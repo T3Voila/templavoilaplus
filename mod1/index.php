@@ -138,9 +138,10 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			'view' => array(
 				0 => $LANG->getLL('view_basic'),
 			),
+			'showHeaderFields' => '',
 			'sheetData' => '',
 			'clip_parentPos' => '',
-			'clip' => '',
+			'clip' => '',			
 		);
 
 			// page/be_user TSconfig settings and blinding of menu-items
@@ -700,7 +701,8 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	
 	/**
 	 * Render header fields: It's possible to define a list of fields (currently only from the pages table) which should appear
-	 * as a header above the content zones while editing the content of a page. These fields are defined in the page's datastructure.
+	 * as a header above the content zones while editing the content of a page. This function renders those fields.
+	 * The fields to be displayed are defined in the page's datastructure.
 	 * 
 	 * @param	integer		$pageId: The page's ID for which to display the header fields
 	 * @return	string		HTML
@@ -709,26 +711,43 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		global $LANG;
 		$content = '';
 		
-		$showHideButton = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/ol/minusbullet.gif','').' align="absmiddle" vspace="5" border="0" title="" alt="" />';
-		$showHideButton .= '<a href="#">'.$LANG->getLL ('hideheaderinformation').'</a>';
+		$state = intval($this->MOD_SETTINGS['showHeaderFields']);
+		$label = htmlspecialchars($LANG->getLL ($state ? 'hideheaderinformation' : 'showheaderinformation'));
+		$href = t3lib_div::linkThisScript (array('SET'=>array('showHeaderFields'=>$state ? 0 : 1)));
+			
+		$showHideButton = '<a href="'.$href.'"><img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/ol/'.($state ? 'minus' : 'plus').'bullet.gif','').' border="0" title="'.$LANG->getLL ('hideheaderinformation').'" alt="'.$LANG->getLL ('hideheaderinformation').'" /></a>';
+		$showHideMessage = '<a href="'.$href.'">'.$label.'</a>';
 		
 			// Getting data structure for the page template and extract information for header fields to display
 		$pageRecord = t3lib_BEfunc::getRecord ('pages', $pageId);		
 		$dataStructureRecord = t3lib_BEfunc::getRecord ('tx_templavoila_datastructure', $pageRecord['tx_templavoila_ds']);
 		$xmlContent = t3lib_div::xml2array ($dataStructureRecord['dataprot']);
 		if (is_array ($xmlContent['ROOT']['tx_templavoila']['pageModule'])) {
-			$headerFieldNames = t3lib_div::trimExplode(chr(10),str_replace(chr(13),'',$xmlContent['ROOT']['tx_templavoila']['pageModule']['displayHeaderFields']),1);
-			if (is_array ($headerFieldNames)) {
-				foreach ($headerFieldNames as $headerFieldName) {
-					list ($table, $field) = explode ('.',$headerFieldName);
-					$headerFields[] = '<strong>'.htmlspecialchars($field).':</strong> '.$pageRecord[$field];
+			$headerTablesAndFieldNames = t3lib_div::trimExplode(chr(10),str_replace(chr(13),'',$xmlContent['ROOT']['tx_templavoila']['pageModule']['displayHeaderFields']),1);		
+			if (is_array ($headerTablesAndFieldNames)) {
+				$fieldNames = array ();
+				foreach ($headerTablesAndFieldNames as $tableAndFieldName) {
+					list ($table, $field) = explode ('.',$tableAndFieldName);
+					$fieldNames[$table][] = $field;
+					$headerFields[] = array (
+						'table' => $table,
+						'field' => $field,
+						'label' => $LANG->sL(t3lib_BEfunc::getItemLabel('pages',$field)),
+						'value' => t3lib_BEfunc::getProcessedValue('pages',$field,$pageRecord[$field],200)
+					);
 				}
-				
 				if (is_array ($headerFields)) {
-					$content .= $showHideButton;
 					$content .= '<table cellpadding="0" cellspacing="0" border="0" style="padding-left 3px; padding-right: 3px;"><tr>';
-					foreach ($headerFields as $headerField) {
-						$content .= '<tr><td>'.$headerField.'</td></tr>';
+					$content .= '<tr><td colspan="2">'.$showHideButton.'</td><td colspan=2">'.$showHideMessage.'</td>';
+					if ($state) {
+						foreach ($headerFields as $headerFieldArr) {
+							if ($headerFieldArr['table'] == 'pages') {
+								$onClick = t3lib_BEfunc::editOnClick('&edit[pages]['.$pageId.']=edit&columnsOnly='.implode (',',$fieldNames['pages']),$this->doc->backPath);
+								$linkedValue = '<a style="text-decoration: none;" href="#" onclick="'.htmlspecialchars($onClick).'">'.htmlspecialchars($headerFieldArr['value']).'</a>';
+								$content .= '<tr><td style="width: 7px; border-right:1px dotted black;">&nbsp;</td><td>&nbsp;</td>';
+								$content .= '<td style="vertical-align: top; padding-right:10px;" nowrap="nowrap"><strong>'.htmlspecialchars($headerFieldArr['label']).'</strong></td><td><em>'.$linkedValue.'</em></td></tr>';
+							}
+						}
 					}
 					$content .= '</tr></table><br />';
 				}
