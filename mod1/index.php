@@ -39,6 +39,9 @@ require_once (PATH_t3lib.'class.t3lib_scbase.php');
 $BE_USER->modAccess($MCONF,1);    // This checks permissions and exits if the users has no permission for entry.
 
 
+	// We need the TCE forms functions
+require_once (PATH_t3lib.'class.t3lib_loaddbgroup.php');
+
 class tx_templavoila_module1 extends t3lib_SCbase {
 	var $pageinfo;
 
@@ -71,12 +74,18 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	
 			$headerSection = $this->doc->getHeader('pages',$this->pageinfo,$this->pageinfo['_thePath']).'<br />'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.path').': '.t3lib_div::fixed_lgd_pre($this->pageinfo['_thePath'],50);			
 
-			$cmd = t3lib_div::GPvar ('cmd');			// THIS IS DUMMY, HAS TO BE REPLACED 							
+				// Get the parameters
+			$cmd = t3lib_div::GPvar ('cmd');
+			$pageId = t3lib_div::GPvar ('?????');
+			
 			switch ($cmd) {
-				case 'createnew' :
-					$this->content.=$this->renderCreatePageScreen ();
+				
+					// Create a new page
+				case 'crPage' :
+					$this->content.=$this->renderCreatePageScreen ($pageId);
 					break;
 					
+					// Default: Edit an existing page
 				default:
 //					$this->content.=$this->renderEditPageScreen ();
 					$this->content.=$this->renderCreatePageScreen (35); # FOR DEBUGGING
@@ -127,14 +136,21 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 */
     function renderCreatePageScreen ($id) {
 		global $LANG, $BE_USER;
-debug (array('id'=>$id));
 
+			// Initialise the TCEFORMS
+		$tceForms = t3lib_div::makeInstance('t3lib_TCEforms');
+		$tceForms->initDefaultBEMode();
+
+			//	Output first part of the screen
 		$content =$this->doc->startPage($LANG->getLL('createnewpage_title'));
 		$content.=$this->doc->header($LANG->getLL('createnewpage_title'));
 		$content.=$this->doc->spacer(5);
 		$content.=$LANG->getLL('createnewpage_introduction');
-		$content.=$this->doc->section ($LANG->getLL ('createnewpage_pagetitle'), 'blablabla');	
-		$content.=$this->doc->sectionEnd ();
+
+		$formConf=array();
+		$row=array();
+		$content.=$tceForms->getSingleField_typeInput('pages','title',$row,$formConf);
+		
 		return $content;
    }
 
