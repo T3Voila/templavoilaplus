@@ -72,8 +72,6 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			$this->doc->backPath = $BACK_PATH;
 			$this->doc->form='<form action="" method="POST">';
 	
-			$headerSection = $this->doc->getHeader('pages',$this->pageinfo,$this->pageinfo['_thePath']).'<br />'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.path').': '.t3lib_div::fixed_lgd_pre($this->pageinfo['_thePath'],50);			
-
 				// Get the parameters
 			$cmd = t3lib_div::GPvar ('cmd');
 			$positionPid = t3lib_div::GPvar ('positionPid');
@@ -141,12 +139,21 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		$content.=$LANG->getLL ('createnewpage_introduction');
 		$content.=$this->doc->spacer(5);
 		
-			// Output part for the page title
-		$content.=$this->doc->sectionHeader ($LANG->getLL ('createnewpage_pagetitle_label'));
+		$content.=$this->doc->sectionHeader ($LANG->getLL ('createnewpage_hide_header'));
+		$content.=$LANG->getLL ('createnewpage_hide_description');
+		$content.=$this->doc->spacer(5);
+		$content.='<input type="checkbox" name="data[pages][NEW][hide]" checked="checked"/><br />';
+		$content.=$this->doc->spacer(10);
+
+		$content.=$this->doc->sectionHeader ($LANG->getLL ('createnewpage_pagetitle_header'));
 		$content.=$LANG->getLL ('createnewpage_pagetitle_description');
 		$content.=$this->doc->spacer(5);
-		$content.='<input type="text" name="data[pages][NEW][title]"'.$this->doc->formWidth(35).' /><br />';
-		
+		$content.='<input type="text" name="data[pages][NEW][title]"'.$this->doc->formWidth(30).' /><br />';
+		$content.=$this->doc->spacer(10);
+
+		$content.=$this->doc->sectionHeader ($LANG->getLL ('createnewpage_templateobject_header'));
+		$content.=$LANG->getLL ('createnewpage_templateobject_description');
+		$content.=$this->doc->spacer(5);
 		
 		$content.='<input type="submit" name="create" value="'.$LANG->getLL('createnewpage_submitlabel').'" />';
 		
