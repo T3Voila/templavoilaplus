@@ -33,6 +33,8 @@ FINISHING (A week):
 	- Perform a check of template files for block/solo tag consistens.
 	- Add caching mechanism for retrieval of template content (so we can also have a DYNAMIC binding to the template source, possibly with a timed caching)
 	- Support for http-URLs instead of files (incl. caching)
+	- API: A function which can produce a traditionally marked up version of the template: For use in TS as alternative to the Autoparser
+		- ?: How can extensions supply a default template Array when no Template Object exists yet, mapping the data? What about the data structure containing some sample markup as well which means we can always assemble a simple display from that. Or even a nice default display which is of course stylable by CSS. AND this default 
 - Frontend: cObj API for flexforms (move from pibase to tslib_content)
 	- Finish API for getting valurs from FlexForms XML
 	- Finish API so TypoScript can access flexforms content
@@ -40,22 +42,79 @@ FINISHING (A week):
 - mininews: Implement with TemplaVoila
 
 
-
+	
+	
 TESTING:
 - Implement sites like HP site, Vignette site (to test that it is robust and stable!)
 
 
 
-ADDITIONAL FEATURES:
-- Management: Roberts "Cascading Template Designer" module (See Palm document)
-	- Rules for the relations of elements
+
+CTM module (robert):
+- Allows us to arrange Content Elements hierarchically, starting from the page record
+- The hierarchy is simply made by a group-relation field to other "Flexible" content elements.
+
+Interface:
+- Drag'n'Drop of elements in Roberts Interface?
+  - Having a "palette" with icons of these elements?
+  - Recursivity handling: 
+	- Prevent recursivity
+	- Warn for 1) recursivity, 2) reuse of same element, 3) elements outside of PID, 4) non-used elements
+  - Rules:
+	- number of elements in a field, which types, ...
 	- Permissions for users to certain elements areas.
-	- Overview module where you can see missing or double-referred elements.
+	- Disable edit for some elements?
+- Support for sheets: both page header + content elements!!
+- Hierarchy tree view of the relations (incl. sheets, multiple groupfields in each element)
+
+
+Interface parts:
+- Create new page / content element wizard
+	- Ability to create new element based on t3d file (having dummy content or default nested stuff)
+- Main interface
+
+Questions:
+- How to manage multi-language sites?
+  ANSWER
+  	- Use FlexForms build-in possibilities (is already rendered right!) + possibility to exclude certain fields, eg. tt_content group fields
+	- For non-flexform elements, use future core language support:
+		- tt_content elements refering to the default version, but with translation
+		- In TCA for tt_content, have a list of fields which are the ones being overlaid (optional if blank/zero fields should be overlaid too)
+		- In TCEforms this will also allow us see a simultaneous view of translations.
+- content preview?
+
+Technical:
+- Delivery to a) different clients X b) in various languages.
+- Versioning: Part of TCEmain
+- Language: Part of TCEmain/FlexForms
+- Workflow: Independant.
+- Permissions: Part of TCEmain.
+- Frontend Editing should be available.
+
+NOTES:
+- Make sure that a content element is not called recursively
+- FE: Disable edit icon for some elements (same in backend?)
+
+
+
+
+OTHER MODULES:
 - Management: Overview of Page Templates as set in the tree structure
 - Management: Well-designed overview of Data Structures and Their Templates and how they relate (parents/children)
-- Programming: API: A function which can produce a traditionally marked up version of the template: For use in TS as alternative to the Autoparser
-	- ?: How can extensions supply a default template Array when no Template Object exists yet, mapping the data? What about the data structure containing some sample markup as well which means we can always assemble a simple display from that. Or even a nice default display which is of course stylable by CSS. AND this default 
 
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
 	
 Documentation:
 	<proc>
