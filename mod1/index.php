@@ -342,12 +342,19 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * @return	string		The modules content
 	 */
 	function renderEditPageScreen()    {
-		global $LANG, $BE_USER;
+		global $LANG, $BE_USER, $TYPO3_CONF_VARS;
 
 			// Adding header information:
-		$content =$this->doc->startPage($LANG->getLL('title'));
-		$content.=$this->doc->header($LANG->getLL('title_editpage'));
-		$content.=$this->doc->spacer(5);
+		$content  = $this->doc->startPage($LANG->getLL('title'));
+		$content .= $this->doc->spacer(2);
+
+			// Hook for content at the very top (fx. a toolbar):
+		if (is_array ($TYPO3_CONF_VARS['EXTCONF']['templavoila']['mod1']['renderTopToolbar'])) {
+			$_params = array('pObj' => &$this);
+			foreach ($TYPO3_CONF_VARS['EXTCONF']['templavoila']['mod1']['renderTopToolbar'] as $_funcRef) {
+				$content .= t3lib_div::callUserFunction($_funcRef, $_params, $this);
+			}
+		}
 
 			// Reset internal variable:
 		$this->global_tt_content_elementRegister=array();
@@ -532,7 +539,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * @param	boolean		Is set to the number of references there has been in previous recursions of this function
 	 * @return	string		HTML
 	 */
-	function renderFrameWork($dsInfo,$parentPos='',$clipboardElInPath=0, $referenceInPath=0) {
+	function renderFrameWork($dsInfo, $parentPos='', $clipboardElInPath=0, $referenceInPath=0) {
 		global $LANG;
 
 			// Setting the sheet ID and render sheet menu:
@@ -997,8 +1004,8 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * @return	integer		uid of the new page record
 	 */
 	function createPage($pageArray,$positionPid)	{
-		$dataArr= array();
-		$dataArr['pages']['NEW']=$pageArray;
+		$dataArr = array();
+		$dataArr['pages']['NEW'] = $pageArray;
 		$dataArr['pages']['NEW']['pid'] = $positionPid;
 		if (is_null($dataArr['pages']['NEW']['hidden'])) {
 			$dataArr['pages']['NEW']['hidden'] = 0;
@@ -1103,15 +1110,6 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 		return $handler->pasteRecord($pasteCmd, $target, $destination);
 	}
-
-
-
-
-
-
-
-
-
 
 
 

@@ -3,7 +3,7 @@
  * Language labels for module "web_txtemplavoilaM1"
  *
  * $Id$
- * 
+ *
  * This file is detected by the translation tool.
  */
 
@@ -11,7 +11,6 @@ $LOCAL_LANG = Array (
 	"default" => Array (
 		'title' => "WEB > PAGE MODULE",
 		'default_introduction' => 'If you wish to edit the content of a page, please click the page title in the page tree to the left.',
-		'title_editpage' => 'EDIT PAGE',
 		'createnewpage_title' => 'Create a new page',
 		'createnewpage_introduction' => '',
 		'createnewpage_hide_header' => 'Hide',
@@ -51,7 +50,6 @@ $LOCAL_LANG = Array (
 	"dk" => Array (
 		'title' => "Web > Side module",
 		'default_introduction' => 'Hvis du ønsker at redigere sidens indhold, så klik på sidetitlen i sidetræet til venstre.',
-		'title_editpage' => 'REDIGER SIDE',
 		'createnewpage_title' => 'Opret ny side',
 		'createnewpage_introduction' => '',
 		'createnewpage_hide_header' => 'Skjul',
@@ -89,7 +87,6 @@ $LOCAL_LANG = Array (
 	'de' => Array (
 		'title' => "WEB > SEITEN MODUL",
 		'default_introduction' => 'Wenn Sie den Inhalt einer Seite bearbeiten möchten, klicken Sie bitte auf im Seitenbaum auf der linken Seite auf einen Seitentitel.',
-		'title_editpage' => 'SEITE BEARBEITEN',
 		'createnewpage_title' => 'Neue Seite anlegen',
 		'createnewpage_introduction' => '',
 		'createnewpage_hide_header' => 'Verstecken',

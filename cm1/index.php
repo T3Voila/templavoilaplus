@@ -1829,16 +1829,15 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 	 * @see drawDataStructureMap_editItem()
 	 * @access private
 	 */
-	function drawDataStructureMap_editItem_editTypeExtra($type,$formFieldName,$curValue)	{
+	function drawDataStructureMap_editItem_editTypeExtra($type, $formFieldName, $curValue)	{
 			// If a user function was registered, use that instead of our own handlers:
-debug ($this->modTSconfig['properties']);
-		if (isset ($this->modTSconfig['properties']['userFunctions.']['eTypesExtraFormFields.'][$type])) {
-			$params = array (
+		if (isset ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['cm1']['eTypesExtraFormFields'][$type])) {
+			$_params = array (
 				'type' => $type,
 				'formFieldName' => $formFieldName,
 				'curValue' => $curValue,
 			);
-			$output = t3lib_div::callUserFunction($this->modTSconfig['properties']['userFunctions.']['eTypesExtraFormFields.'][$type], $params, $this,'');
+			$output = t3lib_div::callUserFunction($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['cm1']['eTypesExtraFormFields'][$type], $_params, $this);
 		} else {
 			switch($type)	{
 				case 'TypoScriptObject':
@@ -1895,13 +1894,13 @@ debug ($this->modTSconfig['properties']);
 
 					// Based on the eType (the preset type) we make configuration settings.
 					// If a user function was registered, use that instead of our own handlers:
-				if (isset ($this->modTSconfig['properties']['userFunctions.']['eTypesConfGen.'][$elArray[$key]['tx_templavoila']['eType']])) {
-					$params = array (
+				if (isset ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['cm1']['eTypesConfGen'][$elArray[$key]['tx_templavoila']['eType']])) {
+					$_params = array (
 						'key' => $key,
 						'elArray' => &$elArray,
 						'contentInfo' => $contentInfo,
 					);
-					t3lib_div::callUserFunction($this->modTSconfig['properties']['userFunctions.']['eTypesConfGen.'][$elArray[$key]['tx_templavoila']['eType']], $params, $this,'');
+					t3lib_div::callUserFunction($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['cm1']['eTypesConfGen'][$elArray[$key]['tx_templavoila']['eType']], $_params, $this,'');
 				} else {
 					switch($elArray[$key]['tx_templavoila']['eType'])	{
 						case 'text':
