@@ -2,6 +2,18 @@
 TODO
 ******************
 
+TODO inbox (not sorted into the structure below yet):
+- $cObj bug in templavoila, "<stdWrap>" tag
+ - Use "Content from page" pid from page headers if there
+ - Detect if Mount Page is overlaid and if so, do NOT allow editing of the page.
+ - Do not allow content creation on pages like "Shortcut" and "Extenal URL".
+ - Create wizard for moving NORMAL column elements into TemplaVOila structures (recursively!)
+ - "Show hidden content elements" checkbox (like in traditional Web>Page module)
+
+
+
+
+
 NOW:
 	- BUG: When clicking the path link of a RANGE to preview it, we will see only the first element in the visual frame - because the RANGE part is cut away!
 	- BUG: When mapping via File > Filelist old mapping information is restored - this should be bound to the filename of the template file so a FRESH mapping approach does not get old mapping info.
