@@ -10,13 +10,13 @@ NOW:
 	- Perform a check of template files for block/solo tag consistens.
 	- Backend Module in Web> displaying DS/TOs in a list, linking to display data structures etc. Usage counts? All kinds of nice things...
 	- Show a little warning if no template record was selected in _pi1...
-- BUG: Moving a referenced element MOVES it from the original position!
-
+	- BUG: Moving a referenced element MOVES it from the original position!
+	- BUG: When remapping a TO it might loose the settings for the header sections!
 
 OTHER MODULES:
 - Management: Overview of Page Templates as set in the tree structure
 - Management: Well-designed overview of Data Structures and Their Templates and how they relate (parents/children)
-
+- Conversion tool that can take the original tt_content elements from columns are move into relations of Templavoila - in whole brances of the tree!
 
 
 Related to rendering/content elements (css_styled_content):

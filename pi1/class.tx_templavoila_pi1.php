@@ -184,7 +184,9 @@ class tx_templavoila_pi1 extends tslib_pibase {
 			$this->markupObj->setHeaderBodyParts($TO['MappingInfo_head'],$TO['MappingData_head_cached'],$TO['BodyTag_cached']);
 		if ($GLOBALS['TT']->LR) $GLOBALS['TT']->pull();
 		
-		$content = $this->pi_getEditIcon($content,'tx_templavoila_flex','Edit element',$row,$table);
+		$eIconf = array('styleAttribute'=>'position:absolute;');
+		if ($table=='pages')	$eIconf['beforeLastTag']=-1;	// For "pages", set icon in top, not after.
+		$content = $this->pi_getEditIcon($content,'tx_templavoila_flex','Edit element',$row,$table,$eIconf);
 		return $content;	
 	}
 
@@ -285,7 +287,7 @@ class tx_templavoila_pi1 extends tslib_pibase {
 								}
 							}
 
-								// If constants were found in Plugin configuration, "plugins.tx_templavoila_pi1.TSconstants":
+								// If constants were found in Plugin configuration, "plugins.tx_templavoila_pi1.TSconst":
 							if (is_array($this->conf['TSconst.']))	{
 								foreach($this->conf['TSconst.'] as $constant => $value)	{
 									if (!is_array($value))	{
@@ -317,6 +319,7 @@ class tx_templavoila_pi1 extends tslib_pibase {
 						if ($pOptions['HSC'])		$dataValues[$key][$valueKey] = htmlspecialchars($dataValues[$key][$valueKey]);
 						if (trim($pOptions['stdWrap']))		{
 							$tsparserObj = t3lib_div::makeInstance('t3lib_TSparser');
+								// BUG HERE: should convert array to TypoScript...
 							$tsparserObj->parse($pOptions['stdWrap']);
 							$dataValues[$key][$valueKey] = $cObj->stdWrap($dataValues[$key][$valueKey],$tsparserObj->setup);
 						}
