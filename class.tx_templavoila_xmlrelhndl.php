@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2003, 2004  Robert Lemke (rl@robertlemke.de)
+*  (c) 2003, 2004  Kasper Skårhøj (kasper@typo3.com) / Robert Lemke (rl@robertlemke.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -24,32 +24,34 @@
 /**
  * Script contains handler class for FlexForm relations between content elements and host object
  *
- * @author   Kasper Skårhøj <kasper@typo3.com>
+ * @author		Kasper Skårhøj <kasper@typo3.com>
+ * @coauthor	Robert Lemke <rl@robertlemke.de>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *   71: class tx_templavoila_xmlrelhndl 
- *   84:     function insertRecord($destination, $row)	
- *  131:     function pasteRecord($pasteCmd, $source, $destination)	
+ *   73: class tx_templavoila_xmlrelhndl
+ *   91:     function init($altRoot)
+ *  105:     function insertRecord($destination, $row)
+ *  152:     function pasteRecord($pasteCmd, $source, $destination)
  *
  *              SECTION: Execute changes to the FlexForm structures
- *  264:     function _insertReference($itemArray, $refArr, $item)	
- *  285:     function _moveReference($itemArray, $destRefArr, $sourceItemArray, $sourceRefArr, $item_table, $item_uid, $movePid)	
- *  322:     function _removeReference($itemArray, $refArr)	
- *  345:     function _changeReference($itemArray, $refArr, $newUid)	
- *  367:     function _updateFlexFormRefList($refArr, $idListArr)	
- *  385:     function _deleteContentElement($uid)	
+ *  285:     function _insertReference($itemArray, $refArr, $item)
+ *  306:     function _moveReference($itemArray, $destRefArr, $sourceItemArray, $sourceRefArr, $item_table, $item_uid, $movePid)
+ *  345:     function _removeReference($itemArray, $refArr)
+ *  368:     function _changeReference($itemArray, $refArr, $newUid)
+ *  390:     function _updateFlexFormRefList($refArr, $idListArr)
+ *  408:     function _deleteContentElement($uid)
  *
  *              SECTION: Helper functions
- *  421:     function _insertReferenceInList($itemArray, $refArr, $item, $sourceRefArr=FALSE)	
- *  466:     function _getCopyUid($itemAtPosition_uid, $pid)	
- *  491:     function _splitAndValidateReference($string)	
- *  504:     function _getItemArrayFromXML($xmlString, $refArr)	
+ *  444:     function _insertReferenceInList($itemArray, $refArr, $item, $sourceRefArr=FALSE)
+ *  489:     function _getCopyUid($itemAtPosition_uid, $pid)
+ *  514:     function _splitAndValidateReference($string)
+ *  527:     function _getItemArrayFromXML($xmlString, $refArr)
  *
- * TOTAL FUNCTIONS: 12
+ * TOTAL FUNCTIONS: 13
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -62,19 +64,19 @@ require_once (PATH_t3lib.'class.t3lib_tcemain.php');
 
 /**
  * Handler class for FlexForm relations between content elements and host object
- * 
- * @coauthor	Kasper Skaarhoj <kasper@typo3.com>
+ *
+ * @author		Kasper Skaarhoj <kasper@typo3.com>
+ * @coauthor	Robert Lemke <rl@robertlemke.de>
  * @package		TYPO3
  * @subpackage	tx_templavoila
- * @todo	Support for multiple languages? Right now, its only the default...
  */
 class tx_templavoila_xmlrelhndl {
 
 		// External, static:
 	var $rootTable = 'pages';					// The table of the root level.
 	var $flexFieldIndex = array(
-			'tt_content' => 'tx_templavoila_flex',
-			'pages' => 'tx_templavoila_flex',
+		'tt_content' => 'tx_templavoila_flex',
+		'pages' => 'tx_templavoila_flex',
 	);
 
 
@@ -93,15 +95,11 @@ class tx_templavoila_xmlrelhndl {
 		}
 	}
 
-
-
-
-
 	/**
 	 * Creates a page content element (tt_content) and inserts reference in FlexForm field
-	 * 
+	 *
 	 * @param	string		Position reference of where to create new element. Syntax is: [table]:[uid]:[sheet]:[FlexForm field name]:[index of reference position in field value]
-	 * @param	array		Array of default field values for creating the content element record. "pid" and "uid" are overridden.
+	 * @param	array		Array of default field values for creating the content element record. 'pid' and 'uid' are overridden.
 	 * @return	integer		uid of the created content element (if any)
 	 */
 	function insertRecord($destination, $row)	{
@@ -119,7 +117,7 @@ class tx_templavoila_xmlrelhndl {
 					// First, create record:
 				$dataArr = array();
 				$dataArr['tt_content']['NEW'] = $row;
-				$dataArr['tt_content']['NEW']['pid'] = ($destRefArr[0]=="pages" ? $destinationRec['uid'] : $destinationRec['pid']);
+				$dataArr['tt_content']['NEW']['pid'] = ($destRefArr[0]=='pages' ? $destinationRec['uid'] : $destinationRec['pid']);
 				unset($dataArr['tt_content']['NEW']['uid']);
 
 					// Instantiate TCEmain and create the record:
@@ -145,11 +143,11 @@ class tx_templavoila_xmlrelhndl {
 
 	/**
 	 * Performs the processing part of pasting a record.
-	 * 
+	 *
 	 * @param	string		$pasteCmd: Kind of pasting: 'cut', 'copy', 'ref' or 'unlink'
-	 * @param	string		$source: String defining the original record. [table]:[uid]:[sheet]:[FlexForm field name]:[index of reference position in field value]/[ref. table]:[ref. uid]. Example: "pages:78:sDEF:field_contentarea:0/tt_content:60". The field name in the table is implicitly "tx_templavoila_flex". The definition of the reference element after the slash MUST match the element pointed to by the reference index in the first part. This is a security measure.
-	 * @param	string		$destination: Defines the destination where to paste the record (not used when unlinking of course). Syntax is the same as first part of "source", defining a position in a FlexForm "tx_templavoila_flex" field.
-	 * @return	void		
+	 * @param	string		$source: String defining the original record. [table]:[uid]:[sheet]:[structure Language]:[FlexForm field name]:[value language]:[index of reference position in field value]/[ref. table]:[ref. uid]. Example: 'pages:78:sDEF:lDEF:field_contentarea:vDEF:0/tt_content:60'. The field name in the table is implicitly 'tx_templavoila_flex'. The definition of the reference element after the slash MUST match the element pointed to by the reference index in the first part. This is a security measure.
+	 * @param	string		$destination: Defines the destination where to paste the record (not used when unlinking of course). Syntax is the same as first part of 'source', defining a position in a FlexForm 'tx_templavoila_flex' field.
+	 * @return	void
 	 */
 	function pasteRecord($pasteCmd, $source, $destination)	{
 
@@ -159,7 +157,7 @@ class tx_templavoila_xmlrelhndl {
 		if ($sourceStr)	{
 			$sourceRefArr = $this->_splitAndValidateReference($sourceStr);
 
-				// The "source" elements actually point to the source element by its current position in a relation field - the $check variable should match what we find...
+				// The 'source' elements actually point to the source element by its current position in a relation field - the $check variable should match what we find...
 			if (t3lib_div::inList($this->rootTable.',tt_content',$sourceRefArr[0]))	{
 
 					// Get source record (where the current item is)
@@ -170,7 +168,7 @@ class tx_templavoila_xmlrelhndl {
 					$sourceItemArray = $this->_getItemArrayFromXML($sourceRec[$this->flexFieldIndex[$sourceRefArr[0]]], $sourceRefArr);
 
 						// Getting the item at the index-position:
-					$itemOnPosition = $sourceItemArray[$sourceRefArr[4]-1];
+					$itemOnPosition = $sourceItemArray[$sourceRefArr[6]-1];
 					$refID = $itemOnPosition['id'];
 
 						// Now, check if the current element actually matches what it should (otherwise some update must have taken place in between...)
@@ -206,17 +204,16 @@ class tx_templavoila_xmlrelhndl {
 												// Get the uid of a new tt_content element
 											$refID = $this->_getCopyUid(
 															$refID,
-															$destRefArr[0]=="pages" ? $destinationRec['uid'] : $destinationRec['pid']
+															$destRefArr[0]=='pages' ? $destinationRec['uid'] : $destinationRec['pid']
 														);
-
 											if ($refID)	{	// Only do copy IF a new element was created.
 												$this->_insertReference($destItemArray, $destRefArr, 'tt_content_'.$refID);
 											}
 										break;
 										case 'cut':
 
-												// Find destination PID values (considering if table is "pages" or not)
-											$destPid = $destRefArr[0]=="pages" ? $destinationRec['uid'] : $destinationRec['pid'];	// Find true destination PID
+												// Find destination PID values (considering if table is 'pages' or not)
+											$destPid = $destRefArr[0]=='pages' ? $destinationRec['uid'] : $destinationRec['pid'];	// Find true destination PID
 
 												// Get record of the item we are moving:
 											$itemRec = t3lib_BEfunc::getRecord($itemOnPosition['table'], $itemOnPosition['id'], 'uid,pid');
@@ -278,13 +275,15 @@ class tx_templavoila_xmlrelhndl {
 
 	/**
 	 * Insert item reference into list.
-	 * 
+	 *
 	 * @param	array		Array of items from a current reference (array of table/uid pairs) (see _getItemArrayFromXML())
 	 * @param	array		Reference to element in FlexForm structure, splitted into an array (see _splitAndValidateReference())
-	 * @param	string		Item reference, typically "tt_content_".$uid
-	 * @return	void		
+	 * @param	string		Item reference, typically 'tt_content_'.$uid
+	 * @return	void
 	 */
 	function _insertReference($itemArray, $refArr, $item)	{
+debug (array ($itemArray,$refArr, $item));
+die();
 
 			// Get new list of IDs:
 		$idList = $this->_insertReferenceInList($itemArray, $refArr, $item);
@@ -295,7 +294,7 @@ class tx_templavoila_xmlrelhndl {
 
 	/**
 	 * Moves a reference into from list to another position.
-	 * 
+	 *
 	 * @param	array		Destination: Array of items from a current reference (array of table/uid pairs) (see _getItemArrayFromXML())
 	 * @param	array		Destination: Reference to element in FlexForm structure, splitted into an array (see _splitAndValidateReference())
 	 * @param	array		Source: Array of items from a current reference (array of table/uid pairs) (see _getItemArrayFromXML())
@@ -303,7 +302,7 @@ class tx_templavoila_xmlrelhndl {
 	 * @param	string		Item table
 	 * @param	integer		Item uid
 	 * @param	integer		Move-pid (pos/neg) to which the record should be moved (if at all).
-	 * @return	void		
+	 * @return	void
 	 */
 	function _moveReference($itemArray, $destRefArr, $sourceItemArray, $sourceRefArr, $item_table, $item_uid, $movePid)	{
 
@@ -311,7 +310,9 @@ class tx_templavoila_xmlrelhndl {
 		$sameField = $destRefArr[0]==$sourceRefArr[0]
 						&& $destRefArr[1]==$sourceRefArr[1]
 						&& $destRefArr[2]==$sourceRefArr[2]
-						&& $destRefArr[3]==$sourceRefArr[3];
+						&& $destRefArr[3]==$sourceRefArr[3]
+						&& $destRefArr[4]==$sourceRefArr[4]
+						&& $destRefArr[5]==$sourceRefArr[5];
 
 			// Get new list of IDs + Set the data field:
 		$idList_dest = $this->_insertReferenceInList($itemArray, $destRefArr, $item_table.'_'.$item_uid, $sameField ? $sourceRefArr : FALSE);
@@ -328,7 +329,7 @@ class tx_templavoila_xmlrelhndl {
 			$cmdArray['tt_content'][$item_uid]['move'] = $movePid;
 
 				// Store:
-			$tce = t3lib_div::makeInstance("t3lib_TCEmain");
+			$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 			$tce->stripslashes_values = 0;
 			$tce->start(array(),$cmdArray);
 			$tce->process_cmdmap();
@@ -337,15 +338,15 @@ class tx_templavoila_xmlrelhndl {
 
 	/**
 	 * Removes a reference from list
-	 * 
+	 *
 	 * @param	array		Array of items from a current reference (array of table/uid pairs) (see _getItemArrayFromXML())
 	 * @param	array		Reference to element in FlexForm structure, splitted into an array (see _splitAndValidateReference())
-	 * @return	void		
+	 * @return	void
 	 */
 	function _removeReference($itemArray, $refArr)	{
 
 			// Unset the reference:
-		unset($itemArray[$refArr[4]-1]);
+		unset($itemArray[$refArr[6]-1]);
 
 			// Create new list:
 		$idList = array();
@@ -359,16 +360,16 @@ class tx_templavoila_xmlrelhndl {
 
 	/**
 	 * Change a reference from list
-	 * 
+	 *
 	 * @param	array		Array of items from a current reference (array of table/uid pairs) (see _getItemArrayFromXML())
 	 * @param	array		Reference to element in FlexForm structure, splitted into an array (see _splitAndValidateReference())
 	 * @param	integer		New uid to set.
-	 * @return	void		
+	 * @return	void
 	 */
 	function _changeReference($itemArray, $refArr, $newUid)	{
 
 			// Unset the reference:
-		$itemArray[$refArr[4]-1]['id'] = $newUid;
+		$itemArray[$refArr[6]-1]['id'] = $newUid;
 
 			// Create new list:
 		$idList = array();
@@ -382,15 +383,15 @@ class tx_templavoila_xmlrelhndl {
 
 	/**
 	 * Updates the XML structure with the new list of references to tt_content records.
-	 * 
+	 *
 	 * @param	array		Reference to element in FlexForm structure, splitted into an array (see _splitAndValidateReference())
 	 * @param	array		Array of record references
-	 * @return	void		
+	 * @return	void
 	 */
 	function _updateFlexFormRefList($refArr, $idListArr)	{
 			// Set the data field:
 		$dataArr = array();
-		$dataArr[$refArr[0]][$refArr[1]][$this->flexFieldIndex[$refArr[0]]]['data'][$refArr[2]]['lDEF'][$refArr[3]]['vDEF'] = implode(',',$idListArr);
+		$dataArr[$refArr[0]][$refArr[1]][$this->flexFieldIndex[$refArr[0]]]['data'][$refArr[2]][$refArr[3]][$refArr[4]][$refArr[5]] = implode(',',$idListArr);
 
 			// Execute:
 		$tce = t3lib_div::makeInstance('t3lib_TCEmain');
@@ -401,16 +402,16 @@ class tx_templavoila_xmlrelhndl {
 
 	/**
 	 * Deletes an element from tt_content table using TCEmain
-	 * 
+	 *
 	 * @param	integer		UID of the tt_content element to delete.
-	 * @return	void		
+	 * @return	void
 	 */
 	function _deleteContentElement($uid)	{
 		$cmdArray = array();
 		$cmdArray['tt_content'][$uid]['delete'] = 1;
 
 			// Store:
-		$tce = t3lib_div::makeInstance("t3lib_TCEmain");
+		$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 		$tce->stripslashes_values = 0;
 		$tce->start(array(),$cmdArray);
 		$tce->process_cmdmap();
@@ -434,10 +435,10 @@ class tx_templavoila_xmlrelhndl {
 
 	/**
 	 * Creates a new reference list (as array) with the $item element inserted
-	 * 
+	 *
 	 * @param	array		Array of items from a current reference (array of table/uid pairs) (see _getItemArrayFromXML())
 	 * @param	array		Reference to element in FlexForm structure, splitted into an array (see _splitAndValidateReference())
-	 * @param	string		Item reference, typically "tt_content_".$uid
+	 * @param	string		Item reference, typically 'tt_content_'.$uid
 	 * @param	mixed		Only for CUT operations within the SAME field (otherwise FALSE): Reference to the *source* element if this is a move operation where we need to remove this (same field...)
 	 * @return	array		Array with record reference, ready to implode and store in FlexForm structure field
 	 */
@@ -449,7 +450,7 @@ class tx_templavoila_xmlrelhndl {
 		$counter = 0;
 
 			// Insert first:
-		if ($refArr[4]==0)	{
+		if ($refArr[6]==0)	{
 			$idList[] = $item;
 			$inserted = 1;
 		}
@@ -459,12 +460,12 @@ class tx_templavoila_xmlrelhndl {
 			$counter++;
 
 				// Always insert the previous element UNLESS we are cutting an element from the same record!
-			if (!is_array($sourceRefArr) || $sourceRefArr[4]!=$counter)	{
+			if (!is_array($sourceRefArr) || $sourceRefArr[6]!=$counter)	{
 				$idList[] = $idSet['table'].'_'.$idSet['id'];
 			}
 
 				// Add new item:
-			if ($refArr[4]==$counter)	{
+			if ($refArr[6]==$counter)	{
 				$idList[] = $item;
 				$inserted = 1;
 			}
@@ -481,7 +482,7 @@ class tx_templavoila_xmlrelhndl {
 
 	/**
 	 * Copy the element with uid $itemAtPosition_uid and return the new uid
-	 * 
+	 *
 	 * @param	integer		Uid of original
 	 * @param	integer		Pid of the new record
 	 * @return	integer		New UID or false if no new copy was created.
@@ -506,10 +507,10 @@ class tx_templavoila_xmlrelhndl {
 	/**
 	 * Split reference
 	 * Should also verify the integrity of the reference string since the rest of the application does NOT check it further.
-	 * 
-	 * @param	string		Reference to a tt_content element in a flexform field of references to tt_content elements. Syntax is: [table]:[uid]:[sheet]:[FlexForm field name]:[index of reference position in field value]. Example: "pages:78:sDEF:field_contentarea:0/tt_content:60"
-	 * @return	array		Array with each part between ":" in a value with numeric key (exploded)
-	 * @todo 	We should check if $refArr[2] (the sheet key) and $refArr[3] (the field name) is actually in the data structure! Otherwise a possible XSS hole! - Basically, we should just create a checksum on the value of the whole parameter!
+	 *
+	 * @param	string		Reference to a tt_content element in a flexform field of references to tt_content elements. Syntax is: [table]:[uid]:[sheet]:[lLanguage]:[FlexForm field name]:[vLanguage]:[index of reference position in field value]. Example: 'pages:78:sDEF:lDEF:field_contentarea:vDEF:0/tt_content:60'
+	 * @return	array		Array with each part between ':' in a value with numeric key (exploded)
+	 * @todo 	We should check if $refArr[2] (the sheet key), [3] (lKey),[4] (the field name) and [5] (vKey) is actually in the data structure! Otherwise a possible XSS hole! - Basically, we should just create a checksum on the value of the whole parameter!
 	 */
 	function _splitAndValidateReference($string)	{
 		 $refArr = explode(':',$string);
@@ -519,7 +520,7 @@ class tx_templavoila_xmlrelhndl {
 
 	/**
 	 * Takes FlexForm XML content in and based on the reference found in $refArr array it will find the list of references, parse them and return them as an array.
-	 * 
+	 *
 	 * @param	string		XML content of FlexForm field.
 	 * @param	array		Reference; definining which field in the XML to get list of records from.
 	 * @return	array		Numerical array of arrays defining items by table and uid key/value pairs.
@@ -528,7 +529,7 @@ class tx_templavoila_xmlrelhndl {
 
 			// Getting value of the field containing the relations:
 		$xmlContent = t3lib_div::xml2array($xmlString);
-		$dat = $xmlContent['data'][$refArr[2]]['lDEF'][$refArr[3]]['vDEF'];
+		$dat = $xmlContent['data'][$refArr[2]][$refArr[3]][$refArr[4]][$refArr[5]];
 
 			// Getting the relation uids out:
 		$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');

@@ -2,16 +2,16 @@
 
 ########################################################################
 # Extension Manager/Repository config file for ext: 'templavoila'
-# 
+#
 # Auto generated 02-02-2004 15:40
-# 
+#
 # Manual updates:
 # Only the data in the array - anything else is removed by next write
 ########################################################################
 
 $EM_CONF[$_EXTKEY] = Array (
 	'title' => 'TemplaVoila!',
-	'description' => 'A cool tool...',
+	'description' => 'A cool tool ...',
 	'category' => 'module',
 	'shy' => 0,
 	'dependencies' => 'cms',
@@ -25,9 +25,11 @@ $EM_CONF[$_EXTKEY] = Array (
 	'modify_tables' => '',
 	'clearCacheOnLoad' => 1,
 	'lockType' => '',
-	'author' => 'Kasper Skaarhoj',
-	'author_email' => 'kasper@typo3.com',
-	'author_company' => '',
+	'author' => 'Kasper Skaarhoj / Robert Lemke',
+	'author_email' => 'kasper@typo3.com / rl@robertlemke.de',
+	'author_company' => 'TYPO3',
+	'CGLcompliance' => '',
+	'CGLcompliance_note' => '',
 	'private' => 0,
 	'download_password' => '',
 	'version' => '0.2.0',	// Don't modify this! Managed automatically during upload to repository.

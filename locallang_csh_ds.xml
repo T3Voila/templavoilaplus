@@ -4,7 +4,7 @@
         <description>CSH for Data Structure table</description>
         <type>CSH</type>
         <csh_table>tx_templavoila_datastructure</csh_table>
-        <fileId>EXT:templavoila/locallang_csh_ds.php</fileId>
+        <fileId>EXT:templavoila/locallang_csh_ds.xml</fileId>
         <labelContext type="array">
             <languageKey index=".description"></languageKey>
             <languageKey index="title.description"></languageKey>

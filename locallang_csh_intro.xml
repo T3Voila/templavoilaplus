@@ -17,7 +17,17 @@
 			<label index=".image_descr">One part of TemplaVoila is the unique template mapping system which visually shows HTML tags from the template file and allows the user to map data to HTML elements by a single mouseclick.</label>
 			<label index=".syntax"></label>
 		</languageKey>
+		<languageKey index="de" type="array">
+			<label index=".alttitle">TemplaVoila</label>
+			<label index=".description">Die Erweiterung TemplaVoila enthält eine neuartige Template Enginge für die Integration von HTML Vorlagen mit einigen Mausklicks, einen neuen Typ für flexible Inhaltselemente (&quot;Flexible Content&quot;) und ein neues Seiten Modul das die Erstellung von Websites mit verschachtelten Inhaltselementen erlaubt.</label>
+			<label index=".image_descr">Ein Teil von TemplaVoila ist das neuartige Template Mapping System, welches HTML Tags einer HTML Vorlage visuell darstellt und dem Entwickler erlaubt, Daten mit den HTML Element durch einen einfachen Mausklick zu verbinden.</label>
+		</languageKey>
 	</data>
 	<orig_hash type="array">
+		<languageKey index="de" type="array">
+			<label index=".alttitle" type="integer">255775515</label>
+			<label index=".description" type="integer">199732967</label>
+			<label index=".image_descr" type="integer">50476351</label>
+		</languageKey>
 	</orig_hash>
 </T3locallang>

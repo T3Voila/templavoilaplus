@@ -4,7 +4,7 @@
         <description>CSH for additional tt_content fields</description>
         <type>CSH</type>
         <csh_table>tt_content</csh_table>
-        <fileId>EXT:templavoila/locallang_csh_ttc.php</fileId>
+        <fileId>EXT:templavoila/locallang_csh_ttc.xml</fileId>
         <labelContext type="array">
             <languageKey index="tx_templavoila_ds.description"></languageKey>
             <languageKey index="tx_templavoila_to.description"></languageKey>

@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 2003-2004 Robert Lemke (rl@robertlemke.de)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,9 +24,9 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * New content elements wizard for templavoila
- * 
+ *
  * $Id$
  * Originally based on the CE wizard / cms extension by Kasper Skaarhoj <kasper@typo3.com>
  * XHTML compatible.
@@ -39,26 +39,26 @@
  *
  *
  *
- *  100: class tx_templavoila_posMap extends t3lib_positionMap 
- *  110:     function wrapRecordTitle($str,$row)	
- *  124:     function onClickInsertRecord($row,$vv,$moveUid,$pid,$sys_lang=0) 
+ *  100: class tx_templavoila_posMap extends t3lib_positionMap
+ *  110:     function wrapRecordTitle($str,$row)
+ *  124:     function onClickInsertRecord($row,$vv,$moveUid,$pid,$sys_lang=0)
  *
  *
- *  152: class tx_templavoila_dbnewcontentel 
- *  175:     function init()	
- *  211:     function main()	
- *  355:     function printContent()	
+ *  152: class tx_templavoila_dbnewcontentel
+ *  175:     function init()
+ *  211:     function main()
+ *  355:     function printContent()
  *
  *              SECTION: OTHER FUNCTIONS:
- *  384:     function getWizardItems()	
- *  394:     function wizardArray()	
+ *  384:     function getWizardItems()
+ *  394:     function wizardArray()
  *
  * TOTAL FUNCTIONS: 7
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
- 
- 
+
+
 unset($MCONF);
 require ('conf.php');
 require ($BACK_PATH.'init.php');
@@ -69,9 +69,9 @@ unset($MCONF);
 unset($MLANG);
 
 	// Merging locallang files/arrays:
-include ($BACK_PATH.'sysext/lang/locallang_misc.php');
+$LANG->includeLLFile('EXT:lang/locallang_misc.xml');
 $LOCAL_LANG_orig = $LOCAL_LANG;
-include ('locallang_db_new_content_el.php');
+$LANG->includeLLFile('EXT:templavoila/mod1/locallang_db_new_content_el.xml');
 $LOCAL_LANG = t3lib_div::array_merge_recursive_overrule($LOCAL_LANG_orig,$LOCAL_LANG);
 
 	// Exits if 'cms' extension is not loaded:
@@ -88,13 +88,13 @@ require_once (PATH_t3lib.'class.t3lib_page.php');
 
 /**
  * Script Class for the New Content element wizard
- * 
+ *
  * @author	Robert Lemke <rl@robertlemke.de>
  * @package TYPO3
  * @subpackage templavoila
  */
 class tx_templavoila_dbnewcontentel {
-	
+
 		// Internal, static (from GPvars):
 	var $id;					// Page id
 	var $parentRecord;			// Parameters for the new record
@@ -107,20 +107,20 @@ class tx_templavoila_dbnewcontentel {
 	var $include_once = array();	// Includes a list of files to include between init() and main() - see init()
 	var $content;					// Used to accumulate the content of the module.
 	var $access;					// Access boolean.
-	
+
 	/**
 	 * Constructor, initializing internal variables.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function init()	{
 		global $BE_USER,$BACK_PATH,$TBE_MODULES_EXT;
-		
+
 			// Setting class files to include:
 		if (is_array($TBE_MODULES_EXT['xMOD_db_new_content_el']['addElClasses']))	{
 			$this->include_once = array_merge($this->include_once,$TBE_MODULES_EXT['xMOD_db_new_content_el']['addElClasses']);
 		}
-		
+
 			// Setting internal vars:
 		$this->id = intval(t3lib_div::GPvar('id'));
 		$this->parentRecord = t3lib_div::GPvar('parentRecord');
@@ -132,7 +132,7 @@ class tx_templavoila_dbnewcontentel {
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->JScode='';
 		$this->doc->form='<form action="" name="editForm">';
-		
+
 			// Getting the current page and receiving access information (used in main())
 		$perms_clause = $BE_USER->getPagePermsClause(1);
 		$pageinfo = t3lib_BEfunc::readPageAccess($this->id,$perms_clause);
@@ -141,15 +141,15 @@ class tx_templavoila_dbnewcontentel {
 
 	/**
 	 * Creating the module output.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 * @todo	provide position mapping if no position is given already. Like the columns selector but for our cascading element style ...
 	 */
 	function main()	{
 		global $LANG,$BACK_PATH;
 
-		if ($this->id && $this->access)	{			
-		
+		if ($this->id && $this->access)	{
+
 			// ***************************
 			// Creating content
 			// ***************************
@@ -157,20 +157,20 @@ class tx_templavoila_dbnewcontentel {
 			$this->content.=$this->doc->startPage($LANG->getLL('newContentElement'));
 			$this->content.=$this->doc->header($LANG->getLL('newContentElement'));
 			$this->content.=$this->doc->spacer(5);
-		
+
 			$elRow = t3lib_BEfunc::getRecord('pages',$this->id);
 			$header= t3lib_iconWorks::getIconImage('pages',$elRow,$BACK_PATH,' title="'.htmlspecialchars(t3lib_BEfunc::getRecordIconAltText($elRow,'pages')).'" align="top"');
 			$header.= t3lib_BEfunc::getRecordTitle('pages',$elRow,1);
 			$this->content.=$this->doc->section('',$header,0,1);
-			$this->content.=$this->doc->spacer(10);		
-		
+			$this->content.=$this->doc->spacer(10);
+
 				// Wizard
 			$wizardCode='';
 			$tableRows=array();
 			$wizardItems = $this->getWizardItems();
 
 				// Traverse items for the wizard.
-				// An item is either a header or an item rendered with a title/description and icon:			
+				// An item is either a header or an item rendered with a title/description and icon:
 			$counter=0;
 			foreach($wizardItems as $key => $wizardItem)	{
 				if ($wizardItem['header'])	{
@@ -184,17 +184,17 @@ class tx_templavoila_dbnewcontentel {
 						</tr>';
 				} else {
 					$tableLinks=array();
-										
-						// href URI for icon/title:			
+
+						// href URI for icon/title:
 					$newRecordLink = 'index.php?'.$this->linkParams().'&createNewRecord='.rawurlencode($this->parentRecord).$wizardItem['params'];
 
 						// Icon:
 					$iInfo = @getimagesize($wizardItem['icon']);
 					$tableLinks[]='<a href="'.$newRecordLink.'"><img'.t3lib_iconWorks::skinImg($this->doc->backPath,$wizardItem['icon'],'').' alt="" /></a>';
 
-						// Title + description:					
+						// Title + description:
 					$tableLinks[]='<a href="'.$newRecordLink.'"><strong>'.htmlspecialchars($wizardItem['title']).'</strong><br />'.nl2br(htmlspecialchars(trim($wizardItem['description']))).'</a>';
-			
+
 						// Finally, put it together in a table row:
 					$tableRows[]='
 						<tr>
@@ -207,14 +207,14 @@ class tx_templavoila_dbnewcontentel {
 				// Add the wizard table to the content:
 			$wizardCode.=$LANG->getLL('sel1',1).'<br /><br />
 
-		
+
 			<!--
 				Content Element wizard table:
 			-->
 				<table border="0" cellpadding="1" cellspacing="2" id="typo3-ceWizardTable">
 					'.implode('',$tableRows).'
 				</table>';
-			$this->content.=$this->doc->section(!$onClickEvent?$LANG->getLL('1_selectType'):'',$wizardCode,0,1);		
+			$this->content.=$this->doc->section(!$onClickEvent?$LANG->getLL('1_selectType'):'',$wizardCode,0,1);
 		} else {		// In case of no access:
 			$this->content='';
 			$this->content.=$this->doc->startPage($LANG->getLL('newContentElement'));
@@ -225,8 +225,8 @@ class tx_templavoila_dbnewcontentel {
 
 	/**
 	 * Print out the accumulated content:
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function printContent()	{
 		global $SOBE;
@@ -234,7 +234,7 @@ class tx_templavoila_dbnewcontentel {
 		$this->content.= $this->doc->endPage();
 		echo $this->content;
 	}
-	
+
 	function linkParams()	{
 		$output = 'id='.$this->id.
 				(is_array($this->altRoot) ? t3lib_div::implodeArrayForUrl('altRoot',$this->altRoot) : '');
@@ -251,14 +251,14 @@ class tx_templavoila_dbnewcontentel {
 
 	/***************************
 	 *
-	 * OTHER FUNCTIONS:	
+	 * OTHER FUNCTIONS:
 	 *
 	 ***************************/
 
 
 	/**
 	 * Returns the content of wizardArray() function...
-	 * 
+	 *
 	 * @return	array		Returns the content of wizardArray() function...
 	 */
 	function getWizardItems()	{
@@ -269,11 +269,11 @@ class tx_templavoila_dbnewcontentel {
 	 * Returns the array of elements in the wizard display.
 	 * For the plugin section there is support for adding elements there from a global variable.
 	 *
-	 * @return	array		
+	 * @return	array
 	 */
 	function wizardArray()	{
 		global $LANG,$TBE_MODULES_EXT;
-		
+
 		$wizardItems = array(
 			'common' => array('header'=>$LANG->getLL('common')),
 			'common_1' => array(
@@ -337,8 +337,8 @@ class tx_templavoila_dbnewcontentel {
 				'description'=>$LANG->getLL('special_4_description'),
 				'params'=>'&defVals[tt_content][CType]=html'
 			),
-		
-		
+
+
 			'forms' => array('header'=>$LANG->getLL('forms')),
 			'forms_1' => array(
 				'icon'=>'gfx/c_wiz/mailform.gif',
