@@ -34,44 +34,43 @@
  *
  *
  *
- *  105: class tx_templavoila_module1 extends t3lib_SCbase 
- *  118:     function init()    
- *  128:     function menuConfig()	
- *  155:     function main()    
+ *  104: class tx_templavoila_module1 extends t3lib_SCbase 
+ *  117:     function init()    
+ *  127:     function menuConfig()	
+ *  154:     function main()    
  *
  *              SECTION: Command functions
- *  252:     function cmd_createNewRecord ($params) 
- *  267:     function cmd_unlinkRecord ($params) 
- *  279:     function cmd_pasteRecord ($params) 
+ *  251:     function cmd_createNewRecord ($params) 
+ *  266:     function cmd_unlinkRecord ($params) 
+ *  278:     function cmd_pasteRecord ($params) 
  *
  *              SECTION: Rendering functions
- *  297:     function renderEditPageScreen()    
- *  328:     function renderCreatePageScreen ($positionPid) 
- *  412:     function renderTemplateSelector ($storageFolderPID, $templateType='tmplobj') 
- *  449:     function renderFrameWorkBasic($dsInfo,$parentPos='',$clipboardElInPath=0)	
- *  590:     function renderNonUsed()	
- *  615:     function linkEdit($str,$table,$uid)	
- *  627:     function linkNew($str,$params)	
- *  639:     function linkUnlink($str,$params)	
- *  652:     function linkPaste($str,$params,$target,$cmd)	
- *  664:     function linkCopyCut($str,$parentPos,$cmd)	
- *  673:     function printContent()    
+ *  296:     function renderEditPageScreen()    
+ *  327:     function renderCreatePageScreen ($positionPid) 
+ *  404:     function renderTemplateSelector ($positionPid, $templateType='tmplobj') 
+ *  458:     function renderFrameWorkBasic($dsInfo,$parentPos='',$clipboardElInPath=0)	
+ *  599:     function renderNonUsed()	
+ *  624:     function linkEdit($str,$table,$uid)	
+ *  636:     function linkNew($str,$params)	
+ *  648:     function linkUnlink($str,$params)	
+ *  661:     function linkPaste($str,$params,$target,$cmd)	
+ *  673:     function linkCopyCut($str,$parentPos,$cmd)	
+ *  682:     function printContent()    
  *
  *              SECTION: Processing
- *  694:     function createPage($pageArray,$positionPid)	
- *  714:     function createDefaultRecords ($table, $uid)	
- *  762:     function insertRecord($createNew,$row)	
- *  827:     function pasteRecord($pasteCmd, $target, $destination)	
+ *  703:     function createPage($pageArray,$positionPid)	
+ *  736:     function createDefaultRecords ($table, $uid, $prevDS=-1, $level=0)	
+ *  787:     function insertRecord($createNew,$row)	
+ *  854:     function pasteRecord($pasteCmd, $target, $destination)	
  *
  *              SECTION: Structure and rules functions
- * 1023:     function getStorageFolderPid($positionPid)	
- * 1044:     function getDStreeForPage($table,$id,$prevRecList='',$row='')	
- * 1120:     function renderPreviewContent ($row, $table) 
- * 1184:     function getExpandedDataStructure($table,$field,$row)	
- * 1216:     function evaluateRuleOnElements($rules,$ruleConstants,$elArray)	
- * 1227:     function getDefaultElements($defaults)	
+ * 1050:     function getStorageFolderPid($positionPid)	
+ * 1071:     function getDStreeForPage($table,$id,$prevRecList='',$row='')	
+ * 1147:     function renderPreviewContent ($row, $table) 
+ * 1211:     function getExpandedDataStructure($table,$field,$row)	
+ * 1243:     function evaluateRuleOnElements($rules,$ruleConstants,$elArray)	
  *
- * TOTAL FUNCTIONS: 27
+ * TOTAL FUNCTIONS: 26
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -111,7 +110,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	var $global_tt_content_elementRegister=array();
 	
 	/**
-	 * Initialisation
+	 * Initialisation of this backend module
 	 * 
 	 * @return	void		
 	 */
@@ -322,7 +321,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	/**
 	 * Creates the screen for "new page"
 	 * 
-	 * @param	integer		Position id. Can be positive and negative depending of where the new page is going: Negative always points to a position AFTER the page having the abs. value of the positionId. Positive numbers means to create as the first subpage to another page.
+	 * @param	integer		$positionPid: Can be positive and negative depending of where the new page is going: Negative always points to a position AFTER the page having the abs. value of the positionId. Positive numbers means to create as the first subpage to another page.
 	 * @return	string		Content for the screen output.
 	 */
     function renderCreatePageScreen ($positionPid) {
@@ -339,7 +338,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				if ($newID > 0) {		
 						// Creating the page was successful, now create the default content elements if any
 					$this->createDefaultRecords ('pages',$newID);
-#					header('Location: '.t3lib_div::locationHeaderUrl('index.php?id='.$newID.'&updatePageTree=1'));
+					header('Location: '.t3lib_div::locationHeaderUrl('index.php?id='.$newID.'&updatePageTree=1'));
 					return;
 				} else { debug('Error: Could not create page!'); }
 			} else { debug('Error: Referer host did not match with server host.'); }
@@ -354,13 +353,9 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		$content =$this->doc->startPage($LANG->getLL ('createnewpage_title'));
 		$content.=$this->doc->header($LANG->getLL('createnewpage_title'));
 		$content.=$this->doc->spacer(5);
-		$content.=$LANG->getLL ('createnewpage_introduction');
-		$content.=$this->doc->spacer(5);
 		
 		$content.=$this->doc->sectionHeader ($LANG->getLL ('createnewpage_hide_header'));
-		$content.='<input type="checkbox" name="data[hide]" checked="checked"/><br />';
-		$content.=$this->doc->spacer(5);
-		$content.=$LANG->getLL ('createnewpage_hide_description');
+		$content.='<input type="checkbox" value="1" name="data[hidden]" checked="checked"/> '.$LANG->getLL ('createnewpage_hide_description');
 		$content.=$this->doc->spacer(10);
 
 		$content.=$this->doc->sectionHeader ($LANG->getLL ('createnewpage_pagetitle_header'));
@@ -370,17 +365,17 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		$content.=$this->doc->spacer(10);
 
 		$tmplSelectorCode = '';
-		$tmplSelector = $this->renderTemplateSelector ($this->getStorageFolderPid($positionPid),'tmplobj');
+		$tmplSelector = $this->renderTemplateSelector ($positionPid,'tmplobj');
 		if ($tmplSelector) {
-			$tmplSelectorCode.='<i>'.$LANG->getLL ('createnewpage_templateobject_createemptypage').'</i>';
+#			$tmplSelectorCode.='<em>'.$LANG->getLL ('createnewpage_templateobject_createemptypage').'</em>';
 			$tmplSelectorCode.=$this->doc->spacer(5);
 			$tmplSelectorCode.=$tmplSelector;
 			$tmplSelectorCode.=$this->doc->spacer(10);
 		}
 
-		$tmplSelector = $this->renderTemplateSelector ($this->getStorageFolderPid($positionPid),'t3d');
+		$tmplSelector = $this->renderTemplateSelector ($positionPid,'t3d');
 		if ($tmplSelector) {
-			$tmplSelectorCode.='<i>'.$LANG->getLL ('createnewpage_templateobject_createpagewithdefaultcontent').'</i>';
+			$tmplSelectorCode.='<em>'.$LANG->getLL ('createnewpage_templateobject_createpagewithdefaultcontent').'</em>';
 			$tmplSelectorCode.=$this->doc->spacer(5);
 			$tmplSelectorCode.=$tmplSelector;
 			$tmplSelectorCode.=$this->doc->spacer(10);
@@ -392,41 +387,55 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			$content.=$this->doc->spacer(10);
 			$content.=$tmplSelectorCode;
 		}
-		
-		$content.='<input type="hidden" name="doCreate" value="1" />';	
-		$content.='<input type="hidden" name="positionPid" value="'.$positionPid.'" />';	
-		$content.='<input type="hidden" name="cmd" value="crPage" />';	
-		$content.='<input type="submit" name="create" value="'.$LANG->getLL('createnewpage_submitlabel').'" />';	
 
-		$content.=$this->doc->endPage();
+		$content .= '<input type="hidden" name="doCreate" value="1" />';
+		$content .= '<input type="hidden" name="positionPid" value="'.$positionPid.'" />';
+		$content .= '<input type="hidden" name="cmd" value="crPage" />';
 		return $content;
 	}
 
 	/**
 	 * Renders the template selector.
 	 * 
-	 * @param	integer		$storageFolderPID: The PID of the storage folder where the templates are located
+	 * @param	integer		Position id. Can be positive and negative depending of where the new page is going: Negative always points to a position AFTER the page having the abs. value of the positionId. Positive numbers means to create as the first subpage to another page.
 	 * @param	string		$templateType: The template type, currently only 'tmplobj' is supported, 't3d' is planned
 	 * @return	string		HTML output containing a table with the template selector
 	 */
-	function renderTemplateSelector ($storageFolderPID, $templateType='tmplobj') {
+	function renderTemplateSelector ($positionPid, $templateType='tmplobj') {
 		global $LANG;
+		$storageFolderPID = $this->getStorageFolderPid($positionPid);
 		
 		switch ($templateType) {			
 			case 'tmplobj':				
-				$query='SELECT * FROM `tx_templavoila_tmplobj` WHERE `pid`='.intval($storageFolderPID).t3lib_befunc::deleteClause ('tx_templavoila_tmplobj');
+						// Create the "Default template" entry
+				$previewIconFilename = $GLOBALS['BACK_PATH'].'../'.t3lib_extMgm::siteRelPath($this->extKey).'res1/default_previewicon.gif';
+				$previewIcon = '<input type="image" class="c-inputButton" name="data[tx_templavoila_to]" value="0" src="'.$previewIconFilename.'" title="" />';
+				$description = htmlspecialchars($LANG->getLL ('template_descriptiondefault'));
+				$tmplHTML [] = '<table style="float:left; width: 100%;" valign="top"><tr><td colspan="2" nowrap="nowrap"><h3 class="bgcolor4-20">'.htmlspecialchars($LANG->getLL ('template_titledefault')).'</h3></td></tr>'.
+					'<tr><td valign="top">'.$previewIcon.'</td><td width="120" valign="top"><p>'.$description.'</p></td></tr></table>';
+
+				$tTO = 'tx_templavoila_tmplobj';
+				$tDS = 'tx_templavoila_datastructure';
+				$query="SELECT * FROM $tTO LEFT JOIN $tDS ON $tTO.datastructure = $tDS.uid WHERE $tTO.pid=".intval($storageFolderPID)." AND $tDS.scope=1".t3lib_befunc::deleteClause ($tTO).t3lib_befunc::deleteClause ($tDS);
 				$res = mysql(TYPO3_db, $query);
 				while ($row = @mysql_fetch_assoc($res))	{
 						// Check if preview icon exists, otherwise use default icon:
 					$tmpFilename = 'uploads/tx_templavoila/'.$row['previewicon'];
 					$previewIconFilename = (@is_file(PATH_site.$tmpFilename)) ? ($GLOBALS['BACK_PATH'].'../'.$tmpFilename) : ($GLOBALS['BACK_PATH'].'../'.t3lib_extMgm::siteRelPath($this->extKey).'res1/default_previewicon.gif');
-					$previewIcon = '<a href="#" onclick="this.blur();return false;"><img src="'.$previewIconFilename.'" title="'.htmlspecialchars($row['fileref']).'" alt="" border="0" /></a>';
+					$previewIcon = '<input type="image" class="c-inputButton" name="data[tx_templavoila_to]" value="'.$row['uid'].'" src="'.$previewIconFilename.'" title="" />';
 					$description = $row['description'] ? htmlspecialchars($row['description']) : $LANG->getLL ('template_nodescriptionavailable');
-					$tmplHTML [] = '<table style="float:left;" valign="top"><tr><td colspan="2"><h3>'.htmlspecialchars($row['title']).'</h3></td></tr>'.
+					$tmplHTML [] = '<table style="float:left; width: 100%;" valign="top"><tr><td colspan="2" nowrap="nowrap"><h3>'.htmlspecialchars($row['title']).'</h3></td></tr>'.
 						'<tr><td valign="top">'.$previewIcon.'</td><td width="120" valign="top"><p>'.$description.'</p></td></tr></table>';
 				}
 				if (is_array ($tmplHTML)) {
-					$content = '<div style="float:right;"'.implode (' ',$tmplHTML).'</div>';
+					$counter = 0;
+					$content .= '<table>';
+					foreach ($tmplHTML as $single) {						
+						$content .= ($counter ? '':'<tr>').'<td>'.$single.'</td>'.($counter ? '</tr>':'');
+						$counter ++;
+						if ($counter > 1) { $counter = 0; }
+					}
+					$content .= '</table>';
 				}
 				break;
 			
@@ -695,7 +704,18 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		$dataArr= array();
 		$dataArr['pages']['NEW']=$pageArray;
 		$dataArr['pages']['NEW']['pid'] = $positionPid;
+		if (is_null($dataArr['pages']['NEW']['hidden'])) { 
+			$dataArr['pages']['NEW']['hidden'] = 0; 
+		}
 		unset($dataArr['pages']['NEW']['uid']);
+			// If no data structure is set, try to find one by using the template object
+		if ($dataArr['pages']['NEW']['tx_templavoila_to'] && !$dataArr['pages']['NEW']['tx_templavoila_ds']) {
+			$query = 'SELECT datastructure FROM tx_templavoila_tmplobj WHERE uid='.intval ($dataArr['pages']['NEW']['tx_templavoila_to']).t3lib_BEfunc::deleteClause('tx_templavoila_tmplobj');
+			$res = mysql(TYPO3_db, $query);
+			$resArr = @mysql_fetch_assoc($res);
+			$dataArr['pages']['NEW']['tx_templavoila_ds'] = intval ($resArr['datastructure']);
+		}
+
 		$tce = t3lib_div::makeInstance("t3lib_TCEmain");
 		$tce->stripslashes_values=0;
 		$tce->start($dataArr,array());
@@ -704,21 +724,27 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	}
 
 	/**
-	 * Creates default records which are defined in the datastructure's rules.
+	 * Creates default records which are defined in the datastructure's rules. Calls itself recursively.
 	 * 
 	 * @param	string		$table: The table, usually "pages" or "tt_content"
 	 * @param	integer		$uid: The UID
+	 * @param	integer		$prevDS: Internally used to make sure data structures are not created recursively ("previous data structure")
+	 * @param	integer		$level: Internally used for determine the level of recursiveness
 	 * @return	void		nothing
-	 * @todo				Other tables than 'pages', implementation of flexible CEs (recursive), check for rules compliance? (might not be necessary if we expect ruleDefault to be valid)
+	 * @todo				Check for rules compliance? (might not be necessary if we expect ruleDefault to be valid)
 	 */
-	function createDefaultRecords ($table, $uid)	{
+	function createDefaultRecords ($table, $uid, $prevDS=-1, $level=0)	{
 		global $TCA, $LANG;
-		if ($table == 'pages') {
-				// Getting data structure for the page's template and extract information for default records to create
-			$row = t3lib_BEfunc::getRecord ($table, $uid, 'tx_templavoila_ds,tx_templavoila_to');
-$row['tx_templavoila_ds'] = 1;
-			$row = t3lib_BEfunc::getRecord ('tx_templavoila_datastructure', $row['tx_templavoila_ds']);
-			$xmlContent = t3lib_div::xml2array ($row['dataprot']);
+		
+			// Getting data structure for the template and extract information for default records to create
+		$tableRow = t3lib_BEfunc::getRecord ($table, $uid);
+			// Recursivity check and only care about page records or flexible content elements:
+		if (($level<10) && 
+		    ($tableRow['tx_templavoila_ds'] != $prevDS) &&
+		    ($table != 'tt_content' || $tableRow['CType'] == 'templavoila_pi1') 
+		   ) {	
+			$recRow = t3lib_BEfunc::getRecord ('tx_templavoila_datastructure', $tableRow['tx_templavoila_ds']);
+			$xmlContent = t3lib_div::xml2array ($recRow['dataprot']);
 			if (is_array ($xmlContent)) {
 				foreach ($xmlContent['ROOT']['el'] as $key=>$field) {
 					$defaultRules = explode (chr(10), $field['tx_templavoila']['ruleDefault']);					
@@ -728,17 +754,16 @@ $row['tx_templavoila_ds'] = 1;
 							switch ($ruleArr[0]) {
 								case 'templavoila_pi1': 
 									$conf = array (
-										'header' => '', 
 										'CType' => $ruleArr[0],
-										'tx_templavoila_ds' => intval ($ruleArr[1]),
+										'tx_templavoila_ds' => intval($ruleArr[1]),
 									);
-									$this->insertRecord($table.':'.intval($uid).':sDEF:'.$key,$conf);
+									$ceUid = $this->insertRecord($table.':'.intval($uid).':sDEF:'.$key,$conf);
+									$this->createDefaultRecords ('tt_content', intval($ceUid), $tableRow['tx_templavoila_ds'], $level+1);
 									break;
 								case '':
 									break;
 								default:
 									$conf = array (
-										'header' => '', 
 										'CType' => $ruleArr[0],
 										'bodytext' => $LANG->getLL ('newce_defaulttext_'.$ruleArr[1]), 
 									);
@@ -757,7 +782,7 @@ $row['tx_templavoila_ds'] = 1;
 	 * 
 	 * @param	string		$createNew: consists of several parts separated by colon
 	 * @param	array		$row: Array of parameters for creating the new record.
-	 * @return	void		void
+	 * @return	integer		uid of the created content element (if any)
 	 */
 	function insertRecord($createNew,$row)	{
 		$parts = explode(':',$createNew);
@@ -812,6 +837,8 @@ $row['tx_templavoila_ds'] = 1;
 				$tce->stripslashes_values=0;
 				$tce->start($dataArr,array());
 				$tce->process_datamap();
+				
+				return $ID;
 			}
 		}
 	}
@@ -1215,17 +1242,6 @@ $row['tx_templavoila_ds'] = 1;
 	 */
 	function evaluateRuleOnElements($rules,$ruleConstants,$elArray)	{
 		return $this->rules->evaluateRulesOnElements ($rules,$ruleConstants,$elArray);
-	}
-
-	/**
-	 * Returns an array of arrays with default values for records to create in tt_content table based on the rule/+constants given.
-	 * 
-	 * @param	string		The rule regex
-	 * @param	string		The rule constants
-	 * @return	array		An array of arrays with keynames matching fields in tt_content to set.
-	 */
-	function getDefaultElements($defaults)	{
-		return $this->rules->getDefaultElements($defaults);
 	}
 }
 

@@ -1,3 +1,8 @@
+2003-12-20  Robert Lemke  <rl@robertlemke.de>
+
+	* Various additions, mostly rules + new page creation
+	* Creates default content elements when creating a new page with the create new page wizard. Still things to do though.
+
 2003-12-18  Robert Lemke  <rl@robertlemke.de>
 
 	* Just an upload ...

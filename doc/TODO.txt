@@ -68,6 +68,7 @@ TESTING:
 Roberts TODO:
 - Implement the concept of Data Sources for plugin "pi2"
 - Implement/maintain the rules scheme
+	- When page is created without the create new page wizard, default elements must also be created!
 - Implement wizards for creating new page/new content element
 	- Remember the current "Create page content wizard"; These icons / setups should somehow be implemented as well.
 
@@ -84,7 +85,7 @@ Interface:
 - Hierarchy tree view of the relations (incl. sheets, multiple groupfields in each element)
 - Display of CEs
 	- Better preview for TABLE element
-	- Provide a way for plugins to generate certain previews?
+	- Provide a way for plugins to generate certain previews ?
 
 Interface parts:
 - Create new page / content element wizard
@@ -108,6 +109,7 @@ Technical:
 - Workflow: Independant.
 - Permissions: Part of TCEmain.
 - Frontend Editing should be available.
+	-> Seems to work at first sight but must check what is still missing
 
 NOTES:
 - Make sure that a content element is not called recursively
