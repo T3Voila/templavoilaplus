@@ -2,29 +2,44 @@
 TODO
 ******************
 
-TODO inbox (not sorted into the structure below yet):
-- $cObj bug in templavoila, "<stdWrap>" tag
- - Use "Content from page" pid from page headers if there
- - Detect if Mount Page is overlaid and if so, do NOT allow editing of the page.
- - Do not allow content creation on pages like "Shortcut" and "Extenal URL".
- - Create wizard for moving NORMAL column elements into TemplaVOila structures (recursively!)
- - "Show hidden content elements" checkbox (like in traditional Web>Page module)
-- el. wizard: make copy of.
+Localization:
+1: SELECT FROM tt_content WHERE language_uid = (fr) and language_original_uid = (uid of the default language record)
+2: is <languageDisable> ?
+	If not:
+	3: Get language specific values for the fields
+		- Either per-field
+		- Or per-structure
+	- Enable multi language functions:
+		- Use FlexForms build-in possibilities (is already rendered right!) + possibility to exclude certain fields, eg. tt_content group fields
+			-> first steps taken: lDEF,lXXX and DEF,vXXX will already be displayed correctly
+			-> copy & paste, create new do not work, maybe tcemain(?) changes neccessary because lDEF / vDEF is hard-coded somewhere
 
+		- For non-flexform elements, use future core language support:
+			- tt_content elements refering to the default version, but with translation
+			- In TCA for tt_content, have a list of fields which are the ones being overlaid (optional if blank/zero fields should be overlaid too)
+			- In TCEforms this will also allow us see a simultaneous view of translations.
 
 
 
 NOW:
+	- Management: Overview of Page Templates as set in the tree structure
+		- Look for Flexible Content ELements as well and evaluate if their data structure / template object matches...
+	- Management: Well-designed overview of Data Structures and Their Templates and how they relate (parents/children)
+		- Backend Module in Web> displaying DS/TOs in a list, linking to display data structures etc. Usage counts? All kinds of nice things...
+	- DS selection depending on TO selection
+	- ###STORAGE_PID###
+	- Support for sheets: both page header + content elements! (KASPER)
+
+
+Various:
 	- BUG: When clicking the path link of a RANGE to preview it, we will see only the first element in the visual frame - because the RANGE part is cut away!
 	- BUG: When mapping via File > Filelist old mapping information is restored - this should be bound to the filename of the template file so a FRESH mapping approach does not get old mapping info.
 	- Perform a check of template files for block/solo tag consistens.
-	- Backend Module in Web> displaying DS/TOs in a list, linking to display data structures etc. Usage counts? All kinds of nice things...
 	- BUG: When remapping a TO it might loose the settings for the header sections!
 	- Check for PHP5 compliance
 
+
 OTHER MODULES:
-- Management: Overview of Page Templates as set in the tree structure
-- Management: Well-designed overview of Data Structures and Their Templates and how they relate (parents/children)
 - Conversion tool that can take the original tt_content elements from columns are move into relations of Templavoila - in whole brances of the tree!
 
 
@@ -33,18 +48,18 @@ Related to rendering/content elements (css_styled_content):
  - OK: if register[maxImageWidth] is set, this will override maxW - this is fixed by inserting in the data structure LOAD_REGISTER / RESTORE_REGISTER!
  - Remove "Columns" field from tt_content
  - Remove "Divider" content element type.
+ - $cObj bug in templavoila, "<stdWrap>" tag
+ - Use "Content from page" pid from page headers if there (Rendering: Means, that the other page must be looked up!)
 
 
-
-
-- Mapping features:
+- Mapping features (Kasper, not urgent but annoying for developers...):
 	- While editing an existing Data Element it's confusing that the button "Save" has no effect unless you "Add" the changes before. Rename label?
 	- "class.tx_templavoila_htmlmarkup.php"
 	- Ability to map NEW non-existing attributes AND possibly just any content into HTML tags (like for images ' width="xxx" height="xxx"'.
 	- Ability to select attributes to be REMOVED in a tag.
 	- Ability to map a single field to MANY elements. So the same value can be inserted at multiple positions.
 	- BUG: Assigning an attribute to the FIRST(?) element inside a container will break other elements mapping after that.
-		- Other bugs, loosing mapping. Nico had it, I had it on Vignette site. Robert had it too ;-)
+		- Other bugs, loosing mapping. Nico had it (actually because of an excess </a> tag, so it was HTML nesting inconsistency!!), I had it on Vignette site. Robert had it too ;-)
 		- Also Vignette site exploded itself.
 	- For dynamic creation of Data Structure: Have an intelligent auto-mapper, trying to find which elements might most likely be mapped and which not.
 	- Support inclusion of the EXTERNAL files in the TO serialized array (new field?) so that TOs could be exported WITH all images, stylesheets, JavaScripts... (portable!)
@@ -73,44 +88,43 @@ Related to rendering/content elements (css_styled_content):
 	- API: A function which can produce a traditionally marked up version of the template: For use in TS as alternative to the Autoparser
 	- ?: How can extensions supply a default template Array when no Template Object exists yet, mapping the data? What about the data structure containing some sample markup as well which means we can always assemble a simple display from that. Or even a nice default display which is of course stylable by CSS. AND this default
 	- Implement the language scheme?
-
 - "cm" Backend Modules:
 	- getLL usage in whole module.
 	- CSH for whole module
 
-- "Web > Page" Backend Modules:
-	- For shortcut pages etc, rather show which page it is referring to in Web>Page (TV)
-	- Counting references to objects in some table?
-	- New wizard:
-		- In Content Element Wizard, also list records to insert as references fetched from the storage page
-		- Import t3d files with FlexForm structures inside
-		- Offer to make copies of pages/elements found storage page (or otherwise)
-	- User management: In a Data structure define which users and groups has access to edit etc from thsi point and outwards. At any point in the tree these rights can be overridden. This should be fixed by Robert Lemke? :-)
 
 - Documentation:
 
 
 
 
-
-
-GRAPHICS/PHOTOSHOP:
-	<body> <table> <tbody> <thead> <ol> <ul> <li> <tr> <td> <div> <blockquote> <pre> <p> <span> <font> <a> <map> <h1> <h2> <h3> <h4> <h5> <h6> <img> <input> <textarea> <select> <option> <br> <hr> <form>
-	<u> <i> <b> <strong> <em> <embed> <area> <head> <script> <style> <title>
-	ARIAL 7 px
-	See "html_tags/prototype.psd"
-
-
 ***************
 Roberts TODO:
 ***************
+
+INBOX (imposed by Kasper...:-):
+- "Web > Page" Backend Modules:
+	- Show content in module depending on page type, eg. "sysFolder", "spacer", "Normal / Advanced" etc.
+		- For shortcut pages etc, rather show which page it is referring to in Web>Page (TV)
+	- Counting references to content elements in some table?
+	- New wizard:
+		- In Content Element Wizard, also list records to insert as references fetched from the storage page
+		- Import t3d files with FlexForm structures inside (requires support for FlexForms in T3D - waiting for Kasper)
+		- Offer to make copies of pages/elements found storage page (or otherwise, defined by Page TSconfig, "mod.web_txtemplavoilaM1" ?)
+	- User management: In a Data structure define which users and groups has access to edit etc from thsi point and outwards. At any point in the tree these rights can be overridden. This should be fixed by Robert Lemke? :-)
+	- "createPageWizard.fieldNames" moved to "mod.web_txtemplavoilaM1" branch of Page Tsconfig!
+	- Use "Content from page" pid from page headers if there (Page module: Means, that a notice is shown, just like if the page was a "sysFolder" or the like which cannot contain content)
+	- Detect if Mount Page is overlaid ("Substitute Mount Point (this page) with Mounted page:" is checked) and if so, do NOT allow editing of the page.
+	- Do not allow content creation on pages like "Shortcut" and "Extenal URL".
+	- "Show hidden content elements" checkbox (like in traditional Web>Page module)
+
 
 GENERAL:
 	- Clean up the locallang-files mess in mod1/ !
 	- Implement the concept of Data Sources for plugin "pi2"
 		-> Better create Data Sources as a independent concept (see Datasources thoughts & ToDo)
 		- Make data sources usable and (pre-)viewable in Page Module
-	- Create conditions for DS/TO selection, configurable via TypoScript:
+	- Create conditions for DS/TO selection, configurable via Page TSconfig:
 		- Depending on rootlevel
 		- Depending on branch
 	- Implement access rights on CE level (instead on page level), use ACL! -> Core changes by Kasper
@@ -118,26 +132,36 @@ GENERAL:
 		- rules class API
 		- DS / XML functions
 	- Reorganize functions, create a new class for commonly used functions, make CM1, MOD1, PI1 independent
-	- Enable multi language functions:
-		- Use FlexForms build-in possibilities (is already rendered right!) + possibility to exclude certain fields, eg. tt_content group fields
-			-> first steps taken: lDEF,lXXX and DEF,vXXX will already be displayed correctly
-			-> copy & paste, create new do not work, maybe tcemain(?) changes neccessary because lDEF / vDEF is hard-coded somewhere
 
-		- For non-flexform elements, use future core language support:
-			- tt_content elements refering to the default version, but with translation
-			- In TCA for tt_content, have a list of fields which are the ones being overlaid (optional if blank/zero fields should be overlaid too)
-			- In TCEforms this will also allow us see a simultaneous view of translations.
 
 RULES:
-	- When page is created without the create new page wizard, default elements must also be created! -> core, tcemain
 	- Show what rule in a user-friendly way if a rule doesn't apply or for informational purposes.
-	- Permissions for users to certain elements areas.
+	- Permissions for users to certain elements areas: Probably User TSconfig is used to define a list of "groups" for data structures.
 	- Disable edit for some elements?
 	- Rule editor for click menu and page module
 	- Finish rule compliance check:
 		- braces [sub] (not finished)
 		- classes [class] (not started)
 	- Add solution commands to the status array: Everytime sth is against the rules, some command will be added which would make the page complying to that rule.
+
+
+		<Kaspers bitching>
+		a = CType={text,textpic},list_type=tx_templavoila_pi1
+
+
+		b :
+			CType = list
+			list_type = tx_templavoila_pi1
+			txtemplavoila_to = 3
+			width = 0-200
+
+		a :
+			CType = list
+			list_type = tx_templavoila_pi1
+
+		c :
+			CType = list
+		</Kaspers bitching>
 
 WIZARDS & CLICK MENUS:
 	- Create new content wizard:
@@ -153,14 +177,12 @@ WIZARDS & CLICK MENUS:
 		- implement as clickmenu?
 
 PAGE MODULE:
-	- IDEA: Zoom into content elements / containers by clicking on titlebar / zoom icon.
 	- Provide an EXTMGM install option which allows either both page modules to be installed or only the new one overriding the old one.
 	- If page has no template object selected and no TO is inherited by other page, display message and create dialogue for selecting a template
 	- Recursivity handling:
 		- Prevent recursivity
-		- Warn for 1) recursivity, 2) reuse of same element, 3) elements outside of PID, 4) non-used elements, 5) If elements has references on other pages.
+		- 4) non-used elements, 5) If elements has references on other pages.
 	- Support for sheets: both page header + content elements! (KASPER)
-	- Hierarchy tree view of the relations (incl. sheets, multiple groupfields in each element)
 	- Display of CEs
 		- Better preview for TABLE element
 	- Configure option (in DS): Columns *below* each other instead of side by side display (DASSAULT)
@@ -174,14 +196,26 @@ TECHNICAL:
 	- Frontend Editing should be available.
 		-> Seems to work at first sight but must check what is still missing
 
-OTHER MODULES:
-	- Management: Overview of Page Templates as set in the tree structure
-		- Provide an overview of the whole page tree to show which template (DS/TO) is active
-	- Management: Well-designed overview of Data Structures and Their Templates and how they relate (parents/children)
-
 DOCUMENTATION:
 	- Create manual:
 		- Description of Page Module
 		- Description of Rules
 		- TSconfig reference
 		- "If you see a red dot, the structure does not follow the rules (or you are working with the wrong CMS)"
+
+
+
+
+
+
+
+
+
+
+
+
+GRAPHICS/PHOTOSHOP:
+	<body> <table> <tbody> <thead> <ol> <ul> <li> <tr> <td> <div> <blockquote> <pre> <p> <span> <font> <a> <map> <h1> <h2> <h3> <h4> <h5> <h6> <img> <input> <textarea> <select> <option> <br> <hr> <form>
+	<u> <i> <b> <strong> <em> <embed> <area> <head> <script> <style> <title>
+	ARIAL 7 px
+	See "html_tags/prototype.psd"

@@ -413,14 +413,15 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 #		$content .= $this->renderLanguageSelector();
 
 			// Display the nested page structure:
-		$content .= $this->renderFramework($dsArr,'',$clipboardElInPath);
-#		$content .= t3lib_BEfunc::cshItem('xMOD_tx_templavoila', 'pagemodule', $this->doc->backPath,'|<br/>');
+		$content.= $this->renderFramework($dsArr,'',$clipboardElInPath);
+		$content .= t3lib_BEfunc::cshItem('_MOD_web_txtemplavoilaM1', 'pagemodule', $this->doc->backPath,'|<br/>');
 
 		if (!is_array($this->altRoot))	{
 			$content.=$this->renderNonUsed();
-#			$content.= t3lib_BEfunc::cshItem('xMOD_tx_templavoila', 'pagemodule_notUsed', $this->doc->backPath,'|<br/>');
+			$content.= t3lib_BEfunc::cshItem('_MOD_web_txtemplavoilaM1', 'pagemodule_notUsed', $this->doc->backPath,'|<br/>');
 		}
 
+		$content .= t3lib_BEfunc::cshItem('_MOD_web_txtemplavoilaM1', '', $this->doc->backPath,'<hr/>|What is the TemplaVoila Page module?');
 		return $content;
 	}
 

@@ -7,8 +7,6 @@
         <fileId>EXT:templavoila/locallang_csh_module.php</fileId>
         <labelContext type="array">
             <languageKey index=".alttitle"></languageKey>
-            <languageKey index="pagemodule.description"></languageKey>
-            <languageKey index="pagemodule_notUsed.description"></languageKey>
             <languageKey index="mapping_file.description"></languageKey>
             <languageKey index="mapping_file_showXMLDS.description"></languageKey>
             <languageKey index="mapping_file_loadDSXML.description"></languageKey>
@@ -41,8 +39,6 @@
     <data type="array">
         <languageKey index="default" type="array">
             <label index=".alttitle">TemplaVoila Mapping</label>
-            <label index="pagemodule.description">[FILL IN] TemplaVoila Page Module</label>
-            <label index="pagemodule_notUsed.description">[FILL IN] pagemodule_notUsed</label>
             <label index="mapping_file.description">[FILL IN] mapping_file</label>
             <label index="mapping_file_showXMLDS.description">[FILL IN] mapping_file_showXMLDS</label>
             <label index="mapping_file_loadDSXML.description">[FILL IN] mapping_file_loadDSXML</label>

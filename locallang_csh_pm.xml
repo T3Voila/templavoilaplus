@@ -12,6 +12,8 @@
     <data type="array">
         <languageKey index="default" type="array">
             <label index=".alttitle">Page Module (TemplaVoila)</label>
+            <label index="pagemodule.description">[FILL IN] TemplaVoila Page Module</label>
+            <label index="pagemodule_notUsed.description">[FILL IN] pagemodule_notUsed</label>
         </languageKey>
     </data>
     <orig_hash type="array">
