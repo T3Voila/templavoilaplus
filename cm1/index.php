@@ -617,6 +617,11 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 				
 					// Display XML of data structure:
 				if (is_array($dataStruct))	{
+					require_once(PATH_t3lib.'class.t3lib_syntaxhl.php');
+					
+						// Make instance of syntax highlight class:
+					$hlObj = t3lib_div::makeInstance('t3lib_syntaxhl');
+		
 					$content.='
 					
 					<!--
@@ -627,7 +632,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 						<h3>Data Structure XML:</h3>
 						<p>'.t3lib_BEfunc::getFuncCheck('','SET[showDSxml]',$this->MOD_SETTINGS['showDSxml'],'',t3lib_div::implodeArrayForUrl('',$GLOBALS['HTTP_GET_VARS'],'',1,1)).' Show XML</p>
 						<pre>'.
-							($this->MOD_SETTINGS['showDSxml'] ? htmlspecialchars(t3lib_div::array2xml($dataStruct,'',0,'T3DataStructure')) : '').'
+							($this->MOD_SETTINGS['showDSxml'] ? $hlObj->highLight_DS(t3lib_div::array2xml($dataStruct,'',0,'T3DataStructure')) : '').'
 						</pre>
 					</div>
 					';
