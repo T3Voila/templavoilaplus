@@ -1,3 +1,10 @@
+2004-06-17  Robert Lemke  <rl@robertlemke.de>
+
+	* Bugfix: headerfields, titlebarcolor etc. didn't work with inherited datastructures. Now they do.
+	* New hook in pi1: renderElement_preProcessRow
+	* Prepared some things about multi language support. Don't use it yet!
+	* Guess what: Updated manual
+
 2004-06-07  Robert Lemke  <rl@robertlemke.de>
 
 	* Finished the Create New Page Wizard to an acceptable state ;-)

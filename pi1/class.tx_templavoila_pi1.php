@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2003 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 2003, 2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -27,18 +27,19 @@
  * $Id$
  *
  * @author    Kasper Skaarhoj <kasper@typo3.com>
+ * @coauthor  Robert Lemke <rl@robertlemke.de>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *   67: class tx_templavoila_pi1 extends tslib_pibase 
- *   84:     function main($content,$conf)    
- *   96:     function main_page($content,$conf)    
- *  126:     function initVars($conf)	
- *  139:     function renderElement($row,$table)	
- *  204:     function processDataValues(&$dataValues,$DSelements,$TOelements,$valueKey='vDEF')	
+ *   67: class tx_templavoila_pi1 extends tslib_pibase
+ *   84:     function main($content,$conf)
+ *   96:     function main_page($content,$conf)
+ *  126:     function initVars($conf)
+ *  139:     function renderElement($row,$table)
+ *  204:     function processDataValues(&$dataValues,$DSelements,$TOelements,$valueKey='vDEF')
  *
  * TOTAL FUNCTIONS: 5
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -83,6 +84,7 @@ class tx_templavoila_pi1 extends tslib_pibase {
 	 */
     function main($content,$conf)    {
 		$this->initVars($conf);
+
 		return $this->renderElement($this->cObj->data, 'tt_content');
     }
 
@@ -138,6 +140,22 @@ class tx_templavoila_pi1 extends tslib_pibase {
 	 */
 	function renderElement($row,$table)	{
 		if ($GLOBALS['TT']->LR) $GLOBALS['TT']->push('Get DS, TO and data');
+
+			// First prepare user defined objects (if any) for hooks which extend this function:
+		$hookObjectsArr = array();
+		if (is_array ($TYPO3_CONF_VARS['EXTCONF']['templavoila']['pi1']['renderElementClass'])) {
+			foreach ($TYPO3_CONF_VARS['EXTCONF']['templavoila']['pi1']['renderElementClass'] as $classRef) {
+				$hookObjectsArr[] = &t3lib_div::getUserObj ($classRef);
+			}
+		}
+
+			// Hook: renderElement_preProcessRow
+		reset($hookObjectsArr);
+		while (list(,$hookObj) = each($hookObjectsArr)) {
+			if (method_exists ($hookObj, 'renderElement_preProcessRow')) {
+				$hookObj->renderElement_preProcessRow ($row, $table, $this);
+			}
+		}
 
 			// Get data structure:
 		$srcPointer = $row['tx_templavoila_ds'];

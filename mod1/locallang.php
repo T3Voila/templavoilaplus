@@ -1,6 +1,6 @@
 <?php
 /**
- * Language labels for module "web_txtemplavoilaM1"
+ * Language labels for module 'web_txtemplavoilaM1'
  *
  * $Id$
  *
@@ -8,8 +8,8 @@
  */
 
 $LOCAL_LANG = Array (
-	"default" => Array (
-		'title' => "WEB > PAGE MODULE",
+	'default' => Array (
+		'title' => 'WEB > PAGE MODULE',
 		'default_introduction' => 'If you wish to edit the content of a page, please click the page title in the page tree to the left.',
 		'createnewpage_selecttemplate' => 'Select a template for your new page:',
 		'createnewpage_defaultlayoutsubmitlabel' => 'Create page with default layout',
@@ -25,6 +25,8 @@ $LOCAL_LANG = Array (
 		'view_fancy' => 'Special fancy view',
 		'ruleapplies' => 'Rule applies',
 		'rulefails' => 'Does not comply with the rules',
+		'createnewtranslation' => 'Create new translation',
+		'selectlanguageversion' => 'Select language version',
 		'createnewrecord' => 'Create new record',
 		'editrecord' => 'Edit record',
 		'pasterecord' => 'Paste record',
@@ -41,8 +43,8 @@ $LOCAL_LANG = Array (
 		'path' => 'Path',
 		'defaultLanguage' => 'Default language',
 	),
-	"dk" => Array (
-		'title' => "Web > Side module",
+	'dk' => Array (
+		'title' => 'Web > Side module',
 		'default_introduction' => 'Hvis du ønsker at redigere sidens indhold, så klik på sidetitlen i sidetræet til venstre.',
 		'createnewpage_title' => 'Opret ny side',
 		'createnewpage_defaultlayoutsubmitlabel' => 'Opret side med standardlayout',
@@ -72,7 +74,7 @@ $LOCAL_LANG = Array (
 		'path' => 'Sti',
 	),
 	'de' => Array (
-		'title' => "WEB > SEITEN MODUL",
+		'title' => 'WEB > SEITEN MODUL',
 		'default_introduction' => 'Wenn Sie den Inhalt einer Seite bearbeiten möchten, klicken Sie bitte im Seitenbaum auf der linken Seite auf einen Seitentitel.',
 		'createnewpage_selecttemplate' => 'Vorlage für Ihre neue Seite auswählen:',
 		'createnewpage_defaultlayoutsubmitlabel' => 'Neue Seite mit Standard Layout erstellen',
@@ -88,6 +90,8 @@ $LOCAL_LANG = Array (
 		'view_fancy' => 'Spezielle Ansicht',
 		'ruleapplies' => 'Regel trifft zu',
 		'rulefails' => 'Regel wurde nicht erfüllt',
+		'createnewtranslation' => 'Neue Übersetzung anlegen',
+		'selectlanguageversion' => 'Sprachversion auswählen',
 		'createnewrecord' => 'Neuen Datensatz anlegen',
 		'editrecord' => 'Datensatz bearbeiten',
 		'pasterecord' => 'Datensatz einfügen',
