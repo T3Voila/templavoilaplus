@@ -43,32 +43,32 @@
  *  320:     function renderFile()	
  *  543:     function renderDSO()	
  *  649:     function renderTO()	
- *  805:     function renderTO_editProcessing(&$dataStruct,$row,$theFile)	
+ *  809:     function renderTO_editProcessing(&$dataStruct,$row,$theFile)	
  *
  *              SECTION: Mapper functions
- * 1012:     function renderHeaderSelection($displayFile,$currentHeaderMappingInfo,$showBodyTag,$htmlAfterDSTable='')	
- * 1076:     function renderTemplateMapper($displayFile,$path,$dataStruct=array(),$currentMappingInfo=array(),$htmlAfterDSTable='')	
- * 1240:     function drawDataStructureMap($dataStruct,$mappingMode=0,$currentMappingInfo=array(),$pathLevels=array(),$optDat=array(),$contentSplittedByMapping=array(),$level=0,$tRows=array(),$formPrefix='',$path='',$mapOK=1)	
- * 1453:     function drawDataStructureMap_editItem($formPrefix,$key,$value,$level)	
+ * 1018:     function renderHeaderSelection($displayFile,$currentHeaderMappingInfo,$showBodyTag,$htmlAfterDSTable='')	
+ * 1082:     function renderTemplateMapper($displayFile,$path,$dataStruct=array(),$currentMappingInfo=array(),$htmlAfterDSTable='')	
+ * 1245:     function drawDataStructureMap($dataStruct,$mappingMode=0,$currentMappingInfo=array(),$pathLevels=array(),$optDat=array(),$contentSplittedByMapping=array(),$level=0,$tRows=array(),$formPrefix='',$path='',$mapOK=1)	
+ * 1458:     function drawDataStructureMap_editItem($formPrefix,$key,$value,$level)	
  *
  *              SECTION: Helper-functions for File-based DS/TO creation
- * 1573:     function substEtypeWithRealStuff(&$elArray,$v_sub=array())	
- * 1801:     function substEtypeWithRealStuff_contentInfo($content)	
+ * 1578:     function substEtypeWithRealStuff(&$elArray,$v_sub=array())	
+ * 1806:     function substEtypeWithRealStuff_contentInfo($content)	
  *
  *              SECTION: Various helper functions
- * 1847:     function getDataStructFromDSO($datString,$file='')	
- * 1863:     function linkForDisplayOfPath($title,$path)	
- * 1883:     function linkThisScript($array)	
- * 1905:     function makeIframeForVisual($file,$path,$limitTags,$showOnly,$preview=0)	
- * 1921:     function explodeMappingToTagsStr($mappingToTags,$unsetAll=0)	
- * 1939:     function unsetArrayPath(&$dataStruct,$ref)	
- * 1956:     function cleanUpMappingInfoAccordingToDS(&$currentMappingInfo,$dataStruct)	
+ * 1852:     function getDataStructFromDSO($datString,$file='')	
+ * 1868:     function linkForDisplayOfPath($title,$path)	
+ * 1888:     function linkThisScript($array)	
+ * 1910:     function makeIframeForVisual($file,$path,$limitTags,$showOnly,$preview=0)	
+ * 1926:     function explodeMappingToTagsStr($mappingToTags,$unsetAll=0)	
+ * 1944:     function unsetArrayPath(&$dataStruct,$ref)	
+ * 1961:     function cleanUpMappingInfoAccordingToDS(&$currentMappingInfo,$dataStruct)	
  *
  *              SECTION: DISPLAY mode
- * 1988:     function main_display()	
- * 2033:     function displayFileContentWithMarkup($content,$path,$relPathFix,$limitTags)	
- * 2067:     function displayFileContentWithPreview($content,$relPathFix)	
- * 2103:     function displayFrameError($error)	
+ * 1993:     function main_display()	
+ * 2038:     function displayFileContentWithMarkup($content,$path,$relPathFix,$limitTags)	
+ * 2072:     function displayFileContentWithPreview($content,$relPathFix)	
+ * 2108:     function displayFrameError($error)	
  *
  * TOTAL FUNCTIONS: 25
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -747,6 +747,10 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 						
 							// Header selections
 						$content.='<p>'.t3lib_BEfunc::getFuncCheck('','SET[selectHeaderContent]',$this->MOD_SETTINGS['selectHeaderContent'],'',t3lib_div::implodeArrayForUrl('',$GLOBALS['HTTP_GET_VARS'],'',1,1)).' Select HTML header parts.</p>';
+						
+							// Open in new window:
+						$onClick = 'top.openUrlInWindow(\''.t3lib_div::linkThisScript().'\',\'TVwindow\'); document.location=\''.$GLOBALS['BACK_PATH'].'dummy.php\'; return false;';
+						$content.='<a href="#" onclick="'.htmlspecialchars($onClick).'">Open in own window frame.</a>';
 
 							// If there is a valid data structure, draw table:
 						if (is_array($dataStruct))	{
@@ -885,6 +889,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			} else {
 				if ($cmd=='save_data_mapping' && is_array($inputData))	{
 					$sesDat['currentMappingInfo'] = $currentMappingInfo = t3lib_div::array_merge_recursive_overrule($currentMappingInfo,$inputData);
+					$sesDat['dataStruct'] = $dataStruct;		// Adding data structure to session data so that the PREVIEW window can access the DS easily...
 					$GLOBALS['BE_USER']->setAndSaveSessionData($this->MCONF['name'].'_mappingInfo',$sesDat);
 				}
 			}
@@ -957,12 +962,13 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			$menuItems[]='<input type="submit" name="_save_data_mapping" value="Set" title="Will update session data with current settings." />';
 		}
 
+		$menuItems[]='<input type="submit" name="_save_to" value="Save" title="Saving all mapping data into the Template Object." />';
+
 			// If a difference is detected...:
 		if (
 				(serialize($templatemapping['MappingInfo_head']) != serialize($currentMappingInfo_head))	||
 				(serialize($templatemapping['MappingInfo']) != serialize($currentMappingInfo))
 			)	{
-			$menuItems[]='<input type="submit" name="_save_to" value="Save" title="Saving all mapping data into the Template Object." />';
 			$menuItems[]='<input type="submit" name="_reload_from" value="Revert" title="'.sprintf('Reverting %s mapping data to original data in the Template Object.',$this->MOD_SETTINGS['selectHeaderContent']?'HEAD':'BODY').'" />';
 			$msg[] = 'The current mapping information is different from the mapping information in the Template Object';
 		}
@@ -1141,7 +1147,6 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			<table border="0" cellspacing="2" cellpadding="2">
 			<tr class="bgColor5">
 				<td nowrap="nowrap"><strong>Data Element:</strong></td>
-				<td nowrap="nowrap"><strong>Fieldname:</strong></td>
 				<td nowrap="nowrap"><strong>'.(!$this->_preview?'Mapping instructions:':'Sample Data:').'</strong><br /><img src="clear.gif" width="200" height="1" alt="" /></td>
 				<td nowrap="nowrap"><strong>HTML-path:</strong></td>
 				<td nowrap="nowrap"><strong>Action:</strong></td>
@@ -1291,14 +1296,12 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 								list($pI) = $this->markupObj->splitPath($currentMappingInfo[$key]['MAP_EL']);
 								$rowCells['htmlPath'] = '<img src="'.$GLOBALS['BACK_PATH'].'gfx/icon_ok2.gif" width="18" height="16" border="0" alt="" title="'.htmlspecialchars($cF?'Content found ('.strlen($contentSplittedByMapping['cArray'][$key]).' chars):'.chr(10).chr(10).$cF:'Content empty.').'" class="absmiddle" />'.
 														'<img src="../html_tags/'.$pI['el'].'.gif" height="9" border="0" alt="" hspace="3" class="absmiddle" title="'.htmlspecialchars($currentMappingInfo[$key]['MAP_EL']).'" />'.
-														($pI['modifier'] ? $pI['modifier'].($pI['modifier_value']?':'.$pI['modifier_value']:''):'');
+														($pI['modifier'] ? $pI['modifier'].($pI['modifier_value']?':'.($pI['modifier']!='RANGE'?$pI['modifier_value']:'...'):''):'');
 								$rowCells['htmlPath'] = '<a href="'.$this->linkThisScript(array('htmlPath'=>$path.($path?'|':'').ereg_replace('\/[^ ]*$','',$currentMappingInfo[$key]['MAP_EL']),'showPathOnly'=>1)).'">'.$rowCells['htmlPath'].'</a>';
 
 									// CMD links, default content:
-								$rowCells['cmdLinks'] = '<span class="nobr">'.
-														'<input type="submit" value="Re-Map" name="_" onclick="document.location=\''.$this->linkThisScript(array('mapElPath'=>$formPrefix.'['.$key.']','htmlPath'=>$path,'mappingToTags'=>$value['tx_templavoila']['tags'])).'\';return false;" title="Map this DS element to another HTML element in template file." />'.
-														'<input type="submit" value="Ch.Mode" name="_" onclick="document.location=\''.$this->linkThisScript(array('mapElPath'=>$formPrefix.'['.$key.']','htmlPath'=>$path.($path?'|':'').$pI['path'],'doMappingOfPath'=>1)).'\';return false;" title="Change mapping mode, eg. from INNER to OUTER etc." />'.
-														'</span>';
+								$rowCells['cmdLinks'] = '<span class="nobr"><input type="submit" value="Re-Map" name="_" onclick="document.location=\''.$this->linkThisScript(array('mapElPath'=>$formPrefix.'['.$key.']','htmlPath'=>$path,'mappingToTags'=>$value['tx_templavoila']['tags'])).'\';return false;" title="Map this DS element to another HTML element in template file." />'.
+														'<input type="submit" value="Ch.Mode" name="_" onclick="document.location=\''.$this->linkThisScript(array('mapElPath'=>$formPrefix.'['.$key.']','htmlPath'=>$path.($path?'|':'').$pI['path'],'doMappingOfPath'=>1)).'\';return false;" title="Change mapping mode, eg. from INNER to OUTER etc." /></span>';
 								
 									// If content mapped ok, set flag:
 								$isMapOK=1;
@@ -1351,6 +1354,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 									<select name="dataMappingForm'.$formPrefix.'['.$key.'][MAP_EL]">
 										'.implode('
 										',$opt).'
+										<option value=""></option>
 									</select>
 									<br />
 									<input type="submit" name="_save_data_mapping" value="Set" />
@@ -1389,22 +1393,23 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 					}
 
 						// Put row together
-					$tRows[]='
-						
-						<tr class="bgColor4">
-						<td nowrap="nowrap" valign="top">'.$rowCells['title'].'</td>
-						<td nowrap="nowrap" valign="top">'.$key.'</td>
-						<td>'.$rowCells['description'].'</td>
-						'.($mappingMode 
-								? 
-							'<td nowrap="nowrap">'.$rowCells['htmlPath'].'</td>
-							<td>'.$rowCells['cmdLinks'].'</td>' 
-								:
-							''
-						).'
-						<td>'.$rowCells['tagRules'].'</td>
-						'.$editAddCol.'
-					</tr>';
+					if (!$this->mapElPath || $this->mapElPath == $formPrefix.'['.$key.']')	{
+						$tRows[]='
+							
+							<tr class="bgColor4">
+							<td nowrap="nowrap" valign="top">'.$rowCells['title'].'</td>
+							<td>'.$rowCells['description'].'</td>
+							'.($mappingMode 
+									? 
+								'<td nowrap="nowrap">'.$rowCells['htmlPath'].'</td>
+								<td>'.$rowCells['cmdLinks'].'</td>' 
+									:
+								''
+							).'
+							<td>'.$rowCells['tagRules'].'</td>
+							'.$editAddCol.'
+						</tr>';
+					}
 					
 						// Getting editing row, if applicable:
 					list($addEditRows,$placeBefore) = $this->drawDataStructureMap_editItem($formPrefix,$key,$value,$level);

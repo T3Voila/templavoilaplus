@@ -33,36 +33,38 @@
  *
  *
  *
- *   83: class tx_templavoila_htmlmarkup 
- *  206:     function markupHTMLcontent($content,$backPath,$relPathFix,$showTags,$mode='')	
- *  243:     function passthroughHTMLcontent($content,$relPathFix,$mode='',$altStyle='')	
- *  264:     function getContentBasedOnPath($content,$pathStrArr)	
- *  296:     function splitByPath($content,$pathString)	
- *  323:     function splitContentToMappingInfo($fileContent,$currentMappingInfo)	
- *  386:     function mappingInfoToSearchPath($currentMappingInfo)	
- *  427:     function mergeSearchpartsIntoContent($content,$searchParts,$token='')	
- *  458:     function mergeSampleDataIntoTemplateStructure($dataStruct,$currentMappingInfo,$firstLevelImplodeToken='',$sampleOrder='')	
- *  501:     function mergeFormDataIntoTemplateStructure($editStruct,$currentMappingInfo,$firstLevelImplodeToken='',$valueKey='vDEF')	
- *  547:     function splitPath($pathStr)	
- *  603:     function getTemplateArrayForTO($uid)	
- *  623:     function mergeDataArrayToTemplateArray($TA,$data)	
- *  645:     function getTemplateRecord($uid,$printFlag,$langUid)	
- *  679:     function getTemplateMappingArray($uid,$printFlag,$langUid,$sheet)	
- *  694:     function getTemplateRecord_query($uid,$where)	
+ *   85: class tx_templavoila_htmlmarkup 
+ *  205:     function markupHTMLcontent($content,$backPath,$relPathFix,$showTags,$mode='')	
+ *  242:     function passthroughHTMLcontent($content,$relPathFix,$mode='',$altStyle='')	
+ *  263:     function getContentBasedOnPath($content,$pathStrArr)	
+ *  295:     function splitByPath($content,$pathString)	
+ *  322:     function splitContentToMappingInfo($fileContent,$currentMappingInfo)	
+ *  385:     function mappingInfoToSearchPath($currentMappingInfo)	
+ *  426:     function mergeSearchpartsIntoContent($content,$searchParts,$token='')	
+ *  457:     function mergeSampleDataIntoTemplateStructure($dataStruct,$currentMappingInfo,$firstLevelImplodeToken='',$sampleOrder='')	
+ *  500:     function mergeFormDataIntoTemplateStructure($editStruct,$currentMappingInfo,$firstLevelImplodeToken='',$valueKey='vDEF')	
+ *  546:     function splitPath($pathStr)	
+ *  602:     function getTemplateArrayForTO($uid)	
+ *  622:     function mergeDataArrayToTemplateArray($TA,$data)	
+ *  644:     function getTemplateRecord($uid,$printFlag,$langUid)	
+ *  678:     function getTemplateMappingArray($uid,$printFlag,$langUid,$sheet)	
+ *  693:     function getTemplateRecord_query($uid,$where)	
+ *  711:     function setHeaderBodyParts($MappingInfo_head,$MappingData_head_cached,$BodyTag_cached='')	
  *
  *              SECTION: Various sub processing
- *  725:     function init()	
- *  748:     function splitTagTypes($showTags)	
+ *  745:     function init()	
+ *  768:     function splitTagTypes($showTags)	
  *
  *              SECTION: SPLITTING functions
- *  798:     function recursiveBlockSplitting($content,$tagsBlock,$tagsSolo,$mode,$path='',$recursion=0)	
- *  881:     function getMarkupCode($mode,$v,$params,$firstTagName,$firstTag,$endTag,$subPath,$recursion)	
- *  962:     function getSearchCode($mode,$v,$params,$firstTagName,$firstTag,$endTag,$subPath,$path,$recursion)	
- * 1045:     function sourceDisplay($str,$recursion,$gnyf='',$valueStr=0)	
- * 1064:     function makePath($path,$firstTagName,$attr)	
- * 1092:     function getGnyf($firstTagName,$path,$title)	
+ *  818:     function recursiveBlockSplitting($content,$tagsBlock,$tagsSolo,$mode,$path='',$recursion=0)	
+ *  903:     function getMarkupCode($mode,$v,$params,$firstTagName,$firstTag,$endTag,$subPath,$recursion)	
+ *  988:     function getSearchCode($mode,$v,$params,$firstTagName,$firstTag,$endTag,$subPath,$path,$recursion)	
+ * 1071:     function sourceDisplay($str,$recursion,$gnyf='',$valueStr=0)	
+ * 1092:     function checkboxDisplay($str,$recursion,$path,$gnyf='',$valueStr=0)	
+ * 1118:     function makePath($path,$firstTagName,$attr)	
+ * 1146:     function getGnyf($firstTagName,$path,$title)	
  *
- * TOTAL FUNCTIONS: 23
+ * TOTAL FUNCTIONS: 25
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -175,7 +177,7 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 	var $gnyfStyle = '';		// will contain style-part for gnyf images. (see init())
 	var $gnyfImgAdd = '';		// Eg. 	onclick="return parent.mod.updPath('###PATH###');"	
 	var $pathPrefix='';			// Prefix for the path returned to the mod frame when tag image is clicked.
-
+	var $tDat='';
 	
 	var $elCountArray=array();	// Used to register the paths during parsing the code (see init())
 	var $elParentLevel=array();	// Used to register the all elements on the same level
@@ -604,9 +606,9 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 					($TCA['tx_templavoila_tmplobj']['ctrl']['delete'] ? ' AND NOT '.$TCA['tx_templavoila_tmplobj']['ctrl']['delete'] : '');
 			$res = mysql(TYPO3_db,$query);
 			$row = mysql_fetch_assoc($res);
-			$tDat = unserialize($row['templatemapping']);
+			$this->tDat = unserialize($row['templatemapping']);
 			
-			return $tDat['MappingData_cached'];
+			return $this->tDat['MappingData_cached'];
 		}
 	}
 
@@ -698,10 +700,31 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 		return $printRow;
 	}	
 
-
-
-
-
+	/**
+	 * Will set header content and BodyTag for template.
+	 * 
+	 * @param	[type]		$MappingInfo_head: ...
+	 * @param	[type]		$MappingData_head_cached: ...
+	 * @param	[type]		$BodyTag_cached: ...
+	 * @return	[type]		...
+	 */
+	function setHeaderBodyParts($MappingInfo_head,$MappingData_head_cached,$BodyTag_cached='')	{
+	
+			// Traversing mapped header parts:
+		if (is_array($MappingInfo_head['headElementPaths']))	{
+			foreach($MappingInfo_head['headElementPaths'] as $kk => $vv)	{
+				if (isset($MappingData_head_cached['cArray']['el_'.$kk]))	{
+					$uKey = md5(trim($MappingData_head_cached['cArray']['el_'.$kk]));
+					$GLOBALS['TSFE']->additionalHeaderData['TV_'.$uKey] = chr(10).trim($MappingData_head_cached['cArray']['el_'.$kk]);
+				}
+			}
+		}
+		
+			// Body tag:
+		if ($MappingInfo_head['addBodyTag'] && $BodyTag_cached)	{
+			$GLOBALS['TSFE']->defaultBodyTag = $BodyTag_cached;
+		}
+	}
 
 
 
@@ -1061,7 +1084,7 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 	 * 
 	 * @param	string		Input string to format.
 	 * @param	integer		The recursion integer - used to indent the code.
-	 * @param	string		HTML path 
+	 * @param	string		HTML path
 	 * @param	string		The gnyf-image to display.
 	 * @param	boolean		If set, then the line will be formatted in color as a "value" (means outside of the tag which might otherwise be what is shown)
 	 * @return	string		Formatted input.

@@ -117,11 +117,21 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 			$this->doc->JScode.=$CMparts[0];
 			$this->doc->postCode.= $CMparts[2];
 
+			$this->content.=$this->doc->startPage($LANG->getLL('title'));
+			$this->content.=$this->doc->section('Purpose','This module will provide shortcuts to mapping with TemplaVoila, convenient listing of Template Objects and Data Structures in a hierarchy for much better overview of templates.<hr /> Obviously, this module is not even started...');
 
 			if ($BE_USER->mayMakeShortcut()) {
 				$this->content.='<br /><br />'.$this->doc->makeShortcutIcon('id',implode(',',array_keys($this->MOD_MENU)),$this->MCONF['name']);
 			}
 		} else {	// No access or no current uid:
+
+				// Draw the header.
+			$this->doc = t3lib_div::makeInstance('noDoc');
+			$this->doc->docType= 'xhtml_trans';			
+			$this->doc->backPath = $BACK_PATH;
+			$this->doc->divClass = '';
+			$this->doc->form='<form action="'.htmlspecialchars('index.php?id='.$this->id).'" method="post" autocomplete="off">';
+			$this->content.=$this->doc->startPage($LANG->getLL('title'));
 		}
 		$this->content.=$this->doc->endPage();	
 	}

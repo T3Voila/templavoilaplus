@@ -38,7 +38,7 @@
  *   96:     function main_page($content,$conf)    
  *  126:     function initVars($conf)	
  *  139:     function renderElement($row,$table)	
- *  204:     function processDataValues(&$dataValues,$DSelements,$TOelements,$valueKey='vDEF')	
+ *  202:     function processDataValues(&$dataValues,$DSelements,$TOelements,$valueKey='vDEF')	
  *
  * TOTAL FUNCTIONS: 5
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -181,7 +181,7 @@ class tx_templavoila_pi1 extends tslib_pibase {
 
 		if ($GLOBALS['TT']->LR) $GLOBALS['TT']->push('Merge data and TO');
 			$content = $this->markupObj->mergeFormDataIntoTemplateStructure($dataValues,$TO['MappingData_cached'],'',$vKey);
-			$this->setHeaderBodyParts($TO['MappingInfo_head'],$TO['MappingData_head_cached'],$TO['BodyTag_cached']);
+			$this->markupObj->setHeaderBodyParts($TO['MappingInfo_head'],$TO['MappingData_head_cached'],$TO['BodyTag_cached']);
 		if ($GLOBALS['TT']->LR) $GLOBALS['TT']->pull();
 		
 		$content = $this->pi_getEditIcon($content,'tx_templavoila_flex','Edit element',$row,$table);
@@ -323,27 +323,6 @@ class tx_templavoila_pi1 extends tslib_pibase {
 					}					
 				}
 			}
-		}
-	}
-	
-	/**
-	 *
-	 */
-	function setHeaderBodyParts($MappingInfo_head,$MappingData_head_cached,$BodyTag_cached)	{
-	
-			// Traversing mapped header parts:
-		if (is_array($MappingInfo_head['headElementPaths']))	{
-			foreach($MappingInfo_head['headElementPaths'] as $kk => $vv)	{
-				if (isset($MappingData_head_cached['cArray']['el_'.$kk]))	{
-					$uKey = md5(trim($MappingData_head_cached['cArray']['el_'.$kk]));
-					$GLOBALS['TSFE']->additionalHeaderData['TV_'.$uKey] = chr(10).trim($MappingData_head_cached['cArray']['el_'.$kk]);
-				}
-			}
-		}
-		
-			// Body tag:
-		if ($MappingInfo_head['addBodyTag'] && $BodyTag_cached)	{
-			$GLOBALS['TSFE']->defaultBodyTag = $BodyTag_cached;
 		}
 	}
 }
