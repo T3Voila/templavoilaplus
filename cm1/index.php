@@ -1392,17 +1392,20 @@ $TYPO3_DB->debugOutput = TRUE;
 
 			// Tags, which will trigger "INNER" to be listed on top (because it is almost always INNER-mapping that is needed)
 		if (t3lib_div::inList('body,span,h1,h2,h3,h4,h5,h6,div,td,p,b,i,u,a',$lastEl['el']))	{
-			$optDat =array_reverse($optDat);
+			$optDat = array_reverse($optDat);
 		}
-
+#debug($lastEl);
+#debug($this->markupObj->elParentLevel);
 			// Add options for "samelevel" elements:
 		$sameLevelElements = $this->markupObj->elParentLevel[$lastEl['parent']];
+#debug($sameLevelElements);
 		if (is_array($sameLevelElements))	{
 			$startFound=0;
 			foreach($sameLevelElements as $rEl) 	{
 				if ($startFound)	{
 					$optDat[$lastEl['path'].'/RANGE:'.$rEl]='RANGE to "'.$rEl.'"';
 				}
+
 				if (trim($lastEl['parent'].' '.$rEl)==$lastEl['path'])	$startFound=1;
 			}
 		}

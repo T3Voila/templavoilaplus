@@ -1,3 +1,8 @@
+2005-01-21  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+	* Added a "Start new website" wizard which will set up TemplaVoila site basics in one minute. Found in the Web > TemplaVoila module.
+	* MAY have fixed a bug where the mapping was mysteriously lost - but I might also have introduced a new bug instead. Please let me know!
+
 2004-12-13  Kasper Skårhøj,,,  <kasper@typo3.com>
 
 	* Added an EXAMPLE of how page-templates can come from a t3d file. I expect it needs some configuration of which folder to look for templates in, but the principles are shown. It will require the new TYPO3 source with modified import/export features.

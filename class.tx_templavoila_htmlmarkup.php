@@ -218,9 +218,13 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 		if ($this->mode!='source')	{
 			$content = $this->htmlParse->prefixResourcePath($relPathFix,$content);
 		}
+#debug(array($tagList_elements,$tagList_single),'$tagList_elements,$tagList_single');
 
 			// elements:
 		$content = $this->recursiveBlockSplitting($content,$tagList_elements,$tagList_single,'markup');
+#debug($this->elCountArray,'markupHTMLcontent : '.md5(serialize($this->elCountArray)));
+
+#debug(array($tagList_elements,$tagList_single,'markup'));
 
 			// Wrap in <pre>-tags if source
 		if ($this->mode=='source')	{
@@ -267,17 +271,28 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 		$this->searchPaths=array();
 		$tagList = '';
 
+
+
 		foreach($pathStrArr as $pathStr)	{
 			list($pathInfo) = $this->splitPath($pathStr);
 			$this->searchPaths[$pathInfo['path']] = $pathInfo;
-			$tagList.=','.$pathInfo['tagList'];
+
+				# 21/1 2005: Commented out because the line below is commented in...
+			#$tagList.=','.$pathInfo['tagList'];
 		}
 
-#		$tagList = implode(',',array_keys($this->tags));
+
+			# 21/1 2005:  USING ALL TAGS (otherwise we may get those strange "lost" references - but I DON'T KNOW what may break because of this!!! It just seems that the taglist being used for the "search" should be the SAME as used for the MARKUP!
+		$tagList = implode(',',array_keys($this->tags));
+
+
+
 		list($tagsBlock,$tagsSolo) = $this->splitTagTypes($tagList);
 		// sort array by key so that smallest keys are first - thus we don't get ... ???
+#debug(array($tagsBlock,$tagsSolo),'$tagsBlock,$tagsSolo');
 
 		$newBase = $this->recursiveBlockSplitting($content,$tagsBlock,$tagsSolo,'search');
+#debug($this->elCountArray,'getContentBasedOnPath: '.md5(serialize($this->elCountArray)));
 
 		return array(
 			'searchparts' => $this->searchPaths,
@@ -846,7 +861,7 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 	 * @return	string		HTML
 	 */
 	function recursiveBlockSplitting($content,$tagsBlock,$tagsSolo,$mode,$path='',$recursion=0)	{
-
+#debug($tagsBlock,'$tagsBlock');
 			// Splitting HTML string by all block-tags
 		$blocks = $this->htmlParse->splitIntoBlock($tagsBlock,$content,1);
 		$this->rangeEndSearch[$recursion]='';
@@ -1147,17 +1162,19 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 	 */
 	function makePath($path,$firstTagName,$attr)	{
 			// Detect if pathMode is set and then construct the path based on the mode set.
+#debug($path,1);
 		if ($this->pathMode)	{
 			switch($this->pathMode)	{
 				default:
 					$counterIDstr = $firstTagName.($attr['class']?'.'.$attr['class']:'');	// Counter ID string
 					$this->elCountArray[$path][$counterIDstr]++;		// Increase counter, include
-					$this->elParentLevel[$path][]=$counterIDstr.'['.$this->elCountArray[$path][$counterIDstr].']';
 						// IF id attribute is set, then THAT will reset everything since IDs must be unique. (expecting that ID is a string with no whitespace... at least not checking for that here!)
 					if ($attr['id'])	{
 						$subPath = $firstTagName.'#'.$attr['id'];
+						$this->elParentLevel[$path][]=$counterIDstr.'#'.$attr['id'];
 					} else {
 						$subPath = trim($path.' '.$counterIDstr.'['.$this->elCountArray[$path][$counterIDstr].']');
+						$this->elParentLevel[$path][]=$counterIDstr.'['.$this->elCountArray[$path][$counterIDstr].']';
 					}
 				break;
 			}
