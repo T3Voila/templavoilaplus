@@ -1,26 +1,23 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
-    <meta type="array">
-        <description>Introduction to TemplaVoila Extension</description>
-        <type>CSH</type>
-        <csh_table>xEXT_templavoila</csh_table>
-        <fileId>EXT:templavoila/locallang_csh_intro.php</fileId>
-        <labelContext type="array">
-            <languageKey index=".alttitle"></languageKey>
-        </labelContext>
-    </meta>
-    <data type="array">
-        <languageKey index="default" type="array">
-            <label index=".alttitle">TemplaVoila</label>
-        </languageKey>
-    </data>
-    <orig_hash type="array">
-        <languageKey index="default" type="array">
-            <label index=".alttitle" type="integer">255775515</label>
-        </languageKey>
-    </orig_hash>
-    <orig_text type="array">
-        <languageKey index="default" type="array">
-        </languageKey>
-    </orig_text>
+	<meta type="array">
+		<description>Introduction to TemplaVoila Extension</description>
+		<type>CSH</type>
+		<csh_table>xEXT_templavoila</csh_table>
+		<fileId>EXT:templavoila/locallang_csh_intro.php</fileId>
+		<labelContext type="array">
+		</labelContext>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index=".alttitle">TemplaVoila</label>
+			<label index=".description">The TemplaVoila extension contains a unique point'n'click template mapping engine, a new content element type &quot;Flexible Content&quot; (for fixed-template elements) and a new page module for building web-pages with nested content elements.</label>
+			<label index="_.seeAlso">Tutorial (Futuristic Template Building) | http://typo3.org/documentation/document-library/doc_tut_ftb1/</label>
+			<label index="_.image">EXT:templavoila/cshimages/intro.png</label>
+			<label index=".image_descr">One part of TemplaVoila is the unique template mapping system which visually shows HTML tags from the template file and allows the user to map data to HTML elements by a single mouseclick.</label>
+			<label index=".syntax"></label>
+		</languageKey>
+	</data>
+	<orig_hash type="array">
+	</orig_hash>
 </T3locallang>
