@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2003, 2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 2003, 2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -26,7 +26,7 @@
  *
  * $Id$
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -112,7 +112,7 @@ if (t3lib_extMgm::isLoaded('lorem_ipsum'))	{
 /**
  * Class for controlling the TemplaVoila module.
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tx_templavoila
  */
@@ -681,7 +681,7 @@ $TYPO3_DB->debugOutput = TRUE;
 						'.$this->cshItem('xMOD_tx_templavoila','mapping_file_createDSTO',$this->doc->backPath,'|<br/>').'
 						<table border="0" cellpadding="2" cellspacing="2">
 							<tr>
-								<td class="bgColor5"><strong>Titel of DS/TO:</strong></td>
+								<td class="bgColor5"><strong>Title of DS/TO:</strong></td>
 								<td class="bgColor4"><input type="text" name="_saveDSandTO_title" /></td>
 							</tr>
 							<tr>

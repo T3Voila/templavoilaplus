@@ -156,7 +156,7 @@ class tx_templavoila_xmlrelhndl {
 	/**
 	 * Performs the processing part of pasting a record.
 	 *
-	 * @param	string		$pasteCmd: Kind of pasting: 'cut', 'copy', 'ref' or 'unlink'
+	 * @param	string		$pasteCmd: Kind of pasting: 'cut', 'copy', 'copyref', 'ref' or 'unlink'
 	 * @param	string		$source: String defining the original record. [table]:[uid]:[sheet]:[structure Language]:[FlexForm field name]:[value language]:[index of reference position in field value]/[ref. table]:[ref. uid]. Example: 'pages:78:sDEF:lDEF:field_contentarea:vDEF:0/tt_content:60'. The field name in the table is implicitly 'tx_templavoila_flex'. The definition of the reference element after the slash MUST match the element pointed to by the reference index in the first part. This is a security measure.
 	 * @param	string		$destination: Defines the destination where to paste the record (not used when unlinking of course). Syntax is the same as first part of 'source', defining a position in a FlexForm 'tx_templavoila_flex' field.
 	 * @return	void
@@ -186,20 +186,20 @@ class tx_templavoila_xmlrelhndl {
 						// Now, check if the current element actually matches what it should (otherwise some update must have taken place in between...)
 					if ($itemOnPosition['table'].':'.$itemOnPosition['id'] == $check && $itemOnPosition['table']=='tt_content')	{	// None other than tt_content elements are moved around...
 
-						if ($pasteCmd=='unlink')	{	// Removing the reference:
+						if ($pasteCmd=='unlink') {	// Removing the reference:
 							$this->_removeReference($sourceItemArray, $sourceRefArr);
-						} elseif ($pasteCmd=='delete')	{	// Removing AND DELETING the reference:
+
+						} elseif ($pasteCmd=='delete') { // Removing the reference AND DELETING the content element:
 							$this->_removeReference($sourceItemArray, $sourceRefArr);
 							$this->_deleteContentElement($itemOnPosition['id']);
-						} elseif ($pasteCmd=='localcopy') {
 
-								// Get the uid of a new tt_content element
+						} elseif ($pasteCmd=='localcopy') { // Create a local copy of the referenced content element:
 							$refID = $this->_getCopyUid($refID,	$currentPageId);
-
 							$this->_changeReference($sourceItemArray, $sourceRefArr, $refID);
+
 						} else {	// Copy or Cut a reference:
 
-								// Now, find destination (record in which to insert the new reference)
+								// Now, find destination (record (page or FCE) in which to insert the new reference)
 							$destRefArr = $this->_splitAndValidateReference($destination);
 							if (t3lib_div::inList($this->rootTable.',tt_content',$destRefArr[0]))	{
 									// Destination record:
@@ -212,6 +212,21 @@ class tx_templavoila_xmlrelhndl {
 										// Depending on the paste command, we do...:
 									switch ($pasteCmd)	{
 										case 'copy':
+												// Copy the element and also make true copies of all sub elements:
+												// Get the uid of a new tt_content element
+											$refID = $this->_getCopyUid(
+														$refID,
+														$destRefArr[0]=='pages' ? $destinationRec['uid'] : $destinationRec['pid']
+													);
+
+											if ($refID)	{	// Only do copy IF a new element was created.
+												$this->_insertReference($destItemArray, $destRefArr, 'tt_content_'.$refID);
+												$this->_makeCopiesOfAllSubElements ('tt_content', $refID);
+											}
+
+										break;
+										case 'copyref':
+												// Copy element but don't copy sub-elements, rather keep references to the original sub elements:
 												// Get the uid of a new tt_content element
 											$refID = $this->_getCopyUid(
 														$refID,
@@ -268,12 +283,45 @@ class tx_templavoila_xmlrelhndl {
 		}
 	}
 
+	/**
+	 * Returns a tt_content record specified by a flexform pointer
+	 *
+	 * @param	string		$location: String defining the record. [table]:[uid]:[sheet]:[structure Language]:[FlexForm field name]:[value language]:[index of reference position in field value]/[ref. table]:[ref. uid]. Example: 'pages:78:sDEF:lDEF:field_contentarea:vDEF:0/tt_content:60'. The field name in the table is implicitly 'tx_templavoila_flex'. The definition of the reference element after the slash MUST match the element pointed to by the reference index in the first part. This is a security measure.
+	 * @return	mixed		The record row or FALSE if not successful
+	 */
+	function getRecord($location) {
 
+			// Split the source definition into parts:
+		list($locationStr, $check, $isLocal, $currentPageId) = explode('/', $location);
 
+		if ($locationStr)	{
+			$locationRefArr = $this->_splitAndValidateReference($locationStr);
 
+				// The 'location' elements actually point to the element by its current position in a relation field - the $check variable should match what we find...
+			if (t3lib_div::inList($this->rootTable.',tt_content',$locationRefArr[0]))	{
 
+					// Get record (ie. the parent record, fx. a page, where the current item is)
+				$parentRecord = t3lib_BEfunc::getRecord($locationRefArr[0], $locationRefArr[1],'uid,pid,'.$this->flexFieldIndex[$locationRefArr[0]]);
+				if (is_array($parentRecord))	{
 
+						// Get an array of sub items of that parent record:
+					$itemArray = $this->_getItemArrayFromXML($parentRecord[$this->flexFieldIndex[$locationRefArr[0]]], $locationRefArr);
 
+						// Getting the item at the given index-position:
+					$itemOnPosition = $itemArray[$locationRefArr[6]-1];
+					$refID = $itemOnPosition['id'];
+
+						// Now, check if the current element actually matches what it should (otherwise some update must have taken place in between ...)
+					if ($itemOnPosition['table'].':'.$itemOnPosition['id'] == $check && $itemOnPosition['table']=='tt_content')	{	// None other than tt_content elements are moved around...
+
+							// Finally return the record of the item we have been asked for:
+						return t3lib_BEfunc::getRecord($itemOnPosition['table'], $itemOnPosition['id']);
+					}
+				}
+			}
+		}
+		return false;
+	}
 
 
 
@@ -515,8 +563,62 @@ class tx_templavoila_xmlrelhndl {
 	}
 
 	/**
+	 * Makes a copy of all sub elements of the element specified by $table and $uid. Calls itself recursively.
+	 *
+	 * @param	string		$table: Name of the table of the parent element ('pages' or 'tt_content')
+	 * @param	integer		$uid: UID of the parent element
+	 * @return	void
+	 */
+	function _makeCopiesOfAllSubElements ($table, $uid) {
+
+			// Fetch the specified record and find all sub elements. If there are any, copy them:
+		$parentRecord = t3lib_BEfunc::getRecord ($table, $uid, 'uid,pid,'.$this->flexFieldIndex[$table]);
+		$flexFieldArr = t3lib_div::xml2array($parentRecord[$this->flexFieldIndex[$table]]);
+
+		if (is_array ($flexFieldArr['data'])) {
+			foreach ($flexFieldArr['data'] as $sheetKey => $languagesArr) {
+				if (is_array ($languagesArr)) {
+					foreach ($languagesArr as $languageKey=> $fieldsArr) {
+						if (is_array ($fieldsArr)) {
+							foreach ($fieldsArr as $fieldName => $valuesArr) {
+								if (is_array ($valuesArr)) {
+									foreach ($valuesArr as $valueName => $value) {
+										$valueItems = t3lib_div::intExplode (',', $value);
+
+										if (is_array($valueItems)) {
+											foreach ($valueItems as $index => $sourceUid) {
+												$parentItemArr = $this->_getItemArrayFromXML($parentRecord[$this->flexFieldIndex[$table]], $destRefArr);
+												$parentRefArr = array (
+													$table,
+													$uid,
+													$sheetKey,
+													$languageKey,
+													$fieldName,
+													$valueName,
+													0
+												);
+													// Copy the element:
+												$newUid = $this->_getCopyUid($sourceUid, $parentRecord['pid']);
+												if ($newUid) {
+													$this->_insertReference($parentItemArr, $parentRefArr, 'tt_content_'.$newUid);
+												}
+
+												$this->_makeCopiesOfAllSubElements ('tt_content', $newUid);
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	/**
 	 * Split reference
-	 * Should also verify the integrity of the reference string since the rest of the application does NOT check it further.
+	 * FIXME Should also verify the integrity of the reference string since the rest of the application does NOT check it further.
 	 *
 	 * @param	string		Reference to a tt_content element in a flexform field of references to tt_content elements. Syntax is: [table]:[uid]:[sheet]:[lLanguage]:[FlexForm field name]:[vLanguage]:[index of reference position in field value]. Example: 'pages:78:sDEF:lDEF:field_contentarea:vDEF:0/tt_content:60'
 	 * @return	array		Array with each part between ':' in a value with numeric key (exploded)

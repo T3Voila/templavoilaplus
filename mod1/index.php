@@ -27,7 +27,7 @@
  * $Id$
  *
  * @author     Robert Lemke <robert@typo3.org>
- * @coauthor   Kasper Skï¿½hj <kasper@typo3.com>
+ * @coauthor   Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -37,56 +37,56 @@
  *  129: class tx_templavoila_module1 extends t3lib_SCbase
  *
  *              SECTION: Initialization functions
- *  169:     function init()
- *  203:     function menuConfig()
+ *  171:     function init()
+ *  210:     function menuConfig()
  *
  *              SECTION: Main functions
- *  255:     function main()
+ *  262:     function main()
  *
  *              SECTION: Rendering functions
- *  382:     function renderEditPageScreen()
- *  444:     function renderEditPageScreenMountPoint()
+ *  389:     function renderEditPageScreen()
+ *  473:     function renderEditPageScreenMountPoint()
  *
  *              SECTION: Framework rendering functions
- *  495:     function renderFrameWork_allSheets($dsInfo, $parentPos='', $clipboardElInPath=0, $referenceInPath=0)
- *  532:     function renderFrameWork($dsInfo, $parentPos, $clipboardElInPath, $referenceInPath, $sheet)
+ *  524:     function renderFrameWork_allSheets($dsInfo, $parentPos='', $clipboardElInPath=0, $referenceInPath=0)
+ *  561:     function renderFrameWork($dsInfo, $parentPos, $clipboardElInPath, $referenceInPath, $sheet)
  *
  *              SECTION: Rendering functions for certain subparts
- *  786:     function renderPreviewContent ($row, $table)
- *  873:     function renderLocalizationInfoTable($dsInfo)
+ *  834:     function renderPreviewContent ($row, $table)
+ *  921:     function renderLocalizationInfoTable($dsInfo)
  *
  *              SECTION: Link functions
- *  962:     function linkEdit($str, $table, $uid)
- *  974:     function linkNew($str, $parentRecord)
- *  987:     function linkUnlink($str, $unlinkRecord, $realDelete=FALSE)
- * 1004:     function linkMakeLocal($str, $makeLocalRecord)
- * 1019:     function linkPaste($str, $source, $destination, $cmd)
- * 1031:     function linkCopyCut($str, $source, $cmd)
- * 1040:     function linkParams()
+ * 1010:     function linkEdit($str, $table, $uid)
+ * 1022:     function linkNew($str, $parentRecord)
+ * 1035:     function linkUnlink($str, $unlinkRecord, $realDelete=FALSE)
+ * 1052:     function linkMakeLocal($str, $makeLocalRecord)
+ * 1067:     function linkPaste($str, $source, $destination, $cmd)
+ * 1079:     function linkCopyCut($str, $source, $cmd)
+ * 1088:     function linkParams()
  *
  *              SECTION: Command functions
- * 1066:     function cmd_createNewRecord ($parentRecord, $defVals='')
- * 1084:     function cmd_unlinkRecord ($unlinkRecord)
- * 1096:     function cmd_deleteRecord ($deleteRecord)
- * 1108:     function cmd_makeLocalRecord ($makeLocalRecord)
- * 1120:     function cmd_pasteRecord ($pasteMode)
- * 1132:     function cmd_createNewTranslation ($languageUid)
+ * 1114:     function cmd_createNewRecord ($parentRecord, $defVals='')
+ * 1132:     function cmd_unlinkRecord ($unlinkRecord)
+ * 1144:     function cmd_deleteRecord ($deleteRecord)
+ * 1156:     function cmd_makeLocalRecord ($makeLocalRecord)
+ * 1168:     function cmd_pasteRecord ($pasteMode)
+ * 1180:     function cmd_createNewTranslation ($languageUid)
  *
  *              SECTION: Processing
- * 1158:     function createPage($pageArray,$positionPid)
- * 1194:     function createDefaultRecords ($table, $uid, $prevDS=-1, $level=0)
- * 1245:     function insertRecord($destination, $row)
- * 1260:     function pasteRecord($pasteCmd, $source, $destination)
+ * 1206:     function createPage($pageArray,$positionPid)
+ * 1242:     function createDefaultRecords ($table, $uid, $prevDS=-1, $level=0)
+ * 1293:     function insertRecord($destination, $row)
+ * 1305:     function pasteRecord($pasteCmd, $source, $destination)
  *
  *              SECTION: Structure functions
- * 1284:     function getStorageFolderPid($positionPid)
- * 1305:     function getDStreeForPage($table, $id, $prevRecList='', $row='')
- * 1407:     function getExpandedDataStructure($table, $field, $row)
- * 1442:     function checkRulesForElement ($table, $uid)
+ * 1326:     function getStorageFolderPid($positionPid)
+ * 1348:     function getDStree($table, $id, $prevRecList='', $row='')
+ * 1451:     function getExpandedDataStructure($table, $field, $row)
+ * 1486:     function checkRulesForElement ($table, $uid)
  *
  *              SECTION: Miscelleaneous functions
- * 1465:     function getAvailableLanguages($id=0, $onlyIsoCoded=true, $setDefault=true, $setMulti=false)
- * 1535:     function printContent()
+ * 1509:     function getAvailableLanguages($id=0, $onlyIsoCoded=true, $setDefault=true, $setMulti=false)
+ * 1579:     function printContent()
  *
  * TOTAL FUNCTIONS: 32
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -122,7 +122,7 @@ require_once (t3lib_extMgm::extPath('templavoila').'mod1/class.tx_templavoila_mo
  * Module 'Page' for the 'templavoila' extension.
  *
  * @author		Robert Lemke <robert@typo3.org>
- * @coauthor	Kasper Skaarhoj <kasper@typo3.com>
+ * @coauthor	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package		TYPO3
  * @subpackage	tx_templavoila
  */
@@ -136,8 +136,9 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	var $elementBlacklist=array();					// Used in renderFrameWork (list of CEs causing errors)
 
 	var $altRoot = array();							// Keys: "table", "uid", "field_flex" - thats all to define another "rootTable" than "pages" (using default field "tx_templavoila_flex" for flex form content)
-	var $versionId = 0;								// The current version id
-	var $editVersionUid = 0;
+	var $versionId = 0;								// Versioning: The current version id
+	var $editVersionUid = 0;						// [ CURRENTLY NOT USED ]
+	var $clipboardElIsFCEWithSubEl = 0;				// If TRUE, the clipboard currently contains an element which should be copied and is a Flexible Content Element which has sub elements. Very special, huh?
 
 	var $currentDataStructureArr = array();			// Contains the data structure XML structure indexed by tablenames ('pages', 'tt_content') as an array of the currently selected DS record when editing a page
 	var $currentPageRecord;							// Contains the page record (from table 'pages') of the current page when editing a page
@@ -150,6 +151,10 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	var $sideBarObj;								// Instance of sidebar class
 	var $wizardsObj;								// Instance of wizards class
 	var $rulesObj;									// Instance of the tx_templavoila_rule
+	var $xmlRelHndlObj;								// Instance of XML relationships handler class
+
+
+
 
 
 	/*******************************************
@@ -190,6 +195,11 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 		$this->wizardsObj = t3lib_div::getUserObj('&tx_templavoila_mod1_wizards','');
 		$this->wizardsObj->init($this);
+
+			// Initialize XML relationships handler class:
+		$this->xmlRelHndlObj = t3lib_div::makeInstance('tx_templavoila_xmlrelhndl');
+		$this->xmlRelHndlObj->init($this->altRoot);
+
 	}
 
 	/**
@@ -382,8 +392,30 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			// Reset internal variable which registers all used content elements:
 		$this->global_tt_content_elementRegister=array();
 
-			// Setting whether an element is on the clipboard or not
+			// If no element is in the clipboard, we set clipboardElInPath to true, which in the end disables the display of the paste icons:
 		$clipboardElInPath = (!trim($this->MOD_SETTINGS['clip'].$this->MOD_SETTINGS['clip_parentPos']) ? 1 : 0);
+
+			// If clipboard contains a record being copied, check if it is a flexible content element and if so, if it has sub elements:
+		$this->clipboardElIsFCEWithSubEl = FALSE;
+		if ($this->MOD_SETTINGS['clip'] == 'copy') {
+			$recordToBePasted = $this->xmlRelHndlObj->getRecord ($this->MOD_SETTINGS['clip_parentPos']);
+			if ($recordToBePasted['CType'] == 'templavoila_pi1') {
+				$FCEDataStructureArr = $this->getDStree('tt_content', $recordToBePasted['uid']);
+				$numberOfSubElements = 0;
+				if (is_array ($FCEDataStructureArr['sub'])) {
+					foreach ($FCEDataStructureArr['sub'] as $sheetKey => $fieldsArr) {
+						if (is_array ($fieldsArr)) {
+							foreach ($fieldsArr as $fieldKey => $fieldArr) {
+								if (is_array ($fieldArr['el'])) {
+									$numberOfSubElements += count ($fieldArr['el']);
+								}
+							}
+						}
+					}
+				}
+				$this->clipboardElIsFCEWithSubEl = ($numberOfSubElements > 0);
+			}
+		}
 
 			// Get current page record for later usage
 		$this->currentPageRecord = t3lib_BEfunc::getRecord ('pages', $this->id);
@@ -393,14 +425,14 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			// Returns a BIG array reflecting the "treestructure" of the pages content elements.
 		if (is_array($this->altRoot))	{
 			#($this->editVersionUid ? $this->editVersionUid : $this->altRoot['uid'])
-			$dsArr = $this->getDStreeForPage($this->altRoot['table'], $this->altRoot['uid']);
+			$dsArr = $this->getDStree($this->altRoot['table'], $this->altRoot['uid']);
 		} else {
 				// Get current page record for later usage
 /*			if ($this->editVersionUid && $this->editVersionUid != $this->id)	{
 				$this->currentPageRecord = t3lib_BEfunc::getRecord ('pages', $this->editVersionUid);
 				$this->topPagePid = $this->editVersionUid;
 			}
-	*/		$dsArr = $this->getDStreeForPage('pages', $this->topPagePid, '', $this->currentPageRecord);
+	*/		$dsArr = $this->getDStree('pages', $this->topPagePid, '', $this->currentPageRecord);
 		}
 
 			// Check if it makes sense to allow editing of this page and if it's not, show a message
@@ -623,13 +655,22 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			foreach($dsInfo['sub'][$sheet] as $fieldID => $fieldContent)	{
 				$counter=0;
 
-					// Only show fields and values of a flexible content element, if either the currently selected language is the DEF language, or the langDisable flag of the FCE's data structure is not set
+					// Only show fields and values of a flexible content element if either the currently selected language is the DEF language, or the langDisable flag of the FCE's data structure is not set
 				if (!$fieldContent['meta']['langDisable'] || $this->currentLanguageKey == 'DEF') {
 
 						// "New" and "Paste" icon:
 					$elList = '';
 					$elList.=$this->linkNew('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/new_el.gif','').' style="text-align: center; vertical-align: middle;" vspace="5" border="0" title="'.$LANG->getLL ('createnewrecord').'" alt="" />',$dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$lKey.':'.$fieldID.':'.$vKey.':'.$counter);
-					if (!$clipboardElInPath) { $elList.=$this->linkPaste('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/clip_pasteafter.gif','').' style="text-align: center; vertical-align: middle;" vspace="5" border="0" title="'.$LANG->getLL ('pasterecord').'" alt="" />',$this->MOD_SETTINGS['clip_parentPos'], $dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$lKey.':'.$fieldID.':'.$vKey.':'.$counter, $this->MOD_SETTINGS['clip']); }
+
+						// If the clipboard contains an element, display paste icons:
+					if (!$clipboardElInPath) {
+						if ($this->MOD_SETTINGS['clip']=='copy' && $this->clipboardElIsFCEWithSubEl) {
+							$elList.=$this->linkPaste('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/clip_pasteafter.gif','').' style="text-align: center; vertical-align: middle;" hspace="1" vspace="5" border="0" title="'.$LANG->getLL ('pastefce_andcopyallsubs').'" alt="" />',$this->MOD_SETTINGS['clip_parentPos'], $dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$lKey.':'.$fieldID.':'.$vKey.':'.$counter, 'copy');
+							$elList.=$this->linkPaste('<img'.t3lib_iconWorks::skinImg('clip_pastesubref.gif','').' style="text-align: center; vertical-align: middle;" hspace="1" vspace="5" border="0" title="'.$LANG->getLL ('pastefce_andreferencesubs').'" alt="" />',$this->MOD_SETTINGS['clip_parentPos'], $dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$lKey.':'.$fieldID.':'.$vKey.':'.$counter, 'copyref');
+						} else {
+							$elList.=$this->linkPaste('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/clip_pasteafter.gif','').' style="text-align: center; vertical-align: middle;" hspace="1" vspace="5" border="0" title="'.$LANG->getLL ('pasterecord').'" alt="" />',$this->MOD_SETTINGS['clip_parentPos'], $dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$lKey.':'.$fieldID.':'.$vKey.':'.$counter, $this->MOD_SETTINGS['clip']);
+						}
+					}
 
 						// Render the list of elements (and possibly call itself recursively if needed):
 					if (is_array($fieldContent['el_list']))	 {
@@ -639,8 +680,17 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 							$elList.=$this->renderFrameWork_allSheets($v,$dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$lKey.':'.$fieldID.':'.$vKey.':'.$counter,$clipboardElInPath,$referenceInPath);
 
 								// "New" and "Paste" icon:
-							$elList.=$this->linkNew('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/new_el.gif','').' style="text-align: center; vertical-align: middle;" vspace="5" border="0" title="'.$LANG->getLL ('createnewrecord').'" alt="" />',$dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$lKey.':'.$fieldID.':'.$vKey.':'.$counter);
-							if (!$clipboardElInPath)	$elList.=$this->linkPaste('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/clip_pasteafter.gif','').' style="text-align: center; vertical-align: middle;" vspace="5" border="0" title="'.$LANG->getLL ('pasterecord').'" alt="" />',$this->MOD_SETTINGS['clip_parentPos'], $dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$lKey.':'.$fieldID.':'.$vKey.':'.$counter,$this->MOD_SETTINGS['clip']);
+							$elList.=$this->linkNew('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/new_el.gif','').' style="text-align: center; vertical-align: middle;" vspace="5" hspace="1" border="0" title="'.$LANG->getLL ('createnewrecord').'" alt="" />',$dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$lKey.':'.$fieldID.':'.$vKey.':'.$counter);
+							if (!$clipboardElInPath) {
+
+									// If the clipboard contains an element, display paste icons:
+								if ($this->MOD_SETTINGS['clip']=='copy' && $this->clipboardElIsFCEWithSubEl) {
+									$elList.=$this->linkPaste('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/clip_pasteafter.gif','').' style="text-align: center; vertical-align: middle;" vspace="5" border="0" title="'.$LANG->getLL ('pastefce_andcopyallsubs').'" alt="" />',$this->MOD_SETTINGS['clip_parentPos'], $dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$lKey.':'.$fieldID.':'.$vKey.':'.$counter, 'copy');
+									$elList.=$this->linkPaste('<img'.t3lib_iconWorks::skinImg('clip_pastesubref.gif','').' style="text-align: center; vertical-align: middle;" vspace="5" hspace="1" border="0" title="'.$LANG->getLL ('pastefce_andreferencesubs').'" alt="" />',$this->MOD_SETTINGS['clip_parentPos'], $dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$lKey.':'.$fieldID.':'.$vKey.':'.$counter, 'copyref');
+								} else {
+									$elList.=$this->linkPaste('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/clip_pasteafter.gif','').' style="text-align: center; vertical-align: middle;" vspace="5" border="0" title="'.$LANG->getLL ('pasterecord').'" alt="" />',$this->MOD_SETTINGS['clip_parentPos'], $dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$lKey.':'.$fieldID.':'.$vKey.':'.$counter,$this->MOD_SETTINGS['clip']);
+								}
+							}
 						}
 					}
 
@@ -735,8 +785,9 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			($errorLineBefore ? '<br />'.$errorLineBefore : ''). '
 		<table border="0" cellpadding="0" cellspacing="0" style="border: 1px solid black; margin-bottom:5px; '.$elementBackgroundStyle.'" width="100%">
 			<tr style="'.$elementPageTitlebarStyle.';">
-				<td nowrap="nowrap">'.$ruleIcon.$langIcon.$recordIcon.$viewPageIcon.'</td><td width="95%" '.$titleBarTDParams.'>'.($isLocal?'':'<em>').htmlspecialchars($dsInfo['el']['title']).($isLocal?'':'</em>'). '</td>
-				<td nowrap="nowrap" align="right" valign="top">'.
+				<td nowrap="nowrap" style="vertical-align:top">'.$ruleIcon.$langIcon.$recordIcon.$viewPageIcon.'</td>
+				<td style="width:95%;"'.$titleBarTDParams.'>'.($isLocal?'':'<em>').htmlspecialchars($dsInfo['el']['title']).($isLocal?'':'</em>'). '</td>
+				<td nowrap="nowrap" style="text-align:right; vertical-align:top">'.
 					$linkCustom.
 					$linkMakeLocal.
 					$linkCopy.
@@ -1010,7 +1061,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * @param	string		$str: The label
 	 * @param	string		$params: The parameters defining the original record. Example: pages:78:sDEF:lDEF:field_contentarea:vDEF:0
 	 * @param	string		$destination: The parameters defining the target where to paste the original record
-	 * @param	string		$cmd: The paste mode, usually set in the clipboard: 'cut' or 'copy'
+	 * @param	string		$cmd: The paste mode, usually set in the clipboard: 'cut', 'copy' or 'copyref'
 	 * @return	string		HTML anchor tag containing the label and the paste-link
 	 */
 	function linkPaste($str, $source, $destination, $cmd)	{
@@ -1110,7 +1161,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	/**
 	 * Initiates processing for pasting a record.
 	 *
-	 * @param	string		$pasteMode: "cut" or "copy"
+	 * @param	string		$pasteMode: "cut", "copy" or "copyref" (or the weird commands like "unlink" etc. which actually don't paste)
 	 * @return	void
 	 * @see		pasteRecord ()
 	 */
@@ -1240,25 +1291,19 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * @return	integer		uid of the created content element (if any)
 	 */
 	function insertRecord($destination, $row)	{
-		$handler = t3lib_div::makeInstance('tx_templavoila_xmlrelhndl');
-		$handler->init($this->altRoot);
-
-		return $handler->insertRecord($destination, $row);
+		return $this->xmlRelHndlObj->insertRecord($destination, $row);
 	}
 
 	/**
 	 * Performs the processing part of pasting a record.
 	 *
-	 * @param	string		$pasteCmd: Kind of pasting: 'cut', 'copy' or 'unlink'
+	 * @param	string		$pasteCmd: Kind of pasting: 'cut', 'copy', 'copyref' or 'unlink'
 	 * @param	string		$source: String defining the original record. Example: pages:78:sDEF:lDEF:field_contentarea:vDEF:0
 	 * @param	string		$destination: Defines the destination where to paste the record (not used when unlinking of course).
 	 * @return	void		nothing
 	 */
 	function pasteRecord($pasteCmd, $source, $destination)	{
-		$handler = t3lib_div::makeInstance('tx_templavoila_xmlrelhndl');
-		$handler->init($this->altRoot);
-
-		return $handler->pasteRecord($pasteCmd, $source, $destination);
+		return $this->xmlRelHndlObj->pasteRecord($pasteCmd, $source, $destination);
 	}
 
 
@@ -1291,15 +1336,16 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	}
 
 	/**
-	 * Returns the data structure for a certain page.
+	 * Returns the data structure (containing data) for a certain page or a flexible content element. In case of a page it will contain all the references
+	 * to content elements (and more information) and in case of a FCE, references to its sub-elements.
 	 *
-	 * @param	string		$table: Table which contains the element. Only records from table 'pages' or free content elements from 'tt_content' are handled
+	 * @param	string		$table: Table which contains the (XML) data structure. Only records from table 'pages' or flexible content elements from 'tt_content' are handled
 	 * @param	integer		$id: The uid of the record
-	 * @param	string		$prevRecList: comma separated list of uids, used internally for recursive calls
-	 * @param	array		$row: Row of a record, used internally for recursive calls
+	 * @param	string		$prevRecList: comma separated list of uids, used internally for recursive calls. Don't mess with it!
+	 * @param	array		$row: Row of a record, used internally for recursive calls. Don't mess with it!
 	 * @return	array		The data structure tree
 	 */
-	function getDStreeForPage($table, $id, $prevRecList='', $row='')	{
+	function getDStree($table, $id, $prevRecList='', $row='')	{
 		global $TCA, $LANG;
 
 		$row = is_array($row) ? $row : t3lib_BEfunc::getRecord($table,$id);
@@ -1365,7 +1411,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 								if (!t3lib_div::inList($prevRecList,$idStr))	{
 									if (is_array($idRow))	{
-										$tree['sub'][$sheetKey][$k]['el'][$idStr] = $this->getDStreeForPage($recIdent['table'],$recIdent['id'],$prevRecList.','.$idStr,$idRow);
+										$tree['sub'][$sheetKey][$k]['el'][$idStr] = $this->getDStree($recIdent['table'],$recIdent['id'],$prevRecList.','.$idStr,$idRow);
 										$tree['sub'][$sheetKey][$k]['el'][$idStr]['el']['index'] = $counter+1;
 										$tree['sub'][$sheetKey][$k]['el_list'][($counter+1)] = $idStr;
 									} else {
@@ -1491,9 +1537,9 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		if ($setDefault) {
 			$output[0]=array(
 				'uid' => 0,
-				'title' => strlen ($this->modSharedTSconfig['properties']['defaultLanguageFlag']) ? $this->modSharedTSconfig['properties']['defaultLanguageLabel'].' ('.$LANG->getLL ('defaultLanguage').')' : $LANG->getLL ('defaultLanguage'),
+				'title' => strlen ($this->modSharedTSconfig['properties']['defaultLanguage.']['title']) ? $this->modSharedTSconfig['properties']['defaultLanguage.']['title'] : $LANG->getLL ('defaultLanguage'),
 				'ISOcode' => 'DEF',
-				'flagIcon' => strlen($this->modSharedTSconfig['properties']['defaultLanguageFlag']) && @is_file($flagAbsPath.$this->modSharedTSconfig['properties']['defaultLanguageFlag']) ? $flagIconPath.$this->modSharedTSconfig['properties']['defaultLanguageFlag'] : null,
+				'flagIcon' => strlen($this->modSharedTSconfig['properties']['defaultLanguage.']['flag']) && @is_file($flagAbsPath.$this->modSharedTSconfig['properties']['defaultLanguage.']['flag']) ? $flagIconPath.$this->modSharedTSconfig['properties']['defaultLanguage.']['flag'] : null,
 			);
 		}
 

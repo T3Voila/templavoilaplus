@@ -1,12 +1,16 @@
+2005-01-27  Robert Lemke  <robert@typo3.org>
+ ~ Classic page module is now switched off by default, page template selector switched on (in the extension manager configuration dialogue)
+ + mod1: Added support for making true copies of FCEs with sub elements. Before only the FCE parent element was truely copied, the child objects weren't. Still has a small bug, will fix that soon!
+
 2005-01-21  Kasper Skårhøj,,,  <kasper@typo3.com>
 
-	* Added a "Start new website" wizard which will set up TemplaVoila site basics in one minute. Found in the Web > TemplaVoila module.
-	* MAY have fixed a bug where the mapping was mysteriously lost - but I might also have introduced a new bug instead. Please let me know!
+ * Added a "Start new website" wizard which will set up TemplaVoila site basics in one minute. Found in the Web > TemplaVoila module.
+ * MAY have fixed a bug where the mapping was mysteriously lost - but I might also have introduced a new bug instead. Please let me know!
 
 2004-12-13  Kasper Skårhøj,,,  <kasper@typo3.com>
 
-	* Added an EXAMPLE of how page-templates can come from a t3d file. I expect it needs some configuration of which folder to look for templates in, but the principles are shown. It will require the new TYPO3 source with modified import/export features.
-	* Fixed a PHP5 bug with arrays...
+ * Added an EXAMPLE of how page-templates can come from a t3d file. I expect it needs some configuration of which folder to look for templates in, but the principles are shown. It will require the new TYPO3 source with modified import/export features.
+ * Fixed a PHP5 bug with arrays...
 
 2004-10-30  Robert Lemke  <robert@typo3.org>
  + mod1: Added TSconfig configuration for sidebar position: mod.web_txtemplavoilaM1.sideBarPosition
@@ -177,5 +181,6 @@ See the updated many for more information. BTW: Thanks for the extra fields!
 	* Added $Id$ keywords tags.
 	* Added support+icon for iframe tags in htmlmarkup class.
 	* Added package/subpackage tags.
+
 
 
