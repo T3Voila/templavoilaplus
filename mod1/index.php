@@ -560,7 +560,16 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * @return	string		HTML
 	 */
 	function renderFrameWork($dsInfo, $parentPos='', $clipboardElInPath=0, $referenceInPath=0) {
-		global $LANG;
+		global $LANG, $TYPO3_CONF_VARS;
+
+			// First prepare user defined objects (if any) for hooks which extend this function:
+		$hookObjectsArr = array();
+		if (is_array ($TYPO3_CONF_VARS['EXTCONF']['templavoila']['mod1']['renderFrameworkClass'])) {
+			foreach ($TYPO3_CONF_VARS['EXTCONF']['templavoila']['mod1']['renderFrameworkClass'] as $classRef) {
+				$hookObjectsArr[] = &t3lib_div::getUserObj ($classRef);
+			}
+		}
+
 			// Setting the sheet ID and render sheet menu:
 		$sheet = isset($dsInfo['sub'][$this->MOD_SETTINGS['currentSheetKey']]) ? $this->MOD_SETTINGS['currentSheetKey'] : 'sDEF';
 
@@ -662,10 +671,12 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 		$realDelete = $isLocal;	// content elements that are NOT references from other pages will be deleted when unlinked
 
+		$linkCustom = '';
 		$linkCopy = '';
 		$linkCut = '';
 		$linkRef = '';
 		$linkUnlink = '';
+		$linkMakeLocal = '';
 		if ($dsInfo['el']['table']!='tt_content')	{
 			$viewPageIcon = '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::viewOnClick($dsInfo['el']['table']=='pages'?$dsInfo['el']['id']:$dsInfo['el']['pid'],$this->doc->backPath,t3lib_BEfunc::BEgetRootLine($dsInfo['el']['id']))).'">'.
 				'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/zoom.gif','width="12" height="12"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showPage',1).'" hspace="3" alt="" align="absmiddle" />'.
@@ -679,11 +690,20 @@ class tx_templavoila_module1 extends t3lib_SCbase {
    			$linkUnlink = $this->linkUnlink('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/garbage.gif','').' title="'.$LANG->getLL($realDelete ? 'deleteRecord' : 'unlinkRecord').'" border="0" alt="" />', $parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].'/'.$isLocal, $realDelete);
 		}
 
- 		$finalContent = $this->renderSheetMenu($dsInfo, $sheet) . $errorLineBefore . '
+			// Hook: renderFrameWork_preProcessOutput
+		reset($hookObjectsArr);
+		while (list(,$hookObj) = each($hookObjectsArr)) {
+			if (method_exists ($hookObj, 'renderFrameWork_preProcessOutput')) {
+				$hookObj->renderFrameWork_preProcessOutput ($dsInfo, $sheet, $content, $isLocal, $linkCustom, $this);
+			}
+		}
+
+		$finalContent = $this->renderSheetMenu($dsInfo, $sheet) . $errorLineBefore . '
 		<table border="0" cellpadding="2" cellspacing="0" style="border: 1px solid black; margin-bottom:5px; '.$elementBackgroundStyle.'" width="100%">
 			<tr style="'.$elementPageTitlebarStyle.';">
 				<td>'.$showRuleIcon.$recordIcon.$viewPageIcon.'&nbsp;'.($isLocal?'':'<em>').$GLOBALS['LANG']->sL($dsInfo['el']['title'],1).($isLocal?'':'</em>'). '</td>
 				<td nowrap="nowrap" align="right" valign="top">'.
+					$linkCustom.
 					$linkMakeLocal.
 					$linkCopy.
 					$linkCut.
@@ -948,20 +968,22 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	function renderPreviewContent ($row, $table) {
 		global $TYPO3_CONF_VARS;
 
-		$alreadyRendered = false;
+			// First prepare user defined objects (if any) for hooks which extend this function:
+		$hookObjectsArr = array();
+		if (is_array ($TYPO3_CONF_VARS['EXTCONF']['templavoila']['mod1']['renderPreviewContentClass'])) {
+			foreach ($TYPO3_CONF_VARS['EXTCONF']['templavoila']['mod1']['renderPreviewContentClass'] as $classRef) {
+				$hookObjectsArr[] = &t3lib_div::getUserObj ($classRef);
+			}
+		}
 
-			// Hook for custom preview rendering: Set 'alreadyRendered' to true if you provided a preview content for the current cType !
-		if (is_array ($TYPO3_CONF_VARS['EXTCONF']['templavoila']['mod1']['renderPreviewContent'])) {
-			$_params = array (
-				'pObj' => &$this,
-				'row' => &$row,
-				'table' => &$table,
-				'alreadyRendered' => &$alreadyRendered
-			);
-			foreach ($TYPO3_CONF_VARS['EXTCONF']['templavoila']['mod1']['renderPreviewContent'] as $_funcRef) {
-				if (!$alreadyRendered) {
-					$out = t3lib_div::callUserFunction($_funcRef, $_params, $this);
-				}
+		$alreadyRendered = false;
+		$out = '';
+
+			// Hook: renderPreviewContent_preProcess. Set 'alreadyRendered' to true if you provided a preview content for the current cType !
+		reset($hookObjectsArr);
+		while (list(,$hookObj) = each($hookObjectsArr)) {
+			if (method_exists ($hookObj, 'renderPreviewContent_preProcess')) {
+				$out .= $hookObj->renderPreviewContent_preProcess ($row, $table, $alreadyRendered, $this);
 			}
 		}
 
