@@ -71,6 +71,7 @@ class tx_templavoila_pi1 extends tslib_pibase {
     
 	var $inheritValueFromDefault=1;		// If set, children-translations will take the value from the default if "false" (zero or blank)
 
+	var $conf=array();					// TypoScript config.
 	
 	
 	/**
@@ -124,6 +125,7 @@ class tx_templavoila_pi1 extends tslib_pibase {
 	 */
 	function initVars($conf)	{
 		$this->inheritValueFromDefault = $conf['dontInheritValueFromDefault'] ? 0 : 1;
+		$this->conf=$conf;
 	}
 
 	/**
@@ -257,13 +259,44 @@ class tx_templavoila_pi1 extends tslib_pibase {
 
 						$cObj->setCurrentVal($dataValues[$key][$valueKey]);
 						
+							
 						if (trim($DSelements[$key]['tx_templavoila']['TypoScript']))	{
+						
+								// If constants were found locally/internally in DS/TO:
 							if (is_array($DSelements[$key]['tx_templavoila']['TypoScript_constants']))	{
 								foreach($DSelements[$key]['tx_templavoila']['TypoScript_constants'] as $constant => $value)	{
+
+										// First, see if the constant is itself a constant refering back to TypoScript Setup Object Tree:
+									if (substr($value,0,2)=='{$' && substr($value,-1)=='}')	{
+										$objPath = substr($value,2,-1);
+										
+											// If no value for this object path reference was found, get value:
+										if (!isset($GLOBALS['TSFE']->applicationData['tx_templavoila']['TO_constantCache'][$objPath]))	{
+												// Get value from object path:
+											$cF = t3lib_div::makeInstance('t3lib_TSparser');
+											list($objPathValue) = $cF->getVal($objPath,$GLOBALS['TSFE']->tmpl->setup);
+												// Set value in cache table:
+											$GLOBALS['TSFE']->applicationData['tx_templavoila']['TO_constantCache'][$objPath].=''.$objPathValue;
+										}
+											// Setting value to the value of the TypoScript Setup object path referred to:
+										$value = $GLOBALS['TSFE']->applicationData['tx_templavoila']['TO_constantCache'][$objPath];
+									}
+									
+										// Substitute constant:
 									$DSelements[$key]['tx_templavoila']['TypoScript'] = str_replace('{$'.$constant.'}',$value,$DSelements[$key]['tx_templavoila']['TypoScript']);
 								}
 							}
-#debug(array($DSelements[$key]['tx_templavoila']['TypoScript']));
+
+								// If constants were found in Plugin configuration, "plugins.tx_templavoila_pi1.TSconstants":
+							if (is_array($this->conf['TSconst.']))	{
+								foreach($this->conf['TSconst.'] as $constant => $value)	{
+									if (!is_array($value))	{
+											// Substitute constant:
+										$DSelements[$key]['tx_templavoila']['TypoScript'] = str_replace('{$TSconst.'.$constant.'}',$value,$DSelements[$key]['tx_templavoila']['TypoScript']);
+									}
+								}
+							}
+						
 
 								// Setting "lib." and "plugin." TypoScript - maybe we should set it all except numeric keys?
 							$tsparserObj->setup['lib.'] = $GLOBALS['TSFE']->tmpl->setup['lib.'];

@@ -44,7 +44,21 @@ FINISHING (A week):
 
 
 
+Unsorted notes (kasper)
+- Implement the language scheme!
+- For shortcut pages etc, rather show which page it is refering to!
+- View icon in the TemplaVoila page module.
+- In Content Element Wizard, also list records to insert as references fetched from the storage page
+- Import t3d files, Offer to make copies of pages/elements in storage page (or otherwise)
+- Counting references to objects in some table?
+- Implement TT-tracking of the rendering of elements.
+- mininews...
+- Moving a referenced element MOVES it from the original position!
 
+
+
+	
+	
 TESTING:
 - Implement sites like HP site, Vignette site (to test that it is robust and stable!)
 
