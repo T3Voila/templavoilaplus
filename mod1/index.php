@@ -146,7 +146,6 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		$content.=$LANG->getLL ('createnewpage_pagetitle_description');
 		$content.=$this->doc->spacer(5);
 		$content.='<input type="text" name="data[pages][NEW][title]"'.$this->doc->formWidth(35).' /><br />';
-		$content.=$this->doc->sectionEnd();
 		
 		
 		$content.='<input type="submit" name="create" value="'.$LANG->getLL('createnewpage_submitlabel').'" />';
