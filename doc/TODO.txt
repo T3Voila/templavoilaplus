@@ -1,0 +1,136 @@
+******************
+TODO
+******************
+
+FINISHING (A week): 
+"class.tx_templavoila_htmlmarkup.php"
+"cm1/index.php"
+
+- Mapping features:
+	- Ability to map NEW attributes AND possibly just any content into HTML tags (like for images ' width="xxx" height="xxx"'. 
+	- Ability to select attributes to REMOVE in a tag.
+	- Ability to map a single field to MANY elements. So the same value can be inserted at multiple positions.
+	- BUG: Assigning an attribute to the FIRST(?) element inside a container will break other elements mapping after that.
+		- Other bugs, loosing mapping. Nico had it, I had it on Vignette site. 
+		- Also Vignette site exploded itself.
+	- For dynamic creation of Data Structure: Have an intelligent auto-mapper, trying to find which elements might most likely be mapped and which not.
+	- Support selective inclusion of header elements (by checkboxes?)
+	- Support inclusion of the EXTERNAL files in the TO serialized array (new field?) so that TOs could be exported WITH all images, stylesheets, JavaScripts... (portable!)
+	- When mapping to eg. a Outer table which has an id, then the sub elements will lock them selves to the id as well, which means when we change the mapping for the outer table we will loose the inner mapping.
+	- Allow to re-order the elements in DataStructures when created on-the-fly
+	- Anchors in template document
+	- Non-destructive explode for <tr> / <option>
+	- For predefined images, allow to read and keep the other parameters that src/width/height
+	- Option to wipe out the id's used (or those prefixed "TV-") since they could be repetitive. 
+- Commentering + documentation i SXW fil.
+	- Better define vocabulary! Also define what is a "HTML-path" etc.
+	- // ONLY ALLOW "arrays" inside of "sections" - otherwise it does not make so much sense and it is harder to handle; basically all stuff in a SECTION is defined to be a container and that is what the "array" handles...
+	- REMEMBER: This will be a cornerstone extension, so it must be well tested, documented and commented!
+- Performance: 
+	- Caching of splitting template files -> faster process
+- Various, Later:
+	- Find method for displaying images in sample data.
+	- Perform a check of template files for block/solo tag consistens.
+	- Add caching mechanism for retrieval of template content (so we can also have a DYNAMIC binding to the template source, possibly with a timed caching)
+	- Support for http-URLs instead of files (incl. caching)
+- Frontend: cObj API for flexforms (move from pibase to tslib_content)
+	- Finish API for getting valurs from FlexForms XML
+	- Finish API so TypoScript can access flexforms content
+		- (When done; Update "newloginbox" to use this API)
+- mininews: Implement with TemplaVoila
+
+
+
+TESTING:
+- Implement sites like HP site, Vignette site (to test that it is robust and stable!)
+
+
+
+ADDITIONAL FEATURES:
+- Management: Roberts "Cascading Template Designer" module (See Palm document)
+	- Rules for the relations of elements
+	- Permissions for users to certain elements areas.
+	- Overview module where you can see missing or double-referred elements.
+- Management: Overview of Page Templates as set in the tree structure
+- Management: Well-designed overview of Data Structures and Their Templates and how they relate (parents/children)
+- Programming: API: A function which can produce a traditionally marked up version of the template: For use in TS as alternative to the Autoparser
+	- ?: How can extensions supply a default template Array when no Template Object exists yet, mapping the data? What about the data structure containing some sample markup as well which means we can always assemble a simple display from that. Or even a nice default display which is of course stylable by CSS. AND this default 
+
+	
+Documentation:
+	<proc>
+		<stdWrap>
+		trim = 1
+		br = 1
+		</stdWrap>
+	</proc>
+
+
+	
+	
+******************
+MISC
+******************
+EXAMPLE of API usage:
+
+	function element_anchorList($prodArray,$techArray)	{
+		$TMPLobj = t3lib_div::makeInstance('tx_templavoila_htmlmarkup');
+		$TA = $TMPLobj->getTemplateArrayForTO(1);
+
+		$ROWS_prod='';
+		$c=0;
+		foreach($prodArray as $value)	{
+			$ROWS_prod.=$TMPLobj->mergeDataArrayToTemplateArray(
+				$TA['sub']['rows_1']['sub'][($c%2?'odd':'even')],
+				array(
+					'href' => htmlspecialchars($value['href']),
+					'title' => htmlspecialchars($value['title'])
+				)
+			);
+			$c++;
+		}
+		
+		$ROWS_tech='';
+		$c=0;
+		foreach($techArray as $value)	{
+			$ROWS_tech.=$TMPLobj->mergeDataArrayToTemplateArray(
+				$TA['sub']['rows_2']['sub'][($c%2?'odd':'even')],
+				array(
+					'href' => htmlspecialchars($value['href']),
+					'title' => htmlspecialchars($value['title'])
+				)
+			);
+			$c++;
+		}
+		
+		$prodImage = '<img src="fileadmin/img/titles/title_01_01_productinformation.gif" width="180" height="13" alt="" border="0" />';
+		$techImage = '<img src="fileadmin/img/titles/title_01_01_technicalinformation.gif" width="180" height="13" alt="" border="0" />';
+			
+		$c = $TMPLobj->mergeDataArrayToTemplateArray(
+				$TA,
+				array(
+					'img_1' => $prodImage,
+					'img_2' => $techImage,
+					'rows_1' => $ROWS_prod,
+					'rows_2' => $ROWS_tech
+				)
+			);
+		return $c;
+	}	
+
+
+Graphics/Photoshop:
+<body> <table> <tbody> <thead> <ol> <ul> <li> <tr> <td> <div> <blockquote> <pre> <p> <span> <font> <a> <map> <h1> <h2> <h3> <h4> <h5> <h6> <img> <input> <textarea> <select> <option> <br> <hr> <form>
+<u> <i> <b> <strong> <em> <embed> <area> <head> <script> <style> <title>
+ARIAL 7 px
+
+
+Template Object Records (TOR)
+ - Fields:
+	- title
+	- description
+	- preview image
+	- relation to a DSR
+ - reference to file / URL:
+	- Dynamic: Output from TOR will always read and re-parse the file.
+	- Static (cached): Output comes from internal version (including media-files?)

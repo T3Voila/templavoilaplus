@@ -1,0 +1,2 @@
+  # cat=basic/enable; type=boolean; label=Enable Page Template Selector
+enable.pageTemplateSelector = 0
