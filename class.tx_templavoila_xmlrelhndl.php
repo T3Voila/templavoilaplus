@@ -282,8 +282,8 @@ class tx_templavoila_xmlrelhndl {
 	 * @return	void
 	 */
 	function _insertReference($itemArray, $refArr, $item)	{
-debug (array ($itemArray,$refArr, $item));
-die();
+#debug (array ($itemArray,$refArr, $item));
+#die();
 
 			// Get new list of IDs:
 		$idList = $this->_insertReferenceInList($itemArray, $refArr, $item);
