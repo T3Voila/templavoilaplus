@@ -36,18 +36,18 @@
  *  131:     function pasteRecord($pasteCmd, $source, $destination)	
  *
  *              SECTION: Execute changes to the FlexForm structures
- *  265:     function _insertReference($itemArray, $refArr, $item)	
- *  286:     function _moveReference($itemArray, $destRefArr, $sourceItemArray, $sourceRefArr, $item_table, $item_uid, $movePid)	
- *  323:     function _removeReference($itemArray, $refArr)	
- *  346:     function _changeReference($itemArray, $refArr, $newUid)	
- *  368:     function _updateFlexFormRefList($refArr, $idListArr)	
- *  386:     function _deleteContentElement($uid)	
+ *  264:     function _insertReference($itemArray, $refArr, $item)	
+ *  285:     function _moveReference($itemArray, $destRefArr, $sourceItemArray, $sourceRefArr, $item_table, $item_uid, $movePid)	
+ *  322:     function _removeReference($itemArray, $refArr)	
+ *  345:     function _changeReference($itemArray, $refArr, $newUid)	
+ *  367:     function _updateFlexFormRefList($refArr, $idListArr)	
+ *  385:     function _deleteContentElement($uid)	
  *
  *              SECTION: Helper functions
- *  422:     function _insertReferenceInList($itemArray, $refArr, $item, $sourceRefArr=FALSE)	
- *  467:     function _getCopyUid($itemAtPosition_uid, $pid)	
- *  492:     function _splitAndValidateReference($string)	
- *  505:     function _getItemArrayFromXML($xmlString, $refArr)	
+ *  421:     function _insertReferenceInList($itemArray, $refArr, $item, $sourceRefArr=FALSE)	
+ *  466:     function _getCopyUid($itemAtPosition_uid, $pid)	
+ *  491:     function _splitAndValidateReference($string)	
+ *  504:     function _getItemArrayFromXML($xmlString, $refArr)	
  *
  * TOTAL FUNCTIONS: 12
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -72,6 +72,29 @@ class tx_templavoila_xmlrelhndl {
 
 		// External, static:
 	var $rootTable = 'pages';					// The table of the root level.
+	var $flexFieldIndex = array(
+			'tt_content' => 'tx_templavoila_flex',
+			'pages' => 'tx_templavoila_flex',
+	);
+
+
+
+
+	/**
+	 * Initialize, setting alternative root table and flex field if needed.
+	 *
+	 * @param	array		Alternative root
+	 * @return	void
+	 */
+	function init($altRoot)	{
+		if ($altRoot['table'])	{
+			$this->rootTable = $altRoot['table'];
+			$this->flexFieldIndex[$this->rootTable] = $altRoot['field_flex'];
+		}
+	}
+
+
+
 
 
 	/**
@@ -90,7 +113,7 @@ class tx_templavoila_xmlrelhndl {
 		if (t3lib_div::inList($this->rootTable.',tt_content',$destRefArr[0])) {
 
 				// Get the destination record content:
-			$destinationRec = t3lib_BEfunc::getRecord($destRefArr[0],$destRefArr[1],'uid,pid,tx_templavoila_flex');
+			$destinationRec = t3lib_BEfunc::getRecord($destRefArr[0],$destRefArr[1],'uid,pid,'.$this->flexFieldIndex[$destRefArr[0]]);
 			if (is_array($destinationRec))	{
 
 					// First, create record:
@@ -110,7 +133,7 @@ class tx_templavoila_xmlrelhndl {
 				if ($id)	{
 
 						// Insert the element in the current list:
-					$itemArray = $this->_getItemArrayFromXML($destinationRec['tx_templavoila_flex'], $destRefArr);
+					$itemArray = $this->_getItemArrayFromXML($destinationRec[$this->flexFieldIndex[$destRefArr[0]]], $destRefArr);
 					$this->_insertReference($itemArray, $destRefArr, 'tt_content_'.$id);
 
 						// Return the uid of the new tt_content element:
@@ -140,11 +163,11 @@ class tx_templavoila_xmlrelhndl {
 			if (t3lib_div::inList($this->rootTable.',tt_content',$sourceRefArr[0]))	{
 
 					// Get source record (where the current item is)
-				$sourceRec = t3lib_BEfunc::getRecord($sourceRefArr[0],$sourceRefArr[1],'uid,pid,tx_templavoila_flex');
+				$sourceRec = t3lib_BEfunc::getRecord($sourceRefArr[0],$sourceRefArr[1],'uid,pid,'.$this->flexFieldIndex[$sourceRefArr[0]]);
 				if (is_array($sourceRec))	{
 
 						// Get reference items of source field:
-					$sourceItemArray = $this->_getItemArrayFromXML($sourceRec['tx_templavoila_flex'], $sourceRefArr);
+					$sourceItemArray = $this->_getItemArrayFromXML($sourceRec[$this->flexFieldIndex[$sourceRefArr[0]]], $sourceRefArr);
 
 						// Getting the item at the index-position:
 					$itemOnPosition = $sourceItemArray[$sourceRefArr[4]-1];
@@ -171,11 +194,11 @@ class tx_templavoila_xmlrelhndl {
 							if (t3lib_div::inList($this->rootTable.',tt_content',$destRefArr[0]))	{
 
 									// Destination record:
-								$destinationRec = t3lib_BEfunc::getRecord($destRefArr[0],intval($destRefArr[1]),'uid,pid,tx_templavoila_flex');
+								$destinationRec = t3lib_BEfunc::getRecord($destRefArr[0],intval($destRefArr[1]),'uid,pid,'.$this->flexFieldIndex[$destRefArr[0]]);
 								if (is_array($destinationRec))	{
 
 										// Get reference items of destination field:
-									$destItemArray = $this->_getItemArrayFromXML($destinationRec['tx_templavoila_flex'], $destRefArr);
+									$destItemArray = $this->_getItemArrayFromXML($destinationRec[$this->flexFieldIndex[$destRefArr[0]]], $destRefArr);
 
 										// Depending on the paste command, we do...:
 									switch ($pasteCmd)	{
@@ -225,11 +248,11 @@ class tx_templavoila_xmlrelhndl {
 
 				// Checking parameters:
 			if ($table=='tt_content' && t3lib_div::inList($this->rootTable.',tt_content',$destRefArr[0]))	{
-				$destinationRec = t3lib_BEfunc::getRecord($destRefArr[0],$destRefArr[1],'uid,pid,tx_templavoila_flex');
+				$destinationRec = t3lib_BEfunc::getRecord($destRefArr[0],$destRefArr[1],'uid,pid,'.$this->flexFieldIndex[$destRefArr[0]]);
 				if (is_array($destinationRec))	{
 
 						// Insert the reference:
-					$itemArray = $this->_getItemArrayFromXML($destinationRec['tx_templavoila_flex'], $destRefArr);
+					$itemArray = $this->_getItemArrayFromXML($destinationRec[$this->flexFieldIndex[$destRefArr[0]]], $destRefArr);
 					$this->_insertReference($itemArray, $destRefArr, 'tt_content_'.$uid);
 				}
 			}
@@ -367,7 +390,7 @@ class tx_templavoila_xmlrelhndl {
 	function _updateFlexFormRefList($refArr, $idListArr)	{
 			// Set the data field:
 		$dataArr = array();
-		$dataArr[$refArr[0]][$refArr[1]]['tx_templavoila_flex']['data'][$refArr[2]]['lDEF'][$refArr[3]]['vDEF'] = implode(',',$idListArr);
+		$dataArr[$refArr[0]][$refArr[1]][$this->flexFieldIndex[$refArr[0]]]['data'][$refArr[2]]['lDEF'][$refArr[3]]['vDEF'] = implode(',',$idListArr);
 
 			// Execute:
 		$tce = t3lib_div::makeInstance('t3lib_TCEmain');

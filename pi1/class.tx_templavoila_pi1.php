@@ -1,19 +1,19 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -21,7 +21,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * Plugin 'Flexible Content' for the 'templavoila' extension.
  *
  * $Id$
@@ -38,7 +38,7 @@
  *   96:     function main_page($content,$conf)    
  *  126:     function initVars($conf)	
  *  139:     function renderElement($row,$table)	
- *  202:     function processDataValues(&$dataValues,$DSelements,$TOelements,$valueKey='vDEF')	
+ *  204:     function processDataValues(&$dataValues,$DSelements,$TOelements,$valueKey='vDEF')	
  *
  * TOTAL FUNCTIONS: 5
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -46,7 +46,7 @@
  */
 
 
- 
+
 
 
 
@@ -55,11 +55,11 @@
 
 
 require_once(PATH_tslib.'class.tslib_pibase.php');
-require_once(t3lib_extMgm::extPath('templavoila').'class.tx_templavoila_htmlmarkup.php'); 	
+require_once(t3lib_extMgm::extPath('templavoila').'class.tx_templavoila_htmlmarkup.php');
 
 /**
  * Plugin 'Flexible Content' for the 'templavoila' extension.
- * 
+ *
  * @author    Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage tx_templavoila
@@ -68,15 +68,15 @@ class tx_templavoila_pi1 extends tslib_pibase {
     var $prefixId = 'tx_templavoila_pi1';        // Same as class name
     var $scriptRelPath = 'pi1/class.tx_templavoila_pi1.php';    // Path to this script relative to the extension dir.
     var $extKey = 'templavoila';    // The extension key.
-    
+
 	var $inheritValueFromDefault=1;		// If set, children-translations will take the value from the default if "false" (zero or blank)
 
 	var $conf=array();					// TypoScript config.
-	
-	
+
+
 	/**
 	 * Main function for rendering of Flexible Content elements of TemplaVoila
-	 * 
+	 *
 	 * @param	string		Standard content input. Ignore.
 	 * @param	array		TypoScript array for the plugin.
 	 * @return	string		HTML content for the Flexible Content elements.
@@ -88,7 +88,7 @@ class tx_templavoila_pi1 extends tslib_pibase {
 
 	/**
 	 * Main function for rendering of Page Templates of TemplaVoila
-	 * 
+	 *
 	 * @param	string		Standard content input. Ignore.
 	 * @param	array		TypoScript array for the plugin.
 	 * @return	string		HTML content for the Page Template elements.
@@ -116,12 +116,12 @@ class tx_templavoila_pi1 extends tslib_pibase {
 
 		return $this->renderElement($pageRecord, 'pages');
     }
-	
+
 	/**
 	 * Will set up various stuff in the class based on input TypoScript
-	 * 
+	 *
 	 * @param	array		TypoScript options
-	 * @return	void		
+	 * @return	void
 	 */
 	function initVars($conf)	{
 		$this->inheritValueFromDefault = $conf['dontInheritValueFromDefault'] ? 0 : 1;
@@ -131,7 +131,7 @@ class tx_templavoila_pi1 extends tslib_pibase {
 	/**
 	 * Common function for rendering of the Flexible Content / Page Templates.
 	 * For Page Templates the input row may be manipulated to contain the proper reference to a data structure (pages can have those inherited which content elements cannot).
-	 * 
+	 *
 	 * @param	array		Current data record, either a tt_content element or page record.
 	 * @param	string		Table name, either "pages" or "tt_content".
 	 * @return	string		HTML output.
@@ -150,15 +150,21 @@ class tx_templavoila_pi1 extends tslib_pibase {
 					$DS = t3lib_div::xml2array(t3lib_div::getUrl($file));
 				}
 			}
-			
+
+			if (!is_array($DS))	{
+				return $this->formatError('
+					Couldn\'t find a Data Structure set for table/row "'.$table.':'.$row['uid'].'".
+					Please select a Data Structure and Template Object first.');
+			}
+
 			$langChildren = $DS['meta']['langChildren'] ? 1 : 0;
 			$langDisabled = $DS['meta']['langDisable'] ? 1 : 0;
-			
+
 			list ($dataStruct, $sheet) = t3lib_div::resolveSheetDefInDS($DS,'sDEF');
-	
+
 				// Data:
 			$data = t3lib_div::xml2array($row['tx_templavoila_flex']);
-				
+
 			$lKey = ($GLOBALS['TSFE']->sys_language_isocode && !$langDisabled && !$langChildren) ? 'l'.$GLOBALS['TSFE']->sys_language_isocode : 'lDEF';
 			$dataValues = $data['data']['sDEF'][$lKey];
 
@@ -167,8 +173,20 @@ class tx_templavoila_pi1 extends tslib_pibase {
 			$this->markupObj->htmlParse = t3lib_div::makeInstance('t3lib_parsehtml');
 
 				// Get template record:
+			if (!$row['tx_templavoila_to'])	{
+				return $this->formatError('You haven\'t selected a Template Object yet for table/uid "'.$table.'/'.$row['uid'].'".
+					Without a Template Object TemplaVoila cannot map the XML content into HTML.
+					Please select a Template Object now.');
+			}
+
 			$TOrec = $this->markupObj->getTemplateRecord($row['tx_templavoila_to'], t3lib_div::GPvar('print')?1:0, $GLOBALS['TSFE']->sys_language_uid);
+			if (!is_array($TOrec))	{ return $this->formatError('Couldn\'t find Template Object with UID "'.$row['tx_templavoila_to'].'".
+					Please make sure a Template Object is accessible.'); }
+
 			$TO = unserialize($TOrec['templatemapping']);
+			if (!is_array($TO))	{ return $this->formatError('Template Object could not be unserialized successfully.
+					Are you sure you saved mapping information into Template Object with UID "'.$row['tx_templavoila_to'].'"?'); }
+
 			$TOproc = t3lib_div::xml2array($TOrec['localprocessing']);
 			if (!is_array($TOproc))	$TOproc=array();
 		if ($GLOBALS['TT']->LR) $GLOBALS['TT']->pull();
@@ -183,27 +201,27 @@ class tx_templavoila_pi1 extends tslib_pibase {
 			$content = $this->markupObj->mergeFormDataIntoTemplateStructure($dataValues,$TO['MappingData_cached'],'',$vKey);
 			$this->markupObj->setHeaderBodyParts($TO['MappingInfo_head'],$TO['MappingData_head_cached'],$TO['BodyTag_cached']);
 		if ($GLOBALS['TT']->LR) $GLOBALS['TT']->pull();
-		
+
 		$eIconf = array('styleAttribute'=>'position:absolute;');
 		if ($table=='pages')	$eIconf['beforeLastTag']=-1;	// For "pages", set icon in top, not after.
 		$content = $this->pi_getEditIcon($content,'tx_templavoila_flex','Edit element',$row,$table,$eIconf);
-		return $content;	
+		return $content;
 	}
 
 	/**
-	 * Performing pre-processing of the data array. 
+	 * Performing pre-processing of the data array.
 	 * This will transform the data in the data array according to various rules before the data is merged with the template HTML
 	 * Notice that $dataValues is changed internally as a reference so the function returns no content but internally changes the passed variable for $dataValues.
-	 * 
+	 *
 	 * @param	array		The data values from the XML file (converted to array). Passed by reference.
 	 * @param	array		The data structure definition which the data in the dataValues array reflects.
 	 * @param	array		The local XML processing information found in associated Template Objects (TO)
 	 * @param	string		Value key
-	 * @return	void		
+	 * @return	void
 	 */
 	function processDataValues(&$dataValues,$DSelements,$TOelements,$valueKey='vDEF')	{
 		if (is_array($DSelements))	{
-		
+
 				// Prepare a fake data record for cObj:
 			$dataRecord=array();
 			if (is_array($dataValues))	{
@@ -215,10 +233,10 @@ class tx_templavoila_pi1 extends tslib_pibase {
 					}
 				}
 			}
-			
+
 				// For each DS element:
 			foreach($DSelements as $key => $dsConf)	{
-					
+
 						// Array/Section:
 				if ($DSelements[$key]['type']=='array')	{
 					if (is_array($dataValues[$key]['el']))	{
@@ -238,17 +256,17 @@ class tx_templavoila_pi1 extends tslib_pibase {
 						// Language inheritance:
 					if ($this->inheritValueFromDefault && !$dataValues[$key][$valueKey])	{
 						$dataValues[$key][$valueKey] = $dataValues[$key]['vDEF'];
-					}					
+					}
 
 
 					if (is_array($TOelements[$key]['tx_templavoila']))	{
 						if (is_array($DSelements[$key]['tx_templavoila']))	{
 							$DSelements[$key]['tx_templavoila'] = t3lib_div::array_merge_recursive_overrule($DSelements[$key]['tx_templavoila'],$TOelements[$key]['tx_templavoila']);
 						} else $DSelements[$key]['tx_templavoila'] = $TOelements[$key]['tx_templavoila'];
-#debug($DSelements[$key]['tx_templavoila']);						
+#debug($DSelements[$key]['tx_templavoila']);
 					}
-					
-					
+
+
 						// TypoScript / TypoScriptObjPath:
 					if (trim($DSelements[$key]['tx_templavoila']['TypoScript']) || trim($DSelements[$key]['tx_templavoila']['TypoScriptObjPath']))	{
 						$tsparserObj = t3lib_div::makeInstance('t3lib_TSparser');
@@ -258,10 +276,10 @@ class tx_templavoila_pi1 extends tslib_pibase {
 						$cObj->start($dataRecord,'_NO_TABLE');
 
 						$cObj->setCurrentVal($dataValues[$key][$valueKey]);
-						
-							
+
+
 						if (trim($DSelements[$key]['tx_templavoila']['TypoScript']))	{
-						
+
 								// If constants were found locally/internally in DS/TO:
 							if (is_array($DSelements[$key]['tx_templavoila']['TypoScript_constants']))	{
 								foreach($DSelements[$key]['tx_templavoila']['TypoScript_constants'] as $constant => $value)	{
@@ -269,7 +287,7 @@ class tx_templavoila_pi1 extends tslib_pibase {
 										// First, see if the constant is itself a constant referring back to TypoScript Setup Object Tree:
 									if (substr(trim($value),0,2)=='{$' && substr(trim($value),-1)=='}')	{
 										$objPath = substr(trim($value),2,-1);
-										
+
 											// If no value for this object path reference was found, get value:
 										if (!isset($GLOBALS['TSFE']->applicationData['tx_templavoila']['TO_constantCache'][$objPath]))	{
 												// Get value from object path:
@@ -281,7 +299,7 @@ class tx_templavoila_pi1 extends tslib_pibase {
 											// Setting value to the value of the TypoScript Setup object path referred to:
 										$value = $GLOBALS['TSFE']->applicationData['tx_templavoila']['TO_constantCache'][$objPath];
 									}
-									
+
 										// Substitute constant:
 									$DSelements[$key]['tx_templavoila']['TypoScript'] = str_replace('{$'.$constant.'}',$value,$DSelements[$key]['tx_templavoila']['TypoScript']);
 								}
@@ -296,7 +314,7 @@ class tx_templavoila_pi1 extends tslib_pibase {
 									}
 								}
 							}
-						
+
 
 								// Setting "lib." and "plugin." TypoScript - maybe we should set it all except numeric keys?
 							$tsparserObj->setup['lib.'] = $GLOBALS['TSFE']->tmpl->setup['lib.'];
@@ -308,11 +326,11 @@ class tx_templavoila_pi1 extends tslib_pibase {
 						if (trim($DSelements[$key]['tx_templavoila']['TypoScriptObjPath']))	{
 							list($name, $conf) = $tsparserObj->getVal(trim($DSelements[$key]['tx_templavoila']['TypoScriptObjPath']),$GLOBALS['TSFE']->tmpl->setup);
 							$dataValues[$key][$valueKey] = $cObj->cObjGetSingle($name,$conf,'TemplaVoila_ProcObjPath.');
-						} 
+						}
 					}
-					
+
 						// Various local quick-processing options:
-					$pOptions = $DSelements[$key]['tx_templavoila']['proc'];	
+					$pOptions = $DSelements[$key]['tx_templavoila']['proc'];
 					if (is_array($pOptions))	{
 						if ($pOptions['int'])		$dataValues[$key][$valueKey] = intval($dataValues[$key][$valueKey]);
 							// HSC of all values by default:
@@ -323,10 +341,37 @@ class tx_templavoila_pi1 extends tslib_pibase {
 							$tsparserObj->parse($pOptions['stdWrap']);
 							$dataValues[$key][$valueKey] = $cObj->stdWrap($dataValues[$key][$valueKey],$tsparserObj->setup);
 						}
-					}					
+					}
 				}
 			}
 		}
+	}
+
+	/**
+	 * Creates an error message for frontend output
+	 *
+	 * @string	string		Error message input
+	 * @return	string		Error message output
+	 */
+	function formatError($string)	{
+
+			// Set no-cache since the error message shouldn't be cached of course...
+		$GLOBALS['TSFE']->set_no_cache();
+
+			//
+		$output = '
+			<!-- TemplaVoila ERROR message: -->
+			<div class="tx_templavoila_pi1-error" style="
+					border: 2px red solid;
+					background-color: yellow;
+					color: black;
+					text-align: center;
+					padding: 20px 20px 20px 20px;
+					margin: 20px 20px 20px 20px;
+					">'.
+				'<strong>TemplaVoila ERROR:</strong><br /><br />'.nl2br(htmlspecialchars(trim($string))).
+				'</div>';
+		return $output;
 	}
 }
 

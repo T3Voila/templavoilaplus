@@ -3,15 +3,11 @@ TODO
 ******************
 
 NOW:
-	- Visual formatting of error page
-	- While editing an existing Data Element it's confusing that the button "Save" has no effect unless you "Add" the changes before. Rename label?
 	- BUG: When clicking the path link of a RANGE to preview it, we will see only the first element in the visual frame - because the RANGE part is cut away!
-	- BUG: When mapping via File > Filelist old mapping information is restored - this hsould be bound to the filename of the template file so a FRESH mapping approach does not get old mapping info.
+	- BUG: When mapping via File > Filelist old mapping information is restored - this should be bound to the filename of the template file so a FRESH mapping approach does not get old mapping info.
 	- Perform a check of template files for block/solo tag consistens.
 	- Backend Module in Web> displaying DS/TOs in a list, linking to display data structures etc. Usage counts? All kinds of nice things...
-	- Show a little warning if no template record was selected in _pi1...
 	- BUG: When remapping a TO it might loose the settings for the header sections!
-	- TypoScriptlib object: Field for entering object path.
 
 OTHER MODULES:
 - Management: Overview of Page Templates as set in the tree structure
@@ -27,8 +23,9 @@ Related to rendering/content elements (css_styled_content):
 
 
 
-	
+
 - Mapping features:
+	- While editing an existing Data Element it's confusing that the button "Save" has no effect unless you "Add" the changes before. Rename label?
 	- "class.tx_templavoila_htmlmarkup.php"
 	- Ability to map NEW non-existing attributes AND possibly just any content into HTML tags (like for images ' width="xxx" height="xxx"'.
 	- Ability to select attributes to be REMOVED in a tag.

@@ -34,25 +34,25 @@
  *
  *
  *
- *  106: class tx_templavoila_module1 extends t3lib_SCbase 
+ *  106: class tx_templavoila_module1 extends t3lib_SCbase
  *  122:     function init()    
  *  133:     function menuConfig()	
  *  158:     function main()    
  *
  *              SECTION: Command functions
- *  258:     function cmd_createNewRecord ($parentRecord, $defVals='') 
+ *  258:     function cmd_createNewRecord ($parentRecord, $defVals='')
  *  276:     function cmd_unlinkRecord ($unlinkRecord)
  *  288:     function cmd_pasteRecord ($pasteRecord) 
  *
  *              SECTION: Rendering functions
- *  308:     function renderEditPageScreen()    
- *  342:     function renderCreatePageScreen ($positionPid) 
+ *  308:     function renderEditPageScreen()
+ *  342:     function renderCreatePageScreen ($positionPid)
  *  419:     function renderTemplateSelector ($positionPid, $templateType='tmplobj') 
  *
  *              SECTION: Framework rendering functions
  *  483:     function renderFrameWork($dsInfo,$parentPos='',$clipboardElInPath=0)	
  *  639:     function renderSheetMenu ($dsInfo, $sheet) 
- *  686:     function renderNonUsed()	
+ *  686:     function renderNonUsed()
  *  712:     function linkEdit($str,$table,$uid)	
  *  724:     function linkNew($str,$parentRecord)	
  *  736:     function linkUnlink($str,$unlinkRecord)
@@ -70,7 +70,7 @@
  *
  *              SECTION: Structure functions
  * 1216:     function getStorageFolderPid($positionPid)	
- * 1237:     function getDStreeForPage($table,$id,$prevRecList='',$row='')	
+ * 1237:     function getDStreeForPage($table,$id,$prevRecList='',$row='')
  * 1313:     function getExpandedDataStructure($table,$field,$row)	
  *
  * TOTAL FUNCTIONS: 27
@@ -114,18 +114,22 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	
 	var $global_tt_content_elementRegister=array();
 	var $elementBlacklist=array();			// Used in renderFrameWork (list of CEs causing errors)
-	
+
+	var $altRoot = array();			// Keys: "table", "uid", "field_flex" - thats all to define another "rootTable" than "pages" (using default field "tx_templavoila_flex" for flex form content)
+
 	/**
 	 * Initialisation of this backend module
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function init()    {
 		parent::init();
 		$this->rules = tx_templavoila_rules::getInstance();
-		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::GPvar('SET'), $this->MCONF['name']);		
+		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::GPvar('SET'), $this->MCONF['name']);
+
+		$this->altRoot = t3lib_div::GPvar('altRoot', 1);
 	}
-	
+
 	/**
 	 * Preparing menu content and initializing clipboard and module TSconfig
 	 * 
@@ -162,17 +166,22 @@ class tx_templavoila_module1 extends t3lib_SCbase {
         
 			// Access check!
 			// The page will show only if there is a valid page and if this page may be viewed by the user
-		$this->pageinfo = t3lib_BEfunc::readPageAccess($this->id,$this->perms_clause);
-		$access = is_array($this->pageinfo) ? 1 : 0;
+		if (is_array($this->altRoot))	{
+			$access = 1;
+		} else {
+			$this->pageinfo = t3lib_BEfunc::readPageAccess($this->id,$this->perms_clause);
+			$access = is_array($this->pageinfo) ? 1 : 0;
+		}
 
-		if ($this->id && $access)    {
+			// Check access:
+		if ($access)    {
 
 				// Draw the header.
 			$this->doc = t3lib_div::makeInstance('noDoc');
 			$this->doc->docType= 'xhtml_trans';			
 			$this->doc->backPath = $BACK_PATH;
 			$this->doc->divClass = '';
-			$this->doc->form='<form action="'.htmlspecialchars('index.php?id='.$this->id).'" method="post" autocomplete="off">';
+			$this->doc->form='<form action="'.htmlspecialchars('index.php?'.$this->linkParams()).'" method="post" autocomplete="off">';
 
 				// Adding classic jumpToUrl function, needed for the function menu.
 				// Also, the id in the parent frameset is configured.
@@ -214,7 +223,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			$this->content.=$this->renderEditPageScreen ();
 
 			if ($BE_USER->mayMakeShortcut()) {
-				$this->content.='<br /><br />'.$this->doc->makeShortcutIcon('id',implode(',',array_keys($this->MOD_MENU)),$this->MCONF['name']);
+				$this->content.='<br /><br />'.$this->doc->makeShortcutIcon('id,altRoot',implode(',',array_keys($this->MOD_MENU)),$this->MCONF['name']);
 			}
 		} else {	// No access or no current page uid:
 			$this->doc = t3lib_div::makeInstance('mediumDoc');
@@ -265,7 +274,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 			// Create new record and open it for editing
 		$newUid = $this->insertRecord($parentRecord, $row);
-		$location = $GLOBALS['BACK_PATH'].'alt_doc.php?edit[tt_content]['.$newUid.']=edit&returnUrl='.t3lib_extMgm::extRelPath('templavoila').'mod1/index.php?id='.$this->id;
+		$location = $GLOBALS['BACK_PATH'].'alt_doc.php?edit[tt_content]['.$newUid.']=edit&returnUrl='.rawurlencode(t3lib_extMgm::extRelPath('templavoila').'mod1/index.php?'.$this->linkParams());
 		header('Location: '.t3lib_div::locationHeaderUrl($location));
 	}
 
@@ -278,7 +287,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 */
 	function cmd_unlinkRecord ($unlinkRecord) {
 		$this->pasteRecord('unlink', $unlinkRecord, '');
-		header('Location: '.t3lib_div::locationHeaderUrl('index.php?id='.$this->id));
+		header('Location: '.t3lib_div::locationHeaderUrl('index.php?'.$this->linkParams()));
 	}
 
 	/**
@@ -290,7 +299,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 */
 	function cmd_deleteRecord ($deleteRecord) {
 		$this->pasteRecord('delete', $deleteRecord, '');
-		header('Location: '.t3lib_div::locationHeaderUrl('index.php?id='.$this->id));
+		header('Location: '.t3lib_div::locationHeaderUrl('index.php?'.$this->linkParams()));
 	}
 
 	/**
@@ -302,7 +311,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 */
 	function cmd_makeLocalRecord ($makeLocalRecord) {
 		$this->pasteRecord('localcopy', $makeLocalRecord, '');
-		header('Location: '.t3lib_div::locationHeaderUrl('index.php?id='.$this->id));
+		header('Location: '.t3lib_div::locationHeaderUrl('index.php?'.$this->linkParams()));
 	}
 
 	/**
@@ -314,7 +323,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 */
 	function cmd_pasteRecord ($pasteRecord) {
 		$this->pasteRecord($pasteRecord, t3lib_div::GPvar('target'), t3lib_div::GPvar('destination'));
-		header('Location: '.t3lib_div::locationHeaderUrl('index.php?id='.$this->id));
+		header('Location: '.t3lib_div::locationHeaderUrl('index.php?'.$this->linkParams()));
 	}
 
 	
@@ -345,17 +354,25 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		
 			// Get data structure array for the page/content elements.
 			// Returns a BIG array reflecting the "treestructure" of the pages content elements.
-		$dsInfo = $this->getDStreeForPage('pages',$this->id);
+		if (is_array($this->altRoot))	{
+			$dsInfo = $this->getDStreeForPage($this->altRoot['table'],$this->altRoot['uid']);
+		} else {
+			$dsInfo = $this->getDStreeForPage('pages',$this->id);
+		}
+
 			// Setting whether an element is on the clipboard
 		$clipboardElInPath = (!trim($this->MOD_SETTINGS['clip'].$this->MOD_SETTINGS['clip_parentPos']) ? 1 : 0);
 			// Display the nested page structure:
 		$this->elementBlacklist=array ();
 		$content.=$this->renderFramework($dsInfo,'',$clipboardElInPath);
-			// Display elements not used in the page structure (has to be done differently)
-		$content.=$this->renderNonUsed();
-			// Display (debug) the element counts on the page (has to be done differently)		
+
+		if (!is_array($this->altRoot))	{
+				// Display elements not used in the page structure (has to be done differently)
+			$content.=$this->renderNonUsed();
+		}
+			// Display (debug) the element counts on the page (has to be done differently)
 #		$content.=t3lib_div::view_array($this->global_tt_content_elementRegister);
-		return $content;		
+		return $content;
 	}
 
 	/**
@@ -606,7 +623,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		
 			// Put together the records icon including content sensitive menu link wrapped around it:
 		$recordIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,$dsInfo['el']['icon'],'').' align="absmiddle" width="18" height="16" border="0" title="'.htmlspecialchars('['.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].']'.$extPath).'" alt="" title="" />';
-		$recordIcon = $this->doc->wrapClickMenuOnIcon($recordIcon,$dsInfo['el']['table'],$dsInfo['el']['id']);
+		$recordIcon = $this->doc->wrapClickMenuOnIcon($recordIcon,$dsInfo['el']['table'],$dsInfo['el']['id'],1,'&callingScriptId='.rawurlencode($this->doc->scriptID));
 
 		$realDelete = FALSE;
 #		$realDelete = $isLocal;		// Uncomment this if you want content elements that are NOT references from other pages to also be deleted when unlinked...
@@ -615,18 +632,18 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		$linkCut = '';
 		$linkRef = '';
 		$linkUnlink = '';
-		if ($dsInfo['el']['table']!='pages')	{
+		if ($dsInfo['el']['table']!='tt_content')	{
+			$viewPageIcon = '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::viewOnClick($dsInfo['el']['table']=='pages'?$dsInfo['el']['id']:$dsInfo['el']['pid'],$this->doc->backPath,t3lib_BEfunc::BEgetRootLine($dsInfo['el']['id']))).'">'.
+				'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/zoom.gif','width="12" height="12"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showPage',1).'" hspace="3" alt="" align="absmiddle" />'.
+				'</a>';
+			$renderHeaderFields = $this->renderHeaderFields($dsInfo['el']['id']);
+		} else {
 			$linkMakeLocal = (!$isLocal && $referenceInPath<=1) ? $this->linkMakeLocal('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,t3lib_extMgm::extRelPath('templavoila').'mod1/makelocalcopy.gif','').' title="'.$LANG->getLL('makeLocal').'" border="0" alt="" />', $parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].'/'.$isLocal.'/'.$this->id) : '';
 			$linkCopy = $isLocal ? $this->linkCopyCut('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/clip_copy'.$clipActive_copy.'.gif','').' title="'.$LANG->getLL ('copyrecord').'" border="0" alt="" />',($clipActive_copy ? '' : $parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].'/'.$isLocal),'copy') : '';
 			$linkCut = $this->linkCopyCut('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/clip_cut'.$clipActive_cut.'.gif','').' title="'.$LANG->getLL ('cutrecord').'" border="0" alt="" />',($clipActive_cut ? '' : $parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].'/'.$isLocal),'cut');
 			$linkRef = $this->linkCopyCut('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,t3lib_extMgm::extRelPath('templavoila').'mod1/clip_ref'.$clipActive_ref.'.gif','').' title="'.$LANG->getLL ('createreference').'" border="0" alt="" />',($clipActive_ref ? '' : $parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].'/'.$isLocal),'ref');
    			$linkUnlink = $this->linkUnlink('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/garbage.gif','').' title="'.$LANG->getLL($realDelete ? 'deleteRecord' : 'unlinkRecord').'" border="0" alt="" />', $parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].'/'.$isLocal, $realDelete);
-		} else {
-			$viewPageIcon = '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::viewOnClick($dsInfo['el']['id'],$this->doc->backPath,t3lib_BEfunc::BEgetRootLine($dsInfo['el']['id']))).'">'.
-				'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/zoom.gif','width="12" height="12"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showPage',1).'" hspace="3" alt="" align="absmiddle" />'.
-				'</a>';
-			$renderHeaderFields = $this->renderHeaderFields($dsInfo['el']['id']);
-		}		
+		}
 		
  		$finalContent = $this->renderSheetMenu($dsInfo, $sheet) . $errorLineBefore . '
 		<table border="0" cellpadding="2" cellspacing="0" style="border: 1px solid black; margin-bottom:5px; '.$elementBackgroundStyle.'" width="100%">
@@ -683,7 +700,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 					$width = $isActive ? $widthAct : $widthNo;
 	
 					$label = htmlspecialchars($sheetK);
-					$link = htmlspecialchars('index.php?id='.$this->id.'&SET[sheetData]='.$sheetK);
+					$link = htmlspecialchars('index.php?'.$this->linkParams().'&SET[sheetData]='.$sheetK);
 
 					$sheetMenu.='<td width="'.$width.'%" class="'.$class.'"'.($first?' style="border-left: solid #000 1px;"':'').'>'.
 						'<a href="'.$link.'"'.($first?' style="padding-left:5px;padding-right:2px;"':'').'><strong>'.
@@ -719,7 +736,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		$showHideMessage = '<a href="'.$href.'">'.$label.'</a>';
 		
 			// Getting data structure for the page template and extract information for header fields to display
-		$pageRecord = t3lib_BEfunc::getRecord ('pages', $pageId);		
+		$pageRecord = t3lib_BEfunc::getRecord ('pages', $pageId);
 		$dataStructureRecord = t3lib_BEfunc::getRecord ('tx_templavoila_datastructure', $pageRecord['tx_templavoila_ds']);
 		$xmlContent = t3lib_div::xml2array ($dataStructureRecord['dataprot']);
 		if (is_array ($xmlContent['ROOT']['tx_templavoila']['pageModule'])) {
@@ -764,10 +781,10 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 */
 	function renderNonUsed()	{
 		global $LANG;
-		
+
 		$usedUids = array_keys($this->global_tt_content_elementRegister);
 		$usedUids[]=0;
-		
+
 		$query = 'SELECT uid,header FROM tt_content WHERE pid='.intval($this->id).' AND uid NOT IN ('.implode(',',$usedUids).')'.t3lib_BEfunc::deleteClause('tt_content').' ORDER BY uid';
 		$res = mysql(TYPO3_db,$query);
 		$tRows='';
@@ -782,7 +799,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 	/**
 	 * Returns an HTML link for editing
-	 * 
+	 *
 	 * @param	string		$str: The label (or image)
 	 * @param	string		$table: The table, fx. 'tt_content'
 	 * @param	integer		$uid: The uid of the element to be edited
@@ -801,7 +818,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * @return	string		HTML anchor tag containing the label and the correct link
 	 */
 	function linkNew($str,$parentRecord)	{
-		return '<a href="'.htmlspecialchars('db_new_content_el.php?id='.$this->id.'&parentRecord='.rawurlencode($parentRecord)).'">'.$str.'</a>';
+		return '<a href="'.htmlspecialchars('db_new_content_el.php?'.$this->linkParams().'&parentRecord='.rawurlencode($parentRecord)).'">'.$str.'</a>';
 	}
 
 	/**
@@ -816,9 +833,9 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		global $LANG;
 
 		if ($realDelete)	{
-			return '<a href="index.php?id='.$this->id.'&deleteRecord='.rawurlencode($unlinkRecord).'" onclick="'.htmlspecialchars('return confirm('.$LANG->JScharCode($LANG->getLL('deleteRecordMsg')).');').'">'.$str.'</a>';
+			return '<a href="index.php?'.$this->linkParams().'&deleteRecord='.rawurlencode($unlinkRecord).'" onclick="'.htmlspecialchars('return confirm('.$LANG->JScharCode($LANG->getLL('deleteRecordMsg')).');').'">'.$str.'</a>';
 		} else {
-			return '<a href="index.php?id='.$this->id.'&unlinkRecord='.rawurlencode($unlinkRecord).'">'.$str.'</a>';
+			return '<a href="index.php?'.$this->linkParams().'&unlinkRecord='.rawurlencode($unlinkRecord).'">'.$str.'</a>';
 		}
 	}
 
@@ -832,7 +849,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	function linkMakeLocal($str,$makeLocalRecord)	{
 		global $LANG;
 
-		return '<a href="index.php?id='.$this->id.'&makeLocalRecord='.rawurlencode($makeLocalRecord).'" onclick="'.htmlspecialchars('return confirm('.$LANG->JScharCode($LANG->getLL('makeLocalMsg')).');').'">'.$str.'</a>';
+		return '<a href="index.php?'.$this->linkParams().'&makeLocalRecord='.rawurlencode($makeLocalRecord).'" onclick="'.htmlspecialchars('return confirm('.$LANG->JScharCode($LANG->getLL('makeLocalMsg')).');').'">'.$str.'</a>';
 	}
 
 	/**
@@ -845,7 +862,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * @return	string		HTML anchor tag containing the label and the paste-link
 	 */
 	function linkPaste($str,$params,$target,$cmd)	{
-		return '<a href="index.php?id='.$this->id.'&SET[clip]=&SET[clip_parentPos]=&pasteRecord='.$cmd.'&destination='.rawurlencode($params).'&target='.rawurlencode($target).'">'.$str.'</a>';
+		return '<a href="index.php?'.$this->linkParams().'&SET[clip]=&SET[clip_parentPos]=&pasteRecord='.$cmd.'&destination='.rawurlencode($params).'&target='.rawurlencode($target).'">'.$str.'</a>';
 	}
 
 	/**
@@ -857,7 +874,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * @return	string		HTML anchor tag containing the label and the cut/copy link
 	 */
 	function linkCopyCut($str,$parentPos,$cmd)	{
-		return '<a href="index.php?id='.$this->id.'&SET[clip]='.($parentPos?$cmd:'').'&SET[clip_parentPos]='.rawurlencode($parentPos).'">'.$str.'</a>';
+		return '<a href="index.php?'.$this->linkParams().'&SET[clip]='.($parentPos?$cmd:'').'&SET[clip_parentPos]='.rawurlencode($parentPos).'">'.$str.'</a>';
 	}
 
 	/**
@@ -940,14 +957,21 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 	/**
 	 * Prints out the module HTML
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function printContent()    {
 		echo $this->content;
 	}
 
-	
+	function linkParams()	{
+		$output = 'id='.$this->id.
+				(is_array($this->altRoot) ? t3lib_div::implodeArrayForUrl('altRoot',$this->altRoot) : '');
+		return $output;
+	}
+
+
+
 	
 	
 	
@@ -968,8 +992,8 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		$dataArr= array();
 		$dataArr['pages']['NEW']=$pageArray;
 		$dataArr['pages']['NEW']['pid'] = $positionPid;
-		if (is_null($dataArr['pages']['NEW']['hidden'])) { 
-			$dataArr['pages']['NEW']['hidden'] = 0; 
+		if (is_null($dataArr['pages']['NEW']['hidden'])) {
+			$dataArr['pages']['NEW']['hidden'] = 0;
 		}
 		unset($dataArr['pages']['NEW']['uid']);
 
@@ -1052,6 +1076,8 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 */
 	function insertRecord($createNew,$row)	{
 		$handler = t3lib_div::makeInstance('tx_templavoila_xmlrelhndl');
+		$handler->init($this->altRoot);
+
 		return $handler->insertRecord($createNew,$row);
 	}
 
@@ -1065,6 +1091,8 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 */
 	function pasteRecord($pasteCmd, $target, $destination)	{
 		$handler = t3lib_div::makeInstance('tx_templavoila_xmlrelhndl');
+		$handler->init($this->altRoot);
+
 		return $handler->pasteRecord($pasteCmd, $target, $destination);
 	}
 
@@ -1128,9 +1156,10 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			'icon' => t3lib_iconWorks::getIcon($table,$row)
 		);
 
-		if ($table=='pages' or ($table=='tt_content' && $row['CType']=='templavoila_pi1'))	{
-			$expDS = $this->getExpandedDataStructure($table,'tx_templavoila_flex',$row);
-			$xmlContent = t3lib_div::xml2array($row['tx_templavoila_flex']);
+		if ($table=='pages' or $table==$this->altRoot['table'] or ($table=='tt_content' && $row['CType']=='templavoila_pi1'))	{
+			$flexFName = $this->altRoot['table']==$table ? $this->altRoot['field_flex'] : 'tx_templavoila_flex';
+			$expDS = $this->getExpandedDataStructure($table,$flexFName,$row);
+			$xmlContent = t3lib_div::xml2array($row[$flexFName]);
 
 			foreach($expDS as $sheetKey => $sVal)	{
 				$tree['sub'][$sheetKey]=array();

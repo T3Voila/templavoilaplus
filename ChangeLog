@@ -1,3 +1,10 @@
+2004-03-09  Kasper Skårhøj
+
+	* Removed copy,cut,paste,new,delete links in Context Menu for content elements inside of TemplaVoila module; Doesn't do any good there since those features are specific for TemplaVoila and has to be managed in the module itself; Alternatively we should create menu items in the context menu which does the same as the buttons in the module, but that was too hard for me to think about tonight....
+	* Added support for other root elements in backend module than pages. Setting another root element is done by the parameter set "&altRoot[table], &altRoot[uid], &altRoot[flex_field]"
+	* Added clickmenu item for "TV children" in "content elements" -> a link to direct management of that element and subelements. Using the feature described above.
+	* Fixed a few things with mapping, for instance that TypoScript Object Path can now be set in a little field - very convenient...
+
 2003-12-22  Robert Lemke  <rl@robertlemke.de>
 
 	* Nightly backup ...

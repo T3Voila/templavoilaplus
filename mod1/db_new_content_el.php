@@ -98,6 +98,7 @@ class tx_templavoila_dbnewcontentel {
 		// Internal, static (from GPvars):
 	var $id;					// Page id
 	var $parentRecord;			// Parameters for the new record
+	var $altRoot;				// Array with alternative table, uid and flex-form field (see index.php in module for details, same thing there.)
 
 		// Internal, static:
 	var $doc;					// Internal backend template object
@@ -123,8 +124,9 @@ class tx_templavoila_dbnewcontentel {
 			// Setting internal vars:
 		$this->id = intval(t3lib_div::GPvar('id'));
 		$this->parentRecord = t3lib_div::GPvar('parentRecord');
+		$this->altRoot = t3lib_div::GPvar('altRoot');
 
-			// Starting the document template object:		
+			// Starting the document template object:
 		$this->doc = t3lib_div::makeInstance('mediumDoc');
 		$this->doc->docType= 'xhtml_trans';
 		$this->doc->backPath = $BACK_PATH;
@@ -184,7 +186,8 @@ class tx_templavoila_dbnewcontentel {
 					$tableLinks=array();
 										
 						// href URI for icon/title:			
-					$newRecordLink = 'index.php?id='.$this->id.'&createNewRecord='.rawurlencode($this->parentRecord).$wizardItem['params'];
+					$newRecordLink = 'index.php?'.$this->linkParams().'&createNewRecord='.rawurlencode($this->parentRecord).$wizardItem['params'];
+
 						// Icon:
 					$iInfo = @getimagesize($wizardItem['icon']);
 					$tableLinks[]='<a href="'.$newRecordLink.'"><img'.t3lib_iconWorks::skinImg($this->doc->backPath,$wizardItem['icon'],'').' alt="" /></a>';
@@ -232,7 +235,11 @@ class tx_templavoila_dbnewcontentel {
 		echo $this->content;
 	}
 	
-
+	function linkParams()	{
+		$output = 'id='.$this->id.
+				(is_array($this->altRoot) ? t3lib_div::implodeArrayForUrl('altRoot',$this->altRoot) : '');
+		return $output;
+	}
 
 
 

@@ -34,7 +34,7 @@
  *
  *
  *   61: class tx_templavoila_cm1 
- *   72:     function main(&$backRef,$menuItems,$table,$uid)	
+ *   72:     function main(&$backRef,$menuItems,$table,$uid)
  *  107:     function includeLL()	
  *
  * TOTAL FUNCTIONS: 2
@@ -91,14 +91,55 @@ class tx_templavoila_cm1 {
 					$backRef->urlRefForCM($url),
 					1	// Disables the item in the top-bar. Set this to zero if you with the item to appear in the top bar!
 				);
-				
-				// Simply merges the two arrays together and returns ...
-				$menuItems=array_merge($menuItems,$localItems);
-			} else return $menuItems;
+			} elseif ('tt_content' == $table) {
+				$localItems = Array();
+				$url = t3lib_extMgm::extRelPath('templavoila').'mod1/index.php?id='.intval($backRef->rec['pid']).
+							'&altRoot[table]='.rawurlencode($table).
+							'&altRoot[uid]='.$uid.
+							'&altRoot[field_flex]=tx_templavoila_flex';
+
+				$localItems[] = $backRef->linkItem(
+					'"TV Children"',
+					$backRef->excludeIcon('<img src="'.$backRef->backPath.t3lib_extMgm::extRelPath('templavoila').'cm1/cm_icon.gif" width="15" height="12" border="0" align="top" alt="" />'),
+					$backRef->urlRefForCM($url),
+					1	// Disables the item in the top-bar. Set this to zero if you with the item to appear in the top bar!
+				);
+
+					// Remove items that are not relevant in this context:
+				if (t3lib_div::GPvar('callingScriptId') == 'ext/templavoila/mod1/index.php')	{
+					unset($menuItems['new']);
+					unset($menuItems['copy']);
+					unset($menuItems['cut']);
+					unset($menuItems['pasteinto']);
+					unset($menuItems['pasteafter']);
+					unset($menuItems['delete']);
+
+	 				$lastWasSpacer = FALSE;
+					foreach($menuItems as $kI => $vI)	{
+						if ($vI == 'spacer')	{
+							if ($lastWasSpacer)	{
+								unset($menuItems[$kI]);
+							}
+							$lastWasSpacer = TRUE;
+						} else {
+							$lastWasSpacer = FALSE;
+						}
+					}
+					if ($lastWasSpacer)	{
+						unset($menuItems[$kI]);
+					}
+				}
+			}
 		}
+
+			// Simply merges the two arrays together and returns ...
+		if (count($localItems))	{
+			$menuItems = array_merge($menuItems,$localItems);
+		}
+
 		return $menuItems;
-	} 
-	
+	}
+
 	/**
 	 * Includes the [extDir]/locallang.php and returns the $LOCAL_LANG array found in that file.
 	 * 

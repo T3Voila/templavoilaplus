@@ -49,16 +49,16 @@
  * 1018:     function renderHeaderSelection($displayFile,$currentHeaderMappingInfo,$showBodyTag,$htmlAfterDSTable='')	
  * 1082:     function renderTemplateMapper($displayFile,$path,$dataStruct=array(),$currentMappingInfo=array(),$htmlAfterDSTable='')	
  * 1245:     function drawDataStructureMap($dataStruct,$mappingMode=0,$currentMappingInfo=array(),$pathLevels=array(),$optDat=array(),$contentSplittedByMapping=array(),$level=0,$tRows=array(),$formPrefix='',$path='',$mapOK=1)	
- * 1458:     function drawDataStructureMap_editItem($formPrefix,$key,$value,$level)	
+ * 1458:     function drawDataStructureMap_editItem($formPrefix,$key,$value,$level)
  *
  *              SECTION: Helper-functions for File-based DS/TO creation
- * 1578:     function substEtypeWithRealStuff(&$elArray,$v_sub=array())	
- * 1806:     function substEtypeWithRealStuff_contentInfo($content)	
+ * 1578:     function substEtypeWithRealStuff(&$elArray,$v_sub=array())
+ * 1806:     function substEtypeWithRealStuff_contentInfo($content)
  *
  *              SECTION: Various helper functions
  * 1852:     function getDataStructFromDSO($datString,$file='')	
  * 1868:     function linkForDisplayOfPath($title,$path)	
- * 1888:     function linkThisScript($array)	
+ * 1888:     function linkThisScript($array)
  * 1910:     function makeIframeForVisual($file,$path,$limitTags,$showOnly,$preview=0)	
  * 1926:     function explodeMappingToTagsStr($mappingToTags,$unsetAll=0)	
  * 1944:     function unsetArrayPath(&$dataStruct,$ref)	
@@ -1362,7 +1362,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			</tr>
 			'.implode('',$this->drawDataStructureMap($dataStruct,1,$currentMappingInfo,$pathLevels,$optDat,$contentSplittedByMapping)).'</table>
 			'.$htmlAfterDSTable;
-		
+
 			// Make mapping window:
 		$limitTags = implode(',',array_keys($this->explodeMappingToTagsStr($this->mappingToTags,1)));
 		if (($this->mapElPath && !$this->doMappingOfPath) || $this->showPathOnly || $this->_preview)	{
@@ -1371,7 +1371,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 
 			<!--
 				Visual Mapping Window (Iframe)
-			-->			
+			-->
 			<h3>Mapping Window:</h3>
 			<!-- <p><strong>File:</strong> '.htmlspecialchars($displayFile).'</p> -->
 			<p>'.t3lib_BEfunc::getFuncMenu('','SET[displayMode]',$this->MOD_SETTINGS['displayMode'],$this->MOD_MENU['displayMode'],'',t3lib_div::implodeArrayForUrl('',$GLOBALS['HTTP_GET_VARS'],'',1,1)).'</p>';
@@ -1657,7 +1657,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 
 	/**
 	 * Creates the editing row for a Data Structure element - when DS's are build...
-	 * 
+	 *
 	 * @param	string		Form element prefix
 	 * @param	string		Key for form element
 	 * @param	array		Values for element
@@ -1669,11 +1669,13 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			// Init:
 		$addEditRows='';
 		$placeBefore=0;
-		
+
 			// If editing command is set:
 		if ($this->editDataStruct)	{
 			if ($this->DS_element == $formPrefix.'['.$key.']')	{	// If the editing-command points to this element:
-			
+#debug(t3lib_div::_GET());
+#debug(t3lib_div::_POST());
+
 					// Initialize, detecting either "add" or "edit" (default) mode:
 				$autokey='';
 				if ($this->DS_cmd=='add')	{
@@ -1731,22 +1733,28 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 						<option value="none"'.($insertDataArray['tx_templavoila']['eType']=='none' ? ' selected="selected"' : '').'>[ NONE ]</option>
 						<option value="TypoScriptObject"'.($insertDataArray['tx_templavoila']['eType']=='TypoScriptObject' ? ' selected="selected"' : '').'>TypoScript Object Path</option>
 					</select><br />
+					'.$this->drawDataStructureMap_editItem_editTypeExtra(
+						$insertDataArray['tx_templavoila']['eType'],
+						$formFieldName.'[tx_templavoila][eType_EXTRA]',
+						$insertDataArray['tx_templavoila']['eType_EXTRA']
+					).'
 
 					[Advanced] Mapping rules:<br />
 					<input type="text" size="80" name="'.$formFieldName.'[tx_templavoila][tags]" value="'.htmlspecialchars($insertDataArray['tx_templavoila']['tags']).'" /><br />
 
 					' :'').'
 
-					<input type="submit" name="_updateDS" value="Add" />
+					<input type="hidden" name="DS_element" value="'.htmlspecialchars($this->DS_cmd=='add' ? $this->DS_element.'[el]['.$autokey.']' : $this->DS_element).'" />
+					<input type="submit" name="_updateDS" value="'.($this->DS_cmd=='add' ? 'Add' : 'Update').'" />
 <!--								<input type="submit" name="'.$formFieldName.'" value="Delete (!)" />  -->
-					<input type="submit" name="_" value="Cancel" /><br />
+					<input type="submit" name="_" value="'.($this->DS_cmd=='add' ? 'Cancel' : 'Cancel/Close').'" onclick="document.location=\''.$this->linkThisScript().'\'; return false;" /><br />
 				';
 				$addEditRows='<tr class="bgColor4">
 					<td nowrap="nowrap" valign="top">'.
 					($this->DS_cmd=='add' ? '<img src="clear.gif" width="'.(($level+1)*16).'" height="1" alt="" /><strong>NEW FIELD:</strong> '.$autokey : '').
 					'</td>
-					<td colspan="5">'.$form.'</td>
-				</tr>';							
+					<td colspan="6">'.$form.'</td>
+				</tr>';
 			} elseif (!$this->DS_element && $value['type']=='array' && !$this->mapElPath) {
 				$addEditRows='<tr class="bgColor4">
 					<td colspan="7"><img src="clear.gif" width="'.(($level+1)*16).'" height="1" alt="" />'.
@@ -1759,6 +1767,32 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 		
 			// Return edit row:
 		return array($addEditRows,$placeBefore);
+	}
+
+	/**
+	 * Renders extra form fields for configuration of the Editing Types.
+	 *
+	 * @param	string		Editing Type string
+	 * @param	string		Form field name prefix
+	 * @param	array		Current values for the form field name prefix.
+	 * @return	string		HTML with extra form fields
+	 * @see drawDataStructureMap_editItem()
+	 * @access private
+	 */
+	function drawDataStructureMap_editItem_editTypeExtra($type,$formFieldName,$curValue)	{
+		switch($type)	{
+			case 'TypoScriptObject':
+				$output = '
+					<table border="0" cellpadding="2" cellspacing="0">
+						<tr>
+							<td>Object path:</td>
+							<td><input type="text" name="'.$formFieldName.'[objPath]" value="'.htmlspecialchars($curValue['objPath'] ? $curValue['objPath'] : 'lib.myObject').'" /></td>
+						</tr>
+					</table>';
+			break;
+		}
+
+		return $output;
 	}
 
 
@@ -1978,8 +2012,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 					break;
 					case 'TypoScriptObject':
 						unset($elArray[$key]['TCEforms']['config']);
-	
-						$elArray[$key]['tx_templavoila']['TypoScriptObjPath'] = 'lib.myObject';
+						$elArray[$key]['tx_templavoila']['TypoScriptObjPath'] = $elArray[$key]['tx_templavoila']['eType_EXTRA']['objPath'] ? $elArray[$key]['tx_templavoila']['eType_EXTRA']['objPath'] : 'lib.myObject';
 					break;
 					case 'none':
 						unset($elArray[$key]['TCEforms']['config']);
@@ -2095,7 +2128,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 	 * @return	string		URL, already htmlspecialchars()'ed
 	 * @see drawDataStructureMap()
 	 */
-	function linkThisScript($array)	{
+	function linkThisScript($array=array())	{
 		$theArray=array(
 			'file' => $this->displayFile,
 			'table' => $this->displayTable,
