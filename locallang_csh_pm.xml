@@ -4,7 +4,7 @@
         <description>CSH for alternative Page Module</description>
         <type>CSH</type>
         <csh_table>_MOD_web_txtemplavoilaM1</csh_table>
-        <fileId>EXT:templavoila/locallang_csh_pm.php</fileId>
+        <fileId>EXT:templavoila/locallang_csh_pm.xml</fileId>
         <labelContext type="array">
             <languageKey index=".alttitle"></languageKey>
         </labelContext>
