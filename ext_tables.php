@@ -1,32 +1,38 @@
 <?php
 # TYPO3 CVS ID: $Id$
-if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
+if (!defined ('TYPO3_MODE'))  die ('Access denied.');
 
-if (TYPO3_MODE=='BE')	{
-		// Adding click menu item:
-	$GLOBALS['TBE_MODULES_EXT']['xMOD_alt_clickmenu']['extendCMclasses'][]=array(
-		'name' => 'tx_templavoila_cm1',
-		'path' => t3lib_extMgm::extPath($_EXTKEY).'class.tx_templavoila_cm1.php'
-	);
-	include_once(t3lib_extMgm::extPath('templavoila').'class.tx_templavoila_handlestaticdatastructures.php');
+if (TYPO3_MODE=='BE') {
 
-		// Adding backend modules:
+  // unserializing the configuration so we can use it here:
+ $_EXTCONF = unserialize($_EXTCONF);
+
+  // Adding click menu item:
+ $GLOBALS['TBE_MODULES_EXT']['xMOD_alt_clickmenu']['extendCMclasses'][]=array(
+  'name' => 'tx_templavoila_cm1',
+  'path' => t3lib_extMgm::extPath($_EXTKEY).'class.tx_templavoila_cm1.php'
+ );
+ include_once(t3lib_extMgm::extPath('templavoila').'class.tx_templavoila_handlestaticdatastructures.php');
+
+  // Adding backend modules:
   t3lib_extMgm::addModule('web','txtemplavoilaM1','top',t3lib_extMgm::extPath($_EXTKEY).'mod1/');
   t3lib_extMgm::addModule('web','txtemplavoilaM2','',t3lib_extMgm::extPath($_EXTKEY).'mod2/');
+  t3lib_extMgm::addModule('tools','txtemplavoilaM3','',t3lib_extMgm::extPath($_EXTKEY).'mod3/');
 
-/*  	// Remove default Page module (layout) manually
+    // Remove default Page module (layout) manually if wanted:
+ if (!$_EXTCONF['enable.']['oldPageModule']) {
   $tmp = $GLOBALS['TBE_MODULES']['web'];
   $GLOBALS['TBE_MODULES']['web'] = str_replace (',,',',',str_replace ('layout','',$tmp));
   unset ($GLOBALS['TBE_MODULES']['_PATHS']['web_layout']);
-*/
+   }
 
-		// Registering CSH:
-	t3lib_extMgm::addLLrefForTCAdescr('pages','EXT:templavoila/locallang_csh_pages.xml');
-	t3lib_extMgm::addLLrefForTCAdescr('tt_content','EXT:templavoila/locallang_csh_ttc.xml');
-	t3lib_extMgm::addLLrefForTCAdescr('tx_templavoila_datastructure','EXT:templavoila/locallang_csh_ds.xml');
-	t3lib_extMgm::addLLrefForTCAdescr('tx_templavoila_tmplobj','EXT:templavoila/locallang_csh_to.xml');
-	t3lib_extMgm::addLLrefForTCAdescr('xMOD_tx_templavoila','EXT:templavoila/locallang_csh_module.xml');
-	t3lib_extMgm::addLLrefForTCAdescr('xEXT_templavoila','EXT:templavoila/locallang_csh_intro.xml');
+  // Registering CSH:
+ t3lib_extMgm::addLLrefForTCAdescr('pages','EXT:templavoila/locallang_csh_pages.xml');
+ t3lib_extMgm::addLLrefForTCAdescr('tt_content','EXT:templavoila/locallang_csh_ttc.xml');
+ t3lib_extMgm::addLLrefForTCAdescr('tx_templavoila_datastructure','EXT:templavoila/locallang_csh_ds.xml');
+ t3lib_extMgm::addLLrefForTCAdescr('tx_templavoila_tmplobj','EXT:templavoila/locallang_csh_to.xml');
+ t3lib_extMgm::addLLrefForTCAdescr('xMOD_tx_templavoila','EXT:templavoila/locallang_csh_module.xml');
+ t3lib_extMgm::addLLrefForTCAdescr('xEXT_templavoila','EXT:templavoila/locallang_csh_intro.xml');
 	t3lib_extMgm::addLLrefForTCAdescr('_MOD_web_txtemplavoilaM1','EXT:templavoila/locallang_csh_pm.xml');
 }
 
@@ -134,8 +140,6 @@ $TCA['tt_content']['types'][$_EXTKEY.'_pi2']['showitem']='CType;;4;button;1-1-1,
 t3lib_extMgm::addPlugin(Array('LLL:EXT:templavoila/locallang_db.php:tt_content.CType_pi1', $_EXTKEY.'_pi1'),'CType');
 t3lib_extMgm::addPlugin(Array('LLL:EXT:templavoila/locallang_db.php:tt_content.CType_pi2', $_EXTKEY.'_pi2'),'CType');
 
-
-$_EXTCONF = unserialize($_EXTCONF);	// unserializing the configuration so we can use it here:
 if ($_EXTCONF['enable.']['pageTemplateSelector'])	{
 
 		// For pages:

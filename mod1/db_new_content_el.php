@@ -150,9 +150,7 @@ class tx_templavoila_dbnewcontentel {
 
 		if ($this->id && $this->access)	{
 
-			// ***************************
-			// Creating content
-			// ***************************
+				// Creating content
 			$this->content='';
 			$this->content.=$this->doc->startPage($LANG->getLL('newContentElement'));
 			$this->content.=$this->doc->header($LANG->getLL('newContentElement'));
@@ -358,12 +356,16 @@ class tx_templavoila_dbnewcontentel {
 				'description'=>$LANG->getLL('forms_3_description'),
 				'params'=>'&defVals[tt_content][CType]=login'
 			),
-			'plugins' => array('header'=>$LANG->getLL('plugins')),
 		);
+
+			// Flexible content elements:
+		$wizardItems ['fce'] = array ('header' => $LANG->getLL('fce'));
+
 
 
 			// PLUG-INS:
 		if (is_array($TBE_MODULES_EXT['xMOD_db_new_content_el']['addElClasses']))	{
+			$wizardItems['plugins'] = array('header'=>$LANG->getLL('plugins'));
 			reset($TBE_MODULES_EXT['xMOD_db_new_content_el']['addElClasses']);
 			while(list($class,$path)=each($TBE_MODULES_EXT['xMOD_db_new_content_el']['addElClasses']))	{
 				$modObj = t3lib_div::makeInstance($class);

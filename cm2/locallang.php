@@ -3,51 +3,51 @@
  * Language labels for templavoila module cm2
  *
  * $Id$
- * 
+ *
  * This file is detected by the translation tool.
  */
 
 $LOCAL_LANG = Array (
-	"default" => Array (
-		"title" => "View FlexForm XML data",	
+	'default' => Array (
+		'title' => 'View FlexForm XML data',
 	),
-	"dk" => Array (
+	'dk' => Array (
 	),
-	"de" => Array (
+	'de' => Array (
 	),
-	"no" => Array (
+	'no' => Array (
 	),
-	"it" => Array (
+	'it' => Array (
 	),
-	"fr" => Array (
+	'fr' => Array (
 	),
-	"es" => Array (
+	'es' => Array (
 	),
-	"nl" => Array (
+	'nl' => Array (
 	),
-	"cz" => Array (
+	'cz' => Array (
 	),
-	"pl" => Array (
+	'pl' => Array (
 	),
-	"si" => Array (
+	'si' => Array (
 	),
-	"fi" => Array (
+	'fi' => Array (
 	),
-	"tr" => Array (
+	'tr' => Array (
 	),
-	"se" => Array (
+	'se' => Array (
 	),
-	"pt" => Array (
+	'pt' => Array (
 	),
-	"ru" => Array (
+	'ru' => Array (
 	),
-	"ro" => Array (
+	'ro' => Array (
 	),
-	"ch" => Array (
+	'ch' => Array (
 	),
-	"sk" => Array (
+	'sk' => Array (
 	),
-	"lt" => Array (
+	'lt' => Array (
 	),
 );
 ?>

@@ -12,13 +12,14 @@ $LOCAL_LANG = Array (
 		'cm1_title' => 'TemplaVoilà',
 		'cm1_viewsubelements' => 'View: Sub elements',
 		'cm1_viewflexformxml' => 'View: Flexform XML',
+		'cm1_pagesusingthiselement' => 'Pages using this element ->',
 	),
 	'dk' => Array (
 	),
 	'de' => Array (
 		'cm1_title' => 'TemplaVoilà',
 		'cm1_viewsubelements' => 'Ansicht: Unter-Elemente',
-		'cm1_viewflexformxml' => 'Ansicht: Flexform XML',
+		'cm1_pagesusingthiselement' => 'Seiten die dieses Element nutzen ->',
 	),
 	'no' => Array (
 	),

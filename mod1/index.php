@@ -168,7 +168,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * @return	void
 	 */
 	function menuConfig()	{
-		global $LANG;
+		global $LANG, $TYPO3_CONF_VARS;
 
 		$this->MOD_MENU = array(
 			'view' => array(
@@ -181,6 +181,16 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			'clip_parentPos' => '',
 			'clip' => '',
 		);
+
+			// Hook: menuConfig_preProcessModMenu
+		if (is_array ($TYPO3_CONF_VARS['EXTCONF']['templavoila']['mod1']['menuConfigClass'])) {
+			foreach ($TYPO3_CONF_VARS['EXTCONF']['templavoila']['mod1']['menuConfigClass'] as $classRef) {
+				$hookObj = &t3lib_div::getUserObj ($classRef);
+				if (method_exists ($hookObj, 'menuConfig_preProcessModMenu')) {
+					$hookObj->menuConfig_preProcessModMenu ($this->MOD_MENU, $this);
+				}
+			}
+		}
 
 			// page/be_user TSconfig settings and blinding of menu-items
 		$this->modTSconfig = t3lib_BEfunc::getModTSconfig($this->id,'mod.'.$this->MCONF['name']);
@@ -604,7 +614,8 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * @return	string		HTML output containing a table with the template selector
 	 */
 	function renderTemplateSelector ($positionPid, $templateType='tmplobj') {
-		global $LANG;
+		global $LANG, $TYPO3_DB;
+
 		$storageFolderPID = $this->getStorageFolderPid($positionPid);
 
 		switch ($templateType) {
@@ -621,6 +632,14 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				$tDS = 'tx_templavoila_datastructure';
 				$query="SELECT $tTO.* FROM $tTO LEFT JOIN $tDS ON $tTO.datastructure = $tDS.uid WHERE $tTO.pid=".intval($storageFolderPID)." AND $tDS.scope=1".t3lib_befunc::deleteClause ($tTO).t3lib_befunc::deleteClause ($tDS);
 				$res = mysql(TYPO3_db, $query);
+#				$res = $TYPO3_DB->exec_SELECTquery (
+#					"$tTO.*",
+#					"$tTO LEFT JOIN $tDS ON $tTO.datastructure = $tDS.uid",
+#					"$tTO.pid=".intval($storageFolderPID)." AND $tDS.scope=1".t3lib_befunc::deleteClause ($tTO).t3lib_befunc::deleteClause ($tDS)
+#				);
+
+	#function exec_SELECTquery($select_fields,$from_table,$where_clause,$groupBy='',$orderBy='',$limit='')	{
+
 				while ($row = @mysql_fetch_assoc($res))	{
 						// Check if preview icon exists, otherwise use default icon:
 					$tmpFilename = 'uploads/tx_templavoila/'.$row['previewicon'];
@@ -1433,7 +1452,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * @param	integer		$prevDS: Internally used to make sure data structures are not created recursively ("previous data structure")
 	 * @param	integer		$level: Internally used for determine the level of recursiveness
 	 * @return	void		nothing
-	 * @todo				Check for rules compliance? (might not be necessary if we expect ruleDefaultElements to be valid)
+	 * @todo				Check for rules compliance? (might not be necessary if we expect ruleDefaultElements to be valid), Use current Sheet / Language
 	 */
 	function createDefaultRecords ($table, $uid, $prevDS=-1, $level=0)	{
 		global $TCA, $LANG;

@@ -21,4 +21,7 @@ t3lib_extMgm::addPageTSConfig('
 	// Adding Page Template Selector Fields to root line:
 $GLOBALS['TYPO3_CONF_VARS']['FE']['addRootLineFields'].=',tx_templavoila_ds,tx_templavoila_to,tx_templavoila_next_ds,tx_templavoila_next_to';
 
+	// Register our class at a hook in TCEmain:
+$GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = 'EXT:templavoila/class.tx_templavoila_tcemain.php:tx_templavoila_tcemain';
+
 ?>

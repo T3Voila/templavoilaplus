@@ -140,6 +140,8 @@ class tx_templavoila_pi1 extends tslib_pibase {
 	 * @return	string		HTML output.
 	 */
 	function renderElement($row,$table)	{
+		global $TYPO3_CONF_VARS;
+
 		if ($GLOBALS['TT']->LR) $GLOBALS['TT']->push('Get DS, TO and data');
 
 			// First prepare user defined objects (if any) for hooks which extend this function:

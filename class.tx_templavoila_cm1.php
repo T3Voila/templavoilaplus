@@ -66,8 +66,8 @@ class tx_templavoila_cm1 {
 	 * @param	integer		For database tables, the UID
 	 * @return	array		The modified menu array.
 	 */
-	function main(&$backRef,$menuItems,$table,$uid)	{
-		global $BE_USER,$TCA,$LANG;
+	function main(&$backRef, $menuItems, $table, $uid) {
+		global $BE_USER, $TCA, $LANG, $TYPO3_DB;
 
 		$localItems = Array();
 		if (!$backRef->cmLevel)	{
@@ -97,31 +97,34 @@ class tx_templavoila_cm1 {
 				}
 			}
 
+				// Adding link for Mapping tool:
 			if (t3lib_div::inList('tx_templavoila_tmplobj,tx_templavoila_datastructure,tx_templavoila_content',$table) || @is_file($table))	{
-					// Repeat this (below) for as many items you want to add!
-					// Remember to add entries in the localconf.php file for additional titles.
+				$localItems = Array();
+
 				if (@is_file($table))	{
 					$url = t3lib_extMgm::extRelPath('templavoila').'cm1/index.php?file='.rawurlencode($table);	//.'&mapElPath='.rawurlencode('[ROOT]');
 				} else {
 					$url = t3lib_extMgm::extRelPath('templavoila').'cm1/index.php?table='.rawurlencode($table).'&uid='.$uid.'&_reload_from=1';
 				}
 				$localItems[] = $backRef->linkItem(
-					$GLOBALS['LANG']->getLLL('cm1_title',$LL),
+					$LANG->getLLL('cm1_title',$LL),
 					$backRef->excludeIcon('<img src="'.$backRef->backPath.t3lib_extMgm::extRelPath('templavoila').'cm1/cm_icon.gif" width="15" height="12" border="0" align="top" alt="" />'),
 					$backRef->urlRefForCM($url),
 					1	// Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
 				);
-			} elseif ($table == 'tt_content' && $backRef->rec['tx_templavoila_flex']) {
+			}
+
+				// Adding link for "View: Sub elements":
+			if ($table == 'tt_content' && $backRef->rec['tx_templavoila_flex']) {
 				$localItems = Array();
 
-					// Adding link for "TV children":
 				$url = t3lib_extMgm::extRelPath('templavoila').'mod1/index.php?id='.intval($backRef->rec['pid']).
 							'&altRoot[table]='.rawurlencode($table).
 							'&altRoot[uid]='.$uid.
 							'&altRoot[field_flex]=tx_templavoila_flex';
 
 				$localItems[] = $backRef->linkItem(
-					$GLOBALS['LANG']->getLLL('cm1_viewsubelements',$LL),
+					$LANG->getLLL('cm1_viewsubelements',$LL),
 					$backRef->excludeIcon('<img src="'.$backRef->backPath.t3lib_extMgm::extRelPath('templavoila').'cm1/cm_icon.gif" width="15" height="12" border="0" align="top" alt="" />'),
 					$backRef->urlRefForCM($url),
 					1	// Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
@@ -129,7 +132,7 @@ class tx_templavoila_cm1 {
 
 			}
 
-				// Adding link for view of XML data (admin only)
+				// Adding link for "View: Flexform XML" (admin only):
 			if ($BE_USER->isAdmin() && ('tt_content' == $table || 'pages' == $table) && $backRef->rec['tx_templavoila_flex']) {
 				$url = t3lib_extMgm::extRelPath('templavoila').'cm2/index.php?'.
 							'&viewRec[table]='.rawurlencode($table).
@@ -137,11 +140,51 @@ class tx_templavoila_cm1 {
 							'&viewRec[field_flex]=tx_templavoila_flex';
 
 				$localItems[] = $backRef->linkItem(
-					$GLOBALS['LANG']->getLLL('cm1_viewflexformxml',$LL),
+					$LANG->getLLL('cm1_viewflexformxml',$LL),
 					$backRef->excludeIcon('<img src="'.$backRef->backPath.t3lib_extMgm::extRelPath('templavoila').'cm2/cm_icon.gif" width="15" height="12" border="0" align="top" alt="" />'),
 					$backRef->urlRefForCM($url),
 					1	// Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
 				);
+			}
+
+			if ($table=='tt_content') {
+					// Adding link for "Pages using this element":
+				$localItems[] = $backRef->linkItem(
+					$LANG->getLLL('cm1_pagesusingthiselement',$LL),
+					$backRef->excludeIcon('<img src="'.t3lib_extMgm::extRelPath('templavoila').'cm1/cm_icon_activate.gif" width="15" height="12" border=0 align=top>'),
+					"top.loadTopMenu('".t3lib_div::linkThisScript()."&cmLevel=1&subname=tx_templavoila_cm1_pagesusingthiselement');return false;",
+					0,
+					1
+				);
+			}
+		} else {
+			if (t3lib_div::GPvar('subname') == 'tx_templavoila_cm1_pagesusingthiselement') {
+				$menuItems = array ();
+				$continueProcessing = false;
+				$url = t3lib_extMgm::extRelPath('templavoila').'mod1/index.php?id=';
+
+					// Generate a list of pages where this element is also being used:
+				$res = $TYPO3_DB->exec_SELECTquery ('*', 'tx_templavoila_elementreferences', 'uid='.$backRef->rec['uid']);
+				if ($res) {
+					while ($referenceRecord = $TYPO3_DB->sql_fetch_assoc ($res)) {
+						$pageRecord = t3lib_beFunc::getRecord ('pages', $referenceRecord['pid']);
+						$icon = t3lib_iconWorks::getIconImage('pages', $pageRecord, $backRef->backPath);
+	// To do: Display language flag icon and jump to correct language
+#						if ($referenceRecord['lkey'] != 'lDEF') {
+#							$icon .= ' lKey:'.$referenceRecord['lkey'];
+#						} elseif ($referenceRecord['vkey'] != 'vDEF') {
+#							$icon .= ' vKey:'.$referenceRecord['vkey'];
+#						}
+						if (is_array ($pageRecord)) {
+							$menuItems[] = $backRef->linkItem(
+								$icon,
+								t3lib_beFunc::getRecordTitle('pages', $pageRecord, 1),
+								$backRef->urlRefForCM($url.$pageRecord['uid']),
+								1	// Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
+							);
+						}
+					}
+				}
 			}
 		}
 
