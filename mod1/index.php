@@ -197,6 +197,21 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				// Just to include the Stylesheet information, nothing more:
 			$this->doc->getTabMenu(0,'_',0,array(''=>''));
 
+			
+// BEGIN: TEMPORARY INSERTIONG OF create-new action, old-style:
+			$createNew = t3lib_div::GPvar('createNew');
+			if ($createNew)	{
+				$this->insertRecord($createNew,array(
+					'header' => '[Enter headline here...]',
+					'bodytext' => '[Enter bodytext here ...]',
+					'CType' => 'text'
+				));
+				header('Location: '.t3lib_div::locationHeaderUrl('index.php?id='.$this->id));
+			}
+// END: TEMPORARY INSERTIONG OF create-new action, old-style:
+			
+			
+			
 				// Go through the commands and check if we have to do some action:
 			$commands = array ('createNewRecord', 'unlinkRecord','pasteRecord');
 			foreach ($commands as $cmd) {
@@ -677,7 +692,9 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * @return	string		HTML anchor tag containing the label and the correct link
 	 */
 	function linkNew($str,$params)	{
-		return '<a href="'.htmlspecialchars('db_new_content_el.php?id='.$this->id.'&sys_language_uid='.$this->current_sys_language.'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'">'.$str.'</a>';
+			// Hi rob. I added this link because we couldn't make your wizard work - and then the module is no-good. So I put this back into function until the wizard is working:
+		return '<a href="'.htmlspecialchars('index.php?id='.$this->id.'&createNew='.rawurlencode($params)).'">'.$str.'</a>';
+#		return '<a href="'.htmlspecialchars('db_new_content_el.php?id='.$this->id.'&sys_language_uid='.$this->current_sys_language.'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'">'.$str.'</a>';
 	}
 
 	/**
