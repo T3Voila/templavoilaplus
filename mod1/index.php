@@ -38,55 +38,55 @@
  *
  *              SECTION: Initialization functions
  *  169:     function init()
- *  202:     function menuConfig()
+ *  203:     function menuConfig()
  *
  *              SECTION: Main functions
- *  247:     function main()
+ *  255:     function main()
  *
  *              SECTION: Rendering functions
- *  374:     function renderEditPageScreen()
- *  436:     function renderEditPageScreenMountPoint()
+ *  382:     function renderEditPageScreen()
+ *  444:     function renderEditPageScreenMountPoint()
  *
  *              SECTION: Framework rendering functions
- *  487:     function renderFrameWork_allSheets($dsInfo, $parentPos='', $clipboardElInPath=0, $referenceInPath=0)
- *  517:     function renderFrameWork($dsInfo, $parentPos, $clipboardElInPath, $referenceInPath, $sheet)
+ *  495:     function renderFrameWork_allSheets($dsInfo, $parentPos='', $clipboardElInPath=0, $referenceInPath=0)
+ *  532:     function renderFrameWork($dsInfo, $parentPos, $clipboardElInPath, $referenceInPath, $sheet)
  *
  *              SECTION: Rendering functions for certain subparts
- *  762:     function renderPreviewContent ($row, $table)
- *  849:     function renderLocalizationInfoTable($dsInfo)
+ *  786:     function renderPreviewContent ($row, $table)
+ *  873:     function renderLocalizationInfoTable($dsInfo)
  *
  *              SECTION: Link functions
- *  938:     function linkEdit($str, $table, $uid)
- *  950:     function linkNew($str, $parentRecord)
- *  963:     function linkUnlink($str, $unlinkRecord, $realDelete=FALSE)
- *  980:     function linkMakeLocal($str, $makeLocalRecord)
- *  995:     function linkPaste($str, $source, $destination, $cmd)
- * 1007:     function linkCopyCut($str, $source, $cmd)
- * 1016:     function linkParams()
+ *  962:     function linkEdit($str, $table, $uid)
+ *  974:     function linkNew($str, $parentRecord)
+ *  987:     function linkUnlink($str, $unlinkRecord, $realDelete=FALSE)
+ * 1004:     function linkMakeLocal($str, $makeLocalRecord)
+ * 1019:     function linkPaste($str, $source, $destination, $cmd)
+ * 1031:     function linkCopyCut($str, $source, $cmd)
+ * 1040:     function linkParams()
  *
  *              SECTION: Command functions
- * 1042:     function cmd_createNewRecord ($parentRecord, $defVals='')
- * 1060:     function cmd_unlinkRecord ($unlinkRecord)
- * 1072:     function cmd_deleteRecord ($deleteRecord)
- * 1084:     function cmd_makeLocalRecord ($makeLocalRecord)
- * 1096:     function cmd_pasteRecord ($pasteMode)
- * 1108:     function cmd_createNewTranslation ($languageUid)
+ * 1066:     function cmd_createNewRecord ($parentRecord, $defVals='')
+ * 1084:     function cmd_unlinkRecord ($unlinkRecord)
+ * 1096:     function cmd_deleteRecord ($deleteRecord)
+ * 1108:     function cmd_makeLocalRecord ($makeLocalRecord)
+ * 1120:     function cmd_pasteRecord ($pasteMode)
+ * 1132:     function cmd_createNewTranslation ($languageUid)
  *
  *              SECTION: Processing
- * 1134:     function createPage($pageArray,$positionPid)
- * 1170:     function createDefaultRecords ($table, $uid, $prevDS=-1, $level=0)
- * 1221:     function insertRecord($destination, $row)
- * 1236:     function pasteRecord($pasteCmd, $source, $destination)
+ * 1158:     function createPage($pageArray,$positionPid)
+ * 1194:     function createDefaultRecords ($table, $uid, $prevDS=-1, $level=0)
+ * 1245:     function insertRecord($destination, $row)
+ * 1260:     function pasteRecord($pasteCmd, $source, $destination)
  *
  *              SECTION: Structure functions
- * 1260:     function getStorageFolderPid($positionPid)
- * 1281:     function getDStreeForPage($table, $id, $prevRecList='', $row='')
- * 1383:     function getExpandedDataStructure($table, $field, $row)
- * 1418:     function checkRulesForElement ($table, $uid)
+ * 1284:     function getStorageFolderPid($positionPid)
+ * 1305:     function getDStreeForPage($table, $id, $prevRecList='', $row='')
+ * 1407:     function getExpandedDataStructure($table, $field, $row)
+ * 1442:     function checkRulesForElement ($table, $uid)
  *
  *              SECTION: Miscelleaneous functions
- * 1441:     function getAvailableLanguages($id=0, $onlyIsoCoded=true, $setDefault=true, $setMulti=false)
- * 1511:     function printContent()
+ * 1465:     function getAvailableLanguages($id=0, $onlyIsoCoded=true, $setDefault=true, $setMulti=false)
+ * 1535:     function printContent()
  *
  * TOTAL FUNCTIONS: 32
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -151,7 +151,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	var $wizardsObj;								// Instance of wizards class
 	var $rulesObj;									// Instance of the tx_templavoila_rule
 
-
+	var $sideBarPosition = 'toptabs';				// The position of the navigation bar ("sidebar"). Possible values (see sidebar class!): toptabs, toprows, left
 
 
 
@@ -189,6 +189,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			// Initialize side bar and wizards:
 		$this->sideBarObj =& t3lib_div::getUserObj ('&tx_templavoila_mod1_sidebar','');
 		$this->sideBarObj->init($this);
+		$this->sideBarObj->position = $this->sideBarPosition;
 
 		$this->wizardsObj = t3lib_div::getUserObj('&tx_templavoila_mod1_wizards','');
 		$this->wizardsObj->init($this);
@@ -202,9 +203,16 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	function menuConfig()	{
 		global $LANG, $TYPO3_CONF_VARS;
 
+			// Prepare array of sys_language uids for available translations:
+		$this->translatedLanguagesArr = $this->getAvailableLanguages($this->id);
+		$translatedLanguagesUids = array();
+		foreach ($this->translatedLanguagesArr as $languageRecord) {
+			$translatedLanguagesUids[$languageRecord['uid']] = $languageRecord['title'];
+		}
+
 		$this->MOD_MENU = array(
 			'tt_content_showHidden' => 1,
-			'language' => 0,
+			'language' => $translatedLanguagesUids,
 			'clip_parentPos' => '',
 			'clip' => '',
 		);
@@ -302,9 +310,9 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			}
 
 				// Show the "edit current page" screen along with the sidebar. The sidebar needs information which is only available after
-				// rendering the edit screen, that's why we delay the output:
+				// rendering the edit screen, that's why we delay the output. The sidebar will only be rendered at THIS point, if its position is "left"
 			$editPageScreen = $this->renderEditPageScreen ();
-			$sideBar = $this->sideBarObj->render($dsInfo);
+			$sideBar = ($this->sideBarPosition == 'left') ? $this->sideBarObj->render($dsInfo) : FALSE;
 
 				// Create make-shortcut-icon:
 			if ($BE_USER->mayMakeShortcut()) {
@@ -693,6 +701,9 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			$viewPageIcon = '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::viewOnClick($dsInfo['el']['table']=='pages'?$dsInfo['el']['id']:$dsInfo['el']['pid'],$this->doc->backPath,t3lib_BEfunc::BEgetRootLine($dsInfo['el']['id']),'','',($this->currentLanguageUid?'&L='.$this->currentLanguageUid:''))).'">'.
 				'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/zoom.gif','width="12" height="12"').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.showPage',1).'" hspace="3" alt="" style="text-align: center; vertical-align: middle;" />'.
 				'</a>';
+			if ($this->sideBarPosition == 'toprows' || $this->sideBarPosition == 'toptabs') {
+				$contentWrapPre .= $this->sideBarObj->render($dsInfo);
+			}
 
 		} else {
 			$linkMakeLocal = (!$isLocal && $referenceInPath<=1) ? $this->linkMakeLocal('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,t3lib_extMgm::extRelPath('templavoila').'mod1/makelocalcopy.gif','').' title="'.$LANG->getLL('makeLocal').'" border="0" alt="" />', $parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].'/'.$isLocal.'/'.$this->id) : '';

@@ -1,16 +1,22 @@
-2004-09-09  Kasper Skårhøj,,,  <kasper@typo3.com>
+2004-09-13  Robert Lemke  <robert@typo3.org>
+ + mod1: Added two new modes for the sidebar, now you have "left", "toptabs" and "toprows". They will be configurable via TSconfig in the future, by now "toptabs" is default.
+ # mod1: Fixed a bug at the language selector which tried to select non-existing translations
+ + mod1: Added flags next to the language selector which represent existing translations
+ # mod1: In the sidebar, changed menuItems array for the dynamic tab menu to num array
 
-	* Fixed that color highlighting of data structure didn't show <meta> tag content.
-	* Improved things in page module regarding sheets; Eg. counting elements on each sheet. Fixed some PHP5 array bugs also.
-	* Totally removed that records in the page construction can be deleted - they are always unlinked when clicking the garbage-can (regardless of whether they are references or on current page).
-	* Created bulletlist overview of DS and TO in Web>TemplaVoila module
-	* Implemented support for sheet selection in pi1 (advanced feature). Fixed PHP5 bugs as well.
-	* Implemented yet another fall-back mode for <langChildren>=1 ; The "removeIfBlank" mode which can unset elements totally if a field inside was not set.
-	* Implemented visual feedback for FCE in frontend - this will give an overview of elements on the frontend page if the Admin Panel is expanded on the "Preview" tab and eg. "Show hidden pages" is enabled.
+2004-09-09  Kasper Skårhøj <kasper@typo3.com>
+
+ * Fixed that color highlighting of data structure didn't show <meta> tag content.
+ * Improved things in page module regarding sheets; Eg. counting elements on each sheet. Fixed some PHP5 array bugs also.
+ * Totally removed that records in the page construction can be deleted - they are always unlinked when clicking the garbage-can (regardless of whether they are references or on current page).
+ * Created bulletlist overview of DS and TO in Web>TemplaVoila module
+ * Implemented support for sheet selection in pi1 (advanced feature). Fixed PHP5 bugs as well.
+ * Implemented yet another fall-back mode for <langChildren>=1 ; The "removeIfBlank" mode which can unset elements totally if a field inside was not set.
+ * Implemented visual feedback for FCE in frontend - this will give an overview of elements on the frontend page if the Admin Panel is expanded on the "Preview" tab and eg. "Show hidden pages" is enabled.
 
 2004-09-08  Robert Lemke  <robert@typo3.org>
 
- + Added versioning sidebar item directly to the default sidebar instead of letting the version extension providing it.
+  + Added versioning sidebar item directly to the default sidebar instead of letting the version extension providing it.
 
 2004-09-08  Robert Lemke  <robert@typo3.org>
 
@@ -27,50 +33,50 @@
 
 2004-08-30  Robert Lemke  <rl@robertlemke.de>
 
- * Merged Kaspers and my changes.
- * cm2 Added a click menu item for showing on which pages the current content element is used in the pagetree. Bug: If other extensions add click menuitems to second level menus, they will appear here as well (needs core change, is on the ToDo)
- * mod3: Added a TemplaVoila tools module. Later on this should also contain wizard like converting from old-school to templavoila websites.
- * mod3: Added wizard for (re-) building indexing information about element reference (where which content element is used). You'll need to update table definitions in the extension manager.
- * ToDo for element references: Deleting CEs from elsewhere than the page module will not be registered automatically (see ToDo file)
+  * Merged Kaspers and my changes.
+  * cm2 Added a click menu item for showing on which pages the current content element is used in the pagetree. Bug: If other extensions add click menuitems to second level menus, they will appear here as well (needs core change, is on the ToDo)
+  * mod3: Added a TemplaVoila tools module. Later on this should also contain wizard like converting from old-school to templavoila websites.
+  * mod3: Added wizard for (re-) building indexing information about element reference (where which content element is used). You'll need to update table definitions in the extension manager.
+  * ToDo for element references: Deleting CEs from elsewhere than the page module will not be registered automatically (see ToDo file)
 
 2004-08-27  Kasper Skårhøj,,,  <kasper@typo3.com>
 
- * Page module: Added "Show hidden elements" box - can be moved to better position in page module
- * Corrected bugs for flagicons if they were not configured (they didn't display correctly of course).
- * Added fallback modes for "pi1" output. Updated manual with new rendering option for fall back modes.
- * Page module: Added "&L=xx" parameter to view-page icon (magnifying glass) so preview link to localized pages is correct.
- * Page module: Added overview of localized versions of other records. This is used when TypoScript is configured with "config.sys_language_overlay". Configurable.
+  * Page module: Added "Show hidden elements" box - can be moved to better position in page module
+  * Corrected bugs for flagicons if they were not configured (they didn't display correctly of course).
+  * Added fallback modes for "pi1" output. Updated manual with new rendering option for fall back modes.
+  * Page module: Added "&L=xx" parameter to view-page icon (magnifying glass) so preview link to localized pages is correct.
+  * Page module: Added overview of localized versions of other records. This is used when TypoScript is configured with "config.sys_language_overlay". Configurable.
 
 2004-08-26  Kasper Skårhøj,,,  <kasper@typo3.com>
 
- * Changed the versioning selector...
+  * Changed the versioning selector...
 
 2004-08-21  Kasper Skårhøj,,,  <kasper@typo3.com>
 
- * Finally added the "TemplaVoila" module to the Web main module and put some content into it! Now you can manage all your Data Structures and Template Objects from that module including creating new mappings and validate old ones.
- * Also added TAB menus to the TV page module
- * NOTICE: ALL changes here requires most recent 3.7.0-dev version from CVS in order to work!
+  * Finally added the "TemplaVoila" module to the Web main module and put some content into it! Now you can manage all your Data Structures and Template Objects from that module including creating new mappings and validate old ones.
+  * Also added TAB menus to the TV page module
+  * NOTICE: ALL changes here requires most recent 3.7.0-dev version from CVS in order to work!
 
 2004-07-18  Robert Lemke  <rl@robertlemke.de>
 
-	* Display and processing (copy, paste, insert etc.) for multi lang support now seems to be stable in the page module.
+ * Display and processing (copy, paste, insert etc.) for multi lang support now seems to be stable in the page module.
 
 2004-07-18  Robert Lemke  <rl@robertlemke.de>
 
-	* DS and TO records may now be sorted manually (in the backend). Make sure you update your .sql table definitions (in the extension manager).
+ * DS and TO records may now be sorted manually (in the backend). Make sure you update your .sql table definitions (in the extension manager).
 
 2004-07-15  Robert Lemke  <rl@robertlemke.de>
 
-	* Committed changes and development from the Paris sessions.
-	* @Kasper: There only seemed to be one conflict in mod1/index.php which I could solve easily
-	* @All the others: Be careful with this version, I didn't check if everything works. Wait until the next commit
+ * Committed changes and development from the Paris sessions.
+ * @Kasper: There only seemed to be one conflict in mod1/index.php which I could solve easily
+ * @All the others: Be careful with this version, I didn't check if everything works. Wait until the next commit
 
 2004-06-17  Robert Lemke  <rl@robertlemke.de>
 
-	* Bugfix: headerfields, titlebarcolor etc. didn't work with inherited datastructures. Now they do.
-	* New hook in pi1: renderElement_preProcessRow
-	* Prepared some things about multi language support. Don't use it yet!
-	* Guess what: Updated manual
+ * Bugfix: headerfields, titlebarcolor etc. didn't work with inherited datastructures. Now they do.
+ * New hook in pi1: renderElement_preProcessRow
+ * Prepared some things about multi language support. Don't use it yet!
+ * Guess what: Updated manual
 
 2004-06-07  Robert Lemke  <rl@robertlemke.de>
 

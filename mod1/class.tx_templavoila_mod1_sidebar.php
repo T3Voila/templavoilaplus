@@ -33,22 +33,23 @@
  *
  *
  *
- *   66: class tx_templavoila_mod1_sidebar
- *   85:     function init(&$pObj)
- *  128:     function addItem($itemKey, &$object, $method, $label, $priority=50)
- *  144:     function removeItem($itemKey)
- *  154:     function render()
+ *   67: class tx_templavoila_mod1_sidebar
+ *   89:     function init(&$pObj)
+ *  141:     function addItem($itemKey, &$object, $method, $label, $priority=50)
+ *  157:     function removeItem($itemKey)
+ *  167:     function render()
  *
  *              SECTION: Render functions for the sidebar items
- *  208:     function renderItem_localization (&$pObj)
- *  278:     function renderItem_headerFields (&$pObj)
- *  333:     function renderItem_nonUsedElements (&$pObj)
+ *  258:     function renderItem_localization (&$pObj)
+ *  339:     function renderItem_headerFields (&$pObj)
+ *  397:     function renderItem_nonUsedElements (&$pObj)
+ *  444:     function renderItem_versioning(&$pObj)
  *
  *              SECTION: Helper functions
- *  388:     function getJScode()
- *  426:     function sortItemsCompare($a, $b)
+ *  530:     function getJScode()
+ *  572:     function sortItemsCompare($a, $b)
  *
- * TOTAL FUNCTIONS: 9
+ * TOTAL FUNCTIONS: 10
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -70,9 +71,12 @@ class tx_templavoila_mod1_sidebar {
 	var $doc;										// A reference to the doc object of the parent object.
 	var $extKey;									// A reference to extension key of the parent object.
 
+		// Public variables
+	var $position = 'toptabs';						// The visual position of the navigation bar. Possible values: toptabs, toprows, left
+
 		// Local variables
-	var $sideBarWidth = 180;						// More or less a constant: The side bar's total width
-	var $sideBarItems = array ();					// Contains menuitems for the dynamic sidebar
+	var $sideBarWidth = 180;						// More or less a constant: The side bar's total width in position "left"
+	var $sideBarItems = array ();					// Contains menuitems for the dynamic sidebar (associative array indexed by item key)
 
 	/**
 	 * Initializes the side bar object. The calling class must make sure that the right locallang files are already loaded.
@@ -95,7 +99,7 @@ class tx_templavoila_mod1_sidebar {
 			$this->sideBarItems['versioning'] = array (
 				'object' => &$this,
 				'method' => 'renderItem_versioning',
-				'label' => 'Versioning',
+				'label' => $LANG->getLL('versioning'),
 				'priority' => 60,
 			);
 		}
@@ -103,21 +107,21 @@ class tx_templavoila_mod1_sidebar {
 		$this->sideBarItems['localization'] = array (
 			'object' => &$this,
 			'method' => 'renderItem_localization',
-			'label' => 'Localization',
+			'label' => $LANG->getLL('localization'),
 			'priority' => 60,
 		);
 
 		$this->sideBarItems['headerFields'] = array (
 			'object' => &$this,
 			'method' => 'renderItem_headerFields',
-			'label' => 'Page related information',
+			'label' => $LANG->getLL('pagerelatedinformation'),
 			'priority' => 50,
 		);
 
 		$this->sideBarItems['nonUsedElements'] = array (
 			'object' => &$this,
 			'method' => 'renderItem_nonUsedElements',
-			'label' => 'Non used elements',
+			'label' => $LANG->getLL('nonusedelements'),
 			'priority' => 30,
 		);
 	}
@@ -165,32 +169,69 @@ class tx_templavoila_mod1_sidebar {
 			uasort ($this->sideBarItems, array ($this, 'sortItemsCompare'));
 
 				// Render content of each sidebar item:
-			foreach ($this->sideBarItems as $index => $sideBarItem) {
-				$this->sideBarItems[$index]['content'] = $sideBarItem['object']->{$sideBarItem['method']}($this->pObj);
+			$index = 0;
+			$numSortedSideBarItems = array();
+			foreach ($this->sideBarItems as $itemKey => $sideBarItem) {
+				$numSortedSideBarItems[$index] = $this->sideBarItems[$itemKey];
+				$numSortedSideBarItems[$index]['content'] = $sideBarItem['object']->{$sideBarItem['method']}($this->pObj);
+				$index++;
 			}
 
 				// Create the whole sidebar:
-			$sideBar = '
-				<!-- TemplaVoila Sidebar begin -->
+			switch ($this->position) {
+				case 'left':
+					$sideBar = '
+						<!-- TemplaVoila Sidebar (left) begin -->
 
-				<div id="tx_templavoila_mod1_sidebar-bar" style="height: 100%; width: '.$this->sideBarWidth.'px; margin: 0 4px 0 0; display:none;" class="bgColor-10">
-					<div style="text-align:right;"><a href="#" onClick="tx_templavoila_mod1_sidebar_toggle();"><img '.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/minusbullet_list.gif','').' title="" alt="" /></a></div>
-					'.$this->doc->getDynTabMenu($this->sideBarItems,'TEMPLAVOILA:pagemodule:sidebar', true, true).'
-				</div>
-				<div id="tx_templavoila_mod1_sidebar-showbutton" style="height: 100%; width: 18px; margin: 0 4px 0 0; display:block; " class="bgColor-10">
-					<a href="#" onClick="tx_templavoila_mod1_sidebar_toggle();"><img '.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/plusbullet_list.gif','').' title="" alt="" /></a>
-				</div>
+						<div id="tx_templavoila_mod1_sidebar-bar" style="height: 100%; width: '.$this->sideBarWidth.'px; margin: 0 4px 0 0; display:none;" class="bgColor-10">
+							<div style="text-align:right;"><a href="#" onClick="tx_templavoila_mod1_sidebar_toggle();"><img '.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/minusbullet_list.gif','').' title="" alt="" /></a></div>
+							'.$this->doc->getDynTabMenu($numSortedSideBarItems, 'TEMPLAVOILA:pagemodule:sidebar', 1, true).'
+						</div>
+						<div id="tx_templavoila_mod1_sidebar-showbutton" style="height: 100%; width: 18px; margin: 0 4px 0 0; display:block; " class="bgColor-10">
+							<a href="#" onClick="tx_templavoila_mod1_sidebar_toggle();"><img '.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/plusbullet_list.gif','').' title="" alt="" /></a>
+						</div>
 
-				<script type="text/javascript">
-				/*<![CDATA[*/
+						<script type="text/javascript">
+						/*<![CDATA[*/
 
-					tx_templavoila_mod1_sidebar_activate();
+							tx_templavoila_mod1_sidebar_activate();
 
-				/*]]>*/
-				</script>
+						/*]]>*/
+						</script>
 
-				<!-- TemplaVoila Sidebar end -->
-			';
+						<!-- TemplaVoila Sidebar end -->
+					';
+				break;
+
+				case 'toprows':
+					$sideBar = '
+						<!-- TemplaVoila Sidebar (top) begin -->
+
+						<div id="tx_templavoila_mod1_sidebar-bar" style="width:100%; margin-bottom: 10px;" class="bgColor-10">
+							'.$this->doc->getDynTabMenu($numSortedSideBarItems, 'TEMPLAVOILA:pagemodule:sidebar', 1, true).'
+						</div>
+
+						<!-- TemplaVoila Sidebar end -->
+					';
+				break;
+
+				case 'toptabs':
+					$sideBar = '
+						<!-- TemplaVoila Sidebar (top) begin -->
+
+						<div id="tx_templavoila_mod1_sidebar-bar" style="width:100%; border-bottom: 1px solid black; margin-bottom: 10px;" class="bgColor-10">
+							'.$this->doc->getDynTabMenu($numSortedSideBarItems, 'TEMPLAVOILA:pagemodule:sidebar', 1, false).'
+						</div>
+
+						<!-- TemplaVoila Sidebar end -->
+					';
+				break;
+
+				default:
+					$sidebar = '
+						<!-- TemplaVoila Sidebar ERROR: Invalid position -->
+					';
+			}
 			return $sideBar;
 		}
 		return FALSE;
@@ -223,6 +264,7 @@ class tx_templavoila_mod1_sidebar {
 		$newLanguagesArr = $pObj->getAvailableLanguages(0, true, false);								// Get possible languages for new translation of this page
 		$langChildren = $pObj->currentDataStructureArr['pages']['meta']['langChildren'] ? 1 : 0;		// Evaluate which translation mechanism to choose
 		$langDisable = $pObj->currentDataStructureArr['pages']['meta']['langDisable'] ? 1 : 0;			// Evaluate if language was disabled at all
+		$availableTranslationsFlags = $LANG->getLL ('availabletranslations').':';						// Flags for available translations
 
 			// Create output for the language selector if translations are available:
 		if (!$langDisable && (count($availableLanguagesArr) > 1)) {
@@ -234,15 +276,25 @@ class tx_templavoila_mod1_sidebar {
 
 				$style = isset ($language['flagIcon']) ? 'background-image: url('.$language['flagIcon'].'); background-repeat: no-repeat; padding-left: 22px;' : '';
 				$optionsArr [] = '<option style="'.$style.'" value="'.$language['uid'].'"'.($pObj->MOD_SETTINGS['language'] == $language['uid'] ? ' selected="selected"' : '').'>'.htmlspecialchars($language['title']).'</option>';
+				$availableTranslationsFlags .= '<img src="'.$language['flagIcon'].'" title="'.htmlspecialchars($language['title']).'" alt="" /> ';
 			}
 
 			$link = '\'index.php?'.$pObj->linkParams().'&SET[language]=\'+this.options[this.selectedIndex].value';
+
+				// The line of flags for translated languages doesn't fit into the leftbar:
+			if ($this->position == 'left') {
+				$availableTranslationsFlags = '';
+			}
+
 			$languageSelectorOutput = '
 				<tr class="bgColor4-20">
 					<td>'.$LANG->getLL ('selectlanguageversion').':</td>
 				</tr>
 				<tr class="bgColor4">
-					<td><select style="width:'.($this->sideBarWidth-30).'px;" onChange="document.location='.$link.'">'.implode ($optionsArr).'</select></td>
+					<td>
+						<select style="width:'.($this->sideBarWidth-30).'px;" onChange="document.location='.$link.'">'.implode ($optionsArr).'</select>
+						'.$availableTranslationsFlags.'
+					</td>
 				</tr>
 			';
 		}
@@ -314,13 +366,16 @@ class tx_templavoila_mod1_sidebar {
 							$linkedLabel = '<a style="text-decoration: none;" href="#" onclick="'.htmlspecialchars($onClick).'">'.htmlspecialchars($headerFieldArr['label']).'</a>';
 							$headerFieldRows[] = '
 								<tr>
-									<td class="bgColor4-20" style="vertical-align:top">'.$linkedLabel.'</td><td class="bgColor4" style="vertical-align:top"><em>'.$linkedValue.'</em></td>
+									<td class="bgColor4-20" style="width: 10%; vertical-align:top">'.$linkedLabel.'</td><td class="bgColor4" style="vertical-align:top"><em>'.$linkedValue.'</em></td>
 								</tr>
 							';
 						}
 					}
 					$output = '
 						<table border="0" cellpadding="0" cellspacing="1" width="100%" class="lrPadding">
+							<tr>
+								<td colspan="2" class="bgColor4-20">'.$LANG->getLL('pagerelatedinformation').':</td>
+							</tr>
 							'.implode('',$headerFieldRows).'
 						</table>
 					';
@@ -384,7 +439,7 @@ class tx_templavoila_mod1_sidebar {
 	 *
 	 * @param	object		&$pObj: Reference to the page object (the templavoila page module)
 	 * @return	string		HTML output
-	 * @access	public
+	 * @access public
 	 */
 	function renderItem_versioning(&$pObj) {
 
@@ -425,20 +480,35 @@ class tx_templavoila_mod1_sidebar {
 				}
 
 					// Write out HTML code:
-				return '
+				switch ($this->position) {
+					case 'left':
+						return '
+							<table border="0" cellpadding="0" cellspacing="1" width="100%" class="lrPadding">
+								<tr class="bgColor4-20">
+									<td colspan="2">'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:ver.selVer',1).'</td>
+								</tr>
+								<tr class="bgColor4">
+									<td><select onchange="'.htmlspecialchars($onChange).'">'.implode('',$opt).'</select></td>
+								</tr>
+								<tr class="bgColor4">
+									<td>'.$controls.'</td>
+								</tr>
+							</table>
+						';
+					break;
 
-					<table border="0" cellpadding="0" cellspacing="1" width="100%" class="lrPadding">
-						<tr class="bgColor4-20">
-							<td colspan="2">'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:ver.selVer',1).'</td>
-						</tr>
-						<tr class="bgColor4">
-							<td><select onchange="'.htmlspecialchars($onChange).'">'.implode('',$opt).'</select></td>
-						</tr>
-						<tr class="bgColor4">
-							<td>'.$controls.'</td>
-						</tr>
-					</table>
-				';
+					default:
+						return '
+							<table border="0" cellpadding="0" cellspacing="1" width="100%" class="lrPadding">
+								<tr class="bgColor4-20">
+									<td colspan="2">'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:ver.selVer',1).'</td>
+								</tr>
+								<tr class="bgColor4">
+									<td><select onchange="'.htmlspecialchars($onChange).'">'.implode('',$opt).'</select> '.$controls.'</td>
+								</tr>
+							</table>
+						';
+				}
 			}
 		}
 	}
@@ -458,33 +528,37 @@ class tx_templavoila_mod1_sidebar {
 	 * @return	string		JavaScript section for the HTML header.
 	 */
 	function getJScode()	{
-		return '
-			<script type="text/javascript">
-			/*<![CDATA[*/
+		if ($this->position == 'left') {
+			return '
+				<script type="text/javascript">
+				/*<![CDATA[*/
 
-				function tx_templavoila_mod1_sidebar_activate ()	{	//
-					if (top.tx_templavoila_mod1_sidebar_visible) {
-						document.getElementById("tx_templavoila_mod1_sidebar-bar").style.display="none";
-						document.getElementById("tx_templavoila_mod1_sidebar-showbutton").style.display="block";
-					} else {
-						document.getElementById("tx_templavoila_mod1_sidebar-bar").style.display="block";
-						document.getElementById("tx_templavoila_mod1_sidebar-showbutton").style.display="none";
+					function tx_templavoila_mod1_sidebar_activate ()	{	//
+						if (top.tx_templavoila_mod1_sidebar_visible) {
+							document.getElementById("tx_templavoila_mod1_sidebar-bar").style.display="none";
+							document.getElementById("tx_templavoila_mod1_sidebar-showbutton").style.display="block";
+						} else {
+							document.getElementById("tx_templavoila_mod1_sidebar-bar").style.display="block";
+							document.getElementById("tx_templavoila_mod1_sidebar-showbutton").style.display="none";
+						}
 					}
-				}
 
-				function tx_templavoila_mod1_sidebar_toggle ()	{	//
-					if (top.tx_templavoila_mod1_sidebar_visible) {
-						top.tx_templavoila_mod1_sidebar_visible = false;
-						this.tx_templavoila_mod1_sidebar_activate();
-					} else {
-						top.tx_templavoila_mod1_sidebar_visible = true;
-						this.tx_templavoila_mod1_sidebar_activate();
+					function tx_templavoila_mod1_sidebar_toggle ()	{	//
+						if (top.tx_templavoila_mod1_sidebar_visible) {
+							top.tx_templavoila_mod1_sidebar_visible = false;
+							this.tx_templavoila_mod1_sidebar_activate();
+						} else {
+							top.tx_templavoila_mod1_sidebar_visible = true;
+							this.tx_templavoila_mod1_sidebar_activate();
+						}
 					}
-				}
 
-			/*]]>*/
-			</script>
-		';
+				/*]]>*/
+				</script>
+			';
+		} else {
+			return '';
+		}
 	}
 
 	/**
