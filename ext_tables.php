@@ -10,8 +10,9 @@ if (TYPO3_MODE=='BE')	{
 	);
 	include_once(t3lib_extMgm::extPath('templavoila').'class.tx_templavoila_handlestaticdatastructures.php');
 
-		// Adding backend module:
-  t3lib_extMgm::addModule("web","txtemplavoilaM1","top",t3lib_extMgm::extPath($_EXTKEY)."mod1/");
+		// Adding backend modules:
+  t3lib_extMgm::addModule('web','txtemplavoilaM1','top',t3lib_extMgm::extPath($_EXTKEY).'mod1/');
+  t3lib_extMgm::addModule('web','txtemplavoilaM2','',t3lib_extMgm::extPath($_EXTKEY).'mod2/');
 
   	// Remove default Page module (layout) manually
   $tmp = $GLOBALS['TBE_MODULES']['web'];

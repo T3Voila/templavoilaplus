@@ -138,7 +138,8 @@ class tx_templavoila_pi1 extends tslib_pibase {
 	 */
 	function renderElement($row,$table)	{
 		if ($GLOBALS['TT']->LR) $GLOBALS['TT']->push('Get DS, TO and data');
-			// Get data structure:
+
+				// Get data structure:
 			$srcPointer = $row['tx_templavoila_ds'];
 			if (t3lib_div::testInt($srcPointer))	{	// If integer, then its a record we will look up:
 				$DSrec = $GLOBALS['TSFE']->sys_page->checkRecord('tx_templavoila_datastructure',$srcPointer);
@@ -161,8 +162,6 @@ class tx_templavoila_pi1 extends tslib_pibase {
 			$lKey = ($GLOBALS['TSFE']->sys_language_isocode && !$langDisabled && !$langChildren) ? 'l'.$GLOBALS['TSFE']->sys_language_isocode : 'lDEF';
 			$dataValues = $data['data']['sDEF'][$lKey];
 
-
-
 				// Init mark up object.
 			$this->markupObj = t3lib_div::makeInstance('tx_templavoila_htmlmarkup');
 			$this->markupObj->htmlParse = t3lib_div::makeInstance('t3lib_parsehtml');
@@ -172,7 +171,6 @@ class tx_templavoila_pi1 extends tslib_pibase {
 			$TO = unserialize($TOrec['templatemapping']);
 			$TOproc = t3lib_div::xml2array($TOrec['localprocessing']);
 			if (!is_array($TOproc))	$TOproc=array();
-			
 		if ($GLOBALS['TT']->LR) $GLOBALS['TT']->pull();
 
 
@@ -182,8 +180,8 @@ class tx_templavoila_pi1 extends tslib_pibase {
 		if ($GLOBALS['TT']->LR) $GLOBALS['TT']->pull();
 
 		if ($GLOBALS['TT']->LR) $GLOBALS['TT']->push('Merge data and TO');
-
 			$content = $this->markupObj->mergeFormDataIntoTemplateStructure($dataValues,$TO['MappingData_cached'],'',$vKey);
+			$this->setHeaderBodyParts($TO['MappingInfo_head'],$TO['MappingData_head_cached'],$TO['BodyTag_cached']);
 		if ($GLOBALS['TT']->LR) $GLOBALS['TT']->pull();
 		
 		$content = $this->pi_getEditIcon($content,'tx_templavoila_flex','Edit element',$row,$table);
@@ -325,6 +323,27 @@ class tx_templavoila_pi1 extends tslib_pibase {
 					}					
 				}
 			}
+		}
+	}
+	
+	/**
+	 *
+	 */
+	function setHeaderBodyParts($MappingInfo_head,$MappingData_head_cached,$BodyTag_cached)	{
+	
+			// Traversing mapped header parts:
+		if (is_array($MappingInfo_head['headElementPaths']))	{
+			foreach($MappingInfo_head['headElementPaths'] as $kk => $vv)	{
+				if (isset($MappingData_head_cached['cArray']['el_'.$kk]))	{
+					$uKey = md5(trim($MappingData_head_cached['cArray']['el_'.$kk]));
+					$GLOBALS['TSFE']->additionalHeaderData['TV_'.$uKey] = chr(10).trim($MappingData_head_cached['cArray']['el_'.$kk]);
+				}
+			}
+		}
+		
+			// Body tag:
+		if ($MappingInfo_head['addBodyTag'] && $BodyTag_cached)	{
+			$GLOBALS['TSFE']->defaultBodyTag = $BodyTag_cached;
 		}
 	}
 }

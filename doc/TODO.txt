@@ -1,26 +1,19 @@
 ******************
 TODO
 ******************
-* PID of sysfolder/page used for s...
 * header + bodytag data
-
-* mapping process... / interface.
-* exploded view is default...
 * sample data...
 
-*	- BUG: If you map ONLY the root element then nothing gets saved in the template!
-*	- Support selective inclusion of header elements (by checkboxes?) / bodytag
+* PID of sysfolder/page used for s...
+* mapping process... / interface.
 
+*	- BUG: If you map ONLY the root element then nothing gets saved in the template!
 *		- ?: How can extensions supply a default template Array when no Template Object exists yet, mapping the data? What about the data structure containing some sample markup as well which means we can always assemble a simple display from that. Or even a nice default display which is of course stylable by CSS. AND this default
 - Frontend: cObj API for flexforms (move from pibase to tslib_content)
 	- Finish API for getting values from FlexForms XML
 	- Finish API so TypoScript can access flexforms content
 		- (When done; Update "newloginbox" to use this API)
 - mininews: Implement with TemplaVoila
-
-- Implement TT-tracking of the rendering of elements.
-
-
 
 ***********************************************
 

@@ -108,7 +108,8 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 	var $maxRecursion = 99;	
 
 	var $onlyElements='';	// Commalist of lowercase tag names which are the only ones which will be added as "GNYF" tag images. If empty, ALL HTML tags will have these elements.
-
+	var $checkboxPathsSet=array();		// Array with header section paths to set checkbox for.
+	
 		// INTERNAL STATIC:
 		
 	/**
@@ -154,12 +155,8 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 		'u' => array(),
 		'ul' => array('anchor_outside'=>1),
 		'iframe' => array('anchor_outside'=>1),
-#		'head' => array(),
-#		'script' => array(),
-#		'style' => array(),
 #		'tbody' => array(),
 #		'thead' => array(),
-#		'title' => array(),
 
 			// Single elements:
 		'br' => array('single'=>1),
@@ -200,7 +197,7 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 	 * @param	string		Backend module BACK_PATH - used to set the right position for the tag-images (gnyfs)
 	 * @param	string		The relative path from module position back to the HTML-file position; used to correct paths of HTML since the HTML is modified so it can display correctly from the path of the module using this class.
 	 * @param	string		Comma list of tags which should be exploded. Notice that tags in this list which does not appear in $this->tags will be ignored.
-	 * @param	string		The mode of display; [blank], explode, borders. Set in $this->mode
+	 * @param	string		The mode of display; [blank], explode, borders. Set in $this->mode. "checkbox" is also an option, used for header data.
 	 * @return	string		Modified HTML
 	 */
 	function markupHTMLcontent($content,$backPath,$relPathFix,$showTags,$mode='')	{
@@ -209,7 +206,7 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 		
 		$this->init();
 		$this->backPath = $backPath;
-		$this->gnyfPath = $backPath.t3lib_extMgm::extRelPath('templavoila');
+		$this->gnyfPath = t3lib_div::resolveBackPath($backPath.t3lib_extMgm::extRelPath('templavoila'));
 		list($tagList_elements, $tagList_single) = $this->splitTagTypes($showTags);
 
 #	debug(t3lib_parsehtml::checkTagTypeCounts($content,$tagList_elements, $tagList_single));
@@ -224,7 +221,7 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 
 			// Wrap in <pre>-tags if source
 		if ($this->mode=='source')	{
-			$content = '<pre style="font-size:11px;">'.$content.'</pre>';
+			$content = '<pre style="font-size:11px; font-family: monospace;">'.$content.'</pre>';
 		}
 		
 		return $content;
@@ -732,7 +729,7 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 
 			// Setting gnyf style
 		$style = '';
-		$style.=($this->mode!='explode'?'position:absolute;':'');
+		$style.=(!t3lib_div::inList('explode,checkbox',$this->mode)?'position:absolute;':'');
 #		$style.=($this->mode=='transparent'?'filter:alpha(Opacity=\'75\');':'');
 #		$style.='border: 1px solid black;';
 		$this->gnyfStyle = $style?' style="'.htmlspecialchars($style).'"':'';
@@ -850,6 +847,8 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 							}
 						} elseif ($this->mode=='source' && $mode=='markup')	{
 							$vv = $this->sourceDisplay($vv,$recursion,'',1);
+						} elseif ($this->mode=='checkbox')	{
+							$vv = $this->checkboxDisplay($vv,$recursion,'','',1);
 						} elseif ($mode=='search' && $this->rangeEndSearch[$recursion])	{
 							$this->searchPaths[$this->rangeStartPath[$recursion]]['content'].=$vv;
 							$vv = '';
@@ -921,6 +920,8 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 				// If source mode or normal
 			if ($this->mode=='source')	{
 				$v = $this->sourceDisplay($firstTag,$recursion,$gnyf).$v.$this->sourceDisplay($endTag,$recursion);
+			} elseif ($this->mode=='checkbox')	{
+				$v = $this->checkboxDisplay($firstTag.$v.$endTag,$recursion,$subPath,$gnyf);
 			} else {
 					// Find wrapping value for tag.
 				if (is_array($tagConf['wrap']) && $gnyf)	{
@@ -937,6 +938,8 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 				// Adding gnyf to the tag:
 			if ($this->mode=='source')	{
 				$v = $this->sourceDisplay($v,$recursion,$gnyf);
+			} elseif ($this->mode=='checkbox')	{
+				$v = $this->checkboxDisplay($v,$recursion,$subPath,$gnyf);
 			} else {
 				$v = $gnyf.$v;
 			}
@@ -1050,6 +1053,34 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 				htmlspecialchars(t3lib_div::fixed_lgd(ereg_replace('[[:space:]]+',' ',$str),$this->maxLineLengthInSourceMode)).
 				($valueStr ? '</em></font>' : '').
 				chr(10);
+		}
+	}
+
+	/**
+	 * Will format content for display in 'checkbox' mode.
+	 * 
+	 * @param	string		Input string to format.
+	 * @param	integer		The recursion integer - used to indent the code.
+	 * @param	string		HTML path 
+	 * @param	string		The gnyf-image to display.
+	 * @param	boolean		If set, then the line will be formatted in color as a "value" (means outside of the tag which might otherwise be what is shown)
+	 * @return	string		Formatted input.
+	 */
+	function checkboxDisplay($str,$recursion,$path,$gnyf='',$valueStr=0)	{
+		if ($valueStr)	{
+			return trim($str) ? '
+				<tr class="bgColor4">
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+					<td>'.$this->passthroughHTMLcontent(trim($str),'','source').'</td>
+				</tr>' : '';
+		} else {
+			return '
+				<tr class="bgColor4">
+					<td><input type="checkbox" name="checkboxElement[]" value="'.$path.'"'.(in_array($path,$this->checkboxPathsSet)?' checked="checked"':'').' /></td>
+					<td>'.$gnyf.'</td>
+					<td><pre>'.trim(htmlspecialchars($str)).'</pre></td>
+				</tr>';
 		}
 	}
 

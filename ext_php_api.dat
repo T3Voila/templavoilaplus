@@ -1,4 +1,4 @@
-a:2:{s:4:"meta";a:3:{s:5:"title";s:15:"TemplaVoila API";s:5:"descr";s:0:"";s:7:"options";a:2:{s:10:"usageCount";N;s:19:"includeCodeAbstract";s:1:"1";}}s:5:"files";a:8:{s:14:"MD5_5c642e71a0";a:4:{s:8:"filename";s:28:"class.tx_templavoila_cm1.php";s:8:"filesize";i:3969;s:6:"header";a:5:{s:4:"text";s:79:"
+a:2:{s:4:"meta";a:3:{s:5:"title";s:15:"TemplaVoila API";s:5:"descr";s:0:"";s:7:"options";a:2:{s:10:"usageCount";N;s:19:"includeCodeAbstract";s:1:"1";}}s:5:"files";a:8:{s:14:"MD5_5c642e71a0";a:4:{s:8:"filename";s:28:"class.tx_templavoila_cm1.php";s:8:"filesize";i:3988;s:6:"header";a:5:{s:4:"text";s:79:"
 
 Class which will add menu items to click menus for the extension TemplaVoila
 ";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}s:5:"other";a:3:{i:0;s:42:"@author	Kasper Skaarhoj <kasper@typo3.com>";i:1;s:14:"@package TYPO3";i:2;s:26:"@subpackage tx_templavoila";}s:11:"other_index";a:3:{s:7:"@author";a:1:{i:0;s:34:"Kasper Skaarhoj <kasper@typo3.com>";}s:8:"@package";a:1:{i:0;s:6:"TYPO3 ";}s:11:"@subpackage";a:1:{i:0;s:15:"tx_templavoila ";}}}s:3:"DAT";a:3:{i:1;a:8:{s:6:"header";s:26:"class tx_templavoila_cm1 {";s:5:"class";i:1;s:11:"parentClass";s:18:"tx_templavoila_cm1";s:4:"cDat";a:5:{s:4:"text";s:79:"
@@ -67,13 +67,13 @@ Adds Template Object records to selector box for Content Elements of the "Plugin
 de_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/class.tx_templavoila_handlestaticdatastructures.php']);
 }
 ?>
-";i:1;i:1;}s:12:"content_size";i:1741;s:13:"content_lines";i:29;s:6:"atLine";i:119;}}}s:14:"MD5_e1f7a76790";a:4:{s:8:"filename";s:35:"class.tx_templavoila_htmlmarkup.php";s:8:"filesize";i:41876;s:6:"header";a:5:{s:4:"text";s:155:"
+";i:1;i:1;}s:12:"content_size";i:1741;s:13:"content_lines";i:29;s:6:"atLine";i:119;}}}s:14:"MD5_e1f7a76790";a:4:{s:8:"filename";s:35:"class.tx_templavoila_htmlmarkup.php";s:8:"filesize";i:43355;s:6:"header";a:5:{s:4:"text";s:155:"
 
 HTML markup/search class; can mark up HTML with small images for each element AND as well help you extract parts of the HTML based on a socalled 'PATH'.
-";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}s:5:"other";a:3:{i:0;s:42:"@author	Kasper Skaarhoj <kasper@typo3.com>";i:1;s:14:"@package TYPO3";i:2;s:26:"@subpackage tx_templavoila";}s:11:"other_index";a:3:{s:7:"@author";a:1:{i:0;s:34:"Kasper Skaarhoj <kasper@typo3.com>";}s:8:"@package";a:1:{i:0;s:6:"TYPO3 ";}s:11:"@subpackage";a:1:{i:0;s:15:"tx_templavoila ";}}}s:3:"DAT";a:24:{i:1;a:8:{s:6:"header";s:33:"class tx_templavoila_htmlmarkup {";s:5:"class";i:1;s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:4:"cDat";a:5:{s:4:"text";s:155:"
+";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}s:5:"other";a:3:{i:0;s:42:"@author	Kasper Skaarhoj <kasper@typo3.com>";i:1;s:14:"@package TYPO3";i:2;s:26:"@subpackage tx_templavoila";}s:11:"other_index";a:3:{s:7:"@author";a:1:{i:0;s:34:"Kasper Skaarhoj <kasper@typo3.com>";}s:8:"@package";a:1:{i:0;s:6:"TYPO3 ";}s:11:"@subpackage";a:1:{i:0;s:15:"tx_templavoila ";}}}s:3:"DAT";a:25:{i:1;a:8:{s:6:"header";s:33:"class tx_templavoila_htmlmarkup {";s:5:"class";i:1;s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:4:"cDat";a:5:{s:4:"text";s:155:"
 
 HTML markup/search class; can mark up HTML with small images for each element AND as well help you extract parts of the HTML based on a socalled 'PATH'.
-";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}s:5:"other";a:3:{i:0;s:42:"@author	Kasper Skaarhoj <kasper@typo3.com>";i:1;s:14:"@package TYPO3";i:2;s:26:"@subpackage tx_templavoila";}s:11:"other_index";a:3:{s:7:"@author";a:1:{i:0;s:34:"Kasper Skaarhoj <kasper@typo3.com>";}s:8:"@package";a:1:{i:0;s:6:"TYPO3 ";}s:11:"@subpackage";a:1:{i:0;s:15:"tx_templavoila ";}}}s:7:"content";a:2:{i:0;s:5257:"
+";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}s:5:"other";a:3:{i:0;s:42:"@author	Kasper Skaarhoj <kasper@typo3.com>";i:1;s:14:"@package TYPO3";i:2;s:26:"@subpackage tx_templavoila";}s:11:"other_index";a:3:{s:7:"@author";a:1:{i:0;s:34:"Kasper Skaarhoj <kasper@typo3.com>";}s:8:"@package";a:1:{i:0;s:6:"TYPO3 ";}s:11:"@subpackage";a:1:{i:0;s:15:"tx_templavoila ";}}}s:7:"content";a:2:{i:0;s:5255:"
  		// CONFIG:
 	/**
 	 * Determines which mode is used for markup. Options are:
@@ -100,7 +100,8 @@ HTML markup/search class; can mark up HTML with small images for each element AN
 	var $maxRecursion = 99;	
 
 	var $onlyElements='';	// Commalist of lowercase tag names which are the only ones which will be added as "GNYF" tag images. If empty, ALL HTML tags will have these elements.
-
+	var $checkboxPathsSet=array();		// Array with header section paths to set checkbox for.
+	
 		// INTERNAL STATIC:
 		
 	/**
@@ -146,12 +147,8 @@ HTML markup/search class; can mark up HTML with small images for each element AN
 		'u' => array(),
 		'ul' => array('anchor_outside'=>1),
 		'iframe' => array('anchor_outside'=>1),
-#		'head' => array(),
-#		'script' => array(),
-#		'style' => array(),
 #		'tbody' => array(),
 #		'thead' => array(),
-#		'title' => array(),
 
 			// Single elements:
 		'br' => array('single'=>1),
@@ -185,30 +182,29 @@ HTML markup/search class; can mark up HTML with small images for each element AN
 
 
 
-	";i:1;i:-1;}s:12:"content_size";i:5257;s:13:"content_lines";i:112;s:6:"atLine";i:81;}i:3;a:7:{s:6:"header";s:79:"function markupHTMLcontent($content,$backPath,$relPathFix,$showTags,$mode='')	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:4:"cDat";a:3:{s:4:"text";s:84:"
+	";i:1;i:-1;}s:12:"content_size";i:5255;s:13:"content_lines";i:109;s:6:"atLine";i:81;}i:3;a:7:{s:6:"header";s:79:"function markupHTMLcontent($content,$backPath,$relPathFix,$showTags,$mode='')	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:4:"cDat";a:3:{s:4:"text";s:84:"
 
 Marks up input HTML content string with tag-images based on the list in $showTags
-";s:5:"param";a:5:{i:0;a:2:{i:0;s:6:"string";i:1;s:12:"HTML content";}i:1;a:2:{i:0;s:6:"string";i:1;s:84:"Backend module BACK_PATH - used to set the right position for the tag-images (gnyfs)";}i:2;a:2:{i:0;s:6:"string";i:1;s:201:"The relative path from module position back to the HTML-file position; used to correct paths of HTML since the HTML is modified so it can display correctly from the path of the module using this class.";}i:3;a:2:{i:0;s:6:"string";i:1;s:128:"Comma list of tags which should be exploded. Notice that tags in this list which does not appear in $this->tags will be ignored.";}i:4;a:2:{i:0;s:6:"string";i:1;s:66:"The mode of display; [blank], explode, borders. Set in $this->mode";}}s:6:"return";a:2:{i:0;s:6:"string";i:1;s:13:"Modified HTML";}}s:7:"content";a:2:{i:0;s:507:"			// Initialize:
+";s:5:"param";a:5:{i:0;a:2:{i:0;s:6:"string";i:1;s:12:"HTML content";}i:1;a:2:{i:0;s:6:"string";i:1;s:84:"Backend module BACK_PATH - used to set the right position for the tag-images (gnyfs)";}i:2;a:2:{i:0;s:6:"string";i:1;s:201:"The relative path from module position back to the HTML-file position; used to correct paths of HTML since the HTML is modified so it can display correctly from the path of the module using this class.";}i:3;a:2:{i:0;s:6:"string";i:1;s:128:"Comma list of tags which should be exploded. Notice that tags in this list which does not appear in $this->tags will be ignored.";}i:4;a:2:{i:0;s:6:"string";i:1;s:119:"The mode of display; [blank], explode, borders. Set in $this->mode. "checkbox" is also an option, used for header data.";}}s:6:"return";a:2:{i:0;s:6:"string";i:1;s:13:"Modified HTML";}}s:7:"content";a:2:{i:0;s:507:"			// Initialize:
 		$this->mode = $mode;
 		
 		$this->init();
 		$this->backPath = $backPath;
-		$this->gnyfPath = $backPath.t3lib_extMgm::extRelPath('templavoila');
+		$this->gnyfPath = t3lib_div::resolveBackPath($backPath.t3lib_extMgm::extRelPath('templavoila'));
 		list($tagList_elements, $tagList_single) = $this->splitTagTypes($showTags);
 
 #	debug(t3lib_parsehtml::checkTagTypeCounts($content,$tagList_elements, $tagList_single));
 		
-			// Fix links/paths
-		if ($this->mode
+			// Fix l
 [...]
-if ($this->mode=='source')	{
-			$content = '<pre style="font-size:11px;">'.$content.'</pre>';
+')	{
+			$content = '<pre style="font-size:11px; font-family: monospace;">'.$content.'</pre>';
 		}
 		
 		return $content;
 	}
 
-	";i:1;i:1;}s:12:"content_size";i:747;s:13:"content_lines";i:26;s:6:"atLine";i:204;}i:5;a:7:{s:6:"header";s:77:"function passthroughHTMLcontent($content,$relPathFix,$mode='',$altStyle='')	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:4:"cDat";a:5:{s:4:"text";s:161:"
+	";i:1;i:1;}s:12:"content_size";i:799;s:13:"content_lines";i:26;s:6:"atLine";i:201;}i:5;a:7:{s:6:"header";s:77:"function passthroughHTMLcontent($content,$relPathFix,$mode='',$altStyle='')	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:4:"cDat";a:5:{s:4:"text";s:161:"
 
 Passes through input HTML content string BUT substitutes relative paths. Used to format the parts of the file which are NOT marked up with markupHTMLcontent()
 ";s:5:"param";a:4:{i:0;a:2:{i:0;s:6:"string";i:1;s:12:"HTML content";}i:1;a:2:{i:0;s:6:"string";i:1;s:201:"The relative path from module position back to the HTML-file position; used to correct paths of HTML since the HTML is modified so it can display correctly from the path of the module using this class.";}i:2;a:2:{i:0;s:6:"string";i:1;s:66:"The mode of display; [blank], explode, borders. Set in $this->mode";}i:3;a:2:{i:0;s:6:"string";i:1;s:79:"Alternative CSS style value from the style attribute of the <pre></pre>-section";}}s:6:"return";a:2:{i:0;s:6:"string";i:1;s:13:"Modified HTML";}s:5:"other";a:1:{i:0;s:24:"@see markupHTMLcontent()";}s:11:"other_index";a:1:{s:4:"@see";a:1:{i:0;s:20:"markupHTMLcontent() ";}}}s:7:"content";a:2:{i:0;s:407:"			// Fix links/paths
@@ -224,7 +220,7 @@ Passes through input HTML content string BUT substitutes relative paths. Used to
 		return $content;
 	}
 
-	";i:1;i:0;}s:12:"content_size";i:407;s:13:"content_lines";i:13;s:6:"atLine";i:241;}i:7;a:7:{s:6:"header";s:54:"function getContentBasedOnPath($content,$pathStrArr)	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:4:"cDat";a:3:{s:4:"text";s:107:"
+	";i:1;i:0;}s:12:"content_size";i:407;s:13:"content_lines";i:13;s:6:"atLine";i:238;}i:7;a:7:{s:6:"header";s:54:"function getContentBasedOnPath($content,$pathStrArr)	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:4:"cDat";a:3:{s:4:"text";s:107:"
 
 Returns content based on input $pathStrArray.	(an array with values which are paths to get out of HTML.)
 ";s:5:"param";a:2:{i:0;a:2:{i:0;s:6:"string";i:1;s:28:"Input HTML to get path from.";}i:1;a:2:{i:0;s:6:"string";i:1;s:156:"The array where the values are paths, eg. array('td#content table[1] tr[1]','td#content table[1]','map#cdf / INNER') - takes only the first level in a path!";}}s:6:"return";a:2:{i:0;s:5:"array";i:1;s:32:"Content... (not welldefined yet)";}}s:7:"content";a:2:{i:0;s:507:"			// INIT:
@@ -245,7 +241,7 @@ hes' => array(md5($newBase), md5($content), md5($this->mergeSearchpartsIntoConte
 		);
 	}
 
-	";i:1;i:1;}s:12:"content_size";i:770;s:13:"content_lines";i:24;s:6:"atLine";i:262;}i:9;a:7:{s:6:"header";s:44:"function splitByPath($content,$pathString)	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:4:"cDat";a:3:{s:4:"text";s:25:"
+	";i:1;i:1;}s:12:"content_size";i:770;s:13:"content_lines";i:24;s:6:"atLine";i:259;}i:9;a:7:{s:6:"header";s:44:"function splitByPath($content,$pathString)	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:4:"cDat";a:3:{s:4:"text";s:25:"
 
 [Describe function...]
 ";s:5:"param";a:2:{i:0;a:2:{i:0;s:6:"[type]";i:1;s:13:"$content: ...";}i:1;a:2:{i:0;s:6:"[type]";i:1;s:16:"$pathString: ...";}}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}}s:7:"content";a:2:{i:0;s:507:"		$outArray=array('',$content,'');
@@ -265,7 +261,7 @@ Extract['content'];
 		return $outArray;
 	}
 
-	";i:1;i:1;}s:12:"content_size";i:660;s:13:"content_lines";i:19;s:6:"atLine";i:294;}i:11;a:7:{s:6:"header";s:70:"function splitContentToMappingInfo($fileContent,$currentMappingInfo)	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:4:"cDat";a:3:{s:4:"text";s:25:"
+	";i:1;i:1;}s:12:"content_size";i:660;s:13:"content_lines";i:19;s:6:"atLine";i:291;}i:11;a:7:{s:6:"header";s:70:"function splitContentToMappingInfo($fileContent,$currentMappingInfo)	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:4:"cDat";a:3:{s:4:"text";s:25:"
 
 [Describe function...]
 ";s:5:"param";a:2:{i:0;a:2:{i:0;s:6:"[type]";i:1;s:17:"$fileContent: ...";}i:1;a:2:{i:0;s:6:"[type]";i:1;s:24:"$currentMappingInfo: ...";}}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}}s:7:"content";a:2:{i:0;s:507:"			// Get paths into an array
@@ -287,7 +283,7 @@ Extract['content'];
 		return $newArray;
 	}
 
-	";i:1;i:1;}s:12:"content_size";i:1935;s:13:"content_lines";i:56;s:6:"atLine";i:321;}i:13;a:7:{s:6:"header";s:55:"function mappingInfoToSearchPath($currentMappingInfo)	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:4:"cDat";a:3:{s:4:"text";s:25:"
+	";i:1;i:1;}s:12:"content_size";i:1935;s:13:"content_lines";i:56;s:6:"atLine";i:318;}i:13;a:7:{s:6:"header";s:55:"function mappingInfoToSearchPath($currentMappingInfo)	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:4:"cDat";a:3:{s:4:"text";s:25:"
 
 [Describe function...]
 ";s:5:"param";a:1:{i:0;a:2:{i:0;s:6:"[type]";i:1;s:24:"$currentMappingInfo: ...";}}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}}s:7:"content";a:2:{i:0;s:507:"		$paths = array();
@@ -309,7 +305,7 @@ s[]=$k.' / RANGE:'.$v['RANGE'][0];
 		return $paths;
 	}
 
-	";i:1;i:1;}s:12:"content_size";i:905;s:13:"content_lines";i:32;s:6:"atLine";i:384;}i:15;a:7:{s:6:"header";s:71:"function mergeSearchpartsIntoContent($content,$searchParts,$token='')	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:4:"cDat";a:3:{s:4:"text";s:134:"
+	";i:1;i:1;}s:12:"content_size";i:905;s:13:"content_lines";i:32;s:6:"atLine";i:381;}i:15;a:7:{s:6:"header";s:71:"function mergeSearchpartsIntoContent($content,$searchParts,$token='')	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:4:"cDat";a:3:{s:4:"text";s:134:"
 
 Substitutes all placeholders in $content string which are found in the $searchParts array (see syntax from getContentBasedOnPath())
 ";s:5:"param";a:3:{i:0;a:2:{i:0;s:6:"string";i:1;s:27:"Content string with markers";}i:1;a:2:{i:0;s:5:"array";i:1;s:128:"Array with searchPaths which has been modified by $this->recursiveBlockSplitting in search mode to contain content and subparts.";}i:2;a:2:{i:0;s:6:"[type]";i:1;s:11:"$token: ...";}}s:6:"return";a:2:{i:0;s:6:"string";i:1;s:6:"HTML .";}}s:7:"content";a:2:{i:0;s:529:"		foreach($searchParts as $path => $pathInfo)	{
@@ -333,7 +329,7 @@ Substitutes all placeholders in $content string which are found in the $searchPa
 		return $content;
 	}
 
-	";i:1;i:0;}s:12:"content_size";i:529;s:13:"content_lines";i:21;s:6:"atLine";i:425;}i:17;a:7:{s:6:"header";s:123:"function mergeSampleDataIntoTemplateStructure($dataStruct,$currentMappingInfo,$firstLevelImplodeToken='',$sampleOrder='')	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:4:"cDat";a:3:{s:4:"text";s:25:"
+	";i:1;i:0;}s:12:"content_size";i:529;s:13:"content_lines";i:21;s:6:"atLine";i:422;}i:17;a:7:{s:6:"header";s:123:"function mergeSampleDataIntoTemplateStructure($dataStruct,$currentMappingInfo,$firstLevelImplodeToken='',$sampleOrder='')	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:4:"cDat";a:3:{s:4:"text";s:25:"
 
 [Describe function...]
 ";s:5:"param";a:4:{i:0;a:2:{i:0;s:6:"[type]";i:1;s:16:"$dataStruct: ...";}i:1;a:2:{i:0;s:6:"[type]";i:1;s:24:"$currentMappingInfo: ...";}i:2;a:2:{i:0;s:6:"[type]";i:1;s:28:"$firstLevelImplodeToken: ...";}i:3;a:2:{i:0;s:6:"[type]";i:1;s:17:"$sampleOrder: ...";}}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}}s:7:"content";a:2:{i:0;s:507:"	
@@ -353,7 +349,7 @@ ointer];
 	
 	}
 
-	";i:1;i:1;}s:12:"content_size";i:1205;s:13:"content_lines";i:33;s:6:"atLine";i:456;}i:19;a:7:{s:6:"header";s:122:"function mergeFormDataIntoTemplateStructure($editStruct,$currentMappingInfo,$firstLevelImplodeToken='',$valueKey='vDEF')	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:4:"cDat";a:3:{s:4:"text";s:25:"
+	";i:1;i:1;}s:12:"content_size";i:1205;s:13:"content_lines";i:33;s:6:"atLine";i:453;}i:19;a:7:{s:6:"header";s:122:"function mergeFormDataIntoTemplateStructure($editStruct,$currentMappingInfo,$firstLevelImplodeToken='',$valueKey='vDEF')	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:4:"cDat";a:3:{s:4:"text";s:25:"
 
 [Describe function...]
 ";s:5:"param";a:4:{i:0;a:2:{i:0;s:6:"[type]";i:1;s:16:"$editStruct: ...";}i:1;a:2:{i:0;s:6:"[type]";i:1;s:24:"$currentMappingInfo: ...";}i:2;a:2:{i:0;s:6:"[type]";i:1;s:28:"$firstLevelImplodeToken: ...";}i:3;a:2:{i:0;s:6:"[type]";i:1;s:14:"$valueKey: ...";}}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}}s:7:"content";a:2:{i:0;s:507:"		$isSection=0;
@@ -378,7 +374,7 @@ ointer];
 		return $out;
 	}
 
-	";i:1;i:1;}s:12:"content_size";i:1617;s:13:"content_lines";i:39;s:6:"atLine";i:499;}i:21;a:7:{s:6:"header";s:30:"function splitPath($pathStr)	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:4:"cDat";a:3:{s:4:"text";s:137:"
+	";i:1;i:1;}s:12:"content_size";i:1617;s:13:"content_lines";i:39;s:6:"atLine";i:496;}i:21;a:7:{s:6:"header";s:30:"function splitPath($pathStr)	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:4:"cDat";a:3:{s:4:"text";s:137:"
 
 Processing of a path; It splits the path by tokens like "|", "/" and " " etc and returns an array with path-levels and properties etc.
 ";s:5:"param";a:1:{i:0;a:2:{i:0;s:6:"string";i:1;s:52:"The total path string to explode into smaller units.";}}s:6:"return";a:2:{i:0;s:5:"array";i:1;s:34:"Array with the information inside.";}}s:7:"content";a:2:{i:0;s:507:"		$subPaths = t3lib_div::trimExplode('|',$pathStr,1);
@@ -399,7 +395,7 @@ Processing of a path; It splits the path by tokens like "|", "/" and " " etc and
 		return $subPaths;
 	}
 	
-	";i:1;i:1;}s:12:"content_size";i:1689;s:13:"content_lines";i:49;s:6:"atLine";i:545;}i:23;a:7:{s:6:"header";s:38:"function getTemplateArrayForTO($uid)	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:4:"cDat";a:3:{s:4:"text";s:39:"
+	";i:1;i:1;}s:12:"content_size";i:1689;s:13:"content_lines";i:49;s:6:"atLine";i:542;}i:23;a:7:{s:6:"header";s:38:"function getTemplateArrayForTO($uid)	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:4:"cDat";a:3:{s:4:"text";s:39:"
 
 For use in both frontend and backend
 ";s:5:"param";a:1:{i:0;a:2:{i:0;s:6:"[type]";i:1;s:9:"$uid: ...";}}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}}s:7:"content";a:2:{i:0;s:431:"		global $TCA;
@@ -414,7 +410,7 @@ For use in both frontend and backend
 		}
 	}
 
-	";i:1;i:0;}s:12:"content_size";i:431;s:13:"content_lines";i:12;s:6:"atLine";i:601;}i:25;a:7:{s:6:"header";s:51:"function mergeDataArrayToTemplateArray($TA,$data)	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:4:"cDat";a:3:{s:4:"text";s:25:"
+	";i:1;i:0;}s:12:"content_size";i:431;s:13:"content_lines";i:12;s:6:"atLine";i:598;}i:25;a:7:{s:6:"header";s:51:"function mergeDataArrayToTemplateArray($TA,$data)	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:4:"cDat";a:3:{s:4:"text";s:25:"
 
 [Describe function...]
 ";s:5:"param";a:2:{i:0;a:2:{i:0;s:6:"[type]";i:1;s:8:"$TA: ...";}i:1;a:2:{i:0;s:6:"[type]";i:1;s:10:"$data: ...";}}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}}s:7:"content";a:2:{i:0;s:192:"		if (is_array($TA['cArray']))	{
@@ -429,7 +425,7 @@ For use in both frontend and backend
 
 
 	
-	";i:1;i:0;}s:12:"content_size";i:192;s:13:"content_lines";i:12;s:6:"atLine";i:621;}i:27;a:7:{s:6:"header";s:54:"function getTemplateRecord($uid,$printFlag,$langUid)	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:4:"cDat";a:3:{s:4:"text";s:97:"
+	";i:1;i:0;}s:12:"content_size";i:192;s:13:"content_lines";i:12;s:6:"atLine";i:618;}i:27;a:7:{s:6:"header";s:54:"function getTemplateRecord($uid,$printFlag,$langUid)	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:4:"cDat";a:3:{s:4:"text";s:97:"
 
 Returns the right template record for the current display
 Requires the extension "TemplaVoila"
@@ -450,7 +446,7 @@ sys_language_uid='.intval($langUid));
 		}
 	}
 
-	";i:1;i:1;}s:12:"content_size";i:1155;s:13:"content_lines";i:24;s:6:"atLine";i:643;}i:29;a:7:{s:6:"header";s:67:"function getTemplateMappingArray($uid,$printFlag,$langUid,$sheet)	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:4:"cDat";a:3:{s:4:"text";s:25:"
+	";i:1;i:1;}s:12:"content_size";i:1155;s:13:"content_lines";i:24;s:6:"atLine";i:640;}i:29;a:7:{s:6:"header";s:67:"function getTemplateMappingArray($uid,$printFlag,$langUid,$sheet)	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:4:"cDat";a:3:{s:4:"text";s:25:"
 
 [Describe function...]
 ";s:5:"param";a:4:{i:0;a:2:{i:0;s:6:"[type]";i:1;s:9:"$uid: ...";}i:1;a:2:{i:0;s:6:"[type]";i:1;s:15:"$printFlag: ...";}i:2;a:2:{i:0;s:6:"[type]";i:1;s:13:"$langUid: ...";}i:3;a:2:{i:0;s:6:"[type]";i:1;s:11:"$sheet: ...";}}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}}s:7:"content";a:2:{i:0;s:208:"		$row = $this->getTemplateRecord($uid,$printFlag,$langUid);
@@ -458,7 +454,7 @@ sys_language_uid='.intval($langUid));
 		return $sheet ? $tDat['MappingData_cached']['sub'][$sheet] : $tDat['MappingData_cached'];	
 	}
 	
-	";i:1;i:0;}s:12:"content_size";i:208;s:13:"content_lines";i:5;s:6:"atLine";i:677;}i:31;a:7:{s:6:"header";s:47:"function getTemplateRecord_query($uid,$where)	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:4:"cDat";a:6:{s:4:"text";s:77:"
+	";i:1;i:0;}s:12:"content_size";i:208;s:13:"content_lines";i:5;s:6:"atLine";i:674;}i:31;a:7:{s:6:"header";s:47:"function getTemplateRecord_query($uid,$where)	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:4:"cDat";a:6:{s:4:"text";s:77:"
 
 Helper function to build the query for searching print/language templates.
 ";s:5:"param";a:2:{i:0;a:2:{i:0;s:7:"integer";i:1;s:30:"The UID of the template record";}i:1;a:2:{i:0;s:6:"string";i:1;s:17:"The where clause.";}}s:6:"return";a:2:{i:0;s:5:"mixed";i:1;s:45:"An array if a record is found, otherwise null";}s:6:"access";s:7:"private";s:5:"other";a:1:{i:0;s:24:"@see getTemplateRecord()";}s:11:"other_index";a:1:{s:4:"@see";a:1:{i:0;s:20:"getTemplateRecord() ";}}}s:7:"content";a:2:{i:0;s:323:"		$query = 'SELECT * FROM tx_templavoila_tmplobj WHERE parent='.intval($uid).
@@ -486,10 +482,10 @@ Helper function to build the query for searching print/language templates.
 	 * 
 	 */
 
-	";i:1;i:0;}s:12:"content_size";i:323;s:13:"content_lines";i:25;s:6:"atLine";i:692;}i:33;a:8:{s:6:"header";s:17:"function init()	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:11:"sectionText";a:1:{i:0;s:22:"Various sub processing";}s:4:"cDat";a:3:{s:4:"text";s:121:"
+	";i:1;i:0;}s:12:"content_size";i:323;s:13:"content_lines";i:25;s:6:"atLine";i:689;}i:33;a:8:{s:6:"header";s:17:"function init()	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:11:"sectionText";a:1:{i:0;s:22:"Various sub processing";}s:4:"cDat";a:3:{s:4:"text";s:121:"
 
 Init function, should be called by the processing functions above before doing any recursive parsing of the HTML code.
-";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:4:"void";i:1;s:0:"";}}s:7:"content";a:2:{i:0;s:496:"			// HTML parser object initialized.
+";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:4:"void";i:1;s:0:"";}}s:7:"content";a:2:{i:0;s:524:"			// HTML parser object initialized.
 		$this->htmlParse = t3lib_div::makeInstance('t3lib_parsehtml');
 
 			// Resetting element count array
@@ -498,13 +494,13 @@ Init function, should be called by the processing functions above before doing a
 
 			// Setting gnyf style
 		$style = '';
-		$style.=($this->mode!='explode'?'position:absolute;':'');
+		$style.=(!t3lib_div::inList('explode,checkbox',$this->mode)?'position:absolute;':'');
 #		$style.=($this->mode=='transparent'?'filter:alpha(Opacity=\'75\');':'');
 #		$style.='border: 1px solid black;';
 		$this->gnyfStyle = $style?' style="'.htmlspecialchars($style).'"':'';
 	}
 
-	";i:1;i:0;}s:12:"content_size";i:496;s:13:"content_lines";i:15;s:6:"atLine";i:723;}i:35;a:7:{s:6:"header";s:35:"function splitTagTypes($showTags)	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:4:"cDat";a:3:{s:4:"text";s:172:"
+	";i:1;i:0;}s:12:"content_size";i:524;s:13:"content_lines";i:15;s:6:"atLine";i:720;}i:35;a:7:{s:6:"header";s:35:"function splitTagTypes($showTags)	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:4:"cDat";a:3:{s:4:"text";s:172:"
 
 Takes the input list of tags to markup and validates it against $this->tags array.
 Returns an array with two strings, the list of block tags and the list of single tags.
@@ -545,7 +541,7 @@ Returns an array with two strings, the list of block tags and the list of single
 	 * 
 	 */
 
-	";i:1;i:0;}s:12:"content_size";i:536;s:13:"content_lines";i:37;s:6:"atLine";i:746;}i:37;a:8:{s:6:"header";s:93:"function recursiveBlockSplitting($content,$tagsBlock,$tagsSolo,$mode,$path='',$recursion=0)	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:11:"sectionText";a:1:{i:0;s:19:"SPLITTING functions";}s:4:"cDat";a:3:{s:4:"text";s:361:"
+	";i:1;i:0;}s:12:"content_size";i:536;s:13:"content_lines";i:37;s:6:"atLine";i:743;}i:37;a:8:{s:6:"header";s:93:"function recursiveBlockSplitting($content,$tagsBlock,$tagsSolo,$mode,$path='',$recursion=0)	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:11:"sectionText";a:1:{i:0;s:19:"SPLITTING functions";}s:4:"cDat";a:3:{s:4:"text";s:361:"
 
 Main splitting function - will split the input $content HTML string into sections based on the strings with tags, $tagsBlock and $tagsSolo
 WARNING: No currect support for XML-ended tags, eg. <p/>. In fact there is not even support for block tags like <p> which does not have a counter part ending it!!! (This support must come from the htmlparser class btw.)
@@ -567,7 +563,7 @@ ode('',$soloParts);
 		return implode('',$blocks);
 	}
 
-	";i:1;i:1;}s:12:"content_size";i:2968;s:13:"content_lines";i:69;s:6:"atLine";i:796;}i:39;a:7:{s:6:"header";s:94:"function getMarkupCode($mode,$v,$params,$firstTagName,$firstTag,$endTag,$subPath,$recursion)	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:4:"cDat";a:3:{s:4:"text";s:151:"
+	";i:1;i:1;}s:12:"content_size";i:3072;s:13:"content_lines";i:71;s:6:"atLine";i:793;}i:39;a:7:{s:6:"header";s:94:"function getMarkupCode($mode,$v,$params,$firstTagName,$firstTag,$endTag,$subPath,$recursion)	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:4:"cDat";a:3:{s:4:"text";s:151:"
 
 In markup mode, this function is used to add the gnyf image to the HTML plus set all necessary attributes etc in order to mark up the code visually.
 ";s:5:"param";a:8:{i:0;a:2:{i:0;s:6:"string";i:1;s:39:"Element type: block or '' (single/solo)";}i:1;a:2:{i:0;s:6:"string";i:1;s:14:"Sub HTML code.";}i:2;a:2:{i:0;s:5:"array";i:1;s:29:"Attributes of the current tag";}i:3;a:2:{i:0;s:6:"string";i:1;s:29:"Current tags name (lowercase)";}i:4;a:2:{i:0;s:6:"string";i:1;s:17:"Current tag, full";}i:5;a:2:{i:0;s:6:"string";i:1;s:27:"End tag for the current tag";}i:6;a:2:{i:0;s:6:"string";i:1;s:23:"Current path of element";}i:7;a:2:{i:0;s:7:"integer";i:1;s:20:"The recursion number";}}s:6:"return";a:2:{i:0;s:6:"string";i:1;s:27:"Modified sub HTML code ($v)";}}s:7:"content";a:2:{i:0;s:507:"	
@@ -589,7 +585,7 @@ In markup mode, this function is used to add the gnyf image to the HTML plus set
 		return $v;
 	}
 
-	";i:1;i:1;}s:12:"content_size";i:2341;s:13:"content_lines";i:66;s:6:"atLine";i:879;}i:41;a:7:{s:6:"header";s:100:"function getSearchCode($mode,$v,$params,$firstTagName,$firstTag,$endTag,$subPath,$path,$recursion)	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:4:"cDat";a:3:{s:4:"text";s:64:"
+	";i:1;i:1;}s:12:"content_size";i:2565;s:13:"content_lines";i:70;s:6:"atLine";i:878;}i:41;a:7:{s:6:"header";s:100:"function getSearchCode($mode,$v,$params,$firstTagName,$firstTag,$endTag,$subPath,$path,$recursion)	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:4:"cDat";a:3:{s:4:"text";s:64:"
 
 In search mode, this function is used to process the content.
 ";s:5:"param";a:9:{i:0;a:2:{i:0;s:6:"string";i:1;s:39:"Element type: block or '' (single/solo)";}i:1;a:2:{i:0;s:6:"string";i:1;s:14:"Sub HTML code.";}i:2;a:2:{i:0;s:5:"array";i:1;s:29:"Attributes of the current tag";}i:3;a:2:{i:0;s:6:"string";i:1;s:29:"Current tags name (lowercase)";}i:4;a:2:{i:0;s:6:"string";i:1;s:17:"Current tag, full";}i:5;a:2:{i:0;s:6:"string";i:1;s:27:"End tag for the current tag";}i:6;a:2:{i:0;s:6:"string";i:1;s:23:"Current path of element";}i:7;a:2:{i:0;s:7:"integer";i:1;s:20:"The recursion number";}i:8;a:2:{i:0;s:6:"[type]";i:1;s:15:"$recursion: ...";}}s:6:"return";a:2:{i:0;s:6:"string";i:1;s:27:"Modified sub HTML code ($v)";}}s:7:"content";a:2:{i:0;s:507:"		if ($this->rangeEndSearch[$recursion])	{
@@ -613,7 +609,7 @@ $firstTag.$v.$endTag;
 		return $v;
 	}
 
-	";i:1;i:1;}s:12:"content_size";i:2652;s:13:"content_lines";i:73;s:6:"atLine";i:960;}i:43;a:7:{s:6:"header";s:62:"function sourceDisplay($str,$recursion,$gnyf='',$valueStr=0)	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:4:"cDat";a:3:{s:4:"text";s:52:"
+	";i:1;i:1;}s:12:"content_size";i:2652;s:13:"content_lines";i:73;s:6:"atLine";i:963;}i:43;a:7:{s:6:"header";s:62:"function sourceDisplay($str,$recursion,$gnyf='',$valueStr=0)	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:4:"cDat";a:3:{s:4:"text";s:52:"
 
 Will format content for display in 'source' mode.
 ";s:5:"param";a:4:{i:0;a:2:{i:0;s:6:"string";i:1;s:23:"Input string to format.";}i:1;a:2:{i:0;s:7:"integer";i:1;s:48:"The recursion integer - used to indent the code.";}i:2;a:2:{i:0;s:6:"string";i:1;s:26:"The gnyf-image to display.";}i:3;a:2:{i:0;s:7:"boolean";i:1;s:127:"If set, then the line will be formatted in color as a "value" (means outside of the tag which might otherwise be what is shown)";}}s:6:"return";a:2:{i:0;s:6:"string";i:1;s:16:"Formatted input.";}}s:7:"content";a:2:{i:0;s:325:"		if (strcmp(trim($str),''))	{
@@ -626,10 +622,30 @@ Will format content for display in 'source' mode.
 		}
 	}
 
-	";i:1;i:0;}s:12:"content_size";i:325;s:13:"content_lines";i:10;s:6:"atLine";i:1043;}i:45;a:4:{s:6:"header";s:46:"function makePath($path,$firstTagName,$attr)	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:4:"cDat";a:3:{s:4:"text";s:69:"
+	";i:1;i:0;}s:12:"content_size";i:325;s:13:"content_lines";i:10;s:6:"atLine";i:1046;}i:45;a:7:{s:6:"header";s:70:"function checkboxDisplay($str,$recursion,$path,$gnyf='',$valueStr=0)	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:4:"cDat";a:3:{s:4:"text";s:54:"
+
+Will format content for display in 'checkbox' mode.
+";s:5:"param";a:5:{i:0;a:2:{i:0;s:6:"string";i:1;s:23:"Input string to format.";}i:1;a:2:{i:0;s:7:"integer";i:1;s:48:"The recursion integer - used to indent the code.";}i:2;a:2:{i:0;s:6:"string";i:1;s:9:"HTML path";}i:3;a:2:{i:0;s:6:"string";i:1;s:26:"The gnyf-image to display.";}i:4;a:2:{i:0;s:7:"boolean";i:1;s:127:"If set, then the line will be formatted in color as a "value" (means outside of the tag which might otherwise be what is shown)";}}s:6:"return";a:2:{i:0;s:6:"string";i:1;s:16:"Formatted input.";}}s:7:"content";a:2:{i:0;s:505:"		if ($valueStr)	{
+			return trim($str) ? '
+				<tr class="bgColor4">
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+					<td>'.$this->passthroughHTMLcontent(trim($str),'','source').'</td>
+				</tr>' : '';
+		} else {
+			return '
+				<tr class="bgColor4">
+					<td><input type="checkbox" name="checkboxElement[]" value="'.$path.'"'.(in_array($path,$this->checkboxPathsSet)?' checked="checked"':'').' /></td>
+					<td>'.$gnyf.'</td>
+					<td><pre>'.trim(htmlspecialchars($str)).'</pre></td>
+				</tr>';
+		}
+	}
+
+	";i:1;i:0;}s:12:"content_size";i:505;s:13:"content_lines";i:17;s:6:"atLine";i:1067;}i:47;a:4:{s:6:"header";s:46:"function makePath($path,$firstTagName,$attr)	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:4:"cDat";a:3:{s:4:"text";s:69:"
 
 Compile the path value for the current path/tagname and attributes
-";s:5:"param";a:3:{i:0;a:2:{i:0;s:6:"string";i:1;s:41:"Current path string for the parent level.";}i:1;a:2:{i:0;s:6:"string";i:1;s:50:"The tag name for the current element on that level";}i:2;a:2:{i:0;s:6:"string";i:1;s:59:"The attributes for the tag in an array with key/value pairs";}}s:6:"return";a:2:{i:0;s:6:"string";i:1;s:13:"The sub path.";}}s:6:"atLine";i:1062;}i:47;a:7:{s:6:"header";s:46:"function getGnyf($firstTagName,$path,$title)	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:4:"cDat";a:3:{s:4:"text";s:37:"
+";s:5:"param";a:3:{i:0;a:2:{i:0;s:6:"string";i:1;s:41:"Current path string for the parent level.";}i:1;a:2:{i:0;s:6:"string";i:1;s:50:"The tag name for the current element on that level";}i:2;a:2:{i:0;s:6:"string";i:1;s:59:"The attributes for the tag in an array with key/value pairs";}}s:6:"return";a:2:{i:0;s:6:"string";i:1;s:13:"The sub path.";}}s:6:"atLine";i:1093;}i:49;a:7:{s:6:"header";s:46:"function getGnyf($firstTagName,$path,$title)	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:4:"cDat";a:3:{s:4:"text";s:37:"
 
 Returns the GNYF image (tag-image)
 ";s:5:"param";a:3:{i:0;a:2:{i:0;s:6:"string";i:1;s:46:"The tag name in lowercase, eg. "table" or "tr"";}i:1;a:2:{i:0;s:6:"string";i:1;s:58:"Path string for the link and title-attribute of the image.";}i:2;a:2:{i:0;s:6:"[type]";i:1;s:11:"$title: ...";}}s:6:"return";a:2:{i:0;s:6:"string";i:1;s:4:"HTML";}}s:7:"content";a:2:{i:0;s:507:"		if (!$this->onlyElements || t3lib_div::inList($this->onlyElements,$firstTagName))	{
@@ -640,7 +656,7 @@ Returns the GNYF image (tag-image)
 p.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/class.tx_templavoila_htmlmarkup.php']);
 }
-?>";i:1;i:1;}s:12:"content_size";i:626;s:13:"content_lines";i:11;s:6:"atLine";i:1090;}}}s:14:"MD5_005a2bcadc";a:4:{s:8:"filename";s:30:"class.tx_templavoila_rules.php";s:8:"filesize";i:15991;s:6:"header";a:5:{s:4:"text";s:181:"
+?>";i:1;i:1;}s:12:"content_size";i:626;s:13:"content_lines";i:11;s:6:"atLine";i:1121;}}}s:14:"MD5_005a2bcadc";a:4:{s:8:"filename";s:30:"class.tx_templavoila_rules.php";s:8:"filesize";i:15984;s:6:"header";a:5:{s:4:"text";s:181:"
 
 Class 'tx_templavoila_rules' for the 'templavoila' extension.
 
@@ -894,15 +910,25 @@ The results for min and max are also returned by reference!
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/class.tx_templavoila_rules.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/class.tx_templavoila_rules.php']);
 }
-?>";i:1;i:0;}s:12:"content_size";i:237;s:13:"content_lines";i:7;s:6:"atLine";i:507;}}}s:14:"MD5_ae0ea69cd3";a:4:{s:8:"filename";s:13:"cm1/index.php";s:8:"filesize";i:67443;s:6:"header";a:5:{s:4:"text";s:48:"
+?>";i:1;i:0;}s:12:"content_size";i:237;s:13:"content_lines";i:7;s:6:"atLine";i:507;}}}s:14:"MD5_ae0ea69cd3";a:4:{s:8:"filename";s:13:"cm1/index.php";s:8:"filesize";i:83847;s:6:"header";a:5:{s:4:"text";s:48:"
 
 Class for controlling the TemplaVoila module.
-";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}s:5:"other";a:3:{i:0;s:42:"@author	Kasper Skaarhoj <kasper@typo3.com>";i:1;s:14:"@package TYPO3";i:2;s:26:"@subpackage tx_templavoila";}s:11:"other_index";a:3:{s:7:"@author";a:1:{i:0;s:34:"Kasper Skaarhoj <kasper@typo3.com>";}s:8:"@package";a:1:{i:0;s:6:"TYPO3 ";}s:11:"@subpackage";a:1:{i:0;s:15:"tx_templavoila ";}}}s:3:"DAT";a:23:{i:1;a:8:{s:6:"header";s:47:"class tx_templavoila_cm1 extends t3lib_SCbase {";s:5:"class";i:1;s:11:"parentClass";s:18:"tx_templavoila_cm1";s:4:"cDat";a:5:{s:4:"text";s:48:"
+";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}s:5:"other";a:3:{i:0;s:42:"@author	Kasper Skaarhoj <kasper@typo3.com>";i:1;s:14:"@package TYPO3";i:2;s:26:"@subpackage tx_templavoila";}s:11:"other_index";a:3:{s:7:"@author";a:1:{i:0;s:34:"Kasper Skaarhoj <kasper@typo3.com>";}s:8:"@package";a:1:{i:0;s:6:"TYPO3 ";}s:11:"@subpackage";a:1:{i:0;s:15:"tx_templavoila ";}}}s:3:"DAT";a:26:{i:1;a:8:{s:6:"header";s:47:"class tx_templavoila_cm1 extends t3lib_SCbase {";s:5:"class";i:1;s:11:"parentClass";s:18:"tx_templavoila_cm1";s:4:"cDat";a:5:{s:4:"text";s:48:"
 
 Class for controlling the TemplaVoila module.
-";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}s:5:"other";a:3:{i:0;s:42:"@author	Kasper Skaarhoj <kasper@typo3.com>";i:1;s:14:"@package TYPO3";i:2;s:26:"@subpackage tx_templavoila";}s:11:"other_index";a:3:{s:7:"@author";a:1:{i:0;s:34:"Kasper Skaarhoj <kasper@typo3.com>";}s:8:"@package";a:1:{i:0;s:6:"TYPO3 ";}s:11:"@subpackage";a:1:{i:0;s:15:"tx_templavoila ";}}}s:7:"content";a:2:{i:0;s:1388:"
+";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}s:5:"other";a:3:{i:0;s:42:"@author	Kasper Skaarhoj <kasper@typo3.com>";i:1;s:14:"@package TYPO3";i:2;s:26:"@subpackage tx_templavoila";}s:11:"other_index";a:3:{s:7:"@author";a:1:{i:0;s:34:"Kasper Skaarhoj <kasper@typo3.com>";}s:8:"@package";a:1:{i:0;s:6:"TYPO3 ";}s:11:"@subpackage";a:1:{i:0;s:15:"tx_templavoila ";}}}s:7:"content";a:2:{i:0;s:1820:"
 		// Static:
 	var $theDisplayMode = '';	// Set to ->MOD_SETTINGS[]
+	var $head_markUpTags = array(
+			// Block elements:
+		'title' => array(),
+		'script' => array(),
+		'style' => array(),
+			// Single elements:
+
+		'link' => array('single'=>1),
+		'meta' => array('single'=>1),
+	);
 
 		// Internal, dynamic:
 	var $markupFile = '';		// Used to store the name of the file to mark up with a given path.
@@ -916,10 +942,21 @@ Class for controlling the TemplaVoila module.
 	
 		// GPvars for MODULE mode
 	var $displayFile = '';		// (GPvar "file", shared with DISPLAY mode!) The file to display, if file is referenced directly from filelist module. Takes precedence over displayTable/displayUid
-	var $displayTable = '';		// (GPvar "table") The table from which to display element (data structure object [tx_templavoila_datastructure], template object [tx_templavoila_tmplobj])
+	var $displayTable = '';		// (GPvar "table") The table from which to display element (Data Structure object [tx_templavoila_datastructure], template object [tx_templavoila_tmplobj])
 	var $displayUid = '';		// (GPvar "uid") The UID to display (from ->displayTable)
 	var $displayPath = '';		// (GPvar "htmlPath") The "HTML-path" to display from the current file
 
+		// GPvars for MODULE mode, specific to mapping a DS:
+	var $_preview;
+	var $htmlPath;
+	var $mapElPath;
+	var $doMappingOfPath;
+	var $showPathOnly;
+	var $mappingToTags;
+	var $DS_element;
+	var $DS_cmd;
+	var $fieldName;	
+	
 		// GPvars for DISPLAY mode:
 	var $show;					// Boolean; if true no mapping-links are rendered.
 	var $preview;				// Boolean; if true, the currentMappingInfo preview data is merged in
@@ -927,22 +964,24 @@ Class for controlling the TemplaVoila module.
 	var $path;					// HTML-path to explode in template.
 	
 
-	";i:1;i:-1;}s:12:"content_size";i:1388;s:13:"content_lines";i:27;s:6:"atLine";i:111;}i:3;a:7:{s:6:"header";s:26:"function menuConfig()    {";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:4:"cDat";a:3:{s:4:"text";s:75:"
+	";i:1;i:-1;}s:12:"content_size";i:1820;s:13:"content_lines";i:48;s:6:"atLine";i:114;}i:3;a:7:{s:6:"header";s:26:"function menuConfig()    {";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:4:"cDat";a:3:{s:4:"text";s:75:"
 
 Adds items to the ->MOD_MENU array. Used for the function menu selector.
-";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:4:"void";i:1;s:0:"";}}s:7:"content";a:2:{i:0;s:245:"	    global $LANG;
+";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:4:"void";i:1;s:0:"";}}s:7:"content";a:2:{i:0;s:345:"	    global $LANG;
 	    $this->MOD_MENU = Array (
             'displayMode' => array	(
-				'explode' => 'Explode',
-				'borders' => 'Borders',
-				'source' => 'Source',
-				'_' => 'Overlay',
-			)
+				'explode' => 'Mode: Exploded Visual',
+#				'_' => 'Mode: Overlay',
+				'source' => 'Mode: HTML Source ',
+#				'borders' => 'Mode: Table Borders',
+			),
+			'showDSxml' => '',
+			'selectHeaderContent' => ''
         );
         parent::menuConfig();
     }
 
-	";i:1;i:0;}s:12:"content_size";i:245;s:13:"content_lines";i:12;s:6:"atLine";i:144;}i:5;a:7:{s:6:"header";s:17:"function main()	{";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:4:"cDat";a:3:{s:4:"text";s:148:"
+	";i:1;i:0;}s:12:"content_size";i:345;s:13:"content_lines";i:14;s:6:"atLine";i:168;}i:5;a:7:{s:6:"header";s:17:"function main()	{";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:4:"cDat";a:3:{s:4:"text";s:148:"
 
 Main function, distributes the load between the module and display modes.
 "Display" mode is when the exploded template file is shown in an IFRAME
@@ -965,7 +1004,7 @@ Main function, distributes the load between the module and display modes.
 		}
 	}
 
-	";i:1;i:0;}s:12:"content_size";i:467;s:13:"content_lines";i:19;s:6:"atLine";i:163;}i:7;a:7:{s:6:"header";s:25:"function printContent()	{";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:4:"cDat";a:3:{s:4:"text";s:149:"
+	";i:1;i:0;}s:12:"content_size";i:467;s:13:"content_lines";i:19;s:6:"atLine";i:189;}i:7;a:7:{s:6:"header";s:25:"function printContent()	{";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:4:"cDat";a:3:{s:4:"text";s:149:"
 
 Prints module content. 
 Is only used in case of &mode = "mod" since both "display" mode and frameset is outputted + exiting before this is called.
@@ -988,7 +1027,7 @@ Is only used in case of &mode = "mod" since both "display" mode and frameset is 
 	 *
 	 *****************************************/
 
-	";i:1;i:0;}s:12:"content_size";i:231;s:13:"content_lines";i:19;s:6:"atLine";i:189;}i:9;a:8:{s:6:"header";s:22:"function main_mode()	{";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:11:"sectionText";a:1:{i:0;s:11:"MODULE mode";}s:4:"cDat";a:3:{s:4:"text";s:264:"
+	";i:1;i:0;}s:12:"content_size";i:231;s:13:"content_lines";i:19;s:6:"atLine";i:215;}i:9;a:8:{s:6:"header";s:22:"function main_mode()	{";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:11:"sectionText";a:1:{i:0;s:11:"MODULE mode";}s:4:"cDat";a:3:{s:4:"text";s:264:"
 
 Main function of the MODULE. Write the content to $this->content
 There are three main modes:
@@ -1000,12 +1039,12 @@ There are three main modes:
 			// Draw the header.
 		$this->doc = t3lib_div::makeInstance('noDoc');
 		$this->doc->backPath = $BACK_PATH;
-		$this->doc->docType='xhtml_trans';
-
-			// Getting parameters which might have been sent:
-		$this->displayFile = t3lib_div::GPvar('file');
-		$this->displayTable = t3lib_div::GPvar('table');
-		$this->displayUid = t3lib_div::GPvar('uid')
+		$this->doc->docType = 'xhtml_trans';
+		$this->doc->inDocStylesArray[]='
+			DIV.typo3-noDoc { width: 98%; margin: 0 0 0 0; }
+			DIV.typo3-noDoc H2 { width: 100%; }
+			TABLE#c-mapInfo {margin-top: 10px; margin-bottom: 5px; }
+			TABLE#c-
 [...]
 lobj') {	// Data source display
 			$this->renderTO();
@@ -1015,7 +1054,7 @@ lobj') {	// Data source display
 		$this->content.=$this->doc->spacer(10);
 	}
 	
-	";i:1;i:1;}s:12:"content_size";i:1540;s:13:"content_lines";i:44;s:6:"atLine";i:218;}i:11;a:7:{s:6:"header";s:23:"function renderFile()	{";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:4:"cDat";a:3:{s:4:"text";s:61:"
+	";i:1;i:1;}s:12:"content_size";i:2579;s:13:"content_lines";i:68;s:6:"atLine";i:244;}i:11;a:7:{s:6:"header";s:23:"function renderFile()	{";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:4:"cDat";a:3:{s:4:"text";s:61:"
 
 Renders the display of DS/TO creation directly from a file
 ";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:4:"void";i:1;s:0:"";}}s:7:"content";a:2:{i:0;s:507:"		if (@is_file($this->displayFile) && t3lib_div::getFileAbsFileName($this->displayFile))		{
@@ -1034,40 +1073,59 @@ ayPath,$dataStruct,$currentMappingInfo);
 		$this->content.=$this->doc->section('Browsing file...',$content,0,1);
 	}
 	
-	";i:1;i:1;}s:12:"content_size";i:9530;s:13:"content_lines";i:217;s:6:"atLine";i:268;}i:13;a:7:{s:6:"header";s:22:"function renderDSO()	{";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:4:"cDat";a:3:{s:4:"text";s:49:"
+	";i:1;i:1;}s:12:"content_size";i:9549;s:13:"content_lines";i:217;s:6:"atLine";i:318;}i:13;a:7:{s:6:"header";s:22:"function renderDSO()	{";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:4:"cDat";a:3:{s:4:"text";s:49:"
 
 Renders the display of Data Structure Objects.
 ";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:4:"void";i:1;s:0:"";}}s:7:"content";a:2:{i:0;s:507:"		if (intval($this->displayUid)>0)	{
 			$row = t3lib_BEfunc::getRecord('tx_templavoila_datastructure',$this->displayUid);
 			if (is_array($row))	{
+
 					// Get title and icon:
 				$icon = t3lib_iconworks::getIconImage('tx_templavoila_datastructure',$row,$GLOBALS['BACK_PATH'],' align="top" title="UID: '.$this->displayUid.'"');
-				$title = t3lib_BEfunc::getRecordTitle('tx_te
+				$title = t3lib_BEfunc::getRecordTitle('tx_t
 [...]
-$this->doc->section('Data Source Object ERROR','No UID was found pointing to a Data Source Object record.',0,1,3);
+>doc->section('Data Structure Object ERROR','No UID was found pointing to a Data Structure Object record.',0,1,3);
 		}
 	}
 	
-	";i:1;i:1;}s:12:"content_size";i:3252;s:13:"content_lines";i:63;s:6:"atLine";i:491;}i:15;a:7:{s:6:"header";s:21:"function renderTO()	{";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:4:"cDat";a:3:{s:4:"text";s:43:"
+	";i:1;i:1;}s:12:"content_size";i:3988;s:13:"content_lines";i:100;s:6:"atLine";i:541;}i:15;a:7:{s:6:"header";s:21:"function renderTO()	{";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:4:"cDat";a:3:{s:4:"text";s:43:"
 
-Renders the display of template objects.
+Renders the display of Template Objects.
 ";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:4:"void";i:1;s:0:"";}}s:7:"content";a:2:{i:0;s:507:"		if (intval($this->displayUid)>0)	{
 			$row = t3lib_BEfunc::getRecord('tx_templavoila_tmplobj',$this->displayUid);
+
 			if (is_array($row))	{
-#debug($GLOBALS['HTTP_GET_VARS']);
+				
+				$tRows=array();
+				$tRows[]='
+					<tr class="bgColor5">
+						<td colspan="2"><strong>Template Object Details:</strong></td>
+					</tr>';
+				
 					// Get title and icon:
-				$icon = t3lib_iconworks::getIconImage('tx_templavoila_tmplobj',$row,$GLOBALS['BACK_PATH'],' align="top" title="UID: '.$this->displayUid.'"');
-				$title = t3lib_BEfunc
+				$icon = t3lib_iconworks::getIconImage('tx_templ
 [...]
-,3);
+ntent.=$this->doc->section('Template Object ERROR','No UID was found pointing to a Template Object record.',0,1,3);
 		}
 	}
 
+	";i:1;i:1;}s:12:"content_size";i:6197;s:13:"content_lines";i:146;s:6:"atLine";i:647;}i:17;a:7:{s:6:"header";s:62:"function renderTO_editProcessing(&$dataStruct,$row,$theFile)	{";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:4:"cDat";a:5:{s:4:"text";s:50:"
 
-
-
-
-
+Process editing of a TO for renderTO() function
+";s:5:"param";a:3:{i:0;a:2:{i:0;s:5:"array";i:1;s:112:"Data Structure (without 'meta' section). Passed by reference; The sheets found inside will be resolved if found!";}i:1;a:2:{i:0;s:5:"array";i:1;s:13:"TO record row";}i:2;a:2:{i:0;s:6:"string";i:1;s:29:"Template file path (absolute)";}}s:6:"return";a:2:{i:0;s:5:"array";i:1;s:186:"Array with two keys (0/1) with a) content and b) currentMappingInfo which is retrieved inside (currentMappingInfo will be different based on whether "head" or "body" content is "mapped")";}s:5:"other";a:1:{i:0;s:15:"@see renderTO()";}s:11:"other_index";a:1:{s:4:"@see";a:1:{i:0;s:11:"renderTO() ";}}}s:7:"content";a:2:{i:0;s:507:"		$msg = array();
+	
+			// Converting GPvars into a "cmd" value:
+		$cmd = '';
+		if (t3lib_div::GPvar('_reload_from'))	{	// Reverting to old values in TO
+			$cmd = 'reload_from';
+		} elseif (t3lib_div::GPvar('_clear'))	{	// Resetting mapping
+			$cmd = 'clear';
+		} elseif (t3lib_div::GPvar('_save_data_mapping'))	{	// Saving to Session
+			$cmd = 'save_data_mapping';
+		} elseif
+[...]
+entMappingInfo);
+	}
 
 
 
@@ -1078,37 +1136,61 @@ Renders the display of template objects.
 	 * Mapper functions
 	 *
 	 *******************************/
-	 
-	";i:1;i:1;}s:12:"content_size";i:6971;s:13:"content_lines";i:153;s:6:"atLine";i:560;}i:17;a:8:{s:6:"header";s:99:"function renderTemplateMapper($displayFile,$path,$dataStruct=array(),$currentMappingInfo=array())	{";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:11:"sectionText";a:1:{i:0;s:16:"Mapper functions";}s:4:"cDat";a:3:{s:4:"text";s:93:"
 
-Creates the template mapper table + form for either direct file mapping or Template Object
-";s:5:"param";a:4:{i:0;a:2:{i:0;s:6:"string";i:1;s:25:"The abs file name to read";}i:1;a:2:{i:0;s:6:"string";i:1;s:143:"The HTML-path to follow. Eg. 'td#content table[1] tr[1] / INNER | img[0]' or so. Normally comes from clicking a tag-image in the display frame.";}i:2;a:2:{i:0;s:5:"array";i:1;s:28:"The data Structure to map to";}i:3;a:2:{i:0;s:5:"array";i:1;s:31:"The current mapping information";}}s:6:"return";a:2:{i:0;s:6:"string";i:1;s:11:"HTML table.";}}s:7:"content";a:2:{i:0;s:507:"
+	";i:1;i:1;}s:12:"content_size";i:8123;s:13:"content_lines";i:197;s:6:"atLine";i:803;}i:19;a:8:{s:6:"header";s:106:"function renderHeaderSelection($displayFile,$currentHeaderMappingInfo,$showBodyTag,$htmlAfterDSTable='')	{";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:11:"sectionText";a:1:{i:0;s:16:"Mapper functions";}s:4:"cDat";a:3:{s:4:"text";s:75:"
+
+Renders the table with selection of part from the HTML header + bodytag.
+";s:5:"param";a:4:{i:0;a:2:{i:0;s:6:"string";i:1;s:25:"The abs file name to read";}i:1;a:2:{i:0;s:5:"array";i:1;s:26:"Header mapping information";}i:2;a:2:{i:0;s:7:"boolean";i:1;s:23:"If true, show body tag.";}i:3;a:2:{i:0;s:6:"string";i:1;s:52:"HTML content to show after the Data Structure table.";}}s:6:"return";a:2:{i:0;s:6:"string";i:1;s:11:"HTML table.";}}s:7:"content";a:2:{i:0;s:507:"
 			// Get file content
 		$this->markupFile = $displayFile;
 		$fileContent = t3lib_div::getUrl($this->markupFile);
 					
 			// Init mark up object.
 		$this->markupObj = t3lib_div::makeInstance('tx_templavoila_htmlmarkup');
+		$this->markupObj->init();
 		
-			// Load splitted content from currentMappingInfo array (used to show us which elements maps to some real content).
-		$contentSplittedByMapping = $
+			// Get <body> tag:
+		$reg='';
+		eregi('<body[^>]*>',$fileContent,$reg);
+		$html_body = $reg[0];
+		
+			// Get <head>...
 [...]
-em></p>
-					').
-				$this->makeIframeForVisual($displayFile,$htmlPath,$limitTags,$doMap);
+				'.$tRows.'
+				'.$bodyTagRow.'
+			</table>
+			'.$htmlAfterDSTable;
+		
+			// Return result:
+		return $headerParts;
+	}
+	 
+	";i:1;i:1;}s:12:"content_size";i:1924;s:13:"content_lines";i:53;s:6:"atLine";i:1010;}i:21;a:7:{s:6:"header";s:120:"function renderTemplateMapper($displayFile,$path,$dataStruct=array(),$currentMappingInfo=array(),$htmlAfterDSTable='')	{";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:4:"cDat";a:3:{s:4:"text";s:93:"
+
+Creates the template mapper table + form for either direct file mapping or Template Object
+";s:5:"param";a:5:{i:0;a:2:{i:0;s:6:"string";i:1;s:25:"The abs file name to read";}i:1;a:2:{i:0;s:6:"string";i:1;s:143:"The HTML-path to follow. Eg. 'td#content table[1] tr[1] / INNER | img[0]' or so. Normally comes from clicking a tag-image in the display frame.";}i:2;a:2:{i:0;s:5:"array";i:1;s:28:"The data Structure to map to";}i:3;a:2:{i:0;s:5:"array";i:1;s:31:"The current mapping information";}i:4;a:2:{i:0;s:6:"string";i:1;s:52:"HTML content to show after the Data Structure table.";}}s:6:"return";a:2:{i:0;s:6:"string";i:1;s:11:"HTML table.";}}s:7:"content";a:2:{i:0;s:507:"
+			// Get file content
+		$this->markupFile = $displayFile;
+		$fileContent = t3lib_div::getUrl($this->markupFile);
+					
+			// Init mark up object.
+		$this->markupObj = t3lib_div::makeInstance('tx_templavoila_htmlmarkup');
+
+			// Load splitted content from currentMappingInfo array (used to show us which elements maps to some real content).
+		$contentSplittedByMapping = $th
+[...]
+s->makeIframeForVisual($displayFile,$this->displayPath,$limitTags,$this->doMappingOfPath);
 			}
 		}
 
 		return $content;
 	}
 
-	";i:1;i:1;}s:12:"content_size";i:4541;s:13:"content_lines";i:106;s:6:"atLine";i:723;}i:19;a:7:{s:6:"header";s:214:"function drawDataStructureMap($dataStruct,$mappingMode=0,$currentMappingInfo=array(),$pathLevels=array(),$optDat=array(),$contentSplittedByMapping=array(),$level=0,$tRows=array(),$formPrefix='',$path='',$mapOK=1)	{";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:4:"cDat";a:3:{s:4:"text";s:82:"
+	";i:1;i:1;}s:12:"content_size";i:5409;s:13:"content_lines";i:146;s:6:"atLine";i:1074;}i:23;a:7:{s:6:"header";s:214:"function drawDataStructureMap($dataStruct,$mappingMode=0,$currentMappingInfo=array(),$pathLevels=array(),$optDat=array(),$contentSplittedByMapping=array(),$level=0,$tRows=array(),$formPrefix='',$path='',$mapOK=1)	{";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:4:"cDat";a:3:{s:4:"text";s:82:"
 
-Renders the hierarchical display for a data structure.
+Renders the hierarchical display for a Data Structure.
 Calls itself recursively
-";s:5:"param";a:11:{i:0;a:2:{i:0;s:6:"[type]";i:1;s:16:"$dataStruct: ...";}i:1;a:2:{i:0;s:6:"[type]";i:1;s:24:"$currentMappingInfo: ...";}i:2;a:2:{i:0;s:6:"[type]";i:1;s:16:"$pathLevels: ...";}i:3;a:2:{i:0;s:6:"[type]";i:1;s:12:"$optDat: ...";}i:4;a:2:{i:0;s:6:"[type]";i:1;s:30:"$contentSplittedByMapping: ...";}i:5;a:2:{i:0;s:6:"[type]";i:1;s:11:"$level: ...";}i:6;a:2:{i:0;s:6:"[type]";i:1;s:11:"$tRows: ...";}i:7;a:2:{i:0;s:6:"[type]";i:1;s:16:"$formPrefix: ...";}i:8;a:2:{i:0;s:6:"[type]";i:1;s:10:"$path: ...";}i:9;a:2:{i:0;s:6:"[type]";i:1;s:10:"$path: ...";}i:10;a:2:{i:0;s:6:"[type]";i:1;s:11:"$mapOK: ...";}}s:6:"return";a:2:{i:0;s:5:"array";i:1;s:35:"Table rows as an array of <tr> tags";}}s:7:"content";a:2:{i:0;s:507:"
-		$PREVIEW = t3lib_div::GPvar('_preview');
-
+";s:5:"param";a:11:{i:0;a:2:{i:0;s:5:"array";i:1;s:42:"Part of Data Structure (array of elements)";}i:1;a:2:{i:0;s:7:"boolean";i:1;s:129:"If true, the Data Structure table will show links for mapping actions. Otherwise it will just layout the Data Structure visually.";}i:2;a:2:{i:0;s:5:"array";i:1;s:153:"Part of Current mapping information corresponding to the $dataStruct array - used to evaluate the status of mapping for a certain point in the structure.";}i:3;a:2:{i:0;s:5:"array";i:1;s:19:"Array of HTML paths";}i:4;a:2:{i:0;s:5:"array";i:1;s:54:"Options for mapping mode control (INNER, OUTER etc...)";}i:5;a:2:{i:0;s:5:"array";i:1;s:161:"Content from template file splitted by current mapping info - needed to evaluate whether mapping information for a certain level actually worked on live content!";}i:6;a:2:{i:0;s:7:"integer";i:1;s:28:"Recursion level, counting up";}i:7;a:2:{i:0;s:5:"array";i:1;s:98:"Accumulates the table rows containing the structure. This is the array returned from the function.";}i:8;a:2:{i:0;s:6:"string";i:1;s:93:"Form field prefix. For each recursion of this function, two [] parts are added to this prefix";}i:9;a:2:{i:0;s:6:"string";i:1;s:66:"HTML path. For each recursion a section (divided by "|") is added.";}i:10;a:2:{i:0;s:7:"boolean";i:1;s:87:"If true, the "Map" link can be shown, otherwise not. Used internally in the recursions.";}}s:6:"return";a:2:{i:0;s:5:"array";i:1;s:43:"Table rows as an array of <tr> tags, $tRows";}}s:7:"content";a:2:{i:0;s:507:"
 			// Data Structure array must be ... and array of course...
 		if (is_array($dataStruct))	{
 			foreach($dataStruct as $key => $value)	{
@@ -1118,15 +1200,46 @@ Calls itself recursively
 						// Making the row:
 						// ********************
 					$rowCells=array();
-					$bgCo
+
+						// Icon:
+					if ($value['type']=='array')	{
+		
 [...]
-******
+FTER:
+					if ($addEditRows && !$placeBefore)	{
+						$tRows[]= $addEditRows;
+					}
+				}
+			}
+		}
+
+		return $tRows;		
+	}
+
+	";i:1;i:1;}s:12:"content_size";i:10050;s:13:"content_lines";i:203;s:6:"atLine";i:1238;}i:25;a:7:{s:6:"header";s:72:"function drawDataStructureMap_editItem($formPrefix,$key,$value,$level)	{";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:4:"cDat";a:3:{s:4:"text";s:80:"
+
+Creates the editing row for a Data Structure element - when DS's are build...
+";s:5:"param";a:4:{i:0;a:2:{i:0;s:6:"string";i:1;s:19:"Form element prefix";}i:1;a:2:{i:0;s:6:"string";i:1;s:20:"Key for form element";}i:2;a:2:{i:0;s:5:"array";i:1;s:18:"Values for element";}i:3;a:2:{i:0;s:7:"integer";i:1;s:17:"Indentation level";}}s:6:"return";a:2:{i:0;s:5:"array";i:1;s:111:"Two values, first is addEditRows (string HTML content), second is boolean whether to place row before or after.";}}s:7:"content";a:2:{i:0;s:507:"
+			// Init:
+		$addEditRows='';
+		$placeBefore=0;
+		
+			// If editing command is set:
+		if ($this->editDataStruct)	{
+			if ($this->DS_element == $formPrefix.'['.$key.']')	{	// If the editing-command points to this element:
+			
+					// Initialize, detecting either "add" or "edit" (default) mode:
+				$autokey='';
+				if ($this->DS_cmd=='add')	{
+					if (trim($this->fieldName
+[...]
+*****
 	 *
-	 * Helperfunctions for File-based DS/TO creation
+	 * Helper-functions for File-based DS/TO creation
 	 *
 	 ****************************************************/
 	 
-	";i:1;i:1;}s:12:"content_size";i:14664;s:13:"content_lines";i:277;s:6:"atLine";i:847;}i:21;a:8:{s:6:"header";s:60:"function substEtypeWithRealStuff(&$elArray,$v_sub=array())	{";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:11:"sectionText";a:1:{i:0;s:45:"Helperfunctions for File-based DS/TO creation";}s:4:"cDat";a:5:{s:4:"text";s:285:"
+	";i:1;i:1;}s:12:"content_size";i:5935;s:13:"content_lines";i:110;s:6:"atLine";i:1451;}i:27;a:8:{s:6:"header";s:60:"function substEtypeWithRealStuff(&$elArray,$v_sub=array())	{";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:11:"sectionText";a:1:{i:0;s:46:"Helper-functions for File-based DS/TO creation";}s:4:"cDat";a:5:{s:4:"text";s:285:"
 
 When mapping HTML files to DS the field types are selected amount some presets - this function converts these presets into the actual settings needed in the DS
 Typically called like: ->substEtypeWithRealStuff($storeDataStruct['ROOT']['el'],$contentSplittedByMapping['sub']['ROOT']);
@@ -1147,7 +1260,7 @@ rray[$key]['el']))	{
 		}	// End loop
 	}
 
-	";i:1;i:1;}s:12:"content_size";i:6748;s:13:"content_lines";i:219;s:6:"atLine";i:1134;}i:23;a:7:{s:6:"header";s:56:"function substEtypeWithRealStuff_contentInfo($content)	{";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:4:"cDat";a:5:{s:4:"text";s:144:"
+	";i:1;i:1;}s:12:"content_size";i:6748;s:13:"content_lines";i:219;s:6:"atLine";i:1571;}i:29;a:7:{s:6:"header";s:56:"function substEtypeWithRealStuff_contentInfo($content)	{";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:4:"cDat";a:5:{s:4:"text";s:144:"
 
 Analyzes the input content for various stuff which can be used to generate the DS.
 Basically this tries to intelligently guess some settings.
@@ -1178,9 +1291,9 @@ Basically this tries to intelligently guess some settings.
 	 *
 	 *******************************/
 
-	";i:1;i:1;}s:12:"content_size";i:717;s:13:"content_lines";i:38;s:6:"atLine";i:1362;}i:25;a:8:{s:6:"header";s:52:"function getDataStructFromDSO($datString,$file='')	{";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:11:"sectionText";a:1:{i:0;s:24:"Various helper functions";}s:4:"cDat";a:3:{s:4:"text";s:45:"
+	";i:1;i:1;}s:12:"content_size";i:717;s:13:"content_lines";i:38;s:6:"atLine";i:1799;}i:31;a:8:{s:6:"header";s:52:"function getDataStructFromDSO($datString,$file='')	{";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:11:"sectionText";a:1:{i:0;s:24:"Various helper functions";}s:4:"cDat";a:3:{s:4:"text";s:45:"
 
-Returns data structure from the $datString
+Returns Data Structure from the $datString
 ";s:5:"param";a:2:{i:0;a:2:{i:0;s:6:"string";i:1;s:61:"XML content which is parsed into an array, which is returned.";}i:1;a:2:{i:0;s:6:"string";i:1;s:88:"Absolute filename from which to read the XML data. Will override any input in $datString";}}s:6:"return";a:2:{i:0;s:5:"mixed";i:1;s:129:"The variable $dataStruct. Should be array. If string, then no structures was found and the function returns the XML parser error.";}}s:7:"content";a:2:{i:0;s:173:"		if ($file)	{
 			$dataStruct = t3lib_div::xml2array(t3lib_div::getUrl($file));
 		} else {
@@ -1189,7 +1302,7 @@ Returns data structure from the $datString
 		return $dataStruct;
 	}
 
-	";i:1;i:0;}s:12:"content_size";i:173;s:13:"content_lines";i:8;s:6:"atLine";i:1408;}i:27;a:7:{s:6:"header";s:45:"function linkForDisplayOfPath($title,$path)	{";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:4:"cDat";a:3:{s:4:"text";s:85:"
+	";i:1;i:0;}s:12:"content_size";i:173;s:13:"content_lines";i:8;s:6:"atLine";i:1845;}i:33;a:7:{s:6:"header";s:45:"function linkForDisplayOfPath($title,$path)	{";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:4:"cDat";a:3:{s:4:"text";s:85:"
 
 Creating a link to the display frame for display of the "HTML-path" given as $path
 ";s:5:"param";a:2:{i:0;a:2:{i:0;s:6:"string";i:1;s:16:"The text to link";}i:1;a:2:{i:0;s:6:"string";i:1;s:29:"The path string ("HTML-path")";}}s:6:"return";a:2:{i:0;s:6:"string";i:1;s:41:"HTML link, pointing to the display frame.";}}s:7:"content";a:2:{i:0;s:291:"		$theArray=array(
@@ -1203,7 +1316,7 @@ Creating a link to the display frame for display of the "HTML-path" given as $pa
 		return $content;
 	}
 
-	";i:1;i:0;}s:12:"content_size";i:291;s:13:"content_lines";i:11;s:6:"atLine";i:1424;}i:29;a:7:{s:6:"header";s:33:"function linkThisScript($array)	{";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:4:"cDat";a:5:{s:4:"text";s:153:"
+	";i:1;i:0;}s:12:"content_size";i:291;s:13:"content_lines";i:11;s:6:"atLine";i:1861;}i:35;a:7:{s:6:"header";s:33:"function linkThisScript($array)	{";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:4:"cDat";a:5:{s:4:"text";s:153:"
 
 Creates a link to this script, maintaining the values of the displayFile, displayTable, displayUid variables.
 Primarily used by ->drawDataStructureMap
@@ -1217,7 +1330,7 @@ Primarily used by ->drawDataStructureMap
 		return htmlspecialchars('index.php?'.$p);
 	}
 
-	";i:1;i:0;}s:12:"content_size";i:253;s:13:"content_lines";i:10;s:6:"atLine";i:1444;}i:31;a:7:{s:6:"header";s:75:"function makeIframeForVisual($file,$path,$limitTags,$showOnly,$preview=0)	{";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:4:"cDat";a:5:{s:4:"text";s:75:"
+	";i:1;i:0;}s:12:"content_size";i:253;s:13:"content_lines";i:10;s:6:"atLine";i:1881;}i:37;a:7:{s:6:"header";s:75:"function makeIframeForVisual($file,$path,$limitTags,$showOnly,$preview=0)	{";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:4:"cDat";a:5:{s:4:"text";s:75:"
 
 Creates the HTML code for the IFRAME in which the display mode is shown:
 ";s:5:"param";a:5:{i:0;a:2:{i:0;s:6:"string";i:1;s:38:"File name to display in exploded mode.";}i:1;a:2:{i:0;s:6:"string";i:1;s:9:"HTML-page";}i:2;a:2:{i:0;s:6:"string";i:1;s:35:"Tags which is the only ones to show";}i:3;a:2:{i:0;s:7:"boolean";i:1;s:59:"If set, the template is only shown, mapping links disabled.";}i:4;a:2:{i:0;s:7:"boolean";i:1;s:16:"Preview enabled.";}}s:6:"return";a:2:{i:0;s:6:"string";i:1;s:25:"HTML code for the IFRAME.";}s:5:"other";a:1:{i:0;s:19:"@see main_display()";}s:11:"other_index";a:1:{s:4:"@see";a:1:{i:0;s:15:"main_display() ";}}}s:7:"content";a:2:{i:0;s:348:"		$url = 'index.php?mode=display'.
@@ -1228,7 +1341,7 @@ Creates the HTML code for the IFRAME in which the display mode is shown:
 		return '<iframe width="100%" height="500" src="'.htmlspecialchars($url).'#_MARKED_UP_ELEMENT" style="border: 1xpx solid black;"></iframe>';
 	}
 
-	";i:1;i:0;}s:12:"content_size";i:348;s:13:"content_lines";i:8;s:6:"atLine";i:1466;}i:33;a:7:{s:6:"header";s:62:"function explodeMappingToTagsStr($mappingToTags,$unsetAll=0)	{";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:4:"cDat";a:3:{s:4:"text";s:47:"
+	";i:1;i:0;}s:12:"content_size";i:348;s:13:"content_lines";i:8;s:6:"atLine";i:1903;}i:39;a:7:{s:6:"header";s:62:"function explodeMappingToTagsStr($mappingToTags,$unsetAll=0)	{";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:4:"cDat";a:3:{s:4:"text";s:47:"
 
 Converts a list of mapping rules to an array
 ";s:5:"param";a:2:{i:0;a:2:{i:0;s:6:"string";i:1;s:23:"Mapping rules in a list";}i:1;a:2:{i:0;s:7:"boolean";i:1;s:50:"If set, then the ALL rule (key "*") will be unset.";}}s:6:"return";a:2:{i:0;s:5:"array";i:1;s:42:"Mapping rules in a multidimensional array.";}}s:7:"content";a:2:{i:0;s:305:"		$elements = t3lib_div::trimExplode(',',strtolower($mappingToTags));
@@ -1241,7 +1354,7 @@ Converts a list of mapping rules to an array
 		return $output;
 	}
 
-	";i:1;i:0;}s:12:"content_size";i:305;s:13:"content_lines";i:10;s:6:"atLine";i:1482;}i:35;a:7:{s:6:"header";s:44:"function unsetArrayPath(&$dataStruct,$ref)	{";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:4:"cDat";a:3:{s:4:"text";s:68:"
+	";i:1;i:0;}s:12:"content_size";i:305;s:13:"content_lines";i:10;s:6:"atLine";i:1919;}i:41;a:7:{s:6:"header";s:44:"function unsetArrayPath(&$dataStruct,$ref)	{";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:4:"cDat";a:3:{s:4:"text";s:68:"
 
 General purpose unsetting of elements in a multidimensional array
 ";s:5:"param";a:2:{i:0;a:2:{i:0;s:5:"array";i:1;s:58:"Array from which to remove elements (passed by reference!)";}i:1;a:2:{i:0;s:5:"array";i:1;s:94:"An array where the values in the specified order points to the position in the array to unset.";}}s:6:"return";a:2:{i:0;s:4:"void";i:1;s:0:"";}}s:7:"content";a:2:{i:0;s:182:"		$key = array_shift($ref);
@@ -1253,7 +1366,7 @@ General purpose unsetting of elements in a multidimensional array
 		}
 	}
 
-	";i:1;i:0;}s:12:"content_size";i:182;s:13:"content_lines";i:9;s:6:"atLine";i:1500;}i:37;a:7:{s:6:"header";s:76:"function cleanUpMappingInfoAccordingToDS(&$currentMappingInfo,$dataStruct)	{";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:4:"cDat";a:3:{s:4:"text";s:161:"
+	";i:1;i:0;}s:12:"content_size";i:182;s:13:"content_lines";i:9;s:6:"atLine";i:1937;}i:43;a:7:{s:6:"header";s:76:"function cleanUpMappingInfoAccordingToDS(&$currentMappingInfo,$dataStruct)	{";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:4:"cDat";a:3:{s:4:"text";s:161:"
 
 Function to clean up "old" stuff in the currentMappingInfo array. Basically it will remove EVERYTHING which is not known according to the input Data Structure
 ";s:5:"param";a:2:{i:0;a:2:{i:0;s:5:"array";i:1;s:42:"Current Mapping info (passed by reference)";}i:1;a:2:{i:0;s:5:"array";i:1;s:14:"Data Structure";}}s:6:"return";a:2:{i:0;s:4:"void";i:1;s:0:"";}}s:7:"content";a:2:{i:0;s:477:"		if (is_array($currentMappingInfo))	{
@@ -1281,7 +1394,7 @@ Function to clean up "old" stuff in the currentMappingInfo array. Basically it w
 	 *
 	 *****************************************/
 
-	";i:1;i:0;}s:12:"content_size";i:477;s:13:"content_lines";i:25;s:6:"atLine";i:1517;}i:39;a:8:{s:6:"header";s:25:"function main_display()	{";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:11:"sectionText";a:1:{i:0;s:12:"DISPLAY mode";}s:4:"cDat";a:5:{s:4:"text";s:61:"
+	";i:1;i:0;}s:12:"content_size";i:477;s:13:"content_lines";i:25;s:6:"atLine";i:1954;}i:45;a:8:{s:6:"header";s:25:"function main_display()	{";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:11:"sectionText";a:1:{i:0;s:12:"DISPLAY mode";}s:4:"cDat";a:5:{s:4:"text";s:61:"
 
 Outputs the display of a marked-up HTML file in the IFRAME
 ";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:4:"void";i:1;s:19:"Exits before return";}s:5:"other";a:1:{i:0;s:26:"@see makeIframeForVisual()";}s:11:"other_index";a:1:{s:4:"@see";a:1:{i:0;s:22:"makeIframeForVisual() ";}}}s:7:"content";a:2:{i:0;s:507:"	
@@ -1302,7 +1415,7 @@ Outputs the display of a marked-up HTML file in the IFRAME
 		exit;
 	}
 	
-	";i:1;i:1;}s:12:"content_size";i:1313;s:13:"content_lines";i:34;s:6:"atLine";i:1549;}i:41;a:7:{s:6:"header";s:78:"function displayFileContentWithMarkup($content,$path,$relPathFix,$limitTags)	{";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:4:"cDat";a:5:{s:4:"text";s:75:"
+	";i:1;i:1;}s:12:"content_size";i:1314;s:13:"content_lines";i:34;s:6:"atLine";i:1986;}i:47;a:7:{s:6:"header";s:78:"function displayFileContentWithMarkup($content,$path,$relPathFix,$limitTags)	{";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:4:"cDat";a:5:{s:4:"text";s:75:"
 
 This will mark up the part of the HTML file which is pointed to by $path
 ";s:5:"param";a:4:{i:0;a:2:{i:0;s:6:"string";i:1;s:28:"The file content as a string";}i:1;a:2:{i:0;s:6:"string";i:1;s:27:"The "HTML-path" to split by";}i:2;a:2:{i:0;s:6:"string";i:1;s:45:"The rel-path string to fix images/links with.";}i:3;a:2:{i:0;s:6:"string";i:1;s:20:"List of tags to show";}}s:6:"return";a:2:{i:0;s:4:"void";i:1;s:8:"Exits...";}s:5:"other";a:1:{i:0;s:19:"@see main_display()";}s:11:"other_index";a:1:{s:4:"@see";a:1:{i:0;s:15:"main_display() ";}}}s:7:"content";a:2:{i:0;s:507:"		$markupObj = t3lib_div::makeInstance('tx_templavoila_htmlmarkup');
@@ -1322,10 +1435,10 @@ UP_ELEMENT"></a>'.$cParts[1];
 		}
 	}
 	
-	";i:1;i:1;}s:12:"content_size";i:964;s:13:"content_lines";i:25;s:6:"atLine";i:1594;}i:43;a:4:{s:6:"header";s:62:"function displayFileContentWithPreview($content,$relPathFix)	{";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:4:"cDat";a:5:{s:4:"text";s:101:"
+	";i:1;i:1;}s:12:"content_size";i:964;s:13:"content_lines";i:25;s:6:"atLine";i:2031;}i:49;a:4:{s:6:"header";s:62:"function displayFileContentWithPreview($content,$relPathFix)	{";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:4:"cDat";a:5:{s:4:"text";s:101:"
 
 This will add preview data to the HTML file used as a template according to the currentMappingInfo
-";s:5:"param";a:2:{i:0;a:2:{i:0;s:6:"string";i:1;s:28:"The file content as a string";}i:1;a:2:{i:0;s:6:"string";i:1;s:45:"The rel-path string to fix images/links with.";}}s:6:"return";a:2:{i:0;s:4:"void";i:1;s:8:"Exits...";}s:5:"other";a:1:{i:0;s:19:"@see main_display()";}s:11:"other_index";a:1:{s:4:"@see";a:1:{i:0;s:15:"main_display() ";}}}s:6:"atLine";i:1628;}i:45;a:7:{s:6:"header";s:36:"function displayFrameError($error)	{";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:4:"cDat";a:3:{s:4:"text";s:51:"
+";s:5:"param";a:2:{i:0;a:2:{i:0;s:6:"string";i:1;s:28:"The file content as a string";}i:1;a:2:{i:0;s:6:"string";i:1;s:45:"The rel-path string to fix images/links with.";}}s:6:"return";a:2:{i:0;s:4:"void";i:1;s:8:"Exits...";}s:5:"other";a:1:{i:0;s:19:"@see main_display()";}s:11:"other_index";a:1:{s:4:"@see";a:1:{i:0;s:15:"main_display() ";}}}s:6:"atLine";i:2065;}i:51;a:7:{s:6:"header";s:36:"function displayFrameError($error)	{";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:4:"cDat";a:3:{s:4:"text";s:51:"
 
 Outputs a simple HTML page with an error message
 ";s:5:"param";a:1:{i:0;a:2:{i:0;s:6:"string";i:1;s:37:"Error message for output in <h2> tags";}}s:6:"return";a:2:{i:0;s:4:"void";i:1;s:23:"Echos out an HTML page.";}}s:7:"content";a:2:{i:0;s:527:"			echo '
@@ -1355,7 +1468,7 @@ $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();
 ?>
-";i:1;i:0;}s:12:"content_size";i:527;s:13:"content_lines";i:27;s:6:"atLine";i:1664;}}}s:14:"MD5_19aaeae789";a:4:{s:8:"filename";s:14:"mod1/index.php";s:8:"filesize";i:56318;s:6:"header";a:5:{s:4:"text";s:49:"
+";i:1;i:0;}s:12:"content_size";i:527;s:13:"content_lines";i:27;s:6:"atLine";i:2101;}}}s:14:"MD5_19aaeae789";a:4:{s:8:"filename";s:14:"mod1/index.php";s:8:"filesize";i:57064;s:6:"header";a:5:{s:4:"text";s:49:"
 
 Module 'Page' for the 'templavoila' extension.
 ";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}s:5:"other";a:4:{i:0;s:41:"@author		Robert Lemke <rl@robertlemke.de>";i:1;s:44:"@coauthor	Kasper Skaarhoj <kasper@typo3.com>";i:2;s:15:"@package		TYPO3";i:3;s:26:"@subpackage	tx_templavoila";}s:11:"other_index";a:4:{s:7:"@author";a:1:{i:0;s:32:"Robert Lemke <rl@robertlemke.de>";}s:9:"@coauthor";a:1:{i:0;s:34:"Kasper Skaarhoj <kasper@typo3.com>";}s:8:"@package";a:1:{i:0;s:6:"TYPO3 ";}s:11:"@subpackage";a:1:{i:0;s:15:"tx_templavoila ";}}}s:3:"DAT";a:27:{i:1;a:8:{s:6:"header";s:51:"class tx_templavoila_module1 extends t3lib_SCbase {";s:5:"class";i:1;s:11:"parentClass";s:22:"tx_templavoila_module1";s:4:"cDat";a:5:{s:4:"text";s:49:"
@@ -1419,7 +1532,7 @@ Main function of the module.
 	 * 
 	 ******************************************/
 	 
-	";i:1;i:1;}s:12:"content_size";i:3196;s:13:"content_lines";i:100;s:6:"atLine";i:162;}i:9;a:8:{s:6:"header";s:40:"function cmd_createNewRecord ($params) {";s:11:"parentClass";s:22:"tx_templavoila_module1";s:11:"sectionText";a:1:{i:0;s:17:"Command functions";}s:4:"cDat";a:5:{s:4:"text";s:50:"
+	";i:1;i:1;}s:12:"content_size";i:3659;s:13:"content_lines";i:115;s:6:"atLine";i:162;}i:9;a:8:{s:6:"header";s:40:"function cmd_createNewRecord ($params) {";s:11:"parentClass";s:22:"tx_templavoila_module1";s:11:"sectionText";a:1:{i:0;s:17:"Command functions";}s:4:"cDat";a:5:{s:4:"text";s:50:"
 
 Initiates processing for creating a new record.
 ";s:5:"param";a:1:{i:0;a:2:{i:0;s:6:"string";i:1;s:125:"$params: The parent element where to create the record. Example: 'tt_content:149:sDEF:field_FIELDNAME:0' where 149 is the PID";}}s:6:"return";a:2:{i:0;s:4:"void";i:1;s:0:"";}s:5:"other";a:1:{i:0;s:21:"@see		insertRecord ()";}s:11:"other_index";a:1:{s:4:"@see";a:1:{i:0;s:15:"insertRecord ()";}}}s:7:"content";a:2:{i:0;s:173:"		$this->insertRecord($params,array(
@@ -1429,14 +1542,14 @@ Initiates processing for creating a new record.
 		header('Location: '.t3lib_div::locationHeaderUrl('index.php?id='.$this->id));
 	}
 
-	";i:1;i:0;}s:12:"content_size";i:173;s:13:"content_lines";i:7;s:6:"atLine";i:270;}i:11;a:7:{s:6:"header";s:37:"function cmd_unlinkRecord ($params) {";s:11:"parentClass";s:22:"tx_templavoila_module1";s:4:"cDat";a:5:{s:4:"text";s:47:"
+	";i:1;i:0;}s:12:"content_size";i:173;s:13:"content_lines";i:7;s:6:"atLine";i:285;}i:11;a:7:{s:6:"header";s:37:"function cmd_unlinkRecord ($params) {";s:11:"parentClass";s:22:"tx_templavoila_module1";s:4:"cDat";a:5:{s:4:"text";s:47:"
 
 Initiates processing for unlinking a record.
 ";s:5:"param";a:1:{i:0;a:2:{i:0;s:6:"string";i:1;s:36:"$params: The element to be unlinked.";}}s:6:"return";a:2:{i:0;s:4:"void";i:1;s:0:"";}s:5:"other";a:1:{i:0;s:20:"@see		pasteRecord ()";}s:11:"other_index";a:1:{s:4:"@see";a:1:{i:0;s:14:"pasteRecord ()";}}}s:7:"content";a:2:{i:0;s:130:"		$this->pasteRecord('unlink', $params, '');
 		header('Location: '.t3lib_div::locationHeaderUrl('index.php?id='.$this->id));
 	}
 
-	";i:1;i:0;}s:12:"content_size";i:130;s:13:"content_lines";i:4;s:6:"atLine";i:285;}i:13;a:7:{s:6:"header";s:36:"function cmd_pasteRecord ($params) {";s:11:"parentClass";s:22:"tx_templavoila_module1";s:4:"cDat";a:5:{s:4:"text";s:45:"
+	";i:1;i:0;}s:12:"content_size";i:130;s:13:"content_lines";i:4;s:6:"atLine";i:300;}i:13;a:7:{s:6:"header";s:36:"function cmd_pasteRecord ($params) {";s:11:"parentClass";s:22:"tx_templavoila_module1";s:4:"cDat";a:5:{s:4:"text";s:45:"
 
 Initiates processing for pasting a record.
 ";s:5:"param";a:1:{i:0;a:2:{i:0;s:6:"string";i:1;s:34:"$params: The element to be pasted.";}}s:6:"return";a:2:{i:0;s:4:"void";i:1;s:0:"";}s:5:"other";a:1:{i:0;s:20:"@see		pasteRecord ()";}s:11:"other_index";a:1:{s:4:"@see";a:1:{i:0;s:14:"pasteRecord ()";}}}s:7:"content";a:2:{i:0;s:323:"		$this->pasteRecord($params, t3lib_div::GPvar('target'), t3lib_div::GPvar('destination'));
@@ -1460,7 +1573,7 @@ Initiates processing for pasting a record.
 	 *
 	 ********************************************/
 	 
-	";i:1;i:0;}s:12:"content_size";i:323;s:13:"content_lines";i:21;s:6:"atLine";i:297;}i:15;a:8:{s:6:"header";s:36:"function renderEditPageScreen()    {";s:11:"parentClass";s:22:"tx_templavoila_module1";s:11:"sectionText";a:1:{i:0;s:19:"Rendering functions";}s:4:"cDat";a:3:{s:4:"text";s:81:"
+	";i:1;i:0;}s:12:"content_size";i:323;s:13:"content_lines";i:21;s:6:"atLine";i:312;}i:15;a:8:{s:6:"header";s:36:"function renderEditPageScreen()    {";s:11:"parentClass";s:22:"tx_templavoila_module1";s:11:"sectionText";a:1:{i:0;s:19:"Rendering functions";}s:4:"cDat";a:3:{s:4:"text";s:81:"
 
 Displays the default view of a page, showing the nested structure of elements.
 ";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:6:"string";i:1;s:19:"The modules content";}}s:7:"content";a:2:{i:0;s:507:"		global $LANG, $BE_USER;
@@ -1481,7 +1594,7 @@ e done differently)
 		return $content;		
 	}
 
-	";i:1;i:1;}s:12:"content_size";i:1089;s:13:"content_lines";i:24;s:6:"atLine";i:324;}i:17;a:7:{s:6:"header";s:48:"function renderCreatePageScreen ($positionPid) {";s:11:"parentClass";s:22:"tx_templavoila_module1";s:4:"cDat";a:5:{s:4:"text";s:43:"
+	";i:1;i:1;}s:12:"content_size";i:1089;s:13:"content_lines";i:24;s:6:"atLine";i:339;}i:17;a:7:{s:6:"header";s:48:"function renderCreatePageScreen ($positionPid) {";s:11:"parentClass";s:22:"tx_templavoila_module1";s:4:"cDat";a:5:{s:4:"text";s:43:"
 
 Creates the screen for "new page wizard"
 ";s:5:"param";a:1:{i:0;a:2:{i:0;s:7:"integer";i:1;s:248:"$positionPid: Can be positive and negative depending of where the new page is going: Negative always points to a position AFTER the page having the abs. value of the positionId. Positive numbers means to create as the first subpage to another page.";}}s:6:"return";a:2:{i:0;s:6:"string";i:1;s:30:"Content for the screen output.";}s:5:"other";a:1:{i:0;s:45:"@todo				Check required field(s), support t3d";}s:11:"other_index";a:1:{s:5:"@todo";a:1:{i:0;s:36:"Check required field(s), support t3d";}}}s:7:"content";a:2:{i:0;s:507:"		global $LANG, $BE_USER, $TYPO3_CONF_VARS;
@@ -1498,7 +1611,7 @@ id" value="'.$positionPid.'" />';
 		return $content;
 	}
 
-	";i:1;i:1;}s:12:"content_size";i:3173;s:13:"content_lines";i:69;s:6:"atLine";i:356;}i:19;a:7:{s:6:"header";s:73:"function renderTemplateSelector ($positionPid, $templateType='tmplobj') {";s:11:"parentClass";s:22:"tx_templavoila_module1";s:4:"cDat";a:3:{s:4:"text";s:33:"
+	";i:1;i:1;}s:12:"content_size";i:3173;s:13:"content_lines";i:69;s:6:"atLine";i:371;}i:19;a:7:{s:6:"header";s:73:"function renderTemplateSelector ($positionPid, $templateType='tmplobj') {";s:11:"parentClass";s:22:"tx_templavoila_module1";s:4:"cDat";a:3:{s:4:"text";s:33:"
 
 Renders the template selector.
 ";s:5:"param";a:2:{i:0;a:2:{i:0;s:7:"integer";i:1;s:247:"Position id. Can be positive and negative depending of where the new page is going: Negative always points to a position AFTER the page having the abs. value of the positionId. Positive numbers means to create as the first subpage to another page.";}i:1;a:2:{i:0;s:6:"string";i:1;s:89:"$templateType: The template type, currently only 'tmplobj' is supported, 't3d' is planned";}}s:6:"return";a:2:{i:0;s:6:"string";i:1;s:57:"HTML output containing a table with the template selector";}}s:7:"content";a:2:{i:0;s:507:"		global $LANG;
@@ -1516,7 +1629,7 @@ Renders the template selector.
 	 *
 	 ********************************************/
 
-	";i:1;i:1;}s:12:"content_size";i:2720;s:13:"content_lines";i:54;s:6:"atLine";i:433;}i:21;a:8:{s:6:"header";s:75:"function renderFrameWorkBasic($dsInfo,$parentPos='',$clipboardElInPath=0)	{";s:11:"parentClass";s:22:"tx_templavoila_module1";s:11:"sectionText";a:1:{i:0;s:31:"Framework rendering function(s)";}s:4:"cDat";a:3:{s:4:"text";s:66:"
+	";i:1;i:1;}s:12:"content_size";i:2720;s:13:"content_lines";i:54;s:6:"atLine";i:448;}i:21;a:8:{s:6:"header";s:75:"function renderFrameWorkBasic($dsInfo,$parentPos='',$clipboardElInPath=0)	{";s:11:"parentClass";s:22:"tx_templavoila_module1";s:11:"sectionText";a:1:{i:0;s:31:"Framework rendering function(s)";}s:4:"cDat";a:3:{s:4:"text";s:66:"
 
 Renders the "basic" display framework.
 Calls itself recursively
@@ -1538,7 +1651,7 @@ Calls itself recursively
 		return $content;
 	}
 
-	";i:1;i:1;}s:12:"content_size";i:8974;s:13:"content_lines";i:136;s:6:"atLine";i:497;}i:23;a:7:{s:6:"header";s:26:"function renderNonUsed()	{";s:11:"parentClass";s:22:"tx_templavoila_module1";s:4:"cDat";a:5:{s:4:"text";s:119:"
+	";i:1;i:1;}s:12:"content_size";i:8974;s:13:"content_lines";i:136;s:6:"atLine";i:512;}i:23;a:7:{s:6:"header";s:26:"function renderNonUsed()	{";s:11:"parentClass";s:22:"tx_templavoila_module1";s:4:"cDat";a:5:{s:4:"text";s:119:"
 
 Displays a list of local content elements on the page which were NOT used in the hierarchical structure of the page.
 ";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:6:"string";i:1;s:19:"Display output HTML";}s:5:"other";a:1:{i:0;s:156:"@todo	Clean up this list so it becomes full-features for the elements shown (having all the editing, copy, cut, blablabla features that other elements have)";}s:11:"other_index";a:1:{s:5:"@todo";a:1:{i:0;s:150:"Clean up this list so it becomes full-features for the elements shown (having all the editing, copy, cut, blablabla features that other elements have)";}}}s:7:"content";a:2:{i:0;s:507:"		$usedUids = array_keys($this->global_tt_content_elementRegister);
@@ -1557,39 +1670,41 @@ Icon.htmlspecialchars($row['header']).'</td></tr>';
 		return '<table border="1">'.implode('',$tRows).'</table>';
 	}
 
-	";i:1;i:1;}s:12:"content_size";i:884;s:13:"content_lines";i:16;s:6:"atLine";i:640;}i:25;a:7:{s:6:"header";s:37:"function linkEdit($str,$table,$uid)	{";s:11:"parentClass";s:22:"tx_templavoila_module1";s:4:"cDat";a:3:{s:4:"text";s:35:"
+	";i:1;i:1;}s:12:"content_size";i:884;s:13:"content_lines";i:16;s:6:"atLine";i:655;}i:25;a:7:{s:6:"header";s:37:"function linkEdit($str,$table,$uid)	{";s:11:"parentClass";s:22:"tx_templavoila_module1";s:4:"cDat";a:3:{s:4:"text";s:35:"
 
 Returns an HTML link for editing
 ";s:5:"param";a:3:{i:0;a:2:{i:0;s:6:"string";i:1;s:26:"$str: The label (or image)";}i:1;a:2:{i:0;s:6:"string";i:1;s:35:"$table: The table, fx. 'tt_content'";}i:2;a:2:{i:0;s:7:"integer";i:1;s:41:"$uid: The uid of the element to be edited";}}s:6:"return";a:2:{i:0;s:6:"string";i:1;s:57:"HTML anchor tag containing the label and the correct link";}}s:7:"content";a:2:{i:0;s:211:"		$onClick = t3lib_BEfunc::editOnClick('&edit['.$table.']['.$uid.']=edit',$this->doc->backPath);
 		return '<a style="text-decoration: none;" href="#" onclick="'.htmlspecialchars($onClick).'">'.$str.'</a>';
 	}
 
-	";i:1;i:0;}s:12:"content_size";i:211;s:13:"content_lines";i:4;s:6:"atLine";i:665;}i:27;a:7:{s:6:"header";s:32:"function linkNew($str,$params)	{";s:11:"parentClass";s:22:"tx_templavoila_module1";s:4:"cDat";a:3:{s:4:"text";s:49:"
+	";i:1;i:0;}s:12:"content_size";i:211;s:13:"content_lines";i:4;s:6:"atLine";i:680;}i:27;a:7:{s:6:"header";s:32:"function linkNew($str,$params)	{";s:11:"parentClass";s:22:"tx_templavoila_module1";s:4:"cDat";a:3:{s:4:"text";s:49:"
 
 Returns an HTML link for creating a new record
-";s:5:"param";a:2:{i:0;a:2:{i:0;s:6:"string";i:1;s:26:"$str: The label (or image)";}i:1;a:2:{i:0;s:6:"string";i:1;s:95:"$params: The parameters for creating the new record. Example: pages:78:sDEF:field_contentarea:0";}}s:6:"return";a:2:{i:0;s:6:"string";i:1;s:57:"HTML anchor tag containing the label and the correct link";}}s:7:"content";a:2:{i:0;s:214:"		return '<a href="'.htmlspecialchars('db_new_content_el.php?id='.$this->id.'&sys_language_uid='.$this->current_sys_language.'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'">'.$str.'</a>';
+";s:5:"param";a:2:{i:0;a:2:{i:0;s:6:"string";i:1;s:26:"$str: The label (or image)";}i:1;a:2:{i:0;s:6:"string";i:1;s:95:"$params: The parameters for creating the new record. Example: pages:78:sDEF:field_contentarea:0";}}s:6:"return";a:2:{i:0;s:6:"string";i:1;s:57:"HTML anchor tag containing the label and the correct link";}}s:7:"content";a:2:{i:0;s:504:"			// Hi rob. I added this link because we couldn't make your wizard work - and then the module is no-good. So I put this back into function until the wizard is working:
+		return '<a href="'.htmlspecialchars('index.php?id='.$this->id.'&createNew='.rawurlencode($params)).'">'.$str.'</a>';
+#		return '<a href="'.htmlspecialchars('db_new_content_el.php?id='.$this->id.'&sys_language_uid='.$this->current_sys_language.'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'">'.$str.'</a>';
 	}
 
-	";i:1;i:0;}s:12:"content_size";i:214;s:13:"content_lines";i:3;s:6:"atLine";i:677;}i:29;a:7:{s:6:"header";s:35:"function linkUnlink($str,$params)	{";s:11:"parentClass";s:22:"tx_templavoila_module1";s:4:"cDat";a:3:{s:4:"text";s:160:"
+	";i:1;i:0;}s:12:"content_size";i:504;s:13:"content_lines";i:5;s:6:"atLine";i:692;}i:29;a:7:{s:6:"header";s:35:"function linkUnlink($str,$params)	{";s:11:"parentClass";s:22:"tx_templavoila_module1";s:4:"cDat";a:3:{s:4:"text";s:160:"
 
 Returns an HTML link for unlinking a content element. Unlinking means that the record still exists but
 is not connected to any other content element or page.
 ";s:5:"param";a:2:{i:0;a:2:{i:0;s:6:"string";i:1;s:15:"$str: The label";}i:1;a:2:{i:0;s:6:"string";i:1;s:92:"$params: The parameters for unlinking the record. Example: pages:78:sDEF:field_contentarea:0";}}s:6:"return";a:2:{i:0;s:6:"string";i:1;s:56:"HTML anchor tag containing the label and the unlink-link";}}s:7:"content";a:2:{i:0;s:106:"		return '<a href="index.php?id='.$this->id.'&unlinkRecord='.rawurlencode($params).'">'.$str.'</a>';
 	}
 
-	";i:1;i:0;}s:12:"content_size";i:106;s:13:"content_lines";i:3;s:6:"atLine";i:689;}i:31;a:7:{s:6:"header";s:47:"function linkPaste($str,$params,$target,$cmd)	{";s:11:"parentClass";s:22:"tx_templavoila_module1";s:4:"cDat";a:3:{s:4:"text";s:103:"
+	";i:1;i:0;}s:12:"content_size";i:106;s:13:"content_lines";i:3;s:6:"atLine";i:706;}i:31;a:7:{s:6:"header";s:47:"function linkPaste($str,$params,$target,$cmd)	{";s:11:"parentClass";s:22:"tx_templavoila_module1";s:4:"cDat";a:3:{s:4:"text";s:103:"
 
 Returns an HTML link for pasting a content element. Pasting means either copying or moving a record.
 ";s:5:"param";a:4:{i:0;a:2:{i:0;s:6:"string";i:1;s:15:"$str: The label";}i:1;a:2:{i:0;s:6:"string";i:1;s:96:"$params: The parameters defining the original record. Example: pages:78:sDEF:field_contentarea:0";}i:2;a:2:{i:0;s:6:"string";i:1;s:78:"$target: The parameters defining the target where to paste the original record";}i:3;a:2:{i:0;s:6:"string";i:1;s:67:"$cmd: The paste mode, usually set in the clipboard: 'cut' or 'copy'";}}s:6:"return";a:2:{i:0;s:6:"string";i:1;s:55:"HTML anchor tag containing the label and the paste-link";}}s:7:"content";a:2:{i:0;s:191:"		return '<a href="index.php?id='.$this->id.'&SET[clip]=&SET[clip_parentPos]=&pasteRecord='.$cmd.'&destination='.rawurlencode($params).'&target='.rawurlencode($target).'">'.$str.'</a>';
 	}
 
-	";i:1;i:0;}s:12:"content_size";i:191;s:13:"content_lines";i:3;s:6:"atLine";i:702;}i:33;a:7:{s:6:"header";s:44:"function linkCopyCut($str,$parentPos,$cmd)	{";s:11:"parentClass";s:22:"tx_templavoila_module1";s:4:"cDat";a:3:{s:4:"text";s:114:"
+	";i:1;i:0;}s:12:"content_size";i:191;s:13:"content_lines";i:3;s:6:"atLine";i:719;}i:33;a:7:{s:6:"header";s:44:"function linkCopyCut($str,$parentPos,$cmd)	{";s:11:"parentClass";s:22:"tx_templavoila_module1";s:4:"cDat";a:3:{s:4:"text";s:114:"
 
 Returns an HTML link for marking a content element (i.e. transferring to the clipboard) for copying or cutting.
 ";s:5:"param";a:3:{i:0;a:2:{i:0;s:6:"string";i:1;s:15:"$str: The label";}i:1;a:2:{i:0;s:6:"string";i:1;s:113:"$parentPos: The parameters defining the original record. Example: pages:78:sDEF:field_contentarea::tt_content:115";}i:2;a:2:{i:0;s:6:"string";i:1;s:39:"$cmd: The marking mode: 'cut' or 'copy'";}}s:6:"return";a:2:{i:0;s:6:"string";i:1;s:58:"HTML anchor tag containing the label and the cut/copy link";}}s:7:"content";a:2:{i:0;s:151:"		return '<a href="index.php?id='.$this->id.'&SET[clip]='.($parentPos?$cmd:'').'&SET[clip_parentPos]='.rawurlencode($parentPos).'">'.$str.'</a>';
 	}
 
-	";i:1;i:0;}s:12:"content_size";i:151;s:13:"content_lines";i:3;s:6:"atLine";i:714;}i:35;a:7:{s:6:"header";s:28:"function printContent()    {";s:11:"parentClass";s:22:"tx_templavoila_module1";s:4:"cDat";a:3:{s:4:"text";s:29:"
+	";i:1;i:0;}s:12:"content_size";i:151;s:13:"content_lines";i:3;s:6:"atLine";i:731;}i:35;a:7:{s:6:"header";s:28:"function printContent()    {";s:11:"parentClass";s:22:"tx_templavoila_module1";s:4:"cDat";a:3:{s:4:"text";s:29:"
 
 Prints out the module HTML
 ";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:4:"void";i:1;s:0:"";}}s:7:"content";a:2:{i:0;s:157:"		echo $this->content;
@@ -1605,7 +1720,7 @@ Prints out the module HTML
 	 *
 	 ********************************************/
 	 
-	";i:1;i:0;}s:12:"content_size";i:157;s:13:"content_lines";i:13;s:6:"atLine";i:723;}i:37;a:8:{s:6:"header";s:46:"function createPage($pageArray,$positionPid)	{";s:11:"parentClass";s:22:"tx_templavoila_module1";s:11:"sectionText";a:1:{i:0;s:10:"Processing";}s:4:"cDat";a:3:{s:4:"text";s:54:"
+	";i:1;i:0;}s:12:"content_size";i:157;s:13:"content_lines";i:13;s:6:"atLine";i:740;}i:37;a:8:{s:6:"header";s:46:"function createPage($pageArray,$positionPid)	{";s:11:"parentClass";s:22:"tx_templavoila_module1";s:11:"sectionText";a:1:{i:0;s:10:"Processing";}s:4:"cDat";a:3:{s:4:"text";s:54:"
 
 Performs the neccessary steps to creates a new page
 ";s:5:"param";a:2:{i:0;a:2:{i:0;s:5:"array";i:1;s:56:"$pageArray: array containing the fields for the new page";}i:1;a:2:{i:0;s:7:"integer";i:1;s:55:"$positionPid: location within the page tree (parent id)";}}s:6:"return";a:2:{i:0;s:7:"integer";i:1;s:26:"uid of the new page record";}}s:7:"content";a:2:{i:0;s:507:"		$dataArr= array();
@@ -1624,7 +1739,7 @@ ripslashes_values=0;
 		return $tce->substNEWwithIDs['NEW'];
 	}
 
-	";i:1;i:1;}s:12:"content_size";i:973;s:13:"content_lines";i:22;s:6:"atLine";i:744;}i:39;a:7:{s:6:"header";s:68:"function createDefaultRecords ($table, $uid, $prevDS=-1, $level=0)	{";s:11:"parentClass";s:22:"tx_templavoila_module1";s:4:"cDat";a:5:{s:4:"text";s:100:"
+	";i:1;i:1;}s:12:"content_size";i:973;s:13:"content_lines";i:22;s:6:"atLine";i:761;}i:39;a:7:{s:6:"header";s:68:"function createDefaultRecords ($table, $uid, $prevDS=-1, $level=0)	{";s:11:"parentClass";s:22:"tx_templavoila_module1";s:4:"cDat";a:5:{s:4:"text";s:100:"
 
 Creates default records which are defined in the datastructure's rules. Calls itself recursively.
 ";s:5:"param";a:4:{i:0;a:2:{i:0;s:6:"string";i:1;s:50:"$table: The table, usually "pages" or "tt_content"";}i:1;a:2:{i:0;s:7:"integer";i:1;s:13:"$uid: The UID";}i:2;a:2:{i:0;s:7:"integer";i:1;s:109:"$prevDS: Internally used to make sure data structures are not created recursively ("previous data structure")";}i:3;a:2:{i:0;s:7:"integer";i:1;s:64:"$level: Internally used for determine the level of recursiveness";}}s:6:"return";a:2:{i:0;s:4:"void";i:1;s:7:"nothing";}s:5:"other";a:1:{i:0;s:98:"@todo				Check for rules compliance? (might not be necessary if we expect ruleDefault to be valid)";}s:11:"other_index";a:1:{s:5:"@todo";a:1:{i:0;s:89:"Check for rules compliance? (might not be necessary if we expect ruleDefault to be valid)";}}}s:7:"content";a:2:{i:0;s:507:"		global $TCA, $LANG;
@@ -1646,7 +1761,7 @@ is->insertRecord($table.':'.intval($uid).':sDEF:'.$key,$conf);
 		}
 	}	
 	
-	";i:1;i:1;}s:12:"content_size";i:1647;s:13:"content_lines";i:43;s:6:"atLine";i:777;}i:41;a:7:{s:6:"header";s:40:"function insertRecord($createNew,$row)	{";s:11:"parentClass";s:22:"tx_templavoila_module1";s:4:"cDat";a:3:{s:4:"text";s:46:"
+	";i:1;i:1;}s:12:"content_size";i:1647;s:13:"content_lines";i:43;s:6:"atLine";i:794;}i:41;a:7:{s:6:"header";s:40:"function insertRecord($createNew,$row)	{";s:11:"parentClass";s:22:"tx_templavoila_module1";s:4:"cDat";a:3:{s:4:"text";s:46:"
 
 Inserts a new record (page content element)
 ";s:5:"param";a:2:{i:0;a:2:{i:0;s:6:"string";i:1;s:56:"$createNew: consists of several parts separated by colon";}i:1;a:2:{i:0;s:5:"array";i:1;s:54:"$row: Array of parameters for creating the new record.";}}s:6:"return";a:2:{i:0;s:7:"integer";i:1;s:43:"uid of the created content element (if any)";}}s:7:"content";a:2:{i:0;s:507:"		$parts = explode(':',$createNew);
@@ -1667,7 +1782,7 @@ e->stripslashes_values=0;
 		}
 	}
 
-	";i:1;i:1;}s:12:"content_size";i:2015;s:13:"content_lines";i:58;s:6:"atLine";i:828;}i:43;a:7:{s:6:"header";s:56:"function pasteRecord($pasteCmd, $target, $destination)	{";s:11:"parentClass";s:22:"tx_templavoila_module1";s:4:"cDat";a:3:{s:4:"text";s:52:"
+	";i:1;i:1;}s:12:"content_size";i:2015;s:13:"content_lines";i:58;s:6:"atLine";i:845;}i:43;a:7:{s:6:"header";s:56:"function pasteRecord($pasteCmd, $target, $destination)	{";s:11:"parentClass";s:22:"tx_templavoila_module1";s:4:"cDat";a:3:{s:4:"text";s:52:"
 
 Performs the processing part of pasting a record.
 ";s:5:"param";a:3:{i:0;a:2:{i:0;s:6:"string";i:1;s:53:"$pasteCmd: Kind of pasting: 'cut', 'copy' or 'unlink'";}i:1;a:2:{i:0;s:6:"string";i:1;s:88:"$target: String defining the original record. Example: pages:78:sDEF:field_contentarea:0";}i:2;a:2:{i:0;s:6:"string";i:1;s:100:"$destination: Defines the destination where to paste the record (not used when unlinking of course).";}}s:6:"return";a:2:{i:0;s:4:"void";i:1;s:7:"nothing";}}s:7:"content";a:2:{i:0;s:507:"
@@ -1685,7 +1800,7 @@ Performs the processing part of pasting a record.
 	 *
 	 ********************************************/
 
-	";i:1;i:1;}s:12:"content_size";i:7580;s:13:"content_lines";i:188;s:6:"atLine";i:895;}i:45;a:8:{s:6:"header";s:44:"function getStorageFolderPid($positionPid)	{";s:11:"parentClass";s:22:"tx_templavoila_module1";s:11:"sectionText";a:1:{i:0;s:29:"Structure and rules functions";}s:4:"cDat";a:3:{s:4:"text";s:139:"
+	";i:1;i:1;}s:12:"content_size";i:7580;s:13:"content_lines";i:188;s:6:"atLine";i:912;}i:45;a:8:{s:6:"header";s:44:"function getStorageFolderPid($positionPid)	{";s:11:"parentClass";s:22:"tx_templavoila_module1";s:11:"sectionText";a:1:{i:0;s:29:"Structure and rules functions";}s:4:"cDat";a:3:{s:4:"text";s:139:"
 
 Gets the page ID of the folder containing the template objects (for our template selector).
 The storage folder is used for that purpose.
@@ -1700,7 +1815,7 @@ The storage folder is used for that purpose.
 		return intval($TSconfig['_STORAGE_PID']);
 	}
 	
-	";i:1;i:0;}s:12:"content_size";i:385;s:13:"content_lines";i:11;s:6:"atLine";i:1091;}i:47;a:7:{s:6:"header";s:63:"function getDStreeForPage($table,$id,$prevRecList='',$row='')	{";s:11:"parentClass";s:22:"tx_templavoila_module1";s:4:"cDat";a:3:{s:4:"text";s:49:"
+	";i:1;i:0;}s:12:"content_size";i:385;s:13:"content_lines";i:11;s:6:"atLine";i:1108;}i:47;a:7:{s:6:"header";s:63:"function getDStreeForPage($table,$id,$prevRecList='',$row='')	{";s:11:"parentClass";s:22:"tx_templavoila_module1";s:4:"cDat";a:3:{s:4:"text";s:49:"
 
 Returns the data structure for a certain page.
 ";s:5:"param";a:4:{i:0;a:2:{i:0;s:6:"string";i:1;s:11:"$table: ...";}i:1;a:2:{i:0;s:7:"integer";i:1;s:8:"$id: ...";}i:2;a:2:{i:0;s:6:"[type]";i:1;s:17:"$prevRecList: ...";}i:3;a:2:{i:0;s:5:"array";i:1;s:9:"$row: ...";}}s:6:"return";a:2:{i:0;s:5:"array";i:1;s:23:"The data structure tree";}}s:7:"content";a:2:{i:0;s:507:"		global $TCA;
@@ -1725,7 +1840,7 @@ Returns the data structure for a certain page.
 		return $tree;
 	}
 
-	";i:1;i:1;}s:12:"content_size";i:3183;s:13:"content_lines";i:67;s:6:"atLine";i:1112;}i:49;a:7:{s:6:"header";s:46:"function renderPreviewContent ($row, $table) {";s:11:"parentClass";s:22:"tx_templavoila_module1";s:4:"cDat";a:3:{s:4:"text";s:168:"
+	";i:1;i:1;}s:12:"content_size";i:3183;s:13:"content_lines";i:67;s:6:"atLine";i:1129;}i:49;a:7:{s:6:"header";s:46:"function renderPreviewContent ($row, $table) {";s:11:"parentClass";s:22:"tx_templavoila_module1";s:4:"cDat";a:3:{s:4:"text";s:168:"
 
 Returns an HTMLized preview of a certain content element. If you'd like to register a new content type, you can easily extend
 this function before the switch clause.
@@ -1744,10 +1859,10 @@ reak;
 		return $out;
 	}
 	
-	";i:1;i:1;}s:12:"content_size";i:3590;s:13:"content_lines";i:55;s:6:"atLine";i:1188;}i:51;a:4:{s:6:"header";s:55:"function getExpandedDataStructure($table,$field,$row)	{";s:11:"parentClass";s:22:"tx_templavoila_module1";s:4:"cDat";a:3:{s:4:"text";s:83:"
+	";i:1;i:1;}s:12:"content_size";i:3590;s:13:"content_lines";i:55;s:6:"atLine";i:1205;}i:51;a:4:{s:6:"header";s:55:"function getExpandedDataStructure($table,$field,$row)	{";s:11:"parentClass";s:22:"tx_templavoila_module1";s:4:"cDat";a:3:{s:4:"text";s:83:"
 
 Returns the data structure for a flexform field ($field) from $table (from $row)
-";s:5:"param";a:3:{i:0;a:2:{i:0;s:6:"string";i:1;s:14:"The table name";}i:1;a:2:{i:0;s:6:"string";i:1;s:14:"The field name";}i:2;a:2:{i:0;s:5:"array";i:1;s:74:"The data row (used to get DS if DS is dependant on the data in the record)";}}s:6:"return";a:2:{i:0;s:5:"array";i:1;s:51:"The data structure, expanded for all sheets inside.";}}s:6:"atLine";i:1252;}i:53;a:7:{s:6:"header";s:65:"function evaluateRuleOnElements($rules,$ruleConstants,$elArray)	{";s:11:"parentClass";s:22:"tx_templavoila_module1";s:4:"cDat";a:3:{s:4:"text";s:117:"
+";s:5:"param";a:3:{i:0;a:2:{i:0;s:6:"string";i:1;s:14:"The table name";}i:1;a:2:{i:0;s:6:"string";i:1;s:14:"The field name";}i:2;a:2:{i:0;s:5:"array";i:1;s:74:"The data row (used to get DS if DS is dependant on the data in the record)";}}s:6:"return";a:2:{i:0;s:5:"array";i:1;s:51:"The data structure, expanded for all sheets inside.";}}s:6:"atLine";i:1269;}i:53;a:7:{s:6:"header";s:65:"function evaluateRuleOnElements($rules,$ruleConstants,$elArray)	{";s:11:"parentClass";s:22:"tx_templavoila_module1";s:4:"cDat";a:3:{s:4:"text";s:117:"
 
 This evaluates whether a certain rule is acceptable for the elements found in the field for which the rule applies
 ";s:5:"param";a:3:{i:0;a:2:{i:0;s:6:"string";i:1;s:14:"The rule regex";}i:1;a:2:{i:0;s:6:"string";i:1;s:18:"The rule constants";}i:2;a:2:{i:0;s:5:"array";i:1;s:38:"An array of tt_content element records";}}s:6:"return";a:2:{i:0;s:5:"array";i:1;s:83:"Array with information about the rule status (includes OK flag, the rule text etc.)";}}s:7:"content";a:2:{i:0;s:423:"		return $this->rules->evaluateRulesOnElements ($rules,$ruleConstants,$elArray);
@@ -1764,7 +1879,7 @@ $SOBE = t3lib_div::makeInstance('tx_templavoila_module1');
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();
-?>";i:1;i:0;}s:12:"content_size";i:423;s:13:"content_lines";i:14;s:6:"atLine";i:1284;}}}s:14:"MD5_a9c8193694";a:4:{s:8:"filename";s:32:"pi1/class.tx_templavoila_pi1.php";s:8:"filesize";i:13963;s:6:"header";a:5:{s:4:"text";s:61:"
+?>";i:1;i:0;}s:12:"content_size";i:423;s:13:"content_lines";i:14;s:6:"atLine";i:1301;}}}s:14:"MD5_a9c8193694";a:4:{s:8:"filename";s:32:"pi1/class.tx_templavoila_pi1.php";s:8:"filesize";i:13963;s:6:"header";a:5:{s:4:"text";s:61:"
 
 Plugin 'Flexible Content' for the 'templavoila' extension.
 ";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}s:5:"other";a:3:{i:0;s:45:"@author    Kasper Skaarhoj <kasper@typo3.com>";i:1;s:14:"@package TYPO3";i:2;s:26:"@subpackage tx_templavoila";}s:11:"other_index";a:3:{s:7:"@author";a:1:{i:0;s:34:"Kasper Skaarhoj <kasper@typo3.com>";}s:8:"@package";a:1:{i:0;s:6:"TYPO3 ";}s:11:"@subpackage";a:1:{i:0;s:15:"tx_templavoila ";}}}s:3:"DAT";a:6:{i:1;a:8:{s:6:"header";s:47:"class tx_templavoila_pi1 extends tslib_pibase {";s:5:"class";i:1;s:11:"parentClass";s:18:"tx_templavoila_pi1";s:4:"cDat";a:5:{s:4:"text";s:61:"
