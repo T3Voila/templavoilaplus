@@ -8,6 +8,7 @@ NOW:
 	- Perform a check of template files for block/solo tag consistens.
 	- Backend Module in Web> displaying DS/TOs in a list, linking to display data structures etc. Usage counts? All kinds of nice things...
 	- BUG: When remapping a TO it might loose the settings for the header sections!
+	- Check for PHP5 compliance
 
 OTHER MODULES:
 - Management: Overview of Page Templates as set in the tree structure
