@@ -107,8 +107,8 @@ class tx_templavoila_rules {
 			// Only care about page records or flexible content elements:
 		if ($table != 'tt_content' || $parentRecord['CType'] == 'templavoila_pi1') {
 			$recRow = t3lib_BEfunc::getRecord ('tx_templavoila_datastructure', $parentRecord['tx_templavoila_ds']);
-			$xmlContent = t3lib_div::xml2array ($recRow['dataprot']);
-			if (is_array ($xmlContent['ROOT']['el'])) {
+			$xmlContent = t3lib_div::xml2array($recRow['dataprot']);
+			if (is_array($xmlContent['ROOT']) && is_array($xmlContent['ROOT']['el'])) {
 				foreach ($xmlContent['ROOT']['el'] as $fieldName=>$field) {
 					$ruleRegEx = trim ($field['tx_templavoila']['ruleRegEx']);
 					$ruleConstants = trim ($field['tx_templavoila']['ruleConstants']);
