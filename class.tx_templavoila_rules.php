@@ -66,11 +66,10 @@ class tx_templavoila_rules {
 	
 	/**
 	 * Checks a given element if it complies with certain rules provided as a regular expression.
+	 *  
+	 * Note that only few functionality of the POSIX standard for regular expressions is being supported.
 	 * 
-	 * 								tokens (i.e. uppercase and lowercase characters). These tokens are also called "ruleConstants".
-	 * 								Note that only few functionality of the POSIX standard for regular expressions is being supported.
-	 * 
-	 * @param	[string]		$rules: A regular expression describing the rule. The content elements are reflected by certain
+	 * @param	[string]	$rules: A regular expression describing the rule. The content elements are reflected by certain tokens (i.e. uppercase and lowercase characters). These tokens are also called "ruleConstants".
 	 * @param	[array]		$ruleConstants: An array with the mapping of tokens to content elements.
 	 * @param	[type]		$elArray: ...
 	 * @return	[array]		Array containing status information if the check was successful.
@@ -115,87 +114,13 @@ class tx_templavoila_rules {
 		return $elArray;
 	}
 
-	/**
-	 * Returns a description of a rule in human language
+	/********************************************
+	 *	
+	 *  Rule processing / analyzing functions
 	 *
-	 * @param	[string]	$rules: Regular expression containing the rule
-	 * @param	[array]		$ruleConstants: Contains the mapping of elements to CTypes
-	 * @return	[string		Description of the rule
-	 */
-	function getHumanReadableRules ($rules,$ruleConstants)	{
-		$rulesArr = $this->parseRegexIntoArray ($rules);
-//		$constantsArr = $this->
+	 ********************************************/
 
-debug ($rulesArr);
-		return $this->parseRulesArrayIntoDescription ($rulesArr, $constantsArr);
-	}
-
-	function parseRulesArrayIntoDescription ($rulesArr, $constantsArr, $level=0) {
-		if (is_array ($rulesArr)) {
-			foreach ($rulesArr as $k=>$v) {
-				if (is_array ($v['alt'])) {
-					reset ($v['alt']);
-					if (count ($v['alt'])>1) { $description .= 'either '; }
-					for ($i=0; $i <= count ($v['alt']); $i++) {
-						list ($k,$vAlt) = each ($v['alt']);
-						$description .= $this->getHumanReadableRules ($vAlt, $rulesConstants, $level+1);
-						if ($i < count ($v['alt'])) {
-							$description .= 'or ';
-						}
-					}
-					$description .= 'and then ';
-				} elseif (is_array ($v['sub'])) {
-					if ($description) { $description .= 'and then '; }
-					$description .= $this->parseRulesArrayIntoDescription ($v['sub'], $constantsArr, $level+1);
-				} elseif ($v['el']) {
-					if ($description) { $description .= 'followed by '; }
-					$description .= $this->getQuantifierAsDescription ($v['min'], $v['max']);
-					$description .= $this->getElementNameFromConstantsMapping ($v['el'], $constantsArr);
-				}
-			}
-		}
-
-		return $description;
-	}
-
-	function getQuantifierAsDescription ($min, $max) {
-		if ($min == $max) {
-			switch ($min) {
-				case 1:		$description = 'one ';
-							break;
-				case 0:		$description = 'no ';
-							break;
-				case 999:	$description = 'any number of ';
-							break;
-				default:	$description = intval ($min).' times ';
-							break;
-			}
-		} elseif ($min == 0) {
-			switch ($max) {
-				case 1:		$description = 'maybe one '; break;
-				case 999:	$description = 'any number of '; break;
-				default:	$description = 'up to '.intval ($max).' '; break;
-			}
-		} elseif ($min > 0) {
-			switch ($max) {
-				case 999:	$description =''; break;
-			}
-		}
-		return $description;
-	}
-
-	function getElementNameFromConstantsMapping ($element, $constantsArr) {
-		switch ($element) {
-			case '.' :
-				$description = 'any element ';
-				break;
-			default:
-				$description = $element.' ';
-		}
-		return $description;
-	}
-
-	/**
+	 /**
 	 * Parses a regular expression with a reduced set of functions into an array.
 	 *
 	 * @param	[string]	$regex: The regular expression
@@ -294,7 +219,98 @@ debug ($rulesArr);
 		return $statusArr;
 	}
 
+	
 
+	
+	
+	
+	
+	
+	/********************************************
+	 *	
+	 * Human Readable Rules Functions
+	 *
+	 ********************************************/
+	
+	/**
+	 * Returns a description of a rule in human language
+	 *
+	 * @param	[string]	$rules: Regular expression containing the rule
+	 * @param	[array]		$ruleConstants: Contains the mapping of elements to CTypes
+	 * @return	[string		Description of the rule
+	 */
+	function getHumanReadableRules ($rules,$ruleConstants)	{
+		$rulesArr = $this->parseRegexIntoArray ($rules);
+//		$constantsArr = $this->
+
+debug ($rulesArr);
+		return $this->parseRulesArrayIntoDescription ($rulesArr, $constantsArr);
+	}
+
+	function parseRulesArrayIntoDescription ($rulesArr, $constantsArr, $level=0) {
+		if (is_array ($rulesArr)) {
+			foreach ($rulesArr as $k=>$v) {
+				if (is_array ($v['alt'])) {
+					reset ($v['alt']);
+					if (count ($v['alt'])>1) { $description .= 'either '; }
+					for ($i=0; $i <= count ($v['alt']); $i++) {
+						list ($k,$vAlt) = each ($v['alt']);
+						$description .= $this->getHumanReadableRules ($vAlt, $rulesConstants, $level+1);
+						if ($i < count ($v['alt'])) {
+							$description .= 'or ';
+						}
+					}
+					$description .= 'and then ';
+				} elseif (is_array ($v['sub'])) {
+					if ($description) { $description .= 'and then '; }
+					$description .= $this->parseRulesArrayIntoDescription ($v['sub'], $constantsArr, $level+1);
+				} elseif ($v['el']) {
+					if ($description) { $description .= 'followed by '; }
+					$description .= $this->getQuantifierAsDescription ($v['min'], $v['max']);
+					$description .= $this->getElementNameFromConstantsMapping ($v['el'], $constantsArr);
+				}
+			}
+		}
+
+		return $description;
+	}
+
+	function getQuantifierAsDescription ($min, $max) {
+		if ($min == $max) {
+			switch ($min) {
+				case 1:		$description = 'one ';
+							break;
+				case 0:		$description = 'no ';
+							break;
+				case 999:	$description = 'any number of ';
+							break;
+				default:	$description = intval ($min).' times ';
+							break;
+			}
+		} elseif ($min == 0) {
+			switch ($max) {
+				case 1:		$description = 'maybe one '; break;
+				case 999:	$description = 'any number of '; break;
+				default:	$description = 'up to '.intval ($max).' '; break;
+			}
+		} elseif ($min > 0) {
+			switch ($max) {
+				case 999:	$description =''; break;
+			}
+		}
+		return $description;
+	}
+
+	function getElementNameFromConstantsMapping ($element, $constantsArr) {
+		switch ($element) {
+			case '.' :
+				$description = 'any element ';
+				break;
+			default:
+				$description = $element.' ';
+		}
+		return $description;
+	}
 	
 	/********************************************
 	 *	
