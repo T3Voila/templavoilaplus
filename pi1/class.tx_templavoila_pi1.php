@@ -264,9 +264,9 @@ class tx_templavoila_pi1 extends tslib_pibase {
 							if (is_array($DSelements[$key]['tx_templavoila']['TypoScript_constants']))	{
 								foreach($DSelements[$key]['tx_templavoila']['TypoScript_constants'] as $constant => $value)	{
 
-										// First, see if the constant is itself a constant refering back to TypoScript Setup Object Tree:
-									if (substr($value,0,2)=='{$' && substr($value,-1)=='}')	{
-										$objPath = substr($value,2,-1);
+										// First, see if the constant is itself a constant referring back to TypoScript Setup Object Tree:
+									if (substr(trim($value),0,2)=='{$' && substr(trim($value),-1)=='}')	{
+										$objPath = substr(trim($value),2,-1);
 										
 											// If no value for this object path reference was found, get value:
 										if (!isset($GLOBALS['TSFE']->applicationData['tx_templavoila']['TO_constantCache'][$objPath]))	{
