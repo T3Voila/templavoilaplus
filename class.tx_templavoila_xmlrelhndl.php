@@ -31,24 +31,25 @@
  *
  *
  *
- *   70: class tx_templavoila_xmlrelhndl 
- *   83:     function insertRecord($destination, $row)	
- *  130:     function pasteRecord($pasteCmd, $source, $destination)	
+ *   71: class tx_templavoila_xmlrelhndl 
+ *   84:     function insertRecord($destination, $row)	
+ *  131:     function pasteRecord($pasteCmd, $source, $destination)	
  *
  *              SECTION: Execute changes to the FlexForm structures
- *  258:     function _insertReference($itemArray, $refArr, $item)	
- *  279:     function _moveReference($itemArray, $destRefArr, $sourceItemArray, $sourceRefArr, $item_table, $item_uid, $movePid)	
- *  316:     function _removeReference($itemArray, $refArr)	
- *  338:     function _updateFlexFormRefList($refArr, $idListArr)	
- *  356:     function _deleteContentElement($uid)	
+ *  265:     function _insertReference($itemArray, $refArr, $item)	
+ *  286:     function _moveReference($itemArray, $destRefArr, $sourceItemArray, $sourceRefArr, $item_table, $item_uid, $movePid)	
+ *  323:     function _removeReference($itemArray, $refArr)	
+ *  346:     function _changeReference($itemArray, $refArr, $newUid)	
+ *  368:     function _updateFlexFormRefList($refArr, $idListArr)	
+ *  386:     function _deleteContentElement($uid)	
  *
  *              SECTION: Helper functions
- *  392:     function _insertReferenceInList($itemArray, $refArr, $item, $sourceRefArr=FALSE)	
- *  437:     function _getCopyUid($itemAtPosition_uid, $pid)	
- *  462:     function _splitAndValidateReference($string)	
- *  475:     function _getItemArrayFromXML($xmlString, $refArr)	
+ *  422:     function _insertReferenceInList($itemArray, $refArr, $item, $sourceRefArr=FALSE)	
+ *  467:     function _getCopyUid($itemAtPosition_uid, $pid)	
+ *  492:     function _splitAndValidateReference($string)	
+ *  505:     function _getItemArrayFromXML($xmlString, $refArr)	
  *
- * TOTAL FUNCTIONS: 11
+ * TOTAL FUNCTIONS: 12
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -130,7 +131,7 @@ class tx_templavoila_xmlrelhndl {
 	function pasteRecord($pasteCmd, $source, $destination)	{
 
 			// Split the source definition into parts:
-		list($sourceStr,$check,$isLocal) = explode('/',$source);
+		list($sourceStr,$check,$isLocal,$currentPageId) = explode('/',$source);
 
 		if ($sourceStr)	{
 			$sourceRefArr = $this->_splitAndValidateReference($sourceStr);
@@ -147,6 +148,7 @@ class tx_templavoila_xmlrelhndl {
 
 						// Getting the item at the index-position:
 					$itemOnPosition = $sourceItemArray[$sourceRefArr[4]-1];
+					$refID = $itemOnPosition['id'];
 
 						// Now, check if the current element actually matches what it should (otherwise some update must have taken place in between...)
 					if ($itemOnPosition['table'].':'.$itemOnPosition['id'] == $check && $itemOnPosition['table']=='tt_content')	{	// None other than tt_content elements are moved around...
@@ -157,6 +159,12 @@ class tx_templavoila_xmlrelhndl {
 							if ($isLocal)	{	// Do REAL delete if the record was local:
 								$this->_deleteContentElement($itemOnPosition['id']);
 							}
+						} elseif ($pasteCmd=='localcopy') {
+
+								// Get the uid of a new tt_content element
+							$refID = $this->_getCopyUid($refID,	$currentPageId);
+
+							$this->_changeReference($sourceItemArray, $sourceRefArr, $refID);
 						} else {	// Copy or Cut a reference:
 
 								// Now, find destination (record in which to insert the new reference)
@@ -169,12 +177,11 @@ class tx_templavoila_xmlrelhndl {
 
 										// Get reference items of destination field:
 									$destItemArray = $this->_getItemArrayFromXML($destinationRec['tx_templavoila_flex'], $destRefArr);
-									$refID = $itemOnPosition['id'];
 
 										// Depending on the paste command, we do...:
 									switch ($pasteCmd)	{
 										case 'copy':
-												// Get the uid of the tt_content element reference to copy/cut. Possibly this is a NEW element, hence a copy!
+												// Get the uid of a new tt_content element
 											$refID = $this->_getCopyUid(
 															$refID,
 															$destRefArr[0]=="pages" ? $destinationRec['uid'] : $destinationRec['pid']
@@ -329,6 +336,29 @@ class tx_templavoila_xmlrelhndl {
 	}
 
 	/**
+	 * Change a reference from list
+	 * 
+	 * @param	array		Array of items from a current reference (array of table/uid pairs) (see _getItemArrayFromXML())
+	 * @param	array		Reference to element in FlexForm structure, splitted into an array (see _splitAndValidateReference())
+	 * @param	integer		New uid to set.
+	 * @return	void		
+	 */
+	function _changeReference($itemArray, $refArr, $newUid)	{
+
+			// Unset the reference:
+		$itemArray[$refArr[4]-1]['id'] = $newUid;
+
+			// Create new list:
+		$idList = array();
+		foreach($itemArray as $idSet)	{
+			$idList[] = $idSet['table'].'_'.$idSet['id'];
+		}
+
+			// Set the data field:
+		$this->_updateFlexFormRefList($refArr, $idList);
+	}
+
+	/**
 	 * Updates the XML structure with the new list of references to tt_content records.
 	 * 
 	 * @param	array		Reference to element in FlexForm structure, splitted into an array (see _splitAndValidateReference())
@@ -349,9 +379,9 @@ class tx_templavoila_xmlrelhndl {
 
 	/**
 	 * Deletes an element from tt_content table using TCEmain
-	 *
+	 * 
 	 * @param	integer		UID of the tt_content element to delete.
-	 * @return	void
+	 * @return	void		
 	 */
 	function _deleteContentElement($uid)	{
 		$cmdArray = array();

@@ -42,6 +42,8 @@ $LOCAL_LANG = Array (
 		'unlinkRecord' => 'Unlink record',
 		'deleteRecord' => 'Delete record (!)',
 		'deleteRecordMsg' => 'Do you really want to delete this record?',
+		'makeLocal' => 'Create local copy',
+		'makeLocalMsg' => 'Do you want to create a local copy of this referenced element?',
 		'path' => 'Path',
 	),
 	"dk" => Array (
@@ -78,6 +80,8 @@ $LOCAL_LANG = Array (
 		'unlinkRecord' => 'Fjern reference',
 		'deleteRecord' => 'Slet element(!)',
 		'deleteRecordMsg' => 'Vil du virkelig slette dette element?',
+		'makeLocal' => 'Opret lokal kopi',
+		'makeLocalMsg' => 'Ønsker du at oprette en lokal kopi af dette refererede element?',
 		'path' => 'Sti',
 	),
 );

@@ -41,7 +41,7 @@
  *
  *              SECTION: Command functions
  *  258:     function cmd_createNewRecord ($parentRecord, $defVals='') 
- *  276:     function cmd_unlinkRecord ($unlinkRecord) 
+ *  276:     function cmd_unlinkRecord ($unlinkRecord)
  *  288:     function cmd_pasteRecord ($pasteRecord) 
  *
  *              SECTION: Rendering functions
@@ -55,7 +55,7 @@
  *  686:     function renderNonUsed()	
  *  712:     function linkEdit($str,$table,$uid)	
  *  724:     function linkNew($str,$parentRecord)	
- *  736:     function linkUnlink($str,$unlinkRecord)	
+ *  736:     function linkUnlink($str,$unlinkRecord)
  *  749:     function linkPaste($str,$params,$target,$cmd)	
  *  761:     function linkCopyCut($str,$parentPos,$cmd)	
  *  773:     function renderPreviewContent ($row, $table) 
@@ -194,7 +194,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			$this->doc->getTabMenu(0,'_',0,array(''=>''));
 
 				// Go through the commands and check if we have to do some action:
-			$commands = array ('createNewRecord', 'unlinkRecord','pasteRecord');
+			$commands = array ('createNewRecord', 'unlinkRecord','pasteRecord', 'makeLocalRecord');
 			foreach ($commands as $cmd) {
 				unset ($params);
 				$params = t3lib_div::GPvar($cmd);
@@ -278,6 +278,18 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 */
 	function cmd_unlinkRecord ($unlinkRecord) {
 		$this->pasteRecord('unlink', $unlinkRecord, '');
+		header('Location: '.t3lib_div::locationHeaderUrl('index.php?id='.$this->id));
+	}
+
+	/**
+	 * Initiates processing for making a local copy of a record.
+	 *
+	 * @param	string		$unlinkRecord: The element to be copied to current page.
+	 * @return	void
+	 * @see		pasteRecord ()
+	 */
+	function cmd_makeLocalRecord ($makeLocalRecord) {
+		$this->pasteRecord('localcopy', $makeLocalRecord, '');
 		header('Location: '.t3lib_div::locationHeaderUrl('index.php?id='.$this->id));
 	}
 
@@ -480,9 +492,10 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * @param	array		$dsInfo: DataStructure info array (the whole tree)
 	 * @param	string		$parentPos: Pointer to parent element: table, id, sheet, fieldname, counter (position in list)
 	 * @param	boolean		$clipboardElInPath: Tells whether any element registered on the clipboard is found in the current "path" of the recursion. If true, it normally means that no paste-in symbols are shown since elements are not allowed to be pasted/referenced to a position within themselves (would result in recursion).
+	 * @param	boolean		Is set to the number of references there has been in previous recursions of this function
 	 * @return	string		HTML
 	 */
-	function renderFrameWork($dsInfo,$parentPos='',$clipboardElInPath=0) {
+	function renderFrameWork($dsInfo,$parentPos='',$clipboardElInPath=0, $referenceInPath=0) {
 		global $LANG;
 		
 			// Setting the sheet ID and render sheet menu:
@@ -491,6 +504,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		
 			// The $isLocal flag is used to denote whether an element belongs to the current page or not. If NOT the $isLocal flag means (for instance) that the title bar will be colored differently to show users that this is a foreign element not from this page.
 		$isLocal = $dsInfo['el']['table']=='pages' || $dsInfo['el']['pid']==$this->id;	// Pages should be seem as local...
+		if (!$isLocal)	$referenceInPath++;
 
 			// Setting whether the current element is registered for copy/cut/reference:
 		$clipActive_copy = ($this->MOD_SETTINGS['clip']=='copy' && $this->MOD_SETTINGS['clip_parentPos']==$parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].'/'.$isLocal ? '_h' : '');
@@ -528,7 +542,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
     			if (is_array($fieldContent['el_list']))	 {
 					foreach($fieldContent['el_list'] as $counter => $k)	{
 						$v = $fieldContent['el'][$k];
-						$elList.=$this->renderFrameWork($v,$dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$fieldID.':'.$counter,$clipboardElInPath);
+						$elList.=$this->renderFrameWork($v,$dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$fieldID.':'.$counter,$clipboardElInPath,$referenceInPath);
 
 							// "New" and "Paste" icon:
 						$elList.=$this->linkNew('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/new_el.gif','').' align="absmiddle" vspace="5" border="0" title="'.$LANG->getLL ('createnewrecord').'" alt="" />',$dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$fieldID.':'.$counter);
@@ -588,12 +602,13 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			$linkCut = $this->linkCopyCut('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/clip_cut'.$clipActive_cut.'.gif','').' title="'.$LANG->getLL ('cutrecord').'" border="0" alt="" />',($clipActive_cut ? '' : $parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].'/'.$isLocal),'cut');
 			$linkRef = $this->linkCopyCut('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,t3lib_extMgm::extRelPath('templavoila').'mod1/clip_ref'.$clipActive_ref.'.gif','').' title="'.$LANG->getLL ('createreference').'" border="0" alt="" />',($clipActive_ref ? '' : $parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].'/'.$isLocal),'ref');
 			$linkUnlink = $this->linkUnlink('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/garbage.gif','').' title="'.$LANG->getLL($isLocal ? 'deleteRecord' : 'unlinkRecord').'" border="0" alt="" />', $parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].'/'.$isLocal, $isLocal);
+			$linkMakeLocal = (!$isLocal && $referenceInPath<=1) ? $this->linkMakeLocal('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,t3lib_extMgm::extRelPath('templavoila').'mod1/makelocalcopy.gif','').' title="'.$LANG->getLL('makeLocal').'" border="0" alt="" />', $parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].'/'.$isLocal.'/'.$this->id) : '';
 		} else {
 			$viewPageIcon = '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::viewOnClick($dsInfo['el']['id'],$this->doc->backPath,t3lib_BEfunc::BEgetRootLine($dsInfo['el']['id']))).'">'.
 				'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/zoom.gif','width="12" height="12"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showPage',1).'" hspace="3" alt="" align="absmiddle" />'.
 				'</a>';
 		}		
-		
+
  		$content = $sheetMenu . $errorLineBefore . '
 		<table border="0" cellpadding="2" cellspacing="0" style="border: 1px solid black; margin-bottom:5px; '.$elementBackgroundStyle.'" width="100%">
 			<tr style="'.$elementPageTitlebarStyle.';">
@@ -603,6 +618,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 					$linkCut.
 					$linkRef.
 					$linkUnlink.
+					$linkMakeLocal.
 					($isLocal ? $this->linkEdit('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/edit2.gif','').' title="'.$LANG->getLL ('editrecord').'" border="0" alt="" />',$dsInfo['el']['table'],$dsInfo['el']['id']) : '').
 				'</td>
 			</tr>
@@ -618,7 +634,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * Render sheet menu:
 	 * Design-wise this will change most likely. And we also need to do a proper registration of the sheets since it only 
 	 * works for the page at this point - not content elements deeper in the structure.
-	 * 
+	 *
 	 * @param	array		$dsInfo: Datastructure containing the sheet information
 	 * @param	string		$sheet:
 	 * @return	string		HTML
@@ -715,7 +731,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	/**
 	 * Returns an HTML link for unlinking a content element. Unlinking means that the record still exists but
 	 * is not connected to any other content element or page.
-	 * 
+	 *
 	 * @param	string		$str: The label
 	 * @param	string		$unlinkRecord: The parameters for unlinking the record. Example: pages:78:sDEF:field_contentarea:0
 	 * @return	string		HTML anchor tag containing the label and the unlink-link
@@ -725,6 +741,19 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 		$onClick = $realDelete ? ' onclick="'.htmlspecialchars('return confirm('.$LANG->JScharCode($LANG->getLL('deleteRecordMsg')).');').'"' : '';
 		return '<a href="index.php?id='.$this->id.'&unlinkRecord='.rawurlencode($unlinkRecord).'"'.$onClick.'>'.$str.'</a>';
+	}
+
+	/**
+	 * Returns an HTML link for making a reference content element local to the page (copying it).
+	 *
+	 * @param	string		$str: The label
+	 * @param	string		$unlinkRecord: The parameters for unlinking the record. Example: pages:78:sDEF:field_contentarea:0
+	 * @return	string		HTML anchor tag containing the label and the unlink-link
+	 */
+	function linkMakeLocal($str,$makeLocalRecord)	{
+		global $LANG;
+
+		return '<a href="index.php?id='.$this->id.'&makeLocalRecord='.rawurlencode($makeLocalRecord).'" onclick="'.htmlspecialchars('return confirm('.$LANG->JScharCode($LANG->getLL('makeLocalMsg')).');').'">'.$str.'</a>';
 	}
 
 	/**
