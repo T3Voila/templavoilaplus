@@ -8,12 +8,12 @@ $TCA['tx_templavoila_tmplobj'] = Array (
 		'maxDBListItems' => 60,
 	),
 	'columns' => Array (
-		'title' => Array (		
-			'label' => 'LLL:EXT:templavoila/locallang_db.php:tx_templavoila_tmplobj.title',		
+		'title' => Array (
+			'label' => 'LLL:EXT:templavoila/locallang_db.php:tx_templavoila_tmplobj.title',
 			'config' => Array (
-				'type' => 'input',	
-				'size' => '48',	
-				'max' => '60',	
+				'type' => 'input',
+				'size' => '48',
+				'max' => '60',
 				'eval' => 'required,trim',
 			)
 		),
@@ -97,6 +97,15 @@ $TCA['tx_templavoila_tmplobj'] = Array (
 				'minitems' => '0'
 			)			
 		),
+		'description' => Array (
+			'label' => 'LLL:EXT:templavoila/locallang_db.php:tx_templavoila_tmplobj.description',
+			'config' => Array (
+				'type' => 'input',
+				'size' => '48',
+				'max' => '256',
+				'eval' => 'trim',
+			)
+		),
 		'sys_language_uid' => Array (
 			'exclude' => 1,	
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.language',
@@ -133,7 +142,7 @@ $TCA['tx_templavoila_tmplobj'] = Array (
 		),
 	),
 	'types' => Array (
-		'0' => Array('showitem' => 'title;;;;2-2-2, parent, fileref, datastructure;;;;3-3-3, previewicon,localprocessing;;;;1-1-1'),
+		'0' => Array('showitem' => 'title;;;;2-2-2, parent, fileref, datastructure;;;;3-3-3, previewicon,description,localprocessing;;;;1-1-1'),
 		'1' => Array('showitem' => 'title;;;;2-2-2, parent, fileref, sys_language_uid;;;;3-3-3, rendertype,localprocessing;;;;1-1-1')
 	)
 );

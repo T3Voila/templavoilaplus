@@ -13,6 +13,7 @@ CREATE TABLE tx_templavoila_tmplobj (
 	fileref tinytext NOT NULL,
 	templatemapping mediumtext NOT NULL,
 	previewicon tinytext NOT NULL,
+	description tinytext NOT NULL,
 	rendertype varchar(10) DEFAULT '' NOT NULL,
 	sys_language_uid int(11) unsigned DEFAULT '0' NOT NULL,
 	parent int(11) unsigned DEFAULT '0' NOT NULL,
