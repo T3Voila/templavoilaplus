@@ -1,3 +1,10 @@
+2003-12-18  Robert Lemke  <rl@robertlemke.de>
+
+	* Just an upload ...
+	* Added new configuration for the EM: now you may specify the PID of the template folder (better idea than hardcode it to uid #2 ;-)
+	* Browsetree gets updated, Page module (web_layout) is completely overridden: shortcut, edit page etc.
+	* Various other things ...
+
 2003-11-13  Robert Lemke  <rl@robertlemke.de>
 
 	* Upload of current work status, no special milestone ...
