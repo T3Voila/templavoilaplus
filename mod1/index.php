@@ -1,19 +1,19 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 2003, 2004  Robert Lemke (rl@robertlemke.de)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -21,7 +21,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * Module 'Page' for the 'templavoila' extension.
  *
  * $Id$
@@ -41,7 +41,7 @@
  *
  *              SECTION: Command functions
  *  256:     function cmd_createNewRecord ($parentRecord, $defVals='') 
- *  274:     function cmd_unlinkRecord ($unlinkRecord) 
+ *  274:     function cmd_unlinkRecord ($unlinkRecord)
  *  286:     function cmd_pasteRecord ($pasteRecord) 
  *
  *              SECTION: Rendering functions
@@ -50,13 +50,13 @@
  *  413:     function renderTemplateSelector ($positionPid, $templateType='tmplobj') 
  *
  *              SECTION: Framework rendering function(s)
- *  477:     function renderFrameWorkBasic($dsInfo,$parentPos='',$clipboardElInPath=0)	
+ *  477:     function renderFrameWorkBasic($dsInfo,$parentPos='',$clipboardElInPath=0)
  *  626:     function renderNonUsed()	
  *  652:     function linkEdit($str,$table,$uid)	
  *  664:     function linkNew($str,$parentRecord)	
- *  676:     function linkUnlink($str,$unlinkRecord)	
- *  689:     function linkPaste($str,$params,$target,$cmd)	
- *  701:     function linkCopyCut($str,$parentPos,$cmd)	
+ *  676:     function linkUnlink($str,$unlinkRecord)
+ *  689:     function linkPaste($str,$params,$target,$cmd)
+ *  701:     function linkCopyCut($str,$parentPos,$cmd)
  *  710:     function printContent()    
  *
  *              SECTION: Processing
@@ -67,7 +67,7 @@
  *
  *              SECTION: Structure and rules functions
  * 1076:     function getStorageFolderPid($positionPid)	
- * 1097:     function getDStreeForPage($table,$id,$prevRecList='',$row='')	
+ * 1097:     function getDStreeForPage($table,$id,$prevRecList='',$row='')
  * 1173:     function renderPreviewContent ($row, $table) 
  * 1240:     function getExpandedDataStructure($table,$field,$row)	
  * 1271:     function checkRulesForElement ($table, $uid) 
@@ -89,10 +89,13 @@ $BE_USER->modAccess($MCONF,1);    // This checks permissions and exits if the us
 
 	// We need the TCE forms functions
 require_once (PATH_t3lib.'class.t3lib_loaddbgroup.php');
-require_once (PATH_t3lib.'class.t3lib_tcemain.php');	
+require_once (PATH_t3lib.'class.t3lib_tcemain.php');
 
 	// Include class for parsing rules based on regular expressions
-require_once (t3lib_extMgm::extPath('templavoila').'class.tx_templavoila_rules.php'); 	
+require_once (t3lib_extMgm::extPath('templavoila').'class.tx_templavoila_rules.php');
+
+	// Include class for management of the relations inside the FlexForm XML:
+require_once (t3lib_extMgm::extPath('templavoila').'class.tx_templavoila_xmlrelhndl.php');
 
 
 /**
@@ -182,9 +185,9 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			');
 
 				// Setting up support for context menus (when clicking the items icon)
-			$CMparts=$this->doc->getContextMenuCode();
+			$CMparts = $this->doc->getContextMenuCode();
 			$this->doc->bodyTagAdditions = $CMparts[1];
-			$this->doc->JScode.=$CMparts[0];
+			$this->doc->JScode.= $CMparts[0];
 			$this->doc->postCode.= $CMparts[2];
 
 				// Just to include the Stylesheet information, nothing more:
@@ -201,6 +204,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				 	$this->$function ($params);
 				}			
 			}
+
 				// Check if we have to update the pagetree:
 			if (t3lib_div::GPvar('updatePageTree')) {
 				t3lib_BEfunc::getSetUpdateSignal('updatePageTree');
@@ -239,26 +243,25 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	
 	
 	
-	/**
-	 * *****************************************
-	 * 
+	/*******************************************
+	 *
 	 * Command functions
-	 * 
-	 * *****************************************/
-	 
+	 *
+	 ******************************************/
+
 	/**
 	 * Initiates processing for creating a new record.
-	 * 
+	 *
 	 * @param	string		$params: Array containing parameters for creating the new record (see function)
 	 * @param	array		$defVals: Array containing default values for the new record, e.g. [tt_content][CType] = 'text'
-	 * @return	void		
+	 * @return	void
 	 * @see		insertRecord ()
 	 */
 	function cmd_createNewRecord ($parentRecord, $defVals='') {
 			// Historically "defVals" has been used for submitting the row data. We still use it and use it for our new row:
 		$defVals = (string)$defVals == '' ? t3lib_div::GPvar('defVals') : $defVals;
 		$row = $defVals['tt_content'];
-		
+
 			// Create new record and open it for editing
 		$newUid = $this->insertRecord($parentRecord, $row);
 		$location = $GLOBALS['BACK_PATH'].'alt_doc.php?edit[tt_content]['.$newUid.']=edit&returnUrl='.t3lib_extMgm::extRelPath('templavoila').'mod1/index.php?id='.$this->id;
@@ -267,39 +270,39 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 	/**
 	 * Initiates processing for unlinking a record.
-	 * 
+	 *
 	 * @param	string		$unlinkRecord: The element to be unlinked.
-	 * @return	void		
+	 * @return	void
 	 * @see		pasteRecord ()
 	 */
-	function cmd_unlinkRecord ($unlinkRecord) {	
+	function cmd_unlinkRecord ($unlinkRecord) {
 		$this->pasteRecord('unlink', $unlinkRecord, '');
 		header('Location: '.t3lib_div::locationHeaderUrl('index.php?id='.$this->id));
 	}
 
 	/**
 	 * Initiates processing for pasting a record.
-	 * 
+	 *
 	 * @param	string		$pasteRecord: The element to be pasted.
-	 * @return	void		
+	 * @return	void
 	 * @see		pasteRecord ()
 	 */
 	function cmd_pasteRecord ($pasteRecord) {
 		$this->pasteRecord($pasteRecord, t3lib_div::GPvar('target'), t3lib_div::GPvar('destination'));
 		header('Location: '.t3lib_div::locationHeaderUrl('index.php?id='.$this->id));
 	}
-			
-	
-	
+
+
+
 	/********************************************
 	 *
 	 * Rendering functions
 	 *
 	 ********************************************/
-	 
+
 	/**
 	 * Displays the default view of a page, showing the nested structure of elements.
-	 * 
+	 *
 	 * @return	string		The modules content
 	 */
 	function renderEditPageScreen()    {
@@ -523,16 +526,16 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			}
 		}
 		
-			// Setting whether the current element is registered for copy/cut/reference:
-		$clipActive_copy = ($this->MOD_SETTINGS['clip']=='copy' && $this->MOD_SETTINGS['clip_parentPos']==$parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id'] ? '_h' : '');
-		$clipActive_cut = ($this->MOD_SETTINGS['clip']=='cut' && $this->MOD_SETTINGS['clip_parentPos']==$parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id'] ? '_h' : '');
-		$clipActive_ref = ($this->MOD_SETTINGS['clip']=='ref' && $this->MOD_SETTINGS['clip_parentPos']==$parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id'] ? '_h' : '');
-		$clipboardElInPath = trim($clipActive_copy.$clipActive_cut.$clipActive_ref)||$clipboardElInPath?1:0;
-
 			// The $isLocal flag is used to denote whether an element belongs to the current page or not. If NOT the $isLocal flag means (for instance) that the title bar will be colored differently to show users that this is a foreign element not from this page.
 		$isLocal = $dsInfo['el']['table']=='pages' || $dsInfo['el']['pid']==$this->id;	// Pages should be seem as local...
 
-			// Setting additional information to the title-attribute of the element icon:		
+			// Setting whether the current element is registered for copy/cut/reference:
+		$clipActive_copy = ($this->MOD_SETTINGS['clip']=='copy' && $this->MOD_SETTINGS['clip_parentPos']==$parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].'/'.$isLocal ? '_h' : '');
+		$clipActive_cut = ($this->MOD_SETTINGS['clip']=='cut' && $this->MOD_SETTINGS['clip_parentPos']==$parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].'/'.$isLocal ? '_h' : '');
+		$clipActive_ref = ($this->MOD_SETTINGS['clip']=='ref' && $this->MOD_SETTINGS['clip_parentPos']==$parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].'/'.$isLocal ? '_h' : '');
+		$clipboardElInPath = trim($clipActive_copy.$clipActive_cut.$clipActive_ref)||$clipboardElInPath?1:0;
+
+			// Setting additional information to the title-attribute of the element icon:
 		$extPath = '';
 		if (!$isLocal)	{
 			$extPath = ' - PATH: '.t3lib_BEfunc::getRecordPath($dsInfo['el']['pid'],$this->perms_clause,30);
@@ -541,7 +544,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			// Evaluating the rules and set colors to warning scheme if a rule does not apply
 		$elementBackgroundStyle = '';
 		$elementPageTitlebarStyle = 'background-color: '.($dsInfo['el']['table']=='pages' ? $this->doc->bgColor2 : ($isLocal ? $this->doc->bgColor5 : $this->doc->bgColor6)) .';';
-		$elementCETitlebarStyle = 'background-color: '.$this->doc->bgColor4.';';
+		$elementCETitlebarStyle = 'background-color: '.$this->doc->bgColor4.'; padding-top: 0px; padding-bottom: 0px;';
 		$errorLineBefore = $errorLineAfter = '';
 
 		$rulesStatus = $this->checkRulesForElement($dsInfo['el']['table'], $dsInfo['el']['id']);
@@ -579,13 +582,13 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 					// "New" and "Paste" icon:
 				$elList=$this->linkNew('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/new_el.gif','').' align="absmiddle" vspace="5" border="0" title="'.$LANG->getLL ('createnewrecord').'" alt="" />',$dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$fieldID.':'.$counter);
 				if (!$clipboardElInPath)	$elList.=$this->linkPaste('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/clip_pasteafter.gif','').' align="absmiddle" vspace="5" border="0" title="'.$LANG->getLL ('pasterecord').'" alt="" />',$dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$fieldID.':'.$counter,$this->MOD_SETTINGS['clip_parentPos'],$this->MOD_SETTINGS['clip']);
-				
+
 					// Render the list of elements (and possibly call itself recursively if needed):
-				if (is_array($fieldContent['el']))	{
-					foreach($fieldContent['el'] as $k => $v)	{
-						$counter=$v['el']['index'];
+    			if (is_array($fieldContent['el_list']))	{
+					foreach($fieldContent['el_list'] as $counter => $k)	{
+						$v = $fieldContent['el'][$k];
 						$elList.=$this->renderFrameWorkBasic($v,$dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$fieldID.':'.$counter,$clipboardElInPath);
-							
+
 							// "New" and "Paste" icon:
 						$elList.=$this->linkNew('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/new_el.gif','').' align="absmiddle" vspace="5" border="0" title="'.$LANG->getLL ('createnewrecord').'" alt="" />',$dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$fieldID.':'.$counter);
 						if (!$clipboardElInPath)	$elList.=$this->linkPaste('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/clip_pasteafter.gif','').' align="absmiddle" vspace="5" border="0" title="'.$LANG->getLL ('pasterecord').'" alt="" />',$dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$fieldID.':'.$counter,$this->MOD_SETTINGS['clip_parentPos'],$this->MOD_SETTINGS['clip']);
@@ -597,7 +600,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				$cells[]='<td valign="top" width="'.round(100/count($dsInfo['sub'][$sheet])).'%" style="border: dashed 1px #666666; padding: 5px 5px 5px 5px;">'.$elList.'</td>';
 			}
 		}
-		
+
 			// Compile preview content for the current element:
 		$content=is_array($dsInfo['el']['previewContent']) ? implode('<br />', $dsInfo['el']['previewContent']) : '';
 			// Compile the content areas for the current element (basically what was put together above):
@@ -605,7 +608,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			<tr>'.implode('',$headerCells).'</tr>
 			<tr>'.implode('',$cells).'</tr>
 		</table>';
-		
+
 			// Creating the rule compliance icon, $rulesStatus has been evaluated earlier
 		if (!is_null($rulesStatus['ok'])) {
 			$title = ($rulesStatus['ok'] === true ? $LANG->getLL ('ruleapplies') : $LANG->getLL ('rulefails'));
@@ -617,10 +620,10 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		$recordIcon = $this->doc->wrapClickMenuOnIcon($recordIcon,$dsInfo['el']['table'],$dsInfo['el']['id']);
 				
 		if ($dsInfo['el']['table']!='pages')	{
-			$linkCopy = $this->linkCopyCut('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/clip_copy'.$clipActive_copy.'.gif','').' title="'.$LANG->getLL ('copyrecord').'" border="0" alt="" />',($clipActive_copy ? '' : $parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id']),'copy');
-			$linkCut = $this->linkCopyCut('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/clip_cut'.$clipActive_cut.'.gif','').' title="'.$LANG->getLL ('cutrecord').'" border="0" alt="" />',($clipActive_cut ? '' : $parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id']),'cut');
-			$linkRef = $this->linkCopyCut('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,t3lib_extMgm::extRelPath('templavoila').'mod1/clip_ref'.$clipActive_ref.'.gif','').' title="'.$LANG->getLL ('createreference').'" border="0" alt="" />',($clipActive_ref ? '' : $parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id']),'ref');
-			$linkUnlink = $this->linkUnlink('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/garbage.gif','').' title="'.$LANG->getLL ('unlinkrecord').'" border="0" alt="" />',$parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id']);
+			$linkCopy = $isLocal ? $this->linkCopyCut('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/clip_copy'.$clipActive_copy.'.gif','').' title="'.$LANG->getLL ('copyrecord').'" border="0" alt="" />',($clipActive_copy ? '' : $parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].'/'.$isLocal),'copy') : '';
+			$linkCut = $this->linkCopyCut('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/clip_cut'.$clipActive_cut.'.gif','').' title="'.$LANG->getLL ('cutrecord').'" border="0" alt="" />',($clipActive_cut ? '' : $parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].'/'.$isLocal),'cut');
+			$linkRef = $this->linkCopyCut('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,t3lib_extMgm::extRelPath('templavoila').'mod1/clip_ref'.$clipActive_ref.'.gif','').' title="'.$LANG->getLL ('createreference').'" border="0" alt="" />',($clipActive_ref ? '' : $parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].'/'.$isLocal),'ref');
+			$linkUnlink = $this->linkUnlink('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/garbage.gif','').' title="'.$LANG->getLL($isLocal ? 'deleteRecord' : 'unlinkRecord').'" border="0" alt="" />', $parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].'/'.$isLocal, $isLocal);
 		} else {
 			$linkCopy = '';
 			$linkCut = '';
@@ -707,8 +710,11 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * @param	string		$unlinkRecord: The parameters for unlinking the record. Example: pages:78:sDEF:field_contentarea:0
 	 * @return	string		HTML anchor tag containing the label and the unlink-link
 	 */
-	function linkUnlink($str,$unlinkRecord)	{
-		return '<a href="index.php?id='.$this->id.'&unlinkRecord='.rawurlencode($unlinkRecord).'">'.$str.'</a>';
+	function linkUnlink($str,$unlinkRecord, $realDelete=FALSE)	{
+		global $LANG;
+
+		$onClick = $realDelete ? ' onclick="'.htmlspecialchars('return confirm('.$LANG->JScharCode($LANG->getLL('deleteRecordMsg')).');').'"' : '';
+		return '<a href="index.php?id='.$this->id.'&unlinkRecord='.rawurlencode($unlinkRecord).'"'.$onClick.'>'.$str.'</a>';
 	}
 
 	/**
@@ -786,11 +792,11 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 	/**
 	 * Creates default records which are defined in the datastructure's rules scheme. The property in the DS is called "ruleDefaultElements"
-	 * and consists of elements only (instead of a real regular expression)! I.e. if your regular expression is like this: "(ab){2}c", it makes 
+	 * and consists of elements only (instead of a real regular expression)! I.e. if your regular expression is like this: "(ab){2}c", it makes
 	 * sense having ruleDefaultElements contain this list of elements: "ababc".
 	 *
 	 * Calls itself recursively.
-	 * 
+	 *
 	 * @param	string		$table: The table, usually "pages" or "tt_content"
 	 * @param	integer		$uid: The UID
 	 * @param	integer		$prevDS: Internally used to make sure data structures are not created recursively ("previous data structure")
@@ -839,263 +845,46 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				}
 			}
 		}
-	}	
-	
+	}
+
 	/**
 	 * Inserts a new record (page content element)
-	 * 
+	 *
 	 * @param	string		$createNew: consists of several parts separated by colon
 	 * @param	array		$row: Array of parameters for creating the new record.
 	 * @return	integer		uid of the created content element (if any)
 	 */
 	function insertRecord($createNew,$row)	{
-		$parts = explode(':',$createNew);
-		if (t3lib_div::inList('pages,tt_content',$parts[0])) {
-			$parentRec = t3lib_BEfunc::getRecord($parts[0],intval($parts[1]),'uid,pid,tx_templavoila_flex');
-			if (is_array($parentRec))	{
-					// First, create record:
-				$dataArr= array();
-				$dataArr['tt_content']['NEW']=$row;
-				$dataArr['tt_content']['NEW']['pid'] = ($parts[0]=="pages" ? $parentRec['uid'] : $parentRec['pid']);
-				unset($dataArr['pages']['NEW']['uid']);
-				$tce = t3lib_div::makeInstance("t3lib_TCEmain");
-				$tce->stripslashes_values=0;
-				$tce->start($dataArr,array());
-				$tce->process_datamap();
-				$id = $tce->substNEWwithIDs['NEW'];
-
-				$xmlContent = t3lib_div::xml2array($parentRec['tx_templavoila_flex']);
-				$dat = $xmlContent['data'][$parts[2]]['lDEF'][$parts[3]]['vDEF'];
-					// ACHTUNG: We should check if $parts[2] (the sheet key) and $parts[3] (the field name) is actually in the 
-					// data structure! Otherwise a possible XSS hole!
-					
-				$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
-				$dbAnalysis->start($dat,'tt_content');
-
-				$inserted=0;
-				$idList=array();
-				if ($parts[4]==0)	{
-					$idList[]='tt_content_'.$id;
-					$inserted=1;
-				}
-				$counter=0;
-				foreach($dbAnalysis->itemArray as $idSet)	{
-					$idList[]=$idSet['table'].'_'.$idSet['id'];
-					$counter++;
-					if ($parts[4]==$counter)	{
-						$idList[]='tt_content_'.$id;
-						$inserted=1;
-					}
-				}
-				if (!$inserted)	{
-					$idList[]='tt_content_'.$id;
-				}
-
-				$dataArr= array();
-				$dataArr[$parts[0]][$parentRec['uid']]=array();
-				$dataArr[$parts[0]][$parentRec['uid']]['tx_templavoila_flex']['data'][$parts[2]]['lDEF'][$parts[3]]['vDEF']=implode(',',$idList);
-
-				$tce = t3lib_div::makeInstance("t3lib_TCEmain");
-				$tce->stripslashes_values=0;
-				$tce->start($dataArr,array());
-				$tce->process_datamap();
-				
-				return $id;
-			}
-		}
+		$handler = t3lib_div::makeInstance('tx_templavoila_xmlrelhndl');
+		return $handler->insertRecord($createNew,$row);
 	}
 
 	/**
 	 * Performs the processing part of pasting a record.
-	 * 
+	 *
 	 * @param	string		$pasteCmd: Kind of pasting: 'cut', 'copy' or 'unlink'
 	 * @param	string		$target: String defining the original record. Example: pages:78:sDEF:field_contentarea:0
 	 * @param	string		$destination: Defines the destination where to paste the record (not used when unlinking of course).
 	 * @return	void		nothing
 	 */
 	function pasteRecord($pasteCmd, $target, $destination)	{
-
-			// Split the target definition into parts:
-		list($targetStr,$check) = explode('/',$target);
-		
-		if ($targetStr)	{
-			$parts_target = explode(':',$targetStr);
-				// The "target" elements actually point to the target by its current position in a relation field - the $check variable should match what we find...
-			if (t3lib_div::inList('pages,tt_content',$parts_target[0]))	{
-				$parentRec = t3lib_BEfunc::getRecord($parts_target[0],intval($parts_target[1]),'uid,pid,tx_templavoila_flex');
-				if (is_array($parentRec))	{
-						// Get XML content from that field.
-					$xmlContent = t3lib_div::xml2array($parentRec['tx_templavoila_flex']);
-					$dat = $xmlContent['data'][$parts_target[2]]['lDEF'][$parts_target[3]]['vDEF'];
-					
-					$dbAnalysis_target = t3lib_div::makeInstance('t3lib_loadDBGroup');
-					$dbAnalysis_target->start($dat,'tt_content');
-					
-					$itemOnPosition = $dbAnalysis_target->itemArray[$parts_target[4]-1];
-					
-						// Now, check it the current element actually matches what it should (otherwise some update must have taken place in between...)
-					if ($itemOnPosition['table'].':'.$itemOnPosition['id'] == $check && $itemOnPosition['table']=='tt_content')	{	// None other than tt_content elements are moved around...
-						if ($pasteCmd=='unlink')	{
-							unset($dbAnalysis_target->itemArray[$parts_target[4]-1]);
-							$idList_target=array();
-							foreach($dbAnalysis_target->itemArray as $idSet)	{
-								$idList_target[]=$idSet['table'].'_'.$idSet['id'];
-							}
-		
-							$dataArr=array();
-							$dataArr[$parts_target[0]][$parentRec['uid']]['tx_templavoila_flex']['data'][$parts_target[2]]['lDEF'][$parts_target[3]]['vDEF']=implode(',',$idList_target);
-	
-							$tce = t3lib_div::makeInstance("t3lib_TCEmain");
-							$tce->stripslashes_values=0;
-							$tce->start($dataArr,array());
-							$tce->process_datamap();
-						} else {
-								// Now, find destination:
-							$parts_destination = explode(':',$destination);
-							$destinationTable = $parts_destination[0];
-							if (t3lib_div::inList('pages,tt_content',$destinationTable))	{
-								$destinationRec = t3lib_BEfunc::getRecord($destinationTable,intval($parts_destination[1]),'uid,pid,tx_templavoila_flex');
-								if (is_array($destinationRec))	{
-									$sameField = $destinationTable==$parts_target[0] 
-													&& $destinationRec['uid']==$parentRec['uid'] 
-													&& $parts_destination[2]==$parts_target[2] 
-													&& $parts_destination[3]==$parts_target[3];
-
-										// Get XML content from that field.
-									$xmlContent = t3lib_div::xml2array($destinationRec['tx_templavoila_flex']);
-									$dat = $xmlContent['data'][$parts_destination[2]]['lDEF'][$parts_destination[3]]['vDEF'];
-									
-									$dbAnalysis_dest = t3lib_div::makeInstance('t3lib_loadDBGroup');
-									$dbAnalysis_dest->start($dat,'tt_content');
-		
-									if ($pasteCmd=='copy')	{
-										$cmdArray=array();
-										$cmdArray['tt_content'][$itemOnPosition['id']]['copy']=($destinationTable=="pages" ? $destinationRec['uid'] : $destinationRec['pid']);
-										$tce = t3lib_div::makeInstance("t3lib_TCEmain");
-										$tce->start(array(),$cmdArray);
-										$tce->process_cmdmap();
-										
-										if ($tce->copyMappingArray['tt_content'][$itemOnPosition['id']])	{
-											$ID = $itemOnPosition['id'] = $tce->copyMappingArray['tt_content'][$itemOnPosition['id']];	
-										} else {
-											# Defaulting to making a reference:
-												// Move/Ref:
-											$ID=$itemOnPosition['id'];	
-										}
-									} else {
-											// Move/Ref:
-										$ID=$itemOnPosition['id'];
-									}
-									
-									$inserted=0;
-									$idList_dest=array();
-									if ($parts_destination[4]==0)	{
-										$idList_dest[]='tt_content_'.$ID;
-										$inserted=1;
-									}
-									$counter=0;
-									foreach($dbAnalysis_dest->itemArray as $idSet)	{
-										$counter++;
-										if ($pasteCmd=='cut' && $sameField && $parts_target[4]==$counter)	{
-											# Do nothing, don't add it again!
-										} else {
-											$idList_dest[]=$idSet['table'].'_'.$idSet['id'];
-										}
-										
-										if ($parts_destination[4]==$counter)	{
-											$idList_dest[]='tt_content_'.$ID;
-											$inserted=1;
-										}
-									}
-									if (!$inserted)	{
-										$idList_dest[]='tt_content_'.$ID;
-									}
-		
-										// First, create record:
-									$dataArr=array();
-									$cmdArray=array();
-									$dataArr[$destinationTable][$destinationRec['uid']]['tx_templavoila_flex']['data'][$parts_destination[2]]['lDEF'][$parts_destination[3]]['vDEF']=implode(',',$idList_dest);
-		
-									if ($pasteCmd=='cut' && !$sameField)	{
-										unset($dbAnalysis_target->itemArray[$parts_target[4]-1]);
-										$idList_target=array();
-										foreach($dbAnalysis_target->itemArray as $idSet)	{
-											$idList_target[]=$idSet['table'].'_'.$idSet['id'];
-										}
-										$dataArr[$parts_target[0]][$parentRec['uid']]['tx_templavoila_flex']['data'][$parts_target[2]]['lDEF'][$parts_target[3]]['vDEF']=implode(',',$idList_target);
-									}
-									
-										// If moving element, make sure the PID is changed as well so the element belongs to the page where it is moved to:
-									if ($pasteCmd=='cut')	{
-										$cmdArray['tt_content'][$ID]['move'] = ($destinationTable=="pages" ? $destinationRec['uid'] : $destinationRec['pid']);
-									}
-									
-									$tce = t3lib_div::makeInstance("t3lib_TCEmain");
-									$tce->stripslashes_values=0;
-									$tce->start($dataArr,$cmdArray);
-									$tce->process_datamap();
-									$tce->process_cmdmap();
-								}
-							}
-						}
-					}
-				}
-			}
-		} elseif($check && $pasteCmd=='ref') {
-
-			$parts_destination = explode(':',$destination);
-			$destinationTable = $parts_destination[0];
-			list($table,$uid) = explode(':',$check);
-
-			if ($table=='tt_content' && t3lib_div::inList('pages,tt_content',$destinationTable))	{
-				$destinationRec = t3lib_BEfunc::getRecord($destinationTable,intval($parts_destination[1]),'uid,pid,tx_templavoila_flex');
-				if (is_array($destinationRec))	{
-						// Get XML content from that field.
-					$xmlContent = t3lib_div::xml2array($destinationRec['tx_templavoila_flex']);
-					$dat = $xmlContent['data'][$parts_destination[2]]['lDEF'][$parts_destination[3]]['vDEF'];
-					
-					$dbAnalysis_dest = t3lib_div::makeInstance('t3lib_loadDBGroup');
-					$dbAnalysis_dest->start($dat,'tt_content');
-
-						// Move/Ref:
-					$ID=$uid;
-					
-					$inserted=0;
-					$idList_dest=array();
-					if ($parts_destination[4]==0)	{
-						$idList_dest[]='tt_content_'.$ID;
-						$inserted=1;
-					}
-					$counter=0;
-					foreach($dbAnalysis_dest->itemArray as $idSet)	{
-						$counter++;
-						$idList_dest[]=$idSet['table'].'_'.$idSet['id'];
-						if ($parts_destination[4]==$counter)	{
-							$idList_dest[]='tt_content_'.$ID;
-							$inserted=1;
-						}
-					}
-					if (!$inserted)	{
-						$idList_dest[]='tt_content_'.$ID;
-					}
-
-						// First, create record:
-					$dataArr=array();
-					$dataArr[$destinationTable][$destinationRec['uid']]['tx_templavoila_flex']['data'][$parts_destination[2]]['lDEF'][$parts_destination[3]]['vDEF']=implode(',',$idList_dest);
-
-					$tce = t3lib_div::makeInstance("t3lib_TCEmain");
-					$tce->stripslashes_values=0;
-					$tce->start($dataArr,array());
-					$tce->process_datamap();
-				}
-			}
-		}
+		$handler = t3lib_div::makeInstance('tx_templavoila_xmlrelhndl');
+		return $handler->pasteRecord($pasteCmd, $target, $destination);
 	}
 
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
+
+
+
 	/********************************************
 	 *
 	 * Structure and rules functions
@@ -1105,7 +894,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	/**
 	 * Gets the page ID of the folder containing the template objects (for our template selector).
 	 * The storage folder is used for that purpose.
-	 * 
+	 *
 	 * @param	integer		$positionPid
 	 * @return	integer		PID of the storage folder
 	 */
@@ -1132,7 +921,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 */
 	function getDStreeForPage($table,$id,$prevRecList='',$row='')	{
 		global $TCA;
-		
+
 		$row = is_array($row) ? $row : t3lib_BEfunc::getRecord($table,$id);
 		$tree=array();
 		$tree['el']=array(
@@ -1146,7 +935,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		if ($table=='pages' or ($table=='tt_content' && $row['CType']=='templavoila_pi1'))	{
 			$expDS = $this->getExpandedDataStructure($table,'tx_templavoila_flex',$row);
 			$xmlContent = t3lib_div::xml2array($row['tx_templavoila_flex']);
-		
+
 			foreach($expDS as $sheetKey => $sVal)	{
 				$tree['sub'][$sheetKey]=array();
 				if (is_array($sVal['ROOT']['el']))	{
@@ -1157,25 +946,27 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 							$tree['sub'][$sheetKey][$k]['meta']=array(
 								'title' => $v['TCEforms']['label']
 							);
-							
+
 							$dat = $xmlContent['data'][$sheetKey]['lDEF'][$k]['vDEF'];
 							$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
 							$dbAnalysis->start($dat,'tt_content');
 							$elArray=array();
-							
+
 							foreach($dbAnalysis->itemArray as $counter => $recIdent)	{
 								$this->global_tt_content_elementRegister[$recIdent['id']]++;
 								$idStr=$recIdent['table'].':'.$recIdent['id'];
+
 								$idRow = $elArray[] = t3lib_BEfunc::getRecord($recIdent['table'],$recIdent['id']);
 								if (!t3lib_div::inList($prevRecList,$idStr))	{
 									if (is_array($idRow))	{
 										$tree['sub'][$sheetKey][$k]['el'][$idStr] = $this->getDStreeForPage($recIdent['table'],$recIdent['id'],$prevRecList.','.$idStr,$idRow);
-										$tree['sub'][$sheetKey][$k]['el'][$idStr]['el']['index'] = $counter+1;
+										#$tree['sub'][$sheetKey][$k]['el'][$idStr]['el']['index'] = $counter+1;
+										$tree['sub'][$sheetKey][$k]['el_list'][($counter+1)] = $idStr;
 									} else {
 										# ERROR: The element referenced was deleted!
 									}
 								} else {
-									# ERROR: recursivity error!	
+									# ERROR: recursivity error!
 								}
 							}
 #							$this->evaluateRuleOnElements($v['tx_templavoila']['ruleRegEx'],$v['tx_templavoila']['ruleConstants'],$elArray);
@@ -1267,7 +1058,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	
 	/**
 	 * Returns the data structure for a flexform field ($field) from $table (from $row)
-	 * 
+	 *
 	 * @param	string		The table name
 	 * @param	string		The field name
 	 * @param	array		The data row (used to get DS if DS is dependant on the data in the record)
