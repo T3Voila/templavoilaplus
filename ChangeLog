@@ -1,3 +1,9 @@
+2004-07-15  Robert Lemke  <rl@robertlemke.de>
+
+	* Committed changes and development from the Paris sessions.
+	* @Kasper: There only seemed to be one conflict in mod1/index.php which I could solve easily
+	* @All the others: Be careful with this version, I didn't check if everything works. Wait until the next commit
+
 2004-06-17  Robert Lemke  <rl@robertlemke.de>
 
 	* Bugfix: headerfields, titlebarcolor etc. didn't work with inherited datastructures. Now they do.
