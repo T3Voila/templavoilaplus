@@ -1,3 +1,8 @@
+2004-03-15  Robert Lemke  <rl@robertlemke.de>
+
+	* Hey Kasper, you broke the create new page wizard ... ;-) Anyways, will find out what's wrong.
+	* Small update for the manual (FAQ)
+
 2004-03-09  Kasper Skårhøj
 
 	* Removed copy,cut,paste,new,delete links in Context Menu for content elements inside of TemplaVoila module; Doesn't do any good there since those features are specific for TemplaVoila and has to be managed in the module itself; Alternatively we should create menu items in the context menu which does the same as the buttons in the module, but that was too hard for me to think about tonight....
