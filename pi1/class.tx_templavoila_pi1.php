@@ -34,14 +34,15 @@
  *
  *
  *
- *   67: class tx_templavoila_pi1 extends tslib_pibase
- *   84:     function main($content,$conf)
- *   96:     function main_page($content,$conf)
- *  126:     function initVars($conf)
- *  139:     function renderElement($row,$table)
- *  204:     function processDataValues(&$dataValues,$DSelements,$TOelements,$valueKey='vDEF')
+ *   69: class tx_templavoila_pi1 extends tslib_pibase
+ *   86:     function main($content,$conf)
+ *   99:     function main_page($content,$conf)
+ *  129:     function initVars($conf)
+ *  142:     function renderElement($row,$table)
+ *  241:     function processDataValues(&$dataValues,$DSelements,$TOelements,$valueKey='vDEF')
+ *  376:     function formatError($string)
  *
- * TOTAL FUNCTIONS: 5
+ * TOTAL FUNCTIONS: 6
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -368,8 +369,9 @@ class tx_templavoila_pi1 extends tslib_pibase {
 	/**
 	 * Creates an error message for frontend output
 	 *
-	 * @string	string		Error message input
+	 * @param	[type]		$string: ...
 	 * @return	string		Error message output
+	 * @string	string		Error message input
 	 */
 	function formatError($string)	{
 

@@ -398,6 +398,10 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		$content  = $this->doc->startPage($LANG->getLL('title'));
 		$content .= $this->doc->spacer(2);
 
+		if (is_array ($this->altRoot)) {
+			$content .= '<div style="text-align:right; width:100%; margin-bottom:5px;"><a href="index.php?id='.$this->id.'"><img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/goback.gif','').' title="'.htmlspecialchars($LANG->getLL ('goback')).'" alt="" /></a></div>';
+		}
+
 			// Hook for content at the very top (fx. a toolbar):
 		if (is_array ($TYPO3_CONF_VARS['EXTCONF']['templavoila']['mod1']['renderTopToolbar'])) {
 			foreach ($TYPO3_CONF_VARS['EXTCONF']['templavoila']['mod1']['renderTopToolbar'] as $_funcRef) {
@@ -406,7 +410,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			}
 		}
 
-		$content .= $this->renderLanguageSelector();
+#		$content .= $this->renderLanguageSelector();
 
 			// Display the nested page structure:
 		$content .= $this->renderFramework($dsArr,'',$clipboardElInPath);
@@ -694,6 +698,8 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		$linkRef = '';
 		$linkUnlink = '';
 		$linkMakeLocal = '';
+		$titleBarTDParams = '';
+
 		if ($dsInfo['el']['table']!='tt_content')	{
 			$viewPageIcon = '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::viewOnClick($dsInfo['el']['table']=='pages'?$dsInfo['el']['id']:$dsInfo['el']['pid'],$this->doc->backPath,t3lib_BEfunc::BEgetRootLine($dsInfo['el']['id']))).'">'.
 				'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/zoom.gif','width="12" height="12"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showPage',1).'" hspace="3" alt="" align="absmiddle" />'.
@@ -705,6 +711,15 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			$linkCut = $this->linkCopyCut('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/clip_cut'.$clipActive_cut.'.gif','').' title="'.$LANG->getLL ('cutrecord').'" border="0" alt="" />',($clipActive_cut ? '' : $parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].'/'.$isLocal),'cut');
 			$linkRef = $this->linkCopyCut('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,t3lib_extMgm::extRelPath('templavoila').'mod1/clip_ref'.$clipActive_ref.'.gif','').' title="'.$LANG->getLL ('createreference').'" border="0" alt="" />',($clipActive_ref ? '' : $parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].'/'.$isLocal),'ref');
    			$linkUnlink = $this->linkUnlink('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/garbage.gif','').' title="'.$LANG->getLL($realDelete ? 'deleteRecord' : 'unlinkRecord').'" border="0" alt="" />', $parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].'/'.$isLocal, $realDelete);
+
+			if (is_array ($dsInfo['sub']) && $this->altRoot['uid'] != $dsInfo['el']['id']) {
+				$viewSubElementsUrl = 'index.php?id='.$this->id.
+					'&altRoot[table]='.rawurlencode($dsInfo['el']['table']).
+					'&altRoot[uid]='.$dsInfo['el']['id'].
+					'&altRoot[field_flex]=tx_templavoila_flex';
+				$titleBarTDParams .= ' onClick="jumpToUrl(\''.$viewSubElementsUrl.'\');"';
+				$titleBarTDParams .= ' style="cursor:pointer;cursor:hand" alt="'.htmlspecialchars($LANG->getLL ('viewsubelements')).'" title="'.htmlspecialchars($LANG->getLL ('viewsubelements')).'"';
+			}
 		}
 
 			// Hook: renderFrameWork_preProcessOutput
@@ -718,7 +733,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		$finalContent = $this->renderSheetMenu($dsInfo, $sheet) . $errorLineBefore . '
 		<table border="0" cellpadding="2" cellspacing="0" style="border: 1px solid black; margin-bottom:5px; '.$elementBackgroundStyle.'" width="100%">
 			<tr style="'.$elementPageTitlebarStyle.';">
-				<td>'.$showRuleIcon.$recordIcon.$viewPageIcon.'&nbsp;'.($isLocal?'':'<em>').$GLOBALS['LANG']->sL($dsInfo['el']['title'],1).($isLocal?'':'</em>'). '</td>
+				<td nowrap="nowrap">'.$showRuleIcon.$recordIcon.$viewPageIcon.'</td><td width="95%" '.$titleBarTDParams.'>'.($isLocal?'':'<em>').$GLOBALS['LANG']->sL($dsInfo['el']['title'],1).($isLocal?'':'</em>'). '</td>
 				<td nowrap="nowrap" align="right" valign="top">'.
 					$linkCustom.
 					$linkMakeLocal.
@@ -729,7 +744,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 					($isLocal ? $this->linkEdit('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/edit2.gif','').' title="'.$LANG->getLL ('editrecord').'" border="0" alt="" />',$dsInfo['el']['table'],$dsInfo['el']['id']) : '').
 				'</td>
 			</tr>
-			<tr><td colspan="2">'.$headerFields.$content.($errorLineWithin ? '<br />'.$errorLineWithin : '').'</td></tr>
+			<tr><td colspan="3">'.$headerFields.$content.($errorLineWithin ? '<br />'.$errorLineWithin : '').'</td></tr>
 		</table>
 		'.$errorLineAfter.'
 		';

@@ -1,53 +1,58 @@
 <?php
 /**
- * Language labels for extension "templavoila"
- * 
+ * Language labels for extension 'templavoila'
+ *
  * $Id$
- * 
+ *
  * This file is detected by the translation tool.
  */
 
 $LOCAL_LANG = Array (
-	"default" => Array (
-		"cm1_title" => "TemplaVoila",	
+	'default' => Array (
+		'cm1_title' => 'TemplaVoilà',
+		'cm1_viewsubelements' => 'View: Sub elements',
+		'cm1_viewflexformxml' => 'View: Flexform XML',
 	),
-	"dk" => Array (
+	'dk' => Array (
 	),
-	"de" => Array (
+	'de' => Array (
+		'cm1_title' => 'TemplaVoilà',
+		'cm1_viewsubelements' => 'Ansicht: Unter-Elemente',
+		'cm1_viewflexformxml' => 'Ansicht: Flexform XML',
 	),
-	"no" => Array (
+	'no' => Array (
 	),
-	"it" => Array (
+	'it' => Array (
 	),
-	"fr" => Array (
+	'fr' => Array (
 	),
-	"es" => Array (
+	'es' => Array (
 	),
-	"nl" => Array (
+	'nl' => Array (
 	),
-	"cz" => Array (
+	'cz' => Array (
 	),
-	"pl" => Array (
+	'pl' => Array (
 	),
-	"si" => Array (
+	'si' => Array (
 	),
-	"fi" => Array (
+	'fi' => Array (
 	),
-	"tr" => Array (
+	'tr' => Array (
 	),
-	"se" => Array (
+	'se' => Array (
 	),
-	"pt" => Array (
+	'pt' => Array (
 	),
-	"ru" => Array (
+	'ru' => Array (
 	),
-	"ro" => Array (
+	'ro' => Array (
 	),
-	"ch" => Array (
+	'ch' => Array (
 	),
-	"sk" => Array (
+	'sk' => Array (
 	),
-	"lt" => Array (
+	'lt' => Array (
 	),
 );
 ?>
