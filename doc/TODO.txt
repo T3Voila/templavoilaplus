@@ -9,7 +9,6 @@ TODO inbox (not sorted into the structure below yet):
  - Do not allow content creation on pages like "Shortcut" and "Extenal URL".
  - Create wizard for moving NORMAL column elements into TemplaVOila structures (recursively!)
  - "Show hidden content elements" checkbox (like in traditional Web>Page module)
-- Columns UNDER each other (patterns?) (RL)
 - el. wizard: make copy of.
 
 
@@ -119,16 +118,18 @@ GENERAL:
 		- rules class API
 		- DS / XML functions
 	- Reorganize functions, create a new class for commonly used functions, make CM1, MOD1, PI1 independent
-		-> apply design patterns & abstraction methods
 	- Enable multi language functions:
 		- Use FlexForms build-in possibilities (is already rendered right!) + possibility to exclude certain fields, eg. tt_content group fields
+			-> first steps taken: lDEF,lXXX and DEF,vXXX will already be displayed correctly
+			-> copy & paste, create new do not work, maybe tcemain(?) changes neccessary because lDEF / vDEF is hard-coded somewhere
+
 		- For non-flexform elements, use future core language support:
 			- tt_content elements refering to the default version, but with translation
 			- In TCA for tt_content, have a list of fields which are the ones being overlaid (optional if blank/zero fields should be overlaid too)
 			- In TCEforms this will also allow us see a simultaneous view of translations.
 
 RULES:
-	- When page is created without the create new page wizard, default elements must also be created!
+	- When page is created without the create new page wizard, default elements must also be created! -> core, tcemain
 	- Show what rule in a user-friendly way if a rule doesn't apply or for informational purposes.
 	- Permissions for users to certain elements areas.
 	- Disable edit for some elements?
@@ -162,12 +163,12 @@ PAGE MODULE:
 	- Hierarchy tree view of the relations (incl. sheets, multiple groupfields in each element)
 	- Display of CEs
 		- Better preview for TABLE element
-		- Provide a way for plugins to generate certain previews -> Let them register a function
+	- Configure option (in DS): Columns *below* each other instead of side by side display (DASSAULT)
+	- After creating a new page, the highlighted <td> in page tree must be set (ids array) - how? through top bar via JS?
 
 TECHNICAL:
 	- Delivery to a) different clients X b) in various languages.
 	- Versioning: Part of TCEmain
-	- Language: Part of TCEmain/FlexForms
 	- Workflow: Independant.
 	- Permissions: Part of TCEmain.
 	- Frontend Editing should be available.

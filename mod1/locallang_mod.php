@@ -3,19 +3,22 @@
  * Language labels for module 'web_txtemplavoilaM1' - header, description
  *
  * $Id$
- * 
+ *
  * This file is detected by the translation tool.
  */
 
 $LOCAL_LANG = Array (
     'default' => Array (
-        'mlang_tabs_tab' => 'Page',    
-        'mlang_labels_tabdescr' => 'This module allows you to create and edit webpages. It provides a template selector and management for different languages.',    
-        'mlang_labels_tablabel' => 'Page',
+        'mlang_tabs_tab' => 'Page',
+        'mlang_labels_tabdescr' => 'This module allows you to create and edit webpages. It provides a template selector and management for different languages. This page module is part of the extension "TemplaVoila".',
+        'mlang_labels_tablabel' => 'Create and edit pages',
     ),
     'dk' => Array (
     ),
     'de' => Array (
+        'mlang_tabs_tab' => 'Seite',
+        'mlang_labels_tabdescr' => 'Dieses Modul ermöglicht Ihnen, Seiten zu erstellen und zu bearbeiten. Zusätzlich bietet es einen Assistenten zur Auswahl einer Vorlage und Verwaltung von verschiedenen Übersetzungen einer Seite. Dieses Seiten-Modul ist Bestandteil der Erweiterung "TemplaVoila"',
+        'mlang_labels_tablabel' => 'Seiten erstellen und bearbeiten',
     ),
     'no' => Array (
     ),
