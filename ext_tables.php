@@ -8,6 +8,9 @@ if (TYPO3_MODE=='BE')	{
 		'path' => t3lib_extMgm::extPath($_EXTKEY).'class.tx_templavoila_cm1.php'
 	);
 	include_once(t3lib_extMgm::extPath('templavoila').'class.tx_templavoila_handlestaticdatastructures.php');
+
+		// Adding backend module:
+  t3lib_extMgm::addModule("web","txtemplavoilaM1","top",t3lib_extMgm::extPath($_EXTKEY)."mod1/");
 }
 
 	// Adding tables:
