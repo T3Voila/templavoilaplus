@@ -2,6 +2,10 @@
 TODO
 ******************
 
+INBOX (imposed by Robert ...)
+
+	- (Re-) implement support for thead and tbody for HTML markup class.
+
 Localization:
 1: SELECT FROM tt_content WHERE language_uid = (fr) and language_original_uid = (uid of the default language record)
 2: is <languageDisable> ?
