@@ -85,15 +85,14 @@ class tx_templavoila_rules {
 	 */
 	function evaluateRulesOnElements ($rules, $ruleConstants, $elArray) {
 		$ok = -1;
-//	debug(array($rules, $ruleConstants, $elArray));
+#	debug(array($rules, $ruleConstants, $elArray),'rules/ruleConstants/elEarray',88,'rules.php');
 
 			// Strip the starting and ending delimiter
 		if ($rules[0]=='^') { $rules = substr ($rules, 1); }
 		if ($rules[strlen($rules)-1]=='$') { $rules = substr ($rules,0,-1); }
 
 		$rulesArray = $this->parseRegexIntoArray ($rules);
-//		debug ($this->checkRulesCompliance ($rulesArray, $elArray));
-
+		debug ($this->checkRulesCompliance ($rulesArray, $elArray));
 		return array (
 			'ok' => $ok,
 			'ruletext' => array (
@@ -104,7 +103,6 @@ class tx_templavoila_rules {
 
 	/**
 	 * Delivers the default content elements which are neccessary for a certain element.
-	 * STILL DUMMY
 	 * 
 	 * @param	[type]		$rules: ...
 	 * @param	[type]		$ruleConstants: ...
