@@ -81,7 +81,7 @@ class tx_templavoila_cm1 {
 					// Repeat this (below) for as many items you want to add!
 					// Remember to add entries in the localconf.php file for additional titles.
 				if (@is_file($table))	{
-					$url = t3lib_extMgm::extRelPath('templavoila').'cm1/index.php?file='.rawurlencode($table).'&mapElPath='.rawurlencode('[ROOT]');
+					$url = t3lib_extMgm::extRelPath('templavoila').'cm1/index.php?file='.rawurlencode($table);	//.'&mapElPath='.rawurlencode('[ROOT]');
 				} else {
 					$url = t3lib_extMgm::extRelPath('templavoila').'cm1/index.php?table='.rawurlencode($table).'&uid='.$uid.'&_reload_from=1';
 				}

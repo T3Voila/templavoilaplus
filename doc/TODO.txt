@@ -1,14 +1,6 @@
 ******************
 TODO
 ******************
-* PID of sysfolder/page used for s...
-* mapping process... / interface.
-*	- BUG: If you map ONLY the root element then nothing gets saved in the template!
-
-Module displaying DS/TOs
-
-
-***********************************************
 
 FINISHING (A week):
 "class.tx_templavoila_htmlmarkup.php"
@@ -31,6 +23,8 @@ FINISHING (A week):
 	- Option to wipe out the id's used (or those prefixed "TV-") since they could be repetitive.
 	- Visual formatting of error page
 	- BUG: When clicking the path link of a RANGE to preview it, we will see only the first element in the visual frame - because the RANGE part is cut away!
+	- BUG: If you map ONLY the root element then nothing gets saved in the template! - Could NOT reproduce again!
+	- BUG: When mapping via File > Filelist old mapping information is restored - this hsould be bound to the filename of the template file so a FRESH mapping approach does not get old mapping info.
 - Commenting + documentation i SXW fil.
 	- Better define vocabulary! Also define what is a "HTML-path" etc.
 	- // ONLY ALLOW "arrays" inside of "sections" - otherwise it does not make so much sense and it is harder to handle; basically all stuff in a SECTION is defined to be a container and that is what the "array" handles...
@@ -44,7 +38,9 @@ FINISHING (A week):
 	- Support for http-URLs instead of files (incl. caching)
 	- API: A function which can produce a traditionally marked up version of the template: For use in TS as alternative to the Autoparser
 	- ?: How can extensions supply a default template Array when no Template Object exists yet, mapping the data? What about the data structure containing some sample markup as well which means we can always assemble a simple display from that. Or even a nice default display which is of course stylable by CSS. AND this default
-
+	- Backend Module in Web> displaying DS/TOs in a list, linking to display data structures etc. Usage counts? All kinds of nice things...
+	- Show a little warning if no template record was selected in _pi1...
+	
 	- getLL usage in whole module.
 	- CSH for whole module
 	- Documentation

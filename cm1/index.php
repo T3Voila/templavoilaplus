@@ -132,9 +132,10 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 	var $markupFile = '';		// Used to store the name of the file to mark up with a given path.
 	var $markupObj = '';
 	var $elNames = array();
-	var $templatePID = '';		// The sysfolder's/page's UID which contains Data Structure Objects / Template Objects. Set by TSconfig
-
-
+	var $editDataStruct=0;		// Setting whether we are editing a data structure or not.
+	var $storageFolders = array();	// Storage folders as key(uid) / value (title) pairs.
+	var $storageFolders_pidList=0;	// The storageFolders pids imploded to a comma list including "0"
+	
 		// GPvars:
 	var $mode;					// Looking for "&mode", which defines if we draw a frameset (default), the module (mod) or display (display)
 	
@@ -155,6 +156,14 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 	var $DS_cmd;
 	var $fieldName;	
 	
+		// GPvars for MODULE mode, specific to creating a DS:
+	var $_load_ds_xml_content;
+	var $_load_ds_xml_to;
+	var $_saveDSandTO_TOuid;
+	var $_saveDSandTO_title;
+	var $_saveDSandTO_type;
+	var $_saveDSandTO_pid;
+
 		// GPvars for DISPLAY mode:
 	var $show;					// Boolean; if true no mapping-links are rendered.
 	var $preview;				// Boolean; if true, the currentMappingInfo preview data is merged in
@@ -189,10 +198,6 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 	 * @return	void		
 	 */
 	function main()	{
-
-			// Getting PID of sysfolder / page containing TO / DSO
-		$confArray = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
-		$this->templatePID = intval($confArray['config.']['templatePID']);
 
 			// Setting GPvars:
 		$this->mode = t3lib_div::GPvar('mode');
@@ -255,7 +260,6 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			DIV.typo3-noDoc H2 { width: 100%; }
 			TABLE#c-mapInfo {margin-top: 10px; margin-bottom: 5px; }
 			TABLE#c-mapInfo TR TD {padding-right: 20px;}
-			TABLE#c-headerParts PRE {font-size:11px; font-family: monospace; margin: 0 0 0 0; }
 		';
 
 			// General GPvars for module mode:
@@ -274,6 +278,17 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 		$this->DS_cmd = t3lib_div::GPvar('DS_cmd');
 		$this->fieldName = t3lib_div::GPvar('fieldName');
 		
+			// GPvars specific for DS creation from a file.
+		$this->_load_ds_xml_content = t3lib_div::GPvar('_load_ds_xml_content');		
+		$this->_load_ds_xml_to = t3lib_div::GPvar('_load_ds_xml_to');		
+		$this->_saveDSandTO_TOuid = t3lib_div::GPvar('_saveDSandTO_TOuid');
+		$this->_saveDSandTO_title = t3lib_div::GPvar('_saveDSandTO_title');
+		$this->_saveDSandTO_type = t3lib_div::GPvar('_saveDSandTO_type');
+		$this->_saveDSandTO_pid = t3lib_div::GPvar('_saveDSandTO_pid');
+		$this->DS_element_DELETE = t3lib_div::GPvar('DS_element_DELETE');
+
+			// Finding Storage folder:
+		$this->findingStorageFolderIds();			
 		
 			// Setting up form-wrapper:
 		$this->doc->form='<form action="'.$this->linkThisScript(array()).'" method="post" name="pageform">';
@@ -319,17 +334,54 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 	 */
 	function renderFile()	{
 		if (@is_file($this->displayFile) && t3lib_div::getFileAbsFileName($this->displayFile))		{
+		
+				// Converting GPvars into a "cmd" value:
+			$cmd = '';
+			if (t3lib_div::GPvar('_load_ds_xml'))	{	// Loading DS from XML or TO uid
+				$cmd = 'load_ds_xml';
+			} elseif (t3lib_div::GPvar('_clear'))	{	// Resetting mapping/DS
+				$cmd = 'clear';
+			} elseif (t3lib_div::GPvar('_saveDSandTO'))	{	// Saving DS and TO to records.
+				$cmd = 'saveDSandTO';
+			} elseif (t3lib_div::GPvar('_updateDSandTO'))	{	// Updating DS and TO
+				$cmd = 'updateDSandTO';
+			} elseif (t3lib_div::GPvar('_showXMLDS'))	{	// Showing current DS as XML
+				$cmd = 'showXMLDS';
+			} elseif (t3lib_div::GPvar('_preview'))	{	// Previewing mappings
+				$cmd = 'preview';
+			} elseif (t3lib_div::GPvar('_save_data_mapping'))	{	// Saving mapping to Session
+				$cmd = 'save_data_mapping';
+			} elseif (t3lib_div::GPvar('_updateDS')) {
+				$cmd = 'updateDS';
+			} elseif (t3lib_div::GPvar('DS_element_DELETE'))	{
+				$cmd = 'DS_element_DELETE';
+			} elseif (t3lib_div::GPvar('_saveScreen'))	{
+				$cmd = 'saveScreen';
+			} elseif (t3lib_div::GPvar('_loadScreen'))	{
+				$cmd = 'loadScreen';
+			}
 			
-			$this->editDataStruct=1;
+				// Init settings:
+			$this->editDataStruct=1;	// Edit DS...
 			$content='';
+			$msg = array();
 
-				// Get session data:							
-			if (!t3lib_div::GPvar('_clear'))	{
+				// Checking Storage Folder PID:
+			if (!count($this->storageFolders))	{
+				$msg[] = '<img src="'.$GLOBALS['BACK_PATH'].'gfx/icon_fatalerror.gif" width="18" height="16" border="0" align="top" class="absmiddle" alt="" /><strong>ERROR:</strong> No accessible Storage Folder found - please create one immediately!';
+			}
+
+				// Session data
+			if ($cmd=='clear')	{	// Reset session data:
+				$sesDat = array();
+				$GLOBALS['BE_USER']->setAndSaveSessionData($this->MCONF['name'].'_mappingInfo',$sesDat);
+			} else {	// Get session data:
 				$sesDat = $GLOBALS['BE_USER']->getSessionData($this->MCONF['name'].'_mappingInfo');
-			} else $GLOBALS['BE_USER']->setAndSaveSessionData($this->MCONF['name'].'_mappingInfo',array());
+			}
 
-			if (t3lib_div::GPvar('_load_ds_xml') && (t3lib_div::GPvar('_load_ds_xml_content') || t3lib_div::GPvar('_load_ds_xml_to')))	{
-				$to_uid = t3lib_div::GPvar('_load_ds_xml_to');
+				// Loading DS from either XML or a Template Object (containing reference to DS)
+			if ($cmd=='load_ds_xml' && ($this->_load_ds_xml_content || $this->_load_ds_xml_to))	{
+				$to_uid = $this->_load_ds_xml_to;
 				if ($to_uid)	{
 					$toREC = t3lib_BEfunc::getRecord('tx_templavoila_tmplobj',$to_uid);
 					$tM = unserialize($toREC['templatemapping']);
@@ -337,63 +389,73 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 					$sesDat['currentMappingInfo'] = $tM['MappingInfo'];
 					$dsREC = t3lib_BEfunc::getRecord('tx_templavoila_datastructure',$toREC['datastructure']);
 					
-					$ds=t3lib_div::xml2array($dsREC['dataprot']);
-					$sesDat['dataStruct']['ROOT']=$sesDat['autoDS']['ROOT']=$ds['ROOT'];
+					$ds = t3lib_div::xml2array($dsREC['dataprot']);
+					$sesDat['dataStruct']['ROOT'] = $sesDat['autoDS']['ROOT'] = $ds['ROOT'];
 					$GLOBALS['BE_USER']->setAndSaveSessionData($this->MCONF['name'].'_mappingInfo',$sesDat);
 				} else {
-					$ds = t3lib_div::xml2array(t3lib_div::GPvar('_load_ds_xml_content'));
+					$ds = t3lib_div::xml2array($this->_load_ds_xml_content);
 					$sesDat=array();
-					$sesDat['dataStruct']['ROOT']=$sesDat['autoDS']['ROOT']=$ds['ROOT'];
+					$sesDat['dataStruct']['ROOT'] = $sesDat['autoDS']['ROOT'] = $ds['ROOT'];
 					$GLOBALS['BE_USER']->setAndSaveSessionData($this->MCONF['name'].'_mappingInfo',$sesDat);
 				}
 			}
 			
+				// Setting Data Structure to value from session data - unless it does not exist in which case a default structure is created.
 			$dataStruct = is_array($sesDat['autoDS']) ? $sesDat['autoDS'] : array(
-					'meta' => array(
-						'langChildren' => 1,
-						'langDisable' => 1
+				'meta' => array(
+					'langChildren' => 1,
+					'langDisable' => 1
+				),
+				'ROOT' => array (
+					'tx_templavoila' => array (
+						'title' => 'ROOT',
+						'description' => 'Select the HTML element on the page which you want to be the overall container element for the template.',
 					),
-					'ROOT' => array (
-						'tx_templavoila' => array (
-							'title' => 'ROOT',
-							'description' => 'Select the HTML element on the page which you want to be the overall container element for the template.',
-						),
-						'type' => 'array',
-						'el' => array()
-					)
-				);
+					'type' => 'array',
+					'el' => array()
+				)
+			);
+
+				// Setting Current Mapping information to session variable content OR blank if none exists.
 			$currentMappingInfo = is_array($sesDat['currentMappingInfo']) ? $sesDat['currentMappingInfo'] : array();
-			$this->cleanUpMappingInfoAccordingToDS($currentMappingInfo,$dataStruct);
+			$this->cleanUpMappingInfoAccordingToDS($currentMappingInfo,$dataStruct);	// This will clean up the Current Mapping info to match the Data Structure.
 			
-			$inputData = t3lib_div::GPvar('dataMappingForm',1);
-			if (t3lib_div::GPvar('_save_data_mapping') && is_array($inputData))	{
-				$sesDat['currentMappingInfo'] = $currentMappingInfo = t3lib_div::array_merge_recursive_overrule($currentMappingInfo,$inputData);
-				$sesDat['dataStruct'] = $dataStruct;
-				$GLOBALS['BE_USER']->setAndSaveSessionData($this->MCONF['name'].'_mappingInfo',$sesDat);
-			}
-
-			
-			if (t3lib_div::GPvar('_updateDS'))	{
-				$inDS = t3lib_div::GPvar('autoDS',1);
-				if (is_array($inDS))	{
-					$dataStruct = $sesDat['autoDS'] = t3lib_div::array_merge_recursive_overrule($dataStruct,$inDS);
-					$sesDat['dataStruct'] = $dataStruct;
-					$GLOBALS['BE_USER']->setAndSaveSessionData($this->MCONF['name'].'_mappingInfo',$sesDat);							
-				}
-			}
-			
-			if (t3lib_div::GPvar('DS_element_DELETE'))	{
-				$ref = explode('][',substr(t3lib_div::GPvar('DS_element_DELETE'),1,-1));
-				$this->unsetArrayPath($dataStruct,$ref);
-
+				// CMD switch:
+			switch($cmd)	{
+					// Saving incoming Mapping Data to session data:
+				case 'save_data_mapping':
+					$inputData = t3lib_div::GPvar('dataMappingForm',1);
+					if (is_array($inputData))	{
+						$sesDat['currentMappingInfo'] = $currentMappingInfo = t3lib_div::array_merge_recursive_overrule($currentMappingInfo,$inputData);
+						$sesDat['dataStruct'] = $dataStruct;
+						$GLOBALS['BE_USER']->setAndSaveSessionData($this->MCONF['name'].'_mappingInfo',$sesDat);
+					}
+				break;
+					// Saving incoming Data Structure settings to session data:
+				case 'updateDS':
+					$inDS = t3lib_div::GPvar('autoDS',1);
+					if (is_array($inDS))	{
+						$sesDat['dataStruct'] = $sesDat['autoDS'] = $dataStruct = t3lib_div::array_merge_recursive_overrule($dataStruct,$inDS);
+						$GLOBALS['BE_USER']->setAndSaveSessionData($this->MCONF['name'].'_mappingInfo',$sesDat);							
+					}
+				break;
+					// If DS element is requested for deletion, remove it and update session data:
+				case 'DS_element_DELETE':	
+					$ref = explode('][',substr($this->DS_element_DELETE,1,-1));
+					$this->unsetArrayPath($dataStruct,$ref);
+	
 					$sesDat['dataStruct'] = $sesDat['autoDS'] = $dataStruct;
 					$GLOBALS['BE_USER']->setAndSaveSessionData($this->MCONF['name'].'_mappingInfo',$sesDat);							
+				break;
 			}
 			
-			if (t3lib_div::GPvar('_showXMLDS') || t3lib_div::GPvar('_saveDSandTO') || t3lib_div::GPvar('_updateDSandTO'))	{
+				// Creating $templatemapping array with cached mapping content:
+			if (t3lib_div::inList('showXMLDS,saveDSandTO,updateDSandTO',$cmd))	{
+
 					// Template mapping prepared:
 				$templatemapping=array();
-				$templatemapping['MappingInfo']=$currentMappingInfo;
+				$templatemapping['MappingInfo'] = $currentMappingInfo;
+
 					// Getting cached data:
 				reset($dataStruct);
 				#$firstKey = key($dataStruct);
@@ -401,138 +463,277 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 				if ($firstKey)	{
 					$fileContent = t3lib_div::getUrl($this->displayFile);
 					$htmlParse = t3lib_div::makeInstance('t3lib_parsehtml');
-					$relPathFix=dirname(substr($this->displayFile,strlen(PATH_site))).'/';
-						$fileContent = $htmlParse->prefixResourcePath($relPathFix,$fileContent);
+					$relPathFix = dirname(substr($this->displayFile,strlen(PATH_site))).'/';
+					$fileContent = $htmlParse->prefixResourcePath($relPathFix,$fileContent);
 					$this->markupObj = t3lib_div::makeInstance('tx_templavoila_htmlmarkup');
-					$contentSplittedByMapping=$this->markupObj->splitContentToMappingInfo($fileContent,$currentMappingInfo);
-					$templatemapping['MappingData_cached']=$contentSplittedByMapping['sub'][$firstKey];
+					$contentSplittedByMapping = $this->markupObj->splitContentToMappingInfo($fileContent,$currentMappingInfo);
+					$templatemapping['MappingData_cached'] = $contentSplittedByMapping['sub'][$firstKey];
 				}
 			}
 
-			if (t3lib_div::GPvar('_saveDSandTO'))	{
+				// CMD switch:
+			switch($cmd)	{
+					// If it is requested to save the current DS and mapping information to a DS and TO record, then...:
+				case 'saveDSandTO':
 
-					// DS:
-				$dataArr=array();
-				$dataArr['tx_templavoila_datastructure']['NEW']['pid']=$this->templatePID;
-				$dataArr['tx_templavoila_datastructure']['NEW']['title']=t3lib_div::GPvar('_saveDSandTO_title');
-				$dataArr['tx_templavoila_datastructure']['NEW']['scope']=t3lib_div::GPvar('_saveDSandTO_type');
-				$storeDataStruct=$dataStruct;
-				if (is_array($storeDataStruct['ROOT']['el']))		$this->substEtypeWithRealStuff($storeDataStruct['ROOT']['el'],$contentSplittedByMapping['sub']['ROOT']);
-#debug($storeDataStruct);
-				$dataArr['tx_templavoila_datastructure']['NEW']['dataprot']=t3lib_div::array2xml($storeDataStruct,'',0,'T3DataStructure');
-
-				$tce = t3lib_div::makeInstance("t3lib_TCEmain");
-				$tce->stripslashes_values=0;
-				$tce->start($dataArr,array());
-				$tce->process_datamap();
-				
-				if ($tce->substNEWwithIDs['NEW'])	{
-
-
-					$dataArr=array();
-					$dataArr['tx_templavoila_tmplobj']['NEW']['pid']=$this->templatePID;
-					$dataArr['tx_templavoila_tmplobj']['NEW']['title']=t3lib_div::GPvar('_saveDSandTO_title').' [Template]';
-					$dataArr['tx_templavoila_tmplobj']['NEW']['datastructure']=intval($tce->substNEWwithIDs['NEW']);
-					$dataArr['tx_templavoila_tmplobj']['NEW']['fileref']=substr($this->displayFile,strlen(PATH_site));
-					$dataArr['tx_templavoila_tmplobj']['NEW']['templatemapping']=serialize($templatemapping);
-#debug($templatemapping);	
-					$tce = t3lib_div::makeInstance("t3lib_TCEmain");
-					$tce->stripslashes_values=0;
-					$tce->start($dataArr,array());
-					$tce->process_datamap();
-				}
-
-						// WHAT ABOUT slashing of the input values!!!!??? That should be done!
-				unset($tce);
-				$content.='<strong>SAVED...</strong><br />';
-			}
-			
-			if (t3lib_div::GPvar('_updateDSandTO'))	{
-				$toREC = t3lib_BEfunc::getRecord('tx_templavoila_tmplobj',t3lib_div::GPvar('_saveDSandTO_TOuid'));
-				$dsREC = t3lib_BEfunc::getRecord('tx_templavoila_datastructure',$toREC['datastructure']);
-
-				if ($toREC['uid'] && $dsREC['uid'])	{
-					
 						// DS:
 					$dataArr=array();
-					$storeDataStruct=$dataStruct;
+					$dataArr['tx_templavoila_datastructure']['NEW']['pid']=intval($this->_saveDSandTO_pid);
+					$dataArr['tx_templavoila_datastructure']['NEW']['title']=$this->_saveDSandTO_title;
+					$dataArr['tx_templavoila_datastructure']['NEW']['scope']=$this->_saveDSandTO_type;
+					
+						// Modifying data structure with conversion of preset values for field types to actual settings:
+					$storeDataStruct = $dataStruct;
 					if (is_array($storeDataStruct['ROOT']['el']))		$this->substEtypeWithRealStuff($storeDataStruct['ROOT']['el'],$contentSplittedByMapping['sub']['ROOT']);
-					$dataArr['tx_templavoila_datastructure'][$dsREC['uid']]['dataprot']=t3lib_div::array2xml($storeDataStruct,'',0,'T3DataStructure');
-
+					$dataArr['tx_templavoila_datastructure']['NEW']['dataprot']=t3lib_div::array2xml($storeDataStruct,'',0,'T3DataStructure');
+	
+						// Init TCEmain object and store:
 					$tce = t3lib_div::makeInstance("t3lib_TCEmain");
 					$tce->stripslashes_values=0;
 					$tce->start($dataArr,array());
 					$tce->process_datamap();
 					
-						// TO:
-					$dataArr=array();
-					$dataArr['tx_templavoila_tmplobj'][$toREC['uid']]['fileref']=substr($this->displayFile,strlen(PATH_site));
-					$dataArr['tx_templavoila_tmplobj'][$toREC['uid']]['templatemapping']=serialize($templatemapping);
-
-					$tce = t3lib_div::makeInstance("t3lib_TCEmain");
-					$tce->stripslashes_values=0;
-					$tce->start($dataArr,array());
-					$tce->process_datamap();
-
-							// WHAT ABOUT slashing of the input values!!!!??? That should be done!
+						// If that succeeded, create the TO as well:
+					if ($tce->substNEWwithIDs['NEW'])	{
+						$dataArr=array();
+						$dataArr['tx_templavoila_tmplobj']['NEW']['pid']=intval($this->_saveDSandTO_pid);
+						$dataArr['tx_templavoila_tmplobj']['NEW']['title']=$this->_saveDSandTO_title.' [Template]';
+						$dataArr['tx_templavoila_tmplobj']['NEW']['datastructure']=intval($tce->substNEWwithIDs['NEW']);
+						$dataArr['tx_templavoila_tmplobj']['NEW']['fileref']=substr($this->displayFile,strlen(PATH_site));
+						$dataArr['tx_templavoila_tmplobj']['NEW']['templatemapping']=serialize($templatemapping);
+	
+							// Init TCEmain object and store:
+						$tce = t3lib_div::makeInstance("t3lib_TCEmain");
+						$tce->stripslashes_values=0;
+						$tce->start($dataArr,array());
+						$tce->process_datamap();
+						
+						if ($tce->substNEWwithIDs['NEW'])	{
+							$msg[] = '<img src="'.$GLOBALS['BACK_PATH'].'gfx/icon_ok.gif" width="18" height="16" border="0" align="top" class="absmiddle" alt="" />Data Structure (uid '.$dataArr['tx_templavoila_tmplobj']['NEW']['datastructure'].') and Template Record (uid '.$tce->substNEWwithIDs['NEW'].') was saved in PID "'.$this->_saveDSandTO_pid.'"';
+						} else {
+							$msg[] = '<img src="'.$GLOBALS['BACK_PATH'].'gfx/icon_warning.gif" width="18" height="16" border="0" align="top" class="absmiddle" alt="" /><strong>ERROR:</strong> No Template Object was created although the Data Structure was (uid '.$dataArr['tx_templavoila_tmplobj']['NEW']['datastructure'].')!';
+						}
+					} else {
+						$msg[] = '<img src="'.$GLOBALS['BACK_PATH'].'gfx/icon_warning.gif" width="18" height="16" border="0" align="top" class="absmiddle" alt="" /><strong>ERROR:</strong> No Data Structure was created!';
+					}
+	
 					unset($tce);
-					$content.='<strong>UPDATED...</strong><br />';
-				}
+				break;
+					// Updating DS and TO records:
+				case 'updateDSandTO':
+			
+						// Looking up the records by their uids:
+					$toREC = t3lib_BEfunc::getRecord('tx_templavoila_tmplobj',$this->_saveDSandTO_TOuid);
+					$dsREC = t3lib_BEfunc::getRecord('tx_templavoila_datastructure',$toREC['datastructure']);
+	
+						// If they are found, continue:
+					if ($toREC['uid'] && $dsREC['uid'])	{
+						
+							// DS:
+						$dataArr=array();
+					
+							// Modifying data structure with conversion of preset values for field types to actual settings:
+						$storeDataStruct=$dataStruct;
+						if (is_array($storeDataStruct['ROOT']['el']))		$this->substEtypeWithRealStuff($storeDataStruct['ROOT']['el'],$contentSplittedByMapping['sub']['ROOT']);
+						$dataArr['tx_templavoila_datastructure'][$dsREC['uid']]['dataprot']=t3lib_div::array2xml($storeDataStruct,'',0,'T3DataStructure');
+	
+							// Init TCEmain object and store:
+						$tce = t3lib_div::makeInstance('t3lib_TCEmain');
+						$tce->stripslashes_values=0;
+						$tce->start($dataArr,array());
+						$tce->process_datamap();
+						
+							// TO:
+						$dataArr=array();
+						$dataArr['tx_templavoila_tmplobj'][$toREC['uid']]['fileref']=substr($this->displayFile,strlen(PATH_site));
+						$dataArr['tx_templavoila_tmplobj'][$toREC['uid']]['templatemapping']=serialize($templatemapping);
+	
+							// Init TCEmain object and store:
+						$tce = t3lib_div::makeInstance('t3lib_TCEmain');
+						$tce->stripslashes_values=0;
+						$tce->start($dataArr,array());
+						$tce->process_datamap();
+	
+						unset($tce);
+
+						$msg[] = '<img src="'.$GLOBALS['BACK_PATH'].'gfx/icon_note.gif" width="18" height="16" border="0" align="top" class="absmiddle" alt="" />'.
+								'Data Structure (UID '.$dsREC['uid'].') and Template Record (UID '.$toREC['uid'].') was updated';
+					}
+				break;
 			}
-			
-			
-			if (t3lib_div::GPvar('_showXMLDS'))	{
-				$storeDataStruct=$dataStruct;
-				if (is_array($storeDataStruct['ROOT']['el']))		$this->substEtypeWithRealStuff($storeDataStruct['ROOT']['el'],$contentSplittedByMapping['sub']['ROOT']);
-				$content.='<h3>XML configuration:</h3><pre>'.htmlspecialchars(t3lib_div::array2xml($storeDataStruct,'',0,'T3DataStructure')).'</pre>';
-			}
-			
-			
-			
 			
 
-			$content.='<h3>Load DS XML</h3>';
-			$content.='<textarea cols="" rows="" name="_load_ds_xml_content"></textarea><br />';
-			
-			$opt=array();
-			$opt[]='<option value="0"></option>';
-			$query = 'SELECT * FROM tx_templavoila_tmplobj WHERE pid='.$this->templatePID.' AND datastructure>0 '.t3lib_BEfunc::deleteClause('tx_templavoila_tmplobj').' ORDER BY title';
-			$res = mysql(TYPO3_db,$query);
-			while($row = mysql_fetch_assoc($res))	{
-				$opt[]='<option value="'.htmlspecialchars($row['uid']).'">'.htmlspecialchars($row['title']).'</option>';
-			}
-			$content.='<select name="_load_ds_xml_to">'.implode('',$opt).'</select><br />';
-			$content.='<input type="submit" name="_load_ds_xml" value="LOAD" />';
-			
 
-			
-			
-			
-			$content.='<h3>Creating Data Structure / Mapping to template:</h3>';
-			$content.='<hr><strong>Create new Data Structure and Template Object:</strong><br />
-			Title: <input type="text" name="_saveDSandTO_title" /><br />
-			Type: <select name="_saveDSandTO_type">
-						<option></option>
-						<option value="1">Page Template</option>
-						<option value="2">Content Element</option>
-					</select><br />
-			<input type="submit" name="_saveDSandTO" value="Create DS and TO" /> 
-			<hr>
-			Alternatively, save to existing template record:<br />
-			<select name="_saveDSandTO_TOuid">'.implode('',$opt).'</select><br />
-			<input type="submit" name="_updateDSandTO" value="Update TO/DS" />
-			<hr>
-			<input type="submit" name="_showXMLDS" value="Show XML" /> 
-			<input type="submit" name="_clear" value="Clear current mappings" /> 
-			<input type="submit" name="_DO_NOTHING" value="Refresh..." /> 
-			<input type="submit" name="_preview" value="PREVIEW" />
+				// Header:
+			$tRows = array();
+			$relFilePath = substr($this->displayFile,strlen(PATH_site));
+			$onCl = 'return top.openUrlInWindow(\''.t3lib_div::getIndpEnv('TYPO3_SITE_URL').$relFilePath.'\',\'FileView\');';
+			$tRows[]='
+				<tr>
+					<td class="bgColor5"><strong>Template File:</strong></td>
+					<td class="bgColor4"><a href="#" onclick="'.htmlspecialchars($onCl).'">'.htmlspecialchars($relFilePath).'</a></td>
+				</tr>';
+				// Write header of page:
+			$content.='
+
+				<!-- 
+					Create Data Structure Header:
+				-->
+				<table border="0" cellpadding="2" cellspacing="1" id="c-toHeader">
+					'.implode('',$tRows).'
+				</table>
 			';
 			
-			unset($dataStruct['meta']);			
-			$content.= $this->renderTemplateMapper($this->displayFile,$this->displayPath,$dataStruct,$currentMappingInfo);
+				// Messages:
+			if (is_array($msg))	{
+				$content.='
+	
+					<!-- 
+						Messages:
+					-->
+					'.implode('<br />',$msg).'
+				';
+			}
+
+			
+				// Generate selector box options:
+				// Storage Folders for elements:
+			$sf_opt=array();
+			$query = 'SELECT * FROM pages WHERE uid IN ('.$this->storageFolders_pidList.')'.t3lib_BEfunc::deleteClause('pages').' ORDER BY title';
+			$res = mysql(TYPO3_db,$query);
+			while($row = mysql_fetch_assoc($res))	{
+				$sf_opt[]='<option value="'.htmlspecialchars($row['uid']).'">'.htmlspecialchars($row['title'].' (UID:'.$row['uid'].')').'</option>';
+			}
+
+				// Template Object records:
+			$opt=array();
+			$opt[]='<option value="0"></option>';
+			$query = 'SELECT * FROM tx_templavoila_tmplobj WHERE pid IN ('.$this->storageFolders_pidList.') AND datastructure>0 '.t3lib_BEfunc::deleteClause('tx_templavoila_tmplobj').' ORDER BY title';
+			$res = mysql(TYPO3_db,$query);
+			while($row = mysql_fetch_assoc($res))	{
+				$opt[]='<option value="'.htmlspecialchars($row['uid']).'">'.htmlspecialchars($this->storageFolders[$row['pid']].'/'.$row['title'].' (UID:'.$row['uid'].')').'</option>';
+			}
+
+				// Module Interface output begin:			
+			switch($cmd)	{
+					// Show XML DS
+				case 'showXMLDS':
+					require_once(PATH_t3lib.'class.t3lib_syntaxhl.php');
+					
+						// Make instance of syntax highlight class:
+					$hlObj = t3lib_div::makeInstance('t3lib_syntaxhl');
+				
+					$storeDataStruct=$dataStruct;
+					if (is_array($storeDataStruct['ROOT']['el']))		$this->substEtypeWithRealStuff($storeDataStruct['ROOT']['el'],$contentSplittedByMapping['sub']['ROOT']);
+					$content.='
+						<input type="submit" name="_DO_NOTHING" value="Go back" title="Go back" />
+						<h3>XML configuration:</h3>
+						
+						<pre>'.$hlObj->highLight_DS(t3lib_div::array2xml($storeDataStruct,'',0,'T3DataStructure')).'</pre>';
+				break;
+				case 'loadScreen':
+				
+					$content.='
+						<h3>Load DS XML</h3>
+						
+						<p>Select a Template Object record to load a Data Structure/Mapping information from:</p>
+						<select name="_load_ds_xml_to">'.implode('',$opt).'</select>
+						<br />
+						<p>Alternatively, paste the Data Structure XML into this form:</p>
+						<textarea rows="15" name="_load_ds_xml_content" wrap="off"'.$GLOBALS['TBE_TEMPLATE']->formWidthText(48,'width:98%;','off').'></textarea>
+						<br />
+						<input type="submit" name="_load_ds_xml" value="Load Data Structure" /><input type="submit" name="_" value="Cancel" />
+						';
+				break;
+				case 'saveScreen':
+
+					$content.='
+						<h3>CREATE Data Structure / Template Object:</h3>
+						<table border="0" cellpadding="2" cellspacing="2">
+							<tr>
+								<td class="bgColor5"><strong>Titel of DS/TO:</strong></td>
+								<td class="bgColor4"><input type="text" name="_saveDSandTO_title" /></td>
+							</tr>
+							<tr>
+								<td class="bgColor5"><strong>Template Type:</strong></td>
+								<td class="bgColor4">
+									<select name="_saveDSandTO_type">
+										<option>[No type specified]</option>
+										<option value="1">Page Template</option>
+										<option value="2">Content Element</option>
+									</select>								
+								</td>
+							</tr>
+							<tr>
+								<td class="bgColor5"><strong>Store in PID:</strong></td>
+								<td class="bgColor4">
+									<select name="_saveDSandTO_pid">
+										'.implode('
+										',$sf_opt).'
+									</select>
+								</td>
+							</tr>
+						</table>
+						
+						<input type="submit" name="_saveDSandTO" value="CREATE TO and DS" />
+						<input type="submit" name="_" value="Cancel" />
+
+
+
+						<h3>UPDATE existing Data Structure / Template Object:</h3>
+						<table border="0" cellpadding="2" cellspacing="2">
+							<tr>
+								<td class="bgColor5"><strong>Select TO:</strong></td>
+								<td class="bgColor4">
+									<select name="_saveDSandTO_TOuid">
+										'.implode('
+										',$opt).'
+									</select>
+								</td>
+							</tr>
+						</table>
+						
+						<input type="submit" name="_updateDSandTO" value="UPDATE TO (and DS)" onclick="return confirm(\'Are you sure you want to override the current contents of these records?\nThis feature is meant to support the process of creating new Data Structures which have not been manually edited yet.\');" />
+						<input type="submit" name="_" value="Cancel" />
+						';
+				break;
+				default:
+						// Creating menu:
+					$menuItems = array();
+					$menuItems[]='<input type="submit" name="_showXMLDS" value="Show XML" title="Preview the currently build Data Structure as XML" />';
+					$menuItems[]='<input type="submit" name="_clear" value="Clear all" title="Clear all Data Structure and Mapping information" /> ';
+					$menuItems[]='<input type="submit" name="_preview" value="Preview" title="Preview the mapping to the template" />';
+					$menuItems[]='<input type="submit" name="_saveScreen" value="Save" title="Go to save menu" />';
+					$menuItems[]='<input type="submit" name="_loadScreen" value="Load" title="Go to load menu" />';
+					$menuItems[]='<input type="submit" name="_DO_NOTHING" value="Refresh" title="Redraw screen" />';
+					
+					$menuContent = '
+			
+						<!--
+							Menu for creation Data Structures / Template Objects
+						-->
+						<table border="0" cellpadding="2" cellspacing="2" id="c-toMenu">
+							<tr class="bgColor5">
+								<td>'.implode('</td>
+								<td>',$menuItems).'</td>
+							</tr>
+						</table>
+					';
+		
+					unset($dataStruct['meta']);
+					$content.='
+		
+					<!--
+						Data Structure creation table:
+					-->
+					<h3>Building Data Structure:</h3>
+					
+					'.$this->renderTemplateMapper($this->displayFile,$this->displayPath,$dataStruct,$currentMappingInfo,$menuContent);
+				break;
+			}
 		}
 	
-		$this->content.=$this->doc->section('Browsing file...',$content,0,1);
+		$this->content.=$this->doc->section('',$content,0,1);
 	}
 	
 	/**
@@ -579,7 +780,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 				}
 				
 					// Get Template Objects pointing to this Data Structure
-				$query = 'SELECT * FROM tx_templavoila_tmplobj WHERE pid='.$this->templatePID.' AND datastructure='.intval($row['uid']).t3lib_BEfunc::deleteClause('tx_templavoila_tmplobj');
+				$query = 'SELECT * FROM tx_templavoila_tmplobj WHERE pid IN ('.$this->storageFolders_pidList.') AND datastructure='.intval($row['uid']).t3lib_BEfunc::deleteClause('tx_templavoila_tmplobj');
 				$res = mysql(TYPO3_db,$query);
 				$tRows=array();
 				$tRows[]='
@@ -1152,10 +1353,12 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			<table border="0" cellspacing="2" cellpadding="2">
 			<tr class="bgColor5">
 				<td nowrap="nowrap"><strong>Data Element:</strong></td>
+				'.($this->editDataStruct ? '<td nowrap="nowrap"><strong>Field:</strong></td>' : '').'
 				<td nowrap="nowrap"><strong>'.(!$this->_preview?'Mapping instructions:':'Sample Data:').'</strong><br /><img src="clear.gif" width="200" height="1" alt="" /></td>
 				<td nowrap="nowrap"><strong>HTML-path:</strong></td>
 				<td nowrap="nowrap"><strong>Action:</strong></td>
 				<td nowrap="nowrap"><strong>Rules:</strong></td>
+				'.($this->editDataStruct ? '<td nowrap="nowrap"><strong>Edit:</strong></td>' : '').'
 			</tr>
 			'.implode('',$this->drawDataStructureMap($dataStruct,1,$currentMappingInfo,$pathLevels,$optDat,$contentSplittedByMapping)).'</table>
 			'.$htmlAfterDSTable;
@@ -1403,6 +1606,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 							
 							<tr class="bgColor4">
 							<td nowrap="nowrap" valign="top">'.$rowCells['title'].'</td>
+							'.($this->editDataStruct ? '<td nowrap="nowrap">'.$key.'</td>' : '').'
 							<td>'.$rowCells['description'].'</td>
 							'.($mappingMode 
 									? 
@@ -1975,6 +2179,33 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Generates $this->storageFolders with available sysFolders linked to as storageFolders for the user
+	 *
+	 * @return	void		Modification in $this->storageFolders array
+	 */	
+	function findingStorageFolderIds()	{
+
+			// Init:
+		$readPerms = $GLOBALS['BE_USER']->getPagePermsClause(1);
+		$this->storageFolders=array();
+		
+			// Looking up all references to a storage folder:
+		$query = 'SELECT uid,storage_pid FROM pages WHERE storage_pid>0'.t3lib_BEfunc::deleteClause('pages');
+		$res = mysql(TYPO3_db,$query);
+		while($row = mysql_fetch_assoc($res))	{
+			if ($GLOBALS['BE_USER']->isInWebMount($row['storage_pid'],$readPerms))	{
+				$storageFolder = t3lib_BEfunc::getRecord('pages',$row['storage_pid'],'uid,title');
+				$this->storageFolders[$storageFolder['uid']] = $storageFolder['title'];
+			}
+		}
+		
+			// Compopsing select list:
+		$sysFolderPIDs = array_keys($this->storageFolders);
+		$sysFolderPIDs[]=0;
+		$this->storageFolders_pidList = implode(',',$sysFolderPIDs);
 	}
 
 

@@ -223,7 +223,7 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 
 			// Wrap in <pre>-tags if source
 		if ($this->mode=='source')	{
-			$content = '<pre style="font-size:11px; font-family: monospace;">'.$content.'</pre>';
+			$content = '<pre>'.$content.'</pre>';
 		}
 		
 		return $content;

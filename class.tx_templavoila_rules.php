@@ -33,28 +33,30 @@
  *
  *
  *
- *   74: class tx_templavoila_rules 
- *   85:     function evaluateRulesOnElements ($rules, $ruleConstants, $elArray) 
- *  111:     function getDefaultElements($rules,$ruleConstants)	
+ *   76: class tx_templavoila_rules 
+ *   87:     function evaluateRulesOnElement ($table, $uid) 
  *
  *              SECTION: Rule processing / analyzing functions
- *  152:     function parseRegexIntoArray ($regex) 
- *  233:     function checkRulesCompliance ($rulesArr, $elementsArr, $prevStatusArr='') 
+ *  130:     function parseRegexIntoArray ($regex, $constants) 
+ *  211:     function checkRulesCompliance ($rules, $constants, $table, $uid, $field) 
  *
  *              SECTION: Human Readable Rules Functions
- *  270:     function getHumanReadableRules ($rules,$ruleConstants)	
- *  286:     function parseRulesArrayIntoDescription ($rulesArr, $constantsArr, $level=0) 
- *  321:     function getQuantifierAsDescription ($min, $max) 
- *  354:     function getElementNameFromConstantsMapping ($element, $constantsArr) 
+ *  299:     function getHumanReadableRules ($rules,$ruleConstants)	
+ *  315:     function parseRulesArrayIntoDescription ($rulesArr, $constantsArr, $level=0) 
+ *  350:     function getQuantifierAsDescription ($min, $max) 
+ *  383:     function getElementNameFromConstantsMapping ($element, $constantsArr) 
  *
  *              SECTION: Helper functions
- *  381:     function isElement ($char) 
- *  396:     function extractInnerBrace ($regex, $startPos) 
- *  426:     function explodeAlternatives ($regex) 
- *  452:     function evaluateQuantifier ($quantifier, &$pos, &$min, &$max) 
- *  509:     function getCTypeFromToken ($token) 
+ *  410:     function isElement ($char) 
+ *  425:     function extractInnerBrace ($regex, $startPos) 
+ *  455:     function explodeAlternatives ($regex) 
+ *  481:     function evaluateQuantifier ($quantifier, &$pos, &$min, &$max) 
+ *  539:     function getCTypeFromToken ($token, $rulesConstants) 
+ *  561:     function statusAddErr (&$statusArr, $msg, $uid, $position) 
+ *  577:     function statusMerge (&$statusArr, $newStatusArr) 
+ *  587:     function statusSetOK (&$statusArr) 
  *
- * TOTAL FUNCTIONS: 13
+ * TOTAL FUNCTIONS: 15
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -79,63 +81,37 @@ class tx_templavoila_rules {
 	 * 
 	 * @param	string		$rules: A regular expression describing the rule. The content elements are reflected by certain tokens (i.e. uppercase and lowercase characters). These tokens are also called "ruleConstants".
 	 * @param	array		$ruleConstants: An array with the mapping of tokens to content elements.
-	 * @param	[type]		$elArray: ...
+	 * @param	array		$elArray:
 	 * @return	array		Array containing status information if the check was successful.
 	 */
-	function evaluateRulesOnElements ($rules, $ruleConstants, $elArray) {
-		$ok = -1;
-#	debug(array($rules, $ruleConstants, $elArray),'rules/ruleConstants/elEarray',88,'rules.php');
+	function evaluateRulesOnElement ($table, $uid) {
+	 	$statusArr = null;
+	 	
+			// Getting data structure for the template and extract information for default records to create
+		$tableRow = t3lib_BEfunc::getRecord ($table, $uid);
 
-			// Strip the starting and ending delimiter
-		if ($rules[0]=='^') { $rules = substr ($rules, 1); }
-		if ($rules[strlen($rules)-1]=='$') { $rules = substr ($rules,0,-1); }
+			// Only care about page records or flexible content elements:
+		if ($table != 'tt_content' || $tableRow['CType'] == 'templavoila_pi1') {	
+			$recRow = t3lib_BEfunc::getRecord ('tx_templavoila_datastructure', $tableRow['tx_templavoila_ds']);
+			$xmlContent = t3lib_div::xml2array ($recRow['dataprot']);
+			if (is_array ($xmlContent)) {
+				foreach ($xmlContent['ROOT']['el'] as $fieldName=>$field) {
+					$ruleRegEx = trim ($field['tx_templavoila']['ruleRegEx']);
+					$ruleConstants = trim ($field['tx_templavoila']['ruleConstants']);
+					if ((string)$ruleRegEx != '' && ($field['tx_templavoila']['eType'] == 'ce')) {	// only check if necessary
+#debug(array($ruleRegEx, $ruleConstants),'rules/ruleConstants',__LINE__,__FILE__);
+							// Strip the starting and ending delimiter
+						if ($ruleRegEx[0]=='^') { $ruleRegEx = substr ($ruleRegEx, 1); }
+						if ($ruleRegEx[strlen($ruleRegEx)-1]=='$') { $ruleRegEx = substr ($ruleRegEx,0,-1); }
 
-		$rulesArray = $this->parseRegexIntoArray ($rules);
-#		debug ($this->checkRulesCompliance ($rulesArray, $elArray));
-		return array (
-			'ok' => $ok,
-			'ruletext' => array (
-
-			)
-		);
+						$tmpStatusArr = $this->checkRulesCompliance ($ruleRegEx, $ruleConstants, $table, $uid, $fieldName);
+						$this->statusMerge($statusArr, $tmpStatusArr, true);
+					}
+				}
+			}
+		}
+		return $statusArr;
 	}
-
-	/**
-	 * Delivers the default content elements which are neccessary for a certain element.
-	 * NOT USED YET - maybe we don't need it here!
-	 * 
-	 * @param	[type]		$rules: ...
-	 * @param	[type]		$ruleConstants: ...
-	 * @return	[type]		...
-	 */
-	function getDefaultElements($rules,$ruleConstants)	{
-		$elArray=array();
-
-		$elArray[]=array(
-			'CType' => 'text'
-		);
-		$elArray[]=array(
-			'CType' => 'templavoila_pi1',
-			'tx_templavoila_ds' => 123
-		);
-
-		return $elArray;
-	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 	/********************************************
 	 *	
@@ -147,13 +123,12 @@ class tx_templavoila_rules {
 	 * Parses a regular expression with a reduced set of functions into an array.
 	 * 
 	 * @param	string		$regex: The regular expression
-	 * @return	array		Array containing the cTypes with some additional information
+	 * @param	string		$constants: The constants definitions being used in the regular expression divided by line breaks (eg.: a=text)
+	 * @return	array		Contains the cTypes with some additional information
 	 */
-	function parseRegexIntoArray ($regex) {
-
+	function parseRegexIntoArray ($regex, $constants) {
 		$pos = 0;
 		$outArr = array ();
-
 			// Strip off the not wanted characters. We only support certain functions of regular expressions.
 		$regex = ereg_replace ('[^a-zA-Z0-9\[\]\{\}\*\+\.\-]','',$regex);
 
@@ -162,11 +137,11 @@ class tx_templavoila_rules {
 		$altParts = $this->explodeAlternatives ($regex);
 		if (count($altParts)>1) {
 			foreach ($altParts as $altRegex) {
-				$altArr['alt'][] = $this->parseRegexIntoArray ($altRegex);
+				$altArr['alt'][] = $this->parseRegexIntoArray ($altRegex, $constants);
 			}
 			$outArr[]=$altArr;
 		} else {
-			// No other alternatives, just parse it.
+				// No other alternatives, just parse it.
 			while ($pos<strlen ($regex)) {
 				if ($this->isElement ($regex[$pos])) {				// Element (ie. a-z A-Z and '.')
 					$el = $regex[$pos];
@@ -174,13 +149,13 @@ class tx_templavoila_rules {
 					$max = 0;
 					$this->evaluateQuantifier ($regex, $pos, $min, $max);
 					$outArr[] = array (
-						'el' => $el,
+						'el' => $this->getCTypeFromToken($el, $constants),
 						'min' => $min,
 						'max' => $max,
 					);
 				} elseif ($regex [$pos] == '(') {
 					$innerBraceData = $this->extractInnerBrace($regex, $pos);
-					$sub = $this->parseRegexIntoArray ($innerBraceData['content']);
+					$sub = $this->parseRegexIntoArray ($innerBraceData['content'], $constants);
 					$regex = $innerBraceData['rightpart'];
 					$pos = -1;
 					$outArr[] = array (
@@ -223,30 +198,79 @@ class tx_templavoila_rules {
 	}
 
 	/**
-	 * [Describe function...]
+	 * Checks a number of elements if they comply to their rules.
 	 * 
-	 * @param	[type]		$rulesArr: ...
-	 * @param	[type]		$elementsArr: ...
-	 * @param	[type]		$prevStatusArr: ...
-	 * @return	[type]		...
+	 * @param	string		$rules: The regular expression as a string OR the regular expression already parsed into an array (by parseRegexIntoArray)
+	 * @param	string		$constants: The constants definitions being used in the regular expression divided by line breaks (eg.: a=text)
+	 * @param	string		$table: Usually 'tt_content' or 'pages'
+	 * @param	string		$uid: The record's uid
+	 * @param	string		$field: Field name within the datastructure
+	 * @return	array		
 	 */
-	function checkRulesCompliance ($rulesArr, $elementsArr, $prevStatusArr='') {
-		$statusArr = (is_array ($prevStatusArr) ? $prevStatusArr : array ('ok'=>1));
-		if (is_array ($rulesArr) && is_array ($elementsArr)) {
-			reset ($elementsArr);
-			foreach ($rulesArr as $k => $v)	{
-				if ($v['el']) {
-					list ($kEl, $vEl) =  array_shift($elementsArr);
-					debug (array ($vEl['CType'], $vEl['header'], $vEl['bodytext']));
-				} elseif ($v['class']) {
-					
-				} elseif (is_array ($v['sub'])) {
-					$statusArr = $this->checkRulesCompliance ($v['sub'], $elementsArr, $statusArr);					
-				} elseif (is_array ($v['alt'])) {
-					$statusArr = $this->checkRulesCompliance ($v['alt'], $elementsArr, $statusArr);
-				}				
-			}			
+	function checkRulesCompliance ($rules, $constants, $table, $uid, $field) {
+		global $LANG;
+#debug (array ('rules'=>$rules, 'constants'=> $constants, 'table'=> $table, 'uid'=>$uid, 'field'=>$field), 'checkRulesCompliance()',__LINE__, __FILE__,10);
+		$statusArr = array ();
+		if (is_string ($rules)) {	// If $rules is a regular expression, parse it into an array for easier handling
+			$rules = $this->parseRegexIntoArray ($rules, $constants);
 		}
+		
+		if (is_array ($rules)) {
+			$parentRecord = t3lib_BEfunc::getRecord($table, $uid);
+			$childRecords = array ();
+			$xmlContent = t3lib_div::xml2array($parentRecord['tx_templavoila_flex']);
+				// Get child records of the current parent record
+			$recUIDs = t3lib_div::trimExplode(',',$xmlContent['data']['sDEF']['lDEF'][$field]['vDEF']);
+			foreach ($recUIDs as $recUID) {
+				$row = t3lib_BEfunc::getRecord('tt_content', $recUID, 'uid,CType,tx_templavoila_ds');
+				if ($row['CType'] == 'templavoila_pi1') {
+					$row['CType'] .= ',' . $row['tx_templavoila_ds'];	
+				}
+				$childRecords[] = $row;
+			}			
+
+				// Now traverse the rules
+			foreach ($rules as $k => $rulePart)	{
+debug ($rulePart,'rulePart',__LINE__,__FILE__,10);
+				if ($rulePart['el']) { // Evaluate elements
+					$counter = 0;
+					while ($counter < $rulePart['max'] && ($childRecords[0]['CType'] == $rulePart['el'] || $rulePart['el'] == '.')) {
+						$lastChildRecord = array_shift($childRecords);
+						$counter ++;
+					}
+					if ($counter < $rulePart['min']) { 
+						$msg = 'At least '.$rulePart['min'].' element(s) of type '.$rulePart['el'].' expected, only '.$counter.' were found';
+						$this->statusAddErr($statusArr, $msg, $lastChildRecord['uid'] ? $lastChildRecord['uid'] : $childRecords[0]['uid'],2);
+					}
+				} elseif ($rulePart['class']) {	// Evaluate classes of elements
+					
+				} elseif (is_array ($rulePart['sub'])) { // Traverse subparts
+					$this->statusMerge ($statusArr, $this->checkRulesCompliance ($rulePart['sub'], $constants, $table, $uid, $field));
+				} elseif (is_array ($rulePart['alt'])) { // Traverse alternatives
+					$altStatusArr = array ();						
+					foreach ($rulePart['alt'] as $alternativeRule) {
+						$tmpStatusArr = $this->checkRulesCompliance ($alternativeRule, $constants, $table, $uid, $field);
+debug (array ('altrule'=>$alternativeRule, 'tmpstatusArr' => $tmpStatusArr), 'ALT rule', __LINE__, __FILE__);
+						if ($tmpStatusArr['ok'] == true) { // If one alternative is okay, the whole ALT branch is valid
+							$this->statusSetOK ($altStatusArr);
+						} elseif ($altStatusArr['ok'] != true) { // If alternative fails and no other alternative was valid yet, merge errors
+							$this->statusMerge($altStatusArr, $tmpStatusArr);
+						}
+					}
+					if ($altStatusArr['ok'] && ($statusArr['ok'] != false)) { $statusArr['ok'] = true; }
+					if ($altStatusArr['ok'] == false) { $this->statusMerge ($statusArr, $altStatusArr); }
+debug (array ('statusArr' => $altStatusArr), 'ALT branch', __LINE__, __FILE__);
+						// After an ALT branch no other elements will follow, so clear all remaining children
+					unset ($childRecords); 
+				}				
+			}
+			if (count($childRecords)) { 
+				$this->statusAddErr($statusArr, 'Too many elements at the end of the page', $childRecords[0]['uid'],1);
+			}
+		}
+		
+		if (is_null($statusArr['ok'])) { $statusArr['ok'] = true; }
+debug ($statusArr, 'statusArray after checkcompliance',__LINE__,__FILE__);
 		return $statusArr;
 	}
 
@@ -257,6 +281,9 @@ class tx_templavoila_rules {
 	/********************************************
 	 *	
 	 * Human Readable Rules Functions
+	 *
+	 * NOTE: This section is not working yet and
+	 *       has rather an experimental character
 	 *
 	 ********************************************/
 	
@@ -373,7 +400,7 @@ class tx_templavoila_rules {
 	 ********************************************/
 	
 	/**
-	 * Delivers an array which holds certain information of how a cType is used within the rule.
+	 * Returns true if the given character is an element
 	 * 
 	 * @param	string		$char: Character to be checked
 	 * @return	boolean		true if it is an element
@@ -391,7 +418,7 @@ class tx_templavoila_rules {
 	 * @param	integer		$startPos: The position within the regex string where the search should start
 	 * @return	array		Array containing the results (see function)
 	 * @access private
-	 * @see	parseRegexIntoArray()
+	 * @see					parseRegexIntoArray ()
 	 */
 	function extractInnerBrace ($regex, $startPos) {
 		for ($endPos=$startPos; $endPos<strlen ($regex); $endPos++) { 
@@ -447,7 +474,7 @@ class tx_templavoila_rules {
 	 * @param	integer		$pos: The position within the string where the quantifier should be. BY REFERENCE
 	 * @param	integer		$min: Used for returning the minimum value, ie. how many times an element should be repeated at least
 	 * @param	integer		$max: Used for returning the maximum value, ie. how many times an element should be repeated at maximum
-	 * @return	void		Nothing!
+	 * @return	void		
 	 */
 	function evaluateQuantifier ($quantifier, &$pos, &$min, &$max) {
 		$min=1;
@@ -501,17 +528,76 @@ class tx_templavoila_rules {
 	}
 
 	/**
-	 * [Describe function...]
+	 * Returns the CType (fx. 'text' or 'imgtext') for a given constant (fx. 'a' or 'c').
 	 * 
-	 * @param	[type]		$token: ...
-	 * @return	[type]		...
+	 * @param	string		$token: The constant / token, a single character
+	 * @param	string		$rulesConstants: The constants definitions being used in the regular expression divided by line breaks (eg.: a=text)
+	 * @return	string		The constant's CType
 	 */
-	function getCTypeFromToken ($token) {
+	function getCTypeFromToken ($token, $rulesConstants) {
+		if ($token == '.') { return $token; }
+		
+		$lines = explode (chr(10), $rulesConstants);
+		if (is_array ($lines)) {
+			foreach ($lines as $line) {
+				if (ord ($line[0]) > 13) {	// Ignore empty lines
+					$parts = t3lib_div::trimExplode('=',$line);
+					$constArr[$parts[0]]=$parts[1];
+				}
+			}
+		}
+		return $constArr[$token];
+	}
+
+	/**
+	 * Adds an error message to the status array. The array is passed by reference!
+	 * 
+	 * @param	array		$$statusArr: A status array, passed by reference.
+	 * @param	string		$msg: The error message
+	 * @param	integer		$uid: UID of the element causing the error or being next to it. Optional.
+	 * @param	integer		$position: 0: element #uid causes the error, -1: an element before #uid cause the error, 1: an element after #uid
+	 * @return	void		Nothing returned, result is passed by reference
+	 */
+	function statusAddErr (&$statusArr, $msg, $uid=0, $position=0) {
+		$statusArr['ok'] = false;
+		$statusArr['error'][] = array (
+			'message' => $msg,
+			'uid' => $uid,
+			'position' => $position,
+		);
+	}
+
+	/**
+	 * Merges two status arrays, the second array overrules the first one
+	 * 
+	 * @param	array		$$statusArr: A status array, passed by reference. Will contain the merged arrays.
+	 * @param	array		$newStatusArr: The second status array overruling the first
+	 * @param	boolean		$doAND: If set, the 'ok' status will be evaluated by performing an AND operation.
+	 * @return	void		Nothing returned.
+	 */
+	function statusMerge (&$statusArr, $newStatusArr, $doAND=false) {
+		if (is_array ($statusArr)) {
+			$oldOK =  $statusArr['ok'];
+debug (array ('statusArr'=>$statusArr, 'newStatusArr' => $newStatusArr, 'doAND'=>$doAND, 'ANDed'=>($oldOK OR $newStatusArr['ok'])),'statusMerge',__LINE__);	
+			$statusArr = t3lib_div::array_merge_recursive_overrule ($statusArr, $newStatusArr);
+			if ($doAND) {
+				$statusArr['ok'] = $oldOK OR $newStatusArr['ok'];
+			}
+		} else {
+			$statusArr = $newStatusArr;	
+		}
+	}
+
+	/**
+	 * Clears any errors and sets the status to "valid". The status array is passed by reference.
+	 * 
+	 * @param	array		$$statusArr: A status array, passed by reference.
+	 * @return	void		Nothing.
+	 */
+	function statusSetOK (&$statusArr) {
+		$statusArr['ok'] = true;
+		unset ($statusArr['error']);
 	}
 }
 
-
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/class.tx_templavoila_rules.php'])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/class.tx_templavoila_rules.php']);
-}
 ?>

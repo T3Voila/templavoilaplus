@@ -30,6 +30,17 @@ $LOCAL_LANG = Array (
 		'forms' => 'Form elements',
 		'forms_1_title' => 'Mail form',
 		'forms_1_description' => 'A response mail form by which users of the website can submit responses.',
+		'forms_1_example' => '
+# Example content:
+Name: | *name = input,40 | Enter your name here
+Email: | *email=input,40 |
+Address: | address=textarea,40,5 |
+Contact me: | tv=check | 1
+
+|formtype_mail = submit | Send form!
+|html_enabled=hidden | 1
+|subject=hidden| This is the subject		
+		',
 		'forms_2_title' => 'Search form',
 		'forms_2_description' => 'Draws a search form and the searchresult if a search is performed.',
 		'forms_3_title' => 'Login form',
@@ -98,6 +109,17 @@ $LOCAL_LANG = Array (
 		'forms' => 'Formulare',
 		'forms_1_title' => 'Mailformular',
 		'forms_1_description' => 'Ein Mailformular, mit dem die Besucher Ihnen Bemerkungen zuschicken können.',
+		'forms_1_example' => '
+# Beispiel Inhalt:
+Name: | *name = input,40 | Geben Sie hier Ihren Namen ein
+E-Mail: | *email=input,40 |
+Adresse: | adresse=textarea,40,5 |
+Kontaktieren Sie mich: | kontakieren=check | 1
+
+|formtype_mail = submit | Formular senden
+|html_enabled=hidden | 1
+|subject=hidden| Dies ist die Betreffzeile	
+		',
 		'forms_2_title' => 'Suchformular',
 		'forms_2_description' => 'Fügt ein Suchformular auf der Seite ein.',
 		'forms_3_title' => 'Anmeldeformular',
