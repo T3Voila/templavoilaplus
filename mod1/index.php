@@ -427,7 +427,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 				$tTO = 'tx_templavoila_tmplobj';
 				$tDS = 'tx_templavoila_datastructure';
-				$query="SELECT * FROM $tTO LEFT JOIN $tDS ON $tTO.datastructure = $tDS.uid WHERE $tTO.pid=".intval($storageFolderPID)." AND $tDS.scope=1".t3lib_befunc::deleteClause ($tTO).t3lib_befunc::deleteClause ($tDS);
+				$query="SELECT $tTO.* FROM $tTO LEFT JOIN $tDS ON $tTO.datastructure = $tDS.uid WHERE $tTO.pid=".intval($storageFolderPID)." AND $tDS.scope=1".t3lib_befunc::deleteClause ($tTO).t3lib_befunc::deleteClause ($tDS);
 				$res = mysql(TYPO3_db, $query);
 				while ($row = @mysql_fetch_assoc($res))	{
 						// Check if preview icon exists, otherwise use default icon:
@@ -545,14 +545,14 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		$errorLineBefore = $errorLineAfter = '';
 
 		$rulesStatus = $this->checkRulesForElement($dsInfo['el']['table'], $dsInfo['el']['id']);
-debug ($rulesStatus,'rulesStatus',__LINE__,__FILE__,10);
+#debug ($rulesStatus,'rulesStatus',__LINE__,__FILE__,10);
 		if (is_array($rulesStatus['error'])) {
 			foreach ($rulesStatus['error'] as $errorElement) {
 				$this->elementBlacklist[$errorElement['uid']]['position'] = $errorElement['position'];
 				$this->elementBlacklist[$errorElement['uid']]['message'] = $errorElement['message'];
 			}
 		}
-debug ($this->elementBlacklist,'elementBlacklist');	
+#debug ($this->elementBlacklist,'elementBlacklist');	
 
 		switch ($this->elementBlacklist[$dsInfo['el']['id']]['position']) {
 			case 1:
@@ -798,7 +798,6 @@ debug ($this->elementBlacklist,'elementBlacklist');
 	function createDefaultRecords ($table, $uid, $prevDS=-1, $level=0)	{
 		global $TCA, $LANG;
 		
-			// Getting data structure for the template and extract information for default records to create
 		$tableRow = t3lib_BEfunc::getRecord ($table, $uid);
 			// Recursivity check and only care about page records or flexible content elements:
 		if (($level<10) && 
@@ -808,30 +807,29 @@ debug ($this->elementBlacklist,'elementBlacklist');
 			$recRow = t3lib_BEfunc::getRecord ('tx_templavoila_datastructure', $tableRow['tx_templavoila_ds']);
 			$xmlContent = t3lib_div::xml2array ($recRow['dataprot']);
 			if (is_array ($xmlContent)) {
-				foreach ($xmlContent['ROOT']['el'] as $key=>$field) {
-					$defaultRules = explode (chr(10), $field['tx_templavoila']['ruleDefault']);					
-					foreach ($defaultRules as $rule) {
-						if (ord ($rule[0]) > 13) {	// Ignore empty lines
-							$ruleArr = t3lib_div::trimExplode(',',$rule);	
-							switch ($ruleArr[0]) {
-								case 'templavoila_pi1': 
-									$conf = array (
-										'CType' => $ruleArr[0],
-										'tx_templavoila_ds' => intval($ruleArr[1]),
-									);
-									$ceUid = $this->insertRecord($table.':'.intval($uid).':sDEF:'.$key,$conf);
-									$this->createDefaultRecords ('tt_content', intval($ceUid), $tableRow['tx_templavoila_ds'], $level+1);
-									break;
-								case '':
-									break;
-								default:
-									$conf = array (
-										'CType' => $ruleArr[0],
-										'bodytext' => $LANG->getLL ('newce_defaulttext_'.$ruleArr[1]), 
-									);
-									$this->insertRecord($table.':'.intval($uid).':sDEF:'.$key,$conf);
-									break;
-							}
+				foreach ($xmlContent['ROOT']['el'] as $key=>$field) {					
+					for ($counter=0; $counter <= strlen(trim ($field['tx_templavoila']['ruleDefault'])); $counter++) {
+						$CType = t3lib_div::trimExplode (',',$this->rules->getCTypeFromToken (trim($field['tx_templavoila']['ruleDefault'][$counter]), $field['tx_templavoila']['ruleConstants']));
+						switch ($CType[0]) {
+							case 'templavoila_pi1': 
+								$TOrow = t3lib_BEfunc::getRecord('tx_templavoila_tmplobj', $CType[1], 'datastructure');
+								$conf = array (
+									'CType' => $CType[0],
+									'tx_templavoila_ds' => $TOrow['datastructure'],
+									'tx_templavoila_to' => intval($CType[1]),
+								);
+								$ceUid = $this->insertRecord($table.':'.intval($uid).':sDEF:'.$key,$conf);
+								$this->createDefaultRecords ('tt_content', intval($ceUid), $tableRow['tx_templavoila_ds'], $level+1);
+								break;
+							case '':
+								break;
+							default:
+								$conf = array (
+									'CType' => $CType[0],
+									'bodytext' => $LANG->getLL ('newce_defaulttext_'.$CType[0]), 
+								);
+								$this->insertRecord($table.':'.intval($uid).':sDEF:'.$key,$conf);
+								break;
 						}
 					}
 				}
@@ -1118,7 +1116,7 @@ debug ($this->elementBlacklist,'elementBlacklist');
 		$TSconfig = t3lib_BEfunc::getTCEFORM_TSconfig('pages',$row);
 		return intval($TSconfig['_STORAGE_PID']);
 	}
-	
+		
 	/**
 	 * Returns the data structure for a certain page.
 	 * 

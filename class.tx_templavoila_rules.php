@@ -51,7 +51,7 @@
  *  425:     function extractInnerBrace ($regex, $startPos) 
  *  455:     function explodeAlternatives ($regex) 
  *  481:     function evaluateQuantifier ($quantifier, &$pos, &$min, &$max) 
- *  539:     function getCTypeFromToken ($token, $rulesConstants) 
+ *  539:     function getCTypeFromToken ($token, $ruleConstants) 
  *  561:     function statusAddErr (&$statusArr, $msg, $uid, $position) 
  *  577:     function statusMerge (&$statusArr, $newStatusArr) 
  *  587:     function statusSetOK (&$statusArr) 
@@ -222,16 +222,16 @@ class tx_templavoila_rules {
 				// Get child records of the current parent record
 			$recUIDs = t3lib_div::trimExplode(',',$xmlContent['data']['sDEF']['lDEF'][$field]['vDEF']);
 			foreach ($recUIDs as $recUID) {
-				$row = t3lib_BEfunc::getRecord('tt_content', $recUID, 'uid,CType,tx_templavoila_ds');
+				$row = t3lib_BEfunc::getRecord('tt_content', $recUID, 'uid,CType,tx_templavoila_to');
 				if ($row['CType'] == 'templavoila_pi1') {
-					$row['CType'] .= ',' . $row['tx_templavoila_ds'];	
+					$row['CType'] .= ',' . $row['tx_templavoila_to'];	
 				}
 				$childRecords[] = $row;
 			}			
 
 				// Now traverse the rules
 			foreach ($rules as $k => $rulePart)	{
-debug ($rulePart,'rulePart',__LINE__,__FILE__,10);
+#debug ($rulePart,'rulePart',__LINE__,__FILE__,10);
 				if ($rulePart['el']) { // Evaluate elements
 					$counter = 0;
 					while ($counter < $rulePart['max'] && ($childRecords[0]['CType'] == $rulePart['el'] || $rulePart['el'] == '.')) {
@@ -250,7 +250,7 @@ debug ($rulePart,'rulePart',__LINE__,__FILE__,10);
 					$altStatusArr = array ();						
 					foreach ($rulePart['alt'] as $alternativeRule) {
 						$tmpStatusArr = $this->checkRulesCompliance ($alternativeRule, $constants, $table, $uid, $field);
-debug (array ('altrule'=>$alternativeRule, 'tmpstatusArr' => $tmpStatusArr), 'ALT rule', __LINE__, __FILE__);
+#debug (array ('altrule'=>$alternativeRule, 'tmpstatusArr' => $tmpStatusArr), 'ALT rule', __LINE__, __FILE__);
 						if ($tmpStatusArr['ok'] == true) { // If one alternative is okay, the whole ALT branch is valid
 							$this->statusSetOK ($altStatusArr);
 						} elseif ($altStatusArr['ok'] != true) { // If alternative fails and no other alternative was valid yet, merge errors
@@ -259,7 +259,7 @@ debug (array ('altrule'=>$alternativeRule, 'tmpstatusArr' => $tmpStatusArr), 'AL
 					}
 					if ($altStatusArr['ok'] && ($statusArr['ok'] != false)) { $statusArr['ok'] = true; }
 					if ($altStatusArr['ok'] == false) { $this->statusMerge ($statusArr, $altStatusArr); }
-debug (array ('statusArr' => $altStatusArr), 'ALT branch', __LINE__, __FILE__);
+#debug (array ('statusArr' => $altStatusArr), 'ALT branch', __LINE__, __FILE__);
 						// After an ALT branch no other elements will follow, so clear all remaining children
 					unset ($childRecords); 
 				}				
@@ -270,7 +270,7 @@ debug (array ('statusArr' => $altStatusArr), 'ALT branch', __LINE__, __FILE__);
 		}
 		
 		if (is_null($statusArr['ok'])) { $statusArr['ok'] = true; }
-debug ($statusArr, 'statusArray after checkcompliance',__LINE__,__FILE__);
+#debug ($statusArr, 'statusArray after checkcompliance',__LINE__,__FILE__);
 		return $statusArr;
 	}
 
@@ -318,7 +318,7 @@ debug ($statusArr, 'statusArray after checkcompliance',__LINE__,__FILE__);
 					if (count ($v['alt'])>1) { $description .= 'either '; }
 					for ($i=0; $i <= count ($v['alt']); $i++) {
 						list ($k,$vAlt) = each ($v['alt']);
-						$description .= $this->getHumanReadableRules ($vAlt, $rulesConstants, $level+1);
+						$description .= $this->getHumanReadableRules ($vAlt, $ruleConstants, $level+1);
 						if ($i < count ($v['alt'])) {
 							$description .= 'or ';
 						}
@@ -531,13 +531,13 @@ debug ($statusArr, 'statusArray after checkcompliance',__LINE__,__FILE__);
 	 * Returns the CType (fx. 'text' or 'imgtext') for a given constant (fx. 'a' or 'c').
 	 * 
 	 * @param	string		$token: The constant / token, a single character
-	 * @param	string		$rulesConstants: The constants definitions being used in the regular expression divided by line breaks (eg.: a=text)
+	 * @param	string		$ruleConstants: The constants definitions being used in the regular expression divided by line breaks (eg.: a=text)
 	 * @return	string		The constant's CType
 	 */
-	function getCTypeFromToken ($token, $rulesConstants) {
+	function getCTypeFromToken ($token, $ruleConstants) {
 		if ($token == '.') { return $token; }
 		
-		$lines = explode (chr(10), $rulesConstants);
+		$lines = explode (chr(10), $ruleConstants);
 		if (is_array ($lines)) {
 			foreach ($lines as $line) {
 				if (ord ($line[0]) > 13) {	// Ignore empty lines
@@ -578,7 +578,7 @@ debug ($statusArr, 'statusArray after checkcompliance',__LINE__,__FILE__);
 	function statusMerge (&$statusArr, $newStatusArr, $doAND=false) {
 		if (is_array ($statusArr)) {
 			$oldOK =  $statusArr['ok'];
-debug (array ('statusArr'=>$statusArr, 'newStatusArr' => $newStatusArr, 'doAND'=>$doAND, 'ANDed'=>($oldOK OR $newStatusArr['ok'])),'statusMerge',__LINE__);	
+#debug (array ('statusArr'=>$statusArr, 'newStatusArr' => $newStatusArr, 'doAND'=>$doAND, 'ANDed'=>($oldOK OR $newStatusArr['ok'])),'statusMerge',__LINE__);	
 			$statusArr = t3lib_div::array_merge_recursive_overrule ($statusArr, $newStatusArr);
 			if ($doAND) {
 				$statusArr['ok'] = $oldOK OR $newStatusArr['ok'];
