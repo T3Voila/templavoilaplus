@@ -9,7 +9,8 @@ TODO inbox (not sorted into the structure below yet):
  - Do not allow content creation on pages like "Shortcut" and "Extenal URL".
  - Create wizard for moving NORMAL column elements into TemplaVOila structures (recursively!)
  - "Show hidden content elements" checkbox (like in traditional Web>Page module)
-
+- Columns UNDER each other (patterns?) (RL)
+- el. wizard: make copy of.
 
 
 
