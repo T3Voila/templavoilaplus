@@ -1,3 +1,6 @@
+2004-03-24  Kasper Skårhøj
+	* Added a syntax highlight module for FlexForm data in tt_content and pages; access it as admin via the click menu of pages / tt_content elements.
+
 2004-03-22  Robert Lemke  <rl@robertlemke.de>
 
 	* Added two new TSconfig properties: mod.xMOD_tx_templavoila_cm1.eTypesExtraFormFieldsUserfunctions and mod.xMOD_tx_templavoila_cm1.eTypesConfGenUserfunctions

@@ -89,10 +89,12 @@ class tx_templavoila_cm1 {
 					$GLOBALS['LANG']->getLLL('cm1_title',$LL),
 					$backRef->excludeIcon('<img src="'.$backRef->backPath.t3lib_extMgm::extRelPath('templavoila').'cm1/cm_icon.gif" width="15" height="12" border="0" align="top" alt="" />'),
 					$backRef->urlRefForCM($url),
-					1	// Disables the item in the top-bar. Set this to zero if you with the item to appear in the top bar!
+					1	// Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
 				);
 			} elseif ('tt_content' == $table) {
 				$localItems = Array();
+
+					// Adding link for "TV children":
 				$url = t3lib_extMgm::extRelPath('templavoila').'mod1/index.php?id='.intval($backRef->rec['pid']).
 							'&altRoot[table]='.rawurlencode($table).
 							'&altRoot[uid]='.$uid.
@@ -102,7 +104,7 @@ class tx_templavoila_cm1 {
 					'"TV Children"',
 					$backRef->excludeIcon('<img src="'.$backRef->backPath.t3lib_extMgm::extRelPath('templavoila').'cm1/cm_icon.gif" width="15" height="12" border="0" align="top" alt="" />'),
 					$backRef->urlRefForCM($url),
-					1	// Disables the item in the top-bar. Set this to zero if you with the item to appear in the top bar!
+					1	// Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
 				);
 
 					// Remove items that are not relevant in this context:
@@ -129,6 +131,21 @@ class tx_templavoila_cm1 {
 						unset($menuItems[$kI]);
 					}
 				}
+			}
+
+				// Adding link for view of XML data (admin only)
+			if ($BE_USER->isAdmin() && ('tt_content' == $table || 'pages' == $table) && $backRef->rec['tx_templavoila_flex']) {
+				$url = t3lib_extMgm::extRelPath('templavoila').'cm2/index.php?'.
+							'&viewRec[table]='.rawurlencode($table).
+							'&viewRec[uid]='.$uid.
+							'&viewRec[field_flex]=tx_templavoila_flex';
+
+				$localItems[] = $backRef->linkItem(
+					'View FlexForm XML',
+					$backRef->excludeIcon('<img src="'.$backRef->backPath.t3lib_extMgm::extRelPath('templavoila').'cm2/cm_icon.gif" width="15" height="12" border="0" align="top" alt="" />'),
+					$backRef->urlRefForCM($url),
+					1	// Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
+				);
 			}
 		}
 
