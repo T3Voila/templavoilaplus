@@ -73,7 +73,8 @@ class tx_templavoila_cm1 {
 		if (!$backRef->cmLevel)	{
 			$LL = $this->includeLL();
 				// Remove items that are not relevant in this context:
-			if (t3lib_div::GPvar('callingScriptId') == 'ext/templavoila/mod1/index.php')	{
+				// Commented out since the items are removed by the wrapClicMenu-function in template. When we are sure this code is obsolete, it can be deleted....
+/*			if (t3lib_div::GPvar('callingScriptId') == 'ext/templavoila/mod1/index.php')	{
 				unset($menuItems['new']);
 				unset($menuItems['copy']);
 				unset($menuItems['cut']);
@@ -96,7 +97,7 @@ class tx_templavoila_cm1 {
 					unset($menuItems[$kI]);
 				}
 			}
-
+*/
 				// Adding link for Mapping tool:
 			if (t3lib_div::inList('tx_templavoila_tmplobj,tx_templavoila_datastructure,tx_templavoila_content',$table) || @is_file($table))	{
 				$localItems = Array();

@@ -93,6 +93,8 @@ Related to rendering/content elements (css_styled_content):
 	- getLL usage in whole module.
 	- CSH for whole module
 
+- Benoit request: "Re-map a HTML node ==> try to re-map the children"
+- Benoit request: "Anchor in the HTML page when you are mapping fields... you are scrolling for each field"
 
 - Documentation:
 

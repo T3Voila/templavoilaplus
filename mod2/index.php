@@ -111,7 +111,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 		$this->pageinfo = t3lib_BEfunc::readPageAccess($this->id,$this->perms_clause);
 		$access = is_array($this->pageinfo) ? 1 : 0;
 
-		if ($this->id && $access)    {
+		if ($access)    {
 
 				// Draw the header.
 			$this->doc = t3lib_div::makeInstance('noDoc');
@@ -284,7 +284,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 					'tx_templavoila_datastructure',
 					'pid='.intval($this->id).t3lib_BEfunc::deleteClause('tx_templavoila_datastructure'),
 					'',
-					'sorting'
+					'title'
 				);
 		$dsRecords = array();
 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
@@ -305,7 +305,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 					'tx_templavoila_tmplobj',
 					'pid='.intval($this->id).t3lib_BEfunc::deleteClause('tx_templavoila_tmplobj'),
 					'',
-					'sorting'
+					'title'
 				);
 		$toRecords = array();
 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
@@ -409,6 +409,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 		$dsCount=0;
 		$toCount=0;
 		$content='';
+		$index='';
 
 			// Traverse data structures to list:
 		if (is_array($dsScopeArray))	{
@@ -419,6 +420,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 
 					// Traverse template objects which are not children of anything:
 				$TOcontent = '';
+				$indexTO = '';
 				$toIdArray = array(-1);
 				if (is_array($toRecords[0]))	{
 					$newPid = $dsR['pid'];
@@ -426,7 +428,9 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 					$newTitle = $dsR['title'].' [TEMPLATE]';
 					foreach($toRecords[0] as $toIndex => $toObj)	{
 						if (!strcmp($toObj['datastructure'], $dsID))	{	// If the relation ID matches, render the template object:
-							$TOcontent.= $this->renderTODisplay($toObj, $toRecords, $scope);
+							$TOcontent.= '<a name="to-'.$toObj['uid'].'"></a>'.
+										$this->renderTODisplay($toObj, $toRecords, $scope);
+							$indexTO.='<li><a href="#to-'.$toObj['uid'].'">'.htmlspecialchars($toObj['title']).'</a></li>';
 							$toCount++;
 								// Unset it so we can eventually see what is left:
 							unset($toRecords[0][$toIndex]);
@@ -448,7 +452,12 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 				}
 
 					// Render data structure display
-				$content.= $this->renderDataStructureDisplay($dsR, $toIdArray, $scope);
+				$content.= '<a name="ds-'.md5($dsID).'"></a>'.
+							$this->renderDataStructureDisplay($dsR, $toIdArray, $scope);
+				$index.='<li><a href="#ds-'.md5($dsID).'">'.htmlspecialchars($dsR['title']?$dsR['title']:$dsR['path']).'</a></li>';
+				if ($indexTO)	{
+					$index.='<ul>'.$indexTO.'</ul>';
+				}
 				$dsCount++;
 
 					// Wrap TO elements in a div-tag and add to content:
@@ -456,6 +465,11 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 					$content.='<div style="margin-left: 102px;">'.$TOcontent.'</div>';
 				}
 			}
+		}
+
+		if ($index)	{
+			$content = '<h4>Overview:</h4>
+						<ul>'.$index.'</ul>'.$content;
 		}
 
 		return array($content,$dsCount,$toCount);

@@ -1,7 +1,7 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *

@@ -142,8 +142,6 @@ class tx_templavoila_pi1 extends tslib_pibase {
 	function renderElement($row,$table)	{
 		global $TYPO3_CONF_VARS;
 
-		if ($GLOBALS['TT']->LR) $GLOBALS['TT']->push('Get DS, TO and data');
-
 			// First prepare user defined objects (if any) for hooks which extend this function:
 		$hookObjectsArr = array();
 		if (is_array ($TYPO3_CONF_VARS['EXTCONF']['templavoila']['pi1']['renderElementClass'])) {
@@ -153,8 +151,7 @@ class tx_templavoila_pi1 extends tslib_pibase {
 		}
 
 			// Hook: renderElement_preProcessRow
-		reset($hookObjectsArr);
-		while (list(,$hookObj) = each($hookObjectsArr)) {
+		foreach($hookObjectsArr as $hookObj)	{
 			if (method_exists ($hookObj, 'renderElement_preProcessRow')) {
 				$hookObj->renderElement_preProcessRow ($row, $table, $this);
 			}
@@ -163,7 +160,7 @@ class tx_templavoila_pi1 extends tslib_pibase {
 			// Get data structure:
 		$srcPointer = $row['tx_templavoila_ds'];
 		if (t3lib_div::testInt($srcPointer))	{	// If integer, then its a record we will look up:
-			$DSrec = $GLOBALS['TSFE']->sys_page->checkRecord('tx_templavoila_datastructure',$srcPointer);
+			$DSrec = $GLOBALS['TSFE']->sys_page->checkRecord('tx_templavoila_datastructure', $srcPointer);
 			$DS = t3lib_div::xml2array($DSrec['dataprot']);
 		} else {	// Otherwise expect it to be a file:
 			$file = t3lib_div::getFileAbsFileName($srcPointer);
@@ -172,66 +169,100 @@ class tx_templavoila_pi1 extends tslib_pibase {
 			}
 		}
 
-		if (!is_array($DS))	{
-			return $this->formatError('
+			// If a Data Structure was found:
+		if (is_array($DS))	{
+
+				// Sheet Selector:
+			if ($DS['meta']['sheetSelector'])	{
+					// <meta><sheetSelector> could be something like "EXT:user_extension/class.user_extension_selectsheet.php:&amp;user_extension_selectsheet"
+				$sheetSelector = &t3lib_div::getUserObj($DS['meta']['sheetSelector']);
+				$renderSheet = $sheetSelector->selectSheet();
+			} else {
+				$renderSheet = 'sDEF';
+			}
+
+				// Initialize:
+			$langChildren = $DS['meta']['langChildren'] ? 1 : 0;
+			$langDisabled = $DS['meta']['langDisable'] ? 1 : 0;
+			list ($dataStruct, $sheet, $singleSheet) = t3lib_div::resolveSheetDefInDS($DS,$renderSheet);
+
+				// Data from FlexForm field:
+			$data = t3lib_div::xml2array($row['tx_templavoila_flex']);
+
+			$lKey = ($GLOBALS['TSFE']->sys_language_isocode && !$langDisabled && !$langChildren) ? 'l'.$GLOBALS['TSFE']->sys_language_isocode : 'lDEF';
+
+			$dataValues = is_array($data['data']) ? $data['data'][$sheet][$lKey] : '';
+			if (!is_array($dataValues))	$dataValues = array();
+
+				// Init mark up object.
+			$this->markupObj = t3lib_div::makeInstance('tx_templavoila_htmlmarkup');
+			$this->markupObj->htmlParse = t3lib_div::makeInstance('t3lib_parsehtml');
+
+				// Get template record:
+			if ($row['tx_templavoila_to'])	{
+
+					// Initialize rendering type:
+				if ($this->conf['childTemplate'])	{
+					$renderType = $this->conf['childTemplate'];
+				} else {	// Default:
+					$renderType = t3lib_div::GPvar('print') ? 'print' : '';
+				}
+
+					// Get Template Object record:
+				$TOrec = $this->markupObj->getTemplateRecord($row['tx_templavoila_to'], $renderType, $GLOBALS['TSFE']->sys_language_uid);
+				if (is_array($TOrec))	{
+
+						// Get mapping information from Template Record:
+					$TO = unserialize($TOrec['templatemapping']);
+					if (is_array($TO))	{
+
+							// Get local processing:
+						$TOproc = t3lib_div::xml2array($TOrec['localprocessing']);
+						if (!is_array($TOproc))	$TOproc=array();
+
+							// Processing the data array:
+						if ($GLOBALS['TT']->LR) $GLOBALS['TT']->push('Processing data');
+							$vKey = ($GLOBALS['TSFE']->sys_language_isocode && !$langDisabled && $langChildren) ? 'v'.$GLOBALS['TSFE']->sys_language_isocode : 'vDEF';
+							$TOlocalProc = $singleSheet ? $TOproc['ROOT']['el'] : $TOproc['sheets'][$sheet]['ROOT']['el'];
+							$this->processDataValues($dataValues,$dataStruct['ROOT']['el'],$TOlocalProc,$vKey);
+						if ($GLOBALS['TT']->LR) $GLOBALS['TT']->pull();
+
+							// Merge the processed data into the cached template structure:
+						if ($GLOBALS['TT']->LR) $GLOBALS['TT']->push('Merge data and TO');
+								// Getting the cached mapping data out (if sheets, then default to "sDEF" if no mapping exists for the specified sheet!)
+							$mappingDataBody = $singleSheet ? $TO['MappingData_cached'] : (is_array($TO['MappingData_cached']['sub'][$sheet]) ? $TO['MappingData_cached']['sub'][$sheet] : $TO['MappingData_cached']['sub']['sDEF']);
+							$content = $this->markupObj->mergeFormDataIntoTemplateStructure($dataValues,$mappingDataBody,'',$vKey);
+							$this->markupObj->setHeaderBodyParts($TO['MappingInfo_head'],$TO['MappingData_head_cached'],$TO['BodyTag_cached']);
+						if ($GLOBALS['TT']->LR) $GLOBALS['TT']->pull();
+
+							// Edit icon (frontend editing):
+						$eIconf = array('styleAttribute'=>'position:absolute;');
+						if ($table=='pages')	$eIconf['beforeLastTag']=-1;	// For "pages", set icon in top, not after.
+						$content = $this->pi_getEditIcon($content,'tx_templavoila_flex','Edit element',$row,$table,$eIconf);
+
+							// Visual identification aids:
+						if ($GLOBALS['TSFE']->fePreview)	{
+							$content = $this->visualID($content,$srcPointer,$DSrec,$TOrec,$row,$table);
+						}
+					} else {
+						$content = $this->formatError('Template Object could not be unserialized successfully.
+							Are you sure you saved mapping information into Template Object with UID "'.$row['tx_templavoila_to'].'"?');
+					}
+				} else {
+					$content = $this->formatError('Couldn\'t find Template Object with UID "'.$row['tx_templavoila_to'].'".
+						Please make sure a Template Object is accessible.');
+				}
+			} else {
+				$content = $this->formatError('You haven\'t selected a Template Object yet for table/uid "'.$table.'/'.$row['uid'].'".
+					Without a Template Object TemplaVoila cannot map the XML content into HTML.
+					Please select a Template Object now.');
+			}
+		} else {
+			$content = $this->formatError('
 				Couldn\'t find a Data Structure set for table/row "'.$table.':'.$row['uid'].'".
 				Please select a Data Structure and Template Object first.');
 		}
 
-		$langChildren = $DS['meta']['langChildren'] ? 1 : 0;
-		$langDisabled = $DS['meta']['langDisable'] ? 1 : 0;
-
-		list ($dataStruct, $sheet) = t3lib_div::resolveSheetDefInDS($DS,'sDEF');
-
-			// Data:
-		$data = t3lib_div::xml2array($row['tx_templavoila_flex']);
-
-		$lKey = ($GLOBALS['TSFE']->sys_language_isocode && !$langDisabled && !$langChildren) ? 'l'.$GLOBALS['TSFE']->sys_language_isocode : 'lDEF';
-		$dataValues = $data['data']['sDEF'][$lKey];
-
-			// Init mark up object.
-		$this->markupObj = t3lib_div::makeInstance('tx_templavoila_htmlmarkup');
-		$this->markupObj->htmlParse = t3lib_div::makeInstance('t3lib_parsehtml');
-
-			// Get template record:
-		if (!$row['tx_templavoila_to'])	{
-			return $this->formatError('You haven\'t selected a Template Object yet for table/uid "'.$table.'/'.$row['uid'].'".
-				Without a Template Object TemplaVoila cannot map the XML content into HTML.
-				Please select a Template Object now.');
-		}
-
-		if ($this->conf['childTemplate'])	{
-			$renderType = $this->conf['childTemplate'];
-		} else {	// Default:
-			$renderType = t3lib_div::GPvar('print') ? 'print' : '';
-		}
-
-		$TOrec = $this->markupObj->getTemplateRecord($row['tx_templavoila_to'], $renderType, $GLOBALS['TSFE']->sys_language_uid);
-		if (!is_array($TOrec))	{ return $this->formatError('Couldn\'t find Template Object with UID "'.$row['tx_templavoila_to'].'".
-				Please make sure a Template Object is accessible.'); }
-
-		$TO = unserialize($TOrec['templatemapping']);
-		if (!is_array($TO))	{ return $this->formatError('Template Object could not be unserialized successfully.
-				Are you sure you saved mapping information into Template Object with UID "'.$row['tx_templavoila_to'].'"?'); }
-
-		$TOproc = t3lib_div::xml2array($TOrec['localprocessing']);
-		if (!is_array($TOproc))	$TOproc=array();
-		if ($GLOBALS['TT']->LR) $GLOBALS['TT']->pull();
-
-
-		if ($GLOBALS['TT']->LR) $GLOBALS['TT']->push('Processing data');
-			$vKey = ($GLOBALS['TSFE']->sys_language_isocode && !$langDisabled && $langChildren) ? 'v'.$GLOBALS['TSFE']->sys_language_isocode : 'vDEF';
-			$this->processDataValues($dataValues,$DS['ROOT']['el'],$TOproc['ROOT']['el'],$vKey);
-		if ($GLOBALS['TT']->LR) $GLOBALS['TT']->pull();
-
-		if ($GLOBALS['TT']->LR) $GLOBALS['TT']->push('Merge data and TO');
-			$content = $this->markupObj->mergeFormDataIntoTemplateStructure($dataValues,$TO['MappingData_cached'],'',$vKey);
-			$this->markupObj->setHeaderBodyParts($TO['MappingInfo_head'],$TO['MappingData_head_cached'],$TO['BodyTag_cached']);
-		if ($GLOBALS['TT']->LR) $GLOBALS['TT']->pull();
-
-		$eIconf = array('styleAttribute'=>'position:absolute;');
-		if ($table=='pages')	$eIconf['beforeLastTag']=-1;	// For "pages", set icon in top, not after.
-		$content = $this->pi_getEditIcon($content,'tx_templavoila_flex','Edit element',$row,$table,$eIconf);
 		return $content;
 	}
 
@@ -285,6 +316,11 @@ class tx_templavoila_pi1 extends tslib_pibase {
 								$theKey = key($el);
 								if (is_array($dataValues[$key]['el'][$ik][$theKey]['el']))	{
 									$this->processDataValues($dataValues[$key]['el'][$ik][$theKey]['el'],$DSelements[$key]['el'][$theKey]['el'],$TOelements[$key]['el'][$theKey]['el'],$valueKey);
+
+										// If what was an array is returned as a non-array (eg. string "__REMOVE") then unset the whole thing:
+									if (!is_array($dataValues[$key]['el'][$ik][$theKey]['el']))	{
+										unset($dataValues[$key]['el'][$ik]);
+									}
 								}
 							}
 						} else {
@@ -296,7 +332,13 @@ class tx_templavoila_pi1 extends tslib_pibase {
 
 						// Language inheritance:
 					if ($valueKey!='vDEF')	{
-						$dataValues[$key][$valueKey] = $this->inheritValue($dataValues[$key],$valueKey,$LP[$key]['langOverlayMode']) ;
+						$dataValues[$key][$valueKey] = $this->inheritValue($dataValues[$key],$valueKey,$LP[$key]['langOverlayMode']);
+
+							// The value "__REMOVE" will trigger removal of the item!
+						if (is_array($dataValues[$key][$valueKey]) && !strcmp($dataValues[$key][$valueKey]['ERROR'],'__REMOVE'))	{
+							$dataValues = '__REMOVE';
+							return FALSE;
+						}
 					}
 
 						// TypoScript / TypoScriptObjPath:
@@ -403,7 +445,12 @@ class tx_templavoila_pi1 extends tslib_pibase {
 				case 'never':
 					return $dV[$valueKey];	// Always return its own value
 				break;
+				case 'removeIfBlank':
+					if (!strcmp(trim($dV[$valueKey]),''))	{
+						return array('ERROR' => '__REMOVE');
+					}
 				default:
+
 						// If none of the overlay modes matched, simply use the default:
 					if ($this->inheritValueFromDefault)	{
 						return trim($dV[$valueKey]) ? $dV[$valueKey] : $dV['vDEF'];
@@ -442,6 +489,102 @@ class tx_templavoila_pi1 extends tslib_pibase {
 				'<strong>TemplaVoila ERROR:</strong><br /><br />'.nl2br(htmlspecialchars(trim($string))).
 				'</div>';
 		return $output;
+	}
+
+	/**
+	 * Creates a visual response to the TemplaVoila blocks on the page.
+	 */
+	function visualID($content,$srcPointer,$DSrec,$TOrec,$row,$table)	{
+
+			// Create table rows:
+		$tRows = array();
+
+		switch ($table)	{
+			case 'pages':
+				$tRows[] = '<tr style="background-color: #ABBBB4;">
+						<td colspan="2"><b>Page:</b> '.htmlspecialchars(t3lib_div::fixed_lgd_cs($row['title'],30)).' <em>[UID:'.$row['uid'].']</em></td>
+					</tr>';
+			break;
+			case 'tt_content':
+				$tRows[] = '<tr style="background-color: #ABBBB4;">
+						<td colspan="2"><b>Flexible Content:</b> '.htmlspecialchars(t3lib_div::fixed_lgd_cs($row['header'],30)).' <em>[UID:'.$row['uid'].']</em></td>
+					</tr>';
+			break;
+			default:
+				$tRows[] = '<tr style="background-color: #ABBBB4;">
+						<td colspan="2">Table "'.$table.'" <em>[UID:'.$row['uid'].']</em></td>
+					</tr>';
+			break;
+		}
+
+			// Draw data structure:
+		if (is_numeric($srcPointer))	{
+			$tRows[] = '<tr>
+					<td valign="top"><b>Data Structure:</b></td>
+					<td>'.htmlspecialchars(t3lib_div::fixed_lgd_cs($DSrec['title'],30)).' <em>[UID:'.$srcPointer.']</em>'.
+						($DSrec['previewicon'] ? '<br/><img src="uploads/tx_templavoila/'.$DSrec['previewicon'].'" alt="" />' : '').
+						'</td>
+				</tr>';
+		} else {
+			$tRows[] = '<tr>
+					<td valign="top"><b>Data Structure:</b></td>
+					<td>'.htmlspecialchars($srcPointer).'</td>
+				</tr>';
+		}
+
+			// Template Object:
+		$tRows[] = '<tr>
+				<td valign="top"><b>Template Object:</b></td>
+				<td>'.htmlspecialchars(t3lib_div::fixed_lgd_cs($TOrec['title'],30)).' <em>[UID:'.$TOrec['uid'].']</em>'.
+					($TOrec['previewicon'] ? '<br/><img src="uploads/tx_templavoila/'.$TOrec['previewicon'].'" alt="" />' : '').
+					'</td>
+			</tr>';
+		if ($TOrec['description'])	{
+			$tRows[] = '<tr>
+					<td valign="top" nowrap="nowrap">&nbsp; &nbsp; &nbsp; Description:</td>
+					<td>'.htmlspecialchars($TOrec['description']).'</td>
+				</tr>';
+		}
+		$tRows[] = '<tr>
+				<td valign="top" nowrap="nowrap">&nbsp; &nbsp; &nbsp; Template File:</td>
+				<td>'.htmlspecialchars($TOrec['fileref']).'</td>
+			</tr>';
+		$tRows[] = '<tr>
+				<td valign="top" nowrap="nowrap">&nbsp; &nbsp; &nbsp; Render type:</td>
+				<td>'.htmlspecialchars($TOrec['rendertype'] ? $TOrec['rendertype'] : 'Normal').'</td>
+			</tr>';
+		$tRows[] = '<tr>
+				<td valign="top" nowrap="nowrap">&nbsp; &nbsp; &nbsp; Language:</td>
+				<td>'.htmlspecialchars($TOrec['sys_language_uid'] ? $TOrec['sys_language_uid'] : 'Default').'</td>
+			</tr>';
+		$tRows[] = '<tr>
+				<td valign="top" nowrap="nowrap">&nbsp; &nbsp; &nbsp; Local Proc.:</td>
+				<td>'.htmlspecialchars($TOrec['localprocessing'] ? 'Yes' : '-').'</td>
+			</tr>';
+
+			// Compile information table:
+		$infoArray = '<table style="border:1px solid black; background-color: #D9D5C9; font-family: verdana,arial; font-size: 10px;" border="0" cellspacing="1" cellpadding="1">
+						'.implode('',$tRows).'
+						</table>';
+
+			// Compile information:
+		$id = 'templavoila-preview-'.t3lib_div::shortMD5(microtime());
+		$content = '<div style="text-align: left; position: absolute; display:none; filter: alpha(Opacity=90);" id="'.$id.'">
+						'.$infoArray.'
+					</div>
+					<div id="'.$id.'-wrapper" style=""
+						onmouseover="
+							document.getElementById(\''.$id.'\').style.display=\'block\';
+							document.getElementById(\''.$id.'-wrapper\').attributes.getNamedItem(\'style\').nodeValue = \'border: 2px dashed #333366;\';
+								"
+						onmouseout="
+							document.getElementById(\''.$id.'\').style.display=\'none\';
+							document.getElementById(\''.$id.'-wrapper\').attributes.getNamedItem(\'style\').nodeValue = \'\';
+								">'.
+						$content.
+					'</div>';
+
+		return $content	;
 	}
 }
 

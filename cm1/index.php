@@ -785,7 +785,8 @@ $TYPO3_DB->debugOutput = TRUE;
 						'<strong>'.$title.'</strong><br />';
 
 					// Get Data Structure:
-				$dataStruct = $this->getDataStructFromDSO($row['dataprot']);
+				$origDataStruct = $dataStruct = $this->getDataStructFromDSO($row['dataprot']);
+
 				if (is_array($dataStruct))	{
 						// Showing Data Structure:
 					unset($dataStruct['meta']);
@@ -880,10 +881,11 @@ $TYPO3_DB->debugOutput = TRUE;
 						'.$this->cshItem('xMOD_tx_templavoila','mapping_ds_showXML',$this->doc->backPath).'
 						<p>'.t3lib_BEfunc::getFuncCheck('','SET[showDSxml]',$this->MOD_SETTINGS['showDSxml'],'',t3lib_div::implodeArrayForUrl('',$GLOBALS['HTTP_GET_VARS'],'',1,1)).' Show XML</p>
 						<pre>'.
-							($this->MOD_SETTINGS['showDSxml'] ? $hlObj->highLight_DS(t3lib_div::array2xml($dataStruct,'',0,'T3DataStructure',4)) : '').'
+							($this->MOD_SETTINGS['showDSxml'] ? $hlObj->highLight_DS(t3lib_div::array2xml($origDataStruct,'',0,'T3DataStructure',4)) : '').'
 						</pre>
 					</div>
 					';
+							// Previously showing this instead:  t3lib_div::array2xml($origDataStruct,'',0,'T3DataStructure',4)
 				}
 			} else {
 				$content.='ERROR: No Data Structure Record with the UID '.$this->displayUid;
