@@ -195,9 +195,9 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			foreach ($commands as $cmd) {
 				unset ($params);
 				$params = t3lib_div::GPvar($cmd);
+				$function = 'cmd_'.$cmd;
 					// If the current function has a parameter passed by GET or POST, call the related function:
-				if ($params) {
-					$function = 'cmd_'.$cmd;
+				if ($params && is_callable(array ($this, $function))) {
 				 	$this->$function ($params);
 				}			
 			}
@@ -1246,7 +1246,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 					'<strong>'.$GLOBALS['LANG']->sL(t3lib_BEfunc::getItemLabel('tt_content','pages')).'</strong> '.$row['pages'];
 				break;
 			case 'list':		//	Insert Plugin
-				$out='<strong>'.$GLOBALS['LANG']->sL(t3lib_BEfunc::getItemLabel('tt_content','list_type')).'</strong> '.$GLOBALS['LANG']->sL(t3lib_BEfunc::getLabelFromItemlist('tt_content','menu_type',$row['list_type'])).' '.$row['list_type'];
+				$out='<strong>'.$GLOBALS['LANG']->sL(t3lib_BEfunc::getItemLabel('tt_content','list_type')).'</strong> '.$this->linkEdit(htmlspecialchars($GLOBALS['LANG']->sL(t3lib_BEfunc::getLabelFromItemlist('tt_content','menu_type',$row['list_type'])).' '.$row['list_type']),$table,$row['uid']);
 				break;
 			case 'html':		//	HTML
 				$out='<strong>'.$GLOBALS['LANG']->sL(t3lib_BEfunc::getItemLabel('tt_content','bodytext'),1).'</strong> '.$this->linkEdit (htmlspecialchars(t3lib_div::fixed_lgd(trim($row['bodytext']),200)),$table,$row['uid']);
