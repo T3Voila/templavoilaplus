@@ -127,6 +127,8 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	var $elementBlacklist=array();					// Used in renderFrameWork (list of CEs causing errors)
 
 	var $altRoot = array();							// Keys: "table", "uid", "field_flex" - thats all to define another "rootTable" than "pages" (using default field "tx_templavoila_flex" for flex form content)
+	var $versionId = 0;
+	var $editVersionUid = 0;
 
 	var $currentDataStructureArr = array();			// Contains the data structure XML structure indexed by tablenames ('pages', 'tt_content') as an array of the currently selected DS record when editing a page
 	var $currentPageRecord;							// Contains the page record (from table 'pages') of the current page when editing a page
@@ -143,7 +145,8 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		$this->rulesObj =& t3lib_div::getUserObj ('&tx_templavoila_rules','');
 		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::GPvar('SET'), $this->MCONF['name']);
 
-		$this->altRoot = t3lib_div::GPvar('altRoot', 1);
+		$this->altRoot = t3lib_div::_GP('altRoot');
+		$this->versionId = t3lib_div::_GP('versionId');
 
 			// Fill array allAvailableLanguages and currently selected language (from language selector or from outside)
 		$this->allAvailableLanguages = $this->getAvailableLanguages(0, true, true, true);
@@ -243,6 +246,9 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				 	$this->$function ($params);
 				}
 			}
+
+				// Checks if versioning applies to root record, may alter ->id / ->altRoot variables!!!
+			$this->content .= $this->versioningSelector();
 
 				// Show the "edit current page" screen
 			$this->content .= $this->renderEditPageScreen ();
@@ -396,13 +402,19 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 			// Get current page record for later usage
 		$this->currentPageRecord = t3lib_BEfunc::getRecord ('pages', $this->id);
+		$this->topPagePid = $this->id;
 
 			// Get data structure array for the page/content elements.
 			// Returns a BIG array reflecting the "treestructure" of the pages content elements.
 		if (is_array($this->altRoot))	{
-			$dsArr = $this->getDStreeForPage($this->altRoot['table'], $this->altRoot['uid']);
+			$dsArr = $this->getDStreeForPage($this->altRoot['table'], ($this->editVersionUid ? $this->editVersionUid : $this->altRoot['uid']));
 		} else {
-			$dsArr = $this->getDStreeForPage('pages', $this->id, '', $this->currentPageRecord);
+				// Get current page record for later usage
+			if ($this->editVersionUid && $this->editVersionUid != $this->id)	{
+				$this->currentPageRecord = t3lib_BEfunc::getRecord ('pages', $this->editVersionUid);
+				$this->topPagePid = $this->editVersionUid;
+			}
+			$dsArr = $this->getDStreeForPage('pages', $this->topPagePid, '', $this->currentPageRecord);
 		}
 
 			// Start creating HTML output
@@ -683,7 +695,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		$vKey = $langDisable ? 'vDEF' : ($langChildren ? 'v'.$currentLanguage : 'vDEF');
 
 			// The $isLocal flag is used to denote whether an element belongs to the current page or not. If NOT the $isLocal flag means (for instance) that the title bar will be colored differently to show users that this is a foreign element not from this page.
-		$isLocal = $dsInfo['el']['table']=='pages' || $dsInfo['el']['pid']==$this->id;	// Pages have the local style
+		$isLocal = $dsInfo['el']['table']=='pages' || $dsInfo['el']['pid']==$this->topPagePid;	// Pages have the local style
 		if (!$isLocal) { $referenceInPath++; }
 
 			// Set whether the current element is registered for copy/cut/reference or not:
@@ -1268,7 +1280,10 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * @return	string		parameters
 	 */
 	function linkParams()	{
-		$output = 'id='.$this->id.(is_array($this->altRoot) ? t3lib_div::implodeArrayForUrl('altRoot',$this->altRoot) : '');
+		$output =
+			'id='.$this->id.
+			(is_array($this->altRoot) ? t3lib_div::implodeArrayForUrl('altRoot',$this->altRoot) : '').
+			($this->versionId ? '&versionId='.rawurlencode($this->versionId) : '');
 		return $output;
 	}
 
@@ -1646,6 +1661,39 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		return $output;
 	}
 
+
+
+
+	function versioningSelector()	{
+
+		if (is_array($this->altRoot))	{
+			$versions = t3lib_BEfunc::selectVersionsOfRecord($this->altRoot['table'], $this->altRoot['uid']);
+		} else {
+			$versions = t3lib_BEfunc::selectVersionsOfRecord('pages', $this->id, 'uid,t3ver_label,t3ver_id');
+		}
+
+		if (is_array($versions) && count($versions)>1)	{
+			$opt=array();
+			foreach($versions as $vRec)	{
+
+				if ($this->versionId)	{
+					$selected = $vRec['t3ver_id']==$this->versionId;
+					if ($selected)	$this->editVersionUid = $vRec['uid'];
+				} else {
+					$selected = $vRec['_CURRENT_VERSION'];
+				}
+
+
+				$opt[] = '<option value="'.$vRec['t3ver_id'].'"'.($selected?' selected="selected"':'').($vRec['_CURRENT_VERSION']?' style="background-color: red;"':'').'>'.htmlspecialchars($vRec['t3ver_label'].' [v#'.$vRec['t3ver_id'].($vRec['_CURRENT_VERSION'] ? ' / ONLINE' : '').']').'</option>';
+			}
+
+			$selBox = 'Version: <select name="_" onchange="'.
+				htmlspecialchars('document.location="index.php?'.$this->linkParams().'&versionId="+this.options[this.selectedIndex].value').
+				'">'.implode('',$opt).'</select>';
+
+			return $selBox;
+		}
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/mod1/index.php'])    {
