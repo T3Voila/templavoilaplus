@@ -19,7 +19,11 @@ OTHER MODULES:
 
 
 
-
+Related to rendering/content elements (css_styled_content):
+ - OK: increase $this->cObj->parentRecordNumber - done by RECORDS cObject!
+ - OK: if register[maxImageWidth] is set, this will override maxW - this is fixed by inserting in the data structure LOAD_REGISTER / RESTORE_REGISTER!
+ - Remove "Columns" field from tt_content
+ - Remove "Divider" content element type.
 
 
 
@@ -50,6 +54,8 @@ OTHER MODULES:
 	- Performance:
 		- Caching of splitting template files -> faster process
 	- Testing: Implement sites like HP site, Vignette site (to test that it is robust and stable!)
+	- Allow "old-style" mapping where a data structure immediately finds subparts/markers in HTML code...
+	- Valg af farvecode for sample data... (preset formatting, images, etc?)
 - API Usage:
 	- API: A function which can produce a traditionally marked up version of the template: For use in TS as alternative to the Autoparser
 	- ?: How can extensions supply a default template Array when no Template Object exists yet, mapping the data? What about the data structure containing some sample markup as well which means we can always assemble a simple display from that. Or even a nice default display which is of course stylable by CSS. AND this default
