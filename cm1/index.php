@@ -1108,7 +1108,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 				// Set content, either for header or body:			
 			$templatemapping['MappingInfo_head'] = $currentMappingInfo_head;
 			$templatemapping['MappingInfo'] = $currentMappingInfo;
-			
+
 				// Getting cached data:
 			reset($dataStruct);
 			$firstKey = key($dataStruct);
@@ -1145,7 +1145,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 				eregi('<body[^>]*>',$fileContent,$reg);
 				$templatemapping['BodyTag_cached'] = $currentMappingInfo_head['addBodyTag'] ? $reg[0] : '';
 			}
-			
+
 			$dataArr['tx_templavoila_tmplobj'][$row['uid']]['templatemapping'] = serialize($templatemapping);
 			$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 			$tce->stripslashes_values=0;
