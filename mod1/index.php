@@ -27,7 +27,7 @@
  * $Id$
  *
  * @author     Robert Lemke <robert@typo3.org>
- * @coauthor   Kasper Skårhøj <kasper@typo3.com>
+ * @coauthor   Kasper Skï¿½hj <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -151,9 +151,6 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	var $wizardsObj;								// Instance of wizards class
 	var $rulesObj;									// Instance of the tx_templavoila_rule
 
-	var $sideBarPosition = 'toptabs';				// The position of the navigation bar ("sidebar"). Possible values (see sidebar class!): toptabs, toprows, left
-
-
 
 	/*******************************************
 	 *
@@ -189,7 +186,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			// Initialize side bar and wizards:
 		$this->sideBarObj =& t3lib_div::getUserObj ('&tx_templavoila_mod1_sidebar','');
 		$this->sideBarObj->init($this);
-		$this->sideBarObj->position = $this->sideBarPosition;
+		$this->sideBarObj->position = isset ($this->modTSconfig['properties']['sideBarPosition']) ? $this->modTSconfig['properties']['sideBarPosition'] : 'toptabs';
 
 		$this->wizardsObj = t3lib_div::getUserObj('&tx_templavoila_mod1_wizards','');
 		$this->wizardsObj->init($this);
@@ -312,7 +309,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				// Show the "edit current page" screen along with the sidebar. The sidebar needs information which is only available after
 				// rendering the edit screen, that's why we delay the output. The sidebar will only be rendered at THIS point, if its position is "left"
 			$editPageScreen = $this->renderEditPageScreen ();
-			$sideBar = ($this->sideBarPosition == 'left') ? $this->sideBarObj->render($dsInfo) : FALSE;
+			$sideBar = ($this->sideBarObj->position == 'left') ? $this->sideBarObj->render($dsInfo) : FALSE;
 
 				// Create make-shortcut-icon:
 			if ($BE_USER->mayMakeShortcut()) {
@@ -701,7 +698,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			$viewPageIcon = '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::viewOnClick($dsInfo['el']['table']=='pages'?$dsInfo['el']['id']:$dsInfo['el']['pid'],$this->doc->backPath,t3lib_BEfunc::BEgetRootLine($dsInfo['el']['id']),'','',($this->currentLanguageUid?'&L='.$this->currentLanguageUid:''))).'">'.
 				'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/zoom.gif','width="12" height="12"').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.showPage',1).'" hspace="3" alt="" style="text-align: center; vertical-align: middle;" />'.
 				'</a>';
-			if ($this->sideBarPosition == 'toprows' || $this->sideBarPosition == 'toptabs') {
+			if ($this->sideBarObj->position == 'toprows' || $this->sideBarObj->position == 'toptabs') {
 				$contentWrapPre .= $this->sideBarObj->render($dsInfo);
 			}
 

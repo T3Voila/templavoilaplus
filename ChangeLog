@@ -1,10 +1,15 @@
+2004-10-30  Robert Lemke  <robert@typo3.org>
+ + mod1: Added TSconfig configuration for sidebar position: mod.web_txtemplavoilaM1.sideBarPosition
+ ~ Manual: Updated TSconfig options and added screenshots for sidebar positions
+ ~ !!! mod1: Changed TSconfig option tx_templavoila.mod1.createPageWizard.fieldNames to mod.web_txtemplavoilaM1.createPageWizard.fieldNames
+
 2004-09-13  Robert Lemke  <robert@typo3.org>
  + mod1: Added two new modes for the sidebar, now you have "left", "toptabs" and "toprows". They will be configurable via TSconfig in the future, by now "toptabs" is default.
  # mod1: Fixed a bug at the language selector which tried to select non-existing translations
  + mod1: Added flags next to the language selector which represent existing translations
  # mod1: In the sidebar, changed menuItems array for the dynamic tab menu to num array
 
-2004-09-09  Kasper Skårhøj <kasper@typo3.com>
+2004-09-09  Kasper Skï¿½hj <kasperYYYY@typo3.com>
 
  * Fixed that color highlighting of data structure didn't show <meta> tag content.
  * Improved things in page module regarding sheets; Eg. counting elements on each sheet. Fixed some PHP5 array bugs also.
@@ -31,7 +36,7 @@
  ~ Updated ToDo
  ~ Changed my email address ;-)
 
-2004-08-30  Robert Lemke  <rl@robertlemke.de>
+2004-08-30  Robert Lemke  <robert@typo3.org>
 
   * Merged Kaspers and my changes.
   * cm2 Added a click menu item for showing on which pages the current content element is used in the pagetree. Bug: If other extensions add click menuitems to second level menus, they will appear here as well (needs core change, is on the ToDo)
@@ -39,7 +44,7 @@
   * mod3: Added wizard for (re-) building indexing information about element reference (where which content element is used). You'll need to update table definitions in the extension manager.
   * ToDo for element references: Deleting CEs from elsewhere than the page module will not be registered automatically (see ToDo file)
 
-2004-08-27  Kasper Skårhøj,,,  <kasper@typo3.com>
+2004-08-27  Kasper Skï¿½hj,,,  <kasperYYYY@typo3.com>
 
   * Page module: Added "Show hidden elements" box - can be moved to better position in page module
   * Corrected bugs for flagicons if they were not configured (they didn't display correctly of course).
@@ -47,108 +52,108 @@
   * Page module: Added "&L=xx" parameter to view-page icon (magnifying glass) so preview link to localized pages is correct.
   * Page module: Added overview of localized versions of other records. This is used when TypoScript is configured with "config.sys_language_overlay". Configurable.
 
-2004-08-26  Kasper Skårhøj,,,  <kasper@typo3.com>
+2004-08-26  Kasper Skï¿½hj,,,  <kasperYYYY@typo3.com>
 
   * Changed the versioning selector...
 
-2004-08-21  Kasper Skårhøj,,,  <kasper@typo3.com>
+2004-08-21  Kasper Skï¿½hj,,,  <kasperYYYY@typo3.com>
 
   * Finally added the "TemplaVoila" module to the Web main module and put some content into it! Now you can manage all your Data Structures and Template Objects from that module including creating new mappings and validate old ones.
   * Also added TAB menus to the TV page module
   * NOTICE: ALL changes here requires most recent 3.7.0-dev version from CVS in order to work!
 
-2004-07-18  Robert Lemke  <rl@robertlemke.de>
+2004-07-18  Robert Lemke  <robert@typo3.org>
 
  * Display and processing (copy, paste, insert etc.) for multi lang support now seems to be stable in the page module.
 
-2004-07-18  Robert Lemke  <rl@robertlemke.de>
+2004-07-18  Robert Lemke  <robert@typo3.org>
 
  * DS and TO records may now be sorted manually (in the backend). Make sure you update your .sql table definitions (in the extension manager).
 
-2004-07-15  Robert Lemke  <rl@robertlemke.de>
+2004-07-15  Robert Lemke  <robert@typo3.org>
 
  * Committed changes and development from the Paris sessions.
  * @Kasper: There only seemed to be one conflict in mod1/index.php which I could solve easily
  * @All the others: Be careful with this version, I didn't check if everything works. Wait until the next commit
 
-2004-06-17  Robert Lemke  <rl@robertlemke.de>
+2004-06-17  Robert Lemke  <robert@typo3.org>
 
  * Bugfix: headerfields, titlebarcolor etc. didn't work with inherited datastructures. Now they do.
  * New hook in pi1: renderElement_preProcessRow
  * Prepared some things about multi language support. Don't use it yet!
  * Guess what: Updated manual
 
-2004-06-07  Robert Lemke  <rl@robertlemke.de>
+2004-06-07  Robert Lemke  <robert@typo3.org>
 
 	* Finished the Create New Page Wizard to an acceptable state ;-)
 	* Created new Page TSconfig: createPageWizard.fieldNames
 	* Other cool stuff. But I don't remember exactly ...
 	* Updated manual (as usual)
 
-2004-06-04  Robert Lemke  <rl@robertlemke.de>
+2004-06-04  Robert Lemke  <robert@typo3.org>
 
 	* Added new tag for data structures: <titleBarColor> (configures page module)
 	* Updated manual
 
-2004-06-03  Robert Lemke  <rl@robertlemke.de>
+2004-06-03  Robert Lemke  <robert@typo3.org>
 
 	* Re-implemented userfunctions in cm1 (eTypes, extra fields) to comply with the recommended way of providing hooks. I guess no other extension than mine has used that so far ...
 	* Added hook in page module for inserting HTML code at the very top of the edit page screen - for providing a toolbar or sth. similar
 	* Updated manual
 
-2004-03-31  Kasper Skårhøj,,,  <kasper@typo3.com>
+2004-03-31  Kasper Skï¿½hj,,,  <kasperYYYY@typo3.com>
 
 	* Fixed bug in htmlmarkup class where content were merged with template; When the number of "virtual records" exceeded a limit, none were merged.
 
-2004-03-26  Robert Lemke  <rl@robertlemke.de>
+2004-03-26  Robert Lemke  <robert@typo3.org>
 
 	* Added icons, sponsored by Ben
 	* Modified TSconfig userFunction properties for cm1 and updated manual
 
-2004-03-24  Kasper Skårhøj
+2004-03-24  Kasper Skï¿½hj
 	* Added a syntax highlight module for FlexForm data in tt_content and pages; access it as admin via the click menu of pages / tt_content elements.
 
-2004-03-22  Robert Lemke  <rl@robertlemke.de>
+2004-03-22  Robert Lemke  <robert@typo3.org>
 
 	* Added two new TSconfig properties: mod.xMOD_tx_templavoila_cm1.eTypesExtraFormFieldsUserfunctions and mod.xMOD_tx_templavoila_cm1.eTypesConfGenUserfunctions
 
 See the updated many for more information. BTW: Thanks for the extra fields!
 
-2004-03-15  Robert Lemke  <rl@robertlemke.de>
+2004-03-15  Robert Lemke  <robert@typo3.org>
 
 	* Hey Kasper, you broke the create new page wizard ... ;-) Anyways, will find out what's wrong.
 	* Small update for the manual (FAQ)
 
-2004-03-09  Kasper Skårhøj
+2004-03-09  Kasper Skï¿½hj
 
 	* Removed copy,cut,paste,new,delete links in Context Menu for content elements inside of TemplaVoila module; Doesn't do any good there since those features are specific for TemplaVoila and has to be managed in the module itself; Alternatively we should create menu items in the context menu which does the same as the buttons in the module, but that was too hard for me to think about tonight....
 	* Added support for other root elements in backend module than pages. Setting another root element is done by the parameter set "&altRoot[table], &altRoot[uid], &altRoot[flex_field]"
 	* Added clickmenu item for "TV children" in "content elements" -> a link to direct management of that element and subelements. Using the feature described above.
 	* Fixed a few things with mapping, for instance that TypoScript Object Path can now be set in a little field - very convenient...
 
-2003-12-22  Robert Lemke  <rl@robertlemke.de>
+2003-12-22  Robert Lemke  <robert@typo3.org>
 
 	* Nightly backup ...
 	* started with create new content wizard
 
-2003-12-21  Robert Lemke  <rl@robertlemke.de>
+2003-12-21  Robert Lemke  <robert@typo3.org>
 
 	* Daily backup ...
 	* Mostly working on create new page wizard: Completed the creation of default elements with recursivity check.
 
-2003-12-20  Robert Lemke  <rl@robertlemke.de>
+2003-12-20  Robert Lemke  <robert@typo3.org>
 
 	* Various additions, mostly rules + new page creation
 	* Creates default content elements when creating a new page with the create new page wizard. Still things to do though.
 
-2003-12-18  Robert Lemke  <rl@robertlemke.de>
+2003-12-18  Robert Lemke  <robert@typo3.org>
 
 	* Just an upload ...
 	* Added new configuration for the EM: now you may specify the PID of the template folder (better idea than hardcode it to uid #2 ;-)
 	* Browsetree gets updated, Page module (web_layout) is completely overridden: shortcut, edit page etc.
 	* Various other things ...
 
-2003-11-13  Robert Lemke  <rl@robertlemke.de>
+2003-11-13  Robert Lemke  <robert@typo3.org>
 
 	* Upload of current work status, no special milestone ...
 	* Added support for all CTypes in new page module
@@ -157,7 +162,7 @@ See the updated many for more information. BTW: Thanks for the extra fields!
 	* Several changes here and there, comments added
 
 
-2003-10-28  Kasper Skårhøj
+2003-10-28  Kasper Skï¿½hj
 
 	* Added $Id$ keywords tags.
 	* Added support+icon for iframe tags in htmlmarkup class.

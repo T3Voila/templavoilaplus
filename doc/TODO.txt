@@ -105,7 +105,7 @@ Related to rendering/content elements (css_styled_content):
 Roberts TODO:
 ***************
 
-INBOX (imposed by Kasper...:-):
+INBOX:
 - "Web > Page" Backend Modules:
 	- New wizard:
 		- In Content Element Wizard, also list records to insert as references fetched from the storage page
@@ -193,6 +193,9 @@ PAGE MODULE:
 		- There seems to be a bug when pasting a CE into a field with a datastructure having langChildren set to 1
 		- Bug: Language selector shows broken images when no flag has been defined in sys_languages
 		- Bug: Broken image (rules icon?)
+
+SIDEBAR:
+	- Add [delete] option to unused elements menu to REALLY delete elements.
 
 TECHNICAL:
 	- Delivery to a) different clients X b) in various languages.
