@@ -1,3 +1,7 @@
+2005-02-08	Robert Lemke <robert@typo3.org>
+ # xmlrelhndl: Fixed a newly introduced bug which caused a parse error in PHP4 (but not in PHP5) ...
+ # ext_emconf.php: PHPEclipse did a line wrap were it shouldn't - fixed that.
+
 2005-02-07	Robert Lemke <robert@typo3.org>
  # xmlrelhndl: Fixed the bug mentioned before: Now FCEs are correctly copied recursively with correct referencing, files, pictures etc.
  

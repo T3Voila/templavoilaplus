@@ -11,8 +11,7 @@
 
 $EM_CONF[$_EXTKEY] = Array (
 	'title' => 'TemplaVoila!',
-	'description' => 'A new template mapping tool which includes an API for using the results (Template Objects) and a new content element for flexible content.
-For TYPO3 3.7.0',
+	'description' => 'A new template mapping tool which includes an API for using the results (Template Objects) and a new content element for flexible content. For TYPO3 3.7.0',
 	'category' => 'module',
 	'shy' => 0,
 	'dependencies' => 'cms,lang,static_info_tables',

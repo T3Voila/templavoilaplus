@@ -216,8 +216,9 @@ class tx_templavoila_xmlrelhndl {
 										case 'copy':
 
 												// Determine the PID of the new location and get uids of all sub elements of the record to be copied:
+											$dummyArr = array();  // We have to pass an empty array, because that parameter is used by reference (restricition of PHP4)
 											$destinationPID = $destRefArr[0]=='pages' ? $destinationRec['uid'] : $destinationRec['pid'];
-											$subElementsUids = $this->_getListOfSubElementsRecursively ('tt_content', $refID);
+											$subElementsUids = $this->_getListOfSubElementsRecursively ('tt_content', $refID, $dummyArr);
 
 												// Initialize TCEmain and create configuration for copying the specified record (the parent element) and all sub elements:
 											$tce = t3lib_div::makeInstance('t3lib_TCEmain');
@@ -580,7 +581,7 @@ class tx_templavoila_xmlrelhndl {
 	 * @return	array		Array of record UIDs
 	 * @access protected
 	 */
-	function _getListOfSubElementsRecursively ($table, $uid, &$recordUids=array()) {
+	function _getListOfSubElementsRecursively ($table, $uid, &$recordUids) {
 
 			// Fetch the specified record, find all sub elements
 		$parentRecord = t3lib_BEfunc::getRecord ($table, $uid, 'uid,pid,'.$this->flexFieldIndex[$table]);
