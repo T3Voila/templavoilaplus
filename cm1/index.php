@@ -1894,6 +1894,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 							'size' => '5',
 							'maxitems' => '200',
 							'minitems' => '0',
+							'multiple' => '1',
 							'show_thumbs' => '1'
 						);
 						$elArray[$key]['tx_templavoila']['TypoScript'] = '

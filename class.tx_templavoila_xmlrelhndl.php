@@ -155,10 +155,9 @@ class tx_templavoila_xmlrelhndl {
 
 						if ($pasteCmd=='unlink')	{	// Removing the reference:
 							$this->_removeReference($sourceItemArray, $sourceRefArr);
-
-							if ($isLocal)	{	// Do REAL delete if the record was local:
-								$this->_deleteContentElement($itemOnPosition['id']);
-							}
+						} elseif ($pasteCmd=='delete')	{	// Removing AND DELETING the reference:
+							$this->_removeReference($sourceItemArray, $sourceRefArr);
+							$this->_deleteContentElement($itemOnPosition['id']);
 						} elseif ($pasteCmd=='localcopy') {
 
 								// Get the uid of a new tt_content element

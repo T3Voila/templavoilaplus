@@ -193,7 +193,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			$this->doc->getTabMenu(0,'_',0,array(''=>''));
 
 				// Go through the commands and check if we have to do some action:
-			$commands = array ('createNewRecord', 'unlinkRecord','pasteRecord', 'makeLocalRecord');
+			$commands = array ('createNewRecord', 'unlinkRecord', 'deleteRecord','pasteRecord', 'makeLocalRecord');
 			foreach ($commands as $cmd) {
 				unset ($params);
 				$params = t3lib_div::GPvar($cmd);
@@ -201,14 +201,14 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 					// If the current function has a parameter passed by GET or POST, call the related function:
 				if ($params && is_callable(array ($this, $function))) {
 				 	$this->$function ($params);
-				}			
+				}
 			}
 
 				// Check if we have to update the pagetree:
 			if (t3lib_div::GPvar('updatePageTree')) {
 				t3lib_BEfunc::getSetUpdateSignal('updatePageTree');
 			}
-			
+
 				// Show the "edit current page" dialog
 			$this->content.=$this->renderEditPageScreen ();
 
@@ -277,6 +277,18 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 */
 	function cmd_unlinkRecord ($unlinkRecord) {
 		$this->pasteRecord('unlink', $unlinkRecord, '');
+		header('Location: '.t3lib_div::locationHeaderUrl('index.php?id='.$this->id));
+	}
+
+	/**
+	 * Initiates processing for unlinking AND DELETING a record.
+	 *
+	 * @param	string		$unlinkRecord: The element to be unlinked.
+	 * @return	void
+	 * @see		pasteRecord ()
+	 */
+	function cmd_deleteRecord ($deleteRecord) {
+		$this->pasteRecord('delete', $deleteRecord, '');
 		header('Location: '.t3lib_div::locationHeaderUrl('index.php?id='.$this->id));
 	}
 
@@ -534,7 +546,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 					// "New" and "Paste" icon:
 				$elList = '';
-				$elList.=$this->linkNew('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/new_el.gif','').' align="absmiddle" vspace="5" border="0" title="'.$LANG->getLL ('createnewrecord').'" alt="" />',$dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$fieldID.':'.$counter); 
+				$elList.=$this->linkNew('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/new_el.gif','').' align="absmiddle" vspace="5" border="0" title="'.$LANG->getLL ('createnewrecord').'" alt="" />',$dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$fieldID.':'.$counter);
 				if (!$clipboardElInPath) { $elList.=$this->linkPaste('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/clip_pasteafter.gif','').' align="absmiddle" vspace="5" border="0" title="'.$LANG->getLL ('pasterecord').'" alt="" />',$dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$fieldID.':'.$counter,$this->MOD_SETTINGS['clip_parentPos'],$this->MOD_SETTINGS['clip']); }
 					// Render the list of elements (and possibly call itself recursively if needed):
     			if (is_array($fieldContent['el_list']))	 {
@@ -594,7 +606,10 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			// Put together the records icon including content sensitive menu link wrapped around it:
 		$recordIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,$dsInfo['el']['icon'],'').' align="absmiddle" width="18" height="16" border="0" title="'.htmlspecialchars('['.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].']'.$extPath).'" alt="" title="" />';
 		$recordIcon = $this->doc->wrapClickMenuOnIcon($recordIcon,$dsInfo['el']['table'],$dsInfo['el']['id']);
-				
+
+		$realDelete = FALSE;
+#		$realDelete = $isLocal;		// Uncomment this if you want content elements that are NOT references from other pages to also be deleted when unlinked...
+
 		$linkCopy = '';
 		$linkCut = '';
 		$linkRef = '';
@@ -604,7 +619,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			$linkCopy = $isLocal ? $this->linkCopyCut('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/clip_copy'.$clipActive_copy.'.gif','').' title="'.$LANG->getLL ('copyrecord').'" border="0" alt="" />',($clipActive_copy ? '' : $parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].'/'.$isLocal),'copy') : '';
 			$linkCut = $this->linkCopyCut('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/clip_cut'.$clipActive_cut.'.gif','').' title="'.$LANG->getLL ('cutrecord').'" border="0" alt="" />',($clipActive_cut ? '' : $parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].'/'.$isLocal),'cut');
 			$linkRef = $this->linkCopyCut('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,t3lib_extMgm::extRelPath('templavoila').'mod1/clip_ref'.$clipActive_ref.'.gif','').' title="'.$LANG->getLL ('createreference').'" border="0" alt="" />',($clipActive_ref ? '' : $parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].'/'.$isLocal),'ref');
-			$linkUnlink = $this->linkUnlink('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/garbage.gif','').' title="'.$LANG->getLL($isLocal ? 'deleteRecord' : 'unlinkRecord').'" border="0" alt="" />', $parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].'/'.$isLocal, $isLocal);
+   			$linkUnlink = $this->linkUnlink('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/garbage.gif','').' title="'.$LANG->getLL($realDelete ? 'deleteRecord' : 'unlinkRecord').'" border="0" alt="" />', $parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].'/'.$isLocal, $realDelete);
 		} else {
 			$viewPageIcon = '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::viewOnClick($dsInfo['el']['id'],$this->doc->backPath,t3lib_BEfunc::BEgetRootLine($dsInfo['el']['id']))).'">'.
 				'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/zoom.gif','width="12" height="12"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showPage',1).'" hspace="3" alt="" align="absmiddle" />'.
@@ -676,7 +691,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 					$first=false;
 				}
-								
+
 				$sheetMenu = '<table cellpadding="0" cellspacing="0" border="0" style="padding-left: 3px; padding-right: 3px;"><tr>'.$sheetMenu.'</tr></table>';
 			}
 		}
@@ -781,8 +796,11 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	function linkUnlink($str,$unlinkRecord, $realDelete=FALSE)	{
 		global $LANG;
 
-		$onClick = $realDelete ? ' onclick="'.htmlspecialchars('return confirm('.$LANG->JScharCode($LANG->getLL('deleteRecordMsg')).');').'"' : '';
-		return '<a href="index.php?id='.$this->id.'&unlinkRecord='.rawurlencode($unlinkRecord).'"'.$onClick.'>'.$str.'</a>';
+		if ($realDelete)	{
+			return '<a href="index.php?id='.$this->id.'&deleteRecord='.rawurlencode($unlinkRecord).'" onclick="'.htmlspecialchars('return confirm('.$LANG->JScharCode($LANG->getLL('deleteRecordMsg')).');').'">'.$str.'</a>';
+		} else {
+			return '<a href="index.php?id='.$this->id.'&unlinkRecord='.rawurlencode($unlinkRecord).'">'.$str.'</a>';
+		}
 	}
 
 	/**
