@@ -258,7 +258,7 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 	 * Returns content based on input $pathStrArray.	(an array with values which are paths to get out of HTML.)
 	 * 
 	 * @param	string		Input HTML to get path from.
-	 * @param	string		The array where the values are paths, eg. array('td#content table[1] tr[1]','td#content table[1]','map#cdf / INNER') - tager kun første niveau i en path!
+	 * @param	string		The array where the values are paths, eg. array('td#content table[1] tr[1]','td#content table[1]','map#cdf / INNER') - takes only the first level in a path!
 	 * @return	array		Content... (not welldefined yet)
 	 */
 	function getContentBasedOnPath($content,$pathStrArr)	{

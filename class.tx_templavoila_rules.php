@@ -33,26 +33,26 @@
  *
  *
  *
- *   76: class tx_templavoila_rules 
- *   89:     function evaluateRulesOnElements ($rules, $ruleConstants, $elArray) 
- *  115:     function getDefaultElements($rules,$ruleConstants)	
+ *   74: class tx_templavoila_rules 
+ *   85:     function evaluateRulesOnElements ($rules, $ruleConstants, $elArray) 
+ *  111:     function getDefaultElements($rules,$ruleConstants)	
  *
  *              SECTION: Rule processing / analyzing functions
- *  141:     function parseRegexIntoArray ($regex) 
- *  222:     function checkRulesCompliance ($rulesArr, $elementsArr, $prevStatusArr='') 
+ *  152:     function parseRegexIntoArray ($regex) 
+ *  233:     function checkRulesCompliance ($rulesArr, $elementsArr, $prevStatusArr='') 
  *
  *              SECTION: Human Readable Rules Functions
- *  262:     function getHumanReadableRules ($rules,$ruleConstants)	
- *  278:     function parseRulesArrayIntoDescription ($rulesArr, $constantsArr, $level=0) 
- *  313:     function getQuantifierAsDescription ($min, $max) 
- *  346:     function getElementNameFromConstantsMapping ($element, $constantsArr) 
+ *  270:     function getHumanReadableRules ($rules,$ruleConstants)	
+ *  286:     function parseRulesArrayIntoDescription ($rulesArr, $constantsArr, $level=0) 
+ *  321:     function getQuantifierAsDescription ($min, $max) 
+ *  354:     function getElementNameFromConstantsMapping ($element, $constantsArr) 
  *
  *              SECTION: Helper functions
- *  369:     function isElement ($char) 
- *  384:     function extractInnerBrace ($regex, $startPos) 
- *  414:     function explodeAlternatives ($regex) 
- *  440:     function evaluateQuantifier ($quantifier, &$pos, &$min, &$max) 
- *  497:     function getCTypeFromToken ($token) 
+ *  381:     function isElement ($char) 
+ *  396:     function extractInnerBrace ($regex, $startPos) 
+ *  426:     function explodeAlternatives ($regex) 
+ *  452:     function evaluateQuantifier ($quantifier, &$pos, &$min, &$max) 
+ *  509:     function getCTypeFromToken ($token) 
  *
  * TOTAL FUNCTIONS: 13
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -63,7 +63,7 @@
 
 /**
  * Class 'tx_templavoila_rules' for the 'templavoila' extension.
- *
+ * 
  * This library contains several functions for evaluating and output of rules
  * being defined in data structure objects.
  * 
@@ -77,10 +77,10 @@ class tx_templavoila_rules {
 	 * Checks a given element if it complies with certain rules provided as a regular expression.
 	 * Note that only few functionality of the POSIX standard for regular expressions is being supported.
 	 * 
-	 * @param	[string]	$rules: A regular expression describing the rule. The content elements are reflected by certain tokens (i.e. uppercase and lowercase characters). These tokens are also called "ruleConstants".
-	 * @param	[array]		$ruleConstants: An array with the mapping of tokens to content elements.
+	 * @param	string		$rules: A regular expression describing the rule. The content elements are reflected by certain tokens (i.e. uppercase and lowercase characters). These tokens are also called "ruleConstants".
+	 * @param	array		$ruleConstants: An array with the mapping of tokens to content elements.
 	 * @param	[type]		$elArray: ...
-	 * @return	[array]		Array containing status information if the check was successful.
+	 * @return	array		Array containing status information if the check was successful.
 	 */
 	function evaluateRulesOnElements ($rules, $ruleConstants, $elArray) {
 		$ok = -1;
@@ -102,8 +102,8 @@ class tx_templavoila_rules {
 
 	/**
 	 * Delivers the default content elements which are neccessary for a certain element.
-	 * NOT USED YET - maybe we don't need it here! 
-	 *
+	 * NOT USED YET - maybe we don't need it here!
+	 * 
 	 * @param	[type]		$rules: ...
 	 * @param	[type]		$ruleConstants: ...
 	 * @return	[type]		...
@@ -122,6 +122,21 @@ class tx_templavoila_rules {
 		return $elArray;
 	}
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	/********************************************
 	 *	
 	 *  Rule processing / analyzing functions
@@ -131,8 +146,8 @@ class tx_templavoila_rules {
 	/**
 	 * Parses a regular expression with a reduced set of functions into an array.
 	 * 
-	 * @param	[string]	$regex: The regular expression
-	 * @return	[array]		Array containing the cTypes with some additional information
+	 * @param	string		$regex: The regular expression
+	 * @return	array		Array containing the cTypes with some additional information
 	 */
 	function parseRegexIntoArray ($regex) {
 
@@ -248,9 +263,9 @@ class tx_templavoila_rules {
 	/**
 	 * Returns a description of a rule in human language
 	 * 
-	 * @param	[string]	$rules: Regular expression containing the rule
-	 * @param	[array]		$ruleConstants: Contains the mapping of elements to CTypes
-	 * @return	[string		Description of the rule
+	 * @param	string		$rules: Regular expression containing the rule
+	 * @param	array		$ruleConstants: Contains the mapping of elements to CTypes
+	 * @return	string		Description of the rule
 	 */
 	function getHumanReadableRules ($rules,$ruleConstants)	{
 		$rulesArr = $this->parseRegexIntoArray ($rules);
@@ -376,7 +391,7 @@ class tx_templavoila_rules {
 	 * @param	integer		$startPos: The position within the regex string where the search should start
 	 * @return	array		Array containing the results (see function)
 	 * @access private
-	 * @see					parseRegexIntoArray ()
+	 * @see	parseRegexIntoArray()
 	 */
 	function extractInnerBrace ($regex, $startPos) {
 		for ($endPos=$startPos; $endPos<strlen ($regex); $endPos++) { 
@@ -493,7 +508,10 @@ class tx_templavoila_rules {
 	 */
 	function getCTypeFromToken ($token) {
 	}
-
 }
 
+
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/class.tx_templavoila_rules.php'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/class.tx_templavoila_rules.php']);
+}
 ?>

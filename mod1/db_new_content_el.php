@@ -26,11 +26,8 @@
 ***************************************************************/
 /** 
  * New content elements wizard
- * (Part of the 'cms' extension)
  * 
  * $Id$
- * Revised for TYPO3 3.6 November/2003 by Kasper Skaarhoj
- * XHTML compatible.
  *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
@@ -39,19 +36,19 @@
  *
  *
  *
- *  100: class ext_posMap extends t3lib_positionMap 
- *  110:     function wrapRecordTitle($str,$row)	
- *  124:     function onClickInsertRecord($row,$vv,$moveUid,$pid,$sys_lang=0) 
+ *   97: class ext_posMap extends t3lib_positionMap 
+ *  107:     function wrapRecordTitle($str,$row)	
+ *  121:     function onClickInsertRecord($row,$vv,$moveUid,$pid,$sys_lang=0) 
  *
  *
- *  152: class SC_db_new_content_el 
- *  175:     function init()	
- *  211:     function main()	
- *  355:     function printContent()	
+ *  149: class SC_db_new_content_el 
+ *  172:     function init()	
+ *  208:     function main()	
+ *  352:     function printContent()	
  *
  *              SECTION: OTHER FUNCTIONS:
- *  384:     function getWizardItems()	
- *  394:     function wizardArray()	
+ *  381:     function getWizardItems()	
+ *  391:     function wizardArray()	
  *
  * TOTAL FUNCTIONS: 7
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -506,8 +503,8 @@ Contact me: | tv=check | 1
 }
 
 // Include extension?
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/cms/layout/db_new_content_el.php'])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/cms/layout/db_new_content_el.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/mod1/db_new_content_el.php'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/mod1/db_new_content_el.php']);
 }
 
 

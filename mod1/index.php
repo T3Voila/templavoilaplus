@@ -34,41 +34,43 @@
  *
  *
  *
- *  104: class tx_templavoila_module1 extends t3lib_SCbase 
- *  117:     function init()    
- *  127:     function menuConfig()	
- *  154:     function main()    
+ *  114: class tx_templavoila_module1 extends t3lib_SCbase 
+ *  127:     function init()    
+ *  137:     function menuConfig()	
+ *  164:     function main()    
  *
  *              SECTION: Command functions
- *  251:     function cmd_createNewRecord ($params) 
- *  266:     function cmd_unlinkRecord ($params) 
- *  278:     function cmd_pasteRecord ($params) 
+ *  272:     function cmd_createNewRecord ($params) 
+ *  287:     function cmd_unlinkRecord ($params) 
+ *  299:     function cmd_pasteRecord ($params) 
  *
  *              SECTION: Rendering functions
- *  296:     function renderEditPageScreen()    
- *  327:     function renderCreatePageScreen ($positionPid) 
- *  404:     function renderTemplateSelector ($positionPid, $templateType='tmplobj') 
- *  458:     function renderFrameWorkBasic($dsInfo,$parentPos='',$clipboardElInPath=0)	
- *  599:     function renderNonUsed()	
- *  624:     function linkEdit($str,$table,$uid)	
- *  636:     function linkNew($str,$params)	
- *  648:     function linkUnlink($str,$params)	
- *  661:     function linkPaste($str,$params,$target,$cmd)	
- *  673:     function linkCopyCut($str,$parentPos,$cmd)	
- *  682:     function printContent()    
+ *  326:     function renderEditPageScreen()    
+ *  358:     function renderCreatePageScreen ($positionPid) 
+ *  435:     function renderTemplateSelector ($positionPid, $templateType='tmplobj') 
+ *
+ *              SECTION: Framework rendering function(s)
+ *  499:     function renderFrameWorkBasic($dsInfo,$parentPos='',$clipboardElInPath=0)	
+ *  642:     function renderNonUsed()	
+ *  667:     function linkEdit($str,$table,$uid)	
+ *  679:     function linkNew($str,$params)	
+ *  691:     function linkUnlink($str,$params)	
+ *  704:     function linkPaste($str,$params,$target,$cmd)	
+ *  716:     function linkCopyCut($str,$parentPos,$cmd)	
+ *  725:     function printContent()    
  *
  *              SECTION: Processing
- *  703:     function createPage($pageArray,$positionPid)	
- *  736:     function createDefaultRecords ($table, $uid, $prevDS=-1, $level=0)	
- *  787:     function insertRecord($createNew,$row)	
- *  854:     function pasteRecord($pasteCmd, $target, $destination)	
+ *  746:     function createPage($pageArray,$positionPid)	
+ *  779:     function createDefaultRecords ($table, $uid, $prevDS=-1, $level=0)	
+ *  830:     function insertRecord($createNew,$row)	
+ *  897:     function pasteRecord($pasteCmd, $target, $destination)	
  *
  *              SECTION: Structure and rules functions
- * 1050:     function getStorageFolderPid($positionPid)	
- * 1071:     function getDStreeForPage($table,$id,$prevRecList='',$row='')	
- * 1147:     function renderPreviewContent ($row, $table) 
- * 1211:     function getExpandedDataStructure($table,$field,$row)	
- * 1243:     function evaluateRuleOnElements($rules,$ruleConstants,$elArray)	
+ * 1093:     function getStorageFolderPid($positionPid)	
+ * 1114:     function getDStreeForPage($table,$id,$prevRecList='',$row='')	
+ * 1190:     function renderPreviewContent ($row, $table) 
+ * 1254:     function getExpandedDataStructure($table,$field,$row)	
+ * 1286:     function evaluateRuleOnElements($rules,$ruleConstants,$elArray)	
  *
  * TOTAL FUNCTIONS: 26
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -92,6 +94,14 @@ require_once (PATH_t3lib.'class.t3lib_tcemain.php');
 
 	// Include class for parsing rules based on regular expressions
 require_once (t3lib_extMgm::extPath('templavoila').'class.tx_templavoila_rules.php'); 	
+
+
+
+
+
+
+
+
 
 /**
  * Module 'Page' for the 'templavoila' extension.
@@ -236,12 +246,21 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	
 	
 	
-	/**
-	 * *****************************************
+
+
+
+
+
+
+
+
+
+
+	/*******************************************
 	 * 
 	 * Command functions
 	 * 
-	 * *****************************************/
+	 ******************************************/
 	 
 	/**
 	 * Initiates processing for creating a new record.
@@ -284,6 +303,15 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			
 	
 	
+
+
+
+
+
+
+
+
+
 	/********************************************
 	 *
 	 * Rendering functions

@@ -34,11 +34,11 @@
  *
  *
  *   67: class tx_templavoila_pi1 extends tslib_pibase 
- *   83:     function main($content,$conf)    
- *   95:     function main_page($content,$conf)    
- *  125:     function initVars($conf)	
- *  137:     function renderElement($row,$table)	
- *  202:     function processDataValues(&$dataValues,$DSelements,$TOelements,$valueKey='vDEF')	
+ *   84:     function main($content,$conf)    
+ *   96:     function main_page($content,$conf)    
+ *  126:     function initVars($conf)	
+ *  139:     function renderElement($row,$table)	
+ *  204:     function processDataValues(&$dataValues,$DSelements,$TOelements,$valueKey='vDEF')	
  *
  * TOTAL FUNCTIONS: 5
  * (This index is automatically created/updated by the extension "extdeveval")

@@ -31,7 +31,7 @@ $TCA['tx_templavoila_tmplobj'] = Array (
 		'default_sortby' => 'ORDER BY title',	
 		'delete' => 'deleted',	
 		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tca.php',
-		'iconfile' => t3lib_extMgm::extRelPath($_EXTKEY).'icon_tx_templavoila_tmplobj.gif',
+		'iconfile' => t3lib_extMgm::extRelPath($_EXTKEY).'icon_to.gif',
 		'selicon_field' => 'previewicon',
 		'selicon_field_path' => 'uploads/tx_templavoila',
 		'type' => 'parent',
@@ -47,7 +47,7 @@ $TCA['tx_templavoila_datastructure'] = Array (
 		'default_sortby' => 'ORDER BY title',	
 		'delete' => 'deleted',	
 		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tca.php',
-		'iconfile' => t3lib_extMgm::extRelPath($_EXTKEY).'icon_tx_templavoila_datastructure.gif',
+		'iconfile' => t3lib_extMgm::extRelPath($_EXTKEY).'icon_ds.gif',
 		'selicon_field' => 'previewicon',
 		'selicon_field_path' => 'uploads/tx_templavoila',
 	)

@@ -1,21 +1,41 @@
 ******************
 TODO
 ******************
+* PID of sysfolder/page used for s...
+* header + bodytag data
+
+* mapping process... / interface.
+* exploded view is default...
+* sample data...
+
+*	- BUG: If you map ONLY the root element then nothing gets saved in the template!
+*	- Support selective inclusion of header elements (by checkboxes?) / bodytag
+
+*		- ?: How can extensions supply a default template Array when no Template Object exists yet, mapping the data? What about the data structure containing some sample markup as well which means we can always assemble a simple display from that. Or even a nice default display which is of course stylable by CSS. AND this default
+- Frontend: cObj API for flexforms (move from pibase to tslib_content)
+	- Finish API for getting values from FlexForms XML
+	- Finish API so TypoScript can access flexforms content
+		- (When done; Update "newloginbox" to use this API)
+- mininews: Implement with TemplaVoila
+
+- Implement TT-tracking of the rendering of elements.
+
+
+
+***********************************************
 
 FINISHING (A week):
 "class.tx_templavoila_htmlmarkup.php"
 "cm1/index.php"
 
 - Mapping features:
-	- Ability to map NEW attributes AND possibly just any content into HTML tags (like for images ' width="xxx" height="xxx"'.
-	- Ability to select attributes to REMOVE in a tag.
+	- Ability to map NEW non-existing attributes AND possibly just any content into HTML tags (like for images ' width="xxx" height="xxx"'.
+	- Ability to select attributes to be REMOVED in a tag.
 	- Ability to map a single field to MANY elements. So the same value can be inserted at multiple positions.
-	- BUG: If you map ONLY the root element then nothing gets saved in the template!
 	- BUG: Assigning an attribute to the FIRST(?) element inside a container will break other elements mapping after that.
 		- Other bugs, loosing mapping. Nico had it, I had it on Vignette site.
 		- Also Vignette site exploded itself.
 	- For dynamic creation of Data Structure: Have an intelligent auto-mapper, trying to find which elements might most likely be mapped and which not.
-	- Support selective inclusion of header elements (by checkboxes?)
 	- Support inclusion of the EXTERNAL files in the TO serialized array (new field?) so that TOs could be exported WITH all images, stylesheets, JavaScripts... (portable!)
 	- When mapping to eg. a Outer table which has an id, then the sub elements will lock them selves to the id as well, which means when we change the mapping for the outer table we will loose the inner mapping.
 	- Allow to re-order the elements in DataStructures when created on-the-fly
@@ -23,7 +43,9 @@ FINISHING (A week):
 	- Non-destructive explode for <tr> / <option>
 	- For predefined images, allow to read and keep the other parameters that src/width/height
 	- Option to wipe out the id's used (or those prefixed "TV-") since they could be repetitive.
-- Commentering + documentation i SXW fil.
+	- Visual formatting of error page
+	- 
+- Commenting + documentation i SXW fil.
 	- Better define vocabulary! Also define what is a "HTML-path" etc.
 	- // ONLY ALLOW "arrays" inside of "sections" - otherwise it does not make so much sense and it is harder to handle; basically all stuff in a SECTION is defined to be a container and that is what the "array" handles...
 	- REMEMBER: This will be a cornerstone extension, so it must be well tested, documented and commented!
@@ -35,34 +57,27 @@ FINISHING (A week):
 	- Add caching mechanism for retrieval of template content (so we can also have a DYNAMIC binding to the template source, possibly with a timed caching)
 	- Support for http-URLs instead of files (incl. caching)
 	- API: A function which can produce a traditionally marked up version of the template: For use in TS as alternative to the Autoparser
-		- ?: How can extensions supply a default template Array when no Template Object exists yet, mapping the data? What about the data structure containing some sample markup as well which means we can always assemble a simple display from that. Or even a nice default display which is of course stylable by CSS. AND this default
-- Frontend: cObj API for flexforms (move from pibase to tslib_content)
-	- Finish API for getting values from FlexForms XML
-	- Finish API so TypoScript can access flexforms content
-		- (When done; Update "newloginbox" to use this API)
-- mininews: Implement with TemplaVoila
 
-
+	- getLL usage in whole module.
+	- CSH for whole module
+	- Documentation
+	- Icons for MAP/ChMode/Remap
 
 Unsorted notes (kasper)
 - Implement the language scheme!
-- For shortcut pages etc, rather show which page it is refering to!
-- View icon in the TemplaVoila page module.
-- In Content Element Wizard, also list records to insert as references fetched from the storage page
-- Import t3d files, Offer to make copies of pages/elements in storage page (or otherwise)
+- For shortcut pages etc, rather show which page it is referring to in Web>Page (TV)
+- Add "View" icon in the TemplaVoila page module.
 - Counting references to objects in some table?
-- Implement TT-tracking of the rendering of elements.
-- mininews...
-- Moving a referenced element MOVES it from the original position!
-
-
-
+- New wizard:
+	- In Content Element Wizard, also list records to insert as references fetched from the storage page
+	- Import t3d files with FlexForm structures inside
+	- Offer to make copies of pages/elements found storage page (or otherwise)
+- BUG: Moving a referenced element MOVES it from the original position!
+- Offer a button in Web>Page which can turn a reference into a true copy (for the element alone or all nested records?)
 	
 	
 TESTING:
 - Implement sites like HP site, Vignette site (to test that it is robust and stable!)
-
-
 
 
 Roberts TODO:
@@ -71,6 +86,7 @@ Roberts TODO:
 	- When page is created without the create new page wizard, default elements must also be created!
 - Implement wizards for creating new page/new content element
 	- Remember the current "Create page content wizard"; These icons / setups should somehow be implemented as well.
+- Clean up the locallang-files mess in mod1/ !
 
 Interface:
   - Recursivity handling:
@@ -92,9 +108,11 @@ Interface parts:
 	- Ability to create new element based on t3d file (having dummy content or default nested stuff)
 - Main interface
 
+
+
 Questions:
 - How to manage multi-language sites?
-  ANSWER
+  ANSWER:
   	- Use FlexForms build-in possibilities (is already rendered right!) + possibility to exclude certain fields, eg. tt_content group fields
 	- For non-flexform elements, use future core language support:
 		- tt_content elements refering to the default version, but with translation
@@ -118,17 +136,6 @@ NOTES:
 OTHER MODULES:
 - Management: Overview of Page Templates as set in the tree structure
 - Management: Well-designed overview of Data Structures and Their Templates and how they relate (parents/children)
-
-
-	
-	
-Documentation:
-	<proc>
-		<stdWrap>
-		trim = 1
-		br = 1
-		</stdWrap>
-	</proc>
 
 
 	
@@ -189,6 +196,8 @@ Graphics/Photoshop:
 <u> <i> <b> <strong> <em> <embed> <area> <head> <script> <style> <title>
 ARIAL 7 px
 See "html_tags/prototype.psd"
+
+
 
 Template Object Records (TOR)
  - Fields:
