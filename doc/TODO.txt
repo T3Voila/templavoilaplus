@@ -113,7 +113,6 @@ INBOX (imposed by Kasper...:-):
 	- "createPageWizard.fieldNames" moved to "mod.web_txtemplavoilaM1" branch of Page Tsconfig!
 	- Use "Content from page" pid from page headers if there (Page module: Means, that a notice is shown, just like if the page was a "sysFolder" or the like which cannot contain content)
 	- Do not allow content creation on pages like "Shortcut" and "Extenal URL".
-	- "Show hidden content elements" checkbox (like in traditional Web>Page module)
 
 
 GENERAL:
@@ -129,7 +128,6 @@ GENERAL:
 	- Do proper interface for commonly used classes / functions
 		- rules class API
 		- DS / XML functions
-	- Reorganize functions, create a new class for commonly used functions, make CM1, MOD1, PI1 independent
 
 ELEMENT REFERENCING:
 	- Create hook in t3lib_TCEmain->deleteRecord which allows us to update referencing information whenever a content element or page is deleted
@@ -182,7 +180,7 @@ WIZARDS & CLICK MENUS:
 
 PAGE MODULE:
 	- If page has no template object selected and no TO is inherited by other page, display message and create dialogue for selecting a template
-	- Support for sheets: both page header + content elements! (KASPER)
+	- Support for sheets: content elements!
 	- Display of CEs
 		- Better preview for TABLE element
 	- Configure option (in DS): Columns *below* each other instead of side by side display (DASSAULT)

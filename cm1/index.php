@@ -345,6 +345,8 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 	 * @return	void
 	 */
 	function renderFile()	{
+		global $TYPO3_DB;
+
 		if (@is_file($this->displayFile) && t3lib_div::getFileAbsFileName($this->displayFile))		{
 
 				// Converting GPvars into a "cmd" value:
@@ -616,18 +618,28 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 				// Generate selector box options:
 				// Storage Folders for elements:
 			$sf_opt=array();
-			$query = 'SELECT * FROM pages WHERE uid IN ('.$this->storageFolders_pidList.')'.t3lib_BEfunc::deleteClause('pages').' ORDER BY title';
-			$res = mysql(TYPO3_db,$query);
-			while($row = mysql_fetch_assoc($res))	{
+			$res = $TYPO3_DB->exec_SELECTquery (
+				'*',
+				'pages',
+				'uid IN ('.$this->storageFolders_pidList.')'.t3lib_BEfunc::deleteClause('pages'),
+				'',
+				'title'
+			);
+			while($row = $TYPO3_DB->sql_fetch_assoc($res))	{
 				$sf_opt[]='<option value="'.htmlspecialchars($row['uid']).'">'.htmlspecialchars($row['title'].' (UID:'.$row['uid'].')').'</option>';
 			}
 
 				// Template Object records:
 			$opt=array();
 			$opt[]='<option value="0"></option>';
-			$query = 'SELECT * FROM tx_templavoila_tmplobj WHERE pid IN ('.$this->storageFolders_pidList.') AND datastructure>0 '.t3lib_BEfunc::deleteClause('tx_templavoila_tmplobj').' ORDER BY title';
-			$res = mysql(TYPO3_db,$query);
-			while($row = mysql_fetch_assoc($res))	{
+			$res = $TYPO3_DB->exec_SELECTquery (
+				'*',
+				'tx_templavoila_tmplobj',
+				'pid IN ('.$this->storageFolders_pidList.') AND datastructure>0 '.t3lib_BEfunc::deleteClause('tx_templavoila_tmplobj'),
+				'',
+				'title'
+			);
+			while($row = $TYPO3_DB->sql_fetch_assoc($res))	{
 				$opt[]='<option value="'.htmlspecialchars($row['uid']).'">'.htmlspecialchars($this->storageFolders[$row['pid']].'/'.$row['title'].' (UID:'.$row['uid'].')').'</option>';
 			}
 
@@ -636,7 +648,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 					// Show XML DS
 				case 'showXMLDS':
 					require_once(PATH_t3lib.'class.t3lib_syntaxhl.php');
-
+$TYPO3_DB->debugOutput = TRUE;
 						// Make instance of syntax highlight class:
 					$hlObj = t3lib_div::makeInstance('t3lib_syntaxhl');
 
@@ -761,6 +773,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 	 * @return	void
 	 */
 	function renderDSO()	{
+		global $TYPO3_DB;
 		if (intval($this->displayUid)>0)	{
 			$row = t3lib_BEfunc::getRecord('tx_templavoila_datastructure',$this->displayUid);
 			if (is_array($row))	{
@@ -807,8 +820,11 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 				}
 
 					// Get Template Objects pointing to this Data Structure
-				$query = 'SELECT * FROM tx_templavoila_tmplobj WHERE pid IN ('.$this->storageFolders_pidList.') AND datastructure='.intval($row['uid']).t3lib_BEfunc::deleteClause('tx_templavoila_tmplobj');
-				$res = mysql(TYPO3_db,$query);
+				$TYPO3_DB->exec_SELECTquery (
+					'*',
+					'tx_templavoila_tmplobj',
+					'pid IN ('.$this->storageFolders_pidList.') AND datastructure='.intval($row['uid']).t3lib_BEfunc::deleteClause('tx_templavoila_tmplobj')
+				);
 				$tRows=array();
 				$tRows[]='
 							<tr class="bgColor5">
@@ -819,7 +835,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 				$TOicon = t3lib_iconworks::getIconImage('tx_templavoila_tmplobj',array(),$GLOBALS['BACK_PATH'],' align="top"');
 
 					// Listing Template Objects with links:
-				while($TO_Row = mysql_fetch_assoc($res))	{
+				while($TO_Row = $TYPO3_DB->sql_fetch_assoc($res))	{
 					$tRows[]='
 							<tr class="bgColor4">
 								<td nowrap="nowrap">'.$this->doc->wrapClickMenuOnIcon($TOicon,'tx_templavoila_tmplobj',$TO_Row['uid'],1).
@@ -2320,15 +2336,19 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 	 * @return	void		Modification in $this->storageFolders array
 	 */
 	function findingStorageFolderIds()	{
+		global $TYPO3_DB;
 
 			// Init:
 		$readPerms = $GLOBALS['BE_USER']->getPagePermsClause(1);
 		$this->storageFolders=array();
 
 			// Looking up all references to a storage folder:
-		$query = 'SELECT uid,storage_pid FROM pages WHERE storage_pid>0'.t3lib_BEfunc::deleteClause('pages');
-		$res = mysql(TYPO3_db,$query);
-		while($row = mysql_fetch_assoc($res))	{
+		$res = $TYPO3_DB->exec_SELECTquery (
+			'uid,storage_pid',
+			'pages',
+			'storage_pid>0'.t3lib_BEfunc::deleteClause('pages')
+		);
+		while($row = $TYPO3_DB->sql_fetch_assoc($res))	{
 			if ($GLOBALS['BE_USER']->isInWebMount($row['storage_pid'],$readPerms))	{
 				$storageFolder = t3lib_BEfunc::getRecord('pages',$row['storage_pid'],'uid,title');
 				if ($storageFolder['uid'])	{

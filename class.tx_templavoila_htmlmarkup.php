@@ -602,12 +602,14 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 	 * @return	[type]		...
 	 */
 	function getTemplateArrayForTO($uid)	{
-		global $TCA;
+		global $TCA, $TYPO3_DB;
 		if (isset($TCA['tx_templavoila_tmplobj']))	{
-			$query='SELECT * FROM tx_templavoila_tmplobj WHERE uid='.intval($uid).
-					($TCA['tx_templavoila_tmplobj']['ctrl']['delete'] ? ' AND NOT '.$TCA['tx_templavoila_tmplobj']['ctrl']['delete'] : '');
-			$res = mysql(TYPO3_db,$query);
-			$row = mysql_fetch_assoc($res);
+			$res = $TYPO3_DB->exec_SELECTquery (
+				'*',
+				'tx_templavoila_tmplobj',
+				'uid='.intval($uid).($TCA['tx_templavoila_tmplobj']['ctrl']['delete'] ? ' AND NOT '.$TCA['tx_templavoila_tmplobj']['ctrl']['delete'] : '')
+			);
+			$row = $TYPO3_DB->sql_fetch_assoc($res);
 			$this->tDat = unserialize($row['templatemapping']);
 
 			return $this->tDat['MappingData_cached'];
@@ -692,13 +694,15 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 	 * @access private
 	 * @see getTemplateRecord()
 	 */
-	function getTemplateRecord_query($uid,$where)	{
-		$query = 'SELECT * FROM tx_templavoila_tmplobj WHERE parent='.intval($uid).
-				' '.$where.
-				$GLOBALS['TSFE']->sys_page->enableFields('tx_templavoila_tmplobj');
+	function getTemplateRecord_query($uid, $where)	{
+		global $TYPO3_DB, $TSFE;
 
-		$res = mysql(TYPO3_db,$query);
-		$printRow = mysql_fetch_assoc($res);
+		$res = $TYPO3_DB->exec_SELECTquery (
+			'*',
+			'tx_templavoila_tmplobj',
+			'parent='.intval($uid).' '.$where.$TSFE->sys_page->enableFields('tx_templavoila_tmplobj');
+		);
+		$printRow = $TYPO3_DB->sql_fetch_assoc($res);
 		return $printRow;
 	}
 

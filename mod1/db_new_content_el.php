@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2003-2004 Robert Lemke (rl@robertlemke.de)
+*  (c) 2003-2004 Robert Lemke (robert@typo3.org)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -31,7 +31,7 @@
  * Originally based on the CE wizard / cms extension by Kasper Skaarhoj <kasper@typo3.com>
  * XHTML compatible.
  *
- * @author		Robert Lemke <rl@robertlemke.de>
+ * @author		Robert Lemke <robert@typo3.org>
  * @coauthor	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
@@ -89,7 +89,7 @@ require_once (PATH_t3lib.'class.t3lib_page.php');
 /**
  * Script Class for the New Content element wizard
  *
- * @author	Robert Lemke <rl@robertlemke.de>
+ * @author	Robert Lemke <robert@typo3.org>
  * @package TYPO3
  * @subpackage templavoila
  */

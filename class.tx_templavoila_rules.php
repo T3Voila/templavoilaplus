@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2003  Robert Lemke (rl@robertlemke.de)
+*  (c) 2003  Robert Lemke (robert@typo3.org)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -26,7 +26,7 @@
  *
  * $Id$
  *
- * @author     Robert Lemke <rl@robertlemke.de>
+ * @author     Robert Lemke <robert@typo3.org>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -75,7 +75,7 @@
  * This library contains several functions for evaluating and output of rules
  * being defined in data structure objects.
  *
- * @author		Robert Lemke <rl@robertlemke.de>
+ * @author		Robert Lemke <robert@typo3.org>
  * @package		TYPO3
  * @subpackage	tx_templavoila
  */

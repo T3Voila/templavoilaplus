@@ -27,7 +27,7 @@
  * $Id$
  *
  * @author    Kasper Skaarhoj <kasper@typo3.com>
- * @coauthor  Robert Lemke <rl@robertlemke.de>
+ * @coauthor  Robert Lemke <robert@typo3.org>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]

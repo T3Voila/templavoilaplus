@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2003  Robert Lemke (rl@robertlemke.de)
+*  (c) 2003-2004 Kasper Skårhøj <kasper@typo3.com>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is

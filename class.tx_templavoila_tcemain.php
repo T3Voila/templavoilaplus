@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2004 Robert Lemke (rl@robertlemke.de)
+*  (c) 2004 Robert Lemke (robert@typo3.org)
 *  All rights reserved
 *
 *  This script is part of the Typo3 project. The Typo3 project is
@@ -27,7 +27,7 @@
  *
  * $Id$
  *
- * @author     Robert Lemke <rl@robertlemke.de>
+ * @author     Robert Lemke <robert@typo3.org>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -50,7 +50,7 @@ require_once (t3lib_extMgm::extPath('templavoila').'class.tx_templavoila_xmlrelh
 /**
  * Class being included by TCEmain using a hook
  *
- * @author	Robert Lemke <rl@robertlemke.de>
+ * @author	Robert Lemke <robert@typo3.org>
  * @package TYPO3
  * @subpackage templavoila
  */

@@ -1,3 +1,16 @@
+2004-09-08  Robert Lemke  <robert@typo3.org>
+
+ ~ Made everything DBAL compliant.
+ + Added core version dependency to emconf.php (3.7.0.dev)
+ * mod1: Added a dynamic sidebar and moved all meta information (like language selector, header fields etc.) into sidebar items.
+ ~ mod1: (Sidebar) Modified the language selector: Now is a selectorbox instead of single links.
+ - mod1: Removed version selector. This will now be provided by the versioning extension itself by adding a new sidebar item.
+ ~ mod1: Restructuring and cleanup of the whole module. Commented Kasper's new features. Externalized some methods into own classes, namely wizards and sidebar.
+ # mod1: Fixed the "show hidden" checkbox which worked just the other way around.
+ + Manual: Added a reminder to write a section about sidebar programming
+ ~ Updated ToDo
+ ~ Changed my email address ;-)
+
 2004-08-30  Robert Lemke  <rl@robertlemke.de>
 
  * Merged Kaspers and my changes.
@@ -12,7 +25,7 @@
  * Corrected bugs for flagicons if they were not configured (they didn't display correctly of course).
  * Added fallback modes for "pi1" output. Updated manual with new rendering option for fall back modes.
  * Page module: Added "&L=xx" parameter to view-page icon (magnifying glass) so preview link to localized pages is correct.
- * Page module: Added overview of localized versions of other records. This is used when TypoScript is configured with "config.sys_language_overlay". Configurable. 
+ * Page module: Added overview of localized versions of other records. This is used when TypoScript is configured with "config.sys_language_overlay". Configurable.
 
 2004-08-26  Kasper Skårhøj,,,  <kasper@typo3.com>
 

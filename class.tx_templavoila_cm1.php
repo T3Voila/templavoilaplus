@@ -27,7 +27,7 @@
  * $Id$
  *
  * @author		Kasper Skaarhoj <kasper@typo3.com>
- * @coauthor 	Robert Lemke <rl@robertlemke.de>
+ * @coauthor 	Robert Lemke <robert@typo3.org>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -51,7 +51,7 @@
  * Class which will add menu items to click menus for the extension TemplaVoila
  *
  * @author 		Kasper Skaarhoj <kasper@typo3.com>
- * @coauthor 	Robert Lemke <rl@robertlemke.de>
+ * @coauthor 	Robert Lemke <robert@typo3.org>
  * @package 	TYPO3
  * @subpackage	tx_templavoila
  */

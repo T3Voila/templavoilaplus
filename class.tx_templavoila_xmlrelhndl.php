@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2003, 2004  Kasper Skårhøj (kasper@typo3.com) / Robert Lemke (rl@robertlemke.de)
+*  (c) 2003, 2004  Kasper Skårhøj (kasper@typo3.com) / Robert Lemke (robert@typo3.org)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -25,7 +25,7 @@
  * Script contains handler class for FlexForm relations between content elements and host object
  *
  * @author		Kasper Skårhøj <kasper@typo3.com>
- * @coauthor	Robert Lemke <rl@robertlemke.de>
+ * @coauthor	Robert Lemke <robert@typo3.org>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -66,7 +66,7 @@ require_once (PATH_t3lib.'class.t3lib_tcemain.php');
  * Handler class for FlexForm relations between content elements and host object
  *
  * @author		Kasper Skaarhoj <kasper@typo3.com>
- * @coauthor	Robert Lemke <rl@robertlemke.de>
+ * @coauthor	Robert Lemke <robert@typo3.org>
  * @package		TYPO3
  * @subpackage	tx_templavoila
  */
