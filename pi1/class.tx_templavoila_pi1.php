@@ -139,56 +139,56 @@ class tx_templavoila_pi1 extends tslib_pibase {
 	function renderElement($row,$table)	{
 		if ($GLOBALS['TT']->LR) $GLOBALS['TT']->push('Get DS, TO and data');
 
-				// Get data structure:
-			$srcPointer = $row['tx_templavoila_ds'];
-			if (t3lib_div::testInt($srcPointer))	{	// If integer, then its a record we will look up:
-				$DSrec = $GLOBALS['TSFE']->sys_page->checkRecord('tx_templavoila_datastructure',$srcPointer);
-				$DS = t3lib_div::xml2array($DSrec['dataprot']);
-			} else {	// Otherwise expect it to be a file:
-				$file = t3lib_div::getFileAbsFileName($srcPointer);
-				if ($file && @is_file($file))	{
-					$DS = t3lib_div::xml2array(t3lib_div::getUrl($file));
-				}
+			// Get data structure:
+		$srcPointer = $row['tx_templavoila_ds'];
+		if (t3lib_div::testInt($srcPointer))	{	// If integer, then its a record we will look up:
+			$DSrec = $GLOBALS['TSFE']->sys_page->checkRecord('tx_templavoila_datastructure',$srcPointer);
+			$DS = t3lib_div::xml2array($DSrec['dataprot']);
+		} else {	// Otherwise expect it to be a file:
+			$file = t3lib_div::getFileAbsFileName($srcPointer);
+			if ($file && @is_file($file))	{
+				$DS = t3lib_div::xml2array(t3lib_div::getUrl($file));
 			}
+		}
 
-			if (!is_array($DS))	{
-				return $this->formatError('
-					Couldn\'t find a Data Structure set for table/row "'.$table.':'.$row['uid'].'".
-					Please select a Data Structure and Template Object first.');
-			}
+		if (!is_array($DS))	{
+			return $this->formatError('
+				Couldn\'t find a Data Structure set for table/row "'.$table.':'.$row['uid'].'".
+				Please select a Data Structure and Template Object first.');
+		}
 
-			$langChildren = $DS['meta']['langChildren'] ? 1 : 0;
-			$langDisabled = $DS['meta']['langDisable'] ? 1 : 0;
+		$langChildren = $DS['meta']['langChildren'] ? 1 : 0;
+		$langDisabled = $DS['meta']['langDisable'] ? 1 : 0;
 
-			list ($dataStruct, $sheet) = t3lib_div::resolveSheetDefInDS($DS,'sDEF');
+		list ($dataStruct, $sheet) = t3lib_div::resolveSheetDefInDS($DS,'sDEF');
 
-				// Data:
-			$data = t3lib_div::xml2array($row['tx_templavoila_flex']);
+			// Data:
+		$data = t3lib_div::xml2array($row['tx_templavoila_flex']);
 
-			$lKey = ($GLOBALS['TSFE']->sys_language_isocode && !$langDisabled && !$langChildren) ? 'l'.$GLOBALS['TSFE']->sys_language_isocode : 'lDEF';
-			$dataValues = $data['data']['sDEF'][$lKey];
+		$lKey = ($GLOBALS['TSFE']->sys_language_isocode && !$langDisabled && !$langChildren) ? 'l'.$GLOBALS['TSFE']->sys_language_isocode : 'lDEF';
+		$dataValues = $data['data']['sDEF'][$lKey];
 
-				// Init mark up object.
-			$this->markupObj = t3lib_div::makeInstance('tx_templavoila_htmlmarkup');
-			$this->markupObj->htmlParse = t3lib_div::makeInstance('t3lib_parsehtml');
+			// Init mark up object.
+		$this->markupObj = t3lib_div::makeInstance('tx_templavoila_htmlmarkup');
+		$this->markupObj->htmlParse = t3lib_div::makeInstance('t3lib_parsehtml');
 
-				// Get template record:
-			if (!$row['tx_templavoila_to'])	{
-				return $this->formatError('You haven\'t selected a Template Object yet for table/uid "'.$table.'/'.$row['uid'].'".
-					Without a Template Object TemplaVoila cannot map the XML content into HTML.
-					Please select a Template Object now.');
-			}
+			// Get template record:
+		if (!$row['tx_templavoila_to'])	{
+			return $this->formatError('You haven\'t selected a Template Object yet for table/uid "'.$table.'/'.$row['uid'].'".
+				Without a Template Object TemplaVoila cannot map the XML content into HTML.
+				Please select a Template Object now.');
+		}
 
-			$TOrec = $this->markupObj->getTemplateRecord($row['tx_templavoila_to'], t3lib_div::GPvar('print')?1:0, $GLOBALS['TSFE']->sys_language_uid);
-			if (!is_array($TOrec))	{ return $this->formatError('Couldn\'t find Template Object with UID "'.$row['tx_templavoila_to'].'".
-					Please make sure a Template Object is accessible.'); }
+		$TOrec = $this->markupObj->getTemplateRecord($row['tx_templavoila_to'], t3lib_div::GPvar('print')?1:0, $GLOBALS['TSFE']->sys_language_uid);
+		if (!is_array($TOrec))	{ return $this->formatError('Couldn\'t find Template Object with UID "'.$row['tx_templavoila_to'].'".
+				Please make sure a Template Object is accessible.'); }
 
-			$TO = unserialize($TOrec['templatemapping']);
-			if (!is_array($TO))	{ return $this->formatError('Template Object could not be unserialized successfully.
-					Are you sure you saved mapping information into Template Object with UID "'.$row['tx_templavoila_to'].'"?'); }
+		$TO = unserialize($TOrec['templatemapping']);
+		if (!is_array($TO))	{ return $this->formatError('Template Object could not be unserialized successfully.
+				Are you sure you saved mapping information into Template Object with UID "'.$row['tx_templavoila_to'].'"?'); }
 
-			$TOproc = t3lib_div::xml2array($TOrec['localprocessing']);
-			if (!is_array($TOproc))	$TOproc=array();
+		$TOproc = t3lib_div::xml2array($TOrec['localprocessing']);
+		if (!is_array($TOproc))	$TOproc=array();
 		if ($GLOBALS['TT']->LR) $GLOBALS['TT']->pull();
 
 
