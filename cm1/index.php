@@ -1780,13 +1780,14 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 	 */
 	function drawDataStructureMap_editItem_editTypeExtra($type,$formFieldName,$curValue)	{
 			// If a user function was registered, use that instead of our own handlers:
-		if (isset ($this->modTSconfig['properties']['eTypesExtraFormFieldsUserfunctions.'][$type])) {
+debug ($this->modTSconfig['properties']);			
+		if (isset ($this->modTSconfig['properties']['userFunctions.']['eTypesExtraFormFields.'][$type])) {
 			$params = array (
 				'type' => $type,
 				'formFieldName' => $formFieldName,
 				'curValue' => $curValue,
 			);
-			$output = t3lib_div::callUserFunction($this->modTSconfig['properties']['eTypesExtraFormFieldsUserfunctions.'][$type], $params, $this,'');
+			$output = t3lib_div::callUserFunction($this->modTSconfig['properties']['userFunctions.']['eTypesExtraFormFields.'][$type], $params, $this,'');
 		} else {
 			switch($type)	{
 				case 'TypoScriptObject':
@@ -1841,13 +1842,13 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 
 					// Based on the eType (the preset type) we make configuration settings. 
 					// If a user function was registered, use that instead of our own handlers:
-				if (isset ($this->modTSconfig['properties']['eTypesConfGenUserfunctions.'][$elArray[$key]['tx_templavoila']['eType']])) {
+				if (isset ($this->modTSconfig['properties']['userFunctions.']['eTypesConfGen.'][$elArray[$key]['tx_templavoila']['eType']])) {
 					$params = array (
 						'key' => $key,
 						'elArray' => &$elArray,
 						'contentInfo' => $contentInfo,
 					);
-					t3lib_div::callUserFunction($this->modTSconfig['properties']['eTypesConfGenUserfunctions.'][$elArray[$key]['tx_templavoila']['eType']], $params, $this,'');					
+					t3lib_div::callUserFunction($this->modTSconfig['properties']['userFunctions.']['eTypesConfGen.'][$elArray[$key]['tx_templavoila']['eType']], $params, $this,'');
 				} else {
 					switch($elArray[$key]['tx_templavoila']['eType'])	{
 						case 'text':

@@ -1,3 +1,8 @@
+2004-03-26  Robert Lemke  <rl@robertlemke.de>
+
+	* Added icons, sponsored by Ben
+	* Modified TSconfig userFunction properties for cm1 and updated manual
+
 2004-03-24  Kasper Skårhøj
 	* Added a syntax highlight module for FlexForm data in tt_content and pages; access it as admin via the click menu of pages / tt_content elements.
 
