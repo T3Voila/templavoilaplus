@@ -2,12 +2,6 @@
 TODO
 ******************
 
-Add "iframe" to the list of tags to split out. (+ icon!)
-BUG: If you map ONLY the root element then nothing gets saved in the template!
-
-
-
-
 FINISHING (A week): 
 "class.tx_templavoila_htmlmarkup.php"
 "cm1/index.php"
@@ -16,6 +10,7 @@ FINISHING (A week):
 	- Ability to map NEW attributes AND possibly just any content into HTML tags (like for images ' width="xxx" height="xxx"'. 
 	- Ability to select attributes to REMOVE in a tag.
 	- Ability to map a single field to MANY elements. So the same value can be inserted at multiple positions.
+	- BUG: If you map ONLY the root element then nothing gets saved in the template!
 	- BUG: Assigning an attribute to the FIRST(?) element inside a container will break other elements mapping after that.
 		- Other bugs, loosing mapping. Nico had it, I had it on Vignette site. 
 		- Also Vignette site exploded itself.
@@ -190,7 +185,7 @@ Graphics/Photoshop:
 <body> <table> <tbody> <thead> <ol> <ul> <li> <tr> <td> <div> <blockquote> <pre> <p> <span> <font> <a> <map> <h1> <h2> <h3> <h4> <h5> <h6> <img> <input> <textarea> <select> <option> <br> <hr> <form>
 <u> <i> <b> <strong> <em> <embed> <area> <head> <script> <style> <title>
 ARIAL 7 px
-
+See "html_tags/prototype.psd"
 
 Template Object Records (TOR)
  - Fields:

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -24,15 +24,19 @@
 /** 
  * Plugin 'Data Source' for the 'templavoila' extension.
  *
- * @author    Kasper Skårhøj <kasper@typo3.com>
+ * $Id$
+ *
+ * @todo	Waiting for an author - most likely Robert Lemke, since he is somehow passionate about this idea of data sources
+ *
+ * @author    Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *   53: class tx_templavoila_pi2 extends tslib_pibase 
- *   65:     function main($content,$conf)    
+ *   59: class tx_templavoila_pi2 extends tslib_pibase 
+ *   71:     function main($content,$conf)    
  *
  * TOTAL FUNCTIONS: 1
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -48,7 +52,9 @@ require_once(PATH_tslib.'class.tslib_pibase.php');
 /**
  * Plugin 'Data Source' for the 'templavoila' extension.
  * 
- * @author    Kasper Skårhøj <kasper@typo3.com>
+ * @author    Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage tx_templavoila
  */
 class tx_templavoila_pi2 extends tslib_pibase {
     var $prefixId = 'tx_templavoila_pi2';        // Same as class name

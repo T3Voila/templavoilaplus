@@ -1,6 +1,8 @@
 <?php
 /**
  * Language labels for module "web_txtemplavoilaM1" - header, description
+ *
+ * $Id$
  * 
  * This file is detected by the translation tool.
  */

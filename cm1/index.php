@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -24,40 +24,44 @@
 /** 
  * templavoila module cm1
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * $Id$
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *   92: class tx_templavoila_cm1 extends t3lib_SCbase 
- *  114:     function menuConfig()    
- *  132:     function main()	
- *  152:     function printContent()	
+ *   98: class tx_templavoila_cm1 extends t3lib_SCbase 
+ *  120:     function menuConfig()    
+ *  138:     function main()	
+ *  158:     function printContent()	
  *
  *              SECTION: MODULE content generation
- *  179:     function main_mode()	
- *  202:     function jumpToUrl(URL)	
- *  206:     function updPath(inPath)	
- *  228:     function moduleContent()	
- *  445:     function renderDSO()	
- *  513:     function renderTO()	
- *  654:     function renderTemplateMapper($displayFile,$path,$dataStruct=array(),$currentMappingInfo=array())	
- *  779:     function drawDataStructureMap($dataStruct,$mappingMode=0,$currentMappingInfo=array(),$pathLevels=array(),$optDat=array(),$contentSplittedByMapping=array(),$level=0,$tRows=array(),$formPrefix='',$path='',$mapOK=1)	
- * 1012:     function substEtypeWithRealStuff(&$elArray,$v_sub=array())	
- * 1232:     function substEtypeWithRealStuff_contentInfo($content)	
- * 1269:     function getDataStructFromDSO($datString,$file='')	
- * 1285:     function linkForDisplayOfPath($title,$path)	
- * 1303:     function linkThisScript($array)	
- * 1325:     function makeIframeForVisual($file,$path,$limitTags,$showOnly,$preview=0)	
- * 1341:     function explodeMappingToTagsStr($mappingToTags,$unsetAll=0)	
+ *  185:     function main_mode()	
+ *  208:     function jumpToUrl(URL)	
+ *  212:     function updPath(inPath)	
+ *  234:     function moduleContent()	
+ *  466:     function renderDSO()	
+ *  535:     function renderTO()	
+ *  682:     function renderTemplateMapper($displayFile,$path,$dataStruct=array(),$currentMappingInfo=array())	
+ *  810:     function drawDataStructureMap($dataStruct,$mappingMode=0,$currentMappingInfo=array(),$pathLevels=array(),$optDat=array(),$contentSplittedByMapping=array(),$level=0,$tRows=array(),$formPrefix='',$path='',$mapOK=1)	
+ * 1079:     function substEtypeWithRealStuff(&$elArray,$v_sub=array())	
+ * 1299:     function substEtypeWithRealStuff_contentInfo($content)	
+ * 1336:     function getDataStructFromDSO($datString,$file='')	
+ * 1352:     function linkForDisplayOfPath($title,$path)	
+ * 1370:     function linkThisScript($array)	
+ * 1392:     function makeIframeForVisual($file,$path,$limitTags,$showOnly,$preview=0)	
+ * 1408:     function explodeMappingToTagsStr($mappingToTags,$unsetAll=0)	
+ * 1426:     function unsetArrayPath(&$dataStruct,$ref)	
+ * 1443:     function cleanUpMappingInfoAccordingToDS(&$currentMappingInfo,$dataStruct)	
  *
  *              SECTION: DISPLAY
- * 1370:     function main_display()	
- * 1436:     function displayFileContentWithMarkup($content,$path,$relPathFix,$limitTags)	
+ * 1478:     function main_display()	
+ * 1544:     function displayFileContentWithMarkup($content,$path,$relPathFix,$limitTags)	
  *
- * TOTAL FUNCTIONS: 20
+ * TOTAL FUNCTIONS: 22
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -87,7 +91,9 @@ require_once(PATH_t3lib.'class.t3lib_tcemain.php');
 /**
  * Class for controlling the TemplaVoila module.
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage tx_templavoila
  */
 class tx_templavoila_cm1 extends t3lib_SCbase {
 		// Static:
@@ -1409,7 +1415,14 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 		if ($unsetAll)	unset($output['*']);
 		return $output;
 	}
-	
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$$dataStruct: ...
+	 * @param	[type]		$ref: ...
+	 * @return	[type]		...
+	 */
 	function unsetArrayPath(&$dataStruct,$ref)	{
 		$key = array_shift($ref);
 
@@ -1419,7 +1432,14 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			$this->unsetArrayPath($dataStruct[$key],$ref);
 		}
 	}
-	
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$$currentMappingInfo: ...
+	 * @param	[type]		$dataStruct: ...
+	 * @return	[type]		...
+	 */
 	function cleanUpMappingInfoAccordingToDS(&$currentMappingInfo,$dataStruct)	{	
 		if (is_array($currentMappingInfo))	{
 			foreach($currentMappingInfo as $key => $value)	{

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -24,41 +24,43 @@
 /** 
  * Contains HTML markup class
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * $Id$
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *   79: class tx_templavoila_htmlmarkup 
- *  201:     function markupHTMLcontent($content,$backPath,$relPathFix,$showTags,$mode='')	
- *  238:     function passthroughHTMLcontent($content,$relPathFix,$mode='',$altStyle='')	
- *  259:     function getContentBasedOnPath($content,$pathStrArr)	
- *  291:     function splitByPath($content,$pathString)	
- *  318:     function splitContentToMappingInfo($fileContent,$currentMappingInfo)	
- *  381:     function mappingInfoToSearchPath($currentMappingInfo)	
- *  422:     function mergeSearchpartsIntoContent($content,$searchParts,$token='')	
- *  453:     function mergeSampleDataIntoTemplateStructure($dataStruct,$currentMappingInfo,$firstLevelImplodeToken='',$sampleOrder='')	
- *  496:     function mergeFormDataIntoTemplateStructure($editStruct,$currentMappingInfo,$firstLevelImplodeToken='',$valueKey='vDEF')	
- *  542:     function splitPath($pathStr)	
- *  598:     function getTemplateArrayForTO($uid)	
- *  618:     function mergeDataArrayToTemplateArray($TA,$data)	
- *  640:     function getTemplateRecord($uid,$printFlag,$langUid)	
- *  674:     function getTemplateMappingArray($uid,$printFlag,$langUid,$sheet)	
- *  689:     function getTemplateRecord_query($uid,$where)	
+ *   83: class tx_templavoila_htmlmarkup 
+ *  206:     function markupHTMLcontent($content,$backPath,$relPathFix,$showTags,$mode='')	
+ *  243:     function passthroughHTMLcontent($content,$relPathFix,$mode='',$altStyle='')	
+ *  264:     function getContentBasedOnPath($content,$pathStrArr)	
+ *  296:     function splitByPath($content,$pathString)	
+ *  323:     function splitContentToMappingInfo($fileContent,$currentMappingInfo)	
+ *  386:     function mappingInfoToSearchPath($currentMappingInfo)	
+ *  427:     function mergeSearchpartsIntoContent($content,$searchParts,$token='')	
+ *  458:     function mergeSampleDataIntoTemplateStructure($dataStruct,$currentMappingInfo,$firstLevelImplodeToken='',$sampleOrder='')	
+ *  501:     function mergeFormDataIntoTemplateStructure($editStruct,$currentMappingInfo,$firstLevelImplodeToken='',$valueKey='vDEF')	
+ *  547:     function splitPath($pathStr)	
+ *  603:     function getTemplateArrayForTO($uid)	
+ *  623:     function mergeDataArrayToTemplateArray($TA,$data)	
+ *  645:     function getTemplateRecord($uid,$printFlag,$langUid)	
+ *  679:     function getTemplateMappingArray($uid,$printFlag,$langUid,$sheet)	
+ *  694:     function getTemplateRecord_query($uid,$where)	
  *
  *              SECTION: Various sub processing
- *  720:     function init()	
- *  743:     function splitTagTypes($showTags)	
+ *  725:     function init()	
+ *  748:     function splitTagTypes($showTags)	
  *
  *              SECTION: SPLITTING functions
- *  793:     function recursiveBlockSplitting($content,$tagsBlock,$tagsSolo,$mode,$path='',$recursion=0)	
- *  876:     function getMarkupCode($mode,$v,$params,$firstTagName,$firstTag,$endTag,$subPath,$recursion)	
- *  957:     function getSearchCode($mode,$v,$params,$firstTagName,$firstTag,$endTag,$subPath,$path,$recursion)	
- * 1040:     function sourceDisplay($str,$recursion,$gnyf='',$valueStr=0)	
- * 1059:     function makePath($path,$firstTagName,$attr)	
- * 1087:     function getGnyf($firstTagName,$path,$title)	
+ *  798:     function recursiveBlockSplitting($content,$tagsBlock,$tagsSolo,$mode,$path='',$recursion=0)	
+ *  881:     function getMarkupCode($mode,$v,$params,$firstTagName,$firstTag,$endTag,$subPath,$recursion)	
+ *  962:     function getSearchCode($mode,$v,$params,$firstTagName,$firstTag,$endTag,$subPath,$path,$recursion)	
+ * 1045:     function sourceDisplay($str,$recursion,$gnyf='',$valueStr=0)	
+ * 1064:     function makePath($path,$firstTagName,$attr)	
+ * 1092:     function getGnyf($firstTagName,$path,$title)	
  *
  * TOTAL FUNCTIONS: 23
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -74,7 +76,9 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 /**
  * HTML markup/search class; can mark up HTML with small images for each element AND as well help you extract parts of the HTML based on a socalled 'PATH'.
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage tx_templavoila
  */
  class tx_templavoila_htmlmarkup {
 
@@ -149,6 +153,7 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 		'tr' => array('wrap'=>array('<td>','</td>')),
 		'u' => array(),
 		'ul' => array('anchor_outside'=>1),
+		'iframe' => array('anchor_outside'=>1),
 #		'head' => array(),
 #		'script' => array(),
 #		'style' => array(),

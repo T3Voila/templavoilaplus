@@ -1,6 +1,8 @@
 <?php
 /**
  * Language labels for templavoila module cm1
+ *
+ * $Id$
  * 
  * This file is detected by the translation tool.
  */

@@ -24,34 +24,46 @@
 /** 
  * Module 'Page' for the 'templavoila' extension.
  *
+ * $Id$
+ *
  * @author     Robert Lemke <rl@robertlemke.de>
- * @coauthor   Kasper Skårhøj <kasper@typo3.com>
+ * @coauthor   Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *   84: class tx_templavoila_module1 extends t3lib_SCbase 
- *   92:     function init()    
- *  101:     function main()    
+ *  100: class tx_templavoila_module1 extends t3lib_SCbase 
+ *  112:     function init()    
+ *  122:     function menuConfig()	
+ *  148:     function main()    
+ *  165:     function jumpToUrl(URL)	
  *
  *              SECTION: Rendering functions
- *  180:     function renderEditPageScreen()    
- *  206:     function renderCreatePageScreen ($positionPid) 
- *  284:     function renderFrameWork($dsInfo)	
- *  321:     function renderTemplateSelector ($storageFolderPID, $templateType='tmplobj') 
- *  358:     function printContent()    
+ *  281:     function renderEditPageScreen()    
+ *  307:     function renderCreatePageScreen ($positionPid) 
+ *  386:     function renderFrameWork($dsInfo,$parentPos='',$clipboardElInPath=0)	
+ *  510:     function renderNonUsed()	
+ *  535:     function editLink($str,$table,$uid)	
+ *  547:     function linkNew($str,$params)	
+ *  558:     function linkUnlink($str,$params)	
+ *  571:     function linkPaste($str,$params,$target,$cmd)	
+ *  583:     function linkCopyCut($str,$parentPos,$cmd)	
+ *  594:     function renderTemplateSelector ($storageFolderPID, $templateType='tmplobj') 
+ *  631:     function printContent()    
  *
  *              SECTION: Processing
- *  389:     function createPage($pageArray,$positionPid)	
- *  408:     function getStorageFolderPid($positionPid)	
- *  427:     function getDStreeForPage($table,$id,$prevRecList='',$row='')	
- *  480:     function getExpandedDataStructure($table,$field,$row)	
- *  514:     function evaluateRuleOnElements($rules,$ruleConstants,$elArray)	
- *  525:     function getDefaultElements($rules,$ruleConstants)	
+ *  662:     function createPage($pageArray,$positionPid)	
+ *  681:     function insertRecord($createNew,$row)	
+ *  745:     function pasteRecord($pasteCmd, $target, $destination)	
+ *  934:     function getStorageFolderPid($positionPid)	
+ *  953:     function getDStreeForPage($table,$id,$prevRecList='',$row='')	
+ * 1034:     function getExpandedDataStructure($table,$field,$row)	
+ * 1066:     function evaluateRuleOnElements($rules,$ruleConstants,$elArray)	
+ * 1077:     function getDefaultElements($rules,$ruleConstants)	
  *
- * TOTAL FUNCTIONS: 13
+ * TOTAL FUNCTIONS: 23
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -63,7 +75,6 @@ require ('conf.php');
 require ($BACK_PATH.'init.php');
 require ($BACK_PATH.'template.php');
 $LANG->includeLLFile('EXT:templavoila/mod1/locallang.php');
-
 require_once (PATH_t3lib.'class.t3lib_scbase.php');
 $BE_USER->modAccess($MCONF,1);    // This checks permissions and exits if the users has no permission for entry.
 
@@ -81,6 +92,9 @@ require_once (t3lib_extMgm::extPath('templavoila').'class.tx_templavoila_rules.p
  * Module 'Page' for the 'templavoila' extension.
  * 
  * @author     Robert Lemke <rl@robertlemke.de>
+ * @coauthor   Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage tx_templavoila
  */
 class tx_templavoila_module1 extends t3lib_SCbase {
 	var $pageinfo;
@@ -99,6 +113,11 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		$this->rules = t3lib_div::makeInstance('tx_templavoila_rules');			
 	}
 
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function menuConfig()	{
 		global $LANG;
 		
@@ -359,6 +378,8 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * Renders the "basic" display framework.
 	 * 
 	 * @param	array		DataStructure info array (the whole tree)
+	 * @param	[type]		$parentPos: ...
+	 * @param	[type]		$clipboardElInPath: ...
 	 * @return	string		HTML
 	 */
 	function renderFrameWork($dsInfo,$parentPos='',$clipboardElInPath=0)	{
@@ -478,8 +499,13 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		';
 		
 		return $content;
-	}   
-	
+	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function renderNonUsed()	{
 		$usedUids = array_keys($this->global_tt_content_elementRegister);
 		$usedUids[]=0;
@@ -496,20 +522,63 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		
 		return '<table border="1">'.implode('',$tRows).'</table>';
 	}
-	
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$str: ...
+	 * @param	[type]		$table: ...
+	 * @param	[type]		$uid: ...
+	 * @return	[type]		...
+	 */
 	function editLink($str,$table,$uid)	{
 		$onClick = t3lib_BEfunc::editOnClick('&edit['.$table.']['.$uid.']=edit',$this->doc->backPath);
 		return '<a href="#" onclick="'.htmlspecialchars($onClick).'">'.$str.'</a>';
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$str: ...
+	 * @param	[type]		$params: ...
+	 * @return	[type]		...
+	 */
 	function linkNew($str,$params)	{
 		return '<a href="index.php?id='.$this->id.'&createNew='.rawurlencode($params).'">'.$str.'</a>';
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$str: ...
+	 * @param	[type]		$params: ...
+	 * @return	[type]		...
+	 */
 	function linkUnlink($str,$params)	{
 		return '<a href="index.php?id='.$this->id.'&unlink='.rawurlencode($params).'">'.$str.'</a>';
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$str: ...
+	 * @param	[type]		$params: ...
+	 * @param	[type]		$target: ...
+	 * @param	[type]		$cmd: ...
+	 * @return	[type]		...
+	 */
 	function linkPaste($str,$params,$target,$cmd)	{
 		return '<a href="index.php?id='.$this->id.'&SET[clip]=&SET[clip_parentPos]=&pasteCmd='.$cmd.'&destination='.rawurlencode($params).'&target='.rawurlencode($target).'">'.$str.'</a>';
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$str: ...
+	 * @param	[type]		$parentPos: ...
+	 * @param	[type]		$cmd: ...
+	 * @return	[type]		...
+	 */
 	function linkCopyCut($str,$parentPos,$cmd)	{
 		return '<a href="index.php?id='.$this->id.'&SET[clip]='.($parentPos?$cmd:'').'&SET[clip_parentPos]='.rawurlencode($parentPos).'">'.$str.'</a>';
 	}
@@ -601,6 +670,13 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		return $tce->substNEWwithIDs['NEW'];
 	}
 
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$createNew: ...
+	 * @param	[type]		$row: ...
+	 * @return	[type]		...
+	 */
 	function insertRecord($createNew,$row)	{
 		$parts = explode(':',$createNew);
 
@@ -656,8 +732,15 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			}
 		}
 	}
-	
-	
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$pasteCmd: ...
+	 * @param	[type]		$target: ...
+	 * @param	[type]		$destination: ...
+	 * @return	[type]		...
+	 */
 	function pasteRecord($pasteCmd, $target, $destination)	{
 #debug(array($pasteCmd, $target, $destination));
 #exit;	

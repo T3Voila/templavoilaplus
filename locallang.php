@@ -2,6 +2,8 @@
 /**
  * Language labels for extension "templavoila"
  * 
+ * $Id$
+ * 
  * This file is detected by the translation tool.
  */
 

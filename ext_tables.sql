@@ -1,3 +1,5 @@
+# TYPO3 CVS ID: $Id$
+
 #
 # Table structure for table 'tx_templavoila_tmplobj'
 #

@@ -2,6 +2,8 @@
 /**
  * Language labels for database tables/fields belonging to extension 'templavoila'
  * 
+ * $Id$
+ * 
  * This file is detected by the translation tool.
  */
 

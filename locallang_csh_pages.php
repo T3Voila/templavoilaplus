@@ -1,7 +1,9 @@
 <?php
 /**
-* Default  TCA_DESCR for "pages"
-*/
+ * Default  TCA_DESCR for "pages"
+ * 
+ * $Id$
+ */
 
 $LOCAL_LANG = Array (
 	'default' => Array (

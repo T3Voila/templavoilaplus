@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -24,16 +24,18 @@
 /** 
  * Addition of an item to the clickmenu
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * $Id$
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *   57: class tx_templavoila_cm1 
- *   68:     function main(&$backRef,$menuItems,$table,$uid)	
- *  103:     function includeLL()	
+ *   61: class tx_templavoila_cm1 
+ *   72:     function main(&$backRef,$menuItems,$table,$uid)	
+ *  107:     function includeLL()	
  *
  * TOTAL FUNCTIONS: 2
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -52,7 +54,9 @@
 /**
  * Class which will add menu items to click menus for the extension TemplaVoila
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage tx_templavoila
  */
 class tx_templavoila_cm1 {
 	

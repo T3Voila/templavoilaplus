@@ -23,8 +23,43 @@
 ***************************************************************/
 /**
  * Class 'tx_templavoila_rules' for the 'templavoila' extension.
+ *
+ * $Id$
  * 
  * @author     Robert Lemke <rl@robertlemke.de>
+ */
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   64: class tx_templavoila_rules 
+ *   78:     function evaluateRulesOnElements ($rules, $ruleConstants, $elArray) 
+ *   99:     function getDefaultElements($rules,$ruleConstants)	
+ *  119:     function parseRegexIntoArray ($regex) 
+ *  187:     function getElementsArray ($elements, $min=1, $max=1, $type='simple', $negate=0) 
+ *  208:     function isElement ($char) 
+ *  221:     function evaluateQuantifier ($quantifier, &$pos, &$min, &$max) 
+ *  267:     function getCTypeFromToken ($token) 
+ *
+ * TOTAL FUNCTIONS: 7
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
+ */
+
+
+
+
+
+
+
+
+/**
+ * Class 'tx_templavoila_rules' for the 'templavoila' extension.
+ * 
+ * @author     Robert Lemke <rl@robertlemke.de>
+ * @package TYPO3
+ * @subpackage tx_templavoila
  */
 class tx_templavoila_rules {
 
@@ -32,10 +67,12 @@ class tx_templavoila_rules {
 	/**
 	 * Checks a given element if it complies with certain rules provided as a regular expression.
 	 * 
-	 * @param	[string]		$rules: A regular expression describing the rule. The content elements are reflected by certain 
-	 *								tokens (i.e. uppercase and lowercase characters). These tokens are also called "ruleConstants".
-	 *								Note that only few functionality of the POSIX standard for regular expressions is being supported.
+	 * 								tokens (i.e. uppercase and lowercase characters). These tokens are also called "ruleConstants".
+	 * 								Note that only few functionality of the POSIX standard for regular expressions is being supported.
+	 * 
+	 * @param	[string]		$rules: A regular expression describing the rule. The content elements are reflected by certain
 	 * @param	[array]		$ruleConstants: An array with the mapping of tokens to content elements.
+	 * @param	[type]		$elArray: ...
 	 * @return	[array]		Array containing status information if the check was successful.
 	 */
 	function evaluateRulesOnElements ($rules, $ruleConstants, $elArray) {
@@ -141,8 +178,8 @@ class tx_templavoila_rules {
 	 * Delivers an array which holds certain information of how a cType is used within the rule.
 	 * 
 	 * @param	[array]		$elements: array of cTypes
-	 * @param	[integer]	$min: Minimum number of occurrences
-	 * @param	[integer]	$max: Maximum number of occurrences (-1 => infinite)
+	 * @param	[integer]		$min: Minimum number of occurrences
+	 * @param	[integer]		$max: Maximum number of occurrences (-1 => infinite)
 	 * @param	[string]		$type: 'simple' or 'list'
 	 * @param	[type]		$negate: If set to '1' it means "dont allow these elements"
 	 * @return	[array]		

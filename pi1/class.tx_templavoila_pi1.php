@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -24,19 +24,21 @@
 /** 
  * Plugin 'Flexible Content' for the 'templavoila' extension.
  *
- * @author    Kasper Skårhøj <kasper@typo3.com>
+ * $Id$
+ *
+ * @author    Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *   63: class tx_templavoila_pi1 extends tslib_pibase 
- *   79:     function main($content,$conf)    
- *   91:     function main_page($content,$conf)    
- *  121:     function initVars($conf)	
- *  133:     function renderElement($row,$table)	
- *  191:     function processDataValues(&$dataValues,$DSelements,$valueKey='vDEF')	
+ *   67: class tx_templavoila_pi1 extends tslib_pibase 
+ *   83:     function main($content,$conf)    
+ *   95:     function main_page($content,$conf)    
+ *  125:     function initVars($conf)	
+ *  137:     function renderElement($row,$table)	
+ *  202:     function processDataValues(&$dataValues,$DSelements,$TOelements,$valueKey='vDEF')	
  *
  * TOTAL FUNCTIONS: 5
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -58,7 +60,9 @@ require_once(t3lib_extMgm::extPath('templavoila').'class.tx_templavoila_htmlmark
 /**
  * Plugin 'Flexible Content' for the 'templavoila' extension.
  * 
- * @author    Kasper Skårhøj <kasper@typo3.com>
+ * @author    Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage tx_templavoila
  */
 class tx_templavoila_pi1 extends tslib_pibase {
     var $prefixId = 'tx_templavoila_pi1';        // Same as class name
@@ -191,6 +195,7 @@ class tx_templavoila_pi1 extends tslib_pibase {
 	 * 
 	 * @param	array		The data values from the XML file (converted to array). Passed by reference.
 	 * @param	array		The data structure definition which the data in the dataValues array reflects.
+	 * @param	array		The local XML processing information found in associated Template Objects (TO)
 	 * @param	string		Value key
 	 * @return	void		
 	 */
