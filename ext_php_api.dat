@@ -1,0 +1,330 @@
+a:2:{s:4:"meta";a:3:{s:5:"title";s:0:"";s:5:"descr";s:0:"";s:7:"options";a:2:{s:10:"usageCount";N;s:19:"includeCodeAbstract";N;}}s:5:"files";a:8:{s:14:"MD5_5c642e71a0";a:4:{s:8:"filename";s:28:"class.tx_templavoila_cm1.php";s:8:"filesize";i:3969;s:6:"header";a:5:{s:4:"text";s:79:"
+
+Class which will add menu items to click menus for the extension TemplaVoila
+";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}s:5:"other";a:3:{i:0;s:42:"@author	Kasper Skaarhoj <kasper@typo3.com>";i:1;s:14:"@package TYPO3";i:2;s:26:"@subpackage tx_templavoila";}s:11:"other_index";a:3:{s:7:"@author";a:1:{i:0;s:34:"Kasper Skaarhoj <kasper@typo3.com>";}s:8:"@package";a:1:{i:0;s:6:"TYPO3 ";}s:11:"@subpackage";a:1:{i:0;s:15:"tx_templavoila ";}}}s:3:"DAT";a:3:{i:1;a:8:{s:6:"header";s:26:"class tx_templavoila_cm1 {";s:5:"class";i:1;s:11:"parentClass";s:18:"tx_templavoila_cm1";s:4:"cDat";a:5:{s:4:"text";s:79:"
+
+Class which will add menu items to click menus for the extension TemplaVoila
+";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}s:5:"other";a:3:{i:0;s:42:"@author	Kasper Skaarhoj <kasper@typo3.com>";i:1;s:14:"@package TYPO3";i:2;s:26:"@subpackage tx_templavoila";}s:11:"other_index";a:3:{s:7:"@author";a:1:{i:0;s:34:"Kasper Skaarhoj <kasper@typo3.com>";}s:8:"@package";a:1:{i:0;s:6:"TYPO3 ";}s:11:"@subpackage";a:1:{i:0;s:15:"tx_templavoila ";}}}s:7:"content";s:0:"";s:12:"content_size";i:3;s:13:"content_lines";i:1;s:6:"atLine";i:59;}i:3;a:4:{s:6:"header";s:49:"function main(&$backRef,$menuItems,$table,$uid)	{";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:4:"cDat";a:3:{s:4:"text";s:55:"
+
+Main function, adding items to the click menu array.
+";s:5:"param";a:4:{i:0;a:2:{i:0;s:6:"object";i:1;s:79:"Reference to the parent object of the clickmenu class which calls this function";}i:1;a:2:{i:0;s:5:"array";i:1;s:116:"The current array of menu items - you have to add or remove items to this array in this function. Thats the point...";}i:2;a:2:{i:0;s:6:"string";i:1;s:30:"The database table OR filename";}i:3;a:2:{i:0;s:7:"integer";i:1;s:28:"For database tables, the UID";}}s:6:"return";a:2:{i:0;s:5:"array";i:1;s:24:"The modified menu array.";}}s:6:"atLine";i:70;}i:5;a:7:{s:6:"header";s:22:"function includeLL()	{";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:4:"cDat";a:3:{s:4:"text";s:92:"
+
+Includes the [extDir]/locallang.php and returns the $LOCAL_LANG array found in that file.
+";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:5:"array";i:1;s:50:"The $LOCAL_LANG array from the locallang.php file.";}}s:7:"content";s:0:"";s:12:"content_size";i:320;s:13:"content_lines";i:8;s:6:"atLine";i:105;}}}s:14:"MD5_3a656fcfbd";a:4:{s:8:"filename";s:51:"class.tx_templavoila_handlestaticdatastructures.php";s:8:"filesize";i:5986;s:6:"header";a:5:{s:4:"text";s:104:"
+
+Class/Function which manipulates the item-array for table/field tx_templavoila_tmplobj_datastructure.
+";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}s:5:"other";a:3:{i:0;s:45:"@author    Kasper Skaarhoj <kasper@typo3.com>";i:1;s:14:"@package TYPO3";i:2;s:26:"@subpackage tx_templavoila";}s:11:"other_index";a:3:{s:7:"@author";a:1:{i:0;s:34:"Kasper Skaarhoj <kasper@typo3.com>";}s:8:"@package";a:1:{i:0;s:6:"TYPO3 ";}s:11:"@subpackage";a:1:{i:0;s:15:"tx_templavoila ";}}}s:3:"DAT";a:5:{i:1;a:8:{s:6:"header";s:49:"class tx_templavoila_handleStaticDataStructures {";s:5:"class";i:1;s:11:"parentClass";s:41:"tx_templavoila_handleStaticDataStructures";s:4:"cDat";a:5:{s:4:"text";s:104:"
+
+Class/Function which manipulates the item-array for table/field tx_templavoila_tmplobj_datastructure.
+";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}s:5:"other";a:3:{i:0;s:45:"@author    Kasper Skaarhoj <kasper@typo3.com>";i:1;s:14:"@package TYPO3";i:2;s:26:"@subpackage tx_templavoila";}s:11:"other_index";a:3:{s:7:"@author";a:1:{i:0;s:34:"Kasper Skaarhoj <kasper@typo3.com>";}s:8:"@package";a:1:{i:0;s:6:"TYPO3 ";}s:11:"@subpackage";a:1:{i:0;s:15:"tx_templavoila ";}}}s:7:"content";s:0:"";s:12:"content_size";i:29;s:13:"content_lines";i:2;s:6:"atLine";i:56;}i:3;a:7:{s:6:"header";s:35:"function main(&$params,&$pObj)    {";s:11:"parentClass";s:41:"tx_templavoila_handleStaticDataStructures";s:4:"cDat";a:3:{s:4:"text";s:90:"
+
+Adds static data structures to selector box items arrays.
+Adds ALL available structures
+";s:5:"param";a:2:{i:0;a:2:{i:0;s:5:"array";i:1;s:35:"Array of items passed by reference.";}i:1;a:2:{i:0;s:6:"object";i:1;s:76:"The parent object (t3lib_TCEforms / t3lib_transferData depending on context)";}}s:6:"return";a:2:{i:0;s:4:"void";i:1;s:0:"";}}s:7:"content";s:0:"";s:12:"content_size";i:324;s:13:"content_lines";i:8;s:6:"atLine";i:67;}i:5;a:7:{s:6:"header";s:42:"function main_scope1(&$params,&$pObj)    {";s:11:"parentClass";s:41:"tx_templavoila_handleStaticDataStructures";s:4:"cDat";a:3:{s:4:"text";s:100:"
+
+Adds static data structures to selector box items arrays.
+Adds only structures for Page Templates
+";s:5:"param";a:2:{i:0;a:2:{i:0;s:5:"array";i:1;s:35:"Array of items passed by reference.";}i:1;a:2:{i:0;s:6:"object";i:1;s:76:"The parent object (t3lib_TCEforms / t3lib_transferData depending on context)";}}s:6:"return";a:2:{i:0;s:4:"void";i:1;s:0:"";}}s:7:"content";s:0:"";s:12:"content_size";i:335;s:13:"content_lines";i:9;s:6:"atLine";i:84;}i:7;a:4:{s:6:"header";s:42:"function main_scope2(&$params,&$pObj)    {";s:11:"parentClass";s:41:"tx_templavoila_handleStaticDataStructures";s:4:"cDat";a:3:{s:4:"text";s:111:"
+
+Adds static data structures to selector box items arrays.
+Adds only structures for Flexible Content elements
+";s:5:"param";a:2:{i:0;a:2:{i:0;s:5:"array";i:1;s:35:"Array of items passed by reference.";}i:1;a:2:{i:0;s:6:"object";i:1;s:76:"The parent object (t3lib_TCEforms / t3lib_transferData depending on context)";}}s:6:"return";a:2:{i:0;s:4:"void";i:1;s:0:"";}}s:6:"atLine";i:102;}i:9;a:7:{s:6:"header";s:39:"function pi_templates(&$params,$pObj)	{";s:11:"parentClass";s:41:"tx_templavoila_handleStaticDataStructures";s:4:"cDat";a:3:{s:4:"text";s:90:"
+
+Adds Template Object records to selector box for Content Elements of the "Plugin" type.
+";s:5:"param";a:2:{i:0;a:2:{i:0;s:5:"array";i:1;s:35:"Array of items passed by reference.";}i:1;a:2:{i:0;s:6:"object";i:1;s:76:"The parent object (t3lib_TCEforms / t3lib_transferData depending on context)";}}s:6:"return";a:2:{i:0;s:4:"void";i:1;s:0:"";}}s:7:"content";s:0:"";s:12:"content_size";i:1741;s:13:"content_lines";i:29;s:6:"atLine";i:119;}}}s:14:"MD5_e1f7a76790";a:4:{s:8:"filename";s:35:"class.tx_templavoila_htmlmarkup.php";s:8:"filesize";i:41873;s:6:"header";a:5:{s:4:"text";s:155:"
+
+HTML markup/search class; can mark up HTML with small images for each element AND as well help you extract parts of the HTML based on a socalled 'PATH'.
+";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}s:5:"other";a:3:{i:0;s:42:"@author	Kasper Skaarhoj <kasper@typo3.com>";i:1;s:14:"@package TYPO3";i:2;s:26:"@subpackage tx_templavoila";}s:11:"other_index";a:3:{s:7:"@author";a:1:{i:0;s:34:"Kasper Skaarhoj <kasper@typo3.com>";}s:8:"@package";a:1:{i:0;s:6:"TYPO3 ";}s:11:"@subpackage";a:1:{i:0;s:15:"tx_templavoila ";}}}s:3:"DAT";a:24:{i:1;a:8:{s:6:"header";s:33:"class tx_templavoila_htmlmarkup {";s:5:"class";i:1;s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:4:"cDat";a:5:{s:4:"text";s:155:"
+
+HTML markup/search class; can mark up HTML with small images for each element AND as well help you extract parts of the HTML based on a socalled 'PATH'.
+";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}s:5:"other";a:3:{i:0;s:42:"@author	Kasper Skaarhoj <kasper@typo3.com>";i:1;s:14:"@package TYPO3";i:2;s:26:"@subpackage tx_templavoila";}s:11:"other_index";a:3:{s:7:"@author";a:1:{i:0;s:34:"Kasper Skaarhoj <kasper@typo3.com>";}s:8:"@package";a:1:{i:0;s:6:"TYPO3 ";}s:11:"@subpackage";a:1:{i:0;s:15:"tx_templavoila ";}}}s:7:"content";s:0:"";s:12:"content_size";i:5257;s:13:"content_lines";i:112;s:6:"atLine";i:81;}i:3;a:7:{s:6:"header";s:79:"function markupHTMLcontent($content,$backPath,$relPathFix,$showTags,$mode='')	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:4:"cDat";a:3:{s:4:"text";s:84:"
+
+Marks up input HTML content string with tag-images based on the list in $showTags
+";s:5:"param";a:5:{i:0;a:2:{i:0;s:6:"string";i:1;s:12:"HTML content";}i:1;a:2:{i:0;s:6:"string";i:1;s:84:"Backend module BACK_PATH - used to set the right position for the tag-images (gnyfs)";}i:2;a:2:{i:0;s:6:"string";i:1;s:201:"The relative path from module position back to the HTML-file position; used to correct paths of HTML since the HTML is modified so it can display correctly from the path of the module using this class.";}i:3;a:2:{i:0;s:6:"string";i:1;s:128:"Comma list of tags which should be exploded. Notice that tags in this list which does not appear in $this->tags will be ignored.";}i:4;a:2:{i:0;s:6:"string";i:1;s:66:"The mode of display; [blank], explode, borders. Set in $this->mode";}}s:6:"return";a:2:{i:0;s:6:"string";i:1;s:13:"Modified HTML";}}s:7:"content";s:0:"";s:12:"content_size";i:747;s:13:"content_lines";i:26;s:6:"atLine";i:204;}i:5;a:7:{s:6:"header";s:77:"function passthroughHTMLcontent($content,$relPathFix,$mode='',$altStyle='')	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:4:"cDat";a:5:{s:4:"text";s:161:"
+
+Passes through input HTML content string BUT substitutes relative paths. Used to format the parts of the file which are NOT marked up with markupHTMLcontent()
+";s:5:"param";a:4:{i:0;a:2:{i:0;s:6:"string";i:1;s:12:"HTML content";}i:1;a:2:{i:0;s:6:"string";i:1;s:201:"The relative path from module position back to the HTML-file position; used to correct paths of HTML since the HTML is modified so it can display correctly from the path of the module using this class.";}i:2;a:2:{i:0;s:6:"string";i:1;s:66:"The mode of display; [blank], explode, borders. Set in $this->mode";}i:3;a:2:{i:0;s:6:"string";i:1;s:79:"Alternative CSS style value from the style attribute of the <pre></pre>-section";}}s:6:"return";a:2:{i:0;s:6:"string";i:1;s:13:"Modified HTML";}s:5:"other";a:1:{i:0;s:24:"@see markupHTMLcontent()";}s:11:"other_index";a:1:{s:4:"@see";a:1:{i:0;s:20:"markupHTMLcontent() ";}}}s:7:"content";s:0:"";s:12:"content_size";i:407;s:13:"content_lines";i:13;s:6:"atLine";i:241;}i:7;a:7:{s:6:"header";s:54:"function getContentBasedOnPath($content,$pathStrArr)	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:4:"cDat";a:3:{s:4:"text";s:107:"
+
+Returns content based on input $pathStrArray.	(an array with values which are paths to get out of HTML.)
+";s:5:"param";a:2:{i:0;a:2:{i:0;s:6:"string";i:1;s:28:"Input HTML to get path from.";}i:1;a:2:{i:0;s:6:"string";i:1;s:153:"The array where the values are paths, eg. array('td#content table[1] tr[1]','td#content table[1]','map#cdf / INNER') - tager kun første niveau i en path!";}}s:6:"return";a:2:{i:0;s:5:"array";i:1;s:32:"Content... (not welldefined yet)";}}s:7:"content";s:0:"";s:12:"content_size";i:770;s:13:"content_lines";i:24;s:6:"atLine";i:262;}i:9;a:7:{s:6:"header";s:44:"function splitByPath($content,$pathString)	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:4:"cDat";a:3:{s:4:"text";s:25:"
+
+[Describe function...]
+";s:5:"param";a:2:{i:0;a:2:{i:0;s:6:"[type]";i:1;s:13:"$content: ...";}i:1;a:2:{i:0;s:6:"[type]";i:1;s:16:"$pathString: ...";}}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}}s:7:"content";s:0:"";s:12:"content_size";i:660;s:13:"content_lines";i:19;s:6:"atLine";i:294;}i:11;a:7:{s:6:"header";s:70:"function splitContentToMappingInfo($fileContent,$currentMappingInfo)	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:4:"cDat";a:3:{s:4:"text";s:25:"
+
+[Describe function...]
+";s:5:"param";a:2:{i:0;a:2:{i:0;s:6:"[type]";i:1;s:17:"$fileContent: ...";}i:1;a:2:{i:0;s:6:"[type]";i:1;s:24:"$currentMappingInfo: ...";}}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}}s:7:"content";s:0:"";s:12:"content_size";i:1935;s:13:"content_lines";i:56;s:6:"atLine";i:321;}i:13;a:7:{s:6:"header";s:55:"function mappingInfoToSearchPath($currentMappingInfo)	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:4:"cDat";a:3:{s:4:"text";s:25:"
+
+[Describe function...]
+";s:5:"param";a:1:{i:0;a:2:{i:0;s:6:"[type]";i:1;s:24:"$currentMappingInfo: ...";}}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}}s:7:"content";s:0:"";s:12:"content_size";i:905;s:13:"content_lines";i:32;s:6:"atLine";i:384;}i:15;a:7:{s:6:"header";s:71:"function mergeSearchpartsIntoContent($content,$searchParts,$token='')	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:4:"cDat";a:3:{s:4:"text";s:134:"
+
+Substitutes all placeholders in $content string which are found in the $searchParts array (see syntax from getContentBasedOnPath())
+";s:5:"param";a:3:{i:0;a:2:{i:0;s:6:"string";i:1;s:27:"Content string with markers";}i:1;a:2:{i:0;s:5:"array";i:1;s:128:"Array with searchPaths which has been modified by $this->recursiveBlockSplitting in search mode to contain content and subparts.";}i:2;a:2:{i:0;s:6:"[type]";i:1;s:11:"$token: ...";}}s:6:"return";a:2:{i:0;s:6:"string";i:1;s:6:"HTML .";}}s:7:"content";s:0:"";s:12:"content_size";i:529;s:13:"content_lines";i:21;s:6:"atLine";i:425;}i:17;a:7:{s:6:"header";s:123:"function mergeSampleDataIntoTemplateStructure($dataStruct,$currentMappingInfo,$firstLevelImplodeToken='',$sampleOrder='')	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:4:"cDat";a:3:{s:4:"text";s:25:"
+
+[Describe function...]
+";s:5:"param";a:4:{i:0;a:2:{i:0;s:6:"[type]";i:1;s:16:"$dataStruct: ...";}i:1;a:2:{i:0;s:6:"[type]";i:1;s:24:"$currentMappingInfo: ...";}i:2;a:2:{i:0;s:6:"[type]";i:1;s:28:"$firstLevelImplodeToken: ...";}i:3;a:2:{i:0;s:6:"[type]";i:1;s:17:"$sampleOrder: ...";}}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}}s:7:"content";s:0:"";s:12:"content_size";i:1205;s:13:"content_lines";i:33;s:6:"atLine";i:456;}i:19;a:7:{s:6:"header";s:122:"function mergeFormDataIntoTemplateStructure($editStruct,$currentMappingInfo,$firstLevelImplodeToken='',$valueKey='vDEF')	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:4:"cDat";a:3:{s:4:"text";s:25:"
+
+[Describe function...]
+";s:5:"param";a:4:{i:0;a:2:{i:0;s:6:"[type]";i:1;s:16:"$editStruct: ...";}i:1;a:2:{i:0;s:6:"[type]";i:1;s:24:"$currentMappingInfo: ...";}i:2;a:2:{i:0;s:6:"[type]";i:1;s:28:"$firstLevelImplodeToken: ...";}i:3;a:2:{i:0;s:6:"[type]";i:1;s:14:"$valueKey: ...";}}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}}s:7:"content";s:0:"";s:12:"content_size";i:1617;s:13:"content_lines";i:39;s:6:"atLine";i:499;}i:21;a:7:{s:6:"header";s:30:"function splitPath($pathStr)	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:4:"cDat";a:3:{s:4:"text";s:137:"
+
+Processing of a path; It splits the path by tokens like "|", "/" and " " etc and returns an array with path-levels and properties etc.
+";s:5:"param";a:1:{i:0;a:2:{i:0;s:6:"string";i:1;s:52:"The total path string to explode into smaller units.";}}s:6:"return";a:2:{i:0;s:5:"array";i:1;s:34:"Array with the information inside.";}}s:7:"content";s:0:"";s:12:"content_size";i:1689;s:13:"content_lines";i:49;s:6:"atLine";i:545;}i:23;a:7:{s:6:"header";s:38:"function getTemplateArrayForTO($uid)	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:4:"cDat";a:3:{s:4:"text";s:39:"
+
+For use in both frontend and backend
+";s:5:"param";a:1:{i:0;a:2:{i:0;s:6:"[type]";i:1;s:9:"$uid: ...";}}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}}s:7:"content";s:0:"";s:12:"content_size";i:431;s:13:"content_lines";i:12;s:6:"atLine";i:601;}i:25;a:7:{s:6:"header";s:51:"function mergeDataArrayToTemplateArray($TA,$data)	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:4:"cDat";a:3:{s:4:"text";s:25:"
+
+[Describe function...]
+";s:5:"param";a:2:{i:0;a:2:{i:0;s:6:"[type]";i:1;s:8:"$TA: ...";}i:1;a:2:{i:0;s:6:"[type]";i:1;s:10:"$data: ...";}}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}}s:7:"content";s:0:"";s:12:"content_size";i:192;s:13:"content_lines";i:12;s:6:"atLine";i:621;}i:27;a:7:{s:6:"header";s:54:"function getTemplateRecord($uid,$printFlag,$langUid)	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:4:"cDat";a:3:{s:4:"text";s:97:"
+
+Returns the right template record for the current display
+Requires the extension "TemplaVoila"
+";s:5:"param";a:3:{i:0;a:2:{i:0;s:7:"integer";i:1;s:30:"The UID of the template record";}i:1;a:2:{i:0;s:6:"[type]";i:1;s:15:"$printFlag: ...";}i:2;a:2:{i:0;s:6:"[type]";i:1;s:13:"$langUid: ...";}}s:6:"return";a:2:{i:0;s:5:"array";i:1;s:17:"The record array.";}}s:7:"content";s:0:"";s:12:"content_size";i:1155;s:13:"content_lines";i:24;s:6:"atLine";i:643;}i:29;a:7:{s:6:"header";s:67:"function getTemplateMappingArray($uid,$printFlag,$langUid,$sheet)	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:4:"cDat";a:3:{s:4:"text";s:25:"
+
+[Describe function...]
+";s:5:"param";a:4:{i:0;a:2:{i:0;s:6:"[type]";i:1;s:9:"$uid: ...";}i:1;a:2:{i:0;s:6:"[type]";i:1;s:15:"$printFlag: ...";}i:2;a:2:{i:0;s:6:"[type]";i:1;s:13:"$langUid: ...";}i:3;a:2:{i:0;s:6:"[type]";i:1;s:11:"$sheet: ...";}}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}}s:7:"content";s:0:"";s:12:"content_size";i:208;s:13:"content_lines";i:5;s:6:"atLine";i:677;}i:31;a:7:{s:6:"header";s:47:"function getTemplateRecord_query($uid,$where)	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:4:"cDat";a:6:{s:4:"text";s:77:"
+
+Helper function to build the query for searching print/language templates.
+";s:5:"param";a:2:{i:0;a:2:{i:0;s:7:"integer";i:1;s:30:"The UID of the template record";}i:1;a:2:{i:0;s:6:"string";i:1;s:17:"The where clause.";}}s:6:"return";a:2:{i:0;s:5:"mixed";i:1;s:45:"An array if a record is found, otherwise null";}s:6:"access";s:7:"private";s:5:"other";a:1:{i:0;s:24:"@see getTemplateRecord()";}s:11:"other_index";a:1:{s:4:"@see";a:1:{i:0;s:20:"getTemplateRecord() ";}}}s:7:"content";s:0:"";s:12:"content_size";i:323;s:13:"content_lines";i:25;s:6:"atLine";i:692;}i:33;a:8:{s:6:"header";s:17:"function init()	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:11:"sectionText";a:1:{i:0;s:22:"Various sub processing";}s:4:"cDat";a:3:{s:4:"text";s:121:"
+
+Init function, should be called by the processing functions above before doing any recursive parsing of the HTML code.
+";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:4:"void";i:1;s:0:"";}}s:7:"content";s:0:"";s:12:"content_size";i:496;s:13:"content_lines";i:15;s:6:"atLine";i:723;}i:35;a:7:{s:6:"header";s:35:"function splitTagTypes($showTags)	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:4:"cDat";a:3:{s:4:"text";s:172:"
+
+Takes the input list of tags to markup and validates it against $this->tags array.
+Returns an array with two strings, the list of block tags and the list of single tags.
+";s:5:"param";a:1:{i:0;a:2:{i:0;s:6:"string";i:1;s:66:"Comma list of tags, input to processing functions in top of class.";}}s:6:"return";a:2:{i:0;s:5:"array";i:1;s:75:"array with two strings, the list of block tags and the list of single tags.";}}s:7:"content";s:0:"";s:12:"content_size";i:536;s:13:"content_lines";i:37;s:6:"atLine";i:746;}i:37;a:8:{s:6:"header";s:93:"function recursiveBlockSplitting($content,$tagsBlock,$tagsSolo,$mode,$path='',$recursion=0)	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:11:"sectionText";a:1:{i:0;s:19:"SPLITTING functions";}s:4:"cDat";a:3:{s:4:"text";s:361:"
+
+Main splitting function - will split the input $content HTML string into sections based on the strings with tags, $tagsBlock and $tagsSolo
+WARNING: No currect support for XML-ended tags, eg. <p/>. In fact there is not even support for block tags like <p> which does not have a counter part ending it!!! (This support must come from the htmlparser class btw.)
+";s:5:"param";a:6:{i:0;a:2:{i:0;s:6:"string";i:1;s:22:"$content: HTML content";}i:1;a:2:{i:0;s:6:"string";i:1;s:124:"$tagsBlock: list of block tags; which has a start and end (eg. <p>...</p>, <table>...</table>, <tr>...</tr>, <div>...</div>)";}i:2;a:2:{i:0;s:6:"string";i:1;s:93:"$tagsSolo: list of solo (single) tags; which are stand-alone (eg. <img>, <br>, <hr>, <input>)";}i:3;a:2:{i:0;s:6:"string";i:1;s:175:"$mode: Denotes which mode of operation to apply: 'markup' will markup the html, 'search' will return HTML code with markers inserted for the found paths. Default does nothing.";}i:4;a:2:{i:0;s:6:"string";i:1;s:57:"$path: Used to accumulate the tags 'path' in the document";}i:5;a:2:{i:0;s:7:"integer";i:1;s:49:"$recursion: Used internally to control recursion.";}}s:6:"return";a:2:{i:0;s:6:"string";i:1;s:4:"HTML";}}s:7:"content";s:0:"";s:12:"content_size";i:2968;s:13:"content_lines";i:69;s:6:"atLine";i:796;}i:39;a:7:{s:6:"header";s:94:"function getMarkupCode($mode,$v,$params,$firstTagName,$firstTag,$endTag,$subPath,$recursion)	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:4:"cDat";a:3:{s:4:"text";s:151:"
+
+In markup mode, this function is used to add the gnyf image to the HTML plus set all necessary attributes etc in order to mark up the code visually.
+";s:5:"param";a:8:{i:0;a:2:{i:0;s:6:"string";i:1;s:39:"Element type: block or '' (single/solo)";}i:1;a:2:{i:0;s:6:"string";i:1;s:14:"Sub HTML code.";}i:2;a:2:{i:0;s:5:"array";i:1;s:29:"Attributes of the current tag";}i:3;a:2:{i:0;s:6:"string";i:1;s:29:"Current tags name (lowercase)";}i:4;a:2:{i:0;s:6:"string";i:1;s:17:"Current tag, full";}i:5;a:2:{i:0;s:6:"string";i:1;s:27:"End tag for the current tag";}i:6;a:2:{i:0;s:6:"string";i:1;s:23:"Current path of element";}i:7;a:2:{i:0;s:7:"integer";i:1;s:20:"The recursion number";}}s:6:"return";a:2:{i:0;s:6:"string";i:1;s:27:"Modified sub HTML code ($v)";}}s:7:"content";s:0:"";s:12:"content_size";i:2341;s:13:"content_lines";i:66;s:6:"atLine";i:879;}i:41;a:7:{s:6:"header";s:100:"function getSearchCode($mode,$v,$params,$firstTagName,$firstTag,$endTag,$subPath,$path,$recursion)	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:4:"cDat";a:3:{s:4:"text";s:64:"
+
+In search mode, this function is used to process the content.
+";s:5:"param";a:9:{i:0;a:2:{i:0;s:6:"string";i:1;s:39:"Element type: block or '' (single/solo)";}i:1;a:2:{i:0;s:6:"string";i:1;s:14:"Sub HTML code.";}i:2;a:2:{i:0;s:5:"array";i:1;s:29:"Attributes of the current tag";}i:3;a:2:{i:0;s:6:"string";i:1;s:29:"Current tags name (lowercase)";}i:4;a:2:{i:0;s:6:"string";i:1;s:17:"Current tag, full";}i:5;a:2:{i:0;s:6:"string";i:1;s:27:"End tag for the current tag";}i:6;a:2:{i:0;s:6:"string";i:1;s:23:"Current path of element";}i:7;a:2:{i:0;s:7:"integer";i:1;s:20:"The recursion number";}i:8;a:2:{i:0;s:6:"[type]";i:1;s:15:"$recursion: ...";}}s:6:"return";a:2:{i:0;s:6:"string";i:1;s:27:"Modified sub HTML code ($v)";}}s:7:"content";s:0:"";s:12:"content_size";i:2652;s:13:"content_lines";i:73;s:6:"atLine";i:960;}i:43;a:7:{s:6:"header";s:62:"function sourceDisplay($str,$recursion,$gnyf='',$valueStr=0)	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:4:"cDat";a:3:{s:4:"text";s:52:"
+
+Will format content for display in 'source' mode.
+";s:5:"param";a:4:{i:0;a:2:{i:0;s:6:"string";i:1;s:23:"Input string to format.";}i:1;a:2:{i:0;s:7:"integer";i:1;s:48:"The recursion integer - used to indent the code.";}i:2;a:2:{i:0;s:6:"string";i:1;s:26:"The gnyf-image to display.";}i:3;a:2:{i:0;s:7:"boolean";i:1;s:127:"If set, then the line will be formatted in color as a "value" (means outside of the tag which might otherwise be what is shown)";}}s:6:"return";a:2:{i:0;s:6:"string";i:1;s:16:"Formatted input.";}}s:7:"content";s:0:"";s:12:"content_size";i:325;s:13:"content_lines";i:10;s:6:"atLine";i:1043;}i:45;a:4:{s:6:"header";s:46:"function makePath($path,$firstTagName,$attr)	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:4:"cDat";a:3:{s:4:"text";s:69:"
+
+Compile the path value for the current path/tagname and attributes
+";s:5:"param";a:3:{i:0;a:2:{i:0;s:6:"string";i:1;s:41:"Current path string for the parent level.";}i:1;a:2:{i:0;s:6:"string";i:1;s:50:"The tag name for the current element on that level";}i:2;a:2:{i:0;s:6:"string";i:1;s:59:"The attributes for the tag in an array with key/value pairs";}}s:6:"return";a:2:{i:0;s:6:"string";i:1;s:13:"The sub path.";}}s:6:"atLine";i:1062;}i:47;a:7:{s:6:"header";s:46:"function getGnyf($firstTagName,$path,$title)	{";s:11:"parentClass";s:25:"tx_templavoila_htmlmarkup";s:4:"cDat";a:3:{s:4:"text";s:37:"
+
+Returns the GNYF image (tag-image)
+";s:5:"param";a:3:{i:0;a:2:{i:0;s:6:"string";i:1;s:46:"The tag name in lowercase, eg. "table" or "tr"";}i:1;a:2:{i:0;s:6:"string";i:1;s:58:"Path string for the link and title-attribute of the image.";}i:2;a:2:{i:0;s:6:"[type]";i:1;s:11:"$title: ...";}}s:6:"return";a:2:{i:0;s:6:"string";i:1;s:4:"HTML";}}s:7:"content";s:0:"";s:12:"content_size";i:626;s:13:"content_lines";i:11;s:6:"atLine";i:1090;}}}s:14:"MD5_005a2bcadc";a:4:{s:8:"filename";s:30:"class.tx_templavoila_rules.php";s:8:"filesize";i:14305;s:6:"header";a:5:{s:4:"text";s:64:"
+
+Class 'tx_templavoila_rules' for the 'templavoila' extension.
+";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}s:5:"other";a:3:{i:0;s:44:"@author     Robert Lemke <rl@robertlemke.de>";i:1;s:14:"@package TYPO3";i:2;s:26:"@subpackage tx_templavoila";}s:11:"other_index";a:3:{s:7:"@author";a:1:{i:0;s:32:"Robert Lemke <rl@robertlemke.de>";}s:8:"@package";a:1:{i:0;s:6:"TYPO3 ";}s:11:"@subpackage";a:1:{i:0;s:15:"tx_templavoila ";}}}s:3:"DAT";a:14:{i:1;a:8:{s:6:"header";s:28:"class tx_templavoila_rules {";s:5:"class";i:1;s:11:"parentClass";s:20:"tx_templavoila_rules";s:4:"cDat";a:5:{s:4:"text";s:64:"
+
+Class 'tx_templavoila_rules' for the 'templavoila' extension.
+";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}s:5:"other";a:3:{i:0;s:44:"@author     Robert Lemke <rl@robertlemke.de>";i:1;s:14:"@package TYPO3";i:2;s:26:"@subpackage tx_templavoila";}s:11:"other_index";a:3:{s:7:"@author";a:1:{i:0;s:32:"Robert Lemke <rl@robertlemke.de>";}s:8:"@package";a:1:{i:0;s:6:"TYPO3 ";}s:11:"@subpackage";a:1:{i:0;s:15:"tx_templavoila ";}}}s:7:"content";s:0:"";s:12:"content_size";i:4;s:13:"content_lines";i:2;s:6:"atLine";i:62;}i:3;a:7:{s:6:"header";s:69:"function evaluateRulesOnElements ($rules, $ruleConstants, $elArray) {";s:11:"parentClass";s:20:"tx_templavoila_rules";s:4:"cDat";a:3:{s:4:"text";s:194:"
+
+Checks a given element if it complies with certain rules provided as a regular expression.
+ 
+Note that only few functionality of the POSIX standard for regular expressions is being supported.
+";s:5:"param";a:3:{i:0;a:2:{i:0;s:8:"[string]";i:1;s:191:"$rules: A regular expression describing the rule. The content elements are reflected by certain tokens (i.e. uppercase and lowercase characters). These tokens are also called "ruleConstants".";}i:1;a:2:{i:0;s:7:"[array]";i:1;s:72:"$ruleConstants: An array with the mapping of tokens to content elements.";}i:2;a:2:{i:0;s:6:"[type]";i:1;s:13:"$elArray: ...";}}s:6:"return";a:2:{i:0;s:7:"[array]";i:1;s:64:"Array containing status information if the check was successful.";}}s:7:"content";s:0:"";s:12:"content_size";i:431;s:13:"content_lines";i:18;s:6:"atLine";i:75;}i:5;a:7:{s:6:"header";s:52:"function getDefaultElements($rules,$ruleConstants)	{";s:11:"parentClass";s:20:"tx_templavoila_rules";s:4:"cDat";a:3:{s:4:"text";s:84:"
+
+Delivers the default content elements which are neccessary for a certain element.
+";s:5:"param";a:2:{i:0;a:2:{i:0;s:6:"[type]";i:1;s:11:"$rules: ...";}i:1;a:2:{i:0;s:6:"[type]";i:1;s:19:"$ruleConstants: ...";}}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}}s:7:"content";s:0:"";s:12:"content_size";i:329;s:13:"content_lines";i:19;s:6:"atLine";i:101;}i:7;a:8:{s:6:"header";s:39:"function parseRegexIntoArray ($regex) {";s:11:"parentClass";s:20:"tx_templavoila_rules";s:11:"sectionText";a:1:{i:0;s:37:"Rule processing / analyzing functions";}s:4:"cDat";a:3:{s:4:"text";s:77:"
+
+Parses a regular expression with a reduced set of functions into an array.
+";s:5:"param";a:1:{i:0;a:2:{i:0;s:8:"[string]";i:1;s:30:"$regex: The regular expression";}}s:6:"return";a:2:{i:0;s:7:"[array]";i:1;s:60:"Array containing the cTypes with some additional information";}}s:7:"content";s:0:"";s:12:"content_size";i:2394;s:13:"content_lines";i:72;s:6:"atLine";i:127;}i:9;a:6:{s:6:"header";s:76:"function checkRulesCompliance ($rulesArr, $elementsArr, $prevStatusArr='') {";s:11:"parentClass";s:20:"tx_templavoila_rules";s:7:"content";s:0:"";s:12:"content_size";i:829;s:13:"content_lines";i:32;s:6:"atLine";i:208;}i:11;a:8:{s:6:"header";s:56:"function getHumanReadableRules ($rules,$ruleConstants)	{";s:11:"parentClass";s:20:"tx_templavoila_rules";s:11:"sectionText";a:1:{i:0;s:30:"Human Readable Rules Functions";}s:4:"cDat";a:3:{s:4:"text";s:52:"
+
+Returns a description of a rule in human language
+";s:5:"param";a:2:{i:0;a:2:{i:0;s:8:"[string]";i:1;s:46:"$rules: Regular expression containing the rule";}i:1;a:2:{i:0;s:7:"[array]";i:1;s:58:"$ruleConstants: Contains the mapping of elements to CTypes";}}s:6:"return";a:2:{i:0;s:7:"[string";i:1;s:23:"Description of the rule";}}s:7:"content";s:0:"";s:12:"content_size";i:179;s:13:"content_lines";i:7;s:6:"atLine";i:248;}i:13;a:6:{s:6:"header";s:78:"function parseRulesArrayIntoDescription ($rulesArr, $constantsArr, $level=0) {";s:11:"parentClass";s:20:"tx_templavoila_rules";s:7:"content";s:0:"";s:12:"content_size";i:964;s:13:"content_lines";i:27;s:6:"atLine";i:264;}i:15;a:6:{s:6:"header";s:50:"function getQuantifierAsDescription ($min, $max) {";s:11:"parentClass";s:20:"tx_templavoila_rules";s:7:"content";s:0:"";s:12:"content_size";i:607;s:13:"content_lines";i:25;s:6:"atLine";i:299;}i:17;a:6:{s:6:"header";s:71:"function getElementNameFromConstantsMapping ($element, $constantsArr) {";s:11:"parentClass";s:20:"tx_templavoila_rules";s:7:"content";s:0:"";s:12:"content_size";i:287;s:13:"content_lines";i:16;s:6:"atLine";i:332;}i:19;a:8:{s:6:"header";s:28:"function isElement ($char) {";s:11:"parentClass";s:20:"tx_templavoila_rules";s:11:"sectionText";a:1:{i:0;s:16:"Helper functions";}s:4:"cDat";a:4:{s:4:"text";s:92:"
+
+Delivers an array which holds certain information of how a cType is used within the rule.
+";s:5:"param";a:1:{i:0;a:2:{i:0;s:8:"[string]";i:1;s:30:"$char: Character to be checked";}}s:6:"return";a:2:{i:0;s:9:"[boolean]";i:1;s:24:"true if it is an element";}s:6:"access";s:7:"private";}s:7:"content";s:0:"";s:12:"content_size";i:99;s:13:"content_lines";i:3;s:6:"atLine";i:356;}i:21;a:7:{s:6:"header";s:48:"function extractInnerBrace ($regex, $startPos) {";s:11:"parentClass";s:20:"tx_templavoila_rules";s:4:"cDat";a:6:{s:4:"text";s:268:"
+
+Parses a given string for braces () and returns an array which contains the inner part of theses braces
+as well as the remaining right after the braces. If there is a quantifier after the closing brace, it will
+be evaluated and returned in the result array as well.
+";s:5:"param";a:2:{i:0;a:2:{i:0;s:8:"[string]";i:1;s:30:"$regex: The regular expression";}i:1;a:2:{i:0;s:9:"[integer]";i:1;s:77:"$startPos: The position within the regex string where the search should start";}}s:6:"return";a:2:{i:0;s:7:"[array]";i:1;s:43:"Array containing the results (see function)";}s:5:"other";a:1:{i:0;s:31:"@see					parseRegexIntoArray ()";}s:11:"other_index";a:1:{s:4:"@see";a:1:{i:0;s:22:"parseRegexIntoArray ()";}}s:6:"access";s:7:"private";}s:7:"content";s:0:"";s:12:"content_size";i:719;s:13:"content_lines";i:22;s:6:"atLine";i:371;}i:23;a:7:{s:6:"header";s:39:"function explodeAlternatives ($regex) {";s:11:"parentClass";s:20:"tx_templavoila_rules";s:4:"cDat";a:3:{s:4:"text";s:25:"
+
+[Describe function...]
+";s:5:"param";a:1:{i:0;a:2:{i:0;s:8:"[string]";i:1;s:43:"$regex: The regular expression to be parsed";}}s:6:"return";a:2:{i:0;s:7:"[array]";i:1;s:21:"The alternative parts";}}s:7:"content";s:0:"";s:12:"content_size";i:272;s:13:"content_lines";i:14;s:6:"atLine";i:400;}i:25;a:4:{s:6:"header";s:64:"function evaluateQuantifier ($quantifier, &$pos, &$min, &$max) {";s:11:"parentClass";s:20:"tx_templavoila_rules";s:4:"cDat";a:3:{s:4:"text";s:263:"
+
+Looks for a quantifier and returns their minimum and maximum values. Note that the position parameter
+is passed by reference. It will be incremented depending on the length of the quantify expression.
+The results for min and max are also returned by reference!
+";s:5:"param";a:4:{i:0;a:2:{i:0;s:8:"[string]";i:1;s:70:"$quantifier: The regular expression which likely contains a quantifier";}i:1;a:2:{i:0;s:9:"[integer]";i:1;s:81:"$pos: The position within the string where the quantifier should be. BY REFERENCE";}i:2;a:2:{i:0;s:9:"[integer]";i:1;s:101:"$min: Used for returning the minimum value, ie. how many times an element should be repeated at least";}i:3;a:2:{i:0;s:9:"[integer]";i:1;s:103:"$max: Used for returning the maximum value, ie. how many times an element should be repeated at maximum";}}s:6:"return";a:2:{i:0;s:6:"[void]";i:1;s:8:"Nothing!";}}s:6:"atLine";i:426;}i:27;a:7:{s:6:"header";s:37:"function getCTypeFromToken ($token) {";s:11:"parentClass";s:20:"tx_templavoila_rules";s:4:"cDat";a:3:{s:4:"text";s:25:"
+
+[Describe function...]
+";s:5:"param";a:1:{i:0;a:2:{i:0;s:6:"[type]";i:1;s:11:"$token: ...";}}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}}s:7:"content";s:0:"";s:12:"content_size";i:10;s:13:"content_lines";i:5;s:6:"atLine";i:483;}}}s:14:"MD5_ae0ea69cd3";a:4:{s:8:"filename";s:13:"cm1/index.php";s:8:"filesize";i:62840;s:6:"header";a:5:{s:4:"text";s:48:"
+
+Class for controlling the TemplaVoila module.
+";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}s:5:"other";a:3:{i:0;s:42:"@author	Kasper Skaarhoj <kasper@typo3.com>";i:1;s:14:"@package TYPO3";i:2;s:26:"@subpackage tx_templavoila";}s:11:"other_index";a:3:{s:7:"@author";a:1:{i:0;s:34:"Kasper Skaarhoj <kasper@typo3.com>";}s:8:"@package";a:1:{i:0;s:6:"TYPO3 ";}s:11:"@subpackage";a:1:{i:0;s:15:"tx_templavoila ";}}}s:3:"DAT";a:23:{i:1;a:8:{s:6:"header";s:47:"class tx_templavoila_cm1 extends t3lib_SCbase {";s:5:"class";i:1;s:11:"parentClass";s:18:"tx_templavoila_cm1";s:4:"cDat";a:5:{s:4:"text";s:48:"
+
+Class for controlling the TemplaVoila module.
+";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}s:5:"other";a:3:{i:0;s:42:"@author	Kasper Skaarhoj <kasper@typo3.com>";i:1;s:14:"@package TYPO3";i:2;s:26:"@subpackage tx_templavoila";}s:11:"other_index";a:3:{s:7:"@author";a:1:{i:0;s:34:"Kasper Skaarhoj <kasper@typo3.com>";}s:8:"@package";a:1:{i:0;s:6:"TYPO3 ";}s:11:"@subpackage";a:1:{i:0;s:15:"tx_templavoila ";}}}s:7:"content";s:0:"";s:12:"content_size";i:611;s:13:"content_lines";i:16;s:6:"atLine";i:96;}i:3;a:7:{s:6:"header";s:26:"function menuConfig()    {";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:4:"cDat";a:3:{s:4:"text";s:75:"
+
+Adds items to the ->MOD_MENU array. Used for the function menu selector.
+";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}}s:7:"content";s:0:"";s:12:"content_size";i:244;s:13:"content_lines";i:12;s:6:"atLine";i:118;}i:5;a:7:{s:6:"header";s:17:"function main()	{";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:4:"cDat";a:3:{s:4:"text";s:86:"
+
+Main function, distributes the load between the frameset, module and display modes.
+";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:4:"void";i:1;s:0:"";}}s:7:"content";s:0:"";s:12:"content_size";i:288;s:13:"content_lines";i:13;s:6:"atLine";i:136;}i:7;a:7:{s:6:"header";s:25:"function printContent()	{";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:4:"cDat";a:3:{s:4:"text";s:149:"
+
+Prints module content. 
+Is only used in case of &mode = "mod" since both "display" mode and frameset is outputted + exiting before this is called.
+";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:4:"void";i:1;s:0:"";}}s:7:"content";s:0:"";s:12:"content_size";i:262;s:13:"content_lines";i:21;s:6:"atLine";i:156;}i:9;a:8:{s:6:"header";s:22:"function main_mode()	{";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:11:"sectionText";a:1:{i:0;s:25:"MODULE content generation";}s:4:"cDat";a:3:{s:4:"text";s:67:"
+
+Main function of the MODULE. Write the content to $this->content
+";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:4:"void";i:1;s:0:"";}}s:7:"content";s:0:"";s:12:"content_size";i:740;s:13:"content_lines";i:21;s:6:"atLine";i:183;}i:11;a:6:{s:6:"header";s:25:"function jumpToUrl(URL)	{";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:7:"content";s:0:"";s:12:"content_size";i:46;s:13:"content_lines";i:2;s:6:"atLine";i:206;}i:13;a:6:{s:6:"header";s:26:"function updPath(inPath)	{";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:7:"content";s:0:"";s:12:"content_size";i:436;s:13:"content_lines";i:16;s:6:"atLine";i:210;}i:15;a:7:{s:6:"header";s:26:"function moduleContent()	{";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:4:"cDat";a:3:{s:4:"text";s:26:"
+
+Creates module content.
+";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:4:"void";i:1;s:0:"";}}s:7:"content";s:0:"";s:12:"content_size";i:10250;s:13:"content_lines";i:226;s:6:"atLine";i:232;}i:17;a:7:{s:6:"header";s:22:"function renderDSO()	{";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:4:"cDat";a:3:{s:4:"text";s:49:"
+
+Renders the display of Data Structure Objects.
+";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:4:"void";i:1;s:0:"";}}s:7:"content";s:0:"";s:12:"content_size";i:3250;s:13:"content_lines";i:63;s:6:"atLine";i:464;}i:19;a:7:{s:6:"header";s:21:"function renderTO()	{";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:4:"cDat";a:3:{s:4:"text";s:43:"
+
+Renders the display of template objects.
+";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:4:"void";i:1;s:0:"";}}s:7:"content";s:0:"";s:12:"content_size";i:6856;s:13:"content_lines";i:137;s:6:"atLine";i:533;}i:21;a:7:{s:6:"header";s:99:"function renderTemplateMapper($displayFile,$path,$dataStruct=array(),$currentMappingInfo=array())	{";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:4:"cDat";a:3:{s:4:"text";s:93:"
+
+Creates the template mapper table + form for either direct file mapping or Template Object
+";s:5:"param";a:4:{i:0;a:2:{i:0;s:6:"string";i:1;s:25:"The abs file name to read";}i:1;a:2:{i:0;s:6:"string";i:1;s:143:"The HTML-path to follow. Eg. 'td#content table[1] tr[1] / INNER | img[0]' or so. Normally comes from clicking a tag-image in the display frame.";}i:2;a:2:{i:0;s:5:"array";i:1;s:28:"The data Structure to map to";}i:3;a:2:{i:0;s:5:"array";i:1;s:31:"The current mapping information";}}s:6:"return";a:2:{i:0;s:6:"string";i:1;s:11:"HTML table.";}}s:7:"content";s:0:"";s:12:"content_size";i:4879;s:13:"content_lines";i:111;s:6:"atLine";i:680;}i:23;a:7:{s:6:"header";s:214:"function drawDataStructureMap($dataStruct,$mappingMode=0,$currentMappingInfo=array(),$pathLevels=array(),$optDat=array(),$contentSplittedByMapping=array(),$level=0,$tRows=array(),$formPrefix='',$path='',$mapOK=1)	{";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:4:"cDat";a:3:{s:4:"text";s:25:"
+
+[Describe function...]
+";s:5:"param";a:11:{i:0;a:2:{i:0;s:6:"[type]";i:1;s:16:"$dataStruct: ...";}i:1;a:2:{i:0;s:6:"[type]";i:1;s:24:"$currentMappingInfo: ...";}i:2;a:2:{i:0;s:6:"[type]";i:1;s:16:"$pathLevels: ...";}i:3;a:2:{i:0;s:6:"[type]";i:1;s:12:"$optDat: ...";}i:4;a:2:{i:0;s:6:"[type]";i:1;s:30:"$contentSplittedByMapping: ...";}i:5;a:2:{i:0;s:6:"[type]";i:1;s:11:"$level: ...";}i:6;a:2:{i:0;s:6:"[type]";i:1;s:11:"$tRows: ...";}i:7;a:2:{i:0;s:6:"[type]";i:1;s:16:"$formPrefix: ...";}i:8;a:2:{i:0;s:6:"[type]";i:1;s:10:"$path: ...";}i:9;a:2:{i:0;s:6:"[type]";i:1;s:10:"$path: ...";}i:10;a:2:{i:0;s:6:"[type]";i:1;s:11:"$mapOK: ...";}}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}}s:7:"content";s:0:"";s:12:"content_size";i:14454;s:13:"content_lines";i:261;s:6:"atLine";i:808;}i:25;a:7:{s:6:"header";s:60:"function substEtypeWithRealStuff(&$elArray,$v_sub=array())	{";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:4:"cDat";a:3:{s:4:"text";s:25:"
+
+[Describe function...]
+";s:5:"param";a:2:{i:0;a:2:{i:0;s:6:"[type]";i:1;s:14:"$$elArray: ...";}i:1;a:2:{i:0;s:6:"[type]";i:1;s:11:"$v_sub: ...";}}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}}s:7:"content";s:0:"";s:12:"content_size";i:6057;s:13:"content_lines";i:213;s:6:"atLine";i:1077;}i:27;a:7:{s:6:"header";s:56:"function substEtypeWithRealStuff_contentInfo($content)	{";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:4:"cDat";a:3:{s:4:"text";s:85:"
+
+Analyzes the input content for various stuff which can be used to generate the DS.
+";s:5:"param";a:1:{i:0;a:2:{i:0;s:6:"[type]";i:1;s:13:"$content: ...";}}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}}s:7:"content";s:0:"";s:12:"content_size";i:625;s:13:"content_lines";i:29;s:6:"atLine";i:1297;}i:29;a:7:{s:6:"header";s:52:"function getDataStructFromDSO($datString,$file='')	{";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:4:"cDat";a:3:{s:4:"text";s:45:"
+
+Returns data structure from the $datString
+";s:5:"param";a:2:{i:0;a:2:{i:0;s:6:"[type]";i:1;s:15:"$datString: ...";}i:1;a:2:{i:0;s:6:"[type]";i:1;s:10:"$file: ...";}}s:6:"return";a:2:{i:0;s:5:"mixed";i:1;s:129:"The variable $dataStruct. Should be array. If string, then no structures was found and the function returns the XML parser error.";}}s:7:"content";s:0:"";s:12:"content_size";i:173;s:13:"content_lines";i:8;s:6:"atLine";i:1334;}i:31;a:7:{s:6:"header";s:45:"function linkForDisplayOfPath($title,$path)	{";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:4:"cDat";a:3:{s:4:"text";s:85:"
+
+Creating a link to the display frame for display of the "HTML-path" given as $path
+";s:5:"param";a:2:{i:0;a:2:{i:0;s:6:"string";i:1;s:16:"The text to link";}i:1;a:2:{i:0;s:6:"string";i:1;s:29:"The path string ("HTML-path")";}}s:6:"return";a:2:{i:0;s:6:"string";i:1;s:41:"HTML link, pointing to the display frame.";}}s:7:"content";s:0:"";s:12:"content_size";i:291;s:13:"content_lines";i:11;s:6:"atLine";i:1350;}i:33;a:7:{s:6:"header";s:33:"function linkThisScript($array)	{";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:4:"cDat";a:3:{s:4:"text";s:25:"
+
+[Describe function...]
+";s:5:"param";a:1:{i:0;a:2:{i:0;s:6:"[type]";i:1;s:11:"$array: ...";}}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}}s:7:"content";s:0:"";s:12:"content_size";i:293;s:13:"content_lines";i:11;s:6:"atLine";i:1368;}i:35;a:7:{s:6:"header";s:75:"function makeIframeForVisual($file,$path,$limitTags,$showOnly,$preview=0)	{";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:4:"cDat";a:3:{s:4:"text";s:25:"
+
+[Describe function...]
+";s:5:"param";a:5:{i:0;a:2:{i:0;s:6:"[type]";i:1;s:10:"$file: ...";}i:1;a:2:{i:0;s:6:"[type]";i:1;s:10:"$path: ...";}i:2;a:2:{i:0;s:6:"[type]";i:1;s:15:"$limitTags: ...";}i:3;a:2:{i:0;s:6:"[type]";i:1;s:14:"$showOnly: ...";}i:4;a:2:{i:0;s:6:"[type]";i:1;s:13:"$preview: ...";}}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}}s:7:"content";s:0:"";s:12:"content_size";i:348;s:13:"content_lines";i:8;s:6:"atLine";i:1390;}i:37;a:7:{s:6:"header";s:62:"function explodeMappingToTagsStr($mappingToTags,$unsetAll=0)	{";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:4:"cDat";a:3:{s:4:"text";s:25:"
+
+[Describe function...]
+";s:5:"param";a:2:{i:0;a:2:{i:0;s:6:"[type]";i:1;s:19:"$mappingToTags: ...";}i:1;a:2:{i:0;s:6:"[type]";i:1;s:14:"$unsetAll: ...";}}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}}s:7:"content";s:0:"";s:12:"content_size";i:305;s:13:"content_lines";i:10;s:6:"atLine";i:1406;}i:39;a:7:{s:6:"header";s:44:"function unsetArrayPath(&$dataStruct,$ref)	{";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:4:"cDat";a:3:{s:4:"text";s:25:"
+
+[Describe function...]
+";s:5:"param";a:2:{i:0;a:2:{i:0;s:6:"[type]";i:1;s:17:"$$dataStruct: ...";}i:1;a:2:{i:0;s:6:"[type]";i:1;s:9:"$ref: ...";}}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}}s:7:"content";s:0:"";s:12:"content_size";i:182;s:13:"content_lines";i:9;s:6:"atLine";i:1424;}i:41;a:7:{s:6:"header";s:76:"function cleanUpMappingInfoAccordingToDS(&$currentMappingInfo,$dataStruct)	{";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:4:"cDat";a:3:{s:4:"text";s:25:"
+
+[Describe function...]
+";s:5:"param";a:2:{i:0;a:2:{i:0;s:6:"[type]";i:1;s:25:"$$currentMappingInfo: ...";}i:1;a:2:{i:0;s:6:"[type]";i:1;s:16:"$dataStruct: ...";}}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}}s:7:"content";s:0:"";s:12:"content_size";i:533;s:13:"content_lines";i:29;s:6:"atLine";i:1441;}i:43;a:5:{s:6:"header";s:25:"function main_display()	{";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:11:"sectionText";a:1:{i:0;s:7:"DISPLAY";}s:4:"cDat";a:3:{s:4:"text";s:47:"
+
+Outputs the display for the display frame...
+";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:4:"void";i:1;s:8:"Exits...";}}s:6:"atLine";i:1476;}i:45;a:7:{s:6:"header";s:78:"function displayFileContentWithMarkup($content,$path,$relPathFix,$limitTags)	{";s:11:"parentClass";s:18:"tx_templavoila_cm1";s:4:"cDat";a:3:{s:4:"text";s:75:"
+
+This will mark up the part of the HTML file which is pointed to by $path
+";s:5:"param";a:4:{i:0;a:2:{i:0;s:6:"string";i:1;s:28:"The file content as a string";}i:1;a:2:{i:0;s:6:"string";i:1;s:27:"The "HTML-path" to split by";}i:2;a:2:{i:0;s:6:"string";i:1;s:45:"The rel-path string to fix images/links with.";}i:3;a:2:{i:0;s:6:"[type]";i:1;s:15:"$limitTags: ...";}}s:6:"return";a:2:{i:0;s:4:"void";i:1;s:8:"Exits...";}}s:7:"content";s:0:"";s:12:"content_size";i:1421;s:13:"content_lines";i:49;s:6:"atLine";i:1542;}}}s:14:"MD5_19aaeae789";a:4:{s:8:"filename";s:14:"mod1/index.php";s:8:"filesize";i:48894;s:6:"header";a:5:{s:4:"text";s:49:"
+
+Module 'Page' for the 'templavoila' extension.
+";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}s:5:"other";a:4:{i:0;s:44:"@author     Robert Lemke <rl@robertlemke.de>";i:1;s:46:"@coauthor   Kasper Skaarhoj <kasper@typo3.com>";i:2;s:14:"@package TYPO3";i:3;s:26:"@subpackage tx_templavoila";}s:11:"other_index";a:4:{s:7:"@author";a:1:{i:0;s:32:"Robert Lemke <rl@robertlemke.de>";}s:9:"@coauthor";a:1:{i:0;s:34:"Kasper Skaarhoj <kasper@typo3.com>";}s:8:"@package";a:1:{i:0;s:6:"TYPO3 ";}s:11:"@subpackage";a:1:{i:0;s:15:"tx_templavoila ";}}}s:3:"DAT";a:27:{i:1;a:8:{s:6:"header";s:51:"class tx_templavoila_module1 extends t3lib_SCbase {";s:5:"class";i:1;s:11:"parentClass";s:22:"tx_templavoila_module1";s:4:"cDat";a:5:{s:4:"text";s:49:"
+
+Module 'Page' for the 'templavoila' extension.
+";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}s:5:"other";a:4:{i:0;s:44:"@author     Robert Lemke <rl@robertlemke.de>";i:1;s:46:"@coauthor   Kasper Skaarhoj <kasper@typo3.com>";i:2;s:14:"@package TYPO3";i:3;s:26:"@subpackage tx_templavoila";}s:11:"other_index";a:4:{s:7:"@author";a:1:{i:0;s:32:"Robert Lemke <rl@robertlemke.de>";}s:9:"@coauthor";a:1:{i:0;s:34:"Kasper Skaarhoj <kasper@typo3.com>";}s:8:"@package";a:1:{i:0;s:6:"TYPO3 ";}s:11:"@subpackage";a:1:{i:0;s:15:"tx_templavoila ";}}}s:7:"content";s:0:"";s:12:"content_size";i:221;s:13:"content_lines";i:7;s:6:"atLine";i:98;}i:3;a:7:{s:6:"header";s:20:"function init()    {";s:11:"parentClass";s:22:"tx_templavoila_module1";s:4:"cDat";a:3:{s:4:"text";s:17:"
+
+Initialisation
+";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:4:"void";i:1;s:0:"";}}s:7:"content";s:0:"";s:12:"content_size";i:92;s:13:"content_lines";i:4;s:6:"atLine";i:111;}i:5;a:7:{s:6:"header";s:23:"function menuConfig()	{";s:11:"parentClass";s:22:"tx_templavoila_module1";s:4:"cDat";a:3:{s:4:"text";s:25:"
+
+Preparing menu content
+";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:4:"void";i:1;s:0:"";}}s:7:"content";s:0:"";s:12:"content_size";i:690;s:13:"content_lines";i:21;s:6:"atLine";i:121;}i:7;a:7:{s:6:"header";s:20:"function main()    {";s:11:"parentClass";s:22:"tx_templavoila_module1";s:4:"cDat";a:3:{s:4:"text";s:31:"
+
+Main function of the module.
+";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:4:"void";i:1;s:8:"Nothing.";}}s:7:"content";s:0:"";s:12:"content_size";i:323;s:13:"content_lines";i:7;s:6:"atLine";i:148;}i:9;a:6:{s:6:"header";s:25:"function jumpToUrl(URL)	{";s:11:"parentClass";s:22:"tx_templavoila_module1";s:7:"content";s:0:"";s:12:"content_size";i:2264;s:13:"content_lines";i:75;s:6:"atLine";i:167;}i:11;a:7:{s:6:"header";s:40:"function cmd_createNewRecord ($params) {";s:11:"parentClass";s:22:"tx_templavoila_module1";s:4:"cDat";a:3:{s:4:"text";s:111:"
+*****************************************
+
+Command functions
+
+*******************************************/
+	
+	";s:5:"param";a:1:{i:0;a:2:{i:0;s:6:"[type]";i:1;s:12:"$params: ...";}}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}}s:7:"content";s:0:"";s:12:"content_size";i:228;s:13:"content_lines";i:8;s:6:"atLine";i:253;}i:13;a:6:{s:6:"header";s:37:"function cmd_unlinkRecord ($params) {";s:11:"parentClass";s:22:"tx_templavoila_module1";s:7:"content";s:0:"";s:12:"content_size";i:130;s:13:"content_lines";i:4;s:6:"atLine";i:268;}i:15;a:6:{s:6:"header";s:36:"function cmd_pasteRecord ($params) {";s:11:"parentClass";s:22:"tx_templavoila_module1";s:7:"content";s:0:"";s:12:"content_size";i:314;s:13:"content_lines";i:12;s:6:"atLine";i:279;}i:17;a:8:{s:6:"header";s:36:"function renderEditPageScreen()    {";s:11:"parentClass";s:22:"tx_templavoila_module1";s:11:"sectionText";a:1:{i:0;s:19:"Rendering functions";}s:4:"cDat";a:3:{s:4:"text";s:81:"
+
+Displays the default view of a page, showing the nested structure of elements.
+";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:6:"string";i:1;s:19:"The modules content";}}s:7:"content";s:0:"";s:12:"content_size";i:1090;s:13:"content_lines";i:25;s:6:"atLine";i:297;}i:19;a:7:{s:6:"header";s:48:"function renderCreatePageScreen ($positionPid) {";s:11:"parentClass";s:22:"tx_templavoila_module1";s:4:"cDat";a:3:{s:4:"text";s:36:"
+
+Creates the screen for "new page"
+";s:5:"param";a:1:{i:0;a:2:{i:0;s:7:"integer";i:1;s:247:"Position id. Can be positive and negative depending of where the new page is going: Negative always points to a position AFTER the page having the abs. value of the positionId. Positive numbers means to create as the first subpage to another page.";}}s:6:"return";a:2:{i:0;s:6:"string";i:1;s:30:"Content for the screen output.";}}s:7:"content";s:0:"";s:12:"content_size";i:3427;s:13:"content_lines";i:78;s:6:"atLine";i:329;}i:21;a:7:{s:6:"header";s:78:"function renderTemplateSelector ($storageFolderPID, $templateType='tmplobj') {";s:11:"parentClass";s:22:"tx_templavoila_module1";s:4:"cDat";a:3:{s:4:"text";s:33:"
+
+Renders the template selector.
+";s:5:"param";a:2:{i:0;a:2:{i:0;s:6:"[type]";i:1;s:22:"$storageFolderPID: ...";}i:1;a:2:{i:0;s:6:"[type]";i:1;s:18:"$templateType: ...";}}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}}s:7:"content";s:0:"";s:12:"content_size";i:1427;s:13:"content_lines";i:34;s:6:"atLine";i:415;}i:23;a:7:{s:6:"header";s:75:"function renderFrameWorkBasic($dsInfo,$parentPos='',$clipboardElInPath=0)	{";s:11:"parentClass";s:22:"tx_templavoila_module1";s:4:"cDat";a:3:{s:4:"text";s:66:"
+
+Renders the "basic" display framework.
+Calls itself recursively
+";s:5:"param";a:3:{i:0;a:2:{i:0;s:5:"array";i:1;s:41:"DataStructure info array (the whole tree)";}i:1;a:2:{i:0;s:6:"string";i:1;s:82:"Pointer to parent element: table, id, sheet, fieldname, counter (position in list)";}i:2;a:2:{i:0;s:7:"boolean";i:1;s:280:"Tells whether any element registered on the clipboard is found in the current "path" of the recursion. If true, it normally means that no paste-in symbols are shown since elements are not allowed to be pasted/referenced to a position within themselves (would result in recursion).";}}s:6:"return";a:2:{i:0;s:6:"string";i:1;s:4:"HTML";}}s:7:"content";s:0:"";s:12:"content_size";i:8433;s:13:"content_lines";i:134;s:6:"atLine";i:459;}i:25;a:7:{s:6:"header";s:26:"function renderNonUsed()	{";s:11:"parentClass";s:22:"tx_templavoila_module1";s:4:"cDat";a:5:{s:4:"text";s:119:"
+
+Displays a list of local content elements on the page which were NOT used in the hierarchical structure of the page.
+";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:6:"string";i:1;s:19:"Display output HTML";}s:5:"other";a:1:{i:0;s:156:"@todo	Clean up this list so it becomes full-features for the elements shown (having all the editing, copy, cut, blablabla features that other elements have)";}s:11:"other_index";a:1:{s:5:"@todo";a:1:{i:0;s:150:"Clean up this list so it becomes full-features for the elements shown (having all the editing, copy, cut, blablabla features that other elements have)";}}}s:7:"content";s:0:"";s:12:"content_size";i:859;s:13:"content_lines";i:16;s:6:"atLine";i:600;}i:27;a:7:{s:6:"header";s:37:"function editLink($str,$table,$uid)	{";s:11:"parentClass";s:22:"tx_templavoila_module1";s:4:"cDat";a:3:{s:4:"text";s:36:"
+
+Returns an HTML link for editing 
+";s:5:"param";a:3:{i:0;a:2:{i:0;s:6:"[type]";i:1;s:9:"$str: ...";}i:1;a:2:{i:0;s:6:"[type]";i:1;s:11:"$table: ...";}i:2;a:2:{i:0;s:6:"[type]";i:1;s:9:"$uid: ...";}}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}}s:7:"content";s:0:"";s:12:"content_size";i:180;s:13:"content_lines";i:4;s:6:"atLine";i:625;}i:29;a:7:{s:6:"header";s:32:"function linkNew($str,$params)	{";s:11:"parentClass";s:22:"tx_templavoila_module1";s:4:"cDat";a:3:{s:4:"text";s:49:"
+
+Returns an HTML link for creating a new record
+";s:5:"param";a:2:{i:0;a:2:{i:0;s:8:"[string]";i:1;s:26:"$str: The label (or image)";}i:1;a:2:{i:0;s:8:"[string]";i:1;s:95:"$params: The parameters for creating the new record. Example: pages:78:sDEF:field_contentarea:0";}}s:6:"return";a:2:{i:0;s:8:"[string]";i:1;s:57:"HTML anchor tag containing the label and the correct link";}}s:7:"content";s:0:"";s:12:"content_size";i:109;s:13:"content_lines";i:3;s:6:"atLine";i:637;}i:31;a:7:{s:6:"header";s:35:"function linkUnlink($str,$params)	{";s:11:"parentClass";s:22:"tx_templavoila_module1";s:4:"cDat";a:3:{s:4:"text";s:25:"
+
+[Describe function...]
+";s:5:"param";a:2:{i:0;a:2:{i:0;s:6:"[type]";i:1;s:9:"$str: ...";}i:1;a:2:{i:0;s:6:"[type]";i:1;s:12:"$params: ...";}}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}}s:7:"content";s:0:"";s:12:"content_size";i:106;s:13:"content_lines";i:3;s:6:"atLine";i:648;}i:33;a:7:{s:6:"header";s:47:"function linkPaste($str,$params,$target,$cmd)	{";s:11:"parentClass";s:22:"tx_templavoila_module1";s:4:"cDat";a:3:{s:4:"text";s:25:"
+
+[Describe function...]
+";s:5:"param";a:4:{i:0;a:2:{i:0;s:6:"[type]";i:1;s:9:"$str: ...";}i:1;a:2:{i:0;s:6:"[type]";i:1;s:12:"$params: ...";}i:2;a:2:{i:0;s:6:"[type]";i:1;s:12:"$target: ...";}i:3;a:2:{i:0;s:6:"[type]";i:1;s:9:"$cmd: ...";}}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}}s:7:"content";s:0:"";s:12:"content_size";i:191;s:13:"content_lines";i:3;s:6:"atLine";i:661;}i:35;a:7:{s:6:"header";s:44:"function linkCopyCut($str,$parentPos,$cmd)	{";s:11:"parentClass";s:22:"tx_templavoila_module1";s:4:"cDat";a:3:{s:4:"text";s:25:"
+
+[Describe function...]
+";s:5:"param";a:3:{i:0;a:2:{i:0;s:6:"[type]";i:1;s:9:"$str: ...";}i:1;a:2:{i:0;s:6:"[type]";i:1;s:15:"$parentPos: ...";}i:2;a:2:{i:0;s:6:"[type]";i:1;s:9:"$cmd: ...";}}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}}s:7:"content";s:0:"";s:12:"content_size";i:151;s:13:"content_lines";i:3;s:6:"atLine";i:673;}i:37;a:7:{s:6:"header";s:28:"function printContent()    {";s:11:"parentClass";s:22:"tx_templavoila_module1";s:4:"cDat";a:3:{s:4:"text";s:29:"
+
+Prints out the module HTML
+";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:4:"void";i:1;s:0:"";}}s:7:"content";s:0:"";s:12:"content_size";i:177;s:13:"content_lines";i:23;s:6:"atLine";i:682;}i:39;a:8:{s:6:"header";s:46:"function createPage($pageArray,$positionPid)	{";s:11:"parentClass";s:22:"tx_templavoila_module1";s:11:"sectionText";a:1:{i:0;s:10:"Processing";}s:4:"cDat";a:3:{s:4:"text";s:21:"
+
+Creates a new page
+";s:5:"param";a:2:{i:0;a:2:{i:0;s:7:"[array]";i:1;s:15:"$pageArray: ...";}i:1;a:2:{i:0;s:9:"[integer]";i:1;s:17:"$positionPid: ...";}}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}}s:7:"content";s:0:"";s:12:"content_size";i:338;s:13:"content_lines";i:11;s:6:"atLine";i:713;}i:41;a:7:{s:6:"header";s:40:"function insertRecord($createNew,$row)	{";s:11:"parentClass";s:22:"tx_templavoila_module1";s:4:"cDat";a:3:{s:4:"text";s:46:"
+
+Inserts a new record (page content element)
+";s:5:"param";a:2:{i:0;a:2:{i:0;s:6:"[type]";i:1;s:56:"$createNew: consists of several parts separated by colon";}i:1;a:2:{i:0;s:7:"[array]";i:1;s:54:"$row: Array of parameters for creating the new record.";}}s:6:"return";a:2:{i:0;s:6:"[void]";i:1;s:4:"void";}}s:7:"content";s:0:"";s:12:"content_size";i:1900;s:13:"content_lines";i:55;s:6:"atLine";i:732;}i:43;a:7:{s:6:"header";s:56:"function pasteRecord($pasteCmd, $target, $destination)	{";s:11:"parentClass";s:22:"tx_templavoila_module1";s:4:"cDat";a:3:{s:4:"text";s:25:"
+
+[Describe function...]
+";s:5:"param";a:3:{i:0;a:2:{i:0;s:6:"[type]";i:1;s:14:"$pasteCmd: ...";}i:1;a:2:{i:0;s:6:"[type]";i:1;s:12:"$target: ...";}i:2;a:2:{i:0;s:6:"[type]";i:1;s:17:"$destination: ...";}}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}}s:7:"content";s:0:"";s:12:"content_size";i:7676;s:13:"content_lines";i:181;s:6:"atLine";i:796;}i:45;a:7:{s:6:"header";s:44:"function getStorageFolderPid($positionPid)	{";s:11:"parentClass";s:22:"tx_templavoila_module1";s:4:"cDat";a:3:{s:4:"text";s:139:"
+
+Gets the page ID of the folder containing the template objects (for our template selector).
+The storage folder is used for that purpose.
+";s:5:"param";a:1:{i:0;a:2:{i:0;s:9:"[integer]";i:1;s:12:"$positionPid";}}s:6:"return";a:2:{i:0;s:9:"[integer]";i:1;s:25:"PID of the storage folder";}}s:7:"content";s:0:"";s:12:"content_size";i:385;s:13:"content_lines";i:11;s:6:"atLine";i:985;}i:47;a:7:{s:6:"header";s:63:"function getDStreeForPage($table,$id,$prevRecList='',$row='')	{";s:11:"parentClass";s:22:"tx_templavoila_module1";s:4:"cDat";a:3:{s:4:"text";s:1:"
+";s:5:"param";a:4:{i:0;a:2:{i:0;s:6:"[type]";i:1;s:11:"$table: ...";}i:1;a:2:{i:0;s:6:"[type]";i:1;s:8:"$id: ...";}i:2;a:2:{i:0;s:6:"[type]";i:1;s:17:"$prevRecList: ...";}i:3;a:2:{i:0;s:6:"[type]";i:1;s:9:"$row: ...";}}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}}s:7:"content";s:0:"";s:12:"content_size";i:6736;s:13:"content_lines";i:117;s:6:"atLine";i:1004;}i:49;a:7:{s:6:"header";s:55:"function getExpandedDataStructure($table,$field,$row)	{";s:11:"parentClass";s:22:"tx_templavoila_module1";s:4:"cDat";a:3:{s:4:"text";s:83:"
+
+Returns the data structure for a flexform field ($field) from $table (from $row)
+";s:5:"param";a:3:{i:0;a:2:{i:0;s:6:"string";i:1;s:14:"The table name";}i:1;a:2:{i:0;s:6:"string";i:1;s:14:"The field name";}i:2;a:2:{i:0;s:5:"array";i:1;s:74:"The data row (used to get DS if DS is dependant on the data in the record)";}}s:6:"return";a:2:{i:0;s:5:"array";i:1;s:51:"The data structure, expanded for all sheets inside.";}}s:7:"content";s:0:"";s:12:"content_size";i:698;s:13:"content_lines";i:23;s:6:"atLine";i:1130;}i:51;a:4:{s:6:"header";s:65:"function evaluateRuleOnElements($rules,$ruleConstants,$elArray)	{";s:11:"parentClass";s:22:"tx_templavoila_module1";s:4:"cDat";a:3:{s:4:"text";s:117:"
+
+This evaluates whether a certain rule is acceptable for the elements found in the field for which the rule applies
+";s:5:"param";a:3:{i:0;a:2:{i:0;s:6:"string";i:1;s:14:"The rule regex";}i:1;a:2:{i:0;s:6:"string";i:1;s:18:"The rule constants";}i:2;a:2:{i:0;s:5:"array";i:1;s:38:"An array of tt_content element records";}}s:6:"return";a:2:{i:0;s:5:"array";i:1;s:83:"Array with information about the rule status (includes OK flag, the rule text etc.)";}}s:6:"atLine";i:1162;}i:53;a:7:{s:6:"header";s:52:"function getDefaultElements($rules,$ruleConstants)	{";s:11:"parentClass";s:22:"tx_templavoila_module1";s:4:"cDat";a:3:{s:4:"text";s:127:"
+
+Returns an array of arrays with default values for records to create in tt_content table based on the rule/+constants given.
+";s:5:"param";a:2:{i:0;a:2:{i:0;s:6:"string";i:1;s:14:"The rule regex";}i:1;a:2:{i:0;s:6:"string";i:1;s:18:"The rule constants";}}s:6:"return";a:2:{i:0;s:5:"array";i:1;s:70:"An array of arrays with keynames matching fields in tt_content to set.";}}s:7:"content";s:0:"";s:12:"content_size";i:412;s:13:"content_lines";i:18;s:6:"atLine";i:1173;}}}s:14:"MD5_a9c8193694";a:4:{s:8:"filename";s:32:"pi1/class.tx_templavoila_pi1.php";s:8:"filesize";i:12384;s:6:"header";a:5:{s:4:"text";s:61:"
+
+Plugin 'Flexible Content' for the 'templavoila' extension.
+";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}s:5:"other";a:3:{i:0;s:45:"@author    Kasper Skaarhoj <kasper@typo3.com>";i:1;s:14:"@package TYPO3";i:2;s:26:"@subpackage tx_templavoila";}s:11:"other_index";a:3:{s:7:"@author";a:1:{i:0;s:34:"Kasper Skaarhoj <kasper@typo3.com>";}s:8:"@package";a:1:{i:0;s:6:"TYPO3 ";}s:11:"@subpackage";a:1:{i:0;s:15:"tx_templavoila ";}}}s:3:"DAT";a:6:{i:1;a:8:{s:6:"header";s:47:"class tx_templavoila_pi1 extends tslib_pibase {";s:5:"class";i:1;s:11:"parentClass";s:18:"tx_templavoila_pi1";s:4:"cDat";a:5:{s:4:"text";s:61:"
+
+Plugin 'Flexible Content' for the 'templavoila' extension.
+";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}s:5:"other";a:3:{i:0;s:45:"@author    Kasper Skaarhoj <kasper@typo3.com>";i:1;s:14:"@package TYPO3";i:2;s:26:"@subpackage tx_templavoila";}s:11:"other_index";a:3:{s:7:"@author";a:1:{i:0;s:34:"Kasper Skaarhoj <kasper@typo3.com>";}s:8:"@package";a:1:{i:0;s:6:"TYPO3 ";}s:11:"@subpackage";a:1:{i:0;s:15:"tx_templavoila ";}}}s:7:"content";s:0:"";s:12:"content_size";i:389;s:13:"content_lines";i:8;s:6:"atLine";i:65;}i:3;a:7:{s:6:"header";s:34:"function main($content,$conf)    {";s:11:"parentClass";s:18:"tx_templavoila_pi1";s:4:"cDat";a:3:{s:4:"text";s:74:"
+
+Main function for rendering of Flexible Content elements of TemplaVoila
+";s:5:"param";a:2:{i:0;a:2:{i:0;s:6:"string";i:1;s:31:"Standard content input. Ignore.";}i:1;a:2:{i:0;s:5:"array";i:1;s:32:"TypoScript array for the plugin.";}}s:6:"return";a:2:{i:0;s:6:"string";i:1;s:47:"HTML content for the Flexible Content elements.";}}s:7:"content";s:0:"";s:12:"content_size";i:98;s:13:"content_lines";i:4;s:6:"atLine";i:81;}i:5;a:7:{s:6:"header";s:39:"function main_page($content,$conf)    {";s:11:"parentClass";s:18:"tx_templavoila_pi1";s:4:"cDat";a:3:{s:4:"text";s:63:"
+
+Main function for rendering of Page Templates of TemplaVoila
+";s:5:"param";a:2:{i:0;a:2:{i:0;s:6:"string";i:1;s:31:"Standard content input. Ignore.";}i:1;a:2:{i:0;s:5:"array";i:1;s:32:"TypoScript array for the plugin.";}}s:6:"return";a:2:{i:0;s:6:"string";i:1;s:44:"HTML content for the Page Template elements.";}}s:7:"content";s:0:"";s:12:"content_size";i:907;s:13:"content_lines";i:23;s:6:"atLine";i:93;}i:7;a:7:{s:6:"header";s:26:"function initVars($conf)	{";s:11:"parentClass";s:18:"tx_templavoila_pi1";s:4:"cDat";a:3:{s:4:"text";s:67:"
+
+Will set up various stuff in the class based on input TypoScript
+";s:5:"param";a:1:{i:0;a:2:{i:0;s:5:"array";i:1;s:18:"TypoScript options";}}s:6:"return";a:2:{i:0;s:4:"void";i:1;s:0:"";}}s:7:"content";s:0:"";s:12:"content_size";i:86;s:13:"content_lines";i:3;s:6:"atLine";i:123;}i:9;a:4:{s:6:"header";s:37:"function renderElement($row,$table)	{";s:11:"parentClass";s:18:"tx_templavoila_pi1";s:4:"cDat";a:3:{s:4:"text";s:242:"
+
+Common function for rendering of the Flexible Content / Page Templates.
+For Page Templates the input row may be manipulated to contain the proper reference to a data structure (pages can have those inherited which content elements cannot).
+";s:5:"param";a:2:{i:0;a:2:{i:0;s:5:"array";i:1;s:64:"Current data record, either a tt_content element or page record.";}i:1;a:2:{i:0;s:6:"string";i:1;s:43:"Table name, either "pages" or "tt_content".";}}s:6:"return";a:2:{i:0;s:6:"string";i:1;s:12:"HTML output.";}}s:6:"atLine";i:135;}i:11;a:7:{s:6:"header";s:83:"function processDataValues(&$dataValues,$DSelements,$TOelements,$valueKey='vDEF')	{";s:11:"parentClass";s:18:"tx_templavoila_pi1";s:4:"cDat";a:3:{s:4:"text";s:327:"
+
+Performing pre-processing of the data array. 
+This will transform the data in the data array according to various rules before the data is merged with the template HTML
+Notice that $dataValues is changed internally as a reference so the function returns no content but internally changes the passed variable for $dataValues.
+";s:5:"param";a:4:{i:0;a:2:{i:0;s:5:"array";i:1;s:76:"The data values from the XML file (converted to array). Passed by reference.";}i:1;a:2:{i:0;s:5:"array";i:1;s:78:"The data structure definition which the data in the dataValues array reflects.";}i:2;a:2:{i:0;s:5:"array";i:1;s:78:"The local XML processing information found in associated Template Objects (TO)";}i:3;a:2:{i:0;s:6:"string";i:1;s:9:"Value key";}}s:6:"return";a:2:{i:0;s:4:"void";i:1;s:0:"";}}s:7:"content";s:0:"";s:12:"content_size";i:4540;s:13:"content_lines";i:101;s:6:"atLine";i:200;}}}s:14:"MD5_b706754668";a:4:{s:8:"filename";s:32:"pi2/class.tx_templavoila_pi2.php";s:8:"filesize";i:2688;s:6:"header";a:5:{s:4:"text";s:56:"
+
+Plugin 'Data Source' for the 'templavoila' extension.
+";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}s:5:"other";a:3:{i:0;s:45:"@author    Kasper Skaarhoj <kasper@typo3.com>";i:1;s:14:"@package TYPO3";i:2;s:26:"@subpackage tx_templavoila";}s:11:"other_index";a:3:{s:7:"@author";a:1:{i:0;s:34:"Kasper Skaarhoj <kasper@typo3.com>";}s:8:"@package";a:1:{i:0;s:6:"TYPO3 ";}s:11:"@subpackage";a:1:{i:0;s:15:"tx_templavoila ";}}}s:3:"DAT";a:2:{i:1;a:5:{s:6:"header";s:47:"class tx_templavoila_pi2 extends tslib_pibase {";s:5:"class";i:1;s:11:"parentClass";s:18:"tx_templavoila_pi2";s:4:"cDat";a:5:{s:4:"text";s:56:"
+
+Plugin 'Data Source' for the 'templavoila' extension.
+";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}s:5:"other";a:3:{i:0;s:45:"@author    Kasper Skaarhoj <kasper@typo3.com>";i:1;s:14:"@package TYPO3";i:2;s:26:"@subpackage tx_templavoila";}s:11:"other_index";a:3:{s:7:"@author";a:1:{i:0;s:34:"Kasper Skaarhoj <kasper@typo3.com>";}s:8:"@package";a:1:{i:0;s:6:"TYPO3 ";}s:11:"@subpackage";a:1:{i:0;s:15:"tx_templavoila ";}}}s:6:"atLine";i:57;}i:3;a:7:{s:6:"header";s:34:"function main($content,$conf)    {";s:11:"parentClass";s:18:"tx_templavoila_pi2";s:4:"cDat";a:3:{s:4:"text";s:30:"
+
+[Put your description here]
+";s:5:"param";a:2:{i:0;a:2:{i:0;s:6:"[type]";i:1;s:13:"$content: ...";}i:1;a:2:{i:0;s:6:"[type]";i:1;s:10:"$conf: ...";}}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}}s:7:"content";s:0:"";s:12:"content_size";i:469;s:13:"content_lines";i:15;s:6:"atLine";i:69;}}}}}

@@ -12,6 +12,12 @@ if (TYPO3_MODE=='BE')	{
 
 		// Adding backend module:
   t3lib_extMgm::addModule("web","txtemplavoilaM1","top",t3lib_extMgm::extPath($_EXTKEY)."mod1/");
+
+  	// Remove default Page module (layout) manually
+  $tmp = $GLOBALS['TBE_MODULES']['web'];
+  $GLOBALS['TBE_MODULES']['web'] = str_replace (',,',',',str_replace ('layout','',$tmp));
+  unset ($GLOBALS['TBE_MODULES']['_PATHS']['web_layout']);
+
 }
 
 	// Adding tables:

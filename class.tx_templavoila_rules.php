@@ -33,36 +33,45 @@
  *
  *
  *
- *   64: class tx_templavoila_rules 
- *   78:     function evaluateRulesOnElements ($rules, $ruleConstants, $elArray) 
- *   99:     function getDefaultElements($rules,$ruleConstants)	
- *  119:     function parseRegexIntoArray ($regex) 
- *  187:     function getElementsArray ($elements, $min=1, $max=1, $type='simple', $negate=0) 
- *  208:     function isElement ($char) 
- *  221:     function evaluateQuantifier ($quantifier, &$pos, &$min, &$max) 
- *  267:     function getCTypeFromToken ($token) 
+ *   76: class tx_templavoila_rules 
+ *   89:     function evaluateRulesOnElements ($rules, $ruleConstants, $elArray) 
+ *  115:     function getDefaultElements($rules,$ruleConstants)	
  *
- * TOTAL FUNCTIONS: 7
+ *              SECTION: Rule processing / analyzing functions
+ *  141:     function parseRegexIntoArray ($regex) 
+ *  222:     function checkRulesCompliance ($rulesArr, $elementsArr, $prevStatusArr='') 
+ *
+ *              SECTION: Human Readable Rules Functions
+ *  262:     function getHumanReadableRules ($rules,$ruleConstants)	
+ *  278:     function parseRulesArrayIntoDescription ($rulesArr, $constantsArr, $level=0) 
+ *  313:     function getQuantifierAsDescription ($min, $max) 
+ *  346:     function getElementNameFromConstantsMapping ($element, $constantsArr) 
+ *
+ *              SECTION: Helper functions
+ *  369:     function isElement ($char) 
+ *  384:     function extractInnerBrace ($regex, $startPos) 
+ *  414:     function explodeAlternatives ($regex) 
+ *  440:     function evaluateQuantifier ($quantifier, &$pos, &$min, &$max) 
+ *  497:     function getCTypeFromToken ($token) 
+ *
+ * TOTAL FUNCTIONS: 13
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
 
 
 
-
-
-
-
-
 /**
  * Class 'tx_templavoila_rules' for the 'templavoila' extension.
+ *
+ * This library contains several functions for evaluating and output of rules
+ * being defined in data structure objects.
  * 
- * @author     Robert Lemke <rl@robertlemke.de>
- * @package TYPO3
- * @subpackage tx_templavoila
+ * @author		Robert Lemke <rl@robertlemke.de>
+ * @package		TYPO3
+ * @subpackage	tx_templavoila
  */
 class tx_templavoila_rules {
-
 	
 	/**
 	 * Checks a given element if it complies with certain rules provided as a regular expression.
@@ -95,7 +104,8 @@ class tx_templavoila_rules {
 
 	/**
 	 * Delivers the default content elements which are neccessary for a certain element.
-	 *
+	 * STILL DUMMY
+	 * 
 	 * @param	[type]		$rules: ...
 	 * @param	[type]		$ruleConstants: ...
 	 * @return	[type]		...
@@ -120,9 +130,9 @@ class tx_templavoila_rules {
 	 *
 	 ********************************************/
 
-	 /**
+	/**
 	 * Parses a regular expression with a reduced set of functions into an array.
-	 *
+	 * 
 	 * @param	[string]	$regex: The regular expression
 	 * @return	[array]		Array containing the cTypes with some additional information
 	 */
@@ -199,6 +209,14 @@ class tx_templavoila_rules {
 		return $outArr;
 	}
 
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$rulesArr: ...
+	 * @param	[type]		$elementsArr: ...
+	 * @param	[type]		$prevStatusArr: ...
+	 * @return	[type]		...
+	 */
 	function checkRulesCompliance ($rulesArr, $elementsArr, $prevStatusArr='') {
 		$statusArr = (is_array ($prevStatusArr) ? $prevStatusArr : array ('ok'=>1));
 		if (is_array ($rulesArr) && is_array ($elementsArr)) {
@@ -220,12 +238,9 @@ class tx_templavoila_rules {
 	}
 
 	
-
 	
 	
-	
-	
-	
+		
 	/********************************************
 	 *	
 	 * Human Readable Rules Functions
@@ -234,8 +249,8 @@ class tx_templavoila_rules {
 	
 	/**
 	 * Returns a description of a rule in human language
-	 *
-	 * @param	[string]	$rules: Regular expression containing the rule
+	 * 
+	 * @param	[string]		$rules: Regular expression containing the rule
 	 * @param	[array]		$ruleConstants: Contains the mapping of elements to CTypes
 	 * @return	[string		Description of the rule
 	 */
@@ -247,6 +262,14 @@ debug ($rulesArr);
 		return $this->parseRulesArrayIntoDescription ($rulesArr, $constantsArr);
 	}
 
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$rulesArr: ...
+	 * @param	[type]		$constantsArr: ...
+	 * @param	[type]		$level: ...
+	 * @return	[type]		...
+	 */
 	function parseRulesArrayIntoDescription ($rulesArr, $constantsArr, $level=0) {
 		if (is_array ($rulesArr)) {
 			foreach ($rulesArr as $k=>$v) {
@@ -275,6 +298,13 @@ debug ($rulesArr);
 		return $description;
 	}
 
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$min: ...
+	 * @param	[type]		$max: ...
+	 * @return	[type]		...
+	 */
 	function getQuantifierAsDescription ($min, $max) {
 		if ($min == $max) {
 			switch ($min) {
@@ -301,6 +331,13 @@ debug ($rulesArr);
 		return $description;
 	}
 
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$element: ...
+	 * @param	[type]		$constantsArr: ...
+	 * @return	[type]		...
+	 */
 	function getElementNameFromConstantsMapping ($element, $constantsArr) {
 		switch ($element) {
 			case '.' :
@@ -311,6 +348,10 @@ debug ($rulesArr);
 		}
 		return $description;
 	}
+
+	
+	
+	
 	
 	/********************************************
 	 *	
@@ -323,7 +364,6 @@ debug ($rulesArr);
 	 * 
 	 * @param	[string]		$char: Character to be checked
 	 * @return	[boolean]		true if it is an element
-	 * @access	private
 	 */
 	function isElement ($char) {
 		return ((strtoupper($char[0]) >= 'A' && strtoupper($char[0]) <= 'Z') || ($char[0]) == '.');
@@ -334,11 +374,11 @@ debug ($rulesArr);
 	 * as well as the remaining right after the braces. If there is a quantifier after the closing brace, it will
 	 * be evaluated and returned in the result array as well.
 	 * 
-	 * @param	[string]	$regex: The regular expression
-	 * @param	[integer]	$startPos: The position within the regex string where the search should start
+	 * @param	[string]		$regex: The regular expression
+	 * @param	[integer]		$startPos: The position within the regex string where the search should start
 	 * @return	[array]		Array containing the results (see function)
+	 * @access private
 	 * @see					parseRegexIntoArray ()
-	 * @access	private
 	 */
 	function extractInnerBrace ($regex, $startPos) {
 		for ($endPos=$startPos; $endPos<strlen ($regex); $endPos++) { 
@@ -364,9 +404,10 @@ debug ($rulesArr);
 	}
 
 	/**
-	 * [Describe function...]
+	 * Explodes a regular expression into an array of alternatives which were separated by '|'.
+	 * Takes braces into account.
 	 * 
-	 * @param	[string]	$regex: The regular expression to be parsed
+	 * @param	[string]		$regex: The regular expression to be parsed
 	 * @return	[array]		The alternative parts
 	 */
 	function explodeAlternatives ($regex) {
@@ -389,10 +430,10 @@ debug ($rulesArr);
 	 * is passed by reference. It will be incremented depending on the length of the quantify expression.
 	 * The results for min and max are also returned by reference!
 	 * 
-	 * @param	[string]	$quantifier: The regular expression which likely contains a quantifier
-	 * @param	[integer]	$pos: The position within the string where the quantifier should be. BY REFERENCE
-	 * @param	[integer]	$min: Used for returning the minimum value, ie. how many times an element should be repeated at least
-	 * @param	[integer]	$max: Used for returning the maximum value, ie. how many times an element should be repeated at maximum
+	 * @param	[string]		$quantifier: The regular expression which likely contains a quantifier
+	 * @param	[integer]		$pos: The position within the string where the quantifier should be. BY REFERENCE
+	 * @param	[integer]		$min: Used for returning the minimum value, ie. how many times an element should be repeated at least
+	 * @param	[integer]		$max: Used for returning the maximum value, ie. how many times an element should be repeated at maximum
 	 * @return	[void]		Nothing!
 	 */
 	function evaluateQuantifier ($quantifier, &$pos, &$min, &$max) {

@@ -108,7 +108,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 	var $markupFile = '';		// Used to store the name of the file to mark up with a given path.
 	var $elNames = array();
 	var $markupObj = '';
-		
+	var $templatePID = '';		// The sysfolder's/page's UID which contains Data Structure Objects / Template Objects. Set by TSconfig
 	
 	
 	
@@ -136,6 +136,11 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 	 * @return	void		
 	 */
 	function main()	{
+
+			// Getting PID of sysfolder / page containing TO / DSO
+		$confArray = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
+		$this->templatePID = intval($confArray['config.']['templatePID']);
+
 			// Looking for "&mode", which defines if we draw a frameset (default), the module (mod) or display (display)
 		$mode = t3lib_div::GPvar('mode');
 		
@@ -331,7 +336,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 
 							// DS:
 						$dataArr=array();
-						$dataArr['tx_templavoila_datastructure']['NEW']['pid']=79;
+						$dataArr['tx_templavoila_datastructure']['NEW']['pid']=$this->templatePID;
 						$dataArr['tx_templavoila_datastructure']['NEW']['title']=t3lib_div::GPvar('_saveDSandTO_title');
 						$dataArr['tx_templavoila_datastructure']['NEW']['scope']=t3lib_div::GPvar('_saveDSandTO_type');
 						$storeDataStruct=$dataStruct;
@@ -348,7 +353,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 
 
 							$dataArr=array();
-							$dataArr['tx_templavoila_tmplobj']['NEW']['pid']=79;
+							$dataArr['tx_templavoila_tmplobj']['NEW']['pid']=$this->templatePID;
 							$dataArr['tx_templavoila_tmplobj']['NEW']['title']=t3lib_div::GPvar('_saveDSandTO_title').' [Template]';
 							$dataArr['tx_templavoila_tmplobj']['NEW']['datastructure']=intval($tce->substNEWwithIDs['NEW']);
 							$dataArr['tx_templavoila_tmplobj']['NEW']['fileref']=substr($this->displayFile,strlen(PATH_site));
@@ -362,7 +367,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 
 								// WHAT ABOUT slashing of the input values!!!!??? That should be done!
 						unset($tce);
-						$content.='<strong>SAVED...</strong><br>';
+						$content.='<strong>SAVED...</strong><br />';
 					}
 					
 					if (t3lib_div::GPvar('_updateDSandTO'))	{
@@ -394,7 +399,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 	
 									// WHAT ABOUT slashing of the input values!!!!??? That should be done!
 							unset($tce);
-							$content.='<strong>UPDATED...</strong><br>';
+							$content.='<strong>UPDATED...</strong><br />';
 						}
 					}
 					
@@ -410,16 +415,16 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 					
 
 					$content.='<h3>Load DS XML</h3>';
-					$content.='<textarea cols="" rows="" name="_load_ds_xml_content"></textarea><br>';
+					$content.='<textarea cols="" rows="" name="_load_ds_xml_content"></textarea><br />';
 					
 					$opt=array();
 					$opt[]='<option value="0"></option>';
-					$query = 'SELECT * FROM tx_templavoila_tmplobj WHERE datastructure>0 '.t3lib_BEfunc::deleteClause('tx_templavoila_tmplobj').' ORDER BY title';
+					$query = 'SELECT * FROM tx_templavoila_tmplobj WHERE pid='.$this->templatePID.' AND datastructure>0 '.t3lib_BEfunc::deleteClause('tx_templavoila_tmplobj').' ORDER BY title';
 					$res = mysql(TYPO3_db,$query);
 					while($row = mysql_fetch_assoc($res))	{
 						$opt[]='<option value="'.htmlspecialchars($row['uid']).'">'.htmlspecialchars($row['title']).'</option>';
 					}
-					$content.='<select name="_load_ds_xml_to">'.implode('',$opt).'</select><br>';
+					$content.='<select name="_load_ds_xml_to">'.implode('',$opt).'</select><br />';
 					$content.='<input type="submit" name="_load_ds_xml" value="LOAD">';
 					
 
@@ -427,17 +432,17 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 					
 					
 					$content.='<h3>Creating data structure / Mapping to template:</h3>';
-					$content.='<hr><strong>Create new Data Structure and Template Object:</strong><br>
-					Title: <input type="text" name="_saveDSandTO_title"><br>
+					$content.='<hr><strong>Create new Data Structure and Template Object:</strong><br />
+					Title: <input type="text" name="_saveDSandTO_title"><br />
 					Type: <select name="_saveDSandTO_type">
 								<option></option>
 								<option value="1">Page Template</option>
 								<option value="2">Content Element</option>
-							</select><br>
+							</select><br />
 					<input type="submit" name="_saveDSandTO" value="Create DS and TO"> 
 					<hr>
-					Alternatively, save to existing template record:<br>
-					<select name="_saveDSandTO_TOuid">'.implode('',$opt).'</select><br>
+					Alternatively, save to existing template record:<br />
+					<select name="_saveDSandTO_TOuid">'.implode('',$opt).'</select><br />
 					<input type="submit" name="_updateDSandTO" value="Update TO/DS">
 					<hr>
 					<input type="submit" name="_showXMLDS" value="Show XML"> 
@@ -492,8 +497,8 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 					$content.='<h4>ERROR: No Data Source was defined in the record... (Must be PHP array defined as $dataStruct)</h4>';
 				}
 				
-					// Get Template Objects pointing to this data source (NOT checking for the PID!)
-				$query = 'SELECT * FROM tx_templavoila_tmplobj WHERE datastructure='.intval($row['uid']).t3lib_BEfunc::deleteClause('tx_templavoila_tmplobj');
+					// Get Template Objects pointing to this data source
+				$query = 'SELECT * FROM tx_templavoila_tmplobj WHERE pid='.$this->templatePID.' AND datastructure='.intval($row['uid']).t3lib_BEfunc::deleteClause('tx_templavoila_tmplobj');
 				$res = mysql(TYPO3_db,$query);
 				$tRows=array();
 				$tRows[]='<tr bgcolor="'.$this->doc->bgColor5.'">
@@ -646,7 +651,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 								$tce->start($dataArr,array());
 								$tce->process_datamap();
 								unset($tce);
-								$content.='<strong>SAVED...</strong><br>';
+								$content.='<strong>SAVED...</strong><br />';
 								$row = t3lib_BEfunc::getRecord('tx_templavoila_tmplobj',$this->displayUid);
 								$templatemapping = unserialize($row['templatemapping']);
 							}
@@ -656,7 +661,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 							if (serialize($templatemapping['MappingInfo']) != serialize($currentMappingInfo))	{
 								$content.='<input type="submit" name="_save_to" value="SAVE to Template Object">';
 								$content.='<input type="submit" name="_reload_from" value="RELOAD from Template Object">';
-								$content.='<br><strong>(Changes has been made.)</strong>';
+								$content.='<br /><strong>(Changes has been made.)</strong>';
 							}
 							$content.='<input type="submit" name="_preview" value="PREVIEW">';
 							$content.='<h3>MAPPER:</h3>'.$this->renderTemplateMapper($theFile,$this->displayPath,$dataStruct,$currentMappingInfo);
@@ -908,7 +913,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 #									$opt[]='<option value="'.htmlspecialchars($currentMappingInfo[$key]['MAP_EL']).'" selected="selected">'.htmlspecialchars('[ - CURRENT - ]').'</option>';
 								}
 									// Finally, put together the selector box:
-								$rowCells['cmdLinks'] = '<img src="../html_tags/'.$lastLevel['el'].'.gif" height="9" border="0" alt="" align="absmiddle" title="'.htmlspecialchars($lastLevel['path']).'"><br/><select name="dataMappingForm'.$formPrefix.'['.$key.'][MAP_EL]">'.implode('',$opt).'</select><br><input type="submit" name="_save_data_mapping" value="Save"><input type="submit" name="_" value="Cancel">';
+								$rowCells['cmdLinks'] = '<img src="../html_tags/'.$lastLevel['el'].'.gif" height="9" border="0" alt="" align="absmiddle" title="'.htmlspecialchars($lastLevel['path']).'"><br/><select name="dataMappingForm'.$formPrefix.'['.$key.'][MAP_EL]">'.implode('',$opt).'</select><br /><input type="submit" name="_save_data_mapping" value="Save"><input type="submit" name="_" value="Cancel">';
 							} else {
 								$rowCells['cmdLinks'] = '<span style="color:red;">Now, select element in window below...</span>';
 							}
@@ -975,28 +980,28 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 							}
 
 							$form = '
-								Mapping Type:<br>
+								Mapping Type:<br />
 								<select name="'.$formFieldName.'[type]">
 									<option value="">Element</option>
 									<option value="array"'.($insertDataArray['type']=='array' ? ' selected="selected"' : '').'>Container for elements</option>
 									<option value="attr"'.($insertDataArray['type']=='attr' ? ' selected="selected"' : '').'>Attribute</option>
 									<option value="no_map"'.($insertDataArray['type']=='no_map' ? ' selected="selected"' : '').'>[Not mapped]</option>
-								</select><br>
+								</select><br />
 								<input type="hidden" name="'.$formFieldName.'[section]" value="0">
 								'.(!$autokey && $insertDataArray['type']=='array' ? 
 									'<input type="checkbox" value="1" name="'.$formFieldName.'[section]"'.($insertDataArray['section']?' checked="checked"':'').'> Make this container a SECTION!<br />' :
 									''
 								).'
-								Title:<br>
-								<input type="text" size="80" name="'.$formFieldName.'[tx_templavoila][title]" value="'.htmlspecialchars($insertDataArray['tx_templavoila']['title']).'"><br>
-								Mapping instructions:<br>
-								<input type="text" size="80" name="'.$formFieldName.'[tx_templavoila][description]" value="'.htmlspecialchars($insertDataArray['tx_templavoila']['description']).'"><br>
+								Title:<br />
+								<input type="text" size="80" name="'.$formFieldName.'[tx_templavoila][title]" value="'.htmlspecialchars($insertDataArray['tx_templavoila']['title']).'"><br />
+								Mapping instructions:<br />
+								<input type="text" size="80" name="'.$formFieldName.'[tx_templavoila][description]" value="'.htmlspecialchars($insertDataArray['tx_templavoila']['description']).'"><br />
 
 								'.($insertDataArray['type']!='array' ? '
-								Sample Data:<br>
-								<input type="text" size="80" name="'.$formFieldName.'[tx_templavoila][sample_data][]" value="'.htmlspecialchars($insertDataArray['tx_templavoila']['sample_data'][0]).'"><br>
+								Sample Data:<br />
+								<input type="text" size="80" name="'.$formFieldName.'[tx_templavoila][sample_data][]" value="'.htmlspecialchars($insertDataArray['tx_templavoila']['sample_data'][0]).'"><br />
 
-								Editing Type:<br>
+								Editing Type:<br />
 								<select name="'.$formFieldName.'[tx_templavoila][eType]">
 									<option value="input"'.($insertDataArray['tx_templavoila']['eType']=='input' ? ' selected="selected"' : '').'>Plain input field</option>
 									<option value="input_h"'.($insertDataArray['tx_templavoila']['eType']=='input_h' ? ' selected="selected"' : '').'>Header field</option>
@@ -1010,16 +1015,16 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 									<option value="select"'.($insertDataArray['tx_templavoila']['eType']=='select' ? ' selected="selected"' : '').'>Selector box</option>
 									<option value="none"'.($insertDataArray['tx_templavoila']['eType']=='none' ? ' selected="selected"' : '').'>[ NONE ]</option>
 									<option value="TypoScriptObject"'.($insertDataArray['tx_templavoila']['eType']=='TypoScriptObject' ? ' selected="selected"' : '').'>TypoScript Object Path</option>
-								</select><br>
+								</select><br />
 
-								[Advanced] Mapping rules:<br>
-								<input type="text" size="80" name="'.$formFieldName.'[tx_templavoila][tags]" value="'.htmlspecialchars($insertDataArray['tx_templavoila']['tags']).'"><br>
+								[Advanced] Mapping rules:<br />
+								<input type="text" size="80" name="'.$formFieldName.'[tx_templavoila][tags]" value="'.htmlspecialchars($insertDataArray['tx_templavoila']['tags']).'"><br />
 
 								' :'').'
 
 								<input type="submit" name="_updateDS" value="Add">
 <!--								<input type="submit" name="'.$formFieldName.'" value="Delete (!)">  -->
-								<input type="submit" name="_" value="Cancel"><br>
+								<input type="submit" name="_" value="Cancel"><br />
 							';
 							$addEditRows='<tr bgcolor="'.$bgColor.'">
 								<td nowrap="nowrap" valign="top">'.
