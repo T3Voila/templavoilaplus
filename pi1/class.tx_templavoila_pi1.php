@@ -198,7 +198,13 @@ class tx_templavoila_pi1 extends tslib_pibase {
 				Please select a Template Object now.');
 		}
 
-		$TOrec = $this->markupObj->getTemplateRecord($row['tx_templavoila_to'], t3lib_div::GPvar('print')?1:0, $GLOBALS['TSFE']->sys_language_uid);
+		if ($this->conf['childTemplate'])	{
+			$renderType = $this->conf['childTemplate'];
+		} else {	// Default:
+			$renderType = t3lib_div::GPvar('print') ? 'print' : '';
+		}
+
+		$TOrec = $this->markupObj->getTemplateRecord($row['tx_templavoila_to'], $renderType, $GLOBALS['TSFE']->sys_language_uid);
 		if (!is_array($TOrec))	{ return $this->formatError('Couldn\'t find Template Object with UID "'.$row['tx_templavoila_to'].'".
 				Please make sure a Template Object is accessible.'); }
 

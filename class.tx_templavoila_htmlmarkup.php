@@ -1,19 +1,19 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -21,7 +21,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * Contains HTML markup class
  *
  * $Id$
@@ -33,36 +33,36 @@
  *
  *
  *
- *   85: class tx_templavoila_htmlmarkup 
- *  205:     function markupHTMLcontent($content,$backPath,$relPathFix,$showTags,$mode='')	
- *  242:     function passthroughHTMLcontent($content,$relPathFix,$mode='',$altStyle='')	
- *  263:     function getContentBasedOnPath($content,$pathStrArr)	
- *  295:     function splitByPath($content,$pathString)	
- *  322:     function splitContentToMappingInfo($fileContent,$currentMappingInfo)	
- *  385:     function mappingInfoToSearchPath($currentMappingInfo)	
- *  426:     function mergeSearchpartsIntoContent($content,$searchParts,$token='')	
- *  457:     function mergeSampleDataIntoTemplateStructure($dataStruct,$currentMappingInfo,$firstLevelImplodeToken='',$sampleOrder='')	
+ *   85: class tx_templavoila_htmlmarkup
+ *  205:     function markupHTMLcontent($content,$backPath,$relPathFix,$showTags,$mode='')
+ *  242:     function passthroughHTMLcontent($content,$relPathFix,$mode='',$altStyle='')
+ *  263:     function getContentBasedOnPath($content,$pathStrArr)
+ *  295:     function splitByPath($content,$pathString)
+ *  322:     function splitContentToMappingInfo($fileContent,$currentMappingInfo)
+ *  385:     function mappingInfoToSearchPath($currentMappingInfo)
+ *  426:     function mergeSearchpartsIntoContent($content,$searchParts,$token='')
+ *  457:     function mergeSampleDataIntoTemplateStructure($dataStruct,$currentMappingInfo,$firstLevelImplodeToken='',$sampleOrder='')
  *  500:     function mergeFormDataIntoTemplateStructure($editStruct,$currentMappingInfo,$firstLevelImplodeToken='',$valueKey='vDEF')
- *  546:     function splitPath($pathStr)	
- *  602:     function getTemplateArrayForTO($uid)	
- *  622:     function mergeDataArrayToTemplateArray($TA,$data)	
- *  644:     function getTemplateRecord($uid,$printFlag,$langUid)	
- *  678:     function getTemplateMappingArray($uid,$printFlag,$langUid,$sheet)	
- *  693:     function getTemplateRecord_query($uid,$where)	
- *  711:     function setHeaderBodyParts($MappingInfo_head,$MappingData_head_cached,$BodyTag_cached='')	
+ *  546:     function splitPath($pathStr)
+ *  602:     function getTemplateArrayForTO($uid)
+ *  622:     function mergeDataArrayToTemplateArray($TA,$data)
+ *  644:     function getTemplateRecord($uid,$renderType,$langUid)
+ *  678:     function getTemplateMappingArray($uid,$renderType,$langUid,$sheet)
+ *  693:     function getTemplateRecord_query($uid,$where)
+ *  711:     function setHeaderBodyParts($MappingInfo_head,$MappingData_head_cached,$BodyTag_cached='')
  *
  *              SECTION: Various sub processing
- *  745:     function init()	
- *  768:     function splitTagTypes($showTags)	
+ *  745:     function init()
+ *  768:     function splitTagTypes($showTags)
  *
  *              SECTION: SPLITTING functions
- *  818:     function recursiveBlockSplitting($content,$tagsBlock,$tagsSolo,$mode,$path='',$recursion=0)	
- *  903:     function getMarkupCode($mode,$v,$params,$firstTagName,$firstTag,$endTag,$subPath,$recursion)	
- *  988:     function getSearchCode($mode,$v,$params,$firstTagName,$firstTag,$endTag,$subPath,$path,$recursion)	
- * 1071:     function sourceDisplay($str,$recursion,$gnyf='',$valueStr=0)	
- * 1092:     function checkboxDisplay($str,$recursion,$path,$gnyf='',$valueStr=0)	
- * 1118:     function makePath($path,$firstTagName,$attr)	
- * 1146:     function getGnyf($firstTagName,$path,$title)	
+ *  818:     function recursiveBlockSplitting($content,$tagsBlock,$tagsSolo,$mode,$path='',$recursion=0)
+ *  903:     function getMarkupCode($mode,$v,$params,$firstTagName,$firstTag,$endTag,$subPath,$recursion)
+ *  988:     function getSearchCode($mode,$v,$params,$firstTagName,$firstTag,$endTag,$subPath,$path,$recursion)
+ * 1071:     function sourceDisplay($str,$recursion,$gnyf='',$valueStr=0)
+ * 1092:     function checkboxDisplay($str,$recursion,$path,$gnyf='',$valueStr=0)
+ * 1118:     function makePath($path,$firstTagName,$attr)
+ * 1146:     function getGnyf($firstTagName,$path,$title)
  *
  * TOTAL FUNCTIONS: 25
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -72,12 +72,12 @@
 
 
 
-require_once(PATH_t3lib.'class.t3lib_parsehtml.php'); 
+require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 
 
 /**
  * HTML markup/search class; can mark up HTML with small images for each element AND as well help you extract parts of the HTML based on a socalled 'PATH'.
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage tx_templavoila
@@ -92,7 +92,7 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 	 *  'source'  : In this mode all the HTML code is shown as source code. This mode should be used if you want code-insight OR analyse non-HTML code (like XML or WML)
 	 *  default   :	Original page is preserved and tag-images are added as layers (thus non-destructive). However tag-images may overlap each other so you cannot access the tag images you want.
 	 */
-	var $mode = '';	// [blank], 
+	var $mode = '';	// [blank],
 	var $maxLineLengthInSourceMode = 150;	// When in source mode the lines are truncated with "..." if longer than this number of characters.
 
 	/**
@@ -107,13 +107,14 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 	/**
 	 * Maximum recursions into the HTML code. Works as a break to avoid run-away function calls if that is potentially possible.
 	 */
-	var $maxRecursion = 99;	
+	var $maxRecursion = 99;
 
 	var $onlyElements='';	// Commalist of lowercase tag names which are the only ones which will be added as "GNYF" tag images. If empty, ALL HTML tags will have these elements.
 	var $checkboxPathsSet=array();		// Array with header section paths to set checkbox for.
-	
+
 		// INTERNAL STATIC:
-		
+	var $textGnyf = FALSE;
+
 	/**
 	 * This defines which tags can be exploded. Input lists of tags will be limited to those entered here.
 	 * You can override this array with an external setup in case you want to analyse non-HTML (XML or WML). For HTML you should probably keep these values.
@@ -168,23 +169,23 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 		'area' => array('single'=>1),
 #		'embed' => array('anchor_outside'=>1),
 	);
-	
+
 
 		// INTERNAL dynamic
 	var $htmlParse = '';		// Will contain the HTML-parser object. (See init())
 	var $backPath = '';			// Will contain the backend back-path which is necessary when marking-up the code in order to fix all media paths.
 	var $gnyfPath = '';			// Will contain the path to the tag-images ("gnyfs")
 	var $gnyfStyle = '';		// will contain style-part for gnyf images. (see init())
-	var $gnyfImgAdd = '';		// Eg. 	onclick="return parent.mod.updPath('###PATH###');"	
+	var $gnyfImgAdd = '';		// Eg. 	onclick="return parent.mod.updPath('###PATH###');"
 	var $pathPrefix='';			// Prefix for the path returned to the mod frame when tag image is clicked.
 	var $tDat='';
-	
+
 	var $elCountArray=array();	// Used to register the paths during parsing the code (see init())
 	var $elParentLevel=array();	// Used to register the all elements on the same level
 	var $searchPaths = '';		// Used to contain the paths to search for when searching for a paths. (see getContentBasedOnPath())
-	
 
-	
+
+
 
 
 
@@ -194,7 +195,7 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 
 	/**
 	 * Marks up input HTML content string with tag-images based on the list in $showTags
-	 * 
+	 *
 	 * @param	string		HTML content
 	 * @param	string		Backend module BACK_PATH - used to set the right position for the tag-images (gnyfs)
 	 * @param	string		The relative path from module position back to the HTML-file position; used to correct paths of HTML since the HTML is modified so it can display correctly from the path of the module using this class.
@@ -205,19 +206,19 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 	function markupHTMLcontent($content,$backPath,$relPathFix,$showTags,$mode='')	{
 			// Initialize:
 		$this->mode = $mode;
-		
+
 		$this->init();
 		$this->backPath = $backPath;
 		$this->gnyfPath = t3lib_div::resolveBackPath($backPath.t3lib_extMgm::extRelPath('templavoila'));
 		list($tagList_elements, $tagList_single) = $this->splitTagTypes($showTags);
 
 #	debug(t3lib_parsehtml::checkTagTypeCounts($content,$tagList_elements, $tagList_single));
-		
+
 			// Fix links/paths
 		if ($this->mode!='source')	{
 			$content = $this->htmlParse->prefixResourcePath($relPathFix,$content);
 		}
-		
+
 			// elements:
 		$content = $this->recursiveBlockSplitting($content,$tagList_elements,$tagList_single,'markup');
 
@@ -225,13 +226,13 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 		if ($this->mode=='source')	{
 			$content = '<pre>'.$content.'</pre>';
 		}
-		
+
 		return $content;
 	}
 
 	/**
 	 * Passes through input HTML content string BUT substitutes relative paths. Used to format the parts of the file which are NOT marked up with markupHTMLcontent()
-	 * 
+	 *
 	 * @param	string		HTML content
 	 * @param	string		The relative path from module position back to the HTML-file position; used to correct paths of HTML since the HTML is modified so it can display correctly from the path of the module using this class.
 	 * @param	string		The mode of display; [blank], explode, borders. Set in $this->mode
@@ -244,18 +245,18 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 		if ($mode!='source')	{
 			$content = $this->htmlParse->prefixResourcePath($relPathFix,$content);
 		}
-		
+
 			// Wrap in <pre>-tags if source
 		if ($mode=='source')	{
 			$content = '<pre style="'.htmlspecialchars($altStyle?$altStyle:'font-size:11px; color:#999999; font-style:italic;').'">'.str_replace(chr(9),'    ',htmlspecialchars($content)).'</pre>';
 		}
-		
+
 		return $content;
 	}
 
 	/**
 	 * Returns content based on input $pathStrArray.	(an array with values which are paths to get out of HTML.)
-	 * 
+	 *
 	 * @param	string		Input HTML to get path from.
 	 * @param	string		The array where the values are paths, eg. array('td#content table[1] tr[1]','td#content table[1]','map#cdf / INNER') - takes only the first level in a path!
 	 * @return	array		Content... (not welldefined yet)
@@ -265,7 +266,7 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 		$this->init();
 		$this->searchPaths=array();
 		$tagList = '';
-		
+
 		foreach($pathStrArr as $pathStr)	{
 			list($pathInfo) = $this->splitPath($pathStr);
 			$this->searchPaths[$pathInfo['path']] = $pathInfo;
@@ -275,9 +276,9 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 #		$tagList = implode(',',array_keys($this->tags));
 		list($tagsBlock,$tagsSolo) = $this->splitTagTypes($tagList);
 		// sort array by key so that smallest keys are first - thus we don't get ... ???
-		
+
 		$newBase = $this->recursiveBlockSplitting($content,$tagsBlock,$tagsSolo,'search');
-		
+
 		return array(
 			'searchparts' => $this->searchPaths,
 			'content' => $newBase,
@@ -287,7 +288,7 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$content: ...
 	 * @param	[type]		$pathString: ...
 	 * @return	[type]		...
@@ -302,7 +303,7 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 				$pathExtract = $contentP['searchparts'][$v['path']];
 				if (isset($pathExtract['placeholder']))	{
 					$cSplit = explode($pathExtract['placeholder'],$contentP['content'],2);
-					
+
 					$outArray[0].=$cSplit[0];
 					$outArray[2] =$cSplit[1].$outArray[2];
 					$outArray[1] =$pathExtract['content'];
@@ -314,7 +315,7 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$fileContent: ...
 	 * @param	[type]		$currentMappingInfo: ...
 	 * @return	[type]		...
@@ -326,10 +327,10 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 			// Split content by the paths.
 		$divContent = $this->getContentBasedOnPath($fileContent,$paths);
 #debug($divContent);
-			
+
 			// Token for splitting the content further.
 		$token = md5(microtime());
-			
+
 			// Replacing all placeholders with the keys from $currentMappingInfo, wrapped in the new token.
 		$divContent['content'] = $this->mergeSearchpartsIntoContent($divContent['content'],$divContent['searchparts'],$token);
 
@@ -348,7 +349,7 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 				} else {
 					$lC = $divContent['searchparts'][$pathInfo['path']]['content'];
 				}
-				
+
 					// Looking for the key in the currentMappingInfo array:
 				$theKeyFound='';
 				foreach($currentMappingInfo as $key => $val)	{
@@ -357,7 +358,7 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 						break;
 					}
 				}
-				
+
 				if (!isset($newArray['cArray'][$theKeyFound]))	{
 					$newArray['cArray'][$theKeyFound] = $lC;
 					if(is_array($currentMappingInfo[$theKeyFound]['el']))	{
@@ -370,7 +371,7 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 				$newArray['cArray'][$k] = $v;
 			}
 		}
-		
+
 #		debug(array(md5(implode('',$newArray['cArray'])),md5($fileContent)));
 #		debug($newArray);
 		return $newArray;
@@ -378,14 +379,14 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$currentMappingInfo: ...
 	 * @return	[type]		...
 	 */
 	function mappingInfoToSearchPath($currentMappingInfo)	{
 		$paths = array();
 		$pathsArrays = array();
-		
+
 			// Post processing, putting together all duplicate data in arrays which are easy to traverse in the next run.
 		foreach($currentMappingInfo as $key => $val)	{
 			if ($val['MAP_EL'])	{
@@ -393,9 +394,9 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 				$pathsArrays[$pathInfo['path']][$pathInfo['modifier']][]=$pathInfo['modifier_value'];
 			}
 		}
-		
+
 			// traverse the post-processed data:
-		foreach($pathsArrays as $k => $v)	{	
+		foreach($pathsArrays as $k => $v)	{
 			if (is_array($v['INNER']))	{
 				if (is_array($v['ATTR']))	{
 					$paths[]=$k.' / INNER+ATTR:'.implode(',',$v['ATTR']);
@@ -409,15 +410,15 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 			} else	{
 				$paths[]=$k;	// OUTER is default...
 			}
-			
+
 		}
-		
+
 		return $paths;
 	}
 
 	/**
 	 * Substitutes all placeholders in $content string which are found in the $searchParts array (see syntax from getContentBasedOnPath())
-	 * 
+	 *
 	 * @param	string		Content string with markers
 	 * @param	array		Array with searchPaths which has been modified by $this->recursiveBlockSplitting in search mode to contain content and subparts.
 	 * @param	[type]		$token: ...
@@ -447,7 +448,7 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$dataStruct: ...
 	 * @param	[type]		$currentMappingInfo: ...
 	 * @param	[type]		$firstLevelImplodeToken: ...
@@ -455,13 +456,13 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 	 * @return	[type]		...
 	 */
 	function mergeSampleDataIntoTemplateStructure($dataStruct,$currentMappingInfo,$firstLevelImplodeToken='',$sampleOrder='')	{
-	
+
 		foreach($currentMappingInfo['cArray'] as $key => $val)	{
 			if (!t3lib_div::testInt($key) && $dataStruct[$key])	{
 				if ($dataStruct[$key]['type']=='array')	{
 					if (is_array($currentMappingInfo['sub'][$key]))	{
 						$currentMappingInfo['cArray'][$key]=$this->mergeSampleDataIntoTemplateStructure($dataStruct[$key]['el'],$currentMappingInfo['sub'][$key],'',
-							($dataStruct[$key]['section'] ? 
+							($dataStruct[$key]['section'] ?
 							 	(is_array($dataStruct[$key]['tx_templavoila']['sample_order']) ? $dataStruct[$key]['tx_templavoila']['sample_order'] : array_keys($dataStruct[$key]['el'])) :
 							 	'')
 							 );
@@ -475,7 +476,7 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 				}
 			}
 		}
-		
+
 		if (is_array($sampleOrder))	{
 			$out='';
 			foreach($sampleOrder as $pointer)	{
@@ -485,12 +486,12 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 			$out = implode($firstLevelImplodeToken,$currentMappingInfo['cArray']);
 		}
 		return $out;
-	
+
 	}
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$editStruct: ...
 	 * @param	[type]		$currentMappingInfo: ...
 	 * @param	[type]		$firstLevelImplodeToken: ...
@@ -540,20 +541,20 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 
 	/**
 	 * Processing of a path; It splits the path by tokens like "|", "/" and " " etc and returns an array with path-levels and properties etc.
-	 * 
+	 *
 	 * @param	string		The total path string to explode into smaller units.
 	 * @return	array		Array with the information inside.
 	 */
 	function splitPath($pathStr)	{
 		$subPaths = t3lib_div::trimExplode('|',$pathStr,1);
-		
+
 		foreach($subPaths as $index => $path)	{
 			$subPaths[$index]=array();
 			$subPaths[$index]['fullpath'] = $path;
 
 				// Get base parts of the page: the PATH and the COMMAND
 			list($thePath,$theCmd) = t3lib_div::trimExplode('/', $path,1);
-			
+
 				// Split the path part into its units: results in an array with path units.
 			$splitParts = split('[[:space:]]+',$thePath);
 
@@ -590,13 +591,13 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 			array_pop($splitParts);	// Removing last item to get parent.
 			$subPaths[$index]['parent'] = implode(' ',$splitParts);	// Cleaning up the path
 		}
-		
+
 		return $subPaths;
 	}
-	
+
 	/**
 	 * For use in both frontend and backend
-	 * 
+	 *
 	 * @param	[type]		$uid: ...
 	 * @return	[type]		...
 	 */
@@ -608,14 +609,14 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 			$res = mysql(TYPO3_db,$query);
 			$row = mysql_fetch_assoc($res);
 			$this->tDat = unserialize($row['templatemapping']);
-			
+
 			return $this->tDat['MappingData_cached'];
 		}
 	}
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$TA: ...
 	 * @param	[type]		$data: ...
 	 * @return	[type]		...
@@ -628,33 +629,33 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 			return implode('',$TA['cArray']);
 		}
 	}
-	
 
 
 
-	
+
+
 	/**
 	 * Returns the right template record for the current display
 	 * Requires the extension "TemplaVoila"
-	 * 
+	 *
 	 * @param	integer		The UID of the template record
-	 * @param	[type]		$printFlag: ...
+	 * @param	[type]		$renderType: ...
 	 * @param	[type]		$langUid: ...
 	 * @return	array		The record array.
 	 */
-	function getTemplateRecord($uid,$printFlag,$langUid)	{
+	function getTemplateRecord($uid,$renderType,$langUid)	{
 		if (t3lib_extMgm::isLoaded('templavoila'))	{
 			$rec = $GLOBALS['TSFE']->sys_page->checkRecord('tx_templavoila_tmplobj',$uid);
-	
+
 			if (is_array($rec))	{
-				
-				if ($printFlag)	{	// If print-flag try to find a proper print-record. If the lang-uid is also set, try to find a combined print/lang record, but if not found, the print rec. will take precedence.
+
+				if ($renderType)	{	// If print-flag try to find a proper print-record. If the lang-uid is also set, try to find a combined print/lang record, but if not found, the print rec. will take precedence.
 						// Look up print-row for default language:
-					$printRow = $this->getTemplateRecord_query($rec['uid'],'AND rendertype="print" AND sys_language_uid=0');
+					$printRow = $this->getTemplateRecord_query($rec['uid'],'AND rendertype="'.addslashes($renderType).'" AND sys_language_uid=0');
 					if (is_array($printRow))	$rec = $printRow;
-	
+
 					if ($langUid)	{	// If lang_uid is set, try to look up for current language:
-						$printRow = $this->getTemplateRecord_query($rec['uid'],'AND rendertype="print" AND sys_language_uid='.intval($langUid));
+						$printRow = $this->getTemplateRecord_query($rec['uid'],'AND rendertype="'.addslashes($renderType).'" AND sys_language_uid='.intval($langUid));
 						if (is_array($printRow))	$rec = $printRow;
 					}
 				} elseif ($langUid)	{	// If the language uid is set, then try to find a regular record with sys_language_uid
@@ -662,29 +663,29 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 					if (is_array($printRow))	$rec = $printRow;
 				}
 			}
-		
+
 			return $rec;
 		}
 	}
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$uid: ...
-	 * @param	[type]		$printFlag: ...
+	 * @param	[type]		$renderType: ...
 	 * @param	[type]		$langUid: ...
 	 * @param	[type]		$sheet: ...
 	 * @return	[type]		...
 	 */
-	function getTemplateMappingArray($uid,$printFlag,$langUid,$sheet)	{
-		$row = $this->getTemplateRecord($uid,$printFlag,$langUid);
+	function getTemplateMappingArray($uid,$renderType,$langUid,$sheet)	{
+		$row = $this->getTemplateRecord($uid,$renderType,$langUid);
 		$tDat = unserialize($row['templatemapping']);
-		return $sheet ? $tDat['MappingData_cached']['sub'][$sheet] : $tDat['MappingData_cached'];	
+		return $sheet ? $tDat['MappingData_cached']['sub'][$sheet] : $tDat['MappingData_cached'];
 	}
-	
+
 	/**
 	 * Helper function to build the query for searching print/language templates.
-	 * 
+	 *
 	 * @param	integer		The UID of the template record
 	 * @param	string		The where clause.
 	 * @return	mixed		An array if a record is found, otherwise null
@@ -699,18 +700,18 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 		$res = mysql(TYPO3_db,$query);
 		$printRow = mysql_fetch_assoc($res);
 		return $printRow;
-	}	
+	}
 
 	/**
 	 * Will set header content and BodyTag for template.
-	 * 
+	 *
 	 * @param	[type]		$MappingInfo_head: ...
 	 * @param	[type]		$MappingData_head_cached: ...
 	 * @param	[type]		$BodyTag_cached: ...
 	 * @return	[type]		...
 	 */
 	function setHeaderBodyParts($MappingInfo_head,$MappingData_head_cached,$BodyTag_cached='')	{
-	
+
 			// Traversing mapped header parts:
 		if (is_array($MappingInfo_head['headElementPaths']))	{
 			foreach($MappingInfo_head['headElementPaths'] as $kk => $vv)	{
@@ -720,7 +721,7 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 				}
 			}
 		}
-		
+
 			// Body tag:
 		if ($MappingInfo_head['addBodyTag'] && $BodyTag_cached)	{
 			$GLOBALS['TSFE']->defaultBodyTag = $BodyTag_cached;
@@ -733,15 +734,15 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 
 
 	/**
-	 * 
+	 *
 	 * Various sub processing
-	 * 
+	 *
 	 */
 
 	/**
 	 * Init function, should be called by the processing functions above before doing any recursive parsing of the HTML code.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function init()	{
 			// HTML parser object initialized.
@@ -760,9 +761,33 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 	}
 
 	/**
+	 * The idea is to parse the XML in $contnet and set the internal TAG array with all these tags so they can be mapped...
+	 * NOT WORKING YET - experiment.
+	 */
+	function setTagsFromXML($content)	{
+		$parser = xml_parser_create();
+		$vals = array();
+		$index = array();
+
+		xml_parser_set_option($parser, XML_OPTION_CASE_FOLDING, 0);
+		xml_parser_set_option($parser, XML_OPTION_SKIP_WHITE, 0);
+		xml_parse_into_struct($parser, $content, $vals, $index);
+
+		if (xml_get_error_code($parser))	return 'Line '.xml_get_current_line_number($parser).': '.xml_error_string(xml_get_error_code($parser));
+		xml_parser_free($parser);
+
+		$this->tags = $index;
+		foreach($index as $idx => $value)	{
+			$this->tags[$idx] = array();
+		}
+
+		$this->textGnyf = 1;
+	}
+
+	/**
 	 * Takes the input list of tags to markup and validates it against $this->tags array.
 	 * Returns an array with two strings, the list of block tags and the list of single tags.
-	 * 
+	 *
 	 * @param	string		Comma list of tags, input to processing functions in top of class.
 	 * @return	array		array with two strings, the list of block tags and the list of single tags.
 	 */
@@ -781,7 +806,7 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 				}
 			}
 		}
-		
+
 		return array(implode(',',$tagList_elements),implode(',',$tagList_single));
 	}
 
@@ -799,15 +824,15 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 
 
 	/**
-	 * 
+	 *
 	 * SPLITTING functions
-	 * 
+	 *
 	 */
 
 	/**
 	 * Main splitting function - will split the input $content HTML string into sections based on the strings with tags, $tagsBlock and $tagsSolo
 	 * WARNING: No currect support for XML-ended tags, eg. <p/>. In fact there is not even support for block tags like <p> which does not have a counter part ending it!!! (This support must come from the htmlparser class btw.)
-	 * 
+	 *
 	 * @param	string		$content: HTML content
 	 * @param	string		$tagsBlock: list of block tags; which has a start and end (eg. <p>...</p>, <table>...</table>, <tr>...</tr>, <div>...</div>)
 	 * @param	string		$tagsSolo: list of solo (single) tags; which are stand-alone (eg. <img>, <br>, <hr>, <input>)
@@ -825,7 +850,7 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 
 			// Traverse all sections of blocks
 		foreach($blocks as $k=>$v) {	// INSIDE BLOCK: Processing of block content. This includes a recursive call to this function for the inner content of the block tags.
-				// If inside a block tag 
+				// If inside a block tag
 			if ($k%2)	{
 				$firstTag = $this->htmlParse->getFirstTag($v);	// The first tag's content
 				$firstTagName = strtolower($this->htmlParse->getFirstTagName($v));	// The 'name' of the first tag
@@ -835,10 +860,10 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 
 					// IF pathMode is set:
 				$subPath = $this->makePath($path,$firstTagName,$params[0]);
-				
+
 					// Make the call again - recursively.
 				if ($recursion < $this->maxRecursion && !($mode=='search' && isset($this->searchPaths[$subPath])))	$v = $this->recursiveBlockSplitting($v,$tagsBlock,$tagsSolo,$mode,$subPath,$recursion+1);
-				
+
 				if ($mode=='markup')	{
 					$v = $this->getMarkupCode('block',$v,$params,$firstTagName,$firstTag,$endTag,$subPath,$recursion);
 				} elseif ($mode=='search')	{
@@ -847,21 +872,21 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 					$v = $firstTag.$v.$endTag;
 				}
 			} else {
-				if ($tagsSolo) {	// OUTSIDE of block; Processing of SOLO tags in there... 
-	
+				if ($tagsSolo) {	// OUTSIDE of block; Processing of SOLO tags in there...
+
 						// Split content by the solo tags
 					$soloParts = $this->htmlParse->splitTags($tagsSolo,$v);
-	
+
 						// Traverse solo tags
 					foreach($soloParts as $kk => $vv)	{
 						if ($kk%2)	{
 							$firstTag = $vv;	// The first tag's content
 							$firstTagName = strtolower($this->htmlParse->getFirstTagName($vv));	// The 'name' of the first tag
 							$params = $this->htmlParse->get_tag_attributes($firstTag,1);
-	
+
 								// Get path for THIS element:
 							$subPath = $this->makePath($path,$firstTagName,$params[0]);
-			
+
 							if ($mode=='markup')	{
 								$vv = $this->getMarkupCode('',$vv,$params,$firstTagName,$firstTag,'',$subPath,$recursion+1);
 							} elseif ($mode=='search')	{
@@ -890,7 +915,7 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 
 	/**
 	 * In markup mode, this function is used to add the gnyf image to the HTML plus set all necessary attributes etc in order to mark up the code visually.
-	 * 
+	 *
 	 * @param	string		Element type: block or '' (single/solo)
 	 * @param	string		Sub HTML code.
 	 * @param	array		Attributes of the current tag
@@ -902,7 +927,7 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 	 * @return	string		Modified sub HTML code ($v)
 	 */
 	function getMarkupCode($mode,$v,$params,$firstTagName,$firstTag,$endTag,$subPath,$recursion)	{
-	
+
 			// Get gnyf:
 		$attrInfo = '';
 		if ($params[0]['class'])	$attrInfo.=' CLASS="'.$params[0]['class'].'"';
@@ -940,7 +965,7 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 			}
 				// Get tag configuration
 			$tagConf = $this->tags[$firstTagName];
-			
+
 				// If source mode or normal
 			if ($this->mode=='source')	{
 				$v = $this->sourceDisplay($firstTag,$recursion,$gnyf).$v.$this->sourceDisplay($endTag,$recursion);
@@ -956,7 +981,7 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 					$v = $gnyf.$firstTag.$v.$endTag;
 				} else {
 					$v = $firstTag.$gnyf.$v.$endTag;
-				}	
+				}
 			}
 		} else {	// If solo/single element:
 				// Adding gnyf to the tag:
@@ -974,7 +999,7 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 
 	/**
 	 * In search mode, this function is used to process the content.
-	 * 
+	 *
 	 * @param	string		Element type: block or '' (single/solo)
 	 * @param	string		Sub HTML code.
 	 * @param	array		Attributes of the current tag
@@ -998,7 +1023,7 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 			}
 		} elseif ($this->searchPaths[$subPath])	{
 			$placeholder = md5(microtime());
-			
+
 			switch((string)$this->searchPaths[$subPath]['modifier'])	{
 				case 'ATTR':
 				case 'INNER+ATTR':
@@ -1062,7 +1087,7 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 
 	/**
 	 * Will format content for display in 'source' mode.
-	 * 
+	 *
 	 * @param	string		Input string to format.
 	 * @param	integer		The recursion integer - used to indent the code.
 	 * @param	string		The gnyf-image to display.
@@ -1082,7 +1107,7 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 
 	/**
 	 * Will format content for display in 'checkbox' mode.
-	 * 
+	 *
 	 * @param	string		Input string to format.
 	 * @param	integer		The recursion integer - used to indent the code.
 	 * @param	string		HTML path
@@ -1110,7 +1135,7 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 
 	/**
 	 * Compile the path value for the current path/tagname and attributes
-	 * 
+	 *
 	 * @param	string		Current path string for the parent level.
 	 * @param	string		The tag name for the current element on that level
 	 * @param	string		The attributes for the tag in an array with key/value pairs
@@ -1122,7 +1147,7 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 			switch($this->pathMode)	{
 				default:
 					$counterIDstr = $firstTagName.($attr['class']?'.'.$attr['class']:'');	// Counter ID string
-					$this->elCountArray[$path][$counterIDstr]++;		// Increase counter, include 
+					$this->elCountArray[$path][$counterIDstr]++;		// Increase counter, include
 					$this->elParentLevel[$path][]=$counterIDstr.'['.$this->elCountArray[$path][$counterIDstr].']';
 						// IF id attribute is set, then THAT will reset everything since IDs must be unique. (expecting that ID is a string with no whitespace... at least not checking for that here!)
 					if ($attr['id'])	{
@@ -1132,13 +1157,13 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 					}
 				break;
 			}
-		}	
+		}
 		return $subPath;
 	}
 
 	/**
 	 * Returns the GNYF image (tag-image)
-	 * 
+	 *
 	 * @param	string		The tag name in lowercase, eg. "table" or "tr"
 	 * @param	string		Path string for the link and title-attribute of the image.
 	 * @param	[type]		$title: ...
@@ -1146,8 +1171,10 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 	 */
 	function getGnyf($firstTagName,$path,$title)	{
 		if (!$this->onlyElements || t3lib_div::inList($this->onlyElements,$firstTagName))	{
-			$gnyf= '<img '.str_replace('###PATH###',$this->pathPrefix.$path,$this->gnyfImgAdd).' src="'.$this->gnyfPath.'html_tags/'.$firstTagName.'.gif" border="0" title="'.htmlspecialchars($title).'"'.$this->gnyfStyle.' alt="" />'.
-						($this->mode=='explode' ? '<br />' : '');
+			$onclick = str_replace('###PATH###',$this->pathPrefix.$path,$this->gnyfImgAdd);
+
+			$gnyf = $this->textGnyf ? '<span '.$onclick.' style="border:1px solid blank; background-color: yellow;">['.$firstTagName.']</span>' : '<img '.$onclick.' src="'.$this->gnyfPath.'html_tags/'.$firstTagName.'.gif" border="0" title="'.htmlspecialchars($title).'"'.$this->gnyfStyle.' alt="" />';
+			$gnyf.= ($this->mode=='explode' ? '<br />' : '');
 			return $gnyf;
 		}
 	}

@@ -88,6 +88,9 @@ require_once(t3lib_extMgm::extPath('templavoila').'class.tx_templavoila_htmlmark
 require_once(PATH_t3lib.'class.t3lib_tcemain.php');
 
 
+if (t3lib_extMgm::isLoaded('lorem_ipsum'))	{
+	require_once(t3lib_extMgm::extPath('lorem_ipsum').'class.tx_loremipsum_wiz.php');
+}
 
 
 /*************************************
@@ -144,6 +147,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 	var $displayTable = '';		// (GPvar "table") The table from which to display element (Data Structure object [tx_templavoila_datastructure], template object [tx_templavoila_tmplobj])
 	var $displayUid = '';		// (GPvar "uid") The UID to display (from ->displayTable)
 	var $displayPath = '';		// (GPvar "htmlPath") The "HTML-path" to display from the current file
+	var $returnUrl = '';		// (GPvar "returnUrl") Return URL if the script is supplied with that.
 
 		// GPvars for MODULE mode, specific to mapping a DS:
 	var $_preview;
@@ -266,6 +270,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 		$this->displayTable = t3lib_div::GPvar('table');
 		$this->displayUid = t3lib_div::GPvar('uid');
 		$this->displayPath = t3lib_div::GPvar('htmlPath');
+		$this->returnUrl = t3lib_div::GPvar('returnUrl');
 
 			// GPvars specific to the DS listing/table and mapping features:
 		$this->_preview = t3lib_div::GPvar('_preview');
@@ -312,6 +317,14 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 		$this->content.=$this->doc->startPage($LANG->getLL('title'));
 		$this->content.=$this->doc->header($LANG->getLL('title'));
 		$this->content.=$this->doc->spacer(5);
+
+		if ($this->returnUrl)	{
+		$this->content.='<a href="'.htmlspecialchars($this->returnUrl).'" class="typo3-goBack">'.
+			'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/goback.gif','width="14" height="14"').' alt="" />'.
+			$LANG->sL('LLL:EXT:lang/locallang_misc.xml:goBack',1).
+			'</a><br/>';
+		}
+
 
 			// Render content, depending on input values:
 		if ($this->displayFile)	{	// Browsing file directly, possibly creating a template/data object records.
@@ -500,6 +513,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 						$dataArr['tx_templavoila_tmplobj']['NEW']['datastructure']=intval($tce->substNEWwithIDs['NEW']);
 						$dataArr['tx_templavoila_tmplobj']['NEW']['fileref']=substr($this->displayFile,strlen(PATH_site));
 						$dataArr['tx_templavoila_tmplobj']['NEW']['templatemapping']=serialize($templatemapping);
+						$dataArr['tx_templavoila_tmplobj']['NEW']['fileref_mtime'] = @filemtime($this->displayFile);
 
 							// Init TCEmain object and store:
 						$tce = t3lib_div::makeInstance("t3lib_TCEmain");
@@ -546,6 +560,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 						$dataArr=array();
 						$dataArr['tx_templavoila_tmplobj'][$toREC['uid']]['fileref']=substr($this->displayFile,strlen(PATH_site));
 						$dataArr['tx_templavoila_tmplobj'][$toREC['uid']]['templatemapping']=serialize($templatemapping);
+						$dataArr['tx_templavoila_tmplobj'][$toREC['uid']]['fileref_mtime'] = @filemtime($this->displayFile);
 
 							// Init TCEmain object and store:
 						$tce = t3lib_div::makeInstance('t3lib_TCEmain');
@@ -1047,7 +1062,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			$cmd = 'clear';
 		} elseif (t3lib_div::GPvar('_save_data_mapping'))	{	// Saving to Session
 			$cmd = 'save_data_mapping';
-		} elseif (t3lib_div::GPvar('_save_to'))	{	// Saving to Template Object
+		} elseif (t3lib_div::GPvar('_save_to') || t3lib_div::GPvar('_save_to_return'))	{	// Saving to Template Object
 			$cmd = 'save_to';
 		}
 
@@ -1171,6 +1186,8 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			}
 
 			$dataArr['tx_templavoila_tmplobj'][$row['uid']]['templatemapping'] = serialize($templatemapping);
+			$dataArr['tx_templavoila_tmplobj'][$row['uid']]['fileref_mtime'] = @filemtime($theFile);
+
 			$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 			$tce->stripslashes_values=0;
 			$tce->start($dataArr,array());
@@ -1179,6 +1196,11 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			$msg[] = 'Mapping information was saved to the current Template Object!';
 			$row = t3lib_BEfunc::getRecord('tx_templavoila_tmplobj',$this->displayUid);
 			$templatemapping = unserialize($row['templatemapping']);
+
+			if (t3lib_div::GPvar('_save_to_return'))	{
+				header('Location: '.t3lib_div::locationHeaderUrl($this->returnUrl));
+				exit;
+			}
 		}
 
 			// Making the menu
@@ -1193,6 +1215,10 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 		}
 
 		$menuItems[]='<input type="submit" name="_save_to" value="Save" title="Saving all mapping data into the Template Object." />';
+
+		if ($this->returnUrl)	{
+			$menuItems[]='<input type="submit" name="_save_to_return" value="Save and Return" title="Saving all mapping data into the Template Object and return." />';
+		}
 
 			// If a difference is detected...:
 		if (
@@ -1763,8 +1789,9 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 					<input type="text" size="80" name="'.$formFieldName.'[tx_templavoila][description]" value="'.htmlspecialchars($insertDataArray['tx_templavoila']['description']).'" /><br />
 
 					'.($insertDataArray['type']!='array' ? '
-					Sample Data:<br />
-					<input type="text" size="80" name="'.$formFieldName.'[tx_templavoila][sample_data][]" value="'.htmlspecialchars($insertDataArray['tx_templavoila']['sample_data'][0]).'" /><br />
+					Sample Data'.($insertDataArray['tx_templavoila']['sample_data'][0] ? ' ('.strlen($insertDataArray['tx_templavoila']['sample_data'][0]).' chars)' : '').':<br />
+					<input type="text" size="70" name="'.$formFieldName.'[tx_templavoila][sample_data][]" value="'.htmlspecialchars($insertDataArray['tx_templavoila']['sample_data'][0]).'" />
+					'.$this->lipsumLink($formFieldName.'[tx_templavoila][sample_data]').'<br/>
 
 					Editing Type:<br />
 					<select name="'.$formFieldName.'[tx_templavoila][eType]">
@@ -2204,6 +2231,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			'file' => $this->displayFile,
 			'table' => $this->displayTable,
 			'uid' => $this->displayUid,
+			'returnUrl' => $this->returnUrl
 		);
 		$p = t3lib_div::implodeArrayForUrl('',array_merge($theArray,$array),'',1);
 
@@ -2384,6 +2412,8 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 		$markupObj->pathPrefix = $path?$path.'|':'';
 		$markupObj->onlyElements = $limitTags;
 
+#		$markupObj->setTagsFromXML($content);
+
 		$cParts = $markupObj->splitByPath($content,$path);
 		if (is_array($cParts))	{
 			$cParts[1] = $markupObj->markupHTMLcontent(
@@ -2481,6 +2511,27 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 		}
 	}
 
+
+	function lipsumLink($formElementName)	{
+		if (t3lib_extMgm::isLoaded('lorem_ipsum'))	{
+			$LRobj = t3lib_div::makeInstance('tx_loremipsum_wiz');
+			$LRobj->backPath = $this->doc->backPath;
+
+			$PA = array(
+				'fieldChangeFunc' => array(),
+				'formName' => 'pageform',
+				'itemName' => $formElementName.'[]',
+				'params' => array(
+#					'type' => 'header',
+					'type' => 'description',
+					'add' => 1,
+					'endSequence' => '46,32',
+				)
+			);
+
+			return $LRobj->main($PA,'ID:templavoila');
+		}
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/cm1/index.php'])	{

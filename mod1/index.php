@@ -220,7 +220,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 					return false;
 				}
 				if (top.fsMod) top.fsMod.recentIds["web"] = '.intval($this->id).';
-			');
+			').$this->doc->getDynTabMenuJScode();
 
 				// Setting up support for context menus (when clicking the items icon)
 			$CMparts = $this->doc->getContextMenuCode();
@@ -229,7 +229,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			$this->doc->postCode.= $CMparts[2];
 
 				// Just to include the Stylesheet information, nothing more:
-			$this->doc->getTabMenu(0,'_',0,array(''=>''));
+#			$this->doc->getTabMenu(0,'_',0,array(''=>''));
 
 				// Go through the commands and check if we have to do some action:
 			$commands = array ('createNewRecord', 'unlinkRecord', 'deleteRecord','pasteRecord', 'makeLocalRecord', 'createNewTranslation');
@@ -432,7 +432,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		}
 
 			// Display the nested page structure:
-		$content.= $this->renderFramework($dsArr,'',$clipboardElInPath);
+		$content.= $this->renderFramework_allSheets($dsArr,'',$clipboardElInPath);
 		$content .= t3lib_BEfunc::cshItem('_MOD_web_txtemplavoilaM1', 'pagemodule', $this->doc->backPath,'|<br/>');
 
 		if (!is_array($this->altRoot))	{
@@ -629,6 +629,29 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 *
 	 ********************************************/
 
+	function renderFrameWork_allSheets($dsInfo, $parentPos='', $clipboardElInPath=0, $referenceInPath=0) {
+
+		if (is_array($dsInfo['sub']) && (count($dsInfo['sub'])>1 || !isset($dsInfo['sub']['sDEF'])))	{
+			$parts = array();
+			foreach($dsInfo['sub'] as $sheetKey => $sheetInfo)	{
+				$parts[] = array(
+					'label' => $dsInfo['meta'][$sheetKey]['title'],
+					'description' => $dsInfo['meta'][$sheetKey]['description'],
+					'linkTitle' => $dsInfo['meta'][$sheetKey]['short'],
+					'content' => $this->renderFrameWork($dsInfo, $parentPos, $clipboardElInPath, $referenceInPath, $sheetKey)
+				);
+			}
+			return $this->doc->getDynTabMenu($parts,'TEMPLAVOILA:pagemodule:'.$parentPos);
+		} else {
+			return $this->renderFrameWork($dsInfo, $parentPos, $clipboardElInPath, $referenceInPath, 'sDEF');
+		}
+
+
+			// Setting the sheet ID and render sheet menu:
+		#$sheet = isset($dsInfo['sub'][$this->MOD_SETTINGS['currentSheetKey']]) ? $this->MOD_SETTINGS['currentSheetKey'] : 'sDEF';
+
+	}
+
 	/**
 	 * Renders the display framework.
 	 * Calls itself recursively
@@ -640,7 +663,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * @return	string		HTML
 	 * @todo	Split this huge function into smaller ones
 	 */
-	function renderFrameWork($dsInfo, $parentPos='', $clipboardElInPath=0, $referenceInPath=0) {
+	function renderFrameWork($dsInfo, $parentPos, $clipboardElInPath, $referenceInPath, $sheet) {
 		global $LANG, $TYPO3_CONF_VARS;
 
 			// First prepare user defined objects (if any) for hooks which extend this function:
@@ -650,9 +673,6 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				$hookObjectsArr[] = &t3lib_div::getUserObj ($classRef);
 			}
 		}
-
-			// Setting the sheet ID and render sheet menu:
-		$sheet = isset($dsInfo['sub'][$this->MOD_SETTINGS['currentSheetKey']]) ? $this->MOD_SETTINGS['currentSheetKey'] : 'sDEF';
 
 			// Take care of the currently selected language, for both concepts - with langChildren enabled and disabled
 		$langDisable = intval ($this->currentDataStructureArr[$dsInfo['el']['table']]['meta']['langDisable']);
@@ -749,7 +769,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 					if (is_array($fieldContent['el_list']))	 {
 						foreach($fieldContent['el_list'] as $counter => $k)	{
 							$v = $fieldContent['el'][$k];
-							$elList.=$this->renderFrameWork($v,$dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$lKey.':'.$fieldID.':'.$vKey.':'.$counter,$clipboardElInPath,$referenceInPath);
+							$elList.=$this->renderFrameWork_allSheets($v,$dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$lKey.':'.$fieldID.':'.$vKey.':'.$counter,$clipboardElInPath,$referenceInPath);
 
 								// "New" and "Paste" icon:
 							$elList.=$this->linkNew('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/new_el.gif','').' align="absmiddle" vspace="5" border="0" title="'.$LANG->getLL ('createnewrecord').'" alt="" />',$dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$lKey.':'.$fieldID.':'.$vKey.':'.$counter);
@@ -845,7 +865,9 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 		}
 
-		$finalContent = $this->renderSheetMenu($dsInfo, $sheet) . ($errorLineBefore ? '<br />'.$errorLineBefore : ''). '
+		$finalContent =
+			#$this->renderSheetMenu($dsInfo, $sheet) .
+			($errorLineBefore ? '<br />'.$errorLineBefore : ''). '
 		<table border="0" cellpadding="2" cellspacing="0" style="border: 1px solid black; margin-bottom:5px; '.$elementBackgroundStyle.'" width="100%">
 			<tr style="'.$elementPageTitlebarStyle.';">
 				<td nowrap="nowrap">'.$ruleIcon.$langIcon.$recordIcon.$viewPageIcon.'</td><td width="95%" '.$titleBarTDParams.'>'.($isLocal?'':'<em>').$GLOBALS['LANG']->sL($dsInfo['el']['title'],1).($isLocal?'':'</em>'). '</td>
@@ -1436,7 +1458,12 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			$xmlContent = t3lib_div::xml2array($row[$flexFName]);
 
 			foreach($expDS as $sheetKey => $sVal)	{
-				$tree['sub'][$sheetKey]=array();
+				$tree['sub'][$sheetKey] = array();
+				$tree['meta'][$sheetKey] = array(
+					'title' => ($sVal['ROOT']['TCEforms']['sheetTitle'] ? $GLOBALS['LANG']->sL($sVal['ROOT']['TCEforms']['sheetTitle']) : ''),
+					'description' => ($sVal['ROOT']['TCEforms']['sheetDescription'] ? $GLOBALS['LANG']->sL($sVal['ROOT']['TCEforms']['sheetDescription']) : ''),
+					'short' => ($sVal['ROOT']['TCEforms']['sheetShortDescr'] ? $GLOBALS['LANG']->sL($sVal['ROOT']['TCEforms']['sheetShortDescr']) : '')
+				);
 
 				if (is_array($sVal['ROOT']['el']))	{
 					foreach($sVal['ROOT']['el'] as $k => $v) {

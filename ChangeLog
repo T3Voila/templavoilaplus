@@ -1,3 +1,9 @@
+2004-08-21  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+	* Finally added the "TemplaVoila" module to the Web main module and put some content into it! Now you can manage all your Data Structures and Template Objects from that module including creating new mappings and validate old ones.
+	* Also added TAB menus to the TV page module
+	* NOTICE: ALL changes here requires most recent 3.7.0-dev version from CVS in order to work!
+
 2004-07-18  Robert Lemke  <rl@robertlemke.de>
 
 	* Display and processing (copy, paste, insert etc.) for multi lang support now seems to be stable in the page module.
