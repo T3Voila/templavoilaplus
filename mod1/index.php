@@ -109,7 +109,6 @@ require_once (t3lib_extMgm::extPath('templavoila').'class.tx_templavoila_xmlrelh
 class tx_templavoila_module1 extends t3lib_SCbase {
 	var $pageinfo;
 	var $rules;								// Holds an instance of the tx_templavoila_rule
-	var $renderFramework;					// Instance of tx_templavoila_renderframework
 	var $modTSconfig;
 	var $extKey = 'templavoila';			// Extension key of this module	
 	
@@ -499,8 +498,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		global $LANG;
 		
 			// Setting the sheet ID and render sheet menu:
-		$sheet=isset($dsInfo['sub'][$this->MOD_SETTINGS['sheetData']]) ? $this->MOD_SETTINGS['sheetData'] : 'sDEF';
-		$sheetMenu = $this->renderSheetMenu($dsInfo, $sheet);
+		$sheet=isset($dsInfo['sub'][$this->MOD_SETTINGS['sheetData']]) ? $this->MOD_SETTINGS['sheetData'] : 'sDEF';	
 		
 			// The $isLocal flag is used to denote whether an element belongs to the current page or not. If NOT the $isLocal flag means (for instance) that the title bar will be colored differently to show users that this is a foreign element not from this page.
 		$isLocal = $dsInfo['el']['table']=='pages' || $dsInfo['el']['pid']==$this->id;	// Pages should be seem as local...
@@ -521,8 +519,8 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		$rulesStatus = $this->checkRulesForElement($dsInfo['el']['table'], $dsInfo['el']['id']);		
 		if (is_array($rulesStatus['error'])) {
 			foreach ($rulesStatus['error'] as $errorElement) {
-				$this->elementBlacklist[$errorElement['uid']]['position'] = $errorElement['position'];
-				$this->elementBlacklist[$errorElement['uid']]['message'] = $errorElement['message'];
+				$this->elementBlacklist[$errorElement['uid']][$errorElement['fieldname']]['position'] = $errorElement['position'];
+				$this->elementBlacklist[$errorElement['uid']][$errorElement['fieldname']]['message'] = $errorElement['message'];
 			}
 		}
 
@@ -551,7 +549,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				}
 
 					// Add cell content to registers:
-				$headerCells[]='<td valign="top" width="'.round(100/count($dsInfo['sub'][$sheet])).'%" style="'.$elementCETitlebarStyle.'">'.$GLOBALS['LANG']->sL($fieldContent['meta']['title'],1).'</td>';
+				$headerCells[]='<td valign="top" width="'.round(100/count($dsInfo['sub'][$sheet])).'%" style="'.$elementCETitlebarStyle.'; padding-top:0; padding-bottom:0;">'.$GLOBALS['LANG']->sL($fieldContent['meta']['title'],1).'</td>';
 				$cells[]='<td valign="top" width="'.round(100/count($dsInfo['sub'][$sheet])).'%" style="border: dashed 1px #666666; padding: 5px 5px 5px 5px;">'.$elList.'</td>';
 			}
 		}
@@ -569,18 +567,22 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		$elementPageTitlebarStyle = 'background-color: '.($dsInfo['el']['table']=='pages' ? $this->doc->bgColor2 : ($isLocal ? $this->doc->bgColor5 : $this->doc->bgColor6)) .';';
 		$elementCETitlebarStyle = 'background-color: '.$this->doc->bgColor4.';';
 		$errorLineBefore = $errorLineAfter = '';
-		switch ($this->elementBlacklist[$dsInfo['el']['id']]['position']) {
+			
+		$parentPosArr = explode (':',$parentPos);
+		$currentFieldName = $parentPosArr[3];
+		
+		switch ($this->elementBlacklist[$dsInfo['el']['id']][$currentFieldName]['position']) {
 			case 1:
 				$elementBackgroundStyle = 'background-color: '. ($GLOBALS['TBE_STYLES']['templavoila_bgColorWarning'] ? $GLOBALS['TBE_STYLES']['templavoila_bgColorWarning']:'#f4b0b0') .';';
 				$elementPageTitlebarStyle = 'background-color: '. ($GLOBALS['TBE_STYLES']['templavoila_bgColorPageTitleWarning'] ? $GLOBALS['TBE_STYLES']['templavoila_bgColorPageTitleWarning']:'#ef4545') .';';
 				$elementCETitlebarStyle = 'background-color: '. ($GLOBALS['TBE_STYLES']['templavoila_bgColorCETitleWarning'] ? $GLOBALS['TBE_STYLES']['templavoila_bgColorCETitleWarning']:'#ef7c7c') .';';
-				$errorLineWithin = $this->doc->rfw($this->elementBlacklist[$dsInfo['el']['id']]['message']).'<br />';
+				#$errorLineWithin = $this->doc->rfw($this->elementBlacklist[$dsInfo['el']['id']][$currentFieldName]['message']).'<br />';
 				break;
 			case -1:
-				$errorLineBefore = $this->doc->rfw($this->elementBlacklist[$dsInfo['el']['id']]['message']).'<br />';
+				#$errorLineBefore = $this->doc->rfw($this->elementBlacklist[$dsInfo['el']['id']][$currentFieldName]['message']).'<br />';
 				break;
 			case 2:
-				$errorLineAfter = $this->doc->rfw($this->elementBlacklist[$dsInfo['el']['id']]['message']).'<br />';
+				$errorLineAfter = $this->doc->rfw($this->elementBlacklist[$dsInfo['el']['id']][$currentFieldName]['message']).'<br />';
 			default:
 		}
 			// Creating the rule compliance icon, $rulesStatus has been evaluated earlier
@@ -607,9 +609,10 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			$viewPageIcon = '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::viewOnClick($dsInfo['el']['id'],$this->doc->backPath,t3lib_BEfunc::BEgetRootLine($dsInfo['el']['id']))).'">'.
 				'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/zoom.gif','width="12" height="12"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showPage',1).'" hspace="3" alt="" align="absmiddle" />'.
 				'</a>';
-		}
-
- 		$content = $sheetMenu . $errorLineBefore . '
+			$renderHeaderFields = $this->renderHeaderFields($dsInfo['el']['id']);
+		}		
+		
+ 		$finalContent = $this->renderSheetMenu($dsInfo, $sheet) . $errorLineBefore . '
 		<table border="0" cellpadding="2" cellspacing="0" style="border: 1px solid black; margin-bottom:5px; '.$elementBackgroundStyle.'" width="100%">
 			<tr style="'.$elementPageTitlebarStyle.';">
 				<td>'.$showRuleIcon.$recordIcon.$viewPageIcon.'&nbsp;'.($isLocal?'':'<em>').$GLOBALS['LANG']->sL($dsInfo['el']['title'],1).($isLocal?'':'</em>'). '</td>
@@ -622,12 +625,12 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 					($isLocal ? $this->linkEdit('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/edit2.gif','').' title="'.$LANG->getLL ('editrecord').'" border="0" alt="" />',$dsInfo['el']['table'],$dsInfo['el']['id']) : '').
 				'</td>
 			</tr>
-			<tr><td colspan="2">'.$content.($errorLineWithin ? '<br />'.$errorLineWithin : '').'</td></tr>
+			<tr><td colspan="2">'.$renderHeaderFields.$content.($errorLineWithin ? '<br />'.$errorLineWithin : '').'</td></tr>
 		</table>
 		'.$errorLineAfter.'
 		';
 		
-		return $content;
+		return $finalContent;
 	}	
 	
 	/**
@@ -636,10 +639,10 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * works for the page at this point - not content elements deeper in the structure.
 	 *
 	 * @param	array		$dsInfo: Datastructure containing the sheet information
-	 * @param	string		$sheet:
+	 * @param	string		$currentSheet: The currently selected sheet
 	 * @return	string		HTML
 	 */
-	function renderSheetMenu ($dsInfo, $sheet) {
+	function renderSheetMenu ($dsInfo, $currentSheet) {
 		$sheetMenu='';
 		if (is_array($dsInfo['sub']))	{
 			if (count($dsInfo['sub'])>1 || !isset($dsInfo['sub']['sDEF']))	{
@@ -659,7 +662,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				$first=true;
 				foreach($dsInfo['sub'] as $sheetK => $sheetI)	{
 
-					$isActive = !strcmp($sheet,$sheetK);
+					$isActive = !strcmp($currentSheet,$sheetK);
 					$class = $isActive ? "tabact" : "tab";
 					$width = $isActive ? $widthAct : $widthNo;
 	
@@ -678,6 +681,45 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			}
 		}
 		return $sheetMenu;
+	}
+	
+	/**
+	 * Render header fields: It's possible to define a list of fields (currently only from the pages table) which should appear
+	 * as a header above the content zones while editing the content of a page. These fields are defined in the page's datastructure.
+	 * 
+	 * @param	integer		$pageId: The page's ID for which to display the header fields
+	 * @return	string		HTML
+	 */
+	function renderHeaderFields ($pageId) {
+		global $LANG;
+		$content = '';
+		
+		$showHideButton = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/ol/minusbullet.gif','').' align="absmiddle" vspace="5" border="0" title="" alt="" />';
+		$showHideButton .= '<a href="#">'.$LANG->getLL ('hideheaderinformation').'</a>';
+		
+			// Getting data structure for the page template and extract information for header fields to display
+		$pageRecord = t3lib_BEfunc::getRecord ('pages', $pageId);		
+		$dataStructureRecord = t3lib_BEfunc::getRecord ('tx_templavoila_datastructure', $pageRecord['tx_templavoila_ds']);
+		$xmlContent = t3lib_div::xml2array ($dataStructureRecord['dataprot']);
+		if (is_array ($xmlContent['ROOT']['tx_templavoila']['pageModule'])) {
+			$headerFieldNames = t3lib_div::trimExplode(chr(10),str_replace(chr(13),'',$xmlContent['ROOT']['tx_templavoila']['pageModule']['displayHeaderFields']),1);
+			if (is_array ($headerFieldNames)) {
+				foreach ($headerFieldNames as $headerFieldName) {
+					list ($table, $field) = explode ('.',$headerFieldName);
+					$headerFields[] = '<strong>'.htmlspecialchars($field).':</strong> '.$pageRecord[$field];
+				}
+				
+				if (is_array ($headerFields)) {
+					$content .= $showHideButton;
+					$content .= '<table cellpadding="0" cellspacing="0" border="0" style="padding-left 3px; padding-right: 3px;"><tr>';
+					foreach ($headerFields as $headerField) {
+						$content .= '<tr><td>'.$headerField.'</td></tr>';
+					}
+					$content .= '</tr></table><br />';
+				}
+			}
+		}
+		return $content;
 	}
 	
 	/**
