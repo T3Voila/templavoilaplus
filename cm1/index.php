@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 2003 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 2003, 2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -135,6 +135,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 	var $editDataStruct=0;		// Setting whether we are editing a data structure or not.
 	var $storageFolders = array();	// Storage folders as key(uid) / value (title) pairs.
 	var $storageFolders_pidList=0;	// The storageFolders pids imploded to a comma list including "0"
+	var $eTypeUserFunctions = array();	// May contain userfunctions for certain eTypes, configured by other extensions via TSconfig
 	
 		// GPvars:
 	var $mode;					// Looking for "&mode", which defines if we draw a frameset (default), the module (mod) or display (display)
@@ -198,7 +199,6 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 	 * @return	void		
 	 */
 	function main()	{
-
 			// Setting GPvars:
 		$this->mode = t3lib_div::GPvar('mode');
 
@@ -1780,18 +1780,27 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 	 * @access private
 	 */
 	function drawDataStructureMap_editItem_editTypeExtra($type,$formFieldName,$curValue)	{
-		switch($type)	{
-			case 'TypoScriptObject':
-				$output = '
-					<table border="0" cellpadding="2" cellspacing="0">
-						<tr>
-							<td>Object path:</td>
-							<td><input type="text" name="'.$formFieldName.'[objPath]" value="'.htmlspecialchars($curValue['objPath'] ? $curValue['objPath'] : 'lib.myObject').'" /></td>
-						</tr>
-					</table>';
-			break;
+			// If a user function was registered, use that instead of our own handlers:
+		if (isset ($this->modTSconfig['properties']['eTypesExtraFormFieldsUserfunctions.'][$type])) {
+			$params = array (
+				'type' => $type,
+				'formFieldName' => $formFieldName,
+				'curValue' => $curValue,
+			);
+			$output = t3lib_div::callUserFunction($this->modTSconfig['properties']['eTypesExtraFormFieldsUserfunctions.'][$type], $params, $this,'');
+		} else {
+			switch($type)	{
+				case 'TypoScriptObject':
+					$output = '
+						<table border="0" cellpadding="2" cellspacing="0">
+							<tr>
+								<td>Object path:</td>
+								<td><input type="text" name="'.$formFieldName.'[objPath]" value="'.htmlspecialchars($curValue['objPath'] ? $curValue['objPath'] : 'lib.myObject').'" /></td>
+							</tr>
+						</table>';
+				break;
+			}
 		}
-
 		return $output;
 	}
 
@@ -1813,9 +1822,9 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 	 * When mapping HTML files to DS the field types are selected amount some presets - this function converts these presets into the actual settings needed in the DS
 	 * Typically called like: ->substEtypeWithRealStuff($storeDataStruct['ROOT']['el'],$contentSplittedByMapping['sub']['ROOT']);
 	 * 
-	 * @param	array		Data Structure, passed by reference!
-	 * @param	array		Actual template content splitted by Data Structure
-	 * @return	void		Notice, the result is directly written in $elArray
+	 * @param	array		$elArray: Data Structure, passed by reference!
+	 * @param	array		$v_sub: Actual template content splitted by Data Structure
+	 * @return	void		Note: The result is directly written in $elArray
 	 * @see renderFile()
 	 */
 	function substEtypeWithRealStuff(&$elArray,$v_sub=array())	{
@@ -1829,195 +1838,205 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			} else {	// Only non-arrays can have configuration (that is elements and attributes)
 				
 					// Getting some information about the HTML content (eg. images width/height if applicable)
-				$contentInfo = $this->substEtypeWithRealStuff_contentInfo(trim($v_sub['cArray'][$key]));
+				$contentInfo = $this->substEtypeWithRealStuff_contentInfo(trim($v_sub['cArray'][$key]));				
 
-					// Based on the eType (the preset type) we make configuration settings:
-				switch($elArray[$key]['tx_templavoila']['eType'])	{
-					case 'text':
-						$elArray[$key]['TCEforms']['config'] = array(
-							'type' => 'text',
-							'cols' => '48',
-							'rows' => '5',
-						);
-						$elArray[$key]['tx_templavoila']['proc']['HSC']=1;
-					break;
-					case 'image':
-					case 'imagefixed':
-						$elArray[$key]['TCEforms']['config'] = array(
-							'type' => 'group',
-							'internal_type' => 'file',
-							'allowed' => 'gif,png,jpg,jpeg',
-							'max_size' => '1000',
-							'uploadfolder' => 'uploads/tx_templavoila',
-							'show_thumbs' => '1',
-							'size' => '1',
-							'maxitems' => '1',
-							'minitems' => '0'
-						);
-						
-						$maxW = $contentInfo['img']['width'] ? $contentInfo['img']['width'] : 200;
-						$maxH = $contentInfo['img']['height'] ? $contentInfo['img']['height'] : 150;
-						
-						if ($elArray[$key]['tx_templavoila']['eType']=='image')	{
-							$elArray[$key]['tx_templavoila']['TypoScript'] = '
-10 = IMAGE
-10.file.import = uploads/tx_templavoila/
-10.file.import.current = 1
-10.file.import.listNum = 0
-10.file.maxW = '.$maxW.'
-						';
-						} else {
-							$elArray[$key]['tx_templavoila']['TypoScript'] = '
-10 = IMAGE
-10.file = GIFBUILDER
-10.file {
-	XY = '.$maxW.','.$maxH.'
+					// Based on the eType (the preset type) we make configuration settings. 
+					// If a user function was registered, use that instead of our own handlers:
+				if (isset ($this->modTSconfig['properties']['eTypesConfGenUserfunctions.'][$elArray[$key]['tx_templavoila']['eType']])) {
+					$params = array (
+						'key' => $key,
+						'elArray' => &$elArray,
+						'contentInfo' => $contentInfo,
+					);
+					t3lib_div::callUserFunction($this->modTSconfig['properties']['eTypesConfGenUserfunctions.'][$elArray[$key]['tx_templavoila']['eType']], $params, $this,'');					
+				} else {
+					switch($elArray[$key]['tx_templavoila']['eType'])	{
+						case 'text':
+							$elArray[$key]['TCEforms']['config'] = array(
+								'type' => 'text',
+								'cols' => '48',
+								'rows' => '5',
+							);
+							$elArray[$key]['tx_templavoila']['proc']['HSC']=1;
+						break;
+						case 'image':
+						case 'imagefixed':
+							$elArray[$key]['TCEforms']['config'] = array(
+								'type' => 'group',
+								'internal_type' => 'file',
+								'allowed' => 'gif,png,jpg,jpeg',
+								'max_size' => '1000',
+								'uploadfolder' => 'uploads/tx_templavoila',
+								'show_thumbs' => '1',
+								'size' => '1',
+								'maxitems' => '1',
+								'minitems' => '0'
+							);
+							
+							$maxW = $contentInfo['img']['width'] ? $contentInfo['img']['width'] : 200;
+							$maxH = $contentInfo['img']['height'] ? $contentInfo['img']['height'] : 150;
+							
+							if ($elArray[$key]['tx_templavoila']['eType']=='image')	{
+								$elArray[$key]['tx_templavoila']['TypoScript'] = '
 	10 = IMAGE
 	10.file.import = uploads/tx_templavoila/
 	10.file.import.current = 1
 	10.file.import.listNum = 0
 	10.file.maxW = '.$maxW.'
-	10.file.minW = '.$maxW.'
-	10.file.maxH = '.$maxH.'
-	10.file.minH = '.$maxH.'
-}
-						';					
-						}
-						
-							// Finding link-fields on same level and set the image to be linked by that TypoLink:
-						$elArrayKeys = array_keys($elArray);
-						foreach($elArrayKeys as $theKey)	{
-							if ($elArray[$theKey]['tx_templavoila']['eType']=='link')	{
-								$elArray[$key]['tx_templavoila']['TypoScript'].= '
-10.stdWrap.typolink.parameter.field = '.$theKey.'
-								';
+							';
+							} else {
+								$elArray[$key]['tx_templavoila']['TypoScript'] = '
+	10 = IMAGE
+	10.file = GIFBUILDER
+	10.file {
+		XY = '.$maxW.','.$maxH.'
+		10 = IMAGE
+		10.file.import = uploads/tx_templavoila/
+		10.file.import.current = 1
+		10.file.import.listNum = 0
+		10.file.maxW = '.$maxW.'
+		10.file.minW = '.$maxW.'
+		10.file.maxH = '.$maxH.'
+		10.file.minH = '.$maxH.'
+	}
+							';					
 							}
-						}
-					break;
-					case 'link':
-						$elArray[$key]['TCEforms']['config'] = array(
-							'type' => 'input',		
-							'size' => '15',
-							'max' => '256',
-							'checkbox' => '',
-							'eval' => 'trim',
-							'wizards' => Array(
-								'_PADDING' => 2,
-								'link' => Array(
-									'type' => 'popup',
-									'title' => 'Link',
-									'icon' => 'link_popup.gif',
-									'script' => 'browse_links.php?mode=wizard',
-									'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1'
-								)
-							)
-						);
-	
-						$elArray[$key]['tx_templavoila']['TypoScript'] = '
-10 = TEXT
-10.typolink.parameter.current = 1
-10.typolink.returnLast = url
-						';
-						$elArray[$key]['tx_templavoila']['proc']['HSC']=1;
-					break;
-					case 'ce':
-						$elArray[$key]['TCEforms']['config'] = array(
-							'type' => 'group',
-							'internal_type' => 'db',
-							'allowed' => 'tt_content',
-							'size' => '5',
-							'maxitems' => '200',
-							'minitems' => '0',
-							'multiple' => '1',
-							'show_thumbs' => '1'
-						);
-						$elArray[$key]['tx_templavoila']['TypoScript'] = '
-10= RECORDS
-10.source.current=1
-10.tables = tt_content
-						';
-					break;
-					case 'int':
-						$elArray[$key]['TCEforms']['config'] = array(
-							'type' => 'input',	
-							'size' => '4',
-							'max' => '4',
-							'eval' => 'int',
-							'checkbox' => '0',
-							'range' => Array (
-								'upper' => '999',
-								'lower' => '25'
-							),
-							'default' => 0
-						);
-					break;
-					case 'select':
-						$elArray[$key]['TCEforms']['config'] = array(
-							'type' => 'select',		
-							'items' => Array (	
-								Array('', ''),
-								Array('Value 1', 'Value 1'),
-								Array('Value 2', 'Value 2'),
-								Array('Value 3', 'Value 3'),
-							),
-							'default' => '0'
-						);
-					break;
-					case 'input':
-					case 'input_h':
-					case 'input_g':
-						$elArray[$key]['TCEforms']['config'] = array(
-							'type' => 'input',
-							'size' => '48',
-							'eval' => 'trim',
-						);
-						
-						if ($elArray[$key]['tx_templavoila']['eType']=='input_h')	{	// Text-Header
+							
 								// Finding link-fields on same level and set the image to be linked by that TypoLink:
 							$elArrayKeys = array_keys($elArray);
 							foreach($elArrayKeys as $theKey)	{
 								if ($elArray[$theKey]['tx_templavoila']['eType']=='link')	{
-									$elArray[$key]['tx_templavoila']['TypoScript'] = '
-10 = TEXT
-10.current = 1
-10.typolink.parameter.field = '.$theKey.'
+									$elArray[$key]['tx_templavoila']['TypoScript'].= '
+	10.stdWrap.typolink.parameter.field = '.$theKey.'
 									';
 								}
-							}					
-						} elseif ($elArray[$key]['tx_templavoila']['eType']=='input_g')	{	// Graphical-Header
-	
-							$maxW = $contentInfo['img']['width'] ? $contentInfo['img']['width'] : 200;
-							$maxH = $contentInfo['img']['height'] ? $contentInfo['img']['height'] : 20;
-						
+							}
+						break;
+						case 'link':
+							$elArray[$key]['TCEforms']['config'] = array(
+								'type' => 'input',		
+								'size' => '15',
+								'max' => '256',
+								'checkbox' => '',
+								'eval' => 'trim',
+								'wizards' => Array(
+									'_PADDING' => 2,
+									'link' => Array(
+										'type' => 'popup',
+										'title' => 'Link',
+										'icon' => 'link_popup.gif',
+										'script' => 'browse_links.php?mode=wizard',
+										'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1'
+									)
+								)
+							);
+		
 							$elArray[$key]['tx_templavoila']['TypoScript'] = '
-10 = IMAGE
-10.file = GIFBUILDER
-10.file {				  
-  XY = '.$maxW.','.$maxH.'
-  backColor = #999999
-
-  10 = TEXT
-  10.text.current = 1
-  10.text.case = upper
-  10.fontColor = #FFCC00
-  10.fontFile =  t3lib/fonts/vera.ttf
-  10.niceText = 0
-  10.offset = 0,14
-  10.fontSize = 14				  
-}
+	10 = TEXT
+	10.typolink.parameter.current = 1
+	10.typolink.returnLast = url
 							';
-						} else {	// Normal output.
 							$elArray[$key]['tx_templavoila']['proc']['HSC']=1;
-						}
-					break;
-					case 'TypoScriptObject':
-						unset($elArray[$key]['TCEforms']['config']);
-						$elArray[$key]['tx_templavoila']['TypoScriptObjPath'] = $elArray[$key]['tx_templavoila']['eType_EXTRA']['objPath'] ? $elArray[$key]['tx_templavoila']['eType_EXTRA']['objPath'] : 'lib.myObject';
-					break;
-					case 'none':
-						unset($elArray[$key]['TCEforms']['config']);
-					break;
-				}
+						break;
+						case 'ce':
+							$elArray[$key]['TCEforms']['config'] = array(
+								'type' => 'group',
+								'internal_type' => 'db',
+								'allowed' => 'tt_content',
+								'size' => '5',
+								'maxitems' => '200',
+								'minitems' => '0',
+								'multiple' => '1',
+								'show_thumbs' => '1'
+							);
+							$elArray[$key]['tx_templavoila']['TypoScript'] = '
+	10= RECORDS
+	10.source.current=1
+	10.tables = tt_content
+							';
+						break;
+						case 'int':
+							$elArray[$key]['TCEforms']['config'] = array(
+								'type' => 'input',	
+								'size' => '4',
+								'max' => '4',
+								'eval' => 'int',
+								'checkbox' => '0',
+								'range' => Array (
+									'upper' => '999',
+									'lower' => '25'
+								),
+								'default' => 0
+							);
+						break;
+						case 'select':
+							$elArray[$key]['TCEforms']['config'] = array(
+								'type' => 'select',		
+								'items' => Array (	
+									Array('', ''),
+									Array('Value 1', 'Value 1'),
+									Array('Value 2', 'Value 2'),
+									Array('Value 3', 'Value 3'),
+								),
+								'default' => '0'
+							);
+						break;
+						case 'input':
+						case 'input_h':
+						case 'input_g':
+							$elArray[$key]['TCEforms']['config'] = array(
+								'type' => 'input',
+								'size' => '48',
+								'eval' => 'trim',
+							);
+							
+							if ($elArray[$key]['tx_templavoila']['eType']=='input_h')	{	// Text-Header
+									// Finding link-fields on same level and set the image to be linked by that TypoLink:
+								$elArrayKeys = array_keys($elArray);
+								foreach($elArrayKeys as $theKey)	{
+									if ($elArray[$theKey]['tx_templavoila']['eType']=='link')	{
+										$elArray[$key]['tx_templavoila']['TypoScript'] = '
+	10 = TEXT
+	10.current = 1
+	10.typolink.parameter.field = '.$theKey.'
+										';
+									}
+								}					
+							} elseif ($elArray[$key]['tx_templavoila']['eType']=='input_g')	{	// Graphical-Header
+		
+								$maxW = $contentInfo['img']['width'] ? $contentInfo['img']['width'] : 200;
+								$maxH = $contentInfo['img']['height'] ? $contentInfo['img']['height'] : 20;
+							
+								$elArray[$key]['tx_templavoila']['TypoScript'] = '
+	10 = IMAGE
+	10.file = GIFBUILDER
+	10.file {				  
+	  XY = '.$maxW.','.$maxH.'
+	  backColor = #999999
+	
+	  10 = TEXT
+	  10.text.current = 1
+	  10.text.case = upper
+	  10.fontColor = #FFCC00
+	  10.fontFile =  t3lib/fonts/vera.ttf
+	  10.niceText = 0
+	  10.offset = 0,14
+	  10.fontSize = 14				  
+	}
+								';
+							} else {	// Normal output.
+								$elArray[$key]['tx_templavoila']['proc']['HSC']=1;
+							}
+						break;
+						case 'TypoScriptObject':
+							unset($elArray[$key]['TCEforms']['config']);
+							$elArray[$key]['tx_templavoila']['TypoScriptObjPath'] = $elArray[$key]['tx_templavoila']['eType_EXTRA']['objPath'] ? $elArray[$key]['tx_templavoila']['eType_EXTRA']['objPath'] : 'lib.myObject';
+						break;
+						case 'none':
+							unset($elArray[$key]['TCEforms']['config']);
+						break;
+					}
+				}	// End switch else
 				
 					// Setting TCEforms title for element if configuration is found:
 				if (is_array($elArray[$key]['TCEforms']['config']))	{

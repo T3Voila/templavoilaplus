@@ -1,3 +1,9 @@
+2004-03-22  Robert Lemke  <rl@robertlemke.de>
+
+	* Added two new TSconfig properties: mod.xMOD_tx_templavoila_cm1.eTypesExtraFormFieldsUserfunctions and mod.xMOD_tx_templavoila_cm1.eTypesConfGenUserfunctions
+
+See the updated many for more information. BTW: Thanks for the extra fields!
+
 2004-03-15  Robert Lemke  <rl@robertlemke.de>
 
 	* Hey Kasper, you broke the create new page wizard ... ;-) Anyways, will find out what's wrong.
