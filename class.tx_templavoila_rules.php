@@ -85,7 +85,8 @@
  * @subpackage	tx_templavoila
  */
 class tx_templavoila_rules {
-	var $lastChildRecord;	// Holds the last child record before an error occurs. Used for rule tracking / err messages
+	var $lastParsedRecord;	// Holds the last child record before an error occurs. Used for rule tracking / err messages
+	var $currentFieldName;	// Used for error tracking
 	
 	/**
 	 * This function returns an instance of this rules class. Always use this function in order
@@ -119,7 +120,7 @@ class tx_templavoila_rules {
 	 * @see checkRulesForElement()
 	 */
 	function evaluateRulesForElement ($table, $uid) {
-	 	$statusArr = null;
+	 	$statusArr = array();
 	 	
 			// Getting data structure for the template and extract information for default records to create
 		$parentRecord = t3lib_BEfunc::getRecord ($table, $uid);
@@ -134,6 +135,9 @@ class tx_templavoila_rules {
 					$ruleConstants = trim ($field['tx_templavoila']['ruleConstants']);
 					if ((string)$ruleRegEx != '' && ($field['tx_templavoila']['eType'] == 'ce')) {	// only check if necessary					
 
+							// Save record of parent element for error tracking
+						$this->lastParsedRecord = $parentRecord;
+						$this->currentFieldName = $fieldName;
 							// Get child records of the parent element record
 						$childRecords = array ();
 						$xmlContent = t3lib_div::xml2array($parentRecord['tx_templavoila_flex']);
@@ -143,13 +147,15 @@ class tx_templavoila_rules {
 							if ($row['CType'] == 'templavoila_pi1') {
 								$row['CType'] .= ',' . $row['tx_templavoila_to'];	
 							}
-							$childRecords[] = $row;
+							if (is_array ($row)) {	// only would be no array if the row has been deleted somewhere else and still remains in the flexform data
+								$childRecords[] = $row;
+							}
 						}
 							// Check the rules:
 						$tmpStatusArr = $this->checkRulesForElement ($ruleRegEx, $ruleConstants, $childRecords);
 						$this->statusMerge($statusArr, $tmpStatusArr, true);
-					}
-				}
+					}					
+				}				
 			}
 		}
 		return $statusArr;
@@ -196,13 +202,13 @@ class tx_templavoila_rules {
 					$this->checkRulesForElement_parseALT($rulePart, $childRecords, $statusArr, $constants);
 				}
 			}
-			if (count($childRecords)) { 
-				$this->statusAddErr($statusArr, 'Too many elements at the end of the page', $childRecords[0]['uid'],1);
-				#debug ($statusArr);
+			if ($numEl = count($childRecords)) { 
+				$this->statusAddErr($statusArr, 'At least one of the following elements is not expected here:', $this->lastParsedRecord,2);
+				foreach ($childRecords as $childRecord) {
+					$this->statusAddErr($statusArr, '', $childRecord,1);
+				}
 			}
-		}
-		
-#		if (is_null($statusArr['ok'])) { $statusArr['ok'] = true; }
+		}		
 		return $statusArr;
 	}
 
@@ -220,7 +226,7 @@ class tx_templavoila_rules {
 		while ($counter < $rulePart['max'] && ($childRecords[0]['CType'] == $rulePart['el'] || $rulePart['el'] == '.')) {
 			$tmp = array_shift($childRecords);
 			if (is_array ($tmp)) {
-				$this->lastChildRecord = $tmp;
+				$this->lastParsedRecord = $tmp;
 			} else {
 				break;
 			}
@@ -228,7 +234,7 @@ class tx_templavoila_rules {
 		}
 		if ($counter < $rulePart['min']) { 
 			$msg = 'At least '.$rulePart['min'].' element(s) of type '.$rulePart['el'].' expected, only '.$counter.' were found';
-			$this->statusAddErr($statusArr, $msg, $this->lastChildRecord['uid'],2);
+			$this->statusAddErr($statusArr, $msg, $this->lastParsedRecord,2);
 		}
 	}
 
@@ -243,6 +249,8 @@ class tx_templavoila_rules {
 	 * @param	integer		$uid: ID of the current parent element record
 	 * @param	string		$field: Field name within the datastructure
 	 * @return	void		Results are returned by reference.
+	 * @access	private
+	 * @todo				Not completely tested yet
 	 */
 	function checkRulesForElement_parseSUB ($rulePart, &$childRecords, &$statusArr, $constants) {
 #debug ($rulePart, 'rulePart: SUB', __LINE__, __FILE__);
@@ -277,7 +285,7 @@ class tx_templavoila_rules {
 		}
 #		if ($counter < $rulePart['min']) { 
 #			$msg = 'At least '.$rulePart['min'].' element(s) of type '.$rulePart['el'].' expected, only '.$counter.' were found';
-#			$this->statusAddErr($statusArr, $msg, $lastChildRecord['uid'] ? $lastChildRecord['uid'] : $childRecords[0]['uid'],2);
+#			$this->statusAddErr($statusArr, $msg, $lastParsedRecord ? $lastParsedRecord: $childRecords[0],2);
 #		}
 			
 #debug ($tmpStatusArr, 'tmpStatusArr in parseSUB',__LINE__,__FILE__);
@@ -297,21 +305,24 @@ class tx_templavoila_rules {
 	 * @param	integer		$uid: ID of the current parent element record
 	 * @param	string		$field: Field name within the datastructure
 	 * @return	void		Results are returned by reference.
+	 * @access	private
 	 */
 	function checkRulesForElement_parseALT ($rulePart, &$childRecords, &$statusArr, $constants) {
-debug ($statusArr, 'statusArr parseALT',__LINE__,__FILE__,10);		
 		$altStatusArr = array ();						
 		foreach ($rulePart['alt'] as $alternativeRule) {
 			$tmpStatusArr = $this->checkRulesForElement($alternativeRule, $constants, $childRecords);
 			if ($tmpStatusArr['ok'] !== false) { // If one alternative is okay, the whole ALT branch is valid
 				$this->statusSetOK ($altStatusArr);
-			} elseif ($altStatusArr['ok'] === false) { // If alternative fails and no other alternative was valid yet, merge errors
+				break;
+			} elseif ($tmpStatusArr['ok'] === false) { // If alternative fails and no other alternative was valid yet, merge errors
 				$this->statusMerge($altStatusArr, $tmpStatusArr);
 			}
 		}
-debug ($altStatusArr,'tmpstatus');
 		if ($altStatusArr['ok'] && ($statusArr['ok'])) { $statusArr['ok'] = true; }
-		if (!$altStatusArr['ok']) { $this->statusMerge ($statusArr, $altStatusArr); }
+		if (!$altStatusArr['ok']) {
+			$statusArr['ok'] = false;
+			$this->statusMerge ($statusArr, $altStatusArr); 
+		}
 			// After an ALT branch no other elements will follow, so clear all remaining children
 		$childRecords = null;
 	}
@@ -323,6 +334,8 @@ debug ($altStatusArr,'tmpstatus');
 	 * @param	array		$childRecords: Current array of child records of the main element which remain to be processed. Passed by reference!
 	 * @param	array		$statusArr: The current status array, passed by reference
 	 * @return	void		Results are returned by reference.
+	 * @access	private
+	 * @todo				Obviously this function does nothing yet
 	 */
 	function checkRulesForElement_parseCLASS ($rulePart, &$childRecords, &$statusArr) {
 #debug (array ('rulePart'=>$rulePart['class']), 'rulePart: CLASS', __LINE__, __FILE__);
@@ -460,7 +473,7 @@ debug ($altStatusArr,'tmpstatus');
 	 * @param	string		$constants: The constants definitions being used in the regular expression divided by line breaks (eg.: a=text)
 	 * @return	array		Contains the cTypes with some additional information
 	 */
-	function parseRegexIntoArray ($regex, $constants) {
+	function parseRegexIntoArray ($regex, $constants) {		
 		$pos = 0;
 		$outArr = array ();
 			// Strip off the not wanted characters. We only support certain functions of regular expressions.
@@ -696,15 +709,16 @@ debug ($altStatusArr,'tmpstatus');
 	 * 
 	 * @param	array		$$statusArr: A status array, passed by reference.
 	 * @param	string		$msg: The error message
-	 * @param	integer		$uid: UID of the element causing the error or being next to it. Optional.
+	 * @param	integer		$lastParsedRecord: Record the element causing the error or being next to it. Optional but important.
 	 * @param	integer		$position: 0: element #uid causes the error, -1: an element before #uid cause the error, 1: an element after #uid, 2: all elements after #uid
 	 * @return	void		Nothing returned, result is passed by reference
 	 */
-	function statusAddErr (&$statusArr, $msg, $uid=0, $position=0) {
+	function statusAddErr (&$statusArr, $msg, $lastParsedRecord=array(), $position=0) {
 		$statusArr['ok'] = false;
 		$statusArr['error'][] = array (
 			'message' => $msg,
-			'uid' => $uid,
+			'uid' => $lastParsedRecord['uid'],
+			'fieldname' => $this->currentFieldName,
 			'position' => $position,
 		);
 	}
@@ -718,12 +732,19 @@ debug ($altStatusArr,'tmpstatus');
 	 * @return	void		Nothing returned.
 	 */
 	function statusMerge (&$statusArr, $newStatusArr, $doAND=false) {
-		if (is_array ($statusArr)) {
-			$oldOK =  $statusArr['ok'];
-#debug (array ('statusArr'=>$statusArr, 'newStatusArr' => $newStatusArr, 'doAND'=>$doAND, 'ANDed'=>($oldOK && $newStatusArr['ok'])),'statusMerge',__LINE__);	
-			$statusArr = t3lib_div::array_merge_recursive_overrule ($statusArr, $newStatusArr);
+		if (is_array ($statusArr) && count ($statusArr)) {
+#debug (array ('statusArr'=>$statusArr, 'newStatusArr' => $newStatusArr, 'doAND'=>$doAND, 'ANDed'=>($oldOK && $newStatusArr['ok'])),'statusMerge',__LINE__);
+			if (is_array ($statusArr['error']) && is_array ($newStatusArr['error'])) {
+				$statusArr['error'] = array_merge($statusArr['error'], $newStatusArr['error']);
+			} elseif (is_array ($newStatusArr['error'])) {
+				$statusArr['error'] = $newStatusArr['error'];	
+			}
 			if ($doAND) {
-				$statusArr['ok'] = $oldOK && $newStatusArr['ok'];
+				if (!isset ($statusArr['ok']) || !isset ($newStatusArr['ok'])) {
+					if ($statusArr['ok'] == null) { $statusArr['ok'] = true; }
+					if ($newStatusArr['ok'] == null) { $newStatusArr['ok'] = true; }
+				}
+				$statusArr['ok'] = $statusArr['ok'] && $newStatusArr['ok'];
 			}
 		} else {
 			$statusArr = $newStatusArr;	
@@ -737,7 +758,6 @@ debug ($altStatusArr,'tmpstatus');
 	 * @return	void		Nothing.
 	 */
 	function statusSetOK (&$statusArr) {
-		debug (debug_backtrace());
 		$statusArr['ok'] = true;
 		unset ($statusArr['error']);
 	}
