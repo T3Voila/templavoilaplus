@@ -1,3 +1,8 @@
+2003-12-21  Robert Lemke  <rl@robertlemke.de>
+
+	* Daily backup ...
+	* Mostly working on create new page wizard: Completed the creation of default elements with recursivity check.
+
 2003-12-20  Robert Lemke  <rl@robertlemke.de>
 
 	* Various additions, mostly rules + new page creation
