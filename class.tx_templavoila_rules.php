@@ -10,7 +10,7 @@
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
 * 
@@ -76,29 +76,34 @@ class tx_templavoila_rules {
 	 * @return	[array]		Array containing status information if the check was successful.
 	 */
 	function evaluateRulesOnElements ($rules, $ruleConstants, $elArray) {
-//		debug(array($rules, $ruleConstants, $elArray));
+		$ok = -1;
+//	debug(array($rules, $ruleConstants, $elArray));
 
-		$rules = '^ab(cde)*f(gh){21}.?[^IJ]*l+(mn)+$';		
-//		debug ($this->parseRegexIntoArray ($rules));
+			// Strip the starting and ending delimiter
+		if ($rules[0]=='^') { $rules = substr ($rules, 1); }
+		if ($rules[strlen($rules)-1]=='$') { $rules = substr ($rules,0,-1); }
+
+		$rulesArray = $this->parseRegexIntoArray ($rules);
+//		debug ($this->checkRulesCompliance ($rulesArray, $elArray));
 
 		return array (
 			'ok' => $ok,
 			'ruletext' => array (
-			
+
 			)
-		);		
+		);
 	}
 
 	/**
 	 * Delivers the default content elements which are neccessary for a certain element.
-	 * 
+	 *
 	 * @param	[type]		$rules: ...
 	 * @param	[type]		$ruleConstants: ...
 	 * @return	[type]		...
 	 */
 	function getDefaultElements($rules,$ruleConstants)	{
 		$elArray=array();
-		
+
 		$elArray[]=array(
 			'CType' => 'text'
 		);
@@ -106,155 +111,322 @@ class tx_templavoila_rules {
 			'CType' => 'templavoila_pi1',
 			'tx_templavoila_ds' => 123
 		);
-		
+
 		return $elArray;
 	}
 
 	/**
+	 * Returns a description of a rule in human language
+	 *
+	 * @param	[string]	$rules: Regular expression containing the rule
+	 * @param	[array]		$ruleConstants: Contains the mapping of elements to CTypes
+	 * @return	[string		Description of the rule
+	 */
+	function getHumanReadableRules ($rules,$ruleConstants)	{
+		$rulesArr = $this->parseRegexIntoArray ($rules);
+//		$constantsArr = $this->
+
+debug ($rulesArr);
+		return $this->parseRulesArrayIntoDescription ($rulesArr, $constantsArr);
+	}
+
+	function parseRulesArrayIntoDescription ($rulesArr, $constantsArr, $level=0) {
+		if (is_array ($rulesArr)) {
+			foreach ($rulesArr as $k=>$v) {
+				if (is_array ($v['alt'])) {
+					reset ($v['alt']);
+					if (count ($v['alt'])>1) { $description .= 'either '; }
+					for ($i=0; $i <= count ($v['alt']); $i++) {
+						list ($k,$vAlt) = each ($v['alt']);
+						$description .= $this->getHumanReadableRules ($vAlt, $rulesConstants, $level+1);
+						if ($i < count ($v['alt'])) {
+							$description .= 'or ';
+						}
+					}
+					$description .= 'and then ';
+				} elseif (is_array ($v['sub'])) {
+					if ($description) { $description .= 'and then '; }
+					$description .= $this->parseRulesArrayIntoDescription ($v['sub'], $constantsArr, $level+1);
+				} elseif ($v['el']) {
+					if ($description) { $description .= 'followed by '; }
+					$description .= $this->getQuantifierAsDescription ($v['min'], $v['max']);
+					$description .= $this->getElementNameFromConstantsMapping ($v['el'], $constantsArr);
+				}
+			}
+		}
+
+		return $description;
+	}
+
+	function getQuantifierAsDescription ($min, $max) {
+		if ($min == $max) {
+			switch ($min) {
+				case 1:		$description = 'one ';
+							break;
+				case 0:		$description = 'no ';
+							break;
+				case 999:	$description = 'any number of ';
+							break;
+				default:	$description = intval ($min).' times ';
+							break;
+			}
+		} elseif ($min == 0) {
+			switch ($max) {
+				case 1:		$description = 'maybe one '; break;
+				case 999:	$description = 'any number of '; break;
+				default:	$description = 'up to '.intval ($max).' '; break;
+			}
+		} elseif ($min > 0) {
+			switch ($max) {
+				case 999:	$description =''; break;
+			}
+		}
+		return $description;
+	}
+
+	function getElementNameFromConstantsMapping ($element, $constantsArr) {
+		switch ($element) {
+			case '.' :
+				$description = 'any element ';
+				break;
+			default:
+				$description = $element.' ';
+		}
+		return $description;
+	}
+
+	/**
 	 * Parses a regular expression with a reduced set of functions into an array.
-	 * 
-	 * @param	[string]		$regex: The regular expression
+	 *
+	 * @param	[string]	$regex: The regular expression
 	 * @return	[array]		Array containing the cTypes with some additional information
 	 */
 	function parseRegexIntoArray ($regex) {
+
+		$pos = 0;
+		$outArr = array ();
+
+			// Strip off the not wanted characters. We only support certain functions of regular expressions.
 		$regex = ereg_replace ('[^a-zA-Z0-9\[\]\{\}\*\+\.\-]','',$regex);
 
-		$ok = 1;
-		while ($pos<strlen ($regex)) {
-				// It's a single element
-			if ($this->isElement ($regex[$pos])) {
-					// Is there a quantifier following, which defines the number of repetitions?
-				if (strpos ('*?+{',$regex[$pos+1])) {
-					$pos++;
-					$this->evaluateQuantifier ($regex, $pos, $min, $max);
-					$outArr[] = $this->getElementsArray ($regex[$pos-1], $min, $max);
-				} else {
-					$outArr[] = $this->getElementsArray ($regex[$pos], 1, 1);
-				}
-			} elseif ($regex[$pos] == '[') {
-				$pos++;
-				if ($regex[$pos] == '^') {
-					$negate = 1;
-					$pos++;	
-				} else {
-					$negate = 0;
-				}
-				unset ($elements);
-				while ($this->isElement ($regex[$pos])) {
-					$elements .= $regex[$pos];
-					$pos++;
-				}				
-				if (!$elements) { debug ('Parse error! Character expected'); $ok = 0; }
-				if ($regex[$pos] != ']') { debug ('Parse error! Expected \']\' instead of '.$regex[$pos]); $ok = 0; }
-
-				$pos++;
-					// The characters must be the quantifier!
-				$this->evaluateQuantifier ($regex, $pos, $min, $max);
-				$outArr[] = $this->getElementsArray ($elements, $min, $max,'list',$negate);
-			} elseif ($regex[$pos] == '(') {
-				$pos++;
-				unset ($elements);
-				while ($this->isElement ($regex[$pos])) {
-					$elements .= $regex[$pos];
-					$pos++;
-				}				
-				if (!$elements) { debug ('Parse error! Character expected after \'(\''); $ok = 0; }
-				if ($regex[$pos] != ')') { debug ('Parse error! Expected \')\' at this point'); $ok = 0; }
-
-				$pos++;
-				$this->evaluateQuantifier ($regex, $pos, $min, $max);
-				$outArr[] = $this->getElementsArray ($elements, $min, $max);
-			} else {
-				debug ('Parse error! Unexpected token \''.$regex[$pos].'\'');	
-				$ok=0;
+			// Split regular expression into alternative parts divided by '|'. If there is more then one part,
+			// call this function recursively and parse each part separately.
+		$altParts = $this->explodeAlternatives ($regex);
+		if (count($altParts)>1) {
+			foreach ($altParts as $altRegex) {
+				$altArr['alt'][] = $this->parseRegexIntoArray ($altRegex);
 			}
-			$pos++;			
+			$outArr[]=$altArr;
+		} else {
+			// No other alternatives, just parse it.
+			while ($pos<strlen ($regex)) {
+				if ($this->isElement ($regex[$pos])) {				// Element (ie. a-z A-Z and '.')
+					$el = $regex[$pos];
+					$min = 0; 
+					$max = 0;
+					$this->evaluateQuantifier ($regex, $pos, $min, $max);
+					$outArr[] = array (
+						'el' => $el,
+						'min' => $min,
+						'max' => $max,
+					);
+				} elseif ($regex [$pos] == '(') {
+					$innerBraceData = $this->extractInnerBrace($regex, $pos);
+					$sub = $this->parseRegexIntoArray ($innerBraceData['content']);
+					$regex = $innerBraceData['rightpart'];
+					$pos = -1;
+					$outArr[] = array (
+						'sub' => $sub,
+						'min' => $innerBraceData['min'],
+						'max' => $innerBraceData['max'],
+					);
+				} elseif ($regex [$pos] == '[') {					// Class definition (ie. a set of elements which are allowed, enclosed in [] )
+					$pos++;
+						// If there is a circumflex the elements must *not* be used - set the negate flag
+					if ($regex[$pos] == '^') { 
+						$negate = 1; 
+						$pos++;
+					} else {
+						$negate = 0;
+					}
+					unset ($elements);
+					while ($this->isElement ($regex[$pos])) {
+						$elements .= $regex[$pos];
+						$pos++;
+					}
+					if ($elements) {
+						if ($regex[$pos] == ']') {
+								// Check if there is a quantifier after the closing brace and if so, evaluated it
+							$this->evaluateQuantifier ($regex, $pos, $min, $max);
+							$classArr = array (
+								'class' => $elements,
+								'min' => $min,
+								'max' => $max,
+							);
+							if ($negate) { $classArr['negate'] = 1; }
+							$outArr[] = $classArr;
+						} else { debug ('Parse error: ] expected at end of class definition'); }
+					} else { debug ('Parse error: At least one element expected in class definition'); }
+				}
+				$pos++;
+			}
 		}
-		
-		return $outArr;			
+		return $outArr;
 	}
 
+	function checkRulesCompliance ($rulesArr, $elementsArr, $prevStatusArr='') {
+		$statusArr = (is_array ($prevStatusArr) ? $prevStatusArr : array ('ok'=>1));
+		if (is_array ($rulesArr) && is_array ($elementsArr)) {
+			reset ($elementsArr);
+			foreach ($rulesArr as $k => $v)	{
+				if ($v['el']) {
+					list ($kEl, $vEl) =  array_shift($elementsArr);
+					debug (array ($vEl['CType'], $vEl['header'], $vEl['bodytext']));
+				} elseif ($v['class']) {
+					
+				} elseif (is_array ($v['sub'])) {
+					$statusArr = $this->checkRulesCompliance ($v['sub'], $elementsArr, $statusArr);					
+				} elseif (is_array ($v['alt'])) {
+					$statusArr = $this->checkRulesCompliance ($v['alt'], $elementsArr, $statusArr);
+				}				
+			}			
+		}
+		return $statusArr;
+	}
+
+
+	
+	/********************************************
+	 *	
+	 * Helper functions
+	 *
+	 ********************************************/
+	
 	/**
 	 * Delivers an array which holds certain information of how a cType is used within the rule.
 	 * 
-	 * @param	[array]		$elements: array of cTypes
-	 * @param	[integer]		$min: Minimum number of occurrences
-	 * @param	[integer]		$max: Maximum number of occurrences (-1 => infinite)
-	 * @param	[string]		$type: 'simple' or 'list'
-	 * @param	[type]		$negate: If set to '1' it means "dont allow these elements"
-	 * @return	[array]		
-	 */
-	function getElementsArray ($elements, $min=1, $max=1, $type='simple', $negate=0) {
-		$pos=0;
-		while ($pos<strlen($elements)) {
-			$elArr [] = $elements[$pos];
-			$pos++;
-		}			
-		return array (
-			'elements' => $elArr,
-			'min' => $min,
-			'max' => $max,
-			'type' => $type,
-			'negate' => $negate,
-		);
-	}
-
-	/**
-	 * [Describe function...]
-	 * 
-	 * @param	[type]		$char: ...
-	 * @return	[type]		...
+	 * @param	[string]		$char: Character to be checked
+	 * @return	[boolean]		true if it is an element
+	 * @access	private
 	 */
 	function isElement ($char) {
-		return ((strtoupper($char) >= 'A' && strtoupper($char) <= 'Z') || $char =='.');
+		return ((strtoupper($char[0]) >= 'A' && strtoupper($char[0]) <= 'Z') || ($char[0]) == '.');
+	}
+
+	/**
+	 * Parses a given string for braces () and returns an array which contains the inner part of theses braces
+	 * as well as the remaining right after the braces. If there is a quantifier after the closing brace, it will
+	 * be evaluated and returned in the result array as well.
+	 * 
+	 * @param	[string]	$regex: The regular expression
+	 * @param	[integer]	$startPos: The position within the regex string where the search should start
+	 * @return	[array]		Array containing the results (see function)
+	 * @see					parseRegexIntoArray ()
+	 * @access	private
+	 */
+	function extractInnerBrace ($regex, $startPos) {
+		for ($endPos=$startPos; $endPos<strlen ($regex); $endPos++) { 
+			if ($regex[$endPos]=='(') { 
+				$level++;				
+			}
+			if ($regex[$endPos]==')') {
+				if ($level == 1) {
+						// The end of the inner part, point to one char after the closing brace
+						// Get the min and max from a quantifier which might be there
+					$savePos = $endPos;
+					$this->evaluateQuantifier ($regex, $endPos, $min, $max);
+					$stripEnd = $endPos-$savePos;
+					break;
+				} else {
+					$level--;	
+				}	
+			}
+		}
+		$innerBrace = substr ($regex,$startPos+1,($endPos-$startPos-1-$stripEnd));
+		$rightPart = substr ($regex,$endPos+2);
+		return array ('content' => $innerBrace, 'min' => $min, 'max'=>$max, 'rightpart'=>$rightPart);
 	}
 
 	/**
 	 * [Describe function...]
 	 * 
-	 * @param	[type]		$quantifier: ...
-	 * @param	[type]		$pos: ...
-	 * @param	[type]		$min: ...
-	 * @param	[type]		$max: ...
-	 * @return	[type]		...
+	 * @param	[string]	$regex: The regular expression to be parsed
+	 * @return	[array]		The alternative parts
+	 */
+	function explodeAlternatives ($regex) {
+		for ($pos=0; $pos<strlen($regex); $pos++) {
+			if ($regex[$pos]=='(') { 
+				$level++;				
+			}
+			if ($regex[$pos]==')' && $level>0) {
+				$level--;
+			}
+			if ($regex[$pos]=='|' && $level==0) {
+				$regex[$pos]= chr(1);
+			}
+		}
+		return explode (chr(1),$regex);
+	}
+
+	/**
+	 * Looks for a quantifier and returns their minimum and maximum values. Note that the position parameter
+	 * is passed by reference. It will be incremented depending on the length of the quantify expression.
+	 * The results for min and max are also returned by reference!
+	 * 
+	 * @param	[string]	$quantifier: The regular expression which likely contains a quantifier
+	 * @param	[integer]	$pos: The position within the string where the quantifier should be. BY REFERENCE
+	 * @param	[integer]	$min: Used for returning the minimum value, ie. how many times an element should be repeated at least
+	 * @param	[integer]	$max: Used for returning the maximum value, ie. how many times an element should be repeated at maximum
+	 * @return	[void]		Nothing!
 	 */
 	function evaluateQuantifier ($quantifier, &$pos, &$min, &$max) {
 		$min=1;
 		$max=1;
-		switch ($quantifier[$pos]) {
-			case '*':	
-				$min = 0; 
-				$max = 100;
-				break;
-			case '?':	
-				$min = 0;
-				$max = 1;
-				break;
-			case '+':	
-				$min = 1;
-				$max = -1;
-				break;
-			case '{':
-				$pos++;
-				unset ($str);
-				while ($quantifier[$pos] != '}' && $pos<strlen ($quantifier)) {
-					$str .= $quantifier[$pos];
-					$pos++;
-				}
-				$min = intval ($str);					
-				if ($quantifier[$pos] == '-') {
+		if (!$quantifier[$pos+1]) { return; }
+		if (strpos (' *?+{',$quantifier[$pos+1])) {
+			switch ($quantifier[$pos+1]) {
+				case '*':	
+					$min = 0; 
+					$max = 999;	 // Indefinately
+					break;
+				case '?':	
+					$min = 0;
+					$max = 1;
+					break;
+				case '+':	
+					$min = 1;
+					$max = 999; // Indefinately
+					break;
+				case '{':		// Quantifier enclosed in curly braces
 					$pos++;
 					unset ($str);
-					while ($quantifier[$pos] != '}' && $pos<strlen ($quantifier)) {
-						$str .= $quantifier[$pos];
+						// Parse the first value
+					while ($quantifier[$pos+1] != '}' && $quantifier[$pos+1] != '-' && $pos<strlen ($quantifier)) {
+						$str .= $quantifier[$pos+1];
 						$pos++;
 					}
-					$max = intval ($str);
-				}
-				if ($quantifier[$pos] != '}') { debug ('Parse error! Expected \'}\' at this point'); }
-				break;
-			default:
-				debug ('Parse error! Unexpected token: \''.$quantifier[$pos].'\''); $ok = 0;
+					$min = intval ($str);
+					$max = $min;
+					if ($quantifier[$pos+1] == '-') {
+						$pos++;
+						if ($quantifier[$pos+1] == '}') {
+								// No second value (upper range), so assume indefinately
+							$max = 999;	
+						} else {
+								// Parse the upper range value
+							unset ($str);
+							while ($quantifier[$pos+1] != '}' && $pos<strlen ($quantifier)) {
+								$str .= $quantifier[$pos+1];
+								$pos++;
+							}
+							$max = intval ($str);
+						}
+					}
+					if ($quantifier[$pos+1] != '}') { debug ('Parse error! Expected \'}\' at this point'); }
+					break;
+				default:
+					debug ('Parse error! Unexpected token: \''.$quantifier[$pos+1].'\''); $ok = 0;
+			}
 		}
 	}
 

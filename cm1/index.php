@@ -74,7 +74,7 @@ require ($BACK_PATH.'template.php');
 $LANG->includeLLFile('EXT:templavoila/cm1/locallang.php');
 require_once (PATH_t3lib.'class.t3lib_scbase.php');
 
-	
+
 require_once(t3lib_extMgm::extPath('templavoila').'class.tx_templavoila_htmlmarkup.php'); 	
 require_once(PATH_t3lib.'class.t3lib_tcemain.php');	
 
@@ -331,7 +331,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 
 							// DS:
 						$dataArr=array();
-						$dataArr['tx_templavoila_datastructure']['NEW']['pid']=2;
+						$dataArr['tx_templavoila_datastructure']['NEW']['pid']=79;
 						$dataArr['tx_templavoila_datastructure']['NEW']['title']=t3lib_div::GPvar('_saveDSandTO_title');
 						$dataArr['tx_templavoila_datastructure']['NEW']['scope']=t3lib_div::GPvar('_saveDSandTO_type');
 						$storeDataStruct=$dataStruct;
@@ -348,7 +348,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 
 
 							$dataArr=array();
-							$dataArr['tx_templavoila_tmplobj']['NEW']['pid']=2;
+							$dataArr['tx_templavoila_tmplobj']['NEW']['pid']=79;
 							$dataArr['tx_templavoila_tmplobj']['NEW']['title']=t3lib_div::GPvar('_saveDSandTO_title').' [Template]';
 							$dataArr['tx_templavoila_tmplobj']['NEW']['datastructure']=intval($tce->substNEWwithIDs['NEW']);
 							$dataArr['tx_templavoila_tmplobj']['NEW']['fileref']=substr($this->displayFile,strlen(PATH_site));
@@ -529,7 +529,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 	
 	/**
 	 * Renders the display of template objects.
-	 * 
+	 *
 	 * @return	void		
 	 */
 	function renderTO()	{
@@ -777,7 +777,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			} else {
 				$content.=($showPath ?
 					'<br />
-					<p>Now showing path "'.htmlspecialchars($htmlPath).'"</p>'	
+					<p>Now showing path "'.htmlspecialchars($htmlPath).'"</p>'
 						:
 					'<br />
 					<p>Mapping for '.$this->elNames[$mapElPath]['tx_templavoila']['title'].'</p>
@@ -787,13 +787,13 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 				$this->makeIframeForVisual($displayFile,$htmlPath,$limitTags,$doMap);
 			}
 		}
-		
+
 		return $content;
 	}
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$dataStruct: ...
 	 * @param	[type]		$currentMappingInfo: ...
 	 * @param	[type]		$pathLevels: ...
@@ -808,9 +808,9 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 	 * @return	[type]		...
 	 */
 	function drawDataStructureMap($dataStruct,$mappingMode=0,$currentMappingInfo=array(),$pathLevels=array(),$optDat=array(),$contentSplittedByMapping=array(),$level=0,$tRows=array(),$formPrefix='',$path='',$mapOK=1)	{
-		
+
 		$PREVIEW = t3lib_div::GPvar('_preview');
-		
+
 			// Data Structure array must be ... and array of course...
 		if (is_array($dataStruct))	{
 			foreach($dataStruct as $key => $value)	{
@@ -821,7 +821,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 						// ********************
 					$rowCells=array();
 					$bgColor = $this->doc->bgColor4;
-						
+
 						// Icon:
 					if ($value['type']=='array')	{
 						if (!$value['section'])	{
@@ -859,7 +859,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 														($pI['modifier'] ? $pI['modifier'].($pI['modifier_value']?':'.$pI['modifier_value']:''):'');
 #														htmlspecialchars($currentMappingInfo[$key]['MAP_EL']);
 								$rowCells['htmlPath'] = '<a href="'.$this->linkThisScript(array('htmlPath'=>$path.($path?'|':'').ereg_replace('\/[^ ]*$','',$currentMappingInfo[$key]['MAP_EL']),'showPathOnly'=>1)).'">'.$rowCells['htmlPath'].'</a>';
-	
+
 									// CMD links:
 								$rowCells['cmdLinks'] = '<a href="'.$this->linkThisScript(array('mapElPath'=>$formPrefix.'['.$key.']','htmlPath'=>$path,'mappingToTags'=>$value['tx_templavoila']['tags'])).'">REMAP</a>';
 								$rowCells['cmdLinks'].= '/<a href="'.$this->linkThisScript(array('mapElPath'=>$formPrefix.'['.$key.']','htmlPath'=>$path.($path?'|':'').$pI['path'],'doMappingOfPath'=>1)).'">CH_MODE</a>';
@@ -868,7 +868,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 								$rowCells['htmlPath'] = '<img src="'.$GLOBALS['BACK_PATH'].'gfx/icon_warning.gif" width="18" height="16" border="0" alt="" title="No content found!" align="absmiddle" />'.htmlspecialchars($currentMappingInfo[$key]['MAP_EL']);
 							}
 						} else $rowCells['htmlPath'] = '&nbsp;';
-	
+
 							// CMD links:
 						$mapElPath = t3lib_div::GPvar('mapElPath');
 						if ($mapElPath == $formPrefix.'['.$key.']')	{
@@ -889,7 +889,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 #debug($mapDat);
 									if (($value['type']=='attr' && $pI['modifier']=='ATTR') || ($value['type']!='attr' && $pI['modifier']!='ATTR'))	{
 										if (
-												(!$this->markupObj->tags[$lastLevel['el']]['single'] || $pI['modifier']!='INNER') && 
+												(!$this->markupObj->tags[$lastLevel['el']]['single'] || $pI['modifier']!='INNER') &&
 												(!is_array($mapDat) || ($pI['modifier']!='ATTR' && isset($mapDat[strtolower($pI['modifier']?$pI['modifier']:'outer')])) || ($pI['modifier']=='ATTR' && (isset($mapDat['attr']['*']) || isset($mapDat['attr'][$pI['modifier_value']]))))
 												
 											)	{
@@ -1164,7 +1164,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 							)
 						)
 					);
-					
+
 					$elArray[$key]['tx_templavoila']['TypoScript'] = '
 10 = TEXT
 10.typolink.parameter.current = 1
@@ -1292,7 +1292,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 
 	/**
 	 * Analyzes the input content for various stuff which can be used to generate the DS.
-	 * 
+	 *
 	 * @param	[type]		$content: ...
 	 * @return	[type]		...
 	 */
@@ -1457,7 +1457,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			$currentMappingInfo,$dataStruct
 		));*/
 	}
-	
+
 
 
 
@@ -1469,21 +1469,21 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 	 * DISPLAY
 	 *
 	 *****************************************/
-	 
+
 	/**
 	 * Outputs the display for the display frame...
-	 * 
+	 *
 	 * @return	void		Exits...
 	 */
 	function main_display()	{
 		$displayFile = t3lib_div::GPvar('file');
 		$this->theDisplayMode=$this->MOD_SETTINGS['displayMode'];
-				
+
 		if (@is_file($displayFile) && t3lib_div::getFileAbsFileName($displayFile))		{	// FUTURE: grabbing URLS?: 		.... || substr($displayFile,0,7)=='http://'
 			$content = t3lib_div::getUrl($displayFile);
 			if ($content)	{
 				$relPathFix = $GLOBALS['BACK_PATH'].'../'.dirname(substr($displayFile,strlen(PATH_site))).'/';
-				
+
 				if (t3lib_div::GPvar('preview'))	{
 					$sesDat = $GLOBALS['BE_USER']->getSessionData($this->MCONF['name'].'_mappingInfo');
 					$currentMappingInfo = is_array($sesDat['currentMappingInfo']) ? $sesDat['currentMappingInfo'] : array();
@@ -1491,7 +1491,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 						// Init mark up object.
 					$this->markupObj = t3lib_div::makeInstance('tx_templavoila_htmlmarkup');
 					$this->markupObj->htmlParse = t3lib_div::makeInstance('t3lib_parsehtml');
-					
+
 					$contentSplittedByMapping = $this->markupObj->splitContentToMappingInfo($content,$currentMappingInfo);
 					$token = md5(microtime());
 
@@ -1504,7 +1504,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 					}
 					if (trim($pp[0]))	{
 						$pp[1]='<a name="_MARKED_UP_ELEMENT"></a>'.$pp[1];
-					}					
+					}
 					$content = implode('',$pp);
 					echo $content;
 				} else {
