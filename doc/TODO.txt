@@ -37,7 +37,7 @@ FINISHING (A week):
 	- API: A function which can produce a traditionally marked up version of the template: For use in TS as alternative to the Autoparser
 		- ?: How can extensions supply a default template Array when no Template Object exists yet, mapping the data? What about the data structure containing some sample markup as well which means we can always assemble a simple display from that. Or even a nice default display which is of course stylable by CSS. AND this default
 - Frontend: cObj API for flexforms (move from pibase to tslib_content)
-	- Finish API for getting valurs from FlexForms XML
+	- Finish API for getting values from FlexForms XML
 	- Finish API so TypoScript can access flexforms content
 		- (When done; Update "newloginbox" to use this API)
 - mininews: Implement with TemplaVoila
@@ -69,7 +69,8 @@ Interface:
 - Support for sheets: both page header + content elements! (KASPER)
 - Hierarchy tree view of the relations (incl. sheets, multiple groupfields in each element)
 - Display of CEs
-	- Data has to processed (-> internal/ external links, images, ...)
+	- Better preview for TABLE element
+	- Provide a way for plugins to generate certain previews?
 
 Interface parts:
 - Create new page / content element wizard
@@ -103,17 +104,6 @@ OTHER MODULES:
 - Management: Well-designed overview of Data Structures and Their Templates and how they relate (parents/children)
 
 
-
-
-
-
-
-
-
-
-
-
-	
 	
 	
 Documentation:

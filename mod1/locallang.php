@@ -9,8 +9,9 @@
 
 $LOCAL_LANG = Array (
 	"default" => Array (
-		"title" => "Page",
-		'title_editpage' => 'Edit the page',
+		'title' => "WEB > PAGE MODULE",
+		'default_introduction' => 'If you wish to edit the content of a page, please click the page title in the page tree to the left.',
+		'title_editpage' => 'EDIT PAGE',
 		'createnewpage_title' => 'Create a new page',
 		'createnewpage_introduction' => '',
 		'createnewpage_hide_header' => 'Hide the page',
@@ -23,6 +24,7 @@ $LOCAL_LANG = Array (
 		'createnewpage_templateobject_createemptypage' => 'Create an empty page based on this template:',
 		'createnewpage_templateobject_createpagewithdefaultcontent' => 'Create a page with default content based on this template:',
 		'template_nodescriptionavailable' => 'No description available.',
+		'newce_defaulttext_text' => 'Please enter some text here',
 		'view_basic' => 'Basic view',
 		'view_tree' => 'Tree view',
 		'view_fancy' => 'Special fancy view',
