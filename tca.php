@@ -81,6 +81,7 @@ $TCA['tx_templavoila_tmplobj'] = Array (
 					),
 				),
 				'eval' => 'required,nospace',
+				'softref' => 'typolink'
 			)
 		),
 		'previewicon' => Array(
