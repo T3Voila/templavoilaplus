@@ -163,6 +163,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 				// Draw the header.
 			$this->doc = t3lib_div::makeInstance('noDoc');
+			$this->doc->docType= 'xhtml_trans';			
 			$this->doc->backPath = $BACK_PATH;
 			$this->doc->divClass = '';
 			$this->doc->form='<form action="'.htmlspecialchars('index.php?id='.$this->id).'" method="post" autocomplete="off">';
@@ -211,6 +212,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			}
 		} else {	// No access or no current uid:
 			$this->doc = t3lib_div::makeInstance('mediumDoc');
+			$this->doc->docType= 'xhtml_trans';
 			$this->doc->backPath = $BACK_PATH;
 			$this->content.=$this->doc->startPage($LANG->getLL('title'));
 
@@ -248,7 +250,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * @return	void		
 	 * @see		insertRecord ()
 	 */
-	function cmd_createNewRecord ($params) {					
+	function cmd_createNewRecord ($params) {
 		$this->insertRecord($params,array(
 			'header' => $params,
 			'CType' => 'text'
@@ -319,10 +321,11 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	}
 
 	/**
-	 * Creates the screen for "new page"
+	 * Creates the screen for "new page wizard"
 	 * 
 	 * @param	integer		$positionPid: Can be positive and negative depending of where the new page is going: Negative always points to a position AFTER the page having the abs. value of the positionId. Positive numbers means to create as the first subpage to another page.
 	 * @return	string		Content for the screen output.
+	 * @todo				Check required field(s), support t3d
 	 */
     function renderCreatePageScreen ($positionPid) {
 		global $LANG, $BE_USER, $TYPO3_CONF_VARS;
@@ -446,6 +449,16 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		return $content;
 	}
 
+	
+	
+	
+	
+	/********************************************
+	 *
+	 * Framework rendering function(s)
+	 *
+	 ********************************************/
+
 	/**
 	 * Renders the "basic" display framework.
 	 * Calls itself recursively
@@ -556,6 +569,8 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		$recordIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,$dsInfo['el']['icon'],'').' align="absmiddle" width="18" height="16" border="0" title="'.htmlspecialchars('['.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].']'.$extPath).'" alt="" title="" />';
 		$recordIcon = $this->doc->wrapClickMenuOnIcon($recordIcon,$dsInfo['el']['table'],$dsInfo['el']['id']);
 		
+		$showRuleIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,t3lib_extMgm::extRelPath('templavoila').'mod1/greenled.gif','').' title="Rule applies" border="0" alt="" align="absmiddle" />&nbsp;';
+		
 		if ($dsInfo['el']['table']!='pages')	{
 			$linkCopy = $this->linkCopyCut('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/clip_copy'.$clipActive_copy.'.gif','').' title="Copy" border="0" alt="" />',($clipActive_copy ? '' : $parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id']),'copy');
 			$linkCut = $this->linkCopyCut('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/clip_cut'.$clipActive_cut.'.gif','').' title="Move" border="0" alt="" />',($clipActive_cut ? '' : $parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id']),'cut');
@@ -574,7 +589,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		$content=$sheetMenu.'
 		<table border="0" cellpadding="2" cellspacing="0" style="border: 1px solid black; margin-bottom:5px;" width="100%">
 			<tr style="background-color: '.($dsInfo['el']['table']=='pages' ? $this->doc->bgColor2 : ($isLocal ? $this->doc->bgColor5 : $this->doc->bgColor6)).';">
-				<td>'.$recordIcon.$viewPageIcon.'&nbsp;'.($isLocal?'':'<em>').$GLOBALS['LANG']->sL($dsInfo['el']['title'],1).($isLocal?'':'</em>'). '</td>
+				<td>'.$showRuleIcon.$recordIcon.$viewPageIcon.'&nbsp;'.($isLocal?'':'<em>').$GLOBALS['LANG']->sL($dsInfo['el']['title'],1).($isLocal?'':'</em>'). '</td>
 				<td nowrap="nowrap" align="right" valign="top">'.
 					$linkCopy.
 					$linkCut.
@@ -634,7 +649,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * @return	string		HTML anchor tag containing the label and the correct link
 	 */
 	function linkNew($str,$params)	{
-		return '<a href="index.php?id='.$this->id.'&createNewRecord='.rawurlencode($params).'">'.$str.'</a>';
+		return '<a href="'.htmlspecialchars('db_new_content_el.php?id='.$this->id.'&sys_language_uid='.$this->current_sys_language.'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'">'.$str.'</a>';
 	}
 
 	/**
@@ -1245,13 +1260,9 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	}
 }
 
-
-
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/mod1/index.php'])    {
     include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/mod1/index.php']);
 }
-
-
 
 
 // Make instance:

@@ -75,7 +75,6 @@ class tx_templavoila_rules {
 	
 	/**
 	 * Checks a given element if it complies with certain rules provided as a regular expression.
-	 *  
 	 * Note that only few functionality of the POSIX standard for regular expressions is being supported.
 	 * 
 	 * @param	[string]	$rules: A regular expression describing the rule. The content elements are reflected by certain tokens (i.e. uppercase and lowercase characters). These tokens are also called "ruleConstants".
@@ -92,7 +91,7 @@ class tx_templavoila_rules {
 		if ($rules[strlen($rules)-1]=='$') { $rules = substr ($rules,0,-1); }
 
 		$rulesArray = $this->parseRegexIntoArray ($rules);
-		debug ($this->checkRulesCompliance ($rulesArray, $elArray));
+#		debug ($this->checkRulesCompliance ($rulesArray, $elArray));
 		return array (
 			'ok' => $ok,
 			'ruletext' => array (
@@ -103,7 +102,8 @@ class tx_templavoila_rules {
 
 	/**
 	 * Delivers the default content elements which are neccessary for a certain element.
-	 * 
+	 * NOT USED YET - maybe we don't need it here! 
+	 *
 	 * @param	[type]		$rules: ...
 	 * @param	[type]		$ruleConstants: ...
 	 * @return	[type]		...
@@ -248,7 +248,7 @@ class tx_templavoila_rules {
 	/**
 	 * Returns a description of a rule in human language
 	 * 
-	 * @param	[string]		$rules: Regular expression containing the rule
+	 * @param	[string]	$rules: Regular expression containing the rule
 	 * @param	[array]		$ruleConstants: Contains the mapping of elements to CTypes
 	 * @return	[string		Description of the rule
 	 */
@@ -256,7 +256,7 @@ class tx_templavoila_rules {
 		$rulesArr = $this->parseRegexIntoArray ($rules);
 //		$constantsArr = $this->
 
-debug ($rulesArr);
+#debug ($rulesArr);
 		return $this->parseRulesArrayIntoDescription ($rulesArr, $constantsArr);
 	}
 
@@ -360,8 +360,8 @@ debug ($rulesArr);
 	/**
 	 * Delivers an array which holds certain information of how a cType is used within the rule.
 	 * 
-	 * @param	[string]		$char: Character to be checked
-	 * @return	[boolean]		true if it is an element
+	 * @param	string		$char: Character to be checked
+	 * @return	boolean		true if it is an element
 	 */
 	function isElement ($char) {
 		return ((strtoupper($char[0]) >= 'A' && strtoupper($char[0]) <= 'Z') || ($char[0]) == '.');
@@ -372,9 +372,9 @@ debug ($rulesArr);
 	 * as well as the remaining right after the braces. If there is a quantifier after the closing brace, it will
 	 * be evaluated and returned in the result array as well.
 	 * 
-	 * @param	[string]		$regex: The regular expression
-	 * @param	[integer]		$startPos: The position within the regex string where the search should start
-	 * @return	[array]		Array containing the results (see function)
+	 * @param	string		$regex: The regular expression
+	 * @param	integer		$startPos: The position within the regex string where the search should start
+	 * @return	array		Array containing the results (see function)
 	 * @access private
 	 * @see					parseRegexIntoArray ()
 	 */
@@ -405,8 +405,8 @@ debug ($rulesArr);
 	 * Explodes a regular expression into an array of alternatives which were separated by '|'.
 	 * Takes braces into account.
 	 * 
-	 * @param	[string]		$regex: The regular expression to be parsed
-	 * @return	[array]		The alternative parts
+	 * @param	string		$regex: The regular expression to be parsed
+	 * @return	array		The alternative parts
 	 */
 	function explodeAlternatives ($regex) {
 		for ($pos=0; $pos<strlen($regex); $pos++) {
@@ -428,11 +428,11 @@ debug ($rulesArr);
 	 * is passed by reference. It will be incremented depending on the length of the quantify expression.
 	 * The results for min and max are also returned by reference!
 	 * 
-	 * @param	[string]		$quantifier: The regular expression which likely contains a quantifier
-	 * @param	[integer]		$pos: The position within the string where the quantifier should be. BY REFERENCE
-	 * @param	[integer]		$min: Used for returning the minimum value, ie. how many times an element should be repeated at least
-	 * @param	[integer]		$max: Used for returning the maximum value, ie. how many times an element should be repeated at maximum
-	 * @return	[void]		Nothing!
+	 * @param	string		$quantifier: The regular expression which likely contains a quantifier
+	 * @param	integer		$pos: The position within the string where the quantifier should be. BY REFERENCE
+	 * @param	integer		$min: Used for returning the minimum value, ie. how many times an element should be repeated at least
+	 * @param	integer		$max: Used for returning the maximum value, ie. how many times an element should be repeated at maximum
+	 * @return	void		Nothing!
 	 */
 	function evaluateQuantifier ($quantifier, &$pos, &$min, &$max) {
 		$min=1;

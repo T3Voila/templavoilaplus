@@ -9,6 +9,7 @@ t3lib_extMgm::addPItoST43($_EXTKEY,'pi2/class.tx_templavoila_pi2.php','_pi2','CT
 	// Use templavoila's wizard instead the default create new page wizard
 t3lib_extMgm::addPageTSConfig('
     mod.web_list.newPageWiz.overrideWithExtension = templavoila
+	mod.web_list.newContentWiz.overrideWithExtension = templavoila
 ');
 	// Use templavoila instead of the default page module
 t3lib_extMgm::addUserTSConfig('
