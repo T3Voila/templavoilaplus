@@ -1,0 +1,7 @@
+2003-10-28  Kasper Skårhøj
+
+	* Added $Id$ keywords tags.
+	* Added support+icon for iframe tags in htmlmarkup class.
+	* Added package/subpackage tags.
+
+
