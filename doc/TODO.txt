@@ -30,7 +30,7 @@ OTHER MODULES:
 	- Ability to select attributes to be REMOVED in a tag.
 	- Ability to map a single field to MANY elements. So the same value can be inserted at multiple positions.
 	- BUG: Assigning an attribute to the FIRST(?) element inside a container will break other elements mapping after that.
-		- Other bugs, loosing mapping. Nico had it, I had it on Vignette site.
+		- Other bugs, loosing mapping. Nico had it, I had it on Vignette site. Robert had it too ;-)
 		- Also Vignette site exploded itself.
 	- For dynamic creation of Data Structure: Have an intelligent auto-mapper, trying to find which elements might most likely be mapped and which not.
 	- Support inclusion of the EXTERNAL files in the TO serialized array (new field?) so that TOs could be exported WITH all images, stylesheets, JavaScripts... (portable!)
@@ -75,66 +75,88 @@ OTHER MODULES:
 
 
 
+GRAPHICS/PHOTOSHOP:
+	<body> <table> <tbody> <thead> <ol> <ul> <li> <tr> <td> <div> <blockquote> <pre> <p> <span> <font> <a> <map> <h1> <h2> <h3> <h4> <h5> <h6> <img> <input> <textarea> <select> <option> <br> <hr> <form>
+	<u> <i> <b> <strong> <em> <embed> <area> <head> <script> <style> <title>
+	ARIAL 7 px
+	See "html_tags/prototype.psd"
 
+
+***************
 Roberts TODO:
-- Implement the concept of Data Sources for plugin "pi2"
-- Implement/maintain the rules scheme
-	- When page is created without the create new page wizard, default elements must also be created!
-- Implement wizards for creating new page/new content element
-	- Remember the current "Create page content wizard"; These icons / setups should somehow be implemented as well.
-- Clean up the locallang-files mess in mod1/ !
+***************
 
-Interface:
-  - Recursivity handling:
-	- Prevent recursivity
-	- Warn for 1) recursivity, 2) reuse of same element, 3) elements outside of PID, 4) non-used elements, 5) If elements has references on other pages.
-  - Rules:
-	- number of elements in a field, which types, ...
+GENERAL:
+	- Clean up the locallang-files mess in mod1/ !
+	- Implement the concept of Data Sources for plugin "pi2"
+		-> Better create Data Sources as a independent concept (see Datasources thoughts & ToDo)
+		- Make data sources usable and (pre-)viewable in Page Module
+	- Create conditions for DS/TO selection, configurable via TypoScript:
+		- Depending on rootlevel
+		- Depending on branch
+	- Implement access rights on CE level (instead on page level), use ACL! -> Core changes by Kasper
+	- Do proper interface for commonly used classes / functions
+		- rules class API
+		- DS / XML functions
+	- Reorganize functions, create a new class for commonly used functions, make CM1, MOD1, PI1 independent
+	- Enable multi language functions:
+		- Use FlexForms build-in possibilities (is already rendered right!) + possibility to exclude certain fields, eg. tt_content group fields
+		- For non-flexform elements, use future core language support:
+			- tt_content elements refering to the default version, but with translation
+			- In TCA for tt_content, have a list of fields which are the ones being overlaid (optional if blank/zero fields should be overlaid too)
+			- In TCEforms this will also allow us see a simultaneous view of translations.
+
+RULES:
+	- When page is created without the create new page wizard, default elements must also be created!
+	- Show what rule in a user-friendly way if a rule doesn't apply or for informational purposes.
 	- Permissions for users to certain elements areas.
 	- Disable edit for some elements?
 	- Rule editor for click menu and page module
-- Support for sheets: both page header + content elements! (KASPER)
-- Hierarchy tree view of the relations (incl. sheets, multiple groupfields in each element)
-- Display of CEs
-	- Better preview for TABLE element
-	- Provide a way for plugins to generate certain previews ?
+	- Finish rule compliance check:
+		- braces [sub] (not finished)
+		- classes [class] (not started)
 
-Interface parts:
-- Create new page / content element wizard
-	- Ability to create new element based on t3d file (having dummy content or default nested stuff)
-- Main interface
+WIZARDS & CLICK MENUS:
+	- Create new content wizard:
+		- FEATURE: Implement Flexible Content Elements
+		- FEATURE: Quick-Click mode: Shows only the icons of content elements in a layer, like a clickmenu
+	- Create new page wizard:
+		- FEATURE: Ability to create new element based on t3d file (having dummy content or default nested stuff) -> Wait for Kasper
+	- Select Template CM: (NEW)
+		- FEATURE: Instead of having to edit the page header, provide a horizontal clickmenu for selecting DS/TO by clicking the TO icon.
+	- TypoScript Tool: (NEW)
+		- Makes it easier to edit the TypoScript chunks within DataStructures, accessable from FCE or DS
+		- implement as clickmenu?
 
-Access rights:
-- IDEA: Implement access rights on CE level (instead on page level)
+PAGE MODULE:
+	- IDEA: Zoom into content elements / containers by clicking on titlebar / zoom icon.
+	- Provide an EXTMGM install option which allows either both page modules to be installed or only the new one overriding the old one.
+	- Recursivity handling:
+		- Prevent recursivity
+		- Warn for 1) recursivity, 2) reuse of same element, 3) elements outside of PID, 4) non-used elements, 5) If elements has references on other pages.
+	- Support for sheets: both page header + content elements! (KASPER)
+	- Hierarchy tree view of the relations (incl. sheets, multiple groupfields in each element)
+	- Display of CEs
+		- Better preview for TABLE element
+		- Provide a way for plugins to generate certain previews -> Let them register a function
 
-Questions:
-- How to manage multi-language sites?
-  ANSWER:
-  	- Use FlexForms build-in possibilities (is already rendered right!) + possibility to exclude certain fields, eg. tt_content group fields
-	- For non-flexform elements, use future core language support:
-		- tt_content elements refering to the default version, but with translation
-		- In TCA for tt_content, have a list of fields which are the ones being overlaid (optional if blank/zero fields should be overlaid too)
-		- In TCEforms this will also allow us see a simultaneous view of translations.
-- content preview?
+TECHNICAL:
+	- Delivery to a) different clients X b) in various languages.
+	- Versioning: Part of TCEmain
+	- Language: Part of TCEmain/FlexForms
+	- Workflow: Independant.
+	- Permissions: Part of TCEmain.
+	- Frontend Editing should be available.
+		-> Seems to work at first sight but must check what is still missing
 
-Technical:
-- Delivery to a) different clients X b) in various languages.
-- Versioning: Part of TCEmain
-- Language: Part of TCEmain/FlexForms
-- Workflow: Independant.
-- Permissions: Part of TCEmain.
-- Frontend Editing should be available.
-	-> Seems to work at first sight but must check what is still missing
+OTHER MODULES:
+	- Management: Overview of Page Templates as set in the tree structure
+		- Provide an overview of the whole page tree to show which template (DS/TO) is active
+	- Management: Well-designed overview of Data Structures and Their Templates and how they relate (parents/children)
 
-NOTES:
-- Make sure that a content element is not called recursively
-- FE: Disable edit icon for some elements (same in backend?)
-
-
-
-
-Graphics/Photoshop:
-<body> <table> <tbody> <thead> <ol> <ul> <li> <tr> <td> <div> <blockquote> <pre> <p> <span> <font> <a> <map> <h1> <h2> <h3> <h4> <h5> <h6> <img> <input> <textarea> <select> <option> <br> <hr> <form>
-<u> <i> <b> <strong> <em> <embed> <area> <head> <script> <style> <title>
-ARIAL 7 px
-See "html_tags/prototype.psd"
+DOCUMENTATION:
+	- Create manual:
+		- Description of Page Module
+		- Description of Rules
+		- TSconfig reference
+		- "If you see a red dot, the structure does not follow the rules (or you are working with the wrong CMS)"
