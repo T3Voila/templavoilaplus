@@ -1,3 +1,7 @@
+2004-08-26  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+	* Changed the versioning selector...
+
 2004-08-21  Kasper Skårhøj,,,  <kasper@typo3.com>
 
 	* Finally added the "TemplaVoila" module to the Web main module and put some content into it! Now you can manage all your Data Structures and Template Objects from that module including creating new mappings and validate old ones.

@@ -127,8 +127,8 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	var $elementBlacklist=array();					// Used in renderFrameWork (list of CEs causing errors)
 
 	var $altRoot = array();							// Keys: "table", "uid", "field_flex" - thats all to define another "rootTable" than "pages" (using default field "tx_templavoila_flex" for flex form content)
-	var $versionId = 0;
-	var $editVersionUid = 0;
+#	var $versionId = 0;
+#	var $editVersionUid = 0;
 
 	var $currentDataStructureArr = array();			// Contains the data structure XML structure indexed by tablenames ('pages', 'tt_content') as an array of the currently selected DS record when editing a page
 	var $currentPageRecord;							// Contains the page record (from table 'pages') of the current page when editing a page
@@ -146,7 +146,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::GPvar('SET'), $this->MCONF['name']);
 
 		$this->altRoot = t3lib_div::_GP('altRoot');
-		$this->versionId = t3lib_div::_GP('versionId');
+#		$this->versionId = t3lib_div::_GP('versionId');
 
 			// Fill array allAvailableLanguages and currently selected language (from language selector or from outside)
 		$this->allAvailableLanguages = $this->getAvailableLanguages(0, true, true, true);
@@ -248,7 +248,14 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			}
 
 				// Checks if versioning applies to root record, may alter ->id / ->altRoot variables!!!
-			$this->content .= $this->versioningSelector();
+		#	$this->content .= $this->versioningSelector();
+
+			if (!is_array($this->altRoot))	{
+				$vContent = $this->doc->getVersionSelector($this->id);
+				if ($vContent)	{
+					$this->content.=$this->doc->section('',$vContent);
+				}
+			}
 
 				// Show the "edit current page" screen
 			$this->content .= $this->renderEditPageScreen ();
@@ -407,14 +414,15 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			// Get data structure array for the page/content elements.
 			// Returns a BIG array reflecting the "treestructure" of the pages content elements.
 		if (is_array($this->altRoot))	{
-			$dsArr = $this->getDStreeForPage($this->altRoot['table'], ($this->editVersionUid ? $this->editVersionUid : $this->altRoot['uid']));
+			#($this->editVersionUid ? $this->editVersionUid : $this->altRoot['uid'])
+			$dsArr = $this->getDStreeForPage($this->altRoot['table'], $this->altRoot['uid']);
 		} else {
 				// Get current page record for later usage
-			if ($this->editVersionUid && $this->editVersionUid != $this->id)	{
+/*			if ($this->editVersionUid && $this->editVersionUid != $this->id)	{
 				$this->currentPageRecord = t3lib_BEfunc::getRecord ('pages', $this->editVersionUid);
 				$this->topPagePid = $this->editVersionUid;
 			}
-			$dsArr = $this->getDStreeForPage('pages', $this->topPagePid, '', $this->currentPageRecord);
+	*/		$dsArr = $this->getDStreeForPage('pages', $this->topPagePid, '', $this->currentPageRecord);
 		}
 
 			// Start creating HTML output
@@ -1282,8 +1290,8 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	function linkParams()	{
 		$output =
 			'id='.$this->id.
-			(is_array($this->altRoot) ? t3lib_div::implodeArrayForUrl('altRoot',$this->altRoot) : '').
-			($this->versionId ? '&versionId='.rawurlencode($this->versionId) : '');
+			(is_array($this->altRoot) ? t3lib_div::implodeArrayForUrl('altRoot',$this->altRoot) : '');
+#			($this->versionId ? '&versionId='.rawurlencode($this->versionId) : '');
 		return $output;
 	}
 
@@ -1664,7 +1672,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 
 
-	function versioningSelector()	{
+/*	function versioningSelector()	{
 
 		if (is_array($this->altRoot))	{
 			$versions = t3lib_BEfunc::selectVersionsOfRecord($this->altRoot['table'], $this->altRoot['uid']);
@@ -1694,6 +1702,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			return $selBox;
 		}
 	}
+	*/
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/mod1/index.php'])    {
