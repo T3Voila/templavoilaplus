@@ -91,6 +91,15 @@ class tx_templavoila_mod1_sidebar {
 		$this->extKey =& $this->pObj->extKey;
 
 			// Register the locally available sidebar items. Additional items may be added by other extensions.
+		if (t3lib_extMgm::isLoaded('version'))	{
+			$this->sideBarItems['versioning'] = array (
+				'object' => &$this,
+				'method' => 'renderItem_versioning',
+				'label' => 'Versioning',
+				'priority' => 60,
+			);
+		}
+
 		$this->sideBarItems['localization'] = array (
 			'object' => &$this,
 			'method' => 'renderItem_localization',
@@ -370,6 +379,69 @@ class tx_templavoila_mod1_sidebar {
 		return $output;
 	}
 
+	/**
+	 * Renders the versioning sidebar item. Basically this is a copy from the template class.
+	 *
+	 * @param	object		&$pObj: Reference to the page object (the templavoila page module)
+	 * @return	string		HTML output
+	 * @access	public
+	 */
+	function renderItem_versioning(&$pObj) {
+
+		if ($pObj->id>0) {
+
+				// Get Current page record:
+			$curPage = t3lib_BEfunc::getRecord('pages',$pObj->id);
+				// If the selected page is not online, find the right ID
+			$onlineId = ($curPage['pid']==-1 ? $curPage['t3ver_oid'] : $pObj->id);
+				// Select all versions of online version:
+			$versions = t3lib_BEfunc::selectVersionsOfRecord('pages', $onlineId, 'uid,pid,t3ver_label,t3ver_oid,t3ver_id');
+
+				// If more than one was found...:
+			if (count($versions)>1)	{
+
+					// Create selector box entries:
+				$opt = array();
+				foreach($versions as $vRow)	{
+					$opt[] = '<option value="'.htmlspecialchars(t3lib_div::linkThisScript(array('id'=>$vRow['uid']))).'"'.($pObj->id==$vRow['uid']?' selected="selected"':'').'>'.
+							htmlspecialchars($vRow['t3ver_label'].' [v#'.$vRow['t3ver_id'].']'.($vRow['uid']==$onlineId ? ' =>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:ver.online').'<=':'')).
+							'</option>';
+				}
+
+					// Add management link:
+				$opt[] = '<option value="'.htmlspecialchars(t3lib_div::linkThisScript(array('id'=>$pObj->id))).'">---</option>';
+				$opt[] = '<option value="'.htmlspecialchars($pObj->doc->backPath.t3lib_extMgm::extRelPath('version').'cm1/index.php?table=pages&uid='.$onlineId).'">'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:ver.mgm',1).'</option>';
+
+					// Create onchange handler:
+				$onChange = "document.location=this.options[this.selectedIndex].value;";
+
+					// Controls:
+				if ($pObj->id==$onlineId)	{
+					$controls = '<img'.t3lib_iconWorks::skinImg($pObj->doc->backPath,'gfx/blinkarrow_left.gif','width="5" height="9"').' class="absmiddle" alt="" /> <b>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:ver.online',1).'</b>';
+				} elseif (!$noAction) {
+					$controls = '<a href="'.$pObj->doc->issueCommand('&cmd[pages]['.$onlineId.'][version][swapWith]='.$pObj->id.'&cmd[pages]['.$onlineId.'][version][action]=swap&cmd[pages]['.$onlineId.'][version][swapContent]=1',t3lib_div::linkThisScript(array('id'=>$onlineId))).'">'.
+							'<img'.t3lib_iconWorks::skinImg($pObj->doc->backPath,'gfx/insert2.gif','width="14" height="14"').' style="margin-right: 2px;" class="absmiddle" alt="" title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:ver.swapPage',1).'" />'.
+							'<b>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:ver.swap',1).'</b></a>';
+				}
+
+					// Write out HTML code:
+				return '
+
+					<table border="0" cellpadding="0" cellspacing="1" width="100%" class="lrPadding">
+						<tr class="bgColor4-20">
+							<td colspan="2">'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:ver.selVer',1).'</td>
+						</tr>
+						<tr class="bgColor4">
+							<td><select onchange="'.htmlspecialchars($onChange).'">'.implode('',$opt).'</select></td>
+						</tr>
+						<tr class="bgColor4">
+							<td>'.$controls.'</td>
+						</tr>
+					</table>
+				';
+			}
+		}
+	}
 
 
 
