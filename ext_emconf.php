@@ -2,16 +2,17 @@
 
 ########################################################################
 # Extension Manager/Repository config file for ext: "templavoila"
-# 
+#
 # Auto generated 16-09-2004 11:00
-# 
+#
 # Manual updates:
 # Only the data in the array - anything else is removed by next write
 ########################################################################
 
 $EM_CONF[$_EXTKEY] = Array (
 	'title' => 'TemplaVoila!',
-	'description' => 'A cool tool ...',
+	'description' => 'A new template mapping tool which includes an API for using the results (Template Objects) and a new content element for flexible content.
+For TYPO3 3.7.0',
 	'category' => 'module',
 	'shy' => 0,
 	'dependencies' => 'cms,lang,static_info_tables',

@@ -251,15 +251,18 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 				<td>Data Structures:</td>
 				<td>Template Objects:</td>
 			</tr>';
-		foreach($list as $pid => $stat)	{
-			$path = $this->findRecordsWhereUsed_pid($pid);
-			if ($path)	{
-				$tRows[] = '
-					<tr class="bgColor4">
-						<td><a href="index.php?id='.$pid.'">'.htmlspecialchars($path).'</a></td>
-						<td>'.htmlspecialchars($stat['DS']).'</td>
-						<td>'.htmlspecialchars($stat['TO']).'</td>
-					</tr>';
+
+		if (is_array($list))	{
+			foreach($list as $pid => $stat)	{
+				$path = $this->findRecordsWhereUsed_pid($pid);
+				if ($path)	{
+					$tRows[] = '
+						<tr class="bgColor4">
+							<td><a href="index.php?id='.$pid.'">'.htmlspecialchars($path).'</a></td>
+							<td>'.htmlspecialchars($stat['DS']).'</td>
+							<td>'.htmlspecialchars($stat['TO']).'</td>
+						</tr>';
+				}
 			}
 		}
 
