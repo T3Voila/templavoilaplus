@@ -482,7 +482,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * @param	boolean		$clipboardElInPath: Tells whether any element registered on the clipboard is found in the current "path" of the recursion. If true, it normally means that no paste-in symbols are shown since elements are not allowed to be pasted/referenced to a position within themselves (would result in recursion).
 	 * @return	string		HTML
 	 */
-	function renderFrameWork($dsInfo,$parentPos='',$clipboardElInPath=0)	{
+	function renderFrameWork($dsInfo,$parentPos='',$clipboardElInPath=0) {
 		global $LANG;
 		
 			// Setting the sheet ID and render sheet menu:
@@ -525,17 +525,10 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				$elList.=$this->linkNew('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/new_el.gif','').' align="absmiddle" vspace="5" border="0" title="'.$LANG->getLL ('createnewrecord').'" alt="" />',$dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$fieldID.':'.$counter); 
 				if (!$clipboardElInPath) { $elList.=$this->linkPaste('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/clip_pasteafter.gif','').' align="absmiddle" vspace="5" border="0" title="'.$LANG->getLL ('pasterecord').'" alt="" />',$dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$fieldID.':'.$counter,$this->MOD_SETTINGS['clip_parentPos'],$this->MOD_SETTINGS['clip']); }
 					// Render the list of elements (and possibly call itself recursively if needed):
-    			if (is_array($fieldContent['el_list']))	
-
-					foreach($fieldContent['el_list'] as $counter => $k)	
-
-						$v = $fieldContent['el'][$k]
-
-						$elList.=$this->renderFrameWork($v,$dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$fieldID.':'.$counter,$clipboardElInPath)
-
-
-
-
+    			if (is_array($fieldContent['el_list']))	 {
+					foreach($fieldContent['el_list'] as $counter => $k)	{
+						$v = $fieldContent['el'][$k];
+						$elList.=$this->renderFrameWork($v,$dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$fieldID.':'.$counter,$clipboardElInPath);
 
 							// "New" and "Paste" icon:
 						$elList.=$this->linkNew('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/new_el.gif','').' align="absmiddle" vspace="5" border="0" title="'.$LANG->getLL ('createnewrecord').'" alt="" />',$dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$fieldID.':'.$counter);
