@@ -539,7 +539,7 @@ class tx_templavoila_xmlrelhndl {
 
 			// Getting value of the field containing the relations:
 		$xmlContent = t3lib_div::xml2array($xmlString);
-		$dat = $xmlContent['data'][$refArr[2]][$refArr[3]][$refArr[4]][$refArr[5]];
+		$dat = is_array($xmlContent) ? $xmlContent['data'][$refArr[2]][$refArr[3]][$refArr[4]][$refArr[5]] : '';
 
 			// Getting the relation uids out:
 		$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');

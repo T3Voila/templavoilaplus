@@ -129,6 +129,53 @@ class tx_templavoila_mod1_wizards {
 			} else { debug('Error: Referer host did not match with server host.'); }
 		}
 
+			// Based on t3d/xml templates:
+		if ($templateFile = t3lib_div::_GP('templateFile')) {
+
+			if (t3lib_div::getFileAbsFileName($templateFile) && @is_file($templateFile))	{
+
+					// First, find positive PID for import of the page:
+				$importPID = t3lib_BEfunc::getTSconfig_pidValue('pages','',$positionPid);
+
+					// Initialize the import object:
+				$import = $this->getImportObject();
+				if ($import->loadFile($templateFile, 1))	{
+						// Find the original page id:
+					$origPageId = key($import->dat['header']['pagetree']);
+
+						// Perform import of content
+					$import->importData($importPID);
+
+						// Find the new page id (root page):
+					$newID = $import->import_mapId['pages'][$origPageId];
+
+					if ($newID)	{
+							// If the page was destined to be inserted after another page, move it now:
+						if ($positionPid<0)	{
+							$cmd = array();
+							$cmd['pages'][$newID]['move'] = $positionPid;
+							$tceObject = $import->getNewTCE();
+							$tceObject->start(array(),$cmd);
+							$tceObject->process_cmdmap();
+						}
+
+						// PLAIN COPY FROM ABOVE - BEGIN
+							// Get TSconfig for a different selection of fields in the editing form
+						$TSconfig = t3lib_BEfunc::getModTSconfig($newID, 'tx_templavoila.mod1.createPageWizard.fieldNames');
+						$fieldNames = isset ($TSconfig['value']) ? $TSconfig['value'] : 'hidden,title,alias';
+
+							// Create parameters and finally run the classic page module's edit form for the new page:
+						$params = '&edit[pages]['.$newID.']=edit&columnsOnly='.rawurlencode($fieldNames);
+						$returnUrl = rawurlencode(t3lib_div::getIndpEnv('SCRIPT_NAME').'?id='.$newID.'&updatePageTree=1');
+
+						header('Location: '.t3lib_div::locationHeaderUrl($this->doc->backPath.'alt_doc.php?returnUrl='.$returnUrl.$params));
+						return;
+
+						// PLAIN COPY FROM ABOVE - END
+					} else { debug('Error: Could not create page!'); }
+				}
+			}
+		}
 			// Start assembling the HTML output
 
 		$this->doc->form='<form action="'.htmlspecialchars('index.php?id='.$this->pObj->id).'" method="post" autocomplete="off" enctype="'.$TYPO3_CONF_VARS['SYS']['form_enctype'].'" onsubmit="return TBE_EDITOR_checkSubmit(1);">';
@@ -156,7 +203,7 @@ class tx_templavoila_mod1_wizards {
 
 		$tmplSelector = $this->renderTemplateSelector ($positionPid,'t3d');
 		if ($tmplSelector) {
-			$tmplSelectorCode.='<em>'.$LANG->getLL ('createnewpage_templateobject_createpagewithdefaultcontent').'</em>';
+			#$tmplSelectorCode.='<em>'.$LANG->getLL ('createnewpage_templateobject_createpagewithdefaultcontent').'</em>';
 			$tmplSelectorCode.=$this->doc->spacer(5);
 			$tmplSelectorCode.=$tmplSelector;
 			$tmplSelectorCode.=$this->doc->spacer(10);
@@ -196,6 +243,7 @@ class tx_templavoila_mod1_wizards {
 		global $LANG, $TYPO3_DB;
 
 		$storageFolderPID = $this->pObj->getStorageFolderPid($positionPid);
+		$tmplHTML = array();
 
 		switch ($templateType) {
 			case 'tmplobj':
@@ -224,25 +272,87 @@ class tx_templavoila_mod1_wizards {
 					$tmplHTML [] = '<table style="width: 100%;" valign="top"><tr><td colspan="2" nowrap="nowrap"><h3 class="bgColor3-20">'.htmlspecialchars($row['title']).'</h3></td></tr>'.
 						'<tr><td valign="top">'.$previewIcon.'</td><td width="120" valign="top"><p>'.$description.'</p></td></tr></table>';
 				}
-				if (is_array ($tmplHTML)) {
-					$counter = 0;
-					$content .= '<table>';
-					foreach ($tmplHTML as $single) {
-						$content .= ($counter ? '':'<tr>').'<td valign="top">'.$single.'</td>'.($counter ? '</tr>':'');
-						$counter ++;
-						if ($counter > 1) { $counter = 0; }
-					}
-					$content .= '</table>';
-				}
 				break;
 
 			case 't3d':
+				if (t3lib_extMgm::isLoaded('impexp'))	{
+
+						// Read template files from a certain folder. I suggest this is configurable in some way. But here it is hardcoded for initial tests.
+					$templateFolder = PATH_site.'fileadmin/export/templates/';
+					$files = t3lib_div::getFilesInDir($templateFolder,'t3d,xml',1,1);
+
+						// Traverse the files found:
+					foreach($files as $absPath)	{
+							// Initialize the import object:
+						$import = $this->getImportObject();
+						if ($import->loadFile($absPath))	{
+							if (is_array($import->dat['header']['pagetree']))	{	// This means there are pages in the file, we like that...:
+
+									// Page tree:
+								reset($import->dat['header']['pagetree']);
+								$pageTree = current($import->dat['header']['pagetree']);
+
+
+									// Thumbnail icon:
+								if (is_array($import->dat['header']['thumbnail']))	{
+									$pI = pathinfo($import->dat['header']['thumbnail']['filename']);
+									if (t3lib_div::inList('gif,jpg,png,jpeg',strtolower($pI['extension'])))	{
+
+											// Construct filename and write it:
+										$fileName = PATH_site.
+													'typo3temp/importthumb_'.t3lib_div::shortMD5($absPath).'.'.$pI['extension'];
+										t3lib_div::writeFile($fileName, $import->dat['header']['thumbnail']['content']);
+
+											// Check that the image really is an image and not a malicious PHP script...
+										if (getimagesize($fileName))	{
+												// Create icon tag:
+											$iconTag = '<img src="'.$this->doc->backPath.'../'.substr($fileName,strlen(PATH_site)).'" '.$import->dat['header']['thumbnail']['imgInfo'][3].' vspace="5" style="border: solid black 1px;" alt="" />';
+										} else {
+											t3lib_div::unlink_tempfile($fileName);
+											$iconTag = '';
+										}
+									}
+								}
+
+								$aTagB = '<a href="'.htmlspecialchars(t3lib_div::linkThisScript(array('templateFile' => $absPath))).'">';
+								$aTagE = '</a>';
+								$tmplHTML [] = '<table style="float:left; width: 100%;" valign="top"><tr><td colspan="2" nowrap="nowrap">
+					<h3 class="bgColor3-20">'.$aTagB.htmlspecialchars($import->dat['header']['meta']['title'] ? $import->dat['header']['meta']['title'] : basename($absPath)).$aTagE.'</h3></td></tr>
+					<tr><td valign="top">'.$aTagB.$iconTag.$aTagE.'</td><td valign="top"><p>'.htmlspecialchars($import->dat['header']['meta']['description']).'</p>
+						<em>Levels: '.(count($pageTree)>1 ? 'Deep structure' : 'Single page').'<br/>
+						File: '.basename($absPath).'</em></td></tr></table>';
+
+							}
+						}
+					}
+				}
 				break;
 
 		}
+
+		if (is_array($tmplHTML) && count($tmplHTML)) {
+			$counter = 0;
+			$content .= '<table>';
+			foreach ($tmplHTML as $single) {
+				$content .= ($counter ? '':'<tr>').'<td valign="top">'.$single.'</td>'.($counter ? '</tr>':'');
+				$counter ++;
+				if ($counter > 1) { $counter = 0; }
+			}
+			$content .= '</table>';
+		}
+
 		return $content;
 	}
 
+	function getImportObject()	{
+		global $TYPO3_CONF_VARS;
+
+		require_once (t3lib_extMgm::extPath('impexp').'class.tx_impexp.php');
+		$import = t3lib_div::makeInstance('tx_impexp');
+		$import->init();
+
+		return $import;
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/mod1/class.tx_templavoila_mod1_wizards.php'])    {

@@ -1,3 +1,8 @@
+2004-12-13  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+	* Added an EXAMPLE of how page-templates can come from a t3d file. I expect it needs some configuration of which folder to look for templates in, but the principles are shown. It will require the new TYPO3 source with modified import/export features.
+	* Fixed a PHP5 bug with arrays...
+
 2004-10-30  Robert Lemke  <robert@typo3.org>
  + mod1: Added TSconfig configuration for sidebar position: mod.web_txtemplavoilaM1.sideBarPosition
  ~ Manual: Updated TSconfig options and added screenshots for sidebar positions
