@@ -771,13 +771,13 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 						<h4>Data Structure in record:</h4>
 						<table border="0" cellspacing="2" cellpadding="2">
 									<tr class="bgColor5">
-										<td><strong>Data Element:</strong>'.
+										<td nowrap="nowrap"><strong>Data Element:</strong>'.
 											t3lib_BEfunc::cshItem('xMOD_tx_templavoila','mapping_head_dataElement',$this->doc->backPath,'',TRUE).
 											'</td>
-										<td><strong>Mapping instructions:</strong>'.
+										<td nowrap="nowrap"><strong>Mapping instructions:</strong>'.
 											t3lib_BEfunc::cshItem('xMOD_tx_templavoila','mapping_head_mapping_instructions',$this->doc->backPath,'',TRUE).
 											'</td>
-										<td><strong>Rules:</strong>'.
+										<td nowrap="nowrap"><strong>Rules:</strong>'.
 											t3lib_BEfunc::cshItem('xMOD_tx_templavoila','mapping_head_Rules',$this->doc->backPath,'',TRUE).
 											'</td>
 									</tr>
