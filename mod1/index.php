@@ -154,6 +154,9 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			$this->doc->JScode.=$CMparts[0];
 			$this->doc->postCode.= $CMparts[2];
 			
+				// Just to include the Stylesheet information, nothing more:
+			$this->doc->getTabMenu(0,'_',0,array(''=>''));
+			
 			
 				// Create new CMD:
 			$createNew = t3lib_div::GPvar('createNew');
@@ -359,19 +362,44 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * @return	string		HTML
 	 */
 	function renderFrameWork($dsInfo,$parentPos='',$clipboardElInPath=0)	{
-
+		$sheet=isset($dsInfo['sub'][$this->MOD_SETTINGS['sheetData']]) ? $this->MOD_SETTINGS['sheetData'] : 'sDEF';
+		
 			// Make sheet menu:
 		$sheetMenu='';
 		if (is_array($dsInfo['sub']))	{
 			if (count($dsInfo['sub'])>1 || !isset($dsInfo['sub']['sDEF']))	{
+
+				$count = count($dsInfo['sub']);
+				$widthLeft = 1;
+				$addToAct = 5;
+	
+				$widthRight = max (1,floor(30-pow($count,1.72)));
+				$widthTabs = 100 - $widthRight - $widthLeft;
+				$widthNo = floor(($widthTabs - $addToAct)/$count);
+				$addToAct = max ($addToAct,$widthTabs-($widthNo*$count));
+				$widthAct = $widthNo + $addToAct;
+				$widthRight = 100 - ($widthLeft + ($count*$widthNo) + $addToAct);
+
+
+				$first=true;
 				foreach($dsInfo['sub'] as $sheetK => $sheetI)	{
-					$sheetMenu.='<td bgcolor="red">'.
-						'<a href="index.php?id='.$this->id.'&SET[sheetData]='.$sheetK.'"><strong>'.
-						htmlspecialchars($sheetK).
+
+					$isActive = !strcmp($sheet,$sheetK);
+					$class = $isActive ? "tabact" : "tab";
+					$width = $isActive ? $widthAct : $widthNo;
+	
+					$label = htmlspecialchars($sheetK);
+					$link = htmlspecialchars('index.php?id='.$this->id.'&SET[sheetData]='.$sheetK);
+
+					$sheetMenu.='<td width="'.$width.'%" class="'.$class.'"'.($first?' style="border-left: solid #000 1px;"':'').'>'.
+						'<a href="'.$link.'"'.($first?' style="padding-left:5px;padding-right:2px;"':'').'><strong>'.
+						$label.
 						'</strong></a></td>';
+
+					$first=false;
 				}
-				
-				$sheetMenu = '<table border="1"><tr>'.$sheetMenu.'</tr></table>';
+								
+				$sheetMenu = '<table cellpadding="0" cellspacing="0" border="0" style="padding-left: 3px; padding-right: 3px;"><tr>'.$sheetMenu.'</tr></table>';
 			}
 		}
 		
@@ -380,7 +408,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		$clipActive_ref = ($this->MOD_SETTINGS['clip']=='ref' && $this->MOD_SETTINGS['clip_parentPos']==$parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id'] ? '_h' : '');
 		$clipboardElInPath = trim($clipActive_copy.$clipActive_cut.$clipActive_ref)||$clipboardElInPath?1:0;
 		
-		$sheet=isset($dsInfo['sub'][$this->MOD_SETTINGS['sheetData']]) ? $this->MOD_SETTINGS['sheetData'] : 'sDEF';
+		
 		$cells=array();
 		$headerCells=array();
 		if (is_array($dsInfo['sub'][$sheet]))	{
@@ -411,13 +439,20 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			<tr>'.implode('',$cells).'</tr>
 		</table>';
 		
-		$recordIcon = '<img src="'.$this->doc->backPath.$dsInfo['el']['icon'].'" align="absmiddle" width="18" height="16" border="0" title="'.htmlspecialchars('['.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].']').'" alt="" />';
+		$isLocal = $dsInfo['el']['table']=='pages' || $dsInfo['el']['pid']==$this->id;	// Pages should be seem as local...
+		
+		$extPath = '';
+		if (!$isLocal)	{
+			$extPath = ' - PATH: '.t3lib_BEfunc::getRecordPath($dsInfo['el']['pid'],$this->perms_clause,30);
+		}
+
+		$recordIcon = '<img src="'.$this->doc->backPath.$dsInfo['el']['icon'].'" align="absmiddle" width="18" height="16" border="0" title="'.htmlspecialchars('['.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].']'.$extPath).'" alt="" />';
 		$recordIcon = $this->doc->wrapClickMenuOnIcon($recordIcon,$dsInfo['el']['table'],$dsInfo['el']['id']);
 		
 		if ($dsInfo['el']['table']!='pages')	{
 			$linkCopy = $this->linkCopyCut('<img src="'.$this->doc->backPath.'gfx/clip_copy'.$clipActive_copy.'.gif" title="Copy" border="0" alt="" />',($clipActive_copy ? '' : $parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id']),'copy');
 			$linkCut = $this->linkCopyCut('<img src="'.$this->doc->backPath.'gfx/clip_cut'.$clipActive_cut.'.gif" title="Move" border="0" alt="" />',($clipActive_cut ? '' : $parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id']),'cut');
-			$linkRef = $this->linkCopyCut('<img src="'.$this->doc->backPath.'gfx/clip_ref'.$clipActive_ref.'.gif" title="Reference" border="0" alt="" />',($clipActive_ref ? '' : $parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id']),'ref');
+			$linkRef = $this->linkCopyCut('<img src="./clip_ref'.$clipActive_ref.'.gif" title="Reference" border="0" alt="" />',($clipActive_ref ? '' : $parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id']),'ref');
 			$linkUnlink = $this->linkUnlink('<img src="'.$this->doc->backPath.'gfx/garbage.gif" title="Unlink" border="0" alt="" />',$parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id']);
 		} else {
 			$linkCopy = '';
@@ -425,16 +460,17 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			$linkRef = '';
 			$linkUnlink = '';
 		}
+		
 		$content=$sheetMenu.'
 		<table border="0" cellpadding="2" cellspacing="0" style="border: 1px solid black; margin-bottom:5px;" width="100%">
-			<tr style="background-color: '.($dsInfo['el']['table']=='pages' ? $this->doc->bgColor2 : $this->doc->bgColor5).';">
-				<td>'.$recordIcon.'&nbsp;'.$GLOBALS['LANG']->sL($dsInfo['el']['title'],1).'</td>
+			<tr style="background-color: '.($dsInfo['el']['table']=='pages' ? $this->doc->bgColor2 : ($isLocal ? $this->doc->bgColor5 : $this->doc->bgColor6)).';">
+				<td>'.$recordIcon.'&nbsp;'.($isLocal?'':'<em>').$GLOBALS['LANG']->sL($dsInfo['el']['title'],1).($isLocal?'':'</em>').'</td>
 				<td nowrap="nowrap" align="right" valign="top">'.
 					$linkCopy.
 					$linkCut.
 					$linkRef.
 					$linkUnlink.
-					$this->editLink('<img src="'.$this->doc->backPath.'gfx/edit2.gif" title="Edit" border="0" alt="" />',$dsInfo['el']['table'],$dsInfo['el']['id']).
+					($isLocal ? $this->editLink('<img src="'.$this->doc->backPath.'gfx/edit2.gif" title="Edit" border="0" alt="" />',$dsInfo['el']['table'],$dsInfo['el']['id']) : '').
 				'</td>
 			</tr>
 			<tr><td colspan="2">'.$content.'</td></tr>
@@ -623,6 +659,8 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	
 	
 	function pasteRecord($pasteCmd, $target, $destination)	{
+#debug(array($pasteCmd, $target, $destination));
+#exit;	
 			// Split the target definition into parts:
 		list($targetStr,$check) = explode('/',$target);
 		
@@ -660,10 +698,15 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 						} else {
 								// Now, find destination:
 							$parts_destination = explode(':',$destination);
-							if (t3lib_div::inList('pages,tt_content',$parts_destination[0]))	{
-								$destinationRec = t3lib_BEfunc::getRecord($parts_destination[0],intval($parts_destination[1]),'uid,pid,tx_templavoila_flex');
+							$destinationTable = $parts_destination[0];
+							if (t3lib_div::inList('pages,tt_content',$destinationTable))	{
+								$destinationRec = t3lib_BEfunc::getRecord($destinationTable,intval($parts_destination[1]),'uid,pid,tx_templavoila_flex');
 								if (is_array($destinationRec))	{
-									$sameField = $parts_destination[0]==$parts_target[0] || $destinationRec['uid']==$parentRec['uid'] || $parts_destination[2]==$parts_target[2] || $parts_destination[3]==$parts_target[3];
+									$sameField = $destinationTable==$parts_target[0] 
+													&& $destinationRec['uid']==$parentRec['uid'] 
+													&& $parts_destination[2]==$parts_target[2] 
+													&& $parts_destination[3]==$parts_target[3];
+#debug(array($destinationTable,$parts_target[0],$destinationRec['uid'],$parentRec['uid'],$parts_destination[2],$parts_target[2],$parts_destination[3],$parts_target[3]));
 									
 										// Get XML content from that field.
 									$xmlContent = t3lib_div::xml2array($destinationRec['tx_templavoila_flex']);
@@ -674,7 +717,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		
 									if ($pasteCmd=='copy')	{
 										$cmdArray=array();
-										$cmdArray['tt_content'][$itemOnPosition['id']]['copy']=($parts_destination[0]=="pages" ? $destinationRec['uid'] : $destinationRec['pid']);
+										$cmdArray['tt_content'][$itemOnPosition['id']]['copy']=($destinationTable=="pages" ? $destinationRec['uid'] : $destinationRec['pid']);
 										$tce = t3lib_div::makeInstance("t3lib_TCEmain");
 										$tce->start(array(),$cmdArray);
 										$tce->process_cmdmap();
@@ -717,7 +760,8 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		
 										// First, create record:
 									$dataArr=array();
-									$dataArr[$parts_destination[0]][$destinationRec['uid']]['tx_templavoila_flex']['data'][$parts_destination[2]]['lDEF'][$parts_destination[3]]['vDEF']=implode(',',$idList_dest);
+									$cmdArray=array();
+									$dataArr[$destinationTable][$destinationRec['uid']]['tx_templavoila_flex']['data'][$parts_destination[2]]['lDEF'][$parts_destination[3]]['vDEF']=implode(',',$idList_dest);
 		
 									if ($pasteCmd=='cut' && !$sameField)	{
 										unset($dbAnalysis_target->itemArray[$parts_target[4]-1]);
@@ -730,13 +774,14 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 									
 										// If moving element, make sure the PID is changed as well so the element belongs to the page where it is moved to:
 									if ($pasteCmd=='cut')	{
-										$dataArr['tt_content'][$ID]['pid'] = $destinationRec['pid'];
+										$cmdArray['tt_content'][$ID]['move'] = ($destinationTable=="pages" ? $destinationRec['uid'] : $destinationRec['pid']);
 									}
-		
+#if (!$sameField)	{debug($dataArr);debug($cmdArray);	exit;	}
 									$tce = t3lib_div::makeInstance("t3lib_TCEmain");
 									$tce->stripslashes_values=0;
-									$tce->start($dataArr,array());
+									$tce->start($dataArr,$cmdArray);
 									$tce->process_datamap();
+									$tce->process_cmdmap();
 								}
 							}
 						}
@@ -746,10 +791,11 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		} elseif($check && $pasteCmd=='ref') {
 
 			$parts_destination = explode(':',$destination);
+			$destinationTable = $parts_destination[0];
 			list($table,$uid) = explode(':',$check);
 
-			if ($table=='tt_content' && t3lib_div::inList('pages,tt_content',$parts_destination[0]))	{
-				$destinationRec = t3lib_BEfunc::getRecord($parts_destination[0],intval($parts_destination[1]),'uid,pid,tx_templavoila_flex');
+			if ($table=='tt_content' && t3lib_div::inList('pages,tt_content',$destinationTable))	{
+				$destinationRec = t3lib_BEfunc::getRecord($destinationTable,intval($parts_destination[1]),'uid,pid,tx_templavoila_flex');
 				if (is_array($destinationRec))	{
 						// Get XML content from that field.
 					$xmlContent = t3lib_div::xml2array($destinationRec['tx_templavoila_flex']);
@@ -782,7 +828,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 						// First, create record:
 					$dataArr=array();
-					$dataArr[$parts_destination[0]][$destinationRec['uid']]['tx_templavoila_flex']['data'][$parts_destination[2]]['lDEF'][$parts_destination[3]]['vDEF']=implode(',',$idList_dest);
+					$dataArr[$destinationTable][$destinationRec['uid']]['tx_templavoila_flex']['data'][$parts_destination[2]]['lDEF'][$parts_destination[3]]['vDEF']=implode(',',$idList_dest);
 
 					$tce = t3lib_div::makeInstance("t3lib_TCEmain");
 					$tce->stripslashes_values=0;
@@ -828,6 +874,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		$tree['el']=array(
 			'table' => $table,
 			'id' => $id,
+			'pid' => $row['pid'],
 			'title' => t3lib_div::fixed_lgd(t3lib_BEfunc::getRecordTitle($table,$row),50),
 			'icon' => t3lib_iconWorks::getIcon($table,$row)
 		);
@@ -851,7 +898,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 							$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
 							$dbAnalysis->start($dat,'tt_content');
 							$elArray=array();
-
+							
 							foreach($dbAnalysis->itemArray as $counter => $recIdent)	{
 								$this->global_tt_content_elementRegister[$recIdent['id']]++;
 								$idStr=$recIdent['table'].':'.$recIdent['id'];
@@ -868,8 +915,6 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 								}
 							}
 							$this->evaluateRuleOnElements($v['tx_templavoila']['ruleRegEx'],$v['tx_templavoila']['ruleConstants'],$elArray);
-							debug ($this->rules->getHumanReadableRules ($v['tx_templavoila']['ruleRegEx'],$v['tx_templavoila']['ruleConstants']));
-							
 						} elseif (is_array($v['TCEforms'])) {
 								// Example of how to detect eg. file uploads:
 							if ($v['TCEforms']['config']['type']=='group' && $v['TCEforms']['config']['internal_type']=='file')	{

@@ -2,6 +2,12 @@
 TODO
 ******************
 
+Add "iframe" to the list of tags to split out. (+ icon!)
+BUG: If you map ONLY the root element then nothing gets saved in the template!
+
+
+
+
 FINISHING (A week): 
 "class.tx_templavoila_htmlmarkup.php"
 "cm1/index.php"
@@ -66,6 +72,8 @@ Interface:
 	- Disable edit for some elements?
 - Support for sheets: both page header + content elements!!
 - Hierarchy tree view of the relations (incl. sheets, multiple groupfields in each element)
+- Display of CEs
+	- Data has to processed (-> internal/ external links, images, ...)
 
 
 Interface parts:
