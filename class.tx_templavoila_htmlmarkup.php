@@ -663,21 +663,43 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 	function getTemplateRecord($uid,$renderType,$langUid)	{
 		if (t3lib_extMgm::isLoaded('templavoila'))	{
 			$rec = $GLOBALS['TSFE']->sys_page->checkRecord('tx_templavoila_tmplobj',$uid);
+			$rendertype_ref = $rec['rendertype_ref'] ? $GLOBALS['TSFE']->sys_page->checkRecord('tx_templavoila_tmplobj',$rec['rendertype_ref']) : FALSE;
 
 			if (is_array($rec))	{
-
 				if ($renderType)	{	// If print-flag try to find a proper print-record. If the lang-uid is also set, try to find a combined print/lang record, but if not found, the print rec. will take precedence.
+
 						// Look up print-row for default language:
 					$printRow = $this->getTemplateRecord_query($rec['uid'],'AND rendertype="'.addslashes($renderType).'" AND sys_language_uid=0');
-					if (is_array($printRow))	$rec = $printRow;
+					if (is_array($printRow))	{
+						$rec = $printRow;
+					} elseif ($rendertype_ref) {	// Look in rendertype_ref record:
+						$printRow = $this->getTemplateRecord_query($rendertype_ref['uid'],'AND rendertype="'.addslashes($renderType).'" AND sys_language_uid=0');
+						if (is_array($printRow))	{
+							$rec = $printRow;
+						}
+					}
 
 					if ($langUid)	{	// If lang_uid is set, try to look up for current language:
 						$printRow = $this->getTemplateRecord_query($rec['uid'],'AND rendertype="'.addslashes($renderType).'" AND sys_language_uid='.intval($langUid));
-						if (is_array($printRow))	$rec = $printRow;
+						if (is_array($printRow))	{
+							$rec = $printRow;
+						} elseif ($rendertype_ref) {	// Look in rendertype_ref record:
+							$printRow = $this->getTemplateRecord_query($rendertype_ref['uid'],'AND rendertype="'.addslashes($renderType).'" AND sys_language_uid='.intval($langUid));
+							if (is_array($printRow))	{
+								$rec = $printRow;
+							}
+						}
 					}
 				} elseif ($langUid)	{	// If the language uid is set, then try to find a regular record with sys_language_uid
 					$printRow = $this->getTemplateRecord_query($rec['uid'],'AND rendertype="" AND sys_language_uid='.intval($langUid));
-					if (is_array($printRow))	$rec = $printRow;
+					if (is_array($printRow))	{
+						$rec = $printRow;
+					} elseif ($rendertype_ref) {	// Look in rendertype_ref record:
+						$printRow = $this->getTemplateRecord_query($rendertype_ref['uid'],'AND rendertype="" AND sys_language_uid='.intval($langUid));
+						if (is_array($printRow))	{
+							$rec = $printRow;
+						}
+					}
 				}
 			}
 
@@ -1194,7 +1216,7 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 		if (!$this->onlyElements || t3lib_div::inList($this->onlyElements,$firstTagName))	{
 			$onclick = str_replace('###PATH###',$this->pathPrefix.$path,$this->gnyfImgAdd);
 
-			$gnyf = $this->textGnyf ? '<span '.$onclick.' style="border:1px solid blank; background-color: yellow;">['.$firstTagName.']</span>' : '<img '.$onclick.' src="'.$this->gnyfPath.'html_tags/'.$firstTagName.'.gif" border="0" title="'.htmlspecialchars($title).'"'.$this->gnyfStyle.' alt="" />';
+			$gnyf = $this->textGnyf ? '<span '.$onclick.' style="border:1px solid blank; background-color: yellow;">['.$firstTagName.']</span>' : '<img '.$onclick.' src="'.$this->gnyfPath.'html_tags/'.$firstTagName.'.gif" border="0" title="'.htmlspecialchars(t3lib_div::fixed_lgd($title,-80)).'"'.$this->gnyfStyle.' alt="" />';
 			$gnyf.= ($this->mode=='explode' ? '<br />' : '');
 			return $gnyf;
 		}

@@ -1,3 +1,7 @@
+2005-02-16  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+	* Added feature that allows a Template Object to point to another parent template object from which the print and language subtemplates will be taken if the actual template object doesn't have any defined it self. The feature is called "Inherit subtemplates from as defaults"
+
 2005-02-08	Robert Lemke <robert@typo3.org>
  # xmlrelhndl: Fixed a newly introduced bug which caused a parse error in PHP4 (but not in PHP5) ...
  # ext_emconf.php: PHPEclipse did a line wrap were it shouldn't - fixed that.

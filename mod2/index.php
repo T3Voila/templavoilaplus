@@ -1950,10 +1950,12 @@ lib.'.$menuType.'.1.ACT {
 	 */
 	function makeWrap($cfg)	{
 		if (!$cfg['bulletwrap'])	{
-			return $cfg['wrap'];
+			$wrap = $cfg['wrap'];
 		} else {
-			return  $cfg['wrap'].'  |*|  '.$cfg['bulletwrap'].$cfg['wrap'];
+			$wrap = $cfg['wrap'].'  |*|  '.$cfg['bulletwrap'].$cfg['wrap'];
 		}
+
+		return ereg_replace('['.chr(10).chr(13).chr(9).']','',$wrap);
 	}
 
 	/**

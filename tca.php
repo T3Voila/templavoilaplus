@@ -31,6 +31,19 @@ $TCA['tx_templavoila_tmplobj'] = Array (
 				)
 			)
 		),
+		'rendertype_ref' => Array (
+			'exclude' => 1,
+			'label' => 'LLL:EXT:templavoila/locallang_db.php:tx_templavoila_tmplobj.rendertype_ref',
+			'config' => Array (
+				'type' => 'select',
+				'foreign_table' => 'tx_templavoila_tmplobj',
+				'foreign_table_where' => 'AND tx_templavoila_tmplobj.parent=0 AND tx_templavoila_tmplobj.uid!="###REC_FIELD_uid###" ORDER BY tx_templavoila_tmplobj.title',
+				'suppress_icons' => 'ONLY_SELECTED',
+				'items' => Array(
+					Array('',0)
+				)
+			)
+		),
 		'datastructure' => Array (
 			'exclude' => 1,
 			'label' => 'LLL:EXT:templavoila/locallang_db.php:tx_templavoila_tmplobj.datastructure',
@@ -145,7 +158,7 @@ $TCA['tx_templavoila_tmplobj'] = Array (
 		),
 	),
 	'types' => Array (
-		'0' => Array('showitem' => 'title;;;;2-2-2, parent, fileref, datastructure;;;;3-3-3, previewicon,description,localprocessing;;;;1-1-1'),
+		'0' => Array('showitem' => 'title;;;;2-2-2, parent, fileref, datastructure;;;;3-3-3, rendertype_ref, previewicon,description,localprocessing;;;;1-1-1'),
 		'1' => Array('showitem' => 'title;;;;2-2-2, parent, fileref, sys_language_uid;;;;3-3-3, rendertype,localprocessing;;;;1-1-1')
 	)
 );
