@@ -1322,6 +1322,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			$flexFName = $this->altRoot['table']==$table ? $this->altRoot['field_flex'] : 'tx_templavoila_flex';
 			$expDS = $this->getExpandedDataStructure($table, $flexFName, $row);
 			$xmlContent = t3lib_div::xml2array($row[$flexFName]);
+			if (!is_array($xmlContent))	$xmlContent = array();
 
 			foreach($expDS as $sheetKey => $sVal)	{
 				$tree['sub'][$sheetKey] = array();
@@ -1380,7 +1381,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 #							$this->evaluateRuleOnElements($v['tx_templavoila']['ruleRegEx'],$v['tx_templavoila']['ruleConstants'],$elArray);
 						} elseif (is_array($v['TCEforms'])) {
 							if ($v['TCEforms']['config']['type']=='group' && $v['TCEforms']['config']['internal_type']=='file')	{
-								$xmlContent['data'][$sheetKey][$lKey][$k][$vKey];
+								#$xmlContent['data'][$sheetKey][$lKey][$k][$vKey];
 								$thumbnail = t3lib_BEfunc::thumbCode(array('fN'=>$xmlContent['data'][$sheetKey][$lKey][$k][$vKey]),'','fN',$this->doc->backPath,'',$v['TCEforms']['config']['uploadfolder']);
 								$tree['el']['previewContent'][]='<strong>'.$LANG->sL($v['TCEforms']['label'],1).'</strong> '.$thumbnail;
 							} else {
