@@ -24,13 +24,13 @@ if (TYPO3_MODE=='BE')	{
 	// Adding tables:
 $TCA['tx_templavoila_tmplobj'] = Array (
 	'ctrl' => Array (
-		'title' => 'LLL:EXT:templavoila/locallang_db.php:tx_templavoila_tmplobj',		
-		'label' => 'title',	
+		'title' => 'LLL:EXT:templavoila/locallang_db.php:tx_templavoila_tmplobj',
+		'label' => 'title',
 		'tstamp' => 'tstamp',
 		'crdate' => 'crdate',
 		'cruser_id' => 'cruser_id',
-		'default_sortby' => 'ORDER BY title',	
-		'delete' => 'deleted',	
+		'default_sortby' => 'ORDER BY title',
+		'delete' => 'deleted',
 		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tca.php',
 		'iconfile' => t3lib_extMgm::extRelPath($_EXTKEY).'icon_to.gif',
 		'selicon_field' => 'previewicon',
@@ -40,13 +40,13 @@ $TCA['tx_templavoila_tmplobj'] = Array (
 );
 $TCA['tx_templavoila_datastructure'] = Array (
 	'ctrl' => Array (
-		'title' => 'LLL:EXT:templavoila/locallang_db.php:tx_templavoila_datastructure',		
-		'label' => 'title',	
+		'title' => 'LLL:EXT:templavoila/locallang_db.php:tx_templavoila_datastructure',
+		'label' => 'title',
 		'tstamp' => 'tstamp',
 		'crdate' => 'crdate',
 		'cruser_id' => 'cruser_id',
-		'default_sortby' => 'ORDER BY title',	
-		'delete' => 'deleted',	
+		'default_sortby' => 'ORDER BY title',
+		'delete' => 'deleted',
 		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tca.php',
 		'iconfile' => t3lib_extMgm::extRelPath($_EXTKEY).'icon_ds.gif',
 		'selicon_field' => 'previewicon',
@@ -57,7 +57,7 @@ $TCA['tx_templavoila_datastructure'] = Array (
 	// Adding the new content element, "Flexible Content":
 t3lib_div::loadTCA('tt_content');
 $tempColumns = Array (
-    'tx_templavoila_ds' => Array (        
+    'tx_templavoila_ds' => Array (
         'exclude' => 1,
         'label' => 'LLL:EXT:templavoila/locallang_db.php:tt_content.tx_templavoila_ds',
         'config' => Array (
@@ -91,17 +91,17 @@ $tempColumns = Array (
 			'maxitems' => 1,
         )
     ),
-    'tx_templavoila_flex' => Array (        
+    'tx_templavoila_flex' => Array (
         'exclude' => 1,
         'label' => 'LLL:EXT:templavoila/locallang_db.php:tt_content.tx_templavoila_flex',
 		'displayCond' => 'FIELD:tx_templavoila_ds:REQ:true',
         'config' => Array (
-            'type' => 'flex',    
+            'type' => 'flex',
 			'ds_pointerField' => 'tx_templavoila_ds',
 			'ds_tableField' => 'tx_templavoila_datastructure:dataprot',
         )
     ),
-    'tx_templavoila_pito' => Array (        
+    'tx_templavoila_pito' => Array (
         'exclude' => 1,
         'label' => 'LLL:EXT:templavoila/locallang_db.php:tt_content.tx_templavoila_pito',
         'config' => Array (
@@ -114,7 +114,7 @@ $tempColumns = Array (
 			'minitems' => 0,
 			'maxitems' => 1,
         )
-    ),	
+    ),
 );
 t3lib_extMgm::addTCAcolumns('tt_content',$tempColumns,1);
 
@@ -129,7 +129,7 @@ if ($_EXTCONF['enable.']['pageTemplateSelector'])	{
 
 		// For pages:
 	$tempColumns = Array (
-	    'tx_templavoila_ds' => Array (        
+	    'tx_templavoila_ds' => Array (
 	        'exclude' => 1,
 	        'label' => 'LLL:EXT:templavoila/locallang_db.php:pages.tx_templavoila_ds',
 	        'config' => Array (
@@ -164,7 +164,7 @@ if ($_EXTCONF['enable.']['pageTemplateSelector'])	{
 				'maxitems' => 1,
 	        )
 	    ),
-	    'tx_templavoila_next_ds' => Array (        
+	    'tx_templavoila_next_ds' => Array (
 	        'exclude' => 1,
 	        'label' => 'LLL:EXT:templavoila/locallang_db.php:pages.tx_templavoila_next_ds',
 	        'config' => Array (
@@ -198,23 +198,29 @@ if ($_EXTCONF['enable.']['pageTemplateSelector'])	{
 				'minitems' => 0,
 				'maxitems' => 1,
 	        )
-	    ),	
-	    'tx_templavoila_flex' => Array (        
+	    ),
+	    'tx_templavoila_flex' => Array (
 	        'exclude' => 1,
 	        'label' => 'LLL:EXT:templavoila/locallang_db.php:pages.tx_templavoila_flex',
 	#		'displayCond' => 'FIELD:tx_templavoila_ds:REQ:true',
 	        'config' => Array (
-	            'type' => 'flex',    
+	            'type' => 'flex',
 				'ds_pointerField' => 'tx_templavoila_ds',
 				'ds_pointerField_searchParent' => 'pid',
 				'ds_pointerField_searchParent_subField' => 'tx_templavoila_next_ds',
 				'ds_tableField' => 'tx_templavoila_datastructure:dataprot',
 	        )
-	    ),	
+	    ),
 	);
 	t3lib_extMgm::addTCAcolumns('pages',$tempColumns,1);
 	t3lib_extMgm::addToAllTCAtypes('pages','tx_templavoila_ds;;;;1-1-1,tx_templavoila_to,tx_templavoila_next_ds,tx_templavoila_next_to,tx_templavoila_flex;;;;1-1-1');
+
+		// Registering CSH:
 	t3lib_extMgm::addLLrefForTCAdescr('pages','EXT:templavoila/locallang_csh_pages.php');
+	t3lib_extMgm::addLLrefForTCAdescr('tt_content','EXT:templavoila/locallang_csh_ttc.php');
+	t3lib_extMgm::addLLrefForTCAdescr('tx_templavoila_datastructure','EXT:templavoila/locallang_csh_ds.php');
+	t3lib_extMgm::addLLrefForTCAdescr('tx_templavoila_tmplobj','EXT:templavoila/locallang_csh_to.php');
+	t3lib_extMgm::addLLrefForTCAdescr('xMOD_tx_templavoila','EXT:templavoila/locallang_csh_module.php');
 }
 
 ?>

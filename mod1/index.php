@@ -35,43 +35,43 @@
  *
  *
  *  106: class tx_templavoila_module1 extends t3lib_SCbase
- *  122:     function init()    
- *  133:     function menuConfig()	
- *  158:     function main()    
+ *  122:     function init()
+ *  133:     function menuConfig()
+ *  158:     function main()
  *
  *              SECTION: Command functions
  *  258:     function cmd_createNewRecord ($parentRecord, $defVals='')
  *  276:     function cmd_unlinkRecord ($unlinkRecord)
- *  288:     function cmd_pasteRecord ($pasteRecord) 
+ *  288:     function cmd_pasteRecord ($pasteRecord)
  *
  *              SECTION: Rendering functions
  *  308:     function renderEditPageScreen()
  *  342:     function renderCreatePageScreen ($positionPid)
- *  419:     function renderTemplateSelector ($positionPid, $templateType='tmplobj') 
+ *  419:     function renderTemplateSelector ($positionPid, $templateType='tmplobj')
  *
  *              SECTION: Framework rendering functions
- *  483:     function renderFrameWork($dsInfo,$parentPos='',$clipboardElInPath=0)	
- *  639:     function renderSheetMenu ($dsInfo, $sheet) 
+ *  483:     function renderFrameWork($dsInfo,$parentPos='',$clipboardElInPath=0)
+ *  639:     function renderSheetMenu ($dsInfo, $sheet)
  *  686:     function renderNonUsed()
- *  712:     function linkEdit($str,$table,$uid)	
- *  724:     function linkNew($str,$parentRecord)	
+ *  712:     function linkEdit($str,$table,$uid)
+ *  724:     function linkNew($str,$parentRecord)
  *  736:     function linkUnlink($str,$unlinkRecord)
- *  749:     function linkPaste($str,$params,$target,$cmd)	
- *  761:     function linkCopyCut($str,$parentPos,$cmd)	
- *  773:     function renderPreviewContent ($row, $table) 
- *  839:     function checkRulesForElement ($table, $uid) 
- *  848:     function printContent()    
+ *  749:     function linkPaste($str,$params,$target,$cmd)
+ *  761:     function linkCopyCut($str,$parentPos,$cmd)
+ *  773:     function renderPreviewContent ($row, $table)
+ *  839:     function checkRulesForElement ($table, $uid)
+ *  848:     function printContent()
  *
  *              SECTION: Processing
- *  869:     function createPage($pageArray,$positionPid)	
- *  905:     function createDefaultRecords ($table, $uid, $prevDS=-1, $level=0)	
- *  955:     function insertRecord($createNew,$row)	
- * 1020:     function pasteRecord($pasteCmd, $target, $destination)	
+ *  869:     function createPage($pageArray,$positionPid)
+ *  905:     function createDefaultRecords ($table, $uid, $prevDS=-1, $level=0)
+ *  955:     function insertRecord($createNew,$row)
+ * 1020:     function pasteRecord($pasteCmd, $target, $destination)
  *
  *              SECTION: Structure functions
- * 1216:     function getStorageFolderPid($positionPid)	
+ * 1216:     function getStorageFolderPid($positionPid)
  * 1237:     function getDStreeForPage($table,$id,$prevRecList='',$row='')
- * 1313:     function getExpandedDataStructure($table,$field,$row)	
+ * 1313:     function getExpandedDataStructure($table,$field,$row)
  *
  * TOTAL FUNCTIONS: 27
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -79,7 +79,7 @@
  */
 
 	// Initialize module
-unset($MCONF);    
+unset($MCONF);
 require ('conf.php');
 require ($BACK_PATH.'init.php');
 require ($BACK_PATH.'template.php');
@@ -100,7 +100,7 @@ require_once (t3lib_extMgm::extPath('templavoila').'class.tx_templavoila_xmlrelh
 
 /**
  * Module 'Page' for the 'templavoila' extension.
- * 
+ *
  * @author		Robert Lemke <rl@robertlemke.de>
  * @coauthor	Kasper Skaarhoj <kasper@typo3.com>
  * @package		TYPO3
@@ -110,8 +110,8 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	var $pageinfo;
 	var $rules;								// Holds an instance of the tx_templavoila_rule
 	var $modTSconfig;
-	var $extKey = 'templavoila';			// Extension key of this module	
-	
+	var $extKey = 'templavoila';			// Extension key of this module
+
 	var $global_tt_content_elementRegister=array();
 	var $elementBlacklist=array();			// Used in renderFrameWork (list of CEs causing errors)
 
@@ -132,8 +132,8 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 	/**
 	 * Preparing menu content and initializing clipboard and module TSconfig
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function menuConfig()	{
 		global $LANG;
@@ -145,7 +145,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			'showHeaderFields' => '',
 			'sheetData' => '',
 			'clip_parentPos' => '',
-			'clip' => '',			
+			'clip' => '',
 		);
 
 			// page/be_user TSconfig settings and blinding of menu-items
@@ -158,12 +158,12 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 	/**
 	 * Main function of the module.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function main()    {
 		global $BE_USER,$LANG,$BACK_PATH;
-        
+
 			// Access check!
 			// The page will show only if there is a valid page and if this page may be viewed by the user
 		if (is_array($this->altRoot))	{
@@ -178,7 +178,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 				// Draw the header.
 			$this->doc = t3lib_div::makeInstance('noDoc');
-			$this->doc->docType= 'xhtml_trans';			
+			$this->doc->docType= 'xhtml_trans';
 			$this->doc->backPath = $BACK_PATH;
 			$this->doc->divClass = '';
 			$this->doc->form='<form action="'.htmlspecialchars('index.php?'.$this->linkParams()).'" method="post" autocomplete="off">';
@@ -233,7 +233,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 			$cmd = t3lib_div::GPvar ('cmd');
 			switch ($cmd) {
-				
+
 					// Create a new page
 				case 'crPage' :
 						// Output the page creation form
@@ -241,24 +241,24 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 					break;
 
 					// If no access or if ID == zero
-				default:					
+				default:
 					$this->content.=$this->doc->header($LANG->getLL('title'));
 					$this->content.=$LANG->getLL('default_introduction');
 			}
 		}
-		$this->content.=$this->doc->endPage();	
+		$this->content.=$this->doc->endPage();
 	}
 
-	
-	
-	
-	
+
+
+
+
 	/*******************************************
-	 * 
+	 *
 	 * Command functions
-	 * 
+	 *
 	 *******************************************/
-	 
+
 	/**
 	 * Initiates processing for creating a new record.
 	 *
@@ -326,10 +326,10 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		header('Location: '.t3lib_div::locationHeaderUrl('index.php?'.$this->linkParams()));
 	}
 
-	
-	
-	
-	
+
+
+
+
 	/********************************************
 	 *
 	 * Rendering functions
@@ -351,7 +351,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 			// Reset internal variable:
 		$this->global_tt_content_elementRegister=array();
-		
+
 			// Get data structure array for the page/content elements.
 			// Returns a BIG array reflecting the "treestructure" of the pages content elements.
 		if (is_array($this->altRoot))	{
@@ -362,14 +362,22 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 			// Setting whether an element is on the clipboard
 		$clipboardElInPath = (!trim($this->MOD_SETTINGS['clip'].$this->MOD_SETTINGS['clip_parentPos']) ? 1 : 0);
+
 			// Display the nested page structure:
 		$this->elementBlacklist=array ();
 		$content.=$this->renderFramework($dsInfo,'',$clipboardElInPath);
 
+			// CSH
+		$content.= t3lib_BEfunc::cshItem('xMOD_tx_templavoila','pagemodule',$this->doc->backPath,'|<br/>');
+
 		if (!is_array($this->altRoot))	{
 				// Display elements not used in the page structure (has to be done differently)
 			$content.=$this->renderNonUsed();
+
+				// CSH
+			$content.= t3lib_BEfunc::cshItem('xMOD_tx_templavoila','pagemodule_notUsed',$this->doc->backPath,'|<br/>');
 		}
+
 			// Display (debug) the element counts on the page (has to be done differently)
 #		$content.=t3lib_div::view_array($this->global_tt_content_elementRegister);
 		return $content;
@@ -377,7 +385,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 	/**
 	 * Creates the screen for "new page wizard"
-	 * 
+	 *
 	 * @param	integer		$positionPid: Can be positive and negative depending of where the new page is going: Negative always points to a position AFTER the page having the abs. value of the positionId. Positive numbers means to create as the first subpage to another page.
 	 * @return	string		Content for the screen output.
 	 * @todo				Check required field(s), support t3d
@@ -393,7 +401,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			if ($httpHost==$refInfo['host'] || t3lib_div::GPvar('vC')==$BE_USER->veriCode() || $TYPO3_CONF_VARS['SYS']['doNotCheckReferer'])	{
 					// Create new page
 				$newID = $this->createPage (t3lib_div::GPvar('data'), $positionPid);
-				if ($newID > 0) {		
+				if ($newID > 0) {
 						// Creating the page was successful, now create the default content elements if any
 					$this->createDefaultRecords ('pages',$newID);
 					header('Location: '.t3lib_div::locationHeaderUrl('index.php?id='.$newID.'&updatePageTree=1'));
@@ -407,11 +415,11 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 			// Just to include the Stylesheet information, nothing more:
 		$this->doc->getTabMenu(0,'_',0,array(''=>''));
-		
+
 		$content =$this->doc->startPage($LANG->getLL ('createnewpage_title'));
 		$content.=$this->doc->header($LANG->getLL('createnewpage_title'));
 		$content.=$this->doc->spacer(5);
-		
+
 		$content.=$this->doc->sectionHeader ($LANG->getLL ('createnewpage_hide_header'));
 		$content.='<input type="checkbox" value="1" name="data[hidden]" checked="checked"/> '.$LANG->getLL ('createnewpage_hide_description');
 		$content.=$this->doc->spacer(10);
@@ -454,7 +462,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 	/**
 	 * Renders the template selector.
-	 * 
+	 *
 	 * @param	integer		Position id. Can be positive and negative depending of where the new page is going: Negative always points to a position AFTER the page having the abs. value of the positionId. Positive numbers means to create as the first subpage to another page.
 	 * @param	string		$templateType: The template type, currently only 'tmplobj' is supported, 't3d' is planned
 	 * @return	string		HTML output containing a table with the template selector
@@ -462,9 +470,9 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	function renderTemplateSelector ($positionPid, $templateType='tmplobj') {
 		global $LANG;
 		$storageFolderPID = $this->getStorageFolderPid($positionPid);
-		
-		switch ($templateType) {			
-			case 'tmplobj':				
+
+		switch ($templateType) {
+			case 'tmplobj':
 						// Create the "Default template" entry
 				$previewIconFilename = $GLOBALS['BACK_PATH'].'../'.t3lib_extMgm::siteRelPath($this->extKey).'res1/default_previewicon.gif';
 				$previewIcon = '<input type="image" class="c-inputButton" name="data[tx_templavoila_to]" value="0" src="'.$previewIconFilename.'" title="" />';
@@ -488,7 +496,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				if (is_array ($tmplHTML)) {
 					$counter = 0;
 					$content .= '<table>';
-					foreach ($tmplHTML as $single) {						
+					foreach ($tmplHTML as $single) {
 						$content .= ($counter ? '':'<tr>').'<td valign="top">'.$single.'</td>'.($counter ? '</tr>':'');
 						$counter ++;
 						if ($counter > 1) { $counter = 0; }
@@ -496,18 +504,18 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 					$content .= '</table>';
 				}
 				break;
-			
+
 			case 't3d':
 				break;
-				
+
 		}
 		return $content;
 	}
 
-	
-	
-	
-	
+
+
+
+
 	/********************************************
 	 *
 	 * Framework rendering functions
@@ -517,7 +525,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	/**
 	 * Renders the display framework.
 	 * Calls itself recursively
-	 * 
+	 *
 	 * @param	array		$dsInfo: DataStructure info array (the whole tree)
 	 * @param	string		$parentPos: Pointer to parent element: table, id, sheet, fieldname, counter (position in list)
 	 * @param	boolean		$clipboardElInPath: Tells whether any element registered on the clipboard is found in the current "path" of the recursion. If true, it normally means that no paste-in symbols are shown since elements are not allowed to be pasted/referenced to a position within themselves (would result in recursion).
@@ -526,10 +534,10 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 */
 	function renderFrameWork($dsInfo,$parentPos='',$clipboardElInPath=0, $referenceInPath=0) {
 		global $LANG;
-		
+
 			// Setting the sheet ID and render sheet menu:
-		$sheet=isset($dsInfo['sub'][$this->MOD_SETTINGS['sheetData']]) ? $this->MOD_SETTINGS['sheetData'] : 'sDEF';	
-		
+		$sheet=isset($dsInfo['sub'][$this->MOD_SETTINGS['sheetData']]) ? $this->MOD_SETTINGS['sheetData'] : 'sDEF';
+
 			// The $isLocal flag is used to denote whether an element belongs to the current page or not. If NOT the $isLocal flag means (for instance) that the title bar will be colored differently to show users that this is a foreign element not from this page.
 		$isLocal = $dsInfo['el']['table']=='pages' || $dsInfo['el']['pid']==$this->id;	// Pages should be seem as local...
 		if (!$isLocal)	$referenceInPath++;
@@ -546,7 +554,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			$extPath = ' - '.$LANG->getLL('path').': '.t3lib_BEfunc::getRecordPath($dsInfo['el']['pid'],$this->perms_clause,30);
 		}
 
-		$rulesStatus = $this->checkRulesForElement($dsInfo['el']['table'], $dsInfo['el']['id']);		
+		$rulesStatus = $this->checkRulesForElement($dsInfo['el']['table'], $dsInfo['el']['id']);
 		if (is_array($rulesStatus['error'])) {
 			foreach ($rulesStatus['error'] as $errorElement) {
 				$this->elementBlacklist[$errorElement['uid']][$errorElement['fieldname']]['position'] = $errorElement['position'];
@@ -591,16 +599,16 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			<tr>'.implode('',$headerCells).'</tr>
 			<tr>'.implode('',$cells).'</tr>
 		</table>';
-		
+
 			// Evaluating the rules and set colors to warning scheme if a rule does not apply
 		$elementBackgroundStyle = '';
 		$elementPageTitlebarStyle = 'background-color: '.($dsInfo['el']['table']=='pages' ? $this->doc->bgColor2 : ($isLocal ? $this->doc->bgColor5 : $this->doc->bgColor6)) .';';
 		$elementCETitlebarStyle = 'background-color: '.$this->doc->bgColor4.';';
 		$errorLineBefore = $errorLineAfter = '';
-			
+
 		$parentPosArr = explode (':',$parentPos);
 		$currentFieldName = $parentPosArr[3];
-		
+
 		switch ($this->elementBlacklist[$dsInfo['el']['id']][$currentFieldName]['position']) {
 			case 1:
 				$elementBackgroundStyle = 'background-color: '. ($GLOBALS['TBE_STYLES']['templavoila_bgColorWarning'] ? $GLOBALS['TBE_STYLES']['templavoila_bgColorWarning']:'#f4b0b0') .';';
@@ -620,7 +628,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			$title = ($rulesStatus['ok'] === true ? $LANG->getLL ('ruleapplies') : $LANG->getLL ('rulefails'));
 			$showRuleIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,t3lib_extMgm::extRelPath('templavoila').'mod1/'.($rulesStatus['ok'] === true ? 'green':'red').'led.gif','').' title="'.$title.'" border="0" alt="" align="absmiddle" />&nbsp;';
 		}
-		
+
 			// Put together the records icon including content sensitive menu link wrapped around it:
 		$recordIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,$dsInfo['el']['icon'],'').' align="absmiddle" width="18" height="16" border="0" title="'.htmlspecialchars('['.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].']'.$extPath).'" alt="" title="" />';
 		$recordIcon = $this->doc->wrapClickMenuOnIcon($recordIcon,$dsInfo['el']['table'],$dsInfo['el']['id'],1,'&callingScriptId='.rawurlencode($this->doc->scriptID));
@@ -644,7 +652,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			$linkRef = $this->linkCopyCut('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,t3lib_extMgm::extRelPath('templavoila').'mod1/clip_ref'.$clipActive_ref.'.gif','').' title="'.$LANG->getLL ('createreference').'" border="0" alt="" />',($clipActive_ref ? '' : $parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].'/'.$isLocal),'ref');
    			$linkUnlink = $this->linkUnlink('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/garbage.gif','').' title="'.$LANG->getLL($realDelete ? 'deleteRecord' : 'unlinkRecord').'" border="0" alt="" />', $parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].'/'.$isLocal, $realDelete);
 		}
-		
+
  		$finalContent = $this->renderSheetMenu($dsInfo, $sheet) . $errorLineBefore . '
 		<table border="0" cellpadding="2" cellspacing="0" style="border: 1px solid black; margin-bottom:5px; '.$elementBackgroundStyle.'" width="100%">
 			<tr style="'.$elementPageTitlebarStyle.';">
@@ -662,13 +670,13 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		</table>
 		'.$errorLineAfter.'
 		';
-		
+
 		return $finalContent;
-	}	
-	
+	}
+
 	/**
 	 * Render sheet menu:
-	 * Design-wise this will change most likely. And we also need to do a proper registration of the sheets since it only 
+	 * Design-wise this will change most likely. And we also need to do a proper registration of the sheets since it only
 	 * works for the page at this point - not content elements deeper in the structure.
 	 *
 	 * @param	array		$dsInfo: Datastructure containing the sheet information
@@ -683,7 +691,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				$count = count($dsInfo['sub']);
 				$widthLeft = 1;
 				$addToAct = 5;
-	
+
 				$widthRight = max (1,floor(30-pow($count,1.72)));
 				$widthTabs = 100 - $widthRight - $widthLeft;
 				$widthNo = floor(($widthTabs - $addToAct)/$count);
@@ -698,7 +706,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 					$isActive = !strcmp($currentSheet,$sheetK);
 					$class = $isActive ? "tabact" : "tab";
 					$width = $isActive ? $widthAct : $widthNo;
-	
+
 					$label = htmlspecialchars($sheetK);
 					$link = htmlspecialchars('index.php?'.$this->linkParams().'&SET[sheetData]='.$sheetK);
 
@@ -715,32 +723,32 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		}
 		return $sheetMenu;
 	}
-	
+
 	/**
 	 * Render header fields: It's possible to define a list of fields (currently only from the pages table) which should appear
 	 * as a header above the content zones while editing the content of a page. This function renders those fields.
 	 * The fields to be displayed are defined in the page's datastructure.
-	 * 
+	 *
 	 * @param	integer		$pageId: The page's ID for which to display the header fields
 	 * @return	string		HTML
 	 */
 	function renderHeaderFields ($pageId) {
 		global $LANG;
 		$content = '';
-		
+
 		$state = intval($this->MOD_SETTINGS['showHeaderFields']);
 		$label = htmlspecialchars($LANG->getLL ($state ? 'hideheaderinformation' : 'showheaderinformation'));
 		$href = t3lib_div::linkThisScript (array('SET'=>array('showHeaderFields'=>$state ? 0 : 1)));
-			
+
 		$showHideButton = '<a href="'.$href.'"><img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/ol/'.($state ? 'minus' : 'plus').'bullet.gif','').' border="0" title="'.$LANG->getLL ('hideheaderinformation').'" alt="'.$LANG->getLL ('hideheaderinformation').'" /></a>';
 		$showHideMessage = '<a href="'.$href.'">'.$label.'</a>';
-		
+
 			// Getting data structure for the page template and extract information for header fields to display
 		$pageRecord = t3lib_BEfunc::getRecord ('pages', $pageId);
 		$dataStructureRecord = t3lib_BEfunc::getRecord ('tx_templavoila_datastructure', $pageRecord['tx_templavoila_ds']);
 		$xmlContent = t3lib_div::xml2array ($dataStructureRecord['dataprot']);
 		if (is_array ($xmlContent['ROOT']['tx_templavoila']['pageModule'])) {
-			$headerTablesAndFieldNames = t3lib_div::trimExplode(chr(10),str_replace(chr(13),'',$xmlContent['ROOT']['tx_templavoila']['pageModule']['displayHeaderFields']),1);		
+			$headerTablesAndFieldNames = t3lib_div::trimExplode(chr(10),str_replace(chr(13),'',$xmlContent['ROOT']['tx_templavoila']['pageModule']['displayHeaderFields']),1);
 			if (is_array ($headerTablesAndFieldNames)) {
 				$fieldNames = array ();
 				foreach ($headerTablesAndFieldNames as $tableAndFieldName) {
@@ -772,10 +780,10 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		}
 		return $content;
 	}
-	
+
 	/**
 	 * Displays a list of local content elements on the page which were NOT used in the hierarchical structure of the page.
-	 * 
+	 *
 	 * @return	string		Display output HTML
 	 * @todo	Clean up this list so it becomes full-features for the elements shown (having all the editing, copy, cut, blablabla features that other elements have)
 	 */
@@ -812,7 +820,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 	/**
 	 * Returns an HTML link for creating a new record
-	 * 
+	 *
 	 * @param	string		$str: The label (or image)
 	 * @param	string		$parentRecord: The parameters for creating the new record. Example: pages:78:sDEF:field_contentarea:0
 	 * @return	string		HTML anchor tag containing the label and the correct link
@@ -854,7 +862,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 	/**
 	 * Returns an HTML link for pasting a content element. Pasting means either copying or moving a record.
-	 * 
+	 *
 	 * @param	string		$str: The label
 	 * @param	string		$params: The parameters defining the original record. Example: pages:78:sDEF:field_contentarea:0
 	 * @param	string		$target: The parameters defining the target where to paste the original record
@@ -867,7 +875,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 	/**
 	 * Returns an HTML link for marking a content element (i.e. transferring to the clipboard) for copying or cutting.
-	 * 
+	 *
 	 * @param	string		$str: The label
 	 * @param	string		$parentPos: The parameters defining the original record. Example: pages:78:sDEF:field_contentarea::tt_content:115
 	 * @param	string		$cmd: The marking mode: 'cut' or 'copy'
@@ -880,16 +888,16 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	/**
 	 * Returns an HTMLized preview of a certain content element. If you'd like to register a new content type, you can easily extend
 	 * this function before the switch clause. Set $alreadyHandled if you provided a preview content.
-	 * 
+	 *
 	 * @param	array		$row: The row containing the content element record; especially $row['CType'] and $row['bodytext'] are used.
 	 * @param	string		$table: Name of the CType's MySQL table
 	 * @return	string		HTML preview content
 	 */
 	function renderPreviewContent ($row, $table) {
-		
+
 			// Preview content for non-flexible content elements:
 		switch($row['CType'])	{
-			case 'text':		//	Text	
+			case 'text':		//	Text
 			case 'table':		//	Table
 			case 'mailform':	//	Form
 				$out='<strong>'.$GLOBALS['LANG']->sL(t3lib_BEfunc::getItemLabel('tt_content','bodytext'),1).'</strong> '.$this->linkEdit(htmlspecialchars(t3lib_div::fixed_lgd(trim(strip_tags($row['bodytext'])),200)),$table,$row['uid']);
@@ -911,7 +919,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 					foreach ($bulletsArr as $listItem) {
 						$htmlBullets .= htmlspecialchars(trim(strip_tags($listItem))).'<br />';
 					}
-				}					
+				}
 				$out='<strong>'.$GLOBALS['LANG']->sL(t3lib_BEfunc::getItemLabel('tt_content','bodytext'),1).'</strong><br />'.$this->linkEdit($htmlBullets,$table,$row['uid']);
 				break;
 			case 'uploads':		//	Filelinks
@@ -946,12 +954,12 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 	/**
 	 * Checks if an element's children comply with the rules
-	 * 
+	 *
 	 * @param	string		The content element's table
 	 * @param	integer		The element's uid
-	 * @return	array		
+	 * @return	array
 	 */
-	 function checkRulesForElement ($table, $uid) {	 	
+	 function checkRulesForElement ($table, $uid) {
 		return $this->rules->evaluateRulesForElement ($table, $uid);
 	 }
 
@@ -972,18 +980,18 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 
 
-	
-	
-	
+
+
+
 	/********************************************
 	 *
 	 * Processing
 	 *
 	 ********************************************/
-	 
+
 	/**
 	 * Performs the neccessary steps to creates a new page
-	 * 
+	 *
 	 * @param	array		$pageArray: array containing the fields for the new page
 	 * @param	integer		$positionPid: location within the page tree (parent id)
 	 * @return	integer		uid of the new page record
@@ -1014,7 +1022,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * Creates default records which are defined in the datastructure's rules scheme. The property in the DS is called "ruleDefaultElements"
 	 * and consists of elements only (instead of a real regular expression)! I.e. if your regular expression is like this: "(ab){2}c", it makes
 	 * sense having ruleDefaultElements contain this list of elements: "ababc".
-	 * 
+	 *
 	 * Calls itself recursively.
 	 *
 	 * @param	string		$table: The table, usually "pages" or "tt_content"
@@ -1026,13 +1034,13 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 */
 	function createDefaultRecords ($table, $uid, $prevDS=-1, $level=0)	{
 		global $TCA, $LANG;
-		
+
 		$tableRow = t3lib_BEfunc::getRecord ($table, $uid);
 			// Recursivity check and only care about page records or flexible content elements:
-		if (($level<10) && 
+		if (($level<10) &&
 		    ($tableRow['tx_templavoila_ds'] != $prevDS) &&
-		    ($table != 'tt_content' || $tableRow['CType'] == 'templavoila_pi1') 
-		   ) {	
+		    ($table != 'tt_content' || $tableRow['CType'] == 'templavoila_pi1')
+		   ) {
 			$recRow = t3lib_BEfunc::getRecord ('tx_templavoila_datastructure', $tableRow['tx_templavoila_ds']);
 			$xmlContent = t3lib_div::xml2array ($recRow['dataprot']);
 			if (is_array ($xmlContent)) {
@@ -1040,8 +1048,8 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 						// Count backwards, because we're always using the same $key:
 					for ($counter=strlen(trim ($field['tx_templavoila']['ruleDefaultElements'])); $counter >=0; $counter--) {
 						$CType = t3lib_div::trimExplode (',',$this->rules->getCTypeFromToken (trim($field['tx_templavoila']['ruleDefaultElements'][$counter]), $field['tx_templavoila']['ruleConstants']));
-						switch ($CType[0]) {						   
-							case 'templavoila_pi1': 
+						switch ($CType[0]) {
+							case 'templavoila_pi1':
 								$TOrow = t3lib_BEfunc::getRecord('tx_templavoila_tmplobj', $CType[1], 'datastructure');
 								$conf = array (
 									'CType' => $CType[0],
@@ -1056,7 +1064,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 							default:
 								$conf = array (
 									'CType' => $CType[0],
-									'bodytext' => $LANG->getLL ('newce_defaulttext_'.$CType[0]), 
+									'bodytext' => $LANG->getLL ('newce_defaulttext_'.$CType[0]),
 								);
 								$this->insertRecord($table.':'.intval($uid).':sDEF:'.$key,$conf);
 								break;
@@ -1133,10 +1141,10 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		$TSconfig = t3lib_BEfunc::getTCEFORM_TSconfig('pages',$row);
 		return intval($TSconfig['_STORAGE_PID']);
 	}
-		
+
 	/**
 	 * Returns the data structure for a certain page.
-	 * 
+	 *
 	 * @param	string		$table: Table which contains the element. Only records from table 'pages' or free content elements from 'tt_content' are handled
 	 * @param	integer		$id: The uid of the record
 	 * @param	string		$prevRecList: comma separated list of uids, used internally for recursive calls
@@ -1213,7 +1221,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		}
 		return $tree;
 	}
-	
+
 	/**
 	 * Returns the data structure for a flexform field ($field) from $table (from $row)
 	 *
@@ -1224,7 +1232,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 */
 	function getExpandedDataStructure($table,$field,$row)	{
 		global $TCA;
-		
+
 		t3lib_div::loadTCA($table);
 		$conf = $TCA[$table]['columns'][$field]['config'];
 		$dataStructArray = t3lib_BEfunc::getFlexFormDS($conf,$row,$table);
@@ -1241,7 +1249,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			list ($dataStruct, $sheet) = t3lib_div::resolveSheetDefInDS($dataStructArray,$sheetKey);
 			if ($sheet == $sheetKey)	{
 				$output[$sheetKey]=$dataStruct;
-			}	
+			}
 		}
 		return $output;
 	}

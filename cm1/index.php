@@ -583,6 +583,9 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 				</table>
 			';
 
+				// CSH, general for file mapping:
+			$content.= t3lib_BEfunc::cshItem('xMOD_tx_templavoila','mapping_file',$this->doc->backPath,'|<br/>');
+
 				// Messages:
 			if (is_array($msg))	{
 				$content.='
@@ -627,14 +630,14 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 					$content.='
 						<input type="submit" name="_DO_NOTHING" value="Go back" title="Go back" />
 						<h3>XML configuration:</h3>
-
+						'.t3lib_BEfunc::cshItem('xMOD_tx_templavoila','mapping_file_showXMLDS',$this->doc->backPath,'|<br/>').'
 						<pre>'.$hlObj->highLight_DS(t3lib_div::array2xml($storeDataStruct,'',0,'T3DataStructure',4)).'</pre>';
 				break;
 				case 'loadScreen':
 
 					$content.='
 						<h3>Load DS XML</h3>
-
+						'.t3lib_BEfunc::cshItem('xMOD_tx_templavoila','mapping_file_loadDSXML',$this->doc->backPath,'|<br/>').'
 						<p>Select a Template Object record to load a Data Structure/Mapping information from:</p>
 						<select name="_load_ds_xml_to">'.implode('',$opt).'</select>
 						<br />
@@ -648,6 +651,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 
 					$content.='
 						<h3>CREATE Data Structure / Template Object:</h3>
+						'.t3lib_BEfunc::cshItem('xMOD_tx_templavoila','mapping_file_createDSTO',$this->doc->backPath,'|<br/>').'
 						<table border="0" cellpadding="2" cellspacing="2">
 							<tr>
 								<td class="bgColor5"><strong>Titel of DS/TO:</strong></td>
@@ -727,7 +731,8 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 					-->
 					<h3>Building Data Structure:</h3>
 
-					'.$this->renderTemplateMapper($this->displayFile,$this->displayPath,$dataStruct,$currentMappingInfo,$menuContent);
+					'.t3lib_BEfunc::cshItem('xMOD_tx_templavoila','mapping_file',$this->doc->backPath,'|<br/>').
+					$this->renderTemplateMapper($this->displayFile,$this->displayPath,$dataStruct,$currentMappingInfo,$menuContent);
 				break;
 			}
 		}
@@ -766,14 +771,22 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 						<h4>Data Structure in record:</h4>
 						<table border="0" cellspacing="2" cellpadding="2">
 									<tr class="bgColor5">
-										<td><strong>Data Element:</strong></td>
-										<td><strong>FieldName:</strong></td>
-										<td><strong>Mapping instructions:</strong></td>
-										<td><strong>Rules:</strong></td>
+										<td><strong>Data Element:</strong>'.
+											t3lib_BEfunc::cshItem('xMOD_tx_templavoila','mapping_head_dataElement',$this->doc->backPath,'',TRUE).
+											'</td>
+										<td><strong>Mapping instructions:</strong>'.
+											t3lib_BEfunc::cshItem('xMOD_tx_templavoila','mapping_head_mapping_instructions',$this->doc->backPath,'',TRUE).
+											'</td>
+										<td><strong>Rules:</strong>'.
+											t3lib_BEfunc::cshItem('xMOD_tx_templavoila','mapping_head_Rules',$this->doc->backPath,'',TRUE).
+											'</td>
 									</tr>
 						'.implode('',$tRows).'
 						</table>
 					</div>';
+
+						// CSH
+					$content.= t3lib_BEfunc::cshItem('xMOD_tx_templavoila','mapping_ds',$this->doc->backPath);
 				} else {
 					$content.='<h4>ERROR: No Data Structure was defined in the record... (Must be T3DataStructure XML content)</h4>';
 				}
@@ -815,6 +828,9 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 						</table>
 					</div>';
 
+					// CSH
+				$content.= t3lib_BEfunc::cshItem('xMOD_tx_templavoila','mapping_ds_to',$this->doc->backPath);
+
 					// Display XML of data structure:
 				if (is_array($dataStruct))	{
 					require_once(PATH_t3lib.'class.t3lib_syntaxhl.php');
@@ -830,6 +846,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 					<br />
 					<div id="c-dsxml">
 						<h3>Data Structure XML:</h3>
+						'.t3lib_BEfunc::cshItem('xMOD_tx_templavoila','mapping_ds_showXML',$this->doc->backPath).'
 						<p>'.t3lib_BEfunc::getFuncCheck('','SET[showDSxml]',$this->MOD_SETTINGS['showDSxml'],'',t3lib_div::implodeArrayForUrl('',$GLOBALS['HTTP_GET_VARS'],'',1,1)).' Show XML</p>
 						<pre>'.
 							($this->MOD_SETTINGS['showDSxml'] ? $hlObj->highLight_DS(t3lib_div::array2xml($dataStruct,'',0,'T3DataStructure',4)) : '').'
@@ -860,7 +877,9 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 				$tRows=array();
 				$tRows[]='
 					<tr class="bgColor5">
-						<td colspan="2"><strong>Template Object Details:</strong></td>
+						<td colspan="2"><strong>Template Object Details:</strong>'.
+							t3lib_BEfunc::cshItem('xMOD_tx_templavoila','mapping_to',$this->doc->backPath,'').
+							'</td>
 					</tr>';
 
 					// Get title and icon:
@@ -920,7 +939,9 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 							$tRows[]='
 								<tr class="bgColor4">
 									<td>&nbsp;</td>
-									<td><input type="submit" name="_" value="Modify DS / TO" onclick="'.htmlspecialchars($onClMsg).'"/></td>
+									<td><input type="submit" name="_" value="Modify DS / TO" onclick="'.htmlspecialchars($onClMsg).'"/>'.
+										t3lib_BEfunc::cshItem('xMOD_tx_templavoila','mapping_to_modifyDSTO',$this->doc->backPath,'').
+										'</td>
 								</tr>';
 
 								// Read Data Structure:
@@ -940,7 +961,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 						}
 
 							// Write header of page:
-						$content.='
+						$content.= '
 
 							<!--
 								Template Object Header:
@@ -951,11 +972,15 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 						';
 
 							// Header selections
-						$content.='<p>'.t3lib_BEfunc::getFuncCheck('','SET[selectHeaderContent]',$this->MOD_SETTINGS['selectHeaderContent'],'',t3lib_div::implodeArrayForUrl('',$GLOBALS['HTTP_GET_VARS'],'',1,1)).' Select HTML header parts.</p>';
+						$content.='<p>'.
+									t3lib_BEfunc::getFuncCheck('','SET[selectHeaderContent]',$this->MOD_SETTINGS['selectHeaderContent'],'',t3lib_div::implodeArrayForUrl('',$GLOBALS['HTTP_GET_VARS'],'',1,1)).' Select HTML header parts.'.
+									t3lib_BEfunc::cshItem('xMOD_tx_templavoila','mapping_to_htmlheaderparts',$this->doc->backPath,'').
+									'</p>';
 
 							// Open in new window:
 						$onClick = 'top.openUrlInWindow(\''.t3lib_div::linkThisScript().'\',\'TVwindow\'); document.location=\''.$GLOBALS['BACK_PATH'].'dummy.php\'; return false;';
-						$content.='<a href="#" onclick="'.htmlspecialchars($onClick).'">Open in own window frame.</a>';
+						$content.='<a href="#" onclick="'.htmlspecialchars($onClick).'">Open in own window frame.</a>'.
+									t3lib_BEfunc::cshItem('xMOD_tx_templavoila','mapping_to_openInOwnWindow',$this->doc->backPath,'');
 
 							// If there is a valid data structure, draw table:
 						if (is_array($dataStruct))	{
@@ -1254,7 +1279,8 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 					<td><pre>'.htmlspecialchars($html_body).'</pre></td>
 				</tr>' : '';
 
-		$headerParts = '
+		$headerParts =
+			t3lib_BEfunc::cshItem('xMOD_tx_templavoila','mapping_to_headerParts',$this->doc->backPath,'').'
 
 			<!--
 				Header parts:
@@ -1268,7 +1294,8 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 				'.$tRows.'
 				'.$bodyTagRow.'
 			</table>
-			'.$htmlAfterDSTable;
+			'.t3lib_BEfunc::cshItem('xMOD_tx_templavoila','mapping_to_headerParts_buttons',$this->doc->backPath,'').
+			$htmlAfterDSTable;
 
 			// Return result:
 		return $headerParts;
@@ -1351,16 +1378,31 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			-->
 			<table border="0" cellspacing="2" cellpadding="2">
 			<tr class="bgColor5">
-				<td nowrap="nowrap"><strong>Data Element:</strong></td>
-				'.($this->editDataStruct ? '<td nowrap="nowrap"><strong>Field:</strong></td>' : '').'
-				<td nowrap="nowrap"><strong>'.(!$this->_preview?'Mapping instructions:':'Sample Data:').'</strong><br /><img src="clear.gif" width="200" height="1" alt="" /></td>
-				<td nowrap="nowrap"><strong>HTML-path:</strong></td>
-				<td nowrap="nowrap"><strong>Action:</strong></td>
-				<td nowrap="nowrap"><strong>Rules:</strong></td>
-				'.($this->editDataStruct ? '<td nowrap="nowrap"><strong>Edit:</strong></td>' : '').'
+				<td nowrap="nowrap"><strong>Data Element:</strong>'.
+					t3lib_BEfunc::cshItem('xMOD_tx_templavoila','mapping_head_dataElement',$this->doc->backPath,'',TRUE).
+					'</td>
+				'.($this->editDataStruct ? '<td nowrap="nowrap"><strong>Field:</strong>'.
+					t3lib_BEfunc::cshItem('xMOD_tx_templavoila','mapping_head_Field',$this->doc->backPath,'',TRUE).
+					'</td>' : '').'
+				<td nowrap="nowrap"><strong>'.(!$this->_preview?'Mapping instructions:':'Sample Data:').'</strong>'.
+					t3lib_BEfunc::cshItem('xMOD_tx_templavoila','mapping_head_'.(!$this->_preview?'mapping_instructions':'sample_data'),$this->doc->backPath,'',TRUE).
+					'<br /><img src="clear.gif" width="200" height="1" alt="" /></td>
+				<td nowrap="nowrap"><strong>HTML-path:</strong>'.
+					t3lib_BEfunc::cshItem('xMOD_tx_templavoila','mapping_head_HTMLpath',$this->doc->backPath,'',TRUE).
+					'</td>
+				<td nowrap="nowrap"><strong>Action:</strong>'.
+					t3lib_BEfunc::cshItem('xMOD_tx_templavoila','mapping_head_Action',$this->doc->backPath,'',TRUE).
+					'</td>
+				<td nowrap="nowrap"><strong>Rules:</strong>'.
+					t3lib_BEfunc::cshItem('xMOD_tx_templavoila','mapping_head_Rules',$this->doc->backPath,'',TRUE).
+					'</td>
+				'.($this->editDataStruct ? '<td nowrap="nowrap"><strong>Edit:</strong>'.
+					t3lib_BEfunc::cshItem('xMOD_tx_templavoila','mapping_head_Edit',$this->doc->backPath,'',TRUE).
+					'</td>' : '').'
 			</tr>
 			'.implode('',$this->drawDataStructureMap($dataStruct,1,$currentMappingInfo,$pathLevels,$optDat,$contentSplittedByMapping)).'</table>
-			'.$htmlAfterDSTable;
+			'.$htmlAfterDSTable.
+			t3lib_BEfunc::cshItem('xMOD_tx_templavoila','mapping_basics',$this->doc->backPath,'');
 
 			// Make mapping window:
 		$limitTags = implode(',',array_keys($this->explodeMappingToTagsStr($this->mappingToTags,1)));
@@ -1373,7 +1415,10 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			-->
 			<h3>Mapping Window:</h3>
 			<!-- <p><strong>File:</strong> '.htmlspecialchars($displayFile).'</p> -->
-			<p>'.t3lib_BEfunc::getFuncMenu('','SET[displayMode]',$this->MOD_SETTINGS['displayMode'],$this->MOD_MENU['displayMode'],'',t3lib_div::implodeArrayForUrl('',$GLOBALS['HTTP_GET_VARS'],'',1,1)).'</p>';
+			<p>'.
+				t3lib_BEfunc::getFuncMenu('','SET[displayMode]',$this->MOD_SETTINGS['displayMode'],$this->MOD_MENU['displayMode'],'',t3lib_div::implodeArrayForUrl('',$GLOBALS['HTTP_GET_VARS'],'',1,1)).
+				t3lib_BEfunc::cshItem('xMOD_tx_templavoila','mapping_window_modes',$this->doc->backPath,'').
+				'</p>';
 
 			if ($this->_preview)	{
 				$content.='
@@ -1382,7 +1427,9 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 						Preview information table
 					-->
 					<table border="0" cellpadding="4" cellspacing="2" id="c-mapInfo">
-						<tr class="bgColor5"><td><strong>Preview of Data Structure sample data merged into the mapped tags:</strong></td></tr>
+						<tr class="bgColor5"><td><strong>Preview of Data Structure sample data merged into the mapped tags:</strong>'.
+							t3lib_BEfunc::cshItem('xMOD_tx_templavoila','mapping_window_help',$this->doc->backPath,'').
+							'</td></tr>
 					</table>
 				';
 
@@ -1566,6 +1613,8 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 									<br />
 									<input type="submit" name="_save_data_mapping" value="Set" />
 									<input type="submit" name="_" value="Cancel" />';
+								$rowCells['cmdLinks'].=
+									t3lib_BEfunc::cshItem('xMOD_tx_templavoila','mapping_modeset',$this->doc->backPath,'',FALSE,'margin-bottom: 0px;');
 							} else {
 								$rowCells['cmdLinks'] = '<img src="'.$GLOBALS['BACK_PATH'].'gfx/icon_note.gif" width="18" height="16" border="0" alt="" class="absmiddle" /><strong>Click a tag-icon in the window below to map this element.</strong>';
 								$rowCells['cmdLinks'].= '<br />
@@ -1748,6 +1797,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 <!--								<input type="submit" name="'.$formFieldName.'" value="Delete (!)" />  -->
 					<input type="submit" name="_" value="'.($this->DS_cmd=='add' ? 'Cancel' : 'Cancel/Close').'" onclick="document.location=\''.$this->linkThisScript().'\'; return false;" /><br />
 				';
+				$form.= t3lib_BEfunc::cshItem('xMOD_tx_templavoila','mapping_editform',$this->doc->backPath,'',FALSE,'margin-bottom: 0px;');
 				$addEditRows='<tr class="bgColor4">
 					<td nowrap="nowrap" valign="top">'.
 					($this->DS_cmd=='add' ? '<img src="clear.gif" width="'.(($level+1)*16).'" height="1" alt="" /><strong>NEW FIELD:</strong> '.$autokey : '').
@@ -1759,6 +1809,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 					<td colspan="7"><img src="clear.gif" width="'.(($level+1)*16).'" height="1" alt="" />'.
 					'<input type="text" name="'.md5($formPrefix.'['.$key.']').'" value="[Enter new fieldname]" onfocus="if (this.value==\'[Enter new fieldname]\'){this.value=\'field_\';}" />'.
 					'<input type="submit" name="_" value="Add" onclick="document.location=\''.$this->linkThisScript(array('DS_element'=>$formPrefix.'['.$key.']','DS_cmd'=>'add')).'&amp;fieldName=\'+document.pageform[\''.md5($formPrefix.'['.$key.']').'\'].value; return false;" />'.
+					t3lib_BEfunc::cshItem('xMOD_tx_templavoila','mapping_addfield',$this->doc->backPath,'',FALSE,'margin-bottom: 0px;').
 					'</td>
 				</tr>';
 			}
