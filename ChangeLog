@@ -1,3 +1,8 @@
+2004-06-04  Robert Lemke  <rl@robertlemke.de>
+
+	* Added new tag for data structures: <titleBarColor> (configures page module)
+	* Updated manual
+
 2004-06-03  Robert Lemke  <rl@robertlemke.de>
 
 	* Re-implemented userfunctions in cm1 (eTypes, extra fields) to comply with the recommended way of providing hooks. I guess no other extension than mine has used that so far ...

@@ -549,6 +549,15 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		$isLocal = $dsInfo['el']['table']=='pages' || $dsInfo['el']['pid']==$this->id;	// Pages should be seem as local...
 		if (!$isLocal)	$referenceInPath++;
 
+			// Getting data structure for the page template. This is used later on for reading some special configuration contained in the DS (eg. title bar color)
+		if ($dsInfo['el']['table'] == 'pages') {
+			$pageRecord = t3lib_BEfunc::getRecord ('pages', $dsInfo['el']['id']);
+			$dataStructureRecord = t3lib_BEfunc::getRecord ('tx_templavoila_datastructure', $pageRecord['tx_templavoila_ds']);
+			$dataStructureXMLArr = t3lib_div::xml2array ($dataStructureRecord['dataprot']);
+			unset ($dataStructureRecord);
+			unset ($pageRecord);
+		}
+
 			// Setting whether the current element is registered for copy/cut/reference:
 		$clipActive_copy = ($this->MOD_SETTINGS['clip']=='copy' && $this->MOD_SETTINGS['clip_parentPos']==$parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].'/'.$isLocal ? '_h' : '');
 		$clipActive_cut = ($this->MOD_SETTINGS['clip']=='cut' && $this->MOD_SETTINGS['clip_parentPos']==$parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].'/'.$isLocal ? '_h' : '');
@@ -600,16 +609,17 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		}
 
 			// Compile preview content for the current element:
-		$content=is_array($dsInfo['el']['previewContent']) ? implode('<br />', $dsInfo['el']['previewContent']) : '';
+		$content = is_array($dsInfo['el']['previewContent']) ? implode('<br />', $dsInfo['el']['previewContent']) : '';
 			// Compile the content areas for the current element (basically what was put together above):
-		$content.= '<table border="0" cellpadding="2" cellspacing="2" width="100%">
+		$content .= '<table border="0" cellpadding="2" cellspacing="2" width="100%">
 			<tr>'.implode('',$headerCells).'</tr>
 			<tr>'.implode('',$cells).'</tr>
 		</table>';
 
 			// Evaluating the rules and set colors to warning scheme if a rule does not apply
 		$elementBackgroundStyle = '';
-		$elementPageTitlebarStyle = 'background-color: '.($dsInfo['el']['table']=='pages' ? $this->doc->bgColor2 : ($isLocal ? $this->doc->bgColor5 : $this->doc->bgColor6)) .';';
+		$elementPageTitlebarColor = isset ($dataStructureXMLArr['ROOT']['tx_templavoila']['pageModule']['titleBarColor']) ? $dataStructureXMLArr['ROOT']['tx_templavoila']['pageModule']['titleBarColor'] : $this->doc->bgColor2;
+		$elementPageTitlebarStyle = 'background-color: '.($dsInfo['el']['table']=='pages' ? $elementPageTitlebarColor : ($isLocal ? $this->doc->bgColor5 : $this->doc->bgColor6)) .';';
 		$elementCETitlebarStyle = 'background-color: '.$this->doc->bgColor4.';';
 		$errorLineBefore = $errorLineAfter = '';
 
@@ -776,8 +786,9 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 							if ($headerFieldArr['table'] == 'pages') {
 								$onClick = t3lib_BEfunc::editOnClick('&edit[pages]['.$pageId.']=edit&columnsOnly='.implode (',',$fieldNames['pages']),$this->doc->backPath);
 								$linkedValue = '<a style="text-decoration: none;" href="#" onclick="'.htmlspecialchars($onClick).'">'.htmlspecialchars($headerFieldArr['value']).'</a>';
+								$linkedLabel = '<a style="text-decoration: none;" href="#" onclick="'.htmlspecialchars($onClick).'">'.htmlspecialchars($headerFieldArr['label']).'</a>';
 								$content .= '<tr><td style="width: 7px; border-right:1px dotted black;">&nbsp;</td><td>&nbsp;</td>';
-								$content .= '<td style="vertical-align: top; padding-right:10px;" nowrap="nowrap"><strong>'.htmlspecialchars($headerFieldArr['label']).'</strong></td><td><em>'.$linkedValue.'</em></td></tr>';
+								$content .= '<td style="vertical-align: top; padding-right:10px;" nowrap="nowrap"><strong>'.$linkedLabel.'</strong></td><td><em>'.$linkedValue.'</em></td></tr>';
 							}
 						}
 					}
