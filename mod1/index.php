@@ -490,12 +490,19 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		if (is_array($dsInfo['sub']) && (count($dsInfo['sub'])>1 || !isset($dsInfo['sub']['sDEF'])))	{
 			$parts = array();
 			foreach($dsInfo['sub'] as $sheetKey => $sheetInfo)	{
+
+				$this->containedElementsPointer++;
+				$this->containedElements[$this->containedElementsPointer] = 0;
+				$frContent = $this->renderFrameWork($dsInfo, $parentPos, $clipboardElInPath, $referenceInPath, $sheetKey);
+
 				$parts[] = array(
-					'label' => $dsInfo['meta'][$sheetKey]['title'],
+					'label' => ($dsInfo['meta'][$sheetKey]['title'] ? $dsInfo['meta'][$sheetKey]['title'] : $sheetKey).' ['.$this->containedElements[$this->containedElementsPointer].']',
 					'description' => $dsInfo['meta'][$sheetKey]['description'],
 					'linkTitle' => $dsInfo['meta'][$sheetKey]['short'],
-					'content' => $this->renderFrameWork($dsInfo, $parentPos, $clipboardElInPath, $referenceInPath, $sheetKey)
+					'content' => $frContent,
 				);
+
+				$this->containedElementsPointer--;
 			}
 			return $this->doc->getDynTabMenu($parts,'TEMPLAVOILA:pagemodule:'.$parentPos);
 		} else {
@@ -525,8 +532,12 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			}
 		}
 
+		if (!is_array($this->currentDataStructureArr[$dsInfo['el']['table']]))		{
+			$this->currentDataStructureArr[$dsInfo['el']['table']] = array();
+		}
+
 			// Take care of the currently selected language, for both concepts - with langChildren enabled and disabled
-		$langDisable = intval ($this->currentDataStructureArr[$dsInfo['el']['table']]['meta']['langDisable']);
+		$langDisable = intval($this->currentDataStructureArr[$dsInfo['el']['table']]['meta']['langDisable']);
 
 		$langChildren = intval ($this->currentDataStructureArr[$dsInfo['el']['table']]['meta']['langChildren']);
 		$lKey = $langDisable ? 'lDEF' : ($langChildren ? 'lDEF' : 'l'.$this->currentLanguageKey);
@@ -619,6 +630,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 					if (is_array($fieldContent['el_list']))	 {
 						foreach($fieldContent['el_list'] as $counter => $k)	{
 							$v = $fieldContent['el'][$k];
+							$this->containedElements[$this->containedElementsPointer]++;
 							$elList.=$this->renderFrameWork_allSheets($v,$dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$lKey.':'.$fieldID.':'.$vKey.':'.$counter,$clipboardElInPath,$referenceInPath);
 
 								// "New" and "Paste" icon:
@@ -669,9 +681,10 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 			// Put together the records icon including content sensitive menu link wrapped around it:
 		$recordIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,$dsInfo['el']['icon'],'').' style="text-align: center; vertical-align: middle;" width="18" height="16" border="0" title="'.htmlspecialchars('['.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].']'.$extPath).'" alt="" />';
-		$recordIcon = $this->doc->wrapClickMenuOnIcon($recordIcon,$dsInfo['el']['table'],$dsInfo['el']['id'],1,'&callingScriptId='.rawurlencode($this->doc->scriptID));
+		$recordIcon = $this->doc->wrapClickMenuOnIcon($recordIcon,$dsInfo['el']['table'],$dsInfo['el']['id'],1,'&callingScriptId='.rawurlencode($this->doc->scriptID), 'new,copy,cut,pasteinto,pasteafter,delete');
 
-		$realDelete = $isLocal;	// content elements that are NOT references from other pages will be deleted when unlinked
+#		$realDelete = $isLocal;	// content elements that are NOT references from other pages will be deleted when unlinked
+		$realDelete = FALSE;	// Eventually it seems that deleting content elements is not a good long term idea. Therefore, regardless of situation, we ALWAYS unlink - unused Content Elements can be cleaned up by some other tool some other day.
 
 		$linkCustom = $linkCopy = $linkCut = $linkRef = $linkUnlink = $linkMakeLocal = $titleBarTDParams = $contentWrapPre = $contentWrapPost = '';
 
@@ -881,11 +894,11 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 						#$lC = $this->linkEdit('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/edit2.gif','').' title="'.$LANG->getLL ('editrecord').'" border="0" alt="" />','tt_content',$attachedLocalizations[$sys_language_uid]['uid']);
 
 							// Put together the records icon including content sensitive menu link wrapped around it:
-						$recordIcon = t3lib_iconWorks::getIconImage('tt_content',$attachedLocalizations[$sys_language_uid]['row'],$this->doc->backPath,'class="bottom"');
-						$recordIcon = $this->doc->wrapClickMenuOnIcon($recordIcon,'tt_content',$attachedLocalizations[$sys_language_uid]['uid'],1,'&callingScriptId='.rawurlencode($this->doc->scriptID));
-						$lC = $recordIcon.t3lib_BEfunc::getRecordTitle('tt_content',$attachedLocalizations[$sys_language_uid]['row']);
+						$recordIcon_l10n = t3lib_iconWorks::getIconImage('tt_content',$attachedLocalizations[$sys_language_uid]['row'],$this->doc->backPath,'class="absmiddle"');
+						$recordIcon_l10n = $this->doc->wrapClickMenuOnIcon($recordIcon_l10n,'tt_content',$attachedLocalizations[$sys_language_uid]['uid'],1,'&callingScriptId='.rawurlencode($this->doc->scriptID), 'new,copy,cut,pasteinto,pasteafter');
+						$lC = $recordIcon_l10n.t3lib_BEfunc::getRecordTitle('tt_content',$attachedLocalizations[$sys_language_uid]['row']);
 
-						$lC.= $attachedLocalizations[$sys_language_uid]['content'];
+						$lC.= '<br/>'.$attachedLocalizations[$sys_language_uid]['content'];
 					} elseif ($dsInfo['el']['CType']!='templavoila_pi1') {	// Dont localize Flexible Content Elements (might change policy on this or make it configurable if any would rather like to localize FCEs by duplicate records instead of internally in the FlexForm XML)
 							// Copy for language:
 						$params='&cmd[tt_content]['.$dsInfo['el']['id'].'][localize]='.$sys_language_uid;
@@ -1302,12 +1315,12 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			foreach($expDS as $sheetKey => $sVal)	{
 				$tree['sub'][$sheetKey] = array();
 				$tree['meta'][$sheetKey] = array(
-					'title' => ($sVal['ROOT']['TCEforms']['sheetTitle'] ? $LANG->sL($sVal['ROOT']['TCEforms']['sheetTitle']) : ''),
-					'description' => ($sVal['ROOT']['TCEforms']['sheetDescription'] ? $LANG->sL($sVal['ROOT']['TCEforms']['sheetDescription']) : ''),
-					'short' => ($sVal['ROOT']['TCEforms']['sheetShortDescr'] ? $LANG->sL($sVal['ROOT']['TCEforms']['sheetShortDescr']) : '')
+					'title' => (is_array($sVal) && $sVal['ROOT']['TCEforms']['sheetTitle'] ? $GLOBALS['LANG']->sL($sVal['ROOT']['TCEforms']['sheetTitle']) : ''),
+					'description' => (is_array($sVal) && $sVal['ROOT']['TCEforms']['sheetDescription'] ? $GLOBALS['LANG']->sL($sVal['ROOT']['TCEforms']['sheetDescription']) : ''),
+					'short' => (is_array($sVal) && $sVal['ROOT']['TCEforms']['sheetShortDescr'] ? $GLOBALS['LANG']->sL($sVal['ROOT']['TCEforms']['sheetShortDescr']) : '')
 				);
 
-				if (is_array($sVal['ROOT']['el']))	{
+				if (is_array($sVal) && is_array($sVal['ROOT']['el']))	{
 					foreach($sVal['ROOT']['el'] as $k => $v) {
 
 							// Take care of the currently selected language, for both concepts - with langChildren enabled and disabled

@@ -700,7 +700,7 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 		$res = $TYPO3_DB->exec_SELECTquery (
 			'*',
 			'tx_templavoila_tmplobj',
-			'parent='.intval($uid).' '.$where.$TSFE->sys_page->enableFields('tx_templavoila_tmplobj');
+			'parent='.intval($uid).' '.$where.$TSFE->sys_page->enableFields('tx_templavoila_tmplobj')
 		);
 		$printRow = $TYPO3_DB->sql_fetch_assoc($res);
 		return $printRow;

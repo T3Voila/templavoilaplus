@@ -1,3 +1,13 @@
+2004-09-09  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+	* Fixed that color highlighting of data structure didn't show <meta> tag content.
+	* Improved things in page module regarding sheets; Eg. counting elements on each sheet. Fixed some PHP5 array bugs also.
+	* Totally removed that records in the page construction can be deleted - they are always unlinked when clicking the garbage-can (regardless of whether they are references or on current page).
+	* Created bulletlist overview of DS and TO in Web>TemplaVoila module
+	* Implemented support for sheet selection in pi1 (advanced feature). Fixed PHP5 bugs as well.
+	* Implemented yet another fall-back mode for <langChildren>=1 ; The "removeIfBlank" mode which can unset elements totally if a field inside was not set.
+	* Implemented visual feedback for FCE in frontend - this will give an overview of elements on the frontend page if the Admin Panel is expanded on the "Preview" tab and eg. "Show hidden pages" is enabled.
+
 2004-09-08  Robert Lemke  <robert@typo3.org>
 
  + Added versioning sidebar item directly to the default sidebar instead of letting the version extension providing it.

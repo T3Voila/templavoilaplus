@@ -821,7 +821,7 @@ $TYPO3_DB->debugOutput = TRUE;
 				}
 
 					// Get Template Objects pointing to this Data Structure
-				$TYPO3_DB->exec_SELECTquery (
+				$res = $TYPO3_DB->exec_SELECTquery (
 					'*',
 					'tx_templavoila_tmplobj',
 					'pid IN ('.$this->storageFolders_pidList.') AND datastructure='.intval($row['uid']).t3lib_BEfunc::deleteClause('tx_templavoila_tmplobj')
