@@ -485,7 +485,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 						// Modifying data structure with conversion of preset values for field types to actual settings:
 					$storeDataStruct = $dataStruct;
 					if (is_array($storeDataStruct['ROOT']['el']))		$this->substEtypeWithRealStuff($storeDataStruct['ROOT']['el'],$contentSplittedByMapping['sub']['ROOT']);
-					$dataArr['tx_templavoila_datastructure']['NEW']['dataprot']=t3lib_div::array2xml($storeDataStruct,'',0,'T3DataStructure');
+					$dataArr['tx_templavoila_datastructure']['NEW']['dataprot']=t3lib_div::array2xml($storeDataStruct,'',0,'T3DataStructure',4);
 	
 						// Init TCEmain object and store:
 					$tce = t3lib_div::makeInstance("t3lib_TCEmain");
@@ -535,7 +535,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 							// Modifying data structure with conversion of preset values for field types to actual settings:
 						$storeDataStruct=$dataStruct;
 						if (is_array($storeDataStruct['ROOT']['el']))		$this->substEtypeWithRealStuff($storeDataStruct['ROOT']['el'],$contentSplittedByMapping['sub']['ROOT']);
-						$dataArr['tx_templavoila_datastructure'][$dsREC['uid']]['dataprot']=t3lib_div::array2xml($storeDataStruct,'',0,'T3DataStructure');
+						$dataArr['tx_templavoila_datastructure'][$dsREC['uid']]['dataprot']=t3lib_div::array2xml($storeDataStruct,'',0,'T3DataStructure',4);
 	
 							// Init TCEmain object and store:
 						$tce = t3lib_div::makeInstance('t3lib_TCEmain');
@@ -629,7 +629,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 						<input type="submit" name="_DO_NOTHING" value="Go back" title="Go back" />
 						<h3>XML configuration:</h3>
 						
-						<pre>'.$hlObj->highLight_DS(t3lib_div::array2xml($storeDataStruct,'',0,'T3DataStructure')).'</pre>';
+						<pre>'.$hlObj->highLight_DS(t3lib_div::array2xml($storeDataStruct,'',0,'T3DataStructure',4)).'</pre>';
 				break;
 				case 'loadScreen':
 				
@@ -833,7 +833,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 						<h3>Data Structure XML:</h3>
 						<p>'.t3lib_BEfunc::getFuncCheck('','SET[showDSxml]',$this->MOD_SETTINGS['showDSxml'],'',t3lib_div::implodeArrayForUrl('',$GLOBALS['HTTP_GET_VARS'],'',1,1)).' Show XML</p>
 						<pre>'.
-							($this->MOD_SETTINGS['showDSxml'] ? $hlObj->highLight_DS(t3lib_div::array2xml($dataStruct,'',0,'T3DataStructure')) : '').'
+							($this->MOD_SETTINGS['showDSxml'] ? $hlObj->highLight_DS(t3lib_div::array2xml($dataStruct,'',0,'T3DataStructure',4)) : '').'
 						</pre>
 					</div>
 					';
