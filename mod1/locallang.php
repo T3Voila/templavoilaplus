@@ -7,10 +7,11 @@
 
 $LOCAL_LANG = Array (
     "default" => Array (
-        "title" => "Page",    
-        "function1" => "Function #1",    
-        "function2" => "Function #2",    
-        "function3" => "Function #3",    
+        "title" => "Page",
+        'title_editpage' => 'Edit the page',
+        'createnewpage_title' => 'Create a new page',
+        'createnewpage_introduction' => 'In order to create a new page you will have to enter a page title and maybe choose a layout.',
+        'createnewpage_pagetitle' => 'Page title',
     ),
     "dk" => Array (
     ),
