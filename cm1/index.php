@@ -1747,9 +1747,9 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 					'</td>
 					<td colspan="5">'.$form.'</td>
 				</tr>';							
-			} elseif (!$this->DS_element && $value['type']=='array') {
+			} elseif (!$this->DS_element && $value['type']=='array' && !$this->mapElPath) {
 				$addEditRows='<tr class="bgColor4">
-					<td colspan="6"><img src="clear.gif" width="'.(($level+1)*16).'" height="1" alt="" />'.
+					<td colspan="7"><img src="clear.gif" width="'.(($level+1)*16).'" height="1" alt="" />'.
 					'<input type="text" name="'.md5($formPrefix.'['.$key.']').'" value="[Enter new fieldname]" onfocus="if (this.value==\'[Enter new fieldname]\'){this.value=\'field_\';}" />'.
 					'<input type="submit" name="_" value="Add" onclick="document.location=\''.$this->linkThisScript(array('DS_element'=>$formPrefix.'['.$key.']','DS_cmd'=>'add')).'&amp;fieldName=\'+document.pageform[\''.md5($formPrefix.'['.$key.']').'\'].value; return false;" />'.
 					'</td>
