@@ -51,25 +51,24 @@ TESTING:
 
 
 
-CTM module (robert):
-- Allows us to arrange Content Elements hierarchically, starting from the page record
-- The hierarchy is simply made by a group-relation field to other "Flexible" content elements.
+Roberts TODO:
+- Implement the concept of Data Sources for plugin "pi2"
+- Implement/maintain the rules scheme
+- Implement wizards for creating new page/new content element
+	- Remember the current "Create page content wizard"; These icons / setups should somehow be implemented as well.
 
 Interface:
-- Drag'n'Drop of elements in Roberts Interface?
-  - Having a "palette" with icons of these elements?
   - Recursivity handling: 
 	- Prevent recursivity
-	- Warn for 1) recursivity, 2) reuse of same element, 3) elements outside of PID, 4) non-used elements
+	- Warn for 1) recursivity, 2) reuse of same element, 3) elements outside of PID, 4) non-used elements, 5) If elements has references on other pages.
   - Rules:
 	- number of elements in a field, which types, ...
 	- Permissions for users to certain elements areas.
 	- Disable edit for some elements?
-- Support for sheets: both page header + content elements!!
+- Support for sheets: both page header + content elements! (KASPER)
 - Hierarchy tree view of the relations (incl. sheets, multiple groupfields in each element)
 - Display of CEs
 	- Data has to processed (-> internal/ external links, images, ...)
-
 
 Interface parts:
 - Create new page / content element wizard
@@ -97,9 +96,6 @@ Technical:
 NOTES:
 - Make sure that a content element is not called recursively
 - FE: Disable edit icon for some elements (same in backend?)
-
-
-
 
 OTHER MODULES:
 - Management: Overview of Page Templates as set in the tree structure

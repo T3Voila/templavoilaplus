@@ -114,9 +114,9 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	}
 
 	/**
-	 * [Describe function...]
+	 * Preparing menu content
 	 * 
-	 * @return	[type]		...
+	 * @return	void
 	 */
 	function menuConfig()	{
 		global $LANG;
@@ -138,7 +138,8 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 			// CLEANSE SETTINGS
 		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::GPvar('SET'), $this->MCONF['name']);
-	}	
+	}
+	
 	/**
 	 * Main function of the module. Write the content to $this->content
 	 * 
@@ -158,8 +159,10 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			$this->doc = t3lib_div::makeInstance('noDoc');
 			$this->doc->backPath = $BACK_PATH;
 			$this->doc->divClass = '';
-			$this->doc->form='<form action="index.php?id='.$this->id.'" method="post" autocomplete="off">';
+			$this->doc->form='<form action="'.htmlspecialchars('index.php?id='.$this->id).'" method="post" autocomplete="off">';
 
+				// Adding classic jumpToUrl function, needed for the function menu.
+				// Also, the id in the parent frameset is configured.
 			$this->doc->JScode=$this->doc->wrapScriptTags('
 				function jumpToUrl(URL)	{
 					document.location = URL;
@@ -168,6 +171,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				if (top.fsMod) top.fsMod.recentIds["web"] = '.intval($this->id).';
 			');
 
+				// Setting up support for context menus (when clicking the items icon)
 			$CMparts=$this->doc->getContextMenuCode();
 			$this->doc->bodyTagAdditions = $CMparts[1];
 			$this->doc->JScode.=$CMparts[0];
@@ -177,6 +181,10 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			$this->doc->getTabMenu(0,'_',0,array(''=>''));
 			
 			
+			
+// NOTICE: CODE below this point should be cleaned up in a way so that checking for "actions" etc is performed in another function that this.
+// Anyways, the current handling of various actions is done as a quick solution in a quick implementation. Has to be branced out in some beautiful structures somehow.
+// Go, Robert, go, Robert ...			
 				// Create new CMD:
 			$createNew = t3lib_div::GPvar('createNew');
 			if ($createNew)	{
@@ -242,7 +250,6 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 		} else {
 			    // If no access or if ID == zero
-			
 			$this->doc = t3lib_div::makeInstance('mediumDoc');
 			$this->doc->backPath = $BACK_PATH;
 			
@@ -273,35 +280,42 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 ********************************************/
 	 
 	/**
-	 * [Describe function...]
+	 * Displays the default view of a page, showing the nested structure of elements.
 	 * 
-	 * @return	[type]		...
+	 * @return	string		The modules content
 	 */
 	function renderEditPageScreen()    {
 		global $LANG, $BE_USER;
 
+			// Adding header information:
 		$content =$this->doc->startPage($LANG->getLL('title'));
 		$content.=$this->doc->header($LANG->getLL('title_editpage'));
 		$content.=$this->doc->spacer(5);
 
-
+			// Reset internal variable:
 		$this->global_tt_content_elementRegister=array();
-		$dsInfo = $this->getDStreeForPage('pages',$this->id);
-#debug($dsInfo);
-		$content.=$this->renderFrameWork($dsInfo,'',(!trim($this->MOD_SETTINGS['clip'].$this->MOD_SETTINGS['clip_parentPos']) ? 1 : 0));
-		$content.=$this->renderNonUsed();
-		$content.=$this->doc->spacer(10);
 		
+			// Get data structure array for the page/content elements.
+			// Returns a BIG array reflecting the "treestructure" of the pages content elements.
+		$dsInfo = $this->getDStreeForPage('pages',$this->id);
+
+			// Setting whether an element is on the clipboard
+		$clipboardElInPath = (!trim($this->MOD_SETTINGS['clip'].$this->MOD_SETTINGS['clip_parentPos']) ? 1 : 0);
+			// Display the nested page structure:
+		$content.=$this->renderFrameWork($dsInfo,'',$clipboardElInPath);
+			// Display elements not used in the page structure (has to be done differently)
+		$content.=$this->renderNonUsed();
+			// Display (debug) the element counts on the page (has to be done differently)		
 		$content.=t3lib_div::view_array($this->global_tt_content_elementRegister);
 				
 		return $content;		
 	}
 
 	/**
-	 * [Describe function...]
+	 * Creates the screen for "new page"
 	 * 
-	 * @param	[type]		$id: ...
-	 * @return	[type]		...
+	 * @param	integer		Position id. Can be positive and negativ depending of where the new page is going: Negative always points to a position AFTER the page having the abs. value of the positionId. Positive numbers means to create as the first subpage to another page.
+	 * @return	string		Content for the screen output.
 	 */
     function renderCreatePageScreen ($positionPid) {
 		global $LANG, $BE_USER, $TYPO3_CONF_VARS;
@@ -317,7 +331,8 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				$newID = $this->createPage (t3lib_div::GPvar('data'), $positionPid);		
 				if ($newID > 0) {		
 						// Creating the page was successful, so just return the editscreen of the new page
-					$content.=$this->renderEditPageScreen ($newId);					
+						// KASPER: I rather like if you did a header-location here.
+					$content.=$this->renderEditPageScreen($newId);					
 					return $content;
 				}
 			} else {
@@ -376,16 +391,20 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	
 	/**
 	 * Renders the "basic" display framework.
+	 * Calls itself recursively
 	 * 
 	 * @param	array		DataStructure info array (the whole tree)
-	 * @param	[type]		$parentPos: ...
-	 * @param	[type]		$clipboardElInPath: ...
+	 * @param	string		Pointer to parent element: table, id, sheet, fieldname, counter (position in list)
+	 * @param	boolean		Tells whether any element registered on the clipboard is found in the current "path" of the recursion. If true, it normally means that no paste-in symbols are shown since elements are not allowed to be pasted/referenced to a position within themselves (would result in recursion).
 	 * @return	string		HTML
 	 */
 	function renderFrameWork($dsInfo,$parentPos='',$clipboardElInPath=0)	{
+	
+			// Setting the sheet ID:
 		$sheet=isset($dsInfo['sub'][$this->MOD_SETTINGS['sheetData']]) ? $this->MOD_SETTINGS['sheetData'] : 'sDEF';
 		
 			// Make sheet menu:
+			// Design-wise this will change most likely. And we also need to do a proper registration of the sheets since it only works for the page at this point - not content elements deeper in the structure.
 		$sheetMenu='';
 		if (is_array($dsInfo['sub']))	{
 			if (count($dsInfo['sub'])>1 || !isset($dsInfo['sub']['sDEF']))	{
@@ -424,52 +443,63 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			}
 		}
 		
+			// Setting whether the current element is registered for copy/cut/reference:
 		$clipActive_copy = ($this->MOD_SETTINGS['clip']=='copy' && $this->MOD_SETTINGS['clip_parentPos']==$parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id'] ? '_h' : '');
 		$clipActive_cut = ($this->MOD_SETTINGS['clip']=='cut' && $this->MOD_SETTINGS['clip_parentPos']==$parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id'] ? '_h' : '');
 		$clipActive_ref = ($this->MOD_SETTINGS['clip']=='ref' && $this->MOD_SETTINGS['clip_parentPos']==$parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id'] ? '_h' : '');
 		$clipboardElInPath = trim($clipActive_copy.$clipActive_cut.$clipActive_ref)||$clipboardElInPath?1:0;
 		
-		
+			// Traversing the content areas ("zones" - those shown side-by-side with dotted lines in module) of the current element:
 		$cells=array();
 		$headerCells=array();
 		if (is_array($dsInfo['sub'][$sheet]))	{
 			foreach($dsInfo['sub'][$sheet] as $fieldID => $fieldContent)	{
 				$counter=0;
 
+					// "New" and "Paste" icon:
 				$elList=$this->linkNew('<img src="'.$this->doc->backPath.'gfx/new_el.gif" align="absmiddle" vspace="5" border="0" title="New" alt="" />',$dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$fieldID.':'.$counter);
 				if (!$clipboardElInPath)	$elList.=$this->linkPaste('<img src="'.$this->doc->backPath.'gfx/clip_pasteafter.gif" align="absmiddle" vspace="5" border="0" title="Paste" alt="" />',$dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$fieldID.':'.$counter,$this->MOD_SETTINGS['clip_parentPos'],$this->MOD_SETTINGS['clip']);
 				
-
+					// Render the list of elements (and possibly call itself recursively if needed):
 				if (is_array($fieldContent['el']))	{
 					foreach($fieldContent['el'] as $k => $v)	{
 						$counter=$v['el']['index'];
 						$elList.=$this->renderFrameWork($v,$dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$fieldID.':'.$counter,$clipboardElInPath);
+							
+							// "New" and "Paste" icon:
 						$elList.=$this->linkNew('<img src="'.$this->doc->backPath.'gfx/new_el.gif" align="absmiddle" vspace="5" border="0" title="New" alt="" />',$dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$fieldID.':'.$counter);
 						if (!$clipboardElInPath)	$elList.=$this->linkPaste('<img src="'.$this->doc->backPath.'gfx/clip_pasteafter.gif" align="absmiddle" vspace="5" border="0" title="Paste" alt="" />',$dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$fieldID.':'.$counter,$this->MOD_SETTINGS['clip_parentPos'],$this->MOD_SETTINGS['clip']);
 					}
 				}
 
+					// Add cell content to registers:
 				$headerCells[]='<td valign="top" width="'.round(100/count($dsInfo['sub'][$sheet])).'%" style="background-color: '.$this->doc->bgColor4.';">'.$GLOBALS['LANG']->sL($fieldContent['meta']['title'],1).'</td>';
 				$cells[]='<td valign="top" width="'.round(100/count($dsInfo['sub'][$sheet])).'%" style="border: dashed 1px #666666; padding: 5px 5px 5px 5px;">'.$elList.'</td>';
 			}
 		}
 		
+			// Compile preview content for the current element:
 		$content=is_array($dsInfo['el']['previewContent']) ? implode('<br />', $dsInfo['el']['previewContent']) : '';
+			// Compile the content areas for the current element (basically what was put together above):
 		$content.= '<table border="0" cellpadding="2" cellspacing="2" width="100%">
 			<tr>'.implode('',$headerCells).'</tr>
 			<tr>'.implode('',$cells).'</tr>
 		</table>';
 		
+			// The $isLocal flag is used to denote whether an element belongs to the current page or not. If NOT the $isLocal flag means (for instance) that the title bar will be colored differently to show users that this is a foreign element not from this page.
 		$isLocal = $dsInfo['el']['table']=='pages' || $dsInfo['el']['pid']==$this->id;	// Pages should be seem as local...
-		
+
+			// Setting additional information to the title-attribute of the element icon:		
 		$extPath = '';
 		if (!$isLocal)	{
 			$extPath = ' - PATH: '.t3lib_BEfunc::getRecordPath($dsInfo['el']['pid'],$this->perms_clause,30);
 		}
 
+			// Put together the records icon including content sensitive menu link wrapped around it:
 		$recordIcon = '<img src="'.$this->doc->backPath.$dsInfo['el']['icon'].'" align="absmiddle" width="18" height="16" border="0" title="'.htmlspecialchars('['.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].']'.$extPath).'" alt="" />';
 		$recordIcon = $this->doc->wrapClickMenuOnIcon($recordIcon,$dsInfo['el']['table'],$dsInfo['el']['id']);
 		
+			
 		if ($dsInfo['el']['table']!='pages')	{
 			$linkCopy = $this->linkCopyCut('<img src="'.$this->doc->backPath.'gfx/clip_copy'.$clipActive_copy.'.gif" title="Copy" border="0" alt="" />',($clipActive_copy ? '' : $parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id']),'copy');
 			$linkCut = $this->linkCopyCut('<img src="'.$this->doc->backPath.'gfx/clip_cut'.$clipActive_cut.'.gif" title="Move" border="0" alt="" />',($clipActive_cut ? '' : $parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id']),'cut');
@@ -502,9 +532,10 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	}
 
 	/**
-	 * [Describe function...]
+	 * Displays a list of local content elements on the page which were NOT used in the hierarchical structure of the page.
 	 * 
-	 * @return	[type]		...
+	 * @todo	Clean up this list so it becomes full-features for the elements shown (having all the editing, copy, cut, blablabla features that other elements have)
+	 * @return	string		Display output HTML
 	 */
 	function renderNonUsed()	{
 		$usedUids = array_keys($this->global_tt_content_elementRegister);
@@ -625,7 +656,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	/**
 	 * Prints out the module HTML
 	 * 
-	 * @return	[type]		...
+	 * @return	void		
 	 */
 	function printContent()    {
 		echo $this->content;
