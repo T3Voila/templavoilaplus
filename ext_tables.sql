@@ -10,6 +10,7 @@ CREATE TABLE tx_templavoila_tmplobj (
 	crdate int(11) unsigned DEFAULT '0' NOT NULL,
 	cruser_id int(11) unsigned DEFAULT '0' NOT NULL,
 	deleted tinyint(4) unsigned DEFAULT '0' NOT NULL,
+	sorting int(11) unsigned DEFAULT '0' NOT NULL,
 	title varchar(60) DEFAULT '' NOT NULL,
 	datastructure varchar(100) DEFAULT '' NOT NULL,
 	fileref tinytext NOT NULL,
@@ -20,7 +21,7 @@ CREATE TABLE tx_templavoila_tmplobj (
 	sys_language_uid int(11) unsigned DEFAULT '0' NOT NULL,
 	parent int(11) unsigned DEFAULT '0' NOT NULL,
 	localprocessing text NOT NULL,
-	
+
 	PRIMARY KEY (uid),
 	KEY parent (pid)
 );
@@ -37,11 +38,12 @@ CREATE TABLE tx_templavoila_datastructure (
 	crdate int(11) unsigned DEFAULT '0' NOT NULL,
 	cruser_id int(11) unsigned DEFAULT '0' NOT NULL,
 	deleted tinyint(4) unsigned DEFAULT '0' NOT NULL,
+	sorting int(11) unsigned DEFAULT '0' NOT NULL,
 	title varchar(60) DEFAULT '' NOT NULL,
 	dataprot mediumtext NOT NULL,
 	scope tinyint(4) unsigned DEFAULT '0' NOT NULL,
 	previewicon tinytext NOT NULL,
-	
+
 	PRIMARY KEY (uid),
 	KEY parent (pid)
 );

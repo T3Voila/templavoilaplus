@@ -1,3 +1,7 @@
+2004-07-18  Robert Lemke  <rl@robertlemke.de>
+
+	* DS and TO records may now be sorted manually (in the backend). Make sure you update your .sql table definitions (in the extension manager).
+
 2004-07-15  Robert Lemke  <rl@robertlemke.de>
 
 	* Committed changes and development from the Paris sessions.
