@@ -42,7 +42,7 @@
  *  385:     function mappingInfoToSearchPath($currentMappingInfo)	
  *  426:     function mergeSearchpartsIntoContent($content,$searchParts,$token='')	
  *  457:     function mergeSampleDataIntoTemplateStructure($dataStruct,$currentMappingInfo,$firstLevelImplodeToken='',$sampleOrder='')	
- *  500:     function mergeFormDataIntoTemplateStructure($editStruct,$currentMappingInfo,$firstLevelImplodeToken='',$valueKey='vDEF')	
+ *  500:     function mergeFormDataIntoTemplateStructure($editStruct,$currentMappingInfo,$firstLevelImplodeToken='',$valueKey='vDEF')
  *  546:     function splitPath($pathStr)	
  *  602:     function getTemplateArrayForTO($uid)	
  *  622:     function mergeDataArrayToTemplateArray($TA,$data)	
@@ -500,34 +500,35 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 	function mergeFormDataIntoTemplateStructure($editStruct,$currentMappingInfo,$firstLevelImplodeToken='',$valueKey='vDEF')	{
 		$isSection=0;
 		if (is_array($editStruct))	{
-			$isSection = t3lib_div::testInt(implode('',array_keys($editStruct)));
+			$testInt = implode('',array_keys($editStruct));
+			$isSection = !ereg('[^0-9]',$testInt);
 		}
-		$out='';		
+		$out='';
 		if ($isSection)	{
 			foreach($editStruct as $section)	{
 				$secKey = key($section);
 				$secDat = $section[$secKey];
 #debug(array($secKey,$secDat,$currentMappingInfo['sub']));
 				if ($currentMappingInfo['sub'][$secKey])	{
-#debug('array...');					
+#debug('array...');
 					$out.=$this->mergeFormDataIntoTemplateStructure($secDat['el'],$currentMappingInfo['sub'][$secKey],'',$valueKey);
-				} 
+				}
 				/*elseif ($currentMappingInfo['cArray'][$secKey])	{
-#debug('value...');					
+#debug('value...');
 					$out.=$currentMappingInfo['cArray'][$secKey];
 				}*/
-// ONLY ALLOW "arrays" inside of "sections" - otherwise it does not make so much sense and it is harder to handle; basically all stuff in a SECTION is defined to be a container and that is what the "array" handles...				
-				
+// ONLY ALLOW "arrays" inside of "sections" - otherwise it does not make so much sense and it is harder to handle; basically all stuff in a SECTION is defined to be a container and that is what the "array" handles...
+
 			}
 		} else {
 			if (is_array($currentMappingInfo['cArray']))	{
 				foreach($currentMappingInfo['cArray'] as $key => $val)	{
 					if (!t3lib_div::testInt($key))	{
 						if (is_array($editStruct[$key]['el']) && $currentMappingInfo['sub'][$key])	{
-							$currentMappingInfo['cArray'][$key]=$this->mergeFormDataIntoTemplateStructure($editStruct[$key]['el'],$currentMappingInfo['sub'][$key],'',$valueKey);
+							$currentMappingInfo['cArray'][$key] = $this->mergeFormDataIntoTemplateStructure($editStruct[$key]['el'],$currentMappingInfo['sub'][$key],'',$valueKey);
 						} else {
 								# NO htmlspecialchars()'ing here ... it might be processed values that should be allowed to go through easily.
-							$currentMappingInfo['cArray'][$key]=$editStruct[$key][$valueKey];	
+							$currentMappingInfo['cArray'][$key] = $editStruct[$key][$valueKey];
 						}
 					}
 				}

@@ -1,3 +1,7 @@
+2004-03-31  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+	* Fixed bug in htmlmarkup class where content were merged with template; When the number of "virtual records" exceeded a limit, none were merged.
+
 2004-03-26  Robert Lemke  <rl@robertlemke.de>
 
 	* Added icons, sponsored by Ben
