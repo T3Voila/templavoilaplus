@@ -1,3 +1,12 @@
+2004-08-27  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+	* Page module: Added "Show hidden elements" box - can be moved to better position in page module
+	* Corrected bugs for flagicons if they were not configured (they didn't display correctly of course).
+	* Added fallback modes for "pi1" output. Updated manual with new rendering option for fall back modes.
+	* Page module: Added "&L=xx" parameter to view-page icon (magnifying glass) so preview link to localized pages is correct.
+	* Page module: Added overview of localized versions of other records. This is used when TypoScript is configured with "config.sys_language_overlay". Configurable. 
+	* 
+
 2004-08-26  Kasper Skårhøj,,,  <kasper@typo3.com>
 
 	* Changed the versioning selector...

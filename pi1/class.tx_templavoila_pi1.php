@@ -247,15 +247,28 @@ class tx_templavoila_pi1 extends tslib_pibase {
 	function processDataValues(&$dataValues,$DSelements,$TOelements,$valueKey='vDEF')	{
 		if (is_array($DSelements))	{
 
-				// Prepare a fake data record for cObj:
+				// Create local processing information array:
+			$LP = array();
+			foreach($DSelements as $key => $dsConf)	{
+				if ($DSelements[$key]['type']!='array')	{	// For all non-arrays:
+						// Set base configuration:
+					$LP[$key] = $DSelements[$key]['tx_templavoila'];
+						// Overlaying local processing:
+					if (is_array($TOelements[$key]['tx_templavoila']))	{
+						if (is_array($LP[$key]))	{
+							$LP[$key] = t3lib_div::array_merge_recursive_overrule($LP[$key],$TOelements[$key]['tx_templavoila']);
+						} else {
+							$LP[$key] = $TOelements[$key]['tx_templavoila'];
+						}
+					}
+				}
+			}
+
+				// Prepare a fake data record for cObj (important to do now before processing takes place):
 			$dataRecord=array();
 			if (is_array($dataValues))	{
 				foreach($dataValues as $key => $values)	{
-					if ($this->inheritValueFromDefault)	{
-						$dataRecord[$key]=($dataValues[$key][$valueKey]?$dataValues[$key][$valueKey]:$dataValues[$key]['vDEF']);
-					} else {
-						$dataRecord[$key]=$dataValues[$key][$valueKey];
-					}
+					$dataRecord[$key] = $this->inheritValue($dataValues[$key],$valueKey,$LP[$key]['langOverlayMode']);
 				}
 			}
 
@@ -273,27 +286,19 @@ class tx_templavoila_pi1 extends tslib_pibase {
 								}
 							}
 						} else {
-							if (!isset($dataValues[$key]['el']))	$dataValues[$key]['el']=array();
+							if (!isset($dataValues[$key]['el']))	$dataValues[$key]['el'] = array();
 							$this->processDataValues($dataValues[$key]['el'],$DSelements[$key]['el'],$TOelements[$key]['el'],$valueKey);
 						}
 					}
 				} else {
+
 						// Language inheritance:
-					if ($this->inheritValueFromDefault && !$dataValues[$key][$valueKey])	{
-						$dataValues[$key][$valueKey] = $dataValues[$key]['vDEF'];
+					if ($valueKey!='vDEF')	{
+						$dataValues[$key][$valueKey] = $this->inheritValue($dataValues[$key],$valueKey,$LP[$key]['langOverlayMode']) ;
 					}
-
-
-					if (is_array($TOelements[$key]['tx_templavoila']))	{
-						if (is_array($DSelements[$key]['tx_templavoila']))	{
-							$DSelements[$key]['tx_templavoila'] = t3lib_div::array_merge_recursive_overrule($DSelements[$key]['tx_templavoila'],$TOelements[$key]['tx_templavoila']);
-						} else $DSelements[$key]['tx_templavoila'] = $TOelements[$key]['tx_templavoila'];
-#debug($DSelements[$key]['tx_templavoila']);
-					}
-
 
 						// TypoScript / TypoScriptObjPath:
-					if (trim($DSelements[$key]['tx_templavoila']['TypoScript']) || trim($DSelements[$key]['tx_templavoila']['TypoScriptObjPath']))	{
+					if (trim($LP[$key]['TypoScript']) || trim($LP[$key]['TypoScriptObjPath']))	{
 						$tsparserObj = t3lib_div::makeInstance('t3lib_TSparser');
 
 						$cObj =t3lib_div::makeInstance('tslib_cObj');
@@ -303,11 +308,11 @@ class tx_templavoila_pi1 extends tslib_pibase {
 						$cObj->setCurrentVal($dataValues[$key][$valueKey]);
 
 
-						if (trim($DSelements[$key]['tx_templavoila']['TypoScript']))	{
+						if (trim($LP[$key]['TypoScript']))	{
 
 								// If constants were found locally/internally in DS/TO:
-							if (is_array($DSelements[$key]['tx_templavoila']['TypoScript_constants']))	{
-								foreach($DSelements[$key]['tx_templavoila']['TypoScript_constants'] as $constant => $value)	{
+							if (is_array($LP[$key]['TypoScript_constants']))	{
+								foreach($LP[$key]['TypoScript_constants'] as $constant => $value)	{
 
 										// First, see if the constant is itself a constant referring back to TypoScript Setup Object Tree:
 									if (substr(trim($value),0,2)=='{$' && substr(trim($value),-1)=='}')	{
@@ -326,7 +331,7 @@ class tx_templavoila_pi1 extends tslib_pibase {
 									}
 
 										// Substitute constant:
-									$DSelements[$key]['tx_templavoila']['TypoScript'] = str_replace('{$'.$constant.'}',$value,$DSelements[$key]['tx_templavoila']['TypoScript']);
+									$LP[$key]['TypoScript'] = str_replace('{$'.$constant.'}',$value,$LP[$key]['TypoScript']);
 								}
 							}
 
@@ -335,7 +340,7 @@ class tx_templavoila_pi1 extends tslib_pibase {
 								foreach($this->conf['TSconst.'] as $constant => $value)	{
 									if (!is_array($value))	{
 											// Substitute constant:
-										$DSelements[$key]['tx_templavoila']['TypoScript'] = str_replace('{$TSconst.'.$constant.'}',$value,$DSelements[$key]['tx_templavoila']['TypoScript']);
+										$LP[$key]['TypoScript'] = str_replace('{$TSconst.'.$constant.'}',$value,$LP[$key]['TypoScript']);
 									}
 								}
 							}
@@ -345,17 +350,17 @@ class tx_templavoila_pi1 extends tslib_pibase {
 							$tsparserObj->setup['lib.'] = $GLOBALS['TSFE']->tmpl->setup['lib.'];
 							$tsparserObj->setup['plugin.'] = $GLOBALS['TSFE']->tmpl->setup['plugin.'];
 
-							$tsparserObj->parse($DSelements[$key]['tx_templavoila']['TypoScript']);
+							$tsparserObj->parse($LP[$key]['TypoScript']);
 							$dataValues[$key][$valueKey] = $cObj->cObjGet($tsparserObj->setup,'TemplaVoila_Proc.');
 						}
-						if (trim($DSelements[$key]['tx_templavoila']['TypoScriptObjPath']))	{
-							list($name, $conf) = $tsparserObj->getVal(trim($DSelements[$key]['tx_templavoila']['TypoScriptObjPath']),$GLOBALS['TSFE']->tmpl->setup);
+						if (trim($LP[$key]['TypoScriptObjPath']))	{
+							list($name, $conf) = $tsparserObj->getVal(trim($LP[$key]['TypoScriptObjPath']),$GLOBALS['TSFE']->tmpl->setup);
 							$dataValues[$key][$valueKey] = $cObj->cObjGetSingle($name,$conf,'TemplaVoila_ProcObjPath.');
 						}
 					}
 
 						// Various local quick-processing options:
-					$pOptions = $DSelements[$key]['tx_templavoila']['proc'];
+					$pOptions = $LP[$key]['proc'];
 					if (is_array($pOptions))	{
 						if ($pOptions['int'])		$dataValues[$key][$valueKey] = intval($dataValues[$key][$valueKey]);
 							// HSC of all values by default:
@@ -370,6 +375,43 @@ class tx_templavoila_pi1 extends tslib_pibase {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Processing of language fallback values (inheritance/overlaying)
+	 * You never need to call this function when "$valueKey" is "vDEF"
+	 *
+	 * @param	array	Array where the values for language and default might be in as keys for "vDEF" and "vXXX"
+	 * @param	string	Language key, "vXXX"
+	 * @param	string	Overriding overlay mode from local processing in Data Structure / TO.
+	 * @return	string	The value
+	 */
+	function inheritValue($dV,$valueKey,$overlayMode='')	{
+#debug(array($dV['vDEF'],$valueKey,$overlayMode,$this->inheritValueFromDefault),'inheritValue()');
+		if ($valueKey!='vDEF')	{
+
+				// Consider overlay modes:
+			switch((string)$overlayMode)	{
+				case 'ifFalse':	// Normal inheritance based on whether the value evaluates false or not (zero or blank string)
+					return trim($dV[$valueKey]) ? $dV[$valueKey] : $dV['vDEF'];
+				break;
+				case 'ifBlank':	// Only if the value is truely blank!
+					return strcmp(trim($dV[$valueKey]),'') ? $dV[$valueKey] : $dV['vDEF'];
+				break;
+				case 'never':
+					return $dV[$valueKey];	// Always return its own value
+				break;
+				default:
+						// If none of the overlay modes matched, simply use the default:
+					if ($this->inheritValueFromDefault)	{
+						return trim($dV[$valueKey]) ? $dV[$valueKey] : $dV['vDEF'];
+					}
+				break;
+			}
+		}
+
+			// Default is to just return the value:
+		return $dV[$valueKey];
 	}
 
 	/**
