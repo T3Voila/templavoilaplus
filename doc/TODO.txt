@@ -2,12 +2,30 @@
 TODO
 ******************
 
-FINISHING (A week):
-"class.tx_templavoila_htmlmarkup.php"
-"cm1/index.php"
-
-- Mapping features:
+NOW:
+	- Visual formatting of error page
 	- While editing an existing Data Element it's confusing that the button "Save" has no effect unless you "Add" the changes before. Rename label?
+	- BUG: When clicking the path link of a RANGE to preview it, we will see only the first element in the visual frame - because the RANGE part is cut away!
+	- BUG: When mapping via File > Filelist old mapping information is restored - this hsould be bound to the filename of the template file so a FRESH mapping approach does not get old mapping info.
+	- Perform a check of template files for block/solo tag consistens.
+	- Backend Module in Web> displaying DS/TOs in a list, linking to display data structures etc. Usage counts? All kinds of nice things...
+	- Show a little warning if no template record was selected in _pi1...
+- BUG: Moving a referenced element MOVES it from the original position!
+
+
+OTHER MODULES:
+- Management: Overview of Page Templates as set in the tree structure
+- Management: Well-designed overview of Data Structures and Their Templates and how they relate (parents/children)
+
+
+
+
+
+
+
+	
+- Mapping features:
+	- "class.tx_templavoila_htmlmarkup.php"
 	- Ability to map NEW non-existing attributes AND possibly just any content into HTML tags (like for images ' width="xxx" height="xxx"'.
 	- Ability to select attributes to be REMOVED in a tag.
 	- Ability to map a single field to MANY elements. So the same value can be inserted at multiple positions.
@@ -22,45 +40,40 @@ FINISHING (A week):
 	- Non-destructive explode for <tr> / <option>
 	- For predefined images, allow to read and keep the other parameters that src/width/height
 	- Option to wipe out the id's used (or those prefixed "TV-") since they could be repetitive.
-	- Visual formatting of error page
-	- BUG: When clicking the path link of a RANGE to preview it, we will see only the first element in the visual frame - because the RANGE part is cut away!
 	- BUG: If you map ONLY the root element then nothing gets saved in the template! - Could NOT reproduce again!
-	- BUG: When mapping via File > Filelist old mapping information is restored - this hsould be bound to the filename of the template file so a FRESH mapping approach does not get old mapping info.
-- Commenting + documentation i SXW fil.
-	- Better define vocabulary! Also define what is a "HTML-path" etc.
 	- // ONLY ALLOW "arrays" inside of "sections" - otherwise it does not make so much sense and it is harder to handle; basically all stuff in a SECTION is defined to be a container and that is what the "array" handles...
-	- REMEMBER: This will be a cornerstone extension, so it must be well tested, documented and commented!
-- Performance:
-	- Caching of splitting template files -> faster process
-- Various, Later:
+	- Better define vocabulary! Also define what is a "HTML-path" etc.
 	- Find method for displaying images in sample data.
-	- Perform a check of template files for block/solo tag consistens.
 	- Add caching mechanism for retrieval of template content (so we can also have a DYNAMIC binding to the template source, possibly with a timed caching)
 	- Support for http-URLs instead of files (incl. caching)
+	- Icons for MAP/ChMode/Remap
+	- Performance:
+		- Caching of splitting template files -> faster process
+	- Testing: Implement sites like HP site, Vignette site (to test that it is robust and stable!)
+- API Usage:
 	- API: A function which can produce a traditionally marked up version of the template: For use in TS as alternative to the Autoparser
 	- ?: How can extensions supply a default template Array when no Template Object exists yet, mapping the data? What about the data structure containing some sample markup as well which means we can always assemble a simple display from that. Or even a nice default display which is of course stylable by CSS. AND this default
-	- Backend Module in Web> displaying DS/TOs in a list, linking to display data structures etc. Usage counts? All kinds of nice things...
-	- Show a little warning if no template record was selected in _pi1...
+	- Implement the language scheme?
 
+- "cm" Backend Modules:
 	- getLL usage in whole module.
 	- CSH for whole module
-	- Documentation
-	- Icons for MAP/ChMode/Remap
 
-Unsorted notes (kasper)
-- Implement the language scheme!
-- For shortcut pages etc, rather show which page it is referring to in Web>Page (TV)
-- Counting references to objects in some table?
-- New wizard:
-	- In Content Element Wizard, also list records to insert as references fetched from the storage page
-	- Import t3d files with FlexForm structures inside
-	- Offer to make copies of pages/elements found storage page (or otherwise)
-- BUG: Moving a referenced element MOVES it from the original position!
-- Offer a button in Web>Page which can turn a reference into a true copy (for the element alone or all nested records?)
+- "Web > Page" Backend Modules:
+	- For shortcut pages etc, rather show which page it is referring to in Web>Page (TV)
+	- Counting references to objects in some table?
+	- New wizard:
+		- In Content Element Wizard, also list records to insert as references fetched from the storage page
+		- Import t3d files with FlexForm structures inside
+		- Offer to make copies of pages/elements found storage page (or otherwise)
+	- Offer a button in Web>Page which can turn a reference into a true copy (for the element alone or all nested records?)
+
+- Documentation:
 
 
-TESTING:
-- Implement sites like HP site, Vignette site (to test that it is robust and stable!)
+
+
+
 
 
 Roberts TODO:
@@ -116,10 +129,6 @@ Technical:
 NOTES:
 - Make sure that a content element is not called recursively
 - FE: Disable edit icon for some elements (same in backend?)
-
-OTHER MODULES:
-- Management: Overview of Page Templates as set in the tree structure
-- Management: Well-designed overview of Data Structures and Their Templates and how they relate (parents/children)
 
 
 
