@@ -98,8 +98,8 @@ class tx_templavoila_xmlrelhndl {
 	/**
 	 * Creates a page content element (tt_content) and inserts reference in FlexForm field
 	 *
-	 * @param	string		Position reference of where to create new element. Syntax is: [table]:[uid]:[sheet]:[FlexForm field name]:[index of reference position in field value]
-	 * @param	array		Array of default field values for creating the content element record. 'pid' and 'uid' are overridden.
+	 * @param	string		$destination: Position reference of where to create new element. Syntax is: [table]:[uid]:[sheet]:[structure Language]:[FlexForm field name]:[value language]:[index of reference position in field value]
+	 * @param	array		$row: Array of default field values for creating the content element record. 'pid' and 'uid' are overridden.
 	 * @return	integer		uid of the created content element (if any)
 	 */
 	function insertRecord($destination, $row)	{
@@ -119,6 +119,18 @@ class tx_templavoila_xmlrelhndl {
 				$dataArr['tt_content']['NEW'] = $row;
 				$dataArr['tt_content']['NEW']['pid'] = ($destRefArr[0]=='pages' ? $destinationRec['uid'] : $destinationRec['pid']);
 				unset($dataArr['tt_content']['NEW']['uid']);
+
+					// If the destination is not the default language, try to set the old-style sys_language_uid field accordingly
+				if ($destRefArr[3] != 'lDEF' || $destRefArr[5] != 'vDEF') {
+					$languageKey = $destRefArr[5] != 'vDEF' ? $destRefArr[5] : $destRefArr[3];
+					$staticLangRows = t3lib_BEfunc::getRecordsByField('static_languages', 'lg_iso_2', substr($languageKey, 1));
+					if (isset($staticLangRows[0]['uid'])) {
+						$languageRecords = t3lib_BEfunc::getRecordsByField('sys_language',	'static_lang_isocode', $staticLangRows[0]['uid']);
+						if (isset($languageRecords[0]['uid'])) {
+							$dataArr['tt_content']['NEW']['sys_language_uid'] = $languageRecords[0]['uid'];
+						}
+					}
+				}
 
 					// Instantiate TCEmain and create the record:
 				$tce = t3lib_div::makeInstance('t3lib_TCEmain');
@@ -190,7 +202,6 @@ class tx_templavoila_xmlrelhndl {
 								// Now, find destination (record in which to insert the new reference)
 							$destRefArr = $this->_splitAndValidateReference($destination);
 							if (t3lib_div::inList($this->rootTable.',tt_content',$destRefArr[0]))	{
-
 									// Destination record:
 								$destinationRec = t3lib_BEfunc::getRecord($destRefArr[0],intval($destRefArr[1]),'uid,pid,'.$this->flexFieldIndex[$destRefArr[0]]);
 								if (is_array($destinationRec))	{
@@ -203,9 +214,10 @@ class tx_templavoila_xmlrelhndl {
 										case 'copy':
 												// Get the uid of a new tt_content element
 											$refID = $this->_getCopyUid(
-															$refID,
-															$destRefArr[0]=='pages' ? $destinationRec['uid'] : $destinationRec['pid']
-														);
+														$refID,
+														$destRefArr[0]=='pages' ? $destinationRec['uid'] : $destinationRec['pid']
+													);
+
 											if ($refID)	{	// Only do copy IF a new element was created.
 												$this->_insertReference($destItemArray, $destRefArr, 'tt_content_'.$refID);
 											}
@@ -276,20 +288,18 @@ class tx_templavoila_xmlrelhndl {
 	/**
 	 * Insert item reference into list.
 	 *
-	 * @param	array		Array of items from a current reference (array of table/uid pairs) (see _getItemArrayFromXML())
-	 * @param	array		Reference to element in FlexForm structure, splitted into an array (see _splitAndValidateReference())
+	 * @param	array		$itemArr: Array of items from a current reference (array of table/uid pairs) (see _getItemArrayFromXML())
+	 * @param	array		$refArr: Reference to element in FlexForm structure, splitted into an array (see _splitAndValidateReference())
 	 * @param	string		Item reference, typically 'tt_content_'.$uid
 	 * @return	void
 	 */
-	function _insertReference($itemArray, $refArr, $item)	{
-#debug (array ($itemArray,$refArr, $item));
-#die();
-
+	function _insertReference($itemArr, $refArr, $item)	{
 			// Get new list of IDs:
-		$idList = $this->_insertReferenceInList($itemArray, $refArr, $item);
+		$idList = $this->_insertReferenceInList($itemArr, $refArr, $item);
 
 			// Set the data field:
 		$this->_updateFlexFormRefList($refArr, $idList);
+
 	}
 
 	/**

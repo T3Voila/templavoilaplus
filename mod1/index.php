@@ -130,7 +130,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 	var $currentDataStructureArr = array();			// Contains the data structure XML structure indexed by tablenames ('pages', 'tt_content') as an array of the currently selected DS record when editing a page
 	var $currentPageRecord;							// Contains the page record (from table 'pages') of the current page when editing a page
-	var $currentLanguageKey;							// Contains the currently selected language key (Example: DEF or DE)
+	var $currentLanguageKey;						// Contains the currently selected language key (Example: DEF or DE)
 	var $allAvailableLanguages = array();			// Contains records of all available languages (not hidden, with ISOcode), including the default language and multiple languages. Used for displaying the flags for content elements, set in init().
 
 	/**
@@ -148,6 +148,12 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			// Fill array allAvailableLanguages and currently selected language (from language selector or from outside)
 		$this->allAvailableLanguages = $this->getAvailableLanguages(0, true, true, true);
 		$this->currentLanguageKey = $this->allAvailableLanguages[$this->MOD_SETTINGS['language']]['ISOcode'];
+
+			// If no translations exist for this page, set the current language to default (as there won't be a language selector)
+		$translatedLanguagesArr = $this->getAvailableLanguages($this->id);
+		if (count($translatedLanguagesArr) == 1) {	// Only default language exists
+			$this->currentLanguageKey = 'DEF';
+		}
 	}
 
 	/**
@@ -337,12 +343,12 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	/**
 	 * Initiates processing for pasting a record.
 	 *
-	 * @param	string		$pasteRecord: The element to be pasted.
+	 * @param	string		$pasteMode: "cut" or "copy"
 	 * @return	void
 	 * @see		pasteRecord ()
 	 */
-	function cmd_pasteRecord ($pasteRecord) {
-		$this->pasteRecord($pasteRecord, t3lib_div::GPvar('target'), t3lib_div::GPvar('destination'));
+	function cmd_pasteRecord ($pasteMode) {
+		$this->pasteRecord($pasteMode, t3lib_div::GPvar('source'), t3lib_div::GPvar('destination'));
 		header('Location: '.t3lib_div::locationHeaderUrl('index.php?'.$this->linkParams()));
 	}
 
@@ -649,12 +655,12 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		$sheet = isset($dsInfo['sub'][$this->MOD_SETTINGS['currentSheetKey']]) ? $this->MOD_SETTINGS['currentSheetKey'] : 'sDEF';
 
 			// Take care of the currently selected language, for both concepts - with langChildren enabled and disabled
+		$langDisable = intval ($this->currentDataStructureArr[$dsInfo['el']['table']]['meta']['langDisable']);
 		$currentLanguage = $this->currentLanguageKey ? $this->currentLanguageKey : 'DEF';
 
-		$langDisabled = intval ($this->currentDataStructureArr[$dsInfo['el']['table']]['meta']['langDisabled']);
 		$langChildren = intval ($this->currentDataStructureArr[$dsInfo['el']['table']]['meta']['langChildren']);
-		$lKey = $langDisabled ? 'lDEF' : ($langChildren ? 'lDEF' : 'l'.$currentLanguage);
-		$vKey = $langDisabled ? 'vDEF' : ($langChildren ? 'v'.$currentLanguage : 'vDEF');
+		$lKey = $langDisable ? 'lDEF' : ($langChildren ? 'lDEF' : 'l'.$currentLanguage);
+		$vKey = $langDisable ? 'vDEF' : ($langChildren ? 'v'.$currentLanguage : 'vDEF');
 
 			// The $isLocal flag is used to denote whether an element belongs to the current page or not. If NOT the $isLocal flag means (for instance) that the title bar will be colored differently to show users that this is a foreign element not from this page.
 		$isLocal = $dsInfo['el']['table']=='pages' || $dsInfo['el']['pid']==$this->id;	// Pages have the local style
@@ -728,16 +734,16 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		$metaInfoAreaArr = array();
 
 		if (is_array($dsInfo['sub'][$sheet]))	{
-
 			foreach($dsInfo['sub'][$sheet] as $fieldID => $fieldContent)	{
 				$counter=0;
 
 					// Only show fields and values of a flexible content element, if either the currently selected language is the DEF language, or the langDisable flag of the FCE's data structure is not set
 				if (!$fieldContent['meta']['langDisable'] || $currentLanguage == 'DEF') {
+
 						// "New" and "Paste" icon:
 					$elList = '';
 					$elList.=$this->linkNew('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/new_el.gif','').' align="absmiddle" vspace="5" border="0" title="'.$LANG->getLL ('createnewrecord').'" alt="" />',$dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$lKey.':'.$fieldID.':'.$vKey.':'.$counter);
-					if (!$clipboardElInPath) { $elList.=$this->linkPaste('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/clip_pasteafter.gif','').' align="absmiddle" vspace="5" border="0" title="'.$LANG->getLL ('pasterecord').'" alt="" />',$dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$lKey.':'.$fieldID.':'.$vKey.':'.$counter,$this->MOD_SETTINGS['clip_parentPos'],$this->MOD_SETTINGS['clip']); }
+					if (!$clipboardElInPath) { $elList.=$this->linkPaste('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/clip_pasteafter.gif','').' align="absmiddle" vspace="5" border="0" title="'.$LANG->getLL ('pasterecord').'" alt="" />',$this->MOD_SETTINGS['clip_parentPos'], $dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$lKey.':'.$fieldID.':'.$vKey.':'.$counter, $this->MOD_SETTINGS['clip']); }
 
 						// Render the list of elements (and possibly call itself recursively if needed):
 					if (is_array($fieldContent['el_list']))	 {
@@ -747,7 +753,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 								// "New" and "Paste" icon:
 							$elList.=$this->linkNew('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/new_el.gif','').' align="absmiddle" vspace="5" border="0" title="'.$LANG->getLL ('createnewrecord').'" alt="" />',$dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$lKey.':'.$fieldID.':'.$vKey.':'.$counter);
-							if (!$clipboardElInPath)	$elList.=$this->linkPaste('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/clip_pasteafter.gif','').' align="absmiddle" vspace="5" border="0" title="'.$LANG->getLL ('pasterecord').'" alt="" />',$dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$lKey.':'.$fieldID.':'.$vKey.':'.$counter,$this->MOD_SETTINGS['clip_parentPos'],$this->MOD_SETTINGS['clip']);
+							if (!$clipboardElInPath)	$elList.=$this->linkPaste('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/clip_pasteafter.gif','').' align="absmiddle" vspace="5" border="0" title="'.$LANG->getLL ('pasterecord').'" alt="" />',$this->MOD_SETTINGS['clip_parentPos'], $dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$lKey.':'.$fieldID.':'.$vKey.':'.$counter,$this->MOD_SETTINGS['clip']);
 						}
 					}
 
@@ -875,9 +881,9 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		$newLanguagesArr = $this->getAvailableLanguages(0, true, false);	// Get possible languages for new translation of this page
 
 		$langChildren = $this->currentDataStructureArr['pages']['meta']['langChildren'] ? 1 : 0;
-		$langDisabled = $this->currentDataStructureArr['pages']['meta']['langDisable'] ? 1 : 0;
+		$langDisable = $this->currentDataStructureArr['pages']['meta']['langDisable'] ? 1 : 0;
 
-		if (!$langDisabled && (count($availableLanguagesArr) > 1)) {
+		if (!$langDisable && (count($availableLanguagesArr) > 1)) {
 			$languageTabs = '';
 			foreach ($availableLanguagesArr as $language) {
 				unset($newLanguagesArr[$language['uid']]);	// Remove this language from possible new translation languages array (PNTLA)
@@ -1054,7 +1060,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * @param	integer		$uid: The uid of the element to be edited
 	 * @return	string		HTML anchor tag containing the label and the correct link
 	 */
-	function linkEdit($str,$table,$uid)	{
+	function linkEdit($str, $table, $uid)	{
 		$onClick = t3lib_BEfunc::editOnClick('&edit['.$table.']['.$uid.']=edit',$this->doc->backPath);
 		return '<a style="text-decoration: none;" href="#" onclick="'.htmlspecialchars($onClick).'">'.$str.'</a>';
 	}
@@ -1066,7 +1072,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * @param	string		$parentRecord: The parameters for creating the new record. Example: pages:78:sDEF:lDEF:field_contentarea:vDEF:0
 	 * @return	string		HTML anchor tag containing the label and the correct link
 	 */
-	function linkNew($str,$parentRecord)	{
+	function linkNew($str, $parentRecord)	{
 		return '<a href="'.htmlspecialchars('db_new_content_el.php?'.$this->linkParams().'&parentRecord='.rawurlencode($parentRecord)).'">'.$str.'</a>';
 	}
 
@@ -1079,7 +1085,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * @param	[type]		$realDelete: ...
 	 * @return	string		HTML anchor tag containing the label and the unlink-link
 	 */
-	function linkUnlink($str,$unlinkRecord, $realDelete=FALSE)	{
+	function linkUnlink($str, $unlinkRecord, $realDelete=FALSE)	{
 		global $LANG;
 
 		if ($realDelete)	{
@@ -1096,7 +1102,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * @param	string		$unlinkRecord: The parameters for unlinking the record. Example: pages:78:sDEF:lDEF:field_contentarea:vDEF:0
 	 * @return	string		HTML anchor tag containing the label and the unlink-link
 	 */
-	function linkMakeLocal($str,$makeLocalRecord)	{
+	function linkMakeLocal($str, $makeLocalRecord)	{
 		global $LANG;
 
 		return '<a href="index.php?'.$this->linkParams().'&makeLocalRecord='.rawurlencode($makeLocalRecord).'" onclick="'.htmlspecialchars('return confirm('.$LANG->JScharCode($LANG->getLL('makeLocalMsg')).');').'">'.$str.'</a>';
@@ -1107,24 +1113,24 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 *
 	 * @param	string		$str: The label
 	 * @param	string		$params: The parameters defining the original record. Example: pages:78:sDEF:lDEF:field_contentarea:vDEF:0
-	 * @param	string		$target: The parameters defining the target where to paste the original record
+	 * @param	string		$destination: The parameters defining the target where to paste the original record
 	 * @param	string		$cmd: The paste mode, usually set in the clipboard: 'cut' or 'copy'
 	 * @return	string		HTML anchor tag containing the label and the paste-link
 	 */
-	function linkPaste($str,$params,$target,$cmd)	{
-		return '<a href="index.php?'.$this->linkParams().'&SET[clip]=&SET[clip_parentPos]=&pasteRecord='.$cmd.'&destination='.rawurlencode($params).'&target='.rawurlencode($target).'">'.$str.'</a>';
+	function linkPaste($str, $source, $destination, $cmd)	{
+		return '<a href="index.php?'.$this->linkParams().'&SET[clip]=&SET[clip_parentPos]=&pasteRecord='.$cmd.'&source='.rawurlencode($source).'&destination='.rawurlencode($destination).'">'.$str.'</a>';
 	}
 
 	/**
 	 * Returns an HTML link for marking a content element (i.e. transferring to the clipboard) for copying or cutting.
 	 *
 	 * @param	string		$str: The label
-	 * @param	string		$parentPos: The parameters defining the original record. Example: pages:78:sDEF:lDEF:field_contentarea:vDEF::tt_content:115
+	 * @param	string		$source: The parameters defining the original record. Example: pages:78:sDEF:lDEF:field_contentarea:vDEF::tt_content:115
 	 * @param	string		$cmd: The marking mode: 'cut' or 'copy'
 	 * @return	string		HTML anchor tag containing the label and the cut/copy link
 	 */
-	function linkCopyCut($str,$parentPos,$cmd)	{
-		return '<a href="index.php?'.$this->linkParams().'&SET[clip]='.($parentPos?$cmd:'').'&SET[clip_parentPos]='.rawurlencode($parentPos).'">'.$str.'</a>';
+	function linkCopyCut($str, $source, $cmd)	{
+		return '<a href="index.php?'.$this->linkParams().'&SET[clip]='.($source?$cmd:'').'&SET[clip_parentPos]='.rawurlencode($source).'">'.$str.'</a>';
 	}
 
 	/**
@@ -1360,15 +1366,15 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * Performs the processing part of pasting a record.
 	 *
 	 * @param	string		$pasteCmd: Kind of pasting: 'cut', 'copy' or 'unlink'
-	 * @param	string		$target: String defining the original record. Example: pages:78:sDEF:lDEF:field_contentarea:vDEF:0
+	 * @param	string		$source: String defining the original record. Example: pages:78:sDEF:lDEF:field_contentarea:vDEF:0
 	 * @param	string		$destination: Defines the destination where to paste the record (not used when unlinking of course).
 	 * @return	void		nothing
 	 */
-	function pasteRecord($pasteCmd, $target, $destination)	{
+	function pasteRecord($pasteCmd, $source, $destination)	{
 		$handler = t3lib_div::makeInstance('tx_templavoila_xmlrelhndl');
 		$handler->init($this->altRoot);
 
-		return $handler->pasteRecord($pasteCmd, $target, $destination);
+		return $handler->pasteRecord($pasteCmd, $source, $destination);
 	}
 
 
@@ -1437,7 +1443,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 							// Take care of the currently selected language, for both concepts - with langChildren enabled and disabled
 						$currentLanguage = $this->currentLanguageKey ? $this->currentLanguageKey : 'DEF';
-						$langChildren = intval ($this->currentDataStructureArr['tt_content']['meta']['langChildren']);
+						$langChildren = intval ($sVal['meta']['langChildren']);
 						$lKey = $langChildren ? 'lDEF' : 'l'.$currentLanguage;
 						$vKey = $langChildren ? 'v'.$currentLanguage : 'vDEF';
 
@@ -1446,8 +1452,10 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 							$tree['sub'][$sheetKey][$k]['el']=array();
 							$tree['sub'][$sheetKey][$k]['meta']=array(
 								'title' => $v['TCEforms']['label'],
-								'langDisable' => $sVal['meta']['langDisable']
+								'langDisable' => $sVal['meta']['langDisable'],
+								'langChildren' => $sVal['meta']['langChildren'],
 							);
+
 							$dat = $xmlContent['data'][$sheetKey][$lKey][$k][$vKey];
 							$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
 							$dbAnalysis->start($dat,'tt_content');
@@ -1461,7 +1469,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 								if (!t3lib_div::inList($prevRecList,$idStr))	{
 									if (is_array($idRow))	{
 										$tree['sub'][$sheetKey][$k]['el'][$idStr] = $this->getDStreeForPage($recIdent['table'],$recIdent['id'],$prevRecList.','.$idStr,$idRow);
-										#$tree['sub'][$sheetKey][$k]['el'][$idStr]['el']['index'] = $counter+1;
+										$tree['sub'][$sheetKey][$k]['el'][$idStr]['el']['index'] = $counter+1;
 										$tree['sub'][$sheetKey][$k]['el_list'][($counter+1)] = $idStr;
 									} else {
 										# ERROR: The element referenced was deleted!
@@ -1538,7 +1546,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	/**
 	 * Returns an array of available languages (to use for FlexForms)
 	 *
-	 * @param	integer		Page id: If zero, the query will select all sys_language records from root level which are NOT hidden. If set to another value, the query will select all sys_language records that has a pages_language_overlay record on that page (and is not hidden, unless you are admin user)
+	 * @param	integer		Page id: If zero, the query will select all sys_language records from root level. If set to another value, the query will select all sys_language records that has a pages_language_overlay record on that page (and is not hidden, unless you are admin user)
 	 * @param	boolean		If set, only languages which are paired with a static_info_table / static_language record will be returned.
 	 * @param	boolean		If set, an array entry for a default language is set.
 	 * @param	boolean		If set, an array entry for "multiple languages" is added (uid -1)
@@ -1554,13 +1562,13 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		$defaultLangTSconfig = t3lib_BEfunc::getModTSconfig($this->id, 'mod.SHARED.defaultLanguage');
 
 		$output=array();
-		$excludeHidden = $BE_USER->isAdmin() ? '' : ' AND sys_language.hidden=0';
+		$excludeHidden = $BE_USER->isAdmin() ? '1=1' : 'sys_language.hidden=0';
 
 		if ($id)	{
 			$res = $TYPO3_DB->exec_SELECTquery(
 							'sys_language.*',
 							'pages_language_overlay,sys_language',
-							'pages_language_overlay.sys_language_uid=sys_language.uid AND pages_language_overlay.pid='.intval($id).$excludeHidden,
+							'pages_language_overlay.sys_language_uid=sys_language.uid AND pages_language_overlay.pid='.intval($id).' AND '.$excludeHidden,
 							'pages_language_overlay.sys_language_uid',
 							'sys_language.title'
 			);
@@ -1568,7 +1576,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			$res = $TYPO3_DB->exec_SELECTquery(
 							'sys_language.*',
 							'sys_language',
-							'sys_language.hidden=0',
+							$excludeHidden,
 							'',
 							'sys_language.title'
 			);
