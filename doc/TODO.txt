@@ -43,6 +43,8 @@ Related to rendering/content elements (css_styled_content):
 	- For predefined images, allow to read and keep the other parameters that src/width/height
 	- Option to wipe out the id's used (or those prefixed "TV-") since they could be repetitive.
 	- BUG: If you map ONLY the root element then nothing gets saved in the template! - Could NOT reproduce again!
+	- BUG: IF there are <a> tag elements in the source which has only "name" attribute then the numbering doesn't work. For instance: <a name=".."> .... <a href="blabla">. The last A-tag is detected as "a[1]" while it should be a[2]. The problem is that when you set mapping mode (INNER /OUTER) for a[1] it will find the REAL a[1] tag, not the one with the href- attribute!
+	- BUG: Specifying a range: It only sees the SAME kind of tags even if other tags are found on the same level. An example was: <p>... <font>... <p> ... etc. tags. All <p> tags was found and the range was made from the first to the last. BUT ONLY the <p> tags were substutited - the <font> tags in between stayed after the mapping! That was strange!
 	- // ONLY ALLOW "arrays" inside of "sections" - otherwise it does not make so much sense and it is harder to handle; basically all stuff in a SECTION is defined to be a container and that is what the "array" handles...
 	- Better define vocabulary! Also define what is a "HTML-path" etc.
 	- Find method for displaying images in sample data.
@@ -71,7 +73,7 @@ Related to rendering/content elements (css_styled_content):
 		- In Content Element Wizard, also list records to insert as references fetched from the storage page
 		- Import t3d files with FlexForm structures inside
 		- Offer to make copies of pages/elements found storage page (or otherwise)
-	- Offer a button in Web>Page which can turn a reference into a true copy (for the element alone or all nested records?)
+	- User management: In a Data structure define which users and groups has access to edit etc from thsi point and outwards. At any point in the tree these rights can be overridden. This should be fixed by Robert Lemke? :-)
 
 - Documentation:
 
