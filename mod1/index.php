@@ -808,9 +808,9 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			$xmlContent = t3lib_div::xml2array ($recRow['dataprot']);
 			if (is_array ($xmlContent)) {
 				foreach ($xmlContent['ROOT']['el'] as $key=>$field) {					
-					for ($counter=0; $counter <= strlen(trim ($field['tx_templavoila']['ruleDefault'])); $counter++) {
+					for ($counter=strlen(trim ($field['tx_templavoila']['ruleDefault'])); $counter >=0; $counter--) {
 						$CType = t3lib_div::trimExplode (',',$this->rules->getCTypeFromToken (trim($field['tx_templavoila']['ruleDefault'][$counter]), $field['tx_templavoila']['ruleConstants']));
-						switch ($CType[0]) {
+						switch ($CType[0]) {						   
 							case 'templavoila_pi1': 
 								$TOrow = t3lib_BEfunc::getRecord('tx_templavoila_tmplobj', $CType[1], 'datastructure');
 								$conf = array (
