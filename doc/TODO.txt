@@ -2,17 +2,17 @@
 TODO
 ******************
 
-FINISHING (A week): 
+FINISHING (A week):
 "class.tx_templavoila_htmlmarkup.php"
 "cm1/index.php"
 
 - Mapping features:
-	- Ability to map NEW attributes AND possibly just any content into HTML tags (like for images ' width="xxx" height="xxx"'. 
+	- Ability to map NEW attributes AND possibly just any content into HTML tags (like for images ' width="xxx" height="xxx"'.
 	- Ability to select attributes to REMOVE in a tag.
 	- Ability to map a single field to MANY elements. So the same value can be inserted at multiple positions.
 	- BUG: If you map ONLY the root element then nothing gets saved in the template!
 	- BUG: Assigning an attribute to the FIRST(?) element inside a container will break other elements mapping after that.
-		- Other bugs, loosing mapping. Nico had it, I had it on Vignette site. 
+		- Other bugs, loosing mapping. Nico had it, I had it on Vignette site.
 		- Also Vignette site exploded itself.
 	- For dynamic creation of Data Structure: Have an intelligent auto-mapper, trying to find which elements might most likely be mapped and which not.
 	- Support selective inclusion of header elements (by checkboxes?)
@@ -22,12 +22,12 @@ FINISHING (A week):
 	- Anchors in template document
 	- Non-destructive explode for <tr> / <option>
 	- For predefined images, allow to read and keep the other parameters that src/width/height
-	- Option to wipe out the id's used (or those prefixed "TV-") since they could be repetitive. 
+	- Option to wipe out the id's used (or those prefixed "TV-") since they could be repetitive.
 - Commentering + documentation i SXW fil.
 	- Better define vocabulary! Also define what is a "HTML-path" etc.
 	- // ONLY ALLOW "arrays" inside of "sections" - otherwise it does not make so much sense and it is harder to handle; basically all stuff in a SECTION is defined to be a container and that is what the "array" handles...
 	- REMEMBER: This will be a cornerstone extension, so it must be well tested, documented and commented!
-- Performance: 
+- Performance:
 	- Caching of splitting template files -> faster process
 - Various, Later:
 	- Find method for displaying images in sample data.
@@ -35,7 +35,7 @@ FINISHING (A week):
 	- Add caching mechanism for retrieval of template content (so we can also have a DYNAMIC binding to the template source, possibly with a timed caching)
 	- Support for http-URLs instead of files (incl. caching)
 	- API: A function which can produce a traditionally marked up version of the template: For use in TS as alternative to the Autoparser
-		- ?: How can extensions supply a default template Array when no Template Object exists yet, mapping the data? What about the data structure containing some sample markup as well which means we can always assemble a simple display from that. Or even a nice default display which is of course stylable by CSS. AND this default 
+		- ?: How can extensions supply a default template Array when no Template Object exists yet, mapping the data? What about the data structure containing some sample markup as well which means we can always assemble a simple display from that. Or even a nice default display which is of course stylable by CSS. AND this default
 - Frontend: cObj API for flexforms (move from pibase to tslib_content)
 	- Finish API for getting valurs from FlexForms XML
 	- Finish API so TypoScript can access flexforms content
@@ -43,8 +43,8 @@ FINISHING (A week):
 - mininews: Implement with TemplaVoila
 
 
-	
-	
+
+
 TESTING:
 - Implement sites like HP site, Vignette site (to test that it is robust and stable!)
 
@@ -58,13 +58,14 @@ Roberts TODO:
 	- Remember the current "Create page content wizard"; These icons / setups should somehow be implemented as well.
 
 Interface:
-  - Recursivity handling: 
+  - Recursivity handling:
 	- Prevent recursivity
 	- Warn for 1) recursivity, 2) reuse of same element, 3) elements outside of PID, 4) non-used elements, 5) If elements has references on other pages.
   - Rules:
 	- number of elements in a field, which types, ...
 	- Permissions for users to certain elements areas.
 	- Disable edit for some elements?
+	- Rule editor for click menu and page module
 - Support for sheets: both page header + content elements! (KASPER)
 - Hierarchy tree view of the relations (incl. sheets, multiple groupfields in each element)
 - Display of CEs
@@ -106,12 +107,12 @@ OTHER MODULES:
 
 
 
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
 	
 	
 	
