@@ -10,8 +10,8 @@ NOW:
 	- Perform a check of template files for block/solo tag consistens.
 	- Backend Module in Web> displaying DS/TOs in a list, linking to display data structures etc. Usage counts? All kinds of nice things...
 	- Show a little warning if no template record was selected in _pi1...
-	- BUG: Moving a referenced element MOVES it from the original position!
 	- BUG: When remapping a TO it might loose the settings for the header sections!
+	- TypoScriptlib object: Field for entering object path.
 
 OTHER MODULES:
 - Management: Overview of Page Templates as set in the tree structure
