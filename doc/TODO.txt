@@ -106,6 +106,7 @@ GENERAL:
 		- rules class API
 		- DS / XML functions
 	- Reorganize functions, create a new class for commonly used functions, make CM1, MOD1, PI1 independent
+		-> apply design patterns & abstraction methods
 	- Enable multi language functions:
 		- Use FlexForms build-in possibilities (is already rendered right!) + possibility to exclude certain fields, eg. tt_content group fields
 		- For non-flexform elements, use future core language support:
@@ -122,6 +123,7 @@ RULES:
 	- Finish rule compliance check:
 		- braces [sub] (not finished)
 		- classes [class] (not started)
+	- Add solution commands to the status array: Everytime sth is against the rules, some command will be added which would make the page complying to that rule.
 
 WIZARDS & CLICK MENUS:
 	- Create new content wizard:
@@ -129,6 +131,7 @@ WIZARDS & CLICK MENUS:
 		- FEATURE: Quick-Click mode: Shows only the icons of content elements in a layer, like a clickmenu
 	- Create new page wizard:
 		- FEATURE: Ability to create new element based on t3d file (having dummy content or default nested stuff) -> Wait for Kasper
+		- it should be possible to disable the new page wizard at all
 	- Select Template CM: (NEW)
 		- FEATURE: Instead of having to edit the page header, provide a horizontal clickmenu for selecting DS/TO by clicking the TO icon.
 	- TypoScript Tool: (NEW)
@@ -138,6 +141,7 @@ WIZARDS & CLICK MENUS:
 PAGE MODULE:
 	- IDEA: Zoom into content elements / containers by clicking on titlebar / zoom icon.
 	- Provide an EXTMGM install option which allows either both page modules to be installed or only the new one overriding the old one.
+	- If page has no template object selected and no TO is inherited by other page, display message and create dialogue for selecting a template
 	- Recursivity handling:
 		- Prevent recursivity
 		- Warn for 1) recursivity, 2) reuse of same element, 3) elements outside of PID, 4) non-used elements, 5) If elements has references on other pages.

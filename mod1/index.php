@@ -35,44 +35,45 @@
  *
  *
  *  106: class tx_templavoila_module1 extends t3lib_SCbase 
- *  119:     function init()    
- *  129:     function menuConfig()	
- *  156:     function main()    
+ *  122:     function init()    
+ *  133:     function menuConfig()	
+ *  158:     function main()    
  *
  *              SECTION: Command functions
- *  256:     function cmd_createNewRecord ($parentRecord, $defVals='') 
- *  274:     function cmd_unlinkRecord ($unlinkRecord)
- *  286:     function cmd_pasteRecord ($pasteRecord) 
+ *  258:     function cmd_createNewRecord ($parentRecord, $defVals='') 
+ *  276:     function cmd_unlinkRecord ($unlinkRecord) 
+ *  288:     function cmd_pasteRecord ($pasteRecord) 
  *
  *              SECTION: Rendering functions
- *  304:     function renderEditPageScreen()    
- *  336:     function renderCreatePageScreen ($positionPid) 
- *  413:     function renderTemplateSelector ($positionPid, $templateType='tmplobj') 
+ *  308:     function renderEditPageScreen()    
+ *  342:     function renderCreatePageScreen ($positionPid) 
+ *  419:     function renderTemplateSelector ($positionPid, $templateType='tmplobj') 
  *
- *              SECTION: Framework rendering function(s)
- *  477:     function renderFrameWorkBasic($dsInfo,$parentPos='',$clipboardElInPath=0)
- *  626:     function renderNonUsed()	
- *  652:     function linkEdit($str,$table,$uid)	
- *  664:     function linkNew($str,$parentRecord)	
- *  676:     function linkUnlink($str,$unlinkRecord)
- *  689:     function linkPaste($str,$params,$target,$cmd)
- *  701:     function linkCopyCut($str,$parentPos,$cmd)
- *  710:     function printContent()    
+ *              SECTION: Framework rendering functions
+ *  483:     function renderFrameWork($dsInfo,$parentPos='',$clipboardElInPath=0)	
+ *  639:     function renderSheetMenu ($dsInfo, $sheet) 
+ *  686:     function renderNonUsed()	
+ *  712:     function linkEdit($str,$table,$uid)	
+ *  724:     function linkNew($str,$parentRecord)	
+ *  736:     function linkUnlink($str,$unlinkRecord)	
+ *  749:     function linkPaste($str,$params,$target,$cmd)	
+ *  761:     function linkCopyCut($str,$parentPos,$cmd)	
+ *  773:     function renderPreviewContent ($row, $table) 
+ *  839:     function checkRulesForElement ($table, $uid) 
+ *  848:     function printContent()    
  *
  *              SECTION: Processing
- *  731:     function createPage($pageArray,$positionPid)	
- *  764:     function createDefaultRecords ($table, $uid, $prevDS=-1, $level=0)	
- *  815:     function insertRecord($createNew,$row)	
- *  880:     function pasteRecord($pasteCmd, $target, $destination)	
+ *  869:     function createPage($pageArray,$positionPid)	
+ *  905:     function createDefaultRecords ($table, $uid, $prevDS=-1, $level=0)	
+ *  955:     function insertRecord($createNew,$row)	
+ * 1020:     function pasteRecord($pasteCmd, $target, $destination)	
  *
- *              SECTION: Structure and rules functions
- * 1076:     function getStorageFolderPid($positionPid)	
- * 1097:     function getDStreeForPage($table,$id,$prevRecList='',$row='')
- * 1173:     function renderPreviewContent ($row, $table) 
- * 1240:     function getExpandedDataStructure($table,$field,$row)	
- * 1271:     function checkRulesForElement ($table, $uid) 
+ *              SECTION: Structure functions
+ * 1216:     function getStorageFolderPid($positionPid)	
+ * 1237:     function getDStreeForPage($table,$id,$prevRecList='',$row='')	
+ * 1313:     function getExpandedDataStructure($table,$field,$row)	
  *
- * TOTAL FUNCTIONS: 26
+ * TOTAL FUNCTIONS: 27
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -97,7 +98,6 @@ require_once (t3lib_extMgm::extPath('templavoila').'class.tx_templavoila_rules.p
 	// Include class for management of the relations inside the FlexForm XML:
 require_once (t3lib_extMgm::extPath('templavoila').'class.tx_templavoila_xmlrelhndl.php');
 
-
 /**
  * Module 'Page' for the 'templavoila' extension.
  * 
@@ -109,11 +109,12 @@ require_once (t3lib_extMgm::extPath('templavoila').'class.tx_templavoila_xmlrelh
 class tx_templavoila_module1 extends t3lib_SCbase {
 	var $pageinfo;
 	var $rules;								// Holds an instance of the tx_templavoila_rule
+	var $renderFramework;					// Instance of tx_templavoila_renderframework
 	var $modTSconfig;
 	var $extKey = 'templavoila';			// Extension key of this module	
 	
 	var $global_tt_content_elementRegister=array();
-	var $elementBlacklist=array();			// Used in renderFrameWorkBasic (list of CEs causing errors)
+	var $elementBlacklist=array();			// Used in renderFrameWork (list of CEs causing errors)
 	
 	/**
 	 * Initialisation of this backend module
@@ -122,28 +123,27 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 */
 	function init()    {
 		parent::init();
-		$this->rules = t3lib_div::makeInstance('tx_templavoila_rules');
+		$this->rules = tx_templavoila_rules::getInstance();
+		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::GPvar('SET'), $this->MCONF['name']);		
 	}
-
+	
 	/**
-	 * Preparing menu content
+	 * Preparing menu content and initializing clipboard and module TSconfig
 	 * 
 	 * @return	void		
 	 */
 	function menuConfig()	{
 		global $LANG;
-		
+
 		$this->MOD_MENU = array(
 			'view' => array(
 				0 => $LANG->getLL('view_basic'),
-				1 => $LANG->getLL('view_fancy'),
-				2 => $LANG->getLL('view_tree')
 			),
 			'sheetData' => '',
 			'clip_parentPos' => '',
 			'clip' => '',
 		);
-		
+
 			// page/be_user TSconfig settings and blinding of menu-items
 		$this->modTSconfig = t3lib_BEfunc::getModTSconfig($this->id,'mod.'.$this->MCONF['name']);
 		$this->MOD_MENU['view'] = t3lib_BEfunc::unsetMenuItems($this->modTSconfig['properties'],$this->MOD_MENU['view'],'menu.function');
@@ -151,7 +151,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			// CLEANSE SETTINGS
 		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::GPvar('SET'), $this->MCONF['name']);
 	}
-	
+
 	/**
 	 * Main function of the module.
 	 * 
@@ -212,7 +212,6 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			
 				// Show the "edit current page" dialog
 			$this->content.=$this->renderEditPageScreen ();
-			$this->content.='<br />'.t3lib_BEfunc::getFuncMenu($this->id,'SET[view]',$this->MOD_SETTINGS['view'],$this->MOD_MENU['view'],'','');
 
 			if ($BE_USER->mayMakeShortcut()) {
 				$this->content.='<br /><br />'.$this->doc->makeShortcutIcon('id',implode(',',array_keys($this->MOD_MENU)),$this->MCONF['name']);
@@ -240,15 +239,17 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		}
 		$this->content.=$this->doc->endPage();	
 	}
+
+	
 	
 	
 	
 	/*******************************************
-	 *
+	 * 
 	 * Command functions
-	 *
-	 ******************************************/
-
+	 * 
+	 *******************************************/
+	 
 	/**
 	 * Initiates processing for creating a new record.
 	 *
@@ -292,8 +293,10 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		header('Location: '.t3lib_div::locationHeaderUrl('index.php?id='.$this->id));
 	}
 
-
-
+	
+	
+	
+	
 	/********************************************
 	 *
 	 * Rendering functions
@@ -323,7 +326,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		$clipboardElInPath = (!trim($this->MOD_SETTINGS['clip'].$this->MOD_SETTINGS['clip_parentPos']) ? 1 : 0);
 			// Display the nested page structure:
 		$this->elementBlacklist=array ();
-		$content.=$this->renderFrameworkBasic($dsInfo,'',$clipboardElInPath);
+		$content.=$this->renderFramework($dsInfo,'',$clipboardElInPath);
 			// Display elements not used in the page structure (has to be done differently)
 		$content.=$this->renderNonUsed();
 			// Display (debug) the element counts on the page (has to be done differently)		
@@ -466,28 +469,168 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	
 	/********************************************
 	 *
-	 * Framework rendering function(s)
+	 * Framework rendering functions
 	 *
 	 ********************************************/
 
 	/**
-	 * Renders the "basic" display framework.
+	 * Renders the display framework.
 	 * Calls itself recursively
 	 * 
-	 * @param	array		DataStructure info array (the whole tree)
-	 * @param	string		Pointer to parent element: table, id, sheet, fieldname, counter (position in list)
-	 * @param	boolean		Tells whether any element registered on the clipboard is found in the current "path" of the recursion. If true, it normally means that no paste-in symbols are shown since elements are not allowed to be pasted/referenced to a position within themselves (would result in recursion).
+	 * @param	array		$dsInfo: DataStructure info array (the whole tree)
+	 * @param	string		$parentPos: Pointer to parent element: table, id, sheet, fieldname, counter (position in list)
+	 * @param	boolean		$clipboardElInPath: Tells whether any element registered on the clipboard is found in the current "path" of the recursion. If true, it normally means that no paste-in symbols are shown since elements are not allowed to be pasted/referenced to a position within themselves (would result in recursion).
 	 * @return	string		HTML
 	 */
-	function renderFrameWorkBasic($dsInfo,$parentPos='',$clipboardElInPath=0)	{
+	function renderFrameWork($dsInfo,$parentPos='',$clipboardElInPath=0)	{
 		global $LANG;
 		
-			// Setting the sheet ID:
+			// Setting the sheet ID and render sheet menu:
 		$sheet=isset($dsInfo['sub'][$this->MOD_SETTINGS['sheetData']]) ? $this->MOD_SETTINGS['sheetData'] : 'sDEF';
+		$sheetMenu = $this->renderSheetMenu($dsInfo, $sheet);
 		
-			// Make sheet menu:
-			// Design-wise this will change most likely. And we also need to do a proper registration of the sheets since it only 
-			// works for the page at this point - not content elements deeper in the structure.
+			// The $isLocal flag is used to denote whether an element belongs to the current page or not. If NOT the $isLocal flag means (for instance) that the title bar will be colored differently to show users that this is a foreign element not from this page.
+		$isLocal = $dsInfo['el']['table']=='pages' || $dsInfo['el']['pid']==$this->id;	// Pages should be seem as local...
+
+			// Setting whether the current element is registered for copy/cut/reference:
+		$clipActive_copy = ($this->MOD_SETTINGS['clip']=='copy' && $this->MOD_SETTINGS['clip_parentPos']==$parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].'/'.$isLocal ? '_h' : '');
+		$clipActive_cut = ($this->MOD_SETTINGS['clip']=='cut' && $this->MOD_SETTINGS['clip_parentPos']==$parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].'/'.$isLocal ? '_h' : '');
+		$clipActive_ref = ($this->MOD_SETTINGS['clip']=='ref' && $this->MOD_SETTINGS['clip_parentPos']==$parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].'/'.$isLocal ? '_h' : '');
+		$clipboardElInPath = trim($clipActive_copy.$clipActive_cut.$clipActive_ref)||$clipboardElInPath?1:0;
+
+			// Setting additional information to the title-attribute of the element icon:
+		$extPath = '';
+		if (!$isLocal)	{
+			$extPath = ' - '.$LANG->getLL('path').': '.t3lib_BEfunc::getRecordPath($dsInfo['el']['pid'],$this->perms_clause,30);
+		}
+
+		$rulesStatus = $this->checkRulesForElement($dsInfo['el']['table'], $dsInfo['el']['id']);		
+		if (is_array($rulesStatus['error'])) {
+			foreach ($rulesStatus['error'] as $errorElement) {
+				$this->elementBlacklist[$errorElement['uid']]['position'] = $errorElement['position'];
+				$this->elementBlacklist[$errorElement['uid']]['message'] = $errorElement['message'];
+			}
+		}
+
+			// Traversing the content areas ("zones" - those shown side-by-side with dotted lines in module) of the current element.
+			// This part will be skipped, if we're already on the element level, ie. it will be only active if we currently parse an element with sub-elements
+		$cells=array();
+		$headerCells=array();
+		if (is_array($dsInfo['sub'][$sheet]))	{
+			foreach($dsInfo['sub'][$sheet] as $fieldID => $fieldContent)	{
+				$counter=0;
+
+					// "New" and "Paste" icon:
+				$elList = '';
+				$elList.=$this->linkNew('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/new_el.gif','').' align="absmiddle" vspace="5" border="0" title="'.$LANG->getLL ('createnewrecord').'" alt="" />',$dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$fieldID.':'.$counter); 
+				if (!$clipboardElInPath) { $elList.=$this->linkPaste('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/clip_pasteafter.gif','').' align="absmiddle" vspace="5" border="0" title="'.$LANG->getLL ('pasterecord').'" alt="" />',$dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$fieldID.':'.$counter,$this->MOD_SETTINGS['clip_parentPos'],$this->MOD_SETTINGS['clip']); }
+					// Render the list of elements (and possibly call itself recursively if needed):
+    			if (is_array($fieldContent['el_list']))	
+
+					foreach($fieldContent['el_list'] as $counter => $k)	
+
+						$v = $fieldContent['el'][$k]
+
+						$elList.=$this->renderFrameWork($v,$dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$fieldID.':'.$counter,$clipboardElInPath)
+
+
+
+
+
+							// "New" and "Paste" icon:
+						$elList.=$this->linkNew('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/new_el.gif','').' align="absmiddle" vspace="5" border="0" title="'.$LANG->getLL ('createnewrecord').'" alt="" />',$dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$fieldID.':'.$counter);
+						if (!$clipboardElInPath)	$elList.=$this->linkPaste('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/clip_pasteafter.gif','').' align="absmiddle" vspace="5" border="0" title="'.$LANG->getLL ('pasterecord').'" alt="" />',$dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$fieldID.':'.$counter,$this->MOD_SETTINGS['clip_parentPos'],$this->MOD_SETTINGS['clip']);
+					}
+				}
+
+					// Add cell content to registers:
+				$headerCells[]='<td valign="top" width="'.round(100/count($dsInfo['sub'][$sheet])).'%" style="'.$elementCETitlebarStyle.'">'.$GLOBALS['LANG']->sL($fieldContent['meta']['title'],1).'</td>';
+				$cells[]='<td valign="top" width="'.round(100/count($dsInfo['sub'][$sheet])).'%" style="border: dashed 1px #666666; padding: 5px 5px 5px 5px;">'.$elList.'</td>';
+			}
+		}
+
+			// Compile preview content for the current element:
+		$content=is_array($dsInfo['el']['previewContent']) ? implode('<br />', $dsInfo['el']['previewContent']) : '';
+			// Compile the content areas for the current element (basically what was put together above):
+		$content.= '<table border="0" cellpadding="2" cellspacing="2" width="100%">
+			<tr>'.implode('',$headerCells).'</tr>
+			<tr>'.implode('',$cells).'</tr>
+		</table>';
+		
+			// Evaluating the rules and set colors to warning scheme if a rule does not apply
+		$elementBackgroundStyle = '';
+		$elementPageTitlebarStyle = 'background-color: '.($dsInfo['el']['table']=='pages' ? $this->doc->bgColor2 : ($isLocal ? $this->doc->bgColor5 : $this->doc->bgColor6)) .';';
+		$elementCETitlebarStyle = 'background-color: '.$this->doc->bgColor4.';';
+		$errorLineBefore = $errorLineAfter = '';
+		switch ($this->elementBlacklist[$dsInfo['el']['id']]['position']) {
+			case 1:
+				$elementBackgroundStyle = 'background-color: '. ($GLOBALS['TBE_STYLES']['templavoila_bgColorWarning'] ? $GLOBALS['TBE_STYLES']['templavoila_bgColorWarning']:'#f4b0b0') .';';
+				$elementPageTitlebarStyle = 'background-color: '. ($GLOBALS['TBE_STYLES']['templavoila_bgColorPageTitleWarning'] ? $GLOBALS['TBE_STYLES']['templavoila_bgColorPageTitleWarning']:'#ef4545') .';';
+				$elementCETitlebarStyle = 'background-color: '. ($GLOBALS['TBE_STYLES']['templavoila_bgColorCETitleWarning'] ? $GLOBALS['TBE_STYLES']['templavoila_bgColorCETitleWarning']:'#ef7c7c') .';';
+				$errorLineWithin = $this->doc->rfw($this->elementBlacklist[$dsInfo['el']['id']]['message']).'<br />';
+				break;
+			case -1:
+				$errorLineBefore = $this->doc->rfw($this->elementBlacklist[$dsInfo['el']['id']]['message']).'<br />';
+				break;
+			case 2:
+				$errorLineAfter = $this->doc->rfw($this->elementBlacklist[$dsInfo['el']['id']]['message']).'<br />';
+			default:
+		}
+			// Creating the rule compliance icon, $rulesStatus has been evaluated earlier
+		if (!is_null($rulesStatus['ok'])) {
+			$title = ($rulesStatus['ok'] === true ? $LANG->getLL ('ruleapplies') : $LANG->getLL ('rulefails'));
+			$showRuleIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,t3lib_extMgm::extRelPath('templavoila').'mod1/'.($rulesStatus['ok'] === true ? 'green':'red').'led.gif','').' title="'.$title.'" border="0" alt="" align="absmiddle" />&nbsp;';
+		}
+		
+			// Put together the records icon including content sensitive menu link wrapped around it:
+		$recordIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,$dsInfo['el']['icon'],'').' align="absmiddle" width="18" height="16" border="0" title="'.htmlspecialchars('['.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].']'.$extPath).'" alt="" title="" />';
+		$recordIcon = $this->doc->wrapClickMenuOnIcon($recordIcon,$dsInfo['el']['table'],$dsInfo['el']['id']);
+				
+		$linkCopy = '';
+		$linkCut = '';
+		$linkRef = '';
+		$linkUnlink = '';
+		if ($dsInfo['el']['table']!='pages')	{
+			$linkCopy = $isLocal ? $this->linkCopyCut('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/clip_copy'.$clipActive_copy.'.gif','').' title="'.$LANG->getLL ('copyrecord').'" border="0" alt="" />',($clipActive_copy ? '' : $parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].'/'.$isLocal),'copy') : '';
+			$linkCut = $this->linkCopyCut('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/clip_cut'.$clipActive_cut.'.gif','').' title="'.$LANG->getLL ('cutrecord').'" border="0" alt="" />',($clipActive_cut ? '' : $parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].'/'.$isLocal),'cut');
+			$linkRef = $this->linkCopyCut('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,t3lib_extMgm::extRelPath('templavoila').'mod1/clip_ref'.$clipActive_ref.'.gif','').' title="'.$LANG->getLL ('createreference').'" border="0" alt="" />',($clipActive_ref ? '' : $parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].'/'.$isLocal),'ref');
+			$linkUnlink = $this->linkUnlink('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/garbage.gif','').' title="'.$LANG->getLL($isLocal ? 'deleteRecord' : 'unlinkRecord').'" border="0" alt="" />', $parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].'/'.$isLocal, $isLocal);
+		} else {
+			$viewPageIcon = '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::viewOnClick($dsInfo['el']['id'],$this->doc->backPath,t3lib_BEfunc::BEgetRootLine($dsInfo['el']['id']))).'">'.
+				'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/zoom.gif','width="12" height="12"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showPage',1).'" hspace="3" alt="" align="absmiddle" />'.
+				'</a>';
+		}		
+		
+ 		$content = $sheetMenu . $errorLineBefore . '
+		<table border="0" cellpadding="2" cellspacing="0" style="border: 1px solid black; margin-bottom:5px; '.$elementBackgroundStyle.'" width="100%">
+			<tr style="'.$elementPageTitlebarStyle.';">
+				<td>'.$showRuleIcon.$recordIcon.$viewPageIcon.'&nbsp;'.($isLocal?'':'<em>').$GLOBALS['LANG']->sL($dsInfo['el']['title'],1).($isLocal?'':'</em>'). '</td>
+				<td nowrap="nowrap" align="right" valign="top">'.
+					$linkCopy.
+					$linkCut.
+					$linkRef.
+					$linkUnlink.
+					($isLocal ? $this->linkEdit('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/edit2.gif','').' title="'.$LANG->getLL ('editrecord').'" border="0" alt="" />',$dsInfo['el']['table'],$dsInfo['el']['id']) : '').
+				'</td>
+			</tr>
+			<tr><td colspan="2">'.$content.($errorLineWithin ? '<br />'.$errorLineWithin : '').'</td></tr>
+		</table>
+		'.$errorLineAfter.'
+		';
+		
+		return $content;
+	}	
+	
+	/**
+	 * Render sheet menu:
+	 * Design-wise this will change most likely. And we also need to do a proper registration of the sheets since it only 
+	 * works for the page at this point - not content elements deeper in the structure.
+	 * 
+	 * @param	array		$dsInfo: Datastructure containing the sheet information
+	 * @param	string		$sheet:
+	 * @return	string		HTML
+	 */
+	function renderSheetMenu ($dsInfo, $sheet) {
 		$sheetMenu='';
 		if (is_array($dsInfo['sub']))	{
 			if (count($dsInfo['sub'])>1 || !isset($dsInfo['sub']['sDEF']))	{
@@ -525,135 +668,9 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				$sheetMenu = '<table cellpadding="0" cellspacing="0" border="0" style="padding-left: 3px; padding-right: 3px;"><tr>'.$sheetMenu.'</tr></table>';
 			}
 		}
-		
-			// The $isLocal flag is used to denote whether an element belongs to the current page or not. If NOT the $isLocal flag means (for instance) that the title bar will be colored differently to show users that this is a foreign element not from this page.
-		$isLocal = $dsInfo['el']['table']=='pages' || $dsInfo['el']['pid']==$this->id;	// Pages should be seem as local...
-
-			// Setting whether the current element is registered for copy/cut/reference:
-		$clipActive_copy = ($this->MOD_SETTINGS['clip']=='copy' && $this->MOD_SETTINGS['clip_parentPos']==$parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].'/'.$isLocal ? '_h' : '');
-		$clipActive_cut = ($this->MOD_SETTINGS['clip']=='cut' && $this->MOD_SETTINGS['clip_parentPos']==$parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].'/'.$isLocal ? '_h' : '');
-		$clipActive_ref = ($this->MOD_SETTINGS['clip']=='ref' && $this->MOD_SETTINGS['clip_parentPos']==$parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].'/'.$isLocal ? '_h' : '');
-		$clipboardElInPath = trim($clipActive_copy.$clipActive_cut.$clipActive_ref)||$clipboardElInPath?1:0;
-
-			// Setting additional information to the title-attribute of the element icon:
-		$extPath = '';
-		if (!$isLocal)	{
-			$extPath = ' - PATH: '.t3lib_BEfunc::getRecordPath($dsInfo['el']['pid'],$this->perms_clause,30);
-		}
-
-			// Evaluating the rules and set colors to warning scheme if a rule does not apply
-		$elementBackgroundStyle = '';
-		$elementPageTitlebarStyle = 'background-color: '.($dsInfo['el']['table']=='pages' ? $this->doc->bgColor2 : ($isLocal ? $this->doc->bgColor5 : $this->doc->bgColor6)) .';';
-		$elementCETitlebarStyle = 'background-color: '.$this->doc->bgColor4.'; padding-top: 0px; padding-bottom: 0px;';
-		$errorLineBefore = $errorLineAfter = '';
-
-		$rulesStatus = $this->checkRulesForElement($dsInfo['el']['table'], $dsInfo['el']['id']);
-#debug ($rulesStatus,'rulesStatus',__LINE__,__FILE__,10);
-		if (is_array($rulesStatus['error'])) {
-			foreach ($rulesStatus['error'] as $errorElement) {
-				$this->elementBlacklist[$errorElement['uid']]['position'] = $errorElement['position'];
-				$this->elementBlacklist[$errorElement['uid']]['message'] = $errorElement['message'];
-			}
-		}
-#debug ($this->elementBlacklist,'elementBlacklist');	
-
-		switch ($this->elementBlacklist[$dsInfo['el']['id']]['position']) {
-			case 1:
-				$elementBackgroundStyle = 'background-color: '. ($GLOBALS['TBE_STYLES']['templavoila_bgColorWarning'] ? $GLOBALS['TBE_STYLES']['templavoila_bgColorWarning']:'#f4b0b0') .';';
-				$elementPageTitlebarStyle = 'background-color: '. ($GLOBALS['TBE_STYLES']['templavoila_bgColorPageTitleWarning'] ? $GLOBALS['TBE_STYLES']['templavoila_bgColorPageTitleWarning']:'#ef4545') .';';
-				$elementCETitlebarStyle = 'background-color: '. ($GLOBALS['TBE_STYLES']['templavoila_bgColorCETitleWarning'] ? $GLOBALS['TBE_STYLES']['templavoila_bgColorCETitleWarning']:'#ef7c7c') .';';
-				$errorLineWithin = $this->doc->rfw($this->elementBlacklist[$dsInfo['el']['id']]['message']).'<br >';
-				break;
-			case -1:
-				$errorLineBefore = $this->doc->rfw($this->elementBlacklist[$dsInfo['el']['id']]['message']).'<br >';
-				break;
-			case 2:
-				$errorLineAfter = $this->doc->rfw($this->elementBlacklist[$dsInfo['el']['id']]['message']).'<br >';
-			default:
-		}
-
-			// Traversing the content areas ("zones" - those shown side-by-side with dotted lines in module) of the current element:
-		$cells=array();
-		$headerCells=array();
-		if (is_array($dsInfo['sub'][$sheet]))	{
-			foreach($dsInfo['sub'][$sheet] as $fieldID => $fieldContent)	{
-				$counter=0;
-
-					// "New" and "Paste" icon:
-				$elList=$this->linkNew('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/new_el.gif','').' align="absmiddle" vspace="5" border="0" title="'.$LANG->getLL ('createnewrecord').'" alt="" />',$dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$fieldID.':'.$counter);
-				if (!$clipboardElInPath)	$elList.=$this->linkPaste('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/clip_pasteafter.gif','').' align="absmiddle" vspace="5" border="0" title="'.$LANG->getLL ('pasterecord').'" alt="" />',$dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$fieldID.':'.$counter,$this->MOD_SETTINGS['clip_parentPos'],$this->MOD_SETTINGS['clip']);
-
-					// Render the list of elements (and possibly call itself recursively if needed):
-    			if (is_array($fieldContent['el_list']))	{
-					foreach($fieldContent['el_list'] as $counter => $k)	{
-						$v = $fieldContent['el'][$k];
-						$elList.=$this->renderFrameWorkBasic($v,$dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$fieldID.':'.$counter,$clipboardElInPath);
-
-							// "New" and "Paste" icon:
-						$elList.=$this->linkNew('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/new_el.gif','').' align="absmiddle" vspace="5" border="0" title="'.$LANG->getLL ('createnewrecord').'" alt="" />',$dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$fieldID.':'.$counter);
-						if (!$clipboardElInPath)	$elList.=$this->linkPaste('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/clip_pasteafter.gif','').' align="absmiddle" vspace="5" border="0" title="'.$LANG->getLL ('pasterecord').'" alt="" />',$dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$fieldID.':'.$counter,$this->MOD_SETTINGS['clip_parentPos'],$this->MOD_SETTINGS['clip']);
-					}
-				}
-
-					// Add cell content to registers:
-				$headerCells[]='<td valign="top" width="'.round(100/count($dsInfo['sub'][$sheet])).'%" style="'.$elementCETitlebarStyle.'">'.$GLOBALS['LANG']->sL($fieldContent['meta']['title'],1).'</td>';
-				$cells[]='<td valign="top" width="'.round(100/count($dsInfo['sub'][$sheet])).'%" style="border: dashed 1px #666666; padding: 5px 5px 5px 5px;">'.$elList.'</td>';
-			}
-		}
-
-			// Compile preview content for the current element:
-		$content=is_array($dsInfo['el']['previewContent']) ? implode('<br />', $dsInfo['el']['previewContent']) : '';
-			// Compile the content areas for the current element (basically what was put together above):
-		$content.= '<table border="0" cellpadding="2" cellspacing="2" width="100%">
-			<tr>'.implode('',$headerCells).'</tr>
-			<tr>'.implode('',$cells).'</tr>
-		</table>';
-
-			// Creating the rule compliance icon, $rulesStatus has been evaluated earlier
-		if (!is_null($rulesStatus['ok'])) {
-			$title = ($rulesStatus['ok'] === true ? $LANG->getLL ('ruleapplies') : $LANG->getLL ('rulefails'));
-			$showRuleIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,t3lib_extMgm::extRelPath('templavoila').'mod1/'.($rulesStatus['ok'] === true ? 'green':'red').'led.gif','').' title="'.$title.'" border="0" alt="" align="absmiddle" />&nbsp;';
-		}
-		
-			// Put together the records icon including content sensitive menu link wrapped around it:
-		$recordIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,$dsInfo['el']['icon'],'').' align="absmiddle" width="18" height="16" border="0" title="'.htmlspecialchars('['.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].']'.$extPath).'" alt="" title="" />';
-		$recordIcon = $this->doc->wrapClickMenuOnIcon($recordIcon,$dsInfo['el']['table'],$dsInfo['el']['id']);
-				
-		if ($dsInfo['el']['table']!='pages')	{
-			$linkCopy = $isLocal ? $this->linkCopyCut('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/clip_copy'.$clipActive_copy.'.gif','').' title="'.$LANG->getLL ('copyrecord').'" border="0" alt="" />',($clipActive_copy ? '' : $parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].'/'.$isLocal),'copy') : '';
-			$linkCut = $this->linkCopyCut('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/clip_cut'.$clipActive_cut.'.gif','').' title="'.$LANG->getLL ('cutrecord').'" border="0" alt="" />',($clipActive_cut ? '' : $parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].'/'.$isLocal),'cut');
-			$linkRef = $this->linkCopyCut('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,t3lib_extMgm::extRelPath('templavoila').'mod1/clip_ref'.$clipActive_ref.'.gif','').' title="'.$LANG->getLL ('createreference').'" border="0" alt="" />',($clipActive_ref ? '' : $parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].'/'.$isLocal),'ref');
-			$linkUnlink = $this->linkUnlink('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/garbage.gif','').' title="'.$LANG->getLL($isLocal ? 'deleteRecord' : 'unlinkRecord').'" border="0" alt="" />', $parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].'/'.$isLocal, $isLocal);
-		} else {
-			$linkCopy = '';
-			$linkCut = '';
-			$linkRef = '';
-			$linkUnlink = '';
-			$viewPageIcon = '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::viewOnClick($dsInfo['el']['id'],$this->doc->backPath,t3lib_BEfunc::BEgetRootLine($dsInfo['el']['id']))).'">'.
-				'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/zoom.gif','width="12" height="12"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showPage',1).'" hspace="3" alt="" align="absmiddle" />'.
-				'</a>';
-		}
-
-		$content = $sheetMenu . $errorLineBefore . '
-		<table border="0" cellpadding="2" cellspacing="0" style="border: 1px solid black; margin-bottom:5px; '.$elementBackgroundStyle.'" width="100%">
-			<tr style="'.$elementPageTitlebarStyle.';">
-				<td>'.$showRuleIcon.$recordIcon.$viewPageIcon.'&nbsp;'.($isLocal?'':'<em>').$GLOBALS['LANG']->sL($dsInfo['el']['title'],1).($isLocal?'':'</em>'). '</td>
-				<td nowrap="nowrap" align="right" valign="top">'.
-					$linkCopy.
-					$linkCut.
-					$linkRef.
-					$linkUnlink.
-					($isLocal ? $this->linkEdit('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/edit2.gif','').' title="'.$LANG->getLL ('editrecord').'" border="0" alt="" />',$dsInfo['el']['table'],$dsInfo['el']['id']) : '').
-				'</td>
-			</tr>
-			<tr><td colspan="2">'.$content.'</td></tr>
-		</table>
-		'.$errorLineAfter.'
-		';
-		
-		return $content;
+		return $sheetMenu;
 	}
-
+	
 	/**
 	 * Displays a list of local content elements on the page which were NOT used in the hierarchical structure of the page.
 	 * 
@@ -743,6 +760,84 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	}
 
 	/**
+	 * Returns an HTMLized preview of a certain content element. If you'd like to register a new content type, you can easily extend
+	 * this function before the switch clause. Set $alreadyHandled if you provided a preview content.
+	 * 
+	 * @param	array		$row: The row containing the content element record; especially $row['CType'] and $row['bodytext'] are used.
+	 * @param	string		$table: Name of the CType's MySQL table
+	 * @return	string		HTML preview content
+	 */
+	function renderPreviewContent ($row, $table) {
+		
+			// Preview content for non-flexible content elements:
+		switch($row['CType'])	{
+			case 'text':		//	Text	
+			case 'table':		//	Table
+			case 'mailform':	//	Form
+				$out='<strong>'.$GLOBALS['LANG']->sL(t3lib_BEfunc::getItemLabel('tt_content','bodytext'),1).'</strong> '.$this->linkEdit(htmlspecialchars(t3lib_div::fixed_lgd(trim(strip_tags($row['bodytext'])),200)),$table,$row['uid']);
+				break;
+			case 'image':		//	Image
+				$out='<strong>'.$GLOBALS['LANG']->sL(t3lib_BEfunc::getItemLabel('tt_content','image'),1).'</strong><br /> '.t3lib_BEfunc::thumbCode ($row, $table, 'image', $this->doc->backPath, '', $v['TCEforms']['config']['uploadfolder']);
+				break;
+			case 'textpic':		//	Text w/image
+			case 'splash':		//	Textbox
+				$thumbnail = '<strong>'.$GLOBALS['LANG']->sL(t3lib_BEfunc::getItemLabel('tt_content','image'),1).'</strong><br />';
+				$thumbnail .= t3lib_BEfunc::thumbCode ($row, $table, 'image', $this->doc->backPath, '', $v['TCEforms']['config']['uploadfolder']);
+				$text = '<strong>'.$GLOBALS['LANG']->sL(t3lib_BEfunc::getItemLabel('tt_content','bodytext'),1).'</strong> ' . $this->linkEdit(htmlspecialchars(t3lib_div::fixed_lgd(trim(strip_tags($row['bodytext'])),200)),$table,$row['uid']);
+				$out='<table><tr><td valign="top">'.$text.'</td><td valign="top">'.$thumbnail.'</td></tr></table>';
+				break;
+			case 'bullets':		//	Bullets
+				$htmlBullets = '';
+				$bulletsArr = explode ("\n", t3lib_div::fixed_lgd($row['bodytext'],200));
+				if (is_array ($bulletsArr)) {
+					foreach ($bulletsArr as $listItem) {
+						$htmlBullets .= htmlspecialchars(trim(strip_tags($listItem))).'<br />';
+					}
+				}					
+				$out='<strong>'.$GLOBALS['LANG']->sL(t3lib_BEfunc::getItemLabel('tt_content','bodytext'),1).'</strong><br />'.$this->linkEdit($htmlBullets,$table,$row['uid']);
+				break;
+			case 'uploads':		//	Filelinks
+				$out='<strong>'.$GLOBALS['LANG']->sL(t3lib_BEfunc::getItemLabel('tt_content','media'),1).'</strong><br />' . $this->linkEdit(str_replace (',','<br />',htmlspecialchars(t3lib_div::fixed_lgd(trim(strip_tags($row['media'])),200))),$table,$row['uid']);
+				break;
+			case 'multimedia':	//	Multimedia
+				$out='<strong>'.$GLOBALS['LANG']->sL(t3lib_BEfunc::getItemLabel('tt_content','multimedia'),1).'</strong><br />' . $this->linkEdit (str_replace (',','<br />',htmlspecialchars(t3lib_div::fixed_lgd(trim(strip_tags($row['multimedia'])),200))),$table,$row['uid']);
+				break;
+			case 'menu':		//	Menu / Sitemap
+				$out='<strong>'.$GLOBALS['LANG']->sL(t3lib_BEfunc::getItemLabel('tt_content','menu_type')).'</strong> '.$GLOBALS['LANG']->sL(t3lib_BEfunc::getLabelFromItemlist('tt_content','menu_type',$row['menu_type'])).'<br />'.
+					'<strong>'.$GLOBALS['LANG']->sL(t3lib_BEfunc::getItemLabel('tt_content','pages')).'</strong> '.$row['pages'];
+				break;
+			case 'list':		//	Insert Plugin
+				$out='<strong>'.$GLOBALS['LANG']->sL(t3lib_BEfunc::getItemLabel('tt_content','list_type')).'</strong> '.$this->linkEdit(htmlspecialchars($GLOBALS['LANG']->sL(t3lib_BEfunc::getLabelFromItemlist('tt_content','menu_type',$row['list_type'])).' '.$row['list_type']),$table,$row['uid']);
+				break;
+			case 'html':		//	HTML
+				$out='<strong>'.$GLOBALS['LANG']->sL(t3lib_BEfunc::getItemLabel('tt_content','bodytext'),1).'</strong> '.$this->linkEdit (htmlspecialchars(t3lib_div::fixed_lgd(trim($row['bodytext']),200)),$table,$row['uid']);
+				break;
+			case 'search':		//	Search Box
+			case 'login':		//	Login Box
+			case 'shortcut':	//	Insert records
+			case 'div':			//	Divider
+				break;
+			default:
+				if (!$alreadyHandled) {
+						// return CType name for unhandled CType
+					$out='<strong>'.htmlspecialchars ($row['CType']).'</strong>';
+				}
+		}
+		return $out;
+	}
+
+	/**
+	 * Checks if an element's children comply with the rules
+	 * 
+	 * @param	string		The content element's table
+	 * @param	integer		The element's uid
+	 * @return	array		
+	 */
+	 function checkRulesForElement ($table, $uid) {	 	
+		return $this->rules->evaluateRulesForElement ($table, $uid);
+	 }
+
+	/**
 	 * Prints out the module HTML
 	 * 
 	 * @return	void		
@@ -794,7 +889,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * Creates default records which are defined in the datastructure's rules scheme. The property in the DS is called "ruleDefaultElements"
 	 * and consists of elements only (instead of a real regular expression)! I.e. if your regular expression is like this: "(ab){2}c", it makes
 	 * sense having ruleDefaultElements contain this list of elements: "ababc".
-	 *
+	 * 
 	 * Calls itself recursively.
 	 *
 	 * @param	string		$table: The table, usually "pages" or "tt_content"
@@ -887,7 +982,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 	/********************************************
 	 *
-	 * Structure and rules functions
+	 * Structure functions
 	 *
 	 ********************************************/
 
@@ -988,73 +1083,6 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		}
 		return $tree;
 	}
-
-	/**
-	 * Returns an HTMLized preview of a certain content element. If you'd like to register a new content type, you can easily extend
-	 * this function before the switch clause. Set $alreadyHandled if you provided a preview content.
-	 * 
-	 * @param	array		$row: The row containing the content element record; especially $row['CType'] and $row['bodytext'] are used.
-	 * @param	string		$table: Name of the CType's MySQL table
-	 * @return	string		HTML preview content
-	 */
-	function renderPreviewContent ($row, $table) {
-		
-			// Preview content for non-flexible content elements:
-		switch($row['CType'])	{
-			case 'text':		//	Text	
-			case 'table':		//	Table
-			case 'mailform':	//	Form
-				$out='<strong>'.$GLOBALS['LANG']->sL(t3lib_BEfunc::getItemLabel('tt_content','bodytext'),1).'</strong> '.$this->linkEdit(htmlspecialchars(t3lib_div::fixed_lgd(trim(strip_tags($row['bodytext'])),200)),$table,$row['uid']);
-				break;
-			case 'image':		//	Image
-				$out='<strong>'.$GLOBALS['LANG']->sL(t3lib_BEfunc::getItemLabel('tt_content','image'),1).'</strong><br /> '.t3lib_BEfunc::thumbCode ($row, $table, 'image', $this->doc->backPath, '', $v['TCEforms']['config']['uploadfolder']);
-				break;
-			case 'textpic':		//	Text w/image
-			case 'splash':		//	Textbox
-				$thumbnail = '<strong>'.$GLOBALS['LANG']->sL(t3lib_BEfunc::getItemLabel('tt_content','image'),1).'</strong><br />';
-				$thumbnail .= t3lib_BEfunc::thumbCode ($row, $table, 'image', $this->doc->backPath, '', $v['TCEforms']['config']['uploadfolder']);
-				$text = '<strong>'.$GLOBALS['LANG']->sL(t3lib_BEfunc::getItemLabel('tt_content','bodytext'),1).'</strong> ' . $this->linkEdit(htmlspecialchars(t3lib_div::fixed_lgd(trim(strip_tags($row['bodytext'])),200)),$table,$row['uid']);
-				$out='<table><tr><td valign="top">'.$text.'</td><td valign="top">'.$thumbnail.'</td></tr></table>';
-				break;
-			case 'bullets':		//	Bullets
-				$htmlBullets = '';
-				$bulletsArr = explode ("\n", t3lib_div::fixed_lgd($row['bodytext'],200));
-				if (is_array ($bulletsArr)) {
-					foreach ($bulletsArr as $listItem) {
-						$htmlBullets .= htmlspecialchars(trim(strip_tags($listItem))).'<br />';
-					}
-				}					
-				$out='<strong>'.$GLOBALS['LANG']->sL(t3lib_BEfunc::getItemLabel('tt_content','bodytext'),1).'</strong><br />'.$this->linkEdit($htmlBullets,$table,$row['uid']);
-				break;
-			case 'uploads':		//	Filelinks
-				$out='<strong>'.$GLOBALS['LANG']->sL(t3lib_BEfunc::getItemLabel('tt_content','media'),1).'</strong><br />' . $this->linkEdit(str_replace (',','<br />',htmlspecialchars(t3lib_div::fixed_lgd(trim(strip_tags($row['media'])),200))),$table,$row['uid']);
-				break;
-			case 'multimedia':	//	Multimedia
-				$out='<strong>'.$GLOBALS['LANG']->sL(t3lib_BEfunc::getItemLabel('tt_content','multimedia'),1).'</strong><br />' . $this->linkEdit (str_replace (',','<br />',htmlspecialchars(t3lib_div::fixed_lgd(trim(strip_tags($row['multimedia'])),200))),$table,$row['uid']);
-				break;
-			case 'menu':		//	Menu / Sitemap
-				$out='<strong>'.$GLOBALS['LANG']->sL(t3lib_BEfunc::getItemLabel('tt_content','menu_type')).'</strong> '.$GLOBALS['LANG']->sL(t3lib_BEfunc::getLabelFromItemlist('tt_content','menu_type',$row['menu_type'])).'<br />'.
-					'<strong>'.$GLOBALS['LANG']->sL(t3lib_BEfunc::getItemLabel('tt_content','pages')).'</strong> '.$row['pages'];
-				break;
-			case 'list':		//	Insert Plugin
-				$out='<strong>'.$GLOBALS['LANG']->sL(t3lib_BEfunc::getItemLabel('tt_content','list_type')).'</strong> '.$this->linkEdit(htmlspecialchars($GLOBALS['LANG']->sL(t3lib_BEfunc::getLabelFromItemlist('tt_content','menu_type',$row['list_type'])).' '.$row['list_type']),$table,$row['uid']);
-				break;
-			case 'html':		//	HTML
-				$out='<strong>'.$GLOBALS['LANG']->sL(t3lib_BEfunc::getItemLabel('tt_content','bodytext'),1).'</strong> '.$this->linkEdit (htmlspecialchars(t3lib_div::fixed_lgd(trim($row['bodytext']),200)),$table,$row['uid']);
-				break;
-			case 'search':		//	Search Box
-			case 'login':		//	Login Box
-			case 'shortcut':	//	Insert records
-			case 'div':			//	Divider
-				break;
-			default:
-				if (!$alreadyHandled) {
-						// return CType name for unhandled CType
-					$out='<strong>'.htmlspecialchars ($row['CType']).'</strong>';
-				}
-		}
-		return $out;
-	}
 	
 	/**
 	 * Returns the data structure for a flexform field ($field) from $table (from $row)
@@ -1087,17 +1115,6 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		}
 		return $output;
 	}
-
-	/**
-	 * Checks if an element's children comply with the rules
-	 * 
-	 * @param	string		The content element's table
-	 * @param	integer		The element's uid
-	 * @return	array
-	 */
-	 function checkRulesForElement ($table, $uid) {	 	
-		return $this->rules->evaluateRulesForElement ($table, $uid);
-	 }
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/mod1/index.php'])    {

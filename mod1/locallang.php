@@ -42,6 +42,7 @@ $LOCAL_LANG = Array (
 		'unlinkRecord' => 'Unlink record',
 		'deleteRecord' => 'Delete record (!)',
 		'deleteRecordMsg' => 'Do you really want to delete this record?',
+		'path' => 'Path',
 	),
 	"dk" => Array (
 		'title' => "Web > Side module",
@@ -77,6 +78,7 @@ $LOCAL_LANG = Array (
 		'unlinkRecord' => 'Fjern reference',
 		'deleteRecord' => 'Slet element(!)',
 		'deleteRecordMsg' => 'Vil du virkelig slette dette element?',
+		'path' => 'Sti',
 	),
 );
 ?>
