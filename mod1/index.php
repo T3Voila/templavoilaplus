@@ -505,8 +505,8 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				$counter=0;
 
 					// "New" and "Paste" icon:
-				$elList=$this->linkNew('<img src="'.$this->doc->backPath.'gfx/new_el.gif" align="absmiddle" vspace="5" border="0" title="New" alt="" />',$dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$fieldID.':'.$counter);
-				if (!$clipboardElInPath)	$elList.=$this->linkPaste('<img src="'.$this->doc->backPath.'gfx/clip_pasteafter.gif" align="absmiddle" vspace="5" border="0" title="Paste" alt="" />',$dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$fieldID.':'.$counter,$this->MOD_SETTINGS['clip_parentPos'],$this->MOD_SETTINGS['clip']);
+				$elList=$this->linkNew('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/new_el.gif','').' align="absmiddle" vspace="5" border="0" title="New" alt="" />',$dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$fieldID.':'.$counter);
+				if (!$clipboardElInPath)	$elList.=$this->linkPaste('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/clip_pasteafter.gif','').' align="absmiddle" vspace="5" border="0" title="Paste" alt="" />',$dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$fieldID.':'.$counter,$this->MOD_SETTINGS['clip_parentPos'],$this->MOD_SETTINGS['clip']);
 				
 					// Render the list of elements (and possibly call itself recursively if needed):
 				if (is_array($fieldContent['el']))	{
@@ -515,8 +515,8 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 						$elList.=$this->renderFrameWorkBasic($v,$dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$fieldID.':'.$counter,$clipboardElInPath);
 							
 							// "New" and "Paste" icon:
-						$elList.=$this->linkNew('<img src="'.$this->doc->backPath.'gfx/new_el.gif" align="absmiddle" vspace="5" border="0" title="New" alt="" />',$dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$fieldID.':'.$counter);
-						if (!$clipboardElInPath)	$elList.=$this->linkPaste('<img src="'.$this->doc->backPath.'gfx/clip_pasteafter.gif" align="absmiddle" vspace="5" border="0" title="Paste" alt="" />',$dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$fieldID.':'.$counter,$this->MOD_SETTINGS['clip_parentPos'],$this->MOD_SETTINGS['clip']);
+						$elList.=$this->linkNew('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/new_el.gif','').' align="absmiddle" vspace="5" border="0" title="New" alt="" />',$dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$fieldID.':'.$counter);
+						if (!$clipboardElInPath)	$elList.=$this->linkPaste('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/clip_pasteafter.gif','').' align="absmiddle" vspace="5" border="0" title="Paste" alt="" />',$dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$fieldID.':'.$counter,$this->MOD_SETTINGS['clip_parentPos'],$this->MOD_SETTINGS['clip']);
 					}
 				}
 
@@ -544,14 +544,14 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		}
 
 			// Put together the records icon including content sensitive menu link wrapped around it:
-		$recordIcon = '<img src="'.$this->doc->backPath.$dsInfo['el']['icon'].'" align="absmiddle" width="18" height="16" border="0" title="'.htmlspecialchars('['.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].']'.$extPath).'" alt="" title="" />';
+		$recordIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,$dsInfo['el']['icon'],'').' align="absmiddle" width="18" height="16" border="0" title="'.htmlspecialchars('['.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].']'.$extPath).'" alt="" title="" />';
 		$recordIcon = $this->doc->wrapClickMenuOnIcon($recordIcon,$dsInfo['el']['table'],$dsInfo['el']['id']);
 		
 		if ($dsInfo['el']['table']!='pages')	{
-			$linkCopy = $this->linkCopyCut('<img src="'.$this->doc->backPath.'gfx/clip_copy'.$clipActive_copy.'.gif" title="Copy" border="0" alt="" />',($clipActive_copy ? '' : $parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id']),'copy');
-			$linkCut = $this->linkCopyCut('<img src="'.$this->doc->backPath.'gfx/clip_cut'.$clipActive_cut.'.gif" title="Move" border="0" alt="" />',($clipActive_cut ? '' : $parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id']),'cut');
-			$linkRef = $this->linkCopyCut('<img src="./clip_ref'.$clipActive_ref.'.gif" title="Reference" border="0" alt="" />',($clipActive_ref ? '' : $parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id']),'ref');
-			$linkUnlink = $this->linkUnlink('<img src="'.$this->doc->backPath.'gfx/garbage.gif" title="Unlink" border="0" alt="" />',$parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id']);
+			$linkCopy = $this->linkCopyCut('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/clip_copy'.$clipActive_copy.'.gif','').' title="Copy" border="0" alt="" />',($clipActive_copy ? '' : $parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id']),'copy');
+			$linkCut = $this->linkCopyCut('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/clip_cut'.$clipActive_cut.'.gif','').' title="Move" border="0" alt="" />',($clipActive_cut ? '' : $parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id']),'cut');
+			$linkRef = $this->linkCopyCut('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,t3lib_extMgm::extRelPath('templavoila').'mod1/clip_ref'.$clipActive_ref.'.gif','').' title="Reference" border="0" alt="" />',($clipActive_ref ? '' : $parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id']),'ref');
+			$linkUnlink = $this->linkUnlink('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/garbage.gif','').' title="Unlink" border="0" alt="" />',$parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id']);
 		} else {
 			$linkCopy = '';
 			$linkCut = '';
@@ -571,7 +571,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 					$linkCut.
 					$linkRef.
 					$linkUnlink.
-					($isLocal ? $this->linkEdit('<img src="'.$this->doc->backPath.'gfx/edit2.gif" title="Edit" border="0" alt="" />',$dsInfo['el']['table'],$dsInfo['el']['id']) : '').
+					($isLocal ? $this->linkEdit('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/edit2.gif','').' title="Edit" border="0" alt="" />',$dsInfo['el']['table'],$dsInfo['el']['id']) : '').
 				'</td>
 			</tr>
 			<tr><td colspan="2">'.$content.'</td></tr>
@@ -597,7 +597,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		$tRows=array();
 		while($row=mysql_fetch_assoc($res))	{
 			$clipActive_cut = ($this->MOD_SETTINGS['clip']=='ref' && $this->MOD_SETTINGS['clip_parentPos']=='/tt_content:'.$row['uid'] ? '_h' : '');
-			$linkIcon = $this->linkCopyCut('<img src="'.$this->doc->backPath.'gfx/clip_cut'.$clipActive_cut.'.gif" title="Move" border="0" alt="" />',($clipActive_cut ? '' : '/tt_content:'.$row['uid']),'ref');
+			$linkIcon = $this->linkCopyCut('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/clip_cut'.$clipActive_cut.'.gif','').' title="Move" border="0" alt="" />',($clipActive_cut ? '' : '/tt_content:'.$row['uid']),'ref');
 			$tRows[]='<tr><td>'.$linkIcon.htmlspecialchars($row['header']).'</td></tr>';
 		}
 		
