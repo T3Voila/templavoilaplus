@@ -135,7 +135,6 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 	var $editDataStruct=0;		// Setting whether we are editing a data structure or not.
 	var $storageFolders = array();	// Storage folders as key(uid) / value (title) pairs.
 	var $storageFolders_pidList=0;	// The storageFolders pids imploded to a comma list including "0"
-	var $eTypeUserFunctions = array();	// May contain userfunctions for certain eTypes, configured by other extensions via TSconfig
 	
 		// GPvars:
 	var $mode;					// Looking for "&mode", which defines if we draw a frameset (default), the module (mod) or display (display)
