@@ -28,7 +28,7 @@
  */
 class tx_templavoila_rules {
 
-// some change to test CVS	
+	
 	/**
 	 * Checks a given set of elements to comply with certain rules provided as a regular expression.
 	 * Note that only few functionality of the POSIX standard for regular expressions is being supported.
