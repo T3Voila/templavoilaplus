@@ -660,8 +660,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		$recordIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,$dsInfo['el']['icon'],'').' align="absmiddle" width="18" height="16" border="0" title="'.htmlspecialchars('['.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].']'.$extPath).'" alt="" title="" />';
 		$recordIcon = $this->doc->wrapClickMenuOnIcon($recordIcon,$dsInfo['el']['table'],$dsInfo['el']['id'],1,'&callingScriptId='.rawurlencode($this->doc->scriptID));
 
-		$realDelete = FALSE;
-#		$realDelete = $isLocal;		// Uncomment this if you want content elements that are NOT references from other pages to also be deleted when unlinked...
+		$realDelete = $isLocal;	// content elements that are NOT references from other pages will be deleted when unlinked
 
 		$linkCopy = '';
 		$linkCut = '';
@@ -961,7 +960,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			);
 			foreach ($TYPO3_CONF_VARS['EXTCONF']['templavoila']['mod1']['renderPreviewContent'] as $_funcRef) {
 				if (!$alreadyRendered) {
-					$out = t3lib_div::callUserFunction($_funcRef, &$_params, $this);
+					$out = t3lib_div::callUserFunction($_funcRef, $_params, $this);
 				}
 			}
 		}
