@@ -7,6 +7,7 @@ FINISHING (A week):
 "cm1/index.php"
 
 - Mapping features:
+	- While editing an existing Data Element it's confusing that the button "Save" has no effect unless you "Add" the changes before. Rename label?
 	- Ability to map NEW non-existing attributes AND possibly just any content into HTML tags (like for images ' width="xxx" height="xxx"'.
 	- Ability to select attributes to be REMOVED in a tag.
 	- Ability to map a single field to MANY elements. So the same value can be inserted at multiple positions.
@@ -40,7 +41,7 @@ FINISHING (A week):
 	- ?: How can extensions supply a default template Array when no Template Object exists yet, mapping the data? What about the data structure containing some sample markup as well which means we can always assemble a simple display from that. Or even a nice default display which is of course stylable by CSS. AND this default
 	- Backend Module in Web> displaying DS/TOs in a list, linking to display data structures etc. Usage counts? All kinds of nice things...
 	- Show a little warning if no template record was selected in _pi1...
-	
+
 	- getLL usage in whole module.
 	- CSH for whole module
 	- Documentation
@@ -56,8 +57,8 @@ Unsorted notes (kasper)
 	- Offer to make copies of pages/elements found storage page (or otherwise)
 - BUG: Moving a referenced element MOVES it from the original position!
 - Offer a button in Web>Page which can turn a reference into a true copy (for the element alone or all nested records?)
-	
-	
+
+
 TESTING:
 - Implement sites like HP site, Vignette site (to test that it is robust and stable!)
 
@@ -90,7 +91,8 @@ Interface parts:
 	- Ability to create new element based on t3d file (having dummy content or default nested stuff)
 - Main interface
 
-
+Access rights:
+- IDEA: Implement access rights on CE level (instead on page level)
 
 Questions:
 - How to manage multi-language sites?
