@@ -32,26 +32,28 @@
  *
  *
  *
- *   73: class tx_templavoila_xmlrelhndl
- *   91:     function init($altRoot)
- *  105:     function insertRecord($destination, $row)
- *  152:     function pasteRecord($pasteCmd, $source, $destination)
+ *   75: class tx_templavoila_xmlrelhndl
+ *   93:     function init($altRoot)
+ *  107:     function insertRecord($destination, $row)
+ *  166:     function pasteRecord($pasteCmd, $source, $destination)
+ *  301:     function getRecord($location)
  *
  *              SECTION: Execute changes to the FlexForm structures
- *  285:     function _insertReference($itemArray, $refArr, $item)
- *  306:     function _moveReference($itemArray, $destRefArr, $sourceItemArray, $sourceRefArr, $item_table, $item_uid, $movePid)
- *  345:     function _removeReference($itemArray, $refArr)
- *  368:     function _changeReference($itemArray, $refArr, $newUid)
- *  390:     function _updateFlexFormRefList($refArr, $idListArr)
- *  408:     function _deleteContentElement($uid)
+ *  353:     function _insertReference($itemArr, $refArr, $item)
+ *  374:     function _moveReference($itemArray, $destRefArr, $sourceItemArray, $sourceRefArr, $item_table, $item_uid, $movePid)
+ *  413:     function _removeReference($itemArray, $refArr)
+ *  436:     function _changeReference($itemArray, $refArr, $newUid)
+ *  458:     function _updateFlexFormRefList($refArr, $idListArr)
+ *  476:     function _deleteContentElement($uid)
  *
  *              SECTION: Helper functions
- *  444:     function _insertReferenceInList($itemArray, $refArr, $item, $sourceRefArr=FALSE)
- *  489:     function _getCopyUid($itemAtPosition_uid, $pid)
- *  514:     function _splitAndValidateReference($string)
- *  527:     function _getItemArrayFromXML($xmlString, $refArr)
+ *  512:     function _insertReferenceInList($itemArray, $refArr, $item, $sourceRefArr=FALSE)
+ *  557:     function _getCopyUid($itemAtPosition_uid, $pid)
+ *  583:     function _getListOfSubElementsRecursively ($table, $uid, &$recordUids=array())
+ *  627:     function _splitAndValidateReference($string)
+ *  640:     function _getItemArrayFromXML($xmlString, $refArr)
  *
- * TOTAL FUNCTIONS: 13
+ * TOTAL FUNCTIONS: 15
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -212,17 +214,24 @@ class tx_templavoila_xmlrelhndl {
 										// Depending on the paste command, we do...:
 									switch ($pasteCmd)	{
 										case 'copy':
-												// Copy the element and also make true copies of all sub elements:
-												// Get the uid of a new tt_content element
-											$refID = $this->_getCopyUid(
-														$refID,
-														$destRefArr[0]=='pages' ? $destinationRec['uid'] : $destinationRec['pid']
-													);
 
-											if ($refID)	{	// Only do copy IF a new element was created.
-												$this->_insertReference($destItemArray, $destRefArr, 'tt_content_'.$refID);
-												$this->_makeCopiesOfAllSubElements ('tt_content', $refID);
+												// Determine the PID of the new location and get uids of all sub elements of the record to be copied:
+											$destinationPID = $destRefArr[0]=='pages' ? $destinationRec['uid'] : $destinationRec['pid'];
+											$subElementsUids = $this->_getListOfSubElementsRecursively ('tt_content', $refID);
+
+												// Initialize TCEmain and create configuration for copying the specified record (the parent element) and all sub elements:
+											$tce = t3lib_div::makeInstance('t3lib_TCEmain');
+											$cmdArray = array();
+											$cmdArray['tt_content'][$refID]['copy'] = $destinationPID;
+
+											foreach ($subElementsUids as $recordUid) {
+												$cmdArray['tt_content'][$recordUid]['copy'] = $destinationPID;
 											}
+
+												// Execute the copy process and finally insert the reference for the parent element to the paste destination:
+											$tce->start(array(),$cmdArray);
+											$tce->process_cmdmap();
+											$this->_insertReference($destItemArray, $destRefArr, 'tt_content_'.$tce->copyMappingArray_merged['tt_content'][$refID]);
 
 										break;
 										case 'copyref':
@@ -563,17 +572,21 @@ class tx_templavoila_xmlrelhndl {
 	}
 
 	/**
-	 * Makes a copy of all sub elements of the element specified by $table and $uid. Calls itself recursively.
+	 * Returns a comma separated list of uids of all sub elements of the element specified by $table and $uid.
 	 *
 	 * @param	string		$table: Name of the table of the parent element ('pages' or 'tt_content')
 	 * @param	integer		$uid: UID of the parent element
-	 * @return	void
+	 * @param	array		Array of record UIDs - used internally, don't touch
+	 * @return	array		Array of record UIDs
+	 * @access protected
 	 */
-	function _makeCopiesOfAllSubElements ($table, $uid) {
+	function _getListOfSubElementsRecursively ($table, $uid, &$recordUids=array()) {
 
-			// Fetch the specified record and find all sub elements. If there are any, copy them:
+			// Fetch the specified record, find all sub elements
 		$parentRecord = t3lib_BEfunc::getRecord ($table, $uid, 'uid,pid,'.$this->flexFieldIndex[$table]);
 		$flexFieldArr = t3lib_div::xml2array($parentRecord[$this->flexFieldIndex[$table]]);
+
+#t3lib_div::devLog('_getListOfSubElementsRecursively ('.$table.', '.$uid.', '.implode(',',$recordUids).')', 'tx_templavoila', 1);
 
 		if (is_array ($flexFieldArr['data'])) {
 			foreach ($flexFieldArr['data'] as $sheetKey => $languagesArr) {
@@ -584,26 +597,12 @@ class tx_templavoila_xmlrelhndl {
 								if (is_array ($valuesArr)) {
 									foreach ($valuesArr as $valueName => $value) {
 										$valueItems = t3lib_div::intExplode (',', $value);
-
 										if (is_array($valueItems)) {
-											foreach ($valueItems as $index => $sourceUid) {
-												$parentItemArr = $this->_getItemArrayFromXML($parentRecord[$this->flexFieldIndex[$table]], $destRefArr);
-												$parentRefArr = array (
-													$table,
-													$uid,
-													$sheetKey,
-													$languageKey,
-													$fieldName,
-													$valueName,
-													0
-												);
-													// Copy the element:
-												$newUid = $this->_getCopyUid($sourceUid, $parentRecord['pid']);
-												if ($newUid) {
-													$this->_insertReference($parentItemArr, $parentRefArr, 'tt_content_'.$newUid);
+											foreach ($valueItems as $index => $subElementUid) {
+												if ($subElementUid > 0) {
+													$recordUids[] = $subElementUid;
+													$this->_getListOfSubElementsRecursively ('tt_content', $subElementUid, $recordUids);
 												}
-
-												$this->_makeCopiesOfAllSubElements ('tt_content', $newUid);
 											}
 										}
 									}
@@ -614,6 +613,7 @@ class tx_templavoila_xmlrelhndl {
 				}
 			}
 		}
+		return $recordUids;
 	}
 
 	/**

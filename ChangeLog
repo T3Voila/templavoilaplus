@@ -1,4 +1,7 @@
-2005-01-27  Robert Lemke  <robert@typo3.org>
+2005-02-07	Robert Lemke <robert@typo3.org>
+ # xmlrelhndl: Fixed the bug mentioned before: Now FCEs are correctly copied recursively with correct referencing, files, pictures etc.
+ 
+2005-01-27  Robert Lemke <robert@typo3.org>
  ~ Classic page module is now switched off by default, page template selector switched on (in the extension manager configuration dialogue)
  + mod1: Added support for making true copies of FCEs with sub elements. Before only the FCE parent element was truely copied, the child objects weren't. Still has a small bug, will fix that soon!
 
