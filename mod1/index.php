@@ -77,7 +77,6 @@
  *
  */
 
-
 	// Initialize module
 unset($MCONF);    
 require ('conf.php');
@@ -94,6 +93,7 @@ require_once (PATH_t3lib.'class.t3lib_tcemain.php');
 
 	// Include class for parsing rules based on regular expressions
 require_once (t3lib_extMgm::extPath('templavoila').'class.tx_templavoila_rules.php'); 	
+
 
 /**
  * Module 'Page' for the 'templavoila' extension.
@@ -119,7 +119,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 */
 	function init()    {
 		parent::init();
-		$this->rules = t3lib_div::makeInstance('tx_templavoila_rules');			
+		$this->rules = t3lib_div::makeInstance('tx_templavoila_rules');
 	}
 
 	/**
@@ -770,12 +770,11 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			$dataArr['pages']['NEW']['hidden'] = 0; 
 		}
 		unset($dataArr['pages']['NEW']['uid']);
+
 			// If no data structure is set, try to find one by using the template object
 		if ($dataArr['pages']['NEW']['tx_templavoila_to'] && !$dataArr['pages']['NEW']['tx_templavoila_ds']) {
-			$query = 'SELECT datastructure FROM tx_templavoila_tmplobj WHERE uid='.intval ($dataArr['pages']['NEW']['tx_templavoila_to']).t3lib_BEfunc::deleteClause('tx_templavoila_tmplobj');
-			$res = mysql(TYPO3_db, $query);
-			$resArr = @mysql_fetch_assoc($res);
-			$dataArr['pages']['NEW']['tx_templavoila_ds'] = intval ($resArr['datastructure']);
+			$templateObjectRow = t3lib_BEfunc::getRecord('tx_templavoila_tmplobj',$dataArr['pages']['NEW']['tx_templavoila_to'],'datastructure');
+			$dataArr['pages']['NEW']['tx_templavoila_ds'] = $templateObjectRow['datastructure'];
 		}
 
 		$tce = t3lib_div::makeInstance("t3lib_TCEmain");
@@ -786,14 +785,18 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	}
 
 	/**
-	 * Creates default records which are defined in the datastructure's rules. Calls itself recursively.
+	 * Creates default records which are defined in the datastructure's rules scheme. The property in the DS is called "ruleDefaultElements"
+	 * and consists of elements only (instead of a real regular expression)! I.e. if your regular expression is like this: "(ab){2}c", it makes 
+	 * sense having ruleDefaultElements contain this list of elements: "ababc".
+	 *
+	 * Calls itself recursively.
 	 * 
 	 * @param	string		$table: The table, usually "pages" or "tt_content"
 	 * @param	integer		$uid: The UID
 	 * @param	integer		$prevDS: Internally used to make sure data structures are not created recursively ("previous data structure")
 	 * @param	integer		$level: Internally used for determine the level of recursiveness
 	 * @return	void		nothing
-	 * @todo				Check for rules compliance? (might not be necessary if we expect ruleDefault to be valid)
+	 * @todo				Check for rules compliance? (might not be necessary if we expect ruleDefaultElements to be valid)
 	 */
 	function createDefaultRecords ($table, $uid, $prevDS=-1, $level=0)	{
 		global $TCA, $LANG;
@@ -807,9 +810,10 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			$recRow = t3lib_BEfunc::getRecord ('tx_templavoila_datastructure', $tableRow['tx_templavoila_ds']);
 			$xmlContent = t3lib_div::xml2array ($recRow['dataprot']);
 			if (is_array ($xmlContent)) {
-				foreach ($xmlContent['ROOT']['el'] as $key=>$field) {					
-					for ($counter=strlen(trim ($field['tx_templavoila']['ruleDefault'])); $counter >=0; $counter--) {
-						$CType = t3lib_div::trimExplode (',',$this->rules->getCTypeFromToken (trim($field['tx_templavoila']['ruleDefault'][$counter]), $field['tx_templavoila']['ruleConstants']));
+				foreach ($xmlContent['ROOT']['el'] as $key=>$field) {
+						// Count backwards, because we're always using the same $key:
+					for ($counter=strlen(trim ($field['tx_templavoila']['ruleDefaultElements'])); $counter >=0; $counter--) {
+						$CType = t3lib_div::trimExplode (',',$this->rules->getCTypeFromToken (trim($field['tx_templavoila']['ruleDefaultElements'][$counter]), $field['tx_templavoila']['ruleConstants']));
 						switch ($CType[0]) {						   
 							case 'templavoila_pi1': 
 								$TOrow = t3lib_BEfunc::getRecord('tx_templavoila_tmplobj', $CType[1], 'datastructure');
@@ -1301,7 +1305,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * @return	array
 	 */
 	 function checkRulesForElement ($table, $uid) {	 	
-		return $this->rules->evaluateRulesOnElement ($table, $uid);
+		return $this->rules->evaluateRulesForElement ($table, $uid);
 	 }
 }
 

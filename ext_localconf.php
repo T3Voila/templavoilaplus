@@ -11,10 +11,12 @@ t3lib_extMgm::addPageTSConfig('
     mod.web_list.newPageWiz.overrideWithExtension = templavoila
 	mod.web_list.newContentWiz.overrideWithExtension = templavoila
 ');
-	// Use templavoila instead of the default page module
+/*
+/ Use templavoila instead of the default page module
 t3lib_extMgm::addUserTSConfig('
 	options.overridePageModule = web_txtemplavoilaM1
 ');
+*/
 
 	// Adding Page Template Selector Fields to root line:
 $GLOBALS['TYPO3_CONF_VARS']['FE']['addRootLineFields'].=',tx_templavoila_ds,tx_templavoila_to,tx_templavoila_next_ds,tx_templavoila_next_to';

@@ -33,30 +33,36 @@
  *
  *
  *
- *   76: class tx_templavoila_rules 
- *   87:     function evaluateRulesOnElement ($table, $uid) 
+ *   82: class tx_templavoila_rules 
+ *   98:     function evaluateRulesForElement ($table, $uid) 
  *
  *              SECTION: Rule processing / analyzing functions
- *  130:     function parseRegexIntoArray ($regex, $constants) 
- *  211:     function checkRulesCompliance ($rules, $constants, $table, $uid, $field) 
+ *  138:     function checkRulesForElement($rules, $constants, $table, $uid, $field) 
+ *  193:     function checkRulesForElement_parseEL ($rulePart, &$childRecords, &$statusArr) 
+ *  213:     function checkRulesForElement_parseSUB ($rulePart, &$childRecords, &$statusArr) 
+ *  235:     function checkRulesForElement_parseALT ($rulePart, &$childRecords, &$statusArr) 
+ *  259:     function checkRulesForElement_parseCLASS ($rulePart, &$childRecords, &$statusArr) 
  *
  *              SECTION: Human Readable Rules Functions
- *  299:     function getHumanReadableRules ($rules,$ruleConstants)	
- *  315:     function parseRulesArrayIntoDescription ($rulesArr, $constantsArr, $level=0) 
- *  350:     function getQuantifierAsDescription ($min, $max) 
- *  383:     function getElementNameFromConstantsMapping ($element, $constantsArr) 
+ *  283:     function getHumanReadableRules ($rules,$ruleConstants)	
+ *  299:     function parseRulesArrayIntoDescription ($rulesArr, $constantsArr, $level=0) 
+ *  334:     function getQuantifierAsDescription ($min, $max) 
+ *  367:     function getElementNameFromConstantsMapping ($element, $constantsArr) 
  *
  *              SECTION: Helper functions
- *  410:     function isElement ($char) 
- *  425:     function extractInnerBrace ($regex, $startPos) 
- *  455:     function explodeAlternatives ($regex) 
- *  481:     function evaluateQuantifier ($quantifier, &$pos, &$min, &$max) 
- *  539:     function getCTypeFromToken ($token, $ruleConstants) 
- *  561:     function statusAddErr (&$statusArr, $msg, $uid, $position) 
- *  577:     function statusMerge (&$statusArr, $newStatusArr) 
- *  587:     function statusSetOK (&$statusArr) 
+ *  395:     function parseRegexIntoArray ($regex, $constants) 
+ *  472:     function isElement ($char) 
+ *  487:     function extractInnerBrace ($regex, $startPos) 
+ *  517:     function explodeAlternatives ($regex) 
+ *  543:     function evaluateQuantifier ($quantifier, &$pos, &$min, &$max) 
+ *  601:     function getCTypeFromToken ($token, $ruleConstants) 
  *
- * TOTAL FUNCTIONS: 15
+ *              SECTION: Status functions
+ *  635:     function statusAddErr (&$statusArr, $msg, $uid=0, $position=0) 
+ *  652:     function statusMerge (&$statusArr, $newStatusArr, $doAND=false) 
+ *  671:     function statusSetOK (&$statusArr) 
+ *
+ * TOTAL FUNCTIONS: 19
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -77,34 +83,47 @@ class tx_templavoila_rules {
 	
 	/**
 	 * Checks a given element if it complies with certain rules provided as a regular expression.
-	 * Note that only few functionality of the POSIX standard for regular expressions is being supported.
+	 * This function prepares all the information which is needed to check rules compliance, the
+	 * check itself will be carried out by checkRulesForElement () which calls itself recursively.
+	 * 
+	 * Note that only few functionality of the POSIX standard for regular expressions is being supported,
+	 * see the manual for more details.
 	 * 
 	 * @param	string		$rules: A regular expression describing the rule. The content elements are reflected by certain tokens (i.e. uppercase and lowercase characters). These tokens are also called "ruleConstants".
 	 * @param	array		$ruleConstants: An array with the mapping of tokens to content elements.
 	 * @param	array		$elArray:
 	 * @return	array		Array containing status information if the check was successful.
+	 * @see checkRulesForElement()
 	 */
-	function evaluateRulesOnElement ($table, $uid) {
+	function evaluateRulesForElement ($table, $uid) {
 	 	$statusArr = null;
 	 	
 			// Getting data structure for the template and extract information for default records to create
-		$tableRow = t3lib_BEfunc::getRecord ($table, $uid);
+		$parentRecord = t3lib_BEfunc::getRecord ($table, $uid);
 
 			// Only care about page records or flexible content elements:
-		if ($table != 'tt_content' || $tableRow['CType'] == 'templavoila_pi1') {	
-			$recRow = t3lib_BEfunc::getRecord ('tx_templavoila_datastructure', $tableRow['tx_templavoila_ds']);
+		if ($table != 'tt_content' || $parentRecord['CType'] == 'templavoila_pi1') {	
+			$recRow = t3lib_BEfunc::getRecord ('tx_templavoila_datastructure', $parentRecord['tx_templavoila_ds']);
 			$xmlContent = t3lib_div::xml2array ($recRow['dataprot']);
-			if (is_array ($xmlContent)) {
+			if (is_array ($xmlContent['ROOT']['el'])) {
 				foreach ($xmlContent['ROOT']['el'] as $fieldName=>$field) {
 					$ruleRegEx = trim ($field['tx_templavoila']['ruleRegEx']);
 					$ruleConstants = trim ($field['tx_templavoila']['ruleConstants']);
-					if ((string)$ruleRegEx != '' && ($field['tx_templavoila']['eType'] == 'ce')) {	// only check if necessary
-#debug(array($ruleRegEx, $ruleConstants),'rules/ruleConstants',__LINE__,__FILE__);
-							// Strip the starting and ending delimiter
-						if ($ruleRegEx[0]=='^') { $ruleRegEx = substr ($ruleRegEx, 1); }
-						if ($ruleRegEx[strlen($ruleRegEx)-1]=='$') { $ruleRegEx = substr ($ruleRegEx,0,-1); }
+					if ((string)$ruleRegEx != '' && ($field['tx_templavoila']['eType'] == 'ce')) {	// only check if necessary					
 
-						$tmpStatusArr = $this->checkRulesCompliance ($ruleRegEx, $ruleConstants, $table, $uid, $fieldName);
+							// Get child records of the parent element record
+						$childRecords = array ();
+						$xmlContent = t3lib_div::xml2array($parentRecord['tx_templavoila_flex']);
+						$recUIDs = t3lib_div::trimExplode(',',$xmlContent['data']['sDEF']['lDEF'][$fieldName]['vDEF']);
+						foreach ($recUIDs as $recUID) {
+							$row = t3lib_BEfunc::getRecord('tt_content', $recUID, 'uid,CType,tx_templavoila_to');
+							if ($row['CType'] == 'templavoila_pi1') {
+								$row['CType'] .= ',' . $row['tx_templavoila_to'];	
+							}
+							$childRecords[] = $row;
+						}
+							// Check the rules:
+						$tmpStatusArr = $this->checkRulesForElement ($ruleRegEx, $ruleConstants, $childRecords);
 						$this->statusMerge($statusArr, $tmpStatusArr, true);
 					}
 				}
@@ -120,164 +139,170 @@ class tx_templavoila_rules {
 	 ********************************************/
 
 	/**
-	 * Parses a regular expression with a reduced set of functions into an array.
-	 * 
-	 * @param	string		$regex: The regular expression
-	 * @param	string		$constants: The constants definitions being used in the regular expression divided by line breaks (eg.: a=text)
-	 * @return	array		Contains the cTypes with some additional information
-	 */
-	function parseRegexIntoArray ($regex, $constants) {
-		$pos = 0;
-		$outArr = array ();
-			// Strip off the not wanted characters. We only support certain functions of regular expressions.
-		$regex = ereg_replace ('[^a-zA-Z0-9\[\]\{\}\*\+\.\-]','',$regex);
-
-			// Split regular expression into alternative parts divided by '|'. If there is more then one part,
-			// call this function recursively and parse each part separately.
-		$altParts = $this->explodeAlternatives ($regex);
-		if (count($altParts)>1) {
-			foreach ($altParts as $altRegex) {
-				$altArr['alt'][] = $this->parseRegexIntoArray ($altRegex, $constants);
-			}
-			$outArr[]=$altArr;
-		} else {
-				// No other alternatives, just parse it.
-			while ($pos<strlen ($regex)) {
-				if ($this->isElement ($regex[$pos])) {				// Element (ie. a-z A-Z and '.')
-					$el = $regex[$pos];
-					$min = 0; 
-					$max = 0;
-					$this->evaluateQuantifier ($regex, $pos, $min, $max);
-					$outArr[] = array (
-						'el' => $this->getCTypeFromToken($el, $constants),
-						'min' => $min,
-						'max' => $max,
-					);
-				} elseif ($regex [$pos] == '(') {
-					$innerBraceData = $this->extractInnerBrace($regex, $pos);
-					$sub = $this->parseRegexIntoArray ($innerBraceData['content'], $constants);
-					$regex = $innerBraceData['rightpart'];
-					$pos = -1;
-					$outArr[] = array (
-						'sub' => $sub,
-						'min' => $innerBraceData['min'],
-						'max' => $innerBraceData['max'],
-					);
-				} elseif ($regex [$pos] == '[') {					// Class definition (ie. a set of elements which are allowed, enclosed in [] )
-					$pos++;
-						// If there is a circumflex the elements must *not* be used - set the negate flag
-					if ($regex[$pos] == '^') { 
-						$negate = 1; 
-						$pos++;
-					} else {
-						$negate = 0;
-					}
-					unset ($elements);
-					while ($this->isElement ($regex[$pos])) {
-						$elements .= $regex[$pos];
-						$pos++;
-					}
-					if ($elements) {
-						if ($regex[$pos] == ']') {
-								// Check if there is a quantifier after the closing brace and if so, evaluated it
-							$this->evaluateQuantifier ($regex, $pos, $min, $max);
-							$classArr = array (
-								'class' => $elements,
-								'min' => $min,
-								'max' => $max,
-							);
-							if ($negate) { $classArr['negate'] = 1; }
-							$outArr[] = $classArr;
-						} else { debug ('Parse error: ] expected at end of class definition'); }
-					} else { debug ('Parse error: At least one element expected in class definition'); }
-				}
-				$pos++;
-			}
-		}
-		return $outArr;
-	}
-
-	/**
-	 * Checks a number of elements if they comply to their rules.
+	 * Checks the child records of an element for compliance to the element's rules.
 	 * 
 	 * @param	string		$rules: The regular expression as a string OR the regular expression already parsed into an array (by parseRegexIntoArray)
 	 * @param	string		$constants: The constants definitions being used in the regular expression divided by line breaks (eg.: a=text)
-	 * @param	string		$table: Usually 'tt_content' or 'pages'
-	 * @param	string		$uid: The record's uid
+	 * @param	string		$table: The element's table, usually 'tt_content' or 'pages'
+	 * @param	string		$uid: The element record uid
 	 * @param	string		$field: Field name within the datastructure
 	 * @return	array		
 	 */
-	function checkRulesCompliance ($rules, $constants, $table, $uid, $field) {
+	function checkRulesForElement($rules, $constants, $childRecords) {
 		global $LANG;
-#debug (array ('rules'=>$rules, 'constants'=> $constants, 'table'=> $table, 'uid'=>$uid, 'field'=>$field), 'checkRulesCompliance()',__LINE__, __FILE__,10);
+
 		$statusArr = array ();
-		if (is_string ($rules)) {	// If $rules is a regular expression, parse it into an array for easier handling
+		if (is_string ($rules)) {	// If $rules is a regular expression, parse it into an array for easier handling:
+				// Strip off the starting and ending delimiter
+			if ($rules[0]=='^') { $rules = substr ($rules, 1); }
+			if ($rules[strlen($rules)-1]=='$') { $rules = substr ($rules,0,-1); }
 			$rules = $this->parseRegexIntoArray ($rules, $constants);
 		}
+debug (array ('rules'=>$rules, 'constants'=> $constants, $childRecords), 'checkRulesForElement()',__LINE__, __FILE__,10);
 		
 		if (is_array ($rules)) {
-			$parentRecord = t3lib_BEfunc::getRecord($table, $uid);
-			$childRecords = array ();
-			$xmlContent = t3lib_div::xml2array($parentRecord['tx_templavoila_flex']);
-				// Get child records of the current parent record
-			$recUIDs = t3lib_div::trimExplode(',',$xmlContent['data']['sDEF']['lDEF'][$field]['vDEF']);
-			foreach ($recUIDs as $recUID) {
-				$row = t3lib_BEfunc::getRecord('tt_content', $recUID, 'uid,CType,tx_templavoila_to');
-				if ($row['CType'] == 'templavoila_pi1') {
-					$row['CType'] .= ',' . $row['tx_templavoila_to'];	
-				}
-				$childRecords[] = $row;
-			}			
-
 				// Now traverse the rules
 			foreach ($rules as $k => $rulePart)	{
-#debug ($rulePart,'rulePart',__LINE__,__FILE__,10);
-				if ($rulePart['el']) { // Evaluate elements
-					$counter = 0;
-					while ($counter < $rulePart['max'] && ($childRecords[0]['CType'] == $rulePart['el'] || $rulePart['el'] == '.')) {
-						$lastChildRecord = array_shift($childRecords);
-						$counter ++;
-					}
-					if ($counter < $rulePart['min']) { 
-						$msg = 'At least '.$rulePart['min'].' element(s) of type '.$rulePart['el'].' expected, only '.$counter.' were found';
-						$this->statusAddErr($statusArr, $msg, $lastChildRecord['uid'] ? $lastChildRecord['uid'] : $childRecords[0]['uid'],2);
-					}
-				} elseif ($rulePart['class']) {	// Evaluate classes of elements
-					
-				} elseif (is_array ($rulePart['sub'])) { // Traverse subparts
-					$this->statusMerge ($statusArr, $this->checkRulesCompliance ($rulePart['sub'], $constants, $table, $uid, $field));
-				} elseif (is_array ($rulePart['alt'])) { // Traverse alternatives
-					$altStatusArr = array ();						
-					foreach ($rulePart['alt'] as $alternativeRule) {
-						$tmpStatusArr = $this->checkRulesCompliance ($alternativeRule, $constants, $table, $uid, $field);
-#debug (array ('altrule'=>$alternativeRule, 'tmpstatusArr' => $tmpStatusArr), 'ALT rule', __LINE__, __FILE__);
-						if ($tmpStatusArr['ok'] == true) { // If one alternative is okay, the whole ALT branch is valid
-							$this->statusSetOK ($altStatusArr);
-						} elseif ($altStatusArr['ok'] != true) { // If alternative fails and no other alternative was valid yet, merge errors
-							$this->statusMerge($altStatusArr, $tmpStatusArr);
-						}
-					}
-					if ($altStatusArr['ok'] && ($statusArr['ok'] != false)) { $statusArr['ok'] = true; }
-					if ($altStatusArr['ok'] == false) { $this->statusMerge ($statusArr, $altStatusArr); }
-#debug (array ('statusArr' => $altStatusArr), 'ALT branch', __LINE__, __FILE__);
-						// After an ALT branch no other elements will follow, so clear all remaining children
-					unset ($childRecords); 
-				}				
+				if ($rulePart['el']) {						// Evaluate elements
+					$this->checkRulesForElement_parseEL ($rulePart, $childRecords, $statusArr);
+				} elseif ($rulePart['class']) { 			// Evaluate classes of elements
+					$this->checkRulesForElement_parseCLASS($rulePart, $childRecords, $statusArr);
+				} elseif (is_array ($rulePart['sub'])) {	// Traverse subparts
+					$this->checkRulesForElement_parseSUB($rulePart, $childRecords, $statusArr, $constants);
+				} elseif (is_array ($rulePart['alt'])) {	// Traverse alternatives
+					$this->checkRulesForElement_parseALT($rulePart, $childRecords, $statusArr, $constants);
+				}
 			}
-			if (count($childRecords)) { 
-				$this->statusAddErr($statusArr, 'Too many elements at the end of the page', $childRecords[0]['uid'],1);
-			}
+#debug ($childRecords,'childRecords in mainFunc',__LINE__,__FILE__,10);
+			if (count($childRecords)) { $this->statusAddErr($statusArr, 'Too many elements at the end of the page', $childRecords[0]['uid'],1);	}
 		}
+debug ($statusArr,'statusArr in main func',__LINE__,__FILE__,10);
 		
 		if (is_null($statusArr['ok'])) { $statusArr['ok'] = true; }
-#debug ($statusArr, 'statusArray after checkcompliance',__LINE__,__FILE__);
 		return $statusArr;
+	}
+
+	/**
+	 * Validates an element, used by checkRulesForElement()
+	 * 
+	 * @param	array		$rulePart: part of the regular expression parsed into an array containing the 'el' branch.
+	 * @param	array		$childRecords: Current array of child records of the main element which remain to be processed. Passed by reference!
+	 * @param	array		$statusArr: The current status array, passed by reference
+	 * @return	void		Results are returned by reference.
+	 */
+	function checkRulesForElement_parseEL ($rulePart, &$childRecords, &$statusArr) {
+debug (array ('rulePart'=>$rulePart, 'childRecords'=>$childRecords, 'statusArr'=>$statusArr),'parseEL',__LINE__,__FILE__,10);
+		$counter = 0;
+		while ($counter < $rulePart['max'] && ($childRecords[0]['CType'] == $rulePart['el'] || $rulePart['el'] == '.')) {
+			$lastChildRecord = array_shift($childRecords);
+			$counter ++;
+		}
+		if ($counter < $rulePart['min']) { 
+			$msg = 'At least '.$rulePart['min'].' element(s) of type '.$rulePart['el'].' expected, only '.$counter.' were found';
+			$this->statusAddErr($statusArr, $msg, $lastChildRecord['uid'] ? $lastChildRecord['uid'] : $childRecords[0]['uid'],2);
+		}
+debug ($statusArr, 'statusArr after parseEL',__LINE__,__FILE__,10);		
+	}
+
+	/**
+	 * Validates a subpart, used by checkRulesForElement()
+	 * 
+	 * @param	array		$rulePart: part of the regular expression parsed into an array containing the 'sub' branch.
+	 * @param	array		$childRecords: Current array of child records of the main element which remain to be processed. Passed by reference!
+	 * @param	array		$statusArr: The current status array, passed by reference
+	 * @param	string		$constants: The regular expresion's constants
+	 * @param	string		$table: table for the current parent element record
+	 * @param	integer		$uid: ID of the current parent element record
+	 * @param	string		$field: Field name within the datastructure
+	 * @return	void		Results are returned by reference.
+	 */
+	function checkRulesForElement_parseSUB ($rulePart, &$childRecords, &$statusArr, $constants) {
+debug ($rulePart, 'rulePart: SUB', __LINE__, __FILE__);
+		if (is_array ($rulePart['sub'])) {
+			for ($counter=1; $counter <= $rulePart['max']; $counter++) {
+				$savedChildren = $childRecords;
+				$savedStatus = $tmpStatusArr;
+debug ($savedChildren, 'SAVEDCHILDREN');
+				foreach ($rulePart['sub'] as $k => $ruleSubPart) {
+debug (array ('ruleSubPart'=>$ruleSubPart,'counter'=>$counter),'ruleSubPart: SUB',__LINE__,__FILE__);			
+					if ($ruleSubPart['el']) {					// Evaluate elements
+						$this->checkRulesForElement_parseEL ($ruleSubPart, $childRecords, $tmpStatusArr);
+					} elseif ($ruleSubPart['class']) { 			// Evaluate classes of elements
+						$this->checkRulesForElement_parseCLASS($ruleSubPart, $childRecords, $tmpStatusArr);
+					} elseif (is_array ($ruleSubPart['sub'])) {	// Traverse subparts
+						$this->checkRulesForElement_parseSUB($ruleSubPart, $childRecords, $tmpStatusArr, $constants);
+					} elseif (is_array ($rulePart['alt'])) {	// Traverse alternatives
+						$this->checkRulesForElement_parseALT($ruleSubPart, $childRecords, $tmpStatusArr, $constants); 
+					}
+				}
+debug ($tmpStatusArr, 'tmpStatus before save the children',__LINE__,__FILE__);				
+				if ($tmpStatusArr['ok'] == false) {
+					if (!is_null($tmpStatusArr['ok'])) {
+						array_shift($savedChildren);
+						$childRecords = $savedChildren;					
+						$tmpStatusArr = $savedStatus;
+debug (array ($childRecords, $tmpStatusArr),'Save the children');
+					}
+					break;
+				}
+			}
+		}
+#		if ($counter < $rulePart['min']) { 
+#			$msg = 'At least '.$rulePart['min'].' element(s) of type '.$rulePart['el'].' expected, only '.$counter.' were found';
+#			$this->statusAddErr($statusArr, $msg, $lastChildRecord['uid'] ? $lastChildRecord['uid'] : $childRecords[0]['uid'],2);
+#		}
+			
+debug ($tmpStatusArr, 'tmpStatusArr in parseSUB',__LINE__,__FILE__);
+debug ($childRecords,'childRecords in parseSub',__LINE__,__FILE__,10);
+
+#		$this->statusMerge ($statusArr, $tmpStatusArr);
+	}
+
+	/**
+	 * Validates an alternative part, used by checkRulesForElement()
+	 * 
+	 * @param	array		$rulePart: part of the regular expression parsed into an array containing the 'alt' branch.
+	 * @param	array		$childRecords: Current array of child records of the main element which remain to be processed. Passed by reference!
+	 * @param	array		$statusArr: The current status array, passed by reference
+	 * @param	string		$constants: The regular expresion's constants
+	 * @param	string		$table: table for the current parent element record
+	 * @param	integer		$uid: ID of the current parent element record
+	 * @param	string		$field: Field name within the datastructure
+	 * @return	void		Results are returned by reference.
+	 */
+	function checkRulesForElement_parseALT ($rulePart, &$childRecords, &$statusArr, $constants) {
+#debug ($statusArr, 'statusArr parseALT',__LINE__,__FILE__,10);		
+		$altStatusArr = array ();						
+		foreach ($rulePart['alt'] as $alternativeRule) {
+			$tmpStatusArr = $this->checkRulesForElement($alternativeRule, $constants, $childRecords);
+			if ($tmpStatusArr['ok']) { // If one alternative is okay, the whole ALT branch is valid
+				$this->statusSetOK ($altStatusArr);
+			} elseif (!$altStatusArr['ok']) { // If alternative fails and no other alternative was valid yet, merge errors
+				$this->statusMerge($altStatusArr, $tmpStatusArr);
+			}
+		}
+		if ($altStatusArr['ok'] && ($statusArr['ok'])) { $statusArr['ok'] = true; }
+		if (!$altStatusArr['ok']) { $this->statusMerge ($statusArr, $altStatusArr); }
+			// After an ALT branch no other elements will follow, so clear all remaining children
+		$childRecords = null;
+	}
+
+	/**
+	 * Validates a class of elements, used by checkRulesForElement()
+	 * 
+	 * @param	array		$rulePart: part of the regular expression parsed into an array containing the 'class' branch.
+	 * @param	array		$childRecords: Current array of child records of the main element which remain to be processed. Passed by reference!
+	 * @param	array		$statusArr: The current status array, passed by reference
+	 * @return	void		Results are returned by reference.
+	 */
+	function checkRulesForElement_parseCLASS ($rulePart, &$childRecords, &$statusArr) {
+#debug (array ('rulePart'=>$rulePart['class']), 'rulePart: CLASS', __LINE__, __FILE__);
 	}
 
 	
 	
 	
-		
+	
 	/********************************************
 	 *	
 	 * Human Readable Rules Functions
@@ -398,7 +423,85 @@ class tx_templavoila_rules {
 	 * Helper functions
 	 *
 	 ********************************************/
-	
+
+	/**
+	 * Parses a regular expression with a reduced set of functions into an array.
+	 * 
+	 * @param	string		$regex: The regular expression
+	 * @param	string		$constants: The constants definitions being used in the regular expression divided by line breaks (eg.: a=text)
+	 * @return	array		Contains the cTypes with some additional information
+	 */
+	function parseRegexIntoArray ($regex, $constants) {
+		$pos = 0;
+		$outArr = array ();
+			// Strip off the not wanted characters. We only support certain functions of regular expressions.
+		$regex = ereg_replace ('[^a-zA-Z0-9\[\]\{\}\*\+\.\-]','',$regex);
+
+			// Split regular expression into alternative parts divided by '|'. If there is more then one part,
+			// call this function recursively and parse each part separately.
+		$altParts = $this->explodeAlternatives ($regex);
+		if (count($altParts)>1) {
+			foreach ($altParts as $altRegex) {
+				$altArr['alt'][] = $this->parseRegexIntoArray ($altRegex, $constants);
+			}
+			$outArr[]=$altArr;
+		} else {
+				// No other alternatives, just parse it.
+			while ($pos<strlen ($regex)) {
+				if ($this->isElement ($regex[$pos])) {				// Element (ie. a-z A-Z and '.')
+					$el = $regex[$pos];
+					$min = 0; 
+					$max = 0;
+					$this->evaluateQuantifier ($regex, $pos, $min, $max);
+					$outArr[] = array (
+						'el' => $this->getCTypeFromToken($el, $constants),
+						'min' => $min,
+						'max' => $max,
+					);
+				} elseif ($regex [$pos] == '(') {
+					$innerBraceData = $this->extractInnerBrace($regex, $pos);
+					$sub = $this->parseRegexIntoArray ($innerBraceData['content'], $constants);
+					$regex = $innerBraceData['rightpart'];
+					$pos = -1;
+					$outArr[] = array (
+						'sub' => $sub,
+						'min' => $innerBraceData['min'],
+						'max' => $innerBraceData['max'],
+					);
+				} elseif ($regex [$pos] == '[') {					// Class definition (ie. a set of elements which are allowed, enclosed in [] )
+					$pos++;
+						// If there is a circumflex the elements must *not* be used - set the negate flag
+					if ($regex[$pos] == '^') { 
+						$negate = 1; 
+						$pos++;
+					} else {
+						$negate = 0;
+					}
+					unset ($elements);
+					while ($this->isElement ($regex[$pos])) {
+						$elements .= $regex[$pos];
+						$pos++;
+					}
+					if ($elements) {
+						if ($regex[$pos] == ']') {
+								// Check if there is a quantifier after the closing brace and if so, evaluated it
+							$this->evaluateQuantifier ($regex, $pos, $min, $max);
+							$classArr = array (
+								'class' => $elements,
+								'min' => $min,
+								'max' => $max,
+							);
+							if ($negate) { $classArr['negate'] = 1; }
+							$outArr[] = $classArr;
+						} else { debug ('Parse error: ] expected at end of class definition'); }
+					} else { debug ('Parse error: At least one element expected in class definition'); }
+				}
+				$pos++;
+			}
+		}
+		return $outArr;
+	}	
+		
 	/**
 	 * Returns true if the given character is an element
 	 * 
@@ -548,6 +651,16 @@ class tx_templavoila_rules {
 		}
 		return $constArr[$token];
 	}
+
+	
+	
+	
+	
+	/********************************************
+	 *	
+	 * Status functions
+	 *
+	 ********************************************/
 
 	/**
 	 * Adds an error message to the status array. The array is passed by reference!

@@ -9,9 +9,9 @@
 
 $LOCAL_LANG = Array (
     "default" => Array (
-        "mlang_tabs_tab" => "Page",    
+        "mlang_tabs_tab" => "TV Page",    
         "mlang_labels_tabdescr" => "This module allows you to create and edit webpages. It provides a template selector and management for different languages.",    
-        "mlang_labels_tablabel" => "Page",    
+        "mlang_labels_tablabel" => "TV Page",
     ),
     "dk" => Array (
     ),
