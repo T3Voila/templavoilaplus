@@ -76,10 +76,10 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 				// Get the parameters
 			$cmd = t3lib_div::GPvar ('cmd');
-			$pageId = t3lib_div::GPvar ('?????');
+			$positionPID = t3lib_div::GPvar ('positionPid');
 			
+debug ($positionPID);
 			switch ($cmd) {
-				
 					// Create a new page
 				case 'crPage' :
 					$this->content.=$this->renderCreatePageScreen ($pageId);
@@ -137,20 +137,14 @@ class tx_templavoila_module1 extends t3lib_SCbase {
     function renderCreatePageScreen ($id) {
 		global $LANG, $BE_USER;
 
-			// Initialise the TCEFORMS
-		$tceForms = t3lib_div::makeInstance('t3lib_TCEforms');
-		$tceForms->initDefaultBEMode();
-
 			//	Output first part of the screen
-		$content =$this->doc->startPage($LANG->getLL('createnewpage_title'));
+		$content =$this->doc->startPage($LANG->getLL ('createnewpage_title'));
 		$content.=$this->doc->header($LANG->getLL('createnewpage_title'));
 		$content.=$this->doc->spacer(5);
-		$content.=$LANG->getLL('createnewpage_introduction');
-
-		$formConf=array();
-		$row=array();
-		$content.=$tceForms->getSingleField_typeInput('pages','title',$row,$formConf);
-		
+		$content.=$LANG->getLL ('createnewpage_introduction');
+		$content.=$this->doc->spacer(5);
+		$content.=$this->doc->sectionHeader ($LANG->getLL ('createnewpage_pagetitle_label'));
+		$content.=$LANG->getLL ('createnewpage_pagetitle_introduction');
 		return $content;
    }
 

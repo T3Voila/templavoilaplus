@@ -11,7 +11,8 @@ $LOCAL_LANG = Array (
         'title_editpage' => 'Edit the page',
         'createnewpage_title' => 'Create a new page',
         'createnewpage_introduction' => 'In order to create a new page you will have to enter a page title and maybe choose a layout.',
-        'createnewpage_pagetitle' => 'Page title',
+        'createnewpage_pagetitle_label' => 'Page title',
+        'createnewpage_pagetitle_description' => 'Please enter a page title. It will be displayed blablabla.',
     ),
     "dk" => Array (
     ),
