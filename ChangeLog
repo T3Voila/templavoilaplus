@@ -1,3 +1,12 @@
+2005-04-27  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+	* Added that a warning is displayed if Flexible content container elements have localization enabled in a "dangerous" non-supported way. Warning can be disabled with Page TSconfig
+	* Added that if an element on the local page is used more than one time inside the page structure it will be noticed in the display (assumption: Local content elements are normally shown only once on the page). (This changed helped to avoid some user confusion about copies and references)
+	* Added context menu item "View: DS/TO" which will display the data structure display (and also tell the DS/TO uids)
+	* Using t3lib_div::fixed_lgd_cs() for cropping strings (supporting backend charset)
+	* Fixed a few bugs
+
+
 2005-02-21	Robert Lemke <robert@typo3.org>
  + htmlmarkup: Added support and icon for DL, DD and DT HTML tags in the click menu (mapping tool). Solved feature request #0000671
 
@@ -11,7 +20,7 @@
 
 2005-02-07	Robert Lemke <robert@typo3.org>
  # xmlrelhndl: Fixed the bug mentioned before: Now FCEs are correctly copied recursively with correct referencing, files, pictures etc.
- 
+
 2005-01-27  Robert Lemke <robert@typo3.org>
  ~ Classic page module is now switched off by default, page template selector switched on (in the extension manager configuration dialogue)
  + mod1: Added support for making true copies of FCEs with sub elements. Before only the FCE parent element was truely copied, the child objects weren't. Still has a small bug, will fix that soon!

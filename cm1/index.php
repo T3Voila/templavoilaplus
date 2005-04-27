@@ -829,6 +829,7 @@ $TYPO3_DB->debugOutput = TRUE;
 				$tRows=array();
 				$tRows[]='
 							<tr class="bgColor5">
+								<td><strong>Uid:</strong></td>
 								<td><strong>Title:</strong></td>
 								<td><strong>File reference:</strong></td>
 								<td><strong>Mapping Data Lgd:</strong></td>
@@ -839,6 +840,7 @@ $TYPO3_DB->debugOutput = TRUE;
 				while($TO_Row = $TYPO3_DB->sql_fetch_assoc($res))	{
 					$tRows[]='
 							<tr class="bgColor4">
+								<td>['.$TO_Row['uid'].']</td>
 								<td nowrap="nowrap">'.$this->doc->wrapClickMenuOnIcon($TOicon,'tx_templavoila_tmplobj',$TO_Row['uid'],1).
 									'<a href="'.htmlspecialchars('index.php?table=tx_templavoila_tmplobj&uid='.$TO_Row['uid'].'&_reload_from=1').'">'.
 									t3lib_BEfunc::getRecordTitle('tx_templavoila_tmplobj',$TO_Row,1).'</a>'.

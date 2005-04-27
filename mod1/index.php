@@ -155,8 +155,6 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 
 
-
-
 	/*******************************************
 	 *
 	 * Initialization functions
@@ -389,9 +387,6 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	function renderEditPageScreen()    {
 		global $LANG, $BE_USER, $TYPO3_CONF_VARS;
 
-			// Reset internal variable which registers all used content elements:
-		$this->global_tt_content_elementRegister=array();
-
 			// If no element is in the clipboard, we set clipboardElInPath to true, which in the end disables the display of the paste icons:
 		$clipboardElInPath = (!trim($this->MOD_SETTINGS['clip'].$this->MOD_SETTINGS['clip_parentPos']) ? 1 : 0);
 
@@ -416,6 +411,8 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				$this->clipboardElIsFCEWithSubEl = ($numberOfSubElements > 0);
 			}
 		}
+			// Reset internal variable which registers all used content elements:
+		$this->global_tt_content_elementRegister=array();
 
 			// Get current page record for later usage
 		$this->currentPageRecord = t3lib_BEfunc::getRecord ('pages', $this->id);
@@ -574,9 +571,8 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		}
 
 			// Take care of the currently selected language, for both concepts - with langChildren enabled and disabled
-		$langDisable = intval($this->currentDataStructureArr[$dsInfo['el']['table']]['meta']['langDisable']);
-
-		$langChildren = intval ($this->currentDataStructureArr[$dsInfo['el']['table']]['meta']['langChildren']);
+		$langDisable = intval($dsInfo['ds_meta']['langDisable']);
+		$langChildren = intval($dsInfo['ds_meta']['langChildren']);
 		$lKey = $langDisable ? 'lDEF' : ($langChildren ? 'lDEF' : 'l'.$this->currentLanguageKey);
 		$vKey = $langDisable ? 'vDEF' : ($langChildren ? 'v'.$this->currentLanguageKey : 'vDEF');
 
@@ -708,7 +704,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				} else {
 					$cells[]='
 						<td valign="top" width="'.round(100/count($dsInfo['sub'][$sheet])).'%" style="'.$cellStyle.' padding: 5px 5px 5px 5px;">
-							<em>'.htmlspecialchars ($LANG->getLL ('willbereplacedbydefaultlanguage')).'</em>
+							<em>'.htmlspecialchars ($LANG->getLL('willbereplacedbydefaultlanguage')).'</em>
 						</td>
 					';
 				}
@@ -726,6 +722,16 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 			// Compile the content areas for the current element (basically what was put together above):
 		if (count ($headerCells) || count ($cells)) {
+
+				// Displaying warning for container content elements if localization is enabled:
+			if (!$this->modTSconfig['properties']['disableContainerElementLocalizationWarning'] && $dsInfo['el']['table'] === 'tt_content' && $dsInfo['el']['CType'] === 'templavoila_pi1' && !$dsInfo['ds_meta']['langDisable'])	{
+				if ($dsInfo['ds_meta']['langChildren'])	{
+					$content .= $this->doc->icons(2).'<b>This container element has localization enabled but with inheritance (&lt;langChildren&gt; = 1). This situation might produce confusing displays in TemplaVoila and you are encouraged to disable localization of this container element completely by setting &lt;langDisable&gt; = 1. Please inform the system administrator!</b>';
+				} else {
+					$content .= $this->doc->icons(3).'<b>WARNING: This container element has localization without inheritance enabled (&lt;langChildren&gt; = 0). This is most likely a misconfiguration since the localization features of TemplaVoila does not support localized container fields in the native interface! Please inform the system administrator!</b>';
+				}
+			}
+
 			$content .= '
 				<table border="0" cellpadding="2" cellspacing="2" width="100%">
 					<tr>'.(count($headerCells) ? implode('',$headerCells) : '<td>&nbsp;</td>').'</tr>
@@ -751,7 +757,6 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			if ($this->sideBarObj->position == 'toprows' || $this->sideBarObj->position == 'toptabs') {
 				$contentWrapPre .= $this->sideBarObj->render($dsInfo);
 			}
-
 		} else {
 			$linkMakeLocal = (!$isLocal && $referenceInPath<=1) ? $this->linkMakeLocal('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,t3lib_extMgm::extRelPath('templavoila').'mod1/makelocalcopy.gif','').' title="'.$LANG->getLL('makeLocal').'" border="0" alt="" />', $parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].'/'.$isLocal.'/'.$this->id) : '';
 			$linkCopy = $isLocal ? $this->linkCopyCut('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/clip_copy'.$clipActive_copy.'.gif','').' title="'.$LANG->getLL ('copyrecord').'" border="0" alt="" />',($clipActive_copy ? '' : $parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].'/'.$isLocal),'copy') : '';
@@ -764,7 +769,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 					'&altRoot[table]='.rawurlencode($dsInfo['el']['table']).
 					'&altRoot[uid]='.$dsInfo['el']['id'].
 					'&altRoot[field_flex]=tx_templavoila_flex';
-				$titleBarTDParams .= ' onClick="jumpToUrl(\''.$viewSubElementsUrl.'\');"';
+				$titleBarTDParams .= ' onclick="jumpToUrl(\''.$viewSubElementsUrl.'\');"';
 				$titleBarTDParams .= ' style="cursor:pointer;cursor:hand" title="'.htmlspecialchars($LANG->getLL ('viewsubelements')).'"';
 			}
 		}
@@ -786,7 +791,10 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		<table border="0" cellpadding="0" cellspacing="0" style="border: 1px solid black; margin-bottom:5px; '.$elementBackgroundStyle.'" width="100%">
 			<tr style="'.$elementPageTitlebarStyle.';">
 				<td nowrap="nowrap" style="vertical-align:top">'.$ruleIcon.$langIcon.$recordIcon.$viewPageIcon.'</td>
-				<td style="width:95%;"'.$titleBarTDParams.'>'.($isLocal?'':'<em>').htmlspecialchars($dsInfo['el']['title']).($isLocal?'':'</em>'). '</td>
+				<td style="width:95%;"'.$titleBarTDParams.'>'.
+					($isLocal?'':'<em>').htmlspecialchars($dsInfo['el']['title']).($isLocal?'':'</em>').
+					($this->global_tt_content_elementRegister[$dsInfo['el']['id']]>1 ? '<br/>'.$this->doc->icons(2).' <em>Element used '.$this->global_tt_content_elementRegister[$dsInfo['el']['id']].' times on page! (UID: '.$dsInfo['el']['id'].')</em>' : '').
+					'</td>
 				<td nowrap="nowrap" style="text-align:right; vertical-align:top">'.
 					$linkCustom.
 					$linkMakeLocal.
@@ -859,7 +867,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				case 'text':		//	Text
 				case 'table':		//	Table
 				case 'mailform':	//	Form
-					$out = $this->linkEdit('<strong>'.$LANG->sL(t3lib_BEfunc::getItemLabel('tt_content','bodytext'),1).'</strong> '.htmlspecialchars(t3lib_div::fixed_lgd(trim(strip_tags($row['bodytext'])),200)),$table,$row['uid']);
+					$out = $this->linkEdit('<strong>'.$LANG->sL(t3lib_BEfunc::getItemLabel('tt_content','bodytext'),1).'</strong> '.htmlspecialchars(t3lib_div::fixed_lgd_cs(trim(strip_tags($row['bodytext'])),200)),$table,$row['uid']);
 					break;
 				case 'image':		//	Image
 					$out = $this->linkEdit('<strong>'.$LANG->sL(t3lib_BEfunc::getItemLabel('tt_content','image'),1).'</strong><br /> ', $table, $row['uid']).t3lib_BEfunc::thumbCode ($row, $table, 'image', $this->doc->backPath, '', $v['TCEforms']['config']['uploadfolder']);
@@ -868,12 +876,12 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				case 'splash':		//	Textbox
 					$thumbnail = '<strong>'.$LANG->sL(t3lib_BEfunc::getItemLabel('tt_content','image'),1).'</strong><br />';
 					$thumbnail .= t3lib_BEfunc::thumbCode ($row, $table, 'image', $this->doc->backPath, '', $v['TCEforms']['config']['uploadfolder']);
-					$text = $this->linkEdit('<strong>'.$LANG->sL(t3lib_BEfunc::getItemLabel('tt_content','bodytext'),1).'</strong> '.htmlspecialchars(t3lib_div::fixed_lgd(trim(strip_tags($row['bodytext'])),200)),$table,$row['uid']);
+					$text = $this->linkEdit('<strong>'.$LANG->sL(t3lib_BEfunc::getItemLabel('tt_content','bodytext'),1).'</strong> '.htmlspecialchars(t3lib_div::fixed_lgd_cs(trim(strip_tags($row['bodytext'])),200)),$table,$row['uid']);
 					$out='<table><tr><td valign="top">'.$text.'</td><td valign="top">'.$thumbnail.'</td></tr></table>';
 					break;
 				case 'bullets':		//	Bullets
 					$htmlBullets = '';
-					$bulletsArr = explode ("\n", t3lib_div::fixed_lgd($row['bodytext'],200));
+					$bulletsArr = explode ("\n", t3lib_div::fixed_lgd_cs($row['bodytext'],200));
 					if (is_array ($bulletsArr)) {
 						foreach ($bulletsArr as $listItem) {
 							$htmlBullets .= htmlspecialchars(trim(strip_tags($listItem))).'<br />';
@@ -882,10 +890,10 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 					$out = $this->linkEdit('<strong>'.$LANG->sL(t3lib_BEfunc::getItemLabel('tt_content','bodytext'),1).'</strong><br />'.$htmlBullets, $table, $row['uid']);
 					break;
 				case 'uploads':		//	Filelinks
-					$out = $this->linkEdit('<strong>'.$LANG->sL(t3lib_BEfunc::getItemLabel('tt_content','media'),1).'</strong><br />'.str_replace (',','<br />',htmlspecialchars(t3lib_div::fixed_lgd(trim(strip_tags($row['media'])),200))), $table, $row['uid']);
+					$out = $this->linkEdit('<strong>'.$LANG->sL(t3lib_BEfunc::getItemLabel('tt_content','media'),1).'</strong><br />'.str_replace (',','<br />',htmlspecialchars(t3lib_div::fixed_lgd_cs(trim(strip_tags($row['media'])),200))), $table, $row['uid']);
 					break;
 				case 'multimedia':	//	Multimedia
-					$out = $this->linkEdit ('<strong>'.$LANG->sL(t3lib_BEfunc::getItemLabel('tt_content','multimedia'),1).'</strong><br />' . str_replace (',','<br />',htmlspecialchars(t3lib_div::fixed_lgd(trim(strip_tags($row['multimedia'])),200))), $table, $row['uid']);
+					$out = $this->linkEdit ('<strong>'.$LANG->sL(t3lib_BEfunc::getItemLabel('tt_content','multimedia'),1).'</strong><br />' . str_replace (',','<br />',htmlspecialchars(t3lib_div::fixed_lgd_cs(trim(strip_tags($row['multimedia'])),200))), $table, $row['uid']);
 					break;
 				case 'menu':		//	Menu / Sitemap
 					$out = $this->linkEdit ('<strong>'.$LANG->sL(t3lib_BEfunc::getItemLabel('tt_content','menu_type')).'</strong> '.$LANG->sL(t3lib_BEfunc::getLabelFromItemlist('tt_content','menu_type',$row['menu_type'])).'<br />'.
@@ -895,7 +903,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 					$out = $this->linkEdit('<strong>'.$LANG->sL(t3lib_BEfunc::getItemLabel('tt_content','list_type')).'</strong> ' . htmlspecialchars($LANG->sL(t3lib_BEfunc::getLabelFromItemlist('tt_content','menu_type',$row['list_type'])).' '.$row['list_type']), $table, $row['uid']);
 					break;
 				case 'html':		//	HTML
-					$out = $this->linkEdit ('<strong>'.$LANG->sL(t3lib_BEfunc::getItemLabel('tt_content','bodytext'),1).'</strong> ' . htmlspecialchars(t3lib_div::fixed_lgd(trim($row['bodytext']),200)),$table,$row['uid']);
+					$out = $this->linkEdit ('<strong>'.$LANG->sL(t3lib_BEfunc::getItemLabel('tt_content','bodytext'),1).'</strong> ' . htmlspecialchars(t3lib_div::fixed_lgd_cs(trim($row['bodytext']),200)),$table,$row['uid']);
 					break;
 				case 'search':		//	Search Box
 				case 'login':		//	Login Box
@@ -949,11 +957,12 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			$tRows=array();
 			foreach($this->translatedLanguagesArr as $sys_language_uid => $sLInfo)	{
 				if ($sys_language_uid > 0)	{
+					$lC = '';
 					if (is_array($attachedLocalizations[$sys_language_uid]))	{
 						#$lC = $this->linkEdit('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/edit2.gif','').' title="'.$LANG->getLL ('editrecord').'" border="0" alt="" />','tt_content',$attachedLocalizations[$sys_language_uid]['uid']);
 
 							// Put together the records icon including content sensitive menu link wrapped around it:
-						$recordIcon_l10n = t3lib_iconWorks::getIconImage('tt_content',$attachedLocalizations[$sys_language_uid]['row'],$this->doc->backPath,'class="absmiddle"');
+						$recordIcon_l10n = t3lib_iconWorks::getIconImage('tt_content',$attachedLocalizations[$sys_language_uid]['row'],$this->doc->backPath,'class="absmiddle" title="'.htmlspecialchars('[tt_content:'.$attachedLocalizations[$sys_language_uid]['uid'].']').'"');
 						$recordIcon_l10n = $this->doc->wrapClickMenuOnIcon($recordIcon_l10n,'tt_content',$attachedLocalizations[$sys_language_uid]['uid'],1,'&callingScriptId='.rawurlencode($this->doc->scriptID), 'new,copy,cut,pasteinto,pasteafter');
 						$lC = $recordIcon_l10n.t3lib_BEfunc::getRecordTitle('tt_content',$attachedLocalizations[$sys_language_uid]['row']);
 
@@ -1354,7 +1363,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			'table' => $table,
 			'id' => $id,
 			'pid' => $row['pid'],
-			'title' => t3lib_div::fixed_lgd(t3lib_BEfunc::getRecordTitle($table, $row),50),
+			'title' => t3lib_div::fixed_lgd_cs(t3lib_BEfunc::getRecordTitle($table, $row),50),
 			'icon' => t3lib_iconWorks::getIcon($table, $row),
 			'sys_language_uid' => $row['sys_language_uid'],
 			'l18n_parent' => $row['l18n_parent'],
@@ -1364,6 +1373,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		if ($table=='pages' || $table==$this->altRoot['table'] || ($table=='tt_content' && $row['CType']=='templavoila_pi1'))	{
 			$flexFName = $this->altRoot['table']==$table ? $this->altRoot['field_flex'] : 'tx_templavoila_flex';
 			$expDS = $this->getExpandedDataStructure($table, $flexFName, $row);
+			$tree['ds_meta'] = $this->currentDataStructureArr[$table]['meta'];
 			$xmlContent = t3lib_div::xml2array($row[$flexFName]);
 			if (!is_array($xmlContent))	$xmlContent = array();
 
@@ -1428,7 +1438,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 								$thumbnail = t3lib_BEfunc::thumbCode(array('fN'=>$xmlContent['data'][$sheetKey][$lKey][$k][$vKey]),'','fN',$this->doc->backPath,'',$v['TCEforms']['config']['uploadfolder']);
 								$tree['el']['previewContent'][]='<strong>'.$LANG->sL($v['TCEforms']['label'],1).'</strong> '.$thumbnail;
 							} else {
-								$tree['el']['previewContent'][]='<strong>'.$LANG->sL($v['TCEforms']['label'],1).'</strong> '.$this->linkEdit(htmlspecialchars(t3lib_div::fixed_lgd(strip_tags($xmlContent['data'][$sheetKey][$lKey][$k][$vKey]),200)),$table,$row['uid']);
+								$tree['el']['previewContent'][]='<strong>'.$LANG->sL($v['TCEforms']['label'],1).'</strong> '.$this->linkEdit(htmlspecialchars(t3lib_div::fixed_lgd_cs(strip_tags($xmlContent['data'][$sheetKey][$lKey][$k][$vKey]),200)),$table,$row['uid']);
 							}
 						}
 					}

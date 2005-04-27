@@ -115,8 +115,10 @@ class tx_templavoila_cm1 {
 				);
 			}
 
+			$isTVelement = ('tt_content' == $table && $backRef->rec['CType']=='templavoila_pi1' || 'pages' == $table) && $backRef->rec['tx_templavoila_flex'];
+
 				// Adding link for "View: Sub elements":
-			if ($table == 'tt_content' && $backRef->rec['tx_templavoila_flex']) {
+			if ($table == 'tt_content' && $isTVelement) {
 				$localItems = Array();
 
 				$url = t3lib_extMgm::extRelPath('templavoila').'mod1/index.php?id='.intval($backRef->rec['pid']).
@@ -134,7 +136,7 @@ class tx_templavoila_cm1 {
 			}
 
 				// Adding link for "View: Flexform XML" (admin only):
-			if ($BE_USER->isAdmin() && ('tt_content' == $table || 'pages' == $table) && $backRef->rec['tx_templavoila_flex']) {
+			if ($BE_USER->isAdmin() && $isTVelement) {
 				$url = t3lib_extMgm::extRelPath('templavoila').'cm2/index.php?'.
 							'&viewRec[table]='.rawurlencode($table).
 							'&viewRec[uid]='.$uid.
@@ -146,6 +148,22 @@ class tx_templavoila_cm1 {
 					$backRef->urlRefForCM($url),
 					1	// Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
 				);
+			}
+
+				// Adding link for "View: DS/TO" (admin only):
+			if ($BE_USER->isAdmin() && $isTVelement) {
+
+				if (t3lib_div::testInt($backRef->rec['tx_templavoila_ds']))	{
+					$url = t3lib_extMgm::extRelPath('templavoila').'cm1/index.php?'.
+								'table=tx_templavoila_datastructure&uid='.$backRef->rec['tx_templavoila_ds'];
+
+					$localItems[] = $backRef->linkItem(
+						$LANG->getLLL('cm_viewdsto',$LL).' ['.$backRef->rec['tx_templavoila_ds'].'/'.$backRef->rec['tx_templavoila_to'].']',
+						$backRef->excludeIcon('<img src="'.$backRef->backPath.t3lib_extMgm::extRelPath('templavoila').'cm2/cm_icon.gif" width="15" height="12" border="0" align="top" alt="" />'),
+						$backRef->urlRefForCM($url),
+						1	// Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
+					);
+				}
 			}
 
 			if ($table=='tt_content') {

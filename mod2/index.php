@@ -568,7 +568,9 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 				<tr class="bgColor4">
 					<td rowspan="'.($this->MOD_SETTINGS['set_details'] ? 4 : 1).'" style="width: 100px; text-align: center;">'.$icon.'</td>
 					<td>XML:</td>
-					<td>'.t3lib_div::formatSize(strlen($dsR['dataprot'])).'</td>
+					<td>'.t3lib_div::formatSize(strlen($dsR['dataprot'])).
+						($this->MOD_SETTINGS['set_details'] ? '<hr/>'.$this->DSdetails($dsR['dataprot']) : '').
+						'</td>
 				</tr>'.($this->MOD_SETTINGS['set_details'] ? '
 				<tr class="bgColor4">
 					<td>Template Status:</td>
@@ -1200,6 +1202,14 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 		}
 	}
 
+	/**
+	 * Show meta data part of Data Structure
+	 */
+	function DSdetails($DSstring)	{
+		$DScontent = t3lib_div::xml2array($DSstring);
+		$DScontent = array('meta' => $DScontent['meta']);
+		return t3lib_div::view_array($DScontent);
+	}
 
 
 
