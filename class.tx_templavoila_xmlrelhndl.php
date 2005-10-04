@@ -113,13 +113,14 @@ class tx_templavoila_xmlrelhndl {
 		if (t3lib_div::inList($this->rootTable.',tt_content',$destRefArr[0])) {
 
 				// Get the destination record content:
-			$destinationRec = t3lib_BEfunc::getRecord($destRefArr[0],$destRefArr[1],'uid,pid,'.$this->flexFieldIndex[$destRefArr[0]]);
+			$destinationRec = t3lib_BEfunc::getRecord($destRefArr[0],$destRefArr[1],'uid,pid,'.$this->flexFieldIndex[$destRefArr[0]].($destRefArr[0]==='pages'?',t3ver_oid':''));
+
 			if (is_array($destinationRec))	{
 
 					// First, create record:
 				$dataArr = array();
 				$dataArr['tt_content']['NEW'] = $row;
-				$dataArr['tt_content']['NEW']['pid'] = ($destRefArr[0]=='pages' ? $destinationRec['uid'] : $destinationRec['pid']);
+				$dataArr['tt_content']['NEW']['pid'] = ($destRefArr[0]=='pages' ? ($destinationRec['pid']==-1 ? $destinationRec['t3ver_oid'] : $destinationRec['uid']) : $destinationRec['pid']);
 				unset($dataArr['tt_content']['NEW']['uid']);
 
 					// If the destination is not the default language, try to set the old-style sys_language_uid field accordingly
@@ -627,6 +628,10 @@ class tx_templavoila_xmlrelhndl {
 	 */
 	function _splitAndValidateReference($string)	{
 		 $refArr = explode(':',$string);
+
+		 if ($version = t3lib_BEfunc::getWorkspaceVersionOfRecord($GLOBALS['BE_USER']->workspace, $refArr[0], $refArr[1], 'uid'))	{
+			$refArr[1] = $version['uid'];
+		 }
 
 		 return $refArr;
 	}

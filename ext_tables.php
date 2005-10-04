@@ -52,6 +52,8 @@ $TCA['tx_templavoila_tmplobj'] = Array (
 		'selicon_field' => 'previewicon',
 		'selicon_field_path' => 'uploads/tx_templavoila',
 		'type' => 'parent',
+		'versioningWS' => TRUE,
+		'origUid' => 't3_origuid',
 	)
 );
 $TCA['tx_templavoila_datastructure'] = Array (
@@ -109,6 +111,7 @@ $tempColumns = Array (
         )
     ),
     'tx_templavoila_flex' => Array (
+		'l10n_cat' => 'text',
         'exclude' => 1,
         'label' => 'LLL:EXT:templavoila/locallang_db.php:tt_content.tx_templavoila_flex',
 		'displayCond' => 'FIELD:tx_templavoila_ds:REQ:true',

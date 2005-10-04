@@ -2055,6 +2055,7 @@ $TYPO3_DB->debugOutput = TRUE;
 	10= RECORDS
 	10.source.current=1
 	10.tables = tt_content
+	10.wrap = <!--TYPO3SEARCH_begin--> | <!--TYPO3SEARCH_end-->
 							';
 						break;
 						case 'int':

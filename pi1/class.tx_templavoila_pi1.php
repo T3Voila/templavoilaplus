@@ -241,7 +241,7 @@ class tx_templavoila_pi1 extends tslib_pibase {
 						$content = $this->pi_getEditIcon($content,'tx_templavoila_flex','Edit element',$row,$table,$eIconf);
 
 							// Visual identification aids:
-						if ($GLOBALS['TSFE']->fePreview)	{
+						if ($GLOBALS['TSFE']->fePreview && !$this->conf['disableExplosivePreview'])	{
 							$content = $this->visualID($content,$srcPointer,$DSrec,$TOrec,$row,$table);
 						}
 					} else {

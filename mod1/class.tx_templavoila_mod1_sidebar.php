@@ -263,20 +263,47 @@ class tx_templavoila_mod1_sidebar {
 		$availableLanguagesArr = $pObj->translatedLanguagesArr;											// Get languages for which translations already exist
 		$newLanguagesArr = $pObj->getAvailableLanguages(0, true, false);								// Get possible languages for new translation of this page
 		$langChildren = $pObj->currentDataStructureArr['pages']['meta']['langChildren'] ? 1 : 0;		// Evaluate which translation mechanism to choose
-		$langDisable = $pObj->currentDataStructureArr['pages']['meta']['langDisable'] ? 1 : 0;			// Evaluate if language was disabled at all
-		$availableTranslationsFlags = $LANG->getLL ('availabletranslations').':';						// Flags for available translations
+
+		#$langDisable = $pObj->currentDataStructureArr['pages']['meta']['langDisable'] ? 1 : 0;			// Evaluate if language was disabled at all
+		$langDisable = FALSE;	// Now, I think that it is better to always show the language selector even if localization is not available for the "top-level" data structure. The reason is that not only the top level might use the translation settings to display content, further if a user switches from a page with localization to one without, any language setting is still in effect - but not changable by the selector and hence it is very confusing.
+
+		if ($pObj->currentLanguageKey==='DEF')	$availableTranslationsFlags = $LANG->getLL ('availabletranslations').':';						// Flags for available translations
+
+#debug(array(!$langDisable,(count($availableLanguagesArr) > 1),$pObj->currentLanguageKey));
 
 			// Create output for the language selector if translations are available:
-		if (!$langDisable && (count($availableLanguagesArr) > 1)) {
+		if ((count($availableLanguagesArr) > 1)) {
+
 			$optionsArr = array ();
 			foreach ($availableLanguagesArr as $language) {
 				unset($newLanguagesArr[$language['uid']]);	// Remove this language from possible new translation languages array (PNTLA ;-)
 
-				$selected = $pObj->currentLanguageKey == $language['ISOcode'];
+				if ($language['uid']<=0 || $GLOBALS['BE_USER']->checkLanguageAccess($language['uid']))	{
 
-				$style = isset ($language['flagIcon']) ? 'background-image: url('.$language['flagIcon'].'); background-repeat: no-repeat; padding-left: 22px;' : '';
-				$optionsArr [] = '<option style="'.$style.'" value="'.$language['uid'].'"'.($pObj->MOD_SETTINGS['language'] == $language['uid'] ? ' selected="selected"' : '').'>'.htmlspecialchars($language['title']).'</option>';
-				$availableTranslationsFlags .= '<img src="'.$language['flagIcon'].'" title="'.htmlspecialchars($language['title']).'" alt="" /> ';
+					$selected = $pObj->currentLanguageKey == $language['ISOcode'];
+
+					$style = isset ($language['flagIcon']) ? 'background-image: url('.$language['flagIcon'].'); background-repeat: no-repeat; padding-left: 22px;' : '';
+					$optionsArr [] = '<option style="'.$style.'" value="'.$language['uid'].'"'.($pObj->MOD_SETTINGS['language'] == $language['uid'] ? ' selected="selected"' : '').'>'.htmlspecialchars($language['title']).'</option>';
+					if ($pObj->currentLanguageKey==='DEF')	{
+						$editItems = '';
+						if (is_array($pObj->global_localization_status[$language['uid']]))	{
+							foreach($pObj->global_localization_status[$language['uid']] as $item)	{
+								switch($item['status'])	{
+									case 'exist':
+										$editItems.= '&eI[]=E:'.$item['localized_uid'];
+									break;
+									case 'flex':
+										$editItems.= '&eI[]=E:'.$item['parent_uid'];
+									break;
+									case 'localize':
+										$editItems.= '&eI[]=L:'.$item['parent_uid'];
+									break;
+								}
+							}
+						}
+						$availableTranslationsFlags .= '<a href="index.php?'.$pObj->linkParams().'&editLocalization='.$language['uid'].$editItems.'"><img src="'.$language['flagIcon'].'" title="Edit '.htmlspecialchars($language['title']).'" alt="" /></a> ';
+					}
+				}
 			}
 
 			$link = '\'index.php?'.$pObj->linkParams().'&SET[language]=\'+this.options[this.selectedIndex].value';
@@ -292,8 +319,9 @@ class tx_templavoila_mod1_sidebar {
 				</tr>
 				<tr class="bgColor4">
 					<td>
-						<select style="width:'.($this->sideBarWidth-30).'px;" onChange="document.location='.$link.'">'.implode ($optionsArr).'</select>
-						'.$availableTranslationsFlags.'
+						'.(!$langDisable ? '<select style="width:'.($this->sideBarWidth-30).'px;" onchange="document.location='.$link.'">'.implode ($optionsArr).'</select>' : '').
+						$availableTranslationsFlags.
+						'
 					</td>
 				</tr>
 			';
@@ -303,18 +331,22 @@ class tx_templavoila_mod1_sidebar {
 		if (count ($newLanguagesArr)) {
 			$optionsArr = array ('<option value=""></option>');
 			foreach ($newLanguagesArr as $language) {
-				$style = isset ($language['flagIcon']) ? 'background-image: url('.$language['flagIcon'].'); background-repeat: no-repeat; padding-top: 0px; padding-left: 22px;' : '';
-				$optionsArr [] = '<option style="'.$style.'" name="createNewTranslation" value="'.$language['uid'].'">'.htmlspecialchars($language['title']).'</option>';
+				if ($GLOBALS['BE_USER']->checkLanguageAccess($language['uid']))	{
+					$style = isset ($language['flagIcon']) ? 'background-image: url('.$language['flagIcon'].'); background-repeat: no-repeat; padding-top: 0px; padding-left: 22px;' : '';
+					$optionsArr [] = '<option style="'.$style.'" name="createNewTranslation" value="'.$language['uid'].'">'.htmlspecialchars($language['title']).'</option>';
+				}
 			}
-			$link = 'index.php?'.$pObj->linkParams().'&createNewTranslation=\'+this.options[this.selectedIndex].value+\'&pid='.$pObj->id;
-			$createNewLanguageOutput = '
-				<tr class="bgColor4-20">
-					<td>'.$LANG->getLL ('createnewtranslation').':</td>
-				</tr>
-				<tr class="bgColor4">
-					<td style="padding:4px;"><select style="width:'.($this->sideBarWidth-30).'px"; onChange="document.location=\''.$link.'\'">'.implode ($optionsArr).'</select></td>
-				</tr>
-			';
+			if (count ($optionsArr)>1) {
+				$link = 'index.php?'.$pObj->linkParams().'&createNewTranslation=\'+this.options[this.selectedIndex].value+\'&pid='.$pObj->id;
+				$createNewLanguageOutput = '
+					<tr class="bgColor4-20">
+						<td>'.$LANG->getLL ('createnewtranslation').':</td>
+					</tr>
+					<tr class="bgColor4">
+						<td style="padding:4px;"><select style="width:'.($this->sideBarWidth-30).'px"; onChange="document.location=\''.$link.'\'">'.implode ($optionsArr).'</select></td>
+					</tr>
+				';
+			}
 		}
 
 		$output = '
@@ -416,7 +448,7 @@ class tx_templavoila_mod1_sidebar {
 			$elementRows[] = '
 				<tr class="bgColor4">
 					<td>'.$linkIcon.'</td>
-					<td>'.htmlspecialchars($row['header']).'</td>
+					<td>'.htmlspecialchars('[UID:'.$row['uid'].'] '.$row['header']).'</td>
 				</tr>
 			';
 		}
