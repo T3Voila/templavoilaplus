@@ -23,7 +23,7 @@
 
  * Added support for versioning plus did some other changes to localization.
 
-2005-04-27  Kasper Sk�hj,,,  <kasper@typo3.com>
+2005-04-27  Kasper Skårhøj  <kasper@typo3.com>
 
  * Added that a warning is displayed if Flexible content container elements have localization enabled in a "dangerous" non-supported way. Warning can be disabled with Page TSconfig
  * Added that if an element on the local page is used more than one time inside the page structure it will be noticed in the display (assumption: Local content elements are normally shown only once on the page). (This changed helped to avoid some user confusion about copies and references)
@@ -71,7 +71,7 @@
  + mod1: Added flags next to the language selector which represent existing translations
  # mod1: In the sidebar, changed menuItems array for the dynamic tab menu to num array
 
-2004-09-09  Kasper Sk�hj <kasperYYYY@typo3.com>
+2004-09-09  Kasper Skårhøj <kasperYYYY@typo3.com>
 
  * Fixed that color highlighting of data structure didn't show <meta> tag content.
  * Improved things in page module regarding sheets; Eg. counting elements on each sheet. Fixed some PHP5 array bugs also.
@@ -172,7 +172,7 @@
 	* Added icons, sponsored by Ben
 	* Modified TSconfig userFunction properties for cm1 and updated manual
 
-2004-03-24  Kasper Sk�hj
+2004-03-24  Kasper Skårhøj
 	* Added a syntax highlight module for FlexForm data in tt_content and pages; access it as admin via the click menu of pages / tt_content elements.
 
 2004-03-22  Robert Lemke  <robert@typo3.org>
@@ -186,7 +186,7 @@ See the updated many for more information. BTW: Thanks for the extra fields!
 	* Hey Kasper, you broke the create new page wizard ... ;-) Anyways, will find out what's wrong.
 	* Small update for the manual (FAQ)
 
-2004-03-09  Kasper Sk�hj
+2004-03-09  Kasper Skårhøj
 
 	* Removed copy,cut,paste,new,delete links in Context Menu for content elements inside of TemplaVoila module; Doesn't do any good there since those features are specific for TemplaVoila and has to be managed in the module itself; Alternatively we should create menu items in the context menu which does the same as the buttons in the module, but that was too hard for me to think about tonight....
 	* Added support for other root elements in backend module than pages. Setting another root element is done by the parameter set "&altRoot[table], &altRoot[uid], &altRoot[flex_field]"
@@ -224,7 +224,7 @@ See the updated many for more information. BTW: Thanks for the extra fields!
 	* Several changes here and there, comments added
 
 
-2003-10-28  Kasper Sk�hj
+2003-10-28  Kasper Skårhøj
 
 	* Added $Id$ keywords tags.
 	* Added support+icon for iframe tags in htmlmarkup class.
