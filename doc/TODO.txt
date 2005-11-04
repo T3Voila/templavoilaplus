@@ -4,7 +4,6 @@ TODO
 
 INBOX
 
-	- (Re-) implement support for thead and tbody for HTML markup class.
 	- BUG: When updating mapping and entering mapping in "Display header" mode and clicking "SAve and return" right away; it clears all mappings of the body!
 	- Frontend editing: Add copy/cut/paste/refer buttons so the frontend becomes the "live" version of the page module in the backend!
 	- ! Count of non-used elements is potentially wrong since it will not traverse other translations than the currently selected. The problem is in the getDStree function which builds the whole structure as an array; it takes the current language into account and builds the structure based on that. However, it is not easy to change because AFAICS there is no easy way to also traverse the languages that are not shown!
@@ -115,7 +114,7 @@ INBOX:
 
 - Add Editing Type "RTE" to mapping tool
 - Frontend Editing: When creating new CEs, they are not referenced to the page, so appear as unused elements! Have to fix that.
-- Some locallang labels don't have the correct charset in backend when in utf-8 mode (clickmenu Templavoilà)
+- Some locallang labels don't have the correct charset in backend when in utf-8 mode (clickmenu Templavoilï¿½)
 
 - "Web > Page" Backend Modules:
 	- New wizard:

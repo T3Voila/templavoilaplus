@@ -1,3 +1,24 @@
+2005-11-04	Robert Lemke	<robert@typo3.org>
+
+ # Added some hints to the manual
+ # Added TypoScript option "plugin.tx_templavoila_pi1.disableErrorMessages". See issue #0001412
+ # Fixed issue #0001463: FCE rendering does not process LLL for type=select
+ # Fixed issue #0000713: stdWrap in DS XML produces "a call on non-object" PHP error
+ # Fixed issue #0000450: DS/TO Category selectorbox accepts empty category
+ # Fixed issue #0001422: UTF-8 Support missing. The mapping tool now handles special characters and character encoding correctly.
+ # Fixed issue #0000604: DS interface writes incorrect XML when switching type of elements 
+ # Fixed issue #0000876: Added support for FIELDSET, LEGEND and LABEL
+ # Fixed issue #0000219: Added support for THEAD, TBODY and TH
+ # Fixed issue #0000393: Wrong parameter count for implode() in side bar (language selection). PHP4 < 4.3 had this problem
+ # Fixed issue #0000749: Content Element wizard Flexible content is empty! -> Added FCEs to the new content element wizard.
+ # Fixed issue #0001429: Incorrect image reference when using img:attr:src
+ # Fixed issue #0000454: edit DS (mapping) in TV looses header part.
+ # Fixed issue #0001669: Import from HTML file: image paths not converted for CSS background-image. -> This is solved in t3lib_parsehtml !
+ # Fixed issue #0001052: TemplaVoila doens't allow html elements inside elements who's attributes are mapped. Thanks to Bernhard Kraft for providing a patch!
+ # Fixed issue #0000087: cannot map to elements with ids that contain spaces
+ 
+ + Added staging support for workspaces (t3ver_stage)
+
 2005-10-04  Kasper Skårhøj  <kasper2005@typo3.com>
 
  * Added support for versioning plus did some other changes to localization.
@@ -14,7 +35,7 @@
 2005-02-21 Robert Lemke <robert@typo3.org>
  + htmlmarkup: Added support and icon for DL, DD and DT HTML tags in the click menu (mapping tool). Solved feature request #0000671
 
-2005-02-16  Kasper Sk�hj,,,  <kasper@typo3.com>
+2005-02-16  Kasper Skårhøj  <kasper@typo3.com>
 
  * Added feature that allows a Template Object to point to another parent template object from which the print and language subtemplates will be taken if the actual template object doesn't have any defined it self. The feature is called "Inherit subtemplates from as defaults"
 
@@ -29,12 +50,12 @@
  ~ Classic page module is now switched off by default, page template selector switched on (in the extension manager configuration dialogue)
  + mod1: Added support for making true copies of FCEs with sub elements. Before only the FCE parent element was truely copied, the child objects weren't. Still has a small bug, will fix that soon!
 
-2005-01-21  Kasper Sk�hj,,,  <kasper@typo3.com>
+2005-01-21  Kasper Skårhøj  <kasper@typo3.com>
 
  * Added a "Start new website" wizard which will set up TemplaVoila site basics in one minute. Found in the Web > TemplaVoila module.
  * MAY have fixed a bug where the mapping was mysteriously lost - but I might also have introduced a new bug instead. Please let me know!
 
-2004-12-13  Kasper Sk�hj,,,  <kasper@typo3.com>
+2004-12-13  Kasper Skårhøj  <kasper@typo3.com>
 
  * Added an EXAMPLE of how page-templates can come from a t3d file. I expect it needs some configuration of which folder to look for templates in, but the principles are shown. It will require the new TYPO3 source with modified import/export features.
  * Fixed a PHP5 bug with arrays...
@@ -85,7 +106,7 @@
   * mod3: Added wizard for (re-) building indexing information about element reference (where which content element is used). You'll need to update table definitions in the extension manager.
   * ToDo for element references: Deleting CEs from elsewhere than the page module will not be registered automatically (see ToDo file)
 
-2004-08-27  Kasper Sk�hj,,,  <kasperYYYY@typo3.com>
+2004-08-27  Kasper Skårhøj  <kasperYYYY@typo3.com>
 
   * Page module: Added "Show hidden elements" box - can be moved to better position in page module
   * Corrected bugs for flagicons if they were not configured (they didn't display correctly of course).
@@ -93,11 +114,11 @@
   * Page module: Added "&L=xx" parameter to view-page icon (magnifying glass) so preview link to localized pages is correct.
   * Page module: Added overview of localized versions of other records. This is used when TypoScript is configured with "config.sys_language_overlay". Configurable.
 
-2004-08-26  Kasper Sk�hj,,,  <kasperYYYY@typo3.com>
+2004-08-26  Kasper Skårhøj  <kasperYYYY@typo3.com>
 
   * Changed the versioning selector...
 
-2004-08-21  Kasper Sk�hj,,,  <kasperYYYY@typo3.com>
+2004-08-21  Kasper Skårhøj  <kasperYYYY@typo3.com>
 
   * Finally added the "TemplaVoila" module to the Web main module and put some content into it! Now you can manage all your Data Structures and Template Objects from that module including creating new mappings and validate old ones.
   * Also added TAB menus to the TV page module
@@ -142,7 +163,7 @@
 	* Added hook in page module for inserting HTML code at the very top of the edit page screen - for providing a toolbar or sth. similar
 	* Updated manual
 
-2004-03-31  Kasper Sk�hj,,,  <kasperYYYY@typo3.com>
+2004-03-31  Kasper Skårhøj  <kasperYYYY@typo3.com>
 
 	* Fixed bug in htmlmarkup class where content were merged with template; When the number of "virtual records" exceeded a limit, none were merged.
 

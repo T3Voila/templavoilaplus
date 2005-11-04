@@ -136,6 +136,7 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 		'dt' => array(),
 		'dd' => array(),
 		'em' => array(),
+		'fieldset' => array('anchor_outside'=>1),		
 		'font' => array(),
 		'form' => array('anchor_outside'=>1),
 		'h1' => array(),
@@ -145,6 +146,8 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 		'h5' => array(),
 		'h6' => array(),
 		'i' => array(),
+		'label' => array(),
+		'legend' => array(),
 		'li' => array(),
 		'map' => array('anchor_outside'=>1),
 		'ol' => array('anchor_outside'=>1),
@@ -155,14 +158,15 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 		'span' => array(),
 		'strong' => array(),
 		'table' => array('anchor_outside'=>1),
+		'tbody' => array('anchor_outside'=>1),
+		'thead' => array('anchor_outside'=>1),
 		'td' => array(),
+		'th' => array(),
 		'textarea' => array('anchor_outside'=>1),
 		'tr' => array('wrap'=>array('<td>','</td>')),
 		'u' => array(),
 		'ul' => array('anchor_outside'=>1),
 		'iframe' => array('anchor_outside'=>1),
-#		'tbody' => array(),
-#		'thead' => array(),
 
 			// Single elements:
 		'br' => array('single'=>1),
@@ -799,8 +803,6 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 			// Setting gnyf style
 		$style = '';
 		$style.=(!t3lib_div::inList('explode,checkbox',$this->mode)?'position:absolute;':'');
-#		$style.=($this->mode=='transparent'?'filter:alpha(Opacity=\'75\');':'');
-#		$style.='border: 1px solid black;';
 		$this->gnyfStyle = $style?' style="'.htmlspecialchars($style).'"':'';
 	}
 
@@ -906,7 +908,7 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 				$subPath = $this->makePath($path,$firstTagName,$params[0]);
 
 					// Make the call again - recursively.
-				if ($recursion < $this->maxRecursion && !($mode=='search' && isset($this->searchPaths[$subPath])))	$v = $this->recursiveBlockSplitting($v,$tagsBlock,$tagsSolo,$mode,$subPath,$recursion+1);
+				if ($recursion < $this->maxRecursion && !($mode=='search' && isset($this->searchPaths[$subPath]) && ($this->searchPaths[$subPath]['modifier']!='ATTR')))	$v = $this->recursiveBlockSplitting($v,$tagsBlock,$tagsSolo,$mode,$subPath,$recursion+1);
 
 				if ($mode=='markup')	{
 					$v = $this->getMarkupCode('block',$v,$params,$firstTagName,$firstTag,$endTag,$subPath,$recursion);
@@ -1195,7 +1197,7 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 					$this->elCountArray[$path][$counterIDstr]++;		// Increase counter, include
 						// IF id attribute is set, then THAT will reset everything since IDs must be unique. (expecting that ID is a string with no whitespace... at least not checking for that here!)
 					if ($attr['id'])	{
-						$subPath = $firstTagName.'#'.$attr['id'];
+						$subPath = $firstTagName.'#'.trim($attr['id']);
 						$this->elParentLevel[$path][]=$counterIDstr.'#'.$attr['id'];
 					} else {
 						$subPath = trim($path.' '.$counterIDstr.'['.$this->elCountArray[$path][$counterIDstr].']');

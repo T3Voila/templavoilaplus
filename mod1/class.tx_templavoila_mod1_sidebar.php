@@ -319,7 +319,7 @@ class tx_templavoila_mod1_sidebar {
 				</tr>
 				<tr class="bgColor4">
 					<td>
-						'.(!$langDisable ? '<select style="width:'.($this->sideBarWidth-30).'px;" onchange="document.location='.$link.'">'.implode ($optionsArr).'</select>' : '').
+						'.(!$langDisable ? '<select style="width:'.($this->sideBarWidth-30).'px;" onchange="document.location='.$link.'">'.implode ('', $optionsArr).'</select>' : '').
 						$availableTranslationsFlags.
 						'
 					</td>
@@ -343,7 +343,7 @@ class tx_templavoila_mod1_sidebar {
 						<td>'.$LANG->getLL ('createnewtranslation').':</td>
 					</tr>
 					<tr class="bgColor4">
-						<td style="padding:4px;"><select style="width:'.($this->sideBarWidth-30).'px"; onChange="document.location=\''.$link.'\'">'.implode ($optionsArr).'</select></td>
+						<td style="padding:4px;"><select style="width:'.($this->sideBarWidth-30).'px"; onChange="document.location=\''.$link.'\'">'.implode ('', $optionsArr).'</select></td>
 					</tr>
 				';
 			}

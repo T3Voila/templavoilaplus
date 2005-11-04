@@ -27,7 +27,7 @@
  * $Id$
  *
  * @author     Robert Lemke <robert@typo3.org>
- * @coauthor   Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @coauthor   Kasper SkÃ¥rhÃ¸j <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -122,7 +122,7 @@ require_once (t3lib_extMgm::extPath('templavoila').'mod1/class.tx_templavoila_mo
  * Module 'Page' for the 'templavoila' extension.
  *
  * @author		Robert Lemke <robert@typo3.org>
- * @coauthor	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @coauthor	Kasper SkÃ¥rhÃ¸j <kasperYYYY@typo3.com>
  * @package		TYPO3
  * @subpackage	tx_templavoila
  */

@@ -341,16 +341,27 @@ class tx_templavoila_pi1 extends tslib_pibase {
 						}
 					}
 
+					$tsparserObj = t3lib_div::makeInstance('t3lib_TSparser');
+
+					$cObj =t3lib_div::makeInstance('tslib_cObj');
+					$cObj->setParent($this->cObj->data,$this->cObj->currentRecord);
+					$cObj->start($dataRecord,'_NO_TABLE');
+
+					$cObj->setCurrentVal($dataValues[$key][$valueKey]);
+
+	                    // Render localized labels for 'select' elements:
+                    if ($DSelements[$key]['TCEforms']['config']['type'] == 'select') {
+                        if (substr($dataValues[$key][$valueKey], 0, 4) == 'LLL:') {
+                            $tempLangVal = $GLOBALS['TSFE']->sL($dataValues[$key][$valueKey]);
+                            if ($tempLangVal != '') {
+                                $dataValues[$key][$valueKey] = $tempLangVal;
+                            }
+                            unset($tempLangVal);
+                        }
+                    }
+
 						// TypoScript / TypoScriptObjPath:
 					if (trim($LP[$key]['TypoScript']) || trim($LP[$key]['TypoScriptObjPath']))	{
-						$tsparserObj = t3lib_div::makeInstance('t3lib_TSparser');
-
-						$cObj =t3lib_div::makeInstance('tslib_cObj');
-						$cObj->setParent($this->cObj->data,$this->cObj->currentRecord);
-						$cObj->start($dataRecord,'_NO_TABLE');
-
-						$cObj->setCurrentVal($dataValues[$key][$valueKey]);
-
 
 						if (trim($LP[$key]['TypoScript']))	{
 
@@ -475,6 +486,7 @@ class tx_templavoila_pi1 extends tslib_pibase {
 			// Set no-cache since the error message shouldn't be cached of course...
 		$GLOBALS['TSFE']->set_no_cache();
 
+		if (intval($this->conf['disableErrorMessages'])) return '';
 			//
 		$output = '
 			<!-- TemplaVoila ERROR message: -->

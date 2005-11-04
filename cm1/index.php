@@ -401,6 +401,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 					$tM = unserialize($toREC['templatemapping']);
 					$sesDat=array();
 					$sesDat['currentMappingInfo'] = $tM['MappingInfo'];
+					$sesDat['currentMappingInfo_head'] = $tM['MappingInfo_head'];
 					$dsREC = t3lib_BEfunc::getRecord('tx_templavoila_datastructure',$toREC['datastructure']);
 
 					$ds = t3lib_div::xml2array($dsREC['dataprot']);
@@ -469,6 +470,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 					// Template mapping prepared:
 				$templatemapping=array();
 				$templatemapping['MappingInfo'] = $currentMappingInfo;
+				if (isset ($sesDat['currentMappingInfo_head'])) $templatemapping['MappingInfo_head'] = $sesDat['currentMappingInfo_head'];
 
 					// Getting cached data:
 				reset($dataStruct);
@@ -499,8 +501,9 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 						// Modifying data structure with conversion of preset values for field types to actual settings:
 					$storeDataStruct = $dataStruct;
 					if (is_array($storeDataStruct['ROOT']['el']))		$this->substEtypeWithRealStuff($storeDataStruct['ROOT']['el'],$contentSplittedByMapping['sub']['ROOT']);
-					$dataArr['tx_templavoila_datastructure']['NEW']['dataprot']=t3lib_div::array2xml($storeDataStruct,'',0,'T3DataStructure',4);
-
+					$dataProtXML = '<?xml version="1.0" encoding="'.$GLOBALS['LANG']->charSet.'" standalone="yes" ?>' .chr(10). t3lib_div::array2xml($storeDataStruct,'',0,'T3DataStructure',4);
+					$dataArr['tx_templavoila_datastructure']['NEW']['dataprot'] = $dataProtXML;
+			
 						// Init TCEmain object and store:
 					$tce = t3lib_div::makeInstance("t3lib_TCEmain");
 					$tce->stripslashes_values=0;
@@ -550,7 +553,8 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 							// Modifying data structure with conversion of preset values for field types to actual settings:
 						$storeDataStruct=$dataStruct;
 						if (is_array($storeDataStruct['ROOT']['el']))		$this->substEtypeWithRealStuff($storeDataStruct['ROOT']['el'],$contentSplittedByMapping['sub']['ROOT']);
-						$dataArr['tx_templavoila_datastructure'][$dsREC['uid']]['dataprot']=t3lib_div::array2xml($storeDataStruct,'',0,'T3DataStructure',4);
+						$dataProtXML = '<?xml version="1.0" encoding="'.$GLOBALS['LANG']->charSet.'" standalone="yes" ?>' .chr(10). t3lib_div::array2xml($storeDataStruct,'',0,'T3DataStructure',4);
+						$dataArr['tx_templavoila_datastructure'][$dsREC['uid']]['dataprot'] = $dataProtXML;
 
 							// Init TCEmain object and store:
 						$tce = t3lib_div::makeInstance('t3lib_TCEmain');
@@ -648,17 +652,19 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 					// Show XML DS
 				case 'showXMLDS':
 					require_once(PATH_t3lib.'class.t3lib_syntaxhl.php');
-$TYPO3_DB->debugOutput = TRUE;
+
 						// Make instance of syntax highlight class:
 					$hlObj = t3lib_div::makeInstance('t3lib_syntaxhl');
 
 					$storeDataStruct=$dataStruct;
 					if (is_array($storeDataStruct['ROOT']['el']))		$this->substEtypeWithRealStuff($storeDataStruct['ROOT']['el'],$contentSplittedByMapping['sub']['ROOT']);
+					$dataStructureXML = '<?xml version="1.0" encoding="'.$GLOBALS['LANG']->charSet.'" standalone="yes" ?>' .chr(10). t3lib_div::array2xml($storeDataStruct,'',0,'T3DataStructure',4);
+					
 					$content.='
 						<input type="submit" name="_DO_NOTHING" value="Go back" title="Go back" />
 						<h3>XML configuration:</h3>
 						'.$this->cshItem('xMOD_tx_templavoila','mapping_file_showXMLDS',$this->doc->backPath,'|<br/>').'
-						<pre>'.$hlObj->highLight_DS(t3lib_div::array2xml($storeDataStruct,'',0,'T3DataStructure',4)).'</pre>';
+						<pre>'.$hlObj->highLight_DS($dataStructureXML).'</pre>';
 				break;
 				case 'loadScreen':
 
@@ -688,7 +694,6 @@ $TYPO3_DB->debugOutput = TRUE;
 								<td class="bgColor5"><strong>Template Type:</strong></td>
 								<td class="bgColor4">
 									<select name="_saveDSandTO_type">
-										<option>[No type specified]</option>
 										<option value="1">Page Template</option>
 										<option value="2">Content Element</option>
 									</select>
@@ -733,7 +738,7 @@ $TYPO3_DB->debugOutput = TRUE;
 					$menuItems[]='<input type="submit" name="_showXMLDS" value="Show XML" title="Preview the currently build Data Structure as XML" />';
 					$menuItems[]='<input type="submit" name="_clear" value="Clear all" title="Clear all Data Structure and Mapping information" /> ';
 					$menuItems[]='<input type="submit" name="_preview" value="Preview" title="Preview the mapping to the template" />';
-					$menuItems[]='<input type="submit" name="_saveScreen" value="Save" title="Go to save menu" />';
+					$menuItems[]='<input type="submit" name="_saveScreen" value="Save as" title="Go to save menu" />';
 					$menuItems[]='<input type="submit" name="_loadScreen" value="Load" title="Go to load menu" />';
 					$menuItems[]='<input type="submit" name="_DO_NOTHING" value="Refresh" title="Redraw screen" />';
 
@@ -872,6 +877,7 @@ $TYPO3_DB->debugOutput = TRUE;
 						// Make instance of syntax highlight class:
 					$hlObj = t3lib_div::makeInstance('t3lib_syntaxhl');
 
+					$dataStructureXML = '<?xml version="1.0" encoding="'.$GLOBALS['LANG']->charSet.'" standalone="yes" ?>' .chr(10). t3lib_div::array2xml($origDataStruct,'',0,'T3DataStructure',4);
 					$content.='
 
 					<!--
@@ -883,7 +889,7 @@ $TYPO3_DB->debugOutput = TRUE;
 						'.$this->cshItem('xMOD_tx_templavoila','mapping_ds_showXML',$this->doc->backPath).'
 						<p>'.t3lib_BEfunc::getFuncCheck('','SET[showDSxml]',$this->MOD_SETTINGS['showDSxml'],'',t3lib_div::implodeArrayForUrl('',$GLOBALS['HTTP_GET_VARS'],'',1,1)).' Show XML</p>
 						<pre>'.
-							($this->MOD_SETTINGS['showDSxml'] ? $hlObj->highLight_DS(t3lib_div::array2xml($origDataStruct,'',0,'T3DataStructure',4)) : '').'
+							($this->MOD_SETTINGS['showDSxml'] ? $hlObj->highLight_DS($dataStructureXML) : '').'
 						</pre>
 					</div>
 					';
@@ -1934,6 +1940,14 @@ $TYPO3_DB->debugOutput = TRUE;
 
 			unset($elArray[$key]['tx_templavoila']['proc']);
 
+			if (is_array ($elArray[$key]['tx_templavoila']['sample_data'])) {
+				foreach ($elArray[$key]['tx_templavoila']['sample_data'] as $tmpKey => $tmpValue) {			
+					$elArray[$key]['tx_templavoila']['sample_data'][$tmpKey] = htmlspecialchars($tmpValue);
+				}
+			} else {
+				$elArray[$key]['tx_templavoila']['sample_data']= htmlspecialchars($elArray[$key]['tx_templavoila']['sample_data']);
+			}
+			
 			if ($elArray[$key]['type']=='array')	{	// If array, then unset:
 				unset($elArray[$key]['tx_templavoila']['sample_data']);
 
@@ -1977,10 +1991,11 @@ $TYPO3_DB->debugOutput = TRUE;
 
 							$maxW = $contentInfo['img']['width'] ? $contentInfo['img']['width'] : 200;
 							$maxH = $contentInfo['img']['height'] ? $contentInfo['img']['height'] : 150;
+ 							$typoScriptImageObject = ($elArray[$key]['type'] == 'attr') ? 'IMG_RESOURCE' : 'IMAGE';
 
 							if ($elArray[$key]['tx_templavoila']['eType']=='image')	{
 								$elArray[$key]['tx_templavoila']['TypoScript'] = '
-	10 = IMAGE
+	10 = '.$typoScriptImageObject.'
 	10.file.import = uploads/tx_templavoila/
 	10.file.import.current = 1
 	10.file.import.listNum = 0
@@ -1988,7 +2003,7 @@ $TYPO3_DB->debugOutput = TRUE;
 							';
 							} else {
 								$elArray[$key]['tx_templavoila']['TypoScript'] = '
-	10 = IMAGE
+	10 = '.$typoScriptImageObject.'
 	10.file = GIFBUILDER
 	10.file {
 		XY = '.$maxW.','.$maxH.'
@@ -2132,6 +2147,7 @@ $TYPO3_DB->debugOutput = TRUE;
 							}
 						break;
 						case 'TypoScriptObject':
+							unset($elArray[$key]['tx_templavoila']['TypoScript']);
 							unset($elArray[$key]['TCEforms']['config']);
 							$elArray[$key]['tx_templavoila']['TypoScriptObjPath'] = $elArray[$key]['tx_templavoila']['eType_EXTRA']['objPath'] ? $elArray[$key]['tx_templavoila']['eType_EXTRA']['objPath'] : 'lib.myObject';
 						break;

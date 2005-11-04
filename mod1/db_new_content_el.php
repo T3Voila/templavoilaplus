@@ -270,7 +270,7 @@ class tx_templavoila_dbnewcontentel {
 	 * @return	array
 	 */
 	function wizardArray()	{
-		global $LANG,$TBE_MODULES_EXT;
+		global $LANG,$TBE_MODULES_EXT,$TYPO3_DB;
 
 		$wizardItems = array(
 			'common' => array('header'=>$LANG->getLL('common')),
@@ -359,7 +359,25 @@ class tx_templavoila_dbnewcontentel {
 		);
 
 			// Flexible content elements:
-		$wizardItems ['fce'] = array ('header' => $LANG->getLL('fce'));
+        $positionPid = $this->id;
+        $storageFolderPID = $this->getStorageFolderPid($positionPid);
+        $tTO = 'tx_templavoila_tmplobj';
+        $tDS = 'tx_templavoila_datastructure';
+        $res = $TYPO3_DB->exec_SELECTquery (
+            "$tTO.*",
+            "$tTO LEFT JOIN $tDS ON $tTO.datastructure = $tDS.uid",
+            "$tTO.pid=".intval($storageFolderPID)." AND $tDS.scope=2".t3lib_befunc::deleteClause ($tTO).t3lib_befunc::deleteClause ($tDS)
+        );
+        $fce_count = 1;
+        $wizardItems['fce']['header'] = $LANG->getLL('fce');
+        while ($row = $TYPO3_DB->sql_fetch_assoc($res)) {
+            $tmpFilename = 'uploads/tx_templavoila/'.$row['previewicon'];
+            $wizardItems['fce_'.$fce_count]['icon'] = (is_file(PATH_site.$tmpFilename)) ? ('../' . $tmpFilename) : ('../' . t3lib_extMgm::siteRelPath('templavoila').'res1/default_previewicon.gif');
+            $wizardItems['fce_'.$fce_count]['description'] = $row['description'] ? htmlspecialchars($row['description']) : $LANG->getLL ('template_nodescriptionavailable');
+            $wizardItems['fce_'.$fce_count]['title'] = htmlspecialchars($row['title']);
+            $wizardItems['fce_'.$fce_count]['params'] = '&defVals[tt_content][CType]=templavoila_pi1&defVals[tt_content][tx_templavoila_ds]='.$row['datastructure'].'&defVals[tt_content][tx_templavoila_to]='.$row['uid'];
+            $fce_count ++;
+        }
 
 
 
@@ -375,6 +393,17 @@ class tx_templavoila_dbnewcontentel {
 
 		return $wizardItems;
 	}
+    
+    function getStorageFolderPid($positionPid) {
+        // Negative PID values is pointing to a page on the same level as the current.
+        if ($positionPid<0) {
+            $pidRow = t3lib_BEfunc::getRecord('pages',abs($positionPid),'pid');
+            $positionPid = $pidRow['pid'];
+        }
+        $row = t3lib_BEfunc::getRecord('pages',$positionPid);
+        $TSconfig = t3lib_BEfunc::getTCEFORM_TSconfig('pages',$row);
+        return intval($TSconfig['_STORAGE_PID']);
+    }
 }
 
 // Include extension?
