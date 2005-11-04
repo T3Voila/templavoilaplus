@@ -397,12 +397,12 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			if ($cmd=='load_ds_xml' && ($this->_load_ds_xml_content || $this->_load_ds_xml_to))	{
 				$to_uid = $this->_load_ds_xml_to;
 				if ($to_uid)	{
-					$toREC = t3lib_BEfunc::getRecord('tx_templavoila_tmplobj',$to_uid);
+					$toREC = t3lib_BEfunc::getRecordWSOL('tx_templavoila_tmplobj',$to_uid);
 					$tM = unserialize($toREC['templatemapping']);
 					$sesDat=array();
 					$sesDat['currentMappingInfo'] = $tM['MappingInfo'];
 					$sesDat['currentMappingInfo_head'] = $tM['MappingInfo_head'];
-					$dsREC = t3lib_BEfunc::getRecord('tx_templavoila_datastructure',$toREC['datastructure']);
+					$dsREC = t3lib_BEfunc::getRecordWSOL('tx_templavoila_datastructure',$toREC['datastructure']);
 
 					$ds = t3lib_div::xml2array($dsREC['dataprot']);
 					$sesDat['dataStruct']['ROOT'] = $sesDat['autoDS']['ROOT'] = $ds['ROOT'];
@@ -503,7 +503,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 					if (is_array($storeDataStruct['ROOT']['el']))		$this->substEtypeWithRealStuff($storeDataStruct['ROOT']['el'],$contentSplittedByMapping['sub']['ROOT']);
 					$dataProtXML = '<?xml version="1.0" encoding="'.$GLOBALS['LANG']->charSet.'" standalone="yes" ?>' .chr(10). t3lib_div::array2xml($storeDataStruct,'',0,'T3DataStructure',4);
 					$dataArr['tx_templavoila_datastructure']['NEW']['dataprot'] = $dataProtXML;
-			
+
 						// Init TCEmain object and store:
 					$tce = t3lib_div::makeInstance("t3lib_TCEmain");
 					$tce->stripslashes_values=0;
@@ -541,8 +541,8 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 				case 'updateDSandTO':
 
 						// Looking up the records by their uids:
-					$toREC = t3lib_BEfunc::getRecord('tx_templavoila_tmplobj',$this->_saveDSandTO_TOuid);
-					$dsREC = t3lib_BEfunc::getRecord('tx_templavoila_datastructure',$toREC['datastructure']);
+					$toREC = t3lib_BEfunc::getRecordWSOL('tx_templavoila_tmplobj',$this->_saveDSandTO_TOuid);
+					$dsREC = t3lib_BEfunc::getRecordWSOL('tx_templavoila_datastructure',$toREC['datastructure']);
 
 						// If they are found, continue:
 					if ($toREC['uid'] && $dsREC['uid'])	{
@@ -639,11 +639,14 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			$res = $TYPO3_DB->exec_SELECTquery (
 				'*',
 				'tx_templavoila_tmplobj',
-				'pid IN ('.$this->storageFolders_pidList.') AND datastructure>0 '.t3lib_BEfunc::deleteClause('tx_templavoila_tmplobj'),
+				'pid IN ('.$this->storageFolders_pidList.') AND datastructure>0 '.
+					t3lib_BEfunc::deleteClause('tx_templavoila_tmplobj').
+					t3lib_BEfunc::versioningPlaceholderClause('tx_templavoila_tmplobj'),
 				'',
 				'title'
 			);
 			while($row = $TYPO3_DB->sql_fetch_assoc($res))	{
+				t3lib_BEfunc::workspaceOL('tx_templavoila_tmplobj',$row);
 				$opt[]='<option value="'.htmlspecialchars($row['uid']).'">'.htmlspecialchars($this->storageFolders[$row['pid']].'/'.$row['title'].' (UID:'.$row['uid'].')').'</option>';
 			}
 
@@ -659,7 +662,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 					$storeDataStruct=$dataStruct;
 					if (is_array($storeDataStruct['ROOT']['el']))		$this->substEtypeWithRealStuff($storeDataStruct['ROOT']['el'],$contentSplittedByMapping['sub']['ROOT']);
 					$dataStructureXML = '<?xml version="1.0" encoding="'.$GLOBALS['LANG']->charSet.'" standalone="yes" ?>' .chr(10). t3lib_div::array2xml($storeDataStruct,'',0,'T3DataStructure',4);
-					
+
 					$content.='
 						<input type="submit" name="_DO_NOTHING" value="Go back" title="Go back" />
 						<h3>XML configuration:</h3>
@@ -780,7 +783,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 	function renderDSO()	{
 		global $TYPO3_DB;
 		if (intval($this->displayUid)>0)	{
-			$row = t3lib_BEfunc::getRecord('tx_templavoila_datastructure',$this->displayUid);
+			$row = t3lib_BEfunc::getRecordWSOL('tx_templavoila_datastructure',$this->displayUid);
 			if (is_array($row))	{
 
 					// Get title and icon:
@@ -829,7 +832,9 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 				$res = $TYPO3_DB->exec_SELECTquery (
 					'*',
 					'tx_templavoila_tmplobj',
-					'pid IN ('.$this->storageFolders_pidList.') AND datastructure='.intval($row['uid']).t3lib_BEfunc::deleteClause('tx_templavoila_tmplobj')
+					'pid IN ('.$this->storageFolders_pidList.') AND datastructure='.intval($row['uid']).
+						t3lib_BEfunc::deleteClause('tx_templavoila_tmplobj').
+						t3lib_BEfunc::versioningPlaceholderClause('tx_templavoila_tmplobj')
 				);
 				$tRows=array();
 				$tRows[]='
@@ -843,6 +848,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 
 					// Listing Template Objects with links:
 				while($TO_Row = $TYPO3_DB->sql_fetch_assoc($res))	{
+					t3lib_BEfunc::workspaceOL('tx_templavoila_tmplobj',$TO_Row);
 					$tRows[]='
 							<tr class="bgColor4">
 								<td>['.$TO_Row['uid'].']</td>
@@ -911,7 +917,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 	 */
 	function renderTO()	{
 		if (intval($this->displayUid)>0)	{
-			$row = t3lib_BEfunc::getRecord('tx_templavoila_tmplobj',$this->displayUid);
+			$row = t3lib_BEfunc::getRecordWSOL('tx_templavoila_tmplobj',$this->displayUid);
 
 			if (is_array($row))	{
 
@@ -947,12 +953,12 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 					$DSOfile='';
 					$dsValue = $row['datastructure'];
 					if ($row['parent'])	{
-						$parentRec = t3lib_BEfunc::getRecord('tx_templavoila_tmplobj',$row['parent'],'datastructure');
+						$parentRec = t3lib_BEfunc::getRecordWSOL('tx_templavoila_tmplobj',$row['parent'],'datastructure');
 						$dsValue=$parentRec['datastructure'];
 					}
 
 					if (t3lib_div::testInt($dsValue))	{
-						$DS_row = t3lib_BEfunc::getRecord('tx_templavoila_datastructure',$dsValue);
+						$DS_row = t3lib_BEfunc::getRecordWSOL('tx_templavoila_datastructure',$dsValue);
 					} else {
 						$DSOfile = t3lib_div::getFileAbsFileName($dsValue);
 					}
@@ -1220,7 +1226,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			$tce->process_datamap();
 			unset($tce);
 			$msg[] = 'Mapping information was saved to the current Template Object!';
-			$row = t3lib_BEfunc::getRecord('tx_templavoila_tmplobj',$this->displayUid);
+			$row = t3lib_BEfunc::getRecordWSOL('tx_templavoila_tmplobj',$this->displayUid);
 			$templatemapping = unserialize($row['templatemapping']);
 
 			if (t3lib_div::GPvar('_save_to_return'))	{
@@ -1941,13 +1947,13 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			unset($elArray[$key]['tx_templavoila']['proc']);
 
 			if (is_array ($elArray[$key]['tx_templavoila']['sample_data'])) {
-				foreach ($elArray[$key]['tx_templavoila']['sample_data'] as $tmpKey => $tmpValue) {			
+				foreach ($elArray[$key]['tx_templavoila']['sample_data'] as $tmpKey => $tmpValue) {
 					$elArray[$key]['tx_templavoila']['sample_data'][$tmpKey] = htmlspecialchars($tmpValue);
 				}
 			} else {
 				$elArray[$key]['tx_templavoila']['sample_data']= htmlspecialchars($elArray[$key]['tx_templavoila']['sample_data']);
 			}
-			
+
 			if ($elArray[$key]['type']=='array')	{	// If array, then unset:
 				unset($elArray[$key]['tx_templavoila']['sample_data']);
 

@@ -1699,11 +1699,11 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 
 						// Update various fields (the index values, eg. the "1" in "$import->import_mapId['pages'][1]]..." are the UIDs of the original records from the import file!)
 					$data = array();
-					$data['pages'][$import->import_mapId['pages'][1]]['title'] = $this->wizardData['sitetitle'];
-					$data['sys_template'][$import->import_mapId['sys_template'][1]]['title'] = 'Main template: '.$this->wizardData['sitetitle'];
-					$data['sys_template'][$import->import_mapId['sys_template'][1]]['sitetitle'] = $this->wizardData['sitetitle'];
-					$data['tx_templavoila_tmplobj'][$import->import_mapId['tx_templavoila_tmplobj'][1]]['fileref'] = $this->wizardData['file'];
-					$data['tx_templavoila_tmplobj'][$import->import_mapId['tx_templavoila_tmplobj'][1]]['templatemapping'] = serialize(
+					$data['pages'][$this->wsMapId('pages',$import->import_mapId['pages'][1])]['title'] = $this->wizardData['sitetitle'];
+					$data['sys_template'][$this->wsMapId('sys_template',$import->import_mapId['sys_template'][1])]['title'] = 'Main template: '.$this->wizardData['sitetitle'];
+					$data['sys_template'][$this->wsMapId('sys_template',$import->import_mapId['sys_template'][1])]['sitetitle'] = $this->wizardData['sitetitle'];
+					$data['tx_templavoila_tmplobj'][$this->wsMapId('tx_templavoila_tmplobj',$import->import_mapId['tx_templavoila_tmplobj'][1])]['fileref'] = $this->wizardData['file'];
+					$data['tx_templavoila_tmplobj'][$this->wsMapId('tx_templavoila_tmplobj',$import->import_mapId['tx_templavoila_tmplobj'][1])]['templatemapping'] = serialize(
 						array(
 							'MappingInfo' => array(
 								'ROOT' => array(
@@ -1718,17 +1718,20 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 					);
 
 						// Update user settings
-					$data['be_users'][$import->import_mapId['be_users'][2]]['username'] = $this->wizardData['username'];
-					$data['be_groups'][$import->import_mapId['be_groups'][1]]['title'] = $this->wizardData['username'];
+					$newUserID = $this->wsMapId('be_users',$import->import_mapId['be_users'][2]);
+					$newGroupID = $this->wsMapId('be_groups',$import->import_mapId['be_groups'][1]);
+
+					$data['be_users'][$newUserID]['username'] = $this->wizardData['username'];
+					$data['be_groups'][$newGroupID]['title'] = $this->wizardData['username'];
 
 					foreach($import->import_mapId['pages'] as $newID)	{
-						$data['pages'][$newID]['perms_userid'] = $import->import_mapId['be_users'][2];
-						$data['pages'][$newID]['perms_groupid'] = $import->import_mapId['be_groups'][1];
+						$data['pages'][$newID]['perms_userid'] = $newUserID;
+						$data['pages'][$newID]['perms_groupid'] = $newGroupID;
 					}
 
 						// Set URL if applicable:
 					if (strlen($this->wizardData['siteurl']))	{
-						$data['sys_domain']['NEW']['pid'] = $import->import_mapId['pages'][1];
+						$data['sys_domain']['NEW']['pid'] = $this->wsMapId('pages',$import->import_mapId['pages'][1]);
 						$data['sys_domain']['NEW']['domainName'] = $this->wizardData['siteurl'];
 					}
 
@@ -1740,9 +1743,9 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 					$tce->process_datamap();
 
 						// Setting environment:
-					$this->wizardData['rootPageId'] = $import->import_mapId['pages'][1];
-					$this->wizardData['templateObjectId'] = $import->import_mapId['tx_templavoila_tmplobj'][1];
-					$this->wizardData['typoScriptTemplateID'] = $import->import_mapId['sys_template'][1];
+					$this->wizardData['rootPageId'] = $this->wsMapId('pages',$import->import_mapId['pages'][1]);
+					$this->wizardData['templateObjectId'] = $this->wsMapId('tx_templavoila_tmplobj',$import->import_mapId['tx_templavoila_tmplobj'][1]);
+					$this->wizardData['typoScriptTemplateID'] = $this->wsMapId('sys_template',$import->import_mapId['sys_template'][1]);
 
 					t3lib_BEfunc::getSetUpdateSignal('updatePageTree');
 
@@ -2069,6 +2072,21 @@ lib.'.$menuType.'.1.ACT {
 		$import->enableLogging = TRUE;
 
 		return $import;
+	}
+
+	/**
+	 * Performs mapping of new uids to new versions UID in case of import inside a workspace.
+	 *
+	 * @param	string		Table name
+	 * @param	integer		Record uid (of live record placeholder)
+	 * @return	integer		Uid of offline version if any, otherwise live uid.
+	 */
+	function wsMapId($table,$uid)	{
+		if ($wsRec = t3lib_BEfunc::getWorkspaceVersionOfRecord($GLOBALS['BE_USER']->workspace,$table,$uid,'uid'))	{
+			return $wsRec['uid'];
+		} else {
+			return $uid;
+		}
 	}
 
 	/**
