@@ -726,6 +726,11 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			// Compile preview content for the current element:
 		$content = is_array($dsInfo['el']['previewContent']) ? implode('<br />', $dsInfo['el']['previewContent']).'<br />' : '';
 
+			// Wrap workspace notification colors:
+		if ($dsInfo['el']['_ORIG_uid'])	{
+			$content = '<div class="ver-element">'.$content.'</div>';
+		}
+
 			// Add language icon (which will be displayed later on):
 		$langLabel = htmlspecialchars ($this->allAvailableLanguages[$dsInfo['el']['sys_language_uid']]['title']);
 		$langIcon = $this->allAvailableLanguages[$dsInfo['el']['sys_language_uid']]['flagIcon'] ?
@@ -853,7 +858,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * @param	string		$table: Name of the CType's DB table
 	 * @return	string		HTML preview content
 	 */
-	function renderPreviewContent ($row, $table) {
+	function renderPreviewContent($row, $table) {
 		global $TYPO3_CONF_VARS, $LANG;
 
 			// First prepare user defined objects (if any) for hooks which extend this function:
@@ -1441,6 +1446,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			'table' => $table,
 			'id' => $id,
 			'pid' => $row['pid'],
+			'_ORIG_uid' => $row['_ORIG_uid'],
 			'title' => t3lib_div::fixed_lgd_cs(t3lib_BEfunc::getRecordTitle($table, $row),50),
 			'icon' => t3lib_iconWorks::getIcon($table, $row),
 			'sys_language_uid' => $row['sys_language_uid'],

@@ -54,6 +54,7 @@ $TCA['tx_templavoila_tmplobj'] = Array (
 		'type' => 'parent',
 		'versioningWS' => TRUE,
 		'origUid' => 't3_origuid',
+		'shadowColumnsForNewPlaceholders' => 'datastructure,rendertype,sys_language_uid,parent,rendertype_ref',
 	)
 );
 $TCA['tx_templavoila_datastructure'] = Array (
@@ -70,6 +71,9 @@ $TCA['tx_templavoila_datastructure'] = Array (
 		'iconfile' => t3lib_extMgm::extRelPath($_EXTKEY).'icon_ds.gif',
 		'selicon_field' => 'previewicon',
 		'selicon_field_path' => 'uploads/tx_templavoila',
+		'versioningWS' => TRUE,
+		'origUid' => 't3_origuid',
+		'shadowColumnsForNewPlaceholders' => '',
 	)
 );
 
