@@ -269,7 +269,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 					'pid,count(*)',
 					'tx_templavoila_datastructure',
-					'1'.t3lib_BEfunc::deleteClause('tx_templavoila_datastructure'),
+					'pid>=0'.t3lib_BEfunc::deleteClause('tx_templavoila_datastructure'),
 					'pid'
 				);
 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
@@ -280,7 +280,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 					'pid,count(*)',
 					'tx_templavoila_tmplobj',
-					'1'.t3lib_BEfunc::deleteClause('tx_templavoila_tmplobj'),
+					'pid>=0'.t3lib_BEfunc::deleteClause('tx_templavoila_tmplobj'),
 					'pid'
 				);
 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
@@ -336,6 +336,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 				);
 		$dsRecords = array();
 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+			t3lib_BEfunc::workspaceOL('tx_templavoila_datastructure',$row);
 			$dsRecords[$row['scope']][] = $row;
 		}
 
@@ -357,6 +358,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 				);
 		$toRecords = array();
 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+			t3lib_BEfunc::workspaceOL('tx_templavoila_tmplobj',$row);
 			$toRecords[$row['parent']][] = $row;
 		}
 
@@ -1699,11 +1701,11 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 
 						// Update various fields (the index values, eg. the "1" in "$import->import_mapId['pages'][1]]..." are the UIDs of the original records from the import file!)
 					$data = array();
-					$data['pages'][$this->wsMapId('pages',$import->import_mapId['pages'][1])]['title'] = $this->wizardData['sitetitle'];
-					$data['sys_template'][$this->wsMapId('sys_template',$import->import_mapId['sys_template'][1])]['title'] = 'Main template: '.$this->wizardData['sitetitle'];
-					$data['sys_template'][$this->wsMapId('sys_template',$import->import_mapId['sys_template'][1])]['sitetitle'] = $this->wizardData['sitetitle'];
-					$data['tx_templavoila_tmplobj'][$this->wsMapId('tx_templavoila_tmplobj',$import->import_mapId['tx_templavoila_tmplobj'][1])]['fileref'] = $this->wizardData['file'];
-					$data['tx_templavoila_tmplobj'][$this->wsMapId('tx_templavoila_tmplobj',$import->import_mapId['tx_templavoila_tmplobj'][1])]['templatemapping'] = serialize(
+					$data['pages'][t3lib_BEfunc::wsMapId('pages',$import->import_mapId['pages'][1])]['title'] = $this->wizardData['sitetitle'];
+					$data['sys_template'][t3lib_BEfunc::wsMapId('sys_template',$import->import_mapId['sys_template'][1])]['title'] = 'Main template: '.$this->wizardData['sitetitle'];
+					$data['sys_template'][t3lib_BEfunc::wsMapId('sys_template',$import->import_mapId['sys_template'][1])]['sitetitle'] = $this->wizardData['sitetitle'];
+					$data['tx_templavoila_tmplobj'][t3lib_BEfunc::wsMapId('tx_templavoila_tmplobj',$import->import_mapId['tx_templavoila_tmplobj'][1])]['fileref'] = $this->wizardData['file'];
+					$data['tx_templavoila_tmplobj'][t3lib_BEfunc::wsMapId('tx_templavoila_tmplobj',$import->import_mapId['tx_templavoila_tmplobj'][1])]['templatemapping'] = serialize(
 						array(
 							'MappingInfo' => array(
 								'ROOT' => array(
@@ -1718,8 +1720,8 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 					);
 
 						// Update user settings
-					$newUserID = $this->wsMapId('be_users',$import->import_mapId['be_users'][2]);
-					$newGroupID = $this->wsMapId('be_groups',$import->import_mapId['be_groups'][1]);
+					$newUserID = t3lib_BEfunc::wsMapId('be_users',$import->import_mapId['be_users'][2]);
+					$newGroupID = t3lib_BEfunc::wsMapId('be_groups',$import->import_mapId['be_groups'][1]);
 
 					$data['be_users'][$newUserID]['username'] = $this->wizardData['username'];
 					$data['be_groups'][$newGroupID]['title'] = $this->wizardData['username'];
@@ -1731,7 +1733,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 
 						// Set URL if applicable:
 					if (strlen($this->wizardData['siteurl']))	{
-						$data['sys_domain']['NEW']['pid'] = $this->wsMapId('pages',$import->import_mapId['pages'][1]);
+						$data['sys_domain']['NEW']['pid'] = t3lib_BEfunc::wsMapId('pages',$import->import_mapId['pages'][1]);
 						$data['sys_domain']['NEW']['domainName'] = $this->wizardData['siteurl'];
 					}
 
@@ -1743,9 +1745,9 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 					$tce->process_datamap();
 
 						// Setting environment:
-					$this->wizardData['rootPageId'] = $this->wsMapId('pages',$import->import_mapId['pages'][1]);
-					$this->wizardData['templateObjectId'] = $this->wsMapId('tx_templavoila_tmplobj',$import->import_mapId['tx_templavoila_tmplobj'][1]);
-					$this->wizardData['typoScriptTemplateID'] = $this->wsMapId('sys_template',$import->import_mapId['sys_template'][1]);
+					$this->wizardData['rootPageId'] = $import->import_mapId['pages'][1];
+					$this->wizardData['templateObjectId'] = t3lib_BEfunc::wsMapId('tx_templavoila_tmplobj',$import->import_mapId['tx_templavoila_tmplobj'][1]);
+					$this->wizardData['typoScriptTemplateID'] = t3lib_BEfunc::wsMapId('sys_template',$import->import_mapId['sys_template'][1]);
 
 					t3lib_BEfunc::getSetUpdateSignal('updatePageTree');
 
@@ -2075,21 +2077,6 @@ lib.'.$menuType.'.1.ACT {
 	}
 
 	/**
-	 * Performs mapping of new uids to new versions UID in case of import inside a workspace.
-	 *
-	 * @param	string		Table name
-	 * @param	integer		Record uid (of live record placeholder)
-	 * @return	integer		Uid of offline version if any, otherwise live uid.
-	 */
-	function wsMapId($table,$uid)	{
-		if ($wsRec = t3lib_BEfunc::getWorkspaceVersionOfRecord($GLOBALS['BE_USER']->workspace,$table,$uid,'uid'))	{
-			return $wsRec['uid'];
-		} else {
-			return $uid;
-		}
-	}
-
-	/**
 	 * Syntax Highlighting of TypoScript code
 	 *
 	 * @param	string		String of TypoScript code
@@ -2131,7 +2118,7 @@ lib.'.$menuType.'.1.ACT {
 	 */
 	function getMenuDefaultCode($field)	{
 			// Select template record and extract menu HTML content
-		$toRec = t3lib_BEfunc::getRecord('tx_templavoila_tmplobj',$this->wizardData['templateObjectId']);
+		$toRec = t3lib_BEfunc::getRecordWSOL('tx_templavoila_tmplobj',$this->wizardData['templateObjectId']);
 		$tMapping = unserialize($toRec['templatemapping']);
 		return $tMapping['MappingData_cached']['cArray'][$field];
 	}

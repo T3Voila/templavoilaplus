@@ -54,7 +54,7 @@ $TCA['tx_templavoila_tmplobj'] = Array (
 		'type' => 'parent',
 		'versioningWS' => TRUE,
 		'origUid' => 't3_origuid',
-		'shadowColumnsForNewPlaceholders' => 'datastructure,rendertype,sys_language_uid,parent,rendertype_ref',
+		'shadowColumnsForNewPlaceholders' => 'title,datastructure,rendertype,sys_language_uid,parent,rendertype_ref',
 	)
 );
 $TCA['tx_templavoila_datastructure'] = Array (
@@ -73,7 +73,7 @@ $TCA['tx_templavoila_datastructure'] = Array (
 		'selicon_field_path' => 'uploads/tx_templavoila',
 		'versioningWS' => TRUE,
 		'origUid' => 't3_origuid',
-		'shadowColumnsForNewPlaceholders' => '',
+		'shadowColumnsForNewPlaceholders' => 'scope,title',
 	)
 );
 

@@ -146,14 +146,14 @@ class tx_templavoila_pi1 extends tslib_pibase {
 		$hookObjectsArr = array();
 		if (is_array ($TYPO3_CONF_VARS['EXTCONF']['templavoila']['pi1']['renderElementClass'])) {
 			foreach ($TYPO3_CONF_VARS['EXTCONF']['templavoila']['pi1']['renderElementClass'] as $classRef) {
-				$hookObjectsArr[] = &t3lib_div::getUserObj ($classRef);
+				$hookObjectsArr[] = &t3lib_div::getUserObj($classRef);
 			}
 		}
 
 			// Hook: renderElement_preProcessRow
 		foreach($hookObjectsArr as $hookObj)	{
 			if (method_exists ($hookObj, 'renderElement_preProcessRow')) {
-				$hookObj->renderElement_preProcessRow ($row, $table, $this);
+				$hookObj->renderElement_preProcessRow($row, $table, $this);
 			}
 		}
 
@@ -241,7 +241,7 @@ class tx_templavoila_pi1 extends tslib_pibase {
 						$content = $this->pi_getEditIcon($content,'tx_templavoila_flex','Edit element',$row,$table,$eIconf);
 
 							// Visual identification aids:
-						if ($GLOBALS['TSFE']->fePreview && !$this->conf['disableExplosivePreview'])	{
+						if ($GLOBALS['TSFE']->fePreview && $GLOBALS['TSFE']->beUserLogin && !$GLOBALS['TSFE']->workspacePreview && !$this->conf['disableExplosivePreview'])	{
 							$content = $this->visualID($content,$srcPointer,$DSrec,$TOrec,$row,$table);
 						}
 					} else {
