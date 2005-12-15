@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2003, 2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 2003, 2004, 2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -26,51 +26,56 @@
  *
  * $Id$
  *
- * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
+ * @author		Kasper Skaarhoj <kasperYYYY@typo3.com>
+ * @co-author	Robert Lemke <robert@typo3.org>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *  116: class tx_templavoila_cm1 extends t3lib_SCbase
- *  170:     function menuConfig()
- *  191:     function main()
- *  217:     function printContent()
+ *  124: class tx_templavoila_cm1 extends t3lib_SCbase
+ *  188:     function menuConfig()
+ *  209:     function main()
+ *  230:     function printContent()
  *
  *              SECTION: MODULE mode
- *  246:     function main_mode()
- *  320:     function renderFile()
- *  543:     function renderDSO()
- *  649:     function renderTO()
- *  809:     function renderTO_editProcessing(&$dataStruct,$row,$theFile)
+ *  259:     function main_mode()
+ *  352:     function renderFile()
+ *  789:     function renderDSO()
+ *  924:     function renderTO()
+ * 1092:     function renderTO_editProcessing(&$dataStruct,$row,$theFile)
  *
  *              SECTION: Mapper functions
- * 1018:     function renderHeaderSelection($displayFile,$currentHeaderMappingInfo,$showBodyTag,$htmlAfterDSTable='')
- * 1082:     function renderTemplateMapper($displayFile,$path,$dataStruct=array(),$currentMappingInfo=array(),$htmlAfterDSTable='')
- * 1245:     function drawDataStructureMap($dataStruct,$mappingMode=0,$currentMappingInfo=array(),$pathLevels=array(),$optDat=array(),$contentSplittedByMapping=array(),$level=0,$tRows=array(),$formPrefix='',$path='',$mapOK=1)
- * 1458:     function drawDataStructureMap_editItem($formPrefix,$key,$value,$level)
+ * 1313:     function renderHeaderSelection($displayFile,$currentHeaderMappingInfo,$showBodyTag,$htmlAfterDSTable='')
+ * 1379:     function renderTemplateMapper($displayFile,$path,$dataStruct=array(),$currentMappingInfo=array(),$htmlAfterDSTable='')
+ * 1567:     function drawDataStructureMap($dataStruct,$mappingMode=0,$currentMappingInfo=array(),$pathLevels=array(),$optDat=array(),$contentSplittedByMapping=array(),$level=0,$tRows=array(),$formPrefix='',$path='',$mapOK=1)
+ * 1783:     function drawDataStructureMap_editItem($formPrefix,$key,$value,$level)
+ * 1901:     function drawDataStructureMap_editItem_editTypeExtra($type, $formFieldName, $curValue)
  *
  *              SECTION: Helper-functions for File-based DS/TO creation
- * 1578:     function substEtypeWithRealStuff(&$elArray,$v_sub=array())
- * 1806:     function substEtypeWithRealStuff_contentInfo($content)
+ * 1949:     function substEtypeWithRealStuff(&$elArray,$v_sub=array())
+ * 2200:     function substEtypeWithRealStuff_contentInfo($content)
  *
  *              SECTION: Various helper functions
- * 1852:     function getDataStructFromDSO($datString,$file='')
- * 1868:     function linkForDisplayOfPath($title,$path)
- * 1888:     function linkThisScript($array)
- * 1910:     function makeIframeForVisual($file,$path,$limitTags,$showOnly,$preview=0)
- * 1926:     function explodeMappingToTagsStr($mappingToTags,$unsetAll=0)
- * 1944:     function unsetArrayPath(&$dataStruct,$ref)
- * 1961:     function cleanUpMappingInfoAccordingToDS(&$currentMappingInfo,$dataStruct)
+ * 2246:     function getDataStructFromDSO($datString,$file='')
+ * 2262:     function linkForDisplayOfPath($title,$path)
+ * 2282:     function linkThisScript($array=array())
+ * 2305:     function makeIframeForVisual($file,$path,$limitTags,$showOnly,$preview=0)
+ * 2321:     function explodeMappingToTagsStr($mappingToTags,$unsetAll=0)
+ * 2339:     function unsetArrayPath(&$dataStruct,$ref)
+ * 2356:     function cleanUpMappingInfoAccordingToDS(&$currentMappingInfo,$dataStruct)
+ * 2375:     function findingStorageFolderIds()
  *
  *              SECTION: DISPLAY mode
- * 1993:     function main_display()
- * 2038:     function displayFileContentWithMarkup($content,$path,$relPathFix,$limitTags)
- * 2072:     function displayFileContentWithPreview($content,$relPathFix)
- * 2108:     function displayFrameError($error)
+ * 2421:     function main_display()
+ * 2466:     function displayFileContentWithMarkup($content,$path,$relPathFix,$limitTags)
+ * 2502:     function displayFileContentWithPreview($content,$relPathFix)
+ * 2538:     function displayFrameError($error)
+ * 2565:     function cshItem($table,$field,$BACK_PATH,$wrap='',$onlyIconMode=FALSE, $styleAttrib='')
+ * 2577:     function lipsumLink($formElementName)
  *
- * TOTAL FUNCTIONS: 25
+ * TOTAL FUNCTIONS: 29
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -80,7 +85,7 @@ unset($MCONF);
 require ('conf.php');
 require ($BACK_PATH.'init.php');
 require ($BACK_PATH.'template.php');
-$LANG->includeLLFile('EXT:templavoila/cm1/locallang.php');
+$LANG->includeLLFile('EXT:templavoila/cm1/locallang.xml');
 require_once (PATH_t3lib.'class.t3lib_scbase.php');
 
 
@@ -113,6 +118,7 @@ if (t3lib_extMgm::isLoaded('lorem_ipsum'))	{
  * Class for controlling the TemplaVoila module.
  *
  * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
+ * @co-author	Robert Lemke <robert@typo3.org>
  * @package TYPO3
  * @subpackage tx_templavoila
  */
@@ -419,7 +425,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			$dataStruct = is_array($sesDat['autoDS']) ? $sesDat['autoDS'] : array(
 				'meta' => array(
 					'langChildren' => 1,
-					'langDisable' => 1
+					'langDisable' => 1,
 				),
 				'ROOT' => array (
 					'tx_templavoila' => array (
@@ -492,6 +498,9 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 					// If it is requested to save the current DS and mapping information to a DS and TO record, then...:
 				case 'saveDSandTO':
 
+						// If we save a page template, it makes very much sense to set langDisable to 0:
+					if ($this->_saveDSandTO_type == 1) $dataStruct['meta']['langDisable'] = 0;
+
 						// DS:
 					$dataArr=array();
 					$dataArr['tx_templavoila_datastructure']['NEW']['pid']=intval($this->_saveDSandTO_pid);
@@ -500,7 +509,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 
 						// Modifying data structure with conversion of preset values for field types to actual settings:
 					$storeDataStruct = $dataStruct;
-					if (is_array($storeDataStruct['ROOT']['el']))		$this->substEtypeWithRealStuff($storeDataStruct['ROOT']['el'],$contentSplittedByMapping['sub']['ROOT']);
+					if (is_array($storeDataStruct['ROOT']['el'])) $this->substEtypeWithRealStuff($storeDataStruct['ROOT']['el'],$contentSplittedByMapping['sub']['ROOT']);
 					$dataProtXML = '<?xml version="1.0" encoding="'.$GLOBALS['LANG']->charSet.'" standalone="yes" ?>' .chr(10). t3lib_div::array2xml($storeDataStruct,'',0,'T3DataStructure',4);
 					$dataArr['tx_templavoila_datastructure']['NEW']['dataprot'] = $dataProtXML;
 
@@ -1331,7 +1340,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 		$this->markupObj->maxRecursion = 0;		// Should not enter more than one level.
 
 			// Markup the header section data with the header tags, using "checkbox" mode:
-		$tRows = $this->markupObj->markupHTMLcontent($html_header,$GLOBALS['BACK_PATH'],$relPathFix,'script,style,link,meta','checkbox');
+		$tRows = $this->markupObj->markupHTMLcontent($html_header,$GLOBALS['BACK_PATH'], '','script,style,link,meta','checkbox');
 		$bodyTagRow = $showBodyTag ? '
 				<tr class="bgColor2">
 					<td><input type="checkbox" name="addBodyTag" value="1"'.($currentHeaderMappingInfo['addBodyTag'] ? ' checked="checked"' : '').' /></td>
@@ -1836,6 +1845,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 						<option value="input_h"'.($insertDataArray['tx_templavoila']['eType']=='input_h' ? ' selected="selected"' : '').'>Header field</option>
 						<option value="input_g"'.($insertDataArray['tx_templavoila']['eType']=='input_g' ? ' selected="selected"' : '').'>Header field, Graphical</option>
 						<option value="text"'.($insertDataArray['tx_templavoila']['eType']=='text' ? ' selected="selected"' : '').'>Text area for bodytext</option>
+						<option value="rte"'.($insertDataArray['tx_templavoila']['eType']=='rte' ? ' selected="selected"' : '').'>Rich text editor for bodytext</option>
 						<option value="link"'.($insertDataArray['tx_templavoila']['eType']=='link' ? ' selected="selected"' : '').'>Link field</option>
 						<option value="int"'.($insertDataArray['tx_templavoila']['eType']=='int' ? ' selected="selected"' : '').'>Integer value</option>
 						<option value="image"'.($insertDataArray['tx_templavoila']['eType']=='image' ? ' selected="selected"' : '').'>Image field</option>
@@ -1890,8 +1900,8 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 	 * @param	string		Form field name prefix
 	 * @param	array		Current values for the form field name prefix.
 	 * @return	string		HTML with extra form fields
-	 * @see drawDataStructureMap_editItem()
 	 * @access private
+	 * @see drawDataStructureMap_editItem()
 	 */
 	function drawDataStructureMap_editItem_editTypeExtra($type, $formFieldName, $curValue)	{
 			// If a user function was registered, use that instead of our own handlers:
@@ -1943,6 +1953,8 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 	 */
 	function substEtypeWithRealStuff(&$elArray,$v_sub=array())	{
 
+		$eTypeCECounter = 0;
+
 			// Traverse array
 		foreach($elArray as $key => $value)	{
 
@@ -1982,6 +1994,22 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 								'rows' => '5',
 							);
 							$elArray[$key]['tx_templavoila']['proc']['HSC']=1;
+						break;
+						case 'rte':
+							$elArray[$key]['TCEforms']['config'] = array(
+								'type' => 'text',
+								'cols' => '48',
+								'rows' => '5',
+							);
+							$elArray[$key]['TCEforms']['defaultExtras'] = 'richtext[*]:rte_transform[flag=rte_enabled|mode=ts_css]';
+							$elArray[$key]['tx_templavoila']['proc']['HSC']=0;
+							$elArray[$key]['tx_templavoila']['TypoScript'] = '
+<![CDATA[
+	10 = TEXT
+	10.current = 1
+	10.parseFunc = < lib.parseFunc_RTE
+]]>
+							';
 						break;
 						case 'image':
 						case 'imagefixed':
@@ -2064,6 +2092,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 							$elArray[$key]['tx_templavoila']['proc']['HSC']=1;
 						break;
 						case 'ce':
+
 							$elArray[$key]['TCEforms']['config'] = array(
 								'type' => 'group',
 								'internal_type' => 'db',
@@ -2079,7 +2108,11 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 	10.source.current=1
 	10.tables = tt_content
 	10.wrap = <!--TYPO3SEARCH_begin--> | <!--TYPO3SEARCH_end-->
-							';
+';
+
+							$elArray[$key]['tx_templavoila']['oldStyleColumnNumber'] = $eTypeCECounter;	
+							$eTypeCECounter++; 
+
 						break;
 						case 'int':
 							$elArray[$key]['TCEforms']['config'] = array(
@@ -2563,7 +2596,12 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 		}
 	}
 
-
+	/**
+	 * [Describe function...]
+	 *
+	 * @param	[type]		$formElementName: ...
+	 * @return	[type]		...
+	 */
 	function lipsumLink($formElementName)	{
 		if (t3lib_extMgm::isLoaded('lorem_ipsum'))	{
 			$LRobj = t3lib_div::makeInstance('tx_loremipsum_wiz');

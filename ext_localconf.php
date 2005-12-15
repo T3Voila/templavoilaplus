@@ -4,7 +4,6 @@ if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 
 	// Adding the two plugins TypoScript:
 t3lib_extMgm::addPItoST43($_EXTKEY,'pi1/class.tx_templavoila_pi1.php','_pi1','CType',1);
-t3lib_extMgm::addPItoST43($_EXTKEY,'pi2/class.tx_templavoila_pi2.php','_pi2','CType',1);
 t3lib_extMgm::addTypoScript($_EXTKEY,'setup','tt_content.templavoila_pi1.10 >',43);
 
 	// Use templavoila's wizard instead the default create new page wizard
@@ -21,7 +20,10 @@ t3lib_extMgm::addPageTSConfig('
 	// Adding Page Template Selector Fields to root line:
 $GLOBALS['TYPO3_CONF_VARS']['FE']['addRootLineFields'].=',tx_templavoila_ds,tx_templavoila_to,tx_templavoila_next_ds,tx_templavoila_next_to';
 
-	// Register our class at a hook in TCEmain:
-$GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = 'EXT:templavoila/class.tx_templavoila_tcemain.php:tx_templavoila_tcemain';
+	// Register our classes at a the hooks:
+$GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass']['templavoila'] = 'EXT:templavoila/class.tx_templavoila_tcemain.php:tx_templavoila_tcemain';
+$GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass']['templavoila'] = 'EXT:templavoila/class.tx_templavoila_tcemain.php:tx_templavoila_tcemain';
+
+$GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['moveRecordClass']['templavoila'] = 'EXT:templavoila/class.tx_templavoila_tcemain.php:tx_templavoila_tcemain';
 
 ?>

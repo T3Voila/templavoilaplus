@@ -1,28 +1,30 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
-    <meta type="array">
-        <description>CSH for alternative Page Module</description>
-        <type>CSH</type>
-        <csh_table>_MOD_web_txtemplavoilaM1</csh_table>
-        <fileId>EXT:templavoila/locallang_csh_pm.xml</fileId>
-        <labelContext type="array">
-            <languageKey index=".alttitle"></languageKey>
-        </labelContext>
-    </meta>
-    <data type="array">
-        <languageKey index="default" type="array">
-            <label index=".alttitle">Page Module (TemplaVoila)</label>
-            <label index="pagemodule.description">[FILL IN] TemplaVoila Page Module</label>
-            <label index="pagemodule_notUsed.description">[FILL IN] pagemodule_notUsed</label>
-        </languageKey>
-    </data>
-    <orig_hash type="array">
-        <languageKey index="default" type="array">
-            <label index=".alttitle" type="integer">42793821</label>
-        </languageKey>
-    </orig_hash>
-    <orig_text type="array">
-        <languageKey index="default" type="array">
-        </languageKey>
-    </orig_text>
+	<meta type="array">
+		<description>CSH for alternative Page Module</description>
+		<type>CSH</type>
+		<csh_table>_MOD_web_txtemplavoilaM1</csh_table>
+		<fileId>EXT:templavoila/locallang_csh_pm.xml</fileId>
+		<labelContext type="array">
+			<label index=".alttitle"></label>
+		</labelContext>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index=".alttitle">Page Module (TemplaVoila)</label>
+			<label index="pagemodule.description">[FILL IN] TemplaVoila Page Module</label>
+			<label index="pagemodule_notUsed.description">[FILL IN] pagemodule_notUsed</label>
+		</languageKey>
+		<languageKey index="de" type="array">
+			<label index=".alttitle">Seiten-Modul (TemplaVoilà)</label>
+		</languageKey>
+	</data>
+	<orig_hash type="array">
+		<languageKey index="default" type="array">
+			<label index=".alttitle" type="integer">42793821</label>
+		</languageKey>
+		<languageKey index="de" type="array">
+			<label index=".alttitle" type="integer">42793821</label>
+		</languageKey>
+	</orig_hash>
 </T3locallang>

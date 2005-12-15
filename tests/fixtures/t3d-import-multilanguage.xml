@@ -1,0 +1,2806 @@
+<?xml version="1.0" encoding="iso-8859-1" standalone="yes" ?>
+<T3RecordDocument>
+	<header type="array">
+		<charset>iso-8859-1</charset>
+		<XMLversion>1.0</XMLversion>
+		<meta type="array">
+			<title>T3Unit Multilanguage DS Testcase</title>
+			<description>This is a fixture for testing the multilanguage features of the TemplaVoila API</description>
+			<notes></notes>
+			<packager_username>admin</packager_username>
+			<packager_name>Administrator</packager_name>
+			<packager_email>admin@email.test</packager_email>
+			<TYPO3_version>3.9-dev</TYPO3_version>
+			<created>Wednesday 16. November 2005</created>
+		</meta>
+		<static_tables index="relStaticTables" type="array">
+		</static_tables>
+		<excludeMap type="array">
+		</excludeMap>
+		<softrefCfg type="array">
+		</softrefCfg>
+		<extensionDependencies type="array">
+		</extensionDependencies>
+		<pagetree type="array">
+			<node index="2014" type="array">
+				<uid>2014</uid>
+			</node>
+		</pagetree>
+		<records type="array">
+			<table index="pages" type="array">
+				<rec index="2014" type="array">
+					<uid>2014</uid>
+					<pid>0</pid>
+					<title>*** t3unit templavoila testcase page ***</title>
+					<size>2333</size>
+					<relations index="rels" type="array">
+						<element index="pages:2014" type="array">
+							<id>2014</id>
+							<table>pages</table>
+						</element>
+						<element index="tx_templavoila_datastructure:1130" type="array">
+							<id>1130</id>
+							<table>tx_templavoila_datastructure</table>
+						</element>
+						<element index="tx_templavoila_tmplobj:1123" type="array">
+							<id>1123</id>
+							<table>tx_templavoila_tmplobj</table>
+						</element>
+						<element index="tt_content:4117" type="array">
+							<id>4117</id>
+							<table>tt_content</table>
+						</element>
+						<element index="tt_content:4118" type="array">
+							<id>4118</id>
+							<table>tt_content</table>
+						</element>
+						<element index="tt_content:4119" type="array">
+							<id>4119</id>
+							<table>tt_content</table>
+						</element>
+						<element index="tt_content:4120" type="array">
+							<id>4120</id>
+							<table>tt_content</table>
+						</element>
+					</relations>
+					<softrefs type="array">
+					</softrefs>
+				</rec>
+			</table>
+			<table index="tt_content" type="array">
+				<rec index="4132" type="array">
+					<uid>4132</uid>
+					<pid>2014</pid>
+					<title>*** t3unit templavoila testcase ***</title>
+					<size>2578</size>
+					<relations index="rels" type="array">
+					</relations>
+					<softrefs type="array">
+					</softrefs>
+				</rec>
+				<rec index="4131" type="array">
+					<uid>4131</uid>
+					<pid>2014</pid>
+					<title>*** t3unit templavoila testcase ***</title>
+					<size>2577</size>
+					<relations index="rels" type="array">
+					</relations>
+					<softrefs type="array">
+					</softrefs>
+				</rec>
+				<rec index="4130" type="array">
+					<uid>4130</uid>
+					<pid>2014</pid>
+					<title>*** t3unit templavoila testcase ***</title>
+					<size>2587</size>
+					<relations index="rels" type="array">
+						<element index="sys_language:1" type="array">
+							<id>1</id>
+							<table>sys_language</table>
+						</element>
+					</relations>
+					<softrefs type="array">
+					</softrefs>
+				</rec>
+				<rec index="4129" type="array">
+					<uid>4129</uid>
+					<pid>2014</pid>
+					<title>*** t3unit templavoila testcase ***</title>
+					<size>2586</size>
+					<relations index="rels" type="array">
+						<element index="sys_language:1" type="array">
+							<id>1</id>
+							<table>sys_language</table>
+						</element>
+					</relations>
+					<softrefs type="array">
+					</softrefs>
+				</rec>
+				<rec index="4117" type="array">
+					<uid>4117</uid>
+					<pid>2014</pid>
+					<title>*** t3unit templavoila testcase content ...</title>
+					<size>2611</size>
+					<relations index="rels" type="array">
+					</relations>
+					<softrefs type="array">
+					</softrefs>
+				</rec>
+				<rec index="4128" type="array">
+					<uid>4128</uid>
+					<pid>2014</pid>
+					<title>*** t3unit templavoila testcase ***</title>
+					<size>2572</size>
+					<relations index="rels" type="array">
+						<element index="sys_language:1" type="array">
+							<id>1</id>
+							<table>sys_language</table>
+						</element>
+					</relations>
+					<softrefs type="array">
+					</softrefs>
+				</rec>
+				<rec index="4118" type="array">
+					<uid>4118</uid>
+					<pid>2014</pid>
+					<title>*** t3unit templavoila testcase *** 2col...</title>
+					<size>3060</size>
+					<relations index="rels" type="array">
+						<element index="tx_templavoila_datastructure:1133" type="array">
+							<id>1133</id>
+							<table>tx_templavoila_datastructure</table>
+						</element>
+						<element index="tt_content:4121" type="array">
+							<id>4121</id>
+							<table>tt_content</table>
+						</element>
+						<element index="tt_content:4127" type="array">
+							<id>4127</id>
+							<table>tt_content</table>
+						</element>
+						<element index="tt_content:4122" type="array">
+							<id>4122</id>
+							<table>tt_content</table>
+						</element>
+						<element index="tt_content:4128" type="array">
+							<id>4128</id>
+							<table>tt_content</table>
+						</element>
+					</relations>
+					<softrefs type="array">
+					</softrefs>
+				</rec>
+				<rec index="4119" type="array">
+					<uid>4119</uid>
+					<pid>2014</pid>
+					<title>*** t3unit templavoila testcase *** 2col...</title>
+					<size>3523</size>
+					<relations index="rels" type="array">
+						<element index="tx_templavoila_datastructure:1132" type="array">
+							<id>1132</id>
+							<table>tx_templavoila_datastructure</table>
+						</element>
+						<element index="tt_content:4123" type="array">
+							<id>4123</id>
+							<table>tt_content</table>
+						</element>
+						<element index="tt_content:4124" type="array">
+							<id>4124</id>
+							<table>tt_content</table>
+						</element>
+						<element index="tt_content:4129" type="array">
+							<id>4129</id>
+							<table>tt_content</table>
+						</element>
+						<element index="tt_content:4130" type="array">
+							<id>4130</id>
+							<table>tt_content</table>
+						</element>
+					</relations>
+					<softrefs type="array">
+					</softrefs>
+				</rec>
+				<rec index="4127" type="array">
+					<uid>4127</uid>
+					<pid>2014</pid>
+					<title>*** t3unit templavoila testcase ***</title>
+					<size>2571</size>
+					<relations index="rels" type="array">
+						<element index="sys_language:1" type="array">
+							<id>1</id>
+							<table>sys_language</table>
+						</element>
+					</relations>
+					<softrefs type="array">
+					</softrefs>
+				</rec>
+				<rec index="4120" type="array">
+					<uid>4120</uid>
+					<pid>2014</pid>
+					<title>*** t3unit templavoila testcase *** 2col...</title>
+					<size>3646</size>
+					<relations index="rels" type="array">
+						<element index="tx_templavoila_datastructure:1131" type="array">
+							<id>1131</id>
+							<table>tx_templavoila_datastructure</table>
+						</element>
+						<element index="tt_content:4125" type="array">
+							<id>4125</id>
+							<table>tt_content</table>
+						</element>
+						<element index="tt_content:4131" type="array">
+							<id>4131</id>
+							<table>tt_content</table>
+						</element>
+						<element index="tt_content:4126" type="array">
+							<id>4126</id>
+							<table>tt_content</table>
+						</element>
+						<element index="tt_content:4132" type="array">
+							<id>4132</id>
+							<table>tt_content</table>
+						</element>
+					</relations>
+					<softrefs type="array">
+					</softrefs>
+				</rec>
+				<rec index="4126" type="array">
+					<uid>4126</uid>
+					<pid>2014</pid>
+					<title>*** t3unit templavoila testcase ***</title>
+					<size>2561</size>
+					<relations index="rels" type="array">
+					</relations>
+					<softrefs type="array">
+					</softrefs>
+				</rec>
+				<rec index="4125" type="array">
+					<uid>4125</uid>
+					<pid>2014</pid>
+					<title>*** t3unit templavoila testcase ***</title>
+					<size>2561</size>
+					<relations index="rels" type="array">
+					</relations>
+					<softrefs type="array">
+					</softrefs>
+				</rec>
+				<rec index="4124" type="array">
+					<uid>4124</uid>
+					<pid>2014</pid>
+					<title>*** t3unit templavoila testcase ***</title>
+					<size>2565</size>
+					<relations index="rels" type="array">
+					</relations>
+					<softrefs type="array">
+					</softrefs>
+				</rec>
+				<rec index="4123" type="array">
+					<uid>4123</uid>
+					<pid>2014</pid>
+					<title>*** t3unit templavoila testcase ***</title>
+					<size>2564</size>
+					<relations index="rels" type="array">
+					</relations>
+					<softrefs type="array">
+					</softrefs>
+				</rec>
+				<rec index="4122" type="array">
+					<uid>4122</uid>
+					<pid>2014</pid>
+					<title>*** t3unit templavoila testcase ***</title>
+					<size>2562</size>
+					<relations index="rels" type="array">
+					</relations>
+					<softrefs type="array">
+					</softrefs>
+				</rec>
+				<rec index="4121" type="array">
+					<uid>4121</uid>
+					<pid>2014</pid>
+					<title>*** t3unit templavoila testcase ***</title>
+					<size>2561</size>
+					<relations index="rels" type="array">
+					</relations>
+					<softrefs type="array">
+					</softrefs>
+				</rec>
+			</table>
+			<table index="pages_language_overlay" type="array">
+				<rec index="6" type="array">
+					<uid>6</uid>
+					<pid>2014</pid>
+					<title>*** t3unit templavoila testcase page ***</title>
+					<size>1023</size>
+					<relations index="rels" type="array">
+						<element index="sys_language:3" type="array">
+							<id>3</id>
+							<table>sys_language</table>
+						</element>
+					</relations>
+					<softrefs type="array">
+					</softrefs>
+				</rec>
+				<rec index="7" type="array">
+					<uid>7</uid>
+					<pid>2014</pid>
+					<title>*** t3unit templavoila testcase page ***</title>
+					<size>1118</size>
+					<relations index="rels" type="array">
+						<element index="sys_language:1" type="array">
+							<id>1</id>
+							<table>sys_language</table>
+						</element>
+					</relations>
+					<softrefs type="array">
+					</softrefs>
+				</rec>
+			</table>
+			<table index="tx_templavoila_tmplobj" type="array">
+				<rec index="1123" type="array">
+					<uid>1123</uid>
+					<pid>2014</pid>
+					<title>*** t3unit templavoila testcase page tem...</title>
+					<size>1500</size>
+					<relations index="rels" type="array">
+						<element index="tx_templavoila_datastructure:1130" type="array">
+							<id>1130</id>
+							<table>tx_templavoila_datastructure</table>
+						</element>
+					</relations>
+					<softrefs type="array">
+						<softref_element index="fileref:typolink:c73d221c78035abb25e357c4deeea2bf:0" type="array">
+							<field>fileref</field>
+							<spKey>typolink</spKey>
+							<matchString>typo3/ext/templavoila/tests/fixtures/page_template.html</matchString>
+						</softref_element>
+					</softrefs>
+				</rec>
+			</table>
+			<table index="tx_templavoila_datastructure" type="array">
+				<rec index="1133" type="array">
+					<uid>1133</uid>
+					<pid>2014</pid>
+					<title>*** t3unit templavoila testcase *** 2col...</title>
+					<size>3519</size>
+					<relations index="rels" type="array">
+					</relations>
+					<softrefs type="array">
+					</softrefs>
+				</rec>
+				<rec index="1132" type="array">
+					<uid>1132</uid>
+					<pid>2014</pid>
+					<title>*** t3unit templavoila testcase *** 2col...</title>
+					<size>3524</size>
+					<relations index="rels" type="array">
+					</relations>
+					<softrefs type="array">
+					</softrefs>
+				</rec>
+				<rec index="1131" type="array">
+					<uid>1131</uid>
+					<pid>2014</pid>
+					<title>*** t3unit templavoila testcase *** 2col...</title>
+					<size>3521</size>
+					<relations index="rels" type="array">
+					</relations>
+					<softrefs type="array">
+					</softrefs>
+				</rec>
+				<rec index="1130" type="array">
+					<uid>1130</uid>
+					<pid>2014</pid>
+					<title>*** t3unit templavoila testcase page tem...</title>
+					<size>2998</size>
+					<relations index="rels" type="array">
+					</relations>
+					<softrefs type="array">
+					</softrefs>
+				</rec>
+			</table>
+			<table index="sys_language" type="array">
+				<rec index="1" type="array">
+					<uid>1</uid>
+					<pid>0</pid>
+					<title>Danish</title>
+					<size>172</size>
+					<relationLevel>1</relationLevel>
+					<relations index="rels" type="array">
+					</relations>
+					<softrefs type="array">
+					</softrefs>
+				</rec>
+				<rec index="3" type="array">
+					<uid>3</uid>
+					<pid>0</pid>
+					<title>German</title>
+					<size>179</size>
+					<relationLevel>1</relationLevel>
+					<relations index="rels" type="array">
+					</relations>
+					<softrefs type="array">
+					</softrefs>
+				</rec>
+			</table>
+		</records>
+		<pid_lookup type="array">
+			<page_contents index="0" type="array">
+				<table index="pages" type="array">
+					<item index="2014">1</item>
+				</table>
+				<table index="sys_language" type="array">
+					<item index="1">1</item>
+					<item index="3">1</item>
+				</table>
+			</page_contents>
+			<page_contents index="2014" type="array">
+				<table index="tt_content" type="array">
+					<item index="4132">1</item>
+					<item index="4131">1</item>
+					<item index="4130">1</item>
+					<item index="4129">1</item>
+					<item index="4117">1</item>
+					<item index="4128">1</item>
+					<item index="4118">1</item>
+					<item index="4119">1</item>
+					<item index="4127">1</item>
+					<item index="4120">1</item>
+					<item index="4126">1</item>
+					<item index="4125">1</item>
+					<item index="4124">1</item>
+					<item index="4123">1</item>
+					<item index="4122">1</item>
+					<item index="4121">1</item>
+				</table>
+				<table index="pages_language_overlay" type="array">
+					<item index="6">1</item>
+					<item index="7">1</item>
+				</table>
+				<table index="tx_templavoila_tmplobj" type="array">
+					<item index="1123">1</item>
+				</table>
+				<table index="tx_templavoila_datastructure" type="array">
+					<item index="1133">1</item>
+					<item index="1132">1</item>
+					<item index="1131">1</item>
+					<item index="1130">1</item>
+				</table>
+			</page_contents>
+		</pid_lookup>
+	</header>
+	<records type="array">
+		<tablerow index="pages:2014" type="array">
+			<fieldlist index="data" type="array">
+				<field index="uid">2014</field>
+				<field index="pid">0</field>
+				<field index="tstamp">1132154436</field>
+				<field index="sorting">128</field>
+				<field index="deleted">0</field>
+				<field index="perms_userid">1</field>
+				<field index="perms_groupid">0</field>
+				<field index="perms_user">31</field>
+				<field index="perms_group">27</field>
+				<field index="perms_everybody">0</field>
+				<field index="crdate">1132152978</field>
+				<field index="cruser_id">1</field>
+				<field index="title">*** t3unit templavoila testcase page ***</field>
+				<field index="alias"></field>
+				<field index="doktype">1</field>
+				<field index="url"></field>
+				<field index="hidden">0</field>
+				<field index="starttime">0</field>
+				<field index="endtime">0</field>
+				<field index="urltype">1</field>
+				<field index="shortcut">0</field>
+				<field index="no_cache">0</field>
+				<field index="fe_group"></field>
+				<field index="subtitle"></field>
+				<field index="layout">0</field>
+				<field index="target"></field>
+				<field index="media"></field>
+				<field index="lastUpdated">0</field>
+				<field index="keywords"></field>
+				<field index="cache_timeout">0</field>
+				<field index="newUntil">0</field>
+				<field index="description"></field>
+				<field index="no_search">0</field>
+				<field index="SYS_LASTCHANGED">0</field>
+				<field index="abstract"></field>
+				<field index="module"></field>
+				<field index="extendToSubpages">0</field>
+				<field index="TSconfig"></field>
+				<field index="author"></field>
+				<field index="author_email"></field>
+				<field index="nav_title"></field>
+				<field index="storage_pid">2014</field>
+				<field index="is_siteroot">0</field>
+				<field index="php_tree_stop">0</field>
+				<field index="shortcut_mode">0</field>
+				<field index="content_from_pid">0</field>
+				<field index="mount_pid">0</field>
+				<field index="tx_impexp_origuid">0</field>
+				<field index="nav_hide">0</field>
+				<field index="mount_pid_ol">0</field>
+				<field index="t3ver_oid">0</field>
+				<field index="t3ver_id">0</field>
+				<field index="t3ver_label"></field>
+				<field index="editlock">0</field>
+				<field index="l18n_cfg">0</field>
+				<field index="fe_login_mode">0</field>
+				<field index="t3ver_wsid">0</field>
+				<field index="t3ver_state">0</field>
+				<field index="t3ver_stage">0</field>
+				<field index="t3ver_count">0</field>
+				<field index="t3ver_tstamp">0</field>
+				<field index="t3ver_swapmode">0</field>
+				<field index="t3_origuid">0</field>
+				<field index="tx_templavoila_ds">1130</field>
+				<field index="tx_templavoila_to">1123</field>
+				<field index="tx_templavoila_next_ds">0</field>
+				<field index="tx_templavoila_next_to">0</field>
+				<field index="tx_templavoila_flex">&lt;?xml version=&quot;1.0&quot; encoding=&quot;iso-8859-1&quot; standalone=&quot;yes&quot; ?&gt;
+&lt;T3FlexForms&gt;
+    &lt;data type=&quot;array&quot;&gt;
+        &lt;sDEF type=&quot;array&quot;&gt;
+            &lt;lDEF type=&quot;array&quot;&gt;
+                &lt;field_content type=&quot;array&quot;&gt;
+                    &lt;vDEF&gt;4117,4118,4119,4120&lt;/vDEF&gt;
+                &lt;/field_content&gt;
+            &lt;/lDEF&gt;
+            &lt;lDA type=&quot;array&quot;&gt;
+                &lt;field_content type=&quot;array&quot;&gt;
+                    &lt;vDEF&gt;4118,4119,4120&lt;/vDEF&gt;
+                &lt;/field_content&gt;
+            &lt;/lDA&gt;
+        &lt;/sDEF&gt;
+    &lt;/data&gt;
+&lt;/T3FlexForms&gt;</field>
+			</fieldlist>
+			<related index="rels" type="array">
+				<field index="storage_pid" type="array">
+					<type>db</type>
+					<relations index="itemArray" type="array">
+						<element index="0" type="array">
+							<id>2014</id>
+							<table>pages</table>
+						</element>
+					</relations>
+				</field>
+				<field index="tx_templavoila_ds" type="array">
+					<type>db</type>
+					<relations index="itemArray" type="array">
+						<element index="0" type="array">
+							<id>1130</id>
+							<table>tx_templavoila_datastructure</table>
+						</element>
+					</relations>
+				</field>
+				<field index="tx_templavoila_to" type="array">
+					<type>db</type>
+					<relations index="itemArray" type="array">
+						<element index="0" type="array">
+							<id>1123</id>
+							<table>tx_templavoila_tmplobj</table>
+						</element>
+					</relations>
+				</field>
+				<field index="tx_templavoila_flex" type="array">
+					<type>flex</type>
+					<flexform index="flexFormRels" type="array">
+						<db_relations index="db" type="array">
+							<path index="sDEF/lDEF/field_content/vDEF/" type="array">
+								<element index="0" type="array">
+									<id>4117</id>
+									<table>tt_content</table>
+								</element>
+								<element index="1" type="array">
+									<id>4118</id>
+									<table>tt_content</table>
+								</element>
+								<element index="2" type="array">
+									<id>4119</id>
+									<table>tt_content</table>
+								</element>
+								<element index="3" type="array">
+									<id>4120</id>
+									<table>tt_content</table>
+								</element>
+							</path>
+							<path index="sDEF/lDA/field_content/vDEF/" type="array">
+								<element index="0" type="array">
+									<id>4118</id>
+									<table>tt_content</table>
+								</element>
+								<element index="1" type="array">
+									<id>4119</id>
+									<table>tt_content</table>
+								</element>
+								<element index="2" type="array">
+									<id>4120</id>
+									<table>tt_content</table>
+								</element>
+							</path>
+						</db_relations>
+						<file_relations index="file" type="array">
+						</file_relations>
+						<softref_relations index="softrefs" type="array">
+						</softref_relations>
+					</flexform>
+				</field>
+			</related>
+		</tablerow>
+		<tablerow index="tt_content:4132" type="array">
+			<fieldlist index="data" type="array">
+				<field index="uid">4132</field>
+				<field index="pid">2014</field>
+				<field index="tstamp">1132154512</field>
+				<field index="hidden">0</field>
+				<field index="sorting">0</field>
+				<field index="CType">text</field>
+				<field index="header">*** t3unit templavoila testcase ***</field>
+				<field index="header_position"></field>
+				<field index="bodytext">2col nolang right danish (error)</field>
+				<field index="image"></field>
+				<field index="imagewidth">0</field>
+				<field index="imageorient">8</field>
+				<field index="imagecaption"></field>
+				<field index="imagecols">0</field>
+				<field index="imageborder">0</field>
+				<field index="media"></field>
+				<field index="layout">0</field>
+				<field index="deleted">0</field>
+				<field index="cols">0</field>
+				<field index="records"></field>
+				<field index="pages"></field>
+				<field index="starttime">0</field>
+				<field index="endtime">0</field>
+				<field index="colPos">0</field>
+				<field index="subheader"></field>
+				<field index="spaceBefore">0</field>
+				<field index="spaceAfter">0</field>
+				<field index="fe_group"></field>
+				<field index="header_link"></field>
+				<field index="imagecaption_position"></field>
+				<field index="image_link"></field>
+				<field index="image_zoom">0</field>
+				<field index="image_noRows">0</field>
+				<field index="image_effects">0</field>
+				<field index="image_compression">0</field>
+				<field index="header_layout">0</field>
+				<field index="text_align"></field>
+				<field index="text_face">0</field>
+				<field index="text_size">0</field>
+				<field index="text_color">0</field>
+				<field index="text_properties">0</field>
+				<field index="menu_type">0</field>
+				<field index="list_type"></field>
+				<field index="table_border">0</field>
+				<field index="table_cellspacing">0</field>
+				<field index="table_cellpadding">0</field>
+				<field index="table_bgColor">0</field>
+				<field index="select_key"></field>
+				<field index="sectionIndex">1</field>
+				<field index="linkToTop">0</field>
+				<field index="filelink_size">0</field>
+				<field index="section_frame">0</field>
+				<field index="date">0</field>
+				<field index="splash_layout">0</field>
+				<field index="multimedia"></field>
+				<field index="image_frames">0</field>
+				<field index="recursive">0</field>
+				<field index="imageheight">0</field>
+				<field index="module_sys_dmail_category">0</field>
+				<field index="rte_enabled">0</field>
+				<field index="sys_language_uid">0</field>
+				<field index="tx_impexp_origuid">0</field>
+				<field index="pi_flexform"></field>
+				<field index="t3ver_oid">0</field>
+				<field index="t3ver_id">0</field>
+				<field index="t3ver_label"></field>
+				<field index="l18n_parent">0</field>
+				<field index="l18n_diffsource">a:23:{s:5:&quot;CType&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:6:&quot;colPos&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:13:&quot;section_frame&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:6:&quot;header&quot;;N;s:15:&quot;header_position&quot;;N;s:13:&quot;header_layout&quot;;N;s:11:&quot;header_link&quot;;N;s:4:&quot;date&quot;;N;s:8:&quot;bodytext&quot;;N;s:10:&quot;text_align&quot;;N;s:9:&quot;text_face&quot;;N;s:9:&quot;text_size&quot;;N;s:10:&quot;text_color&quot;;N;s:15:&quot;text_properties&quot;;N;s:6:&quot;hidden&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:8:&quot;fe_group&quot;;N;}</field>
+				<field index="t3ver_wsid">0</field>
+				<field index="t3ver_state">0</field>
+				<field index="t3ver_stage">0</field>
+				<field index="t3ver_count">0</field>
+				<field index="t3ver_tstamp">0</field>
+				<field index="t3_origuid">4126</field>
+				<field index="tx_templavoila_ds"></field>
+				<field index="tx_templavoila_to">0</field>
+				<field index="tx_templavoila_flex"></field>
+				<field index="tx_templavoila_pito">0</field>
+			</fieldlist>
+			<related index="rels" type="array">
+			</related>
+		</tablerow>
+		<tablerow index="tt_content:4131" type="array">
+			<fieldlist index="data" type="array">
+				<field index="uid">4131</field>
+				<field index="pid">2014</field>
+				<field index="tstamp">1132154353</field>
+				<field index="hidden">0</field>
+				<field index="sorting">1</field>
+				<field index="CType">text</field>
+				<field index="header">*** t3unit templavoila testcase ***</field>
+				<field index="header_position"></field>
+				<field index="bodytext">2col nolang left danish (error)</field>
+				<field index="image"></field>
+				<field index="imagewidth">0</field>
+				<field index="imageorient">8</field>
+				<field index="imagecaption"></field>
+				<field index="imagecols">0</field>
+				<field index="imageborder">0</field>
+				<field index="media"></field>
+				<field index="layout">0</field>
+				<field index="deleted">0</field>
+				<field index="cols">0</field>
+				<field index="records"></field>
+				<field index="pages"></field>
+				<field index="starttime">0</field>
+				<field index="endtime">0</field>
+				<field index="colPos">0</field>
+				<field index="subheader"></field>
+				<field index="spaceBefore">0</field>
+				<field index="spaceAfter">0</field>
+				<field index="fe_group"></field>
+				<field index="header_link"></field>
+				<field index="imagecaption_position"></field>
+				<field index="image_link"></field>
+				<field index="image_zoom">0</field>
+				<field index="image_noRows">0</field>
+				<field index="image_effects">0</field>
+				<field index="image_compression">0</field>
+				<field index="header_layout">0</field>
+				<field index="text_align"></field>
+				<field index="text_face">0</field>
+				<field index="text_size">0</field>
+				<field index="text_color">0</field>
+				<field index="text_properties">0</field>
+				<field index="menu_type">0</field>
+				<field index="list_type"></field>
+				<field index="table_border">0</field>
+				<field index="table_cellspacing">0</field>
+				<field index="table_cellpadding">0</field>
+				<field index="table_bgColor">0</field>
+				<field index="select_key"></field>
+				<field index="sectionIndex">1</field>
+				<field index="linkToTop">0</field>
+				<field index="filelink_size">0</field>
+				<field index="section_frame">0</field>
+				<field index="date">0</field>
+				<field index="splash_layout">0</field>
+				<field index="multimedia"></field>
+				<field index="image_frames">0</field>
+				<field index="recursive">0</field>
+				<field index="imageheight">0</field>
+				<field index="module_sys_dmail_category">0</field>
+				<field index="rte_enabled">0</field>
+				<field index="sys_language_uid">0</field>
+				<field index="tx_impexp_origuid">0</field>
+				<field index="pi_flexform"></field>
+				<field index="t3ver_oid">0</field>
+				<field index="t3ver_id">0</field>
+				<field index="t3ver_label"></field>
+				<field index="l18n_parent">0</field>
+				<field index="l18n_diffsource">a:23:{s:5:&quot;CType&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:6:&quot;colPos&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:13:&quot;section_frame&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:6:&quot;header&quot;;N;s:15:&quot;header_position&quot;;N;s:13:&quot;header_layout&quot;;N;s:11:&quot;header_link&quot;;N;s:4:&quot;date&quot;;N;s:8:&quot;bodytext&quot;;N;s:10:&quot;text_align&quot;;N;s:9:&quot;text_face&quot;;N;s:9:&quot;text_size&quot;;N;s:10:&quot;text_color&quot;;N;s:15:&quot;text_properties&quot;;N;s:6:&quot;hidden&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:8:&quot;fe_group&quot;;N;}</field>
+				<field index="t3ver_wsid">0</field>
+				<field index="t3ver_state">0</field>
+				<field index="t3ver_stage">0</field>
+				<field index="t3ver_count">0</field>
+				<field index="t3ver_tstamp">0</field>
+				<field index="t3_origuid">4125</field>
+				<field index="tx_templavoila_ds"></field>
+				<field index="tx_templavoila_to">0</field>
+				<field index="tx_templavoila_flex"></field>
+				<field index="tx_templavoila_pito">0</field>
+			</fieldlist>
+			<related index="rels" type="array">
+			</related>
+		</tablerow>
+		<tablerow index="tt_content:4130" type="array">
+			<fieldlist index="data" type="array">
+				<field index="uid">4130</field>
+				<field index="pid">2014</field>
+				<field index="tstamp">1132154520</field>
+				<field index="hidden">0</field>
+				<field index="sorting">2</field>
+				<field index="CType">text</field>
+				<field index="header">*** t3unit templavoila testcase ***</field>
+				<field index="header_position"></field>
+				<field index="bodytext">2col structure right</field>
+				<field index="image"></field>
+				<field index="imagewidth">0</field>
+				<field index="imageorient">8</field>
+				<field index="imagecaption"></field>
+				<field index="imagecols">0</field>
+				<field index="imageborder">0</field>
+				<field index="media"></field>
+				<field index="layout">0</field>
+				<field index="deleted">0</field>
+				<field index="cols">0</field>
+				<field index="records"></field>
+				<field index="pages"></field>
+				<field index="starttime">0</field>
+				<field index="endtime">0</field>
+				<field index="colPos">0</field>
+				<field index="subheader"></field>
+				<field index="spaceBefore">0</field>
+				<field index="spaceAfter">0</field>
+				<field index="fe_group"></field>
+				<field index="header_link"></field>
+				<field index="imagecaption_position"></field>
+				<field index="image_link"></field>
+				<field index="image_zoom">0</field>
+				<field index="image_noRows">0</field>
+				<field index="image_effects">0</field>
+				<field index="image_compression">0</field>
+				<field index="header_layout">0</field>
+				<field index="text_align"></field>
+				<field index="text_face">0</field>
+				<field index="text_size">0</field>
+				<field index="text_color">0</field>
+				<field index="text_properties">0</field>
+				<field index="menu_type">0</field>
+				<field index="list_type"></field>
+				<field index="table_border">0</field>
+				<field index="table_cellspacing">0</field>
+				<field index="table_cellpadding">0</field>
+				<field index="table_bgColor">0</field>
+				<field index="select_key"></field>
+				<field index="sectionIndex">1</field>
+				<field index="linkToTop">0</field>
+				<field index="filelink_size">0</field>
+				<field index="section_frame">0</field>
+				<field index="date">0</field>
+				<field index="splash_layout">0</field>
+				<field index="multimedia"></field>
+				<field index="image_frames">0</field>
+				<field index="recursive">0</field>
+				<field index="imageheight">0</field>
+				<field index="module_sys_dmail_category">0</field>
+				<field index="rte_enabled">0</field>
+				<field index="sys_language_uid">1</field>
+				<field index="tx_impexp_origuid">0</field>
+				<field index="pi_flexform"></field>
+				<field index="t3ver_oid">0</field>
+				<field index="t3ver_id">0</field>
+				<field index="t3ver_label"></field>
+				<field index="l18n_parent">0</field>
+				<field index="l18n_diffsource">a:24:{s:5:&quot;CType&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:11:&quot;l18n_parent&quot;;N;s:6:&quot;colPos&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:13:&quot;section_frame&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:6:&quot;header&quot;;N;s:15:&quot;header_position&quot;;N;s:13:&quot;header_layout&quot;;N;s:11:&quot;header_link&quot;;N;s:4:&quot;date&quot;;N;s:8:&quot;bodytext&quot;;N;s:10:&quot;text_align&quot;;N;s:9:&quot;text_face&quot;;N;s:9:&quot;text_size&quot;;N;s:10:&quot;text_color&quot;;N;s:15:&quot;text_properties&quot;;N;s:6:&quot;hidden&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:8:&quot;fe_group&quot;;N;}</field>
+				<field index="t3ver_wsid">0</field>
+				<field index="t3ver_state">0</field>
+				<field index="t3ver_stage">0</field>
+				<field index="t3ver_count">0</field>
+				<field index="t3ver_tstamp">0</field>
+				<field index="t3_origuid">4124</field>
+				<field index="tx_templavoila_ds"></field>
+				<field index="tx_templavoila_to">0</field>
+				<field index="tx_templavoila_flex"></field>
+				<field index="tx_templavoila_pito">0</field>
+			</fieldlist>
+			<related index="rels" type="array">
+				<field index="sys_language_uid" type="array">
+					<type>db</type>
+					<relations index="itemArray" type="array">
+						<element index="0" type="array">
+							<id>1</id>
+							<table>sys_language</table>
+						</element>
+					</relations>
+				</field>
+			</related>
+		</tablerow>
+		<tablerow index="tt_content:4129" type="array">
+			<fieldlist index="data" type="array">
+				<field index="uid">4129</field>
+				<field index="pid">2014</field>
+				<field index="tstamp">1132154528</field>
+				<field index="hidden">0</field>
+				<field index="sorting">5</field>
+				<field index="CType">text</field>
+				<field index="header">*** t3unit templavoila testcase ***</field>
+				<field index="header_position"></field>
+				<field index="bodytext">2col structure left</field>
+				<field index="image"></field>
+				<field index="imagewidth">0</field>
+				<field index="imageorient">8</field>
+				<field index="imagecaption"></field>
+				<field index="imagecols">0</field>
+				<field index="imageborder">0</field>
+				<field index="media"></field>
+				<field index="layout">0</field>
+				<field index="deleted">0</field>
+				<field index="cols">0</field>
+				<field index="records"></field>
+				<field index="pages"></field>
+				<field index="starttime">0</field>
+				<field index="endtime">0</field>
+				<field index="colPos">0</field>
+				<field index="subheader"></field>
+				<field index="spaceBefore">0</field>
+				<field index="spaceAfter">0</field>
+				<field index="fe_group"></field>
+				<field index="header_link"></field>
+				<field index="imagecaption_position"></field>
+				<field index="image_link"></field>
+				<field index="image_zoom">0</field>
+				<field index="image_noRows">0</field>
+				<field index="image_effects">0</field>
+				<field index="image_compression">0</field>
+				<field index="header_layout">0</field>
+				<field index="text_align"></field>
+				<field index="text_face">0</field>
+				<field index="text_size">0</field>
+				<field index="text_color">0</field>
+				<field index="text_properties">0</field>
+				<field index="menu_type">0</field>
+				<field index="list_type"></field>
+				<field index="table_border">0</field>
+				<field index="table_cellspacing">0</field>
+				<field index="table_cellpadding">0</field>
+				<field index="table_bgColor">0</field>
+				<field index="select_key"></field>
+				<field index="sectionIndex">1</field>
+				<field index="linkToTop">0</field>
+				<field index="filelink_size">0</field>
+				<field index="section_frame">0</field>
+				<field index="date">0</field>
+				<field index="splash_layout">0</field>
+				<field index="multimedia"></field>
+				<field index="image_frames">0</field>
+				<field index="recursive">0</field>
+				<field index="imageheight">0</field>
+				<field index="module_sys_dmail_category">0</field>
+				<field index="rte_enabled">0</field>
+				<field index="sys_language_uid">1</field>
+				<field index="tx_impexp_origuid">0</field>
+				<field index="pi_flexform"></field>
+				<field index="t3ver_oid">0</field>
+				<field index="t3ver_id">0</field>
+				<field index="t3ver_label"></field>
+				<field index="l18n_parent">0</field>
+				<field index="l18n_diffsource">a:24:{s:5:&quot;CType&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:11:&quot;l18n_parent&quot;;N;s:6:&quot;colPos&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:13:&quot;section_frame&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:6:&quot;header&quot;;N;s:15:&quot;header_position&quot;;N;s:13:&quot;header_layout&quot;;N;s:11:&quot;header_link&quot;;N;s:4:&quot;date&quot;;N;s:8:&quot;bodytext&quot;;N;s:10:&quot;text_align&quot;;N;s:9:&quot;text_face&quot;;N;s:9:&quot;text_size&quot;;N;s:10:&quot;text_color&quot;;N;s:15:&quot;text_properties&quot;;N;s:6:&quot;hidden&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:8:&quot;fe_group&quot;;N;}</field>
+				<field index="t3ver_wsid">0</field>
+				<field index="t3ver_state">0</field>
+				<field index="t3ver_stage">0</field>
+				<field index="t3ver_count">0</field>
+				<field index="t3ver_tstamp">0</field>
+				<field index="t3_origuid">4123</field>
+				<field index="tx_templavoila_ds"></field>
+				<field index="tx_templavoila_to">0</field>
+				<field index="tx_templavoila_flex"></field>
+				<field index="tx_templavoila_pito">0</field>
+			</fieldlist>
+			<related index="rels" type="array">
+				<field index="sys_language_uid" type="array">
+					<type>db</type>
+					<relations index="itemArray" type="array">
+						<element index="0" type="array">
+							<id>1</id>
+							<table>sys_language</table>
+						</element>
+					</relations>
+				</field>
+			</related>
+		</tablerow>
+		<tablerow index="tt_content:4117" type="array">
+			<fieldlist index="data" type="array">
+				<field index="uid">4117</field>
+				<field index="pid">2014</field>
+				<field index="tstamp">1132153141</field>
+				<field index="hidden">0</field>
+				<field index="sorting">10</field>
+				<field index="CType">text</field>
+				<field index="header">*** t3unit templavoila testcase content element ***</field>
+				<field index="header_position"></field>
+				<field index="bodytext">This is just a text element in the default language</field>
+				<field index="image"></field>
+				<field index="imagewidth">0</field>
+				<field index="imageorient">8</field>
+				<field index="imagecaption"></field>
+				<field index="imagecols">0</field>
+				<field index="imageborder">0</field>
+				<field index="media"></field>
+				<field index="layout">0</field>
+				<field index="deleted">0</field>
+				<field index="cols">0</field>
+				<field index="records"></field>
+				<field index="pages"></field>
+				<field index="starttime">0</field>
+				<field index="endtime">0</field>
+				<field index="colPos">0</field>
+				<field index="subheader"></field>
+				<field index="spaceBefore">0</field>
+				<field index="spaceAfter">0</field>
+				<field index="fe_group"></field>
+				<field index="header_link"></field>
+				<field index="imagecaption_position"></field>
+				<field index="image_link"></field>
+				<field index="image_zoom">0</field>
+				<field index="image_noRows">0</field>
+				<field index="image_effects">0</field>
+				<field index="image_compression">0</field>
+				<field index="header_layout">0</field>
+				<field index="text_align"></field>
+				<field index="text_face">0</field>
+				<field index="text_size">0</field>
+				<field index="text_color">0</field>
+				<field index="text_properties">0</field>
+				<field index="menu_type">0</field>
+				<field index="list_type"></field>
+				<field index="table_border">0</field>
+				<field index="table_cellspacing">0</field>
+				<field index="table_cellpadding">0</field>
+				<field index="table_bgColor">0</field>
+				<field index="select_key"></field>
+				<field index="sectionIndex">1</field>
+				<field index="linkToTop">0</field>
+				<field index="filelink_size">0</field>
+				<field index="section_frame">0</field>
+				<field index="date">0</field>
+				<field index="splash_layout">0</field>
+				<field index="multimedia"></field>
+				<field index="image_frames">0</field>
+				<field index="recursive">0</field>
+				<field index="imageheight">0</field>
+				<field index="module_sys_dmail_category">0</field>
+				<field index="rte_enabled">0</field>
+				<field index="sys_language_uid">0</field>
+				<field index="tx_impexp_origuid">0</field>
+				<field index="pi_flexform"></field>
+				<field index="t3ver_oid">0</field>
+				<field index="t3ver_id">0</field>
+				<field index="t3ver_label"></field>
+				<field index="l18n_parent">0</field>
+				<field index="l18n_diffsource">a:23:{s:5:&quot;CType&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:6:&quot;colPos&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:13:&quot;section_frame&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:6:&quot;header&quot;;N;s:15:&quot;header_position&quot;;N;s:13:&quot;header_layout&quot;;N;s:11:&quot;header_link&quot;;N;s:4:&quot;date&quot;;N;s:8:&quot;bodytext&quot;;N;s:10:&quot;text_align&quot;;N;s:9:&quot;text_face&quot;;N;s:9:&quot;text_size&quot;;N;s:10:&quot;text_color&quot;;N;s:15:&quot;text_properties&quot;;N;s:6:&quot;hidden&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:8:&quot;fe_group&quot;;N;}</field>
+				<field index="t3ver_wsid">0</field>
+				<field index="t3ver_state">0</field>
+				<field index="t3ver_stage">0</field>
+				<field index="t3ver_count">0</field>
+				<field index="t3ver_tstamp">0</field>
+				<field index="t3_origuid">0</field>
+				<field index="tx_templavoila_ds"></field>
+				<field index="tx_templavoila_to">0</field>
+				<field index="tx_templavoila_flex"></field>
+				<field index="tx_templavoila_pito">0</field>
+			</fieldlist>
+			<related index="rels" type="array">
+			</related>
+		</tablerow>
+		<tablerow index="tt_content:4128" type="array">
+			<fieldlist index="data" type="array">
+				<field index="uid">4128</field>
+				<field index="pid">2014</field>
+				<field index="tstamp">1132153826</field>
+				<field index="hidden">0</field>
+				<field index="sorting">32</field>
+				<field index="CType">text</field>
+				<field index="header">*** t3unit templavoila testcase ***</field>
+				<field index="header_position"></field>
+				<field index="bodytext">2col value right (danish)</field>
+				<field index="image"></field>
+				<field index="imagewidth">0</field>
+				<field index="imageorient">8</field>
+				<field index="imagecaption"></field>
+				<field index="imagecols">0</field>
+				<field index="imageborder">0</field>
+				<field index="media"></field>
+				<field index="layout">0</field>
+				<field index="deleted">0</field>
+				<field index="cols">0</field>
+				<field index="records"></field>
+				<field index="pages"></field>
+				<field index="starttime">0</field>
+				<field index="endtime">0</field>
+				<field index="colPos">0</field>
+				<field index="subheader"></field>
+				<field index="spaceBefore">0</field>
+				<field index="spaceAfter">0</field>
+				<field index="fe_group"></field>
+				<field index="header_link"></field>
+				<field index="imagecaption_position"></field>
+				<field index="image_link"></field>
+				<field index="image_zoom">0</field>
+				<field index="image_noRows">0</field>
+				<field index="image_effects">0</field>
+				<field index="image_compression">0</field>
+				<field index="header_layout">0</field>
+				<field index="text_align"></field>
+				<field index="text_face">0</field>
+				<field index="text_size">0</field>
+				<field index="text_color">0</field>
+				<field index="text_properties">0</field>
+				<field index="menu_type">0</field>
+				<field index="list_type"></field>
+				<field index="table_border">0</field>
+				<field index="table_cellspacing">0</field>
+				<field index="table_cellpadding">0</field>
+				<field index="table_bgColor">0</field>
+				<field index="select_key"></field>
+				<field index="sectionIndex">1</field>
+				<field index="linkToTop">0</field>
+				<field index="filelink_size">0</field>
+				<field index="section_frame">0</field>
+				<field index="date">0</field>
+				<field index="splash_layout">0</field>
+				<field index="multimedia"></field>
+				<field index="image_frames">0</field>
+				<field index="recursive">0</field>
+				<field index="imageheight">0</field>
+				<field index="module_sys_dmail_category">0</field>
+				<field index="rte_enabled">0</field>
+				<field index="sys_language_uid">1</field>
+				<field index="tx_impexp_origuid">0</field>
+				<field index="pi_flexform"></field>
+				<field index="t3ver_oid">0</field>
+				<field index="t3ver_id">0</field>
+				<field index="t3ver_label"></field>
+				<field index="l18n_parent">0</field>
+				<field index="l18n_diffsource">a:23:{s:5:&quot;CType&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:6:&quot;colPos&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:13:&quot;section_frame&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:6:&quot;header&quot;;N;s:15:&quot;header_position&quot;;N;s:13:&quot;header_layout&quot;;N;s:11:&quot;header_link&quot;;N;s:4:&quot;date&quot;;N;s:8:&quot;bodytext&quot;;N;s:10:&quot;text_align&quot;;N;s:9:&quot;text_face&quot;;N;s:9:&quot;text_size&quot;;N;s:10:&quot;text_color&quot;;N;s:15:&quot;text_properties&quot;;N;s:6:&quot;hidden&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:8:&quot;fe_group&quot;;N;}</field>
+				<field index="t3ver_wsid">0</field>
+				<field index="t3ver_state">0</field>
+				<field index="t3ver_stage">0</field>
+				<field index="t3ver_count">0</field>
+				<field index="t3ver_tstamp">0</field>
+				<field index="t3_origuid">4122</field>
+				<field index="tx_templavoila_ds"></field>
+				<field index="tx_templavoila_to">0</field>
+				<field index="tx_templavoila_flex"></field>
+				<field index="tx_templavoila_pito">0</field>
+			</fieldlist>
+			<related index="rels" type="array">
+				<field index="sys_language_uid" type="array">
+					<type>db</type>
+					<relations index="itemArray" type="array">
+						<element index="0" type="array">
+							<id>1</id>
+							<table>sys_language</table>
+						</element>
+					</relations>
+				</field>
+			</related>
+		</tablerow>
+		<tablerow index="tt_content:4118" type="array">
+			<fieldlist index="data" type="array">
+				<field index="uid">4118</field>
+				<field index="pid">2014</field>
+				<field index="tstamp">1132153947</field>
+				<field index="hidden">0</field>
+				<field index="sorting">50</field>
+				<field index="CType">templavoila_pi1</field>
+				<field index="header">*** t3unit templavoila testcase *** 2col, value</field>
+				<field index="header_position"></field>
+				<field index="bodytext"></field>
+				<field index="image"></field>
+				<field index="imagewidth">0</field>
+				<field index="imageorient">8</field>
+				<field index="imagecaption"></field>
+				<field index="imagecols">0</field>
+				<field index="imageborder">0</field>
+				<field index="media"></field>
+				<field index="layout">0</field>
+				<field index="deleted">0</field>
+				<field index="cols">0</field>
+				<field index="records"></field>
+				<field index="pages"></field>
+				<field index="starttime">0</field>
+				<field index="endtime">0</field>
+				<field index="colPos">0</field>
+				<field index="subheader"></field>
+				<field index="spaceBefore">0</field>
+				<field index="spaceAfter">0</field>
+				<field index="fe_group"></field>
+				<field index="header_link"></field>
+				<field index="imagecaption_position"></field>
+				<field index="image_link"></field>
+				<field index="image_zoom">0</field>
+				<field index="image_noRows">0</field>
+				<field index="image_effects">0</field>
+				<field index="image_compression">0</field>
+				<field index="header_layout">0</field>
+				<field index="text_align"></field>
+				<field index="text_face">0</field>
+				<field index="text_size">0</field>
+				<field index="text_color">0</field>
+				<field index="text_properties">0</field>
+				<field index="menu_type">0</field>
+				<field index="list_type"></field>
+				<field index="table_border">0</field>
+				<field index="table_cellspacing">0</field>
+				<field index="table_cellpadding">0</field>
+				<field index="table_bgColor">0</field>
+				<field index="select_key"></field>
+				<field index="sectionIndex">1</field>
+				<field index="linkToTop">0</field>
+				<field index="filelink_size">0</field>
+				<field index="section_frame">0</field>
+				<field index="date">0</field>
+				<field index="splash_layout">0</field>
+				<field index="multimedia"></field>
+				<field index="image_frames">0</field>
+				<field index="recursive">0</field>
+				<field index="imageheight">0</field>
+				<field index="module_sys_dmail_category">0</field>
+				<field index="rte_enabled">0</field>
+				<field index="sys_language_uid">0</field>
+				<field index="tx_impexp_origuid">0</field>
+				<field index="pi_flexform"></field>
+				<field index="t3ver_oid">0</field>
+				<field index="t3ver_id">0</field>
+				<field index="t3ver_label"></field>
+				<field index="l18n_parent">0</field>
+				<field index="l18n_diffsource">a:16:{s:5:&quot;CType&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:6:&quot;colPos&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:13:&quot;section_frame&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:6:&quot;header&quot;;N;s:17:&quot;tx_templavoila_ds&quot;;N;s:17:&quot;tx_templavoila_to&quot;;N;s:19:&quot;tx_templavoila_flex&quot;;N;s:6:&quot;hidden&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:8:&quot;fe_group&quot;;N;}</field>
+				<field index="t3ver_wsid">0</field>
+				<field index="t3ver_state">0</field>
+				<field index="t3ver_stage">0</field>
+				<field index="t3ver_count">0</field>
+				<field index="t3ver_tstamp">0</field>
+				<field index="t3_origuid">0</field>
+				<field index="tx_templavoila_ds">1133</field>
+				<field index="tx_templavoila_to">0</field>
+				<field index="tx_templavoila_flex">&lt;?xml version=&quot;1.0&quot; encoding=&quot;iso-8859-1&quot; standalone=&quot;yes&quot; ?&gt;
+&lt;T3FlexForms&gt;
+    &lt;data type=&quot;array&quot;&gt;
+        &lt;sDEF type=&quot;array&quot;&gt;
+            &lt;lDEF type=&quot;array&quot;&gt;
+                &lt;field_leftcolumn type=&quot;array&quot;&gt;
+                    &lt;vDEF&gt;4121&lt;/vDEF&gt;
+                    &lt;vDA&gt;4127&lt;/vDA&gt;
+                    &lt;vDE&gt;&lt;/vDE&gt;
+                &lt;/field_leftcolumn&gt;
+                &lt;field_rightcolumn type=&quot;array&quot;&gt;
+                    &lt;vDEF&gt;4122&lt;/vDEF&gt;
+                    &lt;vDA&gt;4128&lt;/vDA&gt;
+                    &lt;vDE&gt;&lt;/vDE&gt;
+                &lt;/field_rightcolumn&gt;
+            &lt;/lDEF&gt;
+        &lt;/sDEF&gt;
+    &lt;/data&gt;
+&lt;/T3FlexForms&gt;</field>
+				<field index="tx_templavoila_pito">0</field>
+			</fieldlist>
+			<related index="rels" type="array">
+				<field index="tx_templavoila_ds" type="array">
+					<type>db</type>
+					<relations index="itemArray" type="array">
+						<element index="0" type="array">
+							<id>1133</id>
+							<table>tx_templavoila_datastructure</table>
+						</element>
+					</relations>
+				</field>
+				<field index="tx_templavoila_flex" type="array">
+					<type>flex</type>
+					<flexform index="flexFormRels" type="array">
+						<db_relations index="db" type="array">
+							<path index="sDEF/lDEF/field_leftcolumn/vDEF/" type="array">
+								<element index="0" type="array">
+									<id>4121</id>
+									<table>tt_content</table>
+								</element>
+							</path>
+							<path index="sDEF/lDEF/field_leftcolumn/vDA/" type="array">
+								<element index="0" type="array">
+									<id>4127</id>
+									<table>tt_content</table>
+								</element>
+							</path>
+							<path index="sDEF/lDEF/field_rightcolumn/vDEF/" type="array">
+								<element index="0" type="array">
+									<id>4122</id>
+									<table>tt_content</table>
+								</element>
+							</path>
+							<path index="sDEF/lDEF/field_rightcolumn/vDA/" type="array">
+								<element index="0" type="array">
+									<id>4128</id>
+									<table>tt_content</table>
+								</element>
+							</path>
+						</db_relations>
+						<file_relations index="file" type="array">
+						</file_relations>
+						<softref_relations index="softrefs" type="array">
+						</softref_relations>
+					</flexform>
+				</field>
+			</related>
+		</tablerow>
+		<tablerow index="tt_content:4119" type="array">
+			<fieldlist index="data" type="array">
+				<field index="uid">4119</field>
+				<field index="pid">2014</field>
+				<field index="tstamp">1132154188</field>
+				<field index="hidden">0</field>
+				<field index="sorting">60</field>
+				<field index="CType">templavoila_pi1</field>
+				<field index="header">*** t3unit templavoila testcase *** 2col, structure</field>
+				<field index="header_position"></field>
+				<field index="bodytext"></field>
+				<field index="image"></field>
+				<field index="imagewidth">0</field>
+				<field index="imageorient">8</field>
+				<field index="imagecaption"></field>
+				<field index="imagecols">0</field>
+				<field index="imageborder">0</field>
+				<field index="media"></field>
+				<field index="layout">0</field>
+				<field index="deleted">0</field>
+				<field index="cols">0</field>
+				<field index="records"></field>
+				<field index="pages"></field>
+				<field index="starttime">0</field>
+				<field index="endtime">0</field>
+				<field index="colPos">0</field>
+				<field index="subheader"></field>
+				<field index="spaceBefore">0</field>
+				<field index="spaceAfter">0</field>
+				<field index="fe_group"></field>
+				<field index="header_link"></field>
+				<field index="imagecaption_position"></field>
+				<field index="image_link"></field>
+				<field index="image_zoom">0</field>
+				<field index="image_noRows">0</field>
+				<field index="image_effects">0</field>
+				<field index="image_compression">0</field>
+				<field index="header_layout">0</field>
+				<field index="text_align"></field>
+				<field index="text_face">0</field>
+				<field index="text_size">0</field>
+				<field index="text_color">0</field>
+				<field index="text_properties">0</field>
+				<field index="menu_type">0</field>
+				<field index="list_type"></field>
+				<field index="table_border">0</field>
+				<field index="table_cellspacing">0</field>
+				<field index="table_cellpadding">0</field>
+				<field index="table_bgColor">0</field>
+				<field index="select_key"></field>
+				<field index="sectionIndex">1</field>
+				<field index="linkToTop">0</field>
+				<field index="filelink_size">0</field>
+				<field index="section_frame">0</field>
+				<field index="date">0</field>
+				<field index="splash_layout">0</field>
+				<field index="multimedia"></field>
+				<field index="image_frames">0</field>
+				<field index="recursive">0</field>
+				<field index="imageheight">0</field>
+				<field index="module_sys_dmail_category">0</field>
+				<field index="rte_enabled">0</field>
+				<field index="sys_language_uid">0</field>
+				<field index="tx_impexp_origuid">0</field>
+				<field index="pi_flexform"></field>
+				<field index="t3ver_oid">0</field>
+				<field index="t3ver_id">0</field>
+				<field index="t3ver_label"></field>
+				<field index="l18n_parent">0</field>
+				<field index="l18n_diffsource">a:16:{s:5:&quot;CType&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:6:&quot;colPos&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:13:&quot;section_frame&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:6:&quot;header&quot;;N;s:17:&quot;tx_templavoila_ds&quot;;N;s:17:&quot;tx_templavoila_to&quot;;N;s:19:&quot;tx_templavoila_flex&quot;;N;s:6:&quot;hidden&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:8:&quot;fe_group&quot;;N;}</field>
+				<field index="t3ver_wsid">0</field>
+				<field index="t3ver_state">0</field>
+				<field index="t3ver_stage">0</field>
+				<field index="t3ver_count">0</field>
+				<field index="t3ver_tstamp">0</field>
+				<field index="t3_origuid">0</field>
+				<field index="tx_templavoila_ds">1132</field>
+				<field index="tx_templavoila_to">0</field>
+				<field index="tx_templavoila_flex">&lt;?xml version=&quot;1.0&quot; encoding=&quot;iso-8859-1&quot; standalone=&quot;yes&quot; ?&gt;
+&lt;T3FlexForms&gt;
+    &lt;data type=&quot;array&quot;&gt;
+        &lt;sDEF type=&quot;array&quot;&gt;
+            &lt;lDEF type=&quot;array&quot;&gt;
+                &lt;field_leftcolumn type=&quot;array&quot;&gt;
+                    &lt;vDEF&gt;4123&lt;/vDEF&gt;
+                &lt;/field_leftcolumn&gt;
+                &lt;field_rightcolumn type=&quot;array&quot;&gt;
+                    &lt;vDEF&gt;4124&lt;/vDEF&gt;
+                &lt;/field_rightcolumn&gt;
+            &lt;/lDEF&gt;
+            &lt;lDA type=&quot;array&quot;&gt;
+                &lt;field_leftcolumn type=&quot;array&quot;&gt;
+                    &lt;vDEF&gt;4129,4129&lt;/vDEF&gt;
+                &lt;/field_leftcolumn&gt;
+                &lt;field_rightcolumn type=&quot;array&quot;&gt;
+                    &lt;vDEF&gt;4130,4130&lt;/vDEF&gt;
+                &lt;/field_rightcolumn&gt;
+            &lt;/lDA&gt;
+            &lt;lDE type=&quot;array&quot;&gt;
+                &lt;field_leftcolumn type=&quot;array&quot;&gt;
+                    &lt;vDEF&gt;&lt;/vDEF&gt;
+                &lt;/field_leftcolumn&gt;
+                &lt;field_rightcolumn type=&quot;array&quot;&gt;
+                    &lt;vDEF&gt;&lt;/vDEF&gt;
+                &lt;/field_rightcolumn&gt;
+            &lt;/lDE&gt;
+        &lt;/sDEF&gt;
+    &lt;/data&gt;
+&lt;/T3FlexForms&gt;</field>
+				<field index="tx_templavoila_pito">0</field>
+			</fieldlist>
+			<related index="rels" type="array">
+				<field index="tx_templavoila_ds" type="array">
+					<type>db</type>
+					<relations index="itemArray" type="array">
+						<element index="0" type="array">
+							<id>1132</id>
+							<table>tx_templavoila_datastructure</table>
+						</element>
+					</relations>
+				</field>
+				<field index="tx_templavoila_flex" type="array">
+					<type>flex</type>
+					<flexform index="flexFormRels" type="array">
+						<db_relations index="db" type="array">
+							<path index="sDEF/lDEF/field_leftcolumn/vDEF/" type="array">
+								<element index="0" type="array">
+									<id>4123</id>
+									<table>tt_content</table>
+								</element>
+							</path>
+							<path index="sDEF/lDEF/field_rightcolumn/vDEF/" type="array">
+								<element index="0" type="array">
+									<id>4124</id>
+									<table>tt_content</table>
+								</element>
+							</path>
+							<path index="sDEF/lDA/field_leftcolumn/vDEF/" type="array">
+								<element index="0" type="array">
+									<id>4129</id>
+									<table>tt_content</table>
+								</element>
+								<element index="1" type="array">
+									<id>4129</id>
+									<table>tt_content</table>
+								</element>
+							</path>
+							<path index="sDEF/lDA/field_rightcolumn/vDEF/" type="array">
+								<element index="0" type="array">
+									<id>4130</id>
+									<table>tt_content</table>
+								</element>
+								<element index="1" type="array">
+									<id>4130</id>
+									<table>tt_content</table>
+								</element>
+							</path>
+						</db_relations>
+						<file_relations index="file" type="array">
+						</file_relations>
+						<softref_relations index="softrefs" type="array">
+						</softref_relations>
+					</flexform>
+				</field>
+			</related>
+		</tablerow>
+		<tablerow index="tt_content:4127" type="array">
+			<fieldlist index="data" type="array">
+				<field index="uid">4127</field>
+				<field index="pid">2014</field>
+				<field index="tstamp">1132153791</field>
+				<field index="hidden">0</field>
+				<field index="sorting">64</field>
+				<field index="CType">text</field>
+				<field index="header">*** t3unit templavoila testcase ***</field>
+				<field index="header_position"></field>
+				<field index="bodytext">2col value left (danish)</field>
+				<field index="image"></field>
+				<field index="imagewidth">0</field>
+				<field index="imageorient">8</field>
+				<field index="imagecaption"></field>
+				<field index="imagecols">0</field>
+				<field index="imageborder">0</field>
+				<field index="media"></field>
+				<field index="layout">0</field>
+				<field index="deleted">0</field>
+				<field index="cols">0</field>
+				<field index="records"></field>
+				<field index="pages"></field>
+				<field index="starttime">0</field>
+				<field index="endtime">0</field>
+				<field index="colPos">0</field>
+				<field index="subheader"></field>
+				<field index="spaceBefore">0</field>
+				<field index="spaceAfter">0</field>
+				<field index="fe_group"></field>
+				<field index="header_link"></field>
+				<field index="imagecaption_position"></field>
+				<field index="image_link"></field>
+				<field index="image_zoom">0</field>
+				<field index="image_noRows">0</field>
+				<field index="image_effects">0</field>
+				<field index="image_compression">0</field>
+				<field index="header_layout">0</field>
+				<field index="text_align"></field>
+				<field index="text_face">0</field>
+				<field index="text_size">0</field>
+				<field index="text_color">0</field>
+				<field index="text_properties">0</field>
+				<field index="menu_type">0</field>
+				<field index="list_type"></field>
+				<field index="table_border">0</field>
+				<field index="table_cellspacing">0</field>
+				<field index="table_cellpadding">0</field>
+				<field index="table_bgColor">0</field>
+				<field index="select_key"></field>
+				<field index="sectionIndex">1</field>
+				<field index="linkToTop">0</field>
+				<field index="filelink_size">0</field>
+				<field index="section_frame">0</field>
+				<field index="date">0</field>
+				<field index="splash_layout">0</field>
+				<field index="multimedia"></field>
+				<field index="image_frames">0</field>
+				<field index="recursive">0</field>
+				<field index="imageheight">0</field>
+				<field index="module_sys_dmail_category">0</field>
+				<field index="rte_enabled">0</field>
+				<field index="sys_language_uid">1</field>
+				<field index="tx_impexp_origuid">0</field>
+				<field index="pi_flexform"></field>
+				<field index="t3ver_oid">0</field>
+				<field index="t3ver_id">0</field>
+				<field index="t3ver_label"></field>
+				<field index="l18n_parent">0</field>
+				<field index="l18n_diffsource">a:23:{s:5:&quot;CType&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:6:&quot;colPos&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:13:&quot;section_frame&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:6:&quot;header&quot;;N;s:15:&quot;header_position&quot;;N;s:13:&quot;header_layout&quot;;N;s:11:&quot;header_link&quot;;N;s:4:&quot;date&quot;;N;s:8:&quot;bodytext&quot;;N;s:10:&quot;text_align&quot;;N;s:9:&quot;text_face&quot;;N;s:9:&quot;text_size&quot;;N;s:10:&quot;text_color&quot;;N;s:15:&quot;text_properties&quot;;N;s:6:&quot;hidden&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:8:&quot;fe_group&quot;;N;}</field>
+				<field index="t3ver_wsid">0</field>
+				<field index="t3ver_state">0</field>
+				<field index="t3ver_stage">0</field>
+				<field index="t3ver_count">0</field>
+				<field index="t3ver_tstamp">0</field>
+				<field index="t3_origuid">4121</field>
+				<field index="tx_templavoila_ds"></field>
+				<field index="tx_templavoila_to">0</field>
+				<field index="tx_templavoila_flex"></field>
+				<field index="tx_templavoila_pito">0</field>
+			</fieldlist>
+			<related index="rels" type="array">
+				<field index="sys_language_uid" type="array">
+					<type>db</type>
+					<relations index="itemArray" type="array">
+						<element index="0" type="array">
+							<id>1</id>
+							<table>sys_language</table>
+						</element>
+					</relations>
+				</field>
+			</related>
+		</tablerow>
+		<tablerow index="tt_content:4120" type="array">
+			<fieldlist index="data" type="array">
+				<field index="uid">4120</field>
+				<field index="pid">2014</field>
+				<field index="tstamp">1132154480</field>
+				<field index="hidden">0</field>
+				<field index="sorting">70</field>
+				<field index="CType">templavoila_pi1</field>
+				<field index="header">*** t3unit templavoila testcase *** 2col, nolang</field>
+				<field index="header_position"></field>
+				<field index="bodytext"></field>
+				<field index="image"></field>
+				<field index="imagewidth">0</field>
+				<field index="imageorient">8</field>
+				<field index="imagecaption"></field>
+				<field index="imagecols">0</field>
+				<field index="imageborder">0</field>
+				<field index="media"></field>
+				<field index="layout">0</field>
+				<field index="deleted">0</field>
+				<field index="cols">0</field>
+				<field index="records"></field>
+				<field index="pages"></field>
+				<field index="starttime">0</field>
+				<field index="endtime">0</field>
+				<field index="colPos">0</field>
+				<field index="subheader"></field>
+				<field index="spaceBefore">0</field>
+				<field index="spaceAfter">0</field>
+				<field index="fe_group"></field>
+				<field index="header_link"></field>
+				<field index="imagecaption_position"></field>
+				<field index="image_link"></field>
+				<field index="image_zoom">0</field>
+				<field index="image_noRows">0</field>
+				<field index="image_effects">0</field>
+				<field index="image_compression">0</field>
+				<field index="header_layout">0</field>
+				<field index="text_align"></field>
+				<field index="text_face">0</field>
+				<field index="text_size">0</field>
+				<field index="text_color">0</field>
+				<field index="text_properties">0</field>
+				<field index="menu_type">0</field>
+				<field index="list_type"></field>
+				<field index="table_border">0</field>
+				<field index="table_cellspacing">0</field>
+				<field index="table_cellpadding">0</field>
+				<field index="table_bgColor">0</field>
+				<field index="select_key"></field>
+				<field index="sectionIndex">1</field>
+				<field index="linkToTop">0</field>
+				<field index="filelink_size">0</field>
+				<field index="section_frame">0</field>
+				<field index="date">0</field>
+				<field index="splash_layout">0</field>
+				<field index="multimedia"></field>
+				<field index="image_frames">0</field>
+				<field index="recursive">0</field>
+				<field index="imageheight">0</field>
+				<field index="module_sys_dmail_category">0</field>
+				<field index="rte_enabled">0</field>
+				<field index="sys_language_uid">0</field>
+				<field index="tx_impexp_origuid">0</field>
+				<field index="pi_flexform"></field>
+				<field index="t3ver_oid">0</field>
+				<field index="t3ver_id">0</field>
+				<field index="t3ver_label"></field>
+				<field index="l18n_parent">0</field>
+				<field index="l18n_diffsource">a:16:{s:5:&quot;CType&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:6:&quot;colPos&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:13:&quot;section_frame&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:6:&quot;header&quot;;N;s:17:&quot;tx_templavoila_ds&quot;;N;s:17:&quot;tx_templavoila_to&quot;;N;s:19:&quot;tx_templavoila_flex&quot;;N;s:6:&quot;hidden&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:8:&quot;fe_group&quot;;N;}</field>
+				<field index="t3ver_wsid">0</field>
+				<field index="t3ver_state">0</field>
+				<field index="t3ver_stage">0</field>
+				<field index="t3ver_count">0</field>
+				<field index="t3ver_tstamp">0</field>
+				<field index="t3_origuid">0</field>
+				<field index="tx_templavoila_ds">1131</field>
+				<field index="tx_templavoila_to">0</field>
+				<field index="tx_templavoila_flex">&lt;?xml version=&quot;1.0&quot; encoding=&quot;iso-8859-1&quot; standalone=&quot;yes&quot; ?&gt;
+&lt;T3FlexForms&gt;
+    &lt;data type=&quot;array&quot;&gt;
+        &lt;sDEF type=&quot;array&quot;&gt;
+            &lt;lDEF type=&quot;array&quot;&gt;
+                &lt;field_leftcolumn type=&quot;array&quot;&gt;
+                    &lt;vDEF&gt;4125&lt;/vDEF&gt;
+                    &lt;vDA&gt;4131&lt;/vDA&gt;
+                    &lt;vDE&gt;&lt;/vDE&gt;
+                &lt;/field_leftcolumn&gt;
+                &lt;field_rightcolumn type=&quot;array&quot;&gt;
+                    &lt;vDEF&gt;4126&lt;/vDEF&gt;
+                    &lt;vDA&gt;4132&lt;/vDA&gt;
+                    &lt;vDE&gt;&lt;/vDE&gt;
+                &lt;/field_rightcolumn&gt;
+            &lt;/lDEF&gt;
+            &lt;lDA type=&quot;array&quot;&gt;
+                &lt;field_leftcolumn type=&quot;array&quot;&gt;
+                    &lt;vDEF&gt;4131&lt;/vDEF&gt;
+                &lt;/field_leftcolumn&gt;
+                &lt;field_rightcolumn type=&quot;array&quot;&gt;
+                    &lt;vDEF&gt;4132&lt;/vDEF&gt;
+                &lt;/field_rightcolumn&gt;
+            &lt;/lDA&gt;
+            &lt;lDE type=&quot;array&quot;&gt;
+                &lt;field_leftcolumn type=&quot;array&quot;&gt;
+                    &lt;vDEF&gt;&lt;/vDEF&gt;
+                &lt;/field_leftcolumn&gt;
+                &lt;field_rightcolumn type=&quot;array&quot;&gt;
+                    &lt;vDEF&gt;&lt;/vDEF&gt;
+                &lt;/field_rightcolumn&gt;
+            &lt;/lDE&gt;
+        &lt;/sDEF&gt;
+    &lt;/data&gt;
+&lt;/T3FlexForms&gt;</field>
+				<field index="tx_templavoila_pito">0</field>
+			</fieldlist>
+			<related index="rels" type="array">
+				<field index="tx_templavoila_ds" type="array">
+					<type>db</type>
+					<relations index="itemArray" type="array">
+						<element index="0" type="array">
+							<id>1131</id>
+							<table>tx_templavoila_datastructure</table>
+						</element>
+					</relations>
+				</field>
+				<field index="tx_templavoila_flex" type="array">
+					<type>flex</type>
+					<flexform index="flexFormRels" type="array">
+						<db_relations index="db" type="array">
+							<path index="sDEF/lDEF/field_leftcolumn/vDEF/" type="array">
+								<element index="0" type="array">
+									<id>4125</id>
+									<table>tt_content</table>
+								</element>
+							</path>
+							<path index="sDEF/lDEF/field_leftcolumn/vDA/" type="array">
+								<element index="0" type="array">
+									<id>4131</id>
+									<table>tt_content</table>
+								</element>
+							</path>
+							<path index="sDEF/lDEF/field_rightcolumn/vDEF/" type="array">
+								<element index="0" type="array">
+									<id>4126</id>
+									<table>tt_content</table>
+								</element>
+							</path>
+							<path index="sDEF/lDEF/field_rightcolumn/vDA/" type="array">
+								<element index="0" type="array">
+									<id>4132</id>
+									<table>tt_content</table>
+								</element>
+							</path>
+							<path index="sDEF/lDA/field_leftcolumn/vDEF/" type="array">
+								<element index="0" type="array">
+									<id>4131</id>
+									<table>tt_content</table>
+								</element>
+							</path>
+							<path index="sDEF/lDA/field_rightcolumn/vDEF/" type="array">
+								<element index="0" type="array">
+									<id>4132</id>
+									<table>tt_content</table>
+								</element>
+							</path>
+						</db_relations>
+						<file_relations index="file" type="array">
+						</file_relations>
+						<softref_relations index="softrefs" type="array">
+						</softref_relations>
+					</flexform>
+				</field>
+			</related>
+		</tablerow>
+		<tablerow index="tt_content:4126" type="array">
+			<fieldlist index="data" type="array">
+				<field index="uid">4126</field>
+				<field index="pid">2014</field>
+				<field index="tstamp">1132153734</field>
+				<field index="hidden">0</field>
+				<field index="sorting">70</field>
+				<field index="CType">text</field>
+				<field index="header">*** t3unit templavoila testcase ***</field>
+				<field index="header_position"></field>
+				<field index="bodytext">2col nolang right</field>
+				<field index="image"></field>
+				<field index="imagewidth">0</field>
+				<field index="imageorient">8</field>
+				<field index="imagecaption"></field>
+				<field index="imagecols">0</field>
+				<field index="imageborder">0</field>
+				<field index="media"></field>
+				<field index="layout">0</field>
+				<field index="deleted">0</field>
+				<field index="cols">0</field>
+				<field index="records"></field>
+				<field index="pages"></field>
+				<field index="starttime">0</field>
+				<field index="endtime">0</field>
+				<field index="colPos">0</field>
+				<field index="subheader"></field>
+				<field index="spaceBefore">0</field>
+				<field index="spaceAfter">0</field>
+				<field index="fe_group"></field>
+				<field index="header_link"></field>
+				<field index="imagecaption_position"></field>
+				<field index="image_link"></field>
+				<field index="image_zoom">0</field>
+				<field index="image_noRows">0</field>
+				<field index="image_effects">0</field>
+				<field index="image_compression">0</field>
+				<field index="header_layout">0</field>
+				<field index="text_align"></field>
+				<field index="text_face">0</field>
+				<field index="text_size">0</field>
+				<field index="text_color">0</field>
+				<field index="text_properties">0</field>
+				<field index="menu_type">0</field>
+				<field index="list_type"></field>
+				<field index="table_border">0</field>
+				<field index="table_cellspacing">0</field>
+				<field index="table_cellpadding">0</field>
+				<field index="table_bgColor">0</field>
+				<field index="select_key"></field>
+				<field index="sectionIndex">1</field>
+				<field index="linkToTop">0</field>
+				<field index="filelink_size">0</field>
+				<field index="section_frame">0</field>
+				<field index="date">0</field>
+				<field index="splash_layout">0</field>
+				<field index="multimedia"></field>
+				<field index="image_frames">0</field>
+				<field index="recursive">0</field>
+				<field index="imageheight">0</field>
+				<field index="module_sys_dmail_category">0</field>
+				<field index="rte_enabled">0</field>
+				<field index="sys_language_uid">0</field>
+				<field index="tx_impexp_origuid">0</field>
+				<field index="pi_flexform"></field>
+				<field index="t3ver_oid">0</field>
+				<field index="t3ver_id">0</field>
+				<field index="t3ver_label"></field>
+				<field index="l18n_parent">0</field>
+				<field index="l18n_diffsource">a:23:{s:5:&quot;CType&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:6:&quot;colPos&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:13:&quot;section_frame&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:6:&quot;header&quot;;N;s:15:&quot;header_position&quot;;N;s:13:&quot;header_layout&quot;;N;s:11:&quot;header_link&quot;;N;s:4:&quot;date&quot;;N;s:8:&quot;bodytext&quot;;N;s:10:&quot;text_align&quot;;N;s:9:&quot;text_face&quot;;N;s:9:&quot;text_size&quot;;N;s:10:&quot;text_color&quot;;N;s:15:&quot;text_properties&quot;;N;s:6:&quot;hidden&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:8:&quot;fe_group&quot;;N;}</field>
+				<field index="t3ver_wsid">0</field>
+				<field index="t3ver_state">0</field>
+				<field index="t3ver_stage">0</field>
+				<field index="t3ver_count">0</field>
+				<field index="t3ver_tstamp">0</field>
+				<field index="t3_origuid">0</field>
+				<field index="tx_templavoila_ds"></field>
+				<field index="tx_templavoila_to">0</field>
+				<field index="tx_templavoila_flex"></field>
+				<field index="tx_templavoila_pito">0</field>
+			</fieldlist>
+			<related index="rels" type="array">
+			</related>
+		</tablerow>
+		<tablerow index="tt_content:4125" type="array">
+			<fieldlist index="data" type="array">
+				<field index="uid">4125</field>
+				<field index="pid">2014</field>
+				<field index="tstamp">1132153720</field>
+				<field index="hidden">0</field>
+				<field index="sorting">256</field>
+				<field index="CType">text</field>
+				<field index="header">*** t3unit templavoila testcase ***</field>
+				<field index="header_position"></field>
+				<field index="bodytext">2col nolang left</field>
+				<field index="image"></field>
+				<field index="imagewidth">0</field>
+				<field index="imageorient">8</field>
+				<field index="imagecaption"></field>
+				<field index="imagecols">0</field>
+				<field index="imageborder">0</field>
+				<field index="media"></field>
+				<field index="layout">0</field>
+				<field index="deleted">0</field>
+				<field index="cols">0</field>
+				<field index="records"></field>
+				<field index="pages"></field>
+				<field index="starttime">0</field>
+				<field index="endtime">0</field>
+				<field index="colPos">0</field>
+				<field index="subheader"></field>
+				<field index="spaceBefore">0</field>
+				<field index="spaceAfter">0</field>
+				<field index="fe_group"></field>
+				<field index="header_link"></field>
+				<field index="imagecaption_position"></field>
+				<field index="image_link"></field>
+				<field index="image_zoom">0</field>
+				<field index="image_noRows">0</field>
+				<field index="image_effects">0</field>
+				<field index="image_compression">0</field>
+				<field index="header_layout">0</field>
+				<field index="text_align"></field>
+				<field index="text_face">0</field>
+				<field index="text_size">0</field>
+				<field index="text_color">0</field>
+				<field index="text_properties">0</field>
+				<field index="menu_type">0</field>
+				<field index="list_type"></field>
+				<field index="table_border">0</field>
+				<field index="table_cellspacing">0</field>
+				<field index="table_cellpadding">0</field>
+				<field index="table_bgColor">0</field>
+				<field index="select_key"></field>
+				<field index="sectionIndex">1</field>
+				<field index="linkToTop">0</field>
+				<field index="filelink_size">0</field>
+				<field index="section_frame">0</field>
+				<field index="date">0</field>
+				<field index="splash_layout">0</field>
+				<field index="multimedia"></field>
+				<field index="image_frames">0</field>
+				<field index="recursive">0</field>
+				<field index="imageheight">0</field>
+				<field index="module_sys_dmail_category">0</field>
+				<field index="rte_enabled">0</field>
+				<field index="sys_language_uid">0</field>
+				<field index="tx_impexp_origuid">0</field>
+				<field index="pi_flexform"></field>
+				<field index="t3ver_oid">0</field>
+				<field index="t3ver_id">0</field>
+				<field index="t3ver_label"></field>
+				<field index="l18n_parent">0</field>
+				<field index="l18n_diffsource">a:23:{s:5:&quot;CType&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:6:&quot;colPos&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:13:&quot;section_frame&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:6:&quot;header&quot;;N;s:15:&quot;header_position&quot;;N;s:13:&quot;header_layout&quot;;N;s:11:&quot;header_link&quot;;N;s:4:&quot;date&quot;;N;s:8:&quot;bodytext&quot;;N;s:10:&quot;text_align&quot;;N;s:9:&quot;text_face&quot;;N;s:9:&quot;text_size&quot;;N;s:10:&quot;text_color&quot;;N;s:15:&quot;text_properties&quot;;N;s:6:&quot;hidden&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:8:&quot;fe_group&quot;;N;}</field>
+				<field index="t3ver_wsid">0</field>
+				<field index="t3ver_state">0</field>
+				<field index="t3ver_stage">0</field>
+				<field index="t3ver_count">0</field>
+				<field index="t3ver_tstamp">0</field>
+				<field index="t3_origuid">0</field>
+				<field index="tx_templavoila_ds"></field>
+				<field index="tx_templavoila_to">0</field>
+				<field index="tx_templavoila_flex"></field>
+				<field index="tx_templavoila_pito">0</field>
+			</fieldlist>
+			<related index="rels" type="array">
+			</related>
+		</tablerow>
+		<tablerow index="tt_content:4124" type="array">
+			<fieldlist index="data" type="array">
+				<field index="uid">4124</field>
+				<field index="pid">2014</field>
+				<field index="tstamp">1132153702</field>
+				<field index="hidden">0</field>
+				<field index="sorting">512</field>
+				<field index="CType">text</field>
+				<field index="header">*** t3unit templavoila testcase ***</field>
+				<field index="header_position"></field>
+				<field index="bodytext">2col structure right</field>
+				<field index="image"></field>
+				<field index="imagewidth">0</field>
+				<field index="imageorient">8</field>
+				<field index="imagecaption"></field>
+				<field index="imagecols">0</field>
+				<field index="imageborder">0</field>
+				<field index="media"></field>
+				<field index="layout">0</field>
+				<field index="deleted">0</field>
+				<field index="cols">0</field>
+				<field index="records"></field>
+				<field index="pages"></field>
+				<field index="starttime">0</field>
+				<field index="endtime">0</field>
+				<field index="colPos">0</field>
+				<field index="subheader"></field>
+				<field index="spaceBefore">0</field>
+				<field index="spaceAfter">0</field>
+				<field index="fe_group"></field>
+				<field index="header_link"></field>
+				<field index="imagecaption_position"></field>
+				<field index="image_link"></field>
+				<field index="image_zoom">0</field>
+				<field index="image_noRows">0</field>
+				<field index="image_effects">0</field>
+				<field index="image_compression">0</field>
+				<field index="header_layout">0</field>
+				<field index="text_align"></field>
+				<field index="text_face">0</field>
+				<field index="text_size">0</field>
+				<field index="text_color">0</field>
+				<field index="text_properties">0</field>
+				<field index="menu_type">0</field>
+				<field index="list_type"></field>
+				<field index="table_border">0</field>
+				<field index="table_cellspacing">0</field>
+				<field index="table_cellpadding">0</field>
+				<field index="table_bgColor">0</field>
+				<field index="select_key"></field>
+				<field index="sectionIndex">1</field>
+				<field index="linkToTop">0</field>
+				<field index="filelink_size">0</field>
+				<field index="section_frame">0</field>
+				<field index="date">0</field>
+				<field index="splash_layout">0</field>
+				<field index="multimedia"></field>
+				<field index="image_frames">0</field>
+				<field index="recursive">0</field>
+				<field index="imageheight">0</field>
+				<field index="module_sys_dmail_category">0</field>
+				<field index="rte_enabled">0</field>
+				<field index="sys_language_uid">0</field>
+				<field index="tx_impexp_origuid">0</field>
+				<field index="pi_flexform"></field>
+				<field index="t3ver_oid">0</field>
+				<field index="t3ver_id">0</field>
+				<field index="t3ver_label"></field>
+				<field index="l18n_parent">0</field>
+				<field index="l18n_diffsource">a:23:{s:5:&quot;CType&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:6:&quot;colPos&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:13:&quot;section_frame&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:6:&quot;header&quot;;N;s:15:&quot;header_position&quot;;N;s:13:&quot;header_layout&quot;;N;s:11:&quot;header_link&quot;;N;s:4:&quot;date&quot;;N;s:8:&quot;bodytext&quot;;N;s:10:&quot;text_align&quot;;N;s:9:&quot;text_face&quot;;N;s:9:&quot;text_size&quot;;N;s:10:&quot;text_color&quot;;N;s:15:&quot;text_properties&quot;;N;s:6:&quot;hidden&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:8:&quot;fe_group&quot;;N;}</field>
+				<field index="t3ver_wsid">0</field>
+				<field index="t3ver_state">0</field>
+				<field index="t3ver_stage">0</field>
+				<field index="t3ver_count">0</field>
+				<field index="t3ver_tstamp">0</field>
+				<field index="t3_origuid">0</field>
+				<field index="tx_templavoila_ds"></field>
+				<field index="tx_templavoila_to">0</field>
+				<field index="tx_templavoila_flex"></field>
+				<field index="tx_templavoila_pito">0</field>
+			</fieldlist>
+			<related index="rels" type="array">
+			</related>
+		</tablerow>
+		<tablerow index="tt_content:4123" type="array">
+			<fieldlist index="data" type="array">
+				<field index="uid">4123</field>
+				<field index="pid">2014</field>
+				<field index="tstamp">1132153686</field>
+				<field index="hidden">0</field>
+				<field index="sorting">768</field>
+				<field index="CType">text</field>
+				<field index="header">*** t3unit templavoila testcase ***</field>
+				<field index="header_position"></field>
+				<field index="bodytext">2col structure left</field>
+				<field index="image"></field>
+				<field index="imagewidth">0</field>
+				<field index="imageorient">8</field>
+				<field index="imagecaption"></field>
+				<field index="imagecols">0</field>
+				<field index="imageborder">0</field>
+				<field index="media"></field>
+				<field index="layout">0</field>
+				<field index="deleted">0</field>
+				<field index="cols">0</field>
+				<field index="records"></field>
+				<field index="pages"></field>
+				<field index="starttime">0</field>
+				<field index="endtime">0</field>
+				<field index="colPos">0</field>
+				<field index="subheader"></field>
+				<field index="spaceBefore">0</field>
+				<field index="spaceAfter">0</field>
+				<field index="fe_group"></field>
+				<field index="header_link"></field>
+				<field index="imagecaption_position"></field>
+				<field index="image_link"></field>
+				<field index="image_zoom">0</field>
+				<field index="image_noRows">0</field>
+				<field index="image_effects">0</field>
+				<field index="image_compression">0</field>
+				<field index="header_layout">0</field>
+				<field index="text_align"></field>
+				<field index="text_face">0</field>
+				<field index="text_size">0</field>
+				<field index="text_color">0</field>
+				<field index="text_properties">0</field>
+				<field index="menu_type">0</field>
+				<field index="list_type"></field>
+				<field index="table_border">0</field>
+				<field index="table_cellspacing">0</field>
+				<field index="table_cellpadding">0</field>
+				<field index="table_bgColor">0</field>
+				<field index="select_key"></field>
+				<field index="sectionIndex">1</field>
+				<field index="linkToTop">0</field>
+				<field index="filelink_size">0</field>
+				<field index="section_frame">0</field>
+				<field index="date">0</field>
+				<field index="splash_layout">0</field>
+				<field index="multimedia"></field>
+				<field index="image_frames">0</field>
+				<field index="recursive">0</field>
+				<field index="imageheight">0</field>
+				<field index="module_sys_dmail_category">0</field>
+				<field index="rte_enabled">0</field>
+				<field index="sys_language_uid">0</field>
+				<field index="tx_impexp_origuid">0</field>
+				<field index="pi_flexform"></field>
+				<field index="t3ver_oid">0</field>
+				<field index="t3ver_id">0</field>
+				<field index="t3ver_label"></field>
+				<field index="l18n_parent">0</field>
+				<field index="l18n_diffsource">a:23:{s:5:&quot;CType&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:6:&quot;colPos&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:13:&quot;section_frame&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:6:&quot;header&quot;;N;s:15:&quot;header_position&quot;;N;s:13:&quot;header_layout&quot;;N;s:11:&quot;header_link&quot;;N;s:4:&quot;date&quot;;N;s:8:&quot;bodytext&quot;;N;s:10:&quot;text_align&quot;;N;s:9:&quot;text_face&quot;;N;s:9:&quot;text_size&quot;;N;s:10:&quot;text_color&quot;;N;s:15:&quot;text_properties&quot;;N;s:6:&quot;hidden&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:8:&quot;fe_group&quot;;N;}</field>
+				<field index="t3ver_wsid">0</field>
+				<field index="t3ver_state">0</field>
+				<field index="t3ver_stage">0</field>
+				<field index="t3ver_count">0</field>
+				<field index="t3ver_tstamp">0</field>
+				<field index="t3_origuid">0</field>
+				<field index="tx_templavoila_ds"></field>
+				<field index="tx_templavoila_to">0</field>
+				<field index="tx_templavoila_flex"></field>
+				<field index="tx_templavoila_pito">0</field>
+			</fieldlist>
+			<related index="rels" type="array">
+			</related>
+		</tablerow>
+		<tablerow index="tt_content:4122" type="array">
+			<fieldlist index="data" type="array">
+				<field index="uid">4122</field>
+				<field index="pid">2014</field>
+				<field index="tstamp">1132153662</field>
+				<field index="hidden">0</field>
+				<field index="sorting">1024</field>
+				<field index="CType">text</field>
+				<field index="header">*** t3unit templavoila testcase ***</field>
+				<field index="header_position"></field>
+				<field index="bodytext">2col value right</field>
+				<field index="image"></field>
+				<field index="imagewidth">0</field>
+				<field index="imageorient">8</field>
+				<field index="imagecaption"></field>
+				<field index="imagecols">0</field>
+				<field index="imageborder">0</field>
+				<field index="media"></field>
+				<field index="layout">0</field>
+				<field index="deleted">0</field>
+				<field index="cols">0</field>
+				<field index="records"></field>
+				<field index="pages"></field>
+				<field index="starttime">0</field>
+				<field index="endtime">0</field>
+				<field index="colPos">0</field>
+				<field index="subheader"></field>
+				<field index="spaceBefore">0</field>
+				<field index="spaceAfter">0</field>
+				<field index="fe_group"></field>
+				<field index="header_link"></field>
+				<field index="imagecaption_position"></field>
+				<field index="image_link"></field>
+				<field index="image_zoom">0</field>
+				<field index="image_noRows">0</field>
+				<field index="image_effects">0</field>
+				<field index="image_compression">0</field>
+				<field index="header_layout">0</field>
+				<field index="text_align"></field>
+				<field index="text_face">0</field>
+				<field index="text_size">0</field>
+				<field index="text_color">0</field>
+				<field index="text_properties">0</field>
+				<field index="menu_type">0</field>
+				<field index="list_type"></field>
+				<field index="table_border">0</field>
+				<field index="table_cellspacing">0</field>
+				<field index="table_cellpadding">0</field>
+				<field index="table_bgColor">0</field>
+				<field index="select_key"></field>
+				<field index="sectionIndex">1</field>
+				<field index="linkToTop">0</field>
+				<field index="filelink_size">0</field>
+				<field index="section_frame">0</field>
+				<field index="date">0</field>
+				<field index="splash_layout">0</field>
+				<field index="multimedia"></field>
+				<field index="image_frames">0</field>
+				<field index="recursive">0</field>
+				<field index="imageheight">0</field>
+				<field index="module_sys_dmail_category">0</field>
+				<field index="rte_enabled">0</field>
+				<field index="sys_language_uid">0</field>
+				<field index="tx_impexp_origuid">0</field>
+				<field index="pi_flexform"></field>
+				<field index="t3ver_oid">0</field>
+				<field index="t3ver_id">0</field>
+				<field index="t3ver_label"></field>
+				<field index="l18n_parent">0</field>
+				<field index="l18n_diffsource">a:23:{s:5:&quot;CType&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:6:&quot;colPos&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:13:&quot;section_frame&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:6:&quot;header&quot;;N;s:15:&quot;header_position&quot;;N;s:13:&quot;header_layout&quot;;N;s:11:&quot;header_link&quot;;N;s:4:&quot;date&quot;;N;s:8:&quot;bodytext&quot;;N;s:10:&quot;text_align&quot;;N;s:9:&quot;text_face&quot;;N;s:9:&quot;text_size&quot;;N;s:10:&quot;text_color&quot;;N;s:15:&quot;text_properties&quot;;N;s:6:&quot;hidden&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:8:&quot;fe_group&quot;;N;}</field>
+				<field index="t3ver_wsid">0</field>
+				<field index="t3ver_state">0</field>
+				<field index="t3ver_stage">0</field>
+				<field index="t3ver_count">0</field>
+				<field index="t3ver_tstamp">0</field>
+				<field index="t3_origuid">0</field>
+				<field index="tx_templavoila_ds"></field>
+				<field index="tx_templavoila_to">0</field>
+				<field index="tx_templavoila_flex"></field>
+				<field index="tx_templavoila_pito">0</field>
+			</fieldlist>
+			<related index="rels" type="array">
+			</related>
+		</tablerow>
+		<tablerow index="tt_content:4121" type="array">
+			<fieldlist index="data" type="array">
+				<field index="uid">4121</field>
+				<field index="pid">2014</field>
+				<field index="tstamp">1132153646</field>
+				<field index="hidden">0</field>
+				<field index="sorting">1280</field>
+				<field index="CType">text</field>
+				<field index="header">*** t3unit templavoila testcase ***</field>
+				<field index="header_position"></field>
+				<field index="bodytext">2col value left</field>
+				<field index="image"></field>
+				<field index="imagewidth">0</field>
+				<field index="imageorient">8</field>
+				<field index="imagecaption"></field>
+				<field index="imagecols">0</field>
+				<field index="imageborder">0</field>
+				<field index="media"></field>
+				<field index="layout">0</field>
+				<field index="deleted">0</field>
+				<field index="cols">0</field>
+				<field index="records"></field>
+				<field index="pages"></field>
+				<field index="starttime">0</field>
+				<field index="endtime">0</field>
+				<field index="colPos">0</field>
+				<field index="subheader"></field>
+				<field index="spaceBefore">0</field>
+				<field index="spaceAfter">0</field>
+				<field index="fe_group"></field>
+				<field index="header_link"></field>
+				<field index="imagecaption_position"></field>
+				<field index="image_link"></field>
+				<field index="image_zoom">0</field>
+				<field index="image_noRows">0</field>
+				<field index="image_effects">0</field>
+				<field index="image_compression">0</field>
+				<field index="header_layout">0</field>
+				<field index="text_align"></field>
+				<field index="text_face">0</field>
+				<field index="text_size">0</field>
+				<field index="text_color">0</field>
+				<field index="text_properties">0</field>
+				<field index="menu_type">0</field>
+				<field index="list_type"></field>
+				<field index="table_border">0</field>
+				<field index="table_cellspacing">0</field>
+				<field index="table_cellpadding">0</field>
+				<field index="table_bgColor">0</field>
+				<field index="select_key"></field>
+				<field index="sectionIndex">1</field>
+				<field index="linkToTop">0</field>
+				<field index="filelink_size">0</field>
+				<field index="section_frame">0</field>
+				<field index="date">0</field>
+				<field index="splash_layout">0</field>
+				<field index="multimedia"></field>
+				<field index="image_frames">0</field>
+				<field index="recursive">0</field>
+				<field index="imageheight">0</field>
+				<field index="module_sys_dmail_category">0</field>
+				<field index="rte_enabled">0</field>
+				<field index="sys_language_uid">0</field>
+				<field index="tx_impexp_origuid">0</field>
+				<field index="pi_flexform"></field>
+				<field index="t3ver_oid">0</field>
+				<field index="t3ver_id">0</field>
+				<field index="t3ver_label"></field>
+				<field index="l18n_parent">0</field>
+				<field index="l18n_diffsource">a:23:{s:5:&quot;CType&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:6:&quot;colPos&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:13:&quot;section_frame&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:6:&quot;header&quot;;N;s:15:&quot;header_position&quot;;N;s:13:&quot;header_layout&quot;;N;s:11:&quot;header_link&quot;;N;s:4:&quot;date&quot;;N;s:8:&quot;bodytext&quot;;N;s:10:&quot;text_align&quot;;N;s:9:&quot;text_face&quot;;N;s:9:&quot;text_size&quot;;N;s:10:&quot;text_color&quot;;N;s:15:&quot;text_properties&quot;;N;s:6:&quot;hidden&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:8:&quot;fe_group&quot;;N;}</field>
+				<field index="t3ver_wsid">0</field>
+				<field index="t3ver_state">0</field>
+				<field index="t3ver_stage">0</field>
+				<field index="t3ver_count">0</field>
+				<field index="t3ver_tstamp">0</field>
+				<field index="t3_origuid">0</field>
+				<field index="tx_templavoila_ds"></field>
+				<field index="tx_templavoila_to">0</field>
+				<field index="tx_templavoila_flex"></field>
+				<field index="tx_templavoila_pito">0</field>
+			</fieldlist>
+			<related index="rels" type="array">
+			</related>
+		</tablerow>
+		<tablerow index="pages_language_overlay:6" type="array">
+			<fieldlist index="data" type="array">
+				<field index="uid">6</field>
+				<field index="pid">2014</field>
+				<field index="tstamp">1132153093</field>
+				<field index="crdate">1132153093</field>
+				<field index="cruser_id">1</field>
+				<field index="sys_language_uid">3</field>
+				<field index="title">*** t3unit templavoila testcase page ***</field>
+				<field index="hidden">0</field>
+				<field index="starttime">0</field>
+				<field index="endtime">0</field>
+				<field index="subtitle">german version</field>
+				<field index="media"></field>
+				<field index="keywords"></field>
+				<field index="description"></field>
+				<field index="abstract"></field>
+				<field index="author"></field>
+				<field index="author_email"></field>
+				<field index="tx_impexp_origuid">0</field>
+				<field index="nav_title"></field>
+				<field index="t3ver_oid">0</field>
+				<field index="t3ver_id">0</field>
+				<field index="t3ver_label"></field>
+				<field index="l18n_diffsource">a:13:{s:6:&quot;hidden&quot;;N;s:5:&quot;title&quot;;N;s:8:&quot;subtitle&quot;;N;s:9:&quot;nav_title&quot;;N;s:8:&quot;abstract&quot;;N;s:6:&quot;author&quot;;N;s:12:&quot;author_email&quot;;N;s:8:&quot;keywords&quot;;N;s:11:&quot;description&quot;;N;s:5:&quot;media&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:16:&quot;sys_language_uid&quot;;N;}</field>
+				<field index="t3ver_wsid">0</field>
+				<field index="t3ver_state">0</field>
+				<field index="t3ver_stage">0</field>
+				<field index="t3ver_count">0</field>
+				<field index="t3ver_tstamp">0</field>
+				<field index="t3_origuid">0</field>
+			</fieldlist>
+			<related index="rels" type="array">
+				<field index="sys_language_uid" type="array">
+					<type>db</type>
+					<relations index="itemArray" type="array">
+						<element index="0" type="array">
+							<id>3</id>
+							<table>sys_language</table>
+						</element>
+					</relations>
+				</field>
+			</related>
+		</tablerow>
+		<tablerow index="pages_language_overlay:7" type="array">
+			<fieldlist index="data" type="array">
+				<field index="uid">7</field>
+				<field index="pid">2014</field>
+				<field index="tstamp">1132154661</field>
+				<field index="crdate">1132153978</field>
+				<field index="cruser_id">1</field>
+				<field index="sys_language_uid">1</field>
+				<field index="title">*** t3unit templavoila testcase page ***</field>
+				<field index="hidden">0</field>
+				<field index="starttime">0</field>
+				<field index="endtime">0</field>
+				<field index="subtitle">danish</field>
+				<field index="media"></field>
+				<field index="keywords"></field>
+				<field index="description"></field>
+				<field index="abstract"></field>
+				<field index="author"></field>
+				<field index="author_email"></field>
+				<field index="tx_impexp_origuid">0</field>
+				<field index="nav_title"></field>
+				<field index="t3ver_oid">0</field>
+				<field index="t3ver_id">0</field>
+				<field index="t3ver_label"></field>
+				<field index="l18n_diffsource">a:13:{s:6:&quot;hidden&quot;;s:1:&quot;0&quot;;s:5:&quot;title&quot;;s:40:&quot;*** t3unit templavoila testcase page ***&quot;;s:8:&quot;subtitle&quot;;s:0:&quot;&quot;;s:9:&quot;nav_title&quot;;s:0:&quot;&quot;;s:8:&quot;abstract&quot;;s:0:&quot;&quot;;s:6:&quot;author&quot;;s:0:&quot;&quot;;s:12:&quot;author_email&quot;;s:0:&quot;&quot;;s:8:&quot;keywords&quot;;s:0:&quot;&quot;;s:11:&quot;description&quot;;s:0:&quot;&quot;;s:5:&quot;media&quot;;s:0:&quot;&quot;;s:9:&quot;starttime&quot;;s:1:&quot;0&quot;;s:7:&quot;endtime&quot;;s:1:&quot;0&quot;;s:16:&quot;sys_language_uid&quot;;N;}</field>
+				<field index="t3ver_wsid">0</field>
+				<field index="t3ver_state">0</field>
+				<field index="t3ver_stage">0</field>
+				<field index="t3ver_count">0</field>
+				<field index="t3ver_tstamp">0</field>
+				<field index="t3_origuid">0</field>
+			</fieldlist>
+			<related index="rels" type="array">
+				<field index="sys_language_uid" type="array">
+					<type>db</type>
+					<relations index="itemArray" type="array">
+						<element index="0" type="array">
+							<id>1</id>
+							<table>sys_language</table>
+						</element>
+					</relations>
+				</field>
+			</related>
+		</tablerow>
+		<tablerow index="tx_templavoila_tmplobj:1123" type="array">
+			<fieldlist index="data" type="array">
+				<field index="uid">1123</field>
+				<field index="pid">2014</field>
+				<field index="t3ver_oid">0</field>
+				<field index="t3ver_id">0</field>
+				<field index="t3ver_wsid">0</field>
+				<field index="t3ver_label"></field>
+				<field index="t3ver_state">0</field>
+				<field index="t3ver_count">0</field>
+				<field index="t3ver_tstamp">0</field>
+				<field index="t3_origuid">0</field>
+				<field index="tstamp">1132152978</field>
+				<field index="crdate">1132152978</field>
+				<field index="cruser_id">1</field>
+				<field index="fileref_mtime">1131574201</field>
+				<field index="deleted">0</field>
+				<field index="sorting">0</field>
+				<field index="title">*** t3unit templavoila testcase page template to ***</field>
+				<field index="datastructure">1130</field>
+				<field index="fileref">typo3/ext/templavoila/tests/fixtures/page_template.html</field>
+				<field index="templatemapping">a:2:{s:11:&quot;MappingInfo&quot;;a:1:{s:4:&quot;ROOT&quot;;a:2:{s:6:&quot;MAP_EL&quot;;s:13:&quot;body[1]/INNER&quot;;s:2:&quot;el&quot;;a:2:{s:13:&quot;field_content&quot;;a:1:{s:6:&quot;MAP_EL&quot;;s:17:&quot;div#content/INNER&quot;;}s:10:&quot;field_menu&quot;;a:1:{s:6:&quot;MAP_EL&quot;;s:26:&quot;table[1] tr[1] td[2]/INNER&quot;;}}}}s:18:&quot;MappingData_cached&quot;;a:2:{s:6:&quot;cArray&quot;;a:5:{i:0;s:33:&quot;
+		Some text
+		&lt;div id=&quot;content&quot;&gt;&quot;;s:13:&quot;field_content&quot;;s:41:&quot;
+			This will be the main content area
+		&quot;;i:2;s:74:&quot;&lt;/div&gt;
+		Lorem
+		&lt;table&gt;
+		    &lt;tr&gt;
+			&lt;td&gt;
+			    &amp;nbsp;
+			&lt;/td&gt;
+			&lt;td&gt;&quot;;s:10:&quot;field_menu&quot;;s:28:&quot;
+			    This is the menu
+			&quot;;i:4;s:49:&quot;&lt;/td&gt;
+		    &lt;/tr&gt;
+		&lt;/table&gt;
+		Some footer text
+	&quot;;}s:3:&quot;sub&quot;;a:0:{}}}</field>
+				<field index="previewicon"></field>
+				<field index="description">generated by T3Unit testcase</field>
+				<field index="rendertype"></field>
+				<field index="sys_language_uid">0</field>
+				<field index="parent">0</field>
+				<field index="rendertype_ref">0</field>
+				<field index="localprocessing"></field>
+				<field index="t3ver_stage">0</field>
+			</fieldlist>
+			<related index="rels" type="array">
+				<field index="datastructure" type="array">
+					<type>db</type>
+					<relations index="itemArray" type="array">
+						<element index="0" type="array">
+							<id>1130</id>
+							<table>tx_templavoila_datastructure</table>
+						</element>
+					</relations>
+				</field>
+				<field index="fileref" type="array">
+					<softrefs type="array">
+						<keys type="array">
+							<softref_key index="typolink" type="array">
+								<softref_element index="c73d221c78035abb25e357c4deeea2bf:0" type="array">
+									<matchString>typo3/ext/templavoila/tests/fixtures/page_template.html</matchString>
+								</softref_element>
+							</softref_key>
+						</keys>
+					</softrefs>
+				</field>
+			</related>
+		</tablerow>
+		<tablerow index="tx_templavoila_datastructure:1133" type="array">
+			<fieldlist index="data" type="array">
+				<field index="uid">1133</field>
+				<field index="pid">2014</field>
+				<field index="tstamp">1132153450</field>
+				<field index="crdate">1132153430</field>
+				<field index="cruser_id">1</field>
+				<field index="deleted">0</field>
+				<field index="sorting">64</field>
+				<field index="title">*** t3unit templavoila testcase *** 2col, value</field>
+				<field index="dataprot">&lt;?xml version=&quot;1.0&quot; encoding=&quot;iso-8859-1&quot; standalone=&quot;yes&quot; ?&gt;
+&lt;T3DataStructure&gt;
+    &lt;meta type=&quot;array&quot;&gt;
+        &lt;langChildren type=&quot;integer&quot;&gt;1&lt;/langChildren&gt;
+        &lt;langDisable type=&quot;integer&quot;&gt;0&lt;/langDisable&gt;
+    &lt;/meta&gt;
+    &lt;ROOT type=&quot;array&quot;&gt;
+        &lt;tx_templavoila type=&quot;array&quot;&gt;
+            &lt;title&gt;ROOT&lt;/title&gt;
+            &lt;description&gt;Select the HTML element on the page which you want to be the overall container element for the template.&lt;/description&gt;
+        &lt;/tx_templavoila&gt;
+        &lt;type&gt;array&lt;/type&gt;
+        &lt;el type=&quot;array&quot;&gt;
+            &lt;field_leftcolumn type=&quot;array&quot;&gt;
+                &lt;tx_templavoila type=&quot;array&quot;&gt;
+                    &lt;title&gt;Left column&lt;/title&gt;
+                    &lt;sample_data type=&quot;array&quot;&gt;
+                        &lt;numIndex index=&quot;0&quot;&gt;Left col&lt;/numIndex&gt;
+                    &lt;/sample_data&gt;
+                    &lt;eType&gt;ce&lt;/eType&gt;
+                    &lt;TypoScript&gt;
+	10= RECORDS
+	10.source.current=1
+	10.tables = tt_content
+	10.wrap = &amp;lt;!--TYPO3SEARCH_begin--&amp;gt; | &amp;lt;!--TYPO3SEARCH_end--&amp;gt;
+							&lt;/TypoScript&gt;
+                &lt;/tx_templavoila&gt;
+                &lt;TCEforms type=&quot;array&quot;&gt;
+                    &lt;config type=&quot;array&quot;&gt;
+                        &lt;type&gt;group&lt;/type&gt;
+                        &lt;internal_type&gt;db&lt;/internal_type&gt;
+                        &lt;allowed&gt;tt_content&lt;/allowed&gt;
+                        &lt;size&gt;5&lt;/size&gt;
+                        &lt;maxitems&gt;200&lt;/maxitems&gt;
+                        &lt;minitems&gt;0&lt;/minitems&gt;
+                        &lt;multiple&gt;1&lt;/multiple&gt;
+                        &lt;show_thumbs&gt;1&lt;/show_thumbs&gt;
+                    &lt;/config&gt;
+                    &lt;label&gt;Left column&lt;/label&gt;
+                &lt;/TCEforms&gt;
+            &lt;/field_leftcolumn&gt;
+            &lt;field_rightcolumn type=&quot;array&quot;&gt;
+                &lt;tx_templavoila type=&quot;array&quot;&gt;
+                    &lt;title&gt;Right column&lt;/title&gt;
+                    &lt;sample_data type=&quot;array&quot;&gt;
+                        &lt;numIndex index=&quot;0&quot;&gt;The right column&lt;/numIndex&gt;
+                    &lt;/sample_data&gt;
+                    &lt;eType&gt;ce&lt;/eType&gt;
+                    &lt;TypoScript&gt;
+	10= RECORDS
+	10.source.current=1
+	10.tables = tt_content
+	10.wrap = &amp;lt;!--TYPO3SEARCH_begin--&amp;gt; | &amp;lt;!--TYPO3SEARCH_end--&amp;gt;
+							&lt;/TypoScript&gt;
+                &lt;/tx_templavoila&gt;
+                &lt;TCEforms type=&quot;array&quot;&gt;
+                    &lt;config type=&quot;array&quot;&gt;
+                        &lt;type&gt;group&lt;/type&gt;
+                        &lt;internal_type&gt;db&lt;/internal_type&gt;
+                        &lt;allowed&gt;tt_content&lt;/allowed&gt;
+                        &lt;size&gt;5&lt;/size&gt;
+                        &lt;maxitems&gt;200&lt;/maxitems&gt;
+                        &lt;minitems&gt;0&lt;/minitems&gt;
+                        &lt;multiple&gt;1&lt;/multiple&gt;
+                        &lt;show_thumbs&gt;1&lt;/show_thumbs&gt;
+                    &lt;/config&gt;
+                    &lt;label&gt;Right column&lt;/label&gt;
+                &lt;/TCEforms&gt;
+            &lt;/field_rightcolumn&gt;
+        &lt;/el&gt;
+    &lt;/ROOT&gt;
+&lt;/T3DataStructure&gt;</field>
+				<field index="scope">2</field>
+				<field index="previewicon"></field>
+				<field index="t3ver_oid">0</field>
+				<field index="t3ver_id">0</field>
+				<field index="t3ver_wsid">0</field>
+				<field index="t3ver_label"></field>
+				<field index="t3ver_state">0</field>
+				<field index="t3ver_stage">0</field>
+				<field index="t3ver_count">0</field>
+				<field index="t3ver_tstamp">0</field>
+				<field index="t3_origuid">1131</field>
+			</fieldlist>
+			<related index="rels" type="array">
+			</related>
+		</tablerow>
+		<tablerow index="tx_templavoila_datastructure:1132" type="array">
+			<fieldlist index="data" type="array">
+				<field index="uid">1132</field>
+				<field index="pid">2014</field>
+				<field index="tstamp">1132153426</field>
+				<field index="crdate">1132153389</field>
+				<field index="cruser_id">1</field>
+				<field index="deleted">0</field>
+				<field index="sorting">128</field>
+				<field index="title">*** t3unit templavoila testcase *** 2col, structure</field>
+				<field index="dataprot">&lt;?xml version=&quot;1.0&quot; encoding=&quot;iso-8859-1&quot; standalone=&quot;yes&quot; ?&gt;
+&lt;T3DataStructure&gt;
+    &lt;meta type=&quot;array&quot;&gt;
+        &lt;langChildren type=&quot;integer&quot;&gt;0&lt;/langChildren&gt;
+        &lt;langDisable type=&quot;integer&quot;&gt;0&lt;/langDisable&gt;
+    &lt;/meta&gt;
+    &lt;ROOT type=&quot;array&quot;&gt;
+        &lt;tx_templavoila type=&quot;array&quot;&gt;
+            &lt;title&gt;ROOT&lt;/title&gt;
+            &lt;description&gt;Select the HTML element on the page which you want to be the overall container element for the template.&lt;/description&gt;
+        &lt;/tx_templavoila&gt;
+        &lt;type&gt;array&lt;/type&gt;
+        &lt;el type=&quot;array&quot;&gt;
+            &lt;field_leftcolumn type=&quot;array&quot;&gt;
+                &lt;tx_templavoila type=&quot;array&quot;&gt;
+                    &lt;title&gt;Left column&lt;/title&gt;
+                    &lt;sample_data type=&quot;array&quot;&gt;
+                        &lt;numIndex index=&quot;0&quot;&gt;Left col&lt;/numIndex&gt;
+                    &lt;/sample_data&gt;
+                    &lt;eType&gt;ce&lt;/eType&gt;
+                    &lt;TypoScript&gt;
+	10= RECORDS
+	10.source.current=1
+	10.tables = tt_content
+	10.wrap = &amp;lt;!--TYPO3SEARCH_begin--&amp;gt; | &amp;lt;!--TYPO3SEARCH_end--&amp;gt;
+							&lt;/TypoScript&gt;
+                &lt;/tx_templavoila&gt;
+                &lt;TCEforms type=&quot;array&quot;&gt;
+                    &lt;config type=&quot;array&quot;&gt;
+                        &lt;type&gt;group&lt;/type&gt;
+                        &lt;internal_type&gt;db&lt;/internal_type&gt;
+                        &lt;allowed&gt;tt_content&lt;/allowed&gt;
+                        &lt;size&gt;5&lt;/size&gt;
+                        &lt;maxitems&gt;200&lt;/maxitems&gt;
+                        &lt;minitems&gt;0&lt;/minitems&gt;
+                        &lt;multiple&gt;1&lt;/multiple&gt;
+                        &lt;show_thumbs&gt;1&lt;/show_thumbs&gt;
+                    &lt;/config&gt;
+                    &lt;label&gt;Left column&lt;/label&gt;
+                &lt;/TCEforms&gt;
+            &lt;/field_leftcolumn&gt;
+            &lt;field_rightcolumn type=&quot;array&quot;&gt;
+                &lt;tx_templavoila type=&quot;array&quot;&gt;
+                    &lt;title&gt;Right column&lt;/title&gt;
+                    &lt;sample_data type=&quot;array&quot;&gt;
+                        &lt;numIndex index=&quot;0&quot;&gt;The right column&lt;/numIndex&gt;
+                    &lt;/sample_data&gt;
+                    &lt;eType&gt;ce&lt;/eType&gt;
+                    &lt;TypoScript&gt;
+	10= RECORDS
+	10.source.current=1
+	10.tables = tt_content
+	10.wrap = &amp;lt;!--TYPO3SEARCH_begin--&amp;gt; | &amp;lt;!--TYPO3SEARCH_end--&amp;gt;
+							&lt;/TypoScript&gt;
+                &lt;/tx_templavoila&gt;
+                &lt;TCEforms type=&quot;array&quot;&gt;
+                    &lt;config type=&quot;array&quot;&gt;
+                        &lt;type&gt;group&lt;/type&gt;
+                        &lt;internal_type&gt;db&lt;/internal_type&gt;
+                        &lt;allowed&gt;tt_content&lt;/allowed&gt;
+                        &lt;size&gt;5&lt;/size&gt;
+                        &lt;maxitems&gt;200&lt;/maxitems&gt;
+                        &lt;minitems&gt;0&lt;/minitems&gt;
+                        &lt;multiple&gt;1&lt;/multiple&gt;
+                        &lt;show_thumbs&gt;1&lt;/show_thumbs&gt;
+                    &lt;/config&gt;
+                    &lt;label&gt;Right column&lt;/label&gt;
+                &lt;/TCEforms&gt;
+            &lt;/field_rightcolumn&gt;
+        &lt;/el&gt;
+    &lt;/ROOT&gt;
+&lt;/T3DataStructure&gt;</field>
+				<field index="scope">2</field>
+				<field index="previewicon"></field>
+				<field index="t3ver_oid">0</field>
+				<field index="t3ver_id">0</field>
+				<field index="t3ver_wsid">0</field>
+				<field index="t3ver_label"></field>
+				<field index="t3ver_state">0</field>
+				<field index="t3ver_stage">0</field>
+				<field index="t3ver_count">0</field>
+				<field index="t3ver_tstamp">0</field>
+				<field index="t3_origuid">1131</field>
+			</fieldlist>
+			<related index="rels" type="array">
+			</related>
+		</tablerow>
+		<tablerow index="tx_templavoila_datastructure:1131" type="array">
+			<fieldlist index="data" type="array">
+				<field index="uid">1131</field>
+				<field index="pid">2014</field>
+				<field index="tstamp">1132154504</field>
+				<field index="crdate">1132153234</field>
+				<field index="cruser_id">1</field>
+				<field index="deleted">0</field>
+				<field index="sorting">256</field>
+				<field index="title">*** t3unit templavoila testcase *** 2col, nolang</field>
+				<field index="dataprot">&lt;?xml version=&quot;1.0&quot; encoding=&quot;iso-8859-1&quot; standalone=&quot;yes&quot; ?&gt;
+&lt;T3DataStructure&gt;
+    &lt;meta type=&quot;array&quot;&gt;
+        &lt;langChildren type=&quot;integer&quot;&gt;1&lt;/langChildren&gt;
+        &lt;langDisable type=&quot;integer&quot;&gt;1&lt;/langDisable&gt;
+    &lt;/meta&gt;
+    &lt;ROOT type=&quot;array&quot;&gt;
+        &lt;tx_templavoila type=&quot;array&quot;&gt;
+            &lt;title&gt;ROOT&lt;/title&gt;
+            &lt;description&gt;Select the HTML element on the page which you want to be the overall container element for the template.&lt;/description&gt;
+        &lt;/tx_templavoila&gt;
+        &lt;type&gt;array&lt;/type&gt;
+        &lt;el type=&quot;array&quot;&gt;
+            &lt;field_leftcolumn type=&quot;array&quot;&gt;
+                &lt;tx_templavoila type=&quot;array&quot;&gt;
+                    &lt;title&gt;Left column&lt;/title&gt;
+                    &lt;sample_data type=&quot;array&quot;&gt;
+                        &lt;numIndex index=&quot;0&quot;&gt;Left col&lt;/numIndex&gt;
+                    &lt;/sample_data&gt;
+                    &lt;eType&gt;ce&lt;/eType&gt;
+                    &lt;TypoScript&gt;
+	10= RECORDS
+	10.source.current=1
+	10.tables = tt_content
+	10.wrap = &amp;lt;!--TYPO3SEARCH_begin--&amp;gt; | &amp;lt;!--TYPO3SEARCH_end--&amp;gt;
+							&lt;/TypoScript&gt;
+                &lt;/tx_templavoila&gt;
+                &lt;TCEforms type=&quot;array&quot;&gt;
+                    &lt;config type=&quot;array&quot;&gt;
+                        &lt;type&gt;group&lt;/type&gt;
+                        &lt;internal_type&gt;db&lt;/internal_type&gt;
+                        &lt;allowed&gt;tt_content&lt;/allowed&gt;
+                        &lt;size&gt;5&lt;/size&gt;
+                        &lt;maxitems&gt;200&lt;/maxitems&gt;
+                        &lt;minitems&gt;0&lt;/minitems&gt;
+                        &lt;multiple&gt;1&lt;/multiple&gt;
+                        &lt;show_thumbs&gt;1&lt;/show_thumbs&gt;
+                    &lt;/config&gt;
+                    &lt;label&gt;Left column&lt;/label&gt;
+                &lt;/TCEforms&gt;
+            &lt;/field_leftcolumn&gt;
+            &lt;field_rightcolumn type=&quot;array&quot;&gt;
+                &lt;tx_templavoila type=&quot;array&quot;&gt;
+                    &lt;title&gt;Right column&lt;/title&gt;
+                    &lt;sample_data type=&quot;array&quot;&gt;
+                        &lt;numIndex index=&quot;0&quot;&gt;The right column&lt;/numIndex&gt;
+                    &lt;/sample_data&gt;
+                    &lt;eType&gt;ce&lt;/eType&gt;
+                    &lt;TypoScript&gt;
+	10= RECORDS
+	10.source.current=1
+	10.tables = tt_content
+	10.wrap = &amp;lt;!--TYPO3SEARCH_begin--&amp;gt; | &amp;lt;!--TYPO3SEARCH_end--&amp;gt;
+							&lt;/TypoScript&gt;
+                &lt;/tx_templavoila&gt;
+                &lt;TCEforms type=&quot;array&quot;&gt;
+                    &lt;config type=&quot;array&quot;&gt;
+                        &lt;type&gt;group&lt;/type&gt;
+                        &lt;internal_type&gt;db&lt;/internal_type&gt;
+                        &lt;allowed&gt;tt_content&lt;/allowed&gt;
+                        &lt;size&gt;5&lt;/size&gt;
+                        &lt;maxitems&gt;200&lt;/maxitems&gt;
+                        &lt;minitems&gt;0&lt;/minitems&gt;
+                        &lt;multiple&gt;1&lt;/multiple&gt;
+                        &lt;show_thumbs&gt;1&lt;/show_thumbs&gt;
+                    &lt;/config&gt;
+                    &lt;label&gt;Right column&lt;/label&gt;
+                &lt;/TCEforms&gt;
+            &lt;/field_rightcolumn&gt;
+        &lt;/el&gt;
+    &lt;/ROOT&gt;
+&lt;/T3DataStructure&gt;</field>
+				<field index="scope">2</field>
+				<field index="previewicon"></field>
+				<field index="t3ver_oid">0</field>
+				<field index="t3ver_id">0</field>
+				<field index="t3ver_wsid">0</field>
+				<field index="t3ver_label"></field>
+				<field index="t3ver_state">0</field>
+				<field index="t3ver_stage">0</field>
+				<field index="t3ver_count">0</field>
+				<field index="t3ver_tstamp">0</field>
+				<field index="t3_origuid">1081</field>
+			</fieldlist>
+			<related index="rels" type="array">
+			</related>
+		</tablerow>
+		<tablerow index="tx_templavoila_datastructure:1130" type="array">
+			<fieldlist index="data" type="array">
+				<field index="uid">1130</field>
+				<field index="pid">2014</field>
+				<field index="tstamp">1132152978</field>
+				<field index="crdate">1132152978</field>
+				<field index="cruser_id">1</field>
+				<field index="deleted">0</field>
+				<field index="sorting">512</field>
+				<field index="title">*** t3unit templavoila testcase page template ds ***</field>
+				<field index="dataprot">&lt;?xml version=&quot;1.0&quot; encoding=&quot;iso-8859-1&quot; standalone=&quot;yes&quot; ?&gt;
+&lt;T3DataStructure&gt;
+    &lt;meta type=&quot;array&quot;&gt;
+        &lt;langChildren type=&quot;integer&quot;&gt;1&lt;/langChildren&gt;
+        &lt;langDisable type=&quot;integer&quot;&gt;1&lt;/langDisable&gt;
+    &lt;/meta&gt;
+    &lt;ROOT type=&quot;array&quot;&gt;
+        &lt;tx_templavoila type=&quot;array&quot;&gt;
+            &lt;title&gt;ROOT&lt;/title&gt;
+            &lt;description&gt;Select the HTML element on the page which you want to be the overall container element for the template.&lt;/description&gt;
+        &lt;/tx_templavoila&gt;
+        &lt;type&gt;array&lt;/type&gt;
+        &lt;el type=&quot;array&quot;&gt;
+            &lt;field_content type=&quot;array&quot;&gt;
+                &lt;tx_templavoila type=&quot;array&quot;&gt;
+                    &lt;title&gt;Content&lt;/title&gt;
+                    &lt;sample_data type=&quot;array&quot;&gt;
+                        &lt;numIndex index=&quot;0&quot;&gt;This is the main content&lt;/numIndex&gt;
+                    &lt;/sample_data&gt;
+                    &lt;eType&gt;ce&lt;/eType&gt;
+                    &lt;oldStyleColumnNumber&gt;0&lt;/oldStyleColumnNumber&gt;
+                    &lt;TypoScript&gt;
+	10= RECORDS
+	10.source.current=1
+	10.tables = tt_content
+	10.wrap = &amp;lt;!--TYPO3SEARCH_begin--&amp;gt; | &amp;lt;!--TYPO3SEARCH_end--&amp;gt;
+							&lt;/TypoScript&gt;
+                &lt;/tx_templavoila&gt;
+                &lt;TCEforms type=&quot;array&quot;&gt;
+                    &lt;config type=&quot;array&quot;&gt;
+                        &lt;type&gt;group&lt;/type&gt;
+                        &lt;internal_type&gt;db&lt;/internal_type&gt;
+                        &lt;allowed&gt;tt_content&lt;/allowed&gt;
+                        &lt;size&gt;5&lt;/size&gt;
+                        &lt;maxitems&gt;200&lt;/maxitems&gt;
+                        &lt;minitems&gt;0&lt;/minitems&gt;
+                        &lt;multiple&gt;1&lt;/multiple&gt;
+                        &lt;show_thumbs&gt;1&lt;/show_thumbs&gt;
+                    &lt;/config&gt;
+                    &lt;label&gt;Content&lt;/label&gt;
+                &lt;/TCEforms&gt;
+            &lt;/field_content&gt;
+            &lt;field_menu type=&quot;array&quot;&gt;
+                &lt;tx_templavoila type=&quot;array&quot;&gt;
+                    &lt;title&gt;Menu&lt;/title&gt;
+                    &lt;sample_data type=&quot;array&quot;&gt;
+                        &lt;numIndex index=&quot;0&quot;&gt;Some menu&lt;/numIndex&gt;
+                    &lt;/sample_data&gt;
+                    &lt;eType&gt;TypoScriptObject&lt;/eType&gt;
+                    &lt;eType_EXTRA type=&quot;array&quot;&gt;
+                        &lt;objPath&gt;lib.templavoila.t3unittestcase.menu&lt;/objPath&gt;
+                    &lt;/eType_EXTRA&gt;
+                    &lt;TypoScriptObjPath&gt;lib.templavoila.t3unittestcase.menu&lt;/TypoScriptObjPath&gt;
+                &lt;/tx_templavoila&gt;
+            &lt;/field_menu&gt;
+        &lt;/el&gt;
+    &lt;/ROOT&gt;
+&lt;/T3DataStructure&gt;</field>
+				<field index="scope">1</field>
+				<field index="previewicon"></field>
+				<field index="t3ver_oid">0</field>
+				<field index="t3ver_id">0</field>
+				<field index="t3ver_wsid">0</field>
+				<field index="t3ver_label"></field>
+				<field index="t3ver_state">0</field>
+				<field index="t3ver_stage">0</field>
+				<field index="t3ver_count">0</field>
+				<field index="t3ver_tstamp">0</field>
+				<field index="t3_origuid">0</field>
+			</fieldlist>
+			<related index="rels" type="array">
+			</related>
+		</tablerow>
+		<tablerow index="sys_language:1" type="array">
+			<fieldlist index="data" type="array">
+				<field index="uid">1</field>
+				<field index="pid">0</field>
+				<field index="tstamp">1008290521</field>
+				<field index="hidden">0</field>
+				<field index="title">Danish</field>
+				<field index="static_lang_isocode">0</field>
+				<field index="flag"></field>
+			</fieldlist>
+			<related index="rels" type="array">
+			</related>
+		</tablerow>
+		<tablerow index="sys_language:3" type="array">
+			<fieldlist index="data" type="array">
+				<field index="uid">3</field>
+				<field index="pid">0</field>
+				<field index="tstamp">1130943715</field>
+				<field index="hidden">0</field>
+				<field index="title">German</field>
+				<field index="static_lang_isocode">43</field>
+				<field index="flag">de.gif</field>
+			</fieldlist>
+			<related index="rels" type="array">
+			</related>
+		</tablerow>
+	</records>
+</T3RecordDocument>

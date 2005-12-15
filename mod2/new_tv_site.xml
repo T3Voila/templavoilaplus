@@ -2308,7 +2308,7 @@ page.10.userFunc = tx_templavoila_pi1-&gt;main_page
                         &lt;numIndex index=&quot;0&quot;&gt;[Menu goes here]&lt;/numIndex&gt;
                     &lt;/sample_data&gt;
                     &lt;eType&gt;TypoScriptObject&lt;/eType&gt;
-                    &lt;tags&gt;table:inner,div,tr,td&lt;/tags&gt;
+                    &lt;tags&gt;table:inner,ul,div,tr,td&lt;/tags&gt;
                     &lt;eType_EXTRA type=&quot;array&quot;&gt;
                         &lt;objPath&gt;lib.mainMenu&lt;/objPath&gt;
                     &lt;/eType_EXTRA&gt;
@@ -2323,7 +2323,7 @@ page.10.userFunc = tx_templavoila_pi1-&gt;main_page
                         &lt;numIndex index=&quot;0&quot;&gt;[Menu goes here]&lt;/numIndex&gt;
                     &lt;/sample_data&gt;
                     &lt;eType&gt;TypoScriptObject&lt;/eType&gt;
-                    &lt;tags&gt;table:inner,div,tr,td&lt;/tags&gt;
+                    &lt;tags&gt;table:inner,ul,div,tr,td&lt;/tags&gt;
                     &lt;eType_EXTRA type=&quot;array&quot;&gt;
                         &lt;objPath&gt;lib.subMenu&lt;/objPath&gt;
                     &lt;/eType_EXTRA&gt;

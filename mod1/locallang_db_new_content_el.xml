@@ -117,7 +117,7 @@
 			<label index="plugins">Erweiterungen</label>
 			<label index="plugins_1_title">Allgemeines Plugin</label>
 			<label index="plugins_1_description">Wenn Sie ein Plugin einfügen wollen, welches nicht in den unten stehenden Optionen aufgelistet ist, dann wählen Sie diesen Element-Typ und selektieren das gewünschte Plugin später in der Auswahlbox.</label>
-			<label index="fce">Flexible Seiteninhalte</label>
+			<label index="fce">Flexibler Inhalt</label>
 		</languageKey>
 		<languageKey index="no" type="array">
 			<label index="sel1">Velg hva slags sideinnhold du ønsker å opprette:</label>
@@ -1091,6 +1091,7 @@
 			<label index="plugins" type="integer">196313238</label>
 			<label index="plugins_1_title" type="integer">188310073</label>
 			<label index="plugins_1_description" type="integer">4113831</label>
+			<label index="fce" type="integer">125197975</label>
 		</languageKey>
 		<languageKey index="no" type="array">
 			<label index="sel1" type="integer">257792844</label>

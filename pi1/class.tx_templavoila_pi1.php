@@ -34,15 +34,17 @@
  *
  *
  *
- *   69: class tx_templavoila_pi1 extends tslib_pibase
- *   86:     function main($content,$conf)
- *   99:     function main_page($content,$conf)
- *  129:     function initVars($conf)
- *  142:     function renderElement($row,$table)
- *  241:     function processDataValues(&$dataValues,$DSelements,$TOelements,$valueKey='vDEF')
- *  376:     function formatError($string)
+ *   71: class tx_templavoila_pi1 extends tslib_pibase
+ *   88:     function main($content,$conf)
+ *  101:     function main_page($content,$conf)
+ *  131:     function initVars($conf)
+ *  144:     function renderElement($row,$table)
+ *  282:     function processDataValues(&$dataValues,$DSelements,$TOelements,$valueKey='vDEF')
+ *  446:     function inheritValue($dV,$valueKey,$overlayMode='')
+ *  486:     function formatError($string)
+ *  519:     function visualID($content,$srcPointer,$DSrec,$TOrec,$row,$table)
  *
- * TOTAL FUNCTIONS: 6
+ * TOTAL FUNCTIONS: 8
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -436,10 +438,10 @@ class tx_templavoila_pi1 extends tslib_pibase {
 	 * Processing of language fallback values (inheritance/overlaying)
 	 * You never need to call this function when "$valueKey" is "vDEF"
 	 *
-	 * @param	array	Array where the values for language and default might be in as keys for "vDEF" and "vXXX"
-	 * @param	string	Language key, "vXXX"
-	 * @param	string	Overriding overlay mode from local processing in Data Structure / TO.
-	 * @return	string	The value
+	 * @param	array		Array where the values for language and default might be in as keys for "vDEF" and "vXXX"
+	 * @param	string		Language key, "vXXX"
+	 * @param	string		Overriding overlay mode from local processing in Data Structure / TO.
+	 * @return	string		The value
 	 */
 	function inheritValue($dV,$valueKey,$overlayMode='')	{
 #debug(array($dV['vDEF'],$valueKey,$overlayMode,$this->inheritValueFromDefault),'inheritValue()');
@@ -448,14 +450,14 @@ class tx_templavoila_pi1 extends tslib_pibase {
 				// Consider overlay modes:
 			switch((string)$overlayMode)	{
 				case 'ifFalse':	// Normal inheritance based on whether the value evaluates false or not (zero or blank string)
-					return trim($dV[$valueKey]) ? $dV[$valueKey] : $dV['vDEF'];
-				break;
+				return trim($dV[$valueKey]) ? $dV[$valueKey] : $dV['vDEF'];
+
 				case 'ifBlank':	// Only if the value is truely blank!
-					return strcmp(trim($dV[$valueKey]),'') ? $dV[$valueKey] : $dV['vDEF'];
-				break;
+				return strcmp(trim($dV[$valueKey]),'') ? $dV[$valueKey] : $dV['vDEF'];
+
 				case 'never':
-					return $dV[$valueKey];	// Always return its own value
-				break;
+				return $dV[$valueKey];	// Always return its own value
+
 				case 'removeIfBlank':
 					if (!strcmp(trim($dV[$valueKey]),''))	{
 						return array('ERROR' => '__REMOVE');
@@ -505,6 +507,14 @@ class tx_templavoila_pi1 extends tslib_pibase {
 
 	/**
 	 * Creates a visual response to the TemplaVoila blocks on the page.
+	 *
+	 * @param	[type]		$content: ...
+	 * @param	[type]		$srcPointer: ...
+	 * @param	[type]		$DSrec: ...
+	 * @param	[type]		$TOrec: ...
+	 * @param	[type]		$row: ...
+	 * @param	[type]		$table: ...
+	 * @return	[type]		...
 	 */
 	function visualID($content,$srcPointer,$DSrec,$TOrec,$row,$table)	{
 

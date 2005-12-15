@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2003 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 2003, 2004, 2005 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -26,51 +26,20 @@
  *
  * $Id$
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author		Kasper Skaarhoj <kasper@typo3.com>
+ * @co-author	Robert Lemke <robert@typo3.org>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *  116: class tx_templavoila_cm2 extends t3lib_SCbase
- *  170:     function menuConfig()
- *  191:     function main()
- *  217:     function printContent()
+ *   67: class tx_templavoila_cm2 extends t3lib_SCbase
+ *   80:     function main()
+ *  113:     function printContent()
+ *  125:     function markUpXML($str)
  *
- *              SECTION: MODULE mode
- *  246:     function main_mode()
- *  320:     function renderFile()
- *  543:     function renderDSO()
- *  649:     function renderTO()
- *  809:     function renderTO_editProcessing(&$dataStruct,$row,$theFile)
- *
- *              SECTION: Mapper functions
- * 1018:     function renderHeaderSelection($displayFile,$currentHeaderMappingInfo,$showBodyTag,$htmlAfterDSTable='')
- * 1082:     function renderTemplateMapper($displayFile,$path,$dataStruct=array(),$currentMappingInfo=array(),$htmlAfterDSTable='')
- * 1245:     function drawDataStructureMap($dataStruct,$mappingMode=0,$currentMappingInfo=array(),$pathLevels=array(),$optDat=array(),$contentSplittedByMapping=array(),$level=0,$tRows=array(),$formPrefix='',$path='',$mapOK=1)
- * 1458:     function drawDataStructureMap_editItem($formPrefix,$key,$value,$level)
- *
- *              SECTION: Helper-functions for File-based DS/TO creation
- * 1578:     function substEtypeWithRealStuff(&$elArray,$v_sub=array())
- * 1806:     function substEtypeWithRealStuff_contentInfo($content)
- *
- *              SECTION: Various helper functions
- * 1852:     function getDataStructFromDSO($datString,$file='')
- * 1868:     function linkForDisplayOfPath($title,$path)
- * 1888:     function linkThisScript($array)
- * 1910:     function makeIframeForVisual($file,$path,$limitTags,$showOnly,$preview=0)
- * 1926:     function explodeMappingToTagsStr($mappingToTags,$unsetAll=0)
- * 1944:     function unsetArrayPath(&$dataStruct,$ref)
- * 1961:     function cleanUpMappingInfoAccordingToDS(&$currentMappingInfo,$dataStruct)
- *
- *              SECTION: DISPLAY mode
- * 1993:     function main_display()
- * 2038:     function displayFileContentWithMarkup($content,$path,$relPathFix,$limitTags)
- * 2072:     function displayFileContentWithPreview($content,$relPathFix)
- * 2108:     function displayFrameError($error)
- *
- * TOTAL FUNCTIONS: 25
+ * TOTAL FUNCTIONS: 3
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -80,7 +49,7 @@ unset($MCONF);
 require ('conf.php');
 require ($BACK_PATH.'init.php');
 require ($BACK_PATH.'template.php');
-$LANG->includeLLFile('EXT:templavoila/cm2/locallang.php');
+$LANG->includeLLFile('EXT:templavoila/cm2/locallang.xml');
 require_once (PATH_t3lib.'class.t3lib_scbase.php');
 
 
@@ -150,8 +119,8 @@ class tx_templavoila_cm2 extends t3lib_SCbase {
 	/**
 	 * Mark up XML content
 	 *
-	 * @param	string	XML input
-	 * @return	string	HTML formatted output, marked up in colors
+	 * @param	string		XML input
+	 * @return	string		HTML formatted output, marked up in colors
 	 */
 	function markUpXML($str)	{
 		require_once(PATH_t3lib.'class.t3lib_syntaxhl.php');

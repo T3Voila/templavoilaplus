@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<description>DB Labels</description>
+		<type>database</type>
+		<csh_table></csh_table>
+		<fileId>EXT:templavoila/locallang_db.xml</fileId>
+		<labelContext type="array">
+			<label index="tx_templavoila_tmplobj"></label>
+			<label index="tx_templavoila_tmplobj.title"></label>
+			<label index="tx_templavoila_tmplobj.datastructure"></label>
+			<label index="tx_templavoila_tmplobj.fileref"></label>
+			<label index="tx_templavoila_tmplobj.previewicon"></label>
+			<label index="tx_templavoila_tmplobj.description"></label>
+			<label index="tx_templavoila_tmplobj.ds_createnew"></label>
+			<label index="tx_templavoila_tmplobj.rendertype"></label>
+			<label index="tx_templavoila_tmplobj.rendertype.I.0"></label>
+			<label index="tx_templavoila_tmplobj.rendertype.I.1"></label>
+			<label index="tx_templavoila_tmplobj.parent"></label>
+			<label index="tx_templavoila_tmplobj.rendertype_ref"></label>
+			<label index="tx_templavoila_tmplobj.localProc"></label>
+			<label index="tx_templavoila_datastructure"></label>
+			<label index="tx_templavoila_datastructure.title"></label>
+			<label index="tx_templavoila_datastructure.dataprot"></label>
+			<label index="tx_templavoila_datastructure.scope"></label>
+			<label index="tx_templavoila_datastructure.scope.I.0"></label>
+			<label index="tx_templavoila_datastructure.scope.I.1"></label>
+			<label index="tx_templavoila_datastructure.scope.I.2"></label>
+			<label index="tt_content.tx_templavoila_ds"></label>
+			<label index="tt_content.tx_templavoila_to"></label>
+			<label index="tt_content.tx_templavoila_pito"></label>
+			<label index="tt_content.tx_templavoila_flex"></label>
+			<label index="tt_content.CType_pi1"></label>
+			<label index="tt_content.CType_pi2"></label>
+			<label index="pages.tx_templavoila_ds"></label>
+			<label index="pages.tx_templavoila_to"></label>
+			<label index="pages.tx_templavoila_next_ds"></label>
+			<label index="pages.tx_templavoila_next_to"></label>
+			<label index="pages.tx_templavoila_flex"></label>
+		</labelContext>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="tx_templavoila_tmplobj">TemplaVoila Template Object</label>
+			<label index="tx_templavoila_tmplobj.title">Title:</label>
+			<label index="tx_templavoila_tmplobj.datastructure">Data Structure:</label>
+			<label index="tx_templavoila_tmplobj.fileref">File reference:</label>
+			<label index="tx_templavoila_tmplobj.previewicon">Attach preview icon (gif or png in 1:1 size):</label>
+			<label index="tx_templavoila_tmplobj.description">Description of the template:</label>
+			<label index="tx_templavoila_tmplobj.ds_createnew">Create new data structure!</label>
+			<label index="tx_templavoila_tmplobj.rendertype">Select a type of rendering:</label>
+			<label index="tx_templavoila_tmplobj.rendertype.I.0">Default output</label>
+			<label index="tx_templavoila_tmplobj.rendertype.I.1">Printer friendly</label>
+			<label index="tx_templavoila_tmplobj.parent">Make this a sub-template of:</label>
+			<label index="tx_templavoila_tmplobj.rendertype_ref">Inherit default subtemplates from:</label>
+			<label index="tx_templavoila_tmplobj.localProc">Local Processing (XML):</label>
+			<label index="tx_templavoila_datastructure">TemplaVoila Data Structure</label>
+			<label index="tx_templavoila_datastructure.title">Title:</label>
+			<label index="tx_templavoila_datastructure.dataprot">Data Structure XML:</label>
+			<label index="tx_templavoila_datastructure.scope">Category:</label>
+			<label index="tx_templavoila_datastructure.scope.I.0"></label>
+			<label index="tx_templavoila_datastructure.scope.I.1">Page Template</label>
+			<label index="tx_templavoila_datastructure.scope.I.2">Flexible Content Element</label>
+			<label index="tt_content.tx_templavoila_ds">Data Structure:</label>
+			<label index="tt_content.tx_templavoila_to">Template Object:</label>
+			<label index="tt_content.tx_templavoila_pito">Plug-In Template Object:</label>
+			<label index="tt_content.tx_templavoila_flex">Content:</label>
+			<label index="tt_content.CType_pi1">Flexible Content</label>
+			<label index="pages.tx_templavoila_ds">Page Template Structure:</label>
+			<label index="pages.tx_templavoila_to">Use Template Design:</label>
+			<label index="pages.tx_templavoila_next_ds">Subpages - Page Template Structure:</label>
+			<label index="pages.tx_templavoila_next_to">Subpages - Use Template Design:</label>
+			<label index="pages.tx_templavoila_flex">Content:</label>
+		</languageKey>
+		<languageKey index="de" type="array">
+			<label index="tx_templavoila_tmplobj">TemplaVoilà Template Objekt</label>
+			<label index="tx_templavoila_tmplobj.title">Titel</label>
+			<label index="tx_templavoila_tmplobj.datastructure">Datenstruktur</label>
+			<label index="tx_templavoila_tmplobj.fileref">Datei Referenz</label>
+			<label index="tx_templavoila_tmplobj.previewicon">Vorschau Bild (gif oder png in 1:1 Größe)</label>
+			<label index="tx_templavoila_tmplobj.description">Beschreibung der Vorlage</label>
+			<label index="tx_templavoila_tmplobj.ds_createnew">Erzeuge eine neue Datenstruktur!</label>
+			<label index="tx_templavoila_tmplobj.rendertype">Art des Darstellung</label>
+			<label index="tx_templavoila_tmplobj.rendertype.I.0">Standard Ausgabe</label>
+			<label index="tx_templavoila_tmplobj.rendertype.I.1">druckerfreundlich</label>
+			<label index="tx_templavoila_tmplobj.parent">Dies ist eine Untervorlage von</label>
+			<label index="tx_templavoila_tmplobj.rendertype_ref">Erbe Untervorlagen von</label>
+			<label index="tx_templavoila_tmplobj.localProc">Lokale Verarbeitung (XML)</label>
+			<label index="tx_templavoila_datastructure">TemplaVoilà Datenstruktur</label>
+			<label index="tx_templavoila_datastructure.title">Titel</label>
+			<label index="tx_templavoila_datastructure.dataprot">XML der Datenstruktur</label>
+			<label index="tx_templavoila_datastructure.scope">Kategorie</label>
+			<label index="tx_templavoila_datastructure.scope.I.1">Seiten Vorlage</label>
+			<label index="tx_templavoila_datastructure.scope.I.2">Flexibles Inhaltselement</label>
+			<label index="tt_content.tx_templavoila_ds">Datenstruktur</label>
+			<label index="tt_content.tx_templavoila_to">Template Objekt</label>
+			<label index="tt_content.tx_templavoila_pito">Plugin Template Objekt</label>
+			<label index="tt_content.tx_templavoila_flex">Inhalt</label>
+			<label index="tt_content.CType_pi1">Flexibler Inhalt</label>
+			<label index="pages.tx_templavoila_ds">Seiten-Datenstruktur</label>
+			<label index="pages.tx_templavoila_to">Benutze Vorlagendesign</label>
+			<label index="pages.tx_templavoila_next_ds">Unterseiten - Seiten-Datenstruktur</label>
+			<label index="pages.tx_templavoila_next_to">Unterseiten - Benutze Vorlagendesign</label>
+			<label index="pages.tx_templavoila_flex">Inhalt</label>
+		</languageKey>
+	</data>
+	<orig_hash type="array">
+		<languageKey index="default" type="array">
+			<label index="tx_templavoila_tmplobj" type="integer">234813156</label>
+			<label index="tx_templavoila_tmplobj.title" type="integer">85903807</label>
+			<label index="tx_templavoila_tmplobj.datastructure" type="integer">173435779</label>
+			<label index="tx_templavoila_tmplobj.fileref" type="integer">39953077</label>
+			<label index="tx_templavoila_tmplobj.previewicon" type="integer">234091198</label>
+			<label index="tx_templavoila_tmplobj.description" type="integer">224927594</label>
+			<label index="tx_templavoila_tmplobj.ds_createnew" type="integer">147276121</label>
+			<label index="tx_templavoila_tmplobj.rendertype" type="integer">80647585</label>
+			<label index="tx_templavoila_tmplobj.rendertype.I.0" type="integer">71224131</label>
+			<label index="tx_templavoila_tmplobj.rendertype.I.1" type="integer">154697723</label>
+			<label index="tx_templavoila_tmplobj.parent" type="integer">163698107</label>
+			<label index="tx_templavoila_tmplobj.rendertype_ref" type="integer">248199518</label>
+			<label index="tx_templavoila_tmplobj.localProc" type="integer">149518923</label>
+			<label index="tx_templavoila_datastructure" type="integer">164728905</label>
+			<label index="tx_templavoila_datastructure.title" type="integer">85903807</label>
+			<label index="tx_templavoila_datastructure.dataprot" type="integer">241560910</label>
+			<label index="tx_templavoila_datastructure.scope" type="integer">90868382</label>
+			<label index="tx_templavoila_datastructure.scope.I.0" type="integer">222419149</label>
+			<label index="tx_templavoila_datastructure.scope.I.1" type="integer">247659805</label>
+			<label index="tx_templavoila_datastructure.scope.I.2" type="integer">218566846</label>
+			<label index="tt_content.tx_templavoila_ds" type="integer">173435779</label>
+			<label index="tt_content.tx_templavoila_to" type="integer">256106570</label>
+			<label index="tt_content.tx_templavoila_pito" type="integer">208636351</label>
+			<label index="tt_content.tx_templavoila_flex" type="integer">253232975</label>
+			<label index="tt_content.CType_pi1" type="integer">233926600</label>
+			<label index="pages.tx_templavoila_ds" type="integer">100893640</label>
+			<label index="pages.tx_templavoila_to" type="integer">90102606</label>
+			<label index="pages.tx_templavoila_next_ds" type="integer">55610817</label>
+			<label index="pages.tx_templavoila_next_to" type="integer">170865265</label>
+			<label index="pages.tx_templavoila_flex" type="integer">253232975</label>
+		</languageKey>
+		<languageKey index="de" type="array">
+			<label index="tx_templavoila_tmplobj" type="integer">234813156</label>
+			<label index="tx_templavoila_tmplobj.title" type="integer">85903807</label>
+			<label index="tx_templavoila_tmplobj.datastructure" type="integer">173435779</label>
+			<label index="tx_templavoila_tmplobj.fileref" type="integer">39953077</label>
+			<label index="tx_templavoila_tmplobj.previewicon" type="integer">234091198</label>
+			<label index="tx_templavoila_tmplobj.description" type="integer">224927594</label>
+			<label index="tx_templavoila_tmplobj.ds_createnew" type="integer">147276121</label>
+			<label index="tx_templavoila_tmplobj.rendertype" type="integer">80647585</label>
+			<label index="tx_templavoila_tmplobj.rendertype.I.0" type="integer">71224131</label>
+			<label index="tx_templavoila_tmplobj.rendertype.I.1" type="integer">154697723</label>
+			<label index="tx_templavoila_tmplobj.parent" type="integer">163698107</label>
+			<label index="tx_templavoila_tmplobj.rendertype_ref" type="integer">248199518</label>
+			<label index="tx_templavoila_tmplobj.localProc" type="integer">149518923</label>
+			<label index="tx_templavoila_datastructure" type="integer">164728905</label>
+			<label index="tx_templavoila_datastructure.title" type="integer">85903807</label>
+			<label index="tx_templavoila_datastructure.dataprot" type="integer">241560910</label>
+			<label index="tx_templavoila_datastructure.scope" type="integer">90868382</label>
+			<label index="tx_templavoila_datastructure.scope.I.1" type="integer">247659805</label>
+			<label index="tx_templavoila_datastructure.scope.I.2" type="integer">218566846</label>
+			<label index="tt_content.tx_templavoila_ds" type="integer">173435779</label>
+			<label index="tt_content.tx_templavoila_to" type="integer">256106570</label>
+			<label index="tt_content.tx_templavoila_pito" type="integer">208636351</label>
+			<label index="tt_content.tx_templavoila_flex" type="integer">253232975</label>
+			<label index="tt_content.CType_pi1" type="integer">233926600</label>
+			<label index="pages.tx_templavoila_ds" type="integer">100893640</label>
+			<label index="pages.tx_templavoila_to" type="integer">90102606</label>
+			<label index="pages.tx_templavoila_next_ds" type="integer">55610817</label>
+			<label index="pages.tx_templavoila_next_to" type="integer">170865265</label>
+			<label index="pages.tx_templavoila_flex" type="integer">253232975</label>
+		</languageKey>
+	</orig_hash>
+</T3locallang>

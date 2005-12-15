@@ -91,14 +91,3 @@ CREATE TABLE pages (
     tx_templavoila_flex mediumtext NOT NULL,
 
 );
-
-#
-# Table structure for table 'tx_templavoila_elementreferences'
-#
-CREATE TABLE tx_templavoila_elementreferences (
-	uid int(11) unsigned DEFAULT '0' NOT NULL,
-	pid int(11) unsigned DEFAULT '0' NOT NULL,
-	skey tinytext NOT NULL,
-	lkey tinytext NOT NULL,
-	vkey tinytext NOT NULL,
-);

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2003-2004 Robert Lemke (robert@typo3.org)
+*  (c) 2003-2005 Robert Lemke (robert@typo3.org)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -39,21 +39,19 @@
  *
  *
  *
- *  100: class tx_templavoila_posMap extends t3lib_positionMap
- *  110:     function wrapRecordTitle($str,$row)
- *  124:     function onClickInsertRecord($row,$vv,$moveUid,$pid,$sys_lang=0)
- *
- *
- *  152: class tx_templavoila_dbnewcontentel
- *  175:     function init()
- *  211:     function main()
- *  355:     function printContent()
+ *   89: class tx_templavoila_dbnewcontentel
+ *  109:     function init()
+ *  152:     function main()
+ *  236:     function printContent()
+ *  248:     function linkParams()
  *
  *              SECTION: OTHER FUNCTIONS:
- *  384:     function getWizardItems()
- *  394:     function wizardArray()
+ *  274:     function getWizardItems()
+ *  284:     function wizardArray()
+ *  421:     function removeInvalidElements(&$wizardItems)
+ *  481:     function getStorageFolderPid($positionPid)
  *
- * TOTAL FUNCTIONS: 7
+ * TOTAL FUNCTIONS: 8
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -79,12 +77,7 @@ t3lib_extMgm::isLoaded('cms',1);
 
 	// Include needed libraries:
 require_once (PATH_t3lib.'class.t3lib_page.php');
-
-
-
-
-
-
+require_once (t3lib_extMgm::extPath ('templavoila').'class.tx_templavoila_api.php');
 
 /**
  * Script Class for the New Content element wizard
@@ -109,7 +102,7 @@ class tx_templavoila_dbnewcontentel {
 	var $access;					// Access boolean.
 
 	/**
-	 * Constructor, initializing internal variables.
+	 * Initialize internal variables.
 	 *
 	 * @return	void
 	 */
@@ -137,6 +130,17 @@ class tx_templavoila_dbnewcontentel {
 		$perms_clause = $BE_USER->getPagePermsClause(1);
 		$pageinfo = t3lib_BEfunc::readPageAccess($this->id,$perms_clause);
 		$this->access = is_array($pageinfo) ? 1 : 0;
+
+
+		$this->apiObj = t3lib_div::makeInstance ('tx_templavoila_api');
+
+			// If no parent record was specified, find one:
+		if (!$this->parentRecord) {
+			$mainContentAreaFieldName = $this->apiObj->ds_getFieldNameByColumnPosition ($this->id, 0);
+			if ($mainContentAreaFieldName != FALSE) {
+				$this->parentRecord = 'pages:'.$this->id.':sDEF:lDEF:'.$mainContentAreaFieldName.':vDEF:0';
+			}
+		}
 	}
 
 	/**
@@ -156,7 +160,7 @@ class tx_templavoila_dbnewcontentel {
 			$this->content.=$this->doc->header($LANG->getLL('newContentElement'));
 			$this->content.=$this->doc->spacer(5);
 
-			$elRow = t3lib_BEfunc::getRecord('pages',$this->id);
+			$elRow = t3lib_BEfunc::getRecordWSOL('pages',$this->id);
 			$header= t3lib_iconWorks::getIconImage('pages',$elRow,$BACK_PATH,' title="'.htmlspecialchars(t3lib_BEfunc::getRecordIconAltText($elRow,'pages')).'" align="top"');
 			$header.= t3lib_BEfunc::getRecordTitle('pages',$elRow,1);
 			$this->content.=$this->doc->section('',$header,0,1);
@@ -186,6 +190,9 @@ class tx_templavoila_dbnewcontentel {
 						// href URI for icon/title:
 					$newRecordLink = 'index.php?'.$this->linkParams().'&createNewRecord='.rawurlencode($this->parentRecord).$wizardItem['params'];
 
+#  http://localhost/t3dev/t3dev_templavoila/typo3/ext/templavoila/mod1/index.php?id=1948&createNewRecord=pages%3A1948%3AsDEF%3AlDEF%3Afield_content%3AvDEF%3A0&defVals[tt_content][CType]=text
+#  http://localhost/t3dev/t3dev_templavoila/typo3/ext/templavoila/mod1/index.php?id=1948&createNewRecord=&defVals[tt_content][CType]=text
+
 						// Icon:
 					$iInfo = @getimagesize($wizardItem['icon']);
 					$tableLinks[]='<a href="'.$newRecordLink.'"><img'.t3lib_iconWorks::skinImg($this->doc->backPath,$wizardItem['icon'],'').' alt="" /></a>';
@@ -203,8 +210,7 @@ class tx_templavoila_dbnewcontentel {
 				}
 			}
 				// Add the wizard table to the content:
-			$wizardCode.=$LANG->getLL('sel1',1).'<br /><br />
-
+			$wizardCode .= $LANG->getLL('sel1',1).'<br /><br />
 
 			<!--
 				Content Element wizard table:
@@ -212,7 +218,8 @@ class tx_templavoila_dbnewcontentel {
 				<table border="0" cellpadding="1" cellspacing="2" id="typo3-ceWizardTable">
 					'.implode('',$tableRows).'
 				</table>';
-			$this->content.=$this->doc->section(!$onClickEvent?$LANG->getLL('1_selectType'):'',$wizardCode,0,1);
+			$this->content .= $this->doc->section($LANG->getLL('1_selectType'), $wizardCode, 0, 1);
+
 		} else {		// In case of no access:
 			$this->content='';
 			$this->content.=$this->doc->startPage($LANG->getLL('newContentElement'));
@@ -233,6 +240,11 @@ class tx_templavoila_dbnewcontentel {
 		echo $this->content;
 	}
 
+	/**
+	 * [Describe function...]
+	 *
+	 * @return	[type]		...
+	 */
 	function linkParams()	{
 		$output = 'id='.$this->id.
 				(is_array($this->altRoot) ? t3lib_div::implodeArrayForUrl('altRoot',$this->altRoot) : '');
@@ -360,13 +372,15 @@ class tx_templavoila_dbnewcontentel {
 
 			// Flexible content elements:
         $positionPid = $this->id;
-        $storageFolderPID = $this->getStorageFolderPid($positionPid);
+        $storageFolderPID = $this->apiObj->getStorageFolderPid($positionPid);
         $tTO = 'tx_templavoila_tmplobj';
         $tDS = 'tx_templavoila_datastructure';
         $res = $TYPO3_DB->exec_SELECTquery (
             "$tTO.*",
             "$tTO LEFT JOIN $tDS ON $tTO.datastructure = $tDS.uid",
-            "$tTO.pid=".intval($storageFolderPID)." AND $tDS.scope=2".t3lib_befunc::deleteClause ($tTO).t3lib_befunc::deleteClause ($tDS)
+            "$tTO.pid=".intval($storageFolderPID)." AND $tDS.scope=2".
+            	t3lib_befunc::deleteClause ($tTO).t3lib_befunc::deleteClause ($tDS).
+            	t3lib_BEfunc::versioningPlaceholderClause($tTO).t3lib_BEfunc::versioningPlaceholderClause($tDS)
         );
         $fce_count = 1;
         $wizardItems['fce']['header'] = $LANG->getLL('fce');
@@ -391,19 +405,72 @@ class tx_templavoila_dbnewcontentel {
 			}
 		}
 
+			// Remove elements where preset values are not allowed:
+		$this->removeInvalidElements($wizardItems);
+
 		return $wizardItems;
 	}
-    
-    function getStorageFolderPid($positionPid) {
-        // Negative PID values is pointing to a page on the same level as the current.
-        if ($positionPid<0) {
-            $pidRow = t3lib_BEfunc::getRecord('pages',abs($positionPid),'pid');
-            $positionPid = $pidRow['pid'];
-        }
-        $row = t3lib_BEfunc::getRecord('pages',$positionPid);
-        $TSconfig = t3lib_BEfunc::getTCEFORM_TSconfig('pages',$row);
-        return intval($TSconfig['_STORAGE_PID']);
-    }
+
+	/**
+	 * Checks the array for elements which might contain unallowed default values and will unset them!
+	 * Looks for the "tt_content_defValues" key in each element and if found it will traverse that array as fieldname / value pairs and check. The values will be added to the "params" key of the array (which should probably be unset or empty by default).
+	 *
+	 * @param	array		Wizard items, passed by reference
+	 * @return	void
+	 */
+	function removeInvalidElements(&$wizardItems)	{
+		global $TCA;
+
+			// Load full table definition:
+		t3lib_div::loadTCA('tt_content');
+
+		$headersUsed = Array();
+			// Traverse wizard items:
+		foreach($wizardItems as $key => $cfg)	{
+
+				// Exploding parameter string, if any (old style)
+			if ($wizardItems[$key]['params'])	{
+					// Explode GET vars recursively
+				$tempGetVars = t3lib_div::explodeUrl2Array($wizardItems[$key]['params'],TRUE);
+					// If tt_content values are set, merge them into the tt_content_defValues array, unset them from $tempGetVars and re-implode $tempGetVars into the param string (in case remaining parameters are around).
+				if (is_array($tempGetVars['defVals']['tt_content']))	{
+					$wizardItems[$key]['tt_content_defValues'] = array_merge(is_array($wizardItems[$key]['tt_content_defValues']) ? $wizardItems[$key]['tt_content_defValues'] : array(), $tempGetVars['defVals']['tt_content']);
+					unset($tempGetVars['defVals']['tt_content']);
+					$wizardItems[$key]['params'] = t3lib_div::implodeArrayForUrl('',$tempGetVars);
+				}
+			}
+
+				// If tt_content_defValues are defined...:
+			if (is_array($wizardItems[$key]['tt_content_defValues']))	{
+
+					// Traverse field values:
+				foreach($wizardItems[$key]['tt_content_defValues'] as $fN => $fV)	{
+					if (is_array($TCA['tt_content']['columns'][$fN]))	{
+							// Get information about if the field value is OK:
+						$config = &$TCA['tt_content']['columns'][$fN]['config'];
+						$authModeDeny = $config['type']=='select' && $config['authMode'] && !$GLOBALS['BE_USER']->checkAuthMode('tt_content',$fN,$fV,$config['authMode']);
+
+						if ($authModeDeny)	{
+								// Remove element all together:
+							unset($wizardItems[$key]);
+							break;
+						} else {
+								// Add the parameter:
+							$wizardItems[$key]['params'].= '&defVals[tt_content]['.$fN.']='.rawurlencode($fV);
+							$tmp = explode('_', $key);
+							$headersUsed[$tmp[0]] = $tmp[0];
+						}
+					}
+				}
+			}
+		}
+
+			// Remove headers without elements
+		foreach ($wizardItems as $key => $cfg)	{
+			list ($itemCategory, $dummy) = explode('_', $key);
+			if (!isset ($headersUsed[$itemCategory])) unset ($wizardItems[$key]);
+		}
+	}       
 }
 
 // Include extension?

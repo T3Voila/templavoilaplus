@@ -1,4 +1,2 @@
-  # cat=basic/enable; type=boolean; label=Enable Page Template Selector
-enable.pageTemplateSelector = 1
   # cat=basic/enable; type=boolean; label=Enable the classic page module
 enable.oldPageModule = 0

@@ -24,6 +24,8 @@
 /**
  * Class 'tx_templavoila_rules' for the 'templavoila' extension.
  *
+ * Deprecated - not used anymore since version 1.0.0
+ *
  * $Id$
  *
  * @author     Robert Lemke <robert@typo3.org>
@@ -33,36 +35,37 @@
  *
  *
  *
- *   82: class tx_templavoila_rules
- *   98:     function evaluateRulesForElement ($table, $uid)
+ *   86: class tx_templavoila_rules
+ *  105:     function evaluateRulesForElement ($table, $uid)
  *
  *              SECTION: Rule processing / analyzing functions
- *  138:     function checkRulesForElement($rules, $constants, $table, $uid, $field)
- *  193:     function checkRulesForElement_parseEL ($rulePart, &$childRecords, &$statusArr)
- *  213:     function checkRulesForElement_parseSUB ($rulePart, &$childRecords, &$statusArr)
- *  235:     function checkRulesForElement_parseALT ($rulePart, &$childRecords, &$statusArr)
- *  259:     function checkRulesForElement_parseCLASS ($rulePart, &$childRecords, &$statusArr)
+ *  163:     function checkRulesForElement($rules, $constants, $childRecords)
+ *  209:     function checkRulesForElement_parseEL ($rulePart, &$childRecords, &$statusArr)
+ *  242:     function checkRulesForElement_parseSUB ($rulePart, &$childRecords, &$statusArr, $constants)
+ *  297:     function checkRulesForElement_parseALT ($rulePart, &$childRecords, &$statusArr, $constants)
+ *  327:     function checkRulesForElement_parseCLASS ($rulePart, &$childRecords, &$statusArr)
  *
  *              SECTION: Human Readable Rules Functions
- *  283:     function getHumanReadableRules ($rules,$ruleConstants)
- *  299:     function parseRulesArrayIntoDescription ($rulesArr, $constantsArr, $level=0)
- *  334:     function getQuantifierAsDescription ($min, $max)
- *  367:     function getElementNameFromConstantsMapping ($element, $constantsArr)
+ *  351:     function getHumanReadableRules ($rules,$ruleConstants)
+ *  367:     function parseRulesArrayIntoDescription ($rulesArr, $constantsArr, $level=0)
+ *  402:     function getQuantifierAsDescription ($min, $max)
+ *  435:     function getElementNameFromConstantsMapping ($element, $constantsArr)
  *
  *              SECTION: Helper functions
- *  395:     function parseRegexIntoArray ($regex, $constants)
- *  472:     function isElement ($char)
- *  487:     function extractInnerBrace ($regex, $startPos)
- *  517:     function explodeAlternatives ($regex)
- *  543:     function evaluateQuantifier ($quantifier, &$pos, &$min, &$max)
- *  601:     function getCTypeFromToken ($token, $ruleConstants)
+ *  463:     function parseRegexIntoArray ($regex, $constants)
+ *  540:     function isElement ($char)
+ *  555:     function extractInnerBrace ($regex, $startPos)
+ *  585:     function explodeAlternatives ($regex)
+ *  611:     function evaluateQuantifier ($quantifier, &$pos, &$min, &$max)
+ *  669:     function getCTypeFromToken ($token, $ruleConstants)
  *
  *              SECTION: Status functions
- *  635:     function statusAddErr (&$statusArr, $msg, $uid=0, $position=0)
- *  652:     function statusMerge (&$statusArr, $newStatusArr, $doAND=false)
- *  671:     function statusSetOK (&$statusArr)
+ *  703:     function statusAddErr (&$statusArr, $msg, $lastParsedRecord=array(), $position=0)
+ *  722:     function statusMerge (&$statusArr, $newStatusArr, $doAND=false)
+ *  748:     function statusSetOK (&$statusArr)
+ *  768:     function statusSetELRestrictions (&$statusArr, $uid, $restrictionsArr)
  *
- * TOTAL FUNCTIONS: 19
+ * TOTAL FUNCTIONS: 20
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -78,6 +81,7 @@
  * @author		Robert Lemke <robert@typo3.org>
  * @package		TYPO3
  * @subpackage	tx_templavoila
+ * @deprecated 1.0.0
  */
 class tx_templavoila_rules {
 	var $lastParsedRecord;	// Holds the last child record before an error occurs. Used for rule tracking / err messages
@@ -95,7 +99,7 @@ class tx_templavoila_rules {
 	 * @param	array		$ruleConstants: An array with the mapping of tokens to content elements.
 	 * @param	array		$elArray:
 	 * @return	array		Array containing status information if the check was successful.
-	 * @access	public
+	 * @access public
 	 * @see checkRulesForElement()
 	 */
 	function evaluateRulesForElement ($table, $uid) {
@@ -150,11 +154,11 @@ class tx_templavoila_rules {
 	/**
 	 * Checks the child records of an element for compliance to the element's rules.
 	 *
-	 * @param	string	$rules: The regular expression as a string OR the regular expression already parsed into an array (by parseRegexIntoArray)
-	 * @param	string	$constants: The constants definitions being used in the regular expression divided by line breaks (eg.: a=text)
-	 * @param	array	$childRecords: Array of child records (normally page and tt_content rows)
-	 * @return	array	The status array containing information about errors, restrictions etc.
-	 * @access	private
+	 * @param	string		$rules: The regular expression as a string OR the regular expression already parsed into an array (by parseRegexIntoArray)
+	 * @param	string		$constants: The constants definitions being used in the regular expression divided by line breaks (eg.: a=text)
+	 * @param	array		$childRecords: Array of child records (normally page and tt_content rows)
+	 * @return	array		The status array containing information about errors, restrictions etc.
+	 * @access private
 	 */
 	function checkRulesForElement($rules, $constants, $childRecords) {
 		global $LANG;
@@ -200,7 +204,7 @@ class tx_templavoila_rules {
 	 * @param	array		$childRecords: Current array of child records of the main element which remain to be processed. Passed by reference!
 	 * @param	array		$statusArr: The current status array, passed by reference
 	 * @return	void		Results are returned by reference.
-	 * @access	private
+	 * @access private
 	 */
 	function checkRulesForElement_parseEL ($rulePart, &$childRecords, &$statusArr) {
 		$counter = 0;
@@ -232,7 +236,7 @@ class tx_templavoila_rules {
 	 * @param	integer		$uid: ID of the current parent element record
 	 * @param	string		$field: Field name within the datastructure
 	 * @return	void		Results are returned by reference.
-	 * @access	private
+	 * @access private
 	 * @todo				Not completely tested yet
 	 */
 	function checkRulesForElement_parseSUB ($rulePart, &$childRecords, &$statusArr, $constants) {
@@ -288,7 +292,7 @@ class tx_templavoila_rules {
 	 * @param	integer		$uid: ID of the current parent element record
 	 * @param	string		$field: Field name within the datastructure
 	 * @return	void		Results are returned by reference.
-	 * @access	private
+	 * @access private
 	 */
 	function checkRulesForElement_parseALT ($rulePart, &$childRecords, &$statusArr, $constants) {
 		$altStatusArr = array ();
@@ -317,7 +321,7 @@ class tx_templavoila_rules {
 	 * @param	array		$childRecords: Current array of child records of the main element which remain to be processed. Passed by reference!
 	 * @param	array		$statusArr: The current status array, passed by reference
 	 * @return	void		Results are returned by reference.
-	 * @access	private
+	 * @access private
 	 * @todo				Obviously this function does nothing yet
 	 */
 	function checkRulesForElement_parseCLASS ($rulePart, &$childRecords, &$statusArr) {
@@ -756,9 +760,9 @@ class tx_templavoila_rules {
 	 * 'allowedElementsAfter' =>  List of CE types which are allowed after this element. If false, no element is allowed, if not set, any element is allowed
 	 * 'required' => If set to true, this element is required an therefore must not be deleted
 	 *
-	 * @param	array	&$statusArr: A status array, passed by reference.
-	 * @param	array	$restrictionsArr: Array containing restrictions which apply to this element see description of this function for valid options
-	 * @param	integer	$uid: The content element uid
+	 * @param	array		&$statusArr: A status array, passed by reference.
+	 * @param	array		$restrictionsArr: Array containing restrictions which apply to this element see description of this function for valid options
+	 * @param	integer		$uid: The content element uid
 	 * @return	void
 	 */
 	function statusSetELRestrictions (&$statusArr, $uid, $restrictionsArr) {

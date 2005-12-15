@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 2004, 2005 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -34,11 +34,10 @@
  *
  *
  *
- *   61: class tx_templavoila_cm1
- *   72:     function main(&$backRef,$menuItems,$table,$uid)
- *  107:     function includeLL()
+ *   57: class tx_templavoila_cm1
+ *   68:     function main(&$backRef, $menuItems, $table, $uid)
  *
- * TOTAL FUNCTIONS: 2
+ * TOTAL FUNCTIONS: 1
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -71,33 +70,8 @@ class tx_templavoila_cm1 {
 
 		$localItems = Array();
 		if (!$backRef->cmLevel)	{
-			$LL = $this->includeLL();
-				// Remove items that are not relevant in this context:
-				// Commented out since the items are removed by the wrapClicMenu-function in template. When we are sure this code is obsolete, it can be deleted....
-/*			if (t3lib_div::GPvar('callingScriptId') == 'ext/templavoila/mod1/index.php')	{
-				unset($menuItems['new']);
-				unset($menuItems['copy']);
-				unset($menuItems['cut']);
-				unset($menuItems['pasteinto']);
-				unset($menuItems['pasteafter']);
-				unset($menuItems['delete']);
+			$LL = $LANG->includeLLFile(t3lib_extMgm::extPath('templavoila').'locallang.xml', 0);
 
-				$lastWasSpacer = FALSE;
-				foreach($menuItems as $kI => $vI)	{
-					if ($vI == 'spacer')	{
-						if ($lastWasSpacer)	{
-							unset($menuItems[$kI]);
-						}
-						$lastWasSpacer = TRUE;
-					} else {
-						$lastWasSpacer = FALSE;
-					}
-				}
-				if ($lastWasSpacer)	{
-					unset($menuItems[$kI]);
-				}
-			}
-*/
 				// Adding link for Mapping tool:
 			if (t3lib_div::inList('tx_templavoila_tmplobj,tx_templavoila_datastructure,tx_templavoila_content',$table) || @is_file($table))	{
 				$localItems = Array();
@@ -168,13 +142,13 @@ class tx_templavoila_cm1 {
 
 			if ($table=='tt_content') {
 					// Adding link for "Pages using this element":
-				$localItems[] = $backRef->linkItem(
-					$LANG->getLLL('cm1_pagesusingthiselement',$LL),
-					$backRef->excludeIcon('<img src="'.t3lib_extMgm::extRelPath('templavoila').'cm1/cm_icon_activate.gif" width="15" height="12" border=0 align=top>'),
-					"top.loadTopMenu('".t3lib_div::linkThisScript()."&cmLevel=1&subname=tx_templavoila_cm1_pagesusingthiselement');return false;",
-					0,
-					1
-				);
+#				$localItems[] = $backRef->linkItem(
+#					$LANG->getLLL('cm1_pagesusingthiselement',$LL),
+#					$backRef->excludeIcon('<img src="'.t3lib_extMgm::extRelPath('templavoila').'cm1/cm_icon_activate.gif" width="15" height="12" border=0 align=top>'),
+#					"top.loadTopMenu('".t3lib_div::linkThisScript()."&cmLevel=1&subname=tx_templavoila_cm1_pagesusingthiselement');return false;",
+#					0,
+#					1
+#				);
 			}
 		} else {
 			if (t3lib_div::GPvar('subname') == 'tx_templavoila_cm1_pagesusingthiselement') {
@@ -186,7 +160,7 @@ class tx_templavoila_cm1 {
 				$res = $TYPO3_DB->exec_SELECTquery ('*', 'tx_templavoila_elementreferences', 'uid='.$backRef->rec['uid']);
 				if ($res) {
 					while ($referenceRecord = $TYPO3_DB->sql_fetch_assoc ($res)) {
-						$pageRecord = t3lib_beFunc::getRecord ('pages', $referenceRecord['pid']);
+						$pageRecord = t3lib_beFunc::getRecord('pages', $referenceRecord['pid']);
 						$icon = t3lib_iconWorks::getIconImage('pages', $pageRecord, $backRef->backPath);
 	// To do: Display language flag icon and jump to correct language
 #						if ($referenceRecord['lkey'] != 'lDEF') {
@@ -213,16 +187,6 @@ class tx_templavoila_cm1 {
 		}
 
 		return $menuItems;
-	}
-
-	/**
-	 * Includes the [extDir]/locallang.php and returns the $LOCAL_LANG array found in that file.
-	 *
-	 * @return	array		The $LOCAL_LANG array from the locallang.php file.
-	 */
-	function includeLL()	{
-		include(t3lib_extMgm::extPath('templavoila').'locallang.php');
-		return $LOCAL_LANG;
 	}
 }
 

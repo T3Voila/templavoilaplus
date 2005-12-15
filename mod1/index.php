@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2003, 2004  Robert Lemke (robert@typo3.org)
+*  (c) 2003, 2004, 2005 Robert Lemke (robert@typo3.org)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -27,68 +27,54 @@
  * $Id$
  *
  * @author     Robert Lemke <robert@typo3.org>
- * @coauthor   Kasper SkÃ¥rhÃ¸j <kasperYYYY@typo3.com>
+ * @coauthor   Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *  129: class tx_templavoila_module1 extends t3lib_SCbase
+ *  116: class tx_templavoila_module1 extends t3lib_SCbase
  *
  *              SECTION: Initialization functions
- *  171:     function init()
- *  210:     function menuConfig()
+ *  154:     function init()
+ *  198:     function menuConfig()
  *
  *              SECTION: Main functions
- *  262:     function main()
+ *  252:     function main()
+ *  346:     function printContent()
  *
  *              SECTION: Rendering functions
- *  389:     function renderEditPageScreen()
- *  473:     function renderEditPageScreenMountPoint()
+ *  366:     function render_editPageScreen()
  *
  *              SECTION: Framework rendering functions
- *  524:     function renderFrameWork_allSheets($dsInfo, $parentPos='', $clipboardElInPath=0, $referenceInPath=0)
- *  561:     function renderFrameWork($dsInfo, $parentPos, $clipboardElInPath, $referenceInPath, $sheet)
+ *  439:     function render_framework_allSheets($contentTreeArr, $parentPointer=array())
+ *  475:     function render_framework_singleSheet($contentTreeArr, $sheet, $parentPointer=array())
+ *  571:     function render_framework_subElements ($elementContentTreeArr, $sheet)
  *
  *              SECTION: Rendering functions for certain subparts
- *  834:     function renderPreviewContent ($row, $table)
- *  921:     function renderLocalizationInfoTable($dsInfo)
+ *  659:     function render_previewContent($row)
+ *  741:     function render_localizationInfoTable($contentTreeArr, $parentPointer)
  *
- *              SECTION: Link functions
- * 1010:     function linkEdit($str, $table, $uid)
- * 1022:     function linkNew($str, $parentRecord)
- * 1035:     function linkUnlink($str, $unlinkRecord, $realDelete=FALSE)
- * 1052:     function linkMakeLocal($str, $makeLocalRecord)
- * 1067:     function linkPaste($str, $source, $destination, $cmd)
- * 1079:     function linkCopyCut($str, $source, $cmd)
- * 1088:     function linkParams()
+ *              SECTION: Link functions (protected)
+ *  847:     function link_edit($label, $table, $uid)
+ *  864:     function link_new($label, $parentPointer)
+ *  882:     function link_unlink($label, $unlinkPointer, $realDelete=FALSE)
+ *  902:     function link_makeLocal($label, $makeLocalPointer)
+ *  914:     function link_getParameters()
  *
- *              SECTION: Command functions
- * 1114:     function cmd_createNewRecord ($parentRecord, $defVals='')
- * 1132:     function cmd_unlinkRecord ($unlinkRecord)
- * 1144:     function cmd_deleteRecord ($deleteRecord)
- * 1156:     function cmd_makeLocalRecord ($makeLocalRecord)
- * 1168:     function cmd_pasteRecord ($pasteMode)
- * 1180:     function cmd_createNewTranslation ($languageUid)
+ *              SECTION: Processing and structure functions (protected)
+ *  942:     function handleIncomingCommands()
+ * 1046:     function getContentTree($table, $row, $languageKey='DEF', $prevRecList='')
+ * 1150:     function getContentTree_processSubContent($flexformContentArr, $tree, $sheetKey, $lKey, $fieldKey, $vKey, $fieldData, $languageKey, $prevRecList)
+ * 1213:     function getContentTree_processSubElements($flexformContentArr, $tree, $sheetKey, $lKey, $fieldKey, $vKey, $fieldData, $row)
+ * 1252:     function getContentTree_getLocalizationInfoForElement($contentTreeArr)
  *
- *              SECTION: Processing
- * 1206:     function createPage($pageArray,$positionPid)
- * 1242:     function createDefaultRecords ($table, $uid, $prevDS=-1, $level=0)
- * 1293:     function insertRecord($destination, $row)
- * 1305:     function pasteRecord($pasteCmd, $source, $destination)
+ *              SECTION: Miscelleaneous helper functions (protected)
+ * 1324:     function getAvailableLanguages($id=0, $onlyIsoCoded=true, $setDefault=true, $setMulti=false)
+ * 1396:     function hooks_prepareObjectsArray ($hookName)
  *
- *              SECTION: Structure functions
- * 1326:     function getStorageFolderPid($positionPid)
- * 1348:     function getDStree($table, $id, $prevRecList='', $row='')
- * 1451:     function getExpandedDataStructure($table, $field, $row)
- * 1486:     function checkRulesForElement ($table, $uid)
- *
- *              SECTION: Miscelleaneous functions
- * 1509:     function getAvailableLanguages($id=0, $onlyIsoCoded=true, $setDefault=true, $setMulti=false)
- * 1579:     function printContent()
- *
- * TOTAL FUNCTIONS: 32
+ * TOTAL FUNCTIONS: 22
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -98,7 +84,7 @@ unset($MCONF);
 require ('conf.php');
 require ($BACK_PATH.'init.php');
 require ($BACK_PATH.'template.php');
-$LANG->includeLLFile('EXT:templavoila/mod1/locallang.php');
+$LANG->includeLLFile('EXT:templavoila/mod1/locallang.xml');
 require_once (PATH_t3lib.'class.t3lib_scbase.php');
 $BE_USER->modAccess($MCONF,1);    								// This checks permissions and exits if the users has no permission for entry.
 
@@ -107,22 +93,23 @@ t3lib_extMgm::isLoaded('cms',1);
 	// We need the TCE forms functions
 require_once (PATH_t3lib.'class.t3lib_loaddbgroup.php');
 require_once (PATH_t3lib.'class.t3lib_tcemain.php');
+require_once (PATH_t3lib.'class.t3lib_clipboard.php');
 
-	// Include rules engine
-require_once (t3lib_extMgm::extPath('templavoila').'class.tx_templavoila_rules.php');
-
-	// Include class for management of the relations inside the FlexForm XML:
-require_once (t3lib_extMgm::extPath('templavoila').'class.tx_templavoila_xmlrelhndl.php');
+	// Include TemplaVoila API
+require_once (t3lib_extMgm::extPath('templavoila').'class.tx_templavoila_api.php');
 
 	// Include class for rendering the side bar and wizards:
 require_once (t3lib_extMgm::extPath('templavoila').'mod1/class.tx_templavoila_mod1_sidebar.php');
 require_once (t3lib_extMgm::extPath('templavoila').'mod1/class.tx_templavoila_mod1_wizards.php');
+require_once (t3lib_extMgm::extPath('templavoila').'mod1/class.tx_templavoila_mod1_clipboard.php');
+require_once (t3lib_extMgm::extPath('templavoila').'mod1/class.tx_templavoila_mod1_localization.php');
+require_once (t3lib_extMgm::extPath('templavoila').'mod1/class.tx_templavoila_mod1_specialdoktypes.php');
 
 /**
  * Module 'Page' for the 'templavoila' extension.
  *
  * @author		Robert Lemke <robert@typo3.org>
- * @coauthor	Kasper SkÃ¥rhÃ¸j <kasperYYYY@typo3.com>
+ * @coauthor	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package		TYPO3
  * @subpackage	tx_templavoila
  */
@@ -134,15 +121,10 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 	var $global_tt_content_elementRegister=array(); // Contains a list of all content elements which are used on the page currently being displayed (with version, sheet and language currently set). Mainly used for showing "unused elements" in sidebar.
 	var $global_localization_status=array(); 		// Contains structure telling the localization status of each element
-	var $elementBlacklist=array();					// Used in renderFrameWork (list of CEs causing errors)
 
-	var $altRoot = array();							// Keys: "table", "uid", "field_flex" - thats all to define another "rootTable" than "pages" (using default field "tx_templavoila_flex" for flex form content)
+	var $altRoot = array();							// Keys: "table", "uid" - thats all to define another "rootTable" than "pages" (using default field "tx_templavoila_flex" for flex form content)
 	var $versionId = 0;								// Versioning: The current version id
-	var $editVersionUid = 0;						// [ CURRENTLY NOT USED ]
-	var $clipboardElIsFCEWithSubEl = 0;				// If TRUE, the clipboard currently contains an element which should be copied and is a Flexible Content Element which has sub elements. Very special, huh?
 
-	var $currentDataStructureArr = array();			// Contains the data structure XML structure indexed by tablenames ('pages', 'tt_content') as an array of the currently selected DS record when editing a page
-	var $currentPageRecord;							// Contains the page record (from table 'pages') of the current page when editing a page
 	var $currentLanguageKey;						// Contains the currently selected language key (Example: DEF or DE)
 	var $currentLanguageUid;						// Contains the currently selected language uid (Example: -1, 0, 1, 2, ...)
 	var $allAvailableLanguages = array();			// Contains records of all available languages (not hidden, with ISOcode), including the default language and multiple languages. Used for displaying the flags for content elements, set in init().
@@ -151,8 +133,9 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	var $doc;										// Instance of template doc class
 	var $sideBarObj;								// Instance of sidebar class
 	var $wizardsObj;								// Instance of wizards class
+	var $clipboardObj;								// Instance of clipboard class
 	var $rulesObj;									// Instance of the tx_templavoila_rule
-	var $xmlRelHndlObj;								// Instance of XML relationships handler class
+	var $apiObj;									// Instance of tx_templavoila_api
 
 
 
@@ -166,12 +149,14 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * Initialisation of this backend module
 	 *
 	 * @return	void
+	 * @access public
 	 */
 	function init()    {
 		parent::init();
 
-		$this->rulesObj =& t3lib_div::getUserObj ('&tx_templavoila_rules','');
 		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::_GP('SET'), $this->MCONF['name']);
+
+		$this->id = t3lib_beFunc::wsMapId ('pages', $this->id);	// FIXME
 
 		$this->altRoot = t3lib_div::_GP('altRoot');
 		$this->versionId = t3lib_div::_GP('versionId');
@@ -195,16 +180,20 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		$this->wizardsObj = t3lib_div::getUserObj('&tx_templavoila_mod1_wizards','');
 		$this->wizardsObj->init($this);
 
-			// Initialize XML relationships handler class:
-		$this->xmlRelHndlObj = t3lib_div::makeInstance('tx_templavoila_xmlrelhndl');
-		$this->xmlRelHndlObj->init($this->altRoot);
+			// Initialize TemplaVoila API class:
+		$apiClassName = t3lib_div::makeInstanceClassName('tx_templavoila_api');
+		$this->apiObj = new $apiClassName ($this->altRoot ? $this->altRoot : 'pages');
 
+			// Initialize the clipboard
+		$this->clipboardObj =& t3lib_div::getUserObj ('&tx_templavoila_mod1_clipboard','');
+		$this->clipboardObj->init($this);
 	}
 
 	/**
 	 * Preparing menu content and initializing clipboard and module TSconfig
 	 *
 	 * @return	void
+	 * @access public
 	 */
 	function menuConfig()	{
 		global $LANG, $TYPO3_CONF_VARS;
@@ -219,6 +208,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		$this->MOD_MENU = array(
 			'tt_content_showHidden' => 1,
 			'language' => $translatedLanguagesUids,
+			'showTranslationInfo' => 0,
 			'clip_parentPos' => '',
 			'clip' => '',
 		);
@@ -257,6 +247,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * Main function of the module.
 	 *
 	 * @return	void
+	 * @access public
 	 */
 	function main()    {
 		global $BE_USER,$LANG,$BACK_PATH;
@@ -270,7 +261,6 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		}
 
 		if ($access)    {
-
 				// Check if we have to update the pagetree:
 			if (t3lib_div::_GP('updatePageTree')) {
 				t3lib_BEfunc::getSetUpdateSignal('updatePageTree');
@@ -281,7 +271,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			$this->doc->docType= 'xhtml_trans';
 			$this->doc->backPath = $BACK_PATH;
 			$this->doc->divClass = '';
-			$this->doc->form='<form action="'.htmlspecialchars('index.php?'.$this->linkParams()).'" method="post" autocomplete="off">';
+			$this->doc->form='<form action="'.htmlspecialchars('index.php?'.$this->link_getParameters()).'" method="post" autocomplete="off">';
 
 				// Adding classic jumpToUrl function, needed for the function menu. Also, the id in the parent frameset is configured.
 			$this->doc->JScode = $this->doc->wrapScriptTags('
@@ -302,48 +292,25 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			$this->doc->JScode.= $CMparts[0];
 			$this->doc->postCode.= $CMparts[2];
 
-				// Go through the commands and check if we have to do some action:
-			$commands = array ('createNewRecord', 'unlinkRecord', 'deleteRecord','pasteRecord', 'makeLocalRecord', 'createNewTranslation', 'editLocalization');
-			foreach ($commands as $cmd) {
-				unset ($params);
-				$params = t3lib_div::_GP($cmd);
-				$function = 'cmd_'.$cmd;
-
-					// If the current function has a parameter passed by GET or POST, call the related function:
-				if ($params && is_callable(array ($this, $function))) {
-				 	$this->$function ($params);
-				}
-			}
-
-				// Show the "edit current page" screen along with the sidebar. The sidebar needs information which is only available after
-				// rendering the edit screen, that's why we delay the output. The sidebar will only be rendered at THIS point, if its position is "left"
-			$editPageScreen = $this->renderEditPageScreen ();
-			$sideBar = ($this->sideBarObj->position == 'left') ? $this->sideBarObj->render() : FALSE;
-
-				// Create make-shortcut-icon:
-			if ($BE_USER->mayMakeShortcut()) {
-				$editPageScreen .= '<br />'.$this->doc->makeShortcutIcon('id,altRoot',implode(',',array_keys($this->MOD_MENU)),$this->MCONF['name']);
-			}
-				// "Show hidden" checkbox:
-			$editPageScreen .= ' '.t3lib_BEfunc::getFuncCheck($this->id,'SET[tt_content_showHidden]',$this->MOD_SETTINGS['tt_content_showHidden'],'','').' '.$LANG->getLL('printconte_showHiddenElements','1');
+			$this->handleIncomingCommands();
 
 				// Start creating HTML output
 			$this->content .= $this->doc->startPage($LANG->getLL('title'));
 
-			if ($sideBar) {
+				// Show the "edit current page" screen along with the sidebar
+			$shortCut = ($BE_USER->mayMakeShortcut() ? '<br />'.$this->doc->makeShortcutIcon('id,altRoot',implode(',',array_keys($this->MOD_MENU)),$this->MCONF['name']) : '');
+			if ($this->sideBarObj->position == 'left') {
 				$this->content .= '
 					<table cellspacing="0" cellpadding="0" style="width:100%; height:550px; padding:0; margin:0;">
 						<tr>
-							<td style="vertical-align:top;">'.$sideBar.'</td>
-							<td style="vertical-align:top; padding-bottom:20px;" width="99%">'.$editPageScreen.'</td>
+							<td style="vertical-align:top;">'.$this->sideBarObj->render().'</td>
+							<td style="vertical-align:top; padding-bottom:20px;" width="99%">'.$this->render_editPageScreen ().$shortCut;'</td>
 						</tr>
 					</table>
 				';
 			} else {
-				$this->content .= $editPageScreen;
+				$this->content .= $this->render_editPageScreen ().$shortCut;
 			}
-			unset ($sideBar);
-			unset ($editPageScreen);
 
 		} else {	// No access or no current page uid:
 
@@ -370,6 +337,16 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		$this->content.=$this->doc->endPage();
 	}
 
+	/**
+	 * Echoes the HTML output of this module
+	 *
+	 * @return	void
+	 * @access public
+	 */
+	function printContent()    {
+		echo $this->content;
+	}
+
 
 
 
@@ -384,75 +361,45 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * Displays the default view of a page, showing the nested structure of elements.
 	 *
 	 * @return	string		The modules content
+	 * @access protected
 	 */
-	function renderEditPageScreen()    {
+	function render_editPageScreen()    {
 		global $LANG, $BE_USER, $TYPO3_CONF_VARS;
 
-			// If no element is in the clipboard, we set clipboardElInPath to true, which in the end disables the display of the paste icons:
-		$clipboardElInPath = (!trim($this->MOD_SETTINGS['clip'].$this->MOD_SETTINGS['clip_parentPos']) ? 1 : 0);
-
-			// If clipboard contains a record being copied, check if it is a flexible content element and if so, if it has sub elements:
-		$this->clipboardElIsFCEWithSubEl = FALSE;
-		if ($this->MOD_SETTINGS['clip'] == 'copy') {
-			$recordToBePasted = $this->xmlRelHndlObj->getRecord($this->MOD_SETTINGS['clip_parentPos']);
-			if ($recordToBePasted['CType'] == 'templavoila_pi1') {
-				$FCEDataStructureArr = $this->getDStree('tt_content', $recordToBePasted['uid']);
-				$numberOfSubElements = 0;
-				if (is_array ($FCEDataStructureArr['sub'])) {
-					foreach ($FCEDataStructureArr['sub'] as $sheetKey => $fieldsArr) {
-						if (is_array ($fieldsArr)) {
-							foreach ($fieldsArr as $fieldKey => $fieldArr) {
-								if (is_array ($fieldArr['el'])) {
-									$numberOfSubElements += count ($fieldArr['el']);
-								}
-							}
-						}
-					}
-				}
-				$this->clipboardElIsFCEWithSubEl = ($numberOfSubElements > 0);
-			}
-		}
 			// Reset internal variable which registers all used content elements:
 		$this->global_tt_content_elementRegister=array();
 
-			// Get current page record for later usage
-		$this->currentPageRecord = t3lib_BEfunc::getRecord('pages', $this->id);
-		$this->topPagePid = $this->id;
+			// Define the root element record:
+		$this->rootElementTable = is_array($this->altRoot) ? $this->altRoot['table'] : 'pages';
+		$this->rootElementUid = is_array($this->altRoot) ? $this->altRoot['uid'] : $this->id;
+		$this->rootElementRecord = t3lib_BEfunc::getRecordWSOL($this->rootElementTable, $this->rootElementUid, '*');
 
-			// Get data structure array for the page/content elements.
-			// Returns a BIG array reflecting the "treestructure" of the pages content elements.
-		if (is_array($this->altRoot))	{
-			#($this->editVersionUid ? $this->editVersionUid : $this->altRoot['uid'])
-			$dsArr = $this->getDStree($this->altRoot['table'], $this->altRoot['uid']);
-		} else {
-				// Get current page record for later usage
-/*			if ($this->editVersionUid && $this->editVersionUid != $this->id)	{
-				$this->currentPageRecord = t3lib_BEfunc::getRecord ('pages', $this->editVersionUid);
-				$this->topPagePid = $this->editVersionUid;
+			// Check if it makes sense to allow editing of this page and if not, show a message:
+		if ($this->rootElementTable == 'pages') {
+
+				// Initialize the special doktype class:
+			$specialDoktypesObj =& t3lib_div::getUserObj ('&tx_templavoila_mod1_specialdoktypes','');
+			$specialDoktypesObj->init($this);
+
+			$methodName = 'renderDoktype_'.$this->rootElementRecord['doktype'];
+			if (method_exists($specialDoktypesObj, $methodName)) {
+				$result = $specialDoktypesObj->$methodName($this->rootElementRecord);
+				if ($result !== FALSE) return $result;
 			}
-	*/
-
-				// Workspace overlay:
-			t3lib_BEfunc::workspaceOL('pages', $this->currentPageRecord);
-			if ($this->currentPageRecord['_ORIG_uid'] && $this->currentPageRecord['t3ver_swapmode']==0)	{
-				$this->topPagePid = $this->currentPageRecord['_ORIG_uid'];
-			}
-
-			$dsArr = $this->getDStree('pages', $this->topPagePid, '', $this->currentPageRecord);
 		}
-#debug($dsArr);
-			// Check if it makes sense to allow editing of this page and if it's not, show a message
-		switch ($this->currentPageRecord['doktype']) {
-			case 7:		// Mount Point
-				if ($this->currentPageRecord['mount_pid_ol']) {
-					return $content . $this->renderEditPageScreenMountPoint($this->id);
-				}
-			break;
-		}
+
+		$contentTreeArr = $this->getContentTree($this->rootElementTable, $this->rootElementRecord, $this->currentLanguageKey);
+		$this->rootElementLangDisable = $contentTreeArr['ds_meta']['langDisable'];
 
 			// Create a back button if neccessary:
 		if (is_array ($this->altRoot)) {
-			$content .= '<div style="text-align:right; width:100%; margin-bottom:5px;"><a href="index.php?id='.$this->id.'"><img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/goback.gif','').' title="'.htmlspecialchars($LANG->getLL ('goback')).'" alt="" /></a></div>';
+			$content = '<div style="text-align:right; width:100%; margin-bottom:5px;"><a href="index.php?id='.$this->id.'"><img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/goback.gif','').' title="'.htmlspecialchars($LANG->getLL ('goback')).'" alt="" /></a></div>';
+		}
+
+			// Add the localization module if localization is enabled:
+		if (!$this->rootElementLangDisable) {
+			$this->localizationObj =& t3lib_div::getUserObj ('&tx_templavoila_mod1_localization','');
+			$this->localizationObj->init($this);
 		}
 
 			// Hook for content at the very top (fx. a toolbar):
@@ -464,49 +411,11 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		}
 
 			// Display the nested page structure:
-		$content.= $this->renderFramework_allSheets($dsArr,'',$clipboardElInPath);
+		$content.= $this->render_framework_allSheets($contentTreeArr);
+
 		$content .= t3lib_BEfunc::cshItem('_MOD_web_txtemplavoilaM1', 'pagemodule', $this->doc->backPath,'|<br/>');
 		$content .= t3lib_BEfunc::cshItem('_MOD_web_txtemplavoilaM1', '', $this->doc->backPath,'<hr/>|What is the TemplaVoila Page module?');
 
-		return $content;
-	}
-
-	/**
-	 * Displays the edit page screen if the currently selected page is of the doktype "Mount Point"
-	 *
-	 * @return	string		The modules content
-	 */
-	function renderEditPageScreenMountPoint()    {
-		global $LANG, $BE_USER, $TYPO3_CONF_VARS;
-
-			// Put together the records icon including content sensitive menu link wrapped around it:
-		$recordIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/i/pages_mountpoint.gif','').' style="text-align: center; vertical-align: middle;" width="18" height="16" border="0" title="'.htmlspecialchars('[pages]'.$extPath).'" alt="" />';
-		$recordIcon = $this->doc->wrapClickMenuOnIcon($recordIcon, 'pages', $this->id, 1, '&callingScriptId='.rawurlencode($this->doc->scriptID));
-
-		$viewPageIcon = '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::viewOnClick($this->id, $this->doc->backPath, t3lib_BEfunc::BEgetRootLine($this->id))).'">';
-		$viewPageIcon .= '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/zoom.gif','width="12" height="12"').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.showPage',1).'" hspace="3" alt="" style="text-align: center; vertical-align: middle;" />';
-
-		$mountSourcePageRecord = t3lib_beFunc::getRecordWSOL('pages', $this->currentPageRecord['mount_pid']);
-
-		$content = '
-			<table border="0" cellpadding="2" cellspacing="0" style="border: 1px solid black; margin-bottom:5px; width:100%">
-				<tr style="background-color: '.$this->doc->bgColor2.';">
-					<td nowrap="nowrap" colspan="2">
-						'.$recordIcon.'
-						'.$viewPageIcon.'
-						</a>
-						'.htmlspecialchars($this->currentPageRecord['title']).'
-					</td>
-				</tr>
-				<tr>
-					<td style="width:80%;">
-					'.htmlspecialchars(sprintf ($LANG->getLL ('cannotedit_doktypemountpoint'), $mountSourcePageRecord['title'])).'<br /><br />
-					<strong><a href="index.php?id='.$this->currentPageRecord['mount_pid'].'">'.htmlspecialchars($LANG->getLL ('jumptomountsourcepage')).'</a></strong>
-					</td>
-					<td>&nbsp;</td>
-				</tr>
-			</table>
-		';
 		return $content;
 	}
 
@@ -521,323 +430,216 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 *******************************************/
 
 	/**
-	 * @param	array		$dsInfo: DataStructure info array (the whole tree)
-	 * @param	string		$parentPos: Pointer to parent element: table:id:sheet:structure language:fieldname:value language:counter (position in list)
-	 * @param	boolean		$clipboardElInPath: Tells whether any element registered on the clipboard is found in the current "path" of the recursion. If true, it normally means that no paste-in symbols are shown since elements are not allowed to be pasted/referenced to a position within themselves (would result in recursion).
-	 * @param	boolean		$referenceInPath: Is set to the number of references there has been in previous recursions of this function
+	 * @param	array		$contentTreeArr: DataStructure info array (the whole tree)
+	 * @param	array		$parentPointer: Flexform Pointer to parent element
 	 * @return	string		HTML
+	 * @access protected
+	 * @see	render_framework_singleSheet()
 	 */
-	function renderFrameWork_allSheets($dsInfo, $parentPos='', $clipboardElInPath=0, $referenceInPath=0) {
+	function render_framework_allSheets($contentTreeArr, $parentPointer=array()) {
 
 			// If more than one sheet is available, render a dynamic sheet tab menu, otherwise just render the single sheet framework
-		if (is_array($dsInfo['sub']) && (count($dsInfo['sub'])>1 || !isset($dsInfo['sub']['sDEF'])))	{
+		if (is_array($contentTreeArr['sub']) && (count($contentTreeArr['sub'])>1 || !isset($contentTreeArr['sub']['sDEF'])))	{
 			$parts = array();
-			foreach($dsInfo['sub'] as $sheetKey => $sheetInfo)	{
+			foreach($contentTreeArr['sub'] as $sheetKey => $sheetInfo)	{
 
 				$this->containedElementsPointer++;
 				$this->containedElements[$this->containedElementsPointer] = 0;
-				$frContent = $this->renderFrameWork($dsInfo, $parentPos, $clipboardElInPath, $referenceInPath, $sheetKey);
+				$frContent = $this->render_framework_singleSheet($contentTreeArr, $sheetKey, $parentPointer);
 
 				$parts[] = array(
-					'label' => ($dsInfo['meta'][$sheetKey]['title'] ? $dsInfo['meta'][$sheetKey]['title'] : $sheetKey).' ['.$this->containedElements[$this->containedElementsPointer].']',
-					'description' => $dsInfo['meta'][$sheetKey]['description'],
-					'linkTitle' => $dsInfo['meta'][$sheetKey]['short'],
+					'label' => ($contentTreeArr['meta'][$sheetKey]['title'] ? $contentTreeArr['meta'][$sheetKey]['title'] : $sheetKey).' ['.$this->containedElements[$this->containedElementsPointer].']',
+					'description' => $contentTreeArr['meta'][$sheetKey]['description'],
+					'linkTitle' => $contentTreeArr['meta'][$sheetKey]['short'],
 					'content' => $frContent,
 				);
 
 				$this->containedElementsPointer--;
 			}
-			return $this->doc->getDynTabMenu($parts,'TEMPLAVOILA:pagemodule:'.$parentPos);
+			return $this->doc->getDynTabMenu($parts,'TEMPLAVOILA:pagemodule:'.$this->apiObj->flexform_getStringFromPointer($parentPointer));
 		} else {
-			return $this->renderFrameWork($dsInfo, $parentPos, $clipboardElInPath, $referenceInPath, 'sDEF');
+			return $this->render_framework_singleSheet($contentTreeArr, 'sDEF', $parentPointer);
 		}
 	}
 
 	/**
-	 * Renders the display framework.
-	 * Calls itself recursively
+	 * Renders the display framework. Calls itself recursively
 	 *
-	 * @param	array		$dsInfo: DataStructure info array (the whole tree)
-	 * @param	string		$parentPos: Pointer to parent element: table:id:sheet:structure language:fieldname:value language:counter (position in list)
-	 * @param	boolean		$clipboardElInPath: Tells whether any element registered on the clipboard is found in the current "path" of the recursion. If true, it normally means that no paste-in symbols are shown since elements are not allowed to be pasted/referenced to a position within themselves (would result in recursion).
-	 * @param	boolean		$referenceInPath: Is set to the number of references there has been in previous recursions of this function
+	 * @param	array		$contentTreeArr: DataStructure info array (the whole tree)
+	 * @param	array		$parentPointer: Flexform pointer to parent element
 	 * @param	string		$sheet: The sheet key of the sheet which should be rendered
 	 * @return	string		HTML
+	 * @access protected
+	 * @see	render_framework_singleSheet()
 	 */
-	function renderFrameWork($dsInfo, $parentPos, $clipboardElInPath, $referenceInPath, $sheet) {
-		global $LANG, $TYPO3_CONF_VARS, $TCA;
+	function render_framework_singleSheet($contentTreeArr, $sheet, $parentPointer=array()) {
+		global $TYPO3_DB, $LANG, $TYPO3_CONF_VARS, $TCA;
 
-			// First prepare user defined objects (if any) for hooks which extend this function:
-		$hookObjectsArr = array();
-		if (is_array ($TYPO3_CONF_VARS['EXTCONF']['templavoila']['mod1']['renderFrameworkClass'])) {
-			foreach ($TYPO3_CONF_VARS['EXTCONF']['templavoila']['mod1']['renderFrameworkClass'] as $classRef) {
-				$hookObjectsArr[] = &t3lib_div::getUserObj ($classRef);
-			}
+		$hookObjectsArr = $this->hooks_prepareObjectsArray ('renderFrameWorkClass');
+
+		$elementRecord = t3lib_beFunc::getRecordWSOL($contentTreeArr['el']['table'], $contentTreeArr['el']['uid'], '*');
+		$elementBelongsToCurrentPage = $contentTreeArr['el']['table'] == 'pages' || $contentTreeArr['el']['pid'] == $this->rootElementUid;
+		$correctedElementUid = t3lib_beFunc::wsMapId ($contentTreeArr['el']['table'],$contentTreeArr['el']['uid']);
+
+			// Prepare the record icon including a content sensitive menu link wrapped around it:
+		$recordIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,$contentTreeArr['el']['icon'],'').' style="text-align: center; vertical-align: middle;" width="18" height="16" border="0" title="'.htmlspecialchars('['.$contentTreeArr['el']['table'].':'.$contentTreeArr['el']['uid'].']').'" alt="" />';
+		$titleBarLeftButtons = $this->doc->wrapClickMenuOnIcon($recordIcon,$contentTreeArr['el']['table'], $correctedElementUid, 1,'&amp;callingScriptId='.rawurlencode($this->doc->scriptID), 'new,copy,cut,pasteinto,pasteafter,delete');
+
+			// Prepare table specific settings:
+		switch ($contentTreeArr['el']['table']) {
+
+			case 'pages' :
+
+#				$elementTitlebarColor = isset ($this->currentDataStructureArr['pages']['ROOT']['tx_templavoila']['pageModule']['titleBarColor']) ? $this->currentDataStructureArr['pages']['ROOT']['tx_templavoila']['pageModule']['titleBarColor'] : $this->doc->bgColor2;
+#				$elementTitlebarStyle = 'background-color: '.$elementTitlebarColor;
+
+				$titleBarLeftButtons .= $this->link_edit('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/edit2.gif','').' title="'.htmlspecialchars($LANG->sL('LLL:EXT:lang/locallang_mod_web_list.xml:editPage')).'" alt="" style="text-align: center; vertical-align: middle; border:0;" />',$contentTreeArr['el']['table'],$contentTreeArr['el']['uid']);
+				$titleBarRightButtons = '';
+
+				$viewPageOnClick = 'onclick= "'.htmlspecialchars(t3lib_BEfunc::viewOnClick($correctedElementUid, $this->doc->backPath, t3lib_BEfunc::BEgetRootLine($correctedElementUid),'','',($this->currentLanguageUid?'&L='.$this->currentLanguageUid:''))).'"';
+				$viewPageIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/zoom.gif','width="12" height="12"').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.xml:labels.showPage',1).'" hspace="3" alt="" style="text-align: center; vertical-align: middle;" />';
+				$titleBarLeftButtons .= '<a href="#" '.$viewPageOnClick.'>'.$viewPageIcon.'</a>';
+
+				$contentWrapPre .= ($this->sideBarObj->position == 'toprows' || $this->sideBarObj->position == 'toptabs') ? $this->sideBarObj->render() : '';
+
+			break;
+
+			case 'tt_content' :
+
+ 				$elementTitlebarColor = ($elementBelongsToCurrentPage ? $this->doc->bgColor5 : $this->doc->bgColor6);
+				$elementTitlebarStyle = 'background-color: '.$elementTitlebarColor;
+
+				$languageUid = $contentTreeArr['el']['sys_language_uid'];
+
+					// Create CE specific buttons:
+				$linkMakeLocal = !$elementBelongsToCurrentPage ? $this->link_makeLocal('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,t3lib_extMgm::extRelPath('templavoila').'mod1/makelocalcopy.gif','').' title="'.$LANG->getLL('makeLocal').'" border="0" alt="" />', $parentPointer) : '';
+				$linkUnlink = $this->link_unlink('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/garbage.gif','').' title="'.$LANG->getLL('unlinkRecord').'" border="0" alt="" />', $parentPointer, FALSE);
+				$linkEdit = ($elementBelongsToCurrentPage ? $this->link_edit('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/edit2.gif','').' title="'.$LANG->getLL ('editrecord').'" border="0" alt="" />',$contentTreeArr['el']['table'],$contentTreeArr['el']['uid']) : '');
+
+				$titleBarRightButtons = $linkEdit . $this->clipboardObj->element_getSelectButtons ($parentPointer) . $linkMakeLocal . $linkUnlink;
+
+			break;
 		}
 
-		if (!is_array($this->currentDataStructureArr[$dsInfo['el']['table']]))		{
-			$this->currentDataStructureArr[$dsInfo['el']['table']] = array();
+			// Prepare the language icon:
+		$languageLabel = htmlspecialchars ($this->allAvailableLanguages[$contentTreeArr['el']['sys_language_uid']]['title']);
+		$languageIcon = $this->allAvailableLanguages[$languageUid]['flagIcon'] ? '<img src="'.$this->allAvailableLanguages[$languageUid]['flagIcon'].'" title="'.$languageLabel.'" alt="'.$languageLabel.'" style="text-align: center; vertical-align: middle;" />' : ($languageLabel && $languageUid ? '['.$languageLabel.']' : '');
+
+			// Create warning messages if neccessary:
+		$warnings = '';
+		if ($this->global_tt_content_elementRegister[$contentTreeArr['el']['uid']] > 1) {
+			$warnings .= '<br/>'.$this->doc->icons(2).' <em>'.htmlspecialchars(sprintf($LANG->getLL('warning_elementusedmorethanonce',''), $this->global_tt_content_elementRegister[$contentTreeArr['el']['uid']], $contentTreeArr['el']['uid'])).'</em>';
 		}
 
-			// Take care of the currently selected language, for both concepts - with langChildren enabled and disabled
-		$langDisable = intval($dsInfo['ds_meta']['langDisable']);
-		$langChildren = intval($dsInfo['ds_meta']['langChildren']);
-		$lKey = $langDisable ? 'lDEF' : ($langChildren ? 'lDEF' : 'l'.$this->currentLanguageKey);
-		$vKey = $langDisable ? 'vDEF' : ($langChildren ? 'v'.$this->currentLanguageKey : 'vDEF');
-#debug(array('$lKey'=>$lKey,'$vKey'=>$vKey),'renderFrameWork');
-			// The $isLocal flag is used to denote whether an element belongs to the current page or not. If NOT the $isLocal flag means (for instance) that the title bar will be colored differently to show users that this is a foreign element not from this page.
-		$isLocal = $dsInfo['el']['table']=='pages' || $dsInfo['el']['pid']==$this->topPagePid;	// Pages have the local style
-		if (!$isLocal) { $referenceInPath++; }
+			// Finally assemble the table:
+		$finalContent ='
+			<table cellpadding="0" cellspacing="0" style="width: 100%; border: 1px solid black; margin-bottom:5px;">
+				<tr style="'.$elementTitlebarStyle.';">
+					<td nowrap="nowrap" style="vertical-align:top;">'.
+						$languageIcon.
+						$titleBarLeftButtons.
+						($elementBelongsToCurrentPage?'':'<em>').htmlspecialchars($contentTreeArr['el']['title']).($elementBelongsToCurrentPage ? '' : '</em>').
+						$warnings.
+					'</td>
+					<td nowrap="nowrap" style="text-align:right; vertical-align:top;">'.
+						$titleBarRightButtons.
+					'</td>
+				</tr>
+				<tr>
+					<td colspan="2">'.
+						$contentWrapPre.
+						$this->render_framework_subElements ($contentTreeArr, $sheet).
+						$contentTreeArr['el']['previewContent'].
+						($this->MOD_SETTINGS['showTranslationInfo'] ? $this->render_localizationInfoTable ($contentTreeArr, $parentPointer) : '').
+					'</td>
+				</tr>
+			</table>
+		';
 
-			// Set whether the current element is registered for copy/cut/reference or not:
-		$clipActive_copy = ($this->MOD_SETTINGS['clip']=='copy' && $this->MOD_SETTINGS['clip_parentPos']==$parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].'/'.$isLocal ? '_h' : '');
-		$clipActive_cut = ($this->MOD_SETTINGS['clip']=='cut' && $this->MOD_SETTINGS['clip_parentPos']==$parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].'/'.$isLocal ? '_h' : '');
-		$clipActive_ref = ($this->MOD_SETTINGS['clip']=='ref' && $this->MOD_SETTINGS['clip_parentPos']==$parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].'/'.$isLocal ? '_h' : '');
-		$clipboardElInPath = trim($clipActive_copy.$clipActive_cut.$clipActive_ref)||$clipboardElInPath?1:0;
+		return $finalContent;
+	}
 
-			// Set additional information to the title-attribute of the element icon:
-		$extPath = '';
-		if (!$isLocal)	{
-			$extPath = ' - '.$LANG->getLL('path').': '.t3lib_BEfunc::getRecordPath($dsInfo['el']['pid'],$this->perms_clause,30);
-		}
+	/**
+	 * Renders the sub elements of the given elementContentTree array. This function basically
+	 * renders the "new" and "paste" buttons for the parent element and then traverses through
+	 * the sub elements (if any exist). The sub element's (preview-) content will be rendered
+	 * by render_framework_singleSheet().
+	 *
+	 * Calls render_framework_allSheets() and therefore generates a recursion.
+	 *
+	 * @param	array		$elementContentTreeArr: Content tree starting with the element which possibly has sub elements
+	 * @param	string		$sheet: Key of the sheet we want to render
+	 * @return	string		HTML output (a table) of the sub elements and some "insert new" and "paste" buttons
+	 * @access protected
+	 * @see render_framework_allSheets(), render_framework_singleSheet()
+	 */
+	function render_framework_subElements ($elementContentTreeArr, $sheet){
+		global $LANG;
 
-		$rulesStatus = $this->checkRulesForElement($dsInfo['el']['table'], $dsInfo['el']['id']);
-		if (is_array($rulesStatus['error'])) {
-			foreach ($rulesStatus['error'] as $errorElement) {
-				$uid = is_null ($errorElement['uid']) ? 'NULL' : $errorElement['uid'];
-				$this->elementBlacklist[$uid][$errorElement['fieldname']][] = array (
-					'position' => $errorElement['position'],
-					'message' => $errorElement['message']
-				);
-			}
-		}
+		if (!is_array ($elementContentTreeArr['sub'][$sheet])) return '';
 
-			// Evaluating the rules and set colors to warning scheme if a rule does not apply
-		$elementBackgroundStyle = '';
-		$elementPageTitlebarColor = isset ($this->currentDataStructureArr['pages']['ROOT']['tx_templavoila']['pageModule']['titleBarColor']) ? $this->currentDataStructureArr['pages']['ROOT']['tx_templavoila']['pageModule']['titleBarColor'] : $this->doc->bgColor2;
-		$elementPageTitlebarStyle = 'background-color: '.($dsInfo['el']['table']=='pages' ? $elementPageTitlebarColor : ($isLocal ? $this->doc->bgColor5 : $this->doc->bgColor6)) .';';
-		$elementCETitlebarStyle = 'background-color: '.$this->doc->bgColor4.';';
-		$headerCellStyle = 'background-color: '.$this->doc->bgColor4.';';
-		$cellStyle = 'border: 1px dashed #666666;';
+		$output = '';
+		$cells = array();
+		$headerCells = array();
 
-		$errorLineBefore = $errorLineWihtin = $errorLineAfter = $errorLineCell = '';
+		foreach($elementContentTreeArr['sub'][$sheet] as $fieldID => $fieldContent)	{
 
-		$parentPosArr = explode (':',$parentPos);
-		$currentFieldName = $parentPosArr[4];
+			$cellContent = '';
 
-		if (is_array ($this->elementBlacklist[$dsInfo['el']['id']][$currentFieldName])) {
-			foreach ($this->elementBlacklist[$dsInfo['el']['id']][$currentFieldName] as $tmpStatusArr) {
-				switch ($tmpStatusArr['position']) {
-					case 1:
-						$elementBackgroundStyle = 'background-color: '. ($GLOBALS['TBE_STYLES']['templavoila_bgColorWarning'] ? $GLOBALS['TBE_STYLES']['templavoila_bgColorWarning']:'#f4b0b0') .';';
-						$elementPageTitlebarStyle = 'background-color: '. ($GLOBALS['TBE_STYLES']['templavoila_bgColorPageTitleWarning'] ? $GLOBALS['TBE_STYLES']['templavoila_bgColorPageTitleWarning']:'#ef4545') .';';
-						$elementCETitlebarStyle = 'background-color: '. ($GLOBALS['TBE_STYLES']['templavoila_bgColorCETitleWarning'] ? $GLOBALS['TBE_STYLES']['templavoila_bgColorCETitleWarning']:'#ef7c7c') .';';
-						$errorLineWithin .= $this->doc->rfw($tmpStatusArr['message']).'<br />';
-					break;
-					case -1:
-						$errorLineBefore .= $this->doc->rfw($tmpStatusArr['message']).'<br />';
-					break;
-					case 2:
-						$errorLineAfter .= $this->doc->rfw($tmpStatusArr['message']).'<br />';
-					default:
+				// Create flexform pointer pointing to "before the first sub element":
+			$subElementPointer = array (
+				'table' => $elementContentTreeArr['el']['table'],
+				'uid' => $elementContentTreeArr['el']['uid'],
+				'sheet' => $sheet,
+				'sLang' => $elementContentTreeArr['sub'][$sheet][$fieldID]['meta']['sLang'],
+				'field' => $fieldID,
+				'vLang' => $elementContentTreeArr['sub'][$sheet][$fieldID]['meta']['vLang'],
+				'position' => 0
+			);
+
+				// "New" and "Paste" icon:
+			$newIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/new_el.gif','').' style="text-align: center; vertical-align: middle;" vspace="5" hspace="1" border="0" title="'.$LANG->getLL ('createnewrecord').'" alt="" />';
+			$cellContent .= $this->link_new($newIcon, $subElementPointer);
+			$cellContent .= $this->clipboardObj->element_getPasteButtons ($subElementPointer);
+
+				// Render the list of elements (and possibly call itself recursively if needed):
+			if (is_array($fieldContent['el_list']))	 {
+				foreach($fieldContent['el_list'] as $position => $subElementKey)	{
+					$subElementArr = $fieldContent['el'][$subElementKey];
+					if (!$subElementArr['hideInDisplay'])	{
+						$this->containedElements[$this->containedElementsPointer]++;
+
+							// Modify the flexform pointer so it points to the position of the curren sub element:
+						$subElementPointer ['position'] = $position;
+
+						$cellContent .= $this->render_framework_allSheets($subElementArr, $subElementPointer);
+
+							// "New" and "Paste" icon:
+						$newIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/new_el.gif','').' style="text-align: center; vertical-align: middle;" vspace="5" hspace="1" border="0" title="'.$LANG->getLL ('createnewrecord').'" alt="" />';
+						$cellContent .= $this->link_new($newIcon, $subElementPointer);
+
+						$cellContent .= $this->clipboardObj->element_getPasteButtons ($subElementPointer);
+					}
 				}
 			}
+
+				// Add cell content to registers:
+			$headerCells[]='<td valign="top" width="'.round(100/count($elementContentTreeArr['sub'][$sheet])).'%" style="background-color: '.$this->doc->bgColor4.'; padding-top:0; padding-bottom:0;">'.$LANG->sL($fieldContent['meta']['title'],1).'</td>';
+			$cells[]='<td valign="top" width="'.round(100/count($elementContentTreeArr['sub'][$sheet])).'%" style="border: 1px dashed #666666; padding: 5px 5px 5px 5px;">'.$cellContent.'</td>';
+
 		}
 
-			// Creating the rule compliance icon, $rulesStatus has been evaluated earlier
-		if (!is_null($rulesStatus['ok'])) {
-			$title = ($rulesStatus['ok'] === true ? $LANG->getLL ('ruleapplies') : $LANG->getLL ('rulefails'));
-			$ruleIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,t3lib_extMgm::extRelPath('templavoila').'mod1/'.($rulesStatus['ok'] === true ? 'green':'red').'led.gif','').' title="'.$title.'" border="0" alt="" style="text-align: center; vertical-align: middle;" />&nbsp;';
-		}
-
-			// Traversing the content areas ("zones" - those shown side-by-side with dotted lines in module) of the current element.
-			// This part will be skipped, if we're already on the element level, ie. it will be only active if we currently parse an element with sub-elements
-		$cells=array();
-		$headerCells=array();
-		$metaInfoAreaArr = array();
-
-		if (is_array($dsInfo['sub'][$sheet]))	{
-			foreach($dsInfo['sub'][$sheet] as $fieldID => $fieldContent)	{
-				$counter=0;
-
-					// Only show fields and values of a flexible content element if either the currently selected language is the DEF language, or the langDisable flag of the FCE's data structure is not set
-				if (!$fieldContent['meta']['langDisable'] || $this->currentLanguageKey == 'DEF') {
-
-						// "New" and "Paste" icon:
-					$elList = '';
-					$elList.=$this->linkNew('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/new_el.gif','').' style="text-align: center; vertical-align: middle;" vspace="5" border="0" title="'.$LANG->getLL ('createnewrecord').'" alt="" />',$dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$lKey.':'.$fieldID.':'.$vKey.':'.$counter);
-
-						// If the clipboard contains an element, display paste icons:
-					if (!$clipboardElInPath) {
-						if ($this->MOD_SETTINGS['clip']=='copy' && $this->clipboardElIsFCEWithSubEl) {
-							$elList.=$this->linkPaste('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/clip_pasteafter.gif','').' style="text-align: center; vertical-align: middle;" hspace="1" vspace="5" border="0" title="'.$LANG->getLL ('pastefce_andcopyallsubs').'" alt="" />',$this->MOD_SETTINGS['clip_parentPos'], $dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$lKey.':'.$fieldID.':'.$vKey.':'.$counter, 'copy');
-							$elList.=$this->linkPaste('<img'.t3lib_iconWorks::skinImg('clip_pastesubref.gif','').' style="text-align: center; vertical-align: middle;" hspace="1" vspace="5" border="0" title="'.$LANG->getLL ('pastefce_andreferencesubs').'" alt="" />',$this->MOD_SETTINGS['clip_parentPos'], $dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$lKey.':'.$fieldID.':'.$vKey.':'.$counter, 'copyref');
-						} else {
-							$elList.=$this->linkPaste('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/clip_pasteafter.gif','').' style="text-align: center; vertical-align: middle;" hspace="1" vspace="5" border="0" title="'.$LANG->getLL ('pasterecord').'" alt="" />',$this->MOD_SETTINGS['clip_parentPos'], $dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$lKey.':'.$fieldID.':'.$vKey.':'.$counter, $this->MOD_SETTINGS['clip']);
-						}
-					}
-
-						// Render the list of elements (and possibly call itself recursively if needed):
-					if (is_array($fieldContent['el_list']))	 {
-						foreach($fieldContent['el_list'] as $counter => $k)	{
-							$v = $fieldContent['el'][$k];
-							if (!$v['hideInDisplay'])	{
-
-								$this->containedElements[$this->containedElementsPointer]++;
-								$elList.=$this->renderFrameWork_allSheets($v,$dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$lKey.':'.$fieldID.':'.$vKey.':'.$counter,$clipboardElInPath,$referenceInPath);
-
-									// "New" and "Paste" icon:
-								$elList.=$this->linkNew('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/new_el.gif','').' style="text-align: center; vertical-align: middle;" vspace="5" hspace="1" border="0" title="'.$LANG->getLL ('createnewrecord').'" alt="" />',$dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$lKey.':'.$fieldID.':'.$vKey.':'.$counter);
-								if (!$clipboardElInPath) {
-
-										// If the clipboard contains an element, display paste icons:
-									if ($this->MOD_SETTINGS['clip']=='copy' && $this->clipboardElIsFCEWithSubEl) {
-										$elList.=$this->linkPaste('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/clip_pasteafter.gif','').' style="text-align: center; vertical-align: middle;" vspace="5" border="0" title="'.$LANG->getLL ('pastefce_andcopyallsubs').'" alt="" />',$this->MOD_SETTINGS['clip_parentPos'], $dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$lKey.':'.$fieldID.':'.$vKey.':'.$counter, 'copy');
-										$elList.=$this->linkPaste('<img'.t3lib_iconWorks::skinImg('clip_pastesubref.gif','').' style="text-align: center; vertical-align: middle;" vspace="5" hspace="1" border="0" title="'.$LANG->getLL ('pastefce_andreferencesubs').'" alt="" />',$this->MOD_SETTINGS['clip_parentPos'], $dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$lKey.':'.$fieldID.':'.$vKey.':'.$counter, 'copyref');
-									} else {
-										$elList.=$this->linkPaste('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/clip_pasteafter.gif','').' style="text-align: center; vertical-align: middle;" vspace="5" border="0" title="'.$LANG->getLL ('pasterecord').'" alt="" />',$this->MOD_SETTINGS['clip_parentPos'], $dsInfo['el']['table'].':'.$dsInfo['el']['id'].':'.$sheet.':'.$lKey.':'.$fieldID.':'.$vKey.':'.$counter,$this->MOD_SETTINGS['clip']);
-									}
-								}
-							}
-						}
-					}
-
-						// Check if rules-related errors must be displayed for this field at the very beginning
-					if (is_array ($this->elementBlacklist['NULL'][$fieldID])) {
-						foreach ($this->elementBlacklist['NULL'][$fieldID] as $tmpStatusArr) {
-							$headerCellStyle = 'background-color: '. ($GLOBALS['TBE_STYLES']['templavoila_bgColorCETitleWarning'] ? $GLOBALS['TBE_STYLES']['templavoila_bgColorCETitleWarning']:'#ef7c7c') .';';
-							$cellStyle = 'border: 1px dashed red; ';
-							$errorLineCell .= $this->doc->rfw($tmpStatusArr['message']).'<br />';
-						}
-					}
-						// Add cell content to registers:
-					$headerCells[]='<td valign="top" width="'.round(100/count($dsInfo['sub'][$sheet])).'%" style="'.$headerCellStyle.' padding-top:0; padding-bottom:0;">'.$LANG->sL($fieldContent['meta']['title'],1).'</td>';
-					$cells[]='<td valign="top" width="'.round(100/count($dsInfo['sub'][$sheet])).'%" style="'.$cellStyle.' padding: 5px 5px 5px 5px;">'.$errorLineCell.$elList.'</td>';
-				} else {
-					$cells[]='
-						<td valign="top" width="'.round(100/count($dsInfo['sub'][$sheet])).'%" style="'.$cellStyle.' padding: 5px 5px 5px 5px;">
-							<em>'.htmlspecialchars ($LANG->getLL('willbereplacedbydefaultlanguage')).'</em>
-						</td>
-					';
-				}
-			}
-		}
-
-			// Compile preview content for the current element:
-		$content = is_array($dsInfo['el']['previewContent']) ? implode('<br />', $dsInfo['el']['previewContent']).'<br />' : '';
-
-			// Wrap workspace notification colors:
-		if ($dsInfo['el']['_ORIG_uid'])	{
-			$content = '<div class="ver-element">'.$content.'</div>';
-		}
-
-			// Add language icon (which will be displayed later on):
-		$langLabel = htmlspecialchars ($this->allAvailableLanguages[$dsInfo['el']['sys_language_uid']]['title']);
-		$langIcon = $this->allAvailableLanguages[$dsInfo['el']['sys_language_uid']]['flagIcon'] ?
-					'<img src="'.$this->allAvailableLanguages[$dsInfo['el']['sys_language_uid']]['flagIcon'].'" title="'.$langLabel.'" alt="'.$langLabel.'" style="text-align: center; vertical-align: middle;" />' :
-					($langLabel && $dsInfo['el']['sys_language_uid'] ? '['.$langLabel.']' : '');
-
-			// Compile the content areas for the current element (basically what was put together above):
+			// Compile the content area for the current element (basically what was put together above):
 		if (count ($headerCells) || count ($cells)) {
-
-				// Displaying warning for container content elements if localization is enabled:
-			if (!$this->modTSconfig['properties']['disableContainerElementLocalizationWarning'] && $dsInfo['el']['table'] === 'tt_content' && $dsInfo['el']['CType'] === 'templavoila_pi1' && !$dsInfo['ds_meta']['langDisable'])	{
-				if ($dsInfo['ds_meta']['langChildren'])	{
-					if (!$this->modTSconfig['properties']['disableContainerElementLocalizationWarning_warningOnly']) {
-						$content .= $this->doc->icons(2).'<b>This container element has localization enabled but with inheritance (&lt;langChildren&gt; = 1). This situation might produce confusing displays in TemplaVoila and you are encouraged to disable localization of this container element completely by setting &lt;langDisable&gt; = 1. Please inform the system administrator!</b>';
-					}
-				} else {
-					$content .= $this->doc->icons(3).'<b>WARNING: This container element has localization without inheritance enabled (&lt;langChildren&gt; = 0). This is most likely a misconfiguration since the localization features of TemplaVoila does not support localized container fields in the native interface! Please inform the system administrator!</b>';
-				}
-			}
-
-			$content .= '
+			$output = '
 				<table border="0" cellpadding="2" cellspacing="2" width="100%">
-					<tr>'.(count($headerCells) ? implode('',$headerCells) : '<td>&nbsp;</td>').'</tr>
-					<tr>'.(count($cells) ? implode('',$cells) : '<td>&nbsp;</td>').'</tr>
+					<tr>'.(count($headerCells) ? implode('', $headerCells) : '<td>&nbsp;</td>').'</tr>
+					<tr>'.(count($cells) ? implode('', $cells) : '<td>&nbsp;</td>').'</tr>
 				</table>
 			';
 		}
 
-			// Put together the records icon including content sensitive menu link wrapped around it:
-		$recordIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,$dsInfo['el']['icon'],'').' style="text-align: center; vertical-align: middle;" width="18" height="16" border="0" title="'.htmlspecialchars('['.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].']'.$extPath).'" alt="" />';
-		$recordIcon = $this->doc->wrapClickMenuOnIcon($recordIcon,$dsInfo['el']['table'],$dsInfo['el']['id'],1,'&callingScriptId='.rawurlencode($this->doc->scriptID), 'new,copy,cut,pasteinto,pasteafter,delete');
-
-#		$realDelete = $isLocal;	// content elements that are NOT references from other pages will be deleted when unlinked
-		$realDelete = FALSE;	// Eventually it seems that deleting content elements is not a good long term idea. Therefore, regardless of situation, we ALWAYS unlink - unused Content Elements can be cleaned up by some other tool some other day.
-
-		$linkCustom = $linkCopy = $linkCut = $linkRef = $linkUnlink = $linkMakeLocal = $titleBarTDParams = $contentWrapPre = $contentWrapPost = '';
-
-		if ($dsInfo['el']['table']!='tt_content')	{
-
-			$viewPageIcon = '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::viewOnClick($dsInfo['el']['table']=='pages'?$dsInfo['el']['id']:$dsInfo['el']['pid'],$this->doc->backPath,t3lib_BEfunc::BEgetRootLine($dsInfo['el']['id']),'','',($this->currentLanguageUid?'&L='.$this->currentLanguageUid:''))).'">'.
-				'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/zoom.gif','width="12" height="12"').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.showPage',1).'" hspace="3" alt="" style="text-align: center; vertical-align: middle;" />'.
-				'</a>';
-			if ($this->sideBarObj->position == 'toprows' || $this->sideBarObj->position == 'toptabs') {
-				$contentWrapPre .= $this->sideBarObj->render();
-			}
-		} else {
-			$linkMakeLocal = (!$isLocal && $referenceInPath<=1) ? $this->linkMakeLocal('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,t3lib_extMgm::extRelPath('templavoila').'mod1/makelocalcopy.gif','').' title="'.$LANG->getLL('makeLocal').'" border="0" alt="" />', $parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].'/'.$isLocal.'/'.$this->id) : '';
-			$linkCopy = $isLocal ? $this->linkCopyCut('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/clip_copy'.$clipActive_copy.'.gif','').' title="'.$LANG->getLL ('copyrecord').'" border="0" alt="" />',($clipActive_copy ? '' : $parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].'/'.$isLocal),'copy') : '';
-			$linkCut = $this->linkCopyCut('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/clip_cut'.$clipActive_cut.'.gif','').' title="'.$LANG->getLL ('cutrecord').'" border="0" alt="" />',($clipActive_cut ? '' : $parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].'/'.$isLocal),'cut');
-			$linkRef = $this->linkCopyCut('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,t3lib_extMgm::extRelPath('templavoila').'mod1/clip_ref'.$clipActive_ref.'.gif','').' title="'.$LANG->getLL ('createreference').'" border="0" alt="" />',($clipActive_ref ? '' : $parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].'/'.$isLocal),'ref');
-   			$linkUnlink = $this->linkUnlink('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/garbage.gif','').' title="'.$LANG->getLL($realDelete ? 'deleteRecord' : 'unlinkRecord').'" border="0" alt="" />', $parentPos.'/'.$dsInfo['el']['table'].':'.$dsInfo['el']['id'].'/'.$isLocal, $realDelete);
-
-			if (is_array ($dsInfo['sub']) && $this->altRoot['uid'] != $dsInfo['el']['id']) {
-				$viewSubElementsUrl = 'index.php?id='.$this->id.
-					'&altRoot[table]='.rawurlencode($dsInfo['el']['table']).
-					'&altRoot[uid]='.$dsInfo['el']['id'].
-					'&altRoot[field_flex]=tx_templavoila_flex';
-				$titleBarTDParams .= ' onclick="jumpToUrl(\''.$viewSubElementsUrl.'\');"';
-				$titleBarTDParams .= ' style="cursor:pointer;cursor:hand" title="'.htmlspecialchars($LANG->getLL ('viewsubelements')).'"';
-			}
-		}
-
-			// Create informational table about localized versions of elements
-		$llTable = $this->renderLocalizationInfoTable ($dsInfo);
-
-			// Hook: renderFrameWork_preProcessOutput
-		reset($hookObjectsArr);
-		while (list(,$hookObj) = each($hookObjectsArr)) {
-			if (method_exists ($hookObj, 'renderFrameWork_preProcessOutput')) {
-				$hookObj->renderFrameWork_preProcessOutput ($dsInfo, $sheet, $content, $isLocal, $linkCustom, $this);
-			}
-
-		}
-
-		$finalContent =
-			($errorLineBefore ? '<br />'.$errorLineBefore : ''). '
-		<table border="0" cellpadding="0" cellspacing="0" style="border: 1px solid black; margin-bottom:5px; '.$elementBackgroundStyle.'" width="100%">
-			<tr style="'.$elementPageTitlebarStyle.';">
-				<td nowrap="nowrap" style="vertical-align:top">'.$ruleIcon.$langIcon.$recordIcon.$viewPageIcon.'</td>
-				<td style="width:95%;"'.$titleBarTDParams.'>'.
-					($isLocal?'':'<em>').htmlspecialchars($dsInfo['el']['title']).($isLocal?'':'</em>').
-					($this->global_tt_content_elementRegister[$dsInfo['el']['id']]>1 ? '<br/>'.$this->doc->icons(2).' <em>Element used '.$this->global_tt_content_elementRegister[$dsInfo['el']['id']].' times on page! (UID: '.$dsInfo['el']['id'].')</em>' : '').
-					'</td>
-				<td nowrap="nowrap" style="text-align:right; vertical-align:top">'.
-					$linkCustom.
-					$linkMakeLocal.
-					($isLocal ? $this->linkEdit('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/edit2.gif','').' title="'.$LANG->getLL ('editrecord').'" border="0" alt="" />',$dsInfo['el']['table'],$dsInfo['el']['id']) : '').
-					$linkCopy.
-					$linkCut.
-					$linkRef.
-					$linkUnlink.
-				'</td>
-			</tr>
-			<tr>
-				<td colspan="3">'.
-					$contentWrapPre.
-					$content.
-					($errorLineWithin ? '<br />'.$errorLineWithin : '').
-					$llTable.
-					$contentWrapPost.
-				'</td>
-			</tr>
-		</table>
-		'.$errorLineAfter.'
-		';
-
-		return $finalContent;
+		return $output;
 	}
 
 
@@ -854,29 +656,23 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * Returns an HTMLized preview of a certain content element. If you'd like to register a new content type, you can easily use the hook
 	 * provided at the beginning of the function.
 	 *
-	 * @param	array		$row: The row containing the content element record; especially $row['CType'] and $row['bodytext'] are used.
-	 * @param	string		$table: Name of the CType's DB table
+	 * @param	array		$row: The row of tt_content containing the content element record.
 	 * @return	string		HTML preview content
+	 * @access protected
+	 * @see		getContentTree(), render_localizationInfoTable()
 	 */
-	function renderPreviewContent($row, $table) {
+	function render_previewContent($row) {
 		global $TYPO3_CONF_VARS, $LANG;
 
-			// First prepare user defined objects (if any) for hooks which extend this function:
-		$hookObjectsArr = array();
-		if (is_array ($TYPO3_CONF_VARS['EXTCONF']['templavoila']['mod1']['renderPreviewContentClass'])) {
-			foreach ($TYPO3_CONF_VARS['EXTCONF']['templavoila']['mod1']['renderPreviewContentClass'] as $classRef) {
-				$hookObjectsArr[] = &t3lib_div::getUserObj ($classRef);
-			}
-		}
-
-		$alreadyRendered = false;
-		$out = '';
+		$hookObjectsArr = $this->hooks_prepareObjectsArray ('renderPreviewContentClass');
+		$alreadyRendered = FALSE;
+		$output = '';
 
 			// Hook: renderPreviewContent_preProcess. Set 'alreadyRendered' to true if you provided a preview content for the current cType !
 		reset($hookObjectsArr);
 		while (list(,$hookObj) = each($hookObjectsArr)) {
 			if (method_exists ($hookObj, 'renderPreviewContent_preProcess')) {
-				$out .= $hookObj->renderPreviewContent_preProcess ($row, $table, $alreadyRendered, $this);
+				$output .= $hookObj->renderPreviewContent_preProcess ($row, 'tt_content', $alreadyRendered, $this);
 			}
 		}
 
@@ -886,70 +682,73 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				case 'text':		//	Text
 				case 'table':		//	Table
 				case 'mailform':	//	Form
-					$out = $this->linkEdit('<strong>'.$LANG->sL(t3lib_BEfunc::getItemLabel('tt_content','bodytext'),1).'</strong> '.htmlspecialchars(t3lib_div::fixed_lgd_cs(trim(strip_tags($row['bodytext'])),200)),$table,$row['uid']);
+					$output = $this->link_edit('<strong>'.$LANG->sL(t3lib_BEfunc::getItemLabel('tt_content','bodytext'),1).'</strong> '.htmlspecialchars(t3lib_div::fixed_lgd_cs(trim(strip_tags($row['bodytext'])),2000)),'tt_content',$row['uid']).'<br />';
 					break;
 				case 'image':		//	Image
-					$out = $this->linkEdit('<strong>'.$LANG->sL(t3lib_BEfunc::getItemLabel('tt_content','image'),1).'</strong><br /> ', $table, $row['uid']).t3lib_BEfunc::thumbCode ($row, $table, 'image', $this->doc->backPath, '', $v['TCEforms']['config']['uploadfolder']);
+					$output = $this->link_edit('<strong>'.$LANG->sL(t3lib_BEfunc::getItemLabel('tt_content','image'),1).'</strong><br /> ', 'tt_content', $row['uid']).t3lib_BEfunc::thumbCode ($row, 'tt_content', 'image', $this->doc->backPath, '', $v['TCEforms']['config']['uploadfolder']).'<br />';
 					break;
 				case 'textpic':		//	Text w/image
 				case 'splash':		//	Textbox
 					$thumbnail = '<strong>'.$LANG->sL(t3lib_BEfunc::getItemLabel('tt_content','image'),1).'</strong><br />';
-					$thumbnail .= t3lib_BEfunc::thumbCode ($row, $table, 'image', $this->doc->backPath, '', $v['TCEforms']['config']['uploadfolder']);
-					$text = $this->linkEdit('<strong>'.$LANG->sL(t3lib_BEfunc::getItemLabel('tt_content','bodytext'),1).'</strong> '.htmlspecialchars(t3lib_div::fixed_lgd_cs(trim(strip_tags($row['bodytext'])),200)),$table,$row['uid']);
-					$out='<table><tr><td valign="top">'.$text.'</td><td valign="top">'.$thumbnail.'</td></tr></table>';
+					$thumbnail .= t3lib_BEfunc::thumbCode ($row, 'tt_content', 'image', $this->doc->backPath, '', $v['TCEforms']['config']['uploadfolder']);
+					$text = $this->link_edit('<strong>'.$LANG->sL(t3lib_BEfunc::getItemLabel('tt_content','bodytext'),1).'</strong> '.htmlspecialchars(t3lib_div::fixed_lgd_cs(trim(strip_tags($row['bodytext'])),2000)),'tt_content',$row['uid']);
+					$output='<table><tr><td valign="top">'.$text.'</td><td valign="top">'.$thumbnail.'</td></tr></table>'.'<br />';
 					break;
 				case 'bullets':		//	Bullets
 					$htmlBullets = '';
-					$bulletsArr = explode ("\n", t3lib_div::fixed_lgd_cs($row['bodytext'],200));
+					$bulletsArr = explode ("\n", t3lib_div::fixed_lgd_cs($row['bodytext'],2000));
 					if (is_array ($bulletsArr)) {
 						foreach ($bulletsArr as $listItem) {
 							$htmlBullets .= htmlspecialchars(trim(strip_tags($listItem))).'<br />';
 						}
 					}
-					$out = $this->linkEdit('<strong>'.$LANG->sL(t3lib_BEfunc::getItemLabel('tt_content','bodytext'),1).'</strong><br />'.$htmlBullets, $table, $row['uid']);
+					$output = $this->link_edit('<strong>'.$LANG->sL(t3lib_BEfunc::getItemLabel('tt_content','bodytext'),1).'</strong><br />'.$htmlBullets, 'tt_content', $row['uid']).'<br />';
 					break;
 				case 'uploads':		//	Filelinks
-					$out = $this->linkEdit('<strong>'.$LANG->sL(t3lib_BEfunc::getItemLabel('tt_content','media'),1).'</strong><br />'.str_replace (',','<br />',htmlspecialchars(t3lib_div::fixed_lgd_cs(trim(strip_tags($row['media'])),200))), $table, $row['uid']);
+					$output = $this->link_edit('<strong>'.$LANG->sL(t3lib_BEfunc::getItemLabel('tt_content','media'),1).'</strong><br />'.str_replace (',','<br />',htmlspecialchars(t3lib_div::fixed_lgd_cs(trim(strip_tags($row['media'])),2000))), 'tt_content', $row['uid']).'<br />';
 					break;
 				case 'multimedia':	//	Multimedia
-					$out = $this->linkEdit ('<strong>'.$LANG->sL(t3lib_BEfunc::getItemLabel('tt_content','multimedia'),1).'</strong><br />' . str_replace (',','<br />',htmlspecialchars(t3lib_div::fixed_lgd_cs(trim(strip_tags($row['multimedia'])),200))), $table, $row['uid']);
+					$output = $this->link_edit ('<strong>'.$LANG->sL(t3lib_BEfunc::getItemLabel('tt_content','multimedia'),1).'</strong><br />' . str_replace (',','<br />',htmlspecialchars(t3lib_div::fixed_lgd_cs(trim(strip_tags($row['multimedia'])),2000))), 'tt_content', $row['uid']).'<br />';
 					break;
 				case 'menu':		//	Menu / Sitemap
-					$out = $this->linkEdit ('<strong>'.$LANG->sL(t3lib_BEfunc::getItemLabel('tt_content','menu_type')).'</strong> '.$LANG->sL(t3lib_BEfunc::getLabelFromItemlist('tt_content','menu_type',$row['menu_type'])).'<br />'.
-						'<strong>'.$LANG->sL(t3lib_BEfunc::getItemLabel('tt_content','pages')).'</strong> '.$row['pages'], $table, $row['uid']);
+					$output = $this->link_edit ('<strong>'.$LANG->sL(t3lib_BEfunc::getItemLabel('tt_content','menu_type')).'</strong> '.$LANG->sL(t3lib_BEfunc::getLabelFromItemlist('tt_content','menu_type',$row['menu_type'])).'<br />'.
+						'<strong>'.$LANG->sL(t3lib_BEfunc::getItemLabel('tt_content','pages')).'</strong> '.$row['pages'], 'tt_content', $row['uid']).'<br />';
 					break;
 				case 'list':		//	Insert Plugin
-					$out = $this->linkEdit('<strong>'.$LANG->sL(t3lib_BEfunc::getItemLabel('tt_content','list_type')).'</strong> ' . htmlspecialchars($LANG->sL(t3lib_BEfunc::getLabelFromItemlist('tt_content','menu_type',$row['list_type'])).' '.$row['list_type']), $table, $row['uid']);
+					$output = $this->link_edit('<strong>'.$LANG->sL(t3lib_BEfunc::getItemLabel('tt_content','list_type')).'</strong> ' . htmlspecialchars($LANG->sL(t3lib_BEfunc::getLabelFromItemlist('tt_content','menu_type',$row['list_type'])).' '.$row['list_type']), 'tt_content', $row['uid']).'<br />';
 					break;
 				case 'html':		//	HTML
-					$out = $this->linkEdit ('<strong>'.$LANG->sL(t3lib_BEfunc::getItemLabel('tt_content','bodytext'),1).'</strong> ' . htmlspecialchars(t3lib_div::fixed_lgd_cs(trim($row['bodytext']),200)),$table,$row['uid']);
+					$output = $this->link_edit ('<strong>'.$LANG->sL(t3lib_BEfunc::getItemLabel('tt_content','bodytext'),1).'</strong> ' . htmlspecialchars(t3lib_div::fixed_lgd_cs(trim($row['bodytext']),2000)),'tt_content',$row['uid']).'<br />';
 					break;
-				case 'search':		//	Search Box
-				case 'login':		//	Login Box
-				case 'shortcut':	//	Insert records
-				case 'div':			//	Divider
+				case 'search':			//	Search Box
+				case 'login':			//	Login Box
+				case 'shortcut':		//	Insert records
+				case 'div':				//	Divider
+				case 'templavoila_pi1': //	Flexible Content Element: Rendered directly in getContentTree*()
 					break;
 				default:
 						// return CType name for unhandled CType
-					$out='<strong>'.htmlspecialchars ($row['CType']).'</strong>';
+					$output='<strong>'.htmlspecialchars ($row['CType']).'</strong><br />';
 			}
 		}
-		return $out;
+		return $output;
 	}
 
 	/**
 	 * Renders a little table containing previews of translated version of the current content element.
 	 *
-	 * @param	array		$dsInfo: The current dsInfo array
+	 * @param	array		$contentTreeArr: Part of the contentTreeArr for the element
+	 * @param	string		$parentPointer: Flexform pointer pointing to the current element (from the parent's perspective)
 	 * @return	string		HTML
-	 * @see renderFramwork()
-	 * @todo	The localize element should be inserted automatically into the flexform field of the foreign language!
+	 * @access protected
+	 * @see 	render_framework_singleSheet()
 	 */
-	function renderLocalizationInfoTable($dsInfo) {
+	function render_localizationInfoTable($contentTreeArr, $parentPointer) {
+		global $LANG, $BE_USER;
 
 				// LOCALIZATION information for content elements (non Flexible Content Elements)
 		$llTable = '';
-		if ($dsInfo['el']['table']=='tt_content' && $dsInfo['el']['sys_language_uid']<=0)	{
+		if ($contentTreeArr['el']['table']=='tt_content' && $contentTreeArr['el']['sys_language_uid']<=0 && !$this->rootElementLangDisable)	{
 
 				// Traverse the available languages of the page (not default and [All])
 			$tRows=array();
@@ -957,42 +756,44 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				if ($sys_language_uid > 0)	{
 					$lC = '';
 
-					switch((string)$dsInfo['localizationInfo'][$sys_language_uid]['mode'])	{
+					switch((string)$contentTreeArr['localizationInfo'][$sys_language_uid]['mode'])	{
 						case 'exists':
-							$olrow = t3lib_BEfunc::getRecordWSOL('tt_content',$dsInfo['localizationInfo'][$sys_language_uid]['localization_uid']);
+							$olrow = t3lib_BEfunc::getRecord('tt_content',$contentTreeArr['localizationInfo'][$sys_language_uid]['localization_uid']);
 							$localizedRecordInfo = array(
 								'uid' => $olrow['uid'],
 								'row' => $olrow,
-								'content' => $this->renderPreviewContent($olrow, 'tt_content')
+								'content' => $this->render_previewContent($olrow)
 							);
 
 								// Put together the records icon including content sensitive menu link wrapped around it:
 							$recordIcon_l10n = t3lib_iconWorks::getIconImage('tt_content',$localizedRecordInfo['row'],$this->doc->backPath,'class="absmiddle" title="'.htmlspecialchars('[tt_content:'.$localizedRecordInfo['uid'].']').'"');
-							$recordIcon_l10n = $this->doc->wrapClickMenuOnIcon($recordIcon_l10n,'tt_content',$localizedRecordInfo['uid'],1,'&callingScriptId='.rawurlencode($this->doc->scriptID), 'new,copy,cut,pasteinto,pasteafter');
-							$lC = $recordIcon_l10n.t3lib_BEfunc::getRecordTitle('tt_content',$localizedRecordInfo['row']);
+							$recordIcon_l10n = $this->doc->wrapClickMenuOnIcon($recordIcon_l10n,'tt_content',$localizedRecordInfo['uid'],1,'&amp;callingScriptId='.rawurlencode($this->doc->scriptID), 'new,copy,cut,pasteinto,pasteafter');
+							$lC = $recordIcon_l10n.t3lib_BEfunc::getRecordTitle('tt_content', $localizedRecordInfo['row']);
 
 							$lC.= '<br/>'.$localizedRecordInfo['content'];
 
 							$this->global_localization_status[$sys_language_uid][]=array(
 								'status' => 'exist',
-								'parent_uid' => $dsInfo['el']['id'],
+								'parent_uid' => $contentTreeArr['el']['uid'],
 								'localized_uid' => $localizedRecordInfo['row']['uid'],
-								'sys_language' => $dsInfo['el']['sys_language_uid']
+								'sys_language' => $contentTreeArr['el']['sys_language_uid']
 							);
 						break;
 						case 'localize':
-							if ((int)$dsInfo['el']['sys_language_uid']===0)	{	// Assuming that only elements which has the default language set is candidates for localization. In case the language is [ALL] then it is assumed that the element should stay "international".
-									// Copy for language:
-								$params='&cmd[tt_content]['.$dsInfo['el']['id'].'][localize]='.$sys_language_uid;
-								$onClick = "document.location='".$GLOBALS['SOBE']->doc->issueCommand($params)."'; return false;";
+								// Assuming that only elements which have the default language set are candidates for localization. In case the language is [ALL] then it is assumed that the element should stay "international".
+							if ((int)$contentTreeArr['el']['sys_language_uid']===0)	{
 
-								$lC = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/clip_copy.gif','width="12" height="12"').' class="bottom" title="Create localization copy ('.htmlspecialchars($sLInfo['title']).')" alt="" />';
-								$lC = '<a href="#" onclick="'.htmlspecialchars($onClick).'">'.$lC.'</a> <b style="color:red;">(!)</b>';
+								$linkLabel = $LANG->getLL('createcopyfortranslation',1).' ('.htmlspecialchars($sLInfo['title']).')';
+								$localizeIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/clip_copy.gif','width="12" height="12"').' class="bottom" title="'.$linkLabel.'" alt="" />';
+								$sourcePointerString = $this->apiObj->flexform_getStringFromPointer ($parentPointer);
+								$lC = '<a href="index.php?'.$this->link_getParameters().'&amp;source='.rawurlencode($sourcePointerString).'&amp;localizeRecord='.$sLInfo['ISOcode'].'">'.$localizeIcon.'</a>';
+								$lC .= ' <em><a href="index.php?'.$this->link_getParameters().'&amp;source='.rawurlencode($sourcePointerString).'&amp;localizeRecord='.$sLInfo['ISOcode'].'">'.$linkLabel.'</a></em>';
+
 
 								$this->global_localization_status[$sys_language_uid][]=array(
 									'status' => 'localize',
-									'parent_uid' => $dsInfo['el']['id'],
-									'sys_language' => $dsInfo['el']['sys_language_uid']
+									'parent_uid' => $contentTreeArr['el']['uid'],
+									'sys_language' => $contentTreeArr['el']['sys_language_uid']
 								);
 							}
 						break;
@@ -1001,13 +802,13 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 							$this->global_localization_status[$sys_language_uid][]=array(
 								'status' => 'flex',
-								'parent_uid' => $dsInfo['el']['id'],
-								'sys_language' => $dsInfo['el']['sys_language_uid']
+								'parent_uid' => $contentTreeArr['el']['uid'],
+								'sys_language' => $contentTreeArr['el']['sys_language_uid']
 							);
 						break;
 					}
 
-					if ($this->modTSconfig['properties']['enableCElocalizationInfo'] && $lC && $GLOBALS['BE_USER']->checkLanguageAccess($sys_language_uid))	{
+					if (1 && $lC && $BE_USER->checkLanguageAccess($sys_language_uid))	{
 						$tRows[]='
 							<tr class="bgColor4">
 								<td width="1%">'.($sLInfo['flagIcon'] ? '<img src="'.$sLInfo['flagIcon'].'" alt="'.htmlspecialchars($sLInfo['title']).'" title="'.htmlspecialchars($sLInfo['title']).'" />' : $sLInfo['title']).'</td>
@@ -1035,101 +836,91 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 	/*******************************************
 	 *
-	 * Link functions
+	 * Link functions (protected)
 	 *
 	 *******************************************/
 
 	/**
 	 * Returns an HTML link for editing
 	 *
-	 * @param	string		$str: The label (or image)
+	 * @param	string		$label: The label (or image)
 	 * @param	string		$table: The table, fx. 'tt_content'
 	 * @param	integer		$uid: The uid of the element to be edited
 	 * @return	string		HTML anchor tag containing the label and the correct link
+	 * @access protected
 	 */
-	function linkEdit($str, $table, $uid)	{
-		$onClick = t3lib_BEfunc::editOnClick('&edit['.$table.']['.$uid.']=edit',$this->doc->backPath);
-		return '<a style="text-decoration: none;" href="#" onclick="'.htmlspecialchars($onClick).'">'.$str.'</a>';
+	function link_edit($label, $table, $uid)	{
+		if($table == "pages" && $this->currentLanguageUid) {
+			return '<a href="index.php?'.$this->link_getParameters().'&amp;editPageLanguageOverlay='.$this->currentLanguageUid.'">'.$label.'</a>';
+		} else {
+			$onClick = t3lib_BEfunc::editOnClick('&edit['.$table.']['.$uid.']=edit',$this->doc->backPath);
+			return '<a style="text-decoration: none;" href="#" onclick="'.htmlspecialchars($onClick).'">'.$label.'</a>';
+		}
 	}
 
 	/**
 	 * Returns an HTML link for creating a new record
 	 *
-	 * @param	string		$str: The label (or image)
-	 * @param	string		$parentRecord: The parameters for creating the new record. Example: pages:78:sDEF:lDEF:field_contentarea:vDEF:0
+	 * @param	string		$label: The label (or image)
+	 * @param	array		$parentPointer: Flexform pointer defining the parent element of the new record
 	 * @return	string		HTML anchor tag containing the label and the correct link
+	 * @access protected
 	 */
-	function linkNew($str, $parentRecord)	{
-		return '<a href="'.htmlspecialchars('db_new_content_el.php?'.$this->linkParams().'&parentRecord='.rawurlencode($parentRecord)).'">'.$str.'</a>';
+	function link_new($label, $parentPointer)	{
+
+		$parameters =
+			$this->link_getParameters().
+			'&amp;parentRecord='.rawurlencode($this->apiObj->flexform_getStringFromPointer($parentPointer));
+		return '<a href="'.'db_new_content_el.php?'.$parameters.'">'.$label.'</a>';
 	}
 
 	/**
 	 * Returns an HTML link for unlinking a content element. Unlinking means that the record still exists but
 	 * is not connected to any other content element or page.
 	 *
-	 * @param	string		$str: The label
-	 * @param	string		$unlinkRecord: The parameters for unlinking the record. Example: pages:78:sDEF:lDEF:field_contentarea:vDEF:0
+	 * @param	string		$label: The label
+	 * @param	array		$unlinkPointer: Flexform pointer pointing to the element to be unlinked
 	 * @param	[type]		$realDelete: ...
 	 * @return	string		HTML anchor tag containing the label and the unlink-link
+	 * @access protected
 	 */
-	function linkUnlink($str, $unlinkRecord, $realDelete=FALSE)	{
+	function link_unlink($label, $unlinkPointer, $realDelete=FALSE)	{
 		global $LANG;
 
+		$unlinkPointerString = rawurlencode($this->apiObj->flexform_getStringFromPointer ($unlinkPointer));
+
 		if ($realDelete)	{
-			return '<a href="index.php?'.$this->linkParams().'&deleteRecord='.rawurlencode($unlinkRecord).'" onclick="'.htmlspecialchars('return confirm('.$LANG->JScharCode($LANG->getLL('deleteRecordMsg')).');').'">'.$str.'</a>';
+			return '<a href="index.php?'.$this->link_getParameters().'&amp;deleteRecord='.$unlinkPointerString.'" onclick="'.htmlspecialchars('return confirm('.$LANG->JScharCode($LANG->getLL('deleteRecordMsg')).');').'">'.$label.'</a>';
 		} else {
-			return '<a href="index.php?'.$this->linkParams().'&unlinkRecord='.rawurlencode($unlinkRecord).'" onclick="'.htmlspecialchars('return confirm('.$LANG->JScharCode($LANG->getLL('unlinkRecordMsg')).');').'">'.$str.'</a>';
+			return '<a href="index.php?'.$this->link_getParameters().'&amp;unlinkRecord='.$unlinkPointerString.'" onclick="'.htmlspecialchars('return confirm('.$LANG->JScharCode($LANG->getLL('unlinkRecordMsg')).');').'">'.$label.'</a>';
 		}
 	}
 
 	/**
 	 * Returns an HTML link for making a reference content element local to the page (copying it).
 	 *
-	 * @param	string		$str: The label
-	 * @param	string		$unlinkRecord: The parameters for unlinking the record. Example: pages:78:sDEF:lDEF:field_contentarea:vDEF:0
+	 * @param	string		$label: The label
+	 * @param	array		$makeLocalPointer: Flexform pointer pointing to the element which shall be copied
 	 * @return	string		HTML anchor tag containing the label and the unlink-link
+	 * @access protected
 	 */
-	function linkMakeLocal($str, $makeLocalRecord)	{
+	function link_makeLocal($label, $makeLocalPointer)	{
 		global $LANG;
 
-		return '<a href="index.php?'.$this->linkParams().'&makeLocalRecord='.rawurlencode($makeLocalRecord).'" onclick="'.htmlspecialchars('return confirm('.$LANG->JScharCode($LANG->getLL('makeLocalMsg')).');').'">'.$str.'</a>';
-	}
-
-	/**
-	 * Returns an HTML link for pasting a content element. Pasting means either copying or moving a record.
-	 *
-	 * @param	string		$str: The label
-	 * @param	string		$params: The parameters defining the original record. Example: pages:78:sDEF:lDEF:field_contentarea:vDEF:0
-	 * @param	string		$destination: The parameters defining the target where to paste the original record
-	 * @param	string		$cmd: The paste mode, usually set in the clipboard: 'cut', 'copy' or 'copyref'
-	 * @return	string		HTML anchor tag containing the label and the paste-link
-	 */
-	function linkPaste($str, $source, $destination, $cmd)	{
-		return '<a href="index.php?'.$this->linkParams().'&SET[clip]=&SET[clip_parentPos]=&pasteRecord='.$cmd.'&source='.rawurlencode($source).'&destination='.rawurlencode($destination).'">'.$str.'</a>';
-	}
-
-	/**
-	 * Returns an HTML link for marking a content element (i.e. transferring to the clipboard) for copying or cutting.
-	 *
-	 * @param	string		$str: The label
-	 * @param	string		$source: The parameters defining the original record. Example: pages:78:sDEF:lDEF:field_contentarea:vDEF::tt_content:115
-	 * @param	string		$cmd: The marking mode: 'cut' or 'copy'
-	 * @return	string		HTML anchor tag containing the label and the cut/copy link
-	 */
-	function linkCopyCut($str, $source, $cmd)	{
-		return '<a href="index.php?'.$this->linkParams().'&SET[clip]='.($source?$cmd:'').'&SET[clip_parentPos]='.rawurlencode($source).'">'.$str.'</a>';
+		return '<a href="index.php?'.$this->link_getParameters().'&amp;makeLocalRecord='.rawurlencode($this->apiObj->flexform_getStringFromPointer($makeLocalPointer)).'" onclick="'.htmlspecialchars('return confirm('.$LANG->JScharCode($LANG->getLL('makeLocalMsg')).');').'">'.$label.'</a>';
 	}
 
 	/**
 	 * Creates additional parameters which are used for linking to the current page while editing it
 	 *
 	 * @return	string		parameters
+	 * @access public
 	 */
-	function linkParams()	{
+	function link_getParameters()	{
 		$output =
 			'id='.$this->id.
 			(is_array($this->altRoot) ? t3lib_div::implodeArrayForUrl('altRoot',$this->altRoot) : '') .
-			($this->versionId ? '&versionId='.rawurlencode($this->versionId) : '');
+			($this->versionId ? '&amp;versionId='.rawurlencode($this->versionId) : '');
 		return $output;
 	}
 
@@ -1137,436 +928,361 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 
 
-	/*******************************************
+	/*************************************************
 	 *
-	 * Command functions
+	 * Processing and structure functions (protected)
 	 *
-	 *******************************************/
+	 *************************************************/
 
 	/**
-	 * Initiates processing for creating a new record.
+	 * Checks various GET / POST parameters for submitted commands and handles them accordingly.
+	 * All commands will trigger a redirect by sending a location header after they work is done.
 	 *
-	 * @param	string		$parentRecord:
-	 * @param	array		$defVals: Array containing default values for the new record, e.g. [tt_content][CType] = 'text'
+	 * Currently supported commands: 'createNewRecord', 'unlinkRecord', 'deleteRecord','pasteRecord',
+	 * 'makeLocalRecord', 'localizeRecord', 'createNewPageTranslation' and 'editPageLanguageOverlay'
+	 *
 	 * @return	void
-	 * @see		insertRecord ()
+	 * @access protected
 	 */
-	function cmd_createNewRecord ($parentRecord, $defVals='') {
-			// Historically "defVals" has been used for submitting the row data. We still use it and use it for our new row:
-		$defVals = (string)$defVals == '' ? t3lib_div::_GP('defVals') : $defVals;
-		$row = $defVals['tt_content'];
+	function handleIncomingCommands() {
 
-			// Create new record and open it for editing
-		$newUid = $this->insertRecord($parentRecord, $row);
-		$location = $GLOBALS['BACK_PATH'].'alt_doc.php?edit[tt_content]['.$newUid.']=edit&returnUrl='.rawurlencode(t3lib_extMgm::extRelPath('templavoila').'mod1/index.php?'.$this->linkParams());
-		header('Location: '.t3lib_div::locationHeaderUrl($location));
-	}
+		$possibleCommands = array ('createNewRecord', 'unlinkRecord', 'deleteRecord','pasteRecord', 'makeLocalRecord', 'localizeRecord', 'createNewPageTranslation', 'editPageLanguageOverlay');
 
-	/**
-	 * Initiates processing for unlinking a record.
-	 *
-	 * @param	string		$unlinkRecord: The element to be unlinked.
-	 * @return	void
-	 * @see		pasteRecord ()
-	 */
-	function cmd_unlinkRecord ($unlinkRecord) {
-		$this->pasteRecord('unlink', $unlinkRecord, '');
-		header('Location: '.t3lib_div::locationHeaderUrl('index.php?'.$this->linkParams()));
-	}
+		foreach ($possibleCommands as $command) {
+			if ($commandParameters = t3lib_div::_GP($command)) {
 
-	/**
-	 * Initiates processing for unlinking AND DELETING a record.
-	 *
-	 * @param	string		$unlinkRecord: The element to be unlinked.
-	 * @return	void
-	 * @see		pasteRecord ()
-	 */
-	function cmd_deleteRecord ($deleteRecord) {
-		$this->pasteRecord('delete', $deleteRecord, '');
-		header('Location: '.t3lib_div::locationHeaderUrl('index.php?'.$this->linkParams()));
-	}
+				$redirectLocation = 'index.php?'.$this->link_getParameters();
 
-	/**
-	 * Initiates processing for making a local copy of a record.
-	 *
-	 * @param	string		$unlinkRecord: The element to be copied to current page.
-	 * @return	void
-	 * @see		pasteRecord ()
-	 */
-	function cmd_makeLocalRecord ($makeLocalRecord) {
-		$this->pasteRecord('localcopy', $makeLocalRecord, '');
-		header('Location: '.t3lib_div::locationHeaderUrl('index.php?'.$this->linkParams()));
-	}
+				switch ($command) {
 
-	/**
-	 * Initiates processing for pasting a record.
-	 *
-	 * @param	string		$pasteMode: "cut", "copy" or "copyref" (or the weird commands like "unlink" etc. which actually don't paste)
-	 * @return	void
-	 * @see		pasteRecord ()
-	 */
-	function cmd_pasteRecord ($pasteMode) {
-		$this->pasteRecord($pasteMode, t3lib_div::_GP('source'), t3lib_div::_GP('destination'));
-		header('Location: '.t3lib_div::locationHeaderUrl('index.php?'.$this->linkParams()));
-	}
+					case 'createNewRecord':
+							// Historically "defVals" has been used for submitting the preset row data for the new element, so we still support it here:
+						$defVals = t3lib_div::_GP('defVals');
+						$newRow = is_array ($defVals['tt_content']) ? $defVals['tt_content'] : array();
 
-	/**
-	 * Initiates processing for creating a new page language overlay. The PID (uid of the page
-	 * to be translated) must be passed by GET/POST!
-	 *
-	 * @param	integer		$languageUid: The uid of the language to be used for the new translation
-	 * @return	void
-	 */
-	function cmd_createNewTranslation ($languageUid) {
-			// Create parameters and finally run the classic page module for creating a new page translation
-		$params = '&edit[pages_language_overlay]['.intval (t3lib_div::_GP('pid')).']=new&overrideVals[pages_language_overlay][sys_language_uid]='.intval($languageUid);
-		$returnUrl = '&returnUrl='.rawurlencode(t3lib_extMgm::extRelPath('templavoila').'mod1/index.php?'.$this->linkParams());
-		$location = $GLOBALS['BACK_PATH'].'alt_doc.php?'.$params.$returnUrl;
+							// Create new record and open it for editing
+						$destinationPointer = $this->apiObj->flexform_getPointerFromString($commandParameters);
+						$newUid = $this->apiObj->insertElement($destinationPointer, $newRow);
+						$redirectLocation = $GLOBALS['BACK_PATH'].'alt_doc.php?edit[tt_content]['.$newUid.']=edit&returnUrl='.rawurlencode(t3lib_extMgm::extRelPath('templavoila').'mod1/index.php?'.$this->link_getParameters());
+					break;
 
-		header('Location: '.t3lib_div::locationHeaderUrl($location));
-	}
+					case 'unlinkRecord':
+						$unlinkDestinationPointer = $this->apiObj->flexform_getPointerFromString($commandParameters);
+						$this->apiObj->unlinkElement($unlinkDestinationPointer);
+					break;
 
-	/**
-	 *
-	 */
-	function cmd_editLocalization($sys_language)	{
+					case 'deleteRecord':
+						$deleteDestinationPointer = $this->apiObj->flexform_getPointerFromString($commandParameters);
+						$this->apiObj->deleteElement($deleteDestinationPointer);
+					break;
 
-			// Look for pages language overlay record for language:
-		list($pLOrecord) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-				'*',
-				'pages_language_overlay',
-				'pid='.intval($this->id).' AND sys_language_uid='.intval($sys_language).
-					t3lib_BEfunc::deleteClause('pages_language_overlay')
-			);
+					case 'pasteRecord':
+						$sourcePointer = $this->apiObj->flexform_getPointerFromString (t3lib_div::_GP('source'));
+						$destinationPointer = $this->apiObj->flexform_getPointerFromString (t3lib_div::_GP('destination'));
+						switch ($commandParameters) {
+							case 'copy' :	$this->apiObj->copyElement ($sourcePointer, $destinationPointer); break;
+							case 'copyref':	$this->apiObj->copyElement ($sourcePointer, $destinationPointer, FALSE); break;
+							case 'cut':		$this->apiObj->moveElement ($sourcePointer, $destinationPointer); break;
+							case 'ref':		list($table,$uid) = explode(':', t3lib_div::_GP('source'));
+											$this->apiObj->referenceElementByUid ($uid, $destinationPointer);
+							break;
 
-		if (is_array($pLOrecord))	{
-			$params = '';
-			$params = '&edit[pages_language_overlay]['.$pLOrecord['uid'].']=edit';
-
-				// tt_content elements to localize:
-			$elements = t3lib_div::_GP('eI');
-			if (is_array($elements))	{
-				$tt_content_uids = array();
-				foreach($elements as $eCode)	{
-					list($cmd,$uid) = explode(':',$eCode);
-					if ($cmd==='L')	{
-
-						$cmdArray = array();
-						$cmdArray['tt_content'][$uid]['localize'] = $sys_language;
-						$tce = t3lib_div::makeInstance('t3lib_TCEmain');
-						$tce->stripslashes_values=0;
-						$tce->start(array(),$cmdArray);
-						$tce->process_cmdmap();
-
-						if ($tce->copyMappingArray['tt_content'][$uid])	{
-							$tt_content_uids[] = $tce->copyMappingArray['tt_content'][$uid];
 						}
-					} else {
-						$tt_content_uids[] = $uid;
-					}
-				}
-				if (count($tt_content_uids))	{
-					$params.= '&edit[tt_content]['.implode(',',$tt_content_uids).']=edit';
-				}
-			}
+					break;
 
-				// Create parameters and finally run the classic page module for creating a new page translation
-			$returnUrl = '&returnUrl='.rawurlencode(t3lib_extMgm::extRelPath('templavoila').'mod1/index.php?'.$this->linkParams());
-			$location = $GLOBALS['BACK_PATH'].'alt_doc.php?'.$params.$returnUrl.'&localizationMode=text';
+					case 'makeLocalRecord':
+						$sourcePointer = $this->apiObj->flexform_getPointerFromString ($commandParameters);
+						$this->apiObj->copyElement ($sourcePointer, $sourcePointer);
+						$this->apiObj->unlinkElement ($sourcePointer);
+					break;
 
-			header('Location: '.t3lib_div::locationHeaderUrl($location));
-		}
-	}
+					case 'localizeRecord':
+						$sourcePointer = $this->apiObj->flexform_getPointerFromString (t3lib_div::_GP('source'));
+						$this->apiObj->localizeElement ($sourcePointer, $commandParameters);
+					break;
 
+					case 'createNewPageTranslation':
+							// Create parameters and finally run the classic page module for creating a new page translation
+						$params = '&edit[pages_language_overlay]['.intval (t3lib_div::_GP('pid')).']=new&overrideVals[pages_language_overlay][sys_language_uid]='.intval($commandParameters);
+						$returnUrl = '&returnUrl='.rawurlencode(t3lib_extMgm::extRelPath('templavoila').'mod1/index.php?'.$this->link_getParameters());
+						$redirectLocation = $GLOBALS['BACK_PATH'].'alt_doc.php?'.$params.$returnUrl;
+					break;
 
+					case 'editPageLanguageOverlay':
+							// Look for pages language overlay record for language:
+						list($pLOrecord) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+								'*',
+								'pages_language_overlay',
+								'pid='.intval($this->id).' AND sys_language_uid='.intval($commandParameters).
+									t3lib_BEfunc::deleteClause('pages_language_overlay').
+									t3lib_BEfunc::versioningPlaceholderClause('pages_language_overlay')
+							);
+						t3lib_beFunc::workspaceOL('pages_language_overlay', $pLOrecord);
 
-
-
-	/********************************************
-	 *
-	 * Processing
-	 *
-	 ********************************************/
-
-	/**
-	 * Performs the neccessary steps to creates a new page
-	 *
-	 * @param	array		$pageArray: array containing the fields for the new page
-	 * @param	integer		$positionPid: location within the page tree (parent id)
-	 * @return	integer		uid of the new page record
-	 */
-	function createPage($pageArray,$positionPid)	{
-		$dataArr = array();
-		$dataArr['pages']['NEW'] = $pageArray;
-		$dataArr['pages']['NEW']['pid'] = $positionPid;
-		if (is_null($dataArr['pages']['NEW']['hidden'])) {
-			$dataArr['pages']['NEW']['hidden'] = 0;
-		}
-		unset($dataArr['pages']['NEW']['uid']);
-
-			// If no data structure is set, try to find one by using the template object
-		if ($dataArr['pages']['NEW']['tx_templavoila_to'] && !$dataArr['pages']['NEW']['tx_templavoila_ds']) {
-			$templateObjectRow = t3lib_BEfunc::getRecordWSOL('tx_templavoila_tmplobj',$dataArr['pages']['NEW']['tx_templavoila_to'],'datastructure');
-			$dataArr['pages']['NEW']['tx_templavoila_ds'] = $templateObjectRow['datastructure'];
-		}
-
-		$tce = t3lib_div::makeInstance('t3lib_TCEmain');
-		$tce->stripslashes_values=0;
-		$tce->start($dataArr,array());
-		$tce->process_datamap();
-		return $tce->substNEWwithIDs['NEW'];
-	}
-
-	/**
-	 * Creates default records which are defined in the datastructure's rules scheme. The property in the DS is called "ruleDefaultElements"
-	 * and consists of elements only (instead of a real regular expression)! I.e. if your regular expression is like this: "(ab){2}c", it makes
-	 * sense having ruleDefaultElements contain this list of elements: "ababc".
-	 *
-	 * Calls itself recursively.
-	 *
-	 * @param	string		$table: The table, usually "pages" or "tt_content"
-	 * @param	integer		$uid: The UID
-	 * @param	integer		$prevDS: Internally used to make sure data structures are not created recursively ("previous data structure")
-	 * @param	integer		$level: Internally used for determine the level of recursiveness
-	 * @return	void		nothing
-	 * @todo				Check for rules compliance? (might not be necessary if we expect ruleDefaultElements to be valid), Use current Sheet / Language
-	 */
-	function createDefaultRecords ($table, $uid, $prevDS=-1, $level=0)	{
-		global $TCA, $LANG;
-
-		$tableRow = t3lib_BEfunc::getRecordWSOL($table, $uid);
-			// Recursivity check and only care about page records or flexible content elements:
-		if (($level<10) &&
-		    ($tableRow['tx_templavoila_ds'] != $prevDS) &&
-		    ($table != 'tt_content' || $tableRow['CType'] == 'templavoila_pi1')
-		   ) {
-			$recRow = t3lib_BEfunc::getRecordWSOL('tx_templavoila_datastructure', $tableRow['tx_templavoila_ds']);
-			$xmlContent = t3lib_div::xml2array ($recRow['dataprot']);
-			if (is_array ($xmlContent)) {
-				foreach ($xmlContent['ROOT']['el'] as $key=>$field) {
-						// Count backwards, because we're always using the same $key:
-					for ($counter=strlen(trim ($field['tx_templavoila']['ruleDefaultElements'])); $counter >=0; $counter--) {
-						$CType = t3lib_div::trimExplode (',',$this->rulesObj->getCTypeFromToken (trim($field['tx_templavoila']['ruleDefaultElements'][$counter]), $field['tx_templavoila']['ruleConstants']));
-						switch ($CType[0]) {
-							case 'templavoila_pi1':
-								$TOrow = t3lib_BEfunc::getRecordWSOL('tx_templavoila_tmplobj', $CType[1], 'datastructure');
-								$conf = array (
-									'CType' => $CType[0],
-									'tx_templavoila_ds' => $TOrow['datastructure'],
-									'tx_templavoila_to' => intval($CType[1]),
-								);
-
-								$ceUid = $this->insertRecord($table.':'.intval($uid).':sDEF:lDEF:'.$key.':vDEF',$conf);
-								$this->createDefaultRecords ('tt_content', intval($ceUid), $tableRow['tx_templavoila_ds'], $level+1);
-								break;
-							case '':
-								break;
-							default:
-								$conf = array (
-									'CType' => $CType[0],
-									'bodytext' => $LANG->getLL ('newce_defaulttext_'.$CType[0]),
-								);
-								$this->insertRecord($table.':'.intval($uid).':sDEF:lDEF:'.$key.':vDEF',$conf);
-								break;
+						if (is_array($pLOrecord))	{
+							$params = '&edit[pages_language_overlay]['.$pLOrecord['uid'].']=edit';
+							$returnUrl = '&returnUrl='.rawurlencode(t3lib_extMgm::extRelPath('templavoila').'mod1/index.php?'.$this->link_getParameters());
+							$redirectLocation = $GLOBALS['BACK_PATH'].'alt_doc.php?'.$params.$returnUrl.'&localizationMode=text';
 						}
-					}
+					break;
 				}
 			}
 		}
-	}
 
-	/**
-	 * Inserts a new record (page content element)
-	 *
-	 * @param	string		$destination: consists of several parts separated by colon. Example: pages:78:sDEF:lDEF:field_contentarea:vDEF:0
-	 * @param	array		$row: Array of parameters for creating the new record.
-	 * @return	integer		uid of the created content element (if any)
-	 */
-	function insertRecord($destination, $row)	{
-		return $this->xmlRelHndlObj->insertRecord($destination, $row);
-	}
-
-	/**
-	 * Performs the processing part of pasting a record.
-	 *
-	 * @param	string		$pasteCmd: Kind of pasting: 'cut', 'copy', 'copyref' or 'unlink'
-	 * @param	string		$source: String defining the original record. Example: pages:78:sDEF:lDEF:field_contentarea:vDEF:0
-	 * @param	string		$destination: Defines the destination where to paste the record (not used when unlinking of course).
-	 * @return	void		nothing
-	 */
-	function pasteRecord($pasteCmd, $source, $destination)	{
-		return $this->xmlRelHndlObj->pasteRecord($pasteCmd, $source, $destination);
-	}
-
-
-
-
-
-	/********************************************
-	 *
-	 * Structure functions
-	 *
-	 ********************************************/
-
-	/**
-	 * Gets the page ID of the folder containing the template objects (for our template selector).
-	 * The storage folder is used for that purpose.
-	 *
-	 * @param	integer		$positionPid
-	 * @return	integer		PID of the storage folder
-	 */
-	function getStorageFolderPid($positionPid)	{
-			// Negative PID values is pointing to a page on the same level as the current.
-		if ($positionPid<0) {
-			$pidRow = t3lib_BEfunc::getRecordWSOL('pages',abs($positionPid),'pid');
-			$positionPid = $pidRow['pid'];
+		if (isset ($redirectLocation)) {
+			header('Location: '.t3lib_div::locationHeaderUrl($redirectLocation));
 		}
-		$row = t3lib_BEfunc::getRecordWSOL('pages',$positionPid);
-
-		$TSconfig = t3lib_BEfunc::getTCEFORM_TSconfig('pages',$row);
-		return intval($TSconfig['_STORAGE_PID']);
 	}
 
 	/**
-	 * Returns the data structure (containing data) for a certain page or a flexible content element. In case of a page it will contain all the references
-	 * to content elements (and more information) and in case of a FCE, references to its sub-elements.
+	 * Returns the content tree (based on the data structure) for a certain page or a flexible content element. In case of a page it will contain all the references
+	 * to content elements (and some more information) and in case of a FCE, references to its sub-elements.
+	 *
+	 * This function also adds preview content for later display in the page module. The rendering for traditional content elements is done in render_previewContent(),
+	 * all other elements are rendered in the getContentTree*() functions.
 	 *
 	 * @param	string		$table: Table which contains the (XML) data structure. Only records from table 'pages' or flexible content elements from 'tt_content' are handled
-	 * @param	integer		$id: The uid of the record
+	 * @param	array		$row: Record of the root element where the tree starts
+	 * @param	string		$languageKey: The content tree will only contain elements which would be shown when the given language is selected. Use uppercase country codes, fx. "DEF", "DE" or "EN"
 	 * @param	string		$prevRecList: comma separated list of uids, used internally for recursive calls. Don't mess with it!
-	 * @param	array		$row: Row of a record, used internally for recursive calls. Don't mess with it!
-	 * @return	array		The data structure tree
+	 * @return	array		The content tree
+	 * @access protected
 	 */
-	function getDStree($table, $id, $prevRecList='', $row='')	{
+	function getContentTree($table, $row, $languageKey='DEF', $prevRecList='')	{
 		global $TCA, $LANG;
 
-		$row = is_array($row) ? $row : t3lib_BEfunc::getRecordWSOL($table,$id);
 		$tree=array();
 		$tree['el']=array(
 			'table' => $table,
-			'id' => $id,
+			'uid' => $row['uid'],
 			'pid' => $row['pid'],
-			'_ORIG_uid' => $row['_ORIG_uid'],
 			'title' => t3lib_div::fixed_lgd_cs(t3lib_BEfunc::getRecordTitle($table, $row),50),
 			'icon' => t3lib_iconWorks::getIcon($table, $row),
+			'previewContent' => ($table == 'tt_content' ? $this->render_previewContent($row) : NULL),
 			'sys_language_uid' => $row['sys_language_uid'],
 			'l18n_parent' => $row['l18n_parent'],
 			'CType' => $row['CType'],
 		);
 
-		if ($table=='pages' || $table==$this->altRoot['table'] || ($table=='tt_content' && $row['CType']=='templavoila_pi1'))	{
-			$flexFName = $this->altRoot['table']==$table ? $this->altRoot['field_flex'] : 'tx_templavoila_flex';
-			$expDS = $this->getExpandedDataStructure($table, $flexFName, $row);
-			$tree['ds_meta'] = $this->currentDataStructureArr[$table]['meta'];
-			$xmlContent = t3lib_div::xml2array($row[$flexFName]);
-			if (!is_array($xmlContent))	$xmlContent = array();
+		if ($table == 'pages' || $table == $this->altRoot['table'] || ($table=='tt_content' && $row['CType']=='templavoila_pi1'))	{
 
-				// Take care of the currently selected language, for both concepts - with langChildren enabled and disabled
+			t3lib_div::loadTCA ($table);
+			$rawDataStructureArr = t3lib_BEfunc::getFlexFormDS($TCA[$table]['columns']['tx_templavoila_flex']['config'], $row, $table);
+			$expandedDataStructureArr = $this->apiObj->ds_getExpandedDataStructure($table, $row);
+
+			$tree['ds_meta'] = $rawDataStructureArr['meta'];
+			$flexformContentArr = t3lib_div::xml2array($row['tx_templavoila_flex']);
+			if (!is_array($flexformContentArr))	$flexformContentArr = array();
+
+				// Respect the currently selected language, for both concepts - with langChildren enabled and disabled:
 			$langChildren = intval($tree['ds_meta']['langChildren']);
 			$langDisable = intval($tree['ds_meta']['langDisable']);
-#debug($tree['ds_meta'],'sVal');
-			$lKey = $langDisable ? 'lDEF' : ($langChildren ? 'lDEF' : 'l'.$this->currentLanguageKey);
-			$vKey = $langDisable ? 'vDEF' : ($langChildren ? 'v'.$this->currentLanguageKey : 'vDEF');
-#debug(array('$lKey'=>$lKey,'$vKey'=>$vKey),'getDStree');
 
-			foreach($expDS as $sheetKey => $sVal)	{
+			$lKey = $langDisable ? 'lDEF' : ($langChildren ? 'lDEF' : 'l'.$languageKey);
+			$vKey = $langDisable ? 'vDEF' : ($langChildren ? 'v'.$languageKey : 'vDEF');
+
+			$tree['el']['sLang'] = $lKey;
+			$tree['el']['vLang'] = $vKey;
+
+			if ($table == 'pages') {
+				$currentTemplateObject = $this->getPageTemplateObject($row);
+				if (is_array ($currentTemplateObject)) {
+					$templateMappingArr = unserialize($currentTemplateObject['templatemapping']);	
+				}
+			}	
+
+			foreach($expandedDataStructureArr as $sheetKey => $sheetData)	{
+
+					// Add some sheet meta information:
 				$tree['sub'][$sheetKey] = array();
 				$tree['meta'][$sheetKey] = array(
-					'title' => (is_array($sVal) && $sVal['ROOT']['TCEforms']['sheetTitle'] ? $GLOBALS['LANG']->sL($sVal['ROOT']['TCEforms']['sheetTitle']) : ''),
-					'description' => (is_array($sVal) && $sVal['ROOT']['TCEforms']['sheetDescription'] ? $GLOBALS['LANG']->sL($sVal['ROOT']['TCEforms']['sheetDescription']) : ''),
-					'short' => (is_array($sVal) && $sVal['ROOT']['TCEforms']['sheetShortDescr'] ? $GLOBALS['LANG']->sL($sVal['ROOT']['TCEforms']['sheetShortDescr']) : '')
+					'title' => (is_array($sheetData) && $sheetData['ROOT']['TCEforms']['sheetTitle'] ? $LANG->sL($sheetData['ROOT']['TCEforms']['sheetTitle']) : ''),
+					'description' => (is_array($sheetData) && $sheetData['ROOT']['TCEforms']['sheetDescription'] ? $LANG->sL($sheetData['ROOT']['TCEforms']['sheetDescription']) : ''),
+					'short' => (is_array($sheetData) && $sheetData['ROOT']['TCEforms']['sheetShortDescr'] ? $LANG->sL($sheetData['ROOT']['TCEforms']['sheetShortDescr']) : ''),
 				);
 
-				if (is_array($sVal) && is_array($sVal['ROOT']['el']))	{
-					foreach($sVal['ROOT']['el'] as $k => $v) {
-
-						if ($v['TCEforms']['config']['type']=='group' && $v['TCEforms']['config']['internal_type']=='db' && $v['TCEforms']['config']['allowed']=='tt_content')	{
-							$tree['sub'][$sheetKey][$k]=array();
-							$tree['sub'][$sheetKey][$k]['el']=array();
-							$tree['sub'][$sheetKey][$k]['meta']=array(
-								'title' => $v['TCEforms']['label'],
-								'langDisable' => $tree['ds_meta']['langDisable'],
-								'langChildren' => $tree['ds_meta']['langChildren'],
-							);
-
-							$dat = $xmlContent['data'][$sheetKey][$lKey][$k][$vKey];
-							$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
-							$dbAnalysis->start($dat,'tt_content');
-							$elArray = array();
-
-							foreach($dbAnalysis->itemArray as $counter => $recIdent)	{
-								$this->global_tt_content_elementRegister[$recIdent['id']]++;
-								$idStr = $recIdent['table'].':'.$recIdent['id'];
-
-								$nextSubRecord = t3lib_BEfunc::getRecordWSOL($recIdent['table'],$recIdent['id']);
-								if (is_array($nextSubRecord))	{
-									$idRow = $elArray[] = $nextSubRecord;
-								} else {
-									$idRow = $elArray[] = NULL;
-								}
-								$hideInDisplay = !($this->MOD_SETTINGS['tt_content_showHidden'] || ($TCA[$recIdent['table']]['ctrl']['enablecolumns']['disabled'] && !$nextSubRecord[$TCA[$recIdent['table']]['ctrl']['enablecolumns']['disabled']]));
-
-
-								if (!t3lib_div::inList($prevRecList,$idStr))	{
-									if (is_array($idRow))	{
-										$tree['sub'][$sheetKey][$k]['el'][$idStr] = $this->getDStree($recIdent['table'],$recIdent['id'],$prevRecList.','.$idStr,$idRow);
-										$tree['sub'][$sheetKey][$k]['el'][$idStr]['el']['index'] = $counter+1;
-										$tree['sub'][$sheetKey][$k]['el'][$idStr]['hideInDisplay'] = $hideInDisplay;
-										$tree['sub'][$sheetKey][$k]['el_list'][($counter+1)] = $idStr;
-									} else {
-										# ERROR: The element referenced was deleted! - or hidden :-)
-									}
-								} else {
-									# ERROR: recursivity error!
+					// Traverse the sheet's elements:
+				if (is_array($sheetData) && is_array($sheetData['ROOT']['el']))	{
+					foreach($sheetData['ROOT']['el'] as $fieldKey => $fieldData) {
+						
+						if (is_array($templateMappingArr['MappingInfo']['ROOT']['el'][$fieldKey]) || $table!='pages') {
+							$tree['fields'][$fieldKey] = array();
+	
+							$TCEformsConfiguration = $fieldData['TCEforms']['config'];
+							$TCEformsLabel = $LANG->sL($fieldData['TCEforms']['label'], 1);
+	
+							if (isset ($flexformContentArr['data'][$sheetKey][$lKey][$fieldKey][$vKey])) {
+								$fieldValue = $flexformContentArr['data'][$sheetKey][$lKey][$fieldKey][$vKey];
+	
+									// Render preview for images:
+								if ($TCEformsConfiguration['type'] == 'group' && $TCEformsConfiguration['internal_type'] == 'file')	{
+									$thumbnail = t3lib_BEfunc::thumbCode (array('dummyFieldName'=> $fieldValue), '', 'dummyFieldName', $this->doc->backPath, '', $TCEformsConfiguration['uploadfolder']);
+									$tree['el']['previewContent'] .= '<strong>'.$TCEformsLabel.'</strong> '.$thumbnail.'<br />';
+	
+									// Render images for everything else:
+								} elseif ($TCEformsConfiguration['type'] != 'group') {
+									$tree['el']['previewContent'] .= '<strong>'.$TCEformsLabel.'</strong> '. $this->link_edit(htmlspecialchars(t3lib_div::fixed_lgd_cs(strip_tags($fieldValue),200)), 'tt_content', $row['uid']).'<br />';
 								}
 							}
-#							$this->evaluateRuleOnElements($v['tx_templavoila']['ruleRegEx'],$v['tx_templavoila']['ruleConstants'],$elArray);
-						} elseif (is_array($v['TCEforms'])) {
-							if ($v['TCEforms']['config']['type']=='group' && $v['TCEforms']['config']['internal_type']=='file')	{
-								#$xmlContent['data'][$sheetKey][$lKey][$k][$vKey];
-								$thumbnail = t3lib_BEfunc::thumbCode(array('fN'=>$xmlContent['data'][$sheetKey][$lKey][$k][$vKey]),'','fN',$this->doc->backPath,'',$v['TCEforms']['config']['uploadfolder']);
-								$tree['el']['previewContent'][]='<strong>'.$LANG->sL($v['TCEforms']['label'],1).'</strong> '.$thumbnail;
-							} else {
-								$tree['el']['previewContent'][]='<strong>'.$LANG->sL($v['TCEforms']['label'],1).'</strong> '.$this->linkEdit(htmlspecialchars(t3lib_div::fixed_lgd_cs(strip_tags($xmlContent['data'][$sheetKey][$lKey][$k][$vKey]),200)),$table,$row['uid']);
+	
+								// If the current field points to other content elements, process them:
+							if ($fieldData['TCEforms']['config']['type'] == 'group' &&
+								$fieldData['TCEforms']['config']['internal_type'] == 'db' &&
+								$fieldData['TCEforms']['config']['allowed'] == 'tt_content')	{
+									$tree = $this->getContentTree_processSubContent ($flexformContentArr, $tree, $sheetKey, $lKey, $fieldKey, $vKey, $fieldData, $languageKey, $prevRecList);
+	
+	 							// If the current field contains no content itself but has sub elements (sections / containers):
+							} elseif ($fieldData['type'] == 'array') {
+								$tree = $this->getContentTree_processSubElements ($flexformContentArr, $tree, $sheetKey, $lKey, $fieldKey, $vKey, $fieldData, $row);
 							}
 						}
 					}
 				}
 			}
-		} else {
-			$tree['el']['previewContent'][] = $this->renderPreviewContent($row, $table);
 		}
 
-			// Add localization info:
-		$tree['localizationInfo'] = $this->getLocalizationInfo($tree);
+			// Add localization info for this element:
+		$tree['localizationInfo'] = $this->getContentTree_getLocalizationInfoForElement($tree);
 
 		return $tree;
 	}
 
 	/**
+	 * Sub function for rendering the content tree. Handles sub content elements of the current element.
 	 *
-	 *
-	 * @param	array		$dsInfo: The current dsInfo array
-	 * @return	string		HTML
+	 * @param	array		$flexformContentArr: Flexform content of the current element, as an array
+	 * @param	array		$tree: The content tree we are currently building
+	 * @param	string		$sheetKey: The key of the currently selected sheet
+	 * @param	string		$lKey: The current structure language key
+	 * @param	string		$fieldKey: Name of the current field
+	 * @param	string		$vKey: Language key of the current value language
+	 * @param	array		$fieldData: Data of the current field from the expanded datastructure
+	 * @param	string		$languageKey: Key of the currently selected language
+	 * @param	string		$prevRecList: List of previously processed record uids
+	 * @return	array		The modified tree
+	 * @access protected
 	 */
-	function getLocalizationInfo($dsInfo) {
+	function getContentTree_processSubContent($flexformContentArr, $tree, $sheetKey, $lKey, $fieldKey, $vKey, $fieldData, $languageKey, $prevRecList) {
+		global $TCA;
 
-				// LOCALIZATION information for content elements (non Flexible Content Elements)
-		$locInfo = array();
-		if ($dsInfo['el']['table']=='tt_content' && $dsInfo['el']['sys_language_uid']<=0)	{
+		$tree['sub'][$sheetKey][$fieldKey]=array();
+		$tree['sub'][$sheetKey][$fieldKey]['el']=array();
+		$tree['sub'][$sheetKey][$fieldKey]['meta']=array(
+			'title' => $fieldData['TCEforms']['label'],
+			'langDisable' => $tree['ds_meta']['langDisable'],
+			'langChildren' => $tree['ds_meta']['langChildren'],
+			'sLang' => $lKey,
+			'vLang' => $vKey
+		);
 
-				// Finding translations of this record:
-				// Select overlay record:
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+		$listOfSubElementUids = $flexformContentArr['data'][$sheetKey][$lKey][$fieldKey][$vKey];
+		$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
+		$dbAnalysis->start($listOfSubElementUids, 'tt_content');
+		$elArray = array();
+
+		foreach($dbAnalysis->itemArray as $counter => $recIdent)	{
+			$this->global_tt_content_elementRegister[$recIdent['id']]++;
+			$idStr = $recIdent['table'].':'.$recIdent['id'];
+
+			$nextSubRecord = t3lib_BEfunc::getRecordWSOL($recIdent['table'],$recIdent['id']);
+			if (is_array($nextSubRecord))	{
+				$idRow = $elArray[] = $nextSubRecord;
+			} else {
+				$idRow = $elArray[] = NULL;
+			}
+			$hideInDisplay = !($this->MOD_SETTINGS['tt_content_showHidden'] || ($TCA[$recIdent['table']]['ctrl']['enablecolumns']['disabled'] && !$nextSubRecord[$TCA[$recIdent['table']]['ctrl']['enablecolumns']['disabled']]));
+
+			if (!t3lib_div::inList($prevRecList,$idStr))	{
+				if (is_array($idRow))	{
+					$tree['sub'][$sheetKey][$fieldKey]['el'][$idStr] = $this->getContentTree($recIdent['table'],$idRow, $languageKey, $prevRecList.','.$idStr);
+					$tree['sub'][$sheetKey][$fieldKey]['el'][$idStr]['el']['index'] = $counter+1;
+					$tree['sub'][$sheetKey][$fieldKey]['el'][$idStr]['hideInDisplay'] = $hideInDisplay;
+					$tree['sub'][$sheetKey][$fieldKey]['el_list'][($counter+1)] = $idStr;
+
+				} else {
+					# ERROR: The element referenced was deleted! - or hidden :-)
+				}
+			} else {
+				# ERROR: recursivity error!
+			}
+		}
+		return $tree;
+	}
+
+	/**
+	 * Sub function for rendering the content tree. Handles sub elements which don't have any content
+	 * but do have sub elements (eg. sections and containers).
+	 *
+	 * @param	array		$flexformContentArr: Flexform content of the current element, as an array
+	 * @param	array		$tree: The content tree we are currently building
+	 * @param	string		$sheetKey: The key of the currently selected sheet
+	 * @param	string		$lKey: The current structure language key
+	 * @param	string		$fieldKey: Name of the current field
+	 * @param	string		$vKey: Language key of the current value language
+	 * @param	array		$fieldData: Data of the current field from the expanded datastructure
+	 * @param	array		$row: Current tt_content record to be processed
+	 * @return	array		The modified tree
+	 * @access protected
+	 * @todo	Does not support nested SC/CO yet and should be designed to run recursively!
+	 */
+	function getContentTree_processSubElements($flexformContentArr, $tree, $sheetKey, $lKey, $fieldKey, $vKey, $fieldData, $row) {
+
+		$tree['fields'][$fieldKey]['tx_templavoila']['title'] = $fieldData['tx_templavoila']['title'];
+		$tree['fields'][$fieldKey]['tx_templavoila']['section'] = $fieldData['section'];
+
+		if (is_array($flexformContentArr['data'][$sheetKey][$lKey][$fieldKey]['el'])) {
+			if ($fieldData['section']) {
+				foreach($flexformContentArr['data'][$sheetKey][$lKey][$fieldKey]['el'] as $sectionIndex => $sectionData) {
+					$sectionFieldKey = key($sectionData);
+					if (is_array ($sectionData[$sectionFieldKey]['el'])) {
+
+						$tree['el']['previewContent'] .= '<ul>';
+						foreach ($sectionData[$sectionFieldKey]['el'] as $containerFieldKey => $containerData) {
+							$tree['el']['previewContent'] .= '<li><strong>'.$containerFieldKey.'</strong> '.$this->link_edit(htmlspecialchars(t3lib_div::fixed_lgd_cs(strip_tags($containerData[$vKey]),200)), 'tt_content', $row['uid']).'</li>';
+						}
+						$tree['el']['previewContent'] .= '</ul>';
+
+					}
+				}
+			} else {
+ 				foreach ($flexformContentArr['data'][$sheetKey][$lKey][$fieldKey]['el'] as $containerKey => $containerData) {
+					$tree['el']['previewContent'] .= $this->link_edit(htmlspecialchars(t3lib_div::fixed_lgd_cs(strip_tags($containerData[$vKey]),200)), 'tt_content', $row['uid']).'<br />';
+				}
+			}
+		}
+
+		return $tree;
+	}
+
+
+	/**
+	 * Returns information about localization of traditional content elements (non FCEs).
+	 * It will be added to the content tree by getContentTree().
+	 *
+	 * @param	array		$contentTreeArr: Part of the content tree of the element to create the localization information for.
+	 * @return	array		Array of sys_language UIDs with some information as the value
+	 * @access protected
+	 * @see		getContentTree()
+	 */
+	function getContentTree_getLocalizationInfoForElement($contentTreeArr) {
+		global $TYPO3_DB;
+
+		$localizationInfoArr = array();
+		if ($contentTreeArr['el']['table']=='tt_content' && $contentTreeArr['el']['sys_language_uid']<=0)	{
+
+				// Finding translations of this record and select overlay record:
+			$fakeElementRow = array ('uid' => $contentTreeArr['el']['uid'], 'pid' => $contentTreeArr['el']['pid']);
+			t3lib_beFunc::fixVersioningPID ('tt_content', $fakeElementRow);
+			$res = $TYPO3_DB->exec_SELECTquery(
 						'*',
 						'tt_content',
-						'pid='.intval($dsInfo['el']['pid']).
+						'pid='.$fakeElementRow['pid'].
 							' AND sys_language_uid>0'.
-							' AND l18n_parent='.intval($dsInfo['el']['id']).
+							' AND l18n_parent='.intval($contentTreeArr['el']['uid']).
 							t3lib_BEfunc::deleteClause('tt_content')
 					);
 			$attachedLocalizations = array();
-			while($olrow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+			while($olrow = $TYPO3_DB->sql_fetch_assoc($res))	{
 				t3lib_BEfunc::workspaceOL('tt_content',$olrow);
 				if (!isset($attachedLocalizations[$olrow['sys_language_uid']]))	{
 					$attachedLocalizations[$olrow['sys_language_uid']] = $olrow['uid'];
@@ -1577,94 +1293,48 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			foreach($this->translatedLanguagesArr as $sys_language_uid => $sLInfo)	{
 				if ($sys_language_uid > 0)	{
 					if (isset($attachedLocalizations[$sys_language_uid]))	{
-						$locInfo[$sys_language_uid] = array();
-						$locInfo[$sys_language_uid]['mode'] = 'exists';
-						$locInfo[$sys_language_uid]['localization_uid'] = $attachedLocalizations[$sys_language_uid];
+						$localizationInfoArr[$sys_language_uid] = array();
+						$localizationInfoArr[$sys_language_uid]['mode'] = 'exists';
+						$localizationInfoArr[$sys_language_uid]['localization_uid'] = $attachedLocalizations[$sys_language_uid];
 
 						$this->global_tt_content_elementRegister[$attachedLocalizations[$sys_language_uid]]++;
-					} elseif ($dsInfo['el']['CType']!='templavoila_pi1') {	// Dont localize Flexible Content Elements (might change policy on this or make it configurable if any would rather like to localize FCEs by duplicate records instead of internally in the FlexForm XML)
-						if ((int)$dsInfo['el']['sys_language_uid']===0)	{	// Assuming that only elements which has the default language set is candidates for localization. In case the language is [ALL] then it is assumed that the element should stay "international".
-							$locInfo[$sys_language_uid] = array();
-							$locInfo[$sys_language_uid]['mode'] = 'localize';
+					} elseif ($contentTreeArr['el']['CType']!='templavoila_pi1') {	// Dont localize Flexible Content Elements (might change policy on this or make it configurable if any would rather like to localize FCEs by duplicate records instead of internally in the FlexForm XML)
+						if ((int)$contentTreeArr['el']['sys_language_uid']===0)	{	// Assuming that only elements which have the default language set are candidates for localization. In case the language is [ALL] then it is assumed that the element should stay "international".
+							$localizationInfoArr[$sys_language_uid] = array();
+							$localizationInfoArr[$sys_language_uid]['mode'] = 'localize';
 						}
-					} elseif(!$dsInfo['ds_meta']['langDisable'] && (int)$dsInfo['el']['sys_language_uid']===-1) {	// CType == templavoila_pi1
-						$locInfo[$sys_language_uid] = array();
-						$locInfo[$sys_language_uid]['mode'] = 'localizedFlexform';
+					} elseif(!$contentTreeArr['ds_meta']['langDisable'] && (int)$contentTreeArr['el']['sys_language_uid']===-1) {	// CType == templavoila_pi1
+						$localizationInfoArr[$sys_language_uid] = array();
+						$localizationInfoArr[$sys_language_uid]['mode'] = 'localizedFlexform';
 					} else {
-						$locInfo[$sys_language_uid] = array();
-						$locInfo[$sys_language_uid]['mode'] = 'no_localization';
+						$localizationInfoArr[$sys_language_uid] = array();
+						$localizationInfoArr[$sys_language_uid]['mode'] = 'no_localization';
 					}
 				}
 			}
 		}
-		return $locInfo;
+		return $localizationInfoArr;
 	}
 
-	/**
-	 * Returns the data structure for a flexform field ($field) from $table (from $row)
+
+
+
+
+	/***********************************************
 	 *
-	 * @param	string		The table name
-	 * @param	string		The field name
-	 * @param	array		The data row (used to get DS if DS is dependant on the data in the record)
-	 * @return	array		The data structure, expanded for all sheets inside.
-	 */
-	function getExpandedDataStructure($table, $field, $row)	{
-		global $TCA;
-
-		t3lib_div::loadTCA ($table);
-		$conf = $TCA[$table]['columns'][$field]['config'];
-		$dataStructArray = t3lib_BEfunc::getFlexFormDS($conf, $row, $table);
-
-			// Save the raw data structure for later usage
-		$this->currentDataStructureArr[$table] = $dataStructArray;
-
-		$output=array();
-		if (is_array($dataStructArray['sheets']))	{
-			foreach($dataStructArray['sheets'] as $sheetKey => $sheetInfo)	{
-				list ($dataStruct, $sheet) = t3lib_div::resolveSheetDefInDS($dataStructArray, $sheetKey);
-				if ($sheet == $sheetKey)	{
-					$output[$sheetKey]=$dataStruct;
-				}
-			}
-		} else {
-			$sheetKey='sDEF';
-			list ($dataStruct, $sheet) = t3lib_div::resolveSheetDefInDS($dataStructArray, $sheetKey);
-			if ($sheet == $sheetKey)	{
-				$output[$sheetKey]=$dataStruct;
-			}
-		}
-		return $output;
-	}
-
-	/**
-	 * Checks if an element's children comply with the rules
+	 * Miscelleaneous helper functions (protected)
 	 *
-	 * @param	string		The content element's table
-	 * @param	integer		The element's uid
-	 * @return	array
-	 */
-	 function checkRulesForElement ($table, $uid) {
-		return $this->rulesObj->evaluateRulesForElement ($table, $uid);
-	 }
-
-
-
-
-
-	/********************************************
-	 *
-	 * Miscelleaneous functions
-	 *
-	 ********************************************/
+	 ***********************************************/
 
 	/**
 	 * Returns an array of available languages (to use for FlexForms)
 	 *
-	 * @param	integer		Page id: If zero, the query will select all sys_language records from root level. If set to another value, the query will select all sys_language records that has a pages_language_overlay record on that page (and is not hidden, unless you are admin user)
-	 * @param	boolean		If set, only languages which are paired with a static_info_table / static_language record will be returned.
-	 * @param	boolean		If set, an array entry for a default language is set.
-	 * @param	boolean		If set, an array entry for "multiple languages" is added (uid -1)
+	 * @param	integer		$id: If zero, the query will select all sys_language records from root level. If set to another value, the query will select all sys_language records that has a pages_language_overlay record on that page (and is not hidden, unless you are admin user)
+	 * @param	boolean		$onlyIsoCoded: If set, only languages which are paired with a static_info_table / static_language record will be returned.
+	 * @param	boolean		$setDefault: If set, an array entry for a default language is set.
+	 * @param	boolean		$setMulti: If set, an array entry for "multiple languages" is added (uid -1)
 	 * @return	array
+	 * @access protected
 	 */
 	function getAvailableLanguages($id=0, $onlyIsoCoded=true, $setDefault=true, $setMulti=false)	{
 		global $LANG, $TYPO3_DB, $BE_USER, $TCA, $BACK_PATH;
@@ -1713,6 +1383,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		}
 
 		while($row = $TYPO3_DB->sql_fetch_assoc($res))	{
+			t3lib_BEfunc::workspaceOL('sys_language', $row);
 			$output[$row['uid']]=$row;
 
 			if ($row['static_lang_isocode'])	{
@@ -1727,17 +1398,51 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 			if ($onlyIsoCoded && !$output[$row['uid']]['ISOcode']) unset($output[$row['uid']]);
 		}
-
 		return $output;
 	}
 
 	/**
-	 * Prints out the module HTML
-	 *
-	 * @return	void
+	 * Finds the currently selected template object by climbing up the root line. 
+	 * 
+	 * @param	array		$row: A page record
+	 * @return	mixed		The template object record or FALSE if none was found
+	 * @access protected
 	 */
-	function printContent()    {
-		echo $this->content;
+	function getPageTemplateObject($row) {
+		$templateObjectUid = intval($row['tx_templavoila_to']);
+		if (!$templateObjectUid) {
+			$rootLine = t3lib_beFunc::BEgetRootLine($row['uid'],'', TRUE);
+			foreach($rootLine as $rootLineRecord) {
+				$pageRecord = t3lib_beFunc::getRecord('pages', $rootLineRecord['uid']);
+				if (($row['uid'] != $pageRecord['uid']) && $pageRecord['tx_templavoila_next_to'])	{	// If there is a next-level TO:
+					$templateObjectUid = $pageRecord['tx_templavoila_next_to'];
+					break;
+				} elseif ($pageRecord['tx_templavoila_to'])	{	// Otherwise try the NORMAL TO:
+					$templateObjectUid = $pageRecord['tx_templavoila_to'];
+					break;
+				}
+			}
+		}
+		return t3lib_beFunc::getRecordWSOL('tx_templavoila_tmplobj', $templateObjectUid);		
+	}
+
+	/**
+	 * Returns an array of registered instantiated classes for a certain hook.
+	 *
+	 * @param	string		$hookName: Name of the hook
+	 * @return	array		Array of object references
+	 * @access protected
+	 */
+	function hooks_prepareObjectsArray ($hookName) {
+		global $TYPO3_CONF_VARS;
+
+		$hookObjectsArr = array();
+		if (is_array ($TYPO3_CONF_VARS['EXTCONF']['templavoila']['mod1'][$hookName])) {
+			foreach ($TYPO3_CONF_VARS['EXTCONF']['templavoila']['mod1'][$hookName] as $classRef) {
+				$hookObjectsArr[] = &t3lib_div::getUserObj ($classRef);
+			}
+		}
+		return $hookObjectsArr;
 	}
 }
 

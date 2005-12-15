@@ -33,38 +33,39 @@
  *
  *
  *
- *   85: class tx_templavoila_htmlmarkup
- *  205:     function markupHTMLcontent($content,$backPath,$relPathFix,$showTags,$mode='')
- *  242:     function passthroughHTMLcontent($content,$relPathFix,$mode='',$altStyle='')
- *  263:     function getContentBasedOnPath($content,$pathStrArr)
- *  295:     function splitByPath($content,$pathString)
- *  322:     function splitContentToMappingInfo($fileContent,$currentMappingInfo)
- *  385:     function mappingInfoToSearchPath($currentMappingInfo)
- *  426:     function mergeSearchpartsIntoContent($content,$searchParts,$token='')
- *  457:     function mergeSampleDataIntoTemplateStructure($dataStruct,$currentMappingInfo,$firstLevelImplodeToken='',$sampleOrder='')
- *  500:     function mergeFormDataIntoTemplateStructure($editStruct,$currentMappingInfo,$firstLevelImplodeToken='',$valueKey='vDEF')
- *  546:     function splitPath($pathStr)
- *  602:     function getTemplateArrayForTO($uid)
- *  622:     function mergeDataArrayToTemplateArray($TA,$data)
- *  644:     function getTemplateRecord($uid,$renderType,$langUid)
- *  678:     function getTemplateMappingArray($uid,$renderType,$langUid,$sheet)
- *  693:     function getTemplateRecord_query($uid,$where)
- *  711:     function setHeaderBodyParts($MappingInfo_head,$MappingData_head_cached,$BodyTag_cached='')
+ *   86: class tx_templavoila_htmlmarkup
+ *  214:     function markupHTMLcontent($content,$backPath,$relPathFix,$showTags,$mode='')
+ *  255:     function passthroughHTMLcontent($content,$relPathFix,$mode='',$altStyle='')
+ *  276:     function getContentBasedOnPath($content,$pathStrArr)
+ *  319:     function splitByPath($content,$pathString)
+ *  346:     function splitContentToMappingInfo($fileContent,$currentMappingInfo)
+ *  409:     function mappingInfoToSearchPath($currentMappingInfo)
+ *  450:     function mergeSearchpartsIntoContent($content,$searchParts,$token='')
+ *  481:     function mergeSampleDataIntoTemplateStructure($dataStruct,$currentMappingInfo,$firstLevelImplodeToken='',$sampleOrder='')
+ *  524:     function mergeFormDataIntoTemplateStructure($editStruct,$currentMappingInfo,$firstLevelImplodeToken='',$valueKey='vDEF')
+ *  571:     function splitPath($pathStr)
+ *  627:     function getTemplateArrayForTO($uid)
+ *  649:     function mergeDataArrayToTemplateArray($TA,$data)
+ *  671:     function getTemplateRecord($uid,$renderType,$langUid)
+ *  727:     function getTemplateMappingArray($uid,$renderType,$langUid,$sheet)
+ *  742:     function getTemplateRecord_query($uid, $where)
+ *  762:     function setHeaderBodyParts($MappingInfo_head,$MappingData_head_cached,$BodyTag_cached='')
  *
  *              SECTION: Various sub processing
- *  745:     function init()
- *  768:     function splitTagTypes($showTags)
+ *  796:     function init()
+ *  817:     function setTagsFromXML($content)
+ *  844:     function splitTagTypes($showTags)
  *
  *              SECTION: SPLITTING functions
- *  818:     function recursiveBlockSplitting($content,$tagsBlock,$tagsSolo,$mode,$path='',$recursion=0)
- *  903:     function getMarkupCode($mode,$v,$params,$firstTagName,$firstTag,$endTag,$subPath,$recursion)
- *  988:     function getSearchCode($mode,$v,$params,$firstTagName,$firstTag,$endTag,$subPath,$path,$recursion)
- * 1071:     function sourceDisplay($str,$recursion,$gnyf='',$valueStr=0)
- * 1092:     function checkboxDisplay($str,$recursion,$path,$gnyf='',$valueStr=0)
- * 1118:     function makePath($path,$firstTagName,$attr)
- * 1146:     function getGnyf($firstTagName,$path,$title)
+ *  894:     function recursiveBlockSplitting($content,$tagsBlock,$tagsSolo,$mode,$path='',$recursion=0)
+ *  979:     function getMarkupCode($mode,$v,$params,$firstTagName,$firstTag,$endTag,$subPath,$recursion)
+ * 1064:     function getSearchCode($mode,$v,$params,$firstTagName,$firstTag,$endTag,$subPath,$path,$recursion)
+ * 1147:     function sourceDisplay($str,$recursion,$gnyf='',$valueStr=0)
+ * 1168:     function checkboxDisplay($str,$recursion,$path,$gnyf='',$valueStr=0)
+ * 1194:     function makePath($path,$firstTagName,$attr)
+ * 1224:     function getGnyf($firstTagName,$path,$title)
  *
- * TOTAL FUNCTIONS: 25
+ * TOTAL FUNCTIONS: 26
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -136,7 +137,7 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 		'dt' => array(),
 		'dd' => array(),
 		'em' => array(),
-		'fieldset' => array('anchor_outside'=>1),		
+		'fieldset' => array('anchor_outside'=>1),
 		'font' => array(),
 		'form' => array('anchor_outside'=>1),
 		'h1' => array(),
@@ -809,6 +810,9 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 	/**
 	 * The idea is to parse the XML in $contnet and set the internal TAG array with all these tags so they can be mapped...
 	 * NOT WORKING YET - experiment.
+	 *
+	 * @param	[type]		$content: ...
+	 * @return	[type]		...
 	 */
 	function setTagsFromXML($content)	{
 		$parser = xml_parser_create();

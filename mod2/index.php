@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2003-2004 Kasper SkÃ¥rhÃ¸j <kasper@typo3.com>
+*  (c) 2003-2005 Kasper Skårhøj <kasper@typo3.com>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -26,52 +26,53 @@
  *
  * $Id$
  *
- * @author   Kasper SkÃ¥rhÃ¸j <kasper@typo3.com>
+ * @author   Kasper Skårhøj <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *  100: class tx_templavoila_module2 extends t3lib_SCbase
- *  124:     function menuConfig()
- *  145:     function main()
- *  204:     function printContent()
+ *  101: class tx_templavoila_module2 extends t3lib_SCbase
+ *  125:     function menuConfig()
+ *  146:     function main()
+ *  205:     function printContent()
  *
  *              SECTION: Rendering module content:
- *  228:     function renderModuleContent()
- *  265:     function renderModuleContent_searchForTODS()
- *  326:     function renderModuleContent_mainView()
- *  456:     function renderDSlisting($dsScopeArray, &$toRecords)
- *  534:     function renderDataStructureDisplay($dsR, $toIdArray, $scope)
- *  653:     function renderTODisplay($toObj, &$toRecords, $scope, $children=0)
- *  826:     function findRecordsWhereTOUsed($toObj,$scope)
- *  941:     function findDSUsageWithImproperTOs($dsID, $toIdArray, $scope)
- * 1058:     function findRecordsWhereUsed_pid($pid)
- * 1074:     function completeTemplateFileList()
- * 1172:     function setErrorLog($scope,$type,$HTML)
- * 1183:     function getErrorLog($scope)
+ *  229:     function renderModuleContent()
+ *  266:     function renderModuleContent_searchForTODS()
+ *  327:     function renderModuleContent_mainView()
+ *  461:     function renderDSlisting($dsScopeArray, &$toRecords,$scope)
+ *  564:     function renderDataStructureDisplay($dsR, $toIdArray, $scope)
+ *  719:     function renderTODisplay($toObj, &$toRecords, $scope, $children=0)
+ *  903:     function findRecordsWhereTOUsed($toObj,$scope)
+ * 1042:     function findDSUsageWithImproperTOs($dsID, $toIdArray, $scope)
+ * 1159:     function findRecordsWhereUsed_pid($pid)
+ * 1175:     function completeTemplateFileList()
+ * 1273:     function setErrorLog($scope,$type,$HTML)
+ * 1284:     function getErrorLog($scope)
+ * 1310:     function DSdetails($DSstring)
  *
  *              SECTION: Wizard for new site
- * 1229:     function renderNewSiteWizard_overview()
- * 1290:     function renderNewSiteWizard_run()
- * 1339:     function wizard_checkMissingExtensions()
- * 1375:     function wizard_checkConfiguration()
- * 1396:     function wizard_checkDirectory()
- * 1415:     function wizard_step1()
- * 1477:     function wizard_step2()
- * 1526:     function wizard_step3()
- * 1632:     function wizard_step4()
- * 1654:     function wizard_step5($menuField)
- * 1889:     function wizard_step6()
- * 1910:     function getImportObj()
- * 1928:     function syntaxHLTypoScript($v)
- * 1946:     function makeWrap($cfg)
- * 1960:     function getMenuDefaultCode($field)
- * 1972:     function saveMenuCode()
- * 2012:     function getBackgroundColor($filePath)
+ * 1383:     function renderNewSiteWizard_overview()
+ * 1444:     function renderNewSiteWizard_run()
+ * 1493:     function wizard_checkMissingExtensions()
+ * 1529:     function wizard_checkConfiguration()
+ * 1539:     function wizard_checkDirectory()
+ * 1558:     function wizard_step1()
+ * 1620:     function wizard_step2()
+ * 1669:     function wizard_step3()
+ * 1778:     function wizard_step4()
+ * 1800:     function wizard_step5($menuField)
+ * 2040:     function wizard_step6()
+ * 2061:     function getImportObj()
+ * 2079:     function syntaxHLTypoScript($v)
+ * 2097:     function makeWrap($cfg)
+ * 2113:     function getMenuDefaultCode($field)
+ * 2125:     function saveMenuCode()
+ * 2163:     function getBackgroundColor($filePath)
  *
- * TOTAL FUNCTIONS: 32
+ * TOTAL FUNCTIONS: 33
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -82,7 +83,7 @@ unset($MCONF);
 require ('conf.php');
 require ($BACK_PATH.'init.php');
 require ($BACK_PATH.'template.php');
-$LANG->includeLLFile('EXT:templavoila/mod2/locallang.php');
+$LANG->includeLLFile('EXT:templavoila/mod2/locallang.xml');
 require_once (PATH_t3lib.'class.t3lib_scbase.php');
 $BE_USER->modAccess($MCONF,1);    // This checks permissions and exits if the users has no permission for entry.
 
@@ -454,6 +455,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 	 *
 	 * @param	array		Data Structures in a numeric array
 	 * @param	array		Array of template objects (passed by reference).
+	 * @param	[type]		$scope: ...
 	 * @return	array		Returns array with three elements: 0: content, 1: number of DS shown, 2: number of root-level template objects shown.
 	 */
 	function renderDSlisting($dsScopeArray, &$toRecords,$scope)	{
@@ -1301,6 +1303,9 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 
 	/**
 	 * Show meta data part of Data Structure
+	 *
+	 * @param	[type]		$DSstring: ...
+	 * @return	[type]		...
 	 */
 	function DSdetails($DSstring)	{
 		$DScontent = t3lib_div::xml2array($DSstring);
@@ -1524,17 +1529,6 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 	function wizard_checkConfiguration()	{
 
 		$TVconfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
-
-		if (!$TVconfig['enable.']['pageTemplateSelector'])	{
-			return
-				nl2br('You must enable the page template selector for TemplaVoila! In order to do so, follow these directions:
-
-			- Go to the Extensions Manager
-			- Click the title of the extension "TemplaVoila!" in the section "Loaded extensions"
-			- In the configuration form, select the checkbox named "Enable Page Template Selector"
-			- Return to this wizard
-			');
-		}
 	}
 
 	/**

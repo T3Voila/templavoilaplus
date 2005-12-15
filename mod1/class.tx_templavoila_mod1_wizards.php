@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2004  Robert Lemke (robert@typo3.org)
+*  (c) 2004, 2005  Robert Lemke (robert@typo3.org)
 *  All rights reserved
 *
 *  script is part of the TYPO3 project. The TYPO3 project is
@@ -33,16 +33,18 @@
  *
  *
  *
- *   60: class tx_templavoila_mod1_wizards
- *   76:     function init(&$pObj)
+ *   62: class tx_templavoila_mod1_wizards
+ *   78:     function init(&$pObj)
  *
  *              SECTION: Wizards render functions
- *  102:     function renderWizard_createNewPage ($positionPid)
+ *  105:     function renderWizard_createNewPage ($positionPid)
  *
  *              SECTION: Wizard related helper functions
- *  195:     function renderTemplateSelector ($positionPid, $templateType='tmplobj')
+ *  243:     function renderTemplateSelector ($positionPid, $templateType='tmplobj')
+ *  357:     function createPage($pageArray,$positionPid)
+ *  391:     function getImportObject()
  *
- * TOTAL FUNCTIONS: 3
+ * TOTAL FUNCTIONS: 5
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -80,6 +82,7 @@ class tx_templavoila_mod1_wizards {
 		$this->pObj =& $pObj;
 		$this->doc =& $this->pObj->doc;
 		$this->extKey =& $this->pObj->extKey;
+		$this->apiObj =& $this->pObj->apiObj;
 	}
 
 
@@ -110,10 +113,8 @@ class tx_templavoila_mod1_wizards {
 			$httpHost = t3lib_div::getIndpEnv('TYPO3_HOST_ONLY');
 			if ($httpHost == $refInfo['host'] || t3lib_div::_GP('vC') == $BE_USER->veriCode() || $TYPO3_CONF_VARS['SYS']['doNotCheckReferer'])	{
 					// Create new page
-				$newID = $this->pObj->createPage (t3lib_div::_GP('data'), $positionPid);
+				$newID = $this->createPage (t3lib_div::_GP('data'), $positionPid);
 				if ($newID > 0) {
-						// Creating the page was successful, now create the default content elements if any
-					$this->pObj->createDefaultRecords ('pages',$newID);
 
 						// Get TSconfig for a different selection of fields in the editing form
 					$TSconfig = t3lib_BEfunc::getModTSconfig($newID, 'mod.web_txtemplavoilaM1.createPageWizard');
@@ -188,7 +189,7 @@ class tx_templavoila_mod1_wizards {
 		$this->doc->bodyTagAdditions = $CMparts[1];
 		$this->doc->postCode.= $CMparts[2];
 
-		$content.=$this->doc->header($LANG->sL('LLL:EXT:lang/locallang_core.php:db_new.php.pagetitle'));
+		$content.=$this->doc->header($LANG->sL('LLL:EXT:lang/locallang_core.xml:db_new.php.pagetitle'));
 		$content.=$this->doc->startPage($LANG->getLL ('createnewpage_title'));
 
 			// Add template selectors
@@ -236,13 +237,13 @@ class tx_templavoila_mod1_wizards {
 	 * Renders the template selector.
 	 *
 	 * @param	integer		Position id. Can be positive and negative depending of where the new page is going: Negative always points to a position AFTER the page having the abs. value of the positionId. Positive numbers means to create as the first subpage to another page.
-	 * @param	string		$templateType: The template type, currently only 'tmplobj' is supported, 't3d' is planned
+	 * @param	string		$templateType: The template type, 'tmplobj' or 't3d'
 	 * @return	string		HTML output containing a table with the template selector
 	 */
 	function renderTemplateSelector ($positionPid, $templateType='tmplobj') {
 		global $LANG, $TYPO3_DB;
 
-		$storageFolderPID = $this->pObj->getStorageFolderPid($positionPid);
+		$storageFolderPID = $this->apiObj->getStorageFolderPid($positionPid);
 		$tmplHTML = array();
 
 		switch ($templateType) {
@@ -260,7 +261,9 @@ class tx_templavoila_mod1_wizards {
 				$res = $TYPO3_DB->exec_SELECTquery (
 					"$tTO.*",
 					"$tTO LEFT JOIN $tDS ON $tTO.datastructure = $tDS.uid",
-					"$tTO.pid=".intval($storageFolderPID)." AND $tDS.scope=1".t3lib_befunc::deleteClause ($tTO).t3lib_befunc::deleteClause ($tDS)
+					"$tTO.pid=".intval($storageFolderPID)." AND $tDS.scope=1".
+						t3lib_befunc::deleteClause ($tTO).t3lib_befunc::deleteClause ($tDS).
+						t3lib_BEfunc::versioningPlaceholderClause($tTO).t3lib_BEfunc::versioningPlaceholderClause($tDS)
 				);
 
 				while ($row = $TYPO3_DB->sql_fetch_assoc($res))	{
@@ -344,6 +347,47 @@ class tx_templavoila_mod1_wizards {
 		return $content;
 	}
 
+	/**
+	 * Performs the neccessary steps to creates a new page
+	 *
+	 * @param	array		$pageArray: array containing the fields for the new page
+	 * @param	integer		$positionPid: location within the page tree (parent id)
+	 * @return	integer		uid of the new page record
+	 */
+	function createPage($pageArray,$positionPid)	{
+		$dataArr = array();
+		$dataArr['pages']['NEW'] = $pageArray;
+		$dataArr['pages']['NEW']['pid'] = $positionPid;
+		if (is_null($dataArr['pages']['NEW']['hidden'])) {
+			$dataArr['pages']['NEW']['hidden'] = 0;
+		}
+		unset($dataArr['pages']['NEW']['uid']);
+
+			// If no data structure is set, try to find one by using the template object
+		if ($dataArr['pages']['NEW']['tx_templavoila_to'] && !$dataArr['pages']['NEW']['tx_templavoila_ds']) {
+			$templateObjectRow = t3lib_BEfunc::getRecordWSOL('tx_templavoila_tmplobj',$dataArr['pages']['NEW']['tx_templavoila_to'],'uid,pid,datastructure');
+			$dataArr['pages']['NEW']['tx_templavoila_ds'] = $templateObjectRow['datastructure'];
+		}
+
+		$tce = t3lib_div::makeInstance('t3lib_TCEmain');
+
+			// set default TCA values specific for the user
+		$TCAdefaultOverride = $GLOBALS['BE_USER']->getTSConfigProp('TCAdefaults');
+		if (is_array($TCAdefaultOverride))	{
+			$tce->setDefaultsFromUserTS($TCAdefaultOverride);
+		}
+
+		$tce->stripslashes_values=0;
+		$tce->start($dataArr,array());
+		$tce->process_datamap();
+		return $tce->substNEWwithIDs['NEW'];
+	}
+
+	/**
+	 * [Describe function...]
+	 *
+	 * @return	[type]		...
+	 */
 	function getImportObject()	{
 		global $TYPO3_CONF_VARS;
 
