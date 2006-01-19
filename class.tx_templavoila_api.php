@@ -813,7 +813,7 @@ class tx_templavoila_api {
 	 * @access public
 	 */
 	function flexform_getPointersByRecord ($elementUid, $pageUid) {
-		$flexformPointersArr = $this->flexform_getFlexformPointersToSubElementsRecursively ('pages', $pageUid, &$flexformPointers);
+		$flexformPointersArr = $this->flexform_getFlexformPointersToSubElementsRecursively('pages', $pageUid, $flexformPointers);
 
 		$resultPointersArr = array();
 		if (is_array ($flexformPointersArr)) {
