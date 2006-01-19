@@ -378,7 +378,7 @@ class tx_templavoila_dbnewcontentel {
         $res = $TYPO3_DB->exec_SELECTquery (
             "$tTO.*",
             "$tTO LEFT JOIN $tDS ON $tTO.datastructure = $tDS.uid",
-            "$tTO.pid=".intval($storageFolderPID)." AND $tDS.scope=2".
+            "$tTO.pid=".intval($storageFolderPID)." AND $tDS.scope=2 AND $tTO.parent=0".
             	t3lib_befunc::deleteClause ($tTO).t3lib_befunc::deleteClause ($tDS).
             	t3lib_BEfunc::versioningPlaceholderClause($tTO).t3lib_BEfunc::versioningPlaceholderClause($tDS)
         );
