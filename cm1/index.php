@@ -1438,7 +1438,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			// Add options for attributes:
 		if (is_array($attrDat))	{
 			foreach($attrDat as $attrK => $v)	{
-				$optDat[$lastEl['path'].'/ATTR:'.$attrK]='ATTRIBUTE "'.$attrK.'" (= '.t3lib_div::fixed_lgd($v,15).')';
+				$optDat[$lastEl['path'].'/ATTR:'.$attrK]='ATTRIBUTE "'.$attrK.'" (= '.t3lib_div::fixed_lgd_cs($v,15).')';
 			}
 		}
 
@@ -1599,7 +1599,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 					$icon = '<img src="item_'.$t.'.gif" width="24" height="16" border="0" alt="" title="'.$tt.$key.'" style="margin-right: 5px;" class="absmiddle" />';
 
 						// Composing title-cell:
-					$this->elNames[$formPrefix.'['.$key.']']['tx_templavoila']['title'] = $icon.'<strong>'.htmlspecialchars(t3lib_div::fixed_lgd($value['tx_templavoila']['title'],30)).'</strong>';
+					$this->elNames[$formPrefix.'['.$key.']']['tx_templavoila']['title'] = $icon.'<strong>'.htmlspecialchars(t3lib_div::fixed_lgd_cs($value['tx_templavoila']['title'],30)).'</strong>';
 					$rowCells['title'] = '<img src="clear.gif" width="'.($level*16).'" height="1" alt="" />'.$this->elNames[$formPrefix.'['.$key.']']['tx_templavoila']['title'];
 
 						// Description:
@@ -1615,13 +1615,13 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 							if (isset($contentSplittedByMapping['cArray'][$key]))	{	// If mapping of this information also succeeded...:
 								$cF = implode(chr(10),t3lib_div::trimExplode(chr(10),$contentSplittedByMapping['cArray'][$key],1));
 								if (strlen($cF)>200)	{
-									$cF = t3lib_div::fixed_lgd($cF,90).' '.t3lib_div::fixed_lgd_pre($cF,90);
+									$cF = t3lib_div::fixed_lgd_cs($cF,90).' '.t3lib_div::fixed_lgd_cs($cF,-90);
 								}
 
 									// Render HTML path:
 								list($pI) = $this->markupObj->splitPath($currentMappingInfo[$key]['MAP_EL']);
 								$rowCells['htmlPath'] = '<img src="'.$GLOBALS['BACK_PATH'].'gfx/icon_ok2.gif" width="18" height="16" border="0" alt="" title="'.htmlspecialchars($cF?'Content found ('.strlen($contentSplittedByMapping['cArray'][$key]).' chars):'.chr(10).chr(10).$cF:'Content empty.').'" class="absmiddle" />'.
-														'<img src="../html_tags/'.$pI['el'].'.gif" height="9" border="0" alt="" hspace="3" class="absmiddle" title="---'.htmlspecialchars(t3lib_div::fixed_lgd($currentMappingInfo[$key]['MAP_EL'],-80)).'" />'.
+														'<img src="../html_tags/'.$pI['el'].'.gif" height="9" border="0" alt="" hspace="3" class="absmiddle" title="---'.htmlspecialchars(t3lib_div::fixed_lgd_cs($currentMappingInfo[$key]['MAP_EL'],-80)).'" />'.
 														($pI['modifier'] ? $pI['modifier'].($pI['modifier_value']?':'.($pI['modifier']!='RANGE'?$pI['modifier_value']:'...'):''):'');
 								$rowCells['htmlPath'] = '<a href="'.$this->linkThisScript(array('htmlPath'=>$path.($path?'|':'').ereg_replace('\/[^ ]*$','',$currentMappingInfo[$key]['MAP_EL']),'showPathOnly'=>1)).'">'.$rowCells['htmlPath'].'</a>';
 
@@ -1676,7 +1676,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 #									$opt[]='<option value="'.htmlspecialchars($currentMappingInfo[$key]['MAP_EL']).'" selected="selected">'.htmlspecialchars('[ - CURRENT - ]').'</option>';
 								}
 									// Finally, put together the selector box:
-								$rowCells['cmdLinks'] = '<img src="../html_tags/'.$lastLevel['el'].'.gif" height="9" border="0" alt="" class="absmiddle" title="---'.htmlspecialchars(t3lib_div::fixed_lgd($lastLevel['path'],-80)).'" /><br />
+								$rowCells['cmdLinks'] = '<img src="../html_tags/'.$lastLevel['el'].'.gif" height="9" border="0" alt="" class="absmiddle" title="---'.htmlspecialchars(t3lib_div::fixed_lgd_cs($lastLevel['path'],-80)).'" /><br />
 									<select name="dataMappingForm'.$formPrefix.'['.$key.'][MAP_EL]">
 										'.implode('
 										',$opt).'

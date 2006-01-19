@@ -1226,7 +1226,7 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 		if (!$this->onlyElements || t3lib_div::inList($this->onlyElements,$firstTagName))	{
 			$onclick = str_replace('###PATH###',$this->pathPrefix.$path,$this->gnyfImgAdd);
 
-			$gnyf = $this->textGnyf ? '<span '.$onclick.' style="border:1px solid blank; background-color: yellow;">['.$firstTagName.']</span>' : '<img '.$onclick.' src="'.$this->gnyfPath.'html_tags/'.$firstTagName.'.gif" border="0" title="'.htmlspecialchars(t3lib_div::fixed_lgd($title,-80)).'"'.$this->gnyfStyle.' alt="" />';
+			$gnyf = $this->textGnyf ? '<span '.$onclick.' style="border:1px solid blank; background-color: yellow;">['.$firstTagName.']</span>' : '<img '.$onclick.' src="'.$this->gnyfPath.'html_tags/'.$firstTagName.'.gif" border="0" title="'.htmlspecialchars(t3lib_div::fixed_lgd_cs($title,-80)).'"'.$this->gnyfStyle.' alt="" />';
 			$gnyf.= ($this->mode=='explode' ? '<br />' : '');
 			return $gnyf;
 		}
