@@ -136,7 +136,7 @@ class tx_templavoila_mod1_localization {
 	 * @access protected
 	 */
 	function sidebar_renderItem_renderLanguageSelectorbox() {
-		global $LANG , $BE_USER;
+		global $LANG, $BE_USER, $BACK_PATH;
 
 		$availableLanguagesArr = $this->pObj->translatedLanguagesArr;
 		$newLanguagesArr = $this->pObj->getAvailableLanguages(0, true, false);
@@ -149,11 +149,12 @@ class tx_templavoila_mod1_localization {
 			if ($language['uid']<=0 || $BE_USER->checkLanguageAccess($languageArr['uid']))	{
 
 				$selected = $this->pObj->currentLanguageKey == $languageArr['ISOcode'];
-				$style = isset ($languageArr['flagIcon']) ? 'background-image: url('.$languageArr['flagIcon'].'); background-repeat: no-repeat; padding-left: 22px;' : '';
+				$flag = ($languageArr['flagIcon'] != '' ? $languageArr['flagIcon'] : $BACK_PATH . 'gfx/flags/multi-language.gif');
+				$style = isset ($languageArr['flagIcon']) ? 'background-image: url(' . $flag . '); background-repeat: no-repeat; padding-left: 22px;' : '';
 				$optionsArr [] = '<option style="'.$style.'" value="'.$languageArr['uid'].'"'.($this->pObj->MOD_SETTINGS['language'] == $languageArr['uid'] ? ' selected="selected"' : '').'>'.htmlspecialchars($languageArr['title']).'</option>';
 
 				if ($this->pObj->currentLanguageKey == 'DEF')	{
-					$availableTranslationsFlags .= '<a href="index.php?'.$this->pObj->link_getParameters().'&editPageLanguageOverlay='.$languageArr['uid'].'"><img src="'.$languageArr['flagIcon'].'" title="Edit '.htmlspecialchars($languageArr['title']).'" alt="" /></a> ';
+					$availableTranslationsFlags .= '<a href="index.php?'.$this->pObj->link_getParameters().'&editPageLanguageOverlay='.$languageArr['uid'].'"><img src="' . $flag . '" title="Edit '.htmlspecialchars($languageArr['title']).'" alt="" /></a> ';
 				}
 			}
 		}
@@ -165,8 +166,9 @@ class tx_templavoila_mod1_localization {
 				<td width="1%" nowrap="nowrap">'.$LANG->getLL ('selectlanguageversion').':</td>
 				<td>
 					<select onchange="document.location='.$link.'">'.implode ('', $optionsArr).'</select>'.
+					'<span style="margin-left: 5px">' .
 					$availableTranslationsFlags.
-					'
+					'</span>
 				</td>
 			</tr>
 		';
