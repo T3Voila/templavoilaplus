@@ -49,6 +49,9 @@
         <languageKey index="pt" type="array">
         </languageKey>
         <languageKey index="ru" type="array">
+            <label index="mlang_tabs_tab">Страница</label>
+            <label index="mlang_labels_tabdescr">Этот модуль позволяет создавать и редактировать страницы. Он позволяет предоставляет выбор шаблона и управление для разных языков. Это модуль - часть расширения &quot;TemplaVoila&quot;.</label>
+            <label index="mlang_labels_tablabel">Создание и редактирование страниц</label>
         </languageKey>
         <languageKey index="ro" type="array">
         </languageKey>
@@ -79,6 +82,11 @@
         <languageKey index="br" type="array">
         </languageKey>
         <languageKey index="et" type="array">
+        </languageKey>
+        <languageKey index="lv" type="array">
+            <label index="mlang_tabs_tab">Lapa</label>
+            <label index="mlang_labels_tabdescr">Šis modulis ļāuj Jum veidot un labot weblapas. Tas piedāvā paraugu izvēli un valodu pārvaldību. Šis modulis ir daļa no&quot;TemplaVoila&quot; paplašinājuma.</label>
+            <label index="mlang_labels_tablabel">Izveidot un labot lapas</label>
         </languageKey>
     </data>
     <orig_hash type="array">
