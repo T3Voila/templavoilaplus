@@ -723,7 +723,7 @@ class tx_templavoila_api {
 		$targetCheckString = $tmpArr[1];
 
 		$locationArr = explode (':', $locationString);
-		$targetCheckArr = explode (':', $targetCheckArr);
+		$targetCheckArr = explode (':', $targetCheckString);
 
 		if (count($targetCheckArr) == 2) {
 			$flexformPointer = array (
