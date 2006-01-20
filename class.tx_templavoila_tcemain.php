@@ -221,34 +221,43 @@ class tx_templavoila_tcemain {
 
 		switch ($status) {
 			case 'new' :
-				if (isset ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_tcemain']['preProcessFieldArrays'][$id])) {
-					$positionReferenceUid = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_tcemain']['preProcessFieldArrays'][$id]['pid'];
-					if ($positionReferenceUid < 0) {
-						$neighbourFlexformPointersArr = $templaVoilaAPI->flexform_getPointersByRecord (abs($positionReferenceUid ), $fieldArray['pid']);
-						$neighbourFlexformPointer = $neighbourFlexformPointersArr[0];
-
-						if (is_array ($neighbourFlexformPointer)) {
-							$destinationFlexformPointer = $neighbourFlexformPointer;
+				// Important: we do not need to insert element references if page is copied.
+				// References to content elements in flexform will be updated automatically
+				// by TCEmain. If we insert references ourselves, we have to figure out
+				// references for the old page, handle various languages, etc. No reason
+				// to do it here if TCEmain already does it for us.
+				//
+				// See http://bugs.typo3.org/view.php?id=2095 for bug related to this.
+				if (!isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_tcemain']['doNotInsertElementRefsToPage'])) {
+					if (isset ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_tcemain']['preProcessFieldArrays'][$id])) {
+						$positionReferenceUid = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_tcemain']['preProcessFieldArrays'][$id]['pid'];
+						if ($positionReferenceUid < 0) {
+							$neighbourFlexformPointersArr = $templaVoilaAPI->flexform_getPointersByRecord (abs($positionReferenceUid ), $fieldArray['pid']);
+							$neighbourFlexformPointer = $neighbourFlexformPointersArr[0];
+	
+							if (is_array ($neighbourFlexformPointer)) {
+								$destinationFlexformPointer = $neighbourFlexformPointer;
+							}
 						}
 					}
-				}
-
-				if (!is_array ($destinationFlexformPointer)) {
-					$mainContentAreaFieldName = $templaVoilaAPI->ds_getFieldNameByColumnPosition($fieldArray['pid'], 0);
-					if ($mainContentAreaFieldName !== FALSE) {
-						$destinationFlexformPointer = array (
-							'table' => 'pages',
-							'uid' => $fieldArray['pid'],
-							'sheet' => 'sDEF',
-							'sLang' => 'lDEF',
-							'field' => $mainContentAreaFieldName,
-							'vLang' => 'vDEF',
-							'position' => 0
-						);
+	
+					if (!is_array ($destinationFlexformPointer)) {
+						$mainContentAreaFieldName = $templaVoilaAPI->ds_getFieldNameByColumnPosition($fieldArray['pid'], 0);
+						if ($mainContentAreaFieldName !== FALSE) {
+							$destinationFlexformPointer = array (
+								'table' => 'pages',
+								'uid' => $fieldArray['pid'],
+								'sheet' => 'sDEF',
+								'sLang' => 'lDEF',
+								'field' => $mainContentAreaFieldName,
+								'vLang' => 'vDEF',
+								'position' => 0
+							);
+						}
 					}
-				}
-				if (is_array ($destinationFlexformPointer)) {
-					$templaVoilaAPI->insertElement_setElementReferences ($destinationFlexformPointer, $reference->substNEWwithIDs[$id]);
+					if (is_array ($destinationFlexformPointer)) {
+						$templaVoilaAPI->insertElement_setElementReferences ($destinationFlexformPointer, $reference->substNEWwithIDs[$id]);
+					}
 				}
 			break;
 
@@ -271,8 +280,12 @@ class tx_templavoila_tcemain {
 	 */
 	function processCmdmap_preProcess ($command, $table, $id, $value, &$reference) {
 
-		if ($this->debug) t3lib_div::devLog ('processDatamap_preProcess', 'templavoila', 0, array ($command, $table, $id, $value));
+		if ($this->debug) t3lib_div::devLog('processCmdmap_preProcess', 'templavoila', 0, array ($command, $table, $id, $value));
 		if ($GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_api']['apiIsRunningTCEmain']) return;
+		if ($table == 'pages' && $command == 'copy') {
+				// See http://bugs.typo3.org/view.php?id=2095
+			$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_tcemain']['doNotInsertElementRefsToPage'] = true;
+		}
 		if ($table != 'tt_content') return;
 
 		$templaVoilaAPI = t3lib_div::makeInstance('tx_templavoila_api');
@@ -284,6 +297,27 @@ class tx_templavoila_tcemain {
 				$sourceFlexformPointer = $sourceFlexformPointersArr[0];
 				$templaVoilaAPI->unlinkElement ($sourceFlexformPointer);
 			break;
+		}
+	}
+
+	/**
+	 * This method is called by a hook in the TYPO3 Core Engine (TCEmain).
+	 *
+	 * @param	string		$status: The TCEmain operation status, fx. 'update'
+	 * @param	string		$table: The table TCEmain is currently processing
+	 * @param	string		$id: The records id (if any)
+	 * @param	array		$fieldArray: The field names and their values to be processed
+	 * @param	object		$reference: Reference to the parent object (TCEmain)
+	 * @return	void
+	 * @access public
+	 */
+	function processCmdmap_postProcess($command, $table, $id, $value, &$reference) {
+		if ($this->debug) t3lib_div::devLog ('processCmdmap_postProcess', 'templavoila', 0, array ($command, $table, $id, $value));
+		if ($table == 'pages' && $command == 'copy') {
+				// See http://bugs.typo3.org/view.php?id=2095
+			if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_tcemain']['doNotInsertElementRefsToPage'])) {
+				unset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_tcemain']['doNotInsertElementRefsToPage']);
+			}
 		}
 	}
 
