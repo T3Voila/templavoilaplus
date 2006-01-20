@@ -949,7 +949,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		$possibleCommands = array ('createNewRecord', 'unlinkRecord', 'deleteRecord','pasteRecord', 'makeLocalRecord', 'localizeRecord', 'createNewPageTranslation', 'editPageLanguageOverlay');
 
 		foreach ($possibleCommands as $command) {
-			if ($commandParameters = t3lib_div::_GP($command)) {
+			if (($commandParameters = t3lib_div::_GP($command)) != '') {
 
 				$redirectLocation = 'index.php?'.$this->link_getParameters();
 
@@ -1010,17 +1010,30 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 					case 'editPageLanguageOverlay':
 							// Look for pages language overlay record for language:
-						list($pLOrecord) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-								'*',
-								'pages_language_overlay',
-								'pid='.intval($this->id).' AND sys_language_uid='.intval($commandParameters).
-									t3lib_BEfunc::deleteClause('pages_language_overlay').
-									t3lib_BEfunc::versioningPlaceholderClause('pages_language_overlay')
-							);
-						t3lib_beFunc::workspaceOL('pages_language_overlay', $pLOrecord);
-
-						if (is_array($pLOrecord))	{
-							$params = '&edit[pages_language_overlay]['.$pLOrecord['uid'].']=edit';
+						$sys_language_uid = intval($commandParameters);
+						$params = '';
+						if ($sys_language_uid != 0) {
+							// Edit overlay record
+							list($pLOrecord) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+									'*',
+									'pages_language_overlay',
+									'pid='.intval($this->id).' AND sys_language_uid='.$sys_language_uid.
+										t3lib_BEfunc::deleteClause('pages_language_overlay').
+										t3lib_BEfunc::versioningPlaceholderClause('pages_language_overlay')
+								);
+							if ($pLOrecord) {
+								t3lib_beFunc::workspaceOL('pages_language_overlay', $pLOrecord);
+								if (is_array($pLOrecord))	{
+									$params = '&edit[pages_language_overlay]['.$pLOrecord['uid'].']=edit';
+								}
+							}
+						}
+						else {
+							// Edit default language (page properties)
+							// No workspace overlay because we already on this page
+							$params = '&edit[pages]['.intval($this->id).']=edit';
+						}
+						if ($params) {
 							$returnUrl = '&returnUrl='.rawurlencode(t3lib_extMgm::extRelPath('templavoila').'mod1/index.php?'.$this->link_getParameters());
 							$redirectLocation = $GLOBALS['BACK_PATH'].'alt_doc.php?'.$params.$returnUrl.'&localizationMode=text';
 						}
