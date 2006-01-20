@@ -34,47 +34,49 @@
  *
  *
  *
- *  116: class tx_templavoila_module1 extends t3lib_SCbase
+ *  118: class tx_templavoila_module1 extends t3lib_SCbase
  *
  *              SECTION: Initialization functions
- *  154:     function init()
- *  198:     function menuConfig()
+ *  156:     function init()
+ *  200:     function menuConfig()
  *
  *              SECTION: Main functions
- *  252:     function main()
- *  346:     function printContent()
+ *  254:     function main()
+ *  348:     function printContent()
  *
  *              SECTION: Rendering functions
- *  366:     function render_editPageScreen()
+ *  368:     function render_editPageScreen()
  *
  *              SECTION: Framework rendering functions
- *  439:     function render_framework_allSheets($contentTreeArr, $parentPointer=array())
- *  475:     function render_framework_singleSheet($contentTreeArr, $sheet, $parentPointer=array())
- *  571:     function render_framework_subElements ($elementContentTreeArr, $sheet)
+ *  441:     function render_framework_allSheets($contentTreeArr, $parentPointer=array())
+ *  477:     function render_framework_singleSheet($contentTreeArr, $sheet, $parentPointer=array())
+ *  578:     function render_framework_subElements ($elementContentTreeArr, $sheet)
  *
  *              SECTION: Rendering functions for certain subparts
- *  659:     function render_previewContent($row)
- *  741:     function render_localizationInfoTable($contentTreeArr, $parentPointer)
+ *  666:     function render_previewContent($row)
+ *  748:     function render_localizationInfoTable($contentTreeArr, $parentPointer)
  *
  *              SECTION: Link functions (protected)
- *  847:     function link_edit($label, $table, $uid)
- *  864:     function link_new($label, $parentPointer)
- *  882:     function link_unlink($label, $unlinkPointer, $realDelete=FALSE)
- *  902:     function link_makeLocal($label, $makeLocalPointer)
- *  914:     function link_getParameters()
+ *  854:     function link_edit($label, $table, $uid)
+ *  871:     function link_new($label, $parentPointer)
+ *  889:     function link_unlink($label, $unlinkPointer, $realDelete=FALSE)
+ *  909:     function link_makeLocal($label, $makeLocalPointer)
+ *  921:     function link_getParameters()
  *
  *              SECTION: Processing and structure functions (protected)
- *  942:     function handleIncomingCommands()
- * 1046:     function getContentTree($table, $row, $languageKey='DEF', $prevRecList='')
- * 1150:     function getContentTree_processSubContent($flexformContentArr, $tree, $sheetKey, $lKey, $fieldKey, $vKey, $fieldData, $languageKey, $prevRecList)
- * 1213:     function getContentTree_processSubElements($flexformContentArr, $tree, $sheetKey, $lKey, $fieldKey, $vKey, $fieldData, $row)
- * 1252:     function getContentTree_getLocalizationInfoForElement($contentTreeArr)
+ *  949:     function handleIncomingCommands()
+ * 1066:     function getContentTree($table, $row, $languageKey='DEF', $prevRecList='')
+ * 1180:     function getContentTree_processSubContent($flexformContentArr, $tree, $sheetKey, $lKey, $fieldKey, $vKey, $fieldData, $languageKey, $prevRecList)
+ * 1243:     function getContentTree_processSubElements($flexformContentArr, $tree, $sheetKey, $lKey, $fieldKey, $vKey, $fieldData, $row)
+ * 1282:     function getContentTree_getLocalizationInfoForElement($contentTreeArr)
  *
  *              SECTION: Miscelleaneous helper functions (protected)
- * 1324:     function getAvailableLanguages($id=0, $onlyIsoCoded=true, $setDefault=true, $setMulti=false)
- * 1396:     function hooks_prepareObjectsArray ($hookName)
+ * 1354:     function getAvailableLanguages($id=0, $onlyIsoCoded=true, $setDefault=true, $setMulti=false)
+ * 1426:     function getPageTemplateObject($row)
+ * 1451:     function hooks_prepareObjectsArray ($hookName)
+ * 1468:     function alternativeLanguagesDefined()
  *
- * TOTAL FUNCTIONS: 22
+ * TOTAL FUNCTIONS: 24
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -397,7 +399,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		}
 
 			// Add the localization module if localization is enabled:
-		if (!$this->rootElementLangDisable) {
+		if (!$this->rootElementLangDisable && $this->alternativeLanguagesDefined()) {
 			$this->localizationObj =& t3lib_div::getUserObj ('&tx_templavoila_mod1_localization','');
 			$this->localizationObj->init($this);
 		}
@@ -1100,9 +1102,9 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			if ($table == 'pages') {
 				$currentTemplateObject = $this->getPageTemplateObject($row);
 				if (is_array ($currentTemplateObject)) {
-					$templateMappingArr = unserialize($currentTemplateObject['templatemapping']);	
+					$templateMappingArr = unserialize($currentTemplateObject['templatemapping']);
 				}
-			}	
+			}
 
 			foreach($expandedDataStructureArr as $sheetKey => $sheetData)	{
 
@@ -1117,33 +1119,33 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 					// Traverse the sheet's elements:
 				if (is_array($sheetData) && is_array($sheetData['ROOT']['el']))	{
 					foreach($sheetData['ROOT']['el'] as $fieldKey => $fieldData) {
-						
+
 						if (is_array($templateMappingArr['MappingInfo']['ROOT']['el'][$fieldKey]) || $table!='pages') {
 							$tree['fields'][$fieldKey] = array();
-	
+
 							$TCEformsConfiguration = $fieldData['TCEforms']['config'];
 							$TCEformsLabel = $LANG->sL($fieldData['TCEforms']['label'], 1);
-	
+
 							if (isset ($flexformContentArr['data'][$sheetKey][$lKey][$fieldKey][$vKey])) {
 								$fieldValue = $flexformContentArr['data'][$sheetKey][$lKey][$fieldKey][$vKey];
-	
+
 									// Render preview for images:
 								if ($TCEformsConfiguration['type'] == 'group' && $TCEformsConfiguration['internal_type'] == 'file')	{
 									$thumbnail = t3lib_BEfunc::thumbCode (array('dummyFieldName'=> $fieldValue), '', 'dummyFieldName', $this->doc->backPath, '', $TCEformsConfiguration['uploadfolder']);
 									$tree['el']['previewContent'] .= '<strong>'.$TCEformsLabel.'</strong> '.$thumbnail.'<br />';
-	
+
 									// Render images for everything else:
 								} elseif ($TCEformsConfiguration['type'] != 'group') {
 									$tree['el']['previewContent'] .= '<strong>'.$TCEformsLabel.'</strong> '. $this->link_edit(htmlspecialchars(t3lib_div::fixed_lgd_cs(strip_tags($fieldValue),200)), 'tt_content', $row['uid']).'<br />';
 								}
 							}
-	
+
 								// If the current field points to other content elements, process them:
 							if ($fieldData['TCEforms']['config']['type'] == 'group' &&
 								$fieldData['TCEforms']['config']['internal_type'] == 'db' &&
 								$fieldData['TCEforms']['config']['allowed'] == 'tt_content')	{
 									$tree = $this->getContentTree_processSubContent ($flexformContentArr, $tree, $sheetKey, $lKey, $fieldKey, $vKey, $fieldData, $languageKey, $prevRecList);
-	
+
 	 							// If the current field contains no content itself but has sub elements (sections / containers):
 							} elseif ($fieldData['type'] == 'array') {
 								$tree = $this->getContentTree_processSubElements ($flexformContentArr, $tree, $sheetKey, $lKey, $fieldKey, $vKey, $fieldData, $row);
@@ -1415,8 +1417,8 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	}
 
 	/**
-	 * Finds the currently selected template object by climbing up the root line. 
-	 * 
+	 * Finds the currently selected template object by climbing up the root line.
+	 *
 	 * @param	array		$row: A page record
 	 * @return	mixed		The template object record or FALSE if none was found
 	 * @access protected
@@ -1436,7 +1438,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				}
 			}
 		}
-		return t3lib_beFunc::getRecordWSOL('tx_templavoila_tmplobj', $templateObjectUid);		
+		return t3lib_beFunc::getRecordWSOL('tx_templavoila_tmplobj', $templateObjectUid);
 	}
 
 	/**
@@ -1456,6 +1458,15 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			}
 		}
 		return $hookObjectsArr;
+	}
+
+	/**
+	 * Checks if translation to alternative languages can be applied to this page.
+	 *
+	 * @return	boolean		<code>true</code> if alternative languages exist
+	 */
+	function alternativeLanguagesDefined() {
+		return count($this->allAvailableLanguages) > 2;
 	}
 }
 
