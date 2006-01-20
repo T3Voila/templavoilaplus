@@ -403,21 +403,21 @@ class tx_templavoila_mod1_sidebar {
 
 			// Render cache menu:
 		if ($pObj->id>0) {
-			$cshItem = t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'TCEforms_cacheSelector', $GLOBALS['BACK_PATH'],'', TRUE);
 			$cacheMenu = $this->doc->clearCacheMenu(intval($this->id), FALSE);
-			$tableRows[] = '
-				<tr class="bgColor4">
-					<td nowrap="nowrap">'.$cshItem.' '.$LANG->getLL('sidebar_advancedfunctions_labelcachefunctions', 1).':</td>
-					<td>'.$cacheMenu.'</td>
-				</tr>
-			';
+			if ($cacheMenu != '') {
+					// Show cache functions only if they are available to the user
+				$cshItem = t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'TCEforms_cacheSelector', $GLOBALS['BACK_PATH'],'', TRUE);
+				$tableRows[] = '
+					<tr class="bgColor4">
+						<td nowrap="nowrap">'.$cshItem.' '.$LANG->getLL('sidebar_advancedfunctions_labelcachefunctions', 1).':</td>
+						<td>'.$cacheMenu.'</td>
+					</tr>
+				';
+			}
 		}
 
 		return (count ($tableRows)) ? '<table border="0" cellpadding="0" cellspacing="1" class="lrPadding" width="100%">'.implode ('', $tableRows).'</table>' : '';
 	}
-
-
-
 
 	/********************************************
 	 *
