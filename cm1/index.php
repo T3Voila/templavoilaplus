@@ -34,46 +34,46 @@
  *
  *
  *
- *  124: class tx_templavoila_cm1 extends t3lib_SCbase
- *  188:     function menuConfig()
- *  209:     function main()
- *  230:     function printContent()
+ *  125: class tx_templavoila_cm1 extends t3lib_SCbase
+ *  189:     function menuConfig()
+ *  210:     function main()
+ *  231:     function printContent()
  *
  *              SECTION: MODULE mode
- *  259:     function main_mode()
- *  352:     function renderFile()
- *  789:     function renderDSO()
- *  924:     function renderTO()
- * 1092:     function renderTO_editProcessing(&$dataStruct,$row,$theFile)
+ *  260:     function main_mode()
+ *  353:     function renderFile()
+ *  793:     function renderDSO()
+ *  928:     function renderTO()
+ * 1096:     function renderTO_editProcessing(&$dataStruct,$row,$theFile)
  *
  *              SECTION: Mapper functions
- * 1313:     function renderHeaderSelection($displayFile,$currentHeaderMappingInfo,$showBodyTag,$htmlAfterDSTable='')
- * 1379:     function renderTemplateMapper($displayFile,$path,$dataStruct=array(),$currentMappingInfo=array(),$htmlAfterDSTable='')
- * 1567:     function drawDataStructureMap($dataStruct,$mappingMode=0,$currentMappingInfo=array(),$pathLevels=array(),$optDat=array(),$contentSplittedByMapping=array(),$level=0,$tRows=array(),$formPrefix='',$path='',$mapOK=1)
- * 1783:     function drawDataStructureMap_editItem($formPrefix,$key,$value,$level)
- * 1901:     function drawDataStructureMap_editItem_editTypeExtra($type, $formFieldName, $curValue)
+ * 1317:     function renderHeaderSelection($displayFile,$currentHeaderMappingInfo,$showBodyTag,$htmlAfterDSTable='')
+ * 1383:     function renderTemplateMapper($displayFile,$path,$dataStruct=array(),$currentMappingInfo=array(),$htmlAfterDSTable='')
+ * 1571:     function drawDataStructureMap($dataStruct,$mappingMode=0,$currentMappingInfo=array(),$pathLevels=array(),$optDat=array(),$contentSplittedByMapping=array(),$level=0,$tRows=array(),$formPrefix='',$path='',$mapOK=1)
+ * 1787:     function drawDataStructureMap_editItem($formPrefix,$key,$value,$level)
+ * 1906:     function drawDataStructureMap_editItem_editTypeExtra($type, $formFieldName, $curValue)
  *
  *              SECTION: Helper-functions for File-based DS/TO creation
- * 1949:     function substEtypeWithRealStuff(&$elArray,$v_sub=array())
- * 2200:     function substEtypeWithRealStuff_contentInfo($content)
+ * 1956:     function substEtypeWithRealStuff(&$elArray,$v_sub=array(),$scope = 0)
+ * 2237:     function substEtypeWithRealStuff_contentInfo($content)
  *
  *              SECTION: Various helper functions
- * 2246:     function getDataStructFromDSO($datString,$file='')
- * 2262:     function linkForDisplayOfPath($title,$path)
- * 2282:     function linkThisScript($array=array())
- * 2305:     function makeIframeForVisual($file,$path,$limitTags,$showOnly,$preview=0)
- * 2321:     function explodeMappingToTagsStr($mappingToTags,$unsetAll=0)
- * 2339:     function unsetArrayPath(&$dataStruct,$ref)
- * 2356:     function cleanUpMappingInfoAccordingToDS(&$currentMappingInfo,$dataStruct)
- * 2375:     function findingStorageFolderIds()
+ * 2283:     function getDataStructFromDSO($datString,$file='')
+ * 2299:     function linkForDisplayOfPath($title,$path)
+ * 2319:     function linkThisScript($array=array())
+ * 2342:     function makeIframeForVisual($file,$path,$limitTags,$showOnly,$preview=0)
+ * 2358:     function explodeMappingToTagsStr($mappingToTags,$unsetAll=0)
+ * 2376:     function unsetArrayPath(&$dataStruct,$ref)
+ * 2393:     function cleanUpMappingInfoAccordingToDS(&$currentMappingInfo,$dataStruct)
+ * 2412:     function findingStorageFolderIds()
  *
  *              SECTION: DISPLAY mode
- * 2421:     function main_display()
- * 2466:     function displayFileContentWithMarkup($content,$path,$relPathFix,$limitTags)
- * 2502:     function displayFileContentWithPreview($content,$relPathFix)
- * 2538:     function displayFrameError($error)
- * 2565:     function cshItem($table,$field,$BACK_PATH,$wrap='',$onlyIconMode=FALSE, $styleAttrib='')
- * 2577:     function lipsumLink($formElementName)
+ * 2458:     function main_display()
+ * 2503:     function displayFileContentWithMarkup($content,$path,$relPathFix,$limitTags)
+ * 2539:     function displayFileContentWithPreview($content,$relPathFix)
+ * 2575:     function displayFrameError($error)
+ * 2602:     function cshItem($table,$field,$BACK_PATH,$wrap='',$onlyIconMode=FALSE, $styleAttrib='')
+ * 2614:     function lipsumLink($formElementName)
  *
  * TOTAL FUNCTIONS: 29
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -509,7 +509,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 
 						// Modifying data structure with conversion of preset values for field types to actual settings:
 					$storeDataStruct = $dataStruct;
-					if (is_array($storeDataStruct['ROOT']['el'])) $this->substEtypeWithRealStuff($storeDataStruct['ROOT']['el'],$contentSplittedByMapping['sub']['ROOT']);
+					if (is_array($storeDataStruct['ROOT']['el'])) $this->substEtypeWithRealStuff($storeDataStruct['ROOT']['el'],$contentSplittedByMapping['sub']['ROOT'],$dataArr['tx_templavoila_datastructure']['NEW']['scope']);
 					$dataProtXML = '<?xml version="1.0" encoding="'.$GLOBALS['LANG']->charSet.'" standalone="yes" ?>' .chr(10). t3lib_div::array2xml($storeDataStruct,'',0,'T3DataStructure',4);
 					$dataArr['tx_templavoila_datastructure']['NEW']['dataprot'] = $dataProtXML;
 
@@ -561,7 +561,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 
 							// Modifying data structure with conversion of preset values for field types to actual settings:
 						$storeDataStruct=$dataStruct;
-						if (is_array($storeDataStruct['ROOT']['el']))		$this->substEtypeWithRealStuff($storeDataStruct['ROOT']['el'],$contentSplittedByMapping['sub']['ROOT']);
+						if (is_array($storeDataStruct['ROOT']['el']))		$this->substEtypeWithRealStuff($storeDataStruct['ROOT']['el'],$contentSplittedByMapping['sub']['ROOT'],$dsREC['scope']);
 						$dataProtXML = '<?xml version="1.0" encoding="'.$GLOBALS['LANG']->charSet.'" standalone="yes" ?>' .chr(10). t3lib_div::array2xml($storeDataStruct,'',0,'T3DataStructure',4);
 						$dataArr['tx_templavoila_datastructure'][$dsREC['uid']]['dataprot'] = $dataProtXML;
 
@@ -1945,13 +1945,15 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 	/**
 	 * When mapping HTML files to DS the field types are selected amount some presets - this function converts these presets into the actual settings needed in the DS
 	 * Typically called like: ->substEtypeWithRealStuff($storeDataStruct['ROOT']['el'],$contentSplittedByMapping['sub']['ROOT']);
+	 * Notice: this function is used to preview XML also. In this case it is always called with $scope=0, so XML for 'ce' type will not contain wrap with TYPO3SEARCH_xxx. Currently there is no way to avoid it.
 	 *
 	 * @param	array		$elArray: Data Structure, passed by reference!
 	 * @param	array		$v_sub: Actual template content splitted by Data Structure
+	 * @param	int		$scope: Scope as defined in tx_templavoila_datastructure.scope
 	 * @return	void		Note: The result is directly written in $elArray
 	 * @see renderFile()
 	 */
-	function substEtypeWithRealStuff(&$elArray,$v_sub=array())	{
+	function substEtypeWithRealStuff(&$elArray,$v_sub=array(),$scope = 0)	{
 
 		$eTypeCECounter = 0;
 
@@ -2107,11 +2109,18 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 	10= RECORDS
 	10.source.current=1
 	10.tables = tt_content
-	10.wrap = <!--TYPO3SEARCH_begin--> | <!--TYPO3SEARCH_end-->
 ';
+							if ($scope == 1) {
+									// Page DS only!
+								$elArray[$key]['tx_templavoila']['TypoScript'] .=
+'	10.wrap = <!--TYPO3SEARCH_begin--> | <!--TYPO3SEARCH_end-->
+';
+							}
+								// Proper alignment (at least for the first level)
+							$elArray[$key]['tx_templavoila']['TypoScript'] .= '                    ';
 
-							$elArray[$key]['tx_templavoila']['oldStyleColumnNumber'] = $eTypeCECounter;	
-							$eTypeCECounter++; 
+							$elArray[$key]['tx_templavoila']['oldStyleColumnNumber'] = $eTypeCECounter;
+							$eTypeCECounter++;
 
 						break;
 						case 'int':
@@ -2212,7 +2221,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 
 				// Run this function recursively if needed:
 			if (is_array($elArray[$key]['el']))	{
-				$this->substEtypeWithRealStuff($elArray[$key]['el'],$v_sub['sub'][$key]);
+				$this->substEtypeWithRealStuff($elArray[$key]['el'],$v_sub['sub'][$key],$scope);
 			}
 		}	// End loop
 	}
