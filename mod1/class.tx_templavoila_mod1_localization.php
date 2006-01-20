@@ -187,17 +187,20 @@ class tx_templavoila_mod1_localization {
 		global $LANG, $BE_USER;
 
 		$newLanguagesArr = $this->pObj->getAvailableLanguages(0, true, false);
-		if (count ($newLanguagesArr) < 1) return FALSE;
+		if (count($newLanguagesArr) < 1) return FALSE;
+
+		$translatedLanguagesArr = $this->pObj->getAvailableLanguages($this->pObj->id);
 
 		$optionsArr = array ('<option value=""></option>');
-		foreach ($newLanguagesArr as $language) {
-			if ($BE_USER->checkLanguageAccess($language['uid'])) {
+		foreach ($newLanguagesArr as $key => $language) {
+				// Display language only if no translation available yet
+			if (!isset($translatedLanguagesArr[$key]) && $BE_USER->checkLanguageAccess($language['uid'])) {
 				$style = isset ($language['flagIcon']) ? 'background-image: url('.$language['flagIcon'].'); background-repeat: no-repeat; padding-top: 0px; padding-left: 22px;' : '';
 				$optionsArr [] = '<option style="'.$style.'" name="createNewPageTranslation" value="'.$language['uid'].'">'.htmlspecialchars($language['title']).'</option>';
 			}
 		}
 
-		if (count ($optionsArr)>1) {
+		if (count($optionsArr) > 1) {
 			$link = 'index.php?'.$this->pObj->link_getParameters().'&createNewPageTranslation=\'+this.options[this.selectedIndex].value+\'&pid='.$this->pObj->id;
 			$output = '
 				<tr class="bgColor4">
