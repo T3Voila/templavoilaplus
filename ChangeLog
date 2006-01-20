@@ -7,6 +7,7 @@
  # Fixed bug #2206: copying elements doubles the references
  # Fixed bug #2209: Gremlin: hide "Translations" Tab if no alternative Syslanguage are present
  # Fixed bug #2236: TYPO3SEARCH_xxx should not be generated for FCE
+ # Fixed bug #2343: Page module creates many translations to the same language
 
 2006-01-19	Dmitry Dulepov	<typo3@accio.lv>
 
