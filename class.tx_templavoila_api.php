@@ -1213,7 +1213,7 @@ class tx_templavoila_api {
 	 *
 	 * @param	boolean		$flag: If TRUE, our user functions will be omitted
 	 * @return	void
-	 * @access	protected
+	 * @access protected
 	 */
 	function setTCEmainRunningFlag ($flag) {
 		$GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_api']['apiIsRunningTCEmain'] = $flag;
@@ -1225,7 +1225,7 @@ class tx_templavoila_api {
 	 * avoid infinite loops and other bad effects.
 	 *
 	 * @return	boolean		TRUE if flag is set, otherwise FALSE;
-	 * @access	protected
+	 * @access protected
 	 */
 	function getTCEmainRunningFlag () {
 		return $GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_api']['apiIsRunningTCEmain'] ? TRUE : FALSE;
@@ -1236,7 +1236,7 @@ class tx_templavoila_api {
 	 *
 	 * @param	integer		$pageUid: Context page uid
 	 * @return	integer		PID of the storage folder
-	 * @access	public
+	 * @access public
 	 */
 	function getStorageFolderPid($pageUid)	{
 

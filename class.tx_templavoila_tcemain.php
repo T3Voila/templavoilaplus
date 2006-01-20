@@ -34,17 +34,18 @@
  *
  *
  *
- *   62: class tx_templavoila_tcemain
+ *   63: class tx_templavoila_tcemain
  *
  *              SECTION: Public API (called by hook handler)
- *   84:     function processDatamap_preProcessFieldArray (&$incomingFieldArray, $table, $id, &$reference)
- *  110:     function processDatamap_postProcessFieldArray ($status, $table, $id, &$fieldArray, &$reference)
- *  222:     function processDatamap_afterDatabaseOperations ($status, $table, $id, $fieldArray, &$reference)
- *  280:     function processCmdmap_preProcess ($command, $table, $id, $value, &$reference)
- *  311:     function moveRecord_firstElementPostProcess ($table, $uid, $destPid, $sourceRecordBeforeMove, $updateFields, &$reference)
- *  352:     function moveRecord_afterAnotherElementPostProcess ($table, $uid, $destPid, $origDestPid, $sourceRecordBeforeMove, $updateFields, &$reference)
+ *   85:     function processDatamap_preProcessFieldArray (&$incomingFieldArray, $table, $id, &$reference)
+ *  111:     function processDatamap_postProcessFieldArray ($status, $table, $id, &$fieldArray, &$reference)
+ *  215:     function processDatamap_afterDatabaseOperations ($status, $table, $id, $fieldArray, &$reference)
+ *  282:     function processCmdmap_preProcess ($command, $table, $id, $value, &$reference)
+ *  315:     function processCmdmap_postProcess($command, $table, $id, $value, &$reference)
+ *  338:     function moveRecord_firstElementPostProcess ($table, $uid, $destPid, $sourceRecordBeforeMove, $updateFields, &$reference)
+ *  379:     function moveRecord_afterAnotherElementPostProcess ($table, $uid, $destPid, $origDestPid, $sourceRecordBeforeMove, $updateFields, &$reference)
  *
- * TOTAL FUNCTIONS: 6
+ * TOTAL FUNCTIONS: 7
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -234,13 +235,13 @@ class tx_templavoila_tcemain {
 						if ($positionReferenceUid < 0) {
 							$neighbourFlexformPointersArr = $templaVoilaAPI->flexform_getPointersByRecord (abs($positionReferenceUid ), $fieldArray['pid']);
 							$neighbourFlexformPointer = $neighbourFlexformPointersArr[0];
-	
+
 							if (is_array ($neighbourFlexformPointer)) {
 								$destinationFlexformPointer = $neighbourFlexformPointer;
 							}
 						}
 					}
-	
+
 					if (!is_array ($destinationFlexformPointer)) {
 						$mainContentAreaFieldName = $templaVoilaAPI->ds_getFieldNameByColumnPosition($fieldArray['pid'], 0);
 						if ($mainContentAreaFieldName !== FALSE) {

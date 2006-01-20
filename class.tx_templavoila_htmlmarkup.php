@@ -47,23 +47,23 @@
  *  627:     function getTemplateArrayForTO($uid)
  *  649:     function mergeDataArrayToTemplateArray($TA,$data)
  *  671:     function getTemplateRecord($uid,$renderType,$langUid)
- *  727:     function getTemplateMappingArray($uid,$renderType,$langUid,$sheet)
- *  742:     function getTemplateRecord_query($uid, $where)
- *  762:     function setHeaderBodyParts($MappingInfo_head,$MappingData_head_cached,$BodyTag_cached='')
+ *  728:     function getTemplateMappingArray($uid,$renderType,$langUid,$sheet)
+ *  743:     function getTemplateRecord_query($uid, $where)
+ *  763:     function setHeaderBodyParts($MappingInfo_head,$MappingData_head_cached,$BodyTag_cached='')
  *
  *              SECTION: Various sub processing
- *  796:     function init()
- *  817:     function setTagsFromXML($content)
- *  844:     function splitTagTypes($showTags)
+ *  797:     function init()
+ *  818:     function setTagsFromXML($content)
+ *  845:     function splitTagTypes($showTags)
  *
  *              SECTION: SPLITTING functions
- *  894:     function recursiveBlockSplitting($content,$tagsBlock,$tagsSolo,$mode,$path='',$recursion=0)
- *  979:     function getMarkupCode($mode,$v,$params,$firstTagName,$firstTag,$endTag,$subPath,$recursion)
- * 1064:     function getSearchCode($mode,$v,$params,$firstTagName,$firstTag,$endTag,$subPath,$path,$recursion)
- * 1147:     function sourceDisplay($str,$recursion,$gnyf='',$valueStr=0)
- * 1168:     function checkboxDisplay($str,$recursion,$path,$gnyf='',$valueStr=0)
- * 1194:     function makePath($path,$firstTagName,$attr)
- * 1224:     function getGnyf($firstTagName,$path,$title)
+ *  895:     function recursiveBlockSplitting($content,$tagsBlock,$tagsSolo,$mode,$path='',$recursion=0)
+ *  980:     function getMarkupCode($mode,$v,$params,$firstTagName,$firstTag,$endTag,$subPath,$recursion)
+ * 1065:     function getSearchCode($mode,$v,$params,$firstTagName,$firstTag,$endTag,$subPath,$path,$recursion)
+ * 1148:     function sourceDisplay($str,$recursion,$gnyf='',$valueStr=0)
+ * 1169:     function checkboxDisplay($str,$recursion,$path,$gnyf='',$valueStr=0)
+ * 1195:     function makePath($path,$firstTagName,$attr)
+ * 1225:     function getGnyf($firstTagName,$path,$title)
  *
  * TOTAL FUNCTIONS: 26
  * (This index is automatically created/updated by the extension "extdeveval")
