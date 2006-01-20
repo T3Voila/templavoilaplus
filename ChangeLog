@@ -1,4 +1,14 @@
-2006-01-19	Dmitry Dulepov	<typo3@acciio.lv>
+2006-01-20	Dmitry Dulepov	<typo3@accio.lv>
+
+ + Fix (sidebar): if cache commands are not enabled for non-admin user, label for page cache is displayed with empty cell after it
+ + Fix (ext_emconf.php): naming error message in extension manager for pages and tt_content
+ # Fixed bug #2085: Inconsistency in editing translations
+ # Fixed bug #2095: Problems with page copying 
+ # Fixed bug #2206: copying elements doubles the references
+ # Fixed bug #2209: Gremlin: hide "Translations" Tab if no alternative Syslanguage are present
+ # Fixed bug #2236: TYPO3SEARCH_xxx should not be generated for FCE
+
+2006-01-19	Dmitry Dulepov	<typo3@accio.lv>
 
  # class.tx_templavoila_api.php: remove reference operator in a call to flexform_getFlexformPointersToSubElementsRecursively in function flexform_getPointersByRecord because it is deprecated and gives warnings in PHP 4+
  # Fixed bug #2062: Incorrect UTF-8 handling during mapping
@@ -40,7 +50,7 @@
  # Fixed issue #0000802: Copy / paste nested structures from one language to another does not work like expected
  # Fixed issue #0000917: Adding content using the create new CE wizard in the page tree has strange behaviour
  # Fixed issue #0001087: Fatal Error open storage folder
- # Fixed issue #0001334: 0001334: It's not possible to preset tt_content fields in User TSConfig when using TemplaVoila. (Also related to creating pages and content elements with TemplaVoila in general)
+ # Fixed issue #0001334: It's not possible to preset tt_content fields in User TSConfig when using TemplaVoila. (Also related to creating pages and content elements with TemplaVoila in general)
  + Fixed issue #0001498: Missing "Edit translation header icon/button"
  + Fixed issue #0000714: Usability issue with content elements (Template Object selector)
  + Fixed issue #0001483: FCE preview in page module does not display sections/containers - Now basic support for displaying SC/CO is implemented
