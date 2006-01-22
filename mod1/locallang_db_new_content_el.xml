@@ -570,7 +570,8 @@
 			<label index="forms_3_description">Форма входа в систему и выхода из нее (login/logout) для внешних пользователей. Используется для страниц, защищенных паролем. Для того, чтобы она могла работать, необходимо создать внешних пользователей и группы внешних пользователей (frontend users and groups).</label>
 			<label index="plugins">Плагины</label>
 			<label index="plugins_1_title">Общий плагин</label>
-			<label index="plugins_1_description">Если Вы хотите вставить плагин, который не может быть найден среди вариантов ниже, выберите этот тип элемента, и Вы можете выбрать ваше плагин из списка позже.</label>
+			<label index="plugins_1_description">Если Вы хотите вставить плагин, который не может быть найден среди вариантов ниже, выберите этот тип элемента, и Вы сможете выбрать желаемый плагин из списка позже.</label>
+			<label index="fce">Настраиваемый элемент</label>
 		</languageKey>
 		<languageKey index="ro" type="array">
 			<label index="sel1">Alegeţi tipul de conţinut pe care doriţi să-l creaţi:</label>
@@ -975,6 +976,9 @@
 			<label index="forms_3_title">Ielogošanās forma</label>
 			<label index="forms_3_description">Ielogošanās/izlogošanās forma lapas lietotājiem. Tas tiek izmantots, lai aizsargātu lapas ar paroli. Jums jāizveido lietotājus un grupas, lai šis strādātu.</label>
 			<label index="plugins">Spraudņi</label>
+			<label index="plugins_1_title">Vispārīgs spraudnis</label>
+			<label index="plugins_1_description">Ja vēlaties ievietot spraudni, kas nav pieejams sarakstā zemāk, izvēlāties šo elementa tipu, un Jūs varēsiet izvēlēties vajadzīgo spraudni no saraksta vēlāk.</label>
+			<label index="fce">Elastīgs saturs</label>
 		</languageKey>
 		<languageKey index="jp" type="array">
 			<label index="special_3_title">サイトの目次</label>
@@ -1545,6 +1549,7 @@
 			<label index="plugins" type="integer">196313238</label>
 			<label index="plugins_1_title" type="integer">188310073</label>
 			<label index="plugins_1_description" type="integer">4113831</label>
+			<label index="fce" type="integer">125197975</label>
 		</languageKey>
 		<languageKey index="ro" type="array">
 			<label index="sel1" type="integer">257792844</label>
@@ -1917,6 +1922,41 @@
 		<languageKey index="ua" type="array">
 		</languageKey>
 		<languageKey index="lv" type="array">
+			<label index="sel1" type="integer">257792844</label>
+			<label index="sel2" type="integer">2777796</label>
+			<label index="common" type="integer">57063941</label>
+			<label index="common_1_title" type="integer">134955826</label>
+			<label index="common_1_description" type="integer">29135748</label>
+			<label index="common_2_title" type="integer">153490096</label>
+			<label index="common_2_description" type="integer">215746919</label>
+			<label index="common_3_title" type="integer">13066984</label>
+			<label index="common_3_description" type="integer">57201809</label>
+			<label index="common_4_title" type="integer">62677049</label>
+			<label index="common_4_description" type="integer">233905425</label>
+			<label index="common_5_title" type="integer">88917113</label>
+			<label index="common_5_description" type="integer">136121208</label>
+			<label index="common_6_title" type="integer">85738935</label>
+			<label index="common_6_description" type="integer">145590635</label>
+			<label index="special" type="integer">183531399</label>
+			<label index="special_1_title" type="integer">23062602</label>
+			<label index="special_1_description" type="integer">154390211</label>
+			<label index="special_2_title" type="integer">49638223</label>
+			<label index="special_2_description" type="integer">87627445</label>
+			<label index="special_3_title" type="integer">92355808</label>
+			<label index="special_3_description" type="integer">36006628</label>
+			<label index="special_4_title" type="integer">238583373</label>
+			<label index="special_4_description" type="integer">92097111</label>
+			<label index="forms" type="integer">14172094</label>
+			<label index="forms_1_title" type="integer">173513512</label>
+			<label index="forms_1_description" type="integer">149875491</label>
+			<label index="forms_2_title" type="integer">184654558</label>
+			<label index="forms_2_description" type="integer">71325784</label>
+			<label index="forms_3_title" type="integer">149378624</label>
+			<label index="forms_3_description" type="integer">64416876</label>
+			<label index="plugins" type="integer">196313238</label>
+			<label index="plugins_1_title" type="integer">188310073</label>
+			<label index="plugins_1_description" type="integer">4113831</label>
+			<label index="fce" type="integer">125197975</label>
 		</languageKey>
 		<languageKey index="jp" type="array">
 			<label index="special_3_title" type="integer">92355808</label>

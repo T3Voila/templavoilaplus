@@ -235,7 +235,7 @@
 			<label index="cannotedit_externalurl_3">Эта страница ссылается на почтовый адрес, и вы не можете редактировать её содержимое.</label>
 			<label index="jumptoexternalurl">Перейти на внешний URL (%s)</label>
 			<label index="editpage_sysfolder_intro">Эта страница имеет тип &quot;Sysfolder&quot;. Такие страницы обычно не имеют отображаемых элементов, а используются для хранения различных записей в одном каталоге.</label>
-			<label index="editpage_sysfolder_listview_noaccess">Содержимое этой страницы обычно управляется модулем &quot;Список&quot;, но у Вас к этому модулю доступа нет. Если Вы уверены, что Вам требуется доступ, попросите своего системного администратора предоставить доступ к модулю "Список".</label>
+			<label index="editpage_sysfolder_listview_noaccess">Содержимое этой страницы обычно управляется модулем &quot;Список&quot;, но у Вас к этому модулю доступа нет. Если Вы уверены, что Вам требуется доступ, попросите своего системного администратора предоставить доступ к модулю &quot;Список&quot;.</label>
 			<label index="editpage_sysfolder_switchtolistview">Переключить в &quot;Список&quot;</label>
 			<label index="template_nodescriptionavailable">Описание недоступно.</label>
 			<label index="template_titledefault">Шаблон по умочанию</label>
@@ -285,33 +285,33 @@
 			<label index="createnewpage_templateobject_createemptypage">Izveidot jaunu tukšu lapu, pamatojoties un šo paraugu:</label>
 			<label index="createnewpage_templateobject_createpagewithdefaultcontent">Izveidot lapu ar saturu pēc noklusēšanas, pamatojoties uz šo paraugu:</label>
 			<label index="createnewcontent_newContentElement">Jauns satura elements</label>
-			<label index="warning_elementusedmorethanonce">Šis elements tiek izmantots %s reizes šajā lapā! ID:%s</label>
-			<label index="cannotedit_doktypemountpoint">Šо lapa ir ieejas punkts (mount point) un tās saturs tiek aizvietots ar citas lapas saturu (&quot;%s&quot;). Tādēļ Jūs nevarat labot šоs lapas saturu pa taisno.</label>
+			<label index="warning_elementusedmorethanonce">Šis elements tiek izmantots %s reizes šajā lapā! ID: %s</label>
+			<label index="cannotedit_doktypemountpoint">Šī lapa ir ieejas punkts (mount point) un tās saturs tiek aizvietots ar citas lapas saturu (&quot;%s&quot;). Tādēļ Jūs nevarat labot šоs lapas saturu pa taisno.</label>
 			<label index="jumptomountsourcepage">Pāriet uz sākotnējo lapu ar šo ieejas punktu (mount point)</label>
-			<label index="cannotedit_contentfrompid">Šо lapa tika izveidota tā, lai atspoguļotu citas lapas saturu (&quot;%s&quot;). Tādēļ Jūs nevarat labot šоs lapas saturu pa taisno.</label>
+			<label index="cannotedit_contentfrompid">Šī lapa tika izveidota tā, lai atspoguļotu citas lapas saturu (&quot;%s&quot;). Tādēļ Jūs nevarat labot šīs lapas saturu pa taisno.</label>
 			<label index="jumptocontentfrompidpage">Pāriet uz lapu, kas satur lapas elementus.</label>
-			<label index="cannotedit_shortcut_0">Šо lapa ir &quot;norāde&quot;. Šо lapa nesatur pati savu saturu, bet rāda lapas &quot;%s&quot; saturu. Tādēļ Jūs nevarat labot šоs lapas saturu pa taisno.</label>
-			<label index="cannotedit_shortcut_1">Šо lapa ir &quot;norāde&quot;. Šо lapa nesatur pati savu saturu, bet rāda pirmās apakšlapas saturu. Tādēļ Jūs nevarat labot šоs lapas saturu pa taisno.</label>
-			<label index="cannotedit_shortcut_2">Šо lapa ir &quot;norāde&quot;. Šо lapa nesatur pati savu saturu, bet rāda kādas nejauši izvēlētās apakšlapas saturu. Tādēļ Jūs nevarat labot šоs lapas saturu pa taisno.</label>
+			<label index="cannotedit_shortcut_0">Šī lapa ir &quot;norāde&quot;. Šī lapa nesatur pati savu saturu, bet rāda lapas &quot;%s&quot; saturu. Tādēļ Jūs nevarat labot šīs lapas saturu pa taisno.</label>
+			<label index="cannotedit_shortcut_1">Šī lapa ir &quot;norāde&quot;. Šī lapa nesatur pati savu saturu, bet rāda pirmās apakšlapas saturu. Tādēļ Jūs nevarat labot šīs lapas saturu pa taisno.</label>
+			<label index="cannotedit_shortcut_2">Šī lapa ir &quot;norāde&quot;. Šī lapa nesatur pati savu saturu, bet rāda kādas nejauši izvēlētās apakšlapas saturu. Tādēļ Jūs nevarat labot šīs lapas saturu pa taisno.</label>
 			<label index="jumptoshortcutdestination">Pāriet pa norādi</label>
-			<label index="cannotedit_externalurl_1">Šо lapa norāda uz ārēju websaitu. Tādēļ Jūs nevarat labot šоs lapas saturu pa taisno.</label> 
-			<label index="cannotedit_externalurl_2">Šо lapa norāda uz ārēju FTP saitu. Tādēļ Jūs nevarat labot šоs lapas saturu pa taisno.</label>
-			<label index="cannotedit_externalurl_3">Šо lapa norāda uz e-pasta adresi. Tādēļ Jūs nevarat labot šоs lapas saturu pa taisno.</label>
+			<label index="cannotedit_externalurl_1">Šī lapa norāda uz ārēju websaitu. Tādēļ Jūs nevarat labot šīs lapas saturu pa taisno.</label>
+			<label index="cannotedit_externalurl_2">Šī lapa norāda uz ārēju FTP saitu. Tādēļ Jūs nevarat labot šīs lapas saturu pa taisno.</label>
+			<label index="cannotedit_externalurl_3">Šī lapa norāda uz e-pasta adresi. Tādēļ Jūs nevarat labot šīs lapas saturu pa taisno.</label>
 			<label index="jumptoexternalurl">Pāriet uz ārēju URL (%s)</label>
-			<label index="editpage_sysfolder_intro">Šо lapa ir &quot;Sysfolder&quot; tipa. Sysfolders parasti nesatur satura elementus, bet tiek izmantots lai glabātu citus ierakstus vienā folderо.</label>
-			<label index="editpage_sysfolder_listview_noaccess">Sysfoldera saturs tiek pārvaldоts ar &quot;List&quot; moduli, bet Jums nav šobrоd pieejas šim modulim. Ja Jums tomēr ir nepieciešama piekļuve šо moduļa datiem, lūdzu jautājiet savam sistēmas administratoram atļauju piekļūt Saraksta modulim.</label>
+			<label index="editpage_sysfolder_intro">Šī lapa ir &quot;Sysfolder&quot; tipa. Sysfolders parasti nesatur satura elementus, bet tiek izmantots lai glabātu citus ierakstus vienā folderī.</label>
+			<label index="editpage_sysfolder_listview_noaccess">Sysfoldera saturs tiek pārvaldоts ar &quot;List&quot; moduli, bet Jums nav šobrīd pieejas šim modulim. Ja Jums tomēr ir nepieciešama piekļuve šī moduļa datiem, lūdzu jautājiet savam sistēmas administratoram atļauju piekļūt Saraksta modulim.</label>
 			<label index="editpage_sysfolder_switchtolistview">Pārslēgties uz Sarakstu</label>
 			<label index="template_nodescriptionavailable">Apraksts nav pieejams.</label>
 			<label index="template_titledefault">Paraugs pēc noklusēšanas</label>
 			<label index="willbereplacedbydefaultlanguage">(tiks aizvietots ar saturu no pamatvalodas)</label>
 			<label index="newce_defaulttext_text">Lūdzu ievadiet šeit kādu tekstu</label>
 			<label index="view_basic">Kopējais skats</label>
-			<label index="view_tree">Skatоt kā koku</label>
+			<label index="view_tree">Skatīt kā koku</label>
 			<label index="createnewtranslation">Izveidot jaunu tulkojuma lapu</label>
-			<label index="selectlanguageversion">Parādоt lapas valodas versiju</label>
+			<label index="selectlanguageversion">Parādīt lapas valodas versiju</label>
 			<label index="multipleLanguages">Vairākas valodas</label>
 			<label index="languageDisabled">Valoda atslēgta</label>
-			<label index="viewsubelements">Apskatоt apakšelementus</label>
+			<label index="viewsubelements">Apskatīt apakšelementus</label>
 			<label index="gobacktooverview">Atpakaļ uz visas lapas skatu</label>
 			<label index="createnewrecord">Izveidot jaunu elementu</label>
 			<label index="editrecord">Labot elementu</label>
@@ -337,9 +337,9 @@
 			<label index="defaultLanguage">Pamatvaloda</label>
 			<label index="createcopyfortranslation">Izveidot kopiju tulkošanai</label>
 			<label index="inititemno_elementsNotBeingUsed">Elementi netiek izmantoti šajā valodā vai lapā</label>
-			<label index="sidebar_advancedfunctions_labelshowhidden">Parādоt paslēptos elementus</label>
+			<label index="sidebar_advancedfunctions_labelshowhidden">Parādīt paslēptos elementus</label>
 			<label index="sidebar_advancedfunctions_labelcachefunctions">Keša funkcijas</label>
-			<label index="sidebar_renderitem_showtranslationinformation">Parādоt informāciju par tulkojumu</label>
+			<label index="sidebar_renderitem_showtranslationinformation">Parādīt informāciju par tulkojumu</label>
 		</languageKey>
 	</data>
 	<orig_hash type="array">
@@ -483,6 +483,134 @@
 			<label index="editpage_sysfolder_intro" type="integer">197488510</label>
 			<label index="editpage_sysfolder_listview_noaccess" type="integer">209992014</label>
 			<label index="editpage_sysfolder_switchtolistview" type="integer">34594545</label>
+		</languageKey>
+		<languageKey index="lv" type="array">
+			<label index="title" type="integer">122302581</label>
+			<label index="default_introduction" type="integer">187457778</label>
+			<label index="createnewpage_selecttemplate" type="integer">229501621</label>
+			<label index="createnewpage_defaultlayoutsubmitlabel" type="integer">89213016</label>
+			<label index="createnewpage_templateobject_createemptypage" type="integer">123158855</label>
+			<label index="createnewpage_templateobject_createpagewithdefaultcontent" type="integer">107228338</label>
+			<label index="createnewcontent_newContentElement" type="integer">44759206</label>
+			<label index="warning_elementusedmorethanonce" type="integer">267297614</label>
+			<label index="cannotedit_doktypemountpoint" type="integer">34764162</label>
+			<label index="jumptomountsourcepage" type="integer">152991370</label>
+			<label index="cannotedit_contentfrompid" type="integer">6549882</label>
+			<label index="jumptocontentfrompidpage" type="integer">92008296</label>
+			<label index="cannotedit_shortcut_0" type="integer">106433218</label>
+			<label index="cannotedit_shortcut_1" type="integer">179887715</label>
+			<label index="cannotedit_shortcut_2" type="integer">178406769</label>
+			<label index="jumptoshortcutdestination" type="integer">256154171</label>
+			<label index="cannotedit_externalurl_1" type="integer">29073647</label>
+			<label index="cannotedit_externalurl_2" type="integer">154821175</label>
+			<label index="cannotedit_externalurl_3" type="integer">183086125</label>
+			<label index="jumptoexternalurl" type="integer">265247811</label>
+			<label index="editpage_sysfolder_intro" type="integer">197488510</label>
+			<label index="editpage_sysfolder_listview_noaccess" type="integer">209992014</label>
+			<label index="editpage_sysfolder_switchtolistview" type="integer">34594545</label>
+			<label index="template_nodescriptionavailable" type="integer">237805099</label>
+			<label index="template_titledefault" type="integer">87443604</label>
+			<label index="willbereplacedbydefaultlanguage" type="integer">232991398</label>
+			<label index="newce_defaulttext_text" type="integer">126932675</label>
+			<label index="view_basic" type="integer">232928892</label>
+			<label index="view_tree" type="integer">141103821</label>
+			<label index="createnewtranslation" type="integer">42184284</label>
+			<label index="selectlanguageversion" type="integer">142579090</label>
+			<label index="multipleLanguages" type="integer">221168267</label>
+			<label index="languageDisabled" type="integer">126691050</label>
+			<label index="viewsubelements" type="integer">88802235</label>
+			<label index="gobacktooverview" type="integer">131424272</label>
+			<label index="createnewrecord" type="integer">123561390</label>
+			<label index="editrecord" type="integer">31852556</label>
+			<label index="pasterecord" type="integer">42732080</label>
+			<label index="pastefce_andcopyallsubs" type="integer">42574249</label>
+			<label index="pastefce_andreferencesubs" type="integer">177729765</label>
+			<label index="copyrecord" type="integer">207918426</label>
+			<label index="cutrecord" type="integer">6863945</label>
+			<label index="createreference" type="integer">28318206</label>
+			<label index="unlinkRecord" type="integer">169362831</label>
+			<label index="deleteRecord" type="integer">171870182</label>
+			<label index="deleteRecordMsg" type="integer">144295558</label>
+			<label index="unlinkRecordMsg" type="integer">243556365</label>
+			<label index="pagerelatedinformation" type="integer">133529542</label>
+			<label index="advancedfunctions" type="integer">155530193</label>
+			<label index="localization" type="integer">12114219</label>
+			<label index="availabletranslations" type="integer">12114219</label>
+			<label index="versioning" type="integer">26780425</label>
+			<label index="nonusedelements" type="integer">79071216</label>
+			<label index="makeLocal" type="integer">126296530</label>
+			<label index="makeLocalMsg" type="integer">47258179</label>
+			<label index="path" type="integer">180814866</label>
+			<label index="defaultLanguage" type="integer">211199871</label>
+			<label index="createcopyfortranslation" type="integer">23684975</label>
+			<label index="inititemno_elementsNotBeingUsed" type="integer">172090278</label>
+			<label index="sidebar_advancedfunctions_labelshowhidden" type="integer">9993936</label>
+			<label index="sidebar_advancedfunctions_labelcachefunctions" type="integer">59652325</label>
+			<label index="sidebar_renderitem_showtranslationinformation" type="integer">265074500</label>
+		</languageKey>
+		<languageKey index="ru" type="array">
+			<label index="title" type="integer">122302581</label>
+			<label index="default_introduction" type="integer">187457778</label>
+			<label index="createnewpage_selecttemplate" type="integer">229501621</label>
+			<label index="createnewpage_defaultlayoutsubmitlabel" type="integer">89213016</label>
+			<label index="createnewpage_templateobject_createemptypage" type="integer">123158855</label>
+			<label index="createnewpage_templateobject_createpagewithdefaultcontent" type="integer">107228338</label>
+			<label index="createnewcontent_newContentElement" type="integer">44759206</label>
+			<label index="warning_elementusedmorethanonce" type="integer">267297614</label>
+			<label index="cannotedit_doktypemountpoint" type="integer">34764162</label>
+			<label index="jumptomountsourcepage" type="integer">152991370</label>
+			<label index="cannotedit_contentfrompid" type="integer">6549882</label>
+			<label index="jumptocontentfrompidpage" type="integer">92008296</label>
+			<label index="cannotedit_shortcut_0" type="integer">106433218</label>
+			<label index="cannotedit_shortcut_1" type="integer">179887715</label>
+			<label index="cannotedit_shortcut_2" type="integer">178406769</label>
+			<label index="jumptoshortcutdestination" type="integer">256154171</label>
+			<label index="cannotedit_externalurl_1" type="integer">29073647</label>
+			<label index="cannotedit_externalurl_2" type="integer">154821175</label>
+			<label index="cannotedit_externalurl_3" type="integer">183086125</label>
+			<label index="jumptoexternalurl" type="integer">265247811</label>
+			<label index="editpage_sysfolder_intro" type="integer">197488510</label>
+			<label index="editpage_sysfolder_listview_noaccess" type="integer">209992014</label>
+			<label index="editpage_sysfolder_switchtolistview" type="integer">34594545</label>
+			<label index="template_nodescriptionavailable" type="integer">237805099</label>
+			<label index="template_titledefault" type="integer">87443604</label>
+			<label index="willbereplacedbydefaultlanguage" type="integer">232991398</label>
+			<label index="newce_defaulttext_text" type="integer">126932675</label>
+			<label index="view_basic" type="integer">232928892</label>
+			<label index="view_tree" type="integer">141103821</label>
+			<label index="createnewtranslation" type="integer">42184284</label>
+			<label index="selectlanguageversion" type="integer">142579090</label>
+			<label index="multipleLanguages" type="integer">221168267</label>
+			<label index="languageDisabled" type="integer">126691050</label>
+			<label index="viewsubelements" type="integer">88802235</label>
+			<label index="gobacktooverview" type="integer">131424272</label>
+			<label index="createnewrecord" type="integer">123561390</label>
+			<label index="editrecord" type="integer">31852556</label>
+			<label index="pasterecord" type="integer">42732080</label>
+			<label index="pastefce_andcopyallsubs" type="integer">42574249</label>
+			<label index="pastefce_andreferencesubs" type="integer">177729765</label>
+			<label index="copyrecord" type="integer">207918426</label>
+			<label index="cutrecord" type="integer">6863945</label>
+			<label index="createreference" type="integer">28318206</label>
+			<label index="unlinkRecord" type="integer">169362831</label>
+			<label index="deleteRecord" type="integer">171870182</label>
+			<label index="deleteRecordMsg" type="integer">144295558</label>
+			<label index="unlinkRecordMsg" type="integer">243556365</label>
+			<label index="pagerelatedinformation" type="integer">133529542</label>
+			<label index="advancedfunctions" type="integer">155530193</label>
+			<label index="localization" type="integer">12114219</label>
+			<label index="availabletranslations" type="integer">12114219</label>
+			<label index="versioning" type="integer">26780425</label>
+			<label index="nonusedelements" type="integer">79071216</label>
+			<label index="makeLocal" type="integer">126296530</label>
+			<label index="makeLocalMsg" type="integer">47258179</label>
+			<label index="path" type="integer">180814866</label>
+			<label index="defaultLanguage" type="integer">211199871</label>
+			<label index="createcopyfortranslation" type="integer">23684975</label>
+			<label index="inititemno_elementsNotBeingUsed" type="integer">172090278</label>
+			<label index="sidebar_advancedfunctions_labelshowhidden" type="integer">9993936</label>
+			<label index="sidebar_advancedfunctions_labelcachefunctions" type="integer">59652325</label>
+			<label index="sidebar_renderitem_showtranslationinformation" type="integer">265074500</label>
 		</languageKey>
 	</orig_hash>
 </T3locallang>
