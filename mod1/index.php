@@ -1363,10 +1363,10 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 		if ($id)	{
 			$res = $TYPO3_DB->exec_SELECTquery(
-				'sys_language.*',
+				'DISTINCT sys_language.*',
 				'pages_language_overlay,sys_language',
 				'pages_language_overlay.sys_language_uid=sys_language.uid AND pages_language_overlay.pid='.intval($id).' AND '.$excludeHidden,
-				'pages_language_overlay.sys_language_uid',
+				'',
 				'sys_language.title'
 			);
 		} else {
