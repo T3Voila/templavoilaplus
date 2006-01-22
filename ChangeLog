@@ -1,3 +1,8 @@
+2006-01-22	Dmitry Dulepov	<typo3@accio.lv>
+
+ # mod1: Updated orig_hash and fixed spelling errors in Latvian and Russian languages
+ # Fixed bug #2344: query does not work with postgresql
+
 2006-01-20	Dmitry Dulepov	<typo3@accio.lv>
 
  + Fix (sidebar): if cache commands are not enabled for non-admin user, label for page cache is displayed with empty cell after it
