@@ -117,7 +117,7 @@ class tx_templavoila_mod1_wizards {
 				if ($newID > 0) {
 
 						// Get TSconfig for a different selection of fields in the editing form
-					$TSconfig = t3lib_BEfunc::getModTSconfig($newID, 'mod.web_txtemplavoilaM1.createPageWizard');
+					$TSconfig = t3lib_BEfunc::getModTSconfig($newID, 'mod.web_txtemplavoilaM1.createPageWizard.fieldNames');
 					$fieldNames = isset ($TSconfig['value']) ? $TSconfig['value'] : 'hidden,title,alias';
 
 						// Create parameters and finally run the classic page module's edit form for the new page:
