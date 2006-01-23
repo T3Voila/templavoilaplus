@@ -1,3 +1,11 @@
+2006-01-23	Dmitry Dulepov	<typo3@accio.lv>
+
+ + mod2: added text before the table with template listing
+ # mod2: changed "not a directory" message in the wizard to be "more English"
+ # Fix: mod2: label about wrong directory
+ # Fix: mod2: uninitialized variable $fileref_mtime in renderTODisplay function (changed to $fileMtime)
+ # Fix: mod2: wrong TSConfig name for createPageWizard entry
+
 2006-01-22	Dmitry Dulepov	<typo3@accio.lv>
 
  # mod1: Updated orig_hash and fixed spelling errors in Latvian and Russian languages
