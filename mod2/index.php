@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2003-2005 Kasper Skårhøj <kasper@typo3.com>
+*  (c) 2003-2005 Kasper Skï¿½rhï¿½j <kasper@typo3.com>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -26,7 +26,7 @@
  *
  * $Id$
  *
- * @author   Kasper Skårhøj <kasper@typo3.com>
+ * @author   Kasper Skï¿½rhï¿½j <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -310,13 +310,14 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 						</tr>';
 				}
 			}
+
+				// Create overview
+			$outputString = 'The following pages in the root line contain data structures and template objects:';
+			$outputString .= '<br /><table border="0" cellpadding="1" cellspacing="1" class="lrPadding">'.implode('',$tRows).'</table>';
+	
+				// Add output:
+			$this->content.= $this->doc->section($LANG->getLL('title'),$outputString,0,1);
 		}
-
-			// Create overview
-		$outputString = '<table border="0" cellpadding="1" cellspacing="1" class="lrPadding">'.implode('',$tRows).'</table>';
-
-			// Add output:
-		$this->content.= $this->doc->section($LANG->getLL('title'),$outputString,0,1);
 	}
 
 	/**
@@ -755,7 +756,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 				$mappingStatus.= 'Mapping Up-to-date.';
 			}
 			$mappingStatus.='<br/><a href="'.htmlspecialchars($linkUrl).'">[ Update mapping ]</a>';
-		} elseif (!$fileref_mtime) {
+		} elseif (!$fileMtime) {
 			$mappingStatus = $mappingStatus_index = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/icon_fatalerror.gif','width="18" height="16"').' alt="" class="absmiddle" />';
 			$mappingStatus.= 'Not mapped yet!';
 			$this->setErrorLog($scope,'fatal',$mappingStatus.' (TO: "'.$toObj['title'].'")');
@@ -1540,7 +1541,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 
 		if (!@is_dir(PATH_site.$this->templatesDir))	{
 			return
-				nl2br('The directory "'.$this->templatesDir.'" (relative to the website root) does not exist! This is where you must place your HTML templates. Please create that directory now. In order to do so, follow these directions:
+				nl2br('The directory "'.$this->templatesDir.'" (relative to the website root) does not exist! This is where you must place your HTML templates. Please create that directory <u>before you start the wizard</u>. In order to do so, follow these directions:
 
 			- Go to the module File > Filelist
 			- Click the icon of the "fileadmin/" root and select "Create" from the context menu.
@@ -1557,13 +1558,12 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 	 */
 	function wizard_step1()	{
 
-		$this->wizardData = array();
-
-		$outputString.=nl2br('The first step is to select the HTML file you want to base the new website design on. Below you see a list of HTML files found in the folder "'.$this->templatesDir.'". Click the "Preview"-link to see what the file looks like and when the right template is found, just click the "Choose as template"-link in order to proceed.
-			If the list of files is empty you must now copy the HTML file you want to use as a template into the template folder. When you have done that, press the refresh button to refresh the list.
-<br/>');
-
 		if (@is_dir(PATH_site.$this->templatesDir))	{
+
+			$this->wizardData = array();
+
+			$outputString.=nl2br('The first step is to select the HTML file you want to base the new website design on. Below you see a list of HTML files found in the folder "'.$this->templatesDir.'". Click the "Preview"-link to see what the file looks like and when the right template is found, just click the "Choose as template"-link in order to proceed.
+				If the list of files is empty you must now copy the HTML file you want to use as a template into the template folder. When you have done that, press the refresh button to refresh the list.<br/>');
 
 				// Get all HTML files:
 			$fileArr = t3lib_div::getAllFilesAndFoldersInPath(array(),PATH_site.$this->templatesDir,'html,htm',0,1);
@@ -1609,7 +1609,9 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 				// Add output:
 			$this->content.= $this->doc->section('Step 1: Select the template HTML file',$outputString,0,1);
 
-		} else die(PATH_site.$this->templatesDir.' was no dir!');
+		} else { 
+			$this->content .= $this->doc->section('TemplaVoila wizard error',$this->templatesDir.' is not a directory! Please, create it before starting this wizard.',0,1);
+		}
 	}
 
 	/**
