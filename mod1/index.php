@@ -27,7 +27,7 @@
  * $Id$
  *
  * @author     Robert Lemke <robert@typo3.org>
- * @coauthor   Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @coauthor   Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -111,7 +111,7 @@ require_once (t3lib_extMgm::extPath('templavoila').'mod1/class.tx_templavoila_mo
  * Module 'Page' for the 'templavoila' extension.
  *
  * @author		Robert Lemke <robert@typo3.org>
- * @coauthor	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @coauthor	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package		TYPO3
  * @subpackage	tx_templavoila
  */
@@ -158,7 +158,8 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::_GP('SET'), $this->MCONF['name']);
 
-		$this->id = t3lib_beFunc::wsMapId ('pages', $this->id);	// FIXME
+			# Kasper: No remapping of ID here! ID remapping should occur where needed only!
+		#$this->id = t3lib_beFunc::wsMapId ('pages', $this->id);	// FIXME
 
 		$this->altRoot = t3lib_div::_GP('altRoot');
 		$this->versionId = t3lib_div::_GP('versionId');
@@ -481,11 +482,10 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 		$elementRecord = t3lib_beFunc::getRecordWSOL($contentTreeArr['el']['table'], $contentTreeArr['el']['uid'], '*');
 		$elementBelongsToCurrentPage = $contentTreeArr['el']['table'] == 'pages' || $contentTreeArr['el']['pid'] == $this->rootElementUid;
-		$correctedElementUid = t3lib_beFunc::wsMapId ($contentTreeArr['el']['table'],$contentTreeArr['el']['uid']);
 
 			// Prepare the record icon including a content sensitive menu link wrapped around it:
 		$recordIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,$contentTreeArr['el']['icon'],'').' style="text-align: center; vertical-align: middle;" width="18" height="16" border="0" title="'.htmlspecialchars('['.$contentTreeArr['el']['table'].':'.$contentTreeArr['el']['uid'].']').'" alt="" />';
-		$titleBarLeftButtons = $this->doc->wrapClickMenuOnIcon($recordIcon,$contentTreeArr['el']['table'], $correctedElementUid, 1,'&amp;callingScriptId='.rawurlencode($this->doc->scriptID), 'new,copy,cut,pasteinto,pasteafter,delete');
+		$titleBarLeftButtons = $this->doc->wrapClickMenuOnIcon($recordIcon,$contentTreeArr['el']['table'], $contentTreeArr['el']['uid'], 1,'&amp;callingScriptId='.rawurlencode($this->doc->scriptID), 'new,copy,cut,pasteinto,pasteafter,delete');
 
 			// Prepare table specific settings:
 		switch ($contentTreeArr['el']['table']) {
@@ -498,7 +498,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				$titleBarLeftButtons .= $this->link_edit('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/edit2.gif','').' title="'.htmlspecialchars($LANG->sL('LLL:EXT:lang/locallang_mod_web_list.xml:editPage')).'" alt="" style="text-align: center; vertical-align: middle; border:0;" />',$contentTreeArr['el']['table'],$contentTreeArr['el']['uid']);
 				$titleBarRightButtons = '';
 
-				$viewPageOnClick = 'onclick= "'.htmlspecialchars(t3lib_BEfunc::viewOnClick($correctedElementUid, $this->doc->backPath, t3lib_BEfunc::BEgetRootLine($correctedElementUid),'','',($this->currentLanguageUid?'&L='.$this->currentLanguageUid:''))).'"';
+				$viewPageOnClick = 'onclick= "'.htmlspecialchars(t3lib_BEfunc::viewOnClick($contentTreeArr['el']['uid'], $this->doc->backPath, t3lib_BEfunc::BEgetRootLine($contentTreeArr['el']['uid']),'','',($this->currentLanguageUid?'&L='.$this->currentLanguageUid:''))).'"';
 				$viewPageIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/zoom.gif','width="12" height="12"').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.xml:labels.showPage',1).'" hspace="3" alt="" style="text-align: center; vertical-align: middle;" />';
 				$titleBarLeftButtons .= '<a href="#" '.$viewPageOnClick.'>'.$viewPageIcon.'</a>';
 
@@ -532,7 +532,12 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		if ($this->global_tt_content_elementRegister[$contentTreeArr['el']['uid']] > 1) {
 			$warnings .= '<br/>'.$this->doc->icons(2).' <em>'.htmlspecialchars(sprintf($LANG->getLL('warning_elementusedmorethanonce',''), $this->global_tt_content_elementRegister[$contentTreeArr['el']['uid']], $contentTreeArr['el']['uid'])).'</em>';
 		}
-
+		
+			// Wrap workspace notification colors:
+		if ($contentTreeArr['el']['_ORIG_uid'])	{
+			$contentTreeArr['el']['previewContent'] = '<div class="ver-element">'.($contentTreeArr['el']['previewContent'] ? $contentTreeArr['el']['previewContent'] : '<em>[New version]</em>').'</div>';
+		}
+		
 			// Finally assemble the table:
 		$finalContent ='
 			<table cellpadding="0" cellspacing="0" style="width: 100%; border: 1px solid black; margin-bottom:5px;">
@@ -760,7 +765,8 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 					switch((string)$contentTreeArr['localizationInfo'][$sys_language_uid]['mode'])	{
 						case 'exists':
-							$olrow = t3lib_BEfunc::getRecord('tt_content',$contentTreeArr['localizationInfo'][$sys_language_uid]['localization_uid']);
+							$olrow = t3lib_BEfunc::getRecordWSOL('tt_content',$contentTreeArr['localizationInfo'][$sys_language_uid]['localization_uid']);
+
 							$localizedRecordInfo = array(
 								'uid' => $olrow['uid'],
 								'row' => $olrow,
@@ -774,6 +780,11 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 							$lC.= '<br/>'.$localizedRecordInfo['content'];
 
+								// Wrap workspace notification colors:
+							if ($olrow['_ORIG_uid'])	{
+								$lC = '<div class="ver-element">'.$lC.'</div>';
+							}
+
 							$this->global_localization_status[$sys_language_uid][]=array(
 								'status' => 'exist',
 								'parent_uid' => $contentTreeArr['el']['uid'],
@@ -785,12 +796,15 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 								// Assuming that only elements which have the default language set are candidates for localization. In case the language is [ALL] then it is assumed that the element should stay "international".
 							if ((int)$contentTreeArr['el']['sys_language_uid']===0)	{
 
+									// Copy for language:
+								$params='&cmd[tt_content]['.$contentTreeArr['el']['uid'].'][localize]='.$sys_language_uid;
+								$onClick = "document.location='".$GLOBALS['SOBE']->doc->issueCommand($params)."'; return false;";
+
 								$linkLabel = $LANG->getLL('createcopyfortranslation',1).' ('.htmlspecialchars($sLInfo['title']).')';
 								$localizeIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/clip_copy.gif','width="12" height="12"').' class="bottom" title="'.$linkLabel.'" alt="" />';
-								$sourcePointerString = $this->apiObj->flexform_getStringFromPointer ($parentPointer);
-								$lC = '<a href="index.php?'.$this->link_getParameters().'&amp;source='.rawurlencode($sourcePointerString).'&amp;localizeRecord='.$sLInfo['ISOcode'].'">'.$localizeIcon.'</a>';
-								$lC .= ' <em><a href="index.php?'.$this->link_getParameters().'&amp;source='.rawurlencode($sourcePointerString).'&amp;localizeRecord='.$sLInfo['ISOcode'].'">'.$linkLabel.'</a></em>';
-
+								
+								$lC = '<a href="#" onclick="'.htmlspecialchars($onClick).'">'.$localizeIcon.'</a>';
+								$lC .= ' <em><a href="#" onclick="'.htmlspecialchars($onClick).'">'.$linkLabel.'</a></em>';
 
 								$this->global_localization_status[$sys_language_uid][]=array(
 									'status' => 'localize',
@@ -1000,7 +1014,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 					case 'localizeRecord':
 						$sourcePointer = $this->apiObj->flexform_getPointerFromString (t3lib_div::_GP('source'));
-						$this->apiObj->localizeElement ($sourcePointer, $commandParameters);
+						$this->apiObj->localizeElement ($sourcePointer, $commandParameters);						
 					break;
 
 					case 'createNewPageTranslation':
@@ -1071,6 +1085,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			'table' => $table,
 			'uid' => $row['uid'],
 			'pid' => $row['pid'],
+			'_ORIG_uid' => $row['_ORIG_uid'],			
 			'title' => t3lib_div::fixed_lgd_cs(t3lib_BEfunc::getRecordTitle($table, $row),50),
 			'icon' => t3lib_iconWorks::getIcon($table, $row),
 			'previewContent' => ($table == 'tt_content' ? $this->render_previewContent($row) : NULL),

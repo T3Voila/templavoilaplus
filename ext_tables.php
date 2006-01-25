@@ -33,6 +33,14 @@ if (TYPO3_MODE=='BE') {
 	t3lib_extMgm::addLLrefForTCAdescr('xMOD_tx_templavoila','EXT:templavoila/locallang_csh_module.xml');
 	t3lib_extMgm::addLLrefForTCAdescr('xEXT_templavoila','EXT:templavoila/locallang_csh_intro.xml');
 	t3lib_extMgm::addLLrefForTCAdescr('_MOD_web_txtemplavoilaM1','EXT:templavoila/locallang_csh_pm.xml');
+	
+	
+	t3lib_extMgm::insertModuleFunction(
+		'tools_txextdevevalM1',
+		'tx_templavoila_extdeveval',
+		t3lib_extMgm::extPath($_EXTKEY).'class.tx_templavoila_extdeveval.php',
+		'TemplaVoila L10N Mode Conversion Tool'
+	);	
 }
 
 	// Adding tables:

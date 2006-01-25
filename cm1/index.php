@@ -709,6 +709,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 									<select name="_saveDSandTO_type">
 										<option value="1">Page Template</option>
 										<option value="2">Content Element</option>
+										<option value="0">Undefined</option>
 									</select>
 								</td>
 							</tr>

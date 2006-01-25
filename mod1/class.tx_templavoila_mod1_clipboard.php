@@ -259,6 +259,7 @@ class tx_templavoila_mod1_clipboard {
 			'uid'
 		);
 
+		$this->deleteUids = array();	// Used to collect all those tt_content uids with no references which can be deleted 
 		while($row = $TYPO3_DB->sql_fetch_assoc($res))	{
 			$elementPointerString = 'tt_content:'.$row['uid'];
 
@@ -270,15 +271,18 @@ class tx_templavoila_mod1_clipboard {
 			$cutButton = $this->element_getSelectButtons($elementPointerString, 'ref');
 			$recordIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath, t3lib_iconWorks::getIcon('tt_content', $row),'').' width="18" height="16" border="0" title="[tt_content:'.$row['uid'].'" alt="" />';
 			$recordButton = $this->pObj->doc->wrapClickMenuOnIcon($recordIcon, 'tt_content', $row['uid'], 1, '&callingScriptId='.rawurlencode($this->pObj->doc->scriptID), 'new,copy,cut,pasteinto,pasteafter,delete');
+			
+			$refCount_content = $this->makeRef($row['uid']);
 
 			$elementRows[] = '
 				<tr class="bgColor4">
 					<td style="width:1%">'.
 						$cutButton.
 					'</td>
-					<td style="width:1%;"">'.$languageIcon.'</td>
-					<td>'.
-						$recordButton.
+					<td style="width:1%;">'.$languageIcon.'</td>
+					<td style="width:1%;" nowrap="nowrap">'.$refCount_content.'</td>
+					<td style="width:1%;">['.$row['uid'].']</td>
+					<td>'.$recordButton.
 						htmlspecialchars(' '.t3lib_div::fixed_lgd_cs(trim(strip_tags($row['header'].($row['header'] && $row['bodytext'] ? ' - ' : '').$row['bodytext'])),100)).'
 					</td>
 				</tr>
@@ -286,18 +290,72 @@ class tx_templavoila_mod1_clipboard {
 		}
 
 		if (count ($elementRows)) {
+			
+				// Control for deleting all deleteable records:
+			$deleteAll = '';
+			if (count($this->deleteUids))	{
+				$params = '';
+				foreach($this->deleteUids as $deleteUid)	{
+					$params.= '&cmd[tt_content]['.$deleteUid.'][delete]=1';
+				}	
+				$label = 'Delete all records above marked with delete-icon';
+				$deleteAll = '<a href="#" onclick="'.htmlspecialchars('jumpToUrl(\''.$this->doc->issueCommand($params,'').'\');').'">'.
+						'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/garbage.gif','width="11" height="12"').' title="'.htmlspecialchars($label).'" alt="" />'.
+						htmlspecialchars($label).
+						'</a>';
+			}
+			
+				// Create table and header cell:
 			$output = '
 				<table border="0" cellpadding="0" cellspacing="1" width="100%" class="lrPadding">
 					<tr class="bgColor4-20">
-						<td colspan="3">'.$LANG->getLL('inititemno_elementsNotBeingUsed','1').':</td>
+						<td colspan="5">'.$LANG->getLL('inititemno_elementsNotBeingUsed','1').':</td>
 					</tr>
 					'.implode('',$elementRows).'
+					<tr class="bgColor4">
+						<td colspan="5">'.$deleteAll.'</td>
+					</tr>
 				</table>
 			';
 		}
 		return $output;
 
 	}
+	
+	/**
+	 * Make reference count
+	 *
+	 * @param	integer		UID
+	 * @return	string		HTML-table
+	 */
+	function makeRef($uid)	{
+		$table = 'tt_content';
+		
+			// Look up the path:
+		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+			'*',
+			'sys_refindex',
+			'ref_table='.$GLOBALS['TYPO3_DB']->fullQuoteStr($table,'sys_refindex').
+				' AND ref_uid='.intval($uid).
+				' AND deleted=0'
+		);
+		
+			// Compile information for title tag:
+		$infoData = array();
+		foreach($rows as $row)	{
+			$infoData[] = $row['tablename'].':'.$row['recuid'].':'.$row['field'];
+		}
+					
+		if (count($infoData))	{
+			return '<a href="#" onclick="'.htmlspecialchars('top.launchView(\''.$table.'\', \''.$uid.'\'); return false;').'" title="'.htmlspecialchars(t3lib_div::fixed_lgd(implode(' / ',$infoData),100)).'">Ref: '.count($infoData).'</a>'; 
+		} else {
+			$this->deleteUids[] = $uid;
+			$params = '&cmd[tt_content]['.$uid.'][delete]=1';
+			return '<a href="#" onclick="'.htmlspecialchars('jumpToUrl(\''.$this->doc->issueCommand($params,'').'\');').'">'.
+					'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/garbage.gif','width="11" height="12"').' title="Delete!" alt="" />'.
+					'</a>';
+		} 
+	}		
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/mod1/class.tx_templavoila_mod1_clipboard.php'])    {
