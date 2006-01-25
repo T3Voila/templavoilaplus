@@ -1,3 +1,13 @@
+
+2006-01-25	Kasper Skårhøj
+- Linked TemplaVoila into the extdeveval tool with a new class; This is going to be a tool which can convert FlexForm data from "separate" (langChildren = 0) to "inheritance" (langChildren = 1) localization types (the words I have used). Nicolas Cerisier from Dassault is expected to finish the code which I started out. New file added.
+- Added "Undefined" as Data Structure type (again). This will be used if TemplaVOila is used for templating where not related to pages or content elements.
+- Added reference counts for the "Not used elements" including a delete-button. It is now easy to clean up unused elements on a page. The criteria is that content elements which are not used in the hierarchy of a page and which have no references pointing to it can safely be deleted. 
+- Fixed a bug where old variable name $language should have been $languageArr. This affected the "Localization" tab content.
+- Fixed a few bugs related to workspaces and how ids are handled. One misconception is that the input id (&id) should be translated to workspace version. Rather it should remain the real online id and only be translated when required. At this point it has introduced a bug for "page type" versions of pages but I will fix that later. The main type (element versions) works.
+- Reintroduced the element coloring according to versioning status in workspace.
+- Fixed what I perceived as a bug for localization! here we should find out why our perceptions were different. I have only changed the _link_ to the localization action to call tcemain instead of changing your tv-api function (which is what I didn't understand the meaning of...)
+
 2006-01-23	Dmitry Dulepov	<typo3@accio.lv>
 
  + mod2: added text before the table with template listing

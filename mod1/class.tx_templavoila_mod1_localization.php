@@ -144,9 +144,9 @@ class tx_templavoila_mod1_localization {
 
 		$optionsArr = array ();
 		foreach ($availableLanguagesArr as $languageArr) {
-			unset($newLanguagesArr[$language['uid']]);	// Remove this language from possible new translation languages array (PNTLA ;-)
+			unset($newLanguagesArr[$languageArr['uid']]);	// Remove this language from possible new translation languages array (PNTLA ;-)
 
-			if ($language['uid']<=0 || $BE_USER->checkLanguageAccess($languageArr['uid']))	{
+			if ($languageArr['uid']<=0 || $BE_USER->checkLanguageAccess($languageArr['uid']))	{
 
 				$selected = $this->pObj->currentLanguageKey == $languageArr['ISOcode'];
 				$flag = ($languageArr['flagIcon'] != '' ? $languageArr['flagIcon'] : $BACK_PATH . 'gfx/flags/multi-language.gif');
@@ -192,9 +192,8 @@ class tx_templavoila_mod1_localization {
 		$translatedLanguagesArr = $this->pObj->getAvailableLanguages($this->pObj->id);
 
 		$optionsArr = array ('<option value=""></option>');
-		foreach ($newLanguagesArr as $key => $language) {
-				// Display language only if no translation available yet
-			if (!isset($translatedLanguagesArr[$key]) && $BE_USER->checkLanguageAccess($language['uid'])) {
+		foreach ($newLanguagesArr as $language) {
+			if ($BE_USER->checkLanguageAccess($language['uid']) && !isset($this->pObj->translatedLanguagesArr[$language['uid']])) {
 				$style = isset ($language['flagIcon']) ? 'background-image: url('.$language['flagIcon'].'); background-repeat: no-repeat; padding-top: 0px; padding-left: 22px;' : '';
 				$optionsArr [] = '<option style="'.$style.'" name="createNewPageTranslation" value="'.$language['uid'].'">'.htmlspecialchars($language['title']).'</option>';
 			}
