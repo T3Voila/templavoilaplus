@@ -1,3 +1,6 @@
+2006-01-28	Dmitry Dulepov	<typo3@accio.lv>
+
+ # Code cleanup after analysis in Zend Studio
 
 2006-01-25	Kasper Skårhøj
 - Linked TemplaVoila into the extdeveval tool with a new class; This is going to be a tool which can convert FlexForm data from "separate" (langChildren = 0) to "inheritance" (langChildren = 1) localization types (the words I have used). Nicolas Cerisier from Dassault is expected to finish the code which I started out. New file added.
