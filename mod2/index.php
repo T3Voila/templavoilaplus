@@ -123,8 +123,6 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 	 * @return	void
 	 */
 	function menuConfig()	{
-		global $LANG;
-
 		$this->MOD_MENU = array(
 #			'set_showDSxml' => '',
 			'set_details' => '',
@@ -273,7 +271,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 					'pid>=0'.t3lib_BEfunc::deleteClause('tx_templavoila_datastructure'),
 					'pid'
 				);
-		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+		while(false !== ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)))	{
 			$list[$row['pid']]['DS'] = $row['count(*)'];
 		}
 
@@ -284,7 +282,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 					'pid>=0'.t3lib_BEfunc::deleteClause('tx_templavoila_tmplobj'),
 					'pid'
 				);
-		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+		while(false !== ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)))	{
 			$list[$row['pid']]['TO'] = $row['count(*)'];
 		}
 
@@ -314,7 +312,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 				// Create overview
 			$outputString = 'The following pages in the root line contain data structures and template objects:';
 			$outputString .= '<br /><table border="0" cellpadding="1" cellspacing="1" class="lrPadding">'.implode('',$tRows).'</table>';
-	
+
 				// Add output:
 			$this->content.= $this->doc->section($LANG->getLL('title'),$outputString,0,1);
 		}
@@ -337,7 +335,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 					'title'
 				);
 		$dsRecords = array();
-		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+		while(false !== ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)))	{
 			t3lib_BEfunc::workspaceOL('tx_templavoila_datastructure',$row);
 			$dsRecords[$row['scope']][] = $row;
 		}
@@ -359,7 +357,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 					'title'
 				);
 		$toRecords = array();
-		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+		while(false !== ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)))	{
 			t3lib_BEfunc::workspaceOL('tx_templavoila_tmplobj',$row);
 			$toRecords[$row['parent']][] = $row;
 		}
@@ -430,7 +428,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 		);
 
 			// Errors:
-		if ($errStat = $this->getErrorLog('_ALL'))	{
+		if (false !== ($errStat = $this->getErrorLog('_ALL')))	{
 			$parts[] = array(
 				'label' => 'Errors ('.$errStat['count'].')',
 				'content' => $errStat['content'],
@@ -927,7 +925,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 						t3lib_BEfunc::deleteClause('pages')
 				);
 
-				while($pRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+				while(false !== ($pRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)))	{
 					$path = $this->findRecordsWhereUsed_pid($pRow['uid']);
 					if ($path)	{
 						$output[]='
@@ -984,7 +982,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 							</tr>';
 
 					// Elements:
-				while($pRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+				while(false !== ($pRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)))	{
 					$path = $this->findRecordsWhereUsed_pid($pRow['pid']);
 					if ($path)	{
 						$output[]='
@@ -1064,7 +1062,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 						t3lib_BEfunc::deleteClause('pages')
 				);
 
-				while($pRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+				while(false !== ($pRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)))	{
 					$path = $this->findRecordsWhereUsed_pid($pRow['uid']);
 					if ($path)	{
 						$output[]='
@@ -1109,7 +1107,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 							</tr>';
 
 					// Elements:
-				while($pRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+				while(false !== ($pRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)))	{
 					$path = $this->findRecordsWhereUsed_pid($pRow['pid']);
 					if ($path)	{
 						$output[]='
@@ -1174,6 +1172,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 	 * @return	string		HTML table
 	 */
 	function completeTemplateFileList()	{
+	    $output = '';
 		if (is_array($this->tFileList))	{
 
 			$output='';
@@ -1256,10 +1255,8 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 					}
 				}
 			}
-
-
-			return $output;
 		}
+		return $output;
 	}
 
 	/**
@@ -1283,6 +1280,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 	 * @see setErrorLog()
 	 */
 	function getErrorLog($scope)	{
+	    $errStat = false;
 		if (is_array($this->errorsWarnings[$scope]))	{
 			$errStat = array();
 
@@ -1297,9 +1295,8 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 				$errStat['content'].= '<h3>Fatal errors</h3>'.implode('<hr/>',$this->errorsWarnings[$scope]['fatal']);
 				$errStat['iconCode'] = 3;
 			}
-
-			return $errStat;
 		}
+		return $errStat;
 	}
 
 	/**
@@ -1549,6 +1546,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 			- Return to this wizard
 			');
 		}
+		return false;
 	}
 
 	/**
@@ -1609,7 +1607,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 				// Add output:
 			$this->content.= $this->doc->section('Step 1: Select the template HTML file',$outputString,0,1);
 
-		} else { 
+		} else {
 			$this->content .= $this->doc->section('TemplaVoila wizard error',$this->templatesDir.' is not a directory! Please, create it before starting this wizard.',0,1);
 		}
 	}
@@ -1819,7 +1817,6 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 			';
 
 				// Start up HTML parser:
-			global $TYPO3_CONF_VARS;
 			require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 			$htmlParser = t3lib_div::makeinstance('t3lib_parsehtml');
 
@@ -2079,8 +2076,6 @@ lib.'.$menuType.'.1.ACT {
 	 * @return	string		HTML content with it highlighted.
 	 */
 	function syntaxHLTypoScript($v)	{
-		global $TYPO3_CONF_VARS;
-
 		require_once(PATH_t3lib.'class.t3lib_tsparser_ext.php');
 
 		$tsparser = t3lib_div::makeInstance('t3lib_TSparser');
@@ -2177,6 +2172,7 @@ lib.'.$menuType.'.1.ACT {
 						substr('00'.dechex($values['blue']),-2);
 			return $color;
 		}
+		return false;
 	}
 }
 

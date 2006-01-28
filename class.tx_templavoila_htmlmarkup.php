@@ -637,6 +637,7 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 
 			return $this->tDat['MappingData_cached'];
 		}
+		return false;
 	}
 
 	/**
@@ -644,7 +645,7 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 	 *
 	 * @param	[type]		$TA: ...
 	 * @param	[type]		$data: ...
-	 * @return	[type]		...
+	 * @return	mixed		??? or <code>false</code> if ???
 	 */
 	function mergeDataArrayToTemplateArray($TA,$data)	{
 		if (is_array($TA['cArray']))	{
@@ -653,9 +654,8 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 			}
 			return implode('',$TA['cArray']);
 		}
+		return false;
 	}
-
-
 
 
 
@@ -666,7 +666,7 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 	 * @param	integer		The UID of the template record
 	 * @param	[type]		$renderType: ...
 	 * @param	[type]		$langUid: ...
-	 * @return	array		The record array.
+	 * @return	mixed		The record array or <code>false</code>
 	 */
 	function getTemplateRecord($uid,$renderType,$langUid)	{
 		if (t3lib_extMgm::isLoaded('templavoila'))	{
@@ -714,6 +714,7 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 
 			return $rec;
 		}
+		return false;
 	}
 
 	/**
@@ -1154,6 +1155,7 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 				($valueStr ? '</em></font>' : '').
 				chr(10);
 		}
+		return '';
 	}
 
 	/**
@@ -1174,14 +1176,13 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 					<td>&nbsp;</td>
 					<td>'.$this->passthroughHTMLcontent(trim($str),'','source').'</td>
 				</tr>' : '';
-		} else {
-			return '
+		}
+		return '
 				<tr class="bgColor4">
 					<td><input type="checkbox" name="checkboxElement[]" value="'.$path.'"'.(in_array($path,$this->checkboxPathsSet)?' checked="checked"':'').' /></td>
 					<td>'.$gnyf.'</td>
 					<td><pre>'.trim(htmlspecialchars($str)).'</pre></td>
 				</tr>';
-		}
 	}
 
 	/**
@@ -1230,6 +1231,7 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 			$gnyf.= ($this->mode=='explode' ? '<br />' : '');
 			return $gnyf;
 		}
+		return '';
 	}
 }
 

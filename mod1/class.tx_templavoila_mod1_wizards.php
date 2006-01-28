@@ -76,8 +76,6 @@ class tx_templavoila_mod1_wizards {
 	 * @return	void
 	 */
 	function init(&$pObj) {
-		global $LANG;
-
 			// Make local reference to some important variables:
 		$this->pObj =& $pObj;
 		$this->doc =& $this->pObj->doc;
@@ -103,7 +101,7 @@ class tx_templavoila_mod1_wizards {
 	 * @todo				Check required field(s), support t3d
 	 */
     function renderWizard_createNewPage ($positionPid) {
-		global $LANG, $BE_USER, $TYPO3_CONF_VARS, $BACK_PATH;
+		global $LANG, $BE_USER, $TYPO3_CONF_VARS;
 
 			// The user already submitted the create page form:
 		if (t3lib_div::_GP('doCreate')) {
@@ -125,13 +123,13 @@ class tx_templavoila_mod1_wizards {
 					$returnUrl = rawurlencode(t3lib_div::getIndpEnv('SCRIPT_NAME').'?id='.$newID.'&updatePageTree=1');
 
 					header('Location: '.t3lib_div::locationHeaderUrl($this->doc->backPath.'alt_doc.php?returnUrl='.$returnUrl.$params));
-					return;
+					exit();
 				} else { debug('Error: Could not create page!'); }
 			} else { debug('Error: Referer host did not match with server host.'); }
 		}
 
 			// Based on t3d/xml templates:
-		if ($templateFile = t3lib_div::_GP('templateFile')) {
+		if (false != ($templateFile = t3lib_div::_GP('templateFile'))) {
 
 			if (t3lib_div::getFileAbsFileName($templateFile) && @is_file($templateFile))	{
 
@@ -170,7 +168,7 @@ class tx_templavoila_mod1_wizards {
 						$returnUrl = rawurlencode(t3lib_div::getIndpEnv('SCRIPT_NAME').'?id='.$newID.'&updatePageTree=1');
 
 						header('Location: '.t3lib_div::locationHeaderUrl($this->doc->backPath.'alt_doc.php?returnUrl='.$returnUrl.$params));
-						return;
+						exit();
 
 						// PLAIN COPY FROM ABOVE - END
 					} else { debug('Error: Could not create page!'); }
@@ -266,7 +264,7 @@ class tx_templavoila_mod1_wizards {
 						t3lib_BEfunc::versioningPlaceholderClause($tTO).t3lib_BEfunc::versioningPlaceholderClause($tDS)
 				);
 
-				while ($row = $TYPO3_DB->sql_fetch_assoc($res))	{
+				while (false !== ($row = $TYPO3_DB->sql_fetch_assoc($res)))	{
 						// Check if preview icon exists, otherwise use default icon:
 					$tmpFilename = 'uploads/tx_templavoila/'.$row['previewicon'];
 					$previewIconFilename = (@is_file(PATH_site.$tmpFilename)) ? ($GLOBALS['BACK_PATH'].'../'.$tmpFilename) : ($GLOBALS['BACK_PATH'].'../'.t3lib_extMgm::siteRelPath($this->extKey).'res1/default_previewicon.gif');

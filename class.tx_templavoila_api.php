@@ -676,9 +676,9 @@ class tx_templavoila_api {
 
 		if (is_string($flexformPointer)) $flexformPointer = $this->flexform_getPointerFromString ($flexformPointer);
 
-		$workspaceVersion = t3lib_BEfunc::getWorkspaceVersionOfRecord ($BE_USER->workspace, $flexformPointer['table'], $flexFormPointer['uid'], 'uid');
+		$workspaceVersion = t3lib_BEfunc::getWorkspaceVersionOfRecord ($BE_USER->workspace, $flexformPointer['table'], $flexformPointer['uid'], 'uid');
 		if (is_array ($workspaceVersion)) {
-			$flexFormPointer['uid'] = $workspaceVersion['uid'];
+			$flexformPointer['uid'] = $workspaceVersion['uid'];
 		}
 
 		if (!t3lib_div::inList($this->rootTable.',tt_content',$flexformPointer['table'])) {
@@ -739,7 +739,7 @@ class tx_templavoila_api {
 				'field' => $locationArr[4],
 				'vLang' => $locationArr[5],
 				'position' => $locationArr[6],
-				'targetCheckUid' => $recordCheckArr[1],
+				'targetCheckUid' => $targetCheckArr[1],
 			);
 		}
 
@@ -813,6 +813,7 @@ class tx_templavoila_api {
 	 * @access public
 	 */
 	function flexform_getPointersByRecord ($elementUid, $pageUid) {
+	    $flexformPointers = false; // prevent 'used before initialized' warning
 		$flexformPointersArr = $this->flexform_getFlexformPointersToSubElementsRecursively('pages', $pageUid, $flexformPointers);
 
 		$resultPointersArr = array();
@@ -1188,8 +1189,8 @@ class tx_templavoila_api {
 		);
 		if (!$res) return FALSE;
 
-		$templateObjectRecord = array();
-		while ($row = $TYPO3_DB->sql_fetch_assoc($res))	{
+		$templateObjectRecords = array();
+		while (false != ($row = $TYPO3_DB->sql_fetch_assoc($res)))	{
 			$templateObjectRecords[$row['uid']] = $row;
 		}
 

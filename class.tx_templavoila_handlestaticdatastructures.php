@@ -139,7 +139,7 @@ class tx_templavoila_handleStaticDataStructures {
 			);
 
 				// Traverse these and add them. Icons are set too if applicable.
-			while($row=$TYPO3_DB->sql_fetch_assoc($res))	{
+			while(false != ($row=$TYPO3_DB->sql_fetch_assoc($res)))	{
 				if ($row['previewicon'])	{
 					$icon='../'.$GLOBALS['TCA']['tx_templavoila_tmplobj']['columns']['previewicon']['config']['uploadfolder'].'/'.$row['previewicon'];
 				} else $icon='';

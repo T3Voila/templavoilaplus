@@ -339,7 +339,7 @@ class tx_templavoila_pi1 extends tslib_pibase {
 							// The value "__REMOVE" will trigger removal of the item!
 						if (is_array($dataValues[$key][$valueKey]) && !strcmp($dataValues[$key][$valueKey]['ERROR'],'__REMOVE'))	{
 							$dataValues = '__REMOVE';
-							return FALSE;
+							return;
 						}
 					}
 

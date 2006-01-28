@@ -161,8 +161,6 @@ class tx_templavoila_rules {
 	 * @access private
 	 */
 	function checkRulesForElement($rules, $constants, $childRecords) {
-		global $LANG;
-
 		if (!is_array ($childRecords)) { return array ('ok'=>false); }
 		$statusArr = array ('ok' => true);
 

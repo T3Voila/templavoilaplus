@@ -234,8 +234,6 @@ class tx_templavoila_dbnewcontentel {
 	 * @return	void
 	 */
 	function printContent()	{
-		global $SOBE;
-
 		$this->content.= $this->doc->endPage();
 		echo $this->content;
 	}
@@ -384,7 +382,7 @@ class tx_templavoila_dbnewcontentel {
         );
         $fce_count = 1;
         $wizardItems['fce']['header'] = $LANG->getLL('fce');
-        while ($row = $TYPO3_DB->sql_fetch_assoc($res)) {
+        while (false !== ($row = $TYPO3_DB->sql_fetch_assoc($res))) {
             $tmpFilename = 'uploads/tx_templavoila/'.$row['previewicon'];
             $wizardItems['fce_'.$fce_count]['icon'] = (is_file(PATH_site.$tmpFilename)) ? ('../' . $tmpFilename) : ('../' . t3lib_extMgm::siteRelPath('templavoila').'res1/default_previewicon.gif');
             $wizardItems['fce_'.$fce_count]['description'] = $row['description'] ? htmlspecialchars($row['description']) : $LANG->getLL ('template_nodescriptionavailable');
@@ -470,7 +468,7 @@ class tx_templavoila_dbnewcontentel {
 			list ($itemCategory, $dummy) = explode('_', $key);
 			if (!isset ($headersUsed[$itemCategory])) unset ($wizardItems[$key]);
 		}
-	}       
+	}
 }
 
 // Include extension?

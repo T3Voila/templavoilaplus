@@ -187,7 +187,6 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 	 * @return	void
 	 */
 	function menuConfig()    {
-	    global $LANG;
 	    $this->MOD_MENU = Array (
             'displayMode' => array	(
 				'explode' => 'Mode: Exploded Visual',
@@ -639,7 +638,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 				'',
 				'title'
 			);
-			while($row = $TYPO3_DB->sql_fetch_assoc($res))	{
+			while(false !== ($row = $TYPO3_DB->sql_fetch_assoc($res)))	{
 				$sf_opt[]='<option value="'.htmlspecialchars($row['uid']).'">'.htmlspecialchars($row['title'].' (UID:'.$row['uid'].')').'</option>';
 			}
 
@@ -655,7 +654,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 				'',
 				'title'
 			);
-			while($row = $TYPO3_DB->sql_fetch_assoc($res))	{
+			while(false !== ($row = $TYPO3_DB->sql_fetch_assoc($res)))	{
 				t3lib_BEfunc::workspaceOL('tx_templavoila_tmplobj',$row);
 				$opt[]='<option value="'.htmlspecialchars($row['uid']).'">'.htmlspecialchars($this->storageFolders[$row['pid']].'/'.$row['title'].' (UID:'.$row['uid'].')').'</option>';
 			}
@@ -858,7 +857,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 				$TOicon = t3lib_iconworks::getIconImage('tx_templavoila_tmplobj',array(),$GLOBALS['BACK_PATH'],' align="top"');
 
 					// Listing Template Objects with links:
-				while($TO_Row = $TYPO3_DB->sql_fetch_assoc($res))	{
+				while(false !== ($TO_Row = $TYPO3_DB->sql_fetch_assoc($res)))	{
 					t3lib_BEfunc::workspaceOL('tx_templavoila_tmplobj',$TO_Row);
 					$tRows[]='
 							<tr class="bgColor4">
@@ -1331,7 +1330,6 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 		$html_body = $reg[0];
 
 			// Get <head>...</head> from template:
-		$html_header='';
 		$splitByHeader = $this->markupObj->htmlParse->splitIntoBlock('head',$fileContent);
 		list($html_header) =  $this->markupObj->htmlParse->getAllParts($splitByHeader,1,0);
 
@@ -1673,9 +1671,9 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 										}
 									}
 								}
-								if (!$didSetSel && $currentMappingInfo[$key]['MAP_EL'])	{		// IF no element was selected AND there is a value in the array $currentMappingInfo then we add an element holding this value!
+#								if (!$didSetSel && $currentMappingInfo[$key]['MAP_EL'])	{		// IF no element was selected AND there is a value in the array $currentMappingInfo then we add an element holding this value!
 #									$opt[]='<option value="'.htmlspecialchars($currentMappingInfo[$key]['MAP_EL']).'" selected="selected">'.htmlspecialchars('[ - CURRENT - ]').'</option>';
-								}
+#								}
 									// Finally, put together the selector box:
 								$rowCells['cmdLinks'] = '<img src="../html_tags/'.$lastLevel['el'].'.gif" height="9" border="0" alt="" class="absmiddle" title="---'.htmlspecialchars(t3lib_div::fixed_lgd_cs($lastLevel['path'],-80)).'" /><br />
 									<select name="dataMappingForm'.$formPrefix.'['.$key.'][MAP_EL]">
@@ -2252,6 +2250,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 				return array('img'=>$attrib);
 			}
 		}
+		return false;
 	}
 
 
@@ -2423,7 +2422,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			'pages',
 			'storage_pid>0'.t3lib_BEfunc::deleteClause('pages')
 		);
-		while($row = $TYPO3_DB->sql_fetch_assoc($res))	{
+		while(false !== ($row = $TYPO3_DB->sql_fetch_assoc($res)))	{
 			if ($GLOBALS['BE_USER']->isInWebMount($row['storage_pid'],$readPerms))	{
 				$storageFolder = t3lib_BEfunc::getRecord('pages',$row['storage_pid'],'uid,title');
 				if ($storageFolder['uid'])	{
@@ -2524,9 +2523,9 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 				$cParts[1]='<a name="_MARKED_UP_ELEMENT"></a>'.$cParts[1];
 			}
 			return implode('',$cParts);
-		} else {
-			$this->displayFrameError($cParts);
 		}
+		$this->displayFrameError($cParts);
+		return '';
 	}
 
 	/**
@@ -2604,6 +2603,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 		if (is_callable (array ('t3lib_BEfunc','cshItem'))) {
 			return t3lib_BEfunc::cshItem ($table,$field,$BACK_PATH,$wrap,$onlyIconMode, $styleAttrib);
 		}
+		return '';
 	}
 
 	/**
@@ -2631,6 +2631,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 
 			return $LRobj->main($PA,'ID:templavoila');
 		}
+		return '';
 	}
 }
 

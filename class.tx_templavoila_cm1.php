@@ -66,15 +66,15 @@ class tx_templavoila_cm1 {
 	 * @return	array		The modified menu array.
 	 */
 	function main(&$backRef, $menuItems, $table, $uid) {
-		global $BE_USER, $TCA, $LANG, $TYPO3_DB;
+		global $BE_USER, $LANG, $TYPO3_DB;
 
-		$localItems = Array();
+		$localItems = array();
 		if (!$backRef->cmLevel)	{
 			$LL = $LANG->includeLLFile(t3lib_extMgm::extPath('templavoila').'locallang.xml', 0);
 
 				// Adding link for Mapping tool:
 			if (t3lib_div::inList('tx_templavoila_tmplobj,tx_templavoila_datastructure,tx_templavoila_content',$table) || @is_file($table))	{
-				$localItems = Array();
+				$localItems = array();
 
 				if (@is_file($table))	{
 					$url = t3lib_extMgm::extRelPath('templavoila').'cm1/index.php?file='.rawurlencode($table);	//.'&mapElPath='.rawurlencode('[ROOT]');
@@ -93,7 +93,7 @@ class tx_templavoila_cm1 {
 
 				// Adding link for "View: Sub elements":
 			if ($table == 'tt_content' && $isTVelement) {
-				$localItems = Array();
+				$localItems = array();
 
 				$url = t3lib_extMgm::extRelPath('templavoila').'mod1/index.php?id='.intval($backRef->rec['pid']).
 							'&altRoot[table]='.rawurlencode($table).
@@ -140,8 +140,8 @@ class tx_templavoila_cm1 {
 				}
 			}
 
-			if ($table=='tt_content') {
-					// Adding link for "Pages using this element":
+#			if ($table=='tt_content') {
+#					// Adding link for "Pages using this element":
 #				$localItems[] = $backRef->linkItem(
 #					$LANG->getLLL('cm1_pagesusingthiselement',$LL),
 #					$backRef->excludeIcon('<img src="'.t3lib_extMgm::extRelPath('templavoila').'cm1/cm_icon_activate.gif" width="15" height="12" border=0 align=top>'),
@@ -149,17 +149,16 @@ class tx_templavoila_cm1 {
 #					0,
 #					1
 #				);
-			}
+#			}
 		} else {
 			if (t3lib_div::GPvar('subname') == 'tx_templavoila_cm1_pagesusingthiselement') {
 				$menuItems = array ();
-				$continueProcessing = false;
 				$url = t3lib_extMgm::extRelPath('templavoila').'mod1/index.php?id=';
 
 					// Generate a list of pages where this element is also being used:
 				$res = $TYPO3_DB->exec_SELECTquery ('*', 'tx_templavoila_elementreferences', 'uid='.$backRef->rec['uid']);
 				if ($res) {
-					while ($referenceRecord = $TYPO3_DB->sql_fetch_assoc ($res)) {
+					while (false != ($referenceRecord = $TYPO3_DB->sql_fetch_assoc ($res))) {
 						$pageRecord = t3lib_beFunc::getRecord('pages', $referenceRecord['pid']);
 						$icon = t3lib_iconWorks::getIconImage('pages', $pageRecord, $backRef->backPath);
 	// To do: Display language flag icon and jump to correct language

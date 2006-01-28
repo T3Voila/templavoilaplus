@@ -220,9 +220,10 @@ class tx_templavoila_mod1_sidebar {
 				break;
 
 				default:
-					$sidebar = '
+					$sideBar = '
 						<!-- TemplaVoila Sidebar ERROR: Invalid position -->
 					';
+				break;
 			}
 			return $sideBar;
 		}

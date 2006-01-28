@@ -476,7 +476,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * @see	render_framework_singleSheet()
 	 */
 	function render_framework_singleSheet($contentTreeArr, $sheet, $parentPointer=array()) {
-		global $TYPO3_DB, $LANG, $TYPO3_CONF_VARS, $TCA;
+		global $LANG, $TYPO3_CONF_VARS;
 
 		$hookObjectsArr = $this->hooks_prepareObjectsArray ('renderFrameWorkClass');
 
@@ -532,12 +532,12 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		if ($this->global_tt_content_elementRegister[$contentTreeArr['el']['uid']] > 1) {
 			$warnings .= '<br/>'.$this->doc->icons(2).' <em>'.htmlspecialchars(sprintf($LANG->getLL('warning_elementusedmorethanonce',''), $this->global_tt_content_elementRegister[$contentTreeArr['el']['uid']], $contentTreeArr['el']['uid'])).'</em>';
 		}
-		
+
 			// Wrap workspace notification colors:
 		if ($contentTreeArr['el']['_ORIG_uid'])	{
 			$contentTreeArr['el']['previewContent'] = '<div class="ver-element">'.($contentTreeArr['el']['previewContent'] ? $contentTreeArr['el']['previewContent'] : '<em>[New version]</em>').'</div>';
 		}
-		
+
 			// Finally assemble the table:
 		$finalContent ='
 			<table cellpadding="0" cellspacing="0" style="width: 100%; border: 1px solid black; margin-bottom:5px;">
@@ -802,7 +802,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 								$linkLabel = $LANG->getLL('createcopyfortranslation',1).' ('.htmlspecialchars($sLInfo['title']).')';
 								$localizeIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/clip_copy.gif','width="12" height="12"').' class="bottom" title="'.$linkLabel.'" alt="" />';
-								
+
 								$lC = '<a href="#" onclick="'.htmlspecialchars($onClick).'">'.$localizeIcon.'</a>';
 								$lC .= ' <em><a href="#" onclick="'.htmlspecialchars($onClick).'">'.$linkLabel.'</a></em>';
 
@@ -1014,7 +1014,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 					case 'localizeRecord':
 						$sourcePointer = $this->apiObj->flexform_getPointerFromString (t3lib_div::_GP('source'));
-						$this->apiObj->localizeElement ($sourcePointer, $commandParameters);						
+						$this->apiObj->localizeElement ($sourcePointer, $commandParameters);
 					break;
 
 					case 'createNewPageTranslation':
@@ -1085,7 +1085,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			'table' => $table,
 			'uid' => $row['uid'],
 			'pid' => $row['pid'],
-			'_ORIG_uid' => $row['_ORIG_uid'],			
+			'_ORIG_uid' => $row['_ORIG_uid'],
 			'title' => t3lib_div::fixed_lgd_cs(t3lib_BEfunc::getRecordTitle($table, $row),50),
 			'icon' => t3lib_iconWorks::getIcon($table, $row),
 			'previewContent' => ($table == 'tt_content' ? $this->render_previewContent($row) : NULL),

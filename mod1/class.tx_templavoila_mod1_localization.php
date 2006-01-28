@@ -67,7 +67,7 @@ class tx_templavoila_mod1_localization {
 	 * @access public
 	 */
 	function init(&$pObj) {
-		global $LANG, $BE_USER, $BACK_PATH;
+		global $LANG;
 
 			// Make local reference to some important variables:
 		$this->pObj =& $pObj;
@@ -148,7 +148,7 @@ class tx_templavoila_mod1_localization {
 
 			if ($languageArr['uid']<=0 || $BE_USER->checkLanguageAccess($languageArr['uid']))	{
 
-				$selected = $this->pObj->currentLanguageKey == $languageArr['ISOcode'];
+				$this->pObj->currentLanguageKey == $languageArr['ISOcode'];
 				$flag = ($languageArr['flagIcon'] != '' ? $languageArr['flagIcon'] : $BACK_PATH . 'gfx/flags/multi-language.gif');
 				$style = isset ($languageArr['flagIcon']) ? 'background-image: url(' . $flag . '); background-repeat: no-repeat; padding-left: 22px;' : '';
 				$optionsArr [] = '<option style="'.$style.'" value="'.$languageArr['uid'].'"'.($this->pObj->MOD_SETTINGS['language'] == $languageArr['uid'] ? ' selected="selected"' : '').'>'.htmlspecialchars($languageArr['title']).'</option>';
@@ -190,10 +190,9 @@ class tx_templavoila_mod1_localization {
 		if (count($newLanguagesArr) < 1) return FALSE;
 
 		$translatedLanguagesArr = $this->pObj->getAvailableLanguages($this->pObj->id);
-
 		$optionsArr = array ('<option value=""></option>');
 		foreach ($newLanguagesArr as $language) {
-			if ($BE_USER->checkLanguageAccess($language['uid']) && !isset($this->pObj->translatedLanguagesArr[$language['uid']])) {
+			if ($BE_USER->checkLanguageAccess($language['uid']) && !isset($translatedLanguagesArr[$language['uid']])) {
 				$style = isset ($language['flagIcon']) ? 'background-image: url('.$language['flagIcon'].'); background-repeat: no-repeat; padding-top: 0px; padding-left: 22px;' : '';
 				$optionsArr [] = '<option style="'.$style.'" name="createNewPageTranslation" value="'.$language['uid'].'">'.htmlspecialchars($language['title']).'</option>';
 			}

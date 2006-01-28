@@ -69,7 +69,7 @@ class tx_templavoila_mod1_clipboard {
 	 * @access public
 	 */
 	function init(&$pObj) {
-		global $LANG, $BE_USER, $BACK_PATH;
+		global $LANG, $BACK_PATH;
 
 			// Make local reference to some important variables:
 		$this->pObj =& $pObj;
@@ -259,8 +259,8 @@ class tx_templavoila_mod1_clipboard {
 			'uid'
 		);
 
-		$this->deleteUids = array();	// Used to collect all those tt_content uids with no references which can be deleted 
-		while($row = $TYPO3_DB->sql_fetch_assoc($res))	{
+		$this->deleteUids = array();	// Used to collect all those tt_content uids with no references which can be deleted
+		while(false !== ($row = $TYPO3_DB->sql_fetch_assoc($res)))	{
 			$elementPointerString = 'tt_content:'.$row['uid'];
 
 				// Prepare the language icon:
@@ -271,7 +271,7 @@ class tx_templavoila_mod1_clipboard {
 			$cutButton = $this->element_getSelectButtons($elementPointerString, 'ref');
 			$recordIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath, t3lib_iconWorks::getIcon('tt_content', $row),'').' width="18" height="16" border="0" title="[tt_content:'.$row['uid'].'" alt="" />';
 			$recordButton = $this->pObj->doc->wrapClickMenuOnIcon($recordIcon, 'tt_content', $row['uid'], 1, '&callingScriptId='.rawurlencode($this->pObj->doc->scriptID), 'new,copy,cut,pasteinto,pasteafter,delete');
-			
+
 			$refCount_content = $this->makeRef($row['uid']);
 
 			$elementRows[] = '
@@ -290,21 +290,21 @@ class tx_templavoila_mod1_clipboard {
 		}
 
 		if (count ($elementRows)) {
-			
+
 				// Control for deleting all deleteable records:
 			$deleteAll = '';
 			if (count($this->deleteUids))	{
 				$params = '';
 				foreach($this->deleteUids as $deleteUid)	{
 					$params.= '&cmd[tt_content]['.$deleteUid.'][delete]=1';
-				}	
+				}
 				$label = 'Delete all records above marked with delete-icon';
 				$deleteAll = '<a href="#" onclick="'.htmlspecialchars('jumpToUrl(\''.$this->doc->issueCommand($params,'').'\');').'">'.
 						'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/garbage.gif','width="11" height="12"').' title="'.htmlspecialchars($label).'" alt="" />'.
 						htmlspecialchars($label).
 						'</a>';
 			}
-			
+
 				// Create table and header cell:
 			$output = '
 				<table border="0" cellpadding="0" cellspacing="1" width="100%" class="lrPadding">
@@ -321,7 +321,7 @@ class tx_templavoila_mod1_clipboard {
 		return $output;
 
 	}
-	
+
 	/**
 	 * Make reference count
 	 *
@@ -330,7 +330,7 @@ class tx_templavoila_mod1_clipboard {
 	 */
 	function makeRef($uid)	{
 		$table = 'tt_content';
-		
+
 			// Look up the path:
 		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 			'*',
@@ -339,23 +339,23 @@ class tx_templavoila_mod1_clipboard {
 				' AND ref_uid='.intval($uid).
 				' AND deleted=0'
 		);
-		
+
 			// Compile information for title tag:
 		$infoData = array();
 		foreach($rows as $row)	{
 			$infoData[] = $row['tablename'].':'.$row['recuid'].':'.$row['field'];
 		}
-					
+
 		if (count($infoData))	{
-			return '<a href="#" onclick="'.htmlspecialchars('top.launchView(\''.$table.'\', \''.$uid.'\'); return false;').'" title="'.htmlspecialchars(t3lib_div::fixed_lgd(implode(' / ',$infoData),100)).'">Ref: '.count($infoData).'</a>'; 
+			return '<a href="#" onclick="'.htmlspecialchars('top.launchView(\''.$table.'\', \''.$uid.'\'); return false;').'" title="'.htmlspecialchars(t3lib_div::fixed_lgd(implode(' / ',$infoData),100)).'">Ref: '.count($infoData).'</a>';
 		} else {
 			$this->deleteUids[] = $uid;
 			$params = '&cmd[tt_content]['.$uid.'][delete]=1';
 			return '<a href="#" onclick="'.htmlspecialchars('jumpToUrl(\''.$this->doc->issueCommand($params,'').'\');').'">'.
 					'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/garbage.gif','width="11" height="12"').' title="Delete!" alt="" />'.
 					'</a>';
-		} 
-	}		
+		}
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/mod1/class.tx_templavoila_mod1_clipboard.php'])    {
