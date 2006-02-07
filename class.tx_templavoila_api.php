@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2005  Robert Lemke (robert@typo3.org)
+*  (c) 2005-2006  Robert Lemke (robert@typo3.org)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -99,7 +99,7 @@
 class tx_templavoila_api {
 
 	var $rootTable;
-	var $debug = TRUE;
+	var $debug = FALSE;
 
 	/**
 	 * The constructor.
@@ -472,14 +472,31 @@ class tx_templavoila_api {
 		$elementUid = $elementRecord['uid'];
 
 			// Move the element within the same parent element:
-		if ($sourcePointer['table'] == $destinationPointer['table'] && $sourcePointer['uid'] == $destinationPointer['uid']) {
+		$elementsAreWithinTheSameParentElement = (
+			$sourcePointer['table'] == $destinationPointer['table'] && 
+			$sourcePointer['uid'] == $destinationPointer['uid']
+		);			
+		if ($elementsAreWithinTheSameParentElement) {
 
-			$newPosition = ($sourcePointer['position'] < $destinationPointer['position']) ? $destinationPointer['position']-1 : $destinationPointer['position'];
-			$newReferencesArr = $this->flexform_removeElementReferenceFromList ($sourceReferencesArr, $sourcePointer['position']);
-			$newReferencesArr = $this->flexform_insertElementReferenceIntoList ($newReferencesArr, $newPosition, $elementUid);
+			$elementsAreWithinTheSameParentField = (
+				$sourcePointer['sheet'] == $destinationPointer['sheet'] &&
+				$sourcePointer['sLang'] == $destinationPointer['sLang'] &&
+				$sourcePointer['field'] == $destinationPointer['field'] &&
+				$sourcePointer['vLang'] == $destinationPointer['vLang']
+			);
 
-			$this->flexform_storeElementReferencesListInRecord ($newReferencesArr, $destinationPointer);
-
+			if ($elementsAreWithinTheSameParentField) {
+				$newPosition = ($sourcePointer['position'] < $destinationPointer['position']) ? $destinationPointer['position']-1 : $destinationPointer['position'];
+				$newReferencesArr = $this->flexform_removeElementReferenceFromList ($sourceReferencesArr, $sourcePointer['position']);
+				$newReferencesArr = $this->flexform_insertElementReferenceIntoList ($newReferencesArr, $newPosition, $elementUid);
+				$this->flexform_storeElementReferencesListInRecord ($newReferencesArr, $destinationPointer);
+			} else {
+				$sourceParentReferencesArr = $this->flexform_removeElementReferenceFromList ($sourceReferencesArr, $sourcePointer['position']);
+				$this->flexform_storeElementReferencesListInRecord ($sourceParentReferencesArr, $sourcePointer);				
+				$destinationParentReferencesArr = $this->flexform_insertElementReferenceIntoList ($destinationReferencesArr, $destinationPointer['position'], $elementUid);
+				$this->flexform_storeElementReferencesListInRecord ($destinationParentReferencesArr, $destinationPointer);				
+			}
+			
 		} else {
 				// Move the element to a different parent element:
 			$newSourceReferencesArr = $this->flexform_removeElementReferenceFromList ($sourceReferencesArr, $sourcePointer['position']);
@@ -1226,7 +1243,7 @@ class tx_templavoila_api {
 	 * avoid infinite loops and other bad effects.
 	 *
 	 * @return	boolean		TRUE if flag is set, otherwise FALSE;
-	 * @access protected
+	 * @access	protected
 	 */
 	function getTCEmainRunningFlag () {
 		return $GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_api']['apiIsRunningTCEmain'] ? TRUE : FALSE;
@@ -1237,7 +1254,7 @@ class tx_templavoila_api {
 	 *
 	 * @param	integer		$pageUid: Context page uid
 	 * @return	integer		PID of the storage folder
-	 * @access public
+	 * @access	public
 	 */
 	function getStorageFolderPid($pageUid)	{
 

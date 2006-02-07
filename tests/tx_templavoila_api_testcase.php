@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2005 Robert Lemke (robert@typo3.org)
+*  (c) 2005-2006 Robert Lemke (robert@typo3.org)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -34,6 +34,7 @@
  *
  * @author	Robert Lemke <robert@typo3.org>
  */
+ 
 
 require_once (t3lib_extMgm::extPath('templavoila').'class.tx_templavoila_api.php');
 require_once (PATH_t3lib.'class.t3lib_tcemain.php');
@@ -46,6 +47,8 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 	protected $testPageDSTitle = '*** t3unit templavoila testcase page template ds ***';
 	protected $testPageTOTitle = '*** t3unit templavoila testcase page template to ***';
 	protected $testCEHeader = '*** t3unit templavoila testcase content element ***';
+	protected $testFCEDSTitle = '*** t3unit templavoila testcase FCE template ds ***';
+	protected $testFCETOTitle = '*** t3unit templavoila testcase FCE template to ***';
 	protected $testPageUID;
 	protected $testPageDSUID;
 	protected $testPageTOUID;
@@ -435,10 +438,127 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 			// Try to move the element with invalid source pointer:
 		$sourcePointer['position'] = 9999;
 		$result = $this->apiObj->moveElement ($sourcePointer, $destinationPointer);
-		self::assertFalse ($result, 'moveElement() did not return FALSE although we tried to move an element specified by an invalid source pointer!');
-		
+		self::assertFalse ($result, 'moveElement() did not return FALSE although we tried to move an element specified by an invalid source pointer!');		
 	}
+	
+	public function test_moveElement_onSamePageWithinFCE() {
+		global $TYPO3_DB, $BE_USER;
 
+		$BE_USER->setWorkspace (0);
+
+		$this->fixture_createTestPage ();
+		$this->fixture_createTestPageDSTO();
+
+			// Delete old test content elements:			
+		$TYPO3_DB->exec_DELETEquery ('tt_content', 'header LIKE "'.$this->testCEHeader.'%"');
+
+		$this->fixture_createTestFCEDSTO('2col');
+		
+			// Create a 2-column FCE:
+		$row = $this->fixture_getContentElementRow_FCE($this->testFCEDSUID, $this->testFCETOUID);
+		$destinationPointer = array(
+			'table' => 'pages',
+			'uid'   => $this->testPageUID,
+			'sheet' => 'sDEF',
+			'sLang' => 'lDEF',
+			'field' => 'field_content',
+			'vLang' => 'vDEF',
+			'position' => 0
+		);
+		$FCEUid = $this->apiObj->insertElement ($destinationPointer, $row);
+
+			// Create 3+3 new content elements within the two columns of the FCE:
+		$elementUids = array();
+		for ($i=0; $i<3; $i++) {
+			$row = $this->fixture_getContentElementRow_TEXT();
+			$row['bodytext'] = 'move test element left #'.$i;
+			$destinationPointer = array(
+				'table' => 'tt_content',
+				'uid'   => $FCEUid,
+				'sheet' => 'sDEF',
+				'sLang' => 'lDEF',
+				'field' => 'field_leftcolumn',
+				'vLang' => 'vDEF',
+				'position' => $i
+			);
+			$elementUidsLeft[($i+1)] = $this->apiObj->insertElement ($destinationPointer, $row);
+			
+			$row['bodytext'] = 'move test element right #'.$i;
+			$destinationPointer = array(
+				'table' => 'tt_content',
+				'uid'   => $FCEUid,
+				'sheet' => 'sDEF',
+				'sLang' => 'lDEF',
+				'field' => 'field_rightcolumn',
+				'vLang' => 'vDEF',
+				'position' => $i
+			);
+			$elementUidsRight[($i+1)] = $this->apiObj->insertElement ($destinationPointer, $row);
+		}
+
+			// Right column: cut first element and paste it after the third:
+		$sourcePointer = array(
+			'table' => 'tt_content',
+			'uid'   => $FCEUid,
+			'sheet' => 'sDEF',
+			'sLang' => 'lDEF',
+			'field' => 'field_rightcolumn',
+			'vLang' => 'vDEF',
+			'position' => 1
+		);
+		
+		$destinationPointer = array(
+			'table' => 'tt_content',
+			'uid'   => $FCEUid,
+			'sheet' => 'sDEF',
+			'sLang' => 'lDEF',
+			'field' => 'field_rightcolumn',
+			'vLang' => 'vDEF',
+			'position' => 3
+		);
+
+			// Move the element within the same FCE with valid source and destination pointer:		
+		$result = $this->apiObj->moveElement ($sourcePointer, $destinationPointer);
+		self::assertTrue ($result, 'moveElement() did not return TRUE!');
+		
+		 	// Check if the first element has been moved correctly behind the third one:
+		$testFCERecord = t3lib_beFunc::getRecordRaw ('tt_content', 'uid='.$FCEUid, 'tx_templavoila_flex');		
+		$flexform = simplexml_load_string ($testFCERecord['tx_templavoila_flex']);
+		self::assertEquals ((string)$flexform->data->sDEF->lDEF->field_rightcolumn->vDEF, $elementUidsRight[2].','.$elementUidsRight[3].','.$elementUidsRight[1], 'The reference list is not as expected after moving the first element after the third with moveElement()!');
+
+			// Cut third element of the right column and paste it after the first in the left column:
+		$sourcePointer = array(
+			'table' => 'tt_content',
+			'uid'   => $FCEUid,
+			'sheet' => 'sDEF',
+			'sLang' => 'lDEF',
+			'field' => 'field_rightcolumn',
+			'vLang' => 'vDEF',
+			'position' => 3
+		);
+		
+		$destinationPointer = array(
+			'table' => 'tt_content',
+			'uid'   => $FCEUid,
+			'sheet' => 'sDEF',
+			'sLang' => 'lDEF',
+			'field' => 'field_leftcolumn',
+			'vLang' => 'vDEF',
+			'position' => 1
+		);
+
+			// Move the element within the same FCE with valid source and destination pointer from one column to another:		
+		$result = $this->apiObj->moveElement ($sourcePointer, $destinationPointer);
+		self::assertTrue ($result, 'moveElement() did not return TRUE!');
+		
+		 	// Check if the first element has been moved correctly behind the first one in the other column:
+		$testFCERecord = t3lib_beFunc::getRecordRaw ('tt_content', 'uid='.$FCEUid, 'tx_templavoila_flex');		
+		$flexform = simplexml_load_string ($testFCERecord['tx_templavoila_flex']);
+
+		self::assertEquals ((string)$flexform->data->sDEF->lDEF->field_rightcolumn->vDEF, $elementUidsRight[2].','.$elementUidsRight[3], 'The reference list in the right column is not as expected after moving the third element of the second column to after the first in the first column with moveElement()!');
+		self::assertEquals ((string)$flexform->data->sDEF->lDEF->field_leftcolumn->vDEF, $elementUidsLeft[1].','.$elementUidsRight[1].','.$elementUidsLeft[2].','.$elementUidsLeft[3], 'The reference list in the left column is not as expected after moving the third element of the second column to after the first in the first column with moveElement()!');
+	}
+	
 	public function test_moveElement_onSamePage_workspaces() {
 		global $TYPO3_DB, $BE_USER;
 
@@ -1478,8 +1598,7 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 						
 		self::assertTrue ($isOkay, 'The localized record has not the expected content!');
 	}
-
-
+	
 
 
 
@@ -1618,6 +1737,51 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 		$TYPO3_DB->exec_UPDATEquery ('pages', 'title="'.$this->testPageTitle.'"', $row);
 	}
 
+	/**
+	 * Creates a datastructure and template object for a test FCE (2 columns)
+	 * 
+	 * @param	string		$type: The fixture name to use for the FCE (eg. "2col") 
+	 * @return 	array		UID of the DS and UID of the TO
+	 */
+	private function fixture_createTestFCEDSTO($type) {
+		global $TYPO3_DB;
+	
+			// Delete old test templates:			
+		$TYPO3_DB->exec_DELETEquery ('tx_templavoila_datastructure', 'title="'.$this->testFCEDSTitle.$type.'"');
+		$TYPO3_DB->exec_DELETEquery ('tx_templavoila_tmplobj', 'title="'.$this->testFCETOTitle.$type.'"');
+
+			// Create new DS:
+		$row = array (
+			'pid' => $this->testPageUID,
+			'tstamp' => time(),
+			'crdate' => time(),
+			'cruser_id' => 1,
+			'deleted' => 0,
+			'title' => $this->testFCEDSTitle.$type,
+			'dataprot' => file_get_contents (t3lib_extMgm::extPath('templavoila').'tests/fixtures/fce_'.$type.'_datastructure.xml'),
+			'scope' => 2
+		);
+		$res = $TYPO3_DB->exec_INSERTquery ('tx_templavoila_datastructure', $row);
+		$this->testFCEDSUID = $TYPO3_DB->sql_insert_id ($res);	
+
+			// Create new TO:
+		$row = array (
+			'pid' => $this->testPageUID,
+			'tstamp' => time(),
+			'crdate' => time(),
+			'cruser_id' => 1,
+			'deleted' => 0,
+			'title' => $this->testFCETOTitle.$type,
+			'description' => 'generated by T3Unit testcase', 
+			'datastructure' => $this->testFCEDSUID ,
+			'fileref_mtime' => @filemtime (t3lib_extMgm::extPath('templavoila').'tests/fixtures/fce_'.$type.'_template.html'),
+			'fileref' => t3lib_extMgm::siteRelPath('templavoila').'tests/fixtures/fce_'.$type.'_template.html',
+			'templatemapping' => file_get_contents (t3lib_extMgm::extPath('templavoila').'tests/fixtures/fce_'.$type.'_templateobject.dat'),
+		);
+		$res = $TYPO3_DB->exec_INSERTquery ('tx_templavoila_tmplobj', $row);
+		$this->testFCETOUID = $TYPO3_DB->sql_insert_id ($res);			
+	}
+
 	/*********************************************************
 	 *
 	 * FIXTURE FUNCTIONS
@@ -1629,6 +1793,15 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 			'CType' => 'text',
 			'header' => $this->testCEHeader,
 			'bodytext' => 'T3Unit - If you see this message it appears that T3Unit succeeded in creating a content element at the test page. But usually you will never see this message. If everything runs fine.',
+		);
+	}
+
+	private function fixture_getContentElementRow_FCE($dataStructureUid, $templateObjectUid) {
+		return array (
+			'CType' => 'templavoila_pi1',
+			'header' => $this->testCEHeader,
+			'tx_templavoila_ds' => $dataStructureUid,
+			'tx_templavoila_to' => $templateObjectUid,
 		);
 	}
 }

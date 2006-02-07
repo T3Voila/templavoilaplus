@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2003-2005 Kasper Skï¿½rhï¿½j <kasper@typo3.com>
+*  (c) 2003-2006 Kasper Skårhøj <kasper@typo3.com>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -26,7 +26,7 @@
  *
  * $Id$
  *
- * @author   Kasper Skï¿½rhï¿½j <kasper@typo3.com>
+ * @author   Kasper Skårhøj <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]

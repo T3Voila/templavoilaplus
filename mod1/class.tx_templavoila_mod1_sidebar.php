@@ -420,6 +420,9 @@ class tx_templavoila_mod1_sidebar {
 		return (count ($tableRows)) ? '<table border="0" cellpadding="0" cellspacing="1" class="lrPadding" width="100%">'.implode ('', $tableRows).'</table>' : '';
 	}
 
+
+
+
 	/********************************************
 	 *
 	 * Helper functions
