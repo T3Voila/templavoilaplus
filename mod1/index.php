@@ -692,12 +692,12 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 					$output = $this->link_edit('<strong>'.$LANG->sL(t3lib_BEfunc::getItemLabel('tt_content','bodytext'),1).'</strong> '.htmlspecialchars(t3lib_div::fixed_lgd_cs(trim(strip_tags($row['bodytext'])),2000)),'tt_content',$row['uid']).'<br />';
 					break;
 				case 'image':		//	Image
-					$output = $this->link_edit('<strong>'.$LANG->sL(t3lib_BEfunc::getItemLabel('tt_content','image'),1).'</strong><br /> ', 'tt_content', $row['uid']).t3lib_BEfunc::thumbCode ($row, 'tt_content', 'image', $this->doc->backPath, '', $v['TCEforms']['config']['uploadfolder']).'<br />';
+					$output = $this->link_edit('<strong>'.$LANG->sL(t3lib_BEfunc::getItemLabel('tt_content','image'),1).'</strong><br /> ', 'tt_content', $row['uid']).t3lib_BEfunc::thumbCode ($row, 'tt_content', 'image', $this->doc->backPath . '../').'<br />'; // need to jump below "/typo3" because images are rendered for FE but our BACK_PATH is for BE!
 					break;
 				case 'textpic':		//	Text w/image
 				case 'splash':		//	Textbox
 					$thumbnail = '<strong>'.$LANG->sL(t3lib_BEfunc::getItemLabel('tt_content','image'),1).'</strong><br />';
-					$thumbnail .= t3lib_BEfunc::thumbCode ($row, 'tt_content', 'image', $this->doc->backPath, '', $v['TCEforms']['config']['uploadfolder']);
+					$thumbnail .= t3lib_BEfunc::thumbCode ($row, 'tt_content', 'image', $this->doc->backPath . '../'); // need to jump below "/typo3" because images are rendered for FE but our BACK_PATH is for BE!
 					$text = $this->link_edit('<strong>'.$LANG->sL(t3lib_BEfunc::getItemLabel('tt_content','bodytext'),1).'</strong> '.htmlspecialchars(t3lib_div::fixed_lgd_cs(trim(strip_tags($row['bodytext'])),2000)),'tt_content',$row['uid']);
 					$output='<table><tr><td valign="top">'.$text.'</td><td valign="top">'.$thumbnail.'</td></tr></table>'.'<br />';
 					break;
