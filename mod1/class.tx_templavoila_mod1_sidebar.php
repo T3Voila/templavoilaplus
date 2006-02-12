@@ -404,7 +404,7 @@ class tx_templavoila_mod1_sidebar {
 
 			// Render cache menu:
 		if ($pObj->id>0) {
-			$cacheMenu = $this->doc->clearCacheMenu(intval($this->id), FALSE);
+			$cacheMenu = $this->doc->clearCacheMenu(intval($pObj->id), FALSE);
 			if ($cacheMenu != '') {
 					// Show cache functions only if they are available to the user
 				$cshItem = t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'TCEforms_cacheSelector', $GLOBALS['BACK_PATH'],'', TRUE);

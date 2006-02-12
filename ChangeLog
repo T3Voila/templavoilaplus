@@ -1,6 +1,7 @@
 2006-02-12	Dmitry Dulepov	<typo3@accio.lv>
 
  # Fix: page module (mod1) did not show image thumbnails because of wrong back path
+ # Fix: clear cache was unavailable for current page
 
 2006-02-07	Robert Lemke	<robert@typo3.org>
 
