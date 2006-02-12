@@ -1,3 +1,7 @@
+2006-02-12	Dmitry Dulepov	<typo3@accio.lv>
+
+ # Fix: page module (mod1) did not show image thumbnails because of wrong back path
+
 2006-02-07	Robert Lemke	<robert@typo3.org>
 
  ~ Merge of my changes and the previous commits of Dmitry and Kasper
@@ -8,7 +12,7 @@
 
  ~ Code cleanup after analysis in Zend Studio
 
-2006-01-25	Kasper Skårhøj  <kasperYYYY@typo3.com>
+2006-01-25	Kasper Skï¿½rhï¿½j  <kasperYYYY@typo3.com>
 
  + Linked TemplaVoila into the extdeveval tool with a new class; This is going to be a tool which can convert FlexForm data from "separate" (langChildren = 0) to "inheritance" (langChildren = 1) localization types (the words I have used). Nicolas Cerisier from Dassault is expected to finish the code which I started out. New file added.
  ~ Added "Undefined" as Data Structure type (again). This will be used if TemplaVOila is used for templating where not related to pages or content elements.
@@ -117,11 +121,11 @@
  
  + Added staging support for workspaces (t3ver_stage)
 
-2005-10-04  Kasper Skårhøj  <kasper2005@typo3.com>
+2005-10-04  Kasper Skï¿½rhï¿½j  <kasper2005@typo3.com>
 
  * Added support for versioning plus did some other changes to localization.
 
-2005-04-27  Kasper Skårhøj  <kasper@typo3.com>
+2005-04-27  Kasper Skï¿½rhï¿½j  <kasper@typo3.com>
 
  * Added that a warning is displayed if Flexible content container elements have localization enabled in a "dangerous" non-supported way. Warning can be disabled with Page TSconfig
  * Added that if an element on the local page is used more than one time inside the page structure it will be noticed in the display (assumption: Local content elements are normally shown only once on the page). (This changed helped to avoid some user confusion about copies and references)
@@ -133,7 +137,7 @@
 2005-02-21 Robert Lemke <robert@typo3.org>
  + htmlmarkup: Added support and icon for DL, DD and DT HTML tags in the click menu (mapping tool). Solved feature request #0000671
 
-2005-02-16  Kasper Skårhøj  <kasper@typo3.com>
+2005-02-16  Kasper Skï¿½rhï¿½j  <kasper@typo3.com>
 
  * Added feature that allows a Template Object to point to another parent template object from which the print and language subtemplates will be taken if the actual template object doesn't have any defined it self. The feature is called "Inherit subtemplates from as defaults"
 
@@ -148,12 +152,12 @@
  ~ Classic page module is now switched off by default, page template selector switched on (in the extension manager configuration dialogue)
  + mod1: Added support for making true copies of FCEs with sub elements. Before only the FCE parent element was truely copied, the child objects weren't. Still has a small bug, will fix that soon!
 
-2005-01-21  Kasper Skårhøj  <kasper@typo3.com>
+2005-01-21  Kasper Skï¿½rhï¿½j  <kasper@typo3.com>
 
  * Added a "Start new website" wizard which will set up TemplaVoila site basics in one minute. Found in the Web > TemplaVoila module.
  * MAY have fixed a bug where the mapping was mysteriously lost - but I might also have introduced a new bug instead. Please let me know!
 
-2004-12-13  Kasper Skårhøj  <kasper@typo3.com>
+2004-12-13  Kasper Skï¿½rhï¿½j  <kasper@typo3.com>
 
  * Added an EXAMPLE of how page-templates can come from a t3d file. I expect it needs some configuration of which folder to look for templates in, but the principles are shown. It will require the new TYPO3 source with modified import/export features.
  * Fixed a PHP5 bug with arrays...
@@ -169,7 +173,7 @@
  + mod1: Added flags next to the language selector which represent existing translations
  # mod1: In the sidebar, changed menuItems array for the dynamic tab menu to num array
 
-2004-09-09  Kasper Skårhøj <kasperYYYY@typo3.com>
+2004-09-09  Kasper Skï¿½rhï¿½j <kasperYYYY@typo3.com>
 
  * Fixed that color highlighting of data structure didn't show <meta> tag content.
  * Improved things in page module regarding sheets; Eg. counting elements on each sheet. Fixed some PHP5 array bugs also.
@@ -204,7 +208,7 @@
   * mod3: Added wizard for (re-) building indexing information about element reference (where which content element is used). You'll need to update table definitions in the extension manager.
   * ToDo for element references: Deleting CEs from elsewhere than the page module will not be registered automatically (see ToDo file)
 
-2004-08-27  Kasper Skårhøj  <kasperYYYY@typo3.com>
+2004-08-27  Kasper Skï¿½rhï¿½j  <kasperYYYY@typo3.com>
 
   * Page module: Added "Show hidden elements" box - can be moved to better position in page module
   * Corrected bugs for flagicons if they were not configured (they didn't display correctly of course).
@@ -212,11 +216,11 @@
   * Page module: Added "&L=xx" parameter to view-page icon (magnifying glass) so preview link to localized pages is correct.
   * Page module: Added overview of localized versions of other records. This is used when TypoScript is configured with "config.sys_language_overlay". Configurable.
 
-2004-08-26  Kasper Skårhøj  <kasperYYYY@typo3.com>
+2004-08-26  Kasper Skï¿½rhï¿½j  <kasperYYYY@typo3.com>
 
   * Changed the versioning selector...
 
-2004-08-21  Kasper Skårhøj  <kasperYYYY@typo3.com>
+2004-08-21  Kasper Skï¿½rhï¿½j  <kasperYYYY@typo3.com>
 
   * Finally added the "TemplaVoila" module to the Web main module and put some content into it! Now you can manage all your Data Structures and Template Objects from that module including creating new mappings and validate old ones.
   * Also added TAB menus to the TV page module
@@ -261,7 +265,7 @@
 	* Added hook in page module for inserting HTML code at the very top of the edit page screen - for providing a toolbar or sth. similar
 	* Updated manual
 
-2004-03-31  Kasper Skårhøj  <kasperYYYY@typo3.com>
+2004-03-31  Kasper Skï¿½rhï¿½j  <kasperYYYY@typo3.com>
 
 	* Fixed bug in htmlmarkup class where content were merged with template; When the number of "virtual records" exceeded a limit, none were merged.
 
@@ -270,7 +274,7 @@
 	* Added icons, sponsored by Ben
 	* Modified TSconfig userFunction properties for cm1 and updated manual
 
-2004-03-24  Kasper Skårhøj
+2004-03-24  Kasper Skï¿½rhï¿½j
 	* Added a syntax highlight module for FlexForm data in tt_content and pages; access it as admin via the click menu of pages / tt_content elements.
 
 2004-03-22  Robert Lemke  <robert@typo3.org>
@@ -284,7 +288,7 @@ See the updated many for more information. BTW: Thanks for the extra fields!
 	* Hey Kasper, you broke the create new page wizard ... ;-) Anyways, will find out what's wrong.
 	* Small update for the manual (FAQ)
 
-2004-03-09  Kasper Skårhøj
+2004-03-09  Kasper Skï¿½rhï¿½j
 
 	* Removed copy,cut,paste,new,delete links in Context Menu for content elements inside of TemplaVoila module; Doesn't do any good there since those features are specific for TemplaVoila and has to be managed in the module itself; Alternatively we should create menu items in the context menu which does the same as the buttons in the module, but that was too hard for me to think about tonight....
 	* Added support for other root elements in backend module than pages. Setting another root element is done by the parameter set "&altRoot[table], &altRoot[uid], &altRoot[flex_field]"
@@ -322,7 +326,7 @@ See the updated many for more information. BTW: Thanks for the extra fields!
 	* Several changes here and there, comments added
 
 
-2003-10-28  Kasper Skårhøj
+2003-10-28  Kasper Skï¿½rhï¿½j
 
 	* Added $Id$ keywords tags.
 	* Added support+icon for iframe tags in htmlmarkup class.
