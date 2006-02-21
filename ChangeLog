@@ -1,3 +1,7 @@
+2006-02-21	Dmitry Dulepov	<typo3@accio.lv>
+
+ # Changing thumbnail code again due to the bug in typo3 core
+
 2006-02-12	Dmitry Dulepov	<typo3@accio.lv>
 
  # Fix: page module (mod1) did not show image thumbnails because of wrong back path
