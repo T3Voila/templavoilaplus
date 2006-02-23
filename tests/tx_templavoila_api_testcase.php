@@ -112,7 +112,8 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 		 	// Check if the new record has been inserted correctly into the references list in table "pages":
 		$testPageRecord = t3lib_beFunc::getRecordRaw ('pages', 'uid='.$this->testPageUID, 'tx_templavoila_flex');		
 		$flexform = simplexml_load_string ($testPageRecord['tx_templavoila_flex']);
-		self::assertEquals ((string)$flexform->data->sDEF->lDEF->field_content->vDEF, (string)$elementUid, 'The reference from the test page to the element created by insertElement() is not as expected!');
+		$xpathResArr = $flexform->xpath("//data/sheet[@index='sDEF']/language[@index='lDEF']/field[@index='field_content']/vDEF");
+		self::assertEquals ((string)$xpathResArr[0], (string)$elementUid, 'The reference from the test page to the element created by insertElement() is not as expected!');
 
 
 			// Prepare the A SECOND content element:
@@ -144,7 +145,8 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 		 	// Check if the new record has been inserted correctly before the first one:
 		$testPageRecord = t3lib_beFunc::getRecordRaw ('pages', 'uid='.$this->testPageUID, 'tx_templavoila_flex');		
 		$flexform = simplexml_load_string ($testPageRecord['tx_templavoila_flex']);
-		self::assertEquals ((string)$flexform->data->sDEF->lDEF->field_content->vDEF, $secondElementUid.','.$elementUid, 'The reference list the elements created by insertElement() is not as expected!');
+		$xpathResArr = $flexform->xpath("//data/sheet[@index='sDEF']/language[@index='lDEF']/field[@index='field_content']/vDEF");
+		self::assertEquals ((string)$xpathResArr[0], $secondElementUid.','.$elementUid, 'The reference list the elements created by insertElement() is not as expected!');
 
 
 			// Prepare the A THIRD content element:
@@ -177,7 +179,8 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 		 	// Check if the new record has been inserted correctly behind the second one:
 		$testPageRecord = t3lib_beFunc::getRecordRaw ('pages', 'uid='.$this->testPageUID, 'tx_templavoila_flex');		
 		$flexform = simplexml_load_string ($testPageRecord['tx_templavoila_flex']);
-		self::assertEquals ((string)$flexform->data->sDEF->lDEF->field_content->vDEF, $secondElementUid.','.$thirdElementUid.','.$elementUid, '(Third element) The reference list the elements created by insertElement() is not as expected!');
+		$xpathResArr = $flexform->xpath("//data/sheet[@index='sDEF']/language[@index='lDEF']/field[@index='field_content']/vDEF");		
+		self::assertEquals ((string)$xpathResArr[0], $secondElementUid.','.$thirdElementUid.','.$elementUid, '(Third element) The reference list the elements created by insertElement() is not as expected!');
 	}
 
 	public function test_insertElement_basic_workspaces() {
@@ -225,7 +228,8 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 		 	// Check if the new record has been inserted correctly into the references list in table "pages":
 		$testPageRecord = t3lib_beFunc::getRecordWSOL ('pages', $this->testPageUID, 'tx_templavoila_flex,uid,pid,t3ver_swapmode');
 		$flexform = simplexml_load_string ($testPageRecord['tx_templavoila_flex']);
-		self::assertEquals ((string)$flexform->data->sDEF->lDEF->field_content->vDEF, (string)$elementUid, 'The reference from the test page to the element created by insertElement() is not as expected!');
+		$xpathResArr = $flexform->xpath("//data/sheet[@index='sDEF']/language[@index='lDEF']/field[@index='field_content']/vDEF");		
+		self::assertEquals ((string)$xpathResArr[0], (string)$elementUid, 'The reference from the test page to the element created by insertElement() is not as expected!');
 
 
 			// Prepare the A SECOND content element:
@@ -262,7 +266,8 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 		 	// Check if the new record has been inserted correctly before the first one:
 		$testPageRecord = t3lib_beFunc::getRecordWSOL('pages', $this->testPageUID, 'tx_templavoila_flex,uid,pid,t3ver_swapmode');
 		$flexform = simplexml_load_string ($testPageRecord['tx_templavoila_flex']);		
-		self::assertEquals ((string)$flexform->data->sDEF->lDEF->field_content->vDEF, $secondElementUid.','.$elementUid, 'The reference list the elements created by insertElement() is not as expected!');
+		$xpathResArr = $flexform->xpath("//data/sheet[@index='sDEF']/language[@index='lDEF']/field[@index='field_content']/vDEF");
+		self::assertEquals ((string)$xpathResArr[0], $secondElementUid.','.$elementUid, 'The reference list the elements created by insertElement() is not as expected!');
 
 
 			// Prepare the A THIRD content element:
@@ -301,7 +306,8 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 		 	// Check if the new record has been inserted correctly behind the second one:
 		$testPageRecord = t3lib_beFunc::getRecordWSOL ('pages', $this->testPageUID, 'tx_templavoila_flex,uid,pid,t3ver_swapmode');		
 		$flexform = simplexml_load_string ($testPageRecord['tx_templavoila_flex']);
-		self::assertEquals ((string)$flexform->data->sDEF->lDEF->field_content->vDEF, $secondElementUid.','.$thirdElementUid.','.$elementUid, '(Third element) The reference list the elements created by insertElement() is not as expected!');
+		$xpathResArr = $flexform->xpath("//data/sheet[@index='sDEF']/language[@index='lDEF']/field[@index='field_content']/vDEF");
+		self::assertEquals ((string)$xpathResArr[0], $secondElementUid.','.$thirdElementUid.','.$elementUid, '(Third element) The reference list the elements created by insertElement() is not as expected!');
 		
 		$BE_USER->setWorkspace(0);		
 	}
@@ -403,7 +409,8 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 		 	// Check if the first element has been moved correctly behind the third one:
 		$testPageRecord = t3lib_beFunc::getRecordRaw ('pages', 'uid='.$this->testPageUID, 'tx_templavoila_flex');		
 		$flexform = simplexml_load_string ($testPageRecord['tx_templavoila_flex']);
-		self::assertEquals ((string)$flexform->data->sDEF->lDEF->field_content->vDEF, $elementUids[2].','.$elementUids[3].','.$elementUids[1], 'The reference list is not as expected after moving the first element after the third with moveElement()!');
+		$xpathResArr = $flexform->xpath("//data/sheet[@index='sDEF']/language[@index='lDEF']/field[@index='field_content']/vDEF");
+		self::assertEquals ((string)$xpathResArr[0], $elementUids[2].','.$elementUids[3].','.$elementUids[1], 'The reference list is not as expected after moving the first element after the third with moveElement()!');
 
 			// Cut third element and paste it after the first:
 		$sourcePointer = array(
@@ -433,7 +440,8 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 		 	// Check if the first element has been moved correctly behind the third one:
 		$testPageRecord = t3lib_beFunc::getRecordRaw ('pages', 'uid='.$this->testPageUID, 'tx_templavoila_flex');		
 		$flexform = simplexml_load_string ($testPageRecord['tx_templavoila_flex']);
-		self::assertEquals ((string)$flexform->data->sDEF->lDEF->field_content->vDEF, $elementUids[2].','.$elementUids[1].','.$elementUids[3], 'The reference list is not as expected after moving the third element after the first with moveElement()!');
+		$xpathResArr = $flexform->xpath("//data/sheet[@index='sDEF']/language[@index='lDEF']/field[@index='field_content']/vDEF");
+		self::assertEquals ((string)$xpathResArr[0], $elementUids[2].','.$elementUids[1].','.$elementUids[3], 'The reference list is not as expected after moving the third element after the first with moveElement()!');
 
 			// Try to move the element with invalid source pointer:
 		$sourcePointer['position'] = 9999;
@@ -524,7 +532,8 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 		 	// Check if the first element has been moved correctly behind the third one:
 		$testFCERecord = t3lib_beFunc::getRecordRaw ('tt_content', 'uid='.$FCEUid, 'tx_templavoila_flex');		
 		$flexform = simplexml_load_string ($testFCERecord['tx_templavoila_flex']);
-		self::assertEquals ((string)$flexform->data->sDEF->lDEF->field_rightcolumn->vDEF, $elementUidsRight[2].','.$elementUidsRight[3].','.$elementUidsRight[1], 'The reference list is not as expected after moving the first element after the third with moveElement()!');
+		$xpathResArr = $flexform->xpath("//data/sheet[@index='sDEF']/language[@index='lDEF']/field[@index='field_rightcolumn']/vDEF");
+		self::assertEquals ((string)$xpathResArr[0], $elementUidsRight[2].','.$elementUidsRight[3].','.$elementUidsRight[1], 'The reference list is not as expected after moving the first element after the third with moveElement()!');
 
 			// Cut third element of the right column and paste it after the first in the left column:
 		$sourcePointer = array(
@@ -555,8 +564,10 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 		$testFCERecord = t3lib_beFunc::getRecordRaw ('tt_content', 'uid='.$FCEUid, 'tx_templavoila_flex');		
 		$flexform = simplexml_load_string ($testFCERecord['tx_templavoila_flex']);
 
-		self::assertEquals ((string)$flexform->data->sDEF->lDEF->field_rightcolumn->vDEF, $elementUidsRight[2].','.$elementUidsRight[3], 'The reference list in the right column is not as expected after moving the third element of the second column to after the first in the first column with moveElement()!');
-		self::assertEquals ((string)$flexform->data->sDEF->lDEF->field_leftcolumn->vDEF, $elementUidsLeft[1].','.$elementUidsRight[1].','.$elementUidsLeft[2].','.$elementUidsLeft[3], 'The reference list in the left column is not as expected after moving the third element of the second column to after the first in the first column with moveElement()!');
+		$xpathResArr = $flexform->xpath("//data/sheet[@index='sDEF']/language[@index='lDEF']/field[@index='field_rightcolumn']/vDEF");
+		self::assertEquals ((string)$xpathResArr[0], $elementUidsRight[2].','.$elementUidsRight[3], 'The reference list in the right column is not as expected after moving the third element of the second column to after the first in the first column with moveElement()!');
+		$xpathResArr = $flexform->xpath("//data/sheet[@index='sDEF']/language[@index='lDEF']/field[@index='field_leftcolumn']/vDEF");
+		self::assertEquals ((string)$xpathResArr[0], $elementUidsLeft[1].','.$elementUidsRight[1].','.$elementUidsLeft[2].','.$elementUidsLeft[3], 'The reference list in the left column is not as expected after moving the third element of the second column to after the first in the first column with moveElement()!');
 	}
 	
 	public function test_moveElement_onSamePage_workspaces() {
@@ -615,7 +626,8 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 		 	// Check if the first element has been moved correctly behind the third one:
 		$testPageRecord = t3lib_beFunc::getRecordWSOL ('pages', $this->testPageUID, 'uid,pid,tx_templavoila_flex,t3ver_swapmode');		
 		$flexform = simplexml_load_string ($testPageRecord['tx_templavoila_flex']);
-		self::assertEquals ((string)$flexform->data->sDEF->lDEF->field_content->vDEF, $elementUids[2].','.$elementUids[3].','.$elementUids[1], 'The reference list is not as expected after moving the first element after the third with moveElement()!');
+		$xpathResArr = $flexform->xpath("//data/sheet[@index='sDEF']/language[@index='lDEF']/field[@index='field_content']/vDEF");
+		self::assertEquals ((string)$xpathResArr[0], $elementUids[2].','.$elementUids[3].','.$elementUids[1], 'The reference list is not as expected after moving the first element after the third with moveElement()!');
 
 			// Cut third element and paste it after the first:
 		$sourcePointer = array(
@@ -645,7 +657,8 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 		 	// Check if the first element has been moved correctly behind the third one:
 		$testPageRecord = t3lib_beFunc::getRecordWSOL('pages', $this->testPageUID, 'uid,pid,tx_templavoila_flex,t3ver_swapmode');		
 		$flexform = simplexml_load_string ($testPageRecord['tx_templavoila_flex']);
-		self::assertEquals ((string)$flexform->data->sDEF->lDEF->field_content->vDEF, $elementUids[2].','.$elementUids[1].','.$elementUids[3], 'The reference list is not as expected after moving the third element after the first with moveElement()!');
+		$xpathResArr = $flexform->xpath("//data/sheet[@index='sDEF']/language[@index='lDEF']/field[@index='field_content']/vDEF");
+		self::assertEquals ((string)$xpathResArr[0], $elementUids[2].','.$elementUids[1].','.$elementUids[3], 'The reference list is not as expected after moving the third element after the first with moveElement()!');
 
 			// Try to move the element with invalid source pointer:
 		$sourcePointer['position'] = 9999;
@@ -730,7 +743,8 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 		$targetTestPageRecord = t3lib_beFunc::getRecordRaw ('pages', 'uid='.$targetTestPageUID, 'tx_templavoila_flex,pid');		
 		$flexform = simplexml_load_string ($targetTestPageRecord['tx_templavoila_flex']);
 		$expectedReferences = $targetPageElementUids[1].','.$sourcePageElementUids[2].','.$targetPageElementUids[2].','.$targetPageElementUids[3];	
-		self::assertEquals ((string)$flexform->data->sDEF->lDEF->field_content->vDEF, $expectedReferences, 'The reference list is not as expected after moving the element from one page to another with moveElement()!');
+		$xpathResArr = $flexform->xpath("//data/sheet[@index='sDEF']/language[@index='lDEF']/field[@index='field_content']/vDEF");
+		self::assertEquals ((string)$xpathResArr[0], $expectedReferences, 'The reference list is not as expected after moving the element from one page to another with moveElement()!');
 
 		 	// Check if the element has the correct PID:
 		$elementRecord = t3lib_beFunc::getRecordRaw ('tt_content', 'uid='.$sourcePageElementUids[2], 'pid');		
@@ -812,7 +826,8 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 		$targetTestPageRecord = t3lib_beFunc::getRecordWSOL('pages', $targetTestPageUID, 'uid,pid,tx_templavoila_flex,t3ver_swapmode');		
 		$flexform = simplexml_load_string ($targetTestPageRecord['tx_templavoila_flex']);
 		$expectedReferences = $targetPageElementUids[1].','.$sourcePageElementUids[2].','.$targetPageElementUids[2].','.$targetPageElementUids[3];	
-		self::assertEquals ((string)$flexform->data->sDEF->lDEF->field_content->vDEF, $expectedReferences, 'The reference list is not as expected after moving the element from one page to another with moveElement()!');
+		$xpathResArr = $flexform->xpath("//data/sheet[@index='sDEF']/language[@index='lDEF']/field[@index='field_content']/vDEF");
+		self::assertEquals ((string)$xpathResArr[0], $expectedReferences, 'The reference list is not as expected after moving the element from one page to another with moveElement()!');
 
 		 	// Check if the element has the correct PID:
 		$elementRecord = t3lib_beFunc::getRecordWSOL('tt_content', $sourcePageElementUids[2], 'uid,pid');		
@@ -888,7 +903,8 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 		$elementUids[4] = $result;
 		$testPageRecord = t3lib_beFunc::getRecordRaw ('pages', 'uid='.$this->testPageUID, 'tx_templavoila_flex');		
 		$flexform = simplexml_load_string ($testPageRecord['tx_templavoila_flex']);
-		self::assertEquals ((string)$flexform->data->sDEF->lDEF->field_content->vDEF, $elementUids[1].','.$elementUids[2].','.$elementUids[3].','.$elementUids[4], 'The reference list is not as expected after copying the second element after the third with copyElement()!');
+		$xpathResArr = $flexform->xpath("//data/sheet[@index='sDEF']/language[@index='lDEF']/field[@index='field_content']/vDEF");
+		self::assertEquals ((string)$xpathResArr[0], $elementUids[1].','.$elementUids[2].','.$elementUids[3].','.$elementUids[4], 'The reference list is not as expected after copying the second element after the third with copyElement()!');
 	}
 
 	public function test_copyElement_toOtherPage() {
@@ -967,7 +983,8 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 		$testPageRecord = t3lib_beFunc::getRecordRaw ('pages', 'uid='.$targetTestPageUID, 'tx_templavoila_flex');		
 		$expectedReferences = $targetPageElementUids[1].','.$targetPageElementUids[2].','.$newElementUid.','.$targetPageElementUids[3];
 		$flexform = simplexml_load_string ($testPageRecord['tx_templavoila_flex']);
-		self::assertEquals ((string)$flexform->data->sDEF->lDEF->field_content->vDEF, $expectedReferences, 'The reference list is not as expected after copying the from one page to another with copyElement()!');
+		$xpathResArr = $flexform->xpath("//data/sheet[@index='sDEF']/language[@index='lDEF']/field[@index='field_content']/vDEF");
+		self::assertEquals ((string)$xpathResArr[0], $expectedReferences, 'The reference list is not as expected after copying the from one page to another with copyElement()!');
 	}
 
 
@@ -1037,7 +1054,8 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 		 	// Check if the element has been referenced correctly:
 		$testPageRecord = t3lib_beFunc::getRecordRaw ('pages', 'uid='.$this->testPageUID, 'tx_templavoila_flex');		
 		$flexform = simplexml_load_string ($testPageRecord['tx_templavoila_flex']);
-		self::assertEquals ((string)$flexform->data->sDEF->lDEF->field_content->vDEF, $elementUids[1].','.$elementUids[2].','.$elementUids[3].','.$elementUids[2], 'The reference list is not as expected after inserting a reference of the second element after the third with referenceElement()!');
+		$xpathResArr = $flexform->xpath("//data/sheet[@index='sDEF']/language[@index='lDEF']/field[@index='field_content']/vDEF");
+		self::assertEquals ((string)$xpathResArr[0], $elementUids[1].','.$elementUids[2].','.$elementUids[3].','.$elementUids[2], 'The reference list is not as expected after inserting a reference of the second element after the third with referenceElement()!');
 	}
 
 	public function test_referenceElement_workspaces() {
@@ -1096,7 +1114,8 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 		 	// Check if the element has been referenced correctly:
 		$testPageRecord = t3lib_beFunc::getRecordWSOL('pages', $this->testPageUID, 'uid,pid,tx_templavoila_flex,t3ver_swapmode');		
 		$flexform = simplexml_load_string ($testPageRecord['tx_templavoila_flex']);
-		self::assertEquals ((string)$flexform->data->sDEF->lDEF->field_content->vDEF, $elementUids[1].','.$elementUids[2].','.$elementUids[3].','.$elementUids[2], 'The reference list is not as expected after inserting a reference of the second element after the third with referenceElement()!');
+		$xpathResArr = $flexform->xpath("//data/sheet[@index='sDEF']/language[@index='lDEF']/field[@index='field_content']/vDEF");
+		self::assertEquals ((string)$xpathResArr[0], $elementUids[1].','.$elementUids[2].','.$elementUids[3].','.$elementUids[2], 'The reference list is not as expected after inserting a reference of the second element after the third with referenceElement()!');
 	}
 
 	public function test_referenceElementByUid() {
@@ -1144,7 +1163,8 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 		 	// Check if the element has been referenced correctly:
 		$testPageRecord = t3lib_beFunc::getRecordRaw ('pages', 'uid='.$this->testPageUID, 'tx_templavoila_flex');		
 		$flexform = simplexml_load_string ($testPageRecord['tx_templavoila_flex']);
-		self::assertEquals ((string)$flexform->data->sDEF->lDEF->field_content->vDEF, $elementUids[1].','.$elementUids[2].','.$elementUids[3].','.$elementUids[2], 'The reference list is not as expected after inserting a reference of the second element after the third with referenceElementByUid()!');
+		$xpathResArr = $flexform->xpath("//data/sheet[@index='sDEF']/language[@index='lDEF']/field[@index='field_content']/vDEF");
+		self::assertEquals ((string)$xpathResArr[0], $elementUids[1].','.$elementUids[2].','.$elementUids[3].','.$elementUids[2], 'The reference list is not as expected after inserting a reference of the second element after the third with referenceElementByUid()!');
 	}
 
 
@@ -1203,7 +1223,8 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 		 	// Check if the element has been un-referenced correctly:
 		$testPageRecord = t3lib_beFunc::getRecordRaw ('pages', 'uid='.$this->testPageUID, 'tx_templavoila_flex');		
 		$flexform = simplexml_load_string ($testPageRecord['tx_templavoila_flex']);
-		self::assertEquals ((string)$flexform->data->sDEF->lDEF->field_content->vDEF, $elementUids[1].','.$elementUids[3], 'The reference list is not as expected after unlinking an elemen with unlinkElement()!');
+		$xpathResArr = $flexform->xpath("//data/sheet[@index='sDEF']/language[@index='lDEF']/field[@index='field_content']/vDEF");
+		self::assertEquals ((string)$xpathResArr[0], $elementUids[1].','.$elementUids[3], 'The reference list is not as expected after unlinking an elemen with unlinkElement()!');
 	}
 
 
@@ -1262,7 +1283,8 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 		 	// Check if the element has been un-referenced correctly:
 		$testPageRecord = t3lib_beFunc::getRecordRaw ('pages', 'uid='.$this->testPageUID, 'tx_templavoila_flex');		
 		$flexform = simplexml_load_string ($testPageRecord['tx_templavoila_flex']);
-		self::assertEquals ((string)$flexform->data->sDEF->lDEF->field_content->vDEF, $elementUids[1].','.$elementUids[3], 'The reference list is not as expected after deleting an element with deleteElement()!');
+		$xpathResArr = $flexform->xpath("//data/sheet[@index='sDEF']/language[@index='lDEF']/field[@index='field_content']/vDEF");
+		self::assertEquals ((string)$xpathResArr[0], $elementUids[1].','.$elementUids[3], 'The reference list is not as expected after deleting an element with deleteElement()!');
 
 		 	// Check if the record really has been deleted:
 		$elementRecord = t3lib_beFunc::getRecordRaw ('tt_content', 'uid='.$elementUids[2], '*');		
@@ -1316,7 +1338,8 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 		 	// Check if the element has been un-referenced correctly:
 		$testPageRecord = t3lib_beFunc::getRecordWSOL ('pages', $this->testPageUID, 'uid,pid,tx_templavoila_flex,t3ver_swapmode');		
 		$flexform = simplexml_load_string ($testPageRecord['tx_templavoila_flex']);
-		self::assertEquals ((string)$flexform->data->sDEF->lDEF->field_content->vDEF, $elementUids[1].','.$elementUids[3], 'The reference list is not as expected after deleting an element with deleteElement()!');
+		$xpathResArr = $flexform->xpath("//data/sheet[@index='sDEF']/language[@index='lDEF']/field[@index='field_content']/vDEF");
+		self::assertEquals ((string)$xpathResArr[0], $elementUids[1].','.$elementUids[3], 'The reference list is not as expected after deleting an element with deleteElement()!');
 
 		 	// Check if the record really has been deleted:
 		$elementRecord = t3lib_beFunc::getRecordWSOL('tt_content', $elementUids[2], '*');
@@ -1516,7 +1539,8 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 		$localizedUid = intval($result);
 		$testPageRecord = t3lib_beFunc::getRecordRaw ('pages', 'uid='.$this->testPageUID, 'tx_templavoila_flex');		
 		$flexform = simplexml_load_string ($testPageRecord['tx_templavoila_flex']);
-		self::assertEquals ((string)$flexform->data->sDEF->lDEF->field_content->vDE, (string)$localizedUid, 'The reference list is not as expected after localizing the second element to German!');
+		$xpathResArr = $flexform->xpath("//data/sheet[@index='sDEF']/language[@index='lDEF']/field[@index='field_content']/vDE");
+		self::assertEquals ((string)$xpathResArr[0], (string)$localizedUid, 'The reference list is not as expected after localizing the second element to German!');
 
 		 	// Check if the record has been modified correctly:
 		$localizedRecord = t3lib_beFunc::getRecordRaw ('tt_content', 'uid='.$localizedUid, '*');
@@ -1586,7 +1610,8 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 		$localizedUid = intval($result);
 		$testPageRecord = t3lib_beFunc::getRecordWSOL('pages', $this->testPageUID, 'uid,pid,tx_templavoila_flex,t3ver_swapmode');		
 		$flexform = simplexml_load_string ($testPageRecord['tx_templavoila_flex']);
-		self::assertEquals ((string)$flexform->data->sDEF->lDEF->field_content->vDE, (string)$localizedUid, 'The reference list is not as expected after localizing the second element to German!');
+		$xpathResArr = $flexform->xpath("//data/sheet[@index='sDEF']/language[@index='lDEF']/field[@index='field_content']/vDE");
+		self::assertEquals ((string)$xpathResArr[0], (string)$localizedUid, 'The reference list is not as expected after localizing the second element to German!');
 
 		 	// Check if the record has been modified correctly:
 		$localizedRecord = t3lib_beFunc::getRecordWSOL('tt_content', $localizedUid, '*');

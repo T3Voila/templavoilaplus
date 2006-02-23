@@ -45,25 +45,25 @@
  *  524:     function mergeFormDataIntoTemplateStructure($editStruct,$currentMappingInfo,$firstLevelImplodeToken='',$valueKey='vDEF')
  *  571:     function splitPath($pathStr)
  *  627:     function getTemplateArrayForTO($uid)
- *  649:     function mergeDataArrayToTemplateArray($TA,$data)
+ *  650:     function mergeDataArrayToTemplateArray($TA,$data)
  *  671:     function getTemplateRecord($uid,$renderType,$langUid)
- *  728:     function getTemplateMappingArray($uid,$renderType,$langUid,$sheet)
- *  743:     function getTemplateRecord_query($uid, $where)
- *  763:     function setHeaderBodyParts($MappingInfo_head,$MappingData_head_cached,$BodyTag_cached='')
+ *  729:     function getTemplateMappingArray($uid,$renderType,$langUid,$sheet)
+ *  744:     function getTemplateRecord_query($uid, $where)
+ *  764:     function setHeaderBodyParts($MappingInfo_head,$MappingData_head_cached,$BodyTag_cached='')
  *
  *              SECTION: Various sub processing
- *  797:     function init()
- *  818:     function setTagsFromXML($content)
- *  845:     function splitTagTypes($showTags)
+ *  798:     function init()
+ *  819:     function setTagsFromXML($content)
+ *  846:     function splitTagTypes($showTags)
  *
  *              SECTION: SPLITTING functions
- *  895:     function recursiveBlockSplitting($content,$tagsBlock,$tagsSolo,$mode,$path='',$recursion=0)
- *  980:     function getMarkupCode($mode,$v,$params,$firstTagName,$firstTag,$endTag,$subPath,$recursion)
- * 1065:     function getSearchCode($mode,$v,$params,$firstTagName,$firstTag,$endTag,$subPath,$path,$recursion)
- * 1148:     function sourceDisplay($str,$recursion,$gnyf='',$valueStr=0)
- * 1169:     function checkboxDisplay($str,$recursion,$path,$gnyf='',$valueStr=0)
- * 1195:     function makePath($path,$firstTagName,$attr)
- * 1225:     function getGnyf($firstTagName,$path,$title)
+ *  896:     function recursiveBlockSplitting($content,$tagsBlock,$tagsSolo,$mode,$path='',$recursion=0)
+ *  981:     function getMarkupCode($mode,$v,$params,$firstTagName,$firstTag,$endTag,$subPath,$recursion)
+ * 1066:     function getSearchCode($mode,$v,$params,$firstTagName,$firstTag,$endTag,$subPath,$path,$recursion)
+ * 1149:     function sourceDisplay($str,$recursion,$gnyf='',$valueStr=0)
+ * 1171:     function checkboxDisplay($str,$recursion,$path,$gnyf='',$valueStr=0)
+ * 1196:     function makePath($path,$firstTagName,$attr)
+ * 1226:     function getGnyf($firstTagName,$path,$title)
  *
  * TOTAL FUNCTIONS: 26
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -738,7 +738,7 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 	 * @param	integer		The UID of the template record
 	 * @param	string		The where clause.
 	 * @return	mixed		An array if a record is found, otherwise null
-	 * @access private
+	 * @access	private
 	 * @see getTemplateRecord()
 	 */
 	function getTemplateRecord_query($uid, $where)	{

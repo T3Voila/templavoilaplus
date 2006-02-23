@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2005  Robert Lemke (robert@typo3.org)
+*  (c) 2005-2006  Robert Lemke (robert@typo3.org)
 *  All rights reserved
 *
 *  script is part of the TYPO3 project. The TYPO3 project is
@@ -33,13 +33,14 @@
  *
  *
  *
- *   54: class tx_templavoila_mod1_clipboard
- *   71:     function init(&$pObj)
- *  115:     function element_getSelectButtons($elementPointer, $listOfButtons = 'copy,cut,ref')
- *  181:     function element_getPasteButtons($destinationPointer)
- *  241:     function sidebar_renderNonUsedElements()
+ *   55: class tx_templavoila_mod1_clipboard
+ *   72:     function init(&$pObj)
+ *  116:     function element_getSelectButtons($elementPointer, $listOfButtons = 'copy,cut,ref')
+ *  182:     function element_getPasteButtons($destinationPointer)
+ *  242:     function sidebar_renderNonUsedElements()
+ *  334:     function renderReferenceCount($uid)
  *
- * TOTAL FUNCTIONS: 4
+ * TOTAL FUNCTIONS: 5
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -66,7 +67,7 @@ class tx_templavoila_mod1_clipboard {
 	 *
 	 * @param	$pObj:		Reference to the parent object ($this)
 	 * @return	void
-	 * @access public
+	 * @access	public
 	 */
 	function init(&$pObj) {
 		global $LANG, $BACK_PATH;
@@ -110,7 +111,7 @@ class tx_templavoila_mod1_clipboard {
 	 * @param	array		$elementPointer: Flex form pointer specifying the element we want to render the buttons for
 	 * @param	string		$listOfButtons: A comma separated list of buttons which should be rendered. Possible values: 'copy', 'cut' and 'ref'
 	 * @return	string		HTML output: linked images which act as copy, cut and reference buttons
-	 * @access public
+	 * @access	public
 	 */
 	function element_getSelectButtons($elementPointer, $listOfButtons = 'copy,cut,ref') {
 		global $LANG;
@@ -236,7 +237,7 @@ class tx_templavoila_mod1_clipboard {
 	 *
 	 * @param	$pObj:		Reference to the parent object ($this)
 	 * @return	string		HTML output
-	 * @access protected
+	 * @access	protected
 	 */
 	function sidebar_renderNonUsedElements() {
 		global $LANG, $TYPO3_DB, $BE_USER;
@@ -272,7 +273,7 @@ class tx_templavoila_mod1_clipboard {
 			$recordIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath, t3lib_iconWorks::getIcon('tt_content', $row),'').' width="18" height="16" border="0" title="[tt_content:'.$row['uid'].'" alt="" />';
 			$recordButton = $this->pObj->doc->wrapClickMenuOnIcon($recordIcon, 'tt_content', $row['uid'], 1, '&callingScriptId='.rawurlencode($this->pObj->doc->scriptID), 'new,copy,cut,pasteinto,pasteafter,delete');
 
-			$refCount_content = $this->makeRef($row['uid']);
+
 
 			$elementRows[] = '
 				<tr class="bgColor4">
@@ -280,8 +281,7 @@ class tx_templavoila_mod1_clipboard {
 						$cutButton.
 					'</td>
 					<td style="width:1%;">'.$languageIcon.'</td>
-					<td style="width:1%;" nowrap="nowrap">'.$refCount_content.'</td>
-					<td style="width:1%;">['.$row['uid'].']</td>
+					<td style="width:1%;">'.$this->renderReferenceCount($row['uid']).'</td>
 					<td>'.$recordButton.
 						htmlspecialchars(' '.t3lib_div::fixed_lgd_cs(trim(strip_tags($row['header'].($row['header'] && $row['bodytext'] ? ' - ' : '').$row['bodytext'])),100)).'
 					</td>
@@ -323,12 +323,14 @@ class tx_templavoila_mod1_clipboard {
 	}
 
 	/**
-	 * Make reference count
+	 * Render a reference count in form of an HTML table for the content
+	 * element specified by $uid.
 	 *
-	 * @param	integer		UID
+	 * @param	integer		$uid: Element record Uid
 	 * @return	string		HTML-table
+	 * @access	protected
 	 */
-	function makeRef($uid)	{
+	function renderReferenceCount($uid)	{
 		$table = 'tt_content';
 
 			// Look up the path:

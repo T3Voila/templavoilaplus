@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2004, 2005  Robert Lemke (robert@typo3.org)
+*  (c) 2004-2006  Robert Lemke (robert@typo3.org)
 *  All rights reserved
 *
 *  script is part of the TYPO3 project. The TYPO3 project is
@@ -37,12 +37,12 @@
  *   78:     function init(&$pObj)
  *
  *              SECTION: Wizards render functions
- *  105:     function renderWizard_createNewPage ($positionPid)
+ *  103:     function renderWizard_createNewPage ($positionPid)
  *
  *              SECTION: Wizard related helper functions
- *  243:     function renderTemplateSelector ($positionPid, $templateType='tmplobj')
- *  357:     function createPage($pageArray,$positionPid)
- *  391:     function getImportObject()
+ *  241:     function renderTemplateSelector ($positionPid, $templateType='tmplobj')
+ *  355:     function createPage($pageArray,$positionPid)
+ *  389:     function getImportObject()
  *
  * TOTAL FUNCTIONS: 5
  * (This index is automatically created/updated by the extension "extdeveval")

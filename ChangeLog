@@ -1,3 +1,13 @@
+2006-02-23	Robert Lemke <robert@typo3.org>
+
+ @Dmitry: Each time you commit something, my CVS client displays *all* files as changed and show 100% conflict. Please make sure that you upload only those files which have changed (or help me using CVS correctly ...)
+
+ + added new references / migration wizard to the Web -> Functions module. Works fine but needs some cleanup and locallang support
+ + added new TSconfig option mod.web_txtemplavoilaM1.sideBarEnable which makes it possible to disable the toolbar (sidebar) for users, usergroups or page tree branches
+ ~ Changed scope of TypoScript in Data Structures (tx_templavoila_pi1): Now not only lib. and plugin. is accessible from data structure-TypoScript, but also all other objects, except numerical 1st level objects.
+ - Removed the "uid" column in the list of unused elements because it exploded the sidebar when in "left" mode. You can still see the uid of an element if you move the mouse over the element icon
+ ~ Updated manual
+
 2006-02-21	Dmitry Dulepov	<typo3@accio.lv>
 
  # Changing thumbnail code again due to the bug in typo3 core

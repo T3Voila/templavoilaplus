@@ -244,5 +244,16 @@ $tempColumns = Array (
 t3lib_extMgm::addTCAcolumns('pages',$tempColumns,1);
 t3lib_extMgm::addToAllTCAtypes('pages','tx_templavoila_ds;;;;1-1-1,tx_templavoila_to,tx_templavoila_next_ds,tx_templavoila_next_to,tx_templavoila_flex;;;;1-1-1');
 
+	// Configure the referencing wizard to be used in the web_func module:
+if (TYPO3_MODE=='BE')	{
+	t3lib_extMgm::insertModuleFunction(
+		'web_func',
+		'tx_templavoila_referenceElementsWizard',
+		t3lib_extMgm::extPath($_EXTKEY).'func_wizards/class.tx_templavoila_referenceelementswizard.php',
+		'LLL:EXT:templavoila/locallang.xml:wiz_refElements',
+		'wiz'
+	);
+	t3lib_extMgm::addLLrefForTCAdescr('_MOD_web_func','EXT:wizard_crpages/locallang_csh.xml');
+}
 
 ?>

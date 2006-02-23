@@ -15,6 +15,7 @@ t3lib_extMgm::addPageTSConfig('
  	// Use templavoila instead of the default page module
  t3lib_extMgm::addUserTSConfig('
  	options.overridePageModule = web_txtemplavoilaM1
+	mod.web_txtemplavoilaM1.sideBarEnable = 1
  ');
 
 	// Adding Page Template Selector Fields to root line:

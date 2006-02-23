@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2003, 2004, 2005 Robert Lemke (robert@typo3.org)
+*  (c) 2003-2006 Robert Lemke (robert@typo3.org)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -38,43 +38,43 @@
  *
  *              SECTION: Initialization functions
  *  156:     function init()
- *  200:     function menuConfig()
+ *  201:     function menuConfig()
  *
  *              SECTION: Main functions
- *  254:     function main()
- *  348:     function printContent()
+ *  255:     function main()
+ *  349:     function printContent()
  *
  *              SECTION: Rendering functions
- *  368:     function render_editPageScreen()
+ *  369:     function render_editPageScreen()
  *
  *              SECTION: Framework rendering functions
- *  441:     function render_framework_allSheets($contentTreeArr, $parentPointer=array())
- *  477:     function render_framework_singleSheet($contentTreeArr, $sheet, $parentPointer=array())
- *  578:     function render_framework_subElements ($elementContentTreeArr, $sheet)
+ *  442:     function render_framework_allSheets($contentTreeArr, $parentPointer=array())
+ *  478:     function render_framework_singleSheet($contentTreeArr, $sheet, $parentPointer=array())
+ *  583:     function render_framework_subElements ($elementContentTreeArr, $sheet)
  *
  *              SECTION: Rendering functions for certain subparts
- *  666:     function render_previewContent($row)
- *  748:     function render_localizationInfoTable($contentTreeArr, $parentPointer)
+ *  671:     function render_previewContent($row)
+ *  753:     function render_localizationInfoTable($contentTreeArr, $parentPointer)
  *
  *              SECTION: Link functions (protected)
- *  854:     function link_edit($label, $table, $uid)
- *  871:     function link_new($label, $parentPointer)
- *  889:     function link_unlink($label, $unlinkPointer, $realDelete=FALSE)
- *  909:     function link_makeLocal($label, $makeLocalPointer)
- *  921:     function link_getParameters()
+ *  868:     function link_edit($label, $table, $uid)
+ *  885:     function link_new($label, $parentPointer)
+ *  903:     function link_unlink($label, $unlinkPointer, $realDelete=FALSE)
+ *  923:     function link_makeLocal($label, $makeLocalPointer)
+ *  935:     function link_getParameters()
  *
  *              SECTION: Processing and structure functions (protected)
- *  949:     function handleIncomingCommands()
- * 1066:     function getContentTree($table, $row, $languageKey='DEF', $prevRecList='')
- * 1180:     function getContentTree_processSubContent($flexformContentArr, $tree, $sheetKey, $lKey, $fieldKey, $vKey, $fieldData, $languageKey, $prevRecList)
- * 1243:     function getContentTree_processSubElements($flexformContentArr, $tree, $sheetKey, $lKey, $fieldKey, $vKey, $fieldData, $row)
- * 1282:     function getContentTree_getLocalizationInfoForElement($contentTreeArr)
+ *  963:     function handleIncomingCommands()
+ * 1080:     function getContentTree($table, $row, $languageKey='DEF', $prevRecList='')
+ * 1195:     function getContentTree_processSubContent($flexformContentArr, $tree, $sheetKey, $lKey, $fieldKey, $vKey, $fieldData, $languageKey, $prevRecList)
+ * 1258:     function getContentTree_processSubElements($flexformContentArr, $tree, $sheetKey, $lKey, $fieldKey, $vKey, $fieldData, $row)
+ * 1297:     function getContentTree_getLocalizationInfoForElement($contentTreeArr)
  *
  *              SECTION: Miscelleaneous helper functions (protected)
- * 1354:     function getAvailableLanguages($id=0, $onlyIsoCoded=true, $setDefault=true, $setMulti=false)
- * 1426:     function getPageTemplateObject($row)
- * 1451:     function hooks_prepareObjectsArray ($hookName)
- * 1468:     function alternativeLanguagesDefined()
+ * 1369:     function getAvailableLanguages($id=0, $onlyIsoCoded=true, $setDefault=true, $setMulti=false)
+ * 1441:     function getPageTemplateObject($row)
+ * 1466:     function hooks_prepareObjectsArray ($hookName)
+ * 1483:     function alternativeLanguagesDefined()
  *
  * TOTAL FUNCTIONS: 24
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -151,7 +151,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * Initialisation of this backend module
 	 *
 	 * @return	void
-	 * @access public
+	 * @access	public
 	 */
 	function init()    {
 		parent::init();
@@ -196,7 +196,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * Preparing menu content and initializing clipboard and module TSconfig
 	 *
 	 * @return	void
-	 * @access public
+	 * @access	public
 	 */
 	function menuConfig()	{
 		global $LANG, $TYPO3_CONF_VARS;
@@ -227,9 +227,10 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		}
 
 			// page/be_user TSconfig settings and blinding of menu-items
-		$this->modTSconfig = t3lib_BEfunc::getModTSconfig($this->id,'mod.'.$this->MCONF['name']);
+		$this->modTSconfig = t3lib_BEfunc::getModTSconfig($this->id,'mod.'.$this->MCONF['name']);		
 		$this->MOD_MENU['view'] = t3lib_BEfunc::unsetMenuItems($this->modTSconfig['properties'],$this->MOD_MENU['view'],'menu.function');
 
+		if (!isset($this->modTSconfig['properties']['sideBarEnable'])) $this->modTSconfig['properties']['sideBarEnable'] = 1; 
 		$this->modSharedTSconfig = t3lib_BEfunc::getModTSconfig($this->id, 'mod.SHARED');
 
 			// CLEANSE SETTINGS
@@ -250,7 +251,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * Main function of the module.
 	 *
 	 * @return	void
-	 * @access public
+	 * @access	public
 	 */
 	function main()    {
 		global $BE_USER,$LANG,$BACK_PATH;
@@ -287,7 +288,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 				// Set up JS for dynamic tab menu and side bar
 			$this->doc->JScode .= $this->doc->getDynTabMenuJScode();
-			$this->doc->JScode .= $this->sideBarObj->getJScode();
+			$this->doc->JScode .= $this->modTSconfig['properties']['sideBarEnable'] ? $this->sideBarObj->getJScode() : '';
 
 				// Setting up support for context menus (when clicking the items icon)
 			$CMparts = $this->doc->getContextMenuCode();
@@ -302,7 +303,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 				// Show the "edit current page" screen along with the sidebar
 			$shortCut = ($BE_USER->mayMakeShortcut() ? '<br />'.$this->doc->makeShortcutIcon('id,altRoot',implode(',',array_keys($this->MOD_MENU)),$this->MCONF['name']) : '');
-			if ($this->sideBarObj->position == 'left') {
+			if ($this->sideBarObj->position == 'left' && $this->modTSconfig['properties']['sideBarEnable']) {
 				$this->content .= '
 					<table cellspacing="0" cellpadding="0" style="width:100%; height:550px; padding:0; margin:0;">
 						<tr>
@@ -344,7 +345,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * Echoes the HTML output of this module
 	 *
 	 * @return	void
-	 * @access public
+	 * @access	public
 	 */
 	function printContent()    {
 		echo $this->content;
@@ -364,7 +365,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * Displays the default view of a page, showing the nested structure of elements.
 	 *
 	 * @return	string		The modules content
-	 * @access protected
+	 * @access	protected
 	 */
 	function render_editPageScreen()    {
 		global $LANG, $BE_USER, $TYPO3_CONF_VARS;
@@ -436,7 +437,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * @param	array		$contentTreeArr: DataStructure info array (the whole tree)
 	 * @param	array		$parentPointer: Flexform Pointer to parent element
 	 * @return	string		HTML
-	 * @access protected
+	 * @access	protected
 	 * @see	render_framework_singleSheet()
 	 */
 	function render_framework_allSheets($contentTreeArr, $parentPointer=array()) {
@@ -472,7 +473,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * @param	array		$parentPointer: Flexform pointer to parent element
 	 * @param	string		$sheet: The sheet key of the sheet which should be rendered
 	 * @return	string		HTML
-	 * @access protected
+	 * @access	protected
 	 * @see	render_framework_singleSheet()
 	 */
 	function render_framework_singleSheet($contentTreeArr, $sheet, $parentPointer=array()) {
@@ -502,7 +503,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				$viewPageIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/zoom.gif','width="12" height="12"').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.xml:labels.showPage',1).'" hspace="3" alt="" style="text-align: center; vertical-align: middle;" />';
 				$titleBarLeftButtons .= '<a href="#" '.$viewPageOnClick.'>'.$viewPageIcon.'</a>';
 
-				$contentWrapPre .= ($this->sideBarObj->position == 'toprows' || $this->sideBarObj->position == 'toptabs') ? $this->sideBarObj->render() : '';
+				$contentWrapPre .= $this->modTSconfig['properties']['sideBarEnable']  && ($this->sideBarObj->position == 'toprows' || $this->sideBarObj->position == 'toptabs') ? $this->sideBarObj->render() : '';
 
 			break;
 
@@ -577,7 +578,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * @param	array		$elementContentTreeArr: Content tree starting with the element which possibly has sub elements
 	 * @param	string		$sheet: Key of the sheet we want to render
 	 * @return	string		HTML output (a table) of the sub elements and some "insert new" and "paste" buttons
-	 * @access protected
+	 * @access	protected
 	 * @see render_framework_allSheets(), render_framework_singleSheet()
 	 */
 	function render_framework_subElements ($elementContentTreeArr, $sheet){
@@ -665,7 +666,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 *
 	 * @param	array		$row: The row of tt_content containing the content element record.
 	 * @return	string		HTML preview content
-	 * @access protected
+	 * @access	protected
 	 * @see		getContentTree(), render_localizationInfoTable()
 	 */
 	function render_previewContent($row) {
@@ -747,7 +748,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * @param	array		$contentTreeArr: Part of the contentTreeArr for the element
 	 * @param	string		$parentPointer: Flexform pointer pointing to the current element (from the parent's perspective)
 	 * @return	string		HTML
-	 * @access protected
+	 * @access	protected
 	 * @see 	render_framework_singleSheet()
 	 */
 	function render_localizationInfoTable($contentTreeArr, $parentPointer) {
@@ -863,7 +864,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * @param	string		$table: The table, fx. 'tt_content'
 	 * @param	integer		$uid: The uid of the element to be edited
 	 * @return	string		HTML anchor tag containing the label and the correct link
-	 * @access protected
+	 * @access	protected
 	 */
 	function link_edit($label, $table, $uid)	{
 		if($table == "pages" && $this->currentLanguageUid) {
@@ -880,7 +881,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * @param	string		$label: The label (or image)
 	 * @param	array		$parentPointer: Flexform pointer defining the parent element of the new record
 	 * @return	string		HTML anchor tag containing the label and the correct link
-	 * @access protected
+	 * @access	protected
 	 */
 	function link_new($label, $parentPointer)	{
 
@@ -898,7 +899,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * @param	array		$unlinkPointer: Flexform pointer pointing to the element to be unlinked
 	 * @param	[type]		$realDelete: ...
 	 * @return	string		HTML anchor tag containing the label and the unlink-link
-	 * @access protected
+	 * @access	protected
 	 */
 	function link_unlink($label, $unlinkPointer, $realDelete=FALSE)	{
 		global $LANG;
@@ -918,7 +919,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * @param	string		$label: The label
 	 * @param	array		$makeLocalPointer: Flexform pointer pointing to the element which shall be copied
 	 * @return	string		HTML anchor tag containing the label and the unlink-link
-	 * @access protected
+	 * @access	protected
 	 */
 	function link_makeLocal($label, $makeLocalPointer)	{
 		global $LANG;
@@ -930,7 +931,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * Creates additional parameters which are used for linking to the current page while editing it
 	 *
 	 * @return	string		parameters
-	 * @access public
+	 * @access	public
 	 */
 	function link_getParameters()	{
 		$output =
@@ -958,7 +959,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * 'makeLocalRecord', 'localizeRecord', 'createNewPageTranslation' and 'editPageLanguageOverlay'
 	 *
 	 * @return	void
-	 * @access protected
+	 * @access	protected
 	 */
 	function handleIncomingCommands() {
 
@@ -1075,7 +1076,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * @param	string		$languageKey: The content tree will only contain elements which would be shown when the given language is selected. Use uppercase country codes, fx. "DEF", "DE" or "EN"
 	 * @param	string		$prevRecList: comma separated list of uids, used internally for recursive calls. Don't mess with it!
 	 * @return	array		The content tree
-	 * @access protected
+	 * @access	protected
 	 */
 	function getContentTree($table, $row, $languageKey='DEF', $prevRecList='')	{
 		global $TCA, $LANG;
@@ -1190,7 +1191,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * @param	string		$languageKey: Key of the currently selected language
 	 * @param	string		$prevRecList: List of previously processed record uids
 	 * @return	array		The modified tree
-	 * @access protected
+	 * @access	protected
 	 */
 	function getContentTree_processSubContent($flexformContentArr, $tree, $sheetKey, $lKey, $fieldKey, $vKey, $fieldData, $languageKey, $prevRecList) {
 		global $TCA;
@@ -1252,7 +1253,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * @param	array		$fieldData: Data of the current field from the expanded datastructure
 	 * @param	array		$row: Current tt_content record to be processed
 	 * @return	array		The modified tree
-	 * @access protected
+	 * @access	protected
 	 * @todo	Does not support nested SC/CO yet and should be designed to run recursively!
 	 */
 	function getContentTree_processSubElements($flexformContentArr, $tree, $sheetKey, $lKey, $fieldKey, $vKey, $fieldData, $row) {
@@ -1291,7 +1292,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 *
 	 * @param	array		$contentTreeArr: Part of the content tree of the element to create the localization information for.
 	 * @return	array		Array of sys_language UIDs with some information as the value
-	 * @access protected
+	 * @access	protected
 	 * @see		getContentTree()
 	 */
 	function getContentTree_getLocalizationInfoForElement($contentTreeArr) {
@@ -1364,7 +1365,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * @param	boolean		$setDefault: If set, an array entry for a default language is set.
 	 * @param	boolean		$setMulti: If set, an array entry for "multiple languages" is added (uid -1)
 	 * @return	array
-	 * @access protected
+	 * @access	protected
 	 */
 	function getAvailableLanguages($id=0, $onlyIsoCoded=true, $setDefault=true, $setMulti=false)	{
 		global $LANG, $TYPO3_DB, $BE_USER, $TCA, $BACK_PATH;
@@ -1436,7 +1437,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 *
 	 * @param	array		$row: A page record
 	 * @return	mixed		The template object record or FALSE if none was found
-	 * @access protected
+	 * @access	protected
 	 */
 	function getPageTemplateObject($row) {
 		$templateObjectUid = intval($row['tx_templavoila_to']);
@@ -1461,7 +1462,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 *
 	 * @param	string		$hookName: Name of the hook
 	 * @return	array		Array of object references
-	 * @access protected
+	 * @access	protected
 	 */
 	function hooks_prepareObjectsArray ($hookName) {
 		global $TYPO3_CONF_VARS;

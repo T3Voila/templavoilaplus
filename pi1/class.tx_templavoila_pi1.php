@@ -402,11 +402,15 @@ class tx_templavoila_pi1 extends tslib_pibase {
 								}
 							}
 
-
-								// Setting "lib." and "plugin." TypoScript - maybe we should set it all except numeric keys?
-							$tsparserObj->setup['lib.'] = $GLOBALS['TSFE']->tmpl->setup['lib.'];
-							$tsparserObj->setup['plugin.'] = $GLOBALS['TSFE']->tmpl->setup['plugin.'];
-
+								// Copy current global TypoScript configuration except numerical objects:
+							if (is_array($GLOBALS['TSFE']->tmpl->setup)) {
+								foreach ($GLOBALS['TSFE']->tmpl->setup as $tsObjectKey => $tsObjectValue) {
+									if ($tsObjectKey !== intval($tsObjectKey)) {
+										$tsparserObj->setup[$tsObjectKey] = $tsObjectValue;
+									}
+								}	
+							}
+							
 							$tsparserObj->parse($LP[$key]['TypoScript']);
 							$dataValues[$key][$valueKey] = $cObj->cObjGet($tsparserObj->setup,'TemplaVoila_Proc.');
 						}

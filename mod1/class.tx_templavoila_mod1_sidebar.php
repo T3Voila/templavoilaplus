@@ -40,13 +40,13 @@
  *  159:     function render()
  *
  *              SECTION: Render functions for the sidebar items
- *  252:     function renderItem_headerFields (&$pObj)
- *  309:     function renderItem_versioning(&$pObj)
- *  387:     function renderItem_advancedFunctions(&$pObj)
+ *  253:     function renderItem_headerFields (&$pObj)
+ *  310:     function renderItem_versioning(&$pObj)
+ *  388:     function renderItem_advancedFunctions(&$pObj)
  *
  *              SECTION: Helper functions
- *  433:     function getJScode()
- *  475:     function sortItemsCompare($a, $b)
+ *  437:     function getJScode()
+ *  479:     function sortItemsCompare($a, $b)
  *
  * TOTAL FUNCTIONS: 9
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -83,7 +83,7 @@ class tx_templavoila_mod1_sidebar {
 	 *
 	 * @param	$pObj:		Reference to the parent object ($this)
 	 * @return	void
-	 * @access public
+	 * @access	public
 	 */
 	function init(&$pObj) {
 		global $LANG;
@@ -128,7 +128,7 @@ class tx_templavoila_mod1_sidebar {
 	 * @param	string		$label: The label which will be shown for your item in the sidebar menu. Make sure that this label is localized!
 	 * @param	integer		$priority: An integer between 0 and 100. The higher the value, the higher the item will be displayed in the sidebar. Default is 50
 	 * @return	void
-	 * @access public
+	 * @access	public
 	 */
 	function addItem($itemKey, &$object, $method, $label, $priority=50) {
 		$this->sideBarItems[$itemKey] = array (
@@ -144,7 +144,7 @@ class tx_templavoila_mod1_sidebar {
 	 *
 	 * @param	string		$itemKey: The key identifying the sidebar item.
 	 * @return	void
-	 * @access public
+	 * @access	public
 	 */
 	function removeItem($itemKey) {
 		unset ($this->sideBarItems[$itemKey]);
@@ -154,7 +154,7 @@ class tx_templavoila_mod1_sidebar {
 	 * Renders the sidebar and all its items.
 	 *
 	 * @return	string		HTML
-	 * @access public
+	 * @access	public
 	 */
 	function render() {
 		if (is_array ($this->sideBarItems) && count ($this->sideBarItems)) {
@@ -248,7 +248,7 @@ class tx_templavoila_mod1_sidebar {
 	 *
 	 * @param	$pObj:		Reference to the parent object ($this)
 	 * @return	string		HTML output
-	 * @access private
+	 * @access	private
 	 */
 	function renderItem_headerFields (&$pObj) {
 		global $LANG;
@@ -305,7 +305,7 @@ class tx_templavoila_mod1_sidebar {
 	 *
 	 * @param	object		&$pObj: Reference to the page object (the templavoila page module)
 	 * @return	string		HTML output
-	 * @access public
+	 * @access	public
 	 */
 	function renderItem_versioning(&$pObj) {
 
@@ -383,7 +383,7 @@ class tx_templavoila_mod1_sidebar {
 	 *
 	 * @param	object		&$pObj: Reference to the page object (the templavoila page module)
 	 * @return	string		HTML output
-	 * @access public
+	 * @access	public
 	 */
 	function renderItem_advancedFunctions(&$pObj) {
 		global $LANG;
@@ -474,7 +474,7 @@ class tx_templavoila_mod1_sidebar {
 	 * @param	array		$a: Array A
 	 * @param	array		$b: Array B
 	 * @return	boolean
-	 * @access private
+	 * @access	private
 	 */
 	function sortItemsCompare($a, $b) {
 		return ($a['priority'] < $b['priority']);

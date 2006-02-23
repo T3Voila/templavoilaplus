@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2005  Robert Lemke (robert@typo3.org)
+*  (c) 2005-2006  Robert Lemke (robert@typo3.org)
 *  All rights reserved
 *
 *  script is part of the TYPO3 project. The TYPO3 project is
@@ -33,15 +33,16 @@
  *
  *
  *
- *   56: class tx_templavoila_mod1_specialdoktypes
- *   69:     function init(&$pObj)
- *   86:     function renderDoktype_3($pageRecord)
- *  134:     function renderDoktype_4($pageRecord)
- *  178:     function renderDoktype_7($pageRecord)
- *  224:     function renderDoktype_254($pageRecord)
- *  272:     function userHasAccessToListModule()
+ *   58: class tx_templavoila_mod1_specialdoktypes
+ *   71:     function init(&$pObj)
+ *   88:     function renderDoktype_2($pageRecord)
+ *  139:     function renderDoktype_3($pageRecord)
+ *  188:     function renderDoktype_4($pageRecord)
+ *  234:     function renderDoktype_7($pageRecord)
+ *  282:     function renderDoktype_254($pageRecord)
+ *  332:     function userHasAccessToListModule()
  *
- * TOTAL FUNCTIONS: 6
+ * TOTAL FUNCTIONS: 7
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -65,7 +66,7 @@ class tx_templavoila_mod1_specialdoktypes {
 	 *
 	 * @param	$pObj:		Reference to the parent object ($this)
 	 * @return	void
-	 * @access public
+	 * @access	public
 	 */
 	function init(&$pObj) {
 		global $LANG, $BE_USER, $BACK_PATH;
@@ -82,7 +83,7 @@ class tx_templavoila_mod1_specialdoktypes {
 	 *
 	 * @param	array		$pageRecord: The current page record
 	 * @return	mixed		HTML output from this submodule or FALSE if this submodule doesn't feel responsible
-	 * @access public
+	 * @access	public
 	 */
 	function renderDoktype_2($pageRecord)    {
 		global $LANG, $BE_USER, $TYPO3_CONF_VARS;
@@ -133,7 +134,7 @@ class tx_templavoila_mod1_specialdoktypes {
 	 *
 	 * @param	array		$pageRecord: The current page record
 	 * @return	mixed		HTML output from this submodule or FALSE if this submodule doesn't feel responsible
-	 * @access public
+	 * @access	public
 	 */
 	function renderDoktype_3($pageRecord)    {
 		global $LANG, $BE_USER, $TYPO3_CONF_VARS;
@@ -182,7 +183,7 @@ class tx_templavoila_mod1_specialdoktypes {
 	 *
 	 * @param	array		$pageRecord: The current page record
 	 * @return	mixed		HTML output from this submodule or FALSE if this submodule doesn't feel responsible
-	 * @access public
+	 * @access	public
 	 */
 	function renderDoktype_4($pageRecord)    {
 		global $LANG, $BE_USER, $TYPO3_CONF_VARS;
@@ -228,7 +229,7 @@ class tx_templavoila_mod1_specialdoktypes {
 	 *
 	 * @param	array		$pageRecord: The current page record
 	 * @return	mixed		HTML output from this submodule or FALSE if this submodule doesn't feel responsible
-	 * @access protected
+	 * @access	protected
 	 */
 	function renderDoktype_7($pageRecord)    {
 		global $LANG, $BE_USER, $TYPO3_CONF_VARS;
@@ -276,7 +277,7 @@ class tx_templavoila_mod1_specialdoktypes {
 	 *
 	 * @param	array		$pageRecord: The current page record
 	 * @return	mixed		HTML output from this submodule or FALSE if this submodule doesn't feel responsible
-	 * @access public
+	 * @access	public
 	 */
 	function renderDoktype_254($pageRecord) {
 		global $LANG, $BE_USER, $TYPO3_CONF_VARS;
@@ -326,7 +327,7 @@ class tx_templavoila_mod1_specialdoktypes {
 	 * Returns TRUE if the logged in BE user has access to the list module.
 	 *
 	 * @return	boolean		TRUE or FALSE
-	 * @access protected
+	 * @access	protected
 	 */
 	function userHasAccessToListModule() {
 		global $BE_USER;

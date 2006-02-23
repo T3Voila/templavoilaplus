@@ -40,30 +40,30 @@
  *
  *              SECTION: Rule processing / analyzing functions
  *  163:     function checkRulesForElement($rules, $constants, $childRecords)
- *  209:     function checkRulesForElement_parseEL ($rulePart, &$childRecords, &$statusArr)
- *  242:     function checkRulesForElement_parseSUB ($rulePart, &$childRecords, &$statusArr, $constants)
- *  297:     function checkRulesForElement_parseALT ($rulePart, &$childRecords, &$statusArr, $constants)
- *  327:     function checkRulesForElement_parseCLASS ($rulePart, &$childRecords, &$statusArr)
+ *  207:     function checkRulesForElement_parseEL ($rulePart, &$childRecords, &$statusArr)
+ *  240:     function checkRulesForElement_parseSUB ($rulePart, &$childRecords, &$statusArr, $constants)
+ *  295:     function checkRulesForElement_parseALT ($rulePart, &$childRecords, &$statusArr, $constants)
+ *  325:     function checkRulesForElement_parseCLASS ($rulePart, &$childRecords, &$statusArr)
  *
  *              SECTION: Human Readable Rules Functions
- *  351:     function getHumanReadableRules ($rules,$ruleConstants)
- *  367:     function parseRulesArrayIntoDescription ($rulesArr, $constantsArr, $level=0)
- *  402:     function getQuantifierAsDescription ($min, $max)
- *  435:     function getElementNameFromConstantsMapping ($element, $constantsArr)
+ *  349:     function getHumanReadableRules ($rules,$ruleConstants)
+ *  365:     function parseRulesArrayIntoDescription ($rulesArr, $constantsArr, $level=0)
+ *  400:     function getQuantifierAsDescription ($min, $max)
+ *  433:     function getElementNameFromConstantsMapping ($element, $constantsArr)
  *
  *              SECTION: Helper functions
- *  463:     function parseRegexIntoArray ($regex, $constants)
- *  540:     function isElement ($char)
- *  555:     function extractInnerBrace ($regex, $startPos)
- *  585:     function explodeAlternatives ($regex)
- *  611:     function evaluateQuantifier ($quantifier, &$pos, &$min, &$max)
- *  669:     function getCTypeFromToken ($token, $ruleConstants)
+ *  461:     function parseRegexIntoArray ($regex, $constants)
+ *  538:     function isElement ($char)
+ *  553:     function extractInnerBrace ($regex, $startPos)
+ *  583:     function explodeAlternatives ($regex)
+ *  609:     function evaluateQuantifier ($quantifier, &$pos, &$min, &$max)
+ *  667:     function getCTypeFromToken ($token, $ruleConstants)
  *
  *              SECTION: Status functions
- *  703:     function statusAddErr (&$statusArr, $msg, $lastParsedRecord=array(), $position=0)
- *  722:     function statusMerge (&$statusArr, $newStatusArr, $doAND=false)
- *  748:     function statusSetOK (&$statusArr)
- *  768:     function statusSetELRestrictions (&$statusArr, $uid, $restrictionsArr)
+ *  701:     function statusAddErr (&$statusArr, $msg, $lastParsedRecord=array(), $position=0)
+ *  720:     function statusMerge (&$statusArr, $newStatusArr, $doAND=false)
+ *  746:     function statusSetOK (&$statusArr)
+ *  766:     function statusSetELRestrictions (&$statusArr, $uid, $restrictionsArr)
  *
  * TOTAL FUNCTIONS: 20
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -99,7 +99,7 @@ class tx_templavoila_rules {
 	 * @param	array		$ruleConstants: An array with the mapping of tokens to content elements.
 	 * @param	array		$elArray:
 	 * @return	array		Array containing status information if the check was successful.
-	 * @access public
+	 * @access	public
 	 * @see checkRulesForElement()
 	 */
 	function evaluateRulesForElement ($table, $uid) {
@@ -158,7 +158,7 @@ class tx_templavoila_rules {
 	 * @param	string		$constants: The constants definitions being used in the regular expression divided by line breaks (eg.: a=text)
 	 * @param	array		$childRecords: Array of child records (normally page and tt_content rows)
 	 * @return	array		The status array containing information about errors, restrictions etc.
-	 * @access private
+	 * @access	private
 	 */
 	function checkRulesForElement($rules, $constants, $childRecords) {
 		if (!is_array ($childRecords)) { return array ('ok'=>false); }
@@ -202,7 +202,7 @@ class tx_templavoila_rules {
 	 * @param	array		$childRecords: Current array of child records of the main element which remain to be processed. Passed by reference!
 	 * @param	array		$statusArr: The current status array, passed by reference
 	 * @return	void		Results are returned by reference.
-	 * @access private
+	 * @access	private
 	 */
 	function checkRulesForElement_parseEL ($rulePart, &$childRecords, &$statusArr) {
 		$counter = 0;
@@ -234,7 +234,7 @@ class tx_templavoila_rules {
 	 * @param	integer		$uid: ID of the current parent element record
 	 * @param	string		$field: Field name within the datastructure
 	 * @return	void		Results are returned by reference.
-	 * @access private
+	 * @access	private
 	 * @todo				Not completely tested yet
 	 */
 	function checkRulesForElement_parseSUB ($rulePart, &$childRecords, &$statusArr, $constants) {
@@ -290,7 +290,7 @@ class tx_templavoila_rules {
 	 * @param	integer		$uid: ID of the current parent element record
 	 * @param	string		$field: Field name within the datastructure
 	 * @return	void		Results are returned by reference.
-	 * @access private
+	 * @access	private
 	 */
 	function checkRulesForElement_parseALT ($rulePart, &$childRecords, &$statusArr, $constants) {
 		$altStatusArr = array ();
@@ -319,7 +319,7 @@ class tx_templavoila_rules {
 	 * @param	array		$childRecords: Current array of child records of the main element which remain to be processed. Passed by reference!
 	 * @param	array		$statusArr: The current status array, passed by reference
 	 * @return	void		Results are returned by reference.
-	 * @access private
+	 * @access	private
 	 * @todo				Obviously this function does nothing yet
 	 */
 	function checkRulesForElement_parseCLASS ($rulePart, &$childRecords, &$statusArr) {
@@ -547,7 +547,7 @@ class tx_templavoila_rules {
 	 * @param	string		$regex: The regular expression
 	 * @param	integer		$startPos: The position within the regex string where the search should start
 	 * @return	array		Array containing the results (see function)
-	 * @access private
+	 * @access	private
 	 * @see					parseRegexIntoArray ()
 	 */
 	function extractInnerBrace ($regex, $startPos) {

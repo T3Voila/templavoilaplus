@@ -38,7 +38,7 @@
  *   90:     function sidebar_renderItem(&$pObj)
  *  115:     function sidebar_renderItem_renderTranslationInfoCheckbox()
  *  138:     function sidebar_renderItem_renderLanguageSelectorbox()
- *  184:     function sidebar_renderItem_renderNewTranslationSelectorbox()
+ *  186:     function sidebar_renderItem_renderNewTranslationSelectorbox()
  *
  * TOTAL FUNCTIONS: 5
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -64,7 +64,7 @@ class tx_templavoila_mod1_localization {
 	 *
 	 * @param	$pObj:		Reference to the parent object ($this)
 	 * @return	void
-	 * @access public
+	 * @access	public
 	 */
 	function init(&$pObj) {
 		global $LANG;
@@ -85,7 +85,7 @@ class tx_templavoila_mod1_localization {
 	 *
 	 * @param	$pObj:		Reference to the sidebar's parent object (the page module). Not used here, we use our own reference, $this->pObj.
 	 * @return	string		HTML output
-	 * @access public
+	 * @access	public
 	 */
 	function sidebar_renderItem(&$pObj) {
 		global $LANG;
@@ -110,7 +110,7 @@ class tx_templavoila_mod1_localization {
 	 * information on and off.
 	 *
 	 * @return	mixed		HTML code for the checkbox or FALSE if no language is available.
-	 * @access protected
+	 * @access	protected
 	 */
 	function sidebar_renderItem_renderTranslationInfoCheckbox() {
 		global $LANG;
@@ -133,7 +133,7 @@ class tx_templavoila_mod1_localization {
 	 * page.
 	 *
 	 * @return	mixed		HTML code for the selectorbox or FALSE if no language is available.
-	 * @access protected
+	 * @access	protected
 	 */
 	function sidebar_renderItem_renderLanguageSelectorbox() {
 		global $LANG, $BE_USER, $BACK_PATH;
@@ -181,7 +181,7 @@ class tx_templavoila_mod1_localization {
 	 * page (create a new "Alternative Page Header".
 	 *
 	 * @return	mixed		HTML code for the selectorbox or FALSE if no new translation can be created.
-	 * @access protected
+	 * @access	protected
 	 */
 	function sidebar_renderItem_renderNewTranslationSelectorbox() {
 		global $LANG, $BE_USER;

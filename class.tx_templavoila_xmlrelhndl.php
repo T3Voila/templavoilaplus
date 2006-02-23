@@ -206,7 +206,7 @@ class tx_templavoila_xmlrelhndl {
 	 * @param	array		$refArr: Reference to element in FlexForm structure, splitted into an array (see _splitAndValidateReference())
 	 * @param	string		Item reference, typically 'tt_content_'.$uid
 	 * @return	void
-	 * @access protected
+	 * @access	protected
 	 * @deprecated version - 1.0.0
 	 */
 	function _insertReference($itemArr, $refArr, $item)	{
@@ -230,7 +230,7 @@ class tx_templavoila_xmlrelhndl {
 	 * @param	integer		Item uid
 	 * @param	integer		Move-pid (pos/neg) to which the record should be moved (if at all).
 	 * @return	void
-	 * @access protected
+	 * @access	protected
 	 * @deprecated version - 1.0.0
 	 */
 	function _moveReference($itemArray, $destRefArr, $sourceItemArray, $sourceRefArr, $item_table, $item_uid, $movePid)	{
@@ -272,7 +272,7 @@ class tx_templavoila_xmlrelhndl {
 	 * @param	array		Array of items from a current reference (array of table/uid pairs) (see _getItemArrayFromXML())
 	 * @param	array		Reference to element in FlexForm structure, splitted into an array (see _splitAndValidateReference())
 	 * @return	void
-	 * @access protected
+	 * @access	protected
 	 * @deprecated version - 1.0.0
 	 */
 	function _removeReference($itemArray, $refArr)	{
@@ -298,7 +298,7 @@ class tx_templavoila_xmlrelhndl {
 	 * @param	array		Reference to element in FlexForm structure, splitted into an array (see _splitAndValidateReference())
 	 * @param	integer		New uid to set.
 	 * @return	void
-	 * @access protected
+	 * @access	protected
 	 * @deprecated version - 1.0.0
 	 */
 	function _changeReference($itemArray, $refArr, $newUid)	{
@@ -323,7 +323,7 @@ class tx_templavoila_xmlrelhndl {
 	 * @param	array		Reference to element in FlexForm structure, splitted into an array (see _splitAndValidateReference())
 	 * @param	array		Array of record references
 	 * @return	void
-	 * @access protected
+	 * @access	protected
 	 * @deprecated version - 1.0.0
 	 */
 	function _updateFlexFormRefList($refArr, $idListArr)	{
@@ -344,7 +344,7 @@ class tx_templavoila_xmlrelhndl {
 	 *
 	 * @param	integer		UID of the tt_content element to delete.
 	 * @return	void
-	 * @access protected
+	 * @access	protected
 	 * @deprecated version - 1.0.0
 	 */
 	function _deleteContentElement($uid)	{
@@ -383,7 +383,7 @@ class tx_templavoila_xmlrelhndl {
 	 * @param	string		Item reference, typically 'tt_content_'.$uid
 	 * @param	mixed		Only for CUT operations within the SAME field (otherwise FALSE): Reference to the *source* element if this is a move operation where we need to remove this (same field...)
 	 * @return	array		Array with record reference, ready to implode and store in FlexForm structure field
-	 * @access protected
+	 * @access	protected
 	 * @deprecated version - 1.0.0
 	 */
 	function _insertReferenceInList($itemArray, $refArr, $item, $sourceRefArr=FALSE)	{
@@ -431,7 +431,7 @@ class tx_templavoila_xmlrelhndl {
 	 * @param	integer		Uid of original
 	 * @param	integer		Pid of the new record
 	 * @return	integer		New UID or false if no new copy was created.
-	 * @access protected
+	 * @access	protected
 	 * @deprecated version - 1.0.0
 	 */
 	function _getCopyUid($itemAtPosition_uid, $pid)	{
@@ -459,7 +459,7 @@ class tx_templavoila_xmlrelhndl {
 	 * @param	integer		$uid: UID of the parent element
 	 * @param	array		Array of record UIDs - used internally, don't touch
 	 * @return	array		Array of record UIDs
-	 * @access protected
+	 * @access	protected
 	 * @deprecated version - 1.0.0
 	 */
 	function _getListOfSubElementsRecursively ($table, $uid, &$recordUids) {
@@ -505,7 +505,7 @@ class tx_templavoila_xmlrelhndl {
 	 *
 	 * @param	string		Reference to a tt_content element in a flexform field of references to tt_content elements. Syntax is: [table]:[uid]:[sheet]:[lLanguage]:[FlexForm field name]:[vLanguage]:[index of reference position in field value]. Example: 'pages:78:sDEF:lDEF:field_contentarea:vDEF:0/tt_content:60'
 	 * @return	array		Array with each part between ':' in a value with numeric key (exploded)
-	 * @access protected
+	 * @access	protected
 	 * @deprecated version - 1.0.0
 	 */
 	function _splitAndValidateReference($string)	{
@@ -525,7 +525,7 @@ class tx_templavoila_xmlrelhndl {
 	 * @param	string		XML content of FlexForm field.
 	 * @param	array		Reference; definining which field in the XML to get list of records from.
 	 * @return	array		Numerical array of arrays defining items by table and uid key/value pairs.
-	 * @access protected
+	 * @access	protected
 	 * @deprecated version - 1.0.0
 	 */
 	function _getItemArrayFromXML($xmlString, $refArr)	{

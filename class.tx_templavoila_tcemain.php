@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2004 Robert Lemke (robert@typo3.org)
+*  (c) 2004-2006 Robert Lemke (robert@typo3.org)
 *  All rights reserved
 *
 *  This script is part of the Typo3 project. The Typo3 project is
@@ -80,7 +80,7 @@ class tx_templavoila_tcemain {
 	 * @param	string		$id: The records id (if any)
 	 * @param	object		$reference: Reference to the parent object (TCEmain)
 	 * @return	void
-	 * @access public
+	 * @access	public
 	 */
 	function processDatamap_preProcessFieldArray (&$incomingFieldArray, $table, $id, &$reference) {
 		global $TYPO3_DB, $TCA;
@@ -106,7 +106,7 @@ class tx_templavoila_tcemain {
 	 * @param	array		$fieldArray: The field names and their values to be processed
 	 * @param	object		$reference: Reference to the parent object (TCEmain)
 	 * @return	void
-	 * @access public
+	 * @access	public
 	 */
 	function processDatamap_postProcessFieldArray ($status, $table, $id, &$fieldArray, &$reference) {
 		global $TYPO3_DB, $TCA;
@@ -210,7 +210,7 @@ class tx_templavoila_tcemain {
 	 * @param	array		$fieldArray: The record row how it has been inserted into the database
 	 * @param	object		$reference: A reference to the TCEmain instance
 	 * @return	void
-	 * @access public
+	 * @access	public
 	 */
 	function processDatamap_afterDatabaseOperations ($status, $table, $id, $fieldArray, &$reference) {
 
@@ -276,7 +276,7 @@ class tx_templavoila_tcemain {
 	 * @param	array		$fieldArray: The field names and their values to be processed
 	 * @param	object		$reference: Reference to the parent object (TCEmain)
 	 * @return	void
-	 * @access public
+	 * @access	public
 	 * @todo	"delete" should search for all references to the element.
 	 */
 	function processCmdmap_preProcess ($command, $table, $id, $value, &$reference) {
@@ -310,7 +310,7 @@ class tx_templavoila_tcemain {
 	 * @param	array		$fieldArray: The field names and their values to be processed
 	 * @param	object		$reference: Reference to the parent object (TCEmain)
 	 * @return	void
-	 * @access public
+	 * @access	public
 	 */
 	function processCmdmap_postProcess($command, $table, $id, $value, &$reference) {
 		if ($this->debug) t3lib_div::devLog ('processCmdmap_postProcess', 'templavoila', 0, array ($command, $table, $id, $value));
@@ -333,7 +333,7 @@ class tx_templavoila_tcemain {
 	 * @param	array		$updateFields: The updated fields of the record row in question (we don't use that)
 	 * @param	object		$reference: A reference to the TCEmain instance
 	 * @return	void
-	 * @access public
+	 * @access	public
 	 */
 	function moveRecord_firstElementPostProcess ($table, $uid, $destPid, $sourceRecordBeforeMove, $updateFields, &$reference) {
 		global $TCA;
@@ -374,7 +374,7 @@ class tx_templavoila_tcemain {
 	 * @param	array		$updateFields: The updated fields of the record row in question (we don't use that)
 	 * @param	object		$reference: A reference to the TCEmain instance
 	 * @return	void
-	 * @access public
+	 * @access	public
 	 */
 	function moveRecord_afterAnotherElementPostProcess ($table, $uid, $destPid, $origDestPid, $sourceRecordBeforeMove, $updateFields, &$reference) {
 

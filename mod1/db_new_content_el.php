@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2003-2005 Robert Lemke (robert@typo3.org)
+*  (c) 2003-2006 Robert Lemke (robert@typo3.org)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -39,19 +39,18 @@
  *
  *
  *
- *   89: class tx_templavoila_dbnewcontentel
- *  109:     function init()
- *  152:     function main()
- *  236:     function printContent()
- *  248:     function linkParams()
+ *   88: class tx_templavoila_dbnewcontentel
+ *  108:     function init()
+ *  151:     function main()
+ *  235:     function printContent()
+ *  245:     function linkParams()
  *
  *              SECTION: OTHER FUNCTIONS:
- *  274:     function getWizardItems()
- *  284:     function wizardArray()
- *  421:     function removeInvalidElements(&$wizardItems)
- *  481:     function getStorageFolderPid($positionPid)
+ *  271:     function getWizardItems()
+ *  281:     function wizardArray()
+ *  418:     function removeInvalidElements(&$wizardItems)
  *
- * TOTAL FUNCTIONS: 8
+ * TOTAL FUNCTIONS: 7
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */

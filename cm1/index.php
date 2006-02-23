@@ -36,26 +36,26 @@
  *
  *  125: class tx_templavoila_cm1 extends t3lib_SCbase
  *  189:     function menuConfig()
- *  210:     function main()
- *  231:     function printContent()
+ *  209:     function main()
+ *  230:     function printContent()
  *
  *              SECTION: MODULE mode
- *  260:     function main_mode()
- *  353:     function renderFile()
+ *  259:     function main_mode()
+ *  352:     function renderFile()
  *  793:     function renderDSO()
  *  928:     function renderTO()
  * 1096:     function renderTO_editProcessing(&$dataStruct,$row,$theFile)
  *
  *              SECTION: Mapper functions
  * 1317:     function renderHeaderSelection($displayFile,$currentHeaderMappingInfo,$showBodyTag,$htmlAfterDSTable='')
- * 1383:     function renderTemplateMapper($displayFile,$path,$dataStruct=array(),$currentMappingInfo=array(),$htmlAfterDSTable='')
- * 1571:     function drawDataStructureMap($dataStruct,$mappingMode=0,$currentMappingInfo=array(),$pathLevels=array(),$optDat=array(),$contentSplittedByMapping=array(),$level=0,$tRows=array(),$formPrefix='',$path='',$mapOK=1)
- * 1787:     function drawDataStructureMap_editItem($formPrefix,$key,$value,$level)
- * 1906:     function drawDataStructureMap_editItem_editTypeExtra($type, $formFieldName, $curValue)
+ * 1382:     function renderTemplateMapper($displayFile,$path,$dataStruct=array(),$currentMappingInfo=array(),$htmlAfterDSTable='')
+ * 1570:     function drawDataStructureMap($dataStruct,$mappingMode=0,$currentMappingInfo=array(),$pathLevels=array(),$optDat=array(),$contentSplittedByMapping=array(),$level=0,$tRows=array(),$formPrefix='',$path='',$mapOK=1)
+ * 1786:     function drawDataStructureMap_editItem($formPrefix,$key,$value,$level)
+ * 1905:     function drawDataStructureMap_editItem_editTypeExtra($type, $formFieldName, $curValue)
  *
  *              SECTION: Helper-functions for File-based DS/TO creation
- * 1956:     function substEtypeWithRealStuff(&$elArray,$v_sub=array(),$scope = 0)
- * 2237:     function substEtypeWithRealStuff_contentInfo($content)
+ * 1955:     function substEtypeWithRealStuff(&$elArray,$v_sub=array(),$scope = 0)
+ * 2236:     function substEtypeWithRealStuff_contentInfo($content)
  *
  *              SECTION: Various helper functions
  * 2283:     function getDataStructFromDSO($datString,$file='')
@@ -73,7 +73,7 @@
  * 2539:     function displayFileContentWithPreview($content,$relPathFix)
  * 2575:     function displayFrameError($error)
  * 2602:     function cshItem($table,$field,$BACK_PATH,$wrap='',$onlyIconMode=FALSE, $styleAttrib='')
- * 2614:     function lipsumLink($formElementName)
+ * 2615:     function lipsumLink($formElementName)
  *
  * TOTAL FUNCTIONS: 29
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -1899,7 +1899,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 	 * @param	string		Form field name prefix
 	 * @param	array		Current values for the form field name prefix.
 	 * @return	string		HTML with extra form fields
-	 * @access private
+	 * @access	private
 	 * @see drawDataStructureMap_editItem()
 	 */
 	function drawDataStructureMap_editItem_editTypeExtra($type, $formFieldName, $curValue)	{
