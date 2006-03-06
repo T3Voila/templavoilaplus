@@ -1,3 +1,8 @@
+2006-03-06  Robert Lemke <robert@typo3.org>
+
+ # Fixed a fatal error in mod2 in DSdetails() when $DScontent was not an array
+
+
 2006-02-23	Robert Lemke <robert@typo3.org>
 
  @Dmitry: Each time you commit something, my CVS client displays *all* files as changed and show 100% conflict. Please make sure that you upload only those files which have changed (or help me using CVS correctly ...)

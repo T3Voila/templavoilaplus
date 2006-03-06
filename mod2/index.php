@@ -1311,7 +1311,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 		$inputFields = 0;
 		$referenceFields = 0;
 		$rootelements = 0;
-		if (is_array($DScontent['ROOT']['el']))	{
+		if (is_array ($DScontent) && is_array($DScontent['ROOT']['el']))	{
 			foreach($DScontent['ROOT']['el'] as $elKey => $elCfg)	{
 				$rootelements++;
 				if (isset($elCfg['TCEforms']))	{
