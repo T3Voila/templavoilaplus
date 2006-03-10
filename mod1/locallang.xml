@@ -89,6 +89,7 @@
 			<label index="view_tree">Tree view</label>
 			<label index="createnewtranslation">Create new page translation</label>
 			<label index="selectlanguageversion">Show page language version</label>
+			<label index="editlanguageversion">Edit page language</label>
 			<label index="multipleLanguages">Multiple languages</label>
 			<label index="languageDisabled">Language disabled</label>
 			<label index="viewsubelements">View sub elements</label>

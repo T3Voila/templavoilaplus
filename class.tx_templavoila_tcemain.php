@@ -283,10 +283,10 @@ class tx_templavoila_tcemain {
 
 		if ($this->debug) t3lib_div::devLog('processCmdmap_preProcess', 'templavoila', 0, array ($command, $table, $id, $value));
 		if ($GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_api']['apiIsRunningTCEmain']) return;
-		if ($table == 'pages' && $command == 'copy') {
+#		if ($table == 'pages' && $command == 'copy') {
 				// See http://bugs.typo3.org/view.php?id=2095
 			$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_tcemain']['doNotInsertElementRefsToPage'] = true;
-		}
+#		}
 		if ($table != 'tt_content') return;
 
 		$templaVoilaAPI = t3lib_div::makeInstance('tx_templavoila_api');
@@ -314,12 +314,12 @@ class tx_templavoila_tcemain {
 	 */
 	function processCmdmap_postProcess($command, $table, $id, $value, &$reference) {
 		if ($this->debug) t3lib_div::devLog ('processCmdmap_postProcess', 'templavoila', 0, array ($command, $table, $id, $value));
-		if ($table == 'pages' && $command == 'copy') {
+#		if ($table == 'pages' && $command == 'copy') {
 				// See http://bugs.typo3.org/view.php?id=2095
 			if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_tcemain']['doNotInsertElementRefsToPage'])) {
 				unset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_tcemain']['doNotInsertElementRefsToPage']);
 			}
-		}
+#		}
 	}
 
 	/**
