@@ -37,44 +37,44 @@
  *  118: class tx_templavoila_module1 extends t3lib_SCbase
  *
  *              SECTION: Initialization functions
- *  156:     function init()
- *  201:     function menuConfig()
+ *  157:     function init()
+ *  207:     function menuConfig()
  *
  *              SECTION: Main functions
- *  255:     function main()
- *  349:     function printContent()
+ *  261:     function main()
+ *  355:     function printContent()
  *
  *              SECTION: Rendering functions
- *  369:     function render_editPageScreen()
+ *  375:     function render_editPageScreen()
  *
  *              SECTION: Framework rendering functions
- *  442:     function render_framework_allSheets($contentTreeArr, $parentPointer=array())
- *  478:     function render_framework_singleSheet($contentTreeArr, $sheet, $parentPointer=array())
- *  583:     function render_framework_subElements ($elementContentTreeArr, $sheet)
+ *  450:     function render_framework_allSheets($contentTreeArr, $parentPointer=array(), $parentDsMeta=array())
+ *  487:     function render_framework_singleSheet($contentTreeArr, $sheet, $parentPointer=array(), $parentDsMeta=array())
+ *  603:     function render_framework_subElements ($elementContentTreeArr, $sheet)
  *
  *              SECTION: Rendering functions for certain subparts
- *  671:     function render_previewContent($row)
- *  753:     function render_localizationInfoTable($contentTreeArr, $parentPointer)
+ *  695:     function render_previewContent($row)
+ *  778:     function render_localizationInfoTable($contentTreeArr, $parentPointer, $parentDsMeta=array())
  *
  *              SECTION: Link functions (protected)
- *  868:     function link_edit($label, $table, $uid)
- *  885:     function link_new($label, $parentPointer)
- *  903:     function link_unlink($label, $unlinkPointer, $realDelete=FALSE)
- *  923:     function link_makeLocal($label, $makeLocalPointer)
- *  935:     function link_getParameters()
+ *  907:     function link_edit($label, $table, $uid, $forced=FALSE)
+ *  928:     function link_new($label, $parentPointer)
+ *  946:     function link_unlink($label, $unlinkPointer, $realDelete=FALSE)
+ *  966:     function link_makeLocal($label, $makeLocalPointer)
+ *  978:     function link_getParameters()
  *
  *              SECTION: Processing and structure functions (protected)
- *  963:     function handleIncomingCommands()
- * 1080:     function getContentTree($table, $row, $languageKey='DEF', $prevRecList='')
- * 1195:     function getContentTree_processSubContent($flexformContentArr, $tree, $sheetKey, $lKey, $fieldKey, $vKey, $fieldData, $languageKey, $prevRecList)
- * 1258:     function getContentTree_processSubElements($flexformContentArr, $tree, $sheetKey, $lKey, $fieldKey, $vKey, $fieldData, $row)
- * 1297:     function getContentTree_getLocalizationInfoForElement($contentTreeArr)
+ * 1006:     function handleIncomingCommands()
+ * 1123:     function getContentTree($table, $row, $languageKey='DEF', $prevRecList='')
+ * 1241:     function getContentTree_processSubContent($flexformContentArr, $tree, $sheetKey, $lKey, $fieldKey, $vKey, $fieldData, $languageKey, $prevRecList)
+ * 1304:     function getContentTree_processSubElements($flexformContentArr, $tree, $sheetKey, $lKey, $fieldKey, $vKey, $fieldData, $row)
+ * 1343:     function getContentTree_getLocalizationInfoForElement($contentTreeArr)
  *
  *              SECTION: Miscelleaneous helper functions (protected)
- * 1369:     function getAvailableLanguages($id=0, $onlyIsoCoded=true, $setDefault=true, $setMulti=false)
- * 1441:     function getPageTemplateObject($row)
- * 1466:     function hooks_prepareObjectsArray ($hookName)
- * 1483:     function alternativeLanguagesDefined()
+ * 1415:     function getAvailableLanguages($id=0, $onlyIsoCoded=true, $setDefault=true, $setMulti=false)
+ * 1487:     function getPageTemplateObject($row)
+ * 1512:     function hooks_prepareObjectsArray ($hookName)
+ * 1529:     function alternativeLanguagesDefined()
  *
  * TOTAL FUNCTIONS: 24
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -232,10 +232,10 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		}
 
 			// page/be_user TSconfig settings and blinding of menu-items
-		$this->modTSconfig = t3lib_BEfunc::getModTSconfig($this->id,'mod.'.$this->MCONF['name']);		
+		$this->modTSconfig = t3lib_BEfunc::getModTSconfig($this->id,'mod.'.$this->MCONF['name']);
 		$this->MOD_MENU['view'] = t3lib_BEfunc::unsetMenuItems($this->modTSconfig['properties'],$this->MOD_MENU['view'],'menu.function');
 
-		if (!isset($this->modTSconfig['properties']['sideBarEnable'])) $this->modTSconfig['properties']['sideBarEnable'] = 1; 
+		if (!isset($this->modTSconfig['properties']['sideBarEnable'])) $this->modTSconfig['properties']['sideBarEnable'] = 1;
 		$this->modSharedTSconfig = t3lib_BEfunc::getModTSconfig($this->id, 'mod.SHARED');
 
 			// CLEANSE SETTINGS
