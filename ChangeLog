@@ -1,3 +1,7 @@
+2006-03-13  Kasper Skårhøj
+	* When a parent container element has localization set to "Separate", the links to localization of contained records are removed. This is done in mod1/index.php, line 843 [($parentDsMeta['langDisable'] || $parentDsMeta['langChildren'])]. Maybe it should be configurable?
+	* Also updated the JavaDoc of mod1/index.php and function overview in top of document.
+	
 2006-03-10  Kasper Skårhøj
 	* Removed the checkbox, sidebar_renderItem_renderTranslationInfoCheckbox(), from localization sidebar: Not needed, set by default
 	* Changed "Default language" icon to a new one, "flags/unknown.gif"
