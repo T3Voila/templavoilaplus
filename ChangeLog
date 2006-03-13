@@ -1,8 +1,14 @@
-2006-03-13  Kasper Skårhøj
+2006-03-13	Robert Lemke <robert@typo3.org>
+ - mod1_localization: Language selector ($availableTranslationFlags) - Rejected the changes and used an older version which already ignores the "langDisable" tag for the root element. Reason for rejecting the new code is that the strings are not localized with getLL
+ ~ mod1/index.php: Changed case of magic strings "Disable", "Inheritence" and "Separate" to lower case
+ - mod1/index.php: Rejected localization mode warning because it's not translated with getLL, please commit again with locallang label
+ - mod1/index.php: Rejected edit translation link because of missing locallang support
+	  
+2006-03-13  Kasper Skaarhoej
 	* When a parent container element has localization set to "Separate", the links to localization of contained records are removed. This is done in mod1/index.php, line 843 [($parentDsMeta['langDisable'] || $parentDsMeta['langChildren'])]. Maybe it should be configurable?
 	* Also updated the JavaDoc of mod1/index.php and function overview in top of document.
 	
-2006-03-10  Kasper Skårhøj
+2006-03-10  Kasper Skaarhoej
 	* Removed the checkbox, sidebar_renderItem_renderTranslationInfoCheckbox(), from localization sidebar: Not needed, set by default
 	* Changed "Default language" icon to a new one, "flags/unknown.gif"
 	* Links to editing of page language header are displayed regardless of selected language (why not?)

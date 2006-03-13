@@ -153,37 +153,20 @@ class tx_templavoila_mod1_localization {
 				$style = isset ($languageArr['flagIcon']) ? 'background-image: url(' . $flag . '); background-repeat: no-repeat; padding-left: 22px;' : '';
 				$optionsArr [] = '<option style="'.$style.'" value="'.$languageArr['uid'].'"'.($this->pObj->MOD_SETTINGS['language'] == $languageArr['uid'] ? ' selected="selected"' : '').'>'.htmlspecialchars($languageArr['title']).'</option>';
 
-					// Link to editing of language header:
-				$availableTranslationsFlags .= '<a href="index.php?'.$this->pObj->link_getParameters().'&editPageLanguageOverlay='.$languageArr['uid'].'"><img src="' . $flag . '" title="Edit '.htmlspecialchars($languageArr['title']).'" alt="" /></a> ';
+				$availableTranslationsFlags .= '<a href="index.php?'.$this->pObj->link_getParameters().'&editPageLanguageOverlay='.$languageArr['uid'].'"><img src="' . $flag . '" title="Edit '.htmlspecialchars($languageArr['title']).'" alt="" /></a> ';				
 			}
 		}
 
 		$link = '\'index.php?'.$this->pObj->link_getParameters().'&SET[language]=\'+this.options[this.selectedIndex].value';
 
-			// Show selector of language, only if DS doesn't have it disabled:
-	# Note on why the select is shown, even if the root element has localization disabled:
-	# Regardless of the root element localization mode, the MOD_SETTINGS[language] value is passed down to getContentTree() for any element in the structure. 
-	# Inside getContentTree() the value, say "DA", will be used to look for content but will default back to "DEF" in case localization is disabled.
-	# Therefore, we should not remove this selector just because the root element doesn't support localization because elements deeper down may!
-	# And if the value of the selector is set to a langauge which is not supported by the root element it will make no difference. In fact it will nicely show the default for all settings which usability wise is not that bad.
-	# - kasper (9-3-2006)
-	#	if ($this->pObj->rootElementLangMode!=='Disable')	{
-			$output.= '
-				<tr class="bgColor4">
-					<td width="1%" nowrap="nowrap">'.$LANG->getLL ('selectlanguageversion').':</td>
-					<td>
-						<select onchange="document.location='.$link.'">'.implode ('', $optionsArr).'</select>
-						'.($this->pObj->rootElementLangMode!=='Disable' ? ' Page Localization Mode: <em>'.$this->pObj->rootElementLangMode.'</em>' : '').'
-					</td>
-			</tr>';
-	#	}
-		
-			// Show editing language header at any time:
-		$output.= '
+		$output = '
 			<tr class="bgColor4">
-				<td width="1%" nowrap="nowrap">'.$LANG->getLL ('editlanguageversion').':</td>
+				<td width="1%" nowrap="nowrap">'.$LANG->getLL ('selectlanguageversion').':</td>
 				<td>
-					'.$availableTranslationsFlags.'
+					<select onchange="document.location='.$link.'">'.implode ('', $optionsArr).'</select>'.
+					'<span style="margin-left: 5px">' .
+					$availableTranslationsFlags.
+					'</span>
 				</td>
 			</tr>
 		';
