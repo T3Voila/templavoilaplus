@@ -66,6 +66,8 @@
 			<label index="createnewpage_templateobject_createpagewithdefaultcontent">Create a page with default content based on this template:</label>
 			<label index="createnewcontent_newContentElement">New content element</label>
 			<label index="warning_elementusedmorethanonce">This element has been used %s times on this page! ID:%s</label>
+			<label index="warning_containerSeparate">WARNING: This container element has localization without inheritance enabled (&lt;langChildren&gt; = 0). This is most likely a misconfiguration since the localization features of TemplaVoila does not support localized container fields in the native interface! Please inform the system administrator!</label>
+			<label index="warning_containerInheritance">This container element has localization enabled but with inheritance (&lt;langChildren&gt; = 1). This situation might produce confusing displays in TemplaVoila and you are encouraged to disable localization of this container element completely by setting &lt;langDisable&gt; = 1. Please inform the system administrator!</label>
 			<label index="cannotedit_doktypemountpoint">This page acts as a mount point and its content is being replaced by another page (&quot;%s&quot;). Therefore you cannot edit the content of this page directly.</label>
 			<label index="jumptomountsourcepage">Jump to source page of this mount point</label>
 			<label index="cannotedit_contentfrompid">This page has been configured in a way that it doesn't have any content itself but instead the content of another page (&quot;%s&quot;) is shown. Therefore you cannot edit the content of this page directly.</label>
@@ -89,6 +91,10 @@
 			<label index="view_tree">Tree view</label>
 			<label index="createnewtranslation">Create new page translation</label>
 			<label index="selectlanguageversion">Show page language version</label>
+			<label index="pageLocalizationMode">Page Localization Mode</label>
+			<label index="pageLocalizationMode_separate">Separate structures</label>
+			<label index="pageLocalizationMode_inheritance">Inheritance of values</label>
+			<label index="clickToEditTranslation">Click to edit translation</label>
 			<label index="editlanguageversion">Edit page language</label>
 			<label index="multipleLanguages">Multiple languages</label>
 			<label index="languageDisabled">Language disabled</label>
