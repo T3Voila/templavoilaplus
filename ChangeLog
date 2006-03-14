@@ -1,3 +1,12 @@
+2006-03-13  Kasper Skaarhoej
+	* Re-inserted rejected changes, however I fixed all problems pointed out by robert in mail.
+	* Moved getContentTree from mod1/index.php to api-class: At the same time the output from getContentTree has been cleaned up so it doesn't contain formatted preview output (only data on which a preview can be rendered in mod1/index.php). 
+	* getContentTree also includes elements from all languages in its structure (although mod1/index.php only shows the selected language); this leads to the sideeffect that the list of non-used content elements is accurate now!
+	* getContentTree can be used from other applications to read out the page structure from TemplaVoila!
+	* Changed that the sidebar is now _outside_ (on top of) the rendered page: This was necessary to have proper function in case (very rarely though) that sheets are used for the page template! Question is if we should take some action to move only the icons for the top-level element to top of page again?
+	* The refactoring of getContentTree() has been thoroughly tested with as many scenarios I could create and I'm very confident it will work.
+	* Of course, all parameters of getContentTree-related functions may have been moved around since the functions were moved; It is considered unrealistic that any external extension were using getContentTree from its location in mod1/index.php.
+	
 2006-03-13	Robert Lemke <robert@typo3.org>
  - mod1_localization: Language selector ($availableTranslationFlags) - Rejected the changes and used an older version which already ignores the "langDisable" tag for the root element. Reason for rejecting the new code is that the strings are not localized with getLL
  ~ mod1/index.php: Changed case of magic strings "Disable", "Inheritence" and "Separate" to lower case
