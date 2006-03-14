@@ -1359,6 +1359,7 @@ class tx_templavoila_api {
 									foreach($vKeys as $vKey)	{
 										$listOfSubElementUids = $flexformContentArr['data'][$sheetKey][$lKey][$fieldKey][$vKey];
 										$tree['sub'][$sheetKey][$lKey][$fieldKey][$vKey] = $this->getContentTree_processSubContent($listOfSubElementUids, $tt_content_elementRegister, $prevRecList);
+										$tree['sub'][$sheetKey][$lKey][$fieldKey][$vKey]['meta']['title'] = $fieldData['TCEforms']['label'];
 									}
 								}
 						} elseif ($fieldData['type']!='array' && $fieldData['TCEforms']['config'])	{	// If generally there are non-container fields, register them:

@@ -68,6 +68,8 @@
 			<label index="warning_elementusedmorethanonce">This element has been used %s times on this page! ID:%s</label>
 			<label index="warning_containerSeparate">WARNING: This container element has localization without inheritance enabled (&lt;langChildren&gt; = 0). This is most likely a misconfiguration since the localization features of TemplaVoila does not support localized container fields in the native interface! Please inform the system administrator!</label>
 			<label index="warning_containerInheritance">This container element has localization enabled but with inheritance (&lt;langChildren&gt; = 1). This situation might produce confusing displays in TemplaVoila and you are encouraged to disable localization of this container element completely by setting &lt;langDisable&gt; = 1. Please inform the system administrator!</label>
+			<label index="warning_containerSeparate_short">L10N mode: Separate!</label>
+			<label index="warning_containerInheritance_short">L10N mode: Inheritance</label>
 			<label index="cannotedit_doktypemountpoint">This page acts as a mount point and its content is being replaced by another page (&quot;%s&quot;). Therefore you cannot edit the content of this page directly.</label>
 			<label index="jumptomountsourcepage">Jump to source page of this mount point</label>
 			<label index="cannotedit_contentfrompid">This page has been configured in a way that it doesn't have any content itself but instead the content of another page (&quot;%s&quot;) is shown. Therefore you cannot edit the content of this page directly.</label>
@@ -125,8 +127,13 @@
 			<label index="createcopyfortranslation">Create a copy for translation</label>
 			<label index="inititemno_elementsNotBeingUsed">Elements not being used in this language or sheet</label>
 			<label index="sidebar_advancedfunctions_labelshowhidden">Show hidden elements</label>
+			<label index="sidebar_advancedfunctions_labelshowoutline">Show outline</label>
 			<label index="sidebar_advancedfunctions_labelcachefunctions">Cache functions</label>
 			<label index="sidebar_renderitem_showtranslationinformation">Display translation information</label>
+			<label index="outline_header_title">Title:</label>
+			<label index="outline_header_controls">Controls:</label>
+			<label index="outline_header_warnings">Warnings:</label>
+			<label index="outline_header_element">Element:</label>
 		</languageKey>
 		<languageKey index="dk" type="array">
 			<label index="title">Web &gt; Side module</label>

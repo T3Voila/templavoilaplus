@@ -402,6 +402,16 @@ class tx_templavoila_mod1_sidebar {
 			</tr>
 		';
 
+			// Render checkbox for showing outline:
+		if ($GLOBALS['BE_USER']->isAdmin())	{
+			$tableRows[] = '
+				<tr class="bgColor4">
+					<td width="1%" nowrap="nowrap">'.$LANG->getLL('sidebar_advancedfunctions_labelshowoutline', 1).':</td>
+					<td>'.t3lib_BEfunc::getFuncCheck($pObj->id,'SET[showOutline]',$pObj->MOD_SETTINGS['showOutline'],'','').'</td>
+				</tr>
+			';
+		}
+
 			// Render cache menu:
 		if ($pObj->id>0) {
 			$cacheMenu = $this->doc->clearCacheMenu(intval($pObj->id), FALSE);

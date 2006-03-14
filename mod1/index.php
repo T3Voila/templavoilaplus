@@ -34,46 +34,52 @@
  *
  *
  *
- *  115: class tx_templavoila_module1 extends t3lib_SCbase
+ *  121: class tx_templavoila_module1 extends t3lib_SCbase
  *
  *              SECTION: Initialization functions
- *  154:     function init()
- *  204:     function menuConfig()
+ *  161:     function init()
+ *  211:     function menuConfig()
  *
  *              SECTION: Main functions
- *  258:     function main()
- *  356:     function printContent()
+ *  266:     function main()
+ *  364:     function printContent()
  *
  *              SECTION: Rendering functions
- *  376:     function render_editPageScreen()
+ *  384:     function render_editPageScreen()
  *
  *              SECTION: Framework rendering functions
- *  456:     function render_framework_allSheets($contentTreeArr, $languageKey='DEF', $parentPointer=array(), $parentDsMeta=array())
- *  494:     function render_framework_singleSheet($contentTreeArr, $languageKey, $sheet, $parentPointer=array(), $parentDsMeta=array())
- *  622:     function render_framework_subElements($elementContentTreeArr, $languageKey, $sheet)
+ *  469:     function render_framework_allSheets($contentTreeArr, $languageKey='DEF', $parentPointer=array(), $parentDsMeta=array())
+ *  507:     function render_framework_singleSheet($contentTreeArr, $languageKey, $sheet, $parentPointer=array(), $parentDsMeta=array())
+ *  635:     function render_framework_subElements($elementContentTreeArr, $languageKey, $sheet)
  *
  *              SECTION: Rendering functions for certain subparts
- *  722:     function render_previewData($previewData,$table,$ds_meta, $languageKey, $sheet)
- *  766:     function render_previewContent($row)
- *  849:     function render_localizationInfoTable($contentTreeArr, $parentPointer, $parentDsMeta=array())
+ *  737:     function render_previewData($previewData, $elData, $ds_meta, $languageKey, $sheet)
+ *  803:     function render_previewContent($row)
+ *  886:     function render_localizationInfoTable($contentTreeArr, $parentPointer, $parentDsMeta=array())
+ *
+ *              SECTION: Outline rendering:
+ * 1017:     function render_outline($contentTreeArr)
+ * 1073:     function render_outline_element($contentTreeArr, &$entries, $indentLevel=0, $parentPointer=array(), $controls='')
+ * 1176:     function render_outline_subElements($contentTreeArr, $sheet, &$entries, $indentLevel)
+ * 1261:     function render_outline_localizations($contentTreeArr, &$entries, $indentLevel)
  *
  *              SECTION: Link functions (protected)
- *  986:     function link_edit($label, $table, $uid, $forced=FALSE)
- * 1007:     function link_new($label, $parentPointer)
- * 1025:     function link_unlink($label, $unlinkPointer, $realDelete=FALSE)
- * 1045:     function link_makeLocal($label, $makeLocalPointer)
- * 1057:     function link_getParameters()
+ * 1323:     function link_edit($label, $table, $uid, $forced=FALSE)
+ * 1344:     function link_new($label, $parentPointer)
+ * 1362:     function link_unlink($label, $unlinkPointer, $realDelete=FALSE)
+ * 1382:     function link_makeLocal($label, $makeLocalPointer)
+ * 1394:     function link_getParameters()
  *
  *              SECTION: Processing and structure functions (protected)
- * 1085:     function handleIncomingCommands()
+ * 1422:     function handleIncomingCommands()
  *
  *              SECTION: Miscelleaneous helper functions (protected)
- * 1209:     function getAvailableLanguages($id=0, $onlyIsoCoded=true, $setDefault=true, $setMulti=false)
- * 1282:     function getPageTemplateObject($row)
- * 1307:     function hooks_prepareObjectsArray ($hookName)
- * 1324:     function alternativeLanguagesDefined()
+ * 1546:     function getAvailableLanguages($id=0, $onlyIsoCoded=true, $setDefault=true, $setMulti=false)
+ * 1619:     function getPageTemplateObject($row)
+ * 1644:     function hooks_prepareObjectsArray ($hookName)
+ * 1661:     function alternativeLanguagesDefined()
  *
- * TOTAL FUNCTIONS: 21
+ * TOTAL FUNCTIONS: 25
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -128,6 +134,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	var $currentLanguageUid;						// Contains the currently selected language uid (Example: -1, 0, 1, 2, ...)
 	var $allAvailableLanguages = array();			// Contains records of all available languages (not hidden, with ISOcode), including the default language and multiple languages. Used for displaying the flags for content elements, set in init().
 	var $translatedLanguagesArr = array();			// Select language for which there is a page translation
+	var $translatedLanguagesArr_isoCodes = array();	//	ISO codes (for l/v pairs) of translated languages.
 	var $translatorMode = FALSE;					// If this is set, the whole page module scales down functionality so that a translator only needs  to look for and click the "Flags" in the interface to localize the page! This flag is set if a user does not have access to the default language; then translator mode is assumed.
 
 	var $doc;										// Instance of template doc class
@@ -213,6 +220,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 		$this->MOD_MENU = array(
 			'tt_content_showHidden' => 1,
+			'showOutline' => 1,
 			'language' => $translatedLanguagesUids,
 			'clip_parentPos' => '',
 			'clip' => '',
@@ -423,8 +431,13 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			}
 		}
 
-			// Display the nested page structure:
-		$content.= $this->render_framework_allSheets($contentTreeData['tree'], $this->currentLanguageKey);
+		if ($GLOBALS['BE_USER']->isAdmin() && $this->MOD_SETTINGS['showOutline'])	{
+				// Display the outline:
+			$content.= $this->render_outline($contentTreeData['tree']);
+		} else {
+				// Display the nested page structure:
+			$content.= $this->render_framework_allSheets($contentTreeData['tree'], $this->currentLanguageKey);
+		}
 
 		$content .= t3lib_BEfunc::cshItem('_MOD_web_txtemplavoilaM1', 'pagemodule', $this->doc->backPath,'|<br/>');
 		$content .= t3lib_BEfunc::cshItem('_MOD_web_txtemplavoilaM1', '', $this->doc->backPath,'<hr/>|What is the TemplaVoila Page module?');
@@ -530,7 +543,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				if ($this->translatorMode)	{
 					$titleBarRightButtons = '';
 				} else {
-					// Cre	ate CE specific buttons:
+						// Create CE specific buttons:
 					$linkMakeLocal = !$elementBelongsToCurrentPage ? $this->link_makeLocal('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,t3lib_extMgm::extRelPath('templavoila').'mod1/makelocalcopy.gif','').' title="'.$LANG->getLL('makeLocal').'" border="0" alt="" />', $parentPointer) : '';
 					$linkUnlink = $this->link_unlink('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/garbage.gif','').' title="'.$LANG->getLL('unlinkRecord').'" border="0" alt="" />', $parentPointer, FALSE);
 					$linkEdit = ($elementBelongsToCurrentPage ? $this->link_edit('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/edit2.gif','').' title="'.$LANG->getLL ('editrecord').'" border="0" alt="" />',$contentTreeArr['el']['table'],$contentTreeArr['el']['uid']) : '');
@@ -758,7 +771,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 								$previewContent .= '<strong>'.$containerKey.'</strong> '.$this->link_edit(htmlspecialchars(t3lib_div::fixed_lgd_cs(strip_tags($containerData[$vKey]),200)), 'tt_content', $previewData['fullRow']['uid']).'<br />';
 							}
 						}
-					}					
+					}
 				} else {	// Preview of flexform fields on top-level:
 					$fieldValue = $fieldData['data'][$lKey][$vKey];
 
@@ -982,6 +995,307 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			' : '';
 		}
 		return $llTable;
+	}
+
+
+
+
+
+
+	/*******************************************
+	 *
+	 * Outline rendering:
+	 *
+	 *******************************************/
+
+	/**
+	 * Rendering the outline display of the page structure
+	 *
+	 * @param	array		$contentTreeArr: DataStructure info array (the whole tree)
+	 * @return	string		HTML
+	 */
+	function render_outline($contentTreeArr)	{
+		global $LANG;
+		
+			// Load possible website languages:
+		$this->translatedLanguagesArr_isoCodes = array();
+		foreach($this->translatedLanguagesArr as $sys_language_uid => $langInfo)	{
+			if ($langInfo['ISOcode'])	{
+				$this->translatedLanguagesArr_isoCodes['all_lKeys'][]='l'.$langInfo['ISOcode'];
+				$this->translatedLanguagesArr_isoCodes['all_vKeys'][]='v'.$langInfo['ISOcode'];
+			}
+		}
+
+			// Rendering the entries:
+		$entries = array();
+		$this->render_outline_element($contentTreeArr,$entries);
+
+			// Header of table:
+		$output='';
+		$output.='<tr class="bgColor5 tableheader">
+				<td class="nobr">'.$LANG->getLL('outline_header_title',1).'</td>
+				<td class="nobr">'.$LANG->getLL('outline_header_controls',1).'</td>
+				<td class="nobr">'.$LANG->getLL('outline_header_warnings',1).'</td>
+				<td class="nobr">'.$LANG->getLL('outline_header_element',1).'</td>
+			</tr>';
+
+			// Render all entries:
+		foreach($entries as $entry)	{
+
+			$indent = '';
+			for($a=0;$a<$entry['indentLevel'];$a++)	{
+				$indent.='&nbsp;&nbsp;&nbsp;&nbsp;';
+			}
+
+			$output.='<tr class="bgColor4" style="'.$entry['elementTitlebarStyle'].'">
+					<td class="nobr">'.$indent.$entry['icon'].$entry['flag'].$entry['title'].'</td>
+					<td class="nobr">'.$entry['controls'].'</td>
+					<td>'.$entry['warnings'].'</td>
+					<td class="nobr">'.htmlspecialchars($entry['id'] ? $entry['id'] : $entry['table'].':'.$entry['uid']).'</td>
+				</tr>';
+		}
+		$output = '<table border="0" cellpadding="1" cellspacing="1">'.$output.'</table>';
+
+		return $output;
+	}
+
+	/**
+	 * Rendering a single element in outline:
+	 *
+	 * @param	array		$contentTreeArr: DataStructure info array (the whole tree)
+	 * @param	array		$entries: Entries accumulated in this array (passed by reference)
+	 * @param	integer		$indentLevel: Indentation level
+	 * @param	array		$parentPointer: Element position in structure
+	 * @param	string		$controls: HTML for controls to add for this element
+	 * @return	void
+	 * @access protected
+	 * @see	render_outline_allSheets()
+	 */
+	function render_outline_element($contentTreeArr, &$entries, $indentLevel=0, $parentPointer=array(), $controls='') {
+		global $LANG, $TYPO3_CONF_VARS;
+
+			// Get record of element:
+		$elementRecord = t3lib_beFunc::getRecordWSOL($contentTreeArr['el']['table'], $contentTreeArr['el']['uid'], '*');
+		$elementBelongsToCurrentPage = $contentTreeArr['el']['table'] == 'pages' || $contentTreeArr['el']['pid'] == $this->rootElementUid;
+
+			// Prepare the record icon including a context sensitive menu link wrapped around it:
+		$recordIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,$contentTreeArr['el']['icon'],'').' style="text-align: center; vertical-align: middle;" width="18" height="16" border="0" title="'.htmlspecialchars('['.$contentTreeArr['el']['table'].':'.$contentTreeArr['el']['uid'].']').'" alt="" />';
+		$titleBarLeftButtons = $this->translatorMode ? $recordIcon : $this->doc->wrapClickMenuOnIcon($recordIcon,$contentTreeArr['el']['table'], $contentTreeArr['el']['uid'], 1,'&amp;callingScriptId='.rawurlencode($this->doc->scriptID), 'new,copy,cut,pasteinto,pasteafter,delete');
+
+			// Prepare table specific settings:
+		switch ($contentTreeArr['el']['table']) {
+			case 'pages' :
+				$titleBarLeftButtons .= $this->translatorMode ? '' : $this->link_edit('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/edit2.gif','').' title="'.htmlspecialchars($LANG->sL('LLL:EXT:lang/locallang_mod_web_list.xml:editPage')).'" alt="" style="text-align: center; vertical-align: middle; border:0;" />',$contentTreeArr['el']['table'],$contentTreeArr['el']['uid']);
+				$titleBarRightButtons = '';
+
+				$addGetVars = ($this->currentLanguageUid?'&L='.$this->currentLanguageUid:'');
+				$viewPageOnClick = 'onclick= "'.htmlspecialchars(t3lib_BEfunc::viewOnClick($contentTreeArr['el']['uid'], $this->doc->backPath, t3lib_BEfunc::BEgetRootLine($contentTreeArr['el']['uid']),'','',$addGetVars)).'"';
+				$viewPageIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/zoom.gif','width="12" height="12"').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.xml:labels.showPage',1).'" hspace="3" alt="" style="text-align: center; vertical-align: middle;" />';
+				$titleBarLeftButtons .= '<a href="#" '.$viewPageOnClick.'>'.$viewPageIcon.'</a>';
+			break;
+			case 'tt_content' :
+				$languageUid = $contentTreeArr['el']['sys_language_uid'];
+
+				if ($this->translatorMode)	{
+					$titleBarRightButtons = '';
+				} else {
+						// Create CE specific buttons:
+					$linkMakeLocal = !$elementBelongsToCurrentPage ? $this->link_makeLocal('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,t3lib_extMgm::extRelPath('templavoila').'mod1/makelocalcopy.gif','').' title="'.$LANG->getLL('makeLocal').'" border="0" alt="" />', $parentPointer) : '';
+					$linkUnlink = $this->link_unlink('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/garbage.gif','').' title="'.$LANG->getLL('unlinkRecord').'" border="0" alt="" />', $parentPointer, FALSE);
+					$linkEdit = ($elementBelongsToCurrentPage ? $this->link_edit('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/edit2.gif','').' title="'.$LANG->getLL ('editrecord').'" border="0" alt="" />',$contentTreeArr['el']['table'],$contentTreeArr['el']['uid']) : '');
+
+					$titleBarRightButtons = $linkEdit . $this->clipboardObj->element_getSelectButtons ($parentPointer) . $linkMakeLocal . $linkUnlink;
+				}
+			break;
+		}
+
+			// Prepare the language icon:
+		$languageLabel = htmlspecialchars ($this->allAvailableLanguages[$contentTreeArr['el']['sys_language_uid']]['title']);
+		$languageIcon = $this->allAvailableLanguages[$languageUid]['flagIcon'] ? '<img src="'.$this->allAvailableLanguages[$languageUid]['flagIcon'].'" title="'.$languageLabel.'" alt="'.$languageLabel.'" style="text-align: center; vertical-align: middle;" />' : ($languageLabel && $languageUid ? '['.$languageLabel.']' : '');
+
+			// If there was a langauge icon and the language was not default or [all] and if that langauge is accessible for the user, then wrap the flag with an edit link (to support the "Click the flag!" principle for translators)
+		if ($languageIcon && $languageUid>0 && $GLOBALS['BE_USER']->checkLanguageAccess($languageUid) && $contentTreeArr['el']['table']==='tt_content')	{
+			$languageIcon = $this->link_edit($languageIcon, 'tt_content', $contentTreeArr['el']['uid'], TRUE);
+		}
+
+			// Create warning messages if neccessary:
+		$warnings = '';
+		if ($this->global_tt_content_elementRegister[$contentTreeArr['el']['uid']] > 1) {
+			$warnings .= '<br/>'.$this->doc->icons(2).' <em>'.htmlspecialchars(sprintf($LANG->getLL('warning_elementusedmorethanonce',''), $this->global_tt_content_elementRegister[$contentTreeArr['el']['uid']], $contentTreeArr['el']['uid'])).'</em>';
+		}
+
+			// Displaying warning for container content (in default sheet - a limitation) elements if localization is enabled:
+		$isContainerEl = count($contentTreeArr['sub']['sDEF']);
+		if (!$this->modTSconfig['properties']['disableContainerElementLocalizationWarning'] && $isContainerEl && $contentTreeArr['el']['table'] === 'tt_content' && $contentTreeArr['el']['CType'] === 'templavoila_pi1' && !$contentTreeArr['ds_meta']['langDisable'])	{
+			if ($contentTreeArr['ds_meta']['langChildren'])	{
+				if (!$this->modTSconfig['properties']['disableContainerElementLocalizationWarning_warningOnly']) {
+					$warnings .= '<br/>'.$this->doc->icons(2).' <b>'.$LANG->getLL('warning_containerInheritance_short').'</b>';
+				}
+			} else {
+				$warnings .= '<br/>'.$this->doc->icons(3).' <b>'.$LANG->getLL('warning_containerSeparate_short').'</b>';
+			}
+		}
+
+			// Create entry for this element:
+		$entries[] = array(
+			'indentLevel' => $indentLevel,
+			'icon' => $titleBarLeftButtons,
+			'title' => ($elementBelongsToCurrentPage?'':'<em>').htmlspecialchars($contentTreeArr['el']['title']).($elementBelongsToCurrentPage ? '' : '</em>'),
+			'warnings' => $warnings,
+			'controls' => $titleBarRightButtons.$controls,
+			'table' => $contentTreeArr['el']['table'],
+			'uid' =>  $contentTreeArr['el']['uid'],
+			'flag' => $languageIcon,
+			'isNewVersion' => $contentTreeArr['el']['_ORIG_uid'] ? TRUE : FALSE,
+			'elementTitlebarStyle' => (!$elementBelongsToCurrentPage ? 'background-color: '.$this->doc->bgColor6 : '')
+		);
+
+
+			// Create entry for localizaitons...
+		$this->render_outline_localizations($contentTreeArr, $entries, $indentLevel+1);
+
+			// Create entries for sub-elements in all sheets:
+		if ($contentTreeArr['sub'])	{
+			foreach($contentTreeArr['sub'] as $sheetKey => $sheetInfo)	{
+				if (is_array($sheetInfo))	{
+					$this->render_outline_subElements($contentTreeArr, $sheetKey, $entries, $indentLevel+1);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Rendering outline for child-elements
+	 *
+	 * @param	array		$contentTreeArr: DataStructure info array (the whole tree)
+	 * @param	string		$sheet: Which sheet to display
+	 * @param	array		$entries: Entries accumulated in this array (passed by reference)
+	 * @param	integer		$indentLevel: Indentation level
+	 * @return	void
+	 * @access protected
+	 */
+	function render_outline_subElements($contentTreeArr, $sheet, &$entries, $indentLevel)	{
+		global $LANG;
+
+			// Define l/v keys for current language:
+		$langChildren = intval($contentTreeArr['ds_meta']['langChildren']);
+		$langDisable = intval($contentTreeArr['ds_meta']['langDisable']);
+		$lKeys = $langDisable ? array('lDEF') : ($langChildren ? array('lDEF') : $this->translatedLanguagesArr_isoCodes['all_lKeys']);
+		$vKeys = $langDisable ? array('vDEF') : ($langChildren ? $this->translatedLanguagesArr_isoCodes['all_vKeys'] : array('vDEF'));
+
+			// Traverse container fields:
+		foreach($lKeys as $lKey)	{
+
+				// Traverse fields:
+			if (is_array($contentTreeArr['sub'][$sheet][$lKey]))	{
+				foreach($contentTreeArr['sub'][$sheet][$lKey] as $fieldID => $fieldValuesContent)	{
+					foreach($vKeys as $vKey)	{
+
+						if (is_array($fieldValuesContent[$vKey]))	{
+							$fieldContent = $fieldValuesContent[$vKey];
+
+								// Create flexform pointer pointing to "before the first sub element":
+							$subElementPointer = array (
+								'table' => $contentTreeArr['el']['table'],
+								'uid' => $contentTreeArr['el']['uid'],
+								'sheet' => $sheet,
+								'sLang' => $lKey,
+								'field' => $fieldID,
+								'vLang' => $vKey,
+								'position' => 0
+							);
+
+							if (!$this->translatorMode)	{
+									// "New" and "Paste" icon:
+								$newIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/new_el.gif','').' style="text-align: center; vertical-align: middle;" vspace="5" hspace="1" border="0" title="'.$LANG->getLL ('createnewrecord').'" alt="" />';
+								$controls = $this->link_new($newIcon, $subElementPointer);
+								$controls .= $this->clipboardObj->element_getPasteButtons($subElementPointer);
+							}
+
+								// Add entry for lKey level:
+							$specialPath = ($sheet!='sDEF'?'<'.$sheet.'>':'').($lKey!='lDEF'?'<'.$lKey.'>':'').($vKey!='vDEF'?'<'.$vKey.'>':'');
+							$entries[] = array(
+								'indentLevel' => $indentLevel,
+								'icon' => '',
+								'title' => '<b>'.$LANG->sL($fieldContent['meta']['title'],1).'</b>'.($specialPath ? ' <em>'.htmlspecialchars($specialPath).'</em>' : ''),
+								'id' => '<'.$sheet.'><'.$lKey.'><'.$fieldID.'><'.$vKey.'>',
+								'controls' => $controls
+							);
+
+								// Render the list of elements (and possibly call itself recursively if needed):
+							if (is_array($fieldContent['el_list']))	 {
+								foreach($fieldContent['el_list'] as $position => $subElementKey)	{
+									$subElementArr = $fieldContent['el'][$subElementKey];
+									if (!$subElementArr['el']['isHidden'] || $this->MOD_SETTINGS['tt_content_showHidden'])	{
+
+											// Modify the flexform pointer so it points to the position of the curren sub element:
+										$subElementPointer['position'] = $position;
+
+										if (!$this->translatorMode)	{
+												// "New" and "Paste" icon:
+											$newIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/new_el.gif','').' style="text-align: center; vertical-align: middle;" vspace="5" hspace="1" border="0" title="'.$LANG->getLL ('createnewrecord').'" alt="" />';
+											$controls = $this->link_new($newIcon, $subElementPointer);
+											$controls .= $this->clipboardObj->element_getPasteButtons ($subElementPointer);
+										}
+
+										$this->render_outline_element($subElementArr, &$entries, $indentLevel+1, $subElementPointer, $controls);
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	/**
+	 * Renders localized elements of a record
+	 *
+	 * @param	array		$contentTreeArr: Part of the contentTreeArr for the element
+	 * @param	array		$entries: Entries accumulated in this array (passed by reference)
+	 * @param	integer		$indentLevel: Indentation level
+	 * @return	string		HTML
+	 * @access protected
+	 * @see 	render_framework_singleSheet()
+	 */
+	function render_outline_localizations($contentTreeArr, &$entries, $indentLevel) {
+		global $LANG, $BE_USER;
+
+		if ($contentTreeArr['el']['table']=='tt_content' && $contentTreeArr['el']['sys_language_uid']<=0)	{
+
+				// Traverse the available languages of the page (not default and [All])
+			foreach($this->translatedLanguagesArr as $sys_language_uid => $sLInfo)	{
+				if ($sys_language_uid > 0 && $BE_USER->checkLanguageAccess($sys_language_uid))	{
+					switch((string)$contentTreeArr['localizationInfo'][$sys_language_uid]['mode'])	{
+						case 'exists':
+
+								// Get localized record:
+							$olrow = t3lib_BEfunc::getRecordWSOL('tt_content',$contentTreeArr['localizationInfo'][$sys_language_uid]['localization_uid']);
+
+								// Put together the records icon including content sensitive menu link wrapped around it:
+							$recordIcon_l10n = t3lib_iconWorks::getIconImage('tt_content',$olrow,$this->doc->backPath,'class="absmiddle" title="'.htmlspecialchars('[tt_content:'.$olrow['uid'].']').'"');
+							if (!$this->translatorMode)	{
+								$recordIcon_l10n = $this->doc->wrapClickMenuOnIcon($recordIcon_l10n,'tt_content',$olrow['uid'],1,'&amp;callingScriptId='.rawurlencode($this->doc->scriptID), 'new,copy,cut,pasteinto,pasteafter');
+							}
+
+							list($flagLink_Begin, $flagLink_End) = explode('|*|', $this->link_edit('|*|', 'tt_content', $olrow['uid'], TRUE));
+
+								// Create entry for this element:
+							$entries[] = array(
+								'indentLevel' => $indentLevel,
+								'icon' => $recordIcon_l10n,
+								'title' => t3lib_BEfunc::getRecordTitle('tt_content', $olrow),
+								'table' => 'tt_content',
+								'uid' =>  $olrow['uid'],
+								'flag' => $flagLink_Begin.($sLInfo['flagIcon'] ? '<img src="'.$sLInfo['flagIcon'].'" style="text-align: center; vertical-align: middle;" alt="'.htmlspecialchars($sLInfo['title']).'" title="'.htmlspecialchars($sLInfo['title']).'" />' : $sLInfo['title']).$flagLink_End,
+								'isNewVersion' => $olrow['_ORIG_uid'] ? TRUE : FALSE,
+							);
+						break;
+					}
+				}
+			}
+		}
 	}
 
 
