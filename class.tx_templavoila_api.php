@@ -33,66 +33,65 @@
  *
  *
  *
- *  110: class tx_templavoila_api
- *  123:     function __construct ($rootTable = 'pages')
- *  133:     function tx_templavoila_api ($alternativeRootTable = 'pages')
+ *  109: class tx_templavoila_api
+ *  122:     function __construct ($rootTable = 'pages')
+ *  132:     function tx_templavoila_api ($alternativeRootTable = 'pages')
  *
  *              SECTION: Element manipulation functions (public)
- *  156:     function insertElement ($destinationPointer, $elementRow)
- *  179:     function insertElement_createRecord ($destinationPointer, $row)
- *  231:     function insertElement_setElementReferences ($destinationPointer, $uid)
- *  253:     function moveElement ($sourcePointer, $destinationPointer)
- *  268:     function moveElement_setElementReferences ($sourcePointer, $destinationPointer)
- *  284:     function copyElement ($sourcePointer, $destinationPointer, $copySubElements = TRUE)
- *  299:     function localizeElement ($sourcePointer, $languageKey)
- *  354:     function referenceElement ($sourcePointer, $destinationPointer)
- *  371:     function referenceElementByUid ($uid, $destinationPointer)
- *  387:     function unlinkElement ($sourcePointer)
- *  400:     function deleteElement ($sourcePointer)
+ *  155:     function insertElement ($destinationPointer, $elementRow)
+ *  178:     function insertElement_createRecord ($destinationPointer, $row)
+ *  237:     function insertElement_setElementReferences ($destinationPointer, $uid)
+ *  259:     function moveElement ($sourcePointer, $destinationPointer)
+ *  274:     function moveElement_setElementReferences ($sourcePointer, $destinationPointer)
+ *  290:     function copyElement ($sourcePointer, $destinationPointer, $copySubElements = TRUE)
+ *  305:     function localizeElement ($sourcePointer, $languageKey)
+ *  360:     function referenceElement ($sourcePointer, $destinationPointer)
+ *  377:     function referenceElementByUid ($uid, $destinationPointer)
+ *  393:     function unlinkElement ($sourcePointer)
+ *  406:     function deleteElement ($sourcePointer)
  *
  *              SECTION: Processing functions (protected)
- *  425:     function process ($mode, $sourcePointer, $destinationPointer = NULL, $onlyHandleReferences = FALSE)
- *  482:     function process_move ($sourcePointer, $destinationPointer, $sourceReferencesArr, $destinationReferencesArr, $sourceParentRecord, $destinationParentRecord, $elementRecord, $onlyHandleReferences)
- *  551:     function process_copy ($sourcePointer, $destinationPointer, $sourceReferencesArr, $destinationReferencesArr, $sourceParentRecord, $destinationParentRecord, $elementUid)
- *  588:     function process_copyRecursively ($sourcePointer, $destinationPointer, $sourceReferencesArr, $destinationReferencesArr, $sourceParentRecord, $destinationParentRecord, $elementUid)
- *  627:     function process_reference ($destinationPointer, $destinationReferencesArr, $elementUid)
- *  643:     function process_unlink ($sourcePointer, $sourceReferencesArr)
- *  660:     function process_delete ($sourcePointer, $sourceReferencesArr, $elementUid)
+ *  431:     function process ($mode, $sourcePointer, $destinationPointer = NULL, $onlyHandleReferences = FALSE)
+ *  488:     function process_move ($sourcePointer, $destinationPointer, $sourceReferencesArr, $destinationReferencesArr, $sourceParentRecord, $destinationParentRecord, $elementRecord, $onlyHandleReferences)
+ *  557:     function process_copy ($sourcePointer, $destinationPointer, $sourceReferencesArr, $destinationReferencesArr, $sourceParentRecord, $destinationParentRecord, $elementUid)
+ *  594:     function process_copyRecursively ($sourcePointer, $destinationPointer, $sourceReferencesArr, $destinationReferencesArr, $sourceParentRecord, $destinationParentRecord, $elementUid)
+ *  633:     function process_reference ($destinationPointer, $destinationReferencesArr, $elementUid)
+ *  649:     function process_unlink ($sourcePointer, $sourceReferencesArr)
+ *  666:     function process_delete ($sourcePointer, $sourceReferencesArr, $elementUid)
  *
  *              SECTION: Flexform helper functions (public)
- *  703:     function flexform_getValidPointer ($flexformPointer)
- *  748:     function flexform_getPointerFromString ($flexformPointerString)
- *  787:     function flexform_getStringFromPointer ($flexformPointer)
- *  820:     function flexform_getRecordByPointer ($flexformPointer)
- *  844:     function flexform_getPointersByRecord ($elementUid, $pageUid)
- *  869:     function flexform_getElementReferencesFromXML($flexformXML, $flexformPointer)
- *  903:     function flexform_getListOfSubElementUidsRecursively ($table, $uid, &$recordUids)
- *  946:     function flexform_getFlexformPointersToSubElementsRecursively ($table, $uid, &$flexformPointers)
+ *  709:     function flexform_getValidPointer ($flexformPointer)
+ *  754:     function flexform_getPointerFromString ($flexformPointerString)
+ *  793:     function flexform_getStringFromPointer ($flexformPointer)
+ *  826:     function flexform_getRecordByPointer ($flexformPointer)
+ *  850:     function flexform_getPointersByRecord ($elementUid, $pageUid)
+ *  875:     function flexform_getElementReferencesFromXML($flexformXML, $flexformPointer)
+ *  909:     function flexform_getListOfSubElementUidsRecursively ($table, $uid, &$recordUids)
+ *  952:     function flexform_getFlexformPointersToSubElementsRecursively ($table, $uid, &$flexformPointers)
  *
  *              SECTION: Flexform helper functions (protected)
- * 1011:     function flexform_insertElementReferenceIntoList($currentReferencesArr, $position, $elementUid)
- * 1051:     function flexform_removeElementReferenceFromList($currentReferencesArr, $position)
- * 1073:     function flexform_storeElementReferencesListInRecord ($referencesArr, $destinationPointer)
+ * 1017:     function flexform_insertElementReferenceIntoList($currentReferencesArr, $position, $elementUid)
+ * 1057:     function flexform_removeElementReferenceFromList($currentReferencesArr, $position)
+ * 1079:     function flexform_storeElementReferencesListInRecord ($referencesArr, $destinationPointer)
  *
  *              SECTION: Data structure helper functions (public)
- * 1114:     function ds_getFieldNameByColumnPosition ($contextPageUid, $columnPosition)
- * 1168:     function ds_getExpandedDataStructure ($table, $row)
- * 1205:     function ds_getAvailableTORecords ($pageUid)
+ * 1120:     function ds_getFieldNameByColumnPosition ($contextPageUid, $columnPosition)
+ * 1174:     function ds_getExpandedDataStructure ($table, $row)
+ * 1211:     function ds_getAvailableTORecords ($pageUid)
  *
  *              SECTION: Get content structure of page
- * 1247:     function getContentTree($table, $row, $includePreviewData=TRUE)
- * 1277:     function getContentTree_element($table, $row, &$tt_content_elementRegister, $prevRecList='')
- * 1381:     function getContentTree_processSubContent($listOfSubElementUids, &$tt_content_elementRegister, $prevRecList)
- * 1430:     function getContentTree_processSubElements($flexformContentArr, $tree, $sheetKey, $lKey, $fieldKey, $vKey, $fieldData, $row)
- * 1463:     function getContentTree_getLocalizationInfoForElement($contentTreeArr, &$tt_content_elementRegister)
+ * 1254:     function getContentTree($table, $row, $includePreviewData=TRUE)
+ * 1284:     function getContentTree_element($table, $row, &$tt_content_elementRegister, $prevRecList='')
+ * 1394:     function getContentTree_processSubContent($listOfSubElementUids, &$tt_content_elementRegister, $prevRecList)
+ * 1437:     function getContentTree_getLocalizationInfoForElement($contentTreeArr, &$tt_content_elementRegister)
  *
  *              SECTION: Miscellaneous functions (protected)
- * 1536:     function setTCEmainRunningFlag ($flag)
- * 1548:     function getTCEmainRunningFlag ()
- * 1559:     function getStorageFolderPid($pageUid)
- * 1577:     function loadWebsiteLanguages()
+ * 1510:     function setTCEmainRunningFlag ($flag)
+ * 1522:     function getTCEmainRunningFlag ()
+ * 1533:     function getStorageFolderPid($pageUid)
+ * 1551:     function loadWebsiteLanguages()
  *
- * TOTAL FUNCTIONS: 43
+ * TOTAL FUNCTIONS: 42
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -118,7 +117,7 @@ class tx_templavoila_api {
 	 *
 	 * @param	string		$rootTable: Usually the root table is "pages" but another table can be specified (eg. "tt_content")
 	 * @return	void
-	 * @access public
+	 * @access	public
 	 */
 	function __construct ($rootTable = 'pages') {
 		$this->rootTable = $rootTable;
@@ -151,7 +150,7 @@ class tx_templavoila_api {
 	 * @param	array		$destinationPointer: Flexform pointer defining the parent location of the new element. Position refers to the element _after_ which the new element should be inserted. Position == 0 means before the first element.
 	 * @param	array		$elementRow: Array of field keys and values for the new content element record
 	 * @return	mixed		The UID of the newly created record or FALSE if operation was not successful
-	 * @access public
+	 * @access	public
 	 */
 	function insertElement ($destinationPointer, $elementRow) {
 		if ($this->debug) t3lib_div::devLog ('API: insertElement()', 'templavoila', 0, array ('destinationPointer' => $destinationPointer, 'elementRow' => $elementRow));
@@ -174,13 +173,20 @@ class tx_templavoila_api {
 	 * @param	array		$destinationPointer: flexform pointer to the parent element of the new record
 	 * @param	array		$row: The record data to insert into the database
 	 * @return	mixed		The UID of the newly created record or FALSE if operation was not successful
-	 * @access public
+	 * @access	public
 	 */
 	function insertElement_createRecord ($destinationPointer, $row) {
 		if ($this->debug) t3lib_div::devLog ('API: insertElement_createRecord()', 'templavoila', 0, array ('destinationPointer' => $destinationPointer, 'row' => $row));
 
-		$parentRecord = t3lib_BEfunc::getRecord($destinationPointer['table'], $destinationPointer['uid'],'uid,pid,t3ver_oid');
-		$newRecordPid = ($destinationPointer['table'] == 'pages' ? ($parentRecord['pid'] == -1 ? $parentRecord['t3ver_oid'] : $parentRecord['uid']) : $parentRecord['pid']);
+		$parentRecord = t3lib_BEfunc::getRecord($destinationPointer['table'], $destinationPointer['uid'],'uid,pid,t3ver_oid,tx_templavoila_flex');
+
+		if ($destinationPointer['position'] > 0) {
+			$currentReferencesArr = $this->flexform_getElementReferencesFromXML ($parentRecord['tx_templavoila_flex'], $destinationPointer);
+			$uidOfBeforeElement = $currentReferencesArr[$destinationPointer['position']];
+			$newRecordPid = -$uidOfBeforeElement;
+		} else {
+			$newRecordPid = ($destinationPointer['table'] == 'pages' ? ($parentRecord['pid'] == -1 ? $parentRecord['t3ver_oid'] : $parentRecord['uid']) : $parentRecord['pid']);
+		}
 
 		$dataArr = array();
 		$dataArr['tt_content']['NEW'] = $row;
@@ -226,7 +232,7 @@ class tx_templavoila_api {
 	 * @param	array		$destinationPointer: Flexform pointer defining the parent element of the new element. Position refers to the element _after_ which the new element should be inserted. Position == 0 means before the first element.
 	 * @param	array		$uid: UID of the tt_content record
 	 * @return	void
-	 * @access public
+	 * @access	public
 	 */
 	function insertElement_setElementReferences ($destinationPointer, $uid) {
 		if ($this->debug) t3lib_div::devLog ('API: insertElement_setElementReferences()', 'templavoila', 0, array ('destinationPointer' => $destinationPointer, 'uid' => $uid));
@@ -248,7 +254,7 @@ class tx_templavoila_api {
 	 * @param	array		$sourcePointer: flexform pointer pointing to the element which shall be moved
 	 * @param	array		$destinationPointer: flexform pointer to the new location
 	 * @return	boolean		TRUE if operation was successfuly, otherwise false
-	 * @access public
+	 * @access	public
 	 */
 	function moveElement ($sourcePointer, $destinationPointer) {
 		if ($this->debug) t3lib_div::devLog ('API: moveElement()', 'templavoila', 0, array ('sourcePointer' => $sourcePointer, 'destinationPointer' => $destinationPointer));
@@ -263,7 +269,7 @@ class tx_templavoila_api {
 	 * @param	array		$sourcePointer: flexform pointer pointing to the element which shall be moved
 	 * @param	array		$destinationPointer: flexform pointer to the new location
 	 * @return	boolean		TRUE if operation was successfuly, otherwise false
-	 * @access public
+	 * @access	public
 	 */
 	function moveElement_setElementReferences ($sourcePointer, $destinationPointer) {
 		if ($this->debug) t3lib_div::devLog ('API: moveElement_setElementReferences()', 'templavoila', 0, array ('sourcePointer' => $sourcePointer, 'destinationPointer' => $destinationPointer));
@@ -279,7 +285,7 @@ class tx_templavoila_api {
 	 * @param	array		$destinationPointer: flexform pointer to the location for the copy
 	 * @param	boolean		$copySubElements: If set to TRUE, also all sub elements will be truly copied
 	 * @return	mixed		UID of the created copy, otherwise FALSE
-	 * @access public
+	 * @access	public
 	 */
 	function copyElement ($sourcePointer, $destinationPointer, $copySubElements = TRUE) {
 		if ($this->debug) t3lib_div::devLog ('API: copyElement()', 'templavoila', 0, array ('sourcePointer' => $sourcePointer, 'destinationPointer' => $destinationPointer, 'copySubElements' => $copySubElements));
@@ -294,7 +300,7 @@ class tx_templavoila_api {
 	 * @param	array		$sourcePointer: flexform pointer pointing to the element which shall be localized
 	 * @param	string		$languageKey: A two letter ISO language key (eg. 'EN')
 	 * @return	mixed		UID of the created copy, otherwise FALSE
-	 * @access public
+	 * @access	public
 	 */
 	function localizeElement ($sourcePointer, $languageKey) {
 		global $TCA;
@@ -349,7 +355,7 @@ class tx_templavoila_api {
 	 * @param	array		$sourcePointer: flexform pointer pointing to the reference target
 	 * @param	array		$destinationPointer: flexform pointer to the location where the reference should be stored
 	 * @return	boolean		TRUE if operation was successfuly, otherwise false
-	 * @access public
+	 * @access	public
 	 */
 	function referenceElement ($sourcePointer, $destinationPointer) {
 		if ($this->debug) t3lib_div::devLog ('API: referenceElement()', 'templavoila', 0, array ('sourcePointer' => $sourcePointer, 'destinationPointer' => $destinationPointer));
@@ -366,7 +372,7 @@ class tx_templavoila_api {
 	 * @param	integer		$uid: UID of the tt_content element which shall be referenced
 	 * @param	array		$destinationPointer: flexform pointer to the location where the reference should be stored
 	 * @return	boolean		TRUE if operation was successfuly, otherwise false
-	 * @access public
+	 * @access	public
 	 */
 	function referenceElementByUid ($uid, $destinationPointer) {
 		if ($this->debug) t3lib_div::devLog ('API: referenceElementByUid()', 'templavoila', 0, array ('uid' => $uid, 'destinationPointer' => $destinationPointer));
@@ -382,7 +388,7 @@ class tx_templavoila_api {
 	 *
 	 * @param	array		$sourcePointer: flexform pointer pointing to the reference which shall be removed
 	 * @return	boolean		TRUE if operation was successfuly, otherwise false
-	 * @access public
+	 * @access	public
 	 */
 	function unlinkElement ($sourcePointer) {
 		if ($this->debug) t3lib_div::devLog ('API: unlinkElement()', 'templavoila', 0, array ('sourcePointer' => $sourcePointer));
@@ -395,7 +401,7 @@ class tx_templavoila_api {
 	 *
 	 * @param	array		$sourcePointer: flexform pointer pointing to the element which shall be deleted
 	 * @return	boolean		TRUE if operation was successfuly, otherwise false
-	 * @access public
+	 * @access	public
 	 */
 	function deleteElement ($sourcePointer) {
 		if ($this->debug) t3lib_div::devLog ('API: deleteElement()', 'templavoila', 0, array ('sourcePointer' => $sourcePointer));
@@ -420,7 +426,7 @@ class tx_templavoila_api {
 	 * @param	mixed		$destinationPointer: flexform pointer to the destination location (if neccessary)
 	 * @param	boolean		$onlyHandleReferences: If set, the record itself won't be moved, deleted etc. but only the references are set correctly. Use this feature if you are sure that the record has been handled before (eg. by TCEmain)
 	 * @return	mixed		TRUE or something else (depends on operation) if operation was successful, otherwise FALSE
-	 * @access protected
+	 * @access	protected
 	 */
 	function process ($mode, $sourcePointer, $destinationPointer = NULL, $onlyHandleReferences = FALSE) {
 
@@ -477,7 +483,7 @@ class tx_templavoila_api {
 	 * @param	array		$elementRecord: The database record of the element to be moved
 	 * @param	boolean		$onlyHandleReferences: If TRUE, only the references will be set, the record itself will not be moved (because that happens elsewhere)
 	 * @return	boolean		TRUE if operation was successfuly, otherwise false
-	 * @access protected
+	 * @access	protected
 	 */
 	function process_move ($sourcePointer, $destinationPointer, $sourceReferencesArr, $destinationReferencesArr, $sourceParentRecord, $destinationParentRecord, $elementRecord, $onlyHandleReferences) {
 
@@ -546,7 +552,7 @@ class tx_templavoila_api {
 	 * @param	array		$destinationParentRecord: Database record of the destination location (either from table 'pages' or 'tt_content')
 	 * @param	integer		$elementUid: UID of the element to be copied
 	 * @return	mixed		The UID of the newly created copy or FALSE if an error occurred.
-	 * @access protected
+	 * @access	protected
 	 */
 	function process_copy ($sourcePointer, $destinationPointer, $sourceReferencesArr, $destinationReferencesArr, $sourceParentRecord, $destinationParentRecord, $elementUid) {
 
@@ -583,7 +589,7 @@ class tx_templavoila_api {
 	 * @param	array		$destinationParentRecord: Database record of the destination location (either from table 'pages' or 'tt_content')
 	 * @param	integer		$elementUid: UID of the element to be copied
 	 * @return	mixed		The UID of the newly created copy or FALSE if an error occurred.
-	 * @access protected
+	 * @access	protected
 	 */
 	function process_copyRecursively ($sourcePointer, $destinationPointer, $sourceReferencesArr, $destinationReferencesArr, $sourceParentRecord, $destinationParentRecord, $elementUid) {
 
@@ -622,7 +628,7 @@ class tx_templavoila_api {
 	 * @param	array		$destinationReferencesArr: Current list of the parent destination's element references
 	 * @param	integer		$elementUid: UID of the tt_content element to be referenced
 	 * @return	boolean		TRUE if the operation was successful or FALSE if an error occurred.
-	 * @access protected
+	 * @access	protected
 	 */
 	function process_reference ($destinationPointer, $destinationReferencesArr, $elementUid) {
 
@@ -638,7 +644,7 @@ class tx_templavoila_api {
 	 * @param	array		$sourcePointer: flexform pointer pointing to the reference which shall be removed
 	 * @param	array		$sourceReferencesArr: Current list of the parent source's element references
 	 * @return	boolean		TRUE if the operation was successful, otherwise FALSE
-	 * @access protected
+	 * @access	protected
 	 */
 	function process_unlink ($sourcePointer, $sourceReferencesArr) {
 
@@ -655,7 +661,7 @@ class tx_templavoila_api {
 	 * @param	array		$sourceReferencesArr: Current list of the parent source's element references
 	 * @param	integer		$elementUid: UID of the tt_content element to be deleted
 	 * @return	boolean		TRUE if the operation was successful, otherwise FALSE
-	 * @access protected
+	 * @access	protected
 	 */
 	function process_delete ($sourcePointer, $sourceReferencesArr, $elementUid) {
 
@@ -698,7 +704,7 @@ class tx_templavoila_api {
 	 *
 	 * @param	mixed		$flexformPointer: A flexform pointer referring to the content element. Although an array is preferred, you may also pass a string which will be converted automatically by flexform_getPointerFromString()
 	 * @return	mixed		The valid flexform pointer array or FALSE if it was not valid
-	 * @access public
+	 * @access	public
 	 */
 	function flexform_getValidPointer ($flexformPointer) {
 		global $BE_USER;
@@ -743,7 +749,7 @@ class tx_templavoila_api {
 	 *
 	 * @param	string		$flexformPointerString: A string of the format "table:uid:sheet:sLang:field:vLang:position". The string may additionally contain "/table:uid" which is used to check the target record of the pointer
 	 * @return	array		A flexform pointer array which can be used with the functions in tx_templavoila_api
-	 * @access public
+	 * @access	public
 	 */
 	function flexform_getPointerFromString ($flexformPointerString) {
 
@@ -782,7 +788,7 @@ class tx_templavoila_api {
 	 *
 	 * @param	array		$flexformPointer: A valid flexform pointer array
 	 * @return	mixed		A string of the format "table:uid:sheet:sLang:field:vLang:position". The string might additionally contain "/table:uid" which is used to check the target record of the pointer. If an error occurs: FALSE
-	 * @access public
+	 * @access	public
 	 */
 	function flexform_getStringFromPointer ($flexformPointer) {
 
@@ -815,7 +821,7 @@ class tx_templavoila_api {
 	 *
 	 * @param	mixed		$flexformPointer: A flexform pointer referring to the content element. Although an array is preferred, you may also pass a string which will be converted automatically by flexform_getPointerFromString()
 	 * @return	mixed		The record row or FALSE if not successful
-	 * @access public
+	 * @access	public
 	 */
 	function flexform_getRecordByPointer ($flexformPointer) {
 
@@ -839,7 +845,7 @@ class tx_templavoila_api {
 	 * @param	integer		$elementUid: UID of a tt_content record
 	 * @param	integer		$pageUid: UID of the page to search in
 	 * @return	array		Array of flexform pointers
-	 * @access public
+	 * @access	public
 	 */
 	function flexform_getPointersByRecord ($elementUid, $pageUid) {
 	    $flexformPointers = false; // prevent 'used before initialized' warning
@@ -864,7 +870,7 @@ class tx_templavoila_api {
 	 * @param	string		$flexformXML: XML content of a flexform field
 	 * @param	array		$flexformPointer: Pointing to a field in the XML structure to get the list of element references from.
 	 * @return	mixed		Numerical array tt_content uids or FALSE if an error occurred (eg. flexformXML was no valid XML)
-	 * @access public
+	 * @access	public
 	 */
 	function flexform_getElementReferencesFromXML($flexformXML, $flexformPointer)	{
 
@@ -898,7 +904,7 @@ class tx_templavoila_api {
 	 * @param	integer		$uid: UID of the parent element
 	 * @param	array		$recordUids: Array of record UIDs - used internally, don't touch (but pass an empty array)
 	 * @return	array		Array of record UIDs
-	 * @access public
+	 * @access	public
 	 */
 	function flexform_getListOfSubElementUidsRecursively ($table, $uid, &$recordUids) {
 
@@ -941,7 +947,7 @@ class tx_templavoila_api {
 	 * @param	integer		$uid: UID of the parent element
 	 * @param	array		$flexformPointers: Array of flexform pointers - used internally, don't touch
 	 * @return	array		Array of flexform pointers
-	 * @access public
+	 * @access	public
 	 */
 	function flexform_getFlexformPointersToSubElementsRecursively ($table, $uid, &$flexformPointers) {
 
@@ -1005,7 +1011,7 @@ class tx_templavoila_api {
 	 * @param	integer		$position: Position where the new reference should be inserted: 0 = before the first element, 1 = after the first, 2 = after the second etc., -1 = insert as last element
 	 * @param	integer		$elementUid: UID of a tt_content element
 	 * @return	array		Array with an updated reference list
-	 * @access protected
+	 * @access	protected
 	 * @see		flexform_getElementReferencesFromXML(), flexform_removeElementReferenceFromList()
 	 */
 	function flexform_insertElementReferenceIntoList($currentReferencesArr, $position, $elementUid)	{
@@ -1045,7 +1051,7 @@ class tx_templavoila_api {
 	 * @param	array		$currentReferencesArr: Array of tt_content uids from a current reference list
 	 * @param	integer		$position: Position of the element reference which should be removed. 1 = first element, 2 = second element etc.
 	 * @return	array		Array with an updated reference list
-	 * @access protected
+	 * @access	protected
 	 * @see		flexform_getElementReferencesFromXML(), flexform_insertElementReferenceIntoList()
 	 */
 	function flexform_removeElementReferenceFromList($currentReferencesArr, $position)	{
@@ -1068,7 +1074,7 @@ class tx_templavoila_api {
 	 * @param	array		$referencesArr: The array of tt_content uids (references list) to store in the record
 	 * @param	array		$destinationPointer: Flexform pointer to the location where the references list should be stored.
 	 * @return	void
-	 * @access protected
+	 * @access	protected
 	 */
 	function flexform_storeElementReferencesListInRecord ($referencesArr, $destinationPointer) {
 		if ($this->debug) t3lib_div::devLog ('API: flexform_storeElementReferencesListInRecord()', 'templavoila', 0, array ('referencesArr' => $referencesArr, 'destinationPointer' => $destinationPointer));
@@ -1109,7 +1115,7 @@ class tx_templavoila_api {
 	 * @param	array		$contextPageUid: The (current) page uid, used to determine which page datastructure is selected
 	 * @param	integer		$columnPosition: Column number to search a field for
 	 * @return	mixed		Either the field name relating to the given column number or FALSE if all fall back methods failed and no suitable field could be found.
-	 * @access public
+	 * @access	public
 	 */
 	function ds_getFieldNameByColumnPosition ($contextPageUid, $columnPosition) {
 		global $TCA;
@@ -1163,7 +1169,7 @@ class tx_templavoila_api {
 	 * @param	string		$table: The table name, usually "pages" or "tt_content"
 	 * @param	array		$row: The data row (used to get DS if DS is dependant on the data in the record)
 	 * @return	array		The data structure, expanded for all sheets inside.
-	 * @access public
+	 * @access	public
 	 */
 	function ds_getExpandedDataStructure ($table, $row) {
 		global $TCA;
@@ -1200,7 +1206,7 @@ class tx_templavoila_api {
 	 *
 	 * @param	integer		$pageUid: (current) page uid, used for finding the correct storage folder
 	 * @return	mixed		Array of Template Object records or FALSE if an error occurred.
-	 * @access public
+	 * @access	public
 	 */
 	function ds_getAvailableTORecords ($pageUid) {
 		global $TYPO3_DB;
@@ -1243,7 +1249,7 @@ class tx_templavoila_api {
 	 * @param	array		$row: Record row for table (must be overlaid with workspace data)
 	 * @param	boolean		$includePreviewData: If set, preview related data is included.
 	 * @return	array		Array with tree and register of used content elements
-	 * @access public
+	 * @access	public
 	 */
 	function getContentTree($table, $row, $includePreviewData=TRUE)	{
 
@@ -1273,7 +1279,7 @@ class tx_templavoila_api {
 	 * @param	array		$tt_content_elementRegister: Register of used tt_content elements, don't mess with it! (passed by reference since data is built up)
 	 * @param	string		$prevRecList: comma separated list of uids, used internally for recursive calls. Don't mess with it!
 	 * @return	array		The content tree
-	 * @access protected
+	 * @access	protected
 	 */
 	function getContentTree_element($table, $row, &$tt_content_elementRegister, $prevRecList='')	{
 		global $TCA, $LANG;
@@ -1344,7 +1350,7 @@ class tx_templavoila_api {
 								foreach($vKeys as $vKey)	{
 									$tree['previewData']['sheets'][$sheetKey][$fieldKey]['data'][$lKey][$vKey] = $flexformContentArr['data'][$sheetKey][$lKey][$fieldKey][$vKey];
 								}
-									
+
 								if ($fieldData['type'] == 'array')	{
 									$tree['previewData']['sheets'][$sheetKey][$fieldKey]['subElements'][$lKey] = $flexformContentArr['data'][$sheetKey][$lKey][$fieldKey]['el'];
 								}
@@ -1383,7 +1389,7 @@ class tx_templavoila_api {
 	 * @param	array		$tt_content_elementRegister: Register of tt_content elements used on the page (passed by reference since it is modified)
 	 * @param	string		$prevRecList: List of previously processed record uids
 	 * @return	array		The sub tree for these elements
-	 * @access protected
+	 * @access	protected
 	 */
 	function getContentTree_processSubContent($listOfSubElementUids, &$tt_content_elementRegister, $prevRecList) {
 		global $TCA;
@@ -1425,7 +1431,7 @@ class tx_templavoila_api {
 	 * @param	array		$contentTreeArr: Part of the content tree of the element to create the localization information for.
 	 * @param	array		$tt_content_elementRegister: Array of sys_language UIDs with some information as the value
 	 * @return	array		Localization information
-	 * @access protected
+	 * @access	protected
 	 * @see	getContentTree_element()
 	 */
 	function getContentTree_getLocalizationInfoForElement($contentTreeArr, &$tt_content_elementRegister) {
@@ -1499,7 +1505,7 @@ class tx_templavoila_api {
 	 *
 	 * @param	boolean		$flag: If TRUE, our user functions will be omitted
 	 * @return	void
-	 * @access protected
+	 * @access	protected
 	 */
 	function setTCEmainRunningFlag ($flag) {
 		$GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_api']['apiIsRunningTCEmain'] = $flag;
@@ -1511,7 +1517,7 @@ class tx_templavoila_api {
 	 * avoid infinite loops and other bad effects.
 	 *
 	 * @return	boolean		TRUE if flag is set, otherwise FALSE;
-	 * @access protected
+	 * @access	protected
 	 */
 	function getTCEmainRunningFlag () {
 		return $GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_api']['apiIsRunningTCEmain'] ? TRUE : FALSE;
@@ -1522,7 +1528,7 @@ class tx_templavoila_api {
 	 *
 	 * @param	integer		$pageUid: Context page uid
 	 * @return	integer		PID of the storage folder
-	 * @access public
+	 * @access	public
 	 */
 	function getStorageFolderPid($pageUid)	{
 

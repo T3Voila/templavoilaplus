@@ -62,6 +62,12 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 		$this->apiObj = new tx_templavoila_api;
 		$BE_USER->setWorkspace(0);	
 	}
+	
+	public function tearDown () {
+		global $BE_USER;
+		
+		$BE_USER->setWorkspace(0);	
+	}
 
 
 
@@ -341,6 +347,67 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 			// Try to insert the element with invalid parent table:
 		$elementUid = $this->apiObj->insertElement ($destinationPointer, $row);
 		self::assertFalse ($elementUid, 'Trying to insert a content element into invalid table did not return FALSE!');
+	}
+
+	public function test_insertElement_sortingField() {
+		global $TYPO3_DB, $BE_USER;
+
+		$BE_USER->setWorkspace (0);
+
+		$tce = t3lib_div::makeInstance('t3lib_TCEmain');
+		$tce->stripslashes_values=0;
+
+		$this->fixture_createTestPage ();
+		$this->fixture_createTestPageDSTO();
+
+			// Delete old test content elements:			
+		$TYPO3_DB->exec_DELETEquery ('tt_content', 'header LIKE "'.$this->testCEHeader.'%"');
+		
+			// Create 3 new content elements:
+		$elementUids = array();
+		for ($i=0; $i<3; $i++) {
+			$row = $this->fixture_getContentElementRow_TEXT();
+			$row['bodytext'] = 'move test element #'.($i+1);
+			$destinationPointer = array(
+				'table' => 'pages',
+				'uid'   => $this->testPageUID,
+				'sheet' => 'sDEF',
+				'sLang' => 'lDEF',
+				'field' => 'field_content',
+				'vLang' => 'vDEF',
+				'position' => $i
+			);
+			$elementUids[($i+1)] = $this->apiObj->insertElement ($destinationPointer, $row);
+		}
+
+		 	// Check if the sorting field has been set correctly:
+		$elementRecords[1] = t3lib_beFunc::getRecordRaw ('tt_content', 'uid='.$elementUids[1], 'sorting');		
+		$elementRecords[2] = t3lib_beFunc::getRecordRaw ('tt_content', 'uid='.$elementUids[2], 'sorting');		
+		$elementRecords[3] = t3lib_beFunc::getRecordRaw ('tt_content', 'uid='.$elementUids[3], 'sorting');
+		
+		$orderIsCorrect = $elementRecords[1]['sorting'] < $elementRecords[2]['sorting'] && $elementRecords[2]['sorting'] < $elementRecords[3]['sorting']; 
+		self::assertTrue ($orderIsCorrect, 'The sorting field has not been set correctly after inserting three CEs with insertElement()!');
+
+			// Insert yet another element after the first:
+		$row = $this->fixture_getContentElementRow_TEXT();
+		$row['bodytext'] = 'move test element #4';
+		$destinationPointer = array(
+			'table' => 'pages',
+			'uid'   => $this->testPageUID,
+			'sheet' => 'sDEF',
+			'sLang' => 'lDEF',
+			'field' => 'field_content',
+			'vLang' => 'vDEF',
+			'position' => 1
+		);
+		$elementUids[4] = $this->apiObj->insertElement ($destinationPointer, $row);
+		$elementRecords[4] = t3lib_beFunc::getRecordRaw ('tt_content', 'uid='.$elementUids[4], 'sorting');
+
+		$orderIsCorrect = 
+			$elementRecords[1]['sorting'] < $elementRecords[4]['sorting'] && 
+			$elementRecords[4]['sorting'] < $elementRecords[2]['sorting'] && 
+			$elementRecords[2]['sorting'] < $elementRecords[3]['sorting']; 
+		self::assertTrue ($orderIsCorrect, 'The sorting field has not been set correctly after inserting a forth CE after the first with insertElement()!');
 	}
 
 
@@ -1623,7 +1690,87 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 						
 		self::assertTrue ($isOkay, 'The localized record has not the expected content!');
 	}
-	
+
+
+
+
+
+	/*********************************************************
+	 *
+	 * TCE MAIN TESTS
+	 * 
+	 * These tests emulate and check actions carried
+	 * out by non-TemplaVoila-aware extensions or core modules
+	 * like the list module
+	 *
+	 *********************************************************/
+
+	public function test_tcemain_moveUp() {
+		global $TYPO3_DB, $BE_USER;
+
+		$BE_USER->setWorkspace (0);
+
+		$tce = t3lib_div::makeInstance('t3lib_TCEmain');
+		$tce->stripslashes_values=0;
+
+		$this->fixture_createTestPage ();
+		$this->fixture_createTestPageDSTO();
+
+			// Delete old test content elements:			
+		$TYPO3_DB->exec_DELETEquery ('tt_content', 'header LIKE "'.$this->testCEHeader.'%"');
+		
+			// Create 3 new content elements:
+		$elementUids = array();
+		for ($i=0; $i<3; $i++) {
+			$row = $this->fixture_getContentElementRow_TEXT();
+			$row['bodytext'] = 'move test element #'.($i+1);
+			$destinationPointer = array(
+				'table' => 'pages',
+				'uid'   => $this->testPageUID,
+				'sheet' => 'sDEF',
+				'sLang' => 'lDEF',
+				'field' => 'field_content',
+				'vLang' => 'vDEF',
+				'position' => $i
+			);
+			$elementUids[($i+1)] = $this->apiObj->insertElement ($destinationPointer, $row);
+		}
+
+			// Move the third element to after the first element via TCEmain:
+		$cmdMap = array (
+			'tt_content' => array(
+				$elementUids[3] => array (
+					'move' => '-'.$elementUids[1]
+				)
+			)
+		);
+		$tce->start(array(), $cmdMap);
+		$tce->process_cmdmap();
+
+		 	// Check if the third element has been moved correctly behind the first:
+		$testPageRecord = t3lib_beFunc::getRecordRaw ('pages', 'uid='.$this->testPageUID, 'tx_templavoila_flex');		
+		$flexform = simplexml_load_string ($testPageRecord['tx_templavoila_flex']);
+		$xpathResArr = $flexform->xpath("//data/sheet[@index='sDEF']/language[@index='lDEF']/field[@index='field_content']/vDEF");
+		self::assertEquals ((string)$xpathResArr[0], $elementUids[1].','.$elementUids[3].','.$elementUids[2], 'The reference list is not as expected after moving the third element after the first with TCEmain()!');
+		
+			// Now move the third element to after the first element via TCEmain:
+		$cmdMap = array (
+			'tt_content' => array(
+				$elementUids[3] => array (
+					'move' => '-'.$elementUids[1]
+				)
+			)
+		);
+		$tce->start(array(), $cmdMap);
+		$tce->process_cmdmap();
+
+		 	// Check if the third element has been moved correctly behind the first:
+		$testPageRecord = t3lib_beFunc::getRecordRaw ('pages', 'uid='.$this->testPageUID, 'tx_templavoila_flex');		
+		$flexform = simplexml_load_string ($testPageRecord['tx_templavoila_flex']);
+		$xpathResArr = $flexform->xpath("//data/sheet[@index='sDEF']/language[@index='lDEF']/field[@index='field_content']/vDEF");
+		self::assertEquals ((string)$xpathResArr[0], $elementUids[1].','.$elementUids[3].','.$elementUids[2], 'The reference list is not as expected after moving the third element after the first with TCEmain()!');
+	}
+
 
 
 
@@ -1806,6 +1953,10 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 		$res = $TYPO3_DB->exec_INSERTquery ('tx_templavoila_tmplobj', $row);
 		$this->testFCETOUID = $TYPO3_DB->sql_insert_id ($res);			
 	}
+
+
+
+
 
 	/*********************************************************
 	 *
