@@ -51,6 +51,9 @@ require ($BACK_PATH.'init.php');
 require ($BACK_PATH.'template.php');
 $LANG->includeLLFile('EXT:templavoila/cm2/locallang.xml');
 require_once (PATH_t3lib.'class.t3lib_scbase.php');
+require_once (PATH_t3lib.'class.t3lib_flexformtools.php');
+require_once (PATH_t3lib.'class.t3lib_tcemain.php');
+require_once (PATH_t3lib.'class.t3lib_diff.php');
 
 
 
@@ -97,7 +100,81 @@ class tx_templavoila_cm2 extends t3lib_SCbase {
 		$this->viewTable = t3lib_div::_GP('viewRec');
 		$record = t3lib_BEfunc::getRecord($this->viewTable['table'], $this->viewTable['uid']);	// Selecting record based on table/uid since adding the field might impose a SQL-injection problem; at least the field name would have to be checked first.
 		if (is_array($record))	{
-			$xmlContentMarkedUp = $this->markUpXML($record[$this->viewTable['field_flex']]);
+			
+				// Set current XML data:
+			$currentXML = $record[$this->viewTable['field_flex']];
+
+				// Clean up XML:
+			$cleanXML = '';
+			if ($GLOBALS['BE_USER']->isAdmin())	{
+				if ('tx_templavoila_flex' == $this->viewTable['field_flex'])	{
+					$flexObj = t3lib_div::makeInstance('t3lib_flexformtools');
+					if ($record['tx_templavoila_flex'])	{
+						$cleanXML = $flexObj->cleanFlexFormXML($this->viewTable['table'],'tx_templavoila_flex',$record);
+						
+							// If the clean-button was pressed, save right away:
+						if (t3lib_div::_POST('_CLEAN'))	{
+							$dataArr = array();
+							$dataArr[$this->viewTable['table']][$this->viewTable['uid']]['tx_templavoila_flex'] = $cleanXML;
+							
+								// Init TCEmain object and store:
+							$tce = t3lib_div::makeInstance('t3lib_TCEmain');
+							$tce->stripslashes_values=0;
+							$tce->start($dataArr,array());
+							$tce->process_datamap();
+
+								// Re-fetch record:
+							$record = t3lib_BEfunc::getRecord($this->viewTable['table'], $this->viewTable['uid']);
+							$currentXML = $record[$this->viewTable['field_flex']];
+						}	
+					}
+				}
+			}
+				
+			if (md5($currentXML)!=md5($cleanXML))	{
+					// Create diff-result:
+				$t3lib_diff_Obj = t3lib_div::makeInstance('t3lib_diff');
+				$diffres = $t3lib_diff_Obj->makeDiffDisplay($currentXML,$cleanXML);
+				
+				$xmlContentMarkedUp = '
+				<b>'.$this->doc->icons(1).$LANG->getLL('needsCleaning',1).'</b>
+				<table border="0">
+					<tr class="bgColor5 tableheader">
+						<td>'.$LANG->getLL('current',1).'</td>
+					</tr>
+					<tr>
+						<td>'.$this->markUpXML($currentXML).'<br/><br/></td>
+					</tr>
+					<tr class="bgColor5 tableheader">
+						<td>'.$LANG->getLL('clean',1).'</td>
+					</tr>
+					<tr>
+						<td>'.$this->markUpXML($cleanXML).'</td>
+					</tr>
+					<tr class="bgColor5 tableheader">
+						<td>'.$LANG->getLL('diff',1).'</td>
+					</tr>
+					<tr>
+						<td>'.$diffres.'
+						<br/><br/><br/>
+								
+						<form action="'.t3lib_div::getIndpEnv('REQUEST_URI').'" method="post">
+							<input type="submit" value="'.$LANG->getLL('cleanUp',1).'" name="_CLEAN" />
+						</form>
+						
+						</td>
+					</tr>
+				</table>
+				
+				';
+			} else {
+				$xmlContentMarkedUp = '';
+				if ($cleanXML)	{
+					$xmlContentMarkedUp.= '<b>'.$this->doc->icons(-1).$LANG->getLL('XMLclean',1).'</b><br/>';
+				}
+				$xmlContentMarkedUp.= $this->markUpXML($currentXML);
+			}
+			
 			$this->content.=$this->doc->section('',$xmlContentMarkedUp,0,1);
 		}
 

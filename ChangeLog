@@ -1,3 +1,6 @@
+2006-03-14 very late - Kasper Skaarhoej
+	* Added a Clean-FlexForm XML status and link to the outline view.
+	
 2006-03-13 a little later - Kasper Skaarhoej
 	* Added new view: "Outline". This will show a tree view of the page content structure. This view is currently only available for Admin users and they toggle it using a new checkbox in the "Advanced" tab. All affected functions are in mod1/index.php in its own section and will be easy to move to another class if needed. However, they are a parallel implementation of the render_framework* functions. 
 	* Fixed bug I made during refactoring: Names of columns was not displayed

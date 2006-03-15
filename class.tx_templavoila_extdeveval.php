@@ -262,6 +262,7 @@ class tx_templavoila_extdeveval {
 					$flexObj->traverseFlexFormXMLData($table,$field,$row,$this,'traverseFlexFormXMLData_callBackFunction');
 
 						// Show 
+debug('This is not at all finished!!! (it does not do anything yet!)');
 debug(t3lib_div::xml2array($row[$field]),'Old:');
 debug($this->newFlexFormData,'New:');
 debug(array($flexObj->flexArray2Xml($this->newFlexFormData)));

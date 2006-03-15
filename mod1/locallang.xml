@@ -132,8 +132,10 @@
 			<label index="sidebar_renderitem_showtranslationinformation">Display translation information</label>
 			<label index="outline_header_title">Title:</label>
 			<label index="outline_header_controls">Controls:</label>
-			<label index="outline_header_warnings">Warnings:</label>
+			<label index="outline_header_status">Status:</label>
 			<label index="outline_header_element">Element:</label>
+			<label index="outline_status_dirty">Click to clean up XML...</label>
+			<label index="outline_status_clean">XML is clean.</label>
 		</languageKey>
 		<languageKey index="dk" type="array">
 			<label index="title">Web &gt; Side module</label>

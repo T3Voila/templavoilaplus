@@ -1035,22 +1035,40 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		$output.='<tr class="bgColor5 tableheader">
 				<td class="nobr">'.$LANG->getLL('outline_header_title',1).'</td>
 				<td class="nobr">'.$LANG->getLL('outline_header_controls',1).'</td>
-				<td class="nobr">'.$LANG->getLL('outline_header_warnings',1).'</td>
+				<td class="nobr">'.$LANG->getLL('outline_header_status',1).'</td>
 				<td class="nobr">'.$LANG->getLL('outline_header_element',1).'</td>
 			</tr>';
 
 			// Render all entries:
 		foreach($entries as $entry)	{
 
+				// Create indentation code:
 			$indent = '';
 			for($a=0;$a<$entry['indentLevel'];$a++)	{
 				$indent.='&nbsp;&nbsp;&nbsp;&nbsp;';
 			}
 
+				// Create status for FlexForm XML:
+			$status = '';
+			if ($entry['table'] && $entry['uid'])	{
+				$flexObj = t3lib_div::makeInstance('t3lib_flexformtools');
+				$recRow = t3lib_BEfunc::getRecord($entry['table'], $entry['uid']);
+				if ($recRow['tx_templavoila_flex'])	{
+					$newXML = $flexObj->cleanFlexFormXML($entry['table'],'tx_templavoila_flex',$recRow);
+					$xmlUrl = '../cm2/index.php?viewRec[table]='.$entry['table'].'&viewRec[uid]='.$entry['uid'].'&viewRec[field_flex]=tx_templavoila_flex';
+					if (md5($recRow['tx_templavoila_flex'])!=md5($newXML))	{
+						$status = $this->doc->icons(1).'<a href="'.htmlspecialchars($xmlUrl).'">'.$LANG->getLL('outline_status_dirty',1).'</a><br/>';
+					} else {
+						$status = $this->doc->icons(-1).'<a href="'.htmlspecialchars($xmlUrl).'">'.$LANG->getLL('outline_status_clean',1).'</a><br/>';
+					}
+				}
+			}
+
+				// Compile table row:
 			$output.='<tr class="bgColor4" style="'.$entry['elementTitlebarStyle'].'">
 					<td class="nobr">'.$indent.$entry['icon'].$entry['flag'].$entry['title'].'</td>
 					<td class="nobr">'.$entry['controls'].'</td>
-					<td>'.$entry['warnings'].'</td>
+					<td>'.$status.$entry['warnings'].'</td>
 					<td class="nobr">'.htmlspecialchars($entry['id'] ? $entry['id'] : $entry['table'].':'.$entry['uid']).'</td>
 				</tr>';
 		}

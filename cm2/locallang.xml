@@ -12,6 +12,12 @@
 	<data type="array">
 		<languageKey index="default" type="array">
 			<label index="title">View FlexForm XML data</label>
+			<label index="needsCleaning">It seems the FlexForm XML can be cleaned up a bit. Please compare the current and suggested XML structure and press the "Clean" button below if you wish to clean it!</label>
+			<label index="XMLclean">XML is clean</label>
+			<label index="cleanUp">Save clean XML to record!</label>
+			<label index="current">Current XML:</label>
+			<label index="clean">Clean XML:</label>
+			<label index="diff">Difference:</label>
 		</languageKey>
 		<languageKey index="dk" type="array">
 		</languageKey>
