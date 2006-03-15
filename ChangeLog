@@ -1,3 +1,6 @@
+2006-03-15 - Kasper Skaarhoej
+	* Improved the cleaning-link with a button to clean-all on one page in one click, a true killer feature ;-) Robert might like to suggest to extract processing from presentation, but I would like to know how that is done best.
+
 2006-03-14 very late - Kasper Skaarhoej
 	* Added a Clean-FlexForm XML status and link to the outline view.
 	

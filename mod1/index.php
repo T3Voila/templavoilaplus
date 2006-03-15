@@ -1040,6 +1040,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			</tr>';
 
 			// Render all entries:
+		$xmlCleanCandidates = FALSE;
 		foreach($entries as $entry)	{
 
 				// Create indentation code:
@@ -1049,15 +1050,37 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			}
 
 				// Create status for FlexForm XML:
+				// WARNING: Also this section contains cleaning of XML which is sort of mixing functionality but a quick and easy solution for now.
+				// @Robert: How would you like this implementation better? Please advice and I will change it according to your wish!
 			$status = '';
 			if ($entry['table'] && $entry['uid'])	{
 				$flexObj = t3lib_div::makeInstance('t3lib_flexformtools');
 				$recRow = t3lib_BEfunc::getRecord($entry['table'], $entry['uid']);
 				if ($recRow['tx_templavoila_flex'])	{
+						
+						// Clean XML:
 					$newXML = $flexObj->cleanFlexFormXML($entry['table'],'tx_templavoila_flex',$recRow);
+					
+						// If the clean-all command is sent AND there is a difference in current/clean XML, save the clean:
+					if (t3lib_div::_POST('_CLEAN_XML_ALL') && md5($recRow['tx_templavoila_flex'])!=md5($newXML)) {
+						$dataArr = array();
+						$dataArr[$entry['table']][$entry['uid']]['tx_templavoila_flex'] = $newXML;
+						
+							// Init TCEmain object and store:
+						$tce = t3lib_div::makeInstance('t3lib_TCEmain');
+						$tce->stripslashes_values=0;
+						$tce->start($dataArr,array());
+						$tce->process_datamap();
+
+							// Re-fetch record:
+						$recRow = t3lib_BEfunc::getRecord($entry['table'], $entry['uid']);
+					}
+					
+						// Render status:
 					$xmlUrl = '../cm2/index.php?viewRec[table]='.$entry['table'].'&viewRec[uid]='.$entry['uid'].'&viewRec[field_flex]=tx_templavoila_flex';
 					if (md5($recRow['tx_templavoila_flex'])!=md5($newXML))	{
 						$status = $this->doc->icons(1).'<a href="'.htmlspecialchars($xmlUrl).'">'.$LANG->getLL('outline_status_dirty',1).'</a><br/>';
+						$xmlCleanCandidates = TRUE;
 					} else {
 						$status = $this->doc->icons(-1).'<a href="'.htmlspecialchars($xmlUrl).'">'.$LANG->getLL('outline_status_clean',1).'</a><br/>';
 					}
@@ -1073,6 +1096,11 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				</tr>';
 		}
 		$output = '<table border="0" cellpadding="1" cellspacing="1">'.$output.'</table>';
+		
+			// Show link for cleaning all XML structures:
+		if ($xmlCleanCandidates)	{
+			$output.='<br/><input type="submit" value="'.$LANG->getLL('outline_status_cleanAll',1).'" name="_CLEAN_XML_ALL" /><br/><br/>';
+		}
 
 		return $output;
 	}

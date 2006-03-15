@@ -113,7 +113,7 @@ class tx_templavoila_cm2 extends t3lib_SCbase {
 						$cleanXML = $flexObj->cleanFlexFormXML($this->viewTable['table'],'tx_templavoila_flex',$record);
 						
 							// If the clean-button was pressed, save right away:
-						if (t3lib_div::_POST('_CLEAN'))	{
+						if (t3lib_div::_POST('_CLEAN_XML'))	{
 							$dataArr = array();
 							$dataArr[$this->viewTable['table']][$this->viewTable['uid']]['tx_templavoila_flex'] = $cleanXML;
 							
@@ -159,7 +159,7 @@ class tx_templavoila_cm2 extends t3lib_SCbase {
 						<br/><br/><br/>
 								
 						<form action="'.t3lib_div::getIndpEnv('REQUEST_URI').'" method="post">
-							<input type="submit" value="'.$LANG->getLL('cleanUp',1).'" name="_CLEAN" />
+							<input type="submit" value="'.$LANG->getLL('cleanUp',1).'" name="_CLEAN_XML" />
 						</form>
 						
 						</td>
