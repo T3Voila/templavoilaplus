@@ -178,7 +178,7 @@ class tx_templavoila_api {
 	function insertElement_createRecord ($destinationPointer, $row) {
 		if ($this->debug) t3lib_div::devLog ('API: insertElement_createRecord()', 'templavoila', 0, array ('destinationPointer' => $destinationPointer, 'row' => $row));
 
-		$parentRecord = t3lib_BEfunc::getRecord($destinationPointer['table'], $destinationPointer['uid'],'uid,pid,t3ver_oid,tx_templavoila_flex');
+		$parentRecord = t3lib_BEfunc::getRecordWSOL($destinationPointer['table'], $destinationPointer['uid'],'uid,pid,t3ver_oid,tx_templavoila_flex');
 
 		if ($destinationPointer['position'] > 0) {
 			$currentReferencesArr = $this->flexform_getElementReferencesFromXML ($parentRecord['tx_templavoila_flex'], $destinationPointer);
@@ -446,6 +446,9 @@ class tx_templavoila_api {
 			if (!is_array ($destinationParentRecord)) {
 				if ($this->debug) t3lib_div::devLog ('process: Parent record of the element specified by destination pointer does not exist!', 2, $destinationPointer);
 				return FALSE;
+			} elseif($destinationParentRecord['pid']<0)	{
+				if ($this->debug) t3lib_div::devLog ('process: The destination pointer must always point to a live record, not an offline version!', 2, $destinationPointer);
+				return FALSE;
 			}
 			$destinationReferencesArr = $this->flexform_getElementReferencesFromXML ($destinationParentRecord['tx_templavoila_flex'], $destinationPointer);
 		}
@@ -561,7 +564,7 @@ class tx_templavoila_api {
 			// Initialize TCEmain and create configuration for copying the specified record
 		$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 		$cmdArray = array();
-		$cmdArray['tt_content'][t3lib_beFunc::wsMapId('tt_content', $elementUid)]['copy'] = $destinationPID;
+		$cmdArray['tt_content'][$elementUid]['copy'] = $destinationPID;
 
 			// Execute the copy process and finally insert the reference for the element to the destination:
 		$flagWasSet = $this->getTCEmainRunningFlag();
@@ -587,7 +590,7 @@ class tx_templavoila_api {
 	 * @param	array		$destinationReferencesArr: Current list of the parent destination's element references
 	 * @param	array		$sourceParentRecord: Database record of the source location (either from table 'pages' or 'tt_content')
 	 * @param	array		$destinationParentRecord: Database record of the destination location (either from table 'pages' or 'tt_content')
-	 * @param	integer		$elementUid: UID of the element to be copied
+	 * @param	integer		$elementUid: UID of the element to be copied (live uid, not offline version)
 	 * @return	mixed		The UID of the newly created copy or FALSE if an error occurred.
 	 * @access	protected
 	 */
@@ -604,7 +607,7 @@ class tx_templavoila_api {
 		$cmdArray['tt_content'][$elementUid]['copy'] = $destinationPID;
 
 		foreach ($subElementUids as $subElementUid) {
-			$cmdArray['tt_content'][t3lib_beFunc::wsMapId('tt_content', $subElementUid)]['copy'] = $destinationPID;
+			$cmdArray['tt_content'][$subElementUid]['copy'] = $destinationPID;
 		}
 
 			// Execute the copy process and finally insert the reference for the parent element to the paste destination:
@@ -613,7 +616,7 @@ class tx_templavoila_api {
 		$tce->start(array(),$cmdArray);
 		$tce->process_cmdmap();
 		if (!$flagWasSet) $this->setTCEmainRunningFlag (FALSE);
-		$newElementUid = $tce->copyMappingArray_merged['tt_content'][t3lib_beFunc::wsMapId('tt_content', $elementUid)];
+		$newElementUid = $tce->copyMappingArray_merged['tt_content'][$elementUid];
 
 		$newDestinationReferencesArr = $this->flexform_insertElementReferenceIntoList ($destinationReferencesArr, $destinationPointer['position'], $newElementUid);
 		$this->flexform_storeElementReferencesListInRecord ($newDestinationReferencesArr, $destinationPointer);
@@ -668,7 +671,7 @@ class tx_templavoila_api {
 		if (!$this->process_unlink ($sourcePointer, $sourceReferencesArr)) return FALSE;
 
 		$cmdArray = array();
-		$cmdArray['tt_content'][t3lib_beFunc::wsMapId('tt_content', $elementUid)]['delete'] = 1;
+		$cmdArray['tt_content'][$elementUid]['delete'] = 1;	// Element UID should always be that of the online version here...
 
 			// Store:
 		$flagWasSet = $this->getTCEmainRunningFlag();
@@ -700,7 +703,7 @@ class tx_templavoila_api {
 	 * If 'targetCheckUid' is set, the uid of the record which is referenced by
 	 * the pointer will be checked against it.
 	 *
-	 * This method takes workspaces into account and corrects the uid if neccessary!
+	 * Kasper: This method take workspaces into account (by using workspace flexform data if available) but it does NOT (and should not!) remap UIDs!
 	 *
 	 * @param	mixed		$flexformPointer: A flexform pointer referring to the content element. Although an array is preferred, you may also pass a string which will be converted automatically by flexform_getPointerFromString()
 	 * @return	mixed		The valid flexform pointer array or FALSE if it was not valid
@@ -710,11 +713,6 @@ class tx_templavoila_api {
 		global $BE_USER;
 
 		if (is_string($flexformPointer)) $flexformPointer = $this->flexform_getPointerFromString ($flexformPointer);
-
-		$workspaceVersion = t3lib_BEfunc::getWorkspaceVersionOfRecord ($BE_USER->workspace, $flexformPointer['table'], $flexformPointer['uid'], 'uid');
-		if (is_array ($workspaceVersion)) {
-			$flexformPointer['uid'] = $workspaceVersion['uid'];
-		}
 
 		if (!t3lib_div::inList($this->rootTable.',tt_content',$flexformPointer['table'])) {
 			if ($this->debug) t3lib_div::devLog ('flexform_getValidPointer: Table "'.$flexformPointer['table'].'" is not in the list of allowed tables!', 'TemplaVoila API', 2, $this->rootTable.',tt_content');
@@ -831,7 +829,7 @@ class tx_templavoila_api {
 
 		if (isset ($flexformPointer['sheet'])) {
 			if (!$parentRecord = t3lib_BEfunc::getRecordWSOL($flexformPointer['table'], $flexformPointer['uid'],'uid,tx_templavoila_flex')) return FALSE;
-			$elementReferencesArr = $this->flexform_getElementReferencesFromXML ($parentRecord['tx_templavoila_flex'], $flexformPointer);
+			$elementReferencesArr = $this->flexform_getElementReferencesFromXML ($parentRecord['tx_templavoila_flex'], $flexformPointer);	// This should work, because both flexFormPointer and tx_templavoila_flex will be based on any workspace overlaid record.
 			return t3lib_BEfunc::getRecordWSOL('tt_content', $elementReferencesArr[$flexformPointer['position']]);
 		} else {
 			return t3lib_BEfunc::getRecordWSOL('tt_content', $flexformPointer['uid']);

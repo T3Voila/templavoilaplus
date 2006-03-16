@@ -310,7 +310,9 @@ class tx_templavoila_mod1_sidebar {
 	function renderItem_versioning(&$pObj) {
 
 		if ($pObj->id>0) {
-
+			
+			return $pObj->doc->getVersionSelector($pObj->id);
+/*
 				// Get Current page record:
 			$curPage = t3lib_BEfunc::getRecord('pages',$pObj->id);
 				// If the selected page is not online, find the right ID
@@ -375,6 +377,7 @@ class tx_templavoila_mod1_sidebar {
 						';
 				}
 			}
+*/
 		}
 	}
 

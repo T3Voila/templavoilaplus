@@ -163,9 +163,6 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::_GP('SET'), $this->MCONF['name']);
 
-			# Kasper: No remapping of ID here! ID remapping should occur where needed only!
-		#$this->id = t3lib_beFunc::wsMapId ('pages', $this->id);	// FIXME
-
 		$this->altRoot = t3lib_div::_GP('altRoot');
 		$this->versionId = t3lib_div::_GP('versionId');
 
@@ -388,6 +385,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		$this->rootElementTable = is_array($this->altRoot) ? $this->altRoot['table'] : 'pages';
 		$this->rootElementUid = is_array($this->altRoot) ? $this->altRoot['uid'] : $this->id;
 		$this->rootElementRecord = t3lib_BEfunc::getRecordWSOL($this->rootElementTable, $this->rootElementUid, '*');
+		$this->rootElementUid_pidForContent = $this->rootElementRecord['t3ver_swapmode']==0 && $this->rootElementRecord['_ORIG_uid'] ? $this->rootElementRecord['_ORIG_uid'] : $this->rootElementRecord['uid'];
 
 			// Check if it makes sense to allow editing of this page and if not, show a message:
 		if ($this->rootElementTable == 'pages') {
@@ -510,7 +508,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		$hookObjectsArr = $this->hooks_prepareObjectsArray('renderFrameWorkClass');
 
 		$elementRecord = t3lib_beFunc::getRecordWSOL($contentTreeArr['el']['table'], $contentTreeArr['el']['uid'], '*');
-		$elementBelongsToCurrentPage = $contentTreeArr['el']['table'] == 'pages' || $contentTreeArr['el']['pid'] == $this->rootElementUid;
+		$elementBelongsToCurrentPage = $contentTreeArr['el']['table'] == 'pages' || $contentTreeArr['el']['pid'] == $this->rootElementUid_pidForContent;
 
 			// Prepare the record icon including a content sensitive menu link wrapped around it:
 		$recordIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,$contentTreeArr['el']['icon'],'').' style="text-align: center; vertical-align: middle;" width="18" height="16" border="0" title="'.htmlspecialchars('['.$contentTreeArr['el']['table'].':'.$contentTreeArr['el']['uid'].']').'" alt="" />';
@@ -548,7 +546,8 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 					$linkUnlink = $this->link_unlink('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/garbage.gif','').' title="'.$LANG->getLL('unlinkRecord').'" border="0" alt="" />', $parentPointer, FALSE);
 					$linkEdit = ($elementBelongsToCurrentPage ? $this->link_edit('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/edit2.gif','').' title="'.$LANG->getLL ('editrecord').'" border="0" alt="" />',$contentTreeArr['el']['table'],$contentTreeArr['el']['uid']) : '');
 
-					$titleBarRightButtons = $linkEdit . $this->clipboardObj->element_getSelectButtons ($parentPointer) . $linkMakeLocal . $linkUnlink;
+					$titleBarRightButtons = $linkEdit . $this->clipboardObj->element_getSelectButtons($parentPointer) . $linkMakeLocal . $linkUnlink;				
+					# NICE FOR DEBUG: # $titleBarRightButtons.= implode('/',$parentPointer).'UID:'.$contentTreeArr['el']['uid'].'/'.$contentTreeArr['el']['_ORIG_uid'].' PID:'.$contentTreeArr['el']['pid'];
 				}
 			break;
 		}
@@ -689,7 +688,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 								$newIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/new_el.gif','').' style="text-align: center; vertical-align: middle;" vspace="5" hspace="1" border="0" title="'.$LANG->getLL ('createnewrecord').'" alt="" />';
 								$cellContent .= $this->link_new($newIcon, $subElementPointer);
 
-								$cellContent .= $this->clipboardObj->element_getPasteButtons ($subElementPointer);
+								$cellContent .= $this->clipboardObj->element_getPasteButtons($subElementPointer);
 							}
 						}
 					}
@@ -1088,10 +1087,10 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			}
 
 				// Compile table row:
-			$output.='<tr class="bgColor4" style="'.$entry['elementTitlebarStyle'].'">
+			$output.='<tr class="'.($entry['isNewVersion']?'bgColor5':'bgColor4').'" style="'.$entry['elementTitlebarStyle'].'">
 					<td class="nobr">'.$indent.$entry['icon'].$entry['flag'].$entry['title'].'</td>
 					<td class="nobr">'.$entry['controls'].'</td>
-					<td>'.$status.$entry['warnings'].'</td>
+					<td>'.$status.$entry['warnings'].($entry['isNewVersion']?$this->doc->icons(1).'New version!':'').'</td>
 					<td class="nobr">'.htmlspecialchars($entry['id'] ? $entry['id'] : $entry['table'].':'.$entry['uid']).'</td>
 				</tr>';
 		}
@@ -1122,7 +1121,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 			// Get record of element:
 		$elementRecord = t3lib_beFunc::getRecordWSOL($contentTreeArr['el']['table'], $contentTreeArr['el']['uid'], '*');
-		$elementBelongsToCurrentPage = $contentTreeArr['el']['table'] == 'pages' || $contentTreeArr['el']['pid'] == $this->rootElementUid;
+		$elementBelongsToCurrentPage = $contentTreeArr['el']['table'] == 'pages' || $contentTreeArr['el']['pid'] == $this->rootElementUid_pidForContent;
 
 			// Prepare the record icon including a context sensitive menu link wrapped around it:
 		$recordIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,$contentTreeArr['el']['icon'],'').' style="text-align: center; vertical-align: middle;" width="18" height="16" border="0" title="'.htmlspecialchars('['.$contentTreeArr['el']['table'].':'.$contentTreeArr['el']['uid'].']').'" alt="" />';
@@ -1410,7 +1409,6 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		global $LANG;
 
 		$unlinkPointerString = rawurlencode($this->apiObj->flexform_getStringFromPointer ($unlinkPointer));
-
 		if ($realDelete)	{
 			return '<a href="index.php?'.$this->link_getParameters().'&amp;deleteRecord='.$unlinkPointerString.'" onclick="'.htmlspecialchars('return confirm('.$LANG->JScharCode($LANG->getLL('deleteRecordMsg')).');').'">'.$label.'</a>';
 		} else {

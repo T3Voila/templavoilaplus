@@ -101,7 +101,9 @@ class tx_templavoila_mod1_clipboard {
 		$this->t3libClipboardObj->endClipboard();	// Save the clipboard content
 
 			// Add a list of non-used elements to the sidebar:
-		$this->pObj->sideBarObj->addItem('nonUsedElements', $this, 'sidebar_renderNonUsedElements', $LANG->getLL('nonusedelements'),30);
+		if ($GLOBALS['BE_USER']->workspace===0)	{	// Only show if in LIVE workspace:
+			$this->pObj->sideBarObj->addItem('nonUsedElements', $this, 'sidebar_renderNonUsedElements', $LANG->getLL('nonusedelements'),30);
+		}
 	}
 
 	/**
@@ -182,6 +184,7 @@ class tx_templavoila_mod1_clipboard {
 	function element_getPasteButtons($destinationPointer) {
 		global $LANG, $BE_USER;
 
+		$origDestinationPointer = $destinationPointer;
 		if (!$destinationPointer = $this->pObj->apiObj->flexform_getValidPointer($destinationPointer)) return '';
 		if (!is_array ($this->t3libClipboardObj->clipData['normal']['el'])) return '';
 
@@ -190,8 +193,8 @@ class tx_templavoila_mod1_clipboard {
 		$clipboardElementPointer = $this->pObj->apiObj->flexform_getValidPointer ($clipboardElementPointerString);
 
 			// If we have no flexform reference pointing to the element, we create a short flexform pointer pointing to the record directly:
+		list ($clipboardElementTable, $clipboardElementUid) = explode ('|',$clipboardElementTableAndUid);
 		if (!is_array($clipboardElementPointer)) {
-			list ($clipboardElementTable, $clipboardElementUid) = explode ('|',$clipboardElementTableAndUid);
 			if ($clipboardElementTable != 'tt_content') return '';
 
 			$clipboardElementPointer = array (
@@ -203,14 +206,17 @@ class tx_templavoila_mod1_clipboard {
 			// If the destination element is already a sub element of the clipboard element, we mustn't show any paste icon:
 		$destinationRecord = $this->pObj->apiObj->flexform_getRecordByPointer($destinationPointer);
 		$clipboardElementRecord = $this->pObj->apiObj->flexform_getRecordByPointer($clipboardElementPointer);
-
 		$dummyArr = array();
 		$clipboardSubElementUidsArr = $this->pObj->apiObj->flexform_getListOfSubElementUidsRecursively ('tt_content', $clipboardElementRecord['uid'], $dummyArr);
 		$clipboardElementHasSubElements = count($clipboardSubElementUidsArr) > 0;
 
 		if ($clipboardElementHasSubElements) {
-			if (array_search ($destinationRecord['uid'], $clipboardSubElementUidsArr) !== FALSE) return '';
-			if ($destinationPointer['uid'] == $clipboardElementRecord['uid']) return '';
+			if (array_search ($destinationRecord['uid'], $clipboardSubElementUidsArr) !== FALSE) {
+				return '';
+			}
+			if ($origDestinationPointer['uid'] == $clipboardElementUid) {
+				return '';
+			}
 		}
 
 			// Prepare the ingredients for the different buttons:
@@ -246,7 +252,7 @@ class tx_templavoila_mod1_clipboard {
 		$elementRows = array();
 		$usedUids = array_keys($this->pObj->global_tt_content_elementRegister);
 		$usedUids[] = 0;
-		$pid = t3lib_beFunc::wsMapId ('pages', $this->pObj->id);
+		$pid = $this->pObj->id;	// If workspaces should evaluated non-used elements it must consider the id: For "element" and "branch" versions it should accept the incoming id, for "page" type versions it must be remapped (because content elements are then related to the id of the offline version)
 
 		$res = $TYPO3_DB->exec_SELECTquery (
 			'uid, header, bodytext, sys_language_uid',

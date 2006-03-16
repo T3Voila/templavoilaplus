@@ -1,3 +1,22 @@
+2006-03-16 - Kasper Skaarhoej
+	* Inserted version selector from typo3/template.php instead of homebrewn (which is commented out, can be removed when consolidated)
+	* Shows non-used elements only if workspace is "Live"
+	* Fixed all known workspace related problems. This was mainly:
+	* "Page" type versions: All elements appears as if they were references from another page. That is fixed.
+	* Copy/Paste/Reference/Unlink/Insert of elements under workspaces in various scenarios are working now (except copying an Container Element FCE recursively: References does not get fixed, but this is a tcemain problem that must be solved on that level!!)
+	* Details about the work:
+		* wsMapId(): I removed almost all usages of wsMapId(); They were used to map uids of elements to be copied for instance. This is wrong. The uid of an element you want to copy or delete (basically any tcemain &cmd operation) must be the _live_ uid, not the offline uid. [Currently copying in tcemain when in a workspcae does not work correctly but that must be fixed on core level, not in TV]
+		* tx_templavoila_api::flexform_getValidPointer(): This function would re-map the UID value in the pointer if found. This lead to many errors. As a basic principles: _All_ uids passed around must be the "live" uids of elements, _never_ the offline uids. Only when explicitly needed should a uid be mapped to the offline version. Another problem was PID values: They were sometimes "-1" due to usage of "offline" uids which lead to weird errors when a copy was made of objects to pid = "-1" (using pid of a record with uid "1" in tcemain!!!). 
+			* Summary: In tx_templavoila_api, always use uids/pids of live elements. For getting workspace record content you can safely use (and probably should) t3lib_BEfunc::getRecordWSOL() which will protect the live uid/pid while all other values change, including the "tx_templavoila_flex" which is VERY IMPORTANT to get the workspace value from since that contains the correct list of elements in a field.
+	* Testing combinations for Page module under workspaces:
+		* Destination pointer: Test Inserting new/copies/cuts/references:
+		  	* Insert in both pages and tt_content element containers plus both in live and element versioned containers (4 combinations)
+		  	* Insert copies/cuts/references in other pages
+		* Source: Try both live and element versioned elements for all of above.
+		* Try Changing data structure of CEs and pages
+		
+
+
 2006-03-15 Robert Lemke <robert@typo3.org>
  + added test for checking the sorting field after an insertElement operation
  # fixed a bug in tx_templavoila_api::insertElement_createRecord() which didn't respect the insert position for new elements when calling TCEmain
