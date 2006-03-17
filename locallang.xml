@@ -31,6 +31,7 @@
 			<label index="cm1_viewflexformxml">Ansicht: Flexform XML</label>
 			<label index="cm_viewdsto">Ansicht: DS/TO</label>
 			<label index="cm1_pagesusingthiselement">Seiten die dieses Element nutzen -&gt;</label>
+			<label index="wiz_refElements">Referenziere unbenutzte Inhaltselemente (TemplaVoila)</label>
 		</languageKey>
 		<languageKey index="no" type="array">
 		</languageKey>
@@ -83,6 +84,7 @@
 			<label index="cm1_pagesusingthiselement" type="integer">172632714</label>
 			<label index="cm1_viewflexformxml" type="integer">203580167</label>
 			<label index="cm_viewdsto" type="integer">148254017</label>
+			<label index="wiz_refElements" type="integer">121604399</label>
 		</languageKey>
 		<languageKey index="no" type="array">
 		</languageKey>

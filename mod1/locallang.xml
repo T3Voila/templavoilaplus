@@ -60,6 +60,7 @@
 		<languageKey index="default" type="array">
 			<label index="title">WEB &gt; PAGE MODULE</label>
 			<label index="default_introduction">If you wish to edit the content of a page, please click the page title in the page tree to the left.</label>
+			<label index="csh_whatisthetemplavoilapagemodule">What is the TemplaVoila page module?</label>
 			<label index="createnewpage_selecttemplate">Select a template for your new page:</label>
 			<label index="createnewpage_defaultlayoutsubmitlabel">Create page with default layout</label>
 			<label index="createnewpage_templateobject_createemptypage">Create an empty page based on this template:</label>
@@ -93,11 +94,11 @@
 			<label index="view_tree">Tree view</label>
 			<label index="createnewtranslation">Create new page translation</label>
 			<label index="selectlanguageversion">Show page language version</label>
-			<label index="pageLocalizationMode">Page Localization Mode</label>
+			<label index="pageLocalizationMode">Page localization mode</label>
 			<label index="pageLocalizationMode_separate">Separate structures</label>
 			<label index="pageLocalizationMode_inheritance">Inheritance of values</label>
 			<label index="clickToEditTranslation">Click to edit translation</label>
-			<label index="editlanguageversion">Edit page language</label>
+			<label index="editlanguageversion">Edit page properties</label>
 			<label index="multipleLanguages">Multiple languages</label>
 			<label index="languageDisabled">Language disabled</label>
 			<label index="viewsubelements">View sub elements</label>
@@ -168,13 +169,18 @@
 		<languageKey index="de" type="array">
 			<label index="title">WEB &gt; SEITEN-MODUL</label>
 			<label index="default_introduction">Wenn Sie den Inhalt einer Seite bearbeiten möchten, klicken Sie bitte im Seitenbaum auf der linken Seite auf einen Seitentitel.</label>
+			<label index="csh_whatisthetemplavoilapagemodule">Was ist das TemplaVoila Seitenmodul?</label>
 			<label index="createnewpage_selecttemplate">Vorlage für Ihre neue Seite auswählen:</label>
 			<label index="createnewpage_defaultlayoutsubmitlabel">Neue Seite mit Standard Layout erstellen</label>
 			<label index="createnewpage_templateobject_createemptypage">Eine leere Seite basierend auf folgendem Layout erstellen:</label>
 			<label index="createnewpage_templateobject_createpagewithdefaultcontent">Eine Seite mit vorausgefülltem Inhalt, basierend auf folgender Vorlage erstellen:</label>
 			<label index="createnewcontent_newContentElement">Neues Inhaltselement</label>
+			<label index="warning_elementusedmorethanonce">Dieses Element wird auf der aktuellen Seite %s mal verwendet! ID:%s</label>
+			<label index="warning_containerSeparate">ACHTUNG: Für dieses Container Element wurde Lokalisierung ohne Vererbung aktiviert (&lt;langChildren&gt; = 0). Dabei handelt es sich vermutlich um eine Fehlkonfiguration, weil die Standard Oberfläche von TemplaVoila die Darstellung von lokalisierten Container Feldern nicht unterstützt! Bitte informieren Sie den Entwickler dieser Website.</label>
+			<label index="warning_containerInheritance">Für dieses Container Element wurde Lokalisierung mit Vererbung aktiviert (&lt;langChildren&gt; = 1). Diese Konfiguration kann zu verwirrenden Darstellungen in TemplaVoila führen und es wird empfohlen, die Lokalisierung für dieses Container Element komplett auszuschalten, indem Sie &lt;langDisable&gt; auf &quot;1&quot; setzen. Bitte informieren Sie den Entwickler dieser Website.</label>
+			<label index="warning_containerSeparate_short">Übersetzungsmodus: Separat</label>
+			<label index="warning_containerInheritance_short">Übersetzungsmodus: Vererbung</label>
 			<label index="cannotedit_doktypemountpoint">Diese Seite dient als &quot;Moint Point&quot; und ihr Inhalt wird durch den einer anderen Seite (&quot;%s&quot;) ersetzt. Sie können den Inhalt dieser Seite daher nicht direkt bearbeiten.</label>
-			<label index="warning_elementusedmorethanonce">Dieses Element wird der aktuellen Seite %s mal verwendet! ID:%s</label>
 			<label index="jumptomountsourcepage">Springe zur Ursprungsseite für diesen Mount Point</label>
 			<label index="cannotedit_contentfrompid">Diese Seite wurde so konfiguriert, daß sie selbst keine Inhalte enthält sondern stattdessen die Inhalte einer anderen Seite (&quot;%s&quot;) anzeigt. Daher können Sie den Inhalt dieser Seite nicht direkt bearbeiten.</label>
 			<label index="jumptocontentfrompidpage">Springe zur Seite, die die Inhaltselemente enthält</label>
@@ -197,6 +203,11 @@
 			<label index="view_tree">Baumstruktur</label>
 			<label index="createnewtranslation">Neue Seiten-Übersetzung anlegen</label>
 			<label index="selectlanguageversion">Ausgewählte Sprache</label>
+			<label index="pageLocalizationMode">Übersetzungsmodus der Seite</label>
+			<label index="pageLocalizationMode_separate">Separate Strukturen</label>
+			<label index="pageLocalizationMode_inheritance">Vererbung der Werte</label>
+			<label index="clickToEditTranslation">Klicken um Übersetzung zu bearbeiten</label>
+			<label index="editlanguageversion">Bearbeite Seiteneigenschaften</label>
 			<label index="multipleLanguages">Mehrere Sprachen</label>
 			<label index="languageDisabled">Sprache deaktiviert</label>
 			<label index="viewsubelements">Unter-Elemente anzeigen</label>
@@ -226,8 +237,16 @@
 			<label index="createcopyfortranslation">Erstelle eine Kopie für Übersetzung</label>
 			<label index="inititemno_elementsNotBeingUsed">Elemente, die in diesem Blatt oder Sprache nicht verwendet werden</label>
 			<label index="sidebar_advancedfunctions_labelshowhidden">Zeige verborgene Elemente</label>
+			<label index="sidebar_advancedfunctions_labelshowoutline">Listendarstellung zeigen</label>
 			<label index="sidebar_advancedfunctions_labelcachefunctions">Cache Funktionen</label>
 			<label index="sidebar_renderitem_showtranslationinformation">Übersetzungsinformationen anzeigen</label>
+			<label index="outline_header_title">Titel:</label>
+			<label index="outline_header_controls">Funktionen:</label>
+			<label index="outline_header_status">Status:</label>
+			<label index="outline_header_element">Element:</label>
+			<label index="outline_status_dirty">Klicken um XML zu bereinigen ...</label>
+			<label index="outline_status_clean">XML ist sauber</label>
+			<label index="outline_status_cleanAll">Bereinige XML aller obigen Elemente!</label>
 			<label index="template_descriptiondefault">Standard Layout, definiert durch den Designer dieser Website.</label>
 		</languageKey>
 		<languageKey index="ru" type="array">
@@ -500,6 +519,25 @@
 			<label index="editpage_sysfolder_intro" type="integer">197488510</label>
 			<label index="editpage_sysfolder_listview_noaccess" type="integer">209992014</label>
 			<label index="editpage_sysfolder_switchtolistview" type="integer">34594545</label>
+			<label index="warning_elementusedmorethanonce" type="integer">267297614</label>
+			<label index="warning_containerSeparate" type="integer">267827551</label>
+			<label index="warning_containerInheritance" type="integer">24584233</label>
+			<label index="warning_containerSeparate_short" type="integer">148011</label>
+			<label index="warning_containerInheritance_short" type="integer">80566348</label>
+			<label index="pageLocalizationMode" type="integer">165035107</label>
+			<label index="pageLocalizationMode_separate" type="integer">213560612</label>
+			<label index="pageLocalizationMode_inheritance" type="integer">198701355</label>
+			<label index="clickToEditTranslation" type="integer">251265515</label>
+			<label index="editlanguageversion" type="integer">219852795</label>
+			<label index="sidebar_advancedfunctions_labelshowoutline" type="integer">203866131</label>
+			<label index="outline_header_title" type="integer">85903807</label>
+			<label index="outline_header_controls" type="integer">44875680</label>
+			<label index="outline_header_status" type="integer">38413271</label>
+			<label index="outline_header_element" type="integer">56009923</label>
+			<label index="outline_status_dirty" type="integer">75943687</label>
+			<label index="outline_status_clean" type="integer">98978315</label>
+			<label index="outline_status_cleanAll" type="integer">166974424</label>
+			<label index="csh_whatisthetemplavoilapagemodule" type="integer">41029154</label>
 		</languageKey>
 		<languageKey index="lv" type="array">
 			<label index="title" type="integer">122302581</label>

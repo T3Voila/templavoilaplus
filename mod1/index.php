@@ -437,8 +437,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			$content.= $this->render_framework_allSheets($contentTreeData['tree'], $this->currentLanguageKey);
 		}
 
-		$content .= t3lib_BEfunc::cshItem('_MOD_web_txtemplavoilaM1', 'pagemodule', $this->doc->backPath,'|<br/>');
-		$content .= t3lib_BEfunc::cshItem('_MOD_web_txtemplavoilaM1', '', $this->doc->backPath,'<hr/>|What is the TemplaVoila Page module?');
+		$content .= t3lib_BEfunc::cshItem('_MOD_web_txtemplavoilaM1', '', $this->doc->backPath,'<hr/>|'.$LANG->getLL('csh_whatisthetemplavoilapagemodule', 1));
 
 		return $content;
 	}
@@ -546,7 +545,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 					$linkUnlink = $this->link_unlink('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/garbage.gif','').' title="'.$LANG->getLL('unlinkRecord').'" border="0" alt="" />', $parentPointer, FALSE);
 					$linkEdit = ($elementBelongsToCurrentPage ? $this->link_edit('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/edit2.gif','').' title="'.$LANG->getLL ('editrecord').'" border="0" alt="" />',$contentTreeArr['el']['table'],$contentTreeArr['el']['uid']) : '');
 
-					$titleBarRightButtons = $linkEdit . $this->clipboardObj->element_getSelectButtons($parentPointer) . $linkMakeLocal . $linkUnlink;				
+					$titleBarRightButtons = $linkEdit . $this->clipboardObj->element_getSelectButtons ($parentPointer) . $linkMakeLocal . $linkUnlink;
 					# NICE FOR DEBUG: # $titleBarRightButtons.= implode('/',$parentPointer).'UID:'.$contentTreeArr['el']['uid'].'/'.$contentTreeArr['el']['_ORIG_uid'].' PID:'.$contentTreeArr['el']['pid'];
 				}
 			break;
@@ -688,7 +687,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 								$newIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/new_el.gif','').' style="text-align: center; vertical-align: middle;" vspace="5" hspace="1" border="0" title="'.$LANG->getLL ('createnewrecord').'" alt="" />';
 								$cellContent .= $this->link_new($newIcon, $subElementPointer);
 
-								$cellContent .= $this->clipboardObj->element_getPasteButtons($subElementPointer);
+								$cellContent .= $this->clipboardObj->element_getPasteButtons ($subElementPointer);
 							}
 						}
 					}
@@ -1098,7 +1097,10 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		
 			// Show link for cleaning all XML structures:
 		if ($xmlCleanCandidates)	{
-			$output.='<br/><input type="submit" value="'.$LANG->getLL('outline_status_cleanAll',1).'" name="_CLEAN_XML_ALL" /><br/><br/>';
+			$output.= '<br/>
+				'. t3lib_BEfunc::cshItem('_MOD_web_txtemplavoilaM1', 'outline_status_cleanall', $this->doc->backPath).'
+				<input type="submit" value="'.$LANG->getLL('outline_status_cleanAll',1).'" name="_CLEAN_XML_ALL" /><br/><br/>
+			';
 		}
 
 		return $output;
@@ -1409,6 +1411,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		global $LANG;
 
 		$unlinkPointerString = rawurlencode($this->apiObj->flexform_getStringFromPointer ($unlinkPointer));
+
 		if ($realDelete)	{
 			return '<a href="index.php?'.$this->link_getParameters().'&amp;deleteRecord='.$unlinkPointerString.'" onclick="'.htmlspecialchars('return confirm('.$LANG->JScharCode($LANG->getLL('deleteRecordMsg')).');').'">'.$label.'</a>';
 		} else {

@@ -310,7 +310,7 @@ class tx_templavoila_mod1_sidebar {
 	function renderItem_versioning(&$pObj) {
 
 		if ($pObj->id>0) {
-			
+
 			return $pObj->doc->getVersionSelector($pObj->id);
 /*
 				// Get Current page record:
@@ -400,7 +400,10 @@ class tx_templavoila_mod1_sidebar {
 			// Render checkbox for showing hidden elements:
 		$tableRows[] = '
 			<tr class="bgColor4">
-				<td width="1%" nowrap="nowrap">'.$LANG->getLL('sidebar_advancedfunctions_labelshowhidden', 1).':</td>
+				<td width="1%" nowrap="nowrap">
+					'. t3lib_BEfunc::cshItem('_MOD_web_txtemplavoilaM1', 'advancedfunctions_showhiddenelements', $this->doc->backPath) .'
+					'.$LANG->getLL('sidebar_advancedfunctions_labelshowhidden', 1).':
+				</td>
 				<td>'.t3lib_BEfunc::getFuncCheck($pObj->id,'SET[tt_content_showHidden]',$pObj->MOD_SETTINGS['tt_content_showHidden'],'','').'</td>
 			</tr>
 		';
@@ -409,7 +412,10 @@ class tx_templavoila_mod1_sidebar {
 		if ($GLOBALS['BE_USER']->isAdmin())	{
 			$tableRows[] = '
 				<tr class="bgColor4">
-					<td width="1%" nowrap="nowrap">'.$LANG->getLL('sidebar_advancedfunctions_labelshowoutline', 1).':</td>
+					<td width="1%" nowrap="nowrap">
+						'. t3lib_BEfunc::cshItem('_MOD_web_txtemplavoilaM1', 'advancedfunctions_showoutline', $this->doc->backPath) .'
+						'.$LANG->getLL('sidebar_advancedfunctions_labelshowoutline', 1).'
+					:</td>
 					<td>'.t3lib_BEfunc::getFuncCheck($pObj->id,'SET[showOutline]',$pObj->MOD_SETTINGS['showOutline'],'','').'</td>
 				</tr>
 			';

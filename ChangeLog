@@ -1,3 +1,8 @@
+2006-03-17 Robert Lemke <robert@typo3.org>
+ ~ a few cosmetic changes in class.tx_templavoila_mod1_localization.php
+ + added a few placeholders for context sensitive help
+ + updated german LLXML translations for all labels
+
 2006-03-16 - Kasper Skaarhoej
 	* Inserted version selector from typo3/template.php instead of homebrewn (which is commented out, can be removed when consolidated)
 	* Shows non-used elements only if workspace is "Live"
@@ -23,23 +28,23 @@
  + added test for moving elements up via TCEmain
 
 2006-03-15 - Kasper Skaarhoej
-	* Improved the cleaning-link with a button to clean-all on one page in one click, a true killer feature ;-) Robert might like to suggest to extract processing from presentation, but I would like to know how that is done best.
+ + Improved the cleaning-link with a button to clean-all on one page in one click, a true killer feature ;-) Robert might like to suggest to extract processing from presentation, but I would like to know how that is done best.
 
 2006-03-14 very late - Kasper Skaarhoej
-	* Added a Clean-FlexForm XML status and link to the outline view.
+ + Added a Clean-FlexForm XML status and link to the outline view.
 	
 2006-03-13 a little later - Kasper Skaarhoej
-	* Added new view: "Outline". This will show a tree view of the page content structure. This view is currently only available for Admin users and they toggle it using a new checkbox in the "Advanced" tab. All affected functions are in mod1/index.php in its own section and will be easy to move to another class if needed. However, they are a parallel implementation of the render_framework* functions. 
-	* Fixed bug I made during refactoring: Names of columns was not displayed
+ + Added new view: "Outline". This will show a tree view of the page content structure. This view is currently only available for Admin users and they toggle it using a new checkbox in the "Advanced" tab. All affected functions are in mod1/index.php in its own section and will be easy to move to another class if needed. However, they are a parallel implementation of the render_framework* functions. 
+ # Fixed bug I made during refactoring: Names of columns was not displayed
 
 2006-03-13  Kasper Skaarhoej
-	* Re-inserted rejected changes, however I fixed all problems pointed out by robert in mail.
-	* Moved getContentTree from mod1/index.php to api-class: At the same time the output from getContentTree has been cleaned up so it doesn't contain formatted preview output (only data on which a preview can be rendered in mod1/index.php). 
-	* getContentTree also includes elements from all languages in its structure (although mod1/index.php only shows the selected language); this leads to the sideeffect that the list of non-used content elements is accurate now!
-	* getContentTree can be used from other applications to read out the page structure from TemplaVoila!
-	* Changed that the sidebar is now _outside_ (on top of) the rendered page: This was necessary to have proper function in case (very rarely though) that sheets are used for the page template! Question is if we should take some action to move only the icons for the top-level element to top of page again?
-	* The refactoring of getContentTree() has been thoroughly tested with as many scenarios I could create and I'm very confident it will work.
-	* Of course, all parameters of getContentTree-related functions may have been moved around since the functions were moved; It is considered unrealistic that any external extension were using getContentTree from its location in mod1/index.php.
+ ~ Re-inserted rejected changes, however I fixed all problems pointed out by robert in mail.
+ ~ Moved getContentTree from mod1/index.php to api-class: At the same time the output from getContentTree has been cleaned up so it doesn't contain formatted preview output (only data on which a preview can be rendered in mod1/index.php). 
+   getContentTree also includes elements from all languages in its structure (although mod1/index.php only shows the selected language); this leads to the sideeffect that the list of non-used content elements is accurate now!
+   getContentTree can be used from other applications to read out the page structure from TemplaVoila!
+   The refactoring of getContentTree() has been thoroughly tested with as many scenarios I could create and I'm very confident it will work.
+   Of course, all parameters of getContentTree-related functions may have been moved around since the functions were moved; It is considered unrealistic that any external extension were using getContentTree from its location in mod1/index.php.
+ ~ Changed that the sidebar is now _outside_ (on top of) the rendered page: This was necessary to have proper function in case (very rarely though) that sheets are used for the page template! Question is if we should take some action to move only the icons for the top-level element to top of page again?
 	
 2006-03-13	Robert Lemke <robert@typo3.org>
  - mod1_localization: Language selector ($availableTranslationFlags) - Rejected the changes and used an older version which already ignores the "langDisable" tag for the root element. Reason for rejecting the new code is that the strings are not localized with getLL
@@ -48,22 +53,22 @@
  - mod1/index.php: Rejected edit translation link because of missing locallang support
 	  
 2006-03-13  Kasper Skaarhoej
-	* When a parent container element has localization set to "Separate", the links to localization of contained records are removed. This is done in mod1/index.php, line 843 [($parentDsMeta['langDisable'] || $parentDsMeta['langChildren'])]. Maybe it should be configurable?
-	* Also updated the JavaDoc of mod1/index.php and function overview in top of document.
+ ~ When a parent container element has localization set to "Separate", the links to localization of contained records are removed. This is done in mod1/index.php, line 843 [($parentDsMeta['langDisable'] || $parentDsMeta['langChildren'])]. Maybe it should be configurable?
+ ~ Also updated the JavaDoc of mod1/index.php and function overview in top of document.
 	
 2006-03-10  Kasper Skaarhoej
-	* Removed the checkbox, sidebar_renderItem_renderTranslationInfoCheckbox(), from localization sidebar: Not needed, set by default
-	* Changed "Default language" icon to a new one, "flags/unknown.gif"
-	* Links to editing of page language header are displayed regardless of selected language (why not?)
-	* The links to editing of page language header are separated from the selection of language. More userfriendly and practical
-	* Mistakenly, the selection of language/editing of page language header was not shown if the data structure had localization mode "Disabled". The data structure localization mode has no influence on whether the page is localized or not. Therefore, the setting ->rootElementLanguageDisable has also been removed (and substituted with "rootElementLanguageMode").
-	* In TemplaVoilas tcemain hooks a reference was mistakenly created when a tcemain command (like copy or new version) created a new element. I disabled reference creation upon any command now since I can't see when you would like one. In addition I would like to raise doubt how safe it is to assume that any creation of a record in tcemain is supposed to generate a relation in TemplaVoilas context. I ask that such a hook is very conservative and only sets the reference if absolutely sure. I can't tell if there are problems but ask that Robert consider it.
-	* Added a new internal flag for the page module: "->translatorMode". The idea is that when this flag is set all buttons, context menus and editing links are removed EXCEPT links that links to editing of localizable elements or localizes an element. This mode is automatically set for a user if they have no access to the default language (thus assumed to be a translator of one or more languages). This action scales down the modules complexity and for translators - typically foreign to TYPO3 - it will be much easier to translate, simply by the approach "Click-the-flag" (generally, all icons for languages can be clicked to edit the language)
-	* Brought back the warning if a container element is "Inheritance" or "Separate" modes. I know this will seem odd to those who uses those modes, but as my localization guide describes, these modes should only be used under special circumstances. Using Page TSconfig they can be disabled (this is already documented in the manual.sxw). However, the Web > TemplaVoila module will still show warnings in the detail view if those localization modes are found for data structures with container fields
-	* Re-introduced Roberts old links to localization, but commented out in the code. Just for debugging/discussion/testing...
-	* The message "Localized flexform" is now linked to editing of the record (for translators) - AND the message is only shown when relevant, that is when there actually are content to translate. It means for all container elements with not actual content carrying fields they will not be shown.
-	* Modified a few keys in the tree structure that the module makes, in particular the 'fields' key. This doesn't seem to be used actively anywhere in TemplaVoila so I assume it is safe to do. (or irrelevant, pick your favourite :-)
-	* I re-introduced the "mod.SHARED.defaultLanguageLabel" and "mod.SHARED.defaultLanguageFlag". Robert had converted those to "defaultLanguage.title" and "-.flag" but since "mod.SHARED.defaultLanguageLabel" is already used in Web>Page and Web>List for long time it is wrong to correct this now. Hence they are reintroduced and the old ones not supported anymore. Documentation didn't even document them (another reason to change it).
+ - Removed the checkbox, sidebar_renderItem_renderTranslationInfoCheckbox(), from localization sidebar: Not needed, set by default
+ + Changed "Default language" icon to a new one, "flags/unknown.gif"
+ ~ Links to editing of page language header are displayed regardless of selected language (why not?)
+ ~ The links to editing of page language header are separated from the selection of language. More userfriendly and practical
+ # Mistakenly, the selection of language/editing of page language header was not shown if the data structure had localization mode "Disabled". The data structure localization mode has no influence on whether the page is localized or not. Therefore, the setting ->rootElementLanguageDisable has also been removed (and substituted with "rootElementLanguageMode").
+ ~ In TemplaVoilas tcemain hooks a reference was mistakenly created when a tcemain command (like copy or new version) created a new element. I disabled reference creation upon any command now since I can't see when you would like one. In addition I would like to raise doubt how safe it is to assume that any creation of a record in tcemain is supposed to generate a relation in TemplaVoilas context. I ask that such a hook is very conservative and only sets the reference if absolutely sure. I can't tell if there are problems but ask that Robert consider it.
+ + Added a new internal flag for the page module: "->translatorMode". The idea is that when this flag is set all buttons, context menus and editing links are removed EXCEPT links that links to editing of localizable elements or localizes an element. This mode is automatically set for a user if they have no access to the default language (thus assumed to be a translator of one or more languages). This action scales down the modules complexity and for translators - typically foreign to TYPO3 - it will be much easier to translate, simply by the approach "Click-the-flag" (generally, all icons for languages can be clicked to edit the language)
+ ~ Brought back the warning if a container element is "Inheritance" or "Separate" modes. I know this will seem odd to those who uses those modes, but as my localization guide describes, these modes should only be used under special circumstances. Using Page TSconfig they can be disabled (this is already documented in the manual.sxw). However, the Web > TemplaVoila module will still show warnings in the detail view if those localization modes are found for data structures with container fields
+ ~ Re-introduced Roberts old links to localization, but commented out in the code. Just for debugging/discussion/testing...
+ ~ The message "Localized flexform" is now linked to editing of the record (for translators) - AND the message is only shown when relevant, that is when there actually are content to translate. It means for all container elements with not actual content carrying fields they will not be shown.
+ ~ Modified a few keys in the tree structure that the module makes, in particular the 'fields' key. This doesn't seem to be used actively anywhere in TemplaVoila so I assume it is safe to do. (or irrelevant, pick your favourite :-)
+ ~ I re-introduced the "mod.SHARED.defaultLanguageLabel" and "mod.SHARED.defaultLanguageFlag". Robert had converted those to "defaultLanguage.title" and "-.flag" but since "mod.SHARED.defaultLanguageLabel" is already used in Web>Page and Web>List for long time it is wrong to correct this now. Hence they are reintroduced and the old ones not supported anymore. Documentation didn't even document them (another reason to change it).
 
 2006-03-06  Robert Lemke <robert@typo3.org>
 
@@ -99,7 +104,7 @@
 
  ~ Code cleanup after analysis in Zend Studio
 
-2006-01-25	Kasper Sk�rh�j  <kasperYYYY@typo3.com>
+2006-01-25	Kasper Skaarhoej  <kasperYYYY@typo3.com>
 
  + Linked TemplaVoila into the extdeveval tool with a new class; This is going to be a tool which can convert FlexForm data from "separate" (langChildren = 0) to "inheritance" (langChildren = 1) localization types (the words I have used). Nicolas Cerisier from Dassault is expected to finish the code which I started out. New file added.
  ~ Added "Undefined" as Data Structure type (again). This will be used if TemplaVOila is used for templating where not related to pages or content elements.
@@ -208,11 +213,11 @@
  
  + Added staging support for workspaces (t3ver_stage)
 
-2005-10-04  Kasper Sk�rh�j  <kasper2005@typo3.com>
+2005-10-04  Kasper Skaarhoej  <kasper2005@typo3.com>
 
  * Added support for versioning plus did some other changes to localization.
 
-2005-04-27  Kasper Sk�rh�j  <kasper@typo3.com>
+2005-04-27  Kasper Skaarhoej  <kasper@typo3.com>
 
  * Added that a warning is displayed if Flexible content container elements have localization enabled in a "dangerous" non-supported way. Warning can be disabled with Page TSconfig
  * Added that if an element on the local page is used more than one time inside the page structure it will be noticed in the display (assumption: Local content elements are normally shown only once on the page). (This changed helped to avoid some user confusion about copies and references)
@@ -224,7 +229,7 @@
 2005-02-21 Robert Lemke <robert@typo3.org>
  + htmlmarkup: Added support and icon for DL, DD and DT HTML tags in the click menu (mapping tool). Solved feature request #0000671
 
-2005-02-16  Kasper Sk�rh�j  <kasper@typo3.com>
+2005-02-16  Kasper Skaarhoej  <kasper@typo3.com>
 
  * Added feature that allows a Template Object to point to another parent template object from which the print and language subtemplates will be taken if the actual template object doesn't have any defined it self. The feature is called "Inherit subtemplates from as defaults"
 
@@ -239,12 +244,12 @@
  ~ Classic page module is now switched off by default, page template selector switched on (in the extension manager configuration dialogue)
  + mod1: Added support for making true copies of FCEs with sub elements. Before only the FCE parent element was truely copied, the child objects weren't. Still has a small bug, will fix that soon!
 
-2005-01-21  Kasper Sk�rh�j  <kasper@typo3.com>
+2005-01-21  Kasper Skaarhoej  <kasper@typo3.com>
 
  * Added a "Start new website" wizard which will set up TemplaVoila site basics in one minute. Found in the Web > TemplaVoila module.
  * MAY have fixed a bug where the mapping was mysteriously lost - but I might also have introduced a new bug instead. Please let me know!
 
-2004-12-13  Kasper Sk�rh�j  <kasper@typo3.com>
+2004-12-13  Kasper Skaarhoej  <kasper@typo3.com>
 
  * Added an EXAMPLE of how page-templates can come from a t3d file. I expect it needs some configuration of which folder to look for templates in, but the principles are shown. It will require the new TYPO3 source with modified import/export features.
  * Fixed a PHP5 bug with arrays...
@@ -260,7 +265,7 @@
  + mod1: Added flags next to the language selector which represent existing translations
  # mod1: In the sidebar, changed menuItems array for the dynamic tab menu to num array
 
-2004-09-09  Kasper Sk�rh�j <kasperYYYY@typo3.com>
+2004-09-09  Kasper Skaarhoej <kasperYYYY@typo3.com>
 
  * Fixed that color highlighting of data structure didn't show <meta> tag content.
  * Improved things in page module regarding sheets; Eg. counting elements on each sheet. Fixed some PHP5 array bugs also.
@@ -295,7 +300,7 @@
   * mod3: Added wizard for (re-) building indexing information about element reference (where which content element is used). You'll need to update table definitions in the extension manager.
   * ToDo for element references: Deleting CEs from elsewhere than the page module will not be registered automatically (see ToDo file)
 
-2004-08-27  Kasper Sk�rh�j  <kasperYYYY@typo3.com>
+2004-08-27  Kasper Skaarhoej  <kasperYYYY@typo3.com>
 
   * Page module: Added "Show hidden elements" box - can be moved to better position in page module
   * Corrected bugs for flagicons if they were not configured (they didn't display correctly of course).
@@ -303,11 +308,11 @@
   * Page module: Added "&L=xx" parameter to view-page icon (magnifying glass) so preview link to localized pages is correct.
   * Page module: Added overview of localized versions of other records. This is used when TypoScript is configured with "config.sys_language_overlay". Configurable.
 
-2004-08-26  Kasper Sk�rh�j  <kasperYYYY@typo3.com>
+2004-08-26  Kasper Skaarhoej  <kasperYYYY@typo3.com>
 
   * Changed the versioning selector...
 
-2004-08-21  Kasper Sk�rh�j  <kasperYYYY@typo3.com>
+2004-08-21  Kasper Skaarhoej  <kasperYYYY@typo3.com>
 
   * Finally added the "TemplaVoila" module to the Web main module and put some content into it! Now you can manage all your Data Structures and Template Objects from that module including creating new mappings and validate old ones.
   * Also added TAB menus to the TV page module
@@ -352,7 +357,7 @@
 	* Added hook in page module for inserting HTML code at the very top of the edit page screen - for providing a toolbar or sth. similar
 	* Updated manual
 
-2004-03-31  Kasper Sk�rh�j  <kasperYYYY@typo3.com>
+2004-03-31  Kasper Skaarhoej  <kasperYYYY@typo3.com>
 
 	* Fixed bug in htmlmarkup class where content were merged with template; When the number of "virtual records" exceeded a limit, none were merged.
 
@@ -361,7 +366,7 @@
 	* Added icons, sponsored by Ben
 	* Modified TSconfig userFunction properties for cm1 and updated manual
 
-2004-03-24  Kasper Sk�rh�j
+2004-03-24  Kasper Skaarhoej
 	* Added a syntax highlight module for FlexForm data in tt_content and pages; access it as admin via the click menu of pages / tt_content elements.
 
 2004-03-22  Robert Lemke  <robert@typo3.org>
@@ -375,7 +380,7 @@ See the updated many for more information. BTW: Thanks for the extra fields!
 	* Hey Kasper, you broke the create new page wizard ... ;-) Anyways, will find out what's wrong.
 	* Small update for the manual (FAQ)
 
-2004-03-09  Kasper Sk�rh�j
+2004-03-09  Kasper Skaarhoej
 
 	* Removed copy,cut,paste,new,delete links in Context Menu for content elements inside of TemplaVoila module; Doesn't do any good there since those features are specific for TemplaVoila and has to be managed in the module itself; Alternatively we should create menu items in the context menu which does the same as the buttons in the module, but that was too hard for me to think about tonight....
 	* Added support for other root elements in backend module than pages. Setting another root element is done by the parameter set "&altRoot[table], &altRoot[uid], &altRoot[flex_field]"
@@ -413,7 +418,7 @@ See the updated many for more information. BTW: Thanks for the extra fields!
 	* Several changes here and there, comments added
 
 
-2003-10-28  Kasper Sk�rh�j
+2003-10-28  Kasper Skaarhoej
 
 	* Added $Id$ keywords tags.
 	* Added support+icon for iframe tags in htmlmarkup class.
