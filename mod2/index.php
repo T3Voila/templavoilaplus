@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2003-2006 Kasper Skårhøj <kasper@typo3.com>
+*  (c) 2003-2006 Kasper Skï¿½rhï¿½j <kasper@typo3.com>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -26,7 +26,7 @@
  *
  * $Id$
  *
- * @author   Kasper Skårhøj <kasper@typo3.com>
+ * @author   Kasper Skï¿½rhï¿½j <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -475,6 +475,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 				$indexTO = '';
 				$toIdArray = array(-1);
 				if (is_array($toRecords[0]))	{
+
 					$newPid = $dsR['pid'];
 					$newFileRef = '';
 					$newTitle = $dsR['title'].' [TEMPLATE]';
@@ -501,6 +502,11 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 							$toIdArray[] = $toObj['uid'];
 						}
 					}
+
+                    if (is_null($newPid)) {
+                        // Static DS!
+                        $newPid = t3lib_div::_GP('id');  // last possibility :(
+                    }
 
 						// New-TO link:
 					$TOcontent.= '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick(
