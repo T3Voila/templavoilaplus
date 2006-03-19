@@ -1400,7 +1400,8 @@ class tx_templavoila_api {
 		$dbAnalysis->start($listOfSubElementUids, 'tt_content');
 
 			// Traverse records:
-		foreach($dbAnalysis->itemArray as $counter => $recIdent)	{
+        $counter = 1;   // Note: key in $dbAnalysis->itemArray is not a valid counter! It is in 'tt_content_xx' format!
+		foreach($dbAnalysis->itemArray as $recIdent)	{
 			$idStr = 'tt_content:'.$recIdent['id'];
 
 			if (!t3lib_div::inList($prevRecList,$idStr))	{
@@ -1409,9 +1410,10 @@ class tx_templavoila_api {
 				if (is_array($nextSubRecord))	{
 					$tt_content_elementRegister[$recIdent['id']]++;
 					$subTree['el'][$idStr] = $this->getContentTree_element('tt_content', $nextSubRecord, $tt_content_elementRegister, $prevRecList.','.$idStr);
-					$subTree['el'][$idStr]['el']['index'] = $counter+1;
+					$subTree['el'][$idStr]['el']['index'] = $counter;
 					$subTree['el'][$idStr]['el']['isHidden'] = $TCA['tt_content']['ctrl']['enablecolumns']['disabled'] && $nextSubRecord[$TCA['tt_content']['ctrl']['enablecolumns']['disabled']];
-					$subTree['el_list'][($counter+1)] = $idStr;
+					$subTree['el_list'][$counter] = $idStr;
+                    $counter++;
 				} else {
 					# ERROR: The element referenced was deleted! - or hidden :-)
 				}
@@ -1419,6 +1421,7 @@ class tx_templavoila_api {
 				# ERROR: recursivity error!
 			}
 		}
+
 		return $subTree;
 	}
 
