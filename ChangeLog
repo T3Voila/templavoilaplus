@@ -1,3 +1,6 @@
+2006-03-19	Dmitry Dulepov	<typo3@accio.lv>
+	# Fixed bug in API: only one element was displayed by page module regardless of the number of elements on the page
+
 2006-03-17 Robert Lemke <robert@typo3.org>
  ~ a few cosmetic changes in class.tx_templavoila_mod1_localization.php
  + added a few placeholders for context sensitive help
