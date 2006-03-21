@@ -101,9 +101,9 @@ class tx_templavoila_mod1_clipboard {
 		$this->t3libClipboardObj->endClipboard();	// Save the clipboard content
 
 			// Add a list of non-used elements to the sidebar:
-		if ($GLOBALS['BE_USER']->workspace===0)	{	// Only show if in LIVE workspace:
+	#	if ($GLOBALS['BE_USER']->workspace===0)	{	// Only show if in LIVE workspace:
 			$this->pObj->sideBarObj->addItem('nonUsedElements', $this, 'sidebar_renderNonUsedElements', $LANG->getLL('nonusedelements'),30);
-		}
+	#	}
 	}
 
 	/**
@@ -253,13 +253,13 @@ class tx_templavoila_mod1_clipboard {
 		$usedUids = array_keys($this->pObj->global_tt_content_elementRegister);
 		$usedUids[] = 0;
 		$pid = $this->pObj->id;	// If workspaces should evaluated non-used elements it must consider the id: For "element" and "branch" versions it should accept the incoming id, for "page" type versions it must be remapped (because content elements are then related to the id of the offline version)
-
+#debug($usedUids);
 		$res = $TYPO3_DB->exec_SELECTquery (
 			'uid, header, bodytext, sys_language_uid',
 			'tt_content',
 			'pid='.intval($pid).' '.
 				'AND uid NOT IN ('.implode(',',$usedUids).') '.
-				'AND t3ver_wsid='.intval($BE_USER->workspace).
+#				'AND t3ver_wsid='.intval($BE_USER->workspace).
 				t3lib_BEfunc::deleteClause('tt_content').
 				t3lib_BEfunc::versioningPlaceholderClause('tt_content'),
 			'',
@@ -271,7 +271,7 @@ class tx_templavoila_mod1_clipboard {
 			$elementPointerString = 'tt_content:'.$row['uid'];
 
 				// Prepare the language icon:
-			$languageLabel = htmlspecialchars ($this->pObj->allAvailableLanguages[$row['sys_language_uid']]['title']);
+			$languageLabel = htmlspecialchars($this->pObj->allAvailableLanguages[$row['sys_language_uid']]['title']);
 			$languageIcon = $this->pObj->allAvailableLanguages[$row['sys_language_uid']]['flagIcon'] ? '<img src="'.$this->pObj->allAvailableLanguages[$row['sys_language_uid']]['flagIcon'].'" title="'.$languageLabel.'" alt="'.$languageLabel.'"  />' : ($languageLabel && $row['sys_language_uid'] ? '['.$languageLabel.']' : '');
 
 				// Prepare buttons:
@@ -299,7 +299,7 @@ class tx_templavoila_mod1_clipboard {
 
 				// Control for deleting all deleteable records:
 			$deleteAll = '';
-			if (count($this->deleteUids))	{
+			if (count($this->deleteUids) && 0===$BE_USER->workspace)	{
 				$params = '';
 				foreach($this->deleteUids as $deleteUid)	{
 					$params.= '&cmd[tt_content]['.$deleteUid.'][delete]=1';
@@ -356,12 +356,14 @@ class tx_templavoila_mod1_clipboard {
 
 		if (count($infoData))	{
 			return '<a href="#" onclick="'.htmlspecialchars('top.launchView(\''.$table.'\', \''.$uid.'\'); return false;').'" title="'.htmlspecialchars(t3lib_div::fixed_lgd(implode(' / ',$infoData),100)).'">Ref: '.count($infoData).'</a>';
-		} else {
+		} elseif (0===$BE_USER->workspace) {
 			$this->deleteUids[] = $uid;
 			$params = '&cmd[tt_content]['.$uid.'][delete]=1';
 			return '<a href="#" onclick="'.htmlspecialchars('jumpToUrl(\''.$this->doc->issueCommand($params,'').'\');').'">'.
 					'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/garbage.gif','width="11" height="12"').' title="Delete!" alt="" />'.
 					'</a>';
+		} else {
+			return '';
 		}
 	}
 }
