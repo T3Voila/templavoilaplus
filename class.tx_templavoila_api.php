@@ -178,14 +178,14 @@ class tx_templavoila_api {
 	function insertElement_createRecord ($destinationPointer, $row) {
 		if ($this->debug) t3lib_div::devLog ('API: insertElement_createRecord()', 'templavoila', 0, array ('destinationPointer' => $destinationPointer, 'row' => $row));
 
-		$parentRecord = t3lib_BEfunc::getRecordWSOL($destinationPointer['table'], $destinationPointer['uid'],'uid,pid,t3ver_oid,tx_templavoila_flex');
+		$parentRecord = t3lib_BEfunc::getRecordWSOL($destinationPointer['table'], $destinationPointer['uid'],'uid,pid,t3ver_oid,tx_templavoila_flex'.($destinationPointer['table']=='pages'?',t3ver_swapmode':''));
 
 		if ($destinationPointer['position'] > 0) {
 			$currentReferencesArr = $this->flexform_getElementReferencesFromXML ($parentRecord['tx_templavoila_flex'], $destinationPointer);
 			$uidOfBeforeElement = $currentReferencesArr[$destinationPointer['position']];
 			$newRecordPid = -$uidOfBeforeElement;
 		} else {
-			$newRecordPid = ($destinationPointer['table'] == 'pages' ? ($parentRecord['pid'] == -1 ? $parentRecord['t3ver_oid'] : $parentRecord['uid']) : $parentRecord['pid']);
+			$newRecordPid = ($destinationPointer['table'] == 'pages' ? ($parentRecord['pid'] == -1 && $parentRecord['t3ver_swapmode'] == -1 ? $parentRecord['t3ver_oid'] : $parentRecord['uid']) : $parentRecord['pid']);
 		}
 
 		$dataArr = array();
@@ -217,6 +217,7 @@ class tx_templavoila_api {
 		$tce->stripslashes_values = 0;
 		$flagWasSet = $this->getTCEmainRunningFlag();
 		$this->setTCEmainRunningFlag (TRUE);
+
 		$tce->start($dataArr,array());
 		$tce->process_datamap();
 		$newUid = $tce->substNEWwithIDs['NEW'];
@@ -442,11 +443,11 @@ class tx_templavoila_api {
 			// Check and get all information about the destination position:
 		if (is_array ($destinationPointer)) {
 			if (!$destinationPointer = $this->flexform_getValidPointer ($destinationPointer)) return FALSE;
-			$destinationParentRecord = t3lib_BEfunc::getRecordWSOL($destinationPointer['table'], $destinationPointer['uid'],'uid,pid,tx_templavoila_flex');
+			$destinationParentRecord = t3lib_BEfunc::getRecordWSOL($destinationPointer['table'], $destinationPointer['uid'],'uid,pid,tx_templavoila_flex'.($destinationPointer['table']=='pages'?',t3ver_swapmode':''));
 			if (!is_array ($destinationParentRecord)) {
 				if ($this->debug) t3lib_div::devLog ('process: Parent record of the element specified by destination pointer does not exist!', 2, $destinationPointer);
 				return FALSE;
-			} elseif($destinationParentRecord['pid']<0)	{
+			} elseif($destinationParentRecord['pid']<0 && ($destinationPointer['table']!='pages' || $destinationParentRecord['t3ver_swapmode']<0))	{
 				if ($this->debug) t3lib_div::devLog ('process: The destination pointer must always point to a live record, not an offline version!', 2, $destinationPointer);
 				return FALSE;
 			}
