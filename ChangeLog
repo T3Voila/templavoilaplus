@@ -1,3 +1,6 @@
+2006-03-16 - Kasper Skaarhoej
+	* Fixed API class so inserting of new elements and copy/cut/paste/reference works when working with offline versions in Live workspace.
+
 2006-03-19	Dmitry Dulepov	<typo3@accio.lv>
 	# Fixed bug in API: only one element was displayed by page module regardless of the number of elements on the page
 	# Fixed bug in mod2: empty pid was passed to alt_doc when new root TO is created for static DS
