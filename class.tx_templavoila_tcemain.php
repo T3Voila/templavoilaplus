@@ -94,8 +94,7 @@ class tx_templavoila_tcemain {
 	}
 
 	/**
-	 * This method is called by a hook in the TYPO3 Core Engine (TCEmain). We use it to check if a element reference
-	 * has changed and update the table tx_templavoila_elementreferences accordingly
+	 * This method is called by a hook in the TYPO3 Core Engine (TCEmain). 
 	 *
 	 * If a record from table "pages" is created or updated with a new DS but no TO is selected, this function
 	 * tries to find a suitable TO and adds it to the fieldArray.
@@ -153,17 +152,19 @@ class tx_templavoila_tcemain {
 
 			$elementCounter = 1;
 			$sortNumber = 10;
+			
 					// update the sorting field of the content element for backwards-compatibility with pre-TemplaVoila era:
 			foreach ($elementsOnThisPage as $elementArr) {
 				$sortByField = $TCA['tt_content']['ctrl']['sortby'];
 				if ($sortByField) {
 					$updateFields = array($sortByField => $sortNumber);
-					$TYPO3_DB->exec_UPDATEquery (
-						'tt_content',
-						'uid='.intval($row['uid']),
-						$updateFields
-					);
+#					$TYPO3_DB->exec_UPDATEquery (
+#						'tt_content',
+#						'uid='.intval($elementArr['uid']),
+#						$updateFields
+#					);
 					$sortNumber += 10;
+#					$reference->updateRefIndex('tt_content', intval($elementArr['uid']));
 				}
 			}
 		}
