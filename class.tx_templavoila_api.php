@@ -316,19 +316,7 @@ class tx_templavoila_api {
 			if ($this->debug) t3lib_div::devLog ('API: localizeElement(): Cannot localize element because localization is disabled for the active page datastructure!', 'templavoila', 0);
 			return FALSE;
 		}
-
-			// Build destination pointer and copy the element:
-		$destinationPointer = $sourcePointer;
-		$destinationPointer['sLang'] = $rawPageDataStructureArr['meta']['langChildren'] == 1 ? 'lDEF' : 'l'.$languageKey;
-		$destinationPointer['vLang'] = $rawPageDataStructureArr['meta']['langChildren'] == 1 ? 'v'.$languageKey : 'vDEF';
-		$destinationPointer['position'] = -1;
-
-		$newElementUid = $this->process ('copy', $sourcePointer, $destinationPointer);
-
-			// Modify the copied element's record:
-		$dataArr = array();
-		$dataArr['tt_content'][$newElementUid]['l18n_parent'] = $sourceElementRecord['uid'];
-
+		
 		$staticLanguageRows = t3lib_BEfunc::getRecordsByField('static_languages', 'lg_iso_2', $languageKey);
 		if (isset($staticLanguageRows[0]['uid'])) {
 			$languageRecords = t3lib_BEfunc::getRecordsByField('sys_language', 'static_lang_isocode', $staticLanguageRows[0]['uid']);
@@ -337,14 +325,19 @@ class tx_templavoila_api {
 			}
 		}
 
-			// Store l18n modified information in the new tt_content record:
-		$flagWasSet = $this->getTCEmainRunningFlag();
-		$this->setTCEmainRunningFlag (TRUE);
-		$tce = t3lib_div::makeInstance('t3lib_TCEmain');
-		$tce->stripslashes_values = 0;
-		$tce->start($dataArr,array());
-		$tce->process_datamap();
-		if (!$flagWasSet) $this->setTCEmainRunningFlag (FALSE);
+			// Build destination pointer and copy the element:
+		$destinationPointer = $sourcePointer;
+		$destinationPointer['sLang'] = $rawPageDataStructureArr['meta']['langChildren'] == 1 ? 'lDEF' : 'l'.$languageKey;
+		$destinationPointer['vLang'] = $rawPageDataStructureArr['meta']['langChildren'] == 1 ? 'v'.$languageKey : 'vDEF';
+		$destinationPointer['position'] = -1;
+		if (isset($languageRecords[0]['uid'])) {
++			$destinationPointer['sys_language_uid'] = $languageRecords[0]['uid'];
+		} else	{
+			if ($this->debug) t3lib_div::devLog ('API: localizeElement(): Cannot localize element because sys_language record can not be found !', 'templavoila', 0);
+			return FALSE;
+		}
+
+		$newElementUid = $this->process ('localize', $sourcePointer, $destinationPointer);
 
 		return $newElementUid;
 	}
@@ -464,6 +457,7 @@ class tx_templavoila_api {
 		switch ($mode) {
 			case 'move' :			$result = $this->process_move ($sourcePointer, $destinationPointer, $sourceReferencesArr, $destinationReferencesArr, $sourceParentRecord, $destinationParentRecord, $sourceElementRecord, $onlyHandleReferences); break;
 			case 'copy':			$result = $this->process_copy ($sourcePointer, $destinationPointer, $sourceReferencesArr, $destinationReferencesArr, $sourceParentRecord, $destinationParentRecord, $sourceElementRecord['uid']); break;
+			case 'localize':			$result = $this->process_copy ($sourcePointer, $destinationPointer, $sourceReferencesArr, $destinationReferencesArr, $sourceParentRecord, $destinationParentRecord, $sourceElementRecord['uid'], 'localize'); break;
 			case 'copyrecursively':	$result = $this->process_copyRecursively ($sourcePointer, $destinationPointer, $sourceReferencesArr, $destinationReferencesArr, $sourceParentRecord, $destinationParentRecord, $sourceElementRecord['uid']); break;
 			case 'reference':		$result = $this->process_reference ($destinationPointer, $destinationReferencesArr, $sourceElementRecord['uid']); break;
 			case 'referencebyuid':	$result = $this->process_reference ($destinationPointer, $destinationReferencesArr, $sourcePointer['uid']); break;
@@ -558,14 +552,18 @@ class tx_templavoila_api {
 	 * @return	mixed		The UID of the newly created copy or FALSE if an error occurred.
 	 * @access	protected
 	 */
-	function process_copy ($sourcePointer, $destinationPointer, $sourceReferencesArr, $destinationReferencesArr, $sourceParentRecord, $destinationParentRecord, $elementUid) {
+	function process_copy ($sourcePointer, $destinationPointer, $sourceReferencesArr, $destinationReferencesArr, $sourceParentRecord, $destinationParentRecord, $elementUid, $copyMode = 'copy') {
 
-		$destinationPID = $destinationPointer['table'] == 'pages' ? $destinationParentRecord['uid'] : $destinationParentRecord['pid'];
+		if ($copyMode=='localize')	{
+			$destinationPID = $destinationPointer['sys_language_uid'];		// copyMode is set to localize: tce_main localize takes target language as parameter.
+		} else	{
+			$destinationPID = $destinationPointer['table'] == 'pages' ? $destinationParentRecord['uid'] : $destinationParentRecord['pid'];	// copyMode is not localize: tce_main takes target page PID as parameter
+		}
 
 			// Initialize TCEmain and create configuration for copying the specified record
 		$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 		$cmdArray = array();
-		$cmdArray['tt_content'][$elementUid]['copy'] = $destinationPID;
+		$cmdArray['tt_content'][$elementUid][$copyMode] = $destinationPID;
 
 			// Execute the copy process and finally insert the reference for the element to the destination:
 		$flagWasSet = $this->getTCEmainRunningFlag();

@@ -347,8 +347,10 @@ class tx_templavoila_mod1_clipboard {
 
 			// Compile information for title tag:
 		$infoData = array();
-		foreach($rows as $row)	{
-			$infoData[] = $row['tablename'].':'.$row['recuid'].':'.$row['field'];
+		if (is_array($rows))	{
+			foreach($rows as $row)	{
+				$infoData[] = $row['tablename'].':'.$row['recuid'].':'.$row['field'];
+			}
 		}
 
 		if (count($infoData))	{

@@ -221,6 +221,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			'language' => $translatedLanguagesUids,
 			'clip_parentPos' => '',
 			'clip' => '',
+			'langDisplayMode' => '',
 		);
 
 			// Hook: menuConfig_preProcessModMenu
@@ -409,6 +410,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 			// Setting localization mode for root element:
 		$this->rootElementLangMode = $contentTreeData['tree']['ds_meta']['langDisable'] ? 'disable' : ($contentTreeData['tree']['ds_meta']['langChildren'] ? 'inheritance' : 'separate');
+		$this->rootElementLangParadigm = intval($this->modTSconfig['properties']['freeParadigm']) ? 'free' : 'bound';
 
 			// Create a back button if neccessary:
 		if (is_array ($this->altRoot)) {
@@ -562,13 +564,13 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 			// Create warning messages if neccessary:
 		$warnings = '';
-		if ($this->global_tt_content_elementRegister[$contentTreeArr['el']['uid']] > 1) {
+		if ($this->global_tt_content_elementRegister[$contentTreeArr['el']['uid']] > 1 && $this->rootElementLangParadigm !='free') {
 			$warnings .= '<br/>'.$this->doc->icons(2).' <em>'.htmlspecialchars(sprintf($LANG->getLL('warning_elementusedmorethanonce',''), $this->global_tt_content_elementRegister[$contentTreeArr['el']['uid']], $contentTreeArr['el']['uid'])).'</em>';
 		}
 
 			// Displaying warning for container content (in default sheet - a limitation) elements if localization is enabled:
 		$isContainerEl = count($contentTreeArr['sub']['sDEF']);
-		if (!$this->modTSconfig['properties']['disableContainerElementLocalizationWarning'] && $isContainerEl && $contentTreeArr['el']['table'] === 'tt_content' && $contentTreeArr['el']['CType'] === 'templavoila_pi1' && !$contentTreeArr['ds_meta']['langDisable'])	{
+		if (!$this->modTSconfig['properties']['disableContainerElementLocalizationWarning'] && $this->rootElementLangParadigm !='free' && $isContainerEl && $contentTreeArr['el']['table'] === 'tt_content' && $contentTreeArr['el']['CType'] === 'templavoila_pi1' && !$contentTreeArr['ds_meta']['langDisable'])	{
 			if ($contentTreeArr['ds_meta']['langChildren'])	{
 				if (!$this->modTSconfig['properties']['disableContainerElementLocalizationWarning_warningOnly']) {
 					$warnings .= '<br/>'.$this->doc->icons(2).' <b>'.$LANG->getLL('warning_containerInheritance').'</b>';
@@ -636,6 +638,10 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			// Define l/v keys for current language:
 		$langChildren = intval($elementContentTreeArr['ds_meta']['langChildren']);
 		$langDisable = intval($elementContentTreeArr['ds_meta']['langDisable']);
+			// Get's only used internally in this method. Localization info preview will still be rendered in appropriate language
+#		$lKey = ($langDisable || ($this->rootElementLangParadigm =='bound') ) ? 'lDEF' : ($langChildren ? 'lDEF' : 'l'.$languageKey);
+#		$vKey = ($langDisable || ($this->rootElementLangParadigm =='bound') ) ? 'vDEF' : ($langChildren ? 'v'.$languageKey : 'vDEF');
+
 		$lKey = $langDisable ? 'lDEF' : ($langChildren ? 'lDEF' : 'l'.$languageKey);
 		$vKey = $langDisable ? 'vDEF' : ($langChildren ? 'v'.$languageKey : 'vDEF');
 
@@ -674,7 +680,17 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				if (is_array($fieldContent['el_list']))	 {
 					foreach($fieldContent['el_list'] as $position => $subElementKey)	{
 						$subElementArr = $fieldContent['el'][$subElementKey];
-						if (!$subElementArr['el']['isHidden'] || $this->MOD_SETTINGS['tt_content_showHidden'])	{
+
+						if ((!$subElementArr['el']['isHidden'] || $this->MOD_SETTINGS['tt_content_showHidden']) && $this->displayEl($subElementArr))	{
+								// When "onlyLocalized" display mode is set and an alternative language gets displayed
+							if (($this->MOD_SETTINGS['langDisplayMode'] == 'onlyLocalized') && $this->currentLanguageUid>0)	{
+									// Default language element. Subsitute displayed element with localized element
+								if (($subElementArr['el']['sys_language_uid']==0) && is_array($subElementArr['localizationInfo'][$this->currentLanguageUid]) && ($localizedUid = $subElementArr['localizationInfo'][$this->currentLanguageUid]['localization_uid']))	{
+									$localizedRecord = t3lib_BEfunc::getRecordWSOL('tt_content', $localizedUid, '*');
+									$tree = $this->apiObj->getContentTree('tt_content', $localizedRecord);
+									$subElementArr = $tree['tree'];
+								}
+							}
 							$this->containedElements[$this->containedElementsPointer]++;
 
 								// Modify the flexform pointer so it points to the position of the curren sub element:
@@ -891,6 +907,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				// Traverse the available languages of the page (not default and [All])
 			$tRows=array();
 			foreach($this->translatedLanguagesArr as $sys_language_uid => $sLInfo)	{
+				if ($this->MOD_SETTINGS['langDisplayMode'] && $this->currentLanguageUid && ($this->currentLanguageUid != $sys_language_uid))	continue;
 				if ($sys_language_uid > 0)	{
 					$lC = '';
 					$flagLink_Begin = $flagLink_End = '';
@@ -932,17 +949,23 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 							);
 						break;
 						case 'localize':
+								
+							if ($this->rootElementLangParadigm =='free')	{
+								$showLocalizationLinks = !$parentDsMeta['langDisable'];	// For this paradigm, show localization links only if localization is enabled for DS (regardless of Inheritance and Separate)
+							} else {
+								$showLocalizationLinks = ($parentDsMeta['langDisable'] || $parentDsMeta['langChildren']);	// Adding $parentDsMeta['langDisable'] here means that the "Create a copy for translation" link is shown only if the parent container element has localization mode set to "Disabled" or "Inheritance" - and not "Separate"!
+							}
 								// Assuming that only elements which have the default language set are candidates for localization. In case the language is [ALL] then it is assumed that the element should stay "international".
-							if ((int)$contentTreeArr['el']['sys_language_uid']===0 && ($parentDsMeta['langDisable'] || $parentDsMeta['langChildren']))	{	// Adding $parentDsMeta['langDisable'] here means that the "Create a copy for translation" link is shown only if the parent container element has localization mode set to "Disabled" or "Inheritance" - and not "Separate"! Such links would ONLY make sense if roberts old localization links was used and they must be modified  first.
+							if ((int)$contentTreeArr['el']['sys_language_uid']===0 && $showLocalizationLinks)	{	
 
 									// Copy for language:
-								$params='&cmd[tt_content]['.$contentTreeArr['el']['uid'].'][localize]='.$sys_language_uid;
-								$onClick = "document.location='".$GLOBALS['SOBE']->doc->issueCommand($params)."'; return false;";
-
-									# Roberts original code for localization AND making a reference.
-									# !!! Notice that the check for $parentDsMeta['langDisable'] above is introduced because this code has been removed now!
-							#	$sourcePointerString = $this->apiObj->flexform_getStringFromPointer($parentPointer);
-							#	$onClick = "document.location='index.php?".$this->link_getParameters().'&source='.rawurlencode($sourcePointerString).'&localizeRecord='.$sLInfo['ISOcode']."'; return false;";
+								if ($this->rootElementLangParadigm =='free')	{
+									$sourcePointerString = $this->apiObj->flexform_getStringFromPointer($parentPointer);
+									$onClick = "document.location='index.php?".$this->link_getParameters().'&source='.rawurlencode($sourcePointerString).'&localizeRecord='.$sLInfo['ISOcode']."'; return false;";
+								} else {
+									$params='&cmd[tt_content]['.$contentTreeArr['el']['uid'].'][localize]='.$sys_language_uid;
+									$onClick = "document.location='".$GLOBALS['SOBE']->doc->issueCommand($params)."'; return false;";
+								}
 
 								$linkLabel = $LANG->getLL('createcopyfortranslation',1).' ('.htmlspecialchars($sLInfo['title']).')';
 								$localizeIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/clip_copy.gif','width="12" height="12"').' class="bottom" title="'.$linkLabel.'" alt="" />';
@@ -1167,13 +1190,13 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 			// Create warning messages if neccessary:
 		$warnings = '';
-		if ($this->global_tt_content_elementRegister[$contentTreeArr['el']['uid']] > 1) {
+		if ($this->global_tt_content_elementRegister[$contentTreeArr['el']['uid']] > 1 && $this->rootElementLangParadigm !='free') {
 			$warnings .= '<br/>'.$this->doc->icons(2).' <em>'.htmlspecialchars(sprintf($LANG->getLL('warning_elementusedmorethanonce',''), $this->global_tt_content_elementRegister[$contentTreeArr['el']['uid']], $contentTreeArr['el']['uid'])).'</em>';
 		}
 
 			// Displaying warning for container content (in default sheet - a limitation) elements if localization is enabled:
 		$isContainerEl = count($contentTreeArr['sub']['sDEF']);
-		if (!$this->modTSconfig['properties']['disableContainerElementLocalizationWarning'] && $isContainerEl && $contentTreeArr['el']['table'] === 'tt_content' && $contentTreeArr['el']['CType'] === 'templavoila_pi1' && !$contentTreeArr['ds_meta']['langDisable'])	{
+		if (!$this->modTSconfig['properties']['disableContainerElementLocalizationWarning'] && $this->rootElementLangParadigm !='free' && $isContainerEl && $contentTreeArr['el']['table'] === 'tt_content' && $contentTreeArr['el']['CType'] === 'templavoila_pi1' && !$contentTreeArr['ds_meta']['langDisable'])	{
 			if ($contentTreeArr['ds_meta']['langChildren'])	{
 				if (!$this->modTSconfig['properties']['disableContainerElementLocalizationWarning_warningOnly']) {
 					$warnings .= '<br/>'.$this->doc->icons(2).' <b>'.$LANG->getLL('warning_containerInheritance_short').'</b>';
@@ -1708,6 +1731,25 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 */
 	function alternativeLanguagesDefined() {
 		return count($this->allAvailableLanguages) > 2;
+	}
+	
+	/**
+	 * Defines if an element is to be displayed in the TV page module (could be filtered out by language settings)
+	 *
+	 * @param	array	Sub element array
+	 * @return	boolean	Display or not
+	 */
+	function displayEl($subElementArr)	{
+			// Don't display when "selectedLanguage" is choosen
+		$displayEl = !$this->MOD_SETTINGS['langDisplayMode'];
+			// Set to true when current language is not an alteranative (in this case display all elements)
+		$displayEl |= ($this->currentLanguageUid<=0);
+			// When language of CE is ALL or default display it.
+		$displayEl |= ($subElementArr['el']['sys_language_uid']<=0);
+			// Display elements which have their language set to the currently displayed language.
+		$displayEl |= ($this->currentLanguageUid==$subElementArr['el']['sys_language_uid']);
+
+		return $displayEl;
 	}
 }
 

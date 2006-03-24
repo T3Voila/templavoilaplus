@@ -117,6 +117,7 @@ class tx_templavoila_dbnewcontentel {
 		$this->id = intval(t3lib_div::GPvar('id'));
 		$this->parentRecord = t3lib_div::GPvar('parentRecord');
 		$this->altRoot = t3lib_div::GPvar('altRoot');
+		$this->defVals = t3lib_div::GPvar('defVals');
 
 			// Starting the document template object:
 		$this->doc = t3lib_div::makeInstance('mediumDoc');
@@ -281,68 +282,70 @@ class tx_templavoila_dbnewcontentel {
 	function wizardArray()	{
 		global $LANG,$TBE_MODULES_EXT,$TYPO3_DB;
 
+		$defVals = t3lib_div::implodeArrayForUrl('defVals', $this->defVals);
+
 		$wizardItems = array(
 			'common' => array('header'=>$LANG->getLL('common')),
 			'common_1' => array(
 				'icon'=>'gfx/c_wiz/regular_text.gif',
 				'title'=>$LANG->getLL('common_1_title'),
 				'description'=>$LANG->getLL('common_1_description'),
-				'params'=>'&defVals[tt_content][CType]=text'
+				'params'=>'&defVals[tt_content][CType]=text'.$defVals,
 			),
 			'common_2' => array(
 				'icon'=>'gfx/c_wiz/text_image_below.gif',
 				'title'=>$LANG->getLL('common_2_title'),
 				'description'=>$LANG->getLL('common_2_description'),
-				'params'=>'&defVals[tt_content][CType]=textpic&defVals[tt_content][imageorient]=8'
+				'params'=>'&defVals[tt_content][CType]=textpic&defVals[tt_content][imageorient]=8'.$defVals,
 			),
 			'common_3' => array(
 				'icon'=>'gfx/c_wiz/text_image_right.gif',
 				'title'=>$LANG->getLL('common_3_title'),
 				'description'=>$LANG->getLL('common_3_description'),
-				'params'=>'&defVals[tt_content][CType]=textpic&defVals[tt_content][imageorient]=17'
+				'params'=>'&defVals[tt_content][CType]=textpic&defVals[tt_content][imageorient]=17'.$defVals,
 			),
 			'common_4' => array(
 				'icon'=>'gfx/c_wiz/images_only.gif',
 				'title'=>$LANG->getLL('common_4_title'),
 				'description'=>$LANG->getLL('common_4_description'),
-				'params'=>'&defVals[tt_content][CType]=image&defVals[tt_content][imagecols]=2'
+				'params'=>'&defVals[tt_content][CType]=image&defVals[tt_content][imagecols]=2'.$defVals,
 			),
 			'common_5' => array(
 				'icon'=>'gfx/c_wiz/bullet_list.gif',
 				'title'=>$LANG->getLL('common_5_title'),
 				'description'=>$LANG->getLL('common_5_description'),
-				'params'=>'&defVals[tt_content][CType]=bullets'
+				'params'=>'&defVals[tt_content][CType]=bullets'.$defVals,
 			),
 			'common_6' => array(
 				'icon'=>'gfx/c_wiz/table.gif',
 				'title'=>$LANG->getLL('common_6_title'),
 				'description'=>$LANG->getLL('common_6_description'),
-				'params'=>'&defVals[tt_content][CType]=table'
+				'params'=>'&defVals[tt_content][CType]=table'.$defVals,
 			),
 			'special' => array('header'=>$LANG->getLL('special')),
 			'special_1' => array(
 				'icon'=>'gfx/c_wiz/filelinks.gif',
 				'title'=>$LANG->getLL('special_1_title'),
 				'description'=>$LANG->getLL('special_1_description'),
-				'params'=>'&defVals[tt_content][CType]=uploads'
+				'params'=>'&defVals[tt_content][CType]=uploads'.$defVals,
 			),
 			'special_2' => array(
 				'icon'=>'gfx/c_wiz/multimedia.gif',
 				'title'=>$LANG->getLL('special_2_title'),
 				'description'=>$LANG->getLL('special_2_description'),
-				'params'=>'&defVals[tt_content][CType]=multimedia'
+				'params'=>'&defVals[tt_content][CType]=multimedia'.$defVals,
 			),
 			'special_3' => array(
 				'icon'=>'gfx/c_wiz/sitemap2.gif',
 				'title'=>$LANG->getLL('special_3_title'),
 				'description'=>$LANG->getLL('special_3_description'),
-				'params'=>'&defVals[tt_content][CType]=menu&defVals[tt_content][menu_type]=2'
+				'params'=>'&defVals[tt_content][CType]=menu&defVals[tt_content][menu_type]=2'.$defVals,
 			),
 			'special_4' => array(
 				'icon'=>'gfx/c_wiz/html.gif',
 				'title'=>$LANG->getLL('special_4_title'),
 				'description'=>$LANG->getLL('special_4_description'),
-				'params'=>'&defVals[tt_content][CType]=html'
+				'params'=>'&defVals[tt_content][CType]=html'.$defVals,
 			),
 
 
@@ -351,19 +354,19 @@ class tx_templavoila_dbnewcontentel {
 				'icon'=>'gfx/c_wiz/mailform.gif',
 				'title'=>$LANG->getLL('forms_1_title'),
 				'description'=>$LANG->getLL('forms_1_description'),
-				'params'=>'&defVals[tt_content][CType]=mailform&defVals[tt_content][bodytext]='.rawurlencode(trim($LANG->getLL ('forms_1_example')))
+				'params'=>'&defVals[tt_content][CType]=mailform&defVals[tt_content][bodytext]='.rawurlencode(trim($LANG->getLL ('forms_1_example'))).$defVals,
 			),
 			'forms_2' => array(
 				'icon'=>'gfx/c_wiz/searchform.gif',
 				'title'=>$LANG->getLL('forms_2_title'),
 				'description'=>$LANG->getLL('forms_2_description'),
-				'params'=>'&defVals[tt_content][CType]=search'
+				'params'=>'&defVals[tt_content][CType]=search'.$defVals,
 			),
 			'forms_3' => array(
 				'icon'=>'gfx/c_wiz/login_form.gif',
 				'title'=>$LANG->getLL('forms_3_title'),
 				'description'=>$LANG->getLL('forms_3_description'),
-				'params'=>'&defVals[tt_content][CType]=login'
+				'params'=>'&defVals[tt_content][CType]=login'.$defVals,
 			),
 		);
 
@@ -386,7 +389,7 @@ class tx_templavoila_dbnewcontentel {
             $wizardItems['fce_'.$fce_count]['icon'] = (is_file(PATH_site.$tmpFilename)) ? ('../' . $tmpFilename) : ('../' . t3lib_extMgm::siteRelPath('templavoila').'res1/default_previewicon.gif');
             $wizardItems['fce_'.$fce_count]['description'] = $row['description'] ? htmlspecialchars($row['description']) : $LANG->getLL ('template_nodescriptionavailable');
             $wizardItems['fce_'.$fce_count]['title'] = htmlspecialchars($row['title']);
-            $wizardItems['fce_'.$fce_count]['params'] = '&defVals[tt_content][CType]=templavoila_pi1&defVals[tt_content][tx_templavoila_ds]='.$row['datastructure'].'&defVals[tt_content][tx_templavoila_to]='.$row['uid'];
+            $wizardItems['fce_'.$fce_count]['params'] = '&defVals[tt_content][CType]=templavoila_pi1&defVals[tt_content][tx_templavoila_ds]='.$row['datastructure'].'&defVals[tt_content][tx_templavoila_to]='.$row['uid'].$defVals;
             $fce_count ++;
         }
 

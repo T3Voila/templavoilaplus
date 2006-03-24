@@ -97,6 +97,10 @@
 			<label index="pageLocalizationMode">Page localization mode</label>
 			<label index="pageLocalizationMode_separate">Separate structures</label>
 			<label index="pageLocalizationMode_inheritance">Inheritance of values</label>
+			<label index="pageLocalizationParadigm_bound">1:1</label>
+			<label index="pageLocalizationDisplayMode">Display mode</label>
+			<label index="pageLocalizationDisplayMode_selectedLanguage">Selected language</label>
+			<label index="pageLocalizationDisplayMode_onlyLocalized">Only localized</label>
 			<label index="clickToEditTranslation">Click to edit translation</label>
 			<label index="editlanguageversion">Edit page properties</label>
 			<label index="multipleLanguages">Multiple languages</label>

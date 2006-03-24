@@ -1,3 +1,6 @@
+2006-03-16 - Kasper Skaarhoej
+	* Patched in the combined efforts of Bernhard and me over this week to accomodate various localization paradigms. Still missing finetuning and documentation of a few parts.
+
 2006-03-23 - Robert Lemke <robert@typo3.org>
  # Fixed a bug in class.tx_templavoila_tcemain.php (line 156): $row['uid'] never contained a value, use $elementArr['uid'] instead
  # Fixed all tests so they reflect the new flexform structure with <value index="vDEF"> instead of <vDEF>

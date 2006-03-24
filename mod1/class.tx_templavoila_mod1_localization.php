@@ -178,6 +178,29 @@ class tx_templavoila_mod1_localization {
 				</td>
 			</tr>
 		';
+		
+		if ($this->pObj->currentLanguageUid && (($this->pObj->rootElementLangMode === 'disable') || ($this->pObj->rootElementLangParadigm === 'bound'))) {
+			$options = array();
+			$options[] = t3lib_div::inList($this->pObj->modTSconfig['properties']['disableDisplayMode'], 'default')?'':'<option value=""'.($this->pObj->MOD_SETTINGS['langDisplayMode']===''?' selected="selected"':'').'>'.$LANG->sL('LLL:EXT:lang/locallang_general.xml:LGL.default_value').'</option>';
+			$options[] = t3lib_div::inList($this->pObj->modTSconfig['properties']['disableDisplayMode'], 'selectedLanguage')?'':'<option value="selectedLanguage"'.($this->pObj->MOD_SETTINGS['langDisplayMode']==='selectedLanguage'?' selected="selected"':'').'>'.$LANG->getLL('pageLocalizationDisplayMode_selectedLanguage').'</option>';
+			$options[] = t3lib_div::inList($this->pObj->modTSconfig['properties']['disableDisplayMode'], 'onlyLocalized')?'':'<option value="onlyLocalized"'.($this->pObj->MOD_SETTINGS['langDisplayMode']==='onlyLocalized'?' selected="selected"':'').'>'.$LANG->getLL('pageLocalizationDisplayMode_onlyLocalized').'</option>';
+			$link = '\'index.php?'.$this->pObj->link_getParameters().'&SET[langDisplayMode]=\'+this.options[this.selectedIndex].value';
+			if (count($options))	{
+				$output.= '
+					<tr class="bgColor4">
+						<td width="1%" nowrap="nowrap">
+							'. t3lib_BEfunc::cshItem('_MOD_web_txtemplavoilaM1', 'pagelocalizationdisplaymode', $this->doc->backPath) .'						
+							'.$LANG->getLL('pageLocalizationDisplayMode', 1).': 
+						</td>
+						<td>
+							<select onchange="document.location='.$link.'">
+								'.implode(chr(10), $options).'
+							</select>
+						</td>
+					</tr>
+				';
+			}
+		}
 
 		if ($this->pObj->rootElementLangMode !== 'disable') {
 			$output.= '
@@ -186,7 +209,7 @@ class tx_templavoila_mod1_localization {
 						'. t3lib_BEfunc::cshItem('_MOD_web_txtemplavoilaM1', 'pagelocalizationmode', $this->doc->backPath) .'						
 						'.$LANG->getLL('pageLocalizationMode', 1).': 
 					</td>
-					<td><em>'.$LANG->getLL('pageLocalizationMode_'.$this->pObj->rootElementLangMode, 1).'</em></td>
+					<td><em>'.$LANG->getLL('pageLocalizationMode_'.$this->pObj->rootElementLangMode, 1).($this->pObj->rootElementLangParadigm!='free'?(' / '.$LANG->getLL('pageLocalizationParadigm_'.$this->pObj->rootElementLangParadigm)):'').'</em></td>
 				</tr>
 			';				
 		} 
