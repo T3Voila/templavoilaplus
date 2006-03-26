@@ -16,7 +16,9 @@
 			<label index="pagemodule_notUsed.description">[FILL IN] pagemodule_notUsed</label>
 			<label index="selectlanguageversion.description">[FILL IN] Show page language version</label>
 			<label index="editlanguageversion.description">[FILL IN] Edit page properties for different languages</label>
+			<label index="createnewtranslation.description">[FILL IN] Create new translation</label>
 			<label index="pagelocalizationmode.description">[FILL IN] Page localization mode</label>
+			<label index="pagelocalizationdisplaymode.description">[FILL IN] Page localization display mode</label>
 			<label index="advancedfunctions_showhiddenelements.description">[FILL IN] Show hidden elements</label>
 			<label index="advancedfunctions_showoutline.description">[FILL IN] Show outline</label>
 			<label index="outline_status_cleanall.description">[FILL IN]Why is my XML dirty and why do I want to clean it up?</label>

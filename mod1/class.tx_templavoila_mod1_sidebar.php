@@ -42,11 +42,11 @@
  *              SECTION: Render functions for the sidebar items
  *  253:     function renderItem_headerFields (&$pObj)
  *  310:     function renderItem_versioning(&$pObj)
- *  388:     function renderItem_advancedFunctions(&$pObj)
+ *  391:     function renderItem_advancedFunctions(&$pObj)
  *
  *              SECTION: Helper functions
- *  437:     function getJScode()
- *  479:     function sortItemsCompare($a, $b)
+ *  456:     function getJScode()
+ *  498:     function sortItemsCompare($a, $b)
  *
  * TOTAL FUNCTIONS: 9
  * (This index is automatically created/updated by the extension "extdeveval")

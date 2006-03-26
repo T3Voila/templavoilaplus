@@ -1,3 +1,11 @@
+2006-03-26 - Robert Lemke <robert@typo3.org>
+ - tx_templavoila_mod1_localization: Removed sidebar_renderItem_renderTranslationInfoCheckbox()
+ ~ mod1/index.php: Changed GET parameter "localizeRecord" to "localizeElement"
+ ~ Various cosmetic code changes
+ # tx_templavoila_api: Fixed a bug in the processing for localizing elements under the "free" translation paradigm.
+ ~ Changed the new TSconfig option introduced in the last commit from "(boolean) mod.web_txtemplavoilaM1.freeParadigm=0|1" to "(string)mod.web_txtemplavoilaM1.translationParadigm=free|bound". Please add proper documentation to the manual.
+ !!! Depending on how you use localization, administrators might need to enable the old style translation paradigm by adding "mod.web_txtemplavoilaM1.translationParadigm=free" to your TSconfig configuration.
+
 2006-03-16 - Kasper Skaarhoej
 	* Patched in the combined efforts of Bernhard and me over this week to accomodate various localization paradigms. Still missing finetuning and documentation of a few parts.
 

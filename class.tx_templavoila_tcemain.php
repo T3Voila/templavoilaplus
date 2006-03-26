@@ -38,12 +38,12 @@
  *
  *              SECTION: Public API (called by hook handler)
  *   85:     function processDatamap_preProcessFieldArray (&$incomingFieldArray, $table, $id, &$reference)
- *  111:     function processDatamap_postProcessFieldArray ($status, $table, $id, &$fieldArray, &$reference)
- *  215:     function processDatamap_afterDatabaseOperations ($status, $table, $id, $fieldArray, &$reference)
- *  282:     function processCmdmap_preProcess ($command, $table, $id, $value, &$reference)
- *  315:     function processCmdmap_postProcess($command, $table, $id, $value, &$reference)
- *  338:     function moveRecord_firstElementPostProcess ($table, $uid, $destPid, $sourceRecordBeforeMove, $updateFields, &$reference)
- *  379:     function moveRecord_afterAnotherElementPostProcess ($table, $uid, $destPid, $origDestPid, $sourceRecordBeforeMove, $updateFields, &$reference)
+ *  110:     function processDatamap_postProcessFieldArray ($status, $table, $id, &$fieldArray, &$reference)
+ *  216:     function processDatamap_afterDatabaseOperations ($status, $table, $id, $fieldArray, &$reference)
+ *  283:     function processCmdmap_preProcess ($command, $table, $id, $value, &$reference)
+ *  316:     function processCmdmap_postProcess($command, $table, $id, $value, &$reference)
+ *  339:     function moveRecord_firstElementPostProcess ($table, $uid, $destPid, $sourceRecordBeforeMove, $updateFields, &$reference)
+ *  380:     function moveRecord_afterAnotherElementPostProcess ($table, $uid, $destPid, $origDestPid, $sourceRecordBeforeMove, $updateFields, &$reference)
  *
  * TOTAL FUNCTIONS: 7
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -94,7 +94,7 @@ class tx_templavoila_tcemain {
 	}
 
 	/**
-	 * This method is called by a hook in the TYPO3 Core Engine (TCEmain). 
+	 * This method is called by a hook in the TYPO3 Core Engine (TCEmain).
 	 *
 	 * If a record from table "pages" is created or updated with a new DS but no TO is selected, this function
 	 * tries to find a suitable TO and adds it to the fieldArray.
@@ -152,7 +152,7 @@ class tx_templavoila_tcemain {
 
 			$elementCounter = 1;
 			$sortNumber = 10;
-			
+
 					// update the sorting field of the content element for backwards-compatibility with pre-TemplaVoila era:
 			foreach ($elementsOnThisPage as $elementArr) {
 				$sortByField = $TCA['tt_content']['ctrl']['sortby'];

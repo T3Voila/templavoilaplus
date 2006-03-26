@@ -33,14 +33,13 @@
  *
  *
  *
- *   55: class tx_templavoila_mod1_localization
- *   69:     function init(&$pObj)
- *   90:     function sidebar_renderItem(&$pObj)
- *  115:     function sidebar_renderItem_renderTranslationInfoCheckbox()
- *  138:     function sidebar_renderItem_renderLanguageSelectorbox()
- *  186:     function sidebar_renderItem_renderNewTranslationSelectorbox()
+ *   54: class tx_templavoila_mod1_localization
+ *   68:     function init(&$pObj)
+ *   89:     function sidebar_renderItem(&$pObj)
+ *  113:     function sidebar_renderItem_renderLanguageSelectorbox()
+ *  204:     function sidebar_renderItem_renderNewTranslationSelectorbox()
  *
- * TOTAL FUNCTIONS: 5
+ * TOTAL FUNCTIONS: 4
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -96,36 +95,11 @@ class tx_templavoila_mod1_localization {
 					<th colspan="2">&nbsp;</th>
 				</tr>
 				'.
-			#	$this->sidebar_renderItem_renderTranslationInfoCheckbox().
 				$this->sidebar_renderItem_renderLanguageSelectorbox().
 				$this->sidebar_renderItem_renderNewTranslationSelectorbox().
 				'
 			</table>
 		';
-		return $output;
-	}
-
-	/**
-	 * Renders the HTML code for a checkbox which switches display of localization (translation)
-	 * information on and off.
-	 *
-	 * @return	mixed		HTML code for the checkbox or FALSE if no language is available.
-	 * @access	protected
-	 * @obsolete	OBSOLETE - can be removed when it is confirmed that this feature is not used. when so, remove this funciton, all calls to it plus occurencies of "SET[showTranslationInfo]" in TemplaVoila code.	
-	 */
-	function sidebar_renderItem_renderTranslationInfoCheckbox() {
-		global $LANG;
-
-		$availableLanguagesArr = $this->pObj->translatedLanguagesArr;
-		if (count($availableLanguagesArr) <= 1) return FALSE;
-
-		$output = '
-			<tr class="bgColor4">
-				<td width="1%" nowrap="nowrap">'.$LANG->getLL ('sidebar_renderitem_showtranslationinformation', 1).':</td>
-				<td>'.t3lib_BEfunc::getFuncCheck($this->pObj->id,'SET[showTranslationInfo]',$this->pObj->MOD_SETTINGS['showTranslationInfo'],'','').'</td>
-			</tr>
-		';
-
 		return $output;
 	}
 
@@ -168,17 +142,8 @@ class tx_templavoila_mod1_localization {
 				</td>
 				<td><select onchange="document.location='.$link.'">'.implode ('', $optionsArr).'</select></td>
 			</tr>
-			<tr class="bgColor4">
-				<td width="1%" nowrap="nowrap">
-					'. t3lib_BEfunc::cshItem('_MOD_web_txtemplavoilaM1', 'editlanguageversion', $this->doc->backPath) .'
-					'.$LANG->getLL ('editlanguageversion', 1).':
-				</td>
-				<td>
-					'.$availableTranslationsFlags.'
-				</td>
-			</tr>
 		';
-		
+
 		if ($this->pObj->currentLanguageUid && (($this->pObj->rootElementLangMode === 'disable') || ($this->pObj->rootElementLangParadigm === 'bound'))) {
 			$options = array();
 			$options[] = t3lib_div::inList($this->pObj->modTSconfig['properties']['disableDisplayMode'], 'default')?'':'<option value=""'.($this->pObj->MOD_SETTINGS['langDisplayMode']===''?' selected="selected"':'').'>'.$LANG->sL('LLL:EXT:lang/locallang_general.xml:LGL.default_value').'</option>';
@@ -189,8 +154,8 @@ class tx_templavoila_mod1_localization {
 				$output.= '
 					<tr class="bgColor4">
 						<td width="1%" nowrap="nowrap">
-							'. t3lib_BEfunc::cshItem('_MOD_web_txtemplavoilaM1', 'pagelocalizationdisplaymode', $this->doc->backPath) .'						
-							'.$LANG->getLL('pageLocalizationDisplayMode', 1).': 
+							'. t3lib_BEfunc::cshItem('_MOD_web_txtemplavoilaM1', 'pagelocalizationdisplaymode', $this->doc->backPath) .'
+							'.$LANG->getLL('pageLocalizationDisplayMode', 1).':
 						</td>
 						<td>
 							<select onchange="document.location='.$link.'">
@@ -206,14 +171,26 @@ class tx_templavoila_mod1_localization {
 			$output.= '
 				<tr class="bgColor4">
 					<td width="1%" nowrap="nowrap">
-						'. t3lib_BEfunc::cshItem('_MOD_web_txtemplavoilaM1', 'pagelocalizationmode', $this->doc->backPath) .'						
-						'.$LANG->getLL('pageLocalizationMode', 1).': 
+						'. t3lib_BEfunc::cshItem('_MOD_web_txtemplavoilaM1', 'pagelocalizationmode', $this->doc->backPath) .'
+						'.$LANG->getLL('pageLocalizationMode', 1).':
 					</td>
 					<td><em>'.$LANG->getLL('pageLocalizationMode_'.$this->pObj->rootElementLangMode, 1).($this->pObj->rootElementLangParadigm!='free'?(' / '.$LANG->getLL('pageLocalizationParadigm_'.$this->pObj->rootElementLangParadigm)):'').'</em></td>
 				</tr>
-			';				
-		} 
-		
+			';
+		}
+
+		$output .= '
+			<tr class="bgColor4">
+				<td width="1%" nowrap="nowrap">
+					'. t3lib_BEfunc::cshItem('_MOD_web_txtemplavoilaM1', 'editlanguageversion', $this->doc->backPath) .'
+					'.$LANG->getLL ('editlanguageversion', 1).':
+				</td>
+				<td>
+					'.$availableTranslationsFlags.'
+				</td>
+			</tr>
+		';
+
 		return $output;
 	}
 
@@ -243,7 +220,10 @@ class tx_templavoila_mod1_localization {
 			$link = 'index.php?'.$this->pObj->link_getParameters().'&createNewPageTranslation=\'+this.options[this.selectedIndex].value+\'&pid='.$this->pObj->id;
 			$output = '
 				<tr class="bgColor4">
-					<td width="1%" nowrap="nowrap">'.$LANG->getLL('createnewtranslation',1).':</td>
+					<td width="1%" nowrap="nowrap">
+						'. t3lib_BEfunc::cshItem('_MOD_web_txtemplavoilaM1', 'createnewtranslation', $this->doc->backPath) .'
+						'.$LANG->getLL('createnewtranslation',1).':
+					</td>
 					<td style="padding:4px;"><select onChange="document.location=\''.$link.'\'">'.implode ('', $optionsArr).'</select></td>
 				</tr>
 			';

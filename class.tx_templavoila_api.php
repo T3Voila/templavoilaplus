@@ -33,65 +33,66 @@
  *
  *
  *
- *  109: class tx_templavoila_api
- *  122:     function __construct ($rootTable = 'pages')
- *  132:     function tx_templavoila_api ($alternativeRootTable = 'pages')
+ *  110: class tx_templavoila_api
+ *  123:     function __construct ($rootTable = 'pages')
+ *  133:     function tx_templavoila_api ($alternativeRootTable = 'pages')
  *
  *              SECTION: Element manipulation functions (public)
- *  155:     function insertElement ($destinationPointer, $elementRow)
- *  178:     function insertElement_createRecord ($destinationPointer, $row)
- *  237:     function insertElement_setElementReferences ($destinationPointer, $uid)
- *  259:     function moveElement ($sourcePointer, $destinationPointer)
- *  274:     function moveElement_setElementReferences ($sourcePointer, $destinationPointer)
- *  290:     function copyElement ($sourcePointer, $destinationPointer, $copySubElements = TRUE)
- *  305:     function localizeElement ($sourcePointer, $languageKey)
- *  360:     function referenceElement ($sourcePointer, $destinationPointer)
- *  377:     function referenceElementByUid ($uid, $destinationPointer)
- *  393:     function unlinkElement ($sourcePointer)
- *  406:     function deleteElement ($sourcePointer)
+ *  156:     function insertElement ($destinationPointer, $elementRow)
+ *  179:     function insertElement_createRecord ($destinationPointer, $row)
+ *  239:     function insertElement_setElementReferences ($destinationPointer, $uid)
+ *  261:     function moveElement ($sourcePointer, $destinationPointer)
+ *  276:     function moveElement_setElementReferences ($sourcePointer, $destinationPointer)
+ *  292:     function copyElement ($sourcePointer, $destinationPointer, $copySubElements = TRUE)
+ *  310:     function localizeElement ($sourcePointer, $languageKey)
+ *  345:     function referenceElement ($sourcePointer, $destinationPointer)
+ *  362:     function referenceElementByUid ($uid, $destinationPointer)
+ *  378:     function unlinkElement ($sourcePointer)
+ *  391:     function deleteElement ($sourcePointer)
  *
  *              SECTION: Processing functions (protected)
- *  431:     function process ($mode, $sourcePointer, $destinationPointer = NULL, $onlyHandleReferences = FALSE)
- *  488:     function process_move ($sourcePointer, $destinationPointer, $sourceReferencesArr, $destinationReferencesArr, $sourceParentRecord, $destinationParentRecord, $elementRecord, $onlyHandleReferences)
- *  557:     function process_copy ($sourcePointer, $destinationPointer, $sourceReferencesArr, $destinationReferencesArr, $sourceParentRecord, $destinationParentRecord, $elementUid)
- *  594:     function process_copyRecursively ($sourcePointer, $destinationPointer, $sourceReferencesArr, $destinationReferencesArr, $sourceParentRecord, $destinationParentRecord, $elementUid)
- *  633:     function process_reference ($destinationPointer, $destinationReferencesArr, $elementUid)
- *  649:     function process_unlink ($sourcePointer, $sourceReferencesArr)
- *  666:     function process_delete ($sourcePointer, $sourceReferencesArr, $elementUid)
+ *  416:     function process ($mode, $sourcePointer, $destinationPointer = NULL, $onlyHandleReferences = FALSE)
+ *  477:     function process_move ($sourcePointer, $destinationPointer, $sourceReferencesArr, $destinationReferencesArr, $sourceParentRecord, $destinationParentRecord, $elementRecord, $onlyHandleReferences)
+ *  543:     function process_copy ($sourceElementUid, $destinationPointer, $destinationReferencesArr, $destinationParentRecord)
+ *  577:     function process_copyRecursively ($sourceElementUid, $destinationPointer, $destinationReferencesArr, $destinationParentRecord)
+ *  616:     function process_localize ($sourceElementUid, $destinationPointer, $destinationReferencesArr)
+ *  658:     function process_reference ($destinationPointer, $destinationReferencesArr, $elementUid)
+ *  674:     function process_unlink ($sourcePointer, $sourceReferencesArr)
+ *  691:     function process_delete ($sourcePointer, $sourceReferencesArr, $elementUid)
  *
  *              SECTION: Flexform helper functions (public)
- *  709:     function flexform_getValidPointer ($flexformPointer)
- *  754:     function flexform_getPointerFromString ($flexformPointerString)
- *  793:     function flexform_getStringFromPointer ($flexformPointer)
- *  826:     function flexform_getRecordByPointer ($flexformPointer)
- *  850:     function flexform_getPointersByRecord ($elementUid, $pageUid)
- *  875:     function flexform_getElementReferencesFromXML($flexformXML, $flexformPointer)
- *  909:     function flexform_getListOfSubElementUidsRecursively ($table, $uid, &$recordUids)
- *  952:     function flexform_getFlexformPointersToSubElementsRecursively ($table, $uid, &$flexformPointers)
+ *  734:     function flexform_getValidPointer ($flexformPointer)
+ *  773:     function flexform_getPointerFromString ($flexformPointerString)
+ *  812:     function flexform_getStringFromPointer ($flexformPointer)
+ *  845:     function flexform_getRecordByPointer ($flexformPointer)
+ *  869:     function flexform_getPointersByRecord ($elementUid, $pageUid)
+ *  894:     function flexform_getElementReferencesFromXML($flexformXML, $flexformPointer)
+ *  928:     function flexform_getListOfSubElementUidsRecursively ($table, $uid, &$recordUids)
+ *  971:     function flexform_getFlexformPointersToSubElementsRecursively ($table, $uid, &$flexformPointers)
  *
  *              SECTION: Flexform helper functions (protected)
- * 1017:     function flexform_insertElementReferenceIntoList($currentReferencesArr, $position, $elementUid)
- * 1057:     function flexform_removeElementReferenceFromList($currentReferencesArr, $position)
- * 1079:     function flexform_storeElementReferencesListInRecord ($referencesArr, $destinationPointer)
+ * 1036:     function flexform_insertElementReferenceIntoList($currentReferencesArr, $position, $elementUid)
+ * 1076:     function flexform_removeElementReferenceFromList($currentReferencesArr, $position)
+ * 1098:     function flexform_storeElementReferencesListInRecord ($referencesArr, $destinationPointer)
  *
  *              SECTION: Data structure helper functions (public)
- * 1120:     function ds_getFieldNameByColumnPosition ($contextPageUid, $columnPosition)
- * 1174:     function ds_getExpandedDataStructure ($table, $row)
- * 1211:     function ds_getAvailableTORecords ($pageUid)
+ * 1139:     function ds_getFieldNameByColumnPosition ($contextPageUid, $columnPosition)
+ * 1193:     function ds_getExpandedDataStructure ($table, $row)
+ * 1230:     function ds_getAvailableTORecords ($pageUid)
  *
  *              SECTION: Get content structure of page
- * 1254:     function getContentTree($table, $row, $includePreviewData=TRUE)
- * 1284:     function getContentTree_element($table, $row, &$tt_content_elementRegister, $prevRecList='')
- * 1394:     function getContentTree_processSubContent($listOfSubElementUids, &$tt_content_elementRegister, $prevRecList)
- * 1437:     function getContentTree_getLocalizationInfoForElement($contentTreeArr, &$tt_content_elementRegister)
+ * 1273:     function getContentTree($table, $row, $includePreviewData=TRUE)
+ * 1303:     function getContentTree_element($table, $row, &$tt_content_elementRegister, $prevRecList='')
+ * 1413:     function getContentTree_processSubContent($listOfSubElementUids, &$tt_content_elementRegister, $prevRecList)
+ * 1459:     function getContentTree_getLocalizationInfoForElement($contentTreeArr, &$tt_content_elementRegister)
  *
  *              SECTION: Miscellaneous functions (protected)
- * 1510:     function setTCEmainRunningFlag ($flag)
- * 1522:     function getTCEmainRunningFlag ()
- * 1533:     function getStorageFolderPid($pageUid)
- * 1551:     function loadWebsiteLanguages()
+ * 1532:     function setTCEmainRunningFlag ($flag)
+ * 1544:     function getTCEmainRunningFlag ()
+ * 1555:     function getStorageFolderPid($pageUid)
+ * 1573:     function loadWebsiteLanguages()
  *
- * TOTAL FUNCTIONS: 42
+ * TOTAL FUNCTIONS: 43
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -298,6 +299,9 @@ class tx_templavoila_api {
 	 * the language specified by "languageKey". The new element will refer to the source element as the
 	 * original version.
 	 *
+	 * Note: This function is only used with "translationParadigm = free" (see Page Module TSconfig). In the
+	 *       "bound" paradigm, TCEmain is called directly because localized elements won't be referenced
+	 *
 	 * @param	array		$sourcePointer: flexform pointer pointing to the element which shall be localized
 	 * @param	string		$languageKey: A two letter ISO language key (eg. 'EN')
 	 * @return	mixed		UID of the created copy, otherwise FALSE
@@ -316,26 +320,13 @@ class tx_templavoila_api {
 			if ($this->debug) t3lib_div::devLog ('API: localizeElement(): Cannot localize element because localization is disabled for the active page datastructure!', 'templavoila', 0);
 			return FALSE;
 		}
-		
-		$staticLanguageRows = t3lib_BEfunc::getRecordsByField('static_languages', 'lg_iso_2', $languageKey);
-		if (isset($staticLanguageRows[0]['uid'])) {
-			$languageRecords = t3lib_BEfunc::getRecordsByField('sys_language', 'static_lang_isocode', $staticLanguageRows[0]['uid']);
-			if (isset($languageRecords[0]['uid'])) {
-				$dataArr['tt_content'][$newElementUid]['sys_language_uid'] = $languageRecords[0]['uid'];
-			}
-		}
 
-			// Build destination pointer and copy the element:
+			// Build destination pointer:
 		$destinationPointer = $sourcePointer;
 		$destinationPointer['sLang'] = $rawPageDataStructureArr['meta']['langChildren'] == 1 ? 'lDEF' : 'l'.$languageKey;
 		$destinationPointer['vLang'] = $rawPageDataStructureArr['meta']['langChildren'] == 1 ? 'v'.$languageKey : 'vDEF';
 		$destinationPointer['position'] = -1;
-		if (isset($languageRecords[0]['uid'])) {
-+			$destinationPointer['sys_language_uid'] = $languageRecords[0]['uid'];
-		} else	{
-			if ($this->debug) t3lib_div::devLog ('API: localizeElement(): Cannot localize element because sys_language record can not be found !', 'templavoila', 0);
-			return FALSE;
-		}
+		$destinationPointer['_languageKey'] = $languageKey;
 
 		$newElementUid = $this->process ('localize', $sourcePointer, $destinationPointer);
 
@@ -456,9 +447,9 @@ class tx_templavoila_api {
 
 		switch ($mode) {
 			case 'move' :			$result = $this->process_move ($sourcePointer, $destinationPointer, $sourceReferencesArr, $destinationReferencesArr, $sourceParentRecord, $destinationParentRecord, $sourceElementRecord, $onlyHandleReferences); break;
-			case 'copy':			$result = $this->process_copy ($sourcePointer, $destinationPointer, $sourceReferencesArr, $destinationReferencesArr, $sourceParentRecord, $destinationParentRecord, $sourceElementRecord['uid']); break;
-			case 'localize':			$result = $this->process_copy ($sourcePointer, $destinationPointer, $sourceReferencesArr, $destinationReferencesArr, $sourceParentRecord, $destinationParentRecord, $sourceElementRecord['uid'], 'localize'); break;
-			case 'copyrecursively':	$result = $this->process_copyRecursively ($sourcePointer, $destinationPointer, $sourceReferencesArr, $destinationReferencesArr, $sourceParentRecord, $destinationParentRecord, $sourceElementRecord['uid']); break;
+			case 'copy':			$result = $this->process_copy ($sourceElementRecord['uid'], $destinationPointer, $destinationReferencesArr, $destinationParentRecord); break;
+			case 'copyrecursively':	$result = $this->process_copyRecursively ($sourceElementRecord['uid'], $destinationPointer, $destinationReferencesArr, $destinationParentRecord); break;
+			case 'localize':		$result = $this->process_localize ($sourceElementRecord['uid'], $destinationPointer, $destinationReferencesArr); break;
 			case 'reference':		$result = $this->process_reference ($destinationPointer, $destinationReferencesArr, $sourceElementRecord['uid']); break;
 			case 'referencebyuid':	$result = $this->process_reference ($destinationPointer, $destinationReferencesArr, $sourcePointer['uid']); break;
 			case 'unlink':			$result = $this->process_unlink ($sourcePointer, $sourceReferencesArr); break;
@@ -542,35 +533,28 @@ class tx_templavoila_api {
 	/**
 	 * Makes a copy of the specified element and only points to the sub elements with references.
 	 *
-	 * @param	array		$sourcePointer: flexform pointer pointing to the element which will be copied
+	 * @param	integer		$sourceElementUid: UID of the element to be copied
 	 * @param	array		$destinationPointer: flexform pointer to the destination location
-	 * @param	array		$sourceReferencesArr: Current list of the parent source's element references
 	 * @param	array		$destinationReferencesArr: Current list of the parent destination's element references
-	 * @param	array		$sourceParentRecord: Database record of the source location (either from table 'pages' or 'tt_content')
 	 * @param	array		$destinationParentRecord: Database record of the destination location (either from table 'pages' or 'tt_content')
-	 * @param	integer		$elementUid: UID of the element to be copied
 	 * @return	mixed		The UID of the newly created copy or FALSE if an error occurred.
 	 * @access	protected
 	 */
-	function process_copy ($sourcePointer, $destinationPointer, $sourceReferencesArr, $destinationReferencesArr, $sourceParentRecord, $destinationParentRecord, $elementUid, $copyMode = 'copy') {
+	function process_copy ($sourceElementUid, $destinationPointer, $destinationReferencesArr, $destinationParentRecord) {
 
-		if ($copyMode=='localize')	{
-			$destinationPID = $destinationPointer['sys_language_uid'];		// copyMode is set to localize: tce_main localize takes target language as parameter.
-		} else	{
-			$destinationPID = $destinationPointer['table'] == 'pages' ? $destinationParentRecord['uid'] : $destinationParentRecord['pid'];	// copyMode is not localize: tce_main takes target page PID as parameter
-		}
+		$destinationPID = $destinationPointer['table'] == 'pages' ? $destinationParentRecord['uid'] : $destinationParentRecord['pid'];
 
 			// Initialize TCEmain and create configuration for copying the specified record
 		$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 		$cmdArray = array();
-		$cmdArray['tt_content'][$elementUid][$copyMode] = $destinationPID;
+		$cmdArray['tt_content'][$sourceElementUid]['copy'] = $destinationPID;
 
 			// Execute the copy process and finally insert the reference for the element to the destination:
 		$flagWasSet = $this->getTCEmainRunningFlag();
 		$this->setTCEmainRunningFlag (TRUE);
 		$tce->start(array(),$cmdArray);
 		$tce->process_cmdmap();
-		$newElementUid = $tce->copyMappingArray_merged['tt_content'][$elementUid];
+		$newElementUid = $tce->copyMappingArray_merged['tt_content'][$sourceElementUid];
 		if (!$flagWasSet) $this->setTCEmainRunningFlag (FALSE);
 
 		$newDestinationReferencesArr = $this->flexform_insertElementReferenceIntoList ($destinationReferencesArr, $destinationPointer['position'], $newElementUid);
@@ -583,27 +567,24 @@ class tx_templavoila_api {
 	 * Makes a true copy of the specified element and all sub elements and sets the element references of the parent element
 	 * accordingly.
 	 *
-	 * @param	array		$sourcePointer: flexform pointer pointing to the element which will be copied
+	 * @param	integer		$sourceElementUid: UID of the element to be copied
 	 * @param	array		$destinationPointer: flexform pointer to the destination location
-	 * @param	array		$sourceReferencesArr: Current list of the parent source's element references
 	 * @param	array		$destinationReferencesArr: Current list of the parent destination's element references
-	 * @param	array		$sourceParentRecord: Database record of the source location (either from table 'pages' or 'tt_content')
 	 * @param	array		$destinationParentRecord: Database record of the destination location (either from table 'pages' or 'tt_content')
-	 * @param	integer		$elementUid: UID of the element to be copied (live uid, not offline version)
 	 * @return	mixed		The UID of the newly created copy or FALSE if an error occurred.
 	 * @access	protected
 	 */
-	function process_copyRecursively ($sourcePointer, $destinationPointer, $sourceReferencesArr, $destinationReferencesArr, $sourceParentRecord, $destinationParentRecord, $elementUid) {
+	function process_copyRecursively ($sourceElementUid, $destinationPointer, $destinationReferencesArr, $destinationParentRecord) {
 
 			// Determine the PID of the new location and get uids of all sub elements of the element to be copied:
 		$dummyArr = array();
 		$destinationPID = $destinationPointer['table'] == 'pages' ? $destinationParentRecord['uid'] : $destinationParentRecord['pid'];
-		$subElementUids = $this->flexform_getListOfSubElementUidsRecursively ('tt_content', $elementUid, $dummyArr);
+		$subElementUids = $this->flexform_getListOfSubElementUidsRecursively ('tt_content', $sourceElementUid, $dummyArr);
 
 			// Initialize TCEmain and create configuration for copying the specified record (the parent element) and all sub elements:
 		$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 		$cmdArray = array();
-		$cmdArray['tt_content'][$elementUid]['copy'] = $destinationPID;
+		$cmdArray['tt_content'][$sourceElementUid]['copy'] = $destinationPID;
 
 		foreach ($subElementUids as $subElementUid) {
 			$cmdArray['tt_content'][$subElementUid]['copy'] = $destinationPID;
@@ -615,7 +596,49 @@ class tx_templavoila_api {
 		$tce->start(array(),$cmdArray);
 		$tce->process_cmdmap();
 		if (!$flagWasSet) $this->setTCEmainRunningFlag (FALSE);
-		$newElementUid = $tce->copyMappingArray_merged['tt_content'][$elementUid];
+		$newElementUid = $tce->copyMappingArray_merged['tt_content'][$sourceElementUid];
+
+		$newDestinationReferencesArr = $this->flexform_insertElementReferenceIntoList ($destinationReferencesArr, $destinationPointer['position'], $newElementUid);
+		$this->flexform_storeElementReferencesListInRecord ($newDestinationReferencesArr, $destinationPointer);
+
+		return $newElementUid;
+	}
+
+	/**
+	 * Localizes the specified element and only points to the sub elements with references.
+	 *
+	 * @param	integer		$sourceElementUid: UID of the element to be copied
+	 * @param	array		$destinationPointer: flexform pointer to the destination location
+	 * @param	array		$destinationParentRecord: Database record of the destination location (either from table 'pages' or 'tt_content')
+	 * @return	mixed		The UID of the newly created copy or FALSE if an error occurred.
+	 * @access	protected
+	 */
+	function process_localize ($sourceElementUid, $destinationPointer, $destinationReferencesArr) {
+
+			// Determine language record UID of the language we localize to:
+		$staticLanguageRows = t3lib_BEfunc::getRecordsByField('static_languages', 'lg_iso_2', $destinationPointer['_languageKey']);
+		if (is_array($staticLanguageRows) && isset($staticLanguageRows[0]['uid'])) {
+			$languageRecords = t3lib_BEfunc::getRecordsByField('sys_language', 'static_lang_isocode', $staticLanguageRows[0]['uid']);
+		}
+		if (is_array($languageRecords) && isset($languageRecords[0]['uid'])) {
+			$destinationLanguageUid = $languageRecords[0]['uid'];
+		} else	{
+			if ($this->debug) t3lib_div::devLog ('API: process_localize(): Cannot localize element because sys_language record can not be found !', 'templavoila', 2);
+			return FALSE;
+		}
+
+			// Initialize TCEmain and create configuration for localizing the specified record
+		$tce = t3lib_div::makeInstance('t3lib_TCEmain');
+		$cmdArray = array();
+		$cmdArray['tt_content'][$sourceElementUid]['localize'] = $destinationLanguageUid;
+
+			// Execute the copy process and finally insert the reference for the element to the destination:
+		$flagWasSet = $this->getTCEmainRunningFlag();
+		$this->setTCEmainRunningFlag (TRUE);
+		$tce->start(array(),$cmdArray);
+		$tce->process_cmdmap();
+		$newElementUid = $tce->copyMappingArray_merged['tt_content'][$sourceElementUid];
+		if (!$flagWasSet) $this->setTCEmainRunningFlag (FALSE);
 
 		$newDestinationReferencesArr = $this->flexform_insertElementReferenceIntoList ($destinationReferencesArr, $destinationPointer['position'], $newElementUid);
 		$this->flexform_storeElementReferencesListInRecord ($newDestinationReferencesArr, $destinationPointer);
@@ -709,7 +732,6 @@ class tx_templavoila_api {
 	 * @access	public
 	 */
 	function flexform_getValidPointer ($flexformPointer) {
-		global $BE_USER;
 
 		if (is_string($flexformPointer)) $flexformPointer = $this->flexform_getPointerFromString ($flexformPointer);
 
@@ -910,16 +932,16 @@ class tx_templavoila_api {
 		$flexFieldArr = t3lib_div::xml2array($parentRecord['tx_templavoila_flex']);
 
 		if (is_array ($flexFieldArr['data'])) {
-			foreach ($flexFieldArr['data'] as $sheetKey => $languagesArr) {
+			foreach ($flexFieldArr['data'] as $languagesArr) {
 				if (is_array ($languagesArr)) {
-					foreach ($languagesArr as $languageKey=> $fieldsArr) {
+					foreach ($languagesArr as $fieldsArr) {
 						if (is_array ($fieldsArr)) {
-							foreach ($fieldsArr as $fieldName => $valuesArr) {
+							foreach ($fieldsArr as $valuesArr) {
 								if (is_array ($valuesArr)) {
-									foreach ($valuesArr as $valueName => $value) {
+									foreach ($valuesArr as $value) {
 										$valueItems = t3lib_div::intExplode (',', $value);
 										if (is_array($valueItems)) {
-											foreach ($valueItems as $index => $subElementUid) {
+											foreach ($valueItems as $subElementUid) {
 												if ($subElementUid > 0) {
 													$recordUids[] = $subElementUid;
 													$this->flexform_getListOfSubElementUidsRecursively  ('tt_content', $subElementUid, $recordUids);
@@ -963,7 +985,7 @@ class tx_templavoila_api {
 										$valueItems = t3lib_div::intExplode (',', $value);
 										if (is_array($valueItems)) {
 											$position = 1;
-											foreach ($valueItems as $index => $subElementUid) {
+											foreach ($valueItems as $subElementUid) {
 												if ($subElementUid > 0) {
 													$flexformPointers[] = array (
 														'table' => $table,
@@ -1128,7 +1150,7 @@ class tx_templavoila_api {
 
 			// Traverse the data structure and search for oldStyleColumnNumber configurations:
 		if (is_array ($dataStructureArr)) {
-			foreach ($dataStructureArr as $sheetKey => $sheetDataStructureArr) {
+			foreach ($dataStructureArr as $sheetDataStructureArr) {
 				if (is_array ($sheetDataStructureArr['ROOT']['el'])) {
 					foreach ($sheetDataStructureArr['ROOT']['el'] as $fieldName => $fieldConfiguration) {
 						if (is_array ($fieldConfiguration)) {
@@ -1179,7 +1201,7 @@ class tx_templavoila_api {
 		if (!is_array ($dataStructureArr)) $dataStructureArr = array();
 
 		if (is_array($dataStructureArr['sheets']))	{
-			foreach ($dataStructureArr['sheets'] as $sheetKey => $sheetInfo)	{
+			foreach (array_keys($dataStructureArr['sheets']) as $sheetKey)	{
 				list ($sheetDataStructureArr, $sheet) = t3lib_div::resolveSheetDefInDS($dataStructureArr, $sheetKey);
 				if ($sheet == $sheetKey)	{
 					$expandedDataStructureArr[$sheetKey] = $sheetDataStructureArr;
@@ -1454,7 +1476,7 @@ class tx_templavoila_api {
 			);
 
 			$attachedLocalizations = array();
-			while($olrow = $TYPO3_DB->sql_fetch_assoc($res))	{
+			while(TRUE == ($olrow = $TYPO3_DB->sql_fetch_assoc($res)))	{
 				t3lib_BEfunc::workspaceOL('tt_content',$olrow);
 				if (!isset($attachedLocalizations[$olrow['sys_language_uid']]))	{
 					$attachedLocalizations[$olrow['sys_language_uid']] = $olrow['uid'];
@@ -1462,7 +1484,7 @@ class tx_templavoila_api {
 			}
 
 				// Traverse the available languages of the page (not default and [All])
-			foreach($this->allSystemWebsiteLanguages['rows'] as $sys_language_uid => $sLInfo)	{
+			foreach(array_keys($this->allSystemWebsiteLanguages['rows']) as $sys_language_uid)	{
 				if ($sys_language_uid > 0)	{
 					if (isset($attachedLocalizations[$sys_language_uid]))	{
 						$localizationInfoArr[$sys_language_uid] = array();
@@ -1567,7 +1589,7 @@ class tx_templavoila_api {
 		);
 
 			// Traverse and set ISO codes if found:
-		foreach($this->allSystemWebsiteLanguages['rows'] as $uid => $row)	{
+		foreach($this->allSystemWebsiteLanguages['rows'] as $row)	{
 			if ($row['static_lang_isocode'])	{
 				$staticLangRow = t3lib_BEfunc::getRecord('static_languages',$row['static_lang_isocode'],'lg_iso_2');
 				if ($staticLangRow['lg_iso_2']) {

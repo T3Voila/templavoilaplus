@@ -37,8 +37,8 @@
  *   72:     function init(&$pObj)
  *  116:     function element_getSelectButtons($elementPointer, $listOfButtons = 'copy,cut,ref')
  *  182:     function element_getPasteButtons($destinationPointer)
- *  242:     function sidebar_renderNonUsedElements()
- *  334:     function renderReferenceCount($uid)
+ *  246:     function sidebar_renderNonUsedElements()
+ *  336:     function renderReferenceCount($uid)
  *
  * TOTAL FUNCTIONS: 5
  * (This index is automatically created/updated by the extension "extdeveval")
