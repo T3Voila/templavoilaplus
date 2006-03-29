@@ -1,3 +1,11 @@
+2006-03-29 - Robert Lemke <robert@typo3.org>
+
+ # Fixed bug 0003042: Can't insert content elements: Sorry, you didn't have proper permissions to perform this change.
+ + Added two unit tests checking for bug 3042
+ # Fixed bug 0003054: Display of syntax highlighted flexform XML data does not work in non-live workspace
+ # Fixed bug 0002802: Page-Modul doesn't care about 'enableFields' of page_language_overlay-records
+ # Fixed bug 0002836: Tools -> Templavoila module broken when installed global
+
 2006-03-29 - Kasper Skaarhoej
 	* Updated documentation as requested.
 	

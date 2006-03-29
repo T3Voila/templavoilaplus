@@ -98,7 +98,7 @@ class tx_templavoila_cm2 extends t3lib_SCbase {
 
 			// XML code:
 		$this->viewTable = t3lib_div::_GP('viewRec');
-		$record = t3lib_BEfunc::getRecord($this->viewTable['table'], $this->viewTable['uid']);	// Selecting record based on table/uid since adding the field might impose a SQL-injection problem; at least the field name would have to be checked first.
+		$record = t3lib_BEfunc::getRecordWSOL($this->viewTable['table'], $this->viewTable['uid']);	// Selecting record based on table/uid since adding the field might impose a SQL-injection problem; at least the field name would have to be checked first.
 		if (is_array($record))	{
 			
 				// Set current XML data:
@@ -124,7 +124,7 @@ class tx_templavoila_cm2 extends t3lib_SCbase {
 							$tce->process_datamap();
 
 								// Re-fetch record:
-							$record = t3lib_BEfunc::getRecord($this->viewTable['table'], $this->viewTable['uid']);
+							$record = t3lib_BEfunc::getRecordWSOL($this->viewTable['table'], $this->viewTable['uid']);
 							$currentXML = $record[$this->viewTable['field_flex']];
 						}	
 					}

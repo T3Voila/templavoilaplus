@@ -294,9 +294,14 @@ class tx_templavoila_tcemain {
 
 		switch ($command) {
 			case 'delete' :
-				$record = t3lib_beFunc::getRecord('tt_content', $id, 'pid');
-				$sourceFlexformPointersArr = $templaVoilaAPI->flexform_getPointersByRecord ($id, $record['pid']);
+				$record = t3lib_beFunc::getRecord('tt_content', $id);
+				if (intval($record['t3ver_oid']) > 0) {
+					$record = t3lib_BEfunc::getRecord('tt_content', intval($record['t3ver_oid']));
+				}				
+				
+				$sourceFlexformPointersArr = $templaVoilaAPI->flexform_getPointersByRecord ($record['uid'], $record['pid']);
 				$sourceFlexformPointer = $sourceFlexformPointersArr[0];
+
 				$templaVoilaAPI->unlinkElement ($sourceFlexformPointer);
 			break;
 		}

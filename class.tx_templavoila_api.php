@@ -39,58 +39,58 @@
  *
  *              SECTION: Element manipulation functions (public)
  *  156:     function insertElement ($destinationPointer, $elementRow)
- *  179:     function insertElement_createRecord ($destinationPointer, $row)
- *  239:     function insertElement_setElementReferences ($destinationPointer, $uid)
- *  261:     function moveElement ($sourcePointer, $destinationPointer)
- *  276:     function moveElement_setElementReferences ($sourcePointer, $destinationPointer)
- *  292:     function copyElement ($sourcePointer, $destinationPointer, $copySubElements = TRUE)
- *  310:     function localizeElement ($sourcePointer, $languageKey)
- *  345:     function referenceElement ($sourcePointer, $destinationPointer)
- *  362:     function referenceElementByUid ($uid, $destinationPointer)
- *  378:     function unlinkElement ($sourcePointer)
- *  391:     function deleteElement ($sourcePointer)
+ *  178:     function insertElement_createRecord ($destinationPointer, $row)
+ *  238:     function insertElement_setElementReferences ($destinationPointer, $uid)
+ *  260:     function moveElement ($sourcePointer, $destinationPointer)
+ *  275:     function moveElement_setElementReferences ($sourcePointer, $destinationPointer)
+ *  291:     function copyElement ($sourcePointer, $destinationPointer, $copySubElements = TRUE)
+ *  309:     function localizeElement ($sourcePointer, $languageKey)
+ *  344:     function referenceElement ($sourcePointer, $destinationPointer)
+ *  361:     function referenceElementByUid ($uid, $destinationPointer)
+ *  377:     function unlinkElement ($sourcePointer)
+ *  390:     function deleteElement ($sourcePointer)
  *
  *              SECTION: Processing functions (protected)
- *  416:     function process ($mode, $sourcePointer, $destinationPointer = NULL, $onlyHandleReferences = FALSE)
- *  477:     function process_move ($sourcePointer, $destinationPointer, $sourceReferencesArr, $destinationReferencesArr, $sourceParentRecord, $destinationParentRecord, $elementRecord, $onlyHandleReferences)
- *  543:     function process_copy ($sourceElementUid, $destinationPointer, $destinationReferencesArr, $destinationParentRecord)
- *  577:     function process_copyRecursively ($sourceElementUid, $destinationPointer, $destinationReferencesArr, $destinationParentRecord)
- *  616:     function process_localize ($sourceElementUid, $destinationPointer, $destinationReferencesArr)
- *  658:     function process_reference ($destinationPointer, $destinationReferencesArr, $elementUid)
- *  674:     function process_unlink ($sourcePointer, $sourceReferencesArr)
- *  691:     function process_delete ($sourcePointer, $sourceReferencesArr, $elementUid)
+ *  415:     function process ($mode, $sourcePointer, $destinationPointer = NULL, $onlyHandleReferences = FALSE)
+ *  476:     function process_move ($sourcePointer, $destinationPointer, $sourceReferencesArr, $destinationReferencesArr, $sourceParentRecord, $destinationParentRecord, $elementRecord, $onlyHandleReferences)
+ *  542:     function process_copy ($sourceElementUid, $destinationPointer, $destinationReferencesArr, $destinationParentRecord)
+ *  576:     function process_copyRecursively ($sourceElementUid, $destinationPointer, $destinationReferencesArr, $destinationParentRecord)
+ *  615:     function process_localize ($sourceElementUid, $destinationPointer, $destinationReferencesArr)
+ *  657:     function process_reference ($destinationPointer, $destinationReferencesArr, $elementUid)
+ *  673:     function process_unlink ($sourcePointer, $sourceReferencesArr)
+ *  690:     function process_delete ($sourcePointer, $sourceReferencesArr, $elementUid)
  *
  *              SECTION: Flexform helper functions (public)
- *  734:     function flexform_getValidPointer ($flexformPointer)
- *  773:     function flexform_getPointerFromString ($flexformPointerString)
- *  812:     function flexform_getStringFromPointer ($flexformPointer)
- *  845:     function flexform_getRecordByPointer ($flexformPointer)
- *  869:     function flexform_getPointersByRecord ($elementUid, $pageUid)
+ *  733:     function flexform_getValidPointer ($flexformPointer)
+ *  772:     function flexform_getPointerFromString ($flexformPointerString)
+ *  811:     function flexform_getStringFromPointer ($flexformPointer)
+ *  844:     function flexform_getRecordByPointer ($flexformPointer)
+ *  868:     function flexform_getPointersByRecord ($elementUid, $pageUid)
  *  894:     function flexform_getElementReferencesFromXML($flexformXML, $flexformPointer)
- *  928:     function flexform_getListOfSubElementUidsRecursively ($table, $uid, &$recordUids)
- *  971:     function flexform_getFlexformPointersToSubElementsRecursively ($table, $uid, &$flexformPointers)
+ *  931:     function flexform_getListOfSubElementUidsRecursively ($table, $uid, &$recordUids)
+ *  974:     function flexform_getFlexformPointersToSubElementsRecursively ($table, $uid, &$flexformPointers)
  *
  *              SECTION: Flexform helper functions (protected)
- * 1036:     function flexform_insertElementReferenceIntoList($currentReferencesArr, $position, $elementUid)
- * 1076:     function flexform_removeElementReferenceFromList($currentReferencesArr, $position)
- * 1098:     function flexform_storeElementReferencesListInRecord ($referencesArr, $destinationPointer)
+ * 1039:     function flexform_insertElementReferenceIntoList($currentReferencesArr, $position, $elementUid)
+ * 1079:     function flexform_removeElementReferenceFromList($currentReferencesArr, $position)
+ * 1101:     function flexform_storeElementReferencesListInRecord ($referencesArr, $destinationPointer)
  *
  *              SECTION: Data structure helper functions (public)
- * 1139:     function ds_getFieldNameByColumnPosition ($contextPageUid, $columnPosition)
- * 1193:     function ds_getExpandedDataStructure ($table, $row)
- * 1230:     function ds_getAvailableTORecords ($pageUid)
+ * 1142:     function ds_getFieldNameByColumnPosition ($contextPageUid, $columnPosition)
+ * 1196:     function ds_getExpandedDataStructure ($table, $row)
+ * 1233:     function ds_getAvailableTORecords ($pageUid)
  *
  *              SECTION: Get content structure of page
- * 1273:     function getContentTree($table, $row, $includePreviewData=TRUE)
- * 1303:     function getContentTree_element($table, $row, &$tt_content_elementRegister, $prevRecList='')
- * 1413:     function getContentTree_processSubContent($listOfSubElementUids, &$tt_content_elementRegister, $prevRecList)
- * 1459:     function getContentTree_getLocalizationInfoForElement($contentTreeArr, &$tt_content_elementRegister)
+ * 1276:     function getContentTree($table, $row, $includePreviewData=TRUE)
+ * 1306:     function getContentTree_element($table, $row, &$tt_content_elementRegister, $prevRecList='')
+ * 1416:     function getContentTree_processSubContent($listOfSubElementUids, &$tt_content_elementRegister, $prevRecList)
+ * 1462:     function getContentTree_getLocalizationInfoForElement($contentTreeArr, &$tt_content_elementRegister)
  *
  *              SECTION: Miscellaneous functions (protected)
- * 1532:     function setTCEmainRunningFlag ($flag)
- * 1544:     function getTCEmainRunningFlag ()
- * 1555:     function getStorageFolderPid($pageUid)
- * 1573:     function loadWebsiteLanguages()
+ * 1535:     function setTCEmainRunningFlag ($flag)
+ * 1547:     function getTCEmainRunningFlag ()
+ * 1558:     function getStorageFolderPid($pageUid)
+ * 1576:     function loadWebsiteLanguages()
  *
  * TOTAL FUNCTIONS: 43
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -156,7 +156,6 @@ class tx_templavoila_api {
 	function insertElement ($destinationPointer, $elementRow) {
 		if ($this->debug) t3lib_div::devLog ('API: insertElement()', 'templavoila', 0, array ('destinationPointer' => $destinationPointer, 'elementRow' => $elementRow));
 
-			// Check if destination is valid:
 		if (!$destinationPointer = $this->flexform_getValidPointer ($destinationPointer)) return FALSE;
 
 		$newRecordUid = $this->insertElement_createRecord($destinationPointer, $elementRow);
@@ -725,7 +724,7 @@ class tx_templavoila_api {
 	 * If 'targetCheckUid' is set, the uid of the record which is referenced by
 	 * the pointer will be checked against it.
 	 *
-	 * Kasper: This method take workspaces into account (by using workspace flexform data if available) but it does NOT (and should not!) remap UIDs!
+	 * This method take workspaces into account (by using workspace flexform data if available) but it does NOT (and should not!) remap UIDs!
 	 *
 	 * @param	mixed		$flexformPointer: A flexform pointer referring to the content element. Although an array is preferred, you may also pass a string which will be converted automatically by flexform_getPointerFromString()
 	 * @return	mixed		The valid flexform pointer array or FALSE if it was not valid
@@ -858,7 +857,7 @@ class tx_templavoila_api {
 	}
 
 	/**
-	 * Returns an array of flexform pointers pointing to all occurrences tt_content record with uid $recordUid
+	 * Returns an array of flexform pointers pointing to all occurrences of a tt_content record with uid $recordUid
 	 * on the page with uid $pageUid.
 	 *
 	 * @param	integer		$elementUid: UID of a tt_content record
@@ -867,8 +866,8 @@ class tx_templavoila_api {
 	 * @access	public
 	 */
 	function flexform_getPointersByRecord ($elementUid, $pageUid) {
-	    $flexformPointers = false; // prevent 'used before initialized' warning
-		$flexformPointersArr = $this->flexform_getFlexformPointersToSubElementsRecursively('pages', $pageUid, $flexformPointers);
+	    $dummyArr = array();
+		$flexformPointersArr = $this->flexform_getFlexformPointersToSubElementsRecursively('pages', $pageUid, $dummyArr);
 
 		$resultPointersArr = array();
 		if (is_array ($flexformPointersArr)) {
@@ -884,7 +883,8 @@ class tx_templavoila_api {
 
 	/**
 	 * Takes FlexForm XML content in and based on the flexform pointer it will find a list of references, parse them
-	 * and return them as an array of tt_content uids.
+	 * and return them as an array of tt_content uids. This function automatically checks if the tt_content records
+	 * really exist and are not marked as deleted - those who are will be filtered out.
 	 *
 	 * @param	string		$flexformXML: XML content of a flexform field
 	 * @param	array		$flexformPointer: Pointing to a field in the XML structure to get the list of element references from.
@@ -901,17 +901,20 @@ class tx_templavoila_api {
 		}
 
 		$listOfUIDs = is_array ($flexformXMLArr) ? $flexformXMLArr['data'][$flexformPointer['sheet']][$flexformPointer['sLang']][$flexformPointer['field']][$flexformPointer['vLang']] : '';
+		$arrayOfUIDs = t3lib_div::intExplode(',', $listOfUIDs);
 
-			// Getting the relation uids out:
+			// Getting the relation uids out and use only tt_content records which are not deleted:
 		$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
 		$dbAnalysis->start($listOfUIDs, 'tt_content');
-		$itemArr = $dbAnalysis->itemArray;
+		$dbAnalysis->getFromDB();
 
 		$elementReferencesArr = array();
 		$counter = 1;
-		foreach ($itemArr as $itemKeyValuePair) {
-			$elementReferencesArr[$counter] = $itemKeyValuePair['id'];
-			$counter++;
+		foreach ($arrayOfUIDs as $uid) {
+			if (is_array($dbAnalysis->results['tt_content'][$uid])) {
+				$elementReferencesArr[$counter] = $uid;
+				$counter++;
+			}
 		}
 		return $elementReferencesArr;
 	}

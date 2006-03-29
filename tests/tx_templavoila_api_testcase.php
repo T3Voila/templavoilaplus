@@ -53,20 +53,23 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 	protected $testPageDSUID;
 	protected $testPageTOUID;
 	
+	protected $workspaceIdAtStart;
+	
 	public function __construct ($name) {
 		global $TYPO3_DB, $BE_USER;
-		
+
 		parent::__construct ($name);
 		$TYPO3_DB->debugOutput = TRUE;
 		
 		$this->apiObj = new tx_templavoila_api;
+		$this->workspaceIdAtStart = $BE_USER->workspace;
 		$BE_USER->setWorkspace(0);	
 	}
 	
 	public function tearDown () {
 		global $BE_USER;
 		
-		$BE_USER->setWorkspace(0);	
+		$BE_USER->setWorkspace($this->workspaceIdAtStart);	
 	}
 
 
@@ -136,6 +139,7 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 			'vLang' => 'vDEF',
 			'position' => '0'		// Before first element
 		);
+		$testPageRecord = t3lib_beFunc::getRecordRaw ('pages', 'uid='.$this->testPageUID, 'tx_templavoila_flex');
 				
 			// run insertElement():
 		$secondElementUid = $this->apiObj->insertElement ($destinationPointer, $row);
@@ -149,7 +153,8 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 		self::assertTrue ($recordsAreTheSame, 'The element created by insertElement() contains not the same data like the fixture');
 		 
 		 	// Check if the new record has been inserted correctly before the first one:
-		$testPageRecord = t3lib_beFunc::getRecordRaw ('pages', 'uid='.$this->testPageUID, 'tx_templavoila_flex');		
+		$testPageRecord = t3lib_beFunc::getRecordRaw ('pages', 'uid='.$this->testPageUID, 'tx_templavoila_flex');
+
 		$flexform = simplexml_load_string ($testPageRecord['tx_templavoila_flex']);
 		$xpathResArr = $flexform->xpath("//data/sheet[@index='sDEF']/language[@index='lDEF']/field[@index='field_content']/value[@index='vDEF']");
 		self::assertEquals ((string)$xpathResArr[0], $secondElementUid.','.$elementUid, 'The reference list the elements created by insertElement() is not as expected!');
@@ -410,6 +415,149 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 		self::assertTrue ($orderIsCorrect, 'The sorting field has not been set correctly after inserting a forth CE after the first with insertElement()!');
 	}
 
+	/**
+	 * Checks a special situation while inserting CEs if elements have been deleted 
+	 * before. See bug #3042
+	 */
+	public function test_insertElement_bug3042_part1() {
+		global $TYPO3_DB, $BE_USER;
+
+		$tce = t3lib_div::makeInstance('t3lib_TCEmain');
+		$tce->stripslashes_values=0;
+
+		$BE_USER->setWorkspace (-1);
+
+		$this->fixture_createTestPage ();
+		$this->fixture_createTestPageDSTO();
+
+			// Delete old test content elements:			
+		$TYPO3_DB->exec_DELETEquery ('tt_content', 'header LIKE "'.$this->testCEHeader.'%"');
+		
+			// Create 3 new content elements:
+		$elementUids = array();
+		for ($i=0; $i<3; $i++) {
+			$row = $this->fixture_getContentElementRow_TEXT();
+			$row['bodytext'] = 'insert test element #'.($i+1);
+			$destinationPointer = array(
+				'table' => 'pages',
+				'uid'   => $this->testPageUID,
+				'sheet' => 'sDEF',
+				'sLang' => 'lDEF',
+				'field' => 'field_content',
+				'vLang' => 'vDEF',
+				'position' => $i
+			);
+			
+			$elementUids[($i+1)] = $this->apiObj->insertElement ($destinationPointer, $row);			
+		}
+
+			// Delete the second content element by calling TCEmain instead of using the TemplaVoila API.
+			// We pass the UID of the CE with the content (overlayed UID), not the UID of the placeholder
+			// record because that exposes the bug.
+								
+		$tce = t3lib_div::makeInstance('t3lib_TCEmain');
+		$tce->stripslashes_values=0;
+
+		$cmdMap = array (
+			'tt_content' => array(
+				t3lib_beFunc::wsMapId('tt_content', $elementUids[2]) => array (
+					'delete' => 1
+				)
+			)
+		);
+		$tce->start(array(), $cmdMap);
+		$tce->process_cmdmap();
+
+			// Now insert an element after the second:
+		$row = $this->fixture_getContentElementRow_TEXT();
+		$row['bodytext'] = 'insert test element #4';
+		$destinationPointer = array(
+			'table' => 'pages',
+			'uid'   => $this->testPageUID,
+			'sheet' => 'sDEF',
+			'sLang' => 'lDEF',
+			'field' => 'field_content',
+			'vLang' => 'vDEF',
+			'position' => 2
+		);
+
+		$elementUids[4] = $this->apiObj->insertElement ($destinationPointer, $row);
+		self::assertTrue ($elementUids[4] !== FALSE, 'Bug 3042 part one - Inserting a new element was not successful, insertElement() returned FALSE');
+
+			// Check if the new record has been inserted correctly behind the second one:
+		$testPageRecord = t3lib_beFunc::getRecordWSOL ('pages', $this->testPageUID, 'tx_templavoila_flex,uid,pid,t3ver_swapmode');		
+		$flexform = simplexml_load_string ($testPageRecord['tx_templavoila_flex']);
+		$xpathResArr = $flexform->xpath("//data/sheet[@index='sDEF']/language[@index='lDEF']/field[@index='field_content']/value[@index='vDEF']");
+		self::assertEquals ((string)$xpathResArr[0], $elementUids[1].','.$elementUids[3].','.$elementUids[4], 'insertElement_bug3042 - The pages reference list of the elements I created and deleted is not as expected!');
+	}
+
+	/**
+	 * Checks a special situation while inserting CEs if elements have been deleted 
+	 * before. See bug #3042
+	 */
+	public function test_insertElement_bug3042_part2() {
+		global $TYPO3_DB, $BE_USER;
+
+		$tce = t3lib_div::makeInstance('t3lib_TCEmain');
+		$tce->stripslashes_values=0;
+
+		$BE_USER->setWorkspace (-1);
+
+		$this->fixture_createTestPage ();
+		$this->fixture_createTestPageDSTO();
+
+			// Delete old test content elements:			
+		$TYPO3_DB->exec_DELETEquery ('tt_content', 'header LIKE "'.$this->testCEHeader.'%"');
+		
+			// Create 3 new content elements:
+		$elementUids = array();
+		for ($i=0; $i<3; $i++) {
+			$row = $this->fixture_getContentElementRow_TEXT();
+			$row['bodytext'] = 'insert test element #'.($i+1);
+			$destinationPointer = array(
+				'table' => 'pages',
+				'uid'   => $this->testPageUID,
+				'sheet' => 'sDEF',
+				'sLang' => 'lDEF',
+				'field' => 'field_content',
+				'vLang' => 'vDEF',
+				'position' => $i
+			);
+			
+			$elementUids[($i+1)] = $this->apiObj->insertElement ($destinationPointer, $row);			
+		}
+
+			//Mark the second content element as deleted directly in the database so TemplaVoila has no
+			// chance to clean up the flexform XML and therefore must handle the inconsistency:
+
+		$TYPO3_DB->exec_UPDATEquery (
+			'tt_content',
+			'uid='.intval($elementUids[2]),
+			array('deleted' => 1)			
+		);
+
+			// Now insert an element after the second:
+		$row = $this->fixture_getContentElementRow_TEXT();
+		$row['bodytext'] = 'insert test element #4';
+		$destinationPointer = array(
+			'table' => 'pages',
+			'uid'   => $this->testPageUID,
+			'sheet' => 'sDEF',
+			'sLang' => 'lDEF',
+			'field' => 'field_content',
+			'vLang' => 'vDEF',
+			'position' => 2
+		);
+		$elementUids[4] = $this->apiObj->insertElement ($destinationPointer, $row);
+		self::assertTrue ($elementUids[4] !== FALSE, 'Bug 3042 Part two - Inserting a new element was not successful, insertElement() returned FALSE');
+
+			// Check if the new record has been inserted correctly behind the second one:
+		$testPageRecord = t3lib_beFunc::getRecordWSOL ('pages', $this->testPageUID, 'tx_templavoila_flex,uid,pid,t3ver_swapmode');		
+		$flexform = simplexml_load_string ($testPageRecord['tx_templavoila_flex']);
+		$xpathResArr = $flexform->xpath("//data/sheet[@index='sDEF']/language[@index='lDEF']/field[@index='field_content']/value[@index='vDEF']");
+		self::assertEquals ((string)$xpathResArr[0], $elementUids[1].','.$elementUids[3].','.$elementUids[4], 'insertElement_bug3042 - The pages reference list of the elements I created and deleted is not as expected!');
+	}
+	
 
 
 

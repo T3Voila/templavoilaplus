@@ -1622,9 +1622,10 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		$flagIconPath = $BACK_PATH.'../'.substr($flagAbsPath, strlen(PATH_site));
 
 		$output = array();
-		$excludeHidden = $BE_USER->isAdmin() ? '1=1' : 'sys_language.hidden=0';
+		$excludeHidden = $BE_USER->isAdmin() ? '1' : 'sys_language.hidden=0';
 
 		if ($id)	{
+			$excludeHidden .= ' AND pages_language_overlay.deleted=0';
 			$res = $TYPO3_DB->exec_SELECTquery(
 				'DISTINCT sys_language.*',
 				'pages_language_overlay,sys_language',
