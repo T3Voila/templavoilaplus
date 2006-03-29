@@ -1,3 +1,6 @@
+2006-03-29 - Kasper Skaarhoej
+	* Updated documentation as requested.
+	
 2006-03-26 - Robert Lemke <robert@typo3.org>
  - tx_templavoila_mod1_localization: Removed sidebar_renderItem_renderTranslationInfoCheckbox()
  ~ mod1/index.php: Changed GET parameter "localizeRecord" to "localizeElement"
