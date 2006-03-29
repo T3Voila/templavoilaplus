@@ -1581,7 +1581,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 						}
 						if ($params) {
 							$returnUrl = '&returnUrl='.rawurlencode(t3lib_extMgm::extRelPath('templavoila').'mod1/index.php?'.$this->link_getParameters());
-							$redirectLocation = $GLOBALS['BACK_PATH'].'alt_doc.php?'.$params.$returnUrl.'&localizationMode=text';
+							$redirectLocation = $GLOBALS['BACK_PATH'].'alt_doc.php?'.$params.$returnUrl;	//.'&localizationMode=text';
 						}
 					break;
 				}
