@@ -1,3 +1,7 @@
+2006-04-05 - Dmitry Dulepov <typo3@accio.lv>
+
+ + Wrote FAQ entry in the manual about bug 2691
+
 2006-04-04 - Robert Lemke <robert@typo3.org>
 
  ~ Fixed issue 0002148: "Start new website" wizard should set oldStyleColumnNumber
