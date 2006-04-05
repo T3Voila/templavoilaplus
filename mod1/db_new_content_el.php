@@ -41,14 +41,14 @@
  *
  *   88: class tx_templavoila_dbnewcontentel
  *  108:     function init()
- *  151:     function main()
- *  235:     function printContent()
- *  245:     function linkParams()
+ *  152:     function main()
+ *  236:     function printContent()
+ *  246:     function linkParams()
  *
  *              SECTION: OTHER FUNCTIONS:
- *  271:     function getWizardItems()
- *  281:     function wizardArray()
- *  418:     function removeInvalidElements(&$wizardItems)
+ *  272:     function getWizardItems()
+ *  282:     function wizardArray()
+ *  447:     function removeInvalidElements(&$wizardItems)
  *
  * TOTAL FUNCTIONS: 7
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -372,28 +372,54 @@ class tx_templavoila_dbnewcontentel {
 
 			// Flexible content elements:
         $positionPid = $this->id;
+        $dataStructureRecords = array();
         $storageFolderPID = $this->apiObj->getStorageFolderPid($positionPid);
-        $tTO = 'tx_templavoila_tmplobj';
-        $tDS = 'tx_templavoila_datastructure';
-        $res = $TYPO3_DB->exec_SELECTquery (
-            "$tTO.*",
-            "$tTO LEFT JOIN $tDS ON $tTO.datastructure = $tDS.uid",
-            "$tTO.pid=".intval($storageFolderPID)." AND $tDS.scope=2 AND $tTO.parent=0".
-            	t3lib_befunc::deleteClause ($tTO).t3lib_befunc::deleteClause ($tDS).
-            	t3lib_BEfunc::versioningPlaceholderClause($tTO).t3lib_BEfunc::versioningPlaceholderClause($tDS)
+
+        	// Fetch data structures stored in the database:
+        $res = $TYPO3_DB->exec_SELECTquery(
+        	'*',
+        	'tx_templavoila_datastructure',
+        	'pid='.intval($storageFolderPID).' AND scope=2'.
+        		t3lib_BEfunc::deleteClause('tx_templavoila_datastructure').
+        		t3lib_BEfunc::versioningPlaceholderClause('tx_templavoila_datastructure')
         );
-        $fce_count = 1;
-        $wizardItems['fce']['header'] = $LANG->getLL('fce');
-        while (false !== ($row = $TYPO3_DB->sql_fetch_assoc($res))) {
-            $tmpFilename = 'uploads/tx_templavoila/'.$row['previewicon'];
-            $wizardItems['fce_'.$fce_count]['icon'] = (is_file(PATH_site.$tmpFilename)) ? ('../' . $tmpFilename) : ('../' . t3lib_extMgm::siteRelPath('templavoila').'res1/default_previewicon.gif');
-            $wizardItems['fce_'.$fce_count]['description'] = $row['description'] ? htmlspecialchars($row['description']) : $LANG->getLL ('template_nodescriptionavailable');
-            $wizardItems['fce_'.$fce_count]['title'] = htmlspecialchars($row['title']);
-            $wizardItems['fce_'.$fce_count]['params'] = '&defVals[tt_content][CType]=templavoila_pi1&defVals[tt_content][tx_templavoila_ds]='.$row['datastructure'].'&defVals[tt_content][tx_templavoila_to]='.$row['uid'].$defVals;
-            $fce_count ++;
+        while(FALSE !== ($row = $TYPO3_DB->sql_fetch_assoc($res))) {
+        	$dataStructureRecords[$row['uid']] = $row;
         }
 
+        	// Fetch static data structures which are stored in XML files:
+		if (is_array($GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['staticDataStructures']))	{
+			foreach($GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['staticDataStructures'] as $staticDataStructureArr)	{
+				$staticDataStructureArr['_STATIC'] = TRUE;
+				$dataStructureRecords[$staticDataStructureArr['path']] = $staticDataStructureArr;
+			}
+		}
 
+			// Fetch all template object records which uare based one of the previously fetched data structures:
+		$templateObjectRecords = array();
+		$res = $TYPO3_DB->exec_SELECTquery(
+			'*',
+			'tx_templavoila_tmplobj',
+			'pid='.intval($storageFolderPID).' AND parent=0'.
+				t3lib_BEfunc::deleteClause('tx_templavoila_tmplobj').
+				t3lib_BEfunc::versioningPlaceholderClause('tx_templavoila_tmpl')
+		);
+		while(FALSE !== ($row = $TYPO3_DB->sql_fetch_assoc($res))) {
+			if (is_array($dataStructureRecords[$row['datastructure']])) {
+				$templateObjectRecords[] = $row;
+			}
+		}
+
+			// Add the filtered set of TO entries to the wizard list:
+		$wizardItems['fce']['header'] = $LANG->getLL('fce');
+        foreach($templateObjectRecords as $index => $templateObjectRecord) {
+            $tmpFilename = 'uploads/tx_templavoila/'.$templateObjectRecord['previewicon'];
+            $wizardItems['fce_'.$index]['icon'] = (@is_file(PATH_site.$tmpFilename)) ? ('../' . $tmpFilename) : ('../' . t3lib_extMgm::siteRelPath('templavoila').'res1/default_previewicon.gif');
+            $wizardItems['fce_'.$index]['description'] = $templateObjectRecord['description'] ? htmlspecialchars($templateObjectRecord['description']) : $LANG->getLL ('template_nodescriptionavailable');
+            $wizardItems['fce_'.$index]['title'] = htmlspecialchars($templateObjectRecord['title']);
+            $wizardItems['fce_'.$index]['params'] = '&defVals[tt_content][CType]=templavoila_pi1&defVals[tt_content][tx_templavoila_ds]='.$templateObjectRecord['datastructure'].'&defVals[tt_content][tx_templavoila_to]='.$templateObjectRecord['uid'].$defVals;
+            $index ++;
+        }
 
 			// PLUG-INS:
 		if (is_array($TBE_MODULES_EXT['xMOD_db_new_content_el']['addElClasses']))	{

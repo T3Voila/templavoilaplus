@@ -83,6 +83,8 @@
 			<label index="defaultLanguage">Default language</label>
 			<label index="createcopyfortranslation">Create a copy for translation</label>
 			<label index="inititemno_elementsNotBeingUsed">Elements not being used in this language or sheet</label>
+			<label index="rendernonusedelements_deleteall">Delete all records above marked with delete-icon</label>
+			<label index="renderreferencecount_delete">Delete!</label>
 			<label index="sidebar_advancedfunctions_labelshowhidden">Show hidden elements</label>
 			<label index="sidebar_advancedfunctions_labelshowoutline">Show outline</label>
 			<label index="sidebar_advancedfunctions_labelcachefunctions">Cache functions</label>
@@ -197,6 +199,8 @@
 			<label index="defaultLanguage">Standard Sprache</label>
 			<label index="createcopyfortranslation">Erstelle eine Kopie für Übersetzung</label>
 			<label index="inititemno_elementsNotBeingUsed">Elemente, die in diesem Blatt oder Sprache nicht verwendet werden</label>
+			<label index="rendernonusedelements_deleteall">Lösche alle obigen Datensätze, die mit einem Löschen-Symbol gekennzeichnet sind</label>
+			<label index="renderreferencecount_delete">Löschen!</label>
 			<label index="sidebar_advancedfunctions_labelshowhidden">Zeige verborgene Elemente</label>
 			<label index="sidebar_advancedfunctions_labelshowoutline">Listendarstellung zeigen</label>
 			<label index="sidebar_advancedfunctions_labelcachefunctions">Cache Funktionen</label>

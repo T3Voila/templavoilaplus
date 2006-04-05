@@ -78,7 +78,7 @@
  *              SECTION: Data structure helper functions (public)
  * 1142:     function ds_getFieldNameByColumnPosition ($contextPageUid, $columnPosition)
  * 1196:     function ds_getExpandedDataStructure ($table, $row)
- * 1233:     function ds_getAvailableTORecords ($pageUid)
+ * 1233:     function ds_getAvailablePageTORecords ($pageUid)
  *
  *              SECTION: Get content structure of page
  * 1276:     function getContentTree($table, $row, $includePreviewData=TRUE)
@@ -925,29 +925,35 @@ class tx_templavoila_api {
 	 * @param	string		$table: Name of the table of the parent element ('pages' or 'tt_content')
 	 * @param	integer		$uid: UID of the parent element
 	 * @param	array		$recordUids: Array of record UIDs - used internally, don't touch (but pass an empty array)
+	 * @param 	integer		$recursionDepth: Tracks the current level of recursion - used internall, don't touch.
 	 * @return	array		Array of record UIDs
 	 * @access	public
 	 */
-	function flexform_getListOfSubElementUidsRecursively ($table, $uid, &$recordUids) {
+	function flexform_getListOfSubElementUidsRecursively ($table, $uid, &$recordUids, $recursionDepth=0) {
 
 		if (!is_array($recordUids)) $recordUids = array();
-		$parentRecord = t3lib_BEfunc::getRecordWSOL($table, $uid, 'uid,pid,tx_templavoila_flex'.($table=='pages' ? ',t3ver_swapmode' : ''));
+		$parentRecord = t3lib_BEfunc::getRecordWSOL($table, $uid, 'uid,pid,tx_templavoila_ds,tx_templavoila_flex'.($table=='pages' ? ',t3ver_swapmode' : ''));
 		$flexFieldArr = t3lib_div::xml2array($parentRecord['tx_templavoila_flex']);
+		$expandedDataStructure = $this->ds_getExpandedDataStructure ($table, $parentRecord);
 
 		if (is_array ($flexFieldArr['data'])) {
-			foreach ($flexFieldArr['data'] as $languagesArr) {
+			foreach ($flexFieldArr['data'] as $sheetKey => $languagesArr) {
 				if (is_array ($languagesArr)) {
 					foreach ($languagesArr as $fieldsArr) {
 						if (is_array ($fieldsArr)) {
-							foreach ($fieldsArr as $valuesArr) {
+							foreach ($fieldsArr as $fieldName => $valuesArr) {
 								if (is_array ($valuesArr)) {
 									foreach ($valuesArr as $value) {
-										$valueItems = t3lib_div::intExplode (',', $value);
-										if (is_array($valueItems)) {
-											foreach ($valueItems as $subElementUid) {
-												if ($subElementUid > 0) {
-													$recordUids[] = $subElementUid;
-													$this->flexform_getListOfSubElementUidsRecursively  ('tt_content', $subElementUid, $recordUids);
+										if ($expandedDataStructure[$sheetKey]['ROOT']['el'][$fieldName]['tx_templavoila']['eType'] == 'ce') {
+											$valueItems = t3lib_div::intExplode (',', $value);
+											if (is_array($valueItems)) {
+												foreach ($valueItems as $subElementUid) {
+													if ($subElementUid > 0) {
+														$recordUids[] = $subElementUid;
+														if ($recursionDepth < 100) {
+															$this->flexform_getListOfSubElementUidsRecursively  ('tt_content', $subElementUid, $recordUids, $recursionDepth+1);
+														}
+													}
 												}
 											}
 										}
@@ -968,14 +974,16 @@ class tx_templavoila_api {
 	 * @param	string		$table: Name of the table of the parent element ('pages' or 'tt_content')
 	 * @param	integer		$uid: UID of the parent element
 	 * @param	array		$flexformPointers: Array of flexform pointers - used internally, don't touch
+	 * @param 	integer		$recursionDepth: Tracks the current level of recursion - used internall, don't touch.
 	 * @return	array		Array of flexform pointers
 	 * @access	public
 	 */
-	function flexform_getFlexformPointersToSubElementsRecursively ($table, $uid, &$flexformPointers) {
+	function flexform_getFlexformPointersToSubElementsRecursively ($table, $uid, &$flexformPointers, $recursionDepth=0) {
 
 		if (!is_array($flexformPointers)) $flexformPointers = array();
-		$parentRecord = t3lib_BEfunc::getRecordWSOL($table, $uid, 'uid,pid,tx_templavoila_flex'.($table=='pages' ? ',t3ver_swapmode' : ''));
+		$parentRecord = t3lib_BEfunc::getRecordWSOL($table, $uid, 'uid,pid,tx_templavoila_flex,tx_templavoila_ds,tx_templavoila_to'.($table=='pages' ? ',t3ver_swapmode' : ''));
 		$flexFieldArr = t3lib_div::xml2array($parentRecord['tx_templavoila_flex']);
+		$expandedDataStructure = $this->ds_getExpandedDataStructure ($table, $parentRecord);
 
 		if (is_array ($flexFieldArr['data'])) {
 			foreach ($flexFieldArr['data'] as $sheetKey => $languagesArr) {
@@ -985,23 +993,27 @@ class tx_templavoila_api {
 							foreach ($fieldsArr as $fieldName => $valuesArr) {
 								if (is_array ($valuesArr)) {
 									foreach ($valuesArr as $valueName => $value) {
-										$valueItems = t3lib_div::intExplode (',', $value);
-										if (is_array($valueItems)) {
-											$position = 1;
-											foreach ($valueItems as $subElementUid) {
-												if ($subElementUid > 0) {
-													$flexformPointers[] = array (
-														'table' => $table,
-														'uid' => $uid,
-														'sheet' => $sheetKey,
-														'sLang' => $languageKey,
-														'field' => $fieldName,
-														'vLang' => $valueName,
-														'position' => $position,
-														'targetCheckUid' => $subElementUid
-													);
-													$this->flexform_getFlexformPointersToSubElementsRecursively ('tt_content', $subElementUid, $flexformPointers);
-													$position ++;
+										if ($expandedDataStructure[$sheetKey]['ROOT']['el'][$fieldName]['tx_templavoila']['eType'] == 'ce') {
+											$valueItems = t3lib_div::intExplode (',', $value);
+											if (is_array($valueItems)) {
+												$position = 1;
+												foreach ($valueItems as $subElementUid) {
+													if ($subElementUid > 0) {
+														$flexformPointers[] = array (
+															'table' => $table,
+															'uid' => $uid,
+															'sheet' => $sheetKey,
+															'sLang' => $languageKey,
+															'field' => $fieldName,
+															'vLang' => $valueName,
+															'position' => $position,
+															'targetCheckUid' => $subElementUid
+														);
+														if ($recursionDepth < 100) {
+															$this->flexform_getFlexformPointersToSubElementsRecursively ('tt_content', $subElementUid, $flexformPointers, $recursionDepth+1);
+														}
+														$position ++;
+													}
 												}
 											}
 										}
@@ -1221,7 +1233,7 @@ class tx_templavoila_api {
 	}
 
 	/**
-	 * Returns an array of available Template Object records from the scope of the given page.
+	 * Returns an array of available Page Template Object records from the scope of the given page.
 	 *
 	 * Note: All TO records which are found in the selected storage folder will be returned, no matter
 	 *       if they match the currently selected data structure for the given page.
@@ -1230,7 +1242,7 @@ class tx_templavoila_api {
 	 * @return	mixed		Array of Template Object records or FALSE if an error occurred.
 	 * @access	public
 	 */
-	function ds_getAvailableTORecords ($pageUid) {
+	function ds_getAvailablePageTORecords ($pageUid) {
 		global $TYPO3_DB;
 
 		$storageFolderPID = $this->getStorageFolderPid ($pageUid);

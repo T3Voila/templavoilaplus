@@ -1,3 +1,19 @@
+2006-04-04 - Robert Lemke <robert@typo3.org>
+
+ ~ Fixed issue 0002148: "Start new website" wizard should set oldStyleColumnNumber
+ # Fixed bug 0003121: Can't delete records from the "non-used elements" tab anymore
+ # Fixed bug 0003119: The "Page related information" is not shown anymore in the page module
+
+2006-04-03 - Robert Lemke <robert@typo3.org>
+
+ + mod1: Added check for TYPO3 version. For TYPO3 versions lower than 4.0.0 an error message will be displayed.
+ # Fixed issue 0002803: TOs based on static DS does not appear in create new CE wizard
+ # Fixed a bug introduced while solving bug 0002947: The sorting field (and some other operations) were only handled correctly on pages which inherited the page data structure but didn't have a DS selected on their own. (See API flexform_getFlexformPointersToSubElementsRecursively())
+
+2006-03-31 - Robert Lemke <robert@typo3.org>
+
+ # Fixed bug 0002947: TV page module Clipboard functions crash Apache
+
 2006-03-29 - Robert Lemke <robert@typo3.org>
 
  # Fixed bug 0003042: Can't insert content elements: Sorry, you didn't have proper permissions to perform this change.

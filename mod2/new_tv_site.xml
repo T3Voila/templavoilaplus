@@ -2280,6 +2280,7 @@ page.10.userFunc = tx_templavoila_pi1-&gt;main_page
                     &lt;/sample_data&gt;
                     &lt;eType&gt;ce&lt;/eType&gt;
                     &lt;tags&gt;table:outer,td:inner,div:inner,p,h1,h2,h3,h4,h5&lt;/tags&gt;
+                    &lt;oldStyleColumnNumber&gt;0&lt;/oldStyleColumnNumber&gt;
                     &lt;TypoScript&gt;
 	10= RECORDS
 	10.source.current=1

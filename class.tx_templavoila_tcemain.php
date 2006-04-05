@@ -41,9 +41,9 @@
  *  110:     function processDatamap_postProcessFieldArray ($status, $table, $id, &$fieldArray, &$reference)
  *  216:     function processDatamap_afterDatabaseOperations ($status, $table, $id, $fieldArray, &$reference)
  *  283:     function processCmdmap_preProcess ($command, $table, $id, $value, &$reference)
- *  316:     function processCmdmap_postProcess($command, $table, $id, $value, &$reference)
- *  339:     function moveRecord_firstElementPostProcess ($table, $uid, $destPid, $sourceRecordBeforeMove, $updateFields, &$reference)
- *  380:     function moveRecord_afterAnotherElementPostProcess ($table, $uid, $destPid, $origDestPid, $sourceRecordBeforeMove, $updateFields, &$reference)
+ *  321:     function processCmdmap_postProcess($command, $table, $id, $value, &$reference)
+ *  344:     function moveRecord_firstElementPostProcess ($table, $uid, $destPid, $sourceRecordBeforeMove, $updateFields, &$reference)
+ *  385:     function moveRecord_afterAnotherElementPostProcess ($table, $uid, $destPid, $origDestPid, $sourceRecordBeforeMove, $updateFields, &$reference)
  *
  * TOTAL FUNCTIONS: 7
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -172,7 +172,7 @@ class tx_templavoila_tcemain {
 
 		if ($table == 'pages' && (intval ($fieldArray['tx_templavoila_ds']) || intval($fieldArray['tx_templavoila_next_ds']))) {
 
-				// Determine the page uid which ds_getAvailableTORecords() can use for finding the storage folder:
+				// Determine the page uid which ds_getAvailablePageTORecords() can use for finding the storage folder:
 			$pid = NULL;
 			if ($status == 'update') {
 				$pid = $id;
@@ -182,7 +182,7 @@ class tx_templavoila_tcemain {
 
 			if ($pid !== NULL) {
 				$templaVoilaAPI = t3lib_div::makeInstance('tx_templavoila_api');
-				$templateObjectRecords = $templaVoilaAPI->ds_getAvailableTORecords ($pid);
+				$templateObjectRecords = $templaVoilaAPI->ds_getAvailablePageTORecords ($pid);
 
 				if (is_array ($templateObjectRecords)) {
 					foreach ($templateObjectRecords as $templateObjectRecord) {
@@ -297,8 +297,8 @@ class tx_templavoila_tcemain {
 				$record = t3lib_beFunc::getRecord('tt_content', $id);
 				if (intval($record['t3ver_oid']) > 0) {
 					$record = t3lib_BEfunc::getRecord('tt_content', intval($record['t3ver_oid']));
-				}				
-				
+				}
+
 				$sourceFlexformPointersArr = $templaVoilaAPI->flexform_getPointersByRecord ($record['uid'], $record['pid']);
 				$sourceFlexformPointer = $sourceFlexformPointersArr[0];
 

@@ -264,6 +264,11 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	function main()    {
 		global $BE_USER,$LANG,$BACK_PATH;
 
+		if (!is_callable(array('t3lib_div', 'int_from_ver')) || t3lib_div::int_from_ver(TYPO3_version) < 4000000) {
+			$this->content = 'Fatal error:This version of TemplaVoila does not work with TYPO3 versions lower than 4.0.0! Please upgrade your TYPO3 core installation.';
+			return;		
+		}
+
 			// Access check! The page will show only if there is a valid page and if this page may be viewed by the user
 		if (is_array($this->altRoot))	{
 			$access = true;

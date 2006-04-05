@@ -301,7 +301,7 @@ class tx_templavoila_mod1_clipboard {
 				foreach($this->deleteUids as $deleteUid)	{
 					$params.= '&cmd[tt_content]['.$deleteUid.'][delete]=1';
 				}
-				$label = 'Delete all records above marked with delete-icon';
+				$label = $LANG->getLL('rendernonusedelements_deleteall');
 				$deleteAll = '<a href="#" onclick="'.htmlspecialchars('jumpToUrl(\''.$this->doc->issueCommand($params,'').'\');').'">'.
 						'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/garbage.gif','width="11" height="12"').' title="'.htmlspecialchars($label).'" alt="" />'.
 						htmlspecialchars($label).
@@ -334,13 +334,12 @@ class tx_templavoila_mod1_clipboard {
 	 * @access	protected
 	 */
 	function renderReferenceCount($uid)	{
-		$table = 'tt_content';
+		global $TYPO3_DB, $BE_USER, $LANG;
 
-			// Look up the path:
-		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+		$rows = $TYPO3_DB->exec_SELECTgetRows(
 			'*',
 			'sys_refindex',
-			'ref_table='.$GLOBALS['TYPO3_DB']->fullQuoteStr($table,'sys_refindex').
+			'ref_table='.$TYPO3_DB->fullQuoteStr('tt_content','sys_refindex').
 				' AND ref_uid='.intval($uid).
 				' AND deleted=0'
 		);
@@ -354,12 +353,12 @@ class tx_templavoila_mod1_clipboard {
 		}
 
 		if (count($infoData))	{
-			return '<a href="#" onclick="'.htmlspecialchars('top.launchView(\''.$table.'\', \''.$uid.'\'); return false;').'" title="'.htmlspecialchars(t3lib_div::fixed_lgd(implode(' / ',$infoData),100)).'">Ref: '.count($infoData).'</a>';
+			return '<a href="#" onclick="'.htmlspecialchars('top.launchView(\'tt_content\', \''.$uid.'\'); return false;').'" title="'.htmlspecialchars(t3lib_div::fixed_lgd(implode(' / ',$infoData),100)).'">Ref: '.count($infoData).'</a>';
 		} elseif (0===$BE_USER->workspace) {
 			$this->deleteUids[] = $uid;
 			$params = '&cmd[tt_content]['.$uid.'][delete]=1';
 			return '<a href="#" onclick="'.htmlspecialchars('jumpToUrl(\''.$this->doc->issueCommand($params,'').'\');').'">'.
-					'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/garbage.gif','width="11" height="12"').' title="Delete!" alt="" />'.
+					'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/garbage.gif','width="11" height="12"').' title="'.$LANG->getLL('renderreferencecount_delete',1).'" alt="" />'.
 					'</a>';
 		} else {
 			return '';
