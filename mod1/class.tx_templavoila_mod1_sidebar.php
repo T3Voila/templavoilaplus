@@ -260,7 +260,7 @@ class tx_templavoila_mod1_sidebar {
 		$conf = $TCA['pages']['columns']['tx_templavoila_flex']['config'];
 		$dataStructureArr = t3lib_BEfunc::getFlexFormDS($conf, $pObj->rootElementRecord, 'pages');
 
-		if (is_array ($dataStructureArr['ROOT']['tx_templavoila']['pageModule'])) {
+		if (is_array($dataStructureArr) && is_array ($dataStructureArr['ROOT']['tx_templavoila']['pageModule'])) {
 			$headerTablesAndFieldNames = t3lib_div::trimExplode(chr(10),str_replace(chr(13),'', $dataStructureArr['ROOT']['tx_templavoila']['pageModule']['displayHeaderFields']),1);
 			if (is_array ($headerTablesAndFieldNames)) {
 				$fieldNames = array();

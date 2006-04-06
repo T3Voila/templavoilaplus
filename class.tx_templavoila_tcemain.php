@@ -34,18 +34,19 @@
  *
  *
  *
- *   63: class tx_templavoila_tcemain
+ *   64: class tx_templavoila_tcemain
  *
  *              SECTION: Public API (called by hook handler)
- *   85:     function processDatamap_preProcessFieldArray (&$incomingFieldArray, $table, $id, &$reference)
- *  110:     function processDatamap_postProcessFieldArray ($status, $table, $id, &$fieldArray, &$reference)
- *  216:     function processDatamap_afterDatabaseOperations ($status, $table, $id, $fieldArray, &$reference)
- *  283:     function processCmdmap_preProcess ($command, $table, $id, $value, &$reference)
- *  321:     function processCmdmap_postProcess($command, $table, $id, $value, &$reference)
- *  344:     function moveRecord_firstElementPostProcess ($table, $uid, $destPid, $sourceRecordBeforeMove, $updateFields, &$reference)
- *  385:     function moveRecord_afterAnotherElementPostProcess ($table, $uid, $destPid, $origDestPid, $sourceRecordBeforeMove, $updateFields, &$reference)
+ *   86:     function processDatamap_preProcessFieldArray (&$incomingFieldArray, $table, $id, &$reference)
+ *  111:     function processDatamap_postProcessFieldArray ($status, $table, $id, &$fieldArray, &$reference)
+ *  166:     function processDatamap_afterDatabaseOperations ($status, $table, $id, $fieldArray, &$reference)
+ *  225:     function processCmdmap_preProcess ($command, $table, $id, $value, &$reference)
+ *  261:     function processCmdmap_postProcess($command, $table, $id, $value, &$reference)
+ *  283:     function moveRecord_firstElementPostProcess ($table, $uid, $destPid, $sourceRecordBeforeMove, $updateFields, &$reference)
+ *  324:     function moveRecord_afterAnotherElementPostProcess ($table, $uid, $destPid, $origDestPid, $sourceRecordBeforeMove, $updateFields, &$reference)
+ *  354:     function correctSortingFieldsForPage($flexformXML)
  *
- * TOTAL FUNCTIONS: 7
+ * TOTAL FUNCTIONS: 8
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -62,7 +63,7 @@ require_once (t3lib_extMgm::extPath('templavoila').'class.tx_templavoila_api.php
  */
 class tx_templavoila_tcemain {
 
-	var $debug = TRUE;
+	var $debug = FALSE;
 
 	/********************************************
 	 *
@@ -113,89 +114,38 @@ class tx_templavoila_tcemain {
 		if ($this->debug) t3lib_div::devLog ('processDatamap_postProcessFieldArray', 'templavoila',0,array ($status, $table, $id, $fieldArray));
 
 			// If the references for content element changed at the current page, save that information into the reference table:
-		if ($status == 'update' && ($table == 'pages') && isset ($fieldArray['tx_templavoila_flex'])) {
-			$elementsOnThisPage = array ();
+		if ($status == 'update' && $table == 'pages' && isset ($fieldArray['tx_templavoila_flex'])) {
 
-				// Getting value of the field containing the relations:
-			$xmlContent = t3lib_div::xml2array($fieldArray['tx_templavoila_flex']);
+			$this->correctSortingFieldsForPage($fieldArray['tx_templavoila_flex']);
 
-				// And extract all content element uids and their context from the XML structure:
-			if (is_array ($xmlContent['data'])) {
-				foreach ($xmlContent['data'] as $currentSheet => $subArr) {
-					if (is_array ($subArr)) {
-						foreach ($subArr as $currentLanguage => $subSubArr) {
-							if (is_array ($subSubArr)) {
-								foreach ($subSubArr as $currentField => $subSubSubArr) {
-									if (is_array ($subSubSubArr)) {
-										foreach ($subSubSubArr as $currentValueKey => $uidList) {
-											$uidsArr = t3lib_div::trimExplode (',', $uidList);
-											if (is_array ($uidsArr)) {
-												foreach ($uidsArr as $uid) {
-													if (intval($uid)) {
-														$elementsOnThisPage[] = array (
-															'uid' => $uid,
-															'skey' => $currentSheet,
-															'lkey' => $currentLanguage,
-															'vkey' => $currentValueKey,
-														);
-													}
-												}
-											}
-										}
-									}
-								}
+				// If a new data structure has been selected, set a valid template object automatically:
+			if (intval ($fieldArray['tx_templavoila_ds']) || intval($fieldArray['tx_templavoila_next_ds'])) {
+
+					// Determine the page uid which ds_getAvailablePageTORecords() can use for finding the storage folder:
+				$pid = NULL;
+				if ($status == 'update') {
+					$pid = $id;
+				} elseif ($status == 'new' && intval($fieldArray['storage_pid'] == 0)) {
+					$pid = $fieldArray['pid'];
+				}
+
+				if ($pid !== NULL) {
+					$templaVoilaAPI = t3lib_div::makeInstance('tx_templavoila_api');
+					$templateObjectRecords = $templaVoilaAPI->ds_getAvailablePageTORecords ($pid);
+
+					if (is_array ($templateObjectRecords)) {
+						foreach ($templateObjectRecords as $templateObjectRecord) {
+							if (!isset ($matchingTOUid) && $templateObjectRecord['datastructure'] == $fieldArray['tx_templavoila_ds']) {
+								$matchingTOUid = $templateObjectRecord['uid'];
+							}
+							if (!isset ($matchingNextTOUid) && $templateObjectRecord['datastructure'] == $fieldArray['tx_templavoila_next_ds']) {
+								$matchingNextTOUid = $templateObjectRecord['uid'];
 							}
 						}
+							// Finally set the Template Objects if one was found:
+	 					if (intval ($fieldArray['tx_templavoila_ds']) && ($fieldArray['tx_templavoila_to'] == 0)) $fieldArray['tx_templavoila_to'] = $matchingTOUid;
+	 					if (intval ($fieldArray['tx_templavoila_next_ds']) && ($fieldArray['tx_templavoila_next_to'] == 0)) $fieldArray['tx_templavoila_next_to'] = $matchingNextTOUid;
 					}
-				}
-			}
-
-			$elementCounter = 1;
-			$sortNumber = 10;
-
-					// update the sorting field of the content element for backwards-compatibility with pre-TemplaVoila era:
-			foreach ($elementsOnThisPage as $elementArr) {
-				$sortByField = $TCA['tt_content']['ctrl']['sortby'];
-				if ($sortByField) {
-					$updateFields = array($sortByField => $sortNumber);
-#					$TYPO3_DB->exec_UPDATEquery (
-#						'tt_content',
-#						'uid='.intval($elementArr['uid']),
-#						$updateFields
-#					);
-					$sortNumber += 10;
-#					$reference->updateRefIndex('tt_content', intval($elementArr['uid']));
-				}
-			}
-		}
-
-
-		if ($table == 'pages' && (intval ($fieldArray['tx_templavoila_ds']) || intval($fieldArray['tx_templavoila_next_ds']))) {
-
-				// Determine the page uid which ds_getAvailablePageTORecords() can use for finding the storage folder:
-			$pid = NULL;
-			if ($status == 'update') {
-				$pid = $id;
-			} elseif ($status == 'new' && intval($fieldArray['storage_pid'] == 0)) {
-				$pid = $fieldArray['pid'];
-			}
-
-			if ($pid !== NULL) {
-				$templaVoilaAPI = t3lib_div::makeInstance('tx_templavoila_api');
-				$templateObjectRecords = $templaVoilaAPI->ds_getAvailablePageTORecords ($pid);
-
-				if (is_array ($templateObjectRecords)) {
-					foreach ($templateObjectRecords as $templateObjectRecord) {
-						if (!isset ($matchingTOUid) && $templateObjectRecord['datastructure'] == $fieldArray['tx_templavoila_ds']) {
-							$matchingTOUid = $templateObjectRecord['uid'];
-						}
-						if (!isset ($matchingNextTOUid) && $templateObjectRecord['datastructure'] == $fieldArray['tx_templavoila_next_ds']) {
-							$matchingNextTOUid = $templateObjectRecord['uid'];
-						}
-					}
-						// Finally set the Template Objects if one was found:
- 					if (intval ($fieldArray['tx_templavoila_ds']) && ($fieldArray['tx_templavoila_to'] == 0)) $fieldArray['tx_templavoila_to'] = $matchingTOUid;
- 					if (intval ($fieldArray['tx_templavoila_next_ds']) && ($fieldArray['tx_templavoila_next_to'] == 0)) $fieldArray['tx_templavoila_next_to'] = $matchingNextTOUid;
 				}
 			}
 		}
@@ -223,13 +173,6 @@ class tx_templavoila_tcemain {
 
 		switch ($status) {
 			case 'new' :
-				// Important: we do not need to insert element references if page is copied.
-				// References to content elements in flexform will be updated automatically
-				// by TCEmain. If we insert references ourselves, we have to figure out
-				// references for the old page, handle various languages, etc. No reason
-				// to do it here if TCEmain already does it for us.
-				//
-				// See http://bugs.typo3.org/view.php?id=2095 for bug related to this.
 				if (!isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_tcemain']['doNotInsertElementRefsToPage'])) {
 					if (isset ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_tcemain']['preProcessFieldArrays'][$id])) {
 						$positionReferenceUid = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_tcemain']['preProcessFieldArrays'][$id]['pid'];
@@ -264,7 +207,6 @@ class tx_templavoila_tcemain {
 			break;
 
 		}
-
 		unset ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_tcemain']['preProcessFieldArrays']);
 	}
 
@@ -284,10 +226,8 @@ class tx_templavoila_tcemain {
 
 		if ($this->debug) t3lib_div::devLog('processCmdmap_preProcess', 'templavoila', 0, array ($command, $table, $id, $value));
 		if ($GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_api']['apiIsRunningTCEmain']) return;
-#		if ($table == 'pages' && $command == 'copy') {
-				// See http://bugs.typo3.org/view.php?id=2095
-			$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_tcemain']['doNotInsertElementRefsToPage'] = true;
-#		}
+		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_tcemain']['doNotInsertElementRefsToPage'] = true;
+
 		if ($table != 'tt_content') return;
 
 		$templaVoilaAPI = t3lib_div::makeInstance('tx_templavoila_api');
@@ -319,13 +259,12 @@ class tx_templavoila_tcemain {
 	 * @access	public
 	 */
 	function processCmdmap_postProcess($command, $table, $id, $value, &$reference) {
+
 		if ($this->debug) t3lib_div::devLog ('processCmdmap_postProcess', 'templavoila', 0, array ($command, $table, $id, $value));
-#		if ($table == 'pages' && $command == 'copy') {
-				// See http://bugs.typo3.org/view.php?id=2095
-			if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_tcemain']['doNotInsertElementRefsToPage'])) {
-				unset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_tcemain']['doNotInsertElementRefsToPage']);
-			}
-#		}
+
+		if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_tcemain']['doNotInsertElementRefsToPage'])) {
+			unset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_tcemain']['doNotInsertElementRefsToPage']);
+		}
 	}
 
 	/**
@@ -396,10 +335,77 @@ class tx_templavoila_tcemain {
 		$neighbourFlexformPointersArr = $templaVoilaAPI->flexform_getPointersByRecord (abs($origDestPid), $destPid);
 		$neighbourFlexformPointer = $neighbourFlexformPointersArr[0];
 
+			// One-line-fix for frontend editing (see Bug #2154).
+			// NOTE: This fix leads to unwanted behaviour in one special and unrealistic situation: If you move the second
+			// element to after the first element, it will move to the very first position instead of staying where it is.
+		if ($neighbourFlexformPointer['position'] == 1 && $sourceFlexformPointer['position'] == 2) $neighbourFlexformPointer['position'] = 0;
+
 		$templaVoilaAPI->moveElement_setElementReferences ($sourceFlexformPointer, $neighbourFlexformPointer);
 	}
 
+	/**
+	 * Sets the sorting field of all tt_content elements found on the specified page
+	 * so they reflect the order of the references.
+	 *
+	 * @param	string		$flexformXML: The flexform XML data of the page
+	 * @return	void
+	 * @access	protected
+	 */
+	function correctSortingFieldsForPage($flexformXML) {
+		global $TCA, $TYPO3_DB;
 
+		$elementsOnThisPage = array ();
+
+			// Getting value of the field containing the relations:
+		$xmlContentArr = t3lib_div::xml2array($flexformXML);
+
+			// And extract all content element uids and their context from the XML structure:
+		if (is_array ($xmlContentArr['data'])) {
+			foreach ($xmlContentArr['data'] as $currentSheet => $subArr) {
+				if (is_array ($subArr)) {
+					foreach ($subArr as $currentLanguage => $subSubArr) {
+						if (is_array ($subSubArr)) {
+							foreach ($subSubArr as $currentField => $subSubSubArr) {
+								if (is_array ($subSubSubArr)) {
+									foreach ($subSubSubArr as $currentValueKey => $uidList) {
+										$uidsArr = t3lib_div::trimExplode (',', $uidList);
+										if (is_array ($uidsArr)) {
+											foreach ($uidsArr as $uid) {
+												if (intval($uid)) {
+													$elementsOnThisPage[] = array (
+														'uid' => $uid,
+														'skey' => $currentSheet,
+														'lkey' => $currentLanguage,
+														'vkey' => $currentValueKey,
+													);
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		$elementCounter = 1;
+		$sortNumber = 100;
+
+		$sortByField = $TCA['tt_content']['ctrl']['sortby'];
+		if ($sortByField) {
+			foreach ($elementsOnThisPage as $elementArr) {
+				$updateFields = array($sortByField => $sortNumber);
+				$TYPO3_DB->exec_UPDATEquery (
+					'tt_content',
+					'uid='.intval($elementArr['uid']),
+					$updateFields
+				);
+				$sortNumber += 100;
+			}
+		}
+	}
 }
 
 

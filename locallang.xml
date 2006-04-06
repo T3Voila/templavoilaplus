@@ -16,7 +16,7 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
-			<label index="cm1_title">TemplaVoilà</label>
+			<label index="cm1_title">TemplaVoila</label>
 			<label index="cm1_viewsubelements">View: Sub elements</label>
 			<label index="cm1_viewflexformxml">View: Flexform XML</label>
 			<label index="cm_viewdsto">View: DS/TO</label>
@@ -26,7 +26,7 @@
 		<languageKey index="dk" type="array">
 		</languageKey>
 		<languageKey index="de" type="array">
-			<label index="cm1_title">TemplaVoilà</label>
+			<label index="cm1_title">TemplaVoila</label>
 			<label index="cm1_viewsubelements">Ansicht: Unter-Elemente</label>
 			<label index="cm1_viewflexformxml">Ansicht: Flexform XML</label>
 			<label index="cm_viewdsto">Ansicht: DS/TO</label>

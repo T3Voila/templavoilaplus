@@ -1,0 +1,11 @@
+config.doctype = xhtml_trans
+config.metaCharset = utf-8
+config.additionalHeaders = Content-Type:text/html;charset=utf-8
+
+config.admPanel = 1
+
+page = PAGE
+
+page.typeNum = 0
+page.10 = USER
+page.10.userFunc = tx_templavoila_pi1->main_page

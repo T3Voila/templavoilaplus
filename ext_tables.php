@@ -25,7 +25,7 @@ if (TYPO3_MODE=='BE') {
 		unset ($GLOBALS['TBE_MODULES']['_PATHS']['web_layout']);
 	}
 
-	// Registering CSH:
+		// Registering CSH:
 	t3lib_extMgm::addLLrefForTCAdescr('pages','EXT:templavoila/locallang_csh_pages.xml');
 	t3lib_extMgm::addLLrefForTCAdescr('tt_content','EXT:templavoila/locallang_csh_ttc.xml');
 	t3lib_extMgm::addLLrefForTCAdescr('tx_templavoila_datastructure','EXT:templavoila/locallang_csh_ds.xml');

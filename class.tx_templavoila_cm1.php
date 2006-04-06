@@ -82,7 +82,7 @@ class tx_templavoila_cm1 {
 					$url = t3lib_extMgm::extRelPath('templavoila').'cm1/index.php?table='.rawurlencode($table).'&uid='.$uid.'&_reload_from=1';
 				}
 				$localItems[] = $backRef->linkItem(
-					$LANG->getLLL('cm1_title',$LL),
+					$LANG->getLLL('cm1_title',$LL,1),
 					$backRef->excludeIcon('<img src="'.$backRef->backPath.t3lib_extMgm::extRelPath('templavoila').'cm1/cm_icon.gif" width="15" height="12" border="0" align="top" alt="" />'),
 					$backRef->urlRefForCM($url),
 					1	// Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
@@ -101,7 +101,7 @@ class tx_templavoila_cm1 {
 							'&altRoot[field_flex]=tx_templavoila_flex';
 
 				$localItems[] = $backRef->linkItem(
-					$LANG->getLLL('cm1_viewsubelements',$LL),
+					$LANG->getLLL('cm1_viewsubelements',$LL,1),
 					$backRef->excludeIcon('<img src="'.$backRef->backPath.t3lib_extMgm::extRelPath('templavoila').'cm1/cm_icon.gif" width="15" height="12" border="0" align="top" alt="" />'),
 					$backRef->urlRefForCM($url),
 					1	// Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
@@ -117,7 +117,7 @@ class tx_templavoila_cm1 {
 							'&viewRec[field_flex]=tx_templavoila_flex';
 
 				$localItems[] = $backRef->linkItem(
-					$LANG->getLLL('cm1_viewflexformxml',$LL),
+					$LANG->getLLL('cm1_viewflexformxml',$LL,1),
 					$backRef->excludeIcon('<img src="'.$backRef->backPath.t3lib_extMgm::extRelPath('templavoila').'cm2/cm_icon.gif" width="15" height="12" border="0" align="top" alt="" />'),
 					$backRef->urlRefForCM($url),
 					1	// Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
@@ -132,7 +132,7 @@ class tx_templavoila_cm1 {
 								'table=tx_templavoila_datastructure&uid='.$backRef->rec['tx_templavoila_ds'];
 
 					$localItems[] = $backRef->linkItem(
-						$LANG->getLLL('cm_viewdsto',$LL).' ['.$backRef->rec['tx_templavoila_ds'].'/'.$backRef->rec['tx_templavoila_to'].']',
+						$LANG->getLLL('cm_viewdsto',$LL,1).' ['.$backRef->rec['tx_templavoila_ds'].'/'.$backRef->rec['tx_templavoila_to'].']',
 						$backRef->excludeIcon('<img src="'.$backRef->backPath.t3lib_extMgm::extRelPath('templavoila').'cm2/cm_icon.gif" width="15" height="12" border="0" align="top" alt="" />'),
 						$backRef->urlRefForCM($url),
 						1	// Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!

@@ -1,3 +1,16 @@
+2006-04-06 - Robert Lemke <robert@typo3.org>
+
+ + Added feature 0002221: Improvement request: In pagetype "shortcut" elements should be editable somehow
+ # Re-implemented feature #0001760: Hide content elements when they are not mapped in the TO from the Page module. Resolves bug #0003047: Not mapped fields (areas) are schown in the page module.
+ # Fixed bug 0003155: Errors in API functions
+ # Added a check in the sidebar class to avoid a fatal error if an invalid data structure is selected for a page. (see also bug #3148)
+ # (Hopefully) fixed bug 0002154: Problems with move up/down buttons in Frontend Editing. Search class.tx_templavoila_tcemain and the testcase for "2154"
+ + Added new fixture and fixture functions for testing page templates with two columns
+
+2006-04-05 - Robert Lemke <robert@typo3.org>
+ 
+ ~ Created workaround for bug 0003128: CSM has 'TemplaVoil?' rather than 'TemplaVoila'
+
 2006-04-05 - Dmitry Dulepov <typo3@accio.lv>
 
  + Wrote FAQ entry in the manual about bug 2691

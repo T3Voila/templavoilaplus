@@ -34,53 +34,52 @@
  *
  *
  *
- *  122: class tx_templavoila_module1 extends t3lib_SCbase
+ *  121: class tx_templavoila_module1 extends t3lib_SCbase
  *
  *              SECTION: Initialization functions
- *  161:     function init()
- *  208:     function menuConfig()
+ *  160:     function init()
+ *  207:     function menuConfig()
  *
  *              SECTION: Main functions
- *  264:     function main()
- *  362:     function printContent()
+ *  263:     function main()
+ *  380:     function printContent()
  *
  *              SECTION: Rendering functions
- *  382:     function render_editPageScreen()
+ *  400:     function render_editPageScreen()
  *
  *              SECTION: Framework rendering functions
- *  469:     function render_framework_allSheets($contentTreeArr, $languageKey='DEF', $parentPointer=array(), $parentDsMeta=array())
- *  507:     function render_framework_singleSheet($contentTreeArr, $languageKey, $sheet, $parentPointer=array(), $parentDsMeta=array())
- *  633:     function render_framework_subElements($elementContentTreeArr, $languageKey, $sheet)
+ *  473:     function render_framework_allSheets($contentTreeArr, $languageKey='DEF', $parentPointer=array(), $parentDsMeta=array())
+ *  511:     function render_framework_singleSheet($contentTreeArr, $languageKey, $sheet, $parentPointer=array(), $parentDsMeta=array())
+ *  637:     function render_framework_subElements($elementContentTreeArr, $languageKey, $sheet)
  *
  *              SECTION: Rendering functions for certain subparts
- *  752:     function render_previewData($previewData, $elData, $ds_meta, $languageKey, $sheet)
- *  818:     function render_previewContent($row)
- *  901:     function render_localizationInfoTable($contentTreeArr, $parentPointer, $parentDsMeta=array())
+ *  756:     function render_previewData($previewData, $elData, $ds_meta, $languageKey, $sheet)
+ *  822:     function render_previewContent($row)
+ *  905:     function render_localizationInfoTable($contentTreeArr, $parentPointer, $parentDsMeta=array())
  *
  *              SECTION: Outline rendering:
- * 1039:     function render_outline($contentTreeArr)
- * 1145:     function render_outline_element($contentTreeArr, &$entries, $indentLevel=0, $parentPointer=array(), $controls='')
- * 1247:     function render_outline_subElements($contentTreeArr, $sheet, &$entries, $indentLevel)
- * 1332:     function render_outline_localizations($contentTreeArr, &$entries, $indentLevel)
+ * 1043:     function render_outline($contentTreeArr)
+ * 1149:     function render_outline_element($contentTreeArr, &$entries, $indentLevel=0, $parentPointer=array(), $controls='')
+ * 1251:     function render_outline_subElements($contentTreeArr, $sheet, &$entries, $indentLevel)
+ * 1336:     function render_outline_localizations($contentTreeArr, &$entries, $indentLevel)
  *
  *              SECTION: Link functions (protected)
- * 1394:     function link_edit($label, $table, $uid, $forced=FALSE)
- * 1415:     function link_new($label, $parentPointer)
- * 1433:     function link_unlink($label, $unlinkPointer, $realDelete=FALSE)
- * 1453:     function link_makeLocal($label, $makeLocalPointer)
- * 1465:     function link_getParameters()
+ * 1398:     function link_edit($label, $table, $uid, $forced=FALSE)
+ * 1419:     function link_new($label, $parentPointer)
+ * 1437:     function link_unlink($label, $unlinkPointer, $realDelete=FALSE)
+ * 1457:     function link_makeLocal($label, $makeLocalPointer)
+ * 1469:     function link_getParameters()
  *
  *              SECTION: Processing and structure functions (protected)
- * 1493:     function handleIncomingCommands()
+ * 1497:     function handleIncomingCommands()
  *
  *              SECTION: Miscelleaneous helper functions (protected)
- * 1617:     function getAvailableLanguages($id=0, $onlyIsoCoded=true, $setDefault=true, $setMulti=false)
- * 1690:     function getPageTemplateObject($row)
- * 1715:     function hooks_prepareObjectsArray ($hookName)
- * 1732:     function alternativeLanguagesDefined()
- * 1742:     function displayElement($subElementArr)
+ * 1621:     function getAvailableLanguages($id=0, $onlyIsoCoded=true, $setDefault=true, $setMulti=false)
+ * 1695:     function hooks_prepareObjectsArray ($hookName)
+ * 1712:     function alternativeLanguagesDefined()
+ * 1722:     function displayElement($subElementArr)
  *
- * TOTAL FUNCTIONS: 26
+ * TOTAL FUNCTIONS: 25
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -266,7 +265,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 		if (!is_callable(array('t3lib_div', 'int_from_ver')) || t3lib_div::int_from_ver(TYPO3_version) < 4000000) {
 			$this->content = 'Fatal error:This version of TemplaVoila does not work with TYPO3 versions lower than 4.0.0! Please upgrade your TYPO3 core installation.';
-			return;		
+			return;
 		}
 
 			// Access check! The page will show only if there is a valid page and if this page may be viewed by the user
@@ -316,6 +315,20 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 				// Render "edit current page" (important to do before calling ->sideBarObj->render() - otherwise the translation tab is not rendered!
 			$editCurrentPageHTML = $this->render_editPageScreen();
+
+				// Show message if the page is of a special doktype:
+			if ($this->rootElementTable == 'pages') {
+
+					// Initialize the special doktype class:
+				$specialDoktypesObj =& t3lib_div::getUserObj ('&tx_templavoila_mod1_specialdoktypes','');
+				$specialDoktypesObj->init($this);
+
+				$methodName = 'renderDoktype_'.$this->rootElementRecord['doktype'];
+				if (method_exists($specialDoktypesObj, $methodName)) {
+					$result = $specialDoktypesObj->$methodName($this->rootElementRecord);
+					if ($result !== FALSE) $this->content .= $result;
+				}
+			}
 
 				// Show the "edit current page" screen along with the sidebar
 			$shortCut = ($BE_USER->mayMakeShortcut() ? '<br />'.$this->doc->makeShortcutIcon('id,altRoot',implode(',',array_keys($this->MOD_MENU)),$this->MCONF['name']) : '');
@@ -394,20 +407,6 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		$this->rootElementUid = is_array($this->altRoot) ? $this->altRoot['uid'] : $this->id;
 		$this->rootElementRecord = t3lib_BEfunc::getRecordWSOL($this->rootElementTable, $this->rootElementUid, '*');
 		$this->rootElementUid_pidForContent = $this->rootElementRecord['t3ver_swapmode']==0 && $this->rootElementRecord['_ORIG_uid'] ? $this->rootElementRecord['_ORIG_uid'] : $this->rootElementRecord['uid'];
-
-			// Check if it makes sense to allow editing of this page and if not, show a message:
-		if ($this->rootElementTable == 'pages') {
-
-				// Initialize the special doktype class:
-			$specialDoktypesObj =& t3lib_div::getUserObj ('&tx_templavoila_mod1_specialdoktypes','');
-			$specialDoktypesObj->init($this);
-
-			$methodName = 'renderDoktype_'.$this->rootElementRecord['doktype'];
-			if (method_exists($specialDoktypesObj, $methodName)) {
-				$result = $specialDoktypesObj->$methodName($this->rootElementRecord);
-				if ($result !== FALSE) return $result;
-			}
-		}
 
 			// Fetch the content structure of page:
 		$contentTreeData = $this->apiObj->getContentTree($this->rootElementTable, $this->rootElementRecord);
@@ -656,7 +655,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 			// Traverse container fields:
 		foreach($elementContentTreeArr['sub'][$sheet][$lKey] as $fieldID => $fieldValuesContent)	{
-			if (is_array($fieldValuesContent[$vKey]))	{
+			if ($elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['isMapped'] && is_array($fieldValuesContent[$vKey]))	{
 				$fieldContent = $fieldValuesContent[$vKey];
 
 				$cellContent = '';
@@ -1684,31 +1683,6 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		}
 
 		return $output;
-	}
-
-	/**
-	 * Finds the currently selected template object by climbing up the root line.
-	 *
-	 * @param	array		$row: A page record
-	 * @return	mixed		The template object record or FALSE if none was found
-	 * @access	protected
-	 */
-	function getPageTemplateObject($row) {
-		$templateObjectUid = intval($row['tx_templavoila_to']);
-		if (!$templateObjectUid) {
-			$rootLine = t3lib_beFunc::BEgetRootLine($row['uid'],'', TRUE);
-			foreach($rootLine as $rootLineRecord) {
-				$pageRecord = t3lib_beFunc::getRecord('pages', $rootLineRecord['uid']);
-				if (($row['uid'] != $pageRecord['uid']) && $pageRecord['tx_templavoila_next_to'])	{	// If there is a next-level TO:
-					$templateObjectUid = $pageRecord['tx_templavoila_next_to'];
-					break;
-				} elseif ($pageRecord['tx_templavoila_to'])	{	// Otherwise try the NORMAL TO:
-					$templateObjectUid = $pageRecord['tx_templavoila_to'];
-					break;
-				}
-			}
-		}
-		return t3lib_beFunc::getRecordWSOL('tx_templavoila_tmplobj', $templateObjectUid);
 	}
 
 	/**

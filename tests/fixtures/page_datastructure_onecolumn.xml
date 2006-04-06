@@ -18,13 +18,13 @@
                         <numIndex index="0">This is the main content</numIndex>
                     </sample_data>
                     <eType>ce</eType>
-                    <oldStyleColumnNumber>0</oldStyleColumnNumber>
+                    <oldStyleColumnNumber type="integer">0</oldStyleColumnNumber>
                     <TypoScript>
 	10= RECORDS
 	10.source.current=1
 	10.tables = tt_content
 	10.wrap = &lt;!--TYPO3SEARCH_begin--&gt; | &lt;!--TYPO3SEARCH_end--&gt;
-							</TypoScript>
+					</TypoScript>
                 </tx_templavoila>
                 <TCEforms type="array">
                     <config type="array">

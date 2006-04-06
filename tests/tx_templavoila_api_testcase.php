@@ -46,6 +46,7 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 	protected $testPageTitleDE = '*** t3unit templavoila testcase page DE ***';
 	protected $testPageDSTitle = '*** t3unit templavoila testcase page template ds ***';
 	protected $testPageTOTitle = '*** t3unit templavoila testcase page template to ***';
+	protected $testTSTemplateTitle = '*** t3unit templavoila testcase template ***';
 	protected $testCEHeader = '*** t3unit templavoila testcase content element ***';
 	protected $testFCEDSTitle = '*** t3unit templavoila testcase FCE template ds ***';
 	protected $testFCETOTitle = '*** t3unit templavoila testcase FCE template to ***';
@@ -65,11 +66,29 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 		$this->workspaceIdAtStart = $BE_USER->workspace;
 		$BE_USER->setWorkspace(0);	
 	}
+
+	public function setUp() {
+		global $TYPO3_DB;
+		
+		$TYPO3_DB->exec_DELETEquery ('tt_content', 'header LIKE "'.$this->testCEHeader.'%"');
+		$TYPO3_DB->exec_DELETEquery ('pages', 'title="'.$this->testPageTitle.'"');
+		$TYPO3_DB->exec_DELETEquery ('pages_language_overlay', 'title="'.$this->testPageTitle.'"');
+		$TYPO3_DB->exec_DELETEquery ('tx_templavoila_datastructure', 'title="'.$this->testPageDSTitle.'"');
+		$TYPO3_DB->exec_DELETEquery ('tx_templavoila_tmplobj', 'title="'.$this->testPageTOTitle.'"');
+		$TYPO3_DB->exec_DELETEquery ('sys_template', 'title="'.$this->testTSTemplateTitle.'"');
+	}
 	
 	public function tearDown () {
-		global $BE_USER;
-		
+		global $BE_USER, $TYPO3_DB;
+return;		
 		$BE_USER->setWorkspace($this->workspaceIdAtStart);	
+
+		$TYPO3_DB->exec_DELETEquery ('tt_content', 'header LIKE "'.$this->testCEHeader.'%"');
+		$TYPO3_DB->exec_DELETEquery ('pages', 'title="'.$this->testPageTitle.'"');
+		$TYPO3_DB->exec_DELETEquery ('pages_language_overlay', 'title="'.$this->testPageTitle.'"');
+		$TYPO3_DB->exec_DELETEquery ('tx_templavoila_datastructure', 'title="'.$this->testPageDSTitle.'"');
+		$TYPO3_DB->exec_DELETEquery ('tx_templavoila_tmplobj', 'title="'.$this->testPageTOTitle.'"');
+		$TYPO3_DB->exec_DELETEquery ('sys_template', 'title="'.$this->testTSTemplateTitle.'"');
 	}
 
 
@@ -89,9 +108,6 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 
 		$this->fixture_createTestPage ();
 		$this->fixture_createTestPageDSTO();
-
-			// Delete old test content elements:			
-		$TYPO3_DB->exec_DELETEquery ('tt_content', 'header LIKE "'.$this->testCEHeader.'%"');
 		
 			// Prepare the new content element:
 		$row = $this->fixture_getContentElementRow_TEXT();
@@ -201,9 +217,6 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 		
 		$this->fixture_createTestPage ();
 		$this->fixture_createTestPageDSTO();
-
-			// Delete old test content elements:			
-		$TYPO3_DB->exec_DELETEquery ('tt_content', 'header LIKE "'.$this->testCEHeader.'%"');
 		
 			// Prepare the new content element:
 		$row = $this->fixture_getContentElementRow_TEXT();
@@ -331,9 +344,6 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 
 		$this->fixture_createTestPage ();
 		$this->fixture_createTestPageDSTO();
-
-			// Delete old test content elements:			
-		$TYPO3_DB->exec_DELETEquery ('tt_content', 'header="'.$this->testCEHeader.'"');
 		
 			// Prepare the new content element:
 		$row = $this->fixture_getContentElementRow_TEXT();
@@ -364,15 +374,12 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 
 		$this->fixture_createTestPage ();
 		$this->fixture_createTestPageDSTO();
-
-			// Delete old test content elements:			
-		$TYPO3_DB->exec_DELETEquery ('tt_content', 'header LIKE "'.$this->testCEHeader.'%"');
 		
 			// Create 3 new content elements:
 		$elementUids = array();
 		for ($i=0; $i<3; $i++) {
 			$row = $this->fixture_getContentElementRow_TEXT();
-			$row['bodytext'] = 'move test element #'.($i+1);
+			$row['bodytext'] = 'insert test element #'.($i+1);
 			$destinationPointer = array(
 				'table' => 'pages',
 				'uid'   => $this->testPageUID,
@@ -386,16 +393,16 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 		}
 
 		 	// Check if the sorting field has been set correctly:
-		$elementRecords[1] = t3lib_beFunc::getRecordRaw ('tt_content', 'uid='.$elementUids[1], 'sorting');		
-		$elementRecords[2] = t3lib_beFunc::getRecordRaw ('tt_content', 'uid='.$elementUids[2], 'sorting');		
-		$elementRecords[3] = t3lib_beFunc::getRecordRaw ('tt_content', 'uid='.$elementUids[3], 'sorting');
+		$elementRecords[1] = t3lib_beFunc::getRecordRaw ('tt_content', 'uid='.$elementUids[1], 'uid,sorting');		
+		$elementRecords[2] = t3lib_beFunc::getRecordRaw ('tt_content', 'uid='.$elementUids[2], 'uid,sorting');		
+		$elementRecords[3] = t3lib_beFunc::getRecordRaw ('tt_content', 'uid='.$elementUids[3], 'uid,sorting');
 		
 		$orderIsCorrect = $elementRecords[1]['sorting'] < $elementRecords[2]['sorting'] && $elementRecords[2]['sorting'] < $elementRecords[3]['sorting']; 
 		self::assertTrue ($orderIsCorrect, 'The sorting field has not been set correctly after inserting three CEs with insertElement()!');
 
 			// Insert yet another element after the first:
 		$row = $this->fixture_getContentElementRow_TEXT();
-		$row['bodytext'] = 'move test element #4';
+		$row['bodytext'] = 'insert test element #4';
 		$destinationPointer = array(
 			'table' => 'pages',
 			'uid'   => $this->testPageUID,
@@ -405,8 +412,14 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 			'vLang' => 'vDEF',
 			'position' => 1
 		);
+
 		$elementUids[4] = $this->apiObj->insertElement ($destinationPointer, $row);
-		$elementRecords[4] = t3lib_beFunc::getRecordRaw ('tt_content', 'uid='.$elementUids[4], 'sorting');
+
+		 	// Check if the sorting field has been set correctly:
+		$elementRecords[1] = t3lib_beFunc::getRecordRaw ('tt_content', 'uid='.$elementUids[1], 'uid,sorting');		
+		$elementRecords[2] = t3lib_beFunc::getRecordRaw ('tt_content', 'uid='.$elementUids[2], 'uid,sorting');		
+		$elementRecords[3] = t3lib_beFunc::getRecordRaw ('tt_content', 'uid='.$elementUids[3], 'uid,sorting');
+		$elementRecords[4] = t3lib_beFunc::getRecordRaw ('tt_content', 'uid='.$elementUids[4], 'uid,sorting');
 
 		$orderIsCorrect = 
 			$elementRecords[1]['sorting'] < $elementRecords[4]['sorting'] && 
@@ -429,9 +442,6 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 
 		$this->fixture_createTestPage ();
 		$this->fixture_createTestPageDSTO();
-
-			// Delete old test content elements:			
-		$TYPO3_DB->exec_DELETEquery ('tt_content', 'header LIKE "'.$this->testCEHeader.'%"');
 		
 			// Create 3 new content elements:
 		$elementUids = array();
@@ -505,9 +515,6 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 
 		$this->fixture_createTestPage ();
 		$this->fixture_createTestPageDSTO();
-
-			// Delete old test content elements:			
-		$TYPO3_DB->exec_DELETEquery ('tt_content', 'header LIKE "'.$this->testCEHeader.'%"');
 		
 			// Create 3 new content elements:
 		$elementUids = array();
@@ -576,9 +583,6 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 		$this->fixture_createTestPage ();
 		$this->fixture_createTestPageDSTO();
 
-			// Delete old test content elements:			
-		$TYPO3_DB->exec_DELETEquery ('tt_content', 'header LIKE "'.$this->testCEHeader.'%"');
-		
 			// Create 3 new content elements:
 		$elementUids = array();
 		for ($i=0; $i<3; $i++) {
@@ -671,9 +675,6 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 
 		$this->fixture_createTestPage ();
 		$this->fixture_createTestPageDSTO();
-
-			// Delete old test content elements:			
-		$TYPO3_DB->exec_DELETEquery ('tt_content', 'header LIKE "'.$this->testCEHeader.'%"');
 
 		$this->fixture_createTestFCEDSTO('2col');
 		
@@ -793,9 +794,6 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 		$this->fixture_createTestPage ();
 		$this->fixture_createTestPageDSTO();
 
-			// Delete old test content elements:			
-		$TYPO3_DB->exec_DELETEquery ('tt_content', 'header LIKE "'.$this->testCEHeader.'%"');
-		
 			// Create 3 new content elements:
 		$elementUids = array();
 		for ($i=0; $i<3; $i++) {
@@ -895,9 +893,6 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 		$pageRow = array ('title' => $this->testPageTitle);
 		$targetTestPageUID = $this->fixture_createPage ($pageRow, $this->testPageUID);
 
-			// Delete old test content elements:			
-		$TYPO3_DB->exec_DELETEquery ('tt_content', 'header LIKE "'.$this->testCEHeader.'%"');
-		
 			// Create 3 new content elements on test page and on target page:
 		$sourcePageElementUids = array();
 		$targetPageElementUids = array();
@@ -978,9 +973,6 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 		$pageRow = array ('title' => $this->testPageTitle);
 		$targetTestPageUID = $this->fixture_createPage ($pageRow, $this->testPageUID);
 
-			// Delete old test content elements:			
-		$TYPO3_DB->exec_DELETEquery ('tt_content', 'header LIKE "'.$this->testCEHeader.'%"');
-		
 			// Create 3 new content elements on test page and on target page:
 		$sourcePageElementUids = array();
 		$targetPageElementUids = array();
@@ -1068,9 +1060,6 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 
 		$this->fixture_createTestPage ();
 		$this->fixture_createTestPageDSTO();
-
-			// Delete old test content elements:			
-		$TYPO3_DB->exec_DELETEquery ('tt_content', 'header LIKE "'.$this->testCEHeader.'%"');
 		
 			// Create new content elements:
 		$elementUids = array();
@@ -1134,8 +1123,6 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 		$pageRow = array ('title' => $this->testPageTitle);
 		$targetTestPageUID = $this->fixture_createPage ($pageRow, $this->testPageUID);
 
-			// Delete old test content elements:			
-		$TYPO3_DB->exec_DELETEquery ('tt_content', 'header LIKE "'.$this->testCEHeader.'%"');
 		
 			// Create 3 new content elements on test page and on target page:
 		$sourcePageElementUids = array();
@@ -1221,9 +1208,6 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 		$this->fixture_createTestPage ();
 		$this->fixture_createTestPageDSTO();
 
-			// Delete old test content elements:			
-		$TYPO3_DB->exec_DELETEquery ('tt_content', 'header LIKE "'.$this->testCEHeader.'%"');
-		
 			// Create new content elements:
 		$elementUids = array();
 		for ($i=0; $i<3; $i++) {
@@ -1281,9 +1265,6 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 		$this->fixture_createTestPage ();
 		$this->fixture_createTestPageDSTO();
 
-			// Delete old test content elements:			
-		$TYPO3_DB->exec_DELETEquery ('tt_content', 'header LIKE "'.$this->testCEHeader.'%"');
-		
 			// Create new content elements:
 		$elementUids = array();
 		for ($i=0; $i<3; $i++) {
@@ -1341,9 +1322,6 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 		$this->fixture_createTestPage ();
 		$this->fixture_createTestPageDSTO();
 
-			// Delete old test content elements:			
-		$TYPO3_DB->exec_DELETEquery ('tt_content', 'header LIKE "'.$this->testCEHeader.'%"');
-		
 			// Create new content elements:
 		$elementUids = array();
 		for ($i=0; $i<3; $i++) {
@@ -1401,9 +1379,6 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 		$this->fixture_createTestPage ();
 		$this->fixture_createTestPageDSTO();
 
-			// Delete old test content elements:			
-		$TYPO3_DB->exec_DELETEquery ('tt_content', 'header LIKE "'.$this->testCEHeader.'%"');
-		
 			// Create new content elements:
 		$elementUids = array();
 		for ($i=0; $i<3; $i++) {
@@ -1461,9 +1436,6 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 		$this->fixture_createTestPage ();
 		$this->fixture_createTestPageDSTO();
 
-			// Delete old test content elements:			
-		$TYPO3_DB->exec_DELETEquery ('tt_content', 'header LIKE "'.$this->testCEHeader.'%"');
-		
 			// Create new content elements:
 		$elementUids = array();
 		for ($i=0; $i<3; $i++) {
@@ -1514,9 +1486,6 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 		$this->fixture_createTestPage ();
 		$this->fixture_createTestPageDSTO();
 
-			// Delete old test content elements:			
-		$TYPO3_DB->exec_DELETEquery ('tt_content', 'header LIKE "'.$this->testCEHeader.'%"');
-		
 			// Create new content elements:
 		$elementUids = array();
 		for ($i=0; $i<3; $i++) {
@@ -1578,9 +1547,6 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 		$this->fixture_createTestPage ();
 		$this->fixture_createTestPageDSTO();
 
-			// Delete old test content elements:			
-		$TYPO3_DB->exec_DELETEquery ('tt_content', 'header LIKE "'.$this->testCEHeader.'%"');
-		
 			// Create new content elements:
 		$elementUids = array();
 		for ($i=0; $i<3; $i++) {
@@ -1625,9 +1591,6 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 		$this->fixture_createTestPage ();
 		$this->fixture_createTestPageDSTO();
 
-			// Delete old test content elements:			
-		$TYPO3_DB->exec_DELETEquery ('tt_content', 'header LIKE "'.$this->testCEHeader.'%"');
-		
 			// Create new content elements:
 		$elementUids = array();
 		for ($i=0; $i<3; $i++) {
@@ -1706,9 +1669,6 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 		$this->fixture_createTestPageDSTO();
 		$this->fixture_createTestAlternativePageHeader ($this->testPageUID, 'DE');
 
-			// Delete old test content elements:			
-		$TYPO3_DB->exec_DELETEquery ('tt_content', 'header="'.$this->testCEHeader.'"');
-		
 			// Create new content elements:
 		$elementUids = array();
 		for ($i=0; $i<3; $i++) {
@@ -1777,9 +1737,6 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 		$this->fixture_createTestPageDSTO();
 		$this->fixture_createTestAlternativePageHeader ($this->testPageUID, 'DE');
 
-			// Delete old test content elements:			
-		$TYPO3_DB->exec_DELETEquery ('tt_content', 'header="'.$this->testCEHeader.'"');
-		
 			// Create new content elements:
 		$elementUids = array();
 		for ($i=0; $i<3; $i++) {
@@ -1864,9 +1821,6 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 		$this->fixture_createTestPage ();
 		$this->fixture_createTestPageDSTO();
 
-			// Delete old test content elements:			
-		$TYPO3_DB->exec_DELETEquery ('tt_content', 'header LIKE "'.$this->testCEHeader.'%"');
-		
 			// Create 3 new content elements:
 		$elementUids = array();
 		for ($i=0; $i<3; $i++) {
@@ -1900,8 +1854,52 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 		$flexform = simplexml_load_string ($testPageRecord['tx_templavoila_flex']);
 		$xpathResArr = $flexform->xpath("//data/sheet[@index='sDEF']/language[@index='lDEF']/field[@index='field_content']/value[@index='vDEF']");
 		self::assertEquals ((string)$xpathResArr[0], $elementUids[1].','.$elementUids[3].','.$elementUids[2], 'The reference list is not as expected after moving the third element after the first with TCEmain()!');
-		
-			// Now move the third element to after the first element via TCEmain:
+	}
+
+	public function test_tcemain_moveUp_bug2154() {
+		global $TYPO3_DB, $BE_USER;
+
+		$BE_USER->setWorkspace (0);
+
+		$tce = t3lib_div::makeInstance('t3lib_TCEmain');
+		$tce->stripslashes_values=0;
+
+		$this->fixture_createTestPage ();
+		$this->fixture_createTestPageDSTO('twocolumns');
+
+			// Create 3 new content elements in the main area and 3 in the right bar:
+		$elementUids = array();
+		for ($i=0; $i<3; $i++) {
+			$row = $this->fixture_getContentElementRow_TEXT();
+			$row['bodytext'] = 'move test element #'.($i+1);
+			$destinationPointer = array(
+				'table' => 'pages',
+				'uid'   => $this->testPageUID,
+				'sheet' => 'sDEF',
+				'sLang' => 'lDEF',
+				'field' => 'field_content',
+				'vLang' => 'vDEF',
+				'position' => $i
+			);
+			$elementUids[($i+1)] = $this->apiObj->insertElement ($destinationPointer, $row);
+		}
+
+			for ($i=3; $i<6; $i++) {
+			$row = $this->fixture_getContentElementRow_TEXT();
+			$row['bodytext'] = 'move test element (right bar) #'.($i+1);
+			$destinationPointer = array(
+				'table' => 'pages',
+				'uid'   => $this->testPageUID,
+				'sheet' => 'sDEF',
+				'sLang' => 'lDEF',
+				'field' => 'field_rightbar',
+				'vLang' => 'vDEF',
+				'position' => $i-3
+			);
+			$elementUids[($i+1)] = $this->apiObj->insertElement ($destinationPointer, $row);
+		}
+
+			// Main area: move the third element to after the first element via TCEmain:
 		$cmdMap = array (
 			'tt_content' => array(
 				$elementUids[3] => array (
@@ -1912,12 +1910,69 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 		$tce->start(array(), $cmdMap);
 		$tce->process_cmdmap();
 
-		 	// Check if the third element has been moved correctly behind the first:
+			// ... and then move it one more up (exposes the bug 2154):
+		$cmdMap = array (
+			'tt_content' => array(
+				$elementUids[3] => array (
+					'move' => '-'.$elementUids[1]
+				)
+			)
+		);
+		$tce->start(array(), $cmdMap);
+		$tce->process_cmdmap();
+
+			 	// Check if the elements are in the right columns in the right order:
 		$testPageRecord = t3lib_beFunc::getRecordRaw ('pages', 'uid='.$this->testPageUID, 'tx_templavoila_flex');		
 		$flexform = simplexml_load_string ($testPageRecord['tx_templavoila_flex']);
-		$xpathResArr = $flexform->xpath("//data/sheet[@index='sDEF']/language[@index='lDEF']/field[@index='field_content']/value[@index='vDEF']");
-		self::assertEquals ((string)$xpathResArr[0], $elementUids[1].','.$elementUids[3].','.$elementUids[2], 'The reference list is not as expected after moving the third element after the first with TCEmain()!');
-	}
+			
+		$fieldContent_xpathResArr = $flexform->xpath("//data/sheet[@index='sDEF']/language[@index='lDEF']/field[@index='field_content']/value[@index='vDEF']");
+		$fieldRightBar_xpathResArr = $flexform->xpath("//data/sheet[@index='sDEF']/language[@index='lDEF']/field[@index='field_rightbar']/value[@index='vDEF']");
+
+		$everythingIsFine = 
+			(string)$fieldContent_xpathResArr[0] === $elementUids[3].','.$elementUids[1].','.$elementUids[2] &&
+			(string)$fieldRightBar_xpathResArr[0] === $elementUids[4].','.$elementUids[5].','.$elementUids[6]
+		;
+		
+		self::assertTrue($everythingIsFine, 'The reference list is not as expected after moving the third element up two times in the left column!');
+
+				// ... and then move the now second element one up again, measured by the sorting field! (also exposes the bug 2154):
+		$elementsBySortingFieldArr = $TYPO3_DB->exec_SELECTgetRows(
+			'uid',
+			'tt_content',
+			'pid='.intval($this->testPageUID),
+			'',
+			'sorting'
+		);
+		$positionOfElement1 = NULL;
+		foreach ($elementsBySortingFieldArr as $index => $row) {
+			if ($elementUids[1]==$row['uid']) $positionOfElement1 = $index;
+		}
+		
+		
+		$cmdMap = array (
+			'tt_content' => array(
+				$elementUids[1] => array (
+					'move' => '-'.$elementsBySortingFieldArr[$positionOfElement1-1]['uid']
+				)
+			)
+		);
+		$tce->start(array(), $cmdMap);
+		$tce->process_cmdmap();
+
+			 	// Check again if the elements are in the right columns in the right order:
+		$testPageRecord = t3lib_beFunc::getRecordRaw ('pages', 'uid='.$this->testPageUID, 'tx_templavoila_flex');		
+		$flexform = simplexml_load_string ($testPageRecord['tx_templavoila_flex']);
+			
+		$fieldContent_xpathResArr = $flexform->xpath("//data/sheet[@index='sDEF']/language[@index='lDEF']/field[@index='field_content']/value[@index='vDEF']");
+		$fieldRightBar_xpathResArr = $flexform->xpath("//data/sheet[@index='sDEF']/language[@index='lDEF']/field[@index='field_rightbar']/value[@index='vDEF']");
+
+		$everythingIsFine = 
+			(string)$fieldContent_xpathResArr[0] === $elementUids[1].','.$elementUids[3].','.$elementUids[2] &&
+			(string)$fieldRightBar_xpathResArr[0] === $elementUids[4].','.$elementUids[5].','.$elementUids[6]
+		;
+		
+		self::assertTrue($everythingIsFine, 'The reference list is not as expected after moving the second element up and choosing the destination by the sorting field!');		
+}
 
 
 
@@ -1937,12 +1992,12 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 	private function fixture_createTestPage() {
 		global $TYPO3_DB;
 		
-			// Delete old test pages, create a new test page and save the UID:			
-		$TYPO3_DB->exec_DELETEquery ('pages', 'title="'.$this->testPageTitle.'"');
+			// Create a new test page and save the UID:			
 		$pageRow = array (
 			'title' => $this->testPageTitle
 		);
-		$this->testPageUID = $this->fixture_createPage ($pageRow, 0);
+		$this->testPageUID = $this->fixture_createPage($pageRow, 0);
+		$this->fixture_createTSTemplate($this->testPageUID);
 	}
 
 	/**
@@ -1965,6 +2020,33 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 		$tce->process_datamap();
 		return $tce->substNEWwithIDs['NEW'];
 	}
+	
+	/**
+	 * Creates a TypoScript template from the currently only fixture
+	 * and puts it onto the page specified by $pid.
+	 * 
+	 * @param	integer		$pid: Page uid where the TS template should be stored
+	 * @return	void
+	 * @access private
+	 */
+	private function fixture_createTSTemplate($pid) {
+		$dataArr = array();
+		$dataArr['sys_template']['NEW'] = array (
+			'pid' => intval($pid),
+			'hidden' => 0,
+			'title' => $this->testTSTemplateTitle,
+			'clear' => 3,
+			'root' => 1,
+			'config' => '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:templavoila/tests/fixtures/main_typoscript_template.txt">',
+			'include_static_file' => 'EXT:css_styled_content/static/'
+		);
+
+		$tce = t3lib_div::makeInstance('t3lib_TCEmain');
+		$tce->stripslashes_values=0;
+		$tce->start($dataArr,array());
+		$tce->process_datamap();
+		return $tce->substNEWwithIDs['NEW'];
+	}
 
 	/**
 	 * Deletes old and creates a new alternative page header for the given page.
@@ -1973,9 +2055,6 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 	private function fixture_createTestAlternativePageHeader($pid, $languageKey) {
 		global $TYPO3_DB;
 				
-			// Delete old test pages:			
-		$TYPO3_DB->exec_DELETEquery ('pages_language_overlay', 'title="'.$this->testPageTitle.'"');
-
 		$res = $TYPO3_DB->exec_SELECTquery (
 			'sys_language.uid',
 			'sys_language LEFT JOIN static_languages ON sys_language.static_lang_isocode=static_languages.uid',
@@ -2008,15 +2087,12 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 	 * Creates a page datastructure and template object for the
 	 * test page.
 	 * 
+	 * @param 	string		$type: The fixture name to use for that page template (eg. "onecolumn")
 	 * @return 	array		UID of the DS and UID of the TO
 	 */
-	private function fixture_createTestPageDSTO() {
+	private function fixture_createTestPageDSTO($type='onecolumn') {
 		global $TYPO3_DB;
 	
-			// Delete old test templates:			
-		$TYPO3_DB->exec_DELETEquery ('tx_templavoila_datastructure', 'title="'.$this->testPageDSTitle.'"');
-		$TYPO3_DB->exec_DELETEquery ('tx_templavoila_tmplobj', 'title="'.$this->testPageTOTitle.'"');
-
 			// Create new DS:
 		$row = array (
 			'pid' => $this->testPageUID,
@@ -2025,7 +2101,7 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 			'cruser_id' => 1,
 			'deleted' => 0,
 			'title' => $this->testPageDSTitle,
-			'dataprot' => file_get_contents (t3lib_extMgm::extPath('templavoila').'tests/fixtures/page_datastructure.xml'),
+			'dataprot' => file_get_contents (t3lib_extMgm::extPath('templavoila').'tests/fixtures/page_datastructure_'.$type.'.xml'),
 			'scope' => 1
 		);
 		$res = $TYPO3_DB->exec_INSERTquery ('tx_templavoila_datastructure', $row);
@@ -2043,7 +2119,7 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 			'datastructure' => $this->testPageDSUID ,
 			'fileref_mtime' => @filemtime (t3lib_extMgm::extPath('templavoila').'tests/fixtures/page_template.html'),
 			'fileref' => t3lib_extMgm::siteRelPath('templavoila').'tests/fixtures/page_template.html',
-			'templatemapping' => file_get_contents (t3lib_extMgm::extPath('templavoila').'tests/fixtures/page_templateobject.dat'),
+			'templatemapping' => file_get_contents (t3lib_extMgm::extPath('templavoila').'tests/fixtures/page_templateobject_'.$type.'.dat'),
 		);
 		$res = $TYPO3_DB->exec_INSERTquery ('tx_templavoila_tmplobj', $row);
 		$this->testPageTOUID = $TYPO3_DB->sql_insert_id ($res);	
@@ -2066,10 +2142,6 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 	private function fixture_createTestFCEDSTO($type) {
 		global $TYPO3_DB;
 	
-			// Delete old test templates:			
-		$TYPO3_DB->exec_DELETEquery ('tx_templavoila_datastructure', 'title="'.$this->testFCEDSTitle.$type.'"');
-		$TYPO3_DB->exec_DELETEquery ('tx_templavoila_tmplobj', 'title="'.$this->testFCETOTitle.$type.'"');
-
 			// Create new DS:
 		$row = array (
 			'pid' => $this->testPageUID,

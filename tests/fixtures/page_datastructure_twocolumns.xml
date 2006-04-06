@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="iso-8859-1" standalone="yes" ?>
+<T3DataStructure>
+    <meta type="array">
+        <langChildren type="integer">1</langChildren>
+        <langDisable type="integer">0</langDisable>
+    </meta>
+    <ROOT type="array">
+        <tx_templavoila type="array">
+            <title>ROOT</title>
+            <description>Select the HTML element on the page which you want to be the overall container element for the template.</description>
+        </tx_templavoila>
+        <type>array</type>
+        <el type="array">
+            <field_content type="array">
+                <tx_templavoila type="array">
+                    <title>Content</title>
+                    <sample_data type="array">
+                        <numIndex index="0">This is the main content</numIndex>
+                    </sample_data>
+                    <eType>ce</eType>
+                    <oldStyleColumnNumber type="integer">0</oldStyleColumnNumber>
+                    <TypoScript>
+	10= RECORDS
+	10.source.current=1
+	10.tables = tt_content
+	10.wrap = &lt;!--TYPO3SEARCH_begin--&gt; | &lt;!--TYPO3SEARCH_end--&gt;
+                    </TypoScript>
+                </tx_templavoila>
+                <TCEforms type="array">
+                    <config type="array">
+                        <type>group</type>
+                        <internal_type>db</internal_type>
+                        <allowed>tt_content</allowed>
+                        <size>5</size>
+                        <maxitems>200</maxitems>
+                        <minitems>0</minitems>
+                        <multiple>1</multiple>
+                        <show_thumbs>1</show_thumbs>
+                    </config>
+                    <label>Content</label>
+                </TCEforms>
+            </field_content>
+            <field_rightbar type="array">
+                <tx_templavoila type="array">
+                    <title>Right bar</title>
+                    <sample_data type="array">
+                        <numIndex index="0"></numIndex>
+                    </sample_data>
+                    <eType>ce</eType>
+                    <TypoScript>
+	10= RECORDS
+	10.source.current=1
+	10.tables = tt_content
+	10.wrap = &lt;!--TYPO3SEARCH_begin--&gt; | &lt;!--TYPO3SEARCH_end--&gt;
+                    </TypoScript>
+                    <oldStyleColumnNumber type="integer">1</oldStyleColumnNumber>
+                </tx_templavoila>
+                <TCEforms type="array">
+                    <config type="array">
+                        <type>group</type>
+                        <internal_type>db</internal_type>
+                        <allowed>tt_content</allowed>
+                        <size>5</size>
+                        <maxitems>200</maxitems>
+                        <minitems>0</minitems>
+                        <multiple>1</multiple>
+                        <show_thumbs>1</show_thumbs>
+                    </config>
+                    <label>Right bar</label>
+                </TCEforms>
+            </field_rightbar>
+            <field_menu type="array">
+                <tx_templavoila type="array">
+                    <title>Menu</title>
+                    <sample_data type="array">
+                        <numIndex index="0">Some menu</numIndex>
+                    </sample_data>
+                    <eType>TypoScriptObject</eType>
+                    <eType_EXTRA type="array">
+                        <objPath>lib.templavoila.t3unittestcase.menu</objPath>
+                    </eType_EXTRA>
+                    <TypoScriptObjPath>lib.templavoila.t3unittestcase.menu</TypoScriptObjPath>
+                </tx_templavoila>
+            </field_menu>
+        </el>
+    </ROOT>
+</T3DataStructure>
