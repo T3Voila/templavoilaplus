@@ -6,14 +6,11 @@
 		<csh_table></csh_table>
 		<fileId>EXT:templavoila/mod2/locallang.xml</fileId>
 		<labelContext type="array">
-			<label index="title"></label>
-			<label index="wiz_title"></label>
-			<label index="wiz_step"></label>
 		</labelContext>
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
-			<label index="title">TemplaVoila Control Center</label>
+			<label index="title">TemplaVoilà Control Center</label>
 			<label index="wiz_title">New site wizard</label>
 			<label index="wiz_step">Step %s</label>
 		</languageKey>
@@ -24,11 +21,6 @@
 		</languageKey>
 	</data>
 	<orig_hash type="array">
-		<languageKey index="default" type="array">
-			<label index="title" type="integer">91448319</label>
-			<label index="wiz_title" type="integer">205980870</label>
-			<label index="wiz_step" type="integer">256549070</label>
-		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="title" type="integer">91448319</label>
 			<label index="wiz_title" type="integer">205980870</label>

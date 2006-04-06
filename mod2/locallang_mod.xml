@@ -6,16 +6,13 @@
 		<csh_table></csh_table>
 		<fileId>EXT:templavoila/mod2/locallang_mod.xml</fileId>
 		<labelContext type="array">
-			<label index="mlang_tabs_tab"></label>
-			<label index="mlang_labels_tabdescr"></label>
-			<label index="mlang_labels_tablabel"></label>
 		</labelContext>
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
-			<label index="mlang_tabs_tab">TemplaVoila</label>
-			<label index="mlang_labels_tabdescr">TemplaVoila Control Center lists all Data Structures and Template Objects available</label>
-			<label index="mlang_labels_tablabel">TemplaVoila Control Center</label>
+			<label index="mlang_tabs_tab">TemplaVoilà</label>
+			<label index="mlang_labels_tabdescr">TemplaVoilà Control Center lists all Data Structures and Template Objects available</label>
+			<label index="mlang_labels_tablabel">TemplaVoilà Control Center</label>
 		</languageKey>
 		<languageKey index="dk" type="array">
 		</languageKey>
@@ -82,11 +79,6 @@
 		</languageKey>
 	</data>
 	<orig_hash type="array">
-		<languageKey index="default" type="array">
-			<label index="mlang_tabs_tab" type="integer">255775515</label>
-			<label index="mlang_labels_tabdescr" type="integer">70669026</label>
-			<label index="mlang_labels_tablabel" type="integer">91448319</label>
-		</languageKey>
 		<languageKey index="dk" type="array">
 		</languageKey>
 		<languageKey index="de" type="array">
@@ -151,4 +143,8 @@
 		<languageKey index="et" type="array">
 		</languageKey>
 	</orig_hash>
+	<orig_text type="array">
+		<languageKey index="dk" type="array">
+		</languageKey>
+	</orig_text>
 </T3locallang>

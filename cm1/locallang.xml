@@ -6,7 +6,6 @@
 		<csh_table></csh_table>
 		<fileId>EXT:templavoila/cm1/locallang.xml</fileId>
 		<labelContext type="array">
-			<label index="title"></label>
 		</labelContext>
 	</meta>
 	<data type="array">
@@ -54,9 +53,6 @@
 		</languageKey>
 	</data>
 	<orig_hash type="array">
-		<languageKey index="default" type="array">
-			<label index="title" type="integer">255775515</label>
-		</languageKey>
 		<languageKey index="dk" type="array">
 		</languageKey>
 		<languageKey index="de" type="array">

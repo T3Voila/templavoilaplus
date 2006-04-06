@@ -6,12 +6,6 @@
 		<csh_table></csh_table>
 		<fileId>EXT:templavoila/locallang.xml</fileId>
 		<labelContext type="array">
-			<label index="cm1_title"></label>
-			<label index="cm1_viewsubelements"></label>
-			<label index="cm1_viewflexformxml"></label>
-			<label index="cm_viewdsto"></label>
-			<label index="cm1_pagesusingthiselement"></label>
-			<label index="wiz_refElements"></label>
 		</labelContext>
 	</meta>
 	<data type="array">
@@ -69,13 +63,6 @@
 		</languageKey>
 	</data>
 	<orig_hash type="array">
-		<languageKey index="default" type="array">
-			<label index="cm1_title" type="integer">254510048</label>
-			<label index="cm1_viewsubelements" type="integer">64032876</label>
-			<label index="cm1_viewflexformxml" type="integer">203580167</label>
-			<label index="cm_viewdsto" type="integer">148254017</label>
-			<label index="cm1_pagesusingthiselement" type="integer">172632714</label>
-		</languageKey>
 		<languageKey index="dk" type="array">
 		</languageKey>
 		<languageKey index="de" type="array">

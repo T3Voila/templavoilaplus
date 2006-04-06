@@ -509,7 +509,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 						// Modifying data structure with conversion of preset values for field types to actual settings:
 					$storeDataStruct = $dataStruct;
 					if (is_array($storeDataStruct['ROOT']['el'])) $this->substEtypeWithRealStuff($storeDataStruct['ROOT']['el'],$contentSplittedByMapping['sub']['ROOT'],$dataArr['tx_templavoila_datastructure']['NEW']['scope']);
-					$dataProtXML = '<?xml version="1.0" encoding="'.$GLOBALS['LANG']->charSet.'" standalone="yes" ?>' .chr(10). t3lib_div::array2xml($storeDataStruct,'',0,'T3DataStructure',4);
+					$dataProtXML = t3lib_div::array2xml_cs($storeDataStruct,'T3DataStructure');
 					$dataArr['tx_templavoila_datastructure']['NEW']['dataprot'] = $dataProtXML;
 
 						// Init TCEmain object and store:
@@ -561,7 +561,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 							// Modifying data structure with conversion of preset values for field types to actual settings:
 						$storeDataStruct=$dataStruct;
 						if (is_array($storeDataStruct['ROOT']['el']))		$this->substEtypeWithRealStuff($storeDataStruct['ROOT']['el'],$contentSplittedByMapping['sub']['ROOT'],$dsREC['scope']);
-						$dataProtXML = '<?xml version="1.0" encoding="'.$GLOBALS['LANG']->charSet.'" standalone="yes" ?>' .chr(10). t3lib_div::array2xml($storeDataStruct,'',0,'T3DataStructure',4);
+						$dataProtXML = t3lib_div::array2xml_cs($storeDataStruct,'T3DataStructure');
 						$dataArr['tx_templavoila_datastructure'][$dsREC['uid']]['dataprot'] = $dataProtXML;
 
 							// Init TCEmain object and store:
@@ -670,7 +670,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 
 					$storeDataStruct=$dataStruct;
 					if (is_array($storeDataStruct['ROOT']['el']))		$this->substEtypeWithRealStuff($storeDataStruct['ROOT']['el'],$contentSplittedByMapping['sub']['ROOT']);
-					$dataStructureXML = '<?xml version="1.0" encoding="'.$GLOBALS['LANG']->charSet.'" standalone="yes" ?>' .chr(10). t3lib_div::array2xml($storeDataStruct,'',0,'T3DataStructure',4);
+					$dataStructureXML = t3lib_div::array2xml_cs($storeDataStruct,'T3DataStructure');
 
 					$content.='
 						<input type="submit" name="_DO_NOTHING" value="Go back" title="Go back" />
@@ -893,7 +893,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 						// Make instance of syntax highlight class:
 					$hlObj = t3lib_div::makeInstance('t3lib_syntaxhl');
 
-					$dataStructureXML = '<?xml version="1.0" encoding="'.$GLOBALS['LANG']->charSet.'" standalone="yes" ?>' .chr(10). t3lib_div::array2xml($origDataStruct,'',0,'T3DataStructure',4);
+					$dataStructureXML = t3lib_div::array2xml_cs($origDataStruct,'T3DataStructure');
 					$content.='
 
 					<!--
@@ -909,7 +909,6 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 						</pre>
 					</div>
 					';
-							// Previously showing this instead:  t3lib_div::array2xml($origDataStruct,'',0,'T3DataStructure',4)
 				}
 			} else {
 				$content.='ERROR: No Data Structure Record with the UID '.$this->displayUid;
