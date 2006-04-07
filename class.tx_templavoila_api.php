@@ -1197,6 +1197,45 @@ class tx_templavoila_api {
 
 		return $foundFieldName;
 	}
+	
+	/**
+	 * Maps data structure field names to old-style tt_content column positions (0 = Normal, 1 = Left etc.)
+	 *
+	 * If the fields are configured by using the "oldStyleColumnNumber" tag, the correct column number will be returned
+	 * by using this information. If no configuration was found for the given field, 0 will be returned.
+	 *
+	 * Reverse function of ds_getFieldNameByColumnPosition()
+	 *
+	 * @param	array		$contextPageUid: The (current) page uid, used to determine which page datastructure is selected
+	 * @param	string		$fieldName: Field name in the data structure we are searching the column number for
+	 * @return	integer		The column number as used in the "colpos" field in tt_content
+	 * @access	public
+	 */
+	function ds_getColumnPositionByFieldName ($contextPageUid, $fieldName) {
+		global $TCA;
+
+		$columnNumber = 0;
+
+		$pageRow = t3lib_BEfunc::getRecordWSOL('pages', $contextPageUid);
+		if (!is_array ($pageRow)) return 0;
+
+		$dataStructureArr = $this->ds_getExpandedDataStructure ('pages', $pageRow);
+
+			// Traverse the data structure and search for oldStyleColumnNumber configurations:
+		if (is_array ($dataStructureArr)) {
+			foreach ($dataStructureArr as $sheetDataStructureArr) {
+				if (is_array ($sheetDataStructureArr['ROOT']['el'])) {
+					if (is_array ($sheetDataStructureArr['ROOT']['el'][$fieldName])) {
+						if (isset ($sheetDataStructureArr['ROOT']['el'][$fieldName]['tx_templavoila']['oldStyleColumnNumber'])) {
+							$columnNumber = intval($sheetDataStructureArr['ROOT']['el'][$fieldName]['tx_templavoila']['oldStyleColumnNumber']);
+						}
+					}
+				}
+			}
+		}
+
+		return $columnNumber;
+	}
 
 	/**
 	 * Returns the data structure for a flexform field ("tx_templavoila_flex") from $table (by using $row). The DS will

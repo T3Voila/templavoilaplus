@@ -428,6 +428,52 @@ return;
 		self::assertTrue ($orderIsCorrect, 'The sorting field has not been set correctly after inserting a forth CE after the first with insertElement()!');
 	}
 
+	public function test_insertElement_oldStyleColumnNumber() {
+		global $TYPO3_DB, $BE_USER;
+
+		$BE_USER->setWorkspace (0);
+
+		$tce = t3lib_div::makeInstance('t3lib_TCEmain');
+		$tce->stripslashes_values=0;
+
+		$this->fixture_createTestPage ();
+		$this->fixture_createTestPageDSTO('twocolumns');
+
+			// Create 2 new content elements, one in the main area and one in the right bar:
+		$elementUids = array();
+
+		$row = $this->fixture_getContentElementRow_TEXT();
+		$row['bodytext'] = 'oldStyleColumnNumber test #1';
+		$destinationPointer = array(
+			'table' => 'pages',
+			'uid'   => $this->testPageUID,
+			'sheet' => 'sDEF',
+			'sLang' => 'lDEF',
+			'field' => 'field_content',
+			'vLang' => 'vDEF',
+			'position' => 0
+		);
+		$elementUids[1] = $this->apiObj->insertElement ($destinationPointer, $row);
+
+		$row = $this->fixture_getContentElementRow_TEXT();
+		$row['bodytext'] = 'oldStyleColumnNumber test #2';
+		$destinationPointer = array(
+			'table' => 'pages',
+			'uid'   => $this->testPageUID,
+			'sheet' => 'sDEF',
+			'sLang' => 'lDEF',
+			'field' => 'field_rightbar',
+			'vLang' => 'vDEF',
+			'position' => 0
+		);
+		$elementUids[2] = $this->apiObj->insertElement ($destinationPointer, $row);	
+		
+		$elementRecords[1]= t3lib_beFunc::getRecordRaw ('tt_content', 'uid='.$elementUids[1], 'uid,sorting,colpos');
+		$elementRecords[2]= t3lib_beFunc::getRecordRaw ('tt_content', 'uid='.$elementUids[2], 'uid,sorting,colpos');
+			
+		self::assertTrue($elementRecords[1]['colpos'] == 0 && $elementRecords[2]['colpos'] == 1, 'The column position stored in the "colpos" field is not correct after inserting two content elements!');
+	}
+
 	/**
 	 * Checks a special situation while inserting CEs if elements have been deleted 
 	 * before. See bug #3042

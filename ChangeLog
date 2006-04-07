@@ -1,8 +1,10 @@
-2006-04-07 - Kasper Skaarhoej
-	* Committed some changes to ll-XML files: Basically adding the accented "a" to all "TemplaVoila" words - and this will work with new core since I fixed a bug there which displayed non-ascii chars from default language wrong.
-	* Changed array2xml() to array2xml_cs() which will add the proper XML prologue. This solves some nasty charset problems reported on bugtracker.
-	(Wanted to commit this before 1. april, but a server crash at SF blocked that plan and then came Amelie...) 
-	
+2006-04-07 - Robert Lemke <robert@typo3.org>
+
+ RELEASE OF TEMPLAVOILA 1.0!
+
+ # Re-implemented handling of the oldStyleColumn field when inserting and moving elements.
+ + Added a new test for checking the colPos field after insertion of content elements
+
 2006-04-06 - Robert Lemke <robert@typo3.org>
 
  + Added feature 0002221: Improvement request: In pagetype "shortcut" elements should be editable somehow

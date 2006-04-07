@@ -44,7 +44,7 @@
  *  261:     function processCmdmap_postProcess($command, $table, $id, $value, &$reference)
  *  283:     function moveRecord_firstElementPostProcess ($table, $uid, $destPid, $sourceRecordBeforeMove, $updateFields, &$reference)
  *  324:     function moveRecord_afterAnotherElementPostProcess ($table, $uid, $destPid, $origDestPid, $sourceRecordBeforeMove, $updateFields, &$reference)
- *  354:     function correctSortingFieldsForPage($flexformXML)
+ *  354:     function correctSortingAndColposFieldsForPage($flexformXML)
  *
  * TOTAL FUNCTIONS: 8
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -116,7 +116,7 @@ class tx_templavoila_tcemain {
 			// If the references for content element changed at the current page, save that information into the reference table:
 		if ($status == 'update' && $table == 'pages' && isset ($fieldArray['tx_templavoila_flex'])) {
 
-			$this->correctSortingFieldsForPage($fieldArray['tx_templavoila_flex']);
+			$this->correctSortingAndColposFieldsForPage($fieldArray['tx_templavoila_flex'], $id);
 
 				// If a new data structure has been selected, set a valid template object automatically:
 			if (intval ($fieldArray['tx_templavoila_ds']) || intval($fieldArray['tx_templavoila_next_ds'])) {
@@ -348,13 +348,15 @@ class tx_templavoila_tcemain {
 	 * so they reflect the order of the references.
 	 *
 	 * @param	string		$flexformXML: The flexform XML data of the page
+	 * @param	integer		$pid: Current page id
 	 * @return	void
 	 * @access	protected
 	 */
-	function correctSortingFieldsForPage($flexformXML) {
+	function correctSortingAndColposFieldsForPage($flexformXML, $pid) {
 		global $TCA, $TYPO3_DB;
 
 		$elementsOnThisPage = array ();
+		$templaVoilaAPI = t3lib_div::makeInstance('tx_templavoila_api');
 
 			// Getting value of the field containing the relations:
 		$xmlContentArr = t3lib_div::xml2array($flexformXML);
@@ -377,6 +379,7 @@ class tx_templavoila_tcemain {
 														'skey' => $currentSheet,
 														'lkey' => $currentLanguage,
 														'vkey' => $currentValueKey,
+														'field' => $currentField,
 													);
 												}
 											}
@@ -396,7 +399,11 @@ class tx_templavoila_tcemain {
 		$sortByField = $TCA['tt_content']['ctrl']['sortby'];
 		if ($sortByField) {
 			foreach ($elementsOnThisPage as $elementArr) {
-				$updateFields = array($sortByField => $sortNumber);
+				$colPos = $templaVoilaAPI->ds_getColumnPositionByFieldName($pid, $elementArr['field']);
+				$updateFields = array(
+					$sortByField => $sortNumber,
+					'colPos' => $colPos
+				);
 				$TYPO3_DB->exec_UPDATEquery (
 					'tt_content',
 					'uid='.intval($elementArr['uid']),
