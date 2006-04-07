@@ -1385,12 +1385,17 @@ class tx_templavoila_api {
 			$rawDataStructureArr = t3lib_BEfunc::getFlexFormDS($TCA[$table]['columns']['tx_templavoila_flex']['config'], $row, $table);
 			$expandedDataStructureArr = $this->ds_getExpandedDataStructure($table, $row);
 
-			if ($table == 'pages') {
-				$currentTemplateObject = $this->getContentTree_fetchPageTemplateObject($row);
-				if (is_array ($currentTemplateObject)) {
-					$templateMappingArr = unserialize($currentTemplateObject['templatemapping']);
-				}
+			switch ($table) {
+				case 'pages' :
+					$currentTemplateObject = $this->getContentTree_fetchPageTemplateObject($row);
+					break;
+				case 'tt_content':
+					$currentTemplateObject = t3lib_beFunc::getRecordWSOL('tx_templavoila_tmplobj', $row['tx_templavoila_to']);
+					break;
+				default:
+					$currentTemplateObject = FALSE;
 			}
+			if (is_array ($currentTemplateObject)) $templateMappingArr = unserialize($currentTemplateObject['templatemapping']);
 
 			$tree['ds_meta'] = $rawDataStructureArr['meta'];
 			$flexformContentArr = t3lib_div::xml2array($row['tx_templavoila_flex']);
@@ -1548,25 +1553,27 @@ class tx_templavoila_api {
 			}
 
 				// Traverse the available languages of the page (not default and [All])
-			foreach(array_keys($this->allSystemWebsiteLanguages['rows']) as $sys_language_uid)	{
-				if ($sys_language_uid > 0)	{
-					if (isset($attachedLocalizations[$sys_language_uid]))	{
-						$localizationInfoArr[$sys_language_uid] = array();
-						$localizationInfoArr[$sys_language_uid]['mode'] = 'exists';
-						$localizationInfoArr[$sys_language_uid]['localization_uid'] = $attachedLocalizations[$sys_language_uid];
-
-						$tt_content_elementRegister[$attachedLocalizations[$sys_language_uid]]++;
-					} elseif ($contentTreeArr['el']['CType']!='templavoila_pi1') {	// Only localize content elements with "Default" langauge set
-						if ((int)$contentTreeArr['el']['sys_language_uid']===0)	{
+			if (is_array($this->allSystemWebsiteLanguages) && is_array($this->allSystemWebsiteLanguages['rows'])) {
+				foreach(array_keys($this->allSystemWebsiteLanguages['rows']) as $sys_language_uid)	{
+					if ($sys_language_uid > 0)	{
+						if (isset($attachedLocalizations[$sys_language_uid]))	{
 							$localizationInfoArr[$sys_language_uid] = array();
-							$localizationInfoArr[$sys_language_uid]['mode'] = 'localize';
+							$localizationInfoArr[$sys_language_uid]['mode'] = 'exists';
+							$localizationInfoArr[$sys_language_uid]['localization_uid'] = $attachedLocalizations[$sys_language_uid];
+	
+							$tt_content_elementRegister[$attachedLocalizations[$sys_language_uid]]++;
+						} elseif ($contentTreeArr['el']['CType']!='templavoila_pi1') {	// Only localize content elements with "Default" langauge set
+							if ((int)$contentTreeArr['el']['sys_language_uid']===0)	{
+								$localizationInfoArr[$sys_language_uid] = array();
+								$localizationInfoArr[$sys_language_uid]['mode'] = 'localize';
+							}
+						} elseif(!$contentTreeArr['ds_meta']['langDisable'] && (int)$contentTreeArr['el']['sys_language_uid']===-1) {	// Flexible Content Elements (with [All] language set)
+							$localizationInfoArr[$sys_language_uid] = array();
+							$localizationInfoArr[$sys_language_uid]['mode'] = 'localizedFlexform';
+						} else {
+							$localizationInfoArr[$sys_language_uid] = array();
+							$localizationInfoArr[$sys_language_uid]['mode'] = 'no_localization';
 						}
-					} elseif(!$contentTreeArr['ds_meta']['langDisable'] && (int)$contentTreeArr['el']['sys_language_uid']===-1) {	// Flexible Content Elements (with [All] language set)
-						$localizationInfoArr[$sys_language_uid] = array();
-						$localizationInfoArr[$sys_language_uid]['mode'] = 'localizedFlexform';
-					} else {
-						$localizationInfoArr[$sys_language_uid] = array();
-						$localizationInfoArr[$sys_language_uid]['mode'] = 'no_localization';
 					}
 				}
 			}

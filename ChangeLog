@@ -1,5 +1,11 @@
 2006-04-07 - Robert Lemke <robert@typo3.org>
 
+ # Bugfix: Re-implementation of feature #0001760 (see 06.04.) didn't take FCEs into account, so sub elements of FCE were not displayed in the backend. Fixed that.
+ ~ Small update of the manual - now it at least has a small introduction referring to further documentation.
+ # Bugfix: Warning: array_keys(): The first argument should be an array in class.tx_templavoila_api.php on line 1551. That happened when now languages were defined.
+
+2006-04-07 - Robert Lemke <robert@typo3.org>
+
  RELEASE OF TEMPLAVOILA 1.0!
 
  # Re-implemented handling of the oldStyleColumn field when inserting and moving elements.
