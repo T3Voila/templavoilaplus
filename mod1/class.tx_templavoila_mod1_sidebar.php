@@ -256,7 +256,7 @@ class tx_templavoila_mod1_sidebar {
 		$output = '';
 		if ($pObj->rootElementTable != 'pages') return '';
 
-		t3lib_div::loadTCA ($table);
+		t3lib_div::loadTCA('pages');
 		$conf = $TCA['pages']['columns']['tx_templavoila_flex']['config'];
 		$dataStructureArr = t3lib_BEfunc::getFlexFormDS($conf, $pObj->rootElementRecord, 'pages');
 

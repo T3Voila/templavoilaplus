@@ -1,6 +1,7 @@
 2006-04-09 - Dmitry Dulepov <typo3@accio.lv>
 
  #Bug 2870: $TYPO3_CONF_VARS['BE']['fileadminDir'] doesn't work with templavoila
+ #Fixed: undefined variables was passed to t3lib_div::loadTCA in mod1_sidebar
 
 2006-04-07 - Robert Lemke <robert@typo3.org>
 
