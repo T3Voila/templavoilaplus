@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2003-2006 Kasper Skårhøj <kasper@typo3.com>
+*  (c) 2003-2006 Kasper Skï¿½rhï¿½j <kasper@typo3.com>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -26,7 +26,7 @@
  *
  * $Id$
  *
- * @author   Kasper Skårhøj <kasper@typo3.com>
+ * @author   Kasper Skï¿½rhï¿½j <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -101,7 +101,7 @@ $BE_USER->modAccess($MCONF,1);    // This checks permissions and exits if the us
 class tx_templavoila_module2 extends t3lib_SCbase {
 
 		// External static:
-	var $templatesDir = 'fileadmin/templates/';
+	var $templatesDir;
 	var $importPageUid = 0;	// Import as first page in root!
 
 
@@ -115,7 +115,10 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 	var $errorsWarnings=array();
 
 
-
+    function init() {
+        parent::init();
+        $this->templatesDir = $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'] . 'templates/';
+    }
 
 	/**
 	 * Preparing menu content
@@ -1217,7 +1220,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 
 				// TEMPLATE ARCHIVE:
 			if ($this->modTSconfig['properties']['templatePath'])	{
-				$path = t3lib_div::getFileAbsFileName('fileadmin/'.$this->modTSconfig['properties']['templatePath']);
+				$path = t3lib_div::getFileAbsFileName($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'].$this->modTSconfig['properties']['templatePath']);
 				if (@is_dir($path) && is_array($GLOBALS['FILEMOUNTS']))	{
 					foreach($GLOBALS['FILEMOUNTS'] as $mountCfg)	{
 						if (t3lib_div::isFirstPartOfStr($path,$mountCfg['path']))	{
@@ -1396,7 +1399,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 			- Creation of the main TemplaVoila template, including mapping of one content area and a main menu.
 			- Creation of a backend user and group to manage only that website.
 
-			You should prepare an HTML template before you begin the wizard; simply make a design in HTML and place the HTML file including graphics and stylesheets in a subfolder of "fileadmin/templates/" relative to the websites root directory.
+			You should prepare an HTML template before you begin the wizard; simply make a design in HTML and place the HTML file including graphics and stylesheets in a subfolder of "' . $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'] . 'templates/" relative to the websites root directory.
 			Tip about menus: If you include a main menu in the template, try to place the whole menu inside a container (like <div>, <table> or <tr>) and encapsulate each menu item in a block tag (like <tr>, <td> or <div>). Use A-tags for the links. If you want different designs for normal and active menu elements, design the first menu item as "Active" and the second (and rest) as "Normal", then the wizard might be able to capture the right configuration.
 			Tip about stylesheets: The content elements from TYPO3 will be outputted in regular HTML tags like <p>, <h1> to <h6>, <ol> etc. You will prepare yourself well if your stylesheet in the HTML template provides good styles for these standard elements from the start. Then you will have less finetuning to do later.
 			')));
@@ -1546,7 +1549,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 				nl2br('The directory "'.$this->templatesDir.'" (relative to the website root) does not exist! This is where you must place your HTML templates. Please create that directory <u>before you start the wizard</u>. In order to do so, follow these directions:
 
 			- Go to the module File > Filelist
-			- Click the icon of the "fileadmin/" root and select "Create" from the context menu.
+			- Click the icon of the "' . $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'] . '" root and select "Create" from the context menu.
 			- Enter the name "templates" of the folder and press the "Create" button.
 			- Return to this wizard
 			');

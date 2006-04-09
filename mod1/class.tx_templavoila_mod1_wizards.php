@@ -279,7 +279,7 @@ class tx_templavoila_mod1_wizards {
 				if (t3lib_extMgm::isLoaded('impexp'))	{
 
 						// Read template files from a certain folder. I suggest this is configurable in some way. But here it is hardcoded for initial tests.
-					$templateFolder = PATH_site.'fileadmin/export/templates/';
+					$templateFolder = PATH_site.$GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'].'/export/templates/';
 					$files = t3lib_div::getFilesInDir($templateFolder,'t3d,xml',1,1);
 
 						// Traverse the files found:
