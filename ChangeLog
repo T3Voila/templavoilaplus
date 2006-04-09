@@ -1,3 +1,7 @@
+2006-04-09 - Dmitry Dulepov <typo3@accio.lv>
+
+ #Bug 2870: $TYPO3_CONF_VARS['BE']['fileadminDir'] doesn't work with templavoila
+
 2006-04-07 - Robert Lemke <robert@typo3.org>
 
  # Bugfix: Re-implementation of feature #0001760 (see 06.04.) didn't take FCEs into account, so sub elements of FCE were not displayed in the backend. Fixed that.
