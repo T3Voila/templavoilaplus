@@ -450,6 +450,10 @@ class tx_templavoila_dbnewcontentel {
 			// Load full table definition:
 		t3lib_div::loadTCA('tt_content');
 
+            // Get TCEFORM from TSconfig of current page
+        $TCEFORM_TSconfig = t3lib_BEfunc::getTCEFORM_TSconfig('tt_content', array('pid' => $this->id));
+        $removeItems = t3lib_div::trimExplode(',',$TCEFORM_TSconfig['CType']['removeItems'],1);
+
 		$headersUsed = Array();
 			// Traverse wizard items:
 		foreach($wizardItems as $key => $cfg)	{
@@ -476,7 +480,7 @@ class tx_templavoila_dbnewcontentel {
 						$config = &$TCA['tt_content']['columns'][$fN]['config'];
 						$authModeDeny = $config['type']=='select' && $config['authMode'] && !$GLOBALS['BE_USER']->checkAuthMode('tt_content',$fN,$fV,$config['authMode']);
 
-						if ($authModeDeny)	{
+						if ($authModeDeny || in_array($fV,$removeItems))	{
 								// Remove element all together:
 							unset($wizardItems[$key]);
 							break;
