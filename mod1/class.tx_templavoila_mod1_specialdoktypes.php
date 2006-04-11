@@ -151,6 +151,12 @@ class tx_templavoila_mod1_specialdoktypes {
 				$url = 'mailto:'.$pageRecord['url'];
 			break;
 			default:
+				// Check if URI scheme already present. We support only Internet-specific notation, others are not relevant for us (see http://www.ietf.org/rfc/rfc3986.txt for details)
+				if (preg_match('/^[a-z]+[a-z0-9\+\.\-]*:\/\//i', $pageRecord['url'])) {
+					// Do not add any other scheme
+					break;
+				}
+				// fall through
 			case 1 :
 				$url = 'http://'.$pageRecord['url'];
 			break;
