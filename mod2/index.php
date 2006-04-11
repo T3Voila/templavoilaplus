@@ -353,7 +353,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 
 			// Select all Template Records in PID:
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-					'cruser_id,crdate,tstamp,uid,title, parent, fileref, sys_language_uid, datastructure, rendertype,localprocessing, previewicon,description,fileref_mtime',
+					'cruser_id,crdate,tstamp,uid,title, parent, fileref, sys_language_uid, datastructure, rendertype,localprocessing, previewicon,description,fileref_mtime,fileref_md5',
 					'tx_templavoila_tmplobj',
 					'pid='.intval($this->id).t3lib_BEfunc::deleteClause('tx_templavoila_tmplobj'),
 					'',
@@ -753,7 +753,13 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 
 		$mappingStatus = $mappingStatus_index = '';
 		if ($fileMtime && $toObj['fileref_mtime'])	{
-			if ($toObj['fileref_mtime'] != $fileMtime)	{
+			if ($toObj['fileref_md5'] != '') {
+				$modified = (@md5_file($fileReference) != $toObj['fileref_md5']);
+			}
+			else {
+				$modified = ($toObj['fileref_mtime'] != $fileMtime);
+			}
+			if ($modified)	{
 				$mappingStatus = $mappingStatus_index = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/icon_warning2.gif','width="18" height="16"').' alt="" class="absmiddle" />';
 				$mappingStatus.= 'Template file was updated since last mapping ('.t3lib_BEfunc::datetime($toObj['tstamp']).') and you might need to remap the Template Object!';
 				$this->setErrorLog($scope,'warning',$mappingStatus.' (TO: "'.$toObj['title'].'")');
@@ -2181,6 +2187,12 @@ lib.'.$menuType.'.1.ACT {
 			return $color;
 		}
 		return false;
+	}
+}
+
+if (!function_exists('md5_file')) {
+	function md5_file($file, $raw = false) {
+		return md5(file_get_contents($file), $raw);
 	}
 }
 

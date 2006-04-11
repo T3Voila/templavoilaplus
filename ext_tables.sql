@@ -32,6 +32,7 @@ CREATE TABLE tx_templavoila_tmplobj (
 	parent int(11) unsigned DEFAULT '0' NOT NULL,
 	rendertype_ref int(11) unsigned DEFAULT '0' NOT NULL,
 	localprocessing text NOT NULL,
+	fileref_md5 varchar(32) DEFAULT '' NOT NULL,
 
 	PRIMARY KEY (uid),
 	KEY t3ver_oid (t3ver_oid,t3ver_wsid),

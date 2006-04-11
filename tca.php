@@ -146,6 +146,7 @@ $TCA['tx_templavoila_tmplobj'] = Array (
 		),
 		'templatemapping' => Array ('config' => Array ('type' => 'passthrough')),
 		'fileref_mtime' => Array ('config' => Array ('type' => 'passthrough')),
+		'fileref_md5' => Array ('config' => Array ('type' => 'passthrough')),
 		'localprocessing' => Array (
 			'exclude' => 1,
 			'label' => 'LLL:EXT:templavoila/locallang_db.xml:tx_templavoila_tmplobj.localProc',

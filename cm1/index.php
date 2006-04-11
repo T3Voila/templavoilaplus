@@ -527,6 +527,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 						$dataArr['tx_templavoila_tmplobj']['NEW']['fileref']=substr($this->displayFile,strlen(PATH_site));
 						$dataArr['tx_templavoila_tmplobj']['NEW']['templatemapping']=serialize($templatemapping);
 						$dataArr['tx_templavoila_tmplobj']['NEW']['fileref_mtime'] = @filemtime($this->displayFile);
+						$dataArr['tx_templavoila_tmplobj']['NEW']['fileref_md5'] = @md5_file($this->displayFile);
 
 							// Init TCEmain object and store:
 						$tce = t3lib_div::makeInstance("t3lib_TCEmain");
@@ -576,6 +577,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 						$dataArr['tx_templavoila_tmplobj'][$TOuid]['fileref']=substr($this->displayFile,strlen(PATH_site));
 						$dataArr['tx_templavoila_tmplobj'][$TOuid]['templatemapping']=serialize($templatemapping);
 						$dataArr['tx_templavoila_tmplobj'][$TOuid]['fileref_mtime'] = @filemtime($this->displayFile);
+						$dataArr['tx_templavoila_tmplobj'][$TOuid]['fileref_md5'] = @md5_file($this->displayFile);
 
 							// Init TCEmain object and store:
 						$tce = t3lib_div::makeInstance('t3lib_TCEmain');
@@ -1229,6 +1231,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			$TOuid = t3lib_BEfunc::wsMapId('tx_templavoila_tmplobj',$row['uid']);
 			$dataArr['tx_templavoila_tmplobj'][$TOuid]['templatemapping'] = serialize($templatemapping);
 			$dataArr['tx_templavoila_tmplobj'][$TOuid]['fileref_mtime'] = @filemtime($theFile);
+			$dataArr['tx_templavoila_tmplobj'][$TOuid]['fileref_md5'] = @md5_file($theFile);
 
 			$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 			$tce->stripslashes_values=0;
@@ -2633,6 +2636,13 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 		return '';
 	}
 }
+
+if (!function_exists('md5_file')) {
+	function md5_file($file, $raw = false) {
+		return md5(file_get_contents($file), $raw);
+	}
+}
+
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/cm1/index.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/cm1/index.php']);
