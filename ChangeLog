@@ -1,3 +1,8 @@
+2006-04-25 - Dmitry Dulepov <typo3@accio.lv>
+
+ + [EXPERIMENTAL] Added access to parent record (documentation pending!)
+ # Fixed: "langDisabled = 1", etc. was not displayed in pi1
+
 2006-04-11 - Dmitry Dulepov <typo3@accio.lv>
 
  #Bug 2649: external links pagetype with double http://
