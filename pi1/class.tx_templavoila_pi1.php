@@ -307,6 +307,49 @@ class tx_templavoila_pi1 extends tslib_pibase {
 				}
 			}
 
+            // Check if information about parent record should be set. Note: we do not push/pop registers here because it may break LOAD_REGISTER/RESTORE_REGISTER data transfer between FCEs!
+            $savedParentInfo = array();
+            $registerKeys = array();
+            if (is_array($this->cObj->data)) {
+
+                $tArray = $this->cObj->data;
+                ksort($tArray);
+                $checksum = md5(serialize($tArray));
+
+                $sameParent = false;
+                if (isset($GLOBALS['TSFE']->register['tx_templavoila_pi1.parentRec.__SERIAL'])) {
+                    $sameParent = ($checksum === $GLOBALS['TSFE']->register['tx_templavoila_pi1.parentRec.__SERIAL']);
+                }
+
+                if (!$sameParent) {
+                    // Step 1: save previous parent records from registers. This happens when pi1 is called for FCEs on a page.
+                    $unsetKeys = array ();
+                    foreach ($GLOBALS['TSFE']->register as $dkey => $dvalue) {
+                        if (preg_match('/^tx_templavoila_pi1\.parentRec\./', $dkey)) {
+                            $savedParentInfo[$dkey] = $dvalue;
+                            $unsetKeys[] = $dkey;
+                        }
+                    }
+
+                    // Step 2: unset previous parent info
+                    foreach ($unsetKeys as $dkey) {
+                        unset ($GLOBALS['TSFE']->register[$dkey]);
+                    }
+                    unset($unsetKeys); // free memory
+
+                    // Step 3: set new parent record to register
+                    $registerKeys = array ();
+                    foreach ($this->cObj->data as $dkey => $dvalue) {
+                        $registerKeys[] = $tkey = 'tx_templavoila_pi1.parentRec.' . $dkey;
+                        $GLOBALS['TSFE']->register[$tkey] = $dvalue;
+                    }
+                    
+                    // Step 4: update checksum
+                    $GLOBALS['TSFE']->register['tx_templavoila_pi1.parentRec.__SERIAL'] = $checksum;
+                    $registerKeys[] = 'tx_templavoila_pi1.parentRec.__SERIAL'; 
+                }
+            }
+
 				// For each DS element:
 			foreach($DSelements as $key => $dsConf)	{
 
@@ -435,8 +478,18 @@ class tx_templavoila_pi1 extends tslib_pibase {
 					}
 				}
 			}
-		}
-	}
+
+            // Unset curent parent record info
+            foreach ($registerKeys as $dkey) {
+                unset($GLOBALS['TSFE']->register[$dkey]);
+            }
+
+            // Restore previous parent record info if necessary
+            foreach ($savedParentInfo as $dkey => $dvalue) {
+                $GLOBALS['TSFE']->register[$dkey] = $dvalue;
+            }
+        }
+    }
 
 	/**
 	 * Processing of language fallback values (inheritance/overlaying)
