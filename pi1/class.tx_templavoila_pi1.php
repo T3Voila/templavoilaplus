@@ -60,6 +60,7 @@
 
 require_once(PATH_tslib.'class.tslib_pibase.php');
 require_once(t3lib_extMgm::extPath('templavoila').'class.tx_templavoila_htmlmarkup.php');
+require_once(PATH_t3lib . 'class.t3lib_flexformtools.php');
 
 /**
  * Plugin 'Flexible Content' for the 'templavoila' extension.
@@ -92,6 +93,66 @@ class tx_templavoila_pi1 extends tslib_pibase {
     }
 
 	/**
+	 * Main function for rendering records from system tables (like fe_users) using TemplaVoila. Function creates fake flexform, ds and to fields for the record and calls {@link #renderElement($row,$table) renderElement} for processing.
+	 * 
+	 * <strong>This is undocumented and unsupported yet! Do not use unless you are ready to risk!</strong>.
+	 * 
+	 * Example TS for listing FE users:
+	 * <code><pre>
+	 * lib.members = CONTENT
+	 * lib.members {
+	 * 	select {
+	 * 		pidInList = {$styles.content.loginform.pid}
+	 * 		orderBy = tx_lglalv_mysorting,uid
+	 * 	}
+	 * 	table = fe_users
+	 * 	renderObj = USER
+	 * 	renderObj {
+	 * 		userFunc = tx_templavoila_pi1->main_record
+	 *		ds = 2
+	 * 		to = 4
+	 * 		table = fe_users
+	 *	}
+	 * }
+	 * </pre/></code>
+	 * This example lists all frontend users using DS with DS=2 and TO=4.
+	 * 
+	 * Required configuration options (in <code>$conf</code>):
+	 * <ul>
+	 * 	<li><code>ds</code> - DS UID to use
+	 * 	<li><code>to</code> - TO UID to use
+	 * 	<li><code>table</code> - table of the record
+	 * </ul>
+	 * 
+	 * @param string $content Unused
+	 * @param array $conf Configuration (see above for entries)
+	 * @return string Generated content
+	 * @todo Localization (currently everything goes to default language, which is wrong!)
+	 * @todo Create a new content element with this functionality and DS/TO selector?
+	 * @todo Create TS element with this functionality?
+	 */
+    function main_record($content, $conf) {
+		$this->initVars($conf);
+	
+		// Make a copy of the data, do not spoil original!
+		$data = $this->cObj->data;
+
+		// prepare fake flexform
+		$values = array();
+		foreach ($data as $k => $v) {
+			// TODO Use correct language identifiers here!
+		    $values['data']['sDEF']['lDEF'][$k]['vDEF'] = $v;
+		}
+		$data['tx_templavoila_flex'] = t3lib_flexformtools::flexArray2xml($values);
+
+		// setup ds/to
+		$data['tx_templavoila_ds'] = $conf['ds'];
+		$data['tx_templavoila_to'] = $conf['to'];
+		
+		return $this->renderElement($data, $conf['table']);
+    }
+
+	/**
 	 * Main function for rendering of Page Templates of TemplaVoila
 	 *
 	 * @param	string		Standard content input. Ignore.
@@ -117,6 +178,15 @@ class tx_templavoila_pi1 extends tslib_pibase {
 					}
 				} else break;
 			}
+		}
+
+			// "Show content from this page instead" support. Note: using current DS/TO!
+		if ($pageRecord['content_from_pid']) {
+		    $ds = $pageRecord['tx_templavoila_ds'];
+		    $to = $pageRecord['tx_templavoila_to'];
+		    $pageRecord = $GLOBALS['TSFE']->sys_page->getPage($pageRecord['content_from_pid']);
+		    $pageRecord['tx_templavoila_ds'] = $ds;
+		    $pageRecord['tx_templavoila_to'] = $to;
 		}
 
 		return $this->renderElement($pageRecord, 'pages');
