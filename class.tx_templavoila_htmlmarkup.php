@@ -532,17 +532,10 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 			foreach($editStruct as $section)	{
 				$secKey = key($section);
 				$secDat = $section[$secKey];
-#debug(array($secKey,$secDat,$currentMappingInfo['sub']));
+//$this->htmlParse->XHTML_clean
 				if ($currentMappingInfo['sub'][$secKey])	{
-#debug('array...');
 					$out.=$this->mergeFormDataIntoTemplateStructure($secDat['el'],$currentMappingInfo['sub'][$secKey],'',$valueKey);
 				}
-				/*elseif ($currentMappingInfo['cArray'][$secKey])	{
-#debug('value...');
-					$out.=$currentMappingInfo['cArray'][$secKey];
-				}*/
-// ONLY ALLOW "arrays" inside of "sections" - otherwise it does not make so much sense and it is harder to handle; basically all stuff in a SECTION is defined to be a container and that is what the "array" handles...
-
 			}
 		} else {
 			if (is_array($currentMappingInfo['cArray']))	{
@@ -554,6 +547,9 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 								# NO htmlspecialchars()'ing here ... it might be processed values that should be allowed to go through easily.
 							$currentMappingInfo['cArray'][$key] = $editStruct[$key][$valueKey];
 						}
+					}
+					else {
+						$currentMappingInfo['cArray'][$key] = $this->htmlParse->XHTML_clean($currentMappingInfo['cArray'][$key]);
 					}
 				}
 				$out = implode($firstLevelImplodeToken,$currentMappingInfo['cArray']);
