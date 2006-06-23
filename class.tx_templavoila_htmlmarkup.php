@@ -768,7 +768,7 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 			foreach($MappingInfo_head['headElementPaths'] as $kk => $vv)	{
 				if (isset($MappingData_head_cached['cArray']['el_'.$kk]))	{
 					$uKey = md5(trim($MappingData_head_cached['cArray']['el_'.$kk]));
-					$GLOBALS['TSFE']->additionalHeaderData['TV_'.$uKey] = chr(10).trim($MappingData_head_cached['cArray']['el_'.$kk]);
+					$GLOBALS['TSFE']->additionalHeaderData['TV_'.$uKey] = chr(10).trim($this->htmlParse->XHTML_clean($MappingData_head_cached['cArray']['el_'.$kk]));
 				}
 			}
 		}
