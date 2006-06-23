@@ -240,6 +240,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 						'pid='.intval($this->id).t3lib_BEfunc::deleteClause('tx_templavoila_datastructure')
 					);
 			list($countDS) = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
+			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 
 				// Select all Template Records in PID:
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
@@ -248,6 +249,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 						'pid='.intval($this->id).t3lib_BEfunc::deleteClause('tx_templavoila_tmplobj')
 					);
 			list($countTO) = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
+			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 
 				// If there are TO/DS, render the module as usual, otherwise do something else...:
 			if ($countTO || $countDS)	{
@@ -274,9 +276,10 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 					'pid>=0'.t3lib_BEfunc::deleteClause('tx_templavoila_datastructure'),
 					'pid'
 				);
-		while(false !== ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)))	{
+		while($res && false !== ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)))	{
 			$list[$row['pid']]['DS'] = $row['count(*)'];
 		}
+		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 
 			// Select all Template Records in PID:
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
@@ -285,10 +288,10 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 					'pid>=0'.t3lib_BEfunc::deleteClause('tx_templavoila_tmplobj'),
 					'pid'
 				);
-		while(false !== ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)))	{
+		while($res && false !== ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)))	{
 			$list[$row['pid']]['TO'] = $row['count(*)'];
 		}
-
+		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 
 			// Traverse the pages found and list in a table:
 		$tRows = array();
@@ -338,10 +341,11 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 					'title'
 				);
 		$dsRecords = array();
-		while(false !== ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)))	{
+		while($res && false !== ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)))	{
 			t3lib_BEfunc::workspaceOL('tx_templavoila_datastructure',$row);
 			$dsRecords[$row['scope']][] = $row;
 		}
+		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 
 			// Select all static Data Structures and add to array:
 		if (is_array($GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['staticDataStructures']))	{
@@ -364,6 +368,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 			t3lib_BEfunc::workspaceOL('tx_templavoila_tmplobj',$row);
 			$toRecords[$row['parent']][] = $row;
 		}
+		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 
 			// Traverse scopes of data structures display template records belonging to them:
 			// Each scope is places in its own tab in the tab menu:
@@ -971,6 +976,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 							</tr>';
 					}
 				}
+				$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			break;
 			case 2:
 
@@ -1028,6 +1034,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 							</tr>';
 					}
 				}
+				$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			break;
 		}
 
@@ -1098,6 +1105,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 							</tr>';
 					}
 				}
+				$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			break;
 			case 2:
 
@@ -1143,6 +1151,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 							</tr>';
 					}
 				}
+				$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			break;
 		}
 
