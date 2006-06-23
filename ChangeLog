@@ -1,8 +1,22 @@
 2006-06-23 - Dmitry Dulepov <typo3@acio.lv>
+
+ # Bug 2398: Properly escaped links in teplates render "unescaped"
+ # Bug 3164: disableExplosivePreview seems not to work
  # Bug 3227: Page module displays page layout for sysfolders
+ # Bug 3376: JS error "Error: TBE_EDITOR_checkSubmit is not defined" during creating new page
+ # Bug 3406: Field "dataprot" erased
+ # Bug 3403: Fehler in der Ausgabe der Beschreibungen für Content-Elemente im Backend
+ # Bug 3447: Strange chars in tooltips
+ # Bug 3472: Quotation marks in title of TO are shown as &quot;
+ # Bug 3479: With Internet Explorer the DataStructure isn't saved when using the new page wizard
+ # Bug 3665: TV replaces &amp; with &
+ # Bug 3691: Extension Lorem Ipsum causes fatal error in Extension TemplaVoila!
  # Bug 3718: Wrong description texts for content elements in backend
+ ~ Added $GLOBALS['TYPO3_DB']->sql_free_result to mod2/index.php to save memory during mapping process
+ + Implemented language handling for main_record
 
 2006-06-22 - Dmitry Dulepov <typo3@acio.lv>
+
  # Bug 3592: "Show content from this page instead" does not work
  + main_record added, do not use yet!
 
