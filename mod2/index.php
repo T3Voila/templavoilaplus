@@ -360,7 +360,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 					'title'
 				);
 		$toRecords = array();
-		while(false !== ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)))	{
+		while($res && false !== ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)))	{
 			t3lib_BEfunc::workspaceOL('tx_templavoila_tmplobj',$row);
 			$toRecords[$row['parent']][] = $row;
 		}
