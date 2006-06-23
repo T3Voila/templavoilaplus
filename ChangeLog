@@ -1,3 +1,7 @@
+2006-06-23 - Dmitry Dulepov <typo3@acio.lv>
+ # Bug 3227: Page module displays page layout for sysfolders
+ # Bug 3718: Wrong description texts for content elements in backend
+
 2006-06-22 - Dmitry Dulepov <typo3@acio.lv>
  # Bug 3592: "Show content from this page instead" does not work
  + main_record added, do not use yet!
