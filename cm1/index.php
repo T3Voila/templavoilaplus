@@ -94,7 +94,12 @@ require_once(PATH_t3lib.'class.t3lib_tcemain.php');
 
 
 if (t3lib_extMgm::isLoaded('lorem_ipsum'))	{
+	// Dmitry: this dependency on lorem_ipsum is bad :(
+	// http://bugs.typo3.org/view.php?id=3691
 	require_once(t3lib_extMgm::extPath('lorem_ipsum').'class.tx_loremipsum_wiz.php');
+	if (t3lib_extMgm::isLoaded('rtehtmlarea'))	{
+		require_once(t3lib_extMgm::extPath('rtehtmlarea').'class.tx_rtehtmlarea_base.php');
+	}
 }
 
 
