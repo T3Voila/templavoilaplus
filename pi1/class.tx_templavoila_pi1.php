@@ -127,28 +127,54 @@ class tx_templavoila_pi1 extends tslib_pibase {
 	 * @param string $content Unused
 	 * @param array $conf Configuration (see above for entries)
 	 * @return string Generated content
-	 * @todo Localization (currently everything goes to default language, which is wrong!)
 	 * @todo Create a new content element with this functionality and DS/TO selector?
 	 * @todo Create TS element with this functionality?
+	 * @todo Support sheet selector?
 	 */
     function main_record($content, $conf) {
 		$this->initVars($conf);
-	
+
 		// Make a copy of the data, do not spoil original!
 		$data = $this->cObj->data;
-
-		// prepare fake flexform
-		$values = array();
-		foreach ($data as $k => $v) {
-			// TODO Use correct language identifiers here!
-		    $values['data']['sDEF']['lDEF'][$k]['vDEF'] = $v;
-		}
-		$data['tx_templavoila_flex'] = t3lib_flexformtools::flexArray2xml($values);
 
 		// setup ds/to
 		$data['tx_templavoila_ds'] = $conf['ds'];
 		$data['tx_templavoila_to'] = $conf['to'];
-		
+
+		// prepare fake flexform
+		$values = array();
+		foreach ($data as $k => $v) {
+			// Make correct language identifiers here!
+			if ($GLOBALS['TSFE']->sys_language_isocode) {
+				$srcPointer = $data['tx_templavoila_ds'];
+				if (t3lib_div::testInt($srcPointer))	{	// If integer, then its a record we will look up:
+					$DSrec = $GLOBALS['TSFE']->sys_page->checkRecord('tx_templavoila_datastructure', $srcPointer);
+					$DS = t3lib_div::xml2array($DSrec['dataprot']);
+				} else {	// Otherwise expect it to be a file:
+					$file = t3lib_div::getFileAbsFileName($srcPointer);
+					if ($file && @is_file($file))	{
+						$DS = t3lib_div::xml2array(t3lib_div::getUrl($file));
+					}
+				}
+				if (is_array($DS)) {
+					$langChildren = $DS['meta']['langChildren'] ? 1 : 0;
+					$langDisabled = $DS['meta']['langDisable'] ? 1 : 0;
+					$lKey = (!$langDisabled && !$langChildren) ? 'l'.$GLOBALS['TSFE']->sys_language_isocode : 'lDEF';
+					$vKey = (!$langDisabled && $langChildren) ? 'v'.$GLOBALS['TSFE']->sys_language_isocode : 'vDEF';
+				}
+				else {
+					return $this->formatError('
+						Couldn\'t find a Data Structure set with uid/file='.$conf['ds'].'
+						Please put correct DS and TO into your TS setup first.');
+				}
+			}
+			else {
+				$lKey = 'lDEF'; $vKey = 'vDEF';
+			}
+		    $values['data']['sDEF'][$lKey][$k][$vKey] = $v;
+		}
+		$data['tx_templavoila_flex'] = t3lib_flexformtools::flexArray2xml($values);
+
 		return $this->renderElement($data, $conf['table']);
     }
 
