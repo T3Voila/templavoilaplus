@@ -416,7 +416,7 @@ class tx_templavoila_dbnewcontentel {
             $tmpFilename = 'uploads/tx_templavoila/'.$templateObjectRecord['previewicon'];
             $wizardItems['fce_'.$index]['icon'] = (@is_file(PATH_site.$tmpFilename)) ? ('../' . $tmpFilename) : ('../' . t3lib_extMgm::siteRelPath('templavoila').'res1/default_previewicon.gif');
             $wizardItems['fce_'.$index]['description'] = $templateObjectRecord['description'] ? htmlspecialchars($templateObjectRecord['description']) : $LANG->getLL ('template_nodescriptionavailable');
-            $wizardItems['fce_'.$index]['title'] = htmlspecialchars($templateObjectRecord['title']);
+            $wizardItems['fce_'.$index]['title'] = $templateObjectRecord['title'];
             $wizardItems['fce_'.$index]['params'] = '&defVals[tt_content][CType]=templavoila_pi1&defVals[tt_content][tx_templavoila_ds]='.$templateObjectRecord['datastructure'].'&defVals[tt_content][tx_templavoila_to]='.$templateObjectRecord['uid'].$defVals;
             $index ++;
         }
