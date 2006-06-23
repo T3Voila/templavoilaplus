@@ -277,6 +277,13 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		}
 
 		if ($access)    {
+
+				// Define the root element record:
+			$this->rootElementTable = is_array($this->altRoot) ? $this->altRoot['table'] : 'pages';
+			$this->rootElementUid = is_array($this->altRoot) ? $this->altRoot['uid'] : $this->id;
+			$this->rootElementRecord = t3lib_BEfunc::getRecordWSOL($this->rootElementTable, $this->rootElementUid, '*');
+			$this->rootElementUid_pidForContent = $this->rootElementRecord['t3ver_swapmode']==0 && $this->rootElementRecord['_ORIG_uid'] ? $this->rootElementRecord['_ORIG_uid'] : $this->rootElementRecord['uid'];
+
 				// Check if we have to update the pagetree:
 			if (t3lib_div::_GP('updatePageTree')) {
 				t3lib_BEfunc::getSetUpdateSignal('updatePageTree');
@@ -312,10 +319,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 				// Start creating HTML output
 			$this->content .= $this->doc->startPage($LANG->getLL('title'));
-
-				// Render "edit current page" (important to do before calling ->sideBarObj->render() - otherwise the translation tab is not rendered!
-			$editCurrentPageHTML = $this->render_editPageScreen();
-
+			$render_editPageScreen = true;
 				// Show message if the page is of a special doktype:
 			if ($this->rootElementTable == 'pages') {
 
@@ -326,24 +330,32 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				$methodName = 'renderDoktype_'.$this->rootElementRecord['doktype'];
 				if (method_exists($specialDoktypesObj, $methodName)) {
 					$result = $specialDoktypesObj->$methodName($this->rootElementRecord);
-					if ($result !== FALSE) $this->content .= $result;
+					if ($result !== FALSE) {
+						$this->content .= $result;
+						$render_editPageScreen = false; // Do not output editing code for special doctypes!
+					}
 				}
 			}
 
-				// Show the "edit current page" screen along with the sidebar
-			$shortCut = ($BE_USER->mayMakeShortcut() ? '<br />'.$this->doc->makeShortcutIcon('id,altRoot',implode(',',array_keys($this->MOD_MENU)),$this->MCONF['name']) : '');
-			if ($this->sideBarObj->position == 'left' && $this->modTSconfig['properties']['sideBarEnable']) {
-				$this->content .= '
-					<table cellspacing="0" cellpadding="0" style="width:100%; height:550px; padding:0; margin:0;">
-						<tr>
-							<td style="vertical-align:top;">'.$this->sideBarObj->render().'</td>
-							<td style="vertical-align:top; padding-bottom:20px;" width="99%">'.$editCurrentPageHTML.$shortCut;'</td>
-						</tr>
-					</table>
-				';
-			} else {
-				$sideBarTop = $this->modTSconfig['properties']['sideBarEnable']  && ($this->sideBarObj->position == 'toprows' || $this->sideBarObj->position == 'toptabs') ? $this->sideBarObj->render() : '';
-				$this->content .= $sideBarTop.$editCurrentPageHTML.$shortCut;
+			if ($render_editPageScreen) {
+					// Render "edit current page" (important to do before calling ->sideBarObj->render() - otherwise the translation tab is not rendered!
+				$editCurrentPageHTML = $this->render_editPageScreen();
+
+					// Show the "edit current page" screen along with the sidebar
+				$shortCut = ($BE_USER->mayMakeShortcut() ? '<br /><br />'.$this->doc->makeShortcutIcon('id,altRoot',implode(',',array_keys($this->MOD_MENU)),$this->MCONF['name']) : '');
+				if ($this->sideBarObj->position == 'left' && $this->modTSconfig['properties']['sideBarEnable']) {
+					$this->content .= '
+						<table cellspacing="0" cellpadding="0" style="width:100%; height:550px; padding:0; margin:0;">
+							<tr>
+								<td style="vertical-align:top;">'.$this->sideBarObj->render().'</td>
+								<td style="vertical-align:top; padding-bottom:20px;" width="99%">'.$editCurrentPageHTML.$shortCut;'</td>
+							</tr>
+						</table>
+					';
+				} else {
+					$sideBarTop = $this->modTSconfig['properties']['sideBarEnable']  && ($this->sideBarObj->position == 'toprows' || $this->sideBarObj->position == 'toptabs') ? $this->sideBarObj->render() : '';
+					$this->content .= $sideBarTop.$editCurrentPageHTML.$shortCut;
+				}
 			}
 
 		} else {	// No access or no current page uid:
@@ -401,12 +413,6 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		global $LANG, $BE_USER, $TYPO3_CONF_VARS;
 
 		$output = '';
-
-			// Define the root element record:
-		$this->rootElementTable = is_array($this->altRoot) ? $this->altRoot['table'] : 'pages';
-		$this->rootElementUid = is_array($this->altRoot) ? $this->altRoot['uid'] : $this->id;
-		$this->rootElementRecord = t3lib_BEfunc::getRecordWSOL($this->rootElementTable, $this->rootElementUid, '*');
-		$this->rootElementUid_pidForContent = $this->rootElementRecord['t3ver_swapmode']==0 && $this->rootElementRecord['_ORIG_uid'] ? $this->rootElementRecord['_ORIG_uid'] : $this->rootElementRecord['uid'];
 
 			// Fetch the content structure of page:
 		$contentTreeData = $this->apiObj->getContentTree($this->rootElementTable, $this->rootElementRecord);

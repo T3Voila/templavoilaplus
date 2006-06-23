@@ -164,7 +164,7 @@ class tx_templavoila_mod1_specialdoktypes {
 		$content = 
 			$this->doc->icons(1).	
 			$LANG->getLL ('cannotedit_externalurl_'.$pageRecord['urltype'],'',1).
-			' <strong><a href="'.$url.'" target="_new">'.htmlspecialchars(sprintf($LANG->getLL ('jumptoexternalurl'), $url)).'</a></strong>'
+			' <br /><br /><strong><a href="'.$url.'" target="_new">'.htmlspecialchars(sprintf($LANG->getLL ('jumptoexternalurl'), $url)).'</a></strong>'
 		;
 		return $content;
 	}
@@ -193,6 +193,7 @@ class tx_templavoila_mod1_specialdoktypes {
 		$content = 
 			$this->doc->icons(1).
 			htmlspecialchars(sprintf ($LANG->getLL ('cannotedit_shortcut_'.intval($pageRecord['shortcut_mode'])), $shortcutSourcePageRecord['title'])).
+			'<br /><br />' .
 			$jumpToShortcutSourceLink
 		;
 		return $content;
@@ -220,7 +221,7 @@ class tx_templavoila_mod1_specialdoktypes {
 		$mountSourceIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath, t3lib_iconWorks::getIcon('pages', $mountSourcePageRecord), '').' style="text-align: center; vertical-align: middle;" width="18" height="16" border="0" title="'.$mountSourcePageRecord['title'].'" alt="" />';
 		$mountSourceButton = $this->doc->wrapClickMenuOnIcon($mountSourceIcon, 'pages', $mountSourcePageRecord['uid'], 1, '&callingScriptId='.rawurlencode($this->doc->scriptID), 'new,copy,cut,pasteinto,pasteafter,delete');
 
-		$mountSourceLink = '
+		$mountSourceLink = '<br /><br />
 			<a href="index.php?id='.$pageRecord['mount_pid'].'">'.htmlspecialchars($LANG->getLL ('jumptomountsourcepage')).'</a>
 		';
 
@@ -251,7 +252,7 @@ class tx_templavoila_mod1_specialdoktypes {
 		if ($this->userHasAccessToListModule ()) {
 			$listModuleURL = $this->doc->backPath.'db_list.php?id='.intval($this->pObj->id);
 			$onClick = "top.nextLoadModuleUrl='".$listModuleURL."';top.fsMod.recentIds['web']=".intval($this->pObj->id).";top.goToModule('web_list',1);";
-			$listModuleLink = '
+			$listModuleLink = '<br /><br />
 				<img'.t3lib_iconWorks::skinImg($this->doc->backPath, 'mod/web/list/list.gif', '').' style="text-align:center; vertical-align: middle; border:0;" />
 				<strong><a href="#" onClick="'.$onClick.'">'.$LANG->getLL('editpage_sysfolder_switchtolistview','',1).'</a></strong>
 			';
