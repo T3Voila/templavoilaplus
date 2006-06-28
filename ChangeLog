@@ -1,4 +1,8 @@
-2006-06-23 - Dmitry Dulepov <typo3@acio.lv>
+2006-06-28 - Dmitry Dulepov <typo3@accio.lv>
+
+ ~ Small updates in the manual (FAQ  & examples)
+
+2006-06-23 - Dmitry Dulepov <typo3@accio.lv>
 
  # Bug 2398: Properly escaped links in teplates render "unescaped"
  # Bug 3164: disableExplosivePreview seems not to work
@@ -15,7 +19,7 @@
  ~ Added $GLOBALS['TYPO3_DB']->sql_free_result to mod2/index.php to save memory during mapping process
  + Implemented language handling for main_record
 
-2006-06-22 - Dmitry Dulepov <typo3@acio.lv>
+2006-06-22 - Dmitry Dulepov <typo3@accio.lv>
 
  # Bug 3592: "Show content from this page instead" does not work
  + main_record added, do not use yet!
