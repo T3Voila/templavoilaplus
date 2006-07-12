@@ -262,7 +262,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 	 * @return	void
 	 */
 	function main_mode()	{
-		global $LANG,$BACK_PATH;
+		global $LANG, $BACK_PATH;
 
 			// Draw the header.
 		$this->doc = t3lib_div::makeInstance('noDoc');
@@ -1608,7 +1608,15 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 					$icon = '<img src="item_'.$t.'.gif" width="24" height="16" border="0" alt="" title="'.$tt.$key.'" style="margin-right: 5px;" class="absmiddle" />';
 
 						// Composing title-cell:
-					$this->elNames[$formPrefix.'['.$key.']']['tx_templavoila']['title'] = $icon.'<strong>'.htmlspecialchars(t3lib_div::fixed_lgd_cs($value['tx_templavoila']['title'],30)).'</strong>';
+					if (preg_match('/^LLL:/', $value['tx_templavoila']['title'])) {
+						$translatedTitle = $GLOBALS['LANG']->sL($value['tx_templavoila']['title']);
+						$translateIcon = '<sup title="This title is translated!">*</sup>';
+					}
+					else {
+						$translatedTitle = $value['tx_templavoila']['title'];
+						$translateIcon = '';
+					}
+					$this->elNames[$formPrefix.'['.$key.']']['tx_templavoila']['title'] = $icon.'<strong>'.htmlspecialchars(t3lib_div::fixed_lgd_cs($translatedTitle, 30)).'</strong>'.$translateIcon;
 					$rowCells['title'] = '<img src="clear.gif" width="'.($level*16).'" height="1" alt="" />'.$this->elNames[$formPrefix.'['.$key.']']['tx_templavoila']['title'];
 
 						// Description:
