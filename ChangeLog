@@ -1,3 +1,7 @@
+2006-07-17 - Dmitry Dulepov <typo3@accio.lv>
+
+ # Bug: PHP Fatal error "Call to a member function on non-object" in htmlmarkup because many places do not initialize this class (why???)
+
 2006-07-12 - Dmitry Dulepov <typo3@accio.lv>
 
  + Show element titles translated in the mapping view when possible

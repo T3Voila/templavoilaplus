@@ -523,6 +523,7 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 	 */
 	function mergeFormDataIntoTemplateStructure($editStruct,$currentMappingInfo,$firstLevelImplodeToken='',$valueKey='vDEF')	{
 		$isSection=0;
+		$htmlParse = ($this->htmlParse ? $this->htmlParse : t3lib_div::makeInstance('t3lib_parsehtml'));
 		if (is_array($editStruct))	{
 			$testInt = implode('',array_keys($editStruct));
 			$isSection = !ereg('[^0-9]',$testInt);
@@ -532,7 +533,6 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 			foreach($editStruct as $section)	{
 				$secKey = key($section);
 				$secDat = $section[$secKey];
-//$this->htmlParse->XHTML_clean
 				if ($currentMappingInfo['sub'][$secKey])	{
 					$out.=$this->mergeFormDataIntoTemplateStructure($secDat['el'],$currentMappingInfo['sub'][$secKey],'',$valueKey);
 				}
@@ -549,7 +549,7 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 						}
 					}
 					else {
-						$currentMappingInfo['cArray'][$key] = $this->htmlParse->XHTML_clean($currentMappingInfo['cArray'][$key]);
+						$currentMappingInfo['cArray'][$key] = $htmlParse->XHTML_clean($currentMappingInfo['cArray'][$key]);
 					}
 				}
 				$out = implode($firstLevelImplodeToken,$currentMappingInfo['cArray']);
@@ -759,12 +759,14 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 	 */
 	function setHeaderBodyParts($MappingInfo_head,$MappingData_head_cached,$BodyTag_cached='')	{
 
+		$htmlParse = ($this->htmlParse ? $this->htmlParse : t3lib_div::makeInstance('t3lib_parsehtml'));
+
 			// Traversing mapped header parts:
 		if (is_array($MappingInfo_head['headElementPaths']))	{
 			foreach($MappingInfo_head['headElementPaths'] as $kk => $vv)	{
 				if (isset($MappingData_head_cached['cArray']['el_'.$kk]))	{
 					$uKey = md5(trim($MappingData_head_cached['cArray']['el_'.$kk]));
-					$GLOBALS['TSFE']->additionalHeaderData['TV_'.$uKey] = chr(10).trim($this->htmlParse->XHTML_clean($MappingData_head_cached['cArray']['el_'.$kk]));
+					$GLOBALS['TSFE']->additionalHeaderData['TV_'.$uKey] = chr(10).trim($htmlParse->XHTML_clean($MappingData_head_cached['cArray']['el_'.$kk]));
 				}
 			}
 		}
