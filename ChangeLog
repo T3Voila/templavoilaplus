@@ -1,3 +1,7 @@
+2006-07-30 - Dmitry Dulepov <typo3@accio.lv>
+
+ ~ Added truncation for localized element text to 50 characters to make it consistent with element in the main language
+
 2006-07-17 - Dmitry Dulepov <typo3@accio.lv>
 
  # Bug: PHP Fatal error "Call to a member function on non-object" in htmlmarkup because many places do not initialize this class (why???)

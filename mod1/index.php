@@ -415,7 +415,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		$output = '';
 
 			// Fetch the content structure of page:
-		$contentTreeData = $this->apiObj->getContentTree($this->rootElementTable, $this->rootElementRecord);
+		$contentTreeData = $this->apiObj->getContentTree($this->rootElementTable, $this->rootElementRecord); // TODO Dima: seems like it does not retirn <TCEForms> for elements inside sectiions. Thus titles are not visible for these elements!
 
 			// Set internal variable which registers all used content elements:
 		$this->global_tt_content_elementRegister = $contentTreeData['contentElementUsage'];
@@ -774,9 +774,10 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			$lKey = $langDisable ? 'lDEF' : ($langChildren ? 'lDEF' : 'l'.$languageKey);
 			$vKey = $langDisable ? 'vDEF' : ($langChildren ? 'v'.$languageKey : 'vDEF');
 
+//debug($previewData);
 			foreach($previewData['sheets'][$sheet] as $fieldData)	{
 				$TCEformsConfiguration = $fieldData['TCEforms']['config'];
-				$TCEformsLabel = $LANG->sL($fieldData['TCEforms']['label'], 1);
+				$TCEformsLabel = $LANG->sL($fieldData['TCEforms']['label'], 1);	// title for non-section elements
 
 				if ($fieldData['type']=='array')	{	// Making preview for array/section parts of a FlexForm structure:
 					if (is_array($fieldData['subElements'][$lKey])) {
@@ -941,7 +942,8 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 							if (!$this->translatorMode)	{
 								$recordIcon_l10n = $this->doc->wrapClickMenuOnIcon($recordIcon_l10n,'tt_content',$localizedRecordInfo['uid'],1,'&amp;callingScriptId='.rawurlencode($this->doc->scriptID), 'new,copy,cut,pasteinto,pasteafter');
 							}
-							$l10nInfo = $recordIcon_l10n.t3lib_BEfunc::getRecordTitle('tt_content', $localizedRecordInfo['row']);
+							$l10nInfo = $recordIcon_l10n .
+								htmlspecialchars(t3lib_div::fixed_lgd_cs(strip_tags(t3lib_BEfunc::getRecordTitle('tt_content', $localizedRecordInfo['row'])), 50));
 
 							$l10nInfo.= '<br/>'.$localizedRecordInfo['content'];
 
