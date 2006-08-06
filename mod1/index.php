@@ -774,7 +774,6 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			$lKey = $langDisable ? 'lDEF' : ($langChildren ? 'lDEF' : 'l'.$languageKey);
 			$vKey = $langDisable ? 'vDEF' : ($langChildren ? 'v'.$languageKey : 'vDEF');
 
-//debug($previewData);
 			foreach($previewData['sheets'][$sheet] as $fieldData)	{
 				$TCEformsConfiguration = $fieldData['TCEforms']['config'];
 				$TCEformsLabel = $LANG->sL($fieldData['TCEforms']['label'], 1);	// title for non-section elements
@@ -801,13 +800,14 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				} else {	// Preview of flexform fields on top-level:
 					$fieldValue = $fieldData['data'][$lKey][$vKey];
 
-						// Render preview for images:
-					if ($TCEformsConfiguration['type'] == 'group' && $TCEformsConfiguration['internal_type'] == 'file')	{
-						$thumbnail = t3lib_BEfunc::thumbCode (array('dummyFieldName'=> $fieldValue), '', 'dummyFieldName', $this->doc->backPath, '', $TCEformsConfiguration['uploadfolder']);
-						$previewContent .= '<strong>'.$TCEformsLabel.'</strong> '.$thumbnail.'<br />';
-
+					if ($TCEformsConfiguration['type'] == 'group') {
+						if ($TCEformsConfiguration['internal_type'] == 'file')	{
+							// Render preview for images:
+							$thumbnail = t3lib_BEfunc::thumbCode (array('dummyFieldName'=> $fieldValue), '', 'dummyFieldName', $this->doc->backPath, '', $TCEformsConfiguration['uploadfolder']);
+							$previewContent .= '<strong>'.$TCEformsLabel.'</strong> '.$thumbnail.'<br />';
+						}
+					} else if ($TCEformsConfiguration['type'] != '') {
 						// Render for everything else:
-					} elseif ($TCEformsConfiguration['type'] != 'group') {
 						$previewContent .= '<strong>'.$TCEformsLabel.'</strong> '. $this->link_edit(htmlspecialchars(t3lib_div::fixed_lgd_cs(strip_tags($fieldValue),200)), 'tt_content', $previewData['fullRow']['uid']).'<br />';
 					}
 				}
