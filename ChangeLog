@@ -1,3 +1,7 @@
+2006-08-15 - Dmitry Dulepov <typo3@accio.lv>
+
+ # Bug 3483: sql error with dbal
+
 2006-08-06 - Dmitry Dulepov <typo3@accio.lv>
 
  # Fixed many empty links in mod1. They created extra empty line for each non-content element except image.

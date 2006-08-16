@@ -1678,7 +1678,7 @@ class tx_templavoila_api {
 		$this->allSystemWebsiteLanguages['rows'] = $TYPO3_DB->exec_SELECTgetRows(
 			'sys_language.*',
 			'sys_language',
-			'1'.t3lib_BEfunc::deleteClause('sys_language'),
+			'1=1'.t3lib_BEfunc::deleteClause('sys_language'),
 			'',
 			'uid',
 			'',
