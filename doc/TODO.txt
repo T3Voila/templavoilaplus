@@ -2,6 +2,9 @@
 TODO
 ******************
 
+URGENT
+	- Why some modules do not call init() for htmlmarkup?
+
 INBOX
 
 	- TV control center:
