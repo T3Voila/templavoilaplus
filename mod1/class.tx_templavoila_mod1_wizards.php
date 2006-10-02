@@ -268,7 +268,7 @@ class tx_templavoila_mod1_wizards {
 				$res = $TYPO3_DB->exec_SELECTquery (
 					"$tTO.*",
 					"$tTO LEFT JOIN $tDS ON $tTO.datastructure = $tDS.uid",
-					"$tTO.pid=".intval($storageFolderPID)." AND $tDS.scope=1".
+					"$tTO.parent=0 AND $tTO.pid=".intval($storageFolderPID)." AND $tDS.scope=1".
 						t3lib_befunc::deleteClause ($tTO).t3lib_befunc::deleteClause ($tDS).
 						t3lib_BEfunc::versioningPlaceholderClause($tTO).t3lib_BEfunc::versioningPlaceholderClause($tDS)
 				);
