@@ -12,15 +12,15 @@ INBOX
 
 	- Management: Overview of Page Templates as set in the tree structure
 		- Look for Flexible Content ELements as well and evaluate if their data structure / template object matches...
-	
+
 	- "Web > Page" Backend Modules:
 		- New wizard:
 			- In Content Element Wizard, also list records to insert as references fetched from the storage page
 			- Import t3d files with FlexForm structures inside (requires support for FlexForms in T3D - waiting for Kasper)
 			- Offer to make copies of pages/elements found storage page (or otherwise, defined by Page TSconfig, "mod.web_txtemplavoilaM1" ?)
-		- User management: In a Data structure define which users and groups has access to edit etc from thsi point and outwards. At any point in the tree these rights can be overridden.
+		- User management: In a Data structure define which users and groups has access to edit etc from this point and outwards. At any point in the tree these rights can be overridden.
 		- "createPageWizard.fieldNames" moved to "mod.web_txtemplavoilaM1" branch of Page Tsconfig!
-	
+
 	- Add option to DS which defines the field width in percent for display in the page module. Comes handy if you have a big content area and a small "right bar" etc.
 
 Various:
