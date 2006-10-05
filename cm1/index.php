@@ -1689,9 +1689,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 										}
 									}
 								}
-#								if (!$didSetSel && $currentMappingInfo[$key]['MAP_EL'])	{		// IF no element was selected AND there is a value in the array $currentMappingInfo then we add an element holding this value!
-#									$opt[]='<option value="'.htmlspecialchars($currentMappingInfo[$key]['MAP_EL']).'" selected="selected">'.htmlspecialchars('[ - CURRENT - ]').'</option>';
-#								}
+
 									// Finally, put together the selector box:
 								$rowCells['cmdLinks'] = '<img src="../html_tags/'.$lastLevel['el'].'.gif" height="9" border="0" alt="" class="absmiddle" title="---'.htmlspecialchars(t3lib_div::fixed_lgd_cs($lastLevel['path'],-80)).'" /><br />
 									<select name="dataMappingForm'.$formPrefix.'['.$key.'][MAP_EL]">
@@ -2103,12 +2101,20 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 								)
 							);
 
-							$elArray[$key]['tx_templavoila']['TypoScript'] = '
+							if ($elArray[$key]['type'] == 'attr') {
+								$elArray[$key]['tx_templavoila']['TypoScript'] = '
 	10 = TEXT
 	10.typolink.parameter.current = 1
 	10.typolink.returnLast = url
 							';
-							$elArray[$key]['tx_templavoila']['proc']['HSC']=1;
+								$elArray[$key]['tx_templavoila']['proc']['HSC']=1;
+							}
+							else {
+								$elArray[$key]['tx_templavoila']['TypoScript'] = '
+	10 = TEXT
+	10.typolink.parameter.current = 1
+							';
+							}
 						break;
 						case 'ce':
 
