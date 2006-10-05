@@ -502,7 +502,7 @@ class tx_templavoila_pi1 extends tslib_pibase {
                     }
 
 						// TypoScript / TypoScriptObjPath:
-					if (trim($LP[$key]['TypoScript']) || trim($LP[$key]['TypoScriptObjPath']))	{
+					if (trim($LP[$key]['TypoScript']) || ($LP[$key]['eType'] == 'TypoScriptObject' && trim($LP[$key]['TypoScriptObjPath'])))	{
 
 						if (trim($LP[$key]['TypoScript']))	{
 
