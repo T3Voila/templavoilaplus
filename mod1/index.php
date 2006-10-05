@@ -528,9 +528,6 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 			case 'pages' :
 
-#				$elementTitlebarColor = isset ($this->currentDataStructureArr['pages']['ROOT']['tx_templavoila']['pageModule']['titleBarColor']) ? $this->currentDataStructureArr['pages']['ROOT']['tx_templavoila']['pageModule']['titleBarColor'] : $this->doc->bgColor2;
-#				$elementTitlebarStyle = 'background-color: '.$elementTitlebarColor;
-
 				$titleBarLeftButtons .= $this->translatorMode ? '' : $this->link_edit('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/edit2.gif','').' title="'.htmlspecialchars($LANG->sL('LLL:EXT:lang/locallang_mod_web_list.xml:editPage')).'" alt="" style="text-align: center; vertical-align: middle; border:0;" />',$contentTreeArr['el']['table'],$contentTreeArr['el']['uid']);
 				$titleBarRightButtons = '';
 
