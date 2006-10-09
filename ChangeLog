@@ -1,7 +1,13 @@
+2006-10-09 - Dmitry Dulepov <typo3@accio.lv>
+
+ RELEASE OF TEMPLAVOILA 1.1.1
+
 2006-10-05 - Dmitry Dulepov <typo3@accio.lv>
 
  # Bug 2691: TypoScriptObjectPath overrides field type
  # Bug 2990: external link does not work
+ # Bug 3111: default output insetad of print page
+ # Bug 3995: templateselector: template selection failt
  # Bug 4335: "Link field" type does not work when it is not ATTR
 
 2006-10-02 - Dmitry Dulepov <typo3@accio.lv>
