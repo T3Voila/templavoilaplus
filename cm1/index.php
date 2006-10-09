@@ -1808,8 +1808,6 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			// If editing command is set:
 		if ($this->editDataStruct)	{
 			if ($this->DS_element == $formPrefix.'['.$key.']')	{	// If the editing-command points to this element:
-#debug(t3lib_div::_GET());
-#debug(t3lib_div::_POST());
 
 					// Initialize, detecting either "add" or "edit" (default) mode:
 				$autokey='';
