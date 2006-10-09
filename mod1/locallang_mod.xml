@@ -33,6 +33,9 @@
 		<languageKey index="es" type="array">
 		</languageKey>
 		<languageKey index="nl" type="array">
+			<label index="mlang_tabs_tab">Page</label>
+			<label index="mlang_labels_tabdescr">Deze module maakt het mogelijk om webpagina's te maken en te bewerken. Het levert keuze uit meerdere sjablolen en ondersteund meerdere talen. Deze pagina is onderdeel van de extensie &quot;TemplaVoila&quot;.</label>
+			<label index="mlang_labels_tablabel">Pagina's maken en wijzigen</label>
 		</languageKey>
 		<languageKey index="cz" type="array">
 		</languageKey>

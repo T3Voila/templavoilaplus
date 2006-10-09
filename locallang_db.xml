@@ -71,6 +71,37 @@
 			<label index="pages.tx_templavoila_next_to">Unterseiten - Benutze Vorlagendesign</label>
 			<label index="pages.tx_templavoila_flex">Inhalt</label>
 		</languageKey>
+		<languageKey index="nl" type="array">
+			<label index="tx_templavoila_tmplobj">TemplaVoilà Sjabloon Object</label>
+			<label index="tx_templavoila_tmplobj.title">Titel</label>
+			<label index="tx_templavoila_tmplobj.datastructure">Gegevensstructuur</label>
+			<label index="tx_templavoila_tmplobj.fileref">Bestandsreferentie</label>
+			<label index="tx_templavoila_tmplobj.previewicon">Koppel icoon (gif of png in 1:1 formaat)</label>
+			<label index="tx_templavoila_tmplobj.description">Beschrijving van het Sjabloon</label>
+			<label index="tx_templavoila_tmplobj.ds_createnew">Maak en nieuwe gegevenstructuur!</label>
+			<label index="tx_templavoila_tmplobj.rendertype">Kies een opbouw</label>
+			<label index="tx_templavoila_tmplobj.rendertype.I.0">Standaard uitvoer</label>
+			<label index="tx_templavoila_tmplobj.rendertype.I.1">Print vriendelijk</label>
+			<label index="tx_templavoila_tmplobj.parent">Dit is een subsjabloon van:</label>
+			<label index="tx_templavoila_tmplobj.rendertype_ref">Erf subsjablonen van:</label>
+			<label index="tx_templavoila_tmplobj.localProc">Locale verwerking (XML)</label>
+			<label index="tx_templavoila_datastructure">TemplaVoilà Gegevensstructuur</label>
+			<label index="tx_templavoila_datastructure.title">Titel</label>
+			<label index="tx_templavoila_datastructure.dataprot">XML van de gegevensstructuur</label>
+			<label index="tx_templavoila_datastructure.scope">Categorie</label>
+			<label index="tx_templavoila_datastructure.scope.I.1">Pagina Sjabloon</label>
+			<label index="tx_templavoila_datastructure.scope.I.2">Flexibel inhoudselement</label>
+			<label index="tt_content.tx_templavoila_ds">Gegevensstructuur</label>
+			<label index="tt_content.tx_templavoila_to">Sjabloon Object</label>
+			<label index="tt_content.tx_templavoila_pito">Plugin Sjabloon Object</label>
+			<label index="tt_content.tx_templavoila_flex">Inhoud</label>
+			<label index="tt_content.CType_pi1">Flexibele inhoud</label>
+			<label index="pages.tx_templavoila_ds">Pagina gegevensstrucuur</label>
+			<label index="pages.tx_templavoila_to">Gebruik Sjabloon ontwerp</label>
+			<label index="pages.tx_templavoila_next_ds">Subpagina - Pagina gegevensstructuur</label>
+			<label index="pages.tx_templavoila_next_to">Subpagina - Gebruik Sjabloon ontwerp</label>
+			<label index="pages.tx_templavoila_flex">Inhoud</label>
+		</languageKey>
 	</data>
 	<orig_hash type="array">
 		<languageKey index="de" type="array">
