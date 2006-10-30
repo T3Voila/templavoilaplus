@@ -215,7 +215,6 @@
 			<label index="template_descriptiondefault">Standard Layout, definiert durch den Designer dieser Website.</label>
 			<label index="element_localizations">Übersetzungen</label>
 		</languageKey>
-	<data type="array">
 		<languageKey index="nl" type="array">
 			<label index="title">Web &gt; Pagina module</label>
 			<label index="default_introduction">Wanneer je de inhoud van een pagina wilt bewerken, klik in de website boom aan de linkerkant op een pagina titel.</label>
