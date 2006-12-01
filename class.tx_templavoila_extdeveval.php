@@ -67,6 +67,7 @@ class tx_templavoila_extdeveval {
 		// Internal:
 	var $newFlexFormData = array();
 	
+	var $language;
 	
 	
 
@@ -221,6 +222,57 @@ class tx_templavoila_extdeveval {
 
 		$output = '';
 
+		// Language Mode For DS
+		$dbQuery = "SELECT dataprot,title
+						FROM tx_templavoila_datastructure WHERE uid=".(int) $dsIdForConversion;
+		if($dbRes = $GLOBALS['TYPO3_DB']->sql_query($dbQuery)){
+			if(mysql_num_rows($dbRes) == 1){
+				$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($dbRes);
+				$language = $this->DSlanguageMode($row['dataprot']);
+				$DStitle = $row['title'];
+			}
+		}
+		
+		// Define which method you should use 
+		if($language == 'Inheritance'){
+			$traverseMethod = 'traverseFlexFormXMLData_callBackFunction_Inheritance';
+		} elseif ($language == 'Separate') {
+			$traverseMethod = 'traverseFlexFormXMLData_callBackFunction_Separate';
+		} elseif ($language == 'Disabled') {
+			$traverseMethod = 'traverseFlexFormXMLData_callBackFunction_Disabled';
+		}
+						
+		// If POST, then update in database
+		if(is_array($SET = t3lib_div::_POST('SET'))){
+			
+			if(in_array($SET['ds']['table'], array_keys($TCA)))
+				$setTable = $SET['ds']['table'];
+			
+			$setField = $SET['ds']['field'];
+			foreach($SET['content'] as $key => $val){
+				if($val){
+					$dbQuery = "SELECT * FROM {$setTable} WHERE uid='".(int) $key."' ";
+					if($dbRes = $GLOBALS['TYPO3_DB']->sql_query($dbQuery)){
+						if(mysql_num_rows($dbRes) == 1){
+							$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($dbRes);
+							
+							$this->newFlexFormData = array();
+							$flexObj = t3lib_div::makeInstance('t3lib_flexformtools');
+							$flexObj->reNumberIndexesOfSectionData = TRUE;
+							$flexObj->traverseFlexFormXMLData($setTable,$setField,$row,$this,$traverseMethod);
+							$dbQuery = "UPDATE $setTable 
+											SET $setField='".addslashes($flexObj->flexArray2Xml($this->newFlexFormData))."'
+											WHERE uid='".(int) $key."' ";
+							
+							if(!$dbRes = $GLOBALS['TYPO3_DB']->sql_query($dbQuery)){
+								print mysql_error();
+							} 
+						}
+					}
+				} 
+			}
+		}
+		
 			// First, find all flexform fields where we could find relations to data structures:
 		$fieldsToCheck = array();
 		foreach($TCA as $table => $tmp)	{
@@ -244,10 +296,9 @@ class tx_templavoila_extdeveval {
 				$dsPointerField.'='.$GLOBALS['TYPO3_DB']->fullQuoteStr($dsIdForConversion,$table),	// Finds "deleted"-flagged records as well since an undelete action would otherwise invalidate it. Maybe this is not too important and we can enable filtering out deleted records if its boring to fix the problem for those...
 				'','','','uid'
 			);
-
 				// If searchParent feature is used we cannot convert if the data structure is used anywhere for this field! So we must check:
 			if (count($rows) && $searchParentFlag)	{
-				echo 'Sorry, but I found a flexform field ("'.$table.':'.$field.'") with "ds_pointerField_searchParent" set which means I cannot safely find all records to convert. It was used in uids: '.implode(',',array_keys($rows)).'. Please consider to abort the process.';
+				$output .= 'Sorry, but I found a flexform field ("'.$table.':'.$field.'") with "ds_pointerField_searchParent" set which means I cannot safely find all records to convert. It was used in uids: '.implode(',',array_keys($rows)).'. Please consider to abort the process.';
 			}
 
 			if (count($rows)) {
@@ -259,21 +310,92 @@ class tx_templavoila_extdeveval {
 						// Create and call iterator object:
 					$flexObj = t3lib_div::makeInstance('t3lib_flexformtools');
 					$flexObj->reNumberIndexesOfSectionData = TRUE;
-					$flexObj->traverseFlexFormXMLData($table,$field,$row,$this,'traverseFlexFormXMLData_callBackFunction');
+					$flexObj->traverseFlexFormXMLData($table,$field,$row,$this,$traverseMethod);
 
-						// Show 
-debug('This is not at all finished!!! (it does not do anything yet!)');
-debug(t3lib_div::xml2array($row[$field]),'Old:');
-debug($this->newFlexFormData,'New:');
+				/*			
+					debug(t3lib_div::xml2array($row[$field]),'Old: '.$language);
+					debug($this->newFlexFormData,'New: '.$language);
 debug(array($flexObj->flexArray2Xml($this->newFlexFormData)));
-exit;					
+				*/	
+					
+					if(t3lib_div::xml2array($row[$field]) === $this->newFlexFormData){
+						$checked = NULL;
+						$bgColor = 'bgColor3';						
+					} else {
+						$checked = 'checked';
+						$bgColor = 'bgColor4';
 				}
+					
+					// then add a new line
+					$htmlTABLE .= '	<tr class="'.$bgColor.'" >
+										<td><input type="checkbox" name="SET[content]['.$row['uid'].']" value="'.(isset($checked) ? 1 : 0).'" '.$checked.'></td>
+										<td>'.$row['uid'].'</td>
+										<td>'.$row['pid'].'</td>
+										<td>'.(!empty($row['header']) ? $row['header'] : 'no header').'</td>
+									</tr>';
+				}
+				
+				// build the Table
+				$htmlTABLE = '	<tr class="bgColor5 tableheader">
+								<td> </td>
+								<td>UID:</td>
+								<td>PID:</td>
+								<td>HEADER:</td>
+							</tr>'.$htmlTABLE;
+				$output.='<h3>'.count($rows).' Content(s) using the structure "'.$DStitle.'" with the following mode : "'.$language.'"</h3>';
+				$output.='	<form method="POST" action="" >
+								<table border="1" cellpadding="1" cellspacing="1">'.$htmlTABLE.'</table>
+								<b>
+									!!! WARNING !!!<br/>
+									Please check all contents and note that the update will change the XML description of your contents. <br/>
+								</b>
+								<br/>
+								<input type="hidden" name="SET[ds][field]" value="'.$field.'" />
+								<input type="hidden" name="SET[ds][table]" value="'.$table.'" />
+								<input type="submit" value="update contents" name="submit" />
+							</form>';
 			}
 		}
 
 		return $output;
 	}
 
+	function traverseFlexFormXMLData_callBackFunction_Inheritance($dsArr, $data, $PA, $path, &$pObj)	{
+		$pathArray = explode('/',$path);
+		$langId = $pathArray[ sizeof($pathArray)-1 ] ;
+		if(substr($langId,0,1) == 'v'){
+			if( in_array($langId = substr($langId,1), array_values($PA['vKeys']) ) && $langId != 'DEF'){
+				$oldPattern = array("/lDEF/","/v$langId/");
+				$newPattern = array("l$langId","vDEF");
+				$path = preg_replace($oldPattern,$newPattern,$path);
+			}
+		}
+		// Just setting value in our own result array, basically replicating the structure:
+		$pObj->setArrayValueByPath($path,$this->newFlexFormData,$data);
+	}
+
+	function traverseFlexFormXMLData_callBackFunction_Separate($dsArr, $data, $PA, $path, &$pObj)	{
+		$pathArray = explode('/',$path);
+		$langId = $pathArray[2] ;
+		if(substr($langId,0,1) == 'l'){
+			if( $PA['lKey'] == $langId ){
+				
+				$langId = substr($langId,1);
+				$oldPattern = array("/vDEF/","/l$langId/");
+				$newPattern = array("v$langId","lDEF");
+				$path = preg_replace($oldPattern,$newPattern,$path);
+			}
+		}
+		// Just setting value in our own result array, basically replicating the structure:
+		$pObj->setArrayValueByPath($path,$this->newFlexFormData,$data);
+	}
+	
+	function traverseFlexFormXMLData_callBackFunction_Disabled($dsArr, $data, $PA, $path, &$pObj)	{
+		// Just setting value in our own result array, basically replicating the structure:
+		$pObj->setArrayValueByPath($path."/kqsper",$this->newFlexFormData,$data);
+		debug('TODO');
+	}
+		
 	/**
 	 * Call back function for t3lib_flexformtools class
 	 * 
@@ -284,11 +406,12 @@ exit;
 	 * @param	object		Object reference to caller
 	 * @return	void
 	 */	
-	function traverseFlexFormXMLData_callBackFunction($dsArr, $data, $PA, $path, &$pObj)	{
-		
+	/*function traverseFlexFormXMLData_callBackFunction($dsArr, $data, $PA, $path, &$pObj)	{
 			// Just setting value in our own result array, basically replicating the structure:
-		$pObj->setArrayValueByPath($path,$this->newFlexFormData,$data);
-	}
+		$pObj->setArrayValueByPath($path."/kqsper",$this->newFlexFormData,$data);
+		debug($this->language);
+	
+	}*/
 }
 
 
