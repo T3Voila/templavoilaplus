@@ -1,6 +1,7 @@
 2006-10-30 - Dmitry Dulepov <typo3@accio.lv>
 
  # Better fix for bug 2691: now mapping module unsets TypoScriptObjectPath when eType != 'TypoScriptObject', pi1 is reverted (Kasper's request for Dassault)
+ # Bug 4324: lib.myobject instead of real object name (see rev 4213 in SVN for fix!)
 
 2006-10-30 - Dmitry Dulepov <typo3@accio.lv>
 
