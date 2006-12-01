@@ -502,7 +502,7 @@ class tx_templavoila_pi1 extends tslib_pibase {
                     }
 
 						// TypoScript / TypoScriptObjPath:
-					if (trim($LP[$key]['TypoScript']) || ($LP[$key]['eType'] == 'TypoScriptObject' && trim($LP[$key]['TypoScriptObjPath'])))	{
+					if (trim($LP[$key]['TypoScript']) || trim($LP[$key]['TypoScriptObjPath']))	{
 
 						if (trim($LP[$key]['TypoScript']))	{
 
@@ -553,7 +553,7 @@ class tx_templavoila_pi1 extends tslib_pibase {
 							$tsparserObj->parse($LP[$key]['TypoScript']);
 							$dataValues[$key][$valueKey] = $cObj->cObjGet($tsparserObj->setup,'TemplaVoila_Proc.');
 						}
-						if ($LP[$key]['eType'] == 'TypoScriptObject' && trim($LP[$key]['TypoScriptObjPath']))	{
+						if (trim($LP[$key]['TypoScriptObjPath']))	{
 							list($name, $conf) = $tsparserObj->getVal(trim($LP[$key]['TypoScriptObjPath']),$GLOBALS['TSFE']->tmpl->setup);
 							$dataValues[$key][$valueKey] = $cObj->cObjGetSingle($name,$conf,'TemplaVoila_ProcObjPath.');
 						}

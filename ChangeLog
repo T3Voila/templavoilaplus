@@ -1,5 +1,9 @@
 2006-10-30 - Dmitry Dulepov <typo3@accio.lv>
 
+ # Better fix for bug 2691: now mapping module unsets TypoScriptObjectPath when eType != 'TypoScriptObject', pi1 is reverted (Kasper's request for Dassault)
+
+2006-10-30 - Dmitry Dulepov <typo3@accio.lv>
+
  # Fixed error in mod1/locallang.xml
 
 2006-10-09 - Dmitry Dulepov <typo3@accio.lv>

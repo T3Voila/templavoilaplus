@@ -1871,7 +1871,10 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 					'.$this->drawDataStructureMap_editItem_editTypeExtra(
 						$insertDataArray['tx_templavoila']['eType'],
 						$formFieldName.'[tx_templavoila][eType_EXTRA]',
-						$insertDataArray['tx_templavoila']['eType_EXTRA']
+						($insertDataArray['tx_templavoila']['eType_EXTRA'] ?	// Use eType_EXTRA only if it is set (could be modified, etc), otherwise use TypoScriptObjPath! 
+							$insertDataArray['tx_templavoila']['eType_EXTRA'] :
+								($insertDataArray['tx_templavoila']['TypoScriptObjPath'] ?
+								array('objPath' => $insertDataArray['tx_templavoila']['TypoScriptObjPath']) : ''))
 					).'
 
 					[Advanced] Mapping rules:<br />
@@ -2220,13 +2223,28 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 						case 'TypoScriptObject':
 							unset($elArray[$key]['tx_templavoila']['TypoScript']);
 							unset($elArray[$key]['TCEforms']['config']);
-							$elArray[$key]['tx_templavoila']['TypoScriptObjPath'] = $elArray[$key]['tx_templavoila']['eType_EXTRA']['objPath'] ? $elArray[$key]['tx_templavoila']['eType_EXTRA']['objPath'] : 'lib.myObject';
+							$elArray[$key]['tx_templavoila']['TypoScriptObjPath'] = 
+								($elArray[$key]['tx_templavoila']['eType_EXTRA']['objPath'] ?
+									$elArray[$key]['tx_templavoila']['eType_EXTRA']['objPath'] : 
+									($elArray[$key]['tx_templavoila']['TypoScriptObjPath'] ?
+										$elArray[$key]['tx_templavoila']['TypoScriptObjPath'] : ''));
 						break;
 						case 'none':
 							unset($elArray[$key]['TCEforms']['config']);
 						break;
 					}
 				}	// End switch else
+				if ($elArray[$key]['tx_templavoila']['eType'] != 'TypoScriptObject') {
+					if (isset($elArray[$key]['tx_templavoila']['TypoScriptObjPath'])) {
+						unset($elArray[$key]['tx_templavoila']['TypoScriptObjPath']);
+					}
+				}
+				else if (isset($elArray[$key]['tx_templavoila']['eType_EXTRA']['objPath'])) {
+					unset($elArray[$key]['tx_templavoila']['eType_EXTRA']['objPath']);
+					if (count($elArray[$key]['tx_templavoila']['eType_EXTRA']) == 0) {
+						unset($elArray[$key]['tx_templavoila']['eType_EXTRA']);
+					}
+				}
 
 					// Setting TCEforms title for element if configuration is found:
 				if (is_array($elArray[$key]['TCEforms']['config']))	{
