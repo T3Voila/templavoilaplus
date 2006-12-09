@@ -108,6 +108,7 @@ require_once (t3lib_extMgm::extPath('templavoila').'mod1/class.tx_templavoila_mo
 require_once (t3lib_extMgm::extPath('templavoila').'mod1/class.tx_templavoila_mod1_wizards.php');
 require_once (t3lib_extMgm::extPath('templavoila').'mod1/class.tx_templavoila_mod1_clipboard.php');
 require_once (t3lib_extMgm::extPath('templavoila').'mod1/class.tx_templavoila_mod1_localization.php');
+require_once (t3lib_extMgm::extPath('templavoila').'mod1/class.tx_templavoila_mod1_records.php');
 require_once (t3lib_extMgm::extPath('templavoila').'mod1/class.tx_templavoila_mod1_specialdoktypes.php');
 
 /**
@@ -141,6 +142,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	var $sideBarObj;								// Instance of sidebar class
 	var $wizardsObj;								// Instance of wizards class
 	var $clipboardObj;								// Instance of clipboard class
+	var $recordsObj;								// Instance of records class
 	var $apiObj;									// Instance of tx_templavoila_api
 
 
@@ -196,6 +198,10 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			// Initialize the clipboard
 		$this->clipboardObj =& t3lib_div::getUserObj ('&tx_templavoila_mod1_clipboard','');
 		$this->clipboardObj->init($this);
+
+			// Initialize the record module
+		$this->recordsObj =& t3lib_div::getUserObj ('&tx_templavoila_mod1_records','');
+		$this->recordsObj->init($this);
 	}
 
 	/**
@@ -221,6 +227,8 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			'clip_parentPos' => '',
 			'clip' => '',
 			'langDisplayMode' => '',
+			'recordsView_table' => '',
+			'recordsView_start' => ''
 		);
 
 			// Hook: menuConfig_preProcessModMenu
@@ -303,7 +311,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 					return false;
 				}
 				if (top.fsMod) top.fsMod.recentIds["web"] = '.intval($this->id).';
-			');
+			' . $this->doc->redirectUrls());
 
 				// Set up JS for dynamic tab menu and side bar
 			$this->doc->JScode .= $this->doc->getDynTabMenuJScode();
