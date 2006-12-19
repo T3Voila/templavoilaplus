@@ -100,7 +100,7 @@
 			<label index="records">Record list</label>
 			<label index="deleteRecord2">Delete record (!)</label>
 			<label index="displayRecordsFrom">Display records from:</label>
-			<label index="displayingRecords">displaying from %1$d to %2$d out of %3$d</label>
+			<label index="displayingRecords">%1$d-%2$d out of %3$d</label>
 			<label index="prevRecords">Previous %d</label>
 			<label index="nextRecords">Next %d</label>
 			<label index="readOnlyTable">Warning: table is read-only!</label>

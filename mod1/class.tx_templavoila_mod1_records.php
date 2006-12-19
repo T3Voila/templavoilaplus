@@ -111,22 +111,28 @@ class tx_templavoila_mod1_records {
 		$content = '<tr class="bgColor4"><td width="1%" nowrap="nowrap">';
 		$content .= $GLOBALS['LANG']->getLL('displayRecordsFrom');
 		$content .= '</td><td>';
+
 		$link = '\'index.php?'.$this->pObj->link_getParameters().'&SET[recordsView_start]=0&SET[recordsView_table]=\'+this.options[this.selectedIndex].value';
 		$content .= '<select onchange="document.location.href=' . $link . '">';
 		$content .= '<option value=""' . ($this->pObj->MOD_SETTINGS['recordsView_table'] == '' ? ' selected="selected"' : '') . '></options>';
 		foreach ($this->tables as $table) {
 			$t = htmlspecialchars($table);
 			t3lib_div::loadTCA($table);
-			if ($table != 'pages' && $table != 'tt_content' && isset($GLOBALS['TCA'][$table]) && $GLOBALS['BE_USER']->check('tables_select', $table)) {
+			if ($this->canDisplayTable($table)) {
 				$title = $GLOBALS['LANG']->sl($GLOBALS['TCA'][$table]['ctrl']['title']);
-				$content .= '<option value="' . $t . '"' . ($this->pObj->MOD_SETTINGS['recordsView_table'] == $table ? ' selected="selected"' : '') . '>' . $title . ' (' . $t . ')' . '</options>';
+				$content .= '<option value="' . $t . '"' .
+							($this->pObj->MOD_SETTINGS['recordsView_table'] == $table ? ' selected="selected"' : '') .
+							'>' . $title . ' (' . $t . ')' . '</option>';
 			}
 		}
+		$content .= '</select>';
+
 		if (!in_array($this->pObj->MOD_SETTINGS['recordsView_table'], $this->tables)) {
 			unset($this->pObj->MOD_SETTINGS['recordsView_table']);
 			unset($this->pObj->MOD_SETTINGS['recordsView_start']);
 		}
-		$content .= '</select></td></tr>';
+
+		$content .= '</td></tr><tr class="bgColor4"><td colspan="2">&nbsp;</td></tr>';
 		return $content;
 	}
 
@@ -137,13 +143,13 @@ class tx_templavoila_mod1_records {
 	 */
 	function renderRecords() {
 		$table = $this->pObj->MOD_SETTINGS['recordsView_table'];
+		$content = '';
 		if ($table) {
 			// Modify permissions
 			$canModify = ($this->calcPerms & 16) &&
 						$GLOBALS['BE_USER']->check('tables_modify', $table) &&
 						(!isset($GLOBALS['TCA'][$table]['ctrl']['readOnly']) || !$GLOBALS['TCA'][$table]['ctrl']['readOnly']) &&
 						!(!$GLOBALS['BE_USER']->isAdmin() && isset($GLOBALS['TCA'][$table]['ctrl']['adminOnly']) && $GLOBALS['TCA'][$table]['ctrl']['adminOnly']);
-			$content = '<tr class="bgColor4"><td colspan="2">';
 
 			// select record count
 			$where = 'pid=' . $this->pObj->rootElementUid_pidForContent . t3lib_BEfunc::deleteClause($table) . t3lib_BEfunc::versioningPlaceholderClause($table);
@@ -154,26 +160,53 @@ class tx_templavoila_mod1_records {
 						$GLOBALS['TCA'][$table]['interface']['maxDBListItems'] :
 						(intval($this->pObj->modTSconfig['properties']['recordDisplay_maxItems']) ?
 						intval($this->pObj->modTSconfig['properties']['recordDisplay_maxItems']) : 10));
-			// create table name
+
+			// Various icons
+			$tempContent = '';
+
+			// "New" icon
 			if ($canModify) {
 				$title = htmlspecialchars($GLOBALS['LANG']->getLL('createnewrecord'));
-				$content .= '<a href="#" onclick="' .
+				$tempContent .= '<a style="margin-right: 15px;" href="#" onclick="' .
 						t3lib_BEfunc::editOnClick('&edit[' . $table . '][' . $this->pObj->rootElementUid_pidForContent . ']=new', $this->pObj->doc->backPath) .
-						'"><img'.t3lib_iconWorks::skinImg($this->pObj->doc->backPath, 'gfx/new_el.gif','').' title="' . $title .'" alt="' . $title . '" style="text-align: center; vertical-align: middle; border:0; margin-right: 5px; margin-bottom: 3px; " />' .
+						'"><img'.t3lib_iconWorks::skinImg($this->pObj->doc->backPath, 'gfx/new_el.gif','').' align="absmiddle" title="' . $title .'" alt="' . $title . '" style="text-align: center; vertical-align: middle; border:0; margin-right: 5px; margin-bottom: 3px; " />' .
 						'</a>';
 			}
-			else {
-				$title = htmlspecialchars($GLOBALS['LANG']->getLL('readOnlyTable'));
-				$content .= '<img'.t3lib_iconWorks::skinImg($this->pObj->doc->backPath, 'gfx/edit2_d.gif','').' title="' . $title . '" alt="' . $title . '" style="text-align: center; vertical-align: middle; border:0; margin-right: 5px; margin-bottom: 3px; " />';
+
+			$updn_onclick = 'document.location.href=\'index.php?'.$this->pObj->link_getParameters().'&SET[recordsView_table]=' . $table . '&SET[recordsView_start]=%d\'';
+			if ($startPos != 0) {
+				$title = sprintf($GLOBALS['LANG']->getLL('prevRecords'), $maxItems); 
+				$tempContent .= '<a href="#" onclick="' .
+					sprintf($updn_onclick, max(0, $startPos - $maxItems)) .
+					'"><img'.t3lib_iconWorks::skinImg($this->pObj->doc->backPath, 'gfx/up.gif','').' align="absmiddle" title="' . $title .'" alt="' . $title . '" />' .
+					'</a> ';
 			}
+			if ($startPos + $maxItems < $count) {
+				$title = sprintf($GLOBALS['LANG']->getLL('nextRecords'), $maxItems); 
+				$tempContent .= '<a href="#" onclick="' .
+					sprintf($updn_onclick, min($maxItems, $startPos + $maxItems)) .
+					'"><img'.t3lib_iconWorks::skinImg($this->pObj->doc->backPath, 'gfx/down.gif','').' align="absmiddle" title="' . $title .'" alt="' . $title . '" />' .
+					'</a> ';
+			}
+
+			// create table name
+			$content .= '<tr class="bgColor4"><td';
+			if ($tempContent == '') {
+				$content .= ' colspan="2">';
+			}
+			$content .= t3lib_iconWorks::getIconImage($table, array(), $this->pObj->doc->backPath, 'align="absmiddle" hspace="2"');
 			$content .= '<strong>' . $GLOBALS['LANG']->sl($GLOBALS['TCA'][$table]['ctrl']['title']) . '</strong>';
-			if ($count > $maxItems) {
+/*			if ($count > $maxItems) {
 				$content .= ' (' .
 					sprintf($GLOBALS['LANG']->getLL('displayingRecords'), $startPos + 1, min($count, $startPos + $maxItems), $count) .
 					')';
 			}
-			$content .= ':<br />';
-
+*/			$content .= '</td>';
+			if (strlen($tempContent)) {
+				$content .= '<td>' . $tempContent . '</td>';
+			}
+			$content .= '</tr>';
+			
 			// select records
 			$titleFields = ($GLOBALS['TCA'][$table]['ctrl']['label_alt'] ?
 							$GLOBALS['TCA'][$table]['ctrl']['label_alt'] :
@@ -185,6 +218,7 @@ class tx_templavoila_mod1_records {
 							 $GLOBALS['TCA'][$table]['ctrl']['sortby'], $startPos . ',' . $maxItems);
 			$fields = t3lib_div::trimExplode(',', $titleFields, true);
 			foreach($ar as $rec) {
+				$content .= '<tr class="bgColor4"><td colspan="2">';
 				$labels = array();
 				foreach ($fields as $field) {
 					if ($rec[$field]) {
@@ -199,21 +233,8 @@ class tx_templavoila_mod1_records {
 							'<img'.t3lib_iconWorks::skinImg($this->pObj->doc->backPath, 'gfx/garbage.gif','').' title="'.htmlspecialchars($GLOBALS['LANG']->getLL('deleteRecord2')).'" alt="" style="text-align: center; vertical-align: middle; border:0;" />' .
 							'</a>';
 				}
-				$content .= '&nbsp;' . t3lib_div::fixed_lgd_cs(implode(', ', $labels), 35) . '<br />';
+				$content .= '&nbsp;' . t3lib_div::fixed_lgd_cs(implode(', ', $labels), 35) . '</td></tr>';
 			}
-			// Next & Prev buttons
-			$onclick = 'document.location.href=\'index.php?'.$this->pObj->link_getParameters().'&SET[recordsView_table]=' . $table . '&SET[recordsView_start]=%d\'';
-			if ($startPos != 0) {
-				$content .= '<input type="button" value="' .
-					sprintf($GLOBALS['LANG']->getLL('prevRecords'), $maxItems) .
-					'" onclick="' . sprintf($onclick, max(0, $startPos - $maxItems)) . '" /> ';
-			}
-			if ($startPos + $maxItems < $count) {
-				$content .= '<input type="button" value="' .
-					sprintf($GLOBALS['LANG']->getLL('nextRecords'), $maxItems) .
-					'" onclick="' . sprintf($onclick, min($count, $startPos + $maxItems)) . '" />';
-			}
-			$content .= '<br />';
 		}
 		return $content;
 	}
@@ -226,8 +247,10 @@ class tx_templavoila_mod1_records {
 	 */
 	function canDisplayTable($table) {
 		t3lib_div::loadTCA($table);
-		return ($table != 'pages' && $table != 'tt_content' && isset($GLOBALS['TCA'][$table]) && $GLOBALS['BE_USER']->check('tables_select', $table));
+		return ($table != 'pages' /*&& $table != 'tt_content'*/ && isset($GLOBALS['TCA'][$table]) && $GLOBALS['BE_USER']->check('tables_select', $table));
 	}
+
+	
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/mod1/class.tx_templavoila_mod1_records.php'])    {
