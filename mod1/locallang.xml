@@ -97,13 +97,8 @@
 			<label index="outline_status_clean">XML is clean.</label>
 			<label index="outline_status_cleanAll">Clean XML of all dirty elements above!</label>
 			<label index="element_localizations">Localizations</label>
-			<label index="records">Record list</label>
-			<label index="deleteRecord2">Delete record (!)</label>
-			<label index="displayRecordsFrom">Display records from:</label>
-			<label index="displayingRecords">%1$d-%2$d out of %3$d</label>
-			<label index="prevRecords">Previous %d</label>
-			<label index="nextRecords">Next %d</label>
-			<label index="readOnlyTable">Warning: table is read-only!</label>
+			<label index="records">Other elements (non-content)</label>
+			<label index="displayRecordsFrom">Display elements from:</label>
 		</languageKey>
 		<languageKey index="dk" type="array">
 			<label index="title">Web &gt; Side module</label>

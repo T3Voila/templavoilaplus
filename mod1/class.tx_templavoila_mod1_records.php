@@ -33,20 +33,23 @@
  *
  *
  *
- *   55: class tx_templavoila_mod1_records
- *   68:     function init(&$pObj)
- *   93:     function sidebar_renderRecords()
- *  110:     function renderTableSelector()
- *  138:     function renderRecords()
- *  227:     function canDisplayTable($table)
+ *   58: class tx_templavoila_mod1_records
+ *   73:     function init(&$pObj)
+ *  100:     function sidebar_renderRecords()
+ *  117:     function renderTableSelector()
+ *  151:     function renderRecords()
+ *  168:     function canDisplayTable($table)
+ *  179:     function initDbList($table)
  *
- * TOTAL FUNCTIONS: 5
+ * TOTAL FUNCTIONS: 6
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
 
+require_once('class.tx_templavoila_mod1_recordlist.php');
+
 /**
- * Submodule 'clipboard' for the templavoila page module
+ * Submodule 'records' for the templavoila page module
  *
  * @author		Dmitry Dulepov <dmitry@typo3.org>
  * @package		TYPO3
@@ -58,6 +61,8 @@ class tx_templavoila_mod1_records {
 	var	$tables;
 	var $calcPerms;
 
+	var	$dblist;
+
 	/**
 	 * Initializes sidebar object. Checks if there any tables to display and
 	 * adds sidebar item if there are any.
@@ -66,17 +71,19 @@ class tx_templavoila_mod1_records {
 	 * @return	void
 	 */
 	function init(&$pObj) {
-		$this->pObj =& $pObj;
+		if (t3lib_div::int_from_ver(TYPO3_version) >= 4000005) {
+			$this->pObj = &$pObj;
 
-		$this->tables = t3lib_div::trimExplode(',', $this->pObj->modTSconfig['properties']['recordDisplay_tables'], true);
-		if ($this->tables) {
-			// Get permissions
-			$this->calcPerms = $GLOBALS['BE_USER']->calcPerms(t3lib_BEfunc::readPageAccess($this->pObj->id, $this->pObj->perms_clause));
-			foreach ($this->tables as $table) {
-				if ($this->canDisplayTable($table)) {
-					// At least one displayable table found!
-					$this->pObj->sideBarObj->addItem('records', $this, 'sidebar_renderRecords', $GLOBALS['LANG']->getLL('records'), 25);
-					break;
+			$this->tables = t3lib_div::trimExplode(',', $this->pObj->modTSconfig['properties']['recordDisplay_tables'], true);
+			if ($this->tables) {
+				// Get permissions
+				$this->calcPerms = $GLOBALS['BE_USER']->calcPerms(t3lib_BEfunc::readPageAccess($this->pObj->id, $this->pObj->perms_clause));
+				foreach ($this->tables as $table) {
+					if ($this->canDisplayTable($table)) {
+						// At least one displayable table found!
+						$this->pObj->sideBarObj->addItem('records', $this, 'sidebar_renderRecords', $GLOBALS['LANG']->getLL('records'), 25);
+						break;
+					}
 				}
 			}
 		}
@@ -132,7 +139,7 @@ class tx_templavoila_mod1_records {
 			unset($this->pObj->MOD_SETTINGS['recordsView_start']);
 		}
 
-		$content .= '</td></tr><tr class="bgColor4"><td colspan="2">&nbsp;</td></tr>';
+		//$content .= '</td></tr><tr class="bgColor4"><td colspan="2">&nbsp;</td></tr>';
 		return $content;
 	}
 
@@ -145,96 +152,9 @@ class tx_templavoila_mod1_records {
 		$table = $this->pObj->MOD_SETTINGS['recordsView_table'];
 		$content = '';
 		if ($table) {
-			// Modify permissions
-			$canModify = ($this->calcPerms & 16) &&
-						$GLOBALS['BE_USER']->check('tables_modify', $table) &&
-						(!isset($GLOBALS['TCA'][$table]['ctrl']['readOnly']) || !$GLOBALS['TCA'][$table]['ctrl']['readOnly']) &&
-						!(!$GLOBALS['BE_USER']->isAdmin() && isset($GLOBALS['TCA'][$table]['ctrl']['adminOnly']) && $GLOBALS['TCA'][$table]['ctrl']['adminOnly']);
-
-			// select record count
-			$where = 'pid=' . $this->pObj->rootElementUid_pidForContent . t3lib_BEfunc::deleteClause($table) . t3lib_BEfunc::versioningPlaceholderClause($table);
-			$ar = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('COUNT(*) AS count', $table, $where);
-			$count = $ar[0]['count'];
-			$startPos = intval($this->pObj->MOD_SETTINGS['recordsView_start']);
-			$maxItems = ($GLOBALS['TCA'][$table]['interface']['maxDBListItems'] ?
-						$GLOBALS['TCA'][$table]['interface']['maxDBListItems'] :
-						(intval($this->pObj->modTSconfig['properties']['recordDisplay_maxItems']) ?
-						intval($this->pObj->modTSconfig['properties']['recordDisplay_maxItems']) : 10));
-
-			// Various icons
-			$tempContent = '';
-
-			// "New" icon
-			if ($canModify) {
-				$title = htmlspecialchars($GLOBALS['LANG']->getLL('createnewrecord'));
-				$tempContent .= '<a style="margin-right: 15px;" href="#" onclick="' .
-						t3lib_BEfunc::editOnClick('&edit[' . $table . '][' . $this->pObj->rootElementUid_pidForContent . ']=new', $this->pObj->doc->backPath) .
-						'"><img'.t3lib_iconWorks::skinImg($this->pObj->doc->backPath, 'gfx/new_el.gif','').' align="absmiddle" title="' . $title .'" alt="' . $title . '" style="text-align: center; vertical-align: middle; border:0; margin-right: 5px; margin-bottom: 3px; " />' .
-						'</a>';
-			}
-
-			$updn_onclick = 'document.location.href=\'index.php?'.$this->pObj->link_getParameters().'&SET[recordsView_table]=' . $table . '&SET[recordsView_start]=%d\'';
-			if ($startPos != 0) {
-				$title = sprintf($GLOBALS['LANG']->getLL('prevRecords'), $maxItems); 
-				$tempContent .= '<a href="#" onclick="' .
-					sprintf($updn_onclick, max(0, $startPos - $maxItems)) .
-					'"><img'.t3lib_iconWorks::skinImg($this->pObj->doc->backPath, 'gfx/up.gif','').' align="absmiddle" title="' . $title .'" alt="' . $title . '" />' .
-					'</a> ';
-			}
-			if ($startPos + $maxItems < $count) {
-				$title = sprintf($GLOBALS['LANG']->getLL('nextRecords'), $maxItems); 
-				$tempContent .= '<a href="#" onclick="' .
-					sprintf($updn_onclick, min($maxItems, $startPos + $maxItems)) .
-					'"><img'.t3lib_iconWorks::skinImg($this->pObj->doc->backPath, 'gfx/down.gif','').' align="absmiddle" title="' . $title .'" alt="' . $title . '" />' .
-					'</a> ';
-			}
-
-			// create table name
-			$content .= '<tr class="bgColor4"><td';
-			if ($tempContent == '') {
-				$content .= ' colspan="2">';
-			}
-			$content .= t3lib_iconWorks::getIconImage($table, array(), $this->pObj->doc->backPath, 'align="absmiddle" hspace="2"');
-			$content .= '<strong>' . $GLOBALS['LANG']->sl($GLOBALS['TCA'][$table]['ctrl']['title']) . '</strong>';
-/*			if ($count > $maxItems) {
-				$content .= ' (' .
-					sprintf($GLOBALS['LANG']->getLL('displayingRecords'), $startPos + 1, min($count, $startPos + $maxItems), $count) .
-					')';
-			}
-*/			$content .= '</td>';
-			if (strlen($tempContent)) {
-				$content .= '<td>' . $tempContent . '</td>';
-			}
-			$content .= '</tr>';
-			
-			// select records
-			$titleFields = ($GLOBALS['TCA'][$table]['ctrl']['label_alt'] ?
-							$GLOBALS['TCA'][$table]['ctrl']['label_alt'] :
-							$GLOBALS['TCA'][$table]['ctrl']['label']);
-			$sort = ($GLOBALS['TCA'][$table]['ctrl']['sortby'] ?
-						$GLOBALS['TCA'][$table]['ctrl']['sortby'] :
-						$GLOBALS['TCA'][$table]['ctrl']['default_sortby']);
-			$ar = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,' . $titleFields, $table, $where, '',
-							 $GLOBALS['TCA'][$table]['ctrl']['sortby'], $startPos . ',' . $maxItems);
-			$fields = t3lib_div::trimExplode(',', $titleFields, true);
-			foreach($ar as $rec) {
-				$content .= '<tr class="bgColor4"><td colspan="2">';
-				$labels = array();
-				foreach ($fields as $field) {
-					if ($rec[$field]) {
-						$labels[] = $rec[$field];
-					}
-				}
-
-				if ($canModify) {
-					$content .= $this->pObj->link_edit('<img'.t3lib_iconWorks::skinImg($this->pObj->doc->backPath,'gfx/edit2.gif','').' title="'.htmlspecialchars(/*$GLOBALS['LANG']->getLL('editrecord')*/'[' . $table . ':' . $rec['uid'] . ']').'" alt="" style="text-align: center; vertical-align: middle; border:0;" />', $table, $rec['uid']);
-					$content .= '<a href="#" onclick="'.htmlspecialchars('if (confirm('.$GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL('deleteRecordMsg')).'))' .
-							'jumpToUrl(\'' . $this->pObj->doc->issueCommand('&cmd[' . $table . '][' . $rec['uid'] . '][delete]=1', '') . '\')') . '">' .
-							'<img'.t3lib_iconWorks::skinImg($this->pObj->doc->backPath, 'gfx/garbage.gif','').' title="'.htmlspecialchars($GLOBALS['LANG']->getLL('deleteRecord2')).'" alt="" style="text-align: center; vertical-align: middle; border:0;" />' .
-							'</a>';
-				}
-				$content .= '&nbsp;' . t3lib_div::fixed_lgd_cs(implode(', ', $labels), 35) . '</td></tr>';
-			}
+			$this->initDbList($table);
+			$this->dblist->generateList();
+			$content = '<tr class="bgColor4"><td colspan="2" style="padding: 0 0 3px 3px">' . $this->dblist->HTMLcode . '</td></tr>';
 		}
 		return $content;
 	}
@@ -247,10 +167,38 @@ class tx_templavoila_mod1_records {
 	 */
 	function canDisplayTable($table) {
 		t3lib_div::loadTCA($table);
-		return ($table != 'pages' /*&& $table != 'tt_content'*/ && isset($GLOBALS['TCA'][$table]) && $GLOBALS['BE_USER']->check('tables_select', $table));
+		return ($table != 'pages' && $table != 'tt_content' && isset($GLOBALS['TCA'][$table]) && $GLOBALS['BE_USER']->check('tables_select', $table));
 	}
 
-	
+	/**
+	 * Initializes List classes.
+	 *
+	 * @param	string		$table	Table name to show
+	 * @return	void
+	 */
+	function initDbList($table) {
+		// Initialize the dblist object:
+		$this->dblist = t3lib_div::makeInstance('tx_templavoila_mod1_recordlist');
+		$this->dblist->backPath = $this->pObj->doc->backPath;
+		$this->dblist->calcPerms = $this->calcPerms;
+		$this->dblist->thumbs = $GLOBALS['BE_USER']->uc['thumbnailsByDefault'];
+		$this->dblist->returnUrl = 'index.php?' . $this->pObj->link_getParameters();
+		$this->dblist->allFields = true;
+		$this->dblist->localizationView = true;
+		$this->dblist->showClipboard = false;
+		$this->dblist->disableSingleTableView = true;
+		$this->dblist->listOnlyInSingleTableMode = false;
+//		$this->dblist->clickTitleMode = $this->modTSconfig['properties']['clickTitleMode'];
+		$this->dblist->alternateBgColors = (isset($this->pObj->MOD_SETTINGS['recordsView_alternateBgColors']) ? intval($this->pObj->MOD_SETTINGS['recordsView_alternateBgColors']) : false);
+		$this->dblist->allowedNewTables = array($table);
+		$this->dblist->newWizards = false;
+		$this->dblist->tableList = $table;
+		$this->dblist->itemsLimitPerTable = ($GLOBALS['TCA'][$table]['interface']['maxDBListItems'] ?
+						$GLOBALS['TCA'][$table]['interface']['maxDBListItems'] :
+						(intval($this->pObj->modTSconfig['properties']['recordDisplay_maxItems']) ?
+						intval($this->pObj->modTSconfig['properties']['recordDisplay_maxItems']) : 10));
+		$this->dblist->start($this->pObj);
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/mod1/class.tx_templavoila_mod1_records.php'])    {
