@@ -495,15 +495,35 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 					$contentSplittedByMapping = $this->markupObj->splitContentToMappingInfo($fileContent,$currentMappingInfo);
 					$templatemapping['MappingData_cached'] = $contentSplittedByMapping['sub'][$firstKey];
 				}
+				
+				if ($cmd != 'showXMLDS') {
+					// Set default flags to <meta> tag
+					if (!isset($dataStruct['meta'])) {
+						// Make sure <meta> goes at the beginning of data structure.
+						// This is not critical for typo3 but simply convinient to
+						// people who used to see it at the beginning.
+						$dataStruct = array_merge(array('meta'=>array()), $dataStruct);
+					}
+					if ($this->_saveDSandTO_type == 1) {
+						// If we save a page template, set langDisable to 1 as per localization guide
+						if (!isset($dataStruct['meta']['langDisable'])) {
+							$dataStruct['meta']['langDisable'] = '1';
+						}
+					}
+					else {
+						// FCE defaults to inheritance
+						if (!isset($dataStruct['meta']['langDisable'])) {
+							$dataStruct['meta']['langDisable'] = '0';
+							$dataStruct['meta']['langChildren'] = '1';
+						}
+					}
+				}
 			}
 
 				// CMD switch:
 			switch($cmd)	{
 					// If it is requested to save the current DS and mapping information to a DS and TO record, then...:
 				case 'saveDSandTO':
-
-						// If we save a page template, it makes very much sense to set langDisable to 0:
-					if ($this->_saveDSandTO_type == 1) $dataStruct['meta']['langDisable'] = 0;
 
 						// DS:
 					$dataArr=array();
@@ -775,7 +795,6 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 						</table>
 					';
 
-					unset($dataStruct['meta']);
 					$content.='
 
 					<!--
@@ -814,7 +833,6 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 
 				if (is_array($dataStruct))	{
 						// Showing Data Structure:
-					unset($dataStruct['meta']);
 					$tRows = $this->drawDataStructureMap($dataStruct);
 					$content.='
 
@@ -1047,7 +1065,6 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 
 							// If there is a valid data structure, draw table:
 						if (is_array($dataStruct))	{
-							unset($dataStruct['meta']);		// Remove the "meta" section, otherwise the mapper will show this!
 
 								// Working on either Header or Body of HTML source:
 							if ($this->MOD_SETTINGS['selectHeaderContent'])	{	// Selecting from HTML header + bodytag:
@@ -1582,6 +1599,12 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			// Data Structure array must be ... and array of course...
 		if (is_array($dataStruct))	{
 			foreach($dataStruct as $key => $value)	{
+
+				if ($key == 'meta') {
+					// Do not show <meta> information in mapping interface!
+					continue;
+				}
+
 				if (is_array($value))	{	// The value of each entry must be an array.
 
 						// ********************

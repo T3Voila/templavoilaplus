@@ -2,6 +2,7 @@
 
  # Record display is rewritten to use List module. As a side effect this feature works only with TYPO3 >= 4.0.5
  # Changed formatting for mod1/index.php
+ # Bug 4036: Default meta information missing in DS
  # Bug 4625: Not possible to edit page with special doktype
 
 2006-12-09 - Dmitry Dulepov <typo3@accio.lv>
