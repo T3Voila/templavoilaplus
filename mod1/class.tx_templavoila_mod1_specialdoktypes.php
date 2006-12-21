@@ -187,7 +187,9 @@ class tx_templavoila_mod1_specialdoktypes {
 
 		if (intval($pageRecord['shortcut_mode']) == 0) {
 			$shortcutSourcePageRecord = t3lib_beFunc::getRecordWSOL('pages', $pageRecord['shortcut']);
-			$jumpToShortcutSourceLink = '<strong><a href="index.php?id='.$pageRecord['shortcut'].'">'.$LANG->getLL ('jumptoshortcutdestination', '',1).'</a></strong>';
+			$jumpToShortcutSourceLink = '<strong><a href="index.php?id='.$pageRecord['shortcut'].'">'.
+										'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/shortcut.gif',''). ' style="border:none; vertical-align: middle" /> '.
+										$LANG->getLL ('jumptoshortcutdestination', '',1).'</a></strong>';
 		}
 
 		$content = 

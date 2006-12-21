@@ -391,6 +391,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 					$result = $specialDoktypesObj->$methodName($this->rootElementRecord);
 					if ($result !== FALSE) {
 						$this->content .= $result;
+						$this->content .= '<br/><br/><strong>'.$this->link_edit('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/edit2.gif','').' title="'.htmlspecialchars($LANG->sL('LLL:EXT:lang/locallang_mod_web_list.xml:editPage')).'" alt="" style="border: none; vertical-align: middle" /> '.$LANG->sL('LLL:EXT:lang/locallang_mod_web_list.xml:editPage'),'pages',$this->id).'</strong>';
 						$render_editPageScreen = false; // Do not output editing code for special doctypes!
 					}
 				}
