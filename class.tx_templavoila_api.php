@@ -824,7 +824,7 @@ class tx_templavoila_api {
 				$flexformPointer['vLang'].':'.
 				$flexformPointer['position'];
 			if (isset ($flexformPointer['targetCheckUid'])) {
-				$flexformPointerString .= '/tt_content:'.$flexformPointer['targetCheckuid'];
+				$flexformPointerString .= '/tt_content:'.$flexformPointer['targetCheckUid'];
 			}
 		} else {
 			$flexformPointerString = $flexformPointer['table'].':'.$flexformPointer['uid'];

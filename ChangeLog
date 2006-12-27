@@ -1,3 +1,7 @@
+2006-12-27  Dmitry Dulepov  <dmitry@typo3.org>
+
+ # Bug 4697: Error in TemplaVoila API
+
 2006-12-21 - Dmitry Dulepov <typo3@accio.lv>
 
  # Record display is rewritten to use List module. As a side effect this feature works only with TYPO3 >= 4.0.5
