@@ -11,86 +11,31 @@
 	<data type="array">
 		<languageKey index="default" type="array">
 			<label index="title">TemplaVoilà</label>
-		</languageKey>
-		<languageKey index="dk" type="array">
-		</languageKey>
-		<languageKey index="de" type="array">
-			<label index="title">TemplaVoilà</label>
-		</languageKey>
-		<languageKey index="no" type="array">
-		</languageKey>
-		<languageKey index="it" type="array">
-		</languageKey>
-		<languageKey index="fr" type="array">
-		</languageKey>
-		<languageKey index="es" type="array">
-		</languageKey>
-		<languageKey index="nl" type="array">
-		</languageKey>
-		<languageKey index="cz" type="array">
-		</languageKey>
-		<languageKey index="pl" type="array">
-		</languageKey>
-		<languageKey index="si" type="array">
-		</languageKey>
-		<languageKey index="fi" type="array">
-		</languageKey>
-		<languageKey index="tr" type="array">
-		</languageKey>
-		<languageKey index="se" type="array">
-		</languageKey>
-		<languageKey index="pt" type="array">
-		</languageKey>
-		<languageKey index="ru" type="array">
-		</languageKey>
-		<languageKey index="ro" type="array">
-		</languageKey>
-		<languageKey index="ch" type="array">
-		</languageKey>
-		<languageKey index="sk" type="array">
-		</languageKey>
-		<languageKey index="lt" type="array">
+			<label index="templateFile">Template File</label>
+			<label index="templateObject">Template Object</label>
+			<label index="titleXmlConfiguration">XML configuration</label>
+			<label index="titleLoadDSXml">Load DS XML</label>
+			<label index="mappingTitle">Template Mapping</label>
+			<label index="tabTODetails">Information</label>
+			<label index="tabHeadParts">Header Parts</label>
+			<label index="tabBodyParts">Mapping</label>
+			<label index="mappingHeadParts">Adding parts from HTML header</label>
+			<label index="mappingBodyParts">Data Structure to be mapped to HTML template</label>
+			<label index="rootDescription">Select the HTML element on the page which you want to be the overall container element for the template.</label>
+			<label index="selectTOrecrdToLoadDSFrom">Select a Template Object record to load a Data Structure/Mapping information from</label>
+			<label index="noDSDefined">No Data Structure was defined in the record... (Must be T3DataStructure XML content)</label>
+			<label index="pasteDSXml">Alternatively, paste the Data Structure XML into this form</label>
+			<label index="loadDSXml">Load Data Structure</label>
+			<label index="msgDSTOSaved">Data Structure (UID %s) and Template Record (UID %s) was saved in PID %s</label>
+			<label index="msgDSTOUpdated">Data Structure (UID %s) and Template Record (UID %s) was updated</label>
+			<label index="msgMappingSaved">Mapping information was saved to the current Template Object!</label>
+			<label index="error">Error</label>
+			<label index="errorNoStorageFolder">No accessible Storage Folder found - please create one immediately!</label>
+			<label index="errorTONotSaved">No Template Object was created although the Data Structure was (UID %s)!</label>
+			<label index="errorTONotCreated">No Data Structure was created!</label>
+			<label index="errorNoUidFound">No UID was found pointing to a Template Object record.</label>
 		</languageKey>
 	</data>
 	<orig_hash type="array">
-		<languageKey index="dk" type="array">
-		</languageKey>
-		<languageKey index="de" type="array">
-			<label index="title" type="integer">255775515</label>
-		</languageKey>
-		<languageKey index="no" type="array">
-		</languageKey>
-		<languageKey index="it" type="array">
-		</languageKey>
-		<languageKey index="fr" type="array">
-		</languageKey>
-		<languageKey index="es" type="array">
-		</languageKey>
-		<languageKey index="nl" type="array">
-		</languageKey>
-		<languageKey index="cz" type="array">
-		</languageKey>
-		<languageKey index="pl" type="array">
-		</languageKey>
-		<languageKey index="si" type="array">
-		</languageKey>
-		<languageKey index="fi" type="array">
-		</languageKey>
-		<languageKey index="tr" type="array">
-		</languageKey>
-		<languageKey index="se" type="array">
-		</languageKey>
-		<languageKey index="pt" type="array">
-		</languageKey>
-		<languageKey index="ru" type="array">
-		</languageKey>
-		<languageKey index="ro" type="array">
-		</languageKey>
-		<languageKey index="ch" type="array">
-		</languageKey>
-		<languageKey index="sk" type="array">
-		</languageKey>
-		<languageKey index="lt" type="array">
-		</languageKey>
 	</orig_hash>
 </T3locallang>

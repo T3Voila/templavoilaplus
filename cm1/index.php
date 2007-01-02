@@ -142,6 +142,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 		'meta' => array('single'=>1),
 	);
 
+
 		// Internal, dynamic:
 	var $markupFile = '';		// Used to store the name of the file to mark up with a given path.
 	var $markupObj = '';
@@ -185,7 +186,6 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 	var $limitTags;				// String, list of tags to limit display by
 	var $path;					// HTML-path to explode in template.
 
-
 	/**
 	 * Adds items to the ->MOD_MENU array. Used for the function menu selector.
 	 *
@@ -199,8 +199,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 				'source' => 'Mode: HTML Source ',
 #				'borders' => 'Mode: Table Borders',
 			),
-			'showDSxml' => '',
-			'selectHeaderContent' => ''
+			'showDSxml' => ''
         );
         parent::menuConfig();
     }
@@ -316,7 +315,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			function updPath(inPath)	{	//
 				document.location = "'.t3lib_div::linkThisScript(array('htmlPath'=>'','doMappingOfPath'=>1)).'&htmlPath="+top.rawurlencode(inPath);
 			}
-		');
+		').$this->doc->getDynTabMenuJScode();
 
 			// Setting up the context sensitive menu:
 		$CMparts = $this->doc->getContextMenuCode();
@@ -392,7 +391,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 
 				// Checking Storage Folder PID:
 			if (!count($this->storageFolders))	{
-				$msg[] = '<img src="'.$GLOBALS['BACK_PATH'].'gfx/icon_fatalerror.gif" width="18" height="16" border="0" align="top" class="absmiddle" alt="" /><strong>ERROR:</strong> No accessible Storage Folder found - please create one immediately!';
+				$msg[] = '<img src="'.$GLOBALS['BACK_PATH'].'gfx/icon_fatalerror.gif" width="18" height="16" border="0" align="top" class="absmiddle" alt="" /><strong>'.$GLOBALS['LANG']->getLL('error').'</strong> '.$GLOBALS['LANG']->getLL('errorNoStorageFolder');
 			}
 
 				// Session data
@@ -428,13 +427,12 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 				// Setting Data Structure to value from session data - unless it does not exist in which case a default structure is created.
 			$dataStruct = is_array($sesDat['autoDS']) ? $sesDat['autoDS'] : array(
 				'meta' => array(
-					'langChildren' => 1,
-					'langDisable' => 1,
+					'langDisable' => '1',
 				),
 				'ROOT' => array (
 					'tx_templavoila' => array (
 						'title' => 'ROOT',
-						'description' => 'Select the HTML element on the page which you want to be the overall container element for the template.',
+						'description' => $GLOBALS['LANG']->getLL('rootDescription'),
 					),
 					'type' => 'array',
 					'el' => array()
@@ -560,13 +558,15 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 						$tce->start($dataArr,array());
 						$tce->process_datamap();
 
+
+
 						if ($tce->substNEWwithIDs['NEW'])	{
-							$msg[] = '<img src="'.$GLOBALS['BACK_PATH'].'gfx/icon_ok.gif" width="18" height="16" border="0" align="top" class="absmiddle" alt="" />Data Structure (uid '.$dataArr['tx_templavoila_tmplobj']['NEW']['datastructure'].') and Template Record (uid '.$tce->substNEWwithIDs['NEW'].') was saved in PID "'.$this->_saveDSandTO_pid.'"';
+							$msg[] = '<img src="'.$GLOBALS['BACK_PATH'].'gfx/icon_ok.gif" width="18" height="16" border="0" align="top" class="absmiddle" alt="" />'.sprintf($GLOBALS['LANG']->getLL('msgDSTOSaved'), $dataArr['tx_templavoila_tmplobj']['NEW']['datastructure'], $tce->substNEWwithIDs['NEW'], $this->_saveDSandTO_pid);
 						} else {
-							$msg[] = '<img src="'.$GLOBALS['BACK_PATH'].'gfx/icon_warning.gif" width="18" height="16" border="0" align="top" class="absmiddle" alt="" /><strong>ERROR:</strong> No Template Object was created although the Data Structure was (uid '.$dataArr['tx_templavoila_tmplobj']['NEW']['datastructure'].')!';
+							$msg[] = '<img src="'.$GLOBALS['BACK_PATH'].'gfx/icon_warning.gif" width="18" height="16" border="0" align="top" class="absmiddle" alt="" /><strong>'.$GLOBALS['LANG']->getLL('error').':</strong> '.sprintf($GLOBALS['LANG']->getLL('errorTONotSaved'), $dataArr['tx_templavoila_tmplobj']['NEW']['datastructure']);
 						}
 					} else {
-						$msg[] = '<img src="'.$GLOBALS['BACK_PATH'].'gfx/icon_warning.gif" width="18" height="16" border="0" align="top" class="absmiddle" alt="" /><strong>ERROR:</strong> No Data Structure was created!';
+						$msg[] = '<img src="'.$GLOBALS['BACK_PATH'].'gfx/icon_warning.gif" width="18" height="16" border="0" align="top" class="absmiddle" alt="" /><strong>'.$GLOBALS['LANG']->getLL('error').':</strong> '.$GLOBALS['LANG']->getLL('errorTONotCreated');
 					}
 
 					unset($tce);
@@ -612,12 +612,10 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 
 						unset($tce);
 
-						$msg[] = '<img src="'.$GLOBALS['BACK_PATH'].'gfx/icon_note.gif" width="18" height="16" border="0" align="top" class="absmiddle" alt="" />'.
-								'Data Structure (UID '.$dsREC['uid'].') and Template Record (UID '.$toREC['uid'].') was updated';
+						$msg[] = '<img src="'.$GLOBALS['BACK_PATH'].'gfx/icon_note.gif" width="18" height="16" border="0" align="top" class="absmiddle" alt="" />'.sprintf($GLOBALS['LANG']->getLL('msgDSTOUpdated'), $dsREC['uid'], $toREC['uid']);
 					}
 				break;
 			}
-
 
 
 				// Header:
@@ -626,7 +624,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			$onCl = 'return top.openUrlInWindow(\''.t3lib_div::getIndpEnv('TYPO3_SITE_URL').$relFilePath.'\',\'FileView\');';
 			$tRows[]='
 				<tr>
-					<td class="bgColor5"><strong>Template File:</strong></td>
+					<td class="bgColor5"><strong>'.$GLOBALS['LANG']->getLL('templateFile').':</strong></td>
 					<td class="bgColor4"><a href="#" onclick="'.htmlspecialchars($onCl).'">'.htmlspecialchars($relFilePath).'</a></td>
 				</tr>';
 				// Write header of page:
@@ -701,22 +699,22 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 
 					$content.='
 						<input type="submit" name="_DO_NOTHING" value="Go back" title="Go back" />
-						<h3>XML configuration:</h3>
+						<h3>'.$GLOBALS['LANG']->getLL('titleXmlConfiguration').':</h3>
 						'.$this->cshItem('xMOD_tx_templavoila','mapping_file_showXMLDS',$this->doc->backPath,'|<br/>').'
 						<pre>'.$hlObj->highLight_DS($dataStructureXML).'</pre>';
 				break;
 				case 'loadScreen':
 
 					$content.='
-						<h3>Load DS XML</h3>
+						<h3>'.$GLOBALS['LANG']->getLL('titleLoadDSXml').'</h3>
 						'.$this->cshItem('xMOD_tx_templavoila','mapping_file_loadDSXML',$this->doc->backPath,'|<br/>').'
-						<p>Select a Template Object record to load a Data Structure/Mapping information from:</p>
+						<p>'.$GLOBALS['LANG']->getLL('selectTOrecrdToLoadDSFrom').':</p>
 						<select name="_load_ds_xml_to">'.implode('',$opt).'</select>
 						<br />
-						<p>Alternatively, paste the Data Structure XML into this form:</p>
+						<p>'.$GLOBALS['LANG']->getLL('pasteDSXml').':</p>
 						<textarea rows="15" name="_load_ds_xml_content" wrap="off"'.$GLOBALS['TBE_TEMPLATE']->formWidthText(48,'width:98%;','off').'></textarea>
 						<br />
-						<input type="submit" name="_load_ds_xml" value="Load Data Structure" /><input type="submit" name="_" value="Cancel" />
+						<input type="submit" name="_load_ds_xml" value="'.$GLOBALS['LANG']->getLL('loadDSXml').'" /><input type="submit" name="_" value="Cancel" />
 						';
 				break;
 				case 'saveScreen':
@@ -860,7 +858,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 						// CSH
 					$content.= $this->cshItem('xMOD_tx_templavoila','mapping_ds',$this->doc->backPath);
 				} else {
-					$content.='<h4>ERROR: No Data Structure was defined in the record... (Must be T3DataStructure XML content)</h4>';
+					$content.='<h4>'.$GLOBALS['LANG']->getLL('error').': '.$GLOBALS['LANG']->getLL('noDSDefined').'</h4>';
 				}
 
 					// Get Template Objects pointing to this Data Structure
@@ -968,7 +966,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 				$title = t3lib_BEfunc::getRecordTitle('tx_templavoila_tmplobj',$row,1);
 				$tRows[]='
 					<tr class="bgColor4">
-						<td>Template Object:</td>
+						<td>'.$GLOBALS['LANG']->getLL('templateObject').':</td>
 						<td>'.$this->doc->wrapClickMenuOnIcon($icon,'tx_templavoila_tmplobj',$row['uid'],1).$title.'</td>
 					</tr>';
 
@@ -979,7 +977,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 					$onCl = 'return top.openUrlInWindow(\''.t3lib_div::getIndpEnv('TYPO3_SITE_URL').$relFilePath.'\',\'FileView\');';
 					$tRows[]='
 						<tr class="bgColor4">
-							<td>Template File:</td>
+							<td>'.$GLOBALS['LANG']->getLL('templateFile').':</td>
 							<td><a href="#" onclick="'.htmlspecialchars($onCl).'">'.htmlspecialchars($relFilePath).'</a></td>
 						</tr>';
 
@@ -1047,63 +1045,73 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 							<!--
 								Template Object Header:
 							-->
+							<h3>Template Object Information:</h3>
 							<table border="0" cellpadding="2" cellspacing="1" id="c-toHeader">
 								'.implode('',$tRows).'
 							</table>
 						';
 
-							// Header selections
-						$content.='<p>'.
-									t3lib_BEfunc::getFuncCheck('','SET[selectHeaderContent]',$this->MOD_SETTINGS['selectHeaderContent'],'',t3lib_div::implodeArrayForUrl('',$GLOBALS['HTTP_GET_VARS'],'',1,1)).' Select HTML header parts.'.
-									$this->cshItem('xMOD_tx_templavoila','mapping_to_htmlheaderparts',$this->doc->backPath,'').
-									'</p>';
-
-							// Open in new window:
-						$onClick = 'top.openUrlInWindow(\''.t3lib_div::linkThisScript().'\',\'TVwindow\'); document.location=\''.$GLOBALS['BACK_PATH'].'dummy.php\'; return false;';
-						$content.='<a href="#" onclick="'.htmlspecialchars($onClick).'">Open in own window frame.</a>'.
-									$this->cshItem('xMOD_tx_templavoila','mapping_to_openInOwnWindow',$this->doc->backPath,'');
 
 							// If there is a valid data structure, draw table:
 						if (is_array($dataStruct))	{
 
-								// Working on either Header or Body of HTML source:
-							if ($this->MOD_SETTINGS['selectHeaderContent'])	{	// Selecting from HTML header + bodytag:
+							// Working on Header and Body of HTML source:
 
-									// Processing the editing:
-								list($editContent,$currentHeaderMappingInfo) = $this->renderTO_editProcessing($dataStruct,$row,$theFile);
+								// -- Processing the header editing --
+							list($editContent,$currentHeaderMappingInfo) = $this->renderTO_editProcessing($dataStruct,$row,$theFile, 1);
 
 									// Determine if DS is a template record and if it is a page template:
 								$showBodyTag = !is_array($DS_row) || $DS_row['scope']==1 ? TRUE : FALSE;
 
-								$content.='
+							$parts = array();
+							$parts[] = array(
+								'label' => $GLOBALS['LANG']->getLL('tabTODetails'),
+								'content' => $content
+							);
 
+								// -- Processing the head editing
+							$headerContent.='
 								<!--
 									HTML header parts selection:
 								-->
-								<h3>Adding parts from HTML header:</h3>
-
+							<h3>'.$GLOBALS['LANG']->getLL('mappingHeadParts').': '.$this->cshItem('xMOD_tx_templavoila','mapping_to_headerParts',$this->doc->backPath,'').'</h3>
 								'.$this->renderHeaderSelection($theFile,$currentHeaderMappingInfo,$showBodyTag,$editContent);
-							} else {	// Selecting from HTML body:
 
-									// Processing the editing:
-								list($editContent,$currentMappingInfo) = $this->renderTO_editProcessing($dataStruct,$row,$theFile);
+							$parts[] = array(
+								'label' => $GLOBALS['LANG']->getLL('tabHeadParts'),
+								'content' => $headerContent
+							);
 
-								$content.='
+								// -- Processing the body editing --
+							list($editContent,$currentMappingInfo) = $this->renderTO_editProcessing($dataStruct,$row,$theFile, 0);
 
+							$bodyContent.='
 								<!--
 									Data Structure mapping table:
 								-->
-								<h3>Data Structure to be mapped to HTML template:</h3>
-
+							<h3>'.$GLOBALS['LANG']->getLL('mappingBodyParts').':</h3>
 								'.$this->renderTemplateMapper($theFile,$this->displayPath,$dataStruct,$currentMappingInfo,$editContent);
-							}
-						} else $content.='ERROR: No Data Structure Record could be found with UID "'.$dsValue.'"';
-					} else $content.='ERROR: No Data Structure Record could be found with UID "'.$dsValue.'"';
-				} else $content.='ERROR: The file "'.$row['fileref'].'" could not be found!';
-			} else $content.='ERROR: No Template Object Record with the UID '.$this->displayUid;
-			$this->content.=$this->doc->section('',$content,0,1);
+
+							$parts[] = array(
+								'label' => $GLOBALS['LANG']->getLL('tabBodyParts'),
+								'content' => $bodyContent
+							);
+
+						} else $content.= $GLOBALS['LANG']->getLL('error').': No Data Structure Record could be found with UID "'.$dsValue.'"';
+					} else $content.= $GLOBALS['LANG']->getLL('error').': No Data Structure Record could be found with UID "'.$dsValue.'"';
+				} else $content.= $GLOBALS['LANG']->getLL('error').': The file "'.$row['fileref'].'" could not be found!';
+			} else $content.= $GLOBALS['LANG']->getLL('error').': No Template Object Record with the UID '.$this->displayUid;
+			
+			$parts[0]['content'] = $content;
 		} else {
-			$this->content.=$this->doc->section('Template Object ERROR','No UID was found pointing to a Template Object record.',0,1,3);
+			$this->content.=$this->doc->section($GLOBALS['LANG']->getLL('templateObject').' '.$GLOBALS['LANG']->getLL('error'), $GLOBALS['LANG']->getLL('errorNoUidFound'),0,1,3);
+		}
+
+			// show tab menu
+		if (is_array($parts)) {
+			$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('mappingTitle'), ''.
+				$this->doc->getDynTabMenu($parts,'TEMPLAVOILA:templateModule:'.$this->id, 0,0,300)
+				,0,1);
 		}
 	}
 
@@ -1113,10 +1121,11 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 	 * @param	array		Data Structure (without 'meta' section). Passed by reference; The sheets found inside will be resolved if found!
 	 * @param	array		TO record row
 	 * @param	string		Template file path (absolute)
+	 * @param   integer		Process the headerPart instead of the bodyPart
 	 * @return	array		Array with two keys (0/1) with a) content and b) currentMappingInfo which is retrieved inside (currentMappingInfo will be different based on whether "head" or "body" content is "mapped")
 	 * @see renderTO()
 	 */
-	function renderTO_editProcessing(&$dataStruct,$row,$theFile)	{
+	function renderTO_editProcessing(&$dataStruct,$row,$theFile, $headerPart = 0)	{
 		$msg = array();
 
 			// Converting GPvars into a "cmd" value:
@@ -1163,45 +1172,42 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 		$currentMappingInfo = is_array($sesDat['currentMappingInfo']) ? $sesDat['currentMappingInfo'] : array();
 		$this->cleanUpMappingInfoAccordingToDS($currentMappingInfo,$dataStruct);
 
-			// Perform processing based on the mode: head or body:
-		if ($this->MOD_SETTINGS['selectHeaderContent'])	{	// Header:
+		// Perform processing for head
+			// GPvars, incoming data
+		$checkboxElement = t3lib_div::GPvar('checkboxElement',1);
+		$addBodyTag = t3lib_div::GPvar('addBodyTag');
 
-				// GPvars, incoming data
-			$checkboxElement = t3lib_div::GPvar('checkboxElement',1);
-			$addBodyTag = t3lib_div::GPvar('addBodyTag');
-
-				// Update session data:
-			if ($cmd=='reload_from' || $cmd=='clear')	{
-				$currentMappingInfo_head = is_array($templatemapping['MappingInfo_head'])&&$cmd!='clear' ? $templatemapping['MappingInfo_head'] : array();
-				$sesDat['currentMappingInfo_head'] = $currentMappingInfo_head;
+			// Update session data:
+		if ($cmd=='reload_from' || $cmd=='clear')	{
+			$currentMappingInfo_head = is_array($templatemapping['MappingInfo_head'])&&$cmd!='clear' ? $templatemapping['MappingInfo_head'] : array();
+			$sesDat['currentMappingInfo_head'] = $currentMappingInfo_head;
+			$GLOBALS['BE_USER']->setAndSaveSessionData($this->MCONF['name'].'_mappingInfo',$sesDat);
+		} else {
+			if ($cmd=='save_data_mapping' || $cmd=='save_to')	{
+				$sesDat['currentMappingInfo_head'] = $currentMappingInfo_head = array(
+					'headElementPaths' => $checkboxElement,
+					'addBodyTag' => $addBodyTag?1:0
+				);
 				$GLOBALS['BE_USER']->setAndSaveSessionData($this->MCONF['name'].'_mappingInfo',$sesDat);
-			} else {
-				if ($cmd=='save_data_mapping' || $cmd=='save_to')	{
-					$sesDat['currentMappingInfo_head'] = $currentMappingInfo_head = array(
-						'headElementPaths' => $checkboxElement,
-						'addBodyTag' => $addBodyTag?1:0
-					);
-					$GLOBALS['BE_USER']->setAndSaveSessionData($this->MCONF['name'].'_mappingInfo',$sesDat);
-				}
 			}
+		}
 
-		} else {	// Body:
-				// GPvars, incoming data
-			$inputData = t3lib_div::GPvar('dataMappingForm',1);
+		// Perform processing for  body
+			// GPvars, incoming data
+		$inputData = t3lib_div::GPvar('dataMappingForm',1);
 
-				// Update session data:
-			if ($cmd=='reload_from' || $cmd=='clear')	{
-				$currentMappingInfo = is_array($templatemapping['MappingInfo'])&&$cmd!='clear' ? $templatemapping['MappingInfo'] : array();
-				$this->cleanUpMappingInfoAccordingToDS($currentMappingInfo,$dataStruct);
-				$sesDat['currentMappingInfo'] = $currentMappingInfo;
-				$sesDat['dataStruct'] = $dataStruct;
+			// Update session data:
+		if ($cmd=='reload_from' || $cmd=='clear')	{
+			$currentMappingInfo = is_array($templatemapping['MappingInfo'])&&$cmd!='clear' ? $templatemapping['MappingInfo'] : array();
+			$this->cleanUpMappingInfoAccordingToDS($currentMappingInfo,$dataStruct);
+			$sesDat['currentMappingInfo'] = $currentMappingInfo;
+			$sesDat['dataStruct'] = $dataStruct;
+			$GLOBALS['BE_USER']->setAndSaveSessionData($this->MCONF['name'].'_mappingInfo',$sesDat);
+		} else {
+			if ($cmd=='save_data_mapping' && is_array($inputData))	{
+				$sesDat['currentMappingInfo'] = $currentMappingInfo = t3lib_div::array_merge_recursive_overrule($currentMappingInfo,$inputData);
+				$sesDat['dataStruct'] = $dataStruct;		// Adding data structure to session data so that the PREVIEW window can access the DS easily...
 				$GLOBALS['BE_USER']->setAndSaveSessionData($this->MCONF['name'].'_mappingInfo',$sesDat);
-			} else {
-				if ($cmd=='save_data_mapping' && is_array($inputData))	{
-					$sesDat['currentMappingInfo'] = $currentMappingInfo = t3lib_div::array_merge_recursive_overrule($currentMappingInfo,$inputData);
-					$sesDat['dataStruct'] = $dataStruct;		// Adding data structure to session data so that the PREVIEW window can access the DS easily...
-					$GLOBALS['BE_USER']->setAndSaveSessionData($this->MCONF['name'].'_mappingInfo',$sesDat);
-				}
 			}
 		}
 
@@ -1260,7 +1266,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			$tce->start($dataArr,array());
 			$tce->process_datamap();
 			unset($tce);
-			$msg[] = 'Mapping information was saved to the current Template Object!';
+			$msg[] = $GLOBALS['LANG']->getLL('msgMappingSaved');
 			$row = t3lib_BEfunc::getRecordWSOL('tx_templavoila_tmplobj',$this->displayUid);
 			$templatemapping = unserialize($row['templatemapping']);
 
@@ -1275,10 +1281,10 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 		$menuItems[]='<input type="submit" name="_clear" value="Clear all" title="Clears all mapping information currently set." />';
 
 			// Make either "Preview" button (body) or "Set" button (header)
-		if (!$this->MOD_SETTINGS['selectHeaderContent'])	{	// Header:
-			$menuItems[]='<input type="submit" name="_preview" value="Preview" title="Will merge sample content into the template according to the current mapping information." />';
+		if ($headerPart)	{	// Header:
+			$menuItems[] = '<input type="submit" name="_save_data_mapping" value="Set" title="Will update session data with current settings." />';
 		} else {	// Body:
-			$menuItems[]='<input type="submit" name="_save_data_mapping" value="Set" title="Will update session data with current settings." />';
+			$menuItems[] = '<input type="submit" name="_preview" value="Preview" title="Will merge sample content into the template according to the current mapping information." />';
 		}
 
 		$menuItems[]='<input type="submit" name="_save_to" value="Save" title="Saving all mapping data into the Template Object." />';
@@ -1292,7 +1298,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 				(serialize($templatemapping['MappingInfo_head']) != serialize($currentMappingInfo_head))	||
 				(serialize($templatemapping['MappingInfo']) != serialize($currentMappingInfo))
 			)	{
-			$menuItems[]='<input type="submit" name="_reload_from" value="Revert" title="'.sprintf('Reverting %s mapping data to original data in the Template Object.',$this->MOD_SETTINGS['selectHeaderContent']?'HEAD':'BODY').'" />';
+			$menuItems[]='<input type="submit" name="_reload_from" value="Revert" title="'.sprintf('Reverting %s mapping data to original data in the Template Object.',$headerPart?'HEAD':'BODY').'" />';
 			$msg[] = 'The current mapping information is different from the mapping information in the Template Object';
 		}
 
@@ -1316,7 +1322,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 		}
 
 
-		return array($content, $this->MOD_SETTINGS['selectHeaderContent'] ? $currentMappingInfo_head : $currentMappingInfo);
+		return array($content, $headerPart ? $currentMappingInfo_head : $currentMappingInfo);
 	}
 
 
@@ -1371,9 +1377,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 					<td><pre>'.htmlspecialchars($html_body).'</pre></td>
 				</tr>' : '';
 
-		$headerParts =
-			$this->cshItem('xMOD_tx_templavoila','mapping_to_headerParts',$this->doc->backPath,'').'
-
+		$headerParts = '
 			<!--
 				Header parts:
 			-->
@@ -1385,9 +1389,11 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 				</tr>
 				'.$tRows.'
 				'.$bodyTagRow.'
-			</table>
-			'.$this->cshItem('xMOD_tx_templavoila','mapping_to_headerParts_buttons',$this->doc->backPath,'').
-			$htmlAfterDSTable;
+			</table>' .
+			'<p style="margin: 5px 3px">' .
+			'<img'.t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/icon_warning.gif', 'width="18" height="16"').' alt="" align="absmiddle" /> '.
+			'<strong>Do not forget to press "Set" if header parts are changed!</strong></p>' .
+			$this->cshItem('xMOD_tx_templavoila','mapping_to_headerParts_buttons',$this->doc->backPath,'').$htmlAfterDSTable;
 
 			// Return result:
 		return $headerParts;
