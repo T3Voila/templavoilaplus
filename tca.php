@@ -155,7 +155,8 @@ $TCA['tx_templavoila_tmplobj'] = Array (
 				'wrap' => 'OFF',
 				'cols' => '30',
 				'rows' => '2',
-			)
+			),
+			'defaultExtras' => 'fixed-font:enable-tab'
 		),
 	),
 	'types' => Array (
@@ -189,7 +190,8 @@ $TCA['tx_templavoila_datastructure'] = Array (
 				'wrap' => 'OFF',
 				'cols' => '48',
 				'rows' => '20',
-			)
+			),
+			'defaultExtras' => 'fixed-font:enable-tab'
 		),
 		'scope' => array(
 			'exclude' => 1,
