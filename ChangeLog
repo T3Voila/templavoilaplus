@@ -1,7 +1,9 @@
 2006-01-20  Dmitry Dulepov  <dmitry@typo3.org>
 
- # Fixed bug 4812: RTE field does not respect system RTE configuration
+ # Fixed bug 4750: Database compatibilty
  # Fixed bug 4778: Filelinks in FCEs are not registered as "references"
+ # Fixed bug 4812: RTE field does not respect system RTE configuration
+ # Fixed: wrong parameter to link_edit
 
 2006-12-29  Dmitry Dulepov  <dmitry@typo3.org>
 
