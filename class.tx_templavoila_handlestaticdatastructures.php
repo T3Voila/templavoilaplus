@@ -133,7 +133,7 @@ class tx_templavoila_handleStaticDataStructures {
 			$res = $TYPO3_DB->exec_SELECTquery (
 				'title,uid,previewicon',
 				'tx_templavoila_tmplobj',
-				'tx_templavoila_tmplobj.pid='.$storagePid.' AND tx_templavoila_tmplobj.datastructure="'.$TYPO3_DB->quoteStr($templateRef, 'tx_templavoila_tmplobj').'" AND tx_templavoila_tmplobj.parent=0',
+				'tx_templavoila_tmplobj.pid='.$storagePid.' AND tx_templavoila_tmplobj.datastructure='.$TYPO3_DB->fullQuoteStr($templateRef, 'tx_templavoila_tmplobj').' AND tx_templavoila_tmplobj.parent=0',
 				'',
 				'tx_templavoila_tmplobj.title'
 			);
