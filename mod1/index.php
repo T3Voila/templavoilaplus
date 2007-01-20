@@ -833,7 +833,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 			foreach($previewData['sheets'][$sheet] as $fieldData)	{
 				$TCEformsConfiguration = $fieldData['TCEforms']['config'];
-				$TCEformsLabel = $LANG->sL($fieldData['TCEforms']['label'], 1);	// title for non-section elements
+				$TCEformsLabel = $this->localizedFFLabel($fieldData['TCEforms']['label'], 1);	// title for non-section elements
 
 				if ($fieldData['type']=='array')	{	// Making preview for array/section parts of a FlexForm structure:
 					if (is_array($fieldData['subElements'][$lKey])) {
@@ -865,7 +865,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 						}
 					} else if ($TCEformsConfiguration['type'] != '') {
 						// Render for everything else:
-						$previewContent .= '<strong>'.$TCEformsLabel.'</strong> '. $this->link_edit(htmlspecialchars(t3lib_div::fixed_lgd_cs(strip_tags($fieldValue),200)), 'tt_content', $previewData['fullRow']['uid']).'<br />';
+						$previewContent .= '<strong>'.$TCEformsLabel.'</strong> '. (!$fieldValue ? '' : $this->link_edit(htmlspecialchars(t3lib_div::fixed_lgd_cs(strip_tags($fieldValue),200)), 'tt_content', $previewData['fullRow']['uid'])).'<br />';
 					}
 				}
 			}
@@ -1465,16 +1465,19 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * @access protected
 	 */
 	function link_edit($label, $table, $uid, $forced=FALSE)	{
-		if (!$this->translatorMode || $forced)	{
-			if($table == "pages" &&	 $this->currentLanguageUid) {
-				return '<a href="index.php?'.$this->link_getParameters().'&amp;editPageLanguageOverlay='.$this->currentLanguageUid.'">'.$label.'</a>';
+		if ($label) {
+			if (!$this->translatorMode || $forced)	{
+				if($table == "pages" &&	 $this->currentLanguageUid) {
+					return '<a href="index.php?'.$this->link_getParameters().'&amp;editPageLanguageOverlay='.$this->currentLanguageUid.'">'.$label.'</a>';
+				} else {
+					$onClick = t3lib_BEfunc::editOnClick('&edit['.$table.']['.$uid.']=edit', $this->doc->backPath);
+					return '<a style="text-decoration: none;" href="#" onclick="'.htmlspecialchars($onClick).'">'.$label.'</a>';
+				}
 			} else {
-				$onClick = t3lib_BEfunc::editOnClick('&edit['.$table.']['.$uid.']=edit', $this->doc->backPath);
-				return '<a style="text-decoration: none;" href="#" onclick="'.htmlspecialchars($onClick).'">'.$label.'</a>';
+				return $label;
 			}
-		} else {
-			return $label;
 		}
+		return '';
 	}
 
 	/**
@@ -1799,6 +1802,23 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		$displayElement |= ($this->currentLanguageUid==$subElementArr['el']['sys_language_uid']);
 
 		return $displayElement;
+	}
+	
+	/**
+	 * Returns label, localized and converted to current charset. Label must be from FlexForm (= always in UTF-8).
+	 * 
+	 * @param	string	$label	Label
+	 * @param	boolean	$hsc	<code>true</code> if HSC required
+	 * @return	string	Converted label
+	 */
+	function localizedFFLabel($label, $hsc) {
+		global	$LANG;
+		
+		$charset = $LANG->charSet;
+		$LANG->origCharSet = 'utf-8';
+		$result = $LANG->hscAndCharConv($label, $hsc);
+		$LANG->origCharSet = $charset;
+		return $result;
 	}
 }
 
