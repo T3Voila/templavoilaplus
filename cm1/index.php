@@ -2002,6 +2002,8 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 
 		$eTypeCECounter = 0;
 
+		t3lib_div::loadTCA('tt_content');		
+
 			// Traverse array
 		foreach($elArray as $key => $value)	{
 
@@ -2047,8 +2049,11 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 								'type' => 'text',
 								'cols' => '48',
 								'rows' => '5',
+								'softref' => (isset($GLOBALS['TCA']['tt_content']['columns']['bodytext']['config']['softref']) ?
+												$GLOBALS['TCA']['tt_content']['columns']['bodytext']['config']['softref'] :
+												'typolink_tag,images,email[subst],url'),
 							);
-							$elArray[$key]['TCEforms']['defaultExtras'] = 'richtext[*]:rte_transform[flag=rte_enabled|mode=ts_css]';
+							$elArray[$key]['TCEforms']['defaultExtras'] = 'richtext:rte_transform[flag=rte_enabled|mode=ts_css]';
 							$elArray[$key]['tx_templavoila']['proc']['HSC']=0;
 							$elArray[$key]['tx_templavoila']['TypoScript'] = '
 <![CDATA[
