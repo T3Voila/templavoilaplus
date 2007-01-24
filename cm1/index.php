@@ -544,6 +544,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 						// If that succeeded, create the TO as well:
 					if ($tce->substNEWwithIDs['NEW'])	{
 						$dataArr=array();
+						unset($templatemapping['MappingInfo_head']); // !!!See comment in 'updateDSandTO' for meaning of this!!!
 						$dataArr['tx_templavoila_tmplobj']['NEW']['pid']=intval($this->_saveDSandTO_pid);
 						$dataArr['tx_templavoila_tmplobj']['NEW']['title']=$this->_saveDSandTO_title.' [Template]';
 						$dataArr['tx_templavoila_tmplobj']['NEW']['datastructure']=intval($tce->substNEWwithIDs['NEW']);
@@ -558,8 +559,6 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 						$tce->start($dataArr,array());
 						$tce->process_datamap();
 
-
-
 						if ($tce->substNEWwithIDs['NEW'])	{
 							$msg[] = '<img src="'.$GLOBALS['BACK_PATH'].'gfx/icon_ok.gif" width="18" height="16" border="0" align="top" class="absmiddle" alt="" />'.sprintf($GLOBALS['LANG']->getLL('msgDSTOSaved'), $dataArr['tx_templavoila_tmplobj']['NEW']['datastructure'], $tce->substNEWwithIDs['NEW'], $this->_saveDSandTO_pid);
 						} else {
@@ -570,6 +569,10 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 					}
 
 					unset($tce);
+					
+					// Clear cached header info because saveDSandTO always resets headers
+					$sesDat['currentMappingInfo_head'] = '';
+					$GLOBALS['BE_USER']->setAndSaveSessionData($this->MCONF['name'].'_mappingInfo',$sesDat);
 				break;
 					// Updating DS and TO records:
 				case 'updateDSandTO':
@@ -599,6 +602,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 							// TO:
 						$TOuid = t3lib_BEfunc::wsMapId('tx_templavoila_tmplobj',$toREC['uid']);
 						$dataArr=array();
+						unset($templatemapping['MappingInfo_head']);	// Fix: "update mapping" shows headers as set while they are not. Problem is that they are set only for MappingInfo_head and not for MappingData_head_cached. The first is used in mapping, the second in pi1
 						$dataArr['tx_templavoila_tmplobj'][$TOuid]['fileref']=substr($this->displayFile,strlen(PATH_site));
 						$dataArr['tx_templavoila_tmplobj'][$TOuid]['templatemapping']=serialize($templatemapping);
 						$dataArr['tx_templavoila_tmplobj'][$TOuid]['fileref_mtime'] = @filemtime($this->displayFile);
@@ -613,6 +617,10 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 						unset($tce);
 
 						$msg[] = '<img src="'.$GLOBALS['BACK_PATH'].'gfx/icon_note.gif" width="18" height="16" border="0" align="top" class="absmiddle" alt="" />'.sprintf($GLOBALS['LANG']->getLL('msgDSTOUpdated'), $dsREC['uid'], $toREC['uid']);
+
+						// Clear cached header info because updateDSandTO always resets headers
+						$sesDat['currentMappingInfo_head'] = '';
+						$GLOBALS['BE_USER']->setAndSaveSessionData($this->MCONF['name'].'_mappingInfo',$sesDat);
 					}
 				break;
 			}
@@ -1076,7 +1084,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 								-->
 							<h3>'.$GLOBALS['LANG']->getLL('mappingHeadParts').': '.$this->cshItem('xMOD_tx_templavoila','mapping_to_headerParts',$this->doc->backPath,'').'</h3>
 								'.$this->renderHeaderSelection($theFile,$currentHeaderMappingInfo,$showBodyTag,$editContent);
-
+debug(array('$currentHeaderMappingInfo'=>$currentHeaderMappingInfo,'$showBodyTag'=>$showBodyTag), 'renderHeaderSelection');
 							$parts[] = array(
 								'label' => $GLOBALS['LANG']->getLL('tabHeadParts'),
 								'content' => $headerContent
@@ -1170,6 +1178,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			// Set current mapping info arrays:
 		$currentMappingInfo_head = is_array($sesDat['currentMappingInfo_head']) ? $sesDat['currentMappingInfo_head'] : array();
 		$currentMappingInfo = is_array($sesDat['currentMappingInfo']) ? $sesDat['currentMappingInfo'] : array();
+debug(array('$addBodyTag'=>t3lib_div::GPvar('addBodyTag'),'$currentMappingInfo_head'=>$currentMappingInfo_head, '$currentMappingInfo'=>$currentMappingInfo), 'renderTO_editProcessing');
 		$this->cleanUpMappingInfoAccordingToDS($currentMappingInfo,$dataStruct);
 
 		// Perform processing for head
@@ -1180,6 +1189,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			// Update session data:
 		if ($cmd=='reload_from' || $cmd=='clear')	{
 			$currentMappingInfo_head = is_array($templatemapping['MappingInfo_head'])&&$cmd!='clear' ? $templatemapping['MappingInfo_head'] : array();
+debug($currentMappingInfo_head, '$currentMappingInfo_head-2');
 			$sesDat['currentMappingInfo_head'] = $currentMappingInfo_head;
 			$GLOBALS['BE_USER']->setAndSaveSessionData($this->MCONF['name'].'_mappingInfo',$sesDat);
 		} else {
@@ -1188,6 +1198,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 					'headElementPaths' => $checkboxElement,
 					'addBodyTag' => $addBodyTag?1:0
 				);
+debug($currentMappingInfo_head, '$currentMappingInfo_head-3');
 				$GLOBALS['BE_USER']->setAndSaveSessionData($this->MCONF['name'].'_mappingInfo',$sesDat);
 			}
 		}
@@ -1221,7 +1232,8 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 
 				// Getting cached data:
 			reset($dataStruct);
-			$firstKey = key($dataStruct);
+			$firstKey = 'ROOT';//key($dataStruct);
+debug($firstKey, '$firstKey');
 			if ($firstKey)	{
 					// Init; read file, init objects:
 				$fileContent = t3lib_div::getUrl($theFile);
