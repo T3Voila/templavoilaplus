@@ -1101,7 +1101,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 								-->
 							<h3>'.$GLOBALS['LANG']->getLL('mappingHeadParts').': '.$this->cshItem('xMOD_tx_templavoila','mapping_to_headerParts',$this->doc->backPath,'').'</h3>
 								'.$this->renderHeaderSelection($theFile,$currentHeaderMappingInfo,$showBodyTag,$editContent);
-debug(array('$currentHeaderMappingInfo'=>$currentHeaderMappingInfo,'$showBodyTag'=>$showBodyTag), 'renderHeaderSelection');
+
 							$parts[] = array(
 								'label' => $GLOBALS['LANG']->getLL('tabHeadParts'),
 								'content' => $headerContent
@@ -1195,7 +1195,6 @@ debug(array('$currentHeaderMappingInfo'=>$currentHeaderMappingInfo,'$showBodyTag
 			// Set current mapping info arrays:
 		$currentMappingInfo_head = is_array($sesDat['currentMappingInfo_head']) ? $sesDat['currentMappingInfo_head'] : array();
 		$currentMappingInfo = is_array($sesDat['currentMappingInfo']) ? $sesDat['currentMappingInfo'] : array();
-debug(array('$addBodyTag'=>t3lib_div::GPvar('addBodyTag'),'$currentMappingInfo_head'=>$currentMappingInfo_head, '$currentMappingInfo'=>$currentMappingInfo), 'renderTO_editProcessing');
 		$this->cleanUpMappingInfoAccordingToDS($currentMappingInfo,$dataStruct);
 
 		// Perform processing for head
@@ -1206,7 +1205,6 @@ debug(array('$addBodyTag'=>t3lib_div::GPvar('addBodyTag'),'$currentMappingInfo_h
 			// Update session data:
 		if ($cmd=='reload_from' || $cmd=='clear')	{
 			$currentMappingInfo_head = is_array($templatemapping['MappingInfo_head'])&&$cmd!='clear' ? $templatemapping['MappingInfo_head'] : array();
-debug($currentMappingInfo_head, '$currentMappingInfo_head-2');
 			$sesDat['currentMappingInfo_head'] = $currentMappingInfo_head;
 			$GLOBALS['BE_USER']->setAndSaveSessionData($this->MCONF['name'].'_mappingInfo',$sesDat);
 		} else {
@@ -1215,7 +1213,6 @@ debug($currentMappingInfo_head, '$currentMappingInfo_head-2');
 					'headElementPaths' => $checkboxElement,
 					'addBodyTag' => $addBodyTag?1:0
 				);
-debug($currentMappingInfo_head, '$currentMappingInfo_head-3');
 				$GLOBALS['BE_USER']->setAndSaveSessionData($this->MCONF['name'].'_mappingInfo',$sesDat);
 			}
 		}
@@ -1473,11 +1470,9 @@ debug($currentMappingInfo_head, '$currentMappingInfo_head-3');
 		if (t3lib_div::inList('body,span,h1,h2,h3,h4,h5,h6,div,td,p,b,i,u,a',$lastEl['el']))	{
 			$optDat = array_reverse($optDat);
 		}
-#debug($lastEl);
-#debug($this->markupObj->elParentLevel);
+
 			// Add options for "samelevel" elements:
 		$sameLevelElements = $this->markupObj->elParentLevel[$lastEl['parent']];
-#debug($sameLevelElements);
 		if (is_array($sameLevelElements))	{
 			$startFound=0;
 			foreach($sameLevelElements as $rEl) 	{
