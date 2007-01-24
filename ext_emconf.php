@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext: "templavoila"
 #
-# Auto generated 24-01-2007 13:45
+# Auto generated 24-01-2007 13:49
 #
 # Manual updates:
 # Only the data in the array - anything else is removed by next write.
