@@ -478,20 +478,39 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 					// Template mapping prepared:
 				$templatemapping=array();
 				$templatemapping['MappingInfo'] = $currentMappingInfo;
-				if (isset ($sesDat['currentMappingInfo_head'])) $templatemapping['MappingInfo_head'] = $sesDat['currentMappingInfo_head'];
+				if (isset($sesDat['currentMappingInfo_head'])) {
+					$templatemapping['MappingInfo_head'] = $sesDat['currentMappingInfo_head'];
+				}
 
 					// Getting cached data:
 				reset($dataStruct);
-				#$firstKey = key($dataStruct);
-				$firstKey='ROOT';
-				if ($firstKey)	{
-					$fileContent = t3lib_div::getUrl($this->displayFile);
-					$htmlParse = t3lib_div::makeInstance('t3lib_parsehtml');
-					$relPathFix = dirname(substr($this->displayFile,strlen(PATH_site))).'/';
-					$fileContent = $htmlParse->prefixResourcePath($relPathFix,$fileContent);
-					$this->markupObj = t3lib_div::makeInstance('tx_templavoila_htmlmarkup');
-					$contentSplittedByMapping = $this->markupObj->splitContentToMappingInfo($fileContent,$currentMappingInfo);
-					$templatemapping['MappingData_cached'] = $contentSplittedByMapping['sub'][$firstKey];
+				$fileContent = t3lib_div::getUrl($this->displayFile);
+				$htmlParse = t3lib_div::makeInstance('t3lib_parsehtml');
+				$relPathFix = dirname(substr($this->displayFile,strlen(PATH_site))).'/';
+				$fileContent = $htmlParse->prefixResourcePath($relPathFix,$fileContent);
+				$this->markupObj = t3lib_div::makeInstance('tx_templavoila_htmlmarkup');
+				$contentSplittedByMapping = $this->markupObj->splitContentToMappingInfo($fileContent,$currentMappingInfo);
+				$templatemapping['MappingData_cached'] = $contentSplittedByMapping['sub']['ROOT'];
+
+				list($html_header) =  $this->markupObj->htmlParse->getAllParts($htmlParse->splitIntoBlock('head',$fileContent),1,0);
+				$this->markupObj->tags = $this->head_markUpTags;	// Set up the markupObject to process only header-section tags:
+
+				if (isset($templatemapping['MappingInfo_head'])) {
+					$h_currentMappingInfo=array();
+					$currentMappingInfo_head = $templatemapping['MappingInfo_head'];
+					if (is_array($currentMappingInfo_head['headElementPaths']))	{
+						foreach($currentMappingInfo_head['headElementPaths'] as $kk => $vv)	{
+							$h_currentMappingInfo['el_'.$kk]['MAP_EL'] = $vv;
+						}
+					}
+	
+					$contentSplittedByMapping = $this->markupObj->splitContentToMappingInfo($html_header,$h_currentMappingInfo);
+					$templatemapping['MappingData_head_cached'] = $contentSplittedByMapping;
+					
+						// Get <body> tag:
+					$reg='';
+					eregi('<body[^>]*>',$fileContent,$reg);
+					$templatemapping['BodyTag_cached'] = $currentMappingInfo_head['addBodyTag'] ? $reg[0] : '';
 				}
 				
 				if ($cmd != 'showXMLDS') {
@@ -544,7 +563,6 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 						// If that succeeded, create the TO as well:
 					if ($tce->substNEWwithIDs['NEW'])	{
 						$dataArr=array();
-						unset($templatemapping['MappingInfo_head']); // !!!See comment in 'updateDSandTO' for meaning of this!!!
 						$dataArr['tx_templavoila_tmplobj']['NEW']['pid']=intval($this->_saveDSandTO_pid);
 						$dataArr['tx_templavoila_tmplobj']['NEW']['title']=$this->_saveDSandTO_title.' [Template]';
 						$dataArr['tx_templavoila_tmplobj']['NEW']['datastructure']=intval($tce->substNEWwithIDs['NEW']);
@@ -602,7 +620,6 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 							// TO:
 						$TOuid = t3lib_BEfunc::wsMapId('tx_templavoila_tmplobj',$toREC['uid']);
 						$dataArr=array();
-						unset($templatemapping['MappingInfo_head']);	// Fix: "update mapping" shows headers as set while they are not. Problem is that they are set only for MappingInfo_head and not for MappingData_head_cached. The first is used in mapping, the second in pi1
 						$dataArr['tx_templavoila_tmplobj'][$TOuid]['fileref']=substr($this->displayFile,strlen(PATH_site));
 						$dataArr['tx_templavoila_tmplobj'][$TOuid]['templatemapping']=serialize($templatemapping);
 						$dataArr['tx_templavoila_tmplobj'][$TOuid]['fileref_mtime'] = @filemtime($this->displayFile);
@@ -1232,41 +1249,37 @@ debug($currentMappingInfo_head, '$currentMappingInfo_head-3');
 
 				// Getting cached data:
 			reset($dataStruct);
-			$firstKey = 'ROOT';//key($dataStruct);
-debug($firstKey, '$firstKey');
-			if ($firstKey)	{
-					// Init; read file, init objects:
-				$fileContent = t3lib_div::getUrl($theFile);
-				$htmlParse = t3lib_div::makeInstance('t3lib_parsehtml');
-				$this->markupObj = t3lib_div::makeInstance('tx_templavoila_htmlmarkup');
+				// Init; read file, init objects:
+			$fileContent = t3lib_div::getUrl($theFile);
+			$htmlParse = t3lib_div::makeInstance('t3lib_parsehtml');
+			$this->markupObj = t3lib_div::makeInstance('tx_templavoila_htmlmarkup');
 
-					// Fix relative paths in source:
-				$relPathFix=dirname(substr($theFile,strlen(PATH_site))).'/';
-				$fileContent = $htmlParse->prefixResourcePath($relPathFix,$fileContent);
+				// Fix relative paths in source:
+			$relPathFix=dirname(substr($theFile,strlen(PATH_site))).'/';
+			$fileContent = $htmlParse->prefixResourcePath($relPathFix,$fileContent);
 
-					// Get BODY content for caching:
-				$contentSplittedByMapping=$this->markupObj->splitContentToMappingInfo($fileContent,$currentMappingInfo);
-				$templatemapping['MappingData_cached']=$contentSplittedByMapping['sub'][$firstKey];
+				// Get BODY content for caching:
+			$contentSplittedByMapping=$this->markupObj->splitContentToMappingInfo($fileContent,$currentMappingInfo);
+			$templatemapping['MappingData_cached'] = $contentSplittedByMapping['sub']['ROOT'];
 
-					// Get HEAD content for caching:
-				list($html_header) =  $this->markupObj->htmlParse->getAllParts($htmlParse->splitIntoBlock('head',$fileContent),1,0);
-				$this->markupObj->tags = $this->head_markUpTags;	// Set up the markupObject to process only header-section tags:
+				// Get HEAD content for caching:
+			list($html_header) =  $this->markupObj->htmlParse->getAllParts($htmlParse->splitIntoBlock('head',$fileContent),1,0);
+			$this->markupObj->tags = $this->head_markUpTags;	// Set up the markupObject to process only header-section tags:
 
-				$h_currentMappingInfo=array();
-				if (is_array($currentMappingInfo_head['headElementPaths']))	{
-					foreach($currentMappingInfo_head['headElementPaths'] as $kk => $vv)	{
-						$h_currentMappingInfo['el_'.$kk]['MAP_EL'] = $vv;
-					}
+			$h_currentMappingInfo=array();
+			if (is_array($currentMappingInfo_head['headElementPaths']))	{
+				foreach($currentMappingInfo_head['headElementPaths'] as $kk => $vv)	{
+					$h_currentMappingInfo['el_'.$kk]['MAP_EL'] = $vv;
 				}
-
-				$contentSplittedByMapping = $this->markupObj->splitContentToMappingInfo($html_header,$h_currentMappingInfo);
-				$templatemapping['MappingData_head_cached']=$contentSplittedByMapping;
-
-					// Get <body> tag:
-				$reg='';
-				eregi('<body[^>]*>',$fileContent,$reg);
-				$templatemapping['BodyTag_cached'] = $currentMappingInfo_head['addBodyTag'] ? $reg[0] : '';
 			}
+
+			$contentSplittedByMapping = $this->markupObj->splitContentToMappingInfo($html_header,$h_currentMappingInfo);
+			$templatemapping['MappingData_head_cached'] = $contentSplittedByMapping;
+
+				// Get <body> tag:
+			$reg='';
+			eregi('<body[^>]*>',$fileContent,$reg);
+			$templatemapping['BodyTag_cached'] = $currentMappingInfo_head['addBodyTag'] ? $reg[0] : '';
 
 			$TOuid = t3lib_BEfunc::wsMapId('tx_templavoila_tmplobj',$row['uid']);
 			$dataArr['tx_templavoila_tmplobj'][$TOuid]['templatemapping'] = serialize($templatemapping);
@@ -2719,6 +2732,18 @@ debug($firstKey, '$firstKey');
 		}
 		return '';
 	}
+
+	function buildCachedMappingInfo_head($currentMappingInfo_head, $html_header) {
+		$h_currentMappingInfo=array();
+		if (is_array($currentMappingInfo_head['headElementPaths']))	{
+			foreach($currentMappingInfo_head['headElementPaths'] as $kk => $vv)	{
+				$h_currentMappingInfo['el_'.$kk]['MAP_EL'] = $vv;
+			}
+		}
+
+		return $this->markupObj->splitContentToMappingInfo($html_header,$h_currentMappingInfo);
+	}
+
 }
 
 if (!function_exists('md5_file')) {
