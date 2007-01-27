@@ -258,6 +258,7 @@ class tx_templavoila_mod1_sidebar {
 
 		t3lib_div::loadTCA('pages');
 		$conf = $TCA['pages']['columns']['tx_templavoila_flex']['config'];
+
 		$dataStructureArr = t3lib_BEfunc::getFlexFormDS($conf, $pObj->rootElementRecord, 'pages');
 
 		if (is_array($dataStructureArr) && is_array ($dataStructureArr['ROOT']['tx_templavoila']['pageModule'])) {
@@ -274,7 +275,7 @@ class tx_templavoila_mod1_sidebar {
 						'table' => $table,
 						'field' => $field,
 						'label' => $LANG->sL(t3lib_BEfunc::getItemLabel('pages',$field)),
-						'value' => t3lib_BEfunc::getProcessedValue('pages', $field, $pObj->currentPageRecord[$field],200)
+						'value' => t3lib_BEfunc::getProcessedValue('pages', $field, $pObj->rootElementRecord[$field],200)
 					);
 				}
 				if (count($headerFields)) {

@@ -1,6 +1,7 @@
 2007-01-27  Dmitry Dulepov  <dmitry@typo3.org>
 
  # Fixed character conversion problem that appeared in 1.2.0
+ # Fixed empty field values in "Page related information" tab
 
 2007-01-24  Dmitry Dulepov  <dmitry@typo3.org>
 
