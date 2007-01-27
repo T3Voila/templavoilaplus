@@ -700,12 +700,12 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	function render_framework_subElements($elementContentTreeArr, $languageKey, $sheet){
 		global $LANG;
 
+		$beTemplate = '';
+		$flagRenderBeLayout = false;
+
 			// Define l/v keys for current language:
 		$langChildren = intval($elementContentTreeArr['ds_meta']['langChildren']);
 		$langDisable = intval($elementContentTreeArr['ds_meta']['langDisable']);
-			// Get's only used internally in this method. Localization info preview will still be rendered in appropriate language
-#		$lKey = ($langDisable || ($this->rootElementLangParadigm =='bound') ) ? 'lDEF' : ($langChildren ? 'lDEF' : 'l'.$languageKey);
-#		$vKey = ($langDisable || ($this->rootElementLangParadigm =='bound') ) ? 'vDEF' : ($langChildren ? 'v'.$languageKey : 'vDEF');
 
 		$lKey = $langDisable ? 'lDEF' : ($langChildren ? 'lDEF' : 'l'.$languageKey);
 		$vKey = $langDisable ? 'vDEF' : ($langChildren ? 'v'.$languageKey : 'vDEF');
@@ -715,6 +715,12 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		$output = '';
 		$cells = array();
 		$headerCells = array();
+
+				// gets the layout
+		$beTemplate = $elementContentTreeArr['ds_meta']['beLayout'];
+
+				// no layout, no special rendering 
+		$flagRenderBeLayout = $beTemplate? TRUE : FALSE;
 
 			// Traverse container fields:
 		foreach($elementContentTreeArr['sub'][$sheet][$lKey] as $fieldID => $fieldValuesContent)	{
@@ -778,9 +784,21 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				}
 
 					// Add cell content to registers:
-				$headerCells[]='<td valign="top" width="'.round(100/count($elementContentTreeArr['sub'][$sheet][$lKey])).'%" style="background-color: '.$this->doc->bgColor4.'; padding-top:0; padding-bottom:0;">'.$LANG->sL($fieldContent['meta']['title'],1).'</td>';
-				$cells[]='<td valign="top" width="'.round(100/count($elementContentTreeArr['sub'][$sheet][$lKey])).'%" style="border: 1px dashed #666666; padding: 5px 5px 5px 5px;">'.$cellContent.'</td>';
+				if ($flagRenderBeLayout==TRUE) {
+					$beTemplateCell = '<table width="100%" class="beTemplateCell"><tr><td valign="top" style="background-color: '.$this->doc->bgColor4.'; padding-top:0; padding-bottom:0;">'.$LANG->sL($fieldContent['meta']['title'],1).'</td></tr><tr><td valign="top" style="padding: 5px;">'.$cellContent.'</td></tr></table>';
+					$beTemplate = str_replace('###'.$fieldID.'###', $beTemplateCell, $beTemplate);
+				} else {
+							// Add cell content to registers:
+					$headerCells[]='<td valign="top" width="'.round(100/count($elementContentTreeArr['sub'][$sheet][$lKey])).'%" style="background-color: '.$this->doc->bgColor4.'; padding-top:0; padding-bottom:0;">'.$LANG->sL($fieldContent['meta']['title'],1).'</td>';
+					$cells[]='<td valign="top" width="'.round(100/count($elementContentTreeArr['sub'][$sheet][$lKey])).'%" style="border: 1px dashed #000; padding: 5px 5px 5px 5px;">'.$cellContent.'</td>';
+				}
 			}
+		}
+
+		if ($flagRenderBeLayout) {
+			// removes not used markers
+			$beTemplate = preg_replace("/###field_.*?###/", '', $beTemplate);
+			return $beTemplate;
 		}
 
 			// Compile the content area for the current element (basically what was put together above):

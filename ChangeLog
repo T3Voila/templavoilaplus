@@ -5,6 +5,7 @@
  # Fixed problem with preserving <meta> tag during "Modify DS/TO" (this allows me_templavoilalayout and localization to retain its data)
  # Fixed bug #3143: New Content Element is created as Reference
  # Fixed bug #3958: New content created as a reference after a reference
+ # Fixed bug #4650: respect me_templavoilalayout
  + Feature request #4847: Access control for DS/TO
 
 2007-01-24  Dmitry Dulepov  <dmitry@typo3.org>
