@@ -183,11 +183,8 @@ class tx_templavoila_api {
 
 		if ($destinationPointer['position'] > 0) {
 			$currentReferencesArr = $this->flexform_getElementReferencesFromXML ($parentRecord['tx_templavoila_flex'], $destinationPointer);
-			$uidOfBeforeElement = $currentReferencesArr[$destinationPointer['position']];
-			$newRecordPid = -$uidOfBeforeElement;
-		} else {
-			$newRecordPid = ($destinationPointer['table'] == 'pages' ? ($parentRecord['pid'] == -1 && $parentRecord['t3ver_swapmode'] == -1 ? $parentRecord['t3ver_oid'] : $parentRecord['uid']) : $parentRecord['pid']);
 		}
+		$newRecordPid = ($destinationPointer['table'] == 'pages' ? ($parentRecord['pid'] == -1 && $parentRecord['t3ver_swapmode'] == -1 ? $parentRecord['t3ver_oid'] : $parentRecord['uid']) : $parentRecord['pid']);
 
 		$dataArr = array();
 		$dataArr['tt_content']['NEW'] = $row;

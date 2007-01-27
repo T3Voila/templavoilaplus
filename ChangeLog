@@ -3,6 +3,8 @@
  # Fixed character conversion problem that appeared in 1.2.0
  # Fixed empty field values in "Page related information" tab (bug #4576)
  # Fixed problem with preserving <meta> tag during "Modify DS/TO" (this allows me_templavoilalayout and localization to retain its data)
+ # Fixed bug #3143: New Content Element is created as Reference
+ # Fixed bug #3958: New content created as a reference after a reference
  + Feature request #4847: Access control for DS/TO
 
 2007-01-24  Dmitry Dulepov  <dmitry@typo3.org>
