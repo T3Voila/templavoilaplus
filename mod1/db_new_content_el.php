@@ -190,9 +190,6 @@ class tx_templavoila_dbnewcontentel {
 						// href URI for icon/title:
 					$newRecordLink = 'index.php?'.$this->linkParams().'&createNewRecord='.rawurlencode($this->parentRecord).$wizardItem['params'];
 
-#  http://localhost/t3dev/t3dev_templavoila/typo3/ext/templavoila/mod1/index.php?id=1948&createNewRecord=pages%3A1948%3AsDEF%3AlDEF%3Afield_content%3AvDEF%3A0&defVals[tt_content][CType]=text
-#  http://localhost/t3dev/t3dev_templavoila/typo3/ext/templavoila/mod1/index.php?id=1948&createNewRecord=&defVals[tt_content][CType]=text
-
 						// Icon:
 					$iInfo = @getimagesize($wizardItem['icon']);
 					$tableLinks[]='<a href="'.$newRecordLink.'"><img'.t3lib_iconWorks::skinImg($this->doc->backPath,$wizardItem['icon'],'').' alt="" /></a>';
@@ -376,10 +373,11 @@ class tx_templavoila_dbnewcontentel {
         $storageFolderPID = $this->apiObj->getStorageFolderPid($positionPid);
 
         	// Fetch data structures stored in the database:
+        $addWhere = $this->buildRecordWhere('tx_templavoila_datastructure');
         $res = $TYPO3_DB->exec_SELECTquery(
         	'*',
         	'tx_templavoila_datastructure',
-        	'pid='.intval($storageFolderPID).' AND scope=2'.
+        	'pid='.intval($storageFolderPID).' AND scope=2' . $addWhere .
         		t3lib_BEfunc::deleteClause('tx_templavoila_datastructure').
         		t3lib_BEfunc::versioningPlaceholderClause('tx_templavoila_datastructure')
         );
@@ -397,10 +395,11 @@ class tx_templavoila_dbnewcontentel {
 
 			// Fetch all template object records which uare based one of the previously fetched data structures:
 		$templateObjectRecords = array();
+        $addWhere = $this->buildRecordWhere('tx_templavoila_tmplobj');
 		$res = $TYPO3_DB->exec_SELECTquery(
 			'*',
 			'tx_templavoila_tmplobj',
-			'pid='.intval($storageFolderPID).' AND parent=0'.
+			'pid='.intval($storageFolderPID).' AND parent=0' . $addWhere .
 				t3lib_BEfunc::deleteClause('tx_templavoila_tmplobj').
 				t3lib_BEfunc::versioningPlaceholderClause('tx_templavoila_tmpl')
 		);
@@ -500,6 +499,28 @@ class tx_templavoila_dbnewcontentel {
 			list ($itemCategory, $dummy) = explode('_', $key);
 			if (!isset ($headersUsed[$itemCategory])) unset ($wizardItems[$key]);
 		}
+	}
+
+	/**
+	 * Create sql condition for given table to limit records according to user access.
+	 * 
+	 * @param	string	$table	Table nme to fetch records from
+	 * @return	string	Condition or empty string
+	 */
+	function buildRecordWhere($table) {
+		$result = array();
+		if (!$GLOBALS['BE_USER']->isAdmin()) {
+			$prefLen = strlen($table) + 1;
+			foreach($GLOBALS['BE_USER']->userGroups as $group) {
+				$items = t3lib_div::trimExplode(',', $group['tx_templavoila_access'], 1);
+				foreach ($items as $ref) {
+					if (strstr($ref, $table)) { 
+						$result[] = intval(substr($ref, $prefLen));
+					}
+				}
+			}
+		}
+		return (count($result) > 0 ? ' AND uid NOT IN (' . implode(',', $result) . ') ' : '');
 	}
 }
 

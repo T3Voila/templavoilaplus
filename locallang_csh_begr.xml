@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+    <meta type="array">
+        <description>CSH for Template Objects</description>
+        <type>CSH</type>
+        <csh_table>tx_templavoila_tmplobj</csh_table>
+        <fileId>EXT:templavoila/locallang_csh_to.xml</fileId>
+        <labelContext type="array">
+            <languageKey index="tx_templavoila_access.description"></languageKey>
+        </labelContext>
+    </meta>
+    <data type="array">
+        <languageKey index="default" type="array">
+            <label index="tx_templavoila_access.description">Select TemplaVoila objects to disallow access to. Notice that disallowing access to DS (data structure) implicitly disallows access to any TO (template object) associated with this DS.</label>
+            <label index="datastructure.description">Select data structure of this template object</label>
+            <label index="fileref.description">Reference to a file to map with this template object</label>
+            <label index="templatemapping.description"></label>
+            <label index="previewicon.description">Select preview icon (optional)</label>
+            <label index="description.description">Description of this template object</label>
+            <label index="rendertype.description">Select rendering type</label>
+            <label index="sys_language_uid.description"></label>
+            <label index="parent.description">Select parent template</label>
+            <label index="localprocessing.description">Local processing XML overrides parts of Data Source XML. If you want to override parts of DS XML, enter it here</label>
+            <label index="enableaccessctrl.description">Access control for this template object. To enable access control, check the box</label>
+            <!--label index="enableaccesscontrol.description">Enables access control for this template object</label-->
+            <label index="access.description">Lists groups and users. Select users and/or groups that will have access to this template object</label>
+        </languageKey>
+    </data>
+    <orig_hash type="array">
+        <languageKey index="default" type="array">
+            <label index=".description" type="integer">95180219</label>
+            <label index="title.description" type="integer">87767953</label>
+            <label index="datastructure.description" type="integer">113990032</label>
+            <label index="fileref.description" type="integer">143409306</label>
+            <label index="templatemapping.description" type="integer">33544004</label>
+            <label index="previewicon.description" type="integer">52887752</label>
+            <label index="description.description" type="integer">173968958</label>
+            <label index="rendertype.description" type="integer">69956224</label>
+            <label index="sys_language_uid.description" type="integer">49473317</label>
+            <label index="parent.description" type="integer">112861773</label>
+            <label index="localprocessing.description" type="integer">108707299</label>
+        </languageKey>
+    </orig_hash>
+    <orig_text type="array">
+        <languageKey index="default" type="array">
+        </languageKey>
+    </orig_text>
+</T3locallang>

@@ -91,6 +91,7 @@ class tx_templavoila_handleStaticDataStructures {
 				}
 			}
 		}
+		tx_templavoila_handleStaticDataStructures::check_permissions($params, $pObj);
 	}
 
 	/**
@@ -109,6 +110,7 @@ class tx_templavoila_handleStaticDataStructures {
 				}
 			}
 		}
+		tx_templavoila_handleStaticDataStructures::check_permissions($params, $pObj);
 	}
 
 	/**
@@ -144,6 +146,49 @@ class tx_templavoila_handleStaticDataStructures {
 					$icon='../'.$GLOBALS['TCA']['tx_templavoila_tmplobj']['columns']['previewicon']['config']['uploadfolder'].'/'.$row['previewicon'];
 				} else $icon='';
 				$params['items'][]=Array($row['title'],$row['uid'],$icon);
+			}
+		}
+	}
+
+	/**
+	 * Adds static data structures to selector box items arrays.
+	 * Adds only structures for Page Templates
+	 *
+	 * @param	array		Array of items passed by reference.
+	 * @param	object		The parent object (t3lib_TCEforms / t3lib_transferData depending on context)
+	 * @return	void
+	 */
+	function check_permissions(&$params,&$pObj) {
+		global	$BE_USER;
+		
+		if ($BE_USER->isAdmin()) {
+			return;
+		}
+		foreach ($BE_USER->userGroups as $group) {
+			// Get list of DS & TO
+			$items = t3lib_div::trimExplode(',', $group['tx_templavoila_access'], true);
+
+			foreach ($items as $ref) {
+				if (strstr($ref, 'tx_templavoila_tmplobj_')) {
+					$value1 = $params['row']['tx_templavoila_to'];
+					$value2 = ($params['table'] == 'pages' ? $params['row']['tx_templavoila_next_to'] : -1);
+					$test = substr($ref, 23);
+				}		
+				else {
+					$value1 = $params['row']['tx_templavoila_ds'];
+					$value2 = ($params['table'] == 'pages' ? $params['row']['tx_templavoila_next_ds'] : -1);
+					$test = substr($ref, 29);
+				}
+
+				if ($test == $value1 || $test == $value2) {
+					continue;
+				}
+
+				foreach ($params['items'] as $key => $item) {
+					if ($item[1] == $test) {
+						unset($params['items'][$key]);
+					}
+				}
 			}
 		}
 	}

@@ -26,6 +26,7 @@ if (TYPO3_MODE=='BE') {
 	}
 
 		// Registering CSH:
+	t3lib_extMgm::addLLrefForTCAdescr('be_groups','EXT:templavoila/locallang_csh_begr.xml');
 	t3lib_extMgm::addLLrefForTCAdescr('pages','EXT:templavoila/locallang_csh_pages.xml');
 	t3lib_extMgm::addLLrefForTCAdescr('tt_content','EXT:templavoila/locallang_csh_ttc.xml');
 	t3lib_extMgm::addLLrefForTCAdescr('tx_templavoila_datastructure','EXT:templavoila/locallang_csh_ds.xml');
@@ -87,6 +88,28 @@ $TCA['tx_templavoila_datastructure'] = Array (
 t3lib_extMgm::allowTableOnStandardPages('tx_templavoila_datastructure');
 t3lib_extMgm::allowTableOnStandardPages('tx_templavoila_tmplobj');
 
+
+	// Adding access list to be_groups
+t3lib_div::loadTCA('be_groups');
+$tempColumns = array (
+	'tx_templavoila_access' => array(
+		'label' => 'LLL:EXT:templavoila/locallang_db.xml:be_groups.tx_templavoila_access', 
+		'config' => Array (
+			'type' => 'group',
+			'internal_type' => 'db',
+			'allowed' => 'tx_templavoila_datastructure,tx_templavoila_tmplobj',
+			'prepend_tname' => 1,
+			'size' => 5,
+			'autoSizeMax' => 15,
+			'multiple' => 1,
+			'minitems' => 0,
+			'maxitems' => 1000,
+			'show_thumbs'=> 1,
+		),
+	)
+);
+t3lib_extMgm::addTCAcolumns('be_groups', $tempColumns, 1);
+t3lib_extMgm::addToAllTCAtypes('be_groups','tx_templavoila_access;;;;1-1-1', '1');
 
 	// Adding the new content element, "Flexible Content":
 t3lib_div::loadTCA('tt_content');

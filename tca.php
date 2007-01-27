@@ -160,7 +160,7 @@ $TCA['tx_templavoila_tmplobj'] = Array (
 		),
 	),
 	'types' => Array (
-		'0' => Array('showitem' => 'title;;;;2-2-2, parent, fileref, datastructure;;;;3-3-3, rendertype_ref, previewicon,description,localprocessing;;;;1-1-1'),
+		'0' => Array('showitem' => 'title;;;;2-2-2, parent, fileref, datastructure;;;;3-3-3, rendertype_ref, previewicon, description, localprocessing;;;;1-1-1'),
 		'1' => Array('showitem' => 'title;;;;2-2-2, parent, fileref, sys_language_uid;;;;3-3-3, rendertype,localprocessing;;;;1-1-1')
 	)
 );

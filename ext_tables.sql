@@ -92,3 +92,10 @@ CREATE TABLE pages (
     tx_templavoila_flex mediumtext NOT NULL,
 
 );
+
+#
+# Table structure for table 'be_groups'
+#
+CREATE TABLE be_groups (
+	tx_templavoila_access text NOT NULL,
+);
