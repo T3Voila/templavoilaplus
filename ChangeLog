@@ -2,6 +2,7 @@
 
  # Fixed character conversion problem that appeared in 1.2.0
  # Fixed empty field values in "Page related information" tab
+ # Fixed problem with preserving <meta> tag during "Modify DS/TO" (this allows me_templavoilalayout and localization to retain its data)
 
 2007-01-24  Dmitry Dulepov  <dmitry@typo3.org>
 

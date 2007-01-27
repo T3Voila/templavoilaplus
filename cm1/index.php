@@ -414,12 +414,12 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 					$dsREC = t3lib_BEfunc::getRecordWSOL('tx_templavoila_datastructure',$toREC['datastructure']);
 
 					$ds = t3lib_div::xml2array($dsREC['dataprot']);
-					$sesDat['dataStruct']['ROOT'] = $sesDat['autoDS']['ROOT'] = $ds['ROOT'];
+					$sesDat['dataStruct'] = $sesDat['autoDS'] = $ds; // Just set $ds, not only its ROOT! Otherwise <meta> will be lost.
 					$GLOBALS['BE_USER']->setAndSaveSessionData($this->MCONF['name'].'_mappingInfo',$sesDat);
 				} else {
 					$ds = t3lib_div::xml2array($this->_load_ds_xml_content);
 					$sesDat=array();
-					$sesDat['dataStruct']['ROOT'] = $sesDat['autoDS']['ROOT'] = $ds['ROOT'];
+					$sesDat['dataStruct'] = $sesDat['autoDS'] = $ds;
 					$GLOBALS['BE_USER']->setAndSaveSessionData($this->MCONF['name'].'_mappingInfo',$sesDat);
 				}
 			}
@@ -466,7 +466,6 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 				case 'DS_element_DELETE':
 					$ref = explode('][',substr($this->DS_element_DELETE,1,-1));
 					$this->unsetArrayPath($dataStruct,$ref);
-
 					$sesDat['dataStruct'] = $sesDat['autoDS'] = $dataStruct;
 					$GLOBALS['BE_USER']->setAndSaveSessionData($this->MCONF['name'].'_mappingInfo',$sesDat);
 				break;
@@ -551,7 +550,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 						// Modifying data structure with conversion of preset values for field types to actual settings:
 					$storeDataStruct = $dataStruct;
 					if (is_array($storeDataStruct['ROOT']['el'])) $this->substEtypeWithRealStuff($storeDataStruct['ROOT']['el'],$contentSplittedByMapping['sub']['ROOT'],$dataArr['tx_templavoila_datastructure']['NEW']['scope']);
-					$dataProtXML = t3lib_div::array2xml_cs($storeDataStruct,'T3DataStructure');
+					$dataProtXML = t3lib_div::array2xml_cs($storeDataStruct,'T3DataStructure', array('useCDATA' => 1));
 					$dataArr['tx_templavoila_datastructure']['NEW']['dataprot'] = $dataProtXML;
 
 						// Init TCEmain object and store:
@@ -608,7 +607,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 							// Modifying data structure with conversion of preset values for field types to actual settings:
 						$storeDataStruct=$dataStruct;
 						if (is_array($storeDataStruct['ROOT']['el']))		$this->substEtypeWithRealStuff($storeDataStruct['ROOT']['el'],$contentSplittedByMapping['sub']['ROOT'],$dsREC['scope']);
-						$dataProtXML = t3lib_div::array2xml_cs($storeDataStruct,'T3DataStructure');
+						$dataProtXML = t3lib_div::array2xml_cs($storeDataStruct,'T3DataStructure', array('useCDATA' => 1));
 						$dataArr['tx_templavoila_datastructure'][$dsREC['uid']]['dataprot'] = $dataProtXML;
 
 							// Init TCEmain object and store:
@@ -720,7 +719,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 
 					$storeDataStruct=$dataStruct;
 					if (is_array($storeDataStruct['ROOT']['el']))		$this->substEtypeWithRealStuff($storeDataStruct['ROOT']['el'],$contentSplittedByMapping['sub']['ROOT']);
-					$dataStructureXML = t3lib_div::array2xml_cs($storeDataStruct,'T3DataStructure');
+					$dataStructureXML = t3lib_div::array2xml_cs($storeDataStruct,'T3DataStructure', array('useCDATA' => 1));
 
 					$content.='
 						<input type="submit" name="_DO_NOTHING" value="Go back" title="Go back" />
@@ -941,7 +940,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 						// Make instance of syntax highlight class:
 					$hlObj = t3lib_div::makeInstance('t3lib_syntaxhl');
 
-					$dataStructureXML = t3lib_div::array2xml_cs($origDataStruct,'T3DataStructure');
+					$dataStructureXML = t3lib_div::array2xml_cs($origDataStruct,'T3DataStructure', array('useCDATA' => 1));
 					$content.='
 
 					<!--
@@ -1143,7 +1142,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 	/**
 	 * Process editing of a TO for renderTO() function
 	 *
-	 * @param	array		Data Structure (without 'meta' section). Passed by reference; The sheets found inside will be resolved if found!
+	 * @param	array		Data Structure. Passed by reference; The sheets found inside will be resolved if found!
 	 * @param	array		TO record row
 	 * @param	string		Template file path (absolute)
 	 * @param   integer		Process the headerPart instead of the bodyPart
