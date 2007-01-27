@@ -2075,11 +2075,9 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 							$elArray[$key]['TCEforms']['defaultExtras'] = 'richtext:rte_transform[flag=rte_enabled|mode=ts_css]';
 							$elArray[$key]['tx_templavoila']['proc']['HSC']=0;
 							$elArray[$key]['tx_templavoila']['TypoScript'] = '
-<![CDATA[
 	10 = TEXT
 	10.current = 1
 	10.parseFunc = < lib.parseFunc_RTE
-]]>
 							';
 						break;
 						case 'image':
