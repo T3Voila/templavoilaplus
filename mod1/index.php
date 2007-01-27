@@ -1814,7 +1814,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	function localizedFFLabel($label, $hsc) {
 		global	$LANG;
 		
-		$charset = $LANG->charSet;
+		$charset = $LANG->origCharSet;
 		$LANG->origCharSet = 'utf-8';
 		$result = $LANG->hscAndCharConv($label, $hsc);
 		$LANG->origCharSet = $charset;

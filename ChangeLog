@@ -1,11 +1,15 @@
-2006-01-24  Dmitry Dulepov  <dmitry@typo3.org>
+2007-01-27  Dmitry Dulepov  <dmitry@typo3.org>
+
+ # Fixed character conversion problem that appeared in 1.2.0
+
+2007-01-24  Dmitry Dulepov  <dmitry@typo3.org>
 
  # Fixed bug 4842: TV Does not render the Site on T3 4.1 Beta 3
  # Fixed bug 2553: When Modify DS/TO und saving afterwards, the parts from the HTML header are lost
 
 	RELEASE OF TEMPLAVOILA 1.2.1
 
-2006-01-20  Dmitry Dulepov  <dmitry@typo3.org>
+2007-01-20  Dmitry Dulepov  <dmitry@typo3.org>
 
  # Fixed bug 4085: Russian titles of fields shows wrong in Page module (uft8 encoding)
  # Fixed bug 4736: MSSQL and TemplaVoila TO-Selection in Page-Module
