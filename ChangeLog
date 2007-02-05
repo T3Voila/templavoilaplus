@@ -1,3 +1,7 @@
+2007-02-05  Dmitry Dulepov  <dmitry@typo3.org>
+
+	RELEASE OF TEMPLAVOILA 1.3.0
+
 2007-01-27  Dmitry Dulepov  <dmitry@typo3.org>
 
  # Fixed character conversion problem that appeared in 1.2.0
@@ -6,7 +10,7 @@
  # Fixed bug #3143: New Content Element is created as Reference
  # Fixed bug #3958: New content created as a reference after a reference
  # Fixed bug #4650: respect me_templavoilalayout
- + Feature request #4847: Access control for DS/TO
+ + Feature request #4847: Access control for DS/TO (thanks to e-netconsulting KG Hamburg AND Star Finanz GmbH Hamburg as Sponsor!)
 
 2007-01-24  Dmitry Dulepov  <dmitry@typo3.org>
 
