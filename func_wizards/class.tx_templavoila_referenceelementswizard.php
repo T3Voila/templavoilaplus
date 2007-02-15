@@ -226,7 +226,7 @@ class tx_templavoila_referenceElementsWizard extends t3lib_extobjbase {
 		$referencedElementsArr = $this->templavoilaAPIObj->flexform_getListOfSubElementUidsRecursively ('pages', $pid, $dummyArr=array());
 
 		$res = $TYPO3_DB->exec_SELECTquery (
-			'uid, header, bodytext, sys_language_uid, colpos',
+			'uid, header, bodytext, sys_language_uid, colPos',
 			'tt_content',
 			'pid='.intval($pid).
 				(count($referencedElementsArr) ? ' AND uid NOT IN ('.implode(',',$referencedElementsArr).')' : '').
