@@ -1,6 +1,7 @@
 2007-02-19  Dmitry Dulepov  <dmitry@typo3.org>
 
  # Fixed wrong character encoding in mod1 if forceCharset is empty
+ # Fixed bug 4967: Disallowed DS/TO are available in Pagewizard
  # Fixed bug 4975: SQL errors with Templavoila/DBAL/PostgreSQL: TV Control Center: Show Details
  # Fixed bug 4997: SQL error with Templavoila/DBAL/PostgreSQL: Editing templates
 

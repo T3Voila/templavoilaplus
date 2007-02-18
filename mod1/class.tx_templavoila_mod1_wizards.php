@@ -265,12 +265,16 @@ class tx_templavoila_mod1_wizards {
 
 				$tTO = 'tx_templavoila_tmplobj';
 				$tDS = 'tx_templavoila_datastructure';
-				$res = $TYPO3_DB->exec_SELECTquery (
-					"$tTO.*",
-					"$tTO LEFT JOIN $tDS ON $tTO.datastructure = $tDS.uid",
-					"$tTO.parent=0 AND $tTO.pid=".intval($storageFolderPID)." AND $tDS.scope=1".
+				$where = $tTO . '.parent=0 AND ' . $tTO . '.pid=' .
+						intval($storageFolderPID).' AND ' . $tDS . '.scope=1' .
+						$this->buildRecordWhere($tTO) . $this->buildRecordWhere($tDS) .
 						t3lib_befunc::deleteClause ($tTO).t3lib_befunc::deleteClause ($tDS).
-						t3lib_BEfunc::versioningPlaceholderClause($tTO).t3lib_BEfunc::versioningPlaceholderClause($tDS)
+						t3lib_BEfunc::versioningPlaceholderClause($tTO).t3lib_BEfunc::versioningPlaceholderClause($tDS);
+
+				$res = $TYPO3_DB->exec_SELECTquery (
+					$tTO . '.*',
+					$tTO . ' LEFT JOIN ' . $tDS . ' ON ' . $tTO . '.datastructure = ' . $tDS . '.uid',
+					$where
 				);
 
 				while (false !== ($row = $TYPO3_DB->sql_fetch_assoc($res)))	{
@@ -405,6 +409,28 @@ class tx_templavoila_mod1_wizards {
 		$import->init();
 
 		return $import;
+	}
+
+	/**
+	 * Create sql condition for given table to limit records according to user access.
+	 * 
+	 * @param	string	$table	Table nme to fetch records from
+	 * @return	string	Condition or empty string
+	 */
+	function buildRecordWhere($table) {
+		$result = array();
+		if (!$GLOBALS['BE_USER']->isAdmin()) {
+			$prefLen = strlen($table) + 1;
+			foreach($GLOBALS['BE_USER']->userGroups as $group) {
+				$items = t3lib_div::trimExplode(',', $group['tx_templavoila_access'], 1);
+				foreach ($items as $ref) {
+					if (strstr($ref, $table)) { 
+						$result[] = intval(substr($ref, $prefLen));
+					}
+				}
+			}
+		}
+		return (count($result) > 0 ? ' AND ' . $table . '.uid NOT IN (' . implode(',', $result) . ') ' : '');
 	}
 }
 
