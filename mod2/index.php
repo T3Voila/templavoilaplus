@@ -938,8 +938,8 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 					'uid,title,pid,t3ver_wsid,t3ver_id',
 					'pages',
 					'(
-						(tx_templavoila_to='.intval($toObj['uid']).' AND tx_templavoila_ds="'.$GLOBALS['TYPO3_DB']->quoteStr($toObj['datastructure'],'pages').'") OR
-						(tx_templavoila_next_to='.intval($toObj['uid']).' AND tx_templavoila_next_ds="'.$GLOBALS['TYPO3_DB']->quoteStr($toObj['datastructure'],'pages').'")
+						(tx_templavoila_to='.intval($toObj['uid']).' AND tx_templavoila_ds='.$GLOBALS['TYPO3_DB']->fullQuoteStr($toObj['datastructure'],'pages').') OR
+						(tx_templavoila_next_to='.intval($toObj['uid']).' AND tx_templavoila_next_ds='.$GLOBALS['TYPO3_DB']->fullQuoteStr($toObj['datastructure'],'pages').')
 					)'.
 						t3lib_BEfunc::deleteClause('pages')
 				);
@@ -984,9 +984,9 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 					'uid,header,pid,t3ver_wsid,t3ver_id',
 					'tt_content',
-					'CType="'.$GLOBALS['TYPO3_DB']->quoteStr('templavoila_pi1','tt_content').'"'.
+					'CType='.$GLOBALS['TYPO3_DB']->fullQuoteStr('templavoila_pi1','tt_content').
 						' AND tx_templavoila_to='.intval($toObj['uid']).
-						' AND tx_templavoila_ds="'.$GLOBALS['TYPO3_DB']->quoteStr($toObj['datastructure'],'tt_content').'"'.
+						' AND tx_templavoila_ds='.$GLOBALS['TYPO3_DB']->fullQuoteStr($toObj['datastructure'],'tt_content').
 						t3lib_BEfunc::deleteClause('tt_content'),
 					'',
 					'pid'
@@ -1077,8 +1077,8 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 					'uid,title,pid',
 					'pages',
 					'(
-						(tx_templavoila_to NOT IN ('.implode(',',$toIdArray).') AND tx_templavoila_ds="'.$GLOBALS['TYPO3_DB']->quoteStr($dsID,'pages').'") OR
-						(tx_templavoila_next_to NOT IN ('.implode(',',$toIdArray).') AND tx_templavoila_next_ds="'.$GLOBALS['TYPO3_DB']->quoteStr($dsID,'pages').'")
+						(tx_templavoila_to NOT IN ('.implode(',',$toIdArray).') AND tx_templavoila_ds='.$GLOBALS['TYPO3_DB']->fullQuoteStr($dsID,'pages').') OR
+						(tx_templavoila_next_to NOT IN ('.implode(',',$toIdArray).') AND tx_templavoila_next_ds='.$GLOBALS['TYPO3_DB']->fullQuoteStr($dsID,'pages').')
 					)'.
 						t3lib_BEfunc::deleteClause('pages')
 				);
@@ -1113,9 +1113,9 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 					'uid,header,pid',
 					'tt_content',
-					'CType="'.$GLOBALS['TYPO3_DB']->quoteStr('templavoila_pi1','tt_content').'"'.
+					'CType='.$GLOBALS['TYPO3_DB']->fullQuoteStr('templavoila_pi1','tt_content').
 						' AND tx_templavoila_to NOT IN ('.implode(',',$toIdArray).')'.
-						' AND tx_templavoila_ds="'.$GLOBALS['TYPO3_DB']->quoteStr($dsID,'tt_content').'"'.
+						' AND tx_templavoila_ds='.$GLOBALS['TYPO3_DB']->fullQuoteStr($dsID,'tt_content').
 						t3lib_BEfunc::deleteClause('tt_content'),
 					'',
 					'pid'
