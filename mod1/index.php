@@ -1830,10 +1830,12 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * @return	string	Converted label
 	 */
 	function localizedFFLabel($label, $hsc) {
-		global	$LANG;
-		
+		global	$LANG, $TYPO3_CONF_VARS;
+
 		$charset = $LANG->origCharSet;
-		$LANG->origCharSet = 'utf-8';
+		if ($LANG->origCharSet != $TYPO3_CONF_VARS['BE']['forceCharset']) {
+			$LANG->origCharSet = $TYPO3_CONF_VARS['BE']['forceCharset'];
+		}
 		$result = $LANG->hscAndCharConv($label, $hsc);
 		$LANG->origCharSet = $charset;
 		return $result;
