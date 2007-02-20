@@ -149,6 +149,27 @@ class tx_templavoila_tcemain {
 				}
 			}
 		}
+
+		// Access check for FCE
+		if ($table == 'tt_content') {
+			if ($status != 'new') {
+				$row = t3lib_beFunc::getRecord($table, $id);
+			}
+			else {
+				$row = &$fieldArray;
+			}
+			if ($row['CType'] == 'templavoila_pi1') {
+				$params = array(
+					'table' => $table,
+					'row' => $row,
+				);
+				$ref = null;
+				if (!t3lib_div::callUserFunction('EXT:templavoila/class.tx_templavoila_access.php:&tx_templavoila_access->recordEditAccessInternals', $params, $ref)) {
+					$reference->newlog(sprintf($GLOBALS['LANG']->getLL($status != 'new' ? 'access_noModifyAccess' : 'access_noCrateAccess'), $table, $id), 1);
+					$fieldArray = null;
+				}
+			}
+		}
 	}
 
 	/**
@@ -222,7 +243,7 @@ class tx_templavoila_tcemain {
 	 * @access	public
 	 * @todo	"delete" should search for all references to the element.
 	 */
-	function processCmdmap_preProcess ($command, $table, $id, $value, &$reference) {
+	function processCmdmap_preProcess (&$command, $table, $id, $value, &$reference) {
 
 		if ($this->debug) t3lib_div::devLog('processCmdmap_preProcess', 'templavoila', 0, array ($command, $table, $id, $value));
 		if ($GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_api']['apiIsRunningTCEmain']) return;
@@ -235,15 +256,28 @@ class tx_templavoila_tcemain {
 		switch ($command) {
 			case 'delete' :
 				$record = t3lib_beFunc::getRecord('tt_content', $id);
-				if (intval($record['t3ver_oid']) > 0) {
-					$record = t3lib_BEfunc::getRecord('tt_content', intval($record['t3ver_oid']));
+				// Check for FCE access
+				$params = array(
+					'table' => $table,
+					'row' => $record,
+				);
+				$ref = null;
+				if (!t3lib_div::callUserFunction('EXT:templavoila/class.tx_templavoila_access.php:&tx_templavoila_access->recordEditAccessInternals', $params, $ref)) {
+					$reference->newlog(sprintf($GLOBALS['LANG']->getLL($status != 'new' ? 'access_noModifyAccess' : 'access_noCrateAccess'), $table, $id), 1);
+					$command = '';	// Do not delete! A hack but there is no other way to prevent deletion...
 				}
-
-				$sourceFlexformPointersArr = $templaVoilaAPI->flexform_getPointersByRecord ($record['uid'], $record['pid']);
-				$sourceFlexformPointer = $sourceFlexformPointersArr[0];
-
-				$templaVoilaAPI->unlinkElement ($sourceFlexformPointer);
-			break;
+				else {
+					// Access ok
+					if (intval($record['t3ver_oid']) > 0) {
+						$record = t3lib_BEfunc::getRecord('tt_content', intval($record['t3ver_oid']));
+					}
+	
+					$sourceFlexformPointersArr = $templaVoilaAPI->flexform_getPointersByRecord ($record['uid'], $record['pid']);
+					$sourceFlexformPointer = $sourceFlexformPointersArr[0];
+	
+					$templaVoilaAPI->unlinkElement ($sourceFlexformPointer);
+				}
+				break;
 		}
 	}
 

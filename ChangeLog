@@ -1,6 +1,7 @@
 2007-02-20  Dmitry Dulepov  <dmitry@typo3.org>
 
  # Fix: wrong check for null in class.tx_templavoila_tcemain.php
+ + Added access control for creation, modification and deletion of FCEs inside TCEmain (using hooks) and for TCEForms (requires hook in core!)
 
 2007-02-19  Dmitry Dulepov  <dmitry@typo3.org>
 

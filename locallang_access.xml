@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<description>Access hook messages</description>
+		<type>module</type>
+		<csh_table></csh_table>
+		<fileId>EXT:templavoila/locallang_access.xml</fileId>
+		<labelContext type="array">
+		</labelContext>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="access_noDSaccess">You have no access to data structure of this record</label>
+			<label index="access_noTOaccess">You have no access to template object of this record</label>
+			<label index="access_noModifyAccess">Modification of record %s:%d is not allowed because user has no access to its DS and/or TO</label>
+			<label index="access_noCreateAccess">Creation of record in %s is not allowed because user has no access to its DS and/or TO</label>
+		</languageKey>
+	</data>
+	<orig_hash type="array">
+	</orig_hash>
+</T3locallang>
