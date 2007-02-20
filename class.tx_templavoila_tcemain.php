@@ -129,7 +129,7 @@ class tx_templavoila_tcemain {
 					$pid = $fieldArray['pid'];
 				}
 
-				if ($pid !== NULL) {
+				if (!is_null($pid)) {
 					$templaVoilaAPI = t3lib_div::makeInstance('tx_templavoila_api');
 					$templateObjectRecords = $templaVoilaAPI->ds_getAvailablePageTORecords ($pid);
 
