@@ -64,7 +64,13 @@ class tx_templavoila_access {
 	function recordEditAccessInternals($params, $ref) {
 		if ($params['table'] == 'tt_content' && $params['row']['CType'] == 'templavoila_pi1') {
 			if (!$ref) {
-				$ref = $GLOBALS['BE_USER'];
+				$user = &$GLOBALS['BE_USER'];
+			}
+			else {
+				$user = &$ref;
+			}
+			if ($user->isAdmin()) {
+				return true;
 			}
 			if (!$this->checkObjectAccess('tx_templavoila_datastructure', $params['row']['tx_templavoila_ds'], $ref)) {
 				if ($ref) {
