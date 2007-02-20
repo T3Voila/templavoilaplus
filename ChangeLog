@@ -2,6 +2,7 @@
 
  # Fix: wrong check for null in class.tx_templavoila_tcemain.php
  + Added access control for creation, modification and deletion of FCEs inside TCEmain (using hooks) and for TCEForms (requires hook in core!)
+ + Added icon to mod1 to show when FCE editing is disabled
 
 2007-02-19  Dmitry Dulepov  <dmitry@typo3.org>
 

@@ -61,6 +61,7 @@
 			<label index="gobacktooverview">Go back to whole page view</label>
 			<label index="createnewrecord">Create new element</label>
 			<label index="editrecord">Edit element</label>
+			<label index="editrecord_d">Editing is not allowed for this element!</label>
 			<label index="pasterecord">Paste element</label>
 			<label index="pastefce_andcopyallsubs">Paste copy of element and make copies of all sub elements</label>
 			<label index="pastefce_andreferencesubs">Paste copy of element and keep references to original sub elements</label>

@@ -475,7 +475,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		$output = '';
 
 			// Fetch the content structure of page:
-		$contentTreeData = $this->apiObj->getContentTree($this->rootElementTable, $this->rootElementRecord); // TODO Dima: seems like it does not retirn <TCEForms> for elements inside sectiions. Thus titles are not visible for these elements!
+		$contentTreeData = $this->apiObj->getContentTree($this->rootElementTable, $this->rootElementRecord); // TODO Dima: seems like it does not return <TCEForms> for elements inside sectiions. Thus titles are not visible for these elements!
 
 			// Set internal variable which registers all used content elements:
 		$this->global_tt_content_elementRegister = $contentTreeData['contentElementUsage'];
@@ -598,7 +598,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			break;
 
 			case 'tt_content' :
-
+//debug($contentTreeArr, '$contentTreeArr');
  				$elementTitlebarColor = ($elementBelongsToCurrentPage ? $this->doc->bgColor5 : $this->doc->bgColor6);
 				$elementTitlebarStyle = 'background-color: '.$elementTitlebarColor;
 
@@ -610,7 +610,13 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 						// Create CE specific buttons:
 					$linkMakeLocal = !$elementBelongsToCurrentPage ? $this->link_makeLocal('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,t3lib_extMgm::extRelPath('templavoila').'mod1/makelocalcopy.gif','').' title="'.$LANG->getLL('makeLocal').'" border="0" alt="" />', $parentPointer) : '';
 					$linkUnlink = $this->link_unlink('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/garbage.gif','').' title="'.$LANG->getLL('unlinkRecord').'" border="0" alt="" />', $parentPointer, FALSE);
-					$linkEdit = ($elementBelongsToCurrentPage ? $this->link_edit('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/edit2.gif','').' title="'.$LANG->getLL ('editrecord').'" border="0" alt="" />',$contentTreeArr['el']['table'],$contentTreeArr['el']['uid']) : '');
+					// TODO Remove first part of "if" (before ||) and corresponding function at the end of file when hooh inside recordEditAccessInternals is approved!
+					if ($contentTreeArr['el']['CType'] == 'templavoila_pi1' && !$this->hasFCEAccess($contentTreeArr['previewData']['fullRow']) || !$GLOBALS['BE_USER']->recordEditAccessInternals('tt_content', $contentTreeArr['previewData']['fullRow'])) {
+						$linkEdit = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/edit2_d.gif','').' alt="'.$LANG->getLL('editrecord_d').'" border="0" alt="" />';
+					}
+					else {
+						$linkEdit = ($elementBelongsToCurrentPage ? $this->link_edit('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/edit2.gif','').' title="'.$LANG->getLL ('editrecord').'" border="0" alt="" />',$contentTreeArr['el']['table'],$contentTreeArr['el']['uid']) : '');
+					}
 
 					$titleBarRightButtons = $linkEdit . $this->clipboardObj->element_getSelectButtons ($parentPointer) . $linkMakeLocal . $linkUnlink;
 					# NICE FOR DEBUG: # $titleBarRightButtons.= implode('/',$parentPointer).'UID:'.$contentTreeArr['el']['uid'].'/'.$contentTreeArr['el']['_ORIG_uid'].' PID:'.$contentTreeArr['el']['pid'];
@@ -1839,6 +1845,15 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		$result = $LANG->hscAndCharConv($label, $hsc);
 		$LANG->origCharSet = $charset;
 		return $result;
+	}
+	
+	function hasFCEAccess($row) {
+		$params = array(
+			'table' => 'tt_content',
+			'row' => $row
+		);
+		$ref = null;
+		return t3lib_div::callUserFunction('EXT:templavoila/class.tx_templavoila_access.php:&tx_templavoila_access->recordEditAccessInternals', $params, $ref);
 	}
 }
 
