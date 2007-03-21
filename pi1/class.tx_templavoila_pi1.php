@@ -555,7 +555,7 @@ class tx_templavoila_pi1 extends tslib_pibase {
 						}
 						if (trim($LP[$key]['TypoScriptObjPath']))	{
 							list($name, $conf) = $tsparserObj->getVal(trim($LP[$key]['TypoScriptObjPath']),$GLOBALS['TSFE']->tmpl->setup);
-							$dataValues[$key][$valueKey] = $cObj->cObjGetSingle($name,$conf,'TemplaVoila_ProcObjPath.');
+							$dataValues[$key][$valueKey] = $cObj->cObjGetSingle($name,$conf,'TemplaVoila_ProcObjPath--'.str_replace('.','*',$LP[$key]['TypoScriptObjPath']).'.');
 						}
 					}
 
