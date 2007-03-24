@@ -1586,15 +1586,15 @@ class tx_templavoila_api {
 	 * @access	protected
 	 */
 	function getContentTree_fetchPageTemplateObject($row) {
-		$templateObjectUid = intval($row['tx_templavoila_to']);
+		$templateObjectUid = $row['tx_templavoila_ds'] ? intval($row['tx_templavoila_to']) : 0;
 		if (!$templateObjectUid) {
 			$rootLine = t3lib_beFunc::BEgetRootLine($row['uid'],'', TRUE);
 			foreach($rootLine as $rootLineRecord) {
 				$pageRecord = t3lib_beFunc::getRecord('pages', $rootLineRecord['uid']);
-				if (($row['uid'] != $pageRecord['uid']) && $pageRecord['tx_templavoila_next_to'])	{	// If there is a next-level TO:
+				if (($row['uid'] != $pageRecord['uid']) && $pageRecord['tx_templavoila_next_ds'] && $pageRecord['tx_templavoila_next_to'])	{	// If there is a next-level TO:
 					$templateObjectUid = $pageRecord['tx_templavoila_next_to'];
 					break;
-				} elseif ($pageRecord['tx_templavoila_to'])	{	// Otherwise try the NORMAL TO:
+				} elseif ($pageRecord['tx_templavoila_ds'] && $pageRecord['tx_templavoila_to'])	{	// Otherwise try the NORMAL TO:
 					$templateObjectUid = $pageRecord['tx_templavoila_to'];
 					break;
 				}
@@ -1602,6 +1602,9 @@ class tx_templavoila_api {
 		}
 		return t3lib_beFunc::getRecordWSOL('tx_templavoila_tmplobj', $templateObjectUid);
 	}
+
+
+
 
 
 
