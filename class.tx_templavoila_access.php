@@ -62,7 +62,7 @@ class tx_templavoila_access {
 	 * @return	boolean		<code>true</code> if change is allowed
 	 */
 	function recordEditAccessInternals($params, $ref) {
-		if ($params['table'] == 'tt_content' && $params['row']['CType'] == 'templavoila_pi1') {
+		if ($params['table'] == 'tt_content' && is_array($params['idOrRow']) && $params['idOrRow']['CType'] == 'templavoila_pi1') {
 			if (!$ref) {
 				$user = &$GLOBALS['BE_USER'];
 			}
@@ -72,13 +72,13 @@ class tx_templavoila_access {
 			if ($user->isAdmin()) {
 				return true;
 			}
-			if (!$this->checkObjectAccess('tx_templavoila_datastructure', $params['row']['tx_templavoila_ds'], $ref)) {
+			if (!$this->checkObjectAccess('tx_templavoila_datastructure', $params['idOrRow']['tx_templavoila_ds'], $ref)) {
 				if ($ref) {
 					$ref->errorMsg = $GLOBALS['LANG']->getLL('access_noDSaccess');
 				}
 				return false;
 			}
-			if (!$this->checkObjectAccess('tx_templavoila_tmplobj', $params['row']['tx_templavoila_to'], $ref)) {
+			if (!$this->checkObjectAccess('tx_templavoila_tmplobj', $params['idOrRow']['tx_templavoila_to'], $ref)) {
 				if ($ref) {
 					$ref->errorMsg = $GLOBALS['LANG']->getLL('access_noTOaccess');
 				}
