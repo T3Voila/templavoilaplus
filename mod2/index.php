@@ -668,13 +668,15 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 				$fileRef = htmlspecialchars($dsR['path']).' [File not found!]';
 			}
 
+			$dsRecTitle = (substr($dsR['title'], 0, 4) == 'LLL:' ? $GLOBALS['LANG']->sL($dsR['title']) : $dsR['title']);
+
 				// Compile table:
 			$content.='
 			<table'.$tableAttribs.'>
 				<tr class="bgColor2">
 					<td colspan="3" style="border-top: 1px solid black;">'.
 						$recordIcon.
-						htmlspecialchars($dsR['title']).
+						htmlspecialchars($dsRecTitle).
 						'</td>
 				</tr>
 				<tr class="bgColor4">

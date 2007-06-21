@@ -1,3 +1,11 @@
+2007-06-21  Dmitry Dulepov  <dmitry@typo3.org>
+
+ + DS title for static data structures can use 'LLL:' translation
+
+2007-05-09  Dmitry Dulepov  <dmitry@typo3.org>
+
+	RELEASE OF TEMPLAVOILA 1.3.1
+
 2007-02-27  Dmitry Dulepov  <dmitry@typo3.org>
 
  # Changed hook parameter names in class.tx_templavoila_access.php
@@ -213,7 +221,7 @@
  + Added new fixture and fixture functions for testing page templates with two columns
 
 2006-04-05 - Robert Lemke <robert@typo3.org>
- 
+
  ~ Created workaround for bug 0003128: CSM has 'TemplaVoil?' rather than 'TemplaVoila'
 
 2006-04-05 - Dmitry Dulepov <typo3@accio.lv>
@@ -246,7 +254,7 @@
 
 2006-03-29 - Kasper Skaarhoej
 	* Updated documentation as requested.
-	
+
 2006-03-26 - Robert Lemke <robert@typo3.org>
  - tx_templavoila_mod1_localization: Removed sidebar_renderItem_renderTranslationInfoCheckbox()
  ~ mod1/index.php: Changed GET parameter "localizeRecord" to "localizeElement"
@@ -282,7 +290,7 @@
 	* Copy/Paste/Reference/Unlink/Insert of elements under workspaces in various scenarios are working now (except copying an Container Element FCE recursively: References does not get fixed, but this is a tcemain problem that must be solved on that level!!)
 	* Details about the work:
 		* wsMapId(): I removed almost all usages of wsMapId(); They were used to map uids of elements to be copied for instance. This is wrong. The uid of an element you want to copy or delete (basically any tcemain &cmd operation) must be the _live_ uid, not the offline uid. [Currently copying in tcemain when in a workspcae does not work correctly but that must be fixed on core level, not in TV]
-		* tx_templavoila_api::flexform_getValidPointer(): This function would re-map the UID value in the pointer if found. This lead to many errors. As a basic principles: _All_ uids passed around must be the "live" uids of elements, _never_ the offline uids. Only when explicitly needed should a uid be mapped to the offline version. Another problem was PID values: They were sometimes "-1" due to usage of "offline" uids which lead to weird errors when a copy was made of objects to pid = "-1" (using pid of a record with uid "1" in tcemain!!!). 
+		* tx_templavoila_api::flexform_getValidPointer(): This function would re-map the UID value in the pointer if found. This lead to many errors. As a basic principles: _All_ uids passed around must be the "live" uids of elements, _never_ the offline uids. Only when explicitly needed should a uid be mapped to the offline version. Another problem was PID values: They were sometimes "-1" due to usage of "offline" uids which lead to weird errors when a copy was made of objects to pid = "-1" (using pid of a record with uid "1" in tcemain!!!).
 			* Summary: In tx_templavoila_api, always use uids/pids of live elements. For getting workspace record content you can safely use (and probably should) t3lib_BEfunc::getRecordWSOL() which will protect the live uid/pid while all other values change, including the "tx_templavoila_flex" which is VERY IMPORTANT to get the workspace value from since that contains the correct list of elements in a field.
 	* Testing combinations for Page module under workspaces:
 		* Destination pointer: Test Inserting new/copies/cuts/references:
@@ -290,7 +298,7 @@
 		  	* Insert copies/cuts/references in other pages
 		* Source: Try both live and element versioned elements for all of above.
 		* Try Changing data structure of CEs and pages
-		
+
 
 
 2006-03-15 Robert Lemke <robert@typo3.org>
@@ -303,30 +311,30 @@
 
 2006-03-14 very late - Kasper Skaarhoej
  + Added a Clean-FlexForm XML status and link to the outline view.
-	
+
 2006-03-13 a little later - Kasper Skaarhoej
- + Added new view: "Outline". This will show a tree view of the page content structure. This view is currently only available for Admin users and they toggle it using a new checkbox in the "Advanced" tab. All affected functions are in mod1/index.php in its own section and will be easy to move to another class if needed. However, they are a parallel implementation of the render_framework* functions. 
+ + Added new view: "Outline". This will show a tree view of the page content structure. This view is currently only available for Admin users and they toggle it using a new checkbox in the "Advanced" tab. All affected functions are in mod1/index.php in its own section and will be easy to move to another class if needed. However, they are a parallel implementation of the render_framework* functions.
  # Fixed bug I made during refactoring: Names of columns was not displayed
 
 2006-03-13  Kasper Skaarhoej
  ~ Re-inserted rejected changes, however I fixed all problems pointed out by robert in mail.
- ~ Moved getContentTree from mod1/index.php to api-class: At the same time the output from getContentTree has been cleaned up so it doesn't contain formatted preview output (only data on which a preview can be rendered in mod1/index.php). 
+ ~ Moved getContentTree from mod1/index.php to api-class: At the same time the output from getContentTree has been cleaned up so it doesn't contain formatted preview output (only data on which a preview can be rendered in mod1/index.php).
    getContentTree also includes elements from all languages in its structure (although mod1/index.php only shows the selected language); this leads to the sideeffect that the list of non-used content elements is accurate now!
    getContentTree can be used from other applications to read out the page structure from TemplaVoila!
    The refactoring of getContentTree() has been thoroughly tested with as many scenarios I could create and I'm very confident it will work.
    Of course, all parameters of getContentTree-related functions may have been moved around since the functions were moved; It is considered unrealistic that any external extension were using getContentTree from its location in mod1/index.php.
  ~ Changed that the sidebar is now _outside_ (on top of) the rendered page: This was necessary to have proper function in case (very rarely though) that sheets are used for the page template! Question is if we should take some action to move only the icons for the top-level element to top of page again?
-	
+
 2006-03-13	Robert Lemke <robert@typo3.org>
  - mod1_localization: Language selector ($availableTranslationFlags) - Rejected the changes and used an older version which already ignores the "langDisable" tag for the root element. Reason for rejecting the new code is that the strings are not localized with getLL
  ~ mod1/index.php: Changed case of magic strings "Disable", "Inheritence" and "Separate" to lower case
  - mod1/index.php: Rejected localization mode warning because it's not translated with getLL, please commit again with locallang label
  - mod1/index.php: Rejected edit translation link because of missing locallang support
-	  
+
 2006-03-13  Kasper Skaarhoej
  ~ When a parent container element has localization set to "Separate", the links to localization of contained records are removed. This is done in mod1/index.php, line 843 [($parentDsMeta['langDisable'] || $parentDsMeta['langChildren'])]. Maybe it should be configurable?
  ~ Also updated the JavaDoc of mod1/index.php and function overview in top of document.
-	
+
 2006-03-10  Kasper Skaarhoej
  - Removed the checkbox, sidebar_renderItem_renderTranslationInfoCheckbox(), from localization sidebar: Not needed, set by default
  + Changed "Default language" icon to a new one, "flags/unknown.gif"
@@ -379,7 +387,7 @@
 
  + Linked TemplaVoila into the extdeveval tool with a new class; This is going to be a tool which can convert FlexForm data from "separate" (langChildren = 0) to "inheritance" (langChildren = 1) localization types (the words I have used). Nicolas Cerisier from Dassault is expected to finish the code which I started out. New file added.
  ~ Added "Undefined" as Data Structure type (again). This will be used if TemplaVOila is used for templating where not related to pages or content elements.
- + Added reference counts for the "Not used elements" including a delete-button. It is now easy to clean up unused elements on a page. The criteria is that content elements which are not used in the hierarchy of a page and which have no references pointing to it can safely be deleted. 
+ + Added reference counts for the "Not used elements" including a delete-button. It is now easy to clean up unused elements on a page. The criteria is that content elements which are not used in the hierarchy of a page and which have no references pointing to it can safely be deleted.
  # Fixed a bug where old variable name $language should have been $languageArr. This affected the "Localization" tab content.
  # Fixed a few bugs related to workspaces and how ids are handled. One misconception is that the input id (&id) should be translated to workspace version. Rather it should remain the real online id and only be translated when required. At this point it has introduced a bug for "page type" versions of pages but I will fix that later. The main type (element versions) works.
  ~ Reintroduced the element coloring according to versioning status in workspace.
@@ -403,7 +411,7 @@
  + Fix (sidebar): if cache commands are not enabled for non-admin user, label for page cache is displayed with empty cell after it
  + Fix (ext_emconf.php): naming error message in extension manager for pages and tt_content
  # Fixed bug #2085: Inconsistency in editing translations
- # Fixed bug #2095: Problems with page copying 
+ # Fixed bug #2095: Problems with page copying
  # Fixed bug #2206: copying elements doubles the references
  # Fixed bug #2209: Gremlin: hide "Translations" Tab if no alternative Syslanguage are present
  # Fixed bug #2236: TYPO3SEARCH_xxx should not be generated for FCE
@@ -428,7 +436,7 @@
  ~ Moved the localization part of the sidebar into its own class
  ~ Converted all locallang files to the XML format
  ~ New Page Template Data Structures will have langDisable = 0 by default
- 
+
  + Created a new class "tx_templavoila_api". This class provides a new API for other extensions and core hooks. It is fully unit tested and replaces tx_templavoila_xmlrelhndl
  + Added new features into tx_templavoila_tcemain: The sorting field is now automatically updated so it reflects the TV flexform order. It is now possible to move and create records with standard TCEmain requests (eg. with the List module or the classic Page Module!)
  + Added integration into the standard TYPO3 clipboard. You can now cut, edit, paste records from the list module to the TV page module and vice versa. This should work everywhere, where the clipboard is available
@@ -437,7 +445,7 @@
  + Added full support for workspaces internally - but some parts of the UI are not workspaces aware yet. Included several unit tests to make sure workspaces support works.
  + Created a new class for rendering the different doktype screens (for sysfolder, mount points etc.)
  + Added new EType "RTE" as a preset in the mapping tool
- 
+
  - Removed configuration for disabling the Template Selector because the TCA  are neccessary for FE editing and depended on that configuration
  - !!! Removed support for rules from the page module. Evaluation of rules never really worked and - if needed - have to me implemented again, but differently.
  - !!! Removed support for creating default elements. Based on rules engine (see above)
@@ -445,7 +453,7 @@
  - Removed TSconfig option "enableCElocalizationInfo". The localization information can now be switched on and off by a checkbox in the localization tab of the sidebar.
  - Removed pi2 - data sources won't be implemented in TemplaVoila, an extension "datasources" exists for that purpose.
  - Removed mod3 - Element references will be handled by TYPO3 4.0 core functions
- 
+
  # Fixed a number of bugs by creating the new API
  # Fixed localization handling
  # Fixed issue #0000802: Copy / paste nested structures from one language to another does not work like expected
@@ -460,7 +468,7 @@
  + Fixed issue #0001499: Show content from this page instead does not work. Also added support for many other doktypes
  # Fixed issue #0001950: remove items from content wizzard which are not allowed for the current user
  + Fixed issue #0001760: Hide content elements when they are not mapped in the TO from the Page module
- 
+
  ~ Updated manual
 
 2005-11-04	Robert Lemke	<robert@typo3.org>
@@ -471,7 +479,7 @@
  # Fixed issue #0000713: stdWrap in DS XML produces "a call on non-object" PHP error
  # Fixed issue #0000450: DS/TO Category selectorbox accepts empty category
  # Fixed issue #0001422: UTF-8 Support missing. The mapping tool now handles special characters and character encoding correctly.
- # Fixed issue #0000604: DS interface writes incorrect XML when switching type of elements 
+ # Fixed issue #0000604: DS interface writes incorrect XML when switching type of elements
  # Fixed issue #0000876: Added support for FIELDSET, LEGEND and LABEL
  # Fixed issue #0000219: Added support for THEAD, TBODY and TH
  # Fixed issue #0000393: Wrong parameter count for implode() in side bar (language selection). PHP4 < 4.3 had this problem
@@ -481,7 +489,7 @@
  # Fixed issue #0001669: Import from HTML file: image paths not converted for CSS background-image. -> This is solved in t3lib_parsehtml !
  # Fixed issue #0001052: TemplaVoila doens't allow html elements inside elements who's attributes are mapped. Thanks to Bernhard Kraft for providing a patch!
  # Fixed issue #0000087: cannot map to elements with ids that contain spaces
- 
+
  + Added staging support for workspaces (t3ver_stage)
 
 2005-10-04  Kasper Skaarhoej  <kasper2005@typo3.com>
