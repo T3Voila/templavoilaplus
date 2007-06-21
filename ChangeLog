@@ -1,6 +1,7 @@
 2007-06-21  Dmitry Dulepov  <dmitry@typo3.org>
 
  + DS title for static data structures can use 'LLL:' translation
+ # Fix: wrong element position if element is inserted using old page module
 
 2007-05-09  Dmitry Dulepov  <dmitry@typo3.org>
 
