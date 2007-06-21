@@ -3,7 +3,8 @@
  + DS title for static data structures can use 'LLL:' translation
  # Fix: wrong element position if element is inserted using old page module
  # Fix: unnecessary loop while generating TS during mapping
- # Fixed bug #5679: "Create new Template Object" stopped working in 1.3.1
+ # Fixed bug 5679: "Create new Template Object" stopped working in 1.3.1
+ # Fixed bug 5692: Manual sorting of FCEs displayed in the New Content Wizard.
 
 2007-05-09  Dmitry Dulepov  <dmitry@typo3.org>
 

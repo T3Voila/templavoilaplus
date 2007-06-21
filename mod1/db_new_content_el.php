@@ -401,7 +401,7 @@ class tx_templavoila_dbnewcontentel {
 			'tx_templavoila_tmplobj',
 			'pid='.intval($storageFolderPID).' AND parent=0' . $addWhere .
 				t3lib_BEfunc::deleteClause('tx_templavoila_tmplobj').
-				t3lib_BEfunc::versioningPlaceholderClause('tx_templavoila_tmpl')
+				t3lib_BEfunc::versioningPlaceholderClause('tx_templavoila_tmpl'), '', 'sorting'
 		);
 		while(FALSE !== ($row = $TYPO3_DB->sql_fetch_assoc($res))) {
 			if (is_array($dataStructureRecords[$row['datastructure']])) {
@@ -503,7 +503,7 @@ class tx_templavoila_dbnewcontentel {
 
 	/**
 	 * Create sql condition for given table to limit records according to user access.
-	 * 
+	 *
 	 * @param	string	$table	Table nme to fetch records from
 	 * @return	string	Condition or empty string
 	 */
@@ -514,7 +514,7 @@ class tx_templavoila_dbnewcontentel {
 			foreach($GLOBALS['BE_USER']->userGroups as $group) {
 				$items = t3lib_div::trimExplode(',', $group['tx_templavoila_access'], 1);
 				foreach ($items as $ref) {
-					if (strstr($ref, $table)) { 
+					if (strstr($ref, $table)) {
 						$result[] = intval(substr($ref, $prefLen));
 					}
 				}
