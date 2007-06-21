@@ -24,7 +24,7 @@ $TCA['tx_templavoila_tmplobj'] = Array (
 			'config' => Array (
 				'type' => 'select',
 				'foreign_table' => 'tx_templavoila_tmplobj',
-				'foreign_table_where' => 'AND tx_templavoila_tmplobj.parent=0 AND tx_templavoila_tmplobj.uid!=###REC_FIELD_uid### ORDER BY tx_templavoila_tmplobj.title',
+				'foreign_table_where' => 'AND tx_templavoila_tmplobj.parent=0 AND tx_templavoila_tmplobj.uid!=\'###REC_FIELD_uid###\' ORDER BY tx_templavoila_tmplobj.title',
 				'suppress_icons' => 'ONLY_SELECTED',
 				'items' => Array(
 					Array('',0)
@@ -37,7 +37,7 @@ $TCA['tx_templavoila_tmplobj'] = Array (
 			'config' => Array (
 				'type' => 'select',
 				'foreign_table' => 'tx_templavoila_tmplobj',
-				'foreign_table_where' => 'AND tx_templavoila_tmplobj.parent=0 AND tx_templavoila_tmplobj.uid!=###REC_FIELD_uid### ORDER BY tx_templavoila_tmplobj.title',
+				'foreign_table_where' => 'AND tx_templavoila_tmplobj.parent=0 AND tx_templavoila_tmplobj.uid!=\'###REC_FIELD_uid###\' ORDER BY tx_templavoila_tmplobj.title',
 				'suppress_icons' => 'ONLY_SELECTED',
 				'items' => Array(
 					Array('',0)
