@@ -1,6 +1,7 @@
 2007-06-21  Dmitry Dulepov  <dmitry@typo3.org>
 
  + DS title for static data structures can use 'LLL:' translation
+ + Static DSes now can specify default file references
  # Fix: wrong element position if element is inserted using old page module
  # Fix: unnecessary loop while generating TS during mapping
  # Fixed bug 5679: "Create new Template Object" stopped working in 1.3.1
