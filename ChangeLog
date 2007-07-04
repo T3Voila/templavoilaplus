@@ -1,3 +1,11 @@
+2007-07-04  Dmitry Dulepov  <dmitry@typo3.org>
+
+ + Added a hook to add/modify/delete sidebar tabs
+ + Added checks for permissions and removal of new/edit/cut/copy/paste/delete icons
+ + Added posibility to hide sidebar objects if they are empty though object configuration
+ # Fixed spacing problem for disabled tabs
+ # Hidden several tabs if they do not have content
+
 2007-06-21  Dmitry Dulepov  <dmitry@typo3.org>
 
  + DS title for static data structures can use 'LLL:' translation
