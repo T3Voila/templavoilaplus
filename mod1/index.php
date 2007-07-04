@@ -234,12 +234,10 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		);
 
 			// Hook: menuConfig_preProcessModMenu
-		if (is_array ($TYPO3_CONF_VARS['EXTCONF']['templavoila']['mod1']['menuConfigClass'])) {
-			foreach ($TYPO3_CONF_VARS['EXTCONF']['templavoila']['mod1']['menuConfigClass'] as $classRef) {
-				$hookObj = &t3lib_div::getUserObj ($classRef);
-				if (method_exists ($hookObj, 'menuConfig_preProcessModMenu')) {
-					$hookObj->menuConfig_preProcessModMenu ($this->MOD_MENU, $this);
-				}
+		$menuHooks = $this->hooks_prepareObjectsArray('menuConfigClass');
+		foreach ($menuHooks as $hookObj) {
+			if (method_exists ($hookObj, 'menuConfig_preProcessModMenu')) {
+				$hookObj->menuConfig_preProcessModMenu ($this->MOD_MENU, $this);
 			}
 		}
 
@@ -417,12 +415,11 @@ table.typo3-dyntabmenu td.disabled, table.typo3-dyntabmenu td.disabled_over, tab
 				$editCurrentPageHTML = $this->render_editPageScreen();
 
 					// Hook for adding new sidebars or removing existing
-				if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['templavoila/mod1/index.php']['addSideBarObject']))	{
-					foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['templavoila/mod1/index.php']['addSideBarObject'] as $funcRef)	{
-						$params = array(
-							'sideBarObj' => $this->sideBarObj,
-						);
-						t3lib_div::callUserFunction($funcRef, $params, $this);
+				$sideBarHooks = $this->hooks_prepareObjectsArray('sideBarClass');
+					foreach ($sideBarHooks as $hookObj)	{
+						if (method_exists($hookObj, 'main_alterSideBar')) {
+							$hookObj->main_alterSideBar($this->sideBarObj, $this);
+						}
 					}
 				}
 
@@ -533,6 +530,15 @@ table.typo3-dyntabmenu td.disabled, table.typo3-dyntabmenu td.disabled_over, tab
 			$output.= $this->render_outline($contentTreeData['tree']);
 		} else {
 			$output.= $this->render_framework_allSheets($contentTreeData['tree'], $this->currentLanguageKey);
+		}
+
+			// See http://bugs.typo3.org/view.php?id=4821
+		$renderHooks = $this->hooks_prepareObjectsArray('render_editPageScreen');
+			foreach ($sideBarHooks as $hookObj)	{
+				if (method_exists ($hookObj, 'render_editPageScreen_addContent')) {
+					$output .= $hookObj->render_editPageScreen_addContent($this);
+				}
+			}
 		}
 
 		$output .= t3lib_BEfunc::cshItem('_MOD_web_txtemplavoilaM1', '', $this->doc->backPath,'<hr/>|'.$LANG->getLL('csh_whatisthetemplavoilapagemodule', 1));

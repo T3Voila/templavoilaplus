@@ -1,5 +1,6 @@
 2007-07-04  Dmitry Dulepov  <dmitry@typo3.org>
 
+ + Added hook for additional content (see http://bugs.typo3.org/view.php?id=4821)
  + Added a hook to add/modify/delete sidebar tabs
  + Added checks for permissions and removal of new/edit/cut/copy/paste/delete icons
  + Added posibility to hide sidebar objects if they are empty though object configuration
