@@ -5,6 +5,7 @@
  + Added posibility to hide sidebar objects if they are empty though object configuration
  # Fixed spacing problem for disabled tabs
  # Hidden several tabs if they do not have content
+ # Hidden static data structures from the list of content elements that can be created through new content element wizard
 
 2007-06-21  Dmitry Dulepov  <dmitry@typo3.org>
 

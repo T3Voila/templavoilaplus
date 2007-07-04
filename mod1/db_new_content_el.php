@@ -384,7 +384,7 @@ class tx_templavoila_dbnewcontentel {
         while(FALSE !== ($row = $TYPO3_DB->sql_fetch_assoc($res))) {
         	$dataStructureRecords[$row['uid']] = $row;
         }
-
+/*
         	// Fetch static data structures which are stored in XML files:
 		if (is_array($GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['staticDataStructures']))	{
 			foreach($GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['staticDataStructures'] as $staticDataStructureArr)	{
@@ -392,7 +392,7 @@ class tx_templavoila_dbnewcontentel {
 				$dataStructureRecords[$staticDataStructureArr['path']] = $staticDataStructureArr;
 			}
 		}
-
+*/
 			// Fetch all template object records which uare based one of the previously fetched data structures:
 		$templateObjectRecords = array();
         $addWhere = $this->buildRecordWhere('tx_templavoila_tmplobj');
