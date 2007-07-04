@@ -210,6 +210,9 @@ class tx_templavoila_tcemain {
 					if (!is_array ($destinationFlexformPointer)) {
 						$mainContentAreaFieldName = $templaVoilaAPI->ds_getFieldNameByColumnPosition($fieldArray['pid'], 0);
 						if ($mainContentAreaFieldName !== FALSE) {
+							$sorting_field = $GLOBALS['TCA'][$table]['ctrl']['sortby'];
+							$sorting = (!$sorting_field ? 0 : ($fieldArray[$sorting_field] ? -$fieldArray[$sorting_field] : 0));
+
 							$destinationFlexformPointer = array (
 								'table' => 'pages',
 								'uid' => $fieldArray['pid'],
@@ -219,6 +222,20 @@ class tx_templavoila_tcemain {
 								'vLang' => 'vDEF',
 								'position' => 0
 							);
+
+							if ($sorting < 0) {
+								$parentRecord = t3lib_BEfunc::getRecordWSOL($destinationFlexformPointer['table'], $destinationFlexformPointer['uid'],'uid,pid,tx_templavoila_flex');
+								$currentReferencesArr = $templaVoilaAPI->flexform_getElementReferencesFromXML($parentRecord['tx_templavoila_flex'], $destinationFlexformPointer);
+								if (count($currentReferencesArr)) {
+									$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,' . $sorting_field, $table, 'uid IN (' . implode(',', $currentReferencesArr) . ')' . t3lib_BEfunc::deleteClause($table));
+									$sort = array($reference->substNEWwithIDs[$id] => -$sorting);
+									foreach ($rows as $row) {
+										$sort[$row['uid']] = $row[$sorting_field];
+									}
+									asort($sort, SORT_NUMERIC);
+									$destinationFlexformPointer['position'] = array_search($reference->substNEWwithIDs[$id], array_keys($sort));
+								}
+							}
 						}
 					}
 					if (is_array ($destinationFlexformPointer)) {
@@ -247,7 +264,12 @@ class tx_templavoila_tcemain {
 
 		if ($this->debug) t3lib_div::devLog('processCmdmap_preProcess', 'templavoila', 0, array ($command, $table, $id, $value));
 		if ($GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_api']['apiIsRunningTCEmain']) return;
-		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_tcemain']['doNotInsertElementRefsToPage'] = true;
+		if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_tcemain']['doNotInsertElementRefsToPage'])) {
+			$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_tcemain']['doNotInsertElementRefsToPage']++;
+		}
+		else {
+			$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_tcemain']['doNotInsertElementRefsToPage'] = 1;
+		}
 
 		if ($table != 'tt_content') return;
 
@@ -271,14 +293,16 @@ class tx_templavoila_tcemain {
 					if (intval($record['t3ver_oid']) > 0) {
 						$record = t3lib_BEfunc::getRecord('tt_content', intval($record['t3ver_oid']));
 					}
-	
-					$sourceFlexformPointersArr = $templaVoilaAPI->flexform_getPointersByRecord ($record['uid'], $record['pid']);
+
+					$sourceFlexformPointersArr = $templaVoilaAPI->flexform_getPointersByRecord($record['uid'], $record['pid']);
 					$sourceFlexformPointer = $sourceFlexformPointersArr[0];
-	
-					$templaVoilaAPI->unlinkElement ($sourceFlexformPointer);
+
+					$templaVoilaAPI->unlinkElement($sourceFlexformPointer);
 				}
 				break;
 		}
+
+		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_tcemain']['doNotInsertElementRefsToPage']--;
 	}
 
 	/**
@@ -297,8 +321,12 @@ class tx_templavoila_tcemain {
 		if ($this->debug) t3lib_div::devLog ('processCmdmap_postProcess', 'templavoila', 0, array ($command, $table, $id, $value));
 
 		if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_tcemain']['doNotInsertElementRefsToPage'])) {
-			unset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_tcemain']['doNotInsertElementRefsToPage']);
+			$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_tcemain']['doNotInsertElementRefsToPage']--;
+			if ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_tcemain']['doNotInsertElementRefsToPage'] == 0) {
+				unset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_tcemain']['doNotInsertElementRefsToPage']);
+			}
 		}
+
 	}
 
 	/**

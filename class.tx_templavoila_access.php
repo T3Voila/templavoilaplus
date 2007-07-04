@@ -43,7 +43,7 @@
  *
  */
 
-$GLOBALS['LANG']->includeLLFile('EXT:templavoila/locallang_access.xml');
+require_once(PATH_typo3.'sysext/lang/lang.php');
 
 /**
  * Class being included by UserAuthGroup using a hook
@@ -72,18 +72,27 @@ class tx_templavoila_access {
 			if ($user->isAdmin()) {
 				return true;
 			}
+			$error = '';
 			if (!$this->checkObjectAccess('tx_templavoila_datastructure', $params['idOrRow']['tx_templavoila_ds'], $ref)) {
-				if ($ref) {
-					$ref->errorMsg = $GLOBALS['LANG']->getLL('access_noDSaccess');
-				}
-				return false;
+				$error = 'access_noDSaccess';
 			}
-			if (!$this->checkObjectAccess('tx_templavoila_tmplobj', $params['idOrRow']['tx_templavoila_to'], $ref)) {
-				if ($ref) {
-					$ref->errorMsg = $GLOBALS['LANG']->getLL('access_noTOaccess');
-				}
-				return false;
+			elseif (!$this->checkObjectAccess('tx_templavoila_tmplobj', $params['idOrRow']['tx_templavoila_to'], $ref)) {
+				 $error = 'access_noTOaccess';
 			}
+			else {
+				return true;
+			}
+			if ($ref) {
+				if ($GLOBALS['LANG']) {
+					$lang = &$GLOBALS['LANG'];
+				}
+				else {
+					$lang = t3lib_div::makeInstance('language');
+					$lang->init($BE_USER->uc['lang']);
+				}
+				$ref->errorMsg = $lang->sL('LLL:EXT:templavoila/locallang_access.xml:' . $error);
+			}
+			return false;
 		}
 		return true;
 	}

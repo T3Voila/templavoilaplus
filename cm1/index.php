@@ -2131,6 +2131,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 									$elArray[$key]['tx_templavoila']['TypoScript'].= '
 	10.stdWrap.typolink.parameter.field = '.$theKey.'
 									';
+									break;
 								}
 							}
 						break;

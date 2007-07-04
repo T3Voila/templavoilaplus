@@ -485,7 +485,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 				if (is_array($toRecords[0]))	{
 					$newPid = $dsR['pid'];
 					$newFileRef = '';
-					$newTitle = $dsR['title'].' [TEMPLATE]';
+					$newTitle = ($dsR['_STATIC'] && substr($dsR['title'], 0, 4) == 'LLL:' ? $GLOBALS['LANG']->sL($dsR['title']) : $dsR['title']) . ' [TEMPLATE]';
 					foreach($toRecords[0] as $toIndex => $toObj)	{
 						if (!strcmp($toObj['datastructure'], $dsID))	{	// If the relation ID matches, render the template object:
 							$rTODres = $this->renderTODisplay($toObj, $toRecords, $scope);
@@ -513,6 +513,10 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 						// For static DS we use the current page id as the PID:
                     if (is_null($newPid)) {
                         $newPid = t3lib_div::_GP('id');
+                    }
+
+                    if ($newFileRef == '' && $dsR['_STATIC'] && isset($dsR['fileref'])) {
+                    	$newFileRef = $dsR['fileref'];
                     }
 
 						// New-TO link:
@@ -668,13 +672,15 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 				$fileRef = htmlspecialchars($dsR['path']).' [File not found!]';
 			}
 
+			$dsRecTitle = (substr($dsR['title'], 0, 4) == 'LLL:' ? $GLOBALS['LANG']->sL($dsR['title']) : $dsR['title']);
+
 				// Compile table:
 			$content.='
 			<table'.$tableAttribs.'>
 				<tr class="bgColor2">
 					<td colspan="3" style="border-top: 1px solid black;">'.
 						$recordIcon.
-						htmlspecialchars($dsR['title']).
+						htmlspecialchars($dsRecTitle).
 						'</td>
 				</tr>
 				<tr class="bgColor4">

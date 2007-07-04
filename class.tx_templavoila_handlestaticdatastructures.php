@@ -70,7 +70,7 @@ class tx_templavoila_handleStaticDataStructures {
 		// Adding an item!
 		if (is_array($GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['staticDataStructures']))	{
 			foreach($GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['staticDataStructures'] as $val)	{
-				$params['items'][]=Array($this->prefix.$val['title'], $val['path'], $val['icon']);
+				$params['items'][]=Array($this->prefix.(substr($val['title'], 0, 4) == 'LLL:' ? $GLOBALS['LANG']->sL($val['title']) : $val['title']), $val['path'], $val['icon']);
 			}
 		}
     }
@@ -160,7 +160,7 @@ class tx_templavoila_handleStaticDataStructures {
 	 */
 	function check_permissions(&$params,&$pObj) {
 		global	$BE_USER;
-		
+
 		if ($BE_USER->isAdmin()) {
 			return;
 		}
@@ -173,7 +173,7 @@ class tx_templavoila_handleStaticDataStructures {
 					$value1 = $params['row']['tx_templavoila_to'];
 					$value2 = ($params['table'] == 'pages' ? $params['row']['tx_templavoila_next_to'] : -1);
 					$test = substr($ref, 23);
-				}		
+				}
 				else {
 					$value1 = $params['row']['tx_templavoila_ds'];
 					$value2 = ($params['table'] == 'pages' ? $params['row']['tx_templavoila_next_ds'] : -1);

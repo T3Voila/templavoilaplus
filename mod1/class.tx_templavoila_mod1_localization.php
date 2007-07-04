@@ -75,7 +75,7 @@ class tx_templavoila_mod1_localization {
 		$this->MOD_SETTINGS =& $this->pObj->MOD_SETTINGS;
 
 			// Add a localization tab to the sidebar:
-		$this->pObj->sideBarObj->addItem('localization', $this, 'sidebar_renderItem', $LANG->getLL('localization', 1),60);
+		$this->pObj->sideBarObj->addItem('localization', $this, 'sidebar_renderItem', $LANG->getLL('localization', 1), 60, true);
 	}
 
 	/**
@@ -89,17 +89,18 @@ class tx_templavoila_mod1_localization {
 	function sidebar_renderItem(&$pObj) {
 		global $LANG;
 
-		$output = '
+		$iOutput = $this->sidebar_renderItem_renderLanguageSelectorbox().
+				$this->sidebar_renderItem_renderNewTranslationSelectorbox();
+		$output = (!$iOutput ? '' : '
 			<table border="0" cellpadding="0" cellspacing="1" width="100%" class="lrPadding">
 				<tr class="bgColor4-20">
 					<th colspan="2">&nbsp;</th>
 				</tr>
 				'.
-				$this->sidebar_renderItem_renderLanguageSelectorbox().
-				$this->sidebar_renderItem_renderNewTranslationSelectorbox().
+				$iOutput .
 				'
 			</table>
-		';
+		');
 		return $output;
 	}
 
@@ -203,6 +204,10 @@ class tx_templavoila_mod1_localization {
 	 */
 	function sidebar_renderItem_renderNewTranslationSelectorbox() {
 		global $LANG, $BE_USER;
+
+		if (!$GLOBALS['BE_USER']->isPSet($this->pObj->calcPerms, 'pages', 'edit')) {
+			return false;
+		}
 
 		$newLanguagesArr = $this->pObj->getAvailableLanguages(0, true, false);
 		if (count($newLanguagesArr) < 1) return FALSE;
