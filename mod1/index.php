@@ -416,10 +416,9 @@ table.typo3-dyntabmenu td.disabled, table.typo3-dyntabmenu td.disabled_over, tab
 
 					// Hook for adding new sidebars or removing existing
 				$sideBarHooks = $this->hooks_prepareObjectsArray('sideBarClass');
-					foreach ($sideBarHooks as $hookObj)	{
-						if (method_exists($hookObj, 'main_alterSideBar')) {
-							$hookObj->main_alterSideBar($this->sideBarObj, $this);
-						}
+				foreach ($sideBarHooks as $hookObj)	{
+					if (method_exists($hookObj, 'main_alterSideBar')) {
+						$hookObj->main_alterSideBar($this->sideBarObj, $this);
 					}
 				}
 
@@ -534,10 +533,9 @@ table.typo3-dyntabmenu td.disabled, table.typo3-dyntabmenu td.disabled_over, tab
 
 			// See http://bugs.typo3.org/view.php?id=4821
 		$renderHooks = $this->hooks_prepareObjectsArray('render_editPageScreen');
-			foreach ($sideBarHooks as $hookObj)	{
-				if (method_exists ($hookObj, 'render_editPageScreen_addContent')) {
-					$output .= $hookObj->render_editPageScreen_addContent($this);
-				}
+		foreach ($renderHooks as $hookObj)	{
+			if (method_exists ($hookObj, 'render_editPageScreen_addContent')) {
+				$output .= $hookObj->render_editPageScreen_addContent($this);
 			}
 		}
 
