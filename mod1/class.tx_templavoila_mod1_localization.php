@@ -145,7 +145,7 @@ class tx_templavoila_mod1_localization {
 			</tr>
 		';
 
-		if ($this->pObj->currentLanguageUid && (($this->pObj->rootElementLangMode === 'disable') || ($this->pObj->rootElementLangParadigm === 'bound'))) {
+		if ($this->pObj->currentLanguageUid>=0 && (($this->pObj->rootElementLangMode === 'disable') || ($this->pObj->rootElementLangParadigm === 'bound'))) {
 			$options = array();
 			$options[] = t3lib_div::inList($this->pObj->modTSconfig['properties']['disableDisplayMode'], 'default')?'':'<option value=""'.($this->pObj->MOD_SETTINGS['langDisplayMode']===''?' selected="selected"':'').'>'.$LANG->sL('LLL:EXT:lang/locallang_general.xml:LGL.default_value').'</option>';
 			$options[] = t3lib_div::inList($this->pObj->modTSconfig['properties']['disableDisplayMode'], 'selectedLanguage')?'':'<option value="selectedLanguage"'.($this->pObj->MOD_SETTINGS['langDisplayMode']==='selectedLanguage'?' selected="selected"':'').'>'.$LANG->getLL('pageLocalizationDisplayMode_selectedLanguage').'</option>';

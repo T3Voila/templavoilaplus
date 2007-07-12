@@ -1043,7 +1043,7 @@ table.typo3-dyntabmenu td.disabled, table.typo3-dyntabmenu td.disabled_over, tab
 				// Traverse the available languages of the page (not default and [All])
 			$tRows=array();
 			foreach($this->translatedLanguagesArr as $sys_language_uid => $sLInfo)	{
-				if ($this->MOD_SETTINGS['langDisplayMode'] && $this->currentLanguageUid && ($this->currentLanguageUid != $sys_language_uid)) continue;
+				if ($this->MOD_SETTINGS['langDisplayMode'] && ($this->currentLanguageUid != $sys_language_uid)) continue;
 				if ($sys_language_uid > 0)	{
 					$l10nInfo = '';
 					$flagLink_begin = $flagLink_end = '';

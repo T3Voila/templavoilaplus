@@ -253,10 +253,11 @@ class tx_templavoila_mod1_clipboard {
 		$pid = $this->pObj->id;	// If workspaces should evaluated non-used elements it must consider the id: For "element" and "branch" versions it should accept the incoming id, for "page" type versions it must be remapped (because content elements are then related to the id of the offline version)
 
 		$res = $TYPO3_DB->exec_SELECTquery (
-			'uid, header, bodytext, sys_language_uid',
+			t3lib_BEfunc::getCommonSelectFields('tt_content','',array('uid', 'header', 'bodytext', 'sys_language_uid')),
 			'tt_content',
 			'pid='.intval($pid).' '.
 				'AND uid NOT IN ('.implode(',',$usedUids).') '.
+				'AND t3ver_state!=1'.
 				t3lib_BEfunc::deleteClause('tt_content').
 				t3lib_BEfunc::versioningPlaceholderClause('tt_content'),
 			'',
