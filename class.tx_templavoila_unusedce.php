@@ -107,7 +107,7 @@ Automatic Repair:
 		$resultArray = array(
 			'message' => $this->cli_help['name'].chr(10).chr(10).$this->cli_help['description'],
 			'headers' => array(
-				'all_unused' => array('List of all unused content elements','All elements means elements which are not used on that specific page. However, they could be referenced from another record. That is indicated by index "1" which is the number of references leading to the element.',2),
+				'all_unused' => array('List of all unused content elements','All elements means elements which are not used on that specific page. However, they could be referenced from another record. That is indicated by index "1" which is the number of references leading to the element.',1),
 				'deleteMe' => array('List of elements that can be deleted','This is all elements which had no references to them and hence should be OK to delete right away.',2),
 			),
 			'all_unused' => array(),
@@ -144,44 +144,47 @@ Automatic Repair:
 
 					// Fetch the content structure of page:
 				$contentTreeData = $apiObj->getContentTree('pages', t3lib_BEfunc::getRecordRaw('pages','uid='.intval($uid)));
+				if ($contentTreeData['tree']['ds_is_found'])	{
+					$usedUids = array_keys($contentTreeData['contentElementUsage']);
+					$usedUids[] = 0;
 
-				$usedUids = array_keys($contentTreeData['contentElementUsage']);
-				$usedUids[] = 0;
-
-					// Look up all content elements that are NOT used on this page...
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery (
-					'uid, header',
-					'tt_content',
-					'pid='.intval($uid).' '.
-						'AND uid NOT IN ('.implode(',',$usedUids).') '.
-						'AND t3ver_state!=1'.
-						t3lib_BEfunc::deleteClause('tt_content').
-						t3lib_BEfunc::versioningPlaceholderClause('tt_content'),
-					'',
-					'uid'
-				);
-
-					// Traverse, for each find references if any and register them.
-				while(false !== ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)))	{
-	
-						// Look up references to elements:
-					$refrows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-						'*',
-						'sys_refindex',
-						'ref_table='.$GLOBALS['TYPO3_DB']->fullQuoteStr('tt_content','sys_refindex').
-							' AND ref_uid='.intval($row['uid']).
-							' AND deleted=0'
+						// Look up all content elements that are NOT used on this page...
+					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery (
+						'uid, header',
+						'tt_content',
+						'pid='.intval($uid).' '.
+							'AND uid NOT IN ('.implode(',',$usedUids).') '.
+							'AND t3ver_state!=1'.
+							t3lib_BEfunc::deleteClause('tt_content').
+							t3lib_BEfunc::versioningPlaceholderClause('tt_content'),
+						'',
+						'uid'
 					);
+
+						// Traverse, for each find references if any and register them.
+					while(false !== ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)))	{
+	
+							// Look up references to elements:
+						$refrows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+							'*',
+							'sys_refindex',
+							'ref_table='.$GLOBALS['TYPO3_DB']->fullQuoteStr('tt_content','sys_refindex').
+								' AND ref_uid='.intval($row['uid']).
+								' AND deleted=0'
+						);
 				
-						// Register elements etc:
-					$this->resultArray['all_unused'][$row['uid']] = array($row['header'],count($refrows));
-					if ($echoLevel>2) echo chr(10).'			[tx_templavoila_unusedce:] tt_content:'.$row['uid'].' was not used on page...';
-					if (!count($refrows))	{
-						$this->resultArray['deleteMe'][$row['uid']] = $row['uid'];
-						if ($echoLevel>2) echo ' and can be DELETED';
-					} else {
-						if ($echoLevel>2) echo ' but is referenced to ('.count($refrows).') so do not delete...';
+							// Register elements etc:
+						$this->resultArray['all_unused'][$row['uid']] = array($row['header'],count($refrows));
+						if ($echoLevel>2) echo chr(10).'			[tx_templavoila_unusedce:] tt_content:'.$row['uid'].' was not used on page...';
+						if (!count($refrows))	{
+							$this->resultArray['deleteMe'][$row['uid']] = $row['uid'];
+							if ($echoLevel>2) echo ' and can be DELETED';
+						} else {
+							if ($echoLevel>2) echo ' but is referenced to ('.count($refrows).') so do not delete...';
+						}
 					}
+				} else {
+					if ($echoLevel>2) echo chr(10).'			[tx_templavoila_unusedce:] Did not check page - did not have a Data Structure set.';	
 				}
 			} else {
 				if ($echoLevel>2) echo chr(10).'			[tx_templavoila_unusedce:] Did not check page - was on offline page.';

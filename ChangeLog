@@ -1,4 +1,7 @@
 2007-07-12  Kasper Skaarhoej <kasper2007@typo3.com>
+# Fixed issues related to cleaner-plug-in-script
+
+2007-07-12  Kasper Skaarhoej <kasper2007@typo3.com>
 
 # Fixed issues related to display of languages
 + Added class for cleaning out unused content elements on pages (hooks into the "lowlevel" cleaner CLI script)

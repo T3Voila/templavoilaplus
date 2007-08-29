@@ -1393,7 +1393,7 @@ class tx_templavoila_api {
 					$currentTemplateObject = FALSE;
 			}
 			if (is_array ($currentTemplateObject)) $templateMappingArr = unserialize($currentTemplateObject['templatemapping']);
-
+			$tree['ds_is_found'] = is_array($rawDataStructureArr);
 			$tree['ds_meta'] = $rawDataStructureArr['meta'];
 			$flexformContentArr = t3lib_div::xml2array($row['tx_templavoila_flex']);
 			if (!is_array($flexformContentArr))	$flexformContentArr = array();
