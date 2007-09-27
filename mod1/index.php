@@ -1651,6 +1651,7 @@ table.typo3-dyntabmenu td.disabled, table.typo3-dyntabmenu td.disabled_over, tab
 							// Create new record and open it for editing
 						$destinationPointer = $this->apiObj->flexform_getPointerFromString($commandParameters);
 						$newUid = $this->apiObj->insertElement($destinationPointer, $newRow);
+						// TODO If $newUid==0, than we could create new element. Need to handle it...
 						$redirectLocation = $GLOBALS['BACK_PATH'].'alt_doc.php?edit[tt_content]['.$newUid.']=edit&returnUrl='.rawurlencode(t3lib_extMgm::extRelPath('templavoila').'mod1/index.php?'.$this->link_getParameters());
 					break;
 
