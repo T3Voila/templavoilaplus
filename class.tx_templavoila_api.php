@@ -111,7 +111,7 @@ require_once (PATH_t3lib.'class.t3lib_tcemain.php');
 class tx_templavoila_api {
 
 	var $rootTable;
-	var $debug = FALSE;
+	var $debug = false;
 	var $allSystemWebsiteLanguages = array();		// ->loadWebsiteLanguages() will set this to content of sys_language
 
 	/**
@@ -157,13 +157,22 @@ class tx_templavoila_api {
 	function insertElement ($destinationPointer, $elementRow) {
 		if ($this->debug) t3lib_div::devLog ('API: insertElement()', 'templavoila', 0, array ('destinationPointer' => $destinationPointer, 'elementRow' => $elementRow));
 
-		if (!$destinationPointer = $this->flexform_getValidPointer ($destinationPointer)) return FALSE;
+		if (!$destinationPointer = $this->flexform_getValidPointer($destinationPointer)) {
+			if ($this->debug) t3lib_div::devLog ('API#insertElement: flexform_getValidPointer() failed', 'templavoila', 0);
+			return FALSE;
+		}
 
 		$newRecordUid = $this->insertElement_createRecord($destinationPointer, $elementRow);
-		if ($newRecordUid === FALSE) return FALSE;
+		if ($newRecordUid === FALSE) {
+			if ($this->debug) t3lib_div::devLog ('API#insertElement: insertElement_createRecord() failed', 'templavoila', 0);
+			return FALSE;
+		}
 
 		$result = $this->insertElement_setElementReferences($destinationPointer, $newRecordUid);
-		if ($result === FALSE) return FALSE;
+		if ($result === FALSE) {
+			if ($this->debug) t3lib_div::devLog ('API#insertElement: insertElement_setElementReferences() failed', 'templavoila', 0);
+			return FALSE;
+		}
 
 		return $newRecordUid;
 	}
@@ -205,8 +214,9 @@ class tx_templavoila_api {
 
 			// Instantiate TCEmain and create the record:
 		$tce = t3lib_div::makeInstance('t3lib_TCEmain');
+		/* @var $tce t3lib_TCEmain */
 
-			// set default TCA values specific for the user
+		// set default TCA values specific for the user
 		$TCAdefaultOverride = $GLOBALS['BE_USER']->getTSConfigProp('TCAdefaults');
 		if (is_array($TCAdefaultOverride))	{
 			$tce->setDefaultsFromUserTS($TCAdefaultOverride);
@@ -216,8 +226,13 @@ class tx_templavoila_api {
 		$flagWasSet = $this->getTCEmainRunningFlag();
 		$this->setTCEmainRunningFlag (TRUE);
 
+		if ($this->debug) t3lib_div::devLog ('API: insertElement_createRecord()', 'templavoila', 0, array('dataArr' => $dataArr));
+
 		$tce->start($dataArr,array());
 		$tce->process_datamap();
+		if ($this->debug && count($tce->errorLog)) {
+			t3lib_div::devLog ('API: insertElement_createRecord(): tcemain failed', 'templavoila', 0, array('errorLog' => $tce->errorLog));
+		}
 		$newUid = $tce->substNEWwithIDs['NEW'];
 		if (!$flagWasSet) $this->setTCEmainRunningFlag (FALSE);
 
@@ -1194,7 +1209,7 @@ class tx_templavoila_api {
 
 		return $foundFieldName;
 	}
-	
+
 	/**
 	 * Maps data structure field names to old-style tt_content column positions (0 = Normal, 1 = Left etc.)
 	 *
@@ -1557,7 +1572,7 @@ class tx_templavoila_api {
 							$localizationInfoArr[$sys_language_uid] = array();
 							$localizationInfoArr[$sys_language_uid]['mode'] = 'exists';
 							$localizationInfoArr[$sys_language_uid]['localization_uid'] = $attachedLocalizations[$sys_language_uid];
-	
+
 							$tt_content_elementRegister[$attachedLocalizations[$sys_language_uid]]++;
 						} elseif ($contentTreeArr['el']['CType']!='templavoila_pi1') {	// Only localize content elements with "Default" langauge set
 							if ((int)$contentTreeArr['el']['sys_language_uid']===0)	{
