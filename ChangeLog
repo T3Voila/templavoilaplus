@@ -1,3 +1,7 @@
+2007-10-06  Dmitry Dulepov  <dmitry@typo3.org>
+
+ + Added hook to display aditional infpormation about plugins in page module (TYPO3 4.2 new feature)
+
 2007-07-12  Kasper Skaarhoej <kasper2007@typo3.com>
 # Fixed issues related to cleaner-plug-in-script
 

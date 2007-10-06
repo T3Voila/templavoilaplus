@@ -1001,7 +1001,8 @@ table.typo3-dyntabmenu td.disabled, table.typo3-dyntabmenu td.disabled_over, tab
 						'<strong>'.$LANG->sL(t3lib_BEfunc::getItemLabel('tt_content','pages')).'</strong> '.$row['pages'], 'tt_content', $row['uid']).'<br />';
 					break;
 				case 'list':		//	Insert Plugin
-					$output = $this->link_edit('<strong>'.$LANG->sL(t3lib_BEfunc::getItemLabel('tt_content','list_type')).'</strong> ' . htmlspecialchars($LANG->sL(t3lib_BEfunc::getLabelFromItemlist('tt_content','list_type',$row['list_type'])).' '.$row['list_type']), 'tt_content', $row['uid']).'<br />';
+					$extraInfo = $this->render_previewContent_extraPluginInfo($row);
+					$output = $this->link_edit('<strong>'.$LANG->sL(t3lib_BEfunc::getItemLabel('tt_content','list_type')).'</strong> ' . htmlspecialchars($LANG->sL(t3lib_BEfunc::getLabelFromItemlist('tt_content','list_type',$row['list_type']))).' &ndash; '.htmlspecialchars($extraInfo ? $extraInfo : $row['list_type']), 'tt_content', $row['uid']).'<br />';
 					break;
 				case 'html':		//	HTML
 					$output = $this->link_edit('<strong>'.$LANG->sL(t3lib_BEfunc::getItemLabel('tt_content','bodytext'),1).'</strong> ' . htmlspecialchars(t3lib_div::fixed_lgd_cs(trim($row['bodytext']),2000)),'tt_content',$row['uid']).'<br />';
@@ -1023,6 +1024,29 @@ table.typo3-dyntabmenu td.disabled, table.typo3-dyntabmenu td.disabled_over, tab
 		return $output;
 	}
 
+
+	/**
+	 * Renders additional information about plugins (if available)
+	 *
+	 * @param	array	$row	Row from database
+	 * @return	string	Information
+	 */
+	function render_previewContent_extraPluginInfo($row) {
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['list_type_Info'][$row['list_type']]))	{
+			$hookArr = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['list_type_Info'][$row['list_type']];
+		} elseif (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['list_type_Info']['_DEFAULT']))	{
+			$hookArr = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['list_type_Info']['_DEFAULT'];
+		}
+		$hookOut = '';
+		if (count($hookArr) > 0)	{
+			$_params = array('pObj' => &$this, 'row' => $row, 'infoArr' => $infoArr);
+			foreach ($hookArr as $_funcRef)	{
+				$hookOut .= t3lib_div::callUserFunction($_funcRef, $_params, $this);
+			}
+		}
+		return $hookOut;
+	}
+	
 	/**
 	 * Renders a little table containing previews of translated version of the current content element.
 	 *
