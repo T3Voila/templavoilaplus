@@ -1,3 +1,7 @@
+2007-07-12  Kasper Skaarhoej <kasper2007@typo3.com>
+
++ Added hook to display statistics about records in the page view. This is a global TYPO3 hook introduced in the core too and which is used by l10nmgr to show localization status for records.
+
 2007-10-06  Dmitry Dulepov  <dmitry@typo3.org>
 
  + Added hook to display aditional infpormation about plugins in page module (TYPO3 4.2 new feature)

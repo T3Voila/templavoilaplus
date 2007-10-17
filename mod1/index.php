@@ -181,7 +181,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		}
 
 			// Set translator mode if the default langauge is not accessible for the user:
-		if (!$GLOBALS['BE_USER']->checkLanguageAccess(0))	{
+		if (!$GLOBALS['BE_USER']->checkLanguageAccess(0) && !$GLOBALS['BE_USER']->isAdmin())	{
 			$this->translatorMode = TRUE;
 		}
 
@@ -620,7 +620,9 @@ table.typo3-dyntabmenu td.disabled, table.typo3-dyntabmenu td.disabled_over, tab
 		if ($canEditContent) {
 			$menuCommands[] = 'copy,cut,pasteinto,pasteafter,delete';
 		}
+
 		$titleBarLeftButtons = $this->translatorMode ? $recordIcon : (count($menuCommands) == 0 ? $recordIcon : $this->doc->wrapClickMenuOnIcon($recordIcon,$contentTreeArr['el']['table'], $contentTreeArr['el']['uid'], 1,'&amp;callingScriptId='.rawurlencode($this->doc->scriptID), implode(',', $menuCommands)));
+		$titleBarLeftButtons.= $this->getRecordStatHookValue($contentTreeArr['el']['table'],$contentTreeArr['el']['uid']);
 		unset($menuCommands);
 
 			// Prepare table specific settings:
@@ -1087,7 +1089,9 @@ table.typo3-dyntabmenu td.disabled, table.typo3-dyntabmenu td.disabled_over, tab
 							if (!$this->translatorMode)	{
 								$recordIcon_l10n = $this->doc->wrapClickMenuOnIcon($recordIcon_l10n,'tt_content',$localizedRecordInfo['uid'],1,'&amp;callingScriptId='.rawurlencode($this->doc->scriptID), 'new,copy,cut,pasteinto,pasteafter');
 							}
-							$l10nInfo = $recordIcon_l10n .
+							$l10nInfo = 
+								$this->getRecordStatHookValue('tt_content', $localizedRecordInfo['row']['uid']).
+								$recordIcon_l10n .
 								htmlspecialchars(t3lib_div::fixed_lgd_cs(strip_tags(t3lib_BEfunc::getRecordTitle('tt_content', $localizedRecordInfo['row'])), 50));
 
 							$l10nInfo.= '<br/>'.$localizedRecordInfo['content'];
@@ -1312,6 +1316,7 @@ table.typo3-dyntabmenu td.disabled, table.typo3-dyntabmenu td.disabled_over, tab
 			// Prepare the record icon including a context sensitive menu link wrapped around it:
 		$recordIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,$contentTreeArr['el']['icon'],'').' style="text-align: center; vertical-align: middle;" width="18" height="16" border="0" title="'.htmlspecialchars('['.$contentTreeArr['el']['table'].':'.$contentTreeArr['el']['uid'].']').'" alt="" />';
 		$titleBarLeftButtons = $this->translatorMode ? $recordIcon : $this->doc->wrapClickMenuOnIcon($recordIcon,$contentTreeArr['el']['table'], $contentTreeArr['el']['uid'], 1,'&amp;callingScriptId='.rawurlencode($this->doc->scriptID), 'new,copy,cut,pasteinto,pasteafter,delete');
+		$titleBarLeftButtons.= $this->getRecordStatHookValue($contentTreeArr['el']['table'],$contentTreeArr['el']['uid']);
 
 			// Prepare table specific settings:
 		switch ($contentTreeArr['el']['table']) {
@@ -1505,7 +1510,8 @@ table.typo3-dyntabmenu td.disabled, table.typo3-dyntabmenu td.disabled_over, tab
 							$olrow = t3lib_BEfunc::getRecordWSOL('tt_content',$contentTreeArr['localizationInfo'][$sys_language_uid]['localization_uid']);
 
 								// Put together the records icon including content sensitive menu link wrapped around it:
-							$recordIcon_l10n = t3lib_iconWorks::getIconImage('tt_content',$olrow,$this->doc->backPath,'class="absmiddle" title="'.htmlspecialchars('[tt_content:'.$olrow['uid'].']').'"');
+							$recordIcon_l10n = $this->getRecordStatHookValue('tt_content', $olrow['uid']).
+								t3lib_iconWorks::getIconImage('tt_content',$olrow,$this->doc->backPath,'class="absmiddle" title="'.htmlspecialchars('[tt_content:'.$olrow['uid'].']').'"');
 							if (!$this->translatorMode)	{
 								$recordIcon_l10n = $this->doc->wrapClickMenuOnIcon($recordIcon_l10n,'tt_content',$olrow['uid'],1,'&amp;callingScriptId='.rawurlencode($this->doc->scriptID), 'new,copy,cut,pasteinto,pasteafter');
 							}
@@ -1912,6 +1918,18 @@ table.typo3-dyntabmenu td.disabled, table.typo3-dyntabmenu td.disabled_over, tab
 		$result = $LANG->hscAndCharConv($label, $hsc);
 		$LANG->origCharSet = $charset;
 		return $result;
+	}
+	
+	function getRecordStatHookValue($table,$id)	{
+			// Call stats information hook
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks']))	{
+			$stat='';
+			$_params = array($table,$id);
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks'] as $_funcRef)	{
+				$stat.=t3lib_div::callUserFunction($_funcRef,$_params,$this);
+			}
+			return $stat;
+		}		
 	}
 /*
 	function hasFCEAccess($row) {
