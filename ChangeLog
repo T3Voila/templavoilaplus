@@ -1,4 +1,8 @@
-2007-07-12  Kasper Skaarhoej <kasper2007@typo3.com>
+2007-10-19  Kasper Skaarhoej <kasper2007@typo3.com>
+
++ Added some checks for arrays to avoid possible PHP errors.
+
+2007-10-17  Kasper Skaarhoej <kasper2007@typo3.com>
 
 + Added hook to display statistics about records in the page view. This is a global TYPO3 hook introduced in the core too and which is used by l10nmgr to show localization status for records.
 

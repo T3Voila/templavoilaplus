@@ -531,10 +531,12 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 		$out='';
 		if ($isSection)	{
 			foreach($editStruct as $section)	{
-				$secKey = key($section);
-				$secDat = $section[$secKey];
-				if ($currentMappingInfo['sub'][$secKey])	{
-					$out.=$this->mergeFormDataIntoTemplateStructure($secDat['el'],$currentMappingInfo['sub'][$secKey],'',$valueKey);
+				if (is_array($section))	{
+					$secKey = key($section);
+					$secDat = $section[$secKey];
+					if ($currentMappingInfo['sub'][$secKey])	{
+						$out.=$this->mergeFormDataIntoTemplateStructure($secDat['el'],$currentMappingInfo['sub'][$secKey],'',$valueKey);
+					}
 				}
 			}
 		} else {

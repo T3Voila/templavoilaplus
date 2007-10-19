@@ -454,13 +454,15 @@ class tx_templavoila_pi1 extends tslib_pibase {
 					if (is_array($dataValues[$key]['el']))	{
 						if ($DSelements[$key]['section'])	{
 							foreach($dataValues[$key]['el'] as $ik => $el)	{
-								$theKey = key($el);
-								if (is_array($dataValues[$key]['el'][$ik][$theKey]['el']))	{
-									$this->processDataValues($dataValues[$key]['el'][$ik][$theKey]['el'],$DSelements[$key]['el'][$theKey]['el'],$TOelements[$key]['el'][$theKey]['el'],$valueKey);
+								if (is_array($el))	{
+									$theKey = key($el);
+									if (is_array($dataValues[$key]['el'][$ik][$theKey]['el']))	{
+										$this->processDataValues($dataValues[$key]['el'][$ik][$theKey]['el'],$DSelements[$key]['el'][$theKey]['el'],$TOelements[$key]['el'][$theKey]['el'],$valueKey);
 
-										// If what was an array is returned as a non-array (eg. string "__REMOVE") then unset the whole thing:
-									if (!is_array($dataValues[$key]['el'][$ik][$theKey]['el']))	{
-										unset($dataValues[$key]['el'][$ik]);
+											// If what was an array is returned as a non-array (eg. string "__REMOVE") then unset the whole thing:
+										if (!is_array($dataValues[$key]['el'][$ik][$theKey]['el']))	{
+											unset($dataValues[$key]['el'][$ik]);
+										}
 									}
 								}
 							}

@@ -905,13 +905,15 @@ table.typo3-dyntabmenu td.disabled, table.typo3-dyntabmenu td.disabled_over, tab
 					if (is_array($fieldData['subElements'][$lKey])) {
 						if ($fieldData['section']) {
 							foreach($fieldData['subElements'][$lKey] as $sectionData) {
-								$sectionFieldKey = key($sectionData);
-								if (is_array ($sectionData[$sectionFieldKey]['el'])) {
-									$previewContent .= '<ul>';
-									foreach ($sectionData[$sectionFieldKey]['el'] as $containerFieldKey => $containerData) {
-										$previewContent .= '<li><strong>'.$containerFieldKey.'</strong> '.$this->link_edit(htmlspecialchars(t3lib_div::fixed_lgd_cs(strip_tags($containerData[$vKey]),200)), 'tt_content', $previewData['fullRow']['uid']).'</li>';
+								if (is_array($sectionData))	{
+									$sectionFieldKey = key($sectionData);
+									if (is_array ($sectionData[$sectionFieldKey]['el'])) {
+										$previewContent .= '<ul>';
+										foreach ($sectionData[$sectionFieldKey]['el'] as $containerFieldKey => $containerData) {
+											$previewContent .= '<li><strong>'.$containerFieldKey.'</strong> '.$this->link_edit(htmlspecialchars(t3lib_div::fixed_lgd_cs(strip_tags($containerData[$vKey]),200)), 'tt_content', $previewData['fullRow']['uid']).'</li>';
+										}
+										$previewContent .= '</ul>';
 									}
-									$previewContent .= '</ul>';
 								}
 							}
 						} else {
