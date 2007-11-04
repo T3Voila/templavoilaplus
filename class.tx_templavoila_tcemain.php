@@ -208,7 +208,7 @@ class tx_templavoila_tcemain {
 					}
 
 					if (!is_array ($destinationFlexformPointer)) {
-						$mainContentAreaFieldName = $templaVoilaAPI->ds_getFieldNameByColumnPosition($fieldArray['pid'], 0);
+						$mainContentAreaFieldName = $templaVoilaAPI->ds_getFieldNameByColumnPosition($fieldArray['pid'], intval($fieldArray['colPos']));
 						if ($mainContentAreaFieldName !== FALSE) {
 							$sorting_field = $GLOBALS['TCA'][$table]['ctrl']['sortby'];
 							$sorting = (!$sorting_field ? 0 : ($fieldArray[$sorting_field] ? -$fieldArray[$sorting_field] : 0));

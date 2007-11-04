@@ -1,3 +1,7 @@
+2007-10-06  Dmitry Dulepov  <dmitry@typo3.org>
+
+# Fixed bug 6648: TCEmain hook does not use colPos to select where to put new content element
+
 2007-10-19  Kasper Skaarhoej <kasper2007@typo3.com>
 
 + Added some checks for arrays to avoid possible PHP errors.
