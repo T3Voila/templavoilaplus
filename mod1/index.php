@@ -145,6 +145,9 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	var $wizardsObj;								// Instance of wizards class
 	var $clipboardObj;								// Instance of clipboard class
 	var $recordsObj;								// Instance of records class
+	/**
+	 * @var tx_templavoila_api
+	 */
 	var $apiObj;									// Instance of tx_templavoila_api
 
 
@@ -1050,7 +1053,7 @@ table.typo3-dyntabmenu td.disabled, table.typo3-dyntabmenu td.disabled_over, tab
 		}
 		return $hookOut;
 	}
-	
+
 	/**
 	 * Renders a little table containing previews of translated version of the current content element.
 	 *
