@@ -914,7 +914,7 @@ class tx_templavoila_api {
 			return FALSE;
 		}
 
-		$listOfUIDs = is_array ($flexformXMLArr) ? $flexformXMLArr['data'][$flexformPointer['sheet']][$flexformPointer['sLang']][$flexformPointer['field']][$flexformPointer['vLang']] : '';
+		$listOfUIDs = is_array ($flexformXMLArr) && is_array($flexformXMLArr['data']) ? $flexformXMLArr['data'][$flexformPointer['sheet']][$flexformPointer['sLang']][$flexformPointer['field']][$flexformPointer['vLang']] : '';
 		$arrayOfUIDs = t3lib_div::intExplode(',', $listOfUIDs);
 
 			// Getting the relation uids out and use only tt_content records which are not deleted:
@@ -1448,7 +1448,9 @@ class tx_templavoila_api {
 							);
 							foreach($lKeys as $lKey)	{
 								foreach($vKeys as $vKey)	{
-									$tree['previewData']['sheets'][$sheetKey][$fieldKey]['data'][$lKey][$vKey] = $flexformContentArr['data'][$sheetKey][$lKey][$fieldKey][$vKey];
+									if (is_array($flexformContentArr['data'])) {
+										$tree['previewData']['sheets'][$sheetKey][$fieldKey]['data'][$lKey][$vKey] = $flexformContentArr['data'][$sheetKey][$lKey][$fieldKey][$vKey];
+									}
 								}
 
 								if ($fieldData['type'] == 'array')	{

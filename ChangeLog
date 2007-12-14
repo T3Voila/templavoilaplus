@@ -1,3 +1,7 @@
+2007-12-14  Dmitry Dulepov  <dmitry@typo3.org>
+
+# Fixed error messages in case if xml structure is wrong
+
 2007-10-06  Dmitry Dulepov  <dmitry@typo3.org>
 
 # Fixed bug 6648: TCEmain hook does not use colPos to select where to put new content element
