@@ -1,3 +1,7 @@
+2007-12-25  Dmitry Dulepov  <dmitry@typo3.org>
+
+# Added information about switching off mbstring.func_overload into manual
+
 2007-12-14  Dmitry Dulepov  <dmitry@typo3.org>
 
 # Fixed error messages in case if xml structure is wrong
