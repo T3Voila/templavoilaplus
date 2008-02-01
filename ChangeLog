@@ -1,3 +1,7 @@
+2008-02-01  Kasper Skaarhoej <kasper2008@typo3.com>
+
++ Added sorting of arrays in the cleaner-class. Good for diff'able reports from lowlevel_cleaner
+
 2007-12-25  Dmitry Dulepov  <dmitry@typo3.org>
 
 # Added information about switching off mbstring.func_overload into manual

@@ -120,6 +120,9 @@ Automatic Repair:
 		$this->resultArray = &$resultArray;
 		$this->genTree($startingPoint,$depth,(int)$this->cli_argValue('--echotree'),'main_parseTreeCallBack');
 
+		ksort($resultArray['all_unused']);
+		ksort($resultArray['deleteMe']);
+
 		return $resultArray;
 	}
 
