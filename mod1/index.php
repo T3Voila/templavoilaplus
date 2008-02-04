@@ -1094,7 +1094,7 @@ table.typo3-dyntabmenu td.disabled, table.typo3-dyntabmenu td.disabled_over, tab
 							if (!$this->translatorMode)	{
 								$recordIcon_l10n = $this->doc->wrapClickMenuOnIcon($recordIcon_l10n,'tt_content',$localizedRecordInfo['uid'],1,'&amp;callingScriptId='.rawurlencode($this->doc->scriptID), 'new,copy,cut,pasteinto,pasteafter');
 							}
-							$l10nInfo = 
+							$l10nInfo =
 								$this->getRecordStatHookValue('tt_content', $localizedRecordInfo['row']['uid']).
 								$recordIcon_l10n .
 								htmlspecialchars(t3lib_div::fixed_lgd_cs(strip_tags(t3lib_BEfunc::getRecordTitle('tt_content', $localizedRecordInfo['row'])), 50));
@@ -1802,7 +1802,7 @@ table.typo3-dyntabmenu td.disabled, table.typo3-dyntabmenu td.disabled_over, tab
 		$output = array();
 		$excludeHidden = $BE_USER->isAdmin() ? '1=1' : 'sys_language.hidden=0';
 
-		if ($id)	{
+		if ($id) {
 			$excludeHidden .= ' AND pages_language_overlay.deleted=0';
 			$res = $TYPO3_DB->exec_SELECTquery(
 				'DISTINCT sys_language.*',
@@ -1849,7 +1849,7 @@ table.typo3-dyntabmenu td.disabled, table.typo3-dyntabmenu td.disabled_over, tab
 					$output[$row['uid']]['ISOcode'] = $staticLangRow['lg_iso_2'];
 				}
 			}
-			if (strlen ($row['flag'])) {
+			if (strlen($row['flag'])) {
 				$output[$row['uid']]['flagIcon'] = @is_file($flagAbsPath.$row['flag']) ? $flagIconPath.$row['flag'] : '';
 			}
 
@@ -1924,7 +1924,7 @@ table.typo3-dyntabmenu td.disabled, table.typo3-dyntabmenu td.disabled_over, tab
 		$LANG->origCharSet = $charset;
 		return $result;
 	}
-	
+
 	function getRecordStatHookValue($table,$id)	{
 			// Call stats information hook
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks']))	{
@@ -1934,7 +1934,7 @@ table.typo3-dyntabmenu td.disabled, table.typo3-dyntabmenu td.disabled_over, tab
 				$stat.=t3lib_div::callUserFunction($_funcRef,$_params,$this);
 			}
 			return $stat;
-		}		
+		}
 	}
 /*
 	function hasFCEAccess($row) {
