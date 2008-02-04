@@ -1,3 +1,7 @@
+2008-02-04  Dmitry Dulepov  <dmitry@typo3.org>
+
+# Fixed catchable error in t3lib_div with TYPO3 4.2
+
 2008-02-01  Kasper Skaarhoej <kasper2008@typo3.com>
 
 + Added sorting of arrays in the cleaner-class. Good for diff'able reports from lowlevel_cleaner

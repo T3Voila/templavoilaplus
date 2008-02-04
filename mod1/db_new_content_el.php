@@ -279,7 +279,7 @@ class tx_templavoila_dbnewcontentel {
 	function wizardArray()	{
 		global $LANG,$TBE_MODULES_EXT,$TYPO3_DB;
 
-		$defVals = t3lib_div::implodeArrayForUrl('defVals', $this->defVals);
+		$defVals = t3lib_div::implodeArrayForUrl('defVals', is_array($this->defVals) ? $this->defVals : array());
 
 		$wizardItems = array(
 			'common' => array('header'=>$LANG->getLL('common')),
