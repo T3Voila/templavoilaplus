@@ -1074,7 +1074,7 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 				$this->rangeStartPath[$recursion]='';
 			}
 		} elseif ($this->searchPaths[$subPath])	{
-			$placeholder = md5(microtime());
+			$placeholder = md5(uniqid(rand(), true));
 
 			switch((string)$this->searchPaths[$subPath]['modifier'])	{
 				case 'ATTR':
@@ -1082,13 +1082,12 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 						// Attribute
 					if ($this->searchPaths[$subPath]['modifier_value'])	{
 						$attributeArray = array_unique(t3lib_div::trimExplode(',',$this->searchPaths[$subPath]['modifier_value'],1));
-#debug($attributeArray);
 						foreach($attributeArray as $attr)	{
 							$placeholder = '###'.$placeholder.'###';
 							$this->searchPaths[$subPath]['attr'][$attr]['placeholder']=$placeholder;
 							$this->searchPaths[$subPath]['attr'][$attr]['content']=$params[0][$attr];
 							$params[0][$attr] = $placeholder;
-							$placeholder = md5(microtime());
+							$placeholder = md5(uniqid(rand(), true));
 						}
 						$firstTag = '<'.trim($firstTagName.' '.t3lib_div::implodeParams($params[0])).($mode!='block'?' /':'').'>';
 						if ($mode!='block')	{

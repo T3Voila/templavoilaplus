@@ -1,6 +1,7 @@
 2008-02-25	Dmitry Dulepov	<dmitry@typo3.org>
 
 ~ Cleanup, added @var in pi1
+# Fixed bug #7644: Mapping in gets lost in different ways everytime you enter the mapping interface
 
 2008-02-04  Dmitry Dulepov  <dmitry@typo3.org>
 
