@@ -70,14 +70,18 @@ require_once(PATH_t3lib . 'class.t3lib_flexformtools.php');
  * @subpackage tx_templavoila
  */
 class tx_templavoila_pi1 extends tslib_pibase {
-    var $prefixId = 'tx_templavoila_pi1';        // Same as class name
-    var $scriptRelPath = 'pi1/class.tx_templavoila_pi1.php';    // Path to this script relative to the extension dir.
-    var $extKey = 'templavoila';    // The extension key.
+	var $prefixId = 'tx_templavoila_pi1';        // Same as class name
+	var $scriptRelPath = 'pi1/class.tx_templavoila_pi1.php';    // Path to this script relative to the extension dir.
+	var $extKey = 'templavoila';    // The extension key.
 
 	var $inheritValueFromDefault=1;		// If set, children-translations will take the value from the default if "false" (zero or blank)
 
-	var $conf=array();					// TypoScript config.
-
+	/**
+	 * Markup object
+	 *
+	 * @var tx_templavoila_htmlmarkup
+	 */
+	var $markupObj;
 
 	/**
 	 * Main function for rendering of Flexible Content elements of TemplaVoila
@@ -94,9 +98,9 @@ class tx_templavoila_pi1 extends tslib_pibase {
 
 	/**
 	 * Main function for rendering records from system tables (like fe_users) using TemplaVoila. Function creates fake flexform, ds and to fields for the record and calls {@link #renderElement($row,$table) renderElement} for processing.
-	 * 
-	 * <strong>This is undocumented and unsupported yet! Do not use unless you are ready to risk!</strong>.
-	 * 
+	 *
+	 * <strong>This is still undocumented and unsupported! Do not use unless you are ready to risk!</strong>.
+	 *
 	 * Example TS for listing FE users:
 	 * <code><pre>
 	 * lib.members = CONTENT
@@ -116,14 +120,14 @@ class tx_templavoila_pi1 extends tslib_pibase {
 	 * }
 	 * </pre/></code>
 	 * This example lists all frontend users using DS with DS=2 and TO=4.
-	 * 
+	 *
 	 * Required configuration options (in <code>$conf</code>):
 	 * <ul>
 	 * 	<li><code>ds</code> - DS UID to use
 	 * 	<li><code>to</code> - TO UID to use
 	 * 	<li><code>table</code> - table of the record
 	 * </ul>
-	 * 
+	 *
 	 * @param string $content Unused
 	 * @param array $conf Configuration (see above for entries)
 	 * @return string Generated content
@@ -421,28 +425,28 @@ class tx_templavoila_pi1 extends tslib_pibase {
                     // Step 1: save previous parent records from registers. This happens when pi1 is called for FCEs on a page.
                     $unsetKeys = array ();
                     foreach ($GLOBALS['TSFE']->register as $dkey => $dvalue) {
-                        if (preg_match('/^tx_templavoila_pi1\.parentRec\./', $dkey)) {
-                            $savedParentInfo[$dkey] = $dvalue;
-                            $unsetKeys[] = $dkey;
-                        }
+	if (preg_match('/^tx_templavoila_pi1\.parentRec\./', $dkey)) {
+	    $savedParentInfo[$dkey] = $dvalue;
+	    $unsetKeys[] = $dkey;
+	}
                     }
 
                     // Step 2: unset previous parent info
                     foreach ($unsetKeys as $dkey) {
-                        unset ($GLOBALS['TSFE']->register[$dkey]);
+	unset ($GLOBALS['TSFE']->register[$dkey]);
                     }
                     unset($unsetKeys); // free memory
 
                     // Step 3: set new parent record to register
                     $registerKeys = array ();
                     foreach ($this->cObj->data as $dkey => $dvalue) {
-                        $registerKeys[] = $tkey = 'tx_templavoila_pi1.parentRec.' . $dkey;
-                        $GLOBALS['TSFE']->register[$tkey] = $dvalue;
+	$registerKeys[] = $tkey = 'tx_templavoila_pi1.parentRec.' . $dkey;
+	$GLOBALS['TSFE']->register[$tkey] = $dvalue;
                     }
-                    
+
                     // Step 4: update checksum
                     $GLOBALS['TSFE']->register['tx_templavoila_pi1.parentRec.__SERIAL'] = $checksum;
-                    $registerKeys[] = 'tx_templavoila_pi1.parentRec.__SERIAL'; 
+                    $registerKeys[] = 'tx_templavoila_pi1.parentRec.__SERIAL';
                 }
             }
 
@@ -494,13 +498,13 @@ class tx_templavoila_pi1 extends tslib_pibase {
 
 	                    // Render localized labels for 'select' elements:
                     if ($DSelements[$key]['TCEforms']['config']['type'] == 'select') {
-                        if (substr($dataValues[$key][$valueKey], 0, 4) == 'LLL:') {
-                            $tempLangVal = $GLOBALS['TSFE']->sL($dataValues[$key][$valueKey]);
-                            if ($tempLangVal != '') {
-                                $dataValues[$key][$valueKey] = $tempLangVal;
-                            }
-                            unset($tempLangVal);
-                        }
+	if (substr($dataValues[$key][$valueKey], 0, 4) == 'LLL:') {
+	    $tempLangVal = $GLOBALS['TSFE']->sL($dataValues[$key][$valueKey]);
+	    if ($tempLangVal != '') {
+	        $dataValues[$key][$valueKey] = $tempLangVal;
+	    }
+	    unset($tempLangVal);
+	}
                     }
 
 						// TypoScript / TypoScriptObjPath:
@@ -549,9 +553,9 @@ class tx_templavoila_pi1 extends tslib_pibase {
 									if ($tsObjectKey !== intval($tsObjectKey)) {
 										$tsparserObj->setup[$tsObjectKey] = $tsObjectValue;
 									}
-								}	
+								}
 							}
-							
+
 							$tsparserObj->parse($LP[$key]['TypoScript']);
 							$dataValues[$key][$valueKey] = $cObj->cObjGet($tsparserObj->setup,'TemplaVoila_Proc.');
 						}

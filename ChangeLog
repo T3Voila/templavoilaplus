@@ -1,3 +1,7 @@
+2008-02-25	Dmitry Dulepov	<dmitry@typo3.org>
+
+~ Cleanup, added @var in pi1
+
 2008-02-04  Dmitry Dulepov  <dmitry@typo3.org>
 
 # Fixed catchable error in t3lib_div with TYPO3 4.2
