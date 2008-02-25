@@ -143,8 +143,12 @@ class tx_templavoila_tcemain {
 							}
 						}
 							// Finally set the Template Objects if one was found:
-	 					if (intval ($fieldArray['tx_templavoila_ds']) && ($fieldArray['tx_templavoila_to'] == 0)) $fieldArray['tx_templavoila_to'] = $matchingTOUid;
-	 					if (intval ($fieldArray['tx_templavoila_next_ds']) && ($fieldArray['tx_templavoila_next_to'] == 0)) $fieldArray['tx_templavoila_next_to'] = $matchingNextTOUid;
+	 					if (intval ($fieldArray['tx_templavoila_ds']) && ($fieldArray['tx_templavoila_to'] == 0)) {
+	 						$fieldArray['tx_templavoila_to'] = $matchingTOUid;
+	 					}
+	 					if (intval ($fieldArray['tx_templavoila_next_ds']) && ($fieldArray['tx_templavoila_next_to'] == 0)) {
+	 						$fieldArray['tx_templavoila_next_to'] = $matchingNextTOUid;
+	 					}
 					}
 				}
 			}
@@ -419,6 +423,7 @@ class tx_templavoila_tcemain {
 
 		$elementsOnThisPage = array ();
 		$templaVoilaAPI = t3lib_div::makeInstance('tx_templavoila_api');
+		/* @var $templaVoilaAPI tx_templavoila_api */
 
 			// Getting value of the field containing the relations:
 		$xmlContentArr = t3lib_div::xml2array($flexformXML);
