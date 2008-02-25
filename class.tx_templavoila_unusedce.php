@@ -65,7 +65,7 @@ require_once (t3lib_extMgm::extPath('templavoila').'class.tx_templavoila_api.php
 class tx_templavoila_unusedce extends tx_lowlevel_cleaner_core {
 
 	var $checkRefIndex = TRUE;
-	
+
 	var $genTree_traverseDeleted = FALSE;
 	var $genTree_traverseVersions = FALSE;
 
@@ -96,7 +96,7 @@ Automatic Repair:
 	}
 
 	/**
-	 * 
+	 *
 	 *
 	 * @return	array
 	 */
@@ -116,7 +116,7 @@ Automatic Repair:
 
 		$startingPoint = $this->cli_isArg('--pid') ? t3lib_div::intInRange($this->cli_argValue('--pid'),0) : 0;
 		$depth = $this->cli_isArg('--depth') ? t3lib_div::intInRange($this->cli_argValue('--depth'),0) : 1000;
-		
+
 		$this->resultArray = &$resultArray;
 		$this->genTree($startingPoint,$depth,(int)$this->cli_argValue('--echotree'),'main_parseTreeCallBack');
 
@@ -137,7 +137,7 @@ Automatic Repair:
 	 * @return	void
 	 */
 	function main_parseTreeCallBack($tableName,$uid,$echoLevel,$versionSwapmode,$rootIsVersion)	{
-		
+
 		if ($tableName=='pages' && $uid>0)	{
 			if (!$versionSwapmode)	{
 
@@ -166,7 +166,7 @@ Automatic Repair:
 
 						// Traverse, for each find references if any and register them.
 					while(false !== ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)))	{
-	
+
 							// Look up references to elements:
 						$refrows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 							'*',
@@ -175,7 +175,7 @@ Automatic Repair:
 								' AND ref_uid='.intval($row['uid']).
 								' AND deleted=0'
 						);
-				
+
 							// Register elements etc:
 						$this->resultArray['all_unused'][$row['uid']] = array($row['header'],count($refrows));
 						if ($echoLevel>2) echo chr(10).'			[tx_templavoila_unusedce:] tt_content:'.$row['uid'].' was not used on page...';
@@ -187,7 +187,7 @@ Automatic Repair:
 						}
 					}
 				} else {
-					if ($echoLevel>2) echo chr(10).'			[tx_templavoila_unusedce:] Did not check page - did not have a Data Structure set.';	
+					if ($echoLevel>2) echo chr(10).'			[tx_templavoila_unusedce:] Did not check page - did not have a Data Structure set.';
 				}
 			} else {
 				if ($echoLevel>2) echo chr(10).'			[tx_templavoila_unusedce:] Did not check page - was on offline page.';
@@ -218,11 +218,16 @@ Automatic Repair:
 					// Return errors if any:
 				if (count($tce->errorLog))	{
 					echo '	ERROR from "TCEmain":'.chr(10).'TCEmain:'.implode(chr(10).'TCEmain:',$tce->errorLog);
-				} else echo 'DONE';			
+				} else echo 'DONE';
 			}
 			echo chr(10);
 		}
 	}
+}
+
+
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/class.tx_templavoila_unusedce.php'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/class.tx_templavoila_unusedce.php']);
 }
 
 ?>

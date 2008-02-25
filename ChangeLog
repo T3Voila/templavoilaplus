@@ -3,6 +3,7 @@
 ~ Cleanup, added @var in pi1
 # Fixed bug #7644: Mapping in gets lost in different ways everytime you enter the mapping interface
 ~ Small adjustments after #6648
+~ Added some XCLASS definitions to make EM happy
 
 2008-02-04  Dmitry Dulepov  <dmitry@typo3.org>
 
