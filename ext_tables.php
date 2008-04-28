@@ -176,7 +176,7 @@ $tempColumns = Array (
 );
 t3lib_extMgm::addTCAcolumns('tt_content',$tempColumns,1);
 
-$TCA['tt_content']['types'][$_EXTKEY.'_pi1']['showitem']='CType;;4;button;1-1-1, header;;;;2-2-2,tx_templavoila_ds,tx_templavoila_to,tx_templavoila_flex;;;;2-2-2, hidden;;1;;-3-3-3';
+$TCA['tt_content']['types'][$_EXTKEY.'_pi1']['showitem']='CType;;4;button;1-1-1, header;;;;2-2-2,tx_templavoila_ds,tx_templavoila_to,tx_templavoila_flex;;;;2-2-2, hidden;;1;;3-3-3';
 t3lib_extMgm::addPlugin(Array('LLL:EXT:templavoila/locallang_db.xml:tt_content.CType_pi1', $_EXTKEY.'_pi1'),'CType');
 
 if ($TCA['tt_content']['ctrl']['requestUpdate'] != '') {
