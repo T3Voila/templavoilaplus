@@ -502,16 +502,16 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 							$h_currentMappingInfo['el_'.$kk]['MAP_EL'] = $vv;
 						}
 					}
-	
+
 					$contentSplittedByMapping = $this->markupObj->splitContentToMappingInfo($html_header,$h_currentMappingInfo);
 					$templatemapping['MappingData_head_cached'] = $contentSplittedByMapping;
-					
+
 						// Get <body> tag:
 					$reg='';
 					eregi('<body[^>]*>',$fileContent,$reg);
 					$templatemapping['BodyTag_cached'] = $currentMappingInfo_head['addBodyTag'] ? $reg[0] : '';
 				}
-				
+
 				if ($cmd != 'showXMLDS') {
 					// Set default flags to <meta> tag
 					if (!isset($dataStruct['meta'])) {
@@ -586,7 +586,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 					}
 
 					unset($tce);
-					
+
 					// Clear cached header info because saveDSandTO always resets headers
 					$sesDat['currentMappingInfo_head'] = '';
 					$GLOBALS['BE_USER']->setAndSaveSessionData($this->MCONF['name'].'_mappingInfo',$sesDat);
@@ -1125,7 +1125,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 					} else $content.= $GLOBALS['LANG']->getLL('error').': No Data Structure Record could be found with UID "'.$dsValue.'"';
 				} else $content.= $GLOBALS['LANG']->getLL('error').': The file "'.$row['fileref'].'" could not be found!';
 			} else $content.= $GLOBALS['LANG']->getLL('error').': No Template Object Record with the UID '.$this->displayUid;
-			
+
 			$parts[0]['content'] = $content;
 		} else {
 			$this->content.=$this->doc->section($GLOBALS['LANG']->getLL('templateObject').' '.$GLOBALS['LANG']->getLL('error'), $GLOBALS['LANG']->getLL('errorNoUidFound'),0,1,3);
@@ -1536,7 +1536,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			<h3>Mapping Window:</h3>
 			<!-- <p><strong>File:</strong> '.htmlspecialchars($displayFile).'</p> -->
 			<p>'.
-				t3lib_BEfunc::getFuncMenu('','SET[displayMode]',$this->MOD_SETTINGS['displayMode'],$this->MOD_MENU['displayMode'],'',t3lib_div::implodeArrayForUrl('',$GLOBALS['HTTP_GET_VARS'],'',1,1)).
+				t3lib_BEfunc::getFuncMenu('','SET[displayMode]',$this->MOD_SETTINGS['displayMode'],$this->MOD_MENU['displayMode'],'',t3lib_div::implodeArrayForUrl('',$_GET,'',1,1)).
 				$this->cshItem('xMOD_tx_templavoila','mapping_window_modes',$this->doc->backPath,'').
 				'</p>';
 
@@ -1919,7 +1919,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 					'.$this->drawDataStructureMap_editItem_editTypeExtra(
 						$insertDataArray['tx_templavoila']['eType'],
 						$formFieldName.'[tx_templavoila][eType_EXTRA]',
-						($insertDataArray['tx_templavoila']['eType_EXTRA'] ?	// Use eType_EXTRA only if it is set (could be modified, etc), otherwise use TypoScriptObjPath! 
+						($insertDataArray['tx_templavoila']['eType_EXTRA'] ?	// Use eType_EXTRA only if it is set (could be modified, etc), otherwise use TypoScriptObjPath!
 							$insertDataArray['tx_templavoila']['eType_EXTRA'] :
 								($insertDataArray['tx_templavoila']['TypoScriptObjPath'] ?
 								array('objPath' => $insertDataArray['tx_templavoila']['TypoScriptObjPath']) : ''))
@@ -2021,7 +2021,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 
 		$eTypeCECounter = 0;
 
-		t3lib_div::loadTCA('tt_content');		
+		t3lib_div::loadTCA('tt_content');
 
 			// Traverse array
 		foreach($elArray as $key => $value)	{
@@ -2275,9 +2275,9 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 						case 'TypoScriptObject':
 							unset($elArray[$key]['tx_templavoila']['TypoScript']);
 							unset($elArray[$key]['TCEforms']['config']);
-							$elArray[$key]['tx_templavoila']['TypoScriptObjPath'] = 
+							$elArray[$key]['tx_templavoila']['TypoScriptObjPath'] =
 								($elArray[$key]['tx_templavoila']['eType_EXTRA']['objPath'] ?
-									$elArray[$key]['tx_templavoila']['eType_EXTRA']['objPath'] : 
+									$elArray[$key]['tx_templavoila']['eType_EXTRA']['objPath'] :
 									($elArray[$key]['tx_templavoila']['TypoScriptObjPath'] ?
 										$elArray[$key]['tx_templavoila']['TypoScriptObjPath'] : ''));
 						break;
