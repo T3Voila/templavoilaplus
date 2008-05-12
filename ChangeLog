@@ -2,6 +2,8 @@
 
 	* RFC #8338: "Catchable fatal error" still exists
 
+	RELEASE OF TEMPLAVOILA 1.3.5
+
 2008-04-13	Dmitry Dulepov	<dmitry@typo3.org>
 
 	* Added ability to hide FCE
