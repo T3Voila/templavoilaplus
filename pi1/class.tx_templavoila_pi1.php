@@ -177,7 +177,8 @@ class tx_templavoila_pi1 extends tslib_pibase {
 			}
 		    $values['data']['sDEF'][$lKey][$k][$vKey] = $v;
 		}
-		$data['tx_templavoila_flex'] = t3lib_flexformtools::flexArray2xml($values);
+        $ff = t3lib_div::makeInstance('t3lib_flexformtools');                                                                                         
+        $data['tx_templavoila_flex'] = $ff->flexArray2xml($values);                                                                                   
 
 		return $this->renderElement($data, $conf['table']);
     }

@@ -446,8 +446,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 
 			// Create setting handlers:
 		$settings = '<p>'.
-				t3lib_BEfunc::getFuncCheck('','SET[set_details]',$this->MOD_SETTINGS['set_details'],'',t3lib_div::implodeArrayForUrl('',$GLOBALS['HTTP_GET_VARS'],'',1,1)).' Show Details &nbsp;&nbsp;&nbsp;'.
-				#t3lib_BEfunc::getFuncCheck('','SET[set_showDSxml]',$this->MOD_SETTINGS['set_showDSxml'],'',t3lib_div::implodeArrayForUrl('',$GLOBALS['HTTP_GET_VARS'],'',1,1)).' Show DS XML'.
+				t3lib_BEfunc::getFuncCheck('','SET[set_details]',$this->MOD_SETTINGS['set_details'],'',t3lib_div::implodeArrayForUrl('',$_GET,'',1,1)).' Show Details &nbsp;&nbsp;&nbsp;'.
 			'</p>';
 
 			// Add output:
