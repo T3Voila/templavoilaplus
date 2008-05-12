@@ -950,7 +950,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 					<div id="c-dsxml">
 						<h3>Data Structure XML:</h3>
 						'.$this->cshItem('xMOD_tx_templavoila','mapping_ds_showXML',$this->doc->backPath).'
-						<p>'.t3lib_BEfunc::getFuncCheck('','SET[showDSxml]',$this->MOD_SETTINGS['showDSxml'],'',t3lib_div::implodeArrayForUrl('',$GLOBALS['HTTP_GET_VARS'],'',1,1)).' Show XML</p>
+						<p>'.t3lib_BEfunc::getFuncCheck('','SET[showDSxml]',$this->MOD_SETTINGS['showDSxml'],'',t3lib_div::implodeArrayForUrl('',$_GET,'',1,1)).' Show XML</p>
 						<pre>'.
 							($this->MOD_SETTINGS['showDSxml'] ? $hlObj->highLight_DS($dataStructureXML) : '').'
 						</pre>
