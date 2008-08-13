@@ -29,6 +29,8 @@ $EM_CONF[$_EXTKEY] = array(
 			'kb_tv_clipboard' => '-0.1.0',
 			'templavoila_cw' => '-0.1.0',
 			'eu_tradvoila' => '-0.0.2',
+			'me_templavoilalayout' => '',
+			'me_templavoilalayout2' => '',
 		),
 		'suggests' => array(
 		),
@@ -42,7 +44,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'createDirs' => 'uploads/tx_templavoila/',
 	'modify_tables' => 'pages,tt_content,be_groups',
 	'clearCacheOnLoad' => 1,
-	'lockType' => '',
+	'lockType' => 'L',
 	'author' => 'Dmitry Dulepov',
 	'author_email' => 'dmitry@typo3.org',
 	'author_company' => 'ACCIO SIA',

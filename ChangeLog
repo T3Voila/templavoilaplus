@@ -6,6 +6,7 @@
 	* Fixed bug #8858: TV does not honour TCAdefaults. from PageTSconfig
 	* Added header palette
 	* Fixed bug #4823: Remove 'Templavoila' - item in Click Menu of Filelist for editors
+	* Changed lockType to Local
 
 2008-05-12	Dmitry Dulepov	<dmitry@typo3.org>
 
