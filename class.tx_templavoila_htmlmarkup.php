@@ -220,19 +220,13 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 		$this->gnyfPath = t3lib_div::resolveBackPath($backPath.t3lib_extMgm::extRelPath('templavoila'));
 		list($tagList_elements, $tagList_single) = $this->splitTagTypes($showTags);
 
-#	debug(t3lib_parsehtml::checkTagTypeCounts($content,$tagList_elements, $tagList_single));
-
 			// Fix links/paths
 		if ($this->mode!='source')	{
 			$content = $this->htmlParse->prefixResourcePath($relPathFix,$content);
 		}
-#debug(array($tagList_elements,$tagList_single),'$tagList_elements,$tagList_single');
 
 			// elements:
 		$content = $this->recursiveBlockSplitting($content,$tagList_elements,$tagList_single,'markup');
-#debug($this->elCountArray,'markupHTMLcontent : '.md5(serialize($this->elCountArray)));
-
-#debug(array($tagList_elements,$tagList_single,'markup'));
 
 			// Wrap in <pre>-tags if source
 		if ($this->mode=='source')	{
@@ -764,13 +758,28 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 		$htmlParse = ($this->htmlParse ? $this->htmlParse : t3lib_div::makeInstance('t3lib_parsehtml'));
 
 			// Traversing mapped header parts:
-		if (is_array($MappingInfo_head['headElementPaths']))	{
-			foreach($MappingInfo_head['headElementPaths'] as $kk => $vv)	{
-				if (isset($MappingData_head_cached['cArray']['el_'.$kk]))	{
+		if (is_array($MappingInfo_head['headElementPaths'])) {
+			$extraHeaderData = array();
+			foreach(array_keys($MappingInfo_head['headElementPaths']) as $kk) {
+				if (isset($MappingData_head_cached['cArray']['el_'.$kk])) {
 					$uKey = md5(trim($MappingData_head_cached['cArray']['el_'.$kk]));
-					$GLOBALS['TSFE']->additionalHeaderData['TV_'.$uKey] = chr(10).trim($htmlParse->XHTML_clean($MappingData_head_cached['cArray']['el_'.$kk]));
+					$extraHeaderData['TV_'.$uKey] = chr(10) . chr(9) . trim($htmlParse->XHTML_clean($MappingData_head_cached['cArray']['el_'.$kk]));
 				}
 			}
+			// Set 'page.headerData', use the lowest possible free index!
+			// This will make sure that header data appears the very first on the page
+			// but unfortunately after styles from extensions
+			for ($i = 1; $i < PHP_INT_MAX; $i++) {
+				if (!isset($GLOBALS['TSFE']->pSetup['headerData.'][$i])) {
+					$GLOBALS['TSFE']->pSetup['headerData.'][$i] = 'TEXT';
+					$GLOBALS['TSFE']->pSetup['headerData.'][$i . '.']['value'] = implode('', $extraHeaderData) . chr(10);
+					break;
+				}
+			}
+			// Alternative way is to prepend it additionalHeaderData but that
+			// will still put JS/CSS after any page.headerData. So this code is
+			// kept commented here.
+			//$GLOBALS['TSFE']->additionalHeaderData = $extraHeaderData + $GLOBALS['TSFE']->additionalHeaderData;
 		}
 
 			// Body tag:
