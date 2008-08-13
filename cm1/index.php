@@ -192,17 +192,17 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 	 * @return	void
 	 */
 	function menuConfig()    {
-	    $this->MOD_MENU = Array (
-            'displayMode' => array	(
+		$this->MOD_MENU = Array (
+			'displayMode' => array	(
 				'explode' => 'Mode: Exploded Visual',
 #				'_' => 'Mode: Overlay',
 				'source' => 'Mode: HTML Source ',
 #				'borders' => 'Mode: Table Borders',
 			),
 			'showDSxml' => ''
-        );
-        parent::menuConfig();
-    }
+		);
+		parent::menuConfig();
+	}
 
 	/**
 	 * Main function, distributes the load between the module and display modes.
@@ -1252,7 +1252,10 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 
 				// Fix relative paths in source:
 			$relPathFix=dirname(substr($theFile,strlen(PATH_site))).'/';
-			$fileContent = $htmlParse->prefixResourcePath($relPathFix,$fileContent);
+			$uniqueMarker = uniqid('###') . '###';
+			$fileContent = $htmlParse->prefixResourcePath($relPathFix,$fileContent, array('A' => $uniqueMarker));
+			$fileContent = $this->fixPrefixForLinks($relPathFix, $fileContent, $uniqueMarker);
+
 
 				// Get BODY content for caching:
 			$contentSplittedByMapping=$this->markupObj->splitContentToMappingInfo($fileContent,$currentMappingInfo);
@@ -2735,6 +2738,27 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 		}
 
 		return $this->markupObj->splitContentToMappingInfo($html_header,$h_currentMappingInfo);
+	}
+
+	/**
+	 * Checks if link points to local marker or not and sets prefix accordingly.
+	 *
+	 * @param	string	$relPathFix	Prefix
+	 * @param	string	$fileContent	Content
+	 * @param	string	$uniqueMarker	Marker inside links
+	 * @return	string	Content
+	 */
+	function fixPrefixForLinks($relPathFix, $fileContent, $uniqueMarker) {
+		$parts = explode($uniqueMarker, $fileContent);
+		$count = count($parts);
+		if ($count > 1) {
+			for ($i = 1; $i < $count; $i++) {
+				if ($parts[$i]{0} != '#') {
+					$parts[$i] = $relPathFix . $parts[$i];
+				}
+			}
+		}
+		return implode($parts);
 	}
 
 }
