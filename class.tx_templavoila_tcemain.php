@@ -109,8 +109,6 @@ class tx_templavoila_tcemain {
 	 * @access	public
 	 */
 	function processDatamap_postProcessFieldArray ($status, $table, $id, &$fieldArray, &$reference) {
-		global $TYPO3_DB, $TCA;
-
 		if ($this->debug) t3lib_div::devLog ('processDatamap_postProcessFieldArray', 'templavoila',0,array ($status, $table, $id, $fieldArray));
 
 			// If the references for content element changed at the current page, save that information into the reference table:
@@ -484,7 +482,7 @@ class tx_templavoila_tcemain {
 
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/class.tx_templavoila_tcemain.php'])    {
-    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/class.tx_templavoila_tcemain.php']);
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/class.tx_templavoila_tcemain.php']);
 }
 
 ?>
