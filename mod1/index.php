@@ -623,6 +623,9 @@ table.typo3-dyntabmenu td.disabled, table.typo3-dyntabmenu td.disabled_over, tab
 		if ($canEditContent) {
 			$menuCommands[] = 'copy,cut,pasteinto,pasteafter,delete';
 		}
+		else {
+			$menuCommands[] = 'copy';
+		}
 
 		$titleBarLeftButtons = $this->translatorMode ? $recordIcon : (count($menuCommands) == 0 ? $recordIcon : $this->doc->wrapClickMenuOnIcon($recordIcon,$contentTreeArr['el']['table'], $contentTreeArr['el']['uid'], 1,'&amp;callingScriptId='.rawurlencode($this->doc->scriptID), implode(',', $menuCommands)));
 		$titleBarLeftButtons.= $this->getRecordStatHookValue($contentTreeArr['el']['table'],$contentTreeArr['el']['uid']);
@@ -662,7 +665,7 @@ table.typo3-dyntabmenu td.disabled, table.typo3-dyntabmenu td.disabled_over, tab
 					$titleBarRightButtons = $linkEdit . $this->clipboardObj->element_getSelectButtons($parentPointer) . $linkMakeLocal . $linkUnlink;
 				}
 				else {
-					$titleBarRightButtons = '';
+					$titleBarRightButtons = $this->clipboardObj->element_getSelectButtons($parentPointer, 'copy');
 				}
 			break;
 		}
@@ -1015,8 +1018,8 @@ table.typo3-dyntabmenu td.disabled, table.typo3-dyntabmenu td.disabled_over, tab
 					$output = $this->link_edit('<strong>'.$LANG->sL(t3lib_BEfunc::getItemLabel('tt_content','bodytext'),1).'</strong> ' . htmlspecialchars(t3lib_div::fixed_lgd_cs(trim($row['bodytext']),2000)),'tt_content',$row['uid']).'<br />';
 					break;
 				case 'header': // Header
-                    $output = $this->link_edit('<strong>'.$LANG->sL(t3lib_BEfunc::getItemLabel('tt_content','header'),1).'</strong> ' . htmlspecialchars(t3lib_div::fixed_lgd_cs(trim(strip_tags($row['header'])),2000)),'tt_content',$row['uid']).'<br />';
-                    break;
+					$output = $this->link_edit('<strong>'.$LANG->sL(t3lib_BEfunc::getItemLabel('tt_content','header'),1).'</strong> ' . htmlspecialchars(t3lib_div::fixed_lgd_cs(trim(strip_tags($row['header'])),2000)),'tt_content',$row['uid']).'<br />';
+					break;
 				case 'search':			//	Search Box
 				case 'login':			//	Login Box
 				case 'shortcut':		//	Insert records
@@ -1949,7 +1952,7 @@ table.typo3-dyntabmenu td.disabled, table.typo3-dyntabmenu td.disabled_over, tab
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/mod1/index.php'])    {
-    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/mod1/index.php']);
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/mod1/index.php']);
 }
 
 	// Make instance:
