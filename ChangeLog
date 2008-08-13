@@ -3,6 +3,7 @@
 	* Changed the order of header parts - now they appear as the first member of page.headerData
 	* Fixed bug #4703: On-page links gets prefixed with path to template
 	* Fixed bug #9118: Copy Icon not enabled if the user has no edit-rights
+	* Fixed bug #8858: TV does not honour TCAdefaults. from PageTSconfig
 
 2008-05-12	Dmitry Dulepov	<dmitry@typo3.org>
 
