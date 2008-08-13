@@ -73,14 +73,30 @@ class tx_templavoila_cm1 {
 			$LL = $LANG->includeLLFile(t3lib_extMgm::extPath('templavoila').'locallang.xml', 0);
 
 				// Adding link for Mapping tool:
-			if (t3lib_div::inList('tx_templavoila_tmplobj,tx_templavoila_datastructure,tx_templavoila_content',$table) || @is_file($table))	{
-				$localItems = array();
-
-				if (@is_file($table))	{
-					$url = t3lib_extMgm::extRelPath('templavoila').'cm1/index.php?file='.rawurlencode($table);	//.'&mapElPath='.rawurlencode('[ROOT]');
-				} else {
-					$url = t3lib_extMgm::extRelPath('templavoila').'cm1/index.php?table='.rawurlencode($table).'&uid='.$uid.'&_reload_from=1';
+			if (@is_file($table)) {
+				if ($BE_USER->isAdmin()) {
+					if (function_exists('finfo_open')) {
+						$fi = finfo_open(FILEINFO_MIME);
+						$enabled = (@finfo_file($fi, $table) == 'text/html');
+						finfo_close($fi);
+					}
+					else {
+						$pi = @pathinfo($table);
+						$enabled = preg_match('/(html?|tmpl)/', $pi['extension']);
+					}
+					if ($enabled) {
+						$url = t3lib_extMgm::extRelPath('templavoila').'cm1/index.php?file='.rawurlencode($table);
+						$localItems[] = $backRef->linkItem(
+							$LANG->getLLL('cm1_title',$LL,1),
+							$backRef->excludeIcon('<img src="'.$backRef->backPath.t3lib_extMgm::extRelPath('templavoila').'cm1/cm_icon.gif" width="15" height="12" border="0" align="top" alt="" />'),
+							$backRef->urlRefForCM($url),
+							1	// Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
+						);
+					}
 				}
+			}
+			elseif (t3lib_div::inList('tx_templavoila_tmplobj,tx_templavoila_datastructure,tx_templavoila_content',$table)) {
+				$url = t3lib_extMgm::extRelPath('templavoila').'cm1/index.php?table='.rawurlencode($table).'&uid='.$uid.'&_reload_from=1';
 				$localItems[] = $backRef->linkItem(
 					$LANG->getLLL('cm1_title',$LL,1),
 					$backRef->excludeIcon('<img src="'.$backRef->backPath.t3lib_extMgm::extRelPath('templavoila').'cm1/cm_icon.gif" width="15" height="12" border="0" align="top" alt="" />'),
