@@ -113,7 +113,7 @@ t3lib_extMgm::addToAllTCAtypes('be_groups','tx_templavoila_access;;;;1-1-1', '1'
 
 	// Adding the new content element, "Flexible Content":
 t3lib_div::loadTCA('tt_content');
-$tempColumns = Array (
+$tempColumns = array(
 	'tx_templavoila_ds' => Array (
 		'exclude' => 1,
 		'label' => 'LLL:EXT:templavoila/locallang_db.xml:tt_content.tx_templavoila_ds',
@@ -174,10 +174,11 @@ $tempColumns = Array (
 		)
 	),
 );
-t3lib_extMgm::addTCAcolumns('tt_content',$tempColumns,1);
+t3lib_extMgm::addTCAcolumns('tt_content', $tempColumns, 1);
 
-$TCA['tt_content']['types'][$_EXTKEY.'_pi1']['showitem']='CType;;4;button;1-1-1, header;;3;;2-2-2,tx_templavoila_ds,tx_templavoila_to,tx_templavoila_flex;;;;2-2-2, hidden;;1;;3-3-3';
-t3lib_extMgm::addPlugin(Array('LLL:EXT:templavoila/locallang_db.xml:tt_content.CType_pi1', $_EXTKEY.'_pi1'),'CType');
+$TCA['tt_content']['types'][$_EXTKEY . '_pi1']['showitem'] = 'CType;;4;button;1-1-1, header;;3;;2-2-2,tx_templavoila_ds,tx_templavoila_to,tx_templavoila_flex;;;;2-2-2, hidden;;1;;3-3-3';
+$TCA['tt_content']['ctrl']['typeicons'][$_EXTKEY . '_pi1'] = t3lib_extMgm::extRelPath($_EXTKEY) . '/icon_fce_ce.png';
+t3lib_extMgm::addPlugin(array('LLL:EXT:templavoila/locallang_db.xml:tt_content.CType_pi1', $_EXTKEY . '_pi1', 'EXT:' . $_EXTKEY . '/icon_fce_ce.png'), 'CType');
 
 if ($TCA['tt_content']['ctrl']['requestUpdate'] != '') {
 	$TCA['tt_content']['ctrl']['requestUpdate'] .= ',';
@@ -185,14 +186,14 @@ if ($TCA['tt_content']['ctrl']['requestUpdate'] != '') {
 $TCA['tt_content']['ctrl']['requestUpdate'] .= 'tx_templavoila_ds';
 
 	// For pages:
-$tempColumns = Array (
-	'tx_templavoila_ds' => Array (
+$tempColumns = array (
+	'tx_templavoila_ds' => array (
 		'exclude' => 1,
 		'label' => 'LLL:EXT:templavoila/locallang_db.xml:pages.tx_templavoila_ds',
-		'config' => Array (
+		'config' => array (
 			'type' => 'select',
 			'items' => Array (
-				Array('',0),
+				array('',0),
 			),
 			'foreign_table' => 'tx_templavoila_datastructure',
 			'foreign_table_where' => 'AND tx_templavoila_datastructure.pid=###STORAGE_PID### AND tx_templavoila_datastructure.scope IN (1) ORDER BY tx_templavoila_datastructure.sorting',
@@ -269,7 +270,7 @@ $tempColumns = Array (
 		)
 	),
 );
-t3lib_extMgm::addTCAcolumns('pages',$tempColumns,1);
+t3lib_extMgm::addTCAcolumns('pages', $tempColumns, 1);
 t3lib_extMgm::addToAllTCAtypes('pages','tx_templavoila_ds;;;;1-1-1,tx_templavoila_to,tx_templavoila_next_ds,tx_templavoila_next_to,tx_templavoila_flex;;;;1-1-1');
 if ($TCA['pages']['ctrl']['requestUpdate'] != '') {
 	$TCA['pages']['ctrl']['requestUpdate'] .= ',';

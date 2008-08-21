@@ -1,3 +1,7 @@
+2008-08-21	Dmitry Dulepov	<dmitry@typo3.org>
+
+	* Added icon for FCE content element
+
 2008-08-13	Dmitry Dulepov	<dmitry@typo3.org>
 
 	* Changed the order of header parts - now they appear as the first member of page.headerData
