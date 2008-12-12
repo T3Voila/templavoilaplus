@@ -1,3 +1,7 @@
+2008-12-12	Dmitry Dulepov	<dmitry@typo3.org>
+
+	* Fixed bug #9564: Update PHP dependencies
+
 2008-08-21	Dmitry Dulepov	<dmitry@typo3.org>
 
 	* Added icon for FCE content element
@@ -62,7 +66,7 @@
 
 2007-10-06  Dmitry Dulepov  <dmitry@typo3.org>
 
- + Added hook to display aditional infpormation about plugins in page module (TYPO3 4.2 new feature)
++ Added hook to display aditional infpormation about plugins in page module (TYPO3 4.2 new feature)
 
 2007-07-12  Kasper Skaarhoej <kasper2007@typo3.com>
 # Fixed issues related to cleaner-plug-in-script
@@ -76,30 +80,30 @@
 
 	RELEASE OF TEMPLAVOILA 1.3.3
 
- # Fixed: wrong file version went to 1.3.2 (mod1/index.php)
+# Fixed: wrong file version went to 1.3.2 (mod1/index.php)
 
 2007-07-04  Dmitry Dulepov  <dmitry@typo3.org>
 
 	RELEASE OF TEMPLAVOILA 1.3.2
 
- + Added hook for additional content (see http://bugs.typo3.org/view.php?id=4821)
- + Added a hook to add/modify/delete sidebar tabs
- + Added checks for permissions and removal of new/edit/cut/copy/paste/delete icons
- + Added posibility to hide sidebar objects if they are empty though object configuration
- # Fixed spacing problem for disabled tabs
- # Hidden several tabs if they do not have content
- # Hidden static data structures from the list of content elements that can be created through new content element wizard
- # Fixed: $LANG sometimes does not exist and causes failures in class.tx_templavoila_access.php
++ Added hook for additional content (see http://bugs.typo3.org/view.php?id=4821)
++ Added a hook to add/modify/delete sidebar tabs
++ Added checks for permissions and removal of new/edit/cut/copy/paste/delete icons
++ Added posibility to hide sidebar objects if they are empty though object configuration
+# Fixed spacing problem for disabled tabs
+# Hidden several tabs if they do not have content
+# Hidden static data structures from the list of content elements that can be created through new content element wizard
+# Fixed: $LANG sometimes does not exist and causes failures in class.tx_templavoila_access.php
 
 2007-06-21  Dmitry Dulepov  <dmitry@typo3.org>
 
- + DS title for static data structures can use 'LLL:' translation
- + Static DSes now can specify default file references
- # Fix: wrong element position if element is inserted using old page module
- # Fix: unnecessary loop while generating TS during mapping
- # Fixed bug 5253: sort FCEs in wizard
- # Fixed bug 5679: "Create new Template Object" stopped working in 1.3.1
- # Fixed bug 5692: Manual sorting of FCEs displayed in the New Content Wizard.
++ DS title for static data structures can use 'LLL:' translation
++ Static DSes now can specify default file references
+# Fix: wrong element position if element is inserted using old page module
+# Fix: unnecessary loop while generating TS during mapping
+# Fixed bug 5253: sort FCEs in wizard
+# Fixed bug 5679: "Create new Template Object" stopped working in 1.3.1
+# Fixed bug 5692: Manual sorting of FCEs displayed in the New Content Wizard.
 
 2007-05-09  Dmitry Dulepov  <dmitry@typo3.org>
 
@@ -107,27 +111,27 @@
 
 2007-02-27  Dmitry Dulepov  <dmitry@typo3.org>
 
- # Changed hook parameter names in class.tx_templavoila_access.php
+# Changed hook parameter names in class.tx_templavoila_access.php
 
 2007-03-24  Kasper Skaarhoej
- # Fixed bug that the Page module would not show page structure if a Template Object value was set but not the Data Structure
+# Fixed bug that the Page module would not show page structure if a Template Object value was set but not the Data Structure
 
 2007-02-20  Dmitry Dulepov  <dmitry@typo3.org>
 
- # Fix: wrong check for null in class.tx_templavoila_tcemain.php
- + Added access control for creation, modification and deletion of FCEs inside TCEmain (using hooks) and for TCEForms (requires hook in core!)
- + Added icon to mod1 to show when FCE editing is disabled
+# Fix: wrong check for null in class.tx_templavoila_tcemain.php
++ Added access control for creation, modification and deletion of FCEs inside TCEmain (using hooks) and for TCEForms (requires hook in core!)
++ Added icon to mod1 to show when FCE editing is disabled
 
 2007-02-19  Dmitry Dulepov  <dmitry@typo3.org>
 
- # Fixed wrong character encoding in mod1 if forceCharset is empty
- # Fixed bug 4967: Disallowed DS/TO are available in Pagewizard
- # Fixed bug 4975: SQL errors with Templavoila/DBAL/PostgreSQL: TV Control Center: Show Details
- # Fixed bug 4997: SQL error with Templavoila/DBAL/PostgreSQL: Editing templates
+# Fixed wrong character encoding in mod1 if forceCharset is empty
+# Fixed bug 4967: Disallowed DS/TO are available in Pagewizard
+# Fixed bug 4975: SQL errors with Templavoila/DBAL/PostgreSQL: TV Control Center: Show Details
+# Fixed bug 4997: SQL error with Templavoila/DBAL/PostgreSQL: Editing templates
 
 2007-02-15  Dmitry Dulepov  <dmitry@typo3.org>
 
- # Fixed wrong column name in SQL query (class.tx_templavoila_referenceelementswizard.php)
+# Fixed wrong column name in SQL query (class.tx_templavoila_referenceelementswizard.php)
 
 2007-02-05  Dmitry Dulepov  <dmitry@typo3.org>
 
@@ -135,55 +139,55 @@
 
 2007-01-27  Dmitry Dulepov  <dmitry@typo3.org>
 
- # Fixed character conversion problem that appeared in 1.2.0
- # Fixed empty field values in "Page related information" tab (bug #4576)
- # Fixed problem with preserving <meta> tag during "Modify DS/TO" (this allows me_templavoilalayout and localization to retain its data)
- # Fixed bug #3143: New Content Element is created as Reference
- # Fixed bug #3958: New content created as a reference after a reference
- # Fixed bug #4650: respect me_templavoilalayout
- + Feature request #4847: Access control for DS/TO (thanks to e-netconsulting KG Hamburg AND Star Finanz GmbH Hamburg as Sponsor!)
+# Fixed character conversion problem that appeared in 1.2.0
+# Fixed empty field values in "Page related information" tab (bug #4576)
+# Fixed problem with preserving <meta> tag during "Modify DS/TO" (this allows me_templavoilalayout and localization to retain its data)
+# Fixed bug #3143: New Content Element is created as Reference
+# Fixed bug #3958: New content created as a reference after a reference
+# Fixed bug #4650: respect me_templavoilalayout
++ Feature request #4847: Access control for DS/TO (thanks to e-netconsulting KG Hamburg AND Star Finanz GmbH Hamburg as Sponsor!)
 
 2007-01-24  Dmitry Dulepov  <dmitry@typo3.org>
 
- # Fixed bug 4842: TV Does not render the Site on T3 4.1 Beta 3
- # Fixed bug 2553: When Modify DS/TO und saving afterwards, the parts from the HTML header are lost
+# Fixed bug 4842: TV Does not render the Site on T3 4.1 Beta 3
+# Fixed bug 2553: When Modify DS/TO und saving afterwards, the parts from the HTML header are lost
 
 	RELEASE OF TEMPLAVOILA 1.2.1
 
 2007-01-20  Dmitry Dulepov  <dmitry@typo3.org>
 
- # Fixed bug 4085: Russian titles of fields shows wrong in Page module (uft8 encoding)
- # Fixed bug 4736: MSSQL and TemplaVoila TO-Selection in Page-Module
- # Fixed bug 4741: XML fields are not tabbable and fixed font
- # Fixed bug 4750: Database compatibilty
- # Fixed bug 4778: Filelinks in FCEs are not registered as "references"
- # Fixed bug 4812: RTE field does not respect system RTE configuration
- # Fixed: wrong parameter to link_edit
+# Fixed bug 4085: Russian titles of fields shows wrong in Page module (uft8 encoding)
+# Fixed bug 4736: MSSQL and TemplaVoila TO-Selection in Page-Module
+# Fixed bug 4741: XML fields are not tabbable and fixed font
+# Fixed bug 4750: Database compatibilty
+# Fixed bug 4778: Filelinks in FCEs are not registered as "references"
+# Fixed bug 4812: RTE field does not respect system RTE configuration
+# Fixed: wrong parameter to link_edit
 
 	RELEASE OF TEMPLAVOILA 1.2
 
 2006-12-29  Dmitry Dulepov  <dmitry@typo3.org>
 
- + Tabbed interface for mapping (many thanks to Benjamin Mack for initial patch!). This fixes bugs 4593, 4015.
++ Tabbed interface for mapping (many thanks to Benjamin Mack for initial patch!). This fixes bugs 4593, 4015.
 
 2006-12-27  Dmitry Dulepov  <dmitry@typo3.org>
 
- # Bug 4697: Error in TemplaVoila API
+# Bug 4697: Error in TemplaVoila API
 
 2006-12-21 - Dmitry Dulepov <typo3@accio.lv>
 
- # Record display is rewritten to use List module. As a side effect this feature works only with TYPO3 >= 4.0.5
- # Changed formatting for mod1/index.php
- # Bug 4036: Default meta information missing in DS
- # Bug 4625: Not possible to edit page with special doktype
+# Record display is rewritten to use List module. As a side effect this feature works only with TYPO3 >= 4.0.5
+# Changed formatting for mod1/index.php
+# Bug 4036: Default meta information missing in DS
+# Bug 4625: Not possible to edit page with special doktype
 
 2006-12-09 - Dmitry Dulepov <typo3@accio.lv>
 
- + Added permission support to record display. Feature is ready for beta testing.
++ Added permission support to record display. Feature is ready for beta testing.
 
 2006-12-09 - Dmitry Dulepov <typo3@accio.lv>
 
- + Added record display (see http://bugs.typo3.org/view.php?id=912) and updated manual with new TSConfig entry
++ Added record display (see http://bugs.typo3.org/view.php?id=912) and updated manual with new TSConfig entry
 
 2006-12-01 - Kasper Sk�rh�j
 
@@ -192,182 +196,182 @@
 
 2006-10-30 - Dmitry Dulepov <typo3@accio.lv>
 
- # Better fix for bug 2691: now mapping module unsets TypoScriptObjectPath when eType != 'TypoScriptObject', pi1 is reverted (Kasper's request for Dassault)
- # Bug 4324: lib.myobject instead of real object name (see rev 4213 in SVN for fix!)
+# Better fix for bug 2691: now mapping module unsets TypoScriptObjectPath when eType != 'TypoScriptObject', pi1 is reverted (Kasper's request for Dassault)
+# Bug 4324: lib.myobject instead of real object name (see rev 4213 in SVN for fix!)
 
 2006-10-30 - Dmitry Dulepov <typo3@accio.lv>
 
- # Fixed error in mod1/locallang.xml
+# Fixed error in mod1/locallang.xml
 
 2006-10-09 - Dmitry Dulepov <typo3@accio.lv>
 
- + Added dutch translation to mod1, main locallang and locallang_db
++ Added dutch translation to mod1, main locallang and locallang_db
 
 2006-10-09 - Dmitry Dulepov <typo3@accio.lv>
 
- RELEASE OF TEMPLAVOILA 1.1.1
+RELEASE OF TEMPLAVOILA 1.1.1
 
 2006-10-05 - Dmitry Dulepov <typo3@accio.lv>
 
- # Bug 2691: TypoScriptObjectPath overrides field type
- # Bug 2990: external link does not work
- # Bug 3111: default output insetad of print page
- # Bug 3995: templateselector: template selection failt
- # Bug 4335: "Link field" type does not work when it is not ATTR
+# Bug 2691: TypoScriptObjectPath overrides field type
+# Bug 2990: external link does not work
+# Bug 3111: default output insetad of print page
+# Bug 3995: templateselector: template selection failt
+# Bug 4335: "Link field" type does not work when it is not ATTR
 
 2006-10-02 - Dmitry Dulepov <typo3@accio.lv>
 
- # Bug 4061: Subtemplates visible in page creation wizard
+# Bug 4061: Subtemplates visible in page creation wizard
 
 2006-08-16 - Dmitry Dulepov <typo3@accio.lv>
 
- RELEASE OF TEMPLAVOILA 1.1.0
+RELEASE OF TEMPLAVOILA 1.1.0
 
 2006-08-15 - Dmitry Dulepov <typo3@accio.lv>
 
- # Bug 3483: sql error with dbal
+# Bug 3483: sql error with dbal
 
 2006-08-06 - Dmitry Dulepov <typo3@accio.lv>
 
- # Fixed many empty links in mod1. They created extra empty line for each non-content element except image.
+# Fixed many empty links in mod1. They created extra empty line for each non-content element except image.
 
 2006-07-30 - Dmitry Dulepov <typo3@accio.lv>
 
- ~ Added truncation for localized element text to 50 characters to make it consistent with element in the main language
+~ Added truncation for localized element text to 50 characters to make it consistent with element in the main language
 
 2006-07-17 - Dmitry Dulepov <typo3@accio.lv>
 
- # Bug: PHP Fatal error "Call to a member function on non-object" in htmlmarkup because many places do not initialize this class (why???)
+# Bug: PHP Fatal error "Call to a member function on non-object" in htmlmarkup because many places do not initialize this class (why???)
 
 2006-07-12 - Dmitry Dulepov <typo3@accio.lv>
 
- + Show element titles translated in the mapping view when possible
++ Show element titles translated in the mapping view when possible
 
 2006-06-28 - Dmitry Dulepov <typo3@accio.lv>
 
- ~ Small updates in the manual (FAQ  & examples)
+~ Small updates in the manual (FAQ  & examples)
 
 2006-06-23 - Dmitry Dulepov <typo3@accio.lv>
 
- # Bug 2398: Properly escaped links in teplates render "unescaped"
- # Bug 3164: disableExplosivePreview seems not to work
- # Bug 3227: Page module displays page layout for sysfolders
- # Bug 3376: JS error "Error: TBE_EDITOR_checkSubmit is not defined" during creating new page
- # Bug 3406: Field "dataprot" erased
- # Bug 3403: Fehler in der Ausgabe der Beschreibungen f�r Content-Elemente im Backend
- # Bug 3447: Strange chars in tooltips
- # Bug 3472: Quotation marks in title of TO are shown as &quot;
- # Bug 3479: With Internet Explorer the DataStructure isn't saved when using the new page wizard
- # Bug 3665: TV replaces &amp; with &
- # Bug 3691: Extension Lorem Ipsum causes fatal error in Extension TemplaVoila!
- # Bug 3718: Wrong description texts for content elements in backend
- ~ Added $GLOBALS['TYPO3_DB']->sql_free_result to mod2/index.php to save memory during mapping process
- + Implemented language handling for main_record
+# Bug 2398: Properly escaped links in teplates render "unescaped"
+# Bug 3164: disableExplosivePreview seems not to work
+# Bug 3227: Page module displays page layout for sysfolders
+# Bug 3376: JS error "Error: TBE_EDITOR_checkSubmit is not defined" during creating new page
+# Bug 3406: Field "dataprot" erased
+# Bug 3403: Fehler in der Ausgabe der Beschreibungen f�r Content-Elemente im Backend
+# Bug 3447: Strange chars in tooltips
+# Bug 3472: Quotation marks in title of TO are shown as &quot;
+# Bug 3479: With Internet Explorer the DataStructure isn't saved when using the new page wizard
+# Bug 3665: TV replaces &amp; with &
+# Bug 3691: Extension Lorem Ipsum causes fatal error in Extension TemplaVoila!
+# Bug 3718: Wrong description texts for content elements in backend
+~ Added $GLOBALS['TYPO3_DB']->sql_free_result to mod2/index.php to save memory during mapping process
++ Implemented language handling for main_record
 
 2006-06-22 - Dmitry Dulepov <typo3@accio.lv>
 
- # Bug 3592: "Show content from this page instead" does not work
- + main_record added, do not use yet!
+# Bug 3592: "Show content from this page instead" does not work
++ main_record added, do not use yet!
 
 2006-04-30 - Dmitry Dulepov <typo3@accio.lv>
 
- # Bug #3265: Automatic saving/reload on selections of DS/TO
- # Removed empty line at the end of tca.php
+# Bug #3265: Automatic saving/reload on selections of DS/TO
+# Removed empty line at the end of tca.php
 
 2006-04-26 - Dmitry Dulepov <typo3@accio.lv>
 
- + Added information about access to parent record  to the manual
++ Added information about access to parent record  to the manual
 
 2006-04-25 - Dmitry Dulepov <typo3@accio.lv>
 
- + [EXPERIMENTAL] Added access to parent record (documentation pending!)
- # Fixed: "langDisabled = 1", etc. was not displayed in pi1
++ [EXPERIMENTAL] Added access to parent record (documentation pending!)
+# Fixed: "langDisabled = 1", etc. was not displayed in pi1
 
 2006-04-11 - Dmitry Dulepov <typo3@accio.lv>
 
- # Bug 2649: external links pagetype with double http://
- # Bug 2972: Checksums to determine template modifications
+# Bug 2649: external links pagetype with double http://
+# Bug 2972: Checksums to determine template modifications
 
 2006-04-10 - Dmitry Dulepov <typo3@accio.lv>
 
- # Bug 3195: CE wizard ignores CType.removeItems
+# Bug 3195: CE wizard ignores CType.removeItems
 
 2006-04-09 - Dmitry Dulepov <typo3@accio.lv>
 
- # Bug 2870: $TYPO3_CONF_VARS['BE']['fileadminDir'] doesn't work with templavoila
- # Fixed: undefined variables was passed to t3lib_div::loadTCA in mod1_sidebar
+# Bug 2870: $TYPO3_CONF_VARS['BE']['fileadminDir'] doesn't work with templavoila
+# Fixed: undefined variables was passed to t3lib_div::loadTCA in mod1_sidebar
 
 2006-04-07 - Robert Lemke <robert@typo3.org>
 
- # Bugfix: Re-implementation of feature #0001760 (see 06.04.) didn't take FCEs into account, so sub elements of FCE were not displayed in the backend. Fixed that.
- ~ Small update of the manual - now it at least has a small introduction referring to further documentation.
- # Bugfix: Warning: array_keys(): The first argument should be an array in class.tx_templavoila_api.php on line 1551. That happened when now languages were defined.
+# Bugfix: Re-implementation of feature #0001760 (see 06.04.) didn't take FCEs into account, so sub elements of FCE were not displayed in the backend. Fixed that.
+~ Small update of the manual - now it at least has a small introduction referring to further documentation.
+# Bugfix: Warning: array_keys(): The first argument should be an array in class.tx_templavoila_api.php on line 1551. That happened when now languages were defined.
 
 2006-04-07 - Robert Lemke <robert@typo3.org>
 
- RELEASE OF TEMPLAVOILA 1.0!
+RELEASE OF TEMPLAVOILA 1.0!
 
- # Re-implemented handling of the oldStyleColumn field when inserting and moving elements.
- + Added a new test for checking the colPos field after insertion of content elements
+# Re-implemented handling of the oldStyleColumn field when inserting and moving elements.
++ Added a new test for checking the colPos field after insertion of content elements
 
 2006-04-06 - Robert Lemke <robert@typo3.org>
 
- + Added feature 0002221: Improvement request: In pagetype "shortcut" elements should be editable somehow
- # Re-implemented feature #0001760: Hide content elements when they are not mapped in the TO from the Page module. Resolves bug #0003047: Not mapped fields (areas) are schown in the page module.
- # Fixed bug 0003155: Errors in API functions
- # Added a check in the sidebar class to avoid a fatal error if an invalid data structure is selected for a page. (see also bug #3148)
- # (Hopefully) fixed bug 0002154: Problems with move up/down buttons in Frontend Editing. Search class.tx_templavoila_tcemain and the testcase for "2154"
- + Added new fixture and fixture functions for testing page templates with two columns
++ Added feature 0002221: Improvement request: In pagetype "shortcut" elements should be editable somehow
+# Re-implemented feature #0001760: Hide content elements when they are not mapped in the TO from the Page module. Resolves bug #0003047: Not mapped fields (areas) are schown in the page module.
+# Fixed bug 0003155: Errors in API functions
+# Added a check in the sidebar class to avoid a fatal error if an invalid data structure is selected for a page. (see also bug #3148)
+# (Hopefully) fixed bug 0002154: Problems with move up/down buttons in Frontend Editing. Search class.tx_templavoila_tcemain and the testcase for "2154"
++ Added new fixture and fixture functions for testing page templates with two columns
 
 2006-04-05 - Robert Lemke <robert@typo3.org>
 
- ~ Created workaround for bug 0003128: CSM has 'TemplaVoil?' rather than 'TemplaVoila'
+~ Created workaround for bug 0003128: CSM has 'TemplaVoil?' rather than 'TemplaVoila'
 
 2006-04-05 - Dmitry Dulepov <typo3@accio.lv>
 
- + Wrote FAQ entry in the manual about bug 2691
++ Wrote FAQ entry in the manual about bug 2691
 
 2006-04-04 - Robert Lemke <robert@typo3.org>
 
- ~ Fixed issue 0002148: "Start new website" wizard should set oldStyleColumnNumber
- # Fixed bug 0003121: Can't delete records from the "non-used elements" tab anymore
- # Fixed bug 0003119: The "Page related information" is not shown anymore in the page module
+~ Fixed issue 0002148: "Start new website" wizard should set oldStyleColumnNumber
+# Fixed bug 0003121: Can't delete records from the "non-used elements" tab anymore
+# Fixed bug 0003119: The "Page related information" is not shown anymore in the page module
 
 2006-04-03 - Robert Lemke <robert@typo3.org>
 
- + mod1: Added check for TYPO3 version. For TYPO3 versions lower than 4.0.0 an error message will be displayed.
- # Fixed issue 0002803: TOs based on static DS does not appear in create new CE wizard
- # Fixed a bug introduced while solving bug 0002947: The sorting field (and some other operations) were only handled correctly on pages which inherited the page data structure but didn't have a DS selected on their own. (See API flexform_getFlexformPointersToSubElementsRecursively())
++ mod1: Added check for TYPO3 version. For TYPO3 versions lower than 4.0.0 an error message will be displayed.
+# Fixed issue 0002803: TOs based on static DS does not appear in create new CE wizard
+# Fixed a bug introduced while solving bug 0002947: The sorting field (and some other operations) were only handled correctly on pages which inherited the page data structure but didn't have a DS selected on their own. (See API flexform_getFlexformPointersToSubElementsRecursively())
 
 2006-03-31 - Robert Lemke <robert@typo3.org>
 
- # Fixed bug 0002947: TV page module Clipboard functions crash Apache
+# Fixed bug 0002947: TV page module Clipboard functions crash Apache
 
 2006-03-29 - Robert Lemke <robert@typo3.org>
 
- # Fixed bug 0003042: Can't insert content elements: Sorry, you didn't have proper permissions to perform this change.
- + Added two unit tests checking for bug 3042
- # Fixed bug 0003054: Display of syntax highlighted flexform XML data does not work in non-live workspace
- # Fixed bug 0002802: Page-Modul doesn't care about 'enableFields' of page_language_overlay-records
- # Fixed bug 0002836: Tools -> Templavoila module broken when installed global
+# Fixed bug 0003042: Can't insert content elements: Sorry, you didn't have proper permissions to perform this change.
++ Added two unit tests checking for bug 3042
+# Fixed bug 0003054: Display of syntax highlighted flexform XML data does not work in non-live workspace
+# Fixed bug 0002802: Page-Modul doesn't care about 'enableFields' of page_language_overlay-records
+# Fixed bug 0002836: Tools -> Templavoila module broken when installed global
 
 2006-03-29 - Kasper Skaarhoej
 	* Updated documentation as requested.
 
 2006-03-26 - Robert Lemke <robert@typo3.org>
- - tx_templavoila_mod1_localization: Removed sidebar_renderItem_renderTranslationInfoCheckbox()
- ~ mod1/index.php: Changed GET parameter "localizeRecord" to "localizeElement"
- ~ Various cosmetic code changes
- # tx_templavoila_api: Fixed a bug in the processing for localizing elements under the "free" translation paradigm.
- ~ Changed the new TSconfig option introduced in the last commit from "(boolean) mod.web_txtemplavoilaM1.freeParadigm=0|1" to "(string)mod.web_txtemplavoilaM1.translationParadigm=free|bound". Please add proper documentation to the manual.
- !!! Depending on how you use localization, administrators might need to enable the old style translation paradigm by adding "mod.web_txtemplavoilaM1.translationParadigm=free" to your TSconfig configuration.
+- tx_templavoila_mod1_localization: Removed sidebar_renderItem_renderTranslationInfoCheckbox()
+~ mod1/index.php: Changed GET parameter "localizeRecord" to "localizeElement"
+~ Various cosmetic code changes
+# tx_templavoila_api: Fixed a bug in the processing for localizing elements under the "free" translation paradigm.
+~ Changed the new TSconfig option introduced in the last commit from "(boolean) mod.web_txtemplavoilaM1.freeParadigm=0|1" to "(string)mod.web_txtemplavoilaM1.translationParadigm=free|bound". Please add proper documentation to the manual.
+!!! Depending on how you use localization, administrators might need to enable the old style translation paradigm by adding "mod.web_txtemplavoilaM1.translationParadigm=free" to your TSconfig configuration.
 
 2006-03-16 - Kasper Skaarhoej
 	* Patched in the combined efforts of Bernhard and me over this week to accomodate various localization paradigms. Still missing finetuning and documentation of a few parts.
 
 2006-03-23 - Robert Lemke <robert@typo3.org>
- # Fixed a bug in class.tx_templavoila_tcemain.php (line 156): $row['uid'] never contained a value, use $elementArr['uid'] instead
- # Fixed all tests so they reflect the new flexform structure with <value index="vDEF"> instead of <vDEF>
+# Fixed a bug in class.tx_templavoila_tcemain.php (line 156): $row['uid'] never contained a value, use $elementArr['uid'] instead
+# Fixed all tests so they reflect the new flexform structure with <value index="vDEF"> instead of <vDEF>
 
 2006-03-16 - Kasper Skaarhoej
 	* Fixed API class so inserting of new elements and copy/cut/paste/reference works when working with offline versions in Live workspace.
@@ -377,9 +381,9 @@
 	# Fixed bug in mod2: empty pid was passed to alt_doc when new root TO is created for static DS
 
 2006-03-17 Robert Lemke <robert@typo3.org>
- ~ a few cosmetic changes in class.tx_templavoila_mod1_localization.php
- + added a few placeholders for context sensitive help
- + updated german LLXML translations for all labels
+~ a few cosmetic changes in class.tx_templavoila_mod1_localization.php
++ added a few placeholders for context sensitive help
++ updated german LLXML translations for all labels
 
 2006-03-16 - Kasper Skaarhoej
 	* Inserted version selector from typo3/template.php instead of homebrewn (which is commented out, can be removed when consolidated)
@@ -401,195 +405,195 @@
 
 
 2006-03-15 Robert Lemke <robert@typo3.org>
- + added test for checking the sorting field after an insertElement operation
- # fixed a bug in tx_templavoila_api::insertElement_createRecord() which didn't respect the insert position for new elements when calling TCEmain
- + added test for moving elements up via TCEmain
++ added test for checking the sorting field after an insertElement operation
+# fixed a bug in tx_templavoila_api::insertElement_createRecord() which didn't respect the insert position for new elements when calling TCEmain
++ added test for moving elements up via TCEmain
 
 2006-03-15 - Kasper Skaarhoej
- + Improved the cleaning-link with a button to clean-all on one page in one click, a true killer feature ;-) Robert might like to suggest to extract processing from presentation, but I would like to know how that is done best.
++ Improved the cleaning-link with a button to clean-all on one page in one click, a true killer feature ;-) Robert might like to suggest to extract processing from presentation, but I would like to know how that is done best.
 
 2006-03-14 very late - Kasper Skaarhoej
- + Added a Clean-FlexForm XML status and link to the outline view.
++ Added a Clean-FlexForm XML status and link to the outline view.
 
 2006-03-13 a little later - Kasper Skaarhoej
- + Added new view: "Outline". This will show a tree view of the page content structure. This view is currently only available for Admin users and they toggle it using a new checkbox in the "Advanced" tab. All affected functions are in mod1/index.php in its own section and will be easy to move to another class if needed. However, they are a parallel implementation of the render_framework* functions.
- # Fixed bug I made during refactoring: Names of columns was not displayed
++ Added new view: "Outline". This will show a tree view of the page content structure. This view is currently only available for Admin users and they toggle it using a new checkbox in the "Advanced" tab. All affected functions are in mod1/index.php in its own section and will be easy to move to another class if needed. However, they are a parallel implementation of the render_framework* functions.
+# Fixed bug I made during refactoring: Names of columns was not displayed
 
 2006-03-13  Kasper Skaarhoej
- ~ Re-inserted rejected changes, however I fixed all problems pointed out by robert in mail.
- ~ Moved getContentTree from mod1/index.php to api-class: At the same time the output from getContentTree has been cleaned up so it doesn't contain formatted preview output (only data on which a preview can be rendered in mod1/index.php).
-   getContentTree also includes elements from all languages in its structure (although mod1/index.php only shows the selected language); this leads to the sideeffect that the list of non-used content elements is accurate now!
-   getContentTree can be used from other applications to read out the page structure from TemplaVoila!
-   The refactoring of getContentTree() has been thoroughly tested with as many scenarios I could create and I'm very confident it will work.
-   Of course, all parameters of getContentTree-related functions may have been moved around since the functions were moved; It is considered unrealistic that any external extension were using getContentTree from its location in mod1/index.php.
- ~ Changed that the sidebar is now _outside_ (on top of) the rendered page: This was necessary to have proper function in case (very rarely though) that sheets are used for the page template! Question is if we should take some action to move only the icons for the top-level element to top of page again?
+~ Re-inserted rejected changes, however I fixed all problems pointed out by robert in mail.
+~ Moved getContentTree from mod1/index.php to api-class: At the same time the output from getContentTree has been cleaned up so it doesn't contain formatted preview output (only data on which a preview can be rendered in mod1/index.php).
+getContentTree also includes elements from all languages in its structure (although mod1/index.php only shows the selected language); this leads to the sideeffect that the list of non-used content elements is accurate now!
+getContentTree can be used from other applications to read out the page structure from TemplaVoila!
+The refactoring of getContentTree() has been thoroughly tested with as many scenarios I could create and I'm very confident it will work.
+Of course, all parameters of getContentTree-related functions may have been moved around since the functions were moved; It is considered unrealistic that any external extension were using getContentTree from its location in mod1/index.php.
+~ Changed that the sidebar is now _outside_ (on top of) the rendered page: This was necessary to have proper function in case (very rarely though) that sheets are used for the page template! Question is if we should take some action to move only the icons for the top-level element to top of page again?
 
 2006-03-13	Robert Lemke <robert@typo3.org>
- - mod1_localization: Language selector ($availableTranslationFlags) - Rejected the changes and used an older version which already ignores the "langDisable" tag for the root element. Reason for rejecting the new code is that the strings are not localized with getLL
- ~ mod1/index.php: Changed case of magic strings "Disable", "Inheritence" and "Separate" to lower case
- - mod1/index.php: Rejected localization mode warning because it's not translated with getLL, please commit again with locallang label
- - mod1/index.php: Rejected edit translation link because of missing locallang support
+- mod1_localization: Language selector ($availableTranslationFlags) - Rejected the changes and used an older version which already ignores the "langDisable" tag for the root element. Reason for rejecting the new code is that the strings are not localized with getLL
+~ mod1/index.php: Changed case of magic strings "Disable", "Inheritence" and "Separate" to lower case
+- mod1/index.php: Rejected localization mode warning because it's not translated with getLL, please commit again with locallang label
+- mod1/index.php: Rejected edit translation link because of missing locallang support
 
 2006-03-13  Kasper Skaarhoej
- ~ When a parent container element has localization set to "Separate", the links to localization of contained records are removed. This is done in mod1/index.php, line 843 [($parentDsMeta['langDisable'] || $parentDsMeta['langChildren'])]. Maybe it should be configurable?
- ~ Also updated the JavaDoc of mod1/index.php and function overview in top of document.
+~ When a parent container element has localization set to "Separate", the links to localization of contained records are removed. This is done in mod1/index.php, line 843 [($parentDsMeta['langDisable'] || $parentDsMeta['langChildren'])]. Maybe it should be configurable?
+~ Also updated the JavaDoc of mod1/index.php and function overview in top of document.
 
 2006-03-10  Kasper Skaarhoej
- - Removed the checkbox, sidebar_renderItem_renderTranslationInfoCheckbox(), from localization sidebar: Not needed, set by default
- + Changed "Default language" icon to a new one, "flags/unknown.gif"
- ~ Links to editing of page language header are displayed regardless of selected language (why not?)
- ~ The links to editing of page language header are separated from the selection of language. More userfriendly and practical
- # Mistakenly, the selection of language/editing of page language header was not shown if the data structure had localization mode "Disabled". The data structure localization mode has no influence on whether the page is localized or not. Therefore, the setting ->rootElementLanguageDisable has also been removed (and substituted with "rootElementLanguageMode").
- ~ In TemplaVoilas tcemain hooks a reference was mistakenly created when a tcemain command (like copy or new version) created a new element. I disabled reference creation upon any command now since I can't see when you would like one. In addition I would like to raise doubt how safe it is to assume that any creation of a record in tcemain is supposed to generate a relation in TemplaVoilas context. I ask that such a hook is very conservative and only sets the reference if absolutely sure. I can't tell if there are problems but ask that Robert consider it.
- + Added a new internal flag for the page module: "->translatorMode". The idea is that when this flag is set all buttons, context menus and editing links are removed EXCEPT links that links to editing of localizable elements or localizes an element. This mode is automatically set for a user if they have no access to the default language (thus assumed to be a translator of one or more languages). This action scales down the modules complexity and for translators - typically foreign to TYPO3 - it will be much easier to translate, simply by the approach "Click-the-flag" (generally, all icons for languages can be clicked to edit the language)
- ~ Brought back the warning if a container element is "Inheritance" or "Separate" modes. I know this will seem odd to those who uses those modes, but as my localization guide describes, these modes should only be used under special circumstances. Using Page TSconfig they can be disabled (this is already documented in the manual.sxw). However, the Web > TemplaVoila module will still show warnings in the detail view if those localization modes are found for data structures with container fields
- ~ Re-introduced Roberts old links to localization, but commented out in the code. Just for debugging/discussion/testing...
- ~ The message "Localized flexform" is now linked to editing of the record (for translators) - AND the message is only shown when relevant, that is when there actually are content to translate. It means for all container elements with not actual content carrying fields they will not be shown.
- ~ Modified a few keys in the tree structure that the module makes, in particular the 'fields' key. This doesn't seem to be used actively anywhere in TemplaVoila so I assume it is safe to do. (or irrelevant, pick your favourite :-)
- ~ I re-introduced the "mod.SHARED.defaultLanguageLabel" and "mod.SHARED.defaultLanguageFlag". Robert had converted those to "defaultLanguage.title" and "-.flag" but since "mod.SHARED.defaultLanguageLabel" is already used in Web>Page and Web>List for long time it is wrong to correct this now. Hence they are reintroduced and the old ones not supported anymore. Documentation didn't even document them (another reason to change it).
+- Removed the checkbox, sidebar_renderItem_renderTranslationInfoCheckbox(), from localization sidebar: Not needed, set by default
++ Changed "Default language" icon to a new one, "flags/unknown.gif"
+~ Links to editing of page language header are displayed regardless of selected language (why not?)
+~ The links to editing of page language header are separated from the selection of language. More userfriendly and practical
+# Mistakenly, the selection of language/editing of page language header was not shown if the data structure had localization mode "Disabled". The data structure localization mode has no influence on whether the page is localized or not. Therefore, the setting ->rootElementLanguageDisable has also been removed (and substituted with "rootElementLanguageMode").
+~ In TemplaVoilas tcemain hooks a reference was mistakenly created when a tcemain command (like copy or new version) created a new element. I disabled reference creation upon any command now since I can't see when you would like one. In addition I would like to raise doubt how safe it is to assume that any creation of a record in tcemain is supposed to generate a relation in TemplaVoilas context. I ask that such a hook is very conservative and only sets the reference if absolutely sure. I can't tell if there are problems but ask that Robert consider it.
++ Added a new internal flag for the page module: "->translatorMode". The idea is that when this flag is set all buttons, context menus and editing links are removed EXCEPT links that links to editing of localizable elements or localizes an element. This mode is automatically set for a user if they have no access to the default language (thus assumed to be a translator of one or more languages). This action scales down the modules complexity and for translators - typically foreign to TYPO3 - it will be much easier to translate, simply by the approach "Click-the-flag" (generally, all icons for languages can be clicked to edit the language)
+~ Brought back the warning if a container element is "Inheritance" or "Separate" modes. I know this will seem odd to those who uses those modes, but as my localization guide describes, these modes should only be used under special circumstances. Using Page TSconfig they can be disabled (this is already documented in the manual.sxw). However, the Web > TemplaVoila module will still show warnings in the detail view if those localization modes are found for data structures with container fields
+~ Re-introduced Roberts old links to localization, but commented out in the code. Just for debugging/discussion/testing...
+~ The message "Localized flexform" is now linked to editing of the record (for translators) - AND the message is only shown when relevant, that is when there actually are content to translate. It means for all container elements with not actual content carrying fields they will not be shown.
+~ Modified a few keys in the tree structure that the module makes, in particular the 'fields' key. This doesn't seem to be used actively anywhere in TemplaVoila so I assume it is safe to do. (or irrelevant, pick your favourite :-)
+~ I re-introduced the "mod.SHARED.defaultLanguageLabel" and "mod.SHARED.defaultLanguageFlag". Robert had converted those to "defaultLanguage.title" and "-.flag" but since "mod.SHARED.defaultLanguageLabel" is already used in Web>Page and Web>List for long time it is wrong to correct this now. Hence they are reintroduced and the old ones not supported anymore. Documentation didn't even document them (another reason to change it).
 
 2006-03-06  Robert Lemke <robert@typo3.org>
 
- # Fixed a fatal error in mod2 in DSdetails() when $DScontent was not an array
+# Fixed a fatal error in mod2 in DSdetails() when $DScontent was not an array
 
 
 2006-02-23	Robert Lemke <robert@typo3.org>
 
- @Dmitry: Each time you commit something, my CVS client displays *all* files as changed and show 100% conflict. Please make sure that you upload only those files which have changed (or help me using CVS correctly ...)
+@Dmitry: Each time you commit something, my CVS client displays *all* files as changed and show 100% conflict. Please make sure that you upload only those files which have changed (or help me using CVS correctly ...)
 
- + added new references / migration wizard to the Web -> Functions module. Works fine but needs some cleanup and locallang support
- + added new TSconfig option mod.web_txtemplavoilaM1.sideBarEnable which makes it possible to disable the toolbar (sidebar) for users, usergroups or page tree branches
- ~ Changed scope of TypoScript in Data Structures (tx_templavoila_pi1): Now not only lib. and plugin. is accessible from data structure-TypoScript, but also all other objects, except numerical 1st level objects.
- - Removed the "uid" column in the list of unused elements because it exploded the sidebar when in "left" mode. You can still see the uid of an element if you move the mouse over the element icon
- ~ Updated manual
++ added new references / migration wizard to the Web -> Functions module. Works fine but needs some cleanup and locallang support
++ added new TSconfig option mod.web_txtemplavoilaM1.sideBarEnable which makes it possible to disable the toolbar (sidebar) for users, usergroups or page tree branches
+~ Changed scope of TypoScript in Data Structures (tx_templavoila_pi1): Now not only lib. and plugin. is accessible from data structure-TypoScript, but also all other objects, except numerical 1st level objects.
+- Removed the "uid" column in the list of unused elements because it exploded the sidebar when in "left" mode. You can still see the uid of an element if you move the mouse over the element icon
+~ Updated manual
 
 2006-02-21	Dmitry Dulepov	<typo3@accio.lv>
 
- # Changing thumbnail code again due to the bug in typo3 core
+# Changing thumbnail code again due to the bug in typo3 core
 
 2006-02-12	Dmitry Dulepov	<typo3@accio.lv>
 
- # Fix: page module (mod1) did not show image thumbnails because of wrong back path
- # Fix: clear cache was unavailable for current page
+# Fix: page module (mod1) did not show image thumbnails because of wrong back path
+# Fix: clear cache was unavailable for current page
 
 2006-02-07	Robert Lemke	<robert@typo3.org>
 
- ~ Merge of my changes and the previous commits of Dmitry and Kasper
- + A few new unit tests
- # Fixed a bug which incorrectly referenced elements when moving them from one field of a parent FCE to another. Added unit test for this.
+~ Merge of my changes and the previous commits of Dmitry and Kasper
++ A few new unit tests
+# Fixed a bug which incorrectly referenced elements when moving them from one field of a parent FCE to another. Added unit test for this.
 
 2006-01-28	Dmitry Dulepov	<typo3@accio.lv>
 
- ~ Code cleanup after analysis in Zend Studio
+~ Code cleanup after analysis in Zend Studio
 
 2006-01-25	Kasper Skaarhoej  <kasperYYYY@typo3.com>
 
- + Linked TemplaVoila into the extdeveval tool with a new class; This is going to be a tool which can convert FlexForm data from "separate" (langChildren = 0) to "inheritance" (langChildren = 1) localization types (the words I have used). Nicolas Cerisier from Dassault is expected to finish the code which I started out. New file added.
- ~ Added "Undefined" as Data Structure type (again). This will be used if TemplaVOila is used for templating where not related to pages or content elements.
- + Added reference counts for the "Not used elements" including a delete-button. It is now easy to clean up unused elements on a page. The criteria is that content elements which are not used in the hierarchy of a page and which have no references pointing to it can safely be deleted.
- # Fixed a bug where old variable name $language should have been $languageArr. This affected the "Localization" tab content.
- # Fixed a few bugs related to workspaces and how ids are handled. One misconception is that the input id (&id) should be translated to workspace version. Rather it should remain the real online id and only be translated when required. At this point it has introduced a bug for "page type" versions of pages but I will fix that later. The main type (element versions) works.
- ~ Reintroduced the element coloring according to versioning status in workspace.
- # Fixed what I perceived as a bug for localization! here we should find out why our perceptions were different. I have only changed the _link_ to the localization action to call tcemain instead of changing your tv-api function (which is what I didn't understand the meaning of...)
++ Linked TemplaVoila into the extdeveval tool with a new class; This is going to be a tool which can convert FlexForm data from "separate" (langChildren = 0) to "inheritance" (langChildren = 1) localization types (the words I have used). Nicolas Cerisier from Dassault is expected to finish the code which I started out. New file added.
+~ Added "Undefined" as Data Structure type (again). This will be used if TemplaVOila is used for templating where not related to pages or content elements.
++ Added reference counts for the "Not used elements" including a delete-button. It is now easy to clean up unused elements on a page. The criteria is that content elements which are not used in the hierarchy of a page and which have no references pointing to it can safely be deleted.
+# Fixed a bug where old variable name $language should have been $languageArr. This affected the "Localization" tab content.
+# Fixed a few bugs related to workspaces and how ids are handled. One misconception is that the input id (&id) should be translated to workspace version. Rather it should remain the real online id and only be translated when required. At this point it has introduced a bug for "page type" versions of pages but I will fix that later. The main type (element versions) works.
+~ Reintroduced the element coloring according to versioning status in workspace.
+# Fixed what I perceived as a bug for localization! here we should find out why our perceptions were different. I have only changed the _link_ to the localization action to call tcemain instead of changing your tv-api function (which is what I didn't understand the meaning of...)
 
 2006-01-23	Dmitry Dulepov	<typo3@accio.lv>
 
- + mod2: added text before the table with template listing
- # mod2: changed "not a directory" message in the wizard to be "more English"
- # Fix: mod2: label about wrong directory
- # Fix: mod2: uninitialized variable $fileref_mtime in renderTODisplay function (changed to $fileMtime)
- # Fix: mod2: wrong TSConfig name for createPageWizard entry
++ mod2: added text before the table with template listing
+# mod2: changed "not a directory" message in the wizard to be "more English"
+# Fix: mod2: label about wrong directory
+# Fix: mod2: uninitialized variable $fileref_mtime in renderTODisplay function (changed to $fileMtime)
+# Fix: mod2: wrong TSConfig name for createPageWizard entry
 
 2006-01-22	Dmitry Dulepov	<typo3@accio.lv>
 
- # mod1: Updated orig_hash and fixed spelling errors in Latvian and Russian languages
- # Fixed bug #2344: query does not work with postgresql
+# mod1: Updated orig_hash and fixed spelling errors in Latvian and Russian languages
+# Fixed bug #2344: query does not work with postgresql
 
 2006-01-20	Dmitry Dulepov	<typo3@accio.lv>
 
- + Fix (sidebar): if cache commands are not enabled for non-admin user, label for page cache is displayed with empty cell after it
- + Fix (ext_emconf.php): naming error message in extension manager for pages and tt_content
- # Fixed bug #2085: Inconsistency in editing translations
- # Fixed bug #2095: Problems with page copying
- # Fixed bug #2206: copying elements doubles the references
- # Fixed bug #2209: Gremlin: hide "Translations" Tab if no alternative Syslanguage are present
- # Fixed bug #2236: TYPO3SEARCH_xxx should not be generated for FCE
- # Fixed bug #2343: Page module creates many translations to the same language
++ Fix (sidebar): if cache commands are not enabled for non-admin user, label for page cache is displayed with empty cell after it
++ Fix (ext_emconf.php): naming error message in extension manager for pages and tt_content
+# Fixed bug #2085: Inconsistency in editing translations
+# Fixed bug #2095: Problems with page copying
+# Fixed bug #2206: copying elements doubles the references
+# Fixed bug #2209: Gremlin: hide "Translations" Tab if no alternative Syslanguage are present
+# Fixed bug #2236: TYPO3SEARCH_xxx should not be generated for FCE
+# Fixed bug #2343: Page module creates many translations to the same language
 
 2006-01-19	Dmitry Dulepov	<typo3@accio.lv>
 
- # class.tx_templavoila_api.php: remove reference operator in a call to flexform_getFlexformPointersToSubElementsRecursively in function flexform_getPointersByRecord because it is deprecated and gives warnings in PHP 4+
- # Fixed bug #2062: Incorrect UTF-8 handling during mapping
- # Fixed bug #2068: Hide child template objects in the "New content element " list
- # Fixed bug #2097: Translations for mod1 (Latvian/Russian)
- # Fixed bug #2158: error in function "flexform_getPointerFromString()" in class "tx_templavoila_api"
- # Fixed bug #2227: Pass-by-reference warning
- # Fixed bug #2235: "print" version always appears in default language
- # Fixed bug #2312: mod1: Language flag is missing for default language
+# class.tx_templavoila_api.php: remove reference operator in a call to flexform_getFlexformPointersToSubElementsRecursively in function flexform_getPointersByRecord because it is deprecated and gives warnings in PHP 4+
+# Fixed bug #2062: Incorrect UTF-8 handling during mapping
+# Fixed bug #2068: Hide child template objects in the "New content element " list
+# Fixed bug #2097: Translations for mod1 (Latvian/Russian)
+# Fixed bug #2158: error in function "flexform_getPointerFromString()" in class "tx_templavoila_api"
+# Fixed bug #2227: Pass-by-reference warning
+# Fixed bug #2235: "print" version always appears in default language
+# Fixed bug #2312: mod1: Language flag is missing for default language
 
 2005-12-15	Robert Lemke	<robert@typo3.org>
 
- ~ !!! Did a major refactoring of the xmlrelhndl class! This class is now deprecated and not used within TemplaVoila anymore. Use tx_templavoila_api instead. With the new API only table "tt_content" is allowed for elements - in fact that was almost the case in the past but it might break your specific use of TV!
- ~ Raised dependencies to TYPO3 > 3.9.0
- ~ Did a major refactoring of the page module (mod1/index.php). Some functions are now located in other classes.
- ~ Moved the localization part of the sidebar into its own class
- ~ Converted all locallang files to the XML format
- ~ New Page Template Data Structures will have langDisable = 0 by default
+~ !!! Did a major refactoring of the xmlrelhndl class! This class is now deprecated and not used within TemplaVoila anymore. Use tx_templavoila_api instead. With the new API only table "tt_content" is allowed for elements - in fact that was almost the case in the past but it might break your specific use of TV!
+~ Raised dependencies to TYPO3 > 3.9.0
+~ Did a major refactoring of the page module (mod1/index.php). Some functions are now located in other classes.
+~ Moved the localization part of the sidebar into its own class
+~ Converted all locallang files to the XML format
+~ New Page Template Data Structures will have langDisable = 0 by default
 
- + Created a new class "tx_templavoila_api". This class provides a new API for other extensions and core hooks. It is fully unit tested and replaces tx_templavoila_xmlrelhndl
- + Added new features into tx_templavoila_tcemain: The sorting field is now automatically updated so it reflects the TV flexform order. It is now possible to move and create records with standard TCEmain requests (eg. with the List module or the classic Page Module!)
- + Added integration into the standard TYPO3 clipboard. You can now cut, edit, paste records from the list module to the TV page module and vice versa. This should work everywhere, where the clipboard is available
- + Added support for workspaces to new content element wizard.
- + Added a new Tag for the field section in a data structure: <oldStyleColumnNumber> allows you to connect a field to a column position number so the list module (and others) can guess where to reference new content elements in your page template. (See manual)
- + Added full support for workspaces internally - but some parts of the UI are not workspaces aware yet. Included several unit tests to make sure workspaces support works.
- + Created a new class for rendering the different doktype screens (for sysfolder, mount points etc.)
- + Added new EType "RTE" as a preset in the mapping tool
++ Created a new class "tx_templavoila_api". This class provides a new API for other extensions and core hooks. It is fully unit tested and replaces tx_templavoila_xmlrelhndl
++ Added new features into tx_templavoila_tcemain: The sorting field is now automatically updated so it reflects the TV flexform order. It is now possible to move and create records with standard TCEmain requests (eg. with the List module or the classic Page Module!)
++ Added integration into the standard TYPO3 clipboard. You can now cut, edit, paste records from the list module to the TV page module and vice versa. This should work everywhere, where the clipboard is available
++ Added support for workspaces to new content element wizard.
++ Added a new Tag for the field section in a data structure: <oldStyleColumnNumber> allows you to connect a field to a column position number so the list module (and others) can guess where to reference new content elements in your page template. (See manual)
++ Added full support for workspaces internally - but some parts of the UI are not workspaces aware yet. Included several unit tests to make sure workspaces support works.
++ Created a new class for rendering the different doktype screens (for sysfolder, mount points etc.)
++ Added new EType "RTE" as a preset in the mapping tool
 
- - Removed configuration for disabling the Template Selector because the TCA  are neccessary for FE editing and depended on that configuration
- - !!! Removed support for rules from the page module. Evaluation of rules never really worked and - if needed - have to me implemented again, but differently.
- - !!! Removed support for creating default elements. Based on rules engine (see above)
- - !!! Removed hook "renderFrameWork_preProcessOutput" in the page module because too many things have changed in the rendering process.
- - Removed TSconfig option "enableCElocalizationInfo". The localization information can now be switched on and off by a checkbox in the localization tab of the sidebar.
- - Removed pi2 - data sources won't be implemented in TemplaVoila, an extension "datasources" exists for that purpose.
- - Removed mod3 - Element references will be handled by TYPO3 4.0 core functions
+- Removed configuration for disabling the Template Selector because the TCA  are neccessary for FE editing and depended on that configuration
+- !!! Removed support for rules from the page module. Evaluation of rules never really worked and - if needed - have to me implemented again, but differently.
+- !!! Removed support for creating default elements. Based on rules engine (see above)
+- !!! Removed hook "renderFrameWork_preProcessOutput" in the page module because too many things have changed in the rendering process.
+- Removed TSconfig option "enableCElocalizationInfo". The localization information can now be switched on and off by a checkbox in the localization tab of the sidebar.
+- Removed pi2 - data sources won't be implemented in TemplaVoila, an extension "datasources" exists for that purpose.
+- Removed mod3 - Element references will be handled by TYPO3 4.0 core functions
 
- # Fixed a number of bugs by creating the new API
- # Fixed localization handling
- # Fixed issue #0000802: Copy / paste nested structures from one language to another does not work like expected
- # Fixed issue #0000917: Adding content using the create new CE wizard in the page tree has strange behaviour
- # Fixed issue #0001087: Fatal Error open storage folder
- # Fixed issue #0001334: It's not possible to preset tt_content fields in User TSConfig when using TemplaVoila. (Also related to creating pages and content elements with TemplaVoila in general)
- + Fixed issue #0001498: Missing "Edit translation header icon/button"
- + Fixed issue #0000714: Usability issue with content elements (Template Object selector)
- + Fixed issue #0001483: FCE preview in page module does not display sections/containers - Now basic support for displaying SC/CO is implemented
- + Fixed issue #0001858: Clear cache button is not available in TemplaVoila page module - A cache menu is now located in the "Advanced functions" tab
- # Fixed issue #0000499: hide content element wizard when only fc-elements are in use / hide category headings in "Create new content element" wizard
- + Fixed issue #0001499: Show content from this page instead does not work. Also added support for many other doktypes
- # Fixed issue #0001950: remove items from content wizzard which are not allowed for the current user
- + Fixed issue #0001760: Hide content elements when they are not mapped in the TO from the Page module
+# Fixed a number of bugs by creating the new API
+# Fixed localization handling
+# Fixed issue #0000802: Copy / paste nested structures from one language to another does not work like expected
+# Fixed issue #0000917: Adding content using the create new CE wizard in the page tree has strange behaviour
+# Fixed issue #0001087: Fatal Error open storage folder
+# Fixed issue #0001334: It's not possible to preset tt_content fields in User TSConfig when using TemplaVoila. (Also related to creating pages and content elements with TemplaVoila in general)
++ Fixed issue #0001498: Missing "Edit translation header icon/button"
++ Fixed issue #0000714: Usability issue with content elements (Template Object selector)
++ Fixed issue #0001483: FCE preview in page module does not display sections/containers - Now basic support for displaying SC/CO is implemented
++ Fixed issue #0001858: Clear cache button is not available in TemplaVoila page module - A cache menu is now located in the "Advanced functions" tab
+# Fixed issue #0000499: hide content element wizard when only fc-elements are in use / hide category headings in "Create new content element" wizard
++ Fixed issue #0001499: Show content from this page instead does not work. Also added support for many other doktypes
+# Fixed issue #0001950: remove items from content wizzard which are not allowed for the current user
++ Fixed issue #0001760: Hide content elements when they are not mapped in the TO from the Page module
 
- ~ Updated manual
+~ Updated manual
 
 2005-11-04	Robert Lemke	<robert@typo3.org>
 
- # Added some hints to the manual
- # Added TypoScript option "plugin.tx_templavoila_pi1.disableErrorMessages". See issue #0001412
- # Fixed issue #0001463: FCE rendering does not process LLL for type=select
- # Fixed issue #0000713: stdWrap in DS XML produces "a call on non-object" PHP error
- # Fixed issue #0000450: DS/TO Category selectorbox accepts empty category
- # Fixed issue #0001422: UTF-8 Support missing. The mapping tool now handles special characters and character encoding correctly.
- # Fixed issue #0000604: DS interface writes incorrect XML when switching type of elements
- # Fixed issue #0000876: Added support for FIELDSET, LEGEND and LABEL
- # Fixed issue #0000219: Added support for THEAD, TBODY and TH
- # Fixed issue #0000393: Wrong parameter count for implode() in side bar (language selection). PHP4 < 4.3 had this problem
- # Fixed issue #0000749: Content Element wizard Flexible content is empty! -> Added FCEs to the new content element wizard.
- # Fixed issue #0001429: Incorrect image reference when using img:attr:src
- # Fixed issue #0000454: edit DS (mapping) in TV looses header part.
- # Fixed issue #0001669: Import from HTML file: image paths not converted for CSS background-image. -> This is solved in t3lib_parsehtml !
- # Fixed issue #0001052: TemplaVoila doens't allow html elements inside elements who's attributes are mapped. Thanks to Bernhard Kraft for providing a patch!
- # Fixed issue #0000087: cannot map to elements with ids that contain spaces
+# Added some hints to the manual
+# Added TypoScript option "plugin.tx_templavoila_pi1.disableErrorMessages". See issue #0001412
+# Fixed issue #0001463: FCE rendering does not process LLL for type=select
+# Fixed issue #0000713: stdWrap in DS XML produces "a call on non-object" PHP error
+# Fixed issue #0000450: DS/TO Category selectorbox accepts empty category
+# Fixed issue #0001422: UTF-8 Support missing. The mapping tool now handles special characters and character encoding correctly.
+# Fixed issue #0000604: DS interface writes incorrect XML when switching type of elements
+# Fixed issue #0000876: Added support for FIELDSET, LEGEND and LABEL
+# Fixed issue #0000219: Added support for THEAD, TBODY and TH
+# Fixed issue #0000393: Wrong parameter count for implode() in side bar (language selection). PHP4 < 4.3 had this problem
+# Fixed issue #0000749: Content Element wizard Flexible content is empty! -> Added FCEs to the new content element wizard.
+# Fixed issue #0001429: Incorrect image reference when using img:attr:src
+# Fixed issue #0000454: edit DS (mapping) in TV looses header part.
+# Fixed issue #0001669: Import from HTML file: image paths not converted for CSS background-image. -> This is solved in t3lib_parsehtml !
+# Fixed issue #0001052: TemplaVoila doens't allow html elements inside elements who's attributes are mapped. Thanks to Bernhard Kraft for providing a patch!
+# Fixed issue #0000087: cannot map to elements with ids that contain spaces
 
- + Added staging support for workspaces (t3ver_stage)
++ Added staging support for workspaces (t3ver_stage)
 
 2005-10-04  Kasper Skaarhoej  <kasper2005@typo3.com>
 
@@ -605,22 +609,22 @@
 
 
 2005-02-21 Robert Lemke <robert@typo3.org>
- + htmlmarkup: Added support and icon for DL, DD and DT HTML tags in the click menu (mapping tool). Solved feature request #0000671
++ htmlmarkup: Added support and icon for DL, DD and DT HTML tags in the click menu (mapping tool). Solved feature request #0000671
 
 2005-02-16  Kasper Skaarhoej  <kasper@typo3.com>
 
  * Added feature that allows a Template Object to point to another parent template object from which the print and language subtemplates will be taken if the actual template object doesn't have any defined it self. The feature is called "Inherit subtemplates from as defaults"
 
 2005-02-08	Robert Lemke <robert@typo3.org>
- # xmlrelhndl: Fixed a newly introduced bug which caused a parse error in PHP4 (but not in PHP5) ...
- # ext_emconf.php: PHPEclipse did a line wrap were it shouldn't - fixed that.
+# xmlrelhndl: Fixed a newly introduced bug which caused a parse error in PHP4 (but not in PHP5) ...
+# ext_emconf.php: PHPEclipse did a line wrap were it shouldn't - fixed that.
 
 2005-02-07	Robert Lemke <robert@typo3.org>
- # xmlrelhndl: Fixed the bug mentioned before: Now FCEs are correctly copied recursively with correct referencing, files, pictures etc.
+# xmlrelhndl: Fixed the bug mentioned before: Now FCEs are correctly copied recursively with correct referencing, files, pictures etc.
 
 2005-01-27  Robert Lemke <robert@typo3.org>
- ~ Classic page module is now switched off by default, page template selector switched on (in the extension manager configuration dialogue)
- + mod1: Added support for making true copies of FCEs with sub elements. Before only the FCE parent element was truely copied, the child objects weren't. Still has a small bug, will fix that soon!
+~ Classic page module is now switched off by default, page template selector switched on (in the extension manager configuration dialogue)
++ mod1: Added support for making true copies of FCEs with sub elements. Before only the FCE parent element was truely copied, the child objects weren't. Still has a small bug, will fix that soon!
 
 2005-01-21  Kasper Skaarhoej  <kasper@typo3.com>
 
@@ -633,15 +637,15 @@
  * Fixed a PHP5 bug with arrays...
 
 2004-10-30  Robert Lemke  <robert@typo3.org>
- + mod1: Added TSconfig configuration for sidebar position: mod.web_txtemplavoilaM1.sideBarPosition
- ~ Manual: Updated TSconfig options and added screenshots for sidebar positions
- ~ !!! mod1: Changed TSconfig option tx_templavoila.mod1.createPageWizard.fieldNames to mod.web_txtemplavoilaM1.createPageWizard.fieldNames
++ mod1: Added TSconfig configuration for sidebar position: mod.web_txtemplavoilaM1.sideBarPosition
+~ Manual: Updated TSconfig options and added screenshots for sidebar positions
+~ !!! mod1: Changed TSconfig option tx_templavoila.mod1.createPageWizard.fieldNames to mod.web_txtemplavoilaM1.createPageWizard.fieldNames
 
 2004-09-13  Robert Lemke  <robert@typo3.org>
- + mod1: Added two new modes for the sidebar, now you have "left", "toptabs" and "toprows". They will be configurable via TSconfig in the future, by now "toptabs" is default.
- # mod1: Fixed a bug at the language selector which tried to select non-existing translations
- + mod1: Added flags next to the language selector which represent existing translations
- # mod1: In the sidebar, changed menuItems array for the dynamic tab menu to num array
++ mod1: Added two new modes for the sidebar, now you have "left", "toptabs" and "toprows". They will be configurable via TSconfig in the future, by now "toptabs" is default.
+# mod1: Fixed a bug at the language selector which tried to select non-existing translations
++ mod1: Added flags next to the language selector which represent existing translations
+# mod1: In the sidebar, changed menuItems array for the dynamic tab menu to num array
 
 2004-09-09  Kasper Skaarhoej <kasperYYYY@typo3.com>
 
@@ -655,20 +659,20 @@
 
 2004-09-08  Robert Lemke  <robert@typo3.org>
 
-  + Added versioning sidebar item directly to the default sidebar instead of letting the version extension providing it.
++ Added versioning sidebar item directly to the default sidebar instead of letting the version extension providing it.
 
 2004-09-08  Robert Lemke  <robert@typo3.org>
 
- ~ Made everything DBAL compliant.
- + Added core version dependency to emconf.php (3.7.0.dev)
+~ Made everything DBAL compliant.
++ Added core version dependency to emconf.php (3.7.0.dev)
  * mod1: Added a dynamic sidebar and moved all meta information (like language selector, header fields etc.) into sidebar items.
- ~ mod1: (Sidebar) Modified the language selector: Now is a selectorbox instead of single links.
- - mod1: Removed version selector. This will now be provided by the versioning extension itself by adding a new sidebar item.
- ~ mod1: Restructuring and cleanup of the whole module. Commented Kasper's new features. Externalized some methods into own classes, namely wizards and sidebar.
- # mod1: Fixed the "show hidden" checkbox which worked just the other way around.
- + Manual: Added a reminder to write a section about sidebar programming
- ~ Updated ToDo
- ~ Changed my email address ;-)
+~ mod1: (Sidebar) Modified the language selector: Now is a selectorbox instead of single links.
+- mod1: Removed version selector. This will now be provided by the versioning extension itself by adding a new sidebar item.
+~ mod1: Restructuring and cleanup of the whole module. Commented Kasper's new features. Externalized some methods into own classes, namely wizards and sidebar.
+# mod1: Fixed the "show hidden" checkbox which worked just the other way around.
++ Manual: Added a reminder to write a section about sidebar programming
+~ Updated ToDo
+~ Changed my email address ;-)
 
 2004-08-30  Robert Lemke  <robert@typo3.org>
 
