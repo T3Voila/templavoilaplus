@@ -3,6 +3,7 @@
 	* Fixed bug #9564: Update PHP dependencies
 	* Fixed bug #9519: Feature: enable drag&drop in page module  (original code by Nikolas Hagelstein from nh_tvdragndrop, adaptation by Steffen Kamper, optimisation by Dmitry Dulepov)
 	* Fixed bug #9930: TemplaVoila sites do not work in TYPO3 4.3
+	* Fixed bug #9510: Enhancement of "save to" select (thanks to Steffen Kamper)
 
 2008-08-21	Dmitry Dulepov	<dmitry@typo3.org>
 

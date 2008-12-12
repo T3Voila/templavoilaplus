@@ -272,6 +272,8 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			DIV.typo3-noDoc H2 { width: 100%; }
 			TABLE#c-mapInfo {margin-top: 10px; margin-bottom: 5px; }
 			TABLE#c-mapInfo TR TD {padding-right: 20px;}
+			select option.pagetemplate {background-image:url(../icon_pagetemplate.gif);background-repeat: no-repeat; background-position: 5px 50%; padding: 1px 0 3px 24px; -webkit-background-size: 0;}
+			select option.fce {background-image:url(../icon_fce_ce.png);background-repeat: no-repeat; background-position: 5px 50%; padding: 1px 0 3px 24px; -webkit-background-size: 0;}
 		';
 
 			// General GPvars for module mode:
@@ -695,19 +697,34 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			$opt=array();
 			$opt[]='<option value="0"></option>';
 			$res = $TYPO3_DB->exec_SELECTquery (
-				'*',
-				'tx_templavoila_tmplobj',
-				'pid IN ('.$this->storageFolders_pidList.') AND datastructure>0 '.
+				'tx_templavoila_tmplobj.*,tx_templavoila_datastructure.scope',
+				'tx_templavoila_tmplobj LEFT JOIN tx_templavoila_datastructure ON tx_templavoila_datastructure.uid=tx_templavoila_tmplobj.datastructure',
+				'tx_templavoila_tmplobj.pid IN ('.$this->storageFolders_pidList.') AND tx_templavoila_tmplobj.datastructure>0 '.
 					t3lib_BEfunc::deleteClause('tx_templavoila_tmplobj').
 					t3lib_BEfunc::versioningPlaceholderClause('tx_templavoila_tmplobj'),
 				'',
-				'title'
+				'tx_templavoila_datastructure.scope, tx_templavoila_tmplobj.title'
 			);
+			$sFolder = '';
+			$optGroupOpen = false;
 			while(false !== ($row = $TYPO3_DB->sql_fetch_assoc($res)))	{
 				t3lib_BEfunc::workspaceOL('tx_templavoila_tmplobj',$row);
-				$opt[]='<option value="'.htmlspecialchars($row['uid']).'">'.htmlspecialchars($this->storageFolders[$row['pid']].'/'.$row['title'].' (UID:'.$row['uid'].')').'</option>';
+				if ($sFolder != $this->storageFolders[$row['pid']]) {
+					 $sFolder = $this->storageFolders[$row['pid']];
+					 if ($optGroupOpen) {
+						$opt[] = '</optgroup>';
+					 }
+					 $opt[] = '<optgroup label="' . htmlspecialchars($sFolder . ' (PID: ' . $row['pid'] . ')') . '">';
+					 $optGroupOpen = true;
+				}
+				$opt[]= '<option value="' .htmlspecialchars($row['uid']).'" ' .
+					($row['scope'] == 1 ? 'class="pagetemplate"">' : 'class="fce">') .
+					 htmlspecialchars($row['title'] . ' (UID:' . $row['uid'] . ')').'</option>';
 			}
-
+			if ($optGroupOpen) {
+				$opt[] = '</optgroup>';
+			}
+					 
 				// Module Interface output begin:
 			switch($cmd)	{
 					// Show XML DS
