@@ -83,9 +83,9 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
  * @package TYPO3
  * @subpackage tx_templavoila
  */
- class tx_templavoila_htmlmarkup {
+class tx_templavoila_htmlmarkup {
 
- 		// CONFIG:
+		// CONFIG:
 	/**
 	 * Determines which mode is used for markup. Options are:
 	 * 	'explode' : In this mode A) container elementers (tables, tablecells...) are marked with borders and B) all the tag-images inserted are inserted 'relative' to the content which means no tag images can be layered over each other. Best mode if you want access to all elements (analytic) BUT it also spoils the page design the most of the options.
@@ -480,9 +480,9 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 					if (is_array($currentMappingInfo['sub'][$key]))	{
 						$currentMappingInfo['cArray'][$key]=$this->mergeSampleDataIntoTemplateStructure($dataStruct[$key]['el'],$currentMappingInfo['sub'][$key],'',
 							($dataStruct[$key]['section'] ?
-							 	(is_array($dataStruct[$key]['tx_templavoila']['sample_order']) ? $dataStruct[$key]['tx_templavoila']['sample_order'] : array_keys($dataStruct[$key]['el'])) :
-							 	'')
-							 );
+								(is_array($dataStruct[$key]['tx_templavoila']['sample_order']) ? $dataStruct[$key]['tx_templavoila']['sample_order'] : array_keys($dataStruct[$key]['el'])) :
+								'')
+							);
 					}
 				} else {
 					if (is_array($dataStruct[$key]['tx_templavoila']['sample_data']))	{
@@ -756,6 +756,7 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 	function setHeaderBodyParts($MappingInfo_head,$MappingData_head_cached,$BodyTag_cached='')	{
 
 		$htmlParse = ($this->htmlParse ? $this->htmlParse : t3lib_div::makeInstance('t3lib_parsehtml'));
+		/* @var $htmlParse t3lib_parsehtml */
 
 			// Traversing mapped header parts:
 		if (is_array($MappingInfo_head['headElementPaths'])) {
