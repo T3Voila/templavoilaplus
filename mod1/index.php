@@ -149,7 +149,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * @var tx_templavoila_api
 	 */
 	var $apiObj;									// Instance of tx_templavoila_api
-
+	var $sortableContainers = array();				// Contains the containers for drag and drop
 
 
 	/*******************************************
@@ -289,6 +289,20 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 		if ($access)    {
 
+			// calls from drag and drop
+			if (t3lib_div::_GP('ajaxPasteRecord') == 'cut') {
+				$sourcePointer = $this->apiObj->flexform_getPointerFromString(t3lib_div::_GP('source'));
+				$destinationPointer = $this->apiObj->flexform_getPointerFromString(t3lib_div::_GP('destination'));
+				$this->apiObj->moveElement($sourcePointer, $destinationPointer);
+				exit;
+			}
+
+			if (t3lib_div::_GP('ajaxUnlinkRecord')) {
+				$unlinkDestinationPointer = $this->apiObj->flexform_getPointerFromString(t3lib_div::_GP('ajaxUnlinkRecord'));
+				$this->apiObj->unlinkElement($unlinkDestinationPointer);
+				exit;
+			}
+
 			$this->calcPerms = $GLOBALS['BE_USER']->calcPerms($pageInfoArr);
 
 				// Define the root element record:
@@ -369,6 +383,11 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 			);
 
+				//Prototype /Scriptaculous
+			$this->doc->JScode .= '<script src="' . $this->doc->backPath . 'contrib/prototype/prototype.js" type="text/javascript"></script>';
+			$this->doc->JScode .= '<script src="' . $this->doc->backPath . 'contrib/scriptaculous/scriptaculous.js?load=effects,dragdrop" type="text/javascript"></script>';
+			$this->doc->JScode .= '<script src="' . t3lib_div::locationHeaderUrl(t3lib_extMgm::siteRelPath('templavoila') . 'mod1/dragdrop-min.js') . '" type="text/javascript"></script>';
+
 				// Set up JS for dynamic tab menu and side bar
 			$this->doc->JScode .= $this->doc->getDynTabMenuJScode();
 			$this->doc->JScode .= $this->modTSconfig['properties']['sideBarEnable'] ? $this->sideBarObj->getJScode() : '';
@@ -379,11 +398,16 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			$this->doc->JScode.= $CMparts[0];
 			$this->doc->postCode.= $CMparts[2];
 
+			// CSS for drag and drop
+			$this->doc->inDocStyles .= '
+				table {position:relative;}
+				.sortable_handle {cursor:move;}
+			';
 
 			if (t3lib_extMgm::isLoaded('t3skin')) {
 				// Fix padding for t3skin in disabled tabs
 				$this->doc->inDocStyles .= '
-table.typo3-dyntabmenu td.disabled, table.typo3-dyntabmenu td.disabled_over, table.typo3-dyntabmenu td.disabled:hover { padding-left: 10px; }
+					table.typo3-dyntabmenu td.disabled, table.typo3-dyntabmenu td.disabled_over, table.typo3-dyntabmenu td.disabled:hover { padding-left: 10px; }
 				';
 			}
 
@@ -439,6 +463,20 @@ table.typo3-dyntabmenu td.disabled, table.typo3-dyntabmenu td.disabled_over, tab
 				} else {
 					$sideBarTop = $this->modTSconfig['properties']['sideBarEnable']  && ($this->sideBarObj->position == 'toprows' || $this->sideBarObj->position == 'toptabs') ? $this->sideBarObj->render() : '';
 					$this->content .= $sideBarTop.$editCurrentPageHTML.$shortCut;
+				}
+
+				// Create sortables
+				if (is_array($this->sortableContainers)) {
+					$this->content .= '<script type="text/javascript">' . chr(10) .
+						'//<![CDATA[' . chr(10) .
+						'var sortable_linkParameters = \'' . $this->link_getParameters() .
+						'\';';
+					$containment = '["' . implode('","', $this->sortableContainers) . '"]';
+					$this->content .= 'Event.observe(window,"load",function(){';
+					foreach ($this->sortableContainers as $s) {
+						$this->content .= 'tv_createSortable(\'' . $s . '\',' . $containment . ');';
+					}
+					$this->content .= '});' . chr(10) . '//]]>' . chr(10) . '</script>';
 				}
 			}
 
@@ -613,6 +651,7 @@ table.typo3-dyntabmenu td.disabled, table.typo3-dyntabmenu td.disabled_over, tab
 
 		$canEditPage = $GLOBALS['BE_USER']->isPSet($this->calcPerms, 'pages', 'edit');
 		$canEditContent = $GLOBALS['BE_USER']->isPSet($this->calcPerms, 'pages', 'editcontent');
+		$canCreateNew = $GLOBALS['BE_USER']->isPSet($this->calcPerms, 'pages', 'new');
 
 		// Prepare the record icon including a content sensitive menu link wrapped around it:
 		$recordIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,$contentTreeArr['el']['icon'],'').' style="text-align: center; vertical-align: middle;" width="18" height="16" border="0" title="'.htmlspecialchars('['.$contentTreeArr['el']['table'].':'.$contentTreeArr['el']['uid'].']').'" alt="" />';
@@ -647,7 +686,7 @@ table.typo3-dyntabmenu td.disabled, table.typo3-dyntabmenu td.disabled_over, tab
 
 			case 'tt_content' :
 
- 				$elementTitlebarColor = ($elementBelongsToCurrentPage ? $this->doc->bgColor5 : $this->doc->bgColor6);
+				$elementTitlebarColor = ($elementBelongsToCurrentPage ? $this->doc->bgColor5 : $this->doc->bgColor6);
 				$elementTitlebarStyle = 'background-color: '.$elementTitlebarColor;
 
 				$languageUid = $contentTreeArr['el']['sys_language_uid'];
@@ -706,26 +745,27 @@ table.typo3-dyntabmenu td.disabled, table.typo3-dyntabmenu td.disabled_over, tab
 		}
 
 			// Finally assemble the table:
-		$finalContent ='
+		$finalContent =
+			(!$this->translatorMode && $canCreateNew ? '<div class="sortableItem" id="' . $this->apiObj->flexform_getStringFromPointer($parentPointer) . '">' : '') . '
 			<table cellpadding="0" cellspacing="0" style="width: 100%; border: 1px solid black; margin-bottom:5px;">
-				<tr style="'.$elementTitlebarStyle.';">
-					<td style="vertical-align:top;">'.
-						'<span class="nobr">'.
-						$languageIcon.
-						$titleBarLeftButtons.
-						($elementBelongsToCurrentPage?'':'<em>').htmlspecialchars($contentTreeArr['el']['title']).($elementBelongsToCurrentPage ? '' : '</em>').
-						'</span>'.
-						$warnings.
+				<tr style="' . $elementTitlebarStyle . ';" class="sortable_handle">
+					<td style="vertical-align:top;">' .
+						'<span class="nobr">' .
+						$languageIcon .
+						$titleBarLeftButtons .
+						($elementBelongsToCurrentPage ? '' : '<em>') . htmlspecialchars($contentTreeArr['el']['title']) . ($elementBelongsToCurrentPage ? '' : '</em>') .
+						'</span>' .
+						$warnings .
 					'</td>
-					<td nowrap="nowrap" style="text-align:right; vertical-align:top;">'.
-						$titleBarRightButtons.
+					<td nowrap="nowrap" style="text-align:right; vertical-align:top;">' .
+						$titleBarRightButtons .
 					'</td>
 				</tr>
 				<tr>
-					<td colspan="2">'.
-						$this->render_framework_subElements($contentTreeArr, $languageKey, $sheet).
-						$previewContent.
-						$this->render_localizationInfoTable($contentTreeArr, $parentPointer, $parentDsMeta).
+					<td colspan="2">' .
+						$this->render_framework_subElements($contentTreeArr, $languageKey, $sheet) .
+						$previewContent .
+						$this->render_localizationInfoTable($contentTreeArr, $parentPointer, $parentDsMeta) .
 					'</td>
 				</tr>
 			</table>
@@ -799,7 +839,7 @@ table.typo3-dyntabmenu td.disabled, table.typo3-dyntabmenu td.disabled_over, tab
 						// "New" and "Paste" icon:
 					$newIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/new_el.gif','').' style="text-align: center; vertical-align: middle;" vspace="5" hspace="1" border="0" title="'.$LANG->getLL ('createnewrecord').'" alt="" />';
 					$cellContent .= $this->link_new($newIcon, $subElementPointer);
-					$cellContent .= $this->clipboardObj->element_getPasteButtons ($subElementPointer);
+					$cellContent .= '<span class="sortablePaste">' . $this->clipboardObj->element_getPasteButtons ($subElementPointer) . '</span>';
 				}
 
 					// Render the list of elements (and possibly call itself recursively if needed):
@@ -826,15 +866,25 @@ table.typo3-dyntabmenu td.disabled, table.typo3-dyntabmenu td.disabled_over, tab
 
 							$cellContent .= $this->render_framework_allSheets($subElementArr, $languageKey, $subElementPointer, $elementContentTreeArr['ds_meta']);
 
-							if (!$this->translatorMode && $canCreateNew)	{
+							if (!$this->translatorMode && $canCreateNew) {
 									// "New" and "Paste" icon:
 								$newIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/new_el.gif','').' style="text-align: center; vertical-align: middle;" vspace="5" hspace="1" border="0" title="'.$LANG->getLL ('createnewrecord').'" alt="" />';
 								$cellContent .= $this->link_new($newIcon, $subElementPointer);
 
-								$cellContent .= $this->clipboardObj->element_getPasteButtons ($subElementPointer);
+								$cellContent .= '<span class="sortablePaste">' . $this->clipboardObj->element_getPasteButtons ($subElementPointer) . '</span></div>';
 							}
+
 						}
 					}
+				}
+
+				$cellIdStr = '';
+				if ($GLOBALS['BE_USER']->isPSet($this->calcPerms, 'pages', 'editcontent')) {
+					$tmpArr = $subElementPointer;
+					unset($tmpArr['position']);
+					$cellId = $this->apiObj->flexform_getStringFromPointer($tmpArr);
+					$cellIdStr = ' id="' . $cellId . '"';
+					$this->sortableContainers[] = $cellId;
 				}
 
 					// Add cell content to registers:
@@ -844,7 +894,7 @@ table.typo3-dyntabmenu td.disabled, table.typo3-dyntabmenu td.disabled_over, tab
 				} else {
 							// Add cell content to registers:
 					$headerCells[]='<td valign="top" width="'.round(100/count($elementContentTreeArr['sub'][$sheet][$lKey])).'%" style="background-color: '.$this->doc->bgColor4.'; padding-top:0; padding-bottom:0;">'.$LANG->sL($fieldContent['meta']['title'],1).'</td>';
-					$cells[]='<td valign="top" width="'.round(100/count($elementContentTreeArr['sub'][$sheet][$lKey])).'%" style="border: 1px dashed #000; padding: 5px 5px 5px 5px;">'.$cellContent.'</td>';
+					$cells[]='<td '.$cellIdStr.' valign="top" width="'.round(100/count($elementContentTreeArr['sub'][$sheet][$lKey])).'%" style="border: 1px dashed #000; padding: 5px 5px 5px 5px;">'.$cellContent.'</td>';
 				}
 			}
 		}
@@ -923,7 +973,7 @@ table.typo3-dyntabmenu td.disabled, table.typo3-dyntabmenu td.disabled_over, tab
 								}
 							}
 						} else {
-			 				foreach ($fieldData['subElements'][$lKey] as $containerKey => $containerData) {
+							foreach ($fieldData['subElements'][$lKey] as $containerKey => $containerData) {
 								$previewContent .= '<strong>'.$containerKey.'</strong> '.$this->link_edit(htmlspecialchars(t3lib_div::fixed_lgd_cs(strip_tags($containerData[$vKey]),200)), 'tt_content', $previewData['fullRow']['uid']).'<br />';
 							}
 						}
@@ -1611,14 +1661,13 @@ table.typo3-dyntabmenu td.disabled, table.typo3-dyntabmenu td.disabled_over, tab
 	 * @access protected
 	 */
 	function link_unlink($label, $unlinkPointer, $realDelete=FALSE)	{
-		global $LANG;
 
 		$unlinkPointerString = rawurlencode($this->apiObj->flexform_getStringFromPointer ($unlinkPointer));
 
 		if ($realDelete)	{
-			return '<a href="index.php?'.$this->link_getParameters().'&amp;deleteRecord='.$unlinkPointerString.'" onclick="'.htmlspecialchars('return confirm('.$LANG->JScharCode($LANG->getLL('deleteRecordMsg')).');').'">'.$label.'</a>';
+			return '<a href="index.php?' . $this->link_getParameters() . '&amp;deleteRecord=' . $unlinkPointerString . '" onclick="' . htmlspecialchars('return confirm(' . $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL('deleteRecordMsg')) . ');') . '">' . $label . '</a>';
 		} else {
-			return '<a href="index.php?'.$this->link_getParameters().'&amp;unlinkRecord='.$unlinkPointerString.'" onclick="'.htmlspecialchars('return confirm('.$LANG->JScharCode($LANG->getLL('unlinkRecordMsg')).');').'">'.$label.'</a>';
+			return '<a href="javascript:'.htmlspecialchars('if (confirm(' . $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL('unlinkRecordMsg')) . '))') . 'sortable_unlinkRecord(\'' . $unlinkPointerString . '\');">' . $label . '</a>';
 		}
 	}
 
