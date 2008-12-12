@@ -1,0 +1,1 @@
+includeLibs.tx_templavoila_pi1 = EXT:templavoila/pi1/class.tx_templavoila_pi1.php
