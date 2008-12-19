@@ -86,9 +86,12 @@ class tx_templavoila_tcemain {
 	function processDatamap_preProcessFieldArray (&$incomingFieldArray, $table, $id, &$reference) {
 		global $TYPO3_DB, $TCA;
 
-		if ($this->debug) t3lib_div::devLog ('processDatamap_preProcessFieldArray', 'templavoila',0,array ($incomingFieldArray, $table, $id));
-		if ($GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_api']['apiIsRunningTCEmain']) return;
-
+		if ($this->debug) {
+			t3lib_div::devLog ('processDatamap_preProcessFieldArray', 'templavoila',0,array ($incomingFieldArray, $table, $id));
+		}
+		if ($GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_api']['apiIsRunningTCEmain']) {
+			return;
+		}
 		if ($table == 'tt_content') {
 			$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_tcemain']['preProcessFieldArrays'][$id] = $incomingFieldArray;
 		}
@@ -141,12 +144,12 @@ class tx_templavoila_tcemain {
 							}
 						}
 							// Finally set the Template Objects if one was found:
-	 					if (intval ($fieldArray['tx_templavoila_ds']) && ($fieldArray['tx_templavoila_to'] == 0)) {
-	 						$fieldArray['tx_templavoila_to'] = $matchingTOUid;
-	 					}
-	 					if (intval ($fieldArray['tx_templavoila_next_ds']) && ($fieldArray['tx_templavoila_next_to'] == 0)) {
-	 						$fieldArray['tx_templavoila_next_to'] = $matchingNextTOUid;
-	 					}
+						if (intval ($fieldArray['tx_templavoila_ds']) && ($fieldArray['tx_templavoila_to'] == 0)) {
+							$fieldArray['tx_templavoila_to'] = $matchingTOUid;
+						}
+						if (intval ($fieldArray['tx_templavoila_next_ds']) && ($fieldArray['tx_templavoila_next_to'] == 0)) {
+							$fieldArray['tx_templavoila_next_to'] = $matchingNextTOUid;
+						}
 					}
 				}
 			}
