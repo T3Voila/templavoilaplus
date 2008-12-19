@@ -1,6 +1,7 @@
 2008-12-19  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Require PHP 5.1 from now on
+	* Fixed bug #9985: Simplify template object selection for pages and FCE
 
 2008-12-12	Dmitry Dulepov	<dmitry@typo3.org>
 

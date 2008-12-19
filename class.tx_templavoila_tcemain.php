@@ -65,6 +65,22 @@ class tx_templavoila_tcemain {
 
 	var $debug = FALSE;
 
+	/**
+	 * Extension configuration
+	 *
+	 * @var	array
+	 */
+	protected $extConf = array();
+
+	/**
+	 * Creates an instance of this class
+	 *
+	 * @return	void
+	 */
+	public function __construct() {
+		$this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
+	}
+
 	/********************************************
 	 *
 	 * Public API (called by hook handler)
@@ -79,19 +95,26 @@ class tx_templavoila_tcemain {
 	 * @param	array		$incomingFieldArray: The original field names and their values before they are processed
 	 * @param	string		$table: The table TCEmain is currently processing
 	 * @param	string		$id: The records id (if any)
-	 * @param	object		$reference: Reference to the parent object (TCEmain)
+	 * @param	t3lib_TCEmain	$reference: Reference to the parent object (TCEmain)
 	 * @return	void
 	 * @access	public
 	 */
-	function processDatamap_preProcessFieldArray (&$incomingFieldArray, $table, $id, &$reference) {
+	function processDatamap_preProcessFieldArray(array &$incomingFieldArray, $table, $id, t3lib_TCEmain &$reference) {
 		global $TYPO3_DB, $TCA;
 
 		if ($this->debug) {
 			t3lib_div::devLog ('processDatamap_preProcessFieldArray', 'templavoila',0,array ($incomingFieldArray, $table, $id));
 		}
+
 		if ($GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_api']['apiIsRunningTCEmain']) {
 			return;
 		}
+
+		if (!$this->extConf['enable.']['selectDataSource']) {
+			// Update DS if TO was changed
+			$this->updateDataSourceFromTemplateObject($table, $incomingFieldArray, $reference->BE_USER);
+		}
+
 		if ($table == 'tt_content') {
 			$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_tcemain']['preProcessFieldArrays'][$id] = $incomingFieldArray;
 		}
@@ -478,6 +501,56 @@ class tx_templavoila_tcemain {
 					$updateFields
 				);
 				$sortNumber += 100;
+			}
+		}
+	}
+
+	/**
+	 * Checks if template object was changed (== exists in the $incomingFieldArray)
+	 * and sets data source accordingly.
+	 *
+	 * @param	string	$table	Table name
+	 * @param	string	$incomingFieldArray	Array with fields
+	 * @param	t3lib_beUserAuth	$beUser	Current backend user for this operation
+	 * @return	void
+	 */
+	protected function updateDataSourceFromTemplateObject($table, array &$incomingFieldArray, t3lib_beUserAuth &$beUser) {
+		if (($table == 'pages' || $table == 'tt_content') &&
+			isset($incomingFieldArray['tx_templavoila_to'])) {
+			$this->updateDataSourceFieldFromTemplateObjectField($incomingFieldArray, 'tx_templavoila_ds', 'tx_templavoila_to', $beUser);
+		}
+		if ($table == 'pages' && isset($incomingFieldArray['tx_templavoila_next_to'])) {
+			$this->updateDataSourceFieldFromTemplateObjectField($incomingFieldArray, 'tx_templavoila_next_ds', 'tx_templavoila_next_to', $beUser);
+		}
+	}
+
+	/**
+	 * Finds data source value for the current template object and sets it to the
+	 * $incomingFieldArray.
+	 *
+	 * @param	array	$incomingFieldArray	Array with fields
+	 * @param	string	$dsField	Data source field name in the $incomingFieldArray
+	 * @param	string	$toField	Template object field name in the $incomingFieldArray
+	 * @param	t3lib_beUserAuth	$beUser	Current backend user for this operation
+	 * @return	void
+	 */
+	protected function updateDataSourceFieldFromTemplateObjectField(array &$incomingFieldArray, $dsField, $toField, t3lib_beUserAuth &$beUser) {
+		$toId = $incomingFieldArray[$toField];
+		if (intval($toId) == 0) {
+			$incomingFieldArray[$dsField] = '';
+		}
+		else {
+			if ($beUser->workspace) {
+				$record = t3lib_BEfunc::getWorkspaceVersionOfRecord($beUser->workspace, 'tx_templavoila_tmplobj', $toId, 'datastructure');
+				if (!is_array($record)) {
+					$record = t3lib_BEfunc::getRecord('tx_templavoila_tmplobj', $toId, 'datastructure');
+				}
+			}
+			else {
+				$record = t3lib_BEfunc::getRecord('tx_templavoila_tmplobj', $toId, 'datastructure');
+			}
+			if (is_array($record) && isset($record['datastructure'])) {
+				$incomingFieldArray[$dsField] = $record['datastructure'];
 			}
 		}
 	}

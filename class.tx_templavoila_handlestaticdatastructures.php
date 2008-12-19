@@ -66,14 +66,14 @@ class tx_templavoila_handleStaticDataStructures {
 	 * @param	object		The parent object (t3lib_TCEforms / t3lib_transferData depending on context)
 	 * @return	void
 	 */
-    function main(&$params,&$pObj)    {
+	function main(&$params,&$pObj)    {
 		// Adding an item!
 		if (is_array($GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['staticDataStructures']))	{
 			foreach($GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['staticDataStructures'] as $val)	{
 				$params['items'][]=Array($this->prefix.(substr($val['title'], 0, 4) == 'LLL:' ? $GLOBALS['LANG']->sL($val['title']) : $val['title']), $val['path'], $val['icon']);
 			}
 		}
-    }
+	}
 
 	/**
 	 * Adds static data structures to selector box items arrays.
@@ -151,6 +151,115 @@ class tx_templavoila_handleStaticDataStructures {
 	}
 
 	/**
+	 * Adds items to the template object selector according to the scope and
+	 * storage folder of the current page/element.
+	 *
+	 * @param	array	$params	Parameters for itemProcFunc
+	 * @param	t3lib_TCEforms	$pObj	Calling class
+	 * @return	void
+	 */
+	public function templateObjectItemsProcFunc(array &$params, t3lib_TCEforms &$pObj) {
+		// Find DS scope
+		$scope = ($params['table'] == 'pages' ? 1 : 2);
+
+		// Get storage folder
+		$storagePid = intval($pObj->cachedTSconfig[$params['table'].':'.$params['row']['uid']]['_STORAGE_PID']);		// This should be the Storage PID (at least if the pObj is TCEforms! and t3lib_transferdata is not triggering this function since it is not a real foreign-table thing...)
+
+		// Get all DSes from the current storage folder
+		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,title', 'tx_templavoila_datastructure',
+					'scope=' . $scope . ' AND pid=' . $storagePid .
+					self::enableFields('tx_templavoila_datastructure'),
+					'', 'title');
+		$this->dsList = array();
+		foreach ($rows as $row) {
+			$this->dsList[$row['uid']] = $row['title'];
+		}
+		unset($rows);
+
+		if (count($this->dsList) > 0) {
+			// Get all TOs for these DSes
+			$this->toRows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+						'uid,title,previewicon,datastructure', 'tx_templavoila_tmplobj',
+						'datastructure IN (' . implode(',', array_keys($this->dsList)) . ')' .
+						self::enableFields('tx_templavoila_tmplobj'));
+			// Sort by DS name than by TO name
+			uksort($this->toRows, array($this, 'sortTemplateObjects'));
+			$currentDS = 0;
+			$iconPath = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . 'uploads/tx_templavoila/';
+			$params['items'] = array(
+				array(
+					'', ''
+				)
+			);
+			// Create items sorted visually by DS and title
+			foreach ($this->toRows as $row) {
+				// Check if we got a new DS
+				if ($currentDS != $row['datastructure']) {
+					$params['items'][] = array(
+						$this->dsList[$row['datastructure']],
+						'--div--'
+					);
+					$currentDS = $row['datastructure'];
+				}
+				// Add TO
+				$icon = '';
+				if ($row['previewicon']) {
+					$icon = $iconPath . $row['previewicon'];
+				}
+				$params['items'][] = array(
+					$row['title'],
+					$row['uid'],
+					$icon
+				);
+			}
+		}
+		unset($this->dsList);
+		unset($this->toRows);
+	}
+
+	/**
+	 * Provides 'enableFields' functionality while fixing some bugs in the older
+	 * TYPO3 versions
+	 *
+	 * @param	string	$tableName	Table name
+	 * @return	string	Additional WHERE expression (starting from ' AND') or empty string
+	 */
+	protected function enableFields($tableName) {
+		$where1 = trim(t3lib_BEfunc::BEenableFields($tableName));
+		if (strcasecmp($where1, 'AND') == 0) {
+			$where1 = '';
+		}
+		$where2 = trim(t3lib_BEfunc::deleteClause($tableName));
+		if (strcasecmp($where2, 'AND') == 0) {
+			$where2 = '';
+		}
+		$where = trim($where1 . ' ' . $where2);
+		return ($where ? ' ' . $where : '');
+	}
+
+	/**
+	 * Sorts template objects by DS and than by title
+	 *
+	 * @param	int	$key1	Key 1 to $this->toRows
+	 * @param	int	$key2	Key 2 to $this->toRows
+	 * @return	int	Result of the comparison (see strcmp())
+	 * @see	uksort()
+	 * @see	strcmp()
+	 */
+	public function sortTemplateObjects($key1, $key2) {
+		$result = 0;
+		$row1 = $this->toRows[$key1];
+		$row2 = $this->toRows[$key2];
+		if ($row1['datastructure'] == $row2['datastructure']) {
+			$result = strcmp($row1['title'], $row2['title']);
+		}
+		else {
+			$result = strcmp($this->dsList[$row1['datastructure']], $this->dsList[$row2['datastructure']]);
+		}
+		return $result;
+	}
+
+	/**
 	 * Adds static data structures to selector box items arrays.
 	 * Adds only structures for Page Templates
 	 *
@@ -196,6 +305,6 @@ class tx_templavoila_handleStaticDataStructures {
 
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/class.tx_templavoila_handlestaticdatastructures.php'])    {
-    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/class.tx_templavoila_handlestaticdatastructures.php']);
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/class.tx_templavoila_handlestaticdatastructures.php']);
 }
 ?>
