@@ -122,10 +122,8 @@ $tempColumns = array(
 			'items' => Array (
 				Array('',0),
 			),
-			'foreign_table' => 'tx_templavoila_datastructure',
-			'foreign_table_where' => 'AND tx_templavoila_datastructure.pid=###STORAGE_PID### AND tx_templavoila_datastructure.scope IN (2) ORDER BY tx_templavoila_datastructure.sorting',
 			'allowNonIdValues' => 1,
-			'itemsProcFunc' => 'tx_templavoila_handleStaticdatastructures->main_scope2',
+			'itemsProcFunc' => 'tx_templavoila_handleStaticdatastructures->dataSourceItemsProcFunc',
 			'size' => 1,
 			'minitems' => 0,
 			'maxitems' => 1,
@@ -140,8 +138,6 @@ $tempColumns = array(
 			'items' => Array (
 				Array('',0),
 			),
-			'foreign_table' => 'tx_templavoila_tmplobj',
-			'foreign_table_where' => 'AND tx_templavoila_tmplobj.pid=###STORAGE_PID### AND tx_templavoila_tmplobj.datastructure=\'###REC_FIELD_tx_templavoila_ds###\' AND tx_templavoila_tmplobj.parent=0 ORDER BY tx_templavoila_tmplobj.sorting',
 			'itemsProcFunc' => 'tx_templavoila_handleStaticdatastructures->templateObjectItemsProcFunc',
 			'size' => 1,
 			'minitems' => 0,
@@ -185,12 +181,9 @@ if ($_EXTCONF['enable.']['selectDataSource']) {
 		$TCA['tt_content']['ctrl']['requestUpdate'] .= ',';
 	}
 	$TCA['tt_content']['ctrl']['requestUpdate'] .= 'tx_templavoila_ds';
-	unset($TCA['pages']['columns']['tx_templavoila_to']['config']['itemsProcFunc']);
 }
 else {
 	$TCA['tt_content']['types'][$_EXTKEY . '_pi1']['showitem'] = 'CType;;4;button;1-1-1, header;;3;;2-2-2,tx_templavoila_to,tx_templavoila_flex;;;;2-2-2, hidden;;1;;3-3-3';
-	unset($TCA['pages']['columns']['tx_templavoila_to']['config']['foreign_table']);
-	unset($TCA['pages']['columns']['tx_templavoila_to']['config']['foreign_table_where']);
 }
 
 	// For pages:
@@ -203,10 +196,8 @@ $tempColumns = array (
 			'items' => Array (
 				array('',0),
 			),
-			'foreign_table' => 'tx_templavoila_datastructure',
-			'foreign_table_where' => 'AND tx_templavoila_datastructure.pid=###STORAGE_PID### AND tx_templavoila_datastructure.scope IN (1) ORDER BY tx_templavoila_datastructure.sorting',
 			'allowNonIdValues' => 1,
-			'itemsProcFunc' => 'tx_templavoila_handleStaticdatastructures->main_scope1',
+			'itemsProcFunc' => 'tx_templavoila_handleStaticdatastructures->dataSourceItemsProcFunc',
 			'size' => 1,
 			'minitems' => 0,
 			'maxitems' => 1,
@@ -222,8 +213,6 @@ $tempColumns = array (
 			'items' => Array (
 				Array('',0),
 			),
-			'foreign_table' => 'tx_templavoila_tmplobj',
-			'foreign_table_where' => 'AND tx_templavoila_tmplobj.pid=###STORAGE_PID### AND tx_templavoila_tmplobj.datastructure=\'###REC_FIELD_tx_templavoila_ds###\' AND tx_templavoila_tmplobj.parent=0 ORDER BY tx_templavoila_tmplobj.sorting',
 			'itemsProcFunc' => 'tx_templavoila_handleStaticdatastructures->templateObjectItemsProcFunc',
 			'size' => 1,
 			'minitems' => 0,
@@ -238,10 +227,8 @@ $tempColumns = array (
 			'items' => Array (
 				Array('',0),
 			),
-			'foreign_table' => 'tx_templavoila_datastructure',
-			'foreign_table_where' => 'AND tx_templavoila_datastructure.pid=###STORAGE_PID### AND tx_templavoila_datastructure.scope IN (1) ORDER BY tx_templavoila_datastructure.sorting',
 			'allowNonIdValues' => 1,
-			'itemsProcFunc' => 'tx_templavoila_handleStaticdatastructures->main_scope1',
+			'itemsProcFunc' => 'tx_templavoila_handleStaticdatastructures->dataSourceItemsProcFunc',
 			'size' => 1,
 			'minitems' => 0,
 			'maxitems' => 1,
@@ -257,8 +244,6 @@ $tempColumns = array (
 			'items' => Array (
 				Array('',0),
 			),
-			'foreign_table' => 'tx_templavoila_tmplobj',
-			'foreign_table_where' => 'AND tx_templavoila_tmplobj.pid=###STORAGE_PID### AND tx_templavoila_tmplobj.datastructure=\'###REC_FIELD_tx_templavoila_next_ds###\' AND tx_templavoila_tmplobj.parent=0 ORDER BY tx_templavoila_tmplobj.sorting',
 			'itemsProcFunc' => 'tx_templavoila_handleStaticdatastructures->templateObjectItemsProcFunc',
 			'size' => 1,
 			'minitems' => 0,
@@ -284,16 +269,11 @@ if ($_EXTCONF['enable.']['selectDataSource']) {
 		$TCA['pages']['ctrl']['requestUpdate'] .= ',';
 	}
 	$TCA['pages']['ctrl']['requestUpdate'] .= 'tx_templavoila_ds,tx_templavoila_next_ds';
-	unset($TCA['pages']['columns']['tx_templavoila_to']['config']['itemsProcFunc']);
-	unset($TCA['pages']['columns']['tx_templavoila_next_to']['config']['itemsProcFunc']);
 }
 else {
 	t3lib_extMgm::addToAllTCAtypes('pages','tx_templavoila_to;;;;1-1-1,tx_templavoila_next_to;;;;1-1-1,tx_templavoila_flex;;;;1-1-1');
-	unset($TCA['pages']['columns']['tx_templavoila_to']['config']['foreign_table']);
-	unset($TCA['pages']['columns']['tx_templavoila_to']['config']['foreign_table_where']);
+	unset($TCA['pages']['columns']['tx_templavoila_to']['displayCond']);
 	unset($TCA['pages']['columns']['tx_templavoila_next_to']['displayCond']);
-	unset($TCA['pages']['columns']['tx_templavoila_next_to']['config']['foreign_table']);
-	unset($TCA['pages']['columns']['tx_templavoila_next_to']['config']['foreign_table_where']);
 }
 
 	// Configure the referencing wizard to be used in the web_func module:

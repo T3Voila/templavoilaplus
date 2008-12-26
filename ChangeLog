@@ -1,6 +1,7 @@
 2008-12-26  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Removed ext_php_api.dat
+	* Fixed bug #10020: Allow DS and TOs outside of GRSP
 
 2008-12-19  Dmitry Dulepov  <dmitry@typo3.org>
 
