@@ -1,3 +1,7 @@
+2009-01-26  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed possible bug with "argument #1 is not an array"
+
 2008-12-26  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Removed ext_php_api.dat
@@ -411,8 +415,8 @@ RELEASE OF TEMPLAVOILA 1.0!
 			* Summary: In tx_templavoila_api, always use uids/pids of live elements. For getting workspace record content you can safely use (and probably should) t3lib_BEfunc::getRecordWSOL() which will protect the live uid/pid while all other values change, including the "tx_templavoila_flex" which is VERY IMPORTANT to get the workspace value from since that contains the correct list of elements in a field.
 	* Testing combinations for Page module under workspaces:
 		* Destination pointer: Test Inserting new/copies/cuts/references:
-		  	* Insert in both pages and tt_content element containers plus both in live and element versioned containers (4 combinations)
-		  	* Insert copies/cuts/references in other pages
+			 * Insert in both pages and tt_content element containers plus both in live and element versioned containers (4 combinations)
+			 * Insert copies/cuts/references in other pages
 		* Source: Try both live and element versioned elements for all of above.
 		* Try Changing data structure of CEs and pages
 

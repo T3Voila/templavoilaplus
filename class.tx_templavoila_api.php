@@ -217,7 +217,7 @@ class tx_templavoila_api {
 		/* @var $tce t3lib_TCEmain */
 
 		// set default TCA values specific for the user
-		$TCAdefaultOverride = $GLOBALS['BE_USER']->getTSConfigProp('TCAdefaults');
+		$TCAdefaultOverride = (array)$GLOBALS['BE_USER']->getTSConfigProp('TCAdefaults');
 		$pageTS = t3lib_BEfunc::getPagesTSconfig($newRecordPid, true);
 		if (isset($pageTS['TCAdefaults.'])) {
 			$TCAdefaultOverride = array_merge($TCAdefaultOverride, $pageTS['TCAdefaults.']);
@@ -530,7 +530,7 @@ class tx_templavoila_api {
 			$this->flexform_storeElementReferencesListInRecord ($newDestinationReferencesArr, $destinationPointer);
 
 				// Make sure the PID is changed as well so the element belongs to the page where it is moved to:
-		 	if (!$onlyHandleReferences && $elementRecord['pid'] == $sourceParentRecord['uid']) {
+			if (!$onlyHandleReferences && $elementRecord['pid'] == $sourceParentRecord['uid']) {
 				$destinationPID = $destinationPointer['table'] == 'pages' ? $destinationParentRecord['uid'] : $destinationParentRecord['pid'];
 				$cmdArray = array();
 				$cmdArray['tt_content'][$elementUid]['move'] = $destinationPID;
@@ -541,7 +541,7 @@ class tx_templavoila_api {
 				$tce->start(array(),$cmdArray);
 				$tce->process_cmdmap();
 				if (!$flagWasSet) $this->setTCEmainRunningFlag (FALSE);
-		 	}
+			}
 		}
 
 		return TRUE;
@@ -884,7 +884,7 @@ class tx_templavoila_api {
 	 * @access	public
 	 */
 	function flexform_getPointersByRecord ($elementUid, $pageUid) {
-	    $dummyArr = array();
+		$dummyArr = array();
 		$flexformPointersArr = $this->flexform_getFlexformPointersToSubElementsRecursively('pages', $pageUid, $dummyArr);
 
 		$resultPointersArr = array();
@@ -1504,7 +1504,7 @@ class tx_templavoila_api {
 		$dbAnalysis->start($listOfSubElementUids, 'tt_content');
 
 			// Traverse records:
-        $counter = 1;   // Note: key in $dbAnalysis->itemArray is not a valid counter! It is in 'tt_content_xx' format!
+		$counter = 1;   // Note: key in $dbAnalysis->itemArray is not a valid counter! It is in 'tt_content_xx' format!
 		foreach($dbAnalysis->itemArray as $recIdent)	{
 			$idStr = 'tt_content:'.$recIdent['id'];
 
@@ -1517,7 +1517,7 @@ class tx_templavoila_api {
 					$subTree['el'][$idStr]['el']['index'] = $counter;
 					$subTree['el'][$idStr]['el']['isHidden'] = $TCA['tt_content']['ctrl']['enablecolumns']['disabled'] && $nextSubRecord[$TCA['tt_content']['ctrl']['enablecolumns']['disabled']];
 					$subTree['el_list'][$counter] = $idStr;
-                    $counter++;
+					$counter++;
 				} else {
 					# ERROR: The element referenced was deleted! - or hidden :-)
 				}
@@ -1717,7 +1717,7 @@ class tx_templavoila_api {
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/class.tx_templavoila_api.php'])    {
-    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/class.tx_templavoila_api.php']);
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/class.tx_templavoila_api.php']);
 }
 
 ?>
