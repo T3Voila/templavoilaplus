@@ -308,7 +308,7 @@ class tx_templavoila_pi1 extends tslib_pibase {
 				if ($this->conf['childTemplate'])	{
 					$renderType = $this->conf['childTemplate'];
 				} else {	// Default:
-					$renderType = t3lib_div::GPvar('print') ? 'print' : '';
+					$renderType = t3lib_div::_GP('print') ? 'print' : '';
 				}
 
 					// Get Template Object record:

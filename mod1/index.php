@@ -1857,7 +1857,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		if ($id) {
 			$excludeHidden .= ' AND pages_language_overlay.deleted=0';
 			$res = $TYPO3_DB->exec_SELECTquery(
-				'DISTINCT sys_language.*',
+				'DISTINCT sys_language.*, pages_language_overlay.hidden as PLO_hidden, pages_language_overlay.title as PLO_title',
 				'pages_language_overlay,sys_language',
 				'pages_language_overlay.sys_language_uid=sys_language.uid AND pages_language_overlay.pid='.intval($id).' AND '.$excludeHidden,
 				'',

@@ -123,13 +123,14 @@ class tx_templavoila_mod1_localization {
 			unset($newLanguagesArr[$languageArr['uid']]);	// Remove this language from possible new translation languages array (PNTLA ;-)
 
 			if ($languageArr['uid']<=0 || $BE_USER->checkLanguageAccess($languageArr['uid']))	{
+				$grayedOut = $languageArr['PLO_hidden'] ? ' style="Filter: alpha(opacity=25); -moz-opacity: 0.25; opacity: 0.25"' : '';
 
 				$flag = ($languageArr['flagIcon'] != '' ? $languageArr['flagIcon'] : $BACK_PATH . 'gfx/flags/unknown.gif');
 				$style = isset ($languageArr['flagIcon']) ? 'background-image: url(' . $flag . '); background-repeat: no-repeat; padding-left: 22px;' : '';
 				$optionsArr [] = '<option style="'.$style.'" value="'.$languageArr['uid'].'"'.($this->pObj->MOD_SETTINGS['language'] == $languageArr['uid'] ? ' selected="selected"' : '').'>'.htmlspecialchars($languageArr['title']).'</option>';
 
 					// Link to editing of language header:
-				$availableTranslationsFlags .= '<a href="index.php?'.$this->pObj->link_getParameters().'&editPageLanguageOverlay='.$languageArr['uid'].'"><img src="' . $flag . '" title="Edit '.htmlspecialchars($languageArr['title']).'" alt="" /></a> ';
+				$availableTranslationsFlags .= '<a href="index.php?'.$this->pObj->link_getParameters().'&editPageLanguageOverlay='.$languageArr['uid'].'"><img src="' . $flag . '" title="Edit '.htmlspecialchars($languageArr['title']).'" alt=""'.$grayedOut.' /></a> ';
 			}
 		}
 

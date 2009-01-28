@@ -1,0 +1,90 @@
+<?php
+/***************************************************************
+*  Copyright notice
+*
+*  (c) 2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  All rights reserved
+*
+*  This script is part of the TYPO3 project. The TYPO3 project is
+*  free software; you can redistribute it and/or modify
+*  it under the terms of the GNU General Public License as published by
+*  the Free Software Foundation; either version 2 of the License, or
+*  (at your option) any later version.
+*
+*  The GNU General Public License can be found at
+*  http://www.gnu.org/copyleft/gpl.html.
+*  A copy is found in the textfile GPL.txt and important notices to the license
+*  from the author is found in LICENSE.txt distributed with these scripts.
+*
+*
+*  This script is distributed in the hope that it will be useful,
+*  but WITHOUT ANY WARRANTY; without even the implied warranty of
+*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*  GNU General Public License for more details.
+*
+*  This copyright notice MUST APPEAR in all copies of the script!
+***************************************************************/
+/**
+ * Finding used content elements on pages. Used as a filter for other extensions
+ * which wants to know which elements are used on a templavoila page.
+ *
+ * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ */
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ */
+
+
+
+
+
+	// Include TemplaVoila API
+require_once (t3lib_extMgm::extPath('templavoila').'class.tx_templavoila_api.php');
+
+
+/**
+ * Finding used content elements
+ *
+ * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @package TYPO3
+ * @subpackage tx_templavoila
+ */
+class tx_templavoila_usedCE {
+	
+	var $usedUids = array();
+
+	/**
+	 * Initialize object with page id.
+	 *
+	 * @param	integer		UID of page in processing
+	 * @return	void
+	 */
+	function init($page_uid)	{
+
+			// Initialize TemplaVoila API class:
+		$apiClassName = t3lib_div::makeInstanceClassName('tx_templavoila_api');
+		$apiObj = new $apiClassName ('pages');
+
+			// Fetch the content structure of page:
+		$contentTreeData = $apiObj->getContentTree('pages', t3lib_BEfunc::getRecordRaw('pages','uid='.intval($page_uid)));
+		if ($contentTreeData['tree']['ds_is_found'])	{
+			$this->usedUids = array_keys($contentTreeData['contentElementUsage']);
+			$this->usedUids[] = 0;
+		}
+	}
+
+	/**
+	 * Returns TRUE if either table is NOT tt_content OR (in case it is tt_content) if the uid is in the built page.
+	 */
+	function filter($table, $uid)	{
+		if ($table!='tt_content' || in_array($uid,$this->usedUids))	return TRUE;
+	}
+}
+
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/class.tx_templavoila_usedce.php'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/class.tx_templavoila_usedce.php']);
+}
+
+?>
