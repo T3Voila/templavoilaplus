@@ -1,6 +1,10 @@
+2009-02-06  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug #10361: Remove translations from locallang files
+
 2009-01-27  Kasper Skårhøj	<kasper@typo3.org>
 
-	* Fixed a bug in the cleaner of unused elements which ignored some translations of content elements. 
+	* Fixed a bug in the cleaner of unused elements which ignored some translations of content elements.
 	* Added cleaner option --excludePageIdList allowing to exclude certain pages.
 	* Added that language icon in Page module gets dimmed when no translation exists.
 

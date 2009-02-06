@@ -5,36 +5,6 @@
         <type>CSH</type>
         <csh_table>xMOD_tx_templavoila</csh_table>
         <fileId>EXT:templavoila/locallang_csh_module.xml</fileId>
-        <labelContext type="array">
-            <languageKey index=".alttitle"></languageKey>
-            <languageKey index="mapping_file.description"></languageKey>
-            <languageKey index="mapping_file_showXMLDS.description"></languageKey>
-            <languageKey index="mapping_file_loadDSXML.description"></languageKey>
-            <languageKey index="mapping_file_createDSTO.description"></languageKey>
-            <languageKey index="mapping_to.description"></languageKey>
-            <languageKey index="mapping_to_htmlheaderparts.description"></languageKey>
-            <languageKey index="mapping_to_openInOwnWindow.description"></languageKey>
-            <languageKey index="mapping_to_modifyDSTO.description"></languageKey>
-            <languageKey index="mapping_head_mapping_instructions.description"></languageKey>
-            <languageKey index="mapping_head_sample_data.description"></languageKey>
-            <languageKey index="mapping_head_dataElement.description"></languageKey>
-            <languageKey index="mapping_head_Field.description"></languageKey>
-            <languageKey index="mapping_head_HTMLpath.description"></languageKey>
-            <languageKey index="mapping_head_Action.description"></languageKey>
-            <languageKey index="mapping_head_Rules.description"></languageKey>
-            <languageKey index="mapping_head_Edit.description"></languageKey>
-            <languageKey index="mapping_window_modes.description"></languageKey>
-            <languageKey index="mapping_window_help.description"></languageKey>
-            <languageKey index="mapping_basics.description"></languageKey>
-            <languageKey index="mapping_to_headerParts.description"></languageKey>
-            <languageKey index="mapping_to_headerParts_buttons.description"></languageKey>
-            <languageKey index="mapping_editform.description"></languageKey>
-            <languageKey index="mapping_addfield.description"></languageKey>
-            <languageKey index="mapping_modeset.description"></languageKey>
-            <languageKey index="mapping_ds.description"></languageKey>
-            <languageKey index="mapping_ds_to.description"></languageKey>
-            <languageKey index="mapping_ds_showXML.description"></languageKey>
-        </labelContext>
     </meta>
     <data type="array">
         <languageKey index="default" type="array">
@@ -68,42 +38,4 @@
             <label index="mapping_ds_showXML.description">[FILL IN] mapping_ds_showXML</label>
         </languageKey>
     </data>
-    <orig_hash type="array">
-        <languageKey index="default" type="array">
-            <label index=".alttitle" type="integer">2673543</label>
-            <label index="pagemodule.description" type="integer">67850643</label>
-            <label index="pagemodule_notUsed.description" type="integer">68609428</label>
-            <label index="mapping_file.description" type="integer">101836492</label>
-            <label index="mapping_file_showXMLDS.description" type="integer">204002897</label>
-            <label index="mapping_file_loadDSXML.description" type="integer">205979879</label>
-            <label index="mapping_file_createDSTO.description" type="integer">261317307</label>
-            <label index="mapping_to.description" type="integer">73191278</label>
-            <label index="mapping_to_htmlheaderparts.description" type="integer">195835894</label>
-            <label index="mapping_to_openInOwnWindow.description" type="integer">105914562</label>
-            <label index="mapping_to_modifyDSTO.description" type="integer">231554792</label>
-            <label index="mapping_head_mapping_instructions.description" type="integer">228463817</label>
-            <label index="mapping_head_sample_data.description" type="integer">67402286</label>
-            <label index="mapping_head_dataElement.description" type="integer">175123961</label>
-            <label index="mapping_head_Field.description" type="integer">224950370</label>
-            <label index="mapping_head_HTMLpath.description" type="integer">7699006</label>
-            <label index="mapping_head_Action.description" type="integer">56890531</label>
-            <label index="mapping_head_Rules.description" type="integer">140827517</label>
-            <label index="mapping_head_Edit.description" type="integer">54220749</label>
-            <label index="mapping_window_modes.description" type="integer">140489459</label>
-            <label index="mapping_window_help.description" type="integer">52351744</label>
-            <label index="mapping_basics.description" type="integer">116347214</label>
-            <label index="mapping_to_headerParts.description" type="integer">138955748</label>
-            <label index="mapping_to_headerParts_buttons.description" type="integer">29367431</label>
-            <label index="mapping_editform.description" type="integer">88080912</label>
-            <label index="mapping_addfield.description" type="integer">254860446</label>
-            <label index="mapping_modeset.description" type="integer">192017830</label>
-            <label index="mapping_ds.description" type="integer">187747891</label>
-            <label index="mapping_ds_to.description" type="integer">247028326</label>
-            <label index="mapping_ds_showXML.description" type="integer">76605605</label>
-        </languageKey>
-    </orig_hash>
-    <orig_text type="array">
-        <languageKey index="default" type="array">
-        </languageKey>
-    </orig_text>
 </T3locallang>

@@ -5,12 +5,6 @@
         <type>CSH</type>
         <csh_table>tt_content</csh_table>
         <fileId>EXT:templavoila/locallang_csh_ttc.xml</fileId>
-        <labelContext type="array">
-            <languageKey index="tx_templavoila_ds.description"></languageKey>
-            <languageKey index="tx_templavoila_to.description"></languageKey>
-            <languageKey index="tx_templavoila_flex.description"></languageKey>
-            <languageKey index="tx_templavoila_pito.description"></languageKey>
-        </labelContext>
     </meta>
     <data type="array">
         <languageKey index="default" type="array">
@@ -20,16 +14,4 @@
             <label index="tx_templavoila_pito.description">[FILL IN] tx_templavoila_pito</label>
         </languageKey>
     </data>
-    <orig_hash type="array">
-        <languageKey index="default" type="array">
-            <label index="tx_templavoila_ds.description" type="integer">198102171</label>
-            <label index="tx_templavoila_to.description" type="integer">36008749</label>
-            <label index="tx_templavoila_flex.description" type="integer">170207625</label>
-            <label index="tx_templavoila_pito.description" type="integer">139967555</label>
-        </languageKey>
-    </orig_hash>
-    <orig_text type="array">
-        <languageKey index="default" type="array">
-        </languageKey>
-    </orig_text>
 </T3locallang>

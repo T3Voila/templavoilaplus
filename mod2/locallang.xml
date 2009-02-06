@@ -14,17 +14,5 @@
 			<label index="wiz_title">New site wizard</label>
 			<label index="wiz_step">Step %s</label>
 		</languageKey>
-		<languageKey index="de" type="array">
-			<label index="title">TemplaVoilà Kontrollcenter</label>
-			<label index="wiz_title">Neue Site Assistent</label>
-			<label index="wiz_step">Schritt %s</label>
-		</languageKey>
 	</data>
-	<orig_hash type="array">
-		<languageKey index="de" type="array">
-			<label index="title" type="integer">91448319</label>
-			<label index="wiz_title" type="integer">205980870</label>
-			<label index="wiz_step" type="integer">256549070</label>
-		</languageKey>
-	</orig_hash>
 </T3locallang>

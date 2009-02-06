@@ -5,9 +5,6 @@
 		<type>CSH</type>
 		<csh_table>_MOD_web_txtemplavoilaM1</csh_table>
 		<fileId>EXT:templavoila/locallang_csh_pm.xml</fileId>
-		<labelContext type="array">
-			<label index=".alttitle"></label>
-		</labelContext>
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
@@ -23,16 +20,5 @@
 			<label index="advancedfunctions_showoutline.description">[FILL IN] Show outline</label>
 			<label index="outline_status_cleanall.description">[FILL IN]Why is my XML dirty and why do I want to clean it up?</label>
 		</languageKey>
-		<languageKey index="de" type="array">
-			<label index=".alttitle">Seiten-Modul (TemplaVoilà)</label>
-		</languageKey>
 	</data>
-	<orig_hash type="array">
-		<languageKey index="default" type="array">
-			<label index=".alttitle" type="integer">42793821</label>
-		</languageKey>
-		<languageKey index="de" type="array">
-			<label index=".alttitle" type="integer">42793821</label>
-		</languageKey>
-	</orig_hash>
 </T3locallang>
