@@ -25,7 +25,7 @@
 /**
  * Class 'tx_templavoila_access' for the templavoila extension.
  *
- * $Id: $
+ * $Id$
  *
  * @author     Dmitry Dulepov <dmitry@typo3.org>
  */
