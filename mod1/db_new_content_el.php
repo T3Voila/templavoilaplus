@@ -114,10 +114,10 @@ class tx_templavoila_dbnewcontentel {
 		}
 
 			// Setting internal vars:
-		$this->id = intval(t3lib_div::GPvar('id'));
-		$this->parentRecord = t3lib_div::GPvar('parentRecord');
-		$this->altRoot = t3lib_div::GPvar('altRoot');
-		$this->defVals = t3lib_div::GPvar('defVals');
+		$this->id = intval(t3lib_div::_GP('id'));
+		$this->parentRecord = t3lib_div::_GP('parentRecord');
+		$this->altRoot = t3lib_div::_GP('altRoot');
+		$this->defVals = t3lib_div::_GP('defVals');
 
 			// Starting the document template object:
 		$this->doc = t3lib_div::makeInstance('mediumDoc');

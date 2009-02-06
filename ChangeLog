@@ -1,6 +1,7 @@
 2009-02-06  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #10361: Remove translations from locallang files
+	* Fixed bug #10108: Replace t3lib_div::GPvar with t3lib_div::_GP
 
 2009-01-27  Kasper Skårhøj	<kasper@typo3.org>
 

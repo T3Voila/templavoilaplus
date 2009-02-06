@@ -167,7 +167,7 @@ class tx_templavoila_cm1 {
 #				);
 #			}
 		} else {
-			if (t3lib_div::GPvar('subname') == 'tx_templavoila_cm1_pagesusingthiselement') {
+			if (t3lib_div::_GP('subname') == 'tx_templavoila_cm1_pagesusingthiselement') {
 				$menuItems = array ();
 				$url = t3lib_extMgm::extRelPath('templavoila').'mod1/index.php?id=';
 
