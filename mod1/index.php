@@ -172,6 +172,8 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		$this->altRoot = t3lib_div::_GP('altRoot');
 		$this->versionId = t3lib_div::_GP('versionId');
 
+		$this->addToRecentElements();
+
 			// Fill array allAvailableLanguages and currently selected language (from language selector or from outside)
 		$this->allAvailableLanguages = $this->getAvailableLanguages(0, true, true, true);
 		$this->currentLanguageKey = $this->allAvailableLanguages[$this->MOD_SETTINGS['language']]['ISOcode'];
@@ -1988,16 +1990,51 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			return $stat;
 		}
 	}
-/*
-	function hasFCEAccess($row) {
-		$params = array(
-			'table' => 'tt_content',
-			'row' => $row
-		);
-		$ref = null;
-		return t3lib_div::callUserFunction('EXT:templavoila/class.tx_templavoila_access.php:&tx_templavoila_access->recordEditAccessInternals', $params, $ref);
+
+	/**
+	 * Adds element to the list of recet elements
+	 *
+	 * @return	void
+	 */
+	protected function addToRecentElements() {
+		// Add recent element
+		$ser = t3lib_div::_GP('ser');
+		if ($ser) {
+
+			// Include file required to unserialization
+			t3lib_div::requireOnce(t3lib_extMgm::extPath('templavoila', 'newcewizard/model/class.tx_templavoila_contentelementdescriptor.php'));
+
+			$obj = @unserialize(base64_decode($ser));
+
+			if ($obj instanceof tx_templavoila_contentElementDescriptor) {
+				$data = (array)@unserialize($GLOBALS['BE_USER']->uc['tx_templavoila_recentce']);
+				// Find this element
+				$pos = false;
+				for ($i = 0; $i < count($data); $i++) {
+					// Notice: must be "==", not "==="!
+					if ($data[$i] == $obj) {
+						$pos = $i;
+						break;
+					}
+				}
+				if ($pos !== 0) {
+					if ($pos !== false) {
+						// Remove it
+						array_splice($data, $pos, 1);
+					}
+					else {
+						// Check if there are more than necessary elements
+						if (count($data) >= 10) {
+							$data = array_slice($data, 0, 9);
+						}
+					}
+					array_unshift($data, $obj);
+					$GLOBALS['BE_USER']->uc['tx_templavoila_recentce'] = serialize($data);
+					$GLOBALS['BE_USER']->writeUC();
+				}
+			}
+		}
 	}
-*/
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/mod1/index.php'])    {

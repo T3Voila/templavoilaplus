@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<description>Page Module main locallang</description>
+		<type>module</type>
+		<csh_table></csh_table>
+		<fileId>EXT:templavoila/newcewizard/locallang.xml</fileId>
+		<labelContext type="array">
+		</labelContext>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="newcewizard.title">Create a new content element</label>
+			<label index="newcewizard.select_a_page">Please, select a page in the page tree.</label>
+			<label index="newcewizard.no_page_access">No access to this page.</label>
+			<label index="newcewizard.hint">To create a new content element, select its kind below. The element will be inserted to the page. You can customize the element after insertion.</label>
+			<label index="newcewizard.hint_disable">Do not show this hint again</label>
+			<label index="newcewizard.standard">Text &amp; images</label>
+			<label index="newcewizard.text_with_image">Text with image</label>
+			<label index="newcewizard.text_with_image_desc">A regular text element with header, body text and image</label>
+			<label index="newcewizard.menus">Menu &amp; sitemap</label>
+			<label index="newcewizard.forms">Forms</label>
+			<label index="newcewizard.fce">Flexible content</label>
+			<label index="newcewizard.recent">Recent</label>
+			<label index="newcewizard.favorites">Favorites</label>
+			<label index="newcewizard.plugins">Plugins</label>
+			<label index="newcewizard.no_recent_yet">Elements will appear automatically here after you use them on other tabs.\nCurrently there are no recent elements to show. Please, select a content element on another tab.</label>
+			<label index="newcewizard.no_favorites_yet">Elements will appear here after you add them here using the %s icon near the content element on other tabs.\nCurrently there are no favorite elements to show.</label>
+			<label index="newcewizard.add_favorite">Add to favorite elements</label>
+			<label index="newcewizard.clear_recent">Clear this list</label>
+		</languageKey>
+	</data>
+</T3locallang>

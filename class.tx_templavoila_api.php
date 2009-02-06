@@ -1676,7 +1676,15 @@ class tx_templavoila_api {
 		$row = t3lib_BEfunc::getRecordWSOL('pages',$pageUid);
 
 		$TSconfig = t3lib_BEfunc::getTCEFORM_TSconfig('pages', $row);
-		return intval($TSconfig['_STORAGE_PID']);
+		$storagePid = intval($TSconfig['_STORAGE_PID']);
+
+		// Check for alternative storage folder
+		$modTSConfig = t3lib_BEfunc::getModTSconfig($pageUid, 'tx_templavoila.storagePid');
+		if (is_array($modTSConfig) && t3lib_div::testInt($modTSConfig['value'])) {
+			$storagePid = intval($modTSConfig['value']);
+		}
+
+		return $storagePid;
 	}
 
 	/**
