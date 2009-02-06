@@ -1000,7 +1000,7 @@ class tx_templavoila_htmlmarkup {
 				// Disable A tags:
 			if ($firstTagName=='a')	{
 				$params[0]['onclick']='return false;';
-				$firstTag = '<'.trim($firstTagName.' '.t3lib_div::implodeParams($params[0])).'>';
+				$firstTag = '<'.trim($firstTagName.' '.t3lib_div::implodeAttributes($params[0])).'>';
 			}
 				// Display modes:
 			if ($this->mode=='explode')	{
@@ -1009,20 +1009,20 @@ class tx_templavoila_htmlmarkup {
 					$params[0]['cellspacing']=4;
 					$params[0]['cellpadding']=0;
 					$params[0]['style'].='; border: 1px dotted #666666;';
-					$firstTag = '<'.trim($firstTagName.' '.t3lib_div::implodeParams($params[0])).'>';
+					$firstTag = '<'.trim($firstTagName.' '.t3lib_div::implodeAttributes($params[0])).'>';
 				} elseif ($firstTagName=='td')	{
 					$params[0]['style'].='; border: 1px dotted #666666;';
-					$firstTag = '<'.trim($firstTagName.' '.t3lib_div::implodeParams($params[0])).'>';
+					$firstTag = '<'.trim($firstTagName.' '.t3lib_div::implodeAttributes($params[0])).'>';
 
 					$v = (string)$v!=''?$v:'&nbsp;';
 				}
 			} elseif ($this->mode=='borders')	{
 				if ($firstTagName=='table')	{
 					$params[0]['style'].='; border: 1px dotted #666666;';
-					$firstTag = '<'.trim($firstTagName.' '.t3lib_div::implodeParams($params[0])).'>';
+					$firstTag = '<'.trim($firstTagName.' '.t3lib_div::implodeAttributes($params[0])).'>';
 				} elseif ($firstTagName=='td')	{
 					$params[0]['style'].='; border: 1px dotted #666666;';
-					$firstTag = '<'.trim($firstTagName.' '.t3lib_div::implodeParams($params[0])).'>';
+					$firstTag = '<'.trim($firstTagName.' '.t3lib_div::implodeAttributes($params[0])).'>';
 				}
 			}
 				// Get tag configuration
@@ -1099,7 +1099,7 @@ class tx_templavoila_htmlmarkup {
 							$params[0][$attr] = $placeholder;
 							$placeholder = md5(uniqid(rand(), true));
 						}
-						$firstTag = '<'.trim($firstTagName.' '.t3lib_div::implodeParams($params[0])).($mode!='block'?' /':'').'>';
+						$firstTag = '<'.trim($firstTagName.' '.t3lib_div::implodeAttributes($params[0])).($mode!='block'?' /':'').'>';
 						if ($mode!='block')	{
 							$v = $firstTag;
 							$firstTag = '';

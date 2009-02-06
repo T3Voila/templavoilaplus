@@ -2,6 +2,7 @@
 
 	* Fixed bug #10361: Remove translations from locallang files
 	* Fixed bug #10108: Replace t3lib_div::GPvar with t3lib_div::_GP
+	* Fixed bug £10362: t3lib_div::implodeParams is deprecated
 
 2009-01-27  Kasper Skårhøj	<kasper@typo3.org>
 
