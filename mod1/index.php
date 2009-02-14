@@ -386,10 +386,12 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			);
 
 				//Prototype /Scriptaculous
-			$this->doc->JScode .= '<script src="' . $this->doc->backPath . 'contrib/prototype/prototype.js" type="text/javascript"></script>';
+				// prototype is loaded before, so no need to include twice. 
+				//TODO: switch to $this->doc->JScodeLibArray for preventing double inclusion
+			#$this->doc->JScode .= '<script src="' . $this->doc->backPath . 'contrib/prototype/prototype.js" type="text/javascript"></script>';
 			$this->doc->JScode .= '<script src="' . $this->doc->backPath . 'contrib/scriptaculous/scriptaculous.js?load=effects,dragdrop" type="text/javascript"></script>';
-			$this->doc->JScode .= '<script src="' . t3lib_div::locationHeaderUrl(t3lib_extMgm::siteRelPath('templavoila') . 'mod1/dragdrop-min.js') . '" type="text/javascript"></script>';
-
+			$this->doc->JScode .= '<script src="' . t3lib_div::locationHeaderUrl(t3lib_div::resolveBackPath($this->doc->backPath . '../' . t3lib_extMgm::siteRelPath('templavoila') . 'mod1/dragdrop-min.js')) . '" type="text/javascript"></script>';
+              
 				// Set up JS for dynamic tab menu and side bar
 			$this->doc->JScode .= $this->doc->getDynTabMenuJScode();
 			$this->doc->JScode .= $this->modTSconfig['properties']['sideBarEnable'] ? $this->sideBarObj->getJScode() : '';
