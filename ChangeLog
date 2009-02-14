@@ -1,5 +1,7 @@
 2009-02-14  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #10030: defined templatePath allows only one path 
+	This allows using a commalist with "mod.web_txtemplavoilaM2.templatePath" to allow more than one path. The value gets a new default (set to "templates", was empty before). Doc change required.
 	* Fixed bug #10255: Use t3lib::fixed_lgd_cs instead of t3lib::fixed_lgd  
 	* Fixed bug #10280: TEXT doesn't allow NOT NULL with Strict-mode  
 	* Fixed bug #10026: beautify Template filelist 

@@ -1242,12 +1242,20 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 
 				// TEMPLATE ARCHIVE:
 			if ($this->modTSconfig['properties']['templatePath'])	{
-				$path = t3lib_div::getFileAbsFileName($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'].$this->modTSconfig['properties']['templatePath']);
-				if (@is_dir($path) && is_array($GLOBALS['FILEMOUNTS']))	{
+				$paths = t3lib_div::trimExplode(',', $this->modTSconfig['properties']['templatePath'], true); 
+				$prefix = t3lib_div::getFileAbsFileName($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir']); 
+				if (count($paths) > 0 && is_array($GLOBALS['FILEMOUNTS']))	{
 					foreach($GLOBALS['FILEMOUNTS'] as $mountCfg)	{
-						if (t3lib_div::isFirstPartOfStr($path,$mountCfg['path']))	{
-							$files = t3lib_div::getFilesInDir($path,'html,htm,tmpl',1);
-
+						// look in paths if it's part of mounted path
+						$isPart = false;
+						$files = array();
+						foreach ($paths as $path) {
+							if (t3lib_div::isFirstPartOfStr($prefix . $path, $mountCfg['path'])) {
+								$isPart = true;   
+								$files = array_merge(t3lib_div::getFilesInDir($prefix . $path, 'html,htm,tmpl',1), $files);
+							}	
+						}
+						if ($isPart) {
 								// USED FILES:
 							$tRows = array();
 							$tRows[] = '

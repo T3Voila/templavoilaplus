@@ -10,6 +10,7 @@ t3lib_extMgm::addTypoScript($_EXTKEY,'setup','tt_content.templavoila_pi1.10 >',4
 t3lib_extMgm::addPageTSConfig('
     mod.web_list.newPageWiz.overrideWithExtension = templavoila
 	mod.web_list.newContentWiz.overrideWithExtension = templavoila
+	mod.web_txtemplavoilaM2.templatePath = templates
 ');
 
  	// Use templavoila instead of the default page module
