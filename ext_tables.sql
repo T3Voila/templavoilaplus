@@ -23,15 +23,15 @@ CREATE TABLE tx_templavoila_tmplobj (
 	sorting int(11) unsigned DEFAULT '0' NOT NULL,
 	title varchar(60) DEFAULT '' NOT NULL,
 	datastructure varchar(100) DEFAULT '' NOT NULL,
-	fileref tinytext NOT NULL,
-	templatemapping mediumtext NOT NULL,
-	previewicon tinytext NOT NULL,
-	description tinytext NOT NULL,
+	fileref tinytext,
+	templatemapping mediumtext,
+	previewicon tinytext,
+	description tinytext,
 	rendertype varchar(10) DEFAULT '' NOT NULL,
 	sys_language_uid int(11) unsigned DEFAULT '0' NOT NULL,
 	parent int(11) unsigned DEFAULT '0' NOT NULL,
 	rendertype_ref int(11) unsigned DEFAULT '0' NOT NULL,
-	localprocessing text NOT NULL,
+	localprocessing text,
 	fileref_md5 varchar(32) DEFAULT '' NOT NULL,
 
 	PRIMARY KEY (uid),
@@ -62,9 +62,9 @@ CREATE TABLE tx_templavoila_datastructure (
 	deleted tinyint(4) unsigned DEFAULT '0' NOT NULL,
 	sorting int(11) unsigned DEFAULT '0' NOT NULL,
 	title varchar(60) DEFAULT '' NOT NULL,
-	dataprot mediumtext NOT NULL,
+	dataprot mediumtext,
 	scope tinyint(4) unsigned DEFAULT '0' NOT NULL,
-	previewicon tinytext NOT NULL,
+	previewicon tinytext,
 
 	PRIMARY KEY (uid),
 	KEY t3ver_oid (t3ver_oid,t3ver_wsid),
@@ -77,7 +77,7 @@ CREATE TABLE tx_templavoila_datastructure (
 CREATE TABLE tt_content (
 	tx_templavoila_ds varchar(100) DEFAULT '' NOT NULL,
 	tx_templavoila_to int(11) DEFAULT '0' NOT NULL,
-    tx_templavoila_flex mediumtext NOT NULL,
+    tx_templavoila_flex mediumtext,
     tx_templavoila_pito int(11) DEFAULT '0' NOT NULL
 );
 
@@ -89,7 +89,7 @@ CREATE TABLE pages (
 	tx_templavoila_to int(11) DEFAULT '0' NOT NULL,
 	tx_templavoila_next_ds varchar(100) DEFAULT '' NOT NULL,
 	tx_templavoila_next_to int(11) DEFAULT '0' NOT NULL,
-    tx_templavoila_flex mediumtext NOT NULL,
+    tx_templavoila_flex mediumtext,
 
 );
 
@@ -97,5 +97,5 @@ CREATE TABLE pages (
 # Table structure for table 'be_groups'
 #
 CREATE TABLE be_groups (
-	tx_templavoila_access text NOT NULL,
+	tx_templavoila_access text,
 );
