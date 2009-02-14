@@ -1160,7 +1160,7 @@ class tx_templavoila_htmlmarkup {
 			return str_pad('',$recursion*2,' ',STR_PAD_LEFT).
 				$gnyf.
 				($valueStr ? '<font color="#6666FF"><em>' : '').
-				htmlspecialchars(t3lib_div::fixed_lgd(ereg_replace('[[:space:]]+',' ',$str),$this->maxLineLengthInSourceMode)).
+				htmlspecialchars(t3lib_div::fixed_lgd_cs(ereg_replace('[[:space:]]+',' ',$str),$this->maxLineLengthInSourceMode)).
 				($valueStr ? '</em></font>' : '').
 				chr(10);
 		}
