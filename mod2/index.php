@@ -297,7 +297,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 		$tRows = array();
 		$tRows[] = '
 			<tr class="bgColor5 tableheader">
-				<td>Page header</td>
+				<td>Storage Folders</td>
 				<td>Data Structures:</td>
 				<td>Template Objects:</td>
 			</tr>';
@@ -308,7 +308,9 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 				if ($path)	{
 					$tRows[] = '
 						<tr class="bgColor4">
-							<td><a href="index.php?id='.$pid.'">'.htmlspecialchars($path).'</a></td>
+							<td><a href="index.php?id='.$pid.'">' . 
+								t3lib_iconWorks::getIconImage('pages', t3lib_BEfunc::getRecord('pages', $pid), $this->doc->backPath, 'class="absmiddle" title="'. htmlspecialchars($alttext) . '"') .
+								htmlspecialchars($path).'</a></td>
 							<td>'.htmlspecialchars($stat['DS']).'</td>
 							<td>'.htmlspecialchars($stat['TO']).'</td>
 						</tr>';
@@ -317,7 +319,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 
 				// Create overview
 			$outputString = 'The following pages in the root line contain data structures and template objects:';
-			$outputString .= '<br /><table border="0" cellpadding="1" cellspacing="1" class="lrPadding">'.implode('',$tRows).'</table>';
+			$outputString .= '<br /><table border="0" cellpadding="1" cellspacing="1" class="typo3-dblist">'.implode('',$tRows).'</table>';
 
 				// Add output:
 			$this->content.= $this->doc->section($LANG->getLL('title'),$outputString,0,1);

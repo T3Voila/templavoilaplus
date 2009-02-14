@@ -1,3 +1,7 @@
+2009-02-14  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #10436: Select Storage Folders - table is too small with more places
+	
 2009-02-06  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #10361: Remove translations from locallang files
