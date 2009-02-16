@@ -194,7 +194,7 @@ class tx_templavoila_referenceElementsWizard extends t3lib_extobjbase {
 		$unreferencedElementRecordsArr = $this->getUnreferencedElementsRecords($pageUid);
 		foreach ($unreferencedElementRecordsArr as $elementUid => $elementRecord) {
 
-			$contentAreaFieldName = $this->templavoilaAPIObj->ds_getFieldNameByColumnPosition($pageUid, $elementRecord['colpos']);
+			$contentAreaFieldName = $this->templavoilaAPIObj->ds_getFieldNameByColumnPosition($pageUid, $elementRecord['colPos']);
 			if ($contentAreaFieldName !== FALSE) {
 				$destinationPointer = array (
 					'table' => 'pages',
