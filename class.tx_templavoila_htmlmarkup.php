@@ -808,7 +808,8 @@ class tx_templavoila_htmlmarkup {
 	function init()	{
 			// HTML parser object initialized.
 		$this->htmlParse = t3lib_div::makeInstance('t3lib_parsehtml');
-
+        /* @var $this->htmlParse t3lib_parsehtml */ 
+        
 			// Resetting element count array
 		$this->elCountArray=array();
 		$this->elParentLevel=array();
@@ -904,19 +905,44 @@ class tx_templavoila_htmlmarkup {
 	 * @return	string		HTML
 	 */
 	function recursiveBlockSplitting($content,$tagsBlock,$tagsSolo,$mode,$path='',$recursion=0)	{
-#debug($tagsBlock,'$tagsBlock');
+
 			// Splitting HTML string by all block-tags
 		$blocks = $this->htmlParse->splitIntoBlock($tagsBlock,$content,1);
 		$this->rangeEndSearch[$recursion]='';
 		$this->rangeStartPath[$recursion]='';
+            
+        $startCCTag = $endCCTag = '';
 
+        //pre-processing of blocks             
+       	if ((t3lib_div::inList($tagsBlock, 'script') && t3lib_div::inList($tagsBlock, 'style'))  && count($blocks) > 1) {
+       		// correct the blocks (start of CC could be in prior block, end of CC in net block)
+			if(count($blocks) > 1) {
+				foreach($blocks as $key=>$block) {
+					// possible that CC for style start end of block
+					$matchCount1 = preg_match_all('/<!([-]+)?\[if(.+)\]([-]+)?>/', $block, $matches1);
+					$matchCount2 = preg_match_all('/<!([-]+)?\[endif\]([-]+)?>/', $block, $matches2);
+					if ($matchCount2 < $matchCount1) {
+						$startCCTag = $matches1[0][$matchCount1 - 1];
+						//endtag is start of block3
+						$matchCount2 = preg_match_all('/<!([-]+)?\[endif\]([-]+)?>/', $blocks[2], $matches2);
+						$endCCTag = $matches2[0][0];
+						//manipulate blocks					
+						$blocks[$key] = substr(rtrim($block), 0, -1 * strlen($startCCTag));
+						$blocks[$key + 1] = $startCCTag . chr(10) . trim($blocks[$key + 1]) . chr(10) . $endCCTag;	
+						$blocks[$key + 2] = substr(ltrim($blocks[$key + 2]), strlen($endCCTag));					
+					    										
+					}
+				}
+			}
+       	} 
+        
 			// Traverse all sections of blocks
 		foreach($blocks as $k=>$v) {	// INSIDE BLOCK: Processing of block content. This includes a recursive call to this function for the inner content of the block tags.
 				// If inside a block tag
 			if ($k%2)	{
 				$firstTag = $this->htmlParse->getFirstTag($v);	// The first tag's content
 				$firstTagName = strtolower($this->htmlParse->getFirstTagName($v));	// The 'name' of the first tag
-				$endTag = '</'.$firstTagName.'>';	// Create proper end-tag
+				$endTag = $firstTag == $startCCTag ? $endCCTag : '</' . $firstTagName . '>';	// Create proper end-tag
 				$v = $this->htmlParse->removeFirstAndLastTag($v);	// Finally remove the first tag (unless we do this, the recursivity will be eternal!
 				$params = $this->htmlParse->get_tag_attributes($firstTag,1);	// Get attributes
 
@@ -933,15 +959,46 @@ class tx_templavoila_htmlmarkup {
 				} else {
 					$v = $firstTag.$v.$endTag;
 				}
+				
 			} else {
 				if ($tagsSolo) {	// OUTSIDE of block; Processing of SOLO tags in there...
 
 						// Split content by the solo tags
 					$soloParts = $this->htmlParse->splitTags($tagsSolo,$v);
-
-						// Traverse solo tags
+#debug($soloParts);                    
+                    //search for conditional comments  
+					$startTag = '';
+					if(count($soloParts) > 0 && $recursion == 0) {   
+						foreach($soloParts as $key => $value) {        
+							//check for downlevel-hidden and downlevel-revealed syntax, see http://msdn.microsoft.com/de-de/library/ms537512(en-us,VS.85).aspx
+							$matchCount1 = preg_match_all('/<!([-]+)?\[if(.+)\]([-]+)?>/', $value, $matches1);
+							$matchCount2 = preg_match_all('/<!([-]+)?\[endif\]([-]+)?>/', $value, $matches2);
+							
+							// startTag was in last element
+							if ($startTag) {
+								$soloParts[$key] = $startTag . chr(10) . $soloParts[$key];
+								$startTag = '';
+							}
+							// starttag found: store and remove from element
+							if ($matchCount1) {
+								$startTag = $matches1[0][0];
+								$soloParts[$key] = str_replace($startTag, '', $soloParts[$key]); 
+							}
+							// endtag found: store in last element and remove from element
+							if ($matchCount2) {
+								$soloParts[$key] = str_replace($matches2[0][0], '', $soloParts[$key]); 
+								if ($key > 0) {
+									$soloParts[$key - 1] .= chr(10) . $matches2[0][0];
+								} else {
+									#$soloParts = array_merge(array(chr(10) . $matches2[0][0]), $soloParts);									
+								}
+							}
+						}        
+					}
+									
+						// Traverse solo tags 
 					foreach($soloParts as $kk => $vv)	{
-						if ($kk%2)	{
+						if ($kk % 2)	{
 							$firstTag = $vv;	// The first tag's content
 							$firstTagName = strtolower($this->htmlParse->getFirstTagName($vv));	// The 'name' of the first tag
 							$params = $this->htmlParse->get_tag_attributes($firstTag,1);
@@ -966,7 +1023,8 @@ class tx_templavoila_htmlmarkup {
 						}
 						$soloParts[$kk]=$vv;
 					}
-					$v = implode('',$soloParts);
+					$v = implode('',$soloParts); 
+					
 				}
 			}
 			$blocks[$k]=$v;
@@ -1178,6 +1236,8 @@ class tx_templavoila_htmlmarkup {
 	 * @return	string		Formatted input.
 	 */
 	function checkboxDisplay($str,$recursion,$path,$gnyf='',$valueStr=0)	{
+		static $rows = 0;
+		
 		if ($valueStr)	{
 			return trim($str) ? '
 				<tr class="bgColor4">
@@ -1187,7 +1247,7 @@ class tx_templavoila_htmlmarkup {
 				</tr>' : '';
 		}
 		return '
-				<tr class="bgColor4">
+				<tr class="bgColor' . ($rows++ % 2 == 0 ? '4' : '6') . '">
 					<td><input type="checkbox" name="checkboxElement[]" value="'.$path.'"'.(in_array($path,$this->checkboxPathsSet)?' checked="checked"':'').' /></td>
 					<td>'.$gnyf.'</td>
 					<td><pre>'.trim(htmlspecialchars($str)).'</pre></td>
