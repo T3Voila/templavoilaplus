@@ -1,0 +1,798 @@
+dl.DS-infos dt,
+dl.TO-infos dt {
+	font-weight: bold;
+	margin-bottom: 0.25em;
+}
+
+dl.DS-infos dd,
+dl.TO-infos dd {
+	margin-bottom: 0.5em;
+}
+
+dl.DS-config,
+dl.DS-config dl,
+ul.DS-tree,
+ul.DS-tree ul {
+	margin: 0;
+	padding: 0px;
+}
+
+ul.DS-tree ul {
+	padding-left: 18px;
+}
+
+ul.DS-tree li {
+	border: 0;
+	padding: 0;
+	list-style-position: inside;
+	list-style-image: url(../res1/join.gif);
+	background: 0 0 url(../res1/line.gif) repeat-y transparent;
+}
+
+ul.DS-tree li.last-child {
+	list-style-image: url(../res1/blank.gif);
+	background: 0 0 url(../res1/joinbottom.gif) no-repeat transparent;
+}
+
+ul.DS-tree a {
+	position: relative;
+	left: -2px;
+	top: -4px;
+	color: #c7220c;
+}
+
+ul.DS-tree a.active {
+	font-weight: bold;
+	text-decoration: none;
+}
+
+dl.DS-config {
+	margin-bottom: 1em;
+}
+
+dl.DS-config dt {
+	font-weight: bold;
+	margin-bottom: 0.25em;
+	clear: both;
+}
+
+dl.DS-config dd {
+	margin-bottom: 0.5em;
+}
+
+dl.DS-config textarea.xml,
+dl.DS-config textarea.code,
+dl.DS-config textarea.ts {
+	font-family: monospace;
+	font-size: 1.2em;
+}
+
+dl.DS-config .t3e_linenum dt {
+	margin: 0;
+}
+
+
+optgroup,
+optgroup option {
+	background-color: white;
+	border-bottom: medium none;
+	color: black;
+	font-style: normal;
+	margin: 0px;
+	padding: 0px;
+	text-indent: 0px;
+	text-transform: none;
+}
+
+optgroup.c-divider {
+	background-color: #EEEEEE;
+	border-top: 1px solid #666666;
+	color: #666666;
+	font-style: italic;
+	margin-top: 10px;
+	padding: 0px;
+	text-transform: uppercase;
+}
+
+tr.tv-edit-row {
+	background-color: #f4f4ef;
+	padding: 15px 0;
+
+}
+
+tr.tv-edit-row input#_updateDS {
+	background: none !important;
+	border: 0 !important;
+}
+
+tr.tv-edit-row div.tv-ts-tree {
+	/* like input[type=text] */
+	border: 1px solid black;
+	padding: 1px;
+	background: white;
+}
+dl.DS-infos dt,
+dl.TO-infos dt {
+	font-weight: bold;
+	margin-bottom: 0.25em;
+}
+
+dl.DS-infos dd,
+dl.TO-infos dd {
+	margin-bottom: 0.5em;
+}
+
+dl.DS-config,
+dl.DS-config dl,
+ul.DS-tree,
+ul.DS-tree ul {
+	margin: 0;
+	padding: 0px;
+}
+
+ul.DS-tree ul {
+	padding-left: 18px;
+}
+
+ul.DS-tree li {
+	border: 0;
+	padding: 0;
+	list-style-position: inside;
+	list-style-image: url(../res1/join.gif);
+	background: 0 0 url(../res1/line.gif) repeat-y transparent;
+}
+
+ul.DS-tree li.last-child {
+	list-style-image: url(../res1/blank.gif);
+	background: 0 0 url(../res1/joinbottom.gif) no-repeat transparent;
+}
+
+ul.DS-tree a {
+	position: relative;
+	left: -2px;
+	top: -4px;
+	color: #c7220c;
+}
+
+ul.DS-tree a.active {
+	font-weight: bold;
+	text-decoration: none;
+}
+
+dl.DS-config {
+	margin-bottom: 1em;
+}
+
+dl.DS-config dt {
+	font-weight: bold;
+	margin-bottom: 0.25em;
+	clear: both;
+}
+
+dl.DS-config dd {
+	margin-bottom: 0.5em;
+}
+
+dl.DS-config textarea.xml,
+dl.DS-config textarea.code,
+dl.DS-config textarea.ts {
+	font-family: monospace;
+	font-size: 1.2em;
+}
+
+dl.DS-config .t3e_linenum dt {
+	margin: 0;
+}
+
+
+optgroup,
+optgroup option {
+	background-color: white;
+	border-bottom: medium none;
+	color: black;
+	font-style: normal;
+	margin: 0px;
+	padding: 0px;
+	text-indent: 0px;
+	text-transform: none;
+}
+
+optgroup.c-divider {
+	background-color: #EEEEEE;
+	border-top: 1px solid #666666;
+	color: #666666;
+	font-style: italic;
+	margin-top: 10px;
+	padding: 0px;
+	text-transform: uppercase;
+}
+
+tr.tv-edit-row {
+	background-color: #f4f4ef;
+	padding: 15px 0;
+
+}
+
+tr.tv-edit-row input#_updateDS {
+	background: none !important;
+	border: 0 !important;
+}
+
+tr.tv-edit-row div.tv-ts-tree {
+	/* like input[type=text] */
+	border: 1px solid black;
+	padding: 1px;
+	background: white;
+}
+
+tr.tv-edit-row td.edit-ds-actioncontrols {
+	vertical-align: bottom;
+	text-align: right;
+	padding: 0.5em 1em 1em;
+}
+
+dl.DS-infos dt,
+dl.TO-infos dt {
+	font-weight: bold;
+	margin-bottom: 0.25em;
+}
+
+dl.DS-infos dd,
+dl.TO-infos dd {
+	margin-bottom: 0.5em;
+}
+
+dl.DS-config,
+dl.DS-config dl,
+ul.DS-tree,
+ul.DS-tree ul {
+	margin: 0;
+	padding: 0px;
+}
+
+ul.DS-tree ul {
+	padding-left: 18px;
+}
+
+ul.DS-tree li {
+	border: 0;
+	padding: 0;
+	list-style-position: inside;
+	list-style-image: url(../res1/join.gif);
+	background: 0 0 url(../res1/line.gif) repeat-y transparent;
+}
+
+ul.DS-tree li.last-child {
+	list-style-image: url(../res1/blank.gif);
+	background: 0 0 url(../res1/joinbottom.gif) no-repeat transparent;
+}
+
+ul.DS-tree a {
+	position: relative;
+	left: -2px;
+	top: -4px;
+	color: #c7220c;
+}
+
+ul.DS-tree a.active {
+	font-weight: bold;
+	text-decoration: none;
+}
+
+dl.DS-config {
+	margin-bottom: 1em;
+}
+
+dl.DS-config dt {
+	font-weight: bold;
+	margin-bottom: 0.25em;
+	clear: both;
+}
+
+dl.DS-config dd {
+	margin-bottom: 0.5em;
+}
+
+dl.DS-config textarea.xml,
+dl.DS-config textarea.code,
+dl.DS-config textarea.ts {
+	font-family: monospace;
+	font-size: 1.2em;
+}
+
+dl.DS-config .t3e_linenum dt {
+	margin: 0;
+}
+
+
+optgroup,
+optgroup option {
+	background-color: white;
+	border-bottom: medium none;
+	color: black;
+	font-style: normal;
+	margin: 0px;
+	padding: 0px;
+	text-indent: 0px;
+	text-transform: none;
+}
+
+optgroup.c-divider {
+	background-color: #EEEEEE;
+	border-top: 1px solid #666666;
+	color: #666666;
+	font-style: italic;
+	margin-top: 10px;
+	padding: 0px;
+	text-transform: uppercase;
+}
+
+tr.tv-edit-row {
+	background-color: #f4f4ef;
+	padding: 15px 0;
+
+}
+
+tr.tv-edit-row input#_updateDS {
+	background: none !important;
+	border: 0 !important;
+}
+
+tr.tv-edit-row div.tv-ts-tree {
+	/* like input[type=text] */
+	border: 1px solid black;
+	padding: 1px;
+	background: white;
+}
+dl.DS-infos dt,
+dl.TO-infos dt {
+	font-weight: bold;
+	margin-bottom: 0.25em;
+}
+
+dl.DS-infos dd,
+dl.TO-infos dd {
+	margin-bottom: 0.5em;
+}
+
+dl.DS-config,
+dl.DS-config dl,
+ul.DS-tree,
+ul.DS-tree ul {
+	margin: 0;
+	padding: 0px;
+}
+
+ul.DS-tree ul {
+	padding-left: 18px;
+}
+
+ul.DS-tree li {
+	border: 0;
+	padding: 0;
+	list-style-position: inside;
+	list-style-image: url(../res1/join.gif);
+	background: 0 0 url(../res1/line.gif) repeat-y transparent;
+}
+
+ul.DS-tree li.last-child {
+	list-style-image: url(../res1/blank.gif);
+	background: 0 0 url(../res1/joinbottom.gif) no-repeat transparent;
+}
+
+ul.DS-tree a {
+	position: relative;
+	left: -2px;
+	top: -4px;
+	color: #c7220c;
+}
+
+ul.DS-tree a.active {
+	font-weight: bold;
+	text-decoration: none;
+}
+
+dl.DS-config {
+	margin-bottom: 1em;
+}
+
+dl.DS-config dt {
+	font-weight: bold;
+	margin-bottom: 0.25em;
+	clear: both;
+}
+
+dl.DS-config dd {
+	margin-bottom: 0.5em;
+}
+
+dl.DS-config textarea.xml,
+dl.DS-config textarea.code,
+dl.DS-config textarea.ts {
+	font-family: monospace;
+	font-size: 1.2em;
+}
+
+dl.DS-config .t3e_linenum dt {
+	margin: 0;
+}
+
+
+optgroup,
+optgroup option {
+	background-color: white;
+	border-bottom: medium none;
+	color: black;
+	font-style: normal;
+	margin: 0px;
+	padding: 0px;
+	text-indent: 0px;
+	text-transform: none;
+}
+
+optgroup.c-divider {
+	background-color: #EEEEEE;
+	border-top: 1px solid #666666;
+	color: #666666;
+	font-style: italic;
+	margin-top: 10px;
+	padding: 0px;
+	text-transform: uppercase;
+}
+
+tr.tv-edit-row {
+	background-color: #f4f4ef;
+	padding: 15px 0;
+
+}
+
+tr.tv-edit-row input#_updateDS {
+	background: none !important;
+	border: 0 !important;
+}
+
+tr.tv-edit-row div.tv-ts-tree {
+	/* like input[type=text] */
+	border: 1px solid black;
+	padding: 1px;
+	background: white;
+}
+dl.DS-infos dt,
+dl.TO-infos dt {
+	font-weight: bold;
+	margin-bottom: 0.25em;
+}
+
+dl.DS-infos dd,
+dl.TO-infos dd {
+	margin-bottom: 0.5em;
+}
+
+dl.DS-config,
+dl.DS-config dl,
+ul.DS-tree,
+ul.DS-tree ul {
+	margin: 0;
+	padding: 0px;
+}
+
+ul.DS-tree ul {
+	padding-left: 18px;
+}
+
+ul.DS-tree li {
+	border: 0;
+	padding: 0;
+	list-style-position: inside;
+	list-style-image: url(../res1/join.gif);
+	background: 0 0 url(../res1/line.gif) repeat-y transparent;
+}
+
+ul.DS-tree li.last-child {
+	list-style-image: url(../res1/blank.gif);
+	background: 0 0 url(../res1/joinbottom.gif) no-repeat transparent;
+}
+
+ul.DS-tree a {
+	position: relative;
+	left: -2px;
+	top: -4px;
+	color: #c7220c;
+}
+
+ul.DS-tree a.active {
+	font-weight: bold;
+	text-decoration: none;
+}
+
+dl.DS-config {
+	margin-bottom: 1em;
+}
+
+dl.DS-config dt {
+	font-weight: bold;
+	margin-bottom: 0.25em;
+	clear: both;
+}
+
+dl.DS-config dd {
+	margin-bottom: 0.5em;
+}
+
+dl.DS-config textarea.xml,
+dl.DS-config textarea.code,
+dl.DS-config textarea.ts {
+	font-family: monospace;
+	font-size: 1.2em;
+}
+
+dl.DS-config .t3e_linenum dt {
+	margin: 0;
+}
+
+
+optgroup,
+optgroup option {
+	background-color: white;
+	border-bottom: medium none;
+	color: black;
+	font-style: normal;
+	margin: 0px;
+	padding: 0px;
+	text-indent: 0px;
+	text-transform: none;
+}
+
+optgroup.c-divider {
+	background-color: #EEEEEE;
+	border-top: 1px solid #666666;
+	color: #666666;
+	font-style: italic;
+	margin-top: 10px;
+	padding: 0px;
+	text-transform: uppercase;
+}
+
+tr.tv-edit-row {
+	background-color: #f4f4ef;
+	padding: 15px 0;
+
+}
+
+tr.tv-edit-row input#_updateDS {
+	background: none !important;
+	border: 0 !important;
+}
+
+tr.tv-edit-row div.tv-ts-tree {
+	/* like input[type=text] */
+	border: 1px solid black;
+	padding: 1px;
+	background: white;
+}
+dl.DS-infos dt,
+dl.TO-infos dt {
+	font-weight: bold;
+	margin-bottom: 0.25em;
+}
+
+dl.DS-infos dd,
+dl.TO-infos dd {
+	margin-bottom: 0.5em;
+}
+
+dl.DS-config,
+dl.DS-config dl,
+ul.DS-tree,
+ul.DS-tree ul {
+	margin: 0;
+	padding: 0px;
+}
+
+ul.DS-tree ul {
+	padding-left: 18px;
+}
+
+ul.DS-tree li {
+	border: 0;
+	padding: 0;
+	list-style-position: inside;
+	list-style-image: url(../res1/join.gif);
+	background: 0 0 url(../res1/line.gif) repeat-y transparent;
+}
+
+ul.DS-tree li.last-child {
+	list-style-image: url(../res1/blank.gif);
+	background: 0 0 url(../res1/joinbottom.gif) no-repeat transparent;
+}
+
+ul.DS-tree a {
+	position: relative;
+	left: -2px;
+	top: -4px;
+	color: #c7220c;
+}
+
+ul.DS-tree a.active {
+	font-weight: bold;
+	text-decoration: none;
+}
+
+dl.DS-config {
+	margin-bottom: 1em;
+}
+
+dl.DS-config dt {
+	font-weight: bold;
+	margin-bottom: 0.25em;
+	clear: both;
+}
+
+dl.DS-config dd {
+	margin-bottom: 0.5em;
+}
+
+dl.DS-config textarea.xml,
+dl.DS-config textarea.code,
+dl.DS-config textarea.ts {
+	font-family: monospace;
+	font-size: 1.2em;
+}
+
+dl.DS-config .t3e_linenum dt {
+	margin: 0;
+}
+
+
+optgroup,
+optgroup option {
+	background-color: white;
+	border-bottom: medium none;
+	color: black;
+	font-style: normal;
+	margin: 0px;
+	padding: 0px;
+	text-indent: 0px;
+	text-transform: none;
+}
+
+optgroup.c-divider {
+	background-color: #EEEEEE;
+	border-top: 1px solid #666666;
+	color: #666666;
+	font-style: italic;
+	margin-top: 10px;
+	padding: 0px;
+	text-transform: uppercase;
+}
+
+tr.tv-edit-row {
+	background-color: #f4f4ef;
+	padding: 15px 0;
+
+}
+
+tr.tv-edit-row input#_updateDS {
+	background: none !important;
+	border: 0 !important;
+}
+
+tr.tv-edit-row div.tv-ts-tree {
+	/* like input[type=text] */
+	border: 1px solid black;
+	padding: 1px;
+	background: white;
+}
+dl.DS-infos dt,
+dl.TO-infos dt {
+	font-weight: bold;
+	margin-bottom: 0.25em;
+}
+
+dl.DS-infos dd,
+dl.TO-infos dd {
+	margin-bottom: 0.5em;
+}
+
+dl.DS-config,
+dl.DS-config dl,
+ul.DS-tree,
+ul.DS-tree ul {
+	margin: 0;
+	padding: 0px;
+}
+
+ul.DS-tree ul {
+	padding-left: 18px;
+}
+
+ul.DS-tree li {
+	border: 0;
+	padding: 0;
+	list-style-position: inside;
+	list-style-image: url(../res1/join.gif);
+	background: 0 0 url(../res1/line.gif) repeat-y transparent;
+}
+
+ul.DS-tree li.last-child {
+	list-style-image: url(../res1/blank.gif);
+	background: 0 0 url(../res1/joinbottom.gif) no-repeat transparent;
+}
+
+ul.DS-tree a {
+	position: relative;
+	left: -2px;
+	top: -4px;
+	color: #c7220c;
+}
+
+ul.DS-tree a.active {
+	font-weight: bold;
+	text-decoration: none;
+}
+
+dl.DS-config {
+	margin-bottom: 1em;
+}
+
+dl.DS-config dt {
+	font-weight: bold;
+	margin-bottom: 0.25em;
+	clear: both;
+}
+
+dl.DS-config dd {
+	margin-bottom: 0.5em;
+}
+
+dl.DS-config textarea.xml,
+dl.DS-config textarea.code,
+dl.DS-config textarea.ts {
+	font-family: monospace;
+	font-size: 1.2em;
+}
+
+dl.DS-config .t3e_linenum dt {
+	margin: 0;
+}
+
+
+optgroup,
+optgroup option {
+	background-color: white;
+	border-bottom: medium none;
+	color: black;
+	font-style: normal;
+	margin: 0px;
+	padding: 0px;
+	text-indent: 0px;
+	text-transform: none;
+}
+
+optgroup.c-divider {
+	background-color: #EEEEEE;
+	border-top: 1px solid #666666;
+	color: #666666;
+	font-style: italic;
+	margin-top: 10px;
+	padding: 0px;
+	text-transform: uppercase;
+}
+
+tr.tv-edit-row {
+	background-color: #f4f4ef;
+	padding: 15px 0;
+
+}
+
+tr.tv-edit-row input#_updateDS {
+	background: none !important;
+	border: 0 !important;
+}
+
+tr.tv-edit-row div.tv-ts-tree {
+	/* like input[type=text] */
+	border: 1px solid black;
+	padding: 1px;
+	background: white;
+}

@@ -1,3 +1,7 @@
+2009-02-26  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #9529: Enhanced "Show-Details" + new DS-Editor (thanks to Niels Fröhling) 
+
 2009-02-14  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #9500: unable to map headerparts which are in conditional comments 

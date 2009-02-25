@@ -453,10 +453,16 @@ class tx_templavoila_pi1 extends tslib_pibase {
 
 				// For each DS element:
 			foreach($DSelements as $key => $dsConf)	{
-
 						// Array/Section:
 				if ($DSelements[$key]['type']=='array')	{
-					if (is_array($dataValues[$key]['el']))	{
+					/* no DS-childs: bail out
+					 * no EL-childs: progress (they may all be TypoScript elements without visual representation)
+					 */
+					if (is_array($DSelements[$key]['el'])/* &&
+					    is_array($TOelements[$key]['el'])*/) {
+						if (!isset($dataValues[$key]['el']))
+							$dataValues[$key]['el'] = array();
+
 						if ($DSelements[$key]['section'])	{
 							foreach($dataValues[$key]['el'] as $ik => $el)	{
 								if (is_array($el))	{
@@ -472,7 +478,6 @@ class tx_templavoila_pi1 extends tslib_pibase {
 								}
 							}
 						} else {
-							if (!isset($dataValues[$key]['el']))	$dataValues[$key]['el'] = array();
 							$this->processDataValues($dataValues[$key]['el'],$DSelements[$key]['el'],$TOelements[$key]['el'],$valueKey);
 						}
 					}

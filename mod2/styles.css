@@ -1,0 +1,216 @@
+/* 
+ * mod2: detail-view, alanysis of the settings made to the DS-XML
+ */
+dl.DS-details dl,
+dl.DS-details ul,
+dl.DS-details p {
+	margin-top: 1em;
+	margin-bottom: 1em;
+}
+
+dl.DS-details > dt {
+	font-size: 1.1em;
+}
+
+dl.DS-details > dt,
+dl.DS-infos > dt {
+	font-weight: bold;
+}
+
+dl.DS-details > dt,
+dl.DS-details > dd {
+	margin-left: 0;
+	padding-left: 0;
+}
+
+dl.DS-details > dd {
+	padding-left: 22px;
+	background: left top url(../res1/line.gif) repeat-y transparent;
+}
+
+dl.DS-details ul.DS-config,
+dl.DS-details ul.DS-proc,
+dl.DS-details ul.DS-stats,
+dl.DS-details ul.DS-notes {
+	margin-left: 0;
+	padding-left: 0;
+}
+
+dl.DS-details ul.DS-config,
+dl.DS-details ul.DS-proc {
+	list-style-type: none;
+}
+
+dl.DS-details ul.DS-stats,
+dl.DS-details ul.DS-notes {
+	margin-top: 0;
+	margin-bottom: 0;
+}
+
+dl.DS-details ul.DS-config img ,
+dl.DS-details ul.DS-proc img {
+	position: relative;
+	top: 2px;
+}
+/* 
+ * mod2: detail-view, alanysis of the settings made to the DS-XML
+ */
+dl.DS-details dl,
+dl.DS-details ul,
+dl.DS-details p {
+	margin-top: 1em;
+	margin-bottom: 1em;
+}
+
+dl.DS-details > dt {
+	font-size: 1.1em;
+}
+
+dl.DS-details > dt,
+dl.DS-infos > dt {
+	font-weight: bold;
+}
+
+dl.DS-details > dt,
+dl.DS-details > dd {
+	margin-left: 0;
+	padding-left: 0;
+}
+
+dl.DS-details > dd {
+	padding-left: 22px;
+	background: left top url(../res1/line.gif) repeat-y transparent;
+}
+
+dl.DS-details ul.DS-config,
+dl.DS-details ul.DS-proc,
+dl.DS-details ul.DS-stats,
+dl.DS-details ul.DS-notes {
+	margin-left: 0;
+	padding-left: 0;
+}
+
+dl.DS-details ul.DS-config,
+dl.DS-details ul.DS-proc {
+	list-style-type: none;
+}
+
+dl.DS-details ul.DS-stats,
+dl.DS-details ul.DS-notes {
+	margin-top: 0;
+	margin-bottom: 0;
+}
+
+dl.DS-details ul.DS-config img ,
+dl.DS-details ul.DS-proc img {
+	position: relative;
+	top: 2px;
+}
+/* 
+ * mod2: detail-view, alanysis of the settings made to the DS-XML
+ */
+dl.DS-details dl,
+dl.DS-details ul,
+dl.DS-details p {
+	margin-top: 1em;
+	margin-bottom: 1em;
+}
+
+dl.DS-details > dt {
+	font-size: 1.1em;
+}
+
+dl.DS-details > dt,
+dl.DS-infos > dt {
+	font-weight: bold;
+}
+
+dl.DS-details > dt,
+dl.DS-details > dd {
+	margin-left: 0;
+	padding-left: 0;
+}
+
+dl.DS-details > dd {
+	padding-left: 22px;
+	background: left top url(../res1/line.gif) repeat-y transparent;
+}
+
+dl.DS-details ul.DS-config,
+dl.DS-details ul.DS-proc,
+dl.DS-details ul.DS-stats,
+dl.DS-details ul.DS-notes {
+	margin-left: 0;
+	padding-left: 0;
+}
+
+dl.DS-details ul.DS-config,
+dl.DS-details ul.DS-proc {
+	list-style-type: none;
+}
+
+dl.DS-details ul.DS-stats,
+dl.DS-details ul.DS-notes {
+	margin-top: 0;
+	margin-bottom: 0;
+}
+
+dl.DS-details ul.DS-config img ,
+dl.DS-details ul.DS-proc img {
+	position: relative;
+	top: 2px;
+}
+/* 
+ * mod2: detail-view, alanysis of the settings made to the DS-XML
+ */
+dl.DS-details dl,
+dl.DS-details ul,
+dl.DS-details p {
+	margin-top: 1em;
+	margin-bottom: 1em;
+}
+
+dl.DS-details > dt {
+	font-size: 1.1em;
+}
+
+dl.DS-details > dt,
+dl.DS-infos > dt {
+	font-weight: bold;
+}
+
+dl.DS-details > dt,
+dl.DS-details > dd {
+	margin-left: 0;
+	padding-left: 0;
+}
+
+dl.DS-details > dd {
+	padding-left: 22px;
+	background: left top url(../res1/line.gif) repeat-y transparent;
+}
+
+dl.DS-details ul.DS-config,
+dl.DS-details ul.DS-proc,
+dl.DS-details ul.DS-stats,
+dl.DS-details ul.DS-notes {
+	margin-left: 0;
+	padding-left: 0;
+}
+
+dl.DS-details ul.DS-config,
+dl.DS-details ul.DS-proc {
+	list-style-type: none;
+}
+
+dl.DS-details ul.DS-stats,
+dl.DS-details ul.DS-notes {
+	margin-top: 0;
+	margin-bottom: 0;
+}
+
+dl.DS-details ul.DS-config img ,
+dl.DS-details ul.DS-proc img {
+	position: relative;
+	top: 2px;
+}

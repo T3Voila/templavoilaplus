@@ -161,6 +161,9 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 			$this->doc->divClass = '';
 			$this->doc->form='<form action="'.htmlspecialchars('index.php?id='.$this->id).'" method="post" autocomplete="off">';
 
+				// Add custom styles
+			$this->doc->styleSheetFile2 = t3lib_extMgm::extRelPath($this->extKey)."mod2/styles.css";
+
 				// Adding classic jumpToUrl function, needed for the function menu.
 				// Also, the id in the parent frameset is configured.
 			$this->doc->JScode=$this->doc->wrapScriptTags('
@@ -607,6 +610,12 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 				$XMLinfo = $this->DSdetails($dsR['dataprot']);
 			}
 
+				// Template status / link:
+		//	$linkUrl = '../cm1/index.php?file='..'&_load_ds_xml=1';
+
+			$templateStatus = $this->findDSUsageWithImproperTOs($dsID, $toIdArray, $scope);
+		//	$templateStatus.='<br/><a href="'.htmlspecialchars($linkUrl).'">[ Edit datastructure ]</a>';
+
 				// Compile info table:
 			$content.='
 			<table'.$tableAttribs.'>
@@ -618,16 +627,18 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 						'</td>
 				</tr>
 				<tr class="bgColor4">
-					<td rowspan="'.($this->MOD_SETTINGS['set_details'] ? 4 : 1).'" style="width: 100px; text-align: center;">'.$icon.'</td>
-					<td>XML:</td>
-					<td>'.t3lib_div::formatSize(strlen($dsR['dataprot'])).
-						($this->MOD_SETTINGS['set_details'] ? '<hr/>'.$XMLinfo['HTML'] : '').
-						'</td>
-				</tr>'.($this->MOD_SETTINGS['set_details'] ? '
-				<tr class="bgColor4">
+					<td rowspan="'.($this->MOD_SETTINGS['set_details'] ? 4 : 2).'" style="width: 100px; text-align: center;">'.$icon.'</td>
 					<td>Template Status:</td>
-					<td>'.$this->findDSUsageWithImproperTOs($dsID, $toIdArray, $scope).'</td>
+					<td>'.$templateStatus.'</td>
 				</tr>
+				<tr class="bgColor4">
+					<td>Global Processing <strong>XML</strong>:</td>
+					<td>
+						'.$lpXML.($dsR['dataprot'] ?
+						t3lib_div::formatSize(strlen($dsR['dataprot'])).' bytes'.
+						($this->MOD_SETTINGS['set_details'] ? '<hr/>'.$XMLinfo['HTML'] : '') : '').'
+					</td>
+				</tr>'.($this->MOD_SETTINGS['set_details'] ? '
 				<tr class="bgColor4">
 					<td>Created:</td>
 					<td>'.t3lib_BEfunc::datetime($dsR['crdate']).' by user ['.$dsR['cruser_id'].']</td>
@@ -793,6 +804,10 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 			$mappingStatus.='<a href="'.htmlspecialchars($linkUrl.'&_preview=1').'">[ Preview ]</a>';
 		}
 
+		if ($this->MOD_SETTINGS['set_details'])	{
+			$XMLinfo = $this->DSdetails($toObj['localprocessing']);
+		}
+
 			// Format XML if requested
 		if ($this->MOD_SETTINGS['set_details'])	{
 			if ($toObj['localprocessing'])	{
@@ -842,8 +857,12 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 					<td>'.$mappingStatus.'</td>
 				</tr>
 				<tr class="bgColor4">
-					<td>Local Processing:</td>
-					<td>'.$lpXML.'</td>
+					<td>Local Processing <strong>XML</strong>:</td>
+					<td>
+						'.$lpXML.($toObj['localprocessing'] ?
+						t3lib_div::formatSize(strlen($toObj['localprocessing'])).' bytes'.
+						($this->MOD_SETTINGS['set_details'] ? '<hr/>'.$XMLinfo['HTML'] : '') : '').'
+					</td>
 				</tr>'.($this->MOD_SETTINGS['set_details'] ? '
 				<tr class="bgColor4">
 					<td>Used by:</td>
@@ -886,8 +905,12 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 					<td>'.t3lib_BEfunc::getProcessedValue('tx_templavoila_tmplobj','sys_language_uid',$toObj['sys_language_uid']).'</td>
 				</tr>
 				<tr class="bgColor4">
-					<td>Local Processing:</td>
-					<td>'.$lpXML.'</td>
+					<td>Local Processing <strong>XML</strong>:</td>
+					<td>
+						'.$lpXML.($toObj['localprocessing'] ?
+						t3lib_div::formatSize(strlen($toObj['localprocessing'])).' bytes'.
+						($this->MOD_SETTINGS['set_details'] ? '<hr/>'.$XMLinfo['HTML'] : '') : '').'
+					</td>
 				</tr>'.($this->MOD_SETTINGS['set_details'] ? '
 				<tr class="bgColor4">
 					<td>Created:</td>
@@ -1339,6 +1362,231 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 	}
 
 	/**
+	 * Shows a graphical summary of a array-tree, which suppose was a XML
+	 * (but don't need to). This function works recursively.
+	 *
+	 * @param	[type]		$DStree: an array holding the DSs defined structure
+	 * @return	[type]		HTML showing an overview of the DS-structure
+	 */
+	function renderDSdetails($DStree) {
+		$HTML = '';
+
+		if (is_array($DStree) && (count($DStree) > 0)) {
+			$HTML .= '<dl class="DS-details">';
+
+			foreach ($DStree as $elm => $def) {
+				$HTML .= '<dt>';
+				$HTML .= ($elm == "meta" ? 'Configuration' : $def['tx_templavoila']['title']);
+				$HTML .= '</dt>';
+				$HTML .= '<dd>';
+
+				/* this is the configuration-entry ------------------------------ */
+				if ($elm == "meta") {
+					/* The basic XML-structure of an meta-entry is:
+					 *
+					 * <meta>
+					 * 	<langDisable>		-> no localization
+					 * 	<langChildren>		-> no localization for children
+					 * 	<sheetSelector>		-> a php-function for selecting "sDef"
+					 * </meta>
+					 */
+
+					/* it would also be possible to use the 'list-style-image'-property
+					 * for the flags, which would be more sensible to IE-bugs though
+					 */
+					$conf = '';
+					if (isset($def['langDisable'])) $conf .= '<li>' .
+						(($def['langDisable'] == 1)
+? '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/icon_fatalerror.gif','width="18" height="16"').' alt="" class="absmiddle" />'
+: '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/icon_ok2.gif','width="18" height="16"').' alt="" class="absmiddle" />'
+						) . ' FCE-element is localized</li>';
+					if (isset($def['langChildren'])) $conf .= '<li>' .
+						(($def['langChildren'] == 1)
+? '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/icon_ok2.gif','width="18" height="16"').' alt="" class="absmiddle" />'
+: '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/icon_fatalerror.gif','width="18" height="16"').' alt="" class="absmiddle" />'
+						) . ' FCE-inline-elements of the FCE-element are localized</li>';
+					if (isset($def['sheetSelector'])) $conf .= '<li>' .
+						(($def['sheetSelector'] != '')
+? '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/icon_ok2.gif','width="18" height="16"').' alt="" class="absmiddle" />'
+: '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/icon_fatalerror.gif','width="18" height="16"').' alt="" class="absmiddle" />'
+						) . ' custom sheet-selector' .
+						(($def['sheetSelector'] != '')
+? ' [<em>' . $def['sheetSelector'] . '</em>]'
+: ''
+						) . '</li>';
+
+					if ($conf != '')
+						$HTML .= '<ul class="DS-config">' . $conf . '</ul>';
+				}
+				/* this a container for repetitive elements --------------------- */
+				else if (isset($def['section']) && ($def['section'] == 1)) {
+					$HTML .= '<p>[..., ..., ...]</p>';
+				}
+				/* this a container for cellections of elements ----------------- */
+				else if (isset($def['type']) && ($def['type'] == "array")) {
+					$HTML .= '<p>[...]</p>';
+				}
+				/* this a regular entry ----------------------------------------- */
+				else {
+					/* The basic XML-structure of an entry is:
+					 *
+					 * <element>
+					 * 	<tx_templavoila>	-> entries with informational character belonging to this entry
+					 * 	<TCEforms>		-> entries being used for TCE-construction
+					 * 	<type + el + section>	-> subsequent hierarchical construction
+					 *	<langOverlayMode>	-> ??? (is it the language-key?)
+					 * </element>
+					 */
+					if (($tv = $def['tx_templavoila'])) {
+						/* The basic XML-structure of an tx_templavoila-entry is:
+						 *
+						 * <tx_templavoila>
+						 * 	<title>			-> Human readable title of the element
+						 * 	<description>		-> A description explaining the elements function
+						 * 	<sample_data>		-> Some sample-data (can't contain HTML)
+						 * 	<eType>			-> The preset-type of the element, used to switch use/content of TCEforms/TypoScriptObjPath
+						 * 	<oldStyleColumnNumber>	-> for distributing the fields across the tt_content column-positions
+						 * 	<proc>			-> define post-processes for this element's value
+						 *		<int>		-> this element's value will be cast to an integer (if exist)
+						 *		<HSC>		-> this element's value will convert special chars to HTML-entities (if exist)
+						 *		<stdWrap>	-> an implicit stdWrap for this element, "stdWrap { ...inside... }"
+						 * 	</proc>
+						 *	<TypoScript_constants>	-> an array of constants that will be substituted in the <TypoScript>-element
+						 * 	<TypoScript>		->
+						 * 	<TypoScriptObjPath>	->
+						 * </tx_templavoila>
+						 */
+
+						if (isset($tv['description']) && ($tv['description'] != ''))
+							$HTML .= '<p>"' . $tv['description'] . '"</p>';
+
+						/* it would also be possible to use the 'list-style-image'-property
+						 * for the flags, which would be more sensible to IE-bugs though
+						 */
+						$proc = '';
+						if (isset($tv['proc']) && isset($tv['proc']['int'])) $proc .= '<li>' .
+						(($tv['proc']['int'] == 1)
+? '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/icon_ok2.gif','width="18" height="16"').' alt="" class="absmiddle" />'
+: '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/icon_fatalerror.gif','width="18" height="16"').' alt="" class="absmiddle" />'
+						) . ' the entered/computed value will be cast to an integer</li>';
+						if (isset($tv['proc']) && isset($tv['proc']['HSC'])) $proc .= '<li>' .
+						(($tv['proc']['HSC'] == 1)
+? '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/icon_ok2.gif','width="18" height="16"').' alt="" class="absmiddle" />'
+: '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/icon_fatalerror.gif','width="18" height="16"').' alt="" class="absmiddle" />'
+						) . ' the entered/computed value will be passed to htmlentities' .
+						(($tv['proc']['HSC'] == 1)
+? ' [HTML-code won\'t be available]'
+: ' [HTML-code will be displayed as-is]'
+						) . '</li>';
+						if (isset($tv['proc']) && isset($tv['proc']['stdWrap'])) $proc .= '<li>' .
+						(($tv['proc']['stdWrap'] != '')
+? '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/icon_ok2.gif','width="18" height="16"').' alt="" class="absmiddle" />'
+: '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/icon_fatalerror.gif','width="18" height="16"').' alt="" class="absmiddle" />'
+						) . ' the entered/computed value will be wrapped</li>';
+
+						if ($proc != '')
+							$HTML .= '<ul class="DS-proc">' . $proc . '</ul>';
+
+						switch ($tv['eType']) {
+							case "input":            $preset = 'Plain input field';             $tco = false; break;
+							case "input_h":          $preset = 'Header field';                  $tco = false; break;
+							case "input_g":          $preset = 'Header field, Graphical';       $tco = false; break;
+							case "text":             $preset = 'Text area for bodytext';        $tco = false; break;
+							case "rte":              $preset = 'Rich text editor for bodytext'; $tco = false; break;
+							case "link":             $preset = 'Link field';                    $tco = false; break;
+							case "int":              $preset = 'Integer value';                 $tco = false; break;
+							case "image":            $preset = 'Image field';                   $tco = false; break;
+							case "imagefixed":       $preset = 'Image field, fixed W+H';        $tco = false; break;
+							case "select":           $preset = 'Selector box';                  $tco = false; break;
+							case "ce":               $preset = 'Content Elements';              $tco = true;  break;
+							case "TypoScriptObject": $preset = 'TypoScript Object Path';        $tco = true;  break;
+
+							case "none":             $preset = 'None';                          $tco = true;  break;
+							default:                 $preset = 'Custom [' . $tv['eType'] . ']'; $tco = true;  break;
+						}
+
+						switch ($tv['oldStyleColumnNumber']) {
+							case 0:  $column = 'Normal [0]';                                   break;
+							case 1:  $column = 'Left [1]';                                     break;
+							case 2:  $column = 'Right [2]';                                    break;
+							case 3:  $column = 'Border [3]';                                   break;
+							default: $column = 'Custom [' . $tv['oldStyleColumnNumber'] . ']'; break;
+						}
+
+						$notes = '';
+						if (($tv['eType'] != "TypoScriptObject") && isset($tv['TypoScriptObjPath']))
+							$notes .= '<li>redundant &lt;TypoScriptObjPath&gt;-entry</li>';
+						if (($tv['eType'] == "TypoScriptObject") && isset($tv['TypoScript']))
+							$notes .= '<li>redundant &lt;TypoScript&gt;-entry</li>';
+						if ((($tv['eType'] == "TypoScriptObject") || !isset($tv['TypoScript'])) && isset($tv['TypoScript_constants']))
+							$notes .= '<li>redundant &lt;TypoScript_constants&gt;-entry</li>';
+						if (isset($tv['proc']) && isset($tv['proc']['int']) && ($tv['proc']['int'] == 1) && isset($tv['proc']['HSC']))
+							$notes .= '<li>redundant &lt;proc&gt;&lt;HSC&gt;-entry</li>';
+						if (isset($tv['TypoScriptObjPath']) && preg_match('/[^a-zA-Z0-9\.\:_]/', $tv['TypoScriptObjPath']))
+							$notes .= '<li><strong>&lt;TypoScriptObjPath&gt;-entry contains illegal characters and/or has multiple lines</strong></li>';
+
+						$tsstats = '';
+						if (isset($tv['TypoScript_constants']))
+							$tsstats .= '<li>' . count($tv['TypoScript_constants']) . ' TS-constants defined for use in the &lt;TypoScript&gt;-entry</li>';
+						if (isset($tv['TypoScript']))
+							$tsstats .= '<li>' . (1 + strlen($tv['TypoScript']) - strlen(str_replace("\n", "", $tv['TypoScript']))) . ' lines of TS-code inside the &lt;TypoScript&gt;-entry</li>';
+						if (isset($tv['TypoScriptObjPath']))
+							$tsstats .= '<li>will utilize the TS-structure <em>' . $tv['TypoScriptObjPath'] . '</em> defined inside the &lt;TypoScriptObjPath&gt;-entry</li>';
+
+						$HTML .= '<dl class="DS-infos">';
+						$HTML .= '<dt>Preset used for the element:</dt>';
+						$HTML .= '<dd>' . $preset . '</dd>';
+						$HTML .= '<dt>Column-positioning:</dt>';
+						$HTML .= '<dd>' . $column . '</dd>';
+						if ($tsstats != '') {
+							$HTML .= '<dt>Typo-Script:</dt>';
+							$HTML .= '<dd><ul class="DS-stats">' . $tsstats . '</ul></dd>';
+						}
+						if ($notes != '') {
+							$HTML .= '<dt>Notes:</dt>';
+							$HTML .= '<dd><ul class="DS-notes">' . $notes . '</ul></dd>';
+						}
+						$HTML .= '</dl>';
+					}
+					else {
+						$HTML .= '<p>The element has no basic definitions!</p>';
+					}
+
+					if (($tf = $def['TCEforms'])) {
+						/* The basic XML-structure of an TCEforms-entry is:
+						 *
+						 * <TCEforms>
+						 * 	<label>			-> TCE-label for the BE
+						 * 	<config>		-> TCE-configuration array
+						 * </TCEforms>
+						 */
+					}
+					else if (!$tco) {
+						$HTML .= '<p>The element has no TCE-form definitions!</p>';
+					}
+				}
+
+				/* there are some childs to process ----------------------------- */
+				if (isset($def['type']) && ($def['type'] == "array")) {
+
+					if (isset($def['section']))
+						;
+					if (isset($def['el']))
+						$HTML .= $this->renderDSdetails($def['el']);
+				}
+
+				$HTML .= '</dd>';
+			}
+
+			$HTML .= '</dl>';
+		}
+		else
+			$HTML .= '<p><img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/icon_warning2.gif','width="18" height="16"').' alt="" class="absmiddle" /> The element has no children!</p>';
+
+		return $HTML;
+	}
+
+	/**
 	 * Show meta data part of Data Structure
 	 *
 	 * @param	[type]		$DSstring: ...
@@ -1370,9 +1618,10 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 			}
 		}
 
-		$DScontent = array('meta' => $DScontent['meta']);
+	/*	$DScontent = array('meta' => $DScontent['meta']);	*/
 
 		$languageMode = '';
+		if (is_array($DScontent['meta'])) {
 		if ($DScontent['meta']['langDisable'])	{
 			$languageMode = 'Disabled';
 		} elseif ($DScontent['meta']['langChildren']) {
@@ -1380,11 +1629,12 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 		} else {
 			$languageMode = 'Separate';
 		}
+		}
 
 		return array(
-			'HTML' => t3lib_div::view_array($DScontent).'Language Mode => "'.$languageMode.'"<hr/>
+			'HTML' => /*t3lib_div::view_array($DScontent).'Language Mode => "'.$languageMode.'"<hr/>
 						Root Elements = '.$rootelements.', hereof ref/input fields = '.($referenceFields.'/'.$inputFields).'<hr/>
-						'.$rootElementsHTML,
+						'.$rootElementsHTML*/ $this->renderDSdetails($DScontent),
 			'languageMode' => $languageMode,
 			'rootelements' => $rootelements,
 			'inputFields' => $inputFields,
