@@ -473,8 +473,9 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				if (is_array($this->sortableContainers)) {
 					$this->content .= '<script type="text/javascript">' . chr(10) .
 						'//<![CDATA[' . chr(10) .
-						'var sortable_linkParameters = \'' . $this->link_getParameters() .
-						'\';';
+						'var sortable_removeHidden = ' . ($this->MOD_SETTINGS['tt_content_showHidden'] ? 'false;' : 'true;') . 
+						'var sortable_linkParameters = \'' . $this->link_getParameters() . '\';';
+						
 					$containment = '["' . implode('","', $this->sortableContainers) . '"]';
 					$this->content .= 'Event.observe(window,"load",function(){';
 					foreach ($this->sortableContainers as $s) {
@@ -701,11 +702,13 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 					$linkUnlink = $this->link_unlink('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/garbage.gif','').' title="'.$LANG->getLL('unlinkRecord').'" border="0" alt="" />', $parentPointer, FALSE);
 					if ($GLOBALS['BE_USER']->recordEditAccessInternals('tt_content', $contentTreeArr['previewData']['fullRow'])) {
 						$linkEdit = ($elementBelongsToCurrentPage ? $this->link_edit('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/edit2.gif','').' title="'.$LANG->getLL('editrecord').'" border="0" alt="" />',$contentTreeArr['el']['table'],$contentTreeArr['el']['uid']) : '');
+						$linkHide = $this->icon_hide($contentTreeArr['el']);
+						
 					}
 					else {
-						$linkEdit = '';
+						$linkEdit = $linkHide = '';
 					}
-					$titleBarRightButtons = $linkEdit . $this->clipboardObj->element_getSelectButtons($parentPointer) . $linkMakeLocal . $linkUnlink;
+					$titleBarRightButtons = $linkEdit . $linkHide . $this->clipboardObj->element_getSelectButtons($parentPointer) . $linkMakeLocal . $linkUnlink;
 				}
 				else {
 					$titleBarRightButtons = $this->clipboardObj->element_getSelectButtons($parentPointer, 'copy');
@@ -1610,6 +1613,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 *
 	 *******************************************/
 
+	 
 	/**
 	 * Returns an HTML link for editing
 	 *
@@ -1638,6 +1642,71 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		return '';
 	}
 
+	/**
+	 * Returns an HTML link for hiding
+	 *
+	 * @param	string		$label: The label (or image)
+	 * @param	string		$table: The table, fx. 'tt_content'
+	 * @param	integer		$uid: The uid of the element to be hidden/unhidden
+	 * @param	boolean		$forced: By default the link is not shown if translatorMode is set, but with this boolean it can be forced anyway.
+	 * @return	string		HTML anchor tag containing the label and the correct link
+	 * @access protected
+	 */
+	function icon_hide($el) {
+		global $LANG;
+
+		$hideIcon = ($el['table'] == 'pages'
+		?	'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/button_hide.gif','').' border="0" title="'.htmlspecialchars($LANG->sL('LLL:EXT:lang/locallang_mod_web_list.xml:hidePage')).'" alt="" />'
+		:	'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/button_hide.gif','').' border="0" title="'.htmlspecialchars($LANG->sL('LLL:EXT:lang/locallang_mod_web_list.xml:hide')).'" alt="" />');
+		$unhideIcon = ($el['table'] == 'pages'
+		?	'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/button_unhide.gif','').' border="0" title="'.htmlspecialchars($LANG->sL('LLL:EXT:lang/locallang_mod_web_list.xml:unHidePage')).'" alt="" />'
+		:	'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/button_unhide.gif','').' border="0" title="'.htmlspecialchars($LANG->sL('LLL:EXT:lang/locallang_mod_web_list.xml:unHide')).'" alt="" />');
+
+		if ($el['isHidden'])
+			$label = $unhideIcon;
+		else
+			$label = $hideIcon;
+
+		return $this->link_hide($label, $el['table'], $el['uid'], $el['isHidden']);
+	}
+	
+	/**
+	 * [Describe function...]
+	 *
+	 * @param	[type]		$label: ...
+	 * @param	[type]		$table: ...
+	 * @param	[type]		$uid: ...
+	 * @param	[type]		$hidden: ...
+	 * @param	[type]		$forced: ...
+	 * @return	[type]		...
+	 */
+	function link_hide($label, $table, $uid, $hidden, $forced=FALSE) {
+		if ($label) {
+			if (($table == 'pages' && ($this->calcPerms & 2) ||
+				 $table != 'pages' && ($this->calcPerms & 16)) &&
+				(!$this->translatorMode || $forced))	{
+					if ($table == "pages" && $this->currentLanguageUid) {
+						$params = '&data['.$table.']['.$uid.'][hidden]=' . (1 - $hidden);
+					//	return '<a href="#" onclick="' . htmlspecialchars('return jumpToUrl(\'' . $GLOBALS['SOBE']->doc->issueCommand($params, -1) . '\');') . '">'.$label.'</a>';
+					} else {
+						$params = '&data['.$table.']['.$uid.'][hidden]=' . (1 - $hidden);
+					//	return '<a href="#" onclick="' . htmlspecialchars('return jumpToUrl(\'' . $GLOBALS['SOBE']->doc->issueCommand($params, -1) . '\');') . '">'.$label.'</a>';
+
+						/* the commands are indipendent of the position,
+						 * so sortable doesn't need to update these and we
+						 * can safely use '#'
+						 */
+						if ($hidden)
+							return '<a href="#" onclick="sortable_unhideRecord(this, \'' . $GLOBALS['SOBE']->doc->issueCommand($params, -1) . '\');">' . $label . '</a>';
+						else
+							return '<a href="#" onclick="sortable_hideRecord(this, \'' . $GLOBALS['SOBE']->doc->issueCommand($params, -1) . '\');">' . $label . '</a>';
+					}
+				} else {
+					return $label;
+				}
+		}
+		return '';
+	}
 	/**
 	 * Returns an HTML link for creating a new record
 	 *

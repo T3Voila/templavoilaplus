@@ -2,6 +2,30 @@ var sortable_currentItem;
 // Needs also:
 // sortable_linkParameters = mod1/index.php -- $this->link_getParameters()
 
+function sortable_unhideRecord(it, command) {
+	jumpToUrl(command);
+}
+
+function sortable_hideRecord(it, command) {
+	if (!sortable_removeHidden)
+		return jumpToUrl(command);
+
+	while (it.className != 'sortableItem')
+		it = it.parentNode;
+
+	new Ajax.Request(command);
+	new Effect.Fade(it,
+		{ duration: 0.5,
+		  afterFinish: sortable_hideRecordCallBack });
+}
+
+function sortable_hideRecordCallBack(obj) {
+	var el = obj.element;
+
+	while (el.lastChild)
+		el.removeChild(el.lastChild);
+}
+
 function sortable_unlinkRecordCallBack(obj) {
 	var el = obj.element;
 	var pn = el.parentNode;
