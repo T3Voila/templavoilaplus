@@ -171,7 +171,16 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 					document.location = URL;
 					return false;
 				}
-				if (top.fsMod) top.fsMod.recentIds["web"] = '.intval($this->id).';
+				function setHighlight(id)	{	//
+					if (top.fsMod) {
+						top.fsMod.recentIds["web"]=id;
+						top.fsMod.navFrameHighlightedID["web"]="pages"+id+"_"+top.fsMod.currentBank;	// For highlighting
+
+						if (top.content && top.content.nav_frame && top.content.nav_frame.refresh_nav)	{
+							top.content.nav_frame.refresh_nav();
+						}
+					}
+				}
 			').$this->doc->getDynTabMenuJScode();
 
 				// Setting up support for context menus (when clicking the items icon)
@@ -311,7 +320,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 				if ($path)	{
 					$tRows[] = '
 						<tr class="bgColor4">
-							<td><a href="index.php?id='.$pid.'">' . 
+							<td><a href="index.php?id=' . $pid . '" onclick="setHighlight(' . $pid . ')">' . 
 								t3lib_iconWorks::getIconImage('pages', t3lib_BEfunc::getRecord('pages', $pid), $this->doc->backPath, 'class="absmiddle" title="'. htmlspecialchars($alttext) . '"') .
 								htmlspecialchars($path).'</a></td>
 							<td>'.htmlspecialchars($stat['DS']).'</td>
