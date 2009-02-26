@@ -2566,18 +2566,18 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 						break;
 						case 'ce':
 							/* preserve previous config, if of the right kind */
-							if (($reset = $reset || ($elArray[$key]['TCEforms']['config']['type'] != 'group'))) {
+							if (($reset || ($elArray[$key]['TCEforms']['config']['type'] != 'group'))) {
 								$elArray[$key]['TCEforms']['label']=$elArray[$key]['tx_templavoila']['title'];
-							$elArray[$key]['TCEforms']['config'] = array(
-								'type' => 'group',
-								'internal_type' => 'db',
-								'allowed' => 'tt_content',
-								'size' => '5',
-								'maxitems' => '200',
-								'minitems' => '0',
-								'multiple' => '1',
-								'show_thumbs' => '1'
-							);
+								$elArray[$key]['TCEforms']['config'] = array(
+									'type' => 'group',
+									'internal_type' => 'db',
+									'allowed' => 'tt_content',
+									'size' => '5',
+									'maxitems' => '200',
+									'minitems' => '0',
+									'multiple' => '1',
+									'show_thumbs' => '1'
+								);
 							}
 
 							/* preserve previous config, if of the right kind */

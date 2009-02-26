@@ -1,3 +1,7 @@
+2009-02-27  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #10553: Mapping Module loose Typoscript 
+	
 2009-02-26  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #10548: Highlight storage folder in page tree when select a storage folder in templavoila module
