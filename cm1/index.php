@@ -2362,16 +2362,25 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 		$eTypeCECounter = 0;
 
 		t3lib_div::loadTCA('tt_content');
-
+        
 			// Traverse array
-		foreach($elArray as $key => $value)	{
+		foreach($elArray as $key => $value)	{      
 				// this MUST not ever enter the XMLs (it will break TV)
 			if ($elArray[$key]['type'] == 'section') {
 				$elArray[$key]['type'] = 'array';
 				$elArray[$key]['section'] = '1';
-			}
-			else
+			} else {
 				$elArray[$key]['section'] = '0';
+			}
+			
+			// put these into array-form for preset-completition
+			if (!is_array($elArray[$key]['tx_templavoila']['TypoScript_constants'])) {
+				$elArray[$key]['tx_templavoila']['TypoScript_constants'] = $this->unflattenarray($elArray[$key]['tx_templavoila']['TypoScript_constants']);
+			}
+			if (!is_array($elArray[$key]['TCEforms']['config'])) {
+				$elArray[$key]['TCEforms']['config'] = $this->unflattenarray($elArray[$key]['TCEforms']['config']);
+			}
+			
 
 			/* ---------------------------------------------------------------------- */
 				// this is too much different to preserve any previous information
@@ -2390,7 +2399,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			} else {
 				$elArray[$key]['tx_templavoila']['sample_data']= htmlspecialchars($elArray[$key]['tx_templavoila']['sample_data']);
 			}
-
+            
 			/* ---------------------------------------------------------------------- */
 			if ($elArray[$key]['type']=='array')	{	// If array, then unset:
 				unset($elArray[$key]['tx_templavoila']['sample_data']);
@@ -2564,7 +2573,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 							}
 							}
 						break;
-						case 'ce':
+						case 'ce':    
 							/* preserve previous config, if of the right kind */
 							if (($reset || ($elArray[$key]['TCEforms']['config']['type'] != 'group'))) {
 								$elArray[$key]['TCEforms']['label']=$elArray[$key]['tx_templavoila']['title'];
