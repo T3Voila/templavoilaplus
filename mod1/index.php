@@ -840,6 +840,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				);
 
 				$canCreateNew = $GLOBALS['BE_USER']->isPSet($this->calcPerms, 'pages', 'new');
+				$canEditContent = $GLOBALS['BE_USER']->isPSet($this->calcPerms, 'pages', 'editcontent');
 
 				if (!$this->translatorMode && $canCreateNew)	{
 
@@ -850,7 +851,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				}
 
 					// Render the list of elements (and possibly call itself recursively if needed):
-				if (is_array($fieldContent['el_list']))	 {
+				if (is_array($fieldContent['el_list'])) {
 					foreach($fieldContent['el_list'] as $position => $subElementKey)	{
 						$subElementArr = $fieldContent['el'][$subElementKey];
 
@@ -881,6 +882,17 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 								$cellContent .= '<span class="sortablePaste">' . $this->clipboardObj->element_getPasteButtons ($subElementPointer) . '</span></div>';
 							}
 
+						} else {
+								// Modify the flexform pointer so it points to the position of the curren sub element:
+							$subElementPointer['position'] = $position;
+
+							if ($canEditContent) {
+								$cellId = $this->apiObj->flexform_getStringFromPointer($subElementPointer);
+								$cellFragment = '<div class="sortableItem" id="' . $cellId . '"></div>';
+							}
+
+							$cellContent .= $cellFragment;
+					
 						}
 					}
 				}

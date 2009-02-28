@@ -1,5 +1,6 @@
 2009-02-28  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #9931: Drag'n Drop patch carries destructive Sorting-Bug 
 	* Fixed bug #7767: CSH help texts are missing (thanks to Benjamin Mack) 
 	
 2009-02-27  Steffen Kamper  <info@sk-typo3.de>
