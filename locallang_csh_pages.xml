@@ -13,9 +13,10 @@
 			<label index="tx_templavoila_ds.description">Select the kind of page you want to create. You can see the basic layout in the icon below the selector box.</label>
 			<label index="tx_templavoila_next_ds.description">Select alternative page structure for subpages.</label>
 			<label index="tx_templavoila_next_ds.details">Subpages to this page will normally use the same structure as you have set in the &quot;Page Template Structure&quot; field above. However you can select an alternative structure here to be used by all subpages.</label>
-			<label index="tx_templavoila_to.description">[FILL IN] tx_templavoila_to</label>
-			<label index="tx_templavoila_next_to.description">[FILL IN] tx_templavoila_next_to</label>
-			<label index="tx_templavoila_flex.description">[FILL IN] tx_templavoila_flex</label>
+			<label index="tx_templavoila_to.description">Select the template design of the chosen &quot;Page Template Structure&quot; for this page.</label>
+			<label index="tx_templavoila_next_to.description">Select a different template design of the chosen &quot;Page Template Structure&quot; above for all subpages.</label>
+			<label index="tx_templavoila_flex.description">Select the content and / or flexible elements for your page.</label>
+			<label index="tx_templavoila_flex.details">Usually, these fields show you the content types that you defined in the selected data structure above. If you use simple content elements, this fields gets automatically altered through the page module once you add content there.</label>
 		</languageKey>
 	</data>
 </T3locallang>

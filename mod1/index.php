@@ -585,7 +585,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			}
 		}
 
-		$output .= t3lib_BEfunc::cshItem('_MOD_web_txtemplavoilaM1', '', $this->doc->backPath,'<hr/>|'.$LANG->getLL('csh_whatisthetemplavoilapagemodule', 1));
+		$output .= t3lib_BEfunc::cshItem('_MOD_web_txtemplavoilaM1', 'pagemodule', $this->doc->backPath,'<hr/>|' . $LANG->getLL('csh_whatisthetemplavoilapagemodule', 1));
 
 		return $output;
 	}
