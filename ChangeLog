@@ -1,3 +1,7 @@
+2009-03-03  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #10593: External URLs of type https:// are not displayed correctly under the TV Page-Mod (thanks to Dirk Diebel) 
+	
 2009-02-28  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #9931: Drag'n Drop patch carries destructive Sorting-Bug 

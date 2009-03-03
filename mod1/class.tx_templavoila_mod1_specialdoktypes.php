@@ -144,11 +144,14 @@ class tx_templavoila_mod1_specialdoktypes {
 		$editButton = $this->pObj->link_edit('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/edit2.gif','').' title="'.htmlspecialchars($LANG->sL('LLL:EXT:lang/locallang_mod_web_list.xml:editPage')).'" alt="" style="text-align: center; vertical-align: middle; border:0;" />', 'pages', $pageRecord['uid']);
 
 		switch ($pageRecord['urltype']) {
-			case 2 :
-				$url = 'ftp://'.$pageRecord['url'];
+			case 2:
+				$url = 'ftp://' . $pageRecord['url'];
 			break;
 			case 3:
-				$url = 'mailto:'.$pageRecord['url'];
+				$url = 'mailto:' . $pageRecord['url'];
+			break;
+			case 4:
+				$url = 'https://' . $pageRecord['url'];
 			break;
 			default:
 				// Check if URI scheme already present. We support only Internet-specific notation, others are not relevant for us (see http://www.ietf.org/rfc/rfc3986.txt for details)
@@ -157,8 +160,8 @@ class tx_templavoila_mod1_specialdoktypes {
 					break;
 				}
 				// fall through
-			case 1 :
-				$url = 'http://'.$pageRecord['url'];
+			case 1:
+				$url = 'http://' . $pageRecord['url'];
 			break;
 		}
 		$content =
