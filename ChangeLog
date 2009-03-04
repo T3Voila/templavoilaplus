@@ -1,40 +1,44 @@
+2009-03-04  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Moved code for getDynTabMenu in the new "New CE wizard" to be compatible with TYPO3 RFC #10601
+
 2009-03-03  Steffen Kamper  <info@sk-typo3.de>
 
-	* Fixed bug #10593: External URLs of type https:// are not displayed correctly under the TV Page-Mod (thanks to Dirk Diebel) 
-	
+	* Fixed bug #10593: External URLs of type https:// are not displayed correctly under the TV Page-Mod (thanks to Dirk Diebel)
+
 2009-02-28  Steffen Kamper  <info@sk-typo3.de>
 
-	* Fixed bug #9931: Drag'n Drop patch carries destructive Sorting-Bug 
-	* Fixed bug #7767: CSH help texts are missing (thanks to Benjamin Mack) 
-	
+	* Fixed bug #9931: Drag'n Drop patch carries destructive Sorting-Bug
+	* Fixed bug #7767: CSH help texts are missing (thanks to Benjamin Mack)
+
 2009-02-27  Steffen Kamper  <info@sk-typo3.de>
 
-	* Fixed bug #10557: No resizing for previewIcons (DS and TO) 
-	* Fixed bug #10553: Mapping Module loose Typoscript 
-	
+	* Fixed bug #10557: No resizing for previewIcons (DS and TO)
+	* Fixed bug #10553: Mapping Module loose Typoscript
+
 2009-02-26  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #10548: Highlight storage folder in page tree when select a storage folder in templavoila module
 	* Fixed bug #10484: Add icon for hide/unhide record in page module
-	* Fixed bug #9529: Enhanced "Show-Details" + new DS-Editor (thanks to Niels Fröhling) 
+	* Fixed bug #9529: Enhanced "Show-Details" + new DS-Editor (thanks to Niels Fröhling)
 
 2009-02-14  Steffen Kamper  <info@sk-typo3.de>
 
-	* Fixed bug #9500: unable to map headerparts which are in conditional comments 
+	* Fixed bug #9500: unable to map headerparts which are in conditional comments
 
 2009-02-14  Steffen Kamper  <info@sk-typo3.de>
 
-	* Fixed bug #10446: Migration Wizzard references in just one DS_Column (typo, colpos should be colPos) 
+	* Fixed bug #10446: Migration Wizzard references in just one DS_Column (typo, colpos should be colPos)
 
 2009-02-14  Steffen Kamper  <info@sk-typo3.de>
 
-	* Fixed bug #10030: defined templatePath allows only one path 
+	* Fixed bug #10030: defined templatePath allows only one path
 	This allows using a commalist with "mod.web_txtemplavoilaM2.templatePath" to allow more than one path. The value gets a new default (set to "templates", was empty before). Doc change required.
-	* Fixed bug #10255: Use t3lib::fixed_lgd_cs instead of t3lib::fixed_lgd  
-	* Fixed bug #10280: TEXT doesn't allow NOT NULL with Strict-mode  
-	* Fixed bug #10026: beautify Template filelist 
+	* Fixed bug #10255: Use t3lib::fixed_lgd_cs instead of t3lib::fixed_lgd
+	* Fixed bug #10280: TEXT doesn't allow NOT NULL with Strict-mode
+	* Fixed bug #10026: beautify Template filelist
 	* Fixed bug #10436: Select Storage Folders - table is too small with more places
-	
+
 2009-02-06  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #10361: Remove translations from locallang files

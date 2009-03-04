@@ -262,6 +262,7 @@ class tx_templavoila_newcewizard {
 				table.typo3-dyntabmenu td.disabled, table.typo3-dyntabmenu td.disabled_over, table.typo3-dyntabmenu td.disabled:hover { padding-left: 10px; }
 			';
 		}
+		$this->doc->JScode .= $this->doc->getDynTabMenuJScode();
 		$this->content .= $this->doc->startPage($GLOBALS['LANG']->getLL('newcewizard.title'));
 		$this->content .= $this->doc->header($GLOBALS['LANG']->getLL('newcewizard.title'));
 		$this->content .= $this->doc->spacer(5);
@@ -319,8 +320,6 @@ class tx_templavoila_newcewizard {
 	 * @return	void
 	 */
 	protected function createTabs() {
-		$this->doc->JScode .= $this->doc->getDynTabMenuJScode();
-
 		$tabItems = array();
 		$selectElTab = false;
 		$defaultTab = 1; $currentTab = 1;
