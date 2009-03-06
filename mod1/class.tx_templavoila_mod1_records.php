@@ -182,7 +182,7 @@ class tx_templavoila_mod1_records {
 		$this->dblist->backPath = $this->pObj->doc->backPath;
 		$this->dblist->calcPerms = $this->calcPerms;
 		$this->dblist->thumbs = $GLOBALS['BE_USER']->uc['thumbnailsByDefault'];
-		$this->dblist->returnUrl = 'index.php?' . $this->pObj->link_getParameters();
+		$this->dblist->returnUrl = $GLOBALS['BACK_PATH'] . TYPO3_MOD_PATH . 'index.php?' . $this->pObj->link_getParameters();
 		$this->dblist->allFields = true;
 		$this->dblist->localizationView = true;
 		$this->dblist->showClipboard = false;

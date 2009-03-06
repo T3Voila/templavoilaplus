@@ -1,3 +1,7 @@
+2009-03-06  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #10618: Wrong returnUrl in record list
+
 2009-03-04  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Moved code for getDynTabMenu in the new "New CE wizard" to be compatible with TYPO3 RFC #10601
