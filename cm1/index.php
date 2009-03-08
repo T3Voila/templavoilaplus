@@ -1814,20 +1814,26 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 														htmlspecialchars($cF ? sprintf($GLOBALS['LANG']->getLL('displayDSContentFound'), strlen($contentSplittedByMapping['cArray'][$key])) . ($multilineTooltips ? ':' . chr(10) . chr(10) . $cF : '') : $GLOBALS['LANG']->getLL('displayDSContentEmpty')) . '" class="absmiddle" />'.
 														'<img src="../html_tags/' . $pI['el'] . '.gif" height="9" border="0" alt="" hspace="3" class="absmiddle" title="---' . htmlspecialchars(t3lib_div::fixed_lgd_cs($currentMappingInfo[$key]['MAP_EL'], -80)) . '" />' .
 														($pI['modifier'] ? $pI['modifier'] . ($pI['modifier_value'] ? ':' . ($pI['modifier'] != 'RANGE' ? $pI['modifier_value'] : '...') : '') : '');
-								$rowCells['htmlPath'] = '<a href="'.$this->linkThisScript(array('htmlPath'=>$path.($path?'|':'').ereg_replace('\/[^ ]*$','',$currentMappingInfo[$key]['MAP_EL']),'showPathOnly'=>1)).'">'.$rowCells['htmlPath'].'</a>';
+								$rowCells['htmlPath'] = '<a href="'.$this->linkThisScript(array(
+																							'htmlPath'=>$path.($path?'|':'').ereg_replace('\/[^ ]*$','',$currentMappingInfo[$key]['MAP_EL']),
+																							'showPathOnly'=>1,
+																							'DS_element' => t3lib_div::_GP('DS_element')
+																						)).'">'.$rowCells['htmlPath'].'</a>';
 
 									// CMD links, default content:
 								$rowCells['cmdLinks'] = '<span class="nobr"><input type="submit" value="Re-Map" name="_" onclick="document.location=\'' . 
 														$this->linkThisScript(array(
 																				'mapElPath' => $formPrefix . '[' . $key . ']', 
 																				'htmlPath' => $path, 
-																				'mappingToTags' => $value['tx_templavoila']['tags']
+																				'mappingToTags' => $value['tx_templavoila']['tags'],
+																				'DS_element' => t3lib_div::_GP('DS_element')
 																				)) . '\';return false;" title="' . $GLOBALS['LANG']->getLL('buttonRemapTitle') . '" />' .
 														'<input type="submit" value="' . $GLOBALS['LANG']->getLL('buttonChangeMode') . '" name="_" onclick="document.location=\'' .
 														$this->linkThisScript(array(
 																				'mapElPath' => $formPrefix . '[' . $key . ']',
 																				'htmlPath' => $path . ($path ? '|' :'') . $pI['path'],
-																				'doMappingOfPath' => 1
+																				'doMappingOfPath' => 1,
+																				'DS_element' => t3lib_div::_GP('DS_element')
 																				)) . '\';return false;" title="' . $GLOBALS['LANG']->getLL('buttonChangeMode') . '" /></span>';
 
 									// If content mapped ok, set flag:
@@ -1839,7 +1845,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 						} else {	// For non-mapped cases, just output a no-break-space:
 							$rowCells['htmlPath'] = '&nbsp;';
 						}
-
+                        
 							// CMD links; Content when current element is under mapping, then display control panel or message:
 						if ($this->mapElPath == $formPrefix.'['.$key.']')	{
 							if ($this->doMappingOfPath)	{
@@ -1891,14 +1897,18 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 								$rowCells['cmdLinks'] = '<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/icon_note.gif','width="18" height="16"') . ' border="0" alt="" class="absmiddle" />
 														<strong>' . $GLOBALS['LANG']->getLL('msgHowToMap') . '</strong>';
 								$rowCells['cmdLinks'].= '<br />
-										<input type="submit" value="' . $GLOBALS['LANG']->getLL('buttonCancel') . '" name="_" onclick="document.location=\''.$this->linkThisScript(array()).'\';return false;" />';
+										<input type="submit" value="' . $GLOBALS['LANG']->getLL('buttonCancel') . '" name="_" onclick="document.location=\'' .
+										$this->linkThisScript(array(
+											'DS_element' => t3lib_div::_GP('DS_element')
+										)) .'\';return false;" />';
 							}
 						} elseif (!$rowCells['cmdLinks'] && $mapOK && $value['type']!='no_map') {
 							$rowCells['cmdLinks'] = '<input type="submit" value="' . $GLOBALS['LANG']->getLL('buttonMap') . '" name="_" onclick="document.location=\'' .
 													$this->linkThisScript(array(
 																			'mapElPath' => $formPrefix . '[' . $key . ']',
 																			'htmlPath' => $path,
-																			'mappingToTags' => $value['tx_templavoila']['tags']
+																			'mappingToTags' => $value['tx_templavoila']['tags'],
+																			'DS_element' => t3lib_div::_GP('DS_element') 
 																		)) . '\';return false;" />';
 						}
 					}
@@ -1933,7 +1943,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 					}
 
 						// Getting editing row, if applicable:
-					list($addEditRows,$placeBefore) = $this->drawDataStructureMap_editItem($formPrefix,$key,$value,$level);
+					list($addEditRows, $placeBefore) = $this->drawDataStructureMap_editItem($formPrefix, $key, $value, $level, $rowCells);
 
 						// Add edit-row if found and destined to be set BEFORE:
 					if ($addEditRows && $placeBefore)	{
@@ -1996,9 +2006,10 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 	 * @param	string		Key for form element
 	 * @param	array		Values for element
 	 * @param	integer		Indentation level
+	 * @param	array		Array containing mapping links and commands
 	 * @return	array		Two values, first is addEditRows (string HTML content), second is boolean whether to place row before or after.
 	 */
-	function drawDataStructureMap_editItem($formPrefix,$key,$value,$level)	{
+	function drawDataStructureMap_editItem($formPrefix, $key, $value, $level, $rowCells) {
 
 			// Init:
 		$addEditRows='';
@@ -2027,7 +2038,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 					$insertDataArray=array();
 				} else {
 					$placeBefore = 1;
-
+                    
 					$formFieldName = 'autoDS'.$formPrefix.'['.$key.']';
 					$insertDataArray=$value;
 				}
@@ -2221,7 +2232,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 				$info = $this->dsTypeInfo($insertDataArray);
 
 				$addEditRows='<tr class="tv-edit-row">
-					<td valign="top" style="padding: 0.5em; padding-left: '.(($level)*16+3).'px" nowrap="nowrap">
+					<td valign="top" style="padding: 0.5em; padding-left: '.(($level)*16+3).'px" nowrap="nowrap" rowspan="2">
 						<select style="margin: 4px 0 4px 0; padding: 1px 1px 1px 30px; background: 0 50% url(' . $info[3] . ') no-repeat; width: 150px !important;" title="Mapping Type" name="'.$formFieldName.'[type]">
 							<optgroup class="c-divider" label="' . $GLOBALS['LANG']->getLL('mapElContainers') . '">
 								<option style="padding: 1px 1px 1px 30px; background: 0 50% url(' . $this->dsTypes['sc'][3] . ') no-repeat;" value="section"'. ($insertDataArray['type']=='section' ? ' selected="selected"' : '').'>' . $GLOBALS['LANG']->getLL('mapSection') . '</option>
@@ -2251,7 +2262,8 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 						</ul>
 						' . $this->cshItem('xMOD_tx_templavoila', 'mapping_editform', $this->doc->backPath, '', FALSE, 'margin-bottom: 0px;') . '
 					</td>
-					<td valign="top" style="padding: 0.5em;" colspan="3">
+					
+					<td valign="top" style="padding: 0.5em;" colspan="2" rowspan="2">
 						'.$form.'
 						<script type="text/javascript">
 							var dsel_act = "' . (t3lib_div::_GP('dsel_act') ? t3lib_div::_GP('dsel_act') : 'general') . '";
@@ -2299,7 +2311,13 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 							dsel_menu_reset();
 						</script>
 					</td>
-					<td class="edit-ds-actioncontrols" colspan="3">
+					<td>' . ($this->DS_cmd=='add' ? '' : $rowCells['htmlPath']) . '</td>
+					<td>' . ($this->DS_cmd=='add' ? '' : $rowCells['cmdLinks']) . '</td>
+					<td>' . ($this->DS_cmd=='add' ? '' : $rowCells['tagRules']) . '</td>
+					<td colspan="2"></td>
+				</tr>
+				<tr class="tv-edit-row">
+					<td class="edit-ds-actioncontrols" colspan="4">
 					' . $formSubmit . '
 					</td>
 				</tr>';
@@ -2992,7 +3010,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 
 
 
-
+    
 
 
 	/*****************************************

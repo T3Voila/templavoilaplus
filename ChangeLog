@@ -1,3 +1,7 @@
+2009-03-08  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #10636: Show mapping-links and -commands while editing a field
+
 2009-03-07  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #10633: cm1 need to be localized
