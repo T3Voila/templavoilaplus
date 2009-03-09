@@ -37,8 +37,6 @@ class tx_templavoila_cm1_eTypes {
 	
 	function init($pObj) {
 		$this->pObj = $pObj;
-		$this->init_eTypeArray();
-		
 	}
 	
 	
