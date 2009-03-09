@@ -114,6 +114,8 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 	var $tFileList=array();
 	var $errorsWarnings=array();
 
+	var $cm1Link = '../cm1/index.php';
+	
 
     function init() {
         parent::init();
@@ -1275,7 +1277,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 							'</a></td>
 						<td align="center">'.$count.'</td>
 						<td>'.
-							'<a href="'.htmlspecialchars($this->pObj->cm1Script . 'id=' . $this->pObj->id . '&file=' . rawurlencode($tFile)) . '&mapElPath=%5BROOT%5D">'.
+							'<a href="'.htmlspecialchars($this->cm1Link . '?id=' . $this->id . '&file=' . rawurlencode($tFile)) . '&mapElPath=%5BROOT%5D">'.
 							'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/new_el.gif','width="11" height="12"').' alt="" class="absmiddle" /> ' . htmlspecialchars('Create...') .
 							'</a></td>
 					</tr>';
@@ -1325,7 +1327,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 											'</a></td>
 										<td align="center">'.($this->tFileList[$tFile]?$this->tFileList[$tFile]:'-').'</td>
 										<td>'.
-											'<a href="' . htmlspecialchars($this->pObj->cm1Script . 'id=' . $this->pObj->id . '&file=' . rawurlencode($tFile)) . '&mapElPath=%5BROOT%5D">' .
+											'<a href="' . htmlspecialchars($this->cm1Link . '?id=' . $this->id . '&file=' . rawurlencode($tFile)) . '&mapElPath=%5BROOT%5D">' .
 											'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/new_el.gif','width="11" height="12"').' alt="" class="absmiddle" /> ' . htmlspecialchars('Create...') .
 											'</a></td>
 									</tr>';
