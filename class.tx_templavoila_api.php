@@ -1607,7 +1607,7 @@ class tx_templavoila_api {
 		if (!$templateObjectUid) {
 			$rootLine = t3lib_beFunc::BEgetRootLine($row['uid'],'', TRUE);
 			foreach($rootLine as $rootLineRecord) {
-				$pageRecord = t3lib_beFunc::getRecord('pages', $rootLineRecord['uid']);
+				$pageRecord = t3lib_beFunc::getRecordWSOL('pages', $rootLineRecord['uid']);
 				if (($row['uid'] != $pageRecord['uid']) && $pageRecord['tx_templavoila_next_ds'] && $pageRecord['tx_templavoila_next_to'])	{	// If there is a next-level TO:
 					$templateObjectUid = $pageRecord['tx_templavoila_next_to'];
 					break;
