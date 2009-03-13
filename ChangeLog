@@ -1,3 +1,7 @@
+2009-03-13  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #10661: "Show XML" button doesn't work (SVN rev. 17700)
+
 2009-03-09  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #10644: Links to "create" in Template Files (mod2) are broken
