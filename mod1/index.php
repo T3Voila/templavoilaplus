@@ -576,7 +576,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		} else {
 			$output.= $this->render_framework_allSheets($contentTreeData['tree'], $this->currentLanguageKey);
 		}
-
+        
 			// See http://bugs.typo3.org/view.php?id=4821
 		$renderHooks = $this->hooks_prepareObjectsArray('render_editPageScreen');
 		foreach ($renderHooks as $hookObj)	{
@@ -587,6 +587,12 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 		$output .= t3lib_BEfunc::cshItem('_MOD_web_txtemplavoilaM1', 'pagemodule', $this->doc->backPath,'<hr/>|' . $LANG->getLL('csh_whatisthetemplavoilapagemodule', 1));
 
+			// show sys_notes
+		include_once(PATH_typo3 . 'class.db_list.inc');
+		$sys_notes = recordList::showSysNotesForPage();
+		if ($sys_notes) {
+			$output .= $this->doc->section($LANG->sL('LLL:EXT:cms/layout/locallang.xml:internalNotes'), str_replace('sysext/sys_note/ext_icon.gif', $GLOBALS['BACK_PATH'] . 'sysext/sys_note/ext_icon.gif', $sys_notes), 0, 1);
+		}				
 		return $output;
 	}
 
