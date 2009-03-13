@@ -1,5 +1,6 @@
 2009-03-13  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #10643: Page and TO icons aren't shown anymore 
 	* Fixed bug #10662: CREATE/UPDATE of DS/TO in TV wizard doesn't work (SVN rev. 17700) 
 	* Fixed bug #10685: incorrect next_ds and next_to: workspace overlay missing in page module 
 	* Fixed bug #10661: "Show XML" button doesn't work (SVN rev. 17700)

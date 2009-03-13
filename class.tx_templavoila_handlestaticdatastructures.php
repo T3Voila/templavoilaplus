@@ -57,6 +57,7 @@
  */
 class tx_templavoila_handleStaticDataStructures {
 	var $prefix = 'Static: ';
+	var $iconPath = '../uploads/tx_templavoila/';
 
 	/**
 	 * Adds static data structures to selector box items arrays.
@@ -161,7 +162,6 @@ class tx_templavoila_handleStaticDataStructures {
 	public function dataSourceItemsProcFunc(array &$params, t3lib_TCEforms& $pObj) {
 		// Get all DSes
 		$dsList = $this->getDSList($params, $pObj);
-		$iconPath = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . 'uploads/tx_templavoila/';
 		$params['items'] = array(
 			array(
 				'', ''
@@ -170,7 +170,7 @@ class tx_templavoila_handleStaticDataStructures {
 		foreach ($dsList as $dsRecord) {
 			$icon = '';
 			if ($dsRecord['previewicon']) {
-				$icon = $iconPath . $dsRecord['previewicon'];
+				$icon = $this->iconPath . $dsRecord['previewicon']; 
 			}
 			$params['items'][] = array(
 				$dsRecord['title'],
@@ -221,7 +221,6 @@ class tx_templavoila_handleStaticDataStructures {
 					'uid,title,previewicon,datastructure', 'tx_templavoila_tmplobj',
 					'datastructure=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($dataSource, 'tx_templavoila_tmplobj') .
 					self::enableFields('tx_templavoila_tmplobj'));
-		$iconPath = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . 'uploads/tx_templavoila/';
 		$params['items'] = array(
 			array(
 				'', ''
@@ -231,7 +230,7 @@ class tx_templavoila_handleStaticDataStructures {
 		foreach ($rows as $row) {
 			$icon = '';
 			if ($row['previewicon']) {
-				$icon = $iconPath . $row['previewicon'];
+				$icon = $this->iconPath . $row['previewicon'];
 			}
 			$params['items'][] = array(
 				$row['title'],
@@ -262,7 +261,6 @@ class tx_templavoila_handleStaticDataStructures {
 			// Sort by DS name than by TO name
 			uksort($this->toRows, array($this, 'sortTemplateObjects'));
 			$currentDS = 0;
-			$iconPath = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . 'uploads/tx_templavoila/';
 			$params['items'] = array(
 				array(
 					'', ''
@@ -281,7 +279,7 @@ class tx_templavoila_handleStaticDataStructures {
 				// Add TO
 				$icon = '';
 				if ($row['previewicon']) {
-					$icon = $iconPath . $row['previewicon'];
+					$icon = $this->iconPath . $row['previewicon'];
 				}
 				$params['items'][] = array(
 					$row['title'],
