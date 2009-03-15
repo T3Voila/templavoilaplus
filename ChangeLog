@@ -1,3 +1,7 @@
+2009-03-15  Steffen Kamper  <info@sk-typo3.de>
+
+	* Reconstruction of page module #10697 - Step1: use debug flag for not loading minified script
+
 2009-03-13  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #10615: Show sys_notes in Page Module 
