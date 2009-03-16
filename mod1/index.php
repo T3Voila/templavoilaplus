@@ -715,7 +715,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 							: ''); 
 					}
 					$linkUnlink = $this->blindIcon('unlink', $this->icon_unlink($parentPointer));
-					#$linkDelete = $elementBelongsToCurrentPage ? $this->blindIcon(delete', $this->icon_delete($parentPointer)) : '';
+					$linkDelete = $elementBelongsToCurrentPage ? $this->blindIcon('delete', $this->icon_delete($parentPointer)) : '';
 
 					$titleBarRightButtons = $linkEdit . $linkMakeLocal . $this->clipboardObj->element_getSelectButtons($parentPointer) . $linkUnlink . $linkDelete;
 				} else {
@@ -752,11 +752,13 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		}
 
 			// Preview made:
-		$previewContent = $this->render_previewData($contentTreeArr['previewData'], $contentTreeArr['el'], $contentTreeArr['ds_meta'], $languageKey, $sheet);
+		$previewContent = '<div class="ce-preview">' . 
+							$this->render_previewData($contentTreeArr['previewData'], $contentTreeArr['el'], $contentTreeArr['ds_meta'], $languageKey, $sheet) .
+							'</div>';
 
 			// Wrap workspace notification colors:
 		if ($contentTreeArr['el']['_ORIG_uid'])	{
-			$previewContent = '<div class="ver-element">'.($previewContent ? $previewContent : '<em>[New version]</em>').'</div>';
+			$previewContent = '<div class="ver-element">' . ($previewContent ? $previewContent : '<em>[New version]</em>') . '</div>';
 		}
 
 			// Finally assemble the table:
@@ -1860,13 +1862,10 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		global $LANG;
 
 		$unlinkPointerString = rawurlencode($this->apiObj->flexform_getStringFromPointer($unlinkPointer));
-// change the links after implementation of AJAX
 		if ($realDelete) {
-#			return '<a href="javascript:'.htmlspecialchars('if (confirm(' . $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL('deleteRecordMsg')) . '))') . ' sortable_deleteRecord(\'' . $unlinkPointerString . '\');">' . $label . '</a>';
-			return '<a href="index.php?' . $this->link_getParameters() . '&amp;deleteRecord=' . $unlinkPointerString . '" onclick="' . htmlspecialchars('return confirm(' . $LANG->JScharCode($LANG->getLL('deleteRecordMsg')) . ');') . '">' . $label . '</a>';
+			return '<a class="link_delete" href="javascript:'.htmlspecialchars('if (confirm(' . $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL('deleteRecordMsg')) . '))') . ' sortable_deleteRecord(\'' . $unlinkPointerString . '\');">' . $label . '</a>';
 		} else {
-#			return '<a href="javascript:'.htmlspecialchars('if (confirm(' . $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL('unlinkRecordMsg')) . '))') . ' sortable_unlinkRecord(\'' . $unlinkPointerString . '\');" class="onoff">' . $label . '</a>';
-			return '<a href="index.php?' . $this->link_getParameters() . '&amp;unlinkRecord=' . $unlinkPointerString . '" onclick="' . htmlspecialchars('return confirm(' . $LANG->JScharCode($LANG->getLL('unlinkRecordMsg')) . ');') . '">' . $label . '</a>';
+			return '<a class="link_unlink" href="javascript:'.htmlspecialchars('if (confirm(' . $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL('unlinkRecordMsg')) . '))') . ' sortable_unlinkRecord(\'' . $unlinkPointerString . '\');" class="onoff">' . $label . '</a>';
 		}
 	}
 

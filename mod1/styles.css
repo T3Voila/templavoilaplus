@@ -30,6 +30,16 @@ table.tv-coe tr.sortable_handle + tr td >     img.bottom {
 	margin: 1px;
 }
 
-table#clipboard a.link_new {
+table.tv-coe a.link_delete {
+	display: none;
+}
+table#clipboard table.tv-coe a.link_delete {
+	display: inline;
+}
+table#clipboard a.link_new, table#clipboard a.link_unlink {
+	display: none;
+}
+
+table#clipboard .ce-preview {
 	display: none;
 }

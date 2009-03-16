@@ -358,6 +358,8 @@ class tx_templavoila_mod1_clipboard {
 			$elementRows[] = $cellFragment;
 		}
 
+		$renderedElements = '';
+		
 		if (count ($elementRows)) {
 
 				// Control for deleting all deleteable records:
@@ -373,32 +375,35 @@ class tx_templavoila_mod1_clipboard {
 						htmlspecialchars($label).
 						'</a>';
 			}
-
-			
-			$groupElementPointer = array (
+            
+			$renderedElements = implode('', $elementRows);
+		   
+		}
+		
+		$groupElementPointer = array (
 				'table' => 'tt_content'
-			);
+		);
 
-			 if ($this->pObj->apiObj) {
-				$cellId = $this->pObj->apiObj->flexform_getStringFromPointer($groupElementPointer);
-				$this->pObj->sortableContainers[] = $cellId;
-			}
+		 if ($this->pObj->apiObj) {
+			$cellId = $this->pObj->apiObj->flexform_getStringFromPointer($groupElementPointer);
+			$this->pObj->sortableContainers[] = $cellId;
+		}
 			
-				// Create table and header cell:
-			$output = '
+			// Create table and header cell:
+		$output = '
 				<table border="0" cellpadding="0" cellspacing="1" width="100%" class="tv-container tv-clipboard lrPadding" id="clipboard">
 					<tr class="bgColor4-20">
 						<td>' . $LANG->getLL('inititemno_elementsNotBeingUsed','1') . ':</td>
 					</tr>
 					<tr class="bgColor5">
 						<td style="padding: 5px; border: 1px dashed #000000;" id="' . $cellId . '">'.
-							implode('', $elementRows).
+							$renderedElements .
 						'</td>
 					</tr>
 				</table>
 				<br />
 			';
-		}
+			
 		return $output;
 
 	}
@@ -440,7 +445,8 @@ class tx_templavoila_mod1_clipboard {
 				'uid'   => $row['uid']
 			);
 
-			return $this->pObj->blindIcon('delete', $this->pObj->icon_delete($deletePointer));
+			return $this->pObj->blindIcon('unlink', $this->pObj->icon_unlink($deletePointer)) .
+				   $this->pObj->blindIcon('delete', $this->pObj->icon_delete($deletePointer));
 		} else {
 			return '';
 		}

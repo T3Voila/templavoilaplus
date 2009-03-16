@@ -31,6 +31,17 @@ function sortable_unlinkRecordCallBack(obj) {
 	var pn = el.parentNode;
 	pn.removeChild(el);
 	sortable_update(pn);
+	
+	if (el.innerHTML.match(/makeLocalRecord/))
+		return;
+	if (!(pn = document.getElementById('tt_content:')))
+		return;
+
+	pn.appendChild(el);
+	sortable_update(pn);
+
+	new Effect.Appear(el,
+		{ duration: 0.5 });
 }
 
 function sortable_unlinkRecord(id) {
@@ -39,6 +50,23 @@ function sortable_unlinkRecord(id) {
 		{ duration: 0.5,
 		afterFinish: sortable_unlinkRecordCallBack });
 }
+
+function sortable_deleteRecordCallBack(obj) {
+	var el = obj.element;
+	var pn = el.parentNode;
+
+	pn.removeChild(el);
+	sortable_update(pn);
+}
+
+function sortable_deleteRecord(id) {
+	new Ajax.Request(sortable_baseLink + "&ajaxDeleteRecord=" + escape(id));
+	new Effect.Fade(id,
+		{ duration: 0.5,
+		  afterFinish: sortable_deleteRecordCallBack });
+}
+
+
 
 function sortable_updateItemButtons(el, position, pID) {
 	var p	= new Array();	var p1 = new Array();

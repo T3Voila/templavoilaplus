@@ -1,5 +1,6 @@
 2009-03-16  Steffen Kamper  <info@sk-typo3.de>
 
+	* Reconstruction of page module #10697 - Step5: unlink/delete with ajax, little optimizations
 	* Reconstruction of page module #10697 - Step4: render "unused elements" like normal elements, drag&drop between unused elements and content area
 	* Reconstruction of page module #10697 - Step3: changes to link functions, usage of link function, blind option for icons, hook for additional icons, new "unlink"-icon, added stylesheet
 	* Reconstruction of page module #10697 - Step2: complete the link helper functions
