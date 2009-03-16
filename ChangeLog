@@ -1,5 +1,6 @@
 2009-03-16  Steffen Kamper  <info@sk-typo3.de>
 
+	* Reconstruction of page module #10697 - Step3: changes to link functions, usage of link function, blind option for icons, hook for additional icons, new "unlink"-icon, added stylesheet
 	* Reconstruction of page module #10697 - Step2: complete the link helper functions
 
 2009-03-15  Steffen Kamper  <info@sk-typo3.de>

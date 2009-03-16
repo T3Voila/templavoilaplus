@@ -396,6 +396,9 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			$this->doc->JScode .= $this->doc->getDynTabMenuJScode();
 			$this->doc->JScode .= $this->modTSconfig['properties']['sideBarEnable'] ? $this->sideBarObj->getJScode() : '';
 
+				// Add custom styles
+			$this->doc->styleSheetFile2 = t3lib_extMgm::extRelPath($this->extKey)."mod1/styles.css";
+			
 				// Setting up support for context menus (when clicking the items icon)
 			$CMparts = $this->doc->getContextMenuCode();
 			$this->doc->bodyTagAdditions = $CMparts[1];
@@ -685,14 +688,13 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		switch ($contentTreeArr['el']['table']) {
 
 			case 'pages' :
-
-				$titleBarLeftButtons .= $this->translatorMode || !$canEditPage ? '' : $this->link_edit('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/edit2.gif','').' title="'.htmlspecialchars($LANG->sL('LLL:EXT:lang/locallang_mod_web_list.xml:editPage')).'" alt="" style="text-align: center; vertical-align: middle; border:0;" />',$contentTreeArr['el']['table'],$contentTreeArr['el']['uid']);
+                $titleBarLeftButtons .= $this->translatorMode || !$canEditPage ? '' :
+					$this->blindIcon('pages.titleBar.editPage', $this->icon_edit($contentTreeArr['el'])) .
+					#$this->blindIcon('pages.titleBar.hidePage', $this->icon_hide($contentTreeArr['el'])) .
+					$this->blindIcon('pages.titleBar.viewPage', $this->icon_view($contentTreeArr['el'])) .
+					$this->additionalIconHook('pagesTitleBar');
 				$titleBarRightButtons = '';
-
-				$addGetVars = ($this->currentLanguageUid?'&L='.$this->currentLanguageUid:'');
-				$viewPageOnClick = 'onclick= "'.htmlspecialchars(t3lib_BEfunc::viewOnClick($contentTreeArr['el']['uid'], $this->doc->backPath, t3lib_BEfunc::BEgetRootLine($contentTreeArr['el']['uid']),'','',$addGetVars)).'"';
-				$viewPageIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/zoom.gif','width="12" height="12"').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.xml:labels.showPage',1).'" hspace="3" alt="" style="text-align: center; vertical-align: middle;" />';
-				$titleBarLeftButtons .= '<a href="#" '.$viewPageOnClick.'>'.$viewPageIcon.'</a>';
+				
 			break;
 
 			case 'tt_content' :
@@ -704,19 +706,19 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 				if (!$this->translatorMode && $canEditContent) {
 						// Create CE specific buttons:
-					$linkMakeLocal = !$elementBelongsToCurrentPage ? $this->link_makeLocal('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,t3lib_extMgm::extRelPath('templavoila').'mod1/makelocalcopy.gif','').' title="'.$LANG->getLL('makeLocal').'" border="0" alt="" />', $parentPointer) : '';
-					$linkUnlink = $this->link_unlink('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/garbage.gif','').' title="'.$LANG->getLL('unlinkRecord').'" border="0" alt="" />', $parentPointer, FALSE);
+					$linkMakeLocal = $this->blindIcon('tt_content.titleBar.makeLocal', $this->icon_makeLocal($parentPointer, !$elementBelongsToCurrentPage));
+					$linkEdit = ''; 
 					if ($GLOBALS['BE_USER']->recordEditAccessInternals('tt_content', $contentTreeArr['previewData']['fullRow'])) {
-						$linkEdit = ($elementBelongsToCurrentPage ? $this->link_edit('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/edit2.gif','').' title="'.$LANG->getLL('editrecord').'" border="0" alt="" />',$contentTreeArr['el']['table'],$contentTreeArr['el']['uid']) : '');
-						$linkHide = $this->icon_hide($contentTreeArr['el']);
-						
+						$linkEdit = ($elementBelongsToCurrentPage ?
+								$this->blindIcon('tt_content.titleBar.edit', $this->icon_edit($contentTreeArr['el'])) .
+								$this->blindIcon('tt_content.titleBar.hide', $this->icon_hide($contentTreeArr['el'])) 
+							: ''); 
 					}
-					else {
-						$linkEdit = $linkHide = '';
-					}
-					$titleBarRightButtons = $linkEdit . $linkHide . $this->clipboardObj->element_getSelectButtons($parentPointer) . $linkMakeLocal . $linkUnlink;
-				}
-				else {
+					$linkUnlink = $this->blindIcon('tt_content.titleBar.unlink', $this->icon_unlink($parentPointer));
+					#$linkDelete = $elementBelongsToCurrentPage ? $this->blindIcon('tt_content.titleBar.delete', $this->icon_delete($parentPointer)) : '';
+
+					$titleBarRightButtons = $linkEdit . $linkMakeLocal . $this->clipboardObj->element_getSelectButtons($parentPointer) . $linkUnlink . $linkDelete;
+				} else {
 					$titleBarRightButtons = $this->clipboardObj->element_getSelectButtons($parentPointer, 'copy');
 				}
 			break;
@@ -760,7 +762,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			// Finally assemble the table:
 		$finalContent =
 			(!$this->translatorMode && $canCreateNew ? '<div class="sortableItem" id="' . $this->apiObj->flexform_getStringFromPointer($parentPointer) . '">' : '') . '
-			<table cellpadding="0" cellspacing="0" style="width: 100%; border: 1px solid black; margin-bottom:5px;">
+			<table cellpadding="0" cellspacing="0" width="100%" class="tv-coe">
 				<tr style="' . $elementTitlebarStyle . ';" class="sortable_handle">
 					<td style="vertical-align:top;">' .
 						'<span class="nobr">' .
@@ -770,14 +772,21 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 						'</span>' .
 						$warnings .
 					'</td>
-					<td nowrap="nowrap" style="text-align:right; vertical-align:top;">' .
+					<td nowrap="nowrap" class="sortableButtons">' .
 						$titleBarRightButtons .
 					'</td>
 				</tr>
 				<tr>
 					<td colspan="2">' .
-						$this->render_framework_subElements($contentTreeArr, $languageKey, $sheet) .
-						$previewContent .
+						#$this->render_framework_subElements($contentTreeArr, $languageKey, $sheet) .
+						#$previewContent .
+						#$this->render_localizationInfoTable($contentTreeArr, $parentPointer, $parentDsMeta) .
+						(is_array($contentTreeArr['previewData']['fullRow'])
+						&&	  $contentTreeArr['el']['table'] == 'tt_content'
+						&&	  $contentTreeArr['el']['CType'] != 'templavoila_pi1'
+						?	$previewContent
+						:	$this->render_framework_subElements($contentTreeArr, $languageKey, $sheet)
+						) .	
 						$this->render_localizationInfoTable($contentTreeArr, $parentPointer, $parentDsMeta) .
 					'</td>
 				</tr>
@@ -827,6 +836,10 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				// no layout, no special rendering
 		$flagRenderBeLayout = $beTemplate? TRUE : FALSE;
 
+			// some constants
+		$haspreview = is_array($previews = $elementContentTreeArr['previewData']['sheets'][$sheet]);
+		$hassubs = is_array($elementContentTreeArr['sub'][$sheet]) && is_array($subs = $elementContentTreeArr['sub'][$sheet][$lKey]);
+		
 			// Traverse container fields:
 		foreach($elementContentTreeArr['sub'][$sheet][$lKey] as $fieldID => $fieldValuesContent)	{
 			if ($elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['isMapped'] && is_array($fieldValuesContent[$vKey]))	{
@@ -1808,33 +1821,31 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * Returns an HTML link for unlinking a content element. Unlinking means that the record still exists but
 	 * is not connected to any other content element or page.
 	 *
-	 * @param	string		$label: The label
 	 * @param	array		$unlinkPointer: Flexform pointer pointing to the element to be unlinked
-	 * @param	boolean		$realDelete: If set, the record is not just unlinked but deleted!
 	 * @return	string		HTML anchor tag containing the icon and the unlink-link
 	 * @access protected
 	 */
-	function icon_unlink($unlinkPointer, $realDelete=0) {
+	function icon_unlink($unlinkPointer) {
 		global $LANG;
 
-		$deleteIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/garbage.gif','').' title="'.$LANG->getLL('deleteRecord').'" border="0" alt="" />';
-		$unlinkIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath, t3lib_extMgm::extRelPath('templavoila') . 'mod1/unlink.png','').' title="'.$LANG->getLL('unlinkRecord').'" border="0" alt="" />';
-		$emptyIcon  = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/clear.gif','width="16" height="16"').' title="" border="0" alt="" />';
+		$unlinkIcon = '<img' . t3lib_iconWorks::skinImg($this->doc->backPath, t3lib_extMgm::extRelPath('templavoila') . 'mod1/unlink.png', '') . ' title="' . $LANG->getLL('unlinkRecord') . '" border="0" alt="" />';
+		return $this->link_unlink($unlinkIcon, $unlinkPointer, FALSE);
+				   
+	}
+	
+	/**
+	 * Returns an HTML link for deleting a content element. 
+	 *
+	 * @param	array		$deletePointer: Flexform pointer pointing to the element to be deleted
+	 * @return	string		HTML anchor tag containing the icon and the delete-link
+	 * @access protected
+	 */
+	function icon_delete($deletePointer) {
+		global $LANG;
 
-		if ($realDelete == 2) {
-			return str_replace('<a ', '<a style="visibility: hidden;" ',
-				   $this->link_unlink($unlinkIcon, $unlinkPointer, FALSE)) .
-				   $this->link_unlink($deleteIcon, $unlinkPointer, TRUE);
-		}
-		else if ($realDelete == 1) {
-			return $this->link_unlink($unlinkIcon, $unlinkPointer, FALSE) .
-				   $this->link_unlink($deleteIcon, $unlinkPointer, TRUE);
-		}
-		else {
-			return $this->link_unlink($unlinkIcon, $unlinkPointer, FALSE) .
-				   str_replace('<a ', '<a style="visibility: hidden;" ',
-				   $this->link_unlink($deleteIcon, $unlinkPointer, TRUE));
-		}
+		$deleteIcon = '<img' . t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/garbage.gif', '') . ' title="'.$LANG->getLL('deleteRecord') . '" border="0" alt="" />';
+		return $this->link_unlink($deleteIcon, $deletePointer, TRUE);
+		
 	}
 	
 	/**
@@ -1854,10 +1865,10 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 // change the links after implementation of AJAX
 		if ($realDelete) {
 #			return '<a href="javascript:'.htmlspecialchars('if (confirm(' . $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL('deleteRecordMsg')) . '))') . ' sortable_deleteRecord(\'' . $unlinkPointerString . '\');">' . $label . '</a>';
-			return '<a href="' . $this->baseScript.$this->link_getParameters() . '&amp;deleteRecord=' . $unlinkPointerString . '" onclick="' . htmlspecialchars('return confirm(' . $LANG->JScharCode($LANG->getLL('deleteRecordMsg')) . ');') . '">' . $label . '</a>';
+			return '<a href="index.php?' . $this->link_getParameters() . '&amp;deleteRecord=' . $unlinkPointerString . '" onclick="' . htmlspecialchars('return confirm(' . $LANG->JScharCode($LANG->getLL('deleteRecordMsg')) . ');') . '">' . $label . '</a>';
 		} else {
 #			return '<a href="javascript:'.htmlspecialchars('if (confirm(' . $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL('unlinkRecordMsg')) . '))') . ' sortable_unlinkRecord(\'' . $unlinkPointerString . '\');" class="onoff">' . $label . '</a>';
-			return '<a href="' . $this->baseScript.$this->link_getParameters() . '&amp;unlinkRecord=' . $unlinkPointerString . '" onclick="' . htmlspecialchars('return confirm(' . $LANG->JScharCode($LANG->getLL('unlinkRecordMsg')) . ');') . '">' . $label . '</a>';
+			return '<a href="index.php?' . $this->link_getParameters() . '&amp;unlinkRecord=' . $unlinkPointerString . '" onclick="' . htmlspecialchars('return confirm(' . $LANG->JScharCode($LANG->getLL('unlinkRecordMsg')) . ');') . '">' . $label . '</a>';
 		}
 	}
 
@@ -1945,14 +1956,45 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			'setFormValueOpenBrowser(\'db\',\'browser[communication]|||tt_content\');' .
 			'return false;';
 
-		return '<a href="#" id="' . $this->baseScript . $parameters . '" onclick="' . $browser . '">' . $label . '</a>';
+		return '<a href="#" id="' . $parameters . '" onclick="' . $browser . '">' . $label . '</a>';
 	}
 
 	
+	/*************************************************
+	 *
+	 * User setting specific functions (protected)
+	 *
+	 *************************************************/
 	
+	/**
+	* Compare with mod setting if icon is blinded
+	* 
+	* @param	string	$setting: name of icon setting
+	* @param	string	$code: HTML of icon code
+	* @return	string	return $code if not blinded
+	* @access protected 
+	*/
+	function blindIcon($setting, $code) {
+	    return isset($this->modTSconfig['properties']['blindIcon'][$setting]) && $this->modTSconfig['properties']['blindIcon'][$setting] == 1 ? '' : $code;
+	}
 	
-	
-	
+	/**
+	* general hooks for additional icons
+	* 
+	* @param	string	$hookName: name of specific icon hook
+	* @return	string	return HTML of hook
+	* @access protected 
+	*/
+    function additionalIconHook($hookName) {
+    	$html = '';
+    	$iconHooks = $this->hooks_prepareObjectsArray('additionalIcons');
+		foreach ($iconHooks as $hookObj) {
+			if (method_exists ($hookObj, 'additionalIcons')) {
+				$html .= $hookObj->additionalIcons ($hookName, $this);
+			}
+		}
+		return $html;
+    }	
 
 	/*************************************************
 	 *

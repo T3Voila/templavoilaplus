@@ -1,0 +1,35 @@
+
+table.tv-coe {
+	border: 1px solid black;
+	margin-bottom: 5px;
+}
+
+table.tv-coe tr.sortable_handle > td {
+	vertical-align: top;
+}
+
+table.tv-coe tr.sortable_handle > td + td {
+	text-align: right;
+}
+
+table.tv-coe tr.sortable_handle > td + td > a:firstChild {
+	text-decoration: none;
+}
+
+table.tv-coe tr.sortable_handle > td > span.nobr >     img,
+table.tv-coe tr.sortable_handle > td > span.nobr > a > img {
+	text-align: center;
+	vertical-align: middle;
+	margin: 1px;
+}
+
+table.tv-coe tr.sortable_handle + tr td > a > img.bottom,
+table.tv-coe tr.sortable_handle + tr td >     img.bottom {
+	text-align: center;
+	vertical-align: bottom;
+	margin: 1px;
+}
+
+table#clipboard a.link_new {
+	display: none;
+}
