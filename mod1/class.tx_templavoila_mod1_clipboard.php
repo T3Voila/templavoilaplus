@@ -246,6 +246,10 @@ class tx_templavoila_mod1_clipboard {
 	function sidebar_renderNonUsedElements() {
 		global $LANG, $TYPO3_DB, $BE_USER;
 
+		$canCreateNew   = $GLOBALS['BE_USER']->isPSet($this->pObj->calcPerms, 'pages', 'new');
+		$canEditPage    = $GLOBALS['BE_USER']->isPSet($this->pObj->calcPerms, 'pages', 'edit');
+		$canEditContent = $GLOBALS['BE_USER']->isPSet($this->pObj->calcPerms, 'pages', 'editcontent');
+		
 		$output = '';
 		$elementRows = array();
 		$usedUids = array_keys($this->pObj->global_tt_content_elementRegister);
@@ -266,8 +270,13 @@ class tx_templavoila_mod1_clipboard {
 
 		$this->deleteUids = array();	// Used to collect all those tt_content uids with no references which can be deleted
 		while(false !== ($row = $TYPO3_DB->sql_fetch_assoc($res)))	{
-			$elementPointerString = 'tt_content:'.$row['uid'];
-
+			$elementPointerString = 'tt_content:' . $row['uid'];
+            $elementTitlebarColor = $this->doc->bgColor5;
+			$elementTitlebarStyle = 'background-color: '  .$elementTitlebarColor;
+			
+			$ceHeader = $row['header'] ? $row['header'] : '[' . $LANG->sL('LLL:EXT:lang/locallang_core.xml:labels.no_title', 1) . ']';
+			$elementTitle = htmlspecialchars(' ' . t3lib_div::fixed_lgd_cs(trim(strip_tags($ceHeader . ($ceHeader && $row['bodytext'] ? ' - ' : '') . $row['bodytext'])), 100));
+			
 				// Prepare the language icon:
 			$languageLabel = htmlspecialchars ($this->pObj->allAvailableLanguages[$row['sys_language_uid']]['title']);
 			$languageIcon = $this->pObj->allAvailableLanguages[$row['sys_language_uid']]['flagIcon'] ? '<img src="'.$this->pObj->allAvailableLanguages[$row['sys_language_uid']]['flagIcon'].'" title="'.$languageLabel.'" alt="'.$languageLabel.'"  />' : ($languageLabel && $row['sys_language_uid'] ? '['.$languageLabel.']' : '');
@@ -277,8 +286,27 @@ class tx_templavoila_mod1_clipboard {
 			$recordIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath, t3lib_iconWorks::getIcon('tt_content', $row),'').' width="18" height="16" border="0" title="[tt_content:'.$row['uid'].'" alt="" />';
 			$recordButton = $this->pObj->doc->wrapClickMenuOnIcon($recordIcon, 'tt_content', $row['uid'], 1, '&callingScriptId='.rawurlencode($this->pObj->doc->scriptID), 'new,copy,cut,pasteinto,pasteafter,delete');
 
+            $titleBarLeftButtons =  $recordButton;
+            $element = array(
+            	'table' => 'tt_content',
+            	'uid' => $row['uid'],
+            	'isHidden' => $row['hidden']
+            );
+			
+			if (!$this->pObj->translatorMode && $canEditContent) {
+				$linkEdit = $this->pObj->blindIcon('edit', $this->pObj->icon_edit($element));
+				$linkHide = $this->pObj->blindIcon('hide', $this->pObj->icon_hide($element));
 
+				$copyButton = $this->element_getSelectButtons($elementPointerString, 'copy');
+				$refButton  = $this->element_getSelectButtons($elementPointerString, 'ref');
+				$cutButton  = $this->element_getSelectButtons($elementPointerString, 'cut');
 
+				$titleBarRightButtons = $linkEdit . $linkHide . $copyButton . $refButton . $cutButton . $this->renderReferenceCount($row['uid']);
+			}
+			else {
+				$titleBarRightButtons = '';
+			}
+            /*
 			$elementRows[] = '
 				<tr class="bgColor4">
 					<td style="width:1%">'.
@@ -291,6 +319,43 @@ class tx_templavoila_mod1_clipboard {
 					</td>
 				</tr>
 			';
+			*/
+				// Create flexform pointer pointing to "before the first sub element":
+			$subElementPointer = array (
+				'table' => 'tt_content',
+				'uid'   => $row['uid']
+			);
+			
+				// Finally assemble the table:
+			$cellFragment = '
+				<table cellpadding="0" cellspacing="0" width="100%" class="tv-coe">
+					<tr style="'.$elementTitlebarStyle.';" class="sortable_handle">
+						<td>
+							<span class="nobr">'.
+							$languageIcon .
+							$titleBarLeftButtons .
+							$elementTitle .
+							'</span>
+						</td>
+						<td nowrap="nowrap" class="sortableButtons">'.
+							$titleBarRightButtons.
+						'</td>
+					</tr>
+				</table>
+			';
+			
+			if (!$this->pObj->translatorMode && $canCreateNew)	{
+				$cellFragment .= $this->pObj->icon_new($subElementPointer);
+			}
+			
+			$cellFragment .= '<span class="sortablePaste">' . $this->element_getPasteButtons($subElementPointer) . '</span>';
+
+			if ($this->pObj->apiObj) {
+				$cellId = $this->pObj->apiObj->flexform_getStringFromPointer($subElementPointer);
+				$cellFragment = '<div class="sortableItem" id="' . $cellId . '">' . $cellFragment . '</div>';
+			}
+			
+			$elementRows[] = $cellFragment;
 		}
 
 		if (count ($elementRows)) {
@@ -309,17 +374,29 @@ class tx_templavoila_mod1_clipboard {
 						'</a>';
 			}
 
+			
+			$groupElementPointer = array (
+				'table' => 'tt_content'
+			);
+
+			 if ($this->pObj->apiObj) {
+				$cellId = $this->pObj->apiObj->flexform_getStringFromPointer($groupElementPointer);
+				$this->pObj->sortableContainers[] = $cellId;
+			}
+			
 				// Create table and header cell:
 			$output = '
-				<table border="0" cellpadding="0" cellspacing="1" width="100%" class="lrPadding">
+				<table border="0" cellpadding="0" cellspacing="1" width="100%" class="tv-container tv-clipboard lrPadding" id="clipboard">
 					<tr class="bgColor4-20">
-						<td colspan="5">'.$LANG->getLL('inititemno_elementsNotBeingUsed','1').':</td>
+						<td>' . $LANG->getLL('inititemno_elementsNotBeingUsed','1') . ':</td>
 					</tr>
-					'.implode('',$elementRows).'
-					<tr class="bgColor4">
-						<td colspan="5">'.$deleteAll.'</td>
+					<tr class="bgColor5">
+						<td style="padding: 5px; border: 1px dashed #000000;" id="' . $cellId . '">'.
+							implode('', $elementRows).
+						'</td>
 					</tr>
 				</table>
+				<br />
 			';
 		}
 		return $output;
@@ -357,10 +434,13 @@ class tx_templavoila_mod1_clipboard {
 			return '<a href="#" onclick="'.htmlspecialchars('top.launchView(\'tt_content\', \''.$uid.'\'); return false;').'" title="'.htmlspecialchars(t3lib_div::fixed_lgd_cs(implode(' / ',$infoData),100)).'">Ref: '.count($infoData).'</a>';
 		} elseif (0===$BE_USER->workspace) {
 			$this->deleteUids[] = $uid;
-			$params = '&cmd[tt_content]['.$uid.'][delete]=1';
-			return '<a href="#" onclick="'.htmlspecialchars('jumpToUrl(\''.$this->doc->issueCommand($params,'').'\');').'">'.
-					'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/garbage.gif','width="11" height="12"').' title="'.$LANG->getLL('renderreferencecount_delete',1).'" alt="" />'.
-					'</a>';
+					// Create flexform pointer pointing to "before the first sub element":
+			$deletePointer = array (
+				'table' => 'tt_content',
+				'uid'   => $row['uid']
+			);
+
+			return $this->pObj->blindIcon('delete', $this->pObj->icon_delete($deletePointer));
 		} else {
 			return '';
 		}

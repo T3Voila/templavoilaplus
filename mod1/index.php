@@ -689,9 +689,9 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 			case 'pages' :
                 $titleBarLeftButtons .= $this->translatorMode || !$canEditPage ? '' :
-					$this->blindIcon('pages.titleBar.editPage', $this->icon_edit($contentTreeArr['el'])) .
+					$this->blindIcon('editPage', $this->icon_edit($contentTreeArr['el'])) .
 					#$this->blindIcon('pages.titleBar.hidePage', $this->icon_hide($contentTreeArr['el'])) .
-					$this->blindIcon('pages.titleBar.viewPage', $this->icon_view($contentTreeArr['el'])) .
+					$this->blindIcon('viewPage', $this->icon_view($contentTreeArr['el'])) .
 					$this->additionalIconHook('pagesTitleBar');
 				$titleBarRightButtons = '';
 				
@@ -700,7 +700,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			case 'tt_content' :
 
 				$elementTitlebarColor = ($elementBelongsToCurrentPage ? $this->doc->bgColor5 : $this->doc->bgColor6);
-				$elementTitlebarStyle = 'background-color: '.$elementTitlebarColor;
+				$elementTitlebarStyle = 'background-color: ' . $elementTitlebarColor;
 
 				$languageUid = $contentTreeArr['el']['sys_language_uid'];
 
@@ -710,12 +710,12 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 					$linkEdit = ''; 
 					if ($GLOBALS['BE_USER']->recordEditAccessInternals('tt_content', $contentTreeArr['previewData']['fullRow'])) {
 						$linkEdit = ($elementBelongsToCurrentPage ?
-								$this->blindIcon('tt_content.titleBar.edit', $this->icon_edit($contentTreeArr['el'])) .
-								$this->blindIcon('tt_content.titleBar.hide', $this->icon_hide($contentTreeArr['el'])) 
+								$this->blindIcon('edit', $this->icon_edit($contentTreeArr['el'])) .
+								$this->blindIcon('hide', $this->icon_hide($contentTreeArr['el'])) 
 							: ''); 
 					}
-					$linkUnlink = $this->blindIcon('tt_content.titleBar.unlink', $this->icon_unlink($parentPointer));
-					#$linkDelete = $elementBelongsToCurrentPage ? $this->blindIcon('tt_content.titleBar.delete', $this->icon_delete($parentPointer)) : '';
+					$linkUnlink = $this->blindIcon('unlink', $this->icon_unlink($parentPointer));
+					#$linkDelete = $elementBelongsToCurrentPage ? $this->blindIcon(delete', $this->icon_delete($parentPointer)) : '';
 
 					$titleBarRightButtons = $linkEdit . $linkMakeLocal . $this->clipboardObj->element_getSelectButtons($parentPointer) . $linkUnlink . $linkDelete;
 				} else {
@@ -1811,10 +1811,8 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 */
 	function link_new($label, $parentPointer)	{
 
-		$parameters =
-			$this->link_getParameters().
-			'&amp;parentRecord='.rawurlencode($this->apiObj->flexform_getStringFromPointer($parentPointer));
-		return '<a href="'.'db_new_content_el.php?'.$parameters.'">'.$label.'</a>';
+		$parameters = $this->link_getParameters() . '&parentRecord=' . rawurlencode($this->apiObj->flexform_getStringFromPointer($parentPointer));
+		return '<a class="link_new" href="' . 'db_new_content_el.php?' . $parameters . '">' . $label . '</a>';
 	}
 
 	/**
