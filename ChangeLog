@@ -1,3 +1,7 @@
+2009-03-16  Steffen Kamper  <info@sk-typo3.de>
+
+	* Reconstruction of page module #10697 - Step2: complete the link helper functions
+
 2009-03-15  Steffen Kamper  <info@sk-typo3.de>
 
 	* Reconstruction of page module #10697 - Step1: use debug flag for not loading minified script

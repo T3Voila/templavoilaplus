@@ -1631,7 +1631,25 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 *
 	 *******************************************/
 
-	 
+	 /**
+	 * Returns an HTML link for editing with edit icon
+	 *
+	 * @param	array		$el: array with following entries: $el['table'], $el['uid']
+	 * @return	string		HTML anchor tag containing edit icon and the correct link
+	 * @access protected
+	 */
+	function icon_edit($el) {
+		global $LANG;
+
+		$editIcon = ($el['table'] == 'pages'
+		?	'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/edit2.gif','').' border="0" title="'.htmlspecialchars($LANG->sL('LLL:EXT:lang/locallang_mod_web_list.xml:editPage')).'" alt="" />'
+		:	'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/edit2.gif','').' border="0" title="'.htmlspecialchars($LANG->sL('LLL:EXT:lang/locallang_mod_web_list.xml:edit')).'" alt="" />');
+
+		$label = $editIcon;
+
+		return $this->link_edit($label, $el['table'], $el['uid']);
+	}
+	
 	/**
 	 * Returns an HTML link for editing
 	 *
@@ -1660,14 +1678,43 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		return '';
 	}
 
+	
 	/**
-	 * Returns an HTML link for hiding
+	 * Returns an HTML link for view with view icon
+	 *
+	 * @param	array		$el: array with following entries: $el['table'], $el['uid'] 
+	 * @return	string		HTML anchor tag containing view icon and the correct link
+	 * @access protected
+	 */
+	function icon_view($el) {
+		global $LANG;
+
+		$viewPageIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/zoom.gif','width="12" height="12"').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.xml:labels.showPage',1).'" alt="" />';
+
+		$label = $viewPageIcon;
+
+		return $this->link_view($label, $el['table'], $el['uid']);
+	}
+
+	/**
+	 * Returns an HTML link for view
 	 *
 	 * @param	string		$label: The label (or image)
 	 * @param	string		$table: The table, fx. 'tt_content'
-	 * @param	integer		$uid: The uid of the element to be hidden/unhidden
-	 * @param	boolean		$forced: By default the link is not shown if translatorMode is set, but with this boolean it can be forced anyway.
+	 * @param	integer		$uid: The uid of the element to be viewed
 	 * @return	string		HTML anchor tag containing the label and the correct link
+	 */
+	function link_view($label, $table, $uid) {
+		$onClick = t3lib_BEfunc::viewOnClick($uid, $this->doc->backPath, t3lib_BEfunc::BEgetRootLine($uid),'','',($this->currentLanguageUid?'&L='.$this->currentLanguageUid:''));
+
+		return '<a href="#" onclick="'.htmlspecialchars($onClick).'">'.$label.'</a>';
+	}
+	
+	/**
+	 * Returns an HTML link for viewing with hide icon
+	 *
+	 * @param	array		$el: array with following entries: $el['table'], $el['uid']
+	 * @return	string		HTML anchor tag containing hide/unhide icon and the correct link
 	 * @access protected
 	 */
 	function icon_hide($el) {
@@ -1689,14 +1736,13 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	}
 	
 	/**
-	 * [Describe function...]
+	 * Returns an HTML link for hide
 	 *
-	 * @param	[type]		$label: ...
-	 * @param	[type]		$table: ...
-	 * @param	[type]		$uid: ...
-	 * @param	[type]		$hidden: ...
-	 * @param	[type]		$forced: ...
-	 * @return	[type]		...
+	 * @param	string		$label: The label (or image)
+	 * @param	string		$table: The table, fx. 'tt_content'
+	 * @param	integer		$uid: The uid of the element to be viewed
+	 * @param	boolean		$forced: If set return the link always
+	 * @return	string		HTML anchor tag containing the label and the correct link
 	 */
 	function link_hide($label, $table, $uid, $hidden, $forced=FALSE) {
 		if ($label) {
@@ -1705,10 +1751,8 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				(!$this->translatorMode || $forced))	{
 					if ($table == "pages" && $this->currentLanguageUid) {
 						$params = '&data['.$table.']['.$uid.'][hidden]=' . (1 - $hidden);
-					//	return '<a href="#" onclick="' . htmlspecialchars('return jumpToUrl(\'' . $GLOBALS['SOBE']->doc->issueCommand($params, -1) . '\');') . '">'.$label.'</a>';
 					} else {
 						$params = '&data['.$table.']['.$uid.'][hidden]=' . (1 - $hidden);
-					//	return '<a href="#" onclick="' . htmlspecialchars('return jumpToUrl(\'' . $GLOBALS['SOBE']->doc->issueCommand($params, -1) . '\');') . '">'.$label.'</a>';
 
 						/* the commands are indipendent of the position,
 						 * so sortable doesn't need to update these and we
@@ -1725,6 +1769,25 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		}
 		return '';
 	}
+	
+	/**
+	 * Returns an HTML link for creating a new record with create icon
+	 *
+	 * @param	string		$label: The label (or image)
+	 * @param	array		$parentPointer: Flexform pointer defining the parent element of the new record
+	 * @return	string		HTML anchor tag containing the label and the correct link
+	 * @access protected
+	 */
+	function icon_new($parentPointer) {
+		global $LANG;
+
+		$newIcon = '<img class="new"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/new_el.gif','').' border="0" title="'.$LANG->sL('LLL:EXT:lang/locallang_mod_web_list.xml:newRecordGeneral').'" alt="" />';
+
+		$label = $newIcon;
+
+		return $this->link_new($label, $parentPointer);
+	}
+	
 	/**
 	 * Returns an HTML link for creating a new record
 	 *
@@ -1748,20 +1811,78 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * @param	string		$label: The label
 	 * @param	array		$unlinkPointer: Flexform pointer pointing to the element to be unlinked
 	 * @param	boolean		$realDelete: If set, the record is not just unlinked but deleted!
+	 * @return	string		HTML anchor tag containing the icon and the unlink-link
+	 * @access protected
+	 */
+	function icon_unlink($unlinkPointer, $realDelete=0) {
+		global $LANG;
+
+		$deleteIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/garbage.gif','').' title="'.$LANG->getLL('deleteRecord').'" border="0" alt="" />';
+		$unlinkIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath, t3lib_extMgm::extRelPath('templavoila') . 'mod1/unlink.png','').' title="'.$LANG->getLL('unlinkRecord').'" border="0" alt="" />';
+		$emptyIcon  = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/clear.gif','width="16" height="16"').' title="" border="0" alt="" />';
+
+		if ($realDelete == 2) {
+			return str_replace('<a ', '<a style="visibility: hidden;" ',
+				   $this->link_unlink($unlinkIcon, $unlinkPointer, FALSE)) .
+				   $this->link_unlink($deleteIcon, $unlinkPointer, TRUE);
+		}
+		else if ($realDelete == 1) {
+			return $this->link_unlink($unlinkIcon, $unlinkPointer, FALSE) .
+				   $this->link_unlink($deleteIcon, $unlinkPointer, TRUE);
+		}
+		else {
+			return $this->link_unlink($unlinkIcon, $unlinkPointer, FALSE) .
+				   str_replace('<a ', '<a style="visibility: hidden;" ',
+				   $this->link_unlink($deleteIcon, $unlinkPointer, TRUE));
+		}
+	}
+	
+	/**
+	 * Returns an HTML link for unlinking a content element. Unlinking means that the record still exists but
+	 * is not connected to any other content element or page.
+	 *
+	 * @param	string		$label: The label
+	 * @param	array		$unlinkPointer: Flexform pointer pointing to the element to be unlinked
+	 * @param	boolean		$realDelete: If set, the record is not just unlinked but deleted!
 	 * @return	string		HTML anchor tag containing the label and the unlink-link
 	 * @access protected
 	 */
 	function link_unlink($label, $unlinkPointer, $realDelete=FALSE)	{
+		global $LANG;
 
-		$unlinkPointerString = rawurlencode($this->apiObj->flexform_getStringFromPointer ($unlinkPointer));
-
-		if ($realDelete)	{
-			return '<a href="index.php?' . $this->link_getParameters() . '&amp;deleteRecord=' . $unlinkPointerString . '" onclick="' . htmlspecialchars('return confirm(' . $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL('deleteRecordMsg')) . ');') . '">' . $label . '</a>';
+		$unlinkPointerString = rawurlencode($this->apiObj->flexform_getStringFromPointer($unlinkPointer));
+// change the links after implementation of AJAX
+		if ($realDelete) {
+#			return '<a href="javascript:'.htmlspecialchars('if (confirm(' . $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL('deleteRecordMsg')) . '))') . ' sortable_deleteRecord(\'' . $unlinkPointerString . '\');">' . $label . '</a>';
+			return '<a href="' . $this->baseScript.$this->link_getParameters() . '&amp;deleteRecord=' . $unlinkPointerString . '" onclick="' . htmlspecialchars('return confirm(' . $LANG->JScharCode($LANG->getLL('deleteRecordMsg')) . ');') . '">' . $label . '</a>';
 		} else {
-			return '<a href="javascript:'.htmlspecialchars('if (confirm(' . $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL('unlinkRecordMsg')) . '))') . 'sortable_unlinkRecord(\'' . $unlinkPointerString . '\');">' . $label . '</a>';
+#			return '<a href="javascript:'.htmlspecialchars('if (confirm(' . $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL('unlinkRecordMsg')) . '))') . ' sortable_unlinkRecord(\'' . $unlinkPointerString . '\');" class="onoff">' . $label . '</a>';
+			return '<a href="' . $this->baseScript.$this->link_getParameters() . '&amp;unlinkRecord=' . $unlinkPointerString . '" onclick="' . htmlspecialchars('return confirm(' . $LANG->JScharCode($LANG->getLL('unlinkRecordMsg')) . ');') . '">' . $label . '</a>';
 		}
 	}
 
+	
+	/**
+	 * Returns an HTML link for making a reference content element local to the page (copying it).
+	 *
+	 * @param	string		$label: The label
+	 * @param	array		$makeLocalPointer: Flexform pointer pointing to the element which shall be copied
+	 * @return	string		HTML anchor tag containing the label and the unlink-link
+	 * @access protected
+	 */
+	function icon_makeLocal($makeLocalPointer, $realDup=0) {
+		global $LANG;
+
+		$dupIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,t3lib_extMgm::extRelPath('templavoila').'mod1/makelocalcopy.gif','').' title="'.$LANG->getLL('makeLocal').'" border="0" alt="" />';
+
+		$label = $dupIcon;
+
+		if ($realDup)
+			return $this->link_makeLocal($label, $makeLocalPointer);
+		else
+			return '';
+	}
+	
 	/**
 	 * Returns an HTML link for making a reference content element local to the page (copying it).
 	 *
@@ -1791,8 +1912,47 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	}
 
 
+    /**
+	 * Returns an HTML link for browsing an existing record
+	 *
+	 * @param	string		$label: The label (or image)
+	 * @param	array		$parentPointer: Flexform pointer defining the parent element of the new record
+	 * @return	string		HTML anchor tag containing the label and the correct link
+	 * @access protected
+	 */
+	function icon_browse($parentPointer) {
+		global $LANG;
 
+		$browseIcon = '<img class="browse"' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/insert3.gif', '') . ' border="0" title="' . $LANG->sL('LLL:EXT:lang/locallang_core.xml:labels.browse_db') . '" alt="" />';
+		$insertIcon = '<img class="browse"' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/plusbullet2.gif', '') . ' border="0" title="' . $LANG->sL('LLL:EXT:lang/locallang_core.xml:labels.browse_db') . '" alt="" />';
 
+		$p = $this->apiObj->flexform_getStringFromPointer($parentPointer);
+		$b = $GLOBALS['BE_USER']->getSessionData('lastPasteRecord');
+
+		if ($p == $b)
+			$label = $insertIcon;
+		else
+			$label = $browseIcon;
+
+		$parameters =
+			$this->link_getParameters() .
+		//	'&amp;CB[removeAll]=normal' .
+			'&amp;pasteRecord=ref' .
+			'&amp;source=' . rawurlencode('###') .
+			'&amp;destination=' . rawurlencode($this->apiObj->flexform_getStringFromPointer($parentPointer));
+		$browser =
+			'browserPos = this;' .
+			'setFormValueOpenBrowser(\'db\',\'browser[communication]|||tt_content\');' .
+			'return false;';
+
+		return '<a href="#" id="' . $this->baseScript . $parameters . '" onclick="' . $browser . '">' . $label . '</a>';
+	}
+
+	
+	
+	
+	
+	
 
 	/*************************************************
 	 *
