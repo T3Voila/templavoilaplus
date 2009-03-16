@@ -99,7 +99,10 @@ class tx_templavoila_mod1_records {
 	 */
 	function sidebar_renderRecords() {
 		$content = '<table border="0" cellpadding="0" cellspacing="1" class="lrPadding" width="100%">';
-		$content .= '<tr class="bgColor4-20"><th colspan="2">&nbsp;</th></tr>';
+		$content .= '
+			<tr class="bgColor4-20">
+				<td colspan="2">' . $GLOBALS['LANG']->getLL('records', 1) . '</td>
+			</tr>';
 
 		// Render table selector
 		$content .= $this->renderTableSelector();

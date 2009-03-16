@@ -300,8 +300,8 @@ class tx_templavoila_mod1_sidebar {
 					}
 					$output = '
 						<table border="0" cellpadding="0" cellspacing="1" width="100%" class="lrPadding">
-							<tr>
-								<td colspan="2" class="bgColor4-20">'.$LANG->getLL('pagerelatedinformation').':</td>
+							<tr class="bgColor4-20">
+								<td colspan="2">' . $LANG->getLL('pagerelatedinformation') . ':</td>
 							</tr>
 							'.implode('',$headerFieldRows).'
 						</table>
@@ -338,7 +338,7 @@ class tx_templavoila_mod1_sidebar {
 
 		$tableRows = array ('
 			<tr class="bgColor4-20">
-				<th colspan="2">&nbsp;</th>
+				<td colspan="2">' . $LANG->getLL('advancedfunctions', 1) . '</td>
 			</tr>
 		');
 

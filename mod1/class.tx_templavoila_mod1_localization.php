@@ -94,7 +94,7 @@ class tx_templavoila_mod1_localization {
 		$output = (!$iOutput ? '' : '
 			<table border="0" cellpadding="0" cellspacing="1" width="100%" class="lrPadding">
 				<tr class="bgColor4-20">
-					<th colspan="2">&nbsp;</th>
+					<td colspan="2">' . $LANG->getLL('localization', 1) . '</td>
 				</tr>
 				'.
 				$iOutput .
