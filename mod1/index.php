@@ -387,7 +387,6 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			);
 
 				// Prototype /Scriptaculous
-			$this->doc->JScode .= '<script src="' . $this->doc->backPath . 'contrib/prototype/prototype.js" type="text/javascript"></script>';
 			$this->doc->JScode .= '<script src="' . $this->doc->backPath . 'contrib/scriptaculous/scriptaculous.js?load=effects,dragdrop" type="text/javascript"></script>';
 			$this->doc->JScode .= '<script src="' . t3lib_div::locationHeaderUrl(t3lib_div::resolveBackPath($this->doc->backPath . '../' . t3lib_extMgm::siteRelPath('templavoila') .
 			 	'mod1/dragdrop' . ($this->debug ? '' : '-min') . '.js')) . '" type="text/javascript"></script>';
@@ -761,11 +760,18 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			$previewContent = '<div class="ver-element">' . ($previewContent ? $previewContent : '<em>[New version]</em>') . '</div>';
 		}
 
+		$id = $this->apiObj->flexform_getStringFromPointer($parentPointer);
+		$class = ' class="sortable_handle"';
+	    if ($id == ':') {
+	       $class = ' class="page-header"';
+	    }
+	    
+	    	
 			// Finally assemble the table:
 		$finalContent =
-			(!$this->translatorMode && $canCreateNew ? '<div class="sortableItem" id="' . $this->apiObj->flexform_getStringFromPointer($parentPointer) . '">' : '') . '
+			(!$this->translatorMode && $canCreateNew && $id != ':'? '<div class="sortableItem" id="' . $id . '">' : '') . '
 			<table cellpadding="0" cellspacing="0" width="100%" class="tv-coe">
-				<tr style="' . $elementTitlebarStyle . ';" class="sortable_handle">
+				<tr style="' . $elementTitlebarStyle . ';"' . $class . '>
 					<td style="vertical-align:top;">' .
 						'<span class="nobr">' .
 						$languageIcon .
@@ -929,7 +935,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 					// Add cell content to registers:
 				if ($flagRenderBeLayout==TRUE) {
-					$beTemplateCell = '<table width="100%" class="beTemplateCell"><tr><td valign="top" style="background-color: '.$this->doc->bgColor4.'; padding-top:0; padding-bottom:0;">'.$LANG->sL($fieldContent['meta']['title'],1).'</td></tr><tr><td valign="top" style="padding: 5px;">'.$cellContent.'</td></tr></table>';
+					$beTemplateCell = '<table width="100%" class="beTemplateCell"><tr><td valign="top" style="background-color: '.$this->doc->bgColor4.'; padding-top:0; padding-bottom:0;">'.$LANG->sL($fieldContent['meta']['title'],1).'</td></tr><tr><td valign="top" style="padding: 5px;" id="' . $cellId . '">' . $cellContent . '</td></tr></table>';
 					$beTemplate = str_replace('###'.$fieldID.'###', $beTemplateCell, $beTemplate);
 				} else {
 							// Add cell content to registers:

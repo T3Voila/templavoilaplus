@@ -21,7 +21,8 @@ table.tv-coe tr.sortable_handle > td + td > a:firstChild {
 }
 
 table.tv-coe tr.sortable_handle > td > span.nobr >     img,
-table.tv-coe tr.sortable_handle > td > span.nobr > a > img {
+table.tv-coe tr.sortable_handle > td > span.nobr > a > img,
+table.tv-coe tr.page-header > td > span.nobr > a > img {
 	text-align: center;
 	vertical-align: middle;
 	margin: 1px;
