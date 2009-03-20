@@ -118,7 +118,7 @@ class tx_templavoila_mod1_records {
 	 * @return	string		Genrated content
 	 */
 	function renderTableSelector() {
-		$content = '<tr class="bgColor4"><td width="1%" nowrap="nowrap">';
+		$content = '<tr class="bgColor4"><td class="td-label" nowrap="nowrap">';
 		$content .= $GLOBALS['LANG']->getLL('displayRecordsFrom');
 		$content .= '</td><td>';
 

@@ -219,18 +219,18 @@ class tx_templavoila_mod1_clipboard {
 
 			// Prepare the ingredients for the different buttons:
 		$pasteMode = isset ($this->t3libClipboardObj->clipData['normal']['flexMode']) ? $this->t3libClipboardObj->clipData['normal']['flexMode'] : ($this->t3libClipboardObj->clipData['normal']['mode'] == 'copy' ? 'copy' : 'cut');
-		$pasteAfterIcon = '<img'.t3lib_iconWorks::skinImg($this->pObj->doc->backPath,'gfx/clip_pasteafter.gif','').' style="text-align: center; vertical-align: middle;" hspace="1" vspace="5" border="0" title="'.$LANG->getLL ('pasterecord').'" alt="" />';
-		$pasteSubRefIcon = '<img'.t3lib_iconWorks::skinImg('clip_pastesubref.gif','').' style="text-align: center; vertical-align: middle;" hspace="1" vspace="5" border="0" title="'.$LANG->getLL ('pastefce_andreferencesubs').'" alt="" />';
+		$pasteAfterIcon = '<img'.t3lib_iconWorks::skinImg($this->pObj->doc->backPath,'gfx/clip_pasteafter.gif','').' class="paste-after" hspace="1" vspace="5" border="0" title="'.$LANG->getLL ('pasterecord').'" alt="" />';
+		$pasteSubRefIcon = '<img'.t3lib_iconWorks::skinImg('clip_pastesubref.gif','').' class="paste-sub" hspace="1" vspace="5" border="0" title="'.$LANG->getLL ('pastefce_andreferencesubs').'" alt="" />';
 
 		$sourcePointerString = $this->pObj->apiObj->flexform_getStringFromPointer ($clipboardElementPointer);
 		$destinationPointerString = $this->pObj->apiObj->flexform_getStringFromPointer ($destinationPointer);
 
 			// FCEs with sub elements have two different paste icons, normal elements only one:
 		if ($pasteMode == 'copy' && $clipboardElementHasSubElements) {
-			$output  = '<a href="index.php?'.$this->pObj->link_getParameters().'&amp;CB[removeAll]=normal&amp;pasteRecord=copy&amp;source='.rawurlencode($sourcePointerString).'&amp;destination='.rawurlencode($destinationPointerString).'">'.$pasteAfterIcon.'</a>';
-			$output .= '<a href="index.php?'.$this->pObj->link_getParameters().'&amp;CB[removeAll]=normal&amp;pasteRecord=copyref&amp;source='.rawurlencode($sourcePointerString).'&amp;destination='.rawurlencode($destinationPointerString).'">'.$pasteSubRefIcon.'</a>';
+			$output  = '<a class="link_pasteafter" href="index.php?'.$this->pObj->link_getParameters().'&amp;CB[removeAll]=normal&amp;pasteRecord=copy&amp;source='.rawurlencode($sourcePointerString).'&amp;destination='.rawurlencode($destinationPointerString).'">'.$pasteAfterIcon.'</a>';
+			$output .= '<a class="link_pastesub" href="index.php?'.$this->pObj->link_getParameters().'&amp;CB[removeAll]=normal&amp;pasteRecord=copyref&amp;source='.rawurlencode($sourcePointerString).'&amp;destination='.rawurlencode($destinationPointerString).'">'.$pasteSubRefIcon.'</a>';
 		} else {
-			$output = '<a href="index.php?'.$this->pObj->link_getParameters().'&amp;CB[removeAll]=normal&amp;pasteRecord='.$pasteMode.'&amp;source='.rawurlencode($sourcePointerString).'&amp;destination='.rawurlencode($destinationPointerString).'">'.$pasteAfterIcon.'</a>';
+			$output = '<a class="link_pasteafter" href="index.php?'.$this->pObj->link_getParameters().'&amp;CB[removeAll]=normal&amp;pasteRecord='.$pasteMode.'&amp;source='.rawurlencode($sourcePointerString).'&amp;destination='.rawurlencode($destinationPointerString).'">'.$pasteAfterIcon.'</a>';
 		}
 
 		return $output;
@@ -330,7 +330,7 @@ class tx_templavoila_mod1_clipboard {
 			$cellFragment = '
 				<table cellpadding="0" cellspacing="0" width="100%" class="tv-coe">
 					<tr style="'.$elementTitlebarStyle.';" class="sortable_handle">
-						<td>
+						<td class="ce-info">
 							<span class="nobr">'.
 							$languageIcon .
 							$titleBarLeftButtons .

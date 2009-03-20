@@ -1,3 +1,7 @@
+2009-03-20  Steffen Kamper  <info@sk-typo3.de>
+
+	* Reconstruction of page module #10697 - Step9: some styling / css issues
+	
 2009-03-19  Steffen Kamper  <info@sk-typo3.de>
 
 	* Reconstruction of page module #10697 - Step8: save drag&drop to unused by using the rel-tag

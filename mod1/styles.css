@@ -8,28 +8,23 @@ table.tv-coe {
 	margin-bottom: 5px;
 }
 
-table.tv-coe tr.sortable_handle > td {
+table.tv-coe tr.sortable_handle td.ce-info {
 	vertical-align: top;
 }
 
-table.tv-coe tr.sortable_handle > td + td {
+table.tv-coe tr.sortable_handle td.sortableButtons {
 	text-align: right;
 }
 
-table.tv-coe tr.sortable_handle > td + td > a:firstChild {
-	text-decoration: none;
-}
 
-table.tv-coe tr.sortable_handle > td > span.nobr >     img,
-table.tv-coe tr.sortable_handle > td > span.nobr > a > img,
-table.tv-coe tr.page-header > td > span.nobr > a > img {
+table.tv-coe tr.sortable_handle td.ce-info img,
+table.tv-coe tr.page-header img {
 	text-align: center;
 	vertical-align: middle;
 	margin: 1px;
 }
 
-table.tv-coe tr.sortable_handle + tr td > a > img.bottom,
-table.tv-coe tr.sortable_handle + tr td >     img.bottom {
+table.tv-coe tr.sortable_handle img.bottom {
 	text-align: center;
 	vertical-align: bottom;
 	margin: 1px;
@@ -41,10 +36,26 @@ table.tv-coe a.link_delete {
 table#clipboard table.tv-coe a.link_delete {
 	display: inline;
 }
-table#clipboard a.link_new, table#clipboard a.link_unlink {
+table#clipboard a.link_new, 
+table#clipboard a.link_unlink,
+table#clipboard a.link_pasteafter,
+table#clipboard a.link_pastesub {
 	display: none;
 }
 
 table#clipboard .ce-preview {
 	display: none;
+}
+
+img.paste-after, img.paste-sub {
+	text-align: center; 
+	vertical-align: middle;
+}
+
+table.lrPadding td {
+	vertical-align: middle;
+}
+
+table td.td-label {
+	width: 200px;
 }

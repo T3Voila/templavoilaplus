@@ -776,7 +776,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			(!$this->translatorMode && $canCreateNew && $id != ':'? '<div class="sortableItem" id="' . $id . '"' . $rel . '>' : '') . '
 			<table cellpadding="0" cellspacing="0" width="100%" class="tv-coe">
 				<tr style="' . $elementTitlebarStyle . ';"' . $class . '>
-					<td style="vertical-align:top;">' .
+					<td class="ce-info">' .
 						'<span class="nobr">' .
 						$languageIcon .
 						$titleBarLeftButtons .
@@ -910,7 +910,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 								$newIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/new_el.gif','').' style="text-align: center; vertical-align: middle;" vspace="5" hspace="1" border="0" title="'.$LANG->getLL ('createnewrecord').'" alt="" />';
 								$cellContent .= $this->link_new($newIcon, $subElementPointer);
 
-								$cellContent .= '<span class="sortablePaste">' . $this->clipboardObj->element_getPasteButtons ($subElementPointer) . '</span></div>';
+								$cellContent .= '<span class="sortablePaste">' . $this->clipboardObj->element_getPasteButtons($subElementPointer) . '</span></div>';
 							}
 
 						} else {

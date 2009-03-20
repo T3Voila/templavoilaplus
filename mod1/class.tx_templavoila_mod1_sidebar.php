@@ -345,7 +345,7 @@ class tx_templavoila_mod1_sidebar {
 			// Render checkbox for showing hidden elements:
 		$tableRows[] = '
 			<tr class="bgColor4">
-				<td width="1%" nowrap="nowrap">
+				<td class="td-label" nowrap="nowrap">
 					'. t3lib_BEfunc::cshItem('_MOD_web_txtemplavoilaM1', 'advancedfunctions_showhiddenelements', $this->doc->backPath) .'
 					'.$LANG->getLL('sidebar_advancedfunctions_labelshowhidden', 1).':
 				</td>
@@ -357,7 +357,7 @@ class tx_templavoila_mod1_sidebar {
 		if ($GLOBALS['BE_USER']->isAdmin())	{
 			$tableRows[] = '
 				<tr class="bgColor4">
-					<td width="1%" nowrap="nowrap">
+					<td class="td-label" nowrap="nowrap">
 						'. t3lib_BEfunc::cshItem('_MOD_web_txtemplavoilaM1', 'advancedfunctions_showoutline', $this->doc->backPath) .'
 						'.$LANG->getLL('sidebar_advancedfunctions_labelshowoutline', 1).'
 					:</td>
