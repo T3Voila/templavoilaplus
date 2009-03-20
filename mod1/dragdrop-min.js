@@ -16,9 +16,12 @@ if((p=childs[1].href.split("&parentRecord=")).length==2)
 childs[1].href=p[0]+"&parentRecord="+newPos;buttons=childs[2].childElements()[0];if(buttons&&(p=buttons.href.split("&destination=")).length==2)
 buttons.href=p[0]+"&destination="+newPos;}
 function sortable_updatePasteButtons(oldPos,newPos){var i=0;var p=new Array;var href="";var buttons=document.getElementsByClassName("sortablePaste");if(buttons[i].firstChild&&buttons[i].firstChild.href.indexOf("&source="+escape(oldPos))!=-1){for(i=0;i<buttons.length;i++){if(buttons[i].firstChild){href=buttons[i].firstChild.href;if((p=href.split("&source="+escape(oldPos))).length==2){buttons[i].firstChild.href=p[0]+"&source="+escape(newPos)+p[1];}}}}}
-function sortable_update(el){var node=el.firstChild;var i=1;while(node!=null){if(node.className=="sortableItem"){if(sortable_currentItem&&node.id==sortable_currentItem.id){var url="index.php?"+sortable_linkParameters+"&ajaxPasteRecord=cut&source="+sortable_currentItem.id+"&destination="+el.id+(i-1);new Ajax.Request(url);sortable_updatePasteButtons(node.id,el.id+i);sortable_currentItem=false;}
-sortable_updateItemButtons(node,i,el.id)
-node.id=el.id+i;i++;}
+function sortable_purify(el){var node=el.firstChild;while(node!=null){if(node.className=="sortableItem"){var actPos=node.id;var newPos=node.getAttribute('rel');if(sortable_currentItem&&(sortable_currentItem.id==actPos)){new Ajax.Request("index.php?"+sortable_linkParameters+"&ajaxPasteRecord=cut&source="+actPos+"&destination="+newPos);sortable_updatePasteButtons(actPos,newPos);sortable_currentItem=false;}
+sortable_updateItemButtons(node,newPos);}
+node=node.nextSibling;}}
+function sortable_update(el){if(el.id=='tt_content:')
+return sortable_purify(el);var node=el.firstChild;var i=1;while(node!=null){if(node.className=="sortableItem"){var actPos=node.id;var prvPos=el.id+(i-1);var newPos=el.id+i;if(sortable_currentItem&&(sortable_currentItem.id==actPos)){new Ajax.Request("index.php?"+sortable_linkParameters+"&ajaxPasteRecord=cut&source="+actPos+"&destination="+prvPos);sortable_updatePasteButtons(actPos,newPos);sortable_currentItem=false;}
+sortable_updateItemButtons(node,newPos);i++;}
 node=node.nextSibling;}}
 function sortable_change(el){sortable_currentItem=el;}
-function tv_createSortable(s,containment){Sortable.create(s,{tag:"div",ghosting:false,format:/(.*)/,handle:"sortable_handle",dropOnEmpty:true,constraint:false,containment:containment,onChange:sortable_change,onUpdate:sortable_update});}
+function tv_createSortable(s,containment){Sortable.create(s,{tag:"div",ghosting:false,format:/(.*)/,handle:"sortable_handle",dropOnEmpty:true,constraint:false,containment:containment,scroll:window,onChange:sortable_change,onUpdate:sortable_update});}

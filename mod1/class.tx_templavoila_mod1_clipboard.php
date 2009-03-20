@@ -352,7 +352,7 @@ class tx_templavoila_mod1_clipboard {
 
 			if ($this->pObj->apiObj) {
 				$cellId = $this->pObj->apiObj->flexform_getStringFromPointer($subElementPointer);
-				$cellFragment = '<div class="sortableItem" id="' . $cellId . '">' . $cellFragment . '</div>';
+				$cellFragment = '<div class="sortableItem" id="' . $cellId . '" rel="' . $cellId . '">' . $cellFragment . '</div>';
 			}
 			
 			$elementRows[] = $cellFragment;

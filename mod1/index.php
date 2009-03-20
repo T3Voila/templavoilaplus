@@ -761,15 +761,19 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		}
 
 		$id = $this->apiObj->flexform_getStringFromPointer($parentPointer);
-		$class = ' class="sortable_handle"';
+		
 	    if ($id == ':') {
 	       $class = ' class="page-header"';
+	       $rel = '';
+	    } else {
+	       $class = ' class="sortable_handle"';
+	       $rel = ' rel="tt_content:' . $contentTreeArr['el']['uid'] . '"';   	
 	    }
 	    
 	    	
 			// Finally assemble the table:
 		$finalContent =
-			(!$this->translatorMode && $canCreateNew && $id != ':'? '<div class="sortableItem" id="' . $id . '">' : '') . '
+			(!$this->translatorMode && $canCreateNew && $id != ':'? '<div class="sortableItem" id="' . $id . '"' . $rel . '>' : '') . '
 			<table cellpadding="0" cellspacing="0" width="100%" class="tv-coe">
 				<tr style="' . $elementTitlebarStyle . ';"' . $class . '>
 					<td style="vertical-align:top;">' .
@@ -915,7 +919,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 							if ($canEditContent) {
 								$cellId = $this->apiObj->flexform_getStringFromPointer($subElementPointer);
-								$cellFragment = '<div class="sortableItem" id="' . $cellId . '"></div>';
+								$cellFragment = '<div class="sortableItem" id="' . $cellId . '" rel="tt_content:' . $subElementArr['el']['uid'] . '"></div>';
 							}
 
 							$cellContent .= $cellFragment;
