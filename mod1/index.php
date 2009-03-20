@@ -151,6 +151,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	var $apiObj;									// Instance of tx_templavoila_api
 	var $sortableContainers = array();				// Contains the containers for drag and drop
 
+	var $newCEWizard = 0;							// Switch for usage of the new content element wizard
 	var $debug = 0;									// Used for development only
 
 	/*******************************************
@@ -419,6 +420,10 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 			$this->handleIncomingCommands();
 
+				// switch for new content element wizard
+			if (isset($this->modTSconfig['properties']['newContentElementWizard']) && $this->modTSconfig['properties']['newContentElementWizard'] == '1') {
+				$this->newCEWizard = 1;
+			}
 				// Start creating HTML output
 			$this->content .= $this->doc->startPage($LANG->getLL('title'));
 			$render_editPageScreen = true;
@@ -1824,7 +1829,12 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	function link_new($label, $parentPointer)	{
 
 		$parameters = $this->link_getParameters() . '&parentRecord=' . rawurlencode($this->apiObj->flexform_getStringFromPointer($parentPointer));
-		return '<a class="link_new" href="' . 'db_new_content_el.php?' . $parameters . '">' . $label . '</a>';
+		if ($this->newCEWizard) {
+			return '<a class="link_new" href="' . '../newcewizard/class.tx_templavoila_newcewizard.php' . '?' . $parameters . '">' . $label . '</a>';
+		} else {
+			return '<a class="link_new" href="' . 'db_new_content_el.php?' . $parameters . '">' . $label . '</a>';
+		}
+		
 	}
 
 	/**
