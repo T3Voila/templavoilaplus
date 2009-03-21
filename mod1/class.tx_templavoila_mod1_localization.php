@@ -94,7 +94,7 @@ class tx_templavoila_mod1_localization {
 		$output = (!$iOutput ? '' : '
 			<table border="0" cellpadding="0" cellspacing="1" width="100%" class="lrPadding">
 				<tr class="bgColor4-20">
-					<td colspan="2">' . $LANG->getLL('localization', 1) . '</td>
+					<th colspan="2">&nbsp;</th>
 				</tr>
 				'.
 				$iOutput .
@@ -138,7 +138,7 @@ class tx_templavoila_mod1_localization {
 
 		$output.= '
 			<tr class="bgColor4">
-				<td class="td-label" nowrap="nowrap">
+				<td width="1%" nowrap="nowrap">
 					'. t3lib_BEfunc::cshItem('_MOD_web_txtemplavoilaM1', 'selectlanguageversion', $this->doc->backPath) .'
 					'.$LANG->getLL ('selectlanguageversion', 1).':
 				</td>
@@ -155,7 +155,7 @@ class tx_templavoila_mod1_localization {
 			if (count($options))	{
 				$output.= '
 					<tr class="bgColor4">
-						<td class="td-label" nowrap="nowrap">
+						<td width="1%" nowrap="nowrap">
 							'. t3lib_BEfunc::cshItem('_MOD_web_txtemplavoilaM1', 'pagelocalizationdisplaymode', $this->doc->backPath) .'
 							'.$LANG->getLL('pageLocalizationDisplayMode', 1).':
 						</td>
@@ -172,7 +172,7 @@ class tx_templavoila_mod1_localization {
 		if ($this->pObj->rootElementLangMode !== 'disable') {
 			$output.= '
 				<tr class="bgColor4">
-					<td class="td-label" nowrap="nowrap">
+					<td width="1%" nowrap="nowrap">
 						'. t3lib_BEfunc::cshItem('_MOD_web_txtemplavoilaM1', 'pagelocalizationmode', $this->doc->backPath) .'
 						'.$LANG->getLL('pageLocalizationMode', 1).':
 					</td>
@@ -183,7 +183,7 @@ class tx_templavoila_mod1_localization {
 
 		$output .= '
 			<tr class="bgColor4">
-				<td class="td-label" nowrap="nowrap">
+				<td width="1%" nowrap="nowrap">
 					'. t3lib_BEfunc::cshItem('_MOD_web_txtemplavoilaM1', 'editlanguageversion', $this->doc->backPath) .'
 					'.$LANG->getLL ('editlanguageversion', 1).':
 				</td>
@@ -226,7 +226,7 @@ class tx_templavoila_mod1_localization {
 			$link = 'index.php?'.$this->pObj->link_getParameters().'&createNewPageTranslation=\'+this.options[this.selectedIndex].value+\'&pid='.$this->pObj->id;
 			$output = '
 				<tr class="bgColor4">
-					<td class="td-label" nowrap="nowrap">
+					<td width="1%" nowrap="nowrap">
 						'. t3lib_BEfunc::cshItem('_MOD_web_txtemplavoilaM1', 'createnewtranslation', $this->doc->backPath) .'
 						'.$LANG->getLL('createnewtranslation',1).':
 					</td>

@@ -31,17 +31,6 @@ function sortable_unlinkRecordCallBack(obj) {
 	var pn = el.parentNode;
 	pn.removeChild(el);
 	sortable_update(pn);
-	
-	if (el.innerHTML.match(/makeLocalRecord/))
-		return;
-	if (!(pn = document.getElementById('tt_content:')))
-		return;
-
-	pn.appendChild(el);
-	sortable_update(pn);
-
-	new Effect.Appear(el,
-		{ duration: 0.5 });
 }
 
 function sortable_unlinkRecord(id) {
@@ -50,23 +39,6 @@ function sortable_unlinkRecord(id) {
 		{ duration: 0.5,
 		afterFinish: sortable_unlinkRecordCallBack });
 }
-
-function sortable_deleteRecordCallBack(obj) {
-	var el = obj.element;
-	var pn = el.parentNode;
-
-	pn.removeChild(el);
-	sortable_update(pn);
-}
-
-function sortable_deleteRecord(id) {
-	new Ajax.Request(sortable_baseLink + "&ajaxDeleteRecord=" + escape(id));
-	new Effect.Fade(id,
-		{ duration: 0.5,
-		  afterFinish: sortable_deleteRecordCallBack });
-}
-
-
 
 function sortable_updateItemButtons(el, position, pID) {
 	var p	= new Array();	var p1 = new Array();
@@ -116,52 +88,22 @@ function sortable_updatePasteButtons(oldPos, newPos) {
 	}
 }
 
-function sortable_purify(el) {
-	var node = el.firstChild;
-
-	while (node != null) {
-		if (node.className == "sortableItem") {
-			var actPos = node.id;
-			var newPos = node.getAttribute('rel');
-
-			if (sortable_currentItem && (sortable_currentItem.id == actPos)) {
-				new Ajax.Request("index.php?" + sortable_linkParameters + "&ajaxPasteRecord=cut&source=" + actPos + "&destination=" + newPos);
-
-				sortable_updatePasteButtons(actPos, newPos);
-				sortable_currentItem = false;
-			}
-
-			sortable_updateItemButtons(node, newPos);
-		}
-
-		node = node.nextSibling;
-	}
-}
-
-function sortable_update(el) {  
-	if (el.id == 'tt_content:')
-		return sortable_purify(el);
-	
+function sortable_update(el) {
 	var node = el.firstChild;
 	var i = 1;
 	while (node != null) {
 		if (node.className == "sortableItem") {
-			var actPos = node.id;
-			var prvPos = el.id + (i - 1);
-			var newPos = el.id +  i;
-
-			if (sortable_currentItem && (sortable_currentItem.id == actPos)) {
-				new Ajax.Request("index.php?" + sortable_linkParameters + "&ajaxPasteRecord=cut&source=" + actPos + "&destination=" + prvPos);
-
-				sortable_updatePasteButtons(actPos, newPos);
+			if (sortable_currentItem && node.id == sortable_currentItem.id ) {
+				var url = "index.php?" + sortable_linkParameters + "&ajaxPasteRecord=cut&source=" + sortable_currentItem.id + "&destination=" + el.id + (i-1); /* xxx */
+				new Ajax.Request(url);
+				sortable_updatePasteButtons(node.id, el.id + i);
 				sortable_currentItem = false;
 			}
-
-			sortable_updateItemButtons(node, newPos);
+			sortable_updateItemButtons(node, i, el.id)
+			node.id = el.id + i;
 			i++;
 		}
-
-		node = node.nextSibling;
+		node	= node.nextSibling;
 	}
 }
 
@@ -178,7 +120,6 @@ function tv_createSortable(s, containment) {
 		dropOnEmpty:true,
 		constraint:false,
 		containment: containment,
-		scroll: window,
 		onChange:sortable_change,
 		onUpdate:sortable_update});
 }

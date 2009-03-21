@@ -300,8 +300,8 @@ class tx_templavoila_mod1_sidebar {
 					}
 					$output = '
 						<table border="0" cellpadding="0" cellspacing="1" width="100%" class="lrPadding">
-							<tr class="bgColor4-20">
-								<td colspan="2">' . $LANG->getLL('pagerelatedinformation') . ':</td>
+							<tr>
+								<td colspan="2" class="bgColor4-20">'.$LANG->getLL('pagerelatedinformation').':</td>
 							</tr>
 							'.implode('',$headerFieldRows).'
 						</table>
@@ -338,14 +338,14 @@ class tx_templavoila_mod1_sidebar {
 
 		$tableRows = array ('
 			<tr class="bgColor4-20">
-				<td colspan="2">' . $LANG->getLL('advancedfunctions', 1) . '</td>
+				<th colspan="2">&nbsp;</th>
 			</tr>
 		');
 
 			// Render checkbox for showing hidden elements:
 		$tableRows[] = '
 			<tr class="bgColor4">
-				<td class="td-label" nowrap="nowrap">
+				<td width="1%" nowrap="nowrap">
 					'. t3lib_BEfunc::cshItem('_MOD_web_txtemplavoilaM1', 'advancedfunctions_showhiddenelements', $this->doc->backPath) .'
 					'.$LANG->getLL('sidebar_advancedfunctions_labelshowhidden', 1).':
 				</td>
@@ -357,7 +357,7 @@ class tx_templavoila_mod1_sidebar {
 		if ($GLOBALS['BE_USER']->isAdmin())	{
 			$tableRows[] = '
 				<tr class="bgColor4">
-					<td class="td-label" nowrap="nowrap">
+					<td width="1%" nowrap="nowrap">
 						'. t3lib_BEfunc::cshItem('_MOD_web_txtemplavoilaM1', 'advancedfunctions_showoutline', $this->doc->backPath) .'
 						'.$LANG->getLL('sidebar_advancedfunctions_labelshowoutline', 1).'
 					:</td>

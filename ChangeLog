@@ -1,25 +1,3 @@
-2009-03-20  Steffen Kamper  <info@sk-typo3.de>
-
-	* Reconstruction of page module #10697 - Step10: switch for new content element wizard
-	* Reconstruction of page module #10697 - Step9: some styling / css issues
-	
-2009-03-19  Steffen Kamper  <info@sk-typo3.de>
-
-	* Reconstruction of page module #10697 - Step8: save drag&drop to unused by using the rel-tag
-	* Reconstruction of page module #10697 - Step7: drag&drop with beLayout
-	
-2009-03-16  Steffen Kamper  <info@sk-typo3.de>
-
-	* Reconstruction of page module #10697 - Step6: added missing titles of sidebars
-	* Reconstruction of page module #10697 - Step5: unlink/delete with ajax, little optimizations
-	* Reconstruction of page module #10697 - Step4: render "unused elements" like normal elements, drag&drop between unused elements and content area
-	* Reconstruction of page module #10697 - Step3: changes to link functions, usage of link function, blind option for icons, hook for additional icons, new "unlink"-icon, added stylesheet
-	* Reconstruction of page module #10697 - Step2: complete the link helper functions
-
-2009-03-15  Steffen Kamper  <info@sk-typo3.de>
-
-	* Reconstruction of page module #10697 - Step1: use debug flag for not loading minified script
-
 2009-03-13  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #10615: Show sys_notes in Page Module 

@@ -151,8 +151,6 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	var $apiObj;									// Instance of tx_templavoila_api
 	var $sortableContainers = array();				// Contains the containers for drag and drop
 
-	var $newCEWizard = 0;							// Switch for usage of the new content element wizard
-	var $debug = 0;									// Used for development only
 
 	/*******************************************
 	 *
@@ -387,18 +385,17 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 			);
 
-				// Prototype /Scriptaculous
+				//Prototype /Scriptaculous
+				// prototype is loaded before, so no need to include twice. 
+				//TODO: switch to $this->doc->JScodeLibArray for preventing double inclusion
+			#$this->doc->JScode .= '<script src="' . $this->doc->backPath . 'contrib/prototype/prototype.js" type="text/javascript"></script>';
 			$this->doc->JScode .= '<script src="' . $this->doc->backPath . 'contrib/scriptaculous/scriptaculous.js?load=effects,dragdrop" type="text/javascript"></script>';
-			$this->doc->JScode .= '<script src="' . t3lib_div::locationHeaderUrl(t3lib_div::resolveBackPath($this->doc->backPath . '../' . t3lib_extMgm::siteRelPath('templavoila') .
-			 	'mod1/dragdrop' . ($this->debug ? '' : '-min') . '.js')) . '" type="text/javascript"></script>';
+			$this->doc->JScode .= '<script src="' . t3lib_div::locationHeaderUrl(t3lib_div::resolveBackPath($this->doc->backPath . '../' . t3lib_extMgm::siteRelPath('templavoila') . 'mod1/dragdrop-min.js')) . '" type="text/javascript"></script>';
               
 				// Set up JS for dynamic tab menu and side bar
 			$this->doc->JScode .= $this->doc->getDynTabMenuJScode();
 			$this->doc->JScode .= $this->modTSconfig['properties']['sideBarEnable'] ? $this->sideBarObj->getJScode() : '';
 
-				// Add custom styles
-			$this->doc->styleSheetFile2 = t3lib_extMgm::extRelPath($this->extKey)."mod1/styles.css";
-			
 				// Setting up support for context menus (when clicking the items icon)
 			$CMparts = $this->doc->getContextMenuCode();
 			$this->doc->bodyTagAdditions = $CMparts[1];
@@ -420,10 +417,6 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 			$this->handleIncomingCommands();
 
-				// switch for new content element wizard
-			if (isset($this->modTSconfig['properties']['newContentElementWizard']) && $this->modTSconfig['properties']['newContentElementWizard'] == '1') {
-				$this->newCEWizard = 1;
-			}
 				// Start creating HTML output
 			$this->content .= $this->doc->startPage($LANG->getLL('title'));
 			$render_editPageScreen = true;
@@ -692,37 +685,38 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		switch ($contentTreeArr['el']['table']) {
 
 			case 'pages' :
-                $titleBarLeftButtons .= $this->translatorMode || !$canEditPage ? '' :
-					$this->blindIcon('editPage', $this->icon_edit($contentTreeArr['el'])) .
-					#$this->blindIcon('pages.titleBar.hidePage', $this->icon_hide($contentTreeArr['el'])) .
-					$this->blindIcon('viewPage', $this->icon_view($contentTreeArr['el'])) .
-					$this->additionalIconHook('pagesTitleBar');
+
+				$titleBarLeftButtons .= $this->translatorMode || !$canEditPage ? '' : $this->link_edit('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/edit2.gif','').' title="'.htmlspecialchars($LANG->sL('LLL:EXT:lang/locallang_mod_web_list.xml:editPage')).'" alt="" style="text-align: center; vertical-align: middle; border:0;" />',$contentTreeArr['el']['table'],$contentTreeArr['el']['uid']);
 				$titleBarRightButtons = '';
-				
+
+				$addGetVars = ($this->currentLanguageUid?'&L='.$this->currentLanguageUid:'');
+				$viewPageOnClick = 'onclick= "'.htmlspecialchars(t3lib_BEfunc::viewOnClick($contentTreeArr['el']['uid'], $this->doc->backPath, t3lib_BEfunc::BEgetRootLine($contentTreeArr['el']['uid']),'','',$addGetVars)).'"';
+				$viewPageIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/zoom.gif','width="12" height="12"').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.xml:labels.showPage',1).'" hspace="3" alt="" style="text-align: center; vertical-align: middle;" />';
+				$titleBarLeftButtons .= '<a href="#" '.$viewPageOnClick.'>'.$viewPageIcon.'</a>';
 			break;
 
 			case 'tt_content' :
 
 				$elementTitlebarColor = ($elementBelongsToCurrentPage ? $this->doc->bgColor5 : $this->doc->bgColor6);
-				$elementTitlebarStyle = 'background-color: ' . $elementTitlebarColor;
+				$elementTitlebarStyle = 'background-color: '.$elementTitlebarColor;
 
 				$languageUid = $contentTreeArr['el']['sys_language_uid'];
 
 				if (!$this->translatorMode && $canEditContent) {
 						// Create CE specific buttons:
-					$linkMakeLocal = $this->blindIcon('tt_content.titleBar.makeLocal', $this->icon_makeLocal($parentPointer, !$elementBelongsToCurrentPage));
-					$linkEdit = ''; 
+					$linkMakeLocal = !$elementBelongsToCurrentPage ? $this->link_makeLocal('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,t3lib_extMgm::extRelPath('templavoila').'mod1/makelocalcopy.gif','').' title="'.$LANG->getLL('makeLocal').'" border="0" alt="" />', $parentPointer) : '';
+					$linkUnlink = $this->link_unlink('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/garbage.gif','').' title="'.$LANG->getLL('unlinkRecord').'" border="0" alt="" />', $parentPointer, FALSE);
 					if ($GLOBALS['BE_USER']->recordEditAccessInternals('tt_content', $contentTreeArr['previewData']['fullRow'])) {
-						$linkEdit = ($elementBelongsToCurrentPage ?
-								$this->blindIcon('edit', $this->icon_edit($contentTreeArr['el'])) .
-								$this->blindIcon('hide', $this->icon_hide($contentTreeArr['el'])) 
-							: ''); 
+						$linkEdit = ($elementBelongsToCurrentPage ? $this->link_edit('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/edit2.gif','').' title="'.$LANG->getLL('editrecord').'" border="0" alt="" />',$contentTreeArr['el']['table'],$contentTreeArr['el']['uid']) : '');
+						$linkHide = $this->icon_hide($contentTreeArr['el']);
+						
 					}
-					$linkUnlink = $this->blindIcon('unlink', $this->icon_unlink($parentPointer));
-					$linkDelete = $elementBelongsToCurrentPage ? $this->blindIcon('delete', $this->icon_delete($parentPointer)) : '';
-
-					$titleBarRightButtons = $linkEdit . $linkMakeLocal . $this->clipboardObj->element_getSelectButtons($parentPointer) . $linkUnlink . $linkDelete;
-				} else {
+					else {
+						$linkEdit = $linkHide = '';
+					}
+					$titleBarRightButtons = $linkEdit . $linkHide . $this->clipboardObj->element_getSelectButtons($parentPointer) . $linkMakeLocal . $linkUnlink;
+				}
+				else {
 					$titleBarRightButtons = $this->clipboardObj->element_getSelectButtons($parentPointer, 'copy');
 				}
 			break;
@@ -756,32 +750,19 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		}
 
 			// Preview made:
-		$previewContent = '<div class="ce-preview">' . 
-							$this->render_previewData($contentTreeArr['previewData'], $contentTreeArr['el'], $contentTreeArr['ds_meta'], $languageKey, $sheet) .
-							'</div>';
+		$previewContent = $this->render_previewData($contentTreeArr['previewData'], $contentTreeArr['el'], $contentTreeArr['ds_meta'], $languageKey, $sheet);
 
 			// Wrap workspace notification colors:
 		if ($contentTreeArr['el']['_ORIG_uid'])	{
-			$previewContent = '<div class="ver-element">' . ($previewContent ? $previewContent : '<em>[New version]</em>') . '</div>';
+			$previewContent = '<div class="ver-element">'.($previewContent ? $previewContent : '<em>[New version]</em>').'</div>';
 		}
 
-		$id = $this->apiObj->flexform_getStringFromPointer($parentPointer);
-		
-	    if ($id == ':') {
-	       $class = ' class="page-header"';
-	       $rel = '';
-	    } else {
-	       $class = ' class="sortable_handle"';
-	       $rel = ' rel="tt_content:' . $contentTreeArr['el']['uid'] . '"';   	
-	    }
-	    
-	    	
 			// Finally assemble the table:
 		$finalContent =
-			(!$this->translatorMode && $canCreateNew && $id != ':'? '<div class="sortableItem" id="' . $id . '"' . $rel . '>' : '') . '
-			<table cellpadding="0" cellspacing="0" width="100%" class="tv-coe">
-				<tr style="' . $elementTitlebarStyle . ';"' . $class . '>
-					<td class="ce-info">' .
+			(!$this->translatorMode && $canCreateNew ? '<div class="sortableItem" id="' . $this->apiObj->flexform_getStringFromPointer($parentPointer) . '">' : '') . '
+			<table cellpadding="0" cellspacing="0" style="width: 100%; border: 1px solid black; margin-bottom:5px;">
+				<tr style="' . $elementTitlebarStyle . ';" class="sortable_handle">
+					<td style="vertical-align:top;">' .
 						'<span class="nobr">' .
 						$languageIcon .
 						$titleBarLeftButtons .
@@ -789,21 +770,14 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 						'</span>' .
 						$warnings .
 					'</td>
-					<td nowrap="nowrap" class="sortableButtons">' .
+					<td nowrap="nowrap" style="text-align:right; vertical-align:top;">' .
 						$titleBarRightButtons .
 					'</td>
 				</tr>
 				<tr>
 					<td colspan="2">' .
-						#$this->render_framework_subElements($contentTreeArr, $languageKey, $sheet) .
-						#$previewContent .
-						#$this->render_localizationInfoTable($contentTreeArr, $parentPointer, $parentDsMeta) .
-						(is_array($contentTreeArr['previewData']['fullRow'])
-						&&	  $contentTreeArr['el']['table'] == 'tt_content'
-						&&	  $contentTreeArr['el']['CType'] != 'templavoila_pi1'
-						?	$previewContent
-						:	$this->render_framework_subElements($contentTreeArr, $languageKey, $sheet)
-						) .	
+						$this->render_framework_subElements($contentTreeArr, $languageKey, $sheet) .
+						$previewContent .
 						$this->render_localizationInfoTable($contentTreeArr, $parentPointer, $parentDsMeta) .
 					'</td>
 				</tr>
@@ -853,10 +827,6 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				// no layout, no special rendering
 		$flagRenderBeLayout = $beTemplate? TRUE : FALSE;
 
-			// some constants
-		$haspreview = is_array($previews = $elementContentTreeArr['previewData']['sheets'][$sheet]);
-		$hassubs = is_array($elementContentTreeArr['sub'][$sheet]) && is_array($subs = $elementContentTreeArr['sub'][$sheet][$lKey]);
-		
 			// Traverse container fields:
 		foreach($elementContentTreeArr['sub'][$sheet][$lKey] as $fieldID => $fieldValuesContent)	{
 			if ($elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['isMapped'] && is_array($fieldValuesContent[$vKey]))	{
@@ -915,7 +885,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 								$newIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/new_el.gif','').' style="text-align: center; vertical-align: middle;" vspace="5" hspace="1" border="0" title="'.$LANG->getLL ('createnewrecord').'" alt="" />';
 								$cellContent .= $this->link_new($newIcon, $subElementPointer);
 
-								$cellContent .= '<span class="sortablePaste">' . $this->clipboardObj->element_getPasteButtons($subElementPointer) . '</span></div>';
+								$cellContent .= '<span class="sortablePaste">' . $this->clipboardObj->element_getPasteButtons ($subElementPointer) . '</span></div>';
 							}
 
 						} else {
@@ -924,7 +894,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 							if ($canEditContent) {
 								$cellId = $this->apiObj->flexform_getStringFromPointer($subElementPointer);
-								$cellFragment = '<div class="sortableItem" id="' . $cellId . '" rel="tt_content:' . $subElementArr['el']['uid'] . '"></div>';
+								$cellFragment = '<div class="sortableItem" id="' . $cellId . '"></div>';
 							}
 
 							$cellContent .= $cellFragment;
@@ -944,7 +914,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 					// Add cell content to registers:
 				if ($flagRenderBeLayout==TRUE) {
-					$beTemplateCell = '<table width="100%" class="beTemplateCell"><tr><td valign="top" style="background-color: '.$this->doc->bgColor4.'; padding-top:0; padding-bottom:0;">'.$LANG->sL($fieldContent['meta']['title'],1).'</td></tr><tr><td valign="top" style="padding: 5px;" id="' . $cellId . '">' . $cellContent . '</td></tr></table>';
+					$beTemplateCell = '<table width="100%" class="beTemplateCell"><tr><td valign="top" style="background-color: '.$this->doc->bgColor4.'; padding-top:0; padding-bottom:0;">'.$LANG->sL($fieldContent['meta']['title'],1).'</td></tr><tr><td valign="top" style="padding: 5px;">'.$cellContent.'</td></tr></table>';
 					$beTemplate = str_replace('###'.$fieldID.'###', $beTemplateCell, $beTemplate);
 				} else {
 							// Add cell content to registers:
@@ -1661,25 +1631,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 *
 	 *******************************************/
 
-	 /**
-	 * Returns an HTML link for editing with edit icon
-	 *
-	 * @param	array		$el: array with following entries: $el['table'], $el['uid']
-	 * @return	string		HTML anchor tag containing edit icon and the correct link
-	 * @access protected
-	 */
-	function icon_edit($el) {
-		global $LANG;
-
-		$editIcon = ($el['table'] == 'pages'
-		?	'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/edit2.gif','').' border="0" title="'.htmlspecialchars($LANG->sL('LLL:EXT:lang/locallang_mod_web_list.xml:editPage')).'" alt="" />'
-		:	'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/edit2.gif','').' border="0" title="'.htmlspecialchars($LANG->sL('LLL:EXT:lang/locallang_mod_web_list.xml:edit')).'" alt="" />');
-
-		$label = $editIcon;
-
-		return $this->link_edit($label, $el['table'], $el['uid']);
-	}
-	
+	 
 	/**
 	 * Returns an HTML link for editing
 	 *
@@ -1708,43 +1660,14 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		return '';
 	}
 
-	
 	/**
-	 * Returns an HTML link for view with view icon
-	 *
-	 * @param	array		$el: array with following entries: $el['table'], $el['uid'] 
-	 * @return	string		HTML anchor tag containing view icon and the correct link
-	 * @access protected
-	 */
-	function icon_view($el) {
-		global $LANG;
-
-		$viewPageIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/zoom.gif','width="12" height="12"').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.xml:labels.showPage',1).'" alt="" />';
-
-		$label = $viewPageIcon;
-
-		return $this->link_view($label, $el['table'], $el['uid']);
-	}
-
-	/**
-	 * Returns an HTML link for view
+	 * Returns an HTML link for hiding
 	 *
 	 * @param	string		$label: The label (or image)
 	 * @param	string		$table: The table, fx. 'tt_content'
-	 * @param	integer		$uid: The uid of the element to be viewed
+	 * @param	integer		$uid: The uid of the element to be hidden/unhidden
+	 * @param	boolean		$forced: By default the link is not shown if translatorMode is set, but with this boolean it can be forced anyway.
 	 * @return	string		HTML anchor tag containing the label and the correct link
-	 */
-	function link_view($label, $table, $uid) {
-		$onClick = t3lib_BEfunc::viewOnClick($uid, $this->doc->backPath, t3lib_BEfunc::BEgetRootLine($uid),'','',($this->currentLanguageUid?'&L='.$this->currentLanguageUid:''));
-
-		return '<a href="#" onclick="'.htmlspecialchars($onClick).'">'.$label.'</a>';
-	}
-	
-	/**
-	 * Returns an HTML link for viewing with hide icon
-	 *
-	 * @param	array		$el: array with following entries: $el['table'], $el['uid']
-	 * @return	string		HTML anchor tag containing hide/unhide icon and the correct link
 	 * @access protected
 	 */
 	function icon_hide($el) {
@@ -1766,13 +1689,14 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	}
 	
 	/**
-	 * Returns an HTML link for hide
+	 * [Describe function...]
 	 *
-	 * @param	string		$label: The label (or image)
-	 * @param	string		$table: The table, fx. 'tt_content'
-	 * @param	integer		$uid: The uid of the element to be viewed
-	 * @param	boolean		$forced: If set return the link always
-	 * @return	string		HTML anchor tag containing the label and the correct link
+	 * @param	[type]		$label: ...
+	 * @param	[type]		$table: ...
+	 * @param	[type]		$uid: ...
+	 * @param	[type]		$hidden: ...
+	 * @param	[type]		$forced: ...
+	 * @return	[type]		...
 	 */
 	function link_hide($label, $table, $uid, $hidden, $forced=FALSE) {
 		if ($label) {
@@ -1781,8 +1705,10 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				(!$this->translatorMode || $forced))	{
 					if ($table == "pages" && $this->currentLanguageUid) {
 						$params = '&data['.$table.']['.$uid.'][hidden]=' . (1 - $hidden);
+					//	return '<a href="#" onclick="' . htmlspecialchars('return jumpToUrl(\'' . $GLOBALS['SOBE']->doc->issueCommand($params, -1) . '\');') . '">'.$label.'</a>';
 					} else {
 						$params = '&data['.$table.']['.$uid.'][hidden]=' . (1 - $hidden);
+					//	return '<a href="#" onclick="' . htmlspecialchars('return jumpToUrl(\'' . $GLOBALS['SOBE']->doc->issueCommand($params, -1) . '\');') . '">'.$label.'</a>';
 
 						/* the commands are indipendent of the position,
 						 * so sortable doesn't need to update these and we
@@ -1799,25 +1725,6 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		}
 		return '';
 	}
-	
-	/**
-	 * Returns an HTML link for creating a new record with create icon
-	 *
-	 * @param	string		$label: The label (or image)
-	 * @param	array		$parentPointer: Flexform pointer defining the parent element of the new record
-	 * @return	string		HTML anchor tag containing the label and the correct link
-	 * @access protected
-	 */
-	function icon_new($parentPointer) {
-		global $LANG;
-
-		$newIcon = '<img class="new"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/new_el.gif','').' border="0" title="'.$LANG->sL('LLL:EXT:lang/locallang_mod_web_list.xml:newRecordGeneral').'" alt="" />';
-
-		$label = $newIcon;
-
-		return $this->link_new($label, $parentPointer);
-	}
-	
 	/**
 	 * Returns an HTML link for creating a new record
 	 *
@@ -1828,46 +1735,12 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 */
 	function link_new($label, $parentPointer)	{
 
-		$parameters = $this->link_getParameters() . '&parentRecord=' . rawurlencode($this->apiObj->flexform_getStringFromPointer($parentPointer));
-		if ($this->newCEWizard) {
-			return '<a class="link_new" href="' . '../newcewizard/class.tx_templavoila_newcewizard.php' . '?' . $parameters . '">' . $label . '</a>';
-		} else {
-			return '<a class="link_new" href="' . 'db_new_content_el.php?' . $parameters . '">' . $label . '</a>';
-		}
-		
+		$parameters =
+			$this->link_getParameters().
+			'&amp;parentRecord='.rawurlencode($this->apiObj->flexform_getStringFromPointer($parentPointer));
+		return '<a href="'.'db_new_content_el.php?'.$parameters.'">'.$label.'</a>';
 	}
 
-	/**
-	 * Returns an HTML link for unlinking a content element. Unlinking means that the record still exists but
-	 * is not connected to any other content element or page.
-	 *
-	 * @param	array		$unlinkPointer: Flexform pointer pointing to the element to be unlinked
-	 * @return	string		HTML anchor tag containing the icon and the unlink-link
-	 * @access protected
-	 */
-	function icon_unlink($unlinkPointer) {
-		global $LANG;
-
-		$unlinkIcon = '<img' . t3lib_iconWorks::skinImg($this->doc->backPath, t3lib_extMgm::extRelPath('templavoila') . 'mod1/unlink.png', '') . ' title="' . $LANG->getLL('unlinkRecord') . '" border="0" alt="" />';
-		return $this->link_unlink($unlinkIcon, $unlinkPointer, FALSE);
-				   
-	}
-	
-	/**
-	 * Returns an HTML link for deleting a content element. 
-	 *
-	 * @param	array		$deletePointer: Flexform pointer pointing to the element to be deleted
-	 * @return	string		HTML anchor tag containing the icon and the delete-link
-	 * @access protected
-	 */
-	function icon_delete($deletePointer) {
-		global $LANG;
-
-		$deleteIcon = '<img' . t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/garbage.gif', '') . ' title="'.$LANG->getLL('deleteRecord') . '" border="0" alt="" />';
-		return $this->link_unlink($deleteIcon, $deletePointer, TRUE);
-		
-	}
-	
 	/**
 	 * Returns an HTML link for unlinking a content element. Unlinking means that the record still exists but
 	 * is not connected to any other content element or page.
@@ -1879,38 +1752,16 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * @access protected
 	 */
 	function link_unlink($label, $unlinkPointer, $realDelete=FALSE)	{
-		global $LANG;
 
-		$unlinkPointerString = rawurlencode($this->apiObj->flexform_getStringFromPointer($unlinkPointer));
-		if ($realDelete) {
-			return '<a class="link_delete" href="javascript:'.htmlspecialchars('if (confirm(' . $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL('deleteRecordMsg')) . '))') . ' sortable_deleteRecord(\'' . $unlinkPointerString . '\');">' . $label . '</a>';
+		$unlinkPointerString = rawurlencode($this->apiObj->flexform_getStringFromPointer ($unlinkPointer));
+
+		if ($realDelete)	{
+			return '<a href="index.php?' . $this->link_getParameters() . '&amp;deleteRecord=' . $unlinkPointerString . '" onclick="' . htmlspecialchars('return confirm(' . $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL('deleteRecordMsg')) . ');') . '">' . $label . '</a>';
 		} else {
-			return '<a class="link_unlink" href="javascript:'.htmlspecialchars('if (confirm(' . $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL('unlinkRecordMsg')) . '))') . ' sortable_unlinkRecord(\'' . $unlinkPointerString . '\');" class="onoff">' . $label . '</a>';
+			return '<a href="javascript:'.htmlspecialchars('if (confirm(' . $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL('unlinkRecordMsg')) . '))') . 'sortable_unlinkRecord(\'' . $unlinkPointerString . '\');">' . $label . '</a>';
 		}
 	}
 
-	
-	/**
-	 * Returns an HTML link for making a reference content element local to the page (copying it).
-	 *
-	 * @param	string		$label: The label
-	 * @param	array		$makeLocalPointer: Flexform pointer pointing to the element which shall be copied
-	 * @return	string		HTML anchor tag containing the label and the unlink-link
-	 * @access protected
-	 */
-	function icon_makeLocal($makeLocalPointer, $realDup=0) {
-		global $LANG;
-
-		$dupIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,t3lib_extMgm::extRelPath('templavoila').'mod1/makelocalcopy.gif','').' title="'.$LANG->getLL('makeLocal').'" border="0" alt="" />';
-
-		$label = $dupIcon;
-
-		if ($realDup)
-			return $this->link_makeLocal($label, $makeLocalPointer);
-		else
-			return '';
-	}
-	
 	/**
 	 * Returns an HTML link for making a reference content element local to the page (copying it).
 	 *
@@ -1940,78 +1791,8 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	}
 
 
-    /**
-	 * Returns an HTML link for browsing an existing record
-	 *
-	 * @param	string		$label: The label (or image)
-	 * @param	array		$parentPointer: Flexform pointer defining the parent element of the new record
-	 * @return	string		HTML anchor tag containing the label and the correct link
-	 * @access protected
-	 */
-	function icon_browse($parentPointer) {
-		global $LANG;
 
-		$browseIcon = '<img class="browse"' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/insert3.gif', '') . ' border="0" title="' . $LANG->sL('LLL:EXT:lang/locallang_core.xml:labels.browse_db') . '" alt="" />';
-		$insertIcon = '<img class="browse"' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/plusbullet2.gif', '') . ' border="0" title="' . $LANG->sL('LLL:EXT:lang/locallang_core.xml:labels.browse_db') . '" alt="" />';
 
-		$p = $this->apiObj->flexform_getStringFromPointer($parentPointer);
-		$b = $GLOBALS['BE_USER']->getSessionData('lastPasteRecord');
-
-		if ($p == $b)
-			$label = $insertIcon;
-		else
-			$label = $browseIcon;
-
-		$parameters =
-			$this->link_getParameters() .
-		//	'&amp;CB[removeAll]=normal' .
-			'&amp;pasteRecord=ref' .
-			'&amp;source=' . rawurlencode('###') .
-			'&amp;destination=' . rawurlencode($this->apiObj->flexform_getStringFromPointer($parentPointer));
-		$browser =
-			'browserPos = this;' .
-			'setFormValueOpenBrowser(\'db\',\'browser[communication]|||tt_content\');' .
-			'return false;';
-
-		return '<a href="#" id="' . $parameters . '" onclick="' . $browser . '">' . $label . '</a>';
-	}
-
-	
-	/*************************************************
-	 *
-	 * User setting specific functions (protected)
-	 *
-	 *************************************************/
-	
-	/**
-	* Compare with mod setting if icon is blinded
-	* 
-	* @param	string	$setting: name of icon setting
-	* @param	string	$code: HTML of icon code
-	* @return	string	return $code if not blinded
-	* @access protected 
-	*/
-	function blindIcon($setting, $code) {
-	    return isset($this->modTSconfig['properties']['blindIcon'][$setting]) && $this->modTSconfig['properties']['blindIcon'][$setting] == 1 ? '' : $code;
-	}
-	
-	/**
-	* general hooks for additional icons
-	* 
-	* @param	string	$hookName: name of specific icon hook
-	* @return	string	return HTML of hook
-	* @access protected 
-	*/
-    function additionalIconHook($hookName) {
-    	$html = '';
-    	$iconHooks = $this->hooks_prepareObjectsArray('additionalIcons');
-		foreach ($iconHooks as $hookObj) {
-			if (method_exists ($hookObj, 'additionalIcons')) {
-				$html .= $hookObj->additionalIcons ($hookName, $this);
-			}
-		}
-		return $html;
-    }	
 
 	/*************************************************
 	 *
