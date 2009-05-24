@@ -72,12 +72,12 @@ class tx_templavoila_api_testcase extends tx_phpunit_testcase {
 	public function setUp() {
 		global $TYPO3_DB;
 		
-		$TYPO3_DB->exec_DELETEquery ('tt_content', 'header LIKE "'.$this->testCEHeader.'%"');
-		$TYPO3_DB->exec_DELETEquery ('pages', 'title="'.$this->testPageTitle.'"');
-		$TYPO3_DB->exec_DELETEquery ('pages_language_overlay', 'title="'.$this->testPageTitle.'"');
-		$TYPO3_DB->exec_DELETEquery ('tx_templavoila_datastructure', 'title="'.$this->testPageDSTitle.'"');
-		$TYPO3_DB->exec_DELETEquery ('tx_templavoila_tmplobj', 'title="'.$this->testPageTOTitle.'"');
-		$TYPO3_DB->exec_DELETEquery ('sys_template', 'title="'.$this->testTSTemplateTitle.'"');
+		$TYPO3_DB->exec_DELETEquery ('tt_content', 'header LIKE \''.$this->testCEHeader.'%\'');
+		$TYPO3_DB->exec_DELETEquery ('pages', 'title=\''.$this->testPageTitle.'\'');
+		$TYPO3_DB->exec_DELETEquery ('pages_language_overlay', 'title=\''.$this->testPageTitle.'\'');
+		$TYPO3_DB->exec_DELETEquery ('tx_templavoila_datastructure', 'title=\''.$this->testPageDSTitle.'\'');
+		$TYPO3_DB->exec_DELETEquery ('tx_templavoila_tmplobj', 'title=\''.$this->testPageTOTitle.'\'');
+		$TYPO3_DB->exec_DELETEquery ('sys_template', 'title=\''.$this->testTSTemplateTitle.'\'');
         $TYPO3_DB->exec_DELETEquery ('sys_language', 'title=\''.$this->testLanguageTitle.'\'');
 	}
 	
@@ -86,12 +86,12 @@ class tx_templavoila_api_testcase extends tx_phpunit_testcase {
 return;		
 		$BE_USER->setWorkspace($this->workspaceIdAtStart);	
 
-		$TYPO3_DB->exec_DELETEquery ('tt_content', 'header LIKE "'.$this->testCEHeader.'%"');
-		$TYPO3_DB->exec_DELETEquery ('pages', 'title="'.$this->testPageTitle.'"');
-		$TYPO3_DB->exec_DELETEquery ('pages_language_overlay', 'title="'.$this->testPageTitle.'"');
-		$TYPO3_DB->exec_DELETEquery ('tx_templavoila_datastructure', 'title="'.$this->testPageDSTitle.'"');
-		$TYPO3_DB->exec_DELETEquery ('tx_templavoila_tmplobj', 'title="'.$this->testPageTOTitle.'"');
-		$TYPO3_DB->exec_DELETEquery ('sys_template', 'title="'.$this->testTSTemplateTitle.'"');
+		$TYPO3_DB->exec_DELETEquery ('tt_content', 'header LIKE \''.$this->testCEHeader.'%\'');
+		$TYPO3_DB->exec_DELETEquery ('pages', 'title=\''.$this->testPageTitle.'\'');
+		$TYPO3_DB->exec_DELETEquery ('pages_language_overlay', 'title=\''.$this->testPageTitle.'\'');
+		$TYPO3_DB->exec_DELETEquery ('tx_templavoila_datastructure', 'title=\''.$this->testPageDSTitle.'\'');
+		$TYPO3_DB->exec_DELETEquery ('tx_templavoila_tmplobj', 'title=\''.$this->testPageTOTitle.'\'');
+		$TYPO3_DB->exec_DELETEquery ('sys_template', 'title=\''.$this->testTSTemplateTitle.'\'');
         $TYPO3_DB->exec_DELETEquery ('sys_language', 'title=\''.$this->testLanguageTitle.'\'');
 	}
 
@@ -2184,7 +2184,7 @@ return;
 			'tx_templavoila_to' => $this->testPageTOUID,
 			'storage_pid' => $this->testPageUID
 		);	
-		$TYPO3_DB->exec_UPDATEquery ('pages', 'title="'.$this->testPageTitle.'"', $row);
+		$TYPO3_DB->exec_UPDATEquery ('pages', 'title=\''.$this->testPageTitle.'\'', $row);
 	}
 
 	/**
