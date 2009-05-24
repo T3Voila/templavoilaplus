@@ -50,9 +50,11 @@ class tx_templavoila_api_testcase extends tx_phpunit_testcase {
 	protected $testCEHeader = '*** t3unit templavoila testcase content element ***';
 	protected $testFCEDSTitle = '*** t3unit templavoila testcase FCE template ds ***';
 	protected $testFCETOTitle = '*** t3unit templavoila testcase FCE template to ***';
+    protected $testLanguageTitle = '*** t3unit templavoila testcase language ***';
 	protected $testPageUID;
 	protected $testPageDSUID;
 	protected $testPageTOUID;
+    protected $testSyslangUid;
 	
 	protected $workspaceIdAtStart;
 	
@@ -76,6 +78,7 @@ class tx_templavoila_api_testcase extends tx_phpunit_testcase {
 		$TYPO3_DB->exec_DELETEquery ('tx_templavoila_datastructure', 'title="'.$this->testPageDSTitle.'"');
 		$TYPO3_DB->exec_DELETEquery ('tx_templavoila_tmplobj', 'title="'.$this->testPageTOTitle.'"');
 		$TYPO3_DB->exec_DELETEquery ('sys_template', 'title="'.$this->testTSTemplateTitle.'"');
+        $TYPO3_DB->exec_DELETEquery ('sys_language', 'title=\''.$this->testLanguageTitle.'\'');
 	}
 	
 	public function tearDown () {
@@ -89,6 +92,7 @@ return;
 		$TYPO3_DB->exec_DELETEquery ('tx_templavoila_datastructure', 'title="'.$this->testPageDSTitle.'"');
 		$TYPO3_DB->exec_DELETEquery ('tx_templavoila_tmplobj', 'title="'.$this->testPageTOTitle.'"');
 		$TYPO3_DB->exec_DELETEquery ('sys_template', 'title="'.$this->testTSTemplateTitle.'"');
+        $TYPO3_DB->exec_DELETEquery ('sys_language', 'title=\''.$this->testLanguageTitle.'\'');
 	}
 
 
@@ -1713,6 +1717,7 @@ return;
 
 		$this->fixture_createTestPage ();		
 		$this->fixture_createTestPageDSTO();
+        $this->fixture_createTestSysLanguage();
 		$this->fixture_createTestAlternativePageHeader ($this->testPageUID, 'DE');
 
 			// Create new content elements:
@@ -1781,6 +1786,7 @@ return;
 
 		$this->fixture_createTestPage ();		
 		$this->fixture_createTestPageDSTO();
+        $this->fixture_createTestSysLanguage();
 		$this->fixture_createTestAlternativePageHeader ($this->testPageUID, 'DE');
 
 			// Create new content elements:
@@ -2223,11 +2229,22 @@ return;
 		$res = $TYPO3_DB->exec_INSERTquery ('tx_templavoila_tmplobj', $row);
 		$this->testFCETOUID = $TYPO3_DB->sql_insert_id ($res);			
 	}
-
-
-
-
-
+    
+    private function fixture_createTestSysLanguage() {
+		global $TYPO3_DB;
+        
+        $row = array(
+			'pid' => 0,
+			'title' => $this->testLanguageTitle,
+			'static_lang_isocode' => 43,
+			'tstamp' => time(),
+			'hidden' => 0            
+        );
+		$res = $TYPO3_DB->exec_INSERTquery ('sys_language', $row);
+		$this->testSyslangUid = $TYPO3_DB->sql_insert_id ($res);        
+    }
+    
+    
 	/*********************************************************
 	 *
 	 * FIXTURE FUNCTIONS

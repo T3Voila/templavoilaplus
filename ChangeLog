@@ -1,5 +1,6 @@
 2009-05-24  Tolleiv Nietsch <nietsch@aoemedia.de>
 
+    * Fixed bug #11174: test_localizeElement and test_localizeElement_workspaces if there is no sys_lang-record
     * Fixed bug #11172: Unit test don't run within latest PHPUnit
 
 2009-03-13  Steffen Kamper  <info@sk-typo3.de>
