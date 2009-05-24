@@ -39,7 +39,7 @@
 require_once (t3lib_extMgm::extPath('templavoila').'class.tx_templavoila_api.php');
 require_once (PATH_t3lib.'class.t3lib_tcemain.php');
 
-class tx_templavoila_api_testcase extends tx_t3unit_testcase {
+class tx_templavoila_api_testcase extends tx_phpunit_testcase {
 
 	protected $apiObj;
 	protected $testPageTitle = '*** t3unit templavoila testcase page ***';
@@ -56,7 +56,7 @@ class tx_templavoila_api_testcase extends tx_t3unit_testcase {
 	
 	protected $workspaceIdAtStart;
 	
-	public function __construct ($name) {
+	public function __construct ($name=null) {
 		global $TYPO3_DB, $BE_USER;
 
 		parent::__construct ($name);
