@@ -1,3 +1,7 @@
+2009-08-05  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug #11653: mergeFormDataIntoTemplateStructure incorrectly determines sections
+
 2009-05-24  Tolleiv Nietsch <nietsch@aoemedia.de>
 
     * Fixed bug #3103:  Unit tests not DBAL-ready

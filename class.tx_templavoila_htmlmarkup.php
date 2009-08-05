@@ -518,7 +518,7 @@ class tx_templavoila_htmlmarkup {
 	function mergeFormDataIntoTemplateStructure($editStruct,$currentMappingInfo,$firstLevelImplodeToken='',$valueKey='vDEF')	{
 		$isSection=0;
 		$htmlParse = ($this->htmlParse ? $this->htmlParse : t3lib_div::makeInstance('t3lib_parsehtml'));
-		if (is_array($editStruct))	{
+		if (is_array($editStruct) && count($editStruct))	{
 			$testInt = implode('',array_keys($editStruct));
 			$isSection = !ereg('[^0-9]',$testInt);
 		}
