@@ -330,8 +330,12 @@ class tx_templavoila_newcewizard {
 			}
 			if (class_exists($tabDef['class'])) {
 				// Create class and get content
-				$className = t3lib_div::makeInstanceClassName($tabDef['class']);
-				$tabInstance = new $className($this);
+				if(version_compare(TYPO3_version,'4.3.0','<')) {
+					$className = t3lib_div::makeInstanceClassName($tabDef['class']);
+					$tabInstance = new $className($this);
+				} else {
+					$tabInstance = t3lib_div::makeInstance($tabDef['class'],$this);
+				}
 				if ($tabInstance instanceof tx_templavoila_baseTab) {
 					/* @var $tabInstance tx_templavoila_basetab */
 					$tabContent = trim($tabInstance->getTabContent());

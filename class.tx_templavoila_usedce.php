@@ -64,8 +64,12 @@ class tx_templavoila_usedCE {
 	function init($page_uid)	{
 
 			// Initialize TemplaVoila API class:
-		$apiClassName = t3lib_div::makeInstanceClassName('tx_templavoila_api');
-		$apiObj = new $apiClassName ('pages');
+		if(version_compare(TYPO3_version,'4.3.0','<')) {
+			$apiClassName = t3lib_div::makeInstanceClassName('tx_templavoila_api');
+			$apiObj = new $apiClassName ('pages');
+		} else {
+			$apiObj = t3lib_div::makeInstance('tx_templavoila_api','pages');
+		}
 
 			// Fetch the content structure of page:
 		$contentTreeData = $apiObj->getContentTree('pages', t3lib_BEfunc::getRecordRaw('pages','uid='.intval($page_uid)));

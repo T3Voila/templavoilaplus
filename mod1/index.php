@@ -199,8 +199,12 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		$this->wizardsObj->init($this);
 
 			// Initialize TemplaVoila API class:
-		$apiClassName = t3lib_div::makeInstanceClassName('tx_templavoila_api');
-		$this->apiObj = new $apiClassName ($this->altRoot ? $this->altRoot : 'pages');
+		if(version_compare(TYPO3_version,'4.3.0','<')) {
+			$apiClassName = t3lib_div::makeInstanceClassName('tx_templavoila_api');
+			$this->apiObj = new $apiClassName ($this->altRoot ? $this->altRoot : 'pages');
+		} else {
+			$this->apiObj = t3lib_div::makeInstance('tx_templavoila_api', $this->altRoot ? $this->altRoot : 'pages');
+		}
 
 			// Initialize the clipboard
 		$this->clipboardObj =& t3lib_div::getUserObj ('&tx_templavoila_mod1_clipboard','');

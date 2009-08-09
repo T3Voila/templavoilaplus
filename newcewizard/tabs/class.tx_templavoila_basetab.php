@@ -133,8 +133,12 @@ abstract class tx_templavoila_baseTab {
 		$content = '';
 		if (count($elements) > 0) {
 			// Create view and render content
-			$viewClass = t3lib_div::makeInstanceClassName('tx_templavoila_tabView');
-			$view = new $viewClass($elements, $this->pObj);
+			if(version_compare(TYPO3_version,'4.3.0','<')) {
+				$viewClass = t3lib_div::makeInstanceClassName('tx_templavoila_tabView');
+				$view = new $viewClass($elements, $this->pObj);
+			} else {
+				$view = t3lib_div::makeInstance('tx_templavoila_tabView', $elements, $this->pObj);
+			}
 			/* @var $view tx_templavoila_tabView */
 			$content = $view->render();
 		}

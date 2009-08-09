@@ -1,3 +1,7 @@
+2009-08-09  Tolleiv Nietsch <nietsch@aoemedia.de>
+
+	* Fixed bug #11532: TV use makeInstanceClassName and fill the deprecation log 
+
 2009-08-05  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #11653: mergeFormDataIntoTemplateStructure incorrectly determines sections
