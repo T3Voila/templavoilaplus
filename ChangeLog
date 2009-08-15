@@ -1,5 +1,6 @@
 2009-08-15  Tolleiv Nietsch <nietsch@aoemedia.de>
 
+	* Fixed issue #11520: DS Tag for Hiding Field Preview Data, updated documentation
 	* Fixed bug #11173: Unit tests utilize the Live-Database
 
 2009-08-09  Tolleiv Nietsch <nietsch@aoemedia.de>
