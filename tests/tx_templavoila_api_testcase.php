@@ -39,7 +39,7 @@
 require_once (t3lib_extMgm::extPath('templavoila').'class.tx_templavoila_api.php');
 require_once (PATH_t3lib.'class.t3lib_tcemain.php');
 
-class tx_templavoila_api_testcase extends tx_phpunit_testcase {
+class tx_templavoila_api_testcase extends tx_phpunit_database_testcase {
 
 	protected $apiObj;
 	protected $testPageTitle = '*** t3unit templavoila testcase page ***';
@@ -69,30 +69,20 @@ class tx_templavoila_api_testcase extends tx_phpunit_testcase {
 		$BE_USER->setWorkspace(0);	
 	}
 
-	public function setUp() {
-		global $TYPO3_DB;
-		
-		$TYPO3_DB->exec_DELETEquery ('tt_content', 'header LIKE \''.$this->testCEHeader.'%\'');
-		$TYPO3_DB->exec_DELETEquery ('pages', 'title=\''.$this->testPageTitle.'\'');
-		$TYPO3_DB->exec_DELETEquery ('pages_language_overlay', 'title=\''.$this->testPageTitle.'\'');
-		$TYPO3_DB->exec_DELETEquery ('tx_templavoila_datastructure', 'title=\''.$this->testPageDSTitle.'\'');
-		$TYPO3_DB->exec_DELETEquery ('tx_templavoila_tmplobj', 'title=\''.$this->testPageTOTitle.'\'');
-		$TYPO3_DB->exec_DELETEquery ('sys_template', 'title=\''.$this->testTSTemplateTitle.'\'');
-        $TYPO3_DB->exec_DELETEquery ('sys_language', 'title=\''.$this->testLanguageTitle.'\'');
+		public function setUp() {
+		$this->createDatabase();
+		// assuming that test-database can be created otherwise PHPUnit will skip the test
+		$db = $this->useTestDatabase();
+		$this->importStdDB();
+		$this->importExtensions(array('cms','static_info_tables','templavoila'));
 	}
 	
 	public function tearDown () {
-		global $BE_USER, $TYPO3_DB;
-return;		
-		$BE_USER->setWorkspace($this->workspaceIdAtStart);	
-
-		$TYPO3_DB->exec_DELETEquery ('tt_content', 'header LIKE \''.$this->testCEHeader.'%\'');
-		$TYPO3_DB->exec_DELETEquery ('pages', 'title=\''.$this->testPageTitle.'\'');
-		$TYPO3_DB->exec_DELETEquery ('pages_language_overlay', 'title=\''.$this->testPageTitle.'\'');
-		$TYPO3_DB->exec_DELETEquery ('tx_templavoila_datastructure', 'title=\''.$this->testPageDSTitle.'\'');
-		$TYPO3_DB->exec_DELETEquery ('tx_templavoila_tmplobj', 'title=\''.$this->testPageTOTitle.'\'');
-		$TYPO3_DB->exec_DELETEquery ('sys_template', 'title=\''.$this->testTSTemplateTitle.'\'');
-        $TYPO3_DB->exec_DELETEquery ('sys_language', 'title=\''.$this->testLanguageTitle.'\'');
+		$this->cleanDatabase();
+		$this->dropDatabase();
+		$GLOBALS['TYPO3_DB']->sql_select_db(TYPO3_db);    
+		
+		$GLOBALS['BE_USER']->setWorkspace($this->workspaceIdAtStart);    
 	}
 
 
@@ -2230,19 +2220,33 @@ return;
 		$this->testFCETOUID = $TYPO3_DB->sql_insert_id ($res);			
 	}
     
-    private function fixture_createTestSysLanguage() {
-		global $TYPO3_DB;
-        
-        $row = array(
+	private function fixture_createTestSysLanguage() {
+
+		$row = array(
+			'uid'=>43, 
+			'pid'=>0, 
+			'lg_iso_2'=>'DE', 
+			'lg_name_en'=>'German', 
+			'lg_typo3'=>'de', 
+			'lg_country_iso_2'=>'', 
+			'lg_collate_locale'=>'de_DE', 
+			'lg_name_local'=>'Deutsch',
+			'lg_sacred'=>0,
+			'lg_constructed'=>0
+		);
+		$res = $GLOBALS['TYPO3_DB']->exec_INSERTquery ('static_languages', $row);
+		$staticLangUid = $GLOBALS['TYPO3_DB']->sql_insert_id ($res);
+		
+		$row = array(
 			'pid' => 0,
 			'title' => $this->testLanguageTitle,
-			'static_lang_isocode' => 43,
+			'static_lang_isocode' => $staticLangUid,
 			'tstamp' => time(),
 			'hidden' => 0            
-        );
-		$res = $TYPO3_DB->exec_INSERTquery ('sys_language', $row);
-		$this->testSyslangUid = $TYPO3_DB->sql_insert_id ($res);        
-    }
+		);
+		$res = $GLOBALS['TYPO3_DB']->exec_INSERTquery ('sys_language', $row);
+		$this->testSyslangUid = $GLOBALS['TYPO3_DB']->sql_insert_id ($res);
+	}
     
     
 	/*********************************************************
