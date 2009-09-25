@@ -1,3 +1,7 @@
+2009-08-09  Steffen Kamper  <info@sk-typo3.de>
+
+	* Added feature #9465: Disable languages for translation with mod.SHARED.disableLanguages
+
 2009-08-15  Tolleiv Nietsch <nietsch@aoemedia.de>
 
 	* Fixed issue #11520: DS Tag for Hiding Field Preview Data, updated documentation

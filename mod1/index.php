@@ -2001,6 +2001,12 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			}
 
 			if ($onlyIsoCoded && !$output[$row['uid']]['ISOcode']) unset($output[$row['uid']]);
+
+			$disableLanguages = t3lib_div::trimExplode(',', $this->modSharedTSconfig['properties']['disableLanguages'], 1);
+			foreach ($disableLanguages as $language) {
+					// $language is the uid of a sys_language
+				unset($output[$language]);
+			}
 		}
 
 		return $output;
