@@ -76,8 +76,9 @@ class tx_templavoila_cm1 {
 			if (@is_file($table)) {
 				if ($BE_USER->isAdmin()) {
 					if (function_exists('finfo_open')) {
-						$fi = finfo_open(FILEINFO_MIME);
-						$enabled = (@finfo_file($fi, $table) == 'text/html');
+						$finfoMode = defined('FILEINFO_MIME_TYPE') ? FILEINFO_MIME_TYPE : FILEINFO_MIME;
+						$fi = finfo_open($finfoMode);
+						$enabled = (substr(@finfo_file($fi, $table), 0, 9) == 'text/html');
 						finfo_close($fi);
 					}
 					else {

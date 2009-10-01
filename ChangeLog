@@ -1,3 +1,7 @@
+2009-10-01  Dmitry Dulepov <dmitry.dulepov@gmail.com>
+
+	* Fixed bug #11676: With PHP 5.3 clickmenu item "TemplaVoila" in File > List module isn't displayed
+
 2009-08-09  Steffen Kamper  <info@sk-typo3.de>
 
 	* Added feature #9465: Disable languages for translation with mod.SHARED.disableLanguages
@@ -9,7 +13,7 @@
 
 2009-08-09  Tolleiv Nietsch <nietsch@aoemedia.de>
 
-	* Fixed bug #11532: TV use makeInstanceClassName and fill the deprecation log 
+	* Fixed bug #11532: TV use makeInstanceClassName and fill the deprecation log
 
 2009-08-05  Dmitry Dulepov  <dmitry@typo3.org>
 
@@ -17,16 +21,16 @@
 
 2009-05-24  Tolleiv Nietsch <nietsch@aoemedia.de>
 
-    * Fixed bug #3103:  Unit tests not DBAL-ready
-    * Fixed bug #11174: test_localizeElement and test_localizeElement_workspaces if there is no sys_lang-record
-    * Fixed bug #11172: Unit test don't run within latest PHPUnit
+	* Fixed bug #3103:  Unit tests not DBAL-ready
+	* Fixed bug #11174: test_localizeElement and test_localizeElement_workspaces if there is no sys_lang-record
+	* Fixed bug #11172: Unit test don't run within latest PHPUnit
 
 2009-03-13  Steffen Kamper  <info@sk-typo3.de>
 
-	* Fixed bug #10615: Show sys_notes in Page Module 
-	* Fixed bug #10643: Page and TO icons aren't shown anymore 
-	* Fixed bug #10662: CREATE/UPDATE of DS/TO in TV wizard doesn't work (SVN rev. 17700) 
-	* Fixed bug #10685: incorrect next_ds and next_to: workspace overlay missing in page module 
+	* Fixed bug #10615: Show sys_notes in Page Module
+	* Fixed bug #10643: Page and TO icons aren't shown anymore
+	* Fixed bug #10662: CREATE/UPDATE of DS/TO in TV wizard doesn't work (SVN rev. 17700)
+	* Fixed bug #10685: incorrect next_ds and next_to: workspace overlay missing in page module
 	* Fixed bug #10661: "Show XML" button doesn't work (SVN rev. 17700)
 
 2009-03-09  Steffen Kamper  <info@sk-typo3.de>
