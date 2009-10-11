@@ -185,8 +185,8 @@
 			
 			<label index="mapConfiguration">Configuration</label>
 			<label index="mapEditConfiguration">Edit general configuration</label>
-			<label index="mapDataProcessing">Data-Processing</label>
-			<label index="mapEditDataProcessing">Edit data-processing modifications</label>
+			<label index="mapDataProcessing">Data processing</label>
+			<label index="mapEditDataProcessing">Edit data processing modifications</label>
 			<label index="mapTyposcript">Typoscript</label>
 			<label index="mapEditTyposcript">Edit Typoscript</label>
 			<label index="mapExtra">Extra</label>
