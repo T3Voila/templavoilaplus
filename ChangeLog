@@ -1,3 +1,7 @@
+2009-10-11  Tolleiv Nietsch <nietsch@aoemedia.de>
+
+	* Fixed bug #7212: versioning-tab doesn't show up when logged in as non-admin
+
 2009-10-01  Dmitry Dulepov <dmitry.dulepov@gmail.com>
 
 	* Fixed bug #11676: With PHP 5.3 clickmenu item "TemplaVoila" in File > List module isn't displayed
