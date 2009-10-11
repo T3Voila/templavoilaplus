@@ -462,7 +462,7 @@ class tx_templavoila_rules {
 		$pos = 0;
 		$outArr = array ();
 			// Strip off the not wanted characters. We only support certain functions of regular expressions.
-		$regex = ereg_replace ('[^a-zA-Z0-9\[\]\{\}\*\+\.\-]','',$regex);
+		$regex = preg_replace ('/[^a-zA-Z0-9\[\]\{\}\*\+\.\-]/','',$regex);
 
 			// Split regular expression into alternative parts divided by '|'. If there is more then one part,
 			// call this function recursively and parse each part separately.

@@ -644,7 +644,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 
 						// Get <body> tag:
 					$reg='';
-					eregi('<body[^>]*>',$fileContent,$reg);
+					preg_match('/<body[^>]*>/i',$fileContent,$reg);
 					$templatemapping['BodyTag_cached'] = $currentMappingInfo_head['addBodyTag'] ? $reg[0] : '';
 				}
 
@@ -1429,7 +1429,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 
 				// Get <body> tag:
 			$reg='';
-			eregi('<body[^>]*>',$fileContent,$reg);
+			preg_match('/<body[^>]*>/i',$fileContent,$reg);
 			$templatemapping['BodyTag_cached'] = $currentMappingInfo_head['addBodyTag'] ? $reg[0] : '';
 
 			$TOuid = t3lib_BEfunc::wsMapId('tx_templavoila_tmplobj',$row['uid']);
@@ -1532,7 +1532,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 
 			// Get <body> tag:
 		$reg='';
-		eregi('<body[^>]*>',$fileContent,$reg);
+		preg_match('/<body[^>]*>/i',$fileContent,$reg);
 		$html_body = $reg[0];
 
 			// Get <head>...</head> from template:
@@ -1833,7 +1833,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 														'<img src="../html_tags/' . $pI['el'] . '.gif" height="9" border="0" alt="" hspace="3" class="absmiddle" title="---' . htmlspecialchars(t3lib_div::fixed_lgd_cs($currentMappingInfo[$key]['MAP_EL'], -80)) . '" />' .
 														($pI['modifier'] ? $pI['modifier'] . ($pI['modifier_value'] ? ':' . ($pI['modifier'] != 'RANGE' ? $pI['modifier_value'] : '...') : '') : '');
 								$rowCells['htmlPath'] = '<a href="'.$this->linkThisScript(array(
-																							'htmlPath'=>$path.($path?'|':'').ereg_replace('\/[^ ]*$','',$currentMappingInfo[$key]['MAP_EL']),
+																							'htmlPath'=>$path.($path?'|':'').preg_replace('/\/[^ ]*$/','',$currentMappingInfo[$key]['MAP_EL']),
 																							'showPathOnly'=>1,
 																							'DS_element' => t3lib_div::_GP('DS_element')
 																						)).'">'.$rowCells['htmlPath'].'</a>';

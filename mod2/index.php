@@ -2172,7 +2172,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 
 							// Check if the complete content is an image - then make GMENU!
 						$linkContent = trim($htmlParser->removeFirstAndLastTag($linkTag[1]));
-						if (eregi('^<img[^>]*>$',$linkContent))	{
+						if (preg_match('/^<img[^>]*>$/i',$linkContent))	{
 							$GMENU = TRUE;
 							$attribs = $htmlParser->get_tag_attributes($linkContent,1);
 							$newValue['I-class'] = $attribs[0]['class'];
@@ -2188,15 +2188,15 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 						}
 
 						$linkTag[1] = '|';
-						$newValue['wrap'] = ereg_replace('['.chr(10).chr(13).']*','',implode('',$linkTag));
+						$newValue['wrap'] = preg_replace('/['.chr(10).chr(13).']*/','',implode('',$linkTag));
 
 						$md5Base = $newValue;
 						unset($md5Base['I-width']);
 						unset($md5Base['I-height']);
 						$md5Base = serialize($md5Base);
-						$md5Base = ereg_replace('name=["\'][^"\']*["\']','',$md5Base);
-						$md5Base = ereg_replace('id=["\'][^"\']*["\']','',$md5Base);
-						$md5Base = ereg_replace('[:space:]','',$md5Base);
+						$md5Base = preg_replace('/name=["\'][^"\']*["\']/','',$md5Base);
+						$md5Base = preg_replace('/id=["\'][^"\']*["\']/','',$md5Base);
+						$md5Base = preg_replace('/\s/','',$md5Base);
 						$key = md5($md5Base);
 
 						if (!isset($menuWraps[$key]))	{	// Only if not yet set, set it (so it only gets set once and the first time!)
@@ -2207,7 +2207,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 					} elseif ($key) {
 
 							// Add this to the previous wrap:
-						$menuWraps[$key]['bulletwrap'].= str_replace('|','&#'.ord('|').';',ereg_replace('['.chr(10).chr(13).']*','',$value));
+						$menuWraps[$key]['bulletwrap'].= str_replace('|','&#'.ord('|').';',preg_replace('/['.chr(10).chr(13).']*/','',$value));
 					}
 				}
 			}
@@ -2228,7 +2228,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 				$typoScript = '
 lib.'.$menuType.' = HMENU
 lib.'.$menuType.'.entryLevel = '.$menuTypeEntryLevel.'
-'.(count($totalWrap) ? 'lib.'.$menuType.'.wrap = '.ereg_replace('['.chr(10).chr(13).']','',implode('|',$totalWrap)) : '').'
+'.(count($totalWrap) ? 'lib.'.$menuType.'.wrap = '.preg_replace('/['.chr(10).chr(13).']/','',implode('|',$totalWrap)) : '').'
 lib.'.$menuType.'.1 = GMENU
 lib.'.$menuType.'.1.NO.wrap = '.$this->makeWrap($menu_normal).
 	($menu_normal['I-class'] ? '
@@ -2273,7 +2273,7 @@ lib.'.$menuType.'.1.ACT {
 				$typoScript = '
 lib.'.$menuType.' = HMENU
 lib.'.$menuType.'.entryLevel = '.$menuTypeEntryLevel.'
-'.(count($totalWrap) ? 'lib.'.$menuType.'.wrap = '.ereg_replace('['.chr(10).chr(13).']','',implode('|',$totalWrap)) : '').'
+'.(count($totalWrap) ? 'lib.'.$menuType.'.wrap = '.preg_replace('/['.chr(10).chr(13).']/','',implode('|',$totalWrap)) : '').'
 lib.'.$menuType.'.1 = TMENU
 lib.'.$menuType.'.1.NO {
 	allWrap = '.$this->makeWrap($menu_normal).
@@ -2416,7 +2416,7 @@ lib.'.$menuType.'.1.ACT {
 			$wrap = $cfg['wrap'].'  |*|  '.$cfg['bulletwrap'].$cfg['wrap'];
 		}
 
-		return ereg_replace('['.chr(10).chr(13).chr(9).']','',$wrap);
+		return preg_replace('/['.chr(10).chr(13).chr(9).']/','',$wrap);
 	}
 
 	/**

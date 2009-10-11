@@ -1,5 +1,6 @@
 2009-10-11  Tolleiv Nietsch <nietsch@aoemedia.de>
 
+	* Fixed bug #11997: modifications due to deprecated funcitons in PHP 5.3
 	* Fixed bug #7212: versioning-tab doesn't show up when logged in as non-admin
 
 2009-10-01  Dmitry Dulepov <dmitry.dulepov@gmail.com>

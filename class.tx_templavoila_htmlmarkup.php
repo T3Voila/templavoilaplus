@@ -520,7 +520,7 @@ class tx_templavoila_htmlmarkup {
 		$htmlParse = ($this->htmlParse ? $this->htmlParse : t3lib_div::makeInstance('t3lib_parsehtml'));
 		if (is_array($editStruct) && count($editStruct))	{
 			$testInt = implode('',array_keys($editStruct));
-			$isSection = !ereg('[^0-9]',$testInt);
+			$isSection = !preg_match('/[^0-9]/',$testInt);
 		}
 		$out='';
 		if ($isSection)	{
@@ -571,7 +571,7 @@ class tx_templavoila_htmlmarkup {
 			list($thePath,$theCmd) = t3lib_div::trimExplode('/', $path,1);
 
 				// Split the path part into its units: results in an array with path units.
-			$splitParts = split('[[:space:]]+',$thePath);
+			$splitParts = preg_split('/\s+/',$thePath);
 
 				// modifier:
 			$modArr = t3lib_div::trimExplode(':', $theCmd,1);
@@ -594,14 +594,14 @@ class tx_templavoila_htmlmarkup {
 				$tagSplitParts[]=$subPaths[$index]['modifier_value'];
 			}
 			foreach($tagSplitParts as $tagV)	{
-				list($tagName) = split('[^a-zA-Z0-9_-]',$tagV);
+				list($tagName) = preg_split('/[^a-zA-Z0-9_-]/',$tagV);
 				$tagIndex[$tagName]++;
 			}
 			$subPaths[$index]['tagList']=implode(',',array_keys($tagIndex));
 
 				// Setting "path" and "parent"
 			$subPaths[$index]['path'] = implode(' ',$splitParts);	// Cleaning up the path
-			list($elName) = split('[^a-zA-Z0-9_-]',end($splitParts));
+			list($elName) = preg_split('/[^a-zA-Z0-9_-]/',end($splitParts));
 			$subPaths[$index]['el'] = $elName;
 			array_pop($splitParts);	// Removing last item to get parent.
 			$subPaths[$index]['parent'] = implode(' ',$splitParts);	// Cleaning up the path
@@ -1218,7 +1218,7 @@ class tx_templavoila_htmlmarkup {
 			return str_pad('',$recursion*2,' ',STR_PAD_LEFT).
 				$gnyf.
 				($valueStr ? '<font color="#6666FF"><em>' : '').
-				htmlspecialchars(t3lib_div::fixed_lgd_cs(ereg_replace('[[:space:]]+',' ',$str),$this->maxLineLengthInSourceMode)).
+				htmlspecialchars(t3lib_div::fixed_lgd_cs(preg_replace('/\s+/',' ',$str),$this->maxLineLengthInSourceMode)).
 				($valueStr ? '</em></font>' : '').
 				chr(10);
 		}

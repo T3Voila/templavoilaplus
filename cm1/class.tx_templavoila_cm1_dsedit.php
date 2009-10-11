@@ -63,7 +63,7 @@ class tx_templavoila_cm1_dsEdit {
 				$autokey='';
 				if ($this->pObj->DS_cmd=='add')	{
 					if (trim($this->pObj->fieldName)!='[' . htmlspecialchars($GLOBALS['LANG']->getLL('mapEnterNewFieldname')) . ']' && trim($this->pObj->fieldName)!='field_')	{
-						$autokey = strtolower(ereg_replace('[^[:alnum:]_]', '', trim($this->pObj->fieldName)));
+						$autokey = strtolower(preg_replace('/[^a-z0-9_]/i', '', trim($this->pObj->fieldName)));
 						if (isset($value['el'][$autokey]))	{
 							$autokey .= '_' . substr(md5(microtime()), 0, 2);
 						}
