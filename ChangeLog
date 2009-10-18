@@ -1,3 +1,7 @@
+2009-10-18  Tolleiv Nietsch <nietsch@aoemedia.de>
+
+	* Fixed bug #10754: Wrong spelling of TypoScript within labels
+
 2009-10-11  Tolleiv Nietsch <nietsch@aoemedia.de>
 
 	* Fixed bug #10751: Abbreviations are not allowed ("only TS")
@@ -78,7 +82,7 @@
 
 	* Fixed bug #10548: Highlight storage folder in page tree when select a storage folder in templavoila module
 	* Fixed bug #10484: Add icon for hide/unhide record in page module
-	* Fixed bug #9529: Enhanced "Show-Details" + new DS-Editor (thanks to Niels Fröhling)
+	* Fixed bug #9529: Enhanced "Show-Details" + new DS-Editor (thanks to Niels FrÃ¶hling)
 
 2009-02-14  Steffen Kamper  <info@sk-typo3.de>
 
@@ -105,7 +109,7 @@
 	* Added SVN properties
 	* Implementation of #10370: added initial work on new CE wizard
 
-2009-01-27  Kasper SkŒrh¿j	<kasper@typo3.org>
+2009-01-27  Kasper SkÅ’rhÂ¿j	<kasper@typo3.org>
 
 	* Fixed a bug in the cleaner of unused elements which ignored some translations of content elements.
 	* Added cleaner option --excludePageIdList allowing to exclude certain pages.

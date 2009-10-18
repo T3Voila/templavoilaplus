@@ -161,11 +161,11 @@
 			<label index="mapPresets_none">None (TypoScript only)</label>
 			<label index="mapPresets_customTCA">Custom TCA</label>
 			<label index="mapPresetGroups_tceFields">Form Fields</label>
-			<label index="mapPresetGroups_ts">Typoscript Elements</label>
+			<label index="mapPresetGroups_ts">TypoScript Elements</label>
 			<label index="mapPresetGroups_other">Other</label>
 			
-			<label index="mapTSconstants">Typoscript Constants</label>
-			<label index="mapTScode">Typoscript Code</label>
+			<label index="mapTSconstants">TypoScript Constants</label>
+			<label index="mapTScode">TypoScript Code</label>
 			<label index="mapExtraOptions">Extra options</label>
 			<label index="mapPostProcesses">Applied post-processes</label>
 			<label index="mapPPcastInteger">Cast content to integer</label>

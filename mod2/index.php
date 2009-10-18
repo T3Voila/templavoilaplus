@@ -1568,7 +1568,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 						$HTML .= '<dt>Column-positioning:</dt>';
 						$HTML .= '<dd>' . $column . '</dd>';
 						if ($tsstats != '') {
-							$HTML .= '<dt>Typo-Script:</dt>';
+							$HTML .= '<dt>TypoScript:</dt>';
 							$HTML .= '<dd><ul class="DS-stats">' . $tsstats . '</ul></dd>';
 						}
 						if ($notes != '') {
