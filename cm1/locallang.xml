@@ -171,9 +171,9 @@
 			<label index="mapPPcastInteger">Cast content to integer</label>
 			<label index="mapPPhsc">Pass content through htmlSpecialChars (HSC)</label>
 			<label index="mapCustomStdWrap">Custom stdWrap</label>
-			<label index="mapTCElabel">Form label</label>
-			<label index="mapTCEconf">Form configuration</label>
-			<label index="mapTCEextras">Form extras</label>
+			<label index="mapTCElabel">TCE Label</label>
+			<label index="mapTCEconf">TCE Configuration</label>
+			<label index="mapTCEextras">TCE Extras</label>
 			
 			<label index="mapElContainers">Containers</label>
 			<label index="mapElElements">Elements</label>
@@ -191,8 +191,8 @@
 			<label index="mapEditTyposcript">Edit Typoscript</label>
 			<label index="mapExtra">Extra</label>
 			<label index="mapEditExtra">Edit extra options</label>
-			<label index="mapTCEform">Form</label>
-			<label index="mapEditTCEform">Edit form configuration</label>
+			<label index="mapTCEform">TCE-Form</label>
+			<label index="mapEditTCEform">Edit TCE-Form configuration</label>
 			<label index="mapObjectPath">Object path</label>
 			
 			<label index="errorNoContentInFile">No content found in file reference</label>
