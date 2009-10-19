@@ -1,3 +1,7 @@
+2009-10-19  Tolleiv Nietsch <nietsch@aoemedia.de>
+
+	* Fixed bug #10756: Bad text ("TCE-Form") 
+
 2009-10-18  Tolleiv Nietsch <nietsch@aoemedia.de>
 
 	* Fixed bug #10754: Wrong spelling of TypoScript within labels
