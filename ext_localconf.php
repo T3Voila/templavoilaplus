@@ -17,6 +17,7 @@ t3lib_extMgm::addPageTSConfig('
  t3lib_extMgm::addUserTSConfig('
  	options.overridePageModule = web_txtemplavoilaM1
 	mod.web_txtemplavoilaM1.sideBarEnable = 1
+	mod.web_txtemplavoilaM1.enableDeleteIconForLocalElements = 0
  ');
 
 	// Adding Page Template Selector Fields to root line:

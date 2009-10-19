@@ -71,6 +71,7 @@
 			<label index="unlinkRecord">Unlink element</label>
 			<label index="deleteRecord">Delete element (!)</label>
 			<label index="deleteRecordMsg">Do you really want to delete this element?</label>
+			<label index="deleteRecordWithReferencesMsg">This element is also referenced on other pages. Do you really want to delete this element?</label>
 			<label index="unlinkRecordMsg">Unlink element?</label>
 			<label index="pagerelatedinformation">Page related information</label>
 			<label index="advancedfunctions">Advanced functions</label>

@@ -709,16 +709,29 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				if (!$this->translatorMode && $canEditContent) {
 						// Create CE specific buttons:
 					$linkMakeLocal = !$elementBelongsToCurrentPage ? $this->link_makeLocal('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,t3lib_extMgm::extRelPath('templavoila').'mod1/makelocalcopy.gif','').' title="'.$LANG->getLL('makeLocal').'" border="0" alt="" />', $parentPointer) : '';
-					$linkUnlink = $this->link_unlink('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/garbage.gif','').' title="'.$LANG->getLL('unlinkRecord').'" border="0" alt="" />', $parentPointer, FALSE);
+					if(	$this->modTSconfig['properties']['enableDeleteIconForLocalElements'] < 2 || 
+						!$elementBelongsToCurrentPage ||
+						$this->global_tt_content_elementRegister[$contentTreeArr['el']['uid']] > 1
+					) {
+						$linkUnlink = $this->link_unlink('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/garbage.gif','').' title="'.$LANG->getLL('unlinkRecord').'" border="0" alt="" />', $parentPointer, FALSE);
+					} else {
+						$linkUnlink = '';
+					}
 					if ($GLOBALS['BE_USER']->recordEditAccessInternals('tt_content', $contentTreeArr['previewData']['fullRow'])) {
 						$linkEdit = ($elementBelongsToCurrentPage ? $this->link_edit('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/edit2.gif','').' title="'.$LANG->getLL('editrecord').'" border="0" alt="" />',$contentTreeArr['el']['table'],$contentTreeArr['el']['uid']) : '');
 						$linkHide = $this->icon_hide($contentTreeArr['el']);
-						
+
+						if( $this->modTSconfig['properties']['enableDeleteIconForLocalElements'] && $elementBelongsToCurrentPage ) {
+							$hasForeignReferences = $this->hasElementForeignReferences($contentTreeArr['el'],$contentTreeArr['el']['pid']);
+							$linkDelete = $this->link_unlink('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/deletedok.gif','').' title="'.$LANG->getLL('deleteRecord').'" border="0" alt="" />', $parentPointer, TRUE, $hasForeignReferences);
+						} else {
+							$linkDelete = '';
+						}
 					}
 					else {
-						$linkEdit = $linkHide = '';
+						$linkDelete = $linkEdit = $linkHide = '';
 					}
-					$titleBarRightButtons = $linkEdit . $linkHide . $this->clipboardObj->element_getSelectButtons($parentPointer) . $linkMakeLocal . $linkUnlink;
+					$titleBarRightButtons = $linkEdit . $linkHide . $this->clipboardObj->element_getSelectButtons($parentPointer) . $linkMakeLocal . $linkUnlink . $linkDelete;
 				}
 				else {
 					$titleBarRightButtons = $this->clipboardObj->element_getSelectButtons($parentPointer, 'copy');
@@ -1424,10 +1437,24 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				} else {
 						// Create CE specific buttons:
 					$linkMakeLocal = !$elementBelongsToCurrentPage ? $this->link_makeLocal('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,t3lib_extMgm::extRelPath('templavoila').'mod1/makelocalcopy.gif','').' title="'.$LANG->getLL('makeLocal').'" border="0" alt="" />', $parentPointer) : '';
-					$linkUnlink = $this->link_unlink('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/garbage.gif','').' title="'.$LANG->getLL('unlinkRecord').'" border="0" alt="" />', $parentPointer, FALSE);
+					if(	$this->modTSconfig['properties']['enableDeleteIconForLocalElements'] < 2 || 
+						!$elementBelongsToCurrentPage ||
+						$this->global_tt_content_elementRegister[$contentTreeArr['el']['uid']] > 1
+					) {
+						$linkUnlink = $this->link_unlink('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/garbage.gif','').' title="'.$LANG->getLL('unlinkRecord').'" border="0" alt="" />', $parentPointer, FALSE);
+					} else {
+						$linkUnlink ='';
+					}
+					if( $this->modTSconfig['properties']['enableDeleteIconForLocalElements'] && $elementBelongsToCurrentPage ) {
+						$hasForeignReferences = $this->hasElementForeignReferences($contentTreeArr['el'],$contentTreeArr['el']['pid']);
+						$linkDelete = $this->link_unlink('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/deletedok.gif','').' title="'.$LANG->getLL('deleteRecord').'" border="0" alt="" />', $parentPointer, TRUE, $hasForeignReferences);
+					} else {
+						$linkDelete = '';
+					}
+
 					$linkEdit = ($elementBelongsToCurrentPage ? $this->link_edit('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/edit2.gif','').' title="'.$LANG->getLL ('editrecord').'" border="0" alt="" />',$contentTreeArr['el']['table'],$contentTreeArr['el']['uid']) : '');
 
-					$titleBarRightButtons = $linkEdit . $this->clipboardObj->element_getSelectButtons ($parentPointer) . $linkMakeLocal . $linkUnlink;
+					$titleBarRightButtons = $linkEdit . $this->clipboardObj->element_getSelectButtons ($parentPointer) . $linkMakeLocal . $linkUnlink . $linkDelete;
 				}
 			break;
 		}
@@ -1752,15 +1779,17 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * @param	string		$label: The label
 	 * @param	array		$unlinkPointer: Flexform pointer pointing to the element to be unlinked
 	 * @param	boolean		$realDelete: If set, the record is not just unlinked but deleted!
+	 * @param   boolean     $foreignReferences: If set, the record seems to have references on other pages
 	 * @return	string		HTML anchor tag containing the label and the unlink-link
 	 * @access protected
 	 */
-	function link_unlink($label, $unlinkPointer, $realDelete=FALSE)	{
+	function link_unlink($label, $unlinkPointer, $realDelete=FALSE, $foreignReferences=FALSE)	{
 
 		$unlinkPointerString = rawurlencode($this->apiObj->flexform_getStringFromPointer ($unlinkPointer));
 
 		if ($realDelete)	{
-			return '<a href="index.php?' . $this->link_getParameters() . '&amp;deleteRecord=' . $unlinkPointerString . '" onclick="' . htmlspecialchars('return confirm(' . $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL('deleteRecordMsg')) . ');') . '">' . $label . '</a>';
+			$LLlabel = $foreignReferences ? 'deleteRecordWithReferencesMsg' : 'deleteRecordMsg';
+			return '<a href="index.php?' . $this->link_getParameters() . '&amp;deleteRecord=' . $unlinkPointerString . '" onclick="' . htmlspecialchars('return confirm(' . $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL($LLlabel)) . ');') . '">' . $label . '</a>';
 		} else {
 			return '<a href="javascript:'.htmlspecialchars('if (confirm(' . $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL('unlinkRecordMsg')) . '))') . 'sortable_unlinkRecord(\'' . $unlinkPointerString . '\');">' . $label . '</a>';
 		}
@@ -2133,6 +2162,39 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Checks if a element is referenced from other pages / elements on other pages than his own.
+	 *
+	 * @param array    array with tablename and uid for a element
+	 * @param int      the suppoed source-pid
+	 * @param int      recursion limiter
+	 * @return boolean true if there are other references for this element
+	 */
+	protected function hasElementForeignReferences($element,$pid,$recursion=99) {
+		if(!$recursion)   return false;
+
+		$refrows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+			'*',
+			'sys_refindex',
+			'ref_table='.$GLOBALS['TYPO3_DB']->fullQuoteStr($element['table'],'sys_refindex').
+				' AND ref_uid='.intval($element['uid']).
+				' AND deleted=0'
+		);
+
+		$foreignRef = false;
+		if(is_array($refrows)) {
+			foreach($refrows as $ref) {
+				if(strcmp($ref['tablename'],'pages')===0) {
+					$foreignRef = $foreignRef || $ref['recuid']!=$pid;
+				} else {
+					$foreignRef = $foreignRef || $this->hasElementForeignReferences(array('table'=>$ref['tablename'], 'uid'=>$ref['recuid']),$pid,$recursion-1);
+				}
+				if($foreignRef) break;
+			}
+		}
+ 		return $foreignRef;
 	}
 }
 
