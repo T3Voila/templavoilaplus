@@ -1,3 +1,7 @@
+2009-11-02  Tolleiv Nietsch <nietsch@aoemedia.de>
+
+	* Fixed issue: #12266:  mod1 shows size of localprocessing two times
+
 2009-10-19  Tolleiv Nietsch <nietsch@aoemedia.de>
 
 	* Fixed issue #6869: $realDelete for templavoila

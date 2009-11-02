@@ -844,8 +844,6 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 				$hlObj = t3lib_div::makeInstance('t3lib_syntaxhl');
 				$lpXML = '<pre>'.str_replace(chr(9),'&nbsp;&nbsp;&nbsp;',$hlObj->highLight_DS($toObj['localprocessing'])).'</pre>';
 			} else $lpXML = '';
-		} else {
-			$lpXML = $toObj['localprocessing'] ? t3lib_div::formatSize(strlen($toObj['localprocessing'])).'bytes' : '';
 		}
 		$lpXML.= '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick('&edit[tx_templavoila_tmplobj]['.$toObj['uid'].']=edit&columnsOnly=localprocessing',$this->doc->backPath)).'"><img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/edit2.gif','width="11" height="12"').' alt="" class="absmiddle" /></a>';
 
