@@ -24,7 +24,7 @@ CREATE TABLE tx_templavoila_tmplobj (
 	title varchar(60) DEFAULT '' NOT NULL,
 	datastructure varchar(100) DEFAULT '' NOT NULL,
 	fileref tinytext,
-	templatemapping mediumtext,
+	templatemapping blob,
 	previewicon tinytext,
 	description tinytext,
 	rendertype varchar(10) DEFAULT '' NOT NULL,

@@ -1,5 +1,6 @@
 2009-11-02  Tolleiv Nietsch <nietsch@aoemedia.de>
 
+	* Fixed bug: #10983: Unserializing problems because of UTF-8
 	* Fixed issue: #12266:  mod1 shows size of localprocessing two times
 
 2009-10-19  Tolleiv Nietsch <nietsch@aoemedia.de>
