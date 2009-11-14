@@ -132,7 +132,7 @@ $tempColumns = array(
 	'tx_templavoila_to' => Array (
 		'exclude' => 1,
 		'label' => 'LLL:EXT:templavoila/locallang_db.xml:tt_content.tx_templavoila_to',
-		'displayCond' => 'FIELD:tx_templavoila_ds:REQ:true',
+		'displayCond' => 'FIELD:CType:=:' . $_EXTKEY . '_pi1',
 		'config' => Array (
 			'type' => 'select',
 			'items' => Array (

@@ -1,3 +1,7 @@
+2009-11-14  Tolleiv Nietsch <nietsch@aoemedia.de>
+
+	* Fixed bug: #12488: Selection of Template Object in new FCE
+
 2009-11-02  Tolleiv Nietsch <nietsch@aoemedia.de>
 
 	* Fixed bug: #10983: Unserializing problems because of UTF-8
