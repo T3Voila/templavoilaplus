@@ -1,5 +1,6 @@
 2009-11-14  Tolleiv Nietsch <nietsch@aoemedia.de>
 
+	* Fixed bug: #10752: Cryptic text in the mapping interface ("Custom TCE") 
 	* Fixed bug: #12488: Selection of Template Object in new FCE
 
 2009-11-02  Tolleiv Nietsch <nietsch@aoemedia.de>

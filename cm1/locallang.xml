@@ -159,7 +159,7 @@
 			<label index="mapPresets_ce">Page-Content Elements [Pos.: %s]</label>
 			<label index="mapPresets_TSobjectPath">TypoScript Object Path</label>
 			<label index="mapPresets_none">None (TypoScript only)</label>
-			<label index="mapPresets_customTCA">Custom TCA</label>
+			<label index="mapPresets_customTCA">Custom form setup (no preset used)</label>
 			<label index="mapPresetGroups_tceFields">Form Fields</label>
 			<label index="mapPresetGroups_ts">TypoScript Elements</label>
 			<label index="mapPresetGroups_other">Other</label>
