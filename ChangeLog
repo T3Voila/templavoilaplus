@@ -1,3 +1,7 @@
+2009-11-16  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug: #12589: recordlist localization doesn't return to pagemodule
+
 2009-11-14  Tolleiv Nietsch <nietsch@aoemedia.de>
 
 	* Fixed bug: #10752: Cryptic text in the mapping interface ("Custom TCE") 
