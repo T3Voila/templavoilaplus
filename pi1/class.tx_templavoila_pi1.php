@@ -327,7 +327,24 @@ class tx_templavoila_pi1 extends tslib_pibase {
 						if ($GLOBALS['TT']->LR) $GLOBALS['TT']->push('Processing data');
 							$vKey = ($GLOBALS['TSFE']->sys_language_isocode && !$langDisabled && $langChildren) ? 'v'.$GLOBALS['TSFE']->sys_language_isocode : 'vDEF';
 							$TOlocalProc = $singleSheet ? $TOproc['ROOT']['el'] : $TOproc['sheets'][$sheet]['ROOT']['el'];
+								// Store the original data values before the get processed.
+							$originalDataValues = $dataValues;
 							$this->processDataValues($dataValues,$dataStruct['ROOT']['el'],$TOlocalProc,$vKey);
+
+								// Hook: renderElement_postProcessDataValues
+							foreach ($hookObjectsArr as $hookObj) {
+								if (method_exists($hookObj, 'renderElement_postProcessDataValues')) {
+									$flexformData = array(
+										'table' => $table,
+										'row'   => $row,
+										'sheet' => $renderSheet,
+										'sLang' => $lKey,
+										'vLang' => $vKey
+									);
+									$hookObj->renderElement_postProcessDataValues($DS, $dataValues, $originalDataValues, $flexformData);
+								}
+							}
+
 						if ($GLOBALS['TT']->LR) $GLOBALS['TT']->pull();
 
 							// Merge the processed data into the cached template structure:
