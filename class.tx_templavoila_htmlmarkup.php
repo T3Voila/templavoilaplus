@@ -670,22 +670,22 @@ class tx_templavoila_htmlmarkup {
 				if ($renderType)	{	// If print-flag try to find a proper print-record. If the lang-uid is also set, try to find a combined print/lang record, but if not found, the print rec. will take precedence.
 
 						// Look up print-row for default language:
-					$printRow = $this->getTemplateRecord_query($parentUid,'AND rendertype="'.addslashes($renderType).'" AND sys_language_uid=0');
+					$printRow = $this->getTemplateRecord_query($parentUid,'AND rendertype=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($renderType, 'tx_templavoila_tmplobj') . ' AND sys_language_uid=0');
 					if (is_array($printRow))	{
 						$rec = $printRow;
 					} elseif ($rendertype_ref) {	// Look in rendertype_ref record:
-						$printRow = $this->getTemplateRecord_query($rendertype_ref['uid'],'AND rendertype="'.addslashes($renderType).'" AND sys_language_uid=0');
+						$printRow = $this->getTemplateRecord_query($rendertype_ref['uid'],'AND rendertype=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($renderType, 'tx_templavoila_tmplobj') . ' AND sys_language_uid=0');
 						if (is_array($printRow))	{
 							$rec = $printRow;
 						}
 					}
 
 					if ($langUid)	{	// If lang_uid is set, try to look up for current language:
-						$printRow = $this->getTemplateRecord_query($parentUid,'AND rendertype="'.addslashes($renderType).'" AND sys_language_uid='.intval($langUid));
+						$printRow = $this->getTemplateRecord_query($parentUid,'AND rendertype=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($renderType, 'tx_templavoila_tmplobj') . ' AND sys_language_uid='.intval($langUid));
 						if (is_array($printRow))	{
 							$rec = $printRow;
 						} elseif ($rendertype_ref) {	// Look in rendertype_ref record:
-							$printRow = $this->getTemplateRecord_query($rendertype_ref['uid'],'AND rendertype="'.addslashes($renderType).'" AND sys_language_uid='.intval($langUid));
+							$printRow = $this->getTemplateRecord_query($rendertype_ref['uid'],'AND rendertype=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($renderType, 'tx_templavoila_tmplobj') . ' AND sys_language_uid='.intval($langUid));
 							if (is_array($printRow))	{
 								$rec = $printRow;
 							}
