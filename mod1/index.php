@@ -289,6 +289,9 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			// Access check! The page will show only if there is a valid page and if this page may be viewed by the user
 		if (is_array($this->altRoot))	{
 			$access = true;
+				// get PID of altRoot Element to get pageInfoArr
+			$altRootRecord = t3lib_BEfunc::getRecordWSOL ($this->altRoot['table'], $this->altRoot['uid'], 'pid');
+			$pageInfoArr = t3lib_BEfunc::readPageAccess ($altRootRecord['pid'], $this->perms_clause);
 		} else {
 			$pageInfoArr = t3lib_BEfunc::readPageAccess($this->id, $this->perms_clause);
 			$access = (intval($pageInfoArr['uid'] > 0));
