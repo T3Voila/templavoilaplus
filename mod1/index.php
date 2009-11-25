@@ -722,7 +722,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 						!$elementBelongsToCurrentPage ||
 						$this->global_tt_content_elementRegister[$contentTreeArr['el']['uid']] > 1
 					) {
-						$linkUnlink = $this->link_unlink('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/garbage.gif','').' title="'.$LANG->getLL('unlinkRecord').'" border="0" alt="" />', $parentPointer, FALSE);
+						$linkUnlink = $this->link_unlink('<img'.t3lib_iconWorks::skinImg($this->doc->backPath, t3lib_extMgm::extRelPath('templavoila') . 'mod1/unlink.png','').' title="'.$LANG->getLL('unlinkRecord').'" border="0" alt="" />', $parentPointer, FALSE);
 					} else {
 						$linkUnlink = '';
 					}
@@ -1450,7 +1450,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 						!$elementBelongsToCurrentPage ||
 						$this->global_tt_content_elementRegister[$contentTreeArr['el']['uid']] > 1
 					) {
-						$linkUnlink = $this->link_unlink('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/garbage.gif','').' title="'.$LANG->getLL('unlinkRecord').'" border="0" alt="" />', $parentPointer, FALSE);
+						$linkUnlink = $this->link_unlink('<img'.t3lib_iconWorks::skinImg($this->doc->backPath, t3lib_extMgm::extRelPath('templavoila') . 'mod1/unlink.png','').' title="'.$LANG->getLL('unlinkRecord').'" border="0" alt="" />', $parentPointer, FALSE);
 					} else {
 						$linkUnlink ='';
 					}

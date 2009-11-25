@@ -1,3 +1,7 @@
+2009-11-25  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug: #12713: Unlink icon use garbage which is used for delete in core
+
 2009-11-25  Tolleiv Nietsch <nietsch@aoemedia.de>
 
 	* Fixed bug: #12586: delete icon isn't compatible with drag&drop
