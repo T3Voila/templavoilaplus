@@ -327,9 +327,15 @@ class tx_templavoila_pi1 extends tslib_pibase {
 					if (is_array($TO))	{
 
 							// Get local processing:
-						$TOproc = t3lib_div::xml2array($TOrec['localprocessing']);
-						if (!is_array($TOproc))	$TOproc=array();
-
+						$TOproc = array();
+						if ($TOrec['localprocessing']) {
+							$TOproc = t3lib_div::xml2array($TOrec['localprocessing']);
+							if (!is_array($TOproc))	{
+								// Must be a error!
+								// TODO log to TT the content of $TOproc (it is a error message now)
+								$TOproc = array();
+							}
+						}
 							// Processing the data array:
 						if ($GLOBALS['TT']->LR) $GLOBALS['TT']->push('Processing data');
 							$vKey = ($GLOBALS['TSFE']->sys_language_isocode && !$langDisabled && $langChildren) ? 'v'.$GLOBALS['TSFE']->sys_language_isocode : 'vDEF';

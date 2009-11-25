@@ -1,7 +1,8 @@
 2009-11-25  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
 
 	* Fixed bug #12752: [Safari] Bad icon positioning
-	* Fixed bug #10781: Allow user function to determine childTemplate 
+	* Fixed bug #10781: Allow user function to determine childTemplate
+	* Fixed bug #12753: Handle local TO processing better
 
 2009-11-24  Tolleiv Nietsch <nietsch@aoemedia.de>
 
