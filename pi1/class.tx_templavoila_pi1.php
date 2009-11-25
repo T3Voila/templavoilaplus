@@ -177,8 +177,8 @@ class tx_templavoila_pi1 extends tslib_pibase {
 			}
 		    $values['data']['sDEF'][$lKey][$k][$vKey] = $v;
 		}
-        $ff = t3lib_div::makeInstance('t3lib_flexformtools');                                                                                         
-        $data['tx_templavoila_flex'] = $ff->flexArray2xml($values);                                                                                   
+        $ff = t3lib_div::makeInstance('t3lib_flexformtools');
+        $data['tx_templavoila_flex'] = $ff->flexArray2xml($values);
 
 		return $this->renderElement($data, $conf['table']);
     }
@@ -443,23 +443,23 @@ class tx_templavoila_pi1 extends tslib_pibase {
                     // Step 1: save previous parent records from registers. This happens when pi1 is called for FCEs on a page.
                     $unsetKeys = array ();
                     foreach ($GLOBALS['TSFE']->register as $dkey => $dvalue) {
-	if (preg_match('/^tx_templavoila_pi1\.parentRec\./', $dkey)) {
-	    $savedParentInfo[$dkey] = $dvalue;
-	    $unsetKeys[] = $dkey;
-	}
+						if (preg_match('/^tx_templavoila_pi1\.parentRec\./', $dkey)) {
+							$savedParentInfo[$dkey] = $dvalue;
+							$unsetKeys[] = $dkey;
+						}
                     }
 
                     // Step 2: unset previous parent info
                     foreach ($unsetKeys as $dkey) {
-	unset ($GLOBALS['TSFE']->register[$dkey]);
+						unset ($GLOBALS['TSFE']->register[$dkey]);
                     }
                     unset($unsetKeys); // free memory
 
                     // Step 3: set new parent record to register
                     $registerKeys = array ();
                     foreach ($this->cObj->data as $dkey => $dvalue) {
-	$registerKeys[] = $tkey = 'tx_templavoila_pi1.parentRec.' . $dkey;
-	$GLOBALS['TSFE']->register[$tkey] = $dvalue;
+						$registerKeys[] = $tkey = 'tx_templavoila_pi1.parentRec.' . $dkey;
+						$GLOBALS['TSFE']->register[$tkey] = $dvalue;
                     }
 
                     // Step 4: update checksum
@@ -521,13 +521,13 @@ class tx_templavoila_pi1 extends tslib_pibase {
 
 	                    // Render localized labels for 'select' elements:
                     if ($DSelements[$key]['TCEforms']['config']['type'] == 'select') {
-	if (substr($dataValues[$key][$valueKey], 0, 4) == 'LLL:') {
-	    $tempLangVal = $GLOBALS['TSFE']->sL($dataValues[$key][$valueKey]);
-	    if ($tempLangVal != '') {
-	        $dataValues[$key][$valueKey] = $tempLangVal;
-	    }
-	    unset($tempLangVal);
-	}
+						if (substr($dataValues[$key][$valueKey], 0, 4) == 'LLL:') {
+							$tempLangVal = $GLOBALS['TSFE']->sL($dataValues[$key][$valueKey]);
+							if ($tempLangVal != '') {
+								$dataValues[$key][$valueKey] = $tempLangVal;
+							}
+							unset($tempLangVal);
+						}
                     }
 
 						// TypoScript / TypoScriptObjPath:
