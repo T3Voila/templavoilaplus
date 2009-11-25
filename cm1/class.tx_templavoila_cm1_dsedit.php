@@ -30,15 +30,15 @@
  * @co-author	Robert Lemke <robert@typo3.org>
  * @co-author	Steffen kamper <info@sk-typo3.de>
  */
- 
+
 class tx_templavoila_cm1_dsEdit {
 	var $pObj;
-	
-	
+
+
 	function init($pObj) {
 		$this->pObj = $pObj;
 	}
-	
+
 	/**
 	 * Creates the editing row for a Data Structure element - when DS's are build...
 	 *
@@ -78,7 +78,7 @@ class tx_templavoila_cm1_dsEdit {
 					$insertDataArray=array();
 				} else {
 					$placeBefore = 1;
-                    
+
 					$formFieldName = 'autoDS'.$formPrefix.'['.$key.']';
 					$insertDataArray=$value;
 				}
@@ -98,7 +98,7 @@ class tx_templavoila_cm1_dsEdit {
 					($insertDataArray['section']))
 					$insertDataArray['type'] = 'section';
 
-				
+
 					// Create form:
 				/* The basic XML-structure of an tx_templavoila-entry is:
 				 *
@@ -220,9 +220,9 @@ class tx_templavoila_cm1_dsEdit {
 					<dl id="dsel-proc" class="DS-config">
 						<dt>' . $GLOBALS['LANG']->getLL('mapPostProcesses') . ':</dt>
 						<dd>
-							<input type="checkbox" class="checkbox" id="tv_proc_int" name="' . $formFieldName . '[tx_templavoila][proc][int]" value="1" ' . ($insertDataArray['tx_templavoila']['proc']['int'] ? 'checked="checked"' : '') . ' /> 
+							<input type="checkbox" class="checkbox" id="tv_proc_int" name="' . $formFieldName . '[tx_templavoila][proc][int]" value="1" ' . ($insertDataArray['tx_templavoila']['proc']['int'] ? 'checked="checked"' : '') . ' />
 							<label for="tv_proc_int">' . $GLOBALS['LANG']->getLL('mapPPcastInteger') . '</label><br />
-							<input type="checkbox" class="checkbox" id="tv_proc_hsc" name="' . $formFieldName . '[tx_templavoila][proc][HSC]" value="1" ' . ($insertDataArray['tx_templavoila']['proc']['HSC'] ? 'checked="checked"' : '') . ' /> 
+							<input type="checkbox" class="checkbox" id="tv_proc_hsc" name="' . $formFieldName . '[tx_templavoila][proc][HSC]" value="1" ' . ($insertDataArray['tx_templavoila']['proc']['HSC'] ? 'checked="checked"' : '') . ' />
 							<label for="tv_proc_hsc">' . $GLOBALS['LANG']->getLL('mapPPhsc') . '</label>
 						</dd>
 
@@ -272,9 +272,19 @@ class tx_templavoila_cm1_dsEdit {
 					// Icons:
 				$info = $this->pObj->dsTypeInfo($insertDataArray);
 
+				// Find "select" style. This is necessary because Safari
+				// does not support paddings in select elements but supports
+				// backgrounds. The rest is text over background.
+				$selectStyle = 'margin: 4px 0; width: 150px !important; display: block;';
+				$userAgent = t3lib_div::getIndpEnv('HTTP_USER_AGENT');
+				if (strpos($userAgent, 'WebKit') === false) {
+					// Not Safai (Can't have "padding" for select elements in Safari)
+					$selectStyle .= 'padding: 1px 1px 1px 30px; background: 0 50% url(' . $info[3] . ') no-repeat;';
+				}
+
 				$addEditRows='<tr class="tv-edit-row">
 					<td valign="top" style="padding: 0.5em; padding-left: '.(($level)*16+3).'px" nowrap="nowrap" rowspan="2">
-						<select style="margin: 4px 0 4px 0; padding: 1px 1px 1px 30px; background: 0 50% url(' . $info[3] . ') no-repeat; width: 150px !important;" title="Mapping Type" name="'.$formFieldName.'[type]">
+						<select style="' . $selectStyle . '" title="Mapping Type" name="'.$formFieldName.'[type]">
 							<optgroup class="c-divider" label="' . $GLOBALS['LANG']->getLL('mapElContainers') . '">
 								<option style="padding: 1px 1px 1px 30px; background: 0 50% url(' . $this->pObj->dsTypes['sc'][3] . ') no-repeat;" value="section"'. ($insertDataArray['type']=='section' ? ' selected="selected"' : '').'>' . $GLOBALS['LANG']->getLL('mapSection') . '</option>
 								<option style="padding: 1px 1px 1px 30px; background: 0 50% url(' . $this->pObj->dsTypes['co'][3] . ') no-repeat;" value="array"'.   ($insertDataArray['type']=='array'   ? ' selected="selected"' : '').'>' . $GLOBALS['LANG']->getLL('mapContainer') . '</option>
@@ -303,7 +313,7 @@ class tx_templavoila_cm1_dsEdit {
 						</ul>
 						' . $this->pObj->cshItem('xMOD_tx_templavoila', 'mapping_editform', $this->pObj->doc->backPath, '', FALSE, 'margin-bottom: 0px;') . '
 					</td>
-					
+
 					<td valign="top" style="padding: 0.5em;" colspan="2" rowspan="2">
 						'.$form.'
 						<script type="text/javascript">
@@ -376,7 +386,7 @@ class tx_templavoila_cm1_dsEdit {
 			// Return edit row:
 		return array($addEditRows,$placeBefore);
 	}
-	
+
 	/**
 	 * Renders extra form fields for configuration of the Editing Types.
 	 *
@@ -411,7 +421,7 @@ class tx_templavoila_cm1_dsEdit {
 		}
 		return $output;
 	}
-}  
+}
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/cm1/class.tx_templavoila_cm1_dsedit.php'])    {
     include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/cm1/class.tx_templavoila_cm1_dsedit.php']);

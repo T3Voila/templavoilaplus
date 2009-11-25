@@ -1,3 +1,7 @@
+2009-11-25  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
+
+	* Fixed bug #12752: [Safari] Bad icon positioning
+
 2009-11-24  Tolleiv Nietsch <nietsch@aoemedia.de>
 
 	* Fixed bug: #12721: Cannot get TO with rendertype=print when using DBAL
@@ -12,7 +16,7 @@
 
 2009-11-14  Tolleiv Nietsch <nietsch@aoemedia.de>
 
-	* Fixed bug: #10752: Cryptic text in the mapping interface ("Custom TCE") 
+	* Fixed bug: #10752: Cryptic text in the mapping interface ("Custom TCE")
 	* Fixed bug: #12488: Selection of Template Object in new FCE
 
 2009-11-02  Tolleiv Nietsch <nietsch@aoemedia.de>
@@ -23,7 +27,7 @@
 2009-10-19  Tolleiv Nietsch <nietsch@aoemedia.de>
 
 	* Fixed issue #6869: $realDelete for templavoila
-	* Fixed bug #10756: Bad text ("TCE-Form") 
+	* Fixed bug #10756: Bad text ("TCE-Form")
 
 2009-10-18  Tolleiv Nietsch <nietsch@aoemedia.de>
 
