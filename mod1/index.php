@@ -316,8 +316,16 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			$this->rootElementTable = is_array($this->altRoot) ? $this->altRoot['table'] : 'pages';
 			$this->rootElementUid = is_array($this->altRoot) ? $this->altRoot['uid'] : $this->id;
 			$this->rootElementRecord = t3lib_BEfunc::getRecordWSOL($this->rootElementTable, $this->rootElementUid, '*');
-			$this->rootElementUid_pidForContent = $this->rootElementRecord['t3ver_swapmode']==0 && $this->rootElementRecord['_ORIG_uid'] ? $this->rootElementRecord['_ORIG_uid'] : $this->rootElementRecord['uid'];
-
+			if ($this->rootElementRecord['t3ver_swapmode']==0 && $this->rootElementRecord['_ORIG_uid'] ) {
+				$this->rootElementUid_pidForContent = $this->rootElementRecord['_ORIG_uid'];
+			}else{
+				// If pages use current UID, otherwhise you must use the PID to define the Page ID
+				if ($this->rootElementTable == 'pages') {
+					$this->rootElementUid_pidForContent = $this->rootElementRecord['uid'];
+				}else{
+					$this->rootElementUid_pidForContent = $this->rootElementRecord['pid'];
+				}
+			}
 				// Check if we have to update the pagetree:
 			if (t3lib_div::_GP('updatePageTree')) {
 				t3lib_BEfunc::getSetUpdateSignal('updatePageTree');
