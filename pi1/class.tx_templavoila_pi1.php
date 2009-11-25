@@ -307,6 +307,13 @@ class tx_templavoila_pi1 extends tslib_pibase {
 					// Initialize rendering type:
 				if ($this->conf['childTemplate'])	{
 					$renderType = $this->conf['childTemplate'];
+					if (substr($renderType, 0, 9) == 'USERFUNC:') {
+						$conf = array(
+							'conf' => is_array($this->conf['childTemplate.']) ? $this->conf['childTemplate.'] : array(),
+							'toRecord' => $row
+						);
+						$renderType = t3lib_div::callUserFunction(substr($renderType, 9), $conf, $this);
+					}
 				} else {	// Default:
 					$renderType = t3lib_div::_GP('print') ? 'print' : '';
 				}
