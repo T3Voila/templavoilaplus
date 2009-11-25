@@ -27,7 +27,7 @@ CREATE TABLE tx_templavoila_tmplobj (
 	templatemapping blob,
 	previewicon tinytext,
 	description tinytext,
-	rendertype varchar(10) DEFAULT '' NOT NULL,
+	rendertype varchar(32) DEFAULT '' NOT NULL,
 	sys_language_uid int(11) unsigned DEFAULT '0' NOT NULL,
 	parent int(11) unsigned DEFAULT '0' NOT NULL,
 	rendertype_ref int(11) unsigned DEFAULT '0' NOT NULL,
@@ -77,8 +77,8 @@ CREATE TABLE tx_templavoila_datastructure (
 CREATE TABLE tt_content (
 	tx_templavoila_ds varchar(100) DEFAULT '' NOT NULL,
 	tx_templavoila_to int(11) DEFAULT '0' NOT NULL,
-    tx_templavoila_flex mediumtext,
-    tx_templavoila_pito int(11) DEFAULT '0' NOT NULL
+	tx_templavoila_flex mediumtext,
+	tx_templavoila_pito int(11) DEFAULT '0' NOT NULL
 );
 
 #
@@ -89,7 +89,7 @@ CREATE TABLE pages (
 	tx_templavoila_to int(11) DEFAULT '0' NOT NULL,
 	tx_templavoila_next_ds varchar(100) DEFAULT '' NOT NULL,
 	tx_templavoila_next_to int(11) DEFAULT '0' NOT NULL,
-    tx_templavoila_flex mediumtext,
+	tx_templavoila_flex mediumtext,
 
 );
 
