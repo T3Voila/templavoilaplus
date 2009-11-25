@@ -1,5 +1,6 @@
 2009-11-25  Tolleiv Nietsch <nietsch@aoemedia.de>
 
+	* Fixed bug: #12586: delete icon isn't compatible with drag&drop
 	* Fixed bug: #12504: pagemodule drag'n'drop is broken when running on 4.3beta
 
 2009-11-25  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
