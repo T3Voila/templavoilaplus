@@ -99,7 +99,7 @@ class tx_templavoila_mod1_records {
 	 */
 	function sidebar_renderRecords() {
 		$content = '<table border="0" cellpadding="0" cellspacing="1" class="lrPadding" width="100%">';
-		$content .= '<tr class="bgColor4-20"><th colspan="2">&nbsp;</th></tr>';
+		$content .= '<tr class="bgColor4-20"><th colspan="3">&nbsp;</th></tr>';
 
 		// Render table selector
 		$content .= $this->renderTableSelector();
@@ -115,9 +115,9 @@ class tx_templavoila_mod1_records {
 	 * @return	string		Genrated content
 	 */
 	function renderTableSelector() {
-		$content = '<tr class="bgColor4"><td width="1%" nowrap="nowrap">';
-		$content .= $GLOBALS['LANG']->getLL('displayRecordsFrom');
-		$content .= '</td><td>';
+		$content = '<tr class="bgColor4">';
+		$content .= '<td width="20">&nbsp;</td>'; //space for csh icon
+		$content .= '<td width="200">' . $GLOBALS['LANG']->getLL('displayRecordsFrom') . '</td><td>';
 
 		$link = '\'index.php?'.$this->pObj->link_getParameters().'&SET[recordsView_start]=0&SET[recordsView_table]=\'+this.options[this.selectedIndex].value';
 		$content .= '<select onchange="document.location.href=' . $link . '">';

@@ -1,5 +1,6 @@
 2009-11-25  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug: #12564: Localization view overlaps labels and doesn't align
 	* Fixed bug: #12713: Unlink icon use garbage which is used for delete in core
 
 2009-11-25  Tolleiv Nietsch <nietsch@aoemedia.de>

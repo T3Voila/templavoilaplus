@@ -338,16 +338,17 @@ class tx_templavoila_mod1_sidebar {
 
 		$tableRows = array ('
 			<tr class="bgColor4-20">
-				<th colspan="2">&nbsp;</th>
+				<th colspan="3">&nbsp;</th>
 			</tr>
 		');
 
 			// Render checkbox for showing hidden elements:
 		$tableRows[] = '
 			<tr class="bgColor4">
-				<td width="1%" nowrap="nowrap">
+				<td width="20">
 					'. t3lib_BEfunc::cshItem('_MOD_web_txtemplavoilaM1', 'advancedfunctions_showhiddenelements', $this->doc->backPath) .'
-					'.$LANG->getLL('sidebar_advancedfunctions_labelshowhidden', 1).':
+				</td><td width="200">
+					' . $LANG->getLL('sidebar_advancedfunctions_labelshowhidden', 1) . ':
 				</td>
 				<td>'.t3lib_BEfunc::getFuncCheck($pObj->id,'SET[tt_content_showHidden]',$pObj->MOD_SETTINGS['tt_content_showHidden'],'','').'</td>
 			</tr>
@@ -357,10 +358,11 @@ class tx_templavoila_mod1_sidebar {
 		if ($GLOBALS['BE_USER']->isAdmin())	{
 			$tableRows[] = '
 				<tr class="bgColor4">
-					<td width="1%" nowrap="nowrap">
+					<td width="20">
 						'. t3lib_BEfunc::cshItem('_MOD_web_txtemplavoilaM1', 'advancedfunctions_showoutline', $this->doc->backPath) .'
-						'.$LANG->getLL('sidebar_advancedfunctions_labelshowoutline', 1).'
-					:</td>
+					</td><td width="200">
+						' . $LANG->getLL('sidebar_advancedfunctions_labelshowoutline', 1) . ':
+					</td>
 					<td>'.t3lib_BEfunc::getFuncCheck($pObj->id,'SET[showOutline]',$pObj->MOD_SETTINGS['showOutline'],'','').'</td>
 				</tr>
 			';
@@ -374,8 +376,12 @@ class tx_templavoila_mod1_sidebar {
 				$cshItem = t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'TCEforms_cacheSelector', $GLOBALS['BACK_PATH'],'', TRUE);
 				$tableRows[] = '
 					<tr class="bgColor4">
-						<td nowrap="nowrap">'.$cshItem.' '.$LANG->getLL('sidebar_advancedfunctions_labelcachefunctions', 1).':</td>
-						<td>'.$cacheMenu.'</td>
+						<td width="20">
+							' . $cshItem . '
+						</td><td width="200" style="vertical-align:middle;">
+							' . $LANG->getLL('sidebar_advancedfunctions_labelcachefunctions', 1) . ':
+						</td>
+						<td>' . $cacheMenu . '</td>
 					</tr>
 				';
 			}

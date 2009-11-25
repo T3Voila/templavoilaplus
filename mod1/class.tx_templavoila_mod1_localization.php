@@ -94,7 +94,7 @@ class tx_templavoila_mod1_localization {
 		$output = (!$iOutput ? '' : '
 			<table border="0" cellpadding="0" cellspacing="1" width="100%" class="lrPadding">
 				<tr class="bgColor4-20">
-					<th colspan="2">&nbsp;</th>
+					<th colspan="3">&nbsp;</th>
 				</tr>
 				'.
 				$iOutput .
@@ -138,11 +138,12 @@ class tx_templavoila_mod1_localization {
 
 		$output.= '
 			<tr class="bgColor4">
-				<td width="1%" nowrap="nowrap">
+				<td width="20">
 					'. t3lib_BEfunc::cshItem('_MOD_web_txtemplavoilaM1', 'selectlanguageversion', $this->doc->backPath) .'
+				</td><td width="200" style="vertical-align:middle;">
 					'.$LANG->getLL ('selectlanguageversion', 1).':
 				</td>
-				<td><select onchange="document.location='.$link.'">'.implode ('', $optionsArr).'</select></td>
+				<td style="vertical-align:middle;"><select onchange="document.location='.$link.'">'.implode ('', $optionsArr).'</select></td>
 			</tr>
 		';
 
@@ -155,11 +156,12 @@ class tx_templavoila_mod1_localization {
 			if (count($options))	{
 				$output.= '
 					<tr class="bgColor4">
-						<td width="1%" nowrap="nowrap">
+						<td width="20">
 							'. t3lib_BEfunc::cshItem('_MOD_web_txtemplavoilaM1', 'pagelocalizationdisplaymode', $this->doc->backPath) .'
+						</td><td width="200" style="vertical-align:middle;">
 							'.$LANG->getLL('pageLocalizationDisplayMode', 1).':
 						</td>
-						<td>
+						<td style="vertical-align:middle;">
 							<select onchange="document.location='.$link.'">
 								'.implode(chr(10), $options).'
 							</select>
@@ -172,22 +174,24 @@ class tx_templavoila_mod1_localization {
 		if ($this->pObj->rootElementLangMode !== 'disable') {
 			$output.= '
 				<tr class="bgColor4">
-					<td width="1%" nowrap="nowrap">
+					<td  width="20">
 						'. t3lib_BEfunc::cshItem('_MOD_web_txtemplavoilaM1', 'pagelocalizationmode', $this->doc->backPath) .'
+					</td><td width="200" style="vertical-align:middle;">
 						'.$LANG->getLL('pageLocalizationMode', 1).':
 					</td>
-					<td><em>'.$LANG->getLL('pageLocalizationMode_'.$this->pObj->rootElementLangMode, 1).($this->pObj->rootElementLangParadigm!='free'?(' / '.$LANG->getLL('pageLocalizationParadigm_'.$this->pObj->rootElementLangParadigm)):'').'</em></td>
+					<td style="vertical-align:middle;"><em>'.$LANG->getLL('pageLocalizationMode_'.$this->pObj->rootElementLangMode, 1).($this->pObj->rootElementLangParadigm!='free'?(' / '.$LANG->getLL('pageLocalizationParadigm_'.$this->pObj->rootElementLangParadigm)):'').'</em></td>
 				</tr>
 			';
 		}
 
 		$output .= '
 			<tr class="bgColor4">
-				<td width="1%" nowrap="nowrap">
+				<td  width="20">
 					'. t3lib_BEfunc::cshItem('_MOD_web_txtemplavoilaM1', 'editlanguageversion', $this->doc->backPath) .'
+				</td><td width="200" style="vertical-align:middle;">
 					'.$LANG->getLL ('editlanguageversion', 1).':
 				</td>
-				<td>
+				<td style="vertical-align:middle;">
 					'.$availableTranslationsFlags.'
 				</td>
 			</tr>
@@ -226,11 +230,12 @@ class tx_templavoila_mod1_localization {
 			$link = 'index.php?'.$this->pObj->link_getParameters().'&createNewPageTranslation=\'+this.options[this.selectedIndex].value+\'&pid='.$this->pObj->id;
 			$output = '
 				<tr class="bgColor4">
-					<td width="1%" nowrap="nowrap">
+					<td width="20">
 						'. t3lib_BEfunc::cshItem('_MOD_web_txtemplavoilaM1', 'createnewtranslation', $this->doc->backPath) .'
+					</td><td width="200" style="vertical-align:middle;">
 						'.$LANG->getLL('createnewtranslation',1).':
 					</td>
-					<td style="padding:4px;"><select onChange="document.location=\''.$link.'\'">'.implode ('', $optionsArr).'</select></td>
+					<td style="vertical-align:middle;"><select onChange="document.location=\''.$link.'\'">'.implode ('', $optionsArr).'</select></td>
 				</tr>
 			';
 		}
