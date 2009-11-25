@@ -223,6 +223,9 @@ class tx_templavoila_tcemain {
 		switch ($status) {
 			case 'new' :
 				if (!isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_tcemain']['doNotInsertElementRefsToPage'])) {
+
+					t3lib_BEfunc::fixVersioningPid($table, $fieldArray);
+
 					if (isset ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_tcemain']['preProcessFieldArrays'][$id])) {
 						$positionReferenceUid = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_tcemain']['preProcessFieldArrays'][$id]['pid'];
 						if ($positionReferenceUid < 0) {
