@@ -44,7 +44,7 @@ function sortable_updateItemButtons(el, position, pID) {
 	var p	= new Array();	var p1 = new Array();
 	var href = "";	var i=0;
 	var newPos = escape(pID + position);
-	var childs = el.childElements()
+	var childs = el.childElements();
 	var buttons = childs[0].childElements()[0].childElements()[0].childElements()[1].childNodes;
 	for (i = 0; i < buttons.length ;i++) {
 		if (buttons[i].nodeType != 1) continue;
@@ -94,13 +94,13 @@ function sortable_update(el) {
 	while (node != null) {
 		if (node.className == "sortableItem") {
 			if (sortable_currentItem && node.id == sortable_currentItem.id ) {
-				var url = "index.php?" + sortable_linkParameters + "&ajaxPasteRecord=cut&source=" + sortable_currentItem.id + "&destination=" + el.id + (i-1); /* xxx */
+				var url = "index.php?" + sortable_linkParameters + "&ajaxPasteRecord=cut&source=" + sortable_items[sortable_currentItem.id] + "&destination=" + sortable_items[el.id] + (i-1); /* xxx */
 				new Ajax.Request(url);
-				sortable_updatePasteButtons(node.id, el.id + i);
+				sortable_updatePasteButtons(sortable_items[node.id], sortable_items[el.id] + i);
 				sortable_currentItem = false;
 			}
-			sortable_updateItemButtons(node, i, el.id)
-			node.id = el.id + i;
+			sortable_updateItemButtons(node, i, sortable_items[el.id]);
+			sortable_items[node.id] = sortable_items[el.id] + i;
 			i++;
 		}
 		node	= node.nextSibling;
