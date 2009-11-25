@@ -1454,7 +1454,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 
 			// Making the menu
 		$menuItems=array();
-		$menuItems[]='<input type="submit" name="_clear" value="' . $GLOBALS['LANG']->getLL('buttonSet') . '" title="' . $GLOBALS['LANG']->getLL('buttonClearAllMappingTitle') . '" />';
+		$menuItems[]='<input type="submit" name="_clear" value="' . $GLOBALS['LANG']->getLL('buttonClearAll') . '" title="' . $GLOBALS['LANG']->getLL('buttonClearAllMappingTitle') . '" />';
 
 			// Make either "Preview" button (body) or "Set" button (header)
 		if ($headerPart)	{	// Header:

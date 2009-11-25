@@ -3,6 +3,7 @@
 	* Fixed bug #12752: [Safari] Bad icon positioning
 	* Fixed bug #10781: Allow user function to determine childTemplate
 	* Fixed bug #12753: Handle local TO processing better
+	* Fixed bug #12754: "Set" button appears twice in header parts
 
 2009-11-24  Tolleiv Nietsch <nietsch@aoemedia.de>
 
