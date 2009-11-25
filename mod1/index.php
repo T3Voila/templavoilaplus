@@ -1871,8 +1871,10 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 							// Create new record and open it for editing
 						$destinationPointer = $this->apiObj->flexform_getPointerFromString($commandParameters);
 						$newUid = $this->apiObj->insertElement($destinationPointer, $newRow);
-						// TODO If $newUid==0, than we could create new element. Need to handle it...
-						$redirectLocation = $GLOBALS['BACK_PATH'].'alt_doc.php?edit[tt_content]['.$newUid.']=edit&returnUrl='.rawurlencode(t3lib_extMgm::extRelPath('templavoila').'mod1/index.php?'.$this->link_getParameters());
+						if( $this->editingOfNewElementIsEnabled( $newRow['tx_templavoila_ds'], $newRow['tx_templavoila_to'] ) ) {
+								// TODO If $newUid==0, than we could create new element. Need to handle it...
+							$redirectLocation = $GLOBALS['BACK_PATH'].'alt_doc.php?edit[tt_content]['.$newUid.']=edit&returnUrl='.rawurlencode(t3lib_extMgm::extRelPath('templavoila').'mod1/index.php?'.$this->link_getParameters());
+						}
 					break;
 
 					case 'unlinkRecord':
@@ -2171,6 +2173,39 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Checks whether the datastructure for a new FCE contains the noEditOnCreation meta configuration
+	 *
+	 * @param integer $dsUid	uid of the datastructure we want to check
+	 * @param integer $toUid	uid of the tmplobj we want to check
+	 * @return boolean
+	 */
+	protected function editingOfNewElementIsEnabled($dsUid, $toUid) {
+		$ret = true;
+		$dsMeta = $toMeta = array();
+
+		$ds = t3lib_beFunc::getRecord('tx_templavoila_datastructure', intval($dsUid), 'uid,dataprot');
+		if( is_array($ds) ) {
+			$dsXML = t3lib_div::xml2array( $ds['dataprot'] );
+			if(is_array($dsXML) && array_key_exists('meta', $dsXML)) {
+				$dsMeta = $dsXML['meta'];
+			}
+		}
+		$to = t3lib_beFunc::getRecord('tx_templavoila_tmplobj', intval($toUid), 'uid,localprocessing');
+		if( is_array($to) ) {
+			$toXML = t3lib_div::xml2array( $to['localprocessing'] );
+			if(is_array($toXML) && array_key_exists('meta', $toXML)) {
+				$toMeta = $toXML['meta'];
+			}
+		}
+
+		$meta = t3lib_div::array_merge_recursive_overrule( $dsMeta, $toMeta );
+		if( is_array($meta) && array_key_exists('noEditOnCreation', $meta) ) {
+			$ret = $meta['noEditOnCreation'] != 1;
+		}
+		return $ret;
 	}
 
 	/**
