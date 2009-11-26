@@ -395,7 +395,8 @@ class tx_templavoila_dbnewcontentel {
 */
 			// Fetch all template object records which uare based one of the previously fetched data structures:
 		$templateObjectRecords = array();
-        $addWhere = $this->buildRecordWhere('tx_templavoila_tmplobj');
+		$recordDataStructure = array();
+		$addWhere = $this->buildRecordWhere('tx_templavoila_tmplobj');
 		$res = $TYPO3_DB->exec_SELECTquery(
 			'*',
 			'tx_templavoila_tmplobj',
@@ -406,19 +407,25 @@ class tx_templavoila_dbnewcontentel {
 		while(FALSE !== ($row = $TYPO3_DB->sql_fetch_assoc($res))) {
 			if (is_array($dataStructureRecords[$row['datastructure']])) {
 				$templateObjectRecords[] = $row;
+				$recordDataStructure[ $row['datastructure'] ] = t3lib_div::xml2array( $dataStructureRecords[$row['datastructure']]['dataprot'] );
 			}
 		}
 
 			// Add the filtered set of TO entries to the wizard list:
 		$wizardItems['fce']['header'] = $LANG->getLL('fce');
-        foreach($templateObjectRecords as $index => $templateObjectRecord) {
-            $tmpFilename = 'uploads/tx_templavoila/'.$templateObjectRecord['previewicon'];
-            $wizardItems['fce_'.$index]['icon'] = (@is_file(PATH_site.$tmpFilename)) ? ('../' . $tmpFilename) : ('../' . t3lib_extMgm::siteRelPath('templavoila').'res1/default_previewicon.gif');
-            $wizardItems['fce_'.$index]['description'] = $templateObjectRecord['description'] ? htmlspecialchars($templateObjectRecord['description']) : $LANG->getLL ('template_nodescriptionavailable');
-            $wizardItems['fce_'.$index]['title'] = $templateObjectRecord['title'];
-            $wizardItems['fce_'.$index]['params'] = '&defVals[tt_content][CType]=templavoila_pi1&defVals[tt_content][tx_templavoila_ds]='.$templateObjectRecord['datastructure'].'&defVals[tt_content][tx_templavoila_to]='.$templateObjectRecord['uid'].$defVals;
-            $index ++;
-        }
+		foreach($templateObjectRecords as $index => $templateObjectRecord) {
+
+				// Get default values from datastructure
+			$localProcessing = t3lib_div::xml2array( $templateObjectRecord['localprocessing'] );
+			$defDSVals = $this->getDsDefaultValues( $recordDataStructure[ $templateObjectRecord['datastructure'] ], $localProcessing );
+
+			$tmpFilename = 'uploads/tx_templavoila/'.$templateObjectRecord['previewicon'];
+			$wizardItems['fce_'.$index]['icon'] = (@is_file(PATH_site.$tmpFilename)) ? ('../' . $tmpFilename) : ('../' . t3lib_extMgm::siteRelPath('templavoila').'res1/default_previewicon.gif');
+			$wizardItems['fce_'.$index]['description'] = $templateObjectRecord['description'] ? htmlspecialchars($templateObjectRecord['description']) : $LANG->getLL ('template_nodescriptionavailable');
+			$wizardItems['fce_'.$index]['title'] = $templateObjectRecord['title'];
+			$wizardItems['fce_'.$index]['params'] = '&defVals[tt_content][CType]=templavoila_pi1&defVals[tt_content][tx_templavoila_ds]='.$templateObjectRecord['datastructure'].'&defVals[tt_content][tx_templavoila_to]='.$templateObjectRecord['uid'].$defVals.$defDSVals;
+			$index ++;
+		}
 
 			// PLUG-INS:
 		if (is_array($TBE_MODULES_EXT['xMOD_db_new_content_el']['addElClasses']))	{
@@ -521,6 +528,29 @@ class tx_templavoila_dbnewcontentel {
 			}
 		}
 		return (count($result) > 0 ? ' AND uid NOT IN (' . implode(',', $result) . ') ' : '');
+	}
+
+	/**
+	 * Get default values from DataStructure and merge it with TemplateObject
+	 * @param array $dsStructure	DataStructure as array
+	 * @param array $toStructure	LocalProcessing as array
+	 * @return string	additional URL arguments with configured default values
+	 */
+	function getDsDefaultValues( $dsStructure, $toStructure ) {
+			// if we've no datastructure information there's no need to proceed here
+		if( !is_array($dsStructure) )	return '';
+			// if available local processing needs to be merged
+		if( is_array($toStructure) ) {
+			$dsStructure = t3lib_div::array_merge_recursive_overrule( $dsStructure, $toStructure );
+		}
+
+		$dsValues = '';
+		if ( is_array($dsStructure['meta']['default']['TCEForms']) ) {
+			foreach( $dsStructure['meta']['default']['TCEForms'] as $field => $value ) {
+				$dsValues .= '&defVals[tt_content]['.$field.']='. $value;
+			}
+		}
+		return $dsValues;
 	}
 }
 
