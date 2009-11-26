@@ -1,9 +1,10 @@
-2009-11-25  Steffen Kamper  <info@sk-typo3.de>
+2009-11-26  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug: #12654: Allow custom "New Site Wizard Template"
 
-2009-11-25  Tolleiv Nietsch <nietsch@aoemedia.de>
+2009-11-26  Tolleiv Nietsch <nietsch@aoemedia.de>
 
+	* Fixed issue: #7263: New register for rendering of sections
 	* Fixed issue: #8759: Possibility to define startup language setting for FCEs instances
 
 2009-11-25  Steffen Kamper  <info@sk-typo3.de>
