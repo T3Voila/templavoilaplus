@@ -182,7 +182,6 @@ class tx_templavoila_htmlmarkup {
 		// INTERNAL dynamic
 	var $htmlParse = '';		// Will contain the HTML-parser object. (See init())
 	var $backPath = '';			// Will contain the backend back-path which is necessary when marking-up the code in order to fix all media paths.
-	var $gnyfPath = '';			// Will contain the path to the tag-images ("gnyfs")
 	var $gnyfStyle = '';		// will contain style-part for gnyf images. (see init())
 	var $gnyfImgAdd = '';		// Eg. 	onclick="return parent.mod.updPath('###PATH###');"
 	var $pathPrefix='';			// Prefix for the path returned to the mod frame when tag image is clicked.
@@ -217,7 +216,11 @@ class tx_templavoila_htmlmarkup {
 
 		$this->init();
 		$this->backPath = $backPath;
-		$this->gnyfPath = t3lib_div::resolveBackPath($backPath.t3lib_extMgm::extRelPath('templavoila'));
+
+		/* build primary cache for icon-images */
+		foreach ($this->tags as $tag => &$conf)
+			$conf['icon'] = t3lib_iconWorks::skinImg($this->backPath, t3lib_extMgm::extRelPath('templavoila') . 'html_tags/' . $tag . '.gif', 'height="17"') . ' alt="" border="0"';
+
 		list($tagList_elements, $tagList_single) = $this->splitTagTypes($showTags);
 
 			// Fix links/paths
@@ -808,8 +811,8 @@ class tx_templavoila_htmlmarkup {
 	function init()	{
 			// HTML parser object initialized.
 		$this->htmlParse = t3lib_div::makeInstance('t3lib_parsehtml');
-        /* @var $this->htmlParse t3lib_parsehtml */ 
-        
+        /* @var $this->htmlParse t3lib_parsehtml */
+
 			// Resetting element count array
 		$this->elCountArray=array();
 		$this->elParentLevel=array();
@@ -910,10 +913,10 @@ class tx_templavoila_htmlmarkup {
 		$blocks = $this->htmlParse->splitIntoBlock($tagsBlock,$content,1);
 		$this->rangeEndSearch[$recursion]='';
 		$this->rangeStartPath[$recursion]='';
-            
+
         $startCCTag = $endCCTag = '';
 
-        //pre-processing of blocks             
+        //pre-processing of blocks
        	if ((t3lib_div::inList($tagsBlock, 'script') && t3lib_div::inList($tagsBlock, 'style'))  && count($blocks) > 1) {
        		// correct the blocks (start of CC could be in prior block, end of CC in net block)
 			if(count($blocks) > 1) {
@@ -926,16 +929,16 @@ class tx_templavoila_htmlmarkup {
 						//endtag is start of block3
 						$matchCount2 = preg_match_all('/<!([-]+)?\[endif\]([-]+)?>/', $blocks[2], $matches2);
 						$endCCTag = $matches2[0][0];
-						//manipulate blocks					
+						//manipulate blocks
 						$blocks[$key] = substr(rtrim($block), 0, -1 * strlen($startCCTag));
-						$blocks[$key + 1] = $startCCTag . chr(10) . trim($blocks[$key + 1]) . chr(10) . $endCCTag;	
-						$blocks[$key + 2] = substr(ltrim($blocks[$key + 2]), strlen($endCCTag));					
-					    										
+						$blocks[$key + 1] = $startCCTag . chr(10) . trim($blocks[$key + 1]) . chr(10) . $endCCTag;
+						$blocks[$key + 2] = substr(ltrim($blocks[$key + 2]), strlen($endCCTag));
+
 					}
 				}
 			}
-       	} 
-        
+       	}
+
 			// Traverse all sections of blocks
 		foreach($blocks as $k=>$v) {	// INSIDE BLOCK: Processing of block content. This includes a recursive call to this function for the inner content of the block tags.
 				// If inside a block tag
@@ -959,21 +962,21 @@ class tx_templavoila_htmlmarkup {
 				} else {
 					$v = $firstTag.$v.$endTag;
 				}
-				
+
 			} else {
 				if ($tagsSolo) {	// OUTSIDE of block; Processing of SOLO tags in there...
 
 						// Split content by the solo tags
 					$soloParts = $this->htmlParse->splitTags($tagsSolo,$v);
-#debug($soloParts);                    
-                    //search for conditional comments  
+#debug($soloParts);
+                    //search for conditional comments
 					$startTag = '';
-					if(count($soloParts) > 0 && $recursion == 0) {   
-						foreach($soloParts as $key => $value) {        
+					if(count($soloParts) > 0 && $recursion == 0) {
+						foreach($soloParts as $key => $value) {
 							//check for downlevel-hidden and downlevel-revealed syntax, see http://msdn.microsoft.com/de-de/library/ms537512(en-us,VS.85).aspx
 							$matchCount1 = preg_match_all('/<!([-]+)?\[if(.+)\]([-]+)?>/', $value, $matches1);
 							$matchCount2 = preg_match_all('/<!([-]+)?\[endif\]([-]+)?>/', $value, $matches2);
-							
+
 							// startTag was in last element
 							if ($startTag) {
 								$soloParts[$key] = $startTag . chr(10) . $soloParts[$key];
@@ -982,21 +985,21 @@ class tx_templavoila_htmlmarkup {
 							// starttag found: store and remove from element
 							if ($matchCount1) {
 								$startTag = $matches1[0][0];
-								$soloParts[$key] = str_replace($startTag, '', $soloParts[$key]); 
+								$soloParts[$key] = str_replace($startTag, '', $soloParts[$key]);
 							}
 							// endtag found: store in last element and remove from element
 							if ($matchCount2) {
-								$soloParts[$key] = str_replace($matches2[0][0], '', $soloParts[$key]); 
+								$soloParts[$key] = str_replace($matches2[0][0], '', $soloParts[$key]);
 								if ($key > 0) {
 									$soloParts[$key - 1] .= chr(10) . $matches2[0][0];
 								} else {
-									#$soloParts = array_merge(array(chr(10) . $matches2[0][0]), $soloParts);									
+									#$soloParts = array_merge(array(chr(10) . $matches2[0][0]), $soloParts);
 								}
 							}
-						}        
+						}
 					}
-									
-						// Traverse solo tags 
+
+						// Traverse solo tags
 					foreach($soloParts as $kk => $vv)	{
 						if ($kk % 2)	{
 							$firstTag = $vv;	// The first tag's content
@@ -1023,8 +1026,8 @@ class tx_templavoila_htmlmarkup {
 						}
 						$soloParts[$kk]=$vv;
 					}
-					$v = implode('',$soloParts); 
-					
+					$v = implode('',$soloParts);
+
 				}
 			}
 			$blocks[$k]=$v;
@@ -1237,7 +1240,7 @@ class tx_templavoila_htmlmarkup {
 	 */
 	function checkboxDisplay($str,$recursion,$path,$gnyf='',$valueStr=0)	{
 		static $rows = 0;
-		
+
 		if ($valueStr)	{
 			return trim($str) ? '
 				<tr class="bgColor4">
@@ -1294,10 +1297,16 @@ class tx_templavoila_htmlmarkup {
 	 */
 	function getGnyf($firstTagName,$path,$title)	{
 		if (!$this->onlyElements || t3lib_div::inList($this->onlyElements,$firstTagName))	{
-			$onclick = str_replace('###PATH###',$this->pathPrefix.$path,$this->gnyfImgAdd);
+			$onclick = str_replace('###PATH###', $this->pathPrefix . $path, $this->gnyfImgAdd);
+			$icon = $this->tags[$firstTagName]['icon'];
 
-			$gnyf = $this->textGnyf ? '<span '.$onclick.' style="border:1px solid blank; background-color: yellow;">['.$firstTagName.']</span>' : '<img '.$onclick.' src="'.$this->gnyfPath.'html_tags/'.$firstTagName.'.gif" border="0" title="'.htmlspecialchars(t3lib_div::fixed_lgd_cs($title,-80)).'"'.$this->gnyfStyle.' alt="" />';
-			$gnyf.= ($this->mode=='explode' ? '<br />' : '');
+			$gnyf  = $this->textGnyf
+				? '<span ' . $onclick . ' style="cursor:pointer; border: 1px solid blank; background-color: yellow;">[' . $firstTagName . ']</span>'
+				: '<img' . $icon . ' title="' . htmlspecialchars(t3lib_div::fixed_lgd_cs($title, -200)) . '"' . $this->gnyfStyle . ' alt="" />';
+			$gnyf .= $this->mode == 'explode'
+				? '<br />'
+				: '';
+
 			return $gnyf;
 		}
 		return '';

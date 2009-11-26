@@ -1,5 +1,6 @@
 2009-11-26  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug: #11180: New tag icons
 	* Fixed bug: #12715: Use technique of 4.3 "New Content Element Wizard"
 	* Fixed bug: #12654: Allow custom "New Site Wizard Template"
 

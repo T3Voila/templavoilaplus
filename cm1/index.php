@@ -1546,10 +1546,11 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 
 			// Markup the header section data with the header tags, using "checkbox" mode:
 		$tRows = $this->markupObj->markupHTMLcontent($html_header,$GLOBALS['BACK_PATH'], '','script,style,link,meta','checkbox');
+		$bodyTagIcon = t3lib_iconWorks::skinImg($this->doc->backPath, t3lib_extMgm::extRelPath('templavoila') . 'html_tags/body.gif', 'width="32" height="17"') . ' alt="" border="0"';
 		$bodyTagRow = $showBodyTag ? '
 				<tr class="bgColor2">
 					<td><input type="checkbox" name="addBodyTag" value="1"'.($currentHeaderMappingInfo['addBodyTag'] ? ' checked="checked"' : '').' /></td>
-					<td><img src="../html_tags/body.gif" width="32" height="9" alt="" /></td>
+					<td><img' . $bodyTagIcon . ' /></td>
 					<td><pre>'.htmlspecialchars($html_body).'</pre></td>
 				</tr>' : '';
 
@@ -1828,9 +1829,13 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 
 									// Render HTML path:
 								list($pI) = $this->markupObj->splitPath($currentMappingInfo[$key]['MAP_EL']);
-								$rowCells['htmlPath'] = '<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/icon_ok2.gif', 'width="18" height="16"') . ' border="0" alt="" title="' . 
+
+								$okayIcon = t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/icon_ok2.gif', 'width="18" height="16"') . ' alt="" border="0"';
+								$tagIcon = t3lib_iconWorks::skinImg($this->doc->backPath, t3lib_extMgm::extRelPath('templavoila') . 'html_tags/' . $pI['el'] . '.gif', 'height="17"') . ' alt="" border="0"';
+
+								$rowCells['htmlPath'] = '<img' . $okayIcon . ' title="' .
 														htmlspecialchars($cF ? sprintf($GLOBALS['LANG']->getLL('displayDSContentFound'), strlen($contentSplittedByMapping['cArray'][$key])) . ($multilineTooltips ? ':' . chr(10) . chr(10) . $cF : '') : $GLOBALS['LANG']->getLL('displayDSContentEmpty')) . '" class="absmiddle" />'.
-														'<img src="../html_tags/' . $pI['el'] . '.gif" height="9" border="0" alt="" hspace="3" class="absmiddle" title="---' . htmlspecialchars(t3lib_div::fixed_lgd_cs($currentMappingInfo[$key]['MAP_EL'], -80)) . '" />' .
+														'<img' . $tagIcon . ' hspace="3" class="absmiddle" title="---' . htmlspecialchars(t3lib_div::fixed_lgd_cs($currentMappingInfo[$key]['MAP_EL'], -80)) . '" />' .
 														($pI['modifier'] ? $pI['modifier'] . ($pI['modifier_value'] ? ':' . ($pI['modifier'] != 'RANGE' ? $pI['modifier_value'] : '...') : '') : '');
 								$rowCells['htmlPath'] = '<a href="'.$this->linkThisScript(array(
 																							'htmlPath'=>$path.($path?'|':'').preg_replace('/\/[^ ]*$/','',$currentMappingInfo[$key]['MAP_EL']),
@@ -1899,8 +1904,10 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 									}
 								}
 
+								$tagIcon = t3lib_iconWorks::skinImg($this->doc->backPath, t3lib_extMgm::extRelPath('templavoila') . 'html_tags/' . $lastLevel['el'] . '.gif', 'height="17"') . ' alt="" border="0"';
+
 									// Finally, put together the selector box:
-								$rowCells['cmdLinks'] = '<img src="../html_tags/'.$lastLevel['el'].'.gif" height="9" border="0" alt="" class="absmiddle" title="---'.htmlspecialchars(t3lib_div::fixed_lgd_cs($lastLevel['path'],-80)).'" /><br />
+								$rowCells['cmdLinks'] = '<img' . $tagIcon . ' class="absmiddle" title="---'.htmlspecialchars(t3lib_div::fixed_lgd_cs($lastLevel['path'],-80)).'" /><br />
 									<select name="dataMappingForm'.$formPrefix.'['.$key.'][MAP_EL]">
 										'.implode('
 										',$opt).'

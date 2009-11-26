@@ -1,0 +1,32 @@
+Font: 9pt "Segoe UI"
+Antialias: strong
+for black background: - color: white; - font weight: bold
+
+1 => 'html,body,h1,h2,h3,h4,h5,h6,p,br,hr',
+2 => 'b,font,i,em,big,strong,small,sup,sub,bdo,u,mark',
+3 => 'pre,code,tt,kbd,var,dfn,samp,output,xmp',
+4 => 'acronym,abbr,address,blockquote,center,q,cite,ins,del,s,strike,article,aside,details,footer,header,meter,nav,progress,section,time',
+5 => 'a,link',
+6 => 'frame,frameset,noframes,iframe',
+7 =>
+'form,input,textarea,button,select,optgroup,option,label,fieldset,legend,command,datagrid,datalist,datatemplate,nest,rule,isindex',
+8 => 'ul,ol,li,dir,dl,dt,dd,menu,dialog',
+9 => 'img,map,area,canvas',
+10 => 'table,caption,th,tr,td,thead,tbody,tfoot,col,colgroup',
+11 => 'style,div,span',
+12 => 'head,title,meta,base,basefont',
+13 => 'script,noscript,applet,object,param,audio,event-source,figure,source,video',
+
+1: "basic" - black - #000000 ... #7f7f7f
+2: "char format" - magenta - #ff33ff
+3: "output" - blue - #0000ff ... #6699cc
+4: "blocks" - brown/beige - #cccc99
+5: "links" - red - #ff0000
+6: "frames" - cyan - #00ffff
+7: "input" - light green - #ccff33
+8: "lists" - light blue - #cbfbff
+9: "images" - green - #0dba00 ... #0fd200
+10: "tables" - yellow - #fcd100
+11: "styles" - pink - #fed4e5
+12: "meta info" - teal - #008080 ... #00a9a9
+13: "programming" - grey - #a5c3d2
