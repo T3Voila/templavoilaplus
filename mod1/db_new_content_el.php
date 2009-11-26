@@ -55,7 +55,6 @@
  *
  */
 
-
 unset($MCONF);
 require ('conf.php');
 require ($BACK_PATH.'init.php');
@@ -92,13 +91,16 @@ class tx_templavoila_dbnewcontentel {
 	var $parentRecord;			// Parameters for the new record
 	var $altRoot;				// Array with alternative table, uid and flex-form field (see index.php in module for details, same thing there.)
 
+
 		// Internal, static:
 	var $doc;					// Internal backend template object
+
 
 		// Internal, dynamic:
 	var $include_once = array();	// Includes a list of files to include between init() and main() - see init()
 	var $content;					// Used to accumulate the content of the module.
 	var $access;					// Access boolean.
+
 
 	/**
 	 * Initialize internal variables.
@@ -124,13 +126,16 @@ class tx_templavoila_dbnewcontentel {
 		$this->doc->docType= 'xhtml_trans';
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->JScode='';
+		$this->doc->JScodeLibArray['dyntabmenu'] = $this->doc->getDynTabMenuJScode();
 		$this->doc->form='<form action="" name="editForm">';
+
+		$config = t3lib_BEfunc::getPagesTSconfig($this->id);
+		$this->config = $config['templavoila.']['wizards.']['newContentElement.'];
 
 			// Getting the current page and receiving access information (used in main())
 		$perms_clause = $BE_USER->getPagePermsClause(1);
 		$pageinfo = t3lib_BEfunc::readPageAccess($this->id,$perms_clause);
 		$this->access = is_array($pageinfo) ? 1 : 0;
-
 
 		$this->apiObj = t3lib_div::makeInstance ('tx_templavoila_api');
 
@@ -171,51 +176,94 @@ class tx_templavoila_dbnewcontentel {
 			$tableRows=array();
 			$wizardItems = $this->getWizardItems();
 
+			// Wrapper for wizards
+			$this->elementWrapper['sectionHeader'] = array ('<h3 class="bgColor5">', '</h3>');
+			$this->elementWrapper['section'] = array ('<table border="0" cellpadding="1" cellspacing="2">', '</table>');
+			$this->elementWrapper['wizard'] = array ('<tr>', '</tr>');
+			$this->elementWrapper['wizardPart'] = array ('<td>', '</td>');
+			// copy wrapper for tabs
+			$this->elementWrapperForTabs = $this->elementWrapper;
+
+			// Hook for manipulating wizardItems, wrapper, onClickEvent etc.
+			if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['templavoila']['db_new_content_el']['wizardItemsHook'])) {
+				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['templavoila']['db_new_content_el']['wizardItemsHook'] as $classData) {
+					$hookObject = t3lib_div::getUserObj($classData);
+
+					if (! ($hookObject instanceof cms_newContentElementWizardsHook)) {
+						throw new UnexpectedValueException('$hookObject must implement interface cms_newContentElementWizardItemsHook', 1227834741);
+					}
+
+					$hookObject->manipulateWizardItems($wizardItems, $this);
+				}
+			}
+
+			if ($this->config['renderMode'] == 'tabs' && $this->elementWrapperForTabs != $this->elementWrapper) {
+				// restore wrapper for tabs if they are overwritten in hook
+				$this->elementWrapper = $this->elementWrapperForTabs;
+			}
+
+			// add document inline javascript
+			$this->doc->JScode = $this->doc->wrapScriptTags('
+				function goToalt_doc()	{	//
+					' . $this->onClickEvent . '
+				}
+
+				if(top.refreshMenu) {
+					top.refreshMenu();
+				} else {
+					top.TYPO3ModuleMenu.refreshMenu();
+				}
+
+				if(top.shortcutFrame) {
+					top.shortcutFrame.refreshShortcuts();
+				}
+			');
+
 				// Traverse items for the wizard.
 				// An item is either a header or an item rendered with a title/description and icon:
 			$counter=0;
-			foreach($wizardItems as $key => $wizardItem)	{
-				if ($wizardItem['header'])	{
-					if ($counter>0) $tableRows[]='
-						<tr>
-							<td colspan="3"><br /></td>
-						</tr>';
-					$tableRows[]='
-						<tr class="bgColor5">
-							<td colspan="3"><strong>'.htmlspecialchars($wizardItem['header']).'</strong></td>
-						</tr>';
+			foreach ($wizardItems as $k => $wInfo) {
+				if ($wInfo['header']) {
+					$menuItems[] = array ('label' => htmlspecialchars($wInfo['header']), 'content' => $this->elementWrapper['section'][0]);
+					$key = count($menuItems) - 1;
 				} else {
-					$tableLinks=array();
-
+					$content = '';
 						// href URI for icon/title:
-					$newRecordLink = 'index.php?'.$this->linkParams().'&createNewRecord='.rawurlencode($this->parentRecord).$wizardItem['params'];
+					$newRecordLink = 'index.php?'.$this->linkParams().'&createNewRecord='.rawurlencode($this->parentRecord).$wInfo['params'];
 
 						// Icon:
-					$iInfo = @getimagesize($wizardItem['icon']);
-					$tableLinks[]='<a href="'.$newRecordLink.'"><img'.t3lib_iconWorks::skinImg($this->doc->backPath,$wizardItem['icon'],'').' alt="" /></a>';
+					$iInfo = @getimagesize($wInfo['icon']);
+					$content .= $this->elementWrapper['wizardPart'][0] . '<a href="' . htmlspecialchars($newRecordLink) . '">
+						<img' . t3lib_iconWorks::skinImg($this->doc->backPath, $wInfo['icon'], '') . ' alt="" /></a>' . $this->elementWrapper['wizardPart'][1];
 
 						// Title + description:
-					$tableLinks[]='<a href="'.$newRecordLink.'"><strong>'.htmlspecialchars($wizardItem['title']).'</strong><br />'.nl2br(htmlspecialchars(trim($wizardItem['description']))).'</a>';
+					$content .= $this->elementWrapper['wizardPart'][0] . '<a href="' . htmlspecialchars($newRecordLink) . '"><strong>' . htmlspecialchars($wInfo['title']) . '</strong><br />' . nl2br(htmlspecialchars(trim($wInfo['description']))) . '</a>' . $this->elementWrapper['wizardPart'][1];
 
-						// Finally, put it together in a table row:
-					$tableRows[]='
-						<tr>
-							<td valign="top">'.implode('</td>
-							<td valign="top">',$tableLinks).'</td>
-						</tr>';
-					$counter++;
+						// Finally, put it together in a container:
+					$menuItems[$key]['content'] .= $this->elementWrapper['wizard'][0] . $content . $this->elementWrapper['wizard'][1];
 				}
 			}
-				// Add the wizard table to the content:
-			$wizardCode .= $LANG->getLL('sel1',1).'<br /><br />
+			// add closing section-tag
+			foreach ($menuItems as $key => $val) {
+				$menuItems[$key]['content'] .= $this->elementWrapper['section'][1];
+			}
 
-			<!--
-				Content Element wizard table:
-			-->
-				<table border="0" cellpadding="1" cellspacing="2" id="typo3-ceWizardTable">
-					'.implode('',$tableRows).'
-				</table>';
-			$this->content .= $this->doc->section($LANG->getLL('1_selectType'), $wizardCode, 0, 1);
+			// Add the wizard table to the content, wrapped in tabs:
+			if ($this->config['renderMode'] == 'tabs') {
+				$this->doc->inDocStylesArray[] = '
+					.typo3-dyntabmenu-divs { background-color: #fafafa; border: 1px solid #000; width: 680px; }
+					.typo3-dyntabmenu-divs table { margin: 15px; }
+					.typo3-dyntabmenu-divs table td { padding: 3px; }
+				';
+				$code = $LANG->getLL('sel1', 1) . '<br /><br />' . $this->doc->getDynTabMenu($menuItems, 'new-content-element-wizard', false, false, 100);
+			} else {
+				$code = $LANG->getLL('sel1', 1) . '<br /><br />';
+				foreach ($menuItems as $section) {
+					$code .= $this->elementWrapper['sectionHeader'][0] . $section['label'] . $this->elementWrapper['sectionHeader'][1] . $section['content'];
+				}
+			}
+
+			$this->content .= $this->doc->section(! $this->onClickEvent ? $LANG->getLL('1_selectType') : '', $code, 0, 1);
 
 		} else {		// In case of no access:
 			$this->content='';
@@ -232,6 +280,7 @@ class tx_templavoila_dbnewcontentel {
 	 */
 	function printContent()	{
 		$this->content.= $this->doc->endPage();
+		$this->content = $this->doc->insertStylesAndJS($this->content);
 		echo $this->content;
 	}
 
@@ -241,25 +290,15 @@ class tx_templavoila_dbnewcontentel {
 	 * @return	[type]		...
 	 */
 	function linkParams()	{
-		$output = 'id='.$this->id.
-				(is_array($this->altRoot) ? t3lib_div::implodeArrayForUrl('altRoot',$this->altRoot) : '');
+		$output = 'id=' . $this->id . (is_array($this->altRoot) ? t3lib_div::implodeArrayForUrl('altRoot', $this->altRoot) : '');
 		return $output;
 	}
-
-
-
-
-
-
-
-
 
 	/***************************
 	 *
 	 * OTHER FUNCTIONS:
 	 *
 	 ***************************/
-
 
 	/**
 	 * Returns the content of wizardArray() function...
@@ -277,95 +316,91 @@ class tx_templavoila_dbnewcontentel {
 	 * @return	array
 	 */
 	function wizardArray()	{
-		global $LANG,$TBE_MODULES_EXT,$TYPO3_DB;
 
-		$defVals = t3lib_div::implodeArrayForUrl('defVals', is_array($this->defVals) ? $this->defVals : array());
+		if (is_array($this->config)) {
+			$wizards = $this->config['wizardItems.'];
+		}
+		$pluginWizards = $this->wizard_appendWizards($wizards['elements.']);
+		$fceWizards = $this->wizard_renderFCEs($wizards['elements.']);
+		$appendWizards = array_merge((array) $fceWizards, (array) $pluginWizards);
 
-		$wizardItems = array(
-			'common' => array('header'=>$LANG->getLL('common')),
-			'common_1' => array(
-				'icon'=>'gfx/c_wiz/regular_text.gif',
-				'title'=>$LANG->getLL('common_1_title'),
-				'description'=>$LANG->getLL('common_1_description'),
-				'params'=>'&defVals[tt_content][CType]=text'.$defVals,
-			),
-			'common_2' => array(
-				'icon'=>'gfx/c_wiz/text_image_below.gif',
-				'title'=>$LANG->getLL('common_2_title'),
-				'description'=>$LANG->getLL('common_2_description'),
-				'params'=>'&defVals[tt_content][CType]=textpic&defVals[tt_content][imageorient]=8'.$defVals,
-			),
-			'common_3' => array(
-				'icon'=>'gfx/c_wiz/text_image_right.gif',
-				'title'=>$LANG->getLL('common_3_title'),
-				'description'=>$LANG->getLL('common_3_description'),
-				'params'=>'&defVals[tt_content][CType]=textpic&defVals[tt_content][imageorient]=17'.$defVals,
-			),
-			'common_4' => array(
-				'icon'=>'gfx/c_wiz/images_only.gif',
-				'title'=>$LANG->getLL('common_4_title'),
-				'description'=>$LANG->getLL('common_4_description'),
-				'params'=>'&defVals[tt_content][CType]=image&defVals[tt_content][imagecols]=2'.$defVals,
-			),
-			'common_5' => array(
-				'icon'=>'gfx/c_wiz/bullet_list.gif',
-				'title'=>$LANG->getLL('common_5_title'),
-				'description'=>$LANG->getLL('common_5_description'),
-				'params'=>'&defVals[tt_content][CType]=bullets'.$defVals,
-			),
-			'common_6' => array(
-				'icon'=>'gfx/c_wiz/table.gif',
-				'title'=>$LANG->getLL('common_6_title'),
-				'description'=>$LANG->getLL('common_6_description'),
-				'params'=>'&defVals[tt_content][CType]=table'.$defVals,
-			),
-			'special' => array('header'=>$LANG->getLL('special')),
-			'special_1' => array(
-				'icon'=>'gfx/c_wiz/filelinks.gif',
-				'title'=>$LANG->getLL('special_1_title'),
-				'description'=>$LANG->getLL('special_1_description'),
-				'params'=>'&defVals[tt_content][CType]=uploads'.$defVals,
-			),
-			'special_2' => array(
-				'icon'=>'gfx/c_wiz/multimedia.gif',
-				'title'=>$LANG->getLL('special_2_title'),
-				'description'=>$LANG->getLL('special_2_description'),
-				'params'=>'&defVals[tt_content][CType]=multimedia'.$defVals,
-			),
-			'special_3' => array(
-				'icon'=>'gfx/c_wiz/sitemap2.gif',
-				'title'=>$LANG->getLL('special_3_title'),
-				'description'=>$LANG->getLL('special_3_description'),
-				'params'=>'&defVals[tt_content][CType]=menu&defVals[tt_content][menu_type]=2'.$defVals,
-			),
-			'special_4' => array(
-				'icon'=>'gfx/c_wiz/html.gif',
-				'title'=>$LANG->getLL('special_4_title'),
-				'description'=>$LANG->getLL('special_4_description'),
-				'params'=>'&defVals[tt_content][CType]=html'.$defVals,
-			),
+		$wizardItems = array ();
 
+		if (is_array($wizards)) {
+			foreach ($wizards as $groupKey => $wizardGroup) {
+				$groupKey = preg_replace('/\.$/', '', $groupKey);
+				$showItems = t3lib_div::trimExplode(',', $wizardGroup['show'], true);
+				$showAll = (strcmp($wizardGroup['show'], '*') ? false : true);
+				$groupItems = array ();
 
-			'forms' => array('header'=>$LANG->getLL('forms')),
-			'forms_1' => array(
-				'icon'=>'gfx/c_wiz/mailform.gif',
-				'title'=>$LANG->getLL('forms_1_title'),
-				'description'=>$LANG->getLL('forms_1_description'),
-				'params'=>'&defVals[tt_content][CType]=mailform&defVals[tt_content][bodytext]='.rawurlencode(trim($LANG->getLL ('forms_1_example'))).$defVals,
-			),
-			'forms_2' => array(
-				'icon'=>'gfx/c_wiz/searchform.gif',
-				'title'=>$LANG->getLL('forms_2_title'),
-				'description'=>$LANG->getLL('forms_2_description'),
-				'params'=>'&defVals[tt_content][CType]=search'.$defVals,
-			),
-			'forms_3' => array(
-				'icon'=>'gfx/c_wiz/login_form.gif',
-				'title'=>$LANG->getLL('forms_3_title'),
-				'description'=>$LANG->getLL('forms_3_description'),
-				'params'=>'&defVals[tt_content][CType]=login'.$defVals,
-			),
-		);
+				if (is_array($appendWizards[$groupKey . '.']['elements.'])) {
+					$wizardElements = array_merge((array) $wizardGroup['elements.'], $appendWizards[$groupKey . '.']['elements.']);
+				} else {
+					$wizardElements = $wizardGroup['elements.'];
+				}
+
+				if (is_array($wizardElements)) {
+					foreach ($wizardElements as $itemKey => $itemConf) {
+						$itemKey = preg_replace('/\.$/', '', $itemKey);
+						if ($showAll || in_array($itemKey, $showItems)) {
+							$tmpItem = $this->wizard_getItem($groupKey, $itemKey, $itemConf);
+							if ($tmpItem) {
+								$groupItems[$groupKey . '_' . $itemKey] = $tmpItem;
+							}
+						}
+					}
+				}
+				if (count($groupItems)) {
+					$wizardItems[$groupKey] = $this->wizard_getGroupHeader($groupKey, $wizardGroup);
+					$wizardItems = array_merge($wizardItems, $groupItems);
+				}
+			}
+		}
+
+			// Remove elements where preset values are not allowed:
+		$this->removeInvalidElements($wizardItems);
+
+		return $wizardItems;
+	}
+
+	/**
+	 * Get wizard array for plugins
+	 *
+	 * @param array $wizardElements
+	 * @return array $returnElements
+	 */
+	function wizard_appendWizards($wizardElements) {
+		if (! is_array($wizardElements)) {
+			$wizardElements = array ();
+		}
+		// plugins
+		if (is_array($GLOBALS['TBE_MODULES_EXT']['xMOD_db_new_content_el']['addElClasses'])) {
+			foreach ($GLOBALS['TBE_MODULES_EXT']['xMOD_db_new_content_el']['addElClasses'] as $class => $path) {
+				require_once ($path);
+				$modObj = t3lib_div::makeInstance($class);
+				$wizardElements = $modObj->proc($wizardElements);
+			}
+		}
+		$returnElements = array ();
+		foreach ($wizardElements as $key => $wizardItem) {
+			preg_match('/^[a-zA-Z0-9]+_/', $key, $group);
+			$wizardGroup = $group[0] ? substr($group[0], 0, - 1) . '.' : $key;
+			$returnElements[$wizardGroup]['elements.'][substr($key, strlen($wizardGroup)) . '.'] = $wizardItem;
+		}
+		return $returnElements;
+	}
+
+	/**
+	 * Get wizard array for FCEs
+	 *
+	 * @param array $wizardElements
+	 * @return array $returnElements
+	 */
+	function wizard_renderFCEs($wizardElements) {
+		if (! is_array($wizardElements)) {
+			$wizardElements = array ();
+		}
+		$returnElements = array ();
 
 			// Flexible content elements:
         $positionPid = $this->id;
@@ -374,16 +409,11 @@ class tx_templavoila_dbnewcontentel {
 
         	// Fetch data structures stored in the database:
         $addWhere = $this->buildRecordWhere('tx_templavoila_datastructure');
-        $res = $TYPO3_DB->exec_SELECTquery(
-        	'*',
-        	'tx_templavoila_datastructure',
-        	'pid='.intval($storageFolderPID).' AND scope=2' . $addWhere .
-        		t3lib_BEfunc::deleteClause('tx_templavoila_datastructure').
-        		t3lib_BEfunc::versioningPlaceholderClause('tx_templavoila_datastructure')
-        );
-        while(FALSE !== ($row = $TYPO3_DB->sql_fetch_assoc($res))) {
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tx_templavoila_datastructure', 'pid=' . intval($storageFolderPID) . ' AND scope=2' . $addWhere . t3lib_BEfunc::deleteClause('tx_templavoila_datastructure') . t3lib_BEfunc::versioningPlaceholderClause('tx_templavoila_datastructure'));
+		while ( FALSE !== ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) ) {
         	$dataStructureRecords[$row['uid']] = $row;
         }
+
 /*
         	// Fetch static data structures which are stored in XML files:
 		if (is_array($GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['staticDataStructures']))	{
@@ -393,54 +423,43 @@ class tx_templavoila_dbnewcontentel {
 			}
 		}
 */
+
 			// Fetch all template object records which uare based one of the previously fetched data structures:
 		$templateObjectRecords = array();
 		$recordDataStructure = array();
 		$addWhere = $this->buildRecordWhere('tx_templavoila_tmplobj');
-		$res = $TYPO3_DB->exec_SELECTquery(
-			'*',
-			'tx_templavoila_tmplobj',
-			'pid='.intval($storageFolderPID).' AND parent=0' . $addWhere .
-				t3lib_BEfunc::deleteClause('tx_templavoila_tmplobj').
-				t3lib_BEfunc::versioningPlaceholderClause('tx_templavoila_tmpl'), '', 'sorting'
-		);
-		while(FALSE !== ($row = $TYPO3_DB->sql_fetch_assoc($res))) {
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tx_templavoila_tmplobj', 'pid=' . intval($storageFolderPID) . ' AND parent=0' . $addWhere . t3lib_BEfunc::deleteClause('tx_templavoila_tmplobj') . t3lib_BEfunc::versioningPlaceholderClause('tx_templavoila_tmpl'), '', 'sorting');
+		while ( FALSE !== ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) ) {
 			if (is_array($dataStructureRecords[$row['datastructure']])) {
 				$templateObjectRecords[] = $row;
 				$recordDataStructure[ $row['datastructure'] ] = t3lib_div::xml2array( $dataStructureRecords[$row['datastructure']]['dataprot'] );
 			}
 		}
 
+
 			// Add the filtered set of TO entries to the wizard list:
-		$wizardItems['fce']['header'] = $LANG->getLL('fce');
-		foreach($templateObjectRecords as $index => $templateObjectRecord) {
+		foreach ($templateObjectRecords as $index => $templateObjectRecord) {
+			$tmpFilename = 'uploads/tx_templavoila/' . $templateObjectRecord['previewicon'];
+			$returnElements['fce.']['elements.']['fce_' . $templateObjectRecord['uid'] . '.'] = array(
+				'icon'        => (@is_file(PATH_site . $tmpFilename)) ? ('../' . $tmpFilename) : ('../' . t3lib_extMgm::siteRelPath('templavoila') . 'res1/default_previewicon.gif'),
+				'description' => $templateObjectRecord['description'] ? htmlspecialchars($templateObjectRecord['description']) : $GLOBALS['LANG']->getLL('template_nodescriptionavailable'),
+				'title'       => $templateObjectRecord['title'],
+				'params'      => '&defVals[tt_content][CType]=templavoila_pi1&defVals[tt_content][tx_templavoila_ds]=' . $templateObjectRecord['datastructure'] . '&defVals[tt_content][tx_templavoila_to]=' . $templateObjectRecord['uid'] . $defVals,
+			);
+ 		}
+		return $returnElements;
+	}
 
-				// Get default values from datastructure
-			$localProcessing = t3lib_div::xml2array( $templateObjectRecord['localprocessing'] );
-			$defDSVals = $this->getDsDefaultValues( $recordDataStructure[ $templateObjectRecord['datastructure'] ], $localProcessing );
+	function wizard_getItem($groupKey, $itemKey, $itemConf) {
+		$itemConf['title'] = $GLOBALS['LANG']->sL($itemConf['title']);
+		$itemConf['description'] = $GLOBALS['LANG']->sL($itemConf['description']);
+		$itemConf['tt_content_defValues'] = $itemConf['tt_content_defValues.'];
+		unset($itemConf['tt_content_defValues.']);
+		return $itemConf;
+	}
 
-			$tmpFilename = 'uploads/tx_templavoila/'.$templateObjectRecord['previewicon'];
-			$wizardItems['fce_'.$index]['icon'] = (@is_file(PATH_site.$tmpFilename)) ? ('../' . $tmpFilename) : ('../' . t3lib_extMgm::siteRelPath('templavoila').'res1/default_previewicon.gif');
-			$wizardItems['fce_'.$index]['description'] = $templateObjectRecord['description'] ? htmlspecialchars($templateObjectRecord['description']) : $LANG->getLL ('template_nodescriptionavailable');
-			$wizardItems['fce_'.$index]['title'] = $templateObjectRecord['title'];
-			$wizardItems['fce_'.$index]['params'] = '&defVals[tt_content][CType]=templavoila_pi1&defVals[tt_content][tx_templavoila_ds]='.$templateObjectRecord['datastructure'].'&defVals[tt_content][tx_templavoila_to]='.$templateObjectRecord['uid'].$defVals.$defDSVals;
-			$index ++;
-		}
-
-			// PLUG-INS:
-		if (is_array($TBE_MODULES_EXT['xMOD_db_new_content_el']['addElClasses']))	{
-			$wizardItems['plugins'] = array('header'=>$LANG->getLL('plugins'));
-			reset($TBE_MODULES_EXT['xMOD_db_new_content_el']['addElClasses']);
-			while(list($class,$path)=each($TBE_MODULES_EXT['xMOD_db_new_content_el']['addElClasses']))	{
-				$modObj = t3lib_div::makeInstance($class);
-				$wizardItems = $modObj->proc($wizardItems);
-			}
-		}
-
-			// Remove elements where preset values are not allowed:
-		$this->removeInvalidElements($wizardItems);
-
-		return $wizardItems;
+	function wizard_getGroupHeader($groupKey, $wizardGroup) {
+		return array ('header' => $GLOBALS['LANG']->sL($wizardGroup['header']));
 	}
 
 	/**
@@ -504,7 +523,8 @@ class tx_templavoila_dbnewcontentel {
 			// Remove headers without elements
 		foreach ($wizardItems as $key => $cfg)	{
 			list ($itemCategory, $dummy) = explode('_', $key);
-			if (!isset ($headersUsed[$itemCategory])) unset ($wizardItems[$key]);
+			if (! isset($headersUsed[$itemCategory]))
+				unset($wizardItems[$key]);
 		}
 	}
 
@@ -564,7 +584,8 @@ $SOBE = t3lib_div::makeInstance('tx_templavoila_dbnewcontentel');
 $SOBE->init();
 
 // Include files?
-foreach($SOBE->include_once as $INC_FILE)	include_once($INC_FILE);
+foreach ($SOBE->include_once as $INC_FILE)
+	include_once ($INC_FILE);
 
 $SOBE->main();
 $SOBE->printContent();
