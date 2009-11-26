@@ -439,12 +439,17 @@ class tx_templavoila_dbnewcontentel {
 
 			// Add the filtered set of TO entries to the wizard list:
 		foreach ($templateObjectRecords as $index => $templateObjectRecord) {
+
+				// Get default values from datastructure
+			$localProcessing = t3lib_div::xml2array( $templateObjectRecord['localprocessing'] );
+			$defDSVals = $this->getDsDefaultValues( $recordDataStructure[ $templateObjectRecord['datastructure'] ], $localProcessing );
+
 			$tmpFilename = 'uploads/tx_templavoila/' . $templateObjectRecord['previewicon'];
 			$returnElements['fce.']['elements.']['fce_' . $templateObjectRecord['uid'] . '.'] = array(
 				'icon'        => (@is_file(PATH_site . $tmpFilename)) ? ('../' . $tmpFilename) : ('../' . t3lib_extMgm::siteRelPath('templavoila') . 'res1/default_previewicon.gif'),
 				'description' => $templateObjectRecord['description'] ? htmlspecialchars($templateObjectRecord['description']) : $GLOBALS['LANG']->getLL('template_nodescriptionavailable'),
 				'title'       => $templateObjectRecord['title'],
-				'params'      => '&defVals[tt_content][CType]=templavoila_pi1&defVals[tt_content][tx_templavoila_ds]=' . $templateObjectRecord['datastructure'] . '&defVals[tt_content][tx_templavoila_to]=' . $templateObjectRecord['uid'] . $defVals,
+				'params'      => '&defVals[tt_content][CType]=templavoila_pi1&defVals[tt_content][tx_templavoila_ds]=' . $templateObjectRecord['datastructure'] . '&defVals[tt_content][tx_templavoila_to]=' . $templateObjectRecord['uid'] . $defVals . $defDSVals,
 			);
  		}
 		return $returnElements;
