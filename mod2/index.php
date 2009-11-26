@@ -2004,7 +2004,11 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 
 					// DO import:
 				$import = $this->getImportObj();
-				$inFile = t3lib_extMgm::extPath('templavoila').'mod2/new_tv_site.xml';
+				if (isset($this->modTSconfig['properties']['newTvSiteFile'])) {
+					$inFile = PATH_site . $this->modTSconfig['properties']['newTVsiteTemplate'];
+				} else {
+					$inFile = t3lib_extMgm::extPath('templavoila') . 'mod2/new_tv_site.xml';
+				}
 				if (@is_file($inFile) && $import->loadFile($inFile,1))	{
 
 					$import->importData($this->importPageUid);

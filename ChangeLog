@@ -1,3 +1,7 @@
+2009-11-25  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug: #12654: Allow custom "New Site Wizard Template"
+
 2009-11-25  Tolleiv Nietsch <nietsch@aoemedia.de>
 
 	* Fixed issue: #8759: Possibility to define startup language setting for FCEs instances
