@@ -1302,7 +1302,7 @@ class tx_templavoila_htmlmarkup {
 
 			$gnyf  = $this->textGnyf
 				? '<span ' . $onclick . ' style="cursor:pointer; border: 1px solid blank; background-color: yellow;">[' . $firstTagName . ']</span>'
-				: '<img' . $icon . ' title="' . htmlspecialchars(t3lib_div::fixed_lgd_cs($title, -200)) . '"' . $this->gnyfStyle . ' alt="" />';
+				: '<img' . $icon . $onclick . ' title="' . htmlspecialchars(t3lib_div::fixed_lgd_cs($title, -200)) . '"' . $this->gnyfStyle . ' alt="" />';
 			$gnyf .= $this->mode == 'explode'
 				? '<br />'
 				: '';
