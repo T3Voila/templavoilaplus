@@ -529,18 +529,33 @@ class tx_templavoila_api {
 			$this->flexform_storeElementReferencesListInRecord ($newSourceReferencesArr, $sourcePointer);
 			$this->flexform_storeElementReferencesListInRecord ($newDestinationReferencesArr, $destinationPointer);
 
-				// Make sure the PID is changed as well so the element belongs to the page where it is moved to:
-			if (!$onlyHandleReferences && $elementRecord['pid'] == $sourceParentRecord['uid']) {
+				// Move the records to the new page as well
+			if (!$onlyHandleReferences) {
+				$sourcePID = $sourcePointer['table'] == 'pages' ? $sourceParentRecord['uid'] : $sourceParentRecord['pid'];
 				$destinationPID = $destinationPointer['table'] == 'pages' ? $destinationParentRecord['uid'] : $destinationParentRecord['pid'];
-				$cmdArray = array();
-				$cmdArray['tt_content'][$elementUid]['move'] = $destinationPID;
-				$flagWasSet = $this->getTCEmainRunningFlag();
-				$this->setTCEmainRunningFlag (TRUE);
-				$tce = t3lib_div::makeInstance('t3lib_TCEmain');
-				$tce->stripslashes_values = 0;
-				$tce->start(array(),$cmdArray);
-				$tce->process_cmdmap();
-				if (!$flagWasSet) $this->setTCEmainRunningFlag (FALSE);
+
+					// Determine uids of all sub elements of the element to be moved:
+				$dummyArr = array();
+				$elementUids = $this->flexform_getListOfSubElementUidsRecursively ('tt_content', $elementUid, $dummyArr);
+				$elementUids[] = $elementUid;
+
+					// Reduce the list to local elements to make sure that references are kept instead of moving the referenced record
+				$localRecords = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,pid', 'tt_content', 'uid IN (' . implode(',', $elementUids) . ') AND pid=' . intval($sourcePID) . ' ' . t3lib_BEfunc::deleteClause('tt_content'));
+				if(!empty($localRecords) && is_array($localRecords)) {
+					foreach ($localRecords as $localRecord) {
+						$cmdArray['tt_content'][$localRecord['uid']]['move'] = $destinationPID;
+					}
+
+					$flagWasSet = $this->getTCEmainRunningFlag ();
+					$this->setTCEmainRunningFlag (TRUE);
+					$tce = t3lib_div::makeInstance ('t3lib_TCEmain');
+					$tce->stripslashes_values = 0;
+					$tce->start (array(), $cmdArray);
+					$tce->process_cmdmap ();
+					if (!$flagWasSet) {
+						$this->setTCEmainRunningFlag (FALSE);
+					}
+				}
 			}
 		}
 
