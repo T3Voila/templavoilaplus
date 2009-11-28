@@ -402,12 +402,12 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			);
 
 				//Prototype /Scriptaculous
-				// prototype is loaded before, so no need to include twice. 
+				// prototype is loaded before, so no need to include twice.
 				//TODO: switch to $this->doc->JScodeLibArray for preventing double inclusion
 			#$this->doc->JScode .= '<script src="' . $this->doc->backPath . 'contrib/prototype/prototype.js" type="text/javascript"></script>';
 			$this->doc->JScode .= '<script src="' . $this->doc->backPath . 'contrib/scriptaculous/scriptaculous.js?load=effects,dragdrop" type="text/javascript"></script>';
 			$this->doc->JScode .= '<script src="' . t3lib_div::locationHeaderUrl(t3lib_div::resolveBackPath($this->doc->backPath . '../' . t3lib_extMgm::siteRelPath('templavoila') . 'mod1/dragdrop-min.js')) . '" type="text/javascript"></script>';
-              
+
 				// Set up JS for dynamic tab menu and side bar
 			$this->doc->JScode .= $this->doc->getDynTabMenuJScode();
 			$this->doc->JScode .= $this->modTSconfig['properties']['sideBarEnable'] ? $this->sideBarObj->getJScode() : '';
@@ -600,7 +600,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		} else {
 			$output.= $this->render_framework_allSheets($contentTreeData['tree'], $this->currentLanguageKey);
 		}
-        
+
 			// See http://bugs.typo3.org/view.php?id=4821
 		$renderHooks = $this->hooks_prepareObjectsArray('render_editPageScreen');
 		foreach ($renderHooks as $hookObj)	{
@@ -616,7 +616,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		$sys_notes = recordList::showSysNotesForPage();
 		if ($sys_notes) {
 			$output .= $this->doc->section($LANG->sL('LLL:EXT:cms/layout/locallang.xml:internalNotes'), str_replace('sysext/sys_note/ext_icon.gif', $GLOBALS['BACK_PATH'] . 'sysext/sys_note/ext_icon.gif', $sys_notes), 0, 1);
-		}				
+		}
 		return $output;
 	}
 
@@ -729,7 +729,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				if (!$this->translatorMode && $canEditContent) {
 						// Create CE specific buttons:
 					$linkMakeLocal = !$elementBelongsToCurrentPage ? $this->link_makeLocal('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,t3lib_extMgm::extRelPath('templavoila').'mod1/makelocalcopy.gif','').' title="'.$LANG->getLL('makeLocal').'" border="0" alt="" />', $parentPointer) : '';
-					if(	$this->modTSconfig['properties']['enableDeleteIconForLocalElements'] < 2 || 
+					if(	$this->modTSconfig['properties']['enableDeleteIconForLocalElements'] < 2 ||
 						!$elementBelongsToCurrentPage ||
 						$this->global_tt_content_elementRegister[$contentTreeArr['el']['uid']] > 1
 					) {
@@ -935,7 +935,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 							}
 
 							$cellContent .= $cellFragment;
-					
+
 						}
 					}
 				}
@@ -951,7 +951,14 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 					// Add cell content to registers:
 				if ($flagRenderBeLayout==TRUE) {
-					$beTemplateCell = '<table width="100%" class="beTemplateCell"><tr><td valign="top" style="background-color: '.$this->doc->bgColor4.'; padding-top:0; padding-bottom:0;">'.$LANG->sL($fieldContent['meta']['title'],1).'</td></tr><tr><td valign="top" style="padding: 5px;">'.$cellContent.'</td></tr></table>';
+					$beTemplateCell = '<table width="100%" class="beTemplateCell">
+					<tr>
+						<td valign="top" style="background-color: ' . $this->doc->bgColor4 . '; padding-top:0; padding-bottom:0;">' . $LANG->sL($fieldContent['meta']['title'], 1) . '</td>
+					</tr>
+					<tr>
+						<td ' . $cellIdStr . ' valign="top" style="padding: 5px;">' . $cellContent . '</td>
+					</tr>
+					</table>';
 					$beTemplate = str_replace('###'.$fieldID.'###', $beTemplateCell, $beTemplate);
 				} else {
 							// Add cell content to registers:
@@ -1457,7 +1464,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				} else {
 						// Create CE specific buttons:
 					$linkMakeLocal = !$elementBelongsToCurrentPage ? $this->link_makeLocal('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,t3lib_extMgm::extRelPath('templavoila').'mod1/makelocalcopy.gif','').' title="'.$LANG->getLL('makeLocal').'" border="0" alt="" />', $parentPointer) : '';
-					if(	$this->modTSconfig['properties']['enableDeleteIconForLocalElements'] < 2 || 
+					if(	$this->modTSconfig['properties']['enableDeleteIconForLocalElements'] < 2 ||
 						!$elementBelongsToCurrentPage ||
 						$this->global_tt_content_elementRegister[$contentTreeArr['el']['uid']] > 1
 					) {
@@ -1682,7 +1689,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 *
 	 *******************************************/
 
-	 
+
 	/**
 	 * Returns an HTML link for editing
 	 *
@@ -1738,7 +1745,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 		return $this->link_hide($label, $el['table'], $el['uid'], $el['isHidden']);
 	}
-	
+
 	/**
 	 * [Describe function...]
 	 *
