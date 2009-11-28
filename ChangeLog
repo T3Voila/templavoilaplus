@@ -1,3 +1,7 @@
+2009-11-28  Tolleiv Nietsch <nietsch@aoemedia.de>
+
+	* Fixed bug: #12804: Unlink icon doesn't hide the "unlinked" item
+
 2009-11-27  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug: #10652: drag&drop of page contents not compatible with beLayout (Thanks to Marc Ehret)

@@ -33,8 +33,8 @@ function sortable_unlinkRecordCallBack(obj) {
 	sortable_update(pn);
 }
 
-function sortable_unlinkRecord(id) {
-	new Ajax.Request("index.php?" + sortable_linkParameters + "&ajaxUnlinkRecord="+escape(id)); /* xxx */
+function sortable_unlinkRecord(pointer, id) {
+	new Ajax.Request("index.php?" + sortable_linkParameters + "&ajaxUnlinkRecord="+escape(pointer)); /* xxx */
 	new Effect.Fade(id,
 		{ duration: 0.5,
 		afterFinish: sortable_unlinkRecordCallBack });
@@ -52,7 +52,8 @@ function sortable_updateItemButtons(el, position, pID) {
 		//alert(href);
 		if (href.charAt(href.length - 1) == "#") continue;
 		if ((p = href.split("unlinkRecord")).length == 2) {
-			buttons[i].href = p[0] + "unlinkRecord(\'" + newPos + "\');";
+			p2 = p[1].split("\',\'")
+			buttons[i].href = p[0] + "unlinkRecord(\'" + newPos + "\',\'" + p2[1];
 		} else if ((p = href.split("deleteRecord")).length == 2) {
 			buttons[i].href = p[0] + "deleteRecord=" + newPos;
 		} else if((p = href.split("CB[el][tt_content")).length == 2) {
