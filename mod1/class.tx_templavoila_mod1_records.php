@@ -154,7 +154,7 @@ class tx_templavoila_mod1_records {
 		if ($table) {
 			$this->initDbList($table);
 			$this->dblist->generateList();
-			$content = '<tr class="bgColor4"><td colspan="2" style="padding: 0 0 3px 3px">' . $this->dblist->HTMLcode . '</td></tr>';
+			$content = '<tr class="bgColor4"><td colspan="3" style="padding: 0 0 3px 3px">' . $this->dblist->HTMLcode . '</td></tr>';
 		}
 		return $content;
 	}
