@@ -89,8 +89,8 @@ $LANG->includeLLFile('EXT:templavoila/cm1/locallang.xml');
 require_once (PATH_t3lib.'class.t3lib_scbase.php');
 
 
-require_once (t3lib_extMgm::extPath('templavoila').'cm1/class.tx_templavoila_cm1_dsedit.php'); 
-require_once (t3lib_extMgm::extPath('templavoila').'cm1/class.tx_templavoila_cm1_etypes.php'); 
+require_once (t3lib_extMgm::extPath('templavoila').'cm1/class.tx_templavoila_cm1_dsedit.php');
+require_once (t3lib_extMgm::extPath('templavoila').'cm1/class.tx_templavoila_cm1_etypes.php');
 
 
 require_once(t3lib_extMgm::extPath('templavoila').'class.tx_templavoila_htmlmarkup.php');
@@ -193,8 +193,8 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 
 	var $dsEdit;				// instance of class tx_templavoila_cm1_dsEdit
 	var $eTypes;				// instance of class tx_templavoila_cm1_eTypes
-	
-	
+
+
 	/**
 	 * Adds items to the ->MOD_MENU array. Used for the function menu selector.
 	 *
@@ -245,16 +245,16 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 	 * @return	void
 	 */
 	function main()	{
-		
+
 			// Initialize ds_edit
 		$this->dsEdit = t3lib_div::getUserObj ('tx_templavoila_cm1_dsedit','');
 		$this->dsEdit->init($this);
-		
+
 			// Initialize eTypes
 		$this->eTypes = t3lib_div::getUserObj ('tx_templavoila_cm1_eTypes','');
 		$this->eTypes->init($this);
-		
-		
+
+
 			// Setting GPvars:
 		$this->mode = t3lib_div::_GP('mode');
 
@@ -858,7 +858,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			if ($optGroupOpen) {
 				$opt[] = '</optgroup>';
 			}
-					 
+
 				// Module Interface output begin:
 			switch($cmd)	{
 					// Show XML DS
@@ -1776,13 +1776,13 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 
 		$bInfo = t3lib_div::clientInfo();
 		$multilineTooltips = ($bInfo['BROWSER'] == 'msie');
-        $rowIndex = -1;
-        
+		$rowIndex = -1;
+
 			// Data Structure array must be ... and array of course...
 		if (is_array($dataStruct))	{
 			foreach($dataStruct as $key => $value)	{
-                $rowIndex++; 
-                
+				$rowIndex++;
+
 				if ($key == 'meta') {
 					// Do not show <meta> information in mapping interface!
 					continue;
@@ -1844,10 +1844,10 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 																						)).'">'.$rowCells['htmlPath'].'</a>';
 
 									// CMD links, default content:
-								$rowCells['cmdLinks'] = '<span class="nobr"><input type="submit" value="Re-Map" name="_" onclick="document.location=\'' . 
+								$rowCells['cmdLinks'] = '<span class="nobr"><input type="submit" value="Re-Map" name="_" onclick="document.location=\'' .
 														$this->linkThisScript(array(
-																				'mapElPath' => $formPrefix . '[' . $key . ']', 
-																				'htmlPath' => $path, 
+																				'mapElPath' => $formPrefix . '[' . $key . ']',
+																				'htmlPath' => $path,
 																				'mappingToTags' => $value['tx_templavoila']['tags'],
 																				'DS_element' => t3lib_div::_GP('DS_element')
 																				)) . '\';return false;" title="' . $GLOBALS['LANG']->getLL('buttonRemapTitle') . '" />' .
@@ -1862,13 +1862,13 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 									// If content mapped ok, set flag:
 								$isMapOK=1;
 							} else {	// Issue warning if mapping was lost:
-								$rowCells['htmlPath'] = '<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/icon_warning.gif', 'width="18" height="16"') . 
+								$rowCells['htmlPath'] = '<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/icon_warning.gif', 'width="18" height="16"') .
 								' border="0" alt="" title="' . $GLOBALS['LANG']->getLL('msgNoContentFound') . '" class="absmiddle" />' . htmlspecialchars($currentMappingInfo[$key]['MAP_EL']);
 							}
 						} else {	// For non-mapped cases, just output a no-break-space:
 							$rowCells['htmlPath'] = '&nbsp;';
 						}
-                        
+
 							// CMD links; Content when current element is under mapping, then display control panel or message:
 						if ($this->mapElPath == $formPrefix.'['.$key.']')	{
 							if ($this->doMappingOfPath)	{
@@ -1933,7 +1933,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 																			'mapElPath' => $formPrefix . '[' . $key . ']',
 																			'htmlPath' => $path,
 																			'mappingToTags' => $value['tx_templavoila']['tags'],
-																			'DS_element' => t3lib_div::_GP('DS_element') 
+																			'DS_element' => t3lib_div::_GP('DS_element')
 																		)) . '\';return false;" />';
 						}
 					}
@@ -1949,13 +1949,13 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 						$editAddCol = '<a href="' . $this->linkThisScript(array(
 																		'DS_element' => $formPrefix . '[' . $key . ']'
 																		)) . '">' .
-										'<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/edit2.gif', 'width="11" height="12"') . 
+										'<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/edit2.gif', 'width="11" height="12"') .
 										' hspace="2" border="0" alt="" title="' . $GLOBALS['LANG']->getLL('editEntry') . '" /></a>
 										<a href="' . $this->linkThisScript(array(
 																		'DS_element_DELETE' => $formPrefix . '[' . $key . ']'
 																		)) . '">' .
 										'<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/garbage.gif', 'width="11" height="12"') .
-										' hspace="2" border="0" alt="" title="' . $GLOBALS['LANG']->getLL('deleteEntry') . '" onclick=" return confirm(\'' . $GLOBALS['LANG']->getLL('confirmDeleteEntry') . 
+										' hspace="2" border="0" alt="" title="' . $GLOBALS['LANG']->getLL('deleteEntry') . '" onclick=" return confirm(\'' . $GLOBALS['LANG']->getLL('confirmDeleteEntry') .
 										'\');" /></a>';
 						$editAddCol = '<td nowrap="nowrap">' . $editAddCol . '</td>';
 					} else {
@@ -2024,7 +2024,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 		return $tRows;
 	}
 
-	
+
 	/*******************************
 	 *
 	 * Various helper functions
@@ -2198,7 +2198,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 
 
 
-    
+
 
 
 	/*****************************************
