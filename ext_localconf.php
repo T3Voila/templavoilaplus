@@ -11,13 +11,13 @@ t3lib_extMgm::addPageTSConfig('
     mod.web_list.newPageWiz.overrideWithExtension = templavoila
 	mod.web_list.newContentWiz.overrideWithExtension = templavoila
 	mod.web_txtemplavoilaM2.templatePath = templates
+	mod.web_txtemplavoilaM1.enableDeleteIconForLocalElements = 0
 ');
 
  	// Use templavoila instead of the default page module
  t3lib_extMgm::addUserTSConfig('
  	options.overridePageModule = web_txtemplavoilaM1
 	mod.web_txtemplavoilaM1.sideBarEnable = 1
-	mod.web_txtemplavoilaM1.enableDeleteIconForLocalElements = 0
  ');
 
 	// Adding Page Template Selector Fields to root line:
