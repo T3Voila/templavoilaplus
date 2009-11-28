@@ -126,7 +126,7 @@
 			<label index="mapEdit">Edit</label>
 			<label index="mapMappingWindow">Mapping Window</label>
 			<label index="mapPreviewInfo">Preview of Data Structure sample data merged into the mapped tags</label>
-			<label index="mapDSelement">Mapping DS element</label>
+			<label index="mapDSelement">Mapping Data Element</label>
 			<label index="mapLimitToTags">Limiting to tags</label>
 			
 			<label index="displayDSTitleTranslated">This title is translated!</label>

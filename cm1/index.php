@@ -1723,15 +1723,15 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 				} else {
 					$tRows[]='
 						<tr class="bgColor4">
-							<td class="bgColor5"><strong>' . $GLOBALS['LANG']->getLL('mapDSelement') . '::</strong></td>
+							<td class="bgColor5"><strong>' . $GLOBALS['LANG']->getLL('mapDSelement') . ':</strong></td>
 							<td>'.$this->elNames[$this->mapElPath]['tx_templavoila']['title'].'</td>
 						</tr>
 						<tr class="bgColor4">
-							<td class="bgColor5"><strong>' . $GLOBALS['LANG']->getLL('mapLimitToTags') . '::</strong></td>
+							<td class="bgColor5"><strong>' . $GLOBALS['LANG']->getLL('mapLimitToTags') . ':</strong></td>
 							<td>'.htmlspecialchars(($limitTags?strtoupper($limitTags):'(ALL TAGS)')).'</td>
 						</tr>
 						<tr class="bgColor4">
-							<td class="bgColor5"><strong>' . $GLOBALS['LANG']->getLL('instructions') . ':</strong></td>
+							<td class="bgColor5"><strong>' . $GLOBALS['LANG']->getLL('mapInstructions') . ':</strong></td>
 							<td>'.htmlspecialchars($this->elNames[$this->mapElPath]['tx_templavoila']['description']).'</td>
 						</tr>
 					';
