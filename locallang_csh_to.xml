@@ -12,7 +12,7 @@
             <label index="title.description">Enter a title that describes this Template Object.</label>
             <label index="datastructure.description">Select a data structure that this Template Object makes use of.</label>
             <label index="fileref.description">Choose a HTML template as a basis for the mapping.</label>
-            <label index="templatemapping.description">This data holds all information needed for TemplaVoila to map the data structure to the actual HTML template file.</label>
+            <label index="templatemapping.description">This data holds all information needed for TemplaVoilà to map the data structure to the actual HTML template file.</label>
             <label index="previewicon.description">Select a preview image to this Template Structure to </label>
             <label index="description.description">Add a small description that is used in the wizards to help users distinguish your templates.</label>
             <label index="rendertype.description">Select whether this is a special Template Object, used for print or other uses, or for the default page.</label>

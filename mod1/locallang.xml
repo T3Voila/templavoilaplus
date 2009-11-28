@@ -12,15 +12,15 @@
 		<languageKey index="default" type="array">
 			<label index="title">WEB &gt; PAGE MODULE</label>
 			<label index="default_introduction">If you wish to edit the content of a page, please click the page title in the page tree to the left.</label>
-			<label index="csh_whatisthetemplavoilapagemodule">What is the TemplaVoilá page module?</label>
+			<label index="csh_whatisthetemplavoilapagemodule">What is the TemplaVoilà page module?</label>
 			<label index="createnewpage_selecttemplate">Select a template for your new page:</label>
 			<label index="createnewpage_defaultlayoutsubmitlabel">Create page with default layout</label>
 			<label index="createnewpage_templateobject_createemptypage">Create an empty page based on this template:</label>
 			<label index="createnewpage_templateobject_createpagewithdefaultcontent">Create a page with default content based on this template:</label>
 			<label index="createnewcontent_newContentElement">New content element</label>
 			<label index="warning_elementusedmorethanonce">This element has been used %s times on this page! ID:%s</label>
-			<label index="warning_containerSeparate">WARNING: This container element has localization without inheritance enabled (langChildren = 0). This is most likely a misconfiguration since the localization features of TemplaVoila does not support localized container fields in the native interface! Please inform the system administrator!</label>
-			<label index="warning_containerInheritance">This container element has localization enabled but with inheritance (langChildren = 1). This situation might produce confusing displays in TemplaVoila and you are encouraged to disable localization of this container element completely by setting langDisable = 1. Please inform the system administrator!</label>
+			<label index="warning_containerSeparate">WARNING: This container element has localization without inheritance enabled (langChildren = 0). This is most likely a misconfiguration since the localization features of TemplaVoilà does not support localized container fields in the native interface! Please inform the system administrator!</label>
+			<label index="warning_containerInheritance">This container element has localization enabled but with inheritance (langChildren = 1). This situation might produce confusing displays in TemplaVoilà and you are encouraged to disable localization of this container element completely by setting langDisable = 1. Please inform the system administrator!</label>
 			<label index="warning_containerSeparate_short">L10N mode: Separate!</label>
 			<label index="warning_containerInheritance_short">L10N mode: Inheritance</label>
 			<label index="cannotedit_doktypemountpoint">This page acts as a mount point and its content is being replaced by another page (&quot;%s&quot;). Therefore you cannot edit the content of this page directly.</label>

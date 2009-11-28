@@ -23,7 +23,7 @@
 			<label index="tx_templavoila_tmplobj.parent">Make this a sub-template of:</label>
 			<label index="tx_templavoila_tmplobj.rendertype_ref">Inherit default subtemplates from:</label>
 			<label index="tx_templavoila_tmplobj.localProc">Local Processing (XML):</label>
-			<label index="be_groups.tx_templavoila_access">Disallow access to TemplaVoila objects:</label>
+			<label index="be_groups.tx_templavoila_access">Disallow access to TemplaVoilà objects:</label>
 			<label index="tx_templavoila_datastructure">TemplaVoilà Data Structure</label>
 			<label index="tx_templavoila_datastructure.title">Title:</label>
 			<label index="tx_templavoila_datastructure.dataprot">Data Structure XML:</label>

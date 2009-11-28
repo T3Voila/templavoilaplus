@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
     <meta type="array">
-        <description>Mapping Documentation for TemplaVoila.</description>
+        <description>Mapping Documentation for TemplaVoilà.</description>
         <type>CSH</type>
         <csh_table>xMOD_tx_templavoila</csh_table>
         <fileId>EXT:templavoila/locallang_csh_module.xml</fileId>
     </meta>
     <data type="array">
         <languageKey index="default" type="array">
-            <label index=".alttitle">TemplaVoila Mapping</label>
+            <label index=".alttitle">TemplaVoilà Mapping</label>
             <label index="mapping_file.description">Modify the structure of this Template and map it with a certain HTML.</label>
             <label index="mapping_file_showXMLDS.description">This view shows the "source code" of what is built together for the Data Structure. You can later modify this data manually.</label>
             <label index="mapping_file_loadDSXML.description">On this page, you can select to load an existing XML (either through an existing Data Structure or through a simple copy / paste of XML in the area below, to replace the existing data structure.</label>
-            <label index="mapping_file_createDSTO.description">Add the Data Structure and Template Object (TemplaVoila will create both of them for you) to a certain Storage Folder. Please be aware that you have to have an existing Storage Folder in your page tree to select it from the dropdown. If you choose "Page Template" as the "Template Type", the new DS/TO Combo will appear when you edit the page properties. If you select "Content Element", the new TO will appear as a new content element type option when you add a new Content Element within any page.</label>
+            <label index="mapping_file_createDSTO.description">Add the Data Structure and Template Object (TemplaVoilà will create both of them for you) to a certain Storage Folder. Please be aware that you have to have an existing Storage Folder in your page tree to select it from the dropdown. If you choose "Page Template" as the "Template Type", the new DS/TO Combo will appear when you edit the page properties. If you select "Content Element", the new TO will appear as a new content element type option when you add a new Content Element within any page.</label>
             <label index="mapping_to.description">This tab shows a list of the Template Object (TO), the file and the correspondig Data Structure (DS)</label>
             <label index="mapping_to_htmlheaderparts.description">[FILL IN] mapping_to_htmlheaderparts</label>
             <label index="mapping_to_openInOwnWindow.description">[FILL IN] mapping_to_openInOwnWindow</label>
@@ -29,7 +29,7 @@
             <label index="mapping_window_help.description">In the screen below you'll see the composite work of the plain HTML template, where the mapped HTML tags are replaced with the sample data (if available).</label>
             <label index="mapping_basics.description">This screen basically allows you to create certain structure through adding fields (when creating the Data Structure) and then map these fields to HTML tags within a HTML template.</label>
             <label index="mapping_to_headerParts.description">When adding a new page template, the Mapping (see other tab) only works on the &lt;body&gt; tag, if you need to add other HTML tags from the HTML &lt;head&gt; tag, you can do this on this screen. Please make sure to hit the "Set" button on the bottom of this list to save your changes. Additional tags in the head part of your HTML can of course be added via regular TypoScript.</label>
-            <label index="mapping_to_headerParts_buttons.description">Press "Clear All" to unset all checkboxes above; "Set" saves the changes of this page (the additional tags), "Save" writes the changes of the Mapping (see other tab) to the database. "Save and return" also writes the mapping to the database, but will also return to the TemplaVoila Control Center.</label>
+            <label index="mapping_to_headerParts_buttons.description">Press "Clear All" to unset all checkboxes above; "Set" saves the changes of this page (the additional tags), "Save" writes the changes of the Mapping (see other tab) to the database. "Save and return" also writes the mapping to the database, but will also return to the TemplaVoilà Control Center.</label>
             <label index="mapping_editform.description">Select the Mapping Type, a distinguishable name, instructions for the one who will map the data to a HTML template later on (optional). The Editing Type determines how the data on the field should be entered. Mapping rules allow to only map to certain HTML tags or HTML attributes. "a:attr:href" to only allows mapping to href attributes of HTML anchor tags.</label>
             <label index="mapping_addfield.description">Enter a for this data structure unique string and click "Add field" to get to the detailed form for this new field.</label>
             <label index="mapping_modeset.description">"OUTER" means that the mapping will also replace the element that the field is mapped to, "INNER" means that the content of the element will be replaced, the element itself will be kept.</label>

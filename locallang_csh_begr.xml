@@ -11,7 +11,7 @@
     </meta>
     <data type="array">
         <languageKey index="default" type="array">
-            <label index="tx_templavoila_access.description">Select TemplaVoila objects to disallow access to. Notice that disallowing access to DS (data structure) implicitly disallows access to any TO (template object) associated with this DS.</label>
+            <label index="tx_templavoila_access.description">Select TemplaVoilà objects to disallow access to. Notice that disallowing access to DS (data structure) implicitly disallows access to any TO (template object) associated with this DS.</label>
             <label index="datastructure.description">Select data structure of this template object</label>
             <label index="fileref.description">Reference to a file to map with this template object</label>
             <label index="templatemapping.description"></label>
