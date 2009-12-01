@@ -195,7 +195,7 @@ templavoila.wizards.newContentElement.renderMode =
 
 if (t3lib_div::compat_version('4.3')) {
 	t3lib_extMgm::addPageTSConfig('
-templavoila.wizards.newContentElement.wizardItems.special.media {
+templavoila.wizards.newContentElement.wizardItems.special.elements.media {
 	icon = gfx/c_wiz/multimedia.gif
 	title = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:special_media_title
 	description = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:special_media_description
