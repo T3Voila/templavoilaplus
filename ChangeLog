@@ -1,11 +1,11 @@
-2009-11-27  Steffen Kamper  <info@sk-typo3.de>
+2009-12-01  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug: #12868: The new media element will not show up in NewCeWizard because of wrong object path (Thanks to Uschi Renziehausen)
 
 2009-11-28  Tolleiv Nietsch <nietsch@aoemedia.de>
 
 	* Follow-up to bugfix #12564: Localization view overlaps labels and doesn't align
-	* Fixed bug: #12826: "TemplaVoil√†" accent missing or wrong in some labels 
+	* Fixed bug: #12826: "TemplaVoil‡†" accent missing or wrong in some labels 
 	* Fixed bug: #12819: Mapping module labels are messed up 
 	* Fixed bug: #12804: Unlink icon doesn't hide the "unlinked" item
 
