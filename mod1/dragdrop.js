@@ -52,7 +52,7 @@ function sortable_updateItemButtons(el, position, pID) {
 		//alert(href);
 		if (href.charAt(href.length - 1) == "#") continue;
 		if ((p = href.split("unlinkRecord")).length == 2) {
-			p2 = p[1].split("\',\'")
+			p2 = p[1].split("\',\'");
 			buttons[i].href = p[0] + "unlinkRecord(\'" + newPos + "\',\'" + p2[1];
 		} else if ((p = href.split("deleteRecord")).length == 2) {
 			buttons[i].href = p[0] + "deleteRecord=" + newPos;
