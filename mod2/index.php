@@ -1403,7 +1403,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 
 			foreach ($DStree as $elm => $def) {
 				$HTML .= '<dt>';
-				$HTML .= ($elm == "meta" ? 'Configuration' : $def['tx_templavoila']['title']);
+				$HTML .= ($elm == "meta" ? 'Configuration' : $def['tx_templavoila']['title'] . ' ('. $elm . ')');
 				$HTML .= '</dt>';
 				$HTML .= '<dd>';
 
