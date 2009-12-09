@@ -1,5 +1,6 @@
 2009-12-09  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug: #12942: Bugfix: Section-"Flag" is lost during Modify DS/TO
 	* Fixed bug: #12973: Allow beLayout template file for TO and DS
 
 2009-12-04  Tolleiv Nietsch <nietsch@aoemedia.de>

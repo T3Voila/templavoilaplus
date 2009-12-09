@@ -60,7 +60,7 @@ class tx_templavoila_cm1_eTypes {
 			// Traverse array
 		foreach($elArray as $key => $value)	{      
 				// this MUST not ever enter the XMLs (it will break TV)
-			if ($elArray[$key]['type'] == 'section') {
+			if ($elArray[$key]['type'] == 'section' || $elArray[$key]['section']) {
 				$elArray[$key]['type'] = 'array';
 				$elArray[$key]['section'] = '1';
 			} else {
