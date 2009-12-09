@@ -14,6 +14,7 @@
 			<label index="tx_templavoila_tmplobj.title">Title:</label>
 			<label index="tx_templavoila_tmplobj.datastructure">Data Structure:</label>
 			<label index="tx_templavoila_tmplobj.fileref">File reference:</label>
+			<label index="tx_templavoila_tmplobj.belayout">BELayout Template File:</label>
 			<label index="tx_templavoila_tmplobj.previewicon">Attach preview icon (gif or png in 1:1 size):</label>
 			<label index="tx_templavoila_tmplobj.description">Description of the template:</label>
 			<label index="tx_templavoila_tmplobj.ds_createnew">Create new data structure!</label>

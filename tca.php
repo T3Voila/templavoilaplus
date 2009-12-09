@@ -97,6 +97,30 @@ $TCA['tx_templavoila_tmplobj'] = Array (
 				'softref' => 'typolink'
 			)
 		),
+		'belayout' => Array (
+			'exclude' => 1,
+			'label' => 'LLL:EXT:templavoila/locallang_db.xml:tx_templavoila_tmplobj.belayout',
+			'config' => Array (
+				'type' => 'input',
+				'size' => '48',
+				'wizards' => Array(
+					'_PADDING' => 2,
+					'link' => Array(
+						'type' => 'popup',
+						'title' => 'Link',
+						'icon' => 'link_popup.gif',
+						'script' => 'browse_links.php?mode=wizard&amp;act=file',
+						'params' => array(
+							'blindLinkOptions' => 'page,folder,mail,spec,url',
+							'allowedExtensions' => $TYPO3_CONF_VARS['SYS']['textfile_ext'],
+						),
+						'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1'
+					),
+				),
+				'eval' => 'nospace',
+				'softref' => 'typolink'
+			)
+		),
 		'previewicon' => Array(
 			'label' => 'LLL:EXT:templavoila/locallang_db.xml:tx_templavoila_tmplobj.previewicon',
 			'displayCond' => 'REC:NEW:false',
@@ -160,8 +184,8 @@ $TCA['tx_templavoila_tmplobj'] = Array (
 		),
 	),
 	'types' => Array (
-		'0' => Array('showitem' => 'title;;;;2-2-2, parent, fileref, datastructure;;;;3-3-3, rendertype_ref, previewicon, description, localprocessing;;;;1-1-1'),
-		'1' => Array('showitem' => 'title;;;;2-2-2, parent, fileref, sys_language_uid;;;;3-3-3, rendertype,localprocessing;;;;1-1-1')
+		'0' => Array('showitem' => 'title;;;;2-2-2, parent, fileref, belayout, datastructure;;;;3-3-3, rendertype_ref, previewicon, description, localprocessing;;;;1-1-1'),
+		'1' => Array('showitem' => 'title;;;;2-2-2, parent, fileref, belayout, sys_language_uid;;;;3-3-3, rendertype,localprocessing;;;;1-1-1')
 	)
 );
 
@@ -219,9 +243,33 @@ $TCA['tx_templavoila_datastructure'] = Array (
 				'minitems' => '0'
 			)
 		),
+		'belayout' => Array (
+			'exclude' => 1,
+			'label' => 'LLL:EXT:templavoila/locallang_db.xml:tx_templavoila_tmplobj.belayout',
+			'config' => Array (
+				'type' => 'input',
+				'size' => '48',
+				'wizards' => Array(
+					'_PADDING' => 2,
+					'link' => Array(
+						'type' => 'popup',
+						'title' => 'Link',
+						'icon' => 'link_popup.gif',
+						'script' => 'browse_links.php?mode=wizard&amp;act=file',
+						'params' => array(
+							'blindLinkOptions' => 'page,folder,mail,spec,url',
+							'allowedExtensions' => $TYPO3_CONF_VARS['SYS']['textfile_ext'],
+						),
+						'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1'
+					),
+				),
+				'eval' => 'nospace',
+				'softref' => 'typolink'
+			)
+		),
 	),
 	'types' => Array (
-		'0' => Array('showitem' => 'title;;;;2-2-2, scope, previewicon, dataprot;;;;3-3-3')
+		'0' => Array('showitem' => 'title;;;;2-2-2, scope, previewicon, belayout, dataprot;;;;3-3-3')
 	)
 );
 
