@@ -33,6 +33,7 @@ CREATE TABLE tx_templavoila_tmplobj (
 	rendertype_ref int(11) unsigned DEFAULT '0' NOT NULL,
 	localprocessing text,
 	fileref_md5 varchar(32) DEFAULT '' NOT NULL,
+	belayout tinytext,
 
 	PRIMARY KEY (uid),
 	KEY t3ver_oid (t3ver_oid,t3ver_wsid),
@@ -65,7 +66,8 @@ CREATE TABLE tx_templavoila_datastructure (
 	dataprot mediumtext,
 	scope tinyint(4) unsigned DEFAULT '0' NOT NULL,
 	previewicon tinytext,
-
+	belayout tinytext,
+	
 	PRIMARY KEY (uid),
 	KEY t3ver_oid (t3ver_oid,t3ver_wsid),
 	KEY parent (pid)

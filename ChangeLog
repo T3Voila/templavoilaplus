@@ -1,3 +1,7 @@
+2009-12-09  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug: #12973: Allow beLayout template file for TO and DS
+
 2009-12-04  Tolleiv Nietsch <nietsch@aoemedia.de>
 
 	* Fixed bug: #12916: Field name is not visible in BE module with detail view (thanks to Francois Suter)

@@ -845,6 +845,8 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		$beTemplate = '';
 		$flagRenderBeLayout = false;
 
+
+
 			// Define l/v keys for current language:
 		$langChildren = intval($elementContentTreeArr['ds_meta']['langChildren']);
 		$langDisable = intval($elementContentTreeArr['ds_meta']['langDisable']);
@@ -859,7 +861,20 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		$headerCells = array();
 
 				// gets the layout
+			// deprecated, use TO or DS record fields instead
 		$beTemplate = $elementContentTreeArr['ds_meta']['beLayout'];
+
+			// get used TO
+		$to = $this->apiObj->getContentTree_fetchPageTemplateObject($this->rootElementRecord);
+		if ($to['belayout']) {
+			$beTemplate = t3lib_div::getURL(PATH_site . $to['belayout']);
+		} else {
+				// when TO doesn't have the beLayout look in DS record
+			$dsBeLayout = t3lib_BEfunc::getRecord('tx_templavoila_datastructure', $to['datastructure'], 'belayout');
+			if ($dsBeLayout['belayout']) {
+				$beTemplate = t3lib_div::getURL(PATH_site . $dsBeLayout['belayout']);
+			}
+		}
 
 				// no layout, no special rendering
 		$flagRenderBeLayout = $beTemplate? TRUE : FALSE;
