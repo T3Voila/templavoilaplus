@@ -1073,7 +1073,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 						}
 					} else if ($TCEformsConfiguration['type'] != '') {
 						// Render for everything else:
-						$previewContent .= '<strong>'.$TCEformsLabel.'</strong> '. (!$fieldValue ? '' : $this->link_edit(htmlspecialchars(t3lib_div::fixed_lgd_cs(strip_tags($fieldValue),200)), 'tt_content', $previewData['fullRow']['uid'])).'<br />';
+						$previewContent .= '<strong>'.$TCEformsLabel.'</strong> '. (!$fieldValue ? '' : $this->link_edit(htmlspecialchars(t3lib_div::fixed_lgd_cs(strip_tags($fieldValue),200)), $elData['table'], $previewData['fullRow']['uid'])).'<br />';
 					}
 				}
 			}
