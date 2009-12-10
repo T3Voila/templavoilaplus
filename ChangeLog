@@ -1,5 +1,6 @@
 2009-12-10  Tolleiv Nietsch <nietsch@aoemedia.de>
 
+	* Fixed bug: #11146: Page Wizard only looks for UserTSConfig, not for PageTSConfig
 	* Fixed bug: #12989: Cleanup: cm1/styles.css holds lots of duplicate code
 
 2009-12-09  Steffen Kamper  <info@sk-typo3.de>
