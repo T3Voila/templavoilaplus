@@ -216,12 +216,8 @@ class tx_templavoila_api {
 		$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 		/* @var $tce t3lib_TCEmain */
 
-		// set default TCA values specific for the user
-		$TCAdefaultOverride = (array)$GLOBALS['BE_USER']->getTSConfigProp('TCAdefaults');
-		$pageTS = t3lib_BEfunc::getPagesTSconfig($newRecordPid, true);
-		if (isset($pageTS['TCAdefaults.'])) {
-			$TCAdefaultOverride = array_merge($TCAdefaultOverride, $pageTS['TCAdefaults.']);
-		}
+			// set default TCA values specific for the page and user
+		$TCAdefaultOverride = t3lib_BEfunc::getModTSconfig($positionPid , 'TCAdefaults');
 		if (is_array($TCAdefaultOverride))	{
 			$tce->setDefaultsFromUserTS($TCAdefaultOverride);
 		}
