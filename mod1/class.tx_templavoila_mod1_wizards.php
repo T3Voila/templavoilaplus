@@ -384,8 +384,9 @@ class tx_templavoila_mod1_wizards {
 
 		$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 
-			// set default TCA values specific for the user
-		$TCAdefaultOverride = $GLOBALS['BE_USER']->getTSConfigProp('TCAdefaults');
+			// set default TCA values specific for the page and user
+		$TCAdefaultOverride = t3lib_BEfunc::getModTSconfig($positionPid , 'TCAdefaults'); 
+
 		if (is_array($TCAdefaultOverride))	{
 			$tce->setDefaultsFromUserTS($TCAdefaultOverride);
 		}
