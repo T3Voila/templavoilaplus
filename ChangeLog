@@ -1,5 +1,6 @@
 2009-12-10  Tolleiv Nietsch <nietsch@aoemedia.de>
 
+	* Fixed bug: #8762: Links to edit page content in BE lead to tt_content elements instead of page elements (Thanks to Simon Tuck)
 	* Fixed bug: #11146: Page Wizard only looks for UserTSConfig, not for PageTSConfig
 
 2009-12-09  Steffen Kamper  <info@sk-typo3.de>
