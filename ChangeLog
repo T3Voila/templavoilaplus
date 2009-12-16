@@ -1,5 +1,6 @@
 2009-12-16  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug: #9980: Configurable eTypes for creating fields
 	* Fixed bug: #4200: Shortcut page must show content when kb_tv_cont_slide in used
 
 2009-12-10  Tolleiv Nietsch <nietsch@aoemedia.de>

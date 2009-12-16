@@ -94,10 +94,14 @@ class tx_templavoila_cm1_dsEdit {
 				$this->pObj->eTypes->substEtypeWithRealStuff($real);
 
 				/* ... */
-				if (($insertDataArray['type'] == 'array') &&
-					($insertDataArray['section']))
+				if ($insertDataArray['type'] == 'array' && 	$insertDataArray['section']) {
 					$insertDataArray['type'] = 'section';
+				}
 
+				$eTypes = $this->pObj->eTypes->defaultEtypes();
+				$eTypes_formFields = t3lib_div::trimExplode(',', $eTypes['defaultTypes_formFields']);
+				$eTypes_typoscriptElements = t3lib_div::trimExplode(',', $eTypes['defaultTypes_typoscriptElements']);
+				$eTypes_misc = t3lib_div::trimExplode(',', $eTypes['defaultTypes_misc']);
 
 					// Create form:
 				/* The basic XML-structure of an tx_templavoila-entry is:
@@ -117,10 +121,10 @@ class tx_templavoila_cm1_dsEdit {
 					<dd><input type="text" size="80" name="' . $formFieldName . '[tx_templavoila][title]" value="' . htmlspecialchars($insertDataArray['tx_templavoila']['title']) . '" /></dd>
 
 					<dt><label>' . $GLOBALS['LANG']->getLL('renderDSO_mappingInstructions') . ':</label></dt>
-					<dd><input type="text" size="80" name="' . $formFieldName . '[tx_templavoila][description]" value="' . htmlspecialchars($insertDataArray['tx_templavoila']['description']) . '" /></dd>
+					<dd><input type="text" size="80" name="' . $formFieldName . '[tx_templavoila][description]" value="' . htmlspecialchars($insertDataArray['tx_templavoila']['description']) . '" /></dd>';
 
-					' . (($insertDataArray['type'] != 'array') &&
-					($insertDataArray['type'] != 'section') ? '
+					if ($insertDataArray['type'] != 'array' && $insertDataArray['type'] != 'section') {
+						$form .= '
 					<!-- non-array options ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 					<dt><label>' . $GLOBALS['LANG']->getLL('mapSampleData') . ':</label></dt>
 					<dd><textarea cols="80" rows="5" name="' . $formFieldName . '[tx_templavoila][sample_data][]">' . htmlspecialchars($insertDataArray['tx_templavoila']['sample_data'][0]) . '</textarea>
@@ -128,45 +132,38 @@ class tx_templavoila_cm1_dsEdit {
 
 					<dt><label>' . $GLOBALS['LANG']->getLL('mapElementPreset') . ':</label></dt>
 					<dd><select name="' . $formFieldName . '[tx_templavoila][eType]">
-						<optgroup class="c-divider" label="' . $GLOBALS['LANG']->getLL('mapPresetGroups_tceFields') . '">
-							<option value="input"' . ($insertDataArray['tx_templavoila']['eType']=='input' ? ' selected="selected"' : '') . '>' . $GLOBALS['LANG']->getLL('mapPresets_plainInput') . '</option>
-							<option value="input_h"' . ($insertDataArray['tx_templavoila']['eType']=='input_h' ? ' selected="selected"' : '') . '>' . $GLOBALS['LANG']->getLL('mapPresets_headerField') . '</option>
-							<option value="input_g"' . ($insertDataArray['tx_templavoila']['eType']=='input_g' ? ' selected="selected"' : '') . '>' . $GLOBALS['LANG']->getLL('mapPresets_gHederField') . '</option>
-							<option value="text"' . ($insertDataArray['tx_templavoila']['eType']=='text' ? ' selected="selected"' : '') . '>' . $GLOBALS['LANG']->getLL('mapPresets_textarea') . '</option>
-							<option value="rte"' . ($insertDataArray['tx_templavoila']['eType']=='rte' ? ' selected="selected"' : '') . '>' . $GLOBALS['LANG']->getLL('mapPresets_rte') . '</option>
-							<option value="link"' . ($insertDataArray['tx_templavoila']['eType']=='link' ? ' selected="selected"' : '') . '>' . $GLOBALS['LANG']->getLL('mapPresets_linkField') . '</option>
-							<option value="int"' . ($insertDataArray['tx_templavoila']['eType']=='int' ? ' selected="selected"' : '') . '>' . $GLOBALS['LANG']->getLL('mapPresets_integer') . '</option>
-							<option value="image"' . ($insertDataArray['tx_templavoila']['eType']=='image' ? ' selected="selected"' : '') . '>' . $GLOBALS['LANG']->getLL('mapPresets_image') . '</option>
-							<option value="imagefixed"' . ($insertDataArray['tx_templavoila']['eType']=='imagefixed' ? ' selected="selected"' : '') . '>' . $GLOBALS['LANG']->getLL('mapPresets_imageFixed') . '</option>
-							<option value="select"' . ($insertDataArray['tx_templavoila']['eType']=='select' ? ' selected="selected"' : '') . '>' . $GLOBALS['LANG']->getLL('mapPresets_select') . '</option>
-							<option value="ce"'. ($insertDataArray['tx_templavoila']['eType']=='ce' ? ' selected="selected"' : '') . '>' . sprintf($GLOBALS['LANG']->getLL('mapPresets_ce'), $insertDataArray['tx_templavoila']['oldStyleColumnNumber'] ? $insertDataArray['tx_templavoila']['oldStyleColumnNumber'] : $GLOBALS['LANG']->getLL('toBeDefined')) . '</option>
+						<optgroup class="c-divider" label="' . $GLOBALS['LANG']->getLL('mapPresetGroups_tceFields') . '">';
+						foreach ($eTypes_formFields as $eType) {
+							$label = htmlspecialchars($eType == 'ce' ?
+									sprintf($eTypes['eType'][$eType]['label'], $insertDataArray['tx_templavoila']['oldStyleColumnNumber'] ? $insertDataArray['tx_templavoila']['oldStyleColumnNumber'] : $GLOBALS['LANG']->getLL('toBeDefined')) :
+									$eTypes['eType'][$eType]['label']);
+							$form .= chr(10) . '<option value="' . $eType . '"' . ($insertDataArray['tx_templavoila']['eType'] == $eType ? ' selected="selected"' : '') . '>' . $label . '</option>';
+						}
+						$form .= '
 						</optgroup>
-						<optgroup class="c-divider" label="' . $GLOBALS['LANG']->getLL('mapPresetGroups_ts') . '">
-							<option value="TypoScriptObject"'.($insertDataArray['tx_templavoila']['eType']=='TypoScriptObject' ? ' selected="selected"' : '').'>' . $GLOBALS['LANG']->getLL('mapPresets_TSobjectPath') . '</option>
-							<option value="none"'. ($insertDataArray['tx_templavoila']['eType']=='none' ? ' selected="selected"' : '') . '>' . $GLOBALS['LANG']->getLL('mapPresets_none') . '</option>
+						<optgroup class="c-divider" label="' . $GLOBALS['LANG']->getLL('mapPresetGroups_ts') . '">';
+						foreach ($eTypes_typoscriptElements as $eType) {
+							$form .= chr(10) . '<option value="' . $eType . '"' . ($insertDataArray['tx_templavoila']['eType'] == $eType ? ' selected="selected"' : '') . '>' . htmlspecialchars($eTypes['eType'][$eType]['label']) . '</option>';
+						}
+						$form .= '
 						</optgroup>
-						<optgroup class="c-divider" label="' . $GLOBALS['LANG']->getLL('mapPresetGroups_other') . '">
-							<option value="custom"'. ($insertDataArray['tx_templavoila']['eType']=='custom' ? ' selected="selected"' : '') . '>' . $GLOBALS['LANG']->getLL('mapPresets_customTCA') . '</option>
+						<optgroup class="c-divider" label="' . $GLOBALS['LANG']->getLL('mapPresetGroups_other') . '">';
+						foreach ($eTypes_misc as $eType) {
+							$form .= chr(10) . '<option value="' . $eType . '"' . ($insertDataArray['tx_templavoila']['eType'] == $eType ? ' selected="selected"' : '') . '>' . htmlspecialchars($eTypes['eType'][$eType]['label']) . '</option>';
+						}
+						$form .= '
 						</optgroup>
 					</select><input type="hidden"
 						name="'.$formFieldName.'[tx_templavoila][eType_before]"
-						value="'.$insertDataArray['tx_templavoila']['eType'].'" /></dd>
-					' :'').'
+						value="'.$insertDataArray['tx_templavoila']['eType'].'" /></dd>';
+					}
 
+					$form .= '
 					<dt><label>Mapping rules:</label></dt>
 					<dd><input type="text" size="80" name="'.$formFieldName.'[tx_templavoila][tags]" value="'.htmlspecialchars($insertDataArray['tx_templavoila']['tags']).'" /></dd>
 				</dl>';
 
-			/*	// The dam-tv-connector will substitute the text above, that's §$%*%&"$%, but well anyway, let's not break it
-				if (count($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['cm1']['eTypesExtraFormFields']) > 0) {
-				$form .= '
-						<optgroup class="c-divider" label="Extra Elements">';
-					foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['cm1']['eTypesExtraFormFields'] as $key => $value) {
-							<option value="'.$key.'"'.($insertDataArray['tx_templavoila']['eType']==$key ? ' selected="selected"' : '').'>'.$key.'</option>
-					}
-				$form .= '
-						</optgroup>';
-				}	*/
+
 
 				if (($insertDataArray['type'] != 'array') &&
 					($insertDataArray['type'] != 'section')) {
