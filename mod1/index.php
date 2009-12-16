@@ -152,6 +152,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	var $sortableContainers = array();				// Contains the containers for drag and drop
 	var $sortableItems = array();					// Registry for all id => flexPointer-Pairs
 
+	const DOKTYPE_NORMAL_EDIT = 1;					// With this doktype the normal Edit screen is rendered
 
 	/*******************************************
 	 *
@@ -442,8 +443,17 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 					// Initialize the special doktype class:
 				$specialDoktypesObj =& t3lib_div::getUserObj ('&tx_templavoila_mod1_specialdoktypes','');
 				$specialDoktypesObj->init($this);
+				$doktype = $this->rootElementRecord['doktype'];
 
-				$methodName = 'renderDoktype_'.$this->rootElementRecord['doktype'];
+					// if doktype is configured as editType render normal edit view
+				$docTypesToEdit = $this->modTSconfig['properties']['additionalDoktypesRenderToEditView'];
+				if ($docTypesToEdit && t3lib_div::inList($docTypesToEdit, $doktype)) {
+						//Make sure it is editable by page module
+					$doktype = self::DOKTYPE_NORMAL_EDIT;
+    			}
+
+
+				$methodName = 'renderDoktype_' . $doktype;
 				if (method_exists($specialDoktypesObj, $methodName)) {
 					$result = $specialDoktypesObj->$methodName($this->rootElementRecord);
 					if ($result !== FALSE) {
