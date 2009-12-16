@@ -1,3 +1,7 @@
+2009-12-16  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug: #4200: Shortcut page must show content when kb_tv_cont_slide in used
+
 2009-12-10  Tolleiv Nietsch <nietsch@aoemedia.de>
 
 	* Fixed bug: #8762: Links to edit page content in BE lead to tt_content elements instead of page elements (Thanks to Simon Tuck)
