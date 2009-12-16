@@ -16,6 +16,7 @@
 			<label index="titleXmlConfiguration">XML configuration</label>
 			<label index="titleLoadDSXml">Load DS XML</label>
 			<label index="mappingTitle">Template Mapping</label>
+			<label index="mappingNEW">[NEW]</label>
 			
 			<label index="mappingHeadParts">Adding parts from HTML header</label>
 			<label index="mappingBodyParts">Data Structure to be mapped to HTML template</label>
@@ -43,6 +44,7 @@
 			<label index="buttonClearAll">Clear all</label>
 			<label index="buttonPreview">Preview</label>
 			<label index="buttonSave">Save</label>
+			<label index="buttonSaveExit">Save and Exit</label>
 			<label index="buttonSaveAs">Save as</label>
 			<label index="buttonLoad">Load</label>
 			<label index="buttonRefresh">Refresh</label>
@@ -53,6 +55,8 @@
 			<label index="buttonTitle_showXML">Preview the currently build Data Structure as XML</label>
 			<label index="buttonTitle_clearAll">Clear all Data Structure and Mapping information</label>
 			<label index="buttonTitle_preview">Preview the mapping to the template</label>
+			<label index="buttonTitle_save">Save to current TO and DS</label>
+			<label index="buttonTitle_saveExit">Save to current TO and DS and return to Overview</label>
 			<label index="buttonTitle_saveAs">Go to save menu</label>
 			<label index="buttonTitle_load">Go to load menu</label>
 			<label index="buttonTitle_refresh">Redraw screen</label>
@@ -155,6 +159,7 @@
 			<label index="mapPresets_integer">Integer value</label>
 			<label index="mapPresets_imageFixed">Image field, fixed W+H</label>
 			<label index="mapPresets_select">Selector box</label>
+			<label index="mapPresets_check">Check box</label>
 			<label index="mapPresets_image">Image field</label>
 			<label index="mapPresets_ce">Page-Content Elements [Pos.: %s]</label>
 			<label index="mapPresets_TSobjectPath">TypoScript Object Path</label>
