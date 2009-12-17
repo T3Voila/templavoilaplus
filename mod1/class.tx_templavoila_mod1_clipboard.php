@@ -164,9 +164,9 @@ class tx_templavoila_mod1_clipboard {
 		$linkRef = '<a class="tpm-ref" href="index.php?'.$this->pObj->link_getParameters().'&amp;CB[setCopyMode]=1&amp;CB[setFlexMode]=ref'.($clipActive_ref ? $removeElement : $setElementRef).'">'.$refIcon.'</a>';
 
 		$output =
-			(t3lib_div::inList($listOfButtons, 'copy') ? $linkCopy : '').
-			(t3lib_div::inList($listOfButtons, 'ref') ? $linkRef : '').
-			(t3lib_div::inList($listOfButtons, 'cut') ? $linkCut : '');
+			(t3lib_div::inList($listOfButtons, 'copy') && !in_array('copy', $this->pObj->blindIcons) ? $linkCopy : '').
+			(t3lib_div::inList($listOfButtons, 'ref') && !in_array('ref', $this->pObj->blindIcons) ? $linkRef : '').
+			(t3lib_div::inList($listOfButtons, 'cut') && !in_array('cut', $this->pObj->blindIcons) ? $linkCut : '');
 
 		return $output;
 	}
@@ -181,6 +181,10 @@ class tx_templavoila_mod1_clipboard {
 	 */
 	function element_getPasteButtons($destinationPointer) {
 		global $LANG, $BE_USER;
+
+		if (in_array('paste', $this->pObj->blindIcons)) {
+			return '';
+		}
 
 		$origDestinationPointer = $destinationPointer;
 		if (!$destinationPointer = $this->pObj->apiObj->flexform_getValidPointer($destinationPointer)) return '';
