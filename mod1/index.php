@@ -407,6 +407,24 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 							}
 
 							if (top.fsMod) top.fsMod.recentIds["web"] = '.intval($this->id).';
+
+							var browserPos = null;
+
+							function setFormValueOpenBrowser(mode,params) {	//
+								var url = "' . $BACK_PATH . 'browser.php?mode="+mode+"&bparams="+params;
+
+								browserWin = window.open(url,"Typo3WinBrowser - TemplaVoila Element Selector","height=350,width="+(mode=="db"?650:600)+",status=0,menubar=0,resizable=1,scrollbars=1");
+								browserWin.focus();
+							}
+							function setFormValueFromBrowseWin(fName,value,label,exclusiveValues){
+								if (value) {
+									var ret = value.split(\'_\');
+									var rid = ret.pop();
+									ret = ret.join(\'_\');
+									browserPos.href = browserPos.rel.replace(\'' . rawurlencode('###') . '\', ret+\':\'+rid);
+									jumpToUrl(browserPos.href);
+								}
+							}
 						'
 
 			);
@@ -917,11 +935,18 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				$canCreateNew = $GLOBALS['BE_USER']->isPSet($this->calcPerms, 'pages', 'new');
 				$canEditContent = $GLOBALS['BE_USER']->isPSet($this->calcPerms, 'pages', 'editcontent');
 
-				if (!$this->translatorMode && $canCreateNew)	{
+				if (!$this->translatorMode)	{
 
-						// "New" and "Paste" icon:
+						// "New" icon:
+					if ($canCreateNew) {
 					$newIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/new_el.gif','').' style="text-align: center; vertical-align: middle;" vspace="5" hspace="1" border="0" title="'.$LANG->getLL ('createnewrecord').'" alt="" />';
 					$cellContent .= $this->link_new($newIcon, $subElementPointer);
+					}
+						// "Browse Record" icon
+					$newIcon = '<img class="browse"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/insert3.gif','').' style="text-align: center; vertical-align: middle;" vspace="5" hspace="1" border="0" title="'.$LANG->sL('LLL:EXT:lang/locallang_core.xml:labels.browse_db').'" alt="" />';
+					$cellContent .= $this->link_browse($newIcon, $subElementPointer);
+
+						// "Paste" icon
 					$cellContent .= '<span class="sortablePaste">' . $this->clipboardObj->element_getPasteButtons ($subElementPointer) . '</span>';
 				}
 
@@ -953,11 +978,17 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 							$cellContent .= $this->render_framework_allSheets($subElementArr, $languageKey, $subElementPointer, $elementContentTreeArr['ds_meta']);
 
-							if (!$this->translatorMode && $canCreateNew) {
-									// "New" and "Paste" icon:
+							if (!$this->translatorMode) {
+									// "New" icon:
+								if ($canCreateNew) {
 								$newIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/new_el.gif','').' style="text-align: center; vertical-align: middle;" vspace="5" hspace="1" border="0" title="'.$LANG->getLL ('createnewrecord').'" alt="" />';
 								$cellContent .= $this->link_new($newIcon, $subElementPointer);
+								}
+									// "Browse Record" icon
+								$newIcon = '<img class="browse"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/insert3.gif','').' style="text-align: center; vertical-align: middle;" vspace="5" hspace="1" border="0" title="'.$LANG->sL('LLL:EXT:lang/locallang_core.xml:labels.browse_db').'" alt="" />';
+								$cellContent .= $this->link_browse($newIcon, $subElementPointer);
 
+									// "Paste" icon
 								$cellContent .= '<span class="sortablePaste">' . $this->clipboardObj->element_getPasteButtons ($subElementPointer) . '</span></div>';
 							}
 
@@ -1819,6 +1850,30 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		}
 		return '';
 	}
+
+	/**
+	 * Returns an HTML link for browse for record
+	 *
+	 * @param	string		$label: The label (or image)
+	 * @param	array		$parentPointer: Flexform pointer defining the parent element of the new record
+	 * @return	string		HTML anchor tag containing the label and the correct link
+	 * @access protected
+	 */
+	function link_browse($label, $parentPointer)	{
+
+		$parameters =
+			$this->link_getParameters().
+			'&pasteRecord=ref' .
+			'&source=' . rawurlencode('###').
+			'&destination=' . rawurlencode($this->apiObj->flexform_getStringFromPointer($parentPointer));
+		$onClick =
+			'browserPos = this;' .
+			'setFormValueOpenBrowser(\'db\',\'browser[communication]|||tt_content\');'.
+			'return false;';
+
+		return '<a href="#" rel="index.php?' . $parameters . '" onclick="' . htmlspecialchars($onClick) . '">' . $label . '</a>';
+	}
+
 	/**
 	 * Returns an HTML link for creating a new record
 	 *
