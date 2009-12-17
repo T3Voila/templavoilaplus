@@ -156,12 +156,12 @@ class tx_templavoila_mod1_clipboard {
 		$refIcon = '<img'.t3lib_iconWorks::skinImg($this->pObj->doc->backPath,t3lib_extMgm::extRelPath('templavoila').'mod1/clip_ref'.($clipActive_ref ? '_h':'').'.gif','').' title="'.$LANG->getLL ('createreference').'" border="0" alt="" />';
 
 		$removeElement = '&amp;CB[removeAll]=normal';
-		$setElement = '&amp;CB[el]['.rawurlencode('tt_content|'.$elementRecord['uid']).']='.rawurlencode($this->pObj->apiObj->flexform_getStringFromPointer($elementPointer));
+		$setElement = '&amp;CB[el]['.rawurlencode('tt_content|'.$elementRecord['uid']).']=1';
 		$setElementRef = '&amp;CB[el]['.rawurlencode('tt_content|'.$elementRecord['uid']).']=1';
 
-		$linkCopy = '<a href="index.php?'.$this->pObj->link_getParameters().'&amp;CB[setCopyMode]=1&amp;CB[setFlexMode]=copy'.($clipActive_copy ? $removeElement : $setElement).'">'.$copyIcon.'</a>';
-		$linkCut = '<a href="index.php?'.$this->pObj->link_getParameters().'&amp;CB[setCopyMode]=0&amp;CB[setFlexMode]=cut'.($clipActive_cut ? $removeElement : $setElement).'">'.$cutIcon.'</a>';
-		$linkRef = '<a href="index.php?'.$this->pObj->link_getParameters().'&amp;CB[setCopyMode]=1&amp;CB[setFlexMode]=ref'.($clipActive_ref ? $removeElement : $setElementRef).'">'.$refIcon.'</a>';
+		$linkCopy = '<a class="tpm-copy" href="index.php?'.$this->pObj->link_getParameters().'&amp;CB[setCopyMode]=1&amp;CB[setFlexMode]=copy'.($clipActive_copy ? $removeElement : $setElement).'">'.$copyIcon.'</a>';
+		$linkCut = '<a class="tpm-cut" href="index.php?'.$this->pObj->link_getParameters().'&amp;CB[setCopyMode]=0&amp;CB[setFlexMode]=cut'.($clipActive_cut ? $removeElement : $setElement).'">'.$cutIcon.'</a>';
+		$linkRef = '<a class="tpm-ref" href="index.php?'.$this->pObj->link_getParameters().'&amp;CB[setCopyMode]=1&amp;CB[setFlexMode]=ref'.($clipActive_ref ? $removeElement : $setElementRef).'">'.$refIcon.'</a>';
 
 		$output =
 			(t3lib_div::inList($listOfButtons, 'copy') ? $linkCopy : '').
@@ -227,10 +227,10 @@ class tx_templavoila_mod1_clipboard {
 
 			// FCEs with sub elements have two different paste icons, normal elements only one:
 		if ($pasteMode == 'copy' && $clipboardElementHasSubElements) {
-			$output  = '<a href="index.php?'.$this->pObj->link_getParameters().'&amp;CB[removeAll]=normal&amp;pasteRecord=copy&amp;source='.rawurlencode($sourcePointerString).'&amp;destination='.rawurlencode($destinationPointerString).'">'.$pasteAfterIcon.'</a>';
-			$output .= '<a href="index.php?'.$this->pObj->link_getParameters().'&amp;CB[removeAll]=normal&amp;pasteRecord=copyref&amp;source='.rawurlencode($sourcePointerString).'&amp;destination='.rawurlencode($destinationPointerString).'">'.$pasteSubRefIcon.'</a>';
+			$output  = '<a class="tpm-pasteAfter" href="index.php?'.$this->pObj->link_getParameters().'&amp;CB[removeAll]=normal&amp;pasteRecord=copy&amp;source='.rawurlencode($sourcePointerString).'&amp;destination='.rawurlencode($destinationPointerString).'">'.$pasteAfterIcon.'</a>';
+			$output .= '<a class="tpm-pasteSubRef" href="index.php?'.$this->pObj->link_getParameters().'&amp;CB[removeAll]=normal&amp;pasteRecord=copyref&amp;source='.rawurlencode($sourcePointerString).'&amp;destination='.rawurlencode($destinationPointerString).'">'.$pasteSubRefIcon.'</a>';
 		} else {
-			$output = '<a href="index.php?'.$this->pObj->link_getParameters().'&amp;CB[removeAll]=normal&amp;pasteRecord='.$pasteMode.'&amp;source='.rawurlencode($sourcePointerString).'&amp;destination='.rawurlencode($destinationPointerString).'">'.$pasteAfterIcon.'</a>';
+			$output = '<a class="tpm-pasteAfter" href="index.php?'.$this->pObj->link_getParameters().'&amp;CB[removeAll]=normal&amp;pasteRecord='.$pasteMode.'&amp;source='.rawurlencode($sourcePointerString).'&amp;destination='.rawurlencode($destinationPointerString).'">'.$pasteAfterIcon.'</a>';
 		}
 
 		return $output;
@@ -354,11 +354,11 @@ class tx_templavoila_mod1_clipboard {
 		}
 
 		if (count($infoData))	{
-			return '<a href="#" onclick="'.htmlspecialchars('top.launchView(\'tt_content\', \''.$uid.'\'); return false;').'" title="'.htmlspecialchars(t3lib_div::fixed_lgd_cs(implode(' / ',$infoData),100)).'">Ref: '.count($infoData).'</a>';
+			return '<a class="tpm-countRef" href="#" onclick="'.htmlspecialchars('top.launchView(\'tt_content\', \''.$uid.'\'); return false;').'" title="'.htmlspecialchars(t3lib_div::fixed_lgd_cs(implode(' / ',$infoData),100)).'">Ref: '.count($infoData).'</a>';
 		} elseif (0===$BE_USER->workspace) {
 			$this->deleteUids[] = $uid;
 			$params = '&cmd[tt_content]['.$uid.'][delete]=1';
-			return '<a href="#" onclick="'.htmlspecialchars('jumpToUrl(\''.$this->doc->issueCommand($params,'').'\');').'">'.
+			return '<a class="tpm-countRef" href="#" onclick="'.htmlspecialchars('jumpToUrl(\''.$this->doc->issueCommand($params,'').'\');').'">'.
 					'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/garbage.gif','width="11" height="12"').' title="'.$LANG->getLL('renderreferencecount_delete',1).'" alt="" />'.
 					'</a>';
 		} else {
