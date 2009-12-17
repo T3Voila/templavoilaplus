@@ -1,3 +1,7 @@
+2009-12-17 Tolleiv Nietsch <nietsch@aoemedia.de>
+
+	* Fixed bug: #13054: Drag&Drop code is hard to maintain, works only for 4.3
+
 2009-12-16  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug: #9980: Configurable eTypes for creating fields

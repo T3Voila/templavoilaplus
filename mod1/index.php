@@ -152,6 +152,8 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	var $sortableContainers = array();				// Contains the containers for drag and drop
 	var $sortableItems = array();					// Registry for all id => flexPointer-Pairs
 
+	protected $debug = FALSE;
+
 	const DOKTYPE_NORMAL_EDIT = 1;					// With this doktype the normal Edit screen is rendered
 
 	/*******************************************
@@ -169,10 +171,17 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	function init()    {
 		parent::init();
 
+		$this->modTSconfig = t3lib_BEfunc::getModTSconfig($this->id, 'mod.' . $this->MCONF['name']);
+		$this->modSharedTSconfig = t3lib_BEfunc::getModTSconfig($this->id, 'mod.SHARED');
 		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::_GP('SET'), $this->MCONF['name']);
 
 		$this->altRoot = t3lib_div::_GP('altRoot');
 		$this->versionId = t3lib_div::_GP('versionId');
+
+			// enable debug for development
+		if ($this->modTSconfig['properties']['debug']) {
+			$this->debug = TRUE;
+		}
 
 		$this->addToRecentElements();
 
@@ -253,11 +262,11 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		}
 
 			// page/be_user TSconfig settings and blinding of menu-items
-		$this->modTSconfig = t3lib_BEfunc::getModTSconfig($this->id,'mod.'.$this->MCONF['name']);
 		$this->MOD_MENU['view'] = t3lib_BEfunc::unsetMenuItems($this->modTSconfig['properties'],$this->MOD_MENU['view'],'menu.function');
 
-		if (!isset($this->modTSconfig['properties']['sideBarEnable'])) $this->modTSconfig['properties']['sideBarEnable'] = 1;
-		$this->modSharedTSconfig = t3lib_BEfunc::getModTSconfig($this->id, 'mod.SHARED');
+		if (!isset($this->modTSconfig['properties']['sideBarEnable'])) {
+			$this->modTSconfig['properties']['sideBarEnable'] = 1;
+		}
 
 			// CLEANSE SETTINGS
 		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::_GP('SET'), $this->MCONF['name']);
@@ -407,7 +416,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				//TODO: switch to $this->doc->JScodeLibArray for preventing double inclusion
 			#$this->doc->JScode .= '<script src="' . $this->doc->backPath . 'contrib/prototype/prototype.js" type="text/javascript"></script>';
 			$this->doc->JScode .= '<script src="' . $this->doc->backPath . 'contrib/scriptaculous/scriptaculous.js?load=effects,dragdrop" type="text/javascript"></script>';
-			$this->doc->JScode .= '<script src="' . t3lib_div::locationHeaderUrl(t3lib_div::resolveBackPath($this->doc->backPath . '../' . t3lib_extMgm::siteRelPath('templavoila') . 'mod1/dragdrop-min.js')) . '" type="text/javascript"></script>';
+			$this->doc->JScode .= '<script src="' . t3lib_div::locationHeaderUrl(t3lib_div::resolveBackPath($this->doc->backPath . '../' . t3lib_extMgm::siteRelPath('templavoila') . 'mod1/dragdrop' . ($this->debug ? '' : '-min') . '.js')) . '" type="text/javascript"></script>';
 
 				// Set up JS for dynamic tab menu and side bar
 			$this->doc->JScode .= $this->doc->getDynTabMenuJScode();
@@ -497,25 +506,25 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 				// Create sortables
 				if (is_array($this->sortableContainers)) {
-
+					$script = '';
 					if (t3lib_div::compat_version ('4.3')) {
 						$items_json = json_encode ($this->sortableItems);
 					} else {
 						$items_json = t3lib_div::array2json ($this->sortableItems);
 					}
 
-					$this->content .= '<script type="text/javascript">' . chr(10) .
-						'//<![CDATA[' . chr(10) .
+					$script .=
 						'var sortable_items = ' . $items_json . ';' .
 						'var sortable_removeHidden = ' . ($this->MOD_SETTINGS['tt_content_showHidden'] ? 'false;' : 'true;') .
 						'var sortable_linkParameters = \'' . $this->link_getParameters() . '\';';
 
-					$containment = '["' . implode('","', $this->sortableContainers) . '"]';
-					$this->content .= 'Event.observe(window,"load",function(){';
+					$containment = '[' . t3lib_div::csvValues($this->sortableContainers, ',', '"') . ']';
+					$script .= 'Event.observe(window,"load",function(){';
 					foreach ($this->sortableContainers as $s) {
-						$this->content .= 'tv_createSortable(\'' . $s . '\',' . $containment . ');';
+						$script .= 'tv_createSortable(\'' . $s . '\',' . $containment . ');';
 					}
-					$this->content .= '});' . chr(10) . '//]]>' . chr(10) . '</script>';
+					$script .= '});';
+					$this->content .= t3lib_div::wrapJS($script);
 				}
 			}
 
@@ -1287,7 +1296,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 								$linkLabel = $LANG->getLL('createcopyfortranslation',1).' ('.htmlspecialchars($sLInfo['title']).')';
 								$localizeIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/clip_copy.gif','width="12" height="12"').' class="bottom" title="'.$linkLabel.'" alt="" />';
 
-								$l10nInfo = '<a href="#" onclick="'.htmlspecialchars($onClick).'">'.$localizeIcon.'</a>';
+								$l10nInfo = '<a class="tpm-clipCopyTranslation" href="#" onclick="'.htmlspecialchars($onClick).'">'.$localizeIcon.'</a>';
 								$l10nInfo .= ' <em><a href="#" onclick="'.htmlspecialchars($onClick).'">'.$linkLabel.'</a></em>';
 								$flagLink_begin = '<a href="#" onclick="'.htmlspecialchars($onClick).'">';
 								$flagLink_end = '</a>';
@@ -1734,7 +1743,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 						return '<a href="index.php?'.$this->link_getParameters().'&amp;editPageLanguageOverlay='.$this->currentLanguageUid.'">'.$label.'</a>';
 					} else {
 						$onClick = t3lib_BEfunc::editOnClick('&edit['.$table.']['.$uid.']=edit', $this->doc->backPath);
-						return '<a style="text-decoration: none;" href="#" onclick="'.htmlspecialchars($onClick).'">'.$label.'</a>';
+						return '<a class="tpm-edit" style="text-decoration: none;" href="#" onclick="'.htmlspecialchars($onClick).'">'.$label.'</a>';
 					}
 				} else {
 					return $label;
@@ -1798,9 +1807,9 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 						 * can safely use '#'
 						 */
 						if ($hidden)
-							return '<a href="#" onclick="sortable_unhideRecord(this, \'' . $GLOBALS['SOBE']->doc->issueCommand($params, -1) . '\');">' . $label . '</a>';
+							return '<a href="#" class="tpm-hide" onclick="sortable_unhideRecord(this, \'' . $GLOBALS['SOBE']->doc->issueCommand($params, -1) . '\');">' . $label . '</a>';
 						else
-							return '<a href="#" onclick="sortable_hideRecord(this, \'' . $GLOBALS['SOBE']->doc->issueCommand($params, -1) . '\');">' . $label . '</a>';
+							return '<a href="#" class="tpm-hide" onclick="sortable_hideRecord(this, \'' . $GLOBALS['SOBE']->doc->issueCommand($params, -1) . '\');">' . $label . '</a>';
 					}
 				} else {
 					return $label;
@@ -1821,7 +1830,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		$parameters =
 			$this->link_getParameters().
 			'&amp;parentRecord='.rawurlencode($this->apiObj->flexform_getStringFromPointer($parentPointer));
-		return '<a href="'.'db_new_content_el.php?'.$parameters.'">'.$label.'</a>';
+		return '<a class="tpm-new" href="'.'db_new_content_el.php?'.$parameters.'">'.$label.'</a>';
 	}
 
 	/**
@@ -1842,9 +1851,9 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 		if ($realDelete)	{
 			$LLlabel = $foreignReferences ? 'deleteRecordWithReferencesMsg' : 'deleteRecordMsg';
-			return '<a href="index.php?' . $this->link_getParameters() . '&amp;deleteRecord=' . $encodedUnlinkPointerString . '" onclick="' . htmlspecialchars('return confirm(' . $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL($LLlabel)) . ');') . '">' . $label . '</a>';
+			return '<a class="tpm-unlink" href="index.php?' . $this->link_getParameters() . '&amp;deleteRecord=' . $encodedUnlinkPointerString . '" onclick="' . htmlspecialchars('return confirm(' . $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL($LLlabel)) . ');') . '">' . $label . '</a>';
 		} else {
-			return '<a href="javascript:'.htmlspecialchars('if (confirm(' . $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL('unlinkRecordMsg')) . '))') . 'sortable_unlinkRecord(\'' . $encodedUnlinkPointerString . '\',\'' . $this->addSortableItem ($unlinkPointerString) . '\');">' . $label . '</a>';
+			return '<a class="tpm-unlink" href="javascript:'.htmlspecialchars('if (confirm(' . $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL('unlinkRecordMsg')) . '))') . 'sortable_unlinkRecord(\'' . $encodedUnlinkPointerString . '\',\'' . $this->addSortableItem ($unlinkPointerString) . '\');">' . $label . '</a>';
 		}
 	}
 
@@ -1859,7 +1868,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	function link_makeLocal($label, $makeLocalPointer)	{
 		global $LANG;
 
-		return '<a href="index.php?'.$this->link_getParameters().'&amp;makeLocalRecord='.rawurlencode($this->apiObj->flexform_getStringFromPointer($makeLocalPointer)).'" onclick="'.htmlspecialchars('return confirm('.$LANG->JScharCode($LANG->getLL('makeLocalMsg')).');').'">'.$label.'</a>';
+		return '<a class="tpm-makewLocal" href="index.php?'.$this->link_getParameters().'&amp;makeLocalRecord='.rawurlencode($this->apiObj->flexform_getStringFromPointer($makeLocalPointer)).'" onclick="'.htmlspecialchars('return confirm('.$LANG->JScharCode($LANG->getLL('makeLocalMsg')).');').'">'.$label.'</a>';
 	}
 
 	/**

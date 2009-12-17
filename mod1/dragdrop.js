@@ -41,39 +41,40 @@ function sortable_unlinkRecord(pointer, id) {
 }
 
 function sortable_updateItemButtons(el, position, pID) {
-	var p	= new Array();	var p1 = new Array();
-	var href = "";	var i=0;
+	var p = [], p1 = [];
 	var newPos = escape(pID + position);
-	var childs = el.childElements();
-	var buttons = childs[0].childElements()[0].childElements()[0].childElements()[1].childNodes;
-	for (i = 0; i < buttons.length ;i++) {
-		if (buttons[i].nodeType != 1) continue;
-		href = buttons[i].href;
-		//alert(href);
-		if (href.charAt(href.length - 1) == "#") continue;
-		if ((p = href.split("unlinkRecord")).length == 2) {
-			p2 = p[1].split("\',\'");
-			buttons[i].href = p[0] + "unlinkRecord(\'" + newPos + "\',\'" + p2[1];
-		} else if ((p = href.split("deleteRecord")).length == 2) {
-			buttons[i].href = p[0] + "deleteRecord=" + newPos;
-		} else if((p = href.split("CB[el][tt_content")).length == 2) {
-			p1 = p[1].split("=");
-			buttons[i].href = p[0] + "CB[el][tt_content" + p1[0]+ "="  + newPos;
-		} else if ((p = href.split("&parentRecord=")).length == 2) {
-			buttons[i].href = p[0] + "&parentRecord=" + newPos;
-		} else if ((p = href.split("&destination=")).length == 2) {
-			buttons[i].href = p[0] + "&destination=" + newPos;
+	el.childElements().each(function(node){
+		if (node.nodeName == 'A' && node.href) {
+			switch (node.className) {
+				case 'tpm-new':
+					node.href = node.href.replace(/&parentRecord=[^&]+/,"&parentRecord=" + newPos);
+					break;
+				case 'tpm-browse':
+					if (node.rel) {
+						node.rel = node.rel.replace(/&destination=[^&]+/,"&destination=" + newPos);
+					}
+					break;
+				case 'tpm-delete':
+					node.href = node.href.replace(/&deleteRecord=[^&]+/,"&deleteRecord=" + newPos);
+					break;
+				case 'tpm-unlink':
+					node.href = node.href.replace(/unlinkRecord\('[^']+'/,"unlinkRecord(\'" + newPos + "\'");
+					break;
+				case 'tpm-cut':
+				case 'tpm-copy':
+				case 'tpm-ref':
+					break;
+				case 'tpm-pasteAfter':
+				case 'tpm-pasteSubRef':
+					node.href = node.href.replace(/&destination=[^&]+/,"&destination=" + newPos);
+					break;
+			}
+		} else if(node.childElements()) {
+			node.childElements().each(function(node){
+				sortable_updateItemButtons(node, position, pID);
+			});
 		}
-	}
-
-	if ((p = childs[1].href.split("&parentRecord=")).length == 2)
-			childs[1].href = p[0] + "&parentRecord=" + newPos;
-
-	buttons = childs[2].childElements()[0];
-	//alert(buttons.nodeName);
-	if (buttons && (p = buttons.href.split("&destination=")).length == 2)
-			buttons.href = p[0] + "&destination=" + newPos;
-
+	});
 }
 
 function sortable_updatePasteButtons(oldPos, newPos) {
