@@ -1,3 +1,7 @@
+2009-12-17  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug: #13051: browse for records
+
 2009-12-17 Tolleiv Nietsch <nietsch@aoemedia.de>
 
 	* Fixed bug: #12949: A drag/drop cursor is shown on the TV Page object
