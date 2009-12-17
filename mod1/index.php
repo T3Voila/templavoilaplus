@@ -431,7 +431,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			// CSS for drag and drop
 			$this->doc->inDocStyles .= '
 				table {position:relative;}
-				.sortable_handle {cursor:move;}
+				.sortableItem .sortable_handle {cursor:move;}
 			';
 
 			if (t3lib_extMgm::isLoaded('t3skin')) {
@@ -705,7 +705,6 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 		$canEditPage = $GLOBALS['BE_USER']->isPSet($this->calcPerms, 'pages', 'edit');
 		$canEditContent = $GLOBALS['BE_USER']->isPSet($this->calcPerms, 'pages', 'editcontent');
-		$canCreateNew = $GLOBALS['BE_USER']->isPSet($this->calcPerms, 'pages', 'new');
 
 		// Prepare the record icon including a content sensitive menu link wrapped around it:
 		$recordIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,$contentTreeArr['el']['icon'],'').' style="text-align: center; vertical-align: middle;" width="18" height="16" border="0" title="'.htmlspecialchars('['.$contentTreeArr['el']['table'].':'.$contentTreeArr['el']['uid'].']').'" alt="" />';
@@ -814,8 +813,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		}
 
 			// Finally assemble the table:
-		$finalContent =
-			(!$this->translatorMode && $canCreateNew ? '<div class="sortableItem" id="' . $this->addSortableItem ($this->apiObj->flexform_getStringFromPointer ($parentPointer)) . '">' : '') . '
+		$finalContent = '
 			<table cellpadding="0" cellspacing="0" style="width: 100%; border: 1px solid black; margin-bottom:5px;">
 				<tr style="' . $elementTitlebarStyle . ';" class="sortable_handle">
 					<td style="vertical-align:top;">' .
@@ -948,6 +946,10 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 								// Modify the flexform pointer so it points to the position of the curren sub element:
 							$subElementPointer['position'] = $position;
+
+							if (!$this->translatorMode && $canCreateNew) {
+								$cellContent .= '<div class="sortableItem" id="' . $this->addSortableItem ($this->apiObj->flexform_getStringFromPointer ($subElementPointer)) . '">';
+							}
 
 							$cellContent .= $this->render_framework_allSheets($subElementArr, $languageKey, $subElementPointer, $elementContentTreeArr['ds_meta']);
 
