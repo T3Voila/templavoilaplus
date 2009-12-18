@@ -45,12 +45,12 @@
  *  236:     function printContent()
  *  246:     function linkParams()
  *
- *              SECTION: OTHER FUNCTIONS:
+ *		SECTION: OTHER FUNCTIONS:
  *  272:     function getWizardItems()
  *  282:     function wizardArray()
  *  447:     function removeInvalidElements(&$wizardItems)
  *
- * TOTAL FUNCTIONS: 7
+ *		TOTAL FUNCTIONS: 7
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -403,19 +403,19 @@ class tx_templavoila_dbnewcontentel {
 		$returnElements = array ();
 
 			// Flexible content elements:
-        $positionPid = $this->id;
-        $dataStructureRecords = array();
-        $storageFolderPID = $this->apiObj->getStorageFolderPid($positionPid);
+		$positionPid = $this->id;
+		$dataStructureRecords = array();
+		$storageFolderPID = $this->apiObj->getStorageFolderPid($positionPid);
 
-        	// Fetch data structures stored in the database:
-        $addWhere = $this->buildRecordWhere('tx_templavoila_datastructure');
+			// Fetch data structures stored in the database:
+		$addWhere = $this->buildRecordWhere('tx_templavoila_datastructure');
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tx_templavoila_datastructure', 'pid=' . intval($storageFolderPID) . ' AND scope=2' . $addWhere . t3lib_BEfunc::deleteClause('tx_templavoila_datastructure') . t3lib_BEfunc::versioningPlaceholderClause('tx_templavoila_datastructure'));
 		while ( FALSE !== ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) ) {
-        	$dataStructureRecords[$row['uid']] = $row;
-        }
+			$dataStructureRecords[$row['uid']] = $row;
+		}
 
 /*
-        	// Fetch static data structures which are stored in XML files:
+			// Fetch static data structures which are stored in XML files:
 		if (is_array($GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['staticDataStructures']))	{
 			foreach($GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['staticDataStructures'] as $staticDataStructureArr)	{
 				$staticDataStructureArr['_STATIC'] = TRUE;
@@ -480,9 +480,9 @@ class tx_templavoila_dbnewcontentel {
 			// Load full table definition:
 		t3lib_div::loadTCA('tt_content');
 
-            // Get TCEFORM from TSconfig of current page
-        $TCEFORM_TSconfig = t3lib_BEfunc::getTCEFORM_TSconfig('tt_content', array('pid' => $this->id));
-        $removeItems = t3lib_div::trimExplode(',',$TCEFORM_TSconfig['CType']['removeItems'],1);
+			// Get TCEFORM from TSconfig of current page
+		$TCEFORM_TSconfig = t3lib_BEfunc::getTCEFORM_TSconfig('tt_content', array('pid' => $this->id));
+		$removeItems = t3lib_div::trimExplode(',',$TCEFORM_TSconfig['CType']['removeItems'],1);
 
 		$headersUsed = Array();
 			// Traverse wizard items:
