@@ -1,5 +1,6 @@
 2009-12-17  Steffen Kamper  <info@sk-typo3.de>
 
+	* added blindIcons and debug to manual
 	* Fixed bug: #13058: Icons can't be blinded in page module
 	* Fixed bug: #13051: browse for records
 
