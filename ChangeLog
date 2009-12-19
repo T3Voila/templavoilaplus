@@ -1,10 +1,14 @@
+2009-12-19  Tolleiv Nietsch <nietsch@aoemedia.de>
+
+	* Fixed bug: #12802: Unlink element does not refresh pages 
+
 2009-12-17  Steffen Kamper  <info@sk-typo3.de>
 
 	* added blindIcons and debug to manual
 	* Fixed bug: #13058: Icons can't be blinded in page module
 	* Fixed bug: #13051: browse for records
 
-2009-12-17 Tolleiv Nietsch <nietsch@aoemedia.de>
+2009-12-17  Tolleiv Nietsch <nietsch@aoemedia.de>
 
 	* Fixed bug: #12949: A drag/drop cursor is shown on the TV Page object
 	* Fixed bug: #13054: Drag&Drop code is hard to maintain, works only for 4.3

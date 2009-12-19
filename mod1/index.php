@@ -323,7 +323,6 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			if (t3lib_div::_GP('ajaxUnlinkRecord')) {
 				$unlinkDestinationPointer = $this->apiObj->flexform_getPointerFromString(t3lib_div::_GP('ajaxUnlinkRecord'));
 				$this->apiObj->unlinkElement($unlinkDestinationPointer);
-				exit;
 			}
 
 			$this->calcPerms = $GLOBALS['BE_USER']->calcPerms($pageInfoArr);
@@ -436,7 +435,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				// prototype is loaded before, so no need to include twice.
 				//TODO: switch to $this->doc->JScodeLibArray for preventing double inclusion
 			#$this->doc->JScode .= '<script src="' . $this->doc->backPath . 'contrib/prototype/prototype.js" type="text/javascript"></script>';
-			$this->doc->JScode .= '<script src="' . $this->doc->backPath . 'contrib/scriptaculous/scriptaculous.js?load=effects,dragdrop" type="text/javascript"></script>';
+			$this->doc->JScode .= '<script src="' . $this->doc->backPath . 'contrib/scriptaculous/scriptaculous.js?load=effects,dragdrop,builder" type="text/javascript"></script>';
 			$this->doc->JScode .= '<script src="' . t3lib_div::locationHeaderUrl(t3lib_div::resolveBackPath($this->doc->backPath . '../' . t3lib_extMgm::siteRelPath('templavoila') . 'mod1/dragdrop' . ($this->debug ? '' : '-min') . '.js')) . '" type="text/javascript"></script>';
 
 				// Set up JS for dynamic tab menu and side bar
@@ -501,13 +500,11 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 					// Render "edit current page" (important to do before calling ->sideBarObj->render() - otherwise the translation tab is not rendered!
 				$editCurrentPageHTML = $this->render_editPageScreen();
 
-					// Hook for adding new sidebars or removing existing
-				$sideBarHooks = $this->hooks_prepareObjectsArray('sideBarClass');
-				foreach ($sideBarHooks as $hookObj)	{
-					if (method_exists($hookObj, 'main_alterSideBar')) {
-						$hookObj->main_alterSideBar($this->sideBarObj, $this);
+				if (t3lib_div::_GP('ajaxUnlinkRecord')) {
+					$this->render_editPageScreen();
+					echo $this->render_sidebar();
+					exit;
 					}
-				}
 
 					// Show the "edit current page" screen along with the sidebar
 				$shortCut = ($BE_USER->mayMakeShortcut() ? '<br /><br />'.$this->doc->makeShortcutIcon('id,altRoot',implode(',',array_keys($this->MOD_MENU)),$this->MCONF['name']) : '');
@@ -515,13 +512,13 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 					$this->content .= '
 						<table cellspacing="0" cellpadding="0" style="width:100%; height:550px; padding:0; margin:0;">
 							<tr>
-								<td style="vertical-align:top;">'.$this->sideBarObj->render().'</td>
+								<td style="vertical-align:top;">'.$this->render_sidebar().'</td>
 								<td style="vertical-align:top; padding-bottom:20px;" width="99%">'.$editCurrentPageHTML.$shortCut;'</td>
 							</tr>
 						</table>
 					';
 				} else {
-					$sideBarTop = $this->modTSconfig['properties']['sideBarEnable']  && ($this->sideBarObj->position == 'toprows' || $this->sideBarObj->position == 'toptabs') ? $this->sideBarObj->render() : '';
+					$sideBarTop = $this->modTSconfig['properties']['sideBarEnable']  && ($this->sideBarObj->position == 'toprows' || $this->sideBarObj->position == 'toptabs') ? $this->render_sidebar() : '';
 					$this->content .= $sideBarTop.$editCurrentPageHTML.$shortCut;
 				}
 
@@ -764,6 +761,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				$elementTitlebarStyle = 'background-color: '.$elementTitlebarColor;
 
 				$languageUid = $contentTreeArr['el']['sys_language_uid'];
+				$elementPointer = 'tt_content:' . $contentTreeArr['el']['uid'];
 
 				if (!$this->translatorMode && $canEditContent) {
 						// Create CE specific buttons:
@@ -772,7 +770,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 						!$elementBelongsToCurrentPage ||
 						$this->global_tt_content_elementRegister[$contentTreeArr['el']['uid']] > 1
 					) {
-						$linkUnlink = !in_array('unlink', $this->blindIcons) ? $this->link_unlink('<img'.t3lib_iconWorks::skinImg($this->doc->backPath, t3lib_extMgm::extRelPath('templavoila') . 'mod1/unlink.png','').' title="'.$LANG->getLL('unlinkRecord').'" border="0" alt="" />', $parentPointer, FALSE) : '';
+						$linkUnlink = !in_array('unlink', $this->blindIcons) ? $this->link_unlink('<img'.t3lib_iconWorks::skinImg($this->doc->backPath, t3lib_extMgm::extRelPath('templavoila') . 'mod1/unlink.png','').' title="'.$LANG->getLL('unlinkRecord').'" border="0" alt="" />', $parentPointer, FALSE, FALSE, $elementPointer) : '';
 					} else {
 						$linkUnlink = '';
 					}
@@ -782,7 +780,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 						if( $this->modTSconfig['properties']['enableDeleteIconForLocalElements'] && $elementBelongsToCurrentPage ) {
 							$hasForeignReferences = $this->hasElementForeignReferences($contentTreeArr['el'],$contentTreeArr['el']['pid']);
-							$linkDelete = !in_array('delete', $this->blindIcons) ? $this->link_unlink('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/deletedok.gif','').' title="'.$LANG->getLL('deleteRecord').'" border="0" alt="" />', $parentPointer, TRUE, $hasForeignReferences) : '';
+							$linkDelete = !in_array('delete', $this->blindIcons) ? $this->link_unlink('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/deletedok.gif','').' title="'.$LANG->getLL('deleteRecord').'" border="0" alt="" />', $parentPointer, TRUE, $hasForeignReferences, $elementPointer) : '';
 						} else {
 							$linkDelete = '';
 						}
@@ -1534,6 +1532,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			break;
 			case 'tt_content' :
 				$languageUid = $contentTreeArr['el']['sys_language_uid'];
+				$elementPointer = 'tt_content:' . $contentTreeArr['el']['uid'];
 
 				if ($this->translatorMode)	{
 					$titleBarRightButtons = '';
@@ -1752,6 +1751,21 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		}
 	}
 
+	/**
+	 * Renders the sidebar, including the relevant hook objects
+	 *
+	 * @return string
+	 */
+	protected function render_sidebar() {
+			// Hook for adding new sidebars or removing existing
+		$sideBarHooks = $this->hooks_prepareObjectsArray('sideBarClass');
+		foreach ($sideBarHooks as $hookObj)	{
+			if (method_exists($hookObj, 'main_alterSideBar')) {
+				$hookObj->main_alterSideBar($this->sideBarObj, $this);
+			}
+		}
+		return $this->sideBarObj->render();
+	}
 
 
 
@@ -1910,7 +1924,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * @return	string		HTML anchor tag containing the label and the unlink-link
 	 * @access protected
 	 */
-	function link_unlink($label, $unlinkPointer, $realDelete=FALSE, $foreignReferences=FALSE)	{
+	function link_unlink($label, $unlinkPointer, $realDelete=FALSE, $foreignReferences=FALSE, $elementPointer='')	{
 
 		$unlinkPointerString = $this->apiObj->flexform_getStringFromPointer ($unlinkPointer);
 		$encodedUnlinkPointerString = rawurlencode($unlinkPointerString);
@@ -1919,7 +1933,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			$LLlabel = $foreignReferences ? 'deleteRecordWithReferencesMsg' : 'deleteRecordMsg';
 			return '<a class="tpm-unlink" href="index.php?' . $this->link_getParameters() . '&amp;deleteRecord=' . $encodedUnlinkPointerString . '" onclick="' . htmlspecialchars('return confirm(' . $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL($LLlabel)) . ');') . '">' . $label . '</a>';
 		} else {
-			return '<a class="tpm-unlink" href="javascript:'.htmlspecialchars('if (confirm(' . $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL('unlinkRecordMsg')) . '))') . 'sortable_unlinkRecord(\'' . $encodedUnlinkPointerString . '\',\'' . $this->addSortableItem ($unlinkPointerString) . '\');">' . $label . '</a>';
+			return '<a class="tpm-unlink" href="javascript:'.htmlspecialchars('if (confirm(' . $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL('unlinkRecordMsg')) . '))') . 'sortable_unlinkRecord(\'' . $encodedUnlinkPointerString . '\',\'' . $this->addSortableItem ($unlinkPointerString) . '\',\'' . $elementPointer . '\');">' . $label . '</a>';
 		}
 	}
 
