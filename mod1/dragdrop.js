@@ -33,11 +33,40 @@ function sortable_unlinkRecordCallBack(obj) {
 	sortable_update(pn);
 }
 
-function sortable_unlinkRecord(pointer, id) {
-	new Ajax.Request("index.php?" + sortable_linkParameters + "&ajaxUnlinkRecord="+escape(pointer)); /* xxx */
-	new Effect.Fade(id,
-		{ duration: 0.5,
-		afterFinish: sortable_unlinkRecordCallBack });
+function sortable_unlinkRecord(pointer, id, elementPointer) {
+	new Ajax.Request("index.php?" + sortable_linkParameters + "&ajaxUnlinkRecord="+escape(pointer), {
+		onSuccess: function(response) {
+			var node = Builder.build(response.responseText);
+			$('tx_templavoila_mod1_sidebar-bar').setStyle({height : $('tx_templavoila_mod1_sidebar-bar').getHeight() + 'px'});
+			$('tx_templavoila_mod1_sidebar-bar').innerHTML = node.innerHTML;
+				//we can't do that instantanious because the browser won't calculate the hights properly
+			setTimeout(function(){sortable_unlinkRecordSidebarCallBack(elementPointer);}, 100);
+		}
+	});
+	new Effect.Fade(id, { 
+		duration: 0.5,
+		afterFinish: sortable_unlinkRecordCallBack
+	});
+}
+
+function sortable_unlinkRecordSidebarCallBack(pointer) {
+	var childNodes = $('tx_templavoila_mod1_sidebar-bar').childElements();
+	var innerHeight = 0;
+	for (var i = 0; i < childNodes.length; i++) {
+		innerHeight += childNodes[i].getHeight();
+	}
+	$('tx_templavoila_mod1_sidebar-bar').morph(
+		{ height: innerHeight + 'px'}, 
+		{
+			duration: 0.1,
+			afterFinish: function() {
+				$('tx_templavoila_mod1_sidebar-bar').setStyle({height : 'auto'});
+				if (pointer) {
+					$(pointer).highlight();
+				}
+			}
+		}
+	);
 }
 
 function sortable_updateItemButtons(el, position, pID) {

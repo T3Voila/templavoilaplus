@@ -284,7 +284,7 @@ class tx_templavoila_mod1_clipboard {
 
 
 			$elementRows[] = '
-				<tr class="bgColor4">
+				<tr class="bgColor4" id="' . $elementPointerString . '">
 					<td style="width:1%">'.
 						$cutButton.
 					'</td>
