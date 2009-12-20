@@ -217,10 +217,12 @@ class tx_templavoila_cm1_dsEdit {
 					<dl id="dsel-proc" class="DS-config">
 						<dt>' . $GLOBALS['LANG']->getLL('mapPostProcesses') . ':</dt>
 						<dd>
-							<input type="checkbox" class="checkbox" id="tv_proc_int" name="' . $formFieldName . '[tx_templavoila][proc][int]" value="1" ' . ($insertDataArray['tx_templavoila']['proc']['int'] ? 'checked="checked"' : '') . ' />
-							<label for="tv_proc_int">' . $GLOBALS['LANG']->getLL('mapPPcastInteger') . '</label><br />
-							<input type="checkbox" class="checkbox" id="tv_proc_hsc" name="' . $formFieldName . '[tx_templavoila][proc][HSC]" value="1" ' . ($insertDataArray['tx_templavoila']['proc']['HSC'] ? 'checked="checked"' : '') . ' />
-							<label for="tv_proc_hsc">' . $GLOBALS['LANG']->getLL('mapPPhsc') . '</label>
+							<input type="checkbox" class="checkbox" id="tv_proc_int_" value="1" ' . ($insertDataArray['tx_templavoila']['proc']['int'] ? 'checked="checked"' : '') . ' onclick="$(\'tv_proc_int\').value=(this.checked ? 1 : 0);" />
+							<label for="tv_proc_int_">' . $GLOBALS['LANG']->getLL('mapPPcastInteger') . '</label><br />
+							<input type="checkbox" class="checkbox" id="tv_proc_hsc_" value="1" ' . ($insertDataArray['tx_templavoila']['proc']['HSC'] ? 'checked="checked"' : '') . ' onclick="$(\'tv_proc_hsc\').value=(this.checked ? 1 : 0);" />
+							<label for="tv_proc_hsc_">' . $GLOBALS['LANG']->getLL('mapPPhsc') . '</label>
+							<input type="hidden" id="tv_proc_int" name="' . $formFieldName . '[tx_templavoila][proc][int]" value="' . intval($insertDataArray['tx_templavoila']['proc']['int']) . '" />
+							<input type="hidden" id="tv_proc_hsc" name="' . $formFieldName . '[tx_templavoila][proc][HSC]" value="' . intval($insertDataArray['tx_templavoila']['proc']['HSC']) . '" />
 						</dd>
 
 						<dt><label>' . $GLOBALS['LANG']->getLL('mapCustomStdWrap') . ':</label></dt>
