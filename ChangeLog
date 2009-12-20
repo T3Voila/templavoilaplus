@@ -1,3 +1,7 @@
+2009-12-17  Steffen Kamper  <info@sk-typo3.de>
+
+	* Follow-up to bugfix #9980: Configurable eTypes for creating fields
+
 2009-12-19  Tolleiv Nietsch <nietsch@aoemedia.de>
 
 	* Fixed bug: #12802: Unlink element does not refresh pages 

@@ -573,9 +573,14 @@ backColor = #999999
 
 		// ce
 		$eTypes['eType']['ce']['TCEforms']['config'] = array(
-			'type' => 'input',
-			'size' => '48',
-			'eval' => 'trim',
+			'type' => 'group',
+			'internal_type' => 'db',
+			'allowed' => 'tt_content',
+			'size' => '5',
+			'maxitems' => '200',
+			'minitems' => '0',
+			'multiple' => '1',
+			'show_thumbs' => '1',
 		);
 		$eTypes['eType']['ce']['label'] = $GLOBALS['LANG']->getLL('mapPresets_ce');
 		$eTypes['eType']['ce']['Typoscript'] = '
