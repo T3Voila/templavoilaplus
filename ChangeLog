@@ -1,5 +1,6 @@
 2009-12-20  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug: #13040: HSC switch in Mapping editor doesn't save "0" 
 	* Follow-up to bugfix #9980: Configurable eTypes for creating fields
 
 2009-12-19  Tolleiv Nietsch <nietsch@aoemedia.de>
