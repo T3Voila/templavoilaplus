@@ -1397,6 +1397,7 @@ class tx_templavoila_api {
 			'sys_language_uid' => $row['sys_language_uid'],
 			'l18n_parent' => $row['l18n_parent'],
 			'CType' => $row['CType'],
+			'TO' => $row['tx_templavoila_to'],
 		);
 
 		if ($this->includePreviewData)	{

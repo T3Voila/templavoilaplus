@@ -1,0 +1,85 @@
+/* PAGEMODULE CSS */
+
+/* general */
+table {
+	position:relative;
+}
+.sortableItem .sortable_handle {
+	cursor:move;
+}
+
+
+/* link icons */
+.tpm-bottom-controls {
+	margin-bottom: 5px;
+}
+.tpm-bottom-controls img {
+	border: none ; 
+	text-align: center; 
+	vertical-align: middle;
+	padding: 0 1px;
+}
+
+/* element titlebars */
+.tpm-container-element tr.tpm-titlebar-page {
+	background-color: #B8BEC9;
+}
+.tpm-container-element tr.tpm-titlebar {
+	background-color: #f8f9fb;
+}
+.tpm-container-element tr.tpm-titlebar-fromOtherPage {
+	background-color: #e6e9eb;
+}
+.tpm-container-element tr.tpm-titlebar img, 
+.tpm-container-element tr.tpm-titlebar-fromOtherPage img,
+.tpm-container-element tr.tpm-titlebar-page img {
+	vertical-align: middle;
+	padding: 2px 1px;
+}
+.tpm-container-element tr.tpm-titlebar span img, 
+.tpm-container-element tr.tpm-titlebar-fromOtherPage span img,
+.tpm-container-element tr.tpm-titlebar-page span img {
+	padding-right: 3px;
+}
+
+/* non-used elements */
+.tpm-nonused-element {
+	
+}
+.tpm-nonused-controls {
+	width: 36px;
+	padding-left: 4px;
+}
+.tpm-nonused-ref {
+	width: 20px;
+}
+.tpm-nonused-element img,
+.tpm-nonused-deleteall img {
+	vertical-align: middle;
+	padding: 2px 1px;
+}
+.tpm-nonused-element .tpm-nonused-preview img {
+	padding-right: 3px;
+}
+.tpm-nonused-deleteall {
+	padding: 5px 0;
+}
+
+/* outline view */
+.tpm-outline-table .tpm-container img,
+.tpm-outline-table .tpm-element img,
+.tpm-outline-table .tpm-elementRef img {
+	vertical-align: middle;
+	padding: 0 1px;
+}
+.tpm-outline-table .tpm-container td.nobr img,
+.tpm-outline-table .tpm-element td.nobr img,
+.tpm-outline-table .tpm-elementRef td.nobr img {
+	padding-right: 3px;
+}
+.tpm-outline-table .tpm-outline-level0 {
+	background-color: #b8bec9;
+}
+.tpm-outline-table .tpm-outline-level1 {
+	background-color: #f8f9fb;
+}
