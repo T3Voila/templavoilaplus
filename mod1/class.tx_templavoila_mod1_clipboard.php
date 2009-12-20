@@ -153,7 +153,7 @@ class tx_templavoila_mod1_clipboard {
 
 		$copyIcon = '<img'.t3lib_iconWorks::skinImg($this->pObj->doc->backPath,'gfx/clip_copy'.($clipActive_copy ? '_h':'').'.gif','').' title="'.$LANG->getLL ('copyrecord').'" border="0" alt="" />';
 		$cutIcon = '<img'.t3lib_iconWorks::skinImg($this->pObj->doc->backPath,'gfx/clip_cut'.($clipActive_cut ? '_h':'').'.gif','').' title="'.$LANG->getLL ('cutrecord').'" border="0" alt="" />';
-		$refIcon = '<img'.t3lib_iconWorks::skinImg($this->pObj->doc->backPath,t3lib_extMgm::extRelPath('templavoila').'mod1/clip_ref'.($clipActive_ref ? '_h':'').'.gif','').' title="'.$LANG->getLL ('createreference').'" border="0" alt="" />';
+		$refIcon = '<img'.t3lib_iconWorks::skinImg($this->pObj->doc->backPath,t3lib_extMgm::extRelPath('templavoila').'mod1/clip_ref'.($clipActive_ref ? '_h':'').'.gif','').' title="'.$LANG->getLL ('createreference').'" vspace="2" hspace="2" alt="" />';
 
 		$removeElement = '&amp;CB[removeAll]=normal';
 		$setElement = '&amp;CB[el]['.rawurlencode('tt_content|'.$elementRecord['uid']).']=1';
@@ -223,8 +223,8 @@ class tx_templavoila_mod1_clipboard {
 
 			// Prepare the ingredients for the different buttons:
 		$pasteMode = isset ($this->t3libClipboardObj->clipData['normal']['flexMode']) ? $this->t3libClipboardObj->clipData['normal']['flexMode'] : ($this->t3libClipboardObj->clipData['normal']['mode'] == 'copy' ? 'copy' : 'cut');
-		$pasteAfterIcon = '<img'.t3lib_iconWorks::skinImg($this->pObj->doc->backPath,'gfx/clip_pasteafter.gif','').' style="text-align: center; vertical-align: middle;" hspace="1" vspace="5" border="0" title="'.$LANG->getLL ('pasterecord').'" alt="" />';
-		$pasteSubRefIcon = '<img'.t3lib_iconWorks::skinImg('clip_pastesubref.gif','').' style="text-align: center; vertical-align: middle;" hspace="1" vspace="5" border="0" title="'.$LANG->getLL ('pastefce_andreferencesubs').'" alt="" />';
+		$pasteAfterIcon = '<img'.t3lib_iconWorks::skinImg($this->pObj->doc->backPath,'gfx/clip_pasteafter.gif','').' title="'.$LANG->getLL ('pasterecord').'" alt="" />';
+		$pasteSubRefIcon = '<img'.t3lib_iconWorks::skinImg('clip_pastesubref.gif','').' title="'.$LANG->getLL ('pastefce_andreferencesubs').'" alt="" />';
 
 		$sourcePointerString = $this->pObj->apiObj->flexform_getStringFromPointer ($clipboardElementPointer);
 		$destinationPointerString = $this->pObj->apiObj->flexform_getStringFromPointer ($destinationPointer);
@@ -284,15 +284,16 @@ class tx_templavoila_mod1_clipboard {
 
 
 			$elementRows[] = '
-				<tr class="bgColor4" id="' . $elementPointerString . '">
-					<td style="width:1%">'.
-						$cutButton.
+				<tr id="' . $elementPointerString . '" class="tpm-nonused-element">
+					<td class="tpm-nonused-controls">' .
+						$cutButton . $languageIcon .
 					'</td>
-					<td style="width:1%;">'.$languageIcon.'</td>
-					<td style="width:1%;">'.$this->renderReferenceCount($row['uid']).'</td>
-					<td>'.$recordButton.
-						htmlspecialchars(' '.t3lib_div::fixed_lgd_cs(trim(strip_tags($row['header'].($row['header'] && $row['bodytext'] ? ' - ' : '').$row['bodytext'])),100)).'
-					</td>
+					<td class="tpm-nonused-ref">' .
+						$this->renderReferenceCount($row['uid']) .
+					'</td>
+					<td class="tpm-nonused-preview">' .
+						$recordButton . htmlspecialchars(t3lib_BEfunc::getRecordTitle('tt_content', $row)) .
+					'</td>
 				</tr>
 			';
 		}
@@ -315,13 +316,13 @@ class tx_templavoila_mod1_clipboard {
 
 				// Create table and header cell:
 			$output = '
-				<table border="0" cellpadding="0" cellspacing="1" width="100%" class="lrPadding">
+				<table class="tpm-nonused-elements" border="0" cellpadding="0" cellspacing="1" width="100%" class="lrPadding">
 					<tr class="bgColor4-20">
-						<td colspan="5">'.$LANG->getLL('inititemno_elementsNotBeingUsed','1').':</td>
+						<td colspan="3">' . $LANG->getLL('inititemno_elementsNotBeingUsed','1') . ':</td>
 					</tr>
-					'.implode('',$elementRows).'
+					' . implode('', $elementRows) . '
 					<tr class="bgColor4">
-						<td colspan="5">'.$deleteAll.'</td>
+						<td colspan="3" class="tpm-nonused-deleteall">' . $deleteAll . '</td>
 					</tr>
 				</table>
 			';
