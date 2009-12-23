@@ -2265,6 +2265,9 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		if ($LANG->origCharSet != $TYPO3_CONF_VARS['BE']['forceCharset']) {
 			$LANG->origCharSet = $TYPO3_CONF_VARS['BE']['forceCharset'];
 		}
+		if (substr($label, 0, 4) === 'LLL:') {
+			$label = $LANG->sL($label);
+		}
 		$result = $LANG->hscAndCharConv($label, $hsc);
 		$LANG->origCharSet = $charset;
 		return $result;
