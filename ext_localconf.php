@@ -2,9 +2,14 @@
 # TYPO3 CVS ID: $Id$
 if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 
+// unserializing the configuration so we can use it here:
+$_EXTCONF = unserialize($_EXTCONF);
+
 	// Adding the two plugins TypoScript:
 t3lib_extMgm::addPItoST43($_EXTKEY,'pi1/class.tx_templavoila_pi1.php','_pi1','CType',1);
-t3lib_extMgm::addTypoScript($_EXTKEY,'setup','tt_content.templavoila_pi1.10 >',43);
+if (!$_EXTCONF['enable.']['renderFCEHeader']) {
+	t3lib_extMgm::addTypoScript($_EXTKEY,'setup','tt_content.templavoila_pi1.10 >',43);
+}
 
 	// Use templavoila's wizard instead the default create new page wizard
 t3lib_extMgm::addPageTSConfig('
