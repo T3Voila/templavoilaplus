@@ -3,3 +3,6 @@ enable.oldPageModule = 0
 
 	# cat=basic/enable; type=boolean; label=Enable data source selection:If this checkbox is checked, page and content elements will have data source selector as they had in older TemplaVoila versions. If current installation has very few template objects, it is recommended to have this checkbox unchecked.
 enable.selectDataSource = 0
+
+	# cat=basic/enable; type=boolean; label=Enable Header for FCE's:If this checkbox is checked the header of Content Element type FCE will be rendered like headers of other Content Elements.
+enable.renderFCEHeader = 0
