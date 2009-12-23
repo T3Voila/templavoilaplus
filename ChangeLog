@@ -1,5 +1,6 @@
 2009-12-23  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug: #13082: New CSS... for beTemplateCell CLASS (Follow-up to #13067)
 	* Fixed bug: #9499: Simultanious edits not possible
 	* Fixed bug: #13077: Enable Header for FCE's (optional)
 

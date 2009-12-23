@@ -1041,17 +1041,20 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				if ($flagRenderBeLayout==TRUE) {
 					$beTemplateCell = '<table width="100%" class="beTemplateCell">
 					<tr>
-						<td valign="top" style="background-color: ' . $this->doc->bgColor4 . '; padding-top:0; padding-bottom:0;">' . $LANG->sL($fieldContent['meta']['title'], 1) . '</td>
+						<td class="bgColor4 tpm-title-cell">' . $LANG->sL($fieldContent['meta']['title'], 1) . '</td>
 					</tr>
 					<tr>
-						<td ' . $cellIdStr . ' valign="top" style="padding: 5px;">' . $cellContent . '</td>
+						<td ' . $cellIdStr . ' class="tpm-content-cell">' . $cellContent . '</td>
 					</tr>
 					</table>';
 					$beTemplate = str_replace('###'.$fieldID.'###', $beTemplateCell, $beTemplate);
 				} else {
 							// Add cell content to registers:
-					$headerCells[]='<td valign="top" width="'.round(100/count($elementContentTreeArr['sub'][$sheet][$lKey])).'%" style="background-color: '.$this->doc->bgColor4.'; padding-top:0; padding-bottom:0;">'.$LANG->sL($fieldContent['meta']['title'],1).'</td>';
-					$cells[]='<td '.$cellIdStr.' valign="top" width="'.round(100/count($elementContentTreeArr['sub'][$sheet][$lKey])).'%" style="border: 1px dashed #000; padding: 5px 5px 5px 5px;">'.$cellContent.'</td>';
+					$width = round(100 / count($elementContentTreeArr['sub'][$sheet][$lKey]));
+					$headerCells[]='<td width="' . $width . '%" class="bgColor4 tpm-title-cell">' .
+						$LANG->sL($fieldContent['meta']['title'], 1) . '</td>';
+					$cells[]='<td '.$cellIdStr.' width="' . $width . '%" class="tpm-content-cell">' .
+						$cellContent.'</td>';
 				}
 			}
 		}
