@@ -21,6 +21,19 @@ table {
 }
 
 /* element titlebars */
+.tpm-title-cell {
+	vertical-align: top;
+	padding-top:0; 
+	padding-bottom:0;
+}
+.tpm-content-cell {
+	vertical-align: top;
+	padding: 5px;
+	border: 1px dashed #000;
+}
+.beTemplateCell .tpm-content-cell {
+	border: none;
+}
 .tpm-container-element tr.tpm-titlebar-page {
 	background-color: #B8BEC9;
 }

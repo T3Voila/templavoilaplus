@@ -1,5 +1,6 @@
 2009-12-23  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug: #13082: New CSS... for beTemplateCell CLASS (Follow-up to #13067)
 	* Fixed bug: #9499: Simultanious edits not possible
 	* Fixed bug: #13077: Enable Header for FCE's (optional)
 
@@ -54,7 +55,7 @@
 2009-11-28  Tolleiv Nietsch <nietsch@aoemedia.de>
 
 	* Follow-up to bugfix #12564: Localization view overlaps labels and doesn't align
-	* Fixed bug: #12826: "TemplaVoilà " accent missing or wrong in some labels 
+	* Fixed bug: #12826: "TemplaVoil�" accent missing or wrong in some labels 
 	* Fixed bug: #12819: Mapping module labels are messed up 
 	* Fixed bug: #12804: Unlink icon doesn't hide the "unlinked" item
 
