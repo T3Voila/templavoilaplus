@@ -1,5 +1,6 @@
 2009-12-23  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug: #9499: Simultanious edits not possible
 	* Fixed bug: #13077: Enable Header for FCE's (optional)
 
 2009-12-20  Steffen Kamper  <info@sk-typo3.de>

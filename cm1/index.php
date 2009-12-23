@@ -518,6 +518,10 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 				$cmd = 'saveScreen';
 			} elseif (t3lib_div::_GP('_loadScreen'))	{
 				$cmd = 'loadScreen';
+			} elseif (t3lib_div::_GP('_save'))	{
+				$cmd = 'saveUpdatedDSandTO';
+			} elseif (t3lib_div::_GP('_saveExit'))	{
+				$cmd = 'saveUpdatedDSandTOandExit';
 			}
 
 				// Init settings:
@@ -531,34 +535,37 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			}
 
 				// Session data
+			$this->sessionKey = $this->MCONF['name'] . '_mappingInfo:' . $this->_load_ds_xml_to;
 			if ($cmd=='clear')	{	// Reset session data:
-				$sesDat = array();
-				$GLOBALS['BE_USER']->setAndSaveSessionData($this->MCONF['name'].'_mappingInfo',$sesDat);
+				$sesDat = array('displayFile' => $this->displayFile, 'TO' => $this->_load_ds_xml_to, 'DS' => $this->displayUid);
+				$GLOBALS['BE_USER']->setAndSaveSessionData($this->sessionKey, $sesDat);
 			} else {	// Get session data:
-				$sesDat = $GLOBALS['BE_USER']->getSessionData($this->MCONF['name'].'_mappingInfo');
+				$sesDat = $GLOBALS['BE_USER']->getSessionData($this->sessionKey);
+			}
+			if ($this->_load_ds_xml_to) {
+				$toREC = t3lib_BEfunc::getRecordWSOL('tx_templavoila_tmplobj', $this->_load_ds_xml_to);
+				$dsREC = t3lib_BEfunc::getRecordWSOL('tx_templavoila_datastructure',$toREC['datastructure']);
 			}
 
 				// Loading DS from either XML or a Template Object (containing reference to DS)
 			if ($cmd=='load_ds_xml' && ($this->_load_ds_xml_content || $this->_load_ds_xml_to))	{
 				$to_uid = $this->_load_ds_xml_to;
 				if ($to_uid)	{
-					$toREC = t3lib_BEfunc::getRecordWSOL('tx_templavoila_tmplobj',$to_uid);
 					$tM = unserialize($toREC['templatemapping']);
-					$sesDat=array();
+					$sesDat = array('displayFile' => $this->displayFile, 'TO' => $this->_load_ds_xml_to, 'DS' => $this->displayUid);
 					$sesDat['currentMappingInfo'] = $tM['MappingInfo'];
 					$sesDat['currentMappingInfo_head'] = $tM['MappingInfo_head'];
-					$dsREC = t3lib_BEfunc::getRecordWSOL('tx_templavoila_datastructure',$toREC['datastructure']);
-
 					$ds = t3lib_div::xml2array($dsREC['dataprot']);
 					$sesDat['dataStruct'] = $sesDat['autoDS'] = $ds; // Just set $ds, not only its ROOT! Otherwise <meta> will be lost.
-					$GLOBALS['BE_USER']->setAndSaveSessionData($this->MCONF['name'].'_mappingInfo',$sesDat);
+					$GLOBALS['BE_USER']->setAndSaveSessionData($this->sessionKey, $sesDat);
 				} else {
 					$ds = t3lib_div::xml2array($this->_load_ds_xml_content);
-					$sesDat=array();
+					$sesDat = array('displayFile' => $this->displayFile, 'TO' => $this->_load_ds_xml_to, 'DS' => $this->displayUid);
 					$sesDat['dataStruct'] = $sesDat['autoDS'] = $ds;
-					$GLOBALS['BE_USER']->setAndSaveSessionData($this->MCONF['name'].'_mappingInfo',$sesDat);
+					$GLOBALS['BE_USER']->setAndSaveSessionData($this->sessionKey, $sesDat);
 				}
 			}
+
 
 				// Setting Data Structure to value from session data - unless it does not exist in which case a default structure is created.
 			$dataStruct = is_array($sesDat['autoDS']) ? $sesDat['autoDS'] : array(
@@ -587,7 +594,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 					if (is_array($inputData))	{
 						$sesDat['currentMappingInfo'] = $currentMappingInfo = $this->array_merge_recursive_overrule($currentMappingInfo,$inputData);
 						$sesDat['dataStruct'] = $dataStruct;
-						$GLOBALS['BE_USER']->setAndSaveSessionData($this->MCONF['name'].'_mappingInfo',$sesDat);
+						$GLOBALS['BE_USER']->setAndSaveSessionData($this->sessionKey, $sesDat);
 					}
 				break;
 					// Saving incoming Data Structure settings to session data:
@@ -595,7 +602,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 					$inDS = t3lib_div::_GP('autoDS',1);
 					if (is_array($inDS))	{
 						$sesDat['dataStruct'] = $sesDat['autoDS'] = $dataStruct = $this->array_merge_recursive_overrule($dataStruct,$inDS);
-						$GLOBALS['BE_USER']->setAndSaveSessionData($this->MCONF['name'].'_mappingInfo',$sesDat);
+						$GLOBALS['BE_USER']->setAndSaveSessionData($this->sessionKey, $sesDat);
 					}
 				break;
 					// If DS element is requested for deletion, remove it and update session data:
@@ -603,12 +610,12 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 					$ref = explode('][',substr($this->DS_element_DELETE,1,-1));
 					$this->unsetArrayPath($dataStruct,$ref);
 					$sesDat['dataStruct'] = $sesDat['autoDS'] = $dataStruct;
-					$GLOBALS['BE_USER']->setAndSaveSessionData($this->MCONF['name'].'_mappingInfo',$sesDat);
+					$GLOBALS['BE_USER']->setAndSaveSessionData($this->sessionKey, $sesDat);
 				break;
 			}
 
 				// Creating $templatemapping array with cached mapping content:
-			if (t3lib_div::inList('showXMLDS,saveDSandTO,updateDSandTO',$cmd))	{
+			if (t3lib_div::inList('showXMLDS,saveDSandTO,updateDSandTO,saveUpdatedDSandTO,saveUpdatedDSandTOandExit', $cmd)) {
 
 					// Template mapping prepared:
 				$templatemapping=array();
@@ -726,14 +733,18 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 
 					// Clear cached header info because saveDSandTO always resets headers
 					$sesDat['currentMappingInfo_head'] = '';
-					$GLOBALS['BE_USER']->setAndSaveSessionData($this->MCONF['name'].'_mappingInfo',$sesDat);
+					$GLOBALS['BE_USER']->setAndSaveSessionData($this->sessionKey, $sesDat);
 				break;
 					// Updating DS and TO records:
 				case 'updateDSandTO':
+				case 'saveUpdatedDSandTO':
+				case 'saveUpdatedDSandTOandExit':
 
-						// Looking up the records by their uids:
-					$toREC = t3lib_BEfunc::getRecordWSOL('tx_templavoila_tmplobj',$this->_saveDSandTO_TOuid);
-					$dsREC = t3lib_BEfunc::getRecordWSOL('tx_templavoila_datastructure',$toREC['datastructure']);
+					if ($cmd == 'updateDSandTO') {
+							// Looking up the records by their uids:
+						$toREC = t3lib_BEfunc::getRecordWSOL('tx_templavoila_tmplobj',$this->_saveDSandTO_TOuid);
+						$dsREC = t3lib_BEfunc::getRecordWSOL('tx_templavoila_datastructure',$toREC['datastructure']);
+					}
 
 						// If they are found, continue:
 					if ($toREC['uid'] && $dsREC['uid'])	{
@@ -772,9 +783,13 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 
 						$msg[] = '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/icon_note.gif','width="18" height="16"').' border="0" align="top" class="absmiddle" alt="" />'.sprintf($GLOBALS['LANG']->getLL('msgDSTOUpdated'), $dsREC['uid'], $toREC['uid']);
 
-						// Clear cached header info because updateDSandTO always resets headers
-						$sesDat['currentMappingInfo_head'] = '';
-						$GLOBALS['BE_USER']->setAndSaveSessionData($this->MCONF['name'].'_mappingInfo',$sesDat);
+						if ($cmd == 'updateDSandTO') {
+								// Clear cached header info because updateDSandTO always resets headers
+							$sesDat['currentMappingInfo_head'] = '';
+							$GLOBALS['BE_USER']->setAndSaveSessionData($this->sessionKey, $sesDat);
+						} elseif ($cmd == 'saveUpdatedDSandTOandExit') {
+							header ('Location:' . t3lib_div::locationHeaderUrl($this->returnUrl));
+						}
 					}
 				break;
 			}
@@ -782,13 +797,26 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 
 				// Header:
 			$tRows = array();
-			$relFilePath = substr($this->displayFile,strlen(PATH_site));
-			$onCl = 'return top.openUrlInWindow(\''.t3lib_div::getIndpEnv('TYPO3_SITE_URL').$relFilePath.'\',\'FileView\');';
+			$relFilePath = substr($this->displayFile, strlen(PATH_site));
+			$onCl = 'return top.openUrlInWindow(\'' . t3lib_div::getIndpEnv('TYPO3_SITE_URL') . $relFilePath . '\',\'FileView\');';
 			$tRows[]='
 				<tr>
-					<td class="bgColor5"><strong>'.$this->cshItem('xMOD_tx_templavoila','mapping_file',$this->doc->backPath,'|') . $GLOBALS['LANG']->getLL('templateFile').':</strong></td>
-					<td class="bgColor4"><a href="#" onclick="'.htmlspecialchars($onCl).'">'.htmlspecialchars($relFilePath).'</a></td>
-				</tr>';
+					<td class="bgColor5">' . $this->cshItem('xMOD_tx_templavoila', 'mapping_file', $this->doc->backPath, '|') . '</td>
+					<td class="bgColor5"><strong>' . $GLOBALS['LANG']->getLL('templateFile') . ':</strong></td>
+					<td class="bgColor4"><a href="#" onclick="' . htmlspecialchars($onCl) . '">' . htmlspecialchars($relFilePath) . '</a></td>
+				</tr>
+				<tr>
+					<td class="bgColor5">&nbsp;</td>
+					<td class="bgColor5"><strong>' . $GLOBALS['LANG']->getLL('templateObject') . ':</strong></td>
+					<td class="bgColor4">' . ($toREC ? htmlspecialchars($toREC['title']) : $GLOBALS['LANG']->getLL('mappingNEW')) . '</td>
+				</tr>
+				<tr>
+					<td class="bgColor5">&nbsp;</td>
+					<td class="bgColor5"><strong>' . $GLOBALS['LANG']->getLL('renderTO_dsRecord') . ':</strong></td>
+					<td class="bgColor4">' . ($dsREC ? htmlspecialchars($dsREC['title']) : $GLOBALS['LANG']->getLL('mappingNEW')) . '</td>
+				</tr>
+
+				';
 				// Write header of page:
 			$content.='
 
@@ -953,6 +981,10 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 					$menuItems[]='<input type="submit" name="_showXMLDS" value="' . $GLOBALS['LANG']->getLL('buttonShowXML') . '" title="' . $GLOBALS['LANG']->getLL('buttonTitle_showXML') . '" />';
 					$menuItems[]='<input type="submit" name="_clear" value="' . $GLOBALS['LANG']->getLL('buttonClearAll') . '" title="' . $GLOBALS['LANG']->getLL('buttonTitle_clearAll') . '" /> ';
 					$menuItems[]='<input type="submit" name="_preview" value="' . $GLOBALS['LANG']->getLL('buttonPreview') . '" title="' . $GLOBALS['LANG']->getLL('buttonTitle_preview') . '" />';
+					if (is_array($toREC) && is_array($dsREC)) {
+						$menuItems[]='<input type="submit" name="_save" value="' . $GLOBALS['LANG']->getLL('buttonSave') . '" title="' . $GLOBALS['LANG']->getLL('buttonTitle_save') . '" />';
+						$menuItems[]='<input type="submit" name="_saveExit" value="' . $GLOBALS['LANG']->getLL('buttonSaveExit') . '" title="' . $GLOBALS['LANG']->getLL('buttonTitle_saveExit') . '" />';
+					}
 					$menuItems[]='<input type="submit" name="_saveScreen" value="' . $GLOBALS['LANG']->getLL('buttonSaveAs') . '" title="' . $GLOBALS['LANG']->getLL('buttonTitle_saveAs') . '" />';
 					$menuItems[]='<input type="submit" name="_loadScreen" value="' . $GLOBALS['LANG']->getLL('buttonLoad') . '" title="' . $GLOBALS['LANG']->getLL('buttonTitle_load') . '" />';
 					$menuItems[]='<input type="submit" name="_DO_NOTHING" value="' . $GLOBALS['LANG']->getLL('buttonRefresh') . '" title="' . $GLOBALS['LANG']->getLL('buttonTitle_refresh') . '" />';
@@ -1184,7 +1216,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 								</tr>';
 
 								// Link to updating DS/TO:
-							$onCl = 'index.php?file='.rawurlencode($theFile).'&_load_ds_xml=1&_load_ds_xml_to='.$row['uid'];
+							$onCl = 'index.php?file=' . rawurlencode($theFile) . '&_load_ds_xml=1&_load_ds_xml_to=' . $row['uid'] . '&uid=' . $DS_row['uid'] . '&returnUrl=' . $this->returnUrl;
 							$onClMsg = '
 								if (confirm(unescape(\''.rawurlencode($GLOBALS['LANG']->getLL('renderTO_updateWarningConfirm')).'\'))) {
 									document.location=\''.$onCl.'\';
@@ -1341,7 +1373,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 		}
 
 			// Get session data:
-		$sesDat = $GLOBALS['BE_USER']->getSessionData($this->MCONF['name'].'_mappingInfo');
+		$sesDat = $GLOBALS['BE_USER']->getSessionData($this->sessionKey);
 
 			// Set current mapping info arrays:
 		$currentMappingInfo_head = is_array($sesDat['currentMappingInfo_head']) ? $sesDat['currentMappingInfo_head'] : array();
@@ -1357,14 +1389,14 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 		if ($cmd=='reload_from' || $cmd=='clear')	{
 			$currentMappingInfo_head = is_array($templatemapping['MappingInfo_head'])&&$cmd!='clear' ? $templatemapping['MappingInfo_head'] : array();
 			$sesDat['currentMappingInfo_head'] = $currentMappingInfo_head;
-			$GLOBALS['BE_USER']->setAndSaveSessionData($this->MCONF['name'].'_mappingInfo',$sesDat);
+			$GLOBALS['BE_USER']->setAndSaveSessionData($this->sessionKey, $sesDat);
 		} else {
 			if ($cmd=='save_data_mapping' || $cmd=='save_to')	{
 				$sesDat['currentMappingInfo_head'] = $currentMappingInfo_head = array(
 					'headElementPaths' => $checkboxElement,
 					'addBodyTag' => $addBodyTag?1:0
 				);
-				$GLOBALS['BE_USER']->setAndSaveSessionData($this->MCONF['name'].'_mappingInfo',$sesDat);
+				$GLOBALS['BE_USER']->setAndSaveSessionData($this->sessionKey, $sesDat);
 			}
 		}
 
@@ -1378,12 +1410,12 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			$this->cleanUpMappingInfoAccordingToDS($currentMappingInfo,$dataStruct);
 			$sesDat['currentMappingInfo'] = $currentMappingInfo;
 			$sesDat['dataStruct'] = $dataStruct;
-			$GLOBALS['BE_USER']->setAndSaveSessionData($this->MCONF['name'].'_mappingInfo',$sesDat);
+			$GLOBALS['BE_USER']->setAndSaveSessionData($this->sessionKey, $sesDat);
 		} else {
 			if ($cmd=='save_data_mapping' && is_array($inputData))	{
 				$sesDat['currentMappingInfo'] = $currentMappingInfo = $this->array_merge_recursive_overrule($currentMappingInfo,$inputData);
 				$sesDat['dataStruct'] = $dataStruct;		// Adding data structure to session data so that the PREVIEW window can access the DS easily...
-				$GLOBALS['BE_USER']->setAndSaveSessionData($this->MCONF['name'].'_mappingInfo',$sesDat);
+				$GLOBALS['BE_USER']->setAndSaveSessionData($this->sessionKey, $sesDat);
 			}
 		}
 
@@ -2079,7 +2111,8 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			'file' => $this->displayFile,
 			'table' => $this->displayTable,
 			'uid' => $this->displayUid,
-			'returnUrl' => $this->returnUrl
+			'returnUrl' => $this->returnUrl,
+			'_load_ds_xml_to' => $this->_load_ds_xml_to
 		);
 		$p = t3lib_div::implodeArrayForUrl('',array_merge($theArray,$array),'',1);
 
@@ -2297,7 +2330,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 	function displayFileContentWithPreview($content,$relPathFix)	{
 
 			// Getting session data to get currentMapping info:
-		$sesDat = $GLOBALS['BE_USER']->getSessionData($this->MCONF['name'].'_mappingInfo');
+		$sesDat = $GLOBALS['BE_USER']->getSessionData($this->sessionKey);
 		$currentMappingInfo = is_array($sesDat['currentMappingInfo']) ? $sesDat['currentMappingInfo'] : array();
 
 			// Init mark up object.
