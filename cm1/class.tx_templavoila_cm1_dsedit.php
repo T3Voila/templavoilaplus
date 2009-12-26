@@ -313,7 +313,7 @@ class tx_templavoila_cm1_dsEdit {
 						' . $this->pObj->cshItem('xMOD_tx_templavoila', 'mapping_editform', $this->pObj->doc->backPath, '', FALSE, 'margin-bottom: 0px;') . '
 					</td>
 
-					<td valign="top" style="padding: 0.5em;" colspan="2" rowspan="2">
+					<td valign="top" style="padding: 0.5em;" colspan="2">
 						'.$form.'
 						<script type="text/javascript">
 							var dsel_act = "' . (t3lib_div::_GP('dsel_act') ? t3lib_div::_GP('dsel_act') : 'general') . '";
@@ -367,7 +367,7 @@ class tx_templavoila_cm1_dsEdit {
 					<td colspan="2"></td>
 				</tr>
 				<tr class="tv-edit-row">
-					<td class="edit-ds-actioncontrols" colspan="4">
+					<td class="edit-ds-actioncontrols" colspan="6">
 					' . $formSubmit . '
 					</td>
 				</tr>';

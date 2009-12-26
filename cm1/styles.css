@@ -26,7 +26,7 @@ ul.DS-tree li {
 	padding: 0;
 	list-style-position: inside;
 	list-style-image: url(../res1/join.gif);
-	background: 0 0 url(../res1/line.gif) repeat-y transparent;
+	background: 0 0 url(../res1/line.gif) repeat-y transparent;"typo3conf/templavoila14/cm1/styles.css"
 }
 
 ul.DS-tree li.last-child {
@@ -113,6 +113,5 @@ tr.tv-edit-row div.tv-ts-tree {
 
 tr.tv-edit-row td.edit-ds-actioncontrols {
 	vertical-align: bottom;
-	text-align: right;
 	padding: 0.5em 1em 1em;
 }
