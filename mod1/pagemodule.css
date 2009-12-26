@@ -31,8 +31,10 @@ table {
 	padding: 5px;
 	border: 1px dashed #000;
 }
-.beTemplateCell .tpm-content-cell {
-	border: none;
+.tpm-container-element {
+	width: 100%; 
+	border: 1px solid black; 
+	margin-bottom:5px;
 }
 .tpm-container-element tr.tpm-titlebar-page {
 	background-color: #B8BEC9;
@@ -53,6 +55,14 @@ table {
 .tpm-container-element tr.tpm-titlebar-fromOtherPage span img,
 .tpm-container-element tr.tpm-titlebar-page span img {
 	padding-right: 3px;
+}
+
+.tpm-element-control {
+	text-align: right; 
+	vertical-align:top;
+}
+.tpm-element-title {
+	vertical-align:top;
 }
 
 /* non-used elements */

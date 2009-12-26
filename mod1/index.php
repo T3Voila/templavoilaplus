@@ -846,9 +846,9 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 			// Finally assemble the table:
 		$finalContent = '
-			<table cellpadding="0" cellspacing="0" style="width: 100%; border: 1px solid black; margin-bottom:5px;" class="' . $elementClass . '">
+			<table cellpadding="0" cellspacing="0" class="' . $elementClass . '">
 				<tr class="sortable_handle ' . $elementTitlebarClass .'">
-					<td style="vertical-align:top;">' .
+					<td class="tpm-element-title">' .
 						'<span class="nobr">' .
 						$languageIcon .
 						$titleBarLeftButtons .
@@ -856,7 +856,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 						'</span>' .
 						$warnings .
 					'</td>
-					<td nowrap="nowrap" style="text-align:right; vertical-align:top;">' .
+					<td nowrap="nowrap" class="tpm-element-control">' .
 						$titleBarRightButtons .
 					'</td>
 				</tr>
@@ -1041,7 +1041,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				if ($flagRenderBeLayout==TRUE) {
 					$beTemplateCell = '<table width="100%" class="beTemplateCell">
 					<tr>
-						<td class="bgColor4 tpm-title-cell">' . $LANG->sL($fieldContent['meta']['title'], 1) . '</td>
+						<td class="bgColor6 tpm-title-cell">' . $LANG->sL($fieldContent['meta']['title'], 1) . '</td>
 					</tr>
 					<tr>
 						<td ' . $cellIdStr . ' class="tpm-content-cell">' . $cellContent . '</td>
@@ -1051,7 +1051,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				} else {
 							// Add cell content to registers:
 					$width = round(100 / count($elementContentTreeArr['sub'][$sheet][$lKey]));
-					$headerCells[]='<td width="' . $width . '%" class="bgColor4 tpm-title-cell">' .
+					$headerCells[]='<td width="' . $width . '%" class="bgColor6 tpm-title-cell">' .
 						$LANG->sL($fieldContent['meta']['title'], 1) . '</td>';
 					$cells[]='<td '.$cellIdStr.' width="' . $width . '%" class="tpm-content-cell">' .
 						$cellContent.'</td>';
@@ -1818,7 +1818,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 						return '<a class="tpm-pageedit" href="index.php?'.$this->link_getParameters().'&amp;editPageLanguageOverlay='.$this->currentLanguageUid.'">'.$label.'</a>';
 					} else {
 						$onClick = t3lib_BEfunc::editOnClick('&edit['.$table.']['.$uid.']=edit', $this->doc->backPath);
-						return '<a class="tpm-edit" style="text-decoration: none;" href="#" onclick="'.htmlspecialchars($onClick).'">'.$label.'</a>';
+						return '<a class="tpm-edit" href="#" onclick="'.htmlspecialchars($onClick).'">'.$label.'</a>';
 					}
 				} else {
 					return $label;
