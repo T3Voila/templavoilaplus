@@ -371,7 +371,7 @@ class tx_templavoila_cm1_dsEdit {
 					' . $formSubmit . '
 					</td>
 				</tr>';
-			} elseif (!$this->pObj->DS_element && ($value['type']=='array' || $value['type']=='section') && !$this->pObj->mapElPath) {
+			} elseif (($value['type']=='array' || $value['type']=='section') && !$this->pObj->mapElPath) {
 				$addEditRows='<tr class="bgColor4">
 					<td colspan="7"><img src="clear.gif" width="'.(($level+1)*16).'" height="1" alt="" />'.
 					'<input type="text" name="'.md5($formPrefix.'['.$key.']').'" value="[' . htmlspecialchars($GLOBALS['LANG']->getLL('mapEnterNewFieldname')) . ']" onfocus="if (this.value==\'[' . $GLOBALS['LANG']->getLL('mapEnterNewFieldname') . ']\'){this.value=\'field_\';}" />'.
