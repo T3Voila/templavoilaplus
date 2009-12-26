@@ -1,5 +1,6 @@
 2009-12-26  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug: #12933: Show create new field also if edit a field in mapping module
 	* Fixed bug: #13091: Bring buttons in mapping module back to the left
 	* Follow-up to bugfix #13067: Missing CSS classes in page module
 
