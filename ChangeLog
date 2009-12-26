@@ -1,3 +1,7 @@
+2009-12-26  Steffen Kamper  <info@sk-typo3.de>
+
+	* Follow-up to bugfix #13067: Missing CSS classes in page module
+
 2009-12-23  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug: #6244: FCE backend-labels are not localized in the preview 
@@ -7,8 +11,8 @@
 
 2009-12-20  Steffen Kamper  <info@sk-typo3.de>
 
-	* Fixed bug: #13067: Missing CSS classes in page module 
-	* Fixed bug: #13040: HSC switch in Mapping editor doesn't save "0" 
+	* Fixed bug: #13067: Missing CSS classes in page module
+	* Fixed bug: #13040: HSC switch in Mapping editor doesn't save "0"
 	* Follow-up to bugfix #9980: Configurable eTypes for creating fields
 
 2009-12-19  Tolleiv Nietsch <nietsch@aoemedia.de>
