@@ -1,3 +1,7 @@
+2009-12-27  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug: #13103: With beLayout in TO FCEs with Container for elements are rendered wrong
+
 2009-12-26  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug: #12933: Show create new field also if edit a field in mapping module

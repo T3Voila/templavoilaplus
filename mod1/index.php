@@ -914,19 +914,25 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		$beTemplate = $elementContentTreeArr['ds_meta']['beLayout'];
 
 			// get used TO
-		$to = $this->apiObj->getContentTree_fetchPageTemplateObject($this->rootElementRecord);
-		if ($to['belayout']) {
-			$beTemplate = t3lib_div::getURL(PATH_site . $to['belayout']);
+		if( isset($elementContentTreeArr['el']['TO']) && intval($elementContentTreeArr['el']['TO'])) {
+			$toRecord = t3lib_BEfunc::getRecordWSOL('tx_templavoila_tmplobj', intval($elementContentTreeArr['el']['TO']));
+		} else {
+			$toRecord = $this->apiObj->getContentTree_fetchPageTemplateObject($this->rootElementRecord);
+		}
+
+		if ($toRecord['belayout']) {
+			$beTemplate = t3lib_div::getURL(PATH_site . $toRecord['belayout']);
 		} else {
 				// when TO doesn't have the beLayout look in DS record
-			$dsBeLayout = t3lib_BEfunc::getRecord('tx_templavoila_datastructure', $to['datastructure'], 'belayout');
-			if ($dsBeLayout['belayout']) {
-				$beTemplate = t3lib_div::getURL(PATH_site . $dsBeLayout['belayout']);
+			$dsRecord = t3lib_BEfunc::getRecordWSOL('tx_templavoila_datastructure', $toRecord['datastructure'], 'belayout');
+			if ($dsRecord['belayout']) {
+				$beTemplate = t3lib_div::getURL(PATH_site . $dsRecord['belayout']);
 			}
 		}
 
 				// no layout, no special rendering
 		$flagRenderBeLayout = $beTemplate? TRUE : FALSE;
+
 
 			// Traverse container fields:
 		foreach($elementContentTreeArr['sub'][$sheet][$lKey] as $fieldID => $fieldValuesContent)	{
