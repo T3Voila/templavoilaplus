@@ -1271,7 +1271,7 @@ class tx_templavoila_htmlmarkup {
 		if ($this->pathMode)	{
 			switch($this->pathMode)	{
 				default:
-					$counterIDstr = $firstTagName.($attr['class']?'.'.$attr['class']:'');	// Counter ID string
+					$counterIDstr = $firstTagName . ($attr['class'] ? '.' . preg_replace('/\s/', '~~~', $attr['class']) : '');	// Counter ID string
 					$this->elCountArray[$path][$counterIDstr]++;		// Increase counter, include
 						// IF id attribute is set, then THAT will reset everything since IDs must be unique. (expecting that ID is a string with no whitespace... at least not checking for that here!)
 					if ($attr['id'])	{

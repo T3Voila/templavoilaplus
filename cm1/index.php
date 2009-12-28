@@ -1855,6 +1855,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 						if ($currentMappingInfo[$key]['MAP_EL'])	{	// If mapping information exists...:
 							if (isset($contentSplittedByMapping['cArray'][$key]))	{	// If mapping of this information also succeeded...:
 								$cF = implode(chr(10),t3lib_div::trimExplode(chr(10),$contentSplittedByMapping['cArray'][$key],1));
+								$mappingElement = str_replace('~~~', ' ', $currentMappingInfo[$key]['MAP_EL']);
 								if (strlen($cF)>200)	{
 									$cF = t3lib_div::fixed_lgd_cs($cF,90).' '.t3lib_div::fixed_lgd_cs($cF,-90);
 								}
@@ -1867,10 +1868,10 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 
 								$rowCells['htmlPath'] = '<img' . $okayIcon . ' title="' .
 														htmlspecialchars($cF ? sprintf($GLOBALS['LANG']->getLL('displayDSContentFound'), strlen($contentSplittedByMapping['cArray'][$key])) . ($multilineTooltips ? ':' . chr(10) . chr(10) . $cF : '') : $GLOBALS['LANG']->getLL('displayDSContentEmpty')) . '" class="absmiddle" />'.
-														'<img' . $tagIcon . ' hspace="3" class="absmiddle" title="---' . htmlspecialchars(t3lib_div::fixed_lgd_cs($currentMappingInfo[$key]['MAP_EL'], -80)) . '" />' .
+														'<img' . $tagIcon . ' hspace="3" class="absmiddle" title="---' . htmlspecialchars(t3lib_div::fixed_lgd_cs($mappingElement, -80)) . '" />' .
 														($pI['modifier'] ? $pI['modifier'] . ($pI['modifier_value'] ? ':' . ($pI['modifier'] != 'RANGE' ? $pI['modifier_value'] : '...') : '') : '');
 								$rowCells['htmlPath'] = '<a href="'.$this->linkThisScript(array(
-																							'htmlPath'=>$path.($path?'|':'').preg_replace('/\/[^ ]*$/','',$currentMappingInfo[$key]['MAP_EL']),
+																							'htmlPath'=>$path.($path?'|':'').preg_replace('/\/[^ ]*$/','',$mappingElement),
 																							'showPathOnly'=>1,
 																							'DS_element' => t3lib_div::_GP('DS_element')
 																						)).'">'.$rowCells['htmlPath'].'</a>';
@@ -1895,7 +1896,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 								$isMapOK=1;
 							} else {	// Issue warning if mapping was lost:
 								$rowCells['htmlPath'] = '<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/icon_warning.gif', 'width="18" height="16"') .
-								' border="0" alt="" title="' . $GLOBALS['LANG']->getLL('msgNoContentFound') . '" class="absmiddle" />' . htmlspecialchars($currentMappingInfo[$key]['MAP_EL']);
+								' border="0" alt="" title="' . $GLOBALS['LANG']->getLL('msgNoContentFound') . '" class="absmiddle" />' . htmlspecialchars($mappingElement);
 							}
 						} else {	// For non-mapped cases, just output a no-break-space:
 							$rowCells['htmlPath'] = '&nbsp;';
