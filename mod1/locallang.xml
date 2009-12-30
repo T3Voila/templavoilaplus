@@ -101,6 +101,7 @@
 			<label index="element_localizations">Localizations</label>
 			<label index="records">Other elements (non-content)</label>
 			<label index="displayRecordsFrom">Display elements from:</label>
+			<label index="content_from_pid_title">Page uses content from this page: %s</label>
 		</languageKey>
 	</data>
 </T3locallang>

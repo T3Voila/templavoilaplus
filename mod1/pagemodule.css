@@ -8,6 +8,24 @@ table {
 	cursor:move;
 }
 
+/* warning */
+div.warning {
+	background-color:#ddeef9;
+	border-color:#8aafc4;
+	border:1px solid;
+	margin: 4px 0;
+	padding:6px;
+	font-weight: bold;
+	font-size: 11px;
+}
+div.warning img {
+	vertical-align: middle;
+	padding: 2px 1px;
+}
+div.warning a {
+	text-decoration: underline;
+}
+
 
 /* link icons */
 .tpm-bottom-controls {
