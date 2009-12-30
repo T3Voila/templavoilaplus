@@ -191,7 +191,7 @@ class tx_templavoila_cm1_dsEdit {
 					 */
 					if (($extra = $this->drawDataStructureMap_editItem_editTypeExtra(
 						$insertDataArray['tx_templavoila']['eType'],
-						$formFieldName.'[tx_templavoila][eType_EXTRA]',
+						$formFieldName,
 						($insertDataArray['tx_templavoila']['eType_EXTRA'] ?	// Use eType_EXTRA only if it is set (could be modified, etc), otherwise use TypoScriptObjPath!
 							$insertDataArray['tx_templavoila']['eType_EXTRA'] :
 								($insertDataArray['tx_templavoila']['TypoScriptObjPath'] ?
@@ -401,18 +401,23 @@ class tx_templavoila_cm1_dsEdit {
 		if (isset ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['cm1']['eTypesExtraFormFields'][$type])) {
 			$_params = array (
 				'type' => $type,
-				'formFieldName' => $formFieldName,
+				'formFieldName' => $formFieldName . '[tx_templavoila][eType_EXTRA]',
 				'curValue' => $curValue,
 			);
 			$output = t3lib_div::callUserFunction($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['cm1']['eTypesExtraFormFields'][$type], $_params, $this);
 		} else {
 			switch($type)	{
 				case 'TypoScriptObject':
+					$value = $curValue['objPath'] ? $curValue['objPath'] : 'lib.myObject';
 					$output = '
 						<table border="0" cellpadding="2" cellspacing="0">
 							<tr>
 								<td>' . $GLOBALS['LANG']->getLL('mapObjectPath') . ':</td>
-								<td><input type="text" name="'.$formFieldName.'[objPath]" value="'.htmlspecialchars($curValue['objPath'] ? $curValue['objPath'] : 'lib.myObject').'" /></td>
+								<td>
+									<input type="text" name="' . $formFieldName . '[tx_templavoila][eType_EXTRA][objPath]" value="'.htmlspecialchars($value) . '" onchange="$(\'hiddenTypoScriptObjPath\').value=this.value;" />
+									<input type="hidden" id="hiddenTypoScriptObjPath" name="' . $formFieldName . '[tx_templavoila][TypoScriptObjPath]" value="'.htmlspecialchars($value) . '" />
+
+								</td>
 							</tr>
 						</table>';
 				break;
