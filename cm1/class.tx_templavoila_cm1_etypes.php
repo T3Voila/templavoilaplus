@@ -130,7 +130,7 @@ class tx_templavoila_cm1_eTypes {
 
 							/* preserve previous config, if explicitly set */
 							if (!isset($elArray[$key]['tx_templavoila']['proc']['HSC'])) {
-							$elArray[$key]['tx_templavoila']['proc']['HSC']=1;
+								$elArray[$key]['tx_templavoila']['proc']['HSC'] = 1;
 							}
 						break;
 						case 'rte':
@@ -322,8 +322,10 @@ class tx_templavoila_cm1_eTypes {
 					if (isset($elArray[$key]['tx_templavoila']['TypoScriptObjPath'])) {
 						unset($elArray[$key]['tx_templavoila']['TypoScriptObjPath']);
 					}
-				}
-				else if (isset($elArray[$key]['tx_templavoila']['eType_EXTRA']['objPath'])) {
+					if (isset($elArray[$key]['tx_templavoila']['eType_EXTRA']['objPath'])) {
+						unset($elArray[$key]['tx_templavoila']['eType_EXTRA']['objPath']);
+					}
+				} elseif (isset($elArray[$key]['tx_templavoila']['eType_EXTRA']['objPath'])) {
 					unset($elArray[$key]['tx_templavoila']['eType_EXTRA']['objPath']);
 					if (count($elArray[$key]['tx_templavoila']['eType_EXTRA']) == 0) {
 						unset($elArray[$key]['tx_templavoila']['eType_EXTRA']);

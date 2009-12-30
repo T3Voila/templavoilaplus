@@ -1,5 +1,6 @@
 2009-12-30  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug: #13089: Mapping: when creating a field eType TyposcriptObjectPath, add and then change the objectPath will be written to DS
 	* Fixed bug: #13032: Inform if page use content_from_pid
 	* Fixed bug: #13083: Not possible to update TS Object PATH
 
