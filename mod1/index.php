@@ -469,6 +469,8 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				// Start creating HTML output
 			$this->content .= $this->doc->startPage($LANG->getLL('title'));
 			$render_editPageScreen = true;
+
+
 				// Show message if the page is of a special doktype:
 			if ($this->rootElementTable == 'pages') {
 
@@ -500,8 +502,32 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			}
 
 			if ($render_editPageScreen) {
+				$editCurrentPageHTML = '';
+
+					// warn if page renders content from other page
+				if ($this->rootElementRecord['content_from_pid']) {
+					$contentPage = t3lib_BEfunc::getRecord('pages', intval($this->rootElementRecord['content_from_pid']));
+					$title = t3lib_BEfunc::getRecordTitle('pages', $contentPage);
+					$linkToPid = 'index.php?id=' . intval($this->rootElementRecord['content_from_pid']);
+					$link = '<a href="' . $linkToPid . '">' . htmlspecialchars($title) . ' (PID ' . intval($this->rootElementRecord['content_from_pid']) . ')</a>';
+					if (t3lib_div::compat_version('4.3')) {
+						$flashMessage = t3lib_div::makeInstance(
+							't3lib_FlashMessage',
+							'',
+							sprintf($LANG->getLL('content_from_pid_title'), $link),
+							t3lib_FlashMessage::INFO
+						);
+						$editCurrentPageHTML = $flashMessage->render();
+					} else {
+						$editCurrentPageHTML = '<div class="warning">' .
+							$this->doc->icons(2) . ' ' .
+							sprintf($LANG->getLL('content_from_pid_title'), $link) .
+							'</div>';
+					}
+
+				}
 					// Render "edit current page" (important to do before calling ->sideBarObj->render() - otherwise the translation tab is not rendered!
-				$editCurrentPageHTML = $this->render_editPageScreen();
+				$editCurrentPageHTML .= $this->render_editPageScreen();
 
 				if (t3lib_div::_GP('ajaxUnlinkRecord')) {
 					$this->render_editPageScreen();
