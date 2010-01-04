@@ -1,5 +1,6 @@
 2010-01-04  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug: #13105: Bugfix: Cut and paste element
 	* Fixed bug: #2081: Using static DSes for Page and FCE
 
 2009-12-30  Steffen Kamper  <info@sk-typo3.de>
