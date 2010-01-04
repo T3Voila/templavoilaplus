@@ -194,6 +194,8 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 	var $dsEdit;				// instance of class tx_templavoila_cm1_dsEdit
 	var $eTypes;				// instance of class tx_templavoila_cm1_eTypes
 
+	var $extConf;				// holds the extconf configuration
+	var $staticDS = FALSE;		// Boolean; if true DS records are file based
 
 	/**
 	 * Adds items to the ->MOD_MENU array. Used for the function menu selector.
@@ -254,6 +256,8 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 		$this->eTypes = t3lib_div::getUserObj ('tx_templavoila_cm1_eTypes','');
 		$this->eTypes->init($this);
 
+		$this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
+		$this->staticDS = ($this->extConf['staticDS.']['enable']);
 
 			// Setting GPvars:
 		$this->mode = t3lib_div::_GP('mode');
@@ -544,7 +548,11 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			}
 			if ($this->_load_ds_xml_to) {
 				$toREC = t3lib_BEfunc::getRecordWSOL('tx_templavoila_tmplobj', $this->_load_ds_xml_to);
-				$dsREC = t3lib_BEfunc::getRecordWSOL('tx_templavoila_datastructure',$toREC['datastructure']);
+				if ($this->staticDS) {
+					$dsREC['dataprot'] = t3lib_div::getURL(PATH_site . $toREC['datastructure']);
+				} else {
+					$dsREC = t3lib_BEfunc::getRecordWSOL('tx_templavoila_datastructure', $toREC['datastructure']);
+				}
 			}
 
 				// Loading DS from either XML or a Template Object (containing reference to DS)
@@ -683,45 +691,59 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			switch($cmd)	{
 					// If it is requested to save the current DS and mapping information to a DS and TO record, then...:
 				case 'saveDSandTO':
-
-						// DS:
-					$dataArr=array();
-					$dataArr['tx_templavoila_datastructure']['NEW']['pid']=intval($this->_saveDSandTO_pid);
-					$dataArr['tx_templavoila_datastructure']['NEW']['title']=$this->_saveDSandTO_title;
-					$dataArr['tx_templavoila_datastructure']['NEW']['scope']=$this->_saveDSandTO_type;
-
-						// Modifying data structure with conversion of preset values for field types to actual settings:
-					$storeDataStruct = $dataStruct;
-					if (is_array($storeDataStruct['ROOT']['el']))
-						$this->eTypes->substEtypeWithRealStuff($storeDataStruct['ROOT']['el'],$contentSplittedByMapping['sub']['ROOT'],$dataArr['tx_templavoila_datastructure']['NEW']['scope']);
-					$dataProtXML = t3lib_div::array2xml_cs($storeDataStruct,'T3DataStructure', array('useCDATA' => 1));
-					$dataArr['tx_templavoila_datastructure']['NEW']['dataprot'] = $dataProtXML;
-
+					$newID = '';
 						// Init TCEmain object and store:
 					$tce = t3lib_div::makeInstance("t3lib_TCEmain");
 					$tce->stripslashes_values=0;
-					$tce->start($dataArr,array());
-					$tce->process_datamap();
+
+
+					// DS:
+
+						// Modifying data structure with conversion of preset values for field types to actual settings:
+					$storeDataStruct = $dataStruct;
+					if (is_array($storeDataStruct['ROOT']['el'])) {
+						$this->eTypes->substEtypeWithRealStuff($storeDataStruct['ROOT']['el'],$contentSplittedByMapping['sub']['ROOT'],$dataArr['tx_templavoila_datastructure']['NEW']['scope']);
+					}
+					$dataProtXML = t3lib_div::array2xml_cs($storeDataStruct,'T3DataStructure', array('useCDATA' => 1));
+
+					if ($this->staticDS) {
+						$title = preg_replace('|[/,\."\']+|', '_', $this->_saveDSandTO_title) . ' (' . ($this->_saveDSandTO_type == 1 ? 'page' : 'fce') . ').xml';
+						$path = PATH_site . ($this->_saveDSandTO_type == 2 ? $this->extConf['staticDS.']['path_fce'] : $this->extConf['staticDS.']['path_page']) . $title;
+						t3lib_div::writeFile($path, $dataProtXML);
+						$newID = substr($path, strlen(PATH_site));
+					} else {
+						$dataArr=array();
+						$dataArr['tx_templavoila_datastructure']['NEW']['pid'] = intval($this->_saveDSandTO_pid);
+						$dataArr['tx_templavoila_datastructure']['NEW']['title'] = $this->_saveDSandTO_title;
+						$dataArr['tx_templavoila_datastructure']['NEW']['scope'] = $this->_saveDSandTO_type;
+						$dataArr['tx_templavoila_datastructure']['NEW']['dataprot'] = $dataProtXML;
+
+							// start data processing
+						$tce->start($dataArr,array());
+						$tce->process_datamap();
+						$newID = intval($tce->substNEWwithIDs['NEW']);
+					}
 
 						// If that succeeded, create the TO as well:
-					if ($tce->substNEWwithIDs['NEW'])	{
+					if ($newID)	{
 						$dataArr=array();
-						$dataArr['tx_templavoila_tmplobj']['NEW']['pid']=intval($this->_saveDSandTO_pid);
-						$dataArr['tx_templavoila_tmplobj']['NEW']['title']=$this->_saveDSandTO_title.' [Template]';
-						$dataArr['tx_templavoila_tmplobj']['NEW']['datastructure']=intval($tce->substNEWwithIDs['NEW']);
-						$dataArr['tx_templavoila_tmplobj']['NEW']['fileref']=substr($this->displayFile,strlen(PATH_site));
-						$dataArr['tx_templavoila_tmplobj']['NEW']['templatemapping']=serialize($templatemapping);
+						$dataArr['tx_templavoila_tmplobj']['NEW']['pid'] = intval($this->_saveDSandTO_pid);
+						$dataArr['tx_templavoila_tmplobj']['NEW']['title'] = $this->_saveDSandTO_title . ' [Template]';
+						$dataArr['tx_templavoila_tmplobj']['NEW']['datastructure'] = $newID;
+						$dataArr['tx_templavoila_tmplobj']['NEW']['fileref'] = substr($this->displayFile, strlen(PATH_site));
+						$dataArr['tx_templavoila_tmplobj']['NEW']['templatemapping'] = serialize($templatemapping);
 						$dataArr['tx_templavoila_tmplobj']['NEW']['fileref_mtime'] = @filemtime($this->displayFile);
 						$dataArr['tx_templavoila_tmplobj']['NEW']['fileref_md5'] = @md5_file($this->displayFile);
 
 							// Init TCEmain object and store:
-						$tce = t3lib_div::makeInstance("t3lib_TCEmain");
-						$tce->stripslashes_values=0;
 						$tce->start($dataArr,array());
 						$tce->process_datamap();
 
 						if ($tce->substNEWwithIDs['NEW'])	{
-							$msg[] = '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/icon_ok.gif', 'width="18" height="16"').' border="0" align="top" class="absmiddle" alt="" />'.sprintf($GLOBALS['LANG']->getLL('msgDSTOSaved'), $dataArr['tx_templavoila_tmplobj']['NEW']['datastructure'], $tce->substNEWwithIDs['NEW'], $this->_saveDSandTO_pid);
+							$msg[] = '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/icon_ok.gif', 'width="18" height="16"').' border="0" align="top" class="absmiddle" alt="" />' .
+								sprintf($GLOBALS['LANG']->getLL('msgDSTOSaved'),
+								$dataArr['tx_templavoila_tmplobj']['NEW']['datastructure'],
+								$tce->substNEWwithIDs['NEW'], $this->_saveDSandTO_pid);
 						} else {
 							$msg[] = '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/icon_warning.gif', 'width="18" height="16"').' border="0" align="top" class="absmiddle" alt="" /><strong>'.$GLOBALS['LANG']->getLL('error').':</strong> '.sprintf($GLOBALS['LANG']->getLL('errorTONotSaved'), $dataArr['tx_templavoila_tmplobj']['NEW']['datastructure']);
 						}
@@ -743,27 +765,40 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 					if ($cmd == 'updateDSandTO') {
 							// Looking up the records by their uids:
 						$toREC = t3lib_BEfunc::getRecordWSOL('tx_templavoila_tmplobj',$this->_saveDSandTO_TOuid);
-						$dsREC = t3lib_BEfunc::getRecordWSOL('tx_templavoila_datastructure',$toREC['datastructure']);
+					} else {
+						$toREC = t3lib_BEfunc::getRecordWSOL('tx_templavoila_tmplobj',$this->_load_ds_xml_to);
+					}
+				if ($this->staticDS) {
+						$dsREC['uid'] = $toREC['datastructure'];
+					} else {
+						$dsREC = t3lib_BEfunc::getRecordWSOL('tx_templavoila_datastructure', $toREC['datastructure']);
 					}
 
 						// If they are found, continue:
 					if ($toREC['uid'] && $dsREC['uid'])	{
-
-							// DS:
-						$dataArr=array();
-
-							// Modifying data structure with conversion of preset values for field types to actual settings:
-						$storeDataStruct=$dataStruct;
-						if (is_array($storeDataStruct['ROOT']['el']))
-							$this->eTypes->substEtypeWithRealStuff($storeDataStruct['ROOT']['el'],$contentSplittedByMapping['sub']['ROOT'],$dsREC['scope']);
-						$dataProtXML = t3lib_div::array2xml_cs($storeDataStruct,'T3DataStructure', array('useCDATA' => 1));
-						$dataArr['tx_templavoila_datastructure'][$dsREC['uid']]['dataprot'] = $dataProtXML;
-
 							// Init TCEmain object and store:
 						$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 						$tce->stripslashes_values=0;
-						$tce->start($dataArr,array());
-						$tce->process_datamap();
+
+							// Modifying data structure with conversion of preset values for field types to actual settings:
+						$storeDataStruct=$dataStruct;
+						if (is_array($storeDataStruct['ROOT']['el'])) {
+							$this->eTypes->substEtypeWithRealStuff($storeDataStruct['ROOT']['el'],$contentSplittedByMapping['sub']['ROOT'],$dsREC['scope']);
+						}
+						$dataProtXML = t3lib_div::array2xml_cs($storeDataStruct,'T3DataStructure', array('useCDATA' => 1));
+
+							// DS:
+						if ($this->staticDS) {
+							$path = PATH_site . $dsREC['uid'];
+							t3lib_div::writeFile($path, $dataProtXML);
+						} else {
+							$dataArr=array();
+							$dataArr['tx_templavoila_datastructure'][$dsREC['uid']]['dataprot'] = $dataProtXML;
+
+								// process data
+							$tce->start($dataArr,array());
+							$tce->process_datamap();
+						}
 
 							// TO:
 						$TOuid = t3lib_BEfunc::wsMapId('tx_templavoila_tmplobj',$toREC['uid']);
@@ -773,9 +808,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 						$dataArr['tx_templavoila_tmplobj'][$TOuid]['fileref_mtime'] = @filemtime($this->displayFile);
 						$dataArr['tx_templavoila_tmplobj'][$TOuid]['fileref_md5'] = @md5_file($this->displayFile);
 
-							// Init TCEmain object and store:
-						$tce = t3lib_div::makeInstance('t3lib_TCEmain');
-						$tce->stripslashes_values=0;
+
 						$tce->start($dataArr,array());
 						$tce->process_datamap();
 
@@ -809,14 +842,24 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 					<td class="bgColor5">&nbsp;</td>
 					<td class="bgColor5"><strong>' . $GLOBALS['LANG']->getLL('templateObject') . ':</strong></td>
 					<td class="bgColor4">' . ($toREC ? htmlspecialchars($toREC['title']) : $GLOBALS['LANG']->getLL('mappingNEW')) . '</td>
-				</tr>
+				</tr>';
+			if ($this->staticDS) {
+				$onClick = 'return top.openUrlInWindow(\'' . t3lib_div::getIndpEnv('TYPO3_SITE_URL') . $toREC['datastructure'] . '\',\'FileView\');';
+				$tRows[]='
+				<tr>
+					<td class="bgColor5">&nbsp;</td>
+					<td class="bgColor5"><strong>' . $GLOBALS['LANG']->getLL('renderDSO_XML') . ':</strong></td>
+					<td class="bgColor4"><a href="#" onclick="' . htmlspecialchars($onClick) . '">'.htmlspecialchars($toREC['datastructure']).'</a></td>
+				</tr>';
+			} else {
+				$tRows[]='
 				<tr>
 					<td class="bgColor5">&nbsp;</td>
 					<td class="bgColor5"><strong>' . $GLOBALS['LANG']->getLL('renderTO_dsRecord') . ':</strong></td>
 					<td class="bgColor4">' . ($dsREC ? htmlspecialchars($dsREC['title']) : $GLOBALS['LANG']->getLL('mappingNEW')) . '</td>
-				</tr>
+				</tr>';
+			}
 
-				';
 				// Write header of page:
 			$content.='
 
@@ -858,15 +901,29 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 				// Template Object records:
 			$opt=array();
 			$opt[]='<option value="0"></option>';
-			$res = $TYPO3_DB->exec_SELECTquery (
-				'tx_templavoila_tmplobj.*,tx_templavoila_datastructure.scope',
-				'tx_templavoila_tmplobj LEFT JOIN tx_templavoila_datastructure ON tx_templavoila_datastructure.uid=tx_templavoila_tmplobj.datastructure',
-				'tx_templavoila_tmplobj.pid IN ('.$this->storageFolders_pidList.') AND tx_templavoila_tmplobj.datastructure>0 '.
-					t3lib_BEfunc::deleteClause('tx_templavoila_tmplobj').
-					t3lib_BEfunc::versioningPlaceholderClause('tx_templavoila_tmplobj'),
-				'',
-				'tx_templavoila_datastructure.scope, tx_templavoila_tmplobj.title'
-			);
+			if ($this->staticDS) {
+				$res = $TYPO3_DB->exec_SELECTquery (
+					'*, CASE WHEN LOCATE(' . $GLOBALS['TYPO3_DB']->fullQuoteStr('(fce)', 'tx_templavoila_tmplobj') . ', datastructure)>0 THEN 2 ELSE 1 END AS scope',
+					'tx_templavoila_tmplobj',
+					'pid IN ('.$this->storageFolders_pidList.') AND datastructure!=' . $GLOBALS['TYPO3_DB']->fullQuoteStr('', 'tx_templavoila_tmplobj') .
+						t3lib_BEfunc::deleteClause('tx_templavoila_tmplobj').
+						t3lib_BEfunc::versioningPlaceholderClause('tx_templavoila_tmplobj'),
+					'',
+					'scope,title'
+				);
+
+			} else {
+				$res = $TYPO3_DB->exec_SELECTquery (
+					'tx_templavoila_tmplobj.*,tx_templavoila_datastructure.scope',
+					'tx_templavoila_tmplobj LEFT JOIN tx_templavoila_datastructure ON tx_templavoila_datastructure.uid=tx_templavoila_tmplobj.datastructure',
+					'tx_templavoila_tmplobj.pid IN ('.$this->storageFolders_pidList.') AND tx_templavoila_tmplobj.datastructure>0 '.
+						t3lib_BEfunc::deleteClause('tx_templavoila_tmplobj').
+						t3lib_BEfunc::versioningPlaceholderClause('tx_templavoila_tmplobj'),
+					'',
+					'tx_templavoila_datastructure.scope, tx_templavoila_tmplobj.title'
+				);
+
+			}
 			$sFolder = '';
 			$optGroupOpen = false;
 			while(false !== ($row = $TYPO3_DB->sql_fetch_assoc($res)))	{
@@ -1023,7 +1080,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 	 */
 	function renderDSO()	{
 		global $TYPO3_DB;
-		if (intval($this->displayUid)>0)	{
+		if (intval($this->displayUid)>0)	{ // TODO: static ds support
 			$row = t3lib_BEfunc::getRecordWSOL('tx_templavoila_datastructure',$this->displayUid);
 			if (is_array($row))	{
 
@@ -1241,6 +1298,20 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 								<tr class="bgColor4">
 									<td>' . $GLOBALS['LANG']->getLL('renderTO_dsFile') . ':</td>
 									<td><a href="#" onclick="'.htmlspecialchars($onCl).'">'.htmlspecialchars($relFilePath).'</a></td>
+								</tr>';
+							$onCl = 'index.php?file=' . rawurlencode($theFile) . '&_load_ds_xml=1&_load_ds_xml_to=' . $row['uid'] . '&uid=' . rawurlencode($DSOfile) . '&returnUrl=' . $this->returnUrl;
+							$onClMsg = '
+								if (confirm(unescape(\''.rawurlencode($GLOBALS['LANG']->getLL('renderTO_updateWarningConfirm')).'\'))) {
+									document.location=\''.$onCl.'\';
+								}
+								return false;
+								';
+							$tRows[]='
+								<tr class="bgColor4">
+									<td>&nbsp;</td>
+									<td><input type="submit" name="_" value="' . $GLOBALS['LANG']->getLL('renderTO_editDSTO') . '" onclick="'.htmlspecialchars($onClMsg).'"/>'.
+										$this->cshItem('xMOD_tx_templavoila','mapping_to_modifyDSTO',$this->doc->backPath,'').
+										'</td>
 								</tr>';
 
 								// Read Data Structure:

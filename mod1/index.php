@@ -152,6 +152,9 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	var $sortableContainers = array();				// Contains the containers for drag and drop
 	var $sortableItems = array();					// Registry for all id => flexPointer-Pairs
 
+	var $extConf;									// holds the extconf configuration
+	var $staticDS = FALSE;							// Boolean; if true DS records are file based
+
 	var $blindIcons = array();						// Icons which shouldn't be rendered by configuration, can contain elements of "new,edit,copy,cut,ref,paste,browse,delete,makeLocal,unlink,hide"
 
 	protected $debug = FALSE;
@@ -176,6 +179,9 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		$this->modTSconfig = t3lib_BEfunc::getModTSconfig($this->id, 'mod.' . $this->MCONF['name']);
 		$this->modSharedTSconfig = t3lib_BEfunc::getModTSconfig($this->id, 'mod.SHARED');
 		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::_GP('SET'), $this->MCONF['name']);
+
+		$this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
+		$this->staticDS = ($this->extConf['staticDS.']['enable']);
 
 		$this->altRoot = t3lib_div::_GP('altRoot');
 		$this->versionId = t3lib_div::_GP('versionId');
@@ -950,10 +956,17 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			$beTemplate = t3lib_div::getURL(PATH_site . $toRecord['belayout']);
 		} else {
 				// when TO doesn't have the beLayout look in DS record
+			if ($this->staticDS) {
+				$beLayoutFile = PATH_site . substr($toRecord['datastructure'], 0, -3) . 'html';
+				if ($toRecord['datastructure'] && file_exists($beLayoutFile)) {
+					$beTemplate = t3lib_div::getURL($beLayoutFile);
+				}
+			} else {
 			$dsRecord = t3lib_BEfunc::getRecordWSOL('tx_templavoila_datastructure', $toRecord['datastructure'], 'belayout');
 			if ($dsRecord['belayout']) {
 				$beTemplate = t3lib_div::getURL(PATH_site . $dsRecord['belayout']);
 			}
+		}
 		}
 
 				// no layout, no special rendering
