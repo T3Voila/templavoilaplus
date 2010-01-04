@@ -92,6 +92,7 @@ function sortable_updateItemButtons(el, position, pID) {
 				case 'tpm-cut':
 				case 'tpm-copy':
 				case 'tpm-ref':
+					node.href = node.href.replace(/CB\[el\]\[([^\]]+)\]=[^&]+/, "CB[el][$1]=" +  newPos); 
 					break;
 				case 'tpm-pasteAfter':
 				case 'tpm-pasteSubRef':

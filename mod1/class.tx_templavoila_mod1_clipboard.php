@@ -156,7 +156,7 @@ class tx_templavoila_mod1_clipboard {
 		$refIcon = '<img'.t3lib_iconWorks::skinImg($this->pObj->doc->backPath,t3lib_extMgm::extRelPath('templavoila').'mod1/clip_ref'.($clipActive_ref ? '_h':'').'.gif','').' title="'.$LANG->getLL ('createreference').'" vspace="2" hspace="2" alt="" />';
 
 		$removeElement = '&amp;CB[removeAll]=normal';
-		$setElement = '&amp;CB[el]['.rawurlencode('tt_content|'.$elementRecord['uid']).']=1';
+		$setElement = '&amp;CB[el]['.rawurlencode('tt_content|'.$elementRecord['uid']).']='.rawurlencode($this->pObj->apiObj->flexform_getStringFromPointer($elementPointer));
 		$setElementRef = '&amp;CB[el]['.rawurlencode('tt_content|'.$elementRecord['uid']).']=1';
 
 		$linkCopy = '<a class="tpm-copy" href="index.php?'.$this->pObj->link_getParameters().'&amp;CB[setCopyMode]=1&amp;CB[setFlexMode]=copy'.($clipActive_copy ? $removeElement : $setElement).'">'.$copyIcon.'</a>';
