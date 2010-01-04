@@ -115,7 +115,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 	var $errorsWarnings=array();
 
 	var $cm1Link = '../cm1/index.php';
-	
+
 
     function init() {
         parent::init();
@@ -322,7 +322,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 				if ($path)	{
 					$tRows[] = '
 						<tr class="bgColor4">
-							<td><a href="index.php?id=' . $pid . '" onclick="setHighlight(' . $pid . ')">' . 
+							<td><a href="index.php?id=' . $pid . '" onclick="setHighlight(' . $pid . ')">' .
 								t3lib_iconWorks::getIconImage('pages', t3lib_BEfunc::getRecord('pages', $pid), $this->doc->backPath, 'class="absmiddle" title="'. htmlspecialchars($alttext) . '"') .
 								htmlspecialchars($path).'</a></td>
 							<td>'.htmlspecialchars($stat['DS']).'</td>
@@ -348,20 +348,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 	function renderModuleContent_mainView()	{
 		global $LANG;
 
-			// Select all Data Structures in the PID and put into an array:
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-					'*',
-					'tx_templavoila_datastructure',
-					'pid='.intval($this->id).t3lib_BEfunc::deleteClause('tx_templavoila_datastructure'),
-					'',
-					'title'
-				);
-		$dsRecords = array();
-		while($res && false !== ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)))	{
-			t3lib_BEfunc::workspaceOL('tx_templavoila_datastructure',$row);
-			$dsRecords[$row['scope']][] = $row;
-		}
-		$GLOBALS['TYPO3_DB']->sql_free_result($res);
+
 
 			// Select all static Data Structures and add to array:
 		if (is_array($GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['staticDataStructures']))	{
@@ -369,6 +356,21 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 				$staticDS['_STATIC'] = 1;
 				$dsRecords[$staticDS['scope']][] = $staticDS;
 			}
+		} else {
+				// Select all Data Structures in the PID and put into an array:
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+						'*',
+						'tx_templavoila_datastructure',
+						'pid='.intval($this->id).t3lib_BEfunc::deleteClause('tx_templavoila_datastructure'),
+						'',
+						'title'
+					);
+			$dsRecords = array();
+			while($res && false !== ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)))	{
+				t3lib_BEfunc::workspaceOL('tx_templavoila_datastructure',$row);
+				$dsRecords[$row['scope']][] = $row;
+			}
+			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		}
 
 			// Select all Template Records in PID:
@@ -605,12 +607,12 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 				// Put together the records icon including content sensitive menu link wrapped around it:
 			$recordIcon = t3lib_iconWorks::getIconImage('tx_templavoila_datastructure',$dsR,$this->doc->backPath,'class="absmiddle"');
 			$recordIcon = $this->doc->wrapClickMenuOnIcon($recordIcon, 'tx_templavoila_datastructure', $dsR['uid'], 1, '&callingScriptId='.rawurlencode($this->doc->scriptID));
- 
+
 				// Preview icon:
 			if ($dsR['previewicon'])	{
 				if (isset($this->modTSconfig['properties']['dsPreviewIconThumb']) && $this->modTSconfig['properties']['dsPreviewIconThumb'] != '0') {
-					$icon = t3lib_BEfunc::getThumbNail($this->doc->backPath . 'thumbs.php', PATH_site . 'uploads/tx_templavoila/' . $dsR['previewicon'], 
-						'hspace="5" vspace="5" border="1"', 
+					$icon = t3lib_BEfunc::getThumbNail($this->doc->backPath . 'thumbs.php', PATH_site . 'uploads/tx_templavoila/' . $dsR['previewicon'],
+						'hspace="5" vspace="5" border="1"',
 						strpos($this->modTSconfig['properties']['dsPreviewIconThumb'], 'x') ? $this->modTSconfig['properties']['dsPreviewIconThumb'] : '');
 				} else {
 					$icon = '<img src="'.$this->doc->backPath.'../uploads/tx_templavoila/'.$dsR['previewicon'].'" alt="" />';
@@ -679,13 +681,14 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 		} else {	// DS was a file:
 
 				// XML file icon:
-			$recordIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/fileicons/xml.gif','width="18" height="16"').' alt="" class="absmiddle" />';
+			$onClick = 'document.location=\'' . $this->doc->backPath . 'file_edit.php?target=' . rawurlencode(PATH_site . $dsR['path']) . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')) . '\';';
+			$recordIcon = '<a href="#" onclick="' . htmlspecialchars($onClick) . '"><img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/fileicons/xml.gif','width="18" height="16"').' alt="" class="absmiddle" /></a>';
 
 				// Preview icon:
 			if ($dsR['icon'] && $iconPath = t3lib_div::getFileAbsFileName($dsR['icon']))	{
 				if (isset($this->modTSconfig['properties']['dsPreviewIconThumb']) && $this->modTSconfig['properties']['dsPreviewIconThumb'] != '0') {
-					$icon = t3lib_BEfunc::getThumbNail($this->doc->backPath . 'thumbs.php', PATH_site . 'uploads/tx_templavoila/' . $dsR['previewicon'], 
-						'hspace="5" vspace="5" border="1"', 
+					$icon = t3lib_BEfunc::getThumbNail($this->doc->backPath . 'thumbs.php', PATH_site . 'uploads/tx_templavoila/' . $dsR['previewicon'],
+						'hspace="5" vspace="5" border="1"',
 						strpos($this->modTSconfig['properties']['dsPreviewIconThumb'], 'x') ? $this->modTSconfig['properties']['dsPreviewIconThumb'] : '');
 				} else {
 					$icon = '<img src="'.$this->doc->backPath.'../'.substr($iconPath,strlen(PATH_site)).'" alt="" />';
@@ -779,7 +782,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 		if ($toObj['previewicon'])	{
 			if (isset($this->modTSconfig['properties']['toPreviewIconThumb']) && $this->modTSconfig['properties']['toPreviewIconThumb'] != '0') {
 					$icon = t3lib_BEfunc::getThumbNail($this->doc->backPath . 'thumbs.php', PATH_site . 'uploads/tx_templavoila/' . $toObj['previewicon'],
-						'hspace="5" vspace="5" border="1"', 
+						'hspace="5" vspace="5" border="1"',
 						strpos($this->modTSconfig['properties']['toPreviewIconThumb'], 'x') ? $this->modTSconfig['properties']['toPreviewIconThumb'] : '');
 				} else {
 					$icon = '<img src="'.$this->doc->backPath.'../uploads/tx_templavoila/'.$toObj['previewicon'].'" alt="" />';
@@ -1292,8 +1295,8 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 
 				// TEMPLATE ARCHIVE:
 			if ($this->modTSconfig['properties']['templatePath'])	{
-				$paths = t3lib_div::trimExplode(',', $this->modTSconfig['properties']['templatePath'], true); 
-				$prefix = t3lib_div::getFileAbsFileName($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir']); 
+				$paths = t3lib_div::trimExplode(',', $this->modTSconfig['properties']['templatePath'], true);
+				$prefix = t3lib_div::getFileAbsFileName($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir']);
 				if (count($paths) > 0 && is_array($GLOBALS['FILEMOUNTS']))	{
 					foreach($GLOBALS['FILEMOUNTS'] as $mountCfg)	{
 						// look in paths if it's part of mounted path
@@ -1301,9 +1304,9 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 						$files = array();
 						foreach ($paths as $path) {
 							if (t3lib_div::isFirstPartOfStr($prefix . $path, $mountCfg['path'])) {
-								$isPart = true;   
+								$isPart = true;
 								$files = array_merge(t3lib_div::getFilesInDir($prefix . $path, 'html,htm,tmpl',1), $files);
-							}	
+							}
 						}
 						if ($isPart) {
 								// USED FILES:
@@ -1314,7 +1317,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 									<td align="center">Usage count</td>
 									<td>New DS/TO</td>
 								</tr>';
-                            
+
                             $i = 0;
 							foreach($files as $tFile)	{
 								$tRows[] = '
