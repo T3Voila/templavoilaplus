@@ -1,5 +1,6 @@
 2010-01-05  Steffen Kamper  <info@sk-typo3.de>
 
+	* Follow-up to bugfix #2081: Using static DSes for Page and FCE
 	* Fixed bug: #4171: New Record Wizard confusing selection -> Hidding 'Default template'
 
 2010-01-04  Tolleiv Nietsch <nietsch@aoemedia.de>

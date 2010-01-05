@@ -262,6 +262,7 @@ class tx_templavoila_mod1_wizards {
 
 		$storageFolderPID = $this->apiObj->getStorageFolderPid($positionPid);
 		$tmplHTML = array();
+		$staticDS = (count($GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['staticDataStructures']));
 
 		switch ($templateType) {
 			case 'tmplobj':
@@ -269,21 +270,36 @@ class tx_templavoila_mod1_wizards {
 						//Fetch Default TO
 				$fakeRow = array('uid' => abs($positionPid));
 				$defaultTO = $this->pObj->apiObj->getContentTree_fetchPageTemplateObject($fakeRow);
-
-					//Fetch all TO's but the default
 				$tTO = 'tx_templavoila_tmplobj';
 				$tDS = 'tx_templavoila_datastructure';
-				$where = $tTO . '.parent=0 AND ' . $tTO . '.pid=' .
-						intval($storageFolderPID).' AND ' . $tDS . '.scope=1' .
-						$this->buildRecordWhere($tTO) . $this->buildRecordWhere($tDS) .
-						t3lib_befunc::deleteClause ($tTO).t3lib_befunc::deleteClause ($tDS).
-						t3lib_BEfunc::versioningPlaceholderClause($tTO).t3lib_BEfunc::versioningPlaceholderClause($tDS);
 
-				$res = $TYPO3_DB->exec_SELECTquery (
-					$tTO . '.*',
-					$tTO . ' LEFT JOIN ' . $tDS . ' ON ' . $tTO . '.datastructure = ' . $tDS . '.uid',
-					$where
-				);
+					//Fetch all TO's but the default
+				if ($staticDS) {
+
+					$where = 'parent=0 AND pid=' .
+							intval($storageFolderPID).' AND LOCATE(' . $GLOBALS['TYPO3_DB']->fullQuoteStr('(page)', 'tx_templavoila_tmplobj') . ', datastructure)>0' .
+							$this->buildRecordWhere($tTO) .
+							t3lib_befunc::deleteClause ($tTO) . t3lib_BEfunc::versioningPlaceholderClause($tTO);
+
+					$res = $TYPO3_DB->exec_SELECTquery (
+						'*', $tTO, $where
+					);
+
+				} else {
+
+					$where = $tTO . '.parent=0 AND ' . $tTO . '.pid=' .
+							intval($storageFolderPID).' AND ' . $tDS . '.scope=1' .
+							$this->buildRecordWhere($tTO) . $this->buildRecordWhere($tDS) .
+							t3lib_befunc::deleteClause ($tTO).t3lib_befunc::deleteClause ($tDS).
+							t3lib_BEfunc::versioningPlaceholderClause($tTO).t3lib_BEfunc::versioningPlaceholderClause($tDS);
+
+					$res = $TYPO3_DB->exec_SELECTquery (
+						$tTO . '.*',
+						$tTO . ' LEFT JOIN ' . $tDS . ' ON ' . $tTO . '.datastructure = ' . $tDS . '.uid',
+						$where
+					);
+				}
+
 
 					// Create the "Default template" entry
 				$previewIconFilename = $this->doc->backPath . '../' . t3lib_extMgm::siteRelPath($this->extKey) . 'res1/default_previewicon.gif';
