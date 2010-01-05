@@ -90,7 +90,7 @@ class tx_templavoila_cm1 {
 						$localItems[] = $backRef->linkItem(
 							$LANG->getLLL('cm1_title',$LL,1),
 							$backRef->excludeIcon('<img src="'.$backRef->backPath.t3lib_extMgm::extRelPath('templavoila').'cm1/cm_icon.gif" width="15" height="12" border="0" align="top" alt="" />'),
-							$backRef->urlRefForCM($url),
+							$backRef->urlRefForCM($url, 'returnUrl'),
 							1	// Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
 						);
 					}
@@ -101,7 +101,7 @@ class tx_templavoila_cm1 {
 				$localItems[] = $backRef->linkItem(
 					$LANG->getLLL('cm1_title',$LL,1),
 					$backRef->excludeIcon('<img src="'.$backRef->backPath.t3lib_extMgm::extRelPath('templavoila').'cm1/cm_icon.gif" width="15" height="12" border="0" align="top" alt="" />'),
-					$backRef->urlRefForCM($url),
+					$backRef->urlRefForCM($url, 'returnUrl'),
 					1	// Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
 				);
 			}
@@ -120,7 +120,7 @@ class tx_templavoila_cm1 {
 				$localItems[] = $backRef->linkItem(
 					$LANG->getLLL('cm1_viewsubelements',$LL,1),
 					$backRef->excludeIcon('<img src="'.$backRef->backPath.t3lib_extMgm::extRelPath('templavoila').'cm1/cm_icon.gif" width="15" height="12" border="0" align="top" alt="" />'),
-					$backRef->urlRefForCM($url),
+					$backRef->urlRefForCM($url, 'returnUrl'),
 					1	// Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
 				);
 
@@ -136,7 +136,7 @@ class tx_templavoila_cm1 {
 				$localItems[] = $backRef->linkItem(
 					$LANG->getLLL('cm1_viewflexformxml',$LL,1),
 					$backRef->excludeIcon('<img src="'.$backRef->backPath.t3lib_extMgm::extRelPath('templavoila').'cm2/cm_icon.gif" width="15" height="12" border="0" align="top" alt="" />'),
-					$backRef->urlRefForCM($url),
+					$backRef->urlRefForCM($url, 'returnUrl'),
 					1	// Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
 				);
 			}
@@ -151,7 +151,7 @@ class tx_templavoila_cm1 {
 					$localItems[] = $backRef->linkItem(
 						$LANG->getLLL('cm_viewdsto',$LL,1).' ['.$backRef->rec['tx_templavoila_ds'].'/'.$backRef->rec['tx_templavoila_to'].']',
 						$backRef->excludeIcon('<img src="'.$backRef->backPath.t3lib_extMgm::extRelPath('templavoila').'cm2/cm_icon.gif" width="15" height="12" border="0" align="top" alt="" />'),
-						$backRef->urlRefForCM($url),
+						$backRef->urlRefForCM($url, 'returnUrl'),
 						1	// Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
 					);
 				}
@@ -188,7 +188,7 @@ class tx_templavoila_cm1 {
 							$menuItems[] = $backRef->linkItem(
 								$icon,
 								t3lib_beFunc::getRecordTitle('pages', $pageRecord, 1),
-								$backRef->urlRefForCM($url.$pageRecord['uid']),
+								$backRef->urlRefForCM($url.$pageRecord['uid'], 'returnUrl'),
 								1	// Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
 							);
 						}
