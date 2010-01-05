@@ -59,7 +59,7 @@
  * @package		TYPO3
  * @subpackage	tx_templavoila
  */
- 
+
 require_once(PATH_t3lib.'class.t3lib_tceforms.php');
 
 class tx_templavoila_mod1_wizards {
@@ -68,6 +68,7 @@ class tx_templavoila_mod1_wizards {
 	var $pObj;										// A pointer to the parent object, that is the templavoila page module script. Set by calling the method init() of this class.
 	var $doc;										// A reference to the doc object of the parent object.
 	var $extKey;									// A reference to extension key of the parent object.
+	var $TCAdefaultOverride;						// Config of TCAdefaults
 
 		// Local variables
 
@@ -106,13 +107,20 @@ class tx_templavoila_mod1_wizards {
     function renderWizard_createNewPage ($positionPid) {
 		global $LANG, $BE_USER, $TYPO3_CONF_VARS;
 
+			// Get default TCA values specific for the page and user
+		$temp = t3lib_BEfunc::getModTSconfig(abs($positionPid) , 'TCAdefaults');
+		if (isset($temp['properties'])) {
+			$this->TCAdefaultOverride = $temp['properties'];
+		}
+
 			// The user already submitted the create page form:
-		if (t3lib_div::_GP('doCreate')) {
+		if (t3lib_div::_GP('doCreate') || isset($this->TCAdefaultOverride['pages.']['tx_templavoila_to'])) {
 
 				// Check if the HTTP_REFERER is valid
 			$refInfo = parse_url(t3lib_div::getIndpEnv('HTTP_REFERER'));
 			$httpHost = t3lib_div::getIndpEnv('TYPO3_HOST_ONLY');
 			if ($httpHost == $refInfo['host'] || t3lib_div::_GP('vC') == $BE_USER->veriCode() || $TYPO3_CONF_VARS['SYS']['doNotCheckReferer'])	{
+
 					// Create new page
 				$newID = $this->createPage (t3lib_div::_GP('data'), $positionPid);
 				if ($newID > 0) {
@@ -227,6 +235,8 @@ class tx_templavoila_mod1_wizards {
 		$content .= '<input type="hidden" name="positionPid" value="'.$positionPid.'" />';
 		$content .= '<input type="hidden" name="doCreate" value="1" />';
 		$content .= '<input type="hidden" name="cmd" value="crPage" />';
+
+		$content .= $this->doc->endPage();
 		return $content;
 	}
 
@@ -256,13 +266,11 @@ class tx_templavoila_mod1_wizards {
 		switch ($templateType) {
 			case 'tmplobj':
 						// Create the "Default template" entry
-				$previewIconFilename = $GLOBALS['BACK_PATH'].'../'.t3lib_extMgm::siteRelPath($this->extKey).'res1/default_previewicon.gif';
-				$previewIcon = '<input type="image" class="c-inputButton" name="i0" value="0" src="'.$previewIconFilename.'" title="" />';
-				$description = htmlspecialchars($LANG->getLL ('template_descriptiondefault'));
-				$tmplHTML [] = '<table style="float:left; width: 100%;" valign="top"><tr><td colspan="2" nowrap="nowrap">
-					<h3 class="bgColor3-20">'.htmlspecialchars($LANG->getLL ('template_titledefault')).'</h3></td></tr>
-					<tr><td valign="top">'.$previewIcon.'</td><td width="120" valign="top"><p>'.$description.'</p></td></tr></table>';
+						//Fetch Default TO
+				$fakeRow = array('uid' => abs($positionPid));
+				$defaultTO = $this->pObj->apiObj->getContentTree_fetchPageTemplateObject($fakeRow);
 
+					//Fetch all TO's but the default
 				$tTO = 'tx_templavoila_tmplobj';
 				$tDS = 'tx_templavoila_datastructure';
 				$where = $tTO . '.parent=0 AND ' . $tTO . '.pid=' .
@@ -277,7 +285,28 @@ class tx_templavoila_mod1_wizards {
 					$where
 				);
 
+					// Create the "Default template" entry
+				$previewIconFilename = $this->doc->backPath . '../' . t3lib_extMgm::siteRelPath($this->extKey) . 'res1/default_previewicon.gif';
+				$previewIcon = '<input type="image" class="c-inputButton" name="i0" value="0" src="' . $previewIconFilename . '" title="" />';
+				$description = $defaultTO['description'] ? htmlspecialchars($defaultTO['description']) : $LANG->getLL ('template_descriptiondefault', 1);
+				$tmplHTML [] = '<table style="float:left; width: 100%;" valign="top">
+				<tr>
+					<td colspan="2" nowrap="nowrap">
+						<h3 class="bgColor3-20">' . htmlspecialchars($LANG->getLL ('template_titleInherit')) . '</h3>
+					</td>
+				</tr><tr>
+					<td valign="top">' . $previewIcon . '</td>
+					<td width="120" valign="top">
+						<p><h4>' . htmlspecialchars($defaultTO['title']) . '</h4>' . $description . '</p>
+					</td>
+				</tr>
+				</table>';
+
+
 				while (false !== ($row = $TYPO3_DB->sql_fetch_assoc($res)))	{
+					if ($row['uid'] === $defaultTO['uid']) {
+						continue;
+					}
 						// Check if preview icon exists, otherwise use default icon:
 					$tmpFilename = 'uploads/tx_templavoila/'.$row['previewicon'];
 					$previewIconFilename = (@is_file(PATH_site.$tmpFilename)) ? ($GLOBALS['BACK_PATH'].'../'.$tmpFilename) : ($GLOBALS['BACK_PATH'].'../'.t3lib_extMgm::siteRelPath($this->extKey).'res1/default_previewicon.gif');
@@ -384,16 +413,14 @@ class tx_templavoila_mod1_wizards {
 
 		$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 
-			// set default TCA values specific for the page and user
-		$TCAdefaultOverride = t3lib_BEfunc::getModTSconfig($positionPid , 'TCAdefaults'); 
-
-		if (is_array($TCAdefaultOverride))	{
-			$tce->setDefaultsFromUserTS($TCAdefaultOverride);
+		if (is_array($this->TCAdefaultOverride))	{
+			$tce->setDefaultsFromUserTS($this->TCAdefaultOverride);
 		}
 
 		$tce->stripslashes_values=0;
 		$tce->start($dataArr,array());
 		$tce->process_datamap();
+
 		return $tce->substNEWwithIDs['NEW'];
 	}
 
@@ -414,7 +441,7 @@ class tx_templavoila_mod1_wizards {
 
 	/**
 	 * Create sql condition for given table to limit records according to user access.
-	 * 
+	 *
 	 * @param	string	$table	Table nme to fetch records from
 	 * @return	string	Condition or empty string
 	 */
@@ -425,7 +452,7 @@ class tx_templavoila_mod1_wizards {
 			foreach($GLOBALS['BE_USER']->userGroups as $group) {
 				$items = t3lib_div::trimExplode(',', $group['tx_templavoila_access'], 1);
 				foreach ($items as $ref) {
-					if (strstr($ref, $table)) { 
+					if (strstr($ref, $table)) {
 						$result[] = intval(substr($ref, $prefLen));
 					}
 				}
