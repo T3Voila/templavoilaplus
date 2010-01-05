@@ -29,6 +29,7 @@ div.warning a {
 
 /* link icons */
 .tpm-bottom-controls {
+	display:block;
 	margin-bottom: 5px;
 }
 .tpm-bottom-controls img {

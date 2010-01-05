@@ -995,7 +995,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				$canEditContent = $GLOBALS['BE_USER']->isPSet($this->calcPerms, 'pages', 'editcontent');
 
 				if (!$this->translatorMode)	{
-					$cellContent .= '<div class="tpm-bottom-controls">';
+					$cellContent .= '<span class="tpm-bottom-controls">';
 						// "New" icon:
 					if ($canCreateNew && !in_array('new', $this->blindIcons)) {
 						$newIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/new_el.gif','').' title="'.$LANG->getLL ('createnewrecord').'" alt="" />';
@@ -1009,7 +1009,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 
 						// "Paste" icon
-					$cellContent .= '<span class="sortablePaste">' . $this->clipboardObj->element_getPasteButtons ($subElementPointer) . '</span></div>';
+					$cellContent .= '<span class="sortablePaste">' . $this->clipboardObj->element_getPasteButtons ($subElementPointer) . '</span></span>';
 				}
 
 					// Render the list of elements (and possibly call itself recursively if needed):
