@@ -40,6 +40,7 @@
 			<label index="editpage_sysfolder_switchtolistview">Switch to list view</label>
 			<label index="template_nodescriptionavailable">No description available.</label>
 			<label index="template_titledefault">Default template</label>
+			<label index="template_titleInherit">No selection (inherit)</label>
 			<label index="willbereplacedbydefaultlanguage">(will be replaced by content of default language)</label>
 			<label index="newce_defaulttext_text">Please enter some text here</label>
 			<label index="view_basic">Basic view</label>

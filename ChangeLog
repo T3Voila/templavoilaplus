@@ -1,3 +1,7 @@
+2010-01-05  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug: #4171: New Record Wizard confusing selection -> Hidding 'Default template'
+
 2010-01-04  Tolleiv Nietsch <nietsch@aoemedia.de>
 
 	* Fixed bug: #13115: Bugfix: Drag and Drop involves the "New and Browse" icons and gives wrong results
