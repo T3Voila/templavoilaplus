@@ -74,6 +74,7 @@ class tx_templavoila_cm2 extends t3lib_SCbase {
 
 		// Internal, GPvars:
 	var $viewTable = array();		// Array with tablename, uid and fieldname
+	var $returnUrl = '';			// (GPvar "returnUrl") Return URL if the script is supplied with that.
 
 	/**
 	 * Main function, drawing marked up XML.
@@ -91,16 +92,25 @@ class tx_templavoila_cm2 extends t3lib_SCbase {
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->docType = 'xhtml_trans';
 
+		$this->returnUrl = t3lib_div::_GP('returnUrl');
 
 		$this->content.=$this->doc->startPage($LANG->getLL('title'));
 		$this->content.=$this->doc->header($LANG->getLL('title'));
 		$this->content.=$this->doc->spacer(5);
 
+		if ($this->returnUrl)	{
+			$this->content.='<a href="' . htmlspecialchars($this->returnUrl) . '" class="typo3-goBack">' .
+				'<img' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/goback.gif', 'width="14" height="14"') . ' alt="" />' .
+				$LANG->sL('LLL:EXT:lang/locallang_misc.xml:goBack', 1) .
+				'</a><br/><br/>';
+		}
+
 			// XML code:
 		$this->viewTable = t3lib_div::_GP('viewRec');
+
 		$record = t3lib_BEfunc::getRecordWSOL($this->viewTable['table'], $this->viewTable['uid']);	// Selecting record based on table/uid since adding the field might impose a SQL-injection problem; at least the field name would have to be checked first.
 		if (is_array($record))	{
-			
+
 				// Set current XML data:
 			$currentXML = $record[$this->viewTable['field_flex']];
 
@@ -111,12 +121,12 @@ class tx_templavoila_cm2 extends t3lib_SCbase {
 					$flexObj = t3lib_div::makeInstance('t3lib_flexformtools');
 					if ($record['tx_templavoila_flex'])	{
 						$cleanXML = $flexObj->cleanFlexFormXML($this->viewTable['table'],'tx_templavoila_flex',$record);
-						
+
 							// If the clean-button was pressed, save right away:
 						if (t3lib_div::_POST('_CLEAN_XML'))	{
 							$dataArr = array();
 							$dataArr[$this->viewTable['table']][$this->viewTable['uid']]['tx_templavoila_flex'] = $cleanXML;
-							
+
 								// Init TCEmain object and store:
 							$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 							$tce->stripslashes_values=0;
@@ -126,16 +136,16 @@ class tx_templavoila_cm2 extends t3lib_SCbase {
 								// Re-fetch record:
 							$record = t3lib_BEfunc::getRecordWSOL($this->viewTable['table'], $this->viewTable['uid']);
 							$currentXML = $record[$this->viewTable['field_flex']];
-						}	
+						}
 					}
 				}
 			}
-				
+
 			if (md5($currentXML)!=md5($cleanXML))	{
 					// Create diff-result:
 				$t3lib_diff_Obj = t3lib_div::makeInstance('t3lib_diff');
 				$diffres = $t3lib_diff_Obj->makeDiffDisplay($currentXML,$cleanXML);
-				
+
 				$xmlContentMarkedUp = '
 				<b>'.$this->doc->icons(1).$LANG->getLL('needsCleaning',1).'</b>
 				<table border="0">
@@ -157,15 +167,15 @@ class tx_templavoila_cm2 extends t3lib_SCbase {
 					<tr>
 						<td>'.$diffres.'
 						<br/><br/><br/>
-								
+
 						<form action="'.t3lib_div::getIndpEnv('REQUEST_URI').'" method="post">
 							<input type="submit" value="'.$LANG->getLL('cleanUp',1).'" name="_CLEAN_XML" />
 						</form>
-						
+
 						</td>
 					</tr>
 				</table>
-				
+
 				';
 			} else {
 				$xmlContentMarkedUp = '';
@@ -174,7 +184,7 @@ class tx_templavoila_cm2 extends t3lib_SCbase {
 				}
 				$xmlContentMarkedUp.= $this->markUpXML($currentXML);
 			}
-			
+
 			$this->content.=$this->doc->section('',$xmlContentMarkedUp,0,1);
 		}
 
