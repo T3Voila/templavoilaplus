@@ -1,5 +1,6 @@
 2010-01-06  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug: #11521: Allow include of javascript files in pagemodule
 	* Fixed bug: #13157: cm2 has no back functionality if returnUrl is given
 	* Fixed bug: #13158: Inconsistent Tabs
 

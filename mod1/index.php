@@ -446,9 +446,17 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 				//Prototype /Scriptaculous
 				// prototype is loaded before, so no need to include twice.
-				//TODO: switch to $this->doc->JScodeLibArray for preventing double inclusion
-			$this->doc->JScode .= '<script src="' . $this->doc->backPath . 'contrib/scriptaculous/scriptaculous.js?load=effects,dragdrop,builder" type="text/javascript"></script>';
-			$this->doc->JScode .= '<script src="' . t3lib_div::locationHeaderUrl(t3lib_div::resolveBackPath($this->doc->backPath . '../' . t3lib_extMgm::siteRelPath('templavoila') . 'mod1/dragdrop' . ($this->debug ? '' : '-min') . '.js')) . '" type="text/javascript"></script>';
+			$this->doc->JScodeLibArray['scriptaculous'] = '<script src="' . $this->doc->backPath . 'contrib/scriptaculous/scriptaculous.js?load=effects,dragdrop,builder" type="text/javascript"></script>';
+			$this->doc->JScodeLibArray['dragdrop'] = '<script src="' . $this->doc->backPath . '../' . t3lib_extMgm::siteRelPath('templavoila') . 'mod1/dragdrop' . ($this->debug ? '' : '-min') . '.js" type="text/javascript"></script>';
+
+			if (isset($this->modTSconfig['properties']['javascript.']) && is_array($this->modTSconfig['properties']['javascript.'])) {
+					// add custom javascript files
+				foreach ($this->modTSconfig['properties']['javascript.'] as $key => $value) {
+					if ($value) {
+						$this->doc->JScodeLibArray[$key] = '<script src="' . $this->doc->backPath . htmlspecialchars($value) . '" type="text/javascript"></script>';
+					}
+				}
+			}
 
 
 				// Set up JS for dynamic tab menu and side bar
