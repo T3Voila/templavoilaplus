@@ -93,6 +93,8 @@ class tx_templavoila_mod1_sidebar {
 		$this->doc =& $this->pObj->doc;
 		$this->extKey =& $this->pObj->extKey;
 
+		$hideIfEmpty = $pObj->modTSconfig['properties']['showTabsIfEmpty'] ? FALSE : TRUE;
+
 			// Register the locally available sidebar items. Additional items may be added by other extensions.
 		if (t3lib_extMgm::isLoaded('version') && $GLOBALS['BE_USER']->check('modules','web_txversionM1'))	{
 			$this->sideBarItems['versioning'] = array (
@@ -100,7 +102,7 @@ class tx_templavoila_mod1_sidebar {
 				'method' => 'renderItem_versioning',
 				'label' => $LANG->getLL('versioning'),
 				'priority' => 60,
-				'hideIfEmpty' => true,
+				'hideIfEmpty' => $hideIfEmpty,
 			);
 		}
 
@@ -109,7 +111,7 @@ class tx_templavoila_mod1_sidebar {
 			'method' => 'renderItem_headerFields',
 			'label' => $LANG->getLL('pagerelatedinformation'),
 			'priority' => 50,
-			'hideIfEmpty' => true,
+			'hideIfEmpty' => $hideIfEmpty,
 		);
 
 		$this->sideBarItems['advancedFunctions'] = array (
@@ -117,7 +119,7 @@ class tx_templavoila_mod1_sidebar {
 			'method' => 'renderItem_advancedFunctions',
 			'label' => $LANG->getLL('advancedfunctions'),
 			'priority' => 20,
-			'hideIfEmpty' => true,
+			'hideIfEmpty' => $hideIfEmpty,
 		);
 	}
 
@@ -134,6 +136,7 @@ class tx_templavoila_mod1_sidebar {
 	 * @access	public
 	 */
 	function addItem($itemKey, &$object, $method, $label, $priority = 50, $hideIfEmpty = false) {
+		$hideIfEmpty = $pObj->modTSconfig['properties']['showTabsIfEmpty'] ? FALSE : $hideIfEmpty;
 		$this->sideBarItems[$itemKey] = array (
 			'object' => $object,
 			'method' => $method,

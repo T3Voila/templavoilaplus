@@ -1,3 +1,7 @@
+2010-01-06  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug: #13158: Inconsistent Tabs
+
 2010-01-05  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug: #13149: Empty page after "Save and exit" of changing existing DS/TO

@@ -75,7 +75,14 @@ class tx_templavoila_mod1_localization {
 		$this->MOD_SETTINGS =& $this->pObj->MOD_SETTINGS;
 
 			// Add a localization tab to the sidebar:
-		$this->pObj->sideBarObj->addItem('localization', $this, 'sidebar_renderItem', $LANG->getLL('localization', 1), 60, true);
+		$this->pObj->sideBarObj->addItem(
+			'localization',
+			$this,
+			'sidebar_renderItem',
+			$LANG->getLL('localization', 1),
+			60,
+			true
+		);
 	}
 
 	/**
