@@ -294,6 +294,13 @@ class tx_templavoila_pi1 extends tslib_pibase {
 
 			$lKey = ($GLOBALS['TSFE']->sys_language_isocode && !$langDisabled && !$langChildren) ? 'l'.$GLOBALS['TSFE']->sys_language_isocode : 'lDEF';
 
+				/* Hook to modify language key - e.g. used for EXT:languagevisibility */
+			foreach($hookObjectsArr as $hookObj)	{
+				if (method_exists ($hookObj, 'renderElement_preProcessLanguageKey')) {
+					$lKey = $hookObj->renderElement_preProcessLanguageKey($row, $table, $lKey, $langDisable, $langChildren, $this);
+				}
+			}
+
 			$dataValues = is_array($data['data']) ? $data['data'][$sheet][$lKey] : '';
 			if (!is_array($dataValues))	$dataValues = array();
 
@@ -339,6 +346,14 @@ class tx_templavoila_pi1 extends tslib_pibase {
 							// Processing the data array:
 						if ($GLOBALS['TT']->LR) $GLOBALS['TT']->push('Processing data');
 							$vKey = ($GLOBALS['TSFE']->sys_language_isocode && !$langDisabled && $langChildren) ? 'v'.$GLOBALS['TSFE']->sys_language_isocode : 'vDEF';
+
+								/* Hook to modify value key - e.g. used for EXT:languagevisibility */
+							foreach($hookObjectsArr as $hookObj)	{
+								if (method_exists ($hookObj, 'renderElement_preProcessValueKey')) {
+									$vKey = $hookObj->renderElement_preProcessValueKey($row, $table, $vKey, $langDisable, $langChildren, $this);
+								}
+							}
+
 							$TOlocalProc = $singleSheet ? $TOproc['ROOT']['el'] : $TOproc['sheets'][$sheet]['ROOT']['el'];
 								// Store the original data values before the get processed.
 							$originalDataValues = $dataValues;

@@ -1,5 +1,6 @@
 2010-01-08  Tolleiv Nietsch <nietsch@aoemedia.de>
 
+	* Fixed issue: #13079: Hooks to reprocess lKey and vKey  in pi1
 	* Fixed bug: #13001: new page wizard should respect TCEFORM.pages.* settings
 
 2010-01-06  Steffen Kamper  <info@sk-typo3.de>
