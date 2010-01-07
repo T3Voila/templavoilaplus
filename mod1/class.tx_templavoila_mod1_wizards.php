@@ -264,6 +264,10 @@ class tx_templavoila_mod1_wizards {
 		$tmplHTML = array();
 		$staticDS = (count($GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['staticDataStructures']));
 
+			// look for TCEFORM.pages.tx_templavoila_ds.removeItems / TCEFORM.pages.tx_templavoila_to.removeItems
+		$disallowedPageTemplateItems = $this->getDisallowedTSconfigItemsByFieldName ($positionPid, 'tx_templavoila_ds');
+		$disallowedDesignTemplateItems = $this->getDisallowedTSconfigItemsByFieldName ($positionPid, 'tx_templavoila_to');
+
 		switch ($templateType) {
 			case 'tmplobj':
 						// Create the "Default template" entry
@@ -278,6 +282,7 @@ class tx_templavoila_mod1_wizards {
 
 					$where = 'parent=0 AND pid=' .
 							intval($storageFolderPID).' AND LOCATE(' . $GLOBALS['TYPO3_DB']->fullQuoteStr('(page)', 'tx_templavoila_tmplobj') . ', datastructure)>0' .
+							( $disallowedDesignTemplateItems ? 'uid NOT IN(' . $disallowedDesignTemplateItems . ') AND ' : '' ) .
 							$this->buildRecordWhere($tTO) .
 							t3lib_befunc::deleteClause ($tTO) . t3lib_BEfunc::versioningPlaceholderClause($tTO);
 
@@ -288,7 +293,10 @@ class tx_templavoila_mod1_wizards {
 				} else {
 
 					$where = $tTO . '.parent=0 AND ' . $tTO . '.pid=' .
-							intval($storageFolderPID).' AND ' . $tDS . '.scope=1' .
+							intval($storageFolderPID).' AND ' .
+							( $disallowedDesignTemplateItems ? $tTO . '.uid NOT IN(' . $disallowedDesignTemplateItems . ') AND ' : '' ) .
++							( $disallowedPageTemplateItems ? $tDS .  '.uid NOT IN(' . $disallowedPageTemplateItems . ') AND ' : '' ) .
+							$tDS . '.scope=1' .
 							$this->buildRecordWhere($tTO) . $this->buildRecordWhere($tDS) .
 							t3lib_befunc::deleteClause ($tTO).t3lib_befunc::deleteClause ($tDS).
 							t3lib_BEfunc::versioningPlaceholderClause($tTO).t3lib_BEfunc::versioningPlaceholderClause($tDS);
@@ -475,6 +483,40 @@ class tx_templavoila_mod1_wizards {
 			}
 		}
 		return (count($result) > 0 ? ' AND ' . $table . '.uid NOT IN (' . implode(',', $result) . ') ' : '');
+	}
+
+
+	/**
+	 * Extract the disallowed TCAFORM field values of $fieldName given field
+	 *
+	 * @param	integer		$parentPageId
+	 * @param	string		field name of TCAFORM
+	 * @access	private
+	 * @return	string		comma seperated list of integer
+	 */
+	function getDisallowedTSconfigItemsByFieldName($positionPid, $fieldName) {
+
+		$disallowPageTemplateItems = '';
+		$disallowPageTemplateList = array();
+
+			// Negative PID values is pointing to a page on the same level as the current.
+		if ($positionPid < 0) {
+			$pidRow = t3lib_BEfunc::getRecordWSOL('pages', abs($positionPid), 'pid');
+			$parentPageId = $pidRow['pid'];
+		} else {
+			$parentPageId = $positionPid;
+		}
+
+			// Get PageTSconfig for reduce the output of selectded template structs
+		$disallowPageTemplateStruct = t3lib_BEfunc::getModTSconfig(abs($parentPageId), 'TCEFORM.pages.' . $fieldName);
+
+		if ( isset($disallowPageTemplateStruct['properties']['removeItems']) ) {
+			$disallowedPageTemplateList = $disallowPageTemplateStruct['properties']['removeItems'];
+		}
+
+		$tmp_disallowedPageTemplateItems = array_unique(t3lib_div::intExplode(',', t3lib_div::expandList($disallowedPageTemplateList), TRUE));
+
+		return ( count($tmp_disallowedPageTemplateItems) ) ? implode(',', $tmp_disallowedPageTemplateItems) : '0';
 	}
 }
 

@@ -1,3 +1,7 @@
+2010-01-08  Tolleiv Nietsch <nietsch@aoemedia.de>
+
+	* Fixed bug: #13001: new page wizard should respect TCEFORM.pages.* settings
+
 2010-01-06  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug: #11521: Allow include of javascript files in pagemodule
@@ -9,10 +13,6 @@
 	* Fixed bug: #13149: Empty page after "Save and exit" of changing existing DS/TO
 	* Follow-up to bugfix #2081: Using static DSes for Page and FCE
 	* Fixed bug: #4171: New Record Wizard confusing selection -> Hidding 'Default template'
-
-2010-01-04  Tolleiv Nietsch <nietsch@aoemedia.de>
-
-	* Fixed bug: #13115: Bugfix: Drag and Drop involves the "New and Browse" icons and gives wrong results
 
 2010-01-04  Steffen Kamper  <info@sk-typo3.de>
 
