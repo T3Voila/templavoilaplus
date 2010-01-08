@@ -55,7 +55,7 @@ require_once (PATH_t3lib.'class.t3lib_flexformtools.php');
 require_once (PATH_t3lib.'class.t3lib_tcemain.php');
 require_once (PATH_t3lib.'class.t3lib_diff.php');
 
-
+require_once (t3lib_extMgm::extPath('templavoila') . 'classes/class.tx_templavoila_div.php');
 
 
 
@@ -92,7 +92,7 @@ class tx_templavoila_cm2 extends t3lib_SCbase {
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->docType = 'xhtml_trans';
 
-		$this->returnUrl = t3lib_div::_GP('returnUrl');
+		$this->returnUrl = tx_templavoila_div::sanitizeLocalUrl(t3lib_div::_GP('returnUrl'));
 
 		$this->content.=$this->doc->startPage($LANG->getLL('title'));
 		$this->content.=$this->doc->header($LANG->getLL('title'));

@@ -89,6 +89,8 @@ $LANG->includeLLFile('EXT:templavoila/cm1/locallang.xml');
 require_once (PATH_t3lib.'class.t3lib_scbase.php');
 
 
+require_once (t3lib_extMgm::extPath('templavoila') . 'classes/class.tx_templavoila_div.php');
+
 require_once (t3lib_extMgm::extPath('templavoila').'cm1/class.tx_templavoila_cm1_dsedit.php');
 require_once (t3lib_extMgm::extPath('templavoila').'cm1/class.tx_templavoila_cm1_etypes.php');
 
@@ -397,7 +399,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 		$this->displayTable = t3lib_div::_GP('table');
 		$this->displayUid = t3lib_div::_GP('uid');
 		$this->displayPath = t3lib_div::_GP('htmlPath');
-		$this->returnUrl = t3lib_div::_GP('returnUrl');
+		$this->returnUrl = tx_templavoila_div::sanitizeLocalUrl(t3lib_div::_GP('returnUrl'));
 
 			// GPvars specific to the DS listing/table and mapping features:
 		$this->_preview = t3lib_div::_GP('_preview');
