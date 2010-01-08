@@ -1,3 +1,7 @@
+2010-01-08  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug: #13180: Sanitize returnUrl 
+
 2010-01-08  Tolleiv Nietsch <nietsch@aoemedia.de>
 
 	* Fixed bug: #13174: Sub Page Datastructure Field missing 
