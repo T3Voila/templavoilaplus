@@ -216,7 +216,9 @@ class tx_templavoila_handleStaticDataStructures {
 	protected function templateObjectItemsProcFuncForCurrentDS(array &$params, t3lib_TCEforms &$pObj) {
 		// Get DS
 		$tsConfig = &$pObj->cachedTSconfig[$params['table'].':'.$params['row']['uid']];
-		$dataSource = $tsConfig['_THIS_ROW']['tx_templavoila_ds'];
+
+		$fieldName = $params['field'] == 'tx_templavoila_next_to' ? 'tx_templavoila_next_ds': 'tx_templavoila_ds';
+		$dataSource = $tsConfig['_THIS_ROW'][$fieldName];
 		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 					'uid,title,previewicon,datastructure', 'tx_templavoila_tmplobj',
 					'datastructure=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($dataSource, 'tx_templavoila_tmplobj') .
