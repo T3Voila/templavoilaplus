@@ -325,7 +325,28 @@ class tx_templavoila_mod1_sidebar {
 	 */
 	function renderItem_versioning(&$pObj) {
 		if ($pObj->id > 0) {
-			return trim($pObj->doc->getVersionSelector($pObj->id));
+			$versionSelector = trim($pObj->doc->getVersionSelector($pObj->id));
+			if (!$versionSelector) {
+				$onClick = 'jumpToUrl(\'' . $GLOBALS['BACK_PATH'] . t3lib_extMgm::extRelPath('version') . 'cm1/index.php?table=pages&uid=' . $pObj->id . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')) . '\')';
+				$versionSelector = '<input type="button" value="' . $GLOBALS['LANG']->getLL('sidebar_versionSelector_createVersion', 1) . '" onclick="' . htmlspecialchars($onClick) . '" />';
+			}
+			$tableRows = array ('
+				<tr class="bgColor4-20">
+					<th colspan="3">&nbsp;</th>
+				</tr>
+			');
+			$tableRows[] = '
+			<tr class="bgColor4">
+				<td width="20">
+					&nbsp;
+				</td><td width="200" style="vertical-align:middle;">
+					' . $GLOBALS['LANG']->getLL('sidebar_versionSelector', 1) . ':
+				</td>
+				<td>' . $versionSelector . '</td>
+			</tr>
+			';
+
+			return '<table border="0" cellpadding="0" cellspacing="1" class="lrPadding" width="100%">' . implode ('', $tableRows) . '</table>';
 		}
 	}
 

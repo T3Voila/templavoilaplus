@@ -92,6 +92,8 @@
 			<label index="sidebar_advancedfunctions_labelshowoutline">Show outline</label>
 			<label index="sidebar_advancedfunctions_labelcachefunctions">Cache functions</label>
 			<label index="sidebar_renderitem_showtranslationinformation">Display translation information</label>
+			<label index="sidebar_versionSelector">Versioning</label>
+			<label index="sidebar_versionSelector_createVersion">Create version of this page</label>
 			<label index="outline_header_title">Title:</label>
 			<label index="outline_header_controls">Controls:</label>
 			<label index="outline_header_status">Status:</label>
