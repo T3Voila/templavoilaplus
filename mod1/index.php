@@ -305,6 +305,8 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			return;
 		}
 
+		$this->content = '';
+
 			// Access check! The page will show only if there is a valid page and if this page may be viewed by the user
 		if (is_array($this->altRoot))	{
 			$access = true;
@@ -481,7 +483,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			$this->handleIncomingCommands();
 
 				// Start creating HTML output
-			$this->content .= $this->doc->startPage($LANG->getLL('title'));
+
 			$render_editPageScreen = true;
 
 
@@ -594,7 +596,6 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			$this->doc = t3lib_div::makeInstance('mediumDoc');
 			$this->doc->docType= 'xhtml_trans';
 			$this->doc->backPath = $BACK_PATH;
-			$this->content.=$this->doc->startPage($LANG->getLL('title'));
 
 			$cmd = t3lib_div::_GP ('cmd');
 			switch ($cmd) {
@@ -611,6 +612,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 					$this->content.=$LANG->getLL('default_introduction');
 			}
 		}
+		$this->content = $this->doc->startPage($LANG->getLL('title')) . $this->content;
 		$this->content.=$this->doc->endPage();
 	}
 
