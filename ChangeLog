@@ -1,3 +1,7 @@
+2010-01-13  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug: #13213: page module calls pagerenderer too early
+
 2010-01-10  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug: #13159: Render Button in version tab "Create version of this page" if no page version exists
