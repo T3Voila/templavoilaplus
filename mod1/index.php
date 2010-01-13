@@ -1937,9 +1937,9 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 						 * can safely use '#'
 						 */
 						if ($hidden)
-							return '<a href="#" class="tpm-hide" onclick="sortable_unhideRecord(this, \'' . htmlspecialchars($GLOBALS['SOBE']->doc->issueCommand($params, -1)) . '\');">' . htmlspecialchars($label) . '</a>';
+							return '<a href="#" class="tpm-hide" onclick="sortable_unhideRecord(this, \'' . htmlspecialchars($GLOBALS['SOBE']->doc->issueCommand($params, -1)) . '\');">' . $label . '</a>';
 						else
-							return '<a href="#" class="tpm-hide" onclick="sortable_hideRecord(this, \'' . htmlspecialchars($GLOBALS['SOBE']->doc->issueCommand($params, -1)) . '\');">' . htmlspecialchars($label) . '</a>';
+							return '<a href="#" class="tpm-hide" onclick="sortable_hideRecord(this, \'' . htmlspecialchars($GLOBALS['SOBE']->doc->issueCommand($params, -1)) . '\');">' . $label . '</a>';
 					}
 				} else {
 					return $label;
