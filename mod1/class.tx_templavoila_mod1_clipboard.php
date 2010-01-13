@@ -278,7 +278,7 @@ class tx_templavoila_mod1_clipboard {
 
 				// Prepare buttons:
 			$cutButton = $this->element_getSelectButtons($elementPointerString, 'ref');
-			$recordIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath, t3lib_iconWorks::getIcon('tt_content', $row),'').' width="18" height="16" border="0" title="[tt_content:'.$row['uid'].'" alt="" />';
+			$recordIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath, t3lib_iconWorks::getIcon('tt_content', $row),'').' border="0" title="[tt_content:'.$row['uid'].'" alt="" />';
 			$recordButton = $this->pObj->doc->wrapClickMenuOnIcon($recordIcon, 'tt_content', $row['uid'], 1, '&callingScriptId='.rawurlencode($this->pObj->doc->scriptID), 'new,copy,cut,pasteinto,pasteafter,delete');
 
 
@@ -316,7 +316,7 @@ class tx_templavoila_mod1_clipboard {
 
 				// Create table and header cell:
 			$output = '
-				<table class="tpm-nonused-elements" border="0" cellpadding="0" cellspacing="1" width="100%" class="lrPadding">
+				<table class="tpm-nonused-elements lrPadding" border="0" cellpadding="0" cellspacing="1" width="100%">
 					<tr class="bgColor4-20">
 						<td colspan="3">' . $LANG->getLL('inititemno_elementsNotBeingUsed','1') . ':</td>
 					</tr>
