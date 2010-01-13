@@ -1,5 +1,6 @@
 2010-01-13  Steffen Kamper  <info@sk-typo3.de>
 
+	* Follow-up to bugfix #13225: Cleanup invalid html in page module
 	* Fixed bug: #13225: Cleanup invalid html in page module
 	* Fixed bug: #13213: page module calls pagerenderer too early
 	
