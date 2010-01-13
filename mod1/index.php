@@ -359,7 +359,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			$this->doc->docType= 'xhtml_trans';
 			$this->doc->backPath = $BACK_PATH;
 			$this->doc->divClass = '';
-			$this->doc->form='<form action="'.htmlspecialchars('index.php?'.$this->link_getParameters()).'" method="post" autocomplete="off">';
+			$this->doc->form='<form action="'.htmlspecialchars('index.php?'.$this->link_getParameters()).'" method="post">';
 
 				// Add custom styles
 			$styleSheetFile = t3lib_extMgm::extRelPath($this->extKey) . "mod1/pagemodule.css";
@@ -772,7 +772,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		$elementClass = 'tpm-container-element';
 
 		// Prepare the record icon including a content sensitive menu link wrapped around it:
-		$recordIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,$contentTreeArr['el']['icon'],'').' width="18" height="16" border="0" title="'.htmlspecialchars('['.$contentTreeArr['el']['table'].':'.$contentTreeArr['el']['uid'].']').'" alt="" />';
+		$recordIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,$contentTreeArr['el']['icon'],'').' border="0" title="'.htmlspecialchars('['.$contentTreeArr['el']['table'].':'.$contentTreeArr['el']['uid'].']').'" alt="" />';
 		$menuCommands = array();
 		if ($GLOBALS['BE_USER']->isPSet($this->calcPerms, 'pages', 'new')) {
 			$menuCommands[] = 'new';
@@ -1019,7 +1019,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 
 						// "Paste" icon
-					$cellContent .= '<span class="sortablePaste">' . $this->clipboardObj->element_getPasteButtons ($subElementPointer) . '</span></span>';
+					$cellContent .= '<span class="sortablePaste">' . $this->clipboardObj->element_getPasteButtons ($subElementPointer) . '&nbsp;</span></span>';
 				}
 
 					// Render the list of elements (and possibly call itself recursively if needed):
@@ -1065,7 +1065,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 
 									// "Paste" icon
-								$cellContent .= '<span class="sortablePaste">' . $this->clipboardObj->element_getPasteButtons ($subElementPointer) . '</span></div></div>';
+								$cellContent .= '<span class="sortablePaste">' . $this->clipboardObj->element_getPasteButtons ($subElementPointer) . '&nbsp;</span></div></div>';
 							}
 
 						} else {
@@ -1937,9 +1937,9 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 						 * can safely use '#'
 						 */
 						if ($hidden)
-							return '<a href="#" class="tpm-hide" onclick="sortable_unhideRecord(this, \'' . $GLOBALS['SOBE']->doc->issueCommand($params, -1) . '\');">' . $label . '</a>';
+							return '<a href="#" class="tpm-hide" onclick="sortable_unhideRecord(this, \'' . htmlspecialchars($GLOBALS['SOBE']->doc->issueCommand($params, -1)) . '\');">' . htmlspecialchars($label) . '</a>';
 						else
-							return '<a href="#" class="tpm-hide" onclick="sortable_hideRecord(this, \'' . $GLOBALS['SOBE']->doc->issueCommand($params, -1) . '\');">' . $label . '</a>';
+							return '<a href="#" class="tpm-hide" onclick="sortable_hideRecord(this, \'' . htmlspecialchars($GLOBALS['SOBE']->doc->issueCommand($params, -1)) . '\');">' . htmlspecialchars($label) . '</a>';
 					}
 				} else {
 					return $label;
@@ -1968,7 +1968,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			'setFormValueOpenBrowser(\'db\',\'browser[communication]|||tt_content\');'.
 			'return false;';
 
-		return '<a href="#" rel="index.php?' . $parameters . '" onclick="' . htmlspecialchars($onClick) . '">' . $label . '</a>';
+		return '<a href="#" rel="index.php?' . htmlspecialchars($parameters) . '" onclick="' . htmlspecialchars($onClick) . '">' . $label . '</a>';
 	}
 
 	/**

@@ -137,11 +137,13 @@ class tx_templavoila_mod1_localization {
 				$optionsArr [] = '<option style="'.$style.'" value="'.$languageArr['uid'].'"'.($this->pObj->MOD_SETTINGS['language'] == $languageArr['uid'] ? ' selected="selected"' : '').'>'.htmlspecialchars($languageArr['title']).'</option>';
 
 					// Link to editing of language header:
-				$availableTranslationsFlags .= '<a href="index.php?'.$this->pObj->link_getParameters().'&editPageLanguageOverlay='.$languageArr['uid'].'"><img src="' . $flag . '" title="Edit '.htmlspecialchars($languageArr['title']).'" alt=""'.$grayedOut.' /></a> ';
+				$availableTranslationsFlags .= '<a href="index.php?' .
+					htmlspecialchars($this->pObj->link_getParameters() . '&editPageLanguageOverlay=' . $languageArr['uid']) . '">
+					<img src="' . $flag . '" title="Edit ' . htmlspecialchars($languageArr['title']) . '" alt=""' . $grayedOut . ' /></a> ';
 			}
 		}
 
-		$link = '\'index.php?'.$this->pObj->link_getParameters().'&SET[language]=\'+this.options[this.selectedIndex].value';
+		$link = '\'index.php?' . $this->pObj->link_getParameters() . '&SET[language]=\'+this.options[this.selectedIndex].value';
 
 		$output.= '
 			<tr class="bgColor4">
@@ -150,7 +152,7 @@ class tx_templavoila_mod1_localization {
 				</td><td width="200" style="vertical-align:middle;">
 					'.$LANG->getLL ('selectlanguageversion', 1).':
 				</td>
-				<td style="vertical-align:middle;"><select onchange="document.location='.$link.'">'.implode ('', $optionsArr).'</select></td>
+				<td style="vertical-align:middle;"><select onchange="document.location=' . htmlspecialchars($link) . '">' . implode ('', $optionsArr) . '</select></td>
 			</tr>
 		';
 
@@ -159,7 +161,7 @@ class tx_templavoila_mod1_localization {
 			$options[] = t3lib_div::inList($this->pObj->modTSconfig['properties']['disableDisplayMode'], 'default')?'':'<option value=""'.($this->pObj->MOD_SETTINGS['langDisplayMode']===''?' selected="selected"':'').'>'.$LANG->sL('LLL:EXT:lang/locallang_general.xml:LGL.default_value').'</option>';
 			$options[] = t3lib_div::inList($this->pObj->modTSconfig['properties']['disableDisplayMode'], 'selectedLanguage')?'':'<option value="selectedLanguage"'.($this->pObj->MOD_SETTINGS['langDisplayMode']==='selectedLanguage'?' selected="selected"':'').'>'.$LANG->getLL('pageLocalizationDisplayMode_selectedLanguage').'</option>';
 			$options[] = t3lib_div::inList($this->pObj->modTSconfig['properties']['disableDisplayMode'], 'onlyLocalized')?'':'<option value="onlyLocalized"'.($this->pObj->MOD_SETTINGS['langDisplayMode']==='onlyLocalized'?' selected="selected"':'').'>'.$LANG->getLL('pageLocalizationDisplayMode_onlyLocalized').'</option>';
-			$link = '\'index.php?'.$this->pObj->link_getParameters().'&SET[langDisplayMode]=\'+this.options[this.selectedIndex].value';
+			$link = '\'index.php?' . $this->pObj->link_getParameters() . '&SET[langDisplayMode]=\'+this.options[this.selectedIndex].value';
 			if (count($options))	{
 				$output.= '
 					<tr class="bgColor4">
@@ -169,7 +171,7 @@ class tx_templavoila_mod1_localization {
 							'.$LANG->getLL('pageLocalizationDisplayMode', 1).':
 						</td>
 						<td style="vertical-align:middle;">
-							<select onchange="document.location='.$link.'">
+							<select onchange="document.location=' . htmlspecialchars($link) . '">
 								'.implode(chr(10), $options).'
 							</select>
 						</td>
@@ -242,7 +244,7 @@ class tx_templavoila_mod1_localization {
 					</td><td width="200" style="vertical-align:middle;">
 						'.$LANG->getLL('createnewtranslation',1).':
 					</td>
-					<td style="vertical-align:middle;"><select onChange="document.location=\''.$link.'\'">'.implode ('', $optionsArr).'</select></td>
+					<td style="vertical-align:middle;"><select onChange="document.location=\'' . htmlspecialchars($link) . '\'">' . implode ('', $optionsArr) . '</select></td>
 				</tr>
 			';
 		}
