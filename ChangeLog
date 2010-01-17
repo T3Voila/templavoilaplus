@@ -1,5 +1,6 @@
 2010-01-17  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
+	* Fixed bug: #13274: delete icon carries wrong css-class
 	* Fixed bug: #4585: Wrond links for editing content stored in page flexform 
 	* Fixed bug: #13268: ReturnURls after the sidebar was reloaded aren't correct
 
