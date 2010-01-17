@@ -1,3 +1,7 @@
+2010-01-17  Tolleiv Nietsch <nietsch@aoemedia.de>
+
+	* Fixed bug: #13268: ReturnURls after the sidebar was reloaded aren't correct
+
 2010-01-13  Steffen Kamper  <info@sk-typo3.de>
 
 	* Follow-up to bugfix #13225: Cleanup invalid html in page module
@@ -121,7 +125,7 @@
 2009-11-28  Tolleiv Nietsch <nietsch@aoemedia.de>
 
 	* Follow-up to bugfix #12564: Localization view overlaps labels and doesn't align
-	* Fixed bug: #12826: "TemplaVoilà " accent missing or wrong in some labels 
+	* Fixed bug: #12826: "TemplaVoilï¿½" accent missing or wrong in some labels 
 	* Fixed bug: #12819: Mapping module labels are messed up 
 	* Fixed bug: #12804: Unlink icon doesn't hide the "unlinked" item
 
