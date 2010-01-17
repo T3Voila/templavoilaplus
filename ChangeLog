@@ -1,4 +1,4 @@
-2010-01-17  Steffen Kamper  <info@sk-typo3.de>
+2010-01-17  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
 	* Fixed bug: #13268: ReturnURls after the sidebar was reloaded aren't correct
 
