@@ -1181,7 +1181,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 									if (is_array ($sectionData[$sectionFieldKey]['el'])) {
 										$previewContent .= '<ul>';
 										foreach ($sectionData[$sectionFieldKey]['el'] as $containerFieldKey => $containerData) {
-											$previewContent .= '<li><strong>'.$containerFieldKey.'</strong> '.$this->link_edit(htmlspecialchars(t3lib_div::fixed_lgd_cs(strip_tags($containerData[$vKey]),200)), 'tt_content', $previewData['fullRow']['uid']).'</li>';
+											$previewContent .= '<li><strong>'.$containerFieldKey.'</strong> '.$this->link_edit(htmlspecialchars(t3lib_div::fixed_lgd_cs(strip_tags($containerData[$vKey]),200)), $elData['table'], $previewData['fullRow']['uid']).'</li>';
 										}
 										$previewContent .= '</ul>';
 									}
@@ -1189,7 +1189,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 							}
 						} else {
 							foreach ($fieldData['subElements'][$lKey] as $containerKey => $containerData) {
-								$previewContent .= '<strong>'.$containerKey.'</strong> '.$this->link_edit(htmlspecialchars(t3lib_div::fixed_lgd_cs(strip_tags($containerData[$vKey]),200)), 'tt_content', $previewData['fullRow']['uid']).'<br />';
+								$previewContent .= '<strong>'.$containerKey.'</strong> '.$this->link_edit(htmlspecialchars(t3lib_div::fixed_lgd_cs(strip_tags($containerData[$vKey]),200)), $elData['table'], $previewData['fullRow']['uid']).'<br />';
 							}
 						}
 					}
