@@ -69,19 +69,22 @@ final class tx_templavoila_div {
 				t3lib_div::dirname(t3lib_div::getIndpEnv('SCRIPT_NAME')) . '/' . $decodedUrl
 			);
 
+				// That's what's usually carried in TYPO3_SITE_PATH
+			$typo3_site_path = substr(t3lib_div::getIndpEnv('TYPO3_SITE_URL'), strlen(t3lib_div::getIndpEnv('TYPO3_REQUEST_HOST')));
+
 				// Pass if URL is on the current host:
-			if (t3lib_div::isValidUrl($decodedUrl)) {
-				if (t3lib_div::isOnCurrentHost($decodedUrl) && strpos($decodedUrl, t3lib_div::getIndpEnv('TYPO3_SITE_URL')) === 0) {
+			if (self::isValidUrl($decodedUrl)) {
+				if (self::isOnCurrentHost($decodedUrl) && strpos($decodedUrl, t3lib_div::getIndpEnv('TYPO3_SITE_URL')) === 0) {
 					$sanitizedUrl = $url;
 				}
 				// Pass if URL is an absolute file path:
 			} elseif (t3lib_div::isAbsPath($decodedUrl) && t3lib_div::isAllowedAbsPath($decodedUrl)) {
 				$sanitizedUrl = $url;
 				// Pass if URL is absolute and below TYPO3 base directory:
-			} elseif (strpos($testAbsoluteUrl, t3lib_div::getIndpEnv('TYPO3_SITE_PATH')) === 0 && substr($decodedUrl, 0, 1) === '/') {
+			} elseif (strpos($testAbsoluteUrl, $typo3_site_path) === 0 && substr($decodedUrl, 0, 1) === '/') {
 				$sanitizedUrl = $url;
 				// Pass if URL is relative and below TYPO3 base directory:
-			} elseif (strpos($testRelativeUrl, t3lib_div::getIndpEnv('TYPO3_SITE_PATH')) === 0 && substr($decodedUrl, 0, 1) !== '/') {
+			} elseif (strpos($testRelativeUrl, $typo3_site_path) === 0 && substr($decodedUrl, 0, 1) !== '/') {
 				$sanitizedUrl = $url;
 			}
 		}
