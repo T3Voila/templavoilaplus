@@ -1456,7 +1456,7 @@ class tx_templavoila_api {
 								'section' => $fieldData['section'],
 								'data' => array(),
 								'subElements' => array(),
-								'isMapped' => is_array($templateMappingArr['MappingInfo']['ROOT']['el'][$fieldKey])
+								'isMapped' => !empty($templateMappingArr['MappingInfo']['ROOT']['el'][$fieldKey]['MAP_EL'])
 							);
 							foreach($lKeys as $lKey)	{
 								foreach($vKeys as $vKey)	{
