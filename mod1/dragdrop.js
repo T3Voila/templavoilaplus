@@ -102,10 +102,10 @@ function sortable_updateItemButtons(el, position, pID) {
 					node.href = node.href.replace(/&makeLocalRecord=[^&]+/,"&makeLocalRecord=" + newPos);
 					break;
 			}
-		} else if(node.childElements()) {
-			node.childElements().each(function(node){
-				sortable_updateItemButtons(node, position, pID);
-			});
+		} else if(node.childElements() && node.className != 'tpm-subelement-table') {
+				// recursion within current container to "find" all pointers
+				// we don't want to update nested containers since their inner references didn't change 
+			sortable_updateItemButtons(node, position, pID);
 		}
 	});
 }
@@ -124,6 +124,7 @@ function sortable_update(el) {
 			sortable_items[node.id] = sortable_items[el.id] + i;
 			i++;
 		}
+		
 		node	= node.nextSibling;
 	}
 }

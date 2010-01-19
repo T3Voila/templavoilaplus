@@ -1973,7 +1973,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			'setFormValueOpenBrowser(\'db\',\'browser[communication]|||tt_content\');'.
 			'return false;';
 
-		return '<a href="#" rel="index.php?' . htmlspecialchars($parameters) . '" onclick="' . htmlspecialchars($onClick) . '">' . $label . '</a>';
+		return '<a href="#" class="tpm-browse" rel="index.php?' . htmlspecialchars($parameters) . '" onclick="' . htmlspecialchars($onClick) . '">' . $label . '</a>';
 	}
 
 	/**
