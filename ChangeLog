@@ -1,3 +1,7 @@
+2010-01-19  Tolleiv Nietsch <nietsch@aoemedia.de> 
+
+	* Fixed bug: #3843: Unmapping does not hide ce field in page module
+	
 2010-01-18  Steffen Kamper  <info@sk-typo3.de>
 
 	* Follow-up to bugfix #13180: Sanitize returnUrl
