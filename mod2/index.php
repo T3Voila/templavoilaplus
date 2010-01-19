@@ -311,9 +311,9 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 		$tRows = array();
 		$tRows[] = '
 			<tr class="bgColor5 tableheader">
-				<td>Storage Folders</td>
-				<td>Data Structures:</td>
-				<td>Template Objects:</td>
+				<td>' . $LANG->getLL('storagefolders', 1) . '</td>
+				<td>' . $LANG->getLL('datastructures', 1) . '</td>
+				<td>' . $LANG->getLL('templateobjects', 1) . '</td>
 			</tr>';
 
 		if (is_array($list))	{
@@ -332,7 +332,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 			}
 
 				// Create overview
-			$outputString = 'The following pages in the root line contain data structures and template objects:';
+			$outputString = $LANG->getLL('description');
 			$outputString .= '<br /><table border="0" cellpadding="1" cellspacing="1" class="typo3-dblist">'.implode('',$tRows).'</table>';
 
 				// Add output:
@@ -401,18 +401,18 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 				// Label for the tab:
 			switch((string)$scopePointer)	{
 				case '1':
-					$label = 'Page templates';
+					$label = $LANG->getLL('pagetemplates');
 					$scopeIcon = t3lib_iconWorks::getIconImage('pages',array(),$this->doc->backPath,'class="absmiddle"');
 				break;
 				case '2':
-					$label = 'Flexible CE';
+					$label = $LANG->getLL('fces');
 					$scopeIcon = t3lib_iconWorks::getIconImage('tt_content',array(),$this->doc->backPath,'class="absmiddle"');
 				break;
 				case '0':
-					$label = 'Other';
+					$label = $LANG->getLL('other');
 				break;
 				default:
-					$label = 'Unknown "'.$scopePointer.'"';
+					$label = sprintf($LANG->getLL('unknown'), $scopePointer);
 				break;
 			}
 
@@ -442,14 +442,14 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 		if ($lostTOs) {
 				// Add parts for Tab menu:
 			$parts[] = array(
-				'label' => 'Lost TOs ['.$lostTOCount.']',
+				'label' => sprintf($LANG->getLL('losttos', 1), $lostTOCount),
 				'content' => $lostTOs
 			);
 		}
 
 			// Complete Template File List
 		$parts[] = array(
-			'label' => 'Template Files',
+			'label' => $LANG->getLL('templatefiles', 1),
 			'content' => $this->completeTemplateFileList()
 		);
 
@@ -569,14 +569,14 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 		}
 
 		if ($index)	{
-			$content = '<h4>Overview:</h4>
+			$content = '<h4>' . $GLOBALS['LANG']->getLL('overview', 1) . '</h4>
 						<table border="0" cellpadding="0" cellspacing="1">
 							<tr class="bgColor5 tableheader">
-								<td colspan="2">DS/TO Title:</td>
-								<td>Localization:</td>
-								<td>Container status:</td>
-								<td>Mapping status:</td>
-								<td>Usage Count:</td>
+								<td colspan="2">' . $GLOBALS['LANG']->getLL('dstotitle', 1) . '</td>
+								<td>' . $GLOBALS['LANG']->getLL('localization', 1) . '</td>
+								<td>' . $GLOBALS['LANG']->getLL('containerstatus', 1) . '</td>
+								<td>' . $GLOBALS['LANG']->getLL('mappingstatus', 1) . '</td>
+								<td>' . $GLOBALS['LANG']->getLL('usagecount', 1) . '</td>
 							</tr>
 						'.$index.'
 						</table>'.
@@ -618,7 +618,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 					$icon = '<img src="'.$this->doc->backPath.'../uploads/tx_templavoila/'.$dsR['previewicon'].'" alt="" />';
 				}
 			} else {
-				$icon = '[No icon]';
+				$icon = $GLOBALS['LANG']->getLL('noicon', 1);
 			}
 
 				// Links:
@@ -647,11 +647,11 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 				</tr>
 				<tr class="bgColor4">
 					<td rowspan="'.($this->MOD_SETTINGS['set_details'] ? 4 : 2).'" style="width: 100px; text-align: center;">'.$icon.'</td>
-					<td>Template Status:</td>
+					<td>' . $GLOBALS['LANG']->getLL('templatestatus', 1) . '</td>
 					<td>'.$templateStatus.'</td>
 				</tr>
 				<tr class="bgColor4">
-					<td>Global Processing <strong>XML</strong>:</td>
+					<td>' . $GLOBALS['LANG']->getLL('globalprocessing_xml') . '</td>
 					<td>
 						'.$lpXML.($dsR['dataprot'] ?
 						t3lib_div::formatSize(strlen($dsR['dataprot'])).' bytes'.
@@ -659,11 +659,11 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 					</td>
 				</tr>'.($this->MOD_SETTINGS['set_details'] ? '
 				<tr class="bgColor4">
-					<td>Created:</td>
-					<td>'.t3lib_BEfunc::datetime($dsR['crdate']).' by user ['.$dsR['cruser_id'].']</td>
+					<td>' . $GLOBALS['LANG']->getLL('created', 1) . '</td>
+					<td>' . t3lib_BEfunc::datetime($dsR['crdate']) . ' ' . $GLOBALS['LANG']->getLL('byuser', 1) . ' [' . $dsR['cruser_id'] . ']</td>
 				</tr>
 				<tr class="bgColor4">
-					<td>Updated:</td>
+					<td>' . $GLOBALS['LANG']->getLL('updated', 1) . '</td>
 					<td>'.t3lib_BEfunc::datetime($dsR['tstamp']).'</td>
 				</tr>' : '').'
 			</table>
@@ -694,7 +694,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 					$icon = '<img src="'.$this->doc->backPath.'../'.substr($iconPath,strlen(PATH_site)).'" alt="" />';
 				}
 			} else {
-				$icon = '[No icon]';
+				$icon = $GLOBALS['LANG']->getLL('noicon', 1);
 			}
 
 			$fileReference = t3lib_div::getFileAbsFileName($dsR['path']);
@@ -707,7 +707,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 					$XMLinfo = $this->DSdetails(t3lib_div::getUrl($fileReference));
 				}
 			} else {
-				$fileRef = htmlspecialchars($dsR['path']).' [File not found!]';
+				$fileRef = htmlspecialchars($dsR['path']) . ' ' . $GLOBALS['LANG']->getLL('filenotfound', 1);
 			}
 
 			$dsRecTitle = (substr($dsR['title'], 0, 4) == 'LLL:' ? $GLOBALS['LANG']->sL($dsR['title']) : $dsR['title']);
@@ -723,12 +723,12 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 				</tr>
 				<tr class="bgColor4">
 					<td rowspan="'.($this->MOD_SETTINGS['set_details'] ? 2 : 1).'" style="width: 100px; text-align: center;">'.$icon.'</td>
-					<td>XML file:</td>
+					<td>' . $GLOBALS['LANG']->getLL('xmlfile', 1) . '</td>
 					<td>'.$fileRef.
 						($this->MOD_SETTINGS['set_details'] ? '<hr/>'.$XMLinfo['HTML'] : '').'</td>
 				</tr>'.($this->MOD_SETTINGS['set_details'] ? '
 				<tr class="bgColor4">
-					<td>Template Status:</td>
+					<td>' . $GLOBALS['LANG']->getLL('templatestatus', 1) . '</td>
 					<td>'.$this->findDSUsageWithImproperTOs($dsID, $toIdArray, $scope).'</td>
 				</tr>' : '').'
 			</table>
@@ -737,15 +737,15 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 
 		if ($this->MOD_SETTINGS['set_details'])	{
 			if ($XMLinfo['referenceFields'])	{
-				$containerMode = 'Yes';
+				$containerMode = $GLOBALS['LANG']->getLL('yes', 1);
 				if ($XMLinfo['languageMode']==='Separate')	{
-					$containerMode.= ' '.$this->doc->icons(3).'Container element with separate localization!';
+					$containerMode .= ' ' . $this->doc->icons(3) . $GLOBALS['LANG']->getLL('containerwithseparatelocalization', 1);
 				} elseif ($XMLinfo['languageMode']==='Inheritance')	{
-					$containerMode.= ' '.$this->doc->icons(2);
+					$containerMode .= ' '.$this->doc->icons(2);
 					if ($XMLinfo['inputFields'])	{
-						$containerMode.= 'Mix of content and references, OK, but be careful!';
+						$containerMode .= $GLOBALS['LANG']->getLL('mixofcontentandref', 1);
 					} else {
-						$containerMode.= htmlspecialchars('No content fields, recommended to set "<langDisable>" = 1');
+						$containerMode .= $GLOBALS['LANG']->getLL('nocontentfields', 1);
 					}
 				}
 			} else {
@@ -788,7 +788,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 					$icon = '<img src="'.$this->doc->backPath.'../uploads/tx_templavoila/'.$toObj['previewicon'].'" alt="" />';
 				}
 		} else {
-			$icon = '[No icon]';
+			$icon = $GLOBALS['LANG']->getLL('noicon', 1);
 		}
 
 			// Mapping status / link:
@@ -816,24 +816,24 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 			}
 			if ($modified)	{
 				$mappingStatus = $mappingStatus_index = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/icon_warning2.gif','width="18" height="16"').' alt="" class="absmiddle" />';
-				$mappingStatus.= 'Template file was updated since last mapping ('.t3lib_BEfunc::datetime($toObj['tstamp']).') and you might need to remap the Template Object!';
-				$this->setErrorLog($scope,'warning',$mappingStatus.' (TO: "'.$toObj['title'].'")');
+				$mappingStatus.= sprintf($GLOBALS['LANG']->getLL('towasupdated', 1), t3lib_BEfunc::datetime($toObj['tstamp']));
+				$this->setErrorLog($scope, 'warning', sprintf($GLOBALS['LANG']->getLL('warning_mappingstatus', 1), $mappingStatus, $toObj['title']));
 			} else {
 				$mappingStatus = $mappingStatus_index = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/icon_ok2.gif','width="18" height="16"').' alt="" class="absmiddle" />';
-				$mappingStatus.= 'Mapping Up-to-date.';
+				$mappingStatus.= $GLOBALS['LANG']->getLL('mapping_uptodate', 1);
 			}
-			$mappingStatus.='<br/><a href="'.htmlspecialchars($linkUrl).'">[ Update mapping ]</a>';
+			$mappingStatus .= '<br/><a href="' . htmlspecialchars($linkUrl) . '">' . $GLOBALS['LANG']->getLL('update_mapping', 1) . '</a>';
 		} elseif (!$fileMtime) {
 			$mappingStatus = $mappingStatus_index = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/icon_fatalerror.gif','width="18" height="16"').' alt="" class="absmiddle" />';
-			$mappingStatus.= 'Not mapped yet!';
-			$this->setErrorLog($scope,'fatal',$mappingStatus.' (TO: "'.$toObj['title'].'")');
+			$mappingStatus.= $GLOBALS['LANG']->getLL('notmapped', 1);
+			$this->setErrorLog($scope, 'fatal', sprintf($GLOBALS['LANG']->getLL('warning_mappingstatus', 1), $mappingStatus, $toObj['title']));
 
-			$mappingStatus.=' - <em>(It might also mean that the TO was mapped with an older version of TemplaVoila - then just go and save the mapping again at this will be updated.)</em>';
-			$mappingStatus.='<br/><a href="'.htmlspecialchars($linkUrl).'">[ Map ]</a>';
+			$mappingStatus .= $GLOBALS['LANG']->getLL('updatemapping_info');
+			$mappingStatus.='<br/><a href="'.htmlspecialchars($linkUrl).'">' . $GLOBALS['LANG']->getLL('map', 1) . '</a>';
 		} else {
 			$mappingStatus = '';
-			$mappingStatus.='<a href="'.htmlspecialchars($linkUrl).'">[ Remap ]</a>';
-			$mappingStatus.='<a href="'.htmlspecialchars($linkUrl.'&_preview=1').'">[ Preview ]</a>';
+			$mappingStatus.='<a href="'.htmlspecialchars($linkUrl).'">' . $GLOBALS['LANG']->getLL('remap', 1) . '</a>';
+			$mappingStatus.='<a href="'.htmlspecialchars($linkUrl.'&_preview=1').'">' . $GLOBALS['LANG']->getLL('preview', 1) . '</a>';
 		}
 
 		if ($this->MOD_SETTINGS['set_details'])	{
@@ -875,19 +875,19 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 				</tr>
 				<tr class="bgColor4">
 					<td rowspan="'.($this->MOD_SETTINGS['set_details'] ? 7 : 4).'" style="width: 100px; text-align: center;">'.$icon.'</td>
-					<td>File reference:</td>
+					<td>' . $GLOBALS['LANG']->getLL('filereference', 1) . ':</td>
 					<td>'.$fileRef.$fileMsg.'</td>
 				</tr>
 				<tr class="bgColor4">
-					<td>Description:</td>
+					<td>' . $GLOBALS['LANG']->getLL('description', 1) . ':</td>
 					<td>'.htmlspecialchars($toObj['description']).'</td>
 				</tr>
 				<tr class="bgColor4">
-					<td>Mapping status:</td>
+					<td>' . $GLOBALS['LANG']->getLL('mappingstatus', 1) . ':</td>
 					<td>'.$mappingStatus.'</td>
 				</tr>
 				<tr class="bgColor4">
-					<td>Local Processing <strong>XML</strong>:</td>
+					<td>' . $GLOBALS['LANG']->getLL('localprocessing_xml') . ':</td>
 					<td>
 						'.$lpXML.($toObj['localprocessing'] ?
 						t3lib_div::formatSize(strlen($toObj['localprocessing'])).' bytes'.
@@ -895,15 +895,15 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 					</td>
 				</tr>'.($this->MOD_SETTINGS['set_details'] ? '
 				<tr class="bgColor4">
-					<td>Used by:</td>
+					<td>' . $GLOBALS['LANG']->getLL('usedby', 1) . ':</td>
 					<td>'.$fRWTOUres['HTML'].'</td>
 				</tr>
 				<tr class="bgColor4">
-					<td>Created:</td>
-					<td>'.t3lib_BEfunc::datetime($toObj['crdate']).' by user ['.$toObj['cruser_id'].']</td>
+					<td>' . $GLOBALS['LANG']->getLL('created', 1) . ':</td>
+					<td>' . t3lib_BEfunc::datetime($toObj['crdate']) . ' ' . $GLOBALS['LANG']->getLL('byuser', 1) . ' [' . $toObj['cruser_id'] . ']</td>
 				</tr>
 				<tr class="bgColor4">
-					<td>Updated:</td>
+					<td>' . $GLOBALS['LANG']->getLL('updated', 1) . ':</td>
 					<td>'.t3lib_BEfunc::datetime($toObj['tstamp']).'</td>
 				</tr>' : '').'
 			</table>
@@ -919,23 +919,23 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 						'</td>
 				</tr>
 				<tr class="bgColor4">
-					<td>File reference:</td>
+					<td>' . $GLOBALS['LANG']->getLL('filereference', 1) . ':</td>
 					<td>'.$fileRef.$fileMsg.'</td>
 				</tr>
 				<tr class="bgColor4">
-					<td>Mapping status:</td>
+					<td>' . $GLOBALS['LANG']->getLL('mappingstatus', 1) . ':</td>
 					<td>'.$mappingStatus.'</td>
 				</tr>
 				<tr class="bgColor4">
-					<td>Render Type:</td>
+					<td>' . $GLOBALS['LANG']->getLL('rendertype', 1) . ':</td>
 					<td>'.t3lib_BEfunc::getProcessedValue('tx_templavoila_tmplobj','rendertype',$toObj['rendertype']).'</td>
 				</tr>
 				<tr class="bgColor4">
-					<td>Language:</td>
+					<td>' . $GLOBALS['LANG']->getLL('language', 1) . ':</td>
 					<td>'.t3lib_BEfunc::getProcessedValue('tx_templavoila_tmplobj','sys_language_uid',$toObj['sys_language_uid']).'</td>
 				</tr>
 				<tr class="bgColor4">
-					<td>Local Processing <strong>XML</strong>:</td>
+					<td>' . $GLOBALS['LANG']->getLL('localprocessing_xml') . ':</td>
 					<td>
 						'.$lpXML.($toObj['localprocessing'] ?
 						t3lib_div::formatSize(strlen($toObj['localprocessing'])).' bytes'.
@@ -943,11 +943,11 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 					</td>
 				</tr>'.($this->MOD_SETTINGS['set_details'] ? '
 				<tr class="bgColor4">
-					<td>Created:</td>
-					<td>'.t3lib_BEfunc::datetime($toObj['crdate']).' by user ['.$toObj['cruser_id'].']</td>
+					<td>' . $GLOBALS['LANG']->getLL('created', 1) . ':</td>
+					<td>'.t3lib_BEfunc::datetime($toObj['crdate']) . ' ' . $GLOBALS['LANG']->getLL('byuser', 1) . ' [' . $toObj['cruser_id'] . ']</td>
 				</tr>
 				<tr class="bgColor4">
-					<td>Updated:</td>
+					<td>' . $GLOBALS['LANG']->getLL('updated', 1) . ':</td>
 					<td>'.t3lib_BEfunc::datetime($toObj['tstamp']).'</td>
 				</tr>' : '').'
 			</table>
@@ -987,10 +987,10 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 					// Header:
 				$output[]='
 							<tr class="bgColor5 tableheader">
-								<td>Page ID:</td>
-								<td>Title:</td>
-								<td>Path:</td>
-								<td>Workspace:</td>
+								<td>' . $GLOBALS['LANG']->getLL('toused_pid', 1) . ':</td>
+								<td>' . $GLOBALS['LANG']->getLL('toused_title', 1) . ':</td>
+								<td>' . $GLOBALS['LANG']->getLL('toused_path', 1) . ':</td>
+								<td>' . $GLOBALS['LANG']->getLL('toused_workspace', 1) . ':</td>
 							</tr>';
 
 					// Main templates:
@@ -1030,7 +1030,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 								<td nowrap="nowrap">'.
 									htmlspecialchars($pRow['uid']).
 									'</td>
-								<td><em>No access</em></td>
+								<td><em>' . $GLOBALS['LANG']->getLL('noaccess', 1) . '</em></td>
 								<td>-</td>
 								<td>-</td>
 							</tr>';
@@ -1055,10 +1055,10 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 					// Header:
 				$output[]='
 							<tr class="bgColor5 tableheader">
-								<td>UID:</td>
-								<td>Header:</td>
-								<td>Path:</td>
-								<td>Workspace:</td>
+								<td>' . $GLOBALS['LANG']->getLL('toused_uid', 1) . ':</td>
+								<td>' . $GLOBALS['LANG']->getLL('toused_header', 1) . ':</td>
+								<td>' . $GLOBALS['LANG']->getLL('toused_path', 1) . ':</td>
+								<td>' . $GLOBALS['LANG']->getLL('toused_workspace', 1) . ':</td>
 							</tr>';
 
 					// Elements:
@@ -1088,7 +1088,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 								<td nowrap="nowrap">'.
 									htmlspecialchars($pRow['uid']).
 									'</td>
-								<td><em>No access</em></td>
+								<td><em>' . $GLOBALS['LANG']->getLL('noaccess', 1) . '</em></td>
 								<td>-</td>
 								<td>-</td>
 							</tr>';
@@ -1101,10 +1101,13 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 			// Create final output table:
 		if (count($output))	{
 			if (count($output)>1)	{
-				$outputString = 'Used in '.(count($output)-1).' Elements:<table border="0" cellspacing="1" cellpadding="1" class="lrPadding">'.implode('',$output).'</table>';
+				$outputString = sprintf($GLOBALS['LANG']->getLL('toused_usedin', 1), count($output)-1) . '
+					<table border="0" cellspacing="1" cellpadding="1" class="lrPadding">'
+					. implode('', $output) . '
+				</table>';
 			} else {
 				$outputString = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/icon_warning2.gif','width="18" height="16"').' alt="" class="absmiddle" />No usage!';
-				$this->setErrorLog($scope,'warning',$outputString.' (TO: "'.$toObj['title'].'")');
+				$this->setErrorLog($scope, 'warning', sprintf($GLOBALS['LANG']->getLL('warning_mappingstatus', 1), $outputString ,$toObj['title']));
 			}
 		}
 
@@ -1128,8 +1131,8 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 					// Header:
 				$output[]='
 							<tr class="bgColor5 tableheader">
-								<td>Title:</td>
-								<td>Path:</td>
+								<td>' . $GLOBALS['LANG']->getLL('toused_title', 1) . ':</td>
+								<td>' . $GLOBALS['LANG']->getLL('toused_path', 1) . ':</td>
 							</tr>';
 
 					// Main templates:
@@ -1160,7 +1163,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 					} else {
 						$output[]='
 							<tr class="bgColor4-20">
-								<td><em>No access</em></td>
+								<td><em>' . $GLOBALS['LANG']->getLL('noaccess', 1) . '</em></td>
 								<td>-</td>
 							</tr>';
 					}
@@ -1184,8 +1187,8 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 					// Header:
 				$output[]='
 							<tr class="bgColor5 tableheader">
-								<td>Header:</td>
-								<td>Path:</td>
+								<td>' . $GLOBALS['LANG']->getLL('toused_header', 1) . ':</td>
+								<td>' . $GLOBALS['LANG']->getLL('toused_path', 1) . ':</td>
 							</tr>';
 
 					// Elements:
@@ -1206,7 +1209,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 					} else {
 						$output[]='
 							<tr class="bgColor4-20">
-								<td><em>No access</em></td>
+								<td><em>' . $GLOBALS['LANG']->getLL('noaccess', 1) . '</em></td>
 								<td>-</td>
 							</tr>';
 					}
@@ -1219,12 +1222,13 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 		if (count($output))	{
 			if (count($output)>1)	{
 				$outputString = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/icon_fatalerror.gif','width="18" height="16"').' alt="" class="absmiddle" />'.
-								'Invalid template values in '.(count($output)-1).' elements:';
+								sprintf($GLOBALS['LANG']->getLL('invalidtemplatevalues', 1), count($output) - 1);
 				$this->setErrorLog($scope,'fatal',$outputString);
 
 				$outputString.='<table border="0" cellspacing="1" cellpadding="1" class="lrPadding">'.implode('',$output).'</table>';
 			} else {
-				$outputString = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/icon_ok2.gif','width="18" height="16"').' alt="" class="absmiddle" />No errors found!';
+				$outputString = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/icon_ok2.gif','width="18" height="16"').' alt="" class="absmiddle" />' .
+				$GLOBALS['LANG']->getLL('noerrorsfound', 1);
 			}
 		}
 
@@ -1263,9 +1267,9 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 			$tRows = array();
 			$tRows[] = '
 				<tr class="c-headLineTable" style="font-weight: bold; color: #FFFFFF;">
-					<td>File</td>
-					<td align="center">Usage count</td>
-					<td>New DS/TO</td>
+					<td>' . $GLOBALS['LANG']->getLL('file', 1) . '</td>
+					<td align="center">' . $GLOBALS['LANG']->getLL('usagecount', 1) . '</td>
+					<td>' . $GLOBALS['LANG']->getLL('newdsto', 1) . '</td>
 				</tr>';
 
 			$i = 0;
@@ -1286,7 +1290,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 
 			if (count($tRows)>1)	{
 				$output.= '
-				<h3>Used files:</h3>
+				<h3>' . $GLOBALS['LANG']->getLL('usedfiles', 1) . ':</h3>
 				<table border="0" cellpadding="1" cellspacing="1" class="typo3-dblist">
 					'.implode('',$tRows).'
 				</table>
@@ -1313,9 +1317,9 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 							$tRows = array();
 							$tRows[] = '
 								<tr class="c-headLineTable" style="font-weight: bold; color: #FFFFFF;">
-									<td>File</td>
-									<td align="center">Usage count</td>
-									<td>New DS/TO</td>
+									<td>' . $GLOBALS['LANG']->getLL('file', 1) . '</td>
+									<td align="center">' . $GLOBALS['LANG']->getLL('usagecount', 1) . '</td>
+									<td>' . $GLOBALS['LANG']->getLL('newdsto', 1) . '</td>
 								</tr>';
 
                             $i = 0;
@@ -1336,7 +1340,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 
 							if (count($tRows)>1)	{
 								$output.= '
-								<h3>Template Archive:</h3>
+								<h3>' . $GLOBALS['LANG']->getLL('templatearchive', 1) . ':</h3>
 								<table border="0" cellpadding="1" cellspacing="1" class="typo3-dblist">
 									'.implode('',$tRows).'
 								</table>
@@ -1378,13 +1382,13 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 
 			if (is_array($this->errorsWarnings[$scope]['warning']))	{
 				$errStat['count'] = count($this->errorsWarnings[$scope]['warning']);
-				$errStat['content'] = '<h3>Warnings</h3>'.implode('<hr/>',$this->errorsWarnings[$scope]['warning']);
+				$errStat['content'] = '<h3>' . $GLOBALS['LANG']->getLL('warnings', 1) . '</h3>'.implode('<hr/>',$this->errorsWarnings[$scope]['warning']);
 				$errStat['iconCode'] = 2;
 			}
 
 			if (is_array($this->errorsWarnings[$scope]['fatal']))	{
 				$errStat['count'] = count($this->errorsWarnings[$scope]['fatal']).($errStat['count'] ? '/'.$errStat['count']:'');
-				$errStat['content'].= '<h3>Fatal errors</h3>'.implode('<hr/>',$this->errorsWarnings[$scope]['fatal']);
+				$errStat['content'].= '<h3>' . $GLOBALS['LANG']->getLL('fatalerrors', 1) . '</h3>'.implode('<hr/>',$this->errorsWarnings[$scope]['fatal']);
 				$errStat['iconCode'] = 3;
 			}
 		}
@@ -1406,7 +1410,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 
 			foreach ($DStree as $elm => $def) {
 				$HTML .= '<dt>';
-				$HTML .= ($elm == "meta" ? 'Configuration' : $def['tx_templavoila']['title'] . ' ('. $elm . ')');
+				$HTML .= ($elm == "meta" ? $GLOBALS['LANG']->getLL('configuration', 1) : $def['tx_templavoila']['title'] . ' ('. $elm . ')');
 				$HTML .= '</dt>';
 				$HTML .= '<dd>';
 
@@ -1429,12 +1433,12 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 						(($def['langDisable'] == 1)
 ? '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/icon_fatalerror.gif','width="18" height="16"').' alt="" class="absmiddle" />'
 : '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/icon_ok2.gif','width="18" height="16"').' alt="" class="absmiddle" />'
-						) . ' FCE-element is localized</li>';
+						) . ' ' . $GLOBALS['LANG']->getLL('fceislocalized', 1) . '</li>';
 					if (isset($def['langChildren'])) $conf .= '<li>' .
 						(($def['langChildren'] == 1)
 ? '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/icon_ok2.gif','width="18" height="16"').' alt="" class="absmiddle" />'
 : '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/icon_fatalerror.gif','width="18" height="16"').' alt="" class="absmiddle" />'
-						) . ' FCE-inline-elements of the FCE-element are localized</li>';
+						) . ' ' . $GLOBALS['LANG']->getLL('fceinlineislocalized', 1) . '</li>';
 					if (isset($def['sheetSelector'])) $conf .= '<li>' .
 						(($def['sheetSelector'] != '')
 ? '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/icon_ok2.gif','width="18" height="16"').' alt="" class="absmiddle" />'
@@ -1498,25 +1502,25 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 						(($tv['proc']['int'] == 1)
 ? '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/icon_ok2.gif','width="18" height="16"').' alt="" class="absmiddle" />'
 : '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/icon_fatalerror.gif','width="18" height="16"').' alt="" class="absmiddle" />'
-						) . ' the entered/computed value will be cast to an integer</li>';
+						) . ' ' . $GLOBALS['LANG']->getLL('casttointeger', 1) . '</li>';
 						if (isset($tv['proc']) && isset($tv['proc']['HSC'])) $proc .= '<li>' .
 						(($tv['proc']['HSC'] == 1)
 ? '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/icon_ok2.gif','width="18" height="16"').' alt="" class="absmiddle" />'
 : '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/icon_fatalerror.gif','width="18" height="16"').' alt="" class="absmiddle" />'
-						) . ' the entered/computed value will be passed to htmlentities' .
+						) . ' ' . $GLOBALS['LANG']->getLL('hsced', 1) .
 						(($tv['proc']['HSC'] == 1)
-? ' [HTML-code won\'t be available]'
-: ' [HTML-code will be displayed as-is]'
+? ' ' . $GLOBALS['LANG']->getLL('hsc_on', 1)
+: ' ' . $GLOBALS['LANG']->getLL('hsc_off', 1)
 						) . '</li>';
 						if (isset($tv['proc']) && isset($tv['proc']['stdWrap'])) $proc .= '<li>' .
 						(($tv['proc']['stdWrap'] != '')
 ? '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/icon_ok2.gif','width="18" height="16"').' alt="" class="absmiddle" />'
 : '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/icon_fatalerror.gif','width="18" height="16"').' alt="" class="absmiddle" />'
-						) . ' the entered/computed value will be wrapped</li>';
+						) . ' ' . $GLOBALS['LANG']->getLL('stdwrap', 1) . '</li>';
 
 						if ($proc != '')
 							$HTML .= '<ul class="DS-proc">' . $proc . '</ul>';
-
+								//TODO: get the registered eTypes and use the labels
 						switch ($tv['eType']) {
 							case "input":            $preset = 'Plain input field';             $tco = false; break;
 							case "input_h":          $preset = 'Header field';                  $tco = false; break;
@@ -1545,41 +1549,41 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 
 						$notes = '';
 						if (($tv['eType'] != "TypoScriptObject") && isset($tv['TypoScriptObjPath']))
-							$notes .= '<li>redundant &lt;TypoScriptObjPath&gt;-entry</li>';
+							$notes .= '<li>' . $GLOBALS['LANG']->getLL('redundant', 1) . ' &lt;TypoScriptObjPath&gt;-entry</li>';
 						if (($tv['eType'] == "TypoScriptObject") && isset($tv['TypoScript']))
-							$notes .= '<li>redundant &lt;TypoScript&gt;-entry</li>';
+							$notes .= '<li>' . $GLOBALS['LANG']->getLL('redundant', 1) . ' &lt;TypoScript&gt;-entry</li>';
 						if ((($tv['eType'] == "TypoScriptObject") || !isset($tv['TypoScript'])) && isset($tv['TypoScript_constants']))
-							$notes .= '<li>redundant &lt;TypoScript_constants&gt;-entry</li>';
+							$notes .= '<li>' . $GLOBALS['LANG']->getLL('redundant', 1) . ' &lt;TypoScript_constants&gt;-' . $GLOBALS['LANG']->getLL('entry', 1) . '</li>';
 						if (isset($tv['proc']) && isset($tv['proc']['int']) && ($tv['proc']['int'] == 1) && isset($tv['proc']['HSC']))
-							$notes .= '<li>redundant &lt;proc&gt;&lt;HSC&gt;-entry</li>';
+							$notes .= '<li>' . $GLOBALS['LANG']->getLL('redundant', 1) . ' &lt;proc&gt;&lt;HSC&gt;-' . $GLOBALS['LANG']->getLL('redundant', 1) . '</li>';
 						if (isset($tv['TypoScriptObjPath']) && preg_match('/[^a-zA-Z0-9\.\:_]/', $tv['TypoScriptObjPath']))
-							$notes .= '<li><strong>&lt;TypoScriptObjPath&gt;-entry contains illegal characters and/or has multiple lines</strong></li>';
+							$notes .= '<li><strong>&lt;TypoScriptObjPath&gt;-' . $GLOBALS['LANG']->getLL('illegalcharacters', 1) . '</strong></li>';
 
 						$tsstats = '';
 						if (isset($tv['TypoScript_constants']))
-							$tsstats .= '<li>' . count($tv['TypoScript_constants']) . ' TS-constants defined for use in the &lt;TypoScript&gt;-entry</li>';
+							$tsstats .= '<li>' . sprintf($GLOBALS['LANG']->getLL('dsdetails_tsconstants', 1), count($tv['TypoScript_constants'])) . '</li>';
 						if (isset($tv['TypoScript']))
-							$tsstats .= '<li>' . (1 + strlen($tv['TypoScript']) - strlen(str_replace("\n", "", $tv['TypoScript']))) . ' lines of TS-code inside the &lt;TypoScript&gt;-entry</li>';
+							$tsstats .= '<li>' . sprintf($GLOBALS['LANG']->getLL('dsdetails_tslines', 1), (1 + strlen($tv['TypoScript']) - strlen(str_replace("\n", "", $tv['TypoScript'])))) . '</li>';
 						if (isset($tv['TypoScriptObjPath']))
-							$tsstats .= '<li>will utilize the TS-structure <em>' . $tv['TypoScriptObjPath'] . '</em> defined inside the &lt;TypoScriptObjPath&gt;-entry</li>';
+							$tsstats .= '<li>' . sprintf($GLOBALS['LANG']->getLL('dsdetails_tsutilize', 1), '<em>' . $tv['TypoScriptObjPath'] . '</em>') . '</li>';
 
 						$HTML .= '<dl class="DS-infos">';
-						$HTML .= '<dt>Preset used for the element:</dt>';
+						$HTML .= '<dt>' . $GLOBALS['LANG']->getLL('dsdetails_preset', 1) . ':</dt>';
 						$HTML .= '<dd>' . $preset . '</dd>';
-						$HTML .= '<dt>Column-positioning:</dt>';
+						$HTML .= '<dt>' . $GLOBALS['LANG']->getLL('dsdetails_column', 1) . ':</dt>';
 						$HTML .= '<dd>' . $column . '</dd>';
 						if ($tsstats != '') {
-							$HTML .= '<dt>TypoScript:</dt>';
+							$HTML .= '<dt>' . $GLOBALS['LANG']->getLL('dsdetails_ts', 1) . ':</dt>';
 							$HTML .= '<dd><ul class="DS-stats">' . $tsstats . '</ul></dd>';
 						}
 						if ($notes != '') {
-							$HTML .= '<dt>Notes:</dt>';
+							$HTML .= '<dt>' . $GLOBALS['LANG']->getLL('dsdetails_notes', 1) . ':</dt>';
 							$HTML .= '<dd><ul class="DS-notes">' . $notes . '</ul></dd>';
 						}
 						$HTML .= '</dl>';
 					}
 					else {
-						$HTML .= '<p>The element has no basic definitions!</p>';
+						$HTML .= '<p>' . $GLOBALS['LANG']->getLL('dsdetails_nobasicdefinitions', 1) . '</p>';
 					}
 
 					if (($tf = $def['TCEforms'])) {
@@ -1592,7 +1596,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 						 */
 					}
 					else if (!$tco) {
-						$HTML .= '<p>The element has no TCE-form definitions!</p>';
+						$HTML .= '<p>' . $GLOBALS['LANG']->getLL('dsdetails_notceformdefinitions', 1) . '</p>';
 					}
 				}
 
@@ -1703,17 +1707,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 		if ($BE_USER->isAdmin())	{
 
 				// Introduction:
-			$outputString.= nl2br(htmlspecialchars(trim('
-			If you want to start a new website based on the TemplaVoila template engine you can start this wizard which will set up all the boring initial stuff for you.
-			You will be taken through these steps:
-			- Creation of a new website root, storage folder, sample pages.
-			- Creation of the main TemplaVoila template, including mapping of one content area and a main menu.
-			- Creation of a backend user and group to manage only that website.
-
-			You should prepare an HTML template before you begin the wizard; simply make a design in HTML and place the HTML file including graphics and stylesheets in a subfolder of "' . $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'] . 'templates/" relative to the websites root directory.
-			Tip about menus: If you include a main menu in the template, try to place the whole menu inside a container (like <div>, <table> or <tr>) and encapsulate each menu item in a block tag (like <tr>, <td> or <div>). Use A-tags for the links. If you want different designs for normal and active menu elements, design the first menu item as "Active" and the second (and rest) as "Normal", then the wizard might be able to capture the right configuration.
-			Tip about stylesheets: The content elements from TYPO3 will be outputted in regular HTML tags like <p>, <h1> to <h6>, <ol> etc. You will prepare yourself well if your stylesheet in the HTML template provides good styles for these standard elements from the start. Then you will have less finetuning to do later.
-			')));
+			$outputString.= nl2br($LANG->getLL('newsitewizard_intro', 1));
 
 				// Checks:
 			$missingExt = $this->wizard_checkMissingExtensions();
@@ -1723,12 +1717,9 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 				$outputString.= '
 				<br/>
 				<br/>
-				<input type="submit" value="Start wizard now!" onclick="'.htmlspecialchars('document.location=\'index.php?SET[wiz_step]=1\'; return false;').'" />';
+				<input type="submit" value="' . $LANG->getLL('newsitewizard_startnow', 1) . '" onclick="'.htmlspecialchars('document.location=\'index.php?SET[wiz_step]=1\'; return false;').'" />';
 			} else {
-				$outputString.= '
-				<br/>
-				<br/>
-				<i>There are some technical problems you have to solve before you can start the wizard! Please see below for details. Solve these problems first and come back.</i>';
+				$outputString.= '<br/><br/>' . $LANG_getLL('newsitewizard_problem');
 
 			}
 
@@ -1737,17 +1728,17 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 
 				// Missing extension warning:
 			if ($missingExt)	{
-				$this->content.= $this->doc->section('Missing extension!',$missingExt,0,1,3);
+				$this->content.= $this->doc->section($LANG->getLL('newsitewizard_missingext'), $missingExt, 0, 1, 3);
 			}
 
 				// Missing configuration warning:
 			if ($missingConf)	{
-				$this->content.= $this->doc->section('Missing configuration!',$missingConf,0,1,3);
+				$this->content.= $this->doc->section($LANG->getLL('newsitewizard_missingconf'), $missingConf, 0, 1, 3);
 			}
 
 				// Missing directory warning:
 			if ($missingDir)	{
-				$this->content.= $this->doc->section('Missing directory!',$missingDir,0,1,3);
+				$this->content.= $this->doc->section($LANG->getLL('newsitewizard_missingdir'), $missingDir, 0, 1, 3);
 			}
 		}
 	}
@@ -1792,7 +1783,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 				break;
 			}
 
-			$outputString.= '<hr/><input type="submit" value="Cancel wizard" onclick="'.htmlspecialchars('document.location=\'index.php?SET[wiz_step]=0\'; return false;').'" />';
+			$outputString.= '<hr/><input type="submit" value="' . $LANG->getLL('newsitewizard_cancel', 1) . '" onclick="' . htmlspecialchars('document.location=\'index.php?SET[wiz_step]=0\'; return false;') . '" />';
 
 				// Add output:
 			$this->content.= $this->doc->section('',$outputString,0,1);
@@ -1809,7 +1800,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 	 */
 	function wizard_checkMissingExtensions()	{
 
-		$outputString.='Before the wizard can run some extensions are required to be installed. Below you will see the which extensions are required and which are not available at this moment. Please go to the Extension Manager and install these first.';
+		$outputString .= $GLOBALS['LANG']->getLL('newsitewizard_missingext_description', 1);
 
 			// Create extension status:
 		$checkExtensions = explode(',','css_styled_content,impexp');
@@ -1817,14 +1808,14 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 
 		$tRows = array();
 		$tRows[] = '<tr class="tableheader bgColor5">
-			<td>Extension Key:</td>
-			<td>Installed?</td>
+			<td>' . $GLOBALS['LANG']->getLL('newsitewizard_missingext_extkey', 1) . '</td>
+			<td>' . $GLOBALS['LANG']->getLL('newsitewizard_missingext_installed', 1) . '</td>
 		</tr>';
 
 		foreach($checkExtensions as $extKey)	{
 			$tRows[] = '<tr class="bgColor4">
 				<td>'.$extKey.'</td>
-				<td align="center">'.(t3lib_extMgm::isLoaded($extKey) ? 'Yes' : '<span class="typo3-red">No!</span>').'</td>
+				<td align="center">'.(t3lib_extMgm::isLoaded($extKey) ? $GLOBALS['LANG']->getLL('newsitewizard_missingext_yes', 1) : '<span class="typo3-red">' . $GLOBALS['LANG']->getLL('newsitewizard_missingext_no', 1) . '</span>').'</td>
 			</tr>';
 
 			if (!t3lib_extMgm::isLoaded($extKey))	$missingExtensions = TRUE;
@@ -1856,14 +1847,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 	function wizard_checkDirectory()	{
 
 		if (!@is_dir(PATH_site.$this->templatesDir))	{
-			return
-				nl2br('The directory "'.$this->templatesDir.'" (relative to the website root) does not exist! This is where you must place your HTML templates. Please create that directory <u>before you start the wizard</u>. In order to do so, follow these directions:
-
-			- Go to the module File > Filelist
-			- Click the icon of the "' . $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'] . '" root and select "Create" from the context menu.
-			- Enter the name "templates" of the folder and press the "Create" button.
-			- Return to this wizard
-			');
+			return nl2br(sprintf($GLOBALS['LANG']->getLL('newsitewizard_missingdir_instruction'), $this->templatesDir, $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir']));
 		}
 		return false;
 	}
@@ -1879,8 +1863,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 
 			$this->wizardData = array();
 
-			$outputString.=nl2br('The first step is to select the HTML file you want to base the new website design on. Below you see a list of HTML files found in the folder "'.$this->templatesDir.'". Click the "Preview"-link to see what the file looks like and when the right template is found, just click the "Choose as template"-link in order to proceed.
-				If the list of files is empty you must now copy the HTML file you want to use as a template into the template folder. When you have done that, press the refresh button to refresh the list.<br/>');
+			$outputString .= sprintf($GLOBALS['LANG']->getLL('newsitewizard_firststep'), $this->templatesDir). '<br/>';
 
 				// Get all HTML files:
 			$fileArr = t3lib_div::getAllFilesAndFoldersInPath(array(),PATH_site.$this->templatesDir,'html,htm',0,1);
@@ -1889,9 +1872,9 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 				// Prepare header:
 			$tRows = array();
 			$tRows[] = '<tr class="tableheader bgColor5">
-				<td>Path:</td>
-				<td>Usage:</td>
-				<td>Action:</td>
+				<td>' . $GLOBALS['LANG']->getLL('toused_path', 1) . ':</td>
+				<td>' . $GLOBALS['LANG']->getLL('usage', 1) . ':</td>
+				<td>' . $GLOBALS['LANG']->getLL('action', 1) . ':</td>
 			</tr>';
 
 				// Traverse available template files:
@@ -1910,24 +1893,24 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 
 					// Make row:
 				$tRows[] = '<tr class="bgColor4">
-					<td>'.htmlspecialchars($file).'</td>
-					<td>'.(count($tosForTemplate) ? 'Used '.count($tosForTemplate).' times' : 'Not used yet').'</td>
+					<td>' . htmlspecialchars($file) . '</td>
+					<td>' . (count($tosForTemplate) ? sprintf($GLOBALS['LANG']->getLL('newsitewizard_usedtimes', 1),  count($tosForTemplate)) : $GLOBALS['LANG']->getLL('newsitewizard_notused', 1)) . '</td>
 					<td>'.
-						'<a href="#" onclick="'.htmlspecialchars($onClick).'">[Preview first]</a> '.
-						'<a href="'.htmlspecialchars('index.php?SET[wiz_step]=2&CFG[file]='.rawurlencode($file)).'">[Choose as Template]</a> '.
+						'<a href="#" onclick="'.htmlspecialchars($onClick).'">' . $GLOBALS['LANG']->getLL('newsitewizard_preview', 1) . '</a> '.
+						'<a href="'.htmlspecialchars('index.php?SET[wiz_step]=2&CFG[file]='.rawurlencode($file)).'">' . $GLOBALS['LANG']->getLL('newsitewizard_choose', 1) . '</a> '.
 						'</td>
 				</tr>';
 			}
 			$outputString.= '<table border="0" cellpadding="1" cellspacing="1" class="lrPadding">'.implode('',$tRows).'</table>';
 
 				// Refresh button:
-			$outputString.= '<br/><input type="submit" value="Refresh" onclick="'.htmlspecialchars('document.location=\'index.php?SET[wiz_step]=1\'; return false;').'" />';
+			$outputString.= '<br/><input type="submit" value="' . $GLOBALS['LANG']->getLL('refresh', 1) . '" onclick="'.htmlspecialchars('document.location=\'index.php?SET[wiz_step]=1\'; return false;').'" />';
 
 				// Add output:
-			$this->content.= $this->doc->section('Step 1: Select the template HTML file',$outputString,0,1);
+			$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('newsitewizard_selecttemplate', 1), $outputString, 0, 1);
 
 		} else {
-			$this->content .= $this->doc->section('TemplaVoila wizard error',$this->templatesDir.' is not a directory! Please, create it before starting this wizard.',0,1);
+			$this->content .= $this->doc->section('TemplaVoila wizard error', sprintf($GLOBALS['LANG']->getLL('newsitewizard_errornodir', 1), $this->templatesDir), 0, 1);
 		}
 	}
 
@@ -1946,38 +1929,39 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 
 			// Show selected template file:
 		if ($this->wizardData['file'])	{
-			$outputString.= nl2br('The template file "'.htmlspecialchars($this->wizardData['file']).'" is now selected: ');
+			$outputString.= htmlspecialchars(sprintf($GLOBALS['LANG']->getLL('newsitewizard_templateselected'), $this->wizardData['file']));
 			$outputString.= '<br/><iframe src="'.htmlspecialchars($this->doc->backPath.'../'.$this->wizardData['file']).'" width="640" height="300"></iframe>';
 
 				// Enter default data:
 			$outputString.='
 				<br/><br/><br/>
-				Next, you should enter default values for the new website. With this basic set of information we are ready to create the initial website structure!<br/>
+				' . $GLOBALS['LANG']->getLL('newsitewizard_step2next', 1) . '
+				<br/>
 	<br/>
-				<b>Name of the site:</b><br/>
-				(Required)<br/>
-				This value is shown in the browsers title bar and will be the default name of the first page in the page tree.<br/>
+				<b>' . $GLOBALS['LANG']->getLL('newsitewizard_step2_name', 1) . ':</b><br/>
+				' . $GLOBALS['LANG']->getLL('newsitewizard_step2_required', 1) . '<br/>
+				' . $GLOBALS['LANG']->getLL('newsitewizard_step2_valuename', 1) . '<br/>
 				<input type="text" name="CFG[sitetitle]" value="'.htmlspecialchars($this->wizardData['sitetitle']).'" /><br/>
 	<br/>
-				<b>URL of the website:</b><br/>
-				(Optional)<br/>
-				If you know the URL of the website already please enter it here, eg. "www.mydomain.com".<br/>
+				<b>' . $GLOBALS['LANG']->getLL('newsitewizard_step2_url', 1) . ':</b><br/>
+				' . $GLOBALS['LANG']->getLL('newsitewizard_step2_optional', 1) . '<br/>
+				' . $GLOBALS['LANG']->getLL('newsitewizard_step2_valueurl', 1) . '<br/>
 				<input type="text" name="CFG[siteurl]" value="'.htmlspecialchars($this->wizardData['siteurl']).'" /><br/>
 	<br/>
-				<b>Editor username</b><br/>
-				(Required)<br/>
-				Enter the username of a new backend user/group who will be able to edit the pages on the new website. (Password will be "password" by default, make sure to change that!)<br/>
+				<b>' . $GLOBALS['LANG']->getLL('newsitewizard_step2_editor', 1) . ':</b><br/>
+				' . $GLOBALS['LANG']->getLL('newsitewizard_step2_required', 1) . '<br/>
+				' . $GLOBALS['LANG']->getLL('newsitewizard_step2_username', 1) . '<br/>
 				<input type="text" name="CFG[username]" value="'.htmlspecialchars($this->wizardData['username']).'" /><br/>
 	<br/>
 				<input type="hidden" name="SET[wiz_step]" value="3" />
-				<input type="submit" name="_create_site" value="Create new site" />
+				<input type="submit" name="_create_site" value="' . $GLOBALS['LANG']->getLL('newsitewizard_step2_createnewsite', 1) . '" />
 			';
 		} else {
-			$outputString.= 'No template file found!?';
+			$outputString .= $GLOBALS['LANG']->getLL('newsitewizard_step2_notemplatefound', 1);
 		}
 
 			// Add output:
-		$this->content.= $this->doc->section('Step 2: Enter default values for new site',$outputString,0,1);
+		$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('newsitewizard_step2', 1), $outputString, 0, 1);
 	}
 
 	/**
@@ -2019,7 +2003,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 						// Update various fields (the index values, eg. the "1" in "$import->import_mapId['pages'][1]]..." are the UIDs of the original records from the import file!)
 					$data = array();
 					$data['pages'][t3lib_BEfunc::wsMapId('pages',$import->import_mapId['pages'][1])]['title'] = $this->wizardData['sitetitle'];
-					$data['sys_template'][t3lib_BEfunc::wsMapId('sys_template',$import->import_mapId['sys_template'][1])]['title'] = 'Main template: '.$this->wizardData['sitetitle'];
+					$data['sys_template'][t3lib_BEfunc::wsMapId('sys_template',$import->import_mapId['sys_template'][1])]['title'] = $GLOBALS['LANG']->getLL('newsitewizard_maintemplate', 1) . ' ' . $this->wizardData['sitetitle'];
 					$data['sys_template'][t3lib_BEfunc::wsMapId('sys_template',$import->import_mapId['sys_template'][1])]['sitetitle'] = $this->wizardData['sitetitle'];
 					$data['tx_templavoila_tmplobj'][t3lib_BEfunc::wsMapId('tx_templavoila_tmplobj',$import->import_mapId['tx_templavoila_tmplobj'][1])]['fileref'] = $this->wizardData['file'];
 					$data['tx_templavoila_tmplobj'][t3lib_BEfunc::wsMapId('tx_templavoila_tmplobj',$import->import_mapId['tx_templavoila_tmplobj'][1])]['templatemapping'] = serialize(
@@ -2068,10 +2052,10 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 
 					t3lib_BEfunc::getSetUpdateSignal('updatePageTree');
 
-					$outputString.= 'New site has been created and adapted. <hr/>';
+					$outputString .= $GLOBALS['LANG']->getLL('newsitewizard_maintemplate', 1) . '<hr/>';
 				}
 			} else {
-				$outputString.= 'Error happened: Either you did not specify a website name or username in the previous form!';
+				$outputString .= $GLOBALS['LANG']->getLL('newsitewizard_maintemplate', 1);
 			}
 		}
 
@@ -2079,18 +2063,17 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 		if ($this->wizardData['templateObjectId'])	{
 			$url = '../cm1/index.php?table=tx_templavoila_tmplobj&uid='.$this->wizardData['templateObjectId'].'&SET[selectHeaderContent]=0&_reload_from=1&returnUrl='.rawurlencode('../mod2/index.php?SET[wiz_step]=4');
 
-			$outputString.= '
-				You are now ready to point out at which position in the HTML code to insert the TYPO3 generated page content and the main menu. This process is called "mapping".<br/>
-				The process of mapping is shown with this little animation. Please study it closely to understand the flow, then click the button below to start the mapping process on your own. Complete the mapping process by pressing "Save and Return".<br/>
+			$outputString.= $GLOBALS['LANG']->getLL('newsitewizard_step3ready') . '
+				<br/>
 				<br/>
 				<img src="mapbody_animation.gif" style="border: 2px black solid;" alt=""><br/>
 				<br/>
-				<br/><input type="submit" value="Start the mapping process" onclick="'.htmlspecialchars('document.location=\''.$url.'\'; return false;').'" />
+				<br/><input type="submit" value="' . $GLOBALS['LANG']->getLL('newsitewizard_startmapping', 1) . '" onclick="'.htmlspecialchars('document.location=\''.$url.'\'; return false;').'" />
 			';
 		}
 
 			// Add output:
-		$this->content.= $this->doc->section('Step 3: Begin mapping',$outputString,0,1);
+		$this->content.= $this->doc->section($GLOBALS['LANG']->getLL('newsitewizard_beginmapping', 1), $outputString, 0, 1);
 	}
 
 	/**
@@ -2100,18 +2083,15 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 	 */
 	function wizard_step4()	{
 		$url = '../cm1/index.php?table=tx_templavoila_tmplobj&uid='.$this->wizardData['templateObjectId'].'&SET[selectHeaderContent]=1&_reload_from=1&returnUrl='.rawurlencode('../mod2/index.php?SET[wiz_step]=5');
-		$outputString.= '
-			Finally you also have to select which parts of the HTML header you want to include. For instance it is important that you select all sections with CSS styles in order to preserve the correct visual appearance of your website.<br/>
-			You can also select the body-tag of the template if you want to use the original body-tag.<br/>
-			This animations shows an example of this process:
+		$outputString .= $GLOBALS['LANG']->getLL('newsitewizard_headerinclude') . '
 			<br/>
 			<img src="maphead_animation.gif" style="border: 2px black solid;" alt=""><br/>
 			<br/>
-			<br/><input type="submit" value="Select HTML header parts" onclick="'.htmlspecialchars('document.location=\''.$url.'\'; return false;').'" />
+			<br/><input type="submit" value="' . $GLOBALS['LANG']->getLL('newsitewizard_headerselect') . '" onclick="'.htmlspecialchars('document.location=\''.$url.'\'; return false;').'" />
 			';
 
 			// Add output:
-		$this->content.= $this->doc->section('Step 4: Select HTML header parts',$outputString,0,1);
+		$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('newsitewizard_step4'), $outputString, 0, 1);
 	}
 
 	/**
@@ -2134,10 +2114,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 		if (strlen($menuPart))	{
 
 				// Main message:
-			$outputString.= '
-				The basics of your website should be working now. However the '.$menuTypeText.' still needs to be configured so that TYPO3 automatically generates a menu reflecting the pages in the page tree. This process involves configuration of the TypoScript object path, "lib.'.$menuType.'". This is a technical job which requires that you know about TypoScript if you want it 100% customized.<br/>
-				To assist you getting started with the '.$menuTypeText.' this wizard will try to analyse the menu found inside the template file. If the menu was created of a series of repetitive block tags containing A-tags then there is a good chance this will succeed. You can see the result below.
-			';
+			$outputString.=  sprintf($GLOBALS['LANG']->getLL('newsitewizard_basicsshouldwork', 1), $menuTypeText, $menuType, $menuTypeText);
 
 				// Start up HTML parser:
 			require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
@@ -2306,7 +2283,7 @@ lib.'.$menuType.'.1.ACT {
 			$outputString.='
 			<br/>
 			<br/>
-			Here is the HTML code from the Template that encapsulated the menu:
+			' . $GLOBALS['LANG']->getLL('newsitewizard_menuhtmlcode', 1) . '
 			<hr/>
 			<pre>'.htmlspecialchars($menuPart_HTML).'</pre>
 			<hr/>
@@ -2314,43 +2291,41 @@ lib.'.$menuType.'.1.ACT {
 
 
 			if (trim($menu_normal['wrap']) != '|')	{
-				$outputString.= 'It seems that the menu consists of menu items encapsulated with "'.htmlspecialchars(str_replace('|',' ... ',$menu_normal['wrap'])).'". ';
+				$outputString .= sprintf($GLOBALS['LANG']->getLL('newsitewizard_menuenc', 1), htmlspecialchars(str_replace('|', ' ... ', $menu_normal['wrap'])));
 			} else {
-				$outputString.= 'It seems that the menu consists of menu items not wrapped in any block tags except A-tags. ';
+				$outputString .= $GLOBALS['LANG']->getLL('newsitewizard_menunoa', 1);
 			}
 			if (count($totalWrap))	{
-				$outputString.='It also seems that the whole menu is wrapped in this tag: "'.htmlspecialchars(str_replace('|',' ... ',implode('|',$totalWrap))).'". ';
+				$outputString .= sprintf($GLOBALS['LANG']->getLL('newsitewizard_menuwrap', 1), htmlspecialchars(str_replace('|', ' ... ', implode('|', $totalWrap))));
 			}
 			if ($menu_normal['bulletwrap'])	{
-				$outputString.='Between the menu elements there seems to be a visual division element with this HTML code: "'.htmlspecialchars($menu_normal['bulletwrap']).'". That will be added between each element as well. ';
+				$outputString .= sprintf($GLOBALS['LANG']->getLL('newsitewizard_menudiv', 1), htmlspecialchars($menu_normal['bulletwrap']));
 			}
 			if ($GMENU)	{
-				$outputString.='The menu items were detected to be images - TYPO3 will try to generate graphical menu items automatically (GMENU). You will need to customize the look of these before it will match the originals! ';
+				$outputString .= $GLOBALS['LANG']->getLL('newsitewizard_menuimg', 1);
 			}
 			if ($mouseOver)	{
-				$outputString.='It seems like a mouseover functionality has been applied previously, so roll-over effect has been applied as well.  ';
+				$outputString .= $GLOBALS['LANG']->getLL('newsitewizard_menumouseover', 1);
 			}
 
-			$outputString.='<br/><br/>';
-			$outputString.='Based on this analysis, this TypoScript configuration for the menu is suggested:
+			$outputString .= '<br/><br/>';
+			$outputString .= $GLOBALS['LANG']->getLL('newsitewizard_menuts', 1) . '
 			<br/><br/>';
 			$outputString.='<hr/>'.$this->syntaxHLTypoScript($typoScript).'<hr/><br/>';
 
 
-			$outputString.='You can fine tune the configuration here before it is saved:<br/>';
-			$outputString.='<textarea name="CFG[menuCode]"'.$GLOBALS['TBE_TEMPLATE']->formWidthText().' rows="10">'.t3lib_div::formatForTextarea($typoScript).'</textarea><br/><br/>';
-			$outputString.='<input type="hidden" name="SET[wiz_step]" value="'.$menuTypeNextStep.'" />';
-			$outputString.='<input type="submit" name="_" value="Write '.$menuTypeText.' TypoScript code" />';
+			$outputString .= $GLOBALS['LANG']->getLL('newsitewizard_menufinetune', 1);
+			$outputString .= '<textarea name="CFG[menuCode]"'.$GLOBALS['TBE_TEMPLATE']->formWidthText().' rows="10">'.t3lib_div::formatForTextarea($typoScript).'</textarea><br/><br/>';
+			$outputString .= '<input type="hidden" name="SET[wiz_step]" value="'.$menuTypeNextStep.'" />';
+			$outputString .= '<input type="submit" name="_" value="' . sprintf($GLOBALS['LANG']->getLL('newsitewizard_menuwritets', 1), $menuTypeText) . '" />';
 		} else {
-			$outputString.= '
-				The basics of your website should be working now. It seems like you did not map the '.$menuTypeText.' to any element, so the menu configuration process will be skipped.<br/>
-			';
+			$outputString.= sprintf($GLOBALS['LANG']->getLL('newsitewizard_menufinished', 1), $menuTypeText) . '<br />';
 			$outputString.='<input type="hidden" name="SET[wiz_step]" value="'.$menuTypeNextStep.'" />';
-			$outputString.='<input type="submit" name="_" value="Next..." />';
+			$outputString.='<input type="submit" name="_" value="' . $GLOBALS['LANG']->getLL('newsitewizard_menunext', 1) . '" />';
 		}
 
 			// Add output:
-		$this->content.= $this->doc->section('Step 5'.$menuTypeLetter.': Trying to create dynamic menu',$outputString,0,1);
+		$this->content.= $this->doc->section(sprintf($GLOBALS['LANG']->getLL('newsitewizard_step5', 1), $menuTypeLetter), $outputString, 0, 1);
 
 	}
 
@@ -2364,15 +2339,15 @@ lib.'.$menuType.'.1.ACT {
 		$this->saveMenuCode();
 
 
-		$outputString.= '<b>Congratulations!</b> You have completed the initial creation of a new website in TYPO3 based on the TemplaVoila engine. After you click the "Finish" button you can go to the Web>Page module to edit your pages!
+		$outputString.= $GLOBALS['LANG']->getLL('newsitewizard_sitecreated') . '
 
 		<br/>
 		<br/>
-		<input type="submit" value="Finish Wizard!" onclick="'.htmlspecialchars(t3lib_BEfunc::viewOnClick($this->wizardData['rootPageId'],$this->doc->backPath).'document.location=\'index.php?SET[wiz_step]=0\'; return false;').'" />
+		<input type="submit" value="' . $GLOBALS['LANG']->getLL('newsitewizard_finish', 1) . '" onclick="'.htmlspecialchars(t3lib_BEfunc::viewOnClick($this->wizardData['rootPageId'],$this->doc->backPath).'document.location=\'index.php?SET[wiz_step]=0\'; return false;').'" />
 		';
 
 			// Add output:
-		$this->content.= $this->doc->section('Step 6: Done',$outputString,0,1);
+		$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('newsitewizard_done', 1), $outputString, 0, 1);
 	}
 
 	/**

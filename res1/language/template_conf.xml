@@ -24,7 +24,7 @@
 			<label index="staticDS.wizard.usage">Usage</label>
 			<label index="staticDS.wizard.selectall">select/deselect all</label>
 			<label index="staticDS.wizard.title.0">Check data structure paths</label>
-			<label index="staticDS.wizard.description.0">The wizard checks if the data structure paths exists and are writeable. If a path does not exist, it attempts to create the necessary directory.</label>
+			<label index="staticDS.wizard.description.0">The wizard checks if the data structure paths exist and are writeable. If a path does not exist, it attempts to create the necessary directory.</label>
 			<label index="staticDS.wizard.title.1">Convert existing data structures</label>
 			<label index="staticDS.wizard.description.1">This step copies your existing data structures into static files using the specified data structure paths. Static files that already exist will be overwritten.&lt;br /&gt;Since the existing data structures remain unchanged, this is also an easy way to back up data structure records without actually using the static data structure functionality.</label>
 			<label index="staticDS.wizard.description2.1">Are you sure you want to enable static data structures? This feature is experimental and it is recommended that you perform a database backup of all tables involved (pages, tt_content, tx_templavoila_datastructure, and tx_templavoila_tmplobj) before continuing.</label>
