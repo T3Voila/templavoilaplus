@@ -98,6 +98,9 @@ function sortable_updateItemButtons(el, position, pID) {
 				case 'tpm-pasteSubRef':
 					node.href = node.href.replace(/&destination=[^&]+/,"&destination=" + newPos);
 					break;
+				case 'tpm-makeLocal':
+					node.href = node.href.replace(/&makeLocalRecord=[^&]+/,"&makeLocalRecord=" + newPos);
+					break;
 			}
 		} else if(node.childElements()) {
 			node.childElements().each(function(node){
