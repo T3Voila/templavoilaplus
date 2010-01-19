@@ -508,7 +508,7 @@ class tx_templavoila_pi1 extends tslib_pibase {
 						if (!isset($dataValues[$key]['el']))
 							$dataValues[$key]['el'] = array();
 
-						if ($DSelements[$key]['section'])	{
+						if ($DSelements[$key]['section'] && is_array($dataValues[$key]['el']))	{
 							$registerCounter = 1;
 							foreach($dataValues[$key]['el'] as $ik => $el)	{
 								$GLOBALS['TSFE']->register["tx_templavoila_pi1.sectionPos"] = $registerCounter;

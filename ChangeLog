@@ -1,5 +1,6 @@
 2010-01-19  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
+	* Fixed bug: #13154: Deleting the last element from a section in an FCE crashes rendering
 	* Fixed bug: #3843: Unmapping does not hide ce field in page module
 	
 2010-01-18  Steffen Kamper  <info@sk-typo3.de>
