@@ -1456,6 +1456,7 @@ class tx_templavoila_api {
 						if ($this->includePreviewData)	{
 							$tree['previewData']['sheets'][$sheetKey][$fieldKey] = array(
 								'TCEforms' => $fieldData['TCEforms'],
+								'tx_templavoila' => $fieldData['tx_templavoila'],
 								'type' => $fieldData['type'],
 								'section' => $fieldData['section'],
 								'data' => array(),
