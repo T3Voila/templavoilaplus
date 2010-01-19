@@ -173,6 +173,9 @@
 			<label index="mapTScode">TypoScript Code</label>
 			<label index="mapExtraOptions">Extra options</label>
 			<label index="mapPostProcesses">Applied post-processes</label>
+			<label index="mapEnablePreview">Enable data preview in Page-Module</label>
+			<label index="mapEnablePreview.enable">Enable</label>
+			<label index="mapEnablePreview.disable">Disable</label>
 			<label index="mapPPcastInteger">Cast content to integer</label>
 			<label index="mapPPhsc">Pass content through htmlSpecialChars (HSC)</label>
 			<label index="mapCustomStdWrap">Custom stdWrap</label>

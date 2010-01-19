@@ -1169,6 +1169,11 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			$vKey = $langDisable ? 'vDEF' : ($langChildren ? 'v'.$languageKey : 'vDEF');
 
 			foreach($previewData['sheets'][$sheet] as $fieldData)	{
+
+				if(isset($fieldData['tx_templavoila']['preview']) && $fieldData['tx_templavoila']['preview'] == 'disable') {
+					continue;
+				}
+
 				$TCEformsConfiguration = $fieldData['TCEforms']['config'];
 				$TCEformsLabel = $this->localizedFFLabel($fieldData['TCEforms']['label'], 1);	// title for non-section elements
 
