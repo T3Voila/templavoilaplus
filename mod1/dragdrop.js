@@ -107,21 +107,6 @@ function sortable_updateItemButtons(el, position, pID) {
 	});
 }
 
-function sortable_updatePasteButtons(oldPos, newPos) {
-	var i = 0; var p = new Array; var href = "";
-	var buttons = document.getElementsByClassName("sortablePaste");
-	if (buttons[i].firstChild && buttons[i].firstChild.href.indexOf("&source="+escape(oldPos)) != -1) {
-		for (i = 0; i < buttons.length; i++) {
-			if (buttons[i].firstChild) {
-				href = buttons[i].firstChild.href;
-				if ((p = href.split("&source="+escape(oldPos))).length == 2) {
-					buttons[i].firstChild.href = p[0] + "&source=" + escape(newPos) + p[1];
-				}
-			}
-		}
-	}
-}
-
 function sortable_update(el) {
 	var node = el.firstChild;
 	var i = 1;
@@ -130,7 +115,6 @@ function sortable_update(el) {
 			if (sortable_currentItem && node.id == sortable_currentItem.id ) {
 				var url = "index.php?" + sortable_linkParameters + "&ajaxPasteRecord=cut&source=" + sortable_items[sortable_currentItem.id] + "&destination=" + sortable_items[el.id] + (i-1); /* xxx */
 				new Ajax.Request(url);
-				sortable_updatePasteButtons(sortable_items[node.id], sortable_items[el.id] + i);
 				sortable_currentItem = false;
 			}
 			sortable_updateItemButtons(node, i, sortable_items[el.id]);
