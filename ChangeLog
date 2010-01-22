@@ -1,3 +1,7 @@
+2010-01-22  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug: #13256: Installing Mininews breaks database driven DS/TO handling
+	
 2010-01-20  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug: #13286: mod2 is not localized

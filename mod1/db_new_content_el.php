@@ -94,7 +94,7 @@ class tx_templavoila_dbnewcontentel {
 
 		// Internal, static:
 	var $doc;					// Internal backend template object
-
+	protected $extConf;			// Templavoila extension configuration
 
 		// Internal, dynamic:
 	var $include_once = array();	// Includes a list of files to include between init() and main() - see init()
@@ -114,6 +114,8 @@ class tx_templavoila_dbnewcontentel {
 		if (is_array($TBE_MODULES_EXT['xMOD_db_new_content_el']['addElClasses']))	{
 			$this->include_once = array_merge($this->include_once,$TBE_MODULES_EXT['xMOD_db_new_content_el']['addElClasses']);
 		}
+
+		$this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
 
 			// Setting internal vars:
 		$this->id = intval(t3lib_div::_GP('id'));
@@ -406,15 +408,18 @@ class tx_templavoila_dbnewcontentel {
 		$positionPid = $this->id;
 		$dataStructureRecords = array();
 		$storageFolderPID = $this->apiObj->getStorageFolderPid($positionPid);
-
+		$staticDS = ($this->extConf['staticDS.']['enable']);
 
 		if (is_array($GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['staticDataStructures'])) {
 				// Fetch static data structures which are stored in XML files:
 			foreach($GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['staticDataStructures'] as $staticDataStructureArr)	{
-				$staticDataStructureArr['_STATIC'] = TRUE;
-				$dataStructureRecords[$staticDataStructureArr['path']] = $staticDataStructureArr;
+				if ($staticDS || (!$staticDS && $staticDS['scope'] != 1 && $staticDS['scope'] != 2)) {
+					$staticDataStructureArr['_STATIC'] = TRUE;
+					$dataStructureRecords[$staticDataStructureArr['path']] = $staticDataStructureArr;
+				}
 			}
-		} else {
+		}
+		if (!$staticDS) {
 				// Fetch data structures stored in the database:
 			$addWhere = $this->buildRecordWhere('tx_templavoila_datastructure');
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tx_templavoila_datastructure', 'pid=' . intval($storageFolderPID) . ' AND scope=2' . $addWhere . t3lib_BEfunc::deleteClause('tx_templavoila_datastructure') . t3lib_BEfunc::versioningPlaceholderClause('tx_templavoila_datastructure'));
