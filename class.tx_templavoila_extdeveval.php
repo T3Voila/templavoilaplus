@@ -151,22 +151,27 @@ class tx_templavoila_extdeveval {
 	 * @return	array
 	 */
 	function getDataStructures()	{
+		$extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
+		$staticDS = ($extConf['staticDS.']['enable']);
 
 			// Select all static Data Structures and add to array:
-		if (is_array($GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['staticDataStructures']))	{
-			foreach($GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['staticDataStructures'] as $staticDS)	{
-				$staticDS['_STATIC'] = 1;
-				$fileReference = t3lib_div::getFileAbsFileName($staticDS['path']);
-				if (@is_file($fileReference))	{
-					$staticDS['_languageMode'] = $this->DSlanguageMode(t3lib_div::getUrl($fileReference));
-				} else {
-					$staticDS['_languageMode'] = 'ERROR: File not found';
-				}
-				if ($row['_languageMode']!='Disabled')	{
-					$dsRecords[$staticDS['scope']][] = $staticDS;
+		if (is_array($GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['staticDataStructures'])) {
+			foreach($GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['staticDataStructures'] as $staticDataStructure)	{
+				if ($staticDS || (!$staticDS && $staticDS['scope'] != 1 && $staticDS['scope'] != 2)) {
+					$staticDataStructure['_STATIC'] = 1;
+					$fileReference = t3lib_div::getFileAbsFileName($staticDataStructure['path']);
+					if (@is_file($fileReference))	{
+						$staticDataStructure['_languageMode'] = $this->DSlanguageMode(t3lib_div::getUrl($fileReference));
+					} else {
+						$staticDataStructure['_languageMode'] = 'ERROR: File not found';
+					}
+					if ($staticDataStructure['_languageMode']!='Disabled')	{
+						$dsRecords[$staticDataStructure['scope']][] = $staticDataStructure;
+					}
 				}
 			}
-		} else {
+		}
+		if (!$staticDS) {
 				// Select all Data Structures in the PID and put into an array:
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 				'*',

@@ -262,7 +262,7 @@ class tx_templavoila_mod1_wizards {
 
 		$storageFolderPID = $this->apiObj->getStorageFolderPid($positionPid);
 		$tmplHTML = array();
-		$staticDS = (count($GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['staticDataStructures']));
+		$staticDS = $this->pObj->staticDS;
 
 			// look for TCEFORM.pages.tx_templavoila_ds.removeItems / TCEFORM.pages.tx_templavoila_to.removeItems
 		$disallowedPageTemplateItems = $this->getDisallowedTSconfigItemsByFieldName ($positionPid, 'tx_templavoila_ds');

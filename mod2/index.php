@@ -114,13 +114,18 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 	var $tFileList=array();
 	var $errorsWarnings=array();
 
+	var $extConf;							// holds the extconf configuration
+	var $staticDS = FALSE;					// Boolean; if true DS records are file based
+
 	var $cm1Link = '../cm1/index.php';
 
 
-    function init() {
-        parent::init();
-        $this->templatesDir = $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'] . 'templates/';
-    }
+	function init() {
+		parent::init();
+		$this->templatesDir = $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'] . 'templates/';
+		$this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
+		$this->staticDS = ($this->extConf['staticDS.']['enable']);
+	}
 
 	/**
 	 * Preparing menu content
@@ -349,14 +354,18 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 		global $LANG;
 
 
+		$dsRecords = array();
 
 			// Select all static Data Structures and add to array:
-		if (is_array($GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['staticDataStructures']))	{
+		if (is_array($GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['staticDataStructures'])) {
 			foreach($GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['staticDataStructures'] as $staticDS)	{
-				$staticDS['_STATIC'] = 1;
-				$dsRecords[$staticDS['scope']][] = $staticDS;
+				if ($this->staticDS || (!$this->staticDS && $staticDS['scope'] != 1 && $staticDS['scope'] != 2)) {
+					$staticDS['_STATIC'] = 1;
+					$dsRecords[$staticDS['scope']][] = $staticDS;
+				}
 			}
-		} else {
+		}
+		if (!$this->staticDS) {
 				// Select all Data Structures in the PID and put into an array:
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 						'*',
@@ -365,13 +374,13 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 						'',
 						'title'
 					);
-			$dsRecords = array();
 			while($res && false !== ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)))	{
 				t3lib_BEfunc::workspaceOL('tx_templavoila_datastructure',$row);
 				$dsRecords[$row['scope']][] = $row;
 			}
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		}
+
 
 			// Select all Template Records in PID:
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
