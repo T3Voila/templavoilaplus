@@ -1,5 +1,6 @@
 2010-01-27  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
+	* Fixed issue: #13235: Pre- & Postprocessing Hook for handleIncomingCommands
 	* Fixed bug: #13261: extension load order might prevent wizardItems from extensions
 
 2010-01-22  Steffen Kamper  <info@sk-typo3.de>

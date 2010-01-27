@@ -2068,10 +2068,23 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 		$possibleCommands = array ('createNewRecord', 'unlinkRecord', 'deleteRecord','pasteRecord', 'makeLocalRecord', 'localizeElement', 'createNewPageTranslation', 'editPageLanguageOverlay');
 
+		$hooks = $this->hooks_prepareObjectsArray('handleIncomingCommands');
+
 		foreach ($possibleCommands as $command) {
 			if (($commandParameters = t3lib_div::_GP($command)) != '') {
 
 				$redirectLocation = 'index.php?'.$this->link_getParameters();
+
+				$skipCurrentCommand = false;
+				foreach ($hooks as $hookObj) {
+					if (method_exists ($hookObj, 'handleIncomingCommands_preProcess')) {
+						$skipCurrentCommand = $skipCurrentCommand || $hookObj->handleIncomingCommands_preProcess ($command, $redirectLocation, $this);
+					}
+				}
+
+				if ($skipCurrentCommand) {
+					continue;
+				}
 
 				switch ($command) {
 
@@ -2162,6 +2175,13 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 						}
 					break;
 				}
+
+				foreach ($hooks as $hookObj) {
+					if (method_exists ($hookObj, 'handleIncomingCommands_postProcess')) {
+						$hookObj->handleIncomingCommands_postProcess ($command, $redirectLocation, $this);
+					}
+				}
+
 			}
 		}
 
