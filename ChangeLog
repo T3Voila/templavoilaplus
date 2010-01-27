@@ -1,3 +1,7 @@
+2010-01-27  Tolleiv Nietsch <nietsch@aoemedia.de> 
+
+	* Fixed bug: #13261: extension load order might prevent wizardItems from extensions
+
 2010-01-22  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug: #13328: Don't link to file_edit.php if staticDS comes from extension

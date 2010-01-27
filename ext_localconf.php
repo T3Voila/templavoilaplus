@@ -86,7 +86,7 @@ templavoila.wizards.newContentElement.wizardItems {
 		}
 
 	}
-	common.show = text,textpic,image,bullets,table
+	common.show := addToList(text,textpic,image,bullets,table)
 
 	special.header = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:special
 	special.elements {
@@ -133,7 +133,7 @@ templavoila.wizards.newContentElement.wizardItems {
 		}
 
 	}
-	special.show = uploads,multimedia,menu,html,div
+	special.show := addToList(uploads,multimedia,menu,html,div)
 
 	forms.header = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:forms
 	forms.elements {
@@ -174,7 +174,7 @@ Contact me: | tv=check | 1
 		}
 
 	}
-	forms.show = mailform,search,login
+	forms.show := addToList(mailform,search,login)
 
 	fce.header = LLL:EXT:templavoila/mod1/locallang_db_new_content_el.xml:fce
 	fce.elements  {
