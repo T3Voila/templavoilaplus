@@ -1,3 +1,7 @@
+2010-01-27  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug: #13150: Allow edit of oldStyleColumnNumber in mapping module
+	
 2010-01-27  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
 	* Fixed issue: #13235: Pre- & Postprocessing Hook for handleIncomingCommands
