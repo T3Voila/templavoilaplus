@@ -33,6 +33,7 @@
 
 class tx_templavoila_cm1_dsEdit {
 	var $pObj;
+	protected $oldStyleColumnNumber = 0;
 
 
 	function init($pObj) {
@@ -135,7 +136,7 @@ class tx_templavoila_cm1_dsEdit {
 						<optgroup class="c-divider" label="' . $GLOBALS['LANG']->getLL('mapPresetGroups_tceFields') . '">';
 						foreach ($eTypes_formFields as $eType) {
 							$label = htmlspecialchars($eType == 'ce' ?
-									sprintf($eTypes['eType'][$eType]['label'], $insertDataArray['tx_templavoila']['oldStyleColumnNumber'] ? $insertDataArray['tx_templavoila']['oldStyleColumnNumber'] : $GLOBALS['LANG']->getLL('toBeDefined')) :
+									sprintf($eTypes['eType'][$eType]['label'], $insertDataArray['tx_templavoila']['oldStyleColumnNumber'] ? intval($insertDataArray['tx_templavoila']['oldStyleColumnNumber']) : $this->oldStyleColumnNumber) :
 									$eTypes['eType'][$eType]['label']);
 							$form .= chr(10) . '<option value="' . $eType . '"' . ($insertDataArray['tx_templavoila']['eType'] == $eType ? ' selected="selected"' : '') . '>' . $label . '</option>';
 						}
@@ -232,8 +233,22 @@ class tx_templavoila_cm1_dsEdit {
 						<dd>
 							<input type="radio" class="radio" id="tv_preview_enable" value="" name="'.$formFieldName.'[tx_templavoila][preview]" ' . ($insertDataArray['tx_templavoila']['preview'] != 'disable' ? 'checked="checked"' : '') .'> <label for="tv_preview_enable">' . $GLOBALS['LANG']->getLL('mapEnablePreview.enable') . '</label><br/>
 							<input type="radio" class="radio" id="tv_preview_disable" value="disable" name="'.$formFieldName.'[tx_templavoila][preview]" ' . ($insertDataArray['tx_templavoila']['preview'] == 'disable' ? 'checked="checked"' : '') .'> <label for="tv_preview_disable">' . $GLOBALS['LANG']->getLL('mapEnablePreview.disable') . '</label>
-						</dd>
-					</dl>';
+						</dd>';
+					if ($insertDataArray['tx_templavoila']['eType'] === 'ce') {
+						if (!isset($insertDataArray['tx_templavoila']['oldStyleColumnNumber'])) {
+							$insertDataArray['tx_templavoila']['oldStyleColumnNumber'] = $this->oldStyleColumnNumber++;
+						}
+						$form .= '
+							<dt>' . $GLOBALS['LANG']->getLL('mapOldStyleColumnNumber') . '</dt>
+							<dd>
+								<label for="tv_oldstylecolumnnumber">' . $GLOBALS['LANG']->getLL('mapOldStyleColumnNumber_label') . ':</label><br />
+								<input type="text" id="tv_oldstylecolumnnumber" name="' . $formFieldName . '[tx_templavoila][oldStyleColumnNumber]" value="' . intval($insertDataArray['tx_templavoila']['oldStyleColumnNumber']) . '" />
+
+							</dd>';
+					}
+					$form .= '</dl>';
+
+
 
 					/* The basic XML-structure of an TCEforms-entry is:
 					 *

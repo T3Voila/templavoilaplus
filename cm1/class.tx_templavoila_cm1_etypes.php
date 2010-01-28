@@ -220,8 +220,6 @@ class tx_templavoila_cm1_eTypes {
 							}
 							}
 
-							$elArray[$key]['tx_templavoila']['oldStyleColumnNumber'] = $eTypeCECounter;
-							$eTypeCECounter++;
 						break;
 						case 'int':
 							/* preserve previous config, if of the right kind */
