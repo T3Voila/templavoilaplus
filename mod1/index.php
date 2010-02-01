@@ -157,6 +157,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 	var $blindIcons = array();						// Icons which shouldn't be rendered by configuration, can contain elements of "new,edit,copy,cut,ref,paste,browse,delete,makeLocal,unlink,hide"
 
+	protected $renderPreviewObjects = NULL;			// Classes for preview render
 	protected $debug = FALSE;
 
 	const DOKTYPE_NORMAL_EDIT = 1;					// With this doktype the normal Edit screen is rendered
@@ -1232,100 +1233,30 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 		$hookObjectsArr = $this->hooks_prepareObjectsArray ('renderPreviewContentClass');
 		$alreadyRendered = FALSE;
-		$output = '';
-
 			// Hook: renderPreviewContent_preProcess. Set 'alreadyRendered' to true if you provided a preview content for the current cType !
-		reset($hookObjectsArr);
-		while (list(,$hookObj) = each($hookObjectsArr)) {
+		foreach($hookObjectsArr as $hookObj) {
 			if (method_exists ($hookObj, 'renderPreviewContent_preProcess')) {
 				$output .= $hookObj->renderPreviewContent_preProcess ($row, 'tt_content', $alreadyRendered, $this);
 			}
 		}
 
-		if (!$alreadyRendered) {
-				// Preview content for non-flexible content elements:
-			switch($row['CType'])	{
-				case 'text':		//	Text
-				case 'table':		//	Table
-				case 'mailform':	//	Form
-					$output = $this->link_edit('<strong>'.$LANG->sL(t3lib_BEfunc::getItemLabel('tt_content','bodytext'),1).'</strong> '.htmlspecialchars(t3lib_div::fixed_lgd_cs(trim(strip_tags($row['bodytext'])),2000)),'tt_content',$row['uid']).'<br />';
-					break;
-				case 'image':		//	Image
-					$output = $this->link_edit('<strong>'.$LANG->sL(t3lib_BEfunc::getItemLabel('tt_content','image'),1).'</strong><br /> ', 'tt_content', $row['uid']).t3lib_BEfunc::thumbCode ($row, 'tt_content', 'image', $this->doc->backPath).'<br />';
-					break;
-				case 'textpic':		//	Text w/image
-				case 'splash':		//	Textbox
-					$thumbnail = '<strong>'.$LANG->sL(t3lib_BEfunc::getItemLabel('tt_content','image'),1).'</strong><br />';
-					$thumbnail .= t3lib_BEfunc::thumbCode($row, 'tt_content', 'image', $this->doc->backPath);
-					$text = $this->link_edit('<strong>'.$LANG->sL(t3lib_BEfunc::getItemLabel('tt_content','bodytext'),1).'</strong> '.htmlspecialchars(t3lib_div::fixed_lgd_cs(trim(strip_tags($row['bodytext'])),2000)),'tt_content',$row['uid']);
-					$output='<table><tr><td valign="top">'.$text.'</td><td valign="top">'.$thumbnail.'</td></tr></table>'.'<br />';
-					break;
-				case 'bullets':		//	Bullets
-					$htmlBullets = '';
-					$bulletsArr = explode ("\n", t3lib_div::fixed_lgd_cs($row['bodytext'],2000));
-					if (is_array ($bulletsArr)) {
-						foreach ($bulletsArr as $listItem) {
-							$htmlBullets .= htmlspecialchars(trim(strip_tags($listItem))).'<br />';
-						}
-					}
-					$output = $this->link_edit('<strong>'.$LANG->sL(t3lib_BEfunc::getItemLabel('tt_content','bodytext'),1).'</strong><br />'.$htmlBullets, 'tt_content', $row['uid']).'<br />';
-					break;
-				case 'uploads':		//	Filelinks
-					$output = $this->link_edit('<strong>'.$LANG->sL(t3lib_BEfunc::getItemLabel('tt_content','media'),1).'</strong><br />'.str_replace (',','<br />',htmlspecialchars(t3lib_div::fixed_lgd_cs(trim(strip_tags($row['media'])),2000))), 'tt_content', $row['uid']).'<br />';
-					break;
-				case 'multimedia':	//	Multimedia
-					$output = $this->link_edit ('<strong>'.$LANG->sL(t3lib_BEfunc::getItemLabel('tt_content','multimedia'),1).'</strong><br />' . str_replace (',','<br />',htmlspecialchars(t3lib_div::fixed_lgd_cs(trim(strip_tags($row['multimedia'])),2000))), 'tt_content', $row['uid']).'<br />';
-					break;
-				case 'menu':		//	Menu / Sitemap
-					$output = $this->link_edit ('<strong>'.$LANG->sL(t3lib_BEfunc::getItemLabel('tt_content','menu_type')).'</strong> '.$LANG->sL(t3lib_BEfunc::getLabelFromItemlist('tt_content','menu_type',$row['menu_type'])).'<br />'.
-						'<strong>'.$LANG->sL(t3lib_BEfunc::getItemLabel('tt_content','pages')).'</strong> '.$row['pages'], 'tt_content', $row['uid']).'<br />';
-					break;
-				case 'list':		//	Insert Plugin
-					$extraInfo = $this->render_previewContent_extraPluginInfo($row);
-					$output = $this->link_edit('<strong>'.$LANG->sL(t3lib_BEfunc::getItemLabel('tt_content','list_type')).'</strong> ' . htmlspecialchars($LANG->sL(t3lib_BEfunc::getLabelFromItemlist('tt_content','list_type',$row['list_type']))).' &ndash; '.htmlspecialchars($extraInfo ? $extraInfo : $row['list_type']), 'tt_content', $row['uid']).'<br />';
-					break;
-				case 'html':		//	HTML
-					$output = $this->link_edit('<strong>'.$LANG->sL(t3lib_BEfunc::getItemLabel('tt_content','bodytext'),1).'</strong> ' . htmlspecialchars(t3lib_div::fixed_lgd_cs(trim($row['bodytext']),2000)),'tt_content',$row['uid']).'<br />';
-					break;
-				case 'header': // Header
-					$output = $this->link_edit('<strong>'.$LANG->sL(t3lib_BEfunc::getItemLabel('tt_content','header'),1).'</strong> ' . htmlspecialchars(t3lib_div::fixed_lgd_cs(trim(strip_tags($row['header'])),2000)),'tt_content',$row['uid']).'<br />';
-					break;
-				case 'search':			//	Search Box
-				case 'login':			//	Login Box
-				case 'shortcut':		//	Insert records
-				case 'div':				//	Divider
-				case 'templavoila_pi1': //	Flexible Content Element: Rendered directly in getContentTree*()
-					break;
-				default:
-						// return CType name for unhandled CType
-					$output='<strong>'.htmlspecialchars ($row['CType']).'</strong><br />';
+		if(!$alreadyRendered) {
+			if (!$this->renderPreviewObjects) {
+				$this->renderPreviewObjects = $this->hooks_prepareObjectsArray ('renderPreviewContent');
+			}
+
+			if (isset($this->renderPreviewObjects[$row['CType']]) && method_exists($this->renderPreviewObjects[$row['CType']], 'render_previewContent')) {
+				$output .= $this->renderPreviewObjects[$row['CType']]->render_previewContent ($row, 'tt_content', $output, $alreadyRendered, $this);
+			} elseif (isset($this->renderPreviewObjects['default']) && method_exists($this->renderPreviewObjects['default'], 'render_previewContent')) {
+				$output .= $this->renderPreviewObjects['default']->render_previewContent ($row, 'tt_content', $output, $alreadyRendered, $this);
+			} else {
+				// nothing is left to render the preview - happens if someone broke the configuration
 			}
 		}
+
 		return $output;
 	}
 
-
-	/**
-	 * Renders additional information about plugins (if available)
-	 *
-	 * @param	array	$row	Row from database
-	 * @return	string	Information
-	 */
-	function render_previewContent_extraPluginInfo($row) {
-		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['list_type_Info'][$row['list_type']]))	{
-			$hookArr = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['list_type_Info'][$row['list_type']];
-		} elseif (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['list_type_Info']['_DEFAULT']))	{
-			$hookArr = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['list_type_Info']['_DEFAULT'];
-		}
-		$hookOut = '';
-		if (count($hookArr) > 0)	{
-			$_params = array('pObj' => &$this, 'row' => $row, 'infoArr' => $infoArr);
-			foreach ($hookArr as $_funcRef)	{
-				$hookOut .= t3lib_div::callUserFunction($_funcRef, $_params, $this);
-			}
-		}
-		return $hookOut;
-	}
 
 	/**
 	 * Renders a little table containing previews of translated version of the current content element.
@@ -2296,8 +2227,8 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 		$hookObjectsArr = array();
 		if (is_array ($TYPO3_CONF_VARS['EXTCONF']['templavoila']['mod1'][$hookName])) {
-			foreach ($TYPO3_CONF_VARS['EXTCONF']['templavoila']['mod1'][$hookName] as $classRef) {
-				$hookObjectsArr[] = &t3lib_div::getUserObj ($classRef);
+			foreach ($TYPO3_CONF_VARS['EXTCONF']['templavoila']['mod1'][$hookName] as $key => $classRef) {
+				$hookObjectsArr[$key] = &t3lib_div::getUserObj ($classRef);
 			}
 		}
 		return $hookObjectsArr;
