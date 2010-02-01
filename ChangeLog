@@ -1,5 +1,6 @@
 2010-02-01  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
+	* Fixed issue: #13382: ext_autoload.php missing 
 	* Fixed issue: #8375: Tables entered via RTE break backend layout
 
 2010-01-27  Steffen Kamper  <info@sk-typo3.de>
