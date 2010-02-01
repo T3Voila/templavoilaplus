@@ -1,3 +1,7 @@
+2010-02-01  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed issue: #13387: Object and Param tag cannot be mapped
+
 2010-02-01  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
 	* Fixed issue: #13382: ext_autoload.php missing 
