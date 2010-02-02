@@ -1,3 +1,7 @@
+2010-02-02  Tolleiv Nietsch <nietsch@aoemedia.de> 
+
+	* Fixed issue: #13397: Fatal error due to cloned class definitions in tempalvoila/classes/preview/* (Thanks to Peter Foerger)
+
 2010-02-01  Steffen Kamper  <info@sk-typo3.de>
 
 	* Changed label "Mapping is up to date."

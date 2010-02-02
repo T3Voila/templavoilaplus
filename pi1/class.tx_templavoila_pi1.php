@@ -451,6 +451,9 @@ class tx_templavoila_pi1 extends tslib_pibase {
 				foreach($dataValues as $key => $values)	{
 					$dataRecord[$key] = $this->inheritValue($dataValues[$key],$valueKey,$LP[$key]['langOverlayMode']);
 				}
+			} else {
+					// Not sure why this happens, but the codes relies on having an array
+				$dataValues = array();
 			}
 
             // Check if information about parent record should be set. Note: we do not push/pop registers here because it may break LOAD_REGISTER/RESTORE_REGISTER data transfer between FCEs!
