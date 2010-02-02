@@ -1,12 +1,16 @@
+2010-02-02  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug: #13392: "Update Mapping" isn't clear for new users
+
 2010-02-01  Steffen Kamper  <info@sk-typo3.de>
 
 	* Changed label "Mapping is up to date."
-	* Fixed issue: #13387: Object and Param tag cannot be mapped
+	* Fixed bug: #13387: Object and Param tag cannot be mapped
 
 2010-02-01  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
-	* Fixed issue: #13382: ext_autoload.php missing 
-	* Fixed issue: #8375: Tables entered via RTE break backend layout
+	* Fixed bug: #13382: ext_autoload.php missing 
+	* Fixed bug: #8375: Tables entered via RTE break backend layout
 
 2010-01-27  Steffen Kamper  <info@sk-typo3.de>
 

@@ -835,7 +835,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 				$mappingStatus = $mappingStatus_index = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/icon_ok2.gif','width="18" height="16"').' alt="" class="absmiddle" />';
 				$mappingStatus.= $GLOBALS['LANG']->getLL('mapping_uptodate', 1);
 			}
-			$mappingStatus .= '<br/><a href="' . htmlspecialchars($linkUrl) . '">' . $GLOBALS['LANG']->getLL('update_mapping', 1) . '</a>';
+			$mappingStatus .= '<br/><input type="button" onclick="jumpToUrl(\'' . htmlspecialchars($linkUrl) . '\');" value="' . $GLOBALS['LANG']->getLL('update_mapping', 1) . '" />';
 		} elseif (!$fileMtime) {
 			$mappingStatus = $mappingStatus_index = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/icon_fatalerror.gif','width="18" height="16"').' alt="" class="absmiddle" />';
 			$mappingStatus.= $GLOBALS['LANG']->getLL('notmapped', 1);
