@@ -1717,6 +1717,10 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 	function renderNewSiteWizard_overview()	{
 		global $BE_USER, $LANG;
 
+		if ($this->modTSconfig['properties']['hideNewSiteWizard']) {
+			return;
+		}
+
 		if ($BE_USER->isAdmin())	{
 
 				// Introduction:
