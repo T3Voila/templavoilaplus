@@ -1324,11 +1324,16 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 						break;
 						case 'localize':
 
-							if ($this->rootElementLangParadigm =='free')	{
-								$showLocalizationLinks = !$parentDsMeta['langDisable'];	// For this paradigm, show localization links only if localization is enabled for DS (regardless of Inheritance and Separate)
+							if (isset($this->modTSconfig['properties']['hideCopyForTranslation'])) {
+								$showLocalizationLinks = 0;
 							} else {
-								$showLocalizationLinks = ($parentDsMeta['langDisable'] || $parentDsMeta['langChildren']);	// Adding $parentDsMeta['langDisable'] here means that the "Create a copy for translation" link is shown only if the parent container element has localization mode set to "Disabled" or "Inheritance" - and not "Separate"!
+								if ($this->rootElementLangParadigm =='free')	{
+									$showLocalizationLinks = !$parentDsMeta['langDisable'];	// For this paradigm, show localization links only if localization is enabled for DS (regardless of Inheritance and Separate)
+								} else {
+									$showLocalizationLinks = ($parentDsMeta['langDisable'] || $parentDsMeta['langChildren']);	// Adding $parentDsMeta['langDisable'] here means that the "Create a copy for translation" link is shown only if the parent container element has localization mode set to "Disabled" or "Inheritance" - and not "Separate"!
+								}
 							}
+
 								// Assuming that only elements which have the default language set are candidates for localization. In case the language is [ALL] then it is assumed that the element should stay "international".
 							if ((int)$contentTreeArr['el']['sys_language_uid']===0 && $showLocalizationLinks)	{
 
