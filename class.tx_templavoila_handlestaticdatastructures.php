@@ -321,10 +321,17 @@ class tx_templavoila_handleStaticDataStructures {
 			// Get storage folder
 			$storagePid = $this->getStoragePid($params, $pObj);
 
+			$addWhere = '';
+			$modTSConfig = t3lib_BEfunc::getModTSconfig($params['row']['uid'], 'TCEFORM.pages.tx_templavoila_ds.removeItems');
+			if (isset($modTSConfig['value'])) {
+				$removedItems = implode(',', t3lib_div::trimExplode(',', $modTSConfig['value'], TRUE));
+				$addWhere = ' AND uid NOT IN(' . $removedItems . ')';
+			}
+
 			// Get all DSes from the current storage folder
 			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,title,previewicon',
 						'tx_templavoila_datastructure',
-						'scope=' . $scope . ' AND pid=' . $storagePid .
+						'scope=' . $scope . ' AND pid=' . $storagePid . $addWhere .
 						self::enableFields('tx_templavoila_datastructure'),
 						'', 'title', '', 'uid');
 		}
