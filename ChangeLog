@@ -1,6 +1,6 @@
 2010-02-02  Steffen Kamper  <info@sk-typo3.de>
 
-	* Fixed bug: #13400: Selector for Subtemplates doesn't respect pageTS settings
+	* Fixed bug: #13413: When using translationParadigm=free there is no possibility to disable the copy for translation links
 
 2010-02-02  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
