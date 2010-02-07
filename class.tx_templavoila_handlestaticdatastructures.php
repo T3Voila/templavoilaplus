@@ -322,7 +322,7 @@ class tx_templavoila_handleStaticDataStructures {
 			$storagePid = $this->getStoragePid($params, $pObj);
 
 			$addWhere = '';
-			$modTSConfig = t3lib_BEfunc::getModTSconfig($params['row']['uid'], 'TCEFORM.pages.tx_templavoila_ds.removeItems');
+			$modTSConfig = t3lib_BEfunc::getModTSconfig($params['row']['uid'], 'TCEFORM.pages.' . $params['field'] . '.removeItems');
 			if (isset($modTSConfig['value'])) {
 				$removedItems = implode(',', t3lib_div::trimExplode(',', $modTSConfig['value'], TRUE));
 				$addWhere = ' AND uid NOT IN(' . $removedItems . ')';
