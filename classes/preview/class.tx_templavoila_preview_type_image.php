@@ -37,7 +37,11 @@ class tx_templavoila_preview_type_image extends tx_templavoila_preview_type_text
 
 		$label = $this->getPreviewLabel();
 
-		$text = $ref->link_edit('<strong>' . $label . '</strong><br/>' ,'tt_content',$row['uid']);
+		if ($ref->currentElementBelongsToCurrentPage) {
+			$text = $ref->link_edit('<strong>' . $label . '</strong>' ,'tt_content',$row['uid']);
+		} else {
+			$text = '<strong>' . $label . '</strong>';
+		}
 		$text .= t3lib_BEfunc::thumbCode ($row, 'tt_content', 'image', $ref->doc->backPath);
 
 		return $text;

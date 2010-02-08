@@ -160,6 +160,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	protected $renderPreviewObjects = NULL;			// Classes for preview render
 	protected $debug = FALSE;
 
+	public $currentElementBelongsToCurrentPage;		// Used for Content preview and is used as flag if content should be linked or not
 	const DOKTYPE_NORMAL_EDIT = 1;					// With this doktype the normal Edit screen is rendered
 
 	/*******************************************
@@ -831,7 +832,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 						$linkUnlink = '';
 					}
 					if ($GLOBALS['BE_USER']->recordEditAccessInternals('tt_content', $contentTreeArr['previewData']['fullRow'])) {
-						$linkEdit = ($elementBelongsToCurrentPage && !in_array('edit', $this->blindIcons) ? $this->link_edit('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/edit2.gif','').' title="'.$LANG->getLL('editrecord').'" border="0" alt="" />',$contentTreeArr['el']['table'],$contentTreeArr['el']['uid']) : '');
+						$linkEdit = (($elementBelongsToCurrentPage || (!$elementBelongsToCurrentPage && $this->modTSconfig['properties']['enableEditIconForLocalElements'])) && !in_array('edit', $this->blindIcons) ? $this->link_edit('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/edit2.gif','').' title="'.$LANG->getLL('editrecord').'" border="0" alt="" />',$contentTreeArr['el']['table'],$contentTreeArr['el']['uid']) : '');
 						$linkHide = !in_array('hide', $this->blindIcons) ? $this->icon_hide($contentTreeArr['el']) : '';
 
 						if( $this->modTSconfig['properties']['enableDeleteIconForLocalElements'] && $elementBelongsToCurrentPage ) {
@@ -1157,6 +1158,8 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	function render_previewData($previewData, $elData, $ds_meta, $languageKey, $sheet)	{
 		global $LANG;
 
+		$this->currentElementBelongsToCurrentPage = $elData['table'] == 'pages' || $elData['pid'] == $this->rootElementUid_pidForContent;
+
 			// General preview of the row:
 		$previewContent = is_array($previewData['fullRow']) && $elData['table']=='tt_content' ? $this->render_previewContent($previewData['fullRow']) : '';
 
@@ -1181,17 +1184,25 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				if ($fieldData['type']=='array')	{	// Making preview for array/section parts of a FlexForm structure:
 					if (is_array($fieldData['subElements'][$lKey])) {
 						if ($fieldData['section']) {
+							$previewContent .= '<ul class="section-preview">';
 							foreach($fieldData['subElements'][$lKey] as $sectionData) {
 								if (is_array($sectionData))	{
 									$sectionFieldKey = key($sectionData);
 									if (is_array ($sectionData[$sectionFieldKey]['el'])) {
-										$previewContent .= '<ul>';
+
 										foreach ($sectionData[$sectionFieldKey]['el'] as $containerFieldKey => $containerData) {
-											$previewContent .= '<li><strong>'.$containerFieldKey.'</strong> '.$this->link_edit(htmlspecialchars(t3lib_div::fixed_lgd_cs(strip_tags($containerData[$vKey]),200)), $elData['table'], $previewData['fullRow']['uid']).'</li>';
+											$previewContent .= '<li><strong>' . $containerFieldKey . '</strong> ' .
+												htmlspecialchars(t3lib_div::fixed_lgd_cs(strip_tags($containerData[$vKey]),200)) .
+												'</li>';
 										}
-										$previewContent .= '</ul>';
+
 									}
+
 								}
+							}
+							$previewContent .= '</ul>';
+							if ($this->currentElementBelongsToCurrentPage || (!$this->currentElementBelongsToCurrentPage && $this->modTSconfig['properties']['enableEditIconForLocalElements'])) {
+								$previewContent = $this->link_edit($previewContent, $elData['table'], $previewData['fullRow']['uid']);
 							}
 						} else {
 							foreach ($fieldData['subElements'][$lKey] as $containerKey => $containerData) {
