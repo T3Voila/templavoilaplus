@@ -41,7 +41,11 @@ class tx_templavoila_preview_type_textpic extends tx_templavoila_preview_type_te
 		$label = $this->getPreviewLabel();
 		$data = $this->getPreviewData($row);
 
-		$text = $ref->link_edit('<strong>'. $label .'</strong> ' . $data ,'tt_content',$row['uid']);
+		if ($ref->currentElementBelongsToCurrentPage) {
+			$text = $ref->link_edit('<strong>'. $label .'</strong> ' . $data ,'tt_content',$row['uid']);
+		} else {
+			$text = '<strong>'. $label .'</strong> ' . $data;
+		}
 
 		return '
 		<table>

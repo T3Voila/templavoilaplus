@@ -39,8 +39,11 @@ class tx_templavoila_preview_type_text {
 	public function render_previewContent ($row, $table, $output, $alreadyRendered, &$ref) {
 		$label = $this->getPreviewLabel();
 		$data = $this->getPreviewData($row);
-
-		return $ref->link_edit('<strong>' . $label . '</strong> ' . $data , 'tt_content', $row['uid']);
+		if ($ref->currentElementBelongsToCurrentPage) {
+			return $ref->link_edit('<strong>' . $label . '</strong> ' . $data , 'tt_content', $row['uid']);
+		} else {
+			return '<strong>' . $label . '</strong> ' . $data;
+		}
 	}
 
 	/**
