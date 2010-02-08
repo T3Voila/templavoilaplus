@@ -740,8 +740,8 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 							// Init TCEmain object and store:
 						$tce->start($dataArr,array());
 						$tce->process_datamap();
-
-						if ($tce->substNEWwithIDs['NEW'])	{
+						$newToID = intval($tce->substNEWwithIDs['NEW']);
+						if ($newToID) {
 							$msg[] = '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/icon_ok.gif', 'width="18" height="16"').' border="0" align="top" class="absmiddle" alt="" />' .
 								sprintf($GLOBALS['LANG']->getLL('msgDSTOSaved'),
 								$dataArr['tx_templavoila_tmplobj']['NEW']['datastructure'],
@@ -754,10 +754,16 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 					}
 
 					unset($tce);
-
-					// Clear cached header info because saveDSandTO always resets headers
-					$sesDat['currentMappingInfo_head'] = '';
-					$GLOBALS['BE_USER']->setAndSaveSessionData($this->sessionKey, $sesDat);
+					if ($newID && $newToID) {
+							//redirect to edit view
+						$redirectUrl = 'index.php?file=' . rawurlencode($this->displayFile) . '&_load_ds_xml=1&_load_ds_xml_to=' . $newToID . '&uid=' . rawurlencode($newID) . '&returnUrl=' . rawurlencode('../mod2/index.php?id=' . intval($this->_saveDSandTO_pid));
+						header('Location:' . t3lib_div::locationHeaderUrl($redirectUrl));
+						exit;
+					} else {
+							// Clear cached header info because saveDSandTO always resets headers
+						$sesDat['currentMappingInfo_head'] = '';
+						$GLOBALS['BE_USER']->setAndSaveSessionData($this->sessionKey, $sesDat);
+					}
 				break;
 					// Updating DS and TO records:
 				case 'updateDSandTO':
@@ -770,7 +776,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 					} else {
 						$toREC = t3lib_BEfunc::getRecordWSOL('tx_templavoila_tmplobj',$this->_load_ds_xml_to);
 					}
-				if ($this->staticDS) {
+					if ($this->staticDS) {
 						$dsREC['uid'] = $toREC['datastructure'];
 					} else {
 						$dsREC = t3lib_BEfunc::getRecordWSOL('tx_templavoila_datastructure', $toREC['datastructure']);
@@ -819,9 +825,16 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 						$msg[] = '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/icon_note.gif','width="18" height="16"').' border="0" align="top" class="absmiddle" alt="" />'.sprintf($GLOBALS['LANG']->getLL('msgDSTOUpdated'), $dsREC['uid'], $toREC['uid']);
 
 						if ($cmd == 'updateDSandTO') {
-								// Clear cached header info because updateDSandTO always resets headers
-							$sesDat['currentMappingInfo_head'] = '';
-							$GLOBALS['BE_USER']->setAndSaveSessionData($this->sessionKey, $sesDat);
+							if (!$this->_load_ds_xml_to) {
+									//new created was saved to existing DS/TO, redirect to edit view
+								$redirectUrl = 'index.php?file=' . rawurlencode($this->displayFile) . '&_load_ds_xml=1&_load_ds_xml_to=' . $toREC['uid'] . '&uid=' . rawurlencode($dsREC['uid']) . '&returnUrl=' . rawurlencode('../mod2/index.php?id=' . intval($this->_saveDSandTO_pid));
+								header('Location:' . t3lib_div::locationHeaderUrl($redirectUrl));
+								exit;
+							} else {
+									// Clear cached header info because updateDSandTO always resets headers
+								$sesDat['currentMappingInfo_head'] = '';
+								$GLOBALS['BE_USER']->setAndSaveSessionData($this->sessionKey, $sesDat);
+							}
 						} elseif ($cmd == 'saveUpdatedDSandTOandExit') {
 							header ('Location:' . t3lib_div::locationHeaderUrl($this->returnUrl));
 						}
