@@ -1,4 +1,8 @@
-2010-02-02  Steffen Kamper  <info@sk-typo3.de>
+2010-02-08  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug: #13460: New created DS/TO has wrong save/save and exit after first saving
+
+2010-02-07  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug: #13454: Possible hide of "New Site Wizard"
 	* Fixed bug: #13413: When using translationParadigm=free there is no possibility to disable the copy for translation links
