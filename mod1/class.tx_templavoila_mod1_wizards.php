@@ -263,6 +263,7 @@ class tx_templavoila_mod1_wizards {
 		$storageFolderPID = $this->apiObj->getStorageFolderPid($positionPid);
 		$tmplHTML = array();
 		$staticDS = $this->pObj->staticDS;
+		$defaultIcon = $this->doc->backPath . '../' . t3lib_extMgm::siteRelPath($this->extKey) . 'res1/default_previewicon.gif';
 
 			// look for TCEFORM.pages.tx_templavoila_ds.removeItems / TCEFORM.pages.tx_templavoila_to.removeItems
 		$disallowedPageTemplateItems = $this->getDisallowedTSconfigItemsByFieldName ($positionPid, 'tx_templavoila_ds');
@@ -279,7 +280,6 @@ class tx_templavoila_mod1_wizards {
 
 					//Fetch all TO's but the default
 				if ($staticDS) {
-
 					$where = 'parent=0 AND pid=' .
 							intval($storageFolderPID).' AND LOCATE(' . $GLOBALS['TYPO3_DB']->fullQuoteStr('(page)', 'tx_templavoila_tmplobj') . ', datastructure)>0' .
 							( $disallowedDesignTemplateItems ? 'uid NOT IN(' . $disallowedDesignTemplateItems . ') AND ' : '' ) .
@@ -291,15 +291,16 @@ class tx_templavoila_mod1_wizards {
 					);
 
 				} else {
-
-					$where = $tTO . '.parent=0 AND ' . $tTO . '.pid=' .
-							intval($storageFolderPID).' AND ' .
-							( $disallowedDesignTemplateItems ? $tTO . '.uid NOT IN(' . $disallowedDesignTemplateItems . ') AND ' : '' ) .
-+							( $disallowedPageTemplateItems ? $tDS .  '.uid NOT IN(' . $disallowedPageTemplateItems . ') AND ' : '' ) .
+					$where = $tTO . '.parent=0 AND ' . $tTO . '.pid=' . intval($storageFolderPID).' AND ' .
+							($disallowedDesignTemplateItems ? $tTO . '.uid NOT IN(' . $disallowedDesignTemplateItems . ') AND ' : '') .
+							($disallowedPageTemplateItems ? $tDS .  '.uid NOT IN(' . $disallowedPageTemplateItems . ') AND ' : '') .
 							$tDS . '.scope=1' .
-							$this->buildRecordWhere($tTO) . $this->buildRecordWhere($tDS) .
-							t3lib_befunc::deleteClause ($tTO).t3lib_befunc::deleteClause ($tDS).
-							t3lib_BEfunc::versioningPlaceholderClause($tTO).t3lib_BEfunc::versioningPlaceholderClause($tDS);
+							$this->buildRecordWhere($tTO) .
+							$this->buildRecordWhere($tDS) .
+							t3lib_befunc::deleteClause($tTO) .
+							t3lib_befunc::deleteClause($tDS) .
+							t3lib_BEfunc::versioningPlaceholderClause($tTO) .
+							t3lib_BEfunc::versioningPlaceholderClause($tDS);
 
 					$res = $TYPO3_DB->exec_SELECTquery (
 						$tTO . '.*',
@@ -310,7 +311,12 @@ class tx_templavoila_mod1_wizards {
 
 
 					// Create the "Default template" entry
-				$previewIconFilename = $this->doc->backPath . '../' . t3lib_extMgm::siteRelPath($this->extKey) . 'res1/default_previewicon.gif';
+				if ($defaultTO['previewicon']) {
+					$previewIconFilename = (@is_file(PATH_site . 'uploads/tx_templavoila/' . $defaultTO['previewicon'])) ? ($GLOBALS['BACK_PATH'] . '../' . 'uploads/tx_templavoila/' . $defaultTO['previewicon']) : $defaultIcon;
+				} else {
+					$previewIconFilename = $defaultIcon;
+				}
+
 				$previewIcon = '<input type="image" class="c-inputButton" name="i0" value="0" src="' . $previewIconFilename . '" title="" />';
 				$description = $defaultTO['description'] ? htmlspecialchars($defaultTO['description']) : $LANG->getLL ('template_descriptiondefault', 1);
 				$tmplHTML [] = '<table style="float:left; width: 100%;" valign="top">
@@ -333,7 +339,7 @@ class tx_templavoila_mod1_wizards {
 					}
 						// Check if preview icon exists, otherwise use default icon:
 					$tmpFilename = 'uploads/tx_templavoila/'.$row['previewicon'];
-					$previewIconFilename = (@is_file(PATH_site.$tmpFilename)) ? ($GLOBALS['BACK_PATH'].'../'.$tmpFilename) : ($GLOBALS['BACK_PATH'].'../'.t3lib_extMgm::siteRelPath($this->extKey).'res1/default_previewicon.gif');
+					$previewIconFilename = (@is_file(PATH_site.$tmpFilename)) ? ($GLOBALS['BACK_PATH'].'../'.$tmpFilename) : $defaultIcon;
 						// Note: we cannot use value of image input element because MSIE replaces this value with mouse coordinates! Thus on click we set value to a hidden field. See http://bugs.typo3.org/view.php?id=3376
 					$previewIcon = '<input type="image" class="c-inputButton" name="i' .$row['uid'] . '" onclick="document.getElementById(\'data_tx_templavoila_to\').value='.$row['uid'].'" src="'.$previewIconFilename.'" title="" />';
 					$description = $row['description'] ? htmlspecialchars($row['description']) : $LANG->getLL ('template_nodescriptionavailable');
