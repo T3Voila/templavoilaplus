@@ -1,5 +1,6 @@
 2010-02-10  Steffen Kamper  <info@sk-typo3.de>
 
+	* Updated manual
 	* Follow-up to bugfix #13465: Edit link for referenced elements are inconsistent
 	* Fixed bug: #13066: New Site Wizard is broken
 
