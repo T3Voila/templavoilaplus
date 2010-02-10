@@ -1,3 +1,7 @@
+2010-02-10  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug: #13066: New Site Wizard is broken
+
 2010-02-08  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug: #13469: New Page Wizard don't use previewIcon for default TO
