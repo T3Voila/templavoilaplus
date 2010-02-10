@@ -832,7 +832,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 						$linkUnlink = '';
 					}
 					if ($GLOBALS['BE_USER']->recordEditAccessInternals('tt_content', $contentTreeArr['previewData']['fullRow'])) {
-						$linkEdit = (($elementBelongsToCurrentPage || (!$elementBelongsToCurrentPage && $this->modTSconfig['properties']['enableEditIconForLocalElements'])) && !in_array('edit', $this->blindIcons) ? $this->link_edit('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/edit2.gif','').' title="'.$LANG->getLL('editrecord').'" border="0" alt="" />',$contentTreeArr['el']['table'],$contentTreeArr['el']['uid']) : '');
+						$linkEdit = (($elementBelongsToCurrentPage || (!$elementBelongsToCurrentPage && $this->modTSconfig['properties']['enableEditIconForRefElements'])) && !in_array('edit', $this->blindIcons) ? $this->link_edit('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/edit2.gif','').' title="'.$LANG->getLL('editrecord').'" border="0" alt="" />',$contentTreeArr['el']['table'],$contentTreeArr['el']['uid']) : '');
 						$linkHide = !in_array('hide', $this->blindIcons) ? $this->icon_hide($contentTreeArr['el']) : '';
 
 						if( $this->modTSconfig['properties']['enableDeleteIconForLocalElements'] && $elementBelongsToCurrentPage ) {
@@ -1201,7 +1201,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 								}
 							}
 							$previewContent .= '</ul>';
-							if ($this->currentElementBelongsToCurrentPage || (!$this->currentElementBelongsToCurrentPage && $this->modTSconfig['properties']['enableEditIconForLocalElements'])) {
+							if ($this->currentElementBelongsToCurrentPage || (!$this->currentElementBelongsToCurrentPage && $this->modTSconfig['properties']['enableEditIconForRefElements'])) {
 								$previewContent = $this->link_edit($previewContent, $elData['table'], $previewData['fullRow']['uid']);
 							}
 						} else {
