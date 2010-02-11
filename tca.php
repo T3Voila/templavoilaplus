@@ -90,7 +90,11 @@ $TCA['tx_templavoila_tmplobj'] = Array (
 						'title' => 'Link',
 						'icon' => 'link_popup.gif',
 						'script' => 'browse_links.php?mode=wizard',
-						'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1'
+						'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1',
+						'params' => Array(
+							'blindLinkOptions' => 'page,url,mail,spec,folder',
+							'allowedExtensions' => $TYPO3_CONF_VARS['SYS']['textfile_ext'],
+						)
 					),
 				),
 				'eval' => 'required,nospace',
