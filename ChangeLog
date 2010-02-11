@@ -1,3 +1,7 @@
+2010-02-11  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug: #13482: Browse Links Popup for Template Object File Reference should only allow text files (Thanks to Jeff Segars)
+
 2010-02-10  Steffen Kamper  <info@sk-typo3.de>
 
 	* Updated manual
