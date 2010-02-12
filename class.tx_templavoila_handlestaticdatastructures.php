@@ -198,7 +198,7 @@ class tx_templavoila_handleStaticDataStructures {
 	public function templateObjectItemsProcFunc(array &$params, t3lib_TCEforms &$pObj) {
 		$this->conf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
 
-		if ($this->conf['enable.']['selectDataSource']) {
+		if ($this->conf['enable.']['selectDataStructure']) {
 			$this->templateObjectItemsProcFuncForCurrentDS($params, $pObj);
 		} else {
 			$this->templateObjectItemsProcFuncForAllDSes($params, $pObj);

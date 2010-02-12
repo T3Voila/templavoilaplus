@@ -1,8 +1,8 @@
 	# cat=basic/enable; type=boolean; label=LLL:EXT:templavoila/res1/language/template_conf.xml:enable.oldPageModule
 enable.oldPageModule = 0
 
-	# cat=basic/enable; type=boolean; label=LLL:EXT:templavoila/res1/language/template_conf.xml:enable.selectDataSource
-enable.selectDataSource = 0
+	# cat=basic/enable; type=boolean; label=LLL:EXT:templavoila/res1/language/template_conf.xml:enable.selectDataStructure
+enable.selectDataSructure = 0
 
 	# cat=basic/enable; type=boolean; label=LLL:EXT:templavoila/res1/language/template_conf.xml:enable.renderFCEHeader
 enable.renderFCEHeader = 0

@@ -110,7 +110,7 @@ class tx_templavoila_tcemain {
 			return;
 		}
 
-		if (!$this->extConf['enable.']['selectDataSource']) {
+		if (!$this->extConf['enable.']['selectDataStructure']) {
 			// Update DS if TO was changed
 			$this->updateDataSourceFromTemplateObject($table, $incomingFieldArray, $reference->BE_USER);
 		}
