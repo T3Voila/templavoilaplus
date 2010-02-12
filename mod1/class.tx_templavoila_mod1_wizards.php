@@ -282,7 +282,7 @@ class tx_templavoila_mod1_wizards {
 				if ($staticDS) {
 					$where = 'parent=0 AND pid=' .
 							intval($storageFolderPID).' AND LOCATE(' . $GLOBALS['TYPO3_DB']->fullQuoteStr('(page)', 'tx_templavoila_tmplobj') . ', datastructure)>0' .
-							( $disallowedDesignTemplateItems ? 'uid NOT IN(' . $disallowedDesignTemplateItems . ') AND ' : '' ) .
+							( $disallowedDesignTemplateItems ? ' AND uid NOT IN(' . $disallowedDesignTemplateItems . ')' : '' ) .
 							$this->buildRecordWhere($tTO) .
 							t3lib_befunc::deleteClause ($tTO) . t3lib_BEfunc::versioningPlaceholderClause($tTO);
 
