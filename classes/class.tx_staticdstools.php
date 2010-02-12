@@ -29,6 +29,12 @@
  */
 class tx_staticDStools {
 
+	/**
+	 * Step for the wizard. Can be manipulated by internal function
+	 *
+	 * @var int $step
+	 */
+	protected $step = 0;
 
 	/**
 	 *
@@ -36,14 +42,14 @@ class tx_staticDStools {
 	 * @param		object		Instance of the class t3lib_tsStyleConfig
 	 */
 	function staticDsWizard($params, $pObj) {
-		$step = t3lib_div::_GP('dsWizardDoIt') ? intval(t3lib_div::_GP('dsWizardStep')) : 0;
+		$this->step = t3lib_div::_GP('dsWizardDoIt') ? intval(t3lib_div::_GP('dsWizardStep')) : 0;
 		$conf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
 
-		$title = $GLOBALS['LANG']->sL('LLL:EXT:templavoila/res1/language/template_conf.xml:staticDS.wizard.title.' . $step);
-		$description = $GLOBALS['LANG']->sL('LLL:EXT:templavoila/res1/language/template_conf.xml:staticDS.wizard.description.' . $step);
+		$title = $GLOBALS['LANG']->sL('LLL:EXT:templavoila/res1/language/template_conf.xml:staticDS.wizard.title.' . $this->step);
+		$description = $GLOBALS['LANG']->sL('LLL:EXT:templavoila/res1/language/template_conf.xml:staticDS.wizard.description.' . $this->step);
 		$out = '<h2>' . htmlspecialchars($title) . '</h2>';
 
-		switch($step) {
+		switch($this->step) {
 			case 1:
 				$ok = array(TRUE, TRUE);
 				if (t3lib_div::_GP('dsWizardDoIt')) {
@@ -63,9 +69,11 @@ class tx_staticDStools {
 						$controls .= $this->getDsRecords($conf['staticDS.']);
 					}
 				}
-				$submitText = $conf['staticDS.']['enable'] ? $GLOBALS['LANG']->sL('LLL:EXT:templavoila/res1/language/template_conf.xml:staticDS.wizard.submit3') : $GLOBALS['LANG']->sL('LLL:EXT:templavoila/res1/language/template_conf.xml:staticDS.wizard.submit2');
-				$controls .= '<br /><input type="hidden" name="dsWizardStep" value="1" />
-				<input type="submit" name="dsWizardDoIt" value="' . $submitText . '" />';
+				if ($this->step < 3) {
+					$submitText = $conf['staticDS.']['enable'] ? $GLOBALS['LANG']->sL('LLL:EXT:templavoila/res1/language/template_conf.xml:staticDS.wizard.submit3') : $GLOBALS['LANG']->sL('LLL:EXT:templavoila/res1/language/template_conf.xml:staticDS.wizard.submit2');
+					$controls .= '<br /><input type="hidden" name="dsWizardStep" value="1" />
+					<input type="submit" name="dsWizardDoIt" value="' . $submitText . '" />';
+				}
 			break;
 			default:
 				$controls .= '<input type="hidden" name="dsWizardStep" value="1" />
@@ -101,6 +109,7 @@ class tx_staticDStools {
 		$writeDsIds = array();
 		$writeIds = t3lib_div::_GP('staticDSwizard');
 		$options = t3lib_div::_GP('staticDSwizardoptions');
+		$checkAll = t3lib_div::_GP('sdw-checkall');
 
 		if (count($writeIds)) {
 			$writeDsIds = array_keys($writeIds);
@@ -121,7 +130,7 @@ class tx_staticDStools {
 				<td style="vertical-align:middle;">' . $GLOBALS['LANG']->sL('LLL:EXT:templavoila/res1/language/template_conf.xml:staticDS.wizard.usage') . '</td>
 			<td>
 				<label for="sdw-checkall">' . $GLOBALS['LANG']->sL('LLL:EXT:templavoila/res1/language/template_conf.xml:staticDS.wizard.selectall') . '</label>
-				<input type="checkbox" class="checkbox" id="sdw-checkall" onclick="$(\'staticDSwizard_getdsrecords\').select(\'tbody input[type=checkbox]\').invoke(\'setValue\', $(this).value);" /></td>
+				<input type="checkbox" class="checkbox" id="sdw-checkall" name="sdw-checkall" onclick="$$(\'.staticDScheck\').each(function(e){e.checked=$(\'sdw-checkall\').checked;});" value="1" ' . ($checkAll ? 'checked="checked"' : '') . ' /></td>
 		</tr></thead><tbody>';
 		foreach($rows as $row) {
 			$dirPath = PATH_site . ($row['scope'] == 2 ? $conf['path_fce'] : $conf['path_page']);
@@ -167,6 +176,7 @@ class tx_staticDStools {
 						// delete DS records
 					$GLOBALS['TYPO3_DB']->exec_UPDATEquery('tx_templavoila_datastructure', 'uid=' . $row['uid'], array('deleted' => 1));
 					$updateMessage = $GLOBALS['LANG']->sL('LLL:EXT:templavoila/res1/language/template_conf.xml:staticDS.wizard.updated');
+					$this->step = 3;
 				}
 
 
@@ -180,7 +190,7 @@ class tx_staticDStools {
 			if (count($writeDsIds) && in_array($row['uid'], $writeDsIds)) {
 				$out .= '<td class="nobr" style="text-align: right;padding: 0,3px;">written to "' . $outPath . '"</td>';
 			} else {
-				$out .= '<td class="nobr" style="text-align: right;padding: 0,3px;"><input type="checkbox" class="checkbox" name="staticDSwizard[' . $row['uid'] . ']" value="1" /></td>';
+				$out .= '<td class="nobr" style="text-align: right;padding: 0,3px;"><input type="checkbox" class="checkbox staticDScheck" name="staticDSwizard[' . $row['uid'] . ']" value="1" /></td>';
 			}
 			$out .= '</tr>';
 		}
@@ -188,7 +198,7 @@ class tx_staticDStools {
 
 		if ($conf['enable']) {
 			if ($updateMessage) {
-				$out .= '<p>' . $updateMessage . '</p><p>' . $GLOBALS['LANG']->sL('LLL:EXT:templavoila/res1/language/template_conf.xml:staticDS.wizard.clearcache') . '</p>';
+				$out .= '<p>' . $updateMessage . '</p><p><strong>' . $GLOBALS['LANG']->sL('LLL:EXT:templavoila/res1/language/template_conf.xml:staticDS.wizard.clearcache') . '</strong></p>';
 			} else {
 				$out .= '<h4>' . $GLOBALS['LANG']->sL('LLL:EXT:templavoila/res1/language/template_conf.xml:staticDS.wizard.description2.1') . '</h4>';
 				$out .= '<p>
