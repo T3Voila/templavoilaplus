@@ -413,7 +413,7 @@ class tx_templavoila_dbnewcontentel {
 		if (is_array($GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['staticDataStructures'])) {
 				// Fetch static data structures which are stored in XML files:
 			foreach($GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['staticDataStructures'] as $staticDataStructureArr)	{
-				if ($staticDS || (!$staticDS && $staticDS['scope'] != 1 && $staticDS['scope'] != 2)) {
+				if ($staticDataStructureArr['scope'] == 2) {
 					$staticDataStructureArr['_STATIC'] = TRUE;
 					$dataStructureRecords[$staticDataStructureArr['path']] = $staticDataStructureArr;
 				}
@@ -429,7 +429,7 @@ class tx_templavoila_dbnewcontentel {
 		}
 
 
-			// Fetch all template object records which uare based one of the previously fetched data structures:
+			// Fetch all template object records which are based one of the previously fetched data structures:
 		$templateObjectRecords = array();
 		$recordDataStructure = array();
 		$addWhere = $this->buildRecordWhere('tx_templavoila_tmplobj');

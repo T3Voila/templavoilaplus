@@ -1,5 +1,6 @@
 2010-02-12  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug: #13483: Page Templates appear alongside FCEs in New Content Wizard when using Static Data Structures (Thanks to Jeff Segars)
 	* Fixed bug: #13521: New page wizard has wrong sql-query with staticDS
 
 2010-02-11  Steffen Kamper  <info@sk-typo3.de>
