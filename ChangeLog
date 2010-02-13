@@ -6,6 +6,7 @@
 
 2010-02-13  Steffen Kamper  <info@sk-typo3.de>
 
+	* Follow-up to bugfix #13392: "Update Mapping" isn't clear for new users
 	* Updated manual with new content element wizard configuration
 	* Fixed bug: #13526: selectbox for updating existing Data Structure / Template Object does wrong grouping if more sysfolders with the same name (Thanks to Jörg Winter)
 	* Fixed bug: #13052: New Content Element Wizard didn't load
@@ -42,6 +43,10 @@
 2010-02-02  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
 	* Fixed bug: #13397: Fatal error due to cloned class definitions in tempalvoila/classes/preview/* (Thanks to Peter Foerger)
+
+2010-02-02  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug: #13392: "Update Mapping" isn't clear for new users
 
 2010-02-01  Steffen Kamper  <info@sk-typo3.de>
 

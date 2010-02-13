@@ -820,11 +820,10 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 		}
 
 		$mappingStatus = $mappingStatus_index = '';
-		if ($fileMtime && $toObj['fileref_mtime'])	{
+		if ($fileMtime && $toObj['fileref_mtime']) {
 			if ($toObj['fileref_md5'] != '') {
 				$modified = (@md5_file($fileReference) != $toObj['fileref_md5']);
-			}
-			else {
+			} else {
 				$modified = ($toObj['fileref_mtime'] != $fileMtime);
 			}
 			if ($modified)	{
@@ -842,11 +841,11 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 			$this->setErrorLog($scope, 'fatal', sprintf($GLOBALS['LANG']->getLL('warning_mappingstatus', 1), $mappingStatus, $toObj['title']));
 
 			$mappingStatus .= $GLOBALS['LANG']->getLL('updatemapping_info');
-			$mappingStatus.='<br/><a href="'.htmlspecialchars($linkUrl).'">' . $GLOBALS['LANG']->getLL('map', 1) . '</a>';
+			$mappingStatus .= '<br/><input type="button" onclick="jumpToUrl(\'' . htmlspecialchars($linkUrl) . '\');" value="' . $GLOBALS['LANG']->getLL('map', 1) . '" />';
 		} else {
 			$mappingStatus = '';
-			$mappingStatus.='<a href="'.htmlspecialchars($linkUrl).'">' . $GLOBALS['LANG']->getLL('remap', 1) . '</a>';
-			$mappingStatus.='<a href="'.htmlspecialchars($linkUrl.'&_preview=1').'">' . $GLOBALS['LANG']->getLL('preview', 1) . '</a>';
+			$mappingStatus .= '<input type="button" onclick="jumpToUrl(\'' . htmlspecialchars($linkUrl) . '\');" value="' . $GLOBALS['LANG']->getLL('remap', 1) . '" />';
+			$mappingStatus .= '&nbsp;<input type="button" onclick="jumpToUrl(\'' . htmlspecialchars($linkUrl . '&_preview=1') . '\');" value="' . $GLOBALS['LANG']->getLL('preview', 1) . '" />';
 		}
 
 		if ($this->MOD_SETTINGS['set_details'])	{
