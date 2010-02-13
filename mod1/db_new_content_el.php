@@ -124,7 +124,7 @@ class tx_templavoila_dbnewcontentel {
 		$this->defVals = t3lib_div::_GP('defVals');
 
 			// Starting the document template object:
-		$this->doc = t3lib_div::makeInstance('mediumDoc');
+		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->docType= 'xhtml_trans';
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->JScode='';
