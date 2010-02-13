@@ -1,5 +1,6 @@
 2010-02-13  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
+	* Fixed bug: #13533: DS/TO selectbox can't handle static datastructures from extensions.
 	* Fixed bug: #13527: Typoscript default should be better with Templavoila
 
 2010-02-13  Steffen Kamper  <info@sk-typo3.de>
