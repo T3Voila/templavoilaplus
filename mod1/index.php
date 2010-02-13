@@ -227,7 +227,9 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		} else {
 			$this->apiObj = t3lib_div::makeInstance('tx_templavoila_api', $this->altRoot ? $this->altRoot : 'pages');
 		}
-
+		if (isset($this->modSharedTSconfig['properties']['useLiveWorkspaceForReferenceListUpdates'])) {
+			$this->apiObj->modifyReferencesInLiveWS(true);
+		}
 			// Initialize the clipboard
 		$this->clipboardObj =& t3lib_div::getUserObj ('&tx_templavoila_mod1_clipboard','');
 		$this->clipboardObj->init($this);

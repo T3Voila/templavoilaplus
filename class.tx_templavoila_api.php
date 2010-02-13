@@ -113,6 +113,7 @@ class tx_templavoila_api {
 	var $rootTable;
 	var $debug = false;
 	var $allSystemWebsiteLanguages = array();		// ->loadWebsiteLanguages() will set this to content of sys_language
+	var $modifyReferencesInLiveWS = false;
 
 	/**
 	 * The constructor.
@@ -1148,6 +1149,11 @@ class tx_templavoila_api {
 
 		$dataArr = array();
 		$uid = t3lib_beFunc::wsMapId($destinationPointer['table'],$destinationPointer['uid']);
+		$containerHasWorkspaceVersion = FALSE;
+		if ($uid != $destinationPointer['uid']) {
+			$containerHasWorkspaceVersion = TRUE;
+		}
+
 		$dataArr[$destinationPointer['table']][$uid]['tx_templavoila_flex']['data'][$destinationPointer['sheet']][$destinationPointer['sLang']][$destinationPointer['field']][$destinationPointer['vLang']] = implode(',',$referencesArr);
 
 		$flagWasSet = $this->getTCEmainRunningFlag();
@@ -1155,6 +1161,20 @@ class tx_templavoila_api {
 		$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 		$tce->stripslashes_values = 0;
 		$tce->start($dataArr,array());
+
+			/**
+			 * Set workspace to 0 because:
+			 * 1) we want shadow-records to be placed in the Live-Workspace
+			 * 2) there's no need to create a new version of the parent-record
+			 * 3) try to avoid issues if the same list is modified in different workspaces at the same time
+			 */
+		if ($this->modifyReferencesInLiveWS && !$containerHasWorkspaceVersion) {
+			if ($tce->BE_USER->groupData['allowed_languages']) {
+					//force access to default language - since references needs to be stored in default langauage always
+				$tce->BE_USER->groupData['allowed_languages'].= ',0';
+			}
+			$tce->BE_USER->workspace = 0;
+		}
 		$tce->process_datamap();
 		if (!$flagWasSet) $this->setTCEmainRunningFlag (FALSE);
 	}
@@ -1738,6 +1758,15 @@ class tx_templavoila_api {
 				}
 			}
 		}
+	}
+
+	/**
+	 *
+	 * @param boolean $enable
+	 * @return void
+	*/
+	public function modifyReferencesInLiveWS ( $enable=true ) {
+		$this->modifyReferencesInLiveWS = $enable;
 	}
 }
 
