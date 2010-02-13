@@ -36,11 +36,11 @@
  *
  *
  *
- *   57: class tx_lowlevel_cleanflexform extends tx_lowlevel_cleaner_core
- *   64:     function tx_lowlevel_cleanflexform()
- *   89:     function main()
- *  117:     function main_parseTreeCallBack(&$pObj,$tableName,$uid,$echoLevel,$versionSwapmode,$rootIsVersion)
- *  148:     function main_autoFix($resultArray, $dryrun=TRUE)
+ *   65: class tx_templavoila_unusedce extends tx_lowlevel_cleaner_core
+ *   79:     function tx_templavoila_unusedce()
+ *  103:     function main()
+ *  140:     function main_parseTreeCallBack($tableName,$uid,$echoLevel,$versionSwapmode,$rootIsVersion)
+ *  230:     function main_autoFix($resultArray)
  *
  * TOTAL FUNCTIONS: 4
  * (This index is automatically created/updated by the extension "extdeveval")

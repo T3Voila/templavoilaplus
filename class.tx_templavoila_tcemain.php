@@ -34,19 +34,22 @@
  *
  *
  *
- *   64: class tx_templavoila_tcemain
+ *   67: class tx_templavoila_tcemain
+ *   83:     public function __construct()
  *
  *              SECTION: Public API (called by hook handler)
- *   86:     function processDatamap_preProcessFieldArray (&$incomingFieldArray, $table, $id, &$reference)
- *  111:     function processDatamap_postProcessFieldArray ($status, $table, $id, &$fieldArray, &$reference)
- *  166:     function processDatamap_afterDatabaseOperations ($status, $table, $id, $fieldArray, &$reference)
- *  225:     function processCmdmap_preProcess ($command, $table, $id, $value, &$reference)
- *  261:     function processCmdmap_postProcess($command, $table, $id, $value, &$reference)
- *  283:     function moveRecord_firstElementPostProcess ($table, $uid, $destPid, $sourceRecordBeforeMove, $updateFields, &$reference)
- *  324:     function moveRecord_afterAnotherElementPostProcess ($table, $uid, $destPid, $origDestPid, $sourceRecordBeforeMove, $updateFields, &$reference)
- *  354:     function correctSortingAndColposFieldsForPage($flexformXML)
+ *  105:     function processDatamap_preProcessFieldArray(array &$incomingFieldArray, $table, $id, t3lib_TCEmain &$reference)
+ *  140:     function processDatamap_postProcessFieldArray ($status, $table, $id, &$fieldArray, &$reference)
+ *  227:     function processDatamap_afterDatabaseOperations ($status, $table, $id, $fieldArray, &$reference)
+ *  306:     function processCmdmap_preProcess (&$command, $table, $id, $value, &$reference)
+ *  362:     function processCmdmap_postProcess($command, $table, $id, $value, &$reference)
+ *  388:     function moveRecord_firstElementPostProcess ($table, $uid, $destPid, $sourceRecordBeforeMove, $updateFields, &$reference)
+ *  429:     function moveRecord_afterAnotherElementPostProcess ($table, $uid, $destPid, $origDestPid, $sourceRecordBeforeMove, $updateFields, &$reference)
+ *  460:     function correctSortingAndColposFieldsForPage($flexformXML, $pid)
+ *  532:     protected function updateDataSourceFromTemplateObject($table, array &$incomingFieldArray, t3lib_beUserAuth &$beUser)
+ *  552:     protected function updateDataSourceFieldFromTemplateObjectField(array &$incomingFieldArray, $dsField, $toField, t3lib_beUserAuth &$beUser)
  *
- * TOTAL FUNCTIONS: 8
+ * TOTAL FUNCTIONS: 11
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */

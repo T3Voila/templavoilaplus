@@ -33,13 +33,20 @@
  *
  *
  *
- *   58: class tx_templavoila_handleStaticDataStructures
- *   69:     function main(&$params,&$pObj)
- *   86:     function main_scope1(&$params,&$pObj)
- *  104:     function main_scope2(&$params,&$pObj)
- *  121:     function pi_templates(&$params,$pObj)
+ *   65: class tx_templavoila_handleStaticDataStructures
+ *   77:     function main(&$params,&$pObj)
+ *   95:     function pi_templates(&$params,$pObj)
+ *  133:     public function dataSourceItemsProcFunc(array &$params, t3lib_TCEforms& $pObj)
+ *  164:     public function templateObjectItemsProcFunc(array &$params, t3lib_TCEforms &$pObj)
+ *  182:     protected function templateObjectItemsProcFuncForCurrentDS(array &$params, t3lib_TCEforms &$pObj)
+ *  219:     protected function templateObjectItemsProcFuncForAllDSes(array &$params, t3lib_TCEforms &$pObj)
+ *  272:     protected function getDSList(array &$params, t3lib_TCEforms& $pObj)
+ *  315:     protected function getStoragePid(array &$params, t3lib_TCEforms &$pObj)
+ *  336:     protected function enableFields($tableName)
+ *  358:     public function sortTemplateObjects($key1, $key2)
+ *  379:     function check_permissions(&$params,&$pObj)
  *
- * TOTAL FUNCTIONS: 4
+ * TOTAL FUNCTIONS: 11
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */

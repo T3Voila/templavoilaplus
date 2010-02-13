@@ -36,7 +36,7 @@
  *
  *   55: class tx_templavoila_access
  *   64:     function recordEditAccessInternals($params, $ref)
- *   93:     function checkObjectAccess($table, $uid, $be_user)
+ *  108:     function checkObjectAccess($table, $uid, $be_user)
  *
  * TOTAL FUNCTIONS: 2
  * (This index is automatically created/updated by the extension "extdeveval")

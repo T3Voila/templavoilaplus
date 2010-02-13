@@ -34,6 +34,14 @@
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
+ *
+ *   62: class tx_templavoila_usedCE
+ *   72:     function init($page_uid)
+ *   97:     function filter($table, $uid)
+ *
+ * TOTAL FUNCTIONS: 2
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
  */
 
 

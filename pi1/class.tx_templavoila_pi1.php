@@ -34,17 +34,18 @@
  *
  *
  *
- *   71: class tx_templavoila_pi1 extends tslib_pibase
- *   88:     function main($content,$conf)
- *  101:     function main_page($content,$conf)
- *  131:     function initVars($conf)
- *  144:     function renderElement($row,$table)
- *  282:     function processDataValues(&$dataValues,$DSelements,$TOelements,$valueKey='vDEF')
- *  446:     function inheritValue($dV,$valueKey,$overlayMode='')
- *  486:     function formatError($string)
- *  519:     function visualID($content,$srcPointer,$DSrec,$TOrec,$row,$table)
+ *   73: class tx_templavoila_pi1 extends tslib_pibase
+ *   94:     function main($content,$conf)
+ *  139:     function main_record($content, $conf)
+ *  194:     function main_page($content,$conf)
+ *  233:     function initVars($conf)
+ *  246:     function renderElement($row,$table)
+ *  429:     function processDataValues(&$dataValues,$DSelements,$TOelements,$valueKey='vDEF')
+ *  663:     function inheritValue($dV,$valueKey,$overlayMode='')
+ *  703:     function formatError($string)
+ *  736:     function visualID($content,$srcPointer,$DSrec,$TOrec,$row,$table)
  *
- * TOTAL FUNCTIONS: 8
+ * TOTAL FUNCTIONS: 9
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
