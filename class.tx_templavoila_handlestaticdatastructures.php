@@ -76,43 +76,7 @@ class tx_templavoila_handleStaticDataStructures {
 		}
 	}
 
-	/**
-	 * Adds static data structures to selector box items arrays.
-	 * Adds only structures for Page Templates
-	 *
-	 * @param	array		Array of items passed by reference.
-	 * @param	object		The parent object (t3lib_TCEforms / t3lib_transferData depending on context)
-	 * @return	void
-	 */
-	function main_scope1(&$params,&$pObj)    {
-		if (is_array($GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['staticDataStructures']))	{
-			foreach($GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['staticDataStructures'] as $val)	{
-				if ($val['scope']==1)	{
-					$params['items'][]=Array($this->prefix.$val['title'], $val['path'], $val['icon']);
-				}
-			}
-		}
-		tx_templavoila_handleStaticDataStructures::check_permissions($params, $pObj);
-	}
 
-	/**
-	 * Adds static data structures to selector box items arrays.
-	 * Adds only structures for Flexible Content elements
-	 *
-	 * @param	array		Array of items passed by reference.
-	 * @param	object		The parent object (t3lib_TCEforms / t3lib_transferData depending on context)
-	 * @return	void
-	 */
-	function main_scope2(&$params,&$pObj)    {
-		if (is_array($GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['staticDataStructures']))	{
-			foreach($GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['staticDataStructures'] as $val)	{
-				if ($val['scope']==2)	{
-					$params['items'][]=Array($this->prefix.$val['title'], $val['path'], $val['icon']);
-				}
-			}
-		}
-		tx_templavoila_handleStaticDataStructures::check_permissions($params, $pObj);
-	}
 
 	/**
 	 * Adds Template Object records to selector box for Content Elements of the "Plugin" type.
@@ -160,7 +124,8 @@ class tx_templavoila_handleStaticDataStructures {
 	 * @return	void
 	 */
 	public function dataSourceItemsProcFunc(array &$params, t3lib_TCEforms& $pObj) {
-		// Get all DSes
+
+			// Get all DSes
 		$dsList = $this->getDSList($params, $pObj);
 		$params['items'] = array(
 			array(
@@ -174,17 +139,11 @@ class tx_templavoila_handleStaticDataStructures {
 			}
 			$params['items'][] = array(
 				$dsRecord['title'],
-				$dsRecord['uid'],
+				isset($dsRecord['path']) ? $dsRecord['path'] : $dsRecord['uid'],
 				$icon
 			);
 		}
-		// Call functions to add static data structures
-		if ($params['table'] == 'pages') {
-			$this->main_scope1($params, $pObj);
-		}
-		else {
-			$this->main_scope2($params, $pObj);
-		}
+		tx_templavoila_handleStaticDataStructures::check_permissions($params, $pObj);
 	}
 
 	/**
@@ -255,12 +214,8 @@ class tx_templavoila_handleStaticDataStructures {
 		$this->dsList = $this->getDSList($params, $pObj);
 
 		if (count($this->dsList) > 0) {
-			if ($this->conf['staticDS.']['enable']) {
-				$list = t3lib_div::csvValues(array_keys($this->dsList));
-			} else {
-				$list = implode(',', array_keys($this->dsList));
-			}
-			// Get all TOs for these DSes
+			$list = t3lib_div::csvValues(array_keys($this->dsList));
+				// Get all TOs for these DSes
 			$this->toRows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 						'uid,title,previewicon,datastructure', 'tx_templavoila_tmplobj',
 						'datastructure IN (' . $list . ')' .
@@ -308,16 +263,20 @@ class tx_templavoila_handleStaticDataStructures {
 	 * @return	array	Rows with DSes (uid, title, previewicon)
 	 */
 	protected function getDSList(array &$params, t3lib_TCEforms& $pObj) {
-		// Find DS scope
+
+		$rows = array();
+
+			// Find DS scope
 		$scope = ($params['table'] == 'pages' ? 1 : 2);
-		if ($this->conf['staticDS.']['enable']) {
-			$rows = array();
+		if (is_array($GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['staticDataStructures'])) {
 			foreach ($GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['staticDataStructures'] as $staticDataStructure) {
 				if ($staticDataStructure['scope'] == $scope) {
 					$rows[$staticDataStructure['path']] = $staticDataStructure;
 				}
 			}
-		} else {
+		}
+
+		if (!$this->conf['staticDS.']['enable']) {
 			// Get storage folder
 			$storagePid = $this->getStoragePid($params, $pObj);
 
@@ -329,11 +288,11 @@ class tx_templavoila_handleStaticDataStructures {
 			}
 
 			// Get all DSes from the current storage folder
-			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,title,previewicon',
+			$rows = array_merge($rows, $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,title,previewicon',
 						'tx_templavoila_datastructure',
 						'scope=' . $scope . ' AND pid=' . $storagePid . $addWhere .
 						self::enableFields('tx_templavoila_datastructure'),
-						'', 'title', '', 'uid');
+						'', 'title', '', 'uid'));
 		}
 		return $rows;
 	}
