@@ -1,3 +1,7 @@
+2010-02-13  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug: #13052: New Content Element Wizard didn't load
+
 2010-02-12  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug: #13509: staticDS wizard doesn't deselect checkboxs, shoudn't render submit after last step
