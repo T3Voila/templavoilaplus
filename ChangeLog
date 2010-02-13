@@ -1,5 +1,6 @@
 2010-02-13  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug: #13526: selectbox for updating existing Data Structure / Template Object does wrong grouping if more sysfolders with the same name (Thanks to Jörg Winter)
 	* Fixed bug: #13052: New Content Element Wizard didn't load
 
 2010-02-12  Steffen Kamper  <info@sk-typo3.de>
