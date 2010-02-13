@@ -1,3 +1,7 @@
+2010-02-13  Tolleiv Nietsch <nietsch@aoemedia.de> 
+
+	* Fixed bug: #13527: Typoscript default should be better with Templavoila
+
 2010-02-13  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug: #13526: selectbox for updating existing Data Structure / Template Object does wrong grouping if more sysfolders with the same name (Thanks to Jörg Winter)

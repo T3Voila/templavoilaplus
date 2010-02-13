@@ -197,6 +197,15 @@ class tx_templavoila_tcemain {
 					$fieldArray = null;
 				}
 			}
+		} else if ($table == 'sys_template' && $status == 'new') {
+			if (isset($fieldArray['root']) && $fieldArray['root'] === 1 && isset($fieldArray['clear']) && $fieldArray['clear'] === 3) {
+				$fieldArray['config'] = '
+page = PAGE
+page.10 = USER
+page.10.userFunc = tx_templavoila_pi1->main_page
+page.10.disableExplosivePreview = 1
+				';
+			}
 		}
 	}
 
