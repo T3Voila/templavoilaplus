@@ -935,20 +935,20 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 						t3lib_BEfunc::deleteClause('tx_templavoila_tmplobj').
 						t3lib_BEfunc::versioningPlaceholderClause('tx_templavoila_tmplobj'),
 					'',
-					'tx_templavoila_datastructure.scope, tx_templavoila_tmplobj.title'
+					'tx_templavoila_datastructure.scope, tx_templavoila_tmplobj.pid, tx_templavoila_tmplobj.title'
 				);
 
 			}
-			$sFolder = '';
+			$storageFolderPid = 0;
 			$optGroupOpen = false;
 			while(false !== ($row = $TYPO3_DB->sql_fetch_assoc($res)))	{
 				t3lib_BEfunc::workspaceOL('tx_templavoila_tmplobj',$row);
-				if ($sFolder != $this->storageFolders[$row['pid']]) {
-					 $sFolder = $this->storageFolders[$row['pid']];
+				if ($storageFolderPid != $row['pid']) {
+					 $storageFolderPid = $row['pid'];
 					 if ($optGroupOpen) {
 						$opt[] = '</optgroup>';
 					 }
-					 $opt[] = '<optgroup label="' . htmlspecialchars($sFolder . ' (PID: ' . $row['pid'] . ')') . '">';
+					 $opt[] = '<optgroup label="' . htmlspecialchars($this->storageFolders[$storageFolderPid] . ' (PID: ' . $storageFolderPid . ')') . '">';
 					 $optGroupOpen = true;
 				}
 				$opt[]= '<option value="' .htmlspecialchars($row['uid']).'" ' .
