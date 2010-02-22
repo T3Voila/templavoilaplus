@@ -288,7 +288,7 @@ class tx_templavoila_handleStaticDataStructures {
 			}
 
 			// Get all DSes from the current storage folder
-			$rows = array_merge($rows, $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,title,previewicon',
+			$rows = t3lib_div::array_merge_recursive_overrule($rows, $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,title,previewicon',
 						'tx_templavoila_datastructure',
 						'scope=' . $scope . ' AND pid=' . $storagePid . $addWhere .
 						self::enableFields('tx_templavoila_datastructure'),

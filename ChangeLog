@@ -1,5 +1,6 @@
 2010-02-22  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
+	* Fixed bug: #13587: Selecting of template object in content element
 	* Fixed bug: #13606: BLOB is too small for large mappings
 	
 2010-02-13  Tolleiv Nietsch <nietsch@aoemedia.de> 
