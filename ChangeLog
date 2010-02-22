@@ -1,3 +1,7 @@
+2010-02-22  Tolleiv Nietsch <nietsch@aoemedia.de> 
+
+	* Fixed bug: #13606: BLOB is too small for large mappings
+
 2010-02-13  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
 	* Fixed bug: #13165: improve flexform reference-lists and workspace behaviour	
