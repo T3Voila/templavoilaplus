@@ -1,3 +1,7 @@
+2010-02-22  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug: #13607: SelIcons for DS/TO are all rendered in one row
+
 2010-02-22  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
 	* Fixed bug: #13587: Selecting of template object in content element
