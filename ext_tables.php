@@ -133,6 +133,7 @@ $tempColumns = array(
 			'size' => 1,
 			'minitems' => 0,
 			'maxitems' => 1,
+			'selicon_cols' => 10,
 		)
 	),
 	'tx_templavoila_to' => Array (
@@ -148,6 +149,7 @@ $tempColumns = array(
 			'size' => 1,
 			'minitems' => 0,
 			'maxitems' => 1,
+			'selicon_cols' => 10,
 		)
 	),
 	'tx_templavoila_flex' => Array (
@@ -173,6 +175,7 @@ $tempColumns = array(
 			'size' => 1,
 			'minitems' => 0,
 			'maxitems' => 1,
+			'selicon_cols' => 10,
 		)
 	),
 );
@@ -208,6 +211,7 @@ $tempColumns = array (
 			'minitems' => 0,
 			'maxitems' => 1,
 			'suppress_icons' => 'IF_VALUE_FALSE',
+			'selicon_cols' => 10,
 		)
 	),
 	'tx_templavoila_to' => Array (
@@ -223,6 +227,7 @@ $tempColumns = array (
 			'size' => 1,
 			'minitems' => 0,
 			'maxitems' => 1,
+			'selicon_cols' => 10,
 		)
 	),
 	'tx_templavoila_next_ds' => Array (
@@ -239,6 +244,7 @@ $tempColumns = array (
 			'minitems' => 0,
 			'maxitems' => 1,
 			'suppress_icons' => 'IF_VALUE_FALSE',
+			'selicon_cols' => 10,
 		)
 	),
 	'tx_templavoila_next_to' => Array (
@@ -254,6 +260,7 @@ $tempColumns = array (
 			'size' => 1,
 			'minitems' => 0,
 			'maxitems' => 1,
+			'selicon_cols' => 10,
 		)
 	),
 	'tx_templavoila_flex' => Array (
