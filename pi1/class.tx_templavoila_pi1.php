@@ -426,7 +426,7 @@ class tx_templavoila_pi1 extends tslib_pibase {
 	 * @return	void
 	 */
 	function processDataValues(&$dataValues,$DSelements,$TOelements,$valueKey='vDEF')	{
-		if (is_array($DSelements))	{
+		if (is_array($DSelements) && is_array($dataValues))	{
 
 				// Create local processing information array:
 			$LP = array();
@@ -447,13 +447,8 @@ class tx_templavoila_pi1 extends tslib_pibase {
 
 				// Prepare a fake data record for cObj (important to do now before processing takes place):
 			$dataRecord=array();
-			if (is_array($dataValues))	{
-				foreach($dataValues as $key => $values)	{
-					$dataRecord[$key] = $this->inheritValue($dataValues[$key],$valueKey,$LP[$key]['langOverlayMode']);
-				}
-			} else {
-					// Not sure why this happens, but the codes relies on having an array
-				$dataValues = array();
+			foreach($dataValues as $key => $values)	{
+				$dataRecord[$key] = $this->inheritValue($dataValues[$key],$valueKey,$LP[$key]['langOverlayMode']);
 			}
 
             // Check if information about parent record should be set. Note: we do not push/pop registers here because it may break LOAD_REGISTER/RESTORE_REGISTER data transfer between FCEs!
