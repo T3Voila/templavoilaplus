@@ -1,3 +1,7 @@
+2010-02-23  Tolleiv Nietsch <nietsch@aoemedia.de> 
+
+	* Fixed bug: #13594: Fatal error: Cannot use string offset as an array in class.tx_templavoila_pi1.php on line 509 
+
 2010-02-22  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug: #13607: SelIcons for DS/TO are all rendered in one row
