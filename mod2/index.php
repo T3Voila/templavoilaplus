@@ -519,7 +519,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 							$indexTO.='
 								<tr class="bgColor4">
 									<td>&nbsp;&nbsp;&nbsp;</td>
-									<td><a href="#to-'.$toObj['uid'].'">'.htmlspecialchars($toObj['title']).'</a></td>
+									<td><a href="#to-' . $toObj['uid'] . '">' . htmlspecialchars($GLOBALS['LANG']->sL($toObj['title'])) . '</a></td>
 									<td>&nbsp;</td>
 									<td>&nbsp;</td>
 									<td align="center">'.$rTODres['mappingStatus'].'</td>
@@ -559,7 +559,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 				$content.= '<a name="ds-'.md5($dsID).'"></a>'.$rDSDres['HTML'];
 				$index.='
 					<tr class="bgColor4-20">
-						<td colspan="2"><a href="#ds-'.md5($dsID).'">'.htmlspecialchars($dsR['title']?$dsR['title']:$dsR['path']).'</a></td>
+						<td colspan="2"><a href="#ds-'.md5($dsID).'">'.htmlspecialchars($dsR['title'] ? $GLOBALS['LANG']->sL($dsR['title']) : $dsR['path']).'</a></td>
 						<td align="center">'.$rDSDres['languageMode'].'</td>
 						<td align="center">'.$rDSDres['container'].'</td>
 						<td>&nbsp;</td>
@@ -632,7 +632,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 
 				// Links:
 			$editLink = $lpXML.= '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick('&edit[tx_templavoila_datastructure]['.$dsR['uid'].']=edit',$this->doc->backPath)).'"><img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/edit2.gif','width="11" height="12"').' alt="" class="absmiddle" /></a>';
-			$dsTitle = '<a href="'.htmlspecialchars('../cm1/index.php?table=tx_templavoila_datastructure&uid=' . $dsR['uid'] . '&returnUrl=' . rawurlencode(tx_templavoila_div::sanitizeLocalUrl(t3lib_div::getIndpEnv('REQUEST_URI')))) . '">' . htmlspecialchars($dsR['title']) . '</a>';
+			$dsTitle = '<a href="'.htmlspecialchars('../cm1/index.php?table=tx_templavoila_datastructure&uid=' . $dsR['uid'] . '&returnUrl=' . rawurlencode(tx_templavoila_div::sanitizeLocalUrl(t3lib_div::getIndpEnv('REQUEST_URI')))) . '">' . htmlspecialchars($GLOBALS['LANG']->sL($dsR['title'])) . '</a>';
 
 			if ($this->MOD_SETTINGS['set_details'])	{
 				$XMLinfo = $this->DSdetails($dsR['dataprot']);
@@ -867,7 +867,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 
 			// Links:
 		$editLink = '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick('&edit[tx_templavoila_tmplobj]['.$toObj['uid'].']=edit',$this->doc->backPath)).'"><img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/edit2.gif','width="11" height="12"').' alt="" class="absmiddle" /></a>';
-		$toTitle = '<a href="'.htmlspecialchars($linkUrl).'">'.htmlspecialchars($toObj['title']).'</a>';
+		$toTitle = '<a href="' . htmlspecialchars($linkUrl) . '">' . htmlspecialchars($GLOBALS['LANG']->sL($toObj['title'])) . '</a>';
 
 		$fRWTOUres = array();
 
@@ -1119,7 +1119,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 				</table>';
 			} else {
 				$outputString = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/icon_warning2.gif','width="18" height="16"').' alt="" class="absmiddle" />No usage!';
-				$this->setErrorLog($scope, 'warning', sprintf($GLOBALS['LANG']->getLL('warning_mappingstatus', 1), $outputString ,$toObj['title']));
+				$this->setErrorLog($scope, 'warning', sprintf($GLOBALS['LANG']->getLL('warning_mappingstatus', 1), $outputString , $GLOBALS['LANG']->sL($toObj['title'])));
 			}
 		}
 

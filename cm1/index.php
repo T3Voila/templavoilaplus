@@ -856,7 +856,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 				<tr>
 					<td class="bgColor5">&nbsp;</td>
 					<td class="bgColor5"><strong>' . $GLOBALS['LANG']->getLL('templateObject') . ':</strong></td>
-					<td class="bgColor4">' . ($toREC ? htmlspecialchars($toREC['title']) : $GLOBALS['LANG']->getLL('mappingNEW')) . '</td>
+					<td class="bgColor4">' . ($toREC ? htmlspecialchars($GLOBALS['LANG']->sL($toREC['title'])) : $GLOBALS['LANG']->getLL('mappingNEW')) . '</td>
 				</tr>';
 			if ($this->staticDS) {
 				$onClick = 'return top.openUrlInWindow(\'' . t3lib_div::getIndpEnv('TYPO3_SITE_URL') . $toREC['datastructure'] . '\',\'FileView\');';
@@ -871,7 +871,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 				<tr>
 					<td class="bgColor5">&nbsp;</td>
 					<td class="bgColor5"><strong>' . $GLOBALS['LANG']->getLL('renderTO_dsRecord') . ':</strong></td>
-					<td class="bgColor4">' . ($dsREC ? htmlspecialchars($dsREC['title']) : $GLOBALS['LANG']->getLL('mappingNEW')) . '</td>
+					<td class="bgColor4">' . ($dsREC ? htmlspecialchars($GLOBALS['LANG']->sL($dsREC['title'])) : $GLOBALS['LANG']->getLL('mappingNEW')) . '</td>
 				</tr>';
 			}
 
@@ -953,7 +953,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 				}
 				$opt[]= '<option value="' .htmlspecialchars($row['uid']).'" ' .
 					($row['scope'] == 1 ? 'class="pagetemplate"">' : 'class="fce">') .
-					 htmlspecialchars($row['title'] . ' (UID:' . $row['uid'] . ')').'</option>';
+					 htmlspecialchars($GLOBALS['LANG']->sL($row['title']) . ' (UID:' . $row['uid'] . ')').'</option>';
 			}
 			if ($optGroupOpen) {
 				$opt[] = '</optgroup>';
@@ -1243,11 +1243,12 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 
 					// Get title and icon:
 				$icon = t3lib_iconworks::getIconImage('tx_templavoila_tmplobj',$row,$GLOBALS['BACK_PATH'],' align="top" title="UID: '.$this->displayUid.'"');
-				$title = t3lib_BEfunc::getRecordTitle('tx_templavoila_tmplobj',$row,1);
+				$title = t3lib_BEfunc::getRecordTitle('tx_templavoila_tmplobj', $row);
+				$title = t3lib_BEFunc::getRecordTitlePrep($GLOBALS['LANG']->sL($title));
 				$tRows[]='
 					<tr class="bgColor4">
 						<td>'.$GLOBALS['LANG']->getLL('templateObject').':</td>
-						<td>'.$this->doc->wrapClickMenuOnIcon($icon,'tx_templavoila_tmplobj',$row['uid'],1).$title.'</td>
+						<td>' . $this->doc->wrapClickMenuOnIcon($icon, 'tx_templavoila_tmplobj', $row['uid'], 1) . $title . '</td>
 					</tr>';
 
 					// Find the file:
@@ -1280,11 +1281,13 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 						if (is_array($DS_row))	{
 								// Get title and icon:
 							$icon = t3lib_iconworks::getIconImage('tx_templavoila_datastructure',$DS_row,$GLOBALS['BACK_PATH'],' align="top" title="UID: '.$DS_row['uid'].'"');
-							$title = t3lib_BEfunc::getRecordTitle('tx_templavoila_datastructure',$DS_row,1);
+							$title = t3lib_BEfunc::getRecordTitle('tx_templavoila_datastructure', $DS_row);
+							$title = t3lib_BEFunc::getRecordTitlePrep($GLOBALS['LANG']->sL($title));
+
 							$tRows[]='
 								<tr class="bgColor4">
 									<td>' . $GLOBALS['LANG']->getLL('renderTO_dsRecord') . ':</td>
-									<td>'.$this->doc->wrapClickMenuOnIcon($icon,'tx_templavoila_datastructure',$DS_row['uid'],1).$title.'</td>
+									<td>' . $this->doc->wrapClickMenuOnIcon($icon, 'tx_templavoila_datastructure', $DS_row['uid'] , 1) . $title . '</td>
 								</tr>';
 
 								// Link to updating DS/TO:
