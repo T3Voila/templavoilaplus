@@ -117,7 +117,7 @@ class tx_templavoila_handleStaticDataStructures {
 				if ($row['previewicon'])	{
 					$icon='../'.$GLOBALS['TCA']['tx_templavoila_tmplobj']['columns']['previewicon']['config']['uploadfolder'].'/'.$row['previewicon'];
 				} else $icon='';
-				$params['items'][]=Array($row['title'],$row['uid'],$icon);
+				$params['items'][] = array($GLOBALS['LANG']->sL($row['title']), $row['uid'], $icon);
 			}
 		}
 	}
@@ -145,7 +145,7 @@ class tx_templavoila_handleStaticDataStructures {
 				$icon = $this->iconPath . $dsRecord['previewicon'];
 			}
 			$params['items'][] = array(
-				$dsRecord['title'],
+				$GLOBALS['LANG']->sL($dsRecord['title']),
 				isset($dsRecord['path']) ? $dsRecord['path'] : $dsRecord['uid'],
 				$icon
 			);
@@ -201,7 +201,7 @@ class tx_templavoila_handleStaticDataStructures {
 				$icon = $this->iconPath . $row['previewicon'];
 			}
 			$params['items'][] = array(
-				$row['title'],
+				$GLOBALS['LANG']->sL($row['title']),
 				$row['uid'],
 				$icon
 			);
@@ -252,7 +252,7 @@ class tx_templavoila_handleStaticDataStructures {
 					$icon = $this->iconPath . $row['previewicon'];
 				}
 				$params['items'][] = array(
-					$row['title'],
+					$GLOBALS['LANG']->sL($row['title']),
 					$row['uid'],
 					$icon
 				);
@@ -360,10 +360,10 @@ class tx_templavoila_handleStaticDataStructures {
 		$row1 = $this->toRows[$key1];
 		$row2 = $this->toRows[$key2];
 		if ($row1['datastructure'] == $row2['datastructure']) {
-			$result = strcmp($row1['title'], $row2['title']);
+			$result = strcmp($GLOBALS['LANG']->sL($row1['title']), $GLOBALS['LANG']->sL($row2['title']));
 		}
 		else {
-			$result = strcmp($this->dsList[$row1['datastructure']]['title'], $this->dsList[$row2['datastructure']]['title']);
+			$result = strcmp($GLOBALS['LANG']->sL($this->dsList[$row1['datastructure']]['title']), $GLOBALS['LANG']->sL($this->dsList[$row2['datastructure']]['title']));
 		}
 		return $result;
 	}

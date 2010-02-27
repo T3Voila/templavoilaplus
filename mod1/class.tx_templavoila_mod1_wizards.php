@@ -327,7 +327,7 @@ class tx_templavoila_mod1_wizards {
 				</tr><tr>
 					<td valign="top">' . $previewIcon . '</td>
 					<td width="120" valign="top">
-						<p><h4>' . htmlspecialchars($defaultTO['title']) . '</h4>' . $description . '</p>
+						<p><h4>' . htmlspecialchars($LANG->sL($defaultTO['title'])) . '</h4>' . $LANG->sL($description) . '</p>
 					</td>
 				</tr>
 				</table>';
@@ -343,8 +343,8 @@ class tx_templavoila_mod1_wizards {
 						// Note: we cannot use value of image input element because MSIE replaces this value with mouse coordinates! Thus on click we set value to a hidden field. See http://bugs.typo3.org/view.php?id=3376
 					$previewIcon = '<input type="image" class="c-inputButton" name="i' .$row['uid'] . '" onclick="document.getElementById(\'data_tx_templavoila_to\').value='.$row['uid'].'" src="'.$previewIconFilename.'" title="" />';
 					$description = $row['description'] ? htmlspecialchars($row['description']) : $LANG->getLL ('template_nodescriptionavailable');
-					$tmplHTML [] = '<table style="width: 100%;" valign="top"><tr><td colspan="2" nowrap="nowrap"><h3 class="bgColor3-20">'.htmlspecialchars($row['title']).'</h3></td></tr>'.
-						'<tr><td valign="top">'.$previewIcon.'</td><td width="120" valign="top"><p>'.$description.'</p></td></tr></table>';
+					$tmplHTML [] = '<table style="width: 100%;" valign="top"><tr><td colspan="2" nowrap="nowrap"><h3 class="bgColor3-20">' . htmlspecialchars($LANG->sL($row['title'])) . '</h3></td></tr>'.
+						'<tr><td valign="top">' . $previewIcon . '</td><td width="120" valign="top"><p>' . $LANG->sL($description) . '</p></td></tr></table>';
 				}
 				$tmplHTML[] = '<input type="hidden" id="data_tx_templavoila_to" name="data[tx_templavoila_to]" value="0" />';
 				break;
