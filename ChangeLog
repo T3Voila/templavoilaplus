@@ -1,3 +1,7 @@
+2010-03-06  Tolleiv Nietsch <nietsch@aoemedia.de> 
+
+	* Fixed bug: #4931: SQL error with Templavoila/DBAL/PostgreSQL: Different language (Thanks to Mathias and Xavier)
+
 2010-02-27  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
 	* Fixed bug: #12257: localizable ds/to title fields

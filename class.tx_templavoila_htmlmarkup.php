@@ -697,11 +697,11 @@ class tx_templavoila_htmlmarkup {
 						}
 					}
 				} elseif ($langUid)	{	// If the language uid is set, then try to find a regular record with sys_language_uid
-					$printRow = $this->getTemplateRecord_query($parentUid,'AND rendertype="" AND sys_language_uid='.intval($langUid));
+					$printRow = $this->getTemplateRecord_query($parentUid, 'AND rendertype=\'\' AND sys_language_uid=' . intval($langUid));
 					if (is_array($printRow))	{
 						$rec = $printRow;
 					} elseif ($rendertype_ref) {	// Look in rendertype_ref record:
-						$printRow = $this->getTemplateRecord_query($rendertype_ref['uid'],'AND rendertype="" AND sys_language_uid='.intval($langUid));
+						$printRow = $this->getTemplateRecord_query($rendertype_ref['uid'], 'AND rendertype=\'\' AND sys_language_uid=' . intval($langUid));
 						if (is_array($printRow))	{
 							$rec = $printRow;
 						}
