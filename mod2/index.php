@@ -2066,7 +2066,11 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 					$this->wizardData['templateObjectId'] = t3lib_BEfunc::wsMapId('tx_templavoila_tmplobj',$import->import_mapId['tx_templavoila_tmplobj'][1]);
 					$this->wizardData['typoScriptTemplateID'] = t3lib_BEfunc::wsMapId('sys_template',$import->import_mapId['sys_template'][1]);
 
-					t3lib_BEfunc::getSetUpdateSignal('updatePageTree');
+					if (t3lib_div::compat_version('4.2')) {
+						t3lib_BEfunc::setUpdateSignal('updatePageTree');
+					} else {
+						t3lib_BEfunc::getSetUpdateSignal('updatePageTree');
+					}
 
 					$outputString .= $GLOBALS['LANG']->getLL('newsitewizard_maintemplate', 1) . '<hr/>';
 				}
