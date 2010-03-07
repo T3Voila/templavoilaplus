@@ -453,6 +453,9 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 						'
 
 			);
+				// Preparing context menues
+				// this also adds prototype to the list of required libraries
+			$CMparts = $this->doc->getContextMenuCode();
 
 				//Prototype /Scriptaculous
 				// prototype is loaded before, so no need to include twice.
@@ -468,13 +471,11 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				}
 			}
 
-
 				// Set up JS for dynamic tab menu and side bar
 			$this->doc->JScode .= $this->doc->getDynTabMenuJScode();
 			$this->doc->JScode .= $this->modTSconfig['properties']['sideBarEnable'] ? $this->sideBarObj->getJScode() : '';
 
 				// Setting up support for context menus (when clicking the items icon)
-			$CMparts = $this->doc->getContextMenuCode();
 			$this->doc->bodyTagAdditions = $CMparts[1];
 			$this->doc->JScode.= $CMparts[0];
 			$this->doc->postCode.= $CMparts[2];
