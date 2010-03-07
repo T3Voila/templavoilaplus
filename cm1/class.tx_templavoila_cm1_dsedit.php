@@ -359,7 +359,7 @@ class tx_templavoila_cm1_dsEdit {
 											var li = document.createElement("li"); li.appendChild(ac);
 											ac.title = dsmn[el]["title"]; ac.href = "#dsel-menu"; ac.rel = dsmn[el]["id"];
 											ac.className = (dsel_act == dsmn[el]["id"] ? "active" : "");
-											ac.onclick = function() { dsel_act = this.rel; dsel_menu_reset(); };
+											ac.onclick = function() { dsel_act = this.rel; dsel_menu_reset(); return false; };
 											if (dsmn[el]["childs"]) {
 												var ul = document.createElement("ul");
 												dsel_menu_construct(ul, dsmn[el]["childs"]);
