@@ -1,5 +1,6 @@
 2010-03-07  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
+	* Fixed bug: #13756: Clicking the configuration tabs in mapping module scrolls windows
 	* Fixed bug: #13755: t3lib_BEfunc::getSetUpdateSignal() will be deprecated in TYPO3 4.5 (patch b)
 	* Fixed bug: #13762: Elements on New page -templateselector don't indicate clickability
 
