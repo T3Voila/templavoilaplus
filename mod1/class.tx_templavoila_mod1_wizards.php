@@ -204,6 +204,11 @@ class tx_templavoila_mod1_wizards {
 		$this->doc->bodyTagAdditions = $CMparts[1];
 		$this->doc->postCode.= $CMparts[2] . $tceforms->printNeededJSFunctions();
 
+			// fix due to #13762
+		if (t3lib_div::compat_version('4.3')) {
+			$this->doc->inDocStyles .= '.c-inputButton{ cursor:pointer; }';
+		}
+
 		$content.=$this->doc->header($LANG->sL('LLL:EXT:lang/locallang_core.xml:db_new.php.pagetitle'));
 		$content.=$this->doc->startPage($LANG->getLL ('createnewpage_title'));
 
