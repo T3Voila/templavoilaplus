@@ -355,7 +355,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			}
 				// Check if we have to update the pagetree:
 			if (t3lib_div::_GP('updatePageTree')) {
-				t3lib_BEfunc::getSetUpdateSignal('updatePageTree');
+				t3lib_BEfunc::setUpdateSignal('updatePageTree');
 			}
 
 				// Draw the header.
