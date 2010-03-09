@@ -132,6 +132,7 @@
 			<label index="mapPreviewInfo">Preview of Data Structure sample data merged into the mapped tags</label>
 			<label index="mapDSelement">Mapping Data Element</label>
 			<label index="mapLimitToTags">Limiting to tags</label>
+			<label index="mapWarningElementChange">Changing element type will change your existing settings!</label>
 			
 			<label index="displayDSTitleTranslated">This title is translated!</label>
 			<label index="displayDSContentFound">Content found (%s chars)</label>

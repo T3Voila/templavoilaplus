@@ -154,7 +154,7 @@ class tx_templavoila_cm1_dsEdit {
 						}
 						$form .= '
 						</optgroup>
-					</select><input type="hidden"
+					</select><p>' . $GLOBALS['LANG']->getLL('mapWarningElementChange') . '</p><input type="hidden"
 						name="'.$formFieldName.'[tx_templavoila][eType_before]"
 						value="'.$insertDataArray['tx_templavoila']['eType'].'" /></dd>';
 					}

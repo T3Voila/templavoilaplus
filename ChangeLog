@@ -1,3 +1,7 @@
+2010-02-22  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug: #13764: Changing eType in mapping module remains HSC=1
+
 2010-03-07  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
 	* Fixed bug: #11912: usergroup options for disabling the "paste as reference"-Function, when copying a FCE
