@@ -1,5 +1,6 @@
-2010-02-22  Steffen Kamper  <info@sk-typo3.de>
+2010-03-09  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug: #13776: Cannot unset HSC for input type Plain Input Field
 	* Fixed bug: #13764: Changing eType in mapping module remains HSC=1
 
 2010-03-07  Tolleiv Nietsch <nietsch@aoemedia.de> 

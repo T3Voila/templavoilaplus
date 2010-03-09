@@ -276,7 +276,10 @@ class tx_templavoila_cm1_eTypes {
 								));
 
 							} else {	// Normal output.
-								$elArray[$key]['tx_templavoila']['proc']['HSC'] = 1;
+								/* preserve previous config, if explicitly set */
+								if (!isset($elArray[$key]['tx_templavoila']['proc']['HSC'])) {
+									$elArray[$key]['tx_templavoila']['proc']['HSC'] = 1;
+								}
 							}
 
 							if ($reset) {
@@ -298,7 +301,10 @@ class tx_templavoila_cm1_eTypes {
 									($elArray[$key]['tx_templavoila']['TypoScriptObjPath'] ?
 										$elArray[$key]['tx_templavoila']['TypoScriptObjPath'] : ''));
 							}
-							$elArray[$key]['tx_templavoila']['proc']['HSC'] = 0;
+							/* preserve previous config, if explicitly set */
+							if (!isset($elArray[$key]['tx_templavoila']['proc']['HSC'])) {
+								$elArray[$key]['tx_templavoila']['proc']['HSC'] = 0;
+							}
 						break;
 						case 'none':
 							unset($elArray[$key]['TCEforms']['config']);
