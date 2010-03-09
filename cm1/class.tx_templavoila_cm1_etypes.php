@@ -146,7 +146,7 @@ class tx_templavoila_cm1_eTypes {
 							}
 							/* preserve previous config, if explicitly set */
 							if (!isset($elArray[$key]['TCEforms']['proc']['HSC'])) {
-							$elArray[$key]['tx_templavoila']['proc']['HSC']=0;
+								$elArray[$key]['tx_templavoila']['proc']['HSC'] = 0 ;
 							}
 
 							/* preserve previous config, if of the right kind */
@@ -165,6 +165,7 @@ class tx_templavoila_cm1_eTypes {
 							$maxW = $contentInfo['img']['width'] ? $contentInfo['img']['width'] : $eTypes['eType'][$eType]['maxWdefault'];
 							$maxH = $contentInfo['img']['height'] ? $contentInfo['img']['height'] : $eTypes['eType'][$eType]['maxHdefault'];
  							$typoScriptImageObject = ($elArray[$key]['type'] == 'attr') ? 'IMG_RESOURCE' : 'IMAGE';
+							$elArray[$key]['tx_templavoila']['proc']['HSC'] = 0;
 
 							/* preserve previous config, if of the right kind */
 							if ($reset || !trim($elArray[$key]['tx_templavoila']['TypoScript'])) {
@@ -174,7 +175,7 @@ class tx_templavoila_cm1_eTypes {
 									'MAXW'  => $maxW,
 									'MAXH'  => $maxH
 								));
-	}
+							}
 
 
 								// Finding link-fields on same level and set the image to be linked by that TypoLink:
@@ -196,13 +197,13 @@ class tx_templavoila_cm1_eTypes {
 							/* preserve previous config, if of the right kind */
 							if ($reset || !trim($elArray[$key]['tx_templavoila']['TypoScript'])) {
 								$elArray[$key]['tx_templavoila']['TypoScript'] = $eTypes['eType'][$eType]['Typoscript'];
-							if ($elArray[$key]['type'] == 'attr') {
+								if ($elArray[$key]['type'] == 'attr') {
 									$elArray[$key]['tx_templavoila']['TypoScript'] .= chr(10) . '10.typolink.returnLast = url';
 									/* preserve previous config, if explicitly set */
 									if (!isset($elArray[$key]['TCEforms']['proc']['HSC'])) {
-								$elArray[$key]['tx_templavoila']['proc']['HSC']=1;
-							}
-							}
+										$elArray[$key]['tx_templavoila']['proc']['HSC'] = 1;
+									}
+								}
 							}
 						break;
 						case 'ce':
@@ -217,9 +218,9 @@ class tx_templavoila_cm1_eTypes {
 								$elArray[$key]['tx_templavoila']['TypoScript'] = $eTypes['eType'][$eType]['Typoscript'];
 								if ($scope == 1) {
 									$elArray[$key]['tx_templavoila']['TypoScript'] .= chr(10) . '10.wrap = <!--TYPO3SEARCH_begin--> | <!--TYPO3SEARCH_end-->';
+								}
 							}
-							}
-
+							$elArray[$key]['tx_templavoila']['proc']['HSC'] = 0;
 						break;
 						case 'int':
 							/* preserve previous config, if of the right kind */
@@ -227,6 +228,7 @@ class tx_templavoila_cm1_eTypes {
 								$elArray[$key]['TCEforms']['label']=$elArray[$key]['tx_templavoila']['title'];
 								$elArray[$key]['TCEforms']['config'] = $eTypes['eType'][$eType]['TCEforms']['config'];
 							}
+							$elArray[$key]['tx_templavoila']['proc']['int'] = 1;
 						break;
 						case 'select':
 							/* preserve previous config, if of the right kind */
@@ -274,7 +276,7 @@ class tx_templavoila_cm1_eTypes {
 								));
 
 							} else {	// Normal output.
-								$elArray[$key]['tx_templavoila']['proc']['HSC']=1;
+								$elArray[$key]['tx_templavoila']['proc']['HSC'] = 1;
 							}
 
 							if ($reset) {
@@ -296,6 +298,7 @@ class tx_templavoila_cm1_eTypes {
 									($elArray[$key]['tx_templavoila']['TypoScriptObjPath'] ?
 										$elArray[$key]['tx_templavoila']['TypoScriptObjPath'] : ''));
 							}
+							$elArray[$key]['tx_templavoila']['proc']['HSC'] = 0;
 						break;
 						case 'none':
 							unset($elArray[$key]['TCEforms']['config']);
