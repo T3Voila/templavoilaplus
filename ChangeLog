@@ -1,6 +1,7 @@
 2010-03-07  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
-	* Fixed bug: RFC: #13052: New Content Element Wizard didn't load
+	* Fixed bug: #13783: Content Element Preview Should Show CType Label (Thanks to Jeff Segars)
+	* Fixed bug: #13052: New Content Element Wizard didn't load (Thanks to Jan Perdoch)
 
 2010-03-09  Steffen Kamper  <info@sk-typo3.de>
 
