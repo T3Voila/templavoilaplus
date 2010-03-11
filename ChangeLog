@@ -1,3 +1,7 @@
+2010-03-07  Tolleiv Nietsch <nietsch@aoemedia.de> 
+
+	* Fixed bug: RFC: #13052: New Content Element Wizard didn't load
+
 2010-03-09  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug: #13776: Cannot unset HSC for input type Plain Input Field

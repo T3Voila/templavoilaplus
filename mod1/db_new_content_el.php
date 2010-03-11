@@ -128,6 +128,15 @@ class tx_templavoila_dbnewcontentel {
 		$this->doc->docType= 'xhtml_trans';
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->JScode='';
+
+		if (t3lib_div::compat_version('4.3')) {
+			$pageRenderer = $this->doc->getPageRenderer()->loadPrototype();
+		} elseif (t3lib_div::compat_version('4.2')) {
+			$this->doc->loadJavascriptLib('contrib/prototype/prototype.js');
+		} else {
+			$this->doc->JScodeArray['prototypeJS'] = '<script type="text/javascript" src="' . $this->doc->backPath . 'contrib/prototype/prototype.js"></script>';
+		}
+
 		$this->doc->JScodeLibArray['dyntabmenu'] = $this->doc->getDynTabMenuJScode();
 		$this->doc->form='<form action="" name="editForm">';
 
@@ -204,21 +213,23 @@ class tx_templavoila_dbnewcontentel {
 				$this->elementWrapper = $this->elementWrapperForTabs;
 			}
 
-			// add document inline javascript
+				// add document inline javascript
 			$this->doc->JScode = $this->doc->wrapScriptTags('
 				function goToalt_doc()	{	//
 					' . $this->onClickEvent . '
 				}
 
-				if(top.refreshMenu) {
-					top.refreshMenu();
-				} else {
-					top.TYPO3ModuleMenu.refreshMenu();
-				}
+				Event.observe(window, \'load\', function() {
+					if(top.refreshMenu) {
+						top.refreshMenu();
+					} else {
+						top.TYPO3ModuleMenu.refreshMenu();
+					}
 
-				if(top.shortcutFrame) {
-					top.shortcutFrame.refreshShortcuts();
-				}
+					if(top.shortcutFrame) {
+						top.shortcutFrame.refreshShortcuts();
+					}
+				});
 			');
 
 				// Traverse items for the wizard.
