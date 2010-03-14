@@ -456,6 +456,12 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				// Preparing context menues
 				// this also adds prototype to the list of required libraries
 			$CMparts = $this->doc->getContextMenuCode();
+			if(!t3lib_div::compat_version ('4.2')) {
+				if(!isset($this->doc->JScodeLibArray)) {
+					$this->doc->JScodeLibArray = array();
+				}
+				$this->doc->JScodeLibArray['prototype'] = '<script src="' . $this->doc->backPath . 'contrib/prototype/prototype.js" type="text/javascript"></script>';
+			}
 
 				//Prototype /Scriptaculous
 				// prototype is loaded before, so no need to include twice.
@@ -581,8 +587,12 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 					$script = '';
 					if (t3lib_div::compat_version ('4.3')) {
 						$items_json = json_encode ($this->sortableItems);
-					} else {
+					} else if (t3lib_div::compat_version ('4.2')) {
 						$items_json = t3lib_div::array2json ($this->sortableItems);
+					} else  {
+						include_once(PATH_typo3 . 'contrib/json.php');
+						$json = new Services_JSON();
+						$items_json = $json->encode($this->sortableItems);
 					}
 
 					$script .=
@@ -599,7 +609,9 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 					$this->content .= t3lib_div::wrapJS($script);
 				}
 			}
-
+			if(!t3lib_div::compat_version ('4.2')) {
+				$this->doc->JScode = implode("\n", $this->doc->JScodeLibArray) . $this->doc->JScode;
+			}
 		} else {	// No access or no current page uid:
 
 			$this->doc = t3lib_div::makeInstance('mediumDoc');

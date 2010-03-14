@@ -1,4 +1,8 @@
-2010-03-07  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-03-14  Tolleiv Nietsch <nietsch@aoemedia.de> 
+
+	* Fixed bug: #13801: Page-module isn't fully 4.1 compatible
+
+2010-03-11  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
 	* Fixed bug: #13783: Content Element Preview Should Show CType Label (Thanks to Jeff Segars)
 	* Fixed bug: #13052: New Content Element Wizard didn't load (Thanks to Jan Perdoch)

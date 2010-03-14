@@ -50,7 +50,7 @@ function sortable_unlinkRecord(pointer, id, elementPointer) {
 }
 
 function sortable_unlinkRecordSidebarCallBack(pointer) {
-	var childNodes = $('tx_templavoila_mod1_sidebar-bar').childElements();
+	var childNodes = childElements($('tx_templavoila_mod1_sidebar-bar'));
 	var innerHeight = 0;
 	for (var i = 0; i < childNodes.length; i++) {
 		innerHeight += childNodes[i].getHeight();
@@ -72,7 +72,7 @@ function sortable_unlinkRecordSidebarCallBack(pointer) {
 function sortable_updateItemButtons(el, position, pID) {
 	var p = [], p1 = [];
 	var newPos = escape(pID + position);
-	el.childElements().each(function(node){
+	childElements(el).each(function(node){
 		if (node.nodeName == 'A' && node.href) {
 			switch (node.className) {
 				case 'tpm-new':
@@ -102,7 +102,7 @@ function sortable_updateItemButtons(el, position, pID) {
 					node.href = node.href.replace(/&makeLocalRecord=[^&]+/,"&makeLocalRecord=" + newPos);
 					break;
 			}
-		} else if(node.childElements() && node.className != 'tpm-subelement-table') {
+		} else if(childElements(el) && node.className != 'tpm-subelement-table') {
 				// recursion within current container to "find" all pointers
 				// we don't want to update nested containers since their inner references didn't change 
 			sortable_updateItemButtons(node, position, pID);
@@ -131,6 +131,15 @@ function sortable_update(el) {
 
 function sortable_change(el) {
 	sortable_currentItem=el;
+}
+	// wrapper which is needed to be compatible with Prototype 1.5.0 - 1.6+
+function childElements(node) {
+	
+	if(typeof node.childElements != 'function') {
+		return node.immediateDescendants();
+	} else {
+		return node.childElements();
+	}
 }
 
 function tv_createSortable(s, containment) {
