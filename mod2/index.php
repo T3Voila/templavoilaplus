@@ -1735,7 +1735,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 				<br/>
 				<input type="submit" value="' . $LANG->getLL('newsitewizard_startnow', 1) . '" onclick="'.htmlspecialchars('document.location=\'index.php?SET[wiz_step]=1\'; return false;').'" />';
 			} else {
-				$outputString.= '<br/><br/>' . $LANG_getLL('newsitewizard_problem');
+				$outputString.= '<br/><br/>' . $LANG->getLL('newsitewizard_problem');
 
 			}
 
