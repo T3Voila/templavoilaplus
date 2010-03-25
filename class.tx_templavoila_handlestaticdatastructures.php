@@ -214,7 +214,11 @@ class tx_templavoila_handleStaticDataStructures {
 		$this->dsList = $this->getDSList($params, $pObj);
 
 		if (count($this->dsList) > 0) {
-			$list = t3lib_div::csvValues(array_keys($this->dsList));
+			$keys = array();
+			foreach (array_keys($this->dsList) as $key) {
+				$keys[] = $GLOBALS['TYPO3_DB']->fullQuoteStr($key, 'tx_templavoila_tmplobj');
+			}
+			$list = implode(',', $keys);
 				// Get all TOs for these DSes
 			$this->toRows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 						'uid,title,previewicon,datastructure', 'tx_templavoila_tmplobj',
