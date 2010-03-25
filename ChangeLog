@@ -1,5 +1,6 @@
 2010-03-25  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
+	* Fixed bug: #13912: Handling of static DS is not compatible with DBAL/Oracle (Thanks to Xavier Perseguers)
 	* Fixed bug: #13914: PHP Syntax error in mod2/index.php (Thanks to Sascha Egerer)
 
 2010-03-14  Tolleiv Nietsch <nietsch@aoemedia.de> 
