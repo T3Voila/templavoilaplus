@@ -1,3 +1,7 @@
+2010-03-26  Tolleiv Nietsch <nietsch@aoemedia.de> 
+
+	* Fixed bug: #11550: "Create reference" button of a content element isn't visible for users without write access (Thanks to Stig Nørgaard Færch)
+
 2010-03-25  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
 	* Fixed bug: #13912: Handling of static DS is not compatible with DBAL/Oracle (Thanks to Xavier Perseguers)
@@ -56,7 +60,7 @@
 
 	* Follow-up to bugfix #13392: "Update Mapping" isn't clear for new users
 	* Updated manual with new content element wizard configuration
-	* Fixed bug: #13526: selectbox for updating existing Data Structure / Template Object does wrong grouping if more sysfolders with the same name (Thanks to J�rg Winter)
+	* Fixed bug: #13526: selectbox for updating existing Data Structure / Template Object does wrong grouping if more sysfolders with the same name (Thanks to J�rg Winter)
 	* Fixed bug: #13052: New Content Element Wizard didn't load
 
 2010-02-12  Steffen Kamper  <info@sk-typo3.de>

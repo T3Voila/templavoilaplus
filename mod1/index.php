@@ -851,7 +851,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 					$titleBarRightButtons = $linkEdit . $linkHide . $this->clipboardObj->element_getSelectButtons($parentPointer) . $linkMakeLocal . $linkUnlink . $linkDelete;
 				}
 				else {
-					$titleBarRightButtons = $this->clipboardObj->element_getSelectButtons($parentPointer, 'copy');
+					$titleBarRightButtons = $this->clipboardObj->element_getSelectButtons($parentPointer, 'copy,ref');
 				}
 			break;
 		}
