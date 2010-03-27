@@ -61,7 +61,7 @@ function sortable_unlinkRecordSidebarCallBack(pointer) {
 			duration: 0.1,
 			afterFinish: function() {
 				$('tx_templavoila_mod1_sidebar-bar').setStyle({height : 'auto'});
-				if (pointer) {
+				if (pointer && $(pointer)) {
 					$(pointer).highlight();
 				}
 			}
