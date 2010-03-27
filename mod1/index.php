@@ -434,7 +434,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 							function setFormValueOpenBrowser(mode,params) {	//
 								var url = "' . $BACK_PATH . 'browser.php?mode="+mode+"&bparams="+params;
 
-								browserWin = window.open(url,"Typo3WinBrowser - TemplaVoila Element Selector","height=350,width="+(mode=="db"?650:600)+",status=0,menubar=0,resizable=1,scrollbars=1");
+								browserWin = window.open(url,"templavoilareferencebrowser","height=350,width="+(mode=="db"?650:600)+",status=0,menubar=0,resizable=1,scrollbars=1");
 								browserWin.focus();
 							}
 							function setFormValueFromBrowseWin(fName,value,label,exclusiveValues){

@@ -1,3 +1,7 @@
+2010-03-27  Tolleiv Nietsch <nietsch@aoemedia.de> 
+
+	* Fixed bug: #13831: "Browse for records" doesn't work in IE8, JavaScript Error 
+
 2010-03-26  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
 	* Fixed bug: #11550: "Create reference" button of a content element isn't visible for users without write access (Thanks to Stig Nørgaard Færch)
