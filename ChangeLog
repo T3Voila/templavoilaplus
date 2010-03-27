@@ -1,5 +1,6 @@
 2010-03-27  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
+	* Fixed bug: #13929: Unlinking referenced item triggers JS-error in IE8 
 	* Fixed bug: #13831: "Browse for records" doesn't work in IE8, JavaScript Error 
 
 2010-03-26  Tolleiv Nietsch <nietsch@aoemedia.de> 
