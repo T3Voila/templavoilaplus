@@ -1,5 +1,6 @@
 2010-03-30  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
+	* Fixed bug: #12805: Interferences TV and feeditadvanced
 	* Fixed bug: #13921: Browse and paste icons available if no edit rights (Thanks to Chris Müller)
 	* Fixed bug: #13930: HTML-Path is wrong in case of mapping-errors
 
