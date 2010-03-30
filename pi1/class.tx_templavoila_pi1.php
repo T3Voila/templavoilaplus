@@ -390,8 +390,11 @@ class tx_templavoila_pi1 extends tslib_pibase {
 						$content = $this->pi_getEditIcon($content,'tx_templavoila_flex','Edit element',$row,$table,$eIconf);
 
 							// Visual identification aids:
-						if ($GLOBALS['TSFE']->fePreview && $GLOBALS['TSFE']->beUserLogin && !$GLOBALS['TSFE']->workspacePreview && !$this->conf['disableExplosivePreview'])	{
-							$content = $this->visualID($content,$srcPointer,$DSrec,$TOrec,$row,$table);
+
+						$feedit = is_object($GLOBALS['BE_USER']) && method_exists($GLOBALS['BE_USER'], 'isFrontendEditingActive') && $GLOBALS['BE_USER']->isFrontendEditingActive();
+
+						if ($GLOBALS['TSFE']->fePreview && $GLOBALS['TSFE']->beUserLogin && !$GLOBALS['TSFE']->workspacePreview && !$this->conf['disableExplosivePreview'] && !$feedit)	{
+							$content = $this->visualID($content, $srcPointer, $DSrec, $TOrec, $row, $table);
 						}
 					} else {
 						$content = $this->formatError('Template Object could not be unserialized successfully.
