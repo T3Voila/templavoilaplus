@@ -1942,9 +1942,11 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 							// HTML-path + CMD links:
 						$isMapOK = 0;
 						if ($currentMappingInfo[$key]['MAP_EL'])	{	// If mapping information exists...:
+
+							$mappingElement = str_replace('~~~', ' ', $currentMappingInfo[$key]['MAP_EL']);
 							if (isset($contentSplittedByMapping['cArray'][$key]))	{	// If mapping of this information also succeeded...:
 								$cF = implode(chr(10),t3lib_div::trimExplode(chr(10),$contentSplittedByMapping['cArray'][$key],1));
-								$mappingElement = str_replace('~~~', ' ', $currentMappingInfo[$key]['MAP_EL']);
+
 								if (strlen($cF)>200)	{
 									$cF = t3lib_div::fixed_lgd_cs($cF,90).' '.t3lib_div::fixed_lgd_cs($cF,-90);
 								}

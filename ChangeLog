@@ -1,3 +1,7 @@
+2010-03-30  Tolleiv Nietsch <nietsch@aoemedia.de> 
+
+	* Fixed bug: #13930: HTML-Path is wrong in case of mapping-errors
+
 2010-03-27  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
 	* Fixed bug: #13929: Unlinking referenced item triggers JS-error in IE8 
