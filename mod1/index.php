@@ -1009,22 +1009,8 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				$canCreateNew = $GLOBALS['BE_USER']->isPSet($this->calcPerms, 'pages', 'new');
 				$canEditContent = $GLOBALS['BE_USER']->isPSet($this->calcPerms, 'pages', 'editcontent');
 
-				if (!$this->translatorMode)	{
-					$cellContent .= '<span class="tpm-bottom-controls">';
-						// "New" icon:
-					if ($canCreateNew && !in_array('new', $this->blindIcons)) {
-						$newIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/new_el.gif','').' title="'.$LANG->getLL ('createnewrecord').'" alt="" />';
-						$cellContent .= $this->link_new($newIcon, $subElementPointer);
-					}
-						// "Browse Record" icon
-					if (!in_array('browse', $this->blindIcons)) {
-						$newIcon = '<img class="browse"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/insert3.gif','').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.xml:labels.browse_db').'" alt="" />';
-						$cellContent .= $this->link_browse($newIcon, $subElementPointer);
-					}
-
-
-						// "Paste" icon
-					$cellContent .= '<span class="sortablePaste">' . $this->clipboardObj->element_getPasteButtons ($subElementPointer) . '&nbsp;</span></span>';
+				if (!$this->translatorMode && ($canCreateNew || $canEditContent))	{
+					$cellContent .= $this->link_bottomControls($subElementPointer, $canCreateNew ,$canEditContent );
 				}
 
 					// Render the list of elements (and possibly call itself recursively if needed):
@@ -1055,23 +1041,12 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 							$cellContent .= $this->render_framework_allSheets($subElementArr, $languageKey, $subElementPointer, $elementContentTreeArr['ds_meta']);
 
-							if (!$this->translatorMode) {
-								$cellContent .= '<div class="tpm-bottom-controls">';
-									// "New" icon:
-								if ($canCreateNew && !in_array('new', $this->blindIcons)) {
-									$newIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/new_el.gif','').' title="'.$LANG->getLL ('createnewrecord').'" alt="" />';
-									$cellContent .= $this->link_new($newIcon, $subElementPointer);
-								}
-									// "Browse Record" icon
-								if (!in_array('browse', $this->blindIcons)) {
-									$newIcon = '<img class="browse"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/insert3.gif','').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.xml:labels.browse_db').'" alt="" />';
-									$cellContent .= $this->link_browse($newIcon, $subElementPointer);
-								}
-
-
-									// "Paste" icon
-								$cellContent .= '<span class="sortablePaste">' . $this->clipboardObj->element_getPasteButtons ($subElementPointer) . '&nbsp;</span></div></div>';
+							if (!$this->translatorMode && ($canCreateNew || $canEditContent))	{
+								$cellContent .= $this->link_bottomControls($subElementPointer,$canCreateNew ,$canEditContent );
 							}
+
+							$cellContent .= '</div>';
+
 
 						} else {
 								// Modify the flexform pointer so it points to the position of the curren sub element:
@@ -1994,6 +1969,45 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		return $output;
 	}
 
+
+	/**
+	 * Render the bottom controls which (might) contain the new, browse and paste-buttons
+	 * which sit below each content element
+	 *
+	 * @param array $elementPointer
+	 * @param boolean $canCreateNew
+	 * @param boolean $canEditContent
+	 * @return string
+	 */
+	protected function link_bottomControls($elementPointer, $canCreateNew, $canEditContent) {
+
+		$output = '<span class="tpm-bottom-controls">';
+
+			// "New" icon:
+		if ($canCreateNew && !in_array('new', $this->blindIcons)) {
+			$newIcon =	'<img' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/new_el.gif', '') .
+				' title="' . $GLOBALS['LANG']->getLL ('createnewrecord') . '" alt="" />';
+			$output .= $this->link_new($newIcon, $elementPointer);
+		}
+
+			// "Browse Record" icon
+		if ($canEditContent && !in_array('browse', $this->blindIcons)) {
+			$newIcon = '<img class="browse"' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/insert3.gif', '') .
+				' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.browse_db') . '" alt="" />';
+			$output .= $this->link_browse($newIcon, $elementPointer);
+		}
+
+			// "Paste" icon
+		if($canEditContent) {
+			$output .= '<span class="sortablePaste">' .
+				$this->clipboardObj->element_getPasteButtons ($elementPointer) .
+				'&nbsp;</span>';
+		}
+
+		$output .= '</span>';
+
+		return $output;
+	}
 
 
 
