@@ -461,6 +461,9 @@ page.10.disableExplosivePreview = 1
 		$templaVoilaAPI = t3lib_div::makeInstance('tx_templavoila_api');
 		/* @var $templaVoilaAPI tx_templavoila_api */
 
+		$diffBaseEnabled = isset($GLOBALS['TYPO3_CONF_VARS']['BE']['flexFormXMLincludeDiffBase'])
+							&& ($GLOBALS['TYPO3_CONF_VARS']['BE']['flexFormXMLincludeDiffBase'] != false);
+
 			// Getting value of the field containing the relations:
 		$xmlContentArr = t3lib_div::xml2array($flexformXML);
 
@@ -473,6 +476,11 @@ page.10.disableExplosivePreview = 1
 							foreach ($subSubArr as $currentField => $subSubSubArr) {
 								if (is_array ($subSubSubArr)) {
 									foreach ($subSubSubArr as $currentValueKey => $uidList) {
+
+										if($diffBaseEnabled && preg_match('/\.vDEFbase$/', $currentValueKey)) {
+											continue;
+										}
+
 										$uidsArr = t3lib_div::trimExplode (',', $uidList);
 										if (is_array ($uidsArr)) {
 											foreach ($uidsArr as $uid) {
