@@ -1,3 +1,7 @@
+2010-04-05  Tolleiv Nietsch <nietsch@aoemedia.de> 
+
+	* Fixed bug: #13864: Flags in non-used elements shouldn't be wrapped to next line (Thanks to Jerome Blum)
+
 2010-03-30  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
 	* Fixed bug: #13807: sorting CEs via list mode broken if translation 'diff' exists (Thanks to Jan Hacker)
