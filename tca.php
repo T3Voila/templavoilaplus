@@ -14,7 +14,6 @@ $TCA['tx_templavoila_tmplobj'] = Array (
 			'config' => Array (
 				'type' => 'input',
 				'size' => '48',
-				'max' => '60',
 				'eval' => 'required,trim',
 			)
 		),
@@ -206,7 +205,6 @@ $TCA['tx_templavoila_datastructure'] = Array (
 			'config' => Array (
 				'type' => 'input',
 				'size' => '48',
-				'max' => '60',
 				'eval' => 'required,trim',
 			)
 		),
