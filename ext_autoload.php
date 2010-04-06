@@ -16,6 +16,7 @@ return array(
 	'tx_templavoila_usedce' => $extensionPath . 'class.tx_templavoila_usedce.php',
 	'tx_templavoila_xmlrelhndl' => $extensionPath . 'class.tx_templavoila_xmlrelhndl.php',
 	'tx_templavoila_div' => $extensionPath . 'classes/class.tx_templavoila_div.php',
+	'tx_templavoila_label' => $extensionPath . 'classes/class.tx_templavoila_label.php',
 	'tx_templavoila_preview_default' => $extensionPath . 'classes/preview/class.tx_templavoila_preview_default.php',
 	'tx_templavoila_preview_type_bullets' => $extensionPath . 'classes/preview/class.tx_templavoila_preview_type_bullets.php',
 	'tx_templavoila_preview_type_header' => $extensionPath . 'classes/preview/class.tx_templavoila_preview_type_header.php',
