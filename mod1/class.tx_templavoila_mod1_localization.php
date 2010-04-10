@@ -81,7 +81,7 @@ class tx_templavoila_mod1_localization {
 			'sidebar_renderItem',
 			$LANG->getLL('localization', 1),
 			60,
-			true
+			false
 		);
 	}
 

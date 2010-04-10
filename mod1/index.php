@@ -237,6 +237,11 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			// Initialize the record module
 		$this->recordsObj =& t3lib_div::getUserObj ('&tx_templavoila_mod1_records','');
 		$this->recordsObj->init($this);
+				// Add the localization module if localization is enabled:
+		if ($this->alternativeLanguagesDefined()) {
+			$this->localizationObj =& t3lib_div::getUserObj ('&tx_templavoila_mod1_localization','');
+			$this->localizationObj->init($this);
+		}
 	}
 
 	/**
@@ -359,9 +364,16 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			}
 
 				// Draw the header.
-			$this->doc = t3lib_div::makeInstance('noDoc');
-			$this->doc->docType= 'xhtml_trans';
+			$this->doc = t3lib_div::makeInstance('template');
 			$this->doc->backPath = $BACK_PATH;
+			if (t3lib_div::compat_version('4.3')) {
+				$this->doc->setModuleTemplate('EXT:templavoila/resources/templates/mod1_default.html');
+			} else {
+				$this->doc->setModuleTemplate(t3lib_extMgm::extRelPath('templavoila') . 'resources/templates/mod1_default.html');
+			}
+			$this->doc->docType= 'xhtml_trans';
+
+			$this->doc->bodyTagId = 'typo3-mod-php';
 			$this->doc->divClass = '';
 			$this->doc->form='<form action="'.htmlspecialchars('index.php?'.$this->link_getParameters()).'" method="post">';
 
@@ -554,25 +566,11 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 					$this->render_editPageScreen();
 					echo $this->render_sidebar();
 					exit;
-					}
-
-					// Show the "edit current page" screen along with the sidebar
-				$shortCut = ($BE_USER->mayMakeShortcut() ? '<br /><br />'.$this->doc->makeShortcutIcon('id,altRoot',implode(',',array_keys($this->MOD_MENU)),$this->MCONF['name']) : '');
-				if ($this->sideBarObj->position == 'left' && $this->modTSconfig['properties']['sideBarEnable']) {
-					$this->content .= '
-						<table cellspacing="0" cellpadding="0" style="width:100%; height:550px; padding:0; margin:0;">
-							<tr>
-								<td style="vertical-align:top;">'.$this->render_sidebar().'</td>
-								<td style="vertical-align:top; padding-bottom:20px;" width="99%">'.$editCurrentPageHTML.$shortCut;'</td>
-							</tr>
-						</table>
-					';
-				} else {
-					$sideBarTop = $this->modTSconfig['properties']['sideBarEnable']  && ($this->sideBarObj->position == 'toprows' || $this->sideBarObj->position == 'toptabs') ? $this->render_sidebar() : '';
-					$this->content .= $sideBarTop.$editCurrentPageHTML.$shortCut;
 				}
 
-				// Create sortables
+				$this->content .= $editCurrentPageHTML;
+
+					// Create sortables
 				if (is_array($this->sortableContainers)) {
 					$script = '';
 					if (t3lib_div::compat_version ('4.3')) {
@@ -597,10 +595,16 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			}
 
 		} else {	// No access or no current page uid:
-
-			$this->doc = t3lib_div::makeInstance('mediumDoc');
-			$this->doc->docType= 'xhtml_trans';
+			$this->doc = t3lib_div::makeInstance('template');
 			$this->doc->backPath = $BACK_PATH;
+			if (t3lib_div::compat_version('4.3')) {
+				$this->doc->setModuleTemplate('EXT:templavoila/resources/templates/mod1_noaccess.html');
+			} else {
+				$this->doc->setModuleTemplate(t3lib_extMgm::extRelPath('templavoila') . 'resources/templates/mod1_noaccess.html');
+			}
+			$this->doc->docType= 'xhtml_trans';
+
+			$this->doc->bodyTagId = 'typo3-mod-php';
 
 			$cmd = t3lib_div::_GP ('cmd');
 			switch ($cmd) {
@@ -617,8 +621,18 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 					$this->content.=$LANG->getLL('default_introduction');
 			}
 		}
-		$this->content = $this->doc->startPage($LANG->getLL('title')) . $this->content;
-		$this->content.=$this->doc->endPage();
+
+			// Place content inside template
+		$content  = $this->doc->startPage($GLOBALS['LANG']->getLL('title'));
+		$content .= $this->doc->moduleBody(
+			array(),
+			$this->getDocHeaderButtons(),
+			$this->getBodyMarkers()
+		);
+		$content .= $this->doc->endPage();
+
+			// Replace content with templated content
+		$this->content = $content;
 	}
 
 	/**
@@ -632,7 +646,129 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	}
 
 
+	/*************************
+	 *
+	 * RENDERING UTILITIES
+	 *
+	 *************************/
 
+	/**
+	 * Gets the filled markers that are used in the HTML template.
+	 *
+	 * @return	array		The filled marker array
+	 */
+	protected function getBodyMarkers() {
+
+		$bodyMarkers = array(
+			'TITLE'		=> $GLOBALS['LANG']->getLL('title'),
+		);
+
+		if ($this->modTSconfig['properties']['sideBarEnable'] && $this->sideBarObj->position == 'left') {
+			$sidebarMode = 'SIDEBAR_LEFT';
+		} elseif($this->modTSconfig['properties']['sideBarEnable']) {
+			$sidebarMode = 'SIDEBAR_TOP';
+		} else {
+			$sidebarMode = 'SIDEBAR_DISABLED';
+		}
+
+		$editareaTpl = t3lib_parsehtml::getSubpart($this->doc->moduleTemplate, $sidebarMode);
+		if ($editareaTpl) {
+			$editareaMarkers = array(
+				'TABROW'	=> $this->render_sidebar(),
+				'CONTENT'	=> $this->content,
+			);
+			$editareaContent = t3lib_parsehtml::substituteMarkerArray($editareaTpl, $editareaMarkers, '###|###', true);
+
+			$bodyMarkers['EDITAREA'] = $editareaContent;
+		} else {
+			$bodyMarkers['CONTENT'] = $this->content;
+		}
+		return $bodyMarkers;
+	}
+
+	/**
+	 * Create the panel of buttons for submitting the form or otherwise perform operations.
+	 *
+	 * @param	string	Identifier for function of module
+	 * @return	array	all available buttons as an assoc. array
+	 */
+	protected function getDocHeaderButtons()	{
+		global $TCA, $LANG, $BACK_PATH, $BE_USER;
+
+		$buttons = array(
+			'csh' => '',
+			'view' => '',
+			'history_page' => '',
+			'move_page' => '',
+			'move_record' => '',
+			'new_page' => '',
+			'edit_page' => '',
+			'record_list' => '',
+			'shortcut' => '',
+			'cache' => ''
+		);
+
+			// View page
+		$viewAddGetVars = $this->currentLanguageUid ? '&L=' . $this->currentLanguageUid : '';
+		$buttons['view'] = '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::viewOnClick($this->id, $BACK_PATH, t3lib_BEfunc::BEgetRootLine($this->id), '', '', $viewAddGetVars)) . '">' .
+				'<img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/zoom.gif', 'width="12" height="12"') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showPage', 1) . '" hspace="3" alt="" />' .
+				'</a>';
+
+			// Shortcut
+		if ($BE_USER->mayMakeShortcut())	{
+			$buttons['shortcut'] = $this->doc->makeShortcutIcon('id, edit_record, pointer, new_unique_uid, search_field, search_levels, showLimit', implode(',', array_keys($this->MOD_MENU)), $this->MCONF['name']);
+		}
+
+			// If access to Web>List for user, then link to that module.
+		if ($BE_USER->check('modules','web_list'))	{
+			$href = $BACK_PATH . 'db_list.php?id=' . $this->id . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'));
+			$buttons['record_list'] = '<a href="' . htmlspecialchars($href) . '">' .
+					'<img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/list.gif', 'width="11" height="11"') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showList', 1) . '" alt="" />' .
+					'</a>';
+		}
+
+		if (!$this->modTSconfig['properties']['disableIconToolbar'])	{
+
+				// Page history
+			$buttons['history_page'] = '<a href="#" onclick="' . htmlspecialchars('jumpToUrl(\'' . $BACK_PATH . 'show_rechis.php?element=' . rawurlencode('pages:' . $this->id) . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')) . '#latest\');return false;') . '">' .
+						'<img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/history2.gif', 'width="13" height="12"') . ' vspace="2" hspace="2" align="top" title="' . $GLOBALS['LANG']->sL('LLL:EXT:cms/layout/locallang.xml:recordHistory', 1) . '" alt="" />' .
+						'</a>';
+				// Move page
+			$buttons['move_page'] = '<a href="' . htmlspecialchars($BACK_PATH . 'move_el.php?table=pages&uid=' . $this->id . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))) . '">' .
+						'<img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/move_page.gif', 'width="11" height="12"') . ' vspace="2" hspace="2" align="top" title="' . $GLOBALS['LANG']->sL('LLL:EXT:cms/layout/locallang.xml:move_page', 1) . '" alt="" />' .
+						'</a>';
+				// Create new page (wizard)
+			$buttons['new_page'] = '<a href="#" onclick="' . htmlspecialchars('jumpToUrl(\'' . $BACK_PATH . 'db_new.php?id=' . $this->id . '&pagesOnly=1&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI') . '&updatePageTree=true') . '\');return false;') . '">' .
+						'<img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/new_page.gif', 'width="13" height="12"') . ' hspace="0" vspace="2" align="top" title="' . $GLOBALS['LANG']->sL('LLL:EXT:cms/layout/locallang.xml:newPage', 1) . '" alt="" />' .
+						'</a>';
+				// Edit page properties
+			if (!$this->translatorMode && $GLOBALS['BE_USER']->isPSet($this->calcPerms, 'pages', 'edit'))	{
+				$params='&edit[pages][' . $this->id . ']=edit';
+				$buttons['edit_page'] = '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::editOnClick($params, $BACK_PATH)) . '">' .
+							'<img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/edit2.gif', 'width="11" height="12"') . ' hspace="2" vspace="2" align="top" title="' . $GLOBALS['LANG']->sL('LLL:EXT:cms/layout/locallang.xml:editPageProperties', 1) . '" alt="" />' .
+							'</a>';
+			}
+
+			$buttons['csh'] = t3lib_BEfunc::cshItem('_MOD_web_txtemplavoilaM1', 'pagemodule', $BACK_PATH);
+
+		}
+
+		return $buttons;
+	}
+
+	/**
+	 * Gets the button to set a new shortcut in the backend (if current user is allowed to).
+	 *
+	 * @return	string		HTML representiation of the shortcut button
+	 */
+	protected function getShortcutButton() {
+		$result = '';
+		if ($GLOBALS['BE_USER']->mayMakeShortcut()) {
+			$result = $this->doc->makeShortcutIcon('', 'function', $this->MCONF['name']);
+		}
+
+		return $result;
+	}
 
 
 	/********************************************
@@ -667,12 +803,6 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			$output .= '<div style="text-align:right; width:100%; margin-bottom:5px;"><a href="index.php?id='.$this->id.'"><img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/goback.gif','').' title="'.htmlspecialchars($LANG->getLL ('goback')).'" alt="" /></a></div>';
 		}
 
-			// Add the localization module if localization is enabled:
-		if ($this->alternativeLanguagesDefined()) {
-			$this->localizationObj =& t3lib_div::getUserObj ('&tx_templavoila_mod1_localization','');
-			$this->localizationObj->init($this);
-		}
-
 			// Hook for content at the very top (fx. a toolbar):
 		if (is_array ($TYPO3_CONF_VARS['EXTCONF']['templavoila']['mod1']['renderTopToolbar'])) {
 			foreach ($TYPO3_CONF_VARS['EXTCONF']['templavoila']['mod1']['renderTopToolbar'] as $_funcRef) {
@@ -695,8 +825,6 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				$output .= $hookObj->render_editPageScreen_addContent($this);
 			}
 		}
-
-		$output .= t3lib_BEfunc::cshItem('_MOD_web_txtemplavoilaM1', 'pagemodule', $this->doc->backPath,'<hr/>|' . $LANG->getLL('csh_whatisthetemplavoilapagemodule', 1));
 
 			// show sys_notes
 		include_once(PATH_typo3 . 'class.db_list.inc');
@@ -771,7 +899,6 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 		$elementBelongsToCurrentPage = $contentTreeArr['el']['table'] == 'pages' || $contentTreeArr['el']['pid'] == $this->rootElementUid_pidForContent;
 
-		$canEditPage = $GLOBALS['BE_USER']->isPSet($this->calcPerms, 'pages', 'edit');
 		$canEditContent = $GLOBALS['BE_USER']->isPSet($this->calcPerms, 'pages', 'editcontent');
 
 		$elementClass = 'tpm-container-element';
@@ -799,13 +926,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			case 'pages' :
 				$elementTitlebarClass = 'tpm-titlebar-page';
 				$elementClass .= ' pagecontainer';
-				$titleBarLeftButtons .= $this->translatorMode || !$canEditPage ? '' : $this->link_edit('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/edit2.gif','').' title="'.htmlspecialchars($LANG->sL('LLL:EXT:lang/locallang_mod_web_list.xml:editPage')).'" alt="" />',$contentTreeArr['el']['table'],$contentTreeArr['el']['uid']);
 				$titleBarRightButtons = '';
-
-				$addGetVars = ($this->currentLanguageUid?'&L='.$this->currentLanguageUid:'');
-				$viewPageOnClick = 'onclick= "'.htmlspecialchars(t3lib_BEfunc::viewOnClick($contentTreeArr['el']['uid'], $this->doc->backPath, t3lib_BEfunc::BEgetRootLine($contentTreeArr['el']['uid']),'','',$addGetVars)).'"';
-				$viewPageIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/zoom.gif','width="12" height="12"').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.xml:labels.showPage',1).'" hspace="3" alt="" />';
-				$titleBarLeftButtons .= '<a href="#" '.$viewPageOnClick.'>'.$viewPageIcon.'</a>';
 			break;
 
 			case 'tt_content' :

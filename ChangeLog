@@ -1,3 +1,7 @@
+2010-04-10  Tolleiv Nietsch <nietsch@aoemedia.de> 
+
+	* Fixed bug: #13873: TemplaVoila should use a docHeader as well (mod1) 
+
 2010-04-06 Michael Klapper <michael.klapper@aoemedia.de>
 
 	* Follow up to bugfix: #0012257: New Feature: localizable title fields 

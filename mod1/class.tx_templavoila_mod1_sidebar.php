@@ -221,7 +221,7 @@ class tx_templavoila_mod1_sidebar {
 					$sideBar = '
 						<!-- TemplaVoila Sidebar (top) begin -->
 
-						<div id="tx_templavoila_mod1_sidebar-bar" style="width:100%; border-bottom: 1px solid black; margin-bottom: 10px;" class="bgColor-10">
+						<div id="tx_templavoila_mod1_sidebar-bar" style="width:100%;" class="bgColor-10">
 							'.$this->doc->getDynTabMenu($numSortedSideBarItems, 'TEMPLAVOILA:pagemodule:sidebar', 1, FALSE, 100, 0, TRUE).'
 						</div>
 
