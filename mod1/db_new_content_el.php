@@ -129,7 +129,7 @@ class tx_templavoila_dbnewcontentel {
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->JScode='';
 
-		if (t3lib_div::compat_version('4.3')) {
+		if (version_compare(TYPO3_version, '4.3', '>')) {
 			$pageRenderer = $this->doc->getPageRenderer()->loadPrototype();
 		} else {
 			$this->doc->loadJavascriptLib('contrib/prototype/prototype.js');

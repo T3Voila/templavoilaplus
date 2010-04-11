@@ -366,7 +366,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				// Draw the header.
 			$this->doc = t3lib_div::makeInstance('template');
 			$this->doc->backPath = $BACK_PATH;
-			if (t3lib_div::compat_version('4.3')) {
+			if (version_compare(TYPO3_version, '4.3', '>')) {
 				$this->doc->setModuleTemplate('EXT:templavoila/resources/templates/mod1_default.html');
 			} else {
 				$this->doc->setModuleTemplate(t3lib_extMgm::extRelPath('templavoila') . 'resources/templates/mod1_default.html');
@@ -543,7 +543,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 					$title = t3lib_BEfunc::getRecordTitle('pages', $contentPage);
 					$linkToPid = 'index.php?id=' . intval($this->rootElementRecord['content_from_pid']);
 					$link = '<a href="' . $linkToPid . '">' . htmlspecialchars($title) . ' (PID ' . intval($this->rootElementRecord['content_from_pid']) . ')</a>';
-					if (t3lib_div::compat_version('4.3')) {
+					if (version_compare(TYPO3_version, '4.3', '>')) {
 						$flashMessage = t3lib_div::makeInstance(
 							't3lib_FlashMessage',
 							'',
@@ -573,7 +573,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 					// Create sortables
 				if (is_array($this->sortableContainers)) {
 					$script = '';
-					if (t3lib_div::compat_version ('4.3')) {
+					if (version_compare(TYPO3_version, '4.3', '>')) {
 						$items_json = json_encode ($this->sortableItems);
 					} else {
 						$items_json = t3lib_div::array2json ($this->sortableItems);
@@ -597,7 +597,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		} else {	// No access or no current page uid:
 			$this->doc = t3lib_div::makeInstance('template');
 			$this->doc->backPath = $BACK_PATH;
-			if (t3lib_div::compat_version('4.3')) {
+			if (version_compare(TYPO3_version, '4.3', '>')) {
 				$this->doc->setModuleTemplate('EXT:templavoila/resources/templates/mod1_noaccess.html');
 			} else {
 				$this->doc->setModuleTemplate(t3lib_extMgm::extRelPath('templavoila') . 'resources/templates/mod1_noaccess.html');

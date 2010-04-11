@@ -205,7 +205,7 @@ class tx_templavoila_mod1_wizards {
 		$this->doc->postCode.= $CMparts[2] . $tceforms->printNeededJSFunctions();
 
 			// fix due to #13762
-		if (t3lib_div::compat_version('4.3')) {
+		if (version_compare(TYPO3_version, '4.3', '>')) {
 			$this->doc->inDocStyles .= '.c-inputButton{ cursor:pointer; }';
 		}
 

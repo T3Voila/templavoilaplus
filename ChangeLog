@@ -1,3 +1,7 @@
+2010-04-11  Tolleiv Nietsch <nietsch@aoemedia.de> 
+
+	* Fixed bug: #14036: compat_version comparision is used wrong
+
 2010-04-10  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
 	* Fixed bug: #13873: TemplaVoila should use a docHeader as well (mod1) 
