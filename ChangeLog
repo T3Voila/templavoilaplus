@@ -1,5 +1,6 @@
 2010-04-11  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
+	* Reverted changes for #10370: Implement new content element wizard 
 	* Fixed issue: #7082: Configuration to handle inheritance DS like disabled
 	* Fixed bug: #14036: compat_version comparision is used wrong
 
