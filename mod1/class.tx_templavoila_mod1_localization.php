@@ -193,6 +193,23 @@ class tx_templavoila_mod1_localization {
 			';
 		}
 
+			// enable/disable structure inheritance - see #7082 for details
+		if ($BE_USER->isAdmin() && $this->pObj->rootElementLangMode=='inheritance') {
+			$link = '\'index.php?'.$this->pObj->link_getParameters().'&SET[disablePageStructureInheritance]='.($this->pObj->MOD_SETTINGS['disablePageStructureInheritance']=='1'?'0':'1').'\'';
+			$output.= '
+				<tr class="bgColor4">
+					<td  width="20">
+						'. t3lib_BEfunc::cshItem('_MOD_web_txtemplavoilaM1', 'disablePageStructureInheritance', $this->doc->backPath) .'
+					</td><td width="200" style="vertical-align:middle;">
+						'.$LANG->getLL ('pageLocalizationMode_inheritance.disableInheritance', 1).':
+					</td>
+					<td style="vertical-align:middle;">
+						<input type="checkbox" onchange="document.location='.$link.'" '.($this->pObj->MOD_SETTINGS['disablePageStructureInheritance']=='1'?' checked="checked"':'').'/>
+					</td>
+				</tr>
+			';
+		}
+
 		$output .= '
 			<tr class="bgColor4">
 				<td  width="20">

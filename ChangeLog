@@ -1,5 +1,6 @@
 2010-04-11  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
+	* Fixed issue: #7082: Configuration to handle inheritance DS like disabled
 	* Fixed bug: #14036: compat_version comparision is used wrong
 
 2010-04-06 Michael Klapper <michael.klapper@aoemedia.de>
