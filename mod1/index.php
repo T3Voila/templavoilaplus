@@ -355,7 +355,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			}
 				// Check if we have to update the pagetree:
 			if (t3lib_div::_GP('updatePageTree')) {
-				if (t3lib_div::compat_version('4.2')) {
+				if (version_compare(TYPO3_version, '4.2', '>')) {
 					t3lib_BEfunc::setUpdateSignal('updatePageTree');
 				} else {
 					t3lib_BEfunc::getSetUpdateSignal('updatePageTree');
@@ -456,7 +456,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				// Preparing context menues
 				// this also adds prototype to the list of required libraries
 			$CMparts = $this->doc->getContextMenuCode();
-			if(!t3lib_div::compat_version ('4.2')) {
+			if(!version_compare(TYPO3_version, '4.2', '>')) {
 				if(!isset($this->doc->JScodeLibArray)) {
 					$this->doc->JScodeLibArray = array();
 				}
@@ -541,7 +541,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 					$title = t3lib_BEfunc::getRecordTitle('pages', $contentPage);
 					$linkToPid = 'index.php?id=' . intval($this->rootElementRecord['content_from_pid']);
 					$link = '<a href="' . $linkToPid . '">' . htmlspecialchars($title) . ' (PID ' . intval($this->rootElementRecord['content_from_pid']) . ')</a>';
-					if (t3lib_div::compat_version('4.3')) {
+					if (version_compare(TYPO3_version, '4.3', '>')) {
 						$flashMessage = t3lib_div::makeInstance(
 							't3lib_FlashMessage',
 							'',
@@ -585,9 +585,9 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				// Create sortables
 				if (is_array($this->sortableContainers)) {
 					$script = '';
-					if (t3lib_div::compat_version ('4.3')) {
+					if (version_compare(TYPO3_version, '4.3', '>')) {
 						$items_json = json_encode ($this->sortableItems);
-					} else if (t3lib_div::compat_version ('4.2')) {
+					} else if (version_compare(TYPO3_version, '4.2', '>')) {
 						$items_json = t3lib_div::array2json ($this->sortableItems);
 					} else  {
 						include_once(PATH_typo3 . 'contrib/json.php');
@@ -609,7 +609,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 					$this->content .= t3lib_div::wrapJS($script);
 				}
 			}
-			if(!t3lib_div::compat_version ('4.2')) {
+			if(!version_compare(TYPO3_version, '4.2', '>')) {
 				$this->doc->JScode = implode("\n", $this->doc->JScodeLibArray) . $this->doc->JScode;
 			}
 		} else {	// No access or no current page uid:

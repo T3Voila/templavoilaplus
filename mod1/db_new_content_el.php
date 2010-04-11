@@ -129,9 +129,9 @@ class tx_templavoila_dbnewcontentel {
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->JScode='';
 
-		if (t3lib_div::compat_version('4.3')) {
+		if (version_compare(TYPO3_version, '4.3', '>')) {
 			$pageRenderer = $this->doc->getPageRenderer()->loadPrototype();
-		} elseif (t3lib_div::compat_version('4.2')) {
+		} elseif (version_compare(TYPO3_version, '4.2', '>')) {
 			$this->doc->loadJavascriptLib('contrib/prototype/prototype.js');
 		} else {
 			$this->doc->JScodeArray['prototypeJS'] = '<script type="text/javascript" src="' . $this->doc->backPath . 'contrib/prototype/prototype.js"></script>';
