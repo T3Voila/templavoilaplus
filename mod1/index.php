@@ -268,7 +268,8 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			'clip' => '',
 			'langDisplayMode' => '',
 			'recordsView_table' => '',
-			'recordsView_start' => ''
+			'recordsView_start' => '',
+			'disablePageStructureInheritance' => ''
 		);
 
 			// Hook: menuConfig_preProcessModMenu
@@ -1067,6 +1068,13 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			// Define l/v keys for current language:
 		$langChildren = intval($elementContentTreeArr['ds_meta']['langChildren']);
 		$langDisable = intval($elementContentTreeArr['ds_meta']['langDisable']);
+
+			//if page DS and the checkbox is not set use always langDisable in inheritance mode
+		if ($elementContentTreeArr['el']['table']=='pages') {
+			if ($langDisable!=1 && $this->MOD_SETTINGS['disablePageStructureInheritance']!='1' && $langChildren==1) {
+				$langDisable=1;
+			}
+		}
 
 		$lKey = $langDisable ? 'lDEF' : ($langChildren ? 'lDEF' : 'l'.$languageKey);
 		$vKey = $langDisable ? 'vDEF' : ($langChildren ? 'v'.$languageKey : 'vDEF');

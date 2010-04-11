@@ -50,6 +50,7 @@
 			<label index="pageLocalizationMode">Page localization mode</label>
 			<label index="pageLocalizationMode_separate">Separate structures</label>
 			<label index="pageLocalizationMode_inheritance">Inheritance of values</label>
+			<label index="pageLocalizationMode_inheritance.disableInheritance">Don't inherit structure</label>
 			<label index="pageLocalizationParadigm_bound">1:1</label>
 			<label index="pageLocalizationDisplayMode">Display mode</label>
 			<label index="pageLocalizationDisplayMode_selectedLanguage">Selected language</label>
