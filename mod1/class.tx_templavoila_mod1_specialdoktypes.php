@@ -79,56 +79,6 @@ class tx_templavoila_mod1_specialdoktypes {
 	}
 
 	/**
-	 * Displays the edit page screen if the currently selected page is of the doktype "Advanced"
-	 *
-	 * @param	array		$pageRecord: The current page record
-	 * @return	mixed		HTML output from this submodule or FALSE if this submodule doesn't feel responsible
-	 * @access	public
-	 */
-	function renderDoktype_2($pageRecord)    {
-		global $LANG, $BE_USER, $TYPO3_CONF_VARS;
-
-		if (intval($pageRecord['content_from_pid'])) {
-
-				// Prepare the record icon including a content sensitive menu link wrapped around it:
-			$pageTitle = htmlspecialchars(t3lib_div::fixed_lgd_cs(t3lib_BEfunc::getRecordTitle('pages', $pageRecord), 50));
-			$recordIcon = $recordIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath, t3lib_iconWorks::getIcon('pages', $pageRecord), '').' style="text-align: center; vertical-align: middle;" width="18" height="16" border="0" title="'.$pageTitle.'" alt="" />';
-			$editButton = $this->pObj->link_edit('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/edit2.gif','').' title="'.htmlspecialchars($LANG->sL('LLL:EXT:lang/locallang_mod_web_list.xml:editPage')).'" alt="" style="text-align: center; vertical-align: middle; border:0;" />', 'pages', $pageRecord['uid']);
-
-			$sourcePageRecord = t3lib_beFunc::getRecordWSOL('pages', $pageRecord['content_from_pid']);
-			$sourceIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath, t3lib_iconWorks::getIcon('pages', $sourcePageRecord), '').' style="text-align: center; vertical-align: middle;" width="18" height="16" border="0" title="'.$sourcePageRecord['title'].'" alt="" />';
-			$sourceButton = $this->doc->wrapClickMenuOnIcon($sourceIcon, 'pages', $sourcePageRecord['uid'], 1, '&callingScriptId='.rawurlencode($this->doc->scriptID), 'new,copy,cut,pasteinto,pasteafter,delete');
-
-			$sourceLink = '
-				<a href="index.php?id='.$pageRecord['content_from_pid'].'">'.htmlspecialchars($LANG->getLL ('jumptocontentfrompidpage')).'</a>
-			';
-
-			$content = '
-				<table border="0" cellpadding="2" cellspacing="0" style="border: 1px solid black; margin-bottom:5px; width:100%">
-					<tr style="background-color: '.$this->doc->bgColor2.';">
-						<td nowrap="nowrap" colspan="2">
-							'.$recordIcon.$editButton.'
-							</a>
-							'.htmlspecialchars($pageRecord['title']).'
-						</td>
-					</tr>
-					<tr>
-						<td style="width:80%;">
-						'.htmlspecialchars(sprintf ($LANG->getLL ('cannotedit_contentfrompid'), $sourcePageRecord['title'])).'<br /><br />
-						'.$sourceButton.'<strong>'.$sourceLink.'<strong>
-
-						</td>
-						<td>&nbsp;</td>
-					</tr>
-				</table>
-			';
-			return $content;
-		}
-
-		return FALSE;
-	}
-
-	/**
 	 * Displays the edit page screen if the currently selected page is of the doktype "External URL"
 	 *
 	 * @param	array		$pageRecord: The current page record

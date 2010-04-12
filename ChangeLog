@@ -1,5 +1,6 @@
 2010-04-12  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
+	* Fixed issue: #14082: specialDoktype handling for doktype 2 obsolete 
 	* Fixed issue: #14081: specialDoktype pages should use FlashMessages
 	* Fixed issue: #14080: "No Access" page should use FlashMessages 
 	
