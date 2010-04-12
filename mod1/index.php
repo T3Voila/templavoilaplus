@@ -618,8 +618,18 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 					// If no access or if ID == zero
 				default:
-					$this->content.=$this->doc->header($LANG->getLL('title'));
-					$this->content.=$LANG->getLL('default_introduction');
+					if (version_compare(TYPO3_version,'4.3','>')) {
+						$flashMessage = t3lib_div::makeInstance(
+							't3lib_FlashMessage',
+							$LANG->getLL('default_introduction'),
+							$LANG->getLL('title'),
+							t3lib_FlashMessage::INFO
+						);
+						$this->content .= $flashMessage->render();
+					} else {
+						$this->content .= $this->doc->header($LANG->getLL('title'));
+						$this->content .= $LANG->getLL('default_introduction');
+					}
 			}
 		}
 
