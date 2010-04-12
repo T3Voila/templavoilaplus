@@ -164,11 +164,23 @@ class tx_templavoila_mod1_specialdoktypes {
 				$url = 'http://' . $pageRecord['url'];
 			break;
 		}
-		$content =
-			$this->doc->icons(1).
-			$LANG->getLL ('cannotedit_externalurl_'.$pageRecord['urltype'],'',1).
-			' <br /><br /><strong><a href="'.$url.'" target="_new">'.htmlspecialchars(sprintf($LANG->getLL ('jumptoexternalurl'), $url)).'</a></strong>'
-		;
+
+		$urlInfo = ' <br /><br /><strong><a href="' . $url . '" target="_new">' . htmlspecialchars(sprintf($LANG->getLL ('jumptoexternalurl'), $url)) . '</a></strong>';
+		if (version_compare(TYPO3_version, '4.3', '>')) {
+			$flashMessage = t3lib_div::makeInstance(
+				't3lib_FlashMessage',
+				$LANG->getLL ('cannotedit_externalurl_' . $pageRecord['urltype'], '', 1),
+				'',
+				t3lib_FlashMessage::INFO
+			);
+			$content = $flashMessage->render() . $urlInfo;
+		} else {
+			$content =
+				$this->doc->icons(1).
+				$LANG->getLL ('cannotedit_externalurl_' . $pageRecord['urltype'], '', 1).
+				$urlInfo
+			;
+		}
 		return $content;
 	}
 
@@ -195,12 +207,22 @@ class tx_templavoila_mod1_specialdoktypes {
 										$LANG->getLL ('jumptoshortcutdestination', '',1).'</a></strong>';
 		}
 
-		$content =
-			$this->doc->icons(1).
-			htmlspecialchars(sprintf ($LANG->getLL ('cannotedit_shortcut_'.intval($pageRecord['shortcut_mode'])), $shortcutSourcePageRecord['title'])).
-			'<br /><br />' .
-			$jumpToShortcutSourceLink
-		;
+		if (version_compare(TYPO3_version, '4.3', '>')) {
+			$flashMessage = t3lib_div::makeInstance(
+				't3lib_FlashMessage',
+				sprintf ($LANG->getLL ('cannotedit_shortcut_'.intval($pageRecord['shortcut_mode'])), $shortcutSourcePageRecord['title']),
+				'',
+				t3lib_FlashMessage::INFO
+			);
+			$content = $flashMessage->render() . $jumpToShortcutSourceLink;
+		} else {
+			$content =
+				$this->doc->icons(1).
+				htmlspecialchars(sprintf ($LANG->getLL ('cannotedit_shortcut_'.intval($pageRecord['shortcut_mode'])), $shortcutSourcePageRecord['title'])).
+				'<br /><br />' .
+				$jumpToShortcutSourceLink
+			;
+		}
 		return $content;
 	}
 
@@ -230,11 +252,21 @@ class tx_templavoila_mod1_specialdoktypes {
 			<a href="index.php?id='.$pageRecord['mount_pid'].'">'.htmlspecialchars($LANG->getLL ('jumptomountsourcepage')).'</a>
 		';
 
-		$content =
-			$this->doc->icons(1).
-			htmlspecialchars(sprintf ($LANG->getLL ('cannotedit_doktypemountpoint'), $mountSourcePageRecord['title'])).
-			$mountSourceButton.'<strong>'.$mountSourceLink.'</strong>
-		';
+		if (version_compare(TYPO3_version, '4.3', '>')) {
+			$flashMessage = t3lib_div::makeInstance(
+				't3lib_FlashMessage',
+				sprintf ($LANG->getLL ('cannotedit_doktypemountpoint'), $mountSourceButton . $mountSourcePageRecord['title']),
+				'',
+				t3lib_FlashMessage::INFO
+			);
+			$content = $flashMessage->render() . '<strong>' . $mountSourceLink . '</strong>';
+		} else {
+			$content =
+				$this->doc->icons(1).
+				htmlspecialchars(sprintf ($LANG->getLL ('cannotedit_doktypemountpoint'), $mountSourcePageRecord['title'])).
+				$mountSourceButton . '<strong>' . $mountSourceLink . '</strong>
+			';
+		}
 		return $content;
 	}
 
@@ -265,11 +297,22 @@ class tx_templavoila_mod1_specialdoktypes {
 			$listModuleLink = $LANG->getLL('editpage_sysfolder_listview_noaccess','',1);
 		}
 
-		$content =
-			$this->doc->icons(1).
-			$LANG->getLL('editpage_sysfolder_intro','',1).
-			$listModuleLink
-		;
+		if (version_compare(TYPO3_version, '4.3', '>')) {
+			$flashMessage = t3lib_div::makeInstance(
+				't3lib_FlashMessage',
+				$LANG->getLL('editpage_sysfolder_intro', '', 1),
+				'',
+				t3lib_FlashMessage::INFO
+			);
+			$content = $flashMessage->render() . $listModuleLink;
+		} else {
+			$content =
+				$this->doc->icons(1).
+				$LANG->getLL('editpage_sysfolder_intro', '', 1).
+				$listModuleLink
+			;
+		}
+
 		return $content;
 	}
 
