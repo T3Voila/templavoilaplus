@@ -1723,7 +1723,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 		if ($BE_USER->isAdmin())	{
 
 				// Introduction:
-			$outputString.= nl2br($LANG->getLL('newsitewizard_intro', 1));
+			$outputString.= nl2br(sprintf($LANG->getLL('newsitewizard_intro', 1), $this->templatesDir));
 
 				// Checks:
 			$missingExt = $this->wizard_checkMissingExtensions();
@@ -1861,7 +1861,6 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 	 * @return	string		If string is returned, an error occured.
 	 */
 	function wizard_checkDirectory()	{
-
 		if (!@is_dir(PATH_site.$this->templatesDir))	{
 			return nl2br(sprintf($GLOBALS['LANG']->getLL('newsitewizard_missingdir_instruction'), $this->templatesDir, $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir']));
 		}

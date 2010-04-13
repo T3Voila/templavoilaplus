@@ -147,7 +147,7 @@ You will be taken through these steps:
 - Creation of the main TemplaVoila template, including mapping of one content area and a main menu.
 - Creation of a backend user and group to manage only that website.
 
-You should prepare an HTML template before you begin the wizard; simply make a design in HTML and place the HTML file including graphics and stylesheets in a subfolder of "' . $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'] . 'templates/" relative to the websites root directory.
+You should prepare an HTML template before you begin the wizard; simply make a design in HTML and place the HTML file including graphics and stylesheets in a subfolder of "%s" relative to the websites root directory.
 Tip about menus: If you include a main menu in the template, try to place the whole menu inside a container (like &lt;div&gt;, &lt;table&gt; or &lt;tr&gt;) and encapsulate each menu item in a block tag (like &lt;tr&gt;, &lt;td&gt; or &lt;div&gt;). Use A-tags for the links. If you want different designs for normal and active menu elements, design the first menu item as "Active" and the second (and rest) as "Normal", then the wizard might be able to capture the right configuration.
 Tip about stylesheets: The content elements from TYPO3 will be outputted in regular HTML tags like &lt;p&gt;, &lt;h1&gt; to &lt;h6&gt;, &lt;ol&gt; etc. You will prepare yourself well if your stylesheet in the HTML template provides good styles for these standard elements from the start. Then you will have less finetuning to do later.</label>
 			<label index="newsitewizard_startnow">Start wizard now!</label>
