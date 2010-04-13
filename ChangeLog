@@ -1,3 +1,7 @@
+2010-04-13  Tolleiv Nietsch <nietsch@aoemedia.de> 
+
+	* Fixed issue: #14083: global variable 'fileadminDir' not replaced by its value in help text under new site wizard
+
 2010-04-11  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
 	* Fixed issue: #7082: Configuration to handle inheritance DS like disabled
