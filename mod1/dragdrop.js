@@ -149,6 +149,8 @@ function tv_createSortable(s, containment) {
 		ghosting:false,
 		format: /(.*)/,
 		handle:"sortable_handle",
+		scroll: window,
+		scrollSpeed: 30,
 		dropOnEmpty:true,
 		constraint:false,
 		containment: containment,
