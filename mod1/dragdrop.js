@@ -143,6 +143,7 @@ function childElements(node) {
 }
 
 function tv_createSortable(s, containment) {
+	Position.includeScrollOffsets = true;
 	Sortable.create(s,{
 		tag:"div",
 		ghosting:false,
