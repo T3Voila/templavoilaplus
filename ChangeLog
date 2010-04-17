@@ -1,5 +1,6 @@
 2010-04-17  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
+	* Fixed issue: #14141: Drag&Drop should scroll automatically 
 	* Fixed issue: #14136: JavaScript Problem - Drag and Drop  (Thanks to Frank Hirsch)
 
 2010-04-13  Tolleiv Nietsch <nietsch@aoemedia.de> 
