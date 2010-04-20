@@ -2438,9 +2438,13 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * @param int      recursion limiter
 	 * @return boolean true if there are other references for this element
 	 */
-	protected function hasElementForeignReferences($element,$pid,$recursion=99) {
-		if(!$recursion)   return false;
-
+	protected function hasElementForeignReferences($element, $pid, $recursion=99, $references=null) {
+		if (!$recursion) {
+			return false;
+		}
+		if (!is_array($references)) {
+			$references = array();
+		}
 		$refrows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 			'*',
 			'sys_refindex',
@@ -2455,7 +2459,12 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				if(strcmp($ref['tablename'],'pages')===0) {
 					$foreignRef = $foreignRef || $ref['recuid']!=$pid;
 				} else {
-					$foreignRef = $foreignRef || $this->hasElementForeignReferences(array('table'=>$ref['tablename'], 'uid'=>$ref['recuid']),$pid,$recursion-1);
+					if (!isset($references[$ref['tablename']][$ref['recuid']])) {
+							// initialize with false to avoid recursion without affecting inner OR combinations
+						$references[$ref['tablename']][$ref['recuid']] = false;
+						$references[$ref['tablename']][$ref['recuid']] = $this->hasElementForeignReferences(array('table'=>$ref['tablename'], 'uid'=>$ref['recuid']), $pid, $recursion-1, $references);
+					}
+					$foreignRef = $foreignRef || $references[$ref['tablename']][$ref['recuid']];
 				}
 				if($foreignRef) break;
 			}
