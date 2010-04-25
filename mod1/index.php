@@ -2409,15 +2409,23 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 */
 	protected function editingOfNewElementIsEnabled($dsUid, $toUid) {
 		$ret = true;
-		$dsMeta = $toMeta = array();
+		$dsXML = $dsMeta = $toMeta = array();
 
-		$ds = t3lib_beFunc::getRecord('tx_templavoila_datastructure', intval($dsUid), 'uid,dataprot');
-		if( is_array($ds) ) {
-			$dsXML = t3lib_div::xml2array( $ds['dataprot'] );
-			if(is_array($dsXML) && array_key_exists('meta', $dsXML)) {
-				$dsMeta = $dsXML['meta'];
+		if($this->staticDS) {
+			$ds = t3lib_div::getURL(PATH_site . $dsUid);
+			if( is_string($ds) ) {
+				$dsXML = t3lib_div::xml2array( $ds );
+			}
+		} else {
+			$ds = t3lib_beFunc::getRecord('tx_templavoila_datastructure', intval($dsUid), 'uid,dataprot');
+			if( is_array($ds) ) {
+				$dsXML = t3lib_div::xml2array( $ds['dataprot'] );
 			}
 		}
+		if(is_array($dsXML) && array_key_exists('meta', $dsXML)) {
+			$dsMeta = $dsXML['meta'];
+		}
+		
 		$to = t3lib_beFunc::getRecord('tx_templavoila_tmplobj', intval($toUid), 'uid,localprocessing');
 		if( is_array($to) ) {
 			$toXML = t3lib_div::xml2array( $to['localprocessing'] );
