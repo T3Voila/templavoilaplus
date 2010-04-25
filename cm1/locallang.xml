@@ -205,7 +205,7 @@
 			<label index="mapObjectPath">Object path</label>
 			<label index="mapOldStyleColumnNumber">Old style column number</label>
 			<label index="mapOldStyleColumnNumber_label">Column number (0=normal, 1=left, 2=right, 3=border)</label>
-			
+			<label index="mapEnableDragDrop">Enable Drag&amp;Drop in this container</label>
 			<label index="errorNoContentInFile">No content found in file reference</label>
 			<label index="errorNoFileToDisplay">No file to display</label>
 			<label index="error">Error</label>

@@ -1147,6 +1147,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 				$canCreateNew = $GLOBALS['BE_USER']->isPSet($this->calcPerms, 'pages', 'new');
 				$canEditContent = $GLOBALS['BE_USER']->isPSet($this->calcPerms, 'pages', 'editcontent');
+				$canDragDrop = $canEditContent && $elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['tx_templavoila']['enableDragDrop'] !== '0';
 
 				if (!$this->translatorMode && ($canCreateNew || $canEditContent))	{
 					$cellContent .= $this->link_bottomControls($subElementPointer, $canCreateNew ,$canEditContent );
@@ -1174,7 +1175,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 								// Modify the flexform pointer so it points to the position of the curren sub element:
 							$subElementPointer['position'] = $position;
 
-							if (!$this->translatorMode && $canCreateNew) {
+							if (!$this->translatorMode && $canDragDrop) {
 								$cellContent .= '<div class="sortableItem" id="' . $this->addSortableItem ($this->apiObj->flexform_getStringFromPointer ($subElementPointer)) . '">';
 							}
 
@@ -1184,14 +1185,15 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 								$cellContent .= $this->link_bottomControls($subElementPointer,$canCreateNew ,$canEditContent );
 							}
 
-							$cellContent .= '</div>';
-
+							if (!$this->translatorMode && $canDragDrop) {
+								$cellContent .= '</div>';
+							}
 
 						} else {
 								// Modify the flexform pointer so it points to the position of the curren sub element:
 							$subElementPointer['position'] = $position;
 
-							if ($canEditContent) {
+							if ($canDragDrop) {
 								$cellId = $this->addSortableItem ($this->apiObj->flexform_getStringFromPointer ($subElementPointer));
 								$cellFragment = '<div class="sortableItem" id="' . $cellId . '"></div>';
 							}
@@ -1203,7 +1205,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				}
 
 				$cellIdStr = '';
-				if ($GLOBALS['BE_USER']->isPSet($this->calcPerms, 'pages', 'editcontent')) {
+				if ($canDragDrop) {
 					$tmpArr = $subElementPointer;
 					unset($tmpArr['position']);
 					$cellId = $this->addSortableItem ($this->apiObj->flexform_getStringFromPointer ($tmpArr));
