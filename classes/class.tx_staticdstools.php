@@ -53,23 +53,35 @@ class tx_staticDStools {
 			case 1:
 				$ok = array(TRUE, TRUE);
 				if (t3lib_div::_GP('dsWizardDoIt')) {
-					$ok[0] = $this->checkDirectory($conf['staticDS.']['path_fce']);
-					if ($ok[0]) {
-						$description .= sprintf('||' . $GLOBALS['LANG']->sL('LLL:EXT:templavoila/res1/language/template_conf.xml:staticDS.wizard.dircheck.ok'), htmlspecialchars($conf['staticDS.']['path_fce']));
+
+					if (!isset($conf['staticDS.']['path_fce']) || !strlen($conf['staticDS.']['path_fce'])) {
+						$ok[0] = FALSE;
+						$description .= sprintf('||' . $GLOBALS['LANG']->sL('LLL:EXT:templavoila/res1/language/template_conf.xml:staticDS.wizard.dircheck.notset'), 'staticDS.path_fce');
 					} else {
-						$description .= sprintf('||' . $GLOBALS['LANG']->sL('LLL:EXT:templavoila/res1/language/template_conf.xml:staticDS.wizard.dircheck.ok'), htmlspecialchars($conf['staticDS.']['path_fce']));
+						$ok[0] = $this->checkDirectory($conf['staticDS.']['path_fce']);
+						if ($ok[0]) {
+							$description .= sprintf('||' . $GLOBALS['LANG']->sL('LLL:EXT:templavoila/res1/language/template_conf.xml:staticDS.wizard.dircheck.ok'), htmlspecialchars($conf['staticDS.']['path_fce']));
+						} else {
+							$description .= sprintf('||' . $GLOBALS['LANG']->sL('LLL:EXT:templavoila/res1/language/template_conf.xml:staticDS.wizard.dircheck.notok'), htmlspecialchars($conf['staticDS.']['path_fce']));
+						}
 					}
-					$ok[1] = $this->checkDirectory($conf['path_page']);
-					if ($ok[1]) {
-						$description .= sprintf('|' . $GLOBALS['LANG']->sL('LLL:EXT:templavoila/res1/language/template_conf.xml:staticDS.wizard.dircheck.ok'), htmlspecialchars($conf['staticDS.']['path_page']));
+
+					if (!isset($conf['staticDS.']['path_page']) || !strlen($conf['staticDS.']['path_page'])) {
+						$ok[0] = FALSE;
+						$description .= sprintf('||' . $GLOBALS['LANG']->sL('LLL:EXT:templavoila/res1/language/template_conf.xml:staticDS.wizard.dircheck.notset'), 'staticDS.path_page');
 					} else {
-						$description .= sprintf('|' . $GLOBALS['LANG']->sL('LLL:EXT:templavoila/res1/language/template_conf.xml:staticDS.wizard.dircheck.ok'), htmlspecialchars($conf['staticDS.']['path_page']));
+						$ok[1] = $this->checkDirectory($conf['path_page']);
+						if ($ok[1]) {
+							$description .= sprintf('|' . $GLOBALS['LANG']->sL('LLL:EXT:templavoila/res1/language/template_conf.xml:staticDS.wizard.dircheck.ok'), htmlspecialchars($conf['staticDS.']['path_page']));
+						} else {
+							$description .= sprintf('|' . $GLOBALS['LANG']->sL('LLL:EXT:templavoila/res1/language/template_conf.xml:staticDS.wizard.dircheck.notok'), htmlspecialchars($conf['staticDS.']['path_page']));
+						}
 					}
 					if ($ok == array(TRUE, TRUE)) {
 						$controls .= $this->getDsRecords($conf['staticDS.']);
 					}
 				}
-				if ($this->step < 3) {
+				if ($ok == array(TRUE, TRUE) && $this->step < 3) {
 					$submitText = $conf['staticDS.']['enable'] ? $GLOBALS['LANG']->sL('LLL:EXT:templavoila/res1/language/template_conf.xml:staticDS.wizard.submit3') : $GLOBALS['LANG']->sL('LLL:EXT:templavoila/res1/language/template_conf.xml:staticDS.wizard.submit2');
 					$controls .= '<br /><input type="hidden" name="dsWizardStep" value="1" />
 					<input type="submit" name="dsWizardDoIt" value="' . $submitText . '" />';
