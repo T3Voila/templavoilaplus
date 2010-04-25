@@ -245,6 +245,13 @@ class tx_templavoila_cm1_dsEdit {
 								<input type="text" id="tv_oldstylecolumnnumber" name="' . $formFieldName . '[tx_templavoila][oldStyleColumnNumber]" value="' . intval($insertDataArray['tx_templavoila']['oldStyleColumnNumber']) . '" />
 
 							</dd>';
+
+						$form .= '
+							<dt><label for="tv_enabledragdrop_">' . $GLOBALS['LANG']->getLL('mapEnableDragDrop') . '</label></dt>
+							<dd>
+								<input type="checkbox" class="checkbox" id="tv_enabledragdrop_" value="1" ' . (($insertDataArray['tx_templavoila']['enableDragDrop'] === '0') ? '' : 'checked="checked"') . ' onclick="$(\'tv_enabledragdrop\').value=(this.checked ? 1 : 0);" />
+								<input type="hidden" id="tv_enabledragdrop" name="' . $formFieldName . '[tx_templavoila][enableDragDrop]" value="' . intval($insertDataArray['tx_templavoila']['enableDragDrop']) . '" />
+							</dd>';
 					}
 					$form .= '</dl>';
 
