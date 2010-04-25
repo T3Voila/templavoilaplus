@@ -500,6 +500,16 @@ class tx_templavoila_pi1 extends tslib_pibase {
 
 				// For each DS element:
 			foreach($DSelements as $key => $dsConf)	{
+					// Store key of DS element and the parents being handled in global register
+				$nestedFields = '';
+				if (isset($GLOBALS['TSFE']->register['tx_templavoila_pi1.current_field'])) { 
+					 $nestedFields = implode(',', array($GLOBALS['TSFE']->register['tx_templavoila_pi1.current_field'], $key));
+				} else {
+					$nestedFields = $key;
+				}
+				$GLOBALS['TSFE']->register['tx_templavoila_pi1.nested_fields'] = $nestedFields;
+				$GLOBALS['TSFE']->register['tx_templavoila_pi1.current_field'] = $key;
+
 						// Array/Section:
 				if ($DSelements[$key]['type']=='array')	{
 					/* no DS-childs: bail out

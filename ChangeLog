@@ -1,5 +1,6 @@
 2010-04-25  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
+	* Fixed issue: #14162: Feature(tte): Make current field's name available as register (Thanks to Francois Suter)
 	* Fixed issue: #14056: static ds wizard error-handling improvement if conf is missing
 	* Fixed issue: #13936: noEditOnCreation don't work with static DS
 	* Fixed issue: #12950: Add an option to tt_content , for disabling drag/drop
