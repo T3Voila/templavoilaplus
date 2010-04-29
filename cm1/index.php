@@ -1747,8 +1747,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			$optDat = array_reverse($optDat);
 		}
 
-			// Add options for "samelevel" elements:
-		$sameLevelElements = $this->markupObj->elParentLevel[$lastEl['parent']];
+		list($parentElement, $sameLevelElements) = $this->getRangeParameters($lastEl, $this->markupObj->elParentLevel);
 		if (is_array($sameLevelElements))	{
 			$startFound=0;
 			foreach($sameLevelElements as $rEl) 	{
@@ -1756,7 +1755,12 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 					$optDat[$lastEl['path'].'/RANGE:'.$rEl]='RANGE to "'.$rEl.'"';
 				}
 
-				if (trim($lastEl['parent'].' '.$rEl)==$lastEl['path'])	$startFound=1;
+					// If the element has an ID the path doesn't include parent nodes
+					// If it has an ID and a CSS Class - we need to throw that CSS Class(es) away - otherwise they won't match
+				$curPath = stristr($rEl, '#') ? preg_replace('/^(\w+)\.?.*#(.*)$/i', '\1#\2', $rEl) : trim($parentElement . ' ' . $rEl);
+				if ($curPath == $lastEl['path'])	{
+					$startFound = 1;
+				}
 			}
 		}
 
@@ -1874,6 +1878,73 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 		}
 
 		return $content;
+	}
+
+	/**
+	 * Determines parentElement and sameLevelElements for the RANGE mapping mode
+	 *
+	 * @todo	this functions return value pretty dirty, but due to the fact that this is something which 
+	 * 			should at least be encapsulated the bad coding habit it preferred just for readability of the remaining code
+	 *
+	 * @param array	Array containing information about the current element
+	 * @param array	Array containing information about all mapable elements
+	 * @return array	Array containing 0 => parentElement (string) and 1 => sameLevelElements (array)
+	 */
+	protected function getRangeParameters($lastEl, $elParentLevel) {
+			/**
+			 * Add options for "samelevel" elements -
+			 * If element has an id the "parent" is empty, therefore we need two steps to get the elements (see #11842)
+			 */
+		$sameLevelElements = array();
+		if (strlen($lastEl['parent'])) {
+				// we have a "named" parent
+			$parentElement = $lastEl['parent'];
+			$sameLevelElements = $elParentLevel[$parentElement];
+		} elseif (count($elParentLevel) == 1) {
+				// we have no real parent - happens if parent element is mapped with INNER
+			$parentElement = $lastEl['parent'];
+			$sameLevelElements = $elParentLevel[$parentElement];
+		} else {
+				//there's no parent - maybe because it was wrapped with INNER therefore we try to find it ourselfs
+			$parentElement = '';
+			$hasId = stristr($lastEl['path'], '#');
+			foreach ($elParentLevel as $pKey=>$pValue) {
+				if (in_array($lastEl['path'], $pValue)) {
+					$parentElement = $pKey;
+				} elseif ($hasId) {					
+					foreach($pValue as $pElement) {
+						if(stristr($pElement, '#') && preg_replace('/^(\w+)\.?.*#(.*)$/i', '\1#\2', $pElement) ==  $lastEl['path']) {
+							$parentElement = $pKey;
+							break;
+						}
+					}
+				}
+				if($parentElement != '') {
+					break;
+				}
+			}
+
+			if (!$hasId && preg_match('/\[\d+\]$/',$lastEl['path'])) {
+					// we have a nameless element, therefore the index is used
+				$pos = preg_replace('/^.*\[(\d+)\]$/','\1', $lastEl['path']);
+				$sameLevelElements = array_slice($elParentLevel[$parentElement], $pos);
+			} else {
+					// we have to search ourselfs because there was no parent and no numerical index to find the right elements
+				$foundCurrent = FALSE;
+				if (is_array($elParentLevel[$parentElement])) {
+					foreach ($elParentLevel[$parentElement] as $element) {
+						$curPath = stristr($element, '#') ? preg_replace('/^(\w+)\.?.*#(.*)$/i', '\1#\2', $element) : $element;
+						if($curPath == $lastEl['path']) {
+							$foundCurrent = TRUE;
+						}				
+						if($foundCurrent) {
+							$sameLevelElements[] = $curPath;
+						}
+					}
+				}
+			}
+		}
+		return array($parentElement, $sameLevelElements);
 	}
 
 	/**
