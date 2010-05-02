@@ -1,5 +1,6 @@
 2010-05-02  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
+	* Fixed issue: #14253: Disable drag&drop feature on a per-user and a per-pagebranch basis 
 	* Fixed issue: #12204: Missing clause in XHTML conditional comments like <!--[if lte IE 6]> 
 
 2010-04-29  Tolleiv Nietsch <nietsch@aoemedia.de> 

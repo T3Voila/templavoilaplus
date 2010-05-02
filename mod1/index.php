@@ -1032,7 +1032,9 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 				$canCreateNew = $GLOBALS['BE_USER']->isPSet($this->calcPerms, 'pages', 'new');
 				$canEditContent = $GLOBALS['BE_USER']->isPSet($this->calcPerms, 'pages', 'editcontent');
-				$canDragDrop = $canEditContent && $elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['tx_templavoila']['enableDragDrop'] !== '0';
+				$canDragDrop = $canEditContent &&
+								$elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['tx_templavoila']['enableDragDrop'] !== '0' &&
+								$this->modTSconfig['properties']['enableDragDrop'] !== '0';
 
 				if (!$this->translatorMode && ($canCreateNew || $canEditContent))	{
 					$cellContent .= $this->link_bottomControls($subElementPointer, $canCreateNew, $canEditContent);
