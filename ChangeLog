@@ -1,3 +1,7 @@
+2010-05-02  Tolleiv Nietsch <nietsch@aoemedia.de> 
+
+	* Fixed issue: #12204: Missing clause in XHTML conditional comments like <!--[if lte IE 6]> 
+
 2010-04-29  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
 	* Fixed issue: #14213: "To Top" checkbox is missing in FlexContent (Thanks to Patrick Gaumond)

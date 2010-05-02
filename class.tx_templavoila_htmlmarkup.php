@@ -973,7 +973,7 @@ class tx_templavoila_htmlmarkup {
 #debug($soloParts);
                     //search for conditional comments
 					$startTag = '';
-					if(count($soloParts) > 0 && $recursion == 0) {
+					if(count($soloParts) > 1 && $recursion == 0) {
 						foreach($soloParts as $key => $value) {
 							//check for downlevel-hidden and downlevel-revealed syntax, see http://msdn.microsoft.com/de-de/library/ms537512(en-us,VS.85).aspx
 							$matchCount1 = preg_match_all('/<!([-]+)?\[if(.+)\]([-]+)?>/', $value, $matches1);
