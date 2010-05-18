@@ -298,7 +298,7 @@ class tx_templavoila_pi1 extends tslib_pibase {
 				/* Hook to modify language key - e.g. used for EXT:languagevisibility */
 			foreach($hookObjectsArr as $hookObj)	{
 				if (method_exists ($hookObj, 'renderElement_preProcessLanguageKey')) {
-					$lKey = $hookObj->renderElement_preProcessLanguageKey($row, $table, $lKey, $langDisable, $langChildren, $this);
+					$lKey = $hookObj->renderElement_preProcessLanguageKey($row, $table, $lKey, $langDisabled, $langChildren, $this);
 				}
 			}
 
@@ -351,7 +351,7 @@ class tx_templavoila_pi1 extends tslib_pibase {
 								/* Hook to modify value key - e.g. used for EXT:languagevisibility */
 							foreach($hookObjectsArr as $hookObj)	{
 								if (method_exists ($hookObj, 'renderElement_preProcessValueKey')) {
-									$vKey = $hookObj->renderElement_preProcessValueKey($row, $table, $vKey, $langDisable, $langChildren, $this);
+									$vKey = $hookObj->renderElement_preProcessValueKey($row, $table, $vKey, $langDisabled, $langChildren, $this);
 								}
 							}
 
