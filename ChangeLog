@@ -1,5 +1,6 @@
 2010-05-18  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
+	* Fixed issue: #14346: External URL with no urltype not shown up (Thanks to Benjamin Mack)
 	* Fixed issue: #13079: Followup: Hooks to reprocess lKey and vKey.
 
 2010-05-02  Tolleiv Nietsch <nietsch@aoemedia.de> 
