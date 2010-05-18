@@ -104,9 +104,11 @@ class tx_templavoila_mod1_specialdoktypes {
 				$url = 'https://' . $pageRecord['url'];
 			break;
 			default:
-				// Check if URI scheme already present. We support only Internet-specific notation, others are not relevant for us (see http://www.ietf.org/rfc/rfc3986.txt for details)
+					// Check if URI scheme already present. We support only Internet-specific notation,
+					// others are not relevant for us (see http://www.ietf.org/rfc/rfc3986.txt for details)
 				if (preg_match('/^[a-z]+[a-z0-9\+\.\-]*:\/\//i', $pageRecord['url'])) {
 					// Do not add any other scheme
+					$url = $pageRecord['url'];
 					break;
 				}
 				// fall through
@@ -115,11 +117,17 @@ class tx_templavoila_mod1_specialdoktypes {
 			break;
 		}
 
+			// check if there is a notice on this URL type
+		$notice = $LANG->getLL('cannotedit_externalurl_' . $pageRecord['urltype'], '', 1);
+		if (!$notice) {
+			$notice = $LANG->getLL('cannotedit_externalurl_1', '', 1);
+		}
+
 		$urlInfo = ' <br /><br /><strong><a href="' . $url . '" target="_new">' . htmlspecialchars(sprintf($LANG->getLL ('jumptoexternalurl'), $url)) . '</a></strong>';
 		if (version_compare(TYPO3_version, '4.3', '>')) {
 			$flashMessage = t3lib_div::makeInstance(
 				't3lib_FlashMessage',
-				$LANG->getLL ('cannotedit_externalurl_' . $pageRecord['urltype'], '', 1),
+				$notice,
 				'',
 				t3lib_FlashMessage::INFO
 			);
@@ -127,7 +135,7 @@ class tx_templavoila_mod1_specialdoktypes {
 		} else {
 			$content =
 				$this->doc->icons(1).
-				$LANG->getLL ('cannotedit_externalurl_' . $pageRecord['urltype'], '', 1).
+				$notice.
 				$urlInfo
 			;
 		}
