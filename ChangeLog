@@ -1,3 +1,7 @@
+2010-05-30  Tolleiv Nietsch <nietsch@aoemedia.de> 
+
+	* Fixed issue: #13950: Page TOs with static DSs show up in all sites and do not honor GRSP
+
 2010-05-18  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
 	* Fixed issue: #14346: External URL with no urltype not shown up (Thanks to Benjamin Mack)
