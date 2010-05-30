@@ -125,25 +125,29 @@ class tx_templavoila_handleStaticDataStructures {
 	 */
 	public function dataSourceItemsProcFunc(array &$params, t3lib_TCEforms& $pObj) {
 
-			// Get all DSes
-		$dsList = $this->getDSList($params, $pObj);
+		$storagePid = $this->getStoragePid($params, $pObj);
+		$scope = $this->getScope($params);
+
+		$removeDSItems = $this->getRemoveItems($params, substr($params['field'], 0, -2) . 'ds');
+
+		$dsRepo = t3lib_div::makeInstance('tx_templavoila_datastructureRepository');
+		$dsList = $dsRepo->getDatastructuresByStoragePidAndScope($storagePid, $scope);
+
 		$params['items'] = array(
 			array(
 				'', ''
 			)
 		);
-		foreach ($dsList as $dsRecord) {
-			$icon = '';
-			if ($dsRecord['previewicon']) {
-				$icon = $this->iconPath . $dsRecord['previewicon'];
+
+		foreach ($dsList as $dsObj) {
+			if($dsObj->isPermittedForUser($params['row'], $removeDSItems)) {
+				$params['items'][] = array(
+					$dsObj->getLabel(),
+					$dsObj->getKey(),
+					$dsObj->getIcon()
+				);
 			}
-			$params['items'][] = array(
-				$GLOBALS['LANG']->sL($dsRecord['title']),
-				isset($dsRecord['path']) ? $dsRecord['path'] : $dsRecord['uid'],
-				$icon
-			);
 		}
-		tx_templavoila_handleStaticDataStructures::check_permissions($params, $pObj);
 	}
 
 	/**
@@ -173,31 +177,34 @@ class tx_templavoila_handleStaticDataStructures {
 	 * @return	void
 	 */
 	protected function templateObjectItemsProcFuncForCurrentDS(array &$params, t3lib_TCEforms &$pObj) {
-		// Get DS
-		$tsConfig = &$pObj->cachedTSconfig[$params['table'].':'.$params['row']['uid']];
-
-		$fieldName = $params['field'] == 'tx_templavoila_next_to' ? 'tx_templavoila_next_ds': 'tx_templavoila_ds';
+			// Get DS
+		$tsConfig = &$pObj->cachedTSconfig[$params['table'] . ':' . $params['row']['uid']];
+		$fieldName = $params['field'] == 'tx_templavoila_next_to' ? 'tx_templavoila_next_ds' : 'tx_templavoila_ds';
 		$dataSource = $tsConfig['_THIS_ROW'][$fieldName];
-		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-					'uid,title,previewicon,datastructure', 'tx_templavoila_tmplobj',
-					'datastructure=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($dataSource, 'tx_templavoila_tmplobj') .
-					self::enableFields('tx_templavoila_tmplobj'));
+
+		$removeTOItems = $this->getRemoveItems($params, substr($params['field'], 0, -2) . 'to');
+
+		$dsRepo = t3lib_div::makeInstance('tx_templavoila_datastructureRepository');
+		$toRepo = t3lib_div::makeInstance('tx_templavoila_templateRepository');
+
 		$params['items'] = array(
 			array(
 				'', ''
 			)
 		);
-		// Create items sorted visually by DS and title
-		foreach ($rows as $row) {
-			$icon = '';
-			if ($row['previewicon']) {
-				$icon = $this->iconPath . $row['previewicon'];
+
+		if (strlen($dataSource)) {
+			$ds = $dsRepo->getDatastructureByUidOrFilename($dataSource);
+			$toList = $toRepo->getTemplatesByDatastructure($ds);
+			foreach ($toList as $toObj) {
+				if($toObj->isPermittedForUser($params['table'], $removeTOItems)) {
+					$params['items'][] = array(
+						$toObj->getLabel(),
+						$toObj->getKey(),
+						$toObj->getIcon()
+					);
+				}
 			}
-			$params['items'][] = array(
-				$GLOBALS['LANG']->sL($row['title']),
-				$row['uid'],
-				$icon
-			);
 		}
 	}
 
@@ -210,95 +217,46 @@ class tx_templavoila_handleStaticDataStructures {
 	 * @return	void
 	 */
 	protected function templateObjectItemsProcFuncForAllDSes(array &$params, t3lib_TCEforms &$pObj) {
-		// Find DSes
-		$this->dsList = $this->getDSList($params, $pObj);
+		$storagePid = $this->getStoragePid($params, $pObj);
+		$scope = $this->getScope($params);
 
-		if (count($this->dsList) > 0) {
-			$keys = array();
-			foreach (array_keys($this->dsList) as $key) {
-				$keys[] = $GLOBALS['TYPO3_DB']->fullQuoteStr($key, 'tx_templavoila_tmplobj');
-			}
-			$list = implode(',', $keys);
-				// Get all TOs for these DSes
-			$this->toRows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-						'uid,title,previewicon,datastructure', 'tx_templavoila_tmplobj',
-						'datastructure IN (' . $list . ')' .
-						self::enableFields('tx_templavoila_tmplobj'));
+		$removeDSItems = $this->getRemoveItems($params, substr($params['field'], 0, -2) . 'ds');
+		$removeTOItems = $this->getRemoveItems($params, substr($params['field'], 0, -2) . 'to');
 
-			// Sort by DS name than by TO name
-			uksort($this->toRows, array($this, 'sortTemplateObjects'));
-			$currentDS = 0;
-			$params['items'] = array(
-				array(
-					'', ''
-				)
+		$dsRepo = t3lib_div::makeInstance('tx_templavoila_datastructureRepository');
+		$toRepo = t3lib_div::makeInstance('tx_templavoila_templateRepository');
+		$dsList = $dsRepo->getDatastructuresByStoragePidAndScope($storagePid, $scope);
+
+		$params['items'] = array(
+			array(
+				'', ''
+			)
+		);
+
+		foreach($dsList as $dsObj) {
+			if(!$dsObj->isPermittedForUser($params['row'], $removeDSItems)) {
+				continue;
+ 			}
+			$curDS = array();
+			$curDS[] = array(
+				$dsObj->getLabel(),
+				'--div--'
 			);
-			// Create items sorted visually by DS and title
-			foreach ($this->toRows as $row) {
-				// Check if we got a new DS
-				if ($currentDS != $row['datastructure']) {
-					$params['items'][] = array(
-						$this->dsList[$row['datastructure']]['title'],
-						'--div--'
+			
+			$toList = $toRepo->getTemplatesByDatastructure($dsObj);
+			foreach ($toList as $toObj) {
+				if($toObj->isPermittedForUser($params['row'], $removeTOItems)) {
+					$curDS[] = array(
+						$toObj->getLabel(),
+						$toObj->getKey(),
+						$toObj->getIcon()
 					);
-					$currentDS = $row['datastructure'];
 				}
-				// Add TO
-				$icon = '';
-				if ($row['previewicon']) {
-					$icon = $this->iconPath . $row['previewicon'];
-				}
-				$params['items'][] = array(
-					$GLOBALS['LANG']->sL($row['title']),
-					$row['uid'],
-					$icon
-				);
+ 			}
+			if (count($curDS) > 1) {
+				$params['items'] = array_merge($params['items'], $curDS);
 			}
-		}
-		unset($this->dsList);
-		unset($this->toRows);
-	}
-
-	/**
-	 * Retrieves DS list for the current itemsProcFunc parameters
-	 *
-	 * @param	array	$params	Parameters to the itemsProcFunc
-	 * @param	t3lib_TCEforms	$pObj	Calling function
-	 * @return	array	Rows with DSes (uid, title, previewicon)
-	 */
-	protected function getDSList(array &$params, t3lib_TCEforms& $pObj) {
-
-		$rows = array();
-
-			// Find DS scope
-		$scope = ($params['table'] == 'pages' ? 1 : 2);
-		if (is_array($GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['staticDataStructures'])) {
-			foreach ($GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['staticDataStructures'] as $staticDataStructure) {
-				if ($staticDataStructure['scope'] == $scope) {
-					$rows[$staticDataStructure['path']] = $staticDataStructure;
-				}
-			}
-		}
-
-		if (!$this->conf['staticDS.']['enable']) {
-			// Get storage folder
-			$storagePid = $this->getStoragePid($params, $pObj);
-
-			$addWhere = '';
-			$modTSConfig = t3lib_BEfunc::getModTSconfig($params['row']['uid'], 'TCEFORM.pages.' . $params['field'] . '.removeItems');
-			if (isset($modTSConfig['value'])) {
-				$removedItems = implode(',', t3lib_div::trimExplode(',', $modTSConfig['value'], TRUE));
-				$addWhere = ' AND uid NOT IN(' . $removedItems . ')';
-			}
-
-			// Get all DSes from the current storage folder
-			$rows = t3lib_div::array_merge_recursive_overrule($rows, $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,title,previewicon',
-						'tx_templavoila_datastructure',
-						'scope=' . $scope . ' AND pid=' . $storagePid . $addWhere .
-						self::enableFields('tx_templavoila_datastructure'),
-						'', 'title', '', 'uid'));
-		}
-		return $rows;
+ 		}
 	}
 
 	/**
@@ -314,7 +272,7 @@ class tx_templavoila_handleStaticDataStructures {
 		$tsConfig = &$pObj->cachedTSconfig[$params['table'].':'.$params['row']['uid']];
 		$storagePid = intval($tsConfig['_STORAGE_PID']);
 
-		// Check for alternative storage folder
+			// Check for alternative storage folder
 		$field = $params['table'] == 'pages' ? 'uid' : 'pid';
 		$modTSConfig = t3lib_BEfunc::getModTSconfig($params['row'][$field], 'tx_templavoila.storagePid');
 		if (is_array($modTSConfig) && t3lib_div::testInt($modTSConfig['value'])) {
@@ -324,89 +282,33 @@ class tx_templavoila_handleStaticDataStructures {
 	}
 
 	/**
-	 * Provides 'enableFields' functionality while fixing some bugs in the older
-	 * TYPO3 versions
-	 *
-	 * @param	string	$tableName	Table name
-	 * @return	string	Additional WHERE expression (starting from ' AND') or empty string
-	 */
-	protected function enableFields($tableName) {
-		$where1 = trim(t3lib_BEfunc::BEenableFields($tableName));
-		if (strcasecmp($where1, 'AND') == 0) {
-			$where1 = '';
-		}
-		$where2 = trim(t3lib_BEfunc::deleteClause($tableName));
-		if (strcasecmp($where2, 'AND') == 0) {
-			$where2 = '';
-		}
-		$where = trim($where1 . ' ' . $where2);
-		return ($where ? ' ' . $where : '');
-	}
+	 * Determine scope from current paramset
+ 	 *
+	 * @param array $params
+	 * @return integer
+ 	 */
+	protected function getScope(array $params) {
+		$scope = tx_templavoila_datastructure::SCOPE_UNKNOWN;
+		if ($params['table'] == 'pages') {
+			$scope = tx_templavoila_datastructure::SCOPE_PAGE;
+		} elseif ($params['table'] == 'tt_content') {
+			$scope = tx_templavoila_datastructure::SCOPE_FCE;
+ 		}
+		return $scope;
+ 	}
 
-	/**
-	 * Sorts template objects by DS and than by title
-	 *
-	 * @param	int	$key1	Key 1 to $this->toRows
-	 * @param	int	$key2	Key 2 to $this->toRows
-	 * @return	int	Result of the comparison (see strcmp())
-	 * @see	uksort()
-	 * @see	strcmp()
-	 */
-	public function sortTemplateObjects($key1, $key2) {
-		$result = 0;
-		$row1 = $this->toRows[$key1];
-		$row2 = $this->toRows[$key2];
-		if ($row1['datastructure'] == $row2['datastructure']) {
-			$result = strcmp($GLOBALS['LANG']->sL($row1['title']), $GLOBALS['LANG']->sL($row2['title']));
-		}
-		else {
-			$result = strcmp($GLOBALS['LANG']->sL($this->dsList[$row1['datastructure']]['title']), $GLOBALS['LANG']->sL($this->dsList[$row2['datastructure']]['title']));
-		}
-		return $result;
-	}
-
-	/**
-	 * Adds static data structures to selector box items arrays.
-	 * Adds only structures for Page Templates
-	 *
-	 * @param	array		Array of items passed by reference.
-	 * @param	object		The parent object (t3lib_TCEforms / t3lib_transferData depending on context)
-	 * @return	void
-	 */
-	function check_permissions(&$params,&$pObj) {
-		global	$BE_USER;
-
-		if ($BE_USER->isAdmin()) {
-			return;
-		}
-		foreach ($BE_USER->userGroups as $group) {
-			// Get list of DS & TO
-			$items = t3lib_div::trimExplode(',', $group['tx_templavoila_access'], true);
-
-			foreach ($items as $ref) {
-				if (strstr($ref, 'tx_templavoila_tmplobj_')) {
-					$value1 = $params['row']['tx_templavoila_to'];
-					$value2 = ($params['table'] == 'pages' ? $params['row']['tx_templavoila_next_to'] : -1);
-					$test = substr($ref, 23);
-				}
-				else {
-					$value1 = $params['row']['tx_templavoila_ds'];
-					$value2 = ($params['table'] == 'pages' ? $params['row']['tx_templavoila_next_ds'] : -1);
-					$test = substr($ref, 29);
-				}
-
-				if ($test == $value1 || $test == $value2) {
-					continue;
-				}
-
-				foreach ($params['items'] as $key => $item) {
-					if ($item[1] == $test) {
-						unset($params['items'][$key]);
-					}
-				}
-			}
-		}
-	}
+ 	/**
+	 * Find relevant removeItems blocks for a certain field with the given paramst
+ 	 *
+	 * @param array $params
+	 * @param string $field
+	 * @return array
+ 	 */
+	protected function getRemoveItems($params, $field) {
+		$pid = $params['row'][$params['table'] == 'pages' ? 'uid' : 'pid'];
+		$modTSConfig = t3lib_BEfunc::getModTSconfig($pid, 'TCEFORM.' . $params['table'] . '.' . $field . '.removeItems');
+		return t3lib_div::trimExplode(',', $modTSConfig['value'], TRUE);
+ 	}
 }
 
 

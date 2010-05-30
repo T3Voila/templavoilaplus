@@ -233,4 +233,14 @@ templavoila.wizards.newContentElement.wizardItems.special.elements.media {
 templavoila.wizards.newContentElement.wizardItems.special.show = uploads,media,menu,html,div
 ');
 }
+
+if(t3lib_div::int_from_ver(TYPO3_version) < 4003000) {
+	$list = include(t3lib_extMgm::extPath('templavoila') . '/ext_autoload.php');
+	require_once $list['tx_templavoila_datastructure'];
+	require_once $list['tx_templavoila_datastructure_dbbase'];
+	require_once $list['tx_templavoila_datastructure_staticbase'];
+	require_once $list['tx_templavoila_datastructurerepository'];
+	require_once $list['tx_templavoila_template'];
+	require_once $list['tx_templavoila_templaterepository'];
+}
 ?>

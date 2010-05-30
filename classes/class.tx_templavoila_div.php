@@ -118,5 +118,14 @@ final class tx_templavoila_div {
 		return (stripos($url . '/', t3lib_div::getIndpEnv('TYPO3_REQUEST_HOST') . '/') === 0);
 	}
 
+	public function getDenyListForUser() {
+		$denyItems = array();
+		foreach ($GLOBALS['BE_USER']->userGroups as $group) {
+			$groupDenyItems = t3lib_div::trimExplode(',', $group['tx_templavoila_access'], true);
+			$denyItems = array_merge($denyItems, $groupDenyItems);
+		}
+		return $denyItems;
+	}
+
 }
 ?>
