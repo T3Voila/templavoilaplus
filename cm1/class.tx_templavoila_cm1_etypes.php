@@ -123,19 +123,19 @@ class tx_templavoila_cm1_eTypes {
 					switch($eType)	{
 						case 'text':
 							/* preserve previous config, if of the right kind */
-							if (($reset = $reset || ($elArray[$key]['TCEforms']['config']['type'] != 'text'))) {
+							if ($reset || ($elArray[$key]['TCEforms']['config']['type'] != 'text')) {
 								$elArray[$key]['TCEforms']['label']=$elArray[$key]['tx_templavoila']['title'];
 								$elArray[$key]['TCEforms']['config'] = $eTypes['eType'][$eType]['TCEforms']['config'];
 							}
 
-							/* preserve previous config, if explicitly set */
-							if (!isset($elArray[$key]['tx_templavoila']['proc']['HSC'])) {
+							if ($reset) {
 								$elArray[$key]['tx_templavoila']['proc']['HSC'] = 1;
+								unset($elArray[$key]['tx_templavoila']['proc']['int']);
 							}
 						break;
 						case 'rte':
 							/* preserve previous config, if of the right kind */
-							if (($reset = $reset || ($elArray[$key]['TCEforms']['config']['type'] != 'text'))) {
+							if ($reset || ($elArray[$key]['TCEforms']['config']['type'] != 'text')) {
 								$elArray[$key]['TCEforms']['label']=$elArray[$key]['tx_templavoila']['title'];
 								$elArray[$key]['TCEforms']['config'] = $eTypes['eType'][$eType]['TCEforms']['config'];
 							}
@@ -144,20 +144,20 @@ class tx_templavoila_cm1_eTypes {
 							if (!$elArray[$key]['TCEforms']['defaultExtras']) {
 								$elArray[$key]['TCEforms']['defaultExtras'] = $eTypes['eType'][$eType]['TCEforms']['defaultExtras'];
 							}
-							/* preserve previous config, if explicitly set */
-							if (!isset($elArray[$key]['TCEforms']['proc']['HSC'])) {
-								$elArray[$key]['tx_templavoila']['proc']['HSC'] = 0 ;
+
+							if ($reset) {
+								unset($elArray[$key]['tx_templavoila']['proc']);
 							}
 
 							/* preserve previous config, if of the right kind */
 							if ($reset || !trim($elArray[$key]['tx_templavoila']['TypoScript'])) {
 								$elArray[$key]['tx_templavoila']['TypoScript'] = $eTypes['eType'][$eType]['Typoscript'];
-										}
+							}
 						break;
 						case 'image':
 						case 'imagefixed':
 							/* preserve previous config, if of the right kind */
-							if (($reset = $reset || ($elArray[$key]['TCEforms']['config']['type'] != 'group'))) {
+							if ($reset || ($elArray[$key]['TCEforms']['config']['type'] != 'group')) {
 								$elArray[$key]['TCEforms']['label']=$elArray[$key]['tx_templavoila']['title'];
 								$elArray[$key]['TCEforms']['config'] = $eTypes['eType'][$eType]['TCEforms']['config'];
 							}
@@ -165,7 +165,10 @@ class tx_templavoila_cm1_eTypes {
 							$maxW = $contentInfo['img']['width'] ? $contentInfo['img']['width'] : $eTypes['eType'][$eType]['maxWdefault'];
 							$maxH = $contentInfo['img']['height'] ? $contentInfo['img']['height'] : $eTypes['eType'][$eType]['maxHdefault'];
  							$typoScriptImageObject = ($elArray[$key]['type'] == 'attr') ? 'IMG_RESOURCE' : 'IMAGE';
-							$elArray[$key]['tx_templavoila']['proc']['HSC'] = 0;
+
+ 							if ($reset) {
+								unset($elArray[$key]['tx_templavoila']['proc']);
+ 							}
 
 							/* preserve previous config, if of the right kind */
 							if ($reset || !trim($elArray[$key]['tx_templavoila']['TypoScript'])) {
@@ -189,7 +192,7 @@ class tx_templavoila_cm1_eTypes {
 						break;
 						case 'link':
 							/* preserve previous config, if of the right kind */
-							if (($reset = $reset || ($elArray[$key]['TCEforms']['config']['type'] != 'input'))) {
+							if ($reset || ($elArray[$key]['TCEforms']['config']['type'] != 'input')) {
 								$elArray[$key]['TCEforms']['label']=$elArray[$key]['tx_templavoila']['title'];
 								$elArray[$key]['TCEforms']['config'] = $eTypes['eType'][$eType]['TCEforms']['config'];
 							}
@@ -205,10 +208,13 @@ class tx_templavoila_cm1_eTypes {
 									}
 								}
 							}
+							if ($reset) {
+								unset($elArray[$key]['tx_templavoila']['proc']['int']);
+							}
 						break;
 						case 'ce':
 							/* preserve previous config, if of the right kind */
-							if (($reset || ($elArray[$key]['TCEforms']['config']['type'] != 'group'))) {
+							if ($reset || ($elArray[$key]['TCEforms']['config']['type'] != 'group')) {
 								$elArray[$key]['TCEforms']['label']=$elArray[$key]['tx_templavoila']['title'];
 								$elArray[$key]['TCEforms']['config'] = $eTypes['eType'][$eType]['TCEforms']['config'];
 							}
@@ -220,35 +226,46 @@ class tx_templavoila_cm1_eTypes {
 									$elArray[$key]['tx_templavoila']['TypoScript'] .= chr(10) . '10.wrap = <!--TYPO3SEARCH_begin--> | <!--TYPO3SEARCH_end-->';
 								}
 							}
-							$elArray[$key]['tx_templavoila']['proc']['HSC'] = 0;
+							if($reset) {
+								unset($elArray[$key]['tx_templavoila']['proc']);
+							}
 						break;
 						case 'int':
 							/* preserve previous config, if of the right kind */
-							if (($reset = $reset || ($elArray[$key]['TCEforms']['config']['type'] != 'input'))) {
+							if ($reset || ($elArray[$key]['TCEforms']['config']['type'] != 'input')) {
 								$elArray[$key]['TCEforms']['label']=$elArray[$key]['tx_templavoila']['title'];
 								$elArray[$key]['TCEforms']['config'] = $eTypes['eType'][$eType]['TCEforms']['config'];
 							}
-							$elArray[$key]['tx_templavoila']['proc']['int'] = 1;
+							if($reset) {
+								$elArray[$key]['tx_templavoila']['proc']['int'] = 1;
+								unset($elArray[$key]['tx_templavoila']['proc']['HSC']);
+							}
 						break;
 						case 'select':
 							/* preserve previous config, if of the right kind */
-							if (($reset = $reset || ($elArray[$key]['TCEforms']['config']['type'] != 'select'))) {
+							if ($reset || ($elArray[$key]['TCEforms']['config']['type'] != 'select')) {
 								$elArray[$key]['TCEforms']['label']=$elArray[$key]['tx_templavoila']['title'];
 								$elArray[$key]['TCEforms']['config'] = $eTypes['eType'][$eType]['TCEforms']['config'];
+							}
+							if ($reset) {
+								unset($elArray[$key]['tx_templavoila']['proc']);
 							}
 						break;
 						case 'check':
 							/* preserve previous config, if of the right kind */
-							if (($reset = $reset || ($elArray[$key]['TCEforms']['config']['type'] != 'check'))) {
+							if ($reset || ($elArray[$key]['TCEforms']['config']['type'] != 'check')) {
 								$elArray[$key]['TCEforms']['label'] = $elArray[$key]['tx_templavoila']['title'];
 								$elArray[$key]['TCEforms']['config'] = $eTypes['eType'][$eType]['TCEforms']['config'];
+							}
+							if($reset) {
+								unset($elArray[$key]['tx_templavoila']['proc']);
 							}
 						break;
 						case 'input':
 						case 'input_h':
 						case 'input_g':
 							/* preserve previous config, if of the right kind */
-							if (($reset = $reset || ($elArray[$key]['TCEforms']['config']['type'] != 'input'))) {
+							if ($reset || ($elArray[$key]['TCEforms']['config']['type'] != 'input')) {
 								$elArray[$key]['TCEforms']['label']=$elArray[$key]['tx_templavoila']['title'];
 								$elArray[$key]['TCEforms']['config'] = $eTypes['eType'][$eType]['TCEforms']['config'];
 							}
@@ -265,6 +282,9 @@ class tx_templavoila_cm1_eTypes {
 										$elArray[$key]['tx_templavoila']['TypoScript'] .= chr(10) . '10.typolink.parameter.field = '.$theKey;
 									}
 								}
+								if ($reset) {
+									$elArray[$key]['tx_templavoila']['proc']['HSC'] = 1;
+								}
 							} elseif ($eType == 'input_g') {	// Graphical-Header
 
 								$maxW = $contentInfo['img']['width'] ? $contentInfo['img']['width'] : $eTypes['eType'][$eType]['maxWdefault'];
@@ -274,15 +294,18 @@ class tx_templavoila_cm1_eTypes {
 									'MAXW'  => $maxW,
 									'MAXH'  => $maxH
 								));
+								if ($reset) {
+									unset($elArray[$key]['tx_templavoila']['proc']['HSC']);
+								}
 
 							} else {	// Normal output.
-								/* preserve previous config, if explicitly set */
-								if (!isset($elArray[$key]['tx_templavoila']['proc']['HSC'])) {
+								if ($reset) {
 									$elArray[$key]['tx_templavoila']['proc']['HSC'] = 1;
 								}
 							}
 
 							if ($reset) {
+								unset($elArray[$key]['tx_templavoila']['proc']['int']);
 								unset($elArray[$key]['tx_templavoila']['TypoScript']);
 							}
 						break;
@@ -294,32 +317,35 @@ class tx_templavoila_cm1_eTypes {
 							);
 
 							/* preserve previous config, if of the right kind */
-							if (($reset = $reset || ($elArray[$key]['tx_templavoila']['TypoScriptObjPath'] == ''))) {
+							if ($reset || ($elArray[$key]['tx_templavoila']['TypoScriptObjPath'] == '')) {
 							$elArray[$key]['tx_templavoila']['TypoScriptObjPath'] =
 								($elArray[$key]['tx_templavoila']['eType_EXTRA']['objPath'] ?
 									$elArray[$key]['tx_templavoila']['eType_EXTRA']['objPath'] :
 									($elArray[$key]['tx_templavoila']['TypoScriptObjPath'] ?
 										$elArray[$key]['tx_templavoila']['TypoScriptObjPath'] : ''));
 							}
-							/* preserve previous config, if explicitly set */
-							if (!isset($elArray[$key]['tx_templavoila']['proc']['HSC'])) {
-								$elArray[$key]['tx_templavoila']['proc']['HSC'] = 0;
+
+							if ($reset) {
+								unset($elArray[$key]['tx_templavoila']['proc']);
 							}
 						break;
 						case 'none':
 							unset($elArray[$key]['TCEforms']['config']);
+							if ($reset) {
+								unset($elArray[$key]['tx_templavoila']['proc']);
+							}
 						break;
 						default:
 							/* preserve previous config, if of the right kind */
-							if (($reset = $reset || ($elArray[$key]['TCEforms']['config']['type'] != 'text'))) {
+							if ($reset || ($elArray[$key]['TCEforms']['config']['type'] != 'text')) {
 								$elArray[$key]['TCEforms']['label'] = $elArray[$key]['tx_templavoila']['title'];
 								$elArray[$key]['TCEforms']['config'] = $eTypes['eType'][$eType]['TCEforms']['config'];
 					}
 							if ($reset || !trim($elArray[$key]['tx_templavoila']['TypoScript'])) {
 								$elArray[$key]['tx_templavoila']['TypoScript'] = $eTypes['eType'][$eType]['Typoscript'];
 							}
-							/* preserve previous config, if explicitly set */
-							if (!isset($elArray[$key]['tx_templavoila']['proc']['HSC'])) {
+							if ($reset) {
+								unset($elArray[$key]['tx_templavoila']['proc']['int']);
 								$elArray[$key]['tx_templavoila']['proc']['HSC'] = 1;
 							}
 						break;
