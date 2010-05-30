@@ -190,19 +190,25 @@ class tx_templavoila_cm1_dsEdit {
 					 * 	<TypoScriptObjPath>	->
 					 * </tx_templavoila>
 					 */
-					if (($extra = $this->drawDataStructureMap_editItem_editTypeExtra(
+
+					if (isset($insertDataArray['tx_templavoila']['TypoScriptObjPath'])){
+						$curValue = array('objPath' => $insertDataArray['tx_templavoila']['TypoScriptObjPath']);
+					} else {
+						$curValue = '';
+					}
+					$extra = $this->drawDataStructureMap_editItem_editTypeExtra(
 						$insertDataArray['tx_templavoila']['eType'],
 						$formFieldName,
-						($insertDataArray['tx_templavoila']['eType_EXTRA'] ?	// Use eType_EXTRA only if it is set (could be modified, etc), otherwise use TypoScriptObjPath!
-							$insertDataArray['tx_templavoila']['eType_EXTRA'] :
-								($insertDataArray['tx_templavoila']['TypoScriptObjPath'] ?
-								array('objPath' => $insertDataArray['tx_templavoila']['TypoScriptObjPath']) : ''))
-						)))
-					$form .= '
-					<dl id="dsel-extra" class="DS-config">
-						<dt>' . $GLOBALS['LANG']->getLL('mapExtraOptions') . '</dt>
-						<dd>'.$extra.'</dd>
-					</dl>';
+						$curValue
+					);
+
+					if ($extra) {
+						$form .= '
+						<dl id="dsel-extra" class="DS-config">
+							<dt>' . $GLOBALS['LANG']->getLL('mapExtraOptions') . '</dt>
+							<dd>' . $extra . '</dd>
+						</dl>';
+					}
 
 					/* The process-related XML-structure of an tx_templavoila-entry is:
 					 *
