@@ -1,5 +1,6 @@
 2010-05-30  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
+	* Fixed issue: #13722: Typoscript Object Path gets lost when using Hook for eTypesExtraFormFields TypoScriptObject 
 	* Fixed issue: #14226: Mapping TS always makes it HSC=1 // Review eType preset behaviour 
 	* Fixed issue: #13950: Page TOs with static DSs show up in all sites and do not honor GRSP
 
