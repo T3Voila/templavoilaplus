@@ -1,3 +1,7 @@
+2010-05-31  Tolleiv Nietsch <nietsch@aoemedia.de> 
+
+	* Fixed issue: #14548: Call to undefined method tx_templavoila_template::getScope() 
+
 2010-05-30  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
 	* Fixed issue: #13722: Typoscript Object Path gets lost when using Hook for eTypesExtraFormFields TypoScriptObject 

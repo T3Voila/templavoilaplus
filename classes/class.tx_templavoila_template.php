@@ -126,6 +126,14 @@ class tx_templavoila_template {
 		return $permission;
 	}
 
+	/**
+	 * @return int
+	 */
+	protected function getScope() {
+		$dsRepo = t3lib_div::makeInstance('tx_templavoila_datastructureRepository');
+		$ds = $dsRepo->getDatastructureByUidOrFilename($this->row['datastructure']);
+		return $ds->getScope();
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/classes/class.tx_templavoila_template.php'])	{
