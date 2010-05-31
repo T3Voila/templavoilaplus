@@ -189,6 +189,8 @@ class tx_templavoila_handleStaticDataStructures {
 		$fieldName = $params['field'] == 'tx_templavoila_next_to' ? 'tx_templavoila_next_ds' : 'tx_templavoila_ds';
 		$dataSource = $tsConfig['_THIS_ROW'][$fieldName];
 
+		$storagePid = $this->getStoragePid($params, $pObj);
+
 		$removeTOItems = $this->getRemoveItems($params, substr($params['field'], 0, -2) . 'to');
 
 		$dsRepo = t3lib_div::makeInstance('tx_templavoila_datastructureRepository');
@@ -202,7 +204,7 @@ class tx_templavoila_handleStaticDataStructures {
 
 		if (strlen($dataSource)) {
 			$ds = $dsRepo->getDatastructureByUidOrFilename($dataSource);
-			$toList = $toRepo->getTemplatesByDatastructure($ds);
+			$toList = $toRepo->getTemplatesByDatastructure($ds, $storagePid);
 			foreach ($toList as $toObj) {
 				if($toObj->isPermittedForUser($params['table'], $removeTOItems)) {
 					$params['items'][] = array(
@@ -252,7 +254,7 @@ class tx_templavoila_handleStaticDataStructures {
 				'--div--'
 			);
 
-			$toList = $toRepo->getTemplatesByDatastructure($dsObj);
+			$toList = $toRepo->getTemplatesByDatastructure($dsObj, $storagePid);
 
 			foreach ($toList as $toObj) {
 				if($toObj->isPermittedForUser($params['row'], $removeTOItems)) {

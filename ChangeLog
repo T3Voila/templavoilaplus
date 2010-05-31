@@ -1,5 +1,6 @@
 2010-05-31  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
+	* Fixed issue: #14531: TOs Showing up in in other sites when not in their GRSP on multi-domain installation. 
 	* Fixed issue: #14548: Call to undefined method tx_templavoila_template::getScope() 
 
 2010-05-30  Tolleiv Nietsch <nietsch@aoemedia.de> 
