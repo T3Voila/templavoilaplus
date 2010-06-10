@@ -1,5 +1,6 @@
 2010-06-10  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
+	* Fixed issue: #13346: HTML Validator to indicate that mapping might not succeed 
 	* Fixed bug: #14696: mapping module shows error in workspace 
 	* Fixed issue: #5457: Clean XML doesn't save changes when using workspaces 
 	* Fixed issue: #14694: FlashMessage should be used instead of individual message formats 

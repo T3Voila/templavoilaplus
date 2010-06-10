@@ -219,6 +219,7 @@
 			<label index="errorFileNotFound">The file "%s" could not be found!</label>
 			<label index="errorNoTOfound">No Template Object Record with the UID "%s"!</label>
 			
+			<label index="validateTpl">Validate template file (on validator.w3c.org)</label>
 		</languageKey>
 	</data>
 	<orig_hash type="array">

@@ -435,6 +435,12 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			function updPath(inPath)	{	//
 				document.location = "'.t3lib_div::linkThisScript(array('htmlPath'=>'','doMappingOfPath'=>1)).'&htmlPath="+top.rawurlencode(inPath);
 			}
+
+			function openValidator(strToPost) {
+				var valform = new Element(\'form\',{method: \'post\', target:\'_blank\', action: \'http://validator.w3.org/check#validate_by_input\'});
+				valform.insert(new Element(\'input\',{name: \'fragment\', value:strToPost, type: \'hidden\'}));$(document.body).insert(valform);
+ 				valform.submit();
+			}
 		').$this->doc->getDynTabMenuJScode();
 
 			// Setting up the context sensitive menu:
@@ -849,9 +855,17 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			$onCl = 'return top.openUrlInWindow(\'' . t3lib_div::getIndpEnv('TYPO3_SITE_URL') . $relFilePath . '\',\'FileView\');';
 			$tRows[]='
 				<tr>
-					<td class="bgColor5">' . $this->cshItem('xMOD_tx_templavoila', 'mapping_file', $this->doc->backPath, '|') . '</td>
-					<td class="bgColor5"><strong>' . $GLOBALS['LANG']->getLL('templateFile') . ':</strong></td>
+					<td class="bgColor5" rowspan="2">' . $this->cshItem('xMOD_tx_templavoila', 'mapping_file', $this->doc->backPath, '|') . '</td>
+					<td class="bgColor5" rowspan="2"><strong>' . $GLOBALS['LANG']->getLL('templateFile') . ':</strong></td>
 					<td class="bgColor4"><a href="#" onclick="' . htmlspecialchars($onCl) . '">' . htmlspecialchars($relFilePath) . '</a></td>
+				</tr>
+ 				<tr>
+					<td class="bgColor4">
+						<a href="#" onclick ="openValidator( ' . $GLOBALS['LANG']->JScharCode(file_get_contents($this->displayFile)) . ');return false;">
+							<img ' . t3lib_iconWorks::skinImg($this->doc->backPath, t3lib_extMgm::extRelPath('templavoila') . 'resources/icons/html_go.png') . ' align="top" />
+							' . $GLOBALS['LANG']->getLL('validateTpl') . '
+						</a>
+					</td>
 				</tr>
 				<tr>
 					<td class="bgColor5">&nbsp;</td>
@@ -1260,8 +1274,16 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 					$onCl = 'return top.openUrlInWindow(\''.t3lib_div::getIndpEnv('TYPO3_SITE_URL').$relFilePath.'\',\'FileView\');';
 					$tRows[]='
 						<tr class="bgColor4">
-							<td>'.$GLOBALS['LANG']->getLL('templateFile').':</td>
+							<td rowspan="2">'.$GLOBALS['LANG']->getLL('templateFile').':</td>
 							<td><a href="#" onclick="'.htmlspecialchars($onCl).'">'.htmlspecialchars($relFilePath).'</a></td>
+						</tr>
+						<tr class="bgColor4">
+							<td>
+								<a href="#" onclick ="openValidator( ' . $GLOBALS['LANG']->JScharCode(file_get_contents($theFile)) . ');return false;">
+									<img ' . t3lib_iconWorks::skinImg($this->doc->backPath, t3lib_extMgm::extRelPath('templavoila') . 'resources/icons/html_go.png') . ' align="top" />
+									' . $GLOBALS['LANG']->getLL('validateTpl') . '
+								</a>
+							</td>
 						</tr>';
 
 						// Finding Data Structure Record:
