@@ -1,3 +1,7 @@
+2010-06-10  Tolleiv Nietsch <nietsch@aoemedia.de> 
+
+	* Fixed issue: #14579: Documentation states hook that has been removed in 2006 
+
 2010-05-31  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
 	* Fixed issue: #14531: TOs Showing up in in other sites when not in their GRSP on multi-domain installation. 
