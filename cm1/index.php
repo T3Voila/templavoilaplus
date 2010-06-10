@@ -942,6 +942,8 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			$storageFolderPid = 0;
 			$optGroupOpen = false;
 			while(false !== ($row = $TYPO3_DB->sql_fetch_assoc($res)))	{
+				$scope = $row['scope'];
+				unset($row['scope']);
 				t3lib_BEfunc::workspaceOL('tx_templavoila_tmplobj',$row);
 				if ($storageFolderPid != $row['pid']) {
 					 $storageFolderPid = $row['pid'];
@@ -952,7 +954,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 					 $optGroupOpen = true;
 				}
 				$opt[]= '<option value="' .htmlspecialchars($row['uid']).'" ' .
-					($row['scope'] == 1 ? 'class="pagetemplate"">' : 'class="fce">') .
+					($scope == 1 ? 'class="pagetemplate"">' : 'class="fce">') .
 					 htmlspecialchars($GLOBALS['LANG']->sL($row['title']) . ' (UID:' . $row['uid'] . ')').'</option>';
 			}
 			if ($optGroupOpen) {
