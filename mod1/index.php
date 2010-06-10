@@ -1589,7 +1589,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			$status = '';
 			if ($entry['table'] && $entry['uid'])	{
 				$flexObj = t3lib_div::makeInstance('t3lib_flexformtools');
-				$recRow = t3lib_BEfunc::getRecord($entry['table'], $entry['uid']);
+				$recRow = t3lib_BEfunc::getRecordWSOL($entry['table'], $entry['uid']);
 				if ($recRow['tx_templavoila_flex'])	{
 
 						// Clean XML:
@@ -1607,7 +1607,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 						$tce->process_datamap();
 
 							// Re-fetch record:
-						$recRow = t3lib_BEfunc::getRecord($entry['table'], $entry['uid']);
+						$recRow = t3lib_BEfunc::getRecordWSOL($entry['table'], $entry['uid']);
 					}
 
 						// Render status:
