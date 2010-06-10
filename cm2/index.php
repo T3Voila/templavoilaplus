@@ -146,9 +146,19 @@ class tx_templavoila_cm2 extends t3lib_SCbase {
 				$t3lib_diff_Obj = t3lib_div::makeInstance('t3lib_diff');
 				$diffres = $t3lib_diff_Obj->makeDiffDisplay($currentXML,$cleanXML);
 
-				$xmlContentMarkedUp = '
-				<b>'.$this->doc->icons(1).$LANG->getLL('needsCleaning',1).'</b>
-				<table border="0">
+			if (version_compare(TYPO3_version, '4.3', '>')) {
+				$flashMessage = t3lib_div::makeInstance(
+					't3lib_FlashMessage',
+					$LANG->getLL('needsCleaning',1),
+					'',
+					t3lib_FlashMessage::INFO
+				);
+				$xmlContentMarkedUp = $flashMessage->render();
+			} else {
+				$xmlContentMarkedUp = '<b>' . $this->doc->icons(1) . $LANG->getLL('needsCleaning',1) . '</b>';
+			}
+
+			$xmlContentMarkedUp .= '<table border="0">
 					<tr class="bgColor5 tableheader">
 						<td>'.$LANG->getLL('current',1).'</td>
 					</tr>
@@ -180,7 +190,17 @@ class tx_templavoila_cm2 extends t3lib_SCbase {
 			} else {
 				$xmlContentMarkedUp = '';
 				if ($cleanXML)	{
-					$xmlContentMarkedUp.= '<b>'.$this->doc->icons(-1).$LANG->getLL('XMLclean',1).'</b><br/>';
+					if (version_compare(TYPO3_version, '4.3', '>')) {
+						$flashMessage = t3lib_div::makeInstance(
+							't3lib_FlashMessage',
+							$LANG->getLL('XMLclean',1),
+							'',
+							t3lib_FlashMessage::OK
+						);
+						$xmlContentMarkedUp = $flashMessage->render();
+					} else {
+						$xmlContentMarkedUp .= '<b>' . $this->doc->icons(-1) . $LANG->getLL('XMLclean', 1) . '</b><br/>';
+					}
 				}
 				$xmlContentMarkedUp.= $this->markUpXML($currentXML);
 			}

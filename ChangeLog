@@ -1,5 +1,6 @@
 2010-06-10  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
+	* Fixed issue: #14694: FlashMessage should be used instead of individual message formats 
 	* Fixed issue: #14579: Documentation states hook that has been removed in 2006 
 
 2010-05-31  Tolleiv Nietsch <nietsch@aoemedia.de> 

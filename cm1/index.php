@@ -1679,7 +1679,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			<!--
 				Header parts:
 			-->
-			<table border="0" cellpadding="2" cellspacing="2" id="c-headerParts">
+			<table width="100%" border="0" cellpadding="2" cellspacing="2" id="c-headerParts">
 				<tr class="bgColor5">
 					<td><strong>' . $GLOBALS['LANG']->getLL('include') . ':</strong></td>
 					<td><strong>' . $GLOBALS['LANG']->getLL('tag') . ':</strong></td>
@@ -1687,11 +1687,23 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 				</tr>
 				'.$tRows.'
 				'.$bodyTagRow.'
-			</table>' .
-			'<p style="margin: 5px 3px">' .
+			</table><br />';
+
+		if (version_compare(TYPO3_version, '4.3', '>')) {
+			$flashMessage = t3lib_div::makeInstance(
+				't3lib_FlashMessage',
+				$GLOBALS['LANG']->getLL('msgHeaderSet'),
+				'',
+				t3lib_FlashMessage::WARNING
+			);
+			$headerParts .= $flashMessage->render();
+		} else {
+			$headerParts .= '<p style="margin: 5px 3px">' .
 			'<img'.t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/icon_warning.gif', 'width="18" height="16"').' alt="" align="absmiddle" /> '.
-			'<strong>' . $GLOBALS['LANG']->getLL('msgHeaderSet') . '</strong></p>' .
-			$this->cshItem('xMOD_tx_templavoila','mapping_to_headerParts_buttons',$this->doc->backPath,'').$htmlAfterDSTable;
+			'<strong>' . $GLOBALS['LANG']->getLL('msgHeaderSet') . '</strong></p>';
+		}
+
+		$headerParts .= $this->cshItem('xMOD_tx_templavoila','mapping_to_headerParts_buttons',$this->doc->backPath,'').$htmlAfterDSTable;
 
 			// Return result:
 		return $headerParts;
@@ -1883,7 +1895,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 	/**
 	 * Determines parentElement and sameLevelElements for the RANGE mapping mode
 	 *
-	 * @todo	this functions return value pretty dirty, but due to the fact that this is something which 
+	 * @todo	this functions return value pretty dirty, but due to the fact that this is something which
 	 * 			should at least be encapsulated the bad coding habit it preferred just for readability of the remaining code
 	 *
 	 * @param array	Array containing information about the current element
@@ -1911,7 +1923,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			foreach ($elParentLevel as $pKey=>$pValue) {
 				if (in_array($lastEl['path'], $pValue)) {
 					$parentElement = $pKey;
-				} elseif ($hasId) {					
+				} elseif ($hasId) {
 					foreach($pValue as $pElement) {
 						if(stristr($pElement, '#') && preg_replace('/^(\w+)\.?.*#(.*)$/i', '\1#\2', $pElement) ==  $lastEl['path']) {
 							$parentElement = $pKey;
@@ -1936,7 +1948,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 						$curPath = stristr($element, '#') ? preg_replace('/^(\w+)\.?.*#(.*)$/i', '\1#\2', $element) : $element;
 						if($curPath == $lastEl['path']) {
 							$foundCurrent = TRUE;
-						}				
+						}
 						if($foundCurrent) {
 							$sameLevelElements[] = $curPath;
 						}
