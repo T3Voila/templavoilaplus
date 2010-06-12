@@ -282,6 +282,15 @@ class tx_templavoila_cm1_dsEdit {
 						<dt><label>' . $GLOBALS['LANG']->getLL('mapTCEextras') . ':</label></dt>
 						<dd><input type="text" size="80" name="'.$formFieldName.'[TCEforms][defaultExtras]" value="'.htmlspecialchars($insertDataArray['TCEforms']['defaultExtras']).'" /></dd>
 					</dl>';
+				} else {
+					$form .= '
+						<dl id="dsel-proc" class="DS-config">
+							<dt><label>' . $GLOBALS['LANG']->getLL('mapEnablePreview') . ':</label></dt>
+							<dd>
+								<input type="radio" class="radio" id="tv_preview_enable" value="" name="'.$formFieldName.'[tx_templavoila][preview]" ' . ($insertDataArray['tx_templavoila']['preview'] != 'disable' ? 'checked="checked"' : '') .'> <label for="tv_preview_enable">' . $GLOBALS['LANG']->getLL('mapEnablePreview.enable') . '</label><br/>
+								<input type="radio" class="radio" id="tv_preview_disable" value="disable" name="'.$formFieldName.'[tx_templavoila][preview]" ' . ($insertDataArray['tx_templavoila']['preview'] == 'disable' ? 'checked="checked"' : '') .'> <label for="tv_preview_disable">' . $GLOBALS['LANG']->getLL('mapEnablePreview.disable') . '</label>
+							</dd>
+						</dl>';
 				}
 
 				$formSubmit = '

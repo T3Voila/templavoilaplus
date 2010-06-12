@@ -1346,6 +1346,11 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 		$result = '';
 		foreach ($fieldData as $fieldKey => $fieldValue) {
+
+			if (isset($fieldValue['config']['tx_templavoila']['preview']) && $fieldValue['config']['tx_templavoila']['preview'] == 'disable') {
+				continue;
+			}
+
 			if ($fieldValue['config']['type'] == 'array') {
 				if (isset($fieldValue['data']['el'])) {
 					if ($fieldValue['config']['section']) {
