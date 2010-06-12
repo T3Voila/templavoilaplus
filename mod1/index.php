@@ -1305,7 +1305,8 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 				if ($fieldData['type']=='array')	{	// Making preview for array/section parts of a FlexForm structure:;
 					if(is_array($fieldData['childElements'][$lKey])) {
-						$previewContent .= $this->render_previewSubData($fieldData['childElements'][$lKey], $elData['table'], $previewData['fullRow']['uid'], $vKey);
+						$subData = $this->render_previewSubData($fieldData['childElements'][$lKey], $elData['table'], $previewData['fullRow']['uid'], $vKey);
+						$previewContent .= $this->link_edit($subData, $elData['table'], $previewData['fullRow']['uid']);
 					} else {
 						// no child elements found here
 					}

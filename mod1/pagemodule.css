@@ -84,6 +84,15 @@ div.warning a {
 	vertical-align:top;
 }
 
+.tpm-preview {
+	padding:1px 3px 1px 3px
+}
+
+.tpm-preview ul {
+	padding:0 0 0 20px;
+	margin:0
+}
+
 /* non-used elements */
 .tpm-nonused-element {
 	
