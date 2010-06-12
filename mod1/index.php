@@ -1303,34 +1303,11 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				$TCEformsConfiguration = $fieldData['TCEforms']['config'];
 				$TCEformsLabel = $this->localizedFFLabel($fieldData['TCEforms']['label'], 1);	// title for non-section elements
 
-				if ($fieldData['type']=='array')	{	// Making preview for array/section parts of a FlexForm structure:
-					if (is_array($fieldData['subElements'][$lKey])) {
-						if ($fieldData['section']) {
-							$previewContent .= '<ul class="section-preview">';
-							foreach($fieldData['subElements'][$lKey] as $sectionData) {
-								if (is_array($sectionData))	{
-									$sectionFieldKey = key($sectionData);
-									if (is_array ($sectionData[$sectionFieldKey]['el'])) {
-
-										foreach ($sectionData[$sectionFieldKey]['el'] as $containerFieldKey => $containerData) {
-											$previewContent .= '<li><strong>' . $containerFieldKey . '</strong> ' .
-												htmlspecialchars(t3lib_div::fixed_lgd_cs(strip_tags($containerData[$vKey]),200)) .
-												'</li>';
-										}
-
-									}
-
-								}
-							}
-							$previewContent .= '</ul>';
-							if ($this->currentElementBelongsToCurrentPage || (!$this->currentElementBelongsToCurrentPage && $this->modTSconfig['properties']['enableEditIconForRefElements'])) {
-								$previewContent = $this->link_edit($previewContent, $elData['table'], $previewData['fullRow']['uid']);
-							}
-						} else {
-							foreach ($fieldData['subElements'][$lKey] as $containerKey => $containerData) {
-								$previewContent .= '<strong>'.$containerKey.'</strong> '.$this->link_edit(htmlspecialchars(t3lib_div::fixed_lgd_cs(strip_tags($containerData[$vKey]),200)), $elData['table'], $previewData['fullRow']['uid']).'<br />';
-							}
-						}
+				if ($fieldData['type']=='array')	{	// Making preview for array/section parts of a FlexForm structure:;
+					if(is_array($fieldData['childElements'][$lKey])) {
+						$previewContent .= $this->render_previewSubData($fieldData['childElements'][$lKey], $elData['table'], $previewData['fullRow']['uid'], $vKey);
+					} else {
+						// no child elements found here
 					}
 				} else {	// Preview of flexform fields on top-level:
 					$fieldValue = $fieldData['data'][$lKey][$vKey];
@@ -1350,6 +1327,69 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		}
 
 		return $previewContent;
+	}
+
+	/**
+	 * Merge the datastructure and the related content into a proper tree-structure
+	 *
+	 * @param array $fieldData
+	 * @param string $table
+	 * @param integer $uid
+	 * @param string $vKey
+	 * @return array
+	 */
+	function render_previewSubData($fieldData, $table, $uid, $vKey) {
+		if (!is_array($fieldData)) {
+			return;
+		}
+
+		$result = '';
+		foreach ($fieldData as $fieldKey => $fieldValue) {
+			if ($fieldValue['config']['type'] == 'array') {
+				if (isset($fieldValue['data']['el'])) {
+					if ($fieldValue['config']['section']) {
+						$result .= '<strong>';
+						$result .= ($fieldValue['config']['TCEforms']['label'] ? $fieldValue['config']['TCEforms']['label'] : $fieldValue['config']['tx_templavoila']['title']);
+						$result .= '</strong>';
+						$result .= '<ul>';
+						foreach ($fieldValue['data']['el'] as $i => $sub) {
+							$data = $this->render_previewSubData($sub, $table, $uid, $vKey);
+							if ($data) {
+								$result .= '<li>' . $data . '</li>';
+							}
+						}
+						$result .= '</ul>';
+					} else {
+						$result .= $this->render_previewSubData($fieldValue['data']['el'], $table, $uid, $vKey);
+					}
+				}
+			} else {
+				$label = $data = '';
+			 	if (isset($fieldValue['config']['TCEforms']['config']['type']) && $fieldValue['config']['TCEforms']['config']['type'] == 'group') {
+					if ($fieldValue['config']['TCEforms']['config']['internal_type'] == 'file')	{
+							// Render preview for images:
+						$thumbnail = t3lib_BEfunc::thumbCode (array('dummyFieldName'=> $fieldValue['data'][$vKey]), '', 'dummyFieldName', $this->doc->backPath, '', $fieldValue['config']['TCEforms']['config']['uploadfolder']);
+						if (isset($fieldValue['config']['TCEforms']['label'])) {
+							$label = $fieldValue['config']['TCEforms']['label'];
+						}
+						$data = $thumbnail;
+					}
+				} else if (isset($fieldValue['config']['TCEforms']['config']['type']) && $fieldValue['config']['TCEforms']['config']['type'] != '') {
+						// Render for everything else:
+					if (isset($fieldValue['config']['TCEforms']['label'])) {
+						$label = $fieldValue['config']['TCEforms']['label'];
+					}
+					$data = (!$fieldValue['data'][$vKey] ? '' : $this->link_edit(htmlspecialchars(t3lib_div::fixed_lgd_cs(strip_tags($fieldValue['data'][$vKey]),200)), $table, $uid)) . '<br />';
+				} else {
+					// @todo no idea what we should to here
+				}
+
+				if ($label && $data) {
+					$result .= '<strong>' . $label . '</strong> ' . $data . '</br>';
+				}
+			}
+		}
+		return $result;
 	}
 
 	/**

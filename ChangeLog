@@ -1,3 +1,7 @@
+2010-06-12  Tolleiv Nietsch <nietsch@aoemedia.de> 
+
+	* Fixed issue: #3450: Web->Page (TV) shows "fieldname" instead of "title"
+
 2010-06-10  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
 	* Fixed issue: #13346: HTML Validator to indicate that mapping might not succeed 

@@ -1488,6 +1488,7 @@ class tx_templavoila_api {
 
 								if ($fieldData['type'] == 'array')	{
 									$tree['previewData']['sheets'][$sheetKey][$fieldKey]['subElements'][$lKey] = $flexformContentArr['data'][$sheetKey][$lKey][$fieldKey]['el'];
+									$tree['previewData']['sheets'][$sheetKey][$fieldKey]['childElements'][$lKey] = $this->getContentTree_processSubFlexFields($table, $row, array($fieldKey=>$fieldData), $tt_content_elementRegister, $flexformContentArr['data'][$sheetKey][$lKey], $vKeys);
 								}
 							}
 						}
@@ -1515,6 +1516,45 @@ class tx_templavoila_api {
 		$tree['localizationInfo'] = $this->getContentTree_getLocalizationInfoForElement($tree, $tt_content_elementRegister);
 
 		return $tree;
+	}
+
+	/**
+	 * Merge the datastructure and the related content into a proper tree-structure
+	 *
+	 * @param string $table
+	 * @param array $row
+	 * @param array $fieldData
+	 * @param object $tt_content_elementRegister
+	 * @param array $contentArr
+	 * @param array $vKeys
+	 * @return array
+	 */
+	function getContentTree_processSubFlexFields($table, $row, $fieldData, &$tt_content_elementRegister, $contentArr, $vKeys) {
+		if (!is_array($fieldData)) {
+			return array();
+		}
+		$result = array();
+		foreach ($fieldData as $fieldKey=>$fieldValue) {
+			if ($fieldValue['type'] == 'array') {
+				if (is_array($contentArr) && isset($contentArr[$fieldKey]) && is_array($contentArr[$fieldKey]['el'])) {
+					$result[$fieldKey]['config'] = $fieldValue;
+					unset ($result[$fieldKey]['config']['el']);
+					if ($fieldValue['section']==1) {
+						foreach ($contentArr[$fieldKey]['el'] as $i=>$data) {
+							$result[$fieldKey]['data']['el'][$i] = $this->getContentTree_processSubFlexFields($table, $row, $fieldValue['el'], $tt_content_elementRegister, $data, $vKeys);
+						}
+					} else {
+						$result[$fieldKey]['data']['el'] = $this->getContentTree_processSubFlexFields($table, $row, $fieldValue['el'], $tt_content_elementRegister, $contentArr[$fieldKey]['el'], $vKeys);
+					}
+				}
+			} else {
+				$result[$fieldKey]['config'] = $fieldData[$fieldKey];
+				foreach ($vKeys as $vKey) {
+					$result[$fieldKey]['data'][$vKey] = $contentArr[$fieldKey][$vKey];
+				}
+			}
+		}
+		return $result;
 	}
 
 	/**
