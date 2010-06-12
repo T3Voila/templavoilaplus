@@ -218,6 +218,7 @@
 			<label index="errorNoDSfound">No Data Structure Record could be found with UID "%s"!</label>
 			<label index="errorFileNotFound">The file "%s" could not be found!</label>
 			<label index="errorNoTOfound">No Template Object Record with the UID "%s"!</label>
+			<label index="errorNoToTitleDefined">No "title" defined, unable to create DS/TO.</label>
 			
 			<label index="validateTpl">Validate template file (on validator.w3c.org)</label>
 		</languageKey>

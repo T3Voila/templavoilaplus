@@ -508,12 +508,28 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 
 				// Converting GPvars into a "cmd" value:
 			$cmd = '';
+			$msg = array();
 			if (t3lib_div::_GP('_load_ds_xml'))	{	// Loading DS from XML or TO uid
 				$cmd = 'load_ds_xml';
 			} elseif (t3lib_div::_GP('_clear'))	{	// Resetting mapping/DS
 				$cmd = 'clear';
 			} elseif (t3lib_div::_GP('_saveDSandTO'))	{	// Saving DS and TO to records.
-				$cmd = 'saveDSandTO';
+				if (!strlen(trim($this->_saveDSandTO_title))) {
+					$cmd = 'saveScreen';
+					if (version_compare(TYPO3_version, '4.3', '>')) {
+						$flashMessage = t3lib_div::makeInstance(
+							't3lib_FlashMessage',
+							$GLOBALS['LANG']->getLL('errorNoToTitleDefined'),
+							'',
+							t3lib_FlashMessage::ERROR
+						);
+						$msg[] = $flashMessage->render();
+					} else {
+						$msg[] = '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/icon_fatalerror.gif', 'width="18" height="16"').' border="0" align="top" class="absmiddle" alt="" /><strong>'.$GLOBALS['LANG']->getLL('error').'</strong> '.$GLOBALS['LANG']->getLL('errorNoToTitleDefined');
+					}
+				} else {
+					$cmd = 'saveDSandTO';
+				}
 			} elseif (t3lib_div::_GP('_updateDSandTO'))	{	// Updating DS and TO
 				$cmd = 'updateDSandTO';
 			} elseif (t3lib_div::_GP('_showXMLDS'))	{	// Showing current DS as XML
@@ -539,7 +555,6 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 				// Init settings:
 			$this->editDataStruct=1;	// Edit DS...
 			$content='';
-			$msg = array();
 
 				// Checking Storage Folder PID:
 			if (!count($this->storageFolders))	{
@@ -897,7 +912,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 				-->
 				<table border="0" cellpadding="2" cellspacing="1" id="c-toHeader">
 					'.implode('',$tRows).'
-				</table>
+				</table><br />
 			';
 
 
