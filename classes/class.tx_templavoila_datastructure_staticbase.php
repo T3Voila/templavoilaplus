@@ -72,6 +72,21 @@ class tx_templavoila_datastructure_staticbase extends tx_templavoila_datastructu
 	}
 
 	/**
+	 * Provides the datastructure configuration as XML
+	 *
+	 * @return string
+	 */
+	public function getDataprotXML() {
+		$xml = '';
+		if(is_readable($this->filename)) {
+			$xml = file_get_contents($this->filename);
+		} else {
+			// @todo find out if that happens and whether there's a "useful" reaction for that
+		}
+		return $xml;
+	}
+
+	/**
 	 * Determine whether the current user has permission to create elements based on this
 	 * datastructure or not - not really useable for static datastructure but relevant for
 	 * the overall system

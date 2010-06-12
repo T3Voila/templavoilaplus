@@ -145,21 +145,17 @@ class tx_templavoila_pi1 extends tslib_pibase {
 		$data['tx_templavoila_ds'] = $conf['ds'];
 		$data['tx_templavoila_to'] = $conf['to'];
 
+		$dsRepo = t3lib_div::makeInstance('tx_templavoila_datastructureRepository');
+
 		// prepare fake flexform
 		$values = array();
 		foreach ($data as $k => $v) {
 			// Make correct language identifiers here!
 			if ($GLOBALS['TSFE']->sys_language_isocode) {
-				$srcPointer = $data['tx_templavoila_ds'];
-				if (t3lib_div::testInt($srcPointer))	{	// If integer, then its a record we will look up:
-					$DSrec = $GLOBALS['TSFE']->sys_page->checkRecord('tx_templavoila_datastructure', $srcPointer);
-					$DS = t3lib_div::xml2array($DSrec['dataprot']);
-				} else {	// Otherwise expect it to be a file:
-					$file = t3lib_div::getFileAbsFileName($srcPointer);
-					if ($file && @is_file($file))	{
-						$DS = t3lib_div::xml2array(t3lib_div::getUrl($file));
-					}
-				}
+
+				$dsObj = $dsRepo->getDatastructureByUidOrFilename($data['tx_templavoila_ds']);
+				$DS = $dsObj->getDataprotArray();
+
 				if (is_array($DS)) {
 					$langChildren = $DS['meta']['langChildren'] ? 1 : 0;
 					$langDisabled = $DS['meta']['langDisable'] ? 1 : 0;
@@ -260,17 +256,9 @@ class tx_templavoila_pi1 extends tslib_pibase {
 			}
 		}
 
-			// Get data structure:
-		$srcPointer = $row['tx_templavoila_ds'];
-		if (t3lib_div::testInt($srcPointer))	{	// If integer, then its a record we will look up:
-			$DSrec = $GLOBALS['TSFE']->sys_page->checkRecord('tx_templavoila_datastructure', $srcPointer);
-			$DS = t3lib_div::xml2array($DSrec['dataprot']);
-		} else {	// Otherwise expect it to be a file:
-			$file = t3lib_div::getFileAbsFileName($srcPointer);
-			if ($file && @is_file($file))	{
-				$DS = t3lib_div::xml2array(t3lib_div::getUrl($file));
-			}
-		}
+		$dsRepo = t3lib_div::makeInstance('tx_templavoila_datastructureRepository');
+		$dsObj = $dsRepo->getDatastructureByUidOrFilename($row['tx_templavoila_ds']);
+		$DS = $dsObj->getDataprotArray();
 
 			// If a Data Structure was found:
 		if (is_array($DS))	{
@@ -501,7 +489,7 @@ class tx_templavoila_pi1 extends tslib_pibase {
 			foreach($DSelements as $key => $dsConf)	{
 					// Store key of DS element and the parents being handled in global register
 				$nestedFields = '';
-				if (isset($GLOBALS['TSFE']->register['tx_templavoila_pi1.current_field'])) { 
+				if (isset($GLOBALS['TSFE']->register['tx_templavoila_pi1.current_field'])) {
 					 $nestedFields = implode(',', array($GLOBALS['TSFE']->register['tx_templavoila_pi1.current_field'], $key));
 				} else {
 					$nestedFields = $key;

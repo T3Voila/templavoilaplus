@@ -1,5 +1,6 @@
 2010-06-12  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
+	* Fixed issue: 14386: Static DS - Centralize access to datastructure / pt.1  (Thanks to Michael Klapper)
 	* Fixed issue: #14446: disable data preview for section elements 
 	* Fixed issue: #3450: Web->Page (TV) shows "fieldname" instead of "title"
 

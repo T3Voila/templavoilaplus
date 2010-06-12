@@ -59,6 +59,7 @@ class tx_templavoila_templateRepository {
 			'tx_templavoila_tmplobj.datastructure=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($ds->getKey(), 'tx_templavoila_tmplobj')
 				. (intval($storagePid) > 0 ? ' AND tx_templavoila_tmplobj.pid = ' . intval($storagePid) : '')
 				. t3lib_BEfunc::deleteClause('tx_templavoila_tmplobj')
+				. t3lib_BEfunc::versioningPlaceholderClause('tx_templavoila_tmplobj')
 		);
 		$toCollection = array();
 		foreach ($toList as $toRec) {

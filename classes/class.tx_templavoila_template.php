@@ -31,6 +31,7 @@ class tx_templavoila_template {
 
 	protected $row;
 	protected $label;
+	protected $description;
 	protected $iconFile;
 
 	/**
@@ -41,6 +42,7 @@ class tx_templavoila_template {
 		$this->row = t3lib_beFunc::getRecordWSOL('tx_templavoila_tmplobj', $uid);
 
 		$this->setLabel($this->row['title']);
+		$this->setDescription($this->row['description']);
 		$this->setIcon($this->row['previewicon']);
 	}
 
@@ -60,6 +62,24 @@ class tx_templavoila_template {
 	 */
 	protected function setLabel($str) {
 		$this->label = $str;
+	}
+
+	/**
+	 * Retrieve the description of the template
+	 *
+	 * @return string
+	 */
+	public function getDescription() {
+		return $this->description;
+	}
+
+	/**
+	 *
+	 * @param string $str
+	 * @return void
+	 */
+	protected function setDescription($str) {
+		$this->description = $str;
 	}
 
 	/**
@@ -127,13 +147,33 @@ class tx_templavoila_template {
 	}
 
 	/**
+	 * @return tx_templavoila_datastructure
+	 */
+	public function getDatastructure() {
+		$dsRepo = t3lib_div::makeInstance('tx_templavoila_datastructureRepository');
+		return $dsRepo->getDatastructureByUidOrFilename($this->row['datastructure']);
+	}
+
+	/**
 	 * @return int
 	 */
 	protected function getScope() {
-		$dsRepo = t3lib_div::makeInstance('tx_templavoila_datastructureRepository');
-		$ds = $dsRepo->getDatastructureByUidOrFilename($this->row['datastructure']);
-		return $ds->getScope();
+		return $this->getDatastructure()->getScope();
 	}
+
+	/**
+	 * @return array
+	 */
+	public function getLocalDataprotArray() {
+		$dataprot = $this->getDatastructure()->getDataprotArray();
+		$toDataprot =  t3lib_div::xml2array($this->row['localprocessing']);
+
+		if (is_array($toDatarpot)) {
+			$dataprot = t3lib_div::array_merge_recursive_overrule($dataprot, $toDataprot);
+		}
+		return $dataprot;
+	}
+
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/classes/class.tx_templavoila_template.php'])	{

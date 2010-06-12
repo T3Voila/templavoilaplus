@@ -114,6 +114,27 @@ abstract class tx_templavoila_datastructure {
 	abstract public function getStoragePids();
 
 	/**
+	 * Provides the datastructure configuration as XML
+	 *
+	 * @return string
+	 */
+	abstract public function getDataprotXML();
+
+	/**
+	 * Provides the datastructure configuration as array
+	 *
+	 * @return array
+	 */
+	public function getDataprotArray() {
+		$arr = array();
+		$ds = $this->getDataprotXML();
+		if (strlen($ds) > 1) {
+			$arr = t3lib_div::xml2array($ds);
+		}
+		return $arr;
+	}
+
+	/**
 	 * Determine whether the current user has permission to create elements based on this
 	 * datastructure or not
 	 *

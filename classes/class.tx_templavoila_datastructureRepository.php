@@ -84,7 +84,9 @@ class tx_templavoila_datastructureRepository {
 			$dsRows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 				'uid',
 				'tx_templavoila_datastructure',
-				'pid=' . intval($pid) . t3lib_BEfunc::deleteClause('tx_templavoila_datastructure')
+				'pid=' . intval($pid)
+					. t3lib_BEfunc::deleteClause('tx_templavoila_datastructure')
+					. t3lib_BEfunc::versioningPlaceholderClause('tx_templavoila_datastructure')
 			);
 			foreach ($dsRows as $ds) {
 				$dscollection[] = $this->getDatastructureByUidOrFilename($ds['uid']);
@@ -120,7 +122,9 @@ class tx_templavoila_datastructureRepository {
 			$dsRows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 				'uid',
 				'tx_templavoila_datastructure',
-				'scope=' . intval($scope) . ' AND pid=' . intval($pid) . t3lib_BEfunc::deleteClause('tx_templavoila_datastructure')
+				'scope=' . intval($scope) . ' AND pid=' . intval($pid)
+					. t3lib_BEfunc::deleteClause('tx_templavoila_datastructure')
+					. t3lib_BEfunc::versioningPlaceholderClause('tx_templavoila_datastructure')
 			);
 			foreach ($dsRows as $ds) {
 				$dscollection[] = $this->getDatastructureByUidOrFilename($ds['uid']);

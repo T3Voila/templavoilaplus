@@ -417,54 +417,21 @@ class tx_templavoila_dbnewcontentel {
 		$positionPid = $this->id;
 		$dataStructureRecords = array();
 		$storageFolderPID = $this->apiObj->getStorageFolderPid($positionPid);
-		$staticDS = ($this->extConf['staticDS.']['enable']);
 
-		if (is_array($GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['staticDataStructures'])) {
-				// Fetch static data structures which are stored in XML files:
-			foreach($GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['staticDataStructures'] as $staticDataStructureArr)	{
-				if ($staticDataStructureArr['scope'] == 2) {
-					$staticDataStructureArr['_STATIC'] = TRUE;
-					$dataStructureRecords[$staticDataStructureArr['path']] = $staticDataStructureArr;
-				}
-			}
-		}
-		if (!$staticDS) {
-				// Fetch data structures stored in the database:
-			$addWhere = $this->buildRecordWhere('tx_templavoila_datastructure');
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tx_templavoila_datastructure', 'pid=' . intval($storageFolderPID) . ' AND scope=2' . $addWhere . t3lib_BEfunc::deleteClause('tx_templavoila_datastructure') . t3lib_BEfunc::versioningPlaceholderClause('tx_templavoila_datastructure'));
-			while ( FALSE !== ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) ) {
-				$dataStructureRecords[$row['uid']] = $row;
-			}
-		}
-
-
-			// Fetch all template object records which are based one of the previously fetched data structures:
-		$templateObjectRecords = array();
-		$recordDataStructure = array();
-		$addWhere = $this->buildRecordWhere('tx_templavoila_tmplobj');
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tx_templavoila_tmplobj', 'pid=' . intval($storageFolderPID) . ' AND parent=0' . $addWhere . t3lib_BEfunc::deleteClause('tx_templavoila_tmplobj') . t3lib_BEfunc::versioningPlaceholderClause('tx_templavoila_tmpl'), '', 'sorting');
-		while ( FALSE !== ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) ) {
-			if (is_array($dataStructureRecords[$row['datastructure']])) {
-				$templateObjectRecords[] = $row;
-				$recordDataStructure[ $row['datastructure'] ] = t3lib_div::xml2array( $dataStructureRecords[$row['datastructure']]['dataprot'] );
-			}
-		}
-
-
-			// Add the filtered set of TO entries to the wizard list:
-		foreach ($templateObjectRecords as $index => $templateObjectRecord) {
-
-				// Get default values from datastructure
-			$localProcessing = t3lib_div::xml2array( $templateObjectRecord['localprocessing'] );
-			$defDSVals = $this->getDsDefaultValues( $recordDataStructure[ $templateObjectRecord['datastructure'] ], $localProcessing );
-
-			$tmpFilename = 'uploads/tx_templavoila/' . $templateObjectRecord['previewicon'];
-			$returnElements['fce.']['elements.']['fce_' . $templateObjectRecord['uid'] . '.'] = array(
-				'icon'        => (@is_file(PATH_site . $tmpFilename)) ? ('../' . $tmpFilename) : ('../' . t3lib_extMgm::siteRelPath('templavoila') . 'res1/default_previewicon.gif'),
-				'description' => $templateObjectRecord['description'] ? htmlspecialchars($templateObjectRecord['description']) : $GLOBALS['LANG']->getLL('template_nodescriptionavailable'),
-				'title'       => $templateObjectRecord['title'],
-				'params'      => '&defVals[tt_content][CType]=templavoila_pi1&defVals[tt_content][tx_templavoila_ds]=' . $templateObjectRecord['datastructure'] . '&defVals[tt_content][tx_templavoila_to]=' . $templateObjectRecord['uid'] . $defVals . $defDSVals,
-			);
+		$dsRepo = t3lib_div::makeInstance('tx_templavoila_datastructureRepository');
+		$toRepo = t3lib_div::makeInstance('tx_templavoila_templateRepository');
+		$dsList = $dsRepo->getDatastructuresByStoragePidAndScope($storageFolderPID, tx_templavoila_datastructure::SCOPE_FCE);
+		foreach($dsList as $dsObj) {
+			$toList = $toRepo->getTemplatesByDatastructure($dsObj, $storagePid);
+			foreach ($toList as $toObj) {
+				$tmpFilename = $toObj->getIcon();
+				$returnElements['fce.']['elements.']['fce_' . $toObj->getKey() . '.'] = array(
+					'icon'        => (@is_file(PATH_site . substr($tmpFilename, 3))) ? $tmpFilename : ('../' . t3lib_extMgm::siteRelPath('templavoila') . 'res1/default_previewicon.gif'),
+					'description' => $toObj->getDescription() ? htmlspecialchars($toObj->getDescription()) : $GLOBALS['LANG']->getLL('template_nodescriptionavailable'),
+					'title'       => $toObj->getLabel(),
+					'params'      => $this->getDsDefaultValues( $toObj )
+				);
+ 			}
  		}
 		return $returnElements;
 	}
@@ -570,20 +537,19 @@ class tx_templavoila_dbnewcontentel {
 	}
 
 	/**
-	 * Get default values from DataStructure and merge it with TemplateObject
-	 * @param array $dsStructure	DataStructure as array
-	 * @param array $toStructure	LocalProcessing as array
+	 * Process the default-value settings
+	 *
+	 * @param tx_templavoila_template $toObj	LocalProcessing as array
 	 * @return string	additional URL arguments with configured default values
 	 */
-	function getDsDefaultValues( $dsStructure, $toStructure ) {
-			// if we've no datastructure information there's no need to proceed here
-		if( !is_array($dsStructure) )	return '';
-			// if available local processing needs to be merged
-		if( is_array($toStructure) ) {
-			$dsStructure = t3lib_div::array_merge_recursive_overrule( $dsStructure, $toStructure );
-		}
+	function getDsDefaultValues( tx_templavoila_template $toObj ) {
 
-		$dsValues = '';
+		$dsStructure = $toObj->getLocalDataprotArray();
+
+		$dsValues = '&defVals[tt_content][CType]=templavoila_pi1'
+					. '&defVals[tt_content][tx_templavoila_ds]=' . $toObj->getDatastructure()->getKey()
+					. '&defVals[tt_content][tx_templavoila_to]=' . $toObj->getKey();
+
 		if ( is_array($dsStructure['meta']['default']['TCEForms']) ) {
 			foreach( $dsStructure['meta']['default']['TCEForms'] as $field => $value ) {
 				$dsValues .= '&defVals[tt_content]['.$field.']='. $value;
