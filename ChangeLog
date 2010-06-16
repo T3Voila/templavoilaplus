@@ -1,3 +1,7 @@
+2010-06-16  Tolleiv Nietsch <nietsch@aoemedia.de> 
+
+	* Fixed issue: #14571: Datastructure: meta > default doesn't work when using static datastructure files (Thanks to Aske Ertmann)
+
 2010-06-12  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
 	* Fixed bug: #4512: Would be nice: disallow save without title/name field 

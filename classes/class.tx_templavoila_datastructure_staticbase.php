@@ -78,8 +78,9 @@ class tx_templavoila_datastructure_staticbase extends tx_templavoila_datastructu
 	 */
 	public function getDataprotXML() {
 		$xml = '';
-		if(is_readable($this->filename)) {
-			$xml = file_get_contents($this->filename);
+		$file = t3lib_div::getFileAbsFileName($this->filename);
+		if (is_readable($file)) {
+			$xml = file_get_contents($file);
 		} else {
 			// @todo find out if that happens and whether there's a "useful" reaction for that
 		}
