@@ -179,9 +179,9 @@ class tx_templavoila_cm1_dsEdit {
 					$form .= '
 					<dl id="dsel-ts" class="DS-config">
 						<dt><label>' . $GLOBALS['LANG']->getLL('mapTSconstants') . ':</label></dt>
-						<dd><textarea class="xml" cols="80" rows="10" name="'.$formFieldName.'[tx_templavoila][TypoScript_constants]">'.htmlspecialchars($this->pObj->flattenarray($insertDataArray['tx_templavoila']['TypoScript_constants'])).'</textarea></dd>
+						<dd><textarea class="xml enable-tab" cols="80" rows="10" wrap="off" name="'.$formFieldName.'[tx_templavoila][TypoScript_constants]">'.htmlspecialchars($this->pObj->flattenarray($insertDataArray['tx_templavoila']['TypoScript_constants'])).'</textarea></dd>
 						<dt><label>' . $GLOBALS['LANG']->getLL('mapTScode') . ':</label></dt>
-						<dd><textarea class="code" cols="80" rows="10" name="'.$formFieldName.'[tx_templavoila][TypoScript]">'.htmlspecialchars($insertDataArray['tx_templavoila']['TypoScript']).'</textarea></dd>
+						<dd><textarea class="code enable-tab" cols="80" rows="10" wrap="off" name="'.$formFieldName.'[tx_templavoila][TypoScript]">'.htmlspecialchars($insertDataArray['tx_templavoila']['TypoScript']).'</textarea></dd>
 					</dl>';
 
 					/* The Typoscript-related XML-structure of an tx_templavoila-entry is:

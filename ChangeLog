@@ -1,5 +1,6 @@
 2010-06-16  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
+	* Fixed issue: #10753: Inconsistency: tab is not supported in the TS editor
 	* Fixed issue: #14571: Datastructure: meta > default doesn't work when using static datastructure files (Thanks to Aske Ertmann)
 
 2010-06-12  Tolleiv Nietsch <nietsch@aoemedia.de> 
