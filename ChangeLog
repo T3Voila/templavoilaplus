@@ -1,3 +1,7 @@
+2010-06-22  Tolleiv Nietsch <nietsch@aoemedia.de> 
+
+	* Fixed issue: #13706: can't create pages with a template object based on a static DS
+
 2010-06-16  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
 	* Fixed issue: #10753: Inconsistency: tab is not supported in the TS editor

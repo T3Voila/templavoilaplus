@@ -267,7 +267,6 @@ class tx_templavoila_mod1_wizards {
 
 		$storageFolderPID = $this->apiObj->getStorageFolderPid($positionPid);
 		$tmplHTML = array();
-		$staticDS = $this->pObj->staticDS;
 		$defaultIcon = $this->doc->backPath . '../' . t3lib_extMgm::siteRelPath($this->extKey) . 'res1/default_previewicon.gif';
 
 			// look for TCEFORM.pages.tx_templavoila_ds.removeItems / TCEFORM.pages.tx_templavoila_to.removeItems
@@ -276,44 +275,10 @@ class tx_templavoila_mod1_wizards {
 
 		switch ($templateType) {
 			case 'tmplobj':
-						// Create the "Default template" entry
-						//Fetch Default TO
+					// Create the "Default template" entry
+					//Fetch Default TO
 				$fakeRow = array('uid' => abs($positionPid));
 				$defaultTO = $this->pObj->apiObj->getContentTree_fetchPageTemplateObject($fakeRow);
-				$tTO = 'tx_templavoila_tmplobj';
-				$tDS = 'tx_templavoila_datastructure';
-
-					//Fetch all TO's but the default
-				if ($staticDS) {
-					$where = 'parent=0 AND pid=' .
-							intval($storageFolderPID).' AND LOCATE(' . $GLOBALS['TYPO3_DB']->fullQuoteStr('(page)', 'tx_templavoila_tmplobj') . ', datastructure)>0' .
-							( $disallowedDesignTemplateItems ? ' AND uid NOT IN(' . $disallowedDesignTemplateItems . ')' : '' ) .
-							$this->buildRecordWhere($tTO) .
-							t3lib_befunc::deleteClause ($tTO) . t3lib_BEfunc::versioningPlaceholderClause($tTO);
-
-					$res = $TYPO3_DB->exec_SELECTquery (
-						'*', $tTO, $where
-					);
-
-				} else {
-					$where = $tTO . '.parent=0 AND ' . $tTO . '.pid=' . intval($storageFolderPID).' AND ' .
-							($disallowedDesignTemplateItems ? $tTO . '.uid NOT IN(' . $disallowedDesignTemplateItems . ') AND ' : '') .
-							($disallowedPageTemplateItems ? $tDS .  '.uid NOT IN(' . $disallowedPageTemplateItems . ') AND ' : '') .
-							$tDS . '.scope=1' .
-							$this->buildRecordWhere($tTO) .
-							$this->buildRecordWhere($tDS) .
-							t3lib_befunc::deleteClause($tTO) .
-							t3lib_befunc::deleteClause($tDS) .
-							t3lib_BEfunc::versioningPlaceholderClause($tTO) .
-							t3lib_BEfunc::versioningPlaceholderClause($tDS);
-
-					$res = $TYPO3_DB->exec_SELECTquery (
-						$tTO . '.*',
-						$tTO . ' LEFT JOIN ' . $tDS . ' ON ' . $tTO . '.datastructure = ' . $tDS . '.uid',
-						$where
-					);
-				}
-
 
 					// Create the "Default template" entry
 				if ($defaultTO['previewicon']) {
@@ -337,19 +302,30 @@ class tx_templavoila_mod1_wizards {
 				</tr>
 				</table>';
 
-
-				while (false !== ($row = $TYPO3_DB->sql_fetch_assoc($res)))	{
-					if ($row['uid'] === $defaultTO['uid']) {
+				$dsRepo = t3lib_div::makeInstance('tx_templavoila_datastructureRepository');
+				$toRepo = t3lib_div::makeInstance('tx_templavoila_templateRepository');
+				$dsList = $dsRepo->getDatastructuresByStoragePidAndScope($storageFolderPID, tx_templavoila_datastructure::SCOPE_PAGE);
+				foreach($dsList as $dsObj) {
+					if (t3lib_div::inList($disallowedPageTemplateItems, $dsObj->getKey())) {
 						continue;
 					}
-						// Check if preview icon exists, otherwise use default icon:
-					$tmpFilename = 'uploads/tx_templavoila/'.$row['previewicon'];
-					$previewIconFilename = (@is_file(PATH_site.$tmpFilename)) ? ($GLOBALS['BACK_PATH'].'../'.$tmpFilename) : $defaultIcon;
-						// Note: we cannot use value of image input element because MSIE replaces this value with mouse coordinates! Thus on click we set value to a hidden field. See http://bugs.typo3.org/view.php?id=3376
-					$previewIcon = '<input type="image" class="c-inputButton" name="i' .$row['uid'] . '" onclick="document.getElementById(\'data_tx_templavoila_to\').value='.$row['uid'].'" src="'.$previewIconFilename.'" title="" />';
-					$description = $row['description'] ? htmlspecialchars($row['description']) : $LANG->getLL ('template_nodescriptionavailable');
-					$tmplHTML [] = '<table style="width: 100%;" valign="top"><tr><td colspan="2" nowrap="nowrap"><h3 class="bgColor3-20">' . htmlspecialchars($LANG->sL($row['title'])) . '</h3></td></tr>'.
-						'<tr><td valign="top">' . $previewIcon . '</td><td width="120" valign="top"><p>' . $LANG->sL($description) . '</p></td></tr></table>';
+
+					$toList = $toRepo->getTemplatesByDatastructure($dsObj, $storageFolderPID);
+					foreach ($toList as $toObj) {
+						if ($toObj->getKey() === $defaultTO['uid'] ||
+							t3lib_div::inList($disallowedDesignTemplateItems, $toObj->getKey())
+						) {
+							continue;
+						}
+
+						$tmpFilename = $toObj->getIcon();
+						$previewIconFilename = (@is_file(PATH_site . substr($tmpFilename, 3))) ? ($GLOBALS['BACK_PATH'].'../'.$tmpFilename) : $defaultIcon;
+							// Note: we cannot use value of image input element because MSIE replaces this value with mouse coordinates! Thus on click we set value to a hidden field. See http://bugs.typo3.org/view.php?id=3376
+						$previewIcon = '<input type="image" class="c-inputButton" name="i' .$row['uid'] . '" onclick="document.getElementById(\'data_tx_templavoila_to\').value=' . $toObj->getKey() . '" src="'.$previewIconFilename.'" title="" />';
+						$description = $toObj->getDescription() ? htmlspecialchars($toObj->getDescription()) : $LANG->getLL ('template_nodescriptionavailable');
+						$tmplHTML [] = '<table style="width: 100%;" valign="top"><tr><td colspan="2" nowrap="nowrap"><h3 class="bgColor3-20">' . htmlspecialchars($toObj->getLabel()) . '</h3></td></tr>'.
+							'<tr><td valign="top">' . $previewIcon . '</td><td width="120" valign="top"><p>' . $LANG->sL($description) . '</p></td></tr></table>';
+			 		}
 				}
 				$tmplHTML[] = '<input type="hidden" id="data_tx_templavoila_to" name="data[tx_templavoila_to]" value="0" />';
 				break;
