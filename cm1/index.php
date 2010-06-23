@@ -378,13 +378,20 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 	function main_mode()	{
 		global $LANG, $BACK_PATH;
 
-			// Draw the header.
-		$this->doc = t3lib_div::makeInstance('noDoc');
+		$this->doc = t3lib_div::makeInstance('template');
+		$this->doc->docType= 'xhtml_trans';
 		$this->doc->backPath = $BACK_PATH;
-		$this->doc->docType = 'xhtml_trans';
+		if(version_compare(TYPO3_version,'4.3','>')) {
+			$this->doc->setModuleTemplate('EXT:templavoila/resources/templates/cm1_default.html');
+		} else {
+			$this->doc->setModuleTemplate(t3lib_extMgm::extRelPath('templavoila') . 'resources/templates/cm1_default.html');
+		}
+		$this->doc->bodyTagId = 'typo3-mod-php';
+		$this->doc->divClass = '';
+
 		$this->doc->inDocStylesArray[]='
-			DIV.typo3-noDoc { width: 98%; margin: 0 0 0 0; }
-			DIV.typo3-noDoc H2 { width: 100%; }
+			#templavoila-frame-visual { height:500px; display:block; margin:0 5px; width:98%; border: 1xpx solid black;}
+			DIV.typo3-fullDoc H2 { width: 100%; }
 			TABLE#c-mapInfo {margin-top: 10px; margin-bottom: 5px; }
 			TABLE#c-mapInfo TR TD {padding-right: 20px;}
 			select option.pagetemplate {background-image:url(../icon_pagetemplate.gif);background-repeat: no-repeat; background-position: 5px 50%; padding: 1px 0 3px 24px; -webkit-background-size: 0;}
@@ -449,17 +456,6 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 		$this->doc->JScode.=$CMparts[0];
 		$this->doc->postCode.= $CMparts[2];
 
-		$this->content.=$this->doc->startPage($LANG->getLL('title'));
-		$this->content.=$this->doc->header($LANG->getLL('title'));
-		$this->content.=$this->doc->spacer(5);
-
-		if ($this->returnUrl)	{
-		$this->content.='<a href="'.htmlspecialchars($this->returnUrl).'" class="typo3-goBack">'.
-			'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/goback.gif','width="14" height="14"').' alt="" />'.
-			$LANG->sL('LLL:EXT:lang/locallang_misc.xml:goBack',1).
-			'</a><br/>';
-		}
-
 			// Icons
 		$this->dsTypes = array(
 			'sc' => $LANG->getLL('dsTypes_section') . ': ',
@@ -494,6 +490,65 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 
 			// Add spacer:
 		$this->content.=$this->doc->spacer(10);
+
+		$this->pageinfo = t3lib_BEfunc::readPageAccess($this->id,$this->perms_clause);
+		$docHeaderButtons = $this->getDocHeaderButtons();
+		$docContent = array(
+			'CSH' => $docHeaderButtons['csh'],
+			'CONTENT' => $this->content
+		);
+
+		$content  = $this->doc->startPage($GLOBALS['LANG']->getLL('title'));
+		$content .= $this->doc->moduleBody(
+			$this->pageinfo,
+			$docHeaderButtons,
+			$docContent
+		);
+		$content .= $this->doc->endPage();
+
+			// Replace content with templated content
+		$this->content = $content;
+	}
+
+	/**
+	 * Gets the buttons that shall be rendered in the docHeader.
+	 *
+	 * @return	array		Available buttons for the docHeader
+	 */
+	protected function getDocHeaderButtons() {
+		$buttons = array(
+			'csh'		=> t3lib_BEfunc::cshItem('_MOD_web_txtemplavoilaCM1', '', $this->backPath),
+			'back'		=> '',
+			'shortcut'	=> $this->getShortcutButton(),
+		);
+
+			// Back
+		if ($this->returnUrl) {
+			if(version_compare(TYPO3_version,'4.4','>')) {
+				$backIcon = t3lib_iconWorks::getSpriteIcon('actions-view-go-back');
+			} else {
+				$backIcon = '<img' . t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/goback.gif','width="14" height="14"') . ' alt="" />';
+			}
+
+			$buttons['back'] = '<a href="' . htmlspecialchars(t3lib_div::linkThisUrl($this->returnUrl)) . '" class="typo3-goBack" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.goBack', TRUE) . '">' .
+								$backIcon .
+							   '</a>';
+		}
+		return $buttons;
+	}
+
+	/**
+	 * Gets the button to set a new shortcut in the backend (if current user is allowed to).
+	 *
+	 * @return	string		HTML representiation of the shortcut button
+	 */
+	protected function getShortcutButton() {
+		$result = '';
+		if ($GLOBALS['BE_USER']->mayMakeShortcut()) {
+			$result = $this->doc->makeShortcutIcon('id', implode(',', array_keys($this->MOD_MENU)), $this->MCONF['name']);
+		}
+
+		return $result;
 	}
 
 	/**
@@ -2322,6 +2377,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 	 */
 	function linkThisScript($array=array())	{
 		$theArray=array(
+			'id' => $this->id,		// id of the current sysfolder
 			'file' => $this->displayFile,
 			'table' => $this->displayTable,
 			'uid' => $this->displayUid,
@@ -2350,7 +2406,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 				'&path='.rawurlencode($path).
 				'&preview='.($preview?1:0).
 				($showOnly?'&show=1':'&limitTags='.rawurlencode($limitTags));
-		return '<iframe width="100%" height="500" src="'.htmlspecialchars($url).'#_MARKED_UP_ELEMENT" style="border: 1xpx solid black;"></iframe>';
+		return '<iframe id="templavoila-frame-visual" src="'.htmlspecialchars($url).'#_MARKED_UP_ELEMENT"></iframe>';
 	}
 
 	/**

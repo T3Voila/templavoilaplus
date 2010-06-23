@@ -1,3 +1,7 @@
+2010-06-24  Tolleiv Nietsch <nietsch@aoemedia.de> 
+
+	* Fixed issue: #14839: mapping-module should use the common docHeader
+
 2010-06-22  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
 	* Fixed issue: #13706: can't create pages with a template object based on a static DS

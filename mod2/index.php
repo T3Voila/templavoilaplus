@@ -159,14 +159,21 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 		$this->pageinfo = t3lib_BEfunc::readPageAccess($this->id,$this->perms_clause);
 		$access = is_array($this->pageinfo) ? 1 : 0;
 
-		if ($access)    {
+		$this->doc = t3lib_div::makeInstance('template');
+		$this->doc->docType= 'xhtml_trans';
+		$this->doc->backPath = $BACK_PATH;
+		if (version_compare(TYPO3_version,'4.3','>')) {
+			$this->doc->setModuleTemplate('EXT:templavoila/resources/templates/mod2_default.html');
+		} else {
+			$this->doc->setModuleTemplate(t3lib_extMgm::extRelPath('templavoila') . 'resources/templates/mod2_default.html');
+		}
+		$this->doc->bodyTagId = 'typo3-mod-php';
+		$this->doc->divClass = '';
+		$this->doc->form='<form action="'.htmlspecialchars('index.php?id='.$this->id).'" method="post" autocomplete="off">';
 
+
+		if ($access)    {
 				// Draw the header.
-			$this->doc = t3lib_div::makeInstance('noDoc');
-			$this->doc->docType= 'xhtml_trans';
-			$this->doc->backPath = $BACK_PATH;
-			$this->doc->divClass = '';
-			$this->doc->form='<form action="'.htmlspecialchars('index.php?id='.$this->id).'" method="post" autocomplete="off">';
 
 				// Add custom styles
 			$this->doc->styleSheetFile2 = t3lib_extMgm::extRelPath($this->extKey)."mod2/styles.css";
@@ -190,31 +197,38 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 				}
 			').$this->doc->getDynTabMenuJScode();
 
+			$this->renderModuleContent();
+
 				// Setting up support for context menus (when clicking the items icon)
 			$CMparts = $this->doc->getContextMenuCode();
 			$this->doc->bodyTagAdditions = $CMparts[1];
 			$this->doc->JScode.= $CMparts[0];
 			$this->doc->postCode.= $CMparts[2];
 
-			$this->content.=$this->doc->startPage($LANG->getLL('title'));
-
-				// Rendering module content
-			$this->renderModuleContent();
-
-			if ($BE_USER->mayMakeShortcut()) {
-				$this->content.='<br /><br />'.$this->doc->makeShortcutIcon('id',implode(',',array_keys($this->MOD_MENU)),$this->MCONF['name']);
+		} else {
+			if (version_compare(TYPO3_version, '4.3', '>')) {
+				$flashMessage = t3lib_div::makeInstance(
+					't3lib_FlashMessage',
+					$GLOBALS['LANG']->getLL('noaccess'),
+					'',
+					t3lib_FlashMessage::ERROR
+				);
+				$this->content = $flashMessage->render();
+			} else {
+				$this->content = '<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/icon_fatalerror.gif', 'width="18" height="16"') . ' border="0" align="top" class="absmiddle" alt="" /><strong>' . $GLOBALS['LANG']->getLL('error') . '</strong> ' . $GLOBALS['LANG']->getLL('noaccess');
 			}
-		} else {	// No access or no current uid:
-
-				// Draw the header.
-			$this->doc = t3lib_div::makeInstance('noDoc');
-			$this->doc->docType= 'xhtml_trans';
-			$this->doc->backPath = $BACK_PATH;
-			$this->doc->divClass = '';
-			$this->doc->form='<form action="'.htmlspecialchars('index.php?id='.$this->id).'" method="post" autocomplete="off">';
-			$this->content.=$this->doc->startPage($LANG->getLL('title'));
 		}
-		$this->content.=$this->doc->endPage();
+			// Place content inside template
+		$content  = $this->doc->startPage($GLOBALS['LANG']->getLL('title'));
+		$content .= $this->doc->moduleBody(
+			$this->pageinfo,
+			$this->getDocHeaderButtons(),
+			array('CONTENT' => $this->content)
+		);
+		$content .= $this->doc->endPage();
+
+			// Replace content with templated content
+		$this->content = $content;
 	}
 
 	/**
@@ -227,7 +241,32 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 	}
 
 
+	/**
+	 * Gets the buttons that shall be rendered in the docHeader.
+	 *
+	 * @return	array		Available buttons for the docHeader
+	 */
+	protected function getDocHeaderButtons() {
+		$buttons = array(
+			'csh'      => t3lib_BEfunc::cshItem('_MOD_web_txtemplavoilaM2', '', $this->backPath),
+			'shortcut' => $this->getShortcutButton(),
+		);
+		return $buttons;
+	}
 
+	/**
+	 * Gets the button to set a new shortcut in the backend (if current user is allowed to).
+	 *
+	 * @return	string		HTML representiation of the shortcut button
+	 */
+	protected function getShortcutButton() {
+		$result = '';
+		if ($GLOBALS['BE_USER']->mayMakeShortcut()) {
+			$result = $this->doc->makeShortcutIcon('id', implode(',', array_keys($this->MOD_MENU)), $this->MCONF['name']);
+		}
+
+		return $result;
+	}
 
 
 
@@ -632,7 +671,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 
 				// Links:
 			$editLink = $lpXML.= '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick('&edit[tx_templavoila_datastructure]['.$dsR['uid'].']=edit',$this->doc->backPath)).'"><img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/edit2.gif','width="11" height="12"').' alt="" class="absmiddle" /></a>';
-			$dsTitle = '<a href="'.htmlspecialchars('../cm1/index.php?table=tx_templavoila_datastructure&uid=' . $dsR['uid'] . '&returnUrl=' . rawurlencode(tx_templavoila_div::sanitizeLocalUrl(t3lib_div::getIndpEnv('REQUEST_URI')))) . '">' . htmlspecialchars($GLOBALS['LANG']->sL($dsR['title'])) . '</a>';
+			$dsTitle = '<a href="'.htmlspecialchars('../cm1/index.php?table=tx_templavoila_datastructure&uid=' . $dsR['uid'] . '&id=' . $this->id . '&returnUrl=' . rawurlencode(tx_templavoila_div::sanitizeLocalUrl(t3lib_div::getIndpEnv('REQUEST_URI')))) . '">' . htmlspecialchars($GLOBALS['LANG']->sL($dsR['title'])) . '</a>';
 
 			if ($this->MOD_SETTINGS['set_details'])	{
 				$XMLinfo = $this->DSdetails($dsR['dataprot']);
@@ -805,7 +844,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 		}
 
 			// Mapping status / link:
-		$linkUrl = '../cm1/index.php?table=tx_templavoila_tmplobj&uid='.$toObj['uid'].'&_reload_from=1&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'));
+		$linkUrl = '../cm1/index.php?table=tx_templavoila_tmplobj&uid='.$toObj['uid'].'&_reload_from=1&id=' . $this->id . '&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'));
 
 		$fileReference = t3lib_div::getFileAbsFileName($toObj['fileref']);
 		if (@is_file($fileReference))	{
@@ -2076,7 +2115,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 
 			// If a template Object id was found, continue with mapping:
 		if ($this->wizardData['templateObjectId'])	{
-			$url = '../cm1/index.php?table=tx_templavoila_tmplobj&uid='.$this->wizardData['templateObjectId'].'&SET[selectHeaderContent]=0&_reload_from=1&returnUrl='.rawurlencode('../mod2/index.php?SET[wiz_step]=4');
+			$url = '../cm1/index.php?table=tx_templavoila_tmplobj&uid='.$this->wizardData['templateObjectId'].'&SET[selectHeaderContent]=0&_reload_from=1&id=' . $this->id . '&returnUrl='.rawurlencode('../mod2/index.php?SET[wiz_step]=4');
 
 			$outputString.= $GLOBALS['LANG']->getLL('newsitewizard_step3ready') . '
 				<br/>
@@ -2097,7 +2136,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 	 * @return	void
 	 */
 	function wizard_step4()	{
-		$url = '../cm1/index.php?table=tx_templavoila_tmplobj&uid='.$this->wizardData['templateObjectId'].'&SET[selectHeaderContent]=1&_reload_from=1&returnUrl='.rawurlencode('../mod2/index.php?SET[wiz_step]=5');
+		$url = '../cm1/index.php?table=tx_templavoila_tmplobj&uid='.$this->wizardData['templateObjectId'].'&SET[selectHeaderContent]=1&_reload_from=1&id=' . $this->id . '&returnUrl='.rawurlencode('../mod2/index.php?SET[wiz_step]=5');
 		$outputString .= $GLOBALS['LANG']->getLL('newsitewizard_headerinclude') . '
 			<br/>
 			<img src="maphead_animation.gif" style="border: 2px black solid;" alt=""><br/>
