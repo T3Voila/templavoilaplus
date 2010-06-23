@@ -422,7 +422,7 @@ class tx_templavoila_dbnewcontentel {
 		$toRepo = t3lib_div::makeInstance('tx_templavoila_templateRepository');
 		$dsList = $dsRepo->getDatastructuresByStoragePidAndScope($storageFolderPID, tx_templavoila_datastructure::SCOPE_FCE);
 		foreach($dsList as $dsObj) {
-			$toList = $toRepo->getTemplatesByDatastructure($dsObj, $storagePid);
+			$toList = $toRepo->getTemplatesByDatastructure($dsObj, $storageFolderPID);
 			foreach ($toList as $toObj) {
 				$tmpFilename = $toObj->getIcon();
 				$returnElements['fce.']['elements.']['fce_' . $toObj->getKey() . '.'] = array(
