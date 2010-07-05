@@ -518,7 +518,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 			// Add output:
 		$this->content.=$this->doc->section($LANG->getLL('title'),
 			$settings.
-			$this->doc->getDynTabMenu($parts,'TEMPLAVOILA:templateModule:'.$this->id, 0,0,300)
+			$this->doc->getDynTabMenu($parts,'TEMPLAVOILA:templateOverviewModule:'.$this->id, 0,0,300)
 		,0,1);
 	}
 
