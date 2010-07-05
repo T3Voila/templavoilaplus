@@ -1,5 +1,6 @@
 2010-07-05  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
+	* Fixed issue: #14954: No 'Show outline' feature for non-admin users 
 	* Fixed issue: #14962: Unlinked elements won't disappear if DragDrop is not enabled 
 	* Fixed issue: #14951: [Click to translate FlexForm] harcoded /not translated 
 

@@ -827,7 +827,10 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		}
 
 			// Display the content as outline or the nested page structure:
-		if ($BE_USER->isAdmin() && $this->MOD_SETTINGS['showOutline'])	{
+		if (
+			($BE_USER->isAdmin() || $this->modTSconfig['properties']['enableOutlineForNonAdmin'])
+				&& $this->MOD_SETTINGS['showOutline']
+		) {
 			$output.= $this->render_outline($contentTreeData['tree']);
 		} else {
 			$output.= $this->render_framework_allSheets($contentTreeData['tree'], $this->currentLanguageKey);

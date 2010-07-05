@@ -379,7 +379,7 @@ class tx_templavoila_mod1_sidebar {
 		';
 
 			// Render checkbox for showing outline:
-		if ($GLOBALS['BE_USER']->isAdmin())	{
+		if ($GLOBALS['BE_USER']->isAdmin() || $this->pObj->modTSconfig['properties']['enableOutlineForNonAdmin'])	{
 			$tableRows[] = '
 				<tr class="bgColor4">
 					<td width="20">
