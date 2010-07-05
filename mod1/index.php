@@ -1545,7 +1545,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 								// Change of strategy (27/11): Because there does not have to be content fields; could be in sections or arrays and if thats the case you still want to localize them! There has to be another way...
 							// if (count($contentTreeArr['contentFields']['sDEF']))	{
 								list($flagLink_begin, $flagLink_end) = explode('|*|', $this->link_edit('|*|', 'tt_content', $contentTreeArr['el']['uid'], TRUE));
-								$l10nInfo = $flagLink_begin.'<em>[Click to translate FlexForm]</em>'.$flagLink_end;
+								$l10nInfo = $flagLink_begin.'<em>[' . $LANG->getLL('performTranslation') . ']</em>'.$flagLink_end;
 								$this->global_localization_status[$sys_language_uid][]=array(
 									'status' => 'flex',
 									'parent_uid' => $contentTreeArr['el']['uid'],

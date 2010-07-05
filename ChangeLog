@@ -1,3 +1,7 @@
+2010-07-05  Tolleiv Nietsch <nietsch@aoemedia.de> 
+
+	* Fixed issue: #14951: [Click to translate FlexForm] harcoded /not translated 
+
 2010-06-24  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
 	* Follow-up to: #14386: Static DS - Centralize access to datastructure / pt.1  - renamed one misspelled variable

@@ -83,6 +83,7 @@
 			<label index="nonusedelements">Non-used elements</label>
 			<label index="makeLocal">Create local copy</label>
 			<label index="makeLocalMsg">Do you want to create a local copy of this referenced element?</label>
+			<label index="performTranslation">Click to translate FlexForm</label>
 			<label index="path">Path</label>
 			<label index="defaultLanguage">Default language</label>
 			<label index="createcopyfortranslation">Create a copy for translation</label>
