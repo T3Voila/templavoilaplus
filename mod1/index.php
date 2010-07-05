@@ -1146,7 +1146,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 				$cellContent = '';
 
-				$pid = $elementContentTreeArr['el']['table'] == 'pages' ? $elementContentTreeArr['el']['pid'] : $elementContentTreeArr['el']['uid'];
+				$pid = $elementContentTreeArr['el']['table'] == 'pages' ? $elementContentTreeArr['el']['uid'] : $elementContentTreeArr['el']['pid'];
 				$calcPerms = $this->getCalcPerms($pid);
 
 					// Create flexform pointer pointing to "before the first sub element":
