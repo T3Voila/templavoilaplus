@@ -1,5 +1,6 @@
 2010-07-05  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
+	* Fixed issue: #13928: $calcPerms in mod1 needs to be recreated if grid's are referenced items 
 	* Fixed issue: #6478: After linking a conentent element it should stay in the clipboard
 	* Fixed issue: #10757: Wrong color in the mapping interface 
 	* Fixed issue: #14954: No 'Show outline' feature for non-admin users 

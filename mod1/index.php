@@ -160,6 +160,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 	protected $renderPreviewObjects = NULL;			// Classes for preview render
 	protected $debug = FALSE;
+	protected static $calcPermCache = array();
 
 	public $currentElementBelongsToCurrentPage;		// Used for Content preview and is used as flag if content should be linked or not
 	const DOKTYPE_NORMAL_EDIT = 1;					// With this doktype the normal Edit screen is rendered
@@ -345,6 +346,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			}
 
 			$this->calcPerms = $GLOBALS['BE_USER']->calcPerms($pageInfoArr);
+			self::$calcPermCache[$pageInfoArr['pid']] = $this->calcPerms;
 
 				// Define the root element record:
 			$this->rootElementTable = is_array($this->altRoot) ? $this->altRoot['table'] : 'pages';
@@ -917,14 +919,17 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 		$elementBelongsToCurrentPage = $contentTreeArr['el']['table'] == 'pages' || $contentTreeArr['el']['pid'] == $this->rootElementUid_pidForContent;
 
-		$canEditContent = $GLOBALS['BE_USER']->isPSet($this->calcPerms, 'pages', 'editcontent');
+		$pid = $contentTreeArr['el']['table'] == 'pages' ? $contentTreeArr['el']['uid'] : $contentTreeArr['el']['pid'];
+		$calcPerms = $this->getCalcPerms($pid);
+
+		$canEditContent = $GLOBALS['BE_USER']->isPSet($calcPerms, 'pages', 'editcontent');
 
 		$elementClass = 'tpm-container-element';
 
 		// Prepare the record icon including a content sensitive menu link wrapped around it:
 		$recordIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,$contentTreeArr['el']['icon'],'').' border="0" title="'.htmlspecialchars('['.$contentTreeArr['el']['table'].':'.$contentTreeArr['el']['uid'].']').'" alt="" />';
 		$menuCommands = array();
-		if ($GLOBALS['BE_USER']->isPSet($this->calcPerms, 'pages', 'new')) {
+		if ($GLOBALS['BE_USER']->isPSet($calcPerms, 'pages', 'new')) {
 			$menuCommands[] = 'new';
 		}
 		if ($canEditContent) {
@@ -974,7 +979,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 						$linkUnlink = '';
 					}
 					if ($GLOBALS['BE_USER']->recordEditAccessInternals('tt_content', $contentTreeArr['previewData']['fullRow'])) {
-						$linkEdit = (($elementBelongsToCurrentPage || (!$elementBelongsToCurrentPage && $this->modTSconfig['properties']['enableEditIconForRefElements'])) && !in_array('edit', $this->blindIcons) ? $this->link_edit('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/edit2.gif','').' title="'.$LANG->getLL('editrecord').'" border="0" alt="" />',$contentTreeArr['el']['table'],$contentTreeArr['el']['uid']) : '');
+						$linkEdit = (($elementBelongsToCurrentPage || (!$elementBelongsToCurrentPage && $this->modTSconfig['properties']['enableEditIconForRefElements'])) && !in_array('edit', $this->blindIcons) ? $this->link_edit('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/edit2.gif','').' title="'.$LANG->getLL('editrecord').'" border="0" alt="" />',$contentTreeArr['el']['table'],$contentTreeArr['el']['uid'], false,$contentTreeArr['el']['pid']) : '');
 						$linkHide = !in_array('hide', $this->blindIcons) ? $this->icon_hide($contentTreeArr['el']) : '';
 
 						if( $this->modTSconfig['properties']['enableDeleteIconForLocalElements'] && $elementBelongsToCurrentPage ) {
@@ -1001,7 +1006,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 			// If there was a language icon and the language was not default or [all] and if that langauge is accessible for the user, then wrap the  flag with an edit link (to support the "Click the flag!" principle for translators)
 		if ($languageIcon && $languageUid>0 && $GLOBALS['BE_USER']->checkLanguageAccess($languageUid) && $contentTreeArr['el']['table']==='tt_content')	{
-			$languageIcon = $this->link_edit($languageIcon, 'tt_content', $contentTreeArr['el']['uid'], TRUE);
+			$languageIcon = $this->link_edit($languageIcon, 'tt_content', $contentTreeArr['el']['uid'], TRUE, $contentTreeArr['el']['pid']);
 		}
 
 			// Create warning messages if neccessary:
@@ -1141,6 +1146,9 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 				$cellContent = '';
 
+				$pid = $elementContentTreeArr['el']['table'] == 'pages' ? $elementContentTreeArr['el']['pid'] : $elementContentTreeArr['el']['uid'];
+				$calcPerms = $this->getCalcPerms($pid);
+
 					// Create flexform pointer pointing to "before the first sub element":
 				$subElementPointer = array (
 					'table' => $elementContentTreeArr['el']['table'],
@@ -1152,8 +1160,8 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 					'position' => 0
 				);
 
-				$canCreateNew = $GLOBALS['BE_USER']->isPSet($this->calcPerms, 'pages', 'new');
-				$canEditContent = $GLOBALS['BE_USER']->isPSet($this->calcPerms, 'pages', 'editcontent');
+				$canCreateNew = $GLOBALS['BE_USER']->isPSet($calcPerms, 'pages', 'new');
+				$canEditContent = $GLOBALS['BE_USER']->isPSet($calcPerms, 'pages', 'editcontent');
 
 				$canDragDrop = $canEditContent &&
 								$elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['tx_templavoila']['enableDragDrop'] !== '0' &&
@@ -1987,13 +1995,18 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * @param	string		$table: The table, fx. 'tt_content'
 	 * @param	integer		$uid: The uid of the element to be edited
 	 * @param	boolean		$forced: By default the link is not shown if translatorMode is set, but with this boolean it can be forced anyway.
+	 * @param	integer		$usePid: ...
 	 * @return	string		HTML anchor tag containing the label and the correct link
 	 * @access protected
 	 */
-	function link_edit($label, $table, $uid, $forced=FALSE)	{
+	function link_edit($label, $table, $uid, $forced=FALSE, $usePid=0)	{
 		if ($label) {
-			if (($table == 'pages' && ($this->calcPerms & 2) ||
-				$table != 'pages' && ($this->calcPerms & 16)) &&
+
+			$pid = $table == 'pages' ? $uid : $usePid;
+			$calcPerms = $pid == 0 ? $this->calcPerms : $this->getCalcPerms($pid);
+
+			if (($table == 'pages' && ($calcPerms & 2) ||
+				$table != 'pages' && ($calcPerms & 16)) &&
 				(!$this->translatorMode || $forced))	{
 					if($table == "pages" &&	 $this->currentLanguageUid) {
 						return '<a class="tpm-pageedit" href="index.php?'.$this->link_getParameters().'&amp;editPageLanguageOverlay='.$this->currentLanguageUid.'">'.$label.'</a>';
@@ -2033,7 +2046,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		else
 			$label = $hideIcon;
 
-		return $this->link_hide($label, $el['table'], $el['uid'], $el['isHidden']);
+		return $this->link_hide($label, $el['table'], $el['uid'], $el['isHidden'], false, $el['pid']);
 	}
 
 	/**
@@ -2044,12 +2057,17 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * @param	[type]		$uid: ...
 	 * @param	[type]		$hidden: ...
 	 * @param	[type]		$forced: ...
+	 * @param	integer			$usePid: ...
 	 * @return	[type]		...
 	 */
-	function link_hide($label, $table, $uid, $hidden, $forced=FALSE) {
+	function link_hide($label, $table, $uid, $hidden, $forced=FALSE, $usePid = 0) {
 		if ($label) {
-			if (($table == 'pages' && ($this->calcPerms & 2) ||
-				 $table != 'pages' && ($this->calcPerms & 16)) &&
+
+			$pid = $table == 'pages' ? $uid : $usePid;
+			$calcPerms = $pid == 0 ? $this->calcPerms : $this->getCalcPerms($pid);
+
+			if (($table == 'pages' && ($calcPerms & 2) ||
+				 $table != 'pages' && ($calcPerms & 16)) &&
 				(!$this->translatorMode || $forced))	{
 					if ($table == "pages" && $this->currentLanguageUid) {
 						$params = '&data['.$table.']['.$uid.'][hidden]=' . (1 - $hidden);
@@ -2661,6 +2679,20 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		}
 		$this->allItems[$key] = $pointerStr;
 		return $key;
+	}
+
+	/**
+	 *
+	 * @param 	integer	$pid
+	 * @return	integer
+	 */
+	protected function getCalcPerms($pid) {
+		if (!isset(self::$calcPermCache[$pid])) {
+			$row = t3lib_BEfunc::getRecordWSOL('pages', $pid);
+			$calcPerms = $GLOBALS['BE_USER']->calcPerms($row);
+			self::$calcPermCache[$pid] = $calcPerms;
+		}
+		return self::$calcPermCache[$pid];
 	}
 
 }
