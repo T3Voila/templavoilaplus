@@ -150,7 +150,8 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 */
 	var $apiObj;									// Instance of tx_templavoila_api
 	var $sortableContainers = array();				// Contains the containers for drag and drop
-	var $sortableItems = array();					// Registry for all id => flexPointer-Pairs
+	var $allItems = array();						// Registry for all id => flexPointer-Pairs
+	var $sortableItems = array();					// Registry for sortable id => flexPointer-Pairs
 
 	var $extConf;									// holds the extconf configuration
 	var $staticDS = FALSE;							// Boolean; if true DS records are file based
@@ -575,13 +576,16 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				if (is_array($this->sortableContainers)) {
 					$script = '';
 					if (version_compare(TYPO3_version, '4.3', '>')) {
-						$items_json = json_encode ($this->sortableItems);
+						$sortable_items_json = json_encode ($this->sortableItems);
+						$all_items_json = json_encode ($this->allItems);
 					} else {
-						$items_json = t3lib_div::array2json ($this->sortableItems);
+						$sortable_items_json = t3lib_div::array2json ($this->sortableItems);
+						$all_items_json = t3lib_div::array2json ($this->allItems);
 					}
 
 					$script .=
-						'var sortable_items = ' . $items_json . ';' .
+						'var all_items = ' . $all_items_json . ';' .
+						'var sortable_items = ' . $sortable_items_json . ';' .
 						'var sortable_removeHidden = ' . ($this->MOD_SETTINGS['tt_content_showHidden'] ? 'false;' : 'true;') .
 						'var sortable_linkParameters = \'' . $this->link_getParameters() . '\';';
 
@@ -1178,8 +1182,8 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 								// Modify the flexform pointer so it points to the position of the curren sub element:
 							$subElementPointer['position'] = $position;
 
-							if (!$this->translatorMode && $canDragDrop) {
-								$cellContent .= '<div class="sortableItem" id="' . $this->addSortableItem ($this->apiObj->flexform_getStringFromPointer ($subElementPointer)) . '">';
+							if (!$this->translatorMode) {
+								$cellContent .= '<div' . ($canDragDrop ? ' class="sortableItem tpm-element"' : ' class="tpm-element"') . ' id="' . $this->addSortableItem ($this->apiObj->flexform_getStringFromPointer ($subElementPointer), $canDragDrop) . '">';
 							}
 
 							$cellContent .= $this->render_framework_allSheets($subElementArr, $languageKey, $subElementPointer, $elementContentTreeArr['ds_meta']);
@@ -1188,7 +1192,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 								$cellContent .= $this->link_bottomControls($subElementPointer,$canCreateNew ,$canEditContent );
 							}
 
-							if (!$this->translatorMode && $canDragDrop) {
+							if (!$this->translatorMode) {
 								$cellContent .= '</div>';
 							}
 
@@ -1196,10 +1200,8 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 								// Modify the flexform pointer so it points to the position of the curren sub element:
 							$subElementPointer['position'] = $position;
 
-							if ($canDragDrop) {
-								$cellId = $this->addSortableItem ($this->apiObj->flexform_getStringFromPointer ($subElementPointer));
-								$cellFragment = '<div class="sortableItem" id="' . $cellId . '"></div>';
-							}
+							$cellId = $this->addSortableItem ($this->apiObj->flexform_getStringFromPointer ($subElementPointer), $canDragDrop);
+							$cellFragment = '<div' . ($canDragDrop ? ' class="sortableItem tpm-element"' : ' class="tpm-element"') . ' id="' . $cellId . '"></div>';
 
 							$cellContent .= $cellFragment;
 
@@ -1208,13 +1210,14 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				}
 
 				$cellIdStr = '';
+				$tmpArr = $subElementPointer;
+				unset($tmpArr['position']);
+				$cellId = $this->addSortableItem ($this->apiObj->flexform_getStringFromPointer ($tmpArr), $canDragDrop);
+				$cellIdStr = ' id="' . $cellId . '"';
 				if ($canDragDrop) {
-					$tmpArr = $subElementPointer;
-					unset($tmpArr['position']);
-					$cellId = $this->addSortableItem ($this->apiObj->flexform_getStringFromPointer ($tmpArr));
-					$cellIdStr = ' id="' . $cellId . '"';
 					$this->sortableContainers[] = $cellId;
 				}
+
 
 					// Add cell content to registers:
 				if ($flagRenderBeLayout==TRUE) {
@@ -2645,11 +2648,15 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * Adds a flexPointer to the stack of sortable items for drag&drop
 	 *
 	 * @param string   the sourcePointer for the referenced element
+	 * @param boolean  determine wether the element should be used for drag and drop
 	 * @return string the key for the related html-element
 	 */
-	protected function addSortableItem($pointerStr) {
+	protected function addSortableItem($pointerStr, $addToSortables=true) {
 		$key = 'item' . md5($pointerStr);
-		$this->sortableItems[$key] = $pointerStr;
+		if ($addToSortables) {
+			$this->sortableItems[$key] = $pointerStr;
+		}
+		$this->allItems[$key] = $pointerStr;
 		return $key;
 	}
 

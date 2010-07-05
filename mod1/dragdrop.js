@@ -10,9 +10,9 @@ function sortable_hideRecord(it, command) {
 	if (!sortable_removeHidden)
 		return jumpToUrl(command);
 
-	while (it.className != 'sortableItem')
+	while ((typeof it.className == "undefined") || (it.className.search(/tpm-element(?!-)/) == -1)) {
 		it = it.parentNode;
-
+	}
 	new Ajax.Request(command);
 	new Effect.Fade(it,
 		{ duration: 0.5,
@@ -114,14 +114,14 @@ function sortable_update(el) {
 	var node = el.firstChild;
 	var i = 1;
 	while (node != null) {
-		if (node.className == "sortableItem") {
+		if (!(typeof node.className == "undefined") && node.className.search(/tpm-element(?!-)/) > -1) {
 			if (sortable_currentItem && node.id == sortable_currentItem.id ) {
-				var url = "index.php?" + sortable_linkParameters + "&ajaxPasteRecord=cut&source=" + sortable_items[sortable_currentItem.id] + "&destination=" + sortable_items[el.id] + (i-1); /* xxx */
+				var url = "index.php?" + sortable_linkParameters + "&ajaxPasteRecord=cut&source=" + all_items[sortable_currentItem.id] + "&destination=" + all_items[el.id] + (i-1); /* xxx */
 				new Ajax.Request(url);
 				sortable_currentItem = false;
 			}
-			sortable_updateItemButtons(node, i, sortable_items[el.id]);
-			sortable_items[node.id] = sortable_items[el.id] + i;
+			sortable_updateItemButtons(node, i, all_items[el.id]);
+			all_items[node.id] = all_items[el.id] + i;
 			i++;
 		}
 		

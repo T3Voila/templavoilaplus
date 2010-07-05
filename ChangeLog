@@ -1,5 +1,6 @@
 2010-07-05  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
+	* Fixed issue: #14962: Unlinked elements won't disappear if DragDrop is not enabled 
 	* Fixed issue: #14951: [Click to translate FlexForm] harcoded /not translated 
 
 2010-06-24  Tolleiv Nietsch <nietsch@aoemedia.de> 
