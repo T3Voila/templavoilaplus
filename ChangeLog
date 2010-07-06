@@ -1,5 +1,6 @@
 2010-07-06  Tolleiv Nietsch <nietsch@aoemedia.de>
 
+	* Fixed issue: #15022: cm2 should use the common docHeader
 	* Fixed issue: #11594: "Create local copy" button of a content element isn't visible for users without write access
 
 2010-07-05  Tolleiv Nietsch <nietsch@aoemedia.de> 
