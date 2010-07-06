@@ -922,7 +922,8 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		$pid = $contentTreeArr['el']['table'] == 'pages' ? $contentTreeArr['el']['uid'] : $contentTreeArr['el']['pid'];
 		$calcPerms = $this->getCalcPerms($pid);
 
-		$canEditContent = $GLOBALS['BE_USER']->isPSet($calcPerms, 'pages', 'editcontent');
+		$canEditElement = $GLOBALS['BE_USER']->isPSet($calcPerms, 'pages', 'editcontent');
+		$canEditContent = $GLOBALS['BE_USER']->isPSet($this->calcPerms, 'pages', 'editcontent');
 
 		$elementClass = 'tpm-container-element';
 
@@ -967,35 +968,42 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				$languageUid = $contentTreeArr['el']['sys_language_uid'];
 				$elementPointer = 'tt_content:' . $contentTreeArr['el']['uid'];
 
-				if (!$this->translatorMode && $canEditContent) {
-						// Create CE specific buttons:
-					$linkMakeLocal = !$elementBelongsToCurrentPage && !in_array('makeLocal', $this->blindIcons) ? $this->link_makeLocal('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,t3lib_extMgm::extRelPath('templavoila') . 'mod1/makelocalcopy.gif','').' title="'.$LANG->getLL('makeLocal').'" alt="" vspace="2" hspace="2" />', $parentPointer) : '';
-					if(	$this->modTSconfig['properties']['enableDeleteIconForLocalElements'] < 2 ||
-						!$elementBelongsToCurrentPage ||
-						$this->global_tt_content_elementRegister[$contentTreeArr['el']['uid']] > 1
-					) {
-						$linkUnlink = !in_array('unlink', $this->blindIcons) ? $this->link_unlink('<img'.t3lib_iconWorks::skinImg($this->doc->backPath, t3lib_extMgm::extRelPath('templavoila') . 'mod1/unlink.png','').' title="'.$LANG->getLL('unlinkRecord').'" border="0" alt="" />', $parentPointer, FALSE, FALSE, $elementPointer) : '';
+				$linkCopy = $this->clipboardObj->element_getSelectButtons($parentPointer, 'copy,ref');
+
+				if (!$this->translatorMode) {
+
+					if ($canEditContent) {
+						$linkMakeLocal = !$elementBelongsToCurrentPage && !in_array('makeLocal', $this->blindIcons) ? $this->link_makeLocal('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,t3lib_extMgm::extRelPath('templavoila') . 'mod1/makelocalcopy.gif','').' title="'.$LANG->getLL('makeLocal').'" alt="" vspace="2" hspace="2" />', $parentPointer) : '';
+						$linkCut = $this->clipboardObj->element_getSelectButtons($parentPointer, 'cut');
+						if(	$this->modTSconfig['properties']['enableDeleteIconForLocalElements'] < 2 ||
+							!$elementBelongsToCurrentPage ||
+							$this->global_tt_content_elementRegister[$contentTreeArr['el']['uid']] > 1
+						) {
+							$linkUnlink = !in_array('unlink', $this->blindIcons) ? $this->link_unlink('<img'.t3lib_iconWorks::skinImg($this->doc->backPath, t3lib_extMgm::extRelPath('templavoila') . 'mod1/unlink.png','').' title="'.$LANG->getLL('unlinkRecord').'" border="0" alt="" />', $parentPointer, FALSE, FALSE, $elementPointer) : '';
+						} else {
+							$linkUnlink = '';
+						}
 					} else {
-						$linkUnlink = '';
+						$linkMakeLocal = $linkCut = $linkUnlink = '';
 					}
-					if ($GLOBALS['BE_USER']->recordEditAccessInternals('tt_content', $contentTreeArr['previewData']['fullRow'])) {
+
+					if ($canEditElement && $GLOBALS['BE_USER']->recordEditAccessInternals('tt_content', $contentTreeArr['previewData']['fullRow'])) {
 						$linkEdit = (($elementBelongsToCurrentPage || (!$elementBelongsToCurrentPage && $this->modTSconfig['properties']['enableEditIconForRefElements'])) && !in_array('edit', $this->blindIcons) ? $this->link_edit('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/edit2.gif','').' title="'.$LANG->getLL('editrecord').'" border="0" alt="" />',$contentTreeArr['el']['table'],$contentTreeArr['el']['uid'], false,$contentTreeArr['el']['pid']) : '');
 						$linkHide = !in_array('hide', $this->blindIcons) ? $this->icon_hide($contentTreeArr['el']) : '';
 
-						if( $this->modTSconfig['properties']['enableDeleteIconForLocalElements'] && $elementBelongsToCurrentPage ) {
+						if( $canEditContent && $this->modTSconfig['properties']['enableDeleteIconForLocalElements'] && $elementBelongsToCurrentPage ) {
 							$hasForeignReferences = $this->hasElementForeignReferences($contentTreeArr['el'],$contentTreeArr['el']['pid']);
 							$linkDelete = !in_array('delete', $this->blindIcons) ? $this->link_unlink('<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/deletedok.gif','').' title="'.$LANG->getLL('deleteRecord').'" border="0" alt="" />', $parentPointer, TRUE, $hasForeignReferences, $elementPointer) : '';
 						} else {
 							$linkDelete = '';
 						}
-					}
-					else {
+					} else {
 						$linkDelete = $linkEdit = $linkHide = '';
 					}
-					$titleBarRightButtons = $linkEdit . $linkHide . $this->clipboardObj->element_getSelectButtons($parentPointer) . $linkMakeLocal . $linkUnlink . $linkDelete;
+					$titleBarRightButtons = $linkEdit . $linkHide . $linkCopy . $linkCut . $linkMakeLocal . $linkUnlink . $linkDelete;
 				}
 				else {
-					$titleBarRightButtons = $this->clipboardObj->element_getSelectButtons($parentPointer, 'copy,ref');
+					$titleBarRightButtons = $linkCopy;
 				}
 			break;
 		}
@@ -1053,7 +1061,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				</tr>
 				<tr class="tpm-sub-elements">
 					<td colspan="2">' .
-						$this->render_framework_subElements($contentTreeArr, $languageKey, $sheet) .
+						$this->render_framework_subElements($contentTreeArr, $languageKey, $sheet, $calcPerms) .
 						'<div class="tpm-preview">' . $previewContent . '</div>' .
 						$this->render_localizationInfoTable($contentTreeArr, $parentPointer, $parentDsMeta) .
 					'</td>
@@ -1075,17 +1083,19 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * @param	array		$elementContentTreeArr: Content tree starting with the element which possibly has sub elements
 	 * @param	string		$languageKey: Language key for current display
 	 * @param	string		$sheet: Key of the sheet we want to render
+	 * @param	integer		$calcPerms: Defined the access rights for the enclosing parent
 	 * @return	string		HTML output (a table) of the sub elements and some "insert new" and "paste" buttons
 	 * @access protected
 	 * @see render_framework_allSheets(), render_framework_singleSheet()
 	 */
-	function render_framework_subElements($elementContentTreeArr, $languageKey, $sheet){
+	function render_framework_subElements($elementContentTreeArr, $languageKey, $sheet, $calcPerms=0){
 		global $LANG;
 
 		$beTemplate = '';
 		$flagRenderBeLayout = false;
 
-
+		$canCreateNew = $GLOBALS['BE_USER']->isPSet($calcPerms, 'pages', 'new');
+		$canEditContent = $GLOBALS['BE_USER']->isPSet($calcPerms, 'pages', 'editcontent');
 
 			// Define l/v keys for current language:
 		$langChildren = intval($elementContentTreeArr['ds_meta']['langChildren']);
@@ -1146,9 +1156,6 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 				$cellContent = '';
 
-				$pid = $elementContentTreeArr['el']['table'] == 'pages' ? $elementContentTreeArr['el']['uid'] : $elementContentTreeArr['el']['pid'];
-				$calcPerms = $this->getCalcPerms($pid);
-
 					// Create flexform pointer pointing to "before the first sub element":
 				$subElementPointer = array (
 					'table' => $elementContentTreeArr['el']['table'],
@@ -1159,9 +1166,6 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 					'vLang' => $vKey,
 					'position' => 0
 				);
-
-				$canCreateNew = $GLOBALS['BE_USER']->isPSet($calcPerms, 'pages', 'new');
-				$canEditContent = $GLOBALS['BE_USER']->isPSet($calcPerms, 'pages', 'editcontent');
 
 				$canDragDrop = $canEditContent &&
 								$elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['tx_templavoila']['enableDragDrop'] !== '0' &&

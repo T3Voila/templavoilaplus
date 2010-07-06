@@ -1,3 +1,7 @@
+2010-07-06  Tolleiv Nietsch <nietsch@aoemedia.de>
+
+	* Fixed issue: #11594: "Create local copy" button of a content element isn't visible for users without write access
+
 2010-07-05  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
 	* Follow-up to: #14386: Static DS - Centralize access to datastructure / pt.1  - crash case removed
