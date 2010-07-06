@@ -1,5 +1,6 @@
 2010-07-05  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
+	* Follow-up to: #14386: Static DS - Centralize access to datastructure / pt.1  - crash case removed
 	* Follow-up to: #13928: $calcPerms in mod1 needs to be recreated if grid's are referenced items - typo removed
 	* Fixed issue: #15008: mod2 and cm1 dynTab position shouldn't correspond 
 	* Fixed issue: #13928: $calcPerms in mod1 needs to be recreated if grid's are referenced items 

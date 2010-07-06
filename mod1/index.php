@@ -2596,6 +2596,11 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * @return boolean
 	 */
 	protected function editingOfNewElementIsEnabled($dsUid, $toUid) {
+
+		if ( !strlen($dsUid) || !t3lib_div::intval_positive($toUid)) {
+			return true;
+		}
+
 		$ret = true;
 		$dsMeta = $toMeta = array();
 
