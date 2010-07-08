@@ -354,6 +354,14 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			$this->rootElementRecord = t3lib_BEfunc::getRecordWSOL($this->rootElementTable, $this->rootElementUid, '*');
 			if ($this->rootElementRecord['t3ver_swapmode']==0 && $this->rootElementRecord['_ORIG_uid'] ) {
 				$this->rootElementUid_pidForContent = $this->rootElementRecord['_ORIG_uid'];
+			} else if ($this->rootElementRecord['t3ver_swapmode']==-1 && $this->rootElementRecord['t3ver_oid'] && $this->rootElementRecord['pid'] < 0) {
+					// typo3 lacks a proper API to properly detect Offline versions and extract Live Versions therefore this is done by hand
+				if ($this->rootElementTable == 'pages') {
+					$this->rootElementUid_pidForContent = $this->rootElementRecord['t3ver_oid'];
+				} else {
+					$liveRec = t3lib_beFunc::getLiveRecord($this->rootElementTable, $this->rootElementUid);
+					$this->rootElementUid_pidForContent = $liveRec['pid'];
+				}
 			}else{
 				// If pages use current UID, otherwhise you must use the PID to define the Page ID
 				if ($this->rootElementTable == 'pages') {
@@ -362,6 +370,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 					$this->rootElementUid_pidForContent = $this->rootElementRecord['pid'];
 				}
 			}
+
 				// Check if we have to update the pagetree:
 			if (t3lib_div::_GP('updatePageTree')) {
 				t3lib_BEfunc::setUpdateSignal('updatePageTree');
