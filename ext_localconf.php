@@ -7,9 +7,11 @@ $_EXTCONF = unserialize($_EXTCONF);
 
 	// Adding the two plugins TypoScript:
 t3lib_extMgm::addPItoST43($_EXTKEY,'pi1/class.tx_templavoila_pi1.php','_pi1','CType',1);
+$tvSetup = array('plugin.tx_templavoila_pi1.disableExplosivePreview = 1');
 if (!$_EXTCONF['enable.']['renderFCEHeader']) {
-	t3lib_extMgm::addTypoScript($_EXTKEY,'setup','tt_content.templavoila_pi1.10 >',43);
+	$tvSetup[] = 'tt_content.templavoila_pi1.10 >';
 }
+t3lib_extMgm::addTypoScript($_EXTKEY,'setup',implode(PHP_EOL, $tvSetup), 43);
 
 	// Use templavoila's wizard instead the default create new page wizard
 t3lib_extMgm::addPageTSConfig('

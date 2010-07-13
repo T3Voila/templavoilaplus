@@ -1,3 +1,7 @@
+2010-07-13  Tolleiv Nietsch <nietsch@aoemedia.de>
+
+	* Fixed bug: #15058: disableExplosivePreview doesn't disable Flexible Content preview +manual updated
+
 2010-07-08  Tolleiv Nietsch <nietsch@aoemedia.de>
 
 	* Fixed bug: #5780: Elements are shows as references 
