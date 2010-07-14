@@ -236,8 +236,12 @@ templavoila.wizards.newContentElement.wizardItems.special.show = uploads,media,m
 ');
 }
 
+$TYPO3_CONF_VARS['BE']['AJAX']['tx_templavoila_mod1_ajax::moveRecord'] =
+	'EXT:templavoila/mod1/class.tx_templavoila_mod1_ajax.php:tx_templavoila_mod1_ajax->moveRecord';
+
 if(t3lib_div::int_from_ver(TYPO3_version) < 4003000) {
 	$list = include(t3lib_extMgm::extPath('templavoila') . '/ext_autoload.php');
+	require_once $list['tx_templavoila_api'];
 	require_once $list['tx_templavoila_div'];
 	require_once $list['tx_templavoila_datastructure'];
 	require_once $list['tx_templavoila_datastructure_dbbase'];

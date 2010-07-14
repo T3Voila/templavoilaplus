@@ -39,6 +39,7 @@ return array(
 	'tx_templavoila_cm1_etypes' => $extensionPath . 'cm1/class.tx_templavoila_cm1_etypes.php',
 	'tx_templavoila_cm2' => $extensionPath . 'cm2/index.php',
 	'tx_templavoila_referenceelementswizard' => $extensionPath . 'func_wizards/class.tx_templavoila_referenceelementswizard.php',
+	'tx_templavoila_mod1_ajax' => $extensionPath . 'mod1/class.tx_templavoila_mod1_ajax.php',
 	'tx_templavoila_mod1_clipboard' => $extensionPath . 'mod1/class.tx_templavoila_mod1_clipboard.php',
 	'tx_templavoila_mod1_localization' => $extensionPath . 'mod1/class.tx_templavoila_mod1_localization.php',
 	'tx_templavoila_mod1_recordlist' => $extensionPath . 'mod1/class.tx_templavoila_mod1_recordlist.php',

@@ -331,15 +331,6 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		}
 
 		if ($access)    {
-
-			// calls from drag and drop
-			if (t3lib_div::_GP('ajaxPasteRecord') == 'cut') {
-				$sourcePointer = $this->apiObj->flexform_getPointerFromString(t3lib_div::_GP('source'));
-				$destinationPointer = $this->apiObj->flexform_getPointerFromString(t3lib_div::_GP('destination'));
-				$this->apiObj->moveElement($sourcePointer, $destinationPointer);
-				exit;
-			}
-
 			if (t3lib_div::_GP('ajaxUnlinkRecord')) {
 				$unlinkDestinationPointer = $this->apiObj->flexform_getPointerFromString(t3lib_div::_GP('ajaxUnlinkRecord'));
 				$this->apiObj->unlinkElement($unlinkDestinationPointer);
@@ -405,6 +396,8 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				}
 				if (top.fsMod) top.fsMod.recentIds["web"] = '.intval($this->id).';
 			' . $this->doc->redirectUrls() . '
+				var T3_TV_MOD1_BACKPATH = "'.$BACK_PATH.'";
+
 							function jumpToUrl(URL)	{	//
 								window.location.href = URL;
 								return false;

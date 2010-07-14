@@ -43,7 +43,7 @@ function sortable_unlinkRecord(pointer, id, elementPointer) {
 			setTimeout(function(){sortable_unlinkRecordSidebarCallBack(elementPointer);}, 100);
 		}
 	});
-	new Effect.Fade(id, { 
+	new Effect.Fade(id, {
 		duration: 0.5,
 		afterFinish: sortable_unlinkRecordCallBack
 	});
@@ -56,7 +56,7 @@ function sortable_unlinkRecordSidebarCallBack(pointer) {
 		innerHeight += childNodes[i].getHeight();
 	}
 	$('tx_templavoila_mod1_sidebar-bar').morph(
-		{ height: innerHeight + 'px'}, 
+		{ height: innerHeight + 'px'},
 		{
 			duration: 0.1,
 			afterFinish: function() {
@@ -92,7 +92,7 @@ function sortable_updateItemButtons(el, position, pID) {
 				case 'tpm-cut':
 				case 'tpm-copy':
 				case 'tpm-ref':
-					node.href = node.href.replace(/CB\[el\]\[([^\]]+)\]=[^&]+/, "CB[el][$1]=" +  newPos); 
+					node.href = node.href.replace(/CB\[el\]\[([^\]]+)\]=[^&]+/, "CB[el][$1]=" +  newPos);
 					break;
 				case 'tpm-pasteAfter':
 				case 'tpm-pasteSubRef':
@@ -104,7 +104,7 @@ function sortable_updateItemButtons(el, position, pID) {
 			}
 		} else if(node.childElements() && node.className != 'tpm-subelement-table') {
 				// recursion within current container to "find" all pointers
-				// we don't want to update nested containers since their inner references didn't change 
+				// we don't want to update nested containers since their inner references didn't change
 			sortable_updateItemButtons(node, position, pID);
 		}
 	});
@@ -116,7 +116,7 @@ function sortable_update(el) {
 	while (node != null) {
 		if (!(typeof node.className == "undefined") && node.className.search(/tpm-element(?!-)/) > -1) {
 			if (sortable_currentItem && node.id == sortable_currentItem.id ) {
-				var url = "index.php?" + sortable_linkParameters + "&ajaxPasteRecord=cut&source=" + all_items[sortable_currentItem.id] + "&destination=" + all_items[el.id] + (i-1); /* xxx */
+				var url = T3_TV_MOD1_BACKPATH + "ajax.php?ajaxID=tx_templavoila_mod1_ajax::moveRecord&source=" + all_items[sortable_currentItem.id] + "&destination=" + all_items[el.id] + (i-1); /* xxx */
 				new Ajax.Request(url);
 				sortable_currentItem = false;
 			}
@@ -124,7 +124,7 @@ function sortable_update(el) {
 			all_items[node.id] = all_items[el.id] + i;
 			i++;
 		}
-		
+
 		node	= node.nextSibling;
 	}
 }

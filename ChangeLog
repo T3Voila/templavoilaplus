@@ -1,3 +1,7 @@
+2010-07-14  Tolleiv Nietsch <nietsch@aoemedia.de>
+
+	* Fixed issue: #15063: Introduce seperate ajax responder to handle d&d calls (Thanks to Nikolas Hagelstein)
+
 2010-07-13  Tolleiv Nietsch <nietsch@aoemedia.de>
 
 	* Fixed bug: #15058: disableExplosivePreview doesn't disable Flexible Content preview +manual updated
