@@ -45,8 +45,8 @@ if (TYPO3_MODE=='BE') {
 }
 	// Static DS
 if ($_EXTCONF['staticDS.']['enable']) {
-	include_once(t3lib_extMgm::extPath('templavoila') . 'classes/class.tx_staticdstools.php');
-	tx_staticDStools::readStaticDsFilesIntoArray($_EXTCONF);
+	include_once(t3lib_extMgm::extPath('templavoila') . 'classes/class.tx_templavoila_staticdstools.php');
+	tx_templavoila_staticDStools::readStaticDsFilesIntoArray($_EXTCONF);
 }
 
 	// Adding tables:

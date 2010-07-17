@@ -27,7 +27,7 @@
  *
  * @author	Steffen Kamper  <info@sk-typo3.de>
  */
-class tx_staticDStools {
+class tx_templavoila_staticDStools {
 
 	/**
 	 * Step for the wizard. Can be manipulated by internal function
@@ -258,7 +258,7 @@ class tx_staticDStools {
 	}
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/classes/class.tx_staticdstools.php'])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/classes/class.tx_staticdstools.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/classes/class.tx_templavoila_staticdstools.php'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/classes/class.tx_templavoila_staticdstools.php']);
 }
 ?>
