@@ -1,5 +1,6 @@
 2010-07-17  Tolleiv Nietsch <nietsch@aoemedia.de>
 
+	* Fixed issue: #15158: XCLASS inclusion inclass.tx_templavoila_label.php wrong 
 	* Fixed issue: #15157: tx_staticdstools doesn't follow naming schema
 	* Fixed issue: #15124: bind detection for static DS scope to path and not to string '(fce)' in filename  (Thanks to Franz Koch)
 
