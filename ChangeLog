@@ -1,3 +1,7 @@
+2010-07-17  Tolleiv Nietsch <nietsch@aoemedia.de>
+
+	* Fixed issue: #15124: bind detection for static DS scope to path and not to string '(fce)' in filename  (Thanks to Franz Koch)
+
 2010-07-14  Tolleiv Nietsch <nietsch@aoemedia.de>
 
 	* Fixed issue: #14897: TV shows inconsistent in variours TYPO3 versions (Thanks to Christian Noelle)

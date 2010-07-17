@@ -227,10 +227,14 @@ class tx_staticDStools {
 	 * @param unknown_type $conf
 	 */
 	public function readStaticDsFilesIntoArray($conf) {
-		$paths = array_unique(array($conf['staticDS.']['path_fce'],$conf['staticDS.']['path_page']));
-		foreach ($paths as $path) {
+		$paths = array_unique(array('fce' => $conf['staticDS.']['path_fce'], 'page' => $conf['staticDS.']['path_page']));
+		foreach ($paths as $type => $path) {
 			$absolutePath = t3lib_div::getFileAbsFileName($path);
 			$files = t3lib_div::getFilesInDir($absolutePath, 'xml', true);
+				// if all files are in the same folder, don't resolve the scope by path type
+			if (count($paths) == 1) {
+				$type = FALSE;
+			}
 			foreach($files as $filePath) {
 				$staticDataStructure = array();
 				$pathInfo = pathinfo($filePath);
@@ -241,7 +245,12 @@ class tx_staticDStools {
 				if (file_exists($iconPath)) {
 					$staticDataStructure['icon'] = substr($iconPath, strlen(PATH_site));
 				}
-				$staticDataStructure['scope'] = strpos($pathInfo['filename'], '(fce)') !== FALSE ? 2 : 1;
+
+				if (($type !== FALSE && $type === 'fce') || strpos($pathInfo['filename'], '(fce)') !== FALSE) {
+					$staticDataStructure['scope'] = tx_templavoila_datastructure::SCOPE_FCE;
+				} else {
+					$staticDataStructure['scope'] = tx_templavoila_datastructure::SCOPE_PAGE;
+				}
 
 				$GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['staticDataStructures'][] = $staticDataStructure;
 			}
