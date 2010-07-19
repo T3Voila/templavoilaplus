@@ -186,15 +186,17 @@ $TCA['tt_content']['ctrl']['typeicons'][$_EXTKEY . '_pi1'] = t3lib_extMgm::extRe
 t3lib_extMgm::addPlugin(array('LLL:EXT:templavoila/locallang_db.xml:tt_content.CType_pi1', $_EXTKEY . '_pi1', 'EXT:' . $_EXTKEY . '/icon_fce_ce.png'), 'CType');
 
 if ($_EXTCONF['enable.']['selectDataStructure']) {
-	$TCA['tt_content']['types'][$_EXTKEY . '_pi1']['showitem'] = 'CType;;4;button;1-1-1, header;;3;;2-2-2,tx_templavoila_ds,tx_templavoila_to,tx_templavoila_flex;;;;2-2-2,linkToTop;;;;3-3-3, hidden;;1;;3-3-3';
 	if ($TCA['tt_content']['ctrl']['requestUpdate'] != '') {
 		$TCA['tt_content']['ctrl']['requestUpdate'] .= ',';
 	}
 	$TCA['tt_content']['ctrl']['requestUpdate'] .= 'tx_templavoila_ds';
 }
-else {
-	$TCA['tt_content']['types'][$_EXTKEY . '_pi1']['showitem'] = 'CType;;4;button;1-1-1, header;;3;;2-2-2,tx_templavoila_to,tx_templavoila_flex;;;;2-2-2,linkToTop;;;;3-3-3, hidden;;1;;3-3-3';
-}
+
+$TCA['tt_content']['types'][$_EXTKEY . '_pi1']['showitem'] = 
+	'CType;;4;;1-1-1, hidden, header;;' . (($_EXTCONF['enable.']['renderFCEHeader']) ? '3' : '' ) . ';;2-2-2, linkToTop;;;;3-3-3,
+	 --div--;LLL:EXT:templavoila/locallang_db.xml:tt_content.CType_pi1,' . (($_EXTCONF['enable.']['selectDataStructure']) ? 'tx_templavoila_ds,' : '') . 'tx_templavoila_to,tx_templavoila_flex;;;;2-2-2,
+	 --div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access, starttime, endtime, fe_group';
+
 
 	// For pages:
 $tempColumns = array (

@@ -1,3 +1,7 @@
+2010-07-19  Tolleiv Nietsch <nietsch@aoemedia.de>
+
+	* Fixed issue: #15178: FCE editing forms should match built-in content elements (Thanks to Jeff Segars)
+
 2010-07-17  Tolleiv Nietsch <nietsch@aoemedia.de>
 
 	* Fixed issue: #15158: XCLASS inclusion inclass.tx_templavoila_label.php wrong 
