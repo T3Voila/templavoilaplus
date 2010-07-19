@@ -176,6 +176,22 @@ class tx_templavoila_datastructureRepository {
 	public function sortDatastructures($obj1, $obj2) {
 		return strcmp(strtolower($obj1->getLabel()), strtolower($obj2->getLabel()));
 	}
+
+	/**
+	 *
+	 *
+	 * @return integer
+	 */
+	public function getDatastructureCountForPid($pid) {
+		$dsCnt = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+					'DISTINCT datastructure',
+					'tx_templavoila_tmplobj',
+					'pid=' . intval($pid) .t3lib_BEfunc::deleteClause('tx_templavoila_tmplobj'),
+					'datastructure'
+				);
+		array_unique($dsCnt);
+		return count($dsCnt);
+	}
 }
 
 

@@ -327,29 +327,9 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 	function renderModuleContent_searchForTODS()	{
 		global $LANG;
 
-			// Select all Data Structures in the PID and put into an array:
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-					'pid,count(*)',
-					'tx_templavoila_datastructure',
-					'pid>=0'.t3lib_BEfunc::deleteClause('tx_templavoila_datastructure'),
-					'pid'
-				);
-		while($res && false !== ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)))	{
-			$list[$row['pid']]['DS'] = $row['count(*)'];
-		}
-		$GLOBALS['TYPO3_DB']->sql_free_result($res);
-
-			// Select all Template Records in PID:
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-					'pid,count(*)',
-					'tx_templavoila_tmplobj',
-					'pid>=0'.t3lib_BEfunc::deleteClause('tx_templavoila_tmplobj'),
-					'pid'
-				);
-		while($res && false !== ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)))	{
-			$list[$row['pid']]['TO'] = $row['count(*)'];
-		}
-		$GLOBALS['TYPO3_DB']->sql_free_result($res);
+		$dsRepo = t3lib_div::makeInstance('tx_templavoila_datastructureRepository');
+		$toRepo = t3lib_div::makeInstance('tx_templavoila_templateRepository');
+		$list = $toRepo->getTemplateStoragePids();
 
 			// Traverse the pages found and list in a table:
 		$tRows = array();
@@ -361,16 +341,16 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 			</tr>';
 
 		if (is_array($list))	{
-			foreach($list as $pid => $stat)	{
+			foreach($list as $pid) {
 				$path = $this->findRecordsWhereUsed_pid($pid);
 				if ($path)	{
 					$tRows[] = '
 						<tr class="bgColor4">
 							<td><a href="index.php?id=' . $pid . '" onclick="setHighlight(' . $pid . ')">' .
-								t3lib_iconWorks::getIconImage('pages', t3lib_BEfunc::getRecord('pages', $pid), $this->doc->backPath, 'class="absmiddle" title="'. htmlspecialchars($alttext) . '"') .
-								htmlspecialchars($path).'</a></td>
-							<td>'.htmlspecialchars($stat['DS']).'</td>
-							<td>'.htmlspecialchars($stat['TO']).'</td>
+							t3lib_iconWorks::getIconImage('pages', t3lib_BEfunc::getRecord('pages', $pid), $this->doc->backPath, 'class="absmiddle" title="'. htmlspecialchars($alttext) . '"') .
+							htmlspecialchars($path).'</a></td>
+							<td>' . $dsRepo->getDatastructureCountForPid($pid) . '</td>
+							<td>' . $toRepo->getTemplateCountForPid($pid) . '</td>
 						</tr>';
 				}
 			}

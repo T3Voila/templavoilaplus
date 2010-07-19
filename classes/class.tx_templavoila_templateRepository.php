@@ -30,10 +30,10 @@
 class tx_templavoila_templateRepository {
 
 	/**
-	 * Retrieve a single datastructure by uid or xml-file path
+	 * Retrieve a single templateobject by uid or xml-file path
 	 *
 	 * @param integer $uid
-	 * @return tx_templavoila_datastructure
+	 * @return tx_templavoila_template
 	 */
 	public function getTemplateByUid($uid) {
 		$to = null;
@@ -47,10 +47,11 @@ class tx_templavoila_templateRepository {
 	}
 
 	/**
-	 * Retrieve a single datastructure by uid or xml-file path
+	 * Retrieve template objects which are related to a specific datastructure
 	 *
-	 * @param integer $uid
-	 * @return tx_templavoila_datastructure
+	 * @param tx_templavoila_datastructure
+	 * @param integer $pid
+	 * @return array
 	 */
 	public function getTemplatesByDatastructure(tx_templavoila_datastructure $ds, $storagePid = 0) {
 		$toList = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows (
@@ -81,6 +82,40 @@ class tx_templavoila_templateRepository {
 	public function sortTemplates($obj1, $obj2) {
 		return strcmp(strtolower($obj1->getLabel()), strtolower($obj2->getLabel()));
 	}
+
+	/**
+	 * Find all folders with template objects
+	 *
+	 * @return array
+	 */
+	public function getTemplateStoragePids() {
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+					'pid',
+					'tx_templavoila_tmplobj',
+					'pid>=0'.t3lib_BEfunc::deleteClause('tx_templavoila_tmplobj'),
+					'pid'
+				);
+		while($res && false !== ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)))	{
+			$list[]= $row['pid'];
+		}
+		$GLOBALS['TYPO3_DB']->sql_free_result($res);
+		return $list;
+	}
+
+	/**
+	 *
+	 *
+	 * @return integer
+	 */
+	public function getTemplateCountForPid($pid) {
+		$toCnt = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+					'count(*) as cnt',
+					'tx_templavoila_tmplobj',
+					'pid=' . intval($pid) .t3lib_BEfunc::deleteClause('tx_templavoila_tmplobj')
+				);
+		return $toCnt[0]['cnt'];
+	}
+
 }
 
 
