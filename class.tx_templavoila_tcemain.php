@@ -1,26 +1,26 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2004-2006 Robert Lemke (robert@typo3.org)
-*  All rights reserved
-*
-*  This script is part of the Typo3 project. The Typo3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
+ *  Copyright notice
+ *
+ *  (c) 2004-2006 Robert Lemke (robert@typo3.org)
+ *  All rights reserved
+ *
+ *  This script is part of the Typo3 project. The Typo3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 
 /**
  * Class 'tx_templavoila_tcemain' for the templavoila extension.
@@ -178,7 +178,7 @@ class tx_templavoila_tcemain {
 			}
 		}
 
-		// Access check for FCE
+			// Access check for FCE
 		if ($table == 'tt_content') {
 			if ($status != 'new') {
 				$row = t3lib_beFunc::getRecord($table, $id);
@@ -282,7 +282,7 @@ page.10.disableExplosivePreview = 1
 						$templaVoilaAPI->insertElement_setElementReferences ($destinationFlexformPointer, $reference->substNEWwithIDs[$id]);
 					}
 				}
-			break;
+				break;
 
 		}
 		unset ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_tcemain']['preProcessFieldArrays']);
@@ -318,7 +318,7 @@ page.10.disableExplosivePreview = 1
 		switch ($command) {
 			case 'delete' :
 				$record = t3lib_beFunc::getRecord('tt_content', $id);
-				// Check for FCE access
+					// Check for FCE access
 				$params = array(
 					'table' => $table,
 					'row' => $record,
@@ -329,7 +329,7 @@ page.10.disableExplosivePreview = 1
 					$command = '';	// Do not delete! A hack but there is no other way to prevent deletion...
 				}
 				else {
-					// Access ok
+						// Access ok
 					if (intval($record['t3ver_oid']) > 0) {
 						$record = t3lib_BEfunc::getRecord('tt_content', intval($record['t3ver_oid']));
 					}
@@ -536,7 +536,7 @@ page.10.disableExplosivePreview = 1
 	 */
 	protected function updateDataSourceFromTemplateObject($table, array &$incomingFieldArray, t3lib_beUserAuth &$beUser) {
 		if (($table == 'pages' || $table == 'tt_content') &&
-			isset($incomingFieldArray['tx_templavoila_to'])) {
+		isset($incomingFieldArray['tx_templavoila_to'])) {
 			$this->updateDataSourceFieldFromTemplateObjectField($incomingFieldArray, 'tx_templavoila_ds', 'tx_templavoila_to', $beUser);
 		}
 		if ($table == 'pages' && isset($incomingFieldArray['tx_templavoila_next_to'])) {
@@ -574,6 +574,79 @@ page.10.disableExplosivePreview = 1
 			}
 		}
 	}
+
+	/**
+	 * Using the checkRecordUpdateAccess hook to grant access to flexfields if the user
+	 * make the attempt to update a reference list within a flex field
+	 *
+	 * @see http://bugs.typo3.org/view.php?id=485
+	 *
+	 * @param string $table
+	 * @param integer $id
+	 * @param array $data
+	 * @param boolean $res
+	 * @param object $pObj
+	 * @return mixed - "1" if we grant access and "false" if we can't decide whether to give access or not
+	 */
+	function checkRecordUpdateAccess($table, $id, $data, $res, &$pObj)	{
+
+		global $TCA;
+			// Only perform additional checks if not admin and just for pages table.
+		if (($table=='pages') && is_array($data) && !$pObj->admin)	{
+			$res = 1;
+			foreach ($data as $field => $value)	{
+				if (in_array($table.'-'.$field, $pObj->exclude_array) || $pObj->data_disableFields[$table][$id][$field])	{
+					continue;
+				}
+					// we're not inserting useful data - can't make a decission
+				if(!is_array($data[$field]['data'])) {
+					$res = false;
+					break;
+				}
+					// we're not inserting operating on an flex field - can't make a decission
+				if (!is_array($TCA[$table]['columns'][$field]['config']) ||
+					$TCA[$table]['columns'][$field]['config']['type'] != 'flex') {
+					$res = false;
+					break;
+				}
+					// get the field-information and check if only "ce" fields are updated
+				$conf = $TCA[$table]['columns'][$field]['config'];
+				$currentRecord = t3lib_BEfunc::getRecord($table, $id);
+				$dataStructArray = t3lib_BEfunc::getFlexFormDS($conf, $currentRecord, $table, $field, true);
+				foreach ($data[$field]['data'] as $sheet => $sheetData)	{
+					if (!is_array($sheetData) || !is_array($dataStructArray['ROOT']['el']))	{
+						$res = false;
+						break;
+					}
+					foreach ($sheetData as $lDef => $lData)	{
+						if (!is_array($lData))	{
+							$res = false;
+							break;
+						}
+						foreach ($lData as $fieldName => $fieldData)	{
+
+							if (!isset($dataStructArray['ROOT']['el'][$fieldName])) {
+								$res = false;
+								break;
+							}
+
+							$fieldConf = $dataStructArray['ROOT']['el'][$fieldName];
+							if ($fieldConf['tx_templavoila']['eType'] != 'ce')	{
+								$res = false;
+								break;
+							}
+						}
+					}
+				}
+			}
+			if (($res==1) && !$pObj->doesRecordExist($table, $id, 'editcontent'))	{
+				$res = false;
+			}
+		}
+
+		return $res;
+	}
+
 }
 
 

@@ -1,3 +1,7 @@
+2010-07-20  Tolleiv Nietsch <nietsch@aoemedia.de>
+
+	* Fixed issue: #3903: ACL problem: "edit content" doesn't work (Thanks to Bernhard Kraft)
+
 2010-07-19  Tolleiv Nietsch <nietsch@aoemedia.de>
 
 	* Fixed issue: #13699: static Data Structures not listed in the TemplaVoilà Control Center
