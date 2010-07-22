@@ -1022,7 +1022,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			// Create warning messages if neccessary:
 		$warnings = '';
 		if ($this->global_tt_content_elementRegister[$contentTreeArr['el']['uid']] > 1 && $this->rootElementLangParadigm !='free') {
-			$warnings .= '<br/>'.$this->doc->icons(2).' <em>'.htmlspecialchars(sprintf($LANG->getLL('warning_elementusedmorethanonce',''), $this->global_tt_content_elementRegister[$contentTreeArr['el']['uid']], $contentTreeArr['el']['uid'])).'</em>';
+			$warnings .= $this->doc->icons(2).' <em>'.htmlspecialchars(sprintf($LANG->getLL('warning_elementusedmorethanonce',''), $this->global_tt_content_elementRegister[$contentTreeArr['el']['uid']], $contentTreeArr['el']['uid'])).'</em><br />';
 		}
 
 			// Displaying warning for container content (in default sheet - a limitation) elements if localization is enabled:
@@ -1030,10 +1030,10 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		if (!$this->modTSconfig['properties']['disableContainerElementLocalizationWarning'] && $this->rootElementLangParadigm !='free' && $isContainerEl && $contentTreeArr['el']['table'] === 'tt_content' && $contentTreeArr['el']['CType'] === 'templavoila_pi1' && !$contentTreeArr['ds_meta']['langDisable'])	{
 			if ($contentTreeArr['ds_meta']['langChildren'])	{
 				if (!$this->modTSconfig['properties']['disableContainerElementLocalizationWarning_warningOnly']) {
-					$warnings .= '<br/>'.$this->doc->icons(2).' <b>'.$LANG->getLL('warning_containerInheritance').'</b>';
+					$warnings .= $this->doc->icons(2).' <b>'.$LANG->getLL('warning_containerInheritance').'</b><br />';
 				}
 			} else {
-				$warnings .= '<br/>'.$this->doc->icons(3).' <b>'.$LANG->getLL('warning_containerSeparate').'</b>';
+				$warnings .= $this->doc->icons(3).' <b>'.$LANG->getLL('warning_containerSeparate').'</b><br />';
 			}
 		}
 
@@ -1047,28 +1047,26 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 			// Finally assemble the table:
 		$finalContent = '
-			<table cellpadding="0" cellspacing="0" class="' . $elementClass . '">
-				<tr class="sortable_handle ' . $elementTitlebarClass .'">
-					<td class="tpm-element-title">' .
-						'<span class="nobr">' .
+			<div class="' . $elementClass . '">
+				<div class="sortable_handle tpm-titlebar ' . $elementTitlebarClass .'">
+					<div class="t3-row-header">
+						<div class="tpm-element-control">
+						' . $titleBarRightButtons . '
+						</div>
+						<div class="nobr tpm-element-title">' .
 						$languageIcon .
 						$titleBarLeftButtons .
 						($elementBelongsToCurrentPage ? '' : '<em>') . htmlspecialchars($contentTreeArr['el']['title']) . ($elementBelongsToCurrentPage ? '' : '</em>') .
-						'</span>' .
-						$warnings .
-					'</td>
-					<td nowrap="nowrap" class="tpm-element-control">' .
-						$titleBarRightButtons .
-					'</td>
-				</tr>
-				<tr class="tpm-sub-elements">
-					<td colspan="2">' .
-						$this->render_framework_subElements($contentTreeArr, $languageKey, $sheet, $calcPerms) .
-						'<div class="tpm-preview">' . $previewContent . '</div>' .
-						$this->render_localizationInfoTable($contentTreeArr, $parentPointer, $parentDsMeta) .
-					'</td>
-				</tr>
-			</table>
+						'</div>
+					</div>
+				</div>
+				<div class="tpm-sub-elements">' .
+					$warnings .
+					$this->render_framework_subElements($contentTreeArr, $languageKey, $sheet, $calcPerms) .
+					'<div class="tpm-preview">' . $previewContent . '</div>' .
+					$this->render_localizationInfoTable($contentTreeArr, $parentPointer, $parentDsMeta) .
+				'</div>
+			</div>
 		';
 
 		return $finalContent;
