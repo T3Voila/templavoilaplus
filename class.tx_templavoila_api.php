@@ -1396,10 +1396,11 @@ class tx_templavoila_api {
 	 * @param	array		$row: Record of the root element where the tree starts (Possibly overlaid with workspace content)
 	 * @param	array		$tt_content_elementRegister: Register of used tt_content elements, don't mess with it! (passed by reference since data is built up)
 	 * @param	string		$prevRecList: comma separated list of uids, used internally for recursive calls. Don't mess with it!
+	 * @param	integer		$depth: nexting depth
 	 * @return	array		The content tree
 	 * @access	protected
 	 */
-	function getContentTree_element($table, $row, &$tt_content_elementRegister, $prevRecList='')	{
+	function getContentTree_element($table, $row, &$tt_content_elementRegister, $prevRecList='', $depth=0)	{
 		global $TCA, $LANG;
 
 		$tree = array();
@@ -1500,7 +1501,8 @@ class tx_templavoila_api {
 								foreach($lKeys as $lKey)	{
 									foreach($vKeys as $vKey)	{
 										$listOfSubElementUids = $flexformContentArr['data'][$sheetKey][$lKey][$fieldKey][$vKey];
-										$tree['sub'][$sheetKey][$lKey][$fieldKey][$vKey] = $this->getContentTree_processSubContent($listOfSubElementUids, $tt_content_elementRegister, $prevRecList);
+										$tree['depth'] = $depth;
+										$tree['sub'][$sheetKey][$lKey][$fieldKey][$vKey] = $this->getContentTree_processSubContent($listOfSubElementUids, $tt_content_elementRegister, $prevRecList,$depth);
 										$tree['sub'][$sheetKey][$lKey][$fieldKey][$vKey]['meta']['title'] = $fieldData['TCEforms']['label'];
 									}
 								}
@@ -1563,10 +1565,11 @@ class tx_templavoila_api {
 	 * @param	string		$listOfSubElementUids: List of tt_content elements to process
 	 * @param	array		$tt_content_elementRegister: Register of tt_content elements used on the page (passed by reference since it is modified)
 	 * @param	string		$prevRecList: List of previously processed record uids
+	 * @param	integer		$depth: nexting depth
 	 * @return	array		The sub tree for these elements
 	 * @access	protected
 	 */
-	function getContentTree_processSubContent($listOfSubElementUids, &$tt_content_elementRegister, $prevRecList) {
+	function getContentTree_processSubContent($listOfSubElementUids, &$tt_content_elementRegister, $prevRecList, $depth=0) {
 		global $TCA;
 
 			// Init variable:
@@ -1586,7 +1589,7 @@ class tx_templavoila_api {
 
 				if (is_array($nextSubRecord))	{
 					$tt_content_elementRegister[$recIdent['id']]++;
-					$subTree['el'][$idStr] = $this->getContentTree_element('tt_content', $nextSubRecord, $tt_content_elementRegister, $prevRecList.','.$idStr);
+					$subTree['el'][$idStr] = $this->getContentTree_element('tt_content', $nextSubRecord, $tt_content_elementRegister, $prevRecList.','.$idStr, $depth+1);
 					$subTree['el'][$idStr]['el']['index'] = $counter;
 					$subTree['el'][$idStr]['el']['isHidden'] = $TCA['tt_content']['ctrl']['enablecolumns']['disabled'] && $nextSubRecord[$TCA['tt_content']['ctrl']['enablecolumns']['disabled']];
 					$subTree['el_list'][$counter] = $idStr;

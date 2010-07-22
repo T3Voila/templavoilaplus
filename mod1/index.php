@@ -382,7 +382,13 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			$this->doc->form='<form action="'.htmlspecialchars('index.php?'.$this->link_getParameters()).'" method="post">';
 
 				// Add custom styles
-			$styleSheetFile = t3lib_extMgm::extRelPath($this->extKey) . "mod1/pagemodule.css";
+			$styleSheetFile = t3lib_extMgm::extPath($this->extKey) . 'mod1/pagemodule_' . substr(TYPO3_version, 0, 3) . '.css';
+			if (file_exists($styleSheetFile)) {
+				$styleSheetFile = t3lib_extMgm::extRelPath($this->extKey) . 'mod1/pagemodule_' . substr(TYPO3_version, 0, 3) . '.css';
+			} else {
+				$styleSheetFile = t3lib_extMgm::extRelPath($this->extKey) . 'mod1/pagemodule.css';
+			}
+
 			if ($this->modTSconfig['properties']['stylesheet']) {
 				$styleSheetFile = $this->modTSconfig['properties']['stylesheet'];
 			}
@@ -465,8 +471,48 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 								}
 							}
 						'
-
 			);
+
+
+			if (version_compare(TYPO3_version, '4.3', '>')) {
+				$this->doc->getPageRenderer()->loadExtJs();
+				$this->doc->JScode .= $this->doc->wrapScriptTags('
+					var typo3pageModule = {
+						/**
+						 * Initialization
+						 */
+						init: function() {
+							typo3pageModule.enableHighlighting();
+						},
+
+						/**
+						 * This method is used to bind the higlighting function "setActive"
+						 * to the mouseenter event and the "setInactive" to the mouseleave event.
+						 */
+						enableHighlighting: function() {
+							Ext.get(\'typo3-docbody\')
+								.on(\'mouseover\', typo3pageModule.setActive,typo3pageModule);
+						},
+
+						/**
+						 * This method is used as an event handler when the
+						 * user hovers the a content element.
+						 */
+						setActive: function(e, t) {
+							Ext.select(\'.active\').removeClass(\'active\').addClass(\'inactive\');
+							var parent = Ext.get(t).findParent(\'.t3-page-ce\', null, true);
+							if (parent) {
+								parent.removeClass(\'inactive\').addClass(\'active\');
+							}
+						}
+					}
+
+					Ext.onReady(function() {
+						typo3pageModule.init();
+					});
+				');
+			}
+
 				// Preparing context menues
 				// this also adds prototype to the list of required libraries
 			$CMparts = $this->doc->getContextMenuCode();
@@ -928,6 +974,9 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		$canEditContent = $GLOBALS['BE_USER']->isPSet($this->calcPerms, 'pages', 'editcontent');
 
 		$elementClass = 'tpm-container-element';
+		$elementClass.= ' tpm-container-element-depth-' . $contentTreeArr['depth'];
+		$elementClass.= ' tpm-container-element-depth-' . ($contentTreeArr['depth']%2 ? 'odd' : 'even');
+
 
 		// Prepare the record icon including a content sensitive menu link wrapped around it:
 		$recordIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,$contentTreeArr['el']['icon'],'').' border="0" title="'.htmlspecialchars('['.$contentTreeArr['el']['table'].':'.$contentTreeArr['el']['uid'].']').'" alt="" />';
@@ -1048,7 +1097,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			// Finally assemble the table:
 		$finalContent = '
 			<div class="' . $elementClass . '">
-				<div class="sortable_handle tpm-titlebar ' . $elementTitlebarClass .'">
+				<div class="sortable_handle tpm-titlebar t3-page-ce-header ' . $elementTitlebarClass .'">
 					<div class="t3-row-header">
 						<div class="tpm-element-control">
 						' . $titleBarRightButtons . '
@@ -1198,7 +1247,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 							$subElementPointer['position'] = $position;
 
 							if (!$this->translatorMode) {
-								$cellContent .= '<div' . ($canDragDrop ? ' class="sortableItem tpm-element"' : ' class="tpm-element"') . ' id="' . $this->addSortableItem ($this->apiObj->flexform_getStringFromPointer ($subElementPointer), $canDragDrop) . '">';
+								$cellContent .= '<div' . ($canDragDrop ? ' class="sortableItem tpm-element t3-page-ce inactive"' : ' class="tpm-element t3-page-ce inactive"') . ' id="' . $this->addSortableItem ($this->apiObj->flexform_getStringFromPointer ($subElementPointer), $canDragDrop) . '">';
 							}
 
 							$cellContent .= $this->render_framework_allSheets($subElementArr, $languageKey, $subElementPointer, $elementContentTreeArr['ds_meta']);
