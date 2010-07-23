@@ -100,6 +100,7 @@ class tx_templavoila_dbnewcontentel {
 	var $include_once = array();	// Includes a list of files to include between init() and main() - see init()
 	var $content;					// Used to accumulate the content of the module.
 	var $access;					// Access boolean.
+	var $returnUrl = '';			// (GPvar "returnUrl") Return URL if the script is supplied with that.
 
 
 	/**
@@ -122,11 +123,19 @@ class tx_templavoila_dbnewcontentel {
 		$this->parentRecord = t3lib_div::_GP('parentRecord');
 		$this->altRoot = t3lib_div::_GP('altRoot');
 		$this->defVals = t3lib_div::_GP('defVals');
+		$this->returnUrl = tx_templavoila_div::sanitizeLocalUrl(t3lib_div::_GP('returnUrl'));
 
 			// Starting the document template object:
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->docType= 'xhtml_trans';
 		$this->doc->backPath = $BACK_PATH;
+		if(version_compare(TYPO3_version,'4.3','>')) {
+			$this->doc->setModuleTemplate('EXT:templavoila/resources/templates/mod1_new_content.html');
+		} else {
+			$this->doc->setModuleTemplate(t3lib_extMgm::extRelPath('templavoila') . 'resources/templates/mod1_new_content.html');
+		}
+		$this->doc->bodyTagId = 'typo3-mod-php';
+		$this->doc->divClass = '';
 		$this->doc->JScode='';
 
 		if (version_compare(TYPO3_version, '4.3', '>')) {
@@ -169,9 +178,7 @@ class tx_templavoila_dbnewcontentel {
 		if ($this->id && $this->access)	{
 
 				// Creating content
-			$this->content='';
-			$this->content.=$this->doc->startPage($LANG->getLL('newContentElement'));
-			$this->content.=$this->doc->header($LANG->getLL('newContentElement'));
+			$this->content = $this->doc->header($LANG->getLL('newContentElement'));
 			$this->content.=$this->doc->spacer(5);
 
 			$elRow = t3lib_BEfunc::getRecordWSOL('pages',$this->id);
@@ -277,11 +284,67 @@ class tx_templavoila_dbnewcontentel {
 			$this->content .= $this->doc->section(! $this->onClickEvent ? $LANG->getLL('1_selectType') : '', $code, 0, 1);
 
 		} else {		// In case of no access:
-			$this->content='';
-			$this->content.=$this->doc->startPage($LANG->getLL('newContentElement'));
-			$this->content.=$this->doc->header($LANG->getLL('newContentElement'));
-			$this->content.=$this->doc->spacer(5);
+			$this->content=$this->doc->header($LANG->getLL('newContentElement'));
 		}
+
+		$this->pageinfo = t3lib_BEfunc::readPageAccess($this->id,$this->perms_clause);
+		$docHeaderButtons = $this->getDocHeaderButtons();
+		$docContent = array(
+			'CSH' => $docHeaderButtons['csh'],
+			'CONTENT' =>  $this->content
+		);
+
+		$content  = $this->doc->startPage($LANG->getLL('newContentElement'));
+		$content .= $this->doc->moduleBody(
+			$this->pageinfo,
+			$docHeaderButtons,
+			$docContent
+		);
+		$content .= $this->doc->endPage();
+
+			// Replace content with templated content
+		$this->content = $content;
+	}
+
+	/**
+	 * Gets the buttons that shall be rendered in the docHeader.
+	 *
+	 * @return	array		Available buttons for the docHeader
+	 */
+	protected function getDocHeaderButtons() {
+		$buttons = array(
+			'csh'		=> t3lib_BEfunc::cshItem('_MOD_web_txtemplavoilaCM1', '', $this->backPath),
+			'back'		=> '',
+			'shortcut'	=> $this->getShortcutButton(),
+		);
+
+			// Back
+		if ($this->returnUrl) {
+			if(version_compare(TYPO3_version,'4.4','>')) {
+				$backIcon = t3lib_iconWorks::getSpriteIcon('actions-view-go-back');
+			} else {
+				$backIcon = '<img' . t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/goback.gif','width="14" height="14"') . ' alt="" />';
+			}
+
+			$buttons['back'] = '<a href="' . htmlspecialchars(t3lib_div::linkThisUrl($this->returnUrl)) . '" class="typo3-goBack" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.goBack', TRUE) . '">' .
+								$backIcon .
+							   '</a>';
+		}
+		return $buttons;
+	}
+
+	/**
+	 * Gets the button to set a new shortcut in the backend (if current user is allowed to).
+	 *
+	 * @return	string		HTML representiation of the shortcut button
+	 */
+	protected function getShortcutButton() {
+		$result = '';
+		if ($GLOBALS['BE_USER']->mayMakeShortcut()) {
+			$result = $this->doc->makeShortcutIcon('id', implode(',', array_keys($this->MOD_MENU)), $this->MCONF['name']);
+		}
+
+		return $result;
 	}
 
 	/**
@@ -290,7 +353,6 @@ class tx_templavoila_dbnewcontentel {
 	 * @return	void
 	 */
 	function printContent()	{
-		$this->content.= $this->doc->endPage();
 		$this->content = $this->doc->insertStylesAndJS($this->content);
 		echo $this->content;
 	}

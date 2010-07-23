@@ -1,5 +1,6 @@
 2010-07-23  Tolleiv Nietsch <nietsch@aoemedia.de>
 
+	* Fixed issue: #15217: new content wizard should use docHeader
 	* Fixed issue: #10911: Design: non-used elements are too crowded
 	* Fixed issue: #15210: TemplaVoila should adjust it's look&feel to TYPO3 4.4
 	* Fixed issue: #15209: mod1 -> render_singleSheet uses html table for "styling" 

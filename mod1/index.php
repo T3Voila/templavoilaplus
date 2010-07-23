@@ -2182,7 +2182,8 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 		$parameters =
 			$this->link_getParameters().
-			'&amp;parentRecord='.rawurlencode($this->apiObj->flexform_getStringFromPointer($parentPointer));
+			'&amp;parentRecord='.rawurlencode($this->apiObj->flexform_getStringFromPointer($parentPointer)).
+			'&amp;returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'));
 		return '<a class="tpm-new" href="'.'db_new_content_el.php?'.$parameters.'">'.$label.'</a>';
 	}
 
