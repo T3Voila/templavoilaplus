@@ -1066,6 +1066,8 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			// If there was a language icon and the language was not default or [all] and if that langauge is accessible for the user, then wrap the  flag with an edit link (to support the "Click the flag!" principle for translators)
 		if ($languageIcon && $languageUid>0 && $GLOBALS['BE_USER']->checkLanguageAccess($languageUid) && $contentTreeArr['el']['table']==='tt_content')	{
 			$languageIcon = $this->link_edit($languageIcon, 'tt_content', $contentTreeArr['el']['uid'], TRUE, $contentTreeArr['el']['pid']);
+		} elseif ($languageIcon) {
+			$languageIcon = '<span class="tpm-langIcon">' . $languageIcon . '</span>';
 		}
 
 			// Create warning messages if neccessary:

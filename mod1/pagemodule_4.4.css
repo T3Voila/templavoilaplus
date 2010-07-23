@@ -108,7 +108,13 @@ div.warning a {
 
 .tpm-element-title a {
 	padding-right:5px;
-} 
+}
+
+.tpm-element-title .tpm-langIcon {
+	float:left;
+	padding-right:5px;
+	padding-top:2px;
+}
 
 .tpm-preview {
 	padding:7px
