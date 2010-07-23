@@ -120,8 +120,17 @@ div.warning a {
 }
 
 /* non-used elements */
-.tpm-nonused-element {
-	
+
+.tpm-nonused-elements td:first-child {
+	padding:3px;
+}
+
+.tpm-nonused-element td {
+	padding:2px 3px;
+	vertical-align:middle;
+}
+.tpm-nonused-element:nth-child(odd) {
+	background:#ffffff;
 }
 .tpm-nonused-controls {
 	width: 40px;
@@ -129,6 +138,7 @@ div.warning a {
 }
 .tpm-nonused-ref {
 	width: 20px;
+	white-space:nowrap;
 }
 .tpm-nonused-element img,
 .tpm-nonused-deleteall img {
