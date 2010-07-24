@@ -45,12 +45,17 @@ final class tx_templavoila_icons {
 		'actions-edit-copy-release' => 	array('file' => 'gfx/clip_copy_h.gif'),
 		'actions-edit-cut' => 			array('file' => 'gfx/clip_cut.gif'),
 		'actions-edit-cut-release' => 	array('file' => 'gfx/clip_cut_h.gif'),
-		'actions-system-list-open' => 	array('file' => 'mod/web/list/list.gif'),
+		'actions-system-list-open' => 	array('file' => 'gfx/list.gif'),
 		'apps-pagetree-page-shortcut' => array('file' => 'gfx/shortcut.gif'),
 		'actions-move-up' => 			array('file' => 'gfx/pilup.gif'),
 		'actions-move-down' =>			array('file' => 'gfx/pildown.gif'),
 		'actions-view-table-expand' => 	array('file' => 'gfx/plusbullet_list.gif'),
 		'actions-view-table-collapse' => array('file' => 'gfx/minusbullet_list.gif'),
+		'status-dialog-ok' => 			array('file' => 'gfx/icon_ok2.gif'),
+		'status-dialog-warning' => 		array('file' => 'gfx/icon_warning2.gif'),
+		'status-dialog-error' => 		array('file' => 'gfx/icon_fatalerror.gif'),
+		'status-dialog-information' => 	array('file' => 'gfx/info.gif'),
+		'status-dialog-notification' => 	array('file' => 'gfx/icon_note.gif'),
 	);
 
 	static $useOldIcons = null;
@@ -118,7 +123,7 @@ final class tx_templavoila_icons {
 				$title = '[' . $table . ':'.$row['uid'];
 			}
 
-			return '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], t3lib_iconWorks::getIcon($tabke, $row),'').' border="0" title="' . $title . '" alt="" />';
+			return '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], t3lib_iconWorks::getIcon($table, $row),'').' border="0" title="' . $title . '" alt="" />';
 		} else {
 			return t3lib_iconWorks::getSpriteIconForRecord($table, $row, $options);
 		}

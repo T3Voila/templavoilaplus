@@ -215,7 +215,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 				);
 				$this->content = $flashMessage->render();
 			} else {
-				$this->content = '<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/icon_fatalerror.gif', 'width="18" height="16"') . ' border="0" align="top" class="absmiddle" alt="" /><strong>' . $GLOBALS['LANG']->getLL('error') . '</strong> ' . $GLOBALS['LANG']->getLL('noaccess');
+				$this->content = tx_templavoila_icons::getIcon('status-dialog-error') . '<strong>' . $GLOBALS['LANG']->getLL('error') . '</strong> ' . $GLOBALS['LANG']->getLL('noaccess');
 			}
 		}
 			// Place content inside template
@@ -570,7 +570,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 								'&defVals[tx_templavoila_tmplobj][datastructure]='.rawurlencode($dsID).
 								'&defVals[tx_templavoila_tmplobj][title]='.rawurlencode($newTitle).
 								'&defVals[tx_templavoila_tmplobj][fileref]='.rawurlencode($newFileRef)
-								,$this->doc->backPath)).'"><img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/new_el.gif','width="11" height="12"').' alt="" class="absmiddle" />Create new Template Object</a>';
+								,$this->doc->backPath)).'">' . tx_templavoila_icons::getIcon('actions-document-new') .'Create new Template Object</a>';
 				}
 
 					// Render data structure display
@@ -650,7 +650,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 			}
 
 				// Links:
-			$editLink = $lpXML.= '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick('&edit[tx_templavoila_datastructure]['.$dsR['uid'].']=edit',$this->doc->backPath)).'"><img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/edit2.gif','width="11" height="12"').' alt="" class="absmiddle" /></a>';
+			$editLink = $lpXML.= '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick('&edit[tx_templavoila_datastructure]['.$dsR['uid'].']=edit',$this->doc->backPath)).'">' . tx_templavoila_icons::getIcon('actions-document-open') .'</a>';
 			$dsTitle = '<a href="'.htmlspecialchars('../cm1/index.php?table=tx_templavoila_datastructure&uid=' . $dsR['uid'] . '&id=' . $this->id . '&returnUrl=' . rawurlencode(tx_templavoila_div::sanitizeLocalUrl(t3lib_div::getIndpEnv('REQUEST_URI')))) . '">' . htmlspecialchars($GLOBALS['LANG']->sL($dsR['title'])) . '</a>';
 
 			if ($this->MOD_SETTINGS['set_details'])	{
@@ -704,7 +704,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 					$hlObj = t3lib_div::makeInstance('t3lib_syntaxhl');
 					$content.='<pre>'.str_replace(chr(9),'&nbsp;&nbsp;&nbsp;',$hlObj->highLight_DS($dsR['dataprot'])).'</pre>';
 				}
-				$lpXML.= '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick('&edit[tx_templavoila_datastructure]['.$dsR['uid'].']=edit&columnsOnly=dataprot',$this->doc->backPath)).'"><img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/edit2.gif','width="11" height="12"').' alt="" class="absmiddle" /></a>';
+				$lpXML.= '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick('&edit[tx_templavoila_datastructure]['.$dsR['uid'].']=edit&columnsOnly=dataprot',$this->doc->backPath)).'">' . tx_templavoila_icons::getIcon('actions-document-open') . '</a>';
 			}
 		} else {	// DS was a file:
 
@@ -846,16 +846,16 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 				$modified = ($toObj['fileref_mtime'] != $fileMtime);
 			}
 			if ($modified)	{
-				$mappingStatus = $mappingStatus_index = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/icon_warning2.gif','width="18" height="16"').' alt="" class="absmiddle" />';
+				$mappingStatus = $mappingStatus_index = tx_templavoila_icons::getIcon('status-dialog-warning');
 				$mappingStatus.= sprintf($GLOBALS['LANG']->getLL('towasupdated', 1), t3lib_BEfunc::datetime($toObj['tstamp']));
 				$this->setErrorLog($scope, 'warning', sprintf($GLOBALS['LANG']->getLL('warning_mappingstatus', 1), $mappingStatus, $toObj['title']));
 			} else {
-				$mappingStatus = $mappingStatus_index = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/icon_ok2.gif','width="18" height="16"').' alt="" class="absmiddle" />';
+				$mappingStatus = $mappingStatus_index = tx_templavoila_icons::getIcon('status-dialog-ok');
 				$mappingStatus.= $GLOBALS['LANG']->getLL('mapping_uptodate', 1);
 			}
 			$mappingStatus .= '<br/><input type="button" onclick="jumpToUrl(\'' . htmlspecialchars($linkUrl) . '\');" value="' . $GLOBALS['LANG']->getLL('update_mapping', 1) . '" />';
 		} elseif (!$fileMtime) {
-			$mappingStatus = $mappingStatus_index = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/icon_fatalerror.gif','width="18" height="16"').' alt="" class="absmiddle" />';
+			$mappingStatus = $mappingStatus_index = tx_templavoila_icons::getIcon('status-dialog-error');
 			$mappingStatus.= $GLOBALS['LANG']->getLL('notmapped', 1);
 			$this->setErrorLog($scope, 'fatal', sprintf($GLOBALS['LANG']->getLL('warning_mappingstatus', 1), $mappingStatus, $toObj['title']));
 
@@ -879,13 +879,13 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 				$lpXML = '<pre>'.str_replace(chr(9),'&nbsp;&nbsp;&nbsp;',$hlObj->highLight_DS($toObj['localprocessing'])).'</pre>';
 			} else $lpXML = '';
 		}
-		$lpXML.= '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick('&edit[tx_templavoila_tmplobj]['.$toObj['uid'].']=edit&columnsOnly=localprocessing',$this->doc->backPath)).'"><img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/edit2.gif','width="11" height="12"').' alt="" class="absmiddle" /></a>';
+		$lpXML.= '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick('&edit[tx_templavoila_tmplobj]['.$toObj['uid'].']=edit&columnsOnly=localprocessing',$this->doc->backPath)).'">' . tx_templavoila_icons::getIcon('actions-document-open') . '</a>';
 
 			// Compile info table:
 		$tableAttribs = ' border="0" cellpadding="1" cellspacing="1" width="98%" style="margin-top: 3px;" class="lrPadding"';
 
 			// Links:
-		$editLink = '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick('&edit[tx_templavoila_tmplobj]['.$toObj['uid'].']=edit',$this->doc->backPath)).'"><img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/edit2.gif','width="11" height="12"').' alt="" class="absmiddle" /></a>';
+		$editLink = '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick('&edit[tx_templavoila_tmplobj]['.$toObj['uid'].']=edit',$this->doc->backPath)).'">' . tx_templavoila_icons::getIcon('actions-document-open') . '</a>';
 		$toTitle = '<a href="' . htmlspecialchars($linkUrl) . '">' . htmlspecialchars($GLOBALS['LANG']->sL($toObj['title'])) . '</a>';
 
 		$fRWTOUres = array();
@@ -1137,7 +1137,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 					. implode('', $output) . '
 				</table>';
 			} else {
-				$outputString = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/icon_warning2.gif','width="18" height="16"').' alt="" class="absmiddle" />No usage!';
+				$outputString = tx_templavoila_icons::getIcon('status-dialog-warning') . 'No usage!';
 				$this->setErrorLog($scope, 'warning', sprintf($GLOBALS['LANG']->getLL('warning_mappingstatus', 1), $outputString , $GLOBALS['LANG']->sL($toObj['title'])));
 			}
 		}
@@ -1252,13 +1252,13 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 			// Create final output table:
 		if (count($output))	{
 			if (count($output)>1)	{
-				$outputString = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/icon_fatalerror.gif','width="18" height="16"').' alt="" class="absmiddle" />'.
+				$outputString = tx_templavoila_icons::getIcon('status-dialog-error').
 								sprintf($GLOBALS['LANG']->getLL('invalidtemplatevalues', 1), count($output) - 1);
 				$this->setErrorLog($scope,'fatal',$outputString);
 
 				$outputString.='<table border="0" cellspacing="1" cellpadding="1" class="lrPadding">'.implode('',$output).'</table>';
 			} else {
-				$outputString = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/icon_ok2.gif','width="18" height="16"').' alt="" class="absmiddle" />' .
+				$outputString = tx_templavoila_icons::getIcon('status-dialog-ok') .
 				$GLOBALS['LANG']->getLL('noerrorsfound', 1);
 			}
 		}
@@ -1309,12 +1309,12 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 					<tr class="' . ($i++ % 2 == 0 ? 'bgColor4' : 'bgColor6') . '">
 						<td>'.
 							'<a href="'.htmlspecialchars($this->doc->backPath.'../'.substr($tFile,strlen(PATH_site))).'" target="_blank">'.
-							'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/zoom.gif','width="11" height="12"').' alt="" class="absmiddle" /> ' . htmlspecialchars(substr($tFile,strlen(PATH_site))) .
+							tx_templavoila_icons::getIcon('actions-document-view') . ' ' . htmlspecialchars(substr($tFile,strlen(PATH_site))) .
 							'</a></td>
 						<td align="center">'.$count.'</td>
 						<td>'.
 							'<a href="'.htmlspecialchars($this->cm1Link . '?id=' . $this->id . '&file=' . rawurlencode($tFile)) . '&mapElPath=%5BROOT%5D">'.
-							'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/new_el.gif','width="11" height="12"').' alt="" class="absmiddle" /> ' . htmlspecialchars('Create...') .
+							tx_templavoila_icons::getIcon('actions-document-new') . ' ' . htmlspecialchars('Create...') .
 							'</a></td>
 					</tr>';
 			}
@@ -1359,12 +1359,12 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 									<tr class="' . ($i++ % 2 == 0 ? 'bgColor4' : 'bgColor6') . '">
 										<td>'.
 											'<a href="'.htmlspecialchars($this->doc->backPath.'../'.substr($tFile,strlen(PATH_site))).'" target="_blank">'.
-											'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/zoom.gif','width="11" height="12"').' alt="" class="absmiddle" /> ' . htmlspecialchars(substr($tFile, strlen(PATH_site))) .
+											tx_templavoila_icons::getIcon('actions-document-view') . ' ' . htmlspecialchars(substr($tFile, strlen(PATH_site))) .
 											'</a></td>
 										<td align="center">'.($this->tFileList[$tFile]?$this->tFileList[$tFile]:'-').'</td>
 										<td>'.
 											'<a href="' . htmlspecialchars($this->cm1Link . '?id=' . $this->id . '&file=' . rawurlencode($tFile)) . '&mapElPath=%5BROOT%5D">' .
-											'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/new_el.gif','width="11" height="12"').' alt="" class="absmiddle" /> ' . htmlspecialchars('Create...') .
+											tx_templavoila_icons::getIcon('actions-document-new') . ' ' . htmlspecialchars('Create...') .
 											'</a></td>
 									</tr>';
 							}
@@ -1462,18 +1462,18 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 					$conf = '';
 					if (isset($def['langDisable'])) $conf .= '<li>' .
 						(($def['langDisable'] == 1)
-? '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/icon_fatalerror.gif','width="18" height="16"').' alt="" class="absmiddle" />'
-: '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/icon_ok2.gif','width="18" height="16"').' alt="" class="absmiddle" />'
+? tx_templavoila_icons::getIcon('status-dialog-error')
+: tx_templavoila_icons::getIcon('status-dialog-ok')
 						) . ' ' . $GLOBALS['LANG']->getLL('fceislocalized', 1) . '</li>';
 					if (isset($def['langChildren'])) $conf .= '<li>' .
 						(($def['langChildren'] == 1)
-? '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/icon_ok2.gif','width="18" height="16"').' alt="" class="absmiddle" />'
-: '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/icon_fatalerror.gif','width="18" height="16"').' alt="" class="absmiddle" />'
+? tx_templavoila_icons::getIcon('status-dialog-ok')
+: tx_templavoila_icons::getIcon('status-dialog-error')
 						) . ' ' . $GLOBALS['LANG']->getLL('fceinlineislocalized', 1) . '</li>';
 					if (isset($def['sheetSelector'])) $conf .= '<li>' .
 						(($def['sheetSelector'] != '')
-? '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/icon_ok2.gif','width="18" height="16"').' alt="" class="absmiddle" />'
-: '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/icon_fatalerror.gif','width="18" height="16"').' alt="" class="absmiddle" />'
+? tx_templavoila_icons::getIcon('status-dialog-ok')
+: tx_templavoila_icons::getIcon('status-dialog-error')
 						) . ' custom sheet-selector' .
 						(($def['sheetSelector'] != '')
 ? ' [<em>' . $def['sheetSelector'] . '</em>]'
@@ -1531,13 +1531,13 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 						$proc = '';
 						if (isset($tv['proc']) && isset($tv['proc']['int'])) $proc .= '<li>' .
 						(($tv['proc']['int'] == 1)
-? '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/icon_ok2.gif','width="18" height="16"').' alt="" class="absmiddle" />'
-: '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/icon_fatalerror.gif','width="18" height="16"').' alt="" class="absmiddle" />'
+? tx_templavoila_icons::getIcon('status-dialog-ok')
+: tx_templavoila_icons::getIcon('status-dialog-error')
 						) . ' ' . $GLOBALS['LANG']->getLL('casttointeger', 1) . '</li>';
 						if (isset($tv['proc']) && isset($tv['proc']['HSC'])) $proc .= '<li>' .
 						(($tv['proc']['HSC'] == 1)
-? '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/icon_ok2.gif','width="18" height="16"').' alt="" class="absmiddle" />'
-: '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/icon_fatalerror.gif','width="18" height="16"').' alt="" class="absmiddle" />'
+? tx_templavoila_icons::getIcon('status-dialog-ok')
+: tx_templavoila_icons::getIcon('status-dialog-error')
 						) . ' ' . $GLOBALS['LANG']->getLL('hsced', 1) .
 						(($tv['proc']['HSC'] == 1)
 ? ' ' . $GLOBALS['LANG']->getLL('hsc_on', 1)
@@ -1545,8 +1545,8 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 						) . '</li>';
 						if (isset($tv['proc']) && isset($tv['proc']['stdWrap'])) $proc .= '<li>' .
 						(($tv['proc']['stdWrap'] != '')
-? '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/icon_ok2.gif','width="18" height="16"').' alt="" class="absmiddle" />'
-: '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/icon_fatalerror.gif','width="18" height="16"').' alt="" class="absmiddle" />'
+? tx_templavoila_icons::getIcon('status-dialog-ok')
+: tx_templavoila_icons::getIcon('status-dialog-error')
 						) . ' ' . $GLOBALS['LANG']->getLL('stdwrap', 1) . '</li>';
 
 						if ($proc != '')
@@ -1646,7 +1646,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 			$HTML .= '</dl>';
 		}
 		else
-			$HTML .= '<p><img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/icon_warning2.gif','width="18" height="16"').' alt="" class="absmiddle" /> The element has no children!</p>';
+			$HTML .= '<p>' . tx_templavoila_icons::getIcon('status-dialog-warning') . ' The element has no children!</p>';
 
 		return $HTML;
 	}
