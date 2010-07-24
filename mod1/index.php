@@ -474,7 +474,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			);
 
 
-			if (version_compare(TYPO3_version, '4.3', '>')) {
+			if (version_compare(TYPO3_version, '4.4', '>')) {
 				$this->doc->getPageRenderer()->loadExtJs();
 				$this->doc->JScode .= $this->doc->wrapScriptTags('
 					var typo3pageModule = {
