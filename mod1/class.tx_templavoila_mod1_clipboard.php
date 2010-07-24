@@ -151,9 +151,9 @@ class tx_templavoila_mod1_clipboard {
 
 		}
 
-		$copyIcon = '<img'.t3lib_iconWorks::skinImg($this->pObj->doc->backPath,'gfx/clip_copy'.($clipActive_copy ? '_h':'').'.gif','').' title="'.$LANG->getLL ('copyrecord').'" border="0" alt="" />';
-		$cutIcon = '<img'.t3lib_iconWorks::skinImg($this->pObj->doc->backPath,'gfx/clip_cut'.($clipActive_cut ? '_h':'').'.gif','').' title="'.$LANG->getLL ('cutrecord').'" border="0" alt="" />';
-		$refIcon = '<img'.t3lib_iconWorks::skinImg($this->pObj->doc->backPath,t3lib_extMgm::extRelPath('templavoila').'mod1/clip_ref'.($clipActive_ref ? '_h':'').'.gif','').' title="'.$LANG->getLL ('createreference').'" vspace="2" hspace="2" alt="" />';
+		$copyIcon = tx_templavoila_icons::getIcon('actions-edit-copy'. ($clipActive_copy ? '-release':''), array('title' => $LANG->getLL ('copyrecord')));
+		$cutIcon = tx_templavoila_icons::getIcon('actions-edit-cut'. ($clipActive_cut ? '-release':''), array('title' => $LANG->getLL ('cutrecord')));
+		$refIcon = tx_templavoila_icons::getIcon('extensions-templavoila-clip_ref'. ($clipActive_ref ? '-release':''), array('title' => $LANG->getLL ('createreference')));
 
 		$removeElement = '&amp;CB[removeAll]=normal';
 		$setElement = '&amp;CB[el]['.rawurlencode('tt_content|'.$elementRecord['uid']).']='.rawurlencode($this->pObj->apiObj->flexform_getStringFromPointer($elementPointer));
@@ -223,8 +223,8 @@ class tx_templavoila_mod1_clipboard {
 
 			// Prepare the ingredients for the different buttons:
 		$pasteMode = isset ($this->t3libClipboardObj->clipData['normal']['flexMode']) ? $this->t3libClipboardObj->clipData['normal']['flexMode'] : ($this->t3libClipboardObj->clipData['normal']['mode'] == 'copy' ? 'copy' : 'cut');
-		$pasteAfterIcon = '<img'.t3lib_iconWorks::skinImg($this->pObj->doc->backPath,'gfx/clip_pasteafter.gif','').' title="'.$LANG->getLL ('pasterecord').'" alt="" />';
-		$pasteSubRefIcon = '<img'.t3lib_iconWorks::skinImg('clip_pastesubref.gif','').' title="'.$LANG->getLL ('pastefce_andreferencesubs').'" alt="" />';
+		$pasteAfterIcon = tx_templavoila_icons::getIcon('extensions-templavoila-paste', array('title' => $LANG->getLL ('pasterecord')));
+		$pasteSubRefIcon = tx_templavoila_icons::getIcon('extensions-templavoila-pasteSubRef', array('title' => $LANG->getLL ('pastefce_andreferencesubs')));
 
 		$sourcePointerString = $this->pObj->apiObj->flexform_getStringFromPointer ($clipboardElementPointer);
 		$destinationPointerString = $this->pObj->apiObj->flexform_getStringFromPointer ($destinationPointer);
@@ -280,7 +280,7 @@ class tx_templavoila_mod1_clipboard {
 
 				// Prepare buttons:
 			$cutButton = $this->element_getSelectButtons($elementPointerString, 'ref');
-			$recordIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath, t3lib_iconWorks::getIcon('tt_content', $row),'').' border="0" title="[tt_content:'.$row['uid'].'" alt="" />';
+			$recordIcon = tx_templavoila_icons::getIconForRecord('tt_content', $row);
 			$recordButton = $this->pObj->doc->wrapClickMenuOnIcon($recordIcon, 'tt_content', $row['uid'], 1, '&callingScriptId='.rawurlencode($this->pObj->doc->scriptID), 'new,copy,cut,pasteinto,pasteafter,delete');
 
 
@@ -311,7 +311,7 @@ class tx_templavoila_mod1_clipboard {
 				}
 				$label = $LANG->getLL('rendernonusedelements_deleteall');
 				$deleteAll = '<a href="#" onclick="'.htmlspecialchars('jumpToUrl(\''.$this->doc->issueCommand($params,-1).'\');').'">'.
-						'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/garbage.gif','width="11" height="12"').' title="'.htmlspecialchars($label).'" alt="" />'.
+						tx_templavoila_icons::getIcon('actions-edit-delete', array('title' => htmlspecialchars($label))).
 						htmlspecialchars($label).
 						'</a>';
 			}
@@ -366,7 +366,7 @@ class tx_templavoila_mod1_clipboard {
 			$this->deleteUids[] = $uid;
 			$params = '&cmd[tt_content]['.$uid.'][delete]=1';
 			return '<a class="tpm-countRef" href="#" onclick="'.htmlspecialchars('jumpToUrl(\''.$this->doc->issueCommand($params,-1).'\');').'">'.
-					'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/garbage.gif','width="11" height="12"').' title="'.$LANG->getLL('renderreferencecount_delete',1).'" alt="" />'.
+					tx_templavoila_icons::getIcon('actions-edit-delete', array('title' => $LANG->getLL('renderreferencecount_delete',1))).
 					'</a>';
 		} else {
 			return '';

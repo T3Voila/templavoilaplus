@@ -192,7 +192,7 @@ if ($_EXTCONF['enable.']['selectDataStructure']) {
 	$TCA['tt_content']['ctrl']['requestUpdate'] .= 'tx_templavoila_ds';
 }
 
-$TCA['tt_content']['types'][$_EXTKEY . '_pi1']['showitem'] = 
+$TCA['tt_content']['types'][$_EXTKEY . '_pi1']['showitem'] =
 	'CType;;4;;1-1-1, hidden, header;;' . (($_EXTCONF['enable.']['renderFCEHeader']) ? '3' : '' ) . ';;2-2-2, linkToTop;;;;3-3-3,
 	 --div--;LLL:EXT:templavoila/locallang_db.xml:tt_content.CType_pi1,' . (($_EXTCONF['enable.']['selectDataStructure']) ? 'tx_templavoila_ds,' : '') . 'tx_templavoila_to,tx_templavoila_flex;;;;2-2-2,
 	 --div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access, starttime, endtime, fe_group';
@@ -303,5 +303,30 @@ if (TYPO3_MODE=='BE')	{
 	);
 	t3lib_extMgm::addLLrefForTCAdescr('_MOD_web_func','EXT:wizard_crpages/locallang_csh.xml');
 }
-
+if (TYPO3_MODE=='BE') {
+	if(version_compare(TYPO3_version,'4.4','>')) {
+		$icons = array(
+			'paste' => t3lib_extMgm::extRelPath('templavoila') . 'mod1/clip_pasteafter.gif',
+			'pasteSubRef' => t3lib_extMgm::extRelPath('templavoila') . 'mod1/clip_pastesubref.gif',
+			'makelocalcopy' => t3lib_extMgm::extRelPath('templavoila') . 'mod1/makelocalcopy.gif',
+			'clip_ref' => t3lib_extMgm::extRelPath('templavoila') . 'mod1/clip_ref.gif',
+			'clip_ref-release' => t3lib_extMgm::extRelPath('templavoila') . 'mod1/clip_ref_h.gif',
+			'unlink' => t3lib_extMgm::extRelPath('templavoila') . 'mod1/unlink.png'
+		);
+		t3lib_SpriteManager::addSingleIcons($icons, $_EXTKEY);
+	} else {
+		$icons = array(
+			'extensions-templavoila-paste' => t3lib_extMgm::extRelPath('templavoila') . 'mod1/clip_pasteafter.gif',
+			'extensions-templavoila-pasteSubRef' => t3lib_extMgm::extRelPath('templavoila') . 'mod1/clip_pastesubref.gif',
+			'extensions-templavoila-makelocalcopy' => t3lib_extMgm::extRelPath('templavoila') . 'mod1/makelocalcopy.gif',
+			'extensions-templavoila-clip_ref' => t3lib_extMgm::extRelPath('templavoila') . 'mod1/clip_ref.gif',
+			'extensions-templavoila-clip_ref-release' => t3lib_extMgm::extRelPath('templavoila') . 'mod1/clip_ref_h.gif',
+			'extensions-templavoila-unlink' => t3lib_extMgm::extRelPath('templavoila') . 'mod1/unlink.png'
+		);
+		$GLOBALS['TBE_STYLES']['spritemanager']['singleIcons'] = array_merge(
+			(array) $GLOBALS['TBE_STYLES']['spritemanager']['singleIcons'],
+			$icons
+		);
+	}
+}
 ?>

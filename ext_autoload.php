@@ -20,6 +20,7 @@ return array(
 	'tx_templavoila_datastructure_dbbase' => $extensionPath . 'classes/class.tx_templavoila_datastructure_dbbase.php',
 	'tx_templavoila_datastructure_staticbase' => $extensionPath . 'classes/class.tx_templavoila_datastructure_staticbase.php',
 	'tx_templavoila_div' => $extensionPath . 'classes/class.tx_templavoila_div.php',
+	'tx_templavoila_icons' => $extensionPath . 'classes/class.tx_templavoila_icons.php',
 	'tx_templavoila_label' => $extensionPath . 'classes/class.tx_templavoila_label.php',
 	'tx_templavoila_template' => $extensionPath . 'classes/class.tx_templavoila_template.php',
 	'tx_templavoila_templaterepository' => $extensionPath . 'classes/class.tx_templavoila_templateRepository.php',

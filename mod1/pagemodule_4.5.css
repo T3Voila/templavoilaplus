@@ -170,10 +170,6 @@ div.warning a {
 	padding-right:4px;
 }
 
-.t3-row-header .tpm-element-control a {
-	padding:1px;
-}
-
 /* prevent flicker effects with row-headers and their hide/visibility states */
 .t3-page-ce {
 	margin-bottom:0;

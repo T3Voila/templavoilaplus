@@ -320,12 +320,7 @@ class tx_templavoila_dbnewcontentel {
 
 			// Back
 		if ($this->returnUrl) {
-			if(version_compare(TYPO3_version,'4.4','>')) {
-				$backIcon = t3lib_iconWorks::getSpriteIcon('actions-view-go-back');
-			} else {
-				$backIcon = '<img' . t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/goback.gif','width="14" height="14"') . ' alt="" />';
-			}
-
+			$backIcon = tx_templavoila_icons('actions-view-go-back');
 			$buttons['back'] = '<a href="' . htmlspecialchars(t3lib_div::linkThisUrl($this->returnUrl)) . '" class="typo3-goBack" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.goBack', TRUE) . '">' .
 								$backIcon .
 							   '</a>';
