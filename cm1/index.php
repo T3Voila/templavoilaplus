@@ -1944,7 +1944,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 					$tRows[]='
 						<tr class="bgColor4">
 							<td class="bgColor5"><strong>' . $GLOBALS['LANG']->getLL('mapHTMLpath') . ':</strong></td>
-							<td>'.htmlspecialchars($this->displayPath).'</td>
+							<td>'.htmlspecialchars(str_replace('~~~', ' ',$this->displayPath)).'</td>
 						</tr>
 					';
 				} else {
@@ -2135,7 +2135,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 														'<img' . $tagIcon . ' hspace="3" class="absmiddle" title="---' . htmlspecialchars(t3lib_div::fixed_lgd_cs($mappingElement, -80)) . '" />' .
 														($pI['modifier'] ? $pI['modifier'] . ($pI['modifier_value'] ? ':' . ($pI['modifier'] != 'RANGE' ? $pI['modifier_value'] : '...') : '') : '');
 								$rowCells['htmlPath'] = '<a href="'.$this->linkThisScript(array(
-																							'htmlPath'=>$path.($path?'|':'').preg_replace('/\/[^ ]*$/','',$mappingElement),
+																							'htmlPath'=>$path.($path?'|':'').preg_replace('/\/[^ ]*$/','',$currentMappingInfo[$key]['MAP_EL']),
 																							'showPathOnly'=>1,
 																							'DS_element' => t3lib_div::_GP('DS_element')
 																						)).'">'.$rowCells['htmlPath'].'</a>';
