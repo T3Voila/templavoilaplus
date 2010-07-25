@@ -1,5 +1,6 @@
 2010-07-25  Tolleiv Nietsch <nietsch@aoemedia.de>
 
+	* Fixed bug: #15235: default preview container misses closing strong-tag 
 	* Fixed bug: #14881: Mapping elements with multiple classes results in error: No placeholder found for path... 
 	* Fixed bug: #15234: Exception in tceform if datastructure not found 
 	* Fixed issue: #14140: TemplaVoila should use sprite icons / pt.3
