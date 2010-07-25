@@ -117,11 +117,7 @@ final class tx_templavoila_icons {
 		}
 		if (self::$useOldIcons) {
 
-			if($table == 'pages') {
-				$title = htmlspecialchars(t3lib_div::fixed_lgd_cs(t3lib_BEfunc::getRecordTitle('pages', $row), 50));
-			} else {
-				$title = '[' . $table . ':'.$row['uid'];
-			}
+			$title = htmlspecialchars(t3lib_div::fixed_lgd_cs(t3lib_BEfunc::getRecordIconAltText('pages', $row), 50));
 
 			return '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], t3lib_iconWorks::getIcon($table, $row),'').' border="0" title="' . $title . '" alt="" />';
 		} else {

@@ -1562,7 +1562,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 							);
 
 								// Put together the records icon including content sensitive menu link wrapped around it:
-							$recordIcon_l10n = t3lib_iconWorks::getIconImage('tt_content',$localizedRecordInfo['row'],$this->doc->backPath,'class="absmiddle" title="'.htmlspecialchars('[tt_content:'.$localizedRecordInfo['uid'].']').'"');
+							$recordIcon_l10n = tx_templavoila_icons::getIconForRecord('tt_content', $localizedRecordInfo['row']);
 							if (!$this->translatorMode)	{
 								$recordIcon_l10n = $this->doc->wrapClickMenuOnIcon($recordIcon_l10n,'tt_content',$localizedRecordInfo['uid'],1,'&amp;callingScriptId='.rawurlencode($this->doc->scriptID), 'new,copy,cut,pasteinto,pasteafter');
 							}
@@ -2014,7 +2014,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 								// Put together the records icon including content sensitive menu link wrapped around it:
 							$recordIcon_l10n = $this->getRecordStatHookValue('tt_content', $olrow['uid']).
-								t3lib_iconWorks::getIconImage('tt_content',$olrow,$this->doc->backPath,'class="absmiddle" title="'.htmlspecialchars('[tt_content:'.$olrow['uid'].']').'"');
+								tx_templavoila_icons::getIconForRecord('tt_content', $olrow);
 							if (!$this->translatorMode)	{
 								$recordIcon_l10n = $this->doc->wrapClickMenuOnIcon($recordIcon_l10n,'tt_content',$olrow['uid'],1,'&amp;callingScriptId='.rawurlencode($this->doc->scriptID), 'new,copy,cut,pasteinto,pasteafter');
 							}

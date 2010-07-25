@@ -347,7 +347,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 					$tRows[] = '
 						<tr class="bgColor4">
 							<td><a href="index.php?id=' . $pid . '" onclick="setHighlight(' . $pid . ')">' .
-							t3lib_iconWorks::getIconImage('pages', t3lib_BEfunc::getRecord('pages', $pid), $this->doc->backPath, 'class="absmiddle" title="'. htmlspecialchars($alttext) . '"') .
+							tx_templavoila_icons::getIconForRecord('pages', t3lib_BEfunc::getRecord('pages', $pid)).
 							htmlspecialchars($path).'</a></td>
 							<td>' . $dsRepo->getDatastructureCountForPid($pid) . '</td>
 							<td>' . $toRepo->getTemplateCountForPid($pid) . '</td>
@@ -430,11 +430,11 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 			switch((string)$scopePointer)	{
 				case '1':
 					$label = $LANG->getLL('pagetemplates');
-					$scopeIcon = t3lib_iconWorks::getIconImage('pages',array(),$this->doc->backPath,'class="absmiddle"');
+					$scopeIcon = tx_templavoila_icons::getIconForRecord('pages', array());
 				break;
 				case '2':
 					$label = $LANG->getLL('fces');
-					$scopeIcon = t3lib_iconWorks::getIconImage('tt_content',array(),$this->doc->backPath,'class="absmiddle"');
+					$scopeIcon = tx_templavoila_icons::getIconForRecord('tt_content', array());
 				break;
 				case '0':
 					$label = $LANG->getLL('other');
@@ -633,7 +633,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 		if (!$dsR['_STATIC'])	{
 				// Record icon:
 				// Put together the records icon including content sensitive menu link wrapped around it:
-			$recordIcon = t3lib_iconWorks::getIconImage('tx_templavoila_datastructure',$dsR,$this->doc->backPath,'class="absmiddle"');
+			$recordIcon = tx_templavoila_icons::getIconForRecord('tx_templavoila_datastructure' ,$dsR);
 			$recordIcon = $this->doc->wrapClickMenuOnIcon($recordIcon, 'tx_templavoila_datastructure', $dsR['uid'], 1, '&callingScriptId='.rawurlencode($this->doc->scriptID));
 
 				// Preview icon:
@@ -807,7 +807,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 	function renderTODisplay($toObj, &$toRecords, $scope, $children=0)	{
 
 			// Put together the records icon including content sensitive menu link wrapped around it:
-		$recordIcon = t3lib_iconWorks::getIconImage('tx_templavoila_tmplobj',$toObj,$this->doc->backPath,'class="absmiddle"');
+		$recordIcon = tx_templavoila_icons::getIconForRecord('tx_templavoila_tmplobj', $toObj);
 		$recordIcon = $this->doc->wrapClickMenuOnIcon($recordIcon, 'tx_templavoila_tmplobj', $toObj['uid'], 1, '&callingScriptId='.rawurlencode($this->doc->scriptID));
 
 			// Preview icon:

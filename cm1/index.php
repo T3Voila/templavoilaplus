@@ -927,7 +927,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
  				<tr>
 					<td class="bgColor4">
 						<a href="#" onclick ="openValidator( ' . $GLOBALS['LANG']->JScharCode(file_get_contents($this->displayFile)) . ');return false;">
-							<img ' . t3lib_iconWorks::skinImg($this->doc->backPath, t3lib_extMgm::extRelPath('templavoila') . 'resources/icons/html_go.png') . ' align="top" />
+						' . tx_templavoila_icons::getIcon('extensions-templavoila-htmlvalidate') . '
 							' . $GLOBALS['LANG']->getLL('validateTpl') . '
 						</a>
 					</td>
@@ -1181,7 +1181,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			if (is_array($row))	{
 
 					// Get title and icon:
-				$icon = t3lib_iconworks::getIconImage('tx_templavoila_datastructure',$row,$GLOBALS['BACK_PATH'],' align="top" title="' . $GLOBALS['LANG']->getLL('renderDSO_uid') . ': '.$this->displayUid.'"');
+				$icon = tx_templavoila_icons::getIconForRecord('tx_templavoila_datastructure', $row);
 				$title = t3lib_BEfunc::getRecordTitle('tx_templavoila_datastructure',$row,1);
 				$content.=$this->doc->wrapClickMenuOnIcon($icon,'tx_templavoila_datastructure',$row['uid'],1).
 						'<strong>'.$title.'</strong><br />';
@@ -1237,7 +1237,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 								<td><strong>' . $GLOBALS['LANG']->getLL('renderDSO_fileRef') . ':</strong></td>
 								<td><strong>' . $GLOBALS['LANG']->getLL('renderDSO_dataLgd') . ':</strong></td>
 							</tr>';
-				$TOicon = t3lib_iconworks::getIconImage('tx_templavoila_tmplobj',array(),$GLOBALS['BACK_PATH'],' align="top"');
+				$TOicon = tx_templavoila_icons::getIconForRecord('tx_templavoila_tmplobj',array());
 
 					// Listing Template Objects with links:
 				while(false !== ($TO_Row = $TYPO3_DB->sql_fetch_assoc($res)))	{
@@ -1323,7 +1323,8 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 					</tr>';
 
 					// Get title and icon:
-				$icon = t3lib_iconworks::getIconImage('tx_templavoila_tmplobj',$row,$GLOBALS['BACK_PATH'],' align="top" title="UID: '.$this->displayUid.'"');
+				$icon = tx_templavoila_icons::getIconForRecord('tx_templavoila_tmplobj', $row);
+
 				$title = t3lib_BEfunc::getRecordTitle('tx_templavoila_tmplobj', $row);
 				$title = t3lib_BEFunc::getRecordTitlePrep($GLOBALS['LANG']->sL($title));
 				$tRows[]='
@@ -1345,7 +1346,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 						<tr class="bgColor4">
 							<td>
 								<a href="#" onclick ="openValidator( ' . $GLOBALS['LANG']->JScharCode(file_get_contents($theFile)) . ');return false;">
-									<img ' . t3lib_iconWorks::skinImg($this->doc->backPath, t3lib_extMgm::extRelPath('templavoila') . 'resources/icons/html_go.png') . ' align="top" />
+									' . tx_templavoila_icons::getIcon('extensions-templavoila-htmlvalidate') . '
 									' . $GLOBALS['LANG']->getLL('validateTpl') . '
 								</a>
 							</td>
@@ -1369,7 +1370,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 							// Get main DS array:
 						if (is_array($DS_row))	{
 								// Get title and icon:
-							$icon = t3lib_iconworks::getIconImage('tx_templavoila_datastructure',$DS_row,$GLOBALS['BACK_PATH'],' align="top" title="UID: '.$DS_row['uid'].'"');
+							$icon = tx_templavoila_icons::getIconForRecord('tx_templavoila_datastructure',$DS_row);
 							$title = t3lib_BEfunc::getRecordTitle('tx_templavoila_datastructure', $DS_row);
 							$title = t3lib_BEFunc::getRecordTitlePrep($GLOBALS['LANG']->sL($title));
 
