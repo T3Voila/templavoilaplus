@@ -195,18 +195,22 @@ class tx_templavoila_handleStaticDataStructures {
 			)
 		);
 
-		if (strlen($dataSource)) {
+		try {
 			$ds = $dsRepo->getDatastructureByUidOrFilename($dataSource);
-			$toList = $toRepo->getTemplatesByDatastructure($ds, $storagePid);
-			foreach ($toList as $toObj) {
-				if($toObj->isPermittedForUser($params['table'], $removeTOItems)) {
-					$params['items'][] = array(
-						$toObj->getLabel(),
-						$toObj->getKey(),
-						$toObj->getIcon()
-					);
+			if (strlen($dataSource)) {
+				$toList = $toRepo->getTemplatesByDatastructure($ds, $storagePid);
+				foreach ($toList as $toObj) {
+					if($toObj->isPermittedForUser($params['table'], $removeTOItems)) {
+						$params['items'][] = array(
+							$toObj->getLabel(),
+							$toObj->getKey(),
+							$toObj->getIcon()
+						);
+					}
 				}
 			}
+		} catch (InvalidArgumentException $e) {
+			// we didn't find the DS which we were looking for therefore an empty list is returned
 		}
 	}
 
@@ -244,7 +248,7 @@ class tx_templavoila_handleStaticDataStructures {
 				$dsObj->getLabel(),
 				'--div--'
 			);
-			
+
 			$toList = $toRepo->getTemplatesByDatastructure($dsObj, $storagePid);
 			foreach ($toList as $toObj) {
 				if($toObj->isPermittedForUser($params['row'], $removeTOItems)) {

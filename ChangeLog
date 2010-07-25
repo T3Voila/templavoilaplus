@@ -1,5 +1,6 @@
 2010-07-25  Tolleiv Nietsch <nietsch@aoemedia.de>
 
+	* Fixed bug: #15234: Exception in tceform if datastructure not found 
 	* Fixed issue: #14140: TemplaVoila should use sprite icons / pt.3
 	* Fixed issue: #15233: TV should support mod.web_list.newContentWiz.overrideWithExtension 
 	* Follow-up to: #15210: TemplaVoila should adjust it's look&feel to TYPO3 4.4 - hidden elements adjustments
