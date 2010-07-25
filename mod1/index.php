@@ -162,6 +162,8 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	protected $debug = FALSE;
 	protected static $calcPermCache = array();
 
+	protected $newContentWizScriptPath = 'db_new_content_el.php';	// Setting which new content wizard to use
+
 	public $currentElementBelongsToCurrentPage;		// Used for Content preview and is used as flag if content should be linked or not
 	const DOKTYPE_NORMAL_EDIT = 1;					// With this doktype the normal Edit screen is rendered
 
@@ -183,6 +185,12 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		$this->modTSconfig = t3lib_BEfunc::getModTSconfig($this->id, 'mod.' . $this->MCONF['name']);
 		$this->modSharedTSconfig = t3lib_BEfunc::getModTSconfig($this->id, 'mod.SHARED');
 		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::_GP('SET'), $this->MCONF['name']);
+
+		$tmpTSc = t3lib_BEfunc::getModTSconfig($this->id,'mod.web_list');
+		$tmpTSc = $tmpTSc ['properties']['newContentWiz.']['overrideWithExtension'];
+		if ($tmpTSc != 'templavoila' && t3lib_extMgm::isLoaded($tmpTSc)) {
+			$this->newContentWizScriptPath = $GLOBALS['BACK_PATH'] . t3lib_extMgm::extRelPath($tmpTSc).'mod1/db_new_content_el.php';
+		}
 
 		$this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
 		$this->staticDS = ($this->extConf['staticDS.']['enable']);
@@ -2203,7 +2211,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			$this->link_getParameters().
 			'&amp;parentRecord='.rawurlencode($this->apiObj->flexform_getStringFromPointer($parentPointer)).
 			'&amp;returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'));
-		return '<a class="tpm-new" href="'.'db_new_content_el.php?'.$parameters.'">'.$label.'</a>';
+		return '<a class="tpm-new" href="' . $this->newContentWizScriptPath . '?' . $parameters . '">' . $label . '</a>';
 	}
 
 	/**
