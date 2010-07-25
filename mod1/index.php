@@ -1011,8 +1011,9 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 				$elementTitlebarClass = $elementBelongsToCurrentPage ? 'tpm-titlebar' : 'tpm-titlebar-fromOtherPage';
 				$elementClass .= ' tpm-content-element tpm-ctype-' . $contentTreeArr['el']['CType'];
+
 				if ($contentTreeArr['el']['isHidden']) {
-					$elementClass .= ' tpm-hidden';
+					$elementClass .= ' tpm-hidden t3-page-ce-hidden';
 				}
 				if ($contentTreeArr['el']['CType'] == 'templavoila_pi1') {
 						//fce

@@ -184,6 +184,9 @@ div.warning a {
 .t3-page-ce.active .t3-page-ce.inactive .t3-row-header {
 	visibility:hidden;
 }
+.inactive .tpm-hidden .tpm-sub-elements {
+	opacity: 0.5;
+}
 .t3-page-ce-header, .t3-row-header {
 	height:20px;
 }
