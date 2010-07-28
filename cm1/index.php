@@ -2515,6 +2515,25 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			}
 		}
 
+			// Looking up all root-pages and check if there's a tx_templavoila.storagePid setting present
+		$res = $TYPO3_DB->exec_SELECTquery (
+			'pid,root',
+			'sys_template',
+			'1=1' . t3lib_BEfunc::deleteClause('sys_template')
+		);
+		while (false !== ($row = $TYPO3_DB->sql_fetch_assoc($res)))	{
+			$tsCconfig = t3lib_BEfunc::getModTSconfig($row['pid'],'tx_templavoila');
+			if (
+				isset($tsCconfig['properties']['storagePid']) &&
+				$GLOBALS['BE_USER']->isInWebMount($tsCconfig['properties']['storagePid'],$readPerms)
+			)	{
+				$storageFolder = t3lib_BEfunc::getRecord('pages',$tsCconfig['properties']['storagePid'],'uid,title');
+				if ($storageFolder['uid'])	{
+					$this->storageFolders[$storageFolder['uid']] = $storageFolder['title'];
+				}
+			}
+		}
+
 			// Compopsing select list:
 		$sysFolderPIDs = array_keys($this->storageFolders);
 		$sysFolderPIDs[]=0;
