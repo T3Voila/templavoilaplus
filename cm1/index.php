@@ -396,6 +396,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			TABLE#c-mapInfo TR TD {padding-right: 20px;}
 			select option.pagetemplate {background-image:url(../icon_pagetemplate.gif);background-repeat: no-repeat; background-position: 5px 50%; padding: 1px 0 3px 24px; -webkit-background-size: 0;}
 			select option.fce {background-image:url(../icon_fce_ce.png);background-repeat: no-repeat; background-position: 5px 50%; padding: 1px 0 3px 24px; -webkit-background-size: 0;}
+			#c-toMenu { margin-bottom:10px; }
 		';
 
 			// Add custom styles
@@ -1653,7 +1654,17 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			$tce->start($dataArr,array());
 			$tce->process_datamap();
 			unset($tce);
-			$msg[] = $GLOBALS['LANG']->getLL('msgMappingSaved');
+			if (version_compare(TYPO3_version, '4.3', '>')) {
+				$flashMessage = t3lib_div::makeInstance(
+					't3lib_FlashMessage',
+					$GLOBALS['LANG']->getLL('msgMappingSaved'),
+					'',
+					t3lib_FlashMessage::OK
+				);
+				$msg[] .= $flashMessage->render();
+			} else {
+				$msg[] = $GLOBALS['LANG']->getLL('msgMappingSaved');
+			}
 			$row = t3lib_BEfunc::getRecordWSOL('tx_templavoila_tmplobj',$this->displayUid);
 			$templatemapping = unserialize($row['templatemapping']);
 
@@ -1686,7 +1697,18 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 				(serialize($templatemapping['MappingInfo']) != serialize($currentMappingInfo))
 			)	{
 			$menuItems[]='<input type="submit" name="_reload_from" value="' . $GLOBALS['LANG']->getLL('buttonRevert') . '" title="'.sprintf($GLOBALS['LANG']->getLL('buttonRevertTitle'), $headerPart ? 'HEAD' : 'BODY') . '" />';
-			$msg[] = $GLOBALS['LANG']->getLL('msgMappingIsDifferent');
+
+			if (version_compare(TYPO3_version, '4.3', '>')) {
+				$flashMessage = t3lib_div::makeInstance(
+					't3lib_FlashMessage',
+					$GLOBALS['LANG']->getLL('msgMappingIsDifferent'),
+					'',
+					t3lib_FlashMessage::INFO
+				);
+				$msg[] .= $flashMessage->render();
+			} else {
+				$msg[] = $GLOBALS['LANG']->getLL('msgMappingIsDifferent');
+			}
 		}
 
 		$content = '
@@ -1702,11 +1724,16 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			</table>
 		';
 
-			// Making messages:
-		foreach($msg as $msgStr)	{
-			$content.='
-			<p>' . tx_templavoila_icons::getIcon('status-dialog-notification') . '<strong>'.htmlspecialchars($msgStr).'</strong></p>';
+		if (version_compare(TYPO3_version, '4.3', '>')) {
+				// @todo - replace with FlashMessage Queue
+			$content .= implode('', $msg);
+		} else {			// Making messages:
+			foreach($msg as $msgStr)	{
+				$content.='
+				<p>' . tx_templavoila_icons::getIcon('status-dialog-notification') . '<strong>'.htmlspecialchars($msgStr).'</strong></p>';
+			}
 		}
+
 
 
 		return array($content, $headerPart ? $currentMappingInfo_head : $currentMappingInfo);
