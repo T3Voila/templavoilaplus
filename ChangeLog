@@ -1,3 +1,7 @@
+2010-07-28  Tolleiv Nietsch <nietsch@aoemedia.de>
+
+	* Fixed bug: #15266: mod2 "Template Files" uses wrong list-header styling 
+
 2010-07-25  Tolleiv Nietsch <nietsch@aoemedia.de>
 
 	* Fixed bug: #15235: default preview container misses closing strong-tag 

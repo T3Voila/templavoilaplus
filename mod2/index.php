@@ -1297,7 +1297,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 				// USED FILES:
 			$tRows = array();
 			$tRows[] = '
-				<tr class="c-headLineTable" style="font-weight: bold; color: #FFFFFF;">
+				<tr class="bgColor5 tableheader">
 					<td>' . $GLOBALS['LANG']->getLL('file', 1) . '</td>
 					<td align="center">' . $GLOBALS['LANG']->getLL('usagecount', 1) . '</td>
 					<td>' . $GLOBALS['LANG']->getLL('newdsto', 1) . '</td>
@@ -1347,7 +1347,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 								// USED FILES:
 							$tRows = array();
 							$tRows[] = '
-								<tr class="c-headLineTable" style="font-weight: bold; color: #FFFFFF;">
+								<tr class="bgColor5 tableheader">
 									<td>' . $GLOBALS['LANG']->getLL('file', 1) . '</td>
 									<td align="center">' . $GLOBALS['LANG']->getLL('usagecount', 1) . '</td>
 									<td>' . $GLOBALS['LANG']->getLL('newdsto', 1) . '</td>
