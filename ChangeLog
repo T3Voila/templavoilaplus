@@ -1,5 +1,6 @@
 2010-07-28  Tolleiv Nietsch <nietsch@aoemedia.de>
 
+	* Fixed issue: #14641: TemplaVoila Page Module: Contextual menu disappears when mouse is over with Firefox 3.6
 	* Fixed bug: #13171: cm1::findingStorageFolderIds does not consider tx_templavoila.storagePid
 	* Follow-up to: #14694: FlashMessage should be used instead of individual message formats
 	* Fixed bug: #15266: mod2 "Template Files" uses wrong list-header styling 

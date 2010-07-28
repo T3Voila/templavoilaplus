@@ -135,6 +135,7 @@ function sortable_change(el) {
 
 function tv_createSortable(s, containment) {
 	Position.includeScrollOffsets = true;
+	Position.prepare();
 	Sortable.create(s,{
 		tag:"div",
 		ghosting:false,
