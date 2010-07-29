@@ -1410,7 +1410,8 @@ class tx_templavoila_api {
 			'pid' => $row['pid'],
 			'_ORIG_uid' => $row['_ORIG_uid'],
 			'title' => t3lib_div::fixed_lgd_cs(t3lib_BEfunc::getRecordTitle($table, $row),50),
-			'icon' => t3lib_iconWorks::getIcon($table,$row),
+			'icon' => t3lib_iconWorks::getIcon($table,$row), // kept because it's not clear if this is used elsewhere
+			'iconTag' => tx_templavoila_icons::getIconForRecord($table,$row),
 			'sys_language_uid' => $row['sys_language_uid'],
 			'l18n_parent' => $row['l18n_parent'],
 			'CType' => $row['CType'],

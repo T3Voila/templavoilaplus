@@ -990,7 +990,11 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 
 		// Prepare the record icon including a content sensitive menu link wrapped around it:
-		$recordIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,$contentTreeArr['el']['icon'],'').' border="0" title="'.htmlspecialchars('['.$contentTreeArr['el']['table'].':'.$contentTreeArr['el']['uid'].']').'" alt="" />';
+		if (isset($contentTreeArr['el']['iconTag'])) {
+			$recordIcon = $contentTreeArr['el']['iconTag'];
+		} else {
+			$recordIcon = '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,$contentTreeArr['el']['icon'],'').' border="0" title="'.htmlspecialchars('['.$contentTreeArr['el']['table'].':'.$contentTreeArr['el']['uid'].']').'" alt="" />';
+		}
 		$menuCommands = array();
 		if ($GLOBALS['BE_USER']->isPSet($calcPerms, 'pages', 'new')) {
 			$menuCommands[] = 'new';
