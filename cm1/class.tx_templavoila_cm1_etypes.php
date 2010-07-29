@@ -228,6 +228,7 @@ class tx_templavoila_cm1_eTypes {
 							}
 							if($reset) {
 								unset($elArray[$key]['tx_templavoila']['proc']);
+								$elArray[$key]['tx_templavoila']['enableDragDrop'] = 1;
 							}
 						break;
 						case 'int':
