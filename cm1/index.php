@@ -2276,9 +2276,8 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 										'</a>
 										<a href="' . $this->linkThisScript(array(
 																		'DS_element_DELETE' => $formPrefix . '[' . $key . ']'
-																		)) . '
-											onclick=" return confirm(\'' . $GLOBALS['LANG']->getLL('confirmDeleteEntry') . '\');"
-										">' .
+																		)) . '"
+											onClick="return confirm(' .  $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL('confirmDeleteEntry')) . ');">' .
 										tx_templavoila_icons::getIcon('actions-edit-delete', array('title' => $GLOBALS['LANG']->getLL('deleteEntry'))).
 										'</a>';
 						$editAddCol = '<td nowrap="nowrap">' . $editAddCol . '</td>';
