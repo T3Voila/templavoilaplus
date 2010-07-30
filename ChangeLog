@@ -1,3 +1,7 @@
+2010-07-30  Tolleiv Nietsch <nietsch@aoemedia.de>
+
+	* Fixed issue: #15276: tv page module title bar layout breaks, if too little space 
+
 2010-07-29  Tolleiv Nietsch <nietsch@aoemedia.de>
 
 	* Follow-up to: #14140: TemplaVoila should use sprite icons / pt.2

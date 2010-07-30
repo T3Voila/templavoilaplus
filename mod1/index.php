@@ -1136,7 +1136,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 					</div>
 				</div>
 				<div class="tpm-sub-elements">' .
-					$warnings .
+					($warnings ? '<div class="tpm-warnings">' . $warnings . '</div>' : '' ) .
 					$this->render_framework_subElements($contentTreeArr, $languageKey, $sheet, $calcPerms) .
 					'<div class="tpm-preview">' . $previewContent . '</div>' .
 					$this->render_localizationInfoTable($contentTreeArr, $parentPointer, $parentDsMeta) .

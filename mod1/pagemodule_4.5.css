@@ -1,4 +1,17 @@
 /* PAGEMODULE CSS */
+div#typo3-docbody { 
+	padding:0; 
+}
+div#typo3-inner-docbody {
+	display:table;
+	width:100%;
+	padding:0;
+}
+
+.pagecontainer {
+	display:table-cell;
+	padding:7px;
+}
 
 /* general */
 table {
@@ -30,7 +43,6 @@ div.warning a {
 /* link icons */
 .tpm-bottom-controls {
 	display:block;
-	padding-bottom: 5px;
 }
 .tpm-bottom-controls img {
 	border: none ; 
@@ -48,13 +60,13 @@ div.warning a {
 
 .tpm-content-cell {
 	vertical-align: top;
-	padding: 7px;
-	border-left: 3px solid #555;
+	padding: 5px;
+	border-left: 3px solid #555; 
 }
 .tpm-subelement-table {
 	border-bottom:0px;
 	font-size:10px;
-	padding:7px;
+	margin:4px;
 }
 
 .tpm-subelement-table .tpm-title-cell {
@@ -101,13 +113,15 @@ div.warning a {
 	text-align: right; 
 	vertical-align:top;
 }
-.tpm-element-title {
-	float:left;
-	vertical-align:top;
+.tpm-titlebar {
+	overflow:hidden;
 }
-
-.tpm-element-title a {
-	padding-right:5px;
+.tpm-element-title {
+	min-width:100px;
+	margin-right:140px;
+	vertical-align:top;
+	padding:1px;
+	line-height:15px;
 }
 
 .tpm-element-title .tpm-langIcon {
@@ -116,13 +130,28 @@ div.warning a {
 	padding-top:2px;
 }
 
-.tpm-preview {
-	padding:7px
-}
-
 .tpm-preview ul {
 	padding:0 0 0 20px;
 	margin:0
+}
+
+.t3-page-ce-header {
+	height:auto !important;
+}
+
+.t3-row-header .tpm-element-control {
+	float:right;
+	min-width: 120px;
+	height:20px;
+	padding-right:4px;
+}
+
+.tpm-preview, .tpm-warnings {
+	padding:5px;
+}
+
+.tpm-element {
+	padding:5px 5px 5px 0;
 }
 
 /* non-used elements */
