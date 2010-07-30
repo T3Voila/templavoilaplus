@@ -1,5 +1,6 @@
 2010-07-30  Tolleiv Nietsch <nietsch@aoemedia.de>
 
+	* Fixed issue: #15314: TYPO3 4.4 Version-selector doesn't fit into the current layout
 	* Fixed issue: #15276: tv page module title bar layout breaks, if too little space 
 
 2010-07-29  Tolleiv Nietsch <nietsch@aoemedia.de>

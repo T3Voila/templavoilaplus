@@ -337,16 +337,28 @@ class tx_templavoila_mod1_sidebar {
 					<th colspan="3">&nbsp;</th>
 				</tr>
 			');
-			$tableRows[] = '
-			<tr class="bgColor4">
-				<td width="20">
-					&nbsp;
-				</td><td width="200" style="vertical-align:middle;">
-					' . $GLOBALS['LANG']->getLL('sidebar_versionSelector', 1) . ':
-				</td>
-				<td>' . $versionSelector . '</td>
-			</tr>
-			';
+
+			if (version_compare(TYPO3_version,'4.4','>')) {
+				$tableRows[] = '
+				<tr class="bgColor4">
+					<td width="20">
+						&nbsp;
+					</td>
+					<td colspan="9">' . $versionSelector . '</td>
+				</tr>
+				';
+			} else {
+				$tableRows[] = '
+				<tr class="bgColor4">
+					<td width="20">
+						&nbsp;
+					</td><td width="200" style="vertical-align:middle;">
+						' . $GLOBALS['LANG']->getLL('sidebar_versionSelector', 1) . ':
+					</td>
+					<td>' . $versionSelector . '</td>
+				</tr>
+				';
+			}
 
 			return '<table border="0" cellpadding="0" cellspacing="1" class="lrPadding" width="100%">' . implode ('', $tableRows) . '</table>';
 		}
