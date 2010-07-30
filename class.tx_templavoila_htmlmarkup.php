@@ -753,23 +753,66 @@ class tx_templavoila_htmlmarkup {
 	/**
 	 * Will set header content and BodyTag for template.
 	 *
-	 * @param	[type]		$MappingInfo_head: ...
-	 * @param	[type]		$MappingData_head_cached: ...
-	 * @param	[type]		$BodyTag_cached: ...
-	 * @return	[type]		...
+	 * @param	array		$MappingInfo_head: ...
+	 * @param	array		$MappingData_head_cached: ...
+	 * @param	string		$BodyTag_cached: ...
+	 * @param	boolean		$pageRenderer: try to use the pageRenderer for script and style inclusion
+	 * @return	void
 	 */
-	function setHeaderBodyParts($MappingInfo_head,$MappingData_head_cached,$BodyTag_cached='')	{
+	function setHeaderBodyParts($MappingInfo_head,$MappingData_head_cached,$BodyTag_cached='', $pageRenderer=FALSE)	{
 
 		$htmlParse = ($this->htmlParse ? $this->htmlParse : t3lib_div::makeInstance('t3lib_parsehtml'));
 		/* @var $htmlParse t3lib_parsehtml */
 
+		$types = array(
+			'LINK' => 'text/css',
+			'STYLE' => 'text/css',
+			'SCRIPT' => 'text/javascript'
+		);
 			// Traversing mapped header parts:
 		if (is_array($MappingInfo_head['headElementPaths'])) {
 			$extraHeaderData = array();
 			foreach(array_keys($MappingInfo_head['headElementPaths']) as $kk) {
 				if (isset($MappingData_head_cached['cArray']['el_'.$kk])) {
-					$uKey = md5(trim($MappingData_head_cached['cArray']['el_'.$kk]));
-					$extraHeaderData['TV_'.$uKey] = chr(10) . chr(9) . trim($htmlParse->XHTML_clean($MappingData_head_cached['cArray']['el_'.$kk]));
+					$tag = strtoupper($htmlParse->getFirstTagName($MappingData_head_cached['cArray']['el_'.$kk]));
+					$attr = $htmlParse->get_tag_attributes($MappingData_head_cached['cArray']['el_'.$kk]);
+					if (isset($GLOBALS['TSFE']) &&
+						$pageRenderer &&
+						isset($attr[0]['type']) &&
+						isset($types[$tag]) &&
+						$types[$tag] == $attr[0]['type']
+					) {
+						$name = 'templavoila#' . md5($MappingData_head_cached['cArray']['el_'.$kk]);
+						$pageRenderer = $GLOBALS['TSFE']->getPageRenderer();
+						switch ($tag) {
+							case 'LINK':
+								$rel = isset($attr[0]['rel']) ?  $attr[0]['rel'] : 'stylesheet';
+								$media = isset($attr[0]['media']) ?  $attr[0]['media'] : 'all';
+								$pageRenderer->addCssFile($attr[0]['href'], $rel, $media);
+								break;
+							case 'STYLE':
+								$cont = $htmlParse->removeFirstAndLastTag($MappingData_head_cached['cArray']['el_'.$kk]);
+								if ($GLOBALS['TSFE']->config['config']['inlineStyle2TempFile']) {
+									$pageRenderer->addCssFile(TSpagegen::inline2TempFile($cont, 'css'));
+								} else {
+									$pageRenderer->addCssInlineBlock($name, $cont);
+								}
+								break;
+							case 'SCRIPT':
+								if ( isset($attr[0]['src'])) {
+									$pageRenderer->addJsFile($attr[0]['src']);
+								} else {
+									$cont = $htmlParse->removeFirstAndLastTag($MappingData_head_cached['cArray']['el_'.$kk]);
+									$pageRenderer->addJsInlineCode($name, $cont);
+								}
+								break;
+							default:
+								// can't happen due to condition
+						}
+					} else {
+						$uKey = md5(trim($MappingData_head_cached['cArray']['el_'.$kk]));
+						$extraHeaderData['TV_'.$uKey] = chr(10) . chr(9) . trim($htmlParse->XHTML_clean($MappingData_head_cached['cArray']['el_'.$kk]));
+					}
 				}
 			}
 			// Set 'page.headerData', use the lowest possible free index!

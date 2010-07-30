@@ -76,6 +76,8 @@ class tx_templavoila_pi1 extends tslib_pibase {
 
 	var $inheritValueFromDefault=1;		// If set, children-translations will take the value from the default if "false" (zero or blank)
 
+	static $enablePageRenderer = FALSE;
+
 	/**
 	 * Markup object
 	 *
@@ -227,6 +229,10 @@ class tx_templavoila_pi1 extends tslib_pibase {
 	 */
 	function initVars($conf)	{
 		$this->inheritValueFromDefault = $conf['dontInheritValueFromDefault'] ? 0 : 1;
+		if (version_compare(TYPO3_version,'4.3.0','>')) {
+				// naming choosen to fit the regular TYPO3 integrators needs ;)
+			self::$enablePageRenderer = isset($conf['advancedHeaderInclusion']) ? $conf['advancedHeaderInclusion'] : self::$enablePageRenderer;
+		}
 		$this->conf=$conf;
 	}
 
@@ -368,7 +374,9 @@ class tx_templavoila_pi1 extends tslib_pibase {
 								// Getting the cached mapping data out (if sheets, then default to "sDEF" if no mapping exists for the specified sheet!)
 							$mappingDataBody = $singleSheet ? $TO['MappingData_cached'] : (is_array($TO['MappingData_cached']['sub'][$sheet]) ? $TO['MappingData_cached']['sub'][$sheet] : $TO['MappingData_cached']['sub']['sDEF']);
 							$content = $this->markupObj->mergeFormDataIntoTemplateStructure($dataValues,$mappingDataBody,'',$vKey);
-							$this->markupObj->setHeaderBodyParts($TO['MappingInfo_head'],$TO['MappingData_head_cached'],$TO['BodyTag_cached']);
+
+							$this->markupObj->setHeaderBodyParts($TO['MappingInfo_head'],$TO['MappingData_head_cached'],$TO['BodyTag_cached'], self::$enablePageRenderer);
+
 						if ($GLOBALS['TT']->LR) $GLOBALS['TT']->pull();
 
 							// Edit icon (frontend editing):
