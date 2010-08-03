@@ -1,3 +1,7 @@
+2010-08-03  Tolleiv Nietsch <nietsch@aoemedia.de>
+
+	* Follow-up to: #15217: new content wizard should use docHeader
+
 2010-07-30  Tolleiv Nietsch <nietsch@aoemedia.de>
 
 	* Fixed issue: #14590: use pagerenderer to output / integrate the header parts into the regular TYPO3 output

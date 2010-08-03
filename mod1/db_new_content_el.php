@@ -335,8 +335,9 @@ class tx_templavoila_dbnewcontentel {
 	 */
 	protected function getShortcutButton() {
 		$result = '';
+		$menu = is_array($this->MOD_MENU) ? $this->MOD_MENU : array();
 		if ($GLOBALS['BE_USER']->mayMakeShortcut()) {
-			$result = $this->doc->makeShortcutIcon('id', implode(',', array_keys($this->MOD_MENU)), $this->MCONF['name']);
+			$result = $this->doc->makeShortcutIcon('id', implode(',', array_keys($menu)), $this->MCONF['name']);
 		}
 
 		return $result;
