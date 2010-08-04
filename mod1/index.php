@@ -1126,7 +1126,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		}
 
 
-		$title = t3lib_div::fixed_lgd_cs($contentTreeArr['el']['title'], $this->previewTitleMaxLen);
+		$title = t3lib_div::fixed_lgd_cs($contentTreeArr['el']['fullTitle'], $this->previewTitleMaxLen);
 
 			// Finally assemble the table:
 		$finalContent = '
