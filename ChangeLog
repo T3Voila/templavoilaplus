@@ -1,5 +1,6 @@
 2010-08-04  Tolleiv Nietsch <nietsch@aoemedia.de>
 
+	* Fixed issue: #15358: pagemodule ce title len limit should be configurable
 	* Fixed issue: #15357: pagemodule preview data limit should be configurable 
 
 2010-08-03  Tolleiv Nietsch <nietsch@aoemedia.de>

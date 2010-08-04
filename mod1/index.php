@@ -159,6 +159,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	var $blindIcons = array();						// Icons which shouldn't be rendered by configuration, can contain elements of "new,edit,copy,cut,ref,paste,browse,delete,makeLocal,unlink,hide"
 
 	protected $renderPreviewObjects = NULL;			// Classes for preview render
+	protected $previewTitleMaxLen = 50;
 	protected $debug = FALSE;
 	protected static $calcPermCache = array();
 
@@ -197,6 +198,10 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 		$this->altRoot = t3lib_div::_GP('altRoot');
 		$this->versionId = t3lib_div::_GP('versionId');
+
+		if (isset($this->modTSconfig['properties']['previewTitleMaxLen'])) {
+			$this->previewTitleMaxLen = intval($this->modTSconfig['properties']['previewTitleMaxLen']);
+		}
 
 			// enable debug for development
 		if ($this->modTSconfig['properties']['debug']) {
@@ -1120,6 +1125,9 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			$previewContent = '<div class="ver-element">'.($previewContent ? $previewContent : '<em>[New version]</em>').'</div>';
 		}
 
+
+		$title = t3lib_div::fixed_lgd_cs($contentTreeArr['el']['title'], $this->previewTitleMaxLen);
+
 			// Finally assemble the table:
 		$finalContent = '
 			<div class="' . $elementClass . '">
@@ -1131,7 +1139,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 						<div class="nobr tpm-element-title">' .
 						$languageIcon .
 						$titleBarLeftButtons .
-						($elementBelongsToCurrentPage ? '' : '<em>') . htmlspecialchars($contentTreeArr['el']['title']) . ($elementBelongsToCurrentPage ? '' : '</em>') .
+						($elementBelongsToCurrentPage ? '' : '<em>') . htmlspecialchars($title) . ($elementBelongsToCurrentPage ? '' : '</em>') .
 						'</div>
 					</div>
 				</div>
@@ -1573,7 +1581,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 							$l10nInfo =
 								$this->getRecordStatHookValue('tt_content', $localizedRecordInfo['row']['uid']).
 								$recordIcon_l10n .
-								htmlspecialchars(t3lib_div::fixed_lgd_cs(strip_tags(t3lib_BEfunc::getRecordTitle('tt_content', $localizedRecordInfo['row'])), 50));
+								htmlspecialchars(t3lib_div::fixed_lgd_cs(strip_tags(t3lib_BEfunc::getRecordTitle('tt_content', $localizedRecordInfo['row'])), $this->previewTitleMaxLen));
 
 							$l10nInfo.= '<br/>'.$localizedRecordInfo['content'];
 
