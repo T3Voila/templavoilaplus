@@ -34,12 +34,21 @@ class tx_templavoila_preview_type_bullets extends tx_templavoila_preview_type_te
 	 * @see classes/preview/tx_templavoila_preview_type_text#getPreviewData($row)
 	 */
 	protected function getPreviewData($row) {
-
+		if (isset($this->parentObj->modTSconfig['properties']['previewDataMaxLen'])) {
+			$max = intval($this->parentObj->modTSconfig['properties']['previewDataMaxLen']);
+		} else {
+			$max = 2000;
+		}
 		$htmlBullets = '';
 		$bulletsArr = explode ("\n", $this->preparePreviewData($row['bodytext']));
 		if (is_array ($bulletsArr)) {
 			foreach ($bulletsArr as $listItem) {
-				$htmlBullets .= '<li>' . htmlspecialchars(trim(strip_tags($listItem))) . '</li>';
+				$processedItem = t3lib_div::fixed_lgd_cs(trim(strip_tags($listItem)), $max);
+				$max -= strlen($processedItem);
+				$htmlBullets .= '<li>' . htmlspecialchars($processedItem) . '</li>';
+				if (!$max) {
+					break;
+				}
 			}
 		}
 		return '<ul>' . $htmlBullets . '</ul>';

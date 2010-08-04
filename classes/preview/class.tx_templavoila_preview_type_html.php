@@ -32,7 +32,7 @@ class tx_templavoila_preview_type_html extends tx_templavoila_preview_type_text 
 	 * @see classes/preview/tx_templavoila_preview_type_text#getPreviewData($row)
 	 */
 	protected function getPreviewData($row) {
-		return $this->preparePreviewData($row[$this->previewField], 2000, FALSE);
+		return $this->preparePreviewData($row[$this->previewField], null, FALSE);
 	}
 }
 

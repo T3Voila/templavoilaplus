@@ -35,6 +35,7 @@ class tx_templavoila_preview_type_textpic extends tx_templavoila_preview_type_te
 	 */
 	public function render_previewContent ($row, $table, $output, $alreadyRendered, &$ref) {
 
+		$this->parentObj = $ref;
 		$thumbnail = '<strong>'.$GLOBALS['LANG']->sL(t3lib_BEfunc::getItemLabel('tt_content','image'),1).'</strong><br />';
 		$thumbnail .= t3lib_BEfunc::thumbCode($row, 'tt_content', 'image', $ref->doc->backPath);
 

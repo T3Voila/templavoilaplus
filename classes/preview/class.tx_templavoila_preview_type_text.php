@@ -27,6 +27,8 @@ class tx_templavoila_preview_type_text {
 
 	protected $previewField = 'bodytext';
 
+	protected $parentObj;
+
 	/**
 	 *
 	 * @param array $row
@@ -37,6 +39,7 @@ class tx_templavoila_preview_type_text {
 	 * @return string
 	 */
 	public function render_previewContent ($row, $table, $output, $alreadyRendered, &$ref) {
+		$this->parentObj = $ref;
 		$label = $this->getPreviewLabel();
 		$data = $this->getPreviewData($row);
 		if ($ref->currentElementBelongsToCurrentPage) {
@@ -71,10 +74,14 @@ class tx_templavoila_preview_type_text {
 	 * @param	boolean		$stripTags: HTML-blocks usually keep their tags
 	 * @return	string		the properly prepared string
 	 */
-	protected function preparePreviewData($str, $max = 2000, $stripTags = true) {
+	protected function preparePreviewData($str, $max = null, $stripTags = true) {
 			//Enable to omit that parameter
 		if ($max === null) {
-			$max = 2000;
+			if (isset($this->parentObj->modTSconfig['properties']['previewDataMaxLen'])) {
+				$max = intval($this->parentObj->modTSconfig['properties']['previewDataMaxLen']);
+			} else {
+				$max = 2000;
+			}
 		}
 		if ($stripTags) {
 				//remove tags but avoid that the output is concatinated without spaces (#8375)
