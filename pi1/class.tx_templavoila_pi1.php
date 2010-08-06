@@ -155,9 +155,12 @@ class tx_templavoila_pi1 extends tslib_pibase {
 			// Make correct language identifiers here!
 			if ($GLOBALS['TSFE']->sys_language_isocode) {
 
-				$dsObj = $dsRepo->getDatastructureByUidOrFilename($data['tx_templavoila_ds']);
-				$DS = $dsObj->getDataprotArray();
-
+				try {
+					$dsObj = $dsRepo->getDatastructureByUidOrFilename($data['tx_templavoila_ds']);
+					$DS = $dsObj->getDataprotArray();
+				} catch (InvalidArgumentException $e) {
+					$DS = null;
+				}
 				if (is_array($DS)) {
 					$langChildren = $DS['meta']['langChildren'] ? 1 : 0;
 					$langDisabled = $DS['meta']['langDisable'] ? 1 : 0;
@@ -263,8 +266,12 @@ class tx_templavoila_pi1 extends tslib_pibase {
 		}
 
 		$dsRepo = t3lib_div::makeInstance('tx_templavoila_datastructureRepository');
-		$dsObj = $dsRepo->getDatastructureByUidOrFilename($row['tx_templavoila_ds']);
-		$DS = $dsObj->getDataprotArray();
+		try {
+			$dsObj = $dsRepo->getDatastructureByUidOrFilename($row['tx_templavoila_ds']);
+			$DS = $dsObj->getDataprotArray();
+		} catch (InvalidArgumentException $e) {
+			$DS = null;
+		}
 
 			// If a Data Structure was found:
 		if (is_array($DS))	{

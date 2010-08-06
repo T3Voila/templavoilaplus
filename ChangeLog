@@ -1,3 +1,7 @@
+2010-08-06  Tolleiv Nietsch <nietsch@aoemedia.de>
+
+	* Follow-up to: #14386: Static DS - Centralize access to datastructure / pt.1  - FE crash case removed
+
 2010-08-04  Tolleiv Nietsch <nietsch@aoemedia.de>
 
 	* Fixed issue: #15358: pagemodule ce title len limit should be configurable
