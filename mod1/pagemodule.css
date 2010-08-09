@@ -1,5 +1,20 @@
 /* PAGEMODULE CSS */
 
+.typo3-templavoila-pagemodule > #typo3-docbody {
+	top:22px;
+}
+
+.typo3-templavoila-pagemodule > #typo3-docbody > #typo3-docheader-row2 {
+	height:auto;
+	padding-top:1px;
+}
+
+.typo3-templavoila-pagemodule > #typo3-docbody  > #typo3-docheader-row2 > .docheader-row2-inner {
+	margin-left:10px;
+	margin-right:10px;
+	width:auto;
+}
+
 /* general */
 table {
 	position:relative;

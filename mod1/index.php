@@ -1102,7 +1102,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			// Create warning messages if neccessary:
 		$warnings = '';
 		if ($this->global_tt_content_elementRegister[$contentTreeArr['el']['uid']] > 1 && $this->rootElementLangParadigm !='free') {
-			$warnings .= $this->doc->icons(2).' <em>'.htmlspecialchars(sprintf($LANG->getLL('warning_elementusedmorethanonce',''), $this->global_tt_content_elementRegister[$contentTreeArr['el']['uid']], $contentTreeArr['el']['uid'])).'</em><br />';
+			$warnings .= $this->doc->icons(2).' <em>'.htmlspecialchars(sprintf($LANG->getLL('warning_elementusedmorethanonce',''), $this->global_tt_content_elementRegister[$contentTreeArr['el']['uid']], $contentTreeArr['el']['uid'])).'</em>';
 		}
 
 			// Displaying warning for container content (in default sheet - a limitation) elements if localization is enabled:

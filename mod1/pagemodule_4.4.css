@@ -1,11 +1,26 @@
 /* PAGEMODULE CSS */
 div#typo3-docbody { 
-	padding:0; 
+	padding:0;
 }
 div#typo3-inner-docbody {
 	display:table;
 	width:100%;
 	padding:0;
+}
+
+.typo3-templavoila-pagemodule > #typo3-docbody {
+	top:22px;
+}
+
+.typo3-templavoila-pagemodule > #typo3-docbody > #typo3-docheader-row2 {
+	height:auto;
+	padding-top:0px;
+}
+
+.typo3-templavoila-pagemodule > #typo3-docbody  > #typo3-docheader-row2 > .docheader-row2-inner {
+	margin-left:10px;
+	margin-right:10px;
+	width:auto;
 }
 
 .pagecontainer {
@@ -96,7 +111,7 @@ div.warning a {
 .tpm-container-element, .tpm-container-element a {
 	color:#5F5F5F;
 }
-.active .tpm-container-element, .active .tpm-container-element a {
+.active > .tpm-container-element, .active > .tpm-container-element > a {
 	color:#000000;
 }
 .active > .tpm-container-element {
@@ -139,18 +154,21 @@ div.warning a {
 	height:auto !important;
 }
 
-.t3-row-header .tpm-element-control {
-	float:right;
-	min-width: 120px;
-	height:20px;
-	padding-right:4px;
-}
-
 .tpm-preview, .tpm-warnings {
 	padding:5px;
 }
 
 .tpm-element {
+	padding:5px 5px 5px 0;
+}
+.tpm-element { padding:5px 5px 5px 0; }
+
+/* prevent flicker effects with row-headers and their hide/visibility states */
+.t3-page-ce {
+	margin-bottom:0;
+}
+
+.tpm-element { 
 	padding:5px 5px 5px 0;
 }
 
@@ -204,18 +222,32 @@ div.warning a {
 	margin-bottom:0;
 }
 
-.t3-page-ce.inactive .t3-row-header {
-	visibility:hidden;
-}
-.t3-page-ce.active .t3-row-header {
+.t3-page-ce.inactive .t3-row-header, .t3-page-ce.active .t3-row-header {
 	visibility:visible;
 }
-.t3-page-ce.active .t3-page-ce.inactive .t3-row-header {
+
+.t3-page-ce.inactive > .tpm-container-element > .tpm-titlebar > .t3-row-header > .tpm-element-control {
 	visibility:hidden;
 }
+
+.t3-page-ce.inactive > .tpm-container-element > .tpm-titlebar > .t3-row-header {
+	background:none;
+	color:#000;
+	opacity: 0.5;
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+	filter: alpha(opacity=50);
+}
+
+.t3-page-ce.inactive > .tpm-container-element.tpm-hidden > .tpm-titlebar > .t3-row-header {
+	color:#888;
+}
+
 .inactive .tpm-hidden .tpm-sub-elements {
 	opacity: 0.5;
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+	filter: alpha(opacity=50);
 }
+
 .t3-page-ce-header, .t3-row-header {
 	height:20px;
 }
