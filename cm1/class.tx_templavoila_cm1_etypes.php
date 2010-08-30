@@ -179,16 +179,6 @@ class tx_templavoila_cm1_eTypes {
 									'MAXH'  => $maxH
 								));
 							}
-
-
-								// Finding link-fields on same level and set the image to be linked by that TypoLink:
-							$elArrayKeys = array_keys($elArray);
-							foreach($elArrayKeys as $theKey)	{
-								if ($elArray[$theKey]['tx_templavoila']['eType']=='link')	{
-									$elArray[$key]['tx_templavoila']['TypoScript'] .= chr(10) . '10.stdWrap.typolink.parameter.field = ' . $theKey;
-									break;
-								}
-							}
 						break;
 						case 'link':
 							/* preserve previous config, if of the right kind */
