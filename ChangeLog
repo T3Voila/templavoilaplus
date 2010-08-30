@@ -1,5 +1,6 @@
 2010-08-30  Tolleiv Nietsch <nietsch@aoemedia.de>
 
+	* Fixed issue: #15411: Unmapped Elements of etype 'ce' / 'no_map' don't show in TV BE page module (Thanks to Marcel Greter)
 	* Fixed issue: #15568: Hardcoded added TS snipped crashes output
 
 2010-08-09  Tolleiv Nietsch <nietsch@aoemedia.de>

@@ -1234,7 +1234,10 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 			// Traverse container fields:
 		foreach($elementContentTreeArr['sub'][$sheet][$lKey] as $fieldID => $fieldValuesContent)	{
-			if ($elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['isMapped'] && is_array($fieldValuesContent[$vKey]))	{
+			if ( is_array($fieldValuesContent[$vKey]) && (
+				$elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['isMapped'] || 
+				$elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['type'] == 'no_map'
+			)) {
 				$fieldContent = $fieldValuesContent[$vKey];
 
 				$cellContent = '';
