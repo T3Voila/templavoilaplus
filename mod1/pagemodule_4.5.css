@@ -2,7 +2,7 @@
 div#typo3-docbody { 
 	padding:0;
 }
-div#typo3-inner-docbody {
+.tpm-editPageScreen div#typo3-inner-docbody {
 	display:table;
 	width:100%;
 	padding:0;

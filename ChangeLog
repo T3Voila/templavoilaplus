@@ -1,5 +1,6 @@
 2010-08-30  Tolleiv Nietsch <nietsch@aoemedia.de>
 
+	* Follow-up to: #15210: TemplaVoila should adjust it's look&feel to TYPO3 4.4 - special page padding fixed
 	* Fixed issue: #15411: Unmapped Elements of etype 'ce' / 'no_map' don't show in TV BE page module (Thanks to Marcel Greter)
 	* Fixed issue: #15568: Hardcoded added TS snipped crashes output
 

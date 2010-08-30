@@ -661,6 +661,8 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 					$script .= '});';
 					$this->content .= t3lib_div::wrapJS($script);
 				}
+
+				$this->doc->divClass = 'tpm-editPageScreen';
 			}
 
 		} else {	// No access or no current page uid:
