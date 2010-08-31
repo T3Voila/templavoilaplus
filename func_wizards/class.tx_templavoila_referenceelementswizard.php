@@ -79,6 +79,9 @@ class tx_templavoila_referenceElementsWizard extends t3lib_extobjbase {
 	function main()	{
 		global $BACK_PATH,$LANG,$SOBE, $BE_USER, $TYPO3_DB;
 
+		$this->modSharedTSconfig = t3lib_BEfunc::getModTSconfig($this->pObj->id, 'mod.SHARED');
+		$this->allAvailableLanguages = $this->getAvailableLanguages(0, true, true, true);
+
 		$output = '';
 		$this->templavoilaAPIObj = t3lib_div::makeInstance ('tx_templavoila_api');
 
@@ -192,21 +195,50 @@ class tx_templavoila_referenceElementsWizard extends t3lib_extobjbase {
 	function createReferencesForPage($pageUid) {
 
 		$unreferencedElementRecordsArr = $this->getUnreferencedElementsRecords($pageUid);
+		$langField = $GLOBALS['TCA']['tt_content']['ctrl']['languageField'];
 		foreach ($unreferencedElementRecordsArr as $elementUid => $elementRecord) {
-
+			$lDef = array();
+			$vDef = array();
+			if ($langField && $elementRecord[$langField])	{
+				$pageRec = t3lib_BEfunc::getRecordWSOL('pages', $pageUid);
+				$xml = t3lib_BEfunc::getFlexFormDS($GLOBALS['TCA']['pages']['columns']['tx_templavoila_flex']['config'], $pageRec, 'pages', 'tx_templavoila_ds');
+				$langChildren = intval($xml['meta']['langChildren']);
+				$langDisable = intval($xml['meta']['langDisable']);
+				if ($elementRecord[$langField]==-1)	{
+					$translatedLanguagesArr = $this->getAvailableLanguages($pageUid);
+					foreach ($translatedLanguagesArr as $lUid => $lArr)	{
+						if ($lUid>=0)	{
+							$lDef[] = $langDisable ? 'lDEF' : ($langChildren ? 'lDEF' : 'l'.$lArr['ISOcode']);
+							$vDef[]= $langDisable ? 'vDEF' : ($langChildren ? 'v'.$lArr['ISOcode']: 'vDEF');
+						}
+					}
+				} elseif ($rLang = $this->allAvailableLanguages[$elementRecord[$langField]])	{
+					$lDef[] = $langDisable ? 'lDEF' : ($langChildren ? 'lDEF' : 'l'.$rLang['ISOcode']);
+					$vDef[]= $langDisable ? 'vDEF' : ($langChildren ? 'v'.$rLang['ISOcode']: 'vDEF');
+				} else	{
+					$lDef[] = 'lDEF';
+					$vDef[] = 'vDEF';
+				}
+			} else	{
+				$lDef[] = 'lDEF';
+				$vDef[] = 'vDEF';
+			}
 			$contentAreaFieldName = $this->templavoilaAPIObj->ds_getFieldNameByColumnPosition($pageUid, $elementRecord['colPos']);
 			if ($contentAreaFieldName !== FALSE) {
-				$destinationPointer = array (
-					'table' => 'pages',
-					'uid' => $pageUid,
-					'sheet' => 'sDEF',
-					'sLang' => 'lDEF',
-					'field' => $contentAreaFieldName,
-					'vLang' => 'vDEF',
-					'position' => -1
-				);
-
-				$this->templavoilaAPIObj->referenceElementByUid ($elementUid, $destinationPointer);
+				foreach ($lDef as $iKey => $lKey)	{
+					$vKey = $vDef[$iKey];
+					$destinationPointer = array (
+						'table' => 'pages',
+						'uid' => $pageUid,
+						'sheet' => 'sDEF',
+						'sLang' => $lKey,
+						'field' => $contentAreaFieldName,
+						'vLang' => $vKey,
+						'position' => -1
+					);
+ 
+					$this->templavoilaAPIObj->referenceElementByUid ($elementUid, $destinationPointer);
+				}
 			}
 		}
 	}
@@ -244,8 +276,75 @@ class tx_templavoila_referenceElementsWizard extends t3lib_extobjbase {
 		}
 		return $elementRecordsArr;
 	}
-}
 
+
+	function getAvailableLanguages($id=0, $onlyIsoCoded=true, $setDefault=true, $setMulti=false)	{
+		global $LANG, $TYPO3_DB, $BE_USER, $TCA, $BACK_PATH;
+
+		t3lib_div::loadTCA ('sys_language');
+		$flagAbsPath = t3lib_div::getFileAbsFileName($TCA['sys_language']['columns']['flag']['config']['fileFolder']);
+		$flagIconPath = $BACK_PATH.'../'.substr($flagAbsPath, strlen(PATH_site));
+
+		$output = array();
+		$excludeHidden = $BE_USER->isAdmin() ? '1' : 'sys_language.hidden=0';
+
+		if ($id)	{
+			$excludeHidden .= ' AND pages_language_overlay.deleted=0';
+			$res = $TYPO3_DB->exec_SELECTquery(
+				'DISTINCT sys_language.*',
+				'pages_language_overlay,sys_language',
+				'pages_language_overlay.sys_language_uid=sys_language.uid AND pages_language_overlay.pid='.intval($id).' AND '.$excludeHidden,
+				'',
+				'sys_language.title'
+			);
+		} else {
+			$res = $TYPO3_DB->exec_SELECTquery(
+				'sys_language.*',
+				'sys_language',
+				$excludeHidden,
+				'',
+				'sys_language.title'
+			);
+		}
+
+		if ($setDefault) {
+			$output[0]=array(
+				'uid' => 0,
+				'title' => strlen ($this->modSharedTSconfig['properties']['defaultLanguageLabel']) ? $this->modSharedTSconfig['properties']['defaultLanguageLabel'] : $LANG->getLL('defaultLanguage'),
+				'ISOcode' => 'DEF',
+				'flagIcon' => strlen($this->modSharedTSconfig['properties']['defaultLanguageFlag']) && @is_file($flagAbsPath.$this->modSharedTSconfig['properties']['defaultLanguageFlag']) ? $flagIconPath.$this->modSharedTSconfig['properties']['defaultLanguageFlag'] : null,
+			);
+		}
+
+		if ($setMulti) {
+			$output[-1]=array(
+				'uid' => -1,
+				'title' => $LANG->getLL ('multipleLanguages'),
+				'ISOcode' => 'DEF',
+				'flagIcon' => $flagIconPath.'multi-language.gif',
+			);
+		}
+
+		while(TRUE == ($row = $TYPO3_DB->sql_fetch_assoc($res)))	{
+			t3lib_BEfunc::workspaceOL('sys_language', $row);
+			$output[$row['uid']]=$row;
+
+			if ($row['static_lang_isocode'])	{
+				$staticLangRow = t3lib_BEfunc::getRecord('static_languages',$row['static_lang_isocode'],'lg_iso_2');
+				if ($staticLangRow['lg_iso_2']) {
+					$output[$row['uid']]['ISOcode'] = $staticLangRow['lg_iso_2'];
+				}
+			}
+		if (strlen ($row['flag'])) {
+				$output[$row['uid']]['flagIcon'] = @is_file($flagAbsPath.$row['flag']) ? $flagIconPath.$row['flag'] : '';
+			}
+
+			if ($onlyIsoCoded && !$output[$row['uid']]['ISOcode']) unset($output[$row['uid']]);
+		}
+
+		return $output;
+	}
+}
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/func_wizards/class.tx_templavoila_referenceelementswizard.php'])    {
     include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/func_wizards/class.tx_templavoila_referenceelementswizard.php']);
