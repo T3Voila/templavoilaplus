@@ -1103,8 +1103,13 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 			// Create warning messages if neccessary:
 		$warnings = '';
-		if ($this->global_tt_content_elementRegister[$contentTreeArr['el']['uid']] > 1 && $this->rootElementLangParadigm !='free') {
-			$warnings .= $this->doc->icons(2).' <em>'.htmlspecialchars(sprintf($LANG->getLL('warning_elementusedmorethanonce',''), $this->global_tt_content_elementRegister[$contentTreeArr['el']['uid']], $contentTreeArr['el']['uid'])).'</em>';
+		
+		if (!$this->modTSconfig['properties']['disableReferencedElementNotification'] && !$elementBelongsToCurrentPage) {
+			$warnings .= $this->doc->icons(1).' <em>'.htmlspecialchars(sprintf($LANG->getLL('info_elementfromotherpage'), $contentTreeArr['el']['uid'], $contentTreeArr['el']['pid'])).'</em><br />';
+		}
+		
+		if (!$this->modTSconfig['properties']['disableElementMoreThanOnceWarning'] && $this->global_tt_content_elementRegister[$contentTreeArr['el']['uid']] > 1 && $this->rootElementLangParadigm !='free') {
+			$warnings .= $this->doc->icons(2).' <em>'.htmlspecialchars(sprintf($LANG->getLL('warning_elementusedmorethanonce',''), $this->global_tt_content_elementRegister[$contentTreeArr['el']['uid']], $contentTreeArr['el']['uid'])).'</em><br />';
 		}
 
 			// Displaying warning for container content (in default sheet - a limitation) elements if localization is enabled:
@@ -1112,10 +1117,10 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		if (!$this->modTSconfig['properties']['disableContainerElementLocalizationWarning'] && $this->rootElementLangParadigm !='free' && $isContainerEl && $contentTreeArr['el']['table'] === 'tt_content' && $contentTreeArr['el']['CType'] === 'templavoila_pi1' && !$contentTreeArr['ds_meta']['langDisable'])	{
 			if ($contentTreeArr['ds_meta']['langChildren'])	{
 				if (!$this->modTSconfig['properties']['disableContainerElementLocalizationWarning_warningOnly']) {
-					$warnings .= $this->doc->icons(2).' <b>'.$LANG->getLL('warning_containerInheritance').'</b><br />';
+					$warnings .= $this->doc->icons(2).' <em>'.$LANG->getLL('warning_containerInheritance').'</em><br />';
 				}
 			} else {
-				$warnings .= $this->doc->icons(3).' <b>'.$LANG->getLL('warning_containerSeparate').'</b><br />';
+				$warnings .= $this->doc->icons(3).' <em>'.$LANG->getLL('warning_containerSeparate').'</em><br />';
 			}
 		}
 
