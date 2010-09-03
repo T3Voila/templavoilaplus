@@ -144,6 +144,43 @@ abstract class tx_templavoila_datastructure {
 	 */
 	abstract public function isPermittedForUser($parentRow = array(), $removeItems = array());
 
+	/**
+	 * Enables to determine whether this element is based on a record or on a file
+	 * Required for view-related tasks (edit-icons)
+	 *
+	 * @return boolean
+	 */
+	public function isFilebased() {
+		return FALSE;
+	}
+
+	/**
+	 * Retrieve the filereference of the template
+	 *
+	 * @return string
+	 */
+	abstract public function getTstamp();
+
+	/**
+	 * Retrieve the filereference of the template
+	 *
+	 * @return string
+	 */
+	abstract public function getCrdate();
+
+	/**
+	 * Retrieve the filereference of the template
+	 *
+	 * @return string
+	 */
+	abstract public function getCruser();
+
+	/**
+	 * @param void
+	 * @return mixed
+	 */
+	abstract public function getBeLayout();
+
 }
 
 

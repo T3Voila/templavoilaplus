@@ -135,6 +135,75 @@ class tx_templavoila_datastructureRepository {
 	}
 
 	/**
+ 
+	/**
+	 * Retrieve a collection (array) of tx_templavoila_datastructure objects
+	 *
+	 * @param integer $scope
+	 * @return array
+	 */
+	public function getDatastructuresByScope($scope) {
+		$dscollection = array();
+		if (is_array($GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['staticDataStructures'])) {
+			$confArr = $GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['staticDataStructures'];
+			foreach ($confArr as $key=>$conf) {
+				if ($conf['scope'] == $scope) {
+					$ds = $this->getDatastructureByUidOrFilename($conf['path']);
+					$dscollection[] = $ds;
+				}
+			}
+		}
+
+		if(!self::isStaticDsEnabled()) {
+			$dsRows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+				'uid',
+				'tx_templavoila_datastructure',
+				'scope=' . intval($scope)
+					. t3lib_BEfunc::deleteClause('tx_templavoila_datastructure')
+					. t3lib_BEfunc::versioningPlaceholderClause('tx_templavoila_datastructure')
+			);
+			foreach ($dsRows as $ds) {
+				$dscollection[] = $this->getDatastructureByUidOrFilename($ds['uid']);
+			}
+		}
+		usort($dscollection, array($this, 'sortDatastructures'));
+		return $dscollection;
+	}
+
+	/**
+	 * Retrieve a collection (array) of tx_templavoila_datastructure objects
+	 *
+	 * @return array
+	 */
+	public function getAll() {
+		$dscollection = array();
+		if (is_array($GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['staticDataStructures'])) {
+			$confArr = $GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['staticDataStructures'];
+			foreach ($confArr as $key=>$conf) {
+				if ($conf['scope'] == $scope) {
+					$ds = $this->getDatastructureByUidOrFilename($conf['path']);
+					$dscollection[] = $ds;
+				}
+			}
+		}
+
+		if(!self::isStaticDsEnabled()) {
+			$dsRows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+				'uid',
+				'tx_templavoila_datastructure',
+				'1=1'
+					. t3lib_BEfunc::deleteClause('tx_templavoila_datastructure')
+					. t3lib_BEfunc::versioningPlaceholderClause('tx_templavoila_datastructure')
+			);
+			foreach ($dsRows as $ds) {
+				$dscollection[] = $this->getDatastructureByUidOrFilename($ds['uid']);
+			}
+		}
+		usort($dscollection, array($this, 'sortDatastructures'));
+		return $dscollection;
+	}
+
+	/**
 	 *
 	 * @param string $file
 	 * @return mixed

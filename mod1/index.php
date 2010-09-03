@@ -154,7 +154,6 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	var $sortableItems = array();					// Registry for sortable id => flexPointer-Pairs
 
 	var $extConf;									// holds the extconf configuration
-	var $staticDS = FALSE;							// Boolean; if true DS records are file based
 
 	var $blindIcons = array();						// Icons which shouldn't be rendered by configuration, can contain elements of "new,edit,copy,cut,ref,paste,browse,delete,makeLocal,unlink,hide"
 
@@ -194,7 +193,6 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		}
 
 		$this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
-		$this->staticDS = ($this->extConf['staticDS.']['enable']);
 
 		$this->altRoot = t3lib_div::_GP('altRoot');
 		$this->versionId = t3lib_div::_GP('versionId');
@@ -1207,10 +1205,6 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		$cells = array();
 		$headerCells = array();
 
-				// gets the layout
-			// deprecated, use TO or DS record fields instead
-		$beTemplate = $elementContentTreeArr['ds_meta']['beLayout'];
-
 			// get used TO
 		if( isset($elementContentTreeArr['el']['TO']) && intval($elementContentTreeArr['el']['TO'])) {
 			$toRecord = t3lib_BEfunc::getRecordWSOL('tx_templavoila_tmplobj', intval($elementContentTreeArr['el']['TO']));
@@ -1218,26 +1212,20 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			$toRecord = $this->apiObj->getContentTree_fetchPageTemplateObject($this->rootElementRecord);
 		}
 
-		if ($toRecord['belayout']) {
-			$beTemplate = t3lib_div::getURL(PATH_site . $toRecord['belayout']);
-		} else {
-				// when TO doesn't have the beLayout look in DS record
-			if ($this->staticDS) {
-				$beLayoutFile = PATH_site . substr($toRecord['datastructure'], 0, -3) . 'html';
-				if ($toRecord['datastructure'] && file_exists($beLayoutFile)) {
-					$beTemplate = t3lib_div::getURL($beLayoutFile);
-				}
-			} else {
-			$dsRecord = t3lib_BEfunc::getRecordWSOL('tx_templavoila_datastructure', $toRecord['datastructure'], 'belayout');
-			if ($dsRecord['belayout']) {
-				$beTemplate = t3lib_div::getURL(PATH_site . $dsRecord['belayout']);
-			}
-		}
+		try{
+			$toRepo = t3lib_div::makeInstance('tx_templavoila_templateRepository');
+			$to = $toRepo->getTemplateByUid($toRecord['uid']);
+			$beTemplate = $to->getBeLayout();
+		} catch (InvalidArgumentException $e) {
+			// might happen if uid was not what the Repo expected - that's ok here
 		}
 
-				// no layout, no special rendering
+		if ($beTemplate === FALSE && isset($elementContentTreeArr['ds_meta']['beLayout'])) {
+			$beTemplate = $elementContentTreeArr['ds_meta']['beLayout'];
+		}
+
+			// no layout, no special rendering
 		$flagRenderBeLayout = $beTemplate? TRUE : FALSE;
-
 
 			// Traverse container fields:
 		foreach($elementContentTreeArr['sub'][$sheet][$lKey] as $fieldID => $fieldValuesContent)	{
@@ -2706,36 +2694,21 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * @return boolean
 	 */
 	protected function editingOfNewElementIsEnabled($dsUid, $toUid) {
-
 		if ( !strlen($dsUid) || !t3lib_div::intval_positive($toUid)) {
-			return true;
+			return TRUE;
 		}
-
-		$ret = true;
-		$dsMeta = $toMeta = array();
-
-		$dsRepo = t3lib_div::makeInstance('tx_templavoila_datastructureRepository');
-		$ds = $dsRepo->getDatastructureByUidOrFilename($dsUid);
-
-		$dsXML = $ds->getDataprotArray();
-
-		if(is_array($dsXML) && array_key_exists('meta', $dsXML)) {
-			$dsMeta = $dsXML['meta'];
-		}
-			// @todo can be merged with the datastructure processing
-		$to = t3lib_beFunc::getRecord('tx_templavoila_tmplobj', intval($toUid), 'uid,localprocessing');
-		if( is_array($to) ) {
-			$toXML = t3lib_div::xml2array( $to['localprocessing'] );
-			if(is_array($toXML) && array_key_exists('meta', $toXML)) {
-				$toMeta = $toXML['meta'];
+		$editingEnabled = TRUE;
+		try {
+			$toRepo = t3lib_div::makeInstance('tx_templavoila_templateRepository');
+			$to = $toRepo->getTemplateByUid($toUid);
+			$xml = $to->getLocalDataprotArray();
+			if (isset($xml['meta']['noEditOnCreation'])) {
+				$editingEnabled = $xml['meta']['noEditOnCreation'] != 1;
 			}
+		} catch(InvalidArgumentException $e) {
+			//  might happen if uid was not what the Repo expected - that's ok here
 		}
-
-		$meta = t3lib_div::array_merge_recursive_overrule( $dsMeta, $toMeta );
-		if( is_array($meta) && array_key_exists('noEditOnCreation', $meta) ) {
-			$ret = $meta['noEditOnCreation'] != 1;
-		}
-		return $ret;
+		return $editingEnabled;
 	}
 
 	/**

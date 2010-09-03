@@ -33,6 +33,9 @@ class tx_templavoila_template {
 	protected $label;
 	protected $description;
 	protected $iconFile;
+	protected $fileref;
+	protected $fileref_mtime;
+	protected $fileref_md5;
 
 	/**
 	 *
@@ -44,6 +47,9 @@ class tx_templavoila_template {
 		$this->setLabel($this->row['title']);
 		$this->setDescription($this->row['description']);
 		$this->setIcon($this->row['previewicon']);
+		$this->setFileref($this->row['fileref']);
+		$this->setFilerefMtime($this->row['fileref_mtime']);
+		$this->setFilerefMD5($this->row['fileref_md5']);
 	}
 
 	/**
@@ -105,11 +111,119 @@ class tx_templavoila_template {
 	}
 
 	/**
+	 * Retrieve the filereference of the template
+	 *
+	 * @return string
+	 */
+	public function getFileref() {
+		return $this->fileref;
+	}
+
+	/**
+	 *
+	 * @param string $str
+	 * @return void
+	 */
+	protected function setFileref($str) {
+		$this->fileref = $str;
+	}
+
+	/**
+	 * Retrieve the filereference of the template
+	 *
+	 * @return string
+	 */
+	public function getFilerefMtime() {
+		return $this->fileref_mtime;
+	}
+
+	/**
+	 *
+	 * @param string $str
+	 * @return void
+	 */
+	protected function setFilerefMtime($str) {
+		$this->fileref_mtime = $str;
+	}
+
+	/**
+	 * Retrieve the filereference of the template
+	 *
+	 * @return string
+	 */
+	public function getFilerefMD5() {
+		return $this->fileref_md5;
+	}
+
+	/**
+	 *
+	 * @param string $str
+	 * @return void
+	 */
+	protected function setFilerefMD5($str) {
+		$this->fileref_md5 = $str;
+	}
+
+	/**
 	 *
 	 * @return string - numeric string
 	 */
 	public function getKey() {
 		return $this->row['uid'];
+	}
+
+	/**
+	 * Retrieve the timestamp of the template
+	 *
+	 * @return string
+	 */
+	public function getTstamp() {
+		return $this->row['tstamp'];
+	}
+
+	/**
+	 * Retrieve the creation date of the template
+	 *
+	 * @return string
+	 */
+	public function getCrdate() {
+		return $this->row['crdate'];
+	}
+
+	/**
+	 * Retrieve the creation user of the template
+	 *
+	 * @return string
+	 */
+	public function getCruser() {
+		return $this->row['cruser_id'];
+	}
+
+	/**
+	 * Retrieve the rendertype of the template
+	 *
+	 * @return string
+	 */
+	public function getRendertype() {
+		return $this->row['rendertype'];
+	}
+
+	/**
+	 * Retrieve the system language of the template
+	 *
+	 * @return integer
+	 */
+	public function getSyslang() {
+		return $this->row['sys_language_uid'];
+	}
+
+	/**
+	 * Check if this is a subtemplate or not
+	 *
+	 * @return boolean
+	 */
+	public function hasParentTemplate() {
+		return $this->row['parent'] != 0;
 	}
 
 	/**
@@ -162,16 +276,43 @@ class tx_templavoila_template {
 	}
 
 	/**
+	 * @param boolean $skipDsDataprot
 	 * @return array
 	 */
-	public function getLocalDataprotArray() {
-		$dataprot = $this->getDatastructure()->getDataprotArray();
+	public function getLocalDataprotXML($skipDsDataprot = FALSE) {
+		return t3lib_div::array2xml($this->getLocalDataprotArray($skipDsDataprot), 'T3DataStructure', array('useCDATA' => 1));
+	}
+
+	/**
+	 * @param boolean $skipDsDataprot
+	 * @return array
+	 */
+	public function getLocalDataprotArray($skipDsDataprot = FALSE) {
+		if (!$skipDsDataprot) {
+			$dataprot = $this->getDatastructure()->getDataprotArray();
+		} else {
+			$dataprot = array();
+		}
 		$toDataprot =  t3lib_div::xml2array($this->row['localprocessing']);
 
 		if (is_array($toDatarpot)) {
 			$dataprot = t3lib_div::array_merge_recursive_overrule($dataprot, $toDataprot);
 		}
 		return $dataprot;
+	}
+
+	/**
+	 * @param void
+	 * @return mixed
+	 */
+	public function getBeLayout() {
+		$beLayout = FALSE;
+		if ($this->row['belayout']) {
+			$beLayout = t3lib_div::getURL(PATH_site . $this->row['belayout']);
+		} else {
+			$beLayout = $this->getDatastructure()->getBeLayout();
+		}
+		return $beLayout;
 	}
 
 }

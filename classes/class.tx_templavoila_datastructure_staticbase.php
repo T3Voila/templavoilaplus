@@ -99,6 +99,68 @@ class tx_templavoila_datastructure_staticbase extends tx_templavoila_datastructu
 	public function isPermittedForUser($parentRow = array(), $removeItems = array()) {
 		return TRUE;
 	}
+
+	/**
+	 * Enables to determine whether this element is based on a record or on a file
+	 * Required for view-related tasks (edit-icons)
+	 *
+	 * @return boolean
+	 */
+	public function isFilebased() {
+		return TRUE;
+	}
+
+	/**
+	 * Retrieve the filereference of the template
+	 *
+	 * @return string
+	 */
+	public function getTstamp() {
+		$file = t3lib_div::getFileAbsFileName($this->filename);
+		if (is_readable($file)) {
+			$tstamp = filemtime($file);
+		} else {
+			$tstamp = 0;
+		}
+		return $tstamp;
+	}
+
+	/**
+	 * Retrieve the filereference of the template
+	 *
+	 * @return string
+	 */
+	public function getCrdate() {
+		$file = t3lib_div::getFileAbsFileName($this->filename);
+		if (is_readable($file)) {
+			$tstamp = filectime($file);
+		} else {
+			$tstamp = 0;
+		}
+		return $tstamp;
+	}
+
+	/**
+	 * Retrieve the filereference of the template
+	 *
+	 * @return string
+	 */
+	public function getCruser() {
+		return 0;
+	}
+
+	/**
+	 * @param void
+	 * @return mixed
+	 */
+	public function getBeLayout() {
+		$beLayout = FALSE;		
+		$file = PATH_site . substr(t3lib_div::getFileAbsFileName($this->filename), 0, -3) . 'html';
+		if (file_exists($file)) {
+			$beLayout = t3lib_div::getURL($file);
+		}
+		return $beLayout;
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/classes/class.tx_templavoila_datastructure_staticbase.php'])	{

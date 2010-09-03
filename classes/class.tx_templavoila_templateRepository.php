@@ -71,6 +71,51 @@ class tx_templavoila_templateRepository {
 	}
 
 	/**
+	 * Retrieve template objects which are related to a specific datastructure
+	 *
+	 * @param tx_templavoila_datastructure
+	 * @param integer $pid
+	 * @return array
+	 */
+	public function getTemplatesByParentTemplate(tx_templavoila_template $to) {
+		$toList = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows (
+			'tx_templavoila_tmplobj.uid',
+			'tx_templavoila_tmplobj',
+			'tx_templavoila_tmplobj.parent=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($to->getKey(), 'tx_templavoila_tmplobj')
+				. (intval($storagePid) > 0 ? ' AND tx_templavoila_tmplobj.pid = ' . intval($storagePid) : '')
+				. t3lib_BEfunc::deleteClause('tx_templavoila_tmplobj')
+				. t3lib_BEfunc::versioningPlaceholderClause('tx_templavoila_tmplobj')
+		);
+		$toCollection = array();
+		foreach ($toList as $toRec) {
+			$toCollection[] = $this->getTemplateByUid($toRec['uid']);
+		}
+		usort($toCollection, array($this, 'sortTemplates'));
+		return $toCollection;
+	}
+
+	/**
+	 * Retrieve a collection (array) of tx_templavoila_datastructure objects
+	 *
+	 * @return array
+	 */
+	public function getAll() {
+		$toList = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows (
+			'tx_templavoila_tmplobj.uid',
+			'tx_templavoila_tmplobj',
+			'1=1'
+				. t3lib_BEfunc::deleteClause('tx_templavoila_tmplobj')
+				. t3lib_BEfunc::versioningPlaceholderClause('tx_templavoila_tmplobj')
+		);
+		$toCollection = array();
+		foreach ($toList as $toRec) {
+			$toCollection[] = $this->getTemplateByUid($toRec['uid']);
+		}
+		usort($toCollection, array($this, 'sortTemplates'));
+		return $toCollection;
+	}
+
+	/**
 	 * Sorts datastructure alphabetically
 	 *
 	 * @param	tx_templavoila_template $obj1

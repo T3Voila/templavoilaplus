@@ -140,7 +140,7 @@
 			<label index="fatalerrors">Fatal errors</label>
 			<label index="wiz_title">New site wizard</label>
 			<label index="wiz_step">Step %s</label>
-			<label index="description">The following pages in the root line contain data structures and template objects</label>
+			<label index="description_pagesWithCertainDsTo">The following pages in the root line contain data structures and template objects</label>
 			<label index="newsitewizard_intro">If you want to start a new website based on the TemplaVoila template engine you can start this wizard which will set up all the boring initial stuff for you.
 You will be taken through these steps:
 - Creation of a new website root, storage folder, sample pages.

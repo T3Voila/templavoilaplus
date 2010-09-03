@@ -1,3 +1,7 @@
+2010-07-05  Tolleiv Nietsch <nietsch@aoemedia.de> 
+
+	* Fixed issue: #14386: Static DS - Centralize access to datastructure / pt.4 - mod2 uses proper objects now
+
 2010-09-01  Tolleiv Nietsch <nietsch@aoemedia.de>
 
 	* Fixed issue: #15614: Element warnings are inconsistent and lack information

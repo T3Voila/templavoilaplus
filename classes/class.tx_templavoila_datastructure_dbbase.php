@@ -107,6 +107,45 @@ class tx_templavoila_datastructure_dbbase extends tx_templavoila_datastructure {
 		}
 		return $permission;
 	}
+
+	/**
+	 * Retrieve the filereference of the template
+	 *
+	 * @return string
+	 */
+	public function getTstamp() {
+		return $this->row['tstamp'];
+	}
+
+	/**
+	 * Retrieve the filereference of the template
+	 *
+	 * @return string
+	 */
+	public function getCrdate() {
+		return $this->row['crdate'];
+	}
+
+	/**
+	 * Retrieve the filereference of the template
+	 *
+	 * @return string
+	 */
+	public function getCruser() {
+		return $this->row['cruser_id'];
+	}
+
+	/**
+	 * @param void
+	 * @return mixed
+	 */
+	public function getBeLayout() {
+		$beLayout = FALSE;
+		if ($this->row['belayout']) {
+			$beLayout = t3lib_div::getURL(PATH_site . $this->row['belayout']);
+		}
+		return $beLayout;
+	}
 }
 
 

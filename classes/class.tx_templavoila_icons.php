@@ -97,7 +97,7 @@ final class tx_templavoila_icons {
 			$alt = isset($options['alt']) ? ' alt="' . $options['alt'] .'"': ' alt=""';
 			$title = isset($options['title']) ? ' alt="' . $options['title'] .'"': '';
 			$wHattribs = isset(self::$oldIcons[$iconName]['attributes']) ? self::$oldIcons[$iconName]['attributes'] : '';
-			return '<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],self::$oldIcons[$iconName]['file'], $wHattribs) . $alt . $title . '  style="text-align:center; vertical-align: middle; border:0;" />';
+			return '<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],self::$oldIcons[$iconName]['file'], $wHattribs) . $alt . $title . ' style="text-align:center; vertical-align: middle; border:0;" />';
 		} else {
 			return t3lib_iconWorks::getSpriteIcon($iconName, $options, $overlays);
 		}
@@ -119,7 +119,7 @@ final class tx_templavoila_icons {
 
 			$title = htmlspecialchars(t3lib_div::fixed_lgd_cs(t3lib_BEfunc::getRecordIconAltText($row, 'pages'), 50));
 
-			return '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], t3lib_iconWorks::getIcon($table, $row),'').' border="0" title="' . $title . '" alt="" />';
+			return '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], t3lib_iconWorks::getIcon($table, $row),'').' border="0" title="' . $title . '" style="text-align:center; vertical-align: top; border:0;" alt="" />';
 		} else {
 			return t3lib_iconWorks::getSpriteIconForRecord($table, $row, $options);
 		}
