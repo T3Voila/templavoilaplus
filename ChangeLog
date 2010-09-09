@@ -1,5 +1,6 @@
 2010-07-09  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
+	* Fixed issue: #14314: beLayout does not work with Static Data Structures in Extensions 
 	* Fixed issue: #15675: pagemodule resource "API" behaves inconsistent
 
 2010-07-05  Tolleiv Nietsch <nietsch@aoemedia.de> 
