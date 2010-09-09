@@ -400,10 +400,28 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				$styleSheetFile = t3lib_extMgm::extRelPath($this->extKey) . 'mod1/pagemodule.css';
 			}
 
-			if ($this->modTSconfig['properties']['stylesheet']) {
-				$styleSheetFile = $this->modTSconfig['properties']['stylesheet'];
+			if (isset($this->modTSconfig['properties']['stylesheet'])) {
+					$styleSheetFile = $this->modTSconfig['properties']['stylesheet'];
 			}
-			$this->doc->styleSheetFile2 = $styleSheetFile;
+
+			if (version_compare(TYPO3_version, '4.3', '>')) {
+				$this->doc->getPageRenderer()->addCssFile($GLOBALS['BACK_PATH'] . $styleSheetFile);
+			} else {
+				$this->doc->styleSheetFile2 = $styleSheetFile;
+			}
+
+			if (isset($this->modTSconfig['properties']['stylesheet.']) && version_compare(TYPO3_version, '4.3', '>')) {
+				foreach($this->modTSconfig['properties']['stylesheet.'] as $file) {
+					if(substr($file,0,4) == 'EXT:') {
+						list($extKey,$local) = explode('/',substr($file,4),2);
+						$filename='';
+						if (strcmp($extKey,'') && t3lib_extMgm::isLoaded($extKey) && strcmp($local,''))	{
+							$file = t3lib_extMgm::extRelPath($extKey).$local;
+						}
+					}
+					$this->doc->getPageRenderer()->addCssFile($GLOBALS['BACK_PATH'] . $file);
+				}
+			}
 
 				// Adding classic jumpToUrl function, needed for the function menu. Also, the id in the parent frameset is configured.
 			$this->doc->JScode = $this->doc->wrapScriptTags('
@@ -537,6 +555,13 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 					// add custom javascript files
 				foreach ($this->modTSconfig['properties']['javascript.'] as $key => $value) {
 					if ($value) {
+						if(substr($value,0,4) == 'EXT:') {
+							list($extKey,$local) = explode('/',substr($value,4),2);
+							$filename='';
+							if (strcmp($extKey,'') && t3lib_extMgm::isLoaded($extKey) && strcmp($local,''))	{
+								$value = t3lib_extMgm::extRelPath($extKey).$local;
+							}
+						}
 						$this->doc->JScodeLibArray[$key] = '<script src="' . $this->doc->backPath . htmlspecialchars($value) . '" type="text/javascript"></script>';
 					}
 				}
