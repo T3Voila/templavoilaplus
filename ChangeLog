@@ -1,5 +1,6 @@
 2010-07-14  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
+	* Fixed issue: #13974: HTML5 tag support 
 	* Fixed issue: #15125: static DS not working in conjunction with TYPO3 caches (f.e. TCA cache) (Thanks to Franz Koch)
 
 2010-07-09  Tolleiv Nietsch <nietsch@aoemedia.de> 

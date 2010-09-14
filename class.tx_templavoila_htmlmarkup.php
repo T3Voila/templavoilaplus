@@ -126,60 +126,116 @@ class tx_templavoila_htmlmarkup {
 	 *   'anchor_outside' => TRUE			:	(Block elements only) This means that the tag-image for this element will be placed outside of the block. Default is to place the image inside.
 	 *   'wrap' => array('before','after')	:	(Block elements only) This means that the tag-image for this element will be wrapped in those HTML codes before being placed. Notice how this is cleverly used to represent '<tr>...</tr>' blocks.
 	 */
-	var $tags = array(
-			// Block elements:
-		'a' => array('anchor_outside'=>1),
-		'b' => array(),
-		'blockquote' => array(),
-		'body' => array(),
-		'div' => array(),
-		'dl' => array('anchor_outside'=>1),
-		'dt' => array(),
-		'dd' => array(),
-		'em' => array(),
-		'fieldset' => array('anchor_outside'=>1),
-		'font' => array(),
-		'form' => array('anchor_outside'=>1),
-		'h1' => array(),
-		'h2' => array(),
-		'h3' => array(),
-		'h4' => array(),
-		'h5' => array(),
-		'h6' => array(),
-		'i' => array(),
-		'label' => array(),
-		'legend' => array(),
-		'li' => array(),
-		'map' => array('anchor_outside'=>1),
-		'ol' => array('anchor_outside'=>1),
-		'option' => array('anchor_outside'=>1,'wrap'=>array('</select>','<select>')),
-		'object' => array('anchor_outside'=>1),
-		'p' => array(),
-		'param' => array('single'=>1),
-		'pre' => array(),
-		'select' => array('anchor_outside'=>1),
-		'span' => array(),
-		'strong' => array(),
-		'table' => array('anchor_outside'=>1),
-		'tbody' => array('anchor_outside'=>1),
-		'thead' => array('anchor_outside'=>1),
-		'td' => array(),
-		'th' => array(),
-		'textarea' => array('anchor_outside'=>1),
-		'tr' => array('wrap'=>array('<td>','</td>')),
-		'u' => array(),
-		'ul' => array('anchor_outside'=>1),
-		'iframe' => array('anchor_outside'=>1),
 
-			// Single elements:
-		'br' => array('single'=>1),
-		'hr' => array('single'=>1),
-		'img' => array('single'=>1),
-		'input' => array('single'=>1),
-		'area' => array('single'=>1),
-#		'embed' => array('anchor_outside'=>1),
+	public static $tagConf = array(
+		'a' => array('anchor_outside'=>1, 'blocktype'=> 'text'),
+		'abbr' => array('blocktype'=> 'text'),
+		'address' => array('blocktype'=> 'sections'),
+		'area' => array('blocktype'=> 'embedding', 'single'=>1),
+		'article' => array('blocktype'=> 'sections'),
+		'aside' => array('blocktype'=> 'sections'),
+		'audio' => array('blocktype'=> 'embedding'),
+		'b' => array('blocktype'=> 'text'),
+		'base' => array('blocktype'=> 'document', 'single' => 1),
+		'bdo' => array('blocktype'=> 'text'),
+		'blockquote' => array('blocktype'=> 'grouping'),
+		'body' => array('blocktype'=> 'sections'),
+		'br' => array('blocktype'=> 'grouping', 'single'=>1),
+		'button' => array('blocktype'=> 'form'),
+		'canvas' => array('blocktype'=> 'embedding'),
+		'caption' => array('blocktype'=> 'table'),
+		'cite' => array('blocktype'=> 'text'),
+		'code' => array('blocktype'=> 'text'),
+		'col' => array('blocktype'=> 'table', 'single'=>1),
+		'colgroup' => array('blocktype'=> 'table'),
+		'command' => array('blocktype'=> 'interactive', 'single' => 1),
+		'datalist' => array('blocktype'=> 'form'),
+		'dd' => array('blocktype'=> 'grouping'),
+		'del' => array('blocktype'=> 'text'),
+		'details' => array('blocktype'=> 'interactive'),
+		'device' => array('blocktype'=> 'embedding'),
+		'dfn' => array('blocktype'=> 'text'),
+		'div' => array('blocktype'=> 'grouping'),
+		'dl' => array('anchor_outside'=>1, 'blocktype'=> 'grouping'),
+		'dt' => array('blocktype'=> 'grouping'),
+		'em' => array('blocktype'=> 'text'),
+		'embed' => array('blocktype'=> 'embedding', 'single'=>1),
+		'fieldset' => array('anchor_outside'=>1, 'blocktype'=> 'form'),
+		'figcaption' => array('blocktype'=> 'grouping'),
+		'figure' => array('blocktype'=> 'grouping'),
+		'footer' => array('blocktype'=> 'sections'),
+		'form' => array('anchor_outside'=>1, 'blocktype'=> 'form'),
+		'h1' => array('blocktype'=> 'sections'),
+		'h2' => array('blocktype'=> 'sections'),
+		'h3' => array('blocktype'=> 'sections'),
+		'h4' => array('blocktype'=> 'sections'),
+		'h5' => array('blocktype'=> 'sections'),
+		'h6' => array('blocktype'=> 'sections'),
+		'head' => array('blocktype'=> 'document'),
+		'header' => array('blocktype'=> 'sections'),
+		'hgroup' => array('blocktype'=> 'sections'),
+		'hr' => array('blocktype'=> 'grouping','single'=>1),
+		'html' => array('blocktype'=> 'root'),
+		'i' => array('blocktype'=> 'text'),
+		'iframe' => array('anchor_outside'=>1, 'blocktype'=> 'embedding'),
+		'img' => array('blocktype'=> 'embedding', 'single'=>1),
+		'input' => array('blocktype'=> 'form', 'single'=>1),
+		'ins' => array('blocktype'=> 'text'),
+		'kbd' => array('blocktype'=> 'text'),
+		'keygen' => array('blocktype'=> 'form'),
+		'label' => array('blocktype'=> 'form'),
+		'legend' => array('blocktype'=> 'form'),
+		'li' => array('blocktype'=> 'grouping'),
+		'link' => array('blocktype'=> 'document', 'single'=>1),
+		'map' => array('anchor_outside'=>1, 'blocktype'=> 'embedding'),
+		'mark' => array('blocktype'=> 'text'),
+		'menu' => array('blocktype'=> 'interactive'),
+		'meta' => array('blocktype'=> 'document', 'single'=>1),
+		'meter' => array('blocktype'=> 'form'),
+		'nav' => array('blocktype'=> 'sections'),
+		'noscript' => array('blocktype'=> 'document'),
+		'object' => array('anchor_outside'=>1, 'blocktype'=> 'embedding'),
+		'ol' => array('anchor_outside'=>1, 'blocktype'=> 'grouping'),
+		'optgroup' => array('blocktype'=> 'form'),
+		'option' => array('anchor_outside'=>1,'wrap'=>array('</select>','<select>'), 'blocktype'=> 'form'),
+		'output' => array('blocktype'=> 'form'),
+		'p' => array('blocktype'=> 'grouping'),
+		'param' => array('blocktype'=> 'embedding', 'single'=>1),
+		'pre' => array('blocktype'=> 'grouping'),
+		'progress' => array('blocktype'=> 'form'),
+		'q' => array('blocktype'=> 'text'),
+		'rp' => array('blocktype'=> 'text'),
+		'rt' => array('blocktype'=> 'text'),
+		'ruby' => array('blocktype'=> 'text'),
+		'samp' => array('blocktype'=> 'text'),
+		'script' => array('blocktype'=> 'document'),
+		'section' => array('blocktype'=> 'sections'),
+		'select' => array('anchor_outside'=>1, 'blocktype'=> 'form'),
+		'small' => array('blocktype'=> 'text'),
+		'source' => array('blocktype'=> 'embedding', 'single'=>1),
+		'span' => array('blocktype'=> 'text'),
+		'strong' => array('blocktype'=> 'text'),
+		'style' => array('blocktype'=> 'document'),
+		'sub' => array('blocktype'=> 'text'),
+		'summary' => array('blocktype'=> 'interactive'),
+		'sup' => array('blocktype'=> 'text'),
+		'table' => array('anchor_outside'=>1, 'blocktype'=> 'table'),
+		'tbody' => array('anchor_outside'=>1, 'blocktype'=> 'table'),
+		'td' => array('blocktype'=> 'table'),
+		'textarea' => array('anchor_outside'=>1, 'blocktype'=> 'form'),
+		'tfoot' => array('anchor_outside'=>1,'blocktype'=> 'table'),
+		'th' => array('blocktype'=> 'table'),
+		'thead' => array('anchor_outside'=>1, 'blocktype'=> 'table'),
+		'time' => array('blocktype'=> 'text'),
+		'title' => array('blocktype'=> 'document'),
+		'tr' => array('blocktype'=> 'table', 'wrap'=>array('<td>','</td>')),
+		'track' => array('blocktype'=> 'embedding'),
+		'ul' => array('anchor_outside'=>1, 'blocktype'=> 'grouping'),
+		'var' => array('blocktype'=> 'text'),
+		'video' => array('blocktype'=> 'embedding'),
+		'wbr' => array('blocktype'=> 'text'),
 	);
-
+	var $tags;
 
 		// INTERNAL dynamic
 	var $htmlParse = '';		// Will contain the HTML-parser object. (See init())
@@ -195,7 +251,10 @@ class tx_templavoila_htmlmarkup {
 
 
 
-
+	function __construct() {
+			// kept for compatibility reasons since references to this->tags are still present
+		$this->tags = self::$tagConf;
+	}
 
 
 
@@ -1343,11 +1402,10 @@ class tx_templavoila_htmlmarkup {
 	function getGnyf($firstTagName,$path,$title)	{
 		if (!$this->onlyElements || t3lib_div::inList($this->onlyElements,$firstTagName))	{
 			$onclick = str_replace('###PATH###', $this->pathPrefix . $path, $this->gnyfImgAdd);
-			$icon = $this->tags[$firstTagName]['icon'];
 
 			$gnyf  = $this->textGnyf
 				? '<span ' . $onclick . ' style="cursor:pointer; border: 1px solid blank; background-color: yellow;">[' . $firstTagName . ']</span>'
-				: '<img' . $icon . $onclick . ' title="' . htmlspecialchars(t3lib_div::fixed_lgd_cs($title, -200)) . '"' . $this->gnyfStyle . ' alt="" />';
+				: self::getGnyfMarkup($firstTagName, $title, $onclick);
 			$gnyf .= $this->mode == 'explode'
 				? '<br />'
 				: '';
@@ -1355,6 +1413,15 @@ class tx_templavoila_htmlmarkup {
 			return $gnyf;
 		}
 		return '';
+	}
+	
+	public static function getGnyfMarkup($tagName, $title='', $onclick='') {
+		$tag = strtolower($tagName);
+		if (!isset(self::$tagConf[$tag])) {
+			return '';
+		} else {
+			return '<span ' . $onclick . ' class="gnyfElement gnyf' . ucfirst(self::$tagConf[$tag]['blocktype']) . '" title="' . htmlspecialchars(t3lib_div::fixed_lgd_cs($title, -200)) .'">' . htmlspecialchars($tag) . '</span>';
+		}
 	}
 }
 

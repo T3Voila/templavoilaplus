@@ -199,6 +199,22 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 	var $extConf;				// holds the extconf configuration
 	var $staticDS = FALSE;		// Boolean; if true DS records are file based
 
+	static $gnyfStyleBlock = '
+	.gnyfElement {	color: black; font-family:monospace;font-size:12px !important; line-height:1.3em !important; font-weight:normal; text-transform:none; letter-spacing:auto; cursor: pointer; margin: 0; padding:0 7px; overflow: hidden; text-align: center; position: absolute;  border-radius: 0.4em; -o-border-radius: 0.4em; -moz-border-radius: 0.4em; -webkit-border-radius: 0.4em;	}
+	.gnyfElement:hover {	z-index: 100;	box-shadow: rgba(0, 0, 0, 0.5) 0 0 4px 2px;	-o-box-shadow: rgba(0, 0, 0, 0.5) 0 0 4px 2px;	-moz-box-shadow: rgba(0, 0, 0, 0.5) 0 0 4px 2px;	-webkit-box-shadow: rgba(0, 0, 0, 0.5) 0 0 4px 2px;	}
+	.typo3-fullDoc .gnyfElement {	position:relative;	}
+	.typo3-fullDoc .gnyfElement:hover { box-shadow: none;	-o-box-shadow: none;	-moz-box-shadow: none;	-webkit-box-shadow: none;	}	
+	.gnyfRoot { background-color:#9bff9b; }
+	.gnyfDocument { background-color:#788cff; }
+	.gnyfText { background-color:#ffff64; }
+	.gnyfGrouping { background-color:#ff9650; }
+	.gnyfForm { background-color:#64ff64; }
+	.gnyfSections { background-color:#a0afff; }
+	.gnyfInterative { background-color:#0096ff; }
+	.gnyfTable { background-color:#ff9664; }
+	.gnyfEmbedding { background-color:#ff96ff; }
+';
+
 	/**
 	 * Adds items to the ->MOD_MENU array. Used for the function menu selector.
 	 *
@@ -398,6 +414,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			select option.fce {background-image:url(../icon_fce_ce.png);background-repeat: no-repeat; background-position: 5px 50%; padding: 1px 0 3px 24px; -webkit-background-size: 0;}
 			#c-toMenu { margin-bottom:10px; }
 		';
+		$this->doc->inDocStylesArray[] = self::$gnyfStyleBlock;
 
 			// Add custom styles
 		$this->doc->styleSheetFile2 = t3lib_extMgm::extRelPath($this->extKey)."cm1/styles.css";
@@ -1784,11 +1801,10 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 
 			// Markup the header section data with the header tags, using "checkbox" mode:
 		$tRows = $this->markupObj->markupHTMLcontent($html_header,$GLOBALS['BACK_PATH'], '','script,style,link,meta','checkbox');
-		$bodyTagIcon = t3lib_iconWorks::skinImg($this->doc->backPath, t3lib_extMgm::extRelPath('templavoila') . 'html_tags/body.gif', 'width="32" height="17"') . ' alt="" border="0"';
 		$bodyTagRow = $showBodyTag ? '
 				<tr class="bgColor2">
 					<td><input type="checkbox" name="addBodyTag" value="1"'.($currentHeaderMappingInfo['addBodyTag'] ? ' checked="checked"' : '').' /></td>
-					<td><img' . $bodyTagIcon . ' /></td>
+					<td>' . tx_templavoila_htmlmarkup::getGnyfMarkup('body') . '</td>
 					<td><pre>'.htmlspecialchars($html_body).'</pre></td>
 				</tr>' : '';
 
@@ -2159,7 +2175,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 								$okTitle = htmlspecialchars($cF ? sprintf($GLOBALS['LANG']->getLL('displayDSContentFound'), strlen($contentSplittedByMapping['cArray'][$key])) . ($multilineTooltips ? ':' . chr(10) . chr(10) . $cF : '') : $GLOBALS['LANG']->getLL('displayDSContentEmpty'));
 
 								$rowCells['htmlPath'] = tx_templavoila_icons::getIcon('status-dialog-ok', array('title' => $okTitle)).
-														'<img' . $tagIcon . ' hspace="3" class="absmiddle" title="---' . htmlspecialchars(t3lib_div::fixed_lgd_cs($mappingElement, -80)) . '" />' .
+														tx_templavoila_htmlmarkup::getGnyfMarkup($pI['el'], '---' . htmlspecialchars(t3lib_div::fixed_lgd_cs($mappingElement, -80)) ).
 														($pI['modifier'] ? $pI['modifier'] . ($pI['modifier_value'] ? ':' . ($pI['modifier'] != 'RANGE' ? $pI['modifier_value'] : '...') : '') : '');
 								$rowCells['htmlPath'] = '<a href="'.$this->linkThisScript(array(
 																							'htmlPath'=>$path.($path?'|':'').preg_replace('/\/[^ ]*$/','',$currentMappingInfo[$key]['MAP_EL']),
@@ -2227,11 +2243,9 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 									}
 								}
 
-								$tagIcon = t3lib_iconWorks::skinImg($this->doc->backPath, t3lib_extMgm::extRelPath('templavoila') . 'html_tags/' . $lastLevel['el'] . '.gif', 'height="17"') . ' alt="" border="0"';
-
 									// Finally, put together the selector box:
-								$rowCells['cmdLinks'] = '<img' . $tagIcon . ' class="absmiddle" title="---'.htmlspecialchars(t3lib_div::fixed_lgd_cs($lastLevel['path'],-80)).'" /><br />
-									<select name="dataMappingForm'.$formPrefix.'['.$key.'][MAP_EL]">
+								$rowCells['cmdLinks'] = tx_templavoila_htmlmarkup::getGnyfMarkup($pI['el'], '---' . htmlspecialchars(t3lib_div::fixed_lgd_cs($lastLevel['path'], -80)) ).
+									'<br /><select name="dataMappingForm'.$formPrefix.'['.$key.'][MAP_EL]">
 										'.implode('
 										',$opt).'
 										<option value=""></option>
@@ -2624,7 +2638,15 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			if (trim($cParts[0]))	{
 				$cParts[1]='<a name="_MARKED_UP_ELEMENT"></a>'.$cParts[1];
 			}
-			return implode('',$cParts);
+
+			$markup = implode('',$cParts);
+			$styleBlock = '<style type="text/css">' . self::$gnyfStyleBlock . '</style>';
+			if(preg_match('/<\/head/i', $markup)) {
+				$finalMarkup = preg_replace('/(<\/head)/i', $styleBlock . '\1', $markup);
+			} else {
+				$finalMarkup = $styleBlock . $markup;
+			}
+			return $finalMarkup;
 		}
 		$this->displayFrameError($cParts);
 		return '';
@@ -2663,9 +2685,15 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 		if (trim($pp[0]))	{
 			$pp[1]='<a name="_MARKED_UP_ELEMENT"></a>'.$pp[1];
 		}
-
 			// Implode content and return it:
-		return implode('',$pp);
+		$markup = implode('',$pp);
+		$styleBlock = '<style type="text/css">' . self::$gnyfStyleBlock . '</style>';
+		if(preg_match('/<\/head/i', $markup)) {
+			$finalMarkup = preg_replace('/(<\/head)/i', $styleBlock . '\1', $markup);
+		} else {
+			$finalMarkup = $styleBlock . $markup;
+		}
+		return $finalMarkup;
 	}
 
 	/**
