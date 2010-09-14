@@ -43,11 +43,6 @@ if (TYPO3_MODE=='BE') {
 		'TemplaVoila L10N Mode Conversion Tool'
 	);
 }
-	// Static DS
-if ($_EXTCONF['staticDS.']['enable']) {
-	include_once(t3lib_extMgm::extPath('templavoila') . 'classes/class.tx_templavoila_staticdstools.php');
-	tx_templavoila_staticDStools::readStaticDsFilesIntoArray($_EXTCONF);
-}
 
 	// Adding tables:
 $TCA['tx_templavoila_tmplobj'] = Array (

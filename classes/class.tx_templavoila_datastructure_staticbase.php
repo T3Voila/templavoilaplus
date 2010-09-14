@@ -36,14 +36,21 @@ class tx_templavoila_datastructure_staticbase extends tx_templavoila_datastructu
 	 */
 	public function __construct($key) {
 
-		$conf = $GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['staticDataStructures'][$key];
+		$conf = tx_templavoila_datastructureRepository::getStaticDatastructureConfiguration();
 
-		$this->filename = $conf['path'];
+		if (!isset($conf[$key])) {
+			throw new InvalidArgumentException(
+				'Argument was supposed to be an existing datastructure',
+				1283192644
+			);
+		}
 
-		$this->setLabel($conf['title']);
-		$this->setScope($conf['scope']);
+		$this->filename = $conf[$key]['path'];
+
+		$this->setLabel($conf[$key]['title']);
+		$this->setScope($conf[$key]['scope']);
 			// path relative to typo3 maindir
-		$this->setIcon( '../' . $conf['icon']);
+		$this->setIcon( '../' . $conf[$key]['icon']);
 	}
 
 	/**

@@ -252,7 +252,7 @@ class tx_templavoila_staticDStools {
 					$staticDataStructure['scope'] = tx_templavoila_datastructure::SCOPE_PAGE;
 				}
 
-				$GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['staticDataStructures'][] = $staticDataStructure;
+				$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['staticDataStructures'][] = $staticDataStructure;
 			}
 		}
 	}

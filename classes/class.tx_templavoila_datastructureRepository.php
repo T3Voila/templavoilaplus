@@ -29,6 +29,8 @@
  */
 class tx_templavoila_datastructureRepository {
 
+	protected static $staticDsInitComplete = FALSE;
+
 	/**
 	 * Retrieve a single datastructure by uid or xml-file path
 	 *
@@ -69,8 +71,8 @@ class tx_templavoila_datastructureRepository {
 	public function getDatastructuresByStoragePid($pid) {
 
 		$dscollection = array();
-		if (is_array($GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['staticDataStructures'])) {
-			$confArr = $GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['staticDataStructures'];
+		$confArr = self::getStaticDatastructureConfiguration();
+		if (count($confArr)) {
 			foreach ($confArr as $key=>$conf) {
 				$ds = $this->getDatastructureByUidOrFilename($conf['path']);
 				$pids = $ds->getStoragePids();
@@ -105,8 +107,8 @@ class tx_templavoila_datastructureRepository {
 	 */
 	public function getDatastructuresByStoragePidAndScope($pid, $scope) {
 		$dscollection = array();
-		if (is_array($GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['staticDataStructures'])) {
-			$confArr = $GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['staticDataStructures'];
+		$confArr = self::getStaticDatastructureConfiguration();
+		if (count($confArr)) {
 			foreach ($confArr as $key=>$conf) {
 				if ($conf['scope'] == $scope) {
 					$ds = $this->getDatastructureByUidOrFilename($conf['path']);
@@ -135,8 +137,6 @@ class tx_templavoila_datastructureRepository {
 	}
 
 	/**
- 
-	/**
 	 * Retrieve a collection (array) of tx_templavoila_datastructure objects
 	 *
 	 * @param integer $scope
@@ -144,8 +144,8 @@ class tx_templavoila_datastructureRepository {
 	 */
 	public function getDatastructuresByScope($scope) {
 		$dscollection = array();
-		if (is_array($GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['staticDataStructures'])) {
-			$confArr = $GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['staticDataStructures'];
+		$confArr = self::getStaticDatastructureConfiguration();
+		if (count($confArr)) {
 			foreach ($confArr as $key=>$conf) {
 				if ($conf['scope'] == $scope) {
 					$ds = $this->getDatastructureByUidOrFilename($conf['path']);
@@ -177,8 +177,8 @@ class tx_templavoila_datastructureRepository {
 	 */
 	public function getAll() {
 		$dscollection = array();
-		if (is_array($GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['staticDataStructures'])) {
-			$confArr = $GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['staticDataStructures'];
+		$confArr = self::getStaticDatastructureConfiguration();
+		if (count($confArr)) {
 			foreach ($confArr as $key=>$conf) {
 				if ($conf['scope'] == $scope) {
 					$ds = $this->getDatastructureByUidOrFilename($conf['path']);
@@ -209,16 +209,15 @@ class tx_templavoila_datastructureRepository {
 	 * @return mixed
 	 */
 	protected function validateStaticDS($file) {
-		if (!is_array($GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['staticDataStructures'])) {
-			return FALSE;
-		}
-		$confArr = $GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['staticDataStructures'];
+		$confArr = self::getStaticDatastructureConfiguration();
 		$confKey = FALSE;
-		$fileAbsName = t3lib_div::getFileAbsFileName($file);
-		foreach ($confArr as $key=>$conf) {
-			if (t3lib_div::getFileAbsFileName($conf['path']) == $fileAbsName) {
-				$confKey = $key;
-				break;
+		if (count($confArr)) {
+			$fileAbsName = t3lib_div::getFileAbsFileName($file);
+			foreach ($confArr as $key=>$conf) {
+				if (t3lib_div::getFileAbsFileName($conf['path']) == $fileAbsName) {
+					$confKey = $key;
+					break;
+				}
 			}
 		}
 		return $confKey;
@@ -231,6 +230,35 @@ class tx_templavoila_datastructureRepository {
 	protected function isStaticDsEnabled() {
 		$extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
 		return $extConf['staticDS.']['enable'];
+	}
+
+	/**
+	 *
+	 * @return boolean
+	 */
+	public static function getStaticDatastructureConfiguration() {
+		$config = array();
+		if (!self::$staticDsInitComplete) {
+			$extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
+			if ($extConfig['staticDS.']['enable']) {
+				tx_templavoila_staticDStools::readStaticDsFilesIntoArray($extConfig);	
+			}
+			self::$staticDsInitComplete = TRUE;
+		}
+		if (is_array($GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['staticDataStructures'])) {
+			$config = $GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['staticDataStructures'];
+		}
+		
+		if(is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['staticDataStructures'])) {
+			$config = array_merge($config, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['staticDataStructures']);
+		}
+		
+		$finalConfig = array();
+		foreach($config as $cfg) {
+			$key = md5($cfg['path'] . $cfg['title'] . $cfg['scope']);
+			$finalConfig[$key] = $cfg;
+		}		
+		return array_values($finalConfig);
 	}
 
 	/**

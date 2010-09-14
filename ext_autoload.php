@@ -64,5 +64,6 @@ return array(
 	'tx_templavoila_tabview' => $extensionPath . 'newcewizard/view/class.tx_templavoila_tabview.php',
 	'tx_templavoila_pi1' => $extensionPath . 'pi1/class.tx_templavoila_pi1.php',
 	'tx_templavoila_api_testcase' => $extensionPath . 'tests/tx_templavoila_api_testcase.php',
+	'tx_templavoila_staticdstools' => $extensionPath . 'classes/class.tx_templavoila_staticdstools.php',
 );
 ?>

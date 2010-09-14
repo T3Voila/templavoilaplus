@@ -68,10 +68,24 @@ class tx_templavoila_handleStaticDataStructures {
 	 * @return	void
 	 */
 	function main(&$params,&$pObj)    {
-		// Adding an item!
-		if (is_array($GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['staticDataStructures']))	{
-			foreach($GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['staticDataStructures'] as $val)	{
-				$params['items'][]=Array($this->prefix.(substr($val['title'], 0, 4) == 'LLL:' ? $GLOBALS['LANG']->sL($val['title']) : $val['title']), $val['path'], $val['icon']);
+		$removeDSItems = $this->getRemoveItems($params, substr($params['field'], 0, -2) . 'ds');
+
+		$dsRepo = t3lib_div::makeInstance('tx_templavoila_datastructureRepository');
+		$dsList = $dsRepo->getAll();
+
+		$params['items'] = array(
+			array(
+				'', ''
+			)
+		);
+
+		foreach ($dsList as $dsObj) {
+			if($dsObj->isPermittedForUser($params['row'], $removeDSItems)) {
+				$params['items'][] = array(
+					$dsObj->getLabel(),
+					$dsObj->getKey(),
+					$dsObj->getIcon()
+				);
 			}
 		}
 	}

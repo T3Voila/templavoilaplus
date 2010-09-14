@@ -250,5 +250,7 @@ if(t3lib_div::int_from_ver(TYPO3_version) < 4003000) {
 	require_once $list['tx_templavoila_datastructurerepository'];
 	require_once $list['tx_templavoila_template'];
 	require_once $list['tx_templavoila_templaterepository'];
+	require_once $list['tx_templavoila_staticdstools'];
 }
+
 ?>
