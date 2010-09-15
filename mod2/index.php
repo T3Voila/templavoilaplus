@@ -770,7 +770,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 		} elseif (!$fileMtime) {
 			$mappingStatus = $mappingStatus_index = tx_templavoila_icons::getIcon('status-dialog-error');
 			$mappingStatus.= $GLOBALS['LANG']->getLL('notmapped', 1);
-			$this->setErrorLog($scope, 'fatal', sprintf($GLOBALS['LANG']->getLL('warning_mappingstatus', 1), $mappingStatus, $toObj>getLabel()));
+			$this->setErrorLog($scope, 'fatal', sprintf($GLOBALS['LANG']->getLL('warning_mappingstatus', 1), $mappingStatus, $toObj->getLabel()));
 
 			$mappingStatus .= $GLOBALS['LANG']->getLL('updatemapping_info');
 			$mappingStatus .= '<br/><input type="button" onclick="jumpToUrl(\'' . htmlspecialchars($linkUrl) . '\');" value="' . $GLOBALS['LANG']->getLL('map', 1) . '" />';
