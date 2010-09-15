@@ -1,3 +1,7 @@
+2010-07-15  Tolleiv Nietsch <nietsch@aoemedia.de> 
+
+	* Fixed issue: #15695: Edit link not clickable with Drag n Drop enable with Internet Explorer (Thanks to Megaspoilt)
+
 2010-07-14  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
 	* Fixed issue: #13974: HTML5 tag support 

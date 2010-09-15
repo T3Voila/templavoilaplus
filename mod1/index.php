@@ -1119,7 +1119,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 			// If there was a language icon and the language was not default or [all] and if that langauge is accessible for the user, then wrap the  flag with an edit link (to support the "Click the flag!" principle for translators)
 		if ($languageIcon && $languageUid>0 && $GLOBALS['BE_USER']->checkLanguageAccess($languageUid) && $contentTreeArr['el']['table']==='tt_content')	{
-			$languageIcon = $this->link_edit($languageIcon, 'tt_content', $contentTreeArr['el']['uid'], TRUE, $contentTreeArr['el']['pid']);
+			$languageIcon = $this->link_edit($languageIcon, 'tt_content', $contentTreeArr['el']['uid'], TRUE, $contentTreeArr['el']['pid'], 'tpm-langIcon');
 		} elseif ($languageIcon) {
 			$languageIcon = '<span class="tpm-langIcon">' . $languageIcon . '</span>';
 		}
@@ -1161,16 +1161,18 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			// Finally assemble the table:
 		$finalContent = '
 			<div class="' . $elementClass . '">
-				<div class="sortable_handle tpm-titlebar t3-page-ce-header ' . $elementTitlebarClass .'">
+				<div class="tpm-titlebar t3-page-ce-header ' . $elementTitlebarClass .'">
 					<div class="t3-row-header">
 						<div class="tpm-element-control">
 						' . $titleBarRightButtons . '
 						</div>
-						<div class="nobr tpm-element-title">' .
+						<div class="tpm-element-title">' .
 						$languageIcon .
 						$titleBarLeftButtons .
-						($elementBelongsToCurrentPage ? '' : '<em>') . htmlspecialchars($title) . ($elementBelongsToCurrentPage ? '' : '</em>') .
-						'</div>
+							'<div class="nobr sortable_handle">' .
+							($elementBelongsToCurrentPage ? '' : '<em>') . htmlspecialchars($title) . ($elementBelongsToCurrentPage ? '' : '</em>') .
+							'</div>
+						</div>
 					</div>
 				</div>
 				<div class="tpm-sub-elements">' .
@@ -2110,12 +2112,13 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * @param	integer		$uid: The uid of the element to be edited
 	 * @param	boolean		$forced: By default the link is not shown if translatorMode is set, but with this boolean it can be forced anyway.
 	 * @param	integer		$usePid: ...
+	 * @param	string		$linkClass: css class to use for regular content elements
 	 * @return	string		HTML anchor tag containing the label and the correct link
 	 * @access protected
 	 */
-	function link_edit($label, $table, $uid, $forced=FALSE, $usePid=0)	{
+	function link_edit($label, $table, $uid, $forced=FALSE, $usePid=0, $linkClass='')	{
 		if ($label) {
-
+			$class = $linkClass ? $linkClass : 'tpm-edit';
 			$pid = $table == 'pages' ? $uid : $usePid;
 			$calcPerms = $pid == 0 ? $this->calcPerms : $this->getCalcPerms($pid);
 
@@ -2126,7 +2129,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 						return '<a class="tpm-pageedit" href="index.php?'.$this->link_getParameters().'&amp;editPageLanguageOverlay='.$this->currentLanguageUid.'">'.$label.'</a>';
 					} else {
 						$onClick = t3lib_BEfunc::editOnClick('&edit['.$table.']['.$uid.']=edit', $this->doc->backPath);
-						return '<a class="tpm-edit" href="#" onclick="'.htmlspecialchars($onClick).'">'.$label.'</a>';
+						return '<a class="' . $class . '" href="#" onclick="'.htmlspecialchars($onClick).'">'.$label.'</a>';
 					}
 				} else {
 					return $label;
