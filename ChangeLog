@@ -1,5 +1,6 @@
 2010-07-15  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
+	* Fixed issue: #15718: Long words might cause strange look in pagemodule
 	* Fixed issue: #15706: in trunk: not resolved template file names cause error in mod2/index.php (Thanks to Björn Pedersen)
 	* Fixed issue: #15695: Edit link not clickable with Drag n Drop enable with Internet Explorer (Thanks to Megaspoilt)
 

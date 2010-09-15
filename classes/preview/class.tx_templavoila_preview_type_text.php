@@ -89,6 +89,17 @@ class tx_templavoila_preview_type_text {
 		} else {
 			$newStr = $str;
 		}
+
+		if (isset($this->parentObj->modTSconfig['properties']['previewDataMaxWordLen'])) {
+			$wordLen = intval($this->parentObj->modTSconfig['properties']['previewDataMaxWordLen']);
+		} else {
+			$wordLen = 75;
+		}
+		
+		if ($wordLen) {
+			$newStr = preg_replace('/(\S{'. $wordLen . '})/', '\1 ', $newStr);
+		}
+		
 		return htmlspecialchars(t3lib_div::fixed_lgd_cs(trim($newStr), $max));
 	}
 }
