@@ -110,6 +110,15 @@ div.warning a {
 .tpm-element-title {
 	padding-right:130px;
 	vertical-align:top;
+	overflow: hidden;
+}
+
+.tpm-element-title > a, .tpm-element-title > .tpm-langIcon {
+	float:left;
+}
+
+.tpm-element-title > div {
+	padding-top:2px;
 }
 
 .tpm-preview {
@@ -119,6 +128,11 @@ div.warning a {
 .tpm-preview ul {
 	padding:0 0 0 20px;
 	margin:0
+}
+
+.tpm-langIcon {
+	padding-top:2px;
+	padding-left:2px;
 }
 
 /* non-used elements */
