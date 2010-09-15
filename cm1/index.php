@@ -200,7 +200,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 	var $staticDS = FALSE;		// Boolean; if true DS records are file based
 
 	static $gnyfStyleBlock = '
-	.gnyfElement {	color: black; font-family:monospace;font-size:12px !important; line-height:1.3em !important; font-weight:normal; text-transform:none; letter-spacing:auto; cursor: pointer; margin: 0; padding:0 7px; overflow: hidden; text-align: center; position: absolute;  border-radius: 0.4em; -o-border-radius: 0.4em; -moz-border-radius: 0.4em; -webkit-border-radius: 0.4em;	}
+	.gnyfElement {	color: black; font-family:monospace;font-size:12px !important; line-height:1.3em !important; font-weight:normal; text-transform:none; letter-spacing:auto; cursor: pointer; margin: 0; padding:0 7px; overflow: hidden; text-align: center; position: absolute;  border-radius: 0.4em; -o-border-radius: 0.4em; -moz-border-radius: 0.4em; -webkit-border-radius: 0.4em; background-color: #ffffff;	}
 	span.gnyfElement:hover {	z-index: 100;	box-shadow: rgba(0, 0, 0, 0.5) 0 0 4px 2px;	-o-box-shadow: rgba(0, 0, 0, 0.5) 0 0 4px 2px;	-moz-box-shadow: rgba(0, 0, 0, 0.5) 0 0 4px 2px;	-webkit-box-shadow: rgba(0, 0, 0, 0.5) 0 0 4px 2px;	}
 	a > span.gnyfElement {	position:relative;	}
 	a > .gnyfElement:hover { box-shadow: none;	-o-box-shadow: none;	-moz-box-shadow: none;	-webkit-box-shadow: none;	}	
@@ -213,6 +213,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 	.gnyfInterative { background-color:#0096ff; }
 	.gnyfTable { background-color:#ff9664; }
 	.gnyfEmbedding { background-color:#ff96ff; }
+	.gnyfInteractive { background-color: #d3d3d3; }
 ';
 
 	/**
