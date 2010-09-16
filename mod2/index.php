@@ -492,10 +492,11 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 				$indexTO = '';
 				
 				$toList = $toRepo->getTemplatesByDatastructure($dsObj);
+
+				$newPid = $dsObj->getKey();
+				$newFileRef = '';
+				$newTitle = $dsObj->getLabel() . ' [TEMPLATE]';
 				if (count($toList))	{
-					$newPid = $dsObj->getKey();
-					$newFileRef = '';
-					$newTitle = $dsObj->getLabel() . ' [TEMPLATE]';
 					foreach($toList as $toObj)	{
 						$toIdArray[] = $toObj->getKey();
 						if ($toObj->hasParentTemplate()) {
@@ -523,15 +524,14 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 					if (is_null($newPid)) {
 						$newPid = t3lib_div::_GP('id');
 					}
-
-						// New-TO link:
-					$TOcontent.= '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick(
-								'&edit[tx_templavoila_tmplobj]['.$newPid.']=new'.
-								'&defVals[tx_templavoila_tmplobj][datastructure]='.rawurlencode($dsObj->getKey()).
-								'&defVals[tx_templavoila_tmplobj][title]='.rawurlencode($newTitle).
-								'&defVals[tx_templavoila_tmplobj][fileref]='.rawurlencode($newFileRef)
-								,$this->doc->backPath)).'">' . tx_templavoila_icons::getIcon('actions-document-new') .'Create new Template Object</a>';
 				}
+					// New-TO link:
+				$TOcontent.= '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick(
+							'&edit[tx_templavoila_tmplobj]['.$newPid.']=new'.
+							'&defVals[tx_templavoila_tmplobj][datastructure]='.rawurlencode($dsObj->getKey()).
+							'&defVals[tx_templavoila_tmplobj][title]='.rawurlencode($newTitle).
+							'&defVals[tx_templavoila_tmplobj][fileref]='.rawurlencode($newFileRef)
+							,$this->doc->backPath)).'">' . tx_templavoila_icons::getIcon('actions-document-new') . $GLOBALS['LANG']->getLL('createnewto', 1) . '</a>';
 
 					// Render data structure display
 				$rDSDres = $this->renderDataStructureDisplay($dsObj, $scope, $toIdArray);

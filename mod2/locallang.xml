@@ -38,6 +38,7 @@
 			<label index="updated">Updated</label>
 			<label index="noicon">[No icon]</label>
 			<label index="filenotfound">[File not found!]</label>
+			<label index="createnewto">Create new Template Object</label>
 			<label index="overview">XML file</label>
 			<label index="containerwithseparatelocalization">Container element with separate localization!</label>
 			<label index="mixofcontentandref">Mix of content and references, OK, but be careful!</label>
