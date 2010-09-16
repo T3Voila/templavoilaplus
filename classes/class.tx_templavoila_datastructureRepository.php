@@ -88,6 +88,7 @@ class tx_templavoila_datastructureRepository {
 				'tx_templavoila_datastructure',
 				'pid=' . intval($pid)
 					. t3lib_BEfunc::deleteClause('tx_templavoila_datastructure')
+					. ' AND pid!=-1 '
 					. t3lib_BEfunc::versioningPlaceholderClause('tx_templavoila_datastructure')
 			);
 			foreach ($dsRows as $ds) {
@@ -126,6 +127,7 @@ class tx_templavoila_datastructureRepository {
 				'tx_templavoila_datastructure',
 				'scope=' . intval($scope) . ' AND pid=' . intval($pid)
 					. t3lib_BEfunc::deleteClause('tx_templavoila_datastructure')
+					. ' AND pid!=-1 '
 					. t3lib_BEfunc::versioningPlaceholderClause('tx_templavoila_datastructure')
 			);
 			foreach ($dsRows as $ds) {
@@ -160,6 +162,7 @@ class tx_templavoila_datastructureRepository {
 				'tx_templavoila_datastructure',
 				'scope=' . intval($scope)
 					. t3lib_BEfunc::deleteClause('tx_templavoila_datastructure')
+					. ' AND pid!=-1 '
 					. t3lib_BEfunc::versioningPlaceholderClause('tx_templavoila_datastructure')
 			);
 			foreach ($dsRows as $ds) {
@@ -193,6 +196,7 @@ class tx_templavoila_datastructureRepository {
 				'tx_templavoila_datastructure',
 				'1=1'
 					. t3lib_BEfunc::deleteClause('tx_templavoila_datastructure')
+					. ' AND pid!=-1 '
 					. t3lib_BEfunc::versioningPlaceholderClause('tx_templavoila_datastructure')
 			);
 			foreach ($dsRows as $ds) {

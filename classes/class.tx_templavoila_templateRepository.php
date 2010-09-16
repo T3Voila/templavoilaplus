@@ -60,6 +60,7 @@ class tx_templavoila_templateRepository {
 			'tx_templavoila_tmplobj.datastructure=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($ds->getKey(), 'tx_templavoila_tmplobj')
 				. (intval($storagePid) > 0 ? ' AND tx_templavoila_tmplobj.pid = ' . intval($storagePid) : '')
 				. t3lib_BEfunc::deleteClause('tx_templavoila_tmplobj')
+				. ' AND pid!=-1 '
 				. t3lib_BEfunc::versioningPlaceholderClause('tx_templavoila_tmplobj')
 		);
 		$toCollection = array();
@@ -84,6 +85,7 @@ class tx_templavoila_templateRepository {
 			'tx_templavoila_tmplobj.parent=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($to->getKey(), 'tx_templavoila_tmplobj')
 				. (intval($storagePid) > 0 ? ' AND tx_templavoila_tmplobj.pid = ' . intval($storagePid) : '')
 				. t3lib_BEfunc::deleteClause('tx_templavoila_tmplobj')
+				. ' AND pid!=-1 '
 				. t3lib_BEfunc::versioningPlaceholderClause('tx_templavoila_tmplobj')
 		);
 		$toCollection = array();
@@ -105,6 +107,7 @@ class tx_templavoila_templateRepository {
 			'tx_templavoila_tmplobj',
 			'1=1'
 				. t3lib_BEfunc::deleteClause('tx_templavoila_tmplobj')
+				. ' AND pid!=-1 '
 				. t3lib_BEfunc::versioningPlaceholderClause('tx_templavoila_tmplobj')
 		);
 		$toCollection = array();

@@ -1,5 +1,6 @@
 2010-07-16  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
+	* Follow-up to: #14386: Static DS - Centralize access to datastructure / pt.1  - workspace versions should not be selected in repositories
 	* Fixed bug:	#15722: The create new template object-button is missing if there is no TO attached to a DS
 	* Fixed issue: #15723: Wrong TypoScript path in documentation (Thanks to Bernhard Kraft)
 
