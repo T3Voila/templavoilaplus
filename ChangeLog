@@ -1,3 +1,7 @@
+2010-07-16  Tolleiv Nietsch <nietsch@aoemedia.de> 
+
+	* Fixed issue: #15723: Wrong TypoScript path in documentation (Thanks to Bernhard Kraft)
+
 2010-07-15  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
 	* Fixed issue: #15719: HTML5 <menu> element not styled (Thanks to Rafal Brzeski)
