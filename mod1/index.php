@@ -1481,7 +1481,8 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				if (isset($fieldValue['data']['el'])) {
 					if ($fieldValue['config']['section']) {
 						$result .= '<strong>';
-						$result .= ($fieldValue['config']['TCEforms']['label'] ? $fieldValue['config']['TCEforms']['label'] : $fieldValue['config']['tx_templavoila']['title']);
+ 						$label = ($fieldValue['config']['TCEforms']['label'] ? $fieldValue['config']['TCEforms']['label'] : $fieldValue['config']['tx_templavoila']['title']);
+ 						$result .= $this->localizedFFLabel($label, 1);
 						$result .= '</strong>';
 						$result .= '<ul>';
 						foreach ($fieldValue['data']['el'] as $i => $sub) {
@@ -1502,14 +1503,14 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 							// Render preview for images:
 						$thumbnail = t3lib_BEfunc::thumbCode (array('dummyFieldName'=> $fieldValue['data'][$vKey]), '', 'dummyFieldName', $this->doc->backPath, '', $fieldValue['config']['TCEforms']['config']['uploadfolder']);
 						if (isset($fieldValue['config']['TCEforms']['label'])) {
-							$label = $fieldValue['config']['TCEforms']['label'];
+							$label = $this->localizedFFLabel($fieldValue['config']['TCEforms']['label'], 1);
 						}
 						$data = $thumbnail;
 					}
 				} else if (isset($fieldValue['config']['TCEforms']['config']['type']) && $fieldValue['config']['TCEforms']['config']['type'] != '') {
 						// Render for everything else:
 					if (isset($fieldValue['config']['TCEforms']['label'])) {
-						$label = $fieldValue['config']['TCEforms']['label'];
+						$label = $this->localizedFFLabel($fieldValue['config']['TCEforms']['label'], 1);
 					}
 					$data = (!$fieldValue['data'][$vKey] ? '' : $this->link_edit(htmlspecialchars(t3lib_div::fixed_lgd_cs(strip_tags($fieldValue['data'][$vKey]),200)), $table, $uid)) . '<br />';
 				} else {
