@@ -1,5 +1,6 @@
 2010-07-22  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
+	* Fixed issue: #15571: Fatal PHP Error when try to insert new CEs in Page Module
 	* Fixed issue: #15759: Section title and section fieldlabel are not through "$this->localizedFFLabel" (Thanks to KimPixel)
 	* Fixed issue: #15762: beLayout Template from external files does not work 
 

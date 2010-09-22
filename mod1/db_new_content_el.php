@@ -608,7 +608,7 @@ class tx_templavoila_dbnewcontentel {
 					. '&defVals[tt_content][tx_templavoila_ds]=' . $toObj->getDatastructure()->getKey()
 					. '&defVals[tt_content][tx_templavoila_to]=' . $toObj->getKey();
 
-		if ( is_array($dsStructure['meta']['default']['TCEForms']) ) {
+		if ( is_array($dsStructure) && is_array($dsStructure['meta']['default']['TCEForms']) ) {
 			foreach( $dsStructure['meta']['default']['TCEForms'] as $field => $value ) {
 				$dsValues .= '&defVals[tt_content]['.$field.']='. $value;
 			}
