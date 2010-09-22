@@ -1,3 +1,7 @@
+2010-07-22  Tolleiv Nietsch <nietsch@aoemedia.de> 
+
+	* Fixed issue: #15762: beLayout Template from external files does not work 
+
 2010-07-16  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
 	* Follow-up to: #14386: Static DS - Centralize access to datastructure / pt.1  - workspace versions should not be selected in repositories

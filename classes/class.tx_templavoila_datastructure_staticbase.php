@@ -162,7 +162,7 @@ class tx_templavoila_datastructure_staticbase extends tx_templavoila_datastructu
 	 */
 	public function getBeLayout() {
 		$beLayout = FALSE;		
-		$file = PATH_site . substr(t3lib_div::getFileAbsFileName($this->filename), 0, -3) . 'html';
+		$file = substr(t3lib_div::getFileAbsFileName($this->filename), 0, -3) . 'html';
 		if (file_exists($file)) {
 			$beLayout = t3lib_div::getURL($file);
 		}

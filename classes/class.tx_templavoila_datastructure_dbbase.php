@@ -142,7 +142,7 @@ class tx_templavoila_datastructure_dbbase extends tx_templavoila_datastructure {
 	public function getBeLayout() {
 		$beLayout = FALSE;
 		if ($this->row['belayout']) {
-			$beLayout = t3lib_div::getURL(PATH_site . t3lib_div::getFileAbsFileName($this->row['belayout']));
+			$beLayout = t3lib_div::getURL(t3lib_div::getFileAbsFileName($this->row['belayout']));
 		}
 		return $beLayout;
 	}
