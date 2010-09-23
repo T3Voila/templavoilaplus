@@ -1231,7 +1231,6 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 		$output = '';
 		$cells = array();
-		$headerCells = array();
 
 			// get used TO
 		if( isset($elementContentTreeArr['el']['TO']) && intval($elementContentTreeArr['el']['TO'])) {
@@ -1355,12 +1354,14 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 					</table>';
 					$beTemplate = str_replace('###'.$fieldID.'###', $beTemplateCell, $beTemplate);
 				} else {
-							// Add cell content to registers:
 					$width = round(100 / count($elementContentTreeArr['sub'][$sheet][$lKey]));
-					$headerCells[]='<td width="' . $width . '%" class="bgColor6 tpm-title-cell">' .
-						$LANG->sL($fieldContent['meta']['title'], 1) . '</td>';
-					$cells[]='<td '.$cellIdStr.' width="' . $width . '%" class="tpm-content-cell">' .
-						$cellContent.'</td>';
+					$cells[] = array(
+						'id' => $cellId,
+						'idStr' => $cellIdStr,
+						'title' => $LANG->sL($fieldContent['meta']['title'], 1),
+						'width' => $width,
+						'content' => $cellContent
+					);
 				}
 			}
 		}
@@ -1381,14 +1382,32 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			return $beTemplate;
 		}
 
-			// Compile the content area for the current element (basically what was put together above):
-		if (count ($headerCells) || count ($cells)) {
-			$output = '
-				<table border="0" cellpadding="2" cellspacing="2" width="100%" class="tpm-subelement-table">
-					<tr>'.(count($headerCells) ? implode('', $headerCells) : '<td>&nbsp;</td>').'</tr>
-					<tr>'.(count($cells) ? implode('', $cells) : '<td>&nbsp;</td>').'</tr>
-				</table>
-			';
+			// Compile the content area for the current element
+		if (count ($cells)) {
+
+			$hookObjectsArr = $this->hooks_prepareObjectsArray ('renderFrameworkClass');
+			$alreadyRendered = FALSE;
+			$output = '';
+			foreach($hookObjectsArr as $hookObj) {
+				if (method_exists ($hookObj, 'composeSubelements')) {
+					$hookObj->composeSubelements($cells, $elementContentTreeArr, $output, $alreadyRendered, $this);
+				}
+			}
+
+			if (!$alreadyRendered) {
+				$headerCells = $contentCells = array();
+				foreach ($cells as $cell) {
+					$headerCells[] = vsprintf('<td width="%4$d%%" class="bgColor6 tpm-title-cell">%3$s</td>', $cell);
+					$contentCells[] = vsprintf('<td %2$s width="%4$d%%" class="tpm-content-cell">%5$s</td>', $cell);
+				}
+
+				$output = '
+					<table border="0" cellpadding="2" cellspacing="2" width="100%" class="tpm-subelement-table">
+						<tr>' . (count($headerCells) ? implode('', $headerCells) : '<td>&nbsp;</td>') . '</tr>
+						<tr>' . (count($contentCells) ? implode('', $contentCells) : '<td>&nbsp;</td>') . '</tr>
+					</table>
+				';
+			}
 		}
 
 		return $output;

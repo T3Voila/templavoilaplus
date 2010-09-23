@@ -1,5 +1,6 @@
 2010-07-23  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
+	* Fixed issue: #15779: Hook to influence how the subelement areas are composed 
 	* Fixed issue: #14330: Localizing labels in beLayout (Thanks to Andreas Kiessling)
 	* Fixed issue: #15777: Hook to restrict which elements are displayed 
 	* Fixed issue: #12602: Sorting of template objects in page content
