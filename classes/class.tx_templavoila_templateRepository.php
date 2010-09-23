@@ -96,14 +96,13 @@ class tx_templavoila_templateRepository {
 	 * @param integer $pid
 	 * @return array
 	 */
-	public function getTemplatesByParentTemplate(tx_templavoila_template $to) {
+	public function getTemplatesByParentTemplate(tx_templavoila_template $to, $storagePid=0) {
 		$toList = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows (
 			'tx_templavoila_tmplobj.uid',
 			'tx_templavoila_tmplobj',
 			'tx_templavoila_tmplobj.parent=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($to->getKey(), 'tx_templavoila_tmplobj')
-				. (intval($storagePid) > 0 ? ' AND tx_templavoila_tmplobj.pid = ' . intval($storagePid) : '')
+				. (intval($storagePid) > 0 ? ' AND tx_templavoila_tmplobj.pid = ' . intval($storagePid) : ' AND pid!=-1')
 				. t3lib_BEfunc::deleteClause('tx_templavoila_tmplobj')
-				. ' AND pid!=-1 '
 				. t3lib_BEfunc::versioningPlaceholderClause('tx_templavoila_tmplobj')
 		);
 		$toCollection = array();
@@ -119,13 +118,13 @@ class tx_templavoila_templateRepository {
 	 *
 	 * @return array
 	 */
-	public function getAll() {
+	public function getAll($storagePid=0) {
 		$toList = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows (
 			'tx_templavoila_tmplobj.uid',
 			'tx_templavoila_tmplobj',
 			'1=1'
+				. (intval($storagePid) > 0 ? ' AND tx_templavoila_tmplobj.pid = ' . intval($storagePid) : ' AND tx_templavoila_tmplobj.pid!=-1')
 				. t3lib_BEfunc::deleteClause('tx_templavoila_tmplobj')
-				. ' AND pid!=-1 '
 				. t3lib_BEfunc::versioningPlaceholderClause('tx_templavoila_tmplobj')
 		);
 		$toCollection = array();

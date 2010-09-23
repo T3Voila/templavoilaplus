@@ -1,5 +1,6 @@
 2010-07-23  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
+	* Follow-up to: #14386: Static DS - Centralize access to datastructure / pt.4 - further refinement to hide useless elements
 	* Fixed issue: #15779: Hook to influence how the subelement areas are composed 
 	* Fixed issue: #14330: Localizing labels in beLayout (Thanks to Andreas Kiessling)
 	* Fixed issue: #15777: Hook to restrict which elements are displayed 

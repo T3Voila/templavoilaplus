@@ -134,6 +134,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 		$this->MOD_MENU = array(
 #			'set_showDSxml' => '',
 			'set_details' => '',
+			'set_unusedDs' => '',
 			'wiz_step' => ''
 		);
 
@@ -422,7 +423,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 		$lostTOCount = 0;
 
 		$toRepo = t3lib_div::makeInstance('tx_templavoila_templateRepository');
-		$toList = $toRepo->getAll();
+		$toList = $toRepo->getAll($this->id);
 		foreach($toList as $toObj)	{
 			if(!in_array($toObj->getKey(), $toIdArray)) { 
 				$rTODres = $this->renderTODisplay($toObj, -1, 1);
@@ -456,6 +457,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 			// Create setting handlers:
 		$settings = '<p>'.
 				t3lib_BEfunc::getFuncCheck('','SET[set_details]',$this->MOD_SETTINGS['set_details'],'',t3lib_div::implodeArrayForUrl('',$_GET,'',1,1)).' Show Details &nbsp;&nbsp;&nbsp;'.
+				t3lib_BEfunc::getFuncCheck('','SET[set_unusedDs]',$this->MOD_SETTINGS['set_unusedDs'],'',t3lib_div::implodeArrayForUrl('',$_GET,'',1,1)).' Show unused datastructures &nbsp;&nbsp;&nbsp;'.
 			'</p>';
 
 			// Add output:
@@ -472,11 +474,17 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 	 * @return	array		Returns array with three elements: 0: content, 1: number of DS shown, 2: number of root-level template objects shown.
 	 */
 	function renderDSlisting($scope)	{
-	
+
+		$currentPid = intval(t3lib_div::_GP('id'));	
 		$dsRepo = t3lib_div::makeInstance('tx_templavoila_datastructureRepository');
 		$toRepo = t3lib_div::makeInstance('tx_templavoila_templateRepository');
-		$dsList = $dsRepo->getDatastructuresByScope($scope);
-		
+
+		if ($this->MOD_SETTINGS['set_unusedDs']) {
+			$dsList = $dsRepo->getDatastructuresByScope($scope);
+		} else {
+			$dsList = $dsRepo->getDatastructuresByStoragePidAndScope($currentPid, $scope);
+		}
+
 		$dsCount=0;
 		$toCount=0;
 		$content='';
@@ -491,7 +499,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 				$TOcontent = '';
 				$indexTO = '';
 				
-				$toList = $toRepo->getTemplatesByDatastructure($dsObj);
+				$toList = $toRepo->getTemplatesByDatastructure($dsObj, $currentPid);
 
 				$newPid = $dsObj->getKey();
 				$newFileRef = '';
@@ -628,8 +636,6 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 			$dsTitle = '<a href="'.htmlspecialchars('../cm1/index.php?table=tx_templavoila_datastructure&uid=' . $dsObj->getKey() . '&id=' . $this->id . '&returnUrl=' . rawurlencode(tx_templavoila_div::sanitizeLocalUrl(t3lib_div::getIndpEnv('REQUEST_URI')))) . '">' . htmlspecialchars($dsObj->getLabel()) . '</a>';
 		}
 		
-		$templateStatus = $this->findDSUsageWithImproperTOs($dsObj, $scope, $toIdArray);
-
 			// Compile info table:
 		$content.='
 		<table'.$tableAttribs.'>
@@ -642,9 +648,10 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 			</tr>
 			<tr class="bgColor4">
 				<td rowspan="'.($this->MOD_SETTINGS['set_details'] ? 4 : 2).'" style="width: 100px; text-align: center;">'.$previewIcon.'</td>
-				<td style="width:200px">' . $GLOBALS['LANG']->getLL('templatestatus', 1) . '</td>
-				<td>'.$templateStatus.'</td>
-			</tr>
+				' .
+				($this->MOD_SETTINGS['set_details'] ? '<td style="width:200px">' . $GLOBALS['LANG']->getLL('templatestatus', 1) . '</td>
+				<td>' . $this->findDSUsageWithImproperTOs($dsObj, $scope, $toIdArray) . '</td>' : '' ) .
+			'</tr>
 			<tr class="bgColor4">
 				<td>' . $GLOBALS['LANG']->getLL('globalprocessing_xml') . '</td>
 				<td>
