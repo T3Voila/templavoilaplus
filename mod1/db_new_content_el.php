@@ -473,24 +473,19 @@ class tx_templavoila_dbnewcontentel {
 
 			// Flexible content elements:
 		$positionPid = $this->id;
-		$dataStructureRecords = array();
 		$storageFolderPID = $this->apiObj->getStorageFolderPid($positionPid);
 
-		$dsRepo = t3lib_div::makeInstance('tx_templavoila_datastructureRepository');
 		$toRepo = t3lib_div::makeInstance('tx_templavoila_templateRepository');
-		$dsList = $dsRepo->getDatastructuresByStoragePidAndScope($storageFolderPID, tx_templavoila_datastructure::SCOPE_FCE);
-		foreach($dsList as $dsObj) {
-			$toList = $toRepo->getTemplatesByDatastructure($dsObj, $storageFolderPID);
-			foreach ($toList as $toObj) {
-				$tmpFilename = $toObj->getIcon();
-				$returnElements['fce.']['elements.']['fce_' . $toObj->getKey() . '.'] = array(
-					'icon'        => (@is_file(PATH_site . substr($tmpFilename, 3))) ? $tmpFilename : ('../' . t3lib_extMgm::siteRelPath('templavoila') . 'res1/default_previewicon.gif'),
-					'description' => $toObj->getDescription() ? htmlspecialchars($toObj->getDescription()) : $GLOBALS['LANG']->getLL('template_nodescriptionavailable'),
-					'title'       => $toObj->getLabel(),
-					'params'      => $this->getDsDefaultValues( $toObj )
-				);
- 			}
- 		}
+		$toList = $toRepo->getTemplatesByStoragePidAndScope($storageFolderPID, tx_templavoila_datastructure::SCOPE_FCE);
+		foreach ($toList as $toObj) {
+			$tmpFilename = $toObj->getIcon();
+			$returnElements['fce.']['elements.']['fce_' . $toObj->getKey() . '.'] = array(
+				'icon'        => (@is_file(PATH_site . substr($tmpFilename, 3))) ? $tmpFilename : ('../' . t3lib_extMgm::siteRelPath('templavoila') . 'res1/default_previewicon.gif'),
+				'description' => $toObj->getDescription() ? htmlspecialchars($toObj->getDescription()) : $GLOBALS['LANG']->getLL('template_nodescriptionavailable'),
+				'title'       => $toObj->getLabel(),
+				'params'      => $this->getDsDefaultValues( $toObj )
+			);
+		}
 		return $returnElements;
 	}
 

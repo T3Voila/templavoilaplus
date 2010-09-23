@@ -36,6 +36,7 @@ class tx_templavoila_template {
 	protected $fileref;
 	protected $fileref_mtime;
 	protected $fileref_md5;
+	protected $sortbyField;
 
 	/**
 	 *
@@ -50,6 +51,7 @@ class tx_templavoila_template {
 		$this->setFileref($this->row['fileref']);
 		$this->setFilerefMtime($this->row['fileref_mtime']);
 		$this->setFilerefMD5($this->row['fileref_md5']);
+		$this->setSortbyField($GLOBALS['TCA']['tx_templavoila_tmplobj']['ctrl']['sortby']);
 	}
 
 	/**
@@ -313,6 +315,33 @@ class tx_templavoila_template {
 			$beLayout = $this->getDatastructure()->getBeLayout();
 		}
 		return $beLayout;
+	}
+
+	/**
+	 * @param string	$fieldname
+	 * @return void
+	 */
+	protected function setSortbyField($fieldname) {
+		if (isset($this->row[$fieldname])) {
+			$this->sortbyField = $fieldname;
+		} elseif (!$this->sortbyField) {
+			$this->sortbyField = 'sorting';
+		}
+	}
+
+	/**
+	 * @param void
+	 * @return string
+	 */
+	public function getSortingFieldValue() {
+		if ($this->sortbyField == 'title') {
+			$fieldVal = $this->getLabel();		// required to resolve LLL texts
+		} elseif ($this->sortbyField == 'sorting') {
+			$fieldVal = str_pad($this->row[$this->sortbyField], 15, "0", STR_PAD_LEFT);
+		} else {
+			$fieldVal = $this->row[$this->sortbyField];
+		}
+		return $fieldVal;
 	}
 
 }

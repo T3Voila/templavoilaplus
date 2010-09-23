@@ -181,6 +181,12 @@ abstract class tx_templavoila_datastructure {
 	 */
 	abstract public function getBeLayout();
 
+	/**
+	 * @param void
+	 * @return string
+	 */
+	abstract public function getSortingFieldValue();
+
 }
 
 

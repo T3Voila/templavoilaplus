@@ -72,7 +72,25 @@ class tx_templavoila_templateRepository {
 	}
 
 	/**
-	 * Retrieve template objects which are related to a specific datastructure
+	 * Retrieve template objects with a certain scope within the given storage folder
+	 *
+	 * @param integer $pid
+	 * @param integer $scope
+	 * @return array
+	 */
+	public function getTemplatesByStoragePidAndScope($storagePid, $scope) {
+		$dsRepo = t3lib_div::makeInstance('tx_templavoila_datastructureRepository');
+		$dsList = $dsRepo->getDatastructuresByStoragePidAndScope($storagePid, $scope);
+		$toCollection = array();		
+		foreach($dsList as $dsObj) {
+			$toCollection = array_merge($toCollection, $this->getTemplatesByDatastructure($dsObj, $storagePid));
+		}
+		usort($toCollection, array($this, 'sortTemplates'));
+		return $toCollection;
+	}
+
+	/**
+	 * Retrieve template objects which have a specific template as their parent
 	 *
 	 * @param tx_templavoila_datastructure
 	 * @param integer $pid
@@ -128,7 +146,7 @@ class tx_templavoila_templateRepository {
 	 * @see	strcmp()
 	 */
 	public function sortTemplates($obj1, $obj2) {
-		return strcmp(strtolower($obj1->getLabel()), strtolower($obj2->getLabel()));
+		return strcmp(strtolower($obj1->getSortingFieldValue()), strtolower($obj2->getSortingFieldValue()));
 	}
 
 	/**

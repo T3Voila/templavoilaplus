@@ -275,7 +275,7 @@ class tx_templavoila_datastructureRepository {
 	 * @see	strcmp()
 	 */
 	public function sortDatastructures($obj1, $obj2) {
-		return strcmp(strtolower($obj1->getLabel()), strtolower($obj2->getLabel()));
+		return strcmp(strtolower($obj1->getSortingFieldValue()), strtolower($obj2->getSortingFieldValue()));
 	}
 
 	/**

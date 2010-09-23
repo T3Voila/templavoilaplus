@@ -168,6 +168,14 @@ class tx_templavoila_datastructure_staticbase extends tx_templavoila_datastructu
 		}
 		return $beLayout;
 	}
+
+	/**
+	 * @param void
+	 * @return string
+	 */
+	public function getSortingFieldValue() {
+		return $this->getLabel();		// required to resolve LLL texts
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/classes/class.tx_templavoila_datastructure_staticbase.php'])	{
