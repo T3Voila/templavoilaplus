@@ -1366,6 +1366,16 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		}
 
 		if ($flagRenderBeLayout) {
+				//replace lang markers
+			$beTemplate = preg_replace_callback(
+				"/###(LLL:[\w-\/:]+?\.xml\:[\w-\.]+?)###/", 
+				create_function(
+					'$matches',
+					'return $GLOBALS["LANG"]->sL($matches[1], 1);'
+				),
+				$beTemplate
+			);
+
 			// removes not used markers
 			$beTemplate = preg_replace("/###field_.*?###/", '', $beTemplate);
 			return $beTemplate;
