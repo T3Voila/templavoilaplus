@@ -159,6 +159,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 	protected $renderPreviewObjects = NULL;			// Classes for preview render
 	protected $previewTitleMaxLen = 50;
+	protected $visibleContentHookObjects = NULL;
 	protected $debug = FALSE;
 	protected static $calcPermCache = array();
 
@@ -2633,6 +2634,14 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			// Display elements which have their language set to the currently displayed language.
 		$displayElement |= ($this->currentLanguageUid==$subElementArr['el']['sys_language_uid']);
 
+		if ($this->visibleContentHookObjects === NULL) {
+			$this->visibleContentHookObjects = $this->hooks_prepareObjectsArray('visibleContentClass');
+		}
+		foreach ($this->visibleContentHookObjects as $hookObj) {
+			if (method_exists ($hookObj, 'displayElement')) {
+				$hookObj->displayElement ($subElementArr, $displayElement, $this);
+			}
+		}
 		return $displayElement;
 	}
 
