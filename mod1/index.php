@@ -158,6 +158,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	var $blindIcons = array();						// Icons which shouldn't be rendered by configuration, can contain elements of "new,edit,copy,cut,ref,paste,browse,delete,makeLocal,unlink,hide"
 
 	protected $renderPreviewObjects = NULL;			// Classes for preview render
+	protected $renderPreviewDataObjects = NULL;			// Classes for preview render
 	protected $previewTitleMaxLen = 50;
 	protected $visibleContentHookObjects = NULL;
 	protected $debug = FALSE;
@@ -1437,6 +1438,14 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 							// Render preview for images:
 							$thumbnail = t3lib_BEfunc::thumbCode (array('dummyFieldName'=> $fieldValue), '', 'dummyFieldName', $this->doc->backPath, '', $TCEformsConfiguration['uploadfolder']);
 							$previewContent .= '<strong>'.$TCEformsLabel.'</strong> '.$thumbnail.'<br />';
+						} elseif ($TCEformsConfiguration['internal_type'] === 'db') {
+							if (!$this->renderPreviewDataObjects) {
+								$this->renderPreviewDataObjects = $this->hooks_prepareObjectsArray ('renderPreviewDataClass');
+							}
+							if (isset($this->renderPreviewDataObjects[$TCEformsConfiguration['allowed']]) 
+								&& method_exists($this->renderPreviewDataObjects[$TCEformsConfiguration['allowed']], 'render_previewData_typeDb')) {
+								$previewContent .= $this->renderPreviewDataObjects[$TCEformsConfiguration['allowed']]->render_previewData_typeDb ($fieldValue, $fieldData, $previewData['fullRow']['uid'], $elData['table'], $this);
+							}
 						}
 					} else if ($TCEformsConfiguration['type'] != '') {
 						// Render for everything else:

@@ -1,5 +1,6 @@
 2010-07-28  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
+	* Fixed issue: #14285: FCE: No hook for BE preview on "unknown" fields (Thanks to Alexander Opitz)
 	* Fixed issue: #15775: Avoid that browser-cache issues cause too much confusion during upgrade 
 	* Fixed issue: #15826: Non-admin fails to add new FCE to a page - pagemodule should show a warning
 
