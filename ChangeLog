@@ -1,5 +1,6 @@
 2010-07-28  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
+	* Fixed issue: #15837: % char in locallang label causes php warning
 	* Follow-up to: #13974: HTML5 tag support - added missing styles
 	* Follow-up to: #15670: content element preview in TV module for filelist can get very wide - wrong file inclusion fixed
 	* Fixed issue: #14285: FCE: No hook for BE preview on "unknown" fields (Thanks to Alexander Opitz)
