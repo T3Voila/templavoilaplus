@@ -780,8 +780,14 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		if ($editareaTpl) {
 			$editareaMarkers = array(
 				'TABROW'	=> $this->render_sidebar(),
-				'CONTENT'	=> $this->content,
+				'CONTENT'	=> $this->content
 			);
+			if (version_compare(TYPO3_version, '4.3', '>')) {
+				$editareaMarkers['FLASHMESSAGES'] = t3lib_FlashMessageQueue::renderFlashMessages();
+			} else {
+				$editareaMarkers['FLASHMESSAGES'] = '';
+			}
+
 			$editareaContent = t3lib_parsehtml::substituteMarkerArray($editareaTpl, $editareaMarkers, '###|###', true);
 
 			$bodyMarkers['EDITAREA'] = $editareaContent;
@@ -915,6 +921,27 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			foreach ($TYPO3_CONF_VARS['EXTCONF']['templavoila']['mod1']['renderTopToolbar'] as $_funcRef) {
 				$_params = array ();
 				$output .= t3lib_div::callUserFunction($_funcRef, $_params, $this);
+			}
+		}
+
+			// We show a warning if the user may edit the pagecontent and is not permitted to edit the "content" fields at the same time
+		if (!$BE_USER->isAdmin() && $this->modTSconfig['properties']['enableContentAccessWarning']) {	
+			$id = $this->rootElementRecord[($this->rootElementTable == 'pages' ? 'uid' : 'pid')];
+			$mayEditPage = is_array(t3lib_BEfunc::readPageAccess($id, $BE_USER->getPagePermsClause(16)));
+			$mayModifyTable = t3lib_div::inList($BE_USER->groupData['tables_modify'], $this->rootElementTable);
+			$mayEditContentField = t3lib_div::inList($BE_USER->groupData['non_exclude_fields'], $this->rootElementTable . ':tx_templavoila_flex');
+			if (!($mayEditPage && $mayModifyTable && $mayEditContentField)) {
+				if (version_compare(TYPO3_version, '4.3', '>')) {
+					$message = t3lib_div::makeInstance(
+						't3lib_FlashMessage',
+						$LANG->getLL('missing_edit_right_detail'),
+						$LANG->getLL('missing_edit_right'),
+						t3lib_FlashMessage::INFO
+					);
+					t3lib_FlashMessageQueue::addMessage($message);
+				} else {
+					// this feature is not available in 4.2
+				}
 			}
 		}
 

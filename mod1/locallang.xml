@@ -108,6 +108,8 @@
 			<label index="records">Other elements (non-content)</label>
 			<label index="displayRecordsFrom">Display elements from:</label>
 			<label index="content_from_pid_title">Page uses content from this page: %s</label>
+			<label index="missing_edit_right">Your user settings don't allow creating, moving or removing elements from this page.</label>
+			<label index="missing_edit_right_detail">Your settings indicate that you're either don't have the general right to edit page content, or you're not allowed to modify required tables or you're not allowed to edit the content fields. We suggest you recheck the settings or get in touch with your technical support.</label>
 		</languageKey>
 	</data>
 </T3locallang>

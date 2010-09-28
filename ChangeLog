@@ -1,3 +1,7 @@
+2010-07-28  Tolleiv Nietsch <nietsch@aoemedia.de> 
+
+	* Fixed issue: 15826: Non-admin fails to add new FCE to a page - pagemodule should show a warning
+
 2010-07-23  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
 	* Follow-up to: #14386: Static DS - Centralize access to datastructure / pt.4 - further refinement to hide useless elements

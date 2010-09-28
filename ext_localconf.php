@@ -19,6 +19,7 @@ t3lib_extMgm::addPageTSConfig('
 	mod.web_list.newContentWiz.overrideWithExtension = templavoila
 	mod.web_txtemplavoilaM2.templatePath = templates
 	mod.web_txtemplavoilaM1.enableDeleteIconForLocalElements = 0
+	mod.web_txtemplavoilaM1.enableContentAccessWarning = 1
 ');
 
  	// Use templavoila instead of the default page module

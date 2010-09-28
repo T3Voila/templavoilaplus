@@ -270,3 +270,7 @@ div.warning a {
 .tpm-outline-table .tpm-outline-level1 {
 	background-color: #f8f9fb;
 }
+
+#typo3-docbody > .typo3-message {
+		margin:5px 8px;
+}
