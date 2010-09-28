@@ -1,3 +1,69 @@
+	var browserPos = null;
+
+	function setFormValueOpenBrowser(mode,params) {	//
+		var url = T3_TV_MOD1_BACKPATH + "browser.php?mode="+mode+"&bparams="+params;
+
+		browserWin = window.open(url,"templavoilareferencebrowser","height=350,width="+(mode=="db"?650:600)+",status=0,menubar=0,resizable=1,scrollbars=1");
+		browserWin.focus();
+	}
+	function setFormValueFromBrowseWin(fName,value,label,exclusiveValues){
+		if (value) {
+			var ret = value.split('_');
+			var rid = ret.pop();
+			ret = ret.join('_');
+			browserPos.href = browserPos.rel.replace('%23%23%23', ret+':'+rid);
+			jumpToUrl(browserPos.href);
+		}
+	}
+
+	function jumpToUrl(URL)	{	//
+		window.location.href = URL;
+		return false;
+	}
+	function jumpExt(URL,anchor)	{	//
+		var anc = anchor?anchor:"";
+		window.location.href = URL+(T3_THIS_LOCATION?"&returnUrl="+T3_THIS_LOCATION:"")+anc;
+		return false;
+	}
+	function jumpSelf(URL)	{	//
+		window.location.href = URL+(T3_RETURN_URL?"&returnUrl="+T3_RETURN_URL:"");
+		return false;
+	}
+
+	function setHighlight(id)	{	//
+		top.fsMod.recentIds["web"]=id;
+		top.fsMod.navFrameHighlightedID["web"]="pages"+id+"_"+top.fsMod.currentBank;	// For highlighting
+
+		if (top.content && top.content.nav_frame && top.content.nav_frame.refresh_nav)	{
+			top.content.nav_frame.refresh_nav();
+		}
+	}
+
+	function editRecords(table,idList,addParams,CBflag)	{	//
+		window.location.href=T3_TV_MOD1_BACKPATH + "alt_doc.php?returnUrl=" + T3_TV_MOD1_RETURNURL + "&edit["+table+"]["+idList+"]=edit"+addParams;
+	}
+	function editList(table,idList)	{	//
+		var list="";
+
+			// Checking how many is checked, how many is not
+		var pointer=0;
+		var pos = idList.indexOf(",");
+		while (pos!=-1)	{
+			if (cbValue(table+"|"+idList.substr(pointer,pos-pointer))) {
+				list+=idList.substr(pointer,pos-pointer)+",";
+			}
+			pointer=pos+1;
+			pos = idList.indexOf(",",pointer);
+		}
+		if (cbValue(table+"|"+idList.substr(pointer))) {
+			list+=idList.substr(pointer)+",";
+		}
+
+		return list ? list : idList;
+	}
+
+// --- drag & drop ----
+
 var sortable_currentItem;
 // Needs also:
 // sortable_linkParameters = mod1/index.php -- $this->link_getParameters()

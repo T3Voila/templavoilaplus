@@ -426,82 +426,11 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 				// Adding classic jumpToUrl function, needed for the function menu. Also, the id in the parent frameset is configured.
 			$this->doc->JScode = $this->doc->wrapScriptTags('
-				function jumpToUrl(URL)	{ //
-					document.location = URL;
-					return false;
-				}
 				if (top.fsMod) top.fsMod.recentIds["web"] = '.intval($this->id).';
-			' . $this->doc->redirectUrls() . '
-				var T3_TV_MOD1_BACKPATH = "'.$BACK_PATH.'";
-
-							function jumpToUrl(URL)	{	//
-								window.location.href = URL;
-								return false;
-							}
-							function jumpExt(URL,anchor)	{	//
-								var anc = anchor?anchor:"";
-								window.location.href = URL+(T3_THIS_LOCATION?"&returnUrl="+T3_THIS_LOCATION:"")+anc;
-								return false;
-							}
-							function jumpSelf(URL)	{	//
-								window.location.href = URL+(T3_RETURN_URL?"&returnUrl="+T3_RETURN_URL:"");
-								return false;
-							}
-
-							function setHighlight(id)	{	//
-								top.fsMod.recentIds["web"]=id;
-								top.fsMod.navFrameHighlightedID["web"]="pages"+id+"_"+top.fsMod.currentBank;	// For highlighting
-
-								if (top.content && top.content.nav_frame && top.content.nav_frame.refresh_nav)	{
-									top.content.nav_frame.refresh_nav();
-								}
-							}
-
-							function editRecords(table,idList,addParams,CBflag)	{	//
-								window.location.href="'.$BACK_PATH.'alt_doc.php?returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')).
-									'&edit["+table+"]["+idList+"]=edit"+addParams;
-							}
-							function editList(table,idList)	{	//
-								var list="";
-
-									// Checking how many is checked, how many is not
-								var pointer=0;
-								var pos = idList.indexOf(",");
-								while (pos!=-1)	{
-									if (cbValue(table+"|"+idList.substr(pointer,pos-pointer))) {
-										list+=idList.substr(pointer,pos-pointer)+",";
-									}
-									pointer=pos+1;
-									pos = idList.indexOf(",",pointer);
-								}
-								if (cbValue(table+"|"+idList.substr(pointer))) {
-									list+=idList.substr(pointer)+",";
-								}
-
-								return list ? list : idList;
-							}
-
-							if (top.fsMod) top.fsMod.recentIds["web"] = '.intval($this->id).';
-
-							var browserPos = null;
-
-							function setFormValueOpenBrowser(mode,params) {	//
-								var url = "' . $BACK_PATH . 'browser.php?mode="+mode+"&bparams="+params;
-
-								browserWin = window.open(url,"templavoilareferencebrowser","height=350,width="+(mode=="db"?650:600)+",status=0,menubar=0,resizable=1,scrollbars=1");
-								browserWin.focus();
-							}
-							function setFormValueFromBrowseWin(fName,value,label,exclusiveValues){
-								if (value) {
-									var ret = value.split(\'_\');
-									var rid = ret.pop();
-									ret = ret.join(\'_\');
-									browserPos.href = browserPos.rel.replace(\'' . rawurlencode('###') . '\', ret+\':\'+rid);
-									jumpToUrl(browserPos.href);
-								}
-							}
-						'
-			);
+				' . $this->doc->redirectUrls() . '
+				var T3_TV_MOD1_BACKPATH = "' . $BACK_PATH . '";
+				var T3_TV_MOD1_RETURNURL = "' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')) . '";
+			');
 
 
 			if (version_compare(TYPO3_version, '4.4', '>')) {
@@ -547,10 +476,17 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				// this also adds prototype to the list of required libraries
 			$CMparts = $this->doc->getContextMenuCode();
 
+			$mod1_file = 'dragdrop' . ($this->debug ? '': '-min.js');
+			if (method_exists('t3lib_div', 'createVersionNumberedFilename')) {
+				$mod1_file = t3lib_div::createVersionNumberedFilename($mod1_file);
+			} else {
+				$mod1_file .= '?' . filemtime(t3lib_extMgm::extPath('templavoila') . 'mod1/' . $mod1_file);
+			}
+
 				//Prototype /Scriptaculous
 				// prototype is loaded before, so no need to include twice.
 			$this->doc->JScodeLibArray['scriptaculous'] = '<script src="' . $this->doc->backPath . 'contrib/scriptaculous/scriptaculous.js?load=effects,dragdrop,builder" type="text/javascript"></script>';
-			$this->doc->JScodeLibArray['dragdrop'] = '<script src="' . $this->doc->backPath . '../' . t3lib_extMgm::siteRelPath('templavoila') . 'mod1/dragdrop' . ($this->debug ? '' : '-min') . '.js" type="text/javascript"></script>';
+			$this->doc->JScodeLibArray['templavoila_mod1'] = '<script src="' . $this->doc->backPath . '../' . t3lib_extMgm::siteRelPath('templavoila') . 'mod1/' . $mod1_file . '" type="text/javascript"></script>';
 
 			if (isset($this->modTSconfig['properties']['javascript.']) && is_array($this->modTSconfig['properties']['javascript.'])) {
 					// add custom javascript files
