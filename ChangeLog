@@ -1,4 +1,8 @@
-2010-07-28  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-10-03  Tolleiv Nietsch <nietsch@aoemedia.de> 
+
+	* Fixed issue: #15859: sectionIndex doesn't work as supposed when TemplaVoila is used (Thanks to Steffen Kamper)
+
+2010-09-28  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
 	* Fixed issue: #15837: % char in locallang label causes php warning
 	* Follow-up to: #13974: HTML5 tag support - added missing styles
@@ -7,7 +11,7 @@
 	* Fixed issue: #15775: Avoid that browser-cache issues cause too much confusion during upgrade 
 	* Fixed issue: #15826: Non-admin fails to add new FCE to a page - pagemodule should show a warning
 
-2010-07-23  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-09-23  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
 	* Follow-up to: #14386: Static DS - Centralize access to datastructure / pt.4 - further refinement to hide useless elements
 	* Fixed issue: #15779: Hook to influence how the subelement areas are composed 
@@ -15,37 +19,37 @@
 	* Fixed issue: #15777: Hook to restrict which elements are displayed 
 	* Fixed issue: #12602: Sorting of template objects in page content
 
-2010-07-22  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-09-22  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
 	* Fixed issue: #15571: Fatal PHP Error when try to insert new CEs in Page Module
 	* Fixed issue: #15759: Section title and section fieldlabel are not through "$this->localizedFFLabel" (Thanks to KimPixel)
 	* Fixed issue: #15762: beLayout Template from external files does not work 
 
-2010-07-16  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-09-16  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
 	* Follow-up to: #14386: Static DS - Centralize access to datastructure / pt.1  - workspace versions should not be selected in repositories
 	* Fixed bug:	#15722: The create new template object-button is missing if there is no TO attached to a DS
 	* Fixed issue: #15723: Wrong TypoScript path in documentation (Thanks to Bernhard Kraft)
 
-2010-07-15  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-09-15  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
 	* Fixed issue: #15719: HTML5 <menu> element not styled (Thanks to Rafal Brzeski)
 	* Fixed issue: #15718: Long words might cause strange look in pagemodule
 	* Fixed issue: #15706: in trunk: not resolved template file names cause error in mod2/index.php (Thanks to Björn Pedersen)
 	* Fixed issue: #15695: Edit link not clickable with Drag n Drop enable with Internet Explorer (Thanks to Megaspoilt)
 
-2010-07-14  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-09-14  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
 	* Fixed issue: #13974: HTML5 tag support 
 	* Fixed issue: #15125: static DS not working in conjunction with TYPO3 caches (f.e. TCA cache) (Thanks to Franz Koch)
 
-2010-07-09  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-09-09  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
 	* Fixed issue: #15670: content element preview in TV module for filelist can get very wide 
 	* Fixed issue: #14314: beLayout does not work with Static Data Structures in Extensions 
 	* Fixed issue: #15675: pagemodule resource "API" behaves inconsistent
 
-2010-07-05  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-09-05  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
 	* Fixed issue: #14386: Static DS - Centralize access to datastructure / pt.4 - mod2 uses proper objects now
 

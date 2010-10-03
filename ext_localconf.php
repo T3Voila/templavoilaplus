@@ -11,6 +11,11 @@ $tvSetup = array('plugin.tx_templavoila_pi1.disableExplosivePreview = 1');
 if (!$_EXTCONF['enable.']['renderFCEHeader']) {
 	$tvSetup[] = 'tt_content.templavoila_pi1.10 >';
 }
+
+//sectionIndex replacement
+$tvSetup[] = 'tt_content.menu.20.3 = USER
+tt_content.menu.20.3.userFunc = tx_templavoila_pi1->tvSectionIndex';
+
 t3lib_extMgm::addTypoScript($_EXTKEY,'setup',implode(PHP_EOL, $tvSetup), 43);
 
 	// Use templavoila's wizard instead the default create new page wizard

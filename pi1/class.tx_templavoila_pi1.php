@@ -838,6 +838,27 @@ class tx_templavoila_pi1 extends tslib_pibase {
 
 		return $content	;
 	}
+
+	/**
+	 * Render section index for TV
+	 *
+	 * @param  $content
+	 * @param  $conf config of tt_content.menu.20.3
+	 * @return string rendered section index
+	 */
+	public function tvSectionIndex($content, $conf) {
+
+		$this->cObj->readFlexformIntoConf($GLOBALS['TSFE']->page['tx_templavoila_flex'], $flex);
+		$ceField = $GLOBALS['TSFE']->register['tx_templavoila_pi1.current_field'];
+		$uids = array_diff(t3lib_div::trimExplode(',', $flex[$ceField]), array($this->cObj->data['uid']));
+		if ($conf['select.']['where']) {
+			$conf['select.']['where'] .= ' AND UID IN(' . implode(',', $uids) . ')';
+		} else {
+			$conf['select.']['where'] = 'UID IN(' . implode(',', $uids) . ')';
+		}
+
+		return $this->cObj->cObjGetSingle('CONTENT', $conf);
+	}
 }
 
 
