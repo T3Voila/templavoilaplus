@@ -252,6 +252,10 @@ div.warning a {
 	height:20px;
 }
 
+.tpm-localisation-info-table tr.bgColor4 {
+	color: inherit;
+}
+
 /* outline view */
 .tpm-outline-table .tpm-container img,
 .tpm-outline-table .tpm-element img,
