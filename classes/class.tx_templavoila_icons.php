@@ -115,12 +115,14 @@ final class tx_templavoila_icons {
 		if (self::$useOldIcons === null) {
 			self::init();
 		}
+
+		$title = htmlspecialchars(t3lib_div::fixed_lgd_cs(t3lib_BEfunc::getRecordIconAltText($row, $table), 50));
 		if (self::$useOldIcons) {
-
-			$title = htmlspecialchars(t3lib_div::fixed_lgd_cs(t3lib_BEfunc::getRecordIconAltText($row, 'pages'), 50));
-
 			return '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], t3lib_iconWorks::getIcon($table, $row),'').' border="0" title="' . $title . '" style="text-align:center; vertical-align: top; border:0;" alt="" />';
 		} else {
+			if (!isset($options['title'])) {
+				$options['title'] = $title;
+			}
 			return t3lib_iconWorks::getSpriteIconForRecord($table, $row, $options);
 		}
 	}
