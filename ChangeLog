@@ -1,3 +1,7 @@
+2010-10-06  Tolleiv Nietsch <nietsch@aoemedia.de> 
+
+	* Fixed bug: #15918: co content found! mapping to root element lost 
+
 2010-10-03  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
 	* Follow-up to: #15210: TemplaVoila should adjust it's look&feel to TYPO3 4.4 - translation-text color fixed

@@ -175,7 +175,7 @@ class tx_templavoila_htmlmarkup {
 		'header' => array('blocktype'=> 'sections'),
 		'hgroup' => array('blocktype'=> 'sections'),
 		'hr' => array('blocktype'=> 'grouping','single'=>1),
-		'html' => array('blocktype'=> 'root'),
+//		'html' => array('blocktype'=> 'root'),			-- can't be included since this might break mappings during the upgrade
 		'i' => array('blocktype'=> 'text'),
 		'iframe' => array('anchor_outside'=>1, 'blocktype'=> 'embedding'),
 		'img' => array('blocktype'=> 'embedding', 'single'=>1),
