@@ -1,5 +1,6 @@
 2010-10-06  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
+	* Follow-up to: #15125: static DS not working in conjunction with TYPO3 caches - manual still contained some old references
 	* Fixed bug: #15890: Editor is getting false flash message for missing rights 
 	* Fixed bug: #15918: co content found! mapping to root element lost 
 
