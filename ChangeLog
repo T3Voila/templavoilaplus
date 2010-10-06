@@ -1,5 +1,6 @@
 2010-10-06  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
+	* Fixed bug: #15890: Editor is getting false flash message for missing rights 
 	* Fixed bug: #15918: co content found! mapping to root element lost 
 
 2010-10-03  Tolleiv Nietsch <nietsch@aoemedia.de> 

@@ -864,7 +864,9 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			// We show a warning if the user may edit the pagecontent and is not permitted to edit the "content" fields at the same time
 		if (!$BE_USER->isAdmin() && $this->modTSconfig['properties']['enableContentAccessWarning']) {	
 			$id = $this->rootElementRecord[($this->rootElementTable == 'pages' ? 'uid' : 'pid')];
-			$mayEditPage = is_array(t3lib_BEfunc::readPageAccess($id, $BE_USER->getPagePermsClause(16)));
+			$pageRecord = t3lib_BEfunc::getRecordWSOL('pages', $id);
+
+			$mayEditPage = $GLOBALS['BE_USER']->doesUserHaveAccess($pageRecord, 16);
 			$mayModifyTable = t3lib_div::inList($BE_USER->groupData['tables_modify'], $this->rootElementTable);
 			$mayEditContentField = t3lib_div::inList($BE_USER->groupData['non_exclude_fields'], $this->rootElementTable . ':tx_templavoila_flex');
 			if (!($mayEditPage && $mayModifyTable && $mayEditContentField)) {
