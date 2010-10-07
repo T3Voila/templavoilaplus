@@ -183,10 +183,8 @@ class tx_templavoila_datastructureRepository {
 		$confArr = self::getStaticDatastructureConfiguration();
 		if (count($confArr)) {
 			foreach ($confArr as $key=>$conf) {
-				if ($conf['scope'] == $scope) {
-					$ds = $this->getDatastructureByUidOrFilename($conf['path']);
-					$dscollection[] = $ds;
-				}
+				$ds = $this->getDatastructureByUidOrFilename($conf['path']);
+				$dscollection[] = $ds;
 			}
 		}
 
