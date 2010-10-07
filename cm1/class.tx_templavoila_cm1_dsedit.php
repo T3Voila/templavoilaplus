@@ -193,6 +193,8 @@ class tx_templavoila_cm1_dsEdit {
 
 					if (isset($insertDataArray['tx_templavoila']['TypoScriptObjPath'])){
 						$curValue = array('objPath' => $insertDataArray['tx_templavoila']['TypoScriptObjPath']);
+					} elseif (isset($insertDataArray['tx_templavoila']['eType_EXTRA'])) {
+						$curValue = $insertDataArray['tx_templavoila']['eType_EXTRA'];
 					} else {
 						$curValue = '';
 					}
