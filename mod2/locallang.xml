@@ -110,7 +110,7 @@
 			<label index="newsitewizard_firststep">The first step is to select the HTML file you want to base the new website design on. Below you see a list of HTML files found in the folder "%s". Click the "Preview"-link to see what the file looks like and when the right template is found, just click the "Choose as template"-link in order to proceed.&lt;br/&gt;If the list of files is empty you must now copy the HTML file you want to use as a template into the template folder. When you have done that, press the refresh button to refresh the list.</label>
 			<label index="newsitewizard_selecttemplate">Step 1: Select the template HTML file</label>
 			<label index="newsitewizard_error">TemplaVoila wizard error</label>
-			<label index="newsitewizard_errornodir">%s is not a directory! Please, create it before starting this wizard.</label>
+			<label index="newsitewizard_errornodir">The template directory is empty or could not be found. Please, create it before starting this wizard.</label>
 			<label index="newsitewizard_templateselected">The template file "%s" is now selected:</label>
 			<label index="newsitewizard_step2next">Next, you should enter default values for the new website. With this basic set of information we are ready to create the initial website structure!</label>
 			<label index="newsitewizard_step2_name">Name of the site</label>

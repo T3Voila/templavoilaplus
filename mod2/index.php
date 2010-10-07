@@ -101,7 +101,6 @@ require_once (t3lib_extMgm::extPath('templavoila') . 'classes/class.tx_templavoi
 class tx_templavoila_module2 extends t3lib_SCbase {
 
 		// External static:
-	var $templatesDir;
 	var $importPageUid = 0;	// Import as first page in root!
 
 
@@ -121,7 +120,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 
 	function init() {
 		parent::init();
-		$this->templatesDir = $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'] . 'templates/';
+
 		$this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
 	}
 
@@ -1253,57 +1252,42 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 				';
 			}
 
+			$files = $this->getTemplateFiles();
+
 				// TEMPLATE ARCHIVE:
-			if ($this->modTSconfig['properties']['templatePath'])	{
-				$paths = t3lib_div::trimExplode(',', $this->modTSconfig['properties']['templatePath'], true);
-				$prefix = t3lib_div::getFileAbsFileName($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir']);
-				if (count($paths) > 0 && is_array($GLOBALS['FILEMOUNTS']))	{
-					foreach($GLOBALS['FILEMOUNTS'] as $mountCfg)	{
-						// look in paths if it's part of mounted path
-						$isPart = false;
-						$files = array();
-						foreach ($paths as $path) {
-							if (t3lib_div::isFirstPartOfStr($prefix . $path, $mountCfg['path'])) {
-								$isPart = true;
-								$files = array_merge(t3lib_div::getFilesInDir($prefix . $path, 'html,htm,tmpl',1), $files);
-							}
-						}
-						if ($isPart) {
-								// USED FILES:
-							$tRows = array();
-							$tRows[] = '
-								<tr class="bgColor5 tableheader">
-									<td>' . $GLOBALS['LANG']->getLL('file', 1) . '</td>
-									<td align="center">' . $GLOBALS['LANG']->getLL('usagecount', 1) . '</td>
-									<td>' . $GLOBALS['LANG']->getLL('newdsto', 1) . '</td>
-								</tr>';
+			if (count($files)) {
 
-                            $i = 0;
-							foreach($files as $tFile)	{
-								$tRows[] = '
-									<tr class="' . ($i++ % 2 == 0 ? 'bgColor4' : 'bgColor6') . '">
-										<td>'.
-											'<a href="'.htmlspecialchars($this->doc->backPath.'../'.substr($tFile,strlen(PATH_site))).'" target="_blank">'.
-											tx_templavoila_icons::getIcon('actions-document-view') . ' ' . htmlspecialchars(substr($tFile, strlen(PATH_site))) .
-											'</a></td>
-										<td align="center">'.($this->tFileList[$tFile]?$this->tFileList[$tFile]:'-').'</td>
-										<td>'.
-											'<a href="' . htmlspecialchars($this->cm1Link . '?id=' . $this->id . '&file=' . rawurlencode($tFile)) . '&mapElPath=%5BROOT%5D">' .
-											tx_templavoila_icons::getIcon('actions-document-new') . ' ' . htmlspecialchars('Create...') .
-											'</a></td>
-									</tr>';
-							}
+				$tRows = array();
+				$tRows[] = '
+					<tr class="bgColor5 tableheader">
+						<td>' . $GLOBALS['LANG']->getLL('file', 1) . '</td>
+						<td align="center">' . $GLOBALS['LANG']->getLL('usagecount', 1) . '</td>
+						<td>' . $GLOBALS['LANG']->getLL('newdsto', 1) . '</td>
+					</tr>';
 
-							if (count($tRows)>1)	{
-								$output.= '
-								<h3>' . $GLOBALS['LANG']->getLL('templatearchive', 1) . ':</h3>
-								<table border="0" cellpadding="1" cellspacing="1" class="typo3-dblist">
-									'.implode('',$tRows).'
-								</table>
-								';
-							}
-						}
-					}
+				$i = 0;
+				foreach($files as $tFile)	{
+					$tRows[] = '
+						<tr class="' . ($i++ % 2 == 0 ? 'bgColor4' : 'bgColor6') . '">
+							<td>'.
+								'<a href="'.htmlspecialchars($this->doc->backPath.'../'.substr($tFile,strlen(PATH_site))).'" target="_blank">'.
+								tx_templavoila_icons::getIcon('actions-document-view') . ' ' . htmlspecialchars(substr($tFile, strlen(PATH_site))) .
+								'</a></td>
+							<td align="center">'.($this->tFileList[$tFile]?$this->tFileList[$tFile]:'-').'</td>
+							<td>'.
+								'<a href="' . htmlspecialchars($this->cm1Link . '?id=' . $this->id . '&file=' . rawurlencode($tFile)) . '&mapElPath=%5BROOT%5D">' .
+								tx_templavoila_icons::getIcon('actions-document-new') . ' ' . htmlspecialchars('Create...') .
+								'</a></td>
+						</tr>';
+				}
+
+				if (count($tRows)>1)	{
+					$output.= '
+					<h3>' . $GLOBALS['LANG']->getLL('templatearchive', 1) . ':</h3>
+					<table border="0" cellpadding="1" cellspacing="1" class="typo3-dblist">
+						'.implode('',$tRows).'
+					</table>
+					';
 				}
 			}
 		}
@@ -1667,7 +1651,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 		if ($BE_USER->isAdmin())	{
 
 				// Introduction:
-			$outputString.= nl2br(sprintf($LANG->getLL('newsitewizard_intro', 1), $this->templatesDir));
+			$outputString.= nl2br(sprintf($LANG->getLL('newsitewizard_intro', 1), implode('", "', $this->getTemplatePaths(true, false))));
 
 				// Checks:
 			$missingExt = $this->wizard_checkMissingExtensions();
@@ -1805,8 +1789,9 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 	 * @return	string		If string is returned, an error occured.
 	 */
 	function wizard_checkDirectory()	{
-		if (!@is_dir(PATH_site.$this->templatesDir))	{
-			return nl2br(sprintf($GLOBALS['LANG']->getLL('newsitewizard_missingdir_instruction'), $this->templatesDir, $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir']));
+		$paths = $this->getTemplatePaths(true);
+		if(empty($paths)) {
+			return nl2br(sprintf($GLOBALS['LANG']->getLL('newsitewizard_missingdir_instruction'), implode(' or ', $this->getTemplatePaths(true, false)), $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir']));
 		}
 		return false;
 	}
@@ -1817,16 +1802,16 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 	 * @return	void
 	 */
 	function wizard_step1()	{
-
-		if (@is_dir(PATH_site.$this->templatesDir))	{
+		$paths = $this->getTemplatePaths();
+		$files = $this->getTemplateFiles();
+		if (!empty($paths) && !empty($files))	{
 
 			$this->wizardData = array();
-
-			$outputString .= sprintf($GLOBALS['LANG']->getLL('newsitewizard_firststep'), $this->templatesDir). '<br/>';
+			$pathArr = t3lib_div::removePrefixPathFromList($paths, PATH_site);
+			$outputString .= sprintf($GLOBALS['LANG']->getLL('newsitewizard_firststep'), implode('", "', $pathArr)). '<br/>';
 
 				// Get all HTML files:
-			$fileArr = t3lib_div::getAllFilesAndFoldersInPath(array(),PATH_site.$this->templatesDir,'html,htm',0,1);
-			$fileArr = t3lib_div::removePrefixPathFromList($fileArr,PATH_site);
+			$fileArr = t3lib_div::removePrefixPathFromList($files, PATH_site);
 
 				// Prepare header:
 			$tRows = array();
@@ -1869,7 +1854,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 			$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('newsitewizard_selecttemplate', 1), $outputString, 0, 1);
 
 		} else {
-			$this->content .= $this->doc->section('TemplaVoila wizard error', sprintf($GLOBALS['LANG']->getLL('newsitewizard_errornodir', 1), $this->templatesDir), 0, 1);
+			$this->content .= $this->doc->section('TemplaVoila wizard error', $GLOBALS['LANG']->getLL('newsitewizard_errornodir', 1), 0, 1);
 		}
 	}
 
@@ -2430,6 +2415,53 @@ lib.'.$menuType.'.1.ACT {
 			return $color;
 		}
 		return false;
+	}
+
+	/**
+	 * Find and check all template paths
+	 *
+	 * @param	boolean		if true returned paths are relative
+	 * @param	boolean		if true the patchs are checked
+	 * @return	array		all relevant template paths
+	 */
+	protected function getTemplatePaths($relative = false, $check = true) {
+		$templatePaths = array();
+		if (strlen($this->modTSconfig['properties']['templatePath'])) {
+			$paths = t3lib_div::trimExplode(',', $this->modTSconfig['properties']['templatePath'], true);
+		} else {
+			$paths = array ('templates');
+		}
+		
+		$prefix = t3lib_div::getFileAbsFileName($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir']);
+		if (count($paths) > 0 && is_array($GLOBALS['FILEMOUNTS']))	{
+			foreach($GLOBALS['FILEMOUNTS'] as $mountCfg)	{
+					// look in paths if it's part of mounted path
+				$isPart = false;
+				foreach ($paths as $path) {
+					if (t3lib_div::isFirstPartOfStr($prefix . $path, $mountCfg['path']) &&
+						is_dir($prefix . $path)) {					
+						$templatePaths[] = ($relative ? $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'] : $prefix) . $path;
+					} else if (!$check) {
+						$templatePaths[] = ($relative ? $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'] : $prefix) . $path;
+					}
+				}
+			}
+		}
+		return $templatePaths;
+	}
+
+	/**
+	 * Find and check all templates within the template paths
+	 *
+	 * @return	array		all relevant templates
+	 */
+	protected function getTemplateFiles() {
+		$paths = $this->getTemplatePaths();
+		$files = array();
+		foreach ($paths as $path) {
+			$files = array_merge(t3lib_div::getFilesInDir($prefix . $path, 'html,htm,tmpl',1), $files);
+		}
+		return $files;
 	}
 }
 

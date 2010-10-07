@@ -1,5 +1,6 @@
 2010-10-07  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
+	* Fixed issue: #15926: Make template folder configurable 
 	* Fixed issue: #15921: tx_templavoila_datastructureRepository->getAll() does not handle scope properly 
 
 2010-10-06  Tolleiv Nietsch <nietsch@aoemedia.de> 
