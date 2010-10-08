@@ -156,6 +156,7 @@ Tip about stylesheets: The content elements from TYPO3 will be outputted in regu
 			<label index="newsitewizard_problem">&lt;em&gt;There are some technical problems you have to solve before you can start the wizard! Please see below for details. Solve these problems first and come back.&lt;/em&gt;</label>
 			<label index="newsitewizard_missingext">Missing extension!</label>
 			<label index="newsitewizard_missingconf">Missing configuration!</label>
+			<label index="newsitewizard_missingconf_description">The TemplaVoila extension configuration is missing. Please clear the cache and recheck the configuration within the extension manager.</label>
 			<label index="newsitewizard_missingdir">Missing directory!</label>
 			<label index="newsitewizard_missingext_description">Before the wizard can run some extensions are required to be installed. Below you will see the which extensions are required and which are not available at this moment. Please go to the Extension Manager and install these first.</label>
 			<label index="newsitewizard_missingext_extkey">Extension Key:</label>

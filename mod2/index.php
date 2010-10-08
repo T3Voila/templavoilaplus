@@ -1672,17 +1672,32 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 
 				// Missing extension warning:
 			if ($missingExt)	{
-				$this->content.= $this->doc->section($LANG->getLL('newsitewizard_missingext'), $missingExt, 0, 1, 3);
+				if(version_compare(TYPO3_version,'4.3.0','<')) {
+					$this->content.= $this->doc->section($LANG->getLL('newsitewizard_missingext'), $missingExt, 0, 1, 3);
+				} else {
+					$msg = t3lib_div::makeInstance('t3lib_FlashMessage', $missingExt, $LANG->getLL('newsitewizard_missingext'), t3lib_FlashMessage::ERROR);
+					$this->content .= $msg->render();
+				}
 			}
 
 				// Missing configuration warning:
 			if ($missingConf)	{
-				$this->content.= $this->doc->section($LANG->getLL('newsitewizard_missingconf'), $missingConf, 0, 1, 3);
+				if(version_compare(TYPO3_version,'4.3.0','<')) {
+					$this->content.= $this->doc->section($LANG->getLL('newsitewizard_missingconf'), $LANG->getLL('newsitewizard_missingconf_description'), 0, 1, 3);
+				} else {
+					$msg = t3lib_div::makeInstance('t3lib_FlashMessage', $LANG->getLL('newsitewizard_missingconf_description'), $LANG->getLL('newsitewizard_missingconf'), t3lib_FlashMessage::ERROR);
+					$this->content .= $msg->render();
+				}
 			}
 
 				// Missing directory warning:
 			if ($missingDir)	{
-				$this->content.= $this->doc->section($LANG->getLL('newsitewizard_missingdir'), $missingDir, 0, 1, 3);
+				if(version_compare(TYPO3_version,'4.3.0','<')) {
+					$this->content.= $this->doc->section($LANG->getLL('newsitewizard_missingdir'), $missingDir, 0, 1, 3);
+				} else {
+					$msg = t3lib_div::makeInstance('t3lib_FlashMessage', $missingDir, $LANG->getLL('newsitewizard_missingdir'), t3lib_FlashMessage::ERROR);
+					$this->content .= $msg->render();
+				}
 			}
 		}
 	}
@@ -1779,8 +1794,8 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 	 * @return	string		If string is returned, an error occured.
 	 */
 	function wizard_checkConfiguration()	{
-
 		$TVconfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
+		return !is_array($TVconfig);
 	}
 
 	/**
