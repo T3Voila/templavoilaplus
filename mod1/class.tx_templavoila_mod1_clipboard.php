@@ -263,7 +263,7 @@ class tx_templavoila_mod1_clipboard {
 			'tt_content',
 			'pid='.intval($pid).' '.
 				'AND uid NOT IN ('.implode(',',$usedUids).') '.
-				'AND t3ver_state!=1'.
+				'AND t3ver_state NOT IN (1,3)'.
 				t3lib_BEfunc::deleteClause('tt_content').
 				t3lib_BEfunc::versioningPlaceholderClause('tt_content'),
 			'',
