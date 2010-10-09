@@ -306,13 +306,16 @@ class tx_templavoila_mod1_wizards {
 				$toRepo = t3lib_div::makeInstance('tx_templavoila_templateRepository');
 				$dsList = $dsRepo->getDatastructuresByStoragePidAndScope($storageFolderPID, tx_templavoila_datastructure::SCOPE_PAGE);
 				foreach($dsList as $dsObj) {
-					if (t3lib_div::inList($disallowedPageTemplateItems, $dsObj->getKey())) {
+					if (t3lib_div::inList($disallowedPageTemplateItems, $dsObj->getKey()) ||
+						!$dsObj->isPermittedForUser()
+					) {
 						continue;
 					}
 
 					$toList = $toRepo->getTemplatesByDatastructure($dsObj, $storageFolderPID);
 					foreach ($toList as $toObj) {
 						if ($toObj->getKey() === $defaultTO['uid'] ||
+							!$toObj->isPermittedForUser() ||
 							t3lib_div::inList($disallowedDesignTemplateItems, $toObj->getKey())
 						) {
 							continue;

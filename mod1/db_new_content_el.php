@@ -478,13 +478,15 @@ class tx_templavoila_dbnewcontentel {
 		$toRepo = t3lib_div::makeInstance('tx_templavoila_templateRepository');
 		$toList = $toRepo->getTemplatesByStoragePidAndScope($storageFolderPID, tx_templavoila_datastructure::SCOPE_FCE);
 		foreach ($toList as $toObj) {
-			$tmpFilename = $toObj->getIcon();
-			$returnElements['fce.']['elements.']['fce_' . $toObj->getKey() . '.'] = array(
-				'icon'        => (@is_file(PATH_site . substr($tmpFilename, 3))) ? $tmpFilename : ('../' . t3lib_extMgm::siteRelPath('templavoila') . 'res1/default_previewicon.gif'),
-				'description' => $toObj->getDescription() ? htmlspecialchars($toObj->getDescription()) : $GLOBALS['LANG']->getLL('template_nodescriptionavailable'),
-				'title'       => $toObj->getLabel(),
-				'params'      => $this->getDsDefaultValues( $toObj )
-			);
+			if ($toObj->isPermittedForUser()) {
+				$tmpFilename = $toObj->getIcon();
+				$returnElements['fce.']['elements.']['fce_' . $toObj->getKey() . '.'] = array(
+					'icon'        => (@is_file(PATH_site . substr($tmpFilename, 3))) ? $tmpFilename : ('../' . t3lib_extMgm::siteRelPath('templavoila') . 'res1/default_previewicon.gif'),
+					'description' => $toObj->getDescription() ? htmlspecialchars($toObj->getDescription()) : $GLOBALS['LANG']->getLL('template_nodescriptionavailable'),
+					'title'       => $toObj->getLabel(),
+					'params'      => $this->getDsDefaultValues( $toObj )
+				);
+			}
 		}
 		return $returnElements;
 	}

@@ -1,5 +1,6 @@
 2010-10-09  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
+	* Fixed bug: #15908: access restriction for tv-objects in usergroup setting will be ignored
 	* Fixed issue: #15933: "Create new Template Object" puts new TOs on wrong page
 	* Fixed issue: #15943: tt_content move-to placeholder show up in the non-used CE list 
 

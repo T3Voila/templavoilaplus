@@ -245,14 +245,21 @@ class tx_templavoila_template {
 		$permission = TRUE;
 		$denyItems = tx_templavoila_div::getDenyListForUser();
 
-		$currentSetting = $parentRow['tx_templavoila_to'];
-		if ($this->getScope() == tx_templavoila_datastructure::SCOPE_PAGE) {
+
+		if (isset($parentRow['tx_templavoila_to'])) {
+			$currentSetting = $parentRow['tx_templavoila_to'];
+		} else {
+			$currentSetting = $this->getKey();
+		}
+
+		if (isset($parentRow['tx_templavoila_next_to']) &&
+			$this->getScope() == tx_templavoila_datastructure::SCOPE_PAGE) {
 			$inheritSetting = $parentRow['tx_templavoila_next_to'];
 		} else {
 			$inheritSetting = -1;
 		}
 
-		$key = 'tx_templavoila_tmplobj:' . $this->getKey();
+		$key = 'tx_templavoila_tmplobj_' . $this->getKey();
 		if (in_array($key, $denyItems) &&
 			$key != $currentSetting &&
 			$key != $inheritSetting
