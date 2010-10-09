@@ -500,7 +500,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 				
 				$toList = $toRepo->getTemplatesByDatastructure($dsObj, $currentPid);
 
-				$newPid = $dsObj->getKey();
+				$newPid = intval(t3lib_div::_GP('id'));
 				$newFileRef = '';
 				$newTitle = $dsObj->getLabel() . ' [TEMPLATE]';
 				if (count($toList))	{
@@ -525,11 +525,6 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 						$newPid=-$toObj->getKey();
 						$newFileRef = $toObj->getFileref();
 						$newTitle = $toObj->getLabel() . ' [ALT]';
-					}
-
-						// For static DS we use the current page id as the PID:
-					if (is_null($newPid)) {
-						$newPid = t3lib_div::_GP('id');
 					}
 				}
 					// New-TO link:

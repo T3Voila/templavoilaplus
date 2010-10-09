@@ -1,5 +1,6 @@
 2010-10-09  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
+	* Fixed issue: #15933: "Create new Template Object" puts new TOs on wrong page
 	* Fixed issue: #15943: tt_content move-to placeholder show up in the non-used CE list 
 
 2010-10-08  Tolleiv Nietsch <nietsch@aoemedia.de> 
