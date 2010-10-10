@@ -1,3 +1,7 @@
+2010-10-10  Tolleiv Nietsch <nietsch@aoemedia.de> 
+
+	* Fixed bug: #15948: Content from PID message looks strange
+
 2010-10-09  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
 	* Fixed bug: #15908: access restriction for tv-objects in usergroup setting will be ignored

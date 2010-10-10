@@ -577,7 +577,8 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 							sprintf($LANG->getLL('content_from_pid_title'), $link),
 							t3lib_FlashMessage::INFO
 						);
-						$editCurrentPageHTML = $flashMessage->render();
+						$editCurrentPageHTML = '';
+						t3lib_FlashMessageQueue::addMessage($flashMessage);
 					} else {
 						$editCurrentPageHTML = '<div class="warning">' .
 							$this->doc->icons(2) . ' ' .
