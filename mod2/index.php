@@ -160,7 +160,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->docType= 'xhtml_trans';
 		$this->doc->backPath = $BACK_PATH;
-		if (version_compare(TYPO3_version,'4.3','>')) {
+		if (t3lib_div::int_from_ver(TYPO3_version) >= 4003000) {
 			$this->doc->setModuleTemplate('EXT:templavoila/resources/templates/mod2_default.html');
 		} else {
 			$this->doc->setModuleTemplate(t3lib_extMgm::extRelPath('templavoila') . 'resources/templates/mod2_default.html');
@@ -204,7 +204,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 			$this->doc->postCode.= $CMparts[2];
 
 		} else {
-			if (version_compare(TYPO3_version, '4.3', '>')) {
+			if (t3lib_div::int_from_ver(TYPO3_version) >= 4003000) {
 				$flashMessage = t3lib_div::makeInstance(
 					't3lib_FlashMessage',
 					$GLOBALS['LANG']->getLL('noaccess'),
@@ -1667,7 +1667,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 
 				// Missing extension warning:
 			if ($missingExt)	{
-				if(version_compare(TYPO3_version,'4.3.0','<')) {
+				if(t3lib_div::int_from_ver(TYPO3_version) < 4003000) {
 					$this->content.= $this->doc->section($LANG->getLL('newsitewizard_missingext'), $missingExt, 0, 1, 3);
 				} else {
 					$msg = t3lib_div::makeInstance('t3lib_FlashMessage', $missingExt, $LANG->getLL('newsitewizard_missingext'), t3lib_FlashMessage::ERROR);
@@ -1677,7 +1677,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 
 				// Missing configuration warning:
 			if ($missingConf)	{
-				if(version_compare(TYPO3_version,'4.3.0','<')) {
+				if(t3lib_div::int_from_ver(TYPO3_version) < 4003000) {
 					$this->content.= $this->doc->section($LANG->getLL('newsitewizard_missingconf'), $LANG->getLL('newsitewizard_missingconf_description'), 0, 1, 3);
 				} else {
 					$msg = t3lib_div::makeInstance('t3lib_FlashMessage', $LANG->getLL('newsitewizard_missingconf_description'), $LANG->getLL('newsitewizard_missingconf'), t3lib_FlashMessage::ERROR);
@@ -1687,7 +1687,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 
 				// Missing directory warning:
 			if ($missingDir)	{
-				if(version_compare(TYPO3_version,'4.3.0','<')) {
+				if(t3lib_div::int_from_ver(TYPO3_version) < 4003000) {
 					$this->content.= $this->doc->section($LANG->getLL('newsitewizard_missingdir'), $missingDir, 0, 1, 3);
 				} else {
 					$msg = t3lib_div::makeInstance('t3lib_FlashMessage', $missingDir, $LANG->getLL('newsitewizard_missingdir'), t3lib_FlashMessage::ERROR);

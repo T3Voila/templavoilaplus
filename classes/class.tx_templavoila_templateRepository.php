@@ -37,7 +37,7 @@ class tx_templavoila_templateRepository {
 	 */
 	public function getTemplateByUid($uid) {
 		$to = null;
-		if(version_compare(TYPO3_version,'4.3.0','<')) {
+		if(t3lib_div::int_from_ver(TYPO3_version) < 4003000) {
 			$className = t3lib_div::makeInstanceClassName('tx_templavoila_template');
 			$to = new $className($uid);
 		} else {

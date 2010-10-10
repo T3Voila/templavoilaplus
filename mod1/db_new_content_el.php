@@ -129,7 +129,7 @@ class tx_templavoila_dbnewcontentel {
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->docType= 'xhtml_trans';
 		$this->doc->backPath = $BACK_PATH;
-		if(version_compare(TYPO3_version,'4.3','>')) {
+		if(t3lib_div::int_from_ver(TYPO3_version) >= 4003000) {
 			$this->doc->setModuleTemplate('EXT:templavoila/resources/templates/mod1_new_content.html');
 		} else {
 			$this->doc->setModuleTemplate(t3lib_extMgm::extRelPath('templavoila') . 'resources/templates/mod1_new_content.html');
@@ -138,7 +138,7 @@ class tx_templavoila_dbnewcontentel {
 		$this->doc->divClass = '';
 		$this->doc->JScode='';
 
-		if (version_compare(TYPO3_version, '4.3', '>')) {
+		if (t3lib_div::int_from_ver(TYPO3_version) >= 4003000) {
 			$pageRenderer = $this->doc->getPageRenderer()->loadPrototype();
 		} else {
 			$this->doc->loadJavascriptLib('contrib/prototype/prototype.js');

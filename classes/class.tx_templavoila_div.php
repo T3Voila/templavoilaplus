@@ -35,9 +35,9 @@ final class tx_templavoila_div {
 	 * @param $url
 	 */
 	public static function sanitizeLocalUrl($url = '') {
-		if (version_compare(TYPO3_version, '4.3', '>')) {
+		if (t3lib_div::int_from_ver(TYPO3_version) >= 4003000) {
 			return t3lib_div::sanitizeLocalUrl($url);
-		} elseif (version_compare(TYPO3_version, '4.2', '>') && method_exists('t3lib_div', 'sanitizeLocalUrl')) {
+		} elseif (t3lib_div::int_from_ver(TYPO3_version) > 4002000 && method_exists('t3lib_div', 'sanitizeLocalUrl')) {
 			return t3lib_div::sanitizeLocalUrl($url);
 		} else {
 			return self::internalSanitizeLocalUrl($url);
@@ -58,7 +58,7 @@ final class tx_templavoila_div {
 	private static function internalSanitizeLocalUrl($url = '') {
 		$sanitizedUrl = '';
 		$decodedUrl = rawurldecode($url);
-		if (version_compare(TYPO3_version,'4.2','>')) {
+		if (t3lib_div::int_from_ver(TYPO3_version) > 4002000) {
 			if ($decodedUrl !== t3lib_div::removeXSS($decodedUrl)) {
 				$decodedUrl = '';
 			}

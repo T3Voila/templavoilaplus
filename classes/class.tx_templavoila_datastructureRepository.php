@@ -53,7 +53,7 @@ class tx_templavoila_datastructureRepository {
 		}
 
 		$ds = null;
-		if(version_compare(TYPO3_version,'4.3.0','<')) {
+		if(t3lib_div::int_from_ver(TYPO3_version) < 4003000) {
 			$className = t3lib_div::makeInstanceClassName($className);
 			$ds = new $className($uidOrFile);
 		} else {

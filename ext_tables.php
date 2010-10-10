@@ -300,7 +300,7 @@ if (TYPO3_MODE=='BE')	{
 	t3lib_extMgm::addLLrefForTCAdescr('_MOD_web_func','EXT:wizard_crpages/locallang_csh.xml');
 }
 if (TYPO3_MODE=='BE') {
-	if(version_compare(TYPO3_version,'4.4','>')) {
+	if(t3lib_div::int_from_ver(TYPO3_version) >= 4004000) {
 		$icons = array(
 			'paste' => t3lib_extMgm::extRelPath('templavoila') . 'mod1/clip_pasteafter.gif',
 			'pasteSubRef' => t3lib_extMgm::extRelPath('templavoila') . 'mod1/clip_pastesubref.gif',

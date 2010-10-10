@@ -145,7 +145,7 @@ Automatic Repair:
 			if (!$versionSwapmode)	{
 
 					// Initialize TemplaVoila API class:
-				if(version_compare(TYPO3_version,'4.3.0','<')) {
+				if(t3lib_div::int_from_ver(TYPO3_version) < 4003000) {
 					$apiClassName = t3lib_div::makeInstanceClassName('tx_templavoila_api');
 					$apiObj = new $apiClassName ('pages');
 				} else {

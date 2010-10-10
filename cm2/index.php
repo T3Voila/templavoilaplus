@@ -93,7 +93,7 @@ class tx_templavoila_cm2 extends t3lib_SCbase {
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->docType = 'xhtml_trans';
 		$this->doc->backPath = $BACK_PATH;
-		if (version_compare(TYPO3_version, '4.3', '>')) {
+		if (t3lib_div::int_from_ver(TYPO3_version) >= 4003000) {
 			$this->doc->setModuleTemplate('EXT:templavoila/resources/templates/cm2_default.html');
 		} else {
 			$this->doc->setModuleTemplate(t3lib_extMgm::extRelPath('templavoila') . 'resources/templates/cm2_default.html');
@@ -142,7 +142,7 @@ class tx_templavoila_cm2 extends t3lib_SCbase {
 				$t3lib_diff_Obj = t3lib_div::makeInstance('t3lib_diff');
 				$diffres = $t3lib_diff_Obj->makeDiffDisplay($currentXML,$cleanXML);
 
-			if (version_compare(TYPO3_version, '4.3', '>')) {
+			if (t3lib_div::int_from_ver(TYPO3_version) >= 4003000) {
 				$flashMessage = t3lib_div::makeInstance(
 					't3lib_FlashMessage',
 					$LANG->getLL('needsCleaning',1),
@@ -186,7 +186,7 @@ class tx_templavoila_cm2 extends t3lib_SCbase {
 			} else {
 				$xmlContentMarkedUp = '';
 				if ($cleanXML)	{
-					if (version_compare(TYPO3_version, '4.3', '>')) {
+					if (t3lib_div::int_from_ver(TYPO3_version) >= 4003000) {
 						$flashMessage = t3lib_div::makeInstance(
 							't3lib_FlashMessage',
 							$LANG->getLL('XMLclean',1),

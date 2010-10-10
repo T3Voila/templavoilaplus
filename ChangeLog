@@ -1,5 +1,6 @@
 2010-10-10  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
+	* Fixed issue: #15946: version comparison doesn't work on dev version of TYPO3_4-4 branch
 	* Fixed bug: #15948: Content from PID message looks strange
 
 2010-10-09  Tolleiv Nietsch <nietsch@aoemedia.de> 

@@ -338,7 +338,7 @@ class tx_templavoila_mod1_sidebar {
 				</tr>
 			');
 
-			if (version_compare(TYPO3_version,'4.4','>')) {
+			if (t3lib_div::int_from_ver(TYPO3_version) >= 4004000) {
 				$tableRows[] = '
 				<tr class="bgColor4">
 					<td width="20">

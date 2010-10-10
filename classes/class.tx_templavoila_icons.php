@@ -67,7 +67,7 @@ final class tx_templavoila_icons {
 			return;
 		}
 
-		if(version_compare(TYPO3_version,'4.4','<') || self::$useOldIcons) {
+		if(t3lib_div::int_from_ver(TYPO3_version) < 4004000 || self::$useOldIcons) {
 			self::$useOldIcons = true;
 			if (is_array($GLOBALS['TBE_STYLES']['spritemanager']['singleIcons'])) {
 				foreach($GLOBALS['TBE_STYLES']['spritemanager']['singleIcons'] as $name => $file) {

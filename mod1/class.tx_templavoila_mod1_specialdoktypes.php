@@ -124,7 +124,7 @@ class tx_templavoila_mod1_specialdoktypes {
 		}
 
 		$urlInfo = ' <br /><br /><strong><a href="' . $url . '" target="_new">' . htmlspecialchars(sprintf($LANG->getLL ('jumptoexternalurl'), $url)) . '</a></strong>';
-		if (version_compare(TYPO3_version, '4.3', '>')) {
+		if (t3lib_div::int_from_ver(TYPO3_version) >= 4003000) {
 			$flashMessage = t3lib_div::makeInstance(
 				't3lib_FlashMessage',
 				$notice,
@@ -165,7 +165,7 @@ class tx_templavoila_mod1_specialdoktypes {
 										$LANG->getLL ('jumptoshortcutdestination', '',1).'</a></strong>';
 		}
 
-		if (version_compare(TYPO3_version, '4.3', '>')) {
+		if (t3lib_div::int_from_ver(TYPO3_version) >= 4003000) {
 			$flashMessage = t3lib_div::makeInstance(
 				't3lib_FlashMessage',
 				sprintf ($LANG->getLL ('cannotedit_shortcut_'.intval($pageRecord['shortcut_mode'])), $shortcutSourcePageRecord['title']),
@@ -210,7 +210,7 @@ class tx_templavoila_mod1_specialdoktypes {
 			<a href="index.php?id='.$pageRecord['mount_pid'].'">'.htmlspecialchars($LANG->getLL ('jumptomountsourcepage')).'</a>
 		';
 
-		if (version_compare(TYPO3_version, '4.3', '>')) {
+		if (t3lib_div::int_from_ver(TYPO3_version) >= 4003000) {
 			$flashMessage = t3lib_div::makeInstance(
 				't3lib_FlashMessage',
 				sprintf ($LANG->getLL ('cannotedit_doktypemountpoint'), $mountSourceButton . $mountSourcePageRecord['title']),
@@ -255,7 +255,7 @@ class tx_templavoila_mod1_specialdoktypes {
 			$listModuleLink = $LANG->getLL('editpage_sysfolder_listview_noaccess','',1);
 		}
 
-		if (version_compare(TYPO3_version, '4.3', '>')) {
+		if (t3lib_div::int_from_ver(TYPO3_version) >= 4003000) {
 			$flashMessage = t3lib_div::makeInstance(
 				't3lib_FlashMessage',
 				$LANG->getLL('editpage_sysfolder_intro', '', 1),

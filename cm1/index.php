@@ -398,7 +398,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->docType= 'xhtml_trans';
 		$this->doc->backPath = $BACK_PATH;
-		if(version_compare(TYPO3_version,'4.3','>')) {
+		if(t3lib_div::int_from_ver(TYPO3_version) >= 4003000) {
 			$this->doc->setModuleTemplate('EXT:templavoila/resources/templates/cm1_default.html');
 		} else {
 			$this->doc->setModuleTemplate(t3lib_extMgm::extRelPath('templavoila') . 'resources/templates/cm1_default.html');
@@ -585,7 +585,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			} elseif (t3lib_div::_GP('_saveDSandTO'))	{	// Saving DS and TO to records.
 				if (!strlen(trim($this->_saveDSandTO_title))) {
 					$cmd = 'saveScreen';
-					if (version_compare(TYPO3_version, '4.3', '>')) {
+					if (t3lib_div::int_from_ver(TYPO3_version) >= 4003000) {
 						$flashMessage = t3lib_div::makeInstance(
 							't3lib_FlashMessage',
 							$GLOBALS['LANG']->getLL('errorNoToTitleDefined'),
@@ -1672,7 +1672,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			$tce->start($dataArr,array());
 			$tce->process_datamap();
 			unset($tce);
-			if (version_compare(TYPO3_version, '4.3', '>')) {
+			if (t3lib_div::int_from_ver(TYPO3_version) >= 4003000) {
 				$flashMessage = t3lib_div::makeInstance(
 					't3lib_FlashMessage',
 					$GLOBALS['LANG']->getLL('msgMappingSaved'),
@@ -1716,7 +1716,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			)	{
 			$menuItems[]='<input type="submit" name="_reload_from" value="' . $GLOBALS['LANG']->getLL('buttonRevert') . '" title="'.sprintf($GLOBALS['LANG']->getLL('buttonRevertTitle'), $headerPart ? 'HEAD' : 'BODY') . '" />';
 
-			if (version_compare(TYPO3_version, '4.3', '>')) {
+			if (t3lib_div::int_from_ver(TYPO3_version) >= 4003000) {
 				$flashMessage = t3lib_div::makeInstance(
 					't3lib_FlashMessage',
 					$GLOBALS['LANG']->getLL('msgMappingIsDifferent'),
@@ -1742,7 +1742,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			</table>
 		';
 
-		if (version_compare(TYPO3_version, '4.3', '>')) {
+		if (t3lib_div::int_from_ver(TYPO3_version) >= 4003000) {
 				// @todo - replace with FlashMessage Queue
 			$content .= implode('', $msg);
 		} else {			// Making messages:
@@ -1823,7 +1823,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 				'.$bodyTagRow.'
 			</table><br />';
 
-		if (version_compare(TYPO3_version, '4.3', '>')) {
+		if (t3lib_div::int_from_ver(TYPO3_version) >= 4003000) {
 			$flashMessage = t3lib_div::makeInstance(
 				't3lib_FlashMessage',
 				$GLOBALS['LANG']->getLL('msgHeaderSet'),
