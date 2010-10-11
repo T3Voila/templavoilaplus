@@ -477,7 +477,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				// this also adds prototype to the list of required libraries
 			$CMparts = $this->doc->getContextMenuCode();
 
-			$mod1_file = 'dragdrop' . ($this->debug ? '': '-min.js');
+			$mod1_file = 'dragdrop' . ($this->debug ? '.js': '-min.js');
 			if (method_exists('t3lib_div', 'createVersionNumberedFilename')) {
 				$mod1_file = t3lib_div::createVersionNumberedFilename($mod1_file);
 			} else {

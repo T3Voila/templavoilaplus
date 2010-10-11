@@ -1,3 +1,7 @@
+2010-10-11  Tolleiv Nietsch <nietsch@aoemedia.de> 
+
+	* Follow-up to: #15775: Avoid that browser-cache issues cause too much confusion during upgrade (debug-mode dragdrop.js caused 404)
+
 2010-10-10  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
 	* Fixed issue: #15946: version comparison doesn't work on dev version of TYPO3_4-4 branch
