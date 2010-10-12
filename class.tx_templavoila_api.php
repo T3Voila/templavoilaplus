@@ -218,9 +218,9 @@ class tx_templavoila_api {
 		/* @var $tce t3lib_TCEmain */
 
 			// set default TCA values specific for the page and user
-		$TCAdefaultOverride = t3lib_BEfunc::getModTSconfig($positionPid , 'TCAdefaults');
-		if (is_array($TCAdefaultOverride))	{
-			$tce->setDefaultsFromUserTS($TCAdefaultOverride);
+		$TCAdefaultOverride = t3lib_BEfunc::getModTSconfig($newRecordPid , 'TCAdefaults');
+		if (is_array($TCAdefaultOverride['properties']))	{
+			$tce->setDefaultsFromUserTS($TCAdefaultOverride['properties']);
 		}
 
 		$tce->stripslashes_values = 0;
