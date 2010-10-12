@@ -1,5 +1,6 @@
 2010-10-12  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
+	* Generally updated several outdated parts of the manual
 	* Fixed issue: #15957: TV does not honour TCAdefaults from PageTSconfig or UserTSconfig 
 
 2010-10-11  Tolleiv Nietsch <nietsch@aoemedia.de> 
