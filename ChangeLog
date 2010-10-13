@@ -1,5 +1,9 @@
 2010-10-12  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
+	* Fixed bug: #15980: doktype of page is not respected during localizing of a page (Thanks to Andreas Kiessling)
+
+2010-10-12  Tolleiv Nietsch <nietsch@aoemedia.de> 
+
 	* Generally updated several outdated parts of the manual
 	* Fixed issue: #15957: TV does not honour TCAdefaults from PageTSconfig or UserTSconfig 
 

@@ -2449,7 +2449,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 					case 'createNewPageTranslation':
 							// Create parameters and finally run the classic page module for creating a new page translation
-						$params = '&edit[pages_language_overlay]['.intval (t3lib_div::_GP('pid')).']=new&overrideVals[pages_language_overlay][sys_language_uid]='.intval($commandParameters);
+						$params = '&edit[pages_language_overlay]['.intval (t3lib_div::_GP('pid')).']=new&overrideVals[pages_language_overlay][doktype]=' . intval(t3lib_div::_GP('doktype')) . '&overrideVals[pages_language_overlay][sys_language_uid]='.intval($commandParameters);
 						$returnUrl = '&returnUrl='.rawurlencode(t3lib_extMgm::extRelPath('templavoila').'mod1/index.php?'.$this->link_getParameters());
 						$redirectLocation = $GLOBALS['BACK_PATH'].'alt_doc.php?'.$params.$returnUrl;
 					break;

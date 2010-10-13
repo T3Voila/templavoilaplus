@@ -253,7 +253,8 @@ class tx_templavoila_mod1_localization {
 		}
 
 		if (count($optionsArr) > 1) {
-			$link = 'index.php?'.$this->pObj->link_getParameters().'&createNewPageTranslation=\'+this.options[this.selectedIndex].value+\'&pid='.$this->pObj->id;
+			$linkParam = $this->pObj->rootElementTable == 'pages' ? '&doktype=' . $this->pObj->rootElementRecord['doktype'] : '';
+			$link = 'index.php?'.$this->pObj->link_getParameters().'&createNewPageTranslation=\'+this.options[this.selectedIndex].value+\'&pid='.$this->pObj->id . $linkParam;
 			$output = '
 				<tr class="bgColor4">
 					<td width="20">
