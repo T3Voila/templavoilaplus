@@ -299,7 +299,10 @@ if (TYPO3_MODE=='BE')	{
 	);
 	t3lib_extMgm::addLLrefForTCAdescr('_MOD_web_func','EXT:wizard_crpages/locallang_csh.xml');
 }
-if (TYPO3_MODE=='BE') {
+	// complex condition to make sure the icons are available during frontend editing...
+if (TYPO3_MODE == 'BE' || 
+	(TYPO3_MODE == 'FE' && isset($GLOBALS['BE_USER']) && method_exists($GLOBALS['BE_USER'], 'isFrontendEditingActive')  && $GLOBALS['BE_USER']->isFrontendEditingActive())
+) { 
 	if(t3lib_div::int_from_ver(TYPO3_version) >= 4004000) {
 		$icons = array(
 			'paste' => t3lib_extMgm::extRelPath('templavoila') . 'mod1/clip_pasteafter.gif',

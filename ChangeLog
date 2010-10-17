@@ -1,3 +1,7 @@
+2010-10-17  Tolleiv Nietsch <nietsch@aoemedia.de> 
+
+	* Fixed issue: #15986: TYPO3_MODE check in localconf.php might break spriteCache 
+
 2010-10-12  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
 	* Fixed bug: #15980: doktype of page is not respected during localizing of a page (Thanks to Andreas Kiessling)
