@@ -500,16 +500,20 @@ class tx_templavoila_pi1 extends tslib_pibase {
                 }
             }
 
+			if (isset($GLOBALS['TSFE']->register['tx_templavoila_pi1.nested_fields'])) {
+				$nested_fields = $GLOBALS['TSFE']->register['tx_templavoila_pi1.nested_fields'];
+			} else {
+				$nested_fields = '';
+			}
+
 				// For each DS element:
 			foreach($DSelements as $key => $dsConf)	{
 					// Store key of DS element and the parents being handled in global register
-				$nestedFields = '';
-				if (isset($GLOBALS['TSFE']->register['tx_templavoila_pi1.current_field'])) {
-					 $nestedFields = implode(',', array($GLOBALS['TSFE']->register['tx_templavoila_pi1.current_field'], $key));
+				if ($nested_fields) {
+					$GLOBALS['TSFE']->register['tx_templavoila_pi1.nested_fields'] = $nested_fields . ',' . $key;
 				} else {
-					$nestedFields = $key;
+					$GLOBALS['TSFE']->register['tx_templavoila_pi1.nested_fields'] = $key;
 				}
-				$GLOBALS['TSFE']->register['tx_templavoila_pi1.nested_fields'] = $nestedFields;
 				$GLOBALS['TSFE']->register['tx_templavoila_pi1.current_field'] = $key;
 
 						// Array/Section:
@@ -661,6 +665,8 @@ class tx_templavoila_pi1 extends tslib_pibase {
             foreach ($savedParentInfo as $dkey => $dvalue) {
                 $GLOBALS['TSFE']->register[$dkey] = $dvalue;
             }
+
+			$GLOBALS['TSFE']->register['tx_templavoila_pi1.nested_fields'] = $nested_fields;
         }
     }
 
