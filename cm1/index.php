@@ -462,10 +462,14 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 				document.location = "'.t3lib_div::linkThisScript(array('htmlPath'=>'','doMappingOfPath'=>1)).'&htmlPath="+top.rawurlencode(inPath);
 			}
 
-			function openValidator(strToPost) {
-				var valform = new Element(\'form\',{method: \'post\', target:\'_blank\', action: \'http://validator.w3.org/check#validate_by_input\'});
-				valform.insert(new Element(\'input\',{name: \'fragment\', value:strToPost, type: \'hidden\'}));$(document.body).insert(valform);
- 				valform.submit();
+			function openValidator(key) {
+				new Ajax.Request("' . $GLOBALS['BACK_PATH'] . 'ajax.php?ajaxID=tx_templavoila_cm1_ajax::getDisplayFileContent&key=" + key, {
+					onSuccess: function(response) {
+						var valform = new Element(\'form\',{method: \'post\', target:\'_blank\', action: \'http://validator.w3.org/check#validate_by_input\'});
+						valform.insert(new Element(\'input\',{name: \'fragment\', value:response.responseText, type: \'hidden\'}));$(document.body).insert(valform);
+						valform.submit();
+					}
+				});
 			}
 		').$this->doc->getDynTabMenuJScode();
 
@@ -945,7 +949,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 				</tr>
  				<tr>
 					<td class="bgColor4">
-						<a href="#" onclick ="openValidator( ' . $GLOBALS['LANG']->JScharCode(file_get_contents($this->displayFile)) . ');return false;">
+						<a href="#" onclick ="openValidator(\'' .  $this->sessionKey . '\');return false;">
 						' . tx_templavoila_icons::getIcon('extensions-templavoila-htmlvalidate') . '
 							' . $GLOBALS['LANG']->getLL('validateTpl') . '
 						</a>
@@ -1352,6 +1356,11 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 						<td>' . $this->doc->wrapClickMenuOnIcon($icon, 'tx_templavoila_tmplobj', $row['uid'], 1) . $title . '</td>
 					</tr>';
 
+					// Session data
+				$sessionKey = $this->MCONF['name'] . '_validatorInfo:' . $row['uid'];
+				$sesDat = array('displayFile' => $row['fileref']);
+				$GLOBALS['BE_USER']->setAndSaveSessionData($sessionKey, $sesDat);
+
 					// Find the file:
 				$theFile = t3lib_div::getFileAbsFileName($row['fileref'],1);
 				if ($theFile && @is_file($theFile))	{
@@ -1364,7 +1373,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 						</tr>
 						<tr class="bgColor4">
 							<td>
-								<a href="#" onclick ="openValidator( ' . $GLOBALS['LANG']->JScharCode(file_get_contents($theFile)) . ');return false;">
+								<a href="#" onclick ="openValidator(\'' .  $sessionKey . '\');return false;">
 									' . tx_templavoila_icons::getIcon('extensions-templavoila-htmlvalidate') . '
 									' . $GLOBALS['LANG']->getLL('validateTpl') . '
 								</a>

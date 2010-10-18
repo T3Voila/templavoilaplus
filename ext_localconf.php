@@ -245,6 +245,9 @@ templavoila.wizards.newContentElement.wizardItems.special.show = uploads,media,m
 $TYPO3_CONF_VARS['BE']['AJAX']['tx_templavoila_mod1_ajax::moveRecord'] =
 	'EXT:templavoila/mod1/class.tx_templavoila_mod1_ajax.php:tx_templavoila_mod1_ajax->moveRecord';
 
+$TYPO3_CONF_VARS['BE']['AJAX']['tx_templavoila_cm1_ajax::getDisplayFileContent'] =
+	'EXT:templavoila/cm1/class.tx_templavoila_cm1_ajax.php:tx_templavoila_cm1_ajax->getDisplayFileContent';
+
 if(t3lib_div::int_from_ver(TYPO3_version) < 4003000) {
 	$list = include(t3lib_extMgm::extPath('templavoila') . '/ext_autoload.php');
 	require_once $list['tx_templavoila_api'];

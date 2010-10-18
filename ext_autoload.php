@@ -38,6 +38,7 @@ return array(
 	'tx_templavoila_preview_type_uploads' => $extensionPath . 'classes/preview/class.tx_templavoila_preview_type_uploads.php',
 	'tx_templavoila_cm1_dsedit' => $extensionPath . 'cm1/class.tx_templavoila_cm1_dsedit.php',
 	'tx_templavoila_cm1_etypes' => $extensionPath . 'cm1/class.tx_templavoila_cm1_etypes.php',
+	'tx_templavoila_cm1_ajax' => $extensionPath . 'cm1/class.tx_templavoila_cm1_ajax.php',
 	'tx_templavoila_cm2' => $extensionPath . 'cm2/index.php',
 	'tx_templavoila_referenceelementswizard' => $extensionPath . 'func_wizards/class.tx_templavoila_referenceelementswizard.php',
 	'tx_templavoila_mod1_ajax' => $extensionPath . 'mod1/class.tx_templavoila_mod1_ajax.php',
