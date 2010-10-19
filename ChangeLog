@@ -1,5 +1,6 @@
 2010-10-19  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
+	* Follow-up to: #15924: nested_fields register content is not correct - duplicate code removed
 	* Fixed issue: #15924: nested_fields register content is not correct  (Thanks to Frederik Rei)
 	* Fixed issue: #15896: Infection Warning by Avira AntiVir: HTML/Crypted.Gen
 
