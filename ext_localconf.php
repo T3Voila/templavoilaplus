@@ -12,9 +12,11 @@ if (!$_EXTCONF['enable.']['renderFCEHeader']) {
 	$tvSetup[] = 'tt_content.templavoila_pi1.10 >';
 }
 
-//sectionIndex replacement
-$tvSetup[] = 'tt_content.menu.20.3 = USER
-tt_content.menu.20.3.userFunc = tx_templavoila_pi1->tvSectionIndex';
+if(t3lib_div::int_from_ver(TYPO3_version) >= 4003000) {
+		//sectionIndex replacement
+	$tvSetup[] = 'tt_content.menu.20.3 = USER
+	tt_content.menu.20.3.userFunc = tx_templavoila_pi1->tvSectionIndex';
+}
 
 t3lib_extMgm::addTypoScript($_EXTKEY,'setup',implode(PHP_EOL, $tvSetup), 43);
 
