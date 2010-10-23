@@ -424,7 +424,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 		$toRepo = t3lib_div::makeInstance('tx_templavoila_templateRepository');
 		$toList = $toRepo->getAll($this->id);
 		foreach($toList as $toObj)	{
-			if(!in_array($toObj->getKey(), $toIdArray)) { 
+			if(!in_array($toObj->getKey(), $toIdArray)) {
 				$rTODres = $this->renderTODisplay($toObj, -1, 1);
 				$lostTOs.= $rTODres['HTML'];
 				$lostTOCount++;
@@ -474,7 +474,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 	 */
 	function renderDSlisting($scope)	{
 
-		$currentPid = intval(t3lib_div::_GP('id'));	
+		$currentPid = intval(t3lib_div::_GP('id'));
 		$dsRepo = t3lib_div::makeInstance('tx_templavoila_datastructureRepository');
 		$toRepo = t3lib_div::makeInstance('tx_templavoila_templateRepository');
 
@@ -497,7 +497,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 					// Traverse template objects which are not children of anything:
 				$TOcontent = '';
 				$indexTO = '';
-				
+
 				$toList = $toRepo->getTemplatesByDatastructure($dsObj, $currentPid);
 
 				$newPid = intval(t3lib_div::_GP('id'));
@@ -608,7 +608,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 				$path = str_replace(realpath(PATH_site) . '/', PATH_site, $path);
 				if($path == FALSE) {
 					$previewIcon = $GLOBALS['LANG']->getLL('noicon', 1);
-				} else {			
+				} else {
 					$previewIcon = t3lib_BEfunc::getThumbNail($this->doc->backPath . 'thumbs.php', $path,
 						'hspace="5" vspace="5" border="1"',
 						strpos($this->modTSconfig['properties']['dsPreviewIconThumb'], 'x') ? $this->modTSconfig['properties']['dsPreviewIconThumb'] : '');
@@ -620,7 +620,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 			$previewIcon = $GLOBALS['LANG']->getLL('noicon', 1);
 		}
 
-			// Links:	
+			// Links:
 		if ($dsObj->isFilebased()) {
 			$editLink = $editDataprotLink = '';
 			$dsTitle = $dsObj->getLabel();
@@ -629,7 +629,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 			$editDataprotLink =  '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick('&edit[tx_templavoila_datastructure]['.$dsObj->getKey().']=edit&columnsOnly=dataprot',$this->doc->backPath)).'">' . tx_templavoila_icons::getIcon('actions-document-open') . '</a>';
 			$dsTitle = '<a href="'.htmlspecialchars('../cm1/index.php?table=tx_templavoila_datastructure&uid=' . $dsObj->getKey() . '&id=' . $this->id . '&returnUrl=' . rawurlencode(tx_templavoila_div::sanitizeLocalUrl(t3lib_div::getIndpEnv('REQUEST_URI')))) . '">' . htmlspecialchars($dsObj->getLabel()) . '</a>';
 		}
-		
+
 			// Compile info table:
 		$content.='
 		<table'.$tableAttribs.'>
@@ -725,7 +725,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 					$path = str_replace(realpath(PATH_site) . '/', PATH_site, $path);
 					if($path == FALSE) {
 						$icon = $GLOBALS['LANG']->getLL('noicon', 1);
-					} else {			
+					} else {
 						$icon = t3lib_BEfunc::getThumbNail($this->doc->backPath . 'thumbs.php', $path,
 							'hspace="5" vspace="5" border="1"',
 							strpos($this->modTSconfig['properties']['toPreviewIconThumb'], 'x') ? $this->modTSconfig['properties']['toPreviewIconThumb'] : '');
@@ -906,7 +906,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 		} else {
 			$toChildren = array();
 		}
-		
+
 		if (!$children && count($toChildren))	{
 			$TOchildrenContent = '';
 			foreach($toChildren as $toChild)	{
@@ -1344,6 +1344,11 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 			$HTML .= '<dl class="DS-details">';
 
 			foreach ($DStree as $elm => $def) {
+				if (!is_array($def)) {
+					$HTML .= '<p>' . tx_templavoila_icons::getIcon('status-dialog-error') . sprintf($GLOBALS['LANG']->getLL('invaliddatastructure_xmlbroken', 1), $elm) . '</p>';
+					break;
+				}
+
 				$HTML .= '<dt>';
 				$HTML .= ($elm == "meta" ? $GLOBALS['LANG']->getLL('configuration', 1) : $def['tx_templavoila']['title'] . ' ('. $elm . ')');
 				$HTML .= '</dt>';
@@ -2441,7 +2446,7 @@ lib.'.$menuType.'.1.ACT {
 		} else {
 			$paths = array ('templates');
 		}
-		
+
 		$prefix = t3lib_div::getFileAbsFileName($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir']);
 		if (count($paths) > 0 && is_array($GLOBALS['FILEMOUNTS']))	{
 			foreach($GLOBALS['FILEMOUNTS'] as $mountCfg)	{
@@ -2449,7 +2454,7 @@ lib.'.$menuType.'.1.ACT {
 				$isPart = false;
 				foreach ($paths as $path) {
 					if (t3lib_div::isFirstPartOfStr($prefix . $path, $mountCfg['path']) &&
-						is_dir($prefix . $path)) {					
+						is_dir($prefix . $path)) {
 						$templatePaths[] = ($relative ? $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'] : $prefix) . $path;
 					} else if (!$check) {
 						$templatePaths[] = ($relative ? $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'] : $prefix) . $path;

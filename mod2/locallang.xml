@@ -139,6 +139,7 @@
 			<label index="dsdetails_tsconstants">%d TS-constants defined for use in the &lt;TypoScript&gt;-entry</label>
 			<label index="warnings">Warnings</label>
 			<label index="fatalerrors">Fatal errors</label>
+			<label index="invaliddatastructure_xmlbroken">The the element "%1$s" within the datastructure seems to contain invalid XML, therefore the required data can't be displayed.</label>
 			<label index="wiz_title">New site wizard</label>
 			<label index="wiz_step">Step %s</label>
 			<label index="description_pagesWithCertainDsTo">The following pages in the root line contain data structures and template objects</label>

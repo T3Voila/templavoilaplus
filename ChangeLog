@@ -1,3 +1,7 @@
+2010-10-23  Tolleiv Nietsch <nietsch@aoemedia.de> 
+
+	* Fixed bug: #16083: Fatal error: mod2/index.php 
+
 2010-10-19  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
 	* Fixued issue: #16070: Sitemap Section Index + TV => Internal Server Error 500, PHP Fatal error
