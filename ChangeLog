@@ -1,5 +1,6 @@
 2010-10-23  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
+	* Fixed issue: #16115: content-cells might be very slim
 	* Updated manual related to #8051: oldStyleColumnNumber of FCE overrides colPos of Page Template
 	* Fixed bug: #16083: Fatal error: mod2/index.php 
 

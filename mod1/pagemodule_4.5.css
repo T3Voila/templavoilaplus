@@ -76,7 +76,8 @@ div.warning a {
 .tpm-content-cell {
 	vertical-align: top;
 	padding: 5px;
-	border-left: 3px solid #555; 
+	border-left: 3px solid #555;
+	min-width: 120px;
 }
 .tpm-subelement-table {
 	border-bottom:0px;
