@@ -1523,7 +1523,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				}
 
 				if ($label && $data) {
-					$result .= '<strong>' . $label . '</strong> ' . $data . '</br>';
+					$result .= '<strong>' . $label . '</strong> ' . $data . '<br />';
 				}
 			}
 		}
