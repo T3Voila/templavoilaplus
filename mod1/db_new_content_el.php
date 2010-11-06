@@ -144,7 +144,13 @@ class tx_templavoila_dbnewcontentel {
 			$this->doc->loadJavascriptLib('contrib/prototype/prototype.js');
 		}
 
-		$this->doc->JScodeLibArray['dyntabmenu'] = $this->doc->getDynTabMenuJScode();
+
+		if(t3lib_div::int_from_ver(TYPO3_version) < 4005000) {
+			$this->doc->JScodeLibArray['dyntabmenu'] = $this->doc->getDynTabMenuJScode();
+		} else {
+			$this->doc->loadJavascriptLib('js/tabmenu.js');
+		}
+
 		$this->doc->form='<form action="" name="editForm">';
 
 		$config = t3lib_BEfunc::getPagesTSconfig($this->id);

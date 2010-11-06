@@ -1,3 +1,7 @@
+2010-11-06  Tolleiv Nietsch <nietsch@aoemedia.de> 
+
+	* Fixued issue: #16212: templavoila floods deprecation log on current TYPO3 trunk (4.5) (Thanks to Andreas Kiessling)
+
 2010-10-29  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
 	* Follow-up to: #3450: Web->Page (TV) shows "fieldname" instead of "title" - </br> was supposed to be <br />

@@ -506,7 +506,12 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			}
 
 				// Set up JS for dynamic tab menu and side bar
-			$this->doc->JScode .= $this->doc->getDynTabMenuJScode();
+			if(t3lib_div::int_from_ver(TYPO3_version) < 4005000) {
+				$this->doc->JScode .= $this->doc->getDynTabMenuJScode();
+			} else {
+				$this->doc->loadJavascriptLib('js/tabmenu.js');
+			}
+
 			$this->doc->JScode .= $this->modTSconfig['properties']['sideBarEnable'] ? $this->sideBarObj->getJScode() : '';
 
 				// Setting up support for context menus (when clicking the items icon)

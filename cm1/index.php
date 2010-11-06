@@ -471,7 +471,13 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 					}
 				});
 			}
-		').$this->doc->getDynTabMenuJScode();
+		');
+
+		if(t3lib_div::int_from_ver(TYPO3_version) < 4005000) {
+			$this->doc->getDynTabMenuJScode();
+		} else {
+			$this->doc->loadJavascriptLib('js/tabmenu.js');
+		}
 
 			// Setting up the context sensitive menu:
 		$CMparts = $this->doc->getContextMenuCode();
