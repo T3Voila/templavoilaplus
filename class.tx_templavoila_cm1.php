@@ -78,12 +78,17 @@ class tx_templavoila_cm1 {
 					if (function_exists('finfo_open')) {
 						$finfoMode = defined('FILEINFO_MIME_TYPE') ? FILEINFO_MIME_TYPE : FILEINFO_MIME;
 						$fi = finfo_open($finfoMode);
-						$enabled = (substr(@finfo_file($fi, $table), 0, 9) == 'text/html');
+						$mimeInformation = @finfo_file($fi, $table);
+						$enabled = FALSE;
+						if (t3lib_div::isFirstPartOfStr($mimeInformation, 'text/html') ||
+							t3lib_div::isFirstPartOfStr($mimeInformation, 'application/xml')) {
+							$enabled = TRUE;
+						}
 						finfo_close($fi);
 					}
 					else {
 						$pi = @pathinfo($table);
-						$enabled = preg_match('/(html?|tmpl)/', $pi['extension']);
+						$enabled = preg_match('/(html?|tmpl|xml)/', $pi['extension']);
 					}
 					if ($enabled) {
 						$url = t3lib_extMgm::extRelPath('templavoila').'cm1/index.php?file='.rawurlencode($table);
