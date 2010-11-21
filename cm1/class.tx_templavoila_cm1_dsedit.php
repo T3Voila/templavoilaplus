@@ -201,7 +201,8 @@ class tx_templavoila_cm1_dsEdit {
 					$extra = $this->drawDataStructureMap_editItem_editTypeExtra(
 						$insertDataArray['tx_templavoila']['eType'],
 						$formFieldName,
-						$curValue
+						$curValue,
+						$key
 					);
 
 					if ($extra) {
@@ -437,11 +438,12 @@ class tx_templavoila_cm1_dsEdit {
 	 * @param	string		Editing Type string
 	 * @param	string		Form field name prefix
 	 * @param	array		Current values for the form field name prefix.
+	 * @param	string		Templavoila field name.
 	 * @return	string		HTML with extra form fields
 	 * @access	private
 	 * @see drawDataStructureMap_editItem()
 	 */
-	function drawDataStructureMap_editItem_editTypeExtra($type, $formFieldName, $curValue)	{
+	function drawDataStructureMap_editItem_editTypeExtra($type, $formFieldName, $curValue, $key = '')	{
 			// If a user function was registered, use that instead of our own handlers:
 		if (isset ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['cm1']['eTypesExtraFormFields'][$type])) {
 			$_params = array (
@@ -453,7 +455,7 @@ class tx_templavoila_cm1_dsEdit {
 		} else {
 			switch($type)	{
 				case 'TypoScriptObject':
-					$value = $curValue['objPath'] ? $curValue['objPath'] : 'lib.myObject';
+					$value = $curValue['objPath'] ? $curValue['objPath'] : 'lib.' . $key;
 					$output = '
 						<table border="0" cellpadding="2" cellspacing="0">
 							<tr>
