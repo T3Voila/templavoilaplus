@@ -35,11 +35,11 @@ class tx_templavoila_preview_type_list extends tx_templavoila_preview_type_text 
 	 */
 	protected function getPreviewData($row) {
 
+		$extraInfo =  $this->getExtraInfo($row);
+
 		$this->parentObj = $ref;
 		$info = htmlspecialchars($GLOBALS['LANG']->sL(t3lib_BEfunc::getLabelFromItemlist('tt_content','list_type',$row['list_type'])));
-		$info .= ' &ndash; ';
-		$info .= $this->getExtraInfo($row);
-
+		$info .= $extraInfo ? ' &ndash; ' . $extraInfo : '';
 		return $info;
 	}
 
@@ -63,7 +63,7 @@ class tx_templavoila_preview_type_list extends tx_templavoila_preview_type_text 
 			}
 		}
 
-		return $extraInfo ? $extraInfo : $row['list_type'];
+		return $extraInfo ? $extraInfo : '';
 	}
 
 }

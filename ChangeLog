@@ -1,6 +1,7 @@
 2010-11-22  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
-	* Fixued issue: #16211: a hsc too much 
+	* Fixed issue: #16341: Get rid of the full plugin name
+	* Fixed issue: #16211: a hsc too much 
 
 2010-11-08  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
