@@ -1,3 +1,7 @@
+2010-11-22  Tolleiv Nietsch <nietsch@aoemedia.de> 
+
+	* Fixued issue: #16211: a hsc too much 
+
 2010-11-08  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
 	* Fixued issue: #16243: no context menu for xml files and html files with xml declaration to start mapping process (Thanks to Andreas Kiessling)

@@ -38,7 +38,7 @@ class tx_templavoila_preview_type_list extends tx_templavoila_preview_type_text 
 		$this->parentObj = $ref;
 		$info = htmlspecialchars($GLOBALS['LANG']->sL(t3lib_BEfunc::getLabelFromItemlist('tt_content','list_type',$row['list_type'])));
 		$info .= ' &ndash; ';
-		$info .= htmlspecialchars($this->getExtraInfo($row));
+		$info .= $this->getExtraInfo($row);
 
 		return $info;
 	}
