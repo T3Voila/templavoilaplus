@@ -1179,8 +1179,6 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		$beTemplate = '';
 		$flagRenderBeLayout = false;
 
-			// @todo - there's no specific "new" right - add maxItem check
-		$canCreateNew = $GLOBALS['BE_USER']->isPSet($calcPerms, 'pages', 'editcontent');
 		$canEditContent = $GLOBALS['BE_USER']->isPSet($calcPerms, 'pages', 'editcontent');
 
 			// Define l/v keys for current language:
@@ -1245,12 +1243,35 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 					'position' => 0
 				);
 
-				$canDragDrop = $canEditContent &&
+				if (isset($elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['TCEforms']['config']['maxitems'])) {
+					$maxCnt = $elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['TCEforms']['config']['maxitems'];
+					$maxItemsReached = is_array($fieldContent['el_list']) && count($fieldContent['el_list']) <= $maxCnt;
+				} else {
+					$maxItemsReached = FALSE;
+				}
+
+				if (t3lib_div::int_from_ver(TYPO3_version) >= 4003000 && $maxItemsReached) {
+				$flashMessage = t3lib_div::makeInstance(
+					't3lib_FlashMessage',
+					'',
+					sprintf(
+						$GLOBALS['LANG']->getLL('maximal_content_elements'),
+						$maxCnt,
+						$elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['tx_templavoila']['title']
+					),
+					t3lib_FlashMessage::INFO
+				);
+				t3lib_FlashMessageQueue::addMessage($flashMessage);
+				}
+
+				$canCreateNew = $canEditContent && !$maxItemsReached;
+
+				$canDragDrop = !$maxItemsReached && $canEditContent &&
 								$elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['tx_templavoila']['enableDragDrop'] !== '0' &&
 								$this->modTSconfig['properties']['enableDragDrop'] !== '0';
 
-				if (!$this->translatorMode && ($canCreateNew || $canEditContent))	{
-					$cellContent .= $this->link_bottomControls($subElementPointer, $canCreateNew ,$canEditContent );
+				if (!$this->translatorMode && $canCreateNew)	{
+					$cellContent .= $this->link_bottomControls($subElementPointer, $canCreateNew);
 				}
 
 					// Render the list of elements (and possibly call itself recursively if needed):
@@ -1281,8 +1302,8 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 							$cellContent .= $this->render_framework_allSheets($subElementArr, $languageKey, $subElementPointer, $elementContentTreeArr['ds_meta']);
 
-							if (!$this->translatorMode && ($canCreateNew || $canEditContent))	{
-								$cellContent .= $this->link_bottomControls($subElementPointer,$canCreateNew ,$canEditContent );
+							if (!$this->translatorMode && $canCreateNew)	{
+								$cellContent .= $this->link_bottomControls($subElementPointer,$canCreateNew );
 							}
 
 							if (!$this->translatorMode) {
@@ -2320,10 +2341,9 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 *
 	 * @param array $elementPointer
 	 * @param boolean $canCreateNew
-	 * @param boolean $canEditContent
 	 * @return string
 	 */
-	protected function link_bottomControls($elementPointer, $canCreateNew, $canEditContent) {
+	protected function link_bottomControls($elementPointer, $canCreateNew) {
 
 		$output = '<span class="tpm-bottom-controls">';
 
@@ -2337,7 +2357,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		}
 
 			// "Browse Record" icon
-		if ($canEditContent && !in_array('browse', $this->blindIcons)) {
+		if ($canCreateNew && !in_array('browse', $this->blindIcons)) {
 			$iconOptions = array(
 				'title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.browse_db'),
 				'class' => 'browse'
@@ -2347,7 +2367,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		}
 
 			// "Paste" icon
-		if($canEditContent) {
+		if ($canCreateNew) {
 			$output .= '<span class="sortablePaste">' .
 				$this->clipboardObj->element_getPasteButtons ($elementPointer) .
 				'&nbsp;</span>';

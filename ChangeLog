@@ -1,5 +1,6 @@
 2010-11-22  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
+	* Fixed issue: #011582: No more add icon, if maxitem is reached
 	* Fixed bug: #15927: Remove icon »Create new element« if user has no rights to edit the pages content
 	* Fixed bug: #15925: Buttons in docheader do not respect user rights for pages table
 	* Fixed issue: #16324: Let the auto value for TypoScriptObject path depend on field name (Thanks to 	Christian Mueller)
