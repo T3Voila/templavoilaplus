@@ -349,8 +349,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				$this->apiObj->unlinkElement($unlinkDestinationPointer);
 			}
 
-			$this->calcPerms = $GLOBALS['BE_USER']->calcPerms($pageInfoArr);
-			self::$calcPermCache[$pageInfoArr['pid']] = $this->calcPerms;
+			$this->calcPerms = $this->getCalcPerms($pageInfoArr['uid']);
 
 				// Define the root element record:
 			$this->rootElementTable = is_array($this->altRoot) ? $this->altRoot['table'] : 'pages';
@@ -873,13 +872,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 			// We show a warning if the user may edit the pagecontent and is not permitted to edit the "content" fields at the same time
 		if (!$BE_USER->isAdmin() && $this->modTSconfig['properties']['enableContentAccessWarning']) {
-			$id = $this->rootElementRecord[($this->rootElementTable == 'pages' ? 'uid' : 'pid')];
-			$pageRecord = t3lib_BEfunc::getRecordWSOL('pages', $id);
-
-			$mayEditPage = $GLOBALS['BE_USER']->doesUserHaveAccess($pageRecord, 16);
-			$mayModifyTable = t3lib_div::inList($BE_USER->groupData['tables_modify'], $this->rootElementTable);
-			$mayEditContentField = t3lib_div::inList($BE_USER->groupData['non_exclude_fields'], $this->rootElementTable . ':tx_templavoila_flex');
-			if (!($mayEditPage && $mayModifyTable && $mayEditContentField)) {
+			if (!($this->hasBasicEditRights())) {
 				if (t3lib_div::int_from_ver(TYPO3_version) >= 4003000) {
 					$message = t3lib_div::makeInstance(
 						't3lib_FlashMessage',
@@ -1186,7 +1179,8 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		$beTemplate = '';
 		$flagRenderBeLayout = false;
 
-		$canCreateNew = $GLOBALS['BE_USER']->isPSet($calcPerms, 'pages', 'new');
+			// @todo - there's no specific "new" right - add maxItem check
+		$canCreateNew = $GLOBALS['BE_USER']->isPSet($calcPerms, 'pages', 'editcontent');
 		$canEditContent = $GLOBALS['BE_USER']->isPSet($calcPerms, 'pages', 'editcontent');
 
 			// Define l/v keys for current language:
@@ -2829,9 +2823,38 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		if (!isset(self::$calcPermCache[$pid])) {
 			$row = t3lib_BEfunc::getRecordWSOL('pages', $pid);
 			$calcPerms = $GLOBALS['BE_USER']->calcPerms($row);
+			if (!$this->hasBasicEditRights('pages', $row)) {
+					// unsetting the "edit content" right - which is 16
+				$calcPerms = $calcPerms & 15;
+			}
 			self::$calcPermCache[$pid] = $calcPerms;
 		}
 		return self::$calcPermCache[$pid];
+	}
+
+	/**
+	 * @param  $table
+	 * @param  $record
+	 * @return bool
+	 */
+	protected function hasBasicEditRights($table = null,array $record = null) {
+
+		if ($table == null) {
+			$table = $this->rootElementTable;
+		}
+
+		if (empty($record)) {
+			$record = $this->rootElementRecord;
+		}
+
+		$id = $record[($table == 'pages' ? 'uid' : 'pid')];
+		$pageRecord = t3lib_BEfunc::getRecordWSOL('pages', $id);
+
+		$mayEditPage = $GLOBALS['BE_USER']->doesUserHaveAccess($pageRecord, 16);
+		$mayModifyTable = t3lib_div::inList($GLOBALS['BE_USER']->groupData['tables_modify'], $table);
+		$mayEditContentField = t3lib_div::inList($GLOBALS['BE_USER']->groupData['non_exclude_fields'], $table . ':tx_templavoila_flex');
+
+		return $mayEditPage && $mayModifyTable && $mayEditContentField;
 	}
 
 }
