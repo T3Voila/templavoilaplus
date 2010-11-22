@@ -299,7 +299,6 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 	 * @return	void
 	 */
 	function printContent()	{
-		$this->content.=$this->doc->middle();
 		$this->content.=$this->doc->endPage();
 		echo $this->content;
 	}
