@@ -1245,23 +1245,23 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 				if (isset($elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['TCEforms']['config']['maxitems'])) {
 					$maxCnt = $elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['TCEforms']['config']['maxitems'];
-					$maxItemsReached = is_array($fieldContent['el_list']) && count($fieldContent['el_list']) <= $maxCnt;
+					$maxItemsReached = is_array($fieldContent['el_list']) && count($fieldContent['el_list']) >= $maxCnt;
 				} else {
 					$maxItemsReached = FALSE;
 				}
 
 				if (t3lib_div::int_from_ver(TYPO3_version) >= 4003000 && $maxItemsReached) {
-				$flashMessage = t3lib_div::makeInstance(
-					't3lib_FlashMessage',
-					'',
-					sprintf(
-						$GLOBALS['LANG']->getLL('maximal_content_elements'),
-						$maxCnt,
-						$elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['tx_templavoila']['title']
-					),
-					t3lib_FlashMessage::INFO
-				);
-				t3lib_FlashMessageQueue::addMessage($flashMessage);
+					$flashMessage = t3lib_div::makeInstance(
+						't3lib_FlashMessage',
+						'',
+						sprintf(
+							$GLOBALS['LANG']->getLL('maximal_content_elements'),
+							$maxCnt,
+							$elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['tx_templavoila']['title']
+						),
+						t3lib_FlashMessage::INFO
+					);
+					t3lib_FlashMessageQueue::addMessage($flashMessage);
 				}
 
 				$canCreateNew = $canEditContent && !$maxItemsReached;
