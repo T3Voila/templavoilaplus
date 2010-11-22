@@ -881,11 +881,11 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 				</tr>
 				<tr class="bgColor4">
 					<td>' . $GLOBALS['LANG']->getLL('rendertype', 1) . ':</td>
-					<td>'.t3lib_BEfunc::getProcessedValue('tx_templavoila_tmplobj','rendertype',$toObj->getRendertype()).'</td>
+					<td>' . $this->getProcessedValue('tx_templavoila_tmplobj', 'rendertype', $toObj->getRendertype()) . '</td>
 				</tr>
 				<tr class="bgColor4">
 					<td>' . $GLOBALS['LANG']->getLL('language', 1) . ':</td>
-					<td>'.t3lib_BEfunc::getProcessedValue('tx_templavoila_tmplobj','sys_language_uid',$toObj->getSyslang()).'</td>
+					<td>' . $this->getProcessedValue('tx_templavoila_tmplobj', 'sys_language_uid', $toObj->getSyslang()) . '</td>
 				</tr>
 				<tr class="bgColor4">
 					<td>' . $GLOBALS['LANG']->getLL('localprocessing_xml') . ':</td>
@@ -1296,6 +1296,27 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 		}
 
 		return $output;
+	}
+
+	/**
+	 * Get the processed value analog to t3lib_beFunc::getProcessedValue
+	 * but take additional TSconfig values into account
+	 *
+	 * @param  $table
+	 * @param  $typeField
+	 * @param  $typeValue
+	 * @return
+	 */
+	protected function getProcessedValue($table, $typeField, $typeValue) {
+		$value =  t3lib_beFunc::getProcessedValue($table, $typeField, $typeValue);
+		if (!$value) {
+			$TSConfig = t3lib_beFunc::getPagesTSconfig($this->id);
+			if (isset($TSConfig['TCEFORM.'][$table . '.'][$typeField . '.']['addItems.'][$typeValue])) {
+				$value = $TSConfig['TCEFORM.'][$table . '.'][$typeField . '.']['addItems.'][$typeValue];
+			}
+		}
+
+		return $value;
 	}
 
 	/**
