@@ -787,19 +787,23 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			$buttons['history_page'] = '<a href="#" onclick="' . htmlspecialchars('jumpToUrl(\'' . $BACK_PATH . 'show_rechis.php?element=' . rawurlencode('pages:' . $this->id) . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')) . '#latest\');return false;') . '">' .
 						tx_templavoila_icons::getIcon('actions-document-history-open', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:cms/layout/locallang.xml:recordHistory', 1))).
 						'</a>';
-				// Move page
-			$buttons['move_page'] = '<a href="' . htmlspecialchars($BACK_PATH . 'move_el.php?table=pages&uid=' . $this->id . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))) . '">' .
-						tx_templavoila_icons::getIcon('actions-page-move', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:cms/layout/locallang.xml:move_page', 1))).
-						'</a>';
-				// Create new page (wizard)
-			$buttons['new_page'] = '<a href="#" onclick="' . htmlspecialchars('jumpToUrl(\'' . $BACK_PATH . 'db_new.php?id=' . $this->id . '&pagesOnly=1&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI') . '&updatePageTree=true') . '\');return false;') . '">' .
-						tx_templavoila_icons::getIcon('actions-page-new', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:cms/layout/locallang.xml:newPage', 1))).
-						'</a>';
-				// Edit page properties
+
+			if (!$this->translatorMode && $GLOBALS['BE_USER']->isPSet($this->calcPerms, 'pages', 'new'))	{
+					// Create new page (wizard)
+				$buttons['new_page'] = '<a href="#" onclick="' . htmlspecialchars('jumpToUrl(\'' . $BACK_PATH . 'db_new.php?id=' . $this->id . '&pagesOnly=1&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI') . '&updatePageTree=true') . '\');return false;') . '">' .
+							tx_templavoila_icons::getIcon('actions-page-new', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:cms/layout/locallang.xml:newPage', 1))).
+							'</a>';
+			}
+
 			if (!$this->translatorMode && $GLOBALS['BE_USER']->isPSet($this->calcPerms, 'pages', 'edit'))	{
+					// Edit page properties
 				$params='&edit[pages][' . $this->id . ']=edit';
 				$buttons['edit_page'] = '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::editOnClick($params, $BACK_PATH)) . '">' .
 							tx_templavoila_icons::getIcon('actions-document-open', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:cms/layout/locallang.xml:editPageProperties', 1))).
+							'</a>';
+					// Move page
+				$buttons['move_page'] = '<a href="' . htmlspecialchars($BACK_PATH . 'move_el.php?table=pages&uid=' . $this->id . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))) . '">' .
+							tx_templavoila_icons::getIcon('actions-page-move', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:cms/layout/locallang.xml:move_page', 1))).
 							'</a>';
 			}
 
@@ -868,7 +872,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		}
 
 			// We show a warning if the user may edit the pagecontent and is not permitted to edit the "content" fields at the same time
-		if (!$BE_USER->isAdmin() && $this->modTSconfig['properties']['enableContentAccessWarning']) {	
+		if (!$BE_USER->isAdmin() && $this->modTSconfig['properties']['enableContentAccessWarning']) {
 			$id = $this->rootElementRecord[($this->rootElementTable == 'pages' ? 'uid' : 'pid')];
 			$pageRecord = t3lib_BEfunc::getRecordWSOL('pages', $id);
 
@@ -1099,11 +1103,11 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 			// Create warning messages if neccessary:
 		$warnings = '';
-		
+
 		if (!$this->modTSconfig['properties']['disableReferencedElementNotification'] && !$elementBelongsToCurrentPage) {
 			$warnings .= $this->doc->icons(1).' <em>'.htmlspecialchars(sprintf($LANG->getLL('info_elementfromotherpage'), $contentTreeArr['el']['uid'], $contentTreeArr['el']['pid'])).'</em><br />';
 		}
-		
+
 		if (!$this->modTSconfig['properties']['disableElementMoreThanOnceWarning'] && $this->global_tt_content_elementRegister[$contentTreeArr['el']['uid']] > 1 && $this->rootElementLangParadigm !='free') {
 			$warnings .= $this->doc->icons(2).' <em>'.htmlspecialchars(sprintf($LANG->getLL('warning_elementusedmorethanonce',''), $this->global_tt_content_elementRegister[$contentTreeArr['el']['uid']], $contentTreeArr['el']['uid'])).'</em><br />';
 		}
@@ -1229,7 +1233,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			// Traverse container fields:
 		foreach($elementContentTreeArr['sub'][$sheet][$lKey] as $fieldID => $fieldValuesContent)	{
 			if ( is_array($fieldValuesContent[$vKey]) && (
-				$elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['isMapped'] || 
+				$elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['isMapped'] ||
 				$elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['type'] == 'no_map'
 			)) {
 				$fieldContent = $fieldValuesContent[$vKey];
@@ -1341,7 +1345,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		if ($flagRenderBeLayout) {
 				//replace lang markers
 			$beTemplate = preg_replace_callback(
-				"/###(LLL:[\w-\/:]+?\.xml\:[\w-\.]+?)###/", 
+				"/###(LLL:[\w-\/:]+?\.xml\:[\w-\.]+?)###/",
 				create_function(
 					'$matches',
 					'return $GLOBALS["LANG"]->sL($matches[1], 1);'
@@ -1450,7 +1454,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 							if (!$this->renderPreviewDataObjects) {
 								$this->renderPreviewDataObjects = $this->hooks_prepareObjectsArray ('renderPreviewDataClass');
 							}
-							if (isset($this->renderPreviewDataObjects[$TCEformsConfiguration['allowed']]) 
+							if (isset($this->renderPreviewDataObjects[$TCEformsConfiguration['allowed']])
 								&& method_exists($this->renderPreviewDataObjects[$TCEformsConfiguration['allowed']], 'render_previewData_typeDb')) {
 								$previewContent .= $this->renderPreviewDataObjects[$TCEformsConfiguration['allowed']]->render_previewData_typeDb ($fieldValue, $fieldData, $previewData['fullRow']['uid'], $elData['table'], $this);
 							}
