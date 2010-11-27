@@ -70,7 +70,7 @@ class tx_templavoila_staticDStools {
 						$ok[0] = FALSE;
 						$description .= sprintf('||' . $GLOBALS['LANG']->sL('LLL:EXT:templavoila/res1/language/template_conf.xml:staticDS.wizard.dircheck.notset'), 'staticDS.path_page');
 					} else {
-						$ok[1] = $this->checkDirectory($conf['path_page']);
+						$ok[1] = $this->checkDirectory($conf['staticDS.']['path_page']);
 						if ($ok[1]) {
 							$description .= sprintf('|' . $GLOBALS['LANG']->sL('LLL:EXT:templavoila/res1/language/template_conf.xml:staticDS.wizard.dircheck.ok'), htmlspecialchars($conf['staticDS.']['path_page']));
 						} else {
@@ -103,13 +103,21 @@ class tx_templavoila_staticDStools {
 	/**
 	 *
 	 * @param	string 		$path
+	 * @return	boolean		TRUE if directory exists and is writable or could be created
 	 */
 	protected function checkDirectory($path) {
+		$status = FALSE;
 		$path = $path . (substr($path, -1) == '/' ? '' : '/');
-		if (!is_dir(PATH_site . $path)) {
-			t3lib_div::mkdir_deep(PATH_site, $path);
+		if (@is_writable(PATH_site . $path)) {
+			$status = TRUE;
 		}
-		return TRUE; #is_dir(path_site . substr($path, 0, -1));
+		if (!is_dir(PATH_site . $path)) {
+			$errors = t3lib_div::mkdir_deep(PATH_site, $path);
+			if ($errors === NULL) {
+				$status = TRUE;
+			}
+		}
+		return $status;
 	}
 
 	/**
