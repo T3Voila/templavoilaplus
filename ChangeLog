@@ -1,5 +1,6 @@
 2010-11-27  Tolleiv Nietsch <nietsch@aoemedia.de> 
 
+	* Follow-up to: Fixed bug: #15927: Remove icon »Create new element« if user has no rights to edit the pages content
 	* Fixed issue: #16567: Static DS Conversion Wizard does not check if path is writable and has wrong page-path to check (Thanks to Andreas Lappe)
 
 2010-11-22  Tolleiv Nietsch <nietsch@aoemedia.de> 

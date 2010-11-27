@@ -2845,7 +2845,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			$calcPerms = $GLOBALS['BE_USER']->calcPerms($row);
 			if (!$this->hasBasicEditRights('pages', $row)) {
 					// unsetting the "edit content" right - which is 16
-				$calcPerms = $calcPerms & 15;
+				$calcPerms = $calcPerms & ~16;
 			}
 			self::$calcPermCache[$pid] = $calcPerms;
 		}
@@ -2859,6 +2859,9 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 */
 	protected function hasBasicEditRights($table = null,array $record = null) {
 
+
+		$hasEditRights = FALSE;
+
 		if ($table == null) {
 			$table = $this->rootElementTable;
 		}
@@ -2867,14 +2870,18 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			$record = $this->rootElementRecord;
 		}
 
-		$id = $record[($table == 'pages' ? 'uid' : 'pid')];
-		$pageRecord = t3lib_BEfunc::getRecordWSOL('pages', $id);
+		if ($GLOBALS['BE_USER']->isAdmin()) {
+			$hasEditRights = TRUE;
+		} else {
+			$id = $record[($table == 'pages' ? 'uid' : 'pid')];
+			$pageRecord = t3lib_BEfunc::getRecordWSOL('pages', $id);
 
-		$mayEditPage = $GLOBALS['BE_USER']->doesUserHaveAccess($pageRecord, 16);
-		$mayModifyTable = t3lib_div::inList($GLOBALS['BE_USER']->groupData['tables_modify'], $table);
-		$mayEditContentField = t3lib_div::inList($GLOBALS['BE_USER']->groupData['non_exclude_fields'], $table . ':tx_templavoila_flex');
-
-		return $mayEditPage && $mayModifyTable && $mayEditContentField;
+			$mayEditPage = $GLOBALS['BE_USER']->doesUserHaveAccess($pageRecord, 16);
+			$mayModifyTable = t3lib_div::inList($GLOBALS['BE_USER']->groupData['tables_modify'], $table);
+			$mayEditContentField = t3lib_div::inList($GLOBALS['BE_USER']->groupData['non_exclude_fields'], $table . ':tx_templavoila_flex');
+			$hasEditRights = $mayEditPage && $mayModifyTable && $mayEditContentField;
+		}
+		return $hasEditRights;
 	}
 
 }
