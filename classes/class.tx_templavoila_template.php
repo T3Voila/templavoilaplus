@@ -304,7 +304,7 @@ class tx_templavoila_template {
 		}
 		$toDataprot =  t3lib_div::xml2array($this->row['localprocessing']);
 
-		if (is_array($toDatarpot)) {
+		if (is_array($toDataprot)) {
 			$dataprot = t3lib_div::array_merge_recursive_overrule($dataprot, $toDataprot);
 		}
 		return $dataprot;
