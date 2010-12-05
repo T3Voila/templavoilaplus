@@ -1,5 +1,6 @@
 2010-12-05 Tolleiv Nietsch <nietsch@aoemedia.de> 
 
+	* Fixed bug: #13822: Cut and paste in workspaces
 	* Fixed bug: #11359: When deleting versions of a CE record, page looses reference to the complete record 
 	* Fixed bug: #16521: Localize FCEs from the page module (Thanks to Andreas Kiessling)
 

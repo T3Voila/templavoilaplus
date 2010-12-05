@@ -976,9 +976,17 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	function render_framework_singleSheet($contentTreeArr, $languageKey, $sheet, $parentPointer=array(), $parentDsMeta=array()) {
 		global $LANG, $TYPO3_CONF_VARS;
 
-		$elementBelongsToCurrentPage = $contentTreeArr['el']['table'] == 'pages' || $contentTreeArr['el']['pid'] == $this->rootElementUid_pidForContent;
-
+		$elementBelongsToCurrentPage = FALSE;
 		$pid = $contentTreeArr['el']['table'] == 'pages' ? $contentTreeArr['el']['uid'] : $contentTreeArr['el']['pid'];
+		if ($contentTreeArr['el']['table'] == 'pages' || $contentTreeArr['el']['pid'] == $this->rootElementUid_pidForContent) {
+			$elementBelongsToCurrentPage = TRUE;
+		} else if ($contentTreeArr['el']['_ORIG_uid']) {
+			$record = t3lib_BEfunc::getMovePlaceholder('tt_content', $contentTreeArr['el']['uid']);
+			if (is_array($record) && $record['t3ver_move_id'] == $contentTreeArr['el']['uid']) {
+				$elementBelongsToCurrentPage = $this->rootElementUid_pidForContent == $record['pid'];
+				$pid = $record['pid'];
+			}
+		}
 		$calcPerms = $this->getCalcPerms($pid);
 
 		$canEditElement = $GLOBALS['BE_USER']->isPSet($calcPerms, 'pages', 'editcontent');
