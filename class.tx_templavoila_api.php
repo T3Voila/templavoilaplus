@@ -114,6 +114,7 @@ class tx_templavoila_api {
 	var $debug = false;
 	var $allSystemWebsiteLanguages = array();		// ->loadWebsiteLanguages() will set this to content of sys_language
 	var $modifyReferencesInLiveWS = false;
+	protected $cachedModWebTSconfig = array();
 
 	/**
 	 * The constructor.
@@ -1654,7 +1655,7 @@ class tx_templavoila_api {
 							$localizationInfoArr[$sys_language_uid]['localization_uid'] = $attachedLocalizations[$sys_language_uid];
 
 							$tt_content_elementRegister[$attachedLocalizations[$sys_language_uid]]++;
-						} elseif ($contentTreeArr['el']['CType']!='templavoila_pi1') {	// Only localize content elements with "Default" langauge set
+						} elseif ($contentTreeArr['el']['CType'] !== 'templavoila_pi1' || $this->isLocalizationLinkEnabledForFCE($contentTreeArr)) {	// Only localize content elements with "Default" language set
 							if ((int)$contentTreeArr['el']['sys_language_uid']===0)	{
 								$localizationInfoArr[$sys_language_uid] = array();
 								$localizationInfoArr[$sys_language_uid]['mode'] = 'localize';
@@ -1698,7 +1699,26 @@ class tx_templavoila_api {
 		return t3lib_beFunc::getRecordWSOL('tx_templavoila_tmplobj', $templateObjectUid);
 	}
 
+	/**
+	 * Checks that we are really only working on a FCE,
+	 * that it is not inline translatable
+	 * and that the localization for FCEs is enabled through pageTS / userTS
+	 *
+	 * @param	array $contentTreeArr The content element to check
+	 * @return	bool  TRUE, if all conditions are met to enable localization for the FCE through the page module
+	 */
+	protected function isLocalizationLinkEnabledForFCE ($contentTreeArr) {
+		$isLocalizationLinkEnabledForFCE = FALSE;
+		$modTSConfig =& $this->getModWebTSconfig ($contentTreeArr['el']['pid']);
+		if (intval($modTSConfig['properties']['enableLocalizationLinkForFCEs']) === 1 &&
+			$contentTreeArr['el']['CType'] === 'templavoila_pi1' &&
+			isset($contentTreeArr['ds_meta']['langDisable']) &&
+			intval ($contentTreeArr['ds_meta']['langDisable']) === 1) {
+			$isLocalizationLinkEnabledForFCE = TRUE;
+		}
 
+		return $isLocalizationLinkEnabledForFCE;
+	}
 
 
 
@@ -1808,6 +1828,22 @@ class tx_templavoila_api {
 	 */
 	public function modifyReferencesInLiveWS ( $enable=true ) {
 		$this->modifyReferencesInLiveWS = $enable;
+	}
+
+	/**
+	 * Retrieves the mod.web_txtemplavoilaM1 for a page and stores it in an instance variable.
+	 * This function is e.g. used to determine, if localization is enabled for FCEs.
+	 * Since they can be stored on different pages, different modTSconfigs might be needed.
+	 *
+	 * @param	int	  $pageId The page id to get the modTSconfig for
+	 * @return	array The fetched modTSconfig for the web module
+	 */
+	protected function getModWebTSconfig ($pageId) {
+		if (!isset($this->cachedModWebTSconfig[$pageId])) {
+			$modTSconfig = t3lib_BEfunc::getModTSconfig($pageId, 'mod.web_txtemplavoilaM1');
+			$this->cachedModWebTSconfig[$pageId] = $modTSconfig;
+}
+		return $this->cachedModWebTSconfig[$pageId];
 	}
 }
 
