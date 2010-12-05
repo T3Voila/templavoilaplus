@@ -1549,7 +1549,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 					if (isset($fieldValue['config']['TCEforms']['label'])) {
 						$label = $this->localizedFFLabel($fieldValue['config']['TCEforms']['label'], 1);
 					}
-					$data = (!$fieldValue['data'][$vKey] ? '' : $this->link_edit(htmlspecialchars(t3lib_div::fixed_lgd_cs(strip_tags($fieldValue['data'][$vKey]),200)), $table, $uid)) . '<br />';
+					$data = (!$fieldValue['data'][$vKey] ? '' : $this->link_edit(htmlspecialchars(t3lib_div::fixed_lgd_cs(strip_tags($fieldValue['data'][$vKey]),200)), $table, $uid));
 				} else {
 					// @todo no idea what we should to here
 				}
