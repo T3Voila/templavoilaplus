@@ -329,15 +329,18 @@ page.10.disableExplosivePreview = 1
 					$command = '';	// Do not delete! A hack but there is no other way to prevent deletion...
 				}
 				else {
-						// Access ok
-					if (intval($record['t3ver_oid']) > 0) {
-						$record = t3lib_BEfunc::getRecord('tt_content', intval($record['t3ver_oid']));
+					if (intval($record['t3ver_oid']) > 0 && $record['pid'] == -1) {
+							// we unlink a offline version in a workspace
+						if (abs($record['t3ver_wsid']) !== 0) {
+							$record = t3lib_BEfunc::getRecord('tt_content', intval($record['t3ver_oid']));
+						}
 					}
-
-					$sourceFlexformPointersArr = $templaVoilaAPI->flexform_getPointersByRecord($record['uid'], $record['pid']);
-					$sourceFlexformPointer = $sourceFlexformPointersArr[0];
-
-					$templaVoilaAPI->unlinkElement($sourceFlexformPointer);
+						// avoid that deleting offline version in the live workspace unlinks the online version - see #11359 
+					if ($record['uid'] && $record['pid']) {
+						$sourceFlexformPointersArr = $templaVoilaAPI->flexform_getPointersByRecord($record['uid'], $record['pid']);
+						$sourceFlexformPointer = $sourceFlexformPointersArr[0];
+						$templaVoilaAPI->unlinkElement($sourceFlexformPointer);
+					}
 				}
 				break;
 			case 'copy':
