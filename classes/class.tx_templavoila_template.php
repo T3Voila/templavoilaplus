@@ -289,7 +289,7 @@ class tx_templavoila_template {
 	 * @return array
 	 */
 	public function getLocalDataprotXML($skipDsDataprot = FALSE) {
-		return t3lib_div::array2xml($this->getLocalDataprotArray($skipDsDataprot), 'T3DataStructure', array('useCDATA' => 1));
+		return t3lib_div::array2xml_cs($this->getLocalDataprotArray($skipDsDataprot), 'T3DataStructure', array('useCDATA' => 1));
 	}
 
 	/**

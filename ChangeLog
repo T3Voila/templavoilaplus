@@ -1,3 +1,7 @@
+2010-12-17 Tolleiv Nietsch <nietsch@aoemedia.de> 
+
+	* Fixed bug: #16700: mod2 broken in 1.5.3 when TOs are used / incorrect parameters for t3lib_div::array2xml (Thanks to Andreas Kiessling)
+
 2010-12-05 Tolleiv Nietsch <nietsch@aoemedia.de> 
 
 	* Fixed bug: #16684: useless visual expansion of the nested section datapreview 
