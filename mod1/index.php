@@ -2601,6 +2601,30 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 		while(TRUE == ($row = $TYPO3_DB->sql_fetch_assoc($res)))	{
 			t3lib_BEfunc::workspaceOL('sys_language', $row);
+			if ($id) {
+				$table = 'pages_language_overlay';
+				$enableFields = t3lib_BEfunc::BEenableFields ( $table );
+				if (trim($enableFields) == 'AND') {
+					$enableFields = '';
+				}
+				$enableFields .= t3lib_BEfunc::deleteClause($table);
+				
+					// Selecting overlay record:
+				$resP = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+					'*',
+					'pages_language_overlay',
+					'pid='.intval($id).'
+						AND sys_language_uid='.intval($row['uid']),
+					'',
+					'',
+					'1'
+				);
+				$pageRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($resP);
+				$GLOBALS['TYPO3_DB']->sql_free_result($resP);
+				t3lib_BEfunc::workspaceOL('pages_language_overlay', $pageRow);
+				$row['PLO_hidden'] = $pageRow['hidden'];
+				$row['PLO_title'] = $pageRow['title'];
+			}
 			$output[$row['uid']]=$row;
 
 			if ($row['static_lang_isocode'])	{
