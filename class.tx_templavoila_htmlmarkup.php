@@ -1023,15 +1023,16 @@ class tx_templavoila_htmlmarkup {
         //pre-processing of blocks
        	if ((t3lib_div::inList($tagsBlock, 'script') && t3lib_div::inList($tagsBlock, 'style'))  && count($blocks) > 1) {
        		// correct the blocks (start of CC could be in prior block, end of CC in net block)
+
 			if(count($blocks) > 1) {
 				foreach($blocks as $key=>$block) {
 					// possible that CC for style start end of block
-					$matchCount1 = preg_match_all('/<!([-]+)?\[if(.+)\]([-]+)?>/', $block, $matches1);
-					$matchCount2 = preg_match_all('/<!([-]+)?\[endif\]([-]+)?>/', $block, $matches2);
+					$matchCount1 = preg_match_all('/<!([-]+)?\[if(.+)\]([-]+)?>(<!-->)?/', $block, $matches1);
+					$matchCount2 = preg_match_all('/(<!-->)?<!([-]+)?\[endif\]([-]+)?>/', $block, $matches2);
 					if ($matchCount2 < $matchCount1) {
 						$startCCTag = $matches1[0][$matchCount1 - 1];
 						//endtag is start of block3
-						$matchCount2 = preg_match_all('/<!([-]+)?\[endif\]([-]+)?>/', $blocks[2], $matches2);
+						$matchCount2 = preg_match_all('/(<!-->)?<!([-]+)?\[endif\]([-]+)?>/', $blocks[2], $matches2);
 						$endCCTag = $matches2[0][0];
 						//manipulate blocks
 						$blocks[$key] = substr(rtrim($block), 0, -1 * strlen($startCCTag));
@@ -1072,14 +1073,14 @@ class tx_templavoila_htmlmarkup {
 
 						// Split content by the solo tags
 					$soloParts = $this->htmlParse->splitTags($tagsSolo,$v);
-#debug($soloParts);
-                    //search for conditional comments
+
+						//search for conditional comments
 					$startTag = '';
 					if(count($soloParts) > 1 && $recursion == 0) {
 						foreach($soloParts as $key => $value) {
 							//check for downlevel-hidden and downlevel-revealed syntax, see http://msdn.microsoft.com/de-de/library/ms537512(en-us,VS.85).aspx
-							$matchCount1 = preg_match_all('/<!([-]+)?\[if(.+)\]([-]+)?>/', $value, $matches1);
-							$matchCount2 = preg_match_all('/<!([-]+)?\[endif\]([-]+)?>/', $value, $matches2);
+							$matchCount1 = preg_match_all('/<!([-]+)?\[if(.+)\]([-]+)?>(<!-->)?/', $value, $matches1);
+							$matchCount2 = preg_match_all('/(<!--)?<!([-]+)?\[endif\]([-]+)?>/', $value, $matches2);
 
 							// startTag was in last element
 							if ($startTag) {
@@ -1414,7 +1415,7 @@ class tx_templavoila_htmlmarkup {
 		}
 		return '';
 	}
-	
+
 	public static function getGnyfMarkup($tagName, $title='', $onclick='') {
 		$tag = strtolower($tagName);
 		if (!isset(self::$tagConf[$tag])) {

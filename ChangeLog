@@ -1,3 +1,7 @@
+2011-01-23 Tolleiv Nietsch <nietsch@aoemedia.de> 
+
+	* Fixed bug: #16886: Include Header parts - comments hack bug 
+
 2010-12-20 Tolleiv Nietsch <nietsch@aoemedia.de> 
 
 	* Fixed bug: #16791: language flag might indicate wrong visibility in workspaces (Thanks to Nikola Stojiljkovic)
