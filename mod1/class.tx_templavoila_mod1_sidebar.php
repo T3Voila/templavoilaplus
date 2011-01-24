@@ -167,6 +167,20 @@ class tx_templavoila_mod1_sidebar {
 		if (is_array ($this->sideBarItems) && count ($this->sideBarItems)) {
 			uasort ($this->sideBarItems, array ($this, 'sortItemsCompare'));
 
+				// sort and order the visible tabs
+			$visibleTablist = $this->pObj->modTSconfig['properties']['visibleTabs'];
+			if ($visibleTablist) {
+				$visibleTabs = t3lib_div::trimExplode(',', $visibleTablist);
+				$finalSideBarItems = array();
+				foreach ($visibleTabs as $itemKey) {
+					if (isset($this->sideBarItems[$itemKey])) {
+						$finalSideBarItems[$itemKey] = $this->sideBarItems[$itemKey];
+					}
+				}
+				$this->sideBarItems = $finalSideBarItems;
+			}
+
+
 				// Render content of each sidebar item:
 			$index = 0;
 			$numSortedSideBarItems = array();
