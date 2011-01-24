@@ -2503,7 +2503,7 @@ lib.'.$menuType.'.1.ACT {
 		$paths = $this->getTemplatePaths();
 		$files = array();
 		foreach ($paths as $path) {
-			$files = array_merge(t3lib_div::getFilesInDir($prefix . $path, 'html,htm,tmpl',1), $files);
+			$files = array_merge(t3lib_div::getAllFilesAndFoldersInPath(array(), $prefix . $path . ((substr($path, -1) != '/') ? '/' : ''), 'html,htm,tmpl', 0), $files);
 		}
 		return $files;
 	}
