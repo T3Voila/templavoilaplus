@@ -1,3 +1,7 @@
+2011-01-25 Tolleiv Nietsch <nietsch@aoemedia.de> 
+
+	* Fixed bug: #17005: Adjust TCA setup for pages and tt_content to new 4.5 "style" 
+
 2011-01-24 Tolleiv Nietsch <nietsch@aoemedia.de> 
 
 	* Fixed bug: #16979: TemplaVoila 1.5.3 wizard error in src-4.4.6 site. (Thanks to Jonathan Krusy and Bodo Frommelt)

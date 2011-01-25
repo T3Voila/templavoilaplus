@@ -188,10 +188,31 @@ if ($_EXTCONF['enable.']['selectDataStructure']) {
 	$TCA['tt_content']['ctrl']['requestUpdate'] .= 'tx_templavoila_ds';
 }
 
-$TCA['tt_content']['types'][$_EXTKEY . '_pi1']['showitem'] =
-	'CType;;4;;1-1-1, hidden, header;;' . (($_EXTCONF['enable.']['renderFCEHeader']) ? '3' : '' ) . ';;2-2-2, linkToTop;;;;3-3-3,
-	 --div--;LLL:EXT:templavoila/locallang_db.xml:tt_content.CType_pi1,' . (($_EXTCONF['enable.']['selectDataStructure']) ? 'tx_templavoila_ds,' : '') . 'tx_templavoila_to,tx_templavoila_flex;;;;2-2-2,
-	 --div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access, starttime, endtime, fe_group';
+
+if(t3lib_div::int_from_ver(TYPO3_version) >= 4005000) {
+
+		$TCA['tt_content']['types'][$_EXTKEY . '_pi1']['showitem'] =
+					'--palette--;LLL:EXT:cms/locallang_ttc.xml:palette.general;general,
+					--palette--;LLL:EXT:cms/locallang_ttc.xml:palette.headers;headers,
+				--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.access,
+					--palette--;LLL:EXT:cms/locallang_ttc.xml:palette.visibility;visibility,
+					--palette--;LLL:EXT:cms/locallang_ttc.xml:palette.access;access,
+				--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.appearance,
+					--palette--;LLL:EXT:cms/locallang_ttc.xml:palette.frames;frames,
+				--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.extended';
+		if ($_EXTCONF['enable.']['selectDataStructure']) {
+			t3lib_extMgm::addToAllTCAtypes('tt_content', 'tx_templavoila_ds;;;;1-1-1,tx_templavoila_to', $_EXTKEY . '_pi1', 'after:layout');
+		} else {
+			t3lib_extMgm::addToAllTCAtypes('tt_content', 'tx_templavoila_to', $_EXTKEY . '_pi1', 'after:layout');
+		}
+		t3lib_extMgm::addToAllTCAtypes('tt_content', 'tx_templavoila_flex;;;;1-1-1', $_EXTKEY . '_pi1', 'after:subheader');
+
+} else {
+	$TCA['tt_content']['types'][$_EXTKEY . '_pi1']['showitem'] =
+		'CType;;4;;1-1-1, hidden, header;;' . (($_EXTCONF['enable.']['renderFCEHeader']) ? '3' : '' ) . ';;2-2-2, linkToTop;;;;3-3-3,
+		--div--;LLL:EXT:templavoila/locallang_db.xml:tt_content.CType_pi1,' . (($_EXTCONF['enable.']['selectDataStructure']) ? 'tx_templavoila_ds,' : '') . 'tx_templavoila_to,tx_templavoila_flex;;;;2-2-2,
+		--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access, starttime, endtime, fe_group';
+}
 
 
 	// For pages:
@@ -209,7 +230,7 @@ $tempColumns = array (
 			'size' => 1,
 			'minitems' => 0,
 			'maxitems' => 1,
-			'suppress_icons' => 'IF_VALUE_FALSE',
+			'suppress_icons' => 'ONLY_SELECTED',
 			'selicon_cols' => 10,
 		)
 	),
@@ -226,6 +247,7 @@ $tempColumns = array (
 			'size' => 1,
 			'minitems' => 0,
 			'maxitems' => 1,
+			'suppress_icons' => 'ONLY_SELECTED',
 			'selicon_cols' => 10,
 		)
 	),
@@ -242,7 +264,7 @@ $tempColumns = array (
 			'size' => 1,
 			'minitems' => 0,
 			'maxitems' => 1,
-			'suppress_icons' => 'IF_VALUE_FALSE',
+			'suppress_icons' => 'ONLY_SELECTED',
 			'selicon_cols' => 10,
 		)
 	),
@@ -259,6 +281,7 @@ $tempColumns = array (
 			'size' => 1,
 			'minitems' => 0,
 			'maxitems' => 1,
+			'suppress_icons' => 'ONLY_SELECTED',
 			'selicon_cols' => 10,
 		)
 	),
@@ -276,14 +299,29 @@ $tempColumns = array (
 );
 t3lib_extMgm::addTCAcolumns('pages', $tempColumns, 1);
 if ($_EXTCONF['enable.']['selectDataStructure']) {
-	t3lib_extMgm::addToAllTCAtypes('pages','tx_templavoila_ds;;;;1-1-1,tx_templavoila_to,tx_templavoila_next_ds;;;;1-1-1,tx_templavoila_next_to,tx_templavoila_flex;;;;1-1-1');
+
+	if(t3lib_div::int_from_ver(TYPO3_version) >= 4005000) {
+		t3lib_extMgm::addToAllTCAtypes('pages', 'tx_templavoila_ds;;;;1-1-1,tx_templavoila_to', '', 'replace:backend_layout');
+		t3lib_extMgm::addToAllTCAtypes('pages', 'tx_templavoila_next_ds;;;;1-1-1,tx_templavoila_next_to', '', 'replace:backend_layout_next_level');
+		t3lib_extMgm::addToAllTCAtypes('pages', 'tx_templavoila_flex;;;;1-1-1', '', 'after:title');
+	} else {
+		t3lib_extMgm::addToAllTCAtypes('pages','tx_templavoila_ds;;;;1-1-1,tx_templavoila_to,tx_templavoila_next_ds;;;;1-1-1,tx_templavoila_next_to,tx_templavoila_flex;;;;1-1-1');
+	}
+
 	if ($TCA['pages']['ctrl']['requestUpdate'] != '') {
 		$TCA['pages']['ctrl']['requestUpdate'] .= ',';
 	}
 	$TCA['pages']['ctrl']['requestUpdate'] .= 'tx_templavoila_ds,tx_templavoila_next_ds';
-}
-else {
-	t3lib_extMgm::addToAllTCAtypes('pages','tx_templavoila_to;;;;1-1-1,tx_templavoila_next_to;;;;1-1-1,tx_templavoila_flex;;;;1-1-1');
+
+} else {
+	if(t3lib_div::int_from_ver(TYPO3_version) >= 4005000) {
+		t3lib_extMgm::addToAllTCAtypes('pages', 'tx_templavoila_to;;;;1-1-1', '', 'replace:backend_layout');
+		t3lib_extMgm::addToAllTCAtypes('pages', 'tx_templavoila_next_to;;;;1-1-1', '', 'replace:backend_layout_next_level');
+		t3lib_extMgm::addToAllTCAtypes('pages', 'tx_templavoila_flex;;;;1-1-1', '', 'after:title');
+	} else {
+		t3lib_extMgm::addToAllTCAtypes('pages','tx_templavoila_to;;;;1-1-1,tx_templavoila_next_to;;;;1-1-1,tx_templavoila_flex;;;;1-1-1');
+	}
+
 	unset($TCA['pages']['columns']['tx_templavoila_to']['displayCond']);
 	unset($TCA['pages']['columns']['tx_templavoila_next_to']['displayCond']);
 }
@@ -300,9 +338,9 @@ if (TYPO3_MODE=='BE')	{
 	t3lib_extMgm::addLLrefForTCAdescr('_MOD_web_func','EXT:wizard_crpages/locallang_csh.xml');
 }
 	// complex condition to make sure the icons are available during frontend editing...
-if (TYPO3_MODE == 'BE' || 
+if (TYPO3_MODE == 'BE' ||
 	(TYPO3_MODE == 'FE' && isset($GLOBALS['BE_USER']) && method_exists($GLOBALS['BE_USER'], 'isFrontendEditingActive')  && $GLOBALS['BE_USER']->isFrontendEditingActive())
-) { 
+) {
 	if(t3lib_div::int_from_ver(TYPO3_version) >= 4004000) {
 		$icons = array(
 			'paste' => t3lib_extMgm::extRelPath('templavoila') . 'mod1/clip_pasteafter.gif',
