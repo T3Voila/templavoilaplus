@@ -402,7 +402,7 @@ class tx_templavoila_mod1_sidebar {
 				</td><td width="200">
 					' . $LANG->getLL('sidebar_advancedfunctions_labelshowhidden', 1) . ':
 				</td>
-				<td>'.t3lib_BEfunc::getFuncCheck($pObj->id,'SET[tt_content_showHidden]',$pObj->MOD_SETTINGS['tt_content_showHidden'],'','').'</td>
+				<td>' . t3lib_BEfunc::getFuncCheck($pObj->id, 'SET[tt_content_showHidden]', $pObj->MOD_SETTINGS['tt_content_showHidden'] !== '0', '', '') . '</td>
 			</tr>
 		';
 

@@ -616,7 +616,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 					$script .=
 						'var all_items = ' . $all_items_json . ';' .
 						'var sortable_items = ' . $sortable_items_json . ';' .
-						'var sortable_removeHidden = ' . ($this->MOD_SETTINGS['tt_content_showHidden'] ? 'false;' : 'true;') .
+						'var sortable_removeHidden = ' . ($this->MOD_SETTINGS['tt_content_showHidden'] !== '0' ? 'false;' : 'true;') .
 						'var sortable_linkParameters = \'' . $this->link_getParameters() . '\';';
 
 					$containment = '[' . t3lib_div::csvValues($this->sortableContainers, ',', '"') . ']';
@@ -1287,7 +1287,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 					foreach($fieldContent['el_list'] as $position => $subElementKey)	{
 						$subElementArr = $fieldContent['el'][$subElementKey];
 
-						if ((!$subElementArr['el']['isHidden'] || $this->MOD_SETTINGS['tt_content_showHidden']) && $this->displayElement($subElementArr))	{
+						if ((!$subElementArr['el']['isHidden'] || $this->MOD_SETTINGS['tt_content_showHidden'] !== '0') && $this->displayElement($subElementArr))	{
 
 								// When "onlyLocalized" display mode is set and an alternative language gets displayed
 							if (($this->MOD_SETTINGS['langDisplayMode'] == 'onlyLocalized') && $this->currentLanguageUid>0)	{
@@ -2040,7 +2040,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 							if (is_array($fieldContent['el_list']))	 {
 								foreach($fieldContent['el_list'] as $position => $subElementKey)	{
 									$subElementArr = $fieldContent['el'][$subElementKey];
-									if (!$subElementArr['el']['isHidden'] || $this->MOD_SETTINGS['tt_content_showHidden'])	{
+									if (!$subElementArr['el']['isHidden'] || $this->MOD_SETTINGS['tt_content_showHidden'] !== '0')	{
 
 											// Modify the flexform pointer so it points to the position of the curren sub element:
 										$subElementPointer['position'] = $position;
@@ -2608,7 +2608,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 					$enableFields = '';
 				}
 				$enableFields .= t3lib_BEfunc::deleteClause($table);
-				
+
 					// Selecting overlay record:
 				$resP = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 					'*',

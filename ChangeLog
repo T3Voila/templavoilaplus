@@ -1,11 +1,7 @@
 2011-01-25 Tolleiv Nietsch <nietsch@aoemedia.de> 
 
+	* Fixed bug: #17234: Copying an FCE into another place doesn't show them initially, this might confuse users
 	* Fixed bug: #17005: Adjust TCA setup for pages and tt_content to new 4.5 "style" 
-
-2011-01-24 Tolleiv Nietsch <nietsch@aoemedia.de> 
-
-	* Fixed bug: #16979: TemplaVoila 1.5.3 wizard error in src-4.4.6 site. (Thanks to Jonathan Krusy and Bodo Frommelt)
-	* Fixed bug: #17242: Possibility to disable some tabs (and to reorder them) (Thanks to Benjamin Mack)
 
 2011-01-23 Tolleiv Nietsch <nietsch@aoemedia.de> 
 
