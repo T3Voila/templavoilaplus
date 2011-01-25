@@ -1,5 +1,6 @@
 2011-01-25 Tolleiv Nietsch <nietsch@aoemedia.de> 
 
+	* Fixed bug: #16811: The pageTS config of templavoila. is not merged with userTS config 
 	* Fixed bug: #17234: Copying an FCE into another place doesn't show them initially, this might confuse users
 	* Fixed bug: #17005: Adjust TCA setup for pages and tt_content to new 4.5 "style" 
 

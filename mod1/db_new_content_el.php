@@ -153,8 +153,8 @@ class tx_templavoila_dbnewcontentel {
 
 		$this->doc->form='<form action="" name="editForm">';
 
-		$config = t3lib_BEfunc::getPagesTSconfig($this->id);
-		$this->config = $config['templavoila.']['wizards.']['newContentElement.'];
+		$tsconfig = t3lib_BEfunc::getModTSconfig($this->id, 'templavoila.wizards.newContentElement');
+		$this->config = $tsconfig['properties'];
 
 			// Getting the current page and receiving access information (used in main())
 		$perms_clause = $BE_USER->getPagePermsClause(1);
