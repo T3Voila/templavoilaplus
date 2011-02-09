@@ -59,6 +59,7 @@ final class tx_templavoila_icons {
 	);
 
 	static $useOldIcons = null;
+	static $useOldFlags = null;
 	static $reInit = true;
 
 	public static function init() {
@@ -66,7 +67,6 @@ final class tx_templavoila_icons {
 		if(self::$useOldIcons !== null && self::$reInit == false) {
 			return;
 		}
-
 		if(t3lib_div::int_from_ver(TYPO3_version) < 4004000 || self::$useOldIcons) {
 			self::$useOldIcons = true;
 			if (is_array($GLOBALS['TBE_STYLES']['spritemanager']['singleIcons'])) {
@@ -79,6 +79,12 @@ final class tx_templavoila_icons {
 		} else {
 			self::$useOldIcons = false;
 		}
+		if(t3lib_div::int_from_ver(TYPO3_version) < 4005000 || self::$useOldFlags) {
+			self::$useOldFlags = true;
+		} else {
+			self::$useOldFlags = false;
+		}
+
 		self::$reInit = true;
 	}
 
@@ -127,5 +133,65 @@ final class tx_templavoila_icons {
 		}
 	}
 
+	/**
+	 *
+	 * @param string $lang
+	 * @return string
+	 */
+	public static function getFlagIconForLanguage($flagName, $options = array()) {
+
+		if (self::$useOldFlags === null) {
+			self::init();
+		}
+		$flag = null;
+		if (!strlen($flagName)) {
+			$flagName = 'unknown';
+		}
+
+		if (self::$useOldFlags) {
+
+			if ($flagName == 'unknown') {
+				$flagName = $flagName . '.gif';
+			} elseif($flagName == 'multiple') {
+				$flagName = 'multi-language.gif';
+			}
+			$alt = isset($options['alt']) ? ' alt="' . $options['alt'] . '"' : ' alt=""';
+			$title = isset($options['title']) ? ' title="' . $options['title'] . '"' : '';
+			$flag = '<img src="' . self::getFlagIconFileForLanguage($flagName) . '"'. $title . $alt .'/>';
+		} else {
+			$flag = t3lib_iconWorks::getSpriteIcon('flags-' . $flagName, $options);
+		}
+		return $flag;
+	}
+
+	/**
+	 *
+	 * @param string $lang
+	 * @return string
+	 */
+	public static function getFlagIconFileForLanguage($flagName) {
+
+		if (self::$useOldFlags === null) {
+			self::init();
+		}
+		$flag = null;
+		if (!strlen($flagName)) {
+			$flagName = 'unknown';
+		}
+		if (self::$useOldFlags) {
+			$flagAbsPath = t3lib_div::getFileAbsFileName($GLOBALS['TCA']['sys_language']['columns']['flag']['config']['fileFolder']);
+			$flagIconPath = $GLOBALS['BACK_PATH'] . '../' . substr($flagAbsPath, strlen(PATH_site));
+			if (is_file($flagAbsPath . $flagName)) {
+				$flag = $flagIconPath . $flagName;
+			}
+		} else {
+				// same dirty trick as for #17286 in Core
+			if(is_file(t3lib_div::getFileAbsFileName('EXT:t3skin/images/flags/'. $flagName . '.png', FALSE))) {
+					// resolving extpath on its own because otherwise this might not return a relative path
+				$flag = $GLOBALS['BACK_PATH'] . t3lib_extMgm::extRelPath('t3skin') . '/images/flags/' . $flagName . '.png';
+			}
+		}
+		return $flag;
+	}
 }
 ?>

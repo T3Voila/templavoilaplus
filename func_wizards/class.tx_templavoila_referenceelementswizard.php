@@ -236,7 +236,7 @@ class tx_templavoila_referenceElementsWizard extends t3lib_extobjbase {
 						'vLang' => $vKey,
 						'position' => -1
 					);
- 
+
 					$this->templavoilaAPIObj->referenceElementByUid ($elementUid, $destinationPointer);
 				}
 			}
@@ -312,7 +312,7 @@ class tx_templavoila_referenceElementsWizard extends t3lib_extobjbase {
 				'uid' => 0,
 				'title' => strlen ($this->modSharedTSconfig['properties']['defaultLanguageLabel']) ? $this->modSharedTSconfig['properties']['defaultLanguageLabel'] : $LANG->getLL('defaultLanguage'),
 				'ISOcode' => 'DEF',
-				'flagIcon' => strlen($this->modSharedTSconfig['properties']['defaultLanguageFlag']) && @is_file($flagAbsPath.$this->modSharedTSconfig['properties']['defaultLanguageFlag']) ? $flagIconPath.$this->modSharedTSconfig['properties']['defaultLanguageFlag'] : null,
+				'flagIcon' => strlen($this->modSharedTSconfig['properties']['defaultLanguageFlag']) ? $this->modSharedTSconfig['properties']['defaultLanguageFlag'] : null
 			);
 		}
 
@@ -321,7 +321,7 @@ class tx_templavoila_referenceElementsWizard extends t3lib_extobjbase {
 				'uid' => -1,
 				'title' => $LANG->getLL ('multipleLanguages'),
 				'ISOcode' => 'DEF',
-				'flagIcon' => $flagIconPath.'multi-language.gif',
+				'flagIcon' => 'multiple',
 			);
 		}
 
@@ -336,7 +336,7 @@ class tx_templavoila_referenceElementsWizard extends t3lib_extobjbase {
 				}
 			}
 		if (strlen ($row['flag'])) {
-				$output[$row['uid']]['flagIcon'] = @is_file($flagAbsPath.$row['flag']) ? $flagIconPath.$row['flag'] : '';
+				$output[$row['uid']]['flagIcon'] = $row['flag'];
 			}
 
 			if ($onlyIsoCoded && !$output[$row['uid']]['ISOcode']) unset($output[$row['uid']]);

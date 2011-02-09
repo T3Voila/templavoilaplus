@@ -1093,7 +1093,11 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 			// Prepare the language icon:
 		$languageLabel = htmlspecialchars ($this->allAvailableLanguages[$contentTreeArr['el']['sys_language_uid']]['title']);
-		$languageIcon = $this->allAvailableLanguages[$languageUid]['flagIcon'] ? '<img src="'.$this->allAvailableLanguages[$languageUid]['flagIcon'].'" title="'.$languageLabel.'" alt="'.$languageLabel.'" />' : ($languageLabel && $languageUid ? '['.$languageLabel.']' : '');
+		if ($this->allAvailableLanguages[$languageUid]['flagIcon']) {
+			$languageIcon = tx_templavoila_icons::getFlagIconForLanguage($this->allAvailableLanguages[$languageUid]['flagIcon'], array('title' => $languageLabel, 'alt' => $languageLabel));
+		} else {
+			$languageIcon = ($languageLabel && $languageUid ? '[' . $languageLabel . ']' : '');
+		}
 
 			// If there was a language icon and the language was not default or [all] and if that langauge is accessible for the user, then wrap the  flag with an edit link (to support the "Click the flag!" principle for translators)
 		if ($languageIcon && $languageUid>0 && $GLOBALS['BE_USER']->checkLanguageAccess($languageUid) && $contentTreeArr['el']['table']==='tt_content')	{
@@ -1722,8 +1726,8 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 					if ($l10nInfo && $BE_USER->checkLanguageAccess($sys_language_uid))	{
 						$tRows[]='
 							<tr class="bgColor4">
-								<td width="1%">'.$flagLink_begin.($sLInfo['flagIcon'] ? '<img src="'.$sLInfo['flagIcon'].'" alt="'.htmlspecialchars($sLInfo['title']).'" title="'.htmlspecialchars($sLInfo['title']).'" />' : $sLInfo['title']).$flagLink_end.'</td>
-								<td width="99%">'.$l10nInfo.'</td>
+								<td width="1%">' . $flagLink_begin . tx_templavoila_icons::getFlagIconForLanguage($sLInfo['flagIcon'], array('title' => $sLInfo['title'], 'alt' => $sLInfo['title'])) . $flagLink_end . '</td>
+								<td width="99%">' . $l10nInfo . '</td>
 							</tr>';
 					}
 				}
@@ -1923,8 +1927,17 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		}
 
 			// Prepare the language icon:
-		$languageLabel = htmlspecialchars ($this->allAvailableLanguages[$contentTreeArr['el']['sys_language_uid']]['title']);
-		$languageIcon = $this->allAvailableLanguages[$languageUid]['flagIcon'] ? '<img src="'.$this->allAvailableLanguages[$languageUid]['flagIcon'].'" title="'.$languageLabel.'" alt="'.$languageLabel.'" />' : ($languageLabel && $languageUid ? '['.$languageLabel.']' : '');
+
+		if ($languageUid > 0) {
+			$languageLabel = htmlspecialchars($this->pObj->allAvailableLanguages[$languageUid]['title']);
+			if ($this->pObj->allAvailableLanguages[$languageUid]['flagIcon']) {
+				$languageIcon = tx_templavoila_icons::getFlagIconForLanguage($this->pObj->allAvailableLanguages[$languageUid]['flagIcon'], array('title' => $languageLabel, 'alt' => $languageLabel));
+			} else {
+				$languageIcon = '[' . $languageLabel . ']';
+			}
+		} else {
+			$languageIcon = '';
+		}
 
 			// If there was a langauge icon and the language was not default or [all] and if that langauge is accessible for the user, then wrap the flag with an edit link (to support the "Click the flag!" principle for translators)
 		if ($languageIcon && $languageUid>0 && $GLOBALS['BE_USER']->checkLanguageAccess($languageUid) && $contentTreeArr['el']['table']==='tt_content')	{
@@ -2103,7 +2116,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 								'title' => t3lib_BEfunc::getRecordTitle('tt_content', $olrow),
 								'table' => 'tt_content',
 								'uid' =>  $olrow['uid'],
-								'flag' => $flagLink_begin.($sLInfo['flagIcon'] ? '<img src="'.$sLInfo['flagIcon'].'" alt="'.htmlspecialchars($sLInfo['title']).'" title="'.htmlspecialchars($sLInfo['title']).'" />' : $sLInfo['title']).$flagLink_end,
+								'flag' => $flagLink_begin . tx_templavoila_icons::getFlagIconForLanguage($sLInfo['flagIcon'], array('title' => $sLInfo['title'], 'alt' => $sLInfo['title'])) . $flagLink_end,
 								'isNewVersion' => $olrow['_ORIG_uid'] ? TRUE : FALSE,
 							);
 						break;
@@ -2556,8 +2569,6 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		global $LANG, $TYPO3_DB, $BE_USER, $TCA, $BACK_PATH;
 
 		t3lib_div::loadTCA ('sys_language');
-		$flagAbsPath = t3lib_div::getFileAbsFileName($TCA['sys_language']['columns']['flag']['config']['fileFolder']);
-		$flagIconPath = $BACK_PATH.'../'.substr($flagAbsPath, strlen(PATH_site));
 
 		$output = array();
 		$excludeHidden = $BE_USER->isAdmin() ? '1=1' : 'sys_language.hidden=0';
@@ -2586,7 +2597,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				'uid' => 0,
 				'title' => strlen ($this->modSharedTSconfig['properties']['defaultLanguageLabel']) ? $this->modSharedTSconfig['properties']['defaultLanguageLabel'] : $LANG->getLL('defaultLanguage'),
 				'ISOcode' => 'DEF',
-				'flagIcon' => strlen($this->modSharedTSconfig['properties']['defaultLanguageFlag']) && @is_file($flagAbsPath.$this->modSharedTSconfig['properties']['defaultLanguageFlag']) ? $flagIconPath.$this->modSharedTSconfig['properties']['defaultLanguageFlag'] : null,
+				'flagIcon' => strlen($this->modSharedTSconfig['properties']['defaultLanguageFlag']) ? $this->modSharedTSconfig['properties']['defaultLanguageFlag'] : null
 			);
 		}
 
@@ -2595,7 +2606,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				'uid' => -1,
 				'title' => $LANG->getLL ('multipleLanguages'),
 				'ISOcode' => 'DEF',
-				'flagIcon' => $flagIconPath.'multi-language.gif',
+				'flagIcon' => 'multiple',
 			);
 		}
 
@@ -2634,7 +2645,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				}
 			}
 			if (strlen($row['flag'])) {
-				$output[$row['uid']]['flagIcon'] = @is_file($flagAbsPath.$row['flag']) ? $flagIconPath.$row['flag'] : '';
+				$output[$row['uid']]['flagIcon'] = $row['flag'];
 			}
 
 			if ($onlyIsoCoded && !$output[$row['uid']]['ISOcode']) unset($output[$row['uid']]);

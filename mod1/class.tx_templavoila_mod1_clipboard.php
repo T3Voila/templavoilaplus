@@ -275,8 +275,12 @@ class tx_templavoila_mod1_clipboard {
 			$elementPointerString = 'tt_content:'.$row['uid'];
 
 				// Prepare the language icon:
-			$languageLabel = htmlspecialchars ($this->pObj->allAvailableLanguages[$row['sys_language_uid']]['title']);
-			$languageIcon = $this->pObj->allAvailableLanguages[$row['sys_language_uid']]['flagIcon'] ? '<img src="'.$this->pObj->allAvailableLanguages[$row['sys_language_uid']]['flagIcon'].'" title="'.$languageLabel.'" alt="'.$languageLabel.'"  />' : ($languageLabel && $row['sys_language_uid'] ? '['.$languageLabel.']' : '');
+			$languageLabel = htmlspecialchars($this->pObj->allAvailableLanguages[$row['sys_language_uid']]['title']);
+			if ($this->pObj->allAvailableLanguages[$row['sys_language_uid']]['flagIcon']) {
+				$languageIcon = tx_templavoila_icons::getFlagIconForLanguage($this->pObj->allAvailableLanguages[$row['sys_language_uid']]['flagIcon'], array('title' => $languageLabel, 'alt' => $languageLabel));
+			} else {
+				$languageIcon = ($languageLabel && $row['sys_language_uid'] ? '[' . $languageLabel . ']' : '');
+			}
 
 				// Prepare buttons:
 			$cutButton = $this->element_getSelectButtons($elementPointerString, 'ref');

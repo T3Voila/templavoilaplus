@@ -1,5 +1,6 @@
 2011-02-09 Tolleiv Nietsch <nietsch@aoemedia.de> 
 
+	* Fixed bug: #16520: Flags are gone in page module in TYPO3 4.5 
 	* Followup-to: #17242: Possibility to disable some tabs / consistent naming and manual update
 
 2011-01-25 Tolleiv Nietsch <nietsch@aoemedia.de> 
