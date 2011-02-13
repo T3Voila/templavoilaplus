@@ -597,6 +597,9 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				if (t3lib_div::_GP('ajaxUnlinkRecord')) {
 					$this->render_editPageScreen();
 					echo $this->render_sidebar();
+					if(t3lib_div::int_from_ver(TYPO3_version) > 4005000) {
+						t3lib_formprotection_Factory::get()->persistTokens();
+					}
 					exit;
 				}
 

@@ -1,3 +1,7 @@
+2011-02-14 Tolleiv Nietsch <nietsch@aoemedia.de> 
+
+	* Fixed bug: #17467: CSRF security message on deleting content elements from non-used elements
+
 2011-02-09 Tolleiv Nietsch <nietsch@aoemedia.de> 
 
 	* Fixed bug: #16520: Flags are gone in page module in TYPO3 4.5 
