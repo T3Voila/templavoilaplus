@@ -1242,7 +1242,9 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			if ( is_array($fieldValuesContent[$vKey]) && (
 				$elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['isMapped'] ||
 				$elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['type'] == 'no_map'
-			)) {
+				) &&
+				$elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['tx_templavoila']['preview'] != 'disable'
+			) {
 				$fieldContent = $fieldValuesContent[$vKey];
 
 				$cellContent = '';
