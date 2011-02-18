@@ -127,10 +127,14 @@ class tx_templavoila_mod1_wizards {
 
 						// Get TSconfig for a different selection of fields in the editing form
 					$TSconfig = t3lib_BEfunc::getModTSconfig($newID, 'mod.web_txtemplavoilaM1.createPageWizard.fieldNames');
-					$fieldNames = isset ($TSconfig['value']) ? $TSconfig['value'] : 'hidden,title,alias';
+					$fieldNames = trim(isset ($TSconfig['value']) ? $TSconfig['value'] : 'hidden,title,alias');
+					$columnsOnly = '';
+					if ($fieldNames !== '*') {
+						$columnsOnly = '&columnsOnly='.rawurlencode($fieldNames);
+					}
 
 						// Create parameters and finally run the classic page module's edit form for the new page:
-					$params = '&edit[pages]['.$newID.']=edit&columnsOnly='.rawurlencode($fieldNames);
+					$params = '&edit[pages]['.$newID.']=edit' . $columnsOnly;
 					$returnUrl = rawurlencode(t3lib_div::getIndpEnv('SCRIPT_NAME').'?id='.$newID.'&updatePageTree=1');
 
 					header('Location: '.t3lib_div::locationHeaderUrl($this->doc->backPath.'alt_doc.php?returnUrl='.$returnUrl.$params));

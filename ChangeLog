@@ -1,3 +1,7 @@
+2011-02-18 Tolleiv Nietsch <nietsch@aoemedia.de> 
+
+	* Fixed bug: #17546: Allow new page wizard to show all fields from pages like in normal editing mode (Thanks to Andreas Kiessling)
+
 2011-02-16 Tolleiv Nietsch <nietsch@aoemedia.de> 
 
 	* Fixed bug #17615: preview disable doesn't fully work for page-layouts 
