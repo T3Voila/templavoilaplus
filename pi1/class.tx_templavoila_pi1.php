@@ -854,15 +854,35 @@ class tx_templavoila_pi1 extends tslib_pibase {
 	 */
 	public function tvSectionIndex($content, $conf) {
 
-		$this->cObj->readFlexformIntoConf($GLOBALS['TSFE']->page['tx_templavoila_flex'], $flex);
-		$ceField = $GLOBALS['TSFE']->register['tx_templavoila_pi1.current_field'];
-		$uids = array_diff(t3lib_div::trimExplode(',', $flex[$ceField]), array($this->cObj->data['uid']));
-		if ($conf['select.']['where']) {
-			$conf['select.']['where'] .= ' AND UID IN(' . implode(',', $uids) . ')';
+		$ceField = $this->cObj->stdWrap($conf['indexField'], $conf['indexField.']);
+		$pids = isset($conf['select.']['pidInList.'])
+			? trim($this->cObj->stdWrap($conf['select.']['pidInList'], $conf['select.']['pidInList.']))
+			: trim($conf['select.']['pidInList']);
+		$contentIds = array();
+		if ($pids) {
+			$pageIds = t3lib_div::trimExplode(',', $pids);
+			foreach($pageIds as $pageId) {
+				$page = $GLOBALS['TSFE']->sys_page->checkRecord('pages', $pageId);
+				if (isset($page) && isset($page['tx_templavoila_flex'])) {
+					$flex = array();
+					$this->cObj->readFlexformIntoConf($page['tx_templavoila_flex'], $flex);
+					$contentIds = array_merge($contentIds, t3lib_div::trimExplode(',', $flex[$ceField]));
+
+				}
+			}
 		} else {
-			$conf['select.']['where'] = 'UID IN(' . implode(',', $uids) . ')';
+			$flex = array();
+			$this->cObj->readFlexformIntoConf($GLOBALS['TSFE']->page['tx_templavoila_flex'], $flex);
+			$contentIds = array_merge($contentIds, t3lib_div::trimExplode(',', $flex[$ceField]));
 		}
 
+		if ($conf['select.']['where']) {
+			$conf['select.']['where'] .= ' AND UID IN(' . implode(',', $contentIds)  . ')';
+		} else {
+			$conf['select.']['where'] = 'UID IN(' . implode(',', $contentIds) . ')';
+		}
+			// tiny trink to include the section index element itself too
+		$GLOBALS['TSFE']->recordRegister[$GLOBALS['TSFE']->currentRecord] = -1;
 		return $this->cObj->cObjGetSingle('CONTENT', $conf);
 	}
 }
