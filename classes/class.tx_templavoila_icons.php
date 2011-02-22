@@ -101,7 +101,7 @@ final class tx_templavoila_icons {
 
 		if (self::$useOldIcons) {
 			$alt = isset($options['alt']) ? ' alt="' . $options['alt'] .'"': ' alt=""';
-			$title = isset($options['title']) ? ' alt="' . $options['title'] .'"': '';
+			$title = isset($options['title']) ? ' title="' . $options['title'] .'"': '';
 			$wHattribs = isset(self::$oldIcons[$iconName]['attributes']) ? self::$oldIcons[$iconName]['attributes'] : '';
 			return '<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],self::$oldIcons[$iconName]['file'], $wHattribs) . $alt . $title . ' style="text-align:center; vertical-align: middle; border:0;" />';
 		} else {
