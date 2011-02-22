@@ -358,7 +358,7 @@ class tx_templavoila_pi1 extends tslib_pibase {
 							$TOlocalProc = $singleSheet ? $TOproc['ROOT']['el'] : $TOproc['sheets'][$sheet]['ROOT']['el'];
 								// Store the original data values before the get processed.
 							$originalDataValues = $dataValues;
-							$this->processDataValues($dataValues,$dataStruct['ROOT']['el'],$TOlocalProc,$vKey);
+							$this->processDataValues($dataValues,$dataStruct['ROOT']['el'],$TOlocalProc,$vKey, ($this->conf['renderUnmapped'] === 'false' ? TRUE : $TO['MappingInfo']['ROOT']['el']));
 
 								// Hook: renderElement_postProcessDataValues
 							foreach ($hookObjectsArr as $hookObj) {
@@ -429,23 +429,26 @@ class tx_templavoila_pi1 extends tslib_pibase {
 	 * @param	array		The data structure definition which the data in the dataValues array reflects.
 	 * @param	array		The local XML processing information found in associated Template Objects (TO)
 	 * @param	string		Value key
+	 * @param	mixed		Mapping information
 	 * @return	void
 	 */
-	function processDataValues(&$dataValues,$DSelements,$TOelements,$valueKey='vDEF')	{
+	function processDataValues(&$dataValues,$DSelements,$TOelements,$valueKey='vDEF', $mappingInfo=TRUE)	{
 		if (is_array($DSelements) && is_array($dataValues))	{
 
 				// Create local processing information array:
 			$LP = array();
 			foreach($DSelements as $key => $dsConf)	{
-				if ($DSelements[$key]['type']!='array')	{	// For all non-arrays:
-						// Set base configuration:
-					$LP[$key] = $DSelements[$key]['tx_templavoila'];
-						// Overlaying local processing:
-					if (is_array($TOelements[$key]['tx_templavoila']))	{
-						if (is_array($LP[$key]))	{
-							$LP[$key] = t3lib_div::array_merge_recursive_overrule($LP[$key],$TOelements[$key]['tx_templavoila']);
-						} else {
-							$LP[$key] = $TOelements[$key]['tx_templavoila'];
+				if ($mappingInfo === TRUE || array_key_exists($key, $mappingInfo)) {
+					if ($DSelements[$key]['type']!='array')	{	// For all non-arrays:
+							// Set base configuration:
+						$LP[$key] = $DSelements[$key]['tx_templavoila'];
+							// Overlaying local processing:
+						if (is_array($TOelements[$key]['tx_templavoila']))	{
+							if (is_array($LP[$key]))	{
+								$LP[$key] = t3lib_div::array_merge_recursive_overrule($LP[$key],$TOelements[$key]['tx_templavoila']);
+							} else {
+								$LP[$key] = $TOelements[$key]['tx_templavoila'];
+							}
 						}
 					}
 				}
