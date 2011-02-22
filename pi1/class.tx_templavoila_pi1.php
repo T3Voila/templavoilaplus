@@ -358,7 +358,7 @@ class tx_templavoila_pi1 extends tslib_pibase {
 							$TOlocalProc = $singleSheet ? $TOproc['ROOT']['el'] : $TOproc['sheets'][$sheet]['ROOT']['el'];
 								// Store the original data values before the get processed.
 							$originalDataValues = $dataValues;
-							$this->processDataValues($dataValues,$dataStruct['ROOT']['el'],$TOlocalProc,$vKey, ($this->conf['renderUnmapped'] === 'false' ? TRUE : $TO['MappingInfo']['ROOT']['el']));
+							$this->processDataValues($dataValues,$dataStruct['ROOT']['el'],$TOlocalProc,$vKey, ($this->conf['renderUnmapped'] !== 'false' ? TRUE : $TO['MappingInfo']['ROOT']['el']));
 
 								// Hook: renderElement_postProcessDataValues
 							foreach ($hookObjectsArr as $hookObj) {
