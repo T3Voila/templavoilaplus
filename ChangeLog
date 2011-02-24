@@ -1,3 +1,7 @@
+2011-02-24 Tolleiv Nietsch <nietsch@aoemedia.de> 
+
+	* Fixed bug: #17756: templavoila doesn't look nice in 4.6 
+
 2011-02-22 Tolleiv Nietsch <nietsch@aoemedia.de> 
 
 	* Fixed bug: #17582: Unmapped content areas are still processed (Thanks to Jeff Segars)
