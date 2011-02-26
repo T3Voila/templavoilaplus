@@ -236,12 +236,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		$this->wizardsObj->init($this);
 
 			// Initialize TemplaVoila API class:
-		if(t3lib_div::int_from_ver(TYPO3_version) < 4003000) {
-			$apiClassName = t3lib_div::makeInstanceClassName('tx_templavoila_api');
-			$this->apiObj = new $apiClassName ($this->altRoot ? $this->altRoot : 'pages');
-		} else {
-			$this->apiObj = t3lib_div::makeInstance('tx_templavoila_api', $this->altRoot ? $this->altRoot : 'pages');
-		}
+		$this->apiObj = t3lib_div::makeInstance('tx_templavoila_api', $this->altRoot ? $this->altRoot : 'pages');
 		if (isset($this->modSharedTSconfig['properties']['useLiveWorkspaceForReferenceListUpdates'])) {
 			$this->apiObj->modifyReferencesInLiveWS(true);
 		}
@@ -382,11 +377,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				// Draw the header.
 			$this->doc = t3lib_div::makeInstance('template');
 			$this->doc->backPath = $BACK_PATH;
-			if (t3lib_div::int_from_ver(TYPO3_version) >= 4003000) {
-				$this->doc->setModuleTemplate('EXT:templavoila/resources/templates/mod1_default.html');
-			} else {
-				$this->doc->setModuleTemplate(t3lib_extMgm::extRelPath('templavoila') . 'resources/templates/mod1_default.html');
-			}
+			$this->doc->setModuleTemplate('EXT:templavoila/resources/templates/mod1_default.html');
 			$this->doc->docType= 'xhtml_trans';
 
 			$this->doc->bodyTagId = 'typo3-mod-php';
@@ -405,11 +396,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 					$styleSheetFile = $this->modTSconfig['properties']['stylesheet'];
 			}
 
-			if (t3lib_div::int_from_ver(TYPO3_version) >= 4003000) {
-				$this->doc->getPageRenderer()->addCssFile($GLOBALS['BACK_PATH'] . $styleSheetFile);
-			} else {
-				$this->doc->styleSheetFile2 = $styleSheetFile;
-			}
+			$this->doc->getPageRenderer()->addCssFile($GLOBALS['BACK_PATH'] . $styleSheetFile);
 
 			if (isset($this->modTSconfig['properties']['stylesheet.']) && t3lib_div::int_from_ver(TYPO3_version) >= 4003000) {
 				foreach($this->modTSconfig['properties']['stylesheet.'] as $file) {
@@ -574,22 +561,14 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 					$title = t3lib_BEfunc::getRecordTitle('pages', $contentPage);
 					$linkToPid = 'index.php?id=' . intval($this->rootElementRecord['content_from_pid']);
 					$link = '<a href="' . $linkToPid . '">' . htmlspecialchars($title) . ' (PID ' . intval($this->rootElementRecord['content_from_pid']) . ')</a>';
-					if (t3lib_div::int_from_ver(TYPO3_version) >= 4003000) {
-						$flashMessage = t3lib_div::makeInstance(
-							't3lib_FlashMessage',
-							'',
-							sprintf($LANG->getLL('content_from_pid_title'), $link),
-							t3lib_FlashMessage::INFO
-						);
-						$editCurrentPageHTML = '';
-						t3lib_FlashMessageQueue::addMessage($flashMessage);
-					} else {
-						$editCurrentPageHTML = '<div class="warning">' .
-							$this->doc->icons(2) . ' ' .
-							sprintf($LANG->getLL('content_from_pid_title'), $link) .
-							'</div>';
-					}
-
+					$flashMessage = t3lib_div::makeInstance(
+						't3lib_FlashMessage',
+						'',
+						sprintf($LANG->getLL('content_from_pid_title'), $link),
+						t3lib_FlashMessage::INFO
+					);
+					$editCurrentPageHTML = '';
+					t3lib_FlashMessageQueue::addMessage($flashMessage);
 				}
 					// Render "edit current page" (important to do before calling ->sideBarObj->render() - otherwise the translation tab is not rendered!
 				$editCurrentPageHTML .= $this->render_editPageScreen();
@@ -608,13 +587,8 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 					// Create sortables
 				if (is_array($this->sortableContainers)) {
 					$script = '';
-					if (t3lib_div::int_from_ver(TYPO3_version) >= 4003000) {
-						$sortable_items_json = json_encode ($this->sortableItems);
-						$all_items_json = json_encode ($this->allItems);
-					} else {
-						$sortable_items_json = t3lib_div::array2json ($this->sortableItems);
-						$all_items_json = t3lib_div::array2json ($this->allItems);
-					}
+					$sortable_items_json = json_encode ($this->sortableItems);
+					$all_items_json = json_encode ($this->allItems);
 
 					$script .=
 						'var all_items = ' . $all_items_json . ';' .
@@ -637,11 +611,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		} else {	// No access or no current page uid:
 			$this->doc = t3lib_div::makeInstance('template');
 			$this->doc->backPath = $BACK_PATH;
-			if (t3lib_div::int_from_ver(TYPO3_version) >= 4003000) {
-				$this->doc->setModuleTemplate('EXT:templavoila/resources/templates/mod1_noaccess.html');
-			} else {
-				$this->doc->setModuleTemplate(t3lib_extMgm::extRelPath('templavoila') . 'resources/templates/mod1_noaccess.html');
-			}
+			$this->doc->setModuleTemplate('EXT:templavoila/resources/templates/mod1_noaccess.html');
 			$this->doc->docType= 'xhtml_trans';
 
 			$this->doc->bodyTagId = 'typo3-mod-php';
@@ -657,18 +627,13 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 					// If no access or if ID == zero
 				default:
-					if (t3lib_div::int_from_ver(TYPO3_version) >= 4003000) {
-						$flashMessage = t3lib_div::makeInstance(
-							't3lib_FlashMessage',
-							$LANG->getLL('default_introduction'),
-							$LANG->getLL('title'),
-							t3lib_FlashMessage::INFO
-						);
-						$this->content .= $flashMessage->render();
-					} else {
-						$this->content .= $this->doc->header($LANG->getLL('title'));
-						$this->content .= $LANG->getLL('default_introduction');
-					}
+					$flashMessage = t3lib_div::makeInstance(
+						't3lib_FlashMessage',
+						$LANG->getLL('default_introduction'),
+						$LANG->getLL('title'),
+						t3lib_FlashMessage::INFO
+					);
+					$this->content .= $flashMessage->render();
 			}
 		}
 
@@ -727,11 +692,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				'TABROW'	=> $this->render_sidebar(),
 				'CONTENT'	=> $this->content
 			);
-			if (t3lib_div::int_from_ver(TYPO3_version) >= 4003000) {
-				$editareaMarkers['FLASHMESSAGES'] = t3lib_FlashMessageQueue::renderFlashMessages();
-			} else {
-				$editareaMarkers['FLASHMESSAGES'] = '';
-			}
+			$editareaMarkers['FLASHMESSAGES'] = t3lib_FlashMessageQueue::renderFlashMessages();
 
 			$editareaContent = t3lib_parsehtml::substituteMarkerArray($editareaTpl, $editareaMarkers, '###|###', true);
 
@@ -876,17 +837,13 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			// We show a warning if the user may edit the pagecontent and is not permitted to edit the "content" fields at the same time
 		if (!$BE_USER->isAdmin() && $this->modTSconfig['properties']['enableContentAccessWarning']) {
 			if (!($this->hasBasicEditRights())) {
-				if (t3lib_div::int_from_ver(TYPO3_version) >= 4003000) {
-					$message = t3lib_div::makeInstance(
-						't3lib_FlashMessage',
-						$LANG->getLL('missing_edit_right_detail'),
-						$LANG->getLL('missing_edit_right'),
-						t3lib_FlashMessage::INFO
-					);
-					t3lib_FlashMessageQueue::addMessage($message);
-				} else {
-					// this feature is not available in 4.2
-				}
+				$message = t3lib_div::makeInstance(
+					't3lib_FlashMessage',
+					$LANG->getLL('missing_edit_right_detail'),
+					$LANG->getLL('missing_edit_right'),
+					t3lib_FlashMessage::INFO
+				);
+				t3lib_FlashMessageQueue::addMessage($message);
 			}
 		}
 
@@ -1267,7 +1224,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 					$maxItemsReached = FALSE;
 				}
 
-				if (t3lib_div::int_from_ver(TYPO3_version) >= 4003000 && $maxItemsReached) {
+				if ($maxItemsReached) {
 					$flashMessage = t3lib_div::makeInstance(
 						't3lib_FlashMessage',
 						'',

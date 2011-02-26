@@ -87,17 +87,13 @@ class tx_templavoila_cm2 extends t3lib_SCbase {
 			// Check admin: If this is changed some day to other than admin users we HAVE to check if there is read access to the record being selected!
 		if (!$GLOBALS['BE_USER']->isAdmin())	die('no access.');
 
-		$this->returnUrl = tx_templavoila_div::sanitizeLocalUrl(t3lib_div::_GP('returnUrl'));
+		$this->returnUrl =  t3lib_div::sanitizeLocalUrl(t3lib_div::_GP('returnUrl'));
 
 			// Draw the header.
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->docType = 'xhtml_trans';
 		$this->doc->backPath = $BACK_PATH;
-		if (t3lib_div::int_from_ver(TYPO3_version) >= 4003000) {
-			$this->doc->setModuleTemplate('EXT:templavoila/resources/templates/cm2_default.html');
-		} else {
-			$this->doc->setModuleTemplate(t3lib_extMgm::extRelPath('templavoila') . 'resources/templates/cm2_default.html');
-		}
+		$this->doc->setModuleTemplate('EXT:templavoila/resources/templates/cm2_default.html');
 		$this->doc->bodyTagId = 'typo3-mod-php';
 		$this->doc->divClass = '';
 
@@ -142,17 +138,13 @@ class tx_templavoila_cm2 extends t3lib_SCbase {
 				$t3lib_diff_Obj = t3lib_div::makeInstance('t3lib_diff');
 				$diffres = $t3lib_diff_Obj->makeDiffDisplay($currentXML,$cleanXML);
 
-			if (t3lib_div::int_from_ver(TYPO3_version) >= 4003000) {
-				$flashMessage = t3lib_div::makeInstance(
-					't3lib_FlashMessage',
-					$LANG->getLL('needsCleaning',1),
-					'',
-					t3lib_FlashMessage::INFO
-				);
-				$xmlContentMarkedUp = $flashMessage->render();
-			} else {
-				$xmlContentMarkedUp = '<b>' . $this->doc->icons(1) . $LANG->getLL('needsCleaning',1) . '</b>';
-			}
+			$flashMessage = t3lib_div::makeInstance(
+				't3lib_FlashMessage',
+				$LANG->getLL('needsCleaning',1),
+				'',
+				t3lib_FlashMessage::INFO
+			);
+			$xmlContentMarkedUp = $flashMessage->render();
 
 			$xmlContentMarkedUp .= '<table border="0">
 					<tr class="bgColor5 tableheader">
@@ -186,17 +178,13 @@ class tx_templavoila_cm2 extends t3lib_SCbase {
 			} else {
 				$xmlContentMarkedUp = '';
 				if ($cleanXML)	{
-					if (t3lib_div::int_from_ver(TYPO3_version) >= 4003000) {
-						$flashMessage = t3lib_div::makeInstance(
-							't3lib_FlashMessage',
-							$LANG->getLL('XMLclean',1),
-							'',
-							t3lib_FlashMessage::OK
-						);
-						$xmlContentMarkedUp = $flashMessage->render();
-					} else {
-						$xmlContentMarkedUp .= '<b>' . $this->doc->icons(-1) . $LANG->getLL('XMLclean', 1) . '</b><br/>';
-					}
+					$flashMessage = t3lib_div::makeInstance(
+						't3lib_FlashMessage',
+						$LANG->getLL('XMLclean',1),
+						'',
+						t3lib_FlashMessage::OK
+					);
+					$xmlContentMarkedUp = $flashMessage->render();
 				}
 				$xmlContentMarkedUp.= $this->markUpXML($currentXML);
 			}

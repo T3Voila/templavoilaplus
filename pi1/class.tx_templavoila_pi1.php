@@ -232,10 +232,8 @@ class tx_templavoila_pi1 extends tslib_pibase {
 	 */
 	function initVars($conf)	{
 		$this->inheritValueFromDefault = $conf['dontInheritValueFromDefault'] ? 0 : 1;
-		if (t3lib_div::int_from_ver(TYPO3_version) >= 4003000) {
-				// naming choosen to fit the regular TYPO3 integrators needs ;)
-			self::$enablePageRenderer = isset($conf['advancedHeaderInclusion']) ? $conf['advancedHeaderInclusion'] : self::$enablePageRenderer;
-		}
+			// naming choosen to fit the regular TYPO3 integrators needs ;)
+		self::$enablePageRenderer = isset($conf['advancedHeaderInclusion']) ? $conf['advancedHeaderInclusion'] : self::$enablePageRenderer;
 		$this->conf=$conf;
 	}
 

@@ -52,13 +52,7 @@ class tx_templavoila_datastructureRepository {
 			);
 		}
 
-		$ds = null;
-		if(t3lib_div::int_from_ver(TYPO3_version) < 4003000) {
-			$className = t3lib_div::makeInstanceClassName($className);
-			$ds = new $className($uidOrFile);
-		} else {
-			$ds = t3lib_div::makeInstance($className, $uidOrFile);
-		}
+		$ds = t3lib_div::makeInstance($className, $uidOrFile);
 		return $ds;
 	}
 
@@ -243,23 +237,23 @@ class tx_templavoila_datastructureRepository {
 		if (!self::$staticDsInitComplete) {
 			$extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
 			if ($extConfig['staticDS.']['enable']) {
-				tx_templavoila_staticDStools::readStaticDsFilesIntoArray($extConfig);	
+				tx_templavoila_staticDStools::readStaticDsFilesIntoArray($extConfig);
 			}
 			self::$staticDsInitComplete = TRUE;
 		}
 		if (is_array($GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['staticDataStructures'])) {
 			$config = $GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['staticDataStructures'];
 		}
-		
+
 		if(is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['staticDataStructures'])) {
 			$config = array_merge($config, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['staticDataStructures']);
 		}
-		
+
 		$finalConfig = array();
 		foreach($config as $cfg) {
 			$key = md5($cfg['path'] . $cfg['title'] . $cfg['scope']);
 			$finalConfig[$key] = $cfg;
-		}		
+		}
 		return array_values($finalConfig);
 	}
 

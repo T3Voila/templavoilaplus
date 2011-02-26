@@ -30,23 +30,6 @@
 final class tx_templavoila_div {
 
 	/**
-	 * Wrapper function for checking valid URL for redirect
-	 *
-	 * @param $url
-	 */
-	public static function sanitizeLocalUrl($url = '') {
-		if (t3lib_div::int_from_ver(TYPO3_version) >= 4003000) {
-			return t3lib_div::sanitizeLocalUrl($url);
-		} elseif (t3lib_div::int_from_ver(TYPO3_version) > 4002000 && method_exists('t3lib_div', 'sanitizeLocalUrl')) {
-			return t3lib_div::sanitizeLocalUrl($url);
-		} else {
-			return self::internalSanitizeLocalUrl($url);
-		}
-
-	}
-
-
-	/**
 	 * Checks if a given string is a valid frame URL to be loaded in the
 	 * backend.
 	 *
@@ -58,10 +41,8 @@ final class tx_templavoila_div {
 	private static function internalSanitizeLocalUrl($url = '') {
 		$sanitizedUrl = '';
 		$decodedUrl = rawurldecode($url);
-		if (t3lib_div::int_from_ver(TYPO3_version) > 4002000) {
-			if ($decodedUrl !== t3lib_div::removeXSS($decodedUrl)) {
-				$decodedUrl = '';
-			}
+		if ($decodedUrl !== t3lib_div::removeXSS($decodedUrl)) {
+			$decodedUrl = '';
 		}
 		if (!empty($url) && $decodedUrl !== '') {
 			$testAbsoluteUrl = t3lib_div::resolveBackPath($decodedUrl);

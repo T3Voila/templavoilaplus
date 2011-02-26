@@ -123,26 +123,18 @@ class tx_templavoila_dbnewcontentel {
 		$this->parentRecord = t3lib_div::_GP('parentRecord');
 		$this->altRoot = t3lib_div::_GP('altRoot');
 		$this->defVals = t3lib_div::_GP('defVals');
-		$this->returnUrl = tx_templavoila_div::sanitizeLocalUrl(t3lib_div::_GP('returnUrl'));
+		$this->returnUrl =  t3lib_div::sanitizeLocalUrl(t3lib_div::_GP('returnUrl'));
 
 			// Starting the document template object:
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->docType= 'xhtml_trans';
 		$this->doc->backPath = $BACK_PATH;
-		if(t3lib_div::int_from_ver(TYPO3_version) >= 4003000) {
-			$this->doc->setModuleTemplate('EXT:templavoila/resources/templates/mod1_new_content.html');
-		} else {
-			$this->doc->setModuleTemplate(t3lib_extMgm::extRelPath('templavoila') . 'resources/templates/mod1_new_content.html');
-		}
+		$this->doc->setModuleTemplate('EXT:templavoila/resources/templates/mod1_new_content.html');
 		$this->doc->bodyTagId = 'typo3-mod-php';
 		$this->doc->divClass = '';
 		$this->doc->JScode='';
 
-		if (t3lib_div::int_from_ver(TYPO3_version) >= 4003000) {
-			$pageRenderer = $this->doc->getPageRenderer()->loadPrototype();
-		} else {
-			$this->doc->loadJavascriptLib('contrib/prototype/prototype.js');
-		}
+		$this->doc->getPageRenderer()->loadPrototype();
 
 
 		if(t3lib_div::int_from_ver(TYPO3_version) < 4005000) {

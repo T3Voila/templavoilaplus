@@ -160,11 +160,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->docType= 'xhtml_trans';
 		$this->doc->backPath = $BACK_PATH;
-		if (t3lib_div::int_from_ver(TYPO3_version) >= 4003000) {
-			$this->doc->setModuleTemplate('EXT:templavoila/resources/templates/mod2_default.html');
-		} else {
-			$this->doc->setModuleTemplate(t3lib_extMgm::extRelPath('templavoila') . 'resources/templates/mod2_default.html');
-		}
+		$this->doc->setModuleTemplate('EXT:templavoila/resources/templates/mod2_default.html');
 		$this->doc->bodyTagId = 'typo3-mod-php';
 		$this->doc->divClass = '';
 		$this->doc->form='<form action="'.htmlspecialchars('index.php?id='.$this->id).'" method="post" autocomplete="off">';
@@ -195,9 +191,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 				}
 			');
 
-			if(t3lib_div::int_from_ver(TYPO3_version) < 4003000) {
-				$this->doc->JScode.=$this->doc->getDynTabMenuJScode();
-			} elseif(t3lib_div::int_from_ver(TYPO3_version) < 4005000) {
+			if(t3lib_div::int_from_ver(TYPO3_version) < 4005000) {
 				$this->doc->getDynTabMenuJScode();
 			} else {
 				$this->doc->loadJavascriptLib('js/tabmenu.js');
@@ -213,17 +207,13 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 			$this->doc->postCode.= $CMparts[2];
 
 		} else {
-			if (t3lib_div::int_from_ver(TYPO3_version) >= 4003000) {
-				$flashMessage = t3lib_div::makeInstance(
-					't3lib_FlashMessage',
-					$GLOBALS['LANG']->getLL('noaccess'),
-					'',
-					t3lib_FlashMessage::ERROR
-				);
-				$this->content = $flashMessage->render();
-			} else {
-				$this->content = tx_templavoila_icons::getIcon('status-dialog-error') . '<strong>' . $GLOBALS['LANG']->getLL('error') . '</strong> ' . $GLOBALS['LANG']->getLL('noaccess');
-			}
+			$flashMessage = t3lib_div::makeInstance(
+				't3lib_FlashMessage',
+				$GLOBALS['LANG']->getLL('noaccess'),
+				'',
+				t3lib_FlashMessage::ERROR
+			);
+			$this->content = $flashMessage->render();
 		}
 			// Place content inside template
 		$content  = $this->doc->startPage($GLOBALS['LANG']->getLL('title'));
@@ -603,7 +593,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 		}
 
 		if ($dsObj->isFilebased()) {
-			$onClick = 'document.location=\'' . $this->doc->backPath . 'file_edit.php?target=' . rawurlencode(PATH_site . $dsObj->getKey()) . '&returnUrl=' . rawurlencode(tx_templavoila_div::sanitizeLocalUrl(t3lib_div::getIndpEnv('REQUEST_URI'))) . '\';';
+			$onClick = 'document.location=\'' . $this->doc->backPath . 'file_edit.php?target=' . rawurlencode(PATH_site . $dsObj->getKey()) . '&returnUrl=' . rawurlencode( t3lib_div::sanitizeLocalUrl(t3lib_div::getIndpEnv('REQUEST_URI'))) . '\';';
 			$dsIcon = '<a href="#" onclick="' . htmlspecialchars($onClick) . '"><img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/fileicons/xml.gif','width="18" height="16"').' alt="" class="absmiddle" /></a>';
 		} else {
 			$dsIcon = tx_templavoila_icons::getIconForRecord('tx_templavoila_datastructure' ,array());
@@ -636,7 +626,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 		} else {
 			$editLink = $lpXML.= '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick('&edit[tx_templavoila_datastructure]['.$dsObj->getKey().']=edit',$this->doc->backPath)).'">' . tx_templavoila_icons::getIcon('actions-document-open') .'</a>';
 			$editDataprotLink =  '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick('&edit[tx_templavoila_datastructure]['.$dsObj->getKey().']=edit&columnsOnly=dataprot',$this->doc->backPath)).'">' . tx_templavoila_icons::getIcon('actions-document-open') . '</a>';
-			$dsTitle = '<a href="'.htmlspecialchars('../cm1/index.php?table=tx_templavoila_datastructure&uid=' . $dsObj->getKey() . '&id=' . $this->id . '&returnUrl=' . rawurlencode(tx_templavoila_div::sanitizeLocalUrl(t3lib_div::getIndpEnv('REQUEST_URI')))) . '">' . htmlspecialchars($dsObj->getLabel()) . '</a>';
+			$dsTitle = '<a href="'.htmlspecialchars('../cm1/index.php?table=tx_templavoila_datastructure&uid=' . $dsObj->getKey() . '&id=' . $this->id . '&returnUrl=' . rawurlencode( t3lib_div::sanitizeLocalUrl(t3lib_div::getIndpEnv('REQUEST_URI')))) . '">' . htmlspecialchars($dsObj->getLabel()) . '</a>';
 		}
 
 			// Compile info table:
@@ -1702,32 +1692,19 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 
 				// Missing extension warning:
 			if ($missingExt)	{
-				if(t3lib_div::int_from_ver(TYPO3_version) < 4003000) {
-					$this->content.= $this->doc->section($LANG->getLL('newsitewizard_missingext'), $missingExt, 0, 1, 3);
-				} else {
-					$msg = t3lib_div::makeInstance('t3lib_FlashMessage', $missingExt, $LANG->getLL('newsitewizard_missingext'), t3lib_FlashMessage::ERROR);
-					$this->content .= $msg->render();
-				}
+				$msg = t3lib_div::makeInstance('t3lib_FlashMessage', $missingExt, $LANG->getLL('newsitewizard_missingext'), t3lib_FlashMessage::ERROR);
+				$this->content .= $msg->render();
 			}
 
 				// Missing configuration warning:
 			if ($missingConf)	{
-				if(t3lib_div::int_from_ver(TYPO3_version) < 4003000) {
-					$this->content.= $this->doc->section($LANG->getLL('newsitewizard_missingconf'), $LANG->getLL('newsitewizard_missingconf_description'), 0, 1, 3);
-				} else {
-					$msg = t3lib_div::makeInstance('t3lib_FlashMessage', $LANG->getLL('newsitewizard_missingconf_description'), $LANG->getLL('newsitewizard_missingconf'), t3lib_FlashMessage::ERROR);
-					$this->content .= $msg->render();
-				}
+				$msg = t3lib_div::makeInstance('t3lib_FlashMessage', $LANG->getLL('newsitewizard_missingconf_description'), $LANG->getLL('newsitewizard_missingconf'), t3lib_FlashMessage::ERROR);
+				$this->content .= $msg->render();
 			}
 
 				// Missing directory warning:
 			if ($missingDir)	{
-				if(t3lib_div::int_from_ver(TYPO3_version) < 4003000) {
-					$this->content.= $this->doc->section($LANG->getLL('newsitewizard_missingdir'), $missingDir, 0, 1, 3);
-				} else {
-					$msg = t3lib_div::makeInstance('t3lib_FlashMessage', $missingDir, $LANG->getLL('newsitewizard_missingdir'), t3lib_FlashMessage::ERROR);
-					$this->content .= $msg->render();
-				}
+				$this->content.= $this->doc->section($LANG->getLL('newsitewizard_missingdir'), $missingDir, 0, 1, 3);
 			}
 		}
 	}

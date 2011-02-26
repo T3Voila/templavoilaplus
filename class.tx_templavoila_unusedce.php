@@ -145,12 +145,7 @@ Automatic Repair:
 			if (!$versionSwapmode)	{
 
 					// Initialize TemplaVoila API class:
-				if(t3lib_div::int_from_ver(TYPO3_version) < 4003000) {
-					$apiClassName = t3lib_div::makeInstanceClassName('tx_templavoila_api');
-					$apiObj = new $apiClassName ('pages');
-				} else {
-					$apiObj = t3lib_div::makeInstance('tx_templavoila_api','pages');
-				}
+				$apiObj = t3lib_div::makeInstance('tx_templavoila_api','pages');
 
 					// Fetch the content structure of page:
 				$contentTreeData = $apiObj->getContentTree('pages', t3lib_BEfunc::getRecordRaw('pages','uid='.intval($uid)));

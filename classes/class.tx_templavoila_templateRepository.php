@@ -36,14 +36,7 @@ class tx_templavoila_templateRepository {
 	 * @return tx_templavoila_template
 	 */
 	public function getTemplateByUid($uid) {
-		$to = null;
-		if(t3lib_div::int_from_ver(TYPO3_version) < 4003000) {
-			$className = t3lib_div::makeInstanceClassName('tx_templavoila_template');
-			$to = new $className($uid);
-		} else {
-			$to = t3lib_div::makeInstance('tx_templavoila_template', $uid);
-		}
-		return $to;
+		return t3lib_div::makeInstance('tx_templavoila_template', $uid);
 	}
 
 	/**
@@ -81,7 +74,7 @@ class tx_templavoila_templateRepository {
 	public function getTemplatesByStoragePidAndScope($storagePid, $scope) {
 		$dsRepo = t3lib_div::makeInstance('tx_templavoila_datastructureRepository');
 		$dsList = $dsRepo->getDatastructuresByStoragePidAndScope($storagePid, $scope);
-		$toCollection = array();		
+		$toCollection = array();
 		foreach($dsList as $dsObj) {
 			$toCollection = array_merge($toCollection, $this->getTemplatesByDatastructure($dsObj, $storagePid));
 		}

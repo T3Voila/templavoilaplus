@@ -397,11 +397,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->docType= 'xhtml_trans';
 		$this->doc->backPath = $BACK_PATH;
-		if(t3lib_div::int_from_ver(TYPO3_version) >= 4003000) {
-			$this->doc->setModuleTemplate('EXT:templavoila/resources/templates/cm1_default.html');
-		} else {
-			$this->doc->setModuleTemplate(t3lib_extMgm::extRelPath('templavoila') . 'resources/templates/cm1_default.html');
-		}
+		$this->doc->setModuleTemplate('EXT:templavoila/resources/templates/cm1_default.html');
 		$this->doc->bodyTagId = 'typo3-mod-php';
 		$this->doc->divClass = '';
 
@@ -424,7 +420,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 		$this->displayTable = t3lib_div::_GP('table');
 		$this->displayUid = t3lib_div::_GP('uid');
 		$this->displayPath = t3lib_div::_GP('htmlPath');
-		$this->returnUrl = tx_templavoila_div::sanitizeLocalUrl(t3lib_div::_GP('returnUrl'));
+		$this->returnUrl =  t3lib_div::sanitizeLocalUrl(t3lib_div::_GP('returnUrl'));
 
 			// GPvars specific to the DS listing/table and mapping features:
 		$this->_preview = t3lib_div::_GP('_preview');
@@ -472,9 +468,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			}
 		');
 
-		if(t3lib_div::int_from_ver(TYPO3_version) < 4003000) {
-			$this->doc->JScode.=$this->doc->getDynTabMenuJScode();
-		} elseif(t3lib_div::int_from_ver(TYPO3_version) < 4005000) {
+		if(t3lib_div::int_from_ver(TYPO3_version) < 4005000) {
 			$this->doc->getDynTabMenuJScode();
 		} else {
 			$this->doc->loadJavascriptLib('js/tabmenu.js');
@@ -596,17 +590,13 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			} elseif (t3lib_div::_GP('_saveDSandTO'))	{	// Saving DS and TO to records.
 				if (!strlen(trim($this->_saveDSandTO_title))) {
 					$cmd = 'saveScreen';
-					if (t3lib_div::int_from_ver(TYPO3_version) >= 4003000) {
-						$flashMessage = t3lib_div::makeInstance(
-							't3lib_FlashMessage',
-							$GLOBALS['LANG']->getLL('errorNoToTitleDefined'),
-							'',
-							t3lib_FlashMessage::ERROR
-						);
-						$msg[] = $flashMessage->render();
-					} else {
-						$msg[] = tx_templavoila_icons::getIcon('status-dialog-error') . '<strong>'.$GLOBALS['LANG']->getLL('error').'</strong> '.$GLOBALS['LANG']->getLL('errorNoToTitleDefined');
-					}
+					$flashMessage = t3lib_div::makeInstance(
+						't3lib_FlashMessage',
+						$GLOBALS['LANG']->getLL('errorNoToTitleDefined'),
+						'',
+						t3lib_FlashMessage::ERROR
+					);
+					$msg[] = $flashMessage->render();
 				} else {
 					$cmd = 'saveDSandTO';
 				}
@@ -1688,17 +1678,13 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			$tce->start($dataArr,array());
 			$tce->process_datamap();
 			unset($tce);
-			if (t3lib_div::int_from_ver(TYPO3_version) >= 4003000) {
-				$flashMessage = t3lib_div::makeInstance(
-					't3lib_FlashMessage',
-					$GLOBALS['LANG']->getLL('msgMappingSaved'),
-					'',
-					t3lib_FlashMessage::OK
-				);
-				$msg[] .= $flashMessage->render();
-			} else {
-				$msg[] = $GLOBALS['LANG']->getLL('msgMappingSaved');
-			}
+			$flashMessage = t3lib_div::makeInstance(
+				't3lib_FlashMessage',
+				$GLOBALS['LANG']->getLL('msgMappingSaved'),
+				'',
+				t3lib_FlashMessage::OK
+			);
+			$msg[] .= $flashMessage->render();
 			$row = t3lib_BEfunc::getRecordWSOL('tx_templavoila_tmplobj',$this->displayUid);
 			$templatemapping = unserialize($row['templatemapping']);
 
@@ -1732,17 +1718,13 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			)	{
 			$menuItems[]='<input type="submit" name="_reload_from" value="' . $GLOBALS['LANG']->getLL('buttonRevert') . '" title="'.sprintf($GLOBALS['LANG']->getLL('buttonRevertTitle'), $headerPart ? 'HEAD' : 'BODY') . '" />';
 
-			if (t3lib_div::int_from_ver(TYPO3_version) >= 4003000) {
-				$flashMessage = t3lib_div::makeInstance(
-					't3lib_FlashMessage',
-					$GLOBALS['LANG']->getLL('msgMappingIsDifferent'),
-					'',
-					t3lib_FlashMessage::INFO
-				);
-				$msg[] .= $flashMessage->render();
-			} else {
-				$msg[] = $GLOBALS['LANG']->getLL('msgMappingIsDifferent');
-			}
+			$flashMessage = t3lib_div::makeInstance(
+				't3lib_FlashMessage',
+				$GLOBALS['LANG']->getLL('msgMappingIsDifferent'),
+				'',
+				t3lib_FlashMessage::INFO
+			);
+			$msg[] .= $flashMessage->render();
 		}
 
 		$content = '
@@ -1758,18 +1740,8 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			</table>
 		';
 
-		if (t3lib_div::int_from_ver(TYPO3_version) >= 4003000) {
-				// @todo - replace with FlashMessage Queue
-			$content .= implode('', $msg);
-		} else {			// Making messages:
-			foreach($msg as $msgStr)	{
-				$content.='
-				<p>' . tx_templavoila_icons::getIcon('status-dialog-notification') . '<strong>'.htmlspecialchars($msgStr).'</strong></p>';
-			}
-		}
-
-
-
+			// @todo - replace with FlashMessage Queue
+		$content .= implode('', $msg);
 		return array($content, $headerPart ? $currentMappingInfo_head : $currentMappingInfo);
 	}
 
@@ -1839,19 +1811,13 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 				'.$bodyTagRow.'
 			</table><br />';
 
-		if (t3lib_div::int_from_ver(TYPO3_version) >= 4003000) {
-			$flashMessage = t3lib_div::makeInstance(
-				't3lib_FlashMessage',
-				$GLOBALS['LANG']->getLL('msgHeaderSet'),
-				'',
-				t3lib_FlashMessage::WARNING
-			);
-			$headerParts .= $flashMessage->render();
-		} else {
-			$headerParts .= '<p style="margin: 5px 3px">' .
-			 tx_templavoila_icons::getIcon('status-dialog-warning') .
-			'<strong>' . $GLOBALS['LANG']->getLL('msgHeaderSet') . '</strong></p>';
-		}
+		$flashMessage = t3lib_div::makeInstance(
+			't3lib_FlashMessage',
+			$GLOBALS['LANG']->getLL('msgHeaderSet'),
+			'',
+			t3lib_FlashMessage::WARNING
+		);
+		$headerParts .= $flashMessage->render();
 
 		$headerParts .= $this->cshItem('xMOD_tx_templavoila','mapping_to_headerParts_buttons',$this->doc->backPath,'').$htmlAfterDSTable;
 
