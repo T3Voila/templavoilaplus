@@ -1608,7 +1608,12 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 				unset($elCfg['tx_templavoila']['sample_data']);
 				unset($elCfg['tx_templavoila']['tags']);
 				unset($elCfg['tx_templavoila']['eType']);
-				$rootElementsHTML.='<b>'.$elCfg['tx_templavoila']['title'].'</b>'.t3lib_div::view_array($elCfg);
+
+				if (t3lib_div::int_from_ver(TYPO3_version) < 4005000){
+					$rootElementsHTML.='<b>'.$elCfg['tx_templavoila']['title'].'</b>'.t3lib_div::view_array($elCfg);
+				} else {
+					$rootElementsHTML.='<b>'.$elCfg['tx_templavoila']['title'].'</b>'.t3lib_utility_Debug::viewArray($elCfg);
+				}
 			}
 		}
 

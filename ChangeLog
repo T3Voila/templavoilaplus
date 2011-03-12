@@ -1,3 +1,7 @@
+2011-03-12 Tolleiv Nietsch <nietsch@aoemedia.de> 
+
+	* Fixed bug: #17871: Use of deprecated function t3lib_div::view_array
+
 2011-02-26 Tolleiv Nietsch <nietsch@aoemedia.de> 
 
 	* Fixed bug: #17781: Remove TYPO3 4.2 compatibility blocks
