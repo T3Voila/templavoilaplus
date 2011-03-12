@@ -2318,7 +2318,13 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 
 						// Description:
 					if ($this->_preview)	{
-						$rowCells['description'] = is_array($value['tx_templavoila']['sample_data']) ? t3lib_div::view_array($value['tx_templavoila']['sample_data']) : '[' . $GLOBALS['LANG']->getLL('noSampleData') . ']';
+						if (!is_array($value['tx_templavoila']['sample_data'])) {
+							$rowCells['description'] = '[' . $GLOBALS['LANG']->getLL('noSampleData') . ']';
+						} elseif (t3lib_div::int_from_ver(TYPO3_version) < 4005000){
+							$rowCells['description'] = t3lib_div::view_array($value['tx_templavoila']['sample_data']);
+						} else {
+							$rowCells['description'] = t3lib_utility_Debug::viewArray($value['tx_templavoila']['sample_data']);
+						}
 					}
 
 						// Getting editing row, if applicable:

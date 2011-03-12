@@ -1,3 +1,7 @@
+2011-03-13 Tolleiv Nietsch <nietsch@aoemedia.de> 
+
+	* Fixed bug: #17871: Use of deprecated function t3lib_div::view_array 
+
 2011-02-24 Tolleiv Nietsch <nietsch@aoemedia.de> 
 
 	* Fixed bug: #17756: templavoila doesn't look nice in 4.6 
