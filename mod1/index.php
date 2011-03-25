@@ -2202,11 +2202,14 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			if (($table == 'pages' && ($calcPerms & 2) ||
 				 $table != 'pages' && ($calcPerms & 16)) &&
 				(!$this->translatorMode || $forced))	{
+
+					$workspaceRec = t3lib_BEfunc::getWorkspaceVersionOfRecord($GLOBALS['BE_USER']->workspace, $table, $uid);
+					$workspaceId =  ($workspaceRec['uid'] > 0) ? $workspaceRec['uid'] : $uid;
 					if ($table == "pages" && $this->currentLanguageUid) {
-						$params = '&data['.$table.']['.$uid.'][hidden]=' . (1 - $hidden);
+						$params = '&data['.$table.']['.$workspaceId.'][hidden]=' . (1 - $hidden);
 					//	return '<a href="#" onclick="' . htmlspecialchars('return jumpToUrl(\'' . $GLOBALS['SOBE']->doc->issueCommand($params, -1) . '\');') . '">'.$label.'</a>';
 					} else {
-						$params = '&data['.$table.']['.$uid.'][hidden]=' . (1 - $hidden);
+						$params = '&data['.$table.']['.$workspaceId.'][hidden]=' . (1 - $hidden);
 					//	return '<a href="#" onclick="' . htmlspecialchars('return jumpToUrl(\'' . $GLOBALS['SOBE']->doc->issueCommand($params, -1) . '\');') . '">'.$label.'</a>';
 
 						/* the commands are indipendent of the position,

@@ -1,5 +1,6 @@
 2011-03-25 Tolleiv Nietsch <nietsch@aoemedia.de> 
 
+	* Fixed bug: #17803: Versioning error after hide/unhide action 
 	* Fxied bug: #18037: Mod2 icons lack proper tooltips 
 	* Fixed bug: #18033: RANGE for "unnamed" elements exclude the current element 
 
