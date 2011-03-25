@@ -1,3 +1,7 @@
+2011-03-25 Tolleiv Nietsch <nietsch@aoemedia.de> 
+
+	* Fixed bug: #18033: RANGE for "unnamed" elements exclude the current element 
+
 2011-03-12 Tolleiv Nietsch <nietsch@aoemedia.de> 
 
 	* Fixed bug: #17871: Use of deprecated function t3lib_div::view_array
