@@ -2073,6 +2073,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			foreach ($elParentLevel as $pKey=>$pValue) {
 				if (in_array($lastEl['path'], $pValue)) {
 					$parentElement = $pKey;
+					break;
 				} elseif ($hasId) {
 					foreach($pValue as $pElement) {
 						if(stristr($pElement, '#') && preg_replace('/^(\w+)\.?.*#(.*)$/i', '\1#\2', $pElement) ==  $lastEl['path']) {
@@ -2081,15 +2082,13 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 						}
 					}
 				}
-				if($parentElement != '') {
-					break;
-				}
 			}
 
 			if (!$hasId && preg_match('/\[\d+\]$/',$lastEl['path'])) {
 					// we have a nameless element, therefore the index is used
 				$pos = preg_replace('/^.*\[(\d+)\]$/','\1', $lastEl['path']);
-				$sameLevelElements = array_slice($elParentLevel[$parentElement], $pos);
+					// index is "corrected" by one to include the current element in the selection
+				$sameLevelElements = array_slice($elParentLevel[$parentElement], $pos-1);
 			} else {
 					// we have to search ourselfs because there was no parent and no numerical index to find the right elements
 				$foundCurrent = FALSE;
@@ -2127,7 +2126,6 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 	 * @return	array		Table rows as an array of <tr> tags, $tRows
 	 */
 	function drawDataStructureMap($dataStruct,$mappingMode=0,$currentMappingInfo=array(),$pathLevels=array(),$optDat=array(),$contentSplittedByMapping=array(),$level=0,$tRows=array(),$formPrefix='',$path='',$mapOK=1)	{
-
 		$bInfo = t3lib_div::clientInfo();
 		$multilineTooltips = ($bInfo['BROWSER'] == 'msie');
 		$rowIndex = -1;
