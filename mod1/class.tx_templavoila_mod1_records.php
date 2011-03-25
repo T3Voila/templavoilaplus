@@ -134,12 +134,22 @@ class tx_templavoila_mod1_records {
 		}
 		$content .= '</select>';
 
+		if ($this->pObj->MOD_SETTINGS['recordsView_table']) {
+			$backpath = '../../../../typo3/';
+			$table = $this->pObj->MOD_SETTINGS['recordsView_table'];
+			$params = '&edit[' . $table . '][' . $this->pObj->id . ']=new';
+			$content .= '&nbsp;&nbsp;';
+			$content .= '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::editOnClick($params, $backpath, -1)) . '">';
+			$content .= tx_templavoila_icons::getIcon('actions-document-new', array('title' => $GLOBALS['LANG']->getLL('createnewrecord')));
+			$content .= '</a>';
+		}
+
 		if (!in_array($this->pObj->MOD_SETTINGS['recordsView_table'], $this->tables)) {
 			unset($this->pObj->MOD_SETTINGS['recordsView_table']);
 			unset($this->pObj->MOD_SETTINGS['recordsView_start']);
 		}
 
-		//$content .= '</td></tr><tr class="bgColor4"><td colspan="2">&nbsp;</td></tr>';
+		$content .= '</td></tr><tr class="bgColor4"><td colspan="2"></td></tr>';
 		return $content;
 	}
 
