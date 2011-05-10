@@ -324,7 +324,7 @@ class tx_templavoila_mod1_wizards {
 						}
 
 						$tmpFilename = $toObj->getIcon();
-						$previewIconFilename = (@is_file(PATH_site . substr($tmpFilename, 3))) ? ($GLOBALS['BACK_PATH'].'../'.$tmpFilename) : $defaultIcon;
+						$previewIconFilename = (@is_file(PATH_site . substr($tmpFilename, 3))) ? ($GLOBALS['BACK_PATH'] . $tmpFilename) : $defaultIcon;
 							// Note: we cannot use value of image input element because MSIE replaces this value with mouse coordinates! Thus on click we set value to a hidden field. See http://bugs.typo3.org/view.php?id=3376
 						$previewIcon = '<input type="image" class="c-inputButton" name="i' .$row['uid'] . '" onclick="document.getElementById(\'data_tx_templavoila_to\').value=' . $toObj->getKey() . '" src="'.$previewIconFilename.'" title="" />';
 						$description = $toObj->getDescription() ? htmlspecialchars($toObj->getDescription()) : $LANG->getLL ('template_nodescriptionavailable');
