@@ -1,3 +1,7 @@
+2011-05-10 Tolleiv Nietsch <nietsch@aoemedia.de> 
+
+	* Fixed bug: #7617: 18100: One 4.2 hack left over in mod2/index.php (Thanks to Bjorn Pedersen)
+
 2011-03-25 Tolleiv Nietsch <nietsch@aoemedia.de> 
 
 	* Fixed bug: #7617: Cannot create new records from "Other elements (non-content)" tab  (Thanks to OlivierSC)

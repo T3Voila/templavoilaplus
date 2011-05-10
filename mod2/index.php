@@ -593,7 +593,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 		}
 
 		if ($dsObj->isFilebased()) {
-			$onClick = 'document.location=\'' . $this->doc->backPath . 'file_edit.php?target=' . rawurlencode(PATH_site . $dsObj->getKey()) . '&returnUrl=' . rawurlencode(tx_templavoila_div::sanitizeLocalUrl(t3lib_div::getIndpEnv('REQUEST_URI'))) . '\';';
+			$onClick = 'document.location=\'' . $this->doc->backPath . 'file_edit.php?target=' . rawurlencode(PATH_site . $dsObj->getKey()) . '&returnUrl=' . rawurlencode(t3lib_div::sanitizeLocalUrl(t3lib_div::getIndpEnv('REQUEST_URI'))) . '\';';
 			$dsIcon = '<a href="#" onclick="' . htmlspecialchars($onClick) . '"><img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/fileicons/xml.gif','width="18" height="16"').' alt="" title="' . $dsObj->getKey() . '" class="absmiddle" /></a>';
 		} else {
 			$dsIcon = tx_templavoila_icons::getIconForRecord('tx_templavoila_datastructure' ,array(), array('title' => $dsObj->getKey()));
