@@ -879,11 +879,14 @@ class tx_templavoila_pi1 extends tslib_pibase {
 			$contentIds = array_merge($contentIds, t3lib_div::trimExplode(',', $flex[$ceField]));
 		}
 
-		if ($conf['select.']['where']) {
-			$conf['select.']['where'] .= ' AND UID IN(' . implode(',', $contentIds)  . ')';
-		} else {
-			$conf['select.']['where'] = 'UID IN(' . implode(',', $contentIds) . ')';
+		if (count($contentIds) > 0) {
+			if ($conf['select.']['where']) {
+				$conf['select.']['where'] .= ' AND UID IN(' . implode(',', $contentIds)  . ')';
+			} else {
+				$conf['select.']['where'] = 'UID IN(' . implode(',', $contentIds) . ')';
+			}
 		}
+
 			// tiny trink to include the section index element itself too
 		$GLOBALS['TSFE']->recordRegister[$GLOBALS['TSFE']->currentRecord] = -1;
 		return $this->cObj->cObjGetSingle('CONTENT', $conf);
