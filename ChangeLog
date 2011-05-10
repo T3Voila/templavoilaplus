@@ -1,5 +1,6 @@
 2011-05-10 Tolleiv Nietsch <nietsch@aoemedia.de> 
 
+	* Fixed bug: #18101: Preview icons missing in new page wizard if TYPO3 is installed in subdirectory of DocumentRoot (Thanks to Tobias Schaefer)
 	* Fixed bug: #18116: CE sitemap: Check if content ids exist (Thanks to Benjamin Mack)
 	* Fixed bug: #18098: Link to db_list.php is deprecated in Typo3 4.5 (Thanks to Daniel Minder)
 
