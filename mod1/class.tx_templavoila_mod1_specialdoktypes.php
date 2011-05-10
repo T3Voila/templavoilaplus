@@ -220,7 +220,11 @@ class tx_templavoila_mod1_specialdoktypes {
 		$editButton = $this->pObj->link_edit($iconEdit, 'pages', $pageRecord['uid']);
 
 		if ($this->userHasAccessToListModule()) {
-			$listModuleURL = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir . 'db_list.php?id='.intval($this->pObj->id);
+			if (t3lib_div::int_from_ver(TYPO3_version) < 4005000) {
+				$listModuleURL = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir . 'db_list.php?id='.intval($this->pObj->id);
+			} else {
+				$listModuleURL = t3lib_BEfunc::getModuleUrl('web_list', array ('id' => intval($this->pObj->id)), FALSE, TRUE);
+			}
 			$onClick = "top.nextLoadModuleUrl='".$listModuleURL."';top.fsMod.recentIds['web']=".intval($this->pObj->id).";top.goToModule('web_list',1);";
 			$listModuleLink = '<br /><br />'.
 				tx_templavoila_icons::getIcon('actions-system-list-open').
