@@ -777,7 +777,11 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 			// If access to Web>List for user, then link to that module.
 		if ($BE_USER->check('modules','web_list'))	{
-			$href = $BACK_PATH . 'db_list.php?id=' . $this->id . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'));
+			if (t3lib_div::int_from_ver(TYPO3_version) < 4005000) {
+				$href = $GLOBALS['BACK_PATH'] . 'db_list.php?id=' . $this->id . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'));
+			} else {
+				$href = t3lib_BEfunc::getModuleUrl('web_list', array ('id' => $this->id, 'returnUrl' => t3lib_div::getIndpEnv('REQUEST_URI')) );
+			}
 			$buttons['record_list'] = '<a href="' . htmlspecialchars($href) . '">' .
 					tx_templavoila_icons::getIcon('actions-system-list-open', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showList', 1))).
 					'</a>';
