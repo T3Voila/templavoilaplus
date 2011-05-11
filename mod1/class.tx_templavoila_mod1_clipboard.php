@@ -263,7 +263,7 @@ class tx_templavoila_mod1_clipboard {
 			'tt_content',
 			'pid='.intval($pid).' '.
 				'AND uid NOT IN ('.implode(',',$usedUids).') '.
-				'AND t3ver_state NOT IN (1,3)'.
+				'AND ( t3ver_state NOT IN (1,3) OR (t3ver_wsid > 0 AND t3ver_wsid = ' . intval($GLOBALS['BE_USER']->workspace) . ') )' .
 				t3lib_BEfunc::deleteClause('tt_content').
 				t3lib_BEfunc::versioningPlaceholderClause('tt_content'),
 			'',
@@ -287,28 +287,34 @@ class tx_templavoila_mod1_clipboard {
 			$recordIcon = tx_templavoila_icons::getIconForRecord('tt_content', $row);
 			$recordButton = $this->pObj->doc->wrapClickMenuOnIcon($recordIcon, 'tt_content', $row['uid'], 1, '&callingScriptId='.rawurlencode($this->pObj->doc->scriptID), 'new,copy,cut,pasteinto,pasteafter,delete');
 
-
-
-			$elementRows[] = '
-				<tr id="' . $elementPointerString . '" class="tpm-nonused-element">
-					<td class="tpm-nonused-controls">' .
-						$cutButton . $languageIcon .
-					'</td>
-					<td class="tpm-nonused-ref">' .
-						$this->renderReferenceCount($row['uid']) .
-					'</td>
-					<td class="tpm-nonused-preview">' .
-						$recordButton . htmlspecialchars(t3lib_BEfunc::getRecordTitle('tt_content', $row)) .
-					'</td>
-				</tr>
-			';
+			if ($GLOBALS['BE_USER']->workspace) {
+				$wsRow = t3lib_BEfunc::getRecordWSOL('tt_content', $row['uid']);
+				$isDeletedInWorkspace = $wsRow['t3ver_state'] == 2;
+			} else {
+				$isDeletedInWorkspace = FALSE;
+			}
+			if(!$isDeletedInWorkspace) {
+				$elementRows[] = '
+					<tr id="' . $elementPointerString . '" class="tpm-nonused-element">
+						<td class="tpm-nonused-controls">' .
+							$cutButton . $languageIcon .
+						'</td>
+						<td class="tpm-nonused-ref">' .
+							$this->renderReferenceCount($row['uid']) .
+						'</td>
+						<td class="tpm-nonused-preview">' .
+							$recordButton . htmlspecialchars(t3lib_BEfunc::getRecordTitle('tt_content', $row)) .
+						'</td>
+					</tr>
+				';
+			}
 		}
 
 		if (count ($elementRows)) {
 
 				// Control for deleting all deleteable records:
 			$deleteAll = '';
-			if (count($this->deleteUids) && 0===$BE_USER->workspace)	{
+			if (count($this->deleteUids))	{
 				$params = '';
 				foreach($this->deleteUids as $deleteUid)	{
 					$params.= '&cmd[tt_content]['.$deleteUid.'][delete]=1';
@@ -360,20 +366,24 @@ class tx_templavoila_mod1_clipboard {
 		$infoData = array();
 		if (is_array($rows))	{
 			foreach($rows as $row)	{
-				$infoData[] = $row['tablename'].':'.$row['recuid'].':'.$row['field'];
+
+				if ($GLOBALS['BE_USER']->workspace && $row['tablename']=='pages' && $this->pObj->id == $row['recuid']) {
+					// We would have found you but we didn't - you're most likely deleted
+				} elseif ($GLOBALS['BE_USER']->workspace && $row['tablename']=='tt_content' && $this->pObj->global_tt_content_elementRegister[$row['recuid']] > 0) {
+					// We would have found you but we didn't - you're most likely deleted
+				} else {
+					$infoData[] = $row['tablename'].':'.$row['recuid'].':'.$row['field'];
+				}
 			}
 		}
-
 		if (count($infoData))	{
 			return '<a class="tpm-countRef" href="#" onclick="'.htmlspecialchars('top.launchView(\'tt_content\', \''.$uid.'\'); return false;').'" title="'.htmlspecialchars(t3lib_div::fixed_lgd_cs(implode(' / ',$infoData),100)).'">Ref: '.count($infoData).'</a>';
-		} elseif (0===$BE_USER->workspace) {
+		} else {
 			$this->deleteUids[] = $uid;
 			$params = '&cmd[tt_content]['.$uid.'][delete]=1';
 			return '<a class="tpm-countRef" href="#" onclick="'.htmlspecialchars('jumpToUrl(\''.$this->doc->issueCommand($params,-1).'\');').'">'.
 					tx_templavoila_icons::getIcon('actions-edit-delete', array('title' => $LANG->getLL('renderreferencecount_delete',1))).
 					'</a>';
-		} else {
-			return '';
 		}
 	}
 }
