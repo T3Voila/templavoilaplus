@@ -1,3 +1,7 @@
+2011-05-11 Tolleiv Nietsch <nietsch@aoemedia.de> 
+
+	* Fixed bug: #17929: delete not-used elements in custom workspace (Thanks to Riccardo De Contardi)
+
 2011-05-10 Tolleiv Nietsch <nietsch@aoemedia.de> 
 
 	* Fixed bug: #18101: Preview icons missing in new page wizard if TYPO3 is installed in subdirectory of DocumentRoot (Thanks to Tobias Schaefer)
