@@ -1,5 +1,6 @@
 2011-05-12 Tolleiv Nietsch <nietsch@aoemedia.de> 
 
+	* Fixed bug: #18076: Page templates using Inherited language mode don't work properly on page module
 	* Fixed bug: #18134: Preview flag can't be overwritten within localproc XML
 	* Fixed bug: #1332: V 0.4.0 - The cache pages with referenced content elements is not cleared on change
 

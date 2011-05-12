@@ -1205,7 +1205,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		$langDisable = intval($elementContentTreeArr['ds_meta']['langDisable']);
 
 			//if page DS and the checkbox is not set use always langDisable in inheritance mode
-		if ($elementContentTreeArr['el']['table']=='pages') {
+		if ($elementContentTreeArr['el']['table']=='pages' && $GLOBALS['BE_USER']->isAdmin()) {
 			if ($langDisable!=1 && $this->MOD_SETTINGS['disablePageStructureInheritance']!='1' && $langChildren==1) {
 				$langDisable=1;
 			}
