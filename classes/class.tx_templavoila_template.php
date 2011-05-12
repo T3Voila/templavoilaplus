@@ -311,6 +311,28 @@ class tx_templavoila_template {
 	}
 
 	/**
+	 * Fetch the the field value based on the given XPath expression.
+	 *
+	 * @param  string $fieldName XPath expression to look up for an value.
+	 *
+	 * @return string
+	 */
+	public function getLocalDataprotValueByXpath($fieldName) {
+		$value = '';
+		$doc = new DOMDocument;
+		$doc->preserveWhiteSpace = false;
+		$doc->loadXML($this->getLocalDataprotXML());
+		$xpath = new DOMXPath($doc);
+		$entries = $xpath->query($fieldName);
+
+		if ($entries->length  < 1) {
+			throw new UnexpectedValueException('Nothing found for XPath: "' . $fieldName . '"!');
+		}
+		
+		return $entries->item(0)->nodeValue;
+	}
+
+	/**
 	 * @param void
 	 * @return mixed
 	 */
