@@ -283,8 +283,22 @@ page.10.disableExplosivePreview = 1
 					}
 				}
 				break;
-
 		}
+
+			// clearing the cache of all related pages - see #1332
+		if (method_exists($reference, 'clear_cacheCmd')) {
+			$element = array(
+				'table' => $table,
+				'uid' => $id
+			);
+			$references = tx_templavoila_div::getElementForeignReferences($element, $fieldArray['pid']);
+			if (is_array($references) && is_array($references['pages'])) {
+				foreach($references['pages'] as $pageUid=>$__) {
+					$reference->clear_cacheCmd($pageUid);
+				}
+			}
+		}
+
 		unset ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_tcemain']['preProcessFieldArrays']);
 	}
 
