@@ -1227,8 +1227,8 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		}
 
 		try{
-			$toRepo = t3lib_div::makeInstance('tx_templavoila_templateRepository');
-			$to = $toRepo->getTemplateByUid($toRecord['uid']);
+			$toRepo = t3lib_div::makeInstance('tx_templavoila_templateRepository'); /** @var $toRepo tx_templavoila_templateRepository */
+			$to = $toRepo->getTemplateByUid($toRecord['uid']); /** @var $to tx_templavoila_template */
 			$beTemplate = $to->getBeLayout();
 		} catch (InvalidArgumentException $e) {
 			// might happen if uid was not what the Repo expected - that's ok here
@@ -1243,6 +1243,12 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 			// Traverse container fields:
 		foreach($elementContentTreeArr['sub'][$sheet][$lKey] as $fieldID => $fieldValuesContent)	{
+
+			try {
+				$newValue = $to->getLocalDataprotValueByXpath('//' . $fieldID . '/tx_templavoila/preview');
+				$elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['tx_templavoila']['preview'] = $newValue;
+			} catch (UnexpectedValueException $e) {}
+
 			if ( is_array($fieldValuesContent[$vKey]) && (
 				$elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['isMapped'] ||
 				$elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['type'] == 'no_map'
