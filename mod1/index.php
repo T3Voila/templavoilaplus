@@ -1081,7 +1081,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 						$linkHide = !in_array('hide', $this->blindIcons) ? $this->icon_hide($contentTreeArr['el']) : '';
 
 						if( $canEditContent && $this->modTSconfig['properties']['enableDeleteIconForLocalElements'] && $elementBelongsToCurrentPage ) {
-							$hasForeignReferences = $this->hasElementForeignReferences($contentTreeArr['el'],$contentTreeArr['el']['pid']);
+							$hasForeignReferences = tx_templavoila_div::hasElementForeignReferences($contentTreeArr['el'],$contentTreeArr['el']['pid']);
 							$iconDelete = tx_templavoila_icons::getIcon('actions-edit-delete', array('title' => $LANG->getLL('deleteRecord')));
 							$linkDelete = !in_array('delete', $this->blindIcons) ? $this->link_unlink($iconDelete, $parentPointer, TRUE, $hasForeignReferences, $elementPointer) : '';
 						} else {
@@ -1921,7 +1921,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 						$linkUnlink ='';
 					}
 					if( $this->modTSconfig['properties']['enableDeleteIconForLocalElements'] && $elementBelongsToCurrentPage ) {
-						$hasForeignReferences = $this->hasElementForeignReferences($contentTreeArr['el'],$contentTreeArr['el']['pid']);
+						$hasForeignReferences = tx_templavoila_div::hasElementForeignReferences($contentTreeArr['el'],$contentTreeArr['el']['pid']);
 						$iconDelete = tx_templavoila_icons::getIcon('actions-edit-delete', array('title' => $LANG->getLL('deleteRecord')));
 						$linkDelete = $this->link_unlink($iconDelete, $parentPointer, TRUE, $hasForeignReferences);
 					} else {
@@ -2829,48 +2829,6 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			//  might happen if uid was not what the Repo expected - that's ok here
 		}
 		return $editingEnabled;
-	}
-
-	/**
-	 * Checks if a element is referenced from other pages / elements on other pages than his own.
-	 *
-	 * @param array    array with tablename and uid for a element
-	 * @param int      the suppoed source-pid
-	 * @param int      recursion limiter
-	 * @return boolean true if there are other references for this element
-	 */
-	protected function hasElementForeignReferences($element, $pid, $recursion=99, $references=null) {
-		if (!$recursion) {
-			return false;
-		}
-		if (!is_array($references)) {
-			$references = array();
-		}
-		$refrows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-			'*',
-			'sys_refindex',
-			'ref_table='.$GLOBALS['TYPO3_DB']->fullQuoteStr($element['table'],'sys_refindex').
-				' AND ref_uid='.intval($element['uid']).
-				' AND deleted=0'
-		);
-
-		$foreignRef = false;
-		if(is_array($refrows)) {
-			foreach($refrows as $ref) {
-				if(strcmp($ref['tablename'],'pages')===0) {
-					$foreignRef = $foreignRef || $ref['recuid']!=$pid;
-				} else {
-					if (!isset($references[$ref['tablename']][$ref['recuid']])) {
-							// initialize with false to avoid recursion without affecting inner OR combinations
-						$references[$ref['tablename']][$ref['recuid']] = false;
-						$references[$ref['tablename']][$ref['recuid']] = $this->hasElementForeignReferences(array('table'=>$ref['tablename'], 'uid'=>$ref['recuid']), $pid, $recursion-1, $references);
-					}
-					$foreignRef = $foreignRef || $references[$ref['tablename']][$ref['recuid']];
-				}
-				if($foreignRef) break;
-			}
-		}
- 		return $foreignRef;
 	}
 
 	/**

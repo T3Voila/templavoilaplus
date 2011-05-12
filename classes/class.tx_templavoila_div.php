@@ -127,5 +127,68 @@ final class tx_templavoila_div {
 		return $denyItems;
 	}
 
+
+	/**
+	 * Get a list of referencing elements other than the given pid.
+	 *
+	 * @param array    array with tablename and uid for a element
+	 * @param int      the suppoed source-pid
+	 * @param int      recursion limiter
+	 * @param array    array containing a list of the actual references
+	 * @return boolean true if there are other references for this element
+	 */
+	public function getElementForeignReferences($element, $pid, $recursion=99, &$references=null) {
+		if (!$recursion) {
+			return FALSE;
+		}
+		if (!is_array($references)) {
+			$references = array();
+		}
+		$refrows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+			'*',
+			'sys_refindex',
+			'ref_table='.$GLOBALS['TYPO3_DB']->fullQuoteStr($element['table'],'sys_refindex').
+				' AND ref_uid='.intval($element['uid']).
+				' AND deleted=0'
+		);
+
+		if(is_array($refrows)) {
+			foreach($refrows as $ref) {
+				if(strcmp($ref['tablename'],'pages')===0) {
+					$references[$ref['tablename']][$ref['recuid']] = TRUE;
+				} else {
+					if (!isset($references[$ref['tablename']][$ref['recuid']])) {
+							// initialize with false to avoid recursion without affecting inner OR combinations
+						$references[$ref['tablename']][$ref['recuid']] = FALSE;
+						$references[$ref['tablename']][$ref['recuid']] = self::hasElementForeignReferences(array('table'=>$ref['tablename'], 'uid'=>$ref['recuid']), $pid, $recursion-1, $references);
+					}
+				}
+			}
+		}
+
+		unset($references['pages'][$pid]);
+
+ 		return $references;
+	}
+
+
+	/**
+	 * Checks if a element is referenced from other pages / elements on other pages than his own.
+	 *
+	 * @param array    array with tablename and uid for a element
+	 * @param int      the suppoed source-pid
+	 * @param int      recursion limiter
+	 * @param array    array containing a list of the actual references
+	 * @return boolean true if there are other references for this element
+	 */
+	public function hasElementForeignReferences($element, $pid, $recursion=99, &$references=null) {
+		$references = self::getElementForeignReferences($element, $pid, $recursion, $references);
+		$foreignRefs = FALSE;
+		if (is_array($references)) {
+			unset($references['pages'][$pid]);
+			$foreignRefs = count($references['pages']) || count($references['pages_language_overlay']);
+		}
+		return $foreignRefs;
+	}
 }
 ?>

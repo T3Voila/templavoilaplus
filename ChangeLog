@@ -1,3 +1,7 @@
+2011-05-12 Tolleiv Nietsch <nietsch@aoemedia.de> 
+
+	* Fixed bug: #1332: V 0.4.0 - The cache pages with referenced content elements is not cleared on change
+
 2011-05-11 Tolleiv Nietsch <nietsch@aoemedia.de> 
 
 	* Fixed bug: #17929: delete not-used elements in custom workspace (Thanks to Riccardo De Contardi)
