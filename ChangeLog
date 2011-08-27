@@ -1,3 +1,7 @@
+2011-08-27 Tolleiv Nietsch <nietsch@aoemedia.de> 
+
+	* Fixed bug: #18158: The requested URL /typo3conf/ext/templavoila/mod1/mod.php was not found on this server. 
+
 2011-05-12 Tolleiv Nietsch <nietsch@aoemedia.de> 
 
 	* Fixed bug: #18076: Page templates using Inherited language mode don't work properly on page module
