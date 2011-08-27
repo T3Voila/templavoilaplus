@@ -468,7 +468,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			}
 		');
 
-		if(t3lib_div::int_from_ver(TYPO3_version) < 4005000) {
+		if(tx_templavoila_div::convertVersionNumberToInteger(TYPO3_version) < 4005000) {
 			$this->doc->getDynTabMenuJScode();
 		} else {
 			$this->doc->loadJavascriptLib('js/tabmenu.js');
@@ -2285,7 +2285,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 					if ($this->_preview)	{						
 						if (!is_array($value['tx_templavoila']['sample_data'])) {
 							$rowCells['description'] = '[' . $GLOBALS['LANG']->getLL('noSampleData') . ']';
-						} elseif (t3lib_div::int_from_ver(TYPO3_version) < 4005000){
+						} elseif (tx_templavoila_div::convertVersionNumberToInteger(TYPO3_version) < 4005000){
 							$rowCells['description'] = t3lib_div::view_array($value['tx_templavoila']['sample_data']);
 						} else {
 							$rowCells['description'] = t3lib_utility_Debug::viewArray($value['tx_templavoila']['sample_data']);

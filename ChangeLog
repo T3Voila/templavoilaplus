@@ -1,5 +1,6 @@
 2011-08-27 Tolleiv Nietsch <nietsch@aoemedia.de> 
 
+	* Fixed issue: #18261: t3lib_div_int_from_ver is deprecated 
 	* Fixed issue: #18147: Install as global should be possible
 	* Fixed bug: #18158: The requested URL /typo3conf/ext/templavoila/mod1/mod.php was not found on this server. 
 

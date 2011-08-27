@@ -137,7 +137,7 @@ class tx_templavoila_dbnewcontentel {
 		$this->doc->getPageRenderer()->loadPrototype();
 
 
-		if(t3lib_div::int_from_ver(TYPO3_version) < 4005000) {
+		if(tx_templavoila_div::convertVersionNumberToInteger(TYPO3_version) < 4005000) {
 			$this->doc->JScodeLibArray['dyntabmenu'] = $this->doc->getDynTabMenuJScode();
 		} else {
 			$this->doc->loadJavascriptLib('js/tabmenu.js');

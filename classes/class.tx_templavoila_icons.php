@@ -67,7 +67,7 @@ final class tx_templavoila_icons {
 		if(self::$useOldIcons !== null && self::$reInit == false) {
 			return;
 		}
-		if(t3lib_div::int_from_ver(TYPO3_version) < 4004000 || self::$useOldIcons) {
+		if(tx_templavoila_div::convertVersionNumberToInteger(TYPO3_version) < 4004000 || self::$useOldIcons) {
 			self::$useOldIcons = true;
 			if (is_array($GLOBALS['TBE_STYLES']['spritemanager']['singleIcons'])) {
 				foreach($GLOBALS['TBE_STYLES']['spritemanager']['singleIcons'] as $name => $file) {
@@ -79,7 +79,7 @@ final class tx_templavoila_icons {
 		} else {
 			self::$useOldIcons = false;
 		}
-		if(t3lib_div::int_from_ver(TYPO3_version) < 4005000 || self::$useOldFlags) {
+		if(tx_templavoila_div::convertVersionNumberToInteger(TYPO3_version) < 4005000 || self::$useOldFlags) {
 			self::$useOldFlags = true;
 		} else {
 			self::$useOldFlags = false;

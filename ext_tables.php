@@ -189,7 +189,7 @@ if ($_EXTCONF['enable.']['selectDataStructure']) {
 }
 
 
-if(t3lib_div::int_from_ver(TYPO3_version) >= 4005000) {
+if(tx_templavoila_div::convertVersionNumberToInteger(TYPO3_version) >= 4005000) {
 
 		$TCA['tt_content']['types'][$_EXTKEY . '_pi1']['showitem'] =
 					'--palette--;LLL:EXT:cms/locallang_ttc.xml:palette.general;general,
@@ -300,7 +300,7 @@ $tempColumns = array (
 t3lib_extMgm::addTCAcolumns('pages', $tempColumns, 1);
 if ($_EXTCONF['enable.']['selectDataStructure']) {
 
-	if(t3lib_div::int_from_ver(TYPO3_version) >= 4005000) {
+	if(tx_templavoila_div::convertVersionNumberToInteger(TYPO3_version) >= 4005000) {
 		t3lib_extMgm::addToAllTCAtypes('pages', 'tx_templavoila_ds;;;;1-1-1,tx_templavoila_to', '', 'replace:backend_layout');
 		t3lib_extMgm::addToAllTCAtypes('pages', 'tx_templavoila_next_ds;;;;1-1-1,tx_templavoila_next_to', '', 'replace:backend_layout_next_level');
 		t3lib_extMgm::addToAllTCAtypes('pages', 'tx_templavoila_flex;;;;1-1-1', '', 'after:title');
@@ -314,7 +314,7 @@ if ($_EXTCONF['enable.']['selectDataStructure']) {
 	$TCA['pages']['ctrl']['requestUpdate'] .= 'tx_templavoila_ds,tx_templavoila_next_ds';
 
 } else {
-	if(t3lib_div::int_from_ver(TYPO3_version) >= 4005000) {
+	if(tx_templavoila_div::convertVersionNumberToInteger(TYPO3_version) >= 4005000) {
 		t3lib_extMgm::addToAllTCAtypes('pages', 'tx_templavoila_to;;;;1-1-1', '', 'replace:backend_layout');
 		t3lib_extMgm::addToAllTCAtypes('pages', 'tx_templavoila_next_to;;;;1-1-1', '', 'replace:backend_layout_next_level');
 		t3lib_extMgm::addToAllTCAtypes('pages', 'tx_templavoila_flex;;;;1-1-1', '', 'after:title');
@@ -341,7 +341,7 @@ if (TYPO3_MODE=='BE')	{
 if (TYPO3_MODE == 'BE' ||
 	(TYPO3_MODE == 'FE' && isset($GLOBALS['BE_USER']) && method_exists($GLOBALS['BE_USER'], 'isFrontendEditingActive')  && $GLOBALS['BE_USER']->isFrontendEditingActive())
 ) {
-	if(t3lib_div::int_from_ver(TYPO3_version) >= 4004000) {
+	if(tx_templavoila_div::convertVersionNumberToInteger(TYPO3_version) >= 4004000) {
 		$icons = array(
 			'paste' => t3lib_extMgm::extRelPath('templavoila') . 'mod1/clip_pasteafter.gif',
 			'pasteSubRef' => t3lib_extMgm::extRelPath('templavoila') . 'mod1/clip_pastesubref.gif',

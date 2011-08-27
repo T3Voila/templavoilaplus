@@ -71,19 +71,17 @@ class tx_templavoila_mod1_records {
 	 * @return	void
 	 */
 	function init(&$pObj) {
-		if (t3lib_div::int_from_ver(TYPO3_version) >= 4000005) {
-			$this->pObj = &$pObj;
+		$this->pObj = &$pObj;
 
-			$this->tables = t3lib_div::trimExplode(',', $this->pObj->modTSconfig['properties']['recordDisplay_tables'], true);
-			if ($this->tables) {
-				// Get permissions
-				$this->calcPerms = $GLOBALS['BE_USER']->calcPerms(t3lib_BEfunc::readPageAccess($this->pObj->id, $this->pObj->perms_clause));
-				foreach ($this->tables as $table) {
-					if ($this->canDisplayTable($table)) {
-						// At least one displayable table found!
-						$this->pObj->sideBarObj->addItem('records', $this, 'sidebar_renderRecords', $GLOBALS['LANG']->getLL('records'), 25);
-						break;
-					}
+		$this->tables = t3lib_div::trimExplode(',', $this->pObj->modTSconfig['properties']['recordDisplay_tables'], true);
+		if ($this->tables) {
+			// Get permissions
+			$this->calcPerms = $GLOBALS['BE_USER']->calcPerms(t3lib_BEfunc::readPageAccess($this->pObj->id, $this->pObj->perms_clause));
+			foreach ($this->tables as $table) {
+				if ($this->canDisplayTable($table)) {
+					// At least one displayable table found!
+					$this->pObj->sideBarObj->addItem('records', $this, 'sidebar_renderRecords', $GLOBALS['LANG']->getLL('records'), 25);
+					break;
 				}
 			}
 		}

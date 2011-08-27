@@ -320,11 +320,6 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	function main()    {
 		global $BE_USER,$LANG,$BACK_PATH;
 
-		if (!is_callable(array('t3lib_div', 'int_from_ver')) || t3lib_div::int_from_ver(TYPO3_version) < 4000000) {
-			$this->content = 'Fatal error:This version of TemplaVoila does not work with TYPO3 versions lower than 4.0.0! Please upgrade your TYPO3 core installation.';
-			return;
-		}
-
 		$this->content = '';
 
 			// Access check! The page will show only if there is a valid page and if this page may be viewed by the user
@@ -398,7 +393,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 			$this->doc->getPageRenderer()->addCssFile($GLOBALS['BACK_PATH'] . $styleSheetFile);
 
-			if (isset($this->modTSconfig['properties']['stylesheet.']) && t3lib_div::int_from_ver(TYPO3_version) >= 4003000) {
+			if (isset($this->modTSconfig['properties']['stylesheet.'])) {
 				foreach($this->modTSconfig['properties']['stylesheet.'] as $file) {
 					if(substr($file,0,4) == 'EXT:') {
 						list($extKey,$local) = explode('/',substr($file,4),2);
@@ -420,7 +415,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			');
 
 
-			if (t3lib_div::int_from_ver(TYPO3_version) >= 4004000) {
+			if (tx_templavoila_div::convertVersionNumberToInteger(TYPO3_version) >= 4004000) {
 				$this->doc->getPageRenderer()->loadExtJs();
 				$this->doc->JScode .= $this->doc->wrapScriptTags('
 					var typo3pageModule = {
@@ -492,7 +487,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			}
 
 				// Set up JS for dynamic tab menu and side bar
-			if(t3lib_div::int_from_ver(TYPO3_version) < 4005000) {
+			if(tx_templavoila_div::convertVersionNumberToInteger(TYPO3_version) < 4005000) {
 				$this->doc->JScode .= $this->doc->getDynTabMenuJScode();
 			} else {
 				$this->doc->loadJavascriptLib('js/tabmenu.js');
@@ -576,7 +571,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				if (t3lib_div::_GP('ajaxUnlinkRecord')) {
 					$this->render_editPageScreen();
 					echo $this->render_sidebar();
-					if(t3lib_div::int_from_ver(TYPO3_version) > 4005000) {
+					if(tx_templavoila_div::convertVersionNumberToInteger(TYPO3_version) > 4005000) {
 						t3lib_formprotection_Factory::get()->persistTokens();
 					}
 					exit;
@@ -738,7 +733,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 			// If access to Web>List for user, then link to that module.
 		if ($BE_USER->check('modules','web_list'))	{
-			if (t3lib_div::int_from_ver(TYPO3_version) < 4005000) {
+			if (tx_templavoila_div::convertVersionNumberToInteger(TYPO3_version) < 4005000) {
 				$href = $GLOBALS['BACK_PATH'] . 'db_list.php?id=' . $this->id . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'));
 			} else {
 				$href = t3lib_BEfunc::getModuleUrl('web_list', array ('id' => $this->id, 'returnUrl' => t3lib_div::getIndpEnv('REQUEST_URI')) );

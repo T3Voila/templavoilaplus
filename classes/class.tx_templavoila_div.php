@@ -170,5 +170,23 @@ final class tx_templavoila_div {
 		}
 		return $foreignRefs;
 	}
+
+	/**
+	 * Returns an integer from a three part version number, eg '4.12.3' -> 4012003
+	 * Compatibility layer to make sure TV works in systems < 4.6
+	 *
+	 * @see t3lib_utility_VersionNumber::convertVersionNumberToInteger
+	 * @param $versionNumber string Version number on format x.x.x
+	 * @return integer Integer version of version number (where each part can count to 999)
+	 */
+	public function convertVersionNumberToInteger($version) {
+		$result = 0;
+		if (class_exists('t3lib_utility_VersionNumber')) {
+			$result = t3lib_utility_VersionNumber::convertVersionNumberToInteger($version);
+		} else {
+			$result = t3lib_div::int_from_ver($version);
+		}
+		return $result;
+	}
 }
 ?>
