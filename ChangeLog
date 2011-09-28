@@ -1,3 +1,7 @@
+2011-09-28 Tolleiv Nietsch <nietsch@aoemedia.de> 
+
+	* Fixed issue: #18291: Section index might be wrong if it's placed after an FCE  (Thanks to Thomas Layh)
+
 2011-08-27 Tolleiv Nietsch <nietsch@aoemedia.de> 
 
 	* Fixed issue: #18261: t3lib_div_int_from_ver is deprecated 

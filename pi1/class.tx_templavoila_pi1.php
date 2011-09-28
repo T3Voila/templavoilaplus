@@ -480,6 +480,9 @@ class tx_templavoila_pi1 extends tslib_pibase {
 							$savedParentInfo[$dkey] = $dvalue;
 							$unsetKeys[] = $dkey;
 						}
+						if (preg_match('/^tx_templavoila_pi1\.(nested_fields|current_field)/', $dkey)) {
+							$savedParentInfo[$dkey] = $dvalue;
+						}
                     }
 
                     // Step 2: unset previous parent info
@@ -500,12 +503,6 @@ class tx_templavoila_pi1 extends tslib_pibase {
                     $registerKeys[] = 'tx_templavoila_pi1.parentRec.__SERIAL';
                 }
             }
-
-			if (isset($GLOBALS['TSFE']->register['tx_templavoila_pi1.nested_fields'])) {
-				$nested_fields = $GLOBALS['TSFE']->register['tx_templavoila_pi1.nested_fields'];
-			} else {
-				$nested_fields = '';
-			}
 
 				// For each DS element:
 			foreach($DSelements as $key => $dsConf)	{
@@ -666,8 +663,6 @@ class tx_templavoila_pi1 extends tslib_pibase {
             foreach ($savedParentInfo as $dkey => $dvalue) {
                 $GLOBALS['TSFE']->register[$dkey] = $dvalue;
             }
-
-			$GLOBALS['TSFE']->register['tx_templavoila_pi1.nested_fields'] = $nested_fields;
         }
     }
 
