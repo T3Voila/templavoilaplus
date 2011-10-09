@@ -2520,7 +2520,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 		$res = $TYPO3_DB->exec_SELECTquery (
 			'pid,root',
 			'sys_template',
-			'1=1' . t3lib_BEfunc::deleteClause('sys_template')
+			'root=1' . t3lib_BEfunc::deleteClause('sys_template')
 		);
 		while (false !== ($row = $TYPO3_DB->sql_fetch_assoc($res)))	{
 			$tsCconfig = t3lib_BEfunc::getModTSconfig($row['pid'],'tx_templavoila');
