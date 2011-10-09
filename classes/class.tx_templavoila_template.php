@@ -37,6 +37,7 @@ class tx_templavoila_template {
 	protected $fileref_mtime;
 	protected $fileref_md5;
 	protected $sortbyField;
+	protected $parent;
 
 	/**
 	 *
@@ -52,6 +53,7 @@ class tx_templavoila_template {
 		$this->setFilerefMtime($this->row['fileref_mtime']);
 		$this->setFilerefMD5($this->row['fileref_md5']);
 		$this->setSortbyField($GLOBALS['TCA']['tx_templavoila_tmplobj']['ctrl']['sortby']);
+		$this->setParent($this->row['parent']);
 	}
 
 	/**
@@ -373,6 +375,17 @@ class tx_templavoila_template {
 		return $fieldVal;
 	}
 
+	public function setParent ($parent) {
+		$this->parent = $parent;
+	}
+
+	public function getParent () {
+		return $this->parent;
+	}
+
+	public function hasParent() {
+		return $this->parent > 0;
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/classes/class.tx_templavoila_template.php'])	{

@@ -214,7 +214,7 @@ class tx_templavoila_handleStaticDataStructures {
 			if (strlen($dataSource)) {
 				$toList = $toRepo->getTemplatesByDatastructure($ds, $storagePid);
 				foreach ($toList as $toObj) {
-					if($toObj->isPermittedForUser($params['table'], $removeTOItems)) {
+					if(!$toObj->hasParent() && $toObj->isPermittedForUser($params['table'], $removeTOItems)) {
 						$params['items'][] = array(
 							$toObj->getLabel(),
 							$toObj->getKey(),
@@ -265,7 +265,7 @@ class tx_templavoila_handleStaticDataStructures {
 
 			$toList = $toRepo->getTemplatesByDatastructure($dsObj, $storagePid);
 			foreach ($toList as $toObj) {
-				if($toObj->isPermittedForUser($params['row'], $removeTOItems)) {
+				if(!$toObj->hasParent() && $toObj->isPermittedForUser($params['row'], $removeTOItems)) {
 					$curDS[] = array(
 						$toObj->getLabel(),
 						$toObj->getKey(),
