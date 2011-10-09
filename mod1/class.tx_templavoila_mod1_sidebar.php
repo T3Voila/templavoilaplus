@@ -96,8 +96,10 @@ class tx_templavoila_mod1_sidebar {
 		$hideIfEmpty = $pObj->modTSconfig['properties']['showTabsIfEmpty'] ? FALSE : TRUE;
 
 			// Register the locally available sidebar items. Additional items may be added by other extensions.
-		if (t3lib_extMgm::isLoaded('version') && $GLOBALS['BE_USER']->check('modules','web_txversionM1'))	{
-			$this->sideBarItems['versioning'] = array (
+		if (t3lib_extMgm::isLoaded('version') && !t3lib_extMgm::isLoaded('workspaces')
+			&& $GLOBALS['BE_USER']->check('modules', 'web_txversionM1')
+		) {
+			$this->sideBarItems['versioning'] = array(
 				'object' => &$this,
 				'method' => 'renderItem_versioning',
 				'label' => $LANG->getLL('versioning'),
