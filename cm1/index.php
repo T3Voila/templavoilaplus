@@ -1385,7 +1385,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 						$dsValue=$parentRec['datastructure'];
 					}
 
-					if (t3lib_div::testInt($dsValue))	{
+					if (tx_templavoila_div::canBeInterpretedAsInteger($dsValue))	{
 						$DS_row = t3lib_BEfunc::getRecordWSOL('tx_templavoila_datastructure',$dsValue);
 					} else {
 						$DSOfile = t3lib_div::getFileAbsFileName($dsValue);

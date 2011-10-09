@@ -295,7 +295,7 @@ class tx_templavoila_handleStaticDataStructures {
 			// Check for alternative storage folder
 		$field = $params['table'] == 'pages' ? 'uid' : 'pid';
 		$modTSConfig = t3lib_BEfunc::getModTSconfig($params['row'][$field], 'tx_templavoila.storagePid');
-		if (is_array($modTSConfig) && t3lib_div::testInt($modTSConfig['value'])) {
+		if (is_array($modTSConfig) && tx_templavoila_div::canBeInterpretedAsInteger($modTSConfig['value'])) {
 			$storagePid = intval($modTSConfig['value']);
 		}
 		return $storagePid;

@@ -149,7 +149,7 @@ class tx_templavoila_cm1 {
 				// Adding link for "View: DS/TO" (admin only):
 			if ($BE_USER->isAdmin() && $isTVelement) {
 
-				if (t3lib_div::testInt($backRef->rec['tx_templavoila_ds']))	{
+				if (tx_templavoila_div::canBeInterpretedAsInteger($backRef->rec['tx_templavoila_ds']))	{
 					$url = t3lib_extMgm::extRelPath('templavoila').'cm1/index.php?'.
 								'table=tx_templavoila_datastructure&uid='.$backRef->rec['tx_templavoila_ds'];
 

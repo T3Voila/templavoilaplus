@@ -39,8 +39,7 @@ class tx_templavoila_datastructureRepository {
 	 */
 	public function getDatastructureByUidOrFilename($uidOrFile) {
 
-		$className = '';
-		if(t3lib_div::intval_positive($uidOrFile) > 0) {
+		if(intval($uidOrFile) > 0) {
 			$className = 'tx_templavoila_datastructure_dbbase';
 		} else if(($staticKey = $this->validateStaticDS($uidOrFile)) !== FALSE) {
 			$uidOrFile = $staticKey;

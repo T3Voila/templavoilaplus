@@ -2698,17 +2698,16 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * @return	string	Converted label
 	 */
 	function localizedFFLabel($label, $hsc) {
-		global	$LANG, $TYPO3_CONF_VARS;
 
-		$charset = $LANG->origCharSet;
-		if ($LANG->origCharSet != $TYPO3_CONF_VARS['BE']['forceCharset']) {
-			$LANG->origCharSet = $TYPO3_CONF_VARS['BE']['forceCharset'];
+		$charset = $GLOBALS['LANG']->origCharSet;
+		if ($GLOBALS['LANG']->origCharSet != $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset']) {
+			$GLOBALS['LANG']->origCharSet = $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'];
 		}
 		if (substr($label, 0, 4) === 'LLL:') {
-			$label = $LANG->sL($label);
+			$label = $GLOBALS['LANG']->sL($label);
 		}
-		$result = $LANG->hscAndCharConv($label, $hsc);
-		$LANG->origCharSet = $charset;
+		$result = htmlspecialchars($label, $hsc);
+		$GLOBALS['LANG']->origCharSet = $charset;
 		return $result;
 	}
 
@@ -2777,7 +2776,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 * @return boolean
 	 */
 	protected function editingOfNewElementIsEnabled($dsUid, $toUid) {
-		if ( !strlen($dsUid) || !t3lib_div::intval_positive($toUid)) {
+		if ( !strlen($dsUid) || !intval($toUid)) {
 			return TRUE;
 		}
 		$editingEnabled = TRUE;
