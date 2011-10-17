@@ -101,7 +101,8 @@
 			
 			<label index="renderTO_toDetails">Template Object Details</label>
 			<label index="renderTO_dsRecord">Data Structure Record</label>
-			<label index="renderTO_updateWarningConfirm">Warning: You should only modify Data Structures and Template Objects which have not been manually edited\nYou risk that manual changes will be removed without further notice!</label>
+			<label index="renderTO_updateWarningConfirm"><![CDATA[Warning: You should only modify Data Structures and Template Objects which have not been manually edited.
+You risk that manual changes will be removed without further notice!]]></label>
 			<label index="renderTO_editDSTO">Modify DS / TO</label>
 			<label index="renderTO_dsFile">Data Structure File</label>
 			<label index="renderTO_toInfo">Template Object Information</label>

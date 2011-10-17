@@ -1144,7 +1144,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 							</tr>
 						</table>
 
-						<input type="submit" name="_updateDSandTO" value="UPDATE TO (and DS)" onclick="return confirm(\'' . $GLOBALS['LANG']->getLL('saveDSTOconfirm') . '\');" />
+						<input type="submit" name="_updateDSandTO" value="UPDATE TO (and DS)" onclick="return confirm(' . $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL('saveDSTOconfirm')) . ');" />
 						<input type="submit" name="_" value="' . $GLOBALS['LANG']->getLL('buttonCancel') . '" />
 						';
 				break;
@@ -1408,7 +1408,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 								// Link to updating DS/TO:
 							$onCl = 'index.php?file=' . rawurlencode($theFile) . '&_load_ds_xml=1&_load_ds_xml_to=' . $row['uid'] . '&uid=' . $DS_row['uid'] . '&returnUrl=' . $this->returnUrl;
 							$onClMsg = '
-								if (confirm(unescape(\''.rawurlencode($GLOBALS['LANG']->getLL('renderTO_updateWarningConfirm')).'\'))) {
+								if (confirm(' . $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL('renderTO_updateWarningConfirm')) . ')) {
 									document.location=\''.$onCl.'\';
 								}
 								return false;
@@ -1434,7 +1434,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 								</tr>';
 							$onCl = 'index.php?file=' . rawurlencode($theFile) . '&_load_ds_xml=1&_load_ds_xml_to=' . $row['uid'] . '&uid=' . rawurlencode($DSOfile) . '&returnUrl=' . $this->returnUrl;
 							$onClMsg = '
-								if (confirm(unescape(\''.rawurlencode($GLOBALS['LANG']->getLL('renderTO_updateWarningConfirm')).'\'))) {
+								if (confirm(' . $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL('renderTO_updateWarningConfirm')) . ')) {
 									document.location=\''.$onCl.'\';
 								}
 								return false;
