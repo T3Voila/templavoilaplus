@@ -198,8 +198,8 @@ class tx_templavoila_mod1_sidebar {
 				// Create the whole sidebar:
 			switch ($this->position) {
 				case 'left':
-					$minusIcon = tx_templavoila_icons::getIcon('actions-view-table-collapse');
-					$plusIcon = tx_templavoila_icons::getIcon('actions-view-table-expand');
+					$minusIcon = t3lib_iconWorks::getSpriteIcon('actions-view-table-collapse');
+					$plusIcon = t3lib_iconWorks::getSpriteIcon('actions-view-table-expand');
 					$sideBar = '
 						<!-- TemplaVoila Sidebar (left) begin -->
 
@@ -354,27 +354,14 @@ class tx_templavoila_mod1_sidebar {
 				</tr>
 			');
 
-			if (tx_templavoila_div::convertVersionNumberToInteger(TYPO3_version) >= 4004000) {
-				$tableRows[] = '
-				<tr class="bgColor4">
-					<td width="20">
-						&nbsp;
-					</td>
-					<td colspan="9">' . $versionSelector . '</td>
-				</tr>
-				';
-			} else {
-				$tableRows[] = '
-				<tr class="bgColor4">
-					<td width="20">
-						&nbsp;
-					</td><td width="200" style="vertical-align:middle;">
-						' . $GLOBALS['LANG']->getLL('sidebar_versionSelector', 1) . ':
-					</td>
-					<td>' . $versionSelector . '</td>
-				</tr>
-				';
-			}
+			$tableRows[] = '
+			<tr class="bgColor4">
+				<td width="20">
+					&nbsp;
+				</td>
+				<td colspan="9">' . $versionSelector . '</td>
+			</tr>
+			';
 
 			return '<table border="0" cellpadding="0" cellspacing="1" class="lrPadding" width="100%">' . implode ('', $tableRows) . '</table>';
 		}

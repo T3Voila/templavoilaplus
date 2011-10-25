@@ -180,7 +180,7 @@ class tx_templavoila_dbnewcontentel {
 			$this->content.=$this->doc->spacer(5);
 
 			$elRow = t3lib_BEfunc::getRecordWSOL('pages',$this->id);
-			$header= tx_templavoila_icons::getIconForRecord('pages', $elRow);
+			$header= t3lib_iconWorks::getSpriteIconForRecord('pages', $elRow);
 			$header.= t3lib_BEfunc::getRecordTitle('pages',$elRow,1);
 			$this->content.=$this->doc->section('',$header,0,1);
 			$this->content.=$this->doc->spacer(10);
@@ -318,7 +318,7 @@ class tx_templavoila_dbnewcontentel {
 
 			// Back
 		if ($this->returnUrl) {
-			$backIcon = tx_templavoila_icons::getIcon('actions-view-go-back');
+			$backIcon = t3lib_iconWorks::getSpriteIcon('actions-view-go-back');
 			$buttons['back'] = '<a href="' . htmlspecialchars(t3lib_div::linkThisUrl($this->returnUrl)) . '" class="typo3-goBack" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.goBack', TRUE) . '">' .
 								$backIcon .
 							   '</a>';

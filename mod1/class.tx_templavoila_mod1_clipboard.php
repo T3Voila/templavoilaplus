@@ -151,9 +151,9 @@ class tx_templavoila_mod1_clipboard {
 
 		}
 
-		$copyIcon = tx_templavoila_icons::getIcon('actions-edit-copy'. ($clipActive_copy ? '-release':''), array('title' => $LANG->getLL ('copyrecord')));
-		$cutIcon = tx_templavoila_icons::getIcon('actions-edit-cut'. ($clipActive_cut ? '-release':''), array('title' => $LANG->getLL ('cutrecord')));
-		$refIcon = tx_templavoila_icons::getIcon('extensions-templavoila-clip_ref'. ($clipActive_ref ? '-release':''), array('title' => $LANG->getLL ('createreference')));
+		$copyIcon = t3lib_iconWorks::getSpriteIcon('actions-edit-copy'. ($clipActive_copy ? '-release':''), array('title' => $LANG->getLL ('copyrecord')));
+		$cutIcon = t3lib_iconWorks::getSpriteIcon('actions-edit-cut'. ($clipActive_cut ? '-release':''), array('title' => $LANG->getLL ('cutrecord')));
+		$refIcon = t3lib_iconWorks::getSpriteIcon('extensions-templavoila-clip_ref'. ($clipActive_ref ? '-release':''), array('title' => $LANG->getLL ('createreference')));
 
 		$removeElement = '&amp;CB[removeAll]=normal';
 		$setElement = '&amp;CB[el]['.rawurlencode('tt_content|'.$elementRecord['uid']).']='.rawurlencode($this->pObj->apiObj->flexform_getStringFromPointer($elementPointer));
@@ -223,8 +223,8 @@ class tx_templavoila_mod1_clipboard {
 
 			// Prepare the ingredients for the different buttons:
 		$pasteMode = isset ($this->t3libClipboardObj->clipData['normal']['flexMode']) ? $this->t3libClipboardObj->clipData['normal']['flexMode'] : ($this->t3libClipboardObj->clipData['normal']['mode'] == 'copy' ? 'copy' : 'cut');
-		$pasteAfterIcon = tx_templavoila_icons::getIcon('extensions-templavoila-paste', array('title' => $LANG->getLL ('pasterecord')));
-		$pasteSubRefIcon = tx_templavoila_icons::getIcon('extensions-templavoila-pasteSubRef', array('title' => $LANG->getLL ('pastefce_andreferencesubs')));
+		$pasteAfterIcon = t3lib_iconWorks::getSpriteIcon('extensions-templavoila-paste', array('title' => $LANG->getLL ('pasterecord')));
+		$pasteSubRefIcon = t3lib_iconWorks::getSpriteIcon('extensions-templavoila-pasteSubRef', array('title' => $LANG->getLL ('pastefce_andreferencesubs')));
 
 		$sourcePointerString = $this->pObj->apiObj->flexform_getStringFromPointer ($clipboardElementPointer);
 		$destinationPointerString = $this->pObj->apiObj->flexform_getStringFromPointer ($destinationPointer);
@@ -284,7 +284,7 @@ class tx_templavoila_mod1_clipboard {
 
 				// Prepare buttons:
 			$cutButton = $this->element_getSelectButtons($elementPointerString, 'ref');
-			$recordIcon = tx_templavoila_icons::getIconForRecord('tt_content', $row);
+			$recordIcon = t3lib_iconWorks::getSpriteIconForRecord('tt_content', $row);
 			$recordButton = $this->pObj->doc->wrapClickMenuOnIcon($recordIcon, 'tt_content', $row['uid'], 1, '&callingScriptId='.rawurlencode($this->pObj->doc->scriptID), 'new,copy,cut,pasteinto,pasteafter,delete');
 
 			if ($GLOBALS['BE_USER']->workspace) {
@@ -321,7 +321,7 @@ class tx_templavoila_mod1_clipboard {
 				}
 				$label = $LANG->getLL('rendernonusedelements_deleteall');
 				$deleteAll = '<a href="#" onclick="'.htmlspecialchars('jumpToUrl(\''.$this->doc->issueCommand($params,-1).'\');').'">'.
-						tx_templavoila_icons::getIcon('actions-edit-delete', array('title' => htmlspecialchars($label))).
+						t3lib_iconWorks::getSpriteIcon('actions-edit-delete', array('title' => htmlspecialchars($label))).
 						htmlspecialchars($label).
 						'</a>';
 			}
@@ -382,7 +382,7 @@ class tx_templavoila_mod1_clipboard {
 			$this->deleteUids[] = $uid;
 			$params = '&cmd[tt_content]['.$uid.'][delete]=1';
 			return '<a class="tpm-countRef" href="#" onclick="'.htmlspecialchars('jumpToUrl(\''.$this->doc->issueCommand($params,-1).'\');').'">'.
-					tx_templavoila_icons::getIcon('actions-edit-delete', array('title' => $LANG->getLL('renderreferencecount_delete',1))).
+					t3lib_iconWorks::getSpriteIcon('actions-edit-delete', array('title' => $LANG->getLL('renderreferencecount_delete',1))).
 					'</a>';
 		}
 	}

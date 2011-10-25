@@ -182,7 +182,7 @@ class tx_templavoila_cm1 {
 				if ($res) {
 					while (false != ($referenceRecord = $TYPO3_DB->sql_fetch_assoc ($res))) {
 						$pageRecord = t3lib_beFunc::getRecord('pages', $referenceRecord['pid']);
-						$icon = tx_templavoila_icons::getIconForRecord('pages', $pageRecord);
+						$icon = t3lib_iconWorks::getSpriteIconForRecord('pages', $pageRecord);
 	// To do: Display language flag icon and jump to correct language
 #						if ($referenceRecord['lkey'] != 'lDEF') {
 #							$icon .= ' lKey:'.$referenceRecord['lkey'];

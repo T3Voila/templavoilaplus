@@ -346,33 +346,16 @@ if (TYPO3_MODE=='BE')	{
 if (TYPO3_MODE == 'BE' ||
 	(TYPO3_MODE == 'FE' && isset($GLOBALS['BE_USER']) && method_exists($GLOBALS['BE_USER'], 'isFrontendEditingActive')  && $GLOBALS['BE_USER']->isFrontendEditingActive())
 ) {
-	if(tx_templavoila_div::convertVersionNumberToInteger(TYPO3_version) >= 4004000) {
-		$icons = array(
-			'paste' => t3lib_extMgm::extRelPath('templavoila') . 'mod1/clip_pasteafter.gif',
-			'pasteSubRef' => t3lib_extMgm::extRelPath('templavoila') . 'mod1/clip_pastesubref.gif',
-			'makelocalcopy' => t3lib_extMgm::extRelPath('templavoila') . 'mod1/makelocalcopy.gif',
-			'clip_ref' => t3lib_extMgm::extRelPath('templavoila') . 'mod1/clip_ref.gif',
-			'clip_ref-release' => t3lib_extMgm::extRelPath('templavoila') . 'mod1/clip_ref_h.gif',
-			'unlink' => t3lib_extMgm::extRelPath('templavoila') . 'mod1/unlink.png',
-			'htmlvalidate' => t3lib_extMgm::extRelPath('templavoila') . 'resources/icons/html_go.png',
-			'type-fce' => t3lib_extMgm::extRelPath('templavoila') . 'icon_fce_ce.png'
-		);
-		t3lib_SpriteManager::addSingleIcons($icons, $_EXTKEY);
-	} else {
-		$icons = array(
-			'extensions-templavoila-paste' => t3lib_extMgm::extRelPath('templavoila') . 'mod1/clip_pasteafter.gif',
-			'extensions-templavoila-pasteSubRef' => t3lib_extMgm::extRelPath('templavoila') . 'mod1/clip_pastesubref.gif',
-			'extensions-templavoila-makelocalcopy' => t3lib_extMgm::extRelPath('templavoila') . 'mod1/makelocalcopy.gif',
-			'extensions-templavoila-clip_ref' => t3lib_extMgm::extRelPath('templavoila') . 'mod1/clip_ref.gif',
-			'extensions-templavoila-clip_ref-release' => t3lib_extMgm::extRelPath('templavoila') . 'mod1/clip_ref_h.gif',
-			'extensions-templavoila-unlink' => t3lib_extMgm::extRelPath('templavoila') . 'mod1/unlink.png',
-			'extensions-templavoila-htmlvalidate' => t3lib_extMgm::extRelPath('templavoila') . 'resources/icons/html_go.png',
-			'extensions-templavoila-type-fce' => t3lib_extMgm::extRelPath('templavoila') . 'icon_fce_ce.png'
-		);
-		$GLOBALS['TBE_STYLES']['spritemanager']['singleIcons'] = array_merge(
-			(array) $GLOBALS['TBE_STYLES']['spritemanager']['singleIcons'],
-			$icons
-		);
-	}
+	$icons = array(
+		'paste' => t3lib_extMgm::extRelPath('templavoila') . 'mod1/clip_pasteafter.gif',
+		'pasteSubRef' => t3lib_extMgm::extRelPath('templavoila') . 'mod1/clip_pastesubref.gif',
+		'makelocalcopy' => t3lib_extMgm::extRelPath('templavoila') . 'mod1/makelocalcopy.gif',
+		'clip_ref' => t3lib_extMgm::extRelPath('templavoila') . 'mod1/clip_ref.gif',
+		'clip_ref-release' => t3lib_extMgm::extRelPath('templavoila') . 'mod1/clip_ref_h.gif',
+		'unlink' => t3lib_extMgm::extRelPath('templavoila') . 'mod1/unlink.png',
+		'htmlvalidate' => t3lib_extMgm::extRelPath('templavoila') . 'resources/icons/html_go.png',
+		'type-fce' => t3lib_extMgm::extRelPath('templavoila') . 'icon_fce_ce.png'
+	);
+	t3lib_SpriteManager::addSingleIcons($icons, $_EXTKEY);
 }
 ?>

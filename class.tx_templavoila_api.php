@@ -1413,7 +1413,7 @@ class tx_templavoila_api {
 			'title' => t3lib_div::fixed_lgd_cs(t3lib_BEfunc::getRecordTitle($table, $row),50),
 			'fullTitle' => t3lib_BEfunc::getRecordTitle($table, $row),
 			'icon' => t3lib_iconWorks::getIcon($table,$row), // kept because it's not clear if this is used elsewhere
-			'iconTag' => tx_templavoila_icons::getIconForRecord($table,$row),
+			'iconTag' => t3lib_iconWorks::getSpriteIconForRecord($table,$row),
 			'sys_language_uid' => $row['sys_language_uid'],
 			'l18n_parent' => $row['l18n_parent'],
 			'CType' => $row['CType'],

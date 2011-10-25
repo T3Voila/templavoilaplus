@@ -138,7 +138,7 @@ class tx_templavoila_mod1_records {
 			$params = '&edit[' . $table . '][' . $this->pObj->id . ']=new';
 			$content .= '&nbsp;&nbsp;';
 			$content .= '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::editOnClick($params, $backpath, -1)) . '">';
-			$content .= tx_templavoila_icons::getIcon('actions-document-new', array('title' => $GLOBALS['LANG']->getLL('createnewrecord')));
+			$content .= t3lib_iconWorks::getSpriteIcon('actions-document-new', array('title' => $GLOBALS['LANG']->getLL('createnewrecord')));
 			$content .= '</a>';
 		}
 
