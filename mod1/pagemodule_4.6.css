@@ -136,14 +136,14 @@ div.warning a {
 	min-width:100px;
 	margin-right:140px;
 	vertical-align:top;
-	padding:1px;
+	padding:4px 1px 1px 1px;
 	line-height:15px;
 }
 
 .tpm-element-title .tpm-langIcon {
 	float:left;
 	padding-right:5px;
-	padding-top:2px;
+	padding-top:3px;
 }
 
 .tpm-preview ul {
@@ -215,7 +215,8 @@ div.warning a {
 	float:right;
 	min-width: 120px;
 	height:20px;
-	padding-right:4px;
+	padding-right: 4px;
+	margin-top: 2px;
 }
 
 /* prevent flicker effects with row-headers and their hide/visibility states */
