@@ -76,7 +76,7 @@ class tx_templavoila_pi1 extends tslib_pibase {
 
 	var $inheritValueFromDefault=1;		// If set, children-translations will take the value from the default if "false" (zero or blank)
 
-	static $enablePageRenderer = FALSE;
+	static $enablePageRenderer = TRUE;
 
 	/**
 	 * Markup object

@@ -26,10 +26,11 @@ t3lib_extMgm::addTypoScript($_EXTKEY,'setup',implode(PHP_EOL, $tvSetup), 43);
 t3lib_extMgm::addPageTSConfig('
     mod.web_list.newPageWiz.overrideWithExtension = templavoila
 	mod.web_list.newContentWiz.overrideWithExtension = templavoila
-	mod.web_txtemplavoilaM2.templatePath = templates
+	mod.web_txtemplavoilaM2.templatePath = templates,default/templates
 	mod.web_txtemplavoilaM1.enableDeleteIconForLocalElements = 0
 	mod.web_txtemplavoilaM1.enableContentAccessWarning = 1
 	mod.web_txtemplavoilaM1.enableLocalizationLinkForFCEs = 0
+	mod.web_txtemplavoilaM1.useLiveWorkspaceForReferenceListUpdates = 1
 ');
 
  	// Use templavoila instead of the default page module
