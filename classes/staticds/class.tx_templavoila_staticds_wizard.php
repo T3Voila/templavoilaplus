@@ -1,33 +1,33 @@
 <?php
 /***************************************************************
-* Copyright notice
-*
-* (c) 2009 Steffen Kamper (info@sk-typo3.de)
-*  All rights reserved
-*
-*  This script is part of the Typo3 project. The Typo3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
+ * Copyright notice
+ *
+ * (c) 2009 Steffen Kamper (info@sk-typo3.de)
+ *  All rights reserved
+ *
+ *  This script is part of the Typo3 project. The Typo3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 
 /**
  * Class for userFuncs within the Extension Manager.
  *
  * @author	Steffen Kamper  <info@sk-typo3.de>
  */
-class tx_templavoila_staticDStools {
+class tx_templavoila_staticds_wizard {
 
 	/**
 	 * Step for the wizard. Can be manipulated by internal function
@@ -41,7 +41,7 @@ class tx_templavoila_staticDStools {
 	 * @param		array		Parameter array.  Contains fieldName and fieldValue.
 	 * @param		object		Instance of the class t3lib_tsStyleConfig
 	 */
-	function staticDsWizard($params, $pObj) {
+	public function staticDsWizard() {
 		$this->step = t3lib_div::_GP('dsWizardDoIt') ? intval(t3lib_div::_GP('dsWizardStep')) : 0;
 		$conf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
 
@@ -49,7 +49,9 @@ class tx_templavoila_staticDStools {
 		$description = $GLOBALS['LANG']->sL('LLL:EXT:templavoila/res1/language/template_conf.xml:staticDS.wizard.description.' . $this->step);
 		$out = '<h2>' . htmlspecialchars($title) . '</h2>';
 
-		switch($this->step) {
+		$controls = '';
+
+		switch ($this->step) {
 			case 1:
 				$ok = array(TRUE, TRUE);
 				if (t3lib_div::_GP('dsWizardDoIt')) {
@@ -82,11 +84,13 @@ class tx_templavoila_staticDStools {
 					}
 				}
 				if ($ok == array(TRUE, TRUE) && $this->step < 3) {
-					$submitText = $conf['staticDS.']['enable'] ? $GLOBALS['LANG']->sL('LLL:EXT:templavoila/res1/language/template_conf.xml:staticDS.wizard.submit3') : $GLOBALS['LANG']->sL('LLL:EXT:templavoila/res1/language/template_conf.xml:staticDS.wizard.submit2');
+					$submitText = $conf['staticDS.']['enable']
+							? $GLOBALS['LANG']->sL('LLL:EXT:templavoila/res1/language/template_conf.xml:staticDS.wizard.submit3')
+							: $GLOBALS['LANG']->sL('LLL:EXT:templavoila/res1/language/template_conf.xml:staticDS.wizard.submit2');
 					$controls .= '<br /><input type="hidden" name="dsWizardStep" value="1" />
 					<input type="submit" name="dsWizardDoIt" value="' . $submitText . '" />';
 				}
-			break;
+				break;
 			default:
 				$controls .= '<input type="hidden" name="dsWizardStep" value="1" />
 				<input type="submit" name="dsWizardDoIt" value="' . $GLOBALS['LANG']->sL('LLL:EXT:templavoila/res1/language/template_conf.xml:staticDS.wizard.submit1') . '" />';
@@ -95,14 +99,14 @@ class tx_templavoila_staticDStools {
 
 
 		$out .= '<p style="margin-bottom: 10px;">' . str_replace('|', '<br />', $description) . '</p>' .
-			'<p style="margin-top: 5px;">' . $controls . '</p>';
+				'<p style="margin-top: 5px;">' . $controls . '</p>';
 
-		return $out;
+		return '<form action="#" method="POST">' . $out . '</form>';
 	}
 
 	/**
 	 *
-	 * @param	string 		$path
+	 * @param	string		 $path
 	 * @return	boolean		TRUE if directory exists and is writable or could be created
 	 */
 	protected function checkDirectory($path) {
@@ -150,9 +154,10 @@ class tx_templavoila_staticDStools {
 				<td style="vertical-align:middle;">' . $GLOBALS['LANG']->sL('LLL:EXT:templavoila/res1/language/template_conf.xml:staticDS.wizard.usage') . '</td>
 			<td>
 				<label for="sdw-checkall">' . $GLOBALS['LANG']->sL('LLL:EXT:templavoila/res1/language/template_conf.xml:staticDS.wizard.selectall') . '</label>
-				<input type="checkbox" class="checkbox" id="sdw-checkall" name="sdw-checkall" onclick="$$(\'.staticDScheck\').each(function(e){e.checked=$(\'sdw-checkall\').checked;});" value="1" ' . ($checkAll ? 'checked="checked"' : '') . ' /></td>
+				<input type="checkbox" class="checkbox" id="sdw-checkall" name="sdw-checkall" onclick="$$(\'.staticDScheck\').each(function(e){e.checked=$(\'sdw-checkall\').checked;});" value="1" ' . ($checkAll
+				? 'checked="checked"' : '') . ' /></td>
 		</tr></thead><tbody>';
-		foreach($rows as $row) {
+		foreach ($rows as $row) {
 			$dirPath = PATH_site . ($row['scope'] == 2 ? $conf['path_fce'] : $conf['path_page']);
 			$dirPath = $dirPath . (substr($dirPath, -1) == '/' ? '' : '/');
 			$title = preg_replace('|[/,\."\']+|', '_', $row['title']);
@@ -167,16 +172,23 @@ class tx_templavoila_staticDStools {
 			if (count($writeDsIds) && in_array($row['uid'], $writeDsIds)) {
 				t3lib_div::writeFile($path, $row['dataprot']);
 				if ($row['previewicon']) {
-					copy(PATH_site . 'uploads/tx_templavoila/' . $row['previewicon'], $dirPath . $title . ' (' . ($row['scope'] == 1 ? 'page' : 'fce') . ').gif');
+					copy(PATH_site . 'uploads/tx_templavoila/' . $row['previewicon'], $dirPath . $title . ' (' . ($row['scope'] == 1
+							? 'page' : 'fce') . ').gif');
 				}
 				if ($options['updateRecords']) {
-						// update TO records
+					// remove DS records
+					$GLOBALS['TYPO3_DB']->exec_UPDATEquery(
+						'tx_templavoila_datastructure',
+						'uid="' . $row['uid'] . '"',
+						array('deleted' => 1)
+					);
+					// update TO records
 					$GLOBALS['TYPO3_DB']->exec_UPDATEquery(
 						'tx_templavoila_tmplobj',
 						'datastructure="' . $row['uid'] . '"',
 						array('datastructure' => $outPath)
 					);
-						// update page records
+					// update page records
 					$GLOBALS['TYPO3_DB']->exec_UPDATEquery(
 						'pages',
 						'tx_templavoila_ds="' . $row['uid'] . '"',
@@ -187,13 +199,13 @@ class tx_templavoila_staticDStools {
 						'tx_templavoila_next_ds="' . $row['uid'] . '"',
 						array('tx_templavoila_next_ds' => $outPath)
 					);
-						// update tt_content records
+					// update tt_content records
 					$GLOBALS['TYPO3_DB']->exec_UPDATEquery(
 						'tt_content',
 						'tx_templavoila_ds="' . $row['uid'] . '"',
 						array('tx_templavoila_ds' => $outPath)
 					);
-						// delete DS records
+					// delete DS records
 					$GLOBALS['TYPO3_DB']->exec_UPDATEquery('tx_templavoila_datastructure', 'uid=' . $row['uid'], array('deleted' => 1));
 					$updateMessage = $GLOBALS['LANG']->sL('LLL:EXT:templavoila/res1/language/template_conf.xml:staticDS.wizard.updated');
 					$this->step = 3;
@@ -202,11 +214,11 @@ class tx_templavoila_staticDStools {
 
 			}
 			$out .= '<tr class="bgColor' . ($row['scope'] == 1 ? 3 : 6) . '">
-			<td style="text-align: center;padding: 0,3px;">' .$row['uid'] . '</td>
-			<td style="text-align: center;padding: 0,3px;">' .$row['pid'] . '</td>
-			<td style="padding: 0,3px;">' .htmlspecialchars($row['title']) . '</td>
-			<td style="padding: 0,3px;">' .($row['scope'] == 1 ? 'Page' : 'FCE') . '</td>
-			<td style="text-align: center;padding: 0,3px;">' .$usage[0]['count(*)'] . '</td>';
+			<td style="text-align: center;padding: 0,3px;">' . $row['uid'] . '</td>
+			<td style="text-align: center;padding: 0,3px;">' . $row['pid'] . '</td>
+			<td style="padding: 0,3px;">' . htmlspecialchars($row['title']) . '</td>
+			<td style="padding: 0,3px;">' . ($row['scope'] == 1 ? 'Page' : 'FCE') . '</td>
+			<td style="text-align: center;padding: 0,3px;">' . $usage[0]['count(*)'] . '</td>';
 			if (count($writeDsIds) && in_array($row['uid'], $writeDsIds)) {
 				$out .= '<td class="nobr" style="text-align: right;padding: 0,3px;">written to "' . $outPath . '"</td>';
 			} else {
@@ -231,42 +243,14 @@ class tx_templavoila_staticDStools {
 	}
 
 	/**
-	 *
-	 * @param unknown_type $conf
+	 * @return int
 	 */
-	public function readStaticDsFilesIntoArray($conf) {
-		$paths = array_unique(array('fce' => $conf['staticDS.']['path_fce'], 'page' => $conf['staticDS.']['path_page']));
-		foreach ($paths as $type => $path) {
-			$absolutePath = t3lib_div::getFileAbsFileName($path);
-			$files = t3lib_div::getFilesInDir($absolutePath, 'xml', true);
-				// if all files are in the same folder, don't resolve the scope by path type
-			if (count($paths) == 1) {
-				$type = FALSE;
-			}
-			foreach($files as $filePath) {
-				$staticDataStructure = array();
-				$pathInfo = pathinfo($filePath);
-
-				$staticDataStructure['title'] = $pathInfo['filename'];
-				$staticDataStructure['path'] = substr($filePath, strlen(PATH_site));
-				$iconPath = $pathInfo['dirname'] . '/' . $pathInfo['filename'] . '.gif';
-				if (file_exists($iconPath)) {
-					$staticDataStructure['icon'] = substr($iconPath, strlen(PATH_site));
-				}
-
-				if (($type !== FALSE && $type === 'fce') || strpos($pathInfo['filename'], '(fce)') !== FALSE) {
-					$staticDataStructure['scope'] = tx_templavoila_datastructure::SCOPE_FCE;
-				} else {
-					$staticDataStructure['scope'] = tx_templavoila_datastructure::SCOPE_PAGE;
-				}
-
-				$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['staticDataStructures'][] = $staticDataStructure;
-			}
-		}
+	protected function datastructureDbCount() {
+		return $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', 'tx_templavoila_datastructure', 'deleted=0');
 	}
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/classes/class.tx_templavoila_staticdstools.php'])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/classes/class.tx_templavoila_staticdstools.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/classes/class.tx_templavoila_staticds_wizard.php']) {
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/classes/class.tx_templavoila_staticds_wizard.php']);
 }
 ?>

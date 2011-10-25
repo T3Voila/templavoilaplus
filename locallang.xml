@@ -16,6 +16,9 @@
 			<label index="cm_viewdsto">View: DS/TO</label>
 			<label index="cm1_pagesusingthiselement">Pages using this element -&gt;</label>
 			<label index="wiz_refElements">Reference unused content elements (templavoila)</label>
+			<label index="extconf.staticWizard.header">Migrate</label>
+			<label index="extconf.staticWizard.message">Please use the migration wizard to move all datastructures from your database to the filesystem.</label>
+			<label index="extconf.staticWizard.link">Click here to run the wizard</label>
 		</languageKey>
 	</data>
 </T3locallang>

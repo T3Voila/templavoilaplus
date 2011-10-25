@@ -236,7 +236,7 @@ class tx_templavoila_datastructureRepository {
 		if (!self::$staticDsInitComplete) {
 			$extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
 			if ($extConfig['staticDS.']['enable']) {
-				tx_templavoila_staticDStools::readStaticDsFilesIntoArray($extConfig);
+				tx_templavoila_staticds_tools::readStaticDsFilesIntoArray($extConfig);
 			}
 			self::$staticDsInitComplete = TRUE;
 		}
