@@ -766,7 +766,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			$buttons['csh'] = t3lib_BEfunc::cshItem('_MOD_web_txtemplavoilaM1', 'pagemodule', $BACK_PATH);
 
 			if ($this->id) {
-				$cacheUrl = 'tce_db.php?vC=' . $GLOBALS['BE_USER']->veriCode() .
+				$cacheUrl = $GLOBALS['BACK_PATH'] . 'tce_db.php?vC=' . $GLOBALS['BE_USER']->veriCode() .
 					t3lib_BEfunc::getUrlToken('tceAction') .
 					'&redirect=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')) .
 					'&cacheCmd=' . $this->id;
