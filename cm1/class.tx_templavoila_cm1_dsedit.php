@@ -119,16 +119,16 @@ class tx_templavoila_cm1_dsEdit {
 				<dl id="dsel-general" class="DS-config">
 					<!-- always present options +++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 					<dt><label>' . $GLOBALS['LANG']->getLL('renderDSO_title') . ':</label></dt>
-					<dd><input type="text" size="80" name="' . $formFieldName . '[tx_templavoila][title]" value="' . htmlspecialchars($insertDataArray['tx_templavoila']['title']) . '" /></dd>
+					<dd><input type="text" size="40" name="' . $formFieldName . '[tx_templavoila][title]" value="' . htmlspecialchars($insertDataArray['tx_templavoila']['title']) . '" /></dd>
 
 					<dt><label>' . $GLOBALS['LANG']->getLL('renderDSO_mappingInstructions') . ':</label></dt>
-					<dd><input type="text" size="80" name="' . $formFieldName . '[tx_templavoila][description]" value="' . htmlspecialchars($insertDataArray['tx_templavoila']['description']) . '" /></dd>';
+					<dd><input type="text" size="40" name="' . $formFieldName . '[tx_templavoila][description]" value="' . htmlspecialchars($insertDataArray['tx_templavoila']['description']) . '" /></dd>';
 
 					if ($insertDataArray['type'] != 'array' && $insertDataArray['type'] != 'section') {
 						$form .= '
 					<!-- non-array options ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 					<dt><label>' . $GLOBALS['LANG']->getLL('mapSampleData') . ':</label></dt>
-					<dd><textarea cols="80" rows="5" name="' . $formFieldName . '[tx_templavoila][sample_data][]">' . htmlspecialchars($insertDataArray['tx_templavoila']['sample_data'][0]) . '</textarea>
+					<dd><textarea cols="40" rows="5" name="' . $formFieldName . '[tx_templavoila][sample_data][]">' . htmlspecialchars($insertDataArray['tx_templavoila']['sample_data'][0]) . '</textarea>
 					' . $this->pObj->lipsumLink($formFieldName . '[tx_templavoila][sample_data]') . '</dd>
 
 					<dt><label>' . $GLOBALS['LANG']->getLL('mapElementPreset') . ':</label></dt>
@@ -161,7 +161,7 @@ class tx_templavoila_cm1_dsEdit {
 
 					$form .= '
 					<dt><label>Mapping rules:</label></dt>
-					<dd><input type="text" size="80" name="'.$formFieldName.'[tx_templavoila][tags]" value="'.htmlspecialchars($insertDataArray['tx_templavoila']['tags']).'" /></dd>
+					<dd><input type="text" size="40" name="'.$formFieldName.'[tx_templavoila][tags]" value="'.htmlspecialchars($insertDataArray['tx_templavoila']['tags']).'" /></dd>
 				</dl>';
 
 
@@ -179,9 +179,9 @@ class tx_templavoila_cm1_dsEdit {
 					$form .= '
 					<dl id="dsel-ts" class="DS-config">
 						<dt><label>' . $GLOBALS['LANG']->getLL('mapTSconstants') . ':</label></dt>
-						<dd><textarea class="xml enable-tab" cols="80" rows="10" wrap="off" name="'.$formFieldName.'[tx_templavoila][TypoScript_constants]">'.htmlspecialchars($this->pObj->flattenarray($insertDataArray['tx_templavoila']['TypoScript_constants'])).'</textarea></dd>
+						<dd><textarea class="xml enable-tab" cols="40" rows="10" wrap="off" name="'.$formFieldName.'[tx_templavoila][TypoScript_constants]">'.htmlspecialchars($this->pObj->flattenarray($insertDataArray['tx_templavoila']['TypoScript_constants'])).'</textarea></dd>
 						<dt><label>' . $GLOBALS['LANG']->getLL('mapTScode') . ':</label></dt>
-						<dd><textarea class="code enable-tab" cols="80" rows="10" wrap="off" name="'.$formFieldName.'[tx_templavoila][TypoScript]">'.htmlspecialchars($insertDataArray['tx_templavoila']['TypoScript']).'</textarea></dd>
+						<dd><textarea class="code enable-tab" cols="40" rows="10" wrap="off" name="'.$formFieldName.'[tx_templavoila][TypoScript]">'.htmlspecialchars($insertDataArray['tx_templavoila']['TypoScript']).'</textarea></dd>
 					</dl>';
 
 					/* The Typoscript-related XML-structure of an tx_templavoila-entry is:
@@ -236,7 +236,7 @@ class tx_templavoila_cm1_dsEdit {
 						</dd>
 
 						<dt><label>' . $GLOBALS['LANG']->getLL('mapCustomStdWrap') . ':</label></dt>
-						<dd><textarea class="code" cols="80" rows="10" name="'.$formFieldName.'[tx_templavoila][proc][stdWrap]">'.htmlspecialchars($insertDataArray['tx_templavoila']['proc']['stdWrap']).'</textarea></dd>
+						<dd><textarea class="code" cols="40" rows="10" name="'.$formFieldName.'[tx_templavoila][proc][stdWrap]">'.htmlspecialchars($insertDataArray['tx_templavoila']['proc']['stdWrap']).'</textarea></dd>
 
 						<dt><label>' . $GLOBALS['LANG']->getLL('mapEnablePreview') . ':</label></dt>
 						<dd>
@@ -277,13 +277,13 @@ class tx_templavoila_cm1_dsEdit {
 					$form .= '
 					<dl id="dsel-tce" class="DS-config">
 						<dt><label>' . $GLOBALS['LANG']->getLL('mapTCElabel') . ':</label></dt>
-						<dd><input type="text" size="80" name="'.$formFieldName.'[TCEforms][label]" value="'.htmlspecialchars($insertDataArray['TCEforms']['label']).'" /></dd>
+						<dd><input type="text" size="40" name="'.$formFieldName.'[TCEforms][label]" value="'.htmlspecialchars($insertDataArray['TCEforms']['label']).'" /></dd>
 
 						<dt><label>' . $GLOBALS['LANG']->getLL('mapTCEconf') . ':</label></dt>
-						<dd><textarea class="xml" cols="80" rows="10" name="'.$formFieldName.'[TCEforms][config]">'.htmlspecialchars($this->pObj->flattenarray($insertDataArray['TCEforms']['config'])).'</textarea></dd>
+						<dd><textarea class="xml" cols="40" rows="10" name="'.$formFieldName.'[TCEforms][config]">'.htmlspecialchars($this->pObj->flattenarray($insertDataArray['TCEforms']['config'])).'</textarea></dd>
 
 						<dt><label>' . $GLOBALS['LANG']->getLL('mapTCEextras') . ':</label></dt>
-						<dd><input type="text" size="80" name="'.$formFieldName.'[TCEforms][defaultExtras]" value="'.htmlspecialchars($insertDataArray['TCEforms']['defaultExtras']).'" /></dd>
+						<dd><input type="text" size="40" name="'.$formFieldName.'[TCEforms][defaultExtras]" value="'.htmlspecialchars($insertDataArray['TCEforms']['defaultExtras']).'" /></dd>
 					</dl>';
 				} else {
 					$form .= '
