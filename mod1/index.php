@@ -1118,15 +1118,22 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		$langChildren = intval($elementContentTreeArr['ds_meta']['langChildren']);
 		$langDisable = intval($elementContentTreeArr['ds_meta']['langDisable']);
 
-			//if page DS and the checkbox is not set use always langDisable in inheritance mode
-		if ($elementContentTreeArr['el']['table']=='pages' && $GLOBALS['BE_USER']->isAdmin()) {
-			if ($langDisable!=1 && $this->MOD_SETTINGS['disablePageStructureInheritance']!='1' && $langChildren==1) {
-				$langDisable=1;
-			}
+		$lKey = $this->determineFlexLanguageKey($langDisable, $langChildren, $languageKey);
+		$vKey = $this->determineFlexValueKey($langDisable, $langChildren, $languageKey);
+		if ($elementContentTreeArr['el']['table']=='pages' && $langDisable != 1 && $langChildren == 1) {
+			   if ($this->disablePageStructureInheritance($elementContentTreeArr, $sheet, $lKey, $vKey)) {
+				   $lKey = $this->determineFlexLanguageKey(1, $langChildren, $languageKey);
+				   $vKey = $this->determineFlexValueKey(1, $langChildren, $languageKey);
+			   } else if (!$GLOBALS['BE_USER']->isAdmin()) {
+				   $flashMessage = t3lib_div::makeInstance(
+					   't3lib_FlashMessage',
+					   $GLOBALS['LANG']->getLL('page_structure_inherited_detail'),
+					   $GLOBALS['LANG']->getLL('page_structure_inherited'),
+					   t3lib_FlashMessage::INFO
+				   );
+				   t3lib_FlashMessageQueue::addMessage($flashMessage);
+			   }
 		}
-
-		$lKey = $langDisable ? 'lDEF' : ($langChildren ? 'lDEF' : 'l'.$languageKey);
-		$vKey = $langDisable ? 'vDEF' : ($langChildren ? 'v'.$languageKey : 'vDEF');
 
 		if (!is_array($elementContentTreeArr['sub'][$sheet]) || !is_array($elementContentTreeArr['sub'][$sheet][$lKey])) return '';
 
@@ -1345,8 +1352,58 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		return $output;
 	}
 
+	/**
+	 * @param $langDisable
+	 * @param $langChildren
+	 * @param $languageKey
+	 * @return string
+	 */
+	protected function determineFlexLanguageKey($langDisable, $langChildren, $languageKey) {
+		return $langDisable ? 'lDEF' : ($langChildren ? 'lDEF' : 'l'. $languageKey);
+	}
 
+	/**
+	 * @param $langDisable
+	 * @param $langChildren
+	 * @param $languageCode
+	 * @return string
+	 */
+	protected function determineFlexValueKey($langDisable, $langChildren, $languageKey) {
+		return $langDisable ? 'vDEF' : ($langChildren ? 'v'.$languageKey : 'vDEF');
+	}
 
+	/**
+	 * @param $elementContentTreeArr
+	 * @param $sheet
+	 * @param $lKey
+	 * @param $vKey
+	 * @return bool
+	 */
+	protected function disablePageStructureInheritance($elementContentTreeArr, $sheet, $lKey, $vKey) {
+		$disable = FALSE;
+		if ($GLOBALS['BE_USER']->isAdmin()) {
+				//if page DS and the checkbox is not set use always langDisable in inheritance mode
+			$disable = $this->MOD_SETTINGS['disablePageStructureInheritance']!='1';
+		} else {
+			$hasLocalizedValues = FALSE;
+			$adminOnly = $this->modTSconfig['properties']['adminOnlyPageStructureInheritance'];
+			if ($adminOnly == 'strict') {
+				$disable = TRUE;
+			} else if ($adminOnly == 'fallback' && isset($elementContentTreeArr['sub'][$sheet][$lKey])) {
+				foreach($elementContentTreeArr['previewData']['sheets'][$sheet] as $_ => $fieldData) {
+					$hasLocalizedValues |= isset($fieldData['data'][$lKey][$vKey])
+									&& ($fieldData['data'][$lKey][$vKey] != NULL)
+									&& ($fieldData['isMapped'] == true)
+									&& (!isset($fieldData['TCEforms']['displayCond']) || $fieldData['TCEforms']['displayCond'] != 'HIDE_L10N_SIBLINGS');
+				}
+			} else if ($adminOnly == 'false') {
+				$disable = $this->MOD_SETTINGS['disablePageStructureInheritance']!='1';
+			}
+				// we disable it if the path wasn't already created (by an admin)
+			$disable |= !$hasLocalizedValues;
+		}
+		return $disable;
+	}
 
 
 	/*******************************************

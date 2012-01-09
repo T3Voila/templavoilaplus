@@ -31,6 +31,7 @@ t3lib_extMgm::addPageTSConfig('
 	mod.web_txtemplavoilaM1.enableContentAccessWarning = 1
 	mod.web_txtemplavoilaM1.enableLocalizationLinkForFCEs = 0
 	mod.web_txtemplavoilaM1.useLiveWorkspaceForReferenceListUpdates = 1
+	mod.web_txtemplavoilaM1.adminOnlyPageStructureInheritance = fallback
 ');
 
  	// Use templavoila instead of the default page module

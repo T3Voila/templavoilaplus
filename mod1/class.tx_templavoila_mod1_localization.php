@@ -107,6 +107,7 @@ class tx_templavoila_mod1_localization {
 		global $LANG, $BE_USER, $BACK_PATH;
 
 		$availableLanguagesArr = $this->pObj->translatedLanguagesArr;
+		$availableTranslationsFlags = '';
 		$newLanguagesArr = $this->pObj->getAvailableLanguages(0, true, false);
 		if (count($availableLanguagesArr) <= 1) return FALSE;
 
@@ -132,7 +133,7 @@ class tx_templavoila_mod1_localization {
 
 		$link = '\'index.php?' . $this->pObj->link_getParameters() . '&SET[language]=\'+this.options[this.selectedIndex].value';
 
-		$output.= '
+		$output = '
 			<tr class="bgColor4">
 				<td width="20">
 					'. t3lib_BEfunc::cshItem('_MOD_web_txtemplavoilaM1', 'selectlanguageversion', $this->doc->backPath) .'
@@ -181,7 +182,8 @@ class tx_templavoila_mod1_localization {
 		}
 
 			// enable/disable structure inheritance - see #7082 for details
-		if ($BE_USER->isAdmin() && $this->pObj->rootElementLangMode=='inheritance') {
+		$adminOnlySetting = isset($this->pObj->modTSconfig['properties']['adminOnlyPageStructureInheritance']) ? $this->pObj->modTSconfig['properties']['adminOnlyPageStructureInheritance'] : 'strict';
+		if (($GLOBALS['BE_USER']->isAdmin() || $adminOnlySetting === 'false') && $this->pObj->rootElementLangMode=='inheritance') {
 			$link = '\'index.php?'.$this->pObj->link_getParameters().'&SET[disablePageStructureInheritance]='.($this->pObj->MOD_SETTINGS['disablePageStructureInheritance']=='1'?'0':'1').'\'';
 			$output.= '
 				<tr class="bgColor4">

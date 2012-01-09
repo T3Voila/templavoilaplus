@@ -111,6 +111,8 @@
 			<label index="missing_edit_right">Your user settings don't allow creating, moving or removing elements from this page.</label>
 			<label index="missing_edit_right_detail">Your settings indicate that you're either don't have the general right to edit page content, or you're not allowed to modify required tables or you're not allowed to edit the content fields. We suggest you recheck the settings or get in touch with your technical support.</label>
 			<label index="maximal_content_elements">The maximal amount of %d content elements is reached in field "%s."</label>
+			<label index="page_structure_inherited">The content structure for this lanuage differs from the default language.</label>
+			<label index="page_structure_inherited_detail">If that's not what you expect, please contact you content administrator.</label>
 		</languageKey>
 	</data>
 </T3locallang>
