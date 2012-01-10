@@ -766,10 +766,16 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			$buttons['csh'] = t3lib_BEfunc::cshItem('_MOD_web_txtemplavoilaM1', 'pagemodule', $BACK_PATH);
 
 			if ($this->id) {
-				$cacheUrl = $GLOBALS['BACK_PATH'] . 'tce_db.php?vC=' . $GLOBALS['BE_USER']->veriCode() .
-					t3lib_BEfunc::getUrlToken('tceAction') .
-					'&redirect=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')) .
-					'&cacheCmd=' . $this->id;
+				if (version_compare(TYPO3_version, '4.5.0', '<')) {
+					$cacheUrl = $GLOBALS['BACK_PATH'] . 'tce_db.php?vC=' . $GLOBALS['BE_USER']->veriCode() .
+						'&redirect=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')) .
+						'&cacheCmd=' . $this->id;
+				} else {
+					$cacheUrl = $GLOBALS['BACK_PATH'] . 'tce_db.php?vC=' . $GLOBALS['BE_USER']->veriCode() .
+						t3lib_BEfunc::getUrlToken('tceAction') .
+						'&redirect=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')) .
+						'&cacheCmd=' . $this->id;
+				}
 
 				$buttons['cache'] = '<a href="' . $cacheUrl . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.clear_cache', TRUE) . '">' .
 					t3lib_iconWorks::getSpriteIcon('actions-system-cache-clear') .
