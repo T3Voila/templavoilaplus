@@ -99,7 +99,7 @@ final class tx_templavoila_div {
 		return (stripos($url . '/', t3lib_div::getIndpEnv('TYPO3_REQUEST_HOST') . '/') === 0);
 	}
 
-	public function getDenyListForUser() {
+	public static function getDenyListForUser() {
 		$denyItems = array();
 		foreach ($GLOBALS['BE_USER']->userGroups as $group) {
 			$groupDenyItems = t3lib_div::trimExplode(',', $group['tx_templavoila_access'], true);
@@ -117,7 +117,7 @@ final class tx_templavoila_div {
 	 * @param array    array containing a list of the actual references
 	 * @return boolean true if there are other references for this element
 	 */
-	public function getElementForeignReferences($element, $pid, $recursion=99, &$references=null) {
+	public static function getElementForeignReferences($element, $pid, $recursion=99, &$references=null) {
 		if (!$recursion) {
 			return FALSE;
 		}
@@ -161,7 +161,7 @@ final class tx_templavoila_div {
 	 * @param array    array containing a list of the actual references
 	 * @return boolean true if there are other references for this element
 	 */
-	public function hasElementForeignReferences($element, $pid, $recursion=99, &$references=null) {
+	public static function hasElementForeignReferences($element, $pid, $recursion=99, &$references=null) {
 		$references = self::getElementForeignReferences($element, $pid, $recursion, $references);
 		$foreignRefs = FALSE;
 		if (is_array($references)) {
@@ -179,7 +179,7 @@ final class tx_templavoila_div {
 	 * @param $versionNumber string Version number on format x.x.x
 	 * @return integer Integer version of version number (where each part can count to 999)
 	 */
-	public function convertVersionNumberToInteger($version) {
+	public static function convertVersionNumberToInteger($version) {
 		$result = 0;
 		if (class_exists('t3lib_utility_VersionNumber')) {
 			$result = t3lib_utility_VersionNumber::convertVersionNumberToInteger($version);
