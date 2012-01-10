@@ -28,23 +28,6 @@
  * @author	Nicolas Cerisier <>
  * @author	Kasper Skaarhoj
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   58: class tx_templavoila_extdeveval
- *   69:     function init()
- *   77:     function main()
- *  103:     function renderMenuOfDataStructures()
- *  136:     function getDataStructures()
- *  180:     function DSlanguageMode($DSstring)
- *  203:     function renderConversionView($dsIdForConversion)
- *
- * TOTAL FUNCTIONS: 6
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 require_once(PATH_t3lib.'class.t3lib_flexformtools.php');
 

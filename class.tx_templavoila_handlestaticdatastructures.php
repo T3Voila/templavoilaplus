@@ -28,25 +28,6 @@
  *
  * @author    Kasper Skaarhoj <kasper@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   58: class tx_templavoila_handleStaticDataStructures
- *   69:     function main(&$params,&$pObj)
- *   86:     function main_scope1(&$params,&$pObj)
- *  104:     function main_scope2(&$params,&$pObj)
- *  121:     function pi_templates(&$params,$pObj)
- *
- * TOTAL FUNCTIONS: 4
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
-
-
-
-
 
 /**
  * Class/Function which manipulates the item-array for table/field tx_templavoila_tmplobj_datastructure.

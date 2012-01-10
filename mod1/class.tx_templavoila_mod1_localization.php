@@ -28,21 +28,6 @@
  *
  * @author     Robert Lemke <robert@typo3.org>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   54: class tx_templavoila_mod1_localization
- *   68:     function init(&$pObj)
- *   89:     function sidebar_renderItem(&$pObj)
- *  113:     function sidebar_renderItem_renderLanguageSelectorbox()
- *  204:     function sidebar_renderItem_renderNewTranslationSelectorbox()
- *
- * TOTAL FUNCTIONS: 4
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 /**
  * Submodule 'localization' for the templavoila page module

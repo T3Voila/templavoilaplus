@@ -29,22 +29,6 @@
  * @author		Kasper Skaarhoj <kasper@typo3.com>
  * @coauthor 	Robert Lemke <robert@typo3.org>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   57: class tx_templavoila_cm1
- *   68:     function main(&$backRef, $menuItems, $table, $uid)
- *
- * TOTAL FUNCTIONS: 1
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
-
-
-
-
 
 /**
  * Class which will add menu items to click menus for the extension TemplaVoila

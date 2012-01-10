@@ -28,30 +28,6 @@
  *
  * @author     Robert Lemke <robert@typo3.org>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   66: class tx_templavoila_mod1_sidebar
- *   88:     function init(&$pObj)
- *  133:     function addItem($itemKey, &$object, $method, $label, $priority=50)
- *  149:     function removeItem($itemKey)
- *  159:     function render()
- *
- *              SECTION: Render functions for the sidebar items
- *  253:     function renderItem_headerFields (&$pObj)
- *  310:     function renderItem_versioning(&$pObj)
- *  391:     function renderItem_advancedFunctions(&$pObj)
- *
- *              SECTION: Helper functions
- *  456:     function getJScode()
- *  498:     function sortItemsCompare($a, $b)
- *
- * TOTAL FUNCTIONS: 9
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 /**
  * Submodule 'Sidebar' for the templavoila page module

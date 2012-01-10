@@ -28,26 +28,6 @@
  *
  * @author     Robert Lemke <robert@typo3.org>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   62: class tx_templavoila_mod1_wizards
- *   78:     function init(&$pObj)
- *
- *              SECTION: Wizards render functions
- *  103:     function renderWizard_createNewPage ($positionPid)
- *
- *              SECTION: Wizard related helper functions
- *  241:     function renderTemplateSelector ($positionPid, $templateType='tmplobj')
- *  355:     function createPage($pageArray,$positionPid)
- *  389:     function getImportObject()
- *
- * TOTAL FUNCTIONS: 5
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 /**
  * Submodule 'Wizards' for the templavoila page module

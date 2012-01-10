@@ -28,22 +28,6 @@
  *
  * @author     Robert Lemke <robert@typo3.org>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   55: class tx_templavoila_mod1_clipboard
- *   72:     function init(&$pObj)
- *  116:     function element_getSelectButtons($elementPointer, $listOfButtons = 'copy,cut,ref')
- *  182:     function element_getPasteButtons($destinationPointer)
- *  246:     function sidebar_renderNonUsedElements()
- *  336:     function renderReferenceCount($uid)
- *
- * TOTAL FUNCTIONS: 5
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 /**
  * Submodule 'clipboard' for the templavoila page module

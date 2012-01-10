@@ -22,35 +22,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-/**
- * Class 'tx_templavoila_tcemain' for the templavoila extension.
- *
- * $Id$
- *
- * @author     Robert Lemke <robert@typo3.org>
- */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   64: class tx_templavoila_tcemain
- *
- *              SECTION: Public API (called by hook handler)
- *   86:     function processDatamap_preProcessFieldArray (&$incomingFieldArray, $table, $id, &$reference)
- *  111:     function processDatamap_postProcessFieldArray ($status, $table, $id, &$fieldArray, &$reference)
- *  166:     function processDatamap_afterDatabaseOperations ($status, $table, $id, $fieldArray, &$reference)
- *  225:     function processCmdmap_preProcess ($command, $table, $id, $value, &$reference)
- *  261:     function processCmdmap_postProcess($command, $table, $id, $value, &$reference)
- *  283:     function moveRecord_firstElementPostProcess ($table, $uid, $destPid, $sourceRecordBeforeMove, $updateFields, &$reference)
- *  324:     function moveRecord_afterAnotherElementPostProcess ($table, $uid, $destPid, $origDestPid, $sourceRecordBeforeMove, $updateFields, &$reference)
- *  354:     function correctSortingAndColposFieldsForPage($flexformXML)
- *
- * TOTAL FUNCTIONS: 8
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
-
 	// Include TemplaVoila API:
 require_once (t3lib_extMgm::extPath('templavoila').'class.tx_templavoila_api.php');
 

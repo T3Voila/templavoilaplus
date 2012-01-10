@@ -28,50 +28,6 @@
  *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   86: class tx_templavoila_htmlmarkup
- *  214:     function markupHTMLcontent($content,$backPath,$relPathFix,$showTags,$mode='')
- *  255:     function passthroughHTMLcontent($content,$relPathFix,$mode='',$altStyle='')
- *  276:     function getContentBasedOnPath($content,$pathStrArr)
- *  319:     function splitByPath($content,$pathString)
- *  346:     function splitContentToMappingInfo($fileContent,$currentMappingInfo)
- *  409:     function mappingInfoToSearchPath($currentMappingInfo)
- *  450:     function mergeSearchpartsIntoContent($content,$searchParts,$token='')
- *  481:     function mergeSampleDataIntoTemplateStructure($dataStruct,$currentMappingInfo,$firstLevelImplodeToken='',$sampleOrder='')
- *  524:     function mergeFormDataIntoTemplateStructure($editStruct,$currentMappingInfo,$firstLevelImplodeToken='',$valueKey='vDEF')
- *  571:     function splitPath($pathStr)
- *  627:     function getTemplateArrayForTO($uid)
- *  650:     function mergeDataArrayToTemplateArray($TA,$data)
- *  671:     function getTemplateRecord($uid,$renderType,$langUid)
- *  729:     function getTemplateMappingArray($uid,$renderType,$langUid,$sheet)
- *  744:     function getTemplateRecord_query($uid, $where)
- *  764:     function setHeaderBodyParts($MappingInfo_head,$MappingData_head_cached,$BodyTag_cached='')
- *
- *              SECTION: Various sub processing
- *  798:     function init()
- *  819:     function setTagsFromXML($content)
- *  846:     function splitTagTypes($showTags)
- *
- *              SECTION: SPLITTING functions
- *  896:     function recursiveBlockSplitting($content,$tagsBlock,$tagsSolo,$mode,$path='',$recursion=0)
- *  981:     function getMarkupCode($mode,$v,$params,$firstTagName,$firstTag,$endTag,$subPath,$recursion)
- * 1066:     function getSearchCode($mode,$v,$params,$firstTagName,$firstTag,$endTag,$subPath,$path,$recursion)
- * 1149:     function sourceDisplay($str,$recursion,$gnyf='',$valueStr=0)
- * 1171:     function checkboxDisplay($str,$recursion,$path,$gnyf='',$valueStr=0)
- * 1196:     function makePath($path,$firstTagName,$attr)
- * 1226:     function getGnyf($firstTagName,$path,$title)
- *
- * TOTAL FUNCTIONS: 26
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
-
-
-
 
 require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 

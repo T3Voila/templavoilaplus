@@ -34,26 +34,6 @@
  * @author		Robert Lemke <robert@typo3.org>
  * @coauthor	Kasper Skaarhoj <kasper@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   88: class tx_templavoila_dbnewcontentel
- *  108:     function init()
- *  152:     function main()
- *  236:     function printContent()
- *  246:     function linkParams()
- *
- *		SECTION: OTHER FUNCTIONS:
- *  272:     function getWizardItems()
- *  282:     function wizardArray()
- *  447:     function removeInvalidElements(&$wizardItems)
- *
- *		TOTAL FUNCTIONS: 7
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 unset($MCONF);
 require ('conf.php');

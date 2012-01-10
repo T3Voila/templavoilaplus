@@ -30,47 +30,6 @@
  *
  * @author     Robert Lemke <robert@typo3.org>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   86: class tx_templavoila_rules
- *  105:     function evaluateRulesForElement ($table, $uid)
- *
- *              SECTION: Rule processing / analyzing functions
- *  163:     function checkRulesForElement($rules, $constants, $childRecords)
- *  207:     function checkRulesForElement_parseEL ($rulePart, &$childRecords, &$statusArr)
- *  240:     function checkRulesForElement_parseSUB ($rulePart, &$childRecords, &$statusArr, $constants)
- *  295:     function checkRulesForElement_parseALT ($rulePart, &$childRecords, &$statusArr, $constants)
- *  325:     function checkRulesForElement_parseCLASS ($rulePart, &$childRecords, &$statusArr)
- *
- *              SECTION: Human Readable Rules Functions
- *  349:     function getHumanReadableRules ($rules,$ruleConstants)
- *  365:     function parseRulesArrayIntoDescription ($rulesArr, $constantsArr, $level=0)
- *  400:     function getQuantifierAsDescription ($min, $max)
- *  433:     function getElementNameFromConstantsMapping ($element, $constantsArr)
- *
- *              SECTION: Helper functions
- *  461:     function parseRegexIntoArray ($regex, $constants)
- *  538:     function isElement ($char)
- *  553:     function extractInnerBrace ($regex, $startPos)
- *  583:     function explodeAlternatives ($regex)
- *  609:     function evaluateQuantifier ($quantifier, &$pos, &$min, &$max)
- *  667:     function getCTypeFromToken ($token, $ruleConstants)
- *
- *              SECTION: Status functions
- *  701:     function statusAddErr (&$statusArr, $msg, $lastParsedRecord=array(), $position=0)
- *  720:     function statusMerge (&$statusArr, $newStatusArr, $doAND=false)
- *  746:     function statusSetOK (&$statusArr)
- *  766:     function statusSetELRestrictions (&$statusArr, $uid, $restrictionsArr)
- *
- * TOTAL FUNCTIONS: 20
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
-
-
 
 /**
  * Class 'tx_templavoila_rules' for the 'templavoila' extension.

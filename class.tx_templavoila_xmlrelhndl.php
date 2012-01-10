@@ -27,42 +27,10 @@
  * NOTE: Usage of this class is deprecated. Use tx_templavoila_api instead!
  *       This class is not used anywhere within TemplaVoila anymore.
  *
- * @author		Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author		Kasper Skï¿½rhï¿½j <kasperYYYY@typo3.com>
  * @coauthor	Robert Lemke <robert@typo3.org>
  * @deprecated	version - 1.0.0
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   83: class tx_templavoila_xmlrelhndl
- *  104:     function init($altRoot)
- *  121:     function insertRecord($destination, $row)
- *  146:     function pasteRecord($pasteCmd, $source, $destination)
- *  182:     function getRecord($location)
- *
- *              SECTION: Execute changes to the FlexForm structures
- *  212:     function _insertReference($itemArr, $refArr, $item)
- *  236:     function _moveReference($itemArray, $destRefArr, $sourceItemArray, $sourceRefArr, $item_table, $item_uid, $movePid)
- *  278:     function _removeReference($itemArray, $refArr)
- *  304:     function _changeReference($itemArray, $refArr, $newUid)
- *  329:     function _updateFlexFormRefList($refArr, $idListArr)
- *  350:     function _deleteContentElement($uid)
- *
- *              SECTION: Helper functions
- *  389:     function _insertReferenceInList($itemArray, $refArr, $item, $sourceRefArr=FALSE)
- *  437:     function _getCopyUid($itemAtPosition_uid, $pid)
- *  465:     function _getListOfSubElementsRecursively ($table, $uid, &$recordUids)
- *  511:     function _splitAndValidateReference($string)
- *  531:     function _getItemArrayFromXML($xmlString, $refArr)
- *
- * TOTAL FUNCTIONS: 15
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
-
-
 
  	// We need the TCE forms functions
 require_once (PATH_t3lib.'class.t3lib_loaddbgroup.php');

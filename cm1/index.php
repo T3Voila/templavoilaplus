@@ -29,56 +29,6 @@
  * @author		Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @co-author	Robert Lemke <robert@typo3.org>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *  125: class tx_templavoila_cm1 extends t3lib_SCbase
- *  189:     function menuConfig()
- *  209:     function main()
- *  230:     function printContent()
- *
- *              SECTION: MODULE mode
- *  259:     function main_mode()
- *  352:     function renderFile()
- *  793:     function renderDSO()
- *  928:     function renderTO()
- * 1096:     function renderTO_editProcessing(&$dataStruct,$row,$theFile)
- *
- *              SECTION: Mapper functions
- * 1317:     function renderHeaderSelection($displayFile,$currentHeaderMappingInfo,$showBodyTag,$htmlAfterDSTable='')
- * 1382:     function renderTemplateMapper($displayFile,$path,$dataStruct=array(),$currentMappingInfo=array(),$htmlAfterDSTable='')
- * 1570:     function drawDataStructureMap($dataStruct,$mappingMode=0,$currentMappingInfo=array(),$pathLevels=array(),$optDat=array(),$contentSplittedByMapping=array(),$level=0,$tRows=array(),$formPrefix='',$path='',$mapOK=1)
- * 1786:     function drawDataStructureMap_editItem($formPrefix,$key,$value,$level)
- * 1905:     function drawDataStructureMap_editItem_editTypeExtra($type, $formFieldName, $curValue)
- *
- *              SECTION: Helper-functions for File-based DS/TO creation
- * 1955:     function substEtypeWithRealStuff(&$elArray,$v_sub=array(),$scope = 0)
- * 2236:     function substEtypeWithRealStuff_contentInfo($content)
- *
- *              SECTION: Various helper functions
- * 2283:     function getDataStructFromDSO($datString,$file='')
- * 2299:     function linkForDisplayOfPath($title,$path)
- * 2319:     function linkThisScript($array=array())
- * 2342:     function makeIframeForVisual($file,$path,$limitTags,$showOnly,$preview=0)
- * 2358:     function explodeMappingToTagsStr($mappingToTags,$unsetAll=0)
- * 2376:     function unsetArrayPath(&$dataStruct,$ref)
- * 2393:     function cleanUpMappingInfoAccordingToDS(&$currentMappingInfo,$dataStruct)
- * 2412:     function findingStorageFolderIds()
- *
- *              SECTION: DISPLAY mode
- * 2458:     function main_display()
- * 2503:     function displayFileContentWithMarkup($content,$path,$relPathFix,$limitTags)
- * 2539:     function displayFileContentWithPreview($content,$relPathFix)
- * 2575:     function displayFrameError($error)
- * 2602:     function cshItem($table,$field,$BACK_PATH,$wrap='',$onlyIconMode=FALSE, $styleAttrib='')
- * 2615:     function lipsumLink($formElementName)
- *
- * TOTAL FUNCTIONS: 29
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 	// DEFAULT initialization of a module [BEGIN]
 unset($MCONF);

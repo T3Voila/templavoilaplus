@@ -30,60 +30,6 @@
  * @coauthor   Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @coauthor   Dmitry Dulepov <dmitry@typo3.org>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *  122: class tx_templavoila_module1 extends t3lib_SCbase
- *
- *              SECTION: Initialization functions
- *  162:     function init()
- *  213:     function menuConfig()
- *
- *              SECTION: Main functions
- *  271:     function main()
- *  451:     function printContent()
- *
- *              SECTION: Rendering functions
- *  471:     function render_editPageScreen()
- *
- *              SECTION: Framework rendering functions
- *  538:     function render_framework_allSheets($contentTreeArr, $languageKey='DEF', $parentPointer=array(), $parentDsMeta=array())
- *  576:     function render_framework_singleSheet($contentTreeArr, $languageKey, $sheet, $parentPointer=array(), $parentDsMeta=array())
- *  699:     function render_framework_subElements($elementContentTreeArr, $languageKey, $sheet)
- *
- *              SECTION: Rendering functions for certain subparts
- *  818:     function render_previewData($previewData, $elData, $ds_meta, $languageKey, $sheet)
- *  885:     function render_previewContent($row)
- *  971:     function render_localizationInfoTable($contentTreeArr, $parentPointer, $parentDsMeta=array())
- *
- *              SECTION: Outline rendering:
- * 1111:     function render_outline($contentTreeArr)
- * 1217:     function render_outline_element($contentTreeArr, &$entries, $indentLevel=0, $parentPointer=array(), $controls='')
- * 1319:     function render_outline_subElements($contentTreeArr, $sheet, &$entries, $indentLevel)
- * 1404:     function render_outline_localizations($contentTreeArr, &$entries, $indentLevel)
- *
- *              SECTION: Link functions (protected)
- * 1466:     function link_edit($label, $table, $uid, $forced=FALSE)
- * 1487:     function link_new($label, $parentPointer)
- * 1505:     function link_unlink($label, $unlinkPointer, $realDelete=FALSE)
- * 1525:     function link_makeLocal($label, $makeLocalPointer)
- * 1537:     function link_getParameters()
- *
- *              SECTION: Processing and structure functions (protected)
- * 1565:     function handleIncomingCommands()
- *
- *              SECTION: Miscelleaneous helper functions (protected)
- * 1689:     function getAvailableLanguages($id=0, $onlyIsoCoded=true, $setDefault=true, $setMulti=false)
- * 1763:     function hooks_prepareObjectsArray ($hookName)
- * 1780:     function alternativeLanguagesDefined()
- * 1790:     function displayElement($subElementArr)
- *
- * TOTAL FUNCTIONS: 25
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 	// Initialize module
 unset($MCONF);

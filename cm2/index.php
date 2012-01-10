@@ -29,20 +29,6 @@
  * @author		Kasper Skaarhoj <kasper@typo3.com>
  * @co-author	Robert Lemke <robert@typo3.org>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   67: class tx_templavoila_cm2 extends t3lib_SCbase
- *   80:     function main()
- *  113:     function printContent()
- *  125:     function markUpXML($str)
- *
- * TOTAL FUNCTIONS: 3
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 	// DEFAULT initialization of a module [BEGIN]
 unset($MCONF);

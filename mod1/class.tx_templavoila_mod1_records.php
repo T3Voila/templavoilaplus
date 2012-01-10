@@ -28,23 +28,6 @@
  *
  * @author     Dmitry Dulepov <dmitry@typo3.org>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   58: class tx_templavoila_mod1_records
- *   73:     function init(&$pObj)
- *  100:     function sidebar_renderRecords()
- *  117:     function renderTableSelector()
- *  151:     function renderRecords()
- *  168:     function canDisplayTable($table)
- *  179:     function initDbList($table)
- *
- * TOTAL FUNCTIONS: 6
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 require_once('class.tx_templavoila_mod1_recordlist.php');
 

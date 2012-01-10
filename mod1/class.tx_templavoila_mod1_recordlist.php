@@ -28,19 +28,6 @@
  *
  * @author     Dmitry Dulepov <dmitry@typo3.org>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   59: class tx_templavoila_mod1_recordlist extends localRecordList
- *   69:     function start(&$pObj)
- *   85:     function fwd_rwd_HTML($type,$pointer,$table='')
- *
- * TOTAL FUNCTIONS: 2
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 require_once(PATH_t3lib . 'class.t3lib_recordlist.php');
 require_once(PATH_typo3 . 'class.db_list.inc');

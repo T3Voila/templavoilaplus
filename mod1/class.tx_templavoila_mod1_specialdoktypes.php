@@ -28,24 +28,6 @@
  *
  * @author     Robert Lemke <robert@typo3.org>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   58: class tx_templavoila_mod1_specialdoktypes
- *   71:     function init(&$pObj)
- *   88:     function renderDoktype_2($pageRecord)
- *  139:     function renderDoktype_3($pageRecord)
- *  188:     function renderDoktype_4($pageRecord)
- *  234:     function renderDoktype_7($pageRecord)
- *  282:     function renderDoktype_254($pageRecord)
- *  332:     function userHasAccessToListModule()
- *
- * TOTAL FUNCTIONS: 7
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 /**
  * Submodule 'clipboard' for the templavoila page module

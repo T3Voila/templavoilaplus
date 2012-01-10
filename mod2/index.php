@@ -28,54 +28,6 @@
  *
  * @author   Kasper Sk�rh�j <kasper@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *  101: class tx_templavoila_module2 extends t3lib_SCbase
- *  125:     function menuConfig()
- *  144:     function main()
- *  203:     function printContent()
- *
- *              SECTION: Rendering module content:
- *  227:     function renderModuleContent()
- *  264:     function renderModuleContent_searchForTODS()
- *  326:     function renderModuleContent_mainView()
- *  460:     function renderDSlisting($dsScopeArray, &$toRecords,$scope)
- *  563:     function renderDataStructureDisplay($dsR, $toIdArray, $scope)
- *  718:     function renderTODisplay($toObj, &$toRecords, $scope, $children=0)
- *  902:     function findRecordsWhereTOUsed($toObj,$scope)
- * 1041:     function findDSUsageWithImproperTOs($dsID, $toIdArray, $scope)
- * 1158:     function findRecordsWhereUsed_pid($pid)
- * 1174:     function completeTemplateFileList()
- * 1271:     function setErrorLog($scope,$type,$HTML)
- * 1282:     function getErrorLog($scope)
- * 1308:     function DSdetails($DSstring)
- *
- *              SECTION: Wizard for new site
- * 1381:     function renderNewSiteWizard_overview()
- * 1442:     function renderNewSiteWizard_run()
- * 1491:     function wizard_checkMissingExtensions()
- * 1527:     function wizard_checkConfiguration()
- * 1537:     function wizard_checkDirectory()
- * 1557:     function wizard_step1()
- * 1620:     function wizard_step2()
- * 1669:     function wizard_step3()
- * 1778:     function wizard_step4()
- * 1800:     function wizard_step5($menuField)
- * 2039:     function wizard_step6()
- * 2060:     function getImportObj()
- * 2078:     function syntaxHLTypoScript($v)
- * 2094:     function makeWrap($cfg)
- * 2110:     function getMenuDefaultCode($field)
- * 2122:     function saveMenuCode()
- * 2160:     function getBackgroundColor($filePath)
- *
- * TOTAL FUNCTIONS: 33
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 
 	// Initialize module

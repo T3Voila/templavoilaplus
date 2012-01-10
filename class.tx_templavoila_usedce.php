@@ -30,15 +30,6 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- */
-
-
-
-
 
 	// Include TemplaVoila API
 require_once (t3lib_extMgm::extPath('templavoila').'class.tx_templavoila_api.php');

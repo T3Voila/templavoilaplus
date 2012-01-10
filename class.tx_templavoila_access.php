@@ -29,19 +29,6 @@
  *
  * @author     Dmitry Dulepov <dmitry@typo3.org>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   55: class tx_templavoila_access
- *   64:     function recordEditAccessInternals($params, $ref)
- *   93:     function checkObjectAccess($table, $uid, $be_user)
- *
- * TOTAL FUNCTIONS: 2
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 require_once(PATH_typo3.'sysext/lang/lang.php');
 

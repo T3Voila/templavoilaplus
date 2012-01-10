@@ -29,34 +29,6 @@
  * @author    Kasper Skaarhoj <kasper@typo3.com>
  * @coauthor  Robert Lemke <robert@typo3.org>
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   71: class tx_templavoila_pi1 extends tslib_pibase
- *   88:     function main($content,$conf)
- *  101:     function main_page($content,$conf)
- *  131:     function initVars($conf)
- *  144:     function renderElement($row,$table)
- *  282:     function processDataValues(&$dataValues,$DSelements,$TOelements,$valueKey='vDEF')
- *  446:     function inheritValue($dV,$valueKey,$overlayMode='')
- *  486:     function formatError($string)
- *  519:     function visualID($content,$srcPointer,$DSrec,$TOrec,$row,$table)
- *
- * TOTAL FUNCTIONS: 8
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
-
-
-
-
-
-
-
-
-
 
 require_once(PATH_tslib.'class.tslib_pibase.php');
 require_once(t3lib_extMgm::extPath('templavoila').'class.tx_templavoila_htmlmarkup.php');
