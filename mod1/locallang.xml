@@ -113,6 +113,7 @@
 			<label index="maximal_content_elements">The maximal amount of %d content elements is reached in field "%s."</label>
 			<label index="page_structure_inherited">The content structure for this lanuage differs from the default language.</label>
 			<label index="page_structure_inherited_detail">If that's not what you expect, please contact you content administrator.</label>
+			<label index="page_not_found">The requested page can't be found or is not accessible.</label>
 		</languageKey>
 	</data>
 </T3locallang>

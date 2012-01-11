@@ -558,23 +558,26 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			$this->doc->bodyTagId = 'typo3-mod-php';
 
 			$cmd = t3lib_div::_GP ('cmd');
-			switch ($cmd) {
 
-					// Create a new page
-				case 'crPage' :
-						// Output the page creation form
-					$this->content .= $this->wizardsObj->renderWizard_createNewPage (t3lib_div::_GP ('positionPid'));
-					break;
 
-					// If no access or if ID == zero
-				default:
-					$flashMessage = t3lib_div::makeInstance(
-						't3lib_FlashMessage',
-						$LANG->getLL('default_introduction'),
-						$LANG->getLL('title'),
-						t3lib_FlashMessage::INFO
-					);
-					$this->content .= $flashMessage->render();
+			if ($cmd == 'crPage') {	// create a new page
+				$this->content .= $this->wizardsObj->renderWizard_createNewPage (t3lib_div::_GP ('positionPid'));
+			} else if (!isset($pageInfoArr['uid'])) {
+				$flashMessage = t3lib_div::makeInstance(
+					't3lib_FlashMessage',
+					$GLOBALS['LANG']->getLL('page_not_found'),
+					$GLOBALS['LANG']->getLL('title'),
+					t3lib_FlashMessage::INFO
+				);
+				$this->content .= $flashMessage->render();
+			} else {
+				$flashMessage = t3lib_div::makeInstance(
+					't3lib_FlashMessage',
+					$GLOBALS['LANG']->getLL('default_introduction'),
+					$GLOBALS['LANG']->getLL('title'),
+					t3lib_FlashMessage::INFO
+				);
+				$this->content .= $flashMessage->render();
 			}
 		}
 
@@ -582,7 +585,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		$content  = $this->doc->startPage($GLOBALS['LANG']->getLL('title'));
 		$content .= $this->doc->moduleBody(
 			array(),
-			$this->getDocHeaderButtons(),
+			$this->getDocHeaderButtons(!isset($pageInfoArr['uid'])),
 			$this->getBodyMarkers()
 		);
 		$content .= $this->doc->endPage();
@@ -647,10 +650,10 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	/**
 	 * Create the panel of buttons for submitting the form or otherwise perform operations.
 	 *
-	 * @param	string	Identifier for function of module
+	 * @param	boolean	Determine whether to show any icons or not
 	 * @return	array	all available buttons as an assoc. array
 	 */
-	protected function getDocHeaderButtons()	{
+	protected function getDocHeaderButtons($noButtons=FALSE)	{
 		global $TCA, $LANG, $BACK_PATH, $BE_USER;
 
 		$buttons = array(
@@ -665,6 +668,10 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			'shortcut' => '',
 			'cache' => ''
 		);
+
+		if ($noButtons) {
+			return $buttons;
+		}
 
 			// View page
 		$viewAddGetVars = $this->currentLanguageUid ? '&L=' . $this->currentLanguageUid : '';
@@ -2885,6 +2892,7 @@ if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templav
 }
 
 	// Make instance:
+/* @var $SOBE tx_templavoila_module1 */
 $SOBE = t3lib_div::makeInstance('tx_templavoila_module1');
 $SOBE->init();
 $SOBE->main();
