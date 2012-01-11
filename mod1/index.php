@@ -399,7 +399,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 
 			if (tx_templavoila_div::convertVersionNumberToInteger(TYPO3_version) < 4007000) {
-				$inlineScript = str_repeat('Cls', 'Class', $inlineScript);
+				$inlineScript = str_replace('Cls', 'Class', $inlineScript);
 			}
 
 			$this->doc->JScode .= $this->doc->wrapScriptTags($inlineScript);
