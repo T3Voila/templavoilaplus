@@ -381,7 +381,7 @@ class tx_templavoila_dbnewcontentel {
 				$groupItems = array ();
 
 				if (is_array($appendWizards[$groupKey . '.']['elements.'])) {
-					$wizardElements = array_merge((array) $wizardGroup['elements.'], $appendWizards[$groupKey . '.']['elements.']);
+					$wizardElements = t3lib_div::array_merge_recursive_overrule((array) $wizardGroup['elements.'], $appendWizards[$groupKey . '.']['elements.']);
 				} else {
 					$wizardElements = $wizardGroup['elements.'];
 				}
