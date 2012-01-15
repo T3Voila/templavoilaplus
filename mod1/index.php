@@ -361,7 +361,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			');
 
 			$this->doc->getPageRenderer()->loadExtJs();
-			$inlineScript = '
+			$this->doc->JScode .= $this->doc->wrapScriptTags('
 				var typo3pageModule = {
 					/**
 					 * Initialization
@@ -384,10 +384,10 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 					 * user hovers the a content element.
 					 */
 					setActive: function(e, t) {
-						Ext.select(\'.active\').removeCls(\'active\').addCls(\'inactive\');
+						Ext.select(\'.active\').removeClass(\'active\').addClass(\'inactive\');
 						var parent = Ext.get(t).findParent(\'.t3-page-ce\', null, true);
 						if (parent) {
-							parent.removeCls(\'inactive\').addCls(\'active\');
+							parent.removeClass(\'inactive\').addClass(\'active\');
 						}
 					}
 				}
@@ -395,14 +395,8 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				Ext.onReady(function() {
 					typo3pageModule.init();
 				});
-			';
+			');
 
-
-			if (tx_templavoila_div::convertVersionNumberToInteger(TYPO3_version) < 4007000) {
-				$inlineScript = str_replace('Cls', 'Class', $inlineScript);
-			}
-
-			$this->doc->JScode .= $this->doc->wrapScriptTags($inlineScript);
 				// Preparing context menues
 				// this also adds prototype to the list of required libraries
 			$CMparts = $this->doc->getContextMenuCode();
