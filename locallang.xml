@@ -16,6 +16,12 @@
 			<label index="cm_viewdsto">View: DS/TO</label>
 			<label index="cm1_pagesusingthiselement">Pages using this element -&gt;</label>
 			<label index="wiz_refElements">Reference unused content elements (templavoila)</label>
+			<label index="wiz_renameFieldsInPage">Rename a field in pages.tx_templavoila_flex</label>
+			<label index="wiz_renameFieldsInPage">Rename a field in pages.tx_templavoila_flex</label>
+			<label index="field_sourceField">source field</label>
+			<label index="field_destinationField">destination field</label>
+			<label index="field_simulateField">Simulate Change only</label>
+			<label index="field_submit">submit</label>
 			<label index="extconf.staticWizard.header">Migrate</label>
 			<label index="extconf.staticWizard.message">Please use the migration wizard to move all datastructures from your database to the filesystem.</label>
 			<label index="extconf.staticWizard.link">Click here to run the wizard</label>

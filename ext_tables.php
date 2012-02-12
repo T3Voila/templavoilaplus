@@ -340,6 +340,13 @@ if (TYPO3_MODE=='BE')	{
 		'LLL:EXT:templavoila/locallang.xml:wiz_refElements',
 		'wiz'
 	);
+	t3lib_extMgm::insertModuleFunction(
+		'web_func',
+		'tx_templavoila_renameFieldInPageFlexWizard',
+		t3lib_extMgm::extPath($_EXTKEY).'func_wizards/class.tx_templavoila_renamefieldinpageflexwizard.php',
+		'LLL:EXT:templavoila/locallang.xml:wiz_renameFieldsInPage',
+		'wiz'
+	);
 	t3lib_extMgm::addLLrefForTCAdescr('_MOD_web_func','EXT:wizard_crpages/locallang_csh.xml');
 }
 	// complex condition to make sure the icons are available during frontend editing...
