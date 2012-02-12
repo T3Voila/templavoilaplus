@@ -237,25 +237,24 @@ class tx_templavoila_referenceElementsWizard extends t3lib_extobjbase {
 	 * @access	protected
 	 */
 	function getUnreferencedElementsRecords($pid) {
-		global $TYPO3_DB;
 
 		$elementRecordsArr = array();
-		$referencedElementsArr = $this->templavoilaAPIObj->flexform_getListOfSubElementUidsRecursively ('pages', $pid, $dummyArr=array());
+		$referencedElementsArr = $this->templavoilaAPIObj->flexform_getListOfSubElementUidsRecursively('pages', $pid, $dummyArr = array());
 
-		$res = $TYPO3_DB->exec_SELECTquery (
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 			'uid, header, bodytext, sys_language_uid, colPos',
 			'tt_content',
-			'pid='.intval($pid).
-				(count($referencedElementsArr) ? ' AND uid NOT IN ('.implode(',',$referencedElementsArr).')' : '').
-				' AND t3ver_wsid='.intval($BE_USER->workspace).
-				t3lib_BEfunc::deleteClause('tt_content').
-				t3lib_BEfunc::versioningPlaceholderClause('tt_content'),
+				'pid=' . intval($pid) .
+						(count($referencedElementsArr) ? ' AND uid NOT IN (' . implode(',', $referencedElementsArr) . ')' : '') .
+						' AND t3ver_wsid=' . intval($GLOBALS['BE_USER']->workspace) .
+						t3lib_BEfunc::deleteClause('tt_content') .
+						t3lib_BEfunc::versioningPlaceholderClause('tt_content'),
 			'',
 			'sorting'
 		);
 
 		if ($res) {
-			while(($elementRecordArr = $TYPO3_DB->sql_fetch_assoc($res)) !== FALSE) {
+			while (($elementRecordArr = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) !== FALSE) {
 				$elementRecordsArr[$elementRecordArr['uid']] = $elementRecordArr;
 			}
 		}
