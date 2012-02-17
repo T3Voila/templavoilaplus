@@ -845,16 +845,20 @@ class tx_templavoila_pi1 extends tslib_pibase {
 		}
 
 		if (count($contentIds) > 0) {
-			if ($conf['select.']['where']) {
-				$conf['select.']['where'] .= ' AND UID IN(' . implode(',', $contentIds)  . ')';
-			} else {
-				$conf['select.']['where'] = 'UID IN(' . implode(',', $contentIds) . ')';
-			}
+			$conf['source'] = implode(',', $contentIds);
+			$conf['tables'] = 'tt_content';
+			$conf['conf.'] = array(
+				'tt_content' => $conf['renderObj'],
+				'tt_content.' => $conf['renderObj.'],
+			);
+			$conf['dontCheckPid'] = 1;
+			unset($conf['renderObj']);
+			unset($conf['renderObj.']);
 		}
 
 			// tiny trink to include the section index element itself too
 		$GLOBALS['TSFE']->recordRegister[$GLOBALS['TSFE']->currentRecord] = -1;
-		return $this->cObj->cObjGetSingle('CONTENT', $conf);
+		return $this->cObj->cObjGetSingle('RECORDS', $conf);
 	}
 }
 
