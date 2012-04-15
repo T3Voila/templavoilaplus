@@ -97,8 +97,8 @@ Automatic Repair:
 			'deleteMe' => array(),
 		);
 
-		$startingPoint = $this->cli_isArg('--pid') ? t3lib_div::intInRange($this->cli_argValue('--pid'),0) : 0;
-		$depth = $this->cli_isArg('--depth') ? t3lib_div::intInRange($this->cli_argValue('--depth'),0) : 1000;
+		$startingPoint = $this->cli_isArg('--pid') ? tx_templavoila_div::forceIntegerInRange($this->cli_argValue('--pid'),0) : 0;
+		$depth = $this->cli_isArg('--depth') ? tx_templavoila_div::forceIntegerInRange($this->cli_argValue('--depth'),0) : 1000;
 		$this->excludePageIdList = $this->cli_isArg('--excludePageIdList') ? t3lib_div::intExplode(',',$this->cli_argValue('--excludePageIdList')) : array();
 
 		$this->resultArray = &$resultArray;

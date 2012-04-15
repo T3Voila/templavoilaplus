@@ -209,5 +209,23 @@ final class tx_templavoila_div {
 		}
 		return $result;
 	}
+
+	/**
+	 * Forces the integer $theInt into the boundaries of $min and $max. If the $theInt is FALSE then the $defaultValue is applied.
+	 *
+	 * @param $theInt integer Input value
+	 * @param $min integer Lower limit
+	 * @param $max integer Higher limit
+	 * @param $defaultValue integer Default value if input is FALSE.
+	 * @return integer The input value forced into the boundaries of $min and $max
+	 */
+	public static function forceIntegerInRange($theInt, $min, $max = 2000000000, $defaultValue = 0) {
+		if (class_exists('t3lib_utility_Math')) {
+			$result = t3lib_utility_Math::forceIntegerInRange($theInt, $min, $max, $defaultValue);
+		} else {
+			$result = t3lib_div::intInRange($theInt, $min, $max, $defaultValue);
+		}
+		return $result;
+	}
 }
 ?>
