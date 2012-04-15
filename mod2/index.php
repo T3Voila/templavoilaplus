@@ -404,10 +404,13 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 			);
 		}
 
+		$showDetails = sprintf(' <label for="set_details">%s</label> &nbsp;&nbsp;&nbsp;', $LANG->getLL('showdetails', 1));
+		$showUnused = sprintf(' <label for="set_details">%s</label> &nbsp;&nbsp;&nbsp;', $LANG->getLL('showuused', 1));
+
 			// Create setting handlers:
-		$settings = '<p>'.
-				t3lib_BEfunc::getFuncCheck('','SET[set_details]',$this->MOD_SETTINGS['set_details'],'',t3lib_div::implodeArrayForUrl('',$_GET,'',1,1)).' Show Details &nbsp;&nbsp;&nbsp;'.
-				t3lib_BEfunc::getFuncCheck('','SET[set_unusedDs]',$this->MOD_SETTINGS['set_unusedDs'],'',t3lib_div::implodeArrayForUrl('',$_GET,'',1,1)).' Show unused datastructures &nbsp;&nbsp;&nbsp;'.
+		$settings = '<p>' .
+			t3lib_BEfunc::getFuncCheck('', 'SET[set_details]', $this->MOD_SETTINGS['set_details'], '', t3lib_div::implodeArrayForUrl('', $_GET, '', 1, 1), 'id="set_details"') . $showDetails .
+			t3lib_BEfunc::getFuncCheck('', 'SET[set_unusedDs]', $this->MOD_SETTINGS['set_unusedDs'], '', t3lib_div::implodeArrayForUrl('', $_GET, '', 1, 1), 'id="set_unusedDs"') . $showUnused .
 			'</p>';
 
 			// Add output:

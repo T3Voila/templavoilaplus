@@ -25,6 +25,8 @@
 			<label index="overview">Overview</label>
 			<label index="dstotitle">DS/TO Title</label>
 			<label index="localization">Localization</label>
+			<label index="showdetails">Show Details</label>
+			<label index="showuused">Show unused datastructures</label>
 			<label index="containerstatus">Container status</label>
 			<label index="mappingstatus">Mapping status</label>
 			<label index="usagecount">Usage Count</label>
