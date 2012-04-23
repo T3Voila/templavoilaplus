@@ -817,7 +817,7 @@ class tx_templavoila_htmlmarkup {
 								}
 								break;
 							case 'SCRIPT':
-								if ( isset($attr[0]['src'])) {
+								if ( isset($attr[0]['src']) && $attr[0]['src']) {
 									$pageRenderer->addJsFile($attr[0]['src']);
 								} else {
 									$cont = $htmlParse->removeFirstAndLastTag($MappingData_head_cached['cArray']['el_'.$kk]);
