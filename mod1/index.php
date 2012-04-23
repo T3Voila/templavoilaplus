@@ -113,6 +113,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	protected $newContentWizScriptPath = 'db_new_content_el.php';	// Setting which new content wizard to use
 
 	public $currentElementBelongsToCurrentPage;		// Used for Content preview and is used as flag if content should be linked or not
+	public $currentElementParentPointer;			// Used for edit link of content elements
 	const DOKTYPE_NORMAL_EDIT = 1;					// With this doktype the normal Edit screen is rendered
 
 	/*******************************************
@@ -950,6 +951,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			break;
 
 			case 'tt_content' :
+				$this->currentElementParentPointer = $parentPointer;
 
 				$elementTitlebarClass = $elementBelongsToCurrentPage ? 'tpm-titlebar' : 'tpm-titlebar-fromOtherPage';
 				$elementClass .= ' tpm-content-element tpm-ctype-' . $contentTreeArr['el']['CType'];
@@ -1065,6 +1067,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			// Finally assemble the table:
 		$finalContent = '
 			<div class="' . $elementClass . '">
+				<a name="c'. md5($this->apiObj->flexform_getStringFromPointer($this->currentElementParentPointer) . $contentTreeArr['el']['uid']) .'">
 				<div class="tpm-titlebar t3-page-ce-header ' . $elementTitlebarClass .'">
 					<div class="t3-row-header">
 						<div class="tpm-element-control">
@@ -1633,6 +1636,8 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 								$recordIcon_l10n = $this->doc->wrapClickMenuOnIcon($recordIcon_l10n,'tt_content',$localizedRecordInfo['uid'],1,'&amp;callingScriptId='.rawurlencode($this->doc->scriptID), 'new,copy,cut,pasteinto,pasteafter');
 							}
 							$l10nInfo =
+								'<a name="c'. md5($this->apiObj->flexform_getStringFromPointer($this->currentElementParentPointer) . $localizedRecordInfo['row']['uid']) .'"></a>'.
+								'<a name="c'. md5($this->apiObj->flexform_getStringFromPointer($this->currentElementParentPointer) . $localizedRecordInfo['row']['l18n_parent'] . $localizedRecordInfo['row']['sys_language_uid']) .'"></a>'.
 								$this->getRecordStatHookValue('tt_content', $localizedRecordInfo['row']['uid']).
 								$recordIcon_l10n .
 								htmlspecialchars(t3lib_div::fixed_lgd_cs(strip_tags(t3lib_BEfunc::getRecordTitle('tt_content', $localizedRecordInfo['row'])), $this->previewTitleMaxLen));
@@ -1677,7 +1682,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 									$onClick = "document.location='index.php?".$this->link_getParameters().'&source='.rawurlencode($sourcePointerString).'&localizeElement='.$sLInfo['ISOcode']."'; return false;";
 								} else {
 									$params='&cmd[tt_content]['.$contentTreeArr['el']['uid'].'][localize]='.$sys_language_uid;
-									$onClick = "document.location='".$GLOBALS['SOBE']->doc->issueCommand($params)."'; return false;";
+									$onClick = "document.location='".$GLOBALS['SOBE']->doc->issueCommand($params, t3lib_div::getIndpEnv('REQUEST_URI') .'#c'. md5($this->apiObj->flexform_getStringFromPointer($parentPointer) . $contentTreeArr['el']['uid'] . $sys_language_uid))."'; return false;";
 								}
 
 								$linkLabel = $LANG->getLL('createcopyfortranslation',1).' ('.htmlspecialchars($sLInfo['title']).')';
@@ -2171,7 +2176,8 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 					if($table == "pages" &&	 $this->currentLanguageUid) {
 						return '<a class="tpm-pageedit" href="index.php?'.$this->link_getParameters().'&amp;editPageLanguageOverlay='.$this->currentLanguageUid.'">'.$label.'</a>';
 					} else {
-						$onClick = t3lib_BEfunc::editOnClick('&edit['.$table.']['.$uid.']=edit', $this->doc->backPath);
+						$returnUrl = ( $this->currentElementParentPointer ) ? t3lib_div::getIndpEnv('REQUEST_URI') .'#c'. md5($this->apiObj->flexform_getStringFromPointer($this->currentElementParentPointer) . $uid) :  t3lib_div::getIndpEnv('REQUEST_URI');
+						$onClick = t3lib_BEfunc::editOnClick('&edit['.$table.']['.$uid.']=edit', $this->doc->backPath, $returnUrl );
 						return '<a class="' . $class . '" href="#" onclick="'.htmlspecialchars($onClick).'">'.$label.'</a>';
 					}
 				} else {
