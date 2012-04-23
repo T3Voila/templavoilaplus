@@ -858,7 +858,15 @@ class tx_templavoila_pi1 extends tslib_pibase {
 
 			// tiny trink to include the section index element itself too
 		$GLOBALS['TSFE']->recordRegister[$GLOBALS['TSFE']->currentRecord] = -1;
-		return $this->cObj->cObjGetSingle('RECORDS', $conf);
+		$renderedIndex =  $this->cObj->cObjGetSingle('RECORDS', $conf);
+
+		$wrap = isset($conf['wrap.'])
+			? $this->cObj->stdWrap($conf['wrap'],$conf['wrap.'])
+			: $conf['wrap'];
+		if ($wrap) {
+			$renderedIndex = $this->cObj->wrap($renderedIndex, $wrap);
+		}
+		return $renderedIndex;
 	}
 }
 
