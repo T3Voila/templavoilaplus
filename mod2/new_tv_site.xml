@@ -1761,7 +1761,6 @@
 				<field index="t3ver_stage">0</field>
 				<field index="t3ver_count">0</field>
 				<field index="t3ver_tstamp">0</field>
-				<field index="t3ver_swapmode">0</field>
 				<field index="t3ver_move_id">0</field>
 				<field index="t3_origuid">0</field>
 				<field index="tstamp">1265817192</field>
@@ -2072,7 +2071,6 @@ page.10.userFunc = tx_templavoila_pi1-&gt;main_page
 				<field index="t3ver_stage">0</field>
 				<field index="t3ver_count">0</field>
 				<field index="t3ver_tstamp">0</field>
-				<field index="t3ver_swapmode">0</field>
 				<field index="t3ver_move_id">0</field>
 				<field index="t3_origuid">0</field>
 				<field index="tstamp">1265817192</field>
@@ -2572,7 +2570,6 @@ page.10.userFunc = tx_templavoila_pi1-&gt;main_page
 				<field index="t3ver_stage">0</field>
 				<field index="t3ver_count">0</field>
 				<field index="t3ver_tstamp">0</field>
-				<field index="t3ver_swapmode">0</field>
 				<field index="t3ver_move_id">0</field>
 				<field index="t3_origuid">0</field>
 				<field index="tstamp">1265817192</field>
@@ -2766,7 +2763,6 @@ Curabitur libero purus, adipiscing at, nonummy non, aliquet quis, metus. Curabit
 				<field index="t3ver_stage">0</field>
 				<field index="t3ver_count">0</field>
 				<field index="t3ver_tstamp">0</field>
-				<field index="t3ver_swapmode">0</field>
 				<field index="t3ver_move_id">0</field>
 				<field index="t3_origuid">0</field>
 				<field index="tstamp">1265817192</field>
@@ -2959,7 +2955,6 @@ Curabitur libero purus, adipiscing at, nonummy non, aliquet quis, metus. Curabit
 				<field index="t3ver_stage">0</field>
 				<field index="t3ver_count">0</field>
 				<field index="t3ver_tstamp">0</field>
-				<field index="t3ver_swapmode">0</field>
 				<field index="t3ver_move_id">0</field>
 				<field index="t3_origuid">0</field>
 				<field index="tstamp">1265817192</field>
@@ -3153,7 +3148,6 @@ Maecenas nulla diam, convallis sed, tincidunt a, eleifend eu, felis. Maecenas pe
 				<field index="t3ver_stage">0</field>
 				<field index="t3ver_count">0</field>
 				<field index="t3ver_tstamp">0</field>
-				<field index="t3ver_swapmode">0</field>
 				<field index="t3ver_move_id">0</field>
 				<field index="t3_origuid">0</field>
 				<field index="tstamp">1265817192</field>
@@ -3353,7 +3347,6 @@ Egestas quis, volutpat ac, semper eget, orci. Pellentesque mollis, nibh vitae cu
 				<field index="t3ver_stage">0</field>
 				<field index="t3ver_count">0</field>
 				<field index="t3ver_tstamp">0</field>
-				<field index="t3ver_swapmode">0</field>
 				<field index="t3ver_move_id">0</field>
 				<field index="t3_origuid">0</field>
 				<field index="tstamp">1265817192</field>
@@ -3646,7 +3639,6 @@ Donec odio nunc, fringilla id, adipiscing eu, interdum sed, odio. Donec pede nun
 				<field index="t3ver_stage">0</field>
 				<field index="t3ver_count">0</field>
 				<field index="t3ver_tstamp">0</field>
-				<field index="t3ver_swapmode">0</field>
 				<field index="t3ver_move_id">0</field>
 				<field index="t3_origuid">0</field>
 				<field index="tstamp">1265817192</field>
@@ -3960,7 +3952,6 @@ On the other hand you also have to deal with all the possible variations of cont
 				<field index="t3ver_stage">0</field>
 				<field index="t3ver_count">0</field>
 				<field index="t3ver_tstamp">0</field>
-				<field index="t3ver_swapmode">0</field>
 				<field index="t3ver_move_id">0</field>
 				<field index="t3_origuid">0</field>
 				<field index="tstamp">1265817192</field>
@@ -4126,7 +4117,6 @@ On the other hand you also have to deal with all the possible variations of cont
 				<field index="t3ver_stage">0</field>
 				<field index="t3ver_count">0</field>
 				<field index="t3ver_tstamp">0</field>
-				<field index="t3ver_swapmode">0</field>
 				<field index="t3ver_move_id">0</field>
 				<field index="t3_origuid">0</field>
 				<field index="tstamp">1265817192</field>
@@ -4976,7 +4966,6 @@ Space after: 20</field>
 				<field index="t3ver_stage">0</field>
 				<field index="t3ver_count">0</field>
 				<field index="t3ver_tstamp">0</field>
-				<field index="t3ver_swapmode">0</field>
 				<field index="t3ver_move_id">0</field>
 				<field index="t3_origuid">0</field>
 				<field index="tstamp">1265817192</field>
@@ -5277,7 +5266,6 @@ Space after: 20</field>
 				<field index="t3ver_stage">0</field>
 				<field index="t3ver_count">0</field>
 				<field index="t3ver_tstamp">0</field>
-				<field index="t3ver_swapmode">0</field>
 				<field index="t3ver_move_id">0</field>
 				<field index="t3_origuid">0</field>
 				<field index="tstamp">1265817192</field>
@@ -5481,7 +5469,6 @@ Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia
 				<field index="t3ver_stage">0</field>
 				<field index="t3ver_count">0</field>
 				<field index="t3ver_tstamp">0</field>
-				<field index="t3ver_swapmode">0</field>
 				<field index="t3ver_move_id">0</field>
 				<field index="t3_origuid">0</field>
 				<field index="tstamp">1265817192</field>
@@ -5911,7 +5898,6 @@ Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia
 				<field index="t3ver_stage">0</field>
 				<field index="t3ver_count">0</field>
 				<field index="t3ver_tstamp">0</field>
-				<field index="t3ver_swapmode">0</field>
 				<field index="t3ver_move_id">0</field>
 				<field index="t3_origuid">0</field>
 				<field index="tstamp">1265817192</field>
@@ -6115,7 +6101,6 @@ Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia
 				<field index="t3ver_stage">0</field>
 				<field index="t3ver_count">0</field>
 				<field index="t3ver_tstamp">0</field>
-				<field index="t3ver_swapmode">0</field>
 				<field index="t3ver_move_id">0</field>
 				<field index="t3_origuid">0</field>
 				<field index="tstamp">1265817192</field>
@@ -6307,7 +6292,6 @@ Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia
 				<field index="t3ver_stage">0</field>
 				<field index="t3ver_count">0</field>
 				<field index="t3ver_tstamp">0</field>
-				<field index="t3ver_swapmode">0</field>
 				<field index="t3ver_move_id">0</field>
 				<field index="t3_origuid">0</field>
 				<field index="tstamp">1265817192</field>
@@ -6534,7 +6518,6 @@ Select options: | Select_options=select | blue, red, green
 				<field index="t3ver_stage">0</field>
 				<field index="t3ver_count">0</field>
 				<field index="t3ver_tstamp">0</field>
-				<field index="t3ver_swapmode">0</field>
 				<field index="t3ver_move_id">0</field>
 				<field index="t3_origuid">0</field>
 				<field index="tstamp">1265817192</field>
@@ -6731,7 +6714,6 @@ It was very kind of you!</field>
 				<field index="t3ver_stage">0</field>
 				<field index="t3ver_count">0</field>
 				<field index="t3ver_tstamp">0</field>
-				<field index="t3ver_swapmode">0</field>
 				<field index="t3ver_move_id">0</field>
 				<field index="t3_origuid">0</field>
 				<field index="tstamp">1265817192</field>
@@ -7305,7 +7287,6 @@ Lorem ipsum dolor sit amet, |||</tokenizedContent>
 				<field index="t3ver_stage">0</field>
 				<field index="t3ver_count">0</field>
 				<field index="t3ver_tstamp">0</field>
-				<field index="t3ver_swapmode">0</field>
 				<field index="t3ver_move_id">0</field>
 				<field index="t3_origuid">0</field>
 				<field index="tstamp">1265817192</field>
@@ -7846,7 +7827,6 @@ Nullam accumsan eleifend magna. Pellentesque nulla ipsum, mollis condimentum, sc
 				<field index="t3ver_stage">0</field>
 				<field index="t3ver_count">0</field>
 				<field index="t3ver_tstamp">0</field>
-				<field index="t3ver_swapmode">0</field>
 				<field index="t3ver_move_id">0</field>
 				<field index="t3_origuid">0</field>
 				<field index="tstamp">1265817192</field>
@@ -8341,7 +8321,6 @@ And a link to an &lt;LINK {softref:cc3945ecb4929a917d89efe8150d03d3}&gt;internal
 				<field index="t3ver_stage">0</field>
 				<field index="t3ver_count">0</field>
 				<field index="t3ver_tstamp">0</field>
-				<field index="t3ver_swapmode">0</field>
 				<field index="t3ver_move_id">0</field>
 				<field index="t3_origuid">0</field>
 				<field index="tstamp">1265817192</field>
@@ -9128,7 +9107,6 @@ And a link to an &lt;LINK {softref:cc3945ecb4929a917d89efe8150d03d3}&gt;internal
 				<field index="t3ver_stage">0</field>
 				<field index="t3ver_count">0</field>
 				<field index="t3ver_tstamp">0</field>
-				<field index="t3ver_swapmode">0</field>
 				<field index="t3ver_move_id">0</field>
 				<field index="t3_origuid">0</field>
 				<field index="tstamp">1265817192</field>
