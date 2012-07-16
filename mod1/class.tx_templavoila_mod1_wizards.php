@@ -392,7 +392,12 @@ class tx_templavoila_mod1_wizards {
 	 * @param	integer		$positionPid: location within the page tree (parent id)
 	 * @return	integer		uid of the new page record
 	 */
-	function createPage($pageArray,$positionPid)	{
+	function createPage($pageArray,$positionPid) {
+		$positionPageMoveToRow = t3lib_BEfunc::getMovePlaceholder('pages', abs($positionPid));
+		if (is_array($positionPageMoveToRow)) {
+			$positionPid = ($positionPid > 0 ) ? $positionPageMoveToRow['uid'] : '-' . $positionPageMoveToRow['uid'];
+		}
+
 		$dataArr = array();
 		$dataArr['pages']['NEW'] = $pageArray;
 		$dataArr['pages']['NEW']['pid'] = $positionPid;
