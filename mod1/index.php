@@ -2252,10 +2252,11 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 						 * so sortable doesn't need to update these and we
 						 * can safely use '#'
 						 */
+						$returnUrl = ( $this->currentElementParentPointer ) ? t3lib_div::getIndpEnv('REQUEST_URI') .'#c'. md5($this->apiObj->flexform_getStringFromPointer($this->currentElementParentPointer) . $uid) :  t3lib_div::getIndpEnv('REQUEST_URI');
 						if ($hidden)
-							return '<a href="#" class="tpm-hide" onclick="sortable_unhideRecord(this, \'' . htmlspecialchars($GLOBALS['SOBE']->doc->issueCommand($params, -1)) . '\');">' . $label . '</a>';
+							return '<a href="#" class="tpm-hide" onclick="sortable_unhideRecord(this, \'' . htmlspecialchars($GLOBALS['SOBE']->doc->issueCommand($params, $returnUrl)) . '\');">' . $label . '</a>';
 						else
-							return '<a href="#" class="tpm-hide" onclick="sortable_hideRecord(this, \'' . htmlspecialchars($GLOBALS['SOBE']->doc->issueCommand($params, -1)) . '\');">' . $label . '</a>';
+							return '<a href="#" class="tpm-hide" onclick="sortable_hideRecord(this, \'' . htmlspecialchars($GLOBALS['SOBE']->doc->issueCommand($params, $returnUrl)) . '\');">' . $label . '</a>';
 					}
 				} else {
 					return $label;
