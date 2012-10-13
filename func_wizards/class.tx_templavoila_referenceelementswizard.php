@@ -247,6 +247,7 @@ class tx_templavoila_referenceElementsWizard extends t3lib_extobjbase {
 				'pid=' . intval($pid) .
 						(count($referencedElementsArr) ? ' AND uid NOT IN (' . implode(',', $referencedElementsArr) . ')' : '') .
 						' AND t3ver_wsid=' . intval($GLOBALS['BE_USER']->workspace) .
+						' AND l18n_parent=0' .
 						t3lib_BEfunc::deleteClause('tt_content') .
 						t3lib_BEfunc::versioningPlaceholderClause('tt_content'),
 			'',
