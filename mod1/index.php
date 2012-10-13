@@ -1067,7 +1067,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			// Finally assemble the table:
 		$finalContent = '
 			<div class="' . $elementClass . '">
-				<a name="c'. md5($this->apiObj->flexform_getStringFromPointer($this->currentElementParentPointer) . $contentTreeArr['el']['uid']) .'">
+				<a name="c'. md5($this->apiObj->flexform_getStringFromPointer($this->currentElementParentPointer) . $contentTreeArr['el']['uid']) .'"></a>
 				<div class="tpm-titlebar t3-page-ce-header ' . $elementTitlebarClass .'">
 					<div class="t3-row-header">
 						<div class="tpm-element-control">
