@@ -1380,7 +1380,7 @@ class tx_templavoila_htmlmarkup {
 		if (!isset(self::$tagConf[$tag])) {
 			return '';
 		} else {
-			return '<span ' . $onclick . ' class="gnyfElement gnyf' . ucfirst(self::$tagConf[$tag]['blocktype']) . '" title="' . htmlspecialchars(t3lib_div::fixed_lgd_cs($title, -200)) .'">' . htmlspecialchars($tag) . '</span>';
+			return '<span class="gnyfBox"><span ' . $onclick . ' class="gnyfElement gnyf' . ucfirst(self::$tagConf[$tag]['blocktype']) . '" title="' . htmlspecialchars(t3lib_div::fixed_lgd_cs($title, -200)) .'">' . htmlspecialchars($tag) . '</span></span>';
 		}
 	}
 }

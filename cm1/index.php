@@ -150,7 +150,9 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 	var $staticDS = FALSE;		// Boolean; if true DS records are file based
 
 	static $gnyfStyleBlock = '
+	.gnyfBox { position:relative; }
 	.gnyfElement {	color: black; font-family:monospace;font-size:12px !important; line-height:1.3em !important; font-weight:normal; text-transform:none; letter-spacing:auto; cursor: pointer; margin: 0; padding:0 7px; overflow: hidden; text-align: center; position: absolute;  border-radius: 0.4em; -o-border-radius: 0.4em; -moz-border-radius: 0.4em; -webkit-border-radius: 0.4em; background-color: #ffffff;	}
+	.dso_table .gnyfElement { position: relative; }
 	span.gnyfElement:hover {	z-index: 100;	box-shadow: rgba(0, 0, 0, 0.5) 0 0 4px 2px;	-o-box-shadow: rgba(0, 0, 0, 0.5) 0 0 4px 2px;	-moz-box-shadow: rgba(0, 0, 0, 0.5) 0 0 4px 2px;	-webkit-box-shadow: rgba(0, 0, 0, 0.5) 0 0 4px 2px;	}
 	a > span.gnyfElement, td > span.gnyfElement {	position:relative;	}
 	a > .gnyfElement:hover, td > .gnyfElement:hover  { box-shadow: none;	-o-box-shadow: none;	-moz-box-shadow: none;	-webkit-box-shadow: none;	}
@@ -1050,7 +1052,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 					$content.='
 						<h3>' . $GLOBALS['LANG']->getLL('createDSTO') . ':</h3>
 						'.$this->cshItem('xMOD_tx_templavoila','mapping_file_createDSTO',$this->doc->backPath,'|<br/>').'
-						<table border="0" cellpadding="2" cellspacing="2">
+						<table border="0" cellpadding="2" cellspacing="2" class="dso_table">
 							<tr>
 								<td class="bgColor5"><strong>' . $GLOBALS['LANG']->getLL('titleDSTO') . ':</strong></td>
 								<td class="bgColor4"><input type="text" name="_saveDSandTO_title" /></td>
@@ -1169,7 +1171,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 					-->
 					<div id="c-ds">
 						<h4>' . $GLOBALS['LANG']->getLL('renderDSO_dataStructure') . ':</h4>
-						<table border="0" cellspacing="2" cellpadding="2">
+						<table border="0" cellspacing="2" cellpadding="2" class="dso_table">
 									<tr class="bgColor5">
 										<td nowrap="nowrap"><strong>' . $GLOBALS['LANG']->getLL('renderDSO_dataElement') . ':</strong>'.
 											$this->cshItem('xMOD_tx_templavoila','mapping_head_dataElement',$this->doc->backPath,'',TRUE).
@@ -1232,7 +1234,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 					-->
 					<div id="c-to">
 						<h4>' . $GLOBALS['LANG']->getLL('renderDSO_usedTO') . ':</h4>
-						<table border="0" cellpadding="2" cellspacing="2">
+						<table border="0" cellpadding="2" cellspacing="2" class="dso_table">
 						'.implode('',$tRows).'
 						</table>
 					</div>';
@@ -1850,12 +1852,12 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 		}
 
 			// Create Data Structure table:
-		$content.='
+		$content='
 
 			<!--
 				Data Structure table:
 			-->
-			<table border="0" cellspacing="2" cellpadding="2">
+			<table border="0" cellspacing="2" cellpadding="2" class="dso_table">
 			<tr class="bgColor5">
 				<td nowrap="nowrap"><strong>' . $GLOBALS['LANG']->getLL('mapDataElement') . ':</strong>' .
 					$this->cshItem('xMOD_tx_templavoila','mapping_head_dataElement',$this->doc->backPath, '', TRUE) .
