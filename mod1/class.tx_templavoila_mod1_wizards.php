@@ -247,19 +247,27 @@ class tx_templavoila_mod1_wizards {
 	function renderTemplateSelector ($positionPid, $templateType='tmplobj') {
 		global $LANG, $TYPO3_DB;
 
-		$storageFolderPID = $this->apiObj->getStorageFolderPid($positionPid);
+			// Negative PID values is pointing to a page on the same level as the current.
+		if ($positionPid < 0) {
+			$pidRow = t3lib_BEfunc::getRecordWSOL('pages', abs($positionPid), 'pid');
+			$parentPageId = $pidRow['pid'];
+		} else {
+			$parentPageId = $positionPid;
+		}
+
+		$storageFolderPID = $this->apiObj->getStorageFolderPid($parentPageId);
 		$tmplHTML = array();
 		$defaultIcon = $this->doc->backPath . '../' . t3lib_extMgm::siteRelPath($this->extKey) . 'res1/default_previewicon.gif';
 
 			// look for TCEFORM.pages.tx_templavoila_ds.removeItems / TCEFORM.pages.tx_templavoila_to.removeItems
-		$disallowedPageTemplateItems = $this->getDisallowedTSconfigItemsByFieldName ($positionPid, 'tx_templavoila_ds');
-		$disallowedDesignTemplateItems = $this->getDisallowedTSconfigItemsByFieldName ($positionPid, 'tx_templavoila_to');
+		$disallowedPageTemplateItems = $this->getDisallowedTSconfigItemsByFieldName ($parentPageId, 'tx_templavoila_ds');
+		$disallowedDesignTemplateItems = $this->getDisallowedTSconfigItemsByFieldName ($parentPageId, 'tx_templavoila_to');
 
 		switch ($templateType) {
 			case 'tmplobj':
 					// Create the "Default template" entry
 					//Fetch Default TO
-				$fakeRow = array('uid' => abs($positionPid));
+				$fakeRow = array('uid' => $parentPageId);
 				$defaultTO = $this->pObj->apiObj->getContentTree_fetchPageTemplateObject($fakeRow);
 
 					// Create the "Default template" entry
