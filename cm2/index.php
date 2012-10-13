@@ -32,7 +32,7 @@
 
 	// DEFAULT initialization of a module [BEGIN]
 unset($MCONF);
-require ('conf.php');
+require (dirname(__FILE__) . '/conf.php');
 require ($BACK_PATH.'init.php');
 require ($BACK_PATH.'template.php');
 $LANG->includeLLFile('EXT:templavoila/cm2/locallang.xml');
