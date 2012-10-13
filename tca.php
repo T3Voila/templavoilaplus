@@ -41,7 +41,8 @@ $TCA['tx_templavoila_tmplobj'] = Array (
 				'items' => Array(
 					Array('',0)
 				)
-			)
+			),
+			'displayCond' => 'FIELD:parent:=:0'
 		),
 		'datastructure' => Array (
 			'exclude' => 1,
@@ -56,7 +57,7 @@ $TCA['tx_templavoila_tmplobj'] = Array (
 				'size' => 1,
 				'minitems' => 0,
 				'maxitems' => 1,
-                'itemsProcFunc' => 'tx_templavoila_handleStaticdatastructures->main',
+				'itemsProcFunc' => 'tx_templavoila_handleStaticdatastructures->main',
 				'allowNonIdValues' => 1,
 				'suppress_icons' => 'ONLY_SELECTED',
 				'wizards' => Array(
@@ -73,8 +74,9 @@ $TCA['tx_templavoila_tmplobj'] = Array (
 						),
 						'script' => 'wizard_add.php',
 					),
-				),
-			)
+				)
+			),
+			'displayCond' => 'FIELD:parent:=:0'
 		),
 		'fileref' => Array (
 			'exclude' => 1,
@@ -137,7 +139,8 @@ $TCA['tx_templavoila_tmplobj'] = Array (
 				'size' => '1',
 				'maxitems' => '1',
 				'minitems' => '0'
-			)
+			),
+			'displayCond' => 'FIELD:parent:=:0'
 		),
 		'description' => Array (
 			'label' => 'LLL:EXT:templavoila/locallang_db.xml:tx_templavoila_tmplobj.description',
@@ -145,8 +148,9 @@ $TCA['tx_templavoila_tmplobj'] = Array (
 				'type' => 'input',
 				'size' => '48',
 				'max' => '256',
-				'eval' => 'trim',
-			)
+				'eval' => 'trim'
+			),
+			'displayCond' => 'FIELD:parent:=:0'
 		),
 		'sys_language_uid' => Array (
 			'exclude' => 1,
@@ -158,7 +162,8 @@ $TCA['tx_templavoila_tmplobj'] = Array (
 				'items' => Array(
 					Array('',0)
 				)
-			)
+			),
+			'displayCond' => 'FIELD:parent:!=:0'
 		),
 		'rendertype' => Array (
 			'exclude' => 1,
@@ -168,8 +173,9 @@ $TCA['tx_templavoila_tmplobj'] = Array (
 				'items' => Array (
 					Array('LLL:EXT:templavoila/locallang_db.xml:tx_templavoila_tmplobj.rendertype.I.0', ''),
 					Array('LLL:EXT:templavoila/locallang_db.xml:tx_templavoila_tmplobj.rendertype.I.1', 'print'),
-				),
-			)
+				)
+			),
+			'displayCond' => 'FIELD:parent:!=:0'
 		),
 		'templatemapping' => Array ('config' => Array ('type' => 'passthrough')),
 		'fileref_mtime' => Array ('config' => Array ('type' => 'passthrough')),
@@ -187,8 +193,8 @@ $TCA['tx_templavoila_tmplobj'] = Array (
 		),
 	),
 	'types' => Array (
-		'0' => Array('showitem' => 'title;;;;2-2-2, parent, fileref, belayout, datastructure;;;;3-3-3, rendertype_ref, previewicon, description, localprocessing;;;;1-1-1'),
-		'1' => Array('showitem' => 'title;;;;2-2-2, parent, fileref, belayout, sys_language_uid;;;;3-3-3, rendertype,localprocessing;;;;1-1-1')
+		'0' => Array('showitem' => 'title;;;;2-2-2, parent, fileref, belayout, datastructure;;;;3-3-3, sys_language_uid;;;;3-3-3, rendertype, rendertype_ref, previewicon, description, localprocessing;;;;1-1-1'),
+		'1' => Array('showitem' => 'title;;;;2-2-2, parent, fileref, belayout, datastructure;;;;3-3-3, sys_language_uid;;;;3-3-3, rendertype, rendertype_ref, previewicon, description, localprocessing;;;;1-1-1'),
 	)
 );
 
