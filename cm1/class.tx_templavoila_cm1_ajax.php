@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2010 Tolleiv Nietsch <info@tolleiv.de>
+ *  (c) 2010 Tolleiv Nietsch <tolleiv.nietsch@typo3.org>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is

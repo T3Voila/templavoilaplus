@@ -1,114 +1,114 @@
-2011-09-28 Tolleiv Nietsch <nietsch@aoemedia.de> 
+2011-09-28 Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed issue: #18291: Section index might be wrong if it's placed after an FCE  (Thanks to Thomas Layh)
 
-2011-08-27 Tolleiv Nietsch <nietsch@aoemedia.de> 
+2011-08-27 Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed issue: #18261: t3lib_div_int_from_ver is deprecated 
 	* Fixed issue: #18147: Install as global should be possible
 	* Fixed bug: #18158: The requested URL /typo3conf/ext/templavoila/mod1/mod.php was not found on this server. 
 
-2011-05-12 Tolleiv Nietsch <nietsch@aoemedia.de> 
+2011-05-12 Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed bug: #18076: Page templates using Inherited language mode don't work properly on page module
 	* Fixed bug: #18134: Preview flag can't be overwritten within localproc XML
 	* Fixed bug: #1332: V 0.4.0 - The cache pages with referenced content elements is not cleared on change
 
-2011-05-11 Tolleiv Nietsch <nietsch@aoemedia.de> 
+2011-05-11 Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed bug: #17929: delete not-used elements in custom workspace (Thanks to Riccardo De Contardi)
 
-2011-05-10 Tolleiv Nietsch <nietsch@aoemedia.de> 
+2011-05-10 Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed bug: #18101: Preview icons missing in new page wizard if TYPO3 is installed in subdirectory of DocumentRoot (Thanks to Tobias Schaefer)
 	* Fixed bug: #18116: CE sitemap: Check if content ids exist (Thanks to Benjamin Mack)
 	* Fixed bug: #18098: Link to db_list.php is deprecated in Typo3 4.5 (Thanks to Daniel Minder)
 	* Fixed bug: #18100: One 4.2 hack left over in mod2/index.php (Thanks to Bjorn Pedersen)
 
-2011-03-25 Tolleiv Nietsch <nietsch@aoemedia.de> 
+2011-03-25 Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed bug: #7617: Cannot create new records from "Other elements (non-content)" tab  (Thanks to OlivierSC)
 	* Fixed bug: #17803: Versioning error after hide/unhide action 
 	* Fxied bug: #18037: Mod2 icons lack proper tooltips 
 	* Fixed bug: #18033: RANGE for "unnamed" elements exclude the current element 
 
-2011-03-12 Tolleiv Nietsch <nietsch@aoemedia.de> 
+2011-03-12 Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed bug: #17871: Use of deprecated function t3lib_div::view_array
 
-2011-02-26 Tolleiv Nietsch <nietsch@aoemedia.de> 
+2011-02-26 Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed bug: #17781: Remove TYPO3 4.2 compatibility blocks
 
-2011-02-24 Tolleiv Nietsch <nietsch@aoemedia.de> 
+2011-02-24 Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed bug: #17756: templavoila doesn't look nice in 4.6 
 
-2011-02-22 Tolleiv Nietsch <nietsch@aoemedia.de> 
+2011-02-22 Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed bug: #17582: Unmapped content areas are still processed (Thanks to Jeff Segars)
 	* Fixed bug: #16184: Section Index menu doesn't work with Templavoila (Thanks to Riccardo De Contardi)
 	* Fixed bug: #17696: Icon image tag with doubled alt attribute (and no title) 
 
-2011-02-18 Tolleiv Nietsch <nietsch@aoemedia.de> 
+2011-02-18 Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed bug: #17546: Allow new page wizard to show all fields from pages like in normal editing mode (Thanks to Andreas Kiessling)
 
-2011-02-16 Tolleiv Nietsch <nietsch@aoemedia.de> 
+2011-02-16 Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed bug #17615: preview disable doesn't fully work for page-layouts 
 
-2011-02-14 Tolleiv Nietsch <nietsch@aoemedia.de> 
+2011-02-14 Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed bug: #16947: Incorrect error message in STATIC DS wizard 
 	* Fixed bug: #17484: Missing JS in TV 1.5.3 with Typo3 4.2.17 (Thanks to Alexander Opitz)
 	* Fixed bug: #17467: CSRF security message on deleting content elements from non-used elements
 
-2011-02-09 Tolleiv Nietsch <nietsch@aoemedia.de> 
+2011-02-09 Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed bug: #16520: Flags are gone in page module in TYPO3 4.5 
 	* Followup-to: #17242: Possibility to disable some tabs / consistent naming and manual update
 
-2011-01-25 Tolleiv Nietsch <nietsch@aoemedia.de> 
+2011-01-25 Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed bug: #16811: The pageTS config of templavoila. is not merged with userTS config 
 	* Fixed bug: #17234: Copying an FCE into another place doesn't show them initially, this might confuse users
 	* Fixed bug: #17005: Adjust TCA setup for pages and tt_content to new 4.5 "style" 
 
-2011-01-24 Tolleiv Nietsch <nietsch@aoemedia.de> 
+2011-01-24 Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed bug: #16979: TemplaVoila 1.5.3 wizard error in src-4.4.6 site. (Thanks to Jonathan Krusy and Bodo Frommelt)
 	* Fixed bug: #17242: Possibility to disable some tabs (and to reorder them) (Thanks to Benjamin Mack)
 
-2011-01-23 Tolleiv Nietsch <nietsch@aoemedia.de> 
+2011-01-23 Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed bug: #16886: Include Header parts - comments hack bug 
 
-2010-12-20 Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-12-20 Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed bug: #16791: language flag might indicate wrong visibility in workspaces (Thanks to Nikola Stojiljkovic)
 
-2010-12-17 Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-12-17 Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed bug: #16700: mod2 broken in 1.5.3 when TOs are used / incorrect parameters for t3lib_div::array2xml (Thanks to Andreas Kiessling)
 
-2010-12-05 Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-12-05 Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed bug: #16684: useless visual expansion of the nested section datapreview 
 	* Fixed bug: #13822: Cut and paste in workspaces
 	* Fixed bug: #11359: When deleting versions of a CE record, page looses reference to the complete record 
 	* Fixed bug: #16521: Localize FCEs from the page module (Thanks to Andreas Kiessling)
 
-2010-11-28  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-11-28  Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed bug: #16587: small typo - dataprot variable misspelled (Thanks to Andreas Lappe)
 
-2010-11-27  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-11-27  Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Follow-up to: Fixed bug: #15927: Remove icon »Create new element« if user has no rights to edit the pages content
 	* Fixed issue: #16567: Static DS Conversion Wizard does not check if path is writable and has wrong page-path to check (Thanks to Andreas Lappe)
 
-2010-11-22  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-11-22  Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed issue: #15788: Copy content elements in classic page module
 	* Fixed issue: #16512: template->middle() - is not required and deprecated since TYPO3 3.6 
@@ -120,82 +120,82 @@
 	* Fixed issue: #16341: Get rid of the full plugin name
 	* Fixed issue: #16211: a hsc too much 
 
-2010-11-08  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-11-08  Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixued issue: #16243: no context menu for xml files and html files with xml declaration to start mapping process (Thanks to Andreas Kiessling)
 
-2010-11-06  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-11-06  Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixued issue: #16212: templavoila floods deprecation log on current TYPO3 trunk (4.5) (Thanks to Andreas Kiessling)
 
-2010-10-29  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-10-29  Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Follow-up to: #3450: Web->Page (TV) shows "fieldname" instead of "title" - </br> was supposed to be <br />
 
-2010-10-23  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-10-23  Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed issue: #16115: content-cells might be very slim
 	* Updated manual related to #8051: oldStyleColumnNumber of FCE overrides colPos of Page Template
 	* Fixed bug: #16083: Fatal error: mod2/index.php 
 
-2010-10-19  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-10-19  Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixued issue: #16070: Sitemap Section Index + TV => Internal Server Error 500, PHP Fatal error
 	* Follow-up to: #15924: nested_fields register content is not correct - duplicate code removed
 	* Fixed issue: #15924: nested_fields register content is not correct  (Thanks to Frederik Rei)
 	* Fixed issue: #15896: Infection Warning by Avira AntiVir: HTML/Crypted.Gen
 
-2010-10-17  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-10-17  Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed issue: #15986: TYPO3_MODE check in localconf.php might break spriteCache 
 
-2010-10-12  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-10-12  Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed bug: #15980: doktype of page is not respected during localizing of a page (Thanks to Andreas Kiessling)
 
-2010-10-12  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-10-12  Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Generally updated several outdated parts of the manual
 	* Fixed issue: #15957: TV does not honour TCAdefaults from PageTSconfig or UserTSconfig 
 
-2010-10-11  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-10-11  Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Follow-up to: #15775: Avoid that browser-cache issues cause too much confusion during upgrade (debug-mode dragdrop.js caused 404)
 
-2010-10-10  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-10-10  Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed issue: #15946: version comparison doesn't work on dev version of TYPO3_4-4 branch
 	* Fixed bug: #15948: Content from PID message looks strange
 
-2010-10-09  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-10-09  Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed bug: #15908: access restriction for tv-objects in usergroup setting will be ignored
 	* Fixed issue: #15933: "Create new Template Object" puts new TOs on wrong page
 	* Fixed issue: #15943: tt_content move-to placeholder show up in the non-used CE list 
 
-2010-10-08  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-10-08  Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed issue: #15498: Use Flash Messages in wizard (Thanks to Benjamin Mack)
 
-2010-10-07  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-10-07  Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed issue: #15878: current value is not given to etypesextraformfields hook 
 	* Fixed issue: #15926: Make template folder configurable 
 	* Fixed issue: #15921: tx_templavoila_datastructureRepository->getAll() does not handle scope properly 
 
-2010-10-06  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-10-06  Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed issue: #15920: element icons don't show the id in their tooltips anymore 
 	* Follow-up to: #15125: static DS not working in conjunction with TYPO3 caches - manual still contained some old references
 	* Fixed bug: #15890: Editor is getting false flash message for missing rights 
 	* Fixed bug: #15918: co content found! mapping to root element lost 
 
-2010-10-03  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-10-03  Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Follow-up to: #15210: TemplaVoila should adjust it's look&feel to TYPO3 4.4 - translation-text color fixed
 	* Fixed issue: #15859: sectionIndex doesn't work as supposed when TemplaVoila is used (Thanks to Steffen Kamper)
 
-2010-09-28  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-09-28  Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed issue: #15837: % char in locallang label causes php warning
 	* Follow-up to: #13974: HTML5 tag support - added missing styles
@@ -204,7 +204,7 @@
 	* Fixed issue: #15775: Avoid that browser-cache issues cause too much confusion during upgrade 
 	* Fixed issue: #15826: Non-admin fails to add new FCE to a page - pagemodule should show a warning
 
-2010-09-23  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-09-23  Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Follow-up to: #14386: Static DS - Centralize access to datastructure / pt.4 - further refinement to hide useless elements
 	* Fixed issue: #15779: Hook to influence how the subelement areas are composed 
@@ -212,92 +212,92 @@
 	* Fixed issue: #15777: Hook to restrict which elements are displayed 
 	* Fixed issue: #12602: Sorting of template objects in page content
 
-2010-09-22  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-09-22  Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed issue: #15571: Fatal PHP Error when try to insert new CEs in Page Module
 	* Fixed issue: #15759: Section title and section fieldlabel are not through "$this->localizedFFLabel" (Thanks to KimPixel)
 	* Fixed issue: #15762: beLayout Template from external files does not work 
 
-2010-09-16  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-09-16  Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Follow-up to: #14386: Static DS - Centralize access to datastructure / pt.1  - workspace versions should not be selected in repositories
 	* Fixed bug:	#15722: The create new template object-button is missing if there is no TO attached to a DS
 	* Fixed issue: #15723: Wrong TypoScript path in documentation (Thanks to Bernhard Kraft)
 
-2010-09-15  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-09-15  Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed issue: #15719: HTML5 <menu> element not styled (Thanks to Rafal Brzeski)
 	* Fixed issue: #15718: Long words might cause strange look in pagemodule
 	* Fixed issue: #15706: in trunk: not resolved template file names cause error in mod2/index.php (Thanks to Björn Pedersen)
 	* Fixed issue: #15695: Edit link not clickable with Drag n Drop enable with Internet Explorer (Thanks to Megaspoilt)
 
-2010-09-14  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-09-14  Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed issue: #13974: HTML5 tag support 
 	* Fixed issue: #15125: static DS not working in conjunction with TYPO3 caches (f.e. TCA cache) (Thanks to Franz Koch)
 
-2010-09-09  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-09-09  Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed issue: #15670: content element preview in TV module for filelist can get very wide 
 	* Fixed issue: #14314: beLayout does not work with Static Data Structures in Extensions 
 	* Fixed issue: #15675: pagemodule resource "API" behaves inconsistent
 
-2010-09-05  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-09-05  Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed issue: #14386: Static DS - Centralize access to datastructure / pt.4 - mod2 uses proper objects now
 
-2010-09-01  Tolleiv Nietsch <nietsch@aoemedia.de>
+2010-09-01  Tolleiv Nietsch <tolleiv.nietsch@typo3.org>
 
 	* Fixed issue: #15614: Element warnings are inconsistent and lack information
 
-2010-08-31  Tolleiv Nietsch <nietsch@aoemedia.de>
+2010-08-31  Tolleiv Nietsch <tolleiv.nietsch@typo3.org>
 
 	* Fixed bug: #3813: Localization is not respected when migrating a traditional site using the "Functions" module (Thanks to Bernhard Kraft)
 
-2010-08-30  Tolleiv Nietsch <nietsch@aoemedia.de>
+2010-08-30  Tolleiv Nietsch <tolleiv.nietsch@typo3.org>
 
 	* Follow-up to: #15210: TemplaVoila should adjust it's look&feel to TYPO3 4.4 - special page padding fixed
 	* Fixed issue: #15411: Unmapped Elements of etype 'ce' / 'no_map' don't show in TV BE page module (Thanks to Marcel Greter)
 	* Fixed issue: #15568: Hardcoded added TS snipped crashes output
 
-2010-08-09  Tolleiv Nietsch <nietsch@aoemedia.de>
+2010-08-09  Tolleiv Nietsch <tolleiv.nietsch@typo3.org>
 
 	* Follow-up to: #15210: TemplaVoila should adjust it's look&feel to TYPO3 4.4 - usability adjustments
 
-2010-08-06  Tolleiv Nietsch <nietsch@aoemedia.de>
+2010-08-06  Tolleiv Nietsch <tolleiv.nietsch@typo3.org>
 
 	* Follow-up to: #14386: Static DS - Centralize access to datastructure / pt.1  - FE crash case removed
 
-2010-08-04  Tolleiv Nietsch <nietsch@aoemedia.de>
+2010-08-04  Tolleiv Nietsch <tolleiv.nietsch@typo3.org>
 
 	* Fixed issue: #15358: pagemodule ce title len limit should be configurable
 	* Fixed issue: #15357: pagemodule preview data limit should be configurable 
 
-2010-08-03  Tolleiv Nietsch <nietsch@aoemedia.de>
+2010-08-03  Tolleiv Nietsch <tolleiv.nietsch@typo3.org>
 
 	* Follow-up to: #14140: TemplaVoila should use sprite icons / pt.3
 	* Follow-up to: #15217: new content wizard should use docHeader
 
-2010-07-30  Tolleiv Nietsch <nietsch@aoemedia.de>
+2010-07-30  Tolleiv Nietsch <tolleiv.nietsch@typo3.org>
 
 	* Fixed issue: #14590: use pagerenderer to output / integrate the header parts into the regular TYPO3 output
 	* Fixed issue: #15314: TYPO3 4.4 Version-selector doesn't fit into the current layout
 	* Fixed issue: #15276: tv page module title bar layout breaks, if too little space 
 
-2010-07-29  Tolleiv Nietsch <nietsch@aoemedia.de>
+2010-07-29  Tolleiv Nietsch <tolleiv.nietsch@typo3.org>
 
 	* Follow-up to: #14140: TemplaVoila should use sprite icons / pt.2
 	* Fixed issue: #15293: enableDragDrop setting should be set by default
 	* Fixed issue: #15267: page icon is missing 
 
-2010-07-28  Tolleiv Nietsch <nietsch@aoemedia.de>
+2010-07-28  Tolleiv Nietsch <tolleiv.nietsch@typo3.org>
 
 	* Fixed issue: #14641: TemplaVoila Page Module: Contextual menu disappears when mouse is over with Firefox 3.6
 	* Fixed bug: #13171: cm1::findingStorageFolderIds does not consider tx_templavoila.storagePid
 	* Follow-up to: #14694: FlashMessage should be used instead of individual message formats
 	* Fixed bug: #15266: mod2 "Template Files" uses wrong list-header styling 
 
-2010-07-25  Tolleiv Nietsch <nietsch@aoemedia.de>
+2010-07-25  Tolleiv Nietsch <tolleiv.nietsch@typo3.org>
 
 	* Fixed bug: #15235: default preview container misses closing strong-tag 
 	* Fixed bug: #14881: Mapping elements with multiple classes results in error: No placeholder found for path... 
@@ -306,53 +306,53 @@
 	* Fixed issue: #15233: TV should support mod.web_list.newContentWiz.overrideWithExtension 
 	* Follow-up to: #15210: TemplaVoila should adjust it's look&feel to TYPO3 4.4 - hidden elements adjustments
 
-2010-07-24  Tolleiv Nietsch <nietsch@aoemedia.de>
+2010-07-24  Tolleiv Nietsch <tolleiv.nietsch@typo3.org>
 
 	* Fixed issue: #14140: TemplaVoila should use sprite icons / pt.2
 	* Follow-up to: #15210: TemplaVoila should adjust it's look&feel to TYPO3 4.4 - typo/whitespacefix
 	* Fixed issue: #14140: TemplaVoila should use sprite icons / pt.1
 
-2010-07-23  Tolleiv Nietsch <nietsch@aoemedia.de>
+2010-07-23  Tolleiv Nietsch <tolleiv.nietsch@typo3.org>
 
 	* Fixed issue: #15217: new content wizard should use docHeader
 	* Fixed issue: #10911: Design: non-used elements are too crowded
 	* Fixed issue: #15210: TemplaVoila should adjust it's look&feel to TYPO3 4.4
 	* Fixed issue: #15209: mod1 -> render_singleSheet uses html table for "styling" 
 
-2010-07-20  Tolleiv Nietsch <nietsch@aoemedia.de>
+2010-07-20  Tolleiv Nietsch <tolleiv.nietsch@typo3.org>
 
 	* Fixed issue: #3903: ACL problem: "edit content" doesn't work (Thanks to Bernhard Kraft)
 
-2010-07-19  Tolleiv Nietsch <nietsch@aoemedia.de>
+2010-07-19  Tolleiv Nietsch <tolleiv.nietsch@typo3.org>
 
 	* Fixed issue: #13699: static Data Structures not listed in the TemplaVoilà Control Center
 	* Fixed issue: #15178: FCE editing forms should match built-in content elements (Thanks to Jeff Segars)
 
-2010-07-17  Tolleiv Nietsch <nietsch@aoemedia.de>
+2010-07-17  Tolleiv Nietsch <tolleiv.nietsch@typo3.org>
 
 	* Fixed issue: #15158: XCLASS inclusion inclass.tx_templavoila_label.php wrong 
 	* Fixed issue: #15157: tx_staticdstools doesn't follow naming schema
 	* Fixed issue: #15124: bind detection for static DS scope to path and not to string '(fce)' in filename  (Thanks to Franz Koch)
 
-2010-07-14  Tolleiv Nietsch <nietsch@aoemedia.de>
+2010-07-14  Tolleiv Nietsch <tolleiv.nietsch@typo3.org>
 
 	* Fixed issue: #14897: TV shows inconsistent in variours TYPO3 versions (Thanks to Christian Noelle)
 	* Fixed issue: #15063: Introduce seperate ajax responder to handle d&d calls (Thanks to Nikolas Hagelstein)
 
-2010-07-13  Tolleiv Nietsch <nietsch@aoemedia.de>
+2010-07-13  Tolleiv Nietsch <tolleiv.nietsch@typo3.org>
 
 	* Fixed bug: #15058: disableExplosivePreview doesn't disable Flexible Content preview +manual updated
 
-2010-07-08  Tolleiv Nietsch <nietsch@aoemedia.de>
+2010-07-08  Tolleiv Nietsch <tolleiv.nietsch@typo3.org>
 
 	* Fixed bug: #5780: Elements are shows as references 
 
-2010-07-06  Tolleiv Nietsch <nietsch@aoemedia.de>
+2010-07-06  Tolleiv Nietsch <tolleiv.nietsch@typo3.org>
 
 	* Fixed issue: #15022: cm2 should use the common docHeader
 	* Fixed issue: #11594: "Create local copy" button of a content element isn't visible for users without write access
 
-2010-07-05  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-07-05  Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Follow-up to: #14386: Static DS - Centralize access to datastructure / pt.1  - crash case removed
 	* Follow-up to: #13928: $calcPerms in mod1 needs to be recreated if grid's are referenced items - typo removed
@@ -364,28 +364,28 @@
 	* Fixed issue: #14962: Unlinked elements won't disappear if DragDrop is not enabled 
 	* Fixed issue: #14951: [Click to translate FlexForm] harcoded /not translated 
 
-2010-06-24  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-06-24  Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Follow-up to: #14386: Static DS - Centralize access to datastructure / pt.1  - renamed one misspelled variable
 	* Fixed issue: #14839: mapping-module should use the common docHeader
 
-2010-06-22  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-06-22  Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed issue: #13706: can't create pages with a template object based on a static DS
 
-2010-06-16  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-06-16  Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed issue: #10753: Inconsistency: tab is not supported in the TS editor
 	* Fixed issue: #14571: Datastructure: meta > default doesn't work when using static datastructure files (Thanks to Aske Ertmann)
 
-2010-06-12  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-06-12  Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed bug: #4512: Would be nice: disallow save without title/name field 
 	* Fixed issue: #14386: Static DS - Centralize access to datastructure / pt.1  (Thanks to Michael Klapper)
 	* Fixed issue: #14446: disable data preview for section elements 
 	* Fixed issue: #3450: Web->Page (TV) shows "fieldname" instead of "title"
 
-2010-06-10  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-06-10  Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed issue: #13346: HTML Validator to indicate that mapping might not succeed 
 	* Fixed bug: #14696: mapping module shows error in workspace 
@@ -393,65 +393,65 @@
 	* Fixed issue: #14694: FlashMessage should be used instead of individual message formats 
 	* Fixed issue: #14579: Documentation states hook that has been removed in 2006 
 
-2010-05-31  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-05-31  Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed issue: #14531: TOs Showing up in in other sites when not in their GRSP on multi-domain installation. 
 	* Fixed issue: #14548: Call to undefined method tx_templavoila_template::getScope() 
 
-2010-05-30  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-05-30  Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed issue: #13722: Typoscript Object Path gets lost when using Hook for eTypesExtraFormFields TypoScriptObject 
 	* Fixed issue: #14226: Mapping TS always makes it HSC=1 // Review eType preset behaviour 
 	* Fixed issue: #13950: Page TOs with static DSs show up in all sites and do not honor GRSP
 
-2010-05-18  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-05-18  Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed issue: #14346: External URL with no urltype not shown up (Thanks to Benjamin Mack)
 	* Fixed issue: #13079: Followup: Hooks to reprocess lKey and vKey.
 
-2010-05-02  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-05-02  Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed issue: #14253: Disable drag&drop feature on a per-user and a per-pagebranch basis 
 	* Fixed issue: #12204: Missing clause in XHTML conditional comments like <!--[if lte IE 6]> 
 
-2010-04-29  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-04-29  Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed issue: #14213: "To Top" checkbox is missing in FlexContent (Thanks to Patrick Gaumond)
 	* Fixed issue: #11842: mapping type RANGE not available when tag has both id and class attribute (Thanks to Jigal van Hemert)
 
-2010-04-25  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-04-25  Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed issue: #14162: Feature(tte): Make current field's name available as register (Thanks to Francois Suter)
 	* Fixed issue: #14056: static ds wizard error-handling improvement if conf is missing
 	* Fixed issue: #13936: noEditOnCreation don't work with static DS
 	* Fixed issue: #12950: Add an option to tt_content , for disabling drag/drop
 
-2010-04-20  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-04-20  Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed issue: #13975: hasElementForeignReferences might cause maximum execution time error
 
-2010-04-17  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-04-17  Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed issue: #14141: Drag&Drop should scroll automatically 
 	* Fixed issue: #14136: JavaScript Problem - Drag and Drop  (Thanks to Frank Hirsch)
 
-2010-04-13  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-04-13  Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed issue: #14083: global variable 'fileadminDir' not replaced by its value in help text under new site wizard
 
-2010-04-12  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-04-12  Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed issue: #14082: specialDoktype handling for doktype 2 obsolete 
 	* Fixed issue: #14081: specialDoktype pages should use FlashMessages
 	* Fixed issue: #14080: "No Access" page should use FlashMessages 
 	
-2010-04-11  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-04-11  Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Reverted changes for #10370: Implement new content element wizard 
 	* Fixed issue: #7082: Configuration to handle inheritance DS like disabled
 	* Fixed bug: #14036: compat_version comparision is used wrong
 
-2010-04-10  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-04-10  Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed bug: #13873: TemplaVoila should use a docHeader as well (mod1) 
 
@@ -459,32 +459,32 @@
 
 	* Follow up to bugfix: #0012257: New Feature: localizable title fields 
 
-2010-04-05  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-04-05  Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed bug: #13864: Flags in non-used elements shouldn't be wrapped to next line (Thanks to Jerome Blum)
 
-2010-03-30  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-03-30  Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed bug: #13807: sorting CEs via list mode broken if translation 'diff' exists (Thanks to Jan Hacker)
 	* Fixed bug: #12805: Interferences TV and feeditadvanced
 	* Fixed bug: #13921: Browse and paste icons available if no edit rights (Thanks to Chris Müller)
 	* Fixed bug: #13930: HTML-Path is wrong in case of mapping-errors
 
-2010-03-27  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-03-27  Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed bug: #13929: Unlinking referenced item triggers JS-error in IE8 
 	* Fixed bug: #13831: "Browse for records" doesn't work in IE8, JavaScript Error 
 
-2010-03-26  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-03-26  Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed bug: #11550: "Create reference" button of a content element isn't visible for users without write access (Thanks to Stig Nørgaard Færch)
 
-2010-03-25  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-03-25  Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed bug: #13912: Handling of static DS is not compatible with DBAL/Oracle (Thanks to Xavier Perseguers)
 	* Fixed bug: #13914: PHP Syntax error in mod2/index.php (Thanks to Sascha Egerer)
 
-2010-03-11  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-03-11  Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed bug: #13783: Content Element Preview Should Show CType Label (Thanks to Jeff Segars)
 	* Fixed bug: #13052: New Content Element Wizard didn't load (Thanks to Jan Perdoch)
@@ -494,7 +494,7 @@
 	* Fixed bug: #13776: Cannot unset HSC for input type Plain Input Field
 	* Fixed bug: #13764: Changing eType in mapping module remains HSC=1
 
-2010-03-07  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-03-07  Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed bug: #11912: usergroup options for disabling the "paste as reference"-Function, when copying a FCE
 	* Fixed bug: #13725: [pre-1.4.2] JavaScript errors when opening page module (in TYPO3 4.2)
@@ -502,19 +502,19 @@
 	* Fixed bug: #13755: t3lib_BEfunc::getSetUpdateSignal() will be deprecated in TYPO3 4.5 (patch b)
 	* Fixed bug: #13762: Elements on New page -templateselector don't indicate clickability
 
-2010-03-06  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-03-06  Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed bug: #4931: SQL error with Templavoila/DBAL/PostgreSQL: Different language (Thanks to Mathias and Xavier)
 
-2010-03-04  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-03-04  Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed bug: #13724: misspelled enable.selectDataStructure in ext_conf_template.txt (Thanks to Darren Clark)
 
-2010-02-27  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-02-27  Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed bug: #12257: localizable ds/to title fields
 
-2010-02-23  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-02-23  Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed bug: #13594: Fatal error: Cannot use string offset as an array in class.tx_templavoila_pi1.php on line 509 
 
@@ -522,12 +522,12 @@
 
 	* Fixed bug: #13607: SelIcons for DS/TO are all rendered in one row
 
-2010-02-22  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-02-22  Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed bug: #13587: Selecting of template object in content element
 	* Fixed bug: #13606: BLOB is too small for large mappings
 	
-2010-02-13  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-02-13  Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed bug: #13165: improve flexform reference-lists and workspace behaviour
 	* Fixed bug: #13533: DS/TO selectbox can't handle static datastructures from extensions.
@@ -569,7 +569,7 @@
 	* Fixed bug: #13413: When using translationParadigm=free there is no possibility to disable the copy for translation links
 	* Fixed bug: #13400: Selector for Subtemplates doesn't respect pageTS settings
 
-2010-02-02  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-02-02  Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed bug: #13397: Fatal error due to cloned class definitions in tempalvoila/classes/preview/* (Thanks to Peter Foerger)
 
@@ -582,7 +582,7 @@
 	* Changed label "Mapping is up to date."
 	* Fixed bug: #13387: Object and Param tag cannot be mapped
 
-2010-02-01  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-02-01  Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed bug: #13382: ext_autoload.php missing 
 	* Fixed bug: #8375: Tables entered via RTE break backend layout
@@ -591,7 +591,7 @@
 
 	* Fixed bug: #13150: Allow edit of oldStyleColumnNumber in mapping module
 
-2010-01-27  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-01-27  Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed issue: #13235: Pre- & Postprocessing Hook for handleIncomingCommands
 	* Fixed bug: #13261: extension load order might prevent wizardItems from extensions
@@ -605,7 +605,7 @@
 
 	* Fixed bug: #13286: mod2 is not localized
 
-2010-01-19  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-01-19  Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed bug: #13278: "New" and "Browse" buttons don't seem to work properly after Drag&Drop
 	* Fixed bug: #13276: makeLocalRecord pointer isn't updated during drag&drop
@@ -619,7 +619,7 @@
 	* Follow-up to bugfix #13180: Sanitize returnUrl
 	* Corrected typo in extConf language file
 
-2010-01-17  Tolleiv Nietsch <nietsch@aoemedia.de> 
+2010-01-17  Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed bug: #13274: delete icon carries wrong css-class
 	* Fixed bug: #4585: Wrond links for editing content stored in page flexform 
@@ -635,7 +635,7 @@
 
 	* Fixed bug: #13159: Render Button in version tab "Create version of this page" if no page version exists
 
-2010-01-09  Tolleiv Nietsch <nietsch@aoemedia.de>
+2010-01-09  Tolleiv Nietsch <tolleiv.nietsch@typo3.org>
 
 	* Fixed bug: #13174: Sub Page Datastructure Field missing (Part2) 
 
@@ -643,7 +643,7 @@
 
 	* Fixed bug: #13180: Sanitize returnUrl 
 
-2010-01-08  Tolleiv Nietsch <nietsch@aoemedia.de>
+2010-01-08  Tolleiv Nietsch <tolleiv.nietsch@typo3.org>
 
 	* Fixed bug: #13174: Sub Page Datastructure Field missing 
 	* Fixed issue: #13079: Hooks to reprocess lKey and vKey  in pi1
@@ -699,7 +699,7 @@
 	* Fixed bug: #13040: HSC switch in Mapping editor doesn't save "0"
 	* Follow-up to bugfix #9980: Configurable eTypes for creating fields
 
-2009-12-19  Tolleiv Nietsch <nietsch@aoemedia.de>
+2009-12-19  Tolleiv Nietsch <tolleiv.nietsch@typo3.org>
 
 	* Fixed bug: #12802: Unlink element does not refresh pages 
 
@@ -709,7 +709,7 @@
 	* Fixed bug: #13058: Icons can't be blinded in page module
 	* Fixed bug: #13051: browse for records
 
-2009-12-17  Tolleiv Nietsch <nietsch@aoemedia.de>
+2009-12-17  Tolleiv Nietsch <tolleiv.nietsch@typo3.org>
 
 	* Fixed bug: #12949: A drag/drop cursor is shown on the TV Page object
 	* Fixed bug: #13054: Drag&Drop code is hard to maintain, works only for 4.3
@@ -719,7 +719,7 @@
 	* Fixed bug: #9980: Configurable eTypes for creating fields
 	* Fixed bug: #4200: Shortcut page must show content when kb_tv_cont_slide in used
 
-2009-12-10  Tolleiv Nietsch <nietsch@aoemedia.de>
+2009-12-10  Tolleiv Nietsch <tolleiv.nietsch@typo3.org>
 
 	* Fixed bug: #8762: Links to edit page content in BE lead to tt_content elements instead of page elements (Thanks to Simon Tuck)
 	* Fixed bug: #12996: tx_templavoila_api class should use t3lib_beFunc::getModTSconfig
@@ -731,11 +731,11 @@
 	* Fixed bug: #12942: Bugfix: Section-"Flag" is lost during Modify DS/TO
 	* Fixed bug: #12973: Allow beLayout template file for TO and DS
 
-2009-12-04  Tolleiv Nietsch <nietsch@aoemedia.de>
+2009-12-04  Tolleiv Nietsch <tolleiv.nietsch@typo3.org>
 
 	* Fixed bug: #12916: Field name is not visible in BE module with detail view (thanks to Francois Suter)
 
-2009-12-01  Tolleiv Nietsch <nietsch@aoemedia.de>
+2009-12-01  Tolleiv Nietsch <tolleiv.nietsch@typo3.org>
 
 	* Fixed bug: #0012877: Missing semicolon in dragndrop.js (thanks to Sebastian Gebhard)
 
@@ -743,7 +743,7 @@
 
 	* Fixed bug: #12868: The new media element will not show up in NewCeWizard because of wrong object path (Thanks to Uschi Renziehausen)
 
-2009-11-28  Tolleiv Nietsch <nietsch@aoemedia.de>
+2009-11-28  Tolleiv Nietsch <tolleiv.nietsch@typo3.org>
 
 	* Follow-up to bugfix #12564: Localization view overlaps labels and doesn't align
 	* Fixed bug: #12826: "TemplaVoilà " accent missing or wrong in some labels 
@@ -777,7 +777,7 @@
 	* Fixed bug: #12715: Use technique of 4.3 "New Content Element Wizard"
 	* Fixed bug: #12654: Allow custom "New Site Wizard Template"
 
-2009-11-26  Tolleiv Nietsch <nietsch@aoemedia.de>
+2009-11-26  Tolleiv Nietsch <tolleiv.nietsch@typo3.org>
 
 	* Fixed bug: #8353: Element is referenced instead of moved
 	* Fixed issue: #7263: New register for rendering of sections
@@ -788,7 +788,7 @@
 	* Fixed bug: #12564: Localization view overlaps labels and doesn't align
 	* Fixed bug: #12713: Unlink icon use garbage which is used for delete in core
 
-2009-11-25  Tolleiv Nietsch <nietsch@aoemedia.de>
+2009-11-25  Tolleiv Nietsch <tolleiv.nietsch@typo3.org>
 
 	* Fixed issue: #12599: Wrong function name in manual 
 	* Fixed bug: #9071: Permisions are not calculated when in sub_elmenet view (thanks to Ingo Schmitt) 
@@ -805,7 +805,7 @@
 	* Fixed bug #12753: Handle local TO processing better
 	* Fixed bug #12754: "Set" button appears twice in header parts
 
-2009-11-24  Tolleiv Nietsch <nietsch@aoemedia.de>
+2009-11-24  Tolleiv Nietsch <tolleiv.nietsch@typo3.org>
 
 	* Fixed bug: #12721: Cannot get TO with rendertype=print when using DBAL
 
@@ -817,26 +817,26 @@
 
 	* Fixed bug: #12589: recordlist localization doesn't return to pagemodule
 
-2009-11-14  Tolleiv Nietsch <nietsch@aoemedia.de>
+2009-11-14  Tolleiv Nietsch <tolleiv.nietsch@typo3.org>
 
 	* Fixed bug: #10752: Cryptic text in the mapping interface ("Custom TCE")
 	* Fixed bug: #12488: Selection of Template Object in new FCE
 
-2009-11-02  Tolleiv Nietsch <nietsch@aoemedia.de>
+2009-11-02  Tolleiv Nietsch <tolleiv.nietsch@typo3.org>
 
 	* Fixed bug: #10983: Unserializing problems because of UTF-8
 	* Fixed issue: #12266:  mod1 shows size of localprocessing two times
 
-2009-10-19  Tolleiv Nietsch <nietsch@aoemedia.de>
+2009-10-19  Tolleiv Nietsch <tolleiv.nietsch@typo3.org>
 
 	* Fixed issue #6869: $realDelete for templavoila
 	* Fixed bug #10756: Bad text ("TCE-Form")
 
-2009-10-18  Tolleiv Nietsch <nietsch@aoemedia.de>
+2009-10-18  Tolleiv Nietsch <tolleiv.nietsch@typo3.org>
 
 	* Fixed bug #10754: Wrong spelling of TypoScript within labels
 
-2009-10-11  Tolleiv Nietsch <nietsch@aoemedia.de>
+2009-10-11  Tolleiv Nietsch <tolleiv.nietsch@typo3.org>
 
 	* Fixed bug #10751: Abbreviations are not allowed ("only TS")
 	* Fixed bug #10775: Wrong spelling ("Data-Processing")
@@ -851,12 +851,12 @@
 
 	* Added feature #9465: Disable languages for translation with mod.SHARED.disableLanguages
 
-2009-08-15  Tolleiv Nietsch <nietsch@aoemedia.de>
+2009-08-15  Tolleiv Nietsch <tolleiv.nietsch@typo3.org>
 
 	* Fixed issue #11520: DS Tag for Hiding Field Preview Data, updated documentation
 	* Fixed bug #11173: Unit tests utilize the Live-Database
 
-2009-08-09  Tolleiv Nietsch <nietsch@aoemedia.de>
+2009-08-09  Tolleiv Nietsch <tolleiv.nietsch@typo3.org>
 
 	* Fixed bug #11532: TV use makeInstanceClassName and fill the deprecation log
 
@@ -864,7 +864,7 @@
 
 	* Fixed bug #11653: mergeFormDataIntoTemplateStructure incorrectly determines sections
 
-2009-05-24  Tolleiv Nietsch <nietsch@aoemedia.de>
+2009-05-24  Tolleiv Nietsch <tolleiv.nietsch@typo3.org>
 
 	* Fixed bug #3103:  Unit tests not DBAL-ready
 	* Fixed bug #11174: test_localizeElement and test_localizeElement_workspaces if there is no sys_lang-record
