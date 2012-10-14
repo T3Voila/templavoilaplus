@@ -5,6 +5,9 @@ if (!defined ('TYPO3_MODE'))  die ('Access denied.');
 // unserializing the configuration so we can use it here:
 $_EXTCONF = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
 
+require_once(t3lib_extMgm::extPath($_EXTKEY) . 'classes/class.tx_templavoila_div.php');
+
+
 if (TYPO3_MODE=='BE') {
 
 		// Adding click menu item:

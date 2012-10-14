@@ -368,7 +368,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 		$this->doc->styleSheetFile2 = t3lib_extMgm::extRelPath($this->extKey)."cm1/styles.css";
 
 			// General GPvars for module mode:
-		$this->displayFile = t3lib_div::_GP('file');
+		$this->displayFile = tx_templavoila_file::filename(t3lib_div::_GP('file'));
 		$this->displayTable = t3lib_div::_GP('table');
 		$this->displayUid = t3lib_div::_GP('uid');
 		$this->displayPath = t3lib_div::_GP('htmlPath');

@@ -21,6 +21,7 @@ return array(
 	'tx_templavoila_datastructure_dbbase' => $extensionClassesPath . 'class.tx_templavoila_datastructure_dbbase.php',
 	'tx_templavoila_datastructure_staticbase' => $extensionClassesPath . 'class.tx_templavoila_datastructure_staticbase.php',
 	'tx_templavoila_div' => $extensionClassesPath . 'class.tx_templavoila_div.php',
+	'tx_templavoila_file' => $extensionClassesPath . 'class.tx_templavoila_file.php',
 	'tx_templavoila_icons' => $extensionClassesPath . 'class.tx_templavoila_icons.php',
 	'tx_templavoila_label' => $extensionClassesPath . 'class.tx_templavoila_label.php',
 	'tx_templavoila_template' => $extensionClassesPath . 'class.tx_templavoila_template.php',
