@@ -227,8 +227,6 @@ class tx_templavoila_dbnewcontentel {
 						// href URI for icon/title:
 					$newRecordLink = 'index.php?'.$this->linkParams().'&createNewRecord='.rawurlencode($this->parentRecord).$wInfo['params'];
 
-						// Icon:
-					$iInfo = @getimagesize($wInfo['icon']);
 					$content .= $this->elementWrapper['wizardPart'][0] . '<a href="' . htmlspecialchars($newRecordLink) . '">
 						<img' . t3lib_iconWorks::skinImg($this->doc->backPath, $wInfo['icon'], '') . ' alt="" /></a>' . $this->elementWrapper['wizardPart'][1];
 
