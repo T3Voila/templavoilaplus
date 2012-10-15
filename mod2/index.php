@@ -40,9 +40,6 @@ require_once (PATH_t3lib.'class.t3lib_scbase.php');
 $BE_USER->modAccess($MCONF,1);    // This checks permissions and exits if the users has no permission for entry.
 
 
-require_once (t3lib_extMgm::extPath('templavoila') . 'classes/class.tx_templavoila_div.php');
-
-
 /**
  * Module 'TemplaVoila' for the 'templavoila' extension.
  *
@@ -548,7 +545,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 		}
 
 		if ($dsObj->isFilebased()) {
-			$onClick = 'document.location=\'' . $this->doc->backPath . 'file_edit.php?target=' . rawurlencode(PATH_site . $dsObj->getKey()) . '&returnUrl=' . rawurlencode(t3lib_div::sanitizeLocalUrl(t3lib_div::getIndpEnv('REQUEST_URI'))) . '\';';
+			$onClick = 'document.location=\'' . $this->doc->backPath . 'file_edit.php?target=' . rawurlencode(t3lib_div::getFileAbsFileName($dsObj->getKey())) . '&returnUrl=' . rawurlencode(t3lib_div::sanitizeLocalUrl(t3lib_div::getIndpEnv('REQUEST_URI'))) . '\';';
 			$dsIcon = '<a href="#" onclick="' . htmlspecialchars($onClick) . '"><img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/fileicons/xml.gif','width="18" height="16"').' alt="" title="' . $dsObj->getKey() . '" class="absmiddle" /></a>';
 		} else {
 			$dsIcon = t3lib_iconWorks::getSpriteIconForRecord('tx_templavoila_datastructure' ,array(), array('title' => $dsObj->getKey()));
@@ -1918,7 +1915,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 					// DO import:
 				$import = $this->getImportObj();
 				if (isset($this->modTSconfig['properties']['newTvSiteFile'])) {
-					$inFile = PATH_site . $this->modTSconfig['properties']['newTVsiteTemplate'];
+					$inFile = t3lib_div::getFileAbsFileName($this->modTSconfig['properties']['newTVsiteTemplate']);
 				} else {
 					$inFile = t3lib_extMgm::extPath('templavoila') . 'mod2/new_tv_site.xml';
 				}

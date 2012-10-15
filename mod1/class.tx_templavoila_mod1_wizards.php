@@ -272,7 +272,7 @@ class tx_templavoila_mod1_wizards {
 
 					// Create the "Default template" entry
 				if ($defaultTO['previewicon']) {
-					$previewIconFilename = (@is_file(PATH_site . 'uploads/tx_templavoila/' . $defaultTO['previewicon'])) ? ($GLOBALS['BACK_PATH'] . '../' . 'uploads/tx_templavoila/' . $defaultTO['previewicon']) : $defaultIcon;
+					$previewIconFilename = (@is_file(t3lib_div::getFileAbsFileName('uploads/tx_templavoila/' . $defaultTO['previewicon']))) ? ($GLOBALS['BACK_PATH'] . '../' . 'uploads/tx_templavoila/' . $defaultTO['previewicon']) : $defaultIcon;
 				} else {
 					$previewIconFilename = $defaultIcon;
 				}
@@ -312,7 +312,7 @@ class tx_templavoila_mod1_wizards {
 						}
 
 						$tmpFilename = $toObj->getIcon();
-						$previewIconFilename = (@is_file(PATH_site . substr($tmpFilename, 3))) ? ($GLOBALS['BACK_PATH'] . $tmpFilename) : $defaultIcon;
+						$previewIconFilename = (@is_file(t3lib_div::getFileAbsFileName(PATH_site . substr($tmpFilename, 3)))) ? ($GLOBALS['BACK_PATH'] . $tmpFilename) : $defaultIcon;
 							// Note: we cannot use value of image input element because MSIE replaces this value with mouse coordinates! Thus on click we set value to a hidden field. See http://bugs.typo3.org/view.php?id=3376
 						$previewIcon = '<input type="image" class="c-inputButton" name="i' .$row['uid'] . '" onclick="document.getElementById(\'data_tx_templavoila_to\').value=' . $toObj->getKey() . '" src="'.$previewIconFilename.'" title="" />';
 						$description = $toObj->getDescription() ? htmlspecialchars($toObj->getDescription()) : $LANG->getLL ('template_nodescriptionavailable');
@@ -327,7 +327,7 @@ class tx_templavoila_mod1_wizards {
 				if (t3lib_extMgm::isLoaded('impexp'))	{
 
 						// Read template files from a certain folder. I suggest this is configurable in some way. But here it is hardcoded for initial tests.
-					$templateFolder = PATH_site.$GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'].'/export/templates/';
+					$templateFolder = t3lib_div::getFileAbsFileName($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'].'/export/templates/');
 					$files = t3lib_div::getFilesInDir($templateFolder,'t3d,xml',1,1);
 
 						// Traverse the files found:
@@ -348,8 +348,8 @@ class tx_templavoila_mod1_wizards {
 									if (t3lib_div::inList('gif,jpg,png,jpeg',strtolower($pI['extension'])))	{
 
 											// Construct filename and write it:
-										$fileName = PATH_site.
-													'typo3temp/importthumb_'.t3lib_div::shortMD5($absPath).'.'.$pI['extension'];
+										$fileName = t3lib_div::getFileAbsFileName(
+													'typo3temp/importthumb_'.t3lib_div::shortMD5($absPath).'.'.$pI['extension']);
 										t3lib_div::writeFile($fileName, $import->dat['header']['thumbnail']['content']);
 
 											// Check that the image really is an image and not a malicious PHP script...

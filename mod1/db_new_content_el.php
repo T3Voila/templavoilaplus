@@ -457,7 +457,7 @@ class tx_templavoila_dbnewcontentel {
 			if ($toObj->isPermittedForUser()) {
 				$tmpFilename = $toObj->getIcon();
 				$returnElements['fce.']['elements.']['fce_' . $toObj->getKey() . '.'] = array(
-					'icon'        => (@is_file(PATH_site . substr($tmpFilename, 3))) ? $tmpFilename : ('../' . t3lib_extMgm::siteRelPath('templavoila') . 'res1/default_previewicon.gif'),
+					'icon'        => (@is_file(t3lib_div::getFileAbsFileName(substr($tmpFilename, 3)))) ? $tmpFilename : ('../' . t3lib_extMgm::siteRelPath('templavoila') . 'res1/default_previewicon.gif'),
 					'description' => $toObj->getDescription() ? htmlspecialchars($toObj->getDescription()) : $GLOBALS['LANG']->getLL('template_nodescriptionavailable'),
 					'title'       => $toObj->getLabel(),
 					'params'      => $this->getDsDefaultValues( $toObj )

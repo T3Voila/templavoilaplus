@@ -41,7 +41,6 @@ require_once (PATH_t3lib.'class.t3lib_flexformtools.php');
 require_once (PATH_t3lib.'class.t3lib_tcemain.php');
 require_once (PATH_t3lib.'class.t3lib_diff.php');
 
-require_once (t3lib_extMgm::extPath('templavoila') . 'classes/class.tx_templavoila_div.php');
 
 
 

@@ -38,12 +38,8 @@ require_once ($BACK_PATH.'template.php');
 $LANG->includeLLFile('EXT:templavoila/cm1/locallang.xml');
 require_once (PATH_t3lib.'class.t3lib_scbase.php');
 
-
-require_once (t3lib_extMgm::extPath('templavoila') . 'classes/class.tx_templavoila_div.php');
-
 require_once (t3lib_extMgm::extPath('templavoila').'cm1/class.tx_templavoila_cm1_dsedit.php');
 require_once (t3lib_extMgm::extPath('templavoila').'cm1/class.tx_templavoila_cm1_etypes.php');
-
 
 require_once(t3lib_extMgm::extPath('templavoila').'class.tx_templavoila_htmlmarkup.php');
 require_once(PATH_t3lib.'class.t3lib_tcemain.php');
@@ -594,7 +590,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			if ($this->_load_ds_xml_to) {
 				$toREC = t3lib_BEfunc::getRecordWSOL('tx_templavoila_tmplobj', $this->_load_ds_xml_to);
 				if ($this->staticDS) {
-					$dsREC['dataprot'] = t3lib_div::getURL(PATH_site . $toREC['datastructure']);
+					$dsREC['dataprot'] = t3lib_div::getURL(t3lib_div::getFileAbsFileName($toREC['datastructure']));
 				} else {
 					$dsREC = t3lib_BEfunc::getRecordWSOL('tx_templavoila_datastructure', $toREC['datastructure']);
 				}
@@ -753,7 +749,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 
 					if ($this->staticDS) {
 						$title = preg_replace('|[/,\."\']+|', '_', $this->_saveDSandTO_title) . ' (' . ($this->_saveDSandTO_type == 1 ? 'page' : 'fce') . ').xml';
-						$path = PATH_site . ($this->_saveDSandTO_type == 2 ? $this->extConf['staticDS.']['path_fce'] : $this->extConf['staticDS.']['path_page']) . $title;
+						$path = t3lib_div::getFileAbsFileName($this->_saveDSandTO_type == 2 ? $this->extConf['staticDS.']['path_fce'] : $this->extConf['staticDS.']['path_page']) . $title;
 						t3lib_div::writeFile($path, $dataProtXML);
 						$newID = substr($path, strlen(PATH_site));
 					} else {

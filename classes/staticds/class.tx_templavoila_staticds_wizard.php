@@ -111,14 +111,21 @@ class tx_templavoila_staticds_wizard {
 	 */
 	protected function checkDirectory($path) {
 		$status = FALSE;
-		$path = $path . (substr($path, -1) == '/' ? '' : '/');
-		if (@is_writable(PATH_site . $path)) {
-			$status = TRUE;
-		}
-		if (!is_dir(PATH_site . $path)) {
-			$errors = t3lib_div::mkdir_deep(PATH_site, $path);
-			if ($errors === NULL) {
+		$path = rtrim($path, '/') . '/';
+		$absolutePath = t3lib_div::getFileAbsFileName($path);
+		if (!empty($absolutePath)) {
+			if (@is_writable($absolutePath)) {
 				$status = TRUE;
+			}
+			if (!is_dir($absolutePath)) {
+				try {
+					$errors = t3lib_div::mkdir_deep(PATH_site, $path);
+					if ($errors === NULL) {
+						$status = TRUE;
+					}
+				} catch (\RuntimeException $e) {
+
+				}
 			}
 		}
 		return $status;
@@ -158,7 +165,7 @@ class tx_templavoila_staticds_wizard {
 				? 'checked="checked"' : '') . ' /></td>
 		</tr></thead><tbody>';
 		foreach ($rows as $row) {
-			$dirPath = PATH_site . ($row['scope'] == 2 ? $conf['path_fce'] : $conf['path_page']);
+			$dirPath = t3lib_div::getFileAbsFileName($row['scope'] == 2 ? $conf['path_fce'] : $conf['path_page']);
 			$dirPath = $dirPath . (substr($dirPath, -1) == '/' ? '' : '/');
 			$title = preg_replace('|[/,\."\']+|', '_', $row['title']);
 			$path = $dirPath . $title . ' (' . ($row['scope'] == 1 ? 'page' : 'fce') . ').xml';
@@ -167,12 +174,12 @@ class tx_templavoila_staticds_wizard {
 			$usage = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 				'count(*)',
 				'tx_templavoila_tmplobj',
-				'datastructure=' . $row['uid'] . t3lib_BEfunc::BEenableFields('tx_templavoila_tmplobj')
+				'datastructure=' . (int)$row['uid'] . t3lib_BEfunc::BEenableFields('tx_templavoila_tmplobj')
 			);
 			if (count($writeDsIds) && in_array($row['uid'], $writeDsIds)) {
 				t3lib_div::writeFile($path, $row['dataprot']);
 				if ($row['previewicon']) {
-					copy(PATH_site . 'uploads/tx_templavoila/' . $row['previewicon'], $dirPath . $title . ' (' . ($row['scope'] == 1
+					copy(t3lib_div::getFileAbsFileName('uploads/tx_templavoila/' . $row['previewicon']), $dirPath . $title . ' (' . ($row['scope'] == 1
 							? 'page' : 'fce') . ').gif');
 				}
 				if ($options['updateRecords']) {

@@ -131,7 +131,6 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	function init()    {
 		parent::init();
 
-		$this->modTSconfig = t3lib_BEfunc::getModTSconfig($this->id, 'mod.' . $this->MCONF['name']);
 		$this->modSharedTSconfig = t3lib_BEfunc::getModTSconfig($this->id, 'mod.SHARED');
 		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::_GP('SET'), $this->MCONF['name']);
 
@@ -209,6 +208,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 	 */
 	function menuConfig()	{
 		global $TYPO3_CONF_VARS;
+		$this->modTSconfig = t3lib_BEfunc::getModTSconfig($this->id, 'mod.' . $this->MCONF['name']);
 
 			// Prepare array of sys_language uids for available translations:
 		$this->translatedLanguagesArr = $this->getAvailableLanguages($this->id);
