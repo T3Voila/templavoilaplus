@@ -36,7 +36,7 @@ class tx_templavoila_file {
 	 */
 	protected static function file($filename) {
 		/** @var $resourceFactory TYPO3\CMS\Core\Resource\ResourceFactory */
-		$resourceFactory = TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
+		$resourceFactory = t3lib_div::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
 		$file = $resourceFactory->getObjectFromCombinedIdentifier($filename);
 		return $file;
 	}
@@ -58,7 +58,7 @@ class tx_templavoila_file {
 		try {
 			$file = self::file($filename);
 			$filename = $file->getForLocalProcessing(FALSE);
-		} catch (\Exception $e) {}
+		} catch (Exception $e) {}
 		return $filename;
 	}
 
