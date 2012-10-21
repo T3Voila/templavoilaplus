@@ -292,9 +292,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			$this->rootElementTable = is_array($this->altRoot) ? $this->altRoot['table'] : 'pages';
 			$this->rootElementUid = is_array($this->altRoot) ? $this->altRoot['uid'] : $this->id;
 			$this->rootElementRecord = t3lib_BEfunc::getRecordWSOL($this->rootElementTable, $this->rootElementUid, '*');
-			if ( $this->rootElementRecord['_ORIG_uid'] ) {
-				$this->rootElementUid_pidForContent = $this->rootElementRecord['_ORIG_uid'];
-			} else if ($this->rootElementRecord['t3ver_oid'] && $this->rootElementRecord['pid'] < 0) {
+			if ($this->rootElementRecord['t3ver_oid'] && $this->rootElementRecord['pid'] < 0) {
 					// typo3 lacks a proper API to properly detect Offline versions and extract Live Versions therefore this is done by hand
 				if ($this->rootElementTable == 'pages') {
 					$this->rootElementUid_pidForContent = $this->rootElementRecord['t3ver_oid'];
@@ -1057,9 +1055,9 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		$previewContent = $contentTreeArr['ds_meta']['disableDataPreview'] ? '&nbsp;' : $this->render_previewData($contentTreeArr['previewData'], $contentTreeArr['el'], $contentTreeArr['ds_meta'], $languageKey, $sheet);
 
 			// Wrap workspace notification colors:
-		if ($contentTreeArr['el']['_ORIG_uid'])	{
+		//if ($contentTreeArr['el']['_ORIG_uid'])	{
 			$previewContent = '<div class="ver-element">'.($previewContent ? $previewContent : '<em>[New version]</em>').'</div>';
-		}
+		//}
 
 
 		$title = t3lib_div::fixed_lgd_cs($contentTreeArr['el']['fullTitle'], $this->previewTitleMaxLen);
