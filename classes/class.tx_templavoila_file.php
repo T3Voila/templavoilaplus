@@ -92,7 +92,7 @@ class tx_templavoila_file {
 	public static function is_xmlFile($filename) {
 
 		if (!self::includesFal()) {
-			return self::is_xmlFile($filename);
+			return self::is_xmlFile_finfo($filename);
 		}
 		$isXmlFile = FALSE;
 		try {
