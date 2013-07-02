@@ -32,13 +32,6 @@
  * @deprecated	version - 1.0.0
  */
 
- 	// We need the TCE forms functions
-require_once (PATH_t3lib.'class.t3lib_loaddbgroup.php');
-require_once (PATH_t3lib.'class.t3lib_tcemain.php');
-
-	// Include the new API:
-require_once (t3lib_extMgm::extPath('templavoila').'class.tx_templavoila_api.php');
-
 /**
  * Handler class for FlexForm relations between content elements and host object
  *

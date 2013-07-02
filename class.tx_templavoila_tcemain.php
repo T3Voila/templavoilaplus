@@ -22,9 +22,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-	// Include TemplaVoila API:
-require_once (t3lib_extMgm::extPath('templavoila').'class.tx_templavoila_api.php');
-
 /**
  * Class being included by TCEmain using a hook
  *
@@ -320,7 +317,7 @@ page.10.disableExplosivePreview = 1
 							$record = t3lib_BEfunc::getRecord('tt_content', intval($record['t3ver_oid']));
 						}
 					}
-						// avoid that deleting offline version in the live workspace unlinks the online version - see #11359 
+						// avoid that deleting offline version in the live workspace unlinks the online version - see #11359
 					if ($record['uid'] && $record['pid']) {
 						$sourceFlexformPointersArr = $templaVoilaAPI->flexform_getPointersByRecord($record['uid'], $record['pid']);
 						$sourceFlexformPointer = $sourceFlexformPointersArr[0];

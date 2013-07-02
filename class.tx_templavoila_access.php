@@ -30,8 +30,6 @@
  * @author     Dmitry Dulepov <dmitry@typo3.org>
  */
 
-require_once(PATH_typo3.'sysext/lang/lang.php');
-
 /**
  * Class being included by UserAuthGroup using a hook
  *
