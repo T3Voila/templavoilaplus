@@ -34,26 +34,7 @@
 unset($MCONF);
 require (dirname(__FILE__) . '/conf.php');
 require ($BACK_PATH.'init.php');
-require_once ($BACK_PATH.'template.php');
 $LANG->includeLLFile('EXT:templavoila/cm1/locallang.xml');
-require_once (PATH_t3lib.'class.t3lib_scbase.php');
-
-require_once (t3lib_extMgm::extPath('templavoila').'cm1/class.tx_templavoila_cm1_dsedit.php');
-require_once (t3lib_extMgm::extPath('templavoila').'cm1/class.tx_templavoila_cm1_etypes.php');
-
-require_once(t3lib_extMgm::extPath('templavoila').'class.tx_templavoila_htmlmarkup.php');
-require_once(PATH_t3lib.'class.t3lib_tcemain.php');
-
-
-if (t3lib_extMgm::isLoaded('lorem_ipsum'))	{
-	// Dmitry: this dependency on lorem_ipsum is bad :(
-	// http://bugs.typo3.org/view.php?id=3691
-	require_once(t3lib_extMgm::extPath('lorem_ipsum').'class.tx_loremipsum_wiz.php');
-	if (t3lib_extMgm::isLoaded('rtehtmlarea'))	{
-		require_once(t3lib_extMgm::extPath('rtehtmlarea').'class.tx_rtehtmlarea_base.php');
-	}
-}
-
 
 /*************************************
  *
@@ -1012,7 +993,6 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			switch($cmd)	{
 					// Show XML DS
 				case 'showXMLDS':
-					require_once(PATH_t3lib.'class.t3lib_syntaxhl.php');
 
 						// Make instance of syntax highlight class:
 					$hlObj = t3lib_div::makeInstance('t3lib_syntaxhl');
@@ -1240,7 +1220,6 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 
 					// Display XML of data structure:
 				if (is_array($dataStruct))	{
-					require_once(PATH_t3lib.'class.t3lib_syntaxhl.php');
 
 						// Make instance of syntax highlight class:
 					$hlObj = t3lib_div::makeInstance('t3lib_syntaxhl');
@@ -2230,7 +2209,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 					}
 
 						// Description:
-					if ($this->_preview)	{						
+					if ($this->_preview)	{
 						if (!is_array($value['tx_templavoila']['sample_data'])) {
 							$rowCells['description'] = '[' . $GLOBALS['LANG']->getLL('noSampleData') . ']';
 						} elseif (tx_templavoila_div::convertVersionNumberToInteger(TYPO3_version) < 4005000){
