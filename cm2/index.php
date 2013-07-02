@@ -34,16 +34,7 @@
 unset($MCONF);
 require (dirname(__FILE__) . '/conf.php');
 require ($BACK_PATH.'init.php');
-require_once ($BACK_PATH.'template.php');
 $LANG->includeLLFile('EXT:templavoila/cm2/locallang.xml');
-require_once (PATH_t3lib.'class.t3lib_scbase.php');
-require_once (PATH_t3lib.'class.t3lib_flexformtools.php');
-require_once (PATH_t3lib.'class.t3lib_tcemain.php');
-require_once (PATH_t3lib.'class.t3lib_diff.php');
-
-
-
-
 
 /**
  * Class for displaying color-marked-up version of FlexForm XML content.
@@ -250,7 +241,6 @@ class tx_templavoila_cm2 extends t3lib_SCbase {
 	 * @return	string		HTML formatted output, marked up in colors
 	 */
 	function markUpXML($str)	{
-		require_once(PATH_t3lib.'class.t3lib_syntaxhl.php');
 
 			// Make instance of syntax highlight class:
 		$hlObj = t3lib_div::makeInstance('t3lib_syntaxhl');
