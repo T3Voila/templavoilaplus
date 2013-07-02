@@ -23,8 +23,6 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-require_once(t3lib_extMgm::extPath('templavoila') . 'classes/preview/class.tx_templavoila_preview_type_text.php');
-
 class tx_templavoila_preview_type_image extends tx_templavoila_preview_type_text {
 
 	protected $previewField = 'image';
