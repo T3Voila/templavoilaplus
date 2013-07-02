@@ -30,10 +30,6 @@
  * @author	 Kay Strobach <typo3@kay-strobach.de>
  */
 
-require_once(PATH_t3lib . 'class.t3lib_pagetree.php');
-require_once(PATH_t3lib . 'class.t3lib_extobjbase.php');
-require_once(t3lib_extMgm::extPath('templavoila') . 'class.tx_templavoila_api.php');
-
 class tx_templavoila_renameFieldInPageFlexWizard extends t3lib_extobjbase {
 
 	/**
