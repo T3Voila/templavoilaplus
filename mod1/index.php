@@ -31,11 +31,8 @@
  * @coauthor   Dmitry Dulepov <dmitry@typo3.org>
  */
 
-	// Initialize module
-unset($MCONF);
-require (dirname(__FILE__) . '/conf.php');
-$LANG->includeLLFile('EXT:templavoila/mod1/locallang.xml');
-$BE_USER->modAccess($MCONF,1);    								// This checks permissions and exits if the users has no permission for entry.
+$GLOBALS['LANG']->includeLLFile('EXT:templavoila/mod1/locallang.xml');
+$GLOBALS['BE_USER']->modAccess($GLOBALS['MCONF'], 1);    								// This checks permissions and exits if the users has no permission for entry.
 
 t3lib_extMgm::isLoaded('cms',1);
 
@@ -815,7 +812,6 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		}
 
 			// show sys_notes
-		include_once(PATH_typo3 . 'class.db_list.inc');
 		$sys_notes = recordList::showSysNotesForPage();
 		if ($sys_notes) {
 			$output .= '</div><div>'.$this->doc->section($LANG->sL('LLL:EXT:cms/layout/locallang.xml:internalNotes'), str_replace('sysext/sys_note/ext_icon.gif', $GLOBALS['BACK_PATH'] . 'sysext/sys_note/ext_icon.gif', $sys_notes), 0, 1);

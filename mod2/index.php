@@ -28,14 +28,8 @@
  *
  * @author   Kasper Sk�rh�j <kasper@typo3.com>
  */
-
-
-	// Initialize module
-unset($MCONF);
-require (dirname(__FILE__) . '/conf.php');
-$LANG->includeLLFile('EXT:templavoila/mod2/locallang.xml');
-$BE_USER->modAccess($MCONF,1);    // This checks permissions and exits if the users has no permission for entry.
-
+$GLOBALS['LANG']->includeLLFile('EXT:templavoila/mod2/locallang.xml');
+$GLOBALS['BE_USER']->modAccess($GLOBALS['MCONF'], 1);    // This checks permissions and exits if the users has no permission for entry.
 
 /**
  * Module 'TemplaVoila' for the 'templavoila' extension.
