@@ -34,7 +34,6 @@
 	// Initialize module
 unset($MCONF);
 require (dirname(__FILE__) . '/conf.php');
-require ($BACK_PATH.'init.php');
 $LANG->includeLLFile('EXT:templavoila/mod1/locallang.xml');
 $BE_USER->modAccess($MCONF,1);    								// This checks permissions and exits if the users has no permission for entry.
 
