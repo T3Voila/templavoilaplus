@@ -417,7 +417,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			if(tx_templavoila_div::convertVersionNumberToInteger(TYPO3_version) < 4005000) {
 				$this->doc->JScode .= $this->doc->getDynTabMenuJScode();
 			} else {
-				$this->doc->loadJavascriptLib('js/tabmenu.js');
+				$this->doc->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/tabmenu.js');
 			}
 
 			$this->doc->JScode .= $this->modTSconfig['properties']['sideBarEnable'] ? $this->sideBarObj->getJScode() : '';

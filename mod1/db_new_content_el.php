@@ -115,7 +115,7 @@ class tx_templavoila_dbnewcontentel {
 		if(tx_templavoila_div::convertVersionNumberToInteger(TYPO3_version) < 4005000) {
 			$this->doc->JScodeLibArray['dyntabmenu'] = $this->doc->getDynTabMenuJScode();
 		} else {
-			$this->doc->loadJavascriptLib('js/tabmenu.js');
+			$this->doc->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/tabmenu.js');
 		}
 
 		$this->doc->form='<form action="" name="editForm">';
