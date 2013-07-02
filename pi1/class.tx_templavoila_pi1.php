@@ -30,10 +30,6 @@
  * @coauthor  Robert Lemke <robert@typo3.org>
  */
 
-require_once(PATH_tslib.'class.tslib_pibase.php');
-require_once(t3lib_extMgm::extPath('templavoila').'class.tx_templavoila_htmlmarkup.php');
-require_once(PATH_t3lib . 'class.t3lib_flexformtools.php');
-
 /**
  * Plugin 'Flexible Content' for the 'templavoila' extension.
  *
