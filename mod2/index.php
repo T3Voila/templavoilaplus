@@ -34,9 +34,7 @@
 unset($MCONF);
 require (dirname(__FILE__) . '/conf.php');
 require ($BACK_PATH.'init.php');
-require_once ($BACK_PATH.'template.php');
 $LANG->includeLLFile('EXT:templavoila/mod2/locallang.xml');
-require_once (PATH_t3lib.'class.t3lib_scbase.php');
 $BE_USER->modAccess($MCONF,1);    // This checks permissions and exits if the users has no permission for entry.
 
 
@@ -619,7 +617,6 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 			// Format XML if requested (renders VERY VERY slow)
 		if ($this->MOD_SETTINGS['set_showDSxml'])	{
 			if ($dsObj->getDataprotXML())	{
-				require_once(PATH_t3lib.'class.t3lib_syntaxhl.php');
 				$hlObj = t3lib_div::makeInstance('t3lib_syntaxhl');
 				$content.='<pre>'.str_replace(chr(9),'&nbsp;&nbsp;&nbsp;',$hlObj->highLight_DS($dsObj->getDataprotXML())).'</pre>';
 			}
@@ -739,7 +736,6 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 			// Format XML if requested
 		if ($this->MOD_SETTINGS['set_details'])	{
 			if ($toObj->getLocalDataprotXML(TRUE))	{
-				require_once(PATH_t3lib.'class.t3lib_syntaxhl.php');
 				$hlObj = t3lib_div::makeInstance('t3lib_syntaxhl');
 				$lpXML = '<pre>'.str_replace(chr(9),'&nbsp;&nbsp;&nbsp;',$hlObj->highLight_DS($toObj->getLocalDataprotXML(TRUE))).'</pre>';
 			} else $lpXML = '';
@@ -2040,7 +2036,6 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 			$outputString.=  sprintf($GLOBALS['LANG']->getLL('newsitewizard_basicsshouldwork', 1), $menuTypeText, $menuType, $menuTypeText);
 
 				// Start up HTML parser:
-			require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 			$htmlParser = t3lib_div::makeinstance('t3lib_parsehtml');
 
 				// Parse into blocks
@@ -2281,8 +2276,6 @@ lib.'.$menuType.'.1.ACT {
 	function getImportObj()	{
 		global $TYPO3_CONF_VARS;
 
-		require_once(t3lib_extMgm::extPath('impexp').'class.tx_impexp.php');
-
 		$import = t3lib_div::makeInstance('tx_impexp');
 		$import->init(0,'import');
 		$import->enableLogging = TRUE;
@@ -2297,8 +2290,6 @@ lib.'.$menuType.'.1.ACT {
 	 * @return	string		HTML content with it highlighted.
 	 */
 	function syntaxHLTypoScript($v)	{
-		require_once(PATH_t3lib.'class.t3lib_tsparser_ext.php');
-
 		$tsparser = t3lib_div::makeInstance('t3lib_TSparser');
 		$tsparser->lineNumberOffset=0;
 		$TScontent = $tsparser->doSyntaxHighlight(trim($v).chr(10),'',1);
@@ -2362,7 +2353,6 @@ lib.'.$menuType.'.1.ACT {
 					// Execute changes:
 				global $TYPO3_CONF_VARS;
 
-				require_once(PATH_t3lib.'class.t3lib_tcemain.php');
 				$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 				$tce->stripslashes_values = 0;
 				$tce->dontProcessTransformations = 1;
