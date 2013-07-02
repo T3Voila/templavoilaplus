@@ -35,28 +35,10 @@
 unset($MCONF);
 require (dirname(__FILE__) . '/conf.php');
 require ($BACK_PATH.'init.php');
-require_once ($BACK_PATH.'template.php');
 $LANG->includeLLFile('EXT:templavoila/mod1/locallang.xml');
-require_once (PATH_t3lib.'class.t3lib_scbase.php');
 $BE_USER->modAccess($MCONF,1);    								// This checks permissions and exits if the users has no permission for entry.
 
 t3lib_extMgm::isLoaded('cms',1);
-
-	// We need the TCE forms functions
-require_once (PATH_t3lib.'class.t3lib_loaddbgroup.php');
-require_once (PATH_t3lib.'class.t3lib_tcemain.php');
-require_once (PATH_t3lib.'class.t3lib_clipboard.php');
-
-	// Include TemplaVoila API
-require_once (t3lib_extMgm::extPath('templavoila').'class.tx_templavoila_api.php');
-
-	// Include class for rendering the side bar and wizards:
-require_once (t3lib_extMgm::extPath('templavoila').'mod1/class.tx_templavoila_mod1_sidebar.php');
-require_once (t3lib_extMgm::extPath('templavoila').'mod1/class.tx_templavoila_mod1_wizards.php');
-require_once (t3lib_extMgm::extPath('templavoila').'mod1/class.tx_templavoila_mod1_clipboard.php');
-require_once (t3lib_extMgm::extPath('templavoila').'mod1/class.tx_templavoila_mod1_localization.php');
-require_once (t3lib_extMgm::extPath('templavoila').'mod1/class.tx_templavoila_mod1_records.php');
-require_once (t3lib_extMgm::extPath('templavoila').'mod1/class.tx_templavoila_mod1_specialdoktypes.php');
 
 /**
  * Module 'Page' for the 'templavoila' extension.

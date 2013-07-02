@@ -29,10 +29,6 @@
  * @author     Dmitry Dulepov <dmitry@typo3.org>
  */
 
-require_once(PATH_t3lib . 'class.t3lib_recordlist.php');
-require_once(PATH_typo3 . 'class.db_list.inc');
-require_once(PATH_typo3 . 'class.db_list_extra.inc');
-
 // Need List lables for delete confirmation
 $LANG->includeLLFile('EXT:lang/locallang_mod_web_list.xml');
 

@@ -40,8 +40,6 @@
  * @subpackage	tx_templavoila
  */
 
-require_once(PATH_t3lib.'class.t3lib_tceforms.php');
-
 class tx_templavoila_mod1_wizards {
 
 		// References to the page module object
@@ -441,7 +439,6 @@ class tx_templavoila_mod1_wizards {
 	function getImportObject()	{
 		global $TYPO3_CONF_VARS;
 
-		require_once (t3lib_extMgm::extPath('impexp').'class.tx_impexp.php');
 		$import = t3lib_div::makeInstance('tx_impexp');
 		$import->init();
 

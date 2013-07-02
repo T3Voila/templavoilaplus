@@ -38,7 +38,6 @@
 unset($MCONF);
 require (dirname(__FILE__) . '/conf.php');
 require ($BACK_PATH.'init.php');
-require_once ($BACK_PATH.'template.php');
 
 	// Unset MCONF/MLANG since all we wanted was back path etc. for this particular script.
 unset($MCONF);
@@ -52,10 +51,6 @@ $LOCAL_LANG = t3lib_div::array_merge_recursive_overrule($LOCAL_LANG_orig,$LOCAL_
 
 	// Exits if 'cms' extension is not loaded:
 t3lib_extMgm::isLoaded('cms',1);
-
-	// Include needed libraries:
-require_once (PATH_t3lib.'class.t3lib_page.php');
-require_once (t3lib_extMgm::extPath ('templavoila').'class.tx_templavoila_api.php');
 
 /**
  * Script Class for the New Content element wizard
@@ -421,7 +416,6 @@ class tx_templavoila_dbnewcontentel {
 		// plugins
 		if (is_array($GLOBALS['TBE_MODULES_EXT']['xMOD_db_new_content_el']['addElClasses'])) {
 			foreach ($GLOBALS['TBE_MODULES_EXT']['xMOD_db_new_content_el']['addElClasses'] as $class => $path) {
-				require_once ($path);
 				$modObj = t3lib_div::makeInstance($class);
 				$wizardElements = $modObj->proc($wizardElements);
 			}
