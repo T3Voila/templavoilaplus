@@ -30,9 +30,11 @@
  * @coauthor   Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @coauthor   Dmitry Dulepov <dmitry@typo3.org>
  */
-
-$GLOBALS['LANG']->includeLLFile('EXT:templavoila/mod1/locallang.xml');
-$GLOBALS['BE_USER']->modAccess($GLOBALS['MCONF'], 1);    								// This checks permissions and exits if the users has no permission for entry.
+unset($MCONF);
+require (dirname(__FILE__) . '/conf.php');
+require ($BACK_PATH . 'init.php');
+$LANG->includeLLFile('EXT:templavoila/mod1/locallang.xml');
+$BE_USER->modAccess($MCONF, 1);    								// This checks permissions and exits if the users has no permission for entry.
 
 t3lib_extMgm::isLoaded('cms',1);
 
