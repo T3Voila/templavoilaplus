@@ -243,7 +243,7 @@ class tx_templavoila_cm2 extends t3lib_SCbase {
 	function markUpXML($str)	{
 
 			// Make instance of syntax highlight class:
-		$hlObj = t3lib_div::makeInstance('t3lib_syntaxhl');
+		$hlObj = t3lib_div::makeInstance('tx_templavoila_syntaxhl');
 
 			// Check which document type, if applicable:
 		if (strstr(substr($str,0,100),'<T3DataStructure'))	{

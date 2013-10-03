@@ -613,7 +613,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 			// Format XML if requested (renders VERY VERY slow)
 		if ($this->MOD_SETTINGS['set_showDSxml'])	{
 			if ($dsObj->getDataprotXML())	{
-				$hlObj = t3lib_div::makeInstance('t3lib_syntaxhl');
+				$hlObj = t3lib_div::makeInstance('tx_templavoila_syntaxhl');
 				$content.='<pre>'.str_replace(chr(9),'&nbsp;&nbsp;&nbsp;',$hlObj->highLight_DS($dsObj->getDataprotXML())).'</pre>';
 			}
 			$lpXML.= $editDataprotLink;
@@ -732,7 +732,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 			// Format XML if requested
 		if ($this->MOD_SETTINGS['set_details'])	{
 			if ($toObj->getLocalDataprotXML(TRUE))	{
-				$hlObj = t3lib_div::makeInstance('t3lib_syntaxhl');
+				$hlObj = t3lib_div::makeInstance('tx_templavoila_syntaxhl');
 				$lpXML = '<pre>'.str_replace(chr(9),'&nbsp;&nbsp;&nbsp;',$hlObj->highLight_DS($toObj->getLocalDataprotXML(TRUE))).'</pre>';
 			} else $lpXML = '';
 		}

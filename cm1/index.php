@@ -995,7 +995,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 				case 'showXMLDS':
 
 						// Make instance of syntax highlight class:
-					$hlObj = t3lib_div::makeInstance('t3lib_syntaxhl');
+					$hlObj = t3lib_div::makeInstance('tx_templavoila_syntaxhl');
 
 					$storeDataStruct=$dataStruct;
 					if (is_array($storeDataStruct['ROOT']['el']))
@@ -1222,7 +1222,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 				if (is_array($dataStruct))	{
 
 						// Make instance of syntax highlight class:
-					$hlObj = t3lib_div::makeInstance('t3lib_syntaxhl');
+					$hlObj = t3lib_div::makeInstance('tx_templavoila_syntaxhl');
 
 					$dataStructureXML = t3lib_div::array2xml_cs($origDataStruct,'T3DataStructure', array('useCDATA' => 1));
 					$content.='
