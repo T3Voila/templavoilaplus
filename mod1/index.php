@@ -95,6 +95,11 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 	protected $newContentWizScriptPath = 'db_new_content_el.php'; // Setting which new content wizard to use
 
+	/**
+	 * @var \TYPO3\CMS\Core\Messaging\FlashMessageService
+	 */
+	protected $flashMessageService;
+
 	public $currentElementBelongsToCurrentPage; // Used for Content preview and is used as flag if content should be linked or not
 	public $currentElementParentPointer; // Used for edit link of content elements
 	const DOKTYPE_NORMAL_EDIT = 1; // With this doktype the normal Edit screen is rendered
@@ -181,6 +186,8 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			$this->localizationObj =& \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj('&tx_templavoila_mod1_localization', '');
 			$this->localizationObj->init($this);
 		}
+
+		$this->flashMessageService  = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Core\Messaging\FlashMessageService');
 	}
 
 	/**
@@ -493,7 +500,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 						\TYPO3\CMS\Core\Messaging\FlashMessage::INFO
 					);
 					$editCurrentPageHTML = '';
-					\TYPO3\CMS\Core\Messaging\FlashMessageQueue::addMessage($flashMessage);
+					$this->flashMessageService->getMessageQueueByIdentifier('ext.templavoila')->enqueue($flashMessage);
 				}
 				// Render "edit current page" (important to do before calling ->sideBarObj->render() - otherwise the translation tab is not rendered!
 				$editCurrentPageHTML .= $this->render_editPageScreen();
@@ -617,7 +624,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				'TABROW' => $this->render_sidebar(),
 				'CONTENT' => $this->content
 			);
-			$editareaMarkers['FLASHMESSAGES'] = \TYPO3\CMS\Core\Messaging\FlashMessageQueue::renderFlashMessages();
+			$editareaMarkers['FLASHMESSAGES'] = $this->flashMessageService->getMessageQueueByIdentifier('ext.templavoila')->renderFlashMessages();
 
 			$editareaContent = \TYPO3\CMS\Core\Html\HtmlParser::substituteMarkerArray($editareaTpl, $editareaMarkers, '###|###', TRUE);
 
@@ -794,7 +801,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 					$LANG->getLL('missing_edit_right'),
 					\TYPO3\CMS\Core\Messaging\FlashMessage::INFO
 				);
-				\TYPO3\CMS\Core\Messaging\FlashMessageQueue::addMessage($message);
+				$this->flashMessageService->getMessageQueueByIdentifier('ext.templavoila')->enqueue($message);
 			}
 		}
 
@@ -1127,7 +1134,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 						$GLOBALS['LANG']->getLL('page_structure_inherited'),
 						\TYPO3\CMS\Core\Messaging\FlashMessage::INFO
 					);
-					\TYPO3\CMS\Core\Messaging\FlashMessageQueue::addMessage($flashMessage);
+					$this->flashMessageService->getMessageQueueByIdentifier('ext.templavoila')->enqueue($flashMessage);
 				}
 			}
 		}
@@ -1211,7 +1218,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 						),
 						\TYPO3\CMS\Core\Messaging\FlashMessage::INFO
 					);
-					\TYPO3\CMS\Core\Messaging\FlashMessageQueue::addMessage($flashMessage);
+					$this->flashMessageService->getMessageQueueByIdentifier('ext.templavoila')->enqueue($flashMessage);
 				}
 
 				$canCreateNew = $canEditContent && !$maxItemsReached;
