@@ -545,7 +545,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 						't3lib_FlashMessage',
 						$GLOBALS['LANG']->getLL('errorNoToTitleDefined'),
 						'',
-						t3lib_FlashMessage::ERROR
+						\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR
 					);
 					$msg[] = $flashMessage->render();
 				} else {
@@ -1631,7 +1631,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 				't3lib_FlashMessage',
 				$GLOBALS['LANG']->getLL('msgMappingSaved'),
 				'',
-				t3lib_FlashMessage::OK
+				\TYPO3\CMS\Core\Messaging\FlashMessage::OK
 			);
 			$msg[] .= $flashMessage->render();
 			$row = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('tx_templavoila_tmplobj', $this->displayUid);
@@ -1671,7 +1671,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 				't3lib_FlashMessage',
 				$GLOBALS['LANG']->getLL('msgMappingIsDifferent'),
 				'',
-				t3lib_FlashMessage::INFO
+				\TYPO3\CMS\Core\Messaging\FlashMessage::INFO
 			);
 			$msg[] .= $flashMessage->render();
 		}
@@ -1766,7 +1766,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			't3lib_FlashMessage',
 			$GLOBALS['LANG']->getLL('msgHeaderSet'),
 			'',
-			t3lib_FlashMessage::WARNING
+			\TYPO3\CMS\Core\Messaging\FlashMessage::WARNING
 		);
 		$headerParts .= $flashMessage->render();
 

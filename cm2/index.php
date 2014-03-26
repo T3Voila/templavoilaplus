@@ -120,7 +120,7 @@ class tx_templavoila_cm2 extends t3lib_SCbase {
 					't3lib_FlashMessage',
 					$LANG->getLL('needsCleaning', 1),
 					'',
-					t3lib_FlashMessage::INFO
+					\TYPO3\CMS\Core\Messaging\FlashMessage::INFO
 				);
 				$xmlContentMarkedUp = $flashMessage->render();
 
@@ -160,7 +160,7 @@ class tx_templavoila_cm2 extends t3lib_SCbase {
 						't3lib_FlashMessage',
 						$LANG->getLL('XMLclean', 1),
 						'',
-						t3lib_FlashMessage::OK
+						\TYPO3\CMS\Core\Messaging\FlashMessage::OK
 					);
 					$xmlContentMarkedUp = $flashMessage->render();
 				}

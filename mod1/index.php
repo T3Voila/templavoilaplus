@@ -490,7 +490,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 						't3lib_FlashMessage',
 						'',
 						sprintf($LANG->getLL('content_from_pid_title'), $link),
-						t3lib_FlashMessage::INFO
+						\TYPO3\CMS\Core\Messaging\FlashMessage::INFO
 					);
 					$editCurrentPageHTML = '';
 					t3lib_FlashMessageQueue::addMessage($flashMessage);
@@ -547,7 +547,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 						't3lib_FlashMessage',
 						$GLOBALS['LANG']->getLL('page_not_found'),
 						$GLOBALS['LANG']->getLL('title'),
-						t3lib_FlashMessage::INFO
+						\TYPO3\CMS\Core\Messaging\FlashMessage::INFO
 					);
 					$this->content .= $flashMessage->render();
 				} else {
@@ -555,7 +555,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 						't3lib_FlashMessage',
 						$GLOBALS['LANG']->getLL('default_introduction'),
 						$GLOBALS['LANG']->getLL('title'),
-						t3lib_FlashMessage::INFO
+						\TYPO3\CMS\Core\Messaging\FlashMessage::INFO
 					);
 					$this->content .= $flashMessage->render();
 				}
@@ -792,7 +792,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 					't3lib_FlashMessage',
 					$LANG->getLL('missing_edit_right_detail'),
 					$LANG->getLL('missing_edit_right'),
-					t3lib_FlashMessage::INFO
+					\TYPO3\CMS\Core\Messaging\FlashMessage::INFO
 				);
 				t3lib_FlashMessageQueue::addMessage($message);
 			}
@@ -1124,7 +1124,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 						't3lib_FlashMessage',
 						$GLOBALS['LANG']->getLL('page_structure_inherited_detail'),
 						$GLOBALS['LANG']->getLL('page_structure_inherited'),
-						t3lib_FlashMessage::INFO
+						\TYPO3\CMS\Core\Messaging\FlashMessage::INFO
 					);
 					t3lib_FlashMessageQueue::addMessage($flashMessage);
 				}
@@ -1208,7 +1208,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 							$maxCnt,
 							$elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['tx_templavoila']['title']
 						),
-						t3lib_FlashMessage::INFO
+						\TYPO3\CMS\Core\Messaging\FlashMessage::INFO
 					);
 					t3lib_FlashMessageQueue::addMessage($flashMessage);
 				}

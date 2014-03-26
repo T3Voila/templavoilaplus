@@ -112,7 +112,7 @@ class tx_templavoila_mod1_specialdoktypes {
 			't3lib_FlashMessage',
 			$notice,
 			'',
-			t3lib_FlashMessage::INFO
+			\TYPO3\CMS\Core\Messaging\FlashMessage::INFO
 		);
 		$content = $flashMessage->render() . $urlInfo;
 
@@ -147,7 +147,7 @@ class tx_templavoila_mod1_specialdoktypes {
 			't3lib_FlashMessage',
 			sprintf($LANG->getLL('cannotedit_shortcut_' . intval($pageRecord['shortcut_mode'])), $shortcutSourcePageRecord['title']),
 			'',
-			t3lib_FlashMessage::INFO
+			\TYPO3\CMS\Core\Messaging\FlashMessage::INFO
 		);
 		$content = $flashMessage->render() . $jumpToShortcutSourceLink;
 
@@ -187,7 +187,7 @@ class tx_templavoila_mod1_specialdoktypes {
 			't3lib_FlashMessage',
 			sprintf($LANG->getLL('cannotedit_doktypemountpoint'), $mountSourceButton . $mountSourcePageRecord['title']),
 			'',
-			t3lib_FlashMessage::INFO
+			\TYPO3\CMS\Core\Messaging\FlashMessage::INFO
 		);
 		$content = $flashMessage->render() . '<strong>' . $mountSourceLink . '</strong>';
 
@@ -230,7 +230,7 @@ class tx_templavoila_mod1_specialdoktypes {
 			't3lib_FlashMessage',
 			$LANG->getLL('editpage_sysfolder_intro', '', 1),
 			'',
-			t3lib_FlashMessage::INFO
+			\TYPO3\CMS\Core\Messaging\FlashMessage::INFO
 		);
 		$content = $flashMessage->render() . $listModuleLink;
 

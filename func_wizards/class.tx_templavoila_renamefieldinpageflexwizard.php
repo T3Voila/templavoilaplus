@@ -48,7 +48,7 @@ class tx_templavoila_renameFieldInPageFlexWizard extends t3lib_extobjbase {
 			$message = new t3lib_FlashMessage(
 				'Module only available for admins.',
 				'',
-				t3lib_FlashMessage::ERROR
+				\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR
 			);
 
 			return $message->render();
@@ -82,7 +82,7 @@ class tx_templavoila_renameFieldInPageFlexWizard extends t3lib_extobjbase {
 				$message = new t3lib_FlashMessage(
 					'Renaming a field to itself is senseless, execution aborted.',
 					'',
-					t3lib_FlashMessage::ERROR
+					\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR
 				);
 
 				return $message->render();
@@ -107,7 +107,7 @@ class tx_templavoila_renameFieldInPageFlexWizard extends t3lib_extobjbase {
 					$mbuffer .= '<li>' . htmlspecialchars($row['title']) . ' (uid: ' . intval($row['uid']) . ')</li>';
 				}
 				$mbuffer .= '</ul>';
-				$message = new t3lib_FlashMessage($mbuffer, '', t3lib_FlashMessage::INFO);
+				$message = new t3lib_FlashMessage($mbuffer, '', \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
 				$buffer .= $message->render();
 				unset($mbuffer);
 				//really do it
@@ -119,11 +119,11 @@ class tx_templavoila_renameFieldInPageFlexWizard extends t3lib_extobjbase {
 						SET tx_templavoila_flex = REPLACE(tx_templavoila_flex, ' . $escapedSource . ', ' . $escapedDest . ')
 						WHERE ' . $condition . '
 					');
-					$message = new t3lib_FlashMessage('DONE', '', t3lib_FlashMessage::OK);
+					$message = new t3lib_FlashMessage('DONE', '', \TYPO3\CMS\Core\Messaging\FlashMessage::OK);
 					$buffer .= $message->render();
 				}
 			} else {
-				$message = new t3lib_FlashMessage('Nothing to do, can´t find something to replace.', '', t3lib_FlashMessage::ERROR);
+				$message = new t3lib_FlashMessage('Nothing to do, can´t find something to replace.', '', \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 				$buffer .= $message->render();
 			}
 
@@ -139,7 +139,7 @@ class tx_templavoila_renameFieldInPageFlexWizard extends t3lib_extobjbase {
 		$message = new t3lib_FlashMessage(
 			'This action can affect ' . count($this->getAllSubPages($this->pObj->id)) . ' pages, please ensure, you know what you do!, Please backup your TYPO3 Installation before running that wizard.',
 			'',
-			t3lib_FlashMessage::WARNING
+			\TYPO3\CMS\Core\Messaging\FlashMessage::WARNING
 		);
 		$buffer = $message->render();
 		unset($message);
