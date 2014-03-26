@@ -167,6 +167,10 @@ div.warning a {
 	padding-top: 3px;
 }
 
+.tpm-element-title a {
+	float: left;
+}
+
 .tpm-preview ul {
 	padding: 0 0 0 20px;
 	margin: 0
