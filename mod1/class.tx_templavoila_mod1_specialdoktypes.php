@@ -137,7 +137,7 @@ class tx_templavoila_mod1_specialdoktypes {
 		$editButton = $this->pObj->link_edit($iconEdit, 'pages', $pageRecord['uid']);
 
 		if (intval($pageRecord['shortcut_mode']) == 0) {
-			$shortcutSourcePageRecord = t3lib_beFunc::getRecordWSOL('pages', $pageRecord['shortcut']);
+			$shortcutSourcePageRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('pages', $pageRecord['shortcut']);
 			$jumpToShortcutSourceLink = '<strong><a href="index.php?id=' . $pageRecord['shortcut'] . '">' .
 				\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('apps-pagetree-page-shortcut') .
 				$LANG->getLL('jumptoshortcutdestination', '', 1) . '</a></strong>';
@@ -175,7 +175,7 @@ class tx_templavoila_mod1_specialdoktypes {
 		$iconEdit = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open', array('title' => htmlspecialchars($LANG->sL('LLL:EXT:lang/locallang_mod_web_list.xml:editPage'))));
 		$editButton = $this->pObj->link_edit($iconEdit, 'pages', $pageRecord['uid']);
 
-		$mountSourcePageRecord = t3lib_beFunc::getRecordWSOL('pages', $pageRecord['mount_pid']);
+		$mountSourcePageRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('pages', $pageRecord['mount_pid']);
 		$mountSourceIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', $mountSourcePageRecord);
 		$mountSourceButton = $this->doc->wrapClickMenuOnIcon($mountSourceIcon, 'pages', $mountSourcePageRecord['uid'], 1, '&callingScriptId=' . rawurlencode($this->doc->scriptID), 'new,copy,cut,pasteinto,pasteafter,delete');
 
@@ -206,7 +206,7 @@ class tx_templavoila_mod1_specialdoktypes {
 		global $LANG, $BE_USER, $TYPO3_CONF_VARS;
 
 		// Prepare the record icon including a content sensitive menu link wrapped around it:
-		$pageTitle = htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs(t3lib_BEfunc::getRecordTitle('pages', $pageRecord), 50));
+		$pageTitle = htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs(\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle('pages', $pageRecord), 50));
 		$recordIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', $pageRecord);
 		$iconEdit = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open', array('title' => htmlspecialchars($LANG->sL('LLL:EXT:lang/locallang_mod_web_list.xml:editPage'))));
 		$editButton = $this->pObj->link_edit($iconEdit, 'pages', $pageRecord['uid']);
@@ -215,7 +215,7 @@ class tx_templavoila_mod1_specialdoktypes {
 			if (tx_templavoila_div::convertVersionNumberToInteger(TYPO3_version) < 4005000) {
 				$listModuleURL = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir . 'db_list.php?id=' . intval($this->pObj->id);
 			} else {
-				$listModuleURL = t3lib_BEfunc::getModuleUrl('web_list', array('id' => intval($this->pObj->id)), '');
+				$listModuleURL = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_list', array('id' => intval($this->pObj->id)), '');
 			}
 			$onClick = "top.nextLoadModuleUrl='" . $listModuleURL . "';top.fsMod.recentIds['web']=" . intval($this->pObj->id) . ";top.goToModule('web_list',1);";
 			$listModuleLink = '<br /><br />' .
@@ -246,7 +246,7 @@ class tx_templavoila_mod1_specialdoktypes {
 	function userHasAccessToListModule() {
 		global $BE_USER;
 
-		if (!t3lib_BEfunc::isModuleSetInTBE_MODULES('web_list')) {
+		if (!\TYPO3\CMS\Backend\Utility\BackendUtility::isModuleSetInTBE_MODULES('web_list')) {
 			return FALSE;
 		}
 		if ($BE_USER->isAdmin()) {

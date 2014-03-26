@@ -78,7 +78,7 @@ class tx_templavoila_cm2 extends t3lib_SCbase {
 		// XML code:
 		$this->viewTable = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('viewRec');
 
-		$record = t3lib_BEfunc::getRecordWSOL($this->viewTable['table'], $this->viewTable['uid']); // Selecting record based on table/uid since adding the field might impose a SQL-injection problem; at least the field name would have to be checked first.
+		$record = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL($this->viewTable['table'], $this->viewTable['uid']); // Selecting record based on table/uid since adding the field might impose a SQL-injection problem; at least the field name would have to be checked first.
 		if (is_array($record)) {
 
 			// Set current XML data:
@@ -104,7 +104,7 @@ class tx_templavoila_cm2 extends t3lib_SCbase {
 							$tce->process_datamap();
 
 							// Re-fetch record:
-							$record = t3lib_BEfunc::getRecordWSOL($this->viewTable['table'], $this->viewTable['uid']);
+							$record = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL($this->viewTable['table'], $this->viewTable['uid']);
 							$currentXML = $record[$this->viewTable['field_flex']];
 						}
 					}
@@ -207,7 +207,7 @@ class tx_templavoila_cm2 extends t3lib_SCbase {
 	 */
 	protected function getDocHeaderButtons() {
 		$buttons = array(
-			'csh' => t3lib_BEfunc::cshItem('_MOD_web_txtemplavoilaCM1', '', $this->backPath),
+			'csh' => \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_txtemplavoilaCM1', '', $this->backPath),
 			'back' => '',
 			'shortcut' => $this->getShortcutButton(),
 		);

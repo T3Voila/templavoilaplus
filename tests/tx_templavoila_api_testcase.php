@@ -127,13 +127,13 @@ class tx_templavoila_api_testcase extends tx_phpunit_database_testcase {
 
 		// Check if the new record really exists:
 		$fields = implode(',', array_keys($row)) . ',uid';
-		$fetchedRow = t3lib_beFunc::getRecordRaw('tt_content', 'uid=' . $elementUid, $fields);
+		$fetchedRow = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw('tt_content', 'uid=' . $elementUid, $fields);
 
 		$recordsAreTheSame = count(array_intersect_assoc($row, $fetchedRow)) == count($row);
 		self::assertTrue($recordsAreTheSame, 'The element created by insertElement() contains not the same data like the fixture');
 
 		// Check if the new record has been inserted correctly into the references list in table "pages":
-		$testPageRecord = t3lib_beFunc::getRecordRaw('pages', 'uid=' . $this->testPageUID, 'tx_templavoila_flex');
+		$testPageRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw('pages', 'uid=' . $this->testPageUID, 'tx_templavoila_flex');
 		$flexform = simplexml_load_string($testPageRecord['tx_templavoila_flex']);
 		$xpathResArr = $flexform->xpath("//data/sheet[@index='sDEF']/language[@index='lDEF']/field[@index='field_content']/value[@index='vDEF']");
 		self::assertEquals((string) $xpathResArr[0], (string) $elementUid, 'The reference from the test page to the element created by insertElement() is not as expected!');
@@ -152,7 +152,7 @@ class tx_templavoila_api_testcase extends tx_phpunit_database_testcase {
 			'vLang' => 'vDEF',
 			'position' => '0' // Before first element
 		);
-		$testPageRecord = t3lib_beFunc::getRecordRaw('pages', 'uid=' . $this->testPageUID, 'tx_templavoila_flex');
+		$testPageRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw('pages', 'uid=' . $this->testPageUID, 'tx_templavoila_flex');
 
 		// run insertElement():
 		$secondElementUid = $this->apiObj->insertElement($destinationPointer, $row);
@@ -160,13 +160,13 @@ class tx_templavoila_api_testcase extends tx_phpunit_database_testcase {
 
 		// Check if the new record really exists:
 		$fields = implode(',', array_keys($row)) . ',uid';
-		$fetchedRow = t3lib_beFunc::getRecordRaw('tt_content', 'uid=' . $secondElementUid, $fields);
+		$fetchedRow = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw('tt_content', 'uid=' . $secondElementUid, $fields);
 
 		$recordsAreTheSame = count(array_intersect_assoc($row, $fetchedRow)) == count($row);
 		self::assertTrue($recordsAreTheSame, 'The element created by insertElement() contains not the same data like the fixture');
 
 		// Check if the new record has been inserted correctly before the first one:
-		$testPageRecord = t3lib_beFunc::getRecordRaw('pages', 'uid=' . $this->testPageUID, 'tx_templavoila_flex');
+		$testPageRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw('pages', 'uid=' . $this->testPageUID, 'tx_templavoila_flex');
 
 		$flexform = simplexml_load_string($testPageRecord['tx_templavoila_flex']);
 		$xpathResArr = $flexform->xpath("//data/sheet[@index='sDEF']/language[@index='lDEF']/field[@index='field_content']/value[@index='vDEF']");
@@ -194,13 +194,13 @@ class tx_templavoila_api_testcase extends tx_phpunit_database_testcase {
 
 		// Check if the new record really exists:
 		$fields = implode(',', array_keys($row)) . ',uid';
-		$fetchedRow = t3lib_beFunc::getRecordRaw('tt_content', 'uid=' . $thirdElementUid, $fields);
+		$fetchedRow = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw('tt_content', 'uid=' . $thirdElementUid, $fields);
 
 		$recordsAreTheSame = count(array_intersect_assoc($row, $fetchedRow)) == count($row);
 		self::assertTrue($recordsAreTheSame, 'The element created by insertElement() contains not the same data like the fixture');
 
 		// Check if the new record has been inserted correctly behind the second one:
-		$testPageRecord = t3lib_beFunc::getRecordRaw('pages', 'uid=' . $this->testPageUID, 'tx_templavoila_flex');
+		$testPageRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw('pages', 'uid=' . $this->testPageUID, 'tx_templavoila_flex');
 		$flexform = simplexml_load_string($testPageRecord['tx_templavoila_flex']);
 		$xpathResArr = $flexform->xpath("//data/sheet[@index='sDEF']/language[@index='lDEF']/field[@index='field_content']/value[@index='vDEF']");
 		self::assertEquals((string) $xpathResArr[0], $secondElementUid . ',' . $thirdElementUid . ',' . $elementUid, '(Third element) The reference list the elements created by insertElement() is not as expected!');
@@ -234,7 +234,7 @@ class tx_templavoila_api_testcase extends tx_phpunit_database_testcase {
 
 		// Check if the new record really exists:
 		$fields = implode(',', array_keys($row)) . ',uid';
-		$fetchedRow = t3lib_beFunc::getRecordWSOL('tt_content', $elementUid, $fields);
+		$fetchedRow = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('tt_content', $elementUid, $fields);
 
 		$recordsAreTheSame =
 			$row['CType'] == $fetchedRow['CType'] &&
@@ -245,7 +245,7 @@ class tx_templavoila_api_testcase extends tx_phpunit_database_testcase {
 		self::assertTrue($recordsAreTheSame, 'The element created by insertElement() contains not the same data like the fixture');
 
 		// Check if the new record has been inserted correctly into the references list in table "pages":
-		$testPageRecord = t3lib_beFunc::getRecordWSOL('pages', $this->testPageUID, 'tx_templavoila_flex,uid,pid');
+		$testPageRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('pages', $this->testPageUID, 'tx_templavoila_flex,uid,pid');
 		$flexform = simplexml_load_string($testPageRecord['tx_templavoila_flex']);
 		$xpathResArr = $flexform->xpath("//data/sheet[@index='sDEF']/language[@index='lDEF']/field[@index='field_content']/value[@index='vDEF']");
 		self::assertEquals((string) $xpathResArr[0], (string) $elementUid, 'The reference from the test page to the element created by insertElement() is not as expected!');
@@ -271,7 +271,7 @@ class tx_templavoila_api_testcase extends tx_phpunit_database_testcase {
 
 		// Check if the new record really exists:
 		$fields = implode(',', array_keys($row)) . ',uid';
-		$fetchedRow = t3lib_beFunc::getRecordWSOL('tt_content', $secondElementUid, $fields);
+		$fetchedRow = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('tt_content', $secondElementUid, $fields);
 		$recordsAreTheSame =
 			$row['CType'] == $fetchedRow['CType'] &&
 			$row['header'] == $fetchedRow['header'] &&
@@ -281,7 +281,7 @@ class tx_templavoila_api_testcase extends tx_phpunit_database_testcase {
 		self::assertTrue($recordsAreTheSame, 'The element created by insertElement() contains not the same data like the fixture');
 
 		// Check if the new record has been inserted correctly before the first one:
-		$testPageRecord = t3lib_beFunc::getRecordWSOL('pages', $this->testPageUID, 'tx_templavoila_flex,uid,pid');
+		$testPageRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('pages', $this->testPageUID, 'tx_templavoila_flex,uid,pid');
 		$flexform = simplexml_load_string($testPageRecord['tx_templavoila_flex']);
 		$xpathResArr = $flexform->xpath("//data/sheet[@index='sDEF']/language[@index='lDEF']/field[@index='field_content']/value[@index='vDEF']");
 		self::assertEquals((string) $xpathResArr[0], $secondElementUid . ',' . $elementUid, 'The reference list the elements created by insertElement() is not as expected!');
@@ -308,7 +308,7 @@ class tx_templavoila_api_testcase extends tx_phpunit_database_testcase {
 
 		// Check if the new record really exists:
 		$fields = implode(',', array_keys($row)) . ',uid';
-		$fetchedRow = t3lib_beFunc::getRecordWSOL('tt_content', $thirdElementUid, $fields);
+		$fetchedRow = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('tt_content', $thirdElementUid, $fields);
 
 		$recordsAreTheSame =
 			$row['CType'] == $fetchedRow['CType'] &&
@@ -319,7 +319,7 @@ class tx_templavoila_api_testcase extends tx_phpunit_database_testcase {
 		self::assertTrue($recordsAreTheSame, 'The element created by insertElement() contains not the same data like the fixture');
 
 		// Check if the new record has been inserted correctly behind the second one:
-		$testPageRecord = t3lib_beFunc::getRecordWSOL('pages', $this->testPageUID, 'tx_templavoila_flex,uid,pid');
+		$testPageRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('pages', $this->testPageUID, 'tx_templavoila_flex,uid,pid');
 		$flexform = simplexml_load_string($testPageRecord['tx_templavoila_flex']);
 		$xpathResArr = $flexform->xpath("//data/sheet[@index='sDEF']/language[@index='lDEF']/field[@index='field_content']/value[@index='vDEF']");
 		self::assertEquals((string) $xpathResArr[0], $secondElementUid . ',' . $thirdElementUid . ',' . $elementUid, '(Third element) The reference list the elements created by insertElement() is not as expected!');
@@ -383,9 +383,9 @@ class tx_templavoila_api_testcase extends tx_phpunit_database_testcase {
 		}
 
 		// Check if the sorting field has been set correctly:
-		$elementRecords[1] = t3lib_beFunc::getRecordRaw('tt_content', 'uid=' . $elementUids[1], 'uid,sorting');
-		$elementRecords[2] = t3lib_beFunc::getRecordRaw('tt_content', 'uid=' . $elementUids[2], 'uid,sorting');
-		$elementRecords[3] = t3lib_beFunc::getRecordRaw('tt_content', 'uid=' . $elementUids[3], 'uid,sorting');
+		$elementRecords[1] = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw('tt_content', 'uid=' . $elementUids[1], 'uid,sorting');
+		$elementRecords[2] = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw('tt_content', 'uid=' . $elementUids[2], 'uid,sorting');
+		$elementRecords[3] = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw('tt_content', 'uid=' . $elementUids[3], 'uid,sorting');
 
 		$orderIsCorrect = $elementRecords[1]['sorting'] < $elementRecords[2]['sorting'] && $elementRecords[2]['sorting'] < $elementRecords[3]['sorting'];
 		self::assertTrue($orderIsCorrect, 'The sorting field has not been set correctly after inserting three CEs with insertElement()!');
@@ -406,10 +406,10 @@ class tx_templavoila_api_testcase extends tx_phpunit_database_testcase {
 		$elementUids[4] = $this->apiObj->insertElement($destinationPointer, $row);
 
 		// Check if the sorting field has been set correctly:
-		$elementRecords[1] = t3lib_beFunc::getRecordRaw('tt_content', 'uid=' . $elementUids[1], 'uid,sorting');
-		$elementRecords[2] = t3lib_beFunc::getRecordRaw('tt_content', 'uid=' . $elementUids[2], 'uid,sorting');
-		$elementRecords[3] = t3lib_beFunc::getRecordRaw('tt_content', 'uid=' . $elementUids[3], 'uid,sorting');
-		$elementRecords[4] = t3lib_beFunc::getRecordRaw('tt_content', 'uid=' . $elementUids[4], 'uid,sorting');
+		$elementRecords[1] = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw('tt_content', 'uid=' . $elementUids[1], 'uid,sorting');
+		$elementRecords[2] = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw('tt_content', 'uid=' . $elementUids[2], 'uid,sorting');
+		$elementRecords[3] = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw('tt_content', 'uid=' . $elementUids[3], 'uid,sorting');
+		$elementRecords[4] = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw('tt_content', 'uid=' . $elementUids[4], 'uid,sorting');
 
 		$orderIsCorrect =
 			$elementRecords[1]['sorting'] < $elementRecords[4]['sorting'] &&
@@ -458,8 +458,8 @@ class tx_templavoila_api_testcase extends tx_phpunit_database_testcase {
 		);
 		$elementUids[2] = $this->apiObj->insertElement($destinationPointer, $row);
 
-		$elementRecords[1] = t3lib_beFunc::getRecordRaw('tt_content', 'uid=' . $elementUids[1], 'uid,sorting,colpos');
-		$elementRecords[2] = t3lib_beFunc::getRecordRaw('tt_content', 'uid=' . $elementUids[2], 'uid,sorting,colpos');
+		$elementRecords[1] = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw('tt_content', 'uid=' . $elementUids[1], 'uid,sorting,colpos');
+		$elementRecords[2] = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw('tt_content', 'uid=' . $elementUids[2], 'uid,sorting,colpos');
 
 		self::assertTrue($elementRecords[1]['colpos'] == 0 && $elementRecords[2]['colpos'] == 1, 'The column position stored in the "colpos" field is not correct after inserting two content elements!');
 	}
@@ -506,7 +506,7 @@ class tx_templavoila_api_testcase extends tx_phpunit_database_testcase {
 
 		$cmdMap = array(
 			'tt_content' => array(
-				t3lib_beFunc::wsMapId('tt_content', $elementUids[2]) => array(
+				\TYPO3\CMS\Backend\Utility\BackendUtility::wsMapId('tt_content', $elementUids[2]) => array(
 					'delete' => 1
 				)
 			)
@@ -531,7 +531,7 @@ class tx_templavoila_api_testcase extends tx_phpunit_database_testcase {
 		self::assertTrue($elementUids[4] !== FALSE, 'Bug 3042 part one - Inserting a new element was not successful, insertElement() returned FALSE');
 
 		// Check if the new record has been inserted correctly behind the second one:
-		$testPageRecord = t3lib_beFunc::getRecordWSOL('pages', $this->testPageUID, 'tx_templavoila_flex,uid,pid');
+		$testPageRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('pages', $this->testPageUID, 'tx_templavoila_flex,uid,pid');
 		$flexform = simplexml_load_string($testPageRecord['tx_templavoila_flex']);
 		$xpathResArr = $flexform->xpath("//data/sheet[@index='sDEF']/language[@index='lDEF']/field[@index='field_content']/value[@index='vDEF']");
 		self::assertEquals((string) $xpathResArr[0], $elementUids[1] . ',' . $elementUids[3] . ',' . $elementUids[4], 'insertElement_bug3042 - The pages reference list of the elements I created and deleted is not as expected!');
@@ -595,7 +595,7 @@ class tx_templavoila_api_testcase extends tx_phpunit_database_testcase {
 		self::assertTrue($elementUids[4] !== FALSE, 'Bug 3042 Part two - Inserting a new element was not successful, insertElement() returned FALSE');
 
 		// Check if the new record has been inserted correctly behind the second one:
-		$testPageRecord = t3lib_beFunc::getRecordWSOL('pages', $this->testPageUID, 'tx_templavoila_flex,uid,pid');
+		$testPageRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('pages', $this->testPageUID, 'tx_templavoila_flex,uid,pid');
 		$flexform = simplexml_load_string($testPageRecord['tx_templavoila_flex']);
 		$xpathResArr = $flexform->xpath("//data/sheet[@index='sDEF']/language[@index='lDEF']/field[@index='field_content']/value[@index='vDEF']");
 		self::assertEquals((string) $xpathResArr[0], $elementUids[1] . ',' . $elementUids[3] . ',' . $elementUids[4], 'insertElement_bug3042 - The pages reference list of the elements I created and deleted is not as expected!');
@@ -658,7 +658,7 @@ class tx_templavoila_api_testcase extends tx_phpunit_database_testcase {
 		self::assertTrue($result, 'moveElement() did not return TRUE!');
 
 		// Check if the first element has been moved correctly behind the third one:
-		$testPageRecord = t3lib_beFunc::getRecordRaw('pages', 'uid=' . $this->testPageUID, 'tx_templavoila_flex');
+		$testPageRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw('pages', 'uid=' . $this->testPageUID, 'tx_templavoila_flex');
 		$flexform = simplexml_load_string($testPageRecord['tx_templavoila_flex']);
 		$xpathResArr = $flexform->xpath("//data/sheet[@index='sDEF']/language[@index='lDEF']/field[@index='field_content']/value[@index='vDEF']");
 		self::assertEquals((string) $xpathResArr[0], $elementUids[2] . ',' . $elementUids[3] . ',' . $elementUids[1], 'The reference list is not as expected after moving the first element after the third with moveElement()!');
@@ -689,7 +689,7 @@ class tx_templavoila_api_testcase extends tx_phpunit_database_testcase {
 		self::assertTrue($result, 'moveElement() did not return TRUE!');
 
 		// Check if the first element has been moved correctly behind the third one:
-		$testPageRecord = t3lib_beFunc::getRecordRaw('pages', 'uid=' . $this->testPageUID, 'tx_templavoila_flex');
+		$testPageRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw('pages', 'uid=' . $this->testPageUID, 'tx_templavoila_flex');
 		$flexform = simplexml_load_string($testPageRecord['tx_templavoila_flex']);
 		$xpathResArr = $flexform->xpath("//data/sheet[@index='sDEF']/language[@index='lDEF']/field[@index='field_content']/value[@index='vDEF']");
 		self::assertEquals((string) $xpathResArr[0], $elementUids[2] . ',' . $elementUids[1] . ',' . $elementUids[3], 'The reference list is not as expected after moving the third element after the first with moveElement()!');
@@ -778,7 +778,7 @@ class tx_templavoila_api_testcase extends tx_phpunit_database_testcase {
 		self::assertTrue($result, 'moveElement() did not return TRUE!');
 
 		// Check if the first element has been moved correctly behind the third one:
-		$testFCERecord = t3lib_beFunc::getRecordRaw('tt_content', 'uid=' . $FCEUid, 'tx_templavoila_flex');
+		$testFCERecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw('tt_content', 'uid=' . $FCEUid, 'tx_templavoila_flex');
 		$flexform = simplexml_load_string($testFCERecord['tx_templavoila_flex']);
 		$xpathResArr = $flexform->xpath("//data/sheet[@index='sDEF']/language[@index='lDEF']/field[@index='field_rightcolumn']/value[@index='vDEF']");
 		self::assertEquals((string) $xpathResArr[0], $elementUidsRight[2] . ',' . $elementUidsRight[3] . ',' . $elementUidsRight[1], 'The reference list is not as expected after moving the first element after the third with moveElement()!');
@@ -809,7 +809,7 @@ class tx_templavoila_api_testcase extends tx_phpunit_database_testcase {
 		self::assertTrue($result, 'moveElement() did not return TRUE!');
 
 		// Check if the first element has been moved correctly behind the first one in the other column:
-		$testFCERecord = t3lib_beFunc::getRecordRaw('tt_content', 'uid=' . $FCEUid, 'tx_templavoila_flex');
+		$testFCERecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw('tt_content', 'uid=' . $FCEUid, 'tx_templavoila_flex');
 		$flexform = simplexml_load_string($testFCERecord['tx_templavoila_flex']);
 
 		$xpathResArr = $flexform->xpath("//data/sheet[@index='sDEF']/language[@index='lDEF']/field[@index='field_rightcolumn']/value[@index='vDEF']");
@@ -869,7 +869,7 @@ class tx_templavoila_api_testcase extends tx_phpunit_database_testcase {
 		self::assertTrue($result, 'moveElement() did not return TRUE!');
 
 		// Check if the first element has been moved correctly behind the third one:
-		$testPageRecord = t3lib_beFunc::getRecordWSOL('pages', $this->testPageUID, 'uid,pid,tx_templavoila_flex');
+		$testPageRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('pages', $this->testPageUID, 'uid,pid,tx_templavoila_flex');
 		$flexform = simplexml_load_string($testPageRecord['tx_templavoila_flex']);
 		$xpathResArr = $flexform->xpath("//data/sheet[@index='sDEF']/language[@index='lDEF']/field[@index='field_content']/value[@index='vDEF']");
 		self::assertEquals((string) $xpathResArr[0], $elementUids[2] . ',' . $elementUids[3] . ',' . $elementUids[1], 'The reference list is not as expected after moving the first element after the third with moveElement()!');
@@ -900,7 +900,7 @@ class tx_templavoila_api_testcase extends tx_phpunit_database_testcase {
 		self::assertTrue($result, 'moveElement() did not return TRUE!');
 
 		// Check if the first element has been moved correctly behind the third one:
-		$testPageRecord = t3lib_beFunc::getRecordWSOL('pages', $this->testPageUID, 'uid,pid,tx_templavoila_flex');
+		$testPageRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('pages', $this->testPageUID, 'uid,pid,tx_templavoila_flex');
 		$flexform = simplexml_load_string($testPageRecord['tx_templavoila_flex']);
 		$xpathResArr = $flexform->xpath("//data/sheet[@index='sDEF']/language[@index='lDEF']/field[@index='field_content']/value[@index='vDEF']");
 		self::assertEquals((string) $xpathResArr[0], $elementUids[2] . ',' . $elementUids[1] . ',' . $elementUids[3], 'The reference list is not as expected after moving the third element after the first with moveElement()!');
@@ -980,14 +980,14 @@ class tx_templavoila_api_testcase extends tx_phpunit_database_testcase {
 		self::assertTrue($result, 'moveElement() did not return TRUE!');
 
 		// Check if the element has been referenced correctly on the destination page:
-		$targetTestPageRecord = t3lib_beFunc::getRecordRaw('pages', 'uid=' . $targetTestPageUID, 'tx_templavoila_flex,pid');
+		$targetTestPageRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw('pages', 'uid=' . $targetTestPageUID, 'tx_templavoila_flex,pid');
 		$flexform = simplexml_load_string($targetTestPageRecord['tx_templavoila_flex']);
 		$expectedReferences = $targetPageElementUids[1] . ',' . $sourcePageElementUids[2] . ',' . $targetPageElementUids[2] . ',' . $targetPageElementUids[3];
 		$xpathResArr = $flexform->xpath("//data/sheet[@index='sDEF']/language[@index='lDEF']/field[@index='field_content']/value[@index='vDEF']");
 		self::assertEquals((string) $xpathResArr[0], $expectedReferences, 'The reference list is not as expected after moving the element from one page to another with moveElement()!');
 
 		// Check if the element has the correct PID:
-		$elementRecord = t3lib_beFunc::getRecordRaw('tt_content', 'uid=' . $sourcePageElementUids[2], 'pid');
+		$elementRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw('tt_content', 'uid=' . $sourcePageElementUids[2], 'pid');
 		self::assertEquals($targetTestPageUID, (integer) $elementRecord['pid'], 'The PID of the moved element has not been set to the new page uid!');
 	}
 
@@ -1060,14 +1060,14 @@ class tx_templavoila_api_testcase extends tx_phpunit_database_testcase {
 		self::assertTrue($result, 'moveElement() did not return TRUE!');
 
 		// Check if the element has been referenced correctly on the destination page:
-		$targetTestPageRecord = t3lib_beFunc::getRecordWSOL('pages', $targetTestPageUID, 'uid,pid,tx_templavoila_flex');
+		$targetTestPageRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('pages', $targetTestPageUID, 'uid,pid,tx_templavoila_flex');
 		$flexform = simplexml_load_string($targetTestPageRecord['tx_templavoila_flex']);
 		$expectedReferences = $targetPageElementUids[1] . ',' . $sourcePageElementUids[2] . ',' . $targetPageElementUids[2] . ',' . $targetPageElementUids[3];
 		$xpathResArr = $flexform->xpath("//data/sheet[@index='sDEF']/language[@index='lDEF']/field[@index='field_content']/value[@index='vDEF']");
 		self::assertEquals((string) $xpathResArr[0], $expectedReferences, 'The reference list is not as expected after moving the element from one page to another with moveElement()!');
 
 		// Check if the element has the correct PID:
-		$elementRecord = t3lib_beFunc::getRecordWSOL('tt_content', $sourcePageElementUids[2], 'uid,pid');
+		$elementRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('tt_content', $sourcePageElementUids[2], 'uid,pid');
 		self::assertEquals($targetTestPageUID, (integer) $elementRecord['pid'], 'The PID of the moved element has not been set to the new page uid!');
 	}
 
@@ -1129,7 +1129,7 @@ class tx_templavoila_api_testcase extends tx_phpunit_database_testcase {
 
 		// Check if the element has been copied correctly:
 		$elementUids[4] = $result;
-		$testPageRecord = t3lib_beFunc::getRecordRaw('pages', 'uid=' . $this->testPageUID, 'tx_templavoila_flex');
+		$testPageRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw('pages', 'uid=' . $this->testPageUID, 'tx_templavoila_flex');
 		$flexform = simplexml_load_string($testPageRecord['tx_templavoila_flex']);
 		$xpathResArr = $flexform->xpath("//data/sheet[@index='sDEF']/language[@index='lDEF']/field[@index='field_content']/value[@index='vDEF']");
 		self::assertEquals((string) $xpathResArr[0], $elementUids[1] . ',' . $elementUids[2] . ',' . $elementUids[3] . ',' . $elementUids[4], 'The reference list is not as expected after copying the second element after the third with copyElement()!');
@@ -1204,7 +1204,7 @@ class tx_templavoila_api_testcase extends tx_phpunit_database_testcase {
 
 		// Check if the element has been copied correctly:
 		$newElementUid = $result;
-		$testPageRecord = t3lib_beFunc::getRecordRaw('pages', 'uid=' . $targetTestPageUID, 'tx_templavoila_flex');
+		$testPageRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw('pages', 'uid=' . $targetTestPageUID, 'tx_templavoila_flex');
 		$expectedReferences = $targetPageElementUids[1] . ',' . $targetPageElementUids[2] . ',' . $newElementUid . ',' . $targetPageElementUids[3];
 		$flexform = simplexml_load_string($testPageRecord['tx_templavoila_flex']);
 		$xpathResArr = $flexform->xpath("//data/sheet[@index='sDEF']/language[@index='lDEF']/field[@index='field_content']/value[@index='vDEF']");
@@ -1268,7 +1268,7 @@ class tx_templavoila_api_testcase extends tx_phpunit_database_testcase {
 		self::assertTrue($result !== FALSE, 'referenceElement() did FALSE!');
 
 		// Check if the element has been referenced correctly:
-		$testPageRecord = t3lib_beFunc::getRecordRaw('pages', 'uid=' . $this->testPageUID, 'tx_templavoila_flex');
+		$testPageRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw('pages', 'uid=' . $this->testPageUID, 'tx_templavoila_flex');
 		$flexform = simplexml_load_string($testPageRecord['tx_templavoila_flex']);
 		$xpathResArr = $flexform->xpath("//data/sheet[@index='sDEF']/language[@index='lDEF']/field[@index='field_content']/value[@index='vDEF']");
 		self::assertEquals((string) $xpathResArr[0], $elementUids[1] . ',' . $elementUids[2] . ',' . $elementUids[3] . ',' . $elementUids[2], 'The reference list is not as expected after inserting a reference of the second element after the third with referenceElement()!');
@@ -1325,7 +1325,7 @@ class tx_templavoila_api_testcase extends tx_phpunit_database_testcase {
 		self::assertTrue($result !== FALSE, 'referenceElement() did FALSE!');
 
 		// Check if the element has been referenced correctly:
-		$testPageRecord = t3lib_beFunc::getRecordWSOL('pages', $this->testPageUID, 'uid,pid,tx_templavoila_flex');
+		$testPageRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('pages', $this->testPageUID, 'uid,pid,tx_templavoila_flex');
 		$flexform = simplexml_load_string($testPageRecord['tx_templavoila_flex']);
 		$xpathResArr = $flexform->xpath("//data/sheet[@index='sDEF']/language[@index='lDEF']/field[@index='field_content']/value[@index='vDEF']");
 		self::assertEquals((string) $xpathResArr[0], $elementUids[1] . ',' . $elementUids[2] . ',' . $elementUids[3] . ',' . $elementUids[2], 'The reference list is not as expected after inserting a reference of the second element after the third with referenceElement()!');
@@ -1371,7 +1371,7 @@ class tx_templavoila_api_testcase extends tx_phpunit_database_testcase {
 		self::assertTrue($result !== FALSE, 'referenceElement() returned FALSE!');
 
 		// Check if the element has been referenced correctly:
-		$testPageRecord = t3lib_beFunc::getRecordRaw('pages', 'uid=' . $this->testPageUID, 'tx_templavoila_flex');
+		$testPageRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw('pages', 'uid=' . $this->testPageUID, 'tx_templavoila_flex');
 		$flexform = simplexml_load_string($testPageRecord['tx_templavoila_flex']);
 		$xpathResArr = $flexform->xpath("//data/sheet[@index='sDEF']/language[@index='lDEF']/field[@index='field_content']/value[@index='vDEF']");
 		self::assertEquals((string) $xpathResArr[0], $elementUids[1] . ',' . $elementUids[2] . ',' . $elementUids[3] . ',' . $elementUids[2], 'The reference list is not as expected after inserting a reference of the second element after the third with referenceElementByUid()!');
@@ -1423,7 +1423,7 @@ class tx_templavoila_api_testcase extends tx_phpunit_database_testcase {
 		self::assertTrue($result !== FALSE, 'unlinkElement() returned FALSE!');
 
 		// Check if the element has been un-referenced correctly:
-		$testPageRecord = t3lib_beFunc::getRecordRaw('pages', 'uid=' . $this->testPageUID, 'tx_templavoila_flex');
+		$testPageRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw('pages', 'uid=' . $this->testPageUID, 'tx_templavoila_flex');
 		$flexform = simplexml_load_string($testPageRecord['tx_templavoila_flex']);
 		$xpathResArr = $flexform->xpath("//data/sheet[@index='sDEF']/language[@index='lDEF']/field[@index='field_content']/value[@index='vDEF']");
 		self::assertEquals((string) $xpathResArr[0], $elementUids[1] . ',' . $elementUids[3], 'The reference list is not as expected after unlinking an elemen with unlinkElement()!');
@@ -1475,13 +1475,13 @@ class tx_templavoila_api_testcase extends tx_phpunit_database_testcase {
 		self::assertTrue($result !== FALSE, 'deleteElement() returned FALSE!');
 
 		// Check if the element has been un-referenced correctly:
-		$testPageRecord = t3lib_beFunc::getRecordRaw('pages', 'uid=' . $this->testPageUID, 'tx_templavoila_flex');
+		$testPageRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw('pages', 'uid=' . $this->testPageUID, 'tx_templavoila_flex');
 		$flexform = simplexml_load_string($testPageRecord['tx_templavoila_flex']);
 		$xpathResArr = $flexform->xpath("//data/sheet[@index='sDEF']/language[@index='lDEF']/field[@index='field_content']/value[@index='vDEF']");
 		self::assertEquals((string) $xpathResArr[0], $elementUids[1] . ',' . $elementUids[3], 'The reference list is not as expected after deleting an element with deleteElement()!');
 
 		// Check if the record really has been deleted:
-		$elementRecord = t3lib_beFunc::getRecordRaw('tt_content', 'uid=' . $elementUids[2], '*');
+		$elementRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw('tt_content', 'uid=' . $elementUids[2], '*');
 		self::assertEquals((integer) $elementRecord['deleted'], 1, 'The element record has not been deleted correctly after calling deleteElement()!');
 	}
 
@@ -1527,13 +1527,13 @@ class tx_templavoila_api_testcase extends tx_phpunit_database_testcase {
 		self::assertTrue($result !== FALSE, 'deleteElement() returned FALSE!');
 
 		// Check if the element has been un-referenced correctly:
-		$testPageRecord = t3lib_beFunc::getRecordWSOL('pages', $this->testPageUID, 'uid,pid,tx_templavoila_flex');
+		$testPageRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('pages', $this->testPageUID, 'uid,pid,tx_templavoila_flex');
 		$flexform = simplexml_load_string($testPageRecord['tx_templavoila_flex']);
 		$xpathResArr = $flexform->xpath("//data/sheet[@index='sDEF']/language[@index='lDEF']/field[@index='field_content']/value[@index='vDEF']");
 		self::assertEquals((string) $xpathResArr[0], $elementUids[1] . ',' . $elementUids[3], 'The reference list is not as expected after deleting an element with deleteElement()!');
 
 		// Check if the record really has been deleted:
-		$elementRecord = t3lib_beFunc::getRecordWSOL('tt_content', $elementUids[2], '*');
+		$elementRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('tt_content', $elementUids[2], '*');
 		self::assertEquals((integer) $elementRecord['t3ver_state'], 2, 'The element record has not been deleted correctly after calling deleteElement()!');
 	}
 
@@ -1708,13 +1708,13 @@ class tx_templavoila_api_testcase extends tx_phpunit_database_testcase {
 
 		// Check if the localized element has been referenced correctly:
 		$localizedUid = intval($result);
-		$testPageRecord = t3lib_beFunc::getRecordRaw('pages', 'uid=' . $this->testPageUID, 'tx_templavoila_flex');
+		$testPageRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw('pages', 'uid=' . $this->testPageUID, 'tx_templavoila_flex');
 		$flexform = simplexml_load_string($testPageRecord['tx_templavoila_flex']);
 		$xpathResArr = $flexform->xpath("//data/sheet[@index='sDEF']/language[@index='lDEF']/field[@index='field_content']/value[@index='vDE']");
 		self::assertEquals((string) $xpathResArr[0], (string) $localizedUid, 'The reference list is not as expected after localizing the second element to German!');
 
 		// Check if the record has been modified correctly:
-		$localizedRecord = t3lib_beFunc::getRecordRaw('tt_content', 'uid=' . $localizedUid, '*');
+		$localizedRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw('tt_content', 'uid=' . $localizedUid, '*');
 
 		$isOkay = (
 			$localizedRecord['l18n_parent'] == $elementUids[2] &&
@@ -1777,13 +1777,13 @@ class tx_templavoila_api_testcase extends tx_phpunit_database_testcase {
 
 		// Check if the localized element has been referenced correctly:
 		$localizedUid = intval($result);
-		$testPageRecord = t3lib_beFunc::getRecordWSOL('pages', $this->testPageUID, 'uid,pid,tx_templavoila_flex');
+		$testPageRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('pages', $this->testPageUID, 'uid,pid,tx_templavoila_flex');
 		$flexform = simplexml_load_string($testPageRecord['tx_templavoila_flex']);
 		$xpathResArr = $flexform->xpath("//data/sheet[@index='sDEF']/language[@index='lDEF']/field[@index='field_content']/value[@index='vDE']");
 		self::assertEquals((string) $xpathResArr[0], (string) $localizedUid, 'The reference list is not as expected after localizing the second element to German!');
 
 		// Check if the record has been modified correctly:
-		$localizedRecord = t3lib_beFunc::getRecordWSOL('tt_content', $localizedUid, '*');
+		$localizedRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('tt_content', $localizedUid, '*');
 
 		$isOkay = (
 			$localizedRecord['l18n_parent'] == $elementUids[2] &&
@@ -1843,7 +1843,7 @@ class tx_templavoila_api_testcase extends tx_phpunit_database_testcase {
 		$tce->process_cmdmap();
 
 		// Check if the third element has been moved correctly behind the first:
-		$testPageRecord = t3lib_beFunc::getRecordRaw('pages', 'uid=' . $this->testPageUID, 'tx_templavoila_flex');
+		$testPageRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw('pages', 'uid=' . $this->testPageUID, 'tx_templavoila_flex');
 		$flexform = simplexml_load_string($testPageRecord['tx_templavoila_flex']);
 		$xpathResArr = $flexform->xpath("//data/sheet[@index='sDEF']/language[@index='lDEF']/field[@index='field_content']/value[@index='vDEF']");
 		self::assertEquals((string) $xpathResArr[0], $elementUids[1] . ',' . $elementUids[3] . ',' . $elementUids[2], 'The reference list is not as expected after moving the third element after the first with TCEmain()!');
@@ -1915,7 +1915,7 @@ class tx_templavoila_api_testcase extends tx_phpunit_database_testcase {
 		$tce->process_cmdmap();
 
 		// Check if the elements are in the right columns in the right order:
-		$testPageRecord = t3lib_beFunc::getRecordRaw('pages', 'uid=' . $this->testPageUID, 'tx_templavoila_flex');
+		$testPageRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw('pages', 'uid=' . $this->testPageUID, 'tx_templavoila_flex');
 		$flexform = simplexml_load_string($testPageRecord['tx_templavoila_flex']);
 
 		$fieldContent_xpathResArr = $flexform->xpath("//data/sheet[@index='sDEF']/language[@index='lDEF']/field[@index='field_content']/value[@index='vDEF']");
@@ -1953,7 +1953,7 @@ class tx_templavoila_api_testcase extends tx_phpunit_database_testcase {
 		$tce->process_cmdmap();
 
 		// Check again if the elements are in the right columns in the right order:
-		$testPageRecord = t3lib_beFunc::getRecordRaw('pages', 'uid=' . $this->testPageUID, 'tx_templavoila_flex');
+		$testPageRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw('pages', 'uid=' . $this->testPageUID, 'tx_templavoila_flex');
 		$flexform = simplexml_load_string($testPageRecord['tx_templavoila_flex']);
 
 		$fieldContent_xpathResArr = $flexform->xpath("//data/sheet[@index='sDEF']/language[@index='lDEF']/field[@index='field_content']/value[@index='vDEF']");

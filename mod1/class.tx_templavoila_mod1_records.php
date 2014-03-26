@@ -59,7 +59,7 @@ class tx_templavoila_mod1_records {
 		$this->tables = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->pObj->modTSconfig['properties']['recordDisplay_tables'], TRUE);
 		if ($this->tables) {
 			// Get permissions
-			$this->calcPerms = $GLOBALS['BE_USER']->calcPerms(t3lib_BEfunc::readPageAccess($this->pObj->id, $this->pObj->perms_clause));
+			$this->calcPerms = $GLOBALS['BE_USER']->calcPerms(\TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess($this->pObj->id, $this->pObj->perms_clause));
 			foreach ($this->tables as $table) {
 				if ($this->canDisplayTable($table)) {
 					// At least one displayable table found!
@@ -120,7 +120,7 @@ class tx_templavoila_mod1_records {
 			$table = $this->pObj->MOD_SETTINGS['recordsView_table'];
 			$params = '&edit[' . $table . '][' . $this->pObj->id . ']=new';
 			$content .= '&nbsp;&nbsp;';
-			$content .= '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::editOnClick($params, $backpath, -1)) . '">';
+			$content .= '<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick($params, $backpath, -1)) . '">';
 			$content .= \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-new', array('title' => $GLOBALS['LANG']->getLL('createnewrecord')));
 			$content .= '</a>';
 		}

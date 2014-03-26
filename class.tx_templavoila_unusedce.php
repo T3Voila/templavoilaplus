@@ -127,7 +127,7 @@ Automatic Repair:
 				$apiObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_api', 'pages');
 
 				// Fetch the content structure of page:
-				$contentTreeData = $apiObj->getContentTree('pages', t3lib_BEfunc::getRecordRaw('pages', 'uid=' . intval($uid)));
+				$contentTreeData = $apiObj->getContentTree('pages', \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw('pages', 'uid=' . intval($uid)));
 				if ($contentTreeData['tree']['ds_is_found']) {
 					$usedUids = array_keys($contentTreeData['contentElementUsage']);
 					$usedUids[] = 0;
@@ -140,8 +140,8 @@ Automatic Repair:
 						'AND uid NOT IN (' . implode(',', $usedUids) . ') ' .
 						'AND t3ver_state!=1 ' .
 						'AND t3ver_state!=3 ' .
-						t3lib_BEfunc::deleteClause('tt_content') .
-						t3lib_BEfunc::versioningPlaceholderClause('tt_content'),
+						\TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tt_content') .
+						\TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause('tt_content'),
 						'',
 						'uid'
 					);
@@ -170,7 +170,7 @@ Automatic Repair:
 						);
 						// Check if that other record is deleted or not:
 						if ($refrows_From[0] && $refrows_From[0]['ref_uid']) {
-							$isATranslationChild = t3lib_BEfunc::getRecord('tt_content', $refrows_From[0]['ref_uid'], 'uid') ? TRUE : FALSE;
+							$isATranslationChild = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('tt_content', $refrows_From[0]['ref_uid'], 'uid') ? TRUE : FALSE;
 						}
 
 						// Register elements etc:

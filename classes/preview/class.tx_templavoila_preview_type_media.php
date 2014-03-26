@@ -69,7 +69,7 @@ class tx_templavoila_preview_type_media {
 	 * @return string
 	 */
 	protected function getPreviewLabel() {
-		return $GLOBALS['LANG']->sL(t3lib_BEfunc::getLabelFromItemlist('tt_content', 'CType', $this->previewField));
+		return $GLOBALS['LANG']->sL(\TYPO3\CMS\Backend\Utility\BackendUtility::getLabelFromItemlist('tt_content', 'CType', $this->previewField));
 	}
 }
 

@@ -82,10 +82,10 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 		);
 
 		// page/be_user TSconfig settings and blinding of menu-items
-		$this->modTSconfig = t3lib_BEfunc::getModTSconfig($this->id, 'mod.' . $this->MCONF['name']);
+		$this->modTSconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($this->id, 'mod.' . $this->MCONF['name']);
 
 		// CLEANSE SETTINGS
-		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('SET'), $this->MCONF['name']);
+		$this->MOD_SETTINGS = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData($this->MOD_MENU, \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('SET'), $this->MCONF['name']);
 	}
 
 	/**
@@ -98,7 +98,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 
 		// Access check!
 		// The page will show only if there is a valid page and if this page may be viewed by the user
-		$this->pageinfo = t3lib_BEfunc::readPageAccess($this->id, $this->perms_clause);
+		$this->pageinfo = \TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess($this->id, $this->perms_clause);
 		$access = is_array($this->pageinfo) ? 1 : 0;
 
 		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('template');
@@ -185,7 +185,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 	 */
 	protected function getDocHeaderButtons() {
 		$buttons = array(
-			'csh' => t3lib_BEfunc::cshItem('_MOD_web_txtemplavoilaM2', '', $this->backPath),
+			'csh' => \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_txtemplavoilaM2', '', $this->backPath),
 			'shortcut' => $this->getShortcutButton(),
 		);
 
@@ -233,7 +233,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 				'count(*)',
 				'tx_templavoila_datastructure',
-				'pid=' . intval($this->id) . t3lib_BEfunc::deleteClause('tx_templavoila_datastructure')
+				'pid=' . intval($this->id) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoila_datastructure')
 			);
 			list($countDS) = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
@@ -242,7 +242,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 				'count(*)',
 				'tx_templavoila_tmplobj',
-				'pid=' . intval($this->id) . t3lib_BEfunc::deleteClause('tx_templavoila_tmplobj')
+				'pid=' . intval($this->id) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoila_tmplobj')
 			);
 			list($countTO) = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
@@ -285,7 +285,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 					$tRows[] = '
 						<tr class="bgColor4">
 							<td><a href="index.php?id=' . $pid . '" onclick="setHighlight(' . $pid . ')">' .
-						\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', t3lib_BEfunc::getRecord('pages', $pid)) .
+						\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', $pid)) .
 						htmlspecialchars($path) . '</a></td>
 							<td>' . $dsRepo->getDatastructureCountForPid($pid) . '</td>
 							<td>' . $toRepo->getTemplateCountForPid($pid) . '</td>
@@ -398,8 +398,8 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 
 		// Create setting handlers:
 		$settings = '<p>' .
-			t3lib_BEfunc::getFuncCheck('', 'SET[set_details]', $this->MOD_SETTINGS['set_details'], '', \TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl('', $_GET, '', 1, 1), 'id="set_details"') . $showDetails .
-			t3lib_BEfunc::getFuncCheck('', 'SET[set_unusedDs]', $this->MOD_SETTINGS['set_unusedDs'], '', \TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl('', $_GET, '', 1, 1), 'id="set_unusedDs"') . $showUnused .
+			\TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck('', 'SET[set_details]', $this->MOD_SETTINGS['set_details'], '', \TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl('', $_GET, '', 1, 1), 'id="set_details"') . $showDetails .
+			\TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck('', 'SET[set_unusedDs]', $this->MOD_SETTINGS['set_unusedDs'], '', \TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl('', $_GET, '', 1, 1), 'id="set_unusedDs"') . $showUnused .
 			'</p>';
 
 		// Add output:
@@ -472,7 +472,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 					}
 				}
 				// New-TO link:
-				$TOcontent .= '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::editOnClick(
+				$TOcontent .= '<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick(
 						'&edit[tx_templavoila_tmplobj][' . $newPid . ']=new' .
 						'&defVals[tx_templavoila_tmplobj][datastructure]=' . rawurlencode($dsObj->getKey()) .
 						'&defVals[tx_templavoila_tmplobj][title]=' . rawurlencode($newTitle) .
@@ -554,7 +554,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 				if ($path == FALSE) {
 					$previewIcon = $GLOBALS['LANG']->getLL('noicon', 1);
 				} else {
-					$previewIcon = t3lib_BEfunc::getThumbNail($this->doc->backPath . 'thumbs.php', $path,
+					$previewIcon = \TYPO3\CMS\Backend\Utility\BackendUtility::getThumbNail($this->doc->backPath . 'thumbs.php', $path,
 						'hspace="5" vspace="5" border="1"',
 						strpos($this->modTSconfig['properties']['dsPreviewIconThumb'], 'x') ? $this->modTSconfig['properties']['dsPreviewIconThumb'] : '');
 				}
@@ -570,8 +570,8 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 			$editLink = $editDataprotLink = '';
 			$dsTitle = $dsObj->getLabel();
 		} else {
-			$editLink = $lpXML .= '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::editOnClick('&edit[tx_templavoila_datastructure][' . $dsObj->getKey() . ']=edit', $this->doc->backPath)) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open') . '</a>';
-			$editDataprotLink = '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::editOnClick('&edit[tx_templavoila_datastructure][' . $dsObj->getKey() . ']=edit&columnsOnly=dataprot', $this->doc->backPath)) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open') . '</a>';
+			$editLink = $lpXML .= '<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick('&edit[tx_templavoila_datastructure][' . $dsObj->getKey() . ']=edit', $this->doc->backPath)) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open') . '</a>';
+			$editDataprotLink = '<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick('&edit[tx_templavoila_datastructure][' . $dsObj->getKey() . ']=edit&columnsOnly=dataprot', $this->doc->backPath)) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open') . '</a>';
 			$dsTitle = '<a href="' . htmlspecialchars('../cm1/index.php?table=tx_templavoila_datastructure&uid=' . $dsObj->getKey() . '&id=' . $this->id . '&returnUrl=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::sanitizeLocalUrl(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')))) . '">' . htmlspecialchars($dsObj->getLabel()) . '</a>';
 		}
 
@@ -601,11 +601,11 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 			</tr>' . ($this->MOD_SETTINGS['set_details'] ? '
 			<tr class="bgColor4">
 				<td>' . $GLOBALS['LANG']->getLL('created', 1) . '</td>
-				<td>' . t3lib_BEfunc::datetime($dsObj->getCrdate()) . ' ' . $GLOBALS['LANG']->getLL('byuser', 1) . ' [' . $dsObj->getCruser() . ']</td>
+				<td>' . \TYPO3\CMS\Backend\Utility\BackendUtility::datetime($dsObj->getCrdate()) . ' ' . $GLOBALS['LANG']->getLL('byuser', 1) . ' [' . $dsObj->getCruser() . ']</td>
 			</tr>
 			<tr class="bgColor4">
 				<td>' . $GLOBALS['LANG']->getLL('updated', 1) . '</td>
-				<td>' . t3lib_BEfunc::datetime($dsObj->getTstamp()) . '</td>
+				<td>' . \TYPO3\CMS\Backend\Utility\BackendUtility::datetime($dsObj->getTstamp()) . '</td>
 			</tr>' : '') . '
 		</table>
 		';
@@ -671,7 +671,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 				if ($path == FALSE) {
 					$icon = $GLOBALS['LANG']->getLL('noicon', 1);
 				} else {
-					$icon = t3lib_BEfunc::getThumbNail($this->doc->backPath . 'thumbs.php', $path,
+					$icon = \TYPO3\CMS\Backend\Utility\BackendUtility::getThumbNail($this->doc->backPath . 'thumbs.php', $path,
 						'hspace="5" vspace="5" border="1"',
 						strpos($this->modTSconfig['properties']['toPreviewIconThumb'], 'x') ? $this->modTSconfig['properties']['toPreviewIconThumb'] : '');
 				}
@@ -706,7 +706,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 			}
 			if ($modified) {
 				$mappingStatus = $mappingStatus_index = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-warning');
-				$mappingStatus .= sprintf($GLOBALS['LANG']->getLL('towasupdated', 1), t3lib_BEfunc::datetime($toObj->getTstamp()));
+				$mappingStatus .= sprintf($GLOBALS['LANG']->getLL('towasupdated', 1), \TYPO3\CMS\Backend\Utility\BackendUtility::datetime($toObj->getTstamp()));
 				$this->setErrorLog($scope, 'warning', sprintf($GLOBALS['LANG']->getLL('warning_mappingstatus', 1), $mappingStatus, $toObj->getLabel()));
 			} else {
 				$mappingStatus = $mappingStatus_index = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-ok');
@@ -739,14 +739,14 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 				$lpXML = '';
 			}
 		}
-		$lpXML .= '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::editOnClick('&edit[tx_templavoila_tmplobj][' . $toObj->getKey() . ']=edit&columnsOnly=localprocessing', $this->doc->backPath)) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open') . '</a>';
+		$lpXML .= '<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick('&edit[tx_templavoila_tmplobj][' . $toObj->getKey() . ']=edit&columnsOnly=localprocessing', $this->doc->backPath)) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open') . '</a>';
 
 		// Compile info table:
 		$tableAttribs = ' border="0" cellpadding="1" cellspacing="1" width="98%" style="margin-top: 3px;" class="lrPadding"';
 
 		// Links:
 		$toTitle = '<a href="' . htmlspecialchars($linkUrl) . '">' . htmlspecialchars($GLOBALS['LANG']->sL($toObj->getLabel())) . '</a>';
-		$editLink = '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::editOnClick('&edit[tx_templavoila_tmplobj][' . $toObj->getKey() . ']=edit', $this->doc->backPath)) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open') . '</a>';
+		$editLink = '<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick('&edit[tx_templavoila_tmplobj][' . $toObj->getKey() . ']=edit', $this->doc->backPath)) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open') . '</a>';
 
 		$fRWTOUres = array();
 
@@ -791,11 +791,11 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 				</tr>
 				<tr class="bgColor4">
 					<td>' . $GLOBALS['LANG']->getLL('created', 1) . ':</td>
-					<td>' . t3lib_BEfunc::datetime($toObj->getCrdate()) . ' ' . $GLOBALS['LANG']->getLL('byuser', 1) . ' [' . $toObj->getCruser() . ']</td>
+					<td>' . \TYPO3\CMS\Backend\Utility\BackendUtility::datetime($toObj->getCrdate()) . ' ' . $GLOBALS['LANG']->getLL('byuser', 1) . ' [' . $toObj->getCruser() . ']</td>
 				</tr>
 				<tr class="bgColor4">
 					<td>' . $GLOBALS['LANG']->getLL('updated', 1) . ':</td>
-					<td>' . t3lib_BEfunc::datetime($toObj->getTstamp()) . '</td>
+					<td>' . \TYPO3\CMS\Backend\Utility\BackendUtility::datetime($toObj->getTstamp()) . '</td>
 				</tr>' : '') . '
 			</table>
 			';
@@ -835,11 +835,11 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 				</tr>' . ($this->MOD_SETTINGS['set_details'] ? '
 				<tr class="bgColor4">
 					<td>' . $GLOBALS['LANG']->getLL('created', 1) . ':</td>
-					<td>' . t3lib_BEfunc::datetime($toObj->getCrdate()) . ' ' . $GLOBALS['LANG']->getLL('byuser', 1) . ' [' . $toObj->getCruser() . ']</td>
+					<td>' . \TYPO3\CMS\Backend\Utility\BackendUtility::datetime($toObj->getCrdate()) . ' ' . $GLOBALS['LANG']->getLL('byuser', 1) . ' [' . $toObj->getCruser() . ']</td>
 				</tr>
 				<tr class="bgColor4">
 					<td>' . $GLOBALS['LANG']->getLL('updated', 1) . ':</td>
-					<td>' . t3lib_BEfunc::datetime($toObj->getTstamp()) . '</td>
+					<td>' . \TYPO3\CMS\Backend\Utility\BackendUtility::datetime($toObj->getTstamp()) . '</td>
 				</tr>' : '') . '
 			</table>
 			';
@@ -898,7 +898,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 						(tx_templavoila_to=' . intval($toObj->getKey()) . ' AND tx_templavoila_ds=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($dsKey, 'pages') . ') OR
 						(tx_templavoila_next_to=' . intval($toObj->getKey()) . ' AND tx_templavoila_next_ds=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($dsKey, 'pages') . ')
 					)' .
-					t3lib_BEfunc::deleteClause('pages')
+					\TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('pages')
 				);
 
 				while (FALSE !== ($pRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))) {
@@ -907,14 +907,14 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 						$output[] = '
 							<tr class="bgColor4-20">
 								<td nowrap="nowrap">' .
-							'<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::editOnClick('&edit[pages][' . $pRow['uid'] . ']=edit', $this->doc->backPath)) . '" title="Edit">' .
+							'<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick('&edit[pages][' . $pRow['uid'] . ']=edit', $this->doc->backPath)) . '" title="Edit">' .
 							htmlspecialchars($pRow['uid']) .
 							'</a></td>
 						<td nowrap="nowrap">' .
 							htmlspecialchars($pRow['title']) .
 							'</td>
 						<td nowrap="nowrap">' .
-							'<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::viewOnClick($pRow['uid'], $this->doc->backPath) . 'return false;') . '" title="View">' .
+							'<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::viewOnClick($pRow['uid'], $this->doc->backPath) . 'return false;') . '" title="View">' .
 							htmlspecialchars($path) .
 							'</a></td>
 						<td nowrap="nowrap">' .
@@ -944,7 +944,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 					'CType=' . $GLOBALS['TYPO3_DB']->fullQuoteStr('templavoila_pi1', 'tt_content') .
 					' AND tx_templavoila_to=' . intval($toObj->getKey()) .
 					' AND tx_templavoila_ds=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($toObj->getDatastructure()->getKey(), 'tt_content') .
-					t3lib_BEfunc::deleteClause('tt_content'),
+					\TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tt_content'),
 					'',
 					'pid'
 				);
@@ -965,14 +965,14 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 						$output[] = '
 							<tr class="bgColor4-20">
 								<td nowrap="nowrap">' .
-							'<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::editOnClick('&edit[tt_content][' . $pRow['uid'] . ']=edit', $this->doc->backPath)) . '" title="Edit">' .
+							'<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick('&edit[tt_content][' . $pRow['uid'] . ']=edit', $this->doc->backPath)) . '" title="Edit">' .
 							htmlspecialchars($pRow['uid']) .
 							'</a></td>
 						<td nowrap="nowrap">' .
 							htmlspecialchars($pRow['header']) .
 							'</td>
 						<td nowrap="nowrap">' .
-							'<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::viewOnClick($pRow['pid'], $this->doc->backPath) . 'return false;') . '" title="View page">' .
+							'<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::viewOnClick($pRow['pid'], $this->doc->backPath) . 'return false;') . '" title="View page">' .
 							htmlspecialchars($path) .
 							'</a></td>
 						<td nowrap="nowrap">' .
@@ -1041,7 +1041,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 						(tx_templavoila_to NOT IN (' . implode(',', $toIdArray) . ') AND tx_templavoila_ds=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($dsObj->getKey(), 'pages') . ') OR
 						(tx_templavoila_next_to NOT IN (' . implode(',', $toIdArray) . ') AND tx_templavoila_next_ds=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($dsObj->getKey(), 'pages') . ')
 					)' .
-					t3lib_BEfunc::deleteClause('pages')
+					\TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('pages')
 				);
 
 				while (FALSE !== ($pRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))) {
@@ -1050,11 +1050,11 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 						$output[] = '
 							<tr class="bgColor4-20">
 								<td nowrap="nowrap">' .
-							'<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::editOnClick('&edit[pages][' . $pRow['uid'] . ']=edit', $this->doc->backPath)) . '">' .
+							'<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick('&edit[pages][' . $pRow['uid'] . ']=edit', $this->doc->backPath)) . '">' .
 							htmlspecialchars($pRow['title']) .
 							'</a></td>
 						<td nowrap="nowrap">' .
-							'<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::viewOnClick($pRow['uid'], $this->doc->backPath) . 'return false;') . '">' .
+							'<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::viewOnClick($pRow['uid'], $this->doc->backPath) . 'return false;') . '">' .
 							htmlspecialchars($path) .
 							'</a></td>
 					</tr>';
@@ -1077,7 +1077,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 					'CType=' . $GLOBALS['TYPO3_DB']->fullQuoteStr('templavoila_pi1', 'tt_content') .
 					' AND tx_templavoila_to NOT IN (' . implode(',', $toIdArray) . ')' .
 					' AND tx_templavoila_ds=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($dsObj->getKey(), 'tt_content') .
-					t3lib_BEfunc::deleteClause('tt_content'),
+					\TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tt_content'),
 					'',
 					'pid'
 				);
@@ -1096,11 +1096,11 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 						$output[] = '
 							<tr class="bgColor4-20">
 								<td nowrap="nowrap">' .
-							'<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::editOnClick('&edit[tt_content][' . $pRow['uid'] . ']=edit', $this->doc->backPath)) . '" title="Edit">' .
+							'<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick('&edit[tt_content][' . $pRow['uid'] . ']=edit', $this->doc->backPath)) . '" title="Edit">' .
 							htmlspecialchars($pRow['header']) .
 							'</a></td>
 						<td nowrap="nowrap">' .
-							'<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::viewOnClick($pRow['pid'], $this->doc->backPath) . 'return false;') . '" title="View page">' .
+							'<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::viewOnClick($pRow['pid'], $this->doc->backPath) . 'return false;') . '" title="View page">' .
 							htmlspecialchars($path) .
 							'</a></td>
 					</tr>';
@@ -1145,7 +1145,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 		if (!isset($this->pidCache[$pid])) {
 			$this->pidCache[$pid] = array();
 
-			$pageinfo = t3lib_BEfunc::readPageAccess($pid, $this->perms_clause);
+			$pageinfo = \TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess($pid, $this->perms_clause);
 			$this->pidCache[$pid]['path'] = $pageinfo['_thePath'];
 		}
 
@@ -1240,7 +1240,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 	}
 
 	/**
-	 * Get the processed value analog to t3lib_beFunc::getProcessedValue
+	 * Get the processed value analog to \TYPO3\CMS\Backend\Utility\BackendUtility::getProcessedValue
 	 * but take additional TSconfig values into account
 	 *
 	 * @param  $table
@@ -1250,9 +1250,9 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 	 * @return
 	 */
 	protected function getProcessedValue($table, $typeField, $typeValue) {
-		$value = t3lib_beFunc::getProcessedValue($table, $typeField, $typeValue);
+		$value = \TYPO3\CMS\Backend\Utility\BackendUtility::getProcessedValue($table, $typeField, $typeValue);
 		if (!$value) {
-			$TSConfig = t3lib_beFunc::getPagesTSconfig($this->id);
+			$TSConfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($this->id);
 			if (isset($TSConfig['TCEFORM.'][$table . '.'][$typeField . '.']['addItems.'][$typeValue])) {
 				$value = $TSConfig['TCEFORM.'][$table . '.'][$typeField . '.']['addItems.'][$typeValue];
 			}
@@ -1889,7 +1889,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 					'uid',
 					'tx_templavoila_tmplobj',
 					'fileref=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($file, 'tx_templavoila_tmplobj') .
-					t3lib_BEfunc::deleteClause('tx_templavoila_tmplobj')
+					\TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoila_tmplobj')
 				);
 
 				// Preview link
@@ -2005,11 +2005,11 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 
 					// Update various fields (the index values, eg. the "1" in "$import->import_mapId['pages'][1]]..." are the UIDs of the original records from the import file!)
 					$data = array();
-					$data['pages'][t3lib_BEfunc::wsMapId('pages', $import->import_mapId['pages'][1])]['title'] = $this->wizardData['sitetitle'];
-					$data['sys_template'][t3lib_BEfunc::wsMapId('sys_template', $import->import_mapId['sys_template'][1])]['title'] = $GLOBALS['LANG']->getLL('newsitewizard_maintemplate', 1) . ' ' . $this->wizardData['sitetitle'];
-					$data['sys_template'][t3lib_BEfunc::wsMapId('sys_template', $import->import_mapId['sys_template'][1])]['sitetitle'] = $this->wizardData['sitetitle'];
-					$data['tx_templavoila_tmplobj'][t3lib_BEfunc::wsMapId('tx_templavoila_tmplobj', $import->import_mapId['tx_templavoila_tmplobj'][1])]['fileref'] = $this->wizardData['file'];
-					$data['tx_templavoila_tmplobj'][t3lib_BEfunc::wsMapId('tx_templavoila_tmplobj', $import->import_mapId['tx_templavoila_tmplobj'][1])]['templatemapping'] = serialize(
+					$data['pages'][\TYPO3\CMS\Backend\Utility\BackendUtility::wsMapId('pages', $import->import_mapId['pages'][1])]['title'] = $this->wizardData['sitetitle'];
+					$data['sys_template'][\TYPO3\CMS\Backend\Utility\BackendUtility::wsMapId('sys_template', $import->import_mapId['sys_template'][1])]['title'] = $GLOBALS['LANG']->getLL('newsitewizard_maintemplate', 1) . ' ' . $this->wizardData['sitetitle'];
+					$data['sys_template'][\TYPO3\CMS\Backend\Utility\BackendUtility::wsMapId('sys_template', $import->import_mapId['sys_template'][1])]['sitetitle'] = $this->wizardData['sitetitle'];
+					$data['tx_templavoila_tmplobj'][\TYPO3\CMS\Backend\Utility\BackendUtility::wsMapId('tx_templavoila_tmplobj', $import->import_mapId['tx_templavoila_tmplobj'][1])]['fileref'] = $this->wizardData['file'];
+					$data['tx_templavoila_tmplobj'][\TYPO3\CMS\Backend\Utility\BackendUtility::wsMapId('tx_templavoila_tmplobj', $import->import_mapId['tx_templavoila_tmplobj'][1])]['templatemapping'] = serialize(
 						array(
 							'MappingInfo' => array(
 								'ROOT' => array(
@@ -2024,8 +2024,8 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 					);
 
 					// Update user settings
-					$newUserID = t3lib_BEfunc::wsMapId('be_users', $import->import_mapId['be_users'][2]);
-					$newGroupID = t3lib_BEfunc::wsMapId('be_groups', $import->import_mapId['be_groups'][1]);
+					$newUserID = \TYPO3\CMS\Backend\Utility\BackendUtility::wsMapId('be_users', $import->import_mapId['be_users'][2]);
+					$newGroupID = \TYPO3\CMS\Backend\Utility\BackendUtility::wsMapId('be_groups', $import->import_mapId['be_groups'][1]);
 
 					$data['be_users'][$newUserID]['username'] = $this->wizardData['username'];
 					$data['be_groups'][$newGroupID]['title'] = $this->wizardData['username'];
@@ -2037,7 +2037,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 
 					// Set URL if applicable:
 					if (strlen($this->wizardData['siteurl'])) {
-						$data['sys_domain']['NEW']['pid'] = t3lib_BEfunc::wsMapId('pages', $import->import_mapId['pages'][1]);
+						$data['sys_domain']['NEW']['pid'] = \TYPO3\CMS\Backend\Utility\BackendUtility::wsMapId('pages', $import->import_mapId['pages'][1]);
 						$data['sys_domain']['NEW']['domainName'] = $this->wizardData['siteurl'];
 					}
 
@@ -2050,10 +2050,10 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 
 					// Setting environment:
 					$this->wizardData['rootPageId'] = $import->import_mapId['pages'][1];
-					$this->wizardData['templateObjectId'] = t3lib_BEfunc::wsMapId('tx_templavoila_tmplobj', $import->import_mapId['tx_templavoila_tmplobj'][1]);
-					$this->wizardData['typoScriptTemplateID'] = t3lib_BEfunc::wsMapId('sys_template', $import->import_mapId['sys_template'][1]);
+					$this->wizardData['templateObjectId'] = \TYPO3\CMS\Backend\Utility\BackendUtility::wsMapId('tx_templavoila_tmplobj', $import->import_mapId['tx_templavoila_tmplobj'][1]);
+					$this->wizardData['typoScriptTemplateID'] = \TYPO3\CMS\Backend\Utility\BackendUtility::wsMapId('sys_template', $import->import_mapId['sys_template'][1]);
 
-					t3lib_BEfunc::setUpdateSignal('updatePageTree');
+					\TYPO3\CMS\Backend\Utility\BackendUtility::setUpdateSignal('updatePageTree');
 
 					$outputString .= $GLOBALS['LANG']->getLL('newsitewizard_maintemplate', 1) . '<hr/>';
 				}
@@ -2341,7 +2341,7 @@ lib.' . $menuType . '.1.ACT {
 
 		<br/>
 		<br/>
-		<input type="submit" value="' . $GLOBALS['LANG']->getLL('newsitewizard_finish', 1) . '" onclick="' . htmlspecialchars(t3lib_BEfunc::viewOnClick($this->wizardData['rootPageId'], $this->doc->backPath) . 'document.location=\'index.php?SET[wiz_step]=0\'; return false;') . '" />
+		<input type="submit" value="' . $GLOBALS['LANG']->getLL('newsitewizard_finish', 1) . '" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::viewOnClick($this->wizardData['rootPageId'], $this->doc->backPath) . 'document.location=\'index.php?SET[wiz_step]=0\'; return false;') . '" />
 		';
 
 		// Add output:
@@ -2404,7 +2404,7 @@ lib.' . $menuType . '.1.ACT {
 	 */
 	function getMenuDefaultCode($field) {
 		// Select template record and extract menu HTML content
-		$toRec = t3lib_BEfunc::getRecordWSOL('tx_templavoila_tmplobj', $this->wizardData['templateObjectId']);
+		$toRec = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('tx_templavoila_tmplobj', $this->wizardData['templateObjectId']);
 		$tMapping = unserialize($toRec['templatemapping']);
 
 		return $tMapping['MappingData_cached']['cArray'][$field];
@@ -2422,7 +2422,7 @@ lib.' . $menuType . '.1.ACT {
 		if (isset($cfg['menuCode'])) {
 
 			// Get template record:
-			$TSrecord = t3lib_BEfunc::getRecord('sys_template', $this->wizardData['typoScriptTemplateID']);
+			$TSrecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('sys_template', $this->wizardData['typoScriptTemplateID']);
 			if (is_array($TSrecord)) {
 				$data['sys_template'][$TSrecord['uid']]['config'] = '
 

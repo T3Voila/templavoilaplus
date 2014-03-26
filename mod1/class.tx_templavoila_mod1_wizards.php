@@ -87,7 +87,7 @@ class tx_templavoila_mod1_wizards {
 		global $LANG, $BE_USER, $TYPO3_CONF_VARS;
 
 		// Get default TCA values specific for the page and user
-		$temp = t3lib_BEfunc::getModTSconfig(abs($positionPid), 'TCAdefaults');
+		$temp = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig(abs($positionPid), 'TCAdefaults');
 		if (isset($temp['properties'])) {
 			$this->TCAdefaultOverride = $temp['properties'];
 		}
@@ -105,7 +105,7 @@ class tx_templavoila_mod1_wizards {
 				if ($newID > 0) {
 
 					// Get TSconfig for a different selection of fields in the editing form
-					$TSconfig = t3lib_BEfunc::getModTSconfig($newID, 'mod.web_txtemplavoilaM1.createPageWizard.fieldNames');
+					$TSconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($newID, 'mod.web_txtemplavoilaM1.createPageWizard.fieldNames');
 					$fieldNames = trim(isset ($TSconfig['value']) ? $TSconfig['value'] : 'hidden,title,alias');
 					$columnsOnly = '';
 					if ($fieldNames !== '*') {
@@ -132,7 +132,7 @@ class tx_templavoila_mod1_wizards {
 			if (\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($templateFile) && @is_file($templateFile)) {
 
 				// First, find positive PID for import of the page:
-				$importPID = t3lib_BEfunc::getTSconfig_pidValue('pages', '', $positionPid);
+				$importPID = \TYPO3\CMS\Backend\Utility\BackendUtility::getTSconfig_pidValue('pages', '', $positionPid);
 
 				// Initialize the import object:
 				$import = $this->getImportObject();
@@ -158,7 +158,7 @@ class tx_templavoila_mod1_wizards {
 
 						// PLAIN COPY FROM ABOVE - BEGIN
 						// Get TSconfig for a different selection of fields in the editing form
-						$TSconfig = t3lib_BEfunc::getModTSconfig($newID, 'tx_templavoila.mod1.createPageWizard.fieldNames');
+						$TSconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($newID, 'tx_templavoila.mod1.createPageWizard.fieldNames');
 						$fieldNames = isset ($TSconfig['value']) ? $TSconfig['value'] : 'hidden,title,alias';
 
 						// Create parameters and finally run the classic page module's edit form for the new page:
@@ -255,7 +255,7 @@ class tx_templavoila_mod1_wizards {
 
 		// Negative PID values is pointing to a page on the same level as the current.
 		if ($positionPid < 0) {
-			$pidRow = t3lib_BEfunc::getRecordWSOL('pages', abs($positionPid), 'pid');
+			$pidRow = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('pages', abs($positionPid), 'pid');
 			$parentPageId = $pidRow['pid'];
 		} else {
 			$parentPageId = $positionPid;
@@ -407,7 +407,7 @@ class tx_templavoila_mod1_wizards {
 	 * @return    integer        uid of the new page record
 	 */
 	function createPage($pageArray, $positionPid) {
-		$positionPageMoveToRow = t3lib_BEfunc::getMovePlaceholder('pages', abs($positionPid));
+		$positionPageMoveToRow = \TYPO3\CMS\Backend\Utility\BackendUtility::getMovePlaceholder('pages', abs($positionPid));
 		if (is_array($positionPageMoveToRow)) {
 			$positionPid = ($positionPid > 0) ? $positionPageMoveToRow['uid'] : '-' . $positionPageMoveToRow['uid'];
 		}
@@ -422,7 +422,7 @@ class tx_templavoila_mod1_wizards {
 
 		// If no data structure is set, try to find one by using the template object
 		if ($dataArr['pages']['NEW']['tx_templavoila_to'] && !$dataArr['pages']['NEW']['tx_templavoila_ds']) {
-			$templateObjectRow = t3lib_BEfunc::getRecordWSOL('tx_templavoila_tmplobj', $dataArr['pages']['NEW']['tx_templavoila_to'], 'uid,pid,datastructure');
+			$templateObjectRow = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('tx_templavoila_tmplobj', $dataArr['pages']['NEW']['tx_templavoila_to'], 'uid,pid,datastructure');
 			$dataArr['pages']['NEW']['tx_templavoila_ds'] = $templateObjectRow['datastructure'];
 		}
 
@@ -493,14 +493,14 @@ class tx_templavoila_mod1_wizards {
 
 		// Negative PID values is pointing to a page on the same level as the current.
 		if ($positionPid < 0) {
-			$pidRow = t3lib_BEfunc::getRecordWSOL('pages', abs($positionPid), 'pid');
+			$pidRow = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('pages', abs($positionPid), 'pid');
 			$parentPageId = $pidRow['pid'];
 		} else {
 			$parentPageId = $positionPid;
 		}
 
 		// Get PageTSconfig for reduce the output of selectded template structs
-		$disallowPageTemplateStruct = t3lib_BEfunc::getModTSconfig(abs($parentPageId), 'TCEFORM.pages.' . $fieldName);
+		$disallowPageTemplateStruct = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig(abs($parentPageId), 'TCEFORM.pages.' . $fieldName);
 
 		if (isset($disallowPageTemplateStruct['properties']['removeItems'])) {
 			$disallowedPageTemplateList = $disallowPageTemplateStruct['properties']['removeItems'];

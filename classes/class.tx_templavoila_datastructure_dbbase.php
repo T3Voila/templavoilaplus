@@ -42,7 +42,7 @@ class tx_templavoila_datastructure_dbbase extends tx_templavoila_datastructure {
 		if (TYPO3_MODE == 'FE') {
 			$this->row = $GLOBALS['TSFE']->sys_page->checkRecord('tx_templavoila_datastructure', $uid);
 		} else {
-			$this->row = t3lib_beFunc::getRecordWSOL('tx_templavoila_datastructure', $uid);
+			$this->row = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('tx_templavoila_datastructure', $uid);
 		}
 
 		$this->setLabel($this->row['title']);

@@ -60,7 +60,7 @@ class tx_templavoila_referenceElementsWizard extends t3lib_extobjbase {
 	function main() {
 		global $BACK_PATH, $LANG, $SOBE, $BE_USER, $TYPO3_DB;
 
-		$this->modSharedTSconfig = t3lib_BEfunc::getModTSconfig($this->pObj->id, 'mod.SHARED');
+		$this->modSharedTSconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($this->pObj->id, 'mod.SHARED');
 		$this->allAvailableLanguages = $this->getAvailableLanguages(0, TRUE, TRUE, TRUE);
 
 		$output = '';
@@ -69,7 +69,7 @@ class tx_templavoila_referenceElementsWizard extends t3lib_extobjbase {
 		// Showing the tree:
 		// Initialize starting point of page tree:
 		$treeStartingPoint = intval($this->pObj->id);
-		$treeStartingRecord = t3lib_BEfunc::getRecord('pages', $treeStartingPoint);
+		$treeStartingRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', $treeStartingPoint);
 		$depth = $this->pObj->MOD_SETTINGS['depth'];
 
 		// Initialize tree object:
@@ -113,7 +113,7 @@ class tx_templavoila_referenceElementsWizard extends t3lib_extobjbase {
 				$createReferencesLink = '';
 			}
 
-			$rowTitle = $row['HTML'] . t3lib_BEfunc::getRecordTitle('pages', $row['row'], TRUE);
+			$rowTitle = $row['HTML'] . \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle('pages', $row['row'], TRUE);
 			$cellAttrib = ($row['row']['_CSSCLASS'] ? ' class="' . $row['row']['_CSSCLASS'] . '"' : '');
 
 			$tCells = array();
@@ -137,7 +137,7 @@ class tx_templavoila_referenceElementsWizard extends t3lib_extobjbase {
 		$tCells[] = '<td>&nbsp;</td>';
 
 		// Depth selector:
-		$depthSelectorBox = t3lib_BEfunc::getFuncMenu($this->pObj->id, 'SET[depth]', $this->pObj->MOD_SETTINGS['depth'], $this->pObj->MOD_MENU['depth'], 'index.php');
+		$depthSelectorBox = \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncMenu($this->pObj->id, 'SET[depth]', $this->pObj->MOD_SETTINGS['depth'], $this->pObj->MOD_MENU['depth'], 'index.php');
 
 		$finalOutput = '
 			<br />
@@ -187,8 +187,8 @@ class tx_templavoila_referenceElementsWizard extends t3lib_extobjbase {
 			$lDef = array();
 			$vDef = array();
 			if ($langField && $elementRecord[$langField]) {
-				$pageRec = t3lib_BEfunc::getRecordWSOL('pages', $pageUid);
-				$xml = t3lib_BEfunc::getFlexFormDS($GLOBALS['TCA']['pages']['columns']['tx_templavoila_flex']['config'], $pageRec, 'pages', 'tx_templavoila_ds');
+				$pageRec = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('pages', $pageUid);
+				$xml = \TYPO3\CMS\Backend\Utility\BackendUtility::getFlexFormDS($GLOBALS['TCA']['pages']['columns']['tx_templavoila_flex']['config'], $pageRec, 'pages', 'tx_templavoila_ds');
 				$langChildren = intval($xml['meta']['langChildren']);
 				$langDisable = intval($xml['meta']['langDisable']);
 				if ($elementRecord[$langField] == -1) {
@@ -251,8 +251,8 @@ class tx_templavoila_referenceElementsWizard extends t3lib_extobjbase {
 			(count($referencedElementsArr) ? ' AND uid NOT IN (' . implode(',', $referencedElementsArr) . ')' : '') .
 			' AND t3ver_wsid=' . intval($GLOBALS['BE_USER']->workspace) .
 			' AND l18n_parent=0' .
-			t3lib_BEfunc::deleteClause('tt_content') .
-			t3lib_BEfunc::versioningPlaceholderClause('tt_content'),
+			\TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tt_content') .
+			\TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause('tt_content'),
 			'',
 			'sorting'
 		);
@@ -314,11 +314,11 @@ class tx_templavoila_referenceElementsWizard extends t3lib_extobjbase {
 		}
 
 		while (TRUE == ($row = $TYPO3_DB->sql_fetch_assoc($res))) {
-			t3lib_BEfunc::workspaceOL('sys_language', $row);
+			\TYPO3\CMS\Backend\Utility\BackendUtility::workspaceOL('sys_language', $row);
 			$output[$row['uid']] = $row;
 
 			if ($row['static_lang_isocode']) {
-				$staticLangRow = t3lib_BEfunc::getRecord('static_languages', $row['static_lang_isocode'], 'lg_iso_2');
+				$staticLangRow = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('static_languages', $row['static_lang_isocode'], 'lg_iso_2');
 				if ($staticLangRow['lg_iso_2']) {
 					$output[$row['uid']]['ISOcode'] = $staticLangRow['lg_iso_2'];
 				}

@@ -153,7 +153,7 @@ class tx_templavoila_tcemain {
 		// Access check for FCE
 		if ($table == 'tt_content') {
 			if ($status != 'new') {
-				$row = t3lib_beFunc::getRecord($table, $id);
+				$row = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $id);
 			} else {
 				$row = & $fieldArray;
 			}
@@ -213,7 +213,7 @@ page.10.disableExplosivePreview = 1
 			case 'new' :
 				if (!isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_tcemain']['doNotInsertElementRefsToPage'])) {
 
-					t3lib_BEfunc::fixVersioningPid($table, $fieldArray);
+					\TYPO3\CMS\Backend\Utility\BackendUtility::fixVersioningPid($table, $fieldArray);
 
 					if (isset ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_tcemain']['preProcessFieldArrays'][$id])) {
 						$positionReferenceUid = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_tcemain']['preProcessFieldArrays'][$id]['pid'];
@@ -244,10 +244,10 @@ page.10.disableExplosivePreview = 1
 							);
 
 							if ($sorting < 0) {
-								$parentRecord = t3lib_BEfunc::getRecordWSOL($destinationFlexformPointer['table'], $destinationFlexformPointer['uid'], 'uid,pid,tx_templavoila_flex');
+								$parentRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL($destinationFlexformPointer['table'], $destinationFlexformPointer['uid'], 'uid,pid,tx_templavoila_flex');
 								$currentReferencesArr = $templaVoilaAPI->flexform_getElementReferencesFromXML($parentRecord['tx_templavoila_flex'], $destinationFlexformPointer);
 								if (count($currentReferencesArr)) {
-									$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,' . $sorting_field, $table, 'uid IN (' . implode(',', $currentReferencesArr) . ')' . t3lib_BEfunc::deleteClause($table));
+									$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,' . $sorting_field, $table, 'uid IN (' . implode(',', $currentReferencesArr) . ')' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($table));
 									$sort = array($reference->substNEWwithIDs[$id] => -$sorting);
 									foreach ($rows as $row) {
 										$sort[$row['uid']] = $row[$sorting_field];
@@ -317,7 +317,7 @@ page.10.disableExplosivePreview = 1
 
 		switch ($command) {
 			case 'delete' :
-				$record = t3lib_beFunc::getRecord('tt_content', $id);
+				$record = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('tt_content', $id);
 				// Check for FCE access
 				$params = array(
 					'table' => $table,
@@ -331,7 +331,7 @@ page.10.disableExplosivePreview = 1
 					if (intval($record['t3ver_oid']) > 0 && $record['pid'] == -1) {
 						// we unlink a offline version in a workspace
 						if (abs($record['t3ver_wsid']) !== 0) {
-							$record = t3lib_BEfunc::getRecord('tt_content', intval($record['t3ver_oid']));
+							$record = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('tt_content', intval($record['t3ver_oid']));
 						}
 					}
 					// avoid that deleting offline version in the live workspace unlinks the online version - see #11359
@@ -588,12 +588,12 @@ page.10.disableExplosivePreview = 1
 			$incomingFieldArray[$dsField] = '';
 		} else {
 			if ($beUser->workspace) {
-				$record = t3lib_BEfunc::getWorkspaceVersionOfRecord($beUser->workspace, 'tx_templavoila_tmplobj', $toId, 'datastructure');
+				$record = \TYPO3\CMS\Backend\Utility\BackendUtility::getWorkspaceVersionOfRecord($beUser->workspace, 'tx_templavoila_tmplobj', $toId, 'datastructure');
 				if (!is_array($record)) {
-					$record = t3lib_BEfunc::getRecord('tx_templavoila_tmplobj', $toId, 'datastructure');
+					$record = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('tx_templavoila_tmplobj', $toId, 'datastructure');
 				}
 			} else {
-				$record = t3lib_BEfunc::getRecord('tx_templavoila_tmplobj', $toId, 'datastructure');
+				$record = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('tx_templavoila_tmplobj', $toId, 'datastructure');
 			}
 			if (is_array($record) && isset($record['datastructure'])) {
 				$incomingFieldArray[$dsField] = $record['datastructure'];
@@ -639,8 +639,8 @@ page.10.disableExplosivePreview = 1
 				}
 				// get the field-information and check if only "ce" fields are updated
 				$conf = $TCA[$table]['columns'][$field]['config'];
-				$currentRecord = t3lib_BEfunc::getRecord($table, $id);
-				$dataStructArray = t3lib_BEfunc::getFlexFormDS($conf, $currentRecord, $table, $field, TRUE);
+				$currentRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $id);
+				$dataStructArray = \TYPO3\CMS\Backend\Utility\BackendUtility::getFlexFormDS($conf, $currentRecord, $table, $field, TRUE);
 				foreach ($data[$field]['data'] as $sheet => $sheetData) {
 					if (!is_array($sheetData) || !is_array($dataStructArray['ROOT']['el'])) {
 						$res = FALSE;

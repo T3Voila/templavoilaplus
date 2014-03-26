@@ -262,13 +262,13 @@ class tx_templavoila_mod1_clipboard {
 		$pid = $this->pObj->id; // If workspaces should evaluated non-used elements it must consider the id: For "element" and "branch" versions it should accept the incoming id, for "page" type versions it must be remapped (because content elements are then related to the id of the offline version)
 
 		$res = $TYPO3_DB->exec_SELECTquery(
-			t3lib_BEfunc::getCommonSelectFields('tt_content', '', array('uid', 'header', 'bodytext', 'sys_language_uid')),
+			\TYPO3\CMS\Backend\Utility\BackendUtility::getCommonSelectFields('tt_content', '', array('uid', 'header', 'bodytext', 'sys_language_uid')),
 			'tt_content',
 			'pid=' . intval($pid) . ' ' .
 			'AND uid NOT IN (' . implode(',', $usedUids) . ') ' .
 			'AND ( t3ver_state NOT IN (1,3) OR (t3ver_wsid > 0 AND t3ver_wsid = ' . intval($GLOBALS['BE_USER']->workspace) . ') )' .
-			t3lib_BEfunc::deleteClause('tt_content') .
-			t3lib_BEfunc::versioningPlaceholderClause('tt_content'),
+			\TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tt_content') .
+			\TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause('tt_content'),
 			'',
 			'uid'
 		);
@@ -291,7 +291,7 @@ class tx_templavoila_mod1_clipboard {
 			$recordButton = $this->pObj->doc->wrapClickMenuOnIcon($recordIcon, 'tt_content', $row['uid'], 1, '&callingScriptId=' . rawurlencode($this->pObj->doc->scriptID), 'new,copy,cut,pasteinto,pasteafter,delete');
 
 			if ($GLOBALS['BE_USER']->workspace) {
-				$wsRow = t3lib_BEfunc::getRecordWSOL('tt_content', $row['uid']);
+				$wsRow = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('tt_content', $row['uid']);
 				$isDeletedInWorkspace = $wsRow['t3ver_state'] == 2;
 			} else {
 				$isDeletedInWorkspace = FALSE;
@@ -306,7 +306,7 @@ class tx_templavoila_mod1_clipboard {
 					$this->renderReferenceCount($row['uid']) .
 					'</td>
 					<td class="tpm-nonused-preview">' .
-					$recordButton . htmlspecialchars(t3lib_BEfunc::getRecordTitle('tt_content', $row)) .
+					$recordButton . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle('tt_content', $row)) .
 					'</td>
 				</tr>
 			';

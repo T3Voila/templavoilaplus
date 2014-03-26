@@ -54,9 +54,9 @@ class tx_templavoila_templateRepository {
 			'tx_templavoila_tmplobj',
 			'tx_templavoila_tmplobj.datastructure=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($ds->getKey(), 'tx_templavoila_tmplobj')
 			. (intval($storagePid) > 0 ? ' AND tx_templavoila_tmplobj.pid = ' . intval($storagePid) : '')
-			. t3lib_BEfunc::deleteClause('tx_templavoila_tmplobj')
+			. \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoila_tmplobj')
 			. ' AND pid!=-1 '
-			. t3lib_BEfunc::versioningPlaceholderClause('tx_templavoila_tmplobj')
+			. \TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause('tx_templavoila_tmplobj')
 		);
 		$toCollection = array();
 		foreach ($toList as $toRec) {
@@ -101,8 +101,8 @@ class tx_templavoila_templateRepository {
 			'tx_templavoila_tmplobj',
 			'tx_templavoila_tmplobj.parent=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($to->getKey(), 'tx_templavoila_tmplobj')
 			. (intval($storagePid) > 0 ? ' AND tx_templavoila_tmplobj.pid = ' . intval($storagePid) : ' AND pid!=-1')
-			. t3lib_BEfunc::deleteClause('tx_templavoila_tmplobj')
-			. t3lib_BEfunc::versioningPlaceholderClause('tx_templavoila_tmplobj')
+			. \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoila_tmplobj')
+			. \TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause('tx_templavoila_tmplobj')
 		);
 		$toCollection = array();
 		foreach ($toList as $toRec) {
@@ -124,8 +124,8 @@ class tx_templavoila_templateRepository {
 			'tx_templavoila_tmplobj',
 			'1=1'
 			. (intval($storagePid) > 0 ? ' AND tx_templavoila_tmplobj.pid = ' . intval($storagePid) : ' AND tx_templavoila_tmplobj.pid!=-1')
-			. t3lib_BEfunc::deleteClause('tx_templavoila_tmplobj')
-			. t3lib_BEfunc::versioningPlaceholderClause('tx_templavoila_tmplobj')
+			. \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoila_tmplobj')
+			. \TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause('tx_templavoila_tmplobj')
 		);
 		$toCollection = array();
 		foreach ($toList as $toRec) {
@@ -159,7 +159,7 @@ class tx_templavoila_templateRepository {
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 			'pid',
 			'tx_templavoila_tmplobj',
-			'pid>=0' . t3lib_BEfunc::deleteClause('tx_templavoila_tmplobj'),
+			'pid>=0' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoila_tmplobj'),
 			'pid'
 		);
 		while ($res && FALSE !== ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))) {
@@ -179,7 +179,7 @@ class tx_templavoila_templateRepository {
 		$toCnt = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 			'count(*) as cnt',
 			'tx_templavoila_tmplobj',
-			'pid=' . intval($pid) . t3lib_BEfunc::deleteClause('tx_templavoila_tmplobj')
+			'pid=' . intval($pid) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoila_tmplobj')
 		);
 
 		return $toCnt[0]['cnt'];

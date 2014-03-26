@@ -149,7 +149,7 @@ class tx_templavoila_cm1 {
 				$res = $TYPO3_DB->exec_SELECTquery('*', 'tx_templavoila_elementreferences', 'uid=' . $backRef->rec['uid']);
 				if ($res) {
 					while (FALSE != ($referenceRecord = $TYPO3_DB->sql_fetch_assoc($res))) {
-						$pageRecord = t3lib_beFunc::getRecord('pages', $referenceRecord['pid']);
+						$pageRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', $referenceRecord['pid']);
 						$icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', $pageRecord);
 						// To do: Display language flag icon and jump to correct language
 #						if ($referenceRecord['lkey'] != 'lDEF') {
@@ -160,7 +160,7 @@ class tx_templavoila_cm1 {
 						if (is_array($pageRecord)) {
 							$menuItems[] = $backRef->linkItem(
 								$icon,
-								t3lib_beFunc::getRecordTitle('pages', $pageRecord, 1),
+								\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle('pages', $pageRecord, 1),
 								$backRef->urlRefForCM($url . $pageRecord['uid'], 'returnUrl'),
 								1 // Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
 							);

@@ -117,12 +117,12 @@ class tx_templavoila_dbnewcontentel {
 
 		$this->doc->form = '<form action="" name="editForm">';
 
-		$tsconfig = t3lib_BEfunc::getModTSconfig($this->id, 'templavoila.wizards.newContentElement');
+		$tsconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($this->id, 'templavoila.wizards.newContentElement');
 		$this->config = $tsconfig['properties'];
 
 		// Getting the current page and receiving access information (used in main())
 		$perms_clause = $BE_USER->getPagePermsClause(1);
-		$pageinfo = t3lib_BEfunc::readPageAccess($this->id, $perms_clause);
+		$pageinfo = \TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess($this->id, $perms_clause);
 		$this->access = is_array($pageinfo) ? 1 : 0;
 
 		$this->apiObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_api');
@@ -151,9 +151,9 @@ class tx_templavoila_dbnewcontentel {
 			$this->content = $this->doc->header($LANG->getLL('newContentElement'));
 			$this->content .= $this->doc->spacer(5);
 
-			$elRow = t3lib_BEfunc::getRecordWSOL('pages', $this->id);
+			$elRow = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('pages', $this->id);
 			$header = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', $elRow);
-			$header .= t3lib_BEfunc::getRecordTitle('pages', $elRow, 1);
+			$header .= \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle('pages', $elRow, 1);
 			$this->content .= $this->doc->section('', $header, 0, 1);
 			$this->content .= $this->doc->spacer(10);
 
@@ -254,7 +254,7 @@ class tx_templavoila_dbnewcontentel {
 			$this->content = $this->doc->header($LANG->getLL('newContentElement'));
 		}
 
-		$this->pageinfo = t3lib_BEfunc::readPageAccess($this->id, $this->perms_clause);
+		$this->pageinfo = \TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess($this->id, $this->perms_clause);
 		$docHeaderButtons = $this->getDocHeaderButtons();
 		$docContent = array(
 			'CSH' => $docHeaderButtons['csh'],
@@ -280,7 +280,7 @@ class tx_templavoila_dbnewcontentel {
 	 */
 	protected function getDocHeaderButtons() {
 		$buttons = array(
-			'csh' => t3lib_BEfunc::cshItem('_MOD_web_txtemplavoilaCM1', '', $this->backPath),
+			'csh' => \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_txtemplavoilaCM1', '', $this->backPath),
 			'back' => '',
 			'shortcut' => $this->getShortcutButton(),
 		);
@@ -491,7 +491,7 @@ class tx_templavoila_dbnewcontentel {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA('tt_content');
 
 		// Get TCEFORM from TSconfig of current page
-		$TCEFORM_TSconfig = t3lib_BEfunc::getTCEFORM_TSconfig('tt_content', array('pid' => $this->id));
+		$TCEFORM_TSconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getTCEFORM_TSconfig('tt_content', array('pid' => $this->id));
 		$removeItems = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $TCEFORM_TSconfig['CType']['removeItems'], 1);
 
 		$headersUsed = Array();

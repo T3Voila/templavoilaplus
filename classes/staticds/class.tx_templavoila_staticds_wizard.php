@@ -174,7 +174,7 @@ class tx_templavoila_staticds_wizard {
 			$usage = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 				'count(*)',
 				'tx_templavoila_tmplobj',
-				'datastructure=' . (int) $row['uid'] . t3lib_BEfunc::BEenableFields('tx_templavoila_tmplobj')
+				'datastructure=' . (int) $row['uid'] . \TYPO3\CMS\Backend\Utility\BackendUtility::BEenableFields('tx_templavoila_tmplobj')
 			);
 			if (count($writeDsIds) && in_array($row['uid'], $writeDsIds)) {
 				\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($path, $row['dataprot']);

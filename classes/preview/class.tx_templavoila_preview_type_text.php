@@ -54,7 +54,7 @@ class tx_templavoila_preview_type_text {
 	 * @return string
 	 */
 	protected function getPreviewLabel() {
-		return $GLOBALS['LANG']->sL(t3lib_BEfunc::getItemLabel('tt_content', $this->previewField), 1);
+		return $GLOBALS['LANG']->sL(\TYPO3\CMS\Backend\Utility\BackendUtility::getItemLabel('tt_content', $this->previewField), 1);
 	}
 
 	/**

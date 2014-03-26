@@ -63,7 +63,7 @@ class tx_templavoila_datastructure_staticbase extends tx_templavoila_datastructu
 		$toList = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 			'tx_templavoila_tmplobj.uid,tx_templavoila_tmplobj.pid',
 			'tx_templavoila_tmplobj',
-			'tx_templavoila_tmplobj.datastructure=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->filename, 'tx_templavoila_tmplobj') . t3lib_BEfunc::deleteClause('tx_templavoila_tmplobj')
+			'tx_templavoila_tmplobj.datastructure=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->filename, 'tx_templavoila_tmplobj') . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoila_tmplobj')
 		);
 		foreach ($toList as $toRow) {
 			$pids[$toRow['pid']]++;

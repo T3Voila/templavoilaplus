@@ -141,7 +141,7 @@ class tx_templavoila_mod1_localization {
 		$output = '
 			<tr class="bgColor4">
 				<td width="20">
-					' . t3lib_BEfunc::cshItem('_MOD_web_txtemplavoilaM1', 'selectlanguageversion', $this->doc->backPath) . '
+					' . \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_txtemplavoilaM1', 'selectlanguageversion', $this->doc->backPath) . '
 				</td><td width="200" style="vertical-align:middle;">
 					' . $LANG->getLL('selectlanguageversion', 1) . ':
 				</td>
@@ -159,7 +159,7 @@ class tx_templavoila_mod1_localization {
 				$output .= '
 					<tr class="bgColor4">
 						<td width="20">
-							' . t3lib_BEfunc::cshItem('_MOD_web_txtemplavoilaM1', 'pagelocalizationdisplaymode', $this->doc->backPath) . '
+							' . \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_txtemplavoilaM1', 'pagelocalizationdisplaymode', $this->doc->backPath) . '
 						</td><td width="200" style="vertical-align:middle;">
 							' . $LANG->getLL('pageLocalizationDisplayMode', 1) . ':
 						</td>
@@ -177,7 +177,7 @@ class tx_templavoila_mod1_localization {
 			$output .= '
 				<tr class="bgColor4">
 					<td  width="20">
-						' . t3lib_BEfunc::cshItem('_MOD_web_txtemplavoilaM1', 'pagelocalizationmode', $this->doc->backPath) . '
+						' . \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_txtemplavoilaM1', 'pagelocalizationmode', $this->doc->backPath) . '
 					</td><td width="200" style="vertical-align:middle;">
 						' . $LANG->getLL('pageLocalizationMode', 1) . ':
 					</td>
@@ -193,7 +193,7 @@ class tx_templavoila_mod1_localization {
 			$output .= '
 				<tr class="bgColor4">
 					<td  width="20">
-						' . t3lib_BEfunc::cshItem('_MOD_web_txtemplavoilaM1', 'disablePageStructureInheritance', $this->doc->backPath) . '
+						' . \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_txtemplavoilaM1', 'disablePageStructureInheritance', $this->doc->backPath) . '
 					</td><td width="200" style="vertical-align:middle;">
 						' . $LANG->getLL('pageLocalizationMode_inheritance.disableInheritance', 1) . ':
 					</td>
@@ -207,7 +207,7 @@ class tx_templavoila_mod1_localization {
 		$output .= '
 			<tr class="bgColor4">
 				<td  width="20">
-					' . t3lib_BEfunc::cshItem('_MOD_web_txtemplavoilaM1', 'editlanguageversion', $this->doc->backPath) . '
+					' . \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_txtemplavoilaM1', 'editlanguageversion', $this->doc->backPath) . '
 				</td><td width="200" style="vertical-align:middle;">
 					' . $LANG->getLL('editlanguageversion', 1) . ':
 				</td>
@@ -255,7 +255,7 @@ class tx_templavoila_mod1_localization {
 			$output = '
 				<tr class="bgColor4">
 					<td width="20">
-						' . t3lib_BEfunc::cshItem('_MOD_web_txtemplavoilaM1', 'createnewtranslation', $this->doc->backPath) . '
+						' . \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_txtemplavoilaM1', 'createnewtranslation', $this->doc->backPath) . '
 					</td><td width="200" style="vertical-align:middle;">
 						' . $LANG->getLL('createnewtranslation', 1) . ':
 					</td>

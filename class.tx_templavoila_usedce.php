@@ -55,7 +55,7 @@ class tx_templavoila_usedCE {
 		$apiObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_api', 'pages');
 
 		// Fetch the content structure of page:
-		$contentTreeData = $apiObj->getContentTree('pages', t3lib_BEfunc::getRecordRaw('pages', 'uid=' . intval($page_uid)));
+		$contentTreeData = $apiObj->getContentTree('pages', \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw('pages', 'uid=' . intval($page_uid)));
 		if ($contentTreeData['tree']['ds_is_found']) {
 			$this->usedUids = array_keys($contentTreeData['contentElementUsage']);
 			$this->usedUids[] = 0;

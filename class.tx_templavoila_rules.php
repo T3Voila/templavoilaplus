@@ -67,11 +67,11 @@ class tx_templavoila_rules {
 		$statusArr = array();
 
 		// Getting data structure for the template and extract information for default records to create
-		$parentRecord = t3lib_BEfunc::getRecord($table, $uid);
+		$parentRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $uid);
 
 		// Only care about page records or flexible content elements:
 		if ($table != 'tt_content' || $parentRecord['CType'] == 'templavoila_pi1') {
-			$recRow = t3lib_BEfunc::getRecord('tx_templavoila_datastructure', $parentRecord['tx_templavoila_ds']);
+			$recRow = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('tx_templavoila_datastructure', $parentRecord['tx_templavoila_ds']);
 			$xmlContent = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($recRow['dataprot']);
 			if (is_array($xmlContent['ROOT']) && is_array($xmlContent['ROOT']['el'])) {
 				foreach ($xmlContent['ROOT']['el'] as $fieldName => $field) {
@@ -87,7 +87,7 @@ class tx_templavoila_rules {
 						$xmlContent = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($parentRecord['tx_templavoila_flex']);
 						$recUIDs = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $xmlContent['data']['sDEF']['lDEF'][$fieldName]['vDEF']);
 						foreach ($recUIDs as $recUID) {
-							$row = t3lib_BEfunc::getRecord('tt_content', $recUID, 'uid,CType,tx_templavoila_to');
+							$row = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('tt_content', $recUID, 'uid,CType,tx_templavoila_to');
 							if ($row['CType'] == 'templavoila_pi1') {
 								$row['CType'] .= ',' . $row['tx_templavoila_to'];
 							}

@@ -448,7 +448,7 @@ class tx_templavoila_xmlrelhndl {
 	function _getListOfSubElementsRecursively($table, $uid, &$recordUids) {
 
 		// Fetch the specified record, find all sub elements
-		$parentRecord = t3lib_BEfunc::getRecord($table, $uid, 'uid,pid,' . $this->flexFieldIndex[$table]);
+		$parentRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $uid, 'uid,pid,' . $this->flexFieldIndex[$table]);
 		$flexFieldArr = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($parentRecord[$this->flexFieldIndex[$table]]);
 
 #\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('_getListOfSubElementsRecursively ('.$table.', '.$uid.', '.implode(',',$recordUids).')', 'tx_templavoila', 1);
@@ -496,7 +496,7 @@ class tx_templavoila_xmlrelhndl {
 	function _splitAndValidateReference($string) {
 		$refArr = explode(':', $string);
 
-		if ($version = t3lib_BEfunc::getWorkspaceVersionOfRecord($GLOBALS['BE_USER']->workspace, $refArr[0], $refArr[1], 'uid')) {
+		if ($version = \TYPO3\CMS\Backend\Utility\BackendUtility::getWorkspaceVersionOfRecord($GLOBALS['BE_USER']->workspace, $refArr[0], $refArr[1], 'uid')) {
 			$refArr[1] = $version['uid'];
 		}
 

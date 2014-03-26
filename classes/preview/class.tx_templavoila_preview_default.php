@@ -36,7 +36,7 @@ class tx_templavoila_preview_default {
 	 * @return string
 	 */
 	public function render_previewContent($row, $table, $output, $alreadyRendered, &$ref) {
-		return '<strong>' . $GLOBALS['LANG']->sL(t3lib_BEfunc::getLabelFromItemlist('tt_content', 'CType', $row['CType'])) . '</strong>';
+		return '<strong>' . $GLOBALS['LANG']->sL(\TYPO3\CMS\Backend\Utility\BackendUtility::getLabelFromItemlist('tt_content', 'CType', $row['CType'])) . '</strong>';
 	}
 }
 

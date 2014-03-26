@@ -61,7 +61,7 @@ class tx_templavoila_renameFieldInPageFlexWizard extends t3lib_extobjbase {
 	 * @return array
 	 */
 	protected function getAllSubPages($uid) {
-		$completeRecords = t3lib_BEfunc::getRecordsByField('pages', 'pid', $uid);
+		$completeRecords = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordsByField('pages', 'pid', $uid);
 		$return = array($uid);
 		if (count($completeRecords) > 0) {
 			foreach ($completeRecords as $record) {

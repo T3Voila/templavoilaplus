@@ -270,7 +270,7 @@ class tx_templavoila_mod1_sidebar {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA('pages');
 		$conf = $TCA['pages']['columns']['tx_templavoila_flex']['config'];
 
-		$dataStructureArr = t3lib_BEfunc::getFlexFormDS($conf, $pObj->rootElementRecord, 'pages');
+		$dataStructureArr = \TYPO3\CMS\Backend\Utility\BackendUtility::getFlexFormDS($conf, $pObj->rootElementRecord, 'pages');
 
 		if (is_array($dataStructureArr) && is_array($dataStructureArr['ROOT']['tx_templavoila']['pageModule'])) {
 			$headerTablesAndFieldNames = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(chr(10), str_replace(chr(13), '', $dataStructureArr['ROOT']['tx_templavoila']['pageModule']['displayHeaderFields']), 1);
@@ -285,14 +285,14 @@ class tx_templavoila_mod1_sidebar {
 					$headerFields[] = array(
 						'table' => $table,
 						'field' => $field,
-						'label' => $LANG->sL(t3lib_BEfunc::getItemLabel('pages', $field)),
-						'value' => t3lib_BEfunc::getProcessedValue('pages', $field, $pObj->rootElementRecord[$field], 200)
+						'label' => $LANG->sL(\TYPO3\CMS\Backend\Utility\BackendUtility::getItemLabel('pages', $field)),
+						'value' => \TYPO3\CMS\Backend\Utility\BackendUtility::getProcessedValue('pages', $field, $pObj->rootElementRecord[$field], 200)
 					);
 				}
 				if (count($headerFields)) {
 					foreach ($headerFields as $headerFieldArr) {
 						if ($headerFieldArr['table'] == 'pages') {
-							$onClick = t3lib_BEfunc::editOnClick('&edit[pages][' . $pObj->id . ']=edit&columnsOnly=' . implode(',', $fieldNames['pages']), $this->doc->backPath);
+							$onClick = \TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick('&edit[pages][' . $pObj->id . ']=edit&columnsOnly=' . implode(',', $fieldNames['pages']), $this->doc->backPath);
 							$linkedValue = '<a style="text-decoration: none;" href="#" onclick="' . htmlspecialchars($onClick) . '">' . htmlspecialchars($headerFieldArr['value']) . '</a>';
 							$linkedLabel = '<a style="text-decoration: none;" href="#" onclick="' . htmlspecialchars($onClick) . '">' . htmlspecialchars($headerFieldArr['label']) . '</a>';
 							$headerFieldRows[] = '
@@ -372,11 +372,11 @@ class tx_templavoila_mod1_sidebar {
 		$tableRows[] = '
 			<tr class="bgColor4">
 				<td width="20">
-					' . t3lib_BEfunc::cshItem('_MOD_web_txtemplavoilaM1', 'advancedfunctions_showhiddenelements', $this->doc->backPath) . '
+					' . \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_txtemplavoilaM1', 'advancedfunctions_showhiddenelements', $this->doc->backPath) . '
 				</td><td width="200">
 					' . $LANG->getLL('sidebar_advancedfunctions_labelshowhidden', 1) . ':
 				</td>
-				<td>' . t3lib_BEfunc::getFuncCheck($pObj->id, 'SET[tt_content_showHidden]', $pObj->MOD_SETTINGS['tt_content_showHidden'] !== '0', '', '') . '</td>
+				<td>' . \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($pObj->id, 'SET[tt_content_showHidden]', $pObj->MOD_SETTINGS['tt_content_showHidden'] !== '0', '', '') . '</td>
 			</tr>
 		';
 
@@ -385,11 +385,11 @@ class tx_templavoila_mod1_sidebar {
 			$tableRows[] = '
 				<tr class="bgColor4">
 					<td width="20">
-						' . t3lib_BEfunc::cshItem('_MOD_web_txtemplavoilaM1', 'advancedfunctions_showoutline', $this->doc->backPath) . '
+						' . \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_txtemplavoilaM1', 'advancedfunctions_showoutline', $this->doc->backPath) . '
 					</td><td width="200">
 						' . $LANG->getLL('sidebar_advancedfunctions_labelshowoutline', 1) . ':
 					</td>
-					<td>' . t3lib_BEfunc::getFuncCheck($pObj->id, 'SET[showOutline]', $pObj->MOD_SETTINGS['showOutline'], '', '') . '</td>
+					<td>' . \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($pObj->id, 'SET[showOutline]', $pObj->MOD_SETTINGS['showOutline'], '', '') . '</td>
 				</tr>
 			';
 		}

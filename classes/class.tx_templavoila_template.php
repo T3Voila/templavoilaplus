@@ -52,7 +52,7 @@ class tx_templavoila_template {
 	 * @param integer $uid
 	 */
 	public function __construct($uid) {
-		$this->row = t3lib_beFunc::getRecordWSOL('tx_templavoila_tmplobj', $uid);
+		$this->row = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('tx_templavoila_tmplobj', $uid);
 
 		$this->setLabel($this->row['title']);
 		$this->setDescription($this->row['description']);

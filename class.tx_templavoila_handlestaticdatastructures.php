@@ -284,7 +284,7 @@ class tx_templavoila_handleStaticDataStructures {
 
 		// Check for alternative storage folder
 		$field = $params['table'] == 'pages' ? 'uid' : 'pid';
-		$modTSConfig = t3lib_BEfunc::getModTSconfig($params['row'][$field], 'tx_templavoila.storagePid');
+		$modTSConfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($params['row'][$field], 'tx_templavoila.storagePid');
 		if (is_array($modTSConfig) && tx_templavoila_div::canBeInterpretedAsInteger($modTSConfig['value'])) {
 			$storagePid = intval($modTSConfig['value']);
 		}
@@ -320,7 +320,7 @@ class tx_templavoila_handleStaticDataStructures {
 	 */
 	protected function getRemoveItems($params, $field) {
 		$pid = $params['row'][$params['table'] == 'pages' ? 'uid' : 'pid'];
-		$modTSConfig = t3lib_BEfunc::getModTSconfig($pid, 'TCEFORM.' . $params['table'] . '.' . $field . '.removeItems');
+		$modTSConfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($pid, 'TCEFORM.' . $params['table'] . '.' . $field . '.removeItems');
 
 		return \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $modTSConfig['value'], TRUE);
 	}

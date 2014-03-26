@@ -41,7 +41,7 @@ class tx_templavoila_preview_type_image extends tx_templavoila_preview_type_text
 		} else {
 			$text = '<strong>' . $label . '</strong>';
 		}
-		$text .= t3lib_BEfunc::thumbCode($row, 'tt_content', 'image', $ref->doc->backPath);
+		$text .= \TYPO3\CMS\Backend\Utility\BackendUtility::thumbCode($row, 'tt_content', 'image', $ref->doc->backPath);
 
 		return $text;
 	}

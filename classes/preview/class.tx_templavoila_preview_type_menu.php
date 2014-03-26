@@ -33,7 +33,7 @@ class tx_templavoila_preview_type_menu extends tx_templavoila_preview_type_text 
 	 * @see classes/preview/tx_templavoila_preview_type_text#getPreviewData($row)
 	 */
 	protected function getPreviewData($row) {
-		return $GLOBALS['LANG']->sL(t3lib_BEfunc::getLabelFromItemlist('tt_content', $this->previewField, $row[$this->previewField]));
+		return $GLOBALS['LANG']->sL(\TYPO3\CMS\Backend\Utility\BackendUtility::getLabelFromItemlist('tt_content', $this->previewField, $row[$this->previewField]));
 	}
 }
 
