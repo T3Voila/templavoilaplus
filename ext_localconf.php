@@ -8,7 +8,7 @@ if (!defined('TYPO3_MODE')) {
 $_EXTCONF = unserialize($_EXTCONF);
 
 // Adding the two plugins TypoScript:
-t3lib_extMgm::addPItoST43($_EXTKEY, 'pi1/class.tx_templavoila_pi1.php', '_pi1', 'CType', 1);
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPItoST43($_EXTKEY, 'pi1/class.tx_templavoila_pi1.php', '_pi1', 'CType', 1);
 $tvSetup = array('plugin.tx_templavoila_pi1.disableExplosivePreview = 1');
 if (!$_EXTCONF['enable.']['renderFCEHeader']) {
 	$tvSetup[] = 'tt_content.templavoila_pi1.10 >';
@@ -22,10 +22,10 @@ $tvSetup[] = 'tt_content.menu.20.3 = USER
 ';
 
 
-t3lib_extMgm::addTypoScript($_EXTKEY, 'setup', implode(PHP_EOL, $tvSetup), 43);
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript($_EXTKEY, 'setup', implode(PHP_EOL, $tvSetup), 43);
 
 // Use templavoila's wizard instead the default create new page wizard
-t3lib_extMgm::addPageTSConfig('
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('
     mod.web_list.newPageWiz.overrideWithExtension = templavoila
 	mod.web_list.newContentWiz.overrideWithExtension = templavoila
 	mod.web_txtemplavoilaM2.templatePath = templates,default/templates
@@ -37,7 +37,7 @@ t3lib_extMgm::addPageTSConfig('
 ');
 
 // Use templavoila instead of the default page module
-t3lib_extMgm::addUserTSConfig('
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addUserTSConfig('
  	options.overridePageModule = web_txtemplavoilaM1
 	mod.web_txtemplavoilaM1.sideBarEnable = 1
  ');
@@ -78,7 +78,7 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['mod1']['renderPreviewCont
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['mod1']['renderPreviewContent']['templavoila_pi1'] = 'EXT:templavoila/classes/preview/class.tx_templavoila_preview_type_null.php:&tx_templavoila_preview_type_null';
 
 // configuration for new content element wizard
-t3lib_extMgm::addPageTSConfig('
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('
 templavoila.wizards.newContentElement.wizardItems {
 	common.header = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:common
 	common.elements {
@@ -239,7 +239,7 @@ templavoila.wizards.newContentElement.renderMode =
 ');
 
 if (\TYPO3\CMS\Core\Utility\GeneralUtility::compat_version('4.3')) {
-	t3lib_extMgm::addPageTSConfig('
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('
 templavoila.wizards.newContentElement.wizardItems.special.elements.media {
 	icon = gfx/c_wiz/multimedia.gif
 	title = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:special_media_title

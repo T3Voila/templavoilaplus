@@ -50,7 +50,7 @@ $LANG->includeLLFile('EXT:templavoila/mod1/locallang_db_new_content_el.xml');
 $LOCAL_LANG = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($LOCAL_LANG_orig, $LOCAL_LANG);
 
 // Exits if 'cms' extension is not loaded:
-t3lib_extMgm::isLoaded('cms', 1);
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cms', 1);
 
 /**
  * Script Class for the New Content element wizard
@@ -452,7 +452,7 @@ class tx_templavoila_dbnewcontentel {
 			if ($toObj->isPermittedForUser()) {
 				$tmpFilename = $toObj->getIcon();
 				$returnElements['fce.']['elements.']['fce_' . $toObj->getKey() . '.'] = array(
-					'icon' => (@is_file(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(substr($tmpFilename, 3)))) ? $tmpFilename : ('../' . t3lib_extMgm::siteRelPath('templavoila') . 'res1/default_previewicon.gif'),
+					'icon' => (@is_file(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(substr($tmpFilename, 3)))) ? $tmpFilename : ('../' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('templavoila') . 'res1/default_previewicon.gif'),
 					'description' => $toObj->getDescription() ? htmlspecialchars($toObj->getDescription()) : $GLOBALS['LANG']->getLL('template_nodescriptionavailable'),
 					'title' => $toObj->getLabel(),
 					'params' => $this->getDsDefaultValues($toObj)

@@ -228,7 +228,7 @@ class tx_templavoila_htmlmarkup {
 
 		/* build primary cache for icon-images */
 		foreach ($this->tags as $tag => &$conf) {
-			$conf['icon'] = \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, t3lib_extMgm::extRelPath('templavoila') . 'html_tags/' . $tag . '.gif', 'height="17"') . ' alt="" border="0"';
+			$conf['icon'] = \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila') . 'html_tags/' . $tag . '.gif', 'height="17"') . ' alt="" border="0"';
 		}
 
 		list($tagList_elements, $tagList_single) = $this->splitTagTypes($showTags);
@@ -693,7 +693,7 @@ class tx_templavoila_htmlmarkup {
 	 * @return    mixed        The record array or <code>false</code>
 	 */
 	function getTemplateRecord($uid, $renderType, $langUid) {
-		if (t3lib_extMgm::isLoaded('templavoila')) {
+		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('templavoila')) {
 			$rec = $GLOBALS['TSFE']->sys_page->checkRecord('tx_templavoila_tmplobj', $uid);
 			$parentUid = $rec['uid'];
 			$rendertype_ref = $rec['rendertype_ref'] ? $GLOBALS['TSFE']->sys_page->checkRecord('tx_templavoila_tmplobj', $rec['rendertype_ref']) : FALSE;

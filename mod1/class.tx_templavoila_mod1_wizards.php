@@ -263,7 +263,7 @@ class tx_templavoila_mod1_wizards {
 
 		$storageFolderPID = $this->apiObj->getStorageFolderPid($parentPageId);
 		$tmplHTML = array();
-		$defaultIcon = $this->doc->backPath . '../' . t3lib_extMgm::siteRelPath($this->extKey) . 'res1/default_previewicon.gif';
+		$defaultIcon = $this->doc->backPath . '../' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath($this->extKey) . 'res1/default_previewicon.gif';
 
 		// look for TCEFORM.pages.tx_templavoila_ds.removeItems / TCEFORM.pages.tx_templavoila_to.removeItems
 		$disallowedPageTemplateItems = $this->getDisallowedTSconfigItemsByFieldName($parentPageId, 'tx_templavoila_ds');
@@ -330,7 +330,7 @@ class tx_templavoila_mod1_wizards {
 				break;
 
 			case 't3d':
-				if (t3lib_extMgm::isLoaded('impexp')) {
+				if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('impexp')) {
 
 					// Read template files from a certain folder. I suggest this is configurable in some way. But here it is hardcoded for initial tests.
 					$templateFolder = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'] . '/export/templates/');

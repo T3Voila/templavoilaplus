@@ -73,7 +73,7 @@ class tx_templavoila_mod1_sidebar {
 		$hideIfEmpty = $pObj->modTSconfig['properties']['showTabsIfEmpty'] ? FALSE : TRUE;
 
 		// Register the locally available sidebar items. Additional items may be added by other extensions.
-		if (t3lib_extMgm::isLoaded('version') && !t3lib_extMgm::isLoaded('workspaces')
+		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('version') && !\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('workspaces')
 			&& $GLOBALS['BE_USER']->check('modules', 'web_txversionM1')
 		) {
 			$this->sideBarItems['versioning'] = array(
@@ -329,7 +329,7 @@ class tx_templavoila_mod1_sidebar {
 		if ($pObj->id > 0) {
 			$versionSelector = trim($pObj->doc->getVersionSelector($pObj->id));
 			if (!$versionSelector) {
-				$onClick = 'jumpToUrl(\'' . $GLOBALS['BACK_PATH'] . t3lib_extMgm::extRelPath('version') . 'cm1/index.php?table=pages&uid=' . $pObj->id . '&returnUrl=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')) . '\')';
+				$onClick = 'jumpToUrl(\'' . $GLOBALS['BACK_PATH'] . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('version') . 'cm1/index.php?table=pages&uid=' . $pObj->id . '&returnUrl=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')) . '\')';
 				$versionSelector = '<input type="button" value="' . $GLOBALS['LANG']->getLL('sidebar_versionSelector_createVersion', 1) . '" onclick="' . htmlspecialchars($onClick) . '" />';
 			}
 			$tableRows = array('

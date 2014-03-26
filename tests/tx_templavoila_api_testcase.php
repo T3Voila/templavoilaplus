@@ -2102,14 +2102,14 @@ class tx_templavoila_api_testcase extends tx_phpunit_database_testcase {
 			'cruser_id' => 1,
 			'deleted' => 0,
 			'title' => $this->testPageDSTitle,
-			'dataprot' => file_get_contents(t3lib_extMgm::extPath('templavoila') . 'tests/fixtures/page_datastructure_' . $type . '.xml'),
+			'dataprot' => file_get_contents(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('templavoila') . 'tests/fixtures/page_datastructure_' . $type . '.xml'),
 			'scope' => 1
 		);
 		$res = $TYPO3_DB->exec_INSERTquery('tx_templavoila_datastructure', $row);
 		$this->testPageDSUID = $TYPO3_DB->sql_insert_id($res);
 
 		// Create new TO:
-		$filename = t3lib_extMgm::extPath('templavoila') . 'tests/fixtures/page_template.html';
+		$filename = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('templavoila') . 'tests/fixtures/page_template.html';
 		$row = array(
 			'pid' => $this->testPageUID,
 			'tstamp' => time(),
@@ -2122,7 +2122,7 @@ class tx_templavoila_api_testcase extends tx_phpunit_database_testcase {
 			'fileref_mtime' => @filemtime($filename),
 			'fileref_md5' => (is_callable('md5_file') ? md5_file($filename) : ''),
 			'fileref' => $filename,
-			'templatemapping' => file_get_contents(t3lib_extMgm::extPath('templavoila') . 'tests/fixtures/page_templateobject_' . $type . '.dat'),
+			'templatemapping' => file_get_contents(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('templavoila') . 'tests/fixtures/page_templateobject_' . $type . '.dat'),
 		);
 		$res = $TYPO3_DB->exec_INSERTquery('tx_templavoila_tmplobj', $row);
 		$this->testPageTOUID = $TYPO3_DB->sql_insert_id($res);
@@ -2154,14 +2154,14 @@ class tx_templavoila_api_testcase extends tx_phpunit_database_testcase {
 			'cruser_id' => 1,
 			'deleted' => 0,
 			'title' => $this->testFCEDSTitle . $type,
-			'dataprot' => file_get_contents(t3lib_extMgm::extPath('templavoila') . 'tests/fixtures/fce_' . $type . '_datastructure.xml'),
+			'dataprot' => file_get_contents(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('templavoila') . 'tests/fixtures/fce_' . $type . '_datastructure.xml'),
 			'scope' => 2
 		);
 		$res = $TYPO3_DB->exec_INSERTquery('tx_templavoila_datastructure', $row);
 		$this->testFCEDSUID = $TYPO3_DB->sql_insert_id($res);
 
 		// Create new TO:
-		$filename = t3lib_extMgm::extPath('templavoila') . 'tests/fixtures/fce_' . $type . '_template.html';
+		$filename = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('templavoila') . 'tests/fixtures/fce_' . $type . '_template.html';
 		$row = array(
 			'pid' => $this->testPageUID,
 			'tstamp' => time(),
@@ -2174,7 +2174,7 @@ class tx_templavoila_api_testcase extends tx_phpunit_database_testcase {
 			'fileref_mtime' => @filemtime($filename),
 			'fileref_md5' => (is_callable('md5_file') ? md5_file($filename) : ''),
 			'fileref' => $filename,
-			'templatemapping' => file_get_contents(t3lib_extMgm::extPath('templavoila') . 'tests/fixtures/fce_' . $type . '_templateobject.dat'),
+			'templatemapping' => file_get_contents(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('templavoila') . 'tests/fixtures/fce_' . $type . '_templateobject.dat'),
 		);
 		$res = $TYPO3_DB->exec_INSERTquery('tx_templavoila_tmplobj', $row);
 		$this->testFCETOUID = $TYPO3_DB->sql_insert_id($res);

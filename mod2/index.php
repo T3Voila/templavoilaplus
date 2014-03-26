@@ -113,7 +113,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 			// Draw the header.
 
 			// Add custom styles
-			$this->doc->styleSheetFile2 = t3lib_extMgm::extRelPath($this->extKey) . "mod2/styles.css";
+			$this->doc->styleSheetFile2 = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->extKey) . "mod2/styles.css";
 
 			// Adding classic jumpToUrl function, needed for the function menu.
 			// Also, the id in the parent frameset is configured.
@@ -1816,10 +1816,10 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 		foreach ($checkExtensions as $extKey) {
 			$tRows[] = '<tr class="bgColor4">
 				<td>' . $extKey . '</td>
-				<td align="center">' . (t3lib_extMgm::isLoaded($extKey) ? $GLOBALS['LANG']->getLL('newsitewizard_missingext_yes', 1) : '<span class="typo3-red">' . $GLOBALS['LANG']->getLL('newsitewizard_missingext_no', 1) . '</span>') . '</td>
+				<td align="center">' . (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extKey) ? $GLOBALS['LANG']->getLL('newsitewizard_missingext_yes', 1) : '<span class="typo3-red">' . $GLOBALS['LANG']->getLL('newsitewizard_missingext_no', 1) . '</span>') . '</td>
 			</tr>';
 
-			if (!t3lib_extMgm::isLoaded($extKey))
+			if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extKey))
 				$missingExtensions = TRUE;
 		}
 
@@ -1997,7 +1997,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 				if (isset($this->modTSconfig['properties']['newTvSiteFile'])) {
 					$inFile = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->modTSconfig['properties']['newTVsiteTemplate']);
 				} else {
-					$inFile = t3lib_extMgm::extPath('templavoila') . 'mod2/new_tv_site.xml';
+					$inFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('templavoila') . 'mod2/new_tv_site.xml';
 				}
 				if (@is_file($inFile) && $import->loadFile($inFile, 1)) {
 

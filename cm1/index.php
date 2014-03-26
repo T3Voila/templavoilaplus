@@ -363,7 +363,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 		$this->doc->inDocStylesArray[] = self::$gnyfStyleBlock;
 
 		// Add custom styles
-		$this->doc->styleSheetFile2 = t3lib_extMgm::extRelPath($this->extKey) . "cm1/styles.css";
+		$this->doc->styleSheetFile2 = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->extKey) . "cm1/styles.css";
 
 		// General GPvars for module mode:
 		$this->displayFile = tx_templavoila_file::filename(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('file'));
@@ -444,9 +444,9 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 				// descriptive title
 				$title,
 				// image-path
-				\TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, t3lib_extMgm::extRelPath('templavoila') . 'cm1/item_' . $id . '.gif', 'width="24" height="16" border="0" style="margin-right: 5px;"'),
+				\TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila') . 'cm1/item_' . $id . '.gif', 'width="24" height="16" border="0" style="margin-right: 5px;"'),
 				// background-path
-				\TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, t3lib_extMgm::extRelPath('templavoila') . 'cm1/item_' . $id . '.gif', '', 1)
+				\TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila') . 'cm1/item_' . $id . '.gif', '', 1)
 			);
 
 			// information
@@ -2104,7 +2104,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 								// Render HTML path:
 								list($pI) = $this->markupObj->splitPath($currentMappingInfo[$key]['MAP_EL']);
 
-								$tagIcon = \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, t3lib_extMgm::extRelPath('templavoila') . 'html_tags/' . $pI['el'] . '.gif', 'height="17"') . ' alt="" border="0"';
+								$tagIcon = \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila') . 'html_tags/' . $pI['el'] . '.gif', 'height="17"') . ' alt="" border="0"';
 
 								$okTitle = htmlspecialchars($cF ? sprintf($GLOBALS['LANG']->getLL('displayDSContentFound'), strlen($contentSplittedByMapping['cArray'][$key])) . ($multilineTooltips ? ':' . chr(10) . chr(10) . $cF : '') : $GLOBALS['LANG']->getLL('displayDSContentEmpty'));
 
@@ -2707,7 +2707,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 	 * @return    [type]        ...
 	 */
 	function lipsumLink($formElementName) {
-		if (t3lib_extMgm::isLoaded('lorem_ipsum')) {
+		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('lorem_ipsum')) {
 			$LRobj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_loremipsum_wiz');
 			$LRobj->backPath = $this->doc->backPath;
 

@@ -78,7 +78,7 @@ final class tx_templavoila_icons {
 			// same dirty trick as for #17286 in Core
 			if (is_file(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('EXT:t3skin/images/flags/' . $flagName . '.png', FALSE))) {
 				// resolving extpath on its own because otherwise this might not return a relative path
-				$flag = $GLOBALS['BACK_PATH'] . t3lib_extMgm::extRelPath('t3skin') . '/images/flags/' . $flagName . '.png';
+				$flag = $GLOBALS['BACK_PATH'] . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('t3skin') . '/images/flags/' . $flagName . '.png';
 			}
 		}
 

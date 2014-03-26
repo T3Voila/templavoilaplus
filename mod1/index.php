@@ -36,7 +36,7 @@ require($BACK_PATH . 'init.php');
 $LANG->includeLLFile('EXT:templavoila/mod1/locallang.xml');
 $BE_USER->modAccess($MCONF, 1); // This checks permissions and exits if the users has no permission for entry.
 
-t3lib_extMgm::isLoaded('cms', 1);
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cms', 1);
 
 /**
  * Module 'Page' for the 'templavoila' extension.
@@ -119,8 +119,8 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 		$tmpTSc = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($this->id, 'mod.web_list');
 		$tmpTSc = $tmpTSc ['properties']['newContentWiz.']['overrideWithExtension'];
-		if ($tmpTSc != 'templavoila' && t3lib_extMgm::isLoaded($tmpTSc)) {
-			$this->newContentWizScriptPath = $GLOBALS['BACK_PATH'] . t3lib_extMgm::extRelPath($tmpTSc) . 'mod1/db_new_content_el.php';
+		if ($tmpTSc != 'templavoila' && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($tmpTSc)) {
+			$this->newContentWizScriptPath = $GLOBALS['BACK_PATH'] . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($tmpTSc) . 'mod1/db_new_content_el.php';
 		}
 
 		$this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
@@ -301,7 +301,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('template');
 			$this->doc->backPath = $BACK_PATH;
 
-			$templateFile = t3lib_extMgm::extPath($this->extKey) . 'resources/templates/mod1_' . substr(TYPO3_version, 0, 3) . '.html';
+			$templateFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($this->extKey) . 'resources/templates/mod1_' . substr(TYPO3_version, 0, 3) . '.html';
 			if (file_exists($templateFile)) {
 				$this->doc->setModuleTemplate('EXT:templavoila/resources/templates/mod1_' . substr(TYPO3_version, 0, 3) . '.html');
 			} else {
@@ -315,11 +315,11 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			$this->doc->form = '<form action="' . htmlspecialchars('index.php?' . $this->link_getParameters()) . '" method="post">';
 
 			// Add custom styles
-			$styleSheetFile = t3lib_extMgm::extPath($this->extKey) . 'resources/styles/mod1_' . substr(TYPO3_version, 0, 3) . '.css';
+			$styleSheetFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($this->extKey) . 'resources/styles/mod1_' . substr(TYPO3_version, 0, 3) . '.css';
 			if (file_exists($styleSheetFile)) {
-				$styleSheetFile = t3lib_extMgm::extRelPath($this->extKey) . 'resources/styles/mod1_' . substr(TYPO3_version, 0, 3) . '.css';
+				$styleSheetFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->extKey) . 'resources/styles/mod1_' . substr(TYPO3_version, 0, 3) . '.css';
 			} else {
-				$styleSheetFile = t3lib_extMgm::extRelPath($this->extKey) . 'resources/styles/mod1_default.css';
+				$styleSheetFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->extKey) . 'resources/styles/mod1_default.css';
 			}
 
 			if (isset($this->modTSconfig['properties']['stylesheet'])) {
@@ -333,8 +333,8 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 					if (substr($file, 0, 4) == 'EXT:') {
 						list($extKey, $local) = explode('/', substr($file, 4), 2);
 						$filename = '';
-						if (strcmp($extKey, '') && t3lib_extMgm::isLoaded($extKey) && strcmp($local, '')) {
-							$file = t3lib_extMgm::extRelPath($extKey) . $local;
+						if (strcmp($extKey, '') && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extKey) && strcmp($local, '')) {
+							$file = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($extKey) . $local;
 						}
 					}
 					$this->doc->getPageRenderer()->addCssFile($GLOBALS['BACK_PATH'] . $file);
@@ -394,13 +394,13 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			if (method_exists('t3lib_div', 'createVersionNumberedFilename')) {
 				$mod1_file = \TYPO3\CMS\Core\Utility\GeneralUtility::createVersionNumberedFilename($mod1_file);
 			} else {
-				$mod1_file .= '?' . filemtime(t3lib_extMgm::extPath('templavoila') . 'mod1/' . $mod1_file);
+				$mod1_file .= '?' . filemtime(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('templavoila') . 'mod1/' . $mod1_file);
 			}
 
 			//Prototype /Scriptaculous
 			// prototype is loaded before, so no need to include twice.
 			$this->doc->JScodeLibArray['scriptaculous'] = '<script src="' . $this->doc->backPath . 'contrib/scriptaculous/scriptaculous.js?load=effects,dragdrop,builder" type="text/javascript"></script>';
-			$this->doc->JScodeLibArray['templavoila_mod1'] = '<script src="' . $this->doc->backPath . '../' . t3lib_extMgm::siteRelPath('templavoila') . 'mod1/' . $mod1_file . '" type="text/javascript"></script>';
+			$this->doc->JScodeLibArray['templavoila_mod1'] = '<script src="' . $this->doc->backPath . '../' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('templavoila') . 'mod1/' . $mod1_file . '" type="text/javascript"></script>';
 
 			if (isset($this->modTSconfig['properties']['javascript.']) && is_array($this->modTSconfig['properties']['javascript.'])) {
 				// add custom javascript files
@@ -409,8 +409,8 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 						if (substr($value, 0, 4) == 'EXT:') {
 							list($extKey, $local) = explode('/', substr($value, 4), 2);
 							$filename = '';
-							if (strcmp($extKey, '') && t3lib_extMgm::isLoaded($extKey) && strcmp($local, '')) {
-								$value = t3lib_extMgm::extRelPath($extKey) . $local;
+							if (strcmp($extKey, '') && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extKey) && strcmp($local, '')) {
+								$value = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($extKey) . $local;
 							}
 						}
 						$this->doc->JScodeLibArray[$key] = '<script src="' . $this->doc->backPath . htmlspecialchars($value) . '" type="text/javascript"></script>';
@@ -434,7 +434,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 			// CSS for drag and drop
 
-			if (t3lib_extMgm::isLoaded('t3skin')) {
+			if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('t3skin')) {
 				// Fix padding for t3skin in disabled tabs
 				$this->doc->inDocStyles .= '
 					table.typo3-dyntabmenu td.disabled, table.typo3-dyntabmenu td.disabled_over, table.typo3-dyntabmenu td.disabled:hover { padding-left: 10px; }
@@ -2489,7 +2489,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 						$newUid = $this->apiObj->insertElement($destinationPointer, $newRow);
 						if ($this->editingOfNewElementIsEnabled($newRow['tx_templavoila_ds'], $newRow['tx_templavoila_to'])) {
 							// TODO If $newUid==0, than we could create new element. Need to handle it...
-							$redirectLocation = $GLOBALS['BACK_PATH'] . 'alt_doc.php?edit[tt_content][' . $newUid . ']=edit&returnUrl=' . rawurlencode(t3lib_extMgm::extRelPath('templavoila') . 'mod1/index.php?' . $this->link_getParameters());
+							$redirectLocation = $GLOBALS['BACK_PATH'] . 'alt_doc.php?edit[tt_content][' . $newUid . ']=edit&returnUrl=' . rawurlencode(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila') . 'mod1/index.php?' . $this->link_getParameters());
 						}
 						break;
 
@@ -2537,7 +2537,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 					case 'createNewPageTranslation':
 						// Create parameters and finally run the classic page module for creating a new page translation
 						$params = '&edit[pages_language_overlay][' . intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('pid')) . ']=new&overrideVals[pages_language_overlay][doktype]=' . intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('doktype')) . '&overrideVals[pages_language_overlay][sys_language_uid]=' . intval($commandParameters);
-						$returnUrl = '&returnUrl=' . rawurlencode(t3lib_extMgm::extRelPath('templavoila') . 'mod1/index.php?' . $this->link_getParameters());
+						$returnUrl = '&returnUrl=' . rawurlencode(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila') . 'mod1/index.php?' . $this->link_getParameters());
 						$redirectLocation = $GLOBALS['BACK_PATH'] . 'alt_doc.php?' . $params . $returnUrl;
 						break;
 
@@ -2566,7 +2566,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 							$params = '&edit[pages][' . intval($this->id) . ']=edit';
 						}
 						if ($params) {
-							$returnUrl = '&returnUrl=' . rawurlencode(t3lib_extMgm::extRelPath('templavoila') . 'mod1/index.php?' . $this->link_getParameters());
+							$returnUrl = '&returnUrl=' . rawurlencode(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila') . 'mod1/index.php?' . $this->link_getParameters());
 							$redirectLocation = $GLOBALS['BACK_PATH'] . 'alt_doc.php?' . $params . $returnUrl; //.'&localizationMode=text';
 						}
 						break;
@@ -2810,7 +2810,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		if ($ser) {
 
 			// Include file required to unserialization
-			\TYPO3\CMS\Core\Utility\GeneralUtility::requireOnce(t3lib_extMgm::extPath('templavoila', 'newcewizard/model/class.tx_templavoila_contentelementdescriptor.php'));
+			\TYPO3\CMS\Core\Utility\GeneralUtility::requireOnce(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('templavoila', 'newcewizard/model/class.tx_templavoila_contentelementdescriptor.php'));
 
 			$obj = @unserialize(base64_decode($ser));
 
