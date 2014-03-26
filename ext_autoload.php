@@ -60,4 +60,5 @@ return array(
 	'tx_templavoila_pi1' => $extensionPath . 'pi1/class.tx_templavoila_pi1.php',
 	'tx_templavoila_api_testcase' => $extensionPath . 'tests/tx_templavoila_api_testcase.php',
 	'tx_templavoila_syntaxhl' => $extensionPath . 'class.tx_templavoila_syntaxhl.php',
+	'tx_templavoila_renamefieldinpageflexwizard' => $extensionPath . 'func_wizards/class.tx_templavoila_renamefieldinpageflexwizard.php',
 );

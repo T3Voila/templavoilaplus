@@ -40,7 +40,7 @@ if (TYPO3_MODE == 'BE') {
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
 		'tools_txextdevevalM1',
 		'tx_templavoila_extdeveval',
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'class.tx_templavoila_extdeveval.php',
+		NULL,
 		'TemplaVoila L10N Mode Conversion Tool'
 	);
 }
@@ -333,14 +333,14 @@ if (TYPO3_MODE == 'BE') {
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
 		'web_func',
 		'tx_templavoila_referenceElementsWizard',
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'func_wizards/class.tx_templavoila_referenceelementswizard.php',
+		NULL,
 		'LLL:EXT:templavoila/locallang.xml:wiz_refElements',
 		'wiz'
 	);
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
 		'web_func',
 		'tx_templavoila_renameFieldInPageFlexWizard',
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'func_wizards/class.tx_templavoila_renamefieldinpageflexwizard.php',
+		NULL,
 		'LLL:EXT:templavoila/locallang.xml:wiz_renameFieldsInPage',
 		'wiz'
 	);
