@@ -493,7 +493,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 						\TYPO3\CMS\Core\Messaging\FlashMessage::INFO
 					);
 					$editCurrentPageHTML = '';
-					t3lib_FlashMessageQueue::addMessage($flashMessage);
+					\TYPO3\CMS\Core\Messaging\FlashMessageQueue::addMessage($flashMessage);
 				}
 				// Render "edit current page" (important to do before calling ->sideBarObj->render() - otherwise the translation tab is not rendered!
 				$editCurrentPageHTML .= $this->render_editPageScreen();
@@ -617,7 +617,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 				'TABROW' => $this->render_sidebar(),
 				'CONTENT' => $this->content
 			);
-			$editareaMarkers['FLASHMESSAGES'] = t3lib_FlashMessageQueue::renderFlashMessages();
+			$editareaMarkers['FLASHMESSAGES'] = \TYPO3\CMS\Core\Messaging\FlashMessageQueue::renderFlashMessages();
 
 			$editareaContent = t3lib_parsehtml::substituteMarkerArray($editareaTpl, $editareaMarkers, '###|###', TRUE);
 
@@ -794,7 +794,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 					$LANG->getLL('missing_edit_right'),
 					\TYPO3\CMS\Core\Messaging\FlashMessage::INFO
 				);
-				t3lib_FlashMessageQueue::addMessage($message);
+				\TYPO3\CMS\Core\Messaging\FlashMessageQueue::addMessage($message);
 			}
 		}
 
@@ -1126,7 +1126,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 						$GLOBALS['LANG']->getLL('page_structure_inherited'),
 						\TYPO3\CMS\Core\Messaging\FlashMessage::INFO
 					);
-					t3lib_FlashMessageQueue::addMessage($flashMessage);
+					\TYPO3\CMS\Core\Messaging\FlashMessageQueue::addMessage($flashMessage);
 				}
 			}
 		}
@@ -1210,7 +1210,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 						),
 						\TYPO3\CMS\Core\Messaging\FlashMessage::INFO
 					);
-					t3lib_FlashMessageQueue::addMessage($flashMessage);
+					\TYPO3\CMS\Core\Messaging\FlashMessageQueue::addMessage($flashMessage);
 				}
 
 				$canCreateNew = $canEditContent && !$maxItemsReached;
