@@ -55,7 +55,7 @@ $LANG->includeLLFile('EXT:templavoila/cm1/locallang.xml');
  * @package TYPO3
  * @subpackage tx_templavoila
  */
-class tx_templavoila_cm1 extends t3lib_SCbase {
+class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 	// Static:
 	var $theDisplayMode = ''; // Set to ->MOD_SETTINGS[]
@@ -542,7 +542,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 				if (!strlen(trim($this->_saveDSandTO_title))) {
 					$cmd = 'saveScreen';
 					$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-						't3lib_FlashMessage',
+						'\TYPO3\CMS\Core\Messaging\FlashMessage',
 						$GLOBALS['LANG']->getLL('errorNoToTitleDefined'),
 						'',
 						\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR
@@ -678,7 +678,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 				// Getting cached data:
 				reset($dataStruct);
 				$fileContent = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($this->displayFile);
-				$htmlParse = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_parsehtml');
+				$htmlParse = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Core\Html\HtmlParser');
 				$relPathFix = dirname(substr($this->displayFile, strlen(PATH_site))) . '/';
 				$fileContent = $htmlParse->prefixResourcePath($relPathFix, $fileContent);
 				$this->markupObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_htmlmarkup');
@@ -735,7 +735,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 				case 'saveDSandTO':
 					$newID = '';
 					// Init TCEmain object and store:
-					$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance("t3lib_TCEmain");
+					$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance("\TYPO3\CMS\Core\DataHandling\DataHandler");
 					$tce->stripslashes_values = 0;
 
 					// DS:
@@ -824,7 +824,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 					// If they are found, continue:
 					if ($toREC['uid'] && $dsREC['uid']) {
 						// Init TCEmain object and store:
-						$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_TCEmain');
+						$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Core\DataHandling\DataHandler');
 						$tce->stripslashes_values = 0;
 
 						// Modifying data structure with conversion of preset values for field types to actual settings:
@@ -1585,7 +1585,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			reset($dataStruct);
 			// Init; read file, init objects:
 			$fileContent = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($theFile);
-			$htmlParse = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_parsehtml');
+			$htmlParse = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Core\Html\HtmlParser');
 			$this->markupObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_htmlmarkup');
 
 			// Fix relative paths in source:
@@ -1622,13 +1622,13 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			$dataArr['tx_templavoila_tmplobj'][$TOuid]['fileref_mtime'] = @filemtime($theFile);
 			$dataArr['tx_templavoila_tmplobj'][$TOuid]['fileref_md5'] = @md5_file($theFile);
 
-			$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_TCEmain');
+			$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Core\DataHandling\DataHandler');
 			$tce->stripslashes_values = 0;
 			$tce->start($dataArr, array());
 			$tce->process_datamap();
 			unset($tce);
 			$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-				't3lib_FlashMessage',
+				'\TYPO3\CMS\Core\Messaging\FlashMessage',
 				$GLOBALS['LANG']->getLL('msgMappingSaved'),
 				'',
 				\TYPO3\CMS\Core\Messaging\FlashMessage::OK
@@ -1668,7 +1668,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			$menuItems[] = '<input type="submit" name="_reload_from" value="' . $GLOBALS['LANG']->getLL('buttonRevert') . '" title="' . sprintf($GLOBALS['LANG']->getLL('buttonRevertTitle'), $headerPart ? 'HEAD' : 'BODY') . '" />';
 
 			$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-				't3lib_FlashMessage',
+				'\TYPO3\CMS\Core\Messaging\FlashMessage',
 				$GLOBALS['LANG']->getLL('msgMappingIsDifferent'),
 				'',
 				\TYPO3\CMS\Core\Messaging\FlashMessage::INFO
@@ -1763,7 +1763,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			</table><br />';
 
 		$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-			't3lib_FlashMessage',
+			'\TYPO3\CMS\Core\Messaging\FlashMessage',
 			$GLOBALS['LANG']->getLL('msgHeaderSet'),
 			'',
 			\TYPO3\CMS\Core\Messaging\FlashMessage::WARNING
@@ -2627,7 +2627,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 
 		// Init mark up object.
 		$this->markupObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_htmlmarkup');
-		$this->markupObj->htmlParse = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_parsehtml');
+		$this->markupObj->htmlParse = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Core\Html\HtmlParser');
 
 		// Splitting content, adding a random token for the part to be previewed:
 		$contentSplittedByMapping = $this->markupObj->splitContentToMappingInfo($content, $currentMappingInfo);
@@ -2692,7 +2692,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 	 * @return    string        HTML content for help text
 	 */
 	function cshItem($table, $field, $BACK_PATH, $wrap = '', $onlyIconMode = FALSE, $styleAttrib = '') {
-		if (is_callable(array('t3lib_BEfunc', 'cshItem'))) {
+		if (is_callable(array('\TYPO3\CMS\Backend\Utility\BackendUtility', 'cshItem'))) {
 			return \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem($table, $field, $BACK_PATH, $wrap, $onlyIconMode, $styleAttrib);
 		}
 

@@ -109,7 +109,7 @@ class tx_templavoila_mod1_specialdoktypes {
 
 		$urlInfo = ' <br /><br /><strong><a href="' . $url . '" target="_new">' . htmlspecialchars(sprintf($LANG->getLL('jumptoexternalurl'), $url)) . '</a></strong>';
 		$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-			't3lib_FlashMessage',
+			'\TYPO3\CMS\Core\Messaging\FlashMessage',
 			$notice,
 			'',
 			\TYPO3\CMS\Core\Messaging\FlashMessage::INFO
@@ -144,7 +144,7 @@ class tx_templavoila_mod1_specialdoktypes {
 		}
 
 		$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-			't3lib_FlashMessage',
+			'\TYPO3\CMS\Core\Messaging\FlashMessage',
 			sprintf($LANG->getLL('cannotedit_shortcut_' . intval($pageRecord['shortcut_mode'])), $shortcutSourcePageRecord['title']),
 			'',
 			\TYPO3\CMS\Core\Messaging\FlashMessage::INFO
@@ -184,7 +184,7 @@ class tx_templavoila_mod1_specialdoktypes {
 		';
 
 		$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-			't3lib_FlashMessage',
+			'\TYPO3\CMS\Core\Messaging\FlashMessage',
 			sprintf($LANG->getLL('cannotedit_doktypemountpoint'), $mountSourceButton . $mountSourcePageRecord['title']),
 			'',
 			\TYPO3\CMS\Core\Messaging\FlashMessage::INFO
@@ -227,7 +227,7 @@ class tx_templavoila_mod1_specialdoktypes {
 		}
 
 		$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-			't3lib_FlashMessage',
+			'\TYPO3\CMS\Core\Messaging\FlashMessage',
 			$LANG->getLL('editpage_sysfolder_intro', '', 1),
 			'',
 			\TYPO3\CMS\Core\Messaging\FlashMessage::INFO

@@ -187,7 +187,7 @@ final class tx_templavoila_div {
 	 */
 	public static function convertVersionNumberToInteger($version) {
 		$result = 0;
-		if (class_exists('t3lib_utility_VersionNumber')) {
+		if (class_exists('\TYPO3\CMS\Core\Utility\VersionNumberUtility')) {
 			$result = \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger($version);
 		} else {
 			$result = \TYPO3\CMS\Core\Utility\GeneralUtility::int_from_ver($version);
@@ -210,7 +210,7 @@ final class tx_templavoila_div {
 	 */
 	public static function canBeInterpretedAsInteger($var) {
 
-		if (class_exists('t3lib_utility_Math')) {
+		if (class_exists('\TYPO3\CMS\Core\Utility\MathUtility')) {
 			$result = \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($var);
 		} else {
 			$result = \TYPO3\CMS\Core\Utility\GeneralUtility::testInt($var);
@@ -230,7 +230,7 @@ final class tx_templavoila_div {
 	 * @return integer The input value forced into the boundaries of $min and $max
 	 */
 	public static function forceIntegerInRange($theInt, $min, $max = 2000000000, $defaultValue = 0) {
-		if (class_exists('t3lib_utility_Math')) {
+		if (class_exists('\TYPO3\CMS\Core\Utility\MathUtility')) {
 			$result = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($theInt, $min, $max, $defaultValue);
 		} else {
 			$result = \TYPO3\CMS\Core\Utility\GeneralUtility::intInRange($theInt, $min, $max, $defaultValue);

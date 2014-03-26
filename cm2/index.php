@@ -43,7 +43,7 @@ $LANG->includeLLFile('EXT:templavoila/cm2/locallang.xml');
  * @package TYPO3
  * @subpackage tx_templavoila
  */
-class tx_templavoila_cm2 extends t3lib_SCbase {
+class tx_templavoila_cm2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 	// External, static:
 	var $option_linenumbers = TRUE; // Showing linenumbers if true.
@@ -88,7 +88,7 @@ class tx_templavoila_cm2 extends t3lib_SCbase {
 			$cleanXML = '';
 			if ($GLOBALS['BE_USER']->isAdmin()) {
 				if ('tx_templavoila_flex' == $this->viewTable['field_flex']) {
-					$flexObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_flexformtools');
+					$flexObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools');
 					if ($record['tx_templavoila_flex']) {
 						$cleanXML = $flexObj->cleanFlexFormXML($this->viewTable['table'], 'tx_templavoila_flex', $record);
 
@@ -98,7 +98,7 @@ class tx_templavoila_cm2 extends t3lib_SCbase {
 							$dataArr[$this->viewTable['table']][$this->viewTable['uid']]['tx_templavoila_flex'] = $cleanXML;
 
 							// Init TCEmain object and store:
-							$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_TCEmain');
+							$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Core\DataHandling\DataHandler');
 							$tce->stripslashes_values = 0;
 							$tce->start($dataArr, array());
 							$tce->process_datamap();
@@ -113,11 +113,11 @@ class tx_templavoila_cm2 extends t3lib_SCbase {
 
 			if (md5($currentXML) != md5($cleanXML)) {
 				// Create diff-result:
-				$t3lib_diff_Obj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_diff');
+				$t3lib_diff_Obj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Core\Utility\DiffUtility');
 				$diffres = $t3lib_diff_Obj->makeDiffDisplay($currentXML, $cleanXML);
 
 				$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-					't3lib_FlashMessage',
+					'\TYPO3\CMS\Core\Messaging\FlashMessage',
 					$LANG->getLL('needsCleaning', 1),
 					'',
 					\TYPO3\CMS\Core\Messaging\FlashMessage::INFO
@@ -157,7 +157,7 @@ class tx_templavoila_cm2 extends t3lib_SCbase {
 				$xmlContentMarkedUp = '';
 				if ($cleanXML) {
 					$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-						't3lib_FlashMessage',
+						'\TYPO3\CMS\Core\Messaging\FlashMessage',
 						$LANG->getLL('XMLclean', 1),
 						'',
 						\TYPO3\CMS\Core\Messaging\FlashMessage::OK

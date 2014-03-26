@@ -30,7 +30,7 @@
  *
  * @author     Kay Strobach <typo3@kay-strobach.de>
  */
-class tx_templavoila_renameFieldInPageFlexWizard extends t3lib_extobjbase {
+class tx_templavoila_renameFieldInPageFlexWizard extends \TYPO3\CMS\Backend\Module\AbstractFunctionModule {
 
 	/**
 	 * @return string
@@ -45,7 +45,7 @@ class tx_templavoila_renameFieldInPageFlexWizard extends t3lib_extobjbase {
 				return 'Please select a page from the tree';
 			}
 		} else {
-			$message = new t3lib_FlashMessage(
+			$message = new \TYPO3\CMS\Core\Messaging\FlashMessage(
 				'Module only available for admins.',
 				'',
 				\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR
@@ -79,7 +79,7 @@ class tx_templavoila_renameFieldInPageFlexWizard extends t3lib_extobjbase {
 		if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('executeRename') == 1) {
 			$buffer = '';
 			if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('sourceField') === \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('destinationField')) {
-				$message = new t3lib_FlashMessage(
+				$message = new \TYPO3\CMS\Core\Messaging\FlashMessage(
 					'Renaming a field to itself is senseless, execution aborted.',
 					'',
 					\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR
@@ -107,7 +107,7 @@ class tx_templavoila_renameFieldInPageFlexWizard extends t3lib_extobjbase {
 					$mbuffer .= '<li>' . htmlspecialchars($row['title']) . ' (uid: ' . intval($row['uid']) . ')</li>';
 				}
 				$mbuffer .= '</ul>';
-				$message = new t3lib_FlashMessage($mbuffer, '', \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
+				$message = new \TYPO3\CMS\Core\Messaging\FlashMessage($mbuffer, '', \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
 				$buffer .= $message->render();
 				unset($mbuffer);
 				//really do it
@@ -119,11 +119,11 @@ class tx_templavoila_renameFieldInPageFlexWizard extends t3lib_extobjbase {
 						SET tx_templavoila_flex = REPLACE(tx_templavoila_flex, ' . $escapedSource . ', ' . $escapedDest . ')
 						WHERE ' . $condition . '
 					');
-					$message = new t3lib_FlashMessage('DONE', '', \TYPO3\CMS\Core\Messaging\FlashMessage::OK);
+					$message = new \TYPO3\CMS\Core\Messaging\FlashMessage('DONE', '', \TYPO3\CMS\Core\Messaging\FlashMessage::OK);
 					$buffer .= $message->render();
 				}
 			} else {
-				$message = new t3lib_FlashMessage('Nothing to do, can´t find something to replace.', '', \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+				$message = new \TYPO3\CMS\Core\Messaging\FlashMessage('Nothing to do, can´t find something to replace.', '', \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 				$buffer .= $message->render();
 			}
 
@@ -136,7 +136,7 @@ class tx_templavoila_renameFieldInPageFlexWizard extends t3lib_extobjbase {
 	 * @return string
 	 */
 	protected function showForm() {
-		$message = new t3lib_FlashMessage(
+		$message = new \TYPO3\CMS\Core\Messaging\FlashMessage(
 			'This action can affect ' . count($this->getAllSubPages($this->pObj->id)) . ' pages, please ensure, you know what you do!, Please backup your TYPO3 Installation before running that wizard.',
 			'',
 			\TYPO3\CMS\Core\Messaging\FlashMessage::WARNING

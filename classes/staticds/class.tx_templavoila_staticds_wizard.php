@@ -39,7 +39,7 @@ class tx_templavoila_staticds_wizard {
 	/**
 	 *
 	 * @param        array        Parameter array.  Contains fieldName and fieldValue.
-	 * @param        object        Instance of the class t3lib_tsStyleConfig
+	 * @param        object        Instance of the class \TYPO3\CMS\Core\TypoScript\ConfigurationForm
 	 */
 	public function staticDsWizard() {
 		$this->step = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('dsWizardDoIt') ? intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('dsWizardStep')) : 0;

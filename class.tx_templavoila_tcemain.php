@@ -63,12 +63,12 @@ class tx_templavoila_tcemain {
 	 * @param    array $incomingFieldArray : The original field names and their values before they are processed
 	 * @param    string $table : The table TCEmain is currently processing
 	 * @param    string $id : The records id (if any)
-	 * @param    t3lib_TCEmain $reference : Reference to the parent object (TCEmain)
+	 * @param    \TYPO3\CMS\Core\DataHandling\DataHandler $reference : Reference to the parent object (TCEmain)
 	 *
 	 * @return    void
 	 * @access    public
 	 */
-	function processDatamap_preProcessFieldArray(array &$incomingFieldArray, $table, $id, t3lib_TCEmain &$reference) {
+	function processDatamap_preProcessFieldArray(array &$incomingFieldArray, $table, $id, \TYPO3\CMS\Core\DataHandling\DataHandler &$reference) {
 		global $TYPO3_DB, $TCA;
 
 		if ($this->debug) {
@@ -556,11 +556,11 @@ page.10.disableExplosivePreview = 1
 	 *
 	 * @param    string $table Table name
 	 * @param    string $incomingFieldArray Array with fields
-	 * @param    t3lib_beUserAuth $beUser Current backend user for this operation
+	 * @param    \TYPO3\CMS\Core\Authentication\BackendUserAuthentication $beUser Current backend user for this operation
 	 *
 	 * @return    void
 	 */
-	protected function updateDataSourceFromTemplateObject($table, array &$incomingFieldArray, t3lib_beUserAuth &$beUser) {
+	protected function updateDataSourceFromTemplateObject($table, array &$incomingFieldArray, \TYPO3\CMS\Core\Authentication\BackendUserAuthentication &$beUser) {
 		if (($table == 'pages' || $table == 'tt_content') &&
 			isset($incomingFieldArray['tx_templavoila_to'])
 		) {
@@ -578,11 +578,11 @@ page.10.disableExplosivePreview = 1
 	 * @param    array $incomingFieldArray Array with fields
 	 * @param    string $dsField Data source field name in the $incomingFieldArray
 	 * @param    string $toField Template object field name in the $incomingFieldArray
-	 * @param    t3lib_beUserAuth $beUser Current backend user for this operation
+	 * @param    \TYPO3\CMS\Core\Authentication\BackendUserAuthentication $beUser Current backend user for this operation
 	 *
 	 * @return    void
 	 */
-	protected function updateDataSourceFieldFromTemplateObjectField(array &$incomingFieldArray, $dsField, $toField, t3lib_beUserAuth &$beUser) {
+	protected function updateDataSourceFieldFromTemplateObjectField(array &$incomingFieldArray, $dsField, $toField, \TYPO3\CMS\Core\Authentication\BackendUserAuthentication &$beUser) {
 		$toId = $incomingFieldArray[$toField];
 		if (intval($toId) == 0) {
 			$incomingFieldArray[$dsField] = '';

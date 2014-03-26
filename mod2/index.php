@@ -41,7 +41,7 @@ $BE_USER->modAccess($MCONF, 1); // This checks permissions and exits if the user
  * @package        TYPO3
  * @subpackage    tx_templavoila
  */
-class tx_templavoila_module2 extends t3lib_SCbase {
+class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 	// External static:
 	var $importPageUid = 0; // Import as first page in root!
@@ -149,7 +149,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 			$this->doc->postCode .= $CMparts[2];
 		} else {
 			$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-				't3lib_FlashMessage',
+				'\TYPO3\CMS\Core\Messaging\FlashMessage',
 				$GLOBALS['LANG']->getLL('noaccess'),
 				'',
 				\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR
@@ -1727,13 +1727,13 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 
 			// Missing extension warning:
 			if ($missingExt) {
-				$msg = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_FlashMessage', $missingExt, $LANG->getLL('newsitewizard_missingext'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+				$msg = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Core\Messaging\FlashMessage', $missingExt, $LANG->getLL('newsitewizard_missingext'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 				$this->content .= $msg->render();
 			}
 
 			// Missing configuration warning:
 			if ($missingConf) {
-				$msg = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_FlashMessage', $LANG->getLL('newsitewizard_missingconf_description'), $LANG->getLL('newsitewizard_missingconf'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+				$msg = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Core\Messaging\FlashMessage', $LANG->getLL('newsitewizard_missingconf_description'), $LANG->getLL('newsitewizard_missingconf'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 				$this->content .= $msg->render();
 			}
 
@@ -2042,7 +2042,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 					}
 
 					// Execute changes:
-					$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_TCEmain');
+					$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Core\DataHandling\DataHandler');
 					$tce->stripslashes_values = 0;
 					$tce->dontProcessTransformations = 1;
 					$tce->start($data, Array());
@@ -2121,7 +2121,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 			$outputString .= sprintf($GLOBALS['LANG']->getLL('newsitewizard_basicsshouldwork', 1), $menuTypeText, $menuType, $menuTypeText);
 
 			// Start up HTML parser:
-			$htmlParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('t3lib_parsehtml');
+			$htmlParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeinstance('\TYPO3\CMS\Core\Html\HtmlParser');
 
 			// Parse into blocks
 			$parts = $htmlParser->splitIntoBlock('td,tr,table,a,div,span,ol,ul,li,p,h1,h2,h3,h4,h5', $menuPart, 1);
@@ -2371,7 +2371,7 @@ lib.' . $menuType . '.1.ACT {
 	 * @return    string        HTML content with it highlighted.
 	 */
 	function syntaxHLTypoScript($v) {
-		$tsparser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_TSparser');
+		$tsparser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser');
 		$tsparser->lineNumberOffset = 0;
 		$TScontent = $tsparser->doSyntaxHighlight(trim($v) . chr(10), '', 1);
 
@@ -2437,7 +2437,7 @@ lib.' . $menuType . '.1.ACT {
 				// Execute changes:
 				global $TYPO3_CONF_VARS;
 
-				$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_TCEmain');
+				$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Core\DataHandling\DataHandler');
 				$tce->stripslashes_values = 0;
 				$tce->dontProcessTransformations = 1;
 				$tce->start($data, Array());

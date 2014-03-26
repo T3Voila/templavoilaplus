@@ -181,7 +181,7 @@ class tx_templavoila_mod1_wizards {
 		$this->doc->getTabMenu(0, '_', 0, array('' => ''));
 
 		// init tceforms for javascript printing
-		$tceforms = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_TCEforms');
+		$tceforms = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Backend\Form\FormEngine');
 		$tceforms->initDefaultBEMode();
 		$tceforms->backPath = $GLOBALS['BACK_PATH'];
 		$tceforms->doSaveFieldName = 'doSave';
@@ -426,7 +426,7 @@ class tx_templavoila_mod1_wizards {
 			$dataArr['pages']['NEW']['tx_templavoila_ds'] = $templateObjectRow['datastructure'];
 		}
 
-		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_TCEmain');
+		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Core\DataHandling\DataHandler');
 
 		if (is_array($this->TCAdefaultOverride)) {
 			$tce->setDefaultsFromUserTS($this->TCAdefaultOverride);

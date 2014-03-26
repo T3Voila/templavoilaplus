@@ -224,7 +224,7 @@ Automatic Repair:
 			} else {
 
 				// Execute CMD array:
-				$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_TCEmain');
+				$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Core\DataHandling\DataHandler');
 				$tce->stripslashes_values = FALSE;
 				$tce->start(array(), array());
 				$tce->deleteAction('tt_content', $uid);

@@ -194,7 +194,7 @@ class tx_templavoila_extdeveval {
 							$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($dbRes);
 
 							$this->newFlexFormData = array();
-							$flexObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_flexformtools');
+							$flexObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools');
 							$flexObj->reNumberIndexesOfSectionData = TRUE;
 							$flexObj->traverseFlexFormXMLData($setTable, $setField, $row, $this, $traverseMethod);
 							$dbQuery = "UPDATE $setTable
@@ -245,7 +245,7 @@ class tx_templavoila_extdeveval {
 					$this->newFlexFormData = array();
 
 					// Create and call iterator object:
-					$flexObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_flexformtools');
+					$flexObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools');
 					$flexObj->reNumberIndexesOfSectionData = TRUE;
 					$flexObj->traverseFlexFormXMLData($table, $field, $row, $this, $traverseMethod);
 
@@ -334,7 +334,7 @@ class tx_templavoila_extdeveval {
 	}
 
 	/**
-	 * Call back function for t3lib_flexformtools class
+	 * Call back function for \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools class
 	 *
 	 * @param    array        Data structure for the current value
 	 * @param    mixed        Current value

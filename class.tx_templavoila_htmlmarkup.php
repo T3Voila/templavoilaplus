@@ -542,7 +542,7 @@ class tx_templavoila_htmlmarkup {
 	 */
 	function mergeFormDataIntoTemplateStructure($editStruct, $currentMappingInfo, $firstLevelImplodeToken = '', $valueKey = 'vDEF') {
 		$isSection = 0;
-		$htmlParse = ($this->htmlParse ? $this->htmlParse : \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_parsehtml'));
+		$htmlParse = ($this->htmlParse ? $this->htmlParse : \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Core\Html\HtmlParser'));
 		if (is_array($editStruct) && count($editStruct)) {
 			$testInt = implode('', array_keys($editStruct));
 			$isSection = !preg_match('/[^0-9]/', $testInt);
@@ -794,8 +794,8 @@ class tx_templavoila_htmlmarkup {
 	 */
 	function setHeaderBodyParts($MappingInfo_head, $MappingData_head_cached, $BodyTag_cached = '', $pageRenderer = FALSE) {
 
-		$htmlParse = ($this->htmlParse ? $this->htmlParse : \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_parsehtml'));
-		/* @var $htmlParse t3lib_parsehtml */
+		$htmlParse = ($this->htmlParse ? $this->htmlParse : \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Core\Html\HtmlParser'));
+		/* @var $htmlParse \TYPO3\CMS\Core\Html\HtmlParser */
 
 		$types = array(
 			'LINK' => 'text/css',
@@ -888,8 +888,8 @@ class tx_templavoila_htmlmarkup {
 	 */
 	function init() {
 		// HTML parser object initialized.
-		$this->htmlParse = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_parsehtml');
-		/* @var $this ->htmlParse t3lib_parsehtml */
+		$this->htmlParse = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Core\Html\HtmlParser');
+		/* @var $this ->htmlParse \TYPO3\CMS\Core\Html\HtmlParser */
 
 		// Resetting element count array
 		$this->elCountArray = array();

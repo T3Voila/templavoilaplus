@@ -46,7 +46,7 @@ $BE_USER->modAccess($MCONF, 1); // This checks permissions and exits if the user
  * @package        TYPO3
  * @subpackage    tx_templavoila
  */
-class tx_templavoila_module1 extends t3lib_SCbase {
+class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 	var $modTSconfig; // This module's TSconfig
 	var $modSharedTSconfig; // TSconfig from mod.SHARED
@@ -391,7 +391,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			$CMparts = $this->doc->getContextMenuCode();
 
 			$mod1_file = 'dragdrop' . ($this->debug ? '.js' : '-min.js');
-			if (method_exists('t3lib_div', 'createVersionNumberedFilename')) {
+			if (method_exists('\TYPO3\CMS\Core\Utility\GeneralUtility', 'createVersionNumberedFilename')) {
 				$mod1_file = \TYPO3\CMS\Core\Utility\GeneralUtility::createVersionNumberedFilename($mod1_file);
 			} else {
 				$mod1_file .= '?' . filemtime(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('templavoila') . 'mod1/' . $mod1_file);
@@ -487,7 +487,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 					$linkToPid = 'index.php?id=' . intval($this->rootElementRecord['content_from_pid']);
 					$link = '<a href="' . $linkToPid . '">' . htmlspecialchars($title) . ' (PID ' . intval($this->rootElementRecord['content_from_pid']) . ')</a>';
 					$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-						't3lib_FlashMessage',
+						'\TYPO3\CMS\Core\Messaging\FlashMessage',
 						'',
 						sprintf($LANG->getLL('content_from_pid_title'), $link),
 						\TYPO3\CMS\Core\Messaging\FlashMessage::INFO
@@ -544,7 +544,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			} else {
 				if (!isset($pageInfoArr['uid'])) {
 					$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-						't3lib_FlashMessage',
+						'\TYPO3\CMS\Core\Messaging\FlashMessage',
 						$GLOBALS['LANG']->getLL('page_not_found'),
 						$GLOBALS['LANG']->getLL('title'),
 						\TYPO3\CMS\Core\Messaging\FlashMessage::INFO
@@ -552,7 +552,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 					$this->content .= $flashMessage->render();
 				} else {
 					$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-						't3lib_FlashMessage',
+						'\TYPO3\CMS\Core\Messaging\FlashMessage',
 						$GLOBALS['LANG']->getLL('default_introduction'),
 						$GLOBALS['LANG']->getLL('title'),
 						\TYPO3\CMS\Core\Messaging\FlashMessage::INFO
@@ -611,7 +611,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			$sidebarMode = 'SIDEBAR_DISABLED';
 		}
 
-		$editareaTpl = t3lib_parsehtml::getSubpart($this->doc->moduleTemplate, $sidebarMode);
+		$editareaTpl = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($this->doc->moduleTemplate, $sidebarMode);
 		if ($editareaTpl) {
 			$editareaMarkers = array(
 				'TABROW' => $this->render_sidebar(),
@@ -619,7 +619,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			);
 			$editareaMarkers['FLASHMESSAGES'] = \TYPO3\CMS\Core\Messaging\FlashMessageQueue::renderFlashMessages();
 
-			$editareaContent = t3lib_parsehtml::substituteMarkerArray($editareaTpl, $editareaMarkers, '###|###', TRUE);
+			$editareaContent = \TYPO3\CMS\Core\Html\HtmlParser::substituteMarkerArray($editareaTpl, $editareaMarkers, '###|###', TRUE);
 
 			$bodyMarkers['EDITAREA'] = $editareaContent;
 		} else {
@@ -789,7 +789,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 		if (!$BE_USER->isAdmin() && $this->modTSconfig['properties']['enableContentAccessWarning']) {
 			if (!($this->hasBasicEditRights())) {
 				$message = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-					't3lib_FlashMessage',
+					'\TYPO3\CMS\Core\Messaging\FlashMessage',
 					$LANG->getLL('missing_edit_right_detail'),
 					$LANG->getLL('missing_edit_right'),
 					\TYPO3\CMS\Core\Messaging\FlashMessage::INFO
@@ -1121,7 +1121,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			} else {
 				if (!$GLOBALS['BE_USER']->isAdmin()) {
 					$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-						't3lib_FlashMessage',
+						'\TYPO3\CMS\Core\Messaging\FlashMessage',
 						$GLOBALS['LANG']->getLL('page_structure_inherited_detail'),
 						$GLOBALS['LANG']->getLL('page_structure_inherited'),
 						\TYPO3\CMS\Core\Messaging\FlashMessage::INFO
@@ -1201,7 +1201,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 
 				if ($maxItemsReached) {
 					$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-						't3lib_FlashMessage',
+						'\TYPO3\CMS\Core\Messaging\FlashMessage',
 						'',
 						sprintf(
 							$GLOBALS['LANG']->getLL('maximal_content_elements'),
@@ -1810,7 +1810,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 			// @Robert: How would you like this implementation better? Please advice and I will change it according to your wish!
 			$status = '';
 			if ($entry['table'] && $entry['uid']) {
-				$flexObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_flexformtools');
+				$flexObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools');
 				$recRow = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL($entry['table'], $entry['uid']);
 				if ($recRow['tx_templavoila_flex']) {
 
@@ -1823,7 +1823,7 @@ class tx_templavoila_module1 extends t3lib_SCbase {
 						$dataArr[$entry['table']][$entry['uid']]['tx_templavoila_flex'] = $newXML;
 
 						// Init TCEmain object and store:
-						$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_TCEmain');
+						$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Core\DataHandling\DataHandler');
 						$tce->stripslashes_values = 0;
 						$tce->start($dataArr, array());
 						$tce->process_datamap();
