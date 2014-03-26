@@ -362,6 +362,6 @@ if (TYPO3_MODE == 'BE' ||
 		'htmlvalidate' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila') . 'resources/icons/html_go.png',
 		'type-fce' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila') . 'icon_fce_ce.png'
 	);
-	t3lib_SpriteManager::addSingleIcons($icons, $_EXTKEY);
+	\TYPO3\CMS\Backend\Sprite\SpriteManager::addSingleIcons($icons, $_EXTKEY);
 }
 ?>
