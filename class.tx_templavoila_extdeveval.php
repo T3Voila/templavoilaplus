@@ -213,7 +213,6 @@ class tx_templavoila_extdeveval {
 		// First, find all flexform fields where we could find relations to data structures:
 		$fieldsToCheck = array();
 		foreach ($TCA as $table => $tmp) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 
 			foreach ($TCA[$table]['columns'] as $fieldName => $config) {
 				if ($config['config']['type'] == 'flex' && $config['config']['ds_pointerField'] && $config['config']['ds_tableField'] == 'tx_templavoila_datastructure:dataprot') {

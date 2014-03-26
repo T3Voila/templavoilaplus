@@ -1388,7 +1388,6 @@ class tx_templavoila_api {
 	function ds_getExpandedDataStructure($table, $row) {
 		global $TCA;
 
-		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 		$conf = $TCA[$table]['columns']['tx_templavoila_flex']['config'];
 		$dataStructureArr = \TYPO3\CMS\Backend\Utility\BackendUtility::getFlexFormDS($conf, $row, $table);
 
@@ -1533,7 +1532,6 @@ class tx_templavoila_api {
 		// If element is a Flexible Content Element (or a page) then look at the content inside:
 		if ($table == 'pages' || $table == $this->rootTable || ($table == 'tt_content' && $row['CType'] == 'templavoila_pi1')) {
 
-			\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 			$rawDataStructureArr = \TYPO3\CMS\Backend\Utility\BackendUtility::getFlexFormDS($TCA[$table]['columns']['tx_templavoila_flex']['config'], $row, $table);
 			$expandedDataStructureArr = $this->ds_getExpandedDataStructure($table, $row);
 

@@ -2611,8 +2611,6 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	function getAvailableLanguages($id = 0, $onlyIsoCoded = TRUE, $setDefault = TRUE, $setMulti = FALSE) {
 		global $LANG, $TYPO3_DB, $BE_USER, $TCA, $BACK_PATH;
 
-		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA('sys_language');
-
 		$output = array();
 		$excludeHidden = $BE_USER->isAdmin() ? '1=1' : 'sys_language.hidden=0';
 

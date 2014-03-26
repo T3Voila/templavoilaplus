@@ -487,9 +487,6 @@ class tx_templavoila_dbnewcontentel {
 	function removeInvalidElements(&$wizardItems) {
 		global $TCA;
 
-		// Load full table definition:
-		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA('tt_content');
-
 		// Get TCEFORM from TSconfig of current page
 		$TCEFORM_TSconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getTCEFORM_TSconfig('tt_content', array('pid' => $this->id));
 		$removeItems = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $TCEFORM_TSconfig['CType']['removeItems'], 1);

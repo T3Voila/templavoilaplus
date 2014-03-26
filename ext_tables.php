@@ -93,7 +93,6 @@ $TCA['tx_templavoila_datastructure'] = Array(
 
 
 // Adding access list to be_groups
-\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA('be_groups');
 $tempColumns = array(
 	'tx_templavoila_access' => array(
 		'label' => 'LLL:EXT:templavoila/locallang_db.xml:be_groups.tx_templavoila_access',
@@ -115,7 +114,6 @@ $tempColumns = array(
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('be_groups', 'tx_templavoila_access;;;;1-1-1', '1');
 
 // Adding the new content element, "Flexible Content":
-\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA('tt_content');
 $tempColumns = array(
 	'tx_templavoila_ds' => Array(
 		'exclude' => 1,

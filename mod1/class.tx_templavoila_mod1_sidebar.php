@@ -267,7 +267,6 @@ class tx_templavoila_mod1_sidebar {
 			return '';
 		}
 
-		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA('pages');
 		$conf = $TCA['pages']['columns']['tx_templavoila_flex']['config'];
 
 		$dataStructureArr = \TYPO3\CMS\Backend\Utility\BackendUtility::getFlexFormDS($conf, $pObj->rootElementRecord, 'pages');

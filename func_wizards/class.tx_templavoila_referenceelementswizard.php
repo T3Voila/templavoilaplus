@@ -269,7 +269,6 @@ class tx_templavoila_referenceElementsWizard extends \TYPO3\CMS\Backend\Module\A
 	function getAvailableLanguages($id = 0, $onlyIsoCoded = TRUE, $setDefault = TRUE, $setMulti = FALSE) {
 		global $LANG, $TYPO3_DB, $BE_USER, $TCA, $BACK_PATH;
 
-		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA('sys_language');
 		$flagAbsPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($TCA['sys_language']['columns']['flag']['config']['fileFolder']);
 		$flagIconPath = $BACK_PATH . '../' . substr($flagAbsPath, strlen(PATH_site));
 

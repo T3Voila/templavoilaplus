@@ -90,8 +90,6 @@ class tx_templavoila_handleStaticDataStructures {
 		$storagePid = $this->getStoragePid($params, $pObj);
 
 		if ($templateRef && $storagePid) {
-			// Load the table:
-			\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA('tx_templavoila_tmplobj');
 
 			// Select all Template Object Records from storage folder, which are parent records and which has the data structure for the plugin:
 			$res = $TYPO3_DB->exec_SELECTquery(

@@ -105,7 +105,6 @@ class tx_templavoila_mod1_records {
 		$content .= '<option value=""' . ($this->pObj->MOD_SETTINGS['recordsView_table'] == '' ? ' selected="selected"' : '') . '></options>';
 		foreach ($this->tables as $table) {
 			$t = htmlspecialchars($table);
-			\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 			if ($this->canDisplayTable($table)) {
 				$title = $GLOBALS['LANG']->sl($GLOBALS['TCA'][$table]['ctrl']['title']);
 				$content .= '<option value="' . $t . '"' .
@@ -160,8 +159,6 @@ class tx_templavoila_mod1_records {
 	 * @return    boolean        <code>true</code> if table can be displayed.
 	 */
 	function canDisplayTable($table) {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
-
 		return ($table != 'pages' && $table != 'tt_content' && isset($GLOBALS['TCA'][$table]) && $GLOBALS['BE_USER']->check('tables_select', $table));
 	}
 

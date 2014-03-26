@@ -57,8 +57,6 @@ class tx_templavoila_cm1_eTypes {
 
 		$eTypeCECounter = 0;
 
-		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA('tt_content');
-
 		// Traverse array
 		foreach ($elArray as $key => $value) {
 			// this MUST not ever enter the XMLs (it will break TV)
