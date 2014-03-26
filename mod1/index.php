@@ -817,8 +817,9 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		}
 
 		// show sys_notes
-		$sys_notes = recordList::showSysNotesForPage();
-		if ($sys_notes) {
+//		$sys_notes = recordList::showSysNotesForPage();
+		if (FALSE) {
+			// @todo: Check if and how this is to replace
 			$output .= '</div><div>' . $this->doc->section($LANG->sL('LLL:EXT:cms/layout/locallang.xml:internalNotes'), str_replace('sysext/sys_note/ext_icon.gif', $GLOBALS['BACK_PATH'] . 'sysext/sys_note/ext_icon.gif', $sys_notes), 0, 1);
 		}
 
