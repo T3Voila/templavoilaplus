@@ -199,7 +199,7 @@ final class tx_templavoila_div {
 	/**
 	 * Forces the integer $theInt into the boundaries of $min and $max. If the $theInt is FALSE then the $defaultValue is applied.
 	 *
-	 * @see t3lib_utility_Math::canBeInterpretedAsInteger
+	 * @see \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger
 	 *
 	 * @param $theInt integer Input value
 	 * @param $min integer Lower limit
@@ -211,7 +211,7 @@ final class tx_templavoila_div {
 	public static function canBeInterpretedAsInteger($var) {
 
 		if (class_exists('t3lib_utility_Math')) {
-			$result = t3lib_utility_Math::canBeInterpretedAsInteger($var);
+			$result = \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($var);
 		} else {
 			$result = \TYPO3\CMS\Core\Utility\GeneralUtility::testInt($var);
 		}
@@ -231,7 +231,7 @@ final class tx_templavoila_div {
 	 */
 	public static function forceIntegerInRange($theInt, $min, $max = 2000000000, $defaultValue = 0) {
 		if (class_exists('t3lib_utility_Math')) {
-			$result = t3lib_utility_Math::forceIntegerInRange($theInt, $min, $max, $defaultValue);
+			$result = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($theInt, $min, $max, $defaultValue);
 		} else {
 			$result = \TYPO3\CMS\Core\Utility\GeneralUtility::intInRange($theInt, $min, $max, $defaultValue);
 		}
