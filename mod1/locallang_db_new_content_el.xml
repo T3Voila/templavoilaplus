@@ -4,8 +4,7 @@
 		<description>Labels for the TemplaVoilà New Content Element wizard</description>
 		<type>module</type>
 		<fileId>EXT:templavoila/mod1/locallang_db_new_content_el.xml</fileId>
-		<labelContext type="array">
-		</labelContext>
+		<labelContext type="array"></labelContext>
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">

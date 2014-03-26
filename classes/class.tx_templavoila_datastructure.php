@@ -1,40 +1,44 @@
 <?php
 /***************************************************************
-* Copyright notice
-*
-* (c) 2010 Tolleiv Nietsch <tolleiv.nietsch@typo3.org>
-*  All rights reserved
-*
-*  This script is part of the Typo3 project. The Typo3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
+ * Copyright notice
+ *
+ * (c) 2010 Tolleiv Nietsch <tolleiv.nietsch@typo3.org>
+ *  All rights reserved
+ *
+ *  This script is part of the Typo3 project. The Typo3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 
 /**
  * Class to provide unique access to datastructure
  *
- * @author	Tolleiv Nietsch <tolleiv.nietsch@typo3.org>
+ * @author    Tolleiv Nietsch <tolleiv.nietsch@typo3.org>
  */
 abstract class tx_templavoila_datastructure {
 
 	const SCOPE_UNKNOWN = 0;
+
 	const SCOPE_PAGE = 1;
+
 	const SCOPE_FCE = 2;
 
 	protected $scope = self::SCOPE_UNKNOWN;
+
 	protected $label = '';
+
 	protected $iconFile = '';
 
 	/**
@@ -49,6 +53,7 @@ abstract class tx_templavoila_datastructure {
 	/**
 	 *
 	 * @param string $str
+	 *
 	 * @return void
 	 */
 	protected function setLabel($str) {
@@ -67,6 +72,7 @@ abstract class tx_templavoila_datastructure {
 	/**
 	 *
 	 * @param integer $scope
+	 *
 	 * @return void
 	 */
 	protected function setScope($scope) {
@@ -92,13 +98,14 @@ abstract class tx_templavoila_datastructure {
 	 * @return string
 	 */
 	public function getIcon() {
-			//regex is used to check if there's a filename within the iconFile string
-		return preg_replace('/^.*\/([^\/]+\.(gif|png))?$/i','\1',$this->iconFile) ? $this->iconFile : '';
+		//regex is used to check if there's a filename within the iconFile string
+		return preg_replace('/^.*\/([^\/]+\.(gif|png))?$/i', '\1', $this->iconFile) ? $this->iconFile : '';
 	}
 
 	/**
 	 *
 	 * @param string $filename
+	 *
 	 * @return void
 	 */
 	protected function setIcon($filename) {
@@ -131,6 +138,7 @@ abstract class tx_templavoila_datastructure {
 		if (strlen($ds) > 1) {
 			$arr = t3lib_div::xml2array($ds);
 		}
+
 		return $arr;
 	}
 
@@ -140,6 +148,7 @@ abstract class tx_templavoila_datastructure {
 	 *
 	 * @param mixed $parentRow
 	 * @param mixed $removeItems
+	 *
 	 * @return boolean
 	 */
 	abstract public function isPermittedForUser($parentRow = array(), $removeItems = array());
@@ -177,20 +186,21 @@ abstract class tx_templavoila_datastructure {
 
 	/**
 	 * @param void
+	 *
 	 * @return mixed
 	 */
 	abstract public function getBeLayout();
 
 	/**
 	 * @param void
+	 *
 	 * @return string
 	 */
 	abstract public function getSortingFieldValue();
-
 }
 
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/classes/class.tx_templavoila_datastructure.php'])	{
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/classes/class.tx_templavoila_datastructure.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/classes/class.tx_templavoila_datastructure.php']);
 }
 ?>

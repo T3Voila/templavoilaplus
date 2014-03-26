@@ -1,4 +1,5 @@
 <?php
+
 /***************************************************************
  * Copyright notice
  *
@@ -21,7 +22,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 class tx_templavoila_preview_type_media {
 
 	protected $previewField = 'media';
@@ -33,6 +33,7 @@ class tx_templavoila_preview_type_media {
 	 * @param string $output
 	 * @param boolean $alreadyRendered
 	 * @param object $ref
+	 *
 	 * @return string
 	 */
 	public function render_previewContent($row, $table, $output, $alreadyRendered, &$ref) {
@@ -49,6 +50,7 @@ class tx_templavoila_preview_type_media {
 	/**
 	 *
 	 * @param array $row
+	 *
 	 * @return string
 	 */
 	protected function getPreviewData($row) {
@@ -59,6 +61,7 @@ class tx_templavoila_preview_type_media {
 				$data = '<span>' . $flexform['data']['sDEF']['lDEF']['mmFile']['vDEF'] . '</span>';
 			}
 		}
+
 		return $data;
 	}
 

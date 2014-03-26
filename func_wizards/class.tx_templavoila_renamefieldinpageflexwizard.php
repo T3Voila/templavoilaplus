@@ -21,15 +21,15 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * This wizard renames a field in pages.tx_templavoila_flex, to avoid
  * a remapping
  *
  * $Id$
  *
- * @author	 Kay Strobach <typo3@kay-strobach.de>
+ * @author     Kay Strobach <typo3@kay-strobach.de>
  */
-
 class tx_templavoila_renameFieldInPageFlexWizard extends t3lib_extobjbase {
 
 	/**
@@ -50,12 +50,14 @@ class tx_templavoila_renameFieldInPageFlexWizard extends t3lib_extobjbase {
 				'',
 				t3lib_FlashMessage::ERROR
 			);
+
 			return $message->render();
 		}
 	}
 
 	/**
 	 * @param integer $uid
+	 *
 	 * @return array
 	 */
 	protected function getAllSubPages($uid) {
@@ -66,6 +68,7 @@ class tx_templavoila_renameFieldInPageFlexWizard extends t3lib_extobjbase {
 				$return = array_merge($return, $this->getAllSubPages($record['uid']));
 			}
 		}
+
 		return $return;
 	}
 
@@ -81,15 +84,16 @@ class tx_templavoila_renameFieldInPageFlexWizard extends t3lib_extobjbase {
 					'',
 					t3lib_FlashMessage::ERROR
 				);
+
 				return $message->render();
 			}
 			$escapedSource = $GLOBALS['TYPO3_DB']->fullQuoteStr('%' . t3lib_div::_GP('sourceField') . '%', 'pages');
 			$escapedDest = $GLOBALS['TYPO3_DB']->fullQuoteStr('%' . t3lib_div::_GP('destinationField') . '%', 'pages');
 
 			$condition = 'tx_templavoila_flex LIKE ' . $escapedSource
-					. ' AND NOT tx_templavoila_flex LIKE ' . $escapedDest . ' '
-					. ' AND uid IN ('
-					. implode(',', $this->getAllSubPages($this->pObj->id)) . ')';
+				. ' AND NOT tx_templavoila_flex LIKE ' . $escapedDest . ' '
+				. ' AND uid IN ('
+				. implode(',', $this->getAllSubPages($this->pObj->id)) . ')';
 
 			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 				'uid, title',
@@ -97,7 +101,7 @@ class tx_templavoila_renameFieldInPageFlexWizard extends t3lib_extobjbase {
 				$condition
 			);
 			if (count($rows) > 0) {
-					// build message for simulation
+				// build message for simulation
 				$mbuffer = 'Affects ' . count($rows) . ': <ul>';
 				foreach ($rows as $row) {
 					$mbuffer .= '<li>' . htmlspecialchars($row['title']) . ' (uid: ' . intval($row['uid']) . ')</li>';
@@ -106,7 +110,7 @@ class tx_templavoila_renameFieldInPageFlexWizard extends t3lib_extobjbase {
 				$message = new t3lib_FlashMessage($mbuffer, '', t3lib_FlashMessage::INFO);
 				$buffer .= $message->render();
 				unset($mbuffer);
-					//really do it
+				//really do it
 				if (!t3lib_div::_GP('simulateField')) {
 					$escapedSource = $GLOBALS['TYPO3_DB']->fullQuoteStr(t3lib_div::_GP('sourceField'), 'pages');
 					$escapedDest = $GLOBALS['TYPO3_DB']->fullQuoteStr(t3lib_div::_GP('destinationField'), 'pages');
@@ -122,6 +126,7 @@ class tx_templavoila_renameFieldInPageFlexWizard extends t3lib_extobjbase {
 				$message = new t3lib_FlashMessage('Nothing to do, can´t find something to replace.', '', t3lib_FlashMessage::ERROR);
 				$buffer .= $message->render();
 			}
+
 			return $buffer;
 			#
 		}
@@ -140,13 +145,14 @@ class tx_templavoila_renameFieldInPageFlexWizard extends t3lib_extobjbase {
 		unset($message);
 		$buffer .= '<form action="' . $this->getLinkModuleRoot() . '"><div id="formFieldContainer">';
 		$options = $this->getDSFieldOptionCode();
-		$buffer .= $this->addFormField('sourceField', null, 'select_optgroup', $options);
-		$buffer .= $this->addFormField('destinationField', null, 'select_optgroup', $options);
+		$buffer .= $this->addFormField('sourceField', NULL, 'select_optgroup', $options);
+		$buffer .= $this->addFormField('destinationField', NULL, 'select_optgroup', $options);
 		$buffer .= $this->addFormField('simulateField', 1, 'checkbox');
 		$buffer .= $this->addFormField('executeRename', 1, 'hidden');
-		$buffer .= $this->addFormField('submit', null, 'submit');
+		$buffer .= $this->addFormField('submit', NULL, 'submit');
 		$buffer .= '</div></form>';
 		$this->getKnownPageDS();
+
 		return $buffer;
 	}
 
@@ -155,10 +161,11 @@ class tx_templavoila_renameFieldInPageFlexWizard extends t3lib_extobjbase {
 	 * @param string $value
 	 * @param string $type
 	 * @param array $options
+	 *
 	 * @return string
 	 */
 	protected function addFormField($name, $value = '', $type = 'text', $options = array()) {
-		if ($value === null) {
+		if ($value === NULL) {
 			$value = t3lib_div::_GP($name);
 		}
 		switch ($type) {
@@ -168,15 +175,16 @@ class tx_templavoila_renameFieldInPageFlexWizard extends t3lib_extobjbase {
 				} else {
 					$checked = '';
 				}
+
 				return '<div id="form-line-0">'
-						. '<label for="' . $name . '" style="width:200px;display:block;float:left;">' . $GLOBALS['LANG']->sL('LLL:EXT:templavoila/locallang.xml:field_' . $name) . '</label>'
-						. '<input type="checkbox" id="' . $name . '" name="' . $name . '" ' . $checked . ' value="1">'
-						. '</div>';
+				. '<label for="' . $name . '" style="width:200px;display:block;float:left;">' . $GLOBALS['LANG']->sL('LLL:EXT:templavoila/locallang.xml:field_' . $name) . '</label>'
+				. '<input type="checkbox" id="' . $name . '" name="' . $name . '" ' . $checked . ' value="1">'
+				. '</div>';
 				break;
 			case 'submit':
 				return '<div id="form-line-0">'
-						. '<input type="submit" id="' . $name . '" name="' . $name . '" value="' . $GLOBALS['LANG']->sL('LLL:EXT:templavoila/locallang.xml:field_' . $name) . '">'
-						. '</div>';
+				. '<input type="submit" id="' . $name . '" name="' . $name . '" value="' . $GLOBALS['LANG']->sL('LLL:EXT:templavoila/locallang.xml:field_' . $name) . '">'
+				. '</div>';
 				break;
 			case 'hidden':
 				return '<input type="hidden" id="' . $name . '" name="' . $name . '" value="' . htmlspecialchars($value) . '">';
@@ -191,21 +199,21 @@ class tx_templavoila_renameFieldInPageFlexWizard extends t3lib_extobjbase {
 						} else {
 							$buffer .= '<option>' . htmlspecialchars($option) . '</option>';
 						}
-
 					}
 					$buffer .= '</optgroup>';
 				}
+
 				return '<div id="form-line-0">'
-						. '<label style="width:200px;display:block;float:left;" for="' . $name . '">' . $GLOBALS['LANG']->sL('LLL:EXT:templavoila/locallang.xml:field_' . $name) . '</label>'
-						. '<select id="' . $name . '" name="' . $name . '">' . $buffer . '</select>'
-						. '</div>';
+				. '<label style="width:200px;display:block;float:left;" for="' . $name . '">' . $GLOBALS['LANG']->sL('LLL:EXT:templavoila/locallang.xml:field_' . $name) . '</label>'
+				. '<select id="' . $name . '" name="' . $name . '">' . $buffer . '</select>'
+				. '</div>';
 				break;
 			case 'text':
 			default:
 				return '<div id="form-line-0">'
-						. '<label for="' . $name . '">' . $GLOBALS['LANG']->sL('LLL:EXT:templavoila/locallang.xml:field_' . $name) . '</label>'
-						. '<input type="text" id="' . $name . '" name="' . $name . '" value="' . htmlspecialchars($value) . '">'
-						. '</div>';
+				. '<label for="' . $name . '">' . $GLOBALS['LANG']->sL('LLL:EXT:templavoila/locallang.xml:field_' . $name) . '</label>'
+				. '<input type="text" id="' . $name . '" name="' . $name . '" value="' . htmlspecialchars($value) . '">'
+				. '</div>';
 		}
 	}
 
@@ -215,6 +223,7 @@ class tx_templavoila_renameFieldInPageFlexWizard extends t3lib_extobjbase {
 	protected function getLinkModuleRoot() {
 		$urlParams = $this->pObj->MOD_SETTINGS;
 		$urlParams['id'] = $this->pObj->id;
+
 		return $this->pObj->doc->scriptID . '?' . t3lib_div::implodeArrayForUrl(
 			'',
 			$urlParams
@@ -226,6 +235,7 @@ class tx_templavoila_renameFieldInPageFlexWizard extends t3lib_extobjbase {
 	 */
 	protected function getKnownPageDS() {
 		$dsRepo = t3lib_div::makeInstance('tx_templavoila_datastructureRepository');
+
 		return $dsRepo->getDatastructuresByScope(1);
 	}
 
@@ -242,12 +252,13 @@ class tx_templavoila_renameFieldInPageFlexWizard extends t3lib_extobjbase {
 				$return[$ds->getLabel()][] = $field;
 			}
 		}
+
 		return $return;
 	}
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/func_wizards/class.tx_templavoila_renamefieldinpageflexwizard.php'])    {
-    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/func_wizards/class.tx_templavoila_renamefieldinpageflexwizard.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/func_wizards/class.tx_templavoila_renamefieldinpageflexwizard.php']) {
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/func_wizards/class.tx_templavoila_renamefieldinpageflexwizard.php']);
 }
 
 ?>

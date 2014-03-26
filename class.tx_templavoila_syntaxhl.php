@@ -29,7 +29,7 @@
  *
  * $Id$
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author    Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -38,37 +38,36 @@
  *
  *   84: class tx_templavoila_syntaxhl
  *
- *			  SECTION: Markup of Data Structure, <T3DataStructure>
- *  156:	 function highLight_DS($str)
- *  183:	 function highLight_DS_markUpRecursively($struct,$parent='',$app='')
+ *              SECTION: Markup of Data Structure, <T3DataStructure>
+ *  156:     function highLight_DS($str)
+ *  183:     function highLight_DS_markUpRecursively($struct,$parent='',$app='')
  *
- *			  SECTION: Markup of Data Structure, <T3FlexForms>
- *  268:	 function highLight_FF($str)
- *  295:	 function highLight_FF_markUpRecursively($struct,$parent='',$app='')
+ *              SECTION: Markup of Data Structure, <T3FlexForms>
+ *  268:     function highLight_FF($str)
+ *  295:     function highLight_FF_markUpRecursively($struct,$parent='',$app='')
  *
- *			  SECTION: Various
- *  376:	 function getAllTags($str)
- *  407:	 function splitXMLbyTags($tagList,$str)
+ *              SECTION: Various
+ *  376:     function getAllTags($str)
+ *  407:     function splitXMLbyTags($tagList,$str)
  *
  * TOTAL FUNCTIONS: 6
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
 
-
 /**
  * Syntax Highlighting class.
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author    Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  */
 class tx_templavoila_syntaxhl {
 
-		// Internal, dynamic:
+	// Internal, dynamic:
 	var $htmlParse; // Parse object.
 
-		// External, static:
+	// External, static:
 	var $DS_wrapTags = array(
 		'T3DataStructure' => array('<span style="font-weight: bold;">', '</span>'),
 		'type' => array('<span style="font-weight: bold; color: #000080;">', '</span>'),
@@ -100,7 +99,6 @@ class tx_templavoila_syntaxhl {
 		'numIndex' => array('<span style="color: #333333;">', '</span>'),
 		'_unknown' => array('<span style="font-style: italic; color: #666666;">', '</span>'),
 
-
 		'sDEF' => array('<span style="font-weight: bold; color: #008000;">', '</span>'),
 		'level:sheet' => array('<span style="font-weight: bold; color: #008000;">', '</span>'),
 
@@ -126,26 +124,28 @@ class tx_templavoila_syntaxhl {
 	/**
 	 * Makes syntax highlighting of a Data Structure, <T3DataStructure>
 	 *
-	 * @param	string		Data Structure XML, must be valid since it's parsed.
-	 * @return	string		HTML code with highlighted content. Must be wrapped in <PRE> tags
+	 * @param    string        Data Structure XML, must be valid since it's parsed.
+	 *
+	 * @return    string        HTML code with highlighted content. Must be wrapped in <PRE> tags
 	 */
 	function highLight_DS($str) {
 
-			// Parse DS to verify that it is valid:
+		// Parse DS to verify that it is valid:
 		$DS = t3lib_div::xml2array($str);
 		if (is_array($DS)) {
 			$completeTagList = array_unique($this->getAllTags($str)); // Complete list of tags in DS
 
-				// Highlighting source:
+			// Highlighting source:
 			$this->htmlParse = t3lib_div::makeInstance('t3lib_parsehtml'); // Init parser object
 			$struct = $this->splitXMLbyTags(implode(',', $completeTagList), $str); // Split the XML by the found tags, recursively into LARGE array.
 			$markUp = $this->highLight_DS_markUpRecursively($struct); // Perform color-markup on the parsed content. Markup preserves the LINE formatting of the XML.
 
-				// Return content:
+			// Return content:
 			return $markUp;
 		} else {
 			$error = 'ERROR: The input content failed XML parsing: ' . $DS;
 		}
+
 		return $error;
 	}
 
@@ -153,10 +153,11 @@ class tx_templavoila_syntaxhl {
 	 * Making syntax highlighting of the parsed Data Structure XML.
 	 * Called recursively.
 	 *
-	 * @param	array		The structure, see splitXMLbyTags()
-	 * @param	string		Parent tag.
-	 * @param	string		"Application" - used to denote if we are 'inside' a section
-	 * @return	string		HTML
+	 * @param    array        The structure, see splitXMLbyTags()
+	 * @param    string        Parent tag.
+	 * @param    string "Application" - used to denote if we are 'inside' a section
+	 *
+	 * @return    string        HTML
 	 */
 	function highLight_DS_markUpRecursively($struct, $parent = '', $app = '') {
 		$output = '';
@@ -169,7 +170,7 @@ class tx_templavoila_syntaxhl {
 					case 'TCEforms':
 					case 'tx_templavoila':
 						$wrap = $this->DS_wrapTags['_applicationContents'];
-					break;
+						break;
 					case 'el':
 					default:
 						if ($parent == 'el') {
@@ -182,22 +183,22 @@ class tx_templavoila_syntaxhl {
 							$nextApp = '';
 						}
 
-							// If no wrap defined, us "unknown" definition
+						// If no wrap defined, us "unknown" definition
 						if (!is_array($wrap)) {
 							$wrap = $this->DS_wrapTags['_unknown'];
 						}
 
-							// Check for application sections in the XML:
+						// Check for application sections in the XML:
 						if ($app == 'el' || $parent == 'ROOT') {
 							switch ($v['tagName']) {
 								case 'TCEforms':
 								case 'tx_templavoila':
 									$nextApp = $v['tagName'];
 									$wrap = $this->DS_wrapTags['_applicationTag'];
-								break;
+									break;
 							}
 						}
-					break;
+						break;
 				}
 
 				$output .= $wrap[0] . htmlspecialchars($v['tag']) . $wrap[1];
@@ -221,26 +222,28 @@ class tx_templavoila_syntaxhl {
 	/**
 	 * Makes syntax highlighting of a FlexForm Data, <T3FlexForms>
 	 *
-	 * @param	string		Data Structure XML, must be valid since it's parsed.
-	 * @return	string		HTML code with highlighted content. Must be wrapped in <PRE> tags
+	 * @param    string        Data Structure XML, must be valid since it's parsed.
+	 *
+	 * @return    string        HTML code with highlighted content. Must be wrapped in <PRE> tags
 	 */
 	function highLight_FF($str) {
 
-			// Parse DS to verify that it is valid:
+		// Parse DS to verify that it is valid:
 		$DS = t3lib_div::xml2array($str);
 		if (is_array($DS)) {
 			$completeTagList = array_unique($this->getAllTags($str)); // Complete list of tags in DS
 
-				// Highlighting source:
+			// Highlighting source:
 			$this->htmlParse = t3lib_div::makeInstance('t3lib_parsehtml'); // Init parser object
 			$struct = $this->splitXMLbyTags(implode(',', $completeTagList), $str); // Split the XML by the found tags, recursively into LARGE array.
 			$markUp = $this->highLight_FF_markUpRecursively($struct); // Perform color-markup on the parsed content. Markup preserves the LINE formatting of the XML.
 
-				// Return content:
+			// Return content:
 			return $markUp;
 		} else {
 			$error = 'ERROR: The input content failed XML parsing: ' . $DS;
 		}
+
 		return $error;
 	}
 
@@ -248,15 +251,16 @@ class tx_templavoila_syntaxhl {
 	 * Making syntax highlighting of the parsed FlexForm XML.
 	 * Called recursively.
 	 *
-	 * @param	array		The structure, see splitXMLbyTags()
-	 * @param	string		Parent tag.
-	 * @param	string		"Application" - used to denote if we are 'inside' a section
-	 * @return	string		HTML
+	 * @param    array        The structure, see splitXMLbyTags()
+	 * @param    string        Parent tag.
+	 * @param    string "Application" - used to denote if we are 'inside' a section
+	 *
+	 * @return    string        HTML
 	 */
 	function highLight_FF_markUpRecursively($struct, $parent = '', $app = '') {
 		$output = '';
 
-			// Setting levels:
+		// Setting levels:
 		if ($parent == 'data') {
 			$app = 'sheet';
 		} elseif ($app == 'sheet') {
@@ -269,7 +273,7 @@ class tx_templavoila_syntaxhl {
 			$app = 'fieldname';
 		}
 
-			// Traverse structure:
+		// Traverse structure:
 		foreach ($struct as $k => $v) {
 			if ($k % 2) {
 				$wrap = array('', '');
@@ -278,10 +282,10 @@ class tx_templavoila_syntaxhl {
 					$app = 'numIndex';
 				}
 
-					// Default wrap:
+				// Default wrap:
 				$wrap = $this->FF_wrapTags[$v['tagName']];
 
-					// If no wrap defined, us "unknown" definition
+				// If no wrap defined, us "unknown" definition
 				if (!is_array($wrap)) {
 					switch ($app) {
 						case 'sheet':
@@ -289,10 +293,10 @@ class tx_templavoila_syntaxhl {
 						case 'fieldname':
 						case 'value':
 							$wrap = $this->FF_wrapTags['level:' . $app];
-						break;
+							break;
 						default:
 							$wrap = $this->FF_wrapTags['_unknown'];
-						break;
+							break;
 					}
 				}
 
@@ -321,29 +325,30 @@ class tx_templavoila_syntaxhl {
 	/**
 	 * Returning all tag names found in XML/HTML input string
 	 *
-	 * @param	string		HTML/XML input
-	 * @return	array		Array with all found tags (starttags only)
+	 * @param    string        HTML/XML input
+	 *
+	 * @return    array        Array with all found tags (starttags only)
 	 */
 	function getAllTags($str) {
 
-			// Init:
+		// Init:
 		$tags = array();
 		$token = md5(microtime());
 
-			// Markup all tag names with token.
+		// Markup all tag names with token.
 		$markUpStr = preg_replace('/<([[:alnum:]_]+)[^>]*>/', $token . '${1}' . $token, $str);
 
-			// Splitting by token:
+		// Splitting by token:
 		$parts = explode($token, $markUpStr);
 
-			// Traversing parts:
+		// Traversing parts:
 		foreach ($parts as $k => $v) {
 			if ($k % 2) {
 				$tags[] = $v;
 			}
 		}
 
-			// Returning tags:
+		// Returning tags:
 		return $tags;
 	}
 
@@ -351,14 +356,15 @@ class tx_templavoila_syntaxhl {
 	 * Splitting the input source by the tags listing in $tagList.
 	 * Called recursively.
 	 *
-	 * @param	string		Commalist of tags to split source by (into blocks, ALL being block-tags!)
-	 * @param	string		Input string.
-	 * @return	array		Array with the content arranged hierarchically.
+	 * @param    string        Commalist of tags to split source by (into blocks, ALL being block-tags!)
+	 * @param    string        Input string.
+	 *
+	 * @return    array        Array with the content arranged hierarchically.
 	 */
 	function splitXMLbyTags($tagList, $str) {
 		$struct = $this->htmlParse->splitIntoBlock($tagList, $str);
 
-			// Traverse level:
+		// Traverse level:
 		foreach ($struct as $k => $v) {
 			if ($k % 2) {
 				$tag = $this->htmlParse->getFirstTag($v);

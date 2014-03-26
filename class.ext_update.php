@@ -25,28 +25,28 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 class ext_update {
 
 	/**
 	 * Main function, returning the HTML content of the module
 	 *
-	 * @return	string		HTML
+	 * @return    string        HTML
 	 */
 	public function main() {
 
 		/* @var $dsTools tx_templavoila_staticds_wizard */
 		$dsWizard = t3lib_div::makeInstance('tx_templavoila_staticds_wizard');
+
 		return $dsWizard->staticDsWizard();
 	}
-
 
 	/**
 	 * Checks how many rows are found and returns true if there are any
 	 * (this function is called from the extension manager)
 	 *
-	 * @param	string		$what: what should be updated
-	 * @return	boolean
+	 * @param    string $what : what should be updated
+	 *
+	 * @return    boolean
 	 */
 	public function access($what = 'all') {
 		return $GLOBALS['BE_USER']->isAdmin();
@@ -54,6 +54,6 @@ class ext_update {
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/class.ext_update.php']) {
-	include_once ($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/class.ext_update.php']);
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/class.ext_update.php']);
 }
 ?>

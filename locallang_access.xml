@@ -5,8 +5,7 @@
 		<type>module</type>
 		<csh_table></csh_table>
 		<fileId>EXT:templavoila/locallang_access.xml</fileId>
-		<labelContext type="array">
-		</labelContext>
+		<labelContext type="array"></labelContext>
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
@@ -16,6 +15,5 @@
 			<label index="access_noCreateAccess">Creation of record in %s is not allowed because user has no access to its DS and/or TO</label>
 		</languageKey>
 	</data>
-	<orig_hash type="array">
-	</orig_hash>
+	<orig_hash type="array"></orig_hash>
 </T3locallang>
