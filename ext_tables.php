@@ -110,7 +110,7 @@ $tempColumns = array(
 		),
 	)
 );
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('be_groups', $tempColumns, 1);
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('be_groups', $tempColumns);
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('be_groups', 'tx_templavoila_access;;;;1-1-1', '1');
 
 // Adding the new content element, "Flexible Content":
@@ -174,7 +174,7 @@ $tempColumns = array(
 		)
 	),
 );
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('tt_content', $tempColumns, 1);
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('tt_content', $tempColumns);
 
 $TCA['tt_content']['ctrl']['typeicons'][$_EXTKEY . '_pi1'] = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . '/icon_fce_ce.png';
 $GLOBALS['TCA']['tt_content']['ctrl']['typeicon_classes'][$_EXTKEY . '_pi1'] = 'extensions-templavoila-type-fce';
@@ -295,7 +295,7 @@ $tempColumns = array(
 		)
 	),
 );
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('pages', $tempColumns, 1);
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('pages', $tempColumns);
 if ($_EXTCONF['enable.']['selectDataStructure']) {
 
 	if (tx_templavoila_div::convertVersionNumberToInteger(TYPO3_version) >= 4005000) {
