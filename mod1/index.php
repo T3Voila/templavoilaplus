@@ -2364,9 +2364,9 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		if ($realDelete) {
 			$LLlabel = $foreignReferences ? 'deleteRecordWithReferencesMsg' : 'deleteRecordMsg';
 
-			return '<a class="tpm-delete" href="index.php?' . $this->link_getParameters() . '&amp;deleteRecord=' . $encodedUnlinkPointerString . '" onclick="' . htmlspecialchars('return confirm(' . $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL($LLlabel)) . ');') . '">' . $label . '</a>';
+			return '<a class="tpm-delete" href="index.php?' . $this->link_getParameters() . '&amp;deleteRecord=' . $encodedUnlinkPointerString . '" onclick="' . htmlspecialchars('return confirm(' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($GLOBALS['LANG']->getLL($LLlabel)) . ');') . '">' . $label . '</a>';
 		} else {
-			return '<a class="tpm-unlink" href="javascript:' . htmlspecialchars('if (confirm(' . $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL('unlinkRecordMsg')) . '))') . 'sortable_unlinkRecord(\'' . $encodedUnlinkPointerString . '\',\'' . $this->addSortableItem($unlinkPointerString) . '\',\'' . $elementPointer . '\');">' . $label . '</a>';
+			return '<a class="tpm-unlink" href="javascript:' . htmlspecialchars('if (confirm(' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($GLOBALS['LANG']->getLL('unlinkRecordMsg')) . '))') . 'sortable_unlinkRecord(\'' . $encodedUnlinkPointerString . '\',\'' . $this->addSortableItem($unlinkPointerString) . '\',\'' . $elementPointer . '\');">' . $label . '</a>';
 		}
 	}
 
@@ -2382,7 +2382,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	function link_makeLocal($label, $makeLocalPointer) {
 		global $LANG;
 
-		return '<a class="tpm-makeLocal" href="index.php?' . $this->link_getParameters() . '&amp;makeLocalRecord=' . rawurlencode($this->apiObj->flexform_getStringFromPointer($makeLocalPointer)) . '" onclick="' . htmlspecialchars('return confirm(' . $LANG->JScharCode($LANG->getLL('makeLocalMsg')) . ');') . '">' . $label . '</a>';
+		return '<a class="tpm-makeLocal" href="index.php?' . $this->link_getParameters() . '&amp;makeLocalRecord=' . rawurlencode($this->apiObj->flexform_getStringFromPointer($makeLocalPointer)) . '" onclick="' . htmlspecialchars('return confirm(' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($LANG->getLL('makeLocalMsg')) . ');') . '">' . $label . '</a>';
 	}
 
 	/**
