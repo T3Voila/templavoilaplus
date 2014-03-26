@@ -380,5 +380,3 @@ class tx_templavoila_syntaxhl {
 		return $struct;
 	}
 }
-
-?>

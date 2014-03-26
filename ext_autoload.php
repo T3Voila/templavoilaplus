@@ -61,4 +61,3 @@ return array(
 	'tx_templavoila_api_testcase' => $extensionPath . 'tests/tx_templavoila_api_testcase.php',
 	'tx_templavoila_syntaxhl' => $extensionPath . 'class.tx_templavoila_syntaxhl.php',
 );
-?>

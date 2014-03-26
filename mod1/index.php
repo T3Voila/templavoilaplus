@@ -2952,4 +2952,3 @@ $SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_mod
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();
-?>

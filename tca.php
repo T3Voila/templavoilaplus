@@ -281,5 +281,3 @@ $TCA['tx_templavoila_datastructure'] = Array(
 		'0' => Array('showitem' => 'title;;;;2-2-2, scope, previewicon, belayout, dataprot;;;;3-3-3')
 	)
 );
-
-?>

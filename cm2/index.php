@@ -288,4 +288,3 @@ $SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_cm2
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();
-?>

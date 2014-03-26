@@ -364,4 +364,3 @@ if (TYPO3_MODE == 'BE' ||
 	);
 	\TYPO3\CMS\Backend\Sprite\SpriteManager::addSingleIcons($icons, $_EXTKEY);
 }
-?>

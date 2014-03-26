@@ -339,6 +339,3 @@ class tx_templavoila_referenceElementsWizard extends \TYPO3\CMS\Backend\Module\A
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/func_wizards/class.tx_templavoila_referenceelementswizard.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/func_wizards/class.tx_templavoila_referenceelementswizard.php']);
 }
-
-
-?>

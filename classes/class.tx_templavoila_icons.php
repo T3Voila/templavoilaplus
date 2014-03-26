@@ -85,5 +85,3 @@ final class tx_templavoila_icons {
 		return $flag;
 	}
 }
-
-?>

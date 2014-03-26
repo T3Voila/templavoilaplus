@@ -239,5 +239,3 @@ final class tx_templavoila_div {
 		return $result;
 	}
 }
-
-?>

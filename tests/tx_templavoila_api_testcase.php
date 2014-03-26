@@ -2231,5 +2231,3 @@ class tx_templavoila_api_testcase extends tx_phpunit_database_testcase {
 		);
 	}
 }
-
-?>

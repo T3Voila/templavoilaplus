@@ -77,5 +77,3 @@ class tx_templavoila_staticds_check {
 		return $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', 'tx_templavoila_datastructure', 'deleted=0');
 	}
 }
-
-?>
