@@ -214,7 +214,7 @@ class tx_templavoila_cm2 extends t3lib_SCbase {
 
 		// Back
 		if ($this->returnUrl) {
-			$backIcon = t3lib_iconWorks::getSpriteIcon('actions-view-go-back');
+			$backIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-view-go-back');
 			$buttons['back'] = '<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisUrl($this->returnUrl)) . '" class="typo3-goBack" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.goBack', TRUE) . '">' .
 				$backIcon .
 				'</a>';

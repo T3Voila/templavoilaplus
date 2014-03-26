@@ -285,7 +285,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 					$tRows[] = '
 						<tr class="bgColor4">
 							<td><a href="index.php?id=' . $pid . '" onclick="setHighlight(' . $pid . ')">' .
-						t3lib_iconWorks::getSpriteIconForRecord('pages', t3lib_BEfunc::getRecord('pages', $pid)) .
+						\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', t3lib_BEfunc::getRecord('pages', $pid)) .
 						htmlspecialchars($path) . '</a></td>
 							<td>' . $dsRepo->getDatastructureCountForPid($pid) . '</td>
 							<td>' . $toRepo->getTemplateCountForPid($pid) . '</td>
@@ -330,11 +330,11 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 			switch ((string) $scopePointer) {
 				case tx_templavoila_datastructure::SCOPE_PAGE:
 					$label = $LANG->getLL('pagetemplates');
-					$scopeIcon = t3lib_iconWorks::getSpriteIconForRecord('pages', array());
+					$scopeIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', array());
 					break;
 				case tx_templavoila_datastructure::SCOPE_FCE:
 					$label = $LANG->getLL('fces');
-					$scopeIcon = t3lib_iconWorks::getSpriteIconForRecord('tt_content', array());
+					$scopeIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('tt_content', array());
 					break;
 				case tx_templavoila_datastructure::SCOPE_UNKNOWN:
 					$label = $LANG->getLL('other');
@@ -477,7 +477,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 						'&defVals[tx_templavoila_tmplobj][datastructure]=' . rawurlencode($dsObj->getKey()) .
 						'&defVals[tx_templavoila_tmplobj][title]=' . rawurlencode($newTitle) .
 						'&defVals[tx_templavoila_tmplobj][fileref]=' . rawurlencode($newFileRef)
-						, $this->doc->backPath)) . '">' . t3lib_iconWorks::getSpriteIcon('actions-document-new') . $GLOBALS['LANG']->getLL('createnewto', 1) . '</a>';
+						, $this->doc->backPath)) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-new') . $GLOBALS['LANG']->getLL('createnewto', 1) . '</a>';
 
 				// Render data structure display
 				$rDSDres = $this->renderDataStructureDisplay($dsObj, $scope, $toIdArray);
@@ -540,9 +540,9 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 
 		if ($dsObj->isFilebased()) {
 			$onClick = 'document.location=\'' . $this->doc->backPath . 'file_edit.php?target=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($dsObj->getKey())) . '&returnUrl=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::sanitizeLocalUrl(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI'))) . '\';';
-			$dsIcon = '<a href="#" onclick="' . htmlspecialchars($onClick) . '"><img' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/fileicons/xml.gif', 'width="18" height="16"') . ' alt="" title="' . $dsObj->getKey() . '" class="absmiddle" /></a>';
+			$dsIcon = '<a href="#" onclick="' . htmlspecialchars($onClick) . '"><img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, 'gfx/fileicons/xml.gif', 'width="18" height="16"') . ' alt="" title="' . $dsObj->getKey() . '" class="absmiddle" /></a>';
 		} else {
-			$dsIcon = t3lib_iconWorks::getSpriteIconForRecord('tx_templavoila_datastructure', array(), array('title' => $dsObj->getKey()));
+			$dsIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('tx_templavoila_datastructure', array(), array('title' => $dsObj->getKey()));
 			$dsIcon = $this->doc->wrapClickMenuOnIcon($dsIcon, 'tx_templavoila_datastructure', $dsObj->getKey(), 1, '&callingScriptId=' . rawurlencode($this->doc->scriptID));
 		}
 
@@ -570,8 +570,8 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 			$editLink = $editDataprotLink = '';
 			$dsTitle = $dsObj->getLabel();
 		} else {
-			$editLink = $lpXML .= '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::editOnClick('&edit[tx_templavoila_datastructure][' . $dsObj->getKey() . ']=edit', $this->doc->backPath)) . '">' . t3lib_iconWorks::getSpriteIcon('actions-document-open') . '</a>';
-			$editDataprotLink = '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::editOnClick('&edit[tx_templavoila_datastructure][' . $dsObj->getKey() . ']=edit&columnsOnly=dataprot', $this->doc->backPath)) . '">' . t3lib_iconWorks::getSpriteIcon('actions-document-open') . '</a>';
+			$editLink = $lpXML .= '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::editOnClick('&edit[tx_templavoila_datastructure][' . $dsObj->getKey() . ']=edit', $this->doc->backPath)) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open') . '</a>';
+			$editDataprotLink = '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::editOnClick('&edit[tx_templavoila_datastructure][' . $dsObj->getKey() . ']=edit&columnsOnly=dataprot', $this->doc->backPath)) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open') . '</a>';
 			$dsTitle = '<a href="' . htmlspecialchars('../cm1/index.php?table=tx_templavoila_datastructure&uid=' . $dsObj->getKey() . '&id=' . $this->id . '&returnUrl=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::sanitizeLocalUrl(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')))) . '">' . htmlspecialchars($dsObj->getLabel()) . '</a>';
 		}
 
@@ -660,7 +660,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 	function renderTODisplay($toObj, $scope, $children = 0) {
 
 		// Put together the records icon including content sensitive menu link wrapped around it:
-		$recordIcon = t3lib_iconWorks::getSpriteIconForRecord('tx_templavoila_tmplobj', array(), array('title' => $toObj->getKey()));
+		$recordIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('tx_templavoila_tmplobj', array(), array('title' => $toObj->getKey()));
 		$recordIcon = $this->doc->wrapClickMenuOnIcon($recordIcon, 'tx_templavoila_tmplobj', $toObj->getKey(), 1, '&callingScriptId=' . rawurlencode($this->doc->scriptID));
 
 		// Preview icon:
@@ -705,16 +705,16 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 				$modified = ($toObj->getFilerefMtime() != $fileMtime);
 			}
 			if ($modified) {
-				$mappingStatus = $mappingStatus_index = t3lib_iconWorks::getSpriteIcon('status-dialog-warning');
+				$mappingStatus = $mappingStatus_index = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-warning');
 				$mappingStatus .= sprintf($GLOBALS['LANG']->getLL('towasupdated', 1), t3lib_BEfunc::datetime($toObj->getTstamp()));
 				$this->setErrorLog($scope, 'warning', sprintf($GLOBALS['LANG']->getLL('warning_mappingstatus', 1), $mappingStatus, $toObj->getLabel()));
 			} else {
-				$mappingStatus = $mappingStatus_index = t3lib_iconWorks::getSpriteIcon('status-dialog-ok');
+				$mappingStatus = $mappingStatus_index = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-ok');
 				$mappingStatus .= $GLOBALS['LANG']->getLL('mapping_uptodate', 1);
 			}
 			$mappingStatus .= '<br/><input type="button" onclick="jumpToUrl(\'' . htmlspecialchars($linkUrl) . '\');" value="' . $GLOBALS['LANG']->getLL('update_mapping', 1) . '" />';
 		} elseif (!$fileMtime) {
-			$mappingStatus = $mappingStatus_index = t3lib_iconWorks::getSpriteIcon('status-dialog-error');
+			$mappingStatus = $mappingStatus_index = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-error');
 			$mappingStatus .= $GLOBALS['LANG']->getLL('notmapped', 1);
 			$this->setErrorLog($scope, 'fatal', sprintf($GLOBALS['LANG']->getLL('warning_mappingstatus', 1), $mappingStatus, $toObj->getLabel()));
 
@@ -739,14 +739,14 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 				$lpXML = '';
 			}
 		}
-		$lpXML .= '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::editOnClick('&edit[tx_templavoila_tmplobj][' . $toObj->getKey() . ']=edit&columnsOnly=localprocessing', $this->doc->backPath)) . '">' . t3lib_iconWorks::getSpriteIcon('actions-document-open') . '</a>';
+		$lpXML .= '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::editOnClick('&edit[tx_templavoila_tmplobj][' . $toObj->getKey() . ']=edit&columnsOnly=localprocessing', $this->doc->backPath)) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open') . '</a>';
 
 		// Compile info table:
 		$tableAttribs = ' border="0" cellpadding="1" cellspacing="1" width="98%" style="margin-top: 3px;" class="lrPadding"';
 
 		// Links:
 		$toTitle = '<a href="' . htmlspecialchars($linkUrl) . '">' . htmlspecialchars($GLOBALS['LANG']->sL($toObj->getLabel())) . '</a>';
-		$editLink = '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::editOnClick('&edit[tx_templavoila_tmplobj][' . $toObj->getKey() . ']=edit', $this->doc->backPath)) . '">' . t3lib_iconWorks::getSpriteIcon('actions-document-open') . '</a>';
+		$editLink = '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::editOnClick('&edit[tx_templavoila_tmplobj][' . $toObj->getKey() . ']=edit', $this->doc->backPath)) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open') . '</a>';
 
 		$fRWTOUres = array();
 
@@ -1003,7 +1003,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 					. implode('', $output) . '
 				</table>';
 			} else {
-				$outputString = t3lib_iconWorks::getSpriteIcon('status-dialog-warning') . 'No usage!';
+				$outputString = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-warning') . 'No usage!';
 				$this->setErrorLog($scope, 'warning', sprintf($GLOBALS['LANG']->getLL('warning_mappingstatus', 1), $outputString, $toObj->getLabel()));
 			}
 		}
@@ -1119,13 +1119,13 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 		// Create final output table:
 		if (count($output)) {
 			if (count($output) > 1) {
-				$outputString = t3lib_iconWorks::getSpriteIcon('status-dialog-error') .
+				$outputString = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-error') .
 					sprintf($GLOBALS['LANG']->getLL('invalidtemplatevalues', 1), count($output) - 1);
 				$this->setErrorLog($scope, 'fatal', $outputString);
 
 				$outputString .= '<table border="0" cellspacing="1" cellpadding="1" class="lrPadding">' . implode('', $output) . '</table>';
 			} else {
-				$outputString = t3lib_iconWorks::getSpriteIcon('status-dialog-ok') .
+				$outputString = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-ok') .
 					$GLOBALS['LANG']->getLL('noerrorsfound', 1);
 			}
 		}
@@ -1177,12 +1177,12 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 					<tr class="' . ($i++ % 2 == 0 ? 'bgColor4' : 'bgColor6') . '">
 						<td>' .
 					'<a href="' . htmlspecialchars($this->doc->backPath . '../' . substr($tFile, strlen(PATH_site))) . '" target="_blank">' .
-					t3lib_iconWorks::getSpriteIcon('actions-document-view') . ' ' . htmlspecialchars(substr($tFile, strlen(PATH_site))) .
+					\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-view') . ' ' . htmlspecialchars(substr($tFile, strlen(PATH_site))) .
 					'</a></td>
 				<td align="center">' . $count . '</td>
 						<td>' .
 					'<a href="' . htmlspecialchars($this->cm1Link . '?id=' . $this->id . '&file=' . rawurlencode($tFile)) . '&mapElPath=%5BROOT%5D">' .
-					t3lib_iconWorks::getSpriteIcon('actions-document-new') . ' ' . htmlspecialchars('Create...') .
+					\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-new') . ' ' . htmlspecialchars('Create...') .
 					'</a></td>
 			</tr>';
 			}
@@ -1215,12 +1215,12 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 						<tr class="' . ($i++ % 2 == 0 ? 'bgColor4' : 'bgColor6') . '">
 							<td>' .
 						'<a href="' . htmlspecialchars($this->doc->backPath . '../' . substr($tFile, strlen(PATH_site))) . '" target="_blank">' .
-						t3lib_iconWorks::getSpriteIcon('actions-document-view') . ' ' . htmlspecialchars(substr($tFile, strlen(PATH_site))) .
+						\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-view') . ' ' . htmlspecialchars(substr($tFile, strlen(PATH_site))) .
 						'</a></td>
 					<td align="center">' . ($this->tFileList[$tFile] ? $this->tFileList[$tFile] : '-') . '</td>
 							<td>' .
 						'<a href="' . htmlspecialchars($this->cm1Link . '?id=' . $this->id . '&file=' . rawurlencode($tFile)) . '&mapElPath=%5BROOT%5D">' .
-						t3lib_iconWorks::getSpriteIcon('actions-document-new') . ' ' . htmlspecialchars('Create...') .
+						\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-new') . ' ' . htmlspecialchars('Create...') .
 						'</a></td>
 				</tr>';
 				}
@@ -1320,7 +1320,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 
 			foreach ($DStree as $elm => $def) {
 				if (!is_array($def)) {
-					$HTML .= '<p>' . t3lib_iconWorks::getSpriteIcon('status-dialog-error') . sprintf($GLOBALS['LANG']->getLL('invaliddatastructure_xmlbroken', 1), $elm) . '</p>';
+					$HTML .= '<p>' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-error') . sprintf($GLOBALS['LANG']->getLL('invaliddatastructure_xmlbroken', 1), $elm) . '</p>';
 					break;
 				}
 
@@ -1347,22 +1347,22 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 					if (isset($def['langDisable'])) {
 						$conf .= '<li>' .
 							(($def['langDisable'] == 1)
-								? t3lib_iconWorks::getSpriteIcon('status-dialog-error')
-								: t3lib_iconWorks::getSpriteIcon('status-dialog-ok')
+								? \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-error')
+								: \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-ok')
 							) . ' ' . $GLOBALS['LANG']->getLL('fceislocalized', 1) . '</li>';
 					}
 					if (isset($def['langChildren'])) {
 						$conf .= '<li>' .
 							(($def['langChildren'] == 1)
-								? t3lib_iconWorks::getSpriteIcon('status-dialog-ok')
-								: t3lib_iconWorks::getSpriteIcon('status-dialog-error')
+								? \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-ok')
+								: \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-error')
 							) . ' ' . $GLOBALS['LANG']->getLL('fceinlineislocalized', 1) . '</li>';
 					}
 					if (isset($def['sheetSelector'])) {
 						$conf .= '<li>' .
 							(($def['sheetSelector'] != '')
-								? t3lib_iconWorks::getSpriteIcon('status-dialog-ok')
-								: t3lib_iconWorks::getSpriteIcon('status-dialog-error')
+								? \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-ok')
+								: \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-error')
 							) . ' custom sheet-selector' .
 							(($def['sheetSelector'] != '')
 								? ' [<em>' . $def['sheetSelector'] . '</em>]'
@@ -1422,15 +1422,15 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 							if (isset($tv['proc']) && isset($tv['proc']['int'])) {
 								$proc .= '<li>' .
 									(($tv['proc']['int'] == 1)
-										? t3lib_iconWorks::getSpriteIcon('status-dialog-ok')
-										: t3lib_iconWorks::getSpriteIcon('status-dialog-error')
+										? \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-ok')
+										: \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-error')
 									) . ' ' . $GLOBALS['LANG']->getLL('casttointeger', 1) . '</li>';
 							}
 							if (isset($tv['proc']) && isset($tv['proc']['HSC'])) {
 								$proc .= '<li>' .
 									(($tv['proc']['HSC'] == 1)
-										? t3lib_iconWorks::getSpriteIcon('status-dialog-ok')
-										: t3lib_iconWorks::getSpriteIcon('status-dialog-error')
+										? \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-ok')
+										: \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-error')
 									) . ' ' . $GLOBALS['LANG']->getLL('hsced', 1) .
 									(($tv['proc']['HSC'] == 1)
 										? ' ' . $GLOBALS['LANG']->getLL('hsc_on', 1)
@@ -1440,8 +1440,8 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 							if (isset($tv['proc']) && isset($tv['proc']['stdWrap'])) {
 								$proc .= '<li>' .
 									(($tv['proc']['stdWrap'] != '')
-										? t3lib_iconWorks::getSpriteIcon('status-dialog-ok')
-										: t3lib_iconWorks::getSpriteIcon('status-dialog-error')
+										? \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-ok')
+										: \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-error')
 									) . ' ' . $GLOBALS['LANG']->getLL('stdwrap', 1) . '</li>';
 							}
 
@@ -1603,7 +1603,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 
 			$HTML .= '</dl>';
 		} else
-			$HTML .= '<p>' . t3lib_iconWorks::getSpriteIcon('status-dialog-warning') . ' The element has no children!</p>';
+			$HTML .= '<p>' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-warning') . ' The element has no children!</p>';
 
 		return $HTML;
 	}

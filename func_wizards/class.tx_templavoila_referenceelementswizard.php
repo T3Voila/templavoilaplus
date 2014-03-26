@@ -77,7 +77,7 @@ class tx_templavoila_referenceElementsWizard extends t3lib_extobjbase {
 		$tree->init('AND ' . $GLOBALS['BE_USER']->getPagePermsClause(1));
 
 		// Creating top icon; the current page
-		$HTML = t3lib_iconWorks::getSpriteIconForRecord('pages', $treeStartingRecord);
+		$HTML = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', $treeStartingRecord);
 		$tree->tree[] = array(
 			'row' => $treeStartingRecord,
 			'HTML' => $HTML

@@ -228,7 +228,7 @@ class tx_templavoila_htmlmarkup {
 
 		/* build primary cache for icon-images */
 		foreach ($this->tags as $tag => &$conf) {
-			$conf['icon'] = t3lib_iconWorks::skinImg($this->backPath, t3lib_extMgm::extRelPath('templavoila') . 'html_tags/' . $tag . '.gif', 'height="17"') . ' alt="" border="0"';
+			$conf['icon'] = \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, t3lib_extMgm::extRelPath('templavoila') . 'html_tags/' . $tag . '.gif', 'height="17"') . ' alt="" border="0"';
 		}
 
 		list($tagList_elements, $tagList_single) = $this->splitTagTypes($showTags);

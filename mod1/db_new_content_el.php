@@ -152,7 +152,7 @@ class tx_templavoila_dbnewcontentel {
 			$this->content .= $this->doc->spacer(5);
 
 			$elRow = t3lib_BEfunc::getRecordWSOL('pages', $this->id);
-			$header = t3lib_iconWorks::getSpriteIconForRecord('pages', $elRow);
+			$header = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', $elRow);
 			$header .= t3lib_BEfunc::getRecordTitle('pages', $elRow, 1);
 			$this->content .= $this->doc->section('', $header, 0, 1);
 			$this->content .= $this->doc->spacer(10);
@@ -220,7 +220,7 @@ class tx_templavoila_dbnewcontentel {
 					$newRecordLink = 'index.php?' . $this->linkParams() . '&createNewRecord=' . rawurlencode($this->parentRecord) . $wInfo['params'];
 
 					$content .= $this->elementWrapper['wizardPart'][0] . '<a href="' . htmlspecialchars($newRecordLink) . '">
-						<img' . t3lib_iconWorks::skinImg($this->doc->backPath, $wInfo['icon'], '') . ' alt="" /></a>' . $this->elementWrapper['wizardPart'][1];
+						<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, $wInfo['icon'], '') . ' alt="" /></a>' . $this->elementWrapper['wizardPart'][1];
 
 					// Title + description:
 					$content .= $this->elementWrapper['wizardPart'][0] . '<a href="' . htmlspecialchars($newRecordLink) . '"><strong>' . htmlspecialchars($wInfo['title']) . '</strong><br />' . nl2br(htmlspecialchars(trim($wInfo['description']))) . '</a>' . $this->elementWrapper['wizardPart'][1];
@@ -287,7 +287,7 @@ class tx_templavoila_dbnewcontentel {
 
 		// Back
 		if ($this->returnUrl) {
-			$backIcon = t3lib_iconWorks::getSpriteIcon('actions-view-go-back');
+			$backIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-view-go-back');
 			$buttons['back'] = '<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisUrl($this->returnUrl)) . '" class="typo3-goBack" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.goBack', TRUE) . '">' .
 				$backIcon .
 				'</a>';

@@ -176,8 +176,8 @@ class tx_templavoila_mod1_sidebar {
 			// Create the whole sidebar:
 			switch ($this->position) {
 				case 'left':
-					$minusIcon = t3lib_iconWorks::getSpriteIcon('actions-view-table-collapse');
-					$plusIcon = t3lib_iconWorks::getSpriteIcon('actions-view-table-expand');
+					$minusIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-view-table-collapse');
+					$plusIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-view-table-expand');
 					$sideBar = '
 						<!-- TemplaVoila Sidebar (left) begin -->
 

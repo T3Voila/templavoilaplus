@@ -50,7 +50,7 @@ final class tx_templavoila_icons {
 			$title = isset($options['title']) ? ' title="' . $options['title'] . '"' : '';
 			$flag = '<img src="' . self::getFlagIconFileForLanguage($flagName) . '"' . $title . $alt . '/>';
 		} else {
-			$flag = t3lib_iconWorks::getSpriteIcon('flags-' . $flagName, $options);
+			$flag = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('flags-' . $flagName, $options);
 		}
 
 		return $flag;

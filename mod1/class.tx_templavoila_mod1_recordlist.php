@@ -75,13 +75,13 @@ class tx_templavoila_mod1_recordlist extends localRecordList {
 			case 'fwd':
 				$href = $this->returnUrl . '&SET[recordsView_start]=' . ($pointer - $this->iLimit) . '&SET[recordsView_table]=' . $table;
 				$content = '<a href="' . htmlspecialchars($href) . '">' .
-					t3lib_iconWorks::getSpriteIcon('actions-move-up') .
+					\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-move-up') .
 					'</a> <i>[1 - ' . $pointer . ']</i>';
 				break;
 			case 'rwd':
 				$href = $this->returnUrl . '&SET[recordsView_start]=' . $pointer . '&SET[recordsView_table]=' . $table;
 				$content = '<a href="' . htmlspecialchars($href) . '">' .
-					t3lib_iconWorks::getSpriteIcon('actions-move-down') .
+					\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-move-down') .
 					'</a> <i>[' . ($pointer + 1) . ' - ' . $this->totalItems . ']</i>';
 				break;
 		}
