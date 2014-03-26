@@ -2242,7 +2242,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 						} elseif (tx_templavoila_div::convertVersionNumberToInteger(TYPO3_version) < 4005000) {
 							$rowCells['description'] = \TYPO3\CMS\Core\Utility\GeneralUtility::view_array($value['tx_templavoila']['sample_data']);
 						} else {
-							$rowCells['description'] = t3lib_utility_Debug::viewArray($value['tx_templavoila']['sample_data']);
+							$rowCells['description'] = \TYPO3\CMS\Core\Utility\DebugUtility::viewArray($value['tx_templavoila']['sample_data']);
 						}
 					}
 

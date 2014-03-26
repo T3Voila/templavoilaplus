@@ -1642,7 +1642,7 @@ class tx_templavoila_module2 extends t3lib_SCbase {
 				if (tx_templavoila_div::convertVersionNumberToInteger(TYPO3_version) < 4005000) {
 					$rootElementsHTML .= '<b>' . $elCfg['tx_templavoila']['title'] . '</b>' . \TYPO3\CMS\Core\Utility\GeneralUtility::view_array($elCfg);
 				} else {
-					$rootElementsHTML .= '<b>' . $elCfg['tx_templavoila']['title'] . '</b>' . t3lib_utility_Debug::viewArray($elCfg);
+					$rootElementsHTML .= '<b>' . $elCfg['tx_templavoila']['title'] . '</b>' . \TYPO3\CMS\Core\Utility\DebugUtility::viewArray($elCfg);
 				}
 			}
 		}
