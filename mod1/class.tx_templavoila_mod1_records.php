@@ -56,7 +56,7 @@ class tx_templavoila_mod1_records {
 	function init(&$pObj) {
 		$this->pObj = & $pObj;
 
-		$this->tables = t3lib_div::trimExplode(',', $this->pObj->modTSconfig['properties']['recordDisplay_tables'], TRUE);
+		$this->tables = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->pObj->modTSconfig['properties']['recordDisplay_tables'], TRUE);
 		if ($this->tables) {
 			// Get permissions
 			$this->calcPerms = $GLOBALS['BE_USER']->calcPerms(t3lib_BEfunc::readPageAccess($this->pObj->id, $this->pObj->perms_clause));
@@ -105,7 +105,7 @@ class tx_templavoila_mod1_records {
 		$content .= '<option value=""' . ($this->pObj->MOD_SETTINGS['recordsView_table'] == '' ? ' selected="selected"' : '') . '></options>';
 		foreach ($this->tables as $table) {
 			$t = htmlspecialchars($table);
-			t3lib_div::loadTCA($table);
+			\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 			if ($this->canDisplayTable($table)) {
 				$title = $GLOBALS['LANG']->sl($GLOBALS['TCA'][$table]['ctrl']['title']);
 				$content .= '<option value="' . $t . '"' .
@@ -160,7 +160,7 @@ class tx_templavoila_mod1_records {
 	 * @return    boolean        <code>true</code> if table can be displayed.
 	 */
 	function canDisplayTable($table) {
-		t3lib_div::loadTCA($table);
+		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 
 		return ($table != 'pages' && $table != 'tt_content' && isset($GLOBALS['TCA'][$table]) && $GLOBALS['BE_USER']->check('tables_select', $table));
 	}
@@ -174,7 +174,7 @@ class tx_templavoila_mod1_records {
 	 */
 	function initDbList($table) {
 		// Initialize the dblist object:
-		$this->dblist = t3lib_div::makeInstance('tx_templavoila_mod1_recordlist');
+		$this->dblist = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_mod1_recordlist');
 		$this->dblist->backPath = $this->pObj->doc->backPath;
 		$this->dblist->calcPerms = $this->calcPerms;
 		$this->dblist->thumbs = $GLOBALS['BE_USER']->uc['thumbnailsByDefault'];

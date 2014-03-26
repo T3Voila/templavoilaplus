@@ -74,7 +74,7 @@ class tx_templavoila_extdeveval {
 		*/
 
 		// Look for a selected data structure:
-		$dsIdForConversion = t3lib_div::_GP('dsId');
+		$dsIdForConversion = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('dsId');
 
 		// Select output:
 		if (!$dsIdForConversion) {
@@ -94,7 +94,7 @@ class tx_templavoila_extdeveval {
 	function renderMenuOfDataStructures() {
 
 		// Get data structures we should display
-		$dsRepo = t3lib_div::makeInstance('tx_templavoila_datastructureRepository');
+		$dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_datastructureRepository');
 
 		// For each category (page/content element/unknown) we display :
 		foreach ($arrayOfDS as $type => $DSarray) {
@@ -131,7 +131,7 @@ class tx_templavoila_extdeveval {
 	 */
 	function DSlanguageMode($DSstring) {
 
-		$DScontent = t3lib_div::xml2array($DSstring);
+		$DScontent = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($DSstring);
 		$DScontent = array('meta' => $DScontent['meta']);
 
 		$languageMode = '';
@@ -179,7 +179,7 @@ class tx_templavoila_extdeveval {
 		}
 
 		// If POST, then update in database
-		if (is_array($SET = t3lib_div::_POST('SET'))) {
+		if (is_array($SET = \TYPO3\CMS\Core\Utility\GeneralUtility::_POST('SET'))) {
 
 			if (in_array($SET['ds']['table'], array_keys($TCA))) {
 				$setTable = $SET['ds']['table'];
@@ -194,7 +194,7 @@ class tx_templavoila_extdeveval {
 							$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($dbRes);
 
 							$this->newFlexFormData = array();
-							$flexObj = t3lib_div::makeInstance('t3lib_flexformtools');
+							$flexObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_flexformtools');
 							$flexObj->reNumberIndexesOfSectionData = TRUE;
 							$flexObj->traverseFlexFormXMLData($setTable, $setField, $row, $this, $traverseMethod);
 							$dbQuery = "UPDATE $setTable
@@ -213,7 +213,7 @@ class tx_templavoila_extdeveval {
 		// First, find all flexform fields where we could find relations to data structures:
 		$fieldsToCheck = array();
 		foreach ($TCA as $table => $tmp) {
-			t3lib_div::loadTCA($table);
+			\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 
 			foreach ($TCA[$table]['columns'] as $fieldName => $config) {
 				if ($config['config']['type'] == 'flex' && $config['config']['ds_pointerField'] && $config['config']['ds_tableField'] == 'tx_templavoila_datastructure:dataprot') {
@@ -245,17 +245,17 @@ class tx_templavoila_extdeveval {
 					$this->newFlexFormData = array();
 
 					// Create and call iterator object:
-					$flexObj = t3lib_div::makeInstance('t3lib_flexformtools');
+					$flexObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_flexformtools');
 					$flexObj->reNumberIndexesOfSectionData = TRUE;
 					$flexObj->traverseFlexFormXMLData($table, $field, $row, $this, $traverseMethod);
 
 					/*
-						debug(t3lib_div::xml2array($row[$field]),'Old: '.$language);
+						debug(\TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($row[$field]),'Old: '.$language);
 						debug($this->newFlexFormData,'New: '.$language);
 	debug(array($flexObj->flexArray2Xml($this->newFlexFormData)));
 					*/
 
-					if (t3lib_div::xml2array($row[$field]) === $this->newFlexFormData) {
+					if (\TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($row[$field]) === $this->newFlexFormData) {
 						$checked = NULL;
 						$bgColor = 'bgColor3';
 					} else {

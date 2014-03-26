@@ -70,7 +70,7 @@ class tx_templavoila_cm1 {
 						);
 					}
 				}
-			} elseif (t3lib_div::inList('tx_templavoila_tmplobj,tx_templavoila_datastructure,tx_templavoila_content', $table)) {
+			} elseif (\TYPO3\CMS\Core\Utility\GeneralUtility::inList('tx_templavoila_tmplobj,tx_templavoila_datastructure,tx_templavoila_content', $table)) {
 				$url = t3lib_extMgm::extRelPath('templavoila') . 'cm1/index.php?table=' . rawurlencode($table) . '&uid=' . $uid . '&_reload_from=1';
 				$localItems[] = $backRef->linkItem(
 					$LANG->getLLL('cm1_title', $LL, 1),
@@ -135,13 +135,13 @@ class tx_templavoila_cm1 {
 #				$localItems[] = $backRef->linkItem(
 #					$LANG->getLLL('cm1_pagesusingthiselement',$LL),
 #					$backRef->excludeIcon('<img src="'.t3lib_extMgm::extRelPath('templavoila').'cm1/cm_icon_activate.gif" width="15" height="12" border=0 align=top>'),
-#					"top.loadTopMenu('".t3lib_div::linkThisScript()."&cmLevel=1&subname=tx_templavoila_cm1_pagesusingthiselement');return false;",
+#					"top.loadTopMenu('".\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript()."&cmLevel=1&subname=tx_templavoila_cm1_pagesusingthiselement');return false;",
 #					0,
 #					1
 #				);
 #			}
 		} else {
-			if (t3lib_div::_GP('subname') == 'tx_templavoila_cm1_pagesusingthiselement') {
+			if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('subname') == 'tx_templavoila_cm1_pagesusingthiselement') {
 				$menuItems = array();
 				$url = t3lib_extMgm::extRelPath('templavoila') . 'mod1/index.php?id=';
 

@@ -151,9 +151,9 @@ class tx_templavoila_mod1_localization {
 
 		if ($this->pObj->currentLanguageUid >= 0 && (($this->pObj->rootElementLangMode === 'disable') || ($this->pObj->rootElementLangParadigm === 'bound'))) {
 			$options = array();
-			$options[] = t3lib_div::inList($this->pObj->modTSconfig['properties']['disableDisplayMode'], 'default') ? '' : '<option value=""' . ($this->pObj->MOD_SETTINGS['langDisplayMode'] === '' ? ' selected="selected"' : '') . '>' . $LANG->sL('LLL:EXT:lang/locallang_general.xml:LGL.default_value') . '</option>';
-			$options[] = t3lib_div::inList($this->pObj->modTSconfig['properties']['disableDisplayMode'], 'selectedLanguage') ? '' : '<option value="selectedLanguage"' . ($this->pObj->MOD_SETTINGS['langDisplayMode'] === 'selectedLanguage' ? ' selected="selected"' : '') . '>' . $LANG->getLL('pageLocalizationDisplayMode_selectedLanguage') . '</option>';
-			$options[] = t3lib_div::inList($this->pObj->modTSconfig['properties']['disableDisplayMode'], 'onlyLocalized') ? '' : '<option value="onlyLocalized"' . ($this->pObj->MOD_SETTINGS['langDisplayMode'] === 'onlyLocalized' ? ' selected="selected"' : '') . '>' . $LANG->getLL('pageLocalizationDisplayMode_onlyLocalized') . '</option>';
+			$options[] = \TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->pObj->modTSconfig['properties']['disableDisplayMode'], 'default') ? '' : '<option value=""' . ($this->pObj->MOD_SETTINGS['langDisplayMode'] === '' ? ' selected="selected"' : '') . '>' . $LANG->sL('LLL:EXT:lang/locallang_general.xml:LGL.default_value') . '</option>';
+			$options[] = \TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->pObj->modTSconfig['properties']['disableDisplayMode'], 'selectedLanguage') ? '' : '<option value="selectedLanguage"' . ($this->pObj->MOD_SETTINGS['langDisplayMode'] === 'selectedLanguage' ? ' selected="selected"' : '') . '>' . $LANG->getLL('pageLocalizationDisplayMode_selectedLanguage') . '</option>';
+			$options[] = \TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->pObj->modTSconfig['properties']['disableDisplayMode'], 'onlyLocalized') ? '' : '<option value="onlyLocalized"' . ($this->pObj->MOD_SETTINGS['langDisplayMode'] === 'onlyLocalized' ? ' selected="selected"' : '') . '>' . $LANG->getLL('pageLocalizationDisplayMode_onlyLocalized') . '</option>';
 			$link = '\'index.php?' . $this->pObj->link_getParameters() . '&SET[langDisplayMode]=\'+this.options[this.selectedIndex].value';
 			if (count($options)) {
 				$output .= '

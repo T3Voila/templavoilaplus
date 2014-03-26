@@ -87,7 +87,7 @@ class tx_templavoila_datastructure_staticbase extends tx_templavoila_datastructu
 	 */
 	public function getDataprotXML() {
 		$xml = '';
-		$file = t3lib_div::getFileAbsFileName($this->filename);
+		$file = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->filename);
 		if (is_readable($file)) {
 			$xml = file_get_contents($file);
 		} else {
@@ -127,7 +127,7 @@ class tx_templavoila_datastructure_staticbase extends tx_templavoila_datastructu
 	 * @return string
 	 */
 	public function getTstamp() {
-		$file = t3lib_div::getFileAbsFileName($this->filename);
+		$file = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->filename);
 		if (is_readable($file)) {
 			$tstamp = filemtime($file);
 		} else {
@@ -143,7 +143,7 @@ class tx_templavoila_datastructure_staticbase extends tx_templavoila_datastructu
 	 * @return string
 	 */
 	public function getCrdate() {
-		$file = t3lib_div::getFileAbsFileName($this->filename);
+		$file = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->filename);
 		if (is_readable($file)) {
 			$tstamp = filectime($file);
 		} else {
@@ -169,9 +169,9 @@ class tx_templavoila_datastructure_staticbase extends tx_templavoila_datastructu
 	 */
 	public function getBeLayout() {
 		$beLayout = FALSE;
-		$file = substr(t3lib_div::getFileAbsFileName($this->filename), 0, -3) . 'html';
+		$file = substr(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->filename), 0, -3) . 'html';
 		if (file_exists($file)) {
-			$beLayout = t3lib_div::getURL($file);
+			$beLayout = \TYPO3\CMS\Core\Utility\GeneralUtility::getURL($file);
 		}
 
 		return $beLayout;

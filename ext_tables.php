@@ -93,7 +93,7 @@ t3lib_extMgm::allowTableOnStandardPages('tx_templavoila_tmplobj');
 
 
 // Adding access list to be_groups
-t3lib_div::loadTCA('be_groups');
+\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA('be_groups');
 $tempColumns = array(
 	'tx_templavoila_access' => array(
 		'label' => 'LLL:EXT:templavoila/locallang_db.xml:be_groups.tx_templavoila_access',
@@ -115,7 +115,7 @@ t3lib_extMgm::addTCAcolumns('be_groups', $tempColumns, 1);
 t3lib_extMgm::addToAllTCAtypes('be_groups', 'tx_templavoila_access;;;;1-1-1', '1');
 
 // Adding the new content element, "Flexible Content":
-t3lib_div::loadTCA('tt_content');
+\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA('tt_content');
 $tempColumns = array(
 	'tx_templavoila_ds' => Array(
 		'exclude' => 1,

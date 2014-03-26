@@ -54,7 +54,7 @@ class tx_templavoila_datastructureRepository {
 			}
 		}
 
-		$ds = t3lib_div::makeInstance($className, $uidOrFile);
+		$ds = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($className, $uidOrFile);
 
 		return $ds;
 	}
@@ -74,7 +74,7 @@ class tx_templavoila_datastructureRepository {
 			foreach ($confArr as $key => $conf) {
 				$ds = $this->getDatastructureByUidOrFilename($conf['path']);
 				$pids = $ds->getStoragePids();
-				if ($pids == '' || t3lib_div::inList($pids, $pid)) {
+				if ($pids == '' || \TYPO3\CMS\Core\Utility\GeneralUtility::inList($pids, $pid)) {
 					$dscollection[] = $ds;
 				}
 			}
@@ -114,7 +114,7 @@ class tx_templavoila_datastructureRepository {
 				if ($conf['scope'] == $scope) {
 					$ds = $this->getDatastructureByUidOrFilename($conf['path']);
 					$pids = $ds->getStoragePids();
-					if ($pids == '' || t3lib_div::inList($pids, $pid)) {
+					if ($pids == '' || \TYPO3\CMS\Core\Utility\GeneralUtility::inList($pids, $pid)) {
 						$dscollection[] = $ds;
 					}
 				}
@@ -219,9 +219,9 @@ class tx_templavoila_datastructureRepository {
 		$confArr = self::getStaticDatastructureConfiguration();
 		$confKey = FALSE;
 		if (count($confArr)) {
-			$fileAbsName = t3lib_div::getFileAbsFileName($file);
+			$fileAbsName = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($file);
 			foreach ($confArr as $key => $conf) {
-				if (t3lib_div::getFileAbsFileName($conf['path']) == $fileAbsName) {
+				if (\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($conf['path']) == $fileAbsName) {
 					$confKey = $key;
 					break;
 				}

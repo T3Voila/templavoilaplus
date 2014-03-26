@@ -54,7 +54,7 @@ class tx_templavoila_handleStaticDataStructures {
 	function main(&$params, &$pObj) {
 		$removeDSItems = $this->getRemoveItems($params, substr($params['field'], 0, -2) . 'ds');
 
-		$dsRepo = t3lib_div::makeInstance('tx_templavoila_datastructureRepository');
+		$dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_datastructureRepository');
 		$dsList = $dsRepo->getAll();
 
 		$params['items'] = array(
@@ -91,7 +91,7 @@ class tx_templavoila_handleStaticDataStructures {
 
 		if ($templateRef && $storagePid) {
 			// Load the table:
-			t3lib_div::loadTCA('tx_templavoila_tmplobj');
+			\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA('tx_templavoila_tmplobj');
 
 			// Select all Template Object Records from storage folder, which are parent records and which has the data structure for the plugin:
 			$res = $TYPO3_DB->exec_SELECTquery(
@@ -130,7 +130,7 @@ class tx_templavoila_handleStaticDataStructures {
 
 		$removeDSItems = $this->getRemoveItems($params, substr($params['field'], 0, -2) . 'ds');
 
-		$dsRepo = t3lib_div::makeInstance('tx_templavoila_datastructureRepository');
+		$dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_datastructureRepository');
 		$dsList = $dsRepo->getDatastructuresByStoragePidAndScope($storagePid, $scope);
 
 		$params['items'] = array(
@@ -188,8 +188,8 @@ class tx_templavoila_handleStaticDataStructures {
 
 		$removeTOItems = $this->getRemoveItems($params, substr($params['field'], 0, -2) . 'to');
 
-		$dsRepo = t3lib_div::makeInstance('tx_templavoila_datastructureRepository');
-		$toRepo = t3lib_div::makeInstance('tx_templavoila_templateRepository');
+		$dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_datastructureRepository');
+		$toRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_templateRepository');
 
 		$params['items'] = array(
 			array(
@@ -232,8 +232,8 @@ class tx_templavoila_handleStaticDataStructures {
 		$removeDSItems = $this->getRemoveItems($params, substr($params['field'], 0, -2) . 'ds');
 		$removeTOItems = $this->getRemoveItems($params, substr($params['field'], 0, -2) . 'to');
 
-		$dsRepo = t3lib_div::makeInstance('tx_templavoila_datastructureRepository');
-		$toRepo = t3lib_div::makeInstance('tx_templavoila_templateRepository');
+		$dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_datastructureRepository');
+		$toRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_templateRepository');
 		$dsList = $dsRepo->getDatastructuresByStoragePidAndScope($storagePid, $scope);
 
 		$params['items'] = array(
@@ -322,7 +322,7 @@ class tx_templavoila_handleStaticDataStructures {
 		$pid = $params['row'][$params['table'] == 'pages' ? 'uid' : 'pid'];
 		$modTSConfig = t3lib_BEfunc::getModTSconfig($pid, 'TCEFORM.' . $params['table'] . '.' . $field . '.removeItems');
 
-		return t3lib_div::trimExplode(',', $modTSConfig['value'], TRUE);
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $modTSConfig['value'], TRUE);
 	}
 }
 

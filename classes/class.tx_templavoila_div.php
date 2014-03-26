@@ -41,25 +41,25 @@ final class tx_templavoila_div {
 	private static function internalSanitizeLocalUrl($url = '') {
 		$sanitizedUrl = '';
 		$decodedUrl = rawurldecode($url);
-		if ($decodedUrl !== t3lib_div::removeXSS($decodedUrl)) {
+		if ($decodedUrl !== \TYPO3\CMS\Core\Utility\GeneralUtility::removeXSS($decodedUrl)) {
 			$decodedUrl = '';
 		}
 		if (!empty($url) && $decodedUrl !== '') {
-			$testAbsoluteUrl = t3lib_div::resolveBackPath($decodedUrl);
-			$testRelativeUrl = t3lib_div::resolveBackPath(
-				t3lib_div::dirname(t3lib_div::getIndpEnv('SCRIPT_NAME')) . '/' . $decodedUrl
+			$testAbsoluteUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath($decodedUrl);
+			$testRelativeUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath(
+				\TYPO3\CMS\Core\Utility\GeneralUtility::dirname(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('SCRIPT_NAME')) . '/' . $decodedUrl
 			);
 
 			// That's what's usually carried in TYPO3_SITE_PATH
-			$typo3_site_path = substr(t3lib_div::getIndpEnv('TYPO3_SITE_URL'), strlen(t3lib_div::getIndpEnv('TYPO3_REQUEST_HOST')));
+			$typo3_site_path = substr(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL'), strlen(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST')));
 
 			// Pass if URL is on the current host:
 			if (self::isValidUrl($decodedUrl)) {
-				if (self::isOnCurrentHost($decodedUrl) && strpos($decodedUrl, t3lib_div::getIndpEnv('TYPO3_SITE_URL')) === 0) {
+				if (self::isOnCurrentHost($decodedUrl) && strpos($decodedUrl, \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL')) === 0) {
 					$sanitizedUrl = $url;
 				}
 				// Pass if URL is an absolute file path:
-			} elseif (t3lib_div::isAbsPath($decodedUrl) && t3lib_div::isAllowedAbsPath($decodedUrl)) {
+			} elseif (\TYPO3\CMS\Core\Utility\GeneralUtility::isAbsPath($decodedUrl) && \TYPO3\CMS\Core\Utility\GeneralUtility::isAllowedAbsPath($decodedUrl)) {
 				$sanitizedUrl = $url;
 				// Pass if URL is absolute and below TYPO3 base directory:
 			} elseif (strpos($testAbsoluteUrl, $typo3_site_path) === 0 && substr($decodedUrl, 0, 1) === '/') {
@@ -71,7 +71,7 @@ final class tx_templavoila_div {
 		}
 
 		if (!empty($url) && empty($sanitizedUrl)) {
-			t3lib_div::sysLog('The URL "' . $url . '" is not considered to be local and was denied.', 'Core', t3lib_div::SYSLOG_SEVERITY_NOTICE);
+			\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog('The URL "' . $url . '" is not considered to be local and was denied.', 'Core', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_NOTICE);
 		}
 
 		return $sanitizedUrl;
@@ -97,13 +97,13 @@ final class tx_templavoila_div {
 	 * @return    boolean        Whether the URL matches the TYPO3 request host
 	 */
 	private static function isOnCurrentHost($url) {
-		return (stripos($url . '/', t3lib_div::getIndpEnv('TYPO3_REQUEST_HOST') . '/') === 0);
+		return (stripos($url . '/', \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST') . '/') === 0);
 	}
 
 	public static function getDenyListForUser() {
 		$denyItems = array();
 		foreach ($GLOBALS['BE_USER']->userGroups as $group) {
-			$groupDenyItems = t3lib_div::trimExplode(',', $group['tx_templavoila_access'], TRUE);
+			$groupDenyItems = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $group['tx_templavoila_access'], TRUE);
 			$denyItems = array_merge($denyItems, $groupDenyItems);
 		}
 
@@ -190,7 +190,7 @@ final class tx_templavoila_div {
 		if (class_exists('t3lib_utility_VersionNumber')) {
 			$result = t3lib_utility_VersionNumber::convertVersionNumberToInteger($version);
 		} else {
-			$result = t3lib_div::int_from_ver($version);
+			$result = \TYPO3\CMS\Core\Utility\GeneralUtility::int_from_ver($version);
 		}
 
 		return $result;
@@ -213,7 +213,7 @@ final class tx_templavoila_div {
 		if (class_exists('t3lib_utility_Math')) {
 			$result = t3lib_utility_Math::canBeInterpretedAsInteger($var);
 		} else {
-			$result = t3lib_div::testInt($var);
+			$result = \TYPO3\CMS\Core\Utility\GeneralUtility::testInt($var);
 		}
 
 		return $result;
@@ -233,7 +233,7 @@ final class tx_templavoila_div {
 		if (class_exists('t3lib_utility_Math')) {
 			$result = t3lib_utility_Math::forceIntegerInRange($theInt, $min, $max, $defaultValue);
 		} else {
-			$result = t3lib_div::intInRange($theInt, $min, $max, $defaultValue);
+			$result = \TYPO3\CMS\Core\Utility\GeneralUtility::intInRange($theInt, $min, $max, $defaultValue);
 		}
 
 		return $result;

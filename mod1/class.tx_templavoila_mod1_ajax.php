@@ -35,7 +35,7 @@ class tx_templavoila_mod1_ajax {
 	private $apiObj;
 
 	public function __construct() {
-		$this->apiObj = t3lib_div::makeInstance('tx_templavoila_api');
+		$this->apiObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_api');
 	}
 
 	/**
@@ -49,10 +49,10 @@ class tx_templavoila_mod1_ajax {
 	public function moveRecord($params, &$ajaxObj) {
 
 		$sourcePointer = $this->apiObj
-			->flexform_getPointerFromString(t3lib_div::_GP('source'));
+			->flexform_getPointerFromString(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('source'));
 
 		$destinationPointer = $this->apiObj
-			->flexform_getPointerFromString(t3lib_div::_GP('destination'));
+			->flexform_getPointerFromString(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('destination'));
 
 		$this->apiObj->moveElement($sourcePointer, $destinationPointer);
 	}

@@ -92,12 +92,12 @@ class tx_templavoila_api {
 	 */
 	function insertElement($destinationPointer, $elementRow) {
 		if ($this->debug) {
-			t3lib_div::devLog('API: insertElement()', 'templavoila', 0, array('destinationPointer' => $destinationPointer, 'elementRow' => $elementRow));
+			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('API: insertElement()', 'templavoila', 0, array('destinationPointer' => $destinationPointer, 'elementRow' => $elementRow));
 		}
 
 		if (!$destinationPointer = $this->flexform_getValidPointer($destinationPointer)) {
 			if ($this->debug) {
-				t3lib_div::devLog('API#insertElement: flexform_getValidPointer() failed', 'templavoila', 0);
+				\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('API#insertElement: flexform_getValidPointer() failed', 'templavoila', 0);
 			}
 
 			return FALSE;
@@ -106,7 +106,7 @@ class tx_templavoila_api {
 		$newRecordUid = $this->insertElement_createRecord($destinationPointer, $elementRow);
 		if ($newRecordUid === FALSE) {
 			if ($this->debug) {
-				t3lib_div::devLog('API#insertElement: insertElement_createRecord() failed', 'templavoila', 0);
+				\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('API#insertElement: insertElement_createRecord() failed', 'templavoila', 0);
 			}
 
 			return FALSE;
@@ -115,7 +115,7 @@ class tx_templavoila_api {
 		$result = $this->insertElement_setElementReferences($destinationPointer, $newRecordUid);
 		if ($result === FALSE) {
 			if ($this->debug) {
-				t3lib_div::devLog('API#insertElement: insertElement_setElementReferences() failed', 'templavoila', 0);
+				\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('API#insertElement: insertElement_setElementReferences() failed', 'templavoila', 0);
 			}
 
 			return FALSE;
@@ -135,7 +135,7 @@ class tx_templavoila_api {
 	 */
 	function insertElement_createRecord($destinationPointer, $row) {
 		if ($this->debug) {
-			t3lib_div::devLog('API: insertElement_createRecord()', 'templavoila', 0, array('destinationPointer' => $destinationPointer, 'row' => $row));
+			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('API: insertElement_createRecord()', 'templavoila', 0, array('destinationPointer' => $destinationPointer, 'row' => $row));
 		}
 
 		$parentRecord = t3lib_BEfunc::getRecordWSOL($destinationPointer['table'], $destinationPointer['uid'], 'uid,pid,t3ver_oid,tx_templavoila_flex');
@@ -163,7 +163,7 @@ class tx_templavoila_api {
 		}
 
 		// Instantiate TCEmain and create the record:
-		$tce = t3lib_div::makeInstance('t3lib_TCEmain');
+		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_TCEmain');
 		/* @var $tce t3lib_TCEmain */
 
 		// set default TCA values specific for the page and user
@@ -177,13 +177,13 @@ class tx_templavoila_api {
 		$this->setTCEmainRunningFlag(TRUE);
 
 		if ($this->debug) {
-			t3lib_div::devLog('API: insertElement_createRecord()', 'templavoila', 0, array('dataArr' => $dataArr));
+			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('API: insertElement_createRecord()', 'templavoila', 0, array('dataArr' => $dataArr));
 		}
 
 		$tce->start($dataArr, array());
 		$tce->process_datamap();
 		if ($this->debug && count($tce->errorLog)) {
-			t3lib_div::devLog('API: insertElement_createRecord(): tcemain failed', 'templavoila', 0, array('errorLog' => $tce->errorLog));
+			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('API: insertElement_createRecord(): tcemain failed', 'templavoila', 0, array('errorLog' => $tce->errorLog));
 		}
 		$newUid = $tce->substNEWwithIDs['NEW'];
 		if (!$flagWasSet) {
@@ -205,7 +205,7 @@ class tx_templavoila_api {
 	 */
 	function insertElement_setElementReferences($destinationPointer, $uid) {
 		if ($this->debug) {
-			t3lib_div::devLog('API: insertElement_setElementReferences()', 'templavoila', 0, array('destinationPointer' => $destinationPointer, 'uid' => $uid));
+			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('API: insertElement_setElementReferences()', 'templavoila', 0, array('destinationPointer' => $destinationPointer, 'uid' => $uid));
 		}
 
 		$parentRecord = t3lib_BEfunc::getRecordWSOL($destinationPointer['table'], $destinationPointer['uid'], 'uid,pid,tx_templavoila_flex');
@@ -232,7 +232,7 @@ class tx_templavoila_api {
 	 */
 	function moveElement($sourcePointer, $destinationPointer) {
 		if ($this->debug) {
-			t3lib_div::devLog('API: moveElement()', 'templavoila', 0, array('sourcePointer' => $sourcePointer, 'destinationPointer' => $destinationPointer));
+			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('API: moveElement()', 'templavoila', 0, array('sourcePointer' => $sourcePointer, 'destinationPointer' => $destinationPointer));
 		}
 
 		return $this->process('move', $sourcePointer, $destinationPointer);
@@ -251,7 +251,7 @@ class tx_templavoila_api {
 	 */
 	function moveElement_setElementReferences($sourcePointer, $destinationPointer) {
 		if ($this->debug) {
-			t3lib_div::devLog('API: moveElement_setElementReferences()', 'templavoila', 0, array('sourcePointer' => $sourcePointer, 'destinationPointer' => $destinationPointer));
+			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('API: moveElement_setElementReferences()', 'templavoila', 0, array('sourcePointer' => $sourcePointer, 'destinationPointer' => $destinationPointer));
 		}
 
 		return $this->process('move', $sourcePointer, $destinationPointer, TRUE);
@@ -271,7 +271,7 @@ class tx_templavoila_api {
 	 */
 	function copyElement($sourcePointer, $destinationPointer, $copySubElements = TRUE) {
 		if ($this->debug) {
-			t3lib_div::devLog('API: copyElement()', 'templavoila', 0, array('sourcePointer' => $sourcePointer, 'destinationPointer' => $destinationPointer, 'copySubElements' => $copySubElements));
+			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('API: copyElement()', 'templavoila', 0, array('sourcePointer' => $sourcePointer, 'destinationPointer' => $destinationPointer, 'copySubElements' => $copySubElements));
 		}
 
 		return $this->process($copySubElements ? 'copyrecursively' : 'copy', $sourcePointer, $destinationPointer);
@@ -295,7 +295,7 @@ class tx_templavoila_api {
 		global $TCA;
 
 		if ($this->debug) {
-			t3lib_div::devLog('API: localizeElement()', 'templavoila', 0, array('sourcePointer' => $sourcePointer, 'languageKey' => $languageKey));
+			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('API: localizeElement()', 'templavoila', 0, array('sourcePointer' => $sourcePointer, 'languageKey' => $languageKey));
 		}
 
 		$sourceElementRecord = $this->flexform_getRecordByPointer($sourcePointer);
@@ -307,7 +307,7 @@ class tx_templavoila_api {
 		}
 		if ($rawPageDataStructureArr['meta']['langDisable'] == 1) {
 			if ($this->debug) {
-				t3lib_div::devLog('API: localizeElement(): Cannot localize element because localization is disabled for the active page datastructure!', 'templavoila', 0);
+				\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('API: localizeElement(): Cannot localize element because localization is disabled for the active page datastructure!', 'templavoila', 0);
 			}
 
 			return FALSE;
@@ -337,7 +337,7 @@ class tx_templavoila_api {
 	 */
 	function referenceElement($sourcePointer, $destinationPointer) {
 		if ($this->debug) {
-			t3lib_div::devLog('API: referenceElement()', 'templavoila', 0, array('sourcePointer' => $sourcePointer, 'destinationPointer' => $destinationPointer));
+			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('API: referenceElement()', 'templavoila', 0, array('sourcePointer' => $sourcePointer, 'destinationPointer' => $destinationPointer));
 		}
 
 		return $this->process('reference', $sourcePointer, $destinationPointer);
@@ -358,7 +358,7 @@ class tx_templavoila_api {
 	 */
 	function referenceElementByUid($uid, $destinationPointer) {
 		if ($this->debug) {
-			t3lib_div::devLog('API: referenceElementByUid()', 'templavoila', 0, array('uid' => $uid, 'destinationPointer' => $destinationPointer));
+			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('API: referenceElementByUid()', 'templavoila', 0, array('uid' => $uid, 'destinationPointer' => $destinationPointer));
 		}
 		$sourcePointer = array(
 			'table' => 'tt_content',
@@ -378,7 +378,7 @@ class tx_templavoila_api {
 	 */
 	function unlinkElement($sourcePointer) {
 		if ($this->debug) {
-			t3lib_div::devLog('API: unlinkElement()', 'templavoila', 0, array('sourcePointer' => $sourcePointer));
+			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('API: unlinkElement()', 'templavoila', 0, array('sourcePointer' => $sourcePointer));
 		}
 
 		return $this->process('unlink', $sourcePointer);
@@ -395,7 +395,7 @@ class tx_templavoila_api {
 	 */
 	function deleteElement($sourcePointer) {
 		if ($this->debug) {
-			t3lib_div::devLog('API: deleteElement()', 'templavoila', 0, array('sourcePointer' => $sourcePointer));
+			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('API: deleteElement()', 'templavoila', 0, array('sourcePointer' => $sourcePointer));
 		}
 
 		return $this->process('delete', $sourcePointer);
@@ -431,7 +431,7 @@ class tx_templavoila_api {
 		$sourceParentRecord = t3lib_BEfunc::getRecordWSOL($sourcePointer['table'], $sourcePointer['uid'], 'uid,pid,tx_templavoila_flex');
 		if (!is_array($sourceParentRecord)) {
 			if ($this->debug) {
-				t3lib_div::devLog('process: Parent record of the element specified by source pointer does not exist!', 2, $sourcePointer);
+				\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('process: Parent record of the element specified by source pointer does not exist!', 2, $sourcePointer);
 			}
 
 			return FALSE;
@@ -446,13 +446,13 @@ class tx_templavoila_api {
 			$destinationParentRecord = t3lib_BEfunc::getRecordWSOL($destinationPointer['table'], $destinationPointer['uid'], 'uid,pid,tx_templavoila_flex');
 			if (!is_array($destinationParentRecord)) {
 				if ($this->debug) {
-					t3lib_div::devLog('process: Parent record of the element specified by destination pointer does not exist!', 2, $destinationPointer);
+					\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('process: Parent record of the element specified by destination pointer does not exist!', 2, $destinationPointer);
 				}
 
 				return FALSE;
 			} elseif ($destinationParentRecord['pid'] < 0 && $destinationPointer['table'] != 'pages') {
 				if ($this->debug) {
-					t3lib_div::devLog('process: The destination pointer must always point to a live record, not an offline version!', 2, $destinationPointer);
+					\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('process: The destination pointer must always point to a live record, not an offline version!', 2, $destinationPointer);
 				}
 
 				return FALSE;
@@ -569,7 +569,7 @@ class tx_templavoila_api {
 
 					$flagWasSet = $this->getTCEmainRunningFlag();
 					$this->setTCEmainRunningFlag(TRUE);
-					$tce = t3lib_div::makeInstance('t3lib_TCEmain');
+					$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_TCEmain');
 					$tce->stripslashes_values = 0;
 					$tce->start(array(), $cmdArray);
 					$tce->process_cmdmap();
@@ -599,7 +599,7 @@ class tx_templavoila_api {
 		$destinationPID = $destinationPointer['table'] == 'pages' ? $destinationParentRecord['uid'] : $destinationParentRecord['pid'];
 
 		// Initialize TCEmain and create configuration for copying the specified record
-		$tce = t3lib_div::makeInstance('t3lib_TCEmain');
+		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_TCEmain');
 		$cmdArray = array();
 		$cmdArray['tt_content'][$sourceElementUid]['copy'] = $destinationPID;
 
@@ -639,7 +639,7 @@ class tx_templavoila_api {
 		$subElementUids = $this->flexform_getListOfSubElementUidsRecursively('tt_content', $sourceElementUid, $dummyArr);
 
 		// Initialize TCEmain and create configuration for copying the specified record (the parent element) and all sub elements:
-		$tce = t3lib_div::makeInstance('t3lib_TCEmain');
+		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_TCEmain');
 		$cmdArray = array();
 		$cmdArray['tt_content'][$sourceElementUid]['copy'] = $destinationPID;
 
@@ -684,14 +684,14 @@ class tx_templavoila_api {
 			$destinationLanguageUid = $languageRecords[0]['uid'];
 		} else {
 			if ($this->debug) {
-				t3lib_div::devLog('API: process_localize(): Cannot localize element because sys_language record can not be found !', 'templavoila', 2);
+				\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('API: process_localize(): Cannot localize element because sys_language record can not be found !', 'templavoila', 2);
 			}
 
 			return FALSE;
 		}
 
 		// Initialize TCEmain and create configuration for localizing the specified record
-		$tce = t3lib_div::makeInstance('t3lib_TCEmain');
+		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_TCEmain');
 		$cmdArray = array();
 		$cmdArray['tt_content'][$sourceElementUid]['localize'] = $destinationLanguageUid;
 
@@ -768,7 +768,7 @@ class tx_templavoila_api {
 		// Store:
 		$flagWasSet = $this->getTCEmainRunningFlag();
 		$this->setTCEmainRunningFlag(TRUE);
-		$tce = t3lib_div::makeInstance('t3lib_TCEmain');
+		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_TCEmain');
 		$tce->stripslashes_values = 0;
 		$tce->start(array(), $cmdArray);
 		$tce->process_cmdmap();
@@ -810,9 +810,9 @@ class tx_templavoila_api {
 			$flexformPointer = $this->flexform_getPointerFromString($flexformPointer);
 		}
 
-		if (!t3lib_div::inList($this->rootTable . ',tt_content', $flexformPointer['table'])) {
+		if (!\TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->rootTable . ',tt_content', $flexformPointer['table'])) {
 			if ($this->debug) {
-				t3lib_div::devLog('flexform_getValidPointer: Table "' . $flexformPointer['table'] . '" is not in the list of allowed tables!', 'TemplaVoila API', 2, $this->rootTable . ',tt_content');
+				\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('flexform_getValidPointer: Table "' . $flexformPointer['table'] . '" is not in the list of allowed tables!', 'TemplaVoila API', 2, $this->rootTable . ',tt_content');
 			}
 
 			return FALSE;
@@ -820,7 +820,7 @@ class tx_templavoila_api {
 
 		if (!$destinationRecord = t3lib_BEfunc::getRecordWSOL($flexformPointer['table'], $flexformPointer['uid'], 'uid,pid,tx_templavoila_flex')) {
 			if ($this->debug) {
-				t3lib_div::devLog('flexform_getValidPointer: Pointer destination record not found!', 'TemplaVoila API', 2, $flexformPointer);
+				\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('flexform_getValidPointer: Pointer destination record not found!', 'TemplaVoila API', 2, $flexformPointer);
 			}
 
 			return FALSE;
@@ -830,14 +830,14 @@ class tx_templavoila_api {
 			$elementReferencesArr = $this->flexform_getElementReferencesFromXML($destinationRecord['tx_templavoila_flex'], $flexformPointer);
 			if (!isset ($elementReferencesArr[$flexformPointer['position']]) && $flexformPointer['position'] != -1) {
 				if ($this->debug) {
-					t3lib_div::devLog('flexform_getValidPointer: The position in the specified flexform pointer does not exist!', 'TemplaVoila API', 2, $flexformPointer);
+					\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('flexform_getValidPointer: The position in the specified flexform pointer does not exist!', 'TemplaVoila API', 2, $flexformPointer);
 				}
 
 				return FALSE;
 			}
 			if (isset ($flexformPointer['targetCheckUid']) && $elementReferencesArr[$flexformPointer['position']] != $flexformPointer['targetCheckUid']) {
 				if ($this->debug) {
-					t3lib_div::devLog('flexform_getValidPointer: The target record uid does not match the targetCheckUid!', 'TemplaVoila API', 2, array($flexformPointer, $elementReferencesArr));
+					\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('flexform_getValidPointer: The target record uid does not match the targetCheckUid!', 'TemplaVoila API', 2, array($flexformPointer, $elementReferencesArr));
 				}
 
 				return FALSE;
@@ -995,20 +995,20 @@ class tx_templavoila_api {
 	function flexform_getElementReferencesFromXML($flexformXML, $flexformPointer) {
 
 		// Getting value of the field containing the relations:
-		$flexformXMLArr = t3lib_div::xml2array($flexformXML);
+		$flexformXMLArr = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($flexformXML);
 		if (!is_array($flexformXMLArr) && strlen($flexformXML) > 0) {
 			if ($this->debug) {
-				t3lib_div::devLog('flexform_getReferencesToElementsFromXML: flexformXML seems to be no valid XML. Parser error message: ' . $flexformXMLArr, 'TemplaVoila API', 2, $flexformXML);
+				\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('flexform_getReferencesToElementsFromXML: flexformXML seems to be no valid XML. Parser error message: ' . $flexformXMLArr, 'TemplaVoila API', 2, $flexformXML);
 			}
 
 			return FALSE;
 		}
 
 		$listOfUIDs = is_array($flexformXMLArr) && is_array($flexformXMLArr['data']) ? $flexformXMLArr['data'][$flexformPointer['sheet']][$flexformPointer['sLang']][$flexformPointer['field']][$flexformPointer['vLang']] : '';
-		$arrayOfUIDs = t3lib_div::intExplode(',', $listOfUIDs);
+		$arrayOfUIDs = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $listOfUIDs);
 
 		// Getting the relation uids out and use only tt_content records which are not deleted:
-		$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
+		$dbAnalysis = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_loadDBGroup');
 		$dbAnalysis->start($listOfUIDs, 'tt_content');
 		$dbAnalysis->getFromDB();
 
@@ -1041,7 +1041,7 @@ class tx_templavoila_api {
 			$recordUids = array();
 		}
 		$parentRecord = t3lib_BEfunc::getRecordWSOL($table, $uid, 'uid,pid,tx_templavoila_ds,tx_templavoila_flex');
-		$flexFieldArr = t3lib_div::xml2array($parentRecord['tx_templavoila_flex']);
+		$flexFieldArr = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($parentRecord['tx_templavoila_flex']);
 		$expandedDataStructure = $this->ds_getExpandedDataStructure($table, $parentRecord);
 
 		if (is_array($flexFieldArr['data'])) {
@@ -1053,7 +1053,7 @@ class tx_templavoila_api {
 								if (is_array($valuesArr)) {
 									foreach ($valuesArr as $value) {
 										if ($expandedDataStructure[$sheetKey]['ROOT']['el'][$fieldName]['tx_templavoila']['eType'] == 'ce') {
-											$valueItems = t3lib_div::intExplode(',', $value);
+											$valueItems = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $value);
 											if (is_array($valueItems)) {
 												foreach ($valueItems as $subElementUid) {
 													if ($subElementUid > 0) {
@@ -1094,7 +1094,7 @@ class tx_templavoila_api {
 			$flexformPointers = array();
 		}
 		$parentRecord = t3lib_BEfunc::getRecordWSOL($table, $uid, 'uid,pid,tx_templavoila_flex,tx_templavoila_ds,tx_templavoila_to');
-		$flexFieldArr = t3lib_div::xml2array($parentRecord['tx_templavoila_flex']);
+		$flexFieldArr = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($parentRecord['tx_templavoila_flex']);
 		$expandedDataStructure = $this->ds_getExpandedDataStructure($table, $parentRecord);
 
 		if (is_array($flexFieldArr['data'])) {
@@ -1106,7 +1106,7 @@ class tx_templavoila_api {
 								if (is_array($valuesArr)) {
 									foreach ($valuesArr as $valueName => $value) {
 										if ($expandedDataStructure[$sheetKey]['ROOT']['el'][$fieldName]['tx_templavoila']['eType'] == 'ce') {
-											$valueItems = t3lib_div::intExplode(',', $value);
+											$valueItems = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $value);
 											if (is_array($valueItems)) {
 												$position = 1;
 												foreach ($valueItems as $subElementUid) {
@@ -1229,7 +1229,7 @@ class tx_templavoila_api {
 	 */
 	function flexform_storeElementReferencesListInRecord($referencesArr, $destinationPointer) {
 		if ($this->debug) {
-			t3lib_div::devLog('API: flexform_storeElementReferencesListInRecord()', 'templavoila', 0, array('referencesArr' => $referencesArr, 'destinationPointer' => $destinationPointer));
+			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('API: flexform_storeElementReferencesListInRecord()', 'templavoila', 0, array('referencesArr' => $referencesArr, 'destinationPointer' => $destinationPointer));
 		}
 
 		$dataArr = array();
@@ -1243,7 +1243,7 @@ class tx_templavoila_api {
 
 		$flagWasSet = $this->getTCEmainRunningFlag();
 		$this->setTCEmainRunningFlag(TRUE);
-		$tce = t3lib_div::makeInstance('t3lib_TCEmain');
+		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_TCEmain');
 		$tce->stripslashes_values = 0;
 		$tce->start($dataArr, array());
 
@@ -1388,7 +1388,7 @@ class tx_templavoila_api {
 	function ds_getExpandedDataStructure($table, $row) {
 		global $TCA;
 
-		t3lib_div::loadTCA($table);
+		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 		$conf = $TCA[$table]['columns']['tx_templavoila_flex']['config'];
 		$dataStructureArr = t3lib_BEfunc::getFlexFormDS($conf, $row, $table);
 
@@ -1399,14 +1399,14 @@ class tx_templavoila_api {
 
 		if (is_array($dataStructureArr['sheets'])) {
 			foreach (array_keys($dataStructureArr['sheets']) as $sheetKey) {
-				list ($sheetDataStructureArr, $sheet) = t3lib_div::resolveSheetDefInDS($dataStructureArr, $sheetKey);
+				list ($sheetDataStructureArr, $sheet) = \TYPO3\CMS\Core\Utility\GeneralUtility::resolveSheetDefInDS($dataStructureArr, $sheetKey);
 				if ($sheet == $sheetKey) {
 					$expandedDataStructureArr[$sheetKey] = $sheetDataStructureArr;
 				}
 			}
 		} else {
 			$sheetKey = 'sDEF';
-			list ($sheetDataStructureArr, $sheet) = t3lib_div::resolveSheetDefInDS($dataStructureArr, $sheetKey);
+			list ($sheetDataStructureArr, $sheet) = \TYPO3\CMS\Core\Utility\GeneralUtility::resolveSheetDefInDS($dataStructureArr, $sheetKey);
 			if ($sheet == $sheetKey) {
 				$expandedDataStructureArr[$sheetKey] = $sheetDataStructureArr;
 			}
@@ -1514,7 +1514,7 @@ class tx_templavoila_api {
 			'uid' => $row['uid'],
 			'pid' => $row['pid'],
 			'_ORIG_uid' => $row['_ORIG_uid'],
-			'title' => t3lib_div::fixed_lgd_cs(t3lib_BEfunc::getRecordTitle($table, $row), 50),
+			'title' => \TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs(t3lib_BEfunc::getRecordTitle($table, $row), 50),
 			'fullTitle' => t3lib_BEfunc::getRecordTitle($table, $row),
 			'icon' => t3lib_iconWorks::getIcon($table, $row), // kept because it's not clear if this is used elsewhere
 			'iconTag' => t3lib_iconWorks::getSpriteIconForRecord($table, $row, array('title' => $alttext)),
@@ -1533,7 +1533,7 @@ class tx_templavoila_api {
 		// If element is a Flexible Content Element (or a page) then look at the content inside:
 		if ($table == 'pages' || $table == $this->rootTable || ($table == 'tt_content' && $row['CType'] == 'templavoila_pi1')) {
 
-			t3lib_div::loadTCA($table);
+			\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 			$rawDataStructureArr = t3lib_BEfunc::getFlexFormDS($TCA[$table]['columns']['tx_templavoila_flex']['config'], $row, $table);
 			$expandedDataStructureArr = $this->ds_getExpandedDataStructure($table, $row);
 
@@ -1552,7 +1552,7 @@ class tx_templavoila_api {
 			}
 			$tree['ds_is_found'] = is_array($rawDataStructureArr);
 			$tree['ds_meta'] = $rawDataStructureArr['meta'];
-			$flexformContentArr = t3lib_div::xml2array($row['tx_templavoila_flex']);
+			$flexformContentArr = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($row['tx_templavoila_flex']);
 			if (!is_array($flexformContentArr)) {
 				$flexformContentArr = array();
 			}
@@ -1691,7 +1691,7 @@ class tx_templavoila_api {
 		$subTree = array();
 
 		// Get records:
-		$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
+		$dbAnalysis = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_loadDBGroup');
 		$dbAnalysis->start($listOfSubElementUids, 'tt_content');
 
 		// Traverse records:
@@ -1699,7 +1699,7 @@ class tx_templavoila_api {
 		foreach ($dbAnalysis->itemArray as $recIdent) {
 			$idStr = 'tt_content:' . $recIdent['id'];
 
-			if (!t3lib_div::inList($prevRecList, $idStr)) {
+			if (!\TYPO3\CMS\Core\Utility\GeneralUtility::inList($prevRecList, $idStr)) {
 				$nextSubRecord = t3lib_BEfunc::getRecordWSOL('tt_content', $recIdent['id']);
 
 				if (is_array($nextSubRecord)) {

@@ -238,7 +238,7 @@ templavoila.wizards.newContentElement.renderMode =
 
 ');
 
-if (t3lib_div::compat_version('4.3')) {
+if (\TYPO3\CMS\Core\Utility\GeneralUtility::compat_version('4.3')) {
 	t3lib_extMgm::addPageTSConfig('
 templavoila.wizards.newContentElement.wizardItems.special.elements.media {
 	icon = gfx/c_wiz/multimedia.gif

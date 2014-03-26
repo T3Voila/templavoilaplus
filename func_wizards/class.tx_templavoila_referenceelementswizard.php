@@ -64,7 +64,7 @@ class tx_templavoila_referenceElementsWizard extends t3lib_extobjbase {
 		$this->allAvailableLanguages = $this->getAvailableLanguages(0, TRUE, TRUE, TRUE);
 
 		$output = '';
-		$this->templavoilaAPIObj = t3lib_div::makeInstance('tx_templavoila_api');
+		$this->templavoilaAPIObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_api');
 
 		// Showing the tree:
 		// Initialize starting point of page tree:
@@ -73,7 +73,7 @@ class tx_templavoila_referenceElementsWizard extends t3lib_extobjbase {
 		$depth = $this->pObj->MOD_SETTINGS['depth'];
 
 		// Initialize tree object:
-		$tree = t3lib_div::makeInstance('t3lib_pageTree');
+		$tree = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_pageTree');
 		$tree->init('AND ' . $GLOBALS['BE_USER']->getPagePermsClause(1));
 
 		// Creating top icon; the current page
@@ -94,10 +94,10 @@ class tx_templavoila_referenceElementsWizard extends t3lib_extobjbase {
 		', $this->pObj->content);
 
 		// Process commands:
-		if (t3lib_div::_GP('createReferencesForPage')) {
-			$this->createReferencesForPage(t3lib_div::_GP('createReferencesForPage'));
+		if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('createReferencesForPage')) {
+			$this->createReferencesForPage(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('createReferencesForPage'));
 		}
-		if (t3lib_div::_GP('createReferencesForTree')) {
+		if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('createReferencesForTree')) {
 			$this->createReferencesForTree($tree);
 		}
 
@@ -269,8 +269,8 @@ class tx_templavoila_referenceElementsWizard extends t3lib_extobjbase {
 	function getAvailableLanguages($id = 0, $onlyIsoCoded = TRUE, $setDefault = TRUE, $setMulti = FALSE) {
 		global $LANG, $TYPO3_DB, $BE_USER, $TCA, $BACK_PATH;
 
-		t3lib_div::loadTCA('sys_language');
-		$flagAbsPath = t3lib_div::getFileAbsFileName($TCA['sys_language']['columns']['flag']['config']['fileFolder']);
+		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA('sys_language');
+		$flagAbsPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($TCA['sys_language']['columns']['flag']['config']['fileFolder']);
 		$flagIconPath = $BACK_PATH . '../' . substr($flagAbsPath, strlen(PATH_site));
 
 		$output = array();

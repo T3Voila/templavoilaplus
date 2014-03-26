@@ -213,18 +213,18 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 	function main() {
 
 		// Initialize ds_edit
-		$this->dsEdit = t3lib_div::getUserObj('tx_templavoila_cm1_dsedit', '');
+		$this->dsEdit = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj('tx_templavoila_cm1_dsedit', '');
 		$this->dsEdit->init($this);
 
 		// Initialize eTypes
-		$this->eTypes = t3lib_div::getUserObj('tx_templavoila_cm1_eTypes', '');
+		$this->eTypes = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj('tx_templavoila_cm1_eTypes', '');
 		$this->eTypes->init($this);
 
 		$this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
 		$this->staticDS = ($this->extConf['staticDS.']['enable']);
 
 		// Setting GPvars:
-		$this->mode = t3lib_div::_GP('mode');
+		$this->mode = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('mode');
 
 		// Selecting display or module mode:
 		switch ((string) $this->mode) {
@@ -262,7 +262,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			}
 		}
 
-		return str_replace("<>\n", '', str_replace("</>", '', t3lib_div::array2xml($array, '', -1, '', 0, array('useCDATA' => 1))));
+		return str_replace("<>\n", '', str_replace("</>", '', \TYPO3\CMS\Core\Utility\GeneralUtility::array2xml($array, '', -1, '', 0, array('useCDATA' => 1))));
 	}
 
 	/**
@@ -279,7 +279,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			}
 		}
 
-		return t3lib_div::xml2array('<grouped>' . $string . '</grouped>');
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array('<grouped>' . $string . '</grouped>');
 	}
 
 	/**
@@ -344,7 +344,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 	function main_mode() {
 		global $LANG, $BACK_PATH;
 
-		$this->doc = t3lib_div::makeInstance('template');
+		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('template');
 		$this->doc->docType = 'xhtml_trans';
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->setModuleTemplate('EXT:templavoila/resources/templates/cm1_default.html');
@@ -366,30 +366,30 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 		$this->doc->styleSheetFile2 = t3lib_extMgm::extRelPath($this->extKey) . "cm1/styles.css";
 
 		// General GPvars for module mode:
-		$this->displayFile = tx_templavoila_file::filename(t3lib_div::_GP('file'));
-		$this->displayTable = t3lib_div::_GP('table');
-		$this->displayUid = t3lib_div::_GP('uid');
-		$this->displayPath = t3lib_div::_GP('htmlPath');
-		$this->returnUrl = t3lib_div::sanitizeLocalUrl(t3lib_div::_GP('returnUrl'));
+		$this->displayFile = tx_templavoila_file::filename(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('file'));
+		$this->displayTable = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('table');
+		$this->displayUid = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('uid');
+		$this->displayPath = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('htmlPath');
+		$this->returnUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::sanitizeLocalUrl(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('returnUrl'));
 
 		// GPvars specific to the DS listing/table and mapping features:
-		$this->_preview = t3lib_div::_GP('_preview');
-		$this->mapElPath = t3lib_div::_GP('mapElPath');
-		$this->doMappingOfPath = t3lib_div::_GP('doMappingOfPath');
-		$this->showPathOnly = t3lib_div::_GP('showPathOnly');
-		$this->mappingToTags = t3lib_div::_GP('mappingToTags');
-		$this->DS_element = t3lib_div::_GP('DS_element');
-		$this->DS_cmd = t3lib_div::_GP('DS_cmd');
-		$this->fieldName = t3lib_div::_GP('fieldName');
+		$this->_preview = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('_preview');
+		$this->mapElPath = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('mapElPath');
+		$this->doMappingOfPath = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('doMappingOfPath');
+		$this->showPathOnly = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('showPathOnly');
+		$this->mappingToTags = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('mappingToTags');
+		$this->DS_element = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('DS_element');
+		$this->DS_cmd = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('DS_cmd');
+		$this->fieldName = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('fieldName');
 
 		// GPvars specific for DS creation from a file.
-		$this->_load_ds_xml_content = t3lib_div::_GP('_load_ds_xml_content');
-		$this->_load_ds_xml_to = t3lib_div::_GP('_load_ds_xml_to');
-		$this->_saveDSandTO_TOuid = t3lib_div::_GP('_saveDSandTO_TOuid');
-		$this->_saveDSandTO_title = t3lib_div::_GP('_saveDSandTO_title');
-		$this->_saveDSandTO_type = t3lib_div::_GP('_saveDSandTO_type');
-		$this->_saveDSandTO_pid = t3lib_div::_GP('_saveDSandTO_pid');
-		$this->DS_element_DELETE = t3lib_div::_GP('DS_element_DELETE');
+		$this->_load_ds_xml_content = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('_load_ds_xml_content');
+		$this->_load_ds_xml_to = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('_load_ds_xml_to');
+		$this->_saveDSandTO_TOuid = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('_saveDSandTO_TOuid');
+		$this->_saveDSandTO_title = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('_saveDSandTO_title');
+		$this->_saveDSandTO_type = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('_saveDSandTO_type');
+		$this->_saveDSandTO_pid = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('_saveDSandTO_pid');
+		$this->DS_element_DELETE = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('DS_element_DELETE');
 
 		// Finding Storage folder:
 		$this->findingStorageFolderIds();
@@ -404,7 +404,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 				document.location = URL;
 			}
 			function updPath(inPath)	{	//
-				document.location = "' . t3lib_div::linkThisScript(array('htmlPath' => '', 'doMappingOfPath' => 1)) . '&htmlPath="+top.rawurlencode(inPath);
+				document.location = "' . \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('htmlPath' => '', 'doMappingOfPath' => 1)) . '&htmlPath="+top.rawurlencode(inPath);
 			}
 
 			function openValidator(key) {
@@ -499,7 +499,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 		// Back
 		if ($this->returnUrl) {
 			$backIcon = t3lib_iconWorks::getSpriteIcon('actions-view-go-back');
-			$buttons['back'] = '<a href="' . htmlspecialchars(t3lib_div::linkThisUrl($this->returnUrl)) . '" class="typo3-goBack" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.goBack', TRUE) . '">' .
+			$buttons['back'] = '<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisUrl($this->returnUrl)) . '" class="typo3-goBack" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.goBack', TRUE) . '">' .
 				$backIcon .
 				'</a>';
 		}
@@ -529,19 +529,19 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 	function renderFile() {
 		global $TYPO3_DB;
 
-		if (@is_file($this->displayFile) && t3lib_div::getFileAbsFileName($this->displayFile)) {
+		if (@is_file($this->displayFile) && \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->displayFile)) {
 
 			// Converting GPvars into a "cmd" value:
 			$cmd = '';
 			$msg = array();
-			if (t3lib_div::_GP('_load_ds_xml')) { // Loading DS from XML or TO uid
+			if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('_load_ds_xml')) { // Loading DS from XML or TO uid
 				$cmd = 'load_ds_xml';
-			} elseif (t3lib_div::_GP('_clear')) { // Resetting mapping/DS
+			} elseif (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('_clear')) { // Resetting mapping/DS
 				$cmd = 'clear';
-			} elseif (t3lib_div::_GP('_saveDSandTO')) { // Saving DS and TO to records.
+			} elseif (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('_saveDSandTO')) { // Saving DS and TO to records.
 				if (!strlen(trim($this->_saveDSandTO_title))) {
 					$cmd = 'saveScreen';
-					$flashMessage = t3lib_div::makeInstance(
+					$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
 						't3lib_FlashMessage',
 						$GLOBALS['LANG']->getLL('errorNoToTitleDefined'),
 						'',
@@ -551,25 +551,25 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 				} else {
 					$cmd = 'saveDSandTO';
 				}
-			} elseif (t3lib_div::_GP('_updateDSandTO')) { // Updating DS and TO
+			} elseif (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('_updateDSandTO')) { // Updating DS and TO
 				$cmd = 'updateDSandTO';
-			} elseif (t3lib_div::_GP('_showXMLDS')) { // Showing current DS as XML
+			} elseif (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('_showXMLDS')) { // Showing current DS as XML
 				$cmd = 'showXMLDS';
-			} elseif (t3lib_div::_GP('_preview')) { // Previewing mappings
+			} elseif (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('_preview')) { // Previewing mappings
 				$cmd = 'preview';
-			} elseif (t3lib_div::_GP('_save_data_mapping')) { // Saving mapping to Session
+			} elseif (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('_save_data_mapping')) { // Saving mapping to Session
 				$cmd = 'save_data_mapping';
-			} elseif (t3lib_div::_GP('_updateDS')) {
+			} elseif (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('_updateDS')) {
 				$cmd = 'updateDS';
-			} elseif (t3lib_div::_GP('DS_element_DELETE')) {
+			} elseif (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('DS_element_DELETE')) {
 				$cmd = 'DS_element_DELETE';
-			} elseif (t3lib_div::_GP('_saveScreen')) {
+			} elseif (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('_saveScreen')) {
 				$cmd = 'saveScreen';
-			} elseif (t3lib_div::_GP('_loadScreen')) {
+			} elseif (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('_loadScreen')) {
 				$cmd = 'loadScreen';
-			} elseif (t3lib_div::_GP('_save')) {
+			} elseif (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('_save')) {
 				$cmd = 'saveUpdatedDSandTO';
-			} elseif (t3lib_div::_GP('_saveExit')) {
+			} elseif (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('_saveExit')) {
 				$cmd = 'saveUpdatedDSandTOandExit';
 			}
 
@@ -593,7 +593,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			if ($this->_load_ds_xml_to) {
 				$toREC = t3lib_BEfunc::getRecordWSOL('tx_templavoila_tmplobj', $this->_load_ds_xml_to);
 				if ($this->staticDS) {
-					$dsREC['dataprot'] = t3lib_div::getURL(t3lib_div::getFileAbsFileName($toREC['datastructure']));
+					$dsREC['dataprot'] = \TYPO3\CMS\Core\Utility\GeneralUtility::getURL(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($toREC['datastructure']));
 				} else {
 					$dsREC = t3lib_BEfunc::getRecordWSOL('tx_templavoila_datastructure', $toREC['datastructure']);
 				}
@@ -607,11 +607,11 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 					$sesDat = array('displayFile' => $this->displayFile, 'TO' => $this->_load_ds_xml_to, 'DS' => $this->displayUid);
 					$sesDat['currentMappingInfo'] = $tM['MappingInfo'];
 					$sesDat['currentMappingInfo_head'] = $tM['MappingInfo_head'];
-					$ds = t3lib_div::xml2array($dsREC['dataprot']);
+					$ds = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($dsREC['dataprot']);
 					$sesDat['dataStruct'] = $sesDat['autoDS'] = $ds; // Just set $ds, not only its ROOT! Otherwise <meta> will be lost.
 					$GLOBALS['BE_USER']->setAndSaveSessionData($this->sessionKey, $sesDat);
 				} else {
-					$ds = t3lib_div::xml2array($this->_load_ds_xml_content);
+					$ds = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($this->_load_ds_xml_content);
 					$sesDat = array('displayFile' => $this->displayFile, 'TO' => $this->_load_ds_xml_to, 'DS' => $this->displayUid);
 					$sesDat['dataStruct'] = $sesDat['autoDS'] = $ds;
 					$GLOBALS['BE_USER']->setAndSaveSessionData($this->sessionKey, $sesDat);
@@ -641,7 +641,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			switch ($cmd) {
 				// Saving incoming Mapping Data to session data:
 				case 'save_data_mapping':
-					$inputData = t3lib_div::_GP('dataMappingForm', 1);
+					$inputData = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('dataMappingForm', 1);
 					if (is_array($inputData)) {
 						$sesDat['currentMappingInfo'] = $currentMappingInfo = $this->array_merge_recursive_overrule($currentMappingInfo, $inputData);
 						$sesDat['dataStruct'] = $dataStruct;
@@ -650,7 +650,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 					break;
 				// Saving incoming Data Structure settings to session data:
 				case 'updateDS':
-					$inDS = t3lib_div::_GP('autoDS', 1);
+					$inDS = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('autoDS', 1);
 					if (is_array($inDS)) {
 						$sesDat['dataStruct'] = $sesDat['autoDS'] = $dataStruct = $this->array_merge_recursive_overrule($dataStruct, $inDS);
 						$GLOBALS['BE_USER']->setAndSaveSessionData($this->sessionKey, $sesDat);
@@ -666,7 +666,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			}
 
 			// Creating $templatemapping array with cached mapping content:
-			if (t3lib_div::inList('showXMLDS,saveDSandTO,updateDSandTO,saveUpdatedDSandTO,saveUpdatedDSandTOandExit', $cmd)) {
+			if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList('showXMLDS,saveDSandTO,updateDSandTO,saveUpdatedDSandTO,saveUpdatedDSandTOandExit', $cmd)) {
 
 				// Template mapping prepared:
 				$templatemapping = array();
@@ -677,11 +677,11 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 
 				// Getting cached data:
 				reset($dataStruct);
-				$fileContent = t3lib_div::getUrl($this->displayFile);
-				$htmlParse = t3lib_div::makeInstance('t3lib_parsehtml');
+				$fileContent = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($this->displayFile);
+				$htmlParse = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_parsehtml');
 				$relPathFix = dirname(substr($this->displayFile, strlen(PATH_site))) . '/';
 				$fileContent = $htmlParse->prefixResourcePath($relPathFix, $fileContent);
-				$this->markupObj = t3lib_div::makeInstance('tx_templavoila_htmlmarkup');
+				$this->markupObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_htmlmarkup');
 				$contentSplittedByMapping = $this->markupObj->splitContentToMappingInfo($fileContent, $currentMappingInfo);
 				$templatemapping['MappingData_cached'] = $contentSplittedByMapping['sub']['ROOT'];
 
@@ -735,7 +735,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 				case 'saveDSandTO':
 					$newID = '';
 					// Init TCEmain object and store:
-					$tce = t3lib_div::makeInstance("t3lib_TCEmain");
+					$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance("t3lib_TCEmain");
 					$tce->stripslashes_values = 0;
 
 					// DS:
@@ -745,12 +745,12 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 					if (is_array($storeDataStruct['ROOT']['el'])) {
 						$this->eTypes->substEtypeWithRealStuff($storeDataStruct['ROOT']['el'], $contentSplittedByMapping['sub']['ROOT'], $dataArr['tx_templavoila_datastructure']['NEW']['scope']);
 					}
-					$dataProtXML = t3lib_div::array2xml_cs($storeDataStruct, 'T3DataStructure', array('useCDATA' => 1));
+					$dataProtXML = \TYPO3\CMS\Core\Utility\GeneralUtility::array2xml_cs($storeDataStruct, 'T3DataStructure', array('useCDATA' => 1));
 
 					if ($this->staticDS) {
 						$title = preg_replace('|[/,\."\']+|', '_', $this->_saveDSandTO_title) . ' (' . ($this->_saveDSandTO_type == 1 ? 'page' : 'fce') . ').xml';
-						$path = t3lib_div::getFileAbsFileName($this->_saveDSandTO_type == 2 ? $this->extConf['staticDS.']['path_fce'] : $this->extConf['staticDS.']['path_page']) . $title;
-						t3lib_div::writeFile($path, $dataProtXML);
+						$path = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->_saveDSandTO_type == 2 ? $this->extConf['staticDS.']['path_fce'] : $this->extConf['staticDS.']['path_page']) . $title;
+						\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($path, $dataProtXML);
 						$newID = substr($path, strlen(PATH_site));
 					} else {
 						$dataArr = array();
@@ -796,7 +796,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 					if ($newID && $newToID) {
 						//redirect to edit view
 						$redirectUrl = 'index.php?file=' . rawurlencode($this->displayFile) . '&_load_ds_xml=1&_load_ds_xml_to=' . $newToID . '&uid=' . rawurlencode($newID) . '&returnUrl=' . rawurlencode('../mod2/index.php?id=' . intval($this->_saveDSandTO_pid));
-						header('Location:' . t3lib_div::locationHeaderUrl($redirectUrl));
+						header('Location:' . \TYPO3\CMS\Core\Utility\GeneralUtility::locationHeaderUrl($redirectUrl));
 						exit;
 					} else {
 						// Clear cached header info because saveDSandTO always resets headers
@@ -824,7 +824,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 					// If they are found, continue:
 					if ($toREC['uid'] && $dsREC['uid']) {
 						// Init TCEmain object and store:
-						$tce = t3lib_div::makeInstance('t3lib_TCEmain');
+						$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_TCEmain');
 						$tce->stripslashes_values = 0;
 
 						// Modifying data structure with conversion of preset values for field types to actual settings:
@@ -832,12 +832,12 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 						if (is_array($storeDataStruct['ROOT']['el'])) {
 							$this->eTypes->substEtypeWithRealStuff($storeDataStruct['ROOT']['el'], $contentSplittedByMapping['sub']['ROOT'], $dsREC['scope']);
 						}
-						$dataProtXML = t3lib_div::array2xml_cs($storeDataStruct, 'T3DataStructure', array('useCDATA' => 1));
+						$dataProtXML = \TYPO3\CMS\Core\Utility\GeneralUtility::array2xml_cs($storeDataStruct, 'T3DataStructure', array('useCDATA' => 1));
 
 						// DS:
 						if ($this->staticDS) {
 							$path = PATH_site . $dsREC['uid'];
-							t3lib_div::writeFile($path, $dataProtXML);
+							\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($path, $dataProtXML);
 						} else {
 							$dataArr = array();
 							$dataArr['tx_templavoila_datastructure'][$dsREC['uid']]['dataprot'] = $dataProtXML;
@@ -866,7 +866,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 							if (!$this->_load_ds_xml_to) {
 								//new created was saved to existing DS/TO, redirect to edit view
 								$redirectUrl = 'index.php?file=' . rawurlencode($this->displayFile) . '&_load_ds_xml=1&_load_ds_xml_to=' . $toREC['uid'] . '&uid=' . rawurlencode($dsREC['uid']) . '&returnUrl=' . rawurlencode('../mod2/index.php?id=' . intval($this->_saveDSandTO_pid));
-								header('Location:' . t3lib_div::locationHeaderUrl($redirectUrl));
+								header('Location:' . \TYPO3\CMS\Core\Utility\GeneralUtility::locationHeaderUrl($redirectUrl));
 								exit;
 							} else {
 								// Clear cached header info because updateDSandTO always resets headers
@@ -874,7 +874,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 								$GLOBALS['BE_USER']->setAndSaveSessionData($this->sessionKey, $sesDat);
 							}
 						} elseif ($cmd == 'saveUpdatedDSandTOandExit') {
-							header('Location:' . t3lib_div::locationHeaderUrl($this->returnUrl));
+							header('Location:' . \TYPO3\CMS\Core\Utility\GeneralUtility::locationHeaderUrl($this->returnUrl));
 						}
 					}
 					break;
@@ -883,7 +883,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			// Header:
 			$tRows = array();
 			$relFilePath = substr($this->displayFile, strlen(PATH_site));
-			$onCl = 'return top.openUrlInWindow(\'' . t3lib_div::getIndpEnv('TYPO3_SITE_URL') . $relFilePath . '\',\'FileView\');';
+			$onCl = 'return top.openUrlInWindow(\'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $relFilePath . '\',\'FileView\');';
 			$tRows[] = '
 				<tr>
 					<td class="bgColor5" rowspan="2">' . $this->cshItem('xMOD_tx_templavoila', 'mapping_file', $this->doc->backPath, '|') . '</td>
@@ -904,7 +904,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 					<td class="bgColor4">' . ($toREC ? htmlspecialchars($GLOBALS['LANG']->sL($toREC['title'])) : $GLOBALS['LANG']->getLL('mappingNEW')) . '</td>
 				</tr>';
 			if ($this->staticDS) {
-				$onClick = 'return top.openUrlInWindow(\'' . t3lib_div::getIndpEnv('TYPO3_SITE_URL') . $toREC['datastructure'] . '\',\'FileView\');';
+				$onClick = 'return top.openUrlInWindow(\'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $toREC['datastructure'] . '\',\'FileView\');';
 				$tRows[] = '
 				<tr>
 					<td class="bgColor5">&nbsp;</td>
@@ -1008,13 +1008,13 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 				case 'showXMLDS':
 
 					// Make instance of syntax highlight class:
-					$hlObj = t3lib_div::makeInstance('tx_templavoila_syntaxhl');
+					$hlObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_syntaxhl');
 
 					$storeDataStruct = $dataStruct;
 					if (is_array($storeDataStruct['ROOT']['el'])) {
 						$this->eTypes->substEtypeWithRealStuff($storeDataStruct['ROOT']['el'], $contentSplittedByMapping['sub']['ROOT']);
 					}
-					$dataStructureXML = t3lib_div::array2xml_cs($storeDataStruct, 'T3DataStructure', array('useCDATA' => 1));
+					$dataStructureXML = \TYPO3\CMS\Core\Utility\GeneralUtility::array2xml_cs($storeDataStruct, 'T3DataStructure', array('useCDATA' => 1));
 
 					$content .= '
 						<input type="submit" name="_DO_NOTHING" value="Go back" title="' . $GLOBALS['LANG']->getLL('buttonGoBack') . '" />
@@ -1212,7 +1212,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 						t3lib_BEfunc::getRecordTitle('tx_templavoila_tmplobj', $TO_Row, 1) . '</a>' .
 						'</td>
 					<td nowrap="nowrap">' . htmlspecialchars($TO_Row['fileref']) . ' <strong>' .
-						(!t3lib_div::getFileAbsFileName($TO_Row['fileref'], 1) ? $GLOBALS['LANG']->getLL('renderDSO_notFound') : $GLOBALS['LANG']->getLL('renderDSO_ok')) . '</strong></td>
+						(!\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($TO_Row['fileref'], 1) ? $GLOBALS['LANG']->getLL('renderDSO_notFound') : $GLOBALS['LANG']->getLL('renderDSO_ok')) . '</strong></td>
 								<td>' . strlen($TO_Row['templatemapping']) . '</td>
 							</tr>';
 				}
@@ -1236,9 +1236,9 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 				if (is_array($dataStruct)) {
 
 					// Make instance of syntax highlight class:
-					$hlObj = t3lib_div::makeInstance('tx_templavoila_syntaxhl');
+					$hlObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_syntaxhl');
 
-					$dataStructureXML = t3lib_div::array2xml_cs($origDataStruct, 'T3DataStructure', array('useCDATA' => 1));
+					$dataStructureXML = \TYPO3\CMS\Core\Utility\GeneralUtility::array2xml_cs($origDataStruct, 'T3DataStructure', array('useCDATA' => 1));
 					$content .= '
 
 					<!--
@@ -1248,7 +1248,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 					<div id="c-dsxml">
 						<h3>' . $GLOBALS['LANG']->getLL('renderDSO_XML') . ':</h3>
 						' . $this->cshItem('xMOD_tx_templavoila', 'mapping_ds_showXML', $this->doc->backPath) . '
-						<p>' . t3lib_BEfunc::getFuncCheck('', 'SET[showDSxml]', $this->MOD_SETTINGS['showDSxml'], '', t3lib_div::implodeArrayForUrl('', $_GET, '', 1, 1)) . ' Show XML</p>
+						<p>' . t3lib_BEfunc::getFuncCheck('', 'SET[showDSxml]', $this->MOD_SETTINGS['showDSxml'], '', \TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl('', $_GET, '', 1, 1)) . ' Show XML</p>
 						<pre>' .
 						($this->MOD_SETTINGS['showDSxml'] ? $hlObj->highLight_DS($dataStructureXML) : '') . '
 						</pre>
@@ -1300,10 +1300,10 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 				$GLOBALS['BE_USER']->setAndSaveSessionData($sessionKey, $sesDat);
 
 				// Find the file:
-				$theFile = t3lib_div::getFileAbsFileName($row['fileref'], 1);
+				$theFile = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($row['fileref'], 1);
 				if ($theFile && @is_file($theFile)) {
 					$relFilePath = substr($theFile, strlen(PATH_site));
-					$onCl = 'return top.openUrlInWindow(\'' . t3lib_div::getIndpEnv('TYPO3_SITE_URL') . $relFilePath . '\',\'FileView\');';
+					$onCl = 'return top.openUrlInWindow(\'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $relFilePath . '\',\'FileView\');';
 					$tRows[] = '
 						<tr class="bgColor4">
 							<td rowspan="2">' . $GLOBALS['LANG']->getLL('templateFile') . ':</td>
@@ -1329,7 +1329,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 					if (tx_templavoila_div::canBeInterpretedAsInteger($dsValue)) {
 						$DS_row = t3lib_BEfunc::getRecordWSOL('tx_templavoila_datastructure', $dsValue);
 					} else {
-						$DSOfile = t3lib_div::getFileAbsFileName($dsValue);
+						$DSOfile = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($dsValue);
 					}
 					if (is_array($DS_row) || @is_file($DSOfile)) {
 
@@ -1367,7 +1367,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 						} else {
 							// Show filepath of external XML file:
 							$relFilePath = substr($DSOfile, strlen(PATH_site));
-							$onCl = 'return top.openUrlInWindow(\'' . t3lib_div::getIndpEnv('TYPO3_SITE_URL') . $relFilePath . '\',\'FileView\');';
+							$onCl = 'return top.openUrlInWindow(\'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $relFilePath . '\',\'FileView\');';
 							$tRows[] = '
 								<tr class="bgColor4">
 									<td>' . $GLOBALS['LANG']->getLL('renderTO_dsFile') . ':</td>
@@ -1490,13 +1490,13 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 
 		// Converting GPvars into a "cmd" value:
 		$cmd = '';
-		if (t3lib_div::_GP('_reload_from')) { // Reverting to old values in TO
+		if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('_reload_from')) { // Reverting to old values in TO
 			$cmd = 'reload_from';
-		} elseif (t3lib_div::_GP('_clear')) { // Resetting mapping
+		} elseif (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('_clear')) { // Resetting mapping
 			$cmd = 'clear';
-		} elseif (t3lib_div::_GP('_save_data_mapping')) { // Saving to Session
+		} elseif (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('_save_data_mapping')) { // Saving to Session
 			$cmd = 'save_data_mapping';
-		} elseif (t3lib_div::_GP('_save_to') || t3lib_div::_GP('_save_to_return')) { // Saving to Template Object
+		} elseif (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('_save_to') || \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('_save_to_return')) { // Saving to Template Object
 			$cmd = 'save_to';
 		}
 
@@ -1508,7 +1508,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 
 		// If that array contains sheets, then traverse them:
 		if (is_array($dataStruct['sheets'])) {
-			$dSheets = t3lib_div::resolveAllSheetsInDS($dataStruct);
+			$dSheets = \TYPO3\CMS\Core\Utility\GeneralUtility::resolveAllSheetsInDS($dataStruct);
 			$dataStruct = array(
 				'ROOT' => array(
 					'tx_templavoila' => array(
@@ -1536,8 +1536,8 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 
 		// Perform processing for head
 		// GPvars, incoming data
-		$checkboxElement = t3lib_div::_GP('checkboxElement', 1);
-		$addBodyTag = t3lib_div::_GP('addBodyTag');
+		$checkboxElement = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('checkboxElement', 1);
+		$addBodyTag = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('addBodyTag');
 
 		// Update session data:
 		if ($cmd == 'reload_from' || $cmd == 'clear') {
@@ -1556,7 +1556,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 
 		// Perform processing for  body
 		// GPvars, incoming data
-		$inputData = t3lib_div::_GP('dataMappingForm', 1);
+		$inputData = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('dataMappingForm', 1);
 
 		// Update session data:
 		if ($cmd == 'reload_from' || $cmd == 'clear') {
@@ -1584,9 +1584,9 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			// Getting cached data:
 			reset($dataStruct);
 			// Init; read file, init objects:
-			$fileContent = t3lib_div::getUrl($theFile);
-			$htmlParse = t3lib_div::makeInstance('t3lib_parsehtml');
-			$this->markupObj = t3lib_div::makeInstance('tx_templavoila_htmlmarkup');
+			$fileContent = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($theFile);
+			$htmlParse = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_parsehtml');
+			$this->markupObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_htmlmarkup');
 
 			// Fix relative paths in source:
 			$relPathFix = dirname(substr($theFile, strlen(PATH_site))) . '/';
@@ -1622,12 +1622,12 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			$dataArr['tx_templavoila_tmplobj'][$TOuid]['fileref_mtime'] = @filemtime($theFile);
 			$dataArr['tx_templavoila_tmplobj'][$TOuid]['fileref_md5'] = @md5_file($theFile);
 
-			$tce = t3lib_div::makeInstance('t3lib_TCEmain');
+			$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_TCEmain');
 			$tce->stripslashes_values = 0;
 			$tce->start($dataArr, array());
 			$tce->process_datamap();
 			unset($tce);
-			$flashMessage = t3lib_div::makeInstance(
+			$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
 				't3lib_FlashMessage',
 				$GLOBALS['LANG']->getLL('msgMappingSaved'),
 				'',
@@ -1637,8 +1637,8 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			$row = t3lib_BEfunc::getRecordWSOL('tx_templavoila_tmplobj', $this->displayUid);
 			$templatemapping = unserialize($row['templatemapping']);
 
-			if (t3lib_div::_GP('_save_to_return')) {
-				header('Location: ' . t3lib_div::locationHeaderUrl($this->returnUrl));
+			if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('_save_to_return')) {
+				header('Location: ' . \TYPO3\CMS\Core\Utility\GeneralUtility::locationHeaderUrl($this->returnUrl));
 				exit;
 			}
 		}
@@ -1667,7 +1667,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 		) {
 			$menuItems[] = '<input type="submit" name="_reload_from" value="' . $GLOBALS['LANG']->getLL('buttonRevert') . '" title="' . sprintf($GLOBALS['LANG']->getLL('buttonRevertTitle'), $headerPart ? 'HEAD' : 'BODY') . '" />';
 
-			$flashMessage = t3lib_div::makeInstance(
+			$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
 				't3lib_FlashMessage',
 				$GLOBALS['LANG']->getLL('msgMappingIsDifferent'),
 				'',
@@ -1719,10 +1719,10 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 
 		// Get file content
 		$this->markupFile = $displayFile;
-		$fileContent = t3lib_div::getUrl($this->markupFile);
+		$fileContent = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($this->markupFile);
 
 		// Init mark up object.
-		$this->markupObj = t3lib_div::makeInstance('tx_templavoila_htmlmarkup');
+		$this->markupObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_htmlmarkup');
 		$this->markupObj->init();
 
 		// Get <body> tag:
@@ -1762,7 +1762,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 				' . $bodyTagRow . '
 			</table><br />';
 
-		$flashMessage = t3lib_div::makeInstance(
+		$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
 			't3lib_FlashMessage',
 			$GLOBALS['LANG']->getLL('msgHeaderSet'),
 			'',
@@ -1791,16 +1791,16 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 
 		// Get file content
 		$this->markupFile = $displayFile;
-		$fileContent = t3lib_div::getUrl($this->markupFile);
+		$fileContent = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($this->markupFile);
 
 		// Init mark up object.
-		$this->markupObj = t3lib_div::makeInstance('tx_templavoila_htmlmarkup');
+		$this->markupObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_htmlmarkup');
 
 		// Load splitted content from currentMappingInfo array (used to show us which elements maps to some real content).
 		$contentSplittedByMapping = $this->markupObj->splitContentToMappingInfo($fileContent, $currentMappingInfo);
 
 		// Show path:
-		$pathRendered = t3lib_div::trimExplode('|', $path, 1);
+		$pathRendered = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('|', $path, 1);
 		$acc = array();
 		foreach ($pathRendered as $k => $v) {
 			$acc[] = $v;
@@ -1823,7 +1823,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 		$optDat[$lastEl['path'] . '/INNER'] = 'INNER (Exclude tag)';
 
 		// Tags, which will trigger "INNER" to be listed on top (because it is almost always INNER-mapping that is needed)
-		if (t3lib_div::inList('body,span,h1,h2,h3,h4,h5,h6,div,td,p,b,i,u,a', $lastEl['el'])) {
+		if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList('body,span,h1,h2,h3,h4,h5,h6,div,td,p,b,i,u,a', $lastEl['el'])) {
 			$optDat = array_reverse($optDat);
 		}
 
@@ -1847,7 +1847,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 		// Add options for attributes:
 		if (is_array($attrDat)) {
 			foreach ($attrDat as $attrK => $v) {
-				$optDat[$lastEl['path'] . '/ATTR:' . $attrK] = 'ATTRIBUTE "' . $attrK . '" (= ' . t3lib_div::fixed_lgd_cs($v, 15) . ')';
+				$optDat[$lastEl['path'] . '/ATTR:' . $attrK] = 'ATTRIBUTE "' . $attrK . '" (= ' . \TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($v, 15) . ')';
 			}
 		}
 
@@ -1897,7 +1897,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 				<h3>' . $GLOBALS['LANG']->getLL('mapMappingWindow') . ':</h3>
 			<!-- <p><strong>File:</strong> ' . htmlspecialchars($displayFile) . '</p> -->
 			<p>' .
-				t3lib_BEfunc::getFuncMenu('', 'SET[displayMode]', $this->MOD_SETTINGS['displayMode'], $this->MOD_MENU['displayMode'], '', t3lib_div::implodeArrayForUrl('', $_GET, '', 1, 1)) .
+				t3lib_BEfunc::getFuncMenu('', 'SET[displayMode]', $this->MOD_SETTINGS['displayMode'], $this->MOD_MENU['displayMode'], '', \TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl('', $_GET, '', 1, 1)) .
 				$this->cshItem('xMOD_tx_templavoila', 'mapping_window_modes', $this->doc->backPath, '') .
 				'</p>';
 
@@ -2047,7 +2047,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 	 */
 	function drawDataStructureMap($dataStruct, $mappingMode = 0, $currentMappingInfo = array(), $pathLevels = array(), $optDat = array(), $contentSplittedByMapping = array(), $level = 0, $tRows = array(), $formPrefix = '', $path = '', $mapOK = 1) {
 
-		$bInfo = t3lib_div::clientInfo();
+		$bInfo = \TYPO3\CMS\Core\Utility\GeneralUtility::clientInfo();
 		$multilineTooltips = ($bInfo['BROWSER'] == 'msie');
 		$rowIndex = -1;
 
@@ -2080,7 +2080,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 						$translatedTitle = $value['tx_templavoila']['title'];
 						$translateIcon = '';
 					}
-					$this->elNames[$formPrefix . '[' . $key . ']']['tx_templavoila']['title'] = $icon . '<strong>' . htmlspecialchars(t3lib_div::fixed_lgd_cs($translatedTitle, 30)) . '</strong>' . $translateIcon;
+					$this->elNames[$formPrefix . '[' . $key . ']']['tx_templavoila']['title'] = $icon . '<strong>' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($translatedTitle, 30)) . '</strong>' . $translateIcon;
 					$rowCells['title'] = '<img src="clear.gif" width="' . ($level * 16) . '" height="1" alt="" />' . $this->elNames[$formPrefix . '[' . $key . ']']['tx_templavoila']['title'];
 
 					// Description:
@@ -2095,10 +2095,10 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 
 							$mappingElement = str_replace('~~~', ' ', $currentMappingInfo[$key]['MAP_EL']);
 							if (isset($contentSplittedByMapping['cArray'][$key])) { // If mapping of this information also succeeded...:
-								$cF = implode(chr(10), t3lib_div::trimExplode(chr(10), $contentSplittedByMapping['cArray'][$key], 1));
+								$cF = implode(chr(10), \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(chr(10), $contentSplittedByMapping['cArray'][$key], 1));
 
 								if (strlen($cF) > 200) {
-									$cF = t3lib_div::fixed_lgd_cs($cF, 90) . ' ' . t3lib_div::fixed_lgd_cs($cF, -90);
+									$cF = \TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($cF, 90) . ' ' . \TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($cF, -90);
 								}
 
 								// Render HTML path:
@@ -2109,12 +2109,12 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 								$okTitle = htmlspecialchars($cF ? sprintf($GLOBALS['LANG']->getLL('displayDSContentFound'), strlen($contentSplittedByMapping['cArray'][$key])) . ($multilineTooltips ? ':' . chr(10) . chr(10) . $cF : '') : $GLOBALS['LANG']->getLL('displayDSContentEmpty'));
 
 								$rowCells['htmlPath'] = t3lib_iconWorks::getSpriteIcon('status-dialog-ok', array('title' => $okTitle)) .
-									tx_templavoila_htmlmarkup::getGnyfMarkup($pI['el'], '---' . htmlspecialchars(t3lib_div::fixed_lgd_cs($mappingElement, -80))) .
+									tx_templavoila_htmlmarkup::getGnyfMarkup($pI['el'], '---' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($mappingElement, -80))) .
 									($pI['modifier'] ? $pI['modifier'] . ($pI['modifier_value'] ? ':' . ($pI['modifier'] != 'RANGE' ? $pI['modifier_value'] : '...') : '') : '');
 								$rowCells['htmlPath'] = '<a href="' . $this->linkThisScript(array(
 										'htmlPath' => $path . ($path ? '|' : '') . preg_replace('/\/[^ ]*$/', '', $currentMappingInfo[$key]['MAP_EL']),
 										'showPathOnly' => 1,
-										'DS_element' => t3lib_div::_GP('DS_element')
+										'DS_element' => \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('DS_element')
 									)) . '">' . $rowCells['htmlPath'] . '</a>';
 
 								// CMD links, default content:
@@ -2123,14 +2123,14 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 										'mapElPath' => $formPrefix . '[' . $key . ']',
 										'htmlPath' => $path,
 										'mappingToTags' => $value['tx_templavoila']['tags'],
-										'DS_element' => t3lib_div::_GP('DS_element')
+										'DS_element' => \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('DS_element')
 									)) . '\';return false;" title="' . $GLOBALS['LANG']->getLL('buttonRemapTitle') . '" />' .
 									'<input type="submit" value="' . $GLOBALS['LANG']->getLL('buttonChangeMode') . '" name="_" onclick="document.location=\'' .
 									$this->linkThisScript(array(
 										'mapElPath' => $formPrefix . '[' . $key . ']',
 										'htmlPath' => $path . ($path ? '|' : '') . $pI['path'],
 										'doMappingOfPath' => 1,
-										'DS_element' => t3lib_div::_GP('DS_element')
+										'DS_element' => \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('DS_element')
 									)) . '\';return false;" title="' . $GLOBALS['LANG']->getLL('buttonChangeMode') . '" /></span>';
 
 								// If content mapped ok, set flag:
@@ -2180,7 +2180,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 								}
 
 								// Finally, put together the selector box:
-								$rowCells['cmdLinks'] = tx_templavoila_htmlmarkup::getGnyfMarkup($pI['el'], '---' . htmlspecialchars(t3lib_div::fixed_lgd_cs($lastLevel['path'], -80))) .
+								$rowCells['cmdLinks'] = tx_templavoila_htmlmarkup::getGnyfMarkup($pI['el'], '---' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($lastLevel['path'], -80))) .
 									'<br /><select name="dataMappingForm' . $formPrefix . '[' . $key . '][MAP_EL]">
 										' . implode('
 										', $opt) . '
@@ -2197,7 +2197,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 								$rowCells['cmdLinks'] .= '<br />
 										<input type="submit" value="' . $GLOBALS['LANG']->getLL('buttonCancel') . '" name="_" onclick="document.location=\'' .
 									$this->linkThisScript(array(
-										'DS_element' => t3lib_div::_GP('DS_element')
+										'DS_element' => \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('DS_element')
 									)) . '\';return false;" />';
 							}
 						} elseif (!$rowCells['cmdLinks'] && $mapOK && $value['type'] != 'no_map') {
@@ -2206,13 +2206,13 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 									'mapElPath' => $formPrefix . '[' . $key . ']',
 									'htmlPath' => $path,
 									'mappingToTags' => $value['tx_templavoila']['tags'],
-									'DS_element' => t3lib_div::_GP('DS_element')
+									'DS_element' => \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('DS_element')
 								)) . '\';return false;" />';
 						}
 					}
 
 					// Display mapping rules:
-					$rowCells['tagRules'] = implode('<br />', t3lib_div::trimExplode(',', strtolower($value['tx_templavoila']['tags']), 1));
+					$rowCells['tagRules'] = implode('<br />', \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', strtolower($value['tx_templavoila']['tags']), 1));
 					if (!$rowCells['tagRules']) {
 						$rowCells['tagRules'] = $GLOBALS['LANG']->getLL('all');
 					}
@@ -2240,7 +2240,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 						if (!is_array($value['tx_templavoila']['sample_data'])) {
 							$rowCells['description'] = '[' . $GLOBALS['LANG']->getLL('noSampleData') . ']';
 						} elseif (tx_templavoila_div::convertVersionNumberToInteger(TYPO3_version) < 4005000) {
-							$rowCells['description'] = t3lib_div::view_array($value['tx_templavoila']['sample_data']);
+							$rowCells['description'] = \TYPO3\CMS\Core\Utility\GeneralUtility::view_array($value['tx_templavoila']['sample_data']);
 						} else {
 							$rowCells['description'] = t3lib_utility_Debug::viewArray($value['tx_templavoila']['sample_data']);
 						}
@@ -2320,9 +2320,9 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 	 */
 	function getDataStructFromDSO($datString, $file = '') {
 		if ($file) {
-			$dataStruct = t3lib_div::xml2array(t3lib_div::getUrl($file));
+			$dataStruct = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array(\TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($file));
 		} else {
-			$dataStruct = t3lib_div::xml2array($datString);
+			$dataStruct = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($datString);
 		}
 
 		return $dataStruct;
@@ -2342,7 +2342,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			'path' => $path,
 			'mode' => 'display'
 		);
-		$p = t3lib_div::implodeArrayForUrl('', $theArray);
+		$p = \TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl('', $theArray);
 
 		$content .= '<strong><a href="' . htmlspecialchars('index.php?' . $p) . '" target="display">' . $title . '</a></strong>';
 
@@ -2367,7 +2367,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 			'returnUrl' => $this->returnUrl,
 			'_load_ds_xml_to' => $this->_load_ds_xml_to
 		);
-		$p = t3lib_div::implodeArrayForUrl('', array_merge($theArray, $array), '', 1);
+		$p = \TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl('', array_merge($theArray, $array), '', 1);
 
 		return htmlspecialchars('index.php?' . $p);
 	}
@@ -2403,10 +2403,10 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 	 * @return    array        Mapping rules in a multidimensional array.
 	 */
 	function explodeMappingToTagsStr($mappingToTags, $unsetAll = 0) {
-		$elements = t3lib_div::trimExplode(',', strtolower($mappingToTags));
+		$elements = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', strtolower($mappingToTags));
 		$output = array();
 		foreach ($elements as $v) {
-			$subparts = t3lib_div::trimExplode(':', $v);
+			$subparts = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(':', $v);
 			$output[$subparts[0]][$subparts[1]][($subparts[2] ? $subparts[2] : '*')] = 1;
 		}
 		if ($unsetAll) {
@@ -2529,15 +2529,15 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 	function main_display() {
 
 		// Setting GPvars:
-		$this->displayFile = t3lib_div::_GP('file');
-		$this->show = t3lib_div::_GP('show');
-		$this->preview = t3lib_div::_GP('preview');
-		$this->limitTags = t3lib_div::_GP('limitTags');
-		$this->path = t3lib_div::_GP('path');
+		$this->displayFile = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('file');
+		$this->show = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('show');
+		$this->preview = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('preview');
+		$this->limitTags = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('limitTags');
+		$this->path = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('path');
 
 		// Checking if the displayFile parameter is set:
-		if (@is_file($this->displayFile) && t3lib_div::getFileAbsFileName($this->displayFile)) { // FUTURE: grabbing URLS?: 		.... || substr($this->displayFile,0,7)=='http://'
-			$content = t3lib_div::getUrl($this->displayFile);
+		if (@is_file($this->displayFile) && \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->displayFile)) { // FUTURE: grabbing URLS?: 		.... || substr($this->displayFile,0,7)=='http://'
+			$content = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($this->displayFile);
 			if ($content) {
 				$relPathFix = $GLOBALS['BACK_PATH'] . '../' . dirname(substr($this->displayFile, strlen(PATH_site))) . '/';
 
@@ -2573,7 +2573,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 	 * @see main_display()
 	 */
 	function displayFileContentWithMarkup($content, $path, $relPathFix, $limitTags) {
-		$markupObj = t3lib_div::makeInstance('tx_templavoila_htmlmarkup');
+		$markupObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_htmlmarkup');
 		$markupObj->gnyfImgAdd = $this->show ? '' : 'onclick="return parent.updPath(\'###PATH###\');"';
 		$markupObj->pathPrefix = $path ? $path . '|' : '';
 		$markupObj->onlyElements = $limitTags;
@@ -2626,8 +2626,8 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 		$currentMappingInfo = is_array($sesDat['currentMappingInfo']) ? $sesDat['currentMappingInfo'] : array();
 
 		// Init mark up object.
-		$this->markupObj = t3lib_div::makeInstance('tx_templavoila_htmlmarkup');
-		$this->markupObj->htmlParse = t3lib_div::makeInstance('t3lib_parsehtml');
+		$this->markupObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_htmlmarkup');
+		$this->markupObj->htmlParse = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_parsehtml');
 
 		// Splitting content, adding a random token for the part to be previewed:
 		$contentSplittedByMapping = $this->markupObj->splitContentToMappingInfo($content, $currentMappingInfo);
@@ -2708,7 +2708,7 @@ class tx_templavoila_cm1 extends t3lib_SCbase {
 	 */
 	function lipsumLink($formElementName) {
 		if (t3lib_extMgm::isLoaded('lorem_ipsum')) {
-			$LRobj = t3lib_div::makeInstance('tx_loremipsum_wiz');
+			$LRobj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_loremipsum_wiz');
 			$LRobj->backPath = $this->doc->backPath;
 
 			$PA = array(
@@ -2777,7 +2777,7 @@ if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templav
 
 
 // Make instance:
-$SOBE = t3lib_div::makeInstance('tx_templavoila_cm1');
+$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_cm1');
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();

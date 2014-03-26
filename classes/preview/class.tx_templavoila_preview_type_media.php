@@ -56,7 +56,7 @@ class tx_templavoila_preview_type_media {
 	protected function getPreviewData($row) {
 		$data = '';
 		if (is_array($row) && $row['pi_flexform']) {
-			$flexform = t3lib_div::xml2array($row['pi_flexform']);
+			$flexform = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($row['pi_flexform']);
 			if (isset($flexform['data']['sDEF']['lDEF']['mmFile']['vDEF'])) {
 				$data = '<span>' . $flexform['data']['sDEF']['lDEF']['mmFile']['vDEF'] . '</span>';
 			}

@@ -69,7 +69,7 @@ class tx_templavoila_access {
 				if ($GLOBALS['LANG']) {
 					$lang = & $GLOBALS['LANG'];
 				} else {
-					$lang = t3lib_div::makeInstance('language');
+					$lang = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('language');
 					$lang->init($BE_USER->uc['lang']);
 				}
 				$ref->errorMsg = $lang->sL('LLL:EXT:templavoila/locallang_access.xml:' . $error);
@@ -97,7 +97,7 @@ class tx_templavoila_access {
 		if (!$be_user->isAdmin()) {
 			$prefLen = strlen($table) + 1;
 			foreach ($be_user->userGroups as $group) {
-				$items = t3lib_div::trimExplode(',', $group['tx_templavoila_access'], 1);
+				$items = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $group['tx_templavoila_access'], 1);
 				foreach ($items as $ref) {
 					if (strstr($ref, $table)) {
 						if ($uid == intval(substr($ref, $prefLen))) {

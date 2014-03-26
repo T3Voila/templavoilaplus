@@ -52,7 +52,7 @@ class tx_templavoila_usedCE {
 	function init($page_uid) {
 
 		// Initialize TemplaVoila API class:
-		$apiObj = t3lib_div::makeInstance('tx_templavoila_api', 'pages');
+		$apiObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_api', 'pages');
 
 		// Fetch the content structure of page:
 		$contentTreeData = $apiObj->getContentTree('pages', t3lib_BEfunc::getRecordRaw('pages', 'uid=' . intval($page_uid)));

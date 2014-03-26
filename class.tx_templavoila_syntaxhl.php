@@ -131,12 +131,12 @@ class tx_templavoila_syntaxhl {
 	function highLight_DS($str) {
 
 		// Parse DS to verify that it is valid:
-		$DS = t3lib_div::xml2array($str);
+		$DS = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($str);
 		if (is_array($DS)) {
 			$completeTagList = array_unique($this->getAllTags($str)); // Complete list of tags in DS
 
 			// Highlighting source:
-			$this->htmlParse = t3lib_div::makeInstance('t3lib_parsehtml'); // Init parser object
+			$this->htmlParse = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_parsehtml'); // Init parser object
 			$struct = $this->splitXMLbyTags(implode(',', $completeTagList), $str); // Split the XML by the found tags, recursively into LARGE array.
 			$markUp = $this->highLight_DS_markUpRecursively($struct); // Perform color-markup on the parsed content. Markup preserves the LINE formatting of the XML.
 
@@ -229,12 +229,12 @@ class tx_templavoila_syntaxhl {
 	function highLight_FF($str) {
 
 		// Parse DS to verify that it is valid:
-		$DS = t3lib_div::xml2array($str);
+		$DS = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($str);
 		if (is_array($DS)) {
 			$completeTagList = array_unique($this->getAllTags($str)); // Complete list of tags in DS
 
 			// Highlighting source:
-			$this->htmlParse = t3lib_div::makeInstance('t3lib_parsehtml'); // Init parser object
+			$this->htmlParse = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_parsehtml'); // Init parser object
 			$struct = $this->splitXMLbyTags(implode(',', $completeTagList), $str); // Split the XML by the found tags, recursively into LARGE array.
 			$markUp = $this->highLight_FF_markUpRecursively($struct); // Perform color-markup on the parsed content. Markup preserves the LINE formatting of the XML.
 

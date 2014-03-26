@@ -47,7 +47,7 @@ unset($MLANG);
 $LANG->includeLLFile('EXT:lang/locallang_misc.xml');
 $LOCAL_LANG_orig = $LOCAL_LANG;
 $LANG->includeLLFile('EXT:templavoila/mod1/locallang_db_new_content_el.xml');
-$LOCAL_LANG = t3lib_div::array_merge_recursive_overrule($LOCAL_LANG_orig, $LOCAL_LANG);
+$LOCAL_LANG = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($LOCAL_LANG_orig, $LOCAL_LANG);
 
 // Exits if 'cms' extension is not loaded:
 t3lib_extMgm::isLoaded('cms', 1);
@@ -92,14 +92,14 @@ class tx_templavoila_dbnewcontentel {
 		$this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
 
 		// Setting internal vars:
-		$this->id = intval(t3lib_div::_GP('id'));
-		$this->parentRecord = t3lib_div::_GP('parentRecord');
-		$this->altRoot = t3lib_div::_GP('altRoot');
-		$this->defVals = t3lib_div::_GP('defVals');
-		$this->returnUrl = t3lib_div::sanitizeLocalUrl(t3lib_div::_GP('returnUrl'));
+		$this->id = intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id'));
+		$this->parentRecord = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('parentRecord');
+		$this->altRoot = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('altRoot');
+		$this->defVals = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('defVals');
+		$this->returnUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::sanitizeLocalUrl(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('returnUrl'));
 
 		// Starting the document template object:
-		$this->doc = t3lib_div::makeInstance('template');
+		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('template');
 		$this->doc->docType = 'xhtml_trans';
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->setModuleTemplate('EXT:templavoila/resources/templates/mod1_new_content.html');
@@ -125,7 +125,7 @@ class tx_templavoila_dbnewcontentel {
 		$pageinfo = t3lib_BEfunc::readPageAccess($this->id, $perms_clause);
 		$this->access = is_array($pageinfo) ? 1 : 0;
 
-		$this->apiObj = t3lib_div::makeInstance('tx_templavoila_api');
+		$this->apiObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_api');
 
 		// If no parent record was specified, find one:
 		if (!$this->parentRecord) {
@@ -173,7 +173,7 @@ class tx_templavoila_dbnewcontentel {
 			// Hook for manipulating wizardItems, wrapper, onClickEvent etc.
 			if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['templavoila']['db_new_content_el']['wizardItemsHook'])) {
 				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['templavoila']['db_new_content_el']['wizardItemsHook'] as $classData) {
-					$hookObject = t3lib_div::getUserObj($classData);
+					$hookObject = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($classData);
 
 					if (!($hookObject instanceof cms_newContentElementWizardsHook)) {
 						throw new UnexpectedValueException('$hookObject must implement interface cms_newContentElementWizardItemsHook', 1227834741);
@@ -288,7 +288,7 @@ class tx_templavoila_dbnewcontentel {
 		// Back
 		if ($this->returnUrl) {
 			$backIcon = t3lib_iconWorks::getSpriteIcon('actions-view-go-back');
-			$buttons['back'] = '<a href="' . htmlspecialchars(t3lib_div::linkThisUrl($this->returnUrl)) . '" class="typo3-goBack" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.goBack', TRUE) . '">' .
+			$buttons['back'] = '<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisUrl($this->returnUrl)) . '" class="typo3-goBack" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.goBack', TRUE) . '">' .
 				$backIcon .
 				'</a>';
 		}
@@ -327,7 +327,7 @@ class tx_templavoila_dbnewcontentel {
 	 * @return    [type]        ...
 	 */
 	function linkParams() {
-		$output = 'id=' . $this->id . (is_array($this->altRoot) ? t3lib_div::implodeArrayForUrl('altRoot', $this->altRoot) : '');
+		$output = 'id=' . $this->id . (is_array($this->altRoot) ? \TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl('altRoot', $this->altRoot) : '');
 
 		return $output;
 	}
@@ -367,12 +367,12 @@ class tx_templavoila_dbnewcontentel {
 		if (is_array($wizards)) {
 			foreach ($wizards as $groupKey => $wizardGroup) {
 				$groupKey = preg_replace('/\.$/', '', $groupKey);
-				$showItems = t3lib_div::trimExplode(',', $wizardGroup['show'], TRUE);
+				$showItems = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $wizardGroup['show'], TRUE);
 				$showAll = (strcmp($wizardGroup['show'], '*') ? FALSE : TRUE);
 				$groupItems = array();
 
 				if (is_array($appendWizards[$groupKey . '.']['elements.'])) {
-					$wizardElements = t3lib_div::array_merge_recursive_overrule((array) $wizardGroup['elements.'], $appendWizards[$groupKey . '.']['elements.']);
+					$wizardElements = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule((array) $wizardGroup['elements.'], $appendWizards[$groupKey . '.']['elements.']);
 				} else {
 					$wizardElements = $wizardGroup['elements.'];
 				}
@@ -415,7 +415,7 @@ class tx_templavoila_dbnewcontentel {
 		// plugins
 		if (is_array($GLOBALS['TBE_MODULES_EXT']['xMOD_db_new_content_el']['addElClasses'])) {
 			foreach ($GLOBALS['TBE_MODULES_EXT']['xMOD_db_new_content_el']['addElClasses'] as $class => $path) {
-				$modObj = t3lib_div::makeInstance($class);
+				$modObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($class);
 				$wizardElements = $modObj->proc($wizardElements);
 			}
 		}
@@ -446,13 +446,13 @@ class tx_templavoila_dbnewcontentel {
 		$positionPid = $this->id;
 		$storageFolderPID = $this->apiObj->getStorageFolderPid($positionPid);
 
-		$toRepo = t3lib_div::makeInstance('tx_templavoila_templateRepository');
+		$toRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_templateRepository');
 		$toList = $toRepo->getTemplatesByStoragePidAndScope($storageFolderPID, tx_templavoila_datastructure::SCOPE_FCE);
 		foreach ($toList as $toObj) {
 			if ($toObj->isPermittedForUser()) {
 				$tmpFilename = $toObj->getIcon();
 				$returnElements['fce.']['elements.']['fce_' . $toObj->getKey() . '.'] = array(
-					'icon' => (@is_file(t3lib_div::getFileAbsFileName(substr($tmpFilename, 3)))) ? $tmpFilename : ('../' . t3lib_extMgm::siteRelPath('templavoila') . 'res1/default_previewicon.gif'),
+					'icon' => (@is_file(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(substr($tmpFilename, 3)))) ? $tmpFilename : ('../' . t3lib_extMgm::siteRelPath('templavoila') . 'res1/default_previewicon.gif'),
 					'description' => $toObj->getDescription() ? htmlspecialchars($toObj->getDescription()) : $GLOBALS['LANG']->getLL('template_nodescriptionavailable'),
 					'title' => $toObj->getLabel(),
 					'params' => $this->getDsDefaultValues($toObj)
@@ -488,11 +488,11 @@ class tx_templavoila_dbnewcontentel {
 		global $TCA;
 
 		// Load full table definition:
-		t3lib_div::loadTCA('tt_content');
+		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA('tt_content');
 
 		// Get TCEFORM from TSconfig of current page
 		$TCEFORM_TSconfig = t3lib_BEfunc::getTCEFORM_TSconfig('tt_content', array('pid' => $this->id));
-		$removeItems = t3lib_div::trimExplode(',', $TCEFORM_TSconfig['CType']['removeItems'], 1);
+		$removeItems = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $TCEFORM_TSconfig['CType']['removeItems'], 1);
 
 		$headersUsed = Array();
 		// Traverse wizard items:
@@ -501,12 +501,12 @@ class tx_templavoila_dbnewcontentel {
 			// Exploding parameter string, if any (old style)
 			if ($wizardItems[$key]['params']) {
 				// Explode GET vars recursively
-				$tempGetVars = t3lib_div::explodeUrl2Array($wizardItems[$key]['params'], TRUE);
+				$tempGetVars = \TYPO3\CMS\Core\Utility\GeneralUtility::explodeUrl2Array($wizardItems[$key]['params'], TRUE);
 				// If tt_content values are set, merge them into the tt_content_defValues array, unset them from $tempGetVars and re-implode $tempGetVars into the param string (in case remaining parameters are around).
 				if (is_array($tempGetVars['defVals']['tt_content'])) {
 					$wizardItems[$key]['tt_content_defValues'] = array_merge(is_array($wizardItems[$key]['tt_content_defValues']) ? $wizardItems[$key]['tt_content_defValues'] : array(), $tempGetVars['defVals']['tt_content']);
 					unset($tempGetVars['defVals']['tt_content']);
-					$wizardItems[$key]['params'] = t3lib_div::implodeArrayForUrl('', $tempGetVars);
+					$wizardItems[$key]['params'] = \TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl('', $tempGetVars);
 				}
 			}
 
@@ -556,7 +556,7 @@ class tx_templavoila_dbnewcontentel {
 		if (!$GLOBALS['BE_USER']->isAdmin()) {
 			$prefLen = strlen($table) + 1;
 			foreach ($GLOBALS['BE_USER']->userGroups as $group) {
-				$items = t3lib_div::trimExplode(',', $group['tx_templavoila_access'], 1);
+				$items = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $group['tx_templavoila_access'], 1);
 				foreach ($items as $ref) {
 					if (strstr($ref, $table)) {
 						$result[] = intval(substr($ref, $prefLen));
@@ -599,7 +599,7 @@ if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templav
 }
 
 // Make instance:
-$SOBE = t3lib_div::makeInstance('tx_templavoila_dbnewcontentel');
+$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_dbnewcontentel');
 $SOBE->init();
 
 // Include files?

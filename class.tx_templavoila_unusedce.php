@@ -96,7 +96,7 @@ Automatic Repair:
 
 		$startingPoint = $this->cli_isArg('--pid') ? tx_templavoila_div::forceIntegerInRange($this->cli_argValue('--pid'), 0) : 0;
 		$depth = $this->cli_isArg('--depth') ? tx_templavoila_div::forceIntegerInRange($this->cli_argValue('--depth'), 0) : 1000;
-		$this->excludePageIdList = $this->cli_isArg('--excludePageIdList') ? t3lib_div::intExplode(',', $this->cli_argValue('--excludePageIdList')) : array();
+		$this->excludePageIdList = $this->cli_isArg('--excludePageIdList') ? \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $this->cli_argValue('--excludePageIdList')) : array();
 
 		$this->resultArray = & $resultArray;
 		$this->genTree($startingPoint, $depth, (int) $this->cli_argValue('--echotree'), 'main_parseTreeCallBack');
@@ -124,7 +124,7 @@ Automatic Repair:
 			if (!$versionSwapmode) {
 
 				// Initialize TemplaVoila API class:
-				$apiObj = t3lib_div::makeInstance('tx_templavoila_api', 'pages');
+				$apiObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_api', 'pages');
 
 				// Fetch the content structure of page:
 				$contentTreeData = $apiObj->getContentTree('pages', t3lib_BEfunc::getRecordRaw('pages', 'uid=' . intval($uid)));
@@ -224,7 +224,7 @@ Automatic Repair:
 			} else {
 
 				// Execute CMD array:
-				$tce = t3lib_div::makeInstance('t3lib_TCEmain');
+				$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_TCEmain');
 				$tce->stripslashes_values = FALSE;
 				$tce->start(array(), array());
 				$tce->deleteAction('tt_content', $uid);

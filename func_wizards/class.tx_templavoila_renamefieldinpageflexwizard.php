@@ -76,9 +76,9 @@ class tx_templavoila_renameFieldInPageFlexWizard extends t3lib_extobjbase {
 	 * @return string
 	 */
 	protected function executeCommand() {
-		if (t3lib_div::_GP('executeRename') == 1) {
+		if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('executeRename') == 1) {
 			$buffer = '';
-			if (t3lib_div::_GP('sourceField') === t3lib_div::_GP('destinationField')) {
+			if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('sourceField') === \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('destinationField')) {
 				$message = new t3lib_FlashMessage(
 					'Renaming a field to itself is senseless, execution aborted.',
 					'',
@@ -87,8 +87,8 @@ class tx_templavoila_renameFieldInPageFlexWizard extends t3lib_extobjbase {
 
 				return $message->render();
 			}
-			$escapedSource = $GLOBALS['TYPO3_DB']->fullQuoteStr('%' . t3lib_div::_GP('sourceField') . '%', 'pages');
-			$escapedDest = $GLOBALS['TYPO3_DB']->fullQuoteStr('%' . t3lib_div::_GP('destinationField') . '%', 'pages');
+			$escapedSource = $GLOBALS['TYPO3_DB']->fullQuoteStr('%' . \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('sourceField') . '%', 'pages');
+			$escapedDest = $GLOBALS['TYPO3_DB']->fullQuoteStr('%' . \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('destinationField') . '%', 'pages');
 
 			$condition = 'tx_templavoila_flex LIKE ' . $escapedSource
 				. ' AND NOT tx_templavoila_flex LIKE ' . $escapedDest . ' '
@@ -111,9 +111,9 @@ class tx_templavoila_renameFieldInPageFlexWizard extends t3lib_extobjbase {
 				$buffer .= $message->render();
 				unset($mbuffer);
 				//really do it
-				if (!t3lib_div::_GP('simulateField')) {
-					$escapedSource = $GLOBALS['TYPO3_DB']->fullQuoteStr(t3lib_div::_GP('sourceField'), 'pages');
-					$escapedDest = $GLOBALS['TYPO3_DB']->fullQuoteStr(t3lib_div::_GP('destinationField'), 'pages');
+				if (!\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('simulateField')) {
+					$escapedSource = $GLOBALS['TYPO3_DB']->fullQuoteStr(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('sourceField'), 'pages');
+					$escapedDest = $GLOBALS['TYPO3_DB']->fullQuoteStr(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('destinationField'), 'pages');
 					$GLOBALS['TYPO3_DB']->admin_query('
 						UPDATE pages
 						SET tx_templavoila_flex = REPLACE(tx_templavoila_flex, ' . $escapedSource . ', ' . $escapedDest . ')
@@ -166,11 +166,11 @@ class tx_templavoila_renameFieldInPageFlexWizard extends t3lib_extobjbase {
 	 */
 	protected function addFormField($name, $value = '', $type = 'text', $options = array()) {
 		if ($value === NULL) {
-			$value = t3lib_div::_GP($name);
+			$value = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP($name);
 		}
 		switch ($type) {
 			case 'checkbox':
-				if (t3lib_div::_GP($name) || $value) {
+				if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP($name) || $value) {
 					$checked = 'checked';
 				} else {
 					$checked = '';
@@ -224,7 +224,7 @@ class tx_templavoila_renameFieldInPageFlexWizard extends t3lib_extobjbase {
 		$urlParams = $this->pObj->MOD_SETTINGS;
 		$urlParams['id'] = $this->pObj->id;
 
-		return $this->pObj->doc->scriptID . '?' . t3lib_div::implodeArrayForUrl(
+		return $this->pObj->doc->scriptID . '?' . \TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl(
 			'',
 			$urlParams
 		);
@@ -234,7 +234,7 @@ class tx_templavoila_renameFieldInPageFlexWizard extends t3lib_extobjbase {
 	 * @return mixed
 	 */
 	protected function getKnownPageDS() {
-		$dsRepo = t3lib_div::makeInstance('tx_templavoila_datastructureRepository');
+		$dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_datastructureRepository');
 
 		return $dsRepo->getDatastructuresByScope(1);
 	}

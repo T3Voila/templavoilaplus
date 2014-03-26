@@ -42,7 +42,7 @@ class tx_templavoila_preview_type_bullets extends tx_templavoila_preview_type_te
 		$bulletsArr = explode("\n", $this->preparePreviewData($row['bodytext']));
 		if (is_array($bulletsArr)) {
 			foreach ($bulletsArr as $listItem) {
-				$processedItem = t3lib_div::fixed_lgd_cs(trim(strip_tags($listItem)), $max);
+				$processedItem = \TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs(trim(strip_tags($listItem)), $max);
 				$max -= strlen($processedItem);
 				$htmlBullets .= '<li>' . htmlspecialchars($processedItem) . '</li>';
 				if (!$max) {

@@ -69,14 +69,14 @@ final class tx_templavoila_icons {
 			$flagName = 'unknown';
 		}
 		if (tx_templavoila_div::convertVersionNumberToInteger(TYPO3_version) < 4005000) {
-			$flagAbsPath = t3lib_div::getFileAbsFileName($GLOBALS['TCA']['sys_language']['columns']['flag']['config']['fileFolder']);
+			$flagAbsPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($GLOBALS['TCA']['sys_language']['columns']['flag']['config']['fileFolder']);
 			$flagIconPath = $GLOBALS['BACK_PATH'] . '../' . substr($flagAbsPath, strlen(PATH_site));
 			if (is_file($flagAbsPath . $flagName)) {
 				$flag = $flagIconPath . $flagName;
 			}
 		} else {
 			// same dirty trick as for #17286 in Core
-			if (is_file(t3lib_div::getFileAbsFileName('EXT:t3skin/images/flags/' . $flagName . '.png', FALSE))) {
+			if (is_file(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('EXT:t3skin/images/flags/' . $flagName . '.png', FALSE))) {
 				// resolving extpath on its own because otherwise this might not return a relative path
 				$flag = $GLOBALS['BACK_PATH'] . t3lib_extMgm::extRelPath('t3skin') . '/images/flags/' . $flagName . '.png';
 			}

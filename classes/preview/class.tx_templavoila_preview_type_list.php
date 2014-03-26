@@ -60,7 +60,7 @@ class tx_templavoila_preview_type_list extends tx_templavoila_preview_type_text 
 		if (count($hookArr) > 0) {
 			$_params = array('pObj' => &$this, 'row' => $row, 'infoArr' => $infoArr);
 			foreach ($hookArr as $_funcRef) {
-				$extraInfo .= t3lib_div::callUserFunction($_funcRef, $_params, $this);
+				$extraInfo .= \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($_funcRef, $_params, $this);
 			}
 		}
 

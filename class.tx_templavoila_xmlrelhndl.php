@@ -234,7 +234,7 @@ class tx_templavoila_xmlrelhndl {
 			$cmdArray['tt_content'][$item_uid]['move'] = $movePid;
 
 			// Store:
-			$tce = t3lib_div::makeInstance('t3lib_TCEmain');
+			$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_TCEmain');
 			$tce->stripslashes_values = 0;
 			$tce->start(array(), $cmdArray);
 			$tce->process_cmdmap();
@@ -311,7 +311,7 @@ class tx_templavoila_xmlrelhndl {
 		$dataArr[$refArr[0]][$refArr[1]][$this->flexFieldIndex[$refArr[0]]]['data'][$refArr[2]][$refArr[3]][$refArr[4]][$refArr[5]] = implode(',', $idListArr);
 
 		// Execute:
-		$tce = t3lib_div::makeInstance('t3lib_TCEmain');
+		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_TCEmain');
 		$tce->stripslashes_values = 0;
 		$tce->start($dataArr, array());
 		$tce->process_datamap();
@@ -332,7 +332,7 @@ class tx_templavoila_xmlrelhndl {
 		$cmdArray['tt_content'][$uid]['delete'] = 1;
 
 		// Store:
-		$tce = t3lib_div::makeInstance('t3lib_TCEmain');
+		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_TCEmain');
 		$tce->stripslashes_values = 0;
 		$tce->start(array(), $cmdArray);
 		$tce->process_cmdmap();
@@ -421,7 +421,7 @@ class tx_templavoila_xmlrelhndl {
 		// Create copy:
 		$cmdArray = array();
 		$cmdArray['tt_content'][$itemAtPosition_uid]['copy'] = $pid;
-		$tce = t3lib_div::makeInstance('t3lib_TCEmain');
+		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_TCEmain');
 		$tce->start(array(), $cmdArray);
 		$tce->process_cmdmap();
 
@@ -449,9 +449,9 @@ class tx_templavoila_xmlrelhndl {
 
 		// Fetch the specified record, find all sub elements
 		$parentRecord = t3lib_BEfunc::getRecord($table, $uid, 'uid,pid,' . $this->flexFieldIndex[$table]);
-		$flexFieldArr = t3lib_div::xml2array($parentRecord[$this->flexFieldIndex[$table]]);
+		$flexFieldArr = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($parentRecord[$this->flexFieldIndex[$table]]);
 
-#t3lib_div::devLog('_getListOfSubElementsRecursively ('.$table.', '.$uid.', '.implode(',',$recordUids).')', 'tx_templavoila', 1);
+#\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('_getListOfSubElementsRecursively ('.$table.', '.$uid.', '.implode(',',$recordUids).')', 'tx_templavoila', 1);
 
 		if (is_array($flexFieldArr['data'])) {
 			foreach ($flexFieldArr['data'] as $sheetKey => $languagesArr) {
@@ -461,7 +461,7 @@ class tx_templavoila_xmlrelhndl {
 							foreach ($fieldsArr as $fieldName => $valuesArr) {
 								if (is_array($valuesArr)) {
 									foreach ($valuesArr as $valueName => $value) {
-										$valueItems = t3lib_div::intExplode(',', $value);
+										$valueItems = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $value);
 										if (is_array($valueItems)) {
 											foreach ($valueItems as $index => $subElementUid) {
 												if ($subElementUid > 0) {
@@ -517,11 +517,11 @@ class tx_templavoila_xmlrelhndl {
 	function _getItemArrayFromXML($xmlString, $refArr) {
 
 		// Getting value of the field containing the relations:
-		$xmlContent = t3lib_div::xml2array($xmlString);
+		$xmlContent = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($xmlString);
 		$dat = is_array($xmlContent) ? $xmlContent['data'][$refArr[2]][$refArr[3]][$refArr[4]][$refArr[5]] : '';
 
 		// Getting the relation uids out:
-		$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
+		$dbAnalysis = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_loadDBGroup');
 		$dbAnalysis->start($dat, 'tt_content');
 
 		// Return array of items:

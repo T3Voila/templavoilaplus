@@ -359,7 +359,7 @@ class tx_templavoila_api_testcase extends tx_phpunit_database_testcase {
 
 		$BE_USER->setWorkspace(0);
 
-		$tce = t3lib_div::makeInstance('t3lib_TCEmain');
+		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_TCEmain');
 		$tce->stripslashes_values = 0;
 
 		$this->fixture_createTestPage();
@@ -423,7 +423,7 @@ class tx_templavoila_api_testcase extends tx_phpunit_database_testcase {
 
 		$BE_USER->setWorkspace(0);
 
-		$tce = t3lib_div::makeInstance('t3lib_TCEmain');
+		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_TCEmain');
 		$tce->stripslashes_values = 0;
 
 		$this->fixture_createTestPage();
@@ -471,7 +471,7 @@ class tx_templavoila_api_testcase extends tx_phpunit_database_testcase {
 	public function test_insertElement_bug3042_part1() {
 		global $TYPO3_DB, $BE_USER;
 
-		$tce = t3lib_div::makeInstance('t3lib_TCEmain');
+		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_TCEmain');
 		$tce->stripslashes_values = 0;
 
 		$BE_USER->setWorkspace(-1);
@@ -501,7 +501,7 @@ class tx_templavoila_api_testcase extends tx_phpunit_database_testcase {
 		// We pass the UID of the CE with the content (overlayed UID), not the UID of the placeholder
 		// record because that exposes the bug.
 
-		$tce = t3lib_div::makeInstance('t3lib_TCEmain');
+		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_TCEmain');
 		$tce->stripslashes_values = 0;
 
 		$cmdMap = array(
@@ -544,7 +544,7 @@ class tx_templavoila_api_testcase extends tx_phpunit_database_testcase {
 	public function test_insertElement_bug3042_part2() {
 		global $TYPO3_DB, $BE_USER;
 
-		$tce = t3lib_div::makeInstance('t3lib_TCEmain');
+		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_TCEmain');
 		$tce->stripslashes_values = 0;
 
 		$BE_USER->setWorkspace(-1);
@@ -1808,7 +1808,7 @@ class tx_templavoila_api_testcase extends tx_phpunit_database_testcase {
 
 		$BE_USER->setWorkspace(0);
 
-		$tce = t3lib_div::makeInstance('t3lib_TCEmain');
+		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_TCEmain');
 		$tce->stripslashes_values = 0;
 
 		$this->fixture_createTestPage();
@@ -1854,7 +1854,7 @@ class tx_templavoila_api_testcase extends tx_phpunit_database_testcase {
 
 		$BE_USER->setWorkspace(0);
 
-		$tce = t3lib_div::makeInstance('t3lib_TCEmain');
+		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_TCEmain');
 		$tce->stripslashes_values = 0;
 
 		$this->fixture_createTestPage();
@@ -2008,7 +2008,7 @@ class tx_templavoila_api_testcase extends tx_phpunit_database_testcase {
 		$dataArr['pages']['NEW']['hidden'] = 0;
 		unset($dataArr['pages']['NEW']['uid']);
 
-		$tce = t3lib_div::makeInstance('t3lib_TCEmain');
+		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_TCEmain');
 		$tce->stripslashes_values = 0;
 		$tce->start($dataArr, array());
 		$tce->process_datamap();
@@ -2037,7 +2037,7 @@ class tx_templavoila_api_testcase extends tx_phpunit_database_testcase {
 			'include_static_file' => 'EXT:css_styled_content/static/'
 		);
 
-		$tce = t3lib_div::makeInstance('t3lib_TCEmain');
+		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_TCEmain');
 		$tce->stripslashes_values = 0;
 		$tce->start($dataArr, array());
 		$tce->process_datamap();
@@ -2075,7 +2075,7 @@ class tx_templavoila_api_testcase extends tx_phpunit_database_testcase {
 			'subtitle' => $languageKey,
 		);
 
-		$tce = t3lib_div::makeInstance('t3lib_TCEmain');
+		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_TCEmain');
 		$tce->stripslashes_values = 0;
 		$tce->start($dataArr, array());
 		$tce->process_datamap();

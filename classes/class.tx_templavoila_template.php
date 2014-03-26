@@ -294,7 +294,7 @@ class tx_templavoila_template {
 	 * @return tx_templavoila_datastructure
 	 */
 	public function getDatastructure() {
-		$dsRepo = t3lib_div::makeInstance('tx_templavoila_datastructureRepository');
+		$dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_datastructureRepository');
 
 		return $dsRepo->getDatastructureByUidOrFilename($this->row['datastructure']);
 	}
@@ -312,7 +312,7 @@ class tx_templavoila_template {
 	 * @return array
 	 */
 	public function getLocalDataprotXML($skipDsDataprot = FALSE) {
-		return t3lib_div::array2xml_cs($this->getLocalDataprotArray($skipDsDataprot), 'T3DataStructure', array('useCDATA' => 1));
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::array2xml_cs($this->getLocalDataprotArray($skipDsDataprot), 'T3DataStructure', array('useCDATA' => 1));
 	}
 
 	/**
@@ -326,10 +326,10 @@ class tx_templavoila_template {
 		} else {
 			$dataprot = array();
 		}
-		$toDataprot = t3lib_div::xml2array($this->row['localprocessing']);
+		$toDataprot = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($this->row['localprocessing']);
 
 		if (is_array($toDataprot)) {
-			$dataprot = t3lib_div::array_merge_recursive_overrule($dataprot, $toDataprot);
+			$dataprot = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($dataprot, $toDataprot);
 		}
 
 		return $dataprot;
@@ -365,7 +365,7 @@ class tx_templavoila_template {
 	public function getBeLayout() {
 		$beLayout = FALSE;
 		if ($this->row['belayout']) {
-			$beLayout = t3lib_div::getURL(t3lib_div::getFileAbsFileName($this->row['belayout']));
+			$beLayout = \TYPO3\CMS\Core\Utility\GeneralUtility::getURL(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->row['belayout']));
 		} else {
 			$beLayout = $this->getDatastructure()->getBeLayout();
 		}

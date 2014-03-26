@@ -102,9 +102,9 @@ class tx_templavoila_cm1_dsEdit {
 				}
 
 				$eTypes = $this->pObj->eTypes->defaultEtypes();
-				$eTypes_formFields = t3lib_div::trimExplode(',', $eTypes['defaultTypes_formFields']);
-				$eTypes_typoscriptElements = t3lib_div::trimExplode(',', $eTypes['defaultTypes_typoscriptElements']);
-				$eTypes_misc = t3lib_div::trimExplode(',', $eTypes['defaultTypes_misc']);
+				$eTypes_formFields = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $eTypes['defaultTypes_formFields']);
+				$eTypes_typoscriptElements = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $eTypes['defaultTypes_typoscriptElements']);
+				$eTypes_misc = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $eTypes['defaultTypes_misc']);
 
 				// Create form:
 				/* The basic XML-structure of an tx_templavoila-entry is:
@@ -321,7 +321,7 @@ class tx_templavoila_cm1_dsEdit {
 				// does not support paddings in select elements but supports
 				// backgrounds. The rest is text over background.
 				$selectStyle = 'margin: 4px 0; width: 150px !important; display: block;';
-				$userAgent = t3lib_div::getIndpEnv('HTTP_USER_AGENT');
+				$userAgent = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_USER_AGENT');
 				if (strpos($userAgent, 'WebKit') === FALSE) {
 					// Not Safai (Can't have "padding" for select elements in Safari)
 					$selectStyle .= 'padding: 1px 1px 1px 30px; background: 0 50% url(' . $info[3] . ') no-repeat;';
@@ -362,7 +362,7 @@ class tx_templavoila_cm1_dsEdit {
 					<td valign="top" style="padding: 0.5em;" colspan="2">
 						' . $form . '
 						<script type="text/javascript">
-							var dsel_act = "' . (t3lib_div::_GP('dsel_act') ? t3lib_div::_GP('dsel_act') : 'general') . '";
+							var dsel_act = "' . (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('dsel_act') ? \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('dsel_act') : 'general') . '";
 							var dsel_menu = [
 								{"id" : "general",		"avail" : true,	"label" : "' . $GLOBALS['LANG']->getLL('mapConfiguration') . '",	"title" : "' . $GLOBALS['LANG']->getLL('mapEditConfiguration') . '",	"childs" : [
 									{"id" : "ts",		"avail" : true,	"label" : "' . $GLOBALS['LANG']->getLL('mapDataProcessing') . '",	"title" : "' . $GLOBALS['LANG']->getLL('mapEditDataProcessing') . '"},
@@ -452,7 +452,7 @@ class tx_templavoila_cm1_dsEdit {
 				'formFieldName' => $formFieldName . '[tx_templavoila][eType_EXTRA]',
 				'curValue' => $curValue,
 			);
-			$output = t3lib_div::callUserFunction($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['cm1']['eTypesExtraFormFields'][$type], $_params, $this);
+			$output = \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['cm1']['eTypesExtraFormFields'][$type], $_params, $this);
 		} else {
 			switch ($type) {
 				case 'TypoScriptObject':

@@ -151,7 +151,7 @@ class tx_templavoila_mod1_sidebar {
 			// sort and order the visible tabs
 			$tablist = $this->pObj->modTSconfig['properties']['tabList'];
 			if ($tablist) {
-				$tabs = t3lib_div::trimExplode(',', $tablist);
+				$tabs = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $tablist);
 				$finalSideBarItems = array();
 				foreach ($tabs as $itemKey) {
 					if (isset($this->sideBarItems[$itemKey])) {
@@ -267,13 +267,13 @@ class tx_templavoila_mod1_sidebar {
 			return '';
 		}
 
-		t3lib_div::loadTCA('pages');
+		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA('pages');
 		$conf = $TCA['pages']['columns']['tx_templavoila_flex']['config'];
 
 		$dataStructureArr = t3lib_BEfunc::getFlexFormDS($conf, $pObj->rootElementRecord, 'pages');
 
 		if (is_array($dataStructureArr) && is_array($dataStructureArr['ROOT']['tx_templavoila']['pageModule'])) {
-			$headerTablesAndFieldNames = t3lib_div::trimExplode(chr(10), str_replace(chr(13), '', $dataStructureArr['ROOT']['tx_templavoila']['pageModule']['displayHeaderFields']), 1);
+			$headerTablesAndFieldNames = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(chr(10), str_replace(chr(13), '', $dataStructureArr['ROOT']['tx_templavoila']['pageModule']['displayHeaderFields']), 1);
 			if (is_array($headerTablesAndFieldNames)) {
 				$fieldNames = array();
 				$headerFieldRows = array();
@@ -329,7 +329,7 @@ class tx_templavoila_mod1_sidebar {
 		if ($pObj->id > 0) {
 			$versionSelector = trim($pObj->doc->getVersionSelector($pObj->id));
 			if (!$versionSelector) {
-				$onClick = 'jumpToUrl(\'' . $GLOBALS['BACK_PATH'] . t3lib_extMgm::extRelPath('version') . 'cm1/index.php?table=pages&uid=' . $pObj->id . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')) . '\')';
+				$onClick = 'jumpToUrl(\'' . $GLOBALS['BACK_PATH'] . t3lib_extMgm::extRelPath('version') . 'cm1/index.php?table=pages&uid=' . $pObj->id . '&returnUrl=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')) . '\')';
 				$versionSelector = '<input type="button" value="' . $GLOBALS['LANG']->getLL('sidebar_versionSelector_createVersion', 1) . '" onclick="' . htmlspecialchars($onClick) . '" />';
 			}
 			$tableRows = array('

@@ -65,10 +65,10 @@ class tx_templavoila_cm2 extends t3lib_SCbase {
 			die('no access.');
 		}
 
-		$this->returnUrl = t3lib_div::sanitizeLocalUrl(t3lib_div::_GP('returnUrl'));
+		$this->returnUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::sanitizeLocalUrl(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('returnUrl'));
 
 		// Draw the header.
-		$this->doc = t3lib_div::makeInstance('template');
+		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('template');
 		$this->doc->docType = 'xhtml_trans';
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->setModuleTemplate('EXT:templavoila/resources/templates/cm2_default.html');
@@ -76,7 +76,7 @@ class tx_templavoila_cm2 extends t3lib_SCbase {
 		$this->doc->divClass = '';
 
 		// XML code:
-		$this->viewTable = t3lib_div::_GP('viewRec');
+		$this->viewTable = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('viewRec');
 
 		$record = t3lib_BEfunc::getRecordWSOL($this->viewTable['table'], $this->viewTable['uid']); // Selecting record based on table/uid since adding the field might impose a SQL-injection problem; at least the field name would have to be checked first.
 		if (is_array($record)) {
@@ -88,17 +88,17 @@ class tx_templavoila_cm2 extends t3lib_SCbase {
 			$cleanXML = '';
 			if ($GLOBALS['BE_USER']->isAdmin()) {
 				if ('tx_templavoila_flex' == $this->viewTable['field_flex']) {
-					$flexObj = t3lib_div::makeInstance('t3lib_flexformtools');
+					$flexObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_flexformtools');
 					if ($record['tx_templavoila_flex']) {
 						$cleanXML = $flexObj->cleanFlexFormXML($this->viewTable['table'], 'tx_templavoila_flex', $record);
 
 						// If the clean-button was pressed, save right away:
-						if (t3lib_div::_POST('_CLEAN_XML')) {
+						if (\TYPO3\CMS\Core\Utility\GeneralUtility::_POST('_CLEAN_XML')) {
 							$dataArr = array();
 							$dataArr[$this->viewTable['table']][$this->viewTable['uid']]['tx_templavoila_flex'] = $cleanXML;
 
 							// Init TCEmain object and store:
-							$tce = t3lib_div::makeInstance('t3lib_TCEmain');
+							$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_TCEmain');
 							$tce->stripslashes_values = 0;
 							$tce->start($dataArr, array());
 							$tce->process_datamap();
@@ -113,10 +113,10 @@ class tx_templavoila_cm2 extends t3lib_SCbase {
 
 			if (md5($currentXML) != md5($cleanXML)) {
 				// Create diff-result:
-				$t3lib_diff_Obj = t3lib_div::makeInstance('t3lib_diff');
+				$t3lib_diff_Obj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_diff');
 				$diffres = $t3lib_diff_Obj->makeDiffDisplay($currentXML, $cleanXML);
 
-				$flashMessage = t3lib_div::makeInstance(
+				$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
 					't3lib_FlashMessage',
 					$LANG->getLL('needsCleaning', 1),
 					'',
@@ -144,7 +144,7 @@ class tx_templavoila_cm2 extends t3lib_SCbase {
 						<td>' . $diffres . '
 						<br/><br/><br/>
 
-						<form action="' . t3lib_div::getIndpEnv('REQUEST_URI') . '" method="post">
+						<form action="' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI') . '" method="post">
 							<input type="submit" value="' . $LANG->getLL('cleanUp', 1) . '" name="_CLEAN_XML" />
 						</form>
 
@@ -156,7 +156,7 @@ class tx_templavoila_cm2 extends t3lib_SCbase {
 			} else {
 				$xmlContentMarkedUp = '';
 				if ($cleanXML) {
-					$flashMessage = t3lib_div::makeInstance(
+					$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
 						't3lib_FlashMessage',
 						$LANG->getLL('XMLclean', 1),
 						'',
@@ -215,7 +215,7 @@ class tx_templavoila_cm2 extends t3lib_SCbase {
 		// Back
 		if ($this->returnUrl) {
 			$backIcon = t3lib_iconWorks::getSpriteIcon('actions-view-go-back');
-			$buttons['back'] = '<a href="' . htmlspecialchars(t3lib_div::linkThisUrl($this->returnUrl)) . '" class="typo3-goBack" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.goBack', TRUE) . '">' .
+			$buttons['back'] = '<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisUrl($this->returnUrl)) . '" class="typo3-goBack" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.goBack', TRUE) . '">' .
 				$backIcon .
 				'</a>';
 		}
@@ -247,7 +247,7 @@ class tx_templavoila_cm2 extends t3lib_SCbase {
 	function markUpXML($str) {
 
 		// Make instance of syntax highlight class:
-		$hlObj = t3lib_div::makeInstance('tx_templavoila_syntaxhl');
+		$hlObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_syntaxhl');
 
 		// Check which document type, if applicable:
 		if (strstr(substr($str, 0, 100), '<T3DataStructure')) {
@@ -284,7 +284,7 @@ if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templav
 
 
 // Make instance:
-$SOBE = t3lib_div::makeInstance('tx_templavoila_cm2');
+$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_cm2');
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();

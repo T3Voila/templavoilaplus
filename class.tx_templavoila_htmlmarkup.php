@@ -542,7 +542,7 @@ class tx_templavoila_htmlmarkup {
 	 */
 	function mergeFormDataIntoTemplateStructure($editStruct, $currentMappingInfo, $firstLevelImplodeToken = '', $valueKey = 'vDEF') {
 		$isSection = 0;
-		$htmlParse = ($this->htmlParse ? $this->htmlParse : t3lib_div::makeInstance('t3lib_parsehtml'));
+		$htmlParse = ($this->htmlParse ? $this->htmlParse : \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_parsehtml'));
 		if (is_array($editStruct) && count($editStruct)) {
 			$testInt = implode('', array_keys($editStruct));
 			$isSection = !preg_match('/[^0-9]/', $testInt);
@@ -587,20 +587,20 @@ class tx_templavoila_htmlmarkup {
 	 * @return    array        Array with the information inside.
 	 */
 	function splitPath($pathStr) {
-		$subPaths = t3lib_div::trimExplode('|', $pathStr, 1);
+		$subPaths = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('|', $pathStr, 1);
 
 		foreach ($subPaths as $index => $path) {
 			$subPaths[$index] = array();
 			$subPaths[$index]['fullpath'] = $path;
 
 			// Get base parts of the page: the PATH and the COMMAND
-			list($thePath, $theCmd) = t3lib_div::trimExplode('/', $path, 1);
+			list($thePath, $theCmd) = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('/', $path, 1);
 
 			// Split the path part into its units: results in an array with path units.
 			$splitParts = preg_split('/\s+/', $thePath);
 
 			// modifier:
-			$modArr = t3lib_div::trimExplode(':', $theCmd, 1);
+			$modArr = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(':', $theCmd, 1);
 			if ($modArr[0]) {
 				$subPaths[$index]['modifier'] = $modArr[0];
 				$subPaths[$index]['modifier_value'] = $modArr[1];
@@ -794,7 +794,7 @@ class tx_templavoila_htmlmarkup {
 	 */
 	function setHeaderBodyParts($MappingInfo_head, $MappingData_head_cached, $BodyTag_cached = '', $pageRenderer = FALSE) {
 
-		$htmlParse = ($this->htmlParse ? $this->htmlParse : t3lib_div::makeInstance('t3lib_parsehtml'));
+		$htmlParse = ($this->htmlParse ? $this->htmlParse : \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_parsehtml'));
 		/* @var $htmlParse t3lib_parsehtml */
 
 		$types = array(
@@ -888,7 +888,7 @@ class tx_templavoila_htmlmarkup {
 	 */
 	function init() {
 		// HTML parser object initialized.
-		$this->htmlParse = t3lib_div::makeInstance('t3lib_parsehtml');
+		$this->htmlParse = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_parsehtml');
 		/* @var $this ->htmlParse t3lib_parsehtml */
 
 		// Resetting element count array
@@ -897,7 +897,7 @@ class tx_templavoila_htmlmarkup {
 
 		// Setting gnyf style
 		$style = '';
-		$style .= (!t3lib_div::inList('explode,checkbox', $this->mode) ? 'position:absolute;' : '');
+		$style .= (!\TYPO3\CMS\Core\Utility\GeneralUtility::inList('explode,checkbox', $this->mode) ? 'position:absolute;' : '');
 		$this->gnyfStyle = $style ? ' style="' . htmlspecialchars($style) . '"' : '';
 	}
 
@@ -940,7 +940,7 @@ class tx_templavoila_htmlmarkup {
 	 * @return    array        array with two strings, the list of block tags and the list of single tags.
 	 */
 	function splitTagTypes($showTags) {
-		$showTagsArr = t3lib_div::trimExplode(',', strtolower($showTags), 1);
+		$showTagsArr = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', strtolower($showTags), 1);
 		$showTagsArr = array_flip($showTagsArr);
 		$tagList_elements = array();
 		$tagList_single = array();
@@ -1000,7 +1000,7 @@ class tx_templavoila_htmlmarkup {
 		$startCCTag = $endCCTag = '';
 
 		//pre-processing of blocks
-		if ((t3lib_div::inList($tagsBlock, 'script') && t3lib_div::inList($tagsBlock, 'style')) && count($blocks) > 1) {
+		if ((\TYPO3\CMS\Core\Utility\GeneralUtility::inList($tagsBlock, 'script') && \TYPO3\CMS\Core\Utility\GeneralUtility::inList($tagsBlock, 'style')) && count($blocks) > 1) {
 			// correct the blocks (start of CC could be in prior block, end of CC in net block)
 
 			if (count($blocks) > 1) {
@@ -1150,7 +1150,7 @@ class tx_templavoila_htmlmarkup {
 			// Disable A tags:
 			if ($firstTagName == 'a') {
 				$params[0]['onclick'] = 'return false;';
-				$firstTag = '<' . trim($firstTagName . ' ' . t3lib_div::implodeAttributes($params[0])) . '>';
+				$firstTag = '<' . trim($firstTagName . ' ' . \TYPO3\CMS\Core\Utility\GeneralUtility::implodeAttributes($params[0])) . '>';
 			}
 			// Display modes:
 			if ($this->mode == 'explode') {
@@ -1159,20 +1159,20 @@ class tx_templavoila_htmlmarkup {
 					$params[0]['cellspacing'] = 4;
 					$params[0]['cellpadding'] = 0;
 					$params[0]['style'] .= '; border: 1px dotted #666666;';
-					$firstTag = '<' . trim($firstTagName . ' ' . t3lib_div::implodeAttributes($params[0])) . '>';
+					$firstTag = '<' . trim($firstTagName . ' ' . \TYPO3\CMS\Core\Utility\GeneralUtility::implodeAttributes($params[0])) . '>';
 				} elseif ($firstTagName == 'td') {
 					$params[0]['style'] .= '; border: 1px dotted #666666;';
-					$firstTag = '<' . trim($firstTagName . ' ' . t3lib_div::implodeAttributes($params[0])) . '>';
+					$firstTag = '<' . trim($firstTagName . ' ' . \TYPO3\CMS\Core\Utility\GeneralUtility::implodeAttributes($params[0])) . '>';
 
 					$v = (string) $v != '' ? $v : '&nbsp;';
 				}
 			} elseif ($this->mode == 'borders') {
 				if ($firstTagName == 'table') {
 					$params[0]['style'] .= '; border: 1px dotted #666666;';
-					$firstTag = '<' . trim($firstTagName . ' ' . t3lib_div::implodeAttributes($params[0])) . '>';
+					$firstTag = '<' . trim($firstTagName . ' ' . \TYPO3\CMS\Core\Utility\GeneralUtility::implodeAttributes($params[0])) . '>';
 				} elseif ($firstTagName == 'td') {
 					$params[0]['style'] .= '; border: 1px dotted #666666;';
-					$firstTag = '<' . trim($firstTagName . ' ' . t3lib_div::implodeAttributes($params[0])) . '>';
+					$firstTag = '<' . trim($firstTagName . ' ' . \TYPO3\CMS\Core\Utility\GeneralUtility::implodeAttributes($params[0])) . '>';
 				}
 			}
 			// Get tag configuration
@@ -1243,7 +1243,7 @@ class tx_templavoila_htmlmarkup {
 				case 'INNER+ATTR':
 					// Attribute
 					if ($this->searchPaths[$subPath]['modifier_value']) {
-						$attributeArray = array_unique(t3lib_div::trimExplode(',', $this->searchPaths[$subPath]['modifier_value'], 1));
+						$attributeArray = array_unique(\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->searchPaths[$subPath]['modifier_value'], 1));
 						foreach ($attributeArray as $attr) {
 							$placeholder = '###' . $placeholder . '###';
 							$this->searchPaths[$subPath]['attr'][$attr]['placeholder'] = $placeholder;
@@ -1251,7 +1251,7 @@ class tx_templavoila_htmlmarkup {
 							$params[0][$attr] = $placeholder;
 							$placeholder = md5(uniqid(rand(), TRUE));
 						}
-						$firstTag = '<' . trim($firstTagName . ' ' . t3lib_div::implodeAttributes($params[0])) . ($mode != 'block' ? ' /' : '') . '>';
+						$firstTag = '<' . trim($firstTagName . ' ' . \TYPO3\CMS\Core\Utility\GeneralUtility::implodeAttributes($params[0])) . ($mode != 'block' ? ' /' : '') . '>';
 						if ($mode != 'block') {
 							$v = $firstTag;
 							$firstTag = '';
@@ -1314,7 +1314,7 @@ class tx_templavoila_htmlmarkup {
 			return str_pad('', $recursion * 2, ' ', STR_PAD_LEFT) .
 			$gnyf .
 			($valueStr ? '<font color="#6666FF"><em>' : '') .
-			htmlspecialchars(t3lib_div::fixed_lgd_cs(preg_replace('/\s+/', ' ', $str), $this->maxLineLengthInSourceMode)) .
+			htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs(preg_replace('/\s+/', ' ', $str), $this->maxLineLengthInSourceMode)) .
 			($valueStr ? '</em></font>' : '') .
 			chr(10);
 		}
@@ -1395,7 +1395,7 @@ class tx_templavoila_htmlmarkup {
 	 * @return    string        HTML
 	 */
 	function getGnyf($firstTagName, $path, $title) {
-		if (!$this->onlyElements || t3lib_div::inList($this->onlyElements, $firstTagName)) {
+		if (!$this->onlyElements || \TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->onlyElements, $firstTagName)) {
 			$onclick = str_replace('###PATH###', $this->pathPrefix . $path, $this->gnyfImgAdd);
 
 			$gnyf = $this->textGnyf
@@ -1416,7 +1416,7 @@ class tx_templavoila_htmlmarkup {
 		if (!isset(self::$tagConf[$tag])) {
 			return '';
 		} else {
-			return '<span class="gnyfBox"><span ' . $onclick . ' class="gnyfElement gnyf' . ucfirst(self::$tagConf[$tag]['blocktype']) . '" title="' . htmlspecialchars(t3lib_div::fixed_lgd_cs($title, -200)) . '">' . htmlspecialchars($tag) . '</span></span>';
+			return '<span class="gnyfBox"><span ' . $onclick . ' class="gnyfElement gnyf' . ucfirst(self::$tagConf[$tag]['blocktype']) . '" title="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($title, -200)) . '">' . htmlspecialchars($tag) . '</span></span>';
 		}
 	}
 }

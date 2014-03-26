@@ -136,7 +136,7 @@ abstract class tx_templavoila_datastructure {
 		$arr = array();
 		$ds = $this->getDataprotXML();
 		if (strlen($ds) > 1) {
-			$arr = t3lib_div::xml2array($ds);
+			$arr = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($ds);
 		}
 
 		return $arr;

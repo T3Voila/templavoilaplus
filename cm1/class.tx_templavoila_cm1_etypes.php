@@ -57,7 +57,7 @@ class tx_templavoila_cm1_eTypes {
 
 		$eTypeCECounter = 0;
 
-		t3lib_div::loadTCA('tt_content');
+		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA('tt_content');
 
 		// Traverse array
 		foreach ($elArray as $key => $value) {
@@ -114,7 +114,7 @@ class tx_templavoila_cm1_eTypes {
 
 					$bef = $elArray[$key]['tx_templavoila']['TypoScript'];
 
-					t3lib_div::callUserFunction($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['cm1']['eTypesConfGen'][$elArray[$key]['tx_templavoila']['eType']], $_params, $this, '');
+					\TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['cm1']['eTypesConfGen'][$elArray[$key]['tx_templavoila']['eType']], $_params, $this, '');
 
 					if (!$reset && trim($bef)) {
 						$elArray[$key]['tx_templavoila']['TypoScript'] = $bef;
@@ -408,10 +408,10 @@ class tx_templavoila_cm1_eTypes {
 	function substEtypeWithRealStuff_contentInfo($content) {
 		if ($content) {
 			if (substr($content, 0, 4) == '<img') {
-				$attrib = t3lib_div::get_tag_attributes($content);
+				$attrib = \TYPO3\CMS\Core\Utility\GeneralUtility::get_tag_attributes($content);
 				if ((!$attrib['width'] || !$attrib['height']) && $attrib['src']) {
-					$pathWithNoDots = t3lib_div::resolveBackPath($attrib['src']);
-					$filePath = t3lib_div::getFileAbsFileName($pathWithNoDots);
+					$pathWithNoDots = \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath($attrib['src']);
+					$filePath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($pathWithNoDots);
 					if ($filePath && @is_file($filePath)) {
 						$imgInfo = @getimagesize($filePath);
 
@@ -633,7 +633,7 @@ backColor = #999999
 		// merge with tsConfig
 		$config = $GLOBALS['BE_USER']->getTSConfigProp('templavoila.eTypes');
 		if (is_array($config)) {
-			$config = t3lib_div::removeDotsFromTS($config);
+			$config = \TYPO3\CMS\Core\Utility\GeneralUtility::removeDotsFromTS($config);
 			$eTypes = $this->pObj->array_merge_recursive_overrule($eTypes, $config);
 		}
 
@@ -646,7 +646,7 @@ backColor = #999999
 				'defaultTypes_misc' => &$eTypes['defaultTypes_misc']
 			);
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['templavoila']['eTypes'] as $hook) {
-				t3lib_div::callUserFunction($hook, $params, $this);
+				\TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($hook, $params, $this);
 			}
 		}
 

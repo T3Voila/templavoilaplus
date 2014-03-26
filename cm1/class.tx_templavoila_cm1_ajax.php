@@ -33,8 +33,8 @@ class tx_templavoila_cm1_ajax {
 	 * @return    void
 	 */
 	public function getDisplayFileContent($params, &$ajaxObj) {
-		$session = $GLOBALS['BE_USER']->getSessionData(t3lib_div::_GP('key'));
-		echo t3lib_div::getUrl(t3lib_div::getFileAbsFileName($session['displayFile']));
+		$session = $GLOBALS['BE_USER']->getSessionData(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('key'));
+		echo \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($session['displayFile']));
 	}
 }
 

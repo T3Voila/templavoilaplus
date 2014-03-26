@@ -72,7 +72,7 @@ class tx_templavoila_rules {
 		// Only care about page records or flexible content elements:
 		if ($table != 'tt_content' || $parentRecord['CType'] == 'templavoila_pi1') {
 			$recRow = t3lib_BEfunc::getRecord('tx_templavoila_datastructure', $parentRecord['tx_templavoila_ds']);
-			$xmlContent = t3lib_div::xml2array($recRow['dataprot']);
+			$xmlContent = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($recRow['dataprot']);
 			if (is_array($xmlContent['ROOT']) && is_array($xmlContent['ROOT']['el'])) {
 				foreach ($xmlContent['ROOT']['el'] as $fieldName => $field) {
 					$ruleRegEx = trim($field['tx_templavoila']['ruleRegEx']);
@@ -84,8 +84,8 @@ class tx_templavoila_rules {
 						$this->currentFieldName = $fieldName;
 						// Get child records of the parent element record
 						$childRecords = array();
-						$xmlContent = t3lib_div::xml2array($parentRecord['tx_templavoila_flex']);
-						$recUIDs = t3lib_div::trimExplode(',', $xmlContent['data']['sDEF']['lDEF'][$fieldName]['vDEF']);
+						$xmlContent = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($parentRecord['tx_templavoila_flex']);
+						$recUIDs = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $xmlContent['data']['sDEF']['lDEF'][$fieldName]['vDEF']);
 						foreach ($recUIDs as $recUID) {
 							$row = t3lib_BEfunc::getRecord('tt_content', $recUID, 'uid,CType,tx_templavoila_to');
 							if ($row['CType'] == 'templavoila_pi1') {
@@ -694,7 +694,7 @@ class tx_templavoila_rules {
 		if (is_array($lines)) {
 			foreach ($lines as $line) {
 				if (ord($line[0]) > 13) { // Ignore empty lines
-					$parts = t3lib_div::trimExplode('=', $line);
+					$parts = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('=', $line);
 					$constArr[$parts[0]] = $parts[1];
 				}
 			}
@@ -796,7 +796,7 @@ class tx_templavoila_rules {
 	 * @return    void
 	 */
 	function statusSetELRestrictions(&$statusArr, $uid, $restrictionsArr) {
-		$statusArr['restrictions'][$uid] = t3lib_div::array_merge_recursive_overrule($statusArr['restrictions'][$uid], $restrictionsArr, 0);
+		$statusArr['restrictions'][$uid] = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($statusArr['restrictions'][$uid], $restrictionsArr, 0);
 	}
 }
 

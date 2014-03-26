@@ -108,7 +108,7 @@ class tx_templavoila_mod1_specialdoktypes {
 		}
 
 		$urlInfo = ' <br /><br /><strong><a href="' . $url . '" target="_new">' . htmlspecialchars(sprintf($LANG->getLL('jumptoexternalurl'), $url)) . '</a></strong>';
-		$flashMessage = t3lib_div::makeInstance(
+		$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
 			't3lib_FlashMessage',
 			$notice,
 			'',
@@ -143,7 +143,7 @@ class tx_templavoila_mod1_specialdoktypes {
 				$LANG->getLL('jumptoshortcutdestination', '', 1) . '</a></strong>';
 		}
 
-		$flashMessage = t3lib_div::makeInstance(
+		$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
 			't3lib_FlashMessage',
 			sprintf($LANG->getLL('cannotedit_shortcut_' . intval($pageRecord['shortcut_mode'])), $shortcutSourcePageRecord['title']),
 			'',
@@ -183,7 +183,7 @@ class tx_templavoila_mod1_specialdoktypes {
 			<a href="index.php?id=' . $pageRecord['mount_pid'] . '">' . htmlspecialchars($LANG->getLL('jumptomountsourcepage')) . '</a>
 		';
 
-		$flashMessage = t3lib_div::makeInstance(
+		$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
 			't3lib_FlashMessage',
 			sprintf($LANG->getLL('cannotedit_doktypemountpoint'), $mountSourceButton . $mountSourcePageRecord['title']),
 			'',
@@ -206,14 +206,14 @@ class tx_templavoila_mod1_specialdoktypes {
 		global $LANG, $BE_USER, $TYPO3_CONF_VARS;
 
 		// Prepare the record icon including a content sensitive menu link wrapped around it:
-		$pageTitle = htmlspecialchars(t3lib_div::fixed_lgd_cs(t3lib_BEfunc::getRecordTitle('pages', $pageRecord), 50));
+		$pageTitle = htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs(t3lib_BEfunc::getRecordTitle('pages', $pageRecord), 50));
 		$recordIcon = t3lib_iconWorks::getSpriteIconForRecord('pages', $pageRecord);
 		$iconEdit = t3lib_iconWorks::getSpriteIcon('actions-document-open', array('title' => htmlspecialchars($LANG->sL('LLL:EXT:lang/locallang_mod_web_list.xml:editPage'))));
 		$editButton = $this->pObj->link_edit($iconEdit, 'pages', $pageRecord['uid']);
 
 		if ($this->userHasAccessToListModule()) {
 			if (tx_templavoila_div::convertVersionNumberToInteger(TYPO3_version) < 4005000) {
-				$listModuleURL = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir . 'db_list.php?id=' . intval($this->pObj->id);
+				$listModuleURL = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir . 'db_list.php?id=' . intval($this->pObj->id);
 			} else {
 				$listModuleURL = t3lib_BEfunc::getModuleUrl('web_list', array('id' => intval($this->pObj->id)), '');
 			}
@@ -226,7 +226,7 @@ class tx_templavoila_mod1_specialdoktypes {
 			$listModuleLink = $LANG->getLL('editpage_sysfolder_listview_noaccess', '', 1);
 		}
 
-		$flashMessage = t3lib_div::makeInstance(
+		$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
 			't3lib_FlashMessage',
 			$LANG->getLL('editpage_sysfolder_intro', '', 1),
 			'',

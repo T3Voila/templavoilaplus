@@ -37,7 +37,7 @@ class tx_templavoila_file {
 	 */
 	protected static function file($filename) {
 		/** @var $resourceFactory TYPO3\CMS\Core\Resource\ResourceFactory */
-		$resourceFactory = t3lib_div::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
+		$resourceFactory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
 		$file = $resourceFactory->getObjectFromCombinedIdentifier($filename);
 
 		return $file;
@@ -127,8 +127,8 @@ class tx_templavoila_file {
 			$finfoMode = defined('FILEINFO_MIME_TYPE') ? FILEINFO_MIME_TYPE : FILEINFO_MIME;
 			$fi = finfo_open($finfoMode);
 			$mimeInformation = @finfo_file($fi, $filename);
-			if (t3lib_div::isFirstPartOfStr($mimeInformation, 'text/html') ||
-				t3lib_div::isFirstPartOfStr($mimeInformation, 'application/xml')
+			if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($mimeInformation, 'text/html') ||
+				\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($mimeInformation, 'application/xml')
 			) {
 				$isXml = TRUE;
 			}
