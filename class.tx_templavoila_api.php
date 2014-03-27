@@ -163,7 +163,7 @@ class tx_templavoila_api {
 		}
 
 		// Instantiate TCEmain and create the record:
-		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Core\DataHandling\DataHandler');
+		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 		/* @var $tce \TYPO3\CMS\Core\DataHandling\DataHandler */
 
 		// set default TCA values specific for the page and user
@@ -569,7 +569,7 @@ class tx_templavoila_api {
 
 					$flagWasSet = $this->getTCEmainRunningFlag();
 					$this->setTCEmainRunningFlag(TRUE);
-					$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Core\DataHandling\DataHandler');
+					$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 					$tce->stripslashes_values = 0;
 					$tce->start(array(), $cmdArray);
 					$tce->process_cmdmap();
@@ -599,7 +599,7 @@ class tx_templavoila_api {
 		$destinationPID = $destinationPointer['table'] == 'pages' ? $destinationParentRecord['uid'] : $destinationParentRecord['pid'];
 
 		// Initialize TCEmain and create configuration for copying the specified record
-		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Core\DataHandling\DataHandler');
+		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 		$cmdArray = array();
 		$cmdArray['tt_content'][$sourceElementUid]['copy'] = $destinationPID;
 
@@ -639,7 +639,7 @@ class tx_templavoila_api {
 		$subElementUids = $this->flexform_getListOfSubElementUidsRecursively('tt_content', $sourceElementUid, $dummyArr);
 
 		// Initialize TCEmain and create configuration for copying the specified record (the parent element) and all sub elements:
-		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Core\DataHandling\DataHandler');
+		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 		$cmdArray = array();
 		$cmdArray['tt_content'][$sourceElementUid]['copy'] = $destinationPID;
 
@@ -691,7 +691,7 @@ class tx_templavoila_api {
 		}
 
 		// Initialize TCEmain and create configuration for localizing the specified record
-		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Core\DataHandling\DataHandler');
+		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 		$cmdArray = array();
 		$cmdArray['tt_content'][$sourceElementUid]['localize'] = $destinationLanguageUid;
 
@@ -768,7 +768,7 @@ class tx_templavoila_api {
 		// Store:
 		$flagWasSet = $this->getTCEmainRunningFlag();
 		$this->setTCEmainRunningFlag(TRUE);
-		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Core\DataHandling\DataHandler');
+		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 		$tce->stripslashes_values = 0;
 		$tce->start(array(), $cmdArray);
 		$tce->process_cmdmap();
@@ -1008,7 +1008,7 @@ class tx_templavoila_api {
 		$arrayOfUIDs = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $listOfUIDs);
 
 		// Getting the relation uids out and use only tt_content records which are not deleted:
-		$dbAnalysis = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Core\Database\RelationHandler');
+		$dbAnalysis = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
 		$dbAnalysis->start($listOfUIDs, 'tt_content');
 		$dbAnalysis->getFromDB();
 
@@ -1243,7 +1243,7 @@ class tx_templavoila_api {
 
 		$flagWasSet = $this->getTCEmainRunningFlag();
 		$this->setTCEmainRunningFlag(TRUE);
-		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Core\DataHandling\DataHandler');
+		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 		$tce->stripslashes_values = 0;
 		$tce->start($dataArr, array());
 
@@ -1689,7 +1689,7 @@ class tx_templavoila_api {
 		$subTree = array();
 
 		// Get records:
-		$dbAnalysis = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Core\Database\RelationHandler');
+		$dbAnalysis = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
 		$dbAnalysis->start($listOfSubElementUids, 'tt_content');
 
 		// Traverse records:

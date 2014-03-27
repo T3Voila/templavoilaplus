@@ -88,7 +88,7 @@ class tx_templavoila_cm2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			$cleanXML = '';
 			if ($GLOBALS['BE_USER']->isAdmin()) {
 				if ('tx_templavoila_flex' == $this->viewTable['field_flex']) {
-					$flexObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools');
+					$flexObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\FlexForm\\FlexFormTools');
 					if ($record['tx_templavoila_flex']) {
 						$cleanXML = $flexObj->cleanFlexFormXML($this->viewTable['table'], 'tx_templavoila_flex', $record);
 
@@ -98,7 +98,7 @@ class tx_templavoila_cm2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 							$dataArr[$this->viewTable['table']][$this->viewTable['uid']]['tx_templavoila_flex'] = $cleanXML;
 
 							// Init TCEmain object and store:
-							$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Core\DataHandling\DataHandler');
+							$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 							$tce->stripslashes_values = 0;
 							$tce->start($dataArr, array());
 							$tce->process_datamap();
@@ -113,7 +113,7 @@ class tx_templavoila_cm2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 			if (md5($currentXML) != md5($cleanXML)) {
 				// Create diff-result:
-				$t3lib_diff_Obj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Core\Utility\DiffUtility');
+				$t3lib_diff_Obj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\DiffUtility');
 				$diffres = $t3lib_diff_Obj->makeDiffDisplay($currentXML, $cleanXML);
 
 				$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(

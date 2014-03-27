@@ -73,7 +73,7 @@ class tx_templavoila_referenceElementsWizard extends \TYPO3\CMS\Backend\Module\A
 		$depth = $this->pObj->MOD_SETTINGS['depth'];
 
 		// Initialize tree object:
-		$tree = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Backend\Tree\View\PageTreeView');
+		$tree = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\View\\PageTreeView');
 		$tree->init('AND ' . $GLOBALS['BE_USER']->getPagePermsClause(1));
 
 		// Creating top icon; the current page

@@ -234,7 +234,7 @@ class tx_templavoila_xmlrelhndl {
 			$cmdArray['tt_content'][$item_uid]['move'] = $movePid;
 
 			// Store:
-			$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Core\DataHandling\DataHandler');
+			$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 			$tce->stripslashes_values = 0;
 			$tce->start(array(), $cmdArray);
 			$tce->process_cmdmap();
@@ -311,7 +311,7 @@ class tx_templavoila_xmlrelhndl {
 		$dataArr[$refArr[0]][$refArr[1]][$this->flexFieldIndex[$refArr[0]]]['data'][$refArr[2]][$refArr[3]][$refArr[4]][$refArr[5]] = implode(',', $idListArr);
 
 		// Execute:
-		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Core\DataHandling\DataHandler');
+		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 		$tce->stripslashes_values = 0;
 		$tce->start($dataArr, array());
 		$tce->process_datamap();
@@ -332,7 +332,7 @@ class tx_templavoila_xmlrelhndl {
 		$cmdArray['tt_content'][$uid]['delete'] = 1;
 
 		// Store:
-		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Core\DataHandling\DataHandler');
+		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 		$tce->stripslashes_values = 0;
 		$tce->start(array(), $cmdArray);
 		$tce->process_cmdmap();
@@ -421,7 +421,7 @@ class tx_templavoila_xmlrelhndl {
 		// Create copy:
 		$cmdArray = array();
 		$cmdArray['tt_content'][$itemAtPosition_uid]['copy'] = $pid;
-		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Core\DataHandling\DataHandler');
+		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 		$tce->start(array(), $cmdArray);
 		$tce->process_cmdmap();
 
@@ -521,7 +521,7 @@ class tx_templavoila_xmlrelhndl {
 		$dat = is_array($xmlContent) ? $xmlContent['data'][$refArr[2]][$refArr[3]][$refArr[4]][$refArr[5]] : '';
 
 		// Getting the relation uids out:
-		$dbAnalysis = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Core\Database\RelationHandler');
+		$dbAnalysis = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
 		$dbAnalysis->start($dat, 'tt_content');
 
 		// Return array of items:

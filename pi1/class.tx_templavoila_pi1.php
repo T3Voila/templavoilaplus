@@ -148,7 +148,7 @@ class tx_templavoila_pi1 extends tslib_pibase {
 			}
 			$values['data']['sDEF'][$lKey][$k][$vKey] = $v;
 		}
-		$ff = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools');
+		$ff = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\FlexForm\\FlexFormTools');
 		$data['tx_templavoila_flex'] = $ff->flexArray2xml($values);
 
 		return $this->renderElement($data, $conf['table']);
@@ -282,7 +282,7 @@ class tx_templavoila_pi1 extends tslib_pibase {
 
 			// Init mark up object.
 			$this->markupObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_htmlmarkup');
-			$this->markupObj->htmlParse = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Core\Html\HtmlParser');
+			$this->markupObj->htmlParse = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\HtmlParser');
 
 			// Get template record:
 			if ($row['tx_templavoila_to']) {
@@ -552,7 +552,7 @@ class tx_templavoila_pi1 extends tslib_pibase {
 						}
 					}
 
-					$tsparserObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser');
+					$tsparserObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
 
 					$cObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tslib_cObj');
 					$cObj->setParent($this->cObj->data, $this->cObj->currentRecord);
@@ -587,7 +587,7 @@ class tx_templavoila_pi1 extends tslib_pibase {
 										// If no value for this object path reference was found, get value:
 										if (!isset($GLOBALS['TSFE']->applicationData['tx_templavoila']['TO_constantCache'][$objPath])) {
 											// Get value from object path:
-											$cF = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser');
+											$cF = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
 											list($objPathValue) = $cF->getVal($objPath, $GLOBALS['TSFE']->tmpl->setup);
 											// Set value in cache table:
 											$GLOBALS['TSFE']->applicationData['tx_templavoila']['TO_constantCache'][$objPath] .= '' . $objPathValue;
@@ -640,7 +640,7 @@ class tx_templavoila_pi1 extends tslib_pibase {
 							$dataValues[$key][$valueKey] = htmlspecialchars($dataValues[$key][$valueKey]);
 						}
 						if (trim($pOptions['stdWrap'])) {
-							$tsparserObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser');
+							$tsparserObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
 							// BUG HERE: should convert array to TypoScript...
 							$tsparserObj->parse($pOptions['stdWrap']);
 							$dataValues[$key][$valueKey] = $cObj->stdWrap($dataValues[$key][$valueKey], $tsparserObj->setup);

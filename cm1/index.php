@@ -678,7 +678,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				// Getting cached data:
 				reset($dataStruct);
 				$fileContent = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($this->displayFile);
-				$htmlParse = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Core\Html\HtmlParser');
+				$htmlParse = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\HtmlParser');
 				$relPathFix = dirname(substr($this->displayFile, strlen(PATH_site))) . '/';
 				$fileContent = $htmlParse->prefixResourcePath($relPathFix, $fileContent);
 				$this->markupObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_htmlmarkup');
@@ -824,7 +824,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 					// If they are found, continue:
 					if ($toREC['uid'] && $dsREC['uid']) {
 						// Init TCEmain object and store:
-						$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Core\DataHandling\DataHandler');
+						$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 						$tce->stripslashes_values = 0;
 
 						// Modifying data structure with conversion of preset values for field types to actual settings:
@@ -1585,7 +1585,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			reset($dataStruct);
 			// Init; read file, init objects:
 			$fileContent = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($theFile);
-			$htmlParse = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Core\Html\HtmlParser');
+			$htmlParse = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\HtmlParser');
 			$this->markupObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_htmlmarkup');
 
 			// Fix relative paths in source:
@@ -1622,7 +1622,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			$dataArr['tx_templavoila_tmplobj'][$TOuid]['fileref_mtime'] = @filemtime($theFile);
 			$dataArr['tx_templavoila_tmplobj'][$TOuid]['fileref_md5'] = @md5_file($theFile);
 
-			$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Core\DataHandling\DataHandler');
+			$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 			$tce->stripslashes_values = 0;
 			$tce->start($dataArr, array());
 			$tce->process_datamap();
@@ -2627,7 +2627,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 		// Init mark up object.
 		$this->markupObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_htmlmarkup');
-		$this->markupObj->htmlParse = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Core\Html\HtmlParser');
+		$this->markupObj->htmlParse = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\HtmlParser');
 
 		// Splitting content, adding a random token for the part to be previewed:
 		$contentSplittedByMapping = $this->markupObj->splitContentToMappingInfo($content, $currentMappingInfo);

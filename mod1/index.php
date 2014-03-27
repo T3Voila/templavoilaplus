@@ -187,7 +187,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			$this->localizationObj->init($this);
 		}
 
-		$this->flashMessageService  = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Core\Messaging\FlashMessageService');
+		$this->flashMessageService  = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessageService');
 	}
 
 	/**
@@ -1818,7 +1818,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			// @Robert: How would you like this implementation better? Please advice and I will change it according to your wish!
 			$status = '';
 			if ($entry['table'] && $entry['uid']) {
-				$flexObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools');
+				$flexObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\FlexForm\\FlexFormTools');
 				$recRow = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL($entry['table'], $entry['uid']);
 				if ($recRow['tx_templavoila_flex']) {
 
@@ -1831,7 +1831,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 						$dataArr[$entry['table']][$entry['uid']]['tx_templavoila_flex'] = $newXML;
 
 						// Init TCEmain object and store:
-						$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Core\DataHandling\DataHandler');
+						$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 						$tce->stripslashes_values = 0;
 						$tce->start($dataArr, array());
 						$tce->process_datamap();
