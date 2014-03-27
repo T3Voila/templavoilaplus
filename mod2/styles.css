@@ -47,12 +47,13 @@ dl.DS-details ul.DS-notes {
 	margin-bottom: 0;
 }
 
-dl.DS-details ul.DS-config img ,
+dl.DS-details ul.DS-config img,
 dl.DS-details ul.DS-proc img {
 	position: relative;
 	top: 2px;
 }
-/* 
+
+/*
  * mod2: detail-view, alanysis of the settings made to the DS-XML
  */
 dl.DS-details dl,
@@ -101,12 +102,13 @@ dl.DS-details ul.DS-notes {
 	margin-bottom: 0;
 }
 
-dl.DS-details ul.DS-config img ,
+dl.DS-details ul.DS-config img,
 dl.DS-details ul.DS-proc img {
 	position: relative;
 	top: 2px;
 }
-/* 
+
+/*
  * mod2: detail-view, alanysis of the settings made to the DS-XML
  */
 dl.DS-details dl,
@@ -155,12 +157,13 @@ dl.DS-details ul.DS-notes {
 	margin-bottom: 0;
 }
 
-dl.DS-details ul.DS-config img ,
+dl.DS-details ul.DS-config img,
 dl.DS-details ul.DS-proc img {
 	position: relative;
 	top: 2px;
 }
-/* 
+
+/*
  * mod2: detail-view, alanysis of the settings made to the DS-XML
  */
 dl.DS-details dl,
@@ -209,7 +212,7 @@ dl.DS-details ul.DS-notes {
 	margin-bottom: 0;
 }
 
-dl.DS-details ul.DS-config img ,
+dl.DS-details ul.DS-config img,
 dl.DS-details ul.DS-proc img {
 	position: relative;
 	top: 2px;

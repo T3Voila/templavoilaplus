@@ -25,7 +25,7 @@
 /**
  * Class for userFuncs within the Extension Manager.
  *
- * @author	Steffen Kamper  <info@sk-typo3.de>
+ * @author    Steffen Kamper  <info@sk-typo3.de>
  */
 class tx_templavoila_staticds_wizard {
 
@@ -38,11 +38,11 @@ class tx_templavoila_staticds_wizard {
 
 	/**
 	 *
-	 * @param		array		Parameter array.  Contains fieldName and fieldValue.
-	 * @param		object		Instance of the class t3lib_tsStyleConfig
+	 * @param        array        Parameter array.  Contains fieldName and fieldValue.
+	 * @param        object        Instance of the class \TYPO3\CMS\Core\TypoScript\ConfigurationForm
 	 */
 	public function staticDsWizard() {
-		$this->step = t3lib_div::_GP('dsWizardDoIt') ? intval(t3lib_div::_GP('dsWizardStep')) : 0;
+		$this->step = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('dsWizardDoIt') ? intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('dsWizardStep')) : 0;
 		$conf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
 
 		$title = $GLOBALS['LANG']->sL('LLL:EXT:templavoila/res1/language/template_conf.xml:staticDS.wizard.title.' . $this->step);
@@ -54,7 +54,7 @@ class tx_templavoila_staticds_wizard {
 		switch ($this->step) {
 			case 1:
 				$ok = array(TRUE, TRUE);
-				if (t3lib_div::_GP('dsWizardDoIt')) {
+				if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('dsWizardDoIt')) {
 
 					if (!isset($conf['staticDS.']['path_fce']) || !strlen($conf['staticDS.']['path_fce'])) {
 						$ok[0] = FALSE;
@@ -85,8 +85,8 @@ class tx_templavoila_staticds_wizard {
 				}
 				if ($ok == array(TRUE, TRUE) && $this->step < 3) {
 					$submitText = $conf['staticDS.']['enable']
-							? $GLOBALS['LANG']->sL('LLL:EXT:templavoila/res1/language/template_conf.xml:staticDS.wizard.submit3')
-							: $GLOBALS['LANG']->sL('LLL:EXT:templavoila/res1/language/template_conf.xml:staticDS.wizard.submit2');
+						? $GLOBALS['LANG']->sL('LLL:EXT:templavoila/res1/language/template_conf.xml:staticDS.wizard.submit3')
+						: $GLOBALS['LANG']->sL('LLL:EXT:templavoila/res1/language/template_conf.xml:staticDS.wizard.submit2');
 					$controls .= '<br /><input type="hidden" name="dsWizardStep" value="1" />
 					<input type="submit" name="dsWizardDoIt" value="' . $submitText . '" />';
 				}
@@ -97,50 +97,50 @@ class tx_templavoila_staticds_wizard {
 				break;
 		}
 
-
 		$out .= '<p style="margin-bottom: 10px;">' . str_replace('|', '<br />', $description) . '</p>' .
-				'<p style="margin-top: 5px;">' . $controls . '</p>';
+			'<p style="margin-top: 5px;">' . $controls . '</p>';
 
 		return '<form action="#" method="POST">' . $out . '</form>';
 	}
 
 	/**
 	 *
-	 * @param	string		 $path
-	 * @return	boolean		TRUE if directory exists and is writable or could be created
+	 * @param    string $path
+	 *
+	 * @return    boolean        TRUE if directory exists and is writable or could be created
 	 */
 	protected function checkDirectory($path) {
 		$status = FALSE;
 		$path = rtrim($path, '/') . '/';
-		$absolutePath = t3lib_div::getFileAbsFileName($path);
+		$absolutePath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($path);
 		if (!empty($absolutePath)) {
 			if (@is_writable($absolutePath)) {
 				$status = TRUE;
 			}
 			if (!is_dir($absolutePath)) {
 				try {
-					$errors = t3lib_div::mkdir_deep(PATH_site, $path);
+					$errors = \TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep(PATH_site, $path);
 					if ($errors === NULL) {
 						$status = TRUE;
 					}
 				} catch (\RuntimeException $e) {
-
 				}
 			}
 		}
+
 		return $status;
 	}
 
 	/**
 	 *
-	 * @param	array	$conf
+	 * @param    array $conf
 	 */
 	protected function getDsRecords($conf) {
 		$updateMessage = '';
 		$writeDsIds = array();
-		$writeIds = t3lib_div::_GP('staticDSwizard');
-		$options = t3lib_div::_GP('staticDSwizardoptions');
-		$checkAll = t3lib_div::_GP('sdw-checkall');
+		$writeIds = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('staticDSwizard');
+		$options = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('staticDSwizardoptions');
+		$checkAll = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('sdw-checkall');
 
 		if (count($writeIds)) {
 			$writeDsIds = array_keys($writeIds);
@@ -165,7 +165,7 @@ class tx_templavoila_staticds_wizard {
 				? 'checked="checked"' : '') . ' /></td>
 		</tr></thead><tbody>';
 		foreach ($rows as $row) {
-			$dirPath = t3lib_div::getFileAbsFileName($row['scope'] == 2 ? $conf['path_fce'] : $conf['path_page']);
+			$dirPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($row['scope'] == 2 ? $conf['path_fce'] : $conf['path_page']);
 			$dirPath = $dirPath . (substr($dirPath, -1) == '/' ? '' : '/');
 			$title = preg_replace('|[/,\."\']+|', '_', $row['title']);
 			$path = $dirPath . $title . ' (' . ($row['scope'] == 1 ? 'page' : 'fce') . ').xml';
@@ -174,12 +174,12 @@ class tx_templavoila_staticds_wizard {
 			$usage = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 				'count(*)',
 				'tx_templavoila_tmplobj',
-				'datastructure=' . (int)$row['uid'] . t3lib_BEfunc::BEenableFields('tx_templavoila_tmplobj')
+				'datastructure=' . (int) $row['uid'] . \TYPO3\CMS\Backend\Utility\BackendUtility::BEenableFields('tx_templavoila_tmplobj')
 			);
 			if (count($writeDsIds) && in_array($row['uid'], $writeDsIds)) {
-				t3lib_div::writeFile($path, $row['dataprot']);
+				\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($path, $row['dataprot']);
 				if ($row['previewicon']) {
-					copy(t3lib_div::getFileAbsFileName('uploads/tx_templavoila/' . $row['previewicon']), $dirPath . $title . ' (' . ($row['scope'] == 1
+					copy(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('uploads/tx_templavoila/' . $row['previewicon']), $dirPath . $title . ' (' . ($row['scope'] == 1
 							? 'page' : 'fce') . ').gif');
 				}
 				if ($options['updateRecords']) {
@@ -217,8 +217,6 @@ class tx_templavoila_staticds_wizard {
 					$updateMessage = $GLOBALS['LANG']->sL('LLL:EXT:templavoila/res1/language/template_conf.xml:staticDS.wizard.updated');
 					$this->step = 3;
 				}
-
-
 			}
 			$out .= '<tr class="bgColor' . ($row['scope'] == 1 ? 3 : 6) . '">
 			<td style="text-align: center;padding: 0,3px;">' . $row['uid'] . '</td>
@@ -246,6 +244,7 @@ class tx_templavoila_staticds_wizard {
 				</p>';
 			}
 		}
+
 		return $out;
 	}
 
@@ -260,4 +259,3 @@ class tx_templavoila_staticds_wizard {
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/classes/class.tx_templavoila_staticds_wizard.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/classes/class.tx_templavoila_staticds_wizard.php']);
 }
-?>

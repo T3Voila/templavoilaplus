@@ -5,8 +5,7 @@
 		<type>module</type>
 		<csh_table></csh_table>
 		<fileId>EXT:templavoila/mod1/locallang.xml</fileId>
-		<labelContext type="array">
-		</labelContext>
+		<labelContext type="array"></labelContext>
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">

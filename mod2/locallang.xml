@@ -5,8 +5,7 @@
 		<type>module</type>
 		<csh_table></csh_table>
 		<fileId>EXT:templavoila/mod2/locallang.xml</fileId>
-		<labelContext type="array">
-		</labelContext>
+		<labelContext type="array"></labelContext>
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
@@ -50,7 +49,7 @@
 			<label index="mapping_uptodate">Mapping is up to date.</label>
 			<label index="update_mapping">Update mapping</label>
 			<label index="notmapped">Not mapped yet!</label>
-			<label index="updatemapping_info"> - &lt;em&gt;(It might also mean that the TO was mapped with an older version of TemplaVoila - then just go and save the mapping again at this will be updated.)&lt;/em&gt;</label>
+			<label index="updatemapping_info">- &lt;em&gt;(It might also mean that the TO was mapped with an older version of TemplaVoila - then just go and save the mapping again at this will be updated.)&lt;/em&gt;</label>
 			<label index="map">Map</label>
 			<label index="remap">Remap</label>
 			<label index="preview">Preview</label>
@@ -146,14 +145,14 @@
 			<label index="wiz_step">Step %s</label>
 			<label index="description_pagesWithCertainDsTo">The following pages in the root line contain data structures and template objects</label>
 			<label index="newsitewizard_intro">If you want to start a new website based on the TemplaVoila template engine you can start this wizard which will set up all the boring initial stuff for you.
-You will be taken through these steps:
-- Creation of a new website root, storage folder, sample pages.
-- Creation of the main TemplaVoila template, including mapping of one content area and a main menu.
-- Creation of a backend user and group to manage only that website.
-
-You should prepare an HTML template before you begin the wizard; simply make a design in HTML and place the HTML file including graphics and stylesheets in a subfolder of "%s" relative to the websites root directory.
-Tip about menus: If you include a main menu in the template, try to place the whole menu inside a container (like &lt;div&gt;, &lt;table&gt; or &lt;tr&gt;) and encapsulate each menu item in a block tag (like &lt;tr&gt;, &lt;td&gt; or &lt;div&gt;). Use A-tags for the links. If you want different designs for normal and active menu elements, design the first menu item as "Active" and the second (and rest) as "Normal", then the wizard might be able to capture the right configuration.
-Tip about stylesheets: The content elements from TYPO3 will be outputted in regular HTML tags like &lt;p&gt;, &lt;h1&gt; to &lt;h6&gt;, &lt;ol&gt; etc. You will prepare yourself well if your stylesheet in the HTML template provides good styles for these standard elements from the start. Then you will have less finetuning to do later.</label>
+				You will be taken through these steps:
+				- Creation of a new website root, storage folder, sample pages.
+				- Creation of the main TemplaVoila template, including mapping of one content area and a main menu.
+				- Creation of a backend user and group to manage only that website.
+				You should prepare an HTML template before you begin the wizard; simply make a design in HTML and place the HTML file including graphics and stylesheets in a subfolder of "%s" relative to the websites root directory.
+				Tip about menus: If you include a main menu in the template, try to place the whole menu inside a container (like &lt;div&gt;, &lt;table&gt; or &lt;tr&gt;) and encapsulate each menu item in a block tag (like &lt;tr&gt;, &lt;td&gt; or &lt;div&gt;). Use A-tags for the links. If you want different designs for normal and active menu elements, design the first menu item as "Active" and the second (and rest) as "Normal", then the wizard might be able to capture the right configuration.
+				Tip about stylesheets: The content elements from TYPO3 will be outputted in regular HTML tags like &lt;p&gt;, &lt;h1&gt; to &lt;h6&gt;, &lt;ol&gt; etc. You will prepare yourself well if your stylesheet in the HTML template provides good styles for these standard elements from the start. Then you will have less finetuning to do later.
+			</label>
 			<label index="newsitewizard_startnow">Start wizard now!</label>
 			<label index="newsitewizard_cancel">Cancel wizard</label>
 			<label index="newsitewizard_problem">&lt;em&gt;There are some technical problems you have to solve before you can start the wizard! Please see below for details. Solve these problems first and come back.&lt;/em&gt;</label>
@@ -167,11 +166,11 @@ Tip about stylesheets: The content elements from TYPO3 will be outputted in regu
 			<label index="newsitewizard_missingext_yes">Yes</label>
 			<label index="newsitewizard_missingext_no">No</label>
 			<label index="newsitewizard_missingdir_instruction">The directory "%s" (relative to the website root) does not exist! This is where you must place your HTML templates. Please create that directory &lt;u&gt;before you start the wizard&lt;/u&gt;. In order to do so, follow these directions:
-
-			- Go to the module File > Filelist
-			- Click the icon of the "%s" root and select "Create" from the context menu.
-			- Enter the name "templates" of the folder and press the "Create" button.
-			- Return to this wizard</label>
+				- Go to the module File > Filelist
+				- Click the icon of the "%s" root and select "Create" from the context menu.
+				- Enter the name "templates" of the folder and press the "Create" button.
+				- Return to this wizard
+			</label>
 		</languageKey>
 	</data>
 </T3locallang>

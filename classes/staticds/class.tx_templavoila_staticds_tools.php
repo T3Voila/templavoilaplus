@@ -25,7 +25,7 @@
 /**
  * Class for userFuncs within the Extension Manager.
  *
- * @author	Steffen Kamper  <info@sk-typo3.de>
+ * @author    Steffen Kamper  <info@sk-typo3.de>
  */
 class tx_templavoila_staticds_tools {
 
@@ -36,8 +36,8 @@ class tx_templavoila_staticds_tools {
 	public static function readStaticDsFilesIntoArray($conf) {
 		$paths = array_unique(array('fce' => $conf['staticDS.']['path_fce'], 'page' => $conf['staticDS.']['path_page']));
 		foreach ($paths as $type => $path) {
-			$absolutePath = t3lib_div::getFileAbsFileName($path);
-			$files = t3lib_div::getFilesInDir($absolutePath, 'xml', true);
+			$absolutePath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($path);
+			$files = \TYPO3\CMS\Core\Utility\GeneralUtility::getFilesInDir($absolutePath, 'xml', TRUE);
 			// if all files are in the same folder, don't resolve the scope by path type
 			if (count($paths) == 1) {
 				$type = FALSE;
@@ -68,4 +68,3 @@ class tx_templavoila_staticds_tools {
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/classes/class.tx_templavoila_staticds_tools.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/classes/class.tx_templavoila_staticds_tools.php']);
 }
-?>

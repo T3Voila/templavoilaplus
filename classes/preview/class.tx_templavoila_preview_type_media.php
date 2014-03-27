@@ -1,4 +1,5 @@
 <?php
+
 /***************************************************************
  * Copyright notice
  *
@@ -21,7 +22,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 class tx_templavoila_preview_type_media {
 
 	protected $previewField = 'media';
@@ -33,6 +33,7 @@ class tx_templavoila_preview_type_media {
 	 * @param string $output
 	 * @param boolean $alreadyRendered
 	 * @param object $ref
+	 *
 	 * @return string
 	 */
 	public function render_previewContent($row, $table, $output, $alreadyRendered, &$ref) {
@@ -49,16 +50,18 @@ class tx_templavoila_preview_type_media {
 	/**
 	 *
 	 * @param array $row
+	 *
 	 * @return string
 	 */
 	protected function getPreviewData($row) {
 		$data = '';
 		if (is_array($row) && $row['pi_flexform']) {
-			$flexform = t3lib_div::xml2array($row['pi_flexform']);
+			$flexform = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($row['pi_flexform']);
 			if (isset($flexform['data']['sDEF']['lDEF']['mmFile']['vDEF'])) {
 				$data = '<span>' . $flexform['data']['sDEF']['lDEF']['mmFile']['vDEF'] . '</span>';
 			}
 		}
+
 		return $data;
 	}
 
@@ -66,12 +69,10 @@ class tx_templavoila_preview_type_media {
 	 * @return string
 	 */
 	protected function getPreviewLabel() {
-		return $GLOBALS['LANG']->sL(t3lib_BEfunc::getLabelFromItemlist('tt_content', 'CType', $this->previewField));
+		return $GLOBALS['LANG']->sL(\TYPO3\CMS\Backend\Utility\BackendUtility::getLabelFromItemlist('tt_content', 'CType', $this->previewField));
 	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/classes/preview/class.tx_templavoila_preview_type_media.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/classes/preview/class.tx_templavoila_preview_type_media.php']);
 }
-
-?>

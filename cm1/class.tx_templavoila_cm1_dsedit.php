@@ -1,40 +1,41 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2003, 2004, 2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
+ *  Copyright notice
+ *
+ *  (c) 2003, 2004, 2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
+
 /**
  * Submodule 'dsEdit' for the mapping module
  *
  * $Id: index.php 17597 2009-03-08 17:59:14Z steffenk $
  *
- * @author		Kasper Skaarhoj <kasperYYYY@typo3.com>
- * @co-author	Robert Lemke <robert@typo3.org>
- * @co-author	Steffen kamper <info@sk-typo3.de>
+ * @author        Kasper Skaarhoj <kasperYYYY@typo3.com>
+ * @co-author    Robert Lemke <robert@typo3.org>
+ * @co-author    Steffen kamper <info@sk-typo3.de>
  */
-
 class tx_templavoila_cm1_dsEdit {
-	var $pObj;
-	protected $oldStyleColumnNumber = 0;
 
+	var $pObj;
+
+	protected $oldStyleColumnNumber = 0;
 
 	function init($pObj) {
 		$this->pObj = $pObj;
@@ -43,45 +44,46 @@ class tx_templavoila_cm1_dsEdit {
 	/**
 	 * Creates the editing row for a Data Structure element - when DS's are build...
 	 *
-	 * @param	string		Form element prefix
-	 * @param	string		Key for form element
-	 * @param	array		Values for element
-	 * @param	integer		Indentation level
-	 * @param	array		Array containing mapping links and commands
-	 * @return	array		Two values, first is addEditRows (string HTML content), second is boolean whether to place row before or after.
+	 * @param    string        Form element prefix
+	 * @param    string        Key for form element
+	 * @param    array        Values for element
+	 * @param    integer        Indentation level
+	 * @param    array        Array containing mapping links and commands
+	 *
+	 * @return    array        Two values, first is addEditRows (string HTML content), second is boolean whether to place row before or after.
 	 */
 	function drawDataStructureMap_editItem($formPrefix, $key, $value, $level, $rowCells) {
 
-			// Init:
-		$addEditRows='';
-		$placeBefore=0;
+		// Init:
+		$addEditRows = '';
+		$placeBefore = 0;
 
-			// If editing command is set:
-		if ($this->pObj->editDataStruct)	{
-			if ($this->pObj->DS_element == $formPrefix.'['.$key.']')	{	// If the editing-command points to this element:
+		// If editing command is set:
+		if ($this->pObj->editDataStruct) {
+			if ($this->pObj->DS_element == $formPrefix . '[' . $key . ']') { // If the editing-command points to this element:
 
-					// Initialize, detecting either "add" or "edit" (default) mode:
-				$autokey='';
-				if ($this->pObj->DS_cmd=='add')	{
-					if (trim($this->pObj->fieldName)!='[' . htmlspecialchars($GLOBALS['LANG']->getLL('mapEnterNewFieldname')) . ']' && trim($this->pObj->fieldName)!='field_')	{
+				// Initialize, detecting either "add" or "edit" (default) mode:
+				$autokey = '';
+				if ($this->pObj->DS_cmd == 'add') {
+					if (trim($this->pObj->fieldName) != '[' . htmlspecialchars($GLOBALS['LANG']->getLL('mapEnterNewFieldname')) . ']' && trim($this->pObj->fieldName) != 'field_') {
 						$autokey = strtolower(preg_replace('/[^a-z0-9_]/i', '', trim($this->pObj->fieldName)));
-						if (isset($value['el'][$autokey]))	{
+						if (isset($value['el'][$autokey])) {
 							$autokey .= '_' . substr(md5(microtime()), 0, 2);
 						}
 					} else {
 						$autokey = 'field_' . substr(md5(microtime()), 0, 6);
 					}
 
-						// new entries are more offset
+					// new entries are more offset
 					$level = $level + 1;
 
-					$formFieldName = 'autoDS'.$formPrefix.'['.$key.'][el]['.$autokey.']';
-					$insertDataArray=array();
+					$formFieldName = 'autoDS' . $formPrefix . '[' . $key . '][el][' . $autokey . ']';
+					$insertDataArray = array();
 				} else {
 					$placeBefore = 1;
 
-					$formFieldName = 'autoDS'.$formPrefix.'['.$key.']';
-					$insertDataArray=$value;
+					$formFieldName = 'autoDS' . $formPrefix . '[' . $key . ']';
+					$insertDataArray = $value;
 				}
 
 				/* put these into array-form for preset-completition */
@@ -95,16 +97,16 @@ class tx_templavoila_cm1_dsEdit {
 				$this->pObj->eTypes->substEtypeWithRealStuff($real);
 
 				/* ... */
-				if ($insertDataArray['type'] == 'array' && 	$insertDataArray['section']) {
+				if ($insertDataArray['type'] == 'array' && $insertDataArray['section']) {
 					$insertDataArray['type'] = 'section';
 				}
 
 				$eTypes = $this->pObj->eTypes->defaultEtypes();
-				$eTypes_formFields = t3lib_div::trimExplode(',', $eTypes['defaultTypes_formFields']);
-				$eTypes_typoscriptElements = t3lib_div::trimExplode(',', $eTypes['defaultTypes_typoscriptElements']);
-				$eTypes_misc = t3lib_div::trimExplode(',', $eTypes['defaultTypes_misc']);
+				$eTypes_formFields = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $eTypes['defaultTypes_formFields']);
+				$eTypes_typoscriptElements = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $eTypes['defaultTypes_typoscriptElements']);
+				$eTypes_misc = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $eTypes['defaultTypes_misc']);
 
-					// Create form:
+				// Create form:
 				/* The basic XML-structure of an tx_templavoila-entry is:
 				 *
 				 * <tx_templavoila>
@@ -124,8 +126,8 @@ class tx_templavoila_cm1_dsEdit {
 					<dt><label>' . $GLOBALS['LANG']->getLL('renderDSO_mappingInstructions') . ':</label></dt>
 					<dd><input type="text" size="40" name="' . $formFieldName . '[tx_templavoila][description]" value="' . htmlspecialchars($insertDataArray['tx_templavoila']['description']) . '" /></dd>';
 
-					if ($insertDataArray['type'] != 'array' && $insertDataArray['type'] != 'section') {
-						$form .= '
+				if ($insertDataArray['type'] != 'array' && $insertDataArray['type'] != 'section') {
+					$form .= '
 					<!-- non-array options ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 					<dt><label>' . $GLOBALS['LANG']->getLL('mapSampleData') . ':</label></dt>
 					<dd><textarea cols="40" rows="5" name="' . $formFieldName . '[tx_templavoila][sample_data][]">' . htmlspecialchars($insertDataArray['tx_templavoila']['sample_data'][0]) . '</textarea>
@@ -134,40 +136,39 @@ class tx_templavoila_cm1_dsEdit {
 					<dt><label>' . $GLOBALS['LANG']->getLL('mapElementPreset') . ':</label></dt>
 					<dd><select name="' . $formFieldName . '[tx_templavoila][eType]">
 						<optgroup class="c-divider" label="' . $GLOBALS['LANG']->getLL('mapPresetGroups_tceFields') . '">';
-						foreach ($eTypes_formFields as $eType) {
-							$label = htmlspecialchars($eType == 'ce' ?
-									sprintf($eTypes['eType'][$eType]['label'], $insertDataArray['tx_templavoila']['oldStyleColumnNumber'] ? intval($insertDataArray['tx_templavoila']['oldStyleColumnNumber']) : $this->oldStyleColumnNumber) :
-									$eTypes['eType'][$eType]['label']);
-							$form .= chr(10) . '<option value="' . $eType . '"' . ($insertDataArray['tx_templavoila']['eType'] == $eType ? ' selected="selected"' : '') . '>' . $label . '</option>';
-						}
-						$form .= '
+					foreach ($eTypes_formFields as $eType) {
+						$label = htmlspecialchars($eType == 'ce' ?
+							sprintf($eTypes['eType'][$eType]['label'], $insertDataArray['tx_templavoila']['oldStyleColumnNumber'] ? intval($insertDataArray['tx_templavoila']['oldStyleColumnNumber']) : $this->oldStyleColumnNumber) :
+							$eTypes['eType'][$eType]['label']);
+						$form .= chr(10) . '<option value="' . $eType . '"' . ($insertDataArray['tx_templavoila']['eType'] == $eType ? ' selected="selected"' : '') . '>' . $label . '</option>';
+					}
+					$form .= '
 						</optgroup>
 						<optgroup class="c-divider" label="' . $GLOBALS['LANG']->getLL('mapPresetGroups_ts') . '">';
-						foreach ($eTypes_typoscriptElements as $eType) {
-							$form .= chr(10) . '<option value="' . $eType . '"' . ($insertDataArray['tx_templavoila']['eType'] == $eType ? ' selected="selected"' : '') . '>' . htmlspecialchars($eTypes['eType'][$eType]['label']) . '</option>';
-						}
-						$form .= '
+					foreach ($eTypes_typoscriptElements as $eType) {
+						$form .= chr(10) . '<option value="' . $eType . '"' . ($insertDataArray['tx_templavoila']['eType'] == $eType ? ' selected="selected"' : '') . '>' . htmlspecialchars($eTypes['eType'][$eType]['label']) . '</option>';
+					}
+					$form .= '
 						</optgroup>
 						<optgroup class="c-divider" label="' . $GLOBALS['LANG']->getLL('mapPresetGroups_other') . '">';
-						foreach ($eTypes_misc as $eType) {
-							$form .= chr(10) . '<option value="' . $eType . '"' . ($insertDataArray['tx_templavoila']['eType'] == $eType ? ' selected="selected"' : '') . '>' . htmlspecialchars($eTypes['eType'][$eType]['label']) . '</option>';
-						}
-						$form .= '
+					foreach ($eTypes_misc as $eType) {
+						$form .= chr(10) . '<option value="' . $eType . '"' . ($insertDataArray['tx_templavoila']['eType'] == $eType ? ' selected="selected"' : '') . '>' . htmlspecialchars($eTypes['eType'][$eType]['label']) . '</option>';
+					}
+					$form .= '
 						</optgroup>
 					</select><p>' . $GLOBALS['LANG']->getLL('mapWarningElementChange') . '</p><input type="hidden"
-						name="'.$formFieldName.'[tx_templavoila][eType_before]"
-						value="'.$insertDataArray['tx_templavoila']['eType'].'" /></dd>';
-					}
+						name="' . $formFieldName . '[tx_templavoila][eType_before]"
+						value="' . $insertDataArray['tx_templavoila']['eType'] . '" /></dd>';
+				}
 
-					$form .= '
+				$form .= '
 					<dt><label>Mapping rules:</label></dt>
-					<dd><input type="text" size="40" name="'.$formFieldName.'[tx_templavoila][tags]" value="'.htmlspecialchars($insertDataArray['tx_templavoila']['tags']).'" /></dd>
+					<dd><input type="text" size="40" name="' . $formFieldName . '[tx_templavoila][tags]" value="' . htmlspecialchars($insertDataArray['tx_templavoila']['tags']) . '" /></dd>
 				</dl>';
 
-
-
 				if (($insertDataArray['type'] != 'array') &&
-					($insertDataArray['type'] != 'section')) {
+					($insertDataArray['type'] != 'section')
+				) {
 					/* The Typoscript-related XML-structure of an tx_templavoila-entry is:
 					 *
 					 * <tx_templavoila>
@@ -175,14 +176,15 @@ class tx_templavoila_cm1_dsEdit {
 					 * 	<TypoScript>		->
 					 * </tx_templavoila>
 					 */
-					if ($insertDataArray['tx_templavoila']['eType'] != 'TypoScriptObject')
-					$form .= '
+					if ($insertDataArray['tx_templavoila']['eType'] != 'TypoScriptObject') {
+						$form .= '
 					<dl id="dsel-ts" class="DS-config">
 						<dt><label>' . $GLOBALS['LANG']->getLL('mapTSconstants') . ':</label></dt>
-						<dd><textarea class="xml enable-tab" cols="40" rows="10" wrap="off" name="'.$formFieldName.'[tx_templavoila][TypoScript_constants]">'.htmlspecialchars($this->pObj->flattenarray($insertDataArray['tx_templavoila']['TypoScript_constants'])).'</textarea></dd>
+						<dd><textarea class="xml enable-tab" cols="40" rows="10" wrap="off" name="' . $formFieldName . '[tx_templavoila][TypoScript_constants]">' . htmlspecialchars($this->pObj->flattenarray($insertDataArray['tx_templavoila']['TypoScript_constants'])) . '</textarea></dd>
 						<dt><label>' . $GLOBALS['LANG']->getLL('mapTScode') . ':</label></dt>
-						<dd><textarea class="code enable-tab" cols="40" rows="10" wrap="off" name="'.$formFieldName.'[tx_templavoila][TypoScript]">'.htmlspecialchars($insertDataArray['tx_templavoila']['TypoScript']).'</textarea></dd>
+						<dd><textarea class="code enable-tab" cols="40" rows="10" wrap="off" name="' . $formFieldName . '[tx_templavoila][TypoScript]">' . htmlspecialchars($insertDataArray['tx_templavoila']['TypoScript']) . '</textarea></dd>
 					</dl>';
+					}
 
 					/* The Typoscript-related XML-structure of an tx_templavoila-entry is:
 					 *
@@ -191,7 +193,7 @@ class tx_templavoila_cm1_dsEdit {
 					 * </tx_templavoila>
 					 */
 
-					if (isset($insertDataArray['tx_templavoila']['TypoScriptObjPath'])){
+					if (isset($insertDataArray['tx_templavoila']['TypoScriptObjPath'])) {
 						$curValue = array('objPath' => $insertDataArray['tx_templavoila']['TypoScriptObjPath']);
 					} elseif (isset($insertDataArray['tx_templavoila']['eType_EXTRA'])) {
 						$curValue = $insertDataArray['tx_templavoila']['eType_EXTRA'];
@@ -236,12 +238,12 @@ class tx_templavoila_cm1_dsEdit {
 						</dd>
 
 						<dt><label>' . $GLOBALS['LANG']->getLL('mapCustomStdWrap') . ':</label></dt>
-						<dd><textarea class="code" cols="40" rows="10" name="'.$formFieldName.'[tx_templavoila][proc][stdWrap]">'.htmlspecialchars($insertDataArray['tx_templavoila']['proc']['stdWrap']).'</textarea></dd>
+						<dd><textarea class="code" cols="40" rows="10" name="' . $formFieldName . '[tx_templavoila][proc][stdWrap]">' . htmlspecialchars($insertDataArray['tx_templavoila']['proc']['stdWrap']) . '</textarea></dd>
 
 						<dt><label>' . $GLOBALS['LANG']->getLL('mapEnablePreview') . ':</label></dt>
 						<dd>
-							<input type="radio" class="radio" id="tv_preview_enable" value="" name="'.$formFieldName.'[tx_templavoila][preview]" ' . ($insertDataArray['tx_templavoila']['preview'] != 'disable' ? 'checked="checked"' : '') .'> <label for="tv_preview_enable">' . $GLOBALS['LANG']->getLL('mapEnablePreview.enable') . '</label><br/>
-							<input type="radio" class="radio" id="tv_preview_disable" value="disable" name="'.$formFieldName.'[tx_templavoila][preview]" ' . ($insertDataArray['tx_templavoila']['preview'] == 'disable' ? 'checked="checked"' : '') .'> <label for="tv_preview_disable">' . $GLOBALS['LANG']->getLL('mapEnablePreview.disable') . '</label>
+							<input type="radio" class="radio" id="tv_preview_enable" value="" name="' . $formFieldName . '[tx_templavoila][preview]" ' . ($insertDataArray['tx_templavoila']['preview'] != 'disable' ? 'checked="checked"' : '') . '> <label for="tv_preview_enable">' . $GLOBALS['LANG']->getLL('mapEnablePreview.enable') . '</label><br/>
+							<input type="radio" class="radio" id="tv_preview_disable" value="disable" name="' . $formFieldName . '[tx_templavoila][preview]" ' . ($insertDataArray['tx_templavoila']['preview'] == 'disable' ? 'checked="checked"' : '') . '> <label for="tv_preview_disable">' . $GLOBALS['LANG']->getLL('mapEnablePreview.disable') . '</label>
 						</dd>';
 					if ($insertDataArray['tx_templavoila']['eType'] === 'ce') {
 						if (!isset($insertDataArray['tx_templavoila']['oldStyleColumnNumber'])) {
@@ -264,8 +266,6 @@ class tx_templavoila_cm1_dsEdit {
 					}
 					$form .= '</dl>';
 
-
-
 					/* The basic XML-structure of an TCEforms-entry is:
 					 *
 					 * <TCEforms>
@@ -273,36 +273,36 @@ class tx_templavoila_cm1_dsEdit {
 					 * 	<config>		-> TCE-configuration array
 					 * </TCEforms>
 					 */
-					if ($insertDataArray['tx_templavoila']['eType'] != 'TypoScriptObject')
-					$form .= '
+					if ($insertDataArray['tx_templavoila']['eType'] != 'TypoScriptObject') {
+						$form .= '
 					<dl id="dsel-tce" class="DS-config">
 						<dt><label>' . $GLOBALS['LANG']->getLL('mapTCElabel') . ':</label></dt>
-						<dd><input type="text" size="40" name="'.$formFieldName.'[TCEforms][label]" value="'.htmlspecialchars($insertDataArray['TCEforms']['label']).'" /></dd>
+						<dd><input type="text" size="40" name="' . $formFieldName . '[TCEforms][label]" value="' . htmlspecialchars($insertDataArray['TCEforms']['label']) . '" /></dd>
 
 						<dt><label>' . $GLOBALS['LANG']->getLL('mapTCEconf') . ':</label></dt>
-						<dd><textarea class="xml" cols="40" rows="10" name="'.$formFieldName.'[TCEforms][config]">'.htmlspecialchars($this->pObj->flattenarray($insertDataArray['TCEforms']['config'])).'</textarea></dd>
+						<dd><textarea class="xml" cols="40" rows="10" name="' . $formFieldName . '[TCEforms][config]">' . htmlspecialchars($this->pObj->flattenarray($insertDataArray['TCEforms']['config'])) . '</textarea></dd>
 
 						<dt><label>' . $GLOBALS['LANG']->getLL('mapTCEextras') . ':</label></dt>
-						<dd><input type="text" size="40" name="'.$formFieldName.'[TCEforms][defaultExtras]" value="'.htmlspecialchars($insertDataArray['TCEforms']['defaultExtras']).'" /></dd>
+						<dd><input type="text" size="40" name="' . $formFieldName . '[TCEforms][defaultExtras]" value="' . htmlspecialchars($insertDataArray['TCEforms']['defaultExtras']) . '" /></dd>
 					</dl>';
+					}
 				} else {
 					$form .= '
 						<dl id="dsel-proc" class="DS-config">
 							<dt><label>' . $GLOBALS['LANG']->getLL('mapEnablePreview') . ':</label></dt>
 							<dd>
-								<input type="radio" class="radio" id="tv_preview_enable" value="" name="'.$formFieldName.'[tx_templavoila][preview]" ' . ($insertDataArray['tx_templavoila']['preview'] != 'disable' ? 'checked="checked"' : '') .'> <label for="tv_preview_enable">' . $GLOBALS['LANG']->getLL('mapEnablePreview.enable') . '</label><br/>
-								<input type="radio" class="radio" id="tv_preview_disable" value="disable" name="'.$formFieldName.'[tx_templavoila][preview]" ' . ($insertDataArray['tx_templavoila']['preview'] == 'disable' ? 'checked="checked"' : '') .'> <label for="tv_preview_disable">' . $GLOBALS['LANG']->getLL('mapEnablePreview.disable') . '</label>
+								<input type="radio" class="radio" id="tv_preview_enable" value="" name="' . $formFieldName . '[tx_templavoila][preview]" ' . ($insertDataArray['tx_templavoila']['preview'] != 'disable' ? 'checked="checked"' : '') . '> <label for="tv_preview_enable">' . $GLOBALS['LANG']->getLL('mapEnablePreview.enable') . '</label><br/>
+								<input type="radio" class="radio" id="tv_preview_disable" value="disable" name="' . $formFieldName . '[tx_templavoila][preview]" ' . ($insertDataArray['tx_templavoila']['preview'] == 'disable' ? 'checked="checked"' : '') . '> <label for="tv_preview_disable">' . $GLOBALS['LANG']->getLL('mapEnablePreview.disable') . '</label>
 							</dd>
 						</dl>';
 				}
 
 				$formSubmit = '
-					<input type="hidden" name="DS_element" value="'.htmlspecialchars($this->pObj->DS_cmd=='add' ? $this->pObj->DS_element.'[el]['.$autokey.']' : $this->pObj->DS_element).'" />
-					<input type="submit" name="_updateDS" value="'.($this->pObj->DS_cmd=='add' ? $GLOBALS['LANG']->getLL('buttonAdd') : $GLOBALS['LANG']->getLL('buttonUpdate')).'" />
-					<!--	<input type="submit" name="'.$formFieldName.'" value="' . $GLOBALS['LANG']->getLL('buttonDelete') . ' (!)" />  -->
-					<input type="submit" name="_" value="'.($this->pObj->DS_cmd=='add' ? $GLOBALS['LANG']->getLL('buttonCancel') : $GLOBALS['LANG']->getLL('buttonCancelClose')).'" onclick="document.location=\''.$this->pObj->linkThisScript().'\'; return false;" />
+					<input type="hidden" name="DS_element" value="' . htmlspecialchars($this->pObj->DS_cmd == 'add' ? $this->pObj->DS_element . '[el][' . $autokey . ']' : $this->pObj->DS_element) . '" />
+					<input type="submit" name="_updateDS" value="' . ($this->pObj->DS_cmd == 'add' ? $GLOBALS['LANG']->getLL('buttonAdd') : $GLOBALS['LANG']->getLL('buttonUpdate')) . '" />
+					<!--	<input type="submit" name="' . $formFieldName . '" value="' . $GLOBALS['LANG']->getLL('buttonDelete') . ' (!)" />  -->
+					<input type="submit" name="_" value="' . ($this->pObj->DS_cmd == 'add' ? $GLOBALS['LANG']->getLL('buttonCancel') : $GLOBALS['LANG']->getLL('buttonCancelClose')) . '" onclick="document.location=\'' . $this->pObj->linkThisScript() . '\'; return false;" />
 				';
-
 
 				/* The basic XML-structure of an entry is:
 				 *
@@ -314,40 +314,40 @@ class tx_templavoila_cm1_dsEdit {
 				 * </element>
 				 */
 
-					// Icons:
+				// Icons:
 				$info = $this->pObj->dsTypeInfo($insertDataArray);
 
 				// Find "select" style. This is necessary because Safari
 				// does not support paddings in select elements but supports
 				// backgrounds. The rest is text over background.
 				$selectStyle = 'margin: 4px 0; width: 150px !important; display: block;';
-				$userAgent = t3lib_div::getIndpEnv('HTTP_USER_AGENT');
-				if (strpos($userAgent, 'WebKit') === false) {
+				$userAgent = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_USER_AGENT');
+				if (strpos($userAgent, 'WebKit') === FALSE) {
 					// Not Safai (Can't have "padding" for select elements in Safari)
 					$selectStyle .= 'padding: 1px 1px 1px 30px; background: 0 50% url(' . $info[3] . ') no-repeat;';
 				}
 
-				$addEditRows='<tr class="tv-edit-row">
-					<td valign="top" style="padding: 0.5em; padding-left: '.(($level)*16+3).'px" nowrap="nowrap" rowspan="2">
-						<select style="' . $selectStyle . '" title="Mapping Type" name="'.$formFieldName.'[type]">
+				$addEditRows = '<tr class="tv-edit-row">
+					<td valign="top" style="padding: 0.5em; padding-left: ' . (($level) * 16 + 3) . 'px" nowrap="nowrap" rowspan="2">
+						<select style="' . $selectStyle . '" title="Mapping Type" name="' . $formFieldName . '[type]">
 							<optgroup class="c-divider" label="' . $GLOBALS['LANG']->getLL('mapElContainers') . '">
-								<option style="padding: 1px 1px 1px 30px; background: 0 50% url(' . $this->pObj->dsTypes['sc'][3] . ') no-repeat;" value="section"'. ($insertDataArray['type']=='section' ? ' selected="selected"' : '').'>' . $GLOBALS['LANG']->getLL('mapSection') . '</option>
-								<option style="padding: 1px 1px 1px 30px; background: 0 50% url(' . $this->pObj->dsTypes['co'][3] . ') no-repeat;" value="array"'.   ($insertDataArray['type']=='array'   ? ' selected="selected"' : '').'>' . $GLOBALS['LANG']->getLL('mapContainer') . '</option>
+								<option style="padding: 1px 1px 1px 30px; background: 0 50% url(' . $this->pObj->dsTypes['sc'][3] . ') no-repeat;" value="section"' . ($insertDataArray['type'] == 'section' ? ' selected="selected"' : '') . '>' . $GLOBALS['LANG']->getLL('mapSection') . '</option>
+								<option style="padding: 1px 1px 1px 30px; background: 0 50% url(' . $this->pObj->dsTypes['co'][3] . ') no-repeat;" value="array"' . ($insertDataArray['type'] == 'array' ? ' selected="selected"' : '') . '>' . $GLOBALS['LANG']->getLL('mapContainer') . '</option>
 							</optgroup>
 							<optgroup class="c-divider" label="' . $GLOBALS['LANG']->getLL('mapElElements') . '">
-								<option style="padding: 1px 1px 1px 30px; background: 0 50% url(' . $this->pObj->dsTypes['el'][3] . ') no-repeat;" value=""'.        ($insertDataArray['type']==''        ? ' selected="selected"' : '').'>' . $GLOBALS['LANG']->getLL('mapElement') . '</option>
-								<option style="padding: 1px 1px 1px 30px; background: 0 50% url(' . $this->pObj->dsTypes['at'][3] . ') no-repeat;" value="attr"'.    ($insertDataArray['type']=='attr'    ? ' selected="selected"' : '').'>' . $GLOBALS['LANG']->getLL('mapAttribute') . '</option>
+								<option style="padding: 1px 1px 1px 30px; background: 0 50% url(' . $this->pObj->dsTypes['el'][3] . ') no-repeat;" value=""' . ($insertDataArray['type'] == '' ? ' selected="selected"' : '') . '>' . $GLOBALS['LANG']->getLL('mapElement') . '</option>
+								<option style="padding: 1px 1px 1px 30px; background: 0 50% url(' . $this->pObj->dsTypes['at'][3] . ') no-repeat;" value="attr"' . ($insertDataArray['type'] == 'attr' ? ' selected="selected"' : '') . '>' . $GLOBALS['LANG']->getLL('mapAttribute') . '</option>
 							</optgroup>
 							<optgroup class="c-divider" label="' . $GLOBALS['LANG']->getLL('mapPresetGroups_other') . '">
-								<option style="padding: 1px 1px 1px 30px; background: 0 50% url(' . $this->pObj->dsTypes['no'][3] . ') no-repeat;" value="no_map"'.  ($insertDataArray['type']=='no_map'  ? ' selected="selected"' : '').'>' . $GLOBALS['LANG']->getLL('mapNotMapped') . '</option>
+								<option style="padding: 1px 1px 1px 30px; background: 0 50% url(' . $this->pObj->dsTypes['no'][3] . ') no-repeat;" value="no_map"' . ($insertDataArray['type'] == 'no_map' ? ' selected="selected"' : '') . '>' . $GLOBALS['LANG']->getLL('mapNotMapped') . '</option>
 							</optgroup>
 						</select>
 						<div style="margin: 0.25em;">' .
-							($this->pObj->DS_cmd=='add' ? $autokey . ' <strong>(new)</strong>:<br />' : $key) .
-						'</div>
-						<input id="dsel-act" type="hidden" name="dsel_act" />
-						<ul id="dsel-menu" class="DS-tree">
-							<li><a id="dssel-general" class="active" href="#" onclick="" title="' . $GLOBALS['LANG']->getLL('mapEditConfiguration') . '">' . $GLOBALS['LANG']->getLL('mapConfiguration') . '</a>
+					($this->pObj->DS_cmd == 'add' ? $autokey . ' <strong>(new)</strong>:<br />' : $key) .
+					'</div>
+					<input id="dsel-act" type="hidden" name="dsel_act" />
+					<ul id="dsel-menu" class="DS-tree">
+						<li><a id="dssel-general" class="active" href="#" onclick="" title="' . $GLOBALS['LANG']->getLL('mapEditConfiguration') . '">' . $GLOBALS['LANG']->getLL('mapConfiguration') . '</a>
 								<ul>
 									<li><a id="dssel-proc" href="#" title="' . $GLOBALS['LANG']->getLL('mapEditDataProcessing') . '">' . $GLOBALS['LANG']->getLL('mapDataProcessing') . '</a></li>
 									<li><a id="dssel-ts" href="#" title="' . $GLOBALS['LANG']->getLL('mapEditTyposcript') . '">' . $GLOBALS['LANG']->getLL('mapTyposcript') . '</a></li>
@@ -360,9 +360,9 @@ class tx_templavoila_cm1_dsEdit {
 					</td>
 
 					<td valign="top" style="padding: 0.5em;" colspan="2">
-						'.$form.'
+						' . $form . '
 						<script type="text/javascript">
-							var dsel_act = "' . (t3lib_div::_GP('dsel_act') ? t3lib_div::_GP('dsel_act') : 'general') . '";
+							var dsel_act = "' . (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('dsel_act') ? \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('dsel_act') : 'general') . '";
 							var dsel_menu = [
 								{"id" : "general",		"avail" : true,	"label" : "' . $GLOBALS['LANG']->getLL('mapConfiguration') . '",	"title" : "' . $GLOBALS['LANG']->getLL('mapEditConfiguration') . '",	"childs" : [
 									{"id" : "ts",		"avail" : true,	"label" : "' . $GLOBALS['LANG']->getLL('mapDataProcessing') . '",	"title" : "' . $GLOBALS['LANG']->getLL('mapEditDataProcessing') . '"},
@@ -407,9 +407,9 @@ class tx_templavoila_cm1_dsEdit {
 							dsel_menu_reset();
 						</script>
 					</td>
-					<td>' . ($this->pObj->DS_cmd=='add' ? '' : $rowCells['htmlPath']) . '</td>
-					<td>' . ($this->pObj->DS_cmd=='add' ? '' : $rowCells['cmdLinks']) . '</td>
-					<td>' . ($this->pObj->DS_cmd=='add' ? '' : $rowCells['tagRules']) . '</td>
+					<td>' . ($this->pObj->DS_cmd == 'add' ? '' : $rowCells['htmlPath']) . '</td>
+					<td>' . ($this->pObj->DS_cmd == 'add' ? '' : $rowCells['cmdLinks']) . '</td>
+					<td>' . ($this->pObj->DS_cmd == 'add' ? '' : $rowCells['tagRules']) . '</td>
 					<td colspan="2"></td>
 				</tr>
 				<tr class="tv-edit-row">
@@ -417,43 +417,44 @@ class tx_templavoila_cm1_dsEdit {
 					' . $formSubmit . '
 					</td>
 				</tr>';
-			} elseif (($value['type']=='array' || $value['type']=='section') && !$this->pObj->mapElPath) {
-				$addEditRows='<tr class="bgColor4">
-					<td colspan="7"><img src="clear.gif" width="'.(($level+1)*16).'" height="1" alt="" />'.
-					'<input type="text" name="'.md5($formPrefix.'['.$key.']').'" value="[' . htmlspecialchars($GLOBALS['LANG']->getLL('mapEnterNewFieldname')) . ']" onfocus="if (this.value==\'[' . $GLOBALS['LANG']->getLL('mapEnterNewFieldname') . ']\'){this.value=\'field_\';}" />'.
-					'<input type="submit" name="_" value="Add" onclick="document.location=\''.$this->pObj->linkThisScript(array('DS_element'=>$formPrefix.'['.$key.']','DS_cmd'=>'add')).'&amp;fieldName=\'+document.pageform[\''.md5($formPrefix.'['.$key.']').'\'].value; return false;" />'.
-					$this->pObj->cshItem('xMOD_tx_templavoila','mapping_addfield',$this->pObj->doc->backPath,'',FALSE,'margin-bottom: 0px;').
+			} elseif (($value['type'] == 'array' || $value['type'] == 'section') && !$this->pObj->mapElPath) {
+				$addEditRows = '<tr class="bgColor4">
+					<td colspan="7"><img src="clear.gif" width="' . (($level + 1) * 16) . '" height="1" alt="" />' .
+					'<input type="text" name="' . md5($formPrefix . '[' . $key . ']') . '" value="[' . htmlspecialchars($GLOBALS['LANG']->getLL('mapEnterNewFieldname')) . ']" onfocus="if (this.value==\'[' . $GLOBALS['LANG']->getLL('mapEnterNewFieldname') . ']\'){this.value=\'field_\';}" />' .
+					'<input type="submit" name="_" value="Add" onclick="document.location=\'' . $this->pObj->linkThisScript(array('DS_element' => $formPrefix . '[' . $key . ']', 'DS_cmd' => 'add')) . '&amp;fieldName=\'+document.pageform[\'' . md5($formPrefix . '[' . $key . ']') . '\'].value; return false;" />' .
+					$this->pObj->cshItem('xMOD_tx_templavoila', 'mapping_addfield', $this->pObj->doc->backPath, '', FALSE, 'margin-bottom: 0px;') .
 					'</td>
 				</tr>';
 			}
 		}
 
-			// Return edit row:
-		return array($addEditRows,$placeBefore);
+		// Return edit row:
+		return array($addEditRows, $placeBefore);
 	}
 
 	/**
 	 * Renders extra form fields for configuration of the Editing Types.
 	 *
-	 * @param	string		Editing Type string
-	 * @param	string		Form field name prefix
-	 * @param	array		Current values for the form field name prefix.
-	 * @param	string		Templavoila field name.
-	 * @return	string		HTML with extra form fields
-	 * @access	private
+	 * @param    string        Editing Type string
+	 * @param    string        Form field name prefix
+	 * @param    array        Current values for the form field name prefix.
+	 * @param    string        Templavoila field name.
+	 *
+	 * @return    string        HTML with extra form fields
+	 * @access    private
 	 * @see drawDataStructureMap_editItem()
 	 */
-	function drawDataStructureMap_editItem_editTypeExtra($type, $formFieldName, $curValue, $key = '')	{
-			// If a user function was registered, use that instead of our own handlers:
+	function drawDataStructureMap_editItem_editTypeExtra($type, $formFieldName, $curValue, $key = '') {
+		// If a user function was registered, use that instead of our own handlers:
 		if (isset ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['cm1']['eTypesExtraFormFields'][$type])) {
-			$_params = array (
+			$_params = array(
 				'type' => $type,
 				'formFieldName' => $formFieldName . '[tx_templavoila][eType_EXTRA]',
 				'curValue' => $curValue,
 			);
-			$output = t3lib_div::callUserFunction($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['cm1']['eTypesExtraFormFields'][$type], $_params, $this);
+			$output = \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['cm1']['eTypesExtraFormFields'][$type], $_params, $this);
 		} else {
-			switch($type)	{
+			switch ($type) {
 				case 'TypoScriptObject':
 					$value = $curValue['objPath'] ? $curValue['objPath'] : 'lib.' . $key;
 					$output = '
@@ -461,21 +462,21 @@ class tx_templavoila_cm1_dsEdit {
 							<tr>
 								<td>' . $GLOBALS['LANG']->getLL('mapObjectPath') . ':</td>
 								<td>
-									<input type="text" name="' . $formFieldName . '[tx_templavoila][eType_EXTRA][objPath]" value="'.htmlspecialchars($value) . '" onchange="$(\'hiddenTypoScriptObjPath\').value=this.value;" />
-									<input type="hidden" id="hiddenTypoScriptObjPath" name="' . $formFieldName . '[tx_templavoila][TypoScriptObjPath]" value="'.htmlspecialchars($value) . '" />
+									<input type="text" name="' . $formFieldName . '[tx_templavoila][eType_EXTRA][objPath]" value="' . htmlspecialchars($value) . '" onchange="$(\'hiddenTypoScriptObjPath\').value=this.value;" />
+									<input type="hidden" id="hiddenTypoScriptObjPath" name="' . $formFieldName . '[tx_templavoila][TypoScriptObjPath]" value="' . htmlspecialchars($value) . '" />
 
 								</td>
 							</tr>
 						</table>';
-				break;
+					break;
 			}
 		}
+
 		return $output;
 	}
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/cm1/class.tx_templavoila_cm1_dsedit.php'])    {
-    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/cm1/class.tx_templavoila_cm1_dsedit.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/cm1/class.tx_templavoila_cm1_dsedit.php']) {
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/cm1/class.tx_templavoila_cm1_dsedit.php']);
 }
 
-?>

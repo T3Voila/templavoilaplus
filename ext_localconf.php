@@ -1,18 +1,20 @@
 <?php
 # TYPO3 CVS ID: $Id$
-if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
+if (!defined('TYPO3_MODE')) {
+	die ('Access denied.');
+}
 
 // unserializing the configuration so we can use it here:
 $_EXTCONF = unserialize($_EXTCONF);
 
-	// Adding the two plugins TypoScript:
-t3lib_extMgm::addPItoST43($_EXTKEY,'pi1/class.tx_templavoila_pi1.php','_pi1','CType',1);
+// Adding the two plugins TypoScript:
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPItoST43($_EXTKEY, 'pi1/class.tx_templavoila_pi1.php', '_pi1', 'CType', 1);
 $tvSetup = array('plugin.tx_templavoila_pi1.disableExplosivePreview = 1');
 if (!$_EXTCONF['enable.']['renderFCEHeader']) {
 	$tvSetup[] = 'tt_content.templavoila_pi1.10 >';
 }
 
-		//sectionIndex replacement
+//sectionIndex replacement
 $tvSetup[] = 'tt_content.menu.20.3 = USER
 	tt_content.menu.20.3.userFunc = tx_templavoila_pi1->tvSectionIndex
 	tt_content.menu.20.3.select.where >
@@ -20,10 +22,10 @@ $tvSetup[] = 'tt_content.menu.20.3 = USER
 ';
 
 
-t3lib_extMgm::addTypoScript($_EXTKEY,'setup',implode(PHP_EOL, $tvSetup), 43);
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript($_EXTKEY, 'setup', implode(PHP_EOL, $tvSetup), 43);
 
-	// Use templavoila's wizard instead the default create new page wizard
-t3lib_extMgm::addPageTSConfig('
+// Use templavoila's wizard instead the default create new page wizard
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('
     mod.web_list.newPageWiz.overrideWithExtension = templavoila
 	mod.web_list.newContentWiz.overrideWithExtension = templavoila
 	mod.web_txtemplavoilaM2.templatePath = templates,default/templates
@@ -34,16 +36,16 @@ t3lib_extMgm::addPageTSConfig('
 	mod.web_txtemplavoilaM1.adminOnlyPageStructureInheritance = fallback
 ');
 
- 	// Use templavoila instead of the default page module
- t3lib_extMgm::addUserTSConfig('
+// Use templavoila instead of the default page module
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addUserTSConfig('
  	options.overridePageModule = web_txtemplavoilaM1
 	mod.web_txtemplavoilaM1.sideBarEnable = 1
  ');
 
-	// Adding Page Template Selector Fields to root line:
-$GLOBALS['TYPO3_CONF_VARS']['FE']['addRootLineFields'].=',tx_templavoila_ds,tx_templavoila_to,tx_templavoila_next_ds,tx_templavoila_next_to';
+// Adding Page Template Selector Fields to root line:
+$GLOBALS['TYPO3_CONF_VARS']['FE']['addRootLineFields'] .= ',tx_templavoila_ds,tx_templavoila_to,tx_templavoila_next_ds,tx_templavoila_next_to';
 
-	// Register our classes at a the hooks:
+// Register our classes at a the hooks:
 $GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass']['templavoila'] = 'EXT:templavoila/class.tx_templavoila_tcemain.php:tx_templavoila_tcemain';
 $GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass']['templavoila'] = 'EXT:templavoila/class.tx_templavoila_tcemain.php:tx_templavoila_tcemain';
 $GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['moveRecordClass']['templavoila'] = 'EXT:templavoila/class.tx_templavoila_tcemain.php:tx_templavoila_tcemain';
@@ -53,30 +55,30 @@ $GLOBALS ['TYPO3_CONF_VARS']['EXTCONF']['lowlevel']['cleanerModules']['tx_templa
 $GLOBALS ['TYPO3_CONF_VARS']['EXTCONF']['l10nmgr']['indexFilter']['tx_templavoila_usedCE'] = array('EXT:templavoila/class.tx_templavoila_usedce.php:tx_templavoila_usedCE');
 
 
-	// Register Preview Classes for Page Module
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['mod1']['renderPreviewContent']['default']           = 'EXT:templavoila/classes/preview/class.tx_templavoila_preview_default.php:&tx_templavoila_preview_default';
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['mod1']['renderPreviewContent']['text']              = 'EXT:templavoila/classes/preview/class.tx_templavoila_preview_type_text.php:&tx_templavoila_preview_type_text';
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['mod1']['renderPreviewContent']['table']             = 'EXT:templavoila/classes/preview/class.tx_templavoila_preview_type_text.php:&tx_templavoila_preview_type_text';
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['mod1']['renderPreviewContent']['mailform']          = 'EXT:templavoila/classes/preview/class.tx_templavoila_preview_type_text.php:&tx_templavoila_preview_type_text';
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['mod1']['renderPreviewContent']['header']            = 'EXT:templavoila/classes/preview/class.tx_templavoila_preview_type_header.php:&tx_templavoila_preview_type_header';
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['mod1']['renderPreviewContent']['multimedia']        = 'EXT:templavoila/classes/preview/class.tx_templavoila_preview_type_multimedia.php:&tx_templavoila_preview_type_multimedia';
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['mod1']['renderPreviewContent']['media']             = 'EXT:templavoila/classes/preview/class.tx_templavoila_preview_type_media.php:&tx_templavoila_preview_type_media';
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['mod1']['renderPreviewContent']['uploads']           = 'EXT:templavoila/classes/preview/class.tx_templavoila_preview_type_uploads.php:&tx_templavoila_preview_type_uploads';
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['mod1']['renderPreviewContent']['textpic']           = 'EXT:templavoila/classes/preview/class.tx_templavoila_preview_type_textpic.php:&tx_templavoila_preview_type_textpic';
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['mod1']['renderPreviewContent']['splash']            = 'EXT:templavoila/classes/preview/class.tx_templavoila_preview_type_textpic.php:&tx_templavoila_preview_type_textpic';
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['mod1']['renderPreviewContent']['image']             = 'EXT:templavoila/classes/preview/class.tx_templavoila_preview_type_image.php:&tx_templavoila_preview_type_image';
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['mod1']['renderPreviewContent']['bullets']           = 'EXT:templavoila/classes/preview/class.tx_templavoila_preview_type_bullets.php:&tx_templavoila_preview_type_bullets';
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['mod1']['renderPreviewContent']['html']              = 'EXT:templavoila/classes/preview/class.tx_templavoila_preview_type_html.php:&tx_templavoila_preview_type_html';
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['mod1']['renderPreviewContent']['menu']              = 'EXT:templavoila/classes/preview/class.tx_templavoila_preview_type_menu.php:&tx_templavoila_preview_type_menu';
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['mod1']['renderPreviewContent']['list']              = 'EXT:templavoila/classes/preview/class.tx_templavoila_preview_type_list.php:&tx_templavoila_preview_type_list';
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['mod1']['renderPreviewContent']['search']            = 'EXT:templavoila/classes/preview/class.tx_templavoila_preview_type_null.php:&tx_templavoila_preview_type_null';
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['mod1']['renderPreviewContent']['login']             = 'EXT:templavoila/classes/preview/class.tx_templavoila_preview_type_null.php:&tx_templavoila_preview_type_null';
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['mod1']['renderPreviewContent']['shortcut']          = 'EXT:templavoila/classes/preview/class.tx_templavoila_preview_type_null.php:&tx_templavoila_preview_type_null';
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['mod1']['renderPreviewContent']['div']               = 'EXT:templavoila/classes/preview/class.tx_templavoila_preview_type_null.php:&tx_templavoila_preview_type_null';
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['mod1']['renderPreviewContent']['templavoila_pi1']   = 'EXT:templavoila/classes/preview/class.tx_templavoila_preview_type_null.php:&tx_templavoila_preview_type_null';
+// Register Preview Classes for Page Module
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['mod1']['renderPreviewContent']['default'] = 'EXT:templavoila/classes/preview/class.tx_templavoila_preview_default.php:&tx_templavoila_preview_default';
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['mod1']['renderPreviewContent']['text'] = 'EXT:templavoila/classes/preview/class.tx_templavoila_preview_type_text.php:&tx_templavoila_preview_type_text';
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['mod1']['renderPreviewContent']['table'] = 'EXT:templavoila/classes/preview/class.tx_templavoila_preview_type_text.php:&tx_templavoila_preview_type_text';
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['mod1']['renderPreviewContent']['mailform'] = 'EXT:templavoila/classes/preview/class.tx_templavoila_preview_type_text.php:&tx_templavoila_preview_type_text';
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['mod1']['renderPreviewContent']['header'] = 'EXT:templavoila/classes/preview/class.tx_templavoila_preview_type_header.php:&tx_templavoila_preview_type_header';
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['mod1']['renderPreviewContent']['multimedia'] = 'EXT:templavoila/classes/preview/class.tx_templavoila_preview_type_multimedia.php:&tx_templavoila_preview_type_multimedia';
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['mod1']['renderPreviewContent']['media'] = 'EXT:templavoila/classes/preview/class.tx_templavoila_preview_type_media.php:&tx_templavoila_preview_type_media';
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['mod1']['renderPreviewContent']['uploads'] = 'EXT:templavoila/classes/preview/class.tx_templavoila_preview_type_uploads.php:&tx_templavoila_preview_type_uploads';
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['mod1']['renderPreviewContent']['textpic'] = 'EXT:templavoila/classes/preview/class.tx_templavoila_preview_type_textpic.php:&tx_templavoila_preview_type_textpic';
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['mod1']['renderPreviewContent']['splash'] = 'EXT:templavoila/classes/preview/class.tx_templavoila_preview_type_textpic.php:&tx_templavoila_preview_type_textpic';
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['mod1']['renderPreviewContent']['image'] = 'EXT:templavoila/classes/preview/class.tx_templavoila_preview_type_image.php:&tx_templavoila_preview_type_image';
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['mod1']['renderPreviewContent']['bullets'] = 'EXT:templavoila/classes/preview/class.tx_templavoila_preview_type_bullets.php:&tx_templavoila_preview_type_bullets';
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['mod1']['renderPreviewContent']['html'] = 'EXT:templavoila/classes/preview/class.tx_templavoila_preview_type_html.php:&tx_templavoila_preview_type_html';
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['mod1']['renderPreviewContent']['menu'] = 'EXT:templavoila/classes/preview/class.tx_templavoila_preview_type_menu.php:&tx_templavoila_preview_type_menu';
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['mod1']['renderPreviewContent']['list'] = 'EXT:templavoila/classes/preview/class.tx_templavoila_preview_type_list.php:&tx_templavoila_preview_type_list';
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['mod1']['renderPreviewContent']['search'] = 'EXT:templavoila/classes/preview/class.tx_templavoila_preview_type_null.php:&tx_templavoila_preview_type_null';
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['mod1']['renderPreviewContent']['login'] = 'EXT:templavoila/classes/preview/class.tx_templavoila_preview_type_null.php:&tx_templavoila_preview_type_null';
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['mod1']['renderPreviewContent']['shortcut'] = 'EXT:templavoila/classes/preview/class.tx_templavoila_preview_type_null.php:&tx_templavoila_preview_type_null';
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['mod1']['renderPreviewContent']['div'] = 'EXT:templavoila/classes/preview/class.tx_templavoila_preview_type_null.php:&tx_templavoila_preview_type_null';
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['mod1']['renderPreviewContent']['templavoila_pi1'] = 'EXT:templavoila/classes/preview/class.tx_templavoila_preview_type_null.php:&tx_templavoila_preview_type_null';
 
 // configuration for new content element wizard
-t3lib_extMgm::addPageTSConfig('
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('
 templavoila.wizards.newContentElement.wizardItems {
 	common.header = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:common
 	common.elements {
@@ -236,8 +238,8 @@ templavoila.wizards.newContentElement.renderMode =
 
 ');
 
-if (t3lib_div::compat_version('4.3')) {
-	t3lib_extMgm::addPageTSConfig('
+if (\TYPO3\CMS\Core\Utility\GeneralUtility::compat_version('4.3')) {
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('
 templavoila.wizards.newContentElement.wizardItems.special.elements.media {
 	icon = gfx/c_wiz/multimedia.gif
 	title = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:special_media_title
@@ -255,5 +257,3 @@ $TYPO3_CONF_VARS['BE']['AJAX']['tx_templavoila_mod1_ajax::moveRecord'] =
 
 $TYPO3_CONF_VARS['BE']['AJAX']['tx_templavoila_cm1_ajax::getDisplayFileContent'] =
 	'EXT:templavoila/cm1/class.tx_templavoila_cm1_ajax.php:tx_templavoila_cm1_ajax->getDisplayFileContent';
-
-?>

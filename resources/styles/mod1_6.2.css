@@ -9,19 +9,30 @@ div#typo3-docbody {
 	padding: 0;
 }
 
+.typo3-templavoila-pagemodule > #typo3-docheader > .typo3-docheader-functions {
+	padding-top: 5px;
+}
+
 .typo3-templavoila-pagemodule > #typo3-docbody {
-	top: 22px;
+	top: 27px;
 }
 
-.typo3-templavoila-pagemodule > #typo3-docbody > #typo3-docheader-row2 {
+.typo3-templavoila-pagemodule > #typo3-docbody > .typo3-docheader-buttons {
 	height: auto;
-	padding-top: 0px;
+	padding-top: 0px; padding-bottom: 0px;
 }
 
-.typo3-templavoila-pagemodule > #typo3-docbody > #typo3-docheader-row2 > .docheader-row2-inner {
+.typo3-templavoila-pagemodule > #typo3-docbody > .typo3-docheader-buttons > .docheader-buttons-inner {
 	margin-left: 10px;
 	margin-right: 10px;
 	width: auto;
+}
+
+.typo3-templavoila-pagemodule #typo3-docbody #tx_templavoila_mod1_sidebar-bar .typo3-dyntabmenu-tabs table.typo3-dyntabmenu td a,
+.typo3-templavoila-pagemodule #typo3-docbody #tx_templavoila_mod1_sidebar-bar .typo3-dyntabmenu-tabs table.typo3-dyntabmenu td.disabled,
+.typo3-templavoila-pagemodule #typo3-docbody #tx_templavoila_mod1_sidebar-bar .typo3-dyntabmenu-tabs table.typo3-dyntabmenu td.disabled_over {
+	padding-top: 3px;
+	padding-bottom: 1px;
 }
 
 .pagecontainer {
@@ -146,14 +157,18 @@ div.warning a {
 	min-width: 100px;
 	margin-right: 140px;
 	vertical-align: top;
-	padding: 1px;
+	padding: 4px 1px 1px 1px;
 	line-height: 15px;
 }
 
 .tpm-element-title .tpm-langIcon {
 	float: left;
 	padding-right: 5px;
-	padding-top: 2px;
+	padding-top: 3px;
+}
+
+.tpm-element-title a {
+	float: left;
 }
 
 .tpm-preview ul {
@@ -233,6 +248,7 @@ div.warning a {
 	min-width: 120px;
 	height: 20px;
 	padding-right: 4px;
+	margin-top: 2px;
 }
 
 /* prevent flicker effects with row-headers and their hide/visibility states */

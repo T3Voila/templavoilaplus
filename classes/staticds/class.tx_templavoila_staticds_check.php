@@ -1,4 +1,5 @@
 <?php
+
 /***************************************************************
  *  Copyright notice
  *
@@ -24,12 +25,12 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 class tx_templavoila_staticds_check {
 
 	/**
 	 * @param $params
 	 * @param $tsObj
+	 *
 	 * @return string
 	 */
 	public function displayMessage(&$params, &$tsObj) {
@@ -43,7 +44,6 @@ class tx_templavoila_staticds_check {
 		} else {
 			$link = 'mod.php?&amp;id=0&amp;M=tools_em&amp;CMD[showExt]=templavoila&amp;SET[singleDetails]=updateModule';
 		}
-
 
 		$out = '
 		<div style="position:absolute;top:10px;right:10px; width:300px;">
@@ -66,6 +66,7 @@ class tx_templavoila_staticds_check {
 	 */
 	protected function staticDsIsEnabled() {
 		$conf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
+
 		return $conf['staticDS.']['enable'];
 	}
 
@@ -76,5 +77,3 @@ class tx_templavoila_staticds_check {
 		return $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', 'tx_templavoila_datastructure', 'deleted=0');
 	}
 }
-
-?>

@@ -5,8 +5,7 @@
 		<type>module</type>
 		<csh_table></csh_table>
 		<fileId>EXT:templavoila/cm1/locallang.xml</fileId>
-		<labelContext type="array">
-		</labelContext>
+		<labelContext type="array"></labelContext>
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
@@ -17,7 +16,6 @@
 			<label index="titleLoadDSXml">Load DS XML</label>
 			<label index="mappingTitle">TemplaVoilà Template Mapping</label>
 			<label index="mappingNEW">[NEW]</label>
-			
 			<label index="mappingHeadParts">Adding parts from HTML header</label>
 			<label index="mappingBodyParts">Data Structure to be mapped to HTML template</label>
 			<label index="rootDescription">Select the HTML element on the page which you want to be the overall container element for the template.</label>
@@ -27,17 +25,14 @@
 			<label index="loadDSXml">Load Data Structure</label>
 			<label index="instrunctions">Instructions</label>
 			<label index="toBeDefined">to be defined</label>
-			
 			<label index="tabTODetails">Information</label>
 			<label index="tabHeadParts">Header Parts</label>
 			<label index="tabBodyParts">Mapping</label>
-			
 			<label index="dsTypes_section">Section</label>
 			<label index="dsTypes_container">Container</label>
 			<label index="dsTypes_attribute">Attribute</label>
 			<label index="dsTypes_element">Element</label>
 			<label index="dsTypes_notmapped">Not Mapped</label>
-			
 			<label index="buttonGoBack">Go back</label>
 			<label index="buttonCancel">Cancel</label>
 			<label index="buttonShowXML">Show XML</label>
@@ -69,7 +64,6 @@
 			<label index="buttonSaveAndReturnTitle">Saving all mapping data into the Template Object and return.</label>
 			<label index="buttonRevert">Revert</label>
 			<label index="buttonRevertTitle">Reverting %s mapping data to original data in the Template Object.</label>
-			
 			<label index="createDSTO">CREATE Data Structure / Template Object</label>
 			<label index="updateDSTO">UPDATE existing Data Structure / Template Object</label>
 			<label index="updateDSTOshort">UPDATE TO (and DS)</label>
@@ -83,7 +77,6 @@
 			<label index="storeInPID">Store in PID</label>
 			<label index="selectTO">Select TO</label>
 			<label index="buildingDS">Building Data Structure</label>
-			
 			<label index="renderDSO_dataStructure">Data Structure in record</label>
 			<label index="renderDSO_dataElement">Data Element</label>
 			<label index="renderDSO_mappingInstructions">Mapping Instructions</label>
@@ -98,7 +91,6 @@
 			<label index="renderDSO_noUid">No UID was found pointing to a Data Structure Object record.</label>
 			<label index="renderDSO_notFound">(NOT FOUND)</label>
 			<label index="all">(ALL)</label>
-			
 			<label index="renderTO_toDetails">Template Object Details</label>
 			<label index="renderTO_dsRecord">Data Structure Record</label>
 			<label index="renderTO_updateWarningConfirm"><![CDATA[Warning: You should only modify Data Structures and Template Objects which have not been manually edited.
@@ -106,20 +98,16 @@ You risk that manual changes will be removed without further notice!]]></label>
 			<label index="renderTO_editDSTO">Modify DS / TO</label>
 			<label index="renderTO_dsFile">Data Structure File</label>
 			<label index="renderTO_toInfo">Template Object Information</label>
-			
 			<label index="rootMultiTemplate_title">ROOT of MultiTemplate</label>
 			<label index="rootMultiTemplate_description">Select the ROOT container for this template project. Probably just select a body-tag or some other HTML element which encapsulates ALL sub templates!</label>
-			
 			<label index="msgMappingIsDifferent">The current mapping information is different from the mapping information in the Template Object</label>
 			<label index="msgDSTOSaved">Data Structure (UID %s) and Template Record (UID %s) was saved in PID %s</label>
 			<label index="msgDSTOUpdated">Data Structure (UID %s) and Template Record (UID %s) was updated</label>
 			<label index="msgMappingSaved">Mapping information was saved to the current Template Object!</label>
 			<label index="msgHeaderSet">Do not forget to press "Set" if header parts are changed!</label>
-			
 			<label index="include">Include</label>
 			<label index="tag">Tag</label>
 			<label index="tagContent">Tag Content</label>
-			
 			<label index="mapDataElement">Data Element</label>
 			<label index="mapField">Field</label>
 			<label index="mapInstructions">Mapping Instructions</label>
@@ -134,11 +122,9 @@ You risk that manual changes will be removed without further notice!]]></label>
 			<label index="mapDSelement">Mapping Data Element</label>
 			<label index="mapLimitToTags">Limiting to tags</label>
 			<label index="mapWarningElementChange">Changing element type will change your existing settings!</label>
-			
 			<label index="displayDSTitleTranslated">This title is translated!</label>
 			<label index="displayDSContentFound">Content found (%s chars)</label>
 			<label index="displayDSContentEmpty">Content empty.</label>
-			
 			<label index="buttonRemap">Re-Map</label>
 			<label index="buttonRemapTitle">Map this DS element to another HTML element in template file.</label>
 			<label index="buttonChangeMode">Change Mode</label>
@@ -150,7 +136,6 @@ You risk that manual changes will be removed without further notice!]]></label>
 			<label index="deleteEntry">DELETE entry</label>
 			<label index="confirmDeleteEntry">Are you sure to delete this Data Structure entry?</label>
 			<label index="noSampleData">No sample data</label>
-			
 			<label index="mapEnterNewFieldname">Enter new fieldname</label>
 			<label index="mapPresets_plainInput">Plain input field</label>
 			<label index="mapPresets_headerField">Header field</label>
@@ -170,7 +155,6 @@ You risk that manual changes will be removed without further notice!]]></label>
 			<label index="mapPresetGroups_tceFields">Form Fields</label>
 			<label index="mapPresetGroups_ts">TypoScript Elements</label>
 			<label index="mapPresetGroups_other">Other</label>
-			
 			<label index="mapTSconstants">TypoScript Constants</label>
 			<label index="mapTScode">TypoScript Code</label>
 			<label index="mapExtraOptions">Extra options</label>
@@ -184,7 +168,6 @@ You risk that manual changes will be removed without further notice!]]></label>
 			<label index="mapTCElabel">Form label</label>
 			<label index="mapTCEconf">Form configuration</label>
 			<label index="mapTCEextras">Form extras</label>
-			
 			<label index="mapElContainers">Containers</label>
 			<label index="mapElElements">Elements</label>
 			<label index="mapSection">Section of elements</label>
@@ -192,7 +175,6 @@ You risk that manual changes will be removed without further notice!]]></label>
 			<label index="mapElement">Element</label>
 			<label index="mapAttribute">Attribute</label>
 			<label index="mapNotMapped">Not mapped</label>
-			
 			<label index="mapConfiguration">Configuration</label>
 			<label index="mapEditConfiguration">Edit general configuration</label>
 			<label index="mapDataProcessing">Data processing</label>
@@ -220,10 +202,8 @@ You risk that manual changes will be removed without further notice!]]></label>
 			<label index="errorFileNotFound">The file "%s" could not be found!</label>
 			<label index="errorNoTOfound">No Template Object Record with the UID "%s"!</label>
 			<label index="errorNoToTitleDefined">No "title" defined, unable to create DS/TO.</label>
-			
 			<label index="validateTpl">Validate template file (on validator.w3c.org)</label>
 		</languageKey>
 	</data>
-	<orig_hash type="array">
-	</orig_hash>
+	<orig_hash type="array"></orig_hash>
 </T3locallang>

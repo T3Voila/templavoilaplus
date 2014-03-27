@@ -1,42 +1,50 @@
 <?php
 /***************************************************************
-* Copyright notice
-*
-* (c) 2010 Tolleiv Nietsch <tolleiv.nietsch@typo3.org>
-*  All rights reserved
-*
-*  This script is part of the Typo3 project. The Typo3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
+ * Copyright notice
+ *
+ * (c) 2010 Tolleiv Nietsch <tolleiv.nietsch@typo3.org>
+ *  All rights reserved
+ *
+ *  This script is part of the Typo3 project. The Typo3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 
 /**
  * Class to provide unique access to datastructure
  *
- * @author	Tolleiv Nietsch <tolleiv.nietsch@typo3.org>
+ * @author    Tolleiv Nietsch <tolleiv.nietsch@typo3.org>
  */
 class tx_templavoila_template {
 
 	protected $row;
+
 	protected $label;
+
 	protected $description;
+
 	protected $iconFile;
+
 	protected $fileref;
+
 	protected $fileref_mtime;
+
 	protected $fileref_md5;
+
 	protected $sortbyField;
+
 	protected $parent;
 
 	/**
@@ -44,7 +52,7 @@ class tx_templavoila_template {
 	 * @param integer $uid
 	 */
 	public function __construct($uid) {
-		$this->row = t3lib_beFunc::getRecordWSOL('tx_templavoila_tmplobj', $uid);
+		$this->row = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('tx_templavoila_tmplobj', $uid);
 
 		$this->setLabel($this->row['title']);
 		$this->setDescription($this->row['description']);
@@ -68,6 +76,7 @@ class tx_templavoila_template {
 	/**
 	 *
 	 * @param string $str
+	 *
 	 * @return void
 	 */
 	protected function setLabel($str) {
@@ -86,6 +95,7 @@ class tx_templavoila_template {
 	/**
 	 *
 	 * @param string $str
+	 *
 	 * @return void
 	 */
 	protected function setDescription($str) {
@@ -102,12 +112,14 @@ class tx_templavoila_template {
 		if ($this->iconFile) {
 			$icon = '../uploads/tx_templavoila/' . $this->iconFile;
 		}
+
 		return $icon;
 	}
 
 	/**
 	 *
 	 * @param string $filename
+	 *
 	 * @return void
 	 */
 	protected function setIcon($filename) {
@@ -126,6 +138,7 @@ class tx_templavoila_template {
 	/**
 	 *
 	 * @param string $str
+	 *
 	 * @return void
 	 */
 	protected function setFileref($str) {
@@ -144,6 +157,7 @@ class tx_templavoila_template {
 	/**
 	 *
 	 * @param string $str
+	 *
 	 * @return void
 	 */
 	protected function setFilerefMtime($str) {
@@ -162,6 +176,7 @@ class tx_templavoila_template {
 	/**
 	 *
 	 * @param string $str
+	 *
 	 * @return void
 	 */
 	protected function setFilerefMD5($str) {
@@ -236,17 +251,19 @@ class tx_templavoila_template {
 	 *
 	 * @param mixed $parentRow
 	 * @param mixed $removeItems
+	 *
 	 * @return boolean
 	 */
 	public function isPermittedForUser($parentRow = array(), $removeItems = array()) {
 		if ($GLOBALS['BE_USER']->isAdmin()) {
 			return TRUE;
-		} else if(in_array($this->getKey(), $removeItems)) {
-			return FALSE;
+		} else {
+			if (in_array($this->getKey(), $removeItems)) {
+				return FALSE;
+			}
 		}
 		$permission = TRUE;
 		$denyItems = tx_templavoila_div::getDenyListForUser();
-
 
 		if (isset($parentRow['tx_templavoila_to'])) {
 			$currentSetting = $parentRow['tx_templavoila_to'];
@@ -255,7 +272,8 @@ class tx_templavoila_template {
 		}
 
 		if (isset($parentRow['tx_templavoila_next_to']) &&
-			$this->getScope() == tx_templavoila_datastructure::SCOPE_PAGE) {
+			$this->getScope() == tx_templavoila_datastructure::SCOPE_PAGE
+		) {
 			$inheritSetting = $parentRow['tx_templavoila_next_to'];
 		} else {
 			$inheritSetting = -1;
@@ -268,6 +286,7 @@ class tx_templavoila_template {
 		) {
 			$permission = FALSE;
 		}
+
 		return $permission;
 	}
 
@@ -275,7 +294,8 @@ class tx_templavoila_template {
 	 * @return tx_templavoila_datastructure
 	 */
 	public function getDatastructure() {
-		$dsRepo = t3lib_div::makeInstance('tx_templavoila_datastructureRepository');
+		$dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_datastructureRepository');
+
 		return $dsRepo->getDatastructureByUidOrFilename($this->row['datastructure']);
 	}
 
@@ -288,14 +308,16 @@ class tx_templavoila_template {
 
 	/**
 	 * @param boolean $skipDsDataprot
+	 *
 	 * @return array
 	 */
 	public function getLocalDataprotXML($skipDsDataprot = FALSE) {
-		return t3lib_div::array2xml_cs($this->getLocalDataprotArray($skipDsDataprot), 'T3DataStructure', array('useCDATA' => 1));
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::array2xml_cs($this->getLocalDataprotArray($skipDsDataprot), 'T3DataStructure', array('useCDATA' => 1));
 	}
 
 	/**
 	 * @param boolean $skipDsDataprot
+	 *
 	 * @return array
 	 */
 	public function getLocalDataprotArray($skipDsDataprot = FALSE) {
@@ -304,11 +326,12 @@ class tx_templavoila_template {
 		} else {
 			$dataprot = array();
 		}
-		$toDataprot =  t3lib_div::xml2array($this->row['localprocessing']);
+		$toDataprot = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($this->row['localprocessing']);
 
 		if (is_array($toDataprot)) {
-			$dataprot = t3lib_div::array_merge_recursive_overrule($dataprot, $toDataprot);
+			$dataprot = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($dataprot, $toDataprot);
 		}
+
 		return $dataprot;
 	}
 
@@ -322,34 +345,37 @@ class tx_templavoila_template {
 	public function getLocalDataprotValueByXpath($fieldName) {
 		$value = '';
 		$doc = new DOMDocument;
-		$doc->preserveWhiteSpace = false;
+		$doc->preserveWhiteSpace = FALSE;
 		$doc->loadXML($this->getLocalDataprotXML());
 		$xpath = new DOMXPath($doc);
 		$entries = $xpath->query($fieldName);
 
-		if ($entries->length  < 1) {
+		if ($entries->length < 1) {
 			throw new UnexpectedValueException('Nothing found for XPath: "' . $fieldName . '"!');
 		}
-		
+
 		return $entries->item(0)->nodeValue;
 	}
 
 	/**
 	 * @param void
+	 *
 	 * @return mixed
 	 */
 	public function getBeLayout() {
 		$beLayout = FALSE;
 		if ($this->row['belayout']) {
-			$beLayout = t3lib_div::getURL(t3lib_div::getFileAbsFileName($this->row['belayout']));
+			$beLayout = \TYPO3\CMS\Core\Utility\GeneralUtility::getURL(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->row['belayout']));
 		} else {
 			$beLayout = $this->getDatastructure()->getBeLayout();
 		}
+
 		return $beLayout;
 	}
 
 	/**
-	 * @param string	$fieldname
+	 * @param string $fieldname
+	 *
 	 * @return void
 	 */
 	protected function setSortbyField($fieldname) {
@@ -362,24 +388,26 @@ class tx_templavoila_template {
 
 	/**
 	 * @param void
+	 *
 	 * @return string
 	 */
 	public function getSortingFieldValue() {
 		if ($this->sortbyField == 'title') {
-			$fieldVal = $this->getLabel();		// required to resolve LLL texts
+			$fieldVal = $this->getLabel(); // required to resolve LLL texts
 		} elseif ($this->sortbyField == 'sorting') {
 			$fieldVal = str_pad($this->row[$this->sortbyField], 15, "0", STR_PAD_LEFT);
 		} else {
 			$fieldVal = $this->row[$this->sortbyField];
 		}
+
 		return $fieldVal;
 	}
 
-	public function setParent ($parent) {
+	public function setParent($parent) {
 		$this->parent = $parent;
 	}
 
-	public function getParent () {
+	public function getParent() {
 		return $this->parent;
 	}
 
@@ -388,7 +416,6 @@ class tx_templavoila_template {
 	}
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/classes/class.tx_templavoila_template.php'])	{
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/classes/class.tx_templavoila_template.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/classes/class.tx_templavoila_template.php']);
 }
-?>

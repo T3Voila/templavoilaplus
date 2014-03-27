@@ -5,8 +5,7 @@
 		<type>CSH</type>
 		<csh_table>pages</csh_table>
 		<fileId>EXT:templavoila/locallang_csh_pages.xml</fileId>
-		<labelContext type="array">
-		</labelContext>
+		<labelContext type="array"></labelContext>
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">

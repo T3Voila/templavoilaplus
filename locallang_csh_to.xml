@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
-    <meta type="array">
-        <description>CSH for Template Objects</description>
-        <type>CSH</type>
-        <csh_table>tx_templavoila_tmplobj</csh_table>
-        <fileId>EXT:templavoila/locallang_csh_to.xml</fileId>
-    </meta>
-    <data type="array">
-        <languageKey index="default" type="array">
-            <label index=".description">The Template Object maps a predefined data structure with an actual HTML template. It thus allows you to define when </label>
-            <label index="title.description">Enter a title that describes this Template Object.</label>
-            <label index="datastructure.description">Select a data structure that this Template Object makes use of.</label>
-            <label index="fileref.description">Choose a HTML template as a basis for the mapping.</label>
-            <label index="templatemapping.description">This data holds all information needed for TemplaVoilà to map the data structure to the actual HTML template file.</label>
-            <label index="previewicon.description">Select a preview image to this Template Structure to </label>
-            <label index="description.description">Add a small description that is used in the wizards to help users distinguish your templates.</label>
-            <label index="rendertype.description">Select whether this is a special Template Object, used for print or other uses, or for the default page.</label>
-            <label index="sys_language_uid.description">Select the language where this template object is applicable.</label>
-            <label index="parent.description">If this template object is a sub-template object, select a parent where the defaults should be inherited.</label>
-            <label index="localprocessing.description">You can override the processing of fields defined in the data structure. For example, if you have an image field in your data structure, it will have TypoScript with defined maxW and maxH. You can override them here.</label>
-        </languageKey>
-    </data>
+	<meta type="array">
+		<description>CSH for Template Objects</description>
+		<type>CSH</type>
+		<csh_table>tx_templavoila_tmplobj</csh_table>
+		<fileId>EXT:templavoila/locallang_csh_to.xml</fileId>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index=".description">The Template Object maps a predefined data structure with an actual HTML template. It thus allows you to define when</label>
+			<label index="title.description">Enter a title that describes this Template Object.</label>
+			<label index="datastructure.description">Select a data structure that this Template Object makes use of.</label>
+			<label index="fileref.description">Choose a HTML template as a basis for the mapping.</label>
+			<label index="templatemapping.description">This data holds all information needed for TemplaVoilà to map the data structure to the actual HTML template file.</label>
+			<label index="previewicon.description">Select a preview image to this Template Structure to</label>
+			<label index="description.description">Add a small description that is used in the wizards to help users distinguish your templates.</label>
+			<label index="rendertype.description">Select whether this is a special Template Object, used for print or other uses, or for the default page.</label>
+			<label index="sys_language_uid.description">Select the language where this template object is applicable.</label>
+			<label index="parent.description">If this template object is a sub-template object, select a parent where the defaults should be inherited.</label>
+			<label index="localprocessing.description">You can override the processing of fields defined in the data structure. For example, if you have an image field in your data structure, it will have TypoScript with defined maxW and maxH. You can override them here.</label>
+		</languageKey>
+	</data>
 </T3locallang>
