@@ -161,6 +161,10 @@ div.warning a {
 	line-height: 15px;
 }
 
+.tpm-element-title a {
+	float: left;
+}
+
 .tpm-element-title .tpm-langIcon {
 	float: left;
 	padding-right: 5px;
