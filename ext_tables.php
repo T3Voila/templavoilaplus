@@ -45,49 +45,6 @@ if (TYPO3_MODE == 'BE') {
 	);
 }
 
-// Adding tables:
-$TCA['tx_templavoila_tmplobj'] = Array(
-	'ctrl' => Array(
-		'title' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xml:tx_templavoila_tmplobj',
-		'label' => 'title',
-		'label_userFunc' => 'EXT:templavoila/Classes/class.tx_templavoila_label.php:&tx_templavoila_label->getLabel',
-		'tstamp' => 'tstamp',
-		'crdate' => 'crdate',
-		'cruser_id' => 'cruser_id',
-		'sortby' => 'sorting',
-		'default_sortby' => 'ORDER BY title',
-		'delete' => 'deleted',
-		'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'tca.php',
-		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icon/icon_to.gif',
-		'selicon_field' => 'previewicon',
-		'selicon_field_path' => 'uploads/tx_templavoila',
-		'type' => 'parent', // kept to make sure the user is force to reload the form
-		'versioningWS' => TRUE,
-		'origUid' => 't3_origuid',
-		'shadowColumnsForNewPlaceholders' => 'title,datastructure,rendertype,sys_language_uid,parent,rendertype_ref',
-	)
-);
-$TCA['tx_templavoila_datastructure'] = Array(
-	'ctrl' => Array(
-		'title' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xml:tx_templavoila_datastructure',
-		'label' => 'title',
-		'label_userFunc' => 'EXT:templavoila/Classes/class.tx_templavoila_label.php:&tx_templavoila_label->getLabel',
-		'tstamp' => 'tstamp',
-		'crdate' => 'crdate',
-		'cruser_id' => 'cruser_id',
-		'sortby' => 'sorting',
-		'default_sortby' => 'ORDER BY title',
-		'delete' => 'deleted',
-		'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'tca.php',
-		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icon/icon_ds.gif',
-		'selicon_field' => 'previewicon',
-		'selicon_field_path' => 'uploads/tx_templavoila',
-		'versioningWS' => TRUE,
-		'origUid' => 't3_origuid',
-		'shadowColumnsForNewPlaceholders' => 'scope,title',
-	)
-);
-
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_templavoila_datastructure');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_templavoila_tmplobj');
 
