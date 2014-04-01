@@ -398,8 +398,8 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 		// Create setting handlers:
 		$settings = '<p>' .
-			\TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck('', 'SET[set_details]', $this->MOD_SETTINGS['set_details'], '', \TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl('', $_GET, '', 1, 1), 'id="set_details"') . $showDetails .
-			\TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck('', 'SET[set_unusedDs]', $this->MOD_SETTINGS['set_unusedDs'], '', \TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl('', $_GET, '', 1, 1), 'id="set_unusedDs"') . $showUnused .
+			\TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck('', 'SET[set_details]', $this->MOD_SETTINGS['set_details'], 'index.php', \TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl('', $_GET, '', 1, 1), 'id="set_details"') . $showDetails .
+			\TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck('', 'SET[set_unusedDs]', $this->MOD_SETTINGS['set_unusedDs'], 'index.php', \TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl('', $_GET, '', 1, 1), 'id="set_unusedDs"') . $showUnused .
 			'</p>';
 
 		// Add output:
