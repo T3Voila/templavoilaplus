@@ -4,7 +4,7 @@
 		<description>CSH for pages table additions</description>
 		<type>CSH</type>
 		<csh_table>pages</csh_table>
-		<fileId>EXT:templavoila/resources/Private/Language/locallang_csh_pages.xml</fileId>
+		<fileId>EXT:templavoila/Resources/Private/Language/locallang_csh_pages.xml</fileId>
 		<labelContext type="array"></labelContext>
 	</meta>
 	<data type="array">

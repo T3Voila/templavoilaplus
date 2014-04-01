@@ -347,7 +347,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('template');
 		$this->doc->docType = 'xhtml_trans';
 		$this->doc->backPath = $BACK_PATH;
-		$this->doc->setModuleTemplate('EXT:templavoila/resources/templates/cm1_default.html');
+		$this->doc->setModuleTemplate('EXT:templavoila/Resources/templates/cm1_default.html');
 		$this->doc->bodyTagId = 'typo3-mod-php';
 		$this->doc->divClass = '';
 
@@ -356,8 +356,8 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			DIV.typo3-fullDoc H2 { width: 100%; }
 			TABLE#c-mapInfo {margin-top: 10px; margin-bottom: 5px; }
 			TABLE#c-mapInfo TR TD {padding-right: 20px;}
-			select option.pagetemplate {background-image:url(../resources/Public/Icon/icon_pagetemplate.gif);background-repeat: no-repeat; background-position: 5px 50%; padding: 1px 0 3px 24px; -webkit-background-size: 0;}
-			select option.fce {background-image:url(../resources/Public/Icon/icon_fce_ce.png);background-repeat: no-repeat; background-position: 5px 50%; padding: 1px 0 3px 24px; -webkit-background-size: 0;}
+			select option.pagetemplate {background-image:url(../Resources/Public/Icon/icon_pagetemplate.gif);background-repeat: no-repeat; background-position: 5px 50%; padding: 1px 0 3px 24px; -webkit-background-size: 0;}
+			select option.fce {background-image:url(../Resources/Public/Icon/icon_fce_ce.png);background-repeat: no-repeat; background-position: 5px 50%; padding: 1px 0 3px 24px; -webkit-background-size: 0;}
 			#c-toMenu { margin-bottom:10px; }
 		';
 		$this->doc->inDocStylesArray[] = self::$gnyfStyleBlock;

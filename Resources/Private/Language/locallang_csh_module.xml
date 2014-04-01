@@ -4,7 +4,7 @@
 		<description>Mapping Documentation for TemplaVoilà.</description>
 		<type>CSH</type>
 		<csh_table>xMOD_tx_templavoila</csh_table>
-		<fileId>EXT:templavoila/resources/Private/Language/locallang_csh_module.xml</fileId>
+		<fileId>EXT:templavoila/Resources/Private/Language/locallang_csh_module.xml</fileId>
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">

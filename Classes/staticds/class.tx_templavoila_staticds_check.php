@@ -48,11 +48,11 @@ class tx_templavoila_staticds_check {
 		$out = '
 		<div style="position:absolute;top:10px;right:10px; width:300px;">
 			<div class="typo3-message message-information">
-				<div class="message-header">' . $GLOBALS['LANG']->sL('LLL:EXT:templavoila/resources/Private/Language/locallang.xml:extconf.staticWizard.header') . '</div>
+				<div class="message-header">' . $GLOBALS['LANG']->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang.xml:extconf.staticWizard.header') . '</div>
 				<div class="message-body">
-					' . $GLOBALS['LANG']->sL('LLL:EXT:templavoila/resources/Private/Language/locallang.xml:extconf.staticWizard.message') . '<br />
+					' . $GLOBALS['LANG']->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang.xml:extconf.staticWizard.message') . '<br />
 					<a style="text-decoration:underline;" href="' . $link . '">
-					' . $GLOBALS['LANG']->sL('LLL:EXT:templavoila/resources/Private/Language/locallang.xml:extconf.staticWizard.link') . '</a>
+					' . $GLOBALS['LANG']->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang.xml:extconf.staticWizard.link') . '</a>
 				</div>
 			</div>
 		</div>

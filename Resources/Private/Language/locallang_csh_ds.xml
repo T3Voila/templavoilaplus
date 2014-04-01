@@ -4,7 +4,7 @@
 		<description>CSH for Data Structure table</description>
 		<type>CSH</type>
 		<csh_table>tx_templavoila_datastructure</csh_table>
-		<fileId>EXT:templavoila/resources/Private/Language/locallang_csh_ds.xml</fileId>
+		<fileId>EXT:templavoila/Resources/Private/Language/locallang_csh_ds.xml</fileId>
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">

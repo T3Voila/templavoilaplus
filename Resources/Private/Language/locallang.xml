@@ -4,7 +4,7 @@
 		<description>Main</description>
 		<type>module</type>
 		<csh_table></csh_table>
-		<fileId>EXT:templavoila/resources/Private/Language/locallang.xml</fileId>
+		<fileId>EXT:templavoila/Resources/Private/Language/locallang.xml</fileId>
 		<labelContext type="array"></labelContext>
 	</meta>
 	<data type="array">

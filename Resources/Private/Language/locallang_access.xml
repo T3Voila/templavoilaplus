@@ -4,7 +4,7 @@
 		<description>Access hook messages</description>
 		<type>module</type>
 		<csh_table></csh_table>
-		<fileId>EXT:templavoila/resources/Private/Language/locallang_access.xml</fileId>
+		<fileId>EXT:templavoila/Resources/Private/Language/locallang_access.xml</fileId>
 		<labelContext type="array"></labelContext>
 	</meta>
 	<data type="array">

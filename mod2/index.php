@@ -104,7 +104,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('template');
 		$this->doc->docType = 'xhtml_trans';
 		$this->doc->backPath = $BACK_PATH;
-		$this->doc->setModuleTemplate('EXT:templavoila/resources/templates/mod2_default.html');
+		$this->doc->setModuleTemplate('EXT:templavoila/Resources/templates/mod2_default.html');
 		$this->doc->bodyTagId = 'typo3-mod-php';
 		$this->doc->divClass = '';
 		$this->doc->form = '<form action="' . htmlspecialchars('index.php?id=' . $this->id) . '" method="post" autocomplete="off">';
