@@ -12,7 +12,7 @@ $TCA['tx_templavoila_tmplobj'] = Array(
 	),
 	'columns' => Array(
 		'title' => Array(
-			'label' => 'LLL:EXT:templavoila/locallang_db.xml:tx_templavoila_tmplobj.title',
+			'label' => 'LLL:EXT:templavoila/resources/Private/Language/locallang_db.xml:tx_templavoila_tmplobj.title',
 			'config' => Array(
 				'type' => 'input',
 				'size' => '48',
@@ -21,7 +21,7 @@ $TCA['tx_templavoila_tmplobj'] = Array(
 		),
 		'parent' => Array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:templavoila/locallang_db.xml:tx_templavoila_tmplobj.parent',
+			'label' => 'LLL:EXT:templavoila/resources/Private/Language/locallang_db.xml:tx_templavoila_tmplobj.parent',
 			'config' => Array(
 				'type' => 'select',
 				'foreign_table' => 'tx_templavoila_tmplobj',
@@ -34,7 +34,7 @@ $TCA['tx_templavoila_tmplobj'] = Array(
 		),
 		'rendertype_ref' => Array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:templavoila/locallang_db.xml:tx_templavoila_tmplobj.rendertype_ref',
+			'label' => 'LLL:EXT:templavoila/resources/Private/Language/locallang_db.xml:tx_templavoila_tmplobj.rendertype_ref',
 			'config' => Array(
 				'type' => 'select',
 				'foreign_table' => 'tx_templavoila_tmplobj',
@@ -48,7 +48,7 @@ $TCA['tx_templavoila_tmplobj'] = Array(
 		),
 		'datastructure' => Array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:templavoila/locallang_db.xml:tx_templavoila_tmplobj.datastructure',
+			'label' => 'LLL:EXT:templavoila/resources/Private/Language/locallang_db.xml:tx_templavoila_tmplobj.datastructure',
 			'config' => Array(
 				'type' => 'select',
 				'items' => Array(
@@ -67,7 +67,7 @@ $TCA['tx_templavoila_tmplobj'] = Array(
 					'_VERTICAL' => 1,
 					'add' => Array(
 						'type' => 'script',
-						'title' => 'LLL:EXT:templavoila/locallang_db.xml:tx_templavoila_tmplobj.ds_createnew',
+						'title' => 'LLL:EXT:templavoila/resources/Private/Language/locallang_db.xml:tx_templavoila_tmplobj.ds_createnew',
 						'icon' => 'add.gif',
 						'params' => Array(
 							'table' => 'tx_templavoila_datastructure',
@@ -82,7 +82,7 @@ $TCA['tx_templavoila_tmplobj'] = Array(
 		),
 		'fileref' => Array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:templavoila/locallang_db.xml:tx_templavoila_tmplobj.fileref',
+			'label' => 'LLL:EXT:templavoila/resources/Private/Language/locallang_db.xml:tx_templavoila_tmplobj.fileref',
 			'config' => Array(
 				'type' => 'input',
 				'size' => '48',
@@ -106,7 +106,7 @@ $TCA['tx_templavoila_tmplobj'] = Array(
 		),
 		'belayout' => Array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:templavoila/locallang_db.xml:tx_templavoila_tmplobj.belayout',
+			'label' => 'LLL:EXT:templavoila/resources/Private/Language/locallang_db.xml:tx_templavoila_tmplobj.belayout',
 			'config' => Array(
 				'type' => 'input',
 				'size' => '48',
@@ -129,7 +129,7 @@ $TCA['tx_templavoila_tmplobj'] = Array(
 			)
 		),
 		'previewicon' => Array(
-			'label' => 'LLL:EXT:templavoila/locallang_db.xml:tx_templavoila_tmplobj.previewicon',
+			'label' => 'LLL:EXT:templavoila/resources/Private/Language/locallang_db.xml:tx_templavoila_tmplobj.previewicon',
 			'displayCond' => 'REC:NEW:false',
 			'config' => Array(
 				'type' => 'group',
@@ -145,7 +145,7 @@ $TCA['tx_templavoila_tmplobj'] = Array(
 			'displayCond' => 'FIELD:parent:=:0'
 		),
 		'description' => Array(
-			'label' => 'LLL:EXT:templavoila/locallang_db.xml:tx_templavoila_tmplobj.description',
+			'label' => 'LLL:EXT:templavoila/resources/Private/Language/locallang_db.xml:tx_templavoila_tmplobj.description',
 			'config' => Array(
 				'type' => 'input',
 				'size' => '48',
@@ -169,12 +169,12 @@ $TCA['tx_templavoila_tmplobj'] = Array(
 		),
 		'rendertype' => Array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:templavoila/locallang_db.xml:tx_templavoila_tmplobj.rendertype',
+			'label' => 'LLL:EXT:templavoila/resources/Private/Language/locallang_db.xml:tx_templavoila_tmplobj.rendertype',
 			'config' => Array(
 				'type' => 'select',
 				'items' => Array(
-					Array('LLL:EXT:templavoila/locallang_db.xml:tx_templavoila_tmplobj.rendertype.I.0', ''),
-					Array('LLL:EXT:templavoila/locallang_db.xml:tx_templavoila_tmplobj.rendertype.I.1', 'print'),
+					Array('LLL:EXT:templavoila/resources/Private/Language/locallang_db.xml:tx_templavoila_tmplobj.rendertype.I.0', ''),
+					Array('LLL:EXT:templavoila/resources/Private/Language/locallang_db.xml:tx_templavoila_tmplobj.rendertype.I.1', 'print'),
 				)
 			),
 			'displayCond' => 'FIELD:parent:!=:0'
@@ -184,7 +184,7 @@ $TCA['tx_templavoila_tmplobj'] = Array(
 		'fileref_md5' => Array('config' => Array('type' => 'passthrough')),
 		'localprocessing' => Array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:templavoila/locallang_db.xml:tx_templavoila_tmplobj.localProc',
+			'label' => 'LLL:EXT:templavoila/resources/Private/Language/locallang_db.xml:tx_templavoila_tmplobj.localProc',
 			'config' => Array(
 				'type' => 'text',
 				'wrap' => 'OFF',
@@ -208,7 +208,7 @@ $TCA['tx_templavoila_datastructure'] = Array(
 	),
 	'columns' => Array(
 		'title' => Array(
-			'label' => 'LLL:EXT:templavoila/locallang_db.xml:tx_templavoila_datastructure.title',
+			'label' => 'LLL:EXT:templavoila/resources/Private/Language/locallang_db.xml:tx_templavoila_datastructure.title',
 			'config' => Array(
 				'type' => 'input',
 				'size' => '48',
@@ -217,7 +217,7 @@ $TCA['tx_templavoila_datastructure'] = Array(
 		),
 		'dataprot' => Array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:templavoila/locallang_db.xml:tx_templavoila_datastructure.dataprot',
+			'label' => 'LLL:EXT:templavoila/resources/Private/Language/locallang_db.xml:tx_templavoila_datastructure.dataprot',
 			'config' => Array(
 				'type' => 'text',
 				'wrap' => 'OFF',
@@ -228,18 +228,18 @@ $TCA['tx_templavoila_datastructure'] = Array(
 		),
 		'scope' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:templavoila/locallang_db.xml:tx_templavoila_datastructure.scope',
+			'label' => 'LLL:EXT:templavoila/resources/Private/Language/locallang_db.xml:tx_templavoila_datastructure.scope',
 			'config' => Array(
 				'type' => 'select',
 				'items' => Array(
-					Array('LLL:EXT:templavoila/locallang_db.xml:tx_templavoila_datasource.scope.I.0', 0),
-					Array('LLL:EXT:templavoila/locallang_db.xml:tx_templavoila_datastructure.scope.I.1', 1),
-					Array('LLL:EXT:templavoila/locallang_db.xml:tx_templavoila_datastructure.scope.I.2', 2),
+					Array('LLL:EXT:templavoila/resources/Private/Language/locallang_db.xml:tx_templavoila_datasource.scope.I.0', 0),
+					Array('LLL:EXT:templavoila/resources/Private/Language/locallang_db.xml:tx_templavoila_datastructure.scope.I.1', 1),
+					Array('LLL:EXT:templavoila/resources/Private/Language/locallang_db.xml:tx_templavoila_datastructure.scope.I.2', 2),
 				),
 			)
 		),
 		'previewicon' => Array(
-			'label' => 'LLL:EXT:templavoila/locallang_db.xml:tx_templavoila_tmplobj.previewicon',
+			'label' => 'LLL:EXT:templavoila/resources/Private/Language/locallang_db.xml:tx_templavoila_tmplobj.previewicon',
 			'config' => Array(
 				'type' => 'group',
 				'internal_type' => 'file',
@@ -254,7 +254,7 @@ $TCA['tx_templavoila_datastructure'] = Array(
 		),
 		'belayout' => Array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:templavoila/locallang_db.xml:tx_templavoila_tmplobj.belayout',
+			'label' => 'LLL:EXT:templavoila/resources/Private/Language/locallang_db.xml:tx_templavoila_tmplobj.belayout',
 			'config' => Array(
 				'type' => 'input',
 				'size' => '48',

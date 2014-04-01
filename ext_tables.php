@@ -28,14 +28,14 @@ if (TYPO3_MODE == 'BE') {
 	}
 
 	// Registering CSH:
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('be_groups', 'EXT:templavoila/locallang_csh_begr.xml');
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('pages', 'EXT:templavoila/locallang_csh_pages.xml');
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('tt_content', 'EXT:templavoila/locallang_csh_ttc.xml');
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('tx_templavoila_datastructure', 'EXT:templavoila/locallang_csh_ds.xml');
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('tx_templavoila_tmplobj', 'EXT:templavoila/locallang_csh_to.xml');
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('xMOD_tx_templavoila', 'EXT:templavoila/locallang_csh_module.xml');
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('xEXT_templavoila', 'EXT:templavoila/locallang_csh_intro.xml');
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('_MOD_web_txtemplavoilaM1', 'EXT:templavoila/locallang_csh_pm.xml');
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('be_groups', 'EXT:templavoila/resources/Private/Language/locallang_csh_begr.xml');
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('pages', 'EXT:templavoila/resources/Private/Language/locallang_csh_pages.xml');
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('tt_content', 'EXT:templavoila/resources/Private/Language/locallang_csh_ttc.xml');
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('tx_templavoila_datastructure', 'EXT:templavoila/resources/Private/Language/locallang_csh_ds.xml');
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('tx_templavoila_tmplobj', 'EXT:templavoila/resources/Private/Language/locallang_csh_to.xml');
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('xMOD_tx_templavoila', 'EXT:templavoila/resources/Private/Language/locallang_csh_module.xml');
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('xEXT_templavoila', 'EXT:templavoila/resources/Private/Language/locallang_csh_intro.xml');
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('_MOD_web_txtemplavoilaM1', 'EXT:templavoila/resources/Private/Language/locallang_csh_pm.xml');
 
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
 		'tools_txextdevevalM1',
@@ -48,7 +48,7 @@ if (TYPO3_MODE == 'BE') {
 // Adding tables:
 $TCA['tx_templavoila_tmplobj'] = Array(
 	'ctrl' => Array(
-		'title' => 'LLL:EXT:templavoila/locallang_db.xml:tx_templavoila_tmplobj',
+		'title' => 'LLL:EXT:templavoila/resources/Private/Language/locallang_db.xml:tx_templavoila_tmplobj',
 		'label' => 'title',
 		'label_userFunc' => 'EXT:templavoila/classes/class.tx_templavoila_label.php:&tx_templavoila_label->getLabel',
 		'tstamp' => 'tstamp',
@@ -69,7 +69,7 @@ $TCA['tx_templavoila_tmplobj'] = Array(
 );
 $TCA['tx_templavoila_datastructure'] = Array(
 	'ctrl' => Array(
-		'title' => 'LLL:EXT:templavoila/locallang_db.xml:tx_templavoila_datastructure',
+		'title' => 'LLL:EXT:templavoila/resources/Private/Language/locallang_db.xml:tx_templavoila_datastructure',
 		'label' => 'title',
 		'label_userFunc' => 'EXT:templavoila/classes/class.tx_templavoila_label.php:&tx_templavoila_label->getLabel',
 		'tstamp' => 'tstamp',
@@ -95,7 +95,7 @@ $TCA['tx_templavoila_datastructure'] = Array(
 // Adding access list to be_groups
 $tempColumns = array(
 	'tx_templavoila_access' => array(
-		'label' => 'LLL:EXT:templavoila/locallang_db.xml:be_groups.tx_templavoila_access',
+		'label' => 'LLL:EXT:templavoila/resources/Private/Language/locallang_db.xml:be_groups.tx_templavoila_access',
 		'config' => Array(
 			'type' => 'group',
 			'internal_type' => 'db',
@@ -117,7 +117,7 @@ $tempColumns = array(
 $tempColumns = array(
 	'tx_templavoila_ds' => Array(
 		'exclude' => 1,
-		'label' => 'LLL:EXT:templavoila/locallang_db.xml:tt_content.tx_templavoila_ds',
+		'label' => 'LLL:EXT:templavoila/resources/Private/Language/locallang_db.xml:tt_content.tx_templavoila_ds',
 		'config' => Array(
 			'type' => 'select',
 			'items' => Array(
@@ -133,7 +133,7 @@ $tempColumns = array(
 	),
 	'tx_templavoila_to' => Array(
 		'exclude' => 1,
-		'label' => 'LLL:EXT:templavoila/locallang_db.xml:tt_content.tx_templavoila_to',
+		'label' => 'LLL:EXT:templavoila/resources/Private/Language/locallang_db.xml:tt_content.tx_templavoila_to',
 		'displayCond' => 'FIELD:CType:=:' . $_EXTKEY . '_pi1',
 		'config' => Array(
 			'type' => 'select',
@@ -150,7 +150,7 @@ $tempColumns = array(
 	'tx_templavoila_flex' => Array(
 		'l10n_cat' => 'text',
 		'exclude' => 1,
-		'label' => 'LLL:EXT:templavoila/locallang_db.xml:tt_content.tx_templavoila_flex',
+		'label' => 'LLL:EXT:templavoila/resources/Private/Language/locallang_db.xml:tt_content.tx_templavoila_flex',
 		'displayCond' => 'FIELD:tx_templavoila_ds:REQ:true',
 		'config' => Array(
 			'type' => 'flex',
@@ -160,7 +160,7 @@ $tempColumns = array(
 	),
 	'tx_templavoila_pito' => Array(
 		'exclude' => 1,
-		'label' => 'LLL:EXT:templavoila/locallang_db.xml:tt_content.tx_templavoila_pito',
+		'label' => 'LLL:EXT:templavoila/resources/Private/Language/locallang_db.xml:tt_content.tx_templavoila_pito',
 		'config' => Array(
 			'type' => 'select',
 			'items' => Array(
@@ -178,7 +178,7 @@ $tempColumns = array(
 
 $TCA['tt_content']['ctrl']['typeicons'][$_EXTKEY . '_pi1'] = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . '/icon_fce_ce.png';
 $GLOBALS['TCA']['tt_content']['ctrl']['typeicon_classes'][$_EXTKEY . '_pi1'] = 'extensions-templavoila-type-fce';
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin(array('LLL:EXT:templavoila/locallang_db.xml:tt_content.CType_pi1', $_EXTKEY . '_pi1', 'EXT:' . $_EXTKEY . '/icon_fce_ce.png'), 'CType');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin(array('LLL:EXT:templavoila/resources/Private/Language/locallang_db.xml:tt_content.CType_pi1', $_EXTKEY . '_pi1', 'EXT:' . $_EXTKEY . '/icon_fce_ce.png'), 'CType');
 
 if ($_EXTCONF['enable.']['selectDataStructure']) {
 	if ($TCA['tt_content']['ctrl']['requestUpdate'] != '') {
@@ -208,7 +208,7 @@ if (tx_templavoila_div::convertVersionNumberToInteger(TYPO3_version) >= 4005000)
 } else {
 	$TCA['tt_content']['types'][$_EXTKEY . '_pi1']['showitem'] =
 		'CType;;4;;1-1-1, hidden, header;;' . (($_EXTCONF['enable.']['renderFCEHeader']) ? '3' : '') . ';;2-2-2, linkToTop;;;;3-3-3,
-		--div--;LLL:EXT:templavoila/locallang_db.xml:tt_content.CType_pi1,' . (($_EXTCONF['enable.']['selectDataStructure']) ? 'tx_templavoila_ds,' : '') . 'tx_templavoila_to,tx_templavoila_flex;;;;2-2-2,
+		--div--;LLL:EXT:templavoila/resources/Private/Language/locallang_db.xml:tt_content.CType_pi1,' . (($_EXTCONF['enable.']['selectDataStructure']) ? 'tx_templavoila_ds,' : '') . 'tx_templavoila_to,tx_templavoila_flex;;;;2-2-2,
 		--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access, starttime, endtime, fe_group';
 }
 
@@ -217,7 +217,7 @@ if (tx_templavoila_div::convertVersionNumberToInteger(TYPO3_version) >= 4005000)
 $tempColumns = array(
 	'tx_templavoila_ds' => array(
 		'exclude' => 1,
-		'label' => 'LLL:EXT:templavoila/locallang_db.xml:pages.tx_templavoila_ds',
+		'label' => 'LLL:EXT:templavoila/resources/Private/Language/locallang_db.xml:pages.tx_templavoila_ds',
 		'config' => array(
 			'type' => 'select',
 			'items' => Array(
@@ -234,7 +234,7 @@ $tempColumns = array(
 	),
 	'tx_templavoila_to' => Array(
 		'exclude' => 1,
-		'label' => 'LLL:EXT:templavoila/locallang_db.xml:pages.tx_templavoila_to',
+		'label' => 'LLL:EXT:templavoila/resources/Private/Language/locallang_db.xml:pages.tx_templavoila_to',
 		'displayCond' => 'FIELD:tx_templavoila_ds:REQ:true',
 		'config' => Array(
 			'type' => 'select',
@@ -251,7 +251,7 @@ $tempColumns = array(
 	),
 	'tx_templavoila_next_ds' => Array(
 		'exclude' => 1,
-		'label' => 'LLL:EXT:templavoila/locallang_db.xml:pages.tx_templavoila_next_ds',
+		'label' => 'LLL:EXT:templavoila/resources/Private/Language/locallang_db.xml:pages.tx_templavoila_next_ds',
 		'config' => Array(
 			'type' => 'select',
 			'items' => Array(
@@ -268,7 +268,7 @@ $tempColumns = array(
 	),
 	'tx_templavoila_next_to' => Array(
 		'exclude' => 1,
-		'label' => 'LLL:EXT:templavoila/locallang_db.xml:pages.tx_templavoila_next_to',
+		'label' => 'LLL:EXT:templavoila/resources/Private/Language/locallang_db.xml:pages.tx_templavoila_next_to',
 		'displayCond' => 'FIELD:tx_templavoila_next_ds:REQ:true',
 		'config' => Array(
 			'type' => 'select',
@@ -285,7 +285,7 @@ $tempColumns = array(
 	),
 	'tx_templavoila_flex' => Array(
 		'exclude' => 1,
-		'label' => 'LLL:EXT:templavoila/locallang_db.xml:pages.tx_templavoila_flex',
+		'label' => 'LLL:EXT:templavoila/resources/Private/Language/locallang_db.xml:pages.tx_templavoila_flex',
 		'config' => Array(
 			'type' => 'flex',
 			'ds_pointerField' => 'tx_templavoila_ds',
@@ -334,14 +334,14 @@ if (TYPO3_MODE == 'BE') {
 		'web_func',
 		'tx_templavoila_referenceElementsWizard',
 		NULL,
-		'LLL:EXT:templavoila/locallang.xml:wiz_refElements',
+		'LLL:EXT:templavoila/resources/Private/Language/locallang.xml:wiz_refElements',
 		'wiz'
 	);
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
 		'web_func',
 		'tx_templavoila_renameFieldInPageFlexWizard',
 		NULL,
-		'LLL:EXT:templavoila/locallang.xml:wiz_renameFieldsInPage',
+		'LLL:EXT:templavoila/resources/Private/Language/locallang.xml:wiz_renameFieldsInPage',
 		'wiz'
 	);
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('_MOD_web_func', 'EXT:wizard_crpages/locallang_csh.xml');

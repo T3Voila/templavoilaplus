@@ -4,7 +4,7 @@
 		<description>DB Labels</description>
 		<type>database</type>
 		<csh_table></csh_table>
-		<fileId>EXT:templavoila/locallang_db.xml</fileId>
+		<fileId>EXT:templavoila/resources/Private/Language/locallang_db.xml</fileId>
 		<labelContext type="array"></labelContext>
 	</meta>
 	<data type="array">
