@@ -2228,7 +2228,7 @@ lib.' . $menuType . '.1.NO {
 	10.fontColor = #333333
 	10.fontSize = 12
 	10.offset = 15,15
-	10.fontFace = t3lib/fonts/nimbus.ttf
+	10.fontFace = typo3/sysext/core/Resources/Private/Font/nimbus.ttf
 }
 	';
 

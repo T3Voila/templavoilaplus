@@ -1,13 +1,13 @@
 <?php
 # TYPO3 CVS ID: $Id$
 if (!defined('TYPO3_MODE')) {
-	die ('Access denied.');
+	die('Access denied.');
 }
 
 // unserializing the configuration so we can use it here:
 $_EXTCONF = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
 
-if (TYPO3_MODE == 'BE') {
+if (TYPO3_MODE === 'BE') {
 
 	// Adding click menu item:
 	$GLOBALS['TBE_MODULES_EXT']['xMOD_alt_clickmenu']['extendCMclasses'][] = array(
@@ -17,8 +17,19 @@ if (TYPO3_MODE == 'BE') {
 	include_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('templavoila') . 'class.tx_templavoila_handlestaticdatastructures.php');
 
 	// Adding backend modules:
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule('web', 'txtemplavoilaM1', 'top', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'mod1/');
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule('web', 'txtemplavoilaM2', '', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'mod2/');
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
+		'web',
+		'txtemplavoilaM1',
+		'top',
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'mod1/'
+	);
+
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
+		'web',
+		'txtemplavoilaM2',
+		'',
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'mod2/'
+	);
 
 	// Remove default Page module (layout) manually if wanted:
 	if (!$_EXTCONF['enable.']['oldPageModule']) {
@@ -133,21 +144,21 @@ $tempColumns = array(
 );
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('tt_content', $tempColumns);
 
-$TCA['tt_content']['ctrl']['typeicons'][$_EXTKEY . '_pi1'] = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . '/Resources/Public/Icon/icon_fce_ce.png';
+$GLOBALS['TCA']['tt_content']['ctrl']['typeicons'][$_EXTKEY . '_pi1'] = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . '/Resources/Public/Icon/icon_fce_ce.png';
 $GLOBALS['TCA']['tt_content']['ctrl']['typeicon_classes'][$_EXTKEY . '_pi1'] = 'extensions-templavoila-type-fce';
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin(array('LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xml:tt_content.CType_pi1', $_EXTKEY . '_pi1', 'EXT:' . $_EXTKEY . '/Resources/Public/Icon/icon_fce_ce.png'), 'CType');
 
 if ($_EXTCONF['enable.']['selectDataStructure']) {
-	if ($TCA['tt_content']['ctrl']['requestUpdate'] != '') {
-		$TCA['tt_content']['ctrl']['requestUpdate'] .= ',';
+	if ($GLOBALS['TCA']['tt_content']['ctrl']['requestUpdate'] != '') {
+		$GLOBALS['TCA']['tt_content']['ctrl']['requestUpdate'] .= ',';
 	}
-	$TCA['tt_content']['ctrl']['requestUpdate'] .= 'tx_templavoila_ds';
+	$GLOBALS['TCA']['tt_content']['ctrl']['requestUpdate'] .= 'tx_templavoila_ds';
 }
 
 
 if (tx_templavoila_div::convertVersionNumberToInteger(TYPO3_version) >= 4005000) {
 
-	$TCA['tt_content']['types'][$_EXTKEY . '_pi1']['showitem'] =
+	$GLOBALS['TCA']['tt_content']['types'][$_EXTKEY . '_pi1']['showitem'] =
 		'--palette--;LLL:EXT:cms/locallang_ttc.xml:palette.general;general,
 		--palette--;LLL:EXT:cms/locallang_ttc.xml:palette.headers;headers,
 	--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.access,
@@ -163,7 +174,7 @@ if (tx_templavoila_div::convertVersionNumberToInteger(TYPO3_version) >= 4005000)
 	}
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('tt_content', 'tx_templavoila_flex;;;;1-1-1', $_EXTKEY . '_pi1', 'after:subheader');
 } else {
-	$TCA['tt_content']['types'][$_EXTKEY . '_pi1']['showitem'] =
+	$GLOBALS['TCA']['tt_content']['types'][$_EXTKEY . '_pi1']['showitem'] =
 		'CType;;4;;1-1-1, hidden, header;;' . (($_EXTCONF['enable.']['renderFCEHeader']) ? '3' : '') . ';;2-2-2, linkToTop;;;;3-3-3,
 		--div--;LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xml:tt_content.CType_pi1,' . (($_EXTCONF['enable.']['selectDataStructure']) ? 'tx_templavoila_ds,' : '') . 'tx_templavoila_to,tx_templavoila_flex;;;;2-2-2,
 		--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access, starttime, endtime, fe_group';
@@ -263,10 +274,10 @@ if ($_EXTCONF['enable.']['selectDataStructure']) {
 		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('pages', 'tx_templavoila_ds;;;;1-1-1,tx_templavoila_to,tx_templavoila_next_ds;;;;1-1-1,tx_templavoila_next_to,tx_templavoila_flex;;;;1-1-1');
 	}
 
-	if ($TCA['pages']['ctrl']['requestUpdate'] != '') {
-		$TCA['pages']['ctrl']['requestUpdate'] .= ',';
+	if ($GLOBALS['TCA']['pages']['ctrl']['requestUpdate'] != '') {
+		$GLOBALS['TCA']['pages']['ctrl']['requestUpdate'] .= ',';
 	}
-	$TCA['pages']['ctrl']['requestUpdate'] .= 'tx_templavoila_ds,tx_templavoila_next_ds';
+	$GLOBALS['TCA']['pages']['ctrl']['requestUpdate'] .= 'tx_templavoila_ds,tx_templavoila_next_ds';
 } else {
 	if (tx_templavoila_div::convertVersionNumberToInteger(TYPO3_version) >= 4005000) {
 		if (!$_EXTCONF['enable.']['oldPageModule']) {
@@ -281,12 +292,12 @@ if ($_EXTCONF['enable.']['selectDataStructure']) {
 		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('pages', 'tx_templavoila_to;;;;1-1-1,tx_templavoila_next_to;;;;1-1-1,tx_templavoila_flex;;;;1-1-1');
 	}
 
-	unset($TCA['pages']['columns']['tx_templavoila_to']['displayCond']);
-	unset($TCA['pages']['columns']['tx_templavoila_next_to']['displayCond']);
+	unset($GLOBALS['TCA']['pages']['columns']['tx_templavoila_to']['displayCond']);
+	unset($GLOBALS['TCA']['pages']['columns']['tx_templavoila_next_to']['displayCond']);
 }
 
 // Configure the referencing wizard to be used in the web_func module:
-if (TYPO3_MODE == 'BE') {
+if (TYPO3_MODE === 'BE') {
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
 		'web_func',
 		'tx_templavoila_referenceElementsWizard',
@@ -304,8 +315,8 @@ if (TYPO3_MODE == 'BE') {
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('_MOD_web_func', 'EXT:wizard_crpages/locallang_csh.xml');
 }
 // complex condition to make sure the icons are available during frontend editing...
-if (TYPO3_MODE == 'BE' ||
-	(TYPO3_MODE == 'FE' && isset($GLOBALS['BE_USER']) && method_exists($GLOBALS['BE_USER'], 'isFrontendEditingActive') && $GLOBALS['BE_USER']->isFrontendEditingActive())
+if (TYPO3_MODE === 'BE' ||
+	(TYPO3_MODE === 'FE' && isset($GLOBALS['BE_USER']) && method_exists($GLOBALS['BE_USER'], 'isFrontendEditingActive') && $GLOBALS['BE_USER']->isFrontendEditingActive())
 ) {
 	$icons = array(
 		'paste' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila') . 'mod1/clip_pasteafter.gif',
