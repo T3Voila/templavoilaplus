@@ -3,7 +3,7 @@
 // This file was generated on 2011-10-26 01:17
 
 $extensionPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('templavoila');
-$extensionClassesPath = $extensionPath . 'classes/';
+$extensionClassesPath = $extensionPath . 'Classes/';
 return array(
 	'tx_templavoila_access' => $extensionPath . 'class.tx_templavoila_access.php',
 	'tx_templavoila_api' => $extensionPath . 'class.tx_templavoila_api.php',
