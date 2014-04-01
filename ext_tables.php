@@ -58,7 +58,7 @@ $TCA['tx_templavoila_tmplobj'] = Array(
 		'default_sortby' => 'ORDER BY title',
 		'delete' => 'deleted',
 		'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'tca.php',
-		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'icon_to.gif',
+		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'resources/Public/Icon/icon_to.gif',
 		'selicon_field' => 'previewicon',
 		'selicon_field_path' => 'uploads/tx_templavoila',
 		'type' => 'parent', // kept to make sure the user is force to reload the form
@@ -79,7 +79,7 @@ $TCA['tx_templavoila_datastructure'] = Array(
 		'default_sortby' => 'ORDER BY title',
 		'delete' => 'deleted',
 		'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'tca.php',
-		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'icon_ds.gif',
+		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'resources/Public/Icon/icon_ds.gif',
 		'selicon_field' => 'previewicon',
 		'selicon_field_path' => 'uploads/tx_templavoila',
 		'versioningWS' => TRUE,
@@ -176,9 +176,9 @@ $tempColumns = array(
 );
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('tt_content', $tempColumns);
 
-$TCA['tt_content']['ctrl']['typeicons'][$_EXTKEY . '_pi1'] = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . '/icon_fce_ce.png';
+$TCA['tt_content']['ctrl']['typeicons'][$_EXTKEY . '_pi1'] = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . '/resources/Public/Icon/icon_fce_ce.png';
 $GLOBALS['TCA']['tt_content']['ctrl']['typeicon_classes'][$_EXTKEY . '_pi1'] = 'extensions-templavoila-type-fce';
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin(array('LLL:EXT:templavoila/resources/Private/Language/locallang_db.xml:tt_content.CType_pi1', $_EXTKEY . '_pi1', 'EXT:' . $_EXTKEY . '/icon_fce_ce.png'), 'CType');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin(array('LLL:EXT:templavoila/resources/Private/Language/locallang_db.xml:tt_content.CType_pi1', $_EXTKEY . '_pi1', 'EXT:' . $_EXTKEY . '/resources/Public/Icon/icon_fce_ce.png'), 'CType');
 
 if ($_EXTCONF['enable.']['selectDataStructure']) {
 	if ($TCA['tt_content']['ctrl']['requestUpdate'] != '') {
@@ -358,7 +358,7 @@ if (TYPO3_MODE == 'BE' ||
 		'clip_ref-release' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila') . 'mod1/clip_ref_h.gif',
 		'unlink' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila') . 'mod1/unlink.png',
 		'htmlvalidate' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila') . 'resources/icons/html_go.png',
-		'type-fce' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila') . 'icon_fce_ce.png'
+		'type-fce' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila') . 'resources/Public/Icon/icon_fce_ce.png'
 	);
 	\TYPO3\CMS\Backend\Sprite\SpriteManager::addSingleIcons($icons, $_EXTKEY);
 }
