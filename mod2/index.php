@@ -104,7 +104,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('template');
 		$this->doc->docType = 'xhtml_trans';
 		$this->doc->backPath = $BACK_PATH;
-		$this->doc->setModuleTemplate('EXT:templavoila/resources/templates/mod2_default.html');
+		$this->doc->setModuleTemplate('EXT:templavoila/Resources/templates/mod2_default.html');
 		$this->doc->bodyTagId = 'typo3-mod-php';
 		$this->doc->divClass = '';
 		$this->doc->form = '<form action="' . htmlspecialchars('index.php?id=' . $this->id) . '" method="post" autocomplete="off">';
@@ -398,8 +398,8 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 		// Create setting handlers:
 		$settings = '<p>' .
-			\TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck('', 'SET[set_details]', $this->MOD_SETTINGS['set_details'], '', \TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl('', $_GET, '', 1, 1), 'id="set_details"') . $showDetails .
-			\TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck('', 'SET[set_unusedDs]', $this->MOD_SETTINGS['set_unusedDs'], '', \TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl('', $_GET, '', 1, 1), 'id="set_unusedDs"') . $showUnused .
+			\TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck('', 'SET[set_details]', $this->MOD_SETTINGS['set_details'], 'index.php', \TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl('', $_GET, '', 1, 1), 'id="set_details"') . $showDetails .
+			\TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck('', 'SET[set_unusedDs]', $this->MOD_SETTINGS['set_unusedDs'], 'index.php', \TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl('', $_GET, '', 1, 1), 'id="set_unusedDs"') . $showUnused .
 			'</p>';
 
 		// Add output:

@@ -177,13 +177,13 @@ class tx_templavoila_renameFieldInPageFlexWizard extends \TYPO3\CMS\Backend\Modu
 				}
 
 				return '<div id="form-line-0">'
-				. '<label for="' . $name . '" style="width:200px;display:block;float:left;">' . $GLOBALS['LANG']->sL('LLL:EXT:templavoila/locallang.xml:field_' . $name) . '</label>'
+				. '<label for="' . $name . '" style="width:200px;display:block;float:left;">' . $GLOBALS['LANG']->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang.xml:field_' . $name) . '</label>'
 				. '<input type="checkbox" id="' . $name . '" name="' . $name . '" ' . $checked . ' value="1">'
 				. '</div>';
 				break;
 			case 'submit':
 				return '<div id="form-line-0">'
-				. '<input type="submit" id="' . $name . '" name="' . $name . '" value="' . $GLOBALS['LANG']->sL('LLL:EXT:templavoila/locallang.xml:field_' . $name) . '">'
+				. '<input type="submit" id="' . $name . '" name="' . $name . '" value="' . $GLOBALS['LANG']->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang.xml:field_' . $name) . '">'
 				. '</div>';
 				break;
 			case 'hidden':
@@ -204,14 +204,14 @@ class tx_templavoila_renameFieldInPageFlexWizard extends \TYPO3\CMS\Backend\Modu
 				}
 
 				return '<div id="form-line-0">'
-				. '<label style="width:200px;display:block;float:left;" for="' . $name . '">' . $GLOBALS['LANG']->sL('LLL:EXT:templavoila/locallang.xml:field_' . $name) . '</label>'
+				. '<label style="width:200px;display:block;float:left;" for="' . $name . '">' . $GLOBALS['LANG']->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang.xml:field_' . $name) . '</label>'
 				. '<select id="' . $name . '" name="' . $name . '">' . $buffer . '</select>'
 				. '</div>';
 				break;
 			case 'text':
 			default:
 				return '<div id="form-line-0">'
-				. '<label for="' . $name . '">' . $GLOBALS['LANG']->sL('LLL:EXT:templavoila/locallang.xml:field_' . $name) . '</label>'
+				. '<label for="' . $name . '">' . $GLOBALS['LANG']->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang.xml:field_' . $name) . '</label>'
 				. '<input type="text" id="' . $name . '" name="' . $name . '" value="' . htmlspecialchars($value) . '">'
 				. '</div>';
 		}

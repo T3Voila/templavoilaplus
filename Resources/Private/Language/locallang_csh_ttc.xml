@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<description>CSH for additional tt_content fields</description>
+		<type>CSH</type>
+		<csh_table>tt_content</csh_table>
+		<fileId>EXT:templavoila/Resources/Private/Language/locallang_csh_ttc.xml</fileId>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="tx_templavoila_ds.description">Choose a Data Structure for this Flexible Content Element</label>
+			<label index="tx_templavoila_to.description">Select a Template Object that automatically maps the Data Structure to the HTML template</label>
+			<label index="tx_templavoila_flex.description">Fill in the flexible content for this content element structure.</label>
+			<label index="tx_templavoila_pito.description">[FILL IN] tx_templavoila_pito</label>
+		</languageKey>
+	</data>
+</T3locallang>

@@ -308,11 +308,11 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('template');
 			$this->doc->backPath = $BACK_PATH;
 
-			$templateFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($this->extKey) . 'resources/templates/mod1_' . substr(TYPO3_version, 0, 3) . '.html';
+			$templateFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($this->extKey) . 'Resources/templates/mod1_' . substr(TYPO3_version, 0, 3) . '.html';
 			if (file_exists($templateFile)) {
-				$this->doc->setModuleTemplate('EXT:templavoila/resources/templates/mod1_' . substr(TYPO3_version, 0, 3) . '.html');
+				$this->doc->setModuleTemplate('EXT:templavoila/Resources/templates/mod1_' . substr(TYPO3_version, 0, 3) . '.html');
 			} else {
-				$this->doc->setModuleTemplate('EXT:templavoila/resources/templates/mod1_default.html');
+				$this->doc->setModuleTemplate('EXT:templavoila/Resources/templates/mod1_default.html');
 			}
 
 			$this->doc->docType = 'xhtml_trans';
@@ -322,11 +322,11 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			$this->doc->form = '<form action="' . htmlspecialchars('index.php?' . $this->link_getParameters()) . '" method="post">';
 
 			// Add custom styles
-			$styleSheetFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($this->extKey) . 'resources/styles/mod1_' . substr(TYPO3_version, 0, 3) . '.css';
+			$styleSheetFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($this->extKey) . 'Resources/styles/mod1_' . substr(TYPO3_version, 0, 3) . '.css';
 			if (file_exists($styleSheetFile)) {
-				$styleSheetFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->extKey) . 'resources/styles/mod1_' . substr(TYPO3_version, 0, 3) . '.css';
+				$styleSheetFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->extKey) . 'Resources/styles/mod1_' . substr(TYPO3_version, 0, 3) . '.css';
 			} else {
-				$styleSheetFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->extKey) . 'resources/styles/mod1_default.css';
+				$styleSheetFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->extKey) . 'Resources/styles/mod1_default.css';
 			}
 
 			if (isset($this->modTSconfig['properties']['stylesheet'])) {
@@ -539,7 +539,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		} else { // No access or no current page uid:
 			$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('template');
 			$this->doc->backPath = $BACK_PATH;
-			$this->doc->setModuleTemplate('EXT:templavoila/resources/templates/mod1_noaccess.html');
+			$this->doc->setModuleTemplate('EXT:templavoila/Resources/templates/mod1_noaccess.html');
 			$this->doc->docType = 'xhtml_trans';
 
 			$this->doc->bodyTagId = 'typo3-mod-php';
