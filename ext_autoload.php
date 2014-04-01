@@ -45,7 +45,6 @@ return array(
 	'tx_templavoila_cm1_dsedit' => $extensionPath . 'cm1/class.tx_templavoila_cm1_dsedit.php',
 	'tx_templavoila_cm1_etypes' => $extensionPath . 'cm1/class.tx_templavoila_cm1_etypes.php',
 	'tx_templavoila_cm2' => $extensionPath . 'cm2/index.php',
-	'tx_templavoila_referenceelementswizard' => $extensionPath . 'func_wizards/class.tx_templavoila_referenceelementswizard.php',
 	'tx_templavoila_mod1_ajax' => $extensionPath . 'mod1/class.tx_templavoila_mod1_ajax.php',
 	'tx_templavoila_mod1_clipboard' => $extensionPath . 'mod1/class.tx_templavoila_mod1_clipboard.php',
 	'tx_templavoila_mod1_localization' => $extensionPath . 'mod1/class.tx_templavoila_mod1_localization.php',
@@ -60,5 +59,4 @@ return array(
 	'tx_templavoila_pi1' => $extensionPath . 'pi1/class.tx_templavoila_pi1.php',
 	'tx_templavoila_api_testcase' => $extensionPath . 'tests/tx_templavoila_api_testcase.php',
 	'tx_templavoila_syntaxhl' => $extensionPath . 'class.tx_templavoila_syntaxhl.php',
-	'tx_templavoila_renamefieldinpageflexwizard' => $extensionPath . 'func_wizards/class.tx_templavoila_renamefieldinpageflexwizard.php',
 );

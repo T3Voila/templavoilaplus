@@ -289,14 +289,14 @@ if ($_EXTCONF['enable.']['selectDataStructure']) {
 if (TYPO3_MODE == 'BE') {
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
 		'web_func',
-		'tx_templavoila_referenceElementsWizard',
+		'Extension\\Templavoila\\Controller\\ReferenceElementWizardController',
 		NULL,
 		'LLL:EXT:templavoila/Resources/Private/Language/locallang.xml:wiz_refElements',
 		'wiz'
 	);
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
 		'web_func',
-		'tx_templavoila_renameFieldInPageFlexWizard',
+		'Extension\\Templavoila\\Controller\\RenameFieldInPageFlexWizardController',
 		NULL,
 		'LLL:EXT:templavoila/Resources/Private/Language/locallang.xml:wiz_renameFieldsInPage',
 		'wiz'
