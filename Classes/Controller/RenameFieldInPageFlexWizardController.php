@@ -1,4 +1,6 @@
 <?php
+namespace Extension\Templavoila\Controller;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -30,7 +32,7 @@
  *
  * @author     Kay Strobach <typo3@kay-strobach.de>
  */
-class tx_templavoila_renameFieldInPageFlexWizard extends \TYPO3\CMS\Backend\Module\AbstractFunctionModule {
+class RenameFieldInPageFlexWizardController extends \TYPO3\CMS\Backend\Module\AbstractFunctionModule {
 
 	/**
 	 * @return string
@@ -255,8 +257,4 @@ class tx_templavoila_renameFieldInPageFlexWizard extends \TYPO3\CMS\Backend\Modu
 
 		return $return;
 	}
-}
-
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/func_wizards/class.tx_templavoila_renamefieldinpageflexwizard.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/func_wizards/class.tx_templavoila_renamefieldinpageflexwizard.php']);
 }
