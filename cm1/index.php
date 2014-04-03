@@ -366,7 +366,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$this->doc->styleSheetFile2 = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->extKey) . "cm1/styles.css";
 
 		// General GPvars for module mode:
-		$this->displayFile = tx_templavoila_file::filename(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('file'));
+		$this->displayFile = \Extension\Templavoila\Domain\Model\File::filename(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('file'));
 		$this->displayTable = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('table');
 		$this->displayUid = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('uid');
 		$this->displayPath = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('htmlPath');
@@ -418,7 +418,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			}
 		');
 
-		if (tx_templavoila_div::convertVersionNumberToInteger(TYPO3_version) < 4005000) {
+		if (\Extension\Templavoila\Utility\GeneralUtility::convertVersionNumberToInteger(TYPO3_version) < 4005000) {
 			$this->doc->getDynTabMenuJScode();
 		} else {
 			$this->doc->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/tabmenu.js');
@@ -681,7 +681,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				$htmlParse = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\HtmlParser');
 				$relPathFix = dirname(substr($this->displayFile, strlen(PATH_site))) . '/';
 				$fileContent = $htmlParse->prefixResourcePath($relPathFix, $fileContent);
-				$this->markupObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_htmlmarkup');
+				$this->markupObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Domain\\Model\\HtmlMarkup');
 				$contentSplittedByMapping = $this->markupObj->splitContentToMappingInfo($fileContent, $currentMappingInfo);
 				$templatemapping['MappingData_cached'] = $contentSplittedByMapping['sub']['ROOT'];
 
@@ -735,7 +735,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				case 'saveDSandTO':
 					$newID = '';
 					// Init TCEmain object and store:
-					$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance("\TYPO3\CMS\Core\DataHandling\DataHandler");
+					$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance("TYPO3\\CMS\\Core\\DataHandling\\DataHandler");
 					$tce->stripslashes_values = 0;
 
 					// DS:
@@ -1008,7 +1008,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				case 'showXMLDS':
 
 					// Make instance of syntax highlight class:
-					$hlObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_syntaxhl');
+					$hlObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Service\\SyntaxHighlightingService');
 
 					$storeDataStruct = $dataStruct;
 					if (is_array($storeDataStruct['ROOT']['el'])) {
@@ -1236,7 +1236,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				if (is_array($dataStruct)) {
 
 					// Make instance of syntax highlight class:
-					$hlObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_syntaxhl');
+					$hlObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Service\\SyntaxHighlightingService');
 
 					$dataStructureXML = \TYPO3\CMS\Core\Utility\GeneralUtility::array2xml_cs($origDataStruct, 'T3DataStructure', array('useCDATA' => 1));
 					$content .= '
@@ -1326,7 +1326,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 						$dsValue = $parentRec['datastructure'];
 					}
 
-					if (tx_templavoila_div::canBeInterpretedAsInteger($dsValue)) {
+					if (\Extension\Templavoila\Utility\GeneralUtility::canBeInterpretedAsInteger($dsValue)) {
 						$DS_row = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('tx_templavoila_datastructure', $dsValue);
 					} else {
 						$DSOfile = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($dsValue);
@@ -1586,7 +1586,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			// Init; read file, init objects:
 			$fileContent = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($theFile);
 			$htmlParse = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\HtmlParser');
-			$this->markupObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_htmlmarkup');
+			$this->markupObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Domain\\Model\\HtmlMarkup');
 
 			// Fix relative paths in source:
 			$relPathFix = dirname(substr($theFile, strlen(PATH_site))) . '/';
@@ -1722,7 +1722,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$fileContent = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($this->markupFile);
 
 		// Init mark up object.
-		$this->markupObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_htmlmarkup');
+		$this->markupObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Domain\\Model\\HtmlMarkup');
 		$this->markupObj->init();
 
 		// Get <body> tag:
@@ -1744,7 +1744,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$bodyTagRow = $showBodyTag ? '
 				<tr class="bgColor2">
 					<td><input type="checkbox" name="addBodyTag" value="1"' . ($currentHeaderMappingInfo['addBodyTag'] ? ' checked="checked"' : '') . ' /></td>
-					<td>' . tx_templavoila_htmlmarkup::getGnyfMarkup('body') . '</td>
+					<td>' . \Extension\Templavoila\Domain\Model\HtmlMarkup::getGnyfMarkup('body') . '</td>
 					<td><pre>' . htmlspecialchars($html_body) . '</pre></td>
 				</tr>' : '';
 
@@ -1794,7 +1794,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$fileContent = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($this->markupFile);
 
 		// Init mark up object.
-		$this->markupObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_htmlmarkup');
+		$this->markupObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Domain\\Model\\HtmlMarkup');
 
 		// Load splitted content from currentMappingInfo array (used to show us which elements maps to some real content).
 		$contentSplittedByMapping = $this->markupObj->splitContentToMappingInfo($fileContent, $currentMappingInfo);
@@ -2109,7 +2109,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 								$okTitle = htmlspecialchars($cF ? sprintf($GLOBALS['LANG']->getLL('displayDSContentFound'), strlen($contentSplittedByMapping['cArray'][$key])) . ($multilineTooltips ? ':' . chr(10) . chr(10) . $cF : '') : $GLOBALS['LANG']->getLL('displayDSContentEmpty'));
 
 								$rowCells['htmlPath'] = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-ok', array('title' => $okTitle)) .
-									tx_templavoila_htmlmarkup::getGnyfMarkup($pI['el'], '---' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($mappingElement, -80))) .
+									\Extension\Templavoila\Domain\Model\HtmlMarkup::getGnyfMarkup($pI['el'], '---' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($mappingElement, -80))) .
 									($pI['modifier'] ? $pI['modifier'] . ($pI['modifier_value'] ? ':' . ($pI['modifier'] != 'RANGE' ? $pI['modifier_value'] : '...') : '') : '');
 								$rowCells['htmlPath'] = '<a href="' . $this->linkThisScript(array(
 										'htmlPath' => $path . ($path ? '|' : '') . preg_replace('/\/[^ ]*$/', '', $currentMappingInfo[$key]['MAP_EL']),
@@ -2180,7 +2180,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 								}
 
 								// Finally, put together the selector box:
-								$rowCells['cmdLinks'] = tx_templavoila_htmlmarkup::getGnyfMarkup($pI['el'], '---' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($lastLevel['path'], -80))) .
+								$rowCells['cmdLinks'] = \Extension\Templavoila\Domain\Model\HtmlMarkup::getGnyfMarkup($pI['el'], '---' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($lastLevel['path'], -80))) .
 									'<br /><select name="dataMappingForm' . $formPrefix . '[' . $key . '][MAP_EL]">
 										' . implode('
 										', $opt) . '
@@ -2239,7 +2239,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 					if ($this->_preview) {
 						if (!is_array($value['tx_templavoila']['sample_data'])) {
 							$rowCells['description'] = '[' . $GLOBALS['LANG']->getLL('noSampleData') . ']';
-						} elseif (tx_templavoila_div::convertVersionNumberToInteger(TYPO3_version) < 4005000) {
+						} elseif (\Extension\Templavoila\Utility\GeneralUtility::convertVersionNumberToInteger(TYPO3_version) < 4005000) {
 							$rowCells['description'] = \TYPO3\CMS\Core\Utility\GeneralUtility::view_array($value['tx_templavoila']['sample_data']);
 						} else {
 							$rowCells['description'] = \TYPO3\CMS\Core\Utility\DebugUtility::viewArray($value['tx_templavoila']['sample_data']);
@@ -2573,7 +2573,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @see main_display()
 	 */
 	function displayFileContentWithMarkup($content, $path, $relPathFix, $limitTags) {
-		$markupObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_htmlmarkup');
+		$markupObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Domain\\Model\\HtmlMarkup');
 		$markupObj->gnyfImgAdd = $this->show ? '' : 'onclick="return parent.updPath(\'###PATH###\');"';
 		$markupObj->pathPrefix = $path ? $path . '|' : '';
 		$markupObj->onlyElements = $limitTags;
@@ -2626,7 +2626,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$currentMappingInfo = is_array($sesDat['currentMappingInfo']) ? $sesDat['currentMappingInfo'] : array();
 
 		// Init mark up object.
-		$this->markupObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_htmlmarkup');
+		$this->markupObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Domain\\Model\\HtmlMarkup');
 		$this->markupObj->htmlParse = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\HtmlParser');
 
 		// Splitting content, adding a random token for the part to be previewed:
@@ -2769,12 +2769,6 @@ if (!function_exists('md5_file')) {
 		return md5(file_get_contents($file), $raw);
 	}
 }
-
-
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/cm1/index.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/cm1/index.php']);
-}
-
 
 // Make instance:
 $SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_cm1');

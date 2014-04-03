@@ -72,7 +72,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	var $clipboardObj; // Instance of clipboard class
 	var $recordsObj; // Instance of records class
 	/**
-	 * @var tx_templavoila_api
+	 * @var \Extension\Templavoila\Service\ApiService
 	 */
 	var $apiObj; // Instance of tx_templavoila_api
 	var $sortableContainers = array(); // Contains the containers for drag and drop
@@ -170,7 +170,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$this->wizardsObj->init($this);
 
 		// Initialize TemplaVoila API class:
-		$this->apiObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_api', $this->altRoot ? $this->altRoot : 'pages');
+		$this->apiObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Service\\ApiService', $this->altRoot ? $this->altRoot : 'pages');
 		if (isset($this->modSharedTSconfig['properties']['useLiveWorkspaceForReferenceListUpdates'])) {
 			$this->apiObj->modifyReferencesInLiveWS(TRUE);
 		}
@@ -426,7 +426,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			}
 
 			// Set up JS for dynamic tab menu and side bar
-			if (tx_templavoila_div::convertVersionNumberToInteger(TYPO3_version) < 4005000) {
+			if (\Extension\Templavoila\Utility\GeneralUtility::convertVersionNumberToInteger(TYPO3_version) < 4005000) {
 				$this->doc->JScode .= $this->doc->getDynTabMenuJScode();
 			} else {
 				$this->doc->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/tabmenu.js');
@@ -676,7 +676,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 		// If access to Web>List for user, then link to that module.
 		if ($BE_USER->check('modules', 'web_list')) {
-			if (tx_templavoila_div::convertVersionNumberToInteger(TYPO3_version) < 4005000) {
+			if (\Extension\Templavoila\Utility\GeneralUtility::convertVersionNumberToInteger(TYPO3_version) < 4005000) {
 				$href = $GLOBALS['BACK_PATH'] . 'db_list.php?id=' . $this->id . '&returnUrl=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI'));
 			} else {
 				$href = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_list', array('id' => $this->id, 'returnUrl' => \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')));
@@ -997,7 +997,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 						$linkHide = !in_array('hide', $this->blindIcons) ? $this->icon_hide($contentTreeArr['el']) : '';
 
 						if ($canEditContent && $this->modTSconfig['properties']['enableDeleteIconForLocalElements'] && $elementBelongsToCurrentPage) {
-							$hasForeignReferences = tx_templavoila_div::hasElementForeignReferences($contentTreeArr['el'], $contentTreeArr['el']['pid']);
+							$hasForeignReferences = \Extension\Templavoila\Utility\GeneralUtility::hasElementForeignReferences($contentTreeArr['el'], $contentTreeArr['el']['pid']);
 							$iconDelete = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-delete', array('title' => $LANG->getLL('deleteRecord')));
 							$linkDelete = !in_array('delete', $this->blindIcons) ? $this->link_unlink($iconDelete, $parentPointer, TRUE, $hasForeignReferences, $elementPointer) : '';
 						} else {
@@ -1016,7 +1016,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		// Prepare the language icon:
 		$languageLabel = htmlspecialchars($this->allAvailableLanguages[$contentTreeArr['el']['sys_language_uid']]['title']);
 		if ($this->allAvailableLanguages[$languageUid]['flagIcon']) {
-			$languageIcon = tx_templavoila_icons::getFlagIconForLanguage($this->allAvailableLanguages[$languageUid]['flagIcon'], array('title' => $languageLabel, 'alt' => $languageLabel));
+			$languageIcon = \Extension\Templavoila\Utility\IconUtility::getFlagIconForLanguage($this->allAvailableLanguages[$languageUid]['flagIcon'], array('title' => $languageLabel, 'alt' => $languageLabel));
 		} else {
 			$languageIcon = ($languageLabel && $languageUid ? '[' . $languageLabel . ']' : '');
 		}
@@ -1154,10 +1154,10 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		}
 
 		try {
-			$toRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_templateRepository');
-			/** @var $toRepo tx_templavoila_templateRepository */
+			$toRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Domain\\Repository\\TemplateRepository');
+			/** @var $toRepo \Extension\Templavoila\Domain\Repository\TemplateRepository */
 			$to = $toRepo->getTemplateByUid($toRecord['uid']);
-			/** @var $to tx_templavoila_template */
+			/** @var $to \Extension\Templavoila\Domain\Model\Template */
 			$beTemplate = $to->getBeLayout();
 		} catch (InvalidArgumentException $e) {
 			// might happen if uid was not what the Repo expected - that's ok here
@@ -1740,7 +1740,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 					if ($l10nInfo && $BE_USER->checkLanguageAccess($sys_language_uid)) {
 						$tRows[] = '
 							<tr class="bgColor4">
-								<td width="1%">' . $flagLink_begin . tx_templavoila_icons::getFlagIconForLanguage($sLInfo['flagIcon'], array('title' => $sLInfo['title'], 'alt' => $sLInfo['title'])) . $flagLink_end . '</td>
+								<td width="1%">' . $flagLink_begin . \Extension\Templavoila\Utility\IconUtility::getFlagIconForLanguage($sLInfo['flagIcon'], array('title' => $sLInfo['title'], 'alt' => $sLInfo['title'])) . $flagLink_end . '</td>
 								<td width="99%">' . $l10nInfo . '</td>
 							</tr>';
 					}
@@ -1934,7 +1934,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 						$linkUnlink = '';
 					}
 					if ($this->modTSconfig['properties']['enableDeleteIconForLocalElements'] && $elementBelongsToCurrentPage) {
-						$hasForeignReferences = tx_templavoila_div::hasElementForeignReferences($contentTreeArr['el'], $contentTreeArr['el']['pid']);
+						$hasForeignReferences = \Extension\Templavoila\Utility\GeneralUtility::hasElementForeignReferences($contentTreeArr['el'], $contentTreeArr['el']['pid']);
 						$iconDelete = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-delete', array('title' => $LANG->getLL('deleteRecord')));
 						$linkDelete = $this->link_unlink($iconDelete, $parentPointer, TRUE, $hasForeignReferences);
 					} else {
@@ -1953,7 +1953,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		if ($languageUid > 0) {
 			$languageLabel = htmlspecialchars($this->pObj->allAvailableLanguages[$languageUid]['title']);
 			if ($this->pObj->allAvailableLanguages[$languageUid]['flagIcon']) {
-				$languageIcon = tx_templavoila_icons::getFlagIconForLanguage($this->pObj->allAvailableLanguages[$languageUid]['flagIcon'], array('title' => $languageLabel, 'alt' => $languageLabel));
+				$languageIcon = \Extension\Templavoila\Utility\IconUtility::getFlagIconForLanguage($this->pObj->allAvailableLanguages[$languageUid]['flagIcon'], array('title' => $languageLabel, 'alt' => $languageLabel));
 			} else {
 				$languageIcon = '[' . $languageLabel . ']';
 			}
@@ -2139,7 +2139,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 								'title' => \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle('tt_content', $olrow),
 								'table' => 'tt_content',
 								'uid' => $olrow['uid'],
-								'flag' => $flagLink_begin . tx_templavoila_icons::getFlagIconForLanguage($sLInfo['flagIcon'], array('title' => $sLInfo['title'], 'alt' => $sLInfo['title'])) . $flagLink_end,
+								'flag' => $flagLink_begin . \Extension\Templavoila\Utility\IconUtility::getFlagIconForLanguage($sLInfo['flagIcon'], array('title' => $sLInfo['title'], 'alt' => $sLInfo['title'])) . $flagLink_end,
 								'isNewVersion' => $olrow['_ORIG_uid'] ? TRUE : FALSE,
 							);
 							break;
@@ -2820,7 +2820,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 			$obj = @unserialize(base64_decode($ser));
 
-			if ($obj instanceof tx_templavoila_contentElementDescriptor) {
+			if ($obj instanceof \tx_templavoila_contentElementDescriptor) {
 				$data = (array) @unserialize($GLOBALS['BE_USER']->uc['tx_templavoila_recentce']);
 				// Find this element
 				$pos = FALSE;
@@ -2863,7 +2863,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		}
 		$editingEnabled = TRUE;
 		try {
-			$toRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_templateRepository');
+			$toRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Domain\\Repository\\TemplateRepository');
 			$to = $toRepo->getTemplateByUid($toUid);
 			$xml = $to->getLocalDataprotArray();
 			if (isset($xml['meta']['noEditOnCreation'])) {
@@ -2946,10 +2946,6 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 		return $hasEditRights;
 	}
-}
-
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/mod1/index.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/mod1/index.php']);
 }
 
 // Make instance:

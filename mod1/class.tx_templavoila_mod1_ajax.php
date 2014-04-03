@@ -35,7 +35,7 @@ class tx_templavoila_mod1_ajax {
 	private $apiObj;
 
 	public function __construct() {
-		$this->apiObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_api');
+		$this->apiObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Service\\ApiService');
 	}
 
 	/**
@@ -56,9 +56,4 @@ class tx_templavoila_mod1_ajax {
 
 		$this->apiObj->moveElement($sourcePointer, $destinationPointer);
 	}
-}
-
-
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/mod1/class.tx_templavoila_mod1_ajax.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/mod1/class.tx_templavoila_mod1_ajax.php']);
 }

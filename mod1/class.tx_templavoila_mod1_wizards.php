@@ -298,9 +298,9 @@ class tx_templavoila_mod1_wizards {
 				</tr>
 				</table>';
 
-				$dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_datastructureRepository');
-				$toRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_templateRepository');
-				$dsList = $dsRepo->getDatastructuresByStoragePidAndScope($storageFolderPID, tx_templavoila_datastructure::SCOPE_PAGE);
+				$dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Domain\\Repository\\DataStructureRepository');
+				$toRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Domain\\Repository\\TemplateRepository');
+				$dsList = $dsRepo->getDatastructuresByStoragePidAndScope($storageFolderPID, \Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_PAGE);
 				foreach ($dsList as $dsObj) {
 					if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList($disallowedPageTemplateItems, $dsObj->getKey()) ||
 						!$dsObj->isPermittedForUser()
@@ -510,8 +510,4 @@ class tx_templavoila_mod1_wizards {
 
 		return (count($tmp_disallowedPageTemplateItems)) ? implode(',', $tmp_disallowedPageTemplateItems) : '0';
 	}
-}
-
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/mod1/class.tx_templavoila_mod1_wizards.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/mod1/class.tx_templavoila_mod1_wizards.php']);
 }

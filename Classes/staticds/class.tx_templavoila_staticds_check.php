@@ -39,7 +39,7 @@ class tx_templavoila_staticds_check {
 			return;
 		}
 
-		if (tx_templavoila_div::convertVersionNumberToInteger(TYPO3_version) < 4005000) {
+		if (\Extension\Templavoila\Utility\GeneralUtility::convertVersionNumberToInteger(TYPO3_version) < 4005000) {
 			$link = 'index.php?&amp;id=0&amp;CMD[showExt]=templavoila&amp;SET[singleDetails]=updateModule';
 		} else {
 			$link = 'mod.php?&amp;id=0&amp;M=tools_em&amp;CMD[showExt]=templavoila&amp;SET[singleDetails]=updateModule';

@@ -236,7 +236,7 @@ class RenameFieldInPageFlexWizardController extends \TYPO3\CMS\Backend\Module\Ab
 	 * @return mixed
 	 */
 	protected function getKnownPageDS() {
-		$dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_datastructureRepository');
+		$dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Domain\\Repository\\DataStructureRepository');
 
 		return $dsRepo->getDatastructuresByScope(1);
 	}

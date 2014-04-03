@@ -280,7 +280,7 @@ class tx_templavoila_mod1_clipboard {
 			// Prepare the language icon:
 			$languageLabel = htmlspecialchars($this->pObj->allAvailableLanguages[$row['sys_language_uid']]['title']);
 			if ($this->pObj->allAvailableLanguages[$row['sys_language_uid']]['flagIcon']) {
-				$languageIcon = tx_templavoila_icons::getFlagIconForLanguage($this->pObj->allAvailableLanguages[$row['sys_language_uid']]['flagIcon'], array('title' => $languageLabel, 'alt' => $languageLabel));
+				$languageIcon = \Extension\Templavoila\Utility\IconUtility::getFlagIconForLanguage($this->pObj->allAvailableLanguages[$row['sys_language_uid']]['flagIcon'], array('title' => $languageLabel, 'alt' => $languageLabel));
 			} else {
 				$languageIcon = ($languageLabel && $row['sys_language_uid'] ? '[' . $languageLabel . ']' : '');
 			}
@@ -391,8 +391,4 @@ class tx_templavoila_mod1_clipboard {
 			'</a>';
 		}
 	}
-}
-
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/mod1/class.tx_templavoila_mod1_clipboard.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/mod1/class.tx_templavoila_mod1_clipboard.php']);
 }

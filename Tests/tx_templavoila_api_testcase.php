@@ -72,7 +72,7 @@ class tx_templavoila_api_testcase extends tx_phpunit_database_testcase {
 		parent::__construct($name);
 		$TYPO3_DB->debugOutput = TRUE;
 
-		$this->apiObj = new tx_templavoila_api;
+		$this->apiObj = new \Extension\Templavoila\Service\ApiService();
 		$this->workspaceIdAtStart = $BE_USER->workspace;
 		$BE_USER->setWorkspace(0);
 	}

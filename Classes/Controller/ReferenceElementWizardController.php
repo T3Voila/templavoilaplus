@@ -66,7 +66,7 @@ class ReferenceElementWizardController extends \TYPO3\CMS\Backend\Module\Abstrac
 		$this->allAvailableLanguages = $this->getAvailableLanguages(0, TRUE, TRUE, TRUE);
 
 		$output = '';
-		$this->templavoilaAPIObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_api');
+		$this->templavoilaAPIObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Service\\ApiService');
 
 		// Showing the tree:
 		// Initialize starting point of page tree:

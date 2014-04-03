@@ -134,7 +134,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				}
 			');
 
-			if (tx_templavoila_div::convertVersionNumberToInteger(TYPO3_version) < 4005000) {
+			if (\Extension\Templavoila\Utility\GeneralUtility::convertVersionNumberToInteger(TYPO3_version) < 4005000) {
 				$this->doc->getDynTabMenuJScode();
 			} else {
 				$this->doc->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/tabmenu.js');
@@ -265,8 +265,8 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	function renderModuleContent_searchForTODS() {
 		global $LANG;
 
-		$dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_datastructureRepository');
-		$toRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_templateRepository');
+		$dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Domain\\Repository\\DataStructureRepository');
+		$toRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Domain\\Repository\\TemplateRepository');
 		$list = $toRepo->getTemplateStoragePids();
 
 		// Traverse the pages found and list in a table:
@@ -313,9 +313,9 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		// Traverse scopes of data structures display template records belonging to them:
 		// Each scope is places in its own tab in the tab menu:
 		$dsScopes = array(
-			tx_templavoila_datastructure::SCOPE_PAGE,
-			tx_templavoila_datastructure::SCOPE_FCE,
-			tx_templavoila_datastructure::SCOPE_UNKNOWN
+			\Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_PAGE,
+			\Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_FCE,
+			\Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_UNKNOWN
 		);
 
 		$toIdArray = $parts = array();
@@ -328,15 +328,15 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 			// Label for the tab:
 			switch ((string) $scopePointer) {
-				case tx_templavoila_datastructure::SCOPE_PAGE:
+				case \Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_PAGE:
 					$label = $LANG->getLL('pagetemplates');
 					$scopeIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', array());
 					break;
-				case tx_templavoila_datastructure::SCOPE_FCE:
+				case \Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_FCE:
 					$label = $LANG->getLL('fces');
 					$scopeIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('tt_content', array());
 					break;
-				case tx_templavoila_datastructure::SCOPE_UNKNOWN:
+				case \Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_UNKNOWN:
 					$label = $LANG->getLL('other');
 					break;
 				default:
@@ -361,7 +361,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$lostTOs = '';
 		$lostTOCount = 0;
 
-		$toRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_templateRepository');
+		$toRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Domain\\Repository\\TemplateRepository');
 		$toList = $toRepo->getAll($this->id);
 		foreach ($toList as $toObj) {
 			if (!in_array($toObj->getKey(), $toIdArray)) {
@@ -419,8 +419,8 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	function renderDSlisting($scope) {
 
 		$currentPid = intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id'));
-		$dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_datastructureRepository');
-		$toRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_templateRepository');
+		$dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Domain\\Repository\\DataStructureRepository');
+		$toRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Domain\\Repository\\TemplateRepository');
 
 		if ($this->MOD_SETTINGS['set_unusedDs']) {
 			$dsList = $dsRepo->getDatastructuresByScope($scope);
@@ -529,7 +529,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 *
 	 * @return    string        HTML content
 	 */
-	function renderDataStructureDisplay(tx_templavoila_datastructure $dsObj, $scope, $toIdArray) {
+	function renderDataStructureDisplay(\Extension\Templavoila\Domain\Model\AbstractDataStructure $dsObj, $scope, $toIdArray) {
 
 		$tableAttribs = ' border="0" cellpadding="1" cellspacing="1" width="98%" style="margin-top: 10px;" class="lrPadding"';
 
@@ -613,7 +613,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		// Format XML if requested (renders VERY VERY slow)
 		if ($this->MOD_SETTINGS['set_showDSxml']) {
 			if ($dsObj->getDataprotXML()) {
-				$hlObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_syntaxhl');
+				$hlObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Service\\SyntaxHighlightingService');
 				$content .= '<pre>' . str_replace(chr(9), '&nbsp;&nbsp;&nbsp;', $hlObj->highLight_DS($dsObj->getDataprotXML())) . '</pre>';
 			}
 			$lpXML .= $editDataprotLink;
@@ -733,7 +733,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		// Format XML if requested
 		if ($this->MOD_SETTINGS['set_details']) {
 			if ($toObj->getLocalDataprotXML(TRUE)) {
-				$hlObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_syntaxhl');
+				$hlObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Service\\SyntaxHighlightingService');
 				$lpXML = '<pre>' . str_replace(chr(9), '&nbsp;&nbsp;&nbsp;', $hlObj->highLight_DS($toObj->getLocalDataprotXML(TRUE))) . '</pre>';
 			} else {
 				$lpXML = '';
@@ -847,7 +847,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 		// Traverse template objects which are not children of anything:
 		if (!$childRen) {
-			$toRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_templateRepository');
+			$toRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Domain\\Repository\\TemplateRepository');
 			$toChildren = $toRepo->getTemplatesByParentTemplate($toObj);
 		} else {
 			$toChildren = array();
@@ -1639,7 +1639,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				unset($elCfg['tx_templavoila']['tags']);
 				unset($elCfg['tx_templavoila']['eType']);
 
-				if (tx_templavoila_div::convertVersionNumberToInteger(TYPO3_version) < 4005000) {
+				if (\Extension\Templavoila\Utility\GeneralUtility::convertVersionNumberToInteger(TYPO3_version) < 4005000) {
 					$rootElementsHTML .= '<b>' . $elCfg['tx_templavoila']['title'] . '</b>' . \TYPO3\CMS\Core\Utility\GeneralUtility::view_array($elCfg);
 				} else {
 					$rootElementsHTML .= '<b>' . $elCfg['tx_templavoila']['title'] . '</b>' . \TYPO3\CMS\Core\Utility\DebugUtility::viewArray($elCfg);
@@ -2530,11 +2530,6 @@ if (!function_exists('md5_file')) {
 		return md5(file_get_contents($file), $raw);
 	}
 }
-
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/mod2/index.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/mod2/index.php']);
-}
-
 
 // Make instance:
 $SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_module2');

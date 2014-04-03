@@ -109,7 +109,7 @@ class tx_templavoila_dbnewcontentel {
 
 		$this->doc->getPageRenderer()->loadPrototype();
 
-		if (tx_templavoila_div::convertVersionNumberToInteger(TYPO3_version) < 4005000) {
+		if (\Extension\Templavoila\Utility\GeneralUtility::convertVersionNumberToInteger(TYPO3_version) < 4005000) {
 			$this->doc->JScodeLibArray['dyntabmenu'] = $this->doc->getDynTabMenuJScode();
 		} else {
 			$this->doc->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/tabmenu.js');
@@ -125,7 +125,7 @@ class tx_templavoila_dbnewcontentel {
 		$pageinfo = \TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess($this->id, $perms_clause);
 		$this->access = is_array($pageinfo) ? 1 : 0;
 
-		$this->apiObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_api');
+		$this->apiObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Service\\ApiService');
 
 		// If no parent record was specified, find one:
 		if (!$this->parentRecord) {
@@ -175,7 +175,7 @@ class tx_templavoila_dbnewcontentel {
 				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['templavoila']['db_new_content_el']['wizardItemsHook'] as $classData) {
 					$hookObject = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($classData);
 
-					if (!($hookObject instanceof cms_newContentElementWizardsHook)) {
+					if (!($hookObject instanceof \TYPO3\CMS\Backend\Wizard\NewContentElementWizardHookInterface)) {
 						throw new UnexpectedValueException('$hookObject must implement interface cms_newContentElementWizardItemsHook', 1227834741);
 					}
 
@@ -446,8 +446,8 @@ class tx_templavoila_dbnewcontentel {
 		$positionPid = $this->id;
 		$storageFolderPID = $this->apiObj->getStorageFolderPid($positionPid);
 
-		$toRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_templateRepository');
-		$toList = $toRepo->getTemplatesByStoragePidAndScope($storageFolderPID, tx_templavoila_datastructure::SCOPE_FCE);
+		$toRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Domain\\Repository\\TemplateRepository');
+		$toList = $toRepo->getTemplatesByStoragePidAndScope($storageFolderPID, \Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_FCE);
 		foreach ($toList as $toObj) {
 			if ($toObj->isPermittedForUser()) {
 				$tmpFilename = $toObj->getIcon();
@@ -568,7 +568,7 @@ class tx_templavoila_dbnewcontentel {
 	/**
 	 * Process the default-value settings
 	 *
-	 * @param tx_templavoila_template $toObj LocalProcessing as array
+	 * @param \Extension\Templavoila\Domain\Model\Template $toObj LocalProcessing as array
 	 *
 	 * @return string    additional URL arguments with configured default values
 	 */
@@ -588,11 +588,6 @@ class tx_templavoila_dbnewcontentel {
 
 		return $dsValues;
 	}
-}
-
-// Include extension?
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/mod1/db_new_content_el.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/mod1/db_new_content_el.php']);
 }
 
 // Make instance:

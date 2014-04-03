@@ -14,7 +14,6 @@ if (TYPO3_MODE === 'BE') {
 		'name' => 'tx_templavoila_cm1',
 		'path' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'class.tx_templavoila_cm1.php'
 	);
-	include_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('templavoila') . 'class.tx_templavoila_handlestaticdatastructures.php');
 
 	// Adding backend modules:
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
@@ -92,7 +91,7 @@ $tempColumns = array(
 				Array('', 0),
 			),
 			'allowNonIdValues' => 1,
-			'itemsProcFunc' => 'tx_templavoila_handleStaticdatastructures->dataSourceItemsProcFunc',
+			'itemsProcFunc' => '\Extension\Templavoila\Service\ItemProcFunc\StaticDataStructuresHandler->dataSourceItemsProcFunc',
 			'size' => 1,
 			'minitems' => 0,
 			'maxitems' => 1,
@@ -108,7 +107,7 @@ $tempColumns = array(
 			'items' => Array(
 				Array('', 0),
 			),
-			'itemsProcFunc' => 'tx_templavoila_handleStaticdatastructures->templateObjectItemsProcFunc',
+			'itemsProcFunc' => '\Extension\Templavoila\Service\ItemProcFunc\StaticDataStructuresHandler->templateObjectItemsProcFunc',
 			'size' => 1,
 			'minitems' => 0,
 			'maxitems' => 1,
@@ -134,7 +133,7 @@ $tempColumns = array(
 			'items' => Array(
 				Array('', 0),
 			),
-			'itemsProcFunc' => 'tx_templavoila_handleStaticdatastructures->pi_templates',
+			'itemsProcFunc' => '\Extension\Templavoila\Service\ItemProcFunc\StaticDataStructuresHandler->pi_templates',
 			'size' => 1,
 			'minitems' => 0,
 			'maxitems' => 1,
@@ -156,7 +155,7 @@ if ($_EXTCONF['enable.']['selectDataStructure']) {
 }
 
 
-if (tx_templavoila_div::convertVersionNumberToInteger(TYPO3_version) >= 4005000) {
+if (\Extension\Templavoila\Utility\GeneralUtility::convertVersionNumberToInteger(TYPO3_version) >= 4005000) {
 
 	$GLOBALS['TCA']['tt_content']['types'][$_EXTKEY . '_pi1']['showitem'] =
 		'--palette--;LLL:EXT:cms/locallang_ttc.xml:palette.general;general,
@@ -192,7 +191,7 @@ $tempColumns = array(
 				array('', 0),
 			),
 			'allowNonIdValues' => 1,
-			'itemsProcFunc' => 'tx_templavoila_handleStaticdatastructures->dataSourceItemsProcFunc',
+			'itemsProcFunc' => '\Extension\Templavoila\Service\ItemProcFunc\StaticDataStructuresHandler->dataSourceItemsProcFunc',
 			'size' => 1,
 			'minitems' => 0,
 			'maxitems' => 1,
@@ -209,7 +208,7 @@ $tempColumns = array(
 			'items' => Array(
 				Array('', 0),
 			),
-			'itemsProcFunc' => 'tx_templavoila_handleStaticdatastructures->templateObjectItemsProcFunc',
+			'itemsProcFunc' => '\Extension\Templavoila\Service\ItemProcFunc\StaticDataStructuresHandler->templateObjectItemsProcFunc',
 			'size' => 1,
 			'minitems' => 0,
 			'maxitems' => 1,
@@ -226,7 +225,7 @@ $tempColumns = array(
 				Array('', 0),
 			),
 			'allowNonIdValues' => 1,
-			'itemsProcFunc' => 'tx_templavoila_handleStaticdatastructures->dataSourceItemsProcFunc',
+			'itemsProcFunc' => '\Extension\Templavoila\Service\ItemProcFunc\StaticDataStructuresHandler->dataSourceItemsProcFunc',
 			'size' => 1,
 			'minitems' => 0,
 			'maxitems' => 1,
@@ -243,7 +242,7 @@ $tempColumns = array(
 			'items' => Array(
 				Array('', 0),
 			),
-			'itemsProcFunc' => 'tx_templavoila_handleStaticdatastructures->templateObjectItemsProcFunc',
+			'itemsProcFunc' => '\Extension\Templavoila\Service\ItemProcFunc\StaticDataStructuresHandler->templateObjectItemsProcFunc',
 			'size' => 1,
 			'minitems' => 0,
 			'maxitems' => 1,
@@ -266,7 +265,7 @@ $tempColumns = array(
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('pages', $tempColumns);
 if ($_EXTCONF['enable.']['selectDataStructure']) {
 
-	if (tx_templavoila_div::convertVersionNumberToInteger(TYPO3_version) >= 4005000) {
+	if (\Extension\Templavoila\Utility\GeneralUtility::convertVersionNumberToInteger(TYPO3_version) >= 4005000) {
 		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('pages', 'tx_templavoila_ds;;;;1-1-1,tx_templavoila_to', '', 'replace:backend_layout');
 		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('pages', 'tx_templavoila_next_ds;;;;1-1-1,tx_templavoila_next_to', '', 'replace:backend_layout_next_level');
 		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('pages', 'tx_templavoila_flex;;;;1-1-1', '', 'after:title');
@@ -279,7 +278,7 @@ if ($_EXTCONF['enable.']['selectDataStructure']) {
 	}
 	$GLOBALS['TCA']['pages']['ctrl']['requestUpdate'] .= 'tx_templavoila_ds,tx_templavoila_next_ds';
 } else {
-	if (tx_templavoila_div::convertVersionNumberToInteger(TYPO3_version) >= 4005000) {
+	if (\Extension\Templavoila\Utility\GeneralUtility::convertVersionNumberToInteger(TYPO3_version) >= 4005000) {
 		if (!$_EXTCONF['enable.']['oldPageModule']) {
 			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('pages', 'tx_templavoila_to;;;;1-1-1', '', 'replace:backend_layout');
 			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('pages', 'tx_templavoila_next_to;;;;1-1-1', '', 'replace:backend_layout_next_level');

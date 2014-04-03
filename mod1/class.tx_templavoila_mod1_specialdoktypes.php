@@ -212,7 +212,7 @@ class tx_templavoila_mod1_specialdoktypes {
 		$editButton = $this->pObj->link_edit($iconEdit, 'pages', $pageRecord['uid']);
 
 		if ($this->userHasAccessToListModule()) {
-			if (tx_templavoila_div::convertVersionNumberToInteger(TYPO3_version) < 4005000) {
+			if (\Extension\Templavoila\Utility\GeneralUtility::convertVersionNumberToInteger(TYPO3_version) < 4005000) {
 				$listModuleURL = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir . 'db_list.php?id=' . intval($this->pObj->id);
 			} else {
 				$listModuleURL = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_list', array('id' => intval($this->pObj->id)), '');
@@ -255,8 +255,4 @@ class tx_templavoila_mod1_specialdoktypes {
 
 		return $BE_USER->check('modules', 'web_list');
 	}
-}
-
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/mod1/class.tx_templavoila_mod1_specialdoktypes.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/mod1/class.tx_templavoila_mod1_specialdoktypes.php']);
 }

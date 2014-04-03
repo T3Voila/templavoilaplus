@@ -247,7 +247,7 @@ class tx_templavoila_cm2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	function markUpXML($str) {
 
 		// Make instance of syntax highlight class:
-		$hlObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_syntaxhl');
+		$hlObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Service\\SyntaxHighlightingService');
 
 		// Check which document type, if applicable:
 		if (strstr(substr($str, 0, 100), '<T3DataStructure')) {
@@ -277,11 +277,6 @@ class tx_templavoila_cm2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			';
 	}
 }
-
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/cm2/index.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/cm2/index.php']);
-}
-
 
 // Make instance:
 $SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_cm2');

@@ -94,7 +94,7 @@ class tx_templavoila_extdeveval {
 	function renderMenuOfDataStructures() {
 
 		// Get data structures we should display
-		$dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_datastructureRepository');
+		$dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Domain\\Repository\\DataStructureRepository');
 
 		// For each category (page/content element/unknown) we display :
 		foreach ($arrayOfDS as $type => $DSarray) {
@@ -349,8 +349,4 @@ class tx_templavoila_extdeveval {
 		debug($this->language);
 
 	}*/
-}
-
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/class.tx_templavoila_extdeveval.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/class.tx_templavoila_extdeveval.php']);
 }

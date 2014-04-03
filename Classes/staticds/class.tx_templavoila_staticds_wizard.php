@@ -255,7 +255,3 @@ class tx_templavoila_staticds_wizard {
 		return $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', 'tx_templavoila_datastructure', 'deleted=0');
 	}
 }
-
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/Classes/class.tx_templavoila_staticds_wizard.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/Classes/class.tx_templavoila_staticds_wizard.php']);
-}

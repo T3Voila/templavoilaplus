@@ -39,7 +39,7 @@ $LANG->includeLLFile('EXT:lang/locallang_mod_web_list.xml');
  * @package        TYPO3
  * @subpackage    tx_templavoila
  */
-class tx_templavoila_mod1_recordlist extends localRecordList {
+class tx_templavoila_mod1_recordlist extends \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList {
 
 	var $pObj;
 
@@ -88,8 +88,4 @@ class tx_templavoila_mod1_recordlist extends localRecordList {
 
 		return $content;
 	}
-}
-
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/mod1/class.tx_templavoila_mod1_recordlist.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/mod1/class.tx_templavoila_mod1_recordlist.php']);
 }

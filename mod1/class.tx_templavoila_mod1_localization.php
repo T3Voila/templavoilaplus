@@ -123,7 +123,7 @@ class tx_templavoila_mod1_localization {
 			if ($languageArr['uid'] <= 0 || $BE_USER->checkLanguageAccess($languageArr['uid'])) {
 				$grayedOut = $languageArr['PLO_hidden'] ? ' style="Filter: alpha(opacity=25); -moz-opacity: 0.25; opacity: 0.25"' : '';
 
-				$flag = tx_templavoila_icons::getFlagIconFileForLanguage($languageArr['flagIcon']);
+				$flag = \Extension\Templavoila\Utility\IconUtility::getFlagIconFileForLanguage($languageArr['flagIcon']);
 				$style = isset ($languageArr['flagIcon']) ? 'background-image: url(' . $flag . '); background-repeat: no-repeat; padding-left: 22px;' : '';
 				$optionsArr [] = '<option style="' . $style . '" value="' . $languageArr['uid'] . '"' . ($this->pObj->MOD_SETTINGS['language'] == $languageArr['uid'] ? ' selected="selected"' : '') . '>' . htmlspecialchars($languageArr['title']) . '</option>';
 
@@ -131,7 +131,7 @@ class tx_templavoila_mod1_localization {
 				$availableTranslationsFlags .= '<a href="index.php?' .
 					htmlspecialchars($this->pObj->link_getParameters() . '&editPageLanguageOverlay=' . $languageArr['uid']) . '">' .
 					'<span ' . $grayedOut . '>' .
-					tx_templavoila_icons::getFlagIconForLanguage($languageArr['flagIcon'], array('title' => $languageArr['title'], 'alt' => $languageArr['title'])) .
+					\Extension\Templavoila\Utility\IconUtility::getFlagIconForLanguage($languageArr['flagIcon'], array('title' => $languageArr['title'], 'alt' => $languageArr['title'])) .
 					'</span></a>';
 			}
 		}
@@ -243,7 +243,7 @@ class tx_templavoila_mod1_localization {
 		$optionsArr = array('<option value=""></option>');
 		foreach ($newLanguagesArr as $language) {
 			if ($BE_USER->checkLanguageAccess($language['uid']) && !isset($translatedLanguagesArr[$language['uid']])) {
-				$flag = tx_templavoila_icons::getFlagIconFileForLanguage($language['flagIcon']);
+				$flag = \Extension\Templavoila\Utility\IconUtility::getFlagIconFileForLanguage($language['flagIcon']);
 				$style = isset ($language['flagIcon']) ? 'background-image: url(' . $flag . '); background-repeat: no-repeat; padding-top: 0px; padding-left: 22px;' : '';
 				$optionsArr [] = '<option style="' . $style . '" name="createNewPageTranslation" value="' . $language['uid'] . '">' . htmlspecialchars($language['title']) . '</option>';
 			}
@@ -266,8 +266,4 @@ class tx_templavoila_mod1_localization {
 
 		return $output;
 	}
-}
-
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/mod1/class.tx_templavoila_mod1_localization.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/mod1/class.tx_templavoila_mod1_localization.php']);
 }

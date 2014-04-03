@@ -37,7 +37,7 @@
  * @package TYPO3
  * @subpackage tx_templavoila
  */
-class tx_templavoila_pi1 extends tslib_pibase {
+class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 
 	var $prefixId = 'tx_templavoila_pi1'; // Same as class name
 	var $scriptRelPath = 'pi1/class.tx_templavoila_pi1.php'; // Path to this script relative to the extension dir.
@@ -50,7 +50,7 @@ class tx_templavoila_pi1 extends tslib_pibase {
 	/**
 	 * Markup object
 	 *
-	 * @var tx_templavoila_htmlmarkup
+	 * @var \Extension\Templavoila\Domain\Model\HtmlMarkup
 	 */
 	var $markupObj;
 
@@ -118,7 +118,7 @@ class tx_templavoila_pi1 extends tslib_pibase {
 		$data['tx_templavoila_ds'] = $conf['ds'];
 		$data['tx_templavoila_to'] = $conf['to'];
 
-		$dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_datastructureRepository');
+		$dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Domain\\Repository\\DataStructureRepository');
 
 		// prepare fake flexform
 		$values = array();
@@ -238,7 +238,7 @@ class tx_templavoila_pi1 extends tslib_pibase {
 			}
 		}
 
-		$dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_datastructureRepository');
+		$dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Domain\\Repository\\DataStructureRepository');
 		try {
 			$dsObj = $dsRepo->getDatastructureByUidOrFilename($row['tx_templavoila_ds']);
 			$DS = $dsObj->getDataprotArray();
@@ -281,7 +281,7 @@ class tx_templavoila_pi1 extends tslib_pibase {
 			}
 
 			// Init mark up object.
-			$this->markupObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_htmlmarkup');
+			$this->markupObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Domain\\Model\\HtmlMarkup');
 			$this->markupObj->htmlParse = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\HtmlParser');
 
 			// Get template record:
@@ -898,8 +898,4 @@ class tx_templavoila_pi1 extends tslib_pibase {
 
 		return $renderedIndex;
 	}
-}
-
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/pi1/class.tx_templavoila_pi1.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/templavoila/pi1/class.tx_templavoila_pi1.php']);
 }
