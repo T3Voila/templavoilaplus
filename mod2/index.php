@@ -2490,16 +2490,16 @@ lib.' . $menuType . '.1.ACT {
 		}
 
 		$prefix = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir']);
-		if (count($paths) > 0 && is_array($GLOBALS['FILEMOUNTS'])) {
-			foreach ($GLOBALS['FILEMOUNTS'] as $mountCfg) {
-				// look in paths if it's part of mounted path
-				$isPart = FALSE;
-				foreach ($paths as $path) {
-					if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($prefix . $path, $mountCfg['path']) &&
-						is_dir($prefix . $path)
-					) {
-						$templatePaths[] = ($relative ? $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'] : $prefix) . $path;
-					} else if (!$check) {
+
+		foreach ($GLOBALS['BE_USER']->getFileStorages() AS $driver) {
+			/** @var TYPO3\CMS\Core\Resource\ResourceStorage $driver */
+			$driverpath = $driver->getConfiguration();
+			$driverpath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($driverpath['basePath']);
+			foreach ($paths as $path) {
+				if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($prefix . $path, $driverpath) && is_dir($prefix . $path)) {
+					$templatePaths[] = ($relative ? $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'] : $prefix) . $path;
+				} else {
+					if (!$check) {
 						$templatePaths[] = ($relative ? $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'] : $prefix) . $path;
 					}
 				}
