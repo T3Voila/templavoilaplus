@@ -1,6 +1,0 @@
-a:5:{s:16:"MappingInfo_head";a:0:{}s:11:"MappingInfo";a:1:{s:4:"ROOT";a:2:{s:6:"MAP_EL";s:14:"body[1] div[1]";s:2:"el";a:2:{s:16:"field_leftcolumn";a:1:{s:6:"MAP_EL";s:19:"div[1] div[1]/INNER";}s:17:"field_rightcolumn";a:1:{s:6:"MAP_EL";s:19:"div[1] div[2]/INNER";}}}}s:18:"MappingData_cached";a:2:{s:6:"cArray";a:5:{i:0;s:45:"<div name="2columns">
-			<div name="leftcol">";s:16:"field_leftcolumn";s:11:"Left column";i:2;s:31:"</div>
-			<div name="rightcol">";s:17:"field_rightcolumn";s:12:"Right column";i:4;s:15:"</div>
-		</div>";}s:3:"sub";a:0:{}}s:23:"MappingData_head_cached";a:2:{s:6:"cArray";a:1:{i:0;s:45:"
-		<title>Fixture for FCE 2 columns</title>
-	";}s:3:"sub";a:0:{}}s:14:"BodyTag_cached";s:0:"";}
