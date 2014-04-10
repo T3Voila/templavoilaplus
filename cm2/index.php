@@ -61,7 +61,7 @@ class tx_templavoila_cm2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		global $LANG, $BACK_PATH;
 
 		// Check admin: If this is changed some day to other than admin users we HAVE to check if there is read access to the record being selected!
-		if (!$GLOBALS['BE_USER']->isAdmin()) {
+		if (!\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isAdmin()) {
 			die('no access.');
 		}
 
@@ -86,7 +86,7 @@ class tx_templavoila_cm2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 			// Clean up XML:
 			$cleanXML = '';
-			if ($GLOBALS['BE_USER']->isAdmin()) {
+			if (\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isAdmin()) {
 				if ('tx_templavoila_flex' == $this->viewTable['field_flex']) {
 					$flexObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\FlexForm\\FlexFormTools');
 					if ($record['tx_templavoila_flex']) {
@@ -118,7 +118,7 @@ class tx_templavoila_cm2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 				$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
 					'\TYPO3\CMS\Core\Messaging\FlashMessage',
-					$LANG->getLL('needsCleaning', 1),
+					\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('needsCleaning', 1),
 					'',
 					\TYPO3\CMS\Core\Messaging\FlashMessage::INFO
 				);
@@ -126,26 +126,26 @@ class tx_templavoila_cm2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 				$xmlContentMarkedUp .= '<table border="0">
 					<tr class="bgColor5 tableheader">
-						<td>' . $LANG->getLL('current', 1) . '</td>
+						<td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('current', 1) . '</td>
 					</tr>
 					<tr>
 						<td>' . $this->markUpXML($currentXML) . '<br/><br/></td>
 					</tr>
 					<tr class="bgColor5 tableheader">
-						<td>' . $LANG->getLL('clean', 1) . '</td>
+						<td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('clean', 1) . '</td>
 					</tr>
 					<tr>
 						<td>' . $this->markUpXML($cleanXML) . '</td>
 					</tr>
 					<tr class="bgColor5 tableheader">
-						<td>' . $LANG->getLL('diff', 1) . '</td>
+						<td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('diff', 1) . '</td>
 					</tr>
 					<tr>
 						<td>' . $diffres . '
 						<br/><br/><br/>
 
 						<form action="' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI') . '" method="post">
-							<input type="submit" value="' . $LANG->getLL('cleanUp', 1) . '" name="_CLEAN_XML" />
+							<input type="submit" value="' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('cleanUp', 1) . '" name="_CLEAN_XML" />
 						</form>
 
 						</td>
@@ -158,7 +158,7 @@ class tx_templavoila_cm2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				if ($cleanXML) {
 					$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
 						'\TYPO3\CMS\Core\Messaging\FlashMessage',
-						$LANG->getLL('XMLclean', 1),
+						\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('XMLclean', 1),
 						'',
 						\TYPO3\CMS\Core\Messaging\FlashMessage::OK
 					);
@@ -179,7 +179,7 @@ class tx_templavoila_cm2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			'CONTENT' => $this->content
 		);
 
-		$content = $this->doc->startPage($GLOBALS['LANG']->getLL('title'));
+		$content = $this->doc->startPage(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('title'));
 		$content .= $this->doc->moduleBody(
 			array(),
 			$docHeaderButtons,
@@ -215,7 +215,7 @@ class tx_templavoila_cm2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		// Back
 		if ($this->returnUrl) {
 			$backIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-view-go-back');
-			$buttons['back'] = '<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisUrl($this->returnUrl)) . '" class="typo3-goBack" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.goBack', TRUE) . '">' .
+			$buttons['back'] = '<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisUrl($this->returnUrl)) . '" class="typo3-goBack" title="' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_core.php:labels.goBack', TRUE) . '">' .
 				$backIcon .
 				'</a>';
 		}
@@ -230,7 +230,7 @@ class tx_templavoila_cm2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 */
 	protected function getShortcutButton() {
 		$result = '';
-		if ($GLOBALS['BE_USER']->mayMakeShortcut()) {
+		if (\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->mayMakeShortcut()) {
 			$result = $this->doc->makeShortcutIcon('id', implode(',', array_keys($this->MOD_MENU)), $this->MCONF['name']);
 		}
 

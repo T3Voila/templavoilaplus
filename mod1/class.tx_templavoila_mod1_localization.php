@@ -65,7 +65,7 @@ class tx_templavoila_mod1_localization {
 			'localization',
 			$this,
 			'sidebar_renderItem',
-			$LANG->getLL('localization', 1),
+			\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('localization', 1),
 			60,
 			FALSE
 		);
@@ -120,7 +120,7 @@ class tx_templavoila_mod1_localization {
 		foreach ($availableLanguagesArr as $languageArr) {
 			unset($newLanguagesArr[$languageArr['uid']]); // Remove this language from possible new translation languages array (PNTLA ;-)
 
-			if ($languageArr['uid'] <= 0 || $BE_USER->checkLanguageAccess($languageArr['uid'])) {
+			if ($languageArr['uid'] <= 0 || \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->checkLanguageAccess($languageArr['uid'])) {
 				$grayedOut = $languageArr['PLO_hidden'] ? ' style="Filter: alpha(opacity=25); -moz-opacity: 0.25; opacity: 0.25"' : '';
 
 				$flag = \Extension\Templavoila\Utility\IconUtility::getFlagIconFileForLanguage($languageArr['flagIcon']);
@@ -143,7 +143,7 @@ class tx_templavoila_mod1_localization {
 				<td width="20">
 					' . \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_txtemplavoilaM1', 'selectlanguageversion', $this->doc->backPath) . '
 				</td><td width="200" style="vertical-align:middle;">
-					' . $LANG->getLL('selectlanguageversion', 1) . ':
+					' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('selectlanguageversion', 1) . ':
 				</td>
 				<td style="vertical-align:middle;"><select onchange="document.location=' . htmlspecialchars($link) . '">' . implode('', $optionsArr) . '</select></td>
 			</tr>
@@ -151,9 +151,9 @@ class tx_templavoila_mod1_localization {
 
 		if ($this->pObj->currentLanguageUid >= 0 && (($this->pObj->rootElementLangMode === 'disable') || ($this->pObj->rootElementLangParadigm === 'bound'))) {
 			$options = array();
-			$options[] = \TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->pObj->modTSconfig['properties']['disableDisplayMode'], 'default') ? '' : '<option value=""' . ($this->pObj->MOD_SETTINGS['langDisplayMode'] === '' ? ' selected="selected"' : '') . '>' . $LANG->sL('LLL:EXT:lang/locallang_general.xml:LGL.default_value') . '</option>';
-			$options[] = \TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->pObj->modTSconfig['properties']['disableDisplayMode'], 'selectedLanguage') ? '' : '<option value="selectedLanguage"' . ($this->pObj->MOD_SETTINGS['langDisplayMode'] === 'selectedLanguage' ? ' selected="selected"' : '') . '>' . $LANG->getLL('pageLocalizationDisplayMode_selectedLanguage') . '</option>';
-			$options[] = \TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->pObj->modTSconfig['properties']['disableDisplayMode'], 'onlyLocalized') ? '' : '<option value="onlyLocalized"' . ($this->pObj->MOD_SETTINGS['langDisplayMode'] === 'onlyLocalized' ? ' selected="selected"' : '') . '>' . $LANG->getLL('pageLocalizationDisplayMode_onlyLocalized') . '</option>';
+			$options[] = \TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->pObj->modTSconfig['properties']['disableDisplayMode'], 'default') ? '' : '<option value=""' . ($this->pObj->MOD_SETTINGS['langDisplayMode'] === '' ? ' selected="selected"' : '') . '>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_general.xml:LGL.default_value') . '</option>';
+			$options[] = \TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->pObj->modTSconfig['properties']['disableDisplayMode'], 'selectedLanguage') ? '' : '<option value="selectedLanguage"' . ($this->pObj->MOD_SETTINGS['langDisplayMode'] === 'selectedLanguage' ? ' selected="selected"' : '') . '>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('pageLocalizationDisplayMode_selectedLanguage') . '</option>';
+			$options[] = \TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->pObj->modTSconfig['properties']['disableDisplayMode'], 'onlyLocalized') ? '' : '<option value="onlyLocalized"' . ($this->pObj->MOD_SETTINGS['langDisplayMode'] === 'onlyLocalized' ? ' selected="selected"' : '') . '>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('pageLocalizationDisplayMode_onlyLocalized') . '</option>';
 			$link = '\'index.php?' . $this->pObj->link_getParameters() . '&SET[langDisplayMode]=\'+this.options[this.selectedIndex].value';
 			if (count($options)) {
 				$output .= '
@@ -161,7 +161,7 @@ class tx_templavoila_mod1_localization {
 						<td width="20">
 							' . \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_txtemplavoilaM1', 'pagelocalizationdisplaymode', $this->doc->backPath) . '
 						</td><td width="200" style="vertical-align:middle;">
-							' . $LANG->getLL('pageLocalizationDisplayMode', 1) . ':
+							' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('pageLocalizationDisplayMode', 1) . ':
 						</td>
 						<td style="vertical-align:middle;">
 							<select onchange="document.location=' . htmlspecialchars($link) . '">
@@ -179,23 +179,23 @@ class tx_templavoila_mod1_localization {
 					<td  width="20">
 						' . \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_txtemplavoilaM1', 'pagelocalizationmode', $this->doc->backPath) . '
 					</td><td width="200" style="vertical-align:middle;">
-						' . $LANG->getLL('pageLocalizationMode', 1) . ':
+						' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('pageLocalizationMode', 1) . ':
 					</td>
-					<td style="vertical-align:middle;"><em>' . $LANG->getLL('pageLocalizationMode_' . $this->pObj->rootElementLangMode, 1) . ($this->pObj->rootElementLangParadigm != 'free' ? (' / ' . $LANG->getLL('pageLocalizationParadigm_' . $this->pObj->rootElementLangParadigm)) : '') . '</em></td>
+					<td style="vertical-align:middle;"><em>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('pageLocalizationMode_' . $this->pObj->rootElementLangMode, 1) . ($this->pObj->rootElementLangParadigm != 'free' ? (' / ' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('pageLocalizationParadigm_' . $this->pObj->rootElementLangParadigm)) : '') . '</em></td>
 				</tr>
 			';
 		}
 
 		// enable/disable structure inheritance - see #7082 for details
 		$adminOnlySetting = isset($this->pObj->modTSconfig['properties']['adminOnlyPageStructureInheritance']) ? $this->pObj->modTSconfig['properties']['adminOnlyPageStructureInheritance'] : 'strict';
-		if (($GLOBALS['BE_USER']->isAdmin() || $adminOnlySetting === 'false') && $this->pObj->rootElementLangMode == 'inheritance') {
+		if ((\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isAdmin() || $adminOnlySetting === 'false') && $this->pObj->rootElementLangMode == 'inheritance') {
 			$link = '\'index.php?' . $this->pObj->link_getParameters() . '&SET[disablePageStructureInheritance]=' . ($this->pObj->MOD_SETTINGS['disablePageStructureInheritance'] == '1' ? '0' : '1') . '\'';
 			$output .= '
 				<tr class="bgColor4">
 					<td  width="20">
 						' . \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_txtemplavoilaM1', 'disablePageStructureInheritance', $this->doc->backPath) . '
 					</td><td width="200" style="vertical-align:middle;">
-						' . $LANG->getLL('pageLocalizationMode_inheritance.disableInheritance', 1) . ':
+						' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('pageLocalizationMode_inheritance.disableInheritance', 1) . ':
 					</td>
 					<td style="vertical-align:middle;">
 						<input type="checkbox" onchange="document.location=' . $link . '" ' . ($this->pObj->MOD_SETTINGS['disablePageStructureInheritance'] == '1' ? ' checked="checked"' : '') . '/>
@@ -209,7 +209,7 @@ class tx_templavoila_mod1_localization {
 				<td  width="20">
 					' . \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_txtemplavoilaM1', 'editlanguageversion', $this->doc->backPath) . '
 				</td><td width="200" style="vertical-align:middle;">
-					' . $LANG->getLL('editlanguageversion', 1) . ':
+					' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('editlanguageversion', 1) . ':
 				</td>
 				<td style="vertical-align:middle;">
 					' . $availableTranslationsFlags . '
@@ -230,7 +230,7 @@ class tx_templavoila_mod1_localization {
 	function sidebar_renderItem_renderNewTranslationSelectorbox() {
 		global $LANG, $BE_USER;
 
-		if (!$GLOBALS['BE_USER']->isPSet($this->pObj->calcPerms, 'pages', 'edit')) {
+		if (!\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isPSet($this->pObj->calcPerms, 'pages', 'edit')) {
 			return FALSE;
 		}
 
@@ -242,7 +242,7 @@ class tx_templavoila_mod1_localization {
 		$translatedLanguagesArr = $this->pObj->getAvailableLanguages($this->pObj->id);
 		$optionsArr = array('<option value=""></option>');
 		foreach ($newLanguagesArr as $language) {
-			if ($BE_USER->checkLanguageAccess($language['uid']) && !isset($translatedLanguagesArr[$language['uid']])) {
+			if (\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->checkLanguageAccess($language['uid']) && !isset($translatedLanguagesArr[$language['uid']])) {
 				$flag = \Extension\Templavoila\Utility\IconUtility::getFlagIconFileForLanguage($language['flagIcon']);
 				$style = isset ($language['flagIcon']) ? 'background-image: url(' . $flag . '); background-repeat: no-repeat; padding-top: 0px; padding-left: 22px;' : '';
 				$optionsArr [] = '<option style="' . $style . '" name="createNewPageTranslation" value="' . $language['uid'] . '">' . htmlspecialchars($language['title']) . '</option>';
@@ -257,7 +257,7 @@ class tx_templavoila_mod1_localization {
 					<td width="20">
 						' . \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_txtemplavoilaM1', 'createnewtranslation', $this->doc->backPath) . '
 					</td><td width="200" style="vertical-align:middle;">
-						' . $LANG->getLL('createnewtranslation', 1) . ':
+						' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('createnewtranslation', 1) . ':
 					</td>
 					<td style="vertical-align:middle;"><select onChange="document.location=\'' . htmlspecialchars($link) . '\'">' . implode('', $optionsArr) . '</select></td>
 				</tr>

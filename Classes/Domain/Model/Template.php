@@ -72,7 +72,7 @@ class Template {
 	 * @return string
 	 */
 	public function getLabel() {
-		return $GLOBALS['LANG']->sL($this->label);
+		return \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL($this->label);
 	}
 
 	/**
@@ -257,7 +257,7 @@ class Template {
 	 * @return boolean
 	 */
 	public function isPermittedForUser($parentRow = array(), $removeItems = array()) {
-		if ($GLOBALS['BE_USER']->isAdmin()) {
+		if (\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isAdmin()) {
 			return TRUE;
 		} else {
 			if (in_array($this->getKey(), $removeItems)) {

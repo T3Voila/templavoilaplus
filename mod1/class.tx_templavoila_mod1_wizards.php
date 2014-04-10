@@ -98,7 +98,7 @@ class tx_templavoila_mod1_wizards {
 			// Check if the HTTP_REFERER is valid
 			$refInfo = parse_url(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_REFERER'));
 			$httpHost = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY');
-			if ($httpHost == $refInfo['host'] || \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('vC') == $BE_USER->veriCode() || $TYPO3_CONF_VARS['SYS']['doNotCheckReferer']) {
+			if ($httpHost == $refInfo['host'] || \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('vC') == \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->veriCode() || $GLOBALS['TYPO3_CONF_VARS']['SYS']['doNotCheckReferer']) {
 
 				// Create new page
 				$newID = $this->createPage(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('data'), $positionPid);
@@ -195,8 +195,8 @@ class tx_templavoila_mod1_wizards {
 		// fix due to #13762
 		$this->doc->inDocStyles .= '.c-inputButton{ cursor:pointer; }';
 
-		$content .= $this->doc->header($LANG->sL('LLL:EXT:lang/locallang_core.xml:db_new.php.pagetitle'));
-		$content .= $this->doc->startPage($LANG->getLL('createnewpage_title'));
+		$content .= $this->doc->header(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xml:db_new.php.pagetitle'));
+		$content .= $this->doc->startPage(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('createnewpage_title'));
 
 		// Add template selectors
 		$tmplSelectorCode = '';
@@ -217,8 +217,8 @@ class tx_templavoila_mod1_wizards {
 		}
 
 		if ($tmplSelectorCode) {
-			$content .= '<h3>' . htmlspecialchars($LANG->getLL('createnewpage_selecttemplate')) . '</h3>';
-			$content .= $LANG->getLL('createnewpage_templateobject_description');
+			$content .= '<h3>' . htmlspecialchars(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('createnewpage_selecttemplate')) . '</h3>';
+			$content .= \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('createnewpage_templateobject_description');
 			$content .= $this->doc->spacer(10);
 			$content .= $tmplSelectorCode;
 		}
@@ -284,16 +284,16 @@ class tx_templavoila_mod1_wizards {
 				}
 
 				$previewIcon = '<input type="image" class="c-inputButton" name="i0" value="0" src="' . $previewIconFilename . '" title="" />';
-				$description = $defaultTO['description'] ? htmlspecialchars($defaultTO['description']) : $LANG->getLL('template_descriptiondefault', 1);
+				$description = $defaultTO['description'] ? htmlspecialchars($defaultTO['description']) : \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('template_descriptiondefault', 1);
 				$tmplHTML [] = '<table style="float:left; width: 100%;" valign="top">
 				<tr>
 					<td colspan="2" nowrap="nowrap">
-						<h3 class="bgColor3-20">' . htmlspecialchars($LANG->getLL('template_titleInherit')) . '</h3>
+						<h3 class="bgColor3-20">' . htmlspecialchars(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('template_titleInherit')) . '</h3>
 					</td>
 				</tr><tr>
 					<td valign="top">' . $previewIcon . '</td>
 					<td width="120" valign="top">
-						<p><h4>' . htmlspecialchars($LANG->sL($defaultTO['title'])) . '</h4>' . $LANG->sL($description) . '</p>
+						<p><h4>' . htmlspecialchars(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL($defaultTO['title'])) . '</h4>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL($description) . '</p>
 					</td>
 				</tr>
 				</table>';
@@ -321,9 +321,9 @@ class tx_templavoila_mod1_wizards {
 						$previewIconFilename = (@is_file(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(PATH_site . substr($tmpFilename, 3)))) ? ($GLOBALS['BACK_PATH'] . $tmpFilename) : $defaultIcon;
 						// Note: we cannot use value of image input element because MSIE replaces this value with mouse coordinates! Thus on click we set value to a hidden field. See http://bugs.typo3.org/view.php?id=3376
 						$previewIcon = '<input type="image" class="c-inputButton" name="i' . $row['uid'] . '" onclick="document.getElementById(\'data_tx_templavoila_to\').value=' . $toObj->getKey() . '" src="' . $previewIconFilename . '" title="" />';
-						$description = $toObj->getDescription() ? htmlspecialchars($toObj->getDescription()) : $LANG->getLL('template_nodescriptionavailable');
+						$description = $toObj->getDescription() ? htmlspecialchars($toObj->getDescription()) : \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('template_nodescriptionavailable');
 						$tmplHTML [] = '<table style="width: 100%;" valign="top"><tr><td colspan="2" nowrap="nowrap"><h3 class="bgColor3-20">' . htmlspecialchars($toObj->getLabel()) . '</h3></td></tr>' .
-							'<tr><td valign="top">' . $previewIcon . '</td><td width="120" valign="top"><p>' . $LANG->sL($description) . '</p></td></tr></table>';
+							'<tr><td valign="top">' . $previewIcon . '</td><td width="120" valign="top"><p>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL($description) . '</p></td></tr></table>';
 					}
 				}
 				$tmplHTML[] = '<input type="hidden" id="data_tx_templavoila_to" name="data[tx_templavoila_to]" value="0" />';
@@ -462,9 +462,9 @@ class tx_templavoila_mod1_wizards {
 	 */
 	function buildRecordWhere($table) {
 		$result = array();
-		if (!$GLOBALS['BE_USER']->isAdmin()) {
+		if (!\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isAdmin()) {
 			$prefLen = strlen($table) + 1;
-			foreach ($GLOBALS['BE_USER']->userGroups as $group) {
+			foreach (\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->userGroups as $group) {
 				$items = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $group['tx_templavoila_access'], 1);
 				foreach ($items as $ref) {
 					if (strstr($ref, $table)) {

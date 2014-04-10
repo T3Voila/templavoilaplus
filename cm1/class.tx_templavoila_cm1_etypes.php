@@ -454,18 +454,18 @@ class tx_templavoila_cm1_eTypes {
 			'size' => '48',
 			'eval' => 'trim',
 		);
-		$eTypes['eType']['input']['label'] = $GLOBALS['LANG']->getLL('mapPresets_plainInput');
+		$eTypes['eType']['input']['label'] = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapPresets_plainInput');
 
 		// input_h
 		$eTypes['eType']['input_h']['TCEforms']['config'] = $eTypes['eType']['input']['TCEforms']['config'];
-		$eTypes['eType']['input_h']['label'] = $GLOBALS['LANG']->getLL('mapPresets_headerField');
+		$eTypes['eType']['input_h']['label'] = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapPresets_headerField');
 		$eTypes['eType']['input_h']['Typoscript'] = '
 10 = TEXT
 10.current = 1';
 
 		// input_g
 		$eTypes['eType']['input_g']['TCEforms']['config'] = $eTypes['eType']['input']['TCEforms']['config'];
-		$eTypes['eType']['input_g']['label'] = $GLOBALS['LANG']->getLL('mapPresets_gHederField');
+		$eTypes['eType']['input_g']['label'] = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapPresets_gHederField');
 		$eTypes['eType']['input_g']['Typoscript'] = '
 10 = IMAGE
 10.file = GIFBUILDER
@@ -490,7 +490,7 @@ backColor = #999999
 			'cols' => '48',
 			'rows' => '5',
 		);
-		$eTypes['eType']['text']['label'] = $GLOBALS['LANG']->getLL('mapPresets_textarea');
+		$eTypes['eType']['text']['label'] = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapPresets_textarea');
 
 		// rte
 		$eTypes['eType']['rte']['TCEforms']['config'] = array(
@@ -502,7 +502,7 @@ backColor = #999999
 					'typolink_tag,images,email[subst],url'),
 		);
 		$eTypes['eType']['rte']['TCEforms']['defaultExtras'] = 'richtext:rte_transform[flag=rte_enabled|mode=ts_css]';
-		$eTypes['eType']['rte']['label'] = $GLOBALS['LANG']->getLL('mapPresets_rte');
+		$eTypes['eType']['rte']['label'] = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapPresets_rte');
 		$eTypes['eType']['rte']['Typoscript'] = '
 10 = TEXT
 10.current = 1
@@ -526,7 +526,7 @@ backColor = #999999
 				)
 			)
 		);
-		$eTypes['eType']['link']['label'] = $GLOBALS['LANG']->getLL('mapPresets_linkField');
+		$eTypes['eType']['link']['label'] = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapPresets_linkField');
 		$eTypes['eType']['link']['Typoscript'] = '
 10 = TEXT
 10.typolink.parameter.current = 1';
@@ -544,7 +544,7 @@ backColor = #999999
 			),
 			'default' => 0
 		);
-		$eTypes['eType']['int']['label'] = $GLOBALS['LANG']->getLL('mapPresets_integer');
+		$eTypes['eType']['int']['label'] = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapPresets_integer');
 
 		// image
 		$eTypes['eType']['image']['TCEforms']['config'] = array(
@@ -558,7 +558,7 @@ backColor = #999999
 			'maxitems' => '1',
 			'minitems' => '0'
 		);
-		$eTypes['eType']['image']['label'] = $GLOBALS['LANG']->getLL('mapPresets_image');
+		$eTypes['eType']['image']['label'] = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapPresets_image');
 		$eTypes['eType']['image']['Typoscript'] = '
 10 = IMAGE
 10.file.import = uploads/tx_templavoila/
@@ -570,7 +570,7 @@ backColor = #999999
 
 		// imagefixed
 		$eTypes['eType']['imagefixed']['TCEforms']['config'] = $eTypes['eType']['image']['TCEforms']['config'];
-		$eTypes['eType']['imagefixed']['label'] = $GLOBALS['LANG']->getLL('mapPresets_imageFixed');
+		$eTypes['eType']['imagefixed']['label'] = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapPresets_imageFixed');
 		$eTypes['eType']['imagefixed']['Typoscript'] = '
 10 = IMAGE
 10.file.XY = MAXW,MAXH
@@ -595,14 +595,14 @@ backColor = #999999
 			),
 			'default' => '0'
 		);
-		$eTypes['eType']['select']['label'] = $GLOBALS['LANG']->getLL('mapPresets_select');
+		$eTypes['eType']['select']['label'] = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapPresets_select');
 
 		// check
 		$eTypes['eType']['check']['TCEforms']['config'] = array(
 			'type' => 'check',
 			'default' => 0,
 		);
-		$eTypes['eType']['check']['label'] = $GLOBALS['LANG']->getLL('mapPresets_check');
+		$eTypes['eType']['check']['label'] = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapPresets_check');
 
 		// ce
 		$eTypes['eType']['ce']['TCEforms']['config'] = array(
@@ -615,21 +615,21 @@ backColor = #999999
 			'multiple' => '1',
 			'show_thumbs' => '1',
 		);
-		$eTypes['eType']['ce']['label'] = $GLOBALS['LANG']->getLL('mapPresets_ce');
+		$eTypes['eType']['ce']['label'] = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapPresets_ce');
 		$eTypes['eType']['ce']['Typoscript'] = '
 10= RECORDS
 10.source.current=1
 10.tables = tt_content';
 
 		/* Typoscript Elements */
-		$eTypes['eType']['TypoScriptObject']['label'] = $GLOBALS['LANG']->getLL('mapPresets_TSobjectPath');
-		$eTypes['eType']['none']['label'] = $GLOBALS['LANG']->getLL('mapPresets_none');
+		$eTypes['eType']['TypoScriptObject']['label'] = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapPresets_TSobjectPath');
+		$eTypes['eType']['none']['label'] = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapPresets_none');
 
 		/* Misc */
-		$eTypes['eType']['custom']['label'] = $GLOBALS['LANG']->getLL('mapPresets_customTCA');
+		$eTypes['eType']['custom']['label'] = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapPresets_customTCA');
 
 		// merge with tsConfig
-		$config = $GLOBALS['BE_USER']->getTSConfigProp('templavoila.eTypes');
+		$config = \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->getTSConfigProp('templavoila.eTypes');
 		if (is_array($config)) {
 			$config = \TYPO3\CMS\Core\Utility\GeneralUtility::removeDotsFromTS($config);
 			$eTypes = $this->pObj->array_merge_recursive_overrule($eTypes, $config);

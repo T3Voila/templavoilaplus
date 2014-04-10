@@ -38,7 +38,7 @@ class ListController extends TextController {
 		$extraInfo = $this->getExtraInfo($row);
 
 		$this->parentObj = $ref;
-		$info = htmlspecialchars($GLOBALS['LANG']->sL(\TYPO3\CMS\Backend\Utility\BackendUtility::getLabelFromItemlist('tt_content', 'list_type', $row['list_type'])));
+		$info = htmlspecialchars(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL(\TYPO3\CMS\Backend\Utility\BackendUtility::getLabelFromItemlist('tt_content', 'list_type', $row['list_type'])));
 		$info .= $extraInfo ? ' &ndash; ' . $extraInfo : '';
 
 		return $info;

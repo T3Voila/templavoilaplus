@@ -378,7 +378,7 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 
 						// Visual identification aids:
 
-						$feedit = is_object($GLOBALS['BE_USER']) && method_exists($GLOBALS['BE_USER'], 'isFrontendEditingActive') && $GLOBALS['BE_USER']->isFrontendEditingActive();
+						$feedit = is_object(\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()) && method_exists(\Extension\Templavoila\Utility\GeneralUtility::getBackendUser(), 'isFrontendEditingActive') && \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isFrontendEditingActive();
 
 						if ($GLOBALS['TSFE']->fePreview && $GLOBALS['TSFE']->beUserLogin && !$GLOBALS['TSFE']->workspacePreview && !$this->conf['disableExplosivePreview'] && !$feedit) {
 							$content = $this->visualID($content, $srcPointer, $DSrec, $TOrec, $row, $table);

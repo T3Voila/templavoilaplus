@@ -48,11 +48,11 @@ class tx_templavoila_staticds_check {
 		$out = '
 		<div style="position:absolute;top:10px;right:10px; width:300px;">
 			<div class="typo3-message message-information">
-				<div class="message-header">' . $GLOBALS['LANG']->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang.xml:extconf.staticWizard.header') . '</div>
+				<div class="message-header">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang.xml:extconf.staticWizard.header') . '</div>
 				<div class="message-body">
-					' . $GLOBALS['LANG']->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang.xml:extconf.staticWizard.message') . '<br />
+					' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang.xml:extconf.staticWizard.message') . '<br />
 					<a style="text-decoration:underline;" href="' . $link . '">
-					' . $GLOBALS['LANG']->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang.xml:extconf.staticWizard.link') . '</a>
+					' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang.xml:extconf.staticWizard.link') . '</a>
 				</div>
 			</div>
 		</div>
@@ -74,6 +74,6 @@ class tx_templavoila_staticds_check {
 	 * @return int
 	 */
 	protected function datastructureDbCount() {
-		return $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', 'tx_templavoila_datastructure', 'deleted=0');
+		return \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTcountRows('*', 'tx_templavoila_datastructure', 'deleted=0');
 	}
 }

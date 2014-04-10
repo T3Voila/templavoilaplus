@@ -49,7 +49,7 @@ abstract class AbstractDataStructure {
 	 * @return string
 	 */
 	public function getLabel() {
-		return $GLOBALS['LANG']->sL($this->label);
+		return \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL($this->label);
 	}
 
 	/**

@@ -32,6 +32,27 @@ namespace Extension\Templavoila\Utility;
 final class GeneralUtility {
 
 	/**
+	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+	 */
+	static public function getDatabaseConnection() {
+		return $GLOBALS['TYPO3_DB'];
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+	 */
+	static public function getBackendUser() {
+		return $GLOBALS['BE_USER'];
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Lang\LanguageService
+	 */
+	static public function getLanguageService() {
+		return $GLOBALS['LANG'];
+	}
+
+	/**
 	 * Checks if a given string is a valid frame URL to be loaded in the
 	 * backend.
 	 *
@@ -104,7 +125,7 @@ final class GeneralUtility {
 
 	public static function getDenyListForUser() {
 		$denyItems = array();
-		foreach ($GLOBALS['BE_USER']->userGroups as $group) {
+		foreach (\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->userGroups as $group) {
 			$groupDenyItems = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $group['tx_templavoila_access'], TRUE);
 			$denyItems = array_merge($denyItems, $groupDenyItems);
 		}
@@ -129,10 +150,10 @@ final class GeneralUtility {
 		if (!is_array($references)) {
 			$references = array();
 		}
-		$refrows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+		$refrows = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTgetRows(
 			'*',
 			'sys_refindex',
-			'ref_table=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($element['table'], 'sys_refindex') .
+			'ref_table=' . \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr($element['table'], 'sys_refindex') .
 			' AND ref_uid=' . intval($element['uid']) .
 			' AND deleted=0'
 		);

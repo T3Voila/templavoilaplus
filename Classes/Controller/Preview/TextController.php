@@ -55,7 +55,7 @@ class TextController {
 	 * @return string
 	 */
 	protected function getPreviewLabel() {
-		return $GLOBALS['LANG']->sL(\TYPO3\CMS\Backend\Utility\BackendUtility::getItemLabel('tt_content', $this->previewField), 1);
+		return \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL(\TYPO3\CMS\Backend\Utility\BackendUtility::getItemLabel('tt_content', $this->previewField), 1);
 	}
 
 	/**

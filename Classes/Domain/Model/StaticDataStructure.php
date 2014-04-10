@@ -62,10 +62,10 @@ class StaticDataStructure extends AbstractDataStructure {
 	 */
 	public function getStoragePids() {
 		$pids = array();
-		$toList = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+		$toList = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTgetRows(
 			'tx_templavoila_tmplobj.uid,tx_templavoila_tmplobj.pid',
 			'tx_templavoila_tmplobj',
-			'tx_templavoila_tmplobj.datastructure=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->filename, 'tx_templavoila_tmplobj') . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoila_tmplobj')
+			'tx_templavoila_tmplobj.datastructure=' . \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr($this->filename, 'tx_templavoila_tmplobj') . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoila_tmplobj')
 		);
 		foreach ($toList as $toRow) {
 			$pids[$toRow['pid']]++;

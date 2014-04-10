@@ -74,7 +74,7 @@ class tx_templavoila_mod1_specialdoktypes {
 
 		// Prepare the record icon including a content sensitive menu link wrapped around it:
 		$recordIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', $pageRecord);
-		$iconEdit = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open', array('title' => htmlspecialchars($LANG->sL('LLL:EXT:lang/locallang_mod_web_list.xml:editPage'))));
+		$iconEdit = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open', array('title' => htmlspecialchars(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_mod_web_list.xml:editPage'))));
 		$editButton = $this->pObj->link_edit($iconEdit, 'pages', $pageRecord['uid']);
 
 		switch ($pageRecord['urltype']) {
@@ -102,12 +102,12 @@ class tx_templavoila_mod1_specialdoktypes {
 		}
 
 		// check if there is a notice on this URL type
-		$notice = $LANG->getLL('cannotedit_externalurl_' . $pageRecord['urltype'], '', 1);
+		$notice = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('cannotedit_externalurl_' . $pageRecord['urltype'], '', 1);
 		if (!$notice) {
-			$notice = $LANG->getLL('cannotedit_externalurl_1', '', 1);
+			$notice = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('cannotedit_externalurl_1', '', 1);
 		}
 
-		$urlInfo = ' <br /><br /><strong><a href="' . $url . '" target="_new">' . htmlspecialchars(sprintf($LANG->getLL('jumptoexternalurl'), $url)) . '</a></strong>';
+		$urlInfo = ' <br /><br /><strong><a href="' . $url . '" target="_new">' . htmlspecialchars(sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('jumptoexternalurl'), $url)) . '</a></strong>';
 		$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
 			'\TYPO3\CMS\Core\Messaging\FlashMessage',
 			$notice,
@@ -133,19 +133,19 @@ class tx_templavoila_mod1_specialdoktypes {
 		// Prepare the record icon including a content sensitive menu link wrapped around it:
 		$recordIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', $pageRecord);
 		$recordButton = $this->doc->wrapClickMenuOnIcon($recordIcon, 'pages', $pageRecord['uid'], 1, '&callingScriptId=' . rawurlencode($this->doc->scriptID), 'new,copy,cut,pasteinto,pasteafter,delete');
-		$iconEdit = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open', array('title' => htmlspecialchars($LANG->sL('LLL:EXT:lang/locallang_mod_web_list.xml:editPage'))));
+		$iconEdit = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open', array('title' => htmlspecialchars(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_mod_web_list.xml:editPage'))));
 		$editButton = $this->pObj->link_edit($iconEdit, 'pages', $pageRecord['uid']);
 
 		if (intval($pageRecord['shortcut_mode']) == 0) {
 			$shortcutSourcePageRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('pages', $pageRecord['shortcut']);
 			$jumpToShortcutSourceLink = '<strong><a href="index.php?id=' . $pageRecord['shortcut'] . '">' .
 				\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('apps-pagetree-page-shortcut') .
-				$LANG->getLL('jumptoshortcutdestination', '', 1) . '</a></strong>';
+				\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('jumptoshortcutdestination', '', 1) . '</a></strong>';
 		}
 
 		$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
 			'\TYPO3\CMS\Core\Messaging\FlashMessage',
-			sprintf($LANG->getLL('cannotedit_shortcut_' . intval($pageRecord['shortcut_mode'])), $shortcutSourcePageRecord['title']),
+			sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('cannotedit_shortcut_' . intval($pageRecord['shortcut_mode'])), $shortcutSourcePageRecord['title']),
 			'',
 			\TYPO3\CMS\Core\Messaging\FlashMessage::INFO
 		);
@@ -172,7 +172,7 @@ class tx_templavoila_mod1_specialdoktypes {
 		// Put together the records icon including content sensitive menu link wrapped around it:
 		$recordIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', $pageRecord);
 		$recordIcon = $this->doc->wrapClickMenuOnIcon($recordIcon, 'pages', $this->id, 1, '&amp;callingScriptId=' . rawurlencode($this->doc->scriptID));
-		$iconEdit = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open', array('title' => htmlspecialchars($LANG->sL('LLL:EXT:lang/locallang_mod_web_list.xml:editPage'))));
+		$iconEdit = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open', array('title' => htmlspecialchars(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_mod_web_list.xml:editPage'))));
 		$editButton = $this->pObj->link_edit($iconEdit, 'pages', $pageRecord['uid']);
 
 		$mountSourcePageRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('pages', $pageRecord['mount_pid']);
@@ -180,12 +180,12 @@ class tx_templavoila_mod1_specialdoktypes {
 		$mountSourceButton = $this->doc->wrapClickMenuOnIcon($mountSourceIcon, 'pages', $mountSourcePageRecord['uid'], 1, '&callingScriptId=' . rawurlencode($this->doc->scriptID), 'new,copy,cut,pasteinto,pasteafter,delete');
 
 		$mountSourceLink = '<br /><br />
-			<a href="index.php?id=' . $pageRecord['mount_pid'] . '">' . htmlspecialchars($LANG->getLL('jumptomountsourcepage')) . '</a>
+			<a href="index.php?id=' . $pageRecord['mount_pid'] . '">' . htmlspecialchars(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('jumptomountsourcepage')) . '</a>
 		';
 
 		$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
 			'\TYPO3\CMS\Core\Messaging\FlashMessage',
-			sprintf($LANG->getLL('cannotedit_doktypemountpoint'), $mountSourceButton . $mountSourcePageRecord['title']),
+			sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('cannotedit_doktypemountpoint'), $mountSourceButton . $mountSourcePageRecord['title']),
 			'',
 			\TYPO3\CMS\Core\Messaging\FlashMessage::INFO
 		);
@@ -208,7 +208,7 @@ class tx_templavoila_mod1_specialdoktypes {
 		// Prepare the record icon including a content sensitive menu link wrapped around it:
 		$pageTitle = htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs(\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle('pages', $pageRecord), 50));
 		$recordIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', $pageRecord);
-		$iconEdit = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open', array('title' => htmlspecialchars($LANG->sL('LLL:EXT:lang/locallang_mod_web_list.xml:editPage'))));
+		$iconEdit = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open', array('title' => htmlspecialchars(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_mod_web_list.xml:editPage'))));
 		$editButton = $this->pObj->link_edit($iconEdit, 'pages', $pageRecord['uid']);
 
 		if ($this->userHasAccessToListModule()) {
@@ -220,15 +220,15 @@ class tx_templavoila_mod1_specialdoktypes {
 			$onClick = "top.nextLoadModuleUrl='" . $listModuleURL . "';top.fsMod.recentIds['web']=" . intval($this->pObj->id) . ";top.goToModule('web_list',1);";
 			$listModuleLink = '<br /><br />' .
 				\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-system-list-open') .
-				'<strong><a href="#" onClick="' . $onClick . '">' . $LANG->getLL('editpage_sysfolder_switchtolistview', '', 1) . '</a></strong>
+				'<strong><a href="#" onClick="' . $onClick . '">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('editpage_sysfolder_switchtolistview', '', 1) . '</a></strong>
 			';
 		} else {
-			$listModuleLink = $LANG->getLL('editpage_sysfolder_listview_noaccess', '', 1);
+			$listModuleLink = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('editpage_sysfolder_listview_noaccess', '', 1);
 		}
 
 		$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
 			'\TYPO3\CMS\Core\Messaging\FlashMessage',
-			$LANG->getLL('editpage_sysfolder_intro', '', 1),
+			\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('editpage_sysfolder_intro', '', 1),
 			'',
 			\TYPO3\CMS\Core\Messaging\FlashMessage::INFO
 		);
@@ -249,10 +249,10 @@ class tx_templavoila_mod1_specialdoktypes {
 		if (!\TYPO3\CMS\Backend\Utility\BackendUtility::isModuleSetInTBE_MODULES('web_list')) {
 			return FALSE;
 		}
-		if ($BE_USER->isAdmin()) {
+		if (\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isAdmin()) {
 			return TRUE;
 		}
 
-		return $BE_USER->check('modules', 'web_list');
+		return \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->check('modules', 'web_list');
 	}
 }

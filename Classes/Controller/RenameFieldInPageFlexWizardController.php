@@ -38,7 +38,7 @@ class RenameFieldInPageFlexWizardController extends \TYPO3\CMS\Backend\Module\Ab
 	 * @return string
 	 */
 	public function main() {
-		if ($GLOBALS['BE_USER']->isAdmin()) {
+		if (\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isAdmin()) {
 			if (intval($this->pObj->id) > 0) {
 				return $this->showForm() . $this->executeCommand();
 			} else {
@@ -89,15 +89,15 @@ class RenameFieldInPageFlexWizardController extends \TYPO3\CMS\Backend\Module\Ab
 
 				return $message->render();
 			}
-			$escapedSource = $GLOBALS['TYPO3_DB']->fullQuoteStr('%' . \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('sourceField') . '%', 'pages');
-			$escapedDest = $GLOBALS['TYPO3_DB']->fullQuoteStr('%' . \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('destinationField') . '%', 'pages');
+			$escapedSource = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr('%' . \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('sourceField') . '%', 'pages');
+			$escapedDest = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr('%' . \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('destinationField') . '%', 'pages');
 
 			$condition = 'tx_templavoila_flex LIKE ' . $escapedSource
 				. ' AND NOT tx_templavoila_flex LIKE ' . $escapedDest . ' '
 				. ' AND uid IN ('
 				. implode(',', $this->getAllSubPages($this->pObj->id)) . ')';
 
-			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+			$rows = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTgetRows(
 				'uid, title',
 				'pages',
 				$condition
@@ -114,9 +114,9 @@ class RenameFieldInPageFlexWizardController extends \TYPO3\CMS\Backend\Module\Ab
 				unset($mbuffer);
 				//really do it
 				if (!\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('simulateField')) {
-					$escapedSource = $GLOBALS['TYPO3_DB']->fullQuoteStr(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('sourceField'), 'pages');
-					$escapedDest = $GLOBALS['TYPO3_DB']->fullQuoteStr(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('destinationField'), 'pages');
-					$GLOBALS['TYPO3_DB']->admin_query('
+					$escapedSource = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('sourceField'), 'pages');
+					$escapedDest = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('destinationField'), 'pages');
+					\Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->admin_query('
 						UPDATE pages
 						SET tx_templavoila_flex = REPLACE(tx_templavoila_flex, ' . $escapedSource . ', ' . $escapedDest . ')
 						WHERE ' . $condition . '
@@ -179,13 +179,13 @@ class RenameFieldInPageFlexWizardController extends \TYPO3\CMS\Backend\Module\Ab
 				}
 
 				return '<div id="form-line-0">'
-				. '<label for="' . $name . '" style="width:200px;display:block;float:left;">' . $GLOBALS['LANG']->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang.xml:field_' . $name) . '</label>'
+				. '<label for="' . $name . '" style="width:200px;display:block;float:left;">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang.xml:field_' . $name) . '</label>'
 				. '<input type="checkbox" id="' . $name . '" name="' . $name . '" ' . $checked . ' value="1">'
 				. '</div>';
 				break;
 			case 'submit':
 				return '<div id="form-line-0">'
-				. '<input type="submit" id="' . $name . '" name="' . $name . '" value="' . $GLOBALS['LANG']->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang.xml:field_' . $name) . '">'
+				. '<input type="submit" id="' . $name . '" name="' . $name . '" value="' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang.xml:field_' . $name) . '">'
 				. '</div>';
 				break;
 			case 'hidden':
@@ -206,14 +206,14 @@ class RenameFieldInPageFlexWizardController extends \TYPO3\CMS\Backend\Module\Ab
 				}
 
 				return '<div id="form-line-0">'
-				. '<label style="width:200px;display:block;float:left;" for="' . $name . '">' . $GLOBALS['LANG']->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang.xml:field_' . $name) . '</label>'
+				. '<label style="width:200px;display:block;float:left;" for="' . $name . '">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang.xml:field_' . $name) . '</label>'
 				. '<select id="' . $name . '" name="' . $name . '">' . $buffer . '</select>'
 				. '</div>';
 				break;
 			case 'text':
 			default:
 				return '<div id="form-line-0">'
-				. '<label for="' . $name . '">' . $GLOBALS['LANG']->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang.xml:field_' . $name) . '</label>'
+				. '<label for="' . $name . '">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang.xml:field_' . $name) . '</label>'
 				. '<input type="text" id="' . $name . '" name="' . $name . '" value="' . htmlspecialchars($value) . '">'
 				. '</div>';
 		}

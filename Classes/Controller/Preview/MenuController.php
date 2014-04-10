@@ -34,6 +34,6 @@ class MenuController extends TextController {
 	 * @see classes/preview/tx_templavoila_preview_type_text#getPreviewData($row)
 	 */
 	protected function getPreviewData($row) {
-		return $GLOBALS['LANG']->sL(\TYPO3\CMS\Backend\Utility\BackendUtility::getLabelFromItemlist('tt_content', $this->previewField, $row[$this->previewField]));
+		return \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL(\TYPO3\CMS\Backend\Utility\BackendUtility::getLabelFromItemlist('tt_content', $this->previewField, $row[$this->previewField]));
 	}
 }

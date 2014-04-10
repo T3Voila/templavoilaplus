@@ -83,7 +83,7 @@ class DataStructureRepository {
 		}
 
 		if (!self::isStaticDsEnabled()) {
-			$dsRows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+			$dsRows = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTgetRows(
 				'uid',
 				'tx_templavoila_datastructure',
 				'pid=' . intval($pid)
@@ -124,7 +124,7 @@ class DataStructureRepository {
 		}
 
 		if (!self::isStaticDsEnabled()) {
-			$dsRows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+			$dsRows = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTgetRows(
 				'uid',
 				'tx_templavoila_datastructure',
 				'scope=' . intval($scope) . ' AND pid=' . intval($pid)
@@ -161,7 +161,7 @@ class DataStructureRepository {
 		}
 
 		if (!self::isStaticDsEnabled()) {
-			$dsRows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+			$dsRows = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTgetRows(
 				'uid',
 				'tx_templavoila_datastructure',
 				'scope=' . intval($scope)
@@ -194,7 +194,7 @@ class DataStructureRepository {
 		}
 
 		if (!self::isStaticDsEnabled()) {
-			$dsRows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+			$dsRows = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTgetRows(
 				'uid',
 				'tx_templavoila_datastructure',
 				'1=1'
@@ -293,7 +293,7 @@ class DataStructureRepository {
 	 * @return integer
 	 */
 	public function getDatastructureCountForPid($pid) {
-		$dsCnt = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+		$dsCnt = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTgetRows(
 			'DISTINCT datastructure',
 			'tx_templavoila_tmplobj',
 			'pid=' . intval($pid) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoila_tmplobj'),

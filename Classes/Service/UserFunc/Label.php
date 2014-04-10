@@ -48,6 +48,6 @@ class Label {
 	 * @author  Michael Klapper <michael.klapper@aoemedia.de>
 	 */
 	public function getLabel(&$params, &$pObj) {
-		$params['title'] = $GLOBALS['LANG']->sL($params['row']['title']);
+		$params['title'] = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL($params['row']['title']);
 	}
 }

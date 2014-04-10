@@ -121,7 +121,7 @@ class tx_templavoila_dbnewcontentel {
 		$this->config = $tsconfig['properties'];
 
 		// Getting the current page and receiving access information (used in main())
-		$perms_clause = $BE_USER->getPagePermsClause(1);
+		$perms_clause = \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->getPagePermsClause(1);
 		$pageinfo = \TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess($this->id, $perms_clause);
 		$this->access = is_array($pageinfo) ? 1 : 0;
 
@@ -148,7 +148,7 @@ class tx_templavoila_dbnewcontentel {
 		if ($this->id && $this->access) {
 
 			// Creating content
-			$this->content = $this->doc->header($LANG->getLL('newContentElement'));
+			$this->content = $this->doc->header(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newContentElement'));
 			$this->content .= $this->doc->spacer(5);
 
 			$elRow = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('pages', $this->id);
@@ -241,17 +241,17 @@ class tx_templavoila_dbnewcontentel {
 					.typo3-dyntabmenu-divs table { margin: 15px; }
 					.typo3-dyntabmenu-divs table td { padding: 3px; }
 				';
-				$code = $LANG->getLL('sel1', 1) . '<br /><br />' . $this->doc->getDynTabMenu($menuItems, 'new-content-element-wizard', FALSE, FALSE, 100);
+				$code = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('sel1', 1) . '<br /><br />' . $this->doc->getDynTabMenu($menuItems, 'new-content-element-wizard', FALSE, FALSE, 100);
 			} else {
-				$code = $LANG->getLL('sel1', 1) . '<br /><br />';
+				$code = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('sel1', 1) . '<br /><br />';
 				foreach ($menuItems as $section) {
 					$code .= $this->elementWrapper['sectionHeader'][0] . $section['label'] . $this->elementWrapper['sectionHeader'][1] . $section['content'];
 				}
 			}
 
-			$this->content .= $this->doc->section(!$this->onClickEvent ? $LANG->getLL('1_selectType') : '', $code, 0, 1);
+			$this->content .= $this->doc->section(!$this->onClickEvent ? \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('1_selectType') : '', $code, 0, 1);
 		} else { // In case of no access:
-			$this->content = $this->doc->header($LANG->getLL('newContentElement'));
+			$this->content = $this->doc->header(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newContentElement'));
 		}
 
 		$this->pageinfo = \TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess($this->id, $this->perms_clause);
@@ -261,7 +261,7 @@ class tx_templavoila_dbnewcontentel {
 			'CONTENT' => $this->content
 		);
 
-		$content = $this->doc->startPage($LANG->getLL('newContentElement'));
+		$content = $this->doc->startPage(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newContentElement'));
 		$content .= $this->doc->moduleBody(
 			$this->pageinfo,
 			$docHeaderButtons,
@@ -288,7 +288,7 @@ class tx_templavoila_dbnewcontentel {
 		// Back
 		if ($this->returnUrl) {
 			$backIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-view-go-back');
-			$buttons['back'] = '<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisUrl($this->returnUrl)) . '" class="typo3-goBack" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.goBack', TRUE) . '">' .
+			$buttons['back'] = '<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisUrl($this->returnUrl)) . '" class="typo3-goBack" title="' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_core.php:labels.goBack', TRUE) . '">' .
 				$backIcon .
 				'</a>';
 		}
@@ -304,7 +304,7 @@ class tx_templavoila_dbnewcontentel {
 	protected function getShortcutButton() {
 		$result = '';
 		$menu = is_array($this->MOD_MENU) ? $this->MOD_MENU : array();
-		if ($GLOBALS['BE_USER']->mayMakeShortcut()) {
+		if (\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->mayMakeShortcut()) {
 			$result = $this->doc->makeShortcutIcon('id', implode(',', array_keys($menu)), $this->MCONF['name']);
 		}
 
@@ -453,7 +453,7 @@ class tx_templavoila_dbnewcontentel {
 				$tmpFilename = $toObj->getIcon();
 				$returnElements['fce.']['elements.']['fce_' . $toObj->getKey() . '.'] = array(
 					'icon' => (@is_file(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(substr($tmpFilename, 3)))) ? $tmpFilename : ('../' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('templavoila') . 'res1/default_previewicon.gif'),
-					'description' => $toObj->getDescription() ? htmlspecialchars($toObj->getDescription()) : $GLOBALS['LANG']->getLL('template_nodescriptionavailable'),
+					'description' => $toObj->getDescription() ? htmlspecialchars($toObj->getDescription()) : \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('template_nodescriptionavailable'),
 					'title' => $toObj->getLabel(),
 					'params' => $this->getDsDefaultValues($toObj)
 				);
@@ -464,8 +464,8 @@ class tx_templavoila_dbnewcontentel {
 	}
 
 	function wizard_getItem($groupKey, $itemKey, $itemConf) {
-		$itemConf['title'] = $GLOBALS['LANG']->sL($itemConf['title']);
-		$itemConf['description'] = $GLOBALS['LANG']->sL($itemConf['description']);
+		$itemConf['title'] = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL($itemConf['title']);
+		$itemConf['description'] = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL($itemConf['description']);
 		$itemConf['tt_content_defValues'] = $itemConf['tt_content_defValues.'];
 		unset($itemConf['tt_content_defValues.']);
 
@@ -473,7 +473,7 @@ class tx_templavoila_dbnewcontentel {
 	}
 
 	function wizard_getGroupHeader($groupKey, $wizardGroup) {
-		return array('header' => $GLOBALS['LANG']->sL($wizardGroup['header']));
+		return array('header' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL($wizardGroup['header']));
 	}
 
 	/**
@@ -515,7 +515,7 @@ class tx_templavoila_dbnewcontentel {
 					if (is_array($TCA['tt_content']['columns'][$fN])) {
 						// Get information about if the field value is OK:
 						$config = & $TCA['tt_content']['columns'][$fN]['config'];
-						$authModeDeny = $config['type'] == 'select' && $config['authMode'] && !$GLOBALS['BE_USER']->checkAuthMode('tt_content', $fN, $fV, $config['authMode']);
+						$authModeDeny = $config['type'] == 'select' && $config['authMode'] && !\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->checkAuthMode('tt_content', $fN, $fV, $config['authMode']);
 
 						if ($authModeDeny || in_array($fV, $removeItems)) {
 							// Remove element all together:
@@ -550,9 +550,9 @@ class tx_templavoila_dbnewcontentel {
 	 */
 	function buildRecordWhere($table) {
 		$result = array();
-		if (!$GLOBALS['BE_USER']->isAdmin()) {
+		if (!\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isAdmin()) {
 			$prefLen = strlen($table) + 1;
-			foreach ($GLOBALS['BE_USER']->userGroups as $group) {
+			foreach (\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->userGroups as $group) {
 				$items = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $group['tx_templavoila_access'], 1);
 				foreach ($items as $ref) {
 					if (strstr($ref, $table)) {

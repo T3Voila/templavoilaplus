@@ -166,7 +166,7 @@ class DataHandler {
 				);
 				$ref = NULL;
 				if (!\TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction('EXT:templavoila/Classes/Service/UserFunc/Access.php:&\Extension\Templavoila\Service\UserFunc\Access->recordEditAccessInternals', $params, $ref)) {
-					$reference->newlog(sprintf($GLOBALS['LANG']->getLL($status != 'new' ? 'access_noModifyAccess' : 'access_noCrateAccess'), $table, $id), 1);
+					$reference->newlog(sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL($status != 'new' ? 'access_noModifyAccess' : 'access_noCrateAccess'), $table, $id), 1);
 					$fieldArray = NULL;
 				}
 			}
@@ -249,7 +249,7 @@ page.10.disableExplosivePreview = 1
 								$parentRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL($destinationFlexformPointer['table'], $destinationFlexformPointer['uid'], 'uid,pid,tx_templavoila_flex');
 								$currentReferencesArr = $templaVoilaAPI->flexform_getElementReferencesFromXML($parentRecord['tx_templavoila_flex'], $destinationFlexformPointer);
 								if (count($currentReferencesArr)) {
-									$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,' . $sorting_field, $table, 'uid IN (' . implode(',', $currentReferencesArr) . ')' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($table));
+									$rows = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTgetRows('uid,' . $sorting_field, $table, 'uid IN (' . implode(',', $currentReferencesArr) . ')' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($table));
 									$sort = array($reference->substNEWwithIDs[$id] => -$sorting);
 									foreach ($rows as $row) {
 										$sort[$row['uid']] = $row[$sorting_field];
@@ -327,7 +327,7 @@ page.10.disableExplosivePreview = 1
 				);
 				$ref = NULL;
 				if (!\TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction('EXT:templavoila/Classes/Service/UserFunc/Access.php:&\Extension\Templavoila\Service\UserFunc\Access->recordEditAccessInternals', $params, $ref)) {
-					$reference->newlog(sprintf($GLOBALS['LANG']->getLL($status != 'new' ? 'access_noModifyAccess' : 'access_noCrateAccess'), $table, $id), 1);
+					$reference->newlog(sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL($status != 'new' ? 'access_noModifyAccess' : 'access_noCrateAccess'), $table, $id), 1);
 					$command = ''; // Do not delete! A hack but there is no other way to prevent deletion...
 				} else {
 					if (intval($record['t3ver_oid']) > 0 && $record['pid'] == -1) {
@@ -542,7 +542,7 @@ page.10.disableExplosivePreview = 1
 					$sortByField => $sortNumber,
 					'colPos' => $colPos
 				);
-				$TYPO3_DB->exec_UPDATEquery(
+				 \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_UPDATEquery(
 					'tt_content',
 					'uid=' . intval($elementArr['uid']),
 					$updateFields

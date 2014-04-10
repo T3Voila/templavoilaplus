@@ -39,7 +39,7 @@ class TextpicController extends TextController {
 
 		$uploadDir = $GLOBALS['TCA']['tt_content']['columns']['image']['config']['internal_type'] == 'file_reference' ? '' : NULL;
 
-		$thumbnail = '<strong>' . $GLOBALS['LANG']->sL(\TYPO3\CMS\Backend\Utility\BackendUtility::getItemLabel('tt_content', 'image'), 1) . '</strong><br />';
+		$thumbnail = '<strong>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL(\TYPO3\CMS\Backend\Utility\BackendUtility::getItemLabel('tt_content', 'image'), 1) . '</strong><br />';
 		$thumbnail .= \TYPO3\CMS\Backend\Utility\BackendUtility::thumbCode($row, 'tt_content', 'image', $ref->doc->backPath, '', $uploadDir);
 
 		$label = $this->getPreviewLabel();

@@ -49,6 +49,6 @@ class ext_update {
 	 * @return    boolean
 	 */
 	public function access($what = 'all') {
-		return $GLOBALS['BE_USER']->isAdmin();
+		return \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isAdmin();
 	}
 }

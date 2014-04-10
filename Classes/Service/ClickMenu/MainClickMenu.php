@@ -57,15 +57,15 @@ class MainClickMenu {
 
 		$localItems = array();
 		if (!$backRef->cmLevel) {
-			$LL = $LANG->includeLLFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('templavoila') . 'Resources/Private/Language/locallang.xml', 0);
+			$LL = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->includeLLFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('templavoila') . 'Resources/Private/Language/locallang.xml', 0);
 
 			// Adding link for Mapping tool:
 			if (\Extension\Templavoila\Domain\Model\File::is_file($table)) {
-				if ($BE_USER->isAdmin()) {
+				if (\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isAdmin()) {
 					if (\Extension\Templavoila\Domain\Model\File::is_xmlFile($table)) {
 						$url = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila') . 'cm1/index.php?file=' . rawurlencode($table);
 						$localItems[] = $backRef->linkItem(
-							$LANG->getLLL('cm1_title', $LL, 1),
+							\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLLL('cm1_title', $LL, 1),
 							$backRef->excludeIcon('<img src="' . $backRef->backPath . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila') . 'cm1/cm_icon.gif" width="15" height="12" border="0" align="top" alt="" />'),
 							$backRef->urlRefForCM($url, 'returnUrl'),
 							1 // Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
@@ -75,7 +75,7 @@ class MainClickMenu {
 			} elseif (\TYPO3\CMS\Core\Utility\GeneralUtility::inList('tx_templavoila_tmplobj,tx_templavoila_datastructure,tx_templavoila_content', $table)) {
 				$url = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila') . 'cm1/index.php?table=' . rawurlencode($table) . '&uid=' . $uid . '&_reload_from=1';
 				$localItems[] = $backRef->linkItem(
-					$LANG->getLLL('cm1_title', $LL, 1),
+					\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLLL('cm1_title', $LL, 1),
 					$backRef->excludeIcon('<img src="' . $backRef->backPath . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila') . 'cm1/cm_icon.gif" width="15" height="12" border="0" align="top" alt="" />'),
 					$backRef->urlRefForCM($url, 'returnUrl'),
 					1 // Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
@@ -94,7 +94,7 @@ class MainClickMenu {
 					'&altRoot[field_flex]=tx_templavoila_flex';
 
 				$localItems[] = $backRef->linkItem(
-					$LANG->getLLL('cm1_viewsubelements', $LL, 1),
+					\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLLL('cm1_viewsubelements', $LL, 1),
 					$backRef->excludeIcon('<img src="' . $backRef->backPath . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila') . 'cm1/cm_icon.gif" width="15" height="12" border="0" align="top" alt="" />'),
 					$backRef->urlRefForCM($url, 'returnUrl'),
 					1 // Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
@@ -102,14 +102,14 @@ class MainClickMenu {
 			}
 
 			// Adding link for "View: Flexform XML" (admin only):
-			if ($BE_USER->isAdmin() && $isTVelement) {
+			if (\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isAdmin() && $isTVelement) {
 				$url = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila') . 'cm2/index.php?' .
 					'&viewRec[table]=' . rawurlencode($table) .
 					'&viewRec[uid]=' . $uid .
 					'&viewRec[field_flex]=tx_templavoila_flex';
 
 				$localItems[] = $backRef->linkItem(
-					$LANG->getLLL('cm1_viewflexformxml', $LL, 1),
+					\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLLL('cm1_viewflexformxml', $LL, 1),
 					$backRef->excludeIcon('<img src="' . $backRef->backPath . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila') . 'cm2/cm_icon.gif" width="15" height="12" border="0" align="top" alt="" />'),
 					$backRef->urlRefForCM($url, 'returnUrl'),
 					1 // Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
@@ -117,14 +117,14 @@ class MainClickMenu {
 			}
 
 			// Adding link for "View: DS/TO" (admin only):
-			if ($BE_USER->isAdmin() && $isTVelement) {
+			if (\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isAdmin() && $isTVelement) {
 
 				if (\Extension\Templavoila\Utility\GeneralUtility::canBeInterpretedAsInteger($backRef->rec['tx_templavoila_ds'])) {
 					$url = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila') . 'cm1/index.php?' .
 						'table=tx_templavoila_datastructure&uid=' . $backRef->rec['tx_templavoila_ds'];
 
 					$localItems[] = $backRef->linkItem(
-						$LANG->getLLL('cm_viewdsto', $LL, 1) . ' [' . $backRef->rec['tx_templavoila_ds'] . '/' . $backRef->rec['tx_templavoila_to'] . ']',
+						\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLLL('cm_viewdsto', $LL, 1) . ' [' . $backRef->rec['tx_templavoila_ds'] . '/' . $backRef->rec['tx_templavoila_to'] . ']',
 						$backRef->excludeIcon('<img src="' . $backRef->backPath . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila') . 'cm2/cm_icon.gif" width="15" height="12" border="0" align="top" alt="" />'),
 						$backRef->urlRefForCM($url, 'returnUrl'),
 						1 // Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
@@ -148,9 +148,9 @@ class MainClickMenu {
 				$url = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila') . 'mod1/index.php?id=';
 
 				// Generate a list of pages where this element is also being used:
-				$res = $TYPO3_DB->exec_SELECTquery('*', 'tx_templavoila_elementreferences', 'uid=' . $backRef->rec['uid']);
+				$res = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTquery('*', 'tx_templavoila_elementreferences', 'uid=' . $backRef->rec['uid']);
 				if ($res) {
-					while (FALSE != ($referenceRecord = $TYPO3_DB->sql_fetch_assoc($res))) {
+					while (FALSE != ($referenceRecord = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_fetch_assoc($res))) {
 						$pageRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', $referenceRecord['pid']);
 						$icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', $pageRecord);
 						// To do: Display language flag icon and jump to correct language

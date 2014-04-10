@@ -161,9 +161,9 @@ class tx_templavoila_extdeveval {
 		// Language Mode For DS
 		$dbQuery = "SELECT dataprot,title
 						FROM tx_templavoila_datastructure WHERE uid=" . (int) $dsIdForConversion;
-		if ($dbRes = $GLOBALS['TYPO3_DB']->sql_query($dbQuery)) {
+		if ($dbRes = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_query($dbQuery)) {
 			if (mysql_num_rows($dbRes) == 1) {
-				$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($dbRes);
+				$row = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_fetch_assoc($dbRes);
 				$language = $this->DSlanguageMode($row['dataprot']);
 				$DStitle = $row['title'];
 			}
@@ -189,9 +189,9 @@ class tx_templavoila_extdeveval {
 			foreach ($SET['content'] as $key => $val) {
 				if ($val) {
 					$dbQuery = "SELECT * FROM {$setTable} WHERE uid='" . (int) $key . "' ";
-					if ($dbRes = $GLOBALS['TYPO3_DB']->sql_query($dbQuery)) {
+					if ($dbRes = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_query($dbQuery)) {
 						if (mysql_num_rows($dbRes) == 1) {
-							$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($dbRes);
+							$row = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_fetch_assoc($dbRes);
 
 							$this->newFlexFormData = array();
 							$flexObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\FlexForm\\FlexFormTools');
@@ -201,7 +201,7 @@ class tx_templavoila_extdeveval {
 											SET $setField='" . addslashes($flexObj->flexArray2Xml($this->newFlexFormData)) . "'
 											WHERE uid='" . (int) $key . "' ";
 
-							if (!$dbRes = $GLOBALS['TYPO3_DB']->sql_query($dbQuery)) {
+							if (!$dbRes = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_query($dbQuery)) {
 								print mysql_error();
 							}
 						}
@@ -226,10 +226,10 @@ class tx_templavoila_extdeveval {
 			list($table, $field, $dsPointerField, $searchParentFlag) = $tableFieldPair;
 
 			// Select all Data Structures in the PID and put into an array:
-			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+			$rows = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTgetRows(
 				'*',
 				$table,
-				$dsPointerField . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($dsIdForConversion, $table), // Finds "deleted"-flagged records as well since an undelete action would otherwise invalidate it. Maybe this is not too important and we can enable filtering out deleted records if its boring to fix the problem for those...
+				$dsPointerField . '=' . \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr($dsIdForConversion, $table), // Finds "deleted"-flagged records as well since an undelete action would otherwise invalidate it. Maybe this is not too important and we can enable filtering out deleted records if its boring to fix the problem for those...
 				'', '', '', 'uid'
 			);
 			// If searchParent feature is used we cannot convert if the data structure is used anywhere for this field! So we must check:

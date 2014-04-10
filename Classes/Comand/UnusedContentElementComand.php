@@ -135,7 +135,7 @@ Automatic Repair:
 					$usedUids[] = 0;
 
 					// Look up all content elements that are NOT used on this page...
-					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+					$res = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTquery(
 						'uid, header',
 						'tt_content',
 						'pid=' . intval($uid) . ' ' .
@@ -149,25 +149,25 @@ Automatic Repair:
 					);
 
 					// Traverse, for each find references if any and register them.
-					while (FALSE !== ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))) {
+					while (FALSE !== ($row = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_fetch_assoc($res))) {
 
 						// Look up references to elements:
-						$refrows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+						$refrows = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTgetRows(
 							'hash',
 							'sys_refindex',
-							'ref_table=' . $GLOBALS['TYPO3_DB']->fullQuoteStr('tt_content', 'sys_refindex') .
+							'ref_table=' . \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr('tt_content', 'sys_refindex') .
 							' AND ref_uid=' . intval($row['uid']) .
 							' AND deleted=0'
 						);
 
 						// Look up TRANSLATION references FROM this element to another content element:
 						$isATranslationChild = FALSE;
-						$refrows_From = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+						$refrows_From = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTgetRows(
 							'ref_uid',
 							'sys_refindex',
-							'tablename=' . $GLOBALS['TYPO3_DB']->fullQuoteStr('tt_content', 'sys_refindex') .
+							'tablename=' . \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr('tt_content', 'sys_refindex') .
 							' AND recuid=' . intval($row['uid']) .
-							' AND field=' . $GLOBALS['TYPO3_DB']->fullQuoteStr('l18n_parent', 'sys_refindex')
+							' AND field=' . \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr('l18n_parent', 'sys_refindex')
 #								' AND deleted=0'
 						);
 						// Check if that other record is deleted or not:

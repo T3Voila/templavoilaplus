@@ -157,7 +157,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		}
 
 		// Set translator mode if the default langauge is not accessible for the user:
-		if (!$GLOBALS['BE_USER']->checkLanguageAccess(0) && !$GLOBALS['BE_USER']->isAdmin()) {
+		if (!\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->checkLanguageAccess(0) && !\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isAdmin()) {
 			$this->translatorMode = TRUE;
 		}
 
@@ -474,10 +474,10 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 					$result = $specialDoktypesObj->$methodName($this->rootElementRecord);
 					if ($result !== FALSE) {
 						$this->content .= $result;
-						if ($GLOBALS['BE_USER']->isPSet($this->calcPerms, 'pages', 'edit')) {
+						if (\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isPSet($this->calcPerms, 'pages', 'edit')) {
 							// Edit icon only if page can be modified by user
-							$iconEdit = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open', array('title' => $LANG->sL('LLL:EXT:lang/locallang_mod_web_list.xml:editPage')));
-							$this->content .= '<br/><br/><strong>' . $this->link_edit($iconEdit . $LANG->sL('LLL:EXT:lang/locallang_mod_web_list.xml:editPage'), 'pages', $this->id) . '</strong>';
+							$iconEdit = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open', array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_mod_web_list.xml:editPage')));
+							$this->content .= '<br/><br/><strong>' . $this->link_edit($iconEdit . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_mod_web_list.xml:editPage'), 'pages', $this->id) . '</strong>';
 						}
 						$render_editPageScreen = FALSE; // Do not output editing code for special doctypes!
 					}
@@ -496,7 +496,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 					$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
 						'\TYPO3\CMS\Core\Messaging\FlashMessage',
 						'',
-						sprintf($LANG->getLL('content_from_pid_title'), $link),
+						sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('content_from_pid_title'), $link),
 						\TYPO3\CMS\Core\Messaging\FlashMessage::INFO
 					);
 					$editCurrentPageHTML = '';
@@ -552,16 +552,16 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				if (!isset($pageInfoArr['uid'])) {
 					$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
 						'\TYPO3\CMS\Core\Messaging\FlashMessage',
-						$GLOBALS['LANG']->getLL('page_not_found'),
-						$GLOBALS['LANG']->getLL('title'),
+						\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('page_not_found'),
+						\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('title'),
 						\TYPO3\CMS\Core\Messaging\FlashMessage::INFO
 					);
 					$this->content .= $flashMessage->render();
 				} else {
 					$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
 						'\TYPO3\CMS\Core\Messaging\FlashMessage',
-						$GLOBALS['LANG']->getLL('default_introduction'),
-						$GLOBALS['LANG']->getLL('title'),
+						\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('default_introduction'),
+						\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('title'),
 						\TYPO3\CMS\Core\Messaging\FlashMessage::INFO
 					);
 					$this->content .= $flashMessage->render();
@@ -570,7 +570,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		}
 
 		// Place content inside template
-		$content = $this->doc->startPage($GLOBALS['LANG']->getLL('title'));
+		$content = $this->doc->startPage(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('title'));
 		$content .= $this->doc->moduleBody(
 			array(),
 			$this->getDocHeaderButtons(!isset($pageInfoArr['uid'])),
@@ -607,7 +607,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	protected function getBodyMarkers() {
 
 		$bodyMarkers = array(
-			'TITLE' => $GLOBALS['LANG']->getLL('title'),
+			'TITLE' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('title'),
 		);
 
 		if ($this->modTSconfig['properties']['sideBarEnable'] && $this->sideBarObj->position == 'left') {
@@ -666,23 +666,23 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		// View page
 		$viewAddGetVars = $this->currentLanguageUid ? '&L=' . $this->currentLanguageUid : '';
 		$buttons['view'] = '<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::viewOnClick($this->id, $BACK_PATH, \TYPO3\CMS\Backend\Utility\BackendUtility::BEgetRootLine($this->id), '', '', $viewAddGetVars)) . '">' .
-			\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-view', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showPage', 1))) .
+			\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-view', array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_core.php:labels.showPage', 1))) .
 			'</a>';
 
 		// Shortcut
-		if ($BE_USER->mayMakeShortcut()) {
+		if (\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->mayMakeShortcut()) {
 			$buttons['shortcut'] = $this->doc->makeShortcutIcon('id, edit_record, pointer, new_unique_uid, search_field, search_levels, showLimit', implode(',', array_keys($this->MOD_MENU)), $this->MCONF['name']);
 		}
 
 		// If access to Web>List for user, then link to that module.
-		if ($BE_USER->check('modules', 'web_list')) {
+		if (\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->check('modules', 'web_list')) {
 			if (\Extension\Templavoila\Utility\GeneralUtility::convertVersionNumberToInteger(TYPO3_version) < 4005000) {
 				$href = $GLOBALS['BACK_PATH'] . 'db_list.php?id=' . $this->id . '&returnUrl=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI'));
 			} else {
 				$href = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_list', array('id' => $this->id, 'returnUrl' => \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')));
 			}
 			$buttons['record_list'] = '<a href="' . htmlspecialchars($href) . '">' .
-				\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-system-list-open', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showList', 1))) .
+				\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-system-list-open', array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_core.php:labels.showList', 1))) .
 				'</a>';
 		}
 
@@ -690,25 +690,25 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 			// Page history
 			$buttons['history_page'] = '<a href="#" onclick="' . htmlspecialchars('jumpToUrl(\'' . $BACK_PATH . 'show_rechis.php?element=' . rawurlencode('pages:' . $this->id) . '&returnUrl=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')) . '#latest\');return false;') . '">' .
-				\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-history-open', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:cms/layout/locallang.xml:recordHistory', 1))) .
+				\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-history-open', array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:cms/layout/locallang.xml:recordHistory', 1))) .
 				'</a>';
 
-			if (!$this->translatorMode && $GLOBALS['BE_USER']->isPSet($this->calcPerms, 'pages', 'new')) {
+			if (!$this->translatorMode && \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isPSet($this->calcPerms, 'pages', 'new')) {
 				// Create new page (wizard)
 				$buttons['new_page'] = '<a href="#" onclick="' . htmlspecialchars('jumpToUrl(\'' . $BACK_PATH . 'db_new.php?id=' . $this->id . '&pagesOnly=1&returnUrl=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI') . '&updatePageTree=true') . '\');return false;') . '">' .
-					\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-page-new', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:cms/layout/locallang.xml:newPage', 1))) .
+					\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-page-new', array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:cms/layout/locallang.xml:newPage', 1))) .
 					'</a>';
 			}
 
-			if (!$this->translatorMode && $GLOBALS['BE_USER']->isPSet($this->calcPerms, 'pages', 'edit')) {
+			if (!$this->translatorMode && \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isPSet($this->calcPerms, 'pages', 'edit')) {
 				// Edit page properties
 				$params = '&edit[pages][' . $this->id . ']=edit';
 				$buttons['edit_page'] = '<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick($params, $BACK_PATH)) . '">' .
-					\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:cms/layout/locallang.xml:editPageProperties', 1))) .
+					\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open', array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:cms/layout/locallang.xml:editPageProperties', 1))) .
 					'</a>';
 				// Move page
 				$buttons['move_page'] = '<a href="' . htmlspecialchars($BACK_PATH . 'move_el.php?table=pages&uid=' . $this->id . '&returnUrl=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI'))) . '">' .
-					\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-page-move', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:cms/layout/locallang.xml:move_page', 1))) .
+					\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-page-move', array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:cms/layout/locallang.xml:move_page', 1))) .
 					'</a>';
 			}
 
@@ -716,17 +716,17 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 			if ($this->id) {
 				if (version_compare(TYPO3_version, '4.5.0', '<')) {
-					$cacheUrl = $GLOBALS['BACK_PATH'] . 'tce_db.php?vC=' . $GLOBALS['BE_USER']->veriCode() .
+					$cacheUrl = $GLOBALS['BACK_PATH'] . 'tce_db.php?vC=' . \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->veriCode() .
 						'&redirect=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')) .
 						'&cacheCmd=' . $this->id;
 				} else {
-					$cacheUrl = $GLOBALS['BACK_PATH'] . 'tce_db.php?vC=' . $GLOBALS['BE_USER']->veriCode() .
+					$cacheUrl = $GLOBALS['BACK_PATH'] . 'tce_db.php?vC=' . \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->veriCode() .
 						\TYPO3\CMS\Backend\Utility\BackendUtility::getUrlToken('tceAction') .
 						'&redirect=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')) .
 						'&cacheCmd=' . $this->id;
 				}
 
-				$buttons['cache'] = '<a href="' . $cacheUrl . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.clear_cache', TRUE) . '">' .
+				$buttons['cache'] = '<a href="' . $cacheUrl . '" title="' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_core.php:labels.clear_cache', TRUE) . '">' .
 					\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-system-cache-clear') .
 					'</a>';
 			}
@@ -742,7 +742,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 */
 	protected function getShortcutButton() {
 		$result = '';
-		if ($GLOBALS['BE_USER']->mayMakeShortcut()) {
+		if (\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->mayMakeShortcut()) {
 			$result = $this->doc->makeShortcutIcon('', 'function', $this->MCONF['name']);
 		}
 
@@ -780,7 +780,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		// Create a back button if neccessary:
 		if (is_array($this->altRoot)) {
 			$output .= '<div style="text-align:right; width:100%; margin-bottom:5px;"><a href="index.php?id=' . $this->id . '">' .
-				\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-view-go-back', array('title' => htmlspecialchars($LANG->getLL('goback')))) .
+				\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-view-go-back', array('title' => htmlspecialchars(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('goback')))) .
 				'</a></div>';
 		}
 
@@ -793,12 +793,12 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		}
 
 		// We show a warning if the user may edit the pagecontent and is not permitted to edit the "content" fields at the same time
-		if (!$BE_USER->isAdmin() && $this->modTSconfig['properties']['enableContentAccessWarning']) {
+		if (!\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isAdmin() && $this->modTSconfig['properties']['enableContentAccessWarning']) {
 			if (!($this->hasBasicEditRights())) {
 				$message = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
 					'\TYPO3\CMS\Core\Messaging\FlashMessage',
-					$LANG->getLL('missing_edit_right_detail'),
-					$LANG->getLL('missing_edit_right'),
+					\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('missing_edit_right_detail'),
+					\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('missing_edit_right'),
 					\TYPO3\CMS\Core\Messaging\FlashMessage::INFO
 				);
 				$this->flashMessageService->getMessageQueueByIdentifier('ext.templavoila')->enqueue($message);
@@ -807,7 +807,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 		// Display the content as outline or the nested page structure:
 		if (
-			($BE_USER->isAdmin() || $this->modTSconfig['properties']['enableOutlineForNonAdmin'])
+			(\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isAdmin() || $this->modTSconfig['properties']['enableOutlineForNonAdmin'])
 			&& $this->MOD_SETTINGS['showOutline']
 		) {
 			$output .= $this->render_outline($contentTreeData['tree']);
@@ -827,7 +827,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 //		$sys_notes = recordList::showSysNotesForPage();
 		if (FALSE) {
 			// @todo: Check if and how this is to replace
-			$output .= '</div><div>' . $this->doc->section($LANG->sL('LLL:EXT:cms/layout/locallang.xml:internalNotes'), str_replace('sysext/sys_note/ext_icon.gif', $GLOBALS['BACK_PATH'] . 'sysext/sys_note/ext_icon.gif', $sys_notes), 0, 1);
+			$output .= '</div><div>' . $this->doc->section(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:cms/layout/locallang.xml:internalNotes'), str_replace('sysext/sys_note/ext_icon.gif', $GLOBALS['BACK_PATH'] . 'sysext/sys_note/ext_icon.gif', $sys_notes), 0, 1);
 		}
 
 		return $output;
@@ -913,8 +913,8 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		}
 		$calcPerms = $this->getCalcPerms($pid);
 
-		$canEditElement = $GLOBALS['BE_USER']->isPSet($calcPerms, 'pages', 'editcontent');
-		$canEditContent = $GLOBALS['BE_USER']->isPSet($this->calcPerms, 'pages', 'editcontent');
+		$canEditElement = \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isPSet($calcPerms, 'pages', 'editcontent');
+		$canEditContent = \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isPSet($this->calcPerms, 'pages', 'editcontent');
 
 		$elementClass = 'tpm-container-element';
 		$elementClass .= ' tpm-container-element-depth-' . $contentTreeArr['depth'];
@@ -927,7 +927,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			$recordIcon = '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, $contentTreeArr['el']['icon'], '') . ' border="0" title="' . htmlspecialchars('[' . $contentTreeArr['el']['table'] . ':' . $contentTreeArr['el']['uid'] . ']') . '" alt="" />';
 		}
 		$menuCommands = array();
-		if ($GLOBALS['BE_USER']->isPSet($calcPerms, 'pages', 'new')) {
+		if (\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isPSet($calcPerms, 'pages', 'new')) {
 			$menuCommands[] = 'new';
 		}
 		if ($canEditContent) {
@@ -971,14 +971,14 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				if (!$this->translatorMode) {
 
 					if ($canEditContent) {
-						$iconMakeLocal = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('extensions-templavoila-makelocalcopy', array('title' => $LANG->getLL('makeLocal')));
+						$iconMakeLocal = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('extensions-templavoila-makelocalcopy', array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('makeLocal')));
 						$linkMakeLocal = !$elementBelongsToCurrentPage && !in_array('makeLocal', $this->blindIcons) ? $this->link_makeLocal($iconMakeLocal, $parentPointer) : '';
 						$linkCut = $this->clipboardObj->element_getSelectButtons($parentPointer, 'cut');
 						if ($this->modTSconfig['properties']['enableDeleteIconForLocalElements'] < 2 ||
 							!$elementBelongsToCurrentPage ||
 							$this->global_tt_content_elementRegister[$contentTreeArr['el']['uid']] > 1
 						) {
-							$iconUnlink = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('extensions-templavoila-unlink', array('title' => $LANG->getLL('unlinkRecord')));
+							$iconUnlink = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('extensions-templavoila-unlink', array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('unlinkRecord')));
 							$linkUnlink = !in_array('unlink', $this->blindIcons) ? $this->link_unlink($iconUnlink, $parentPointer, FALSE, FALSE, $elementPointer) : '';
 						} else {
 							$linkUnlink = '';
@@ -987,9 +987,9 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 						$linkMakeLocal = $linkCut = $linkUnlink = '';
 					}
 
-					if ($canEditElement && $GLOBALS['BE_USER']->recordEditAccessInternals('tt_content', $contentTreeArr['previewData']['fullRow'])) {
+					if ($canEditElement && \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->recordEditAccessInternals('tt_content', $contentTreeArr['previewData']['fullRow'])) {
 						if (($elementBelongsToCurrentPage || $this->modTSconfig['properties']['enableEditIconForRefElements']) && !in_array('edit', $this->blindIcons)) {
-							$iconEdit = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open', array('title' => $LANG->getLL('editrecord')));
+							$iconEdit = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open', array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('editrecord')));
 							$linkEdit = $this->link_edit($iconEdit, $contentTreeArr['el']['table'], $contentTreeArr['el']['uid'], FALSE, $contentTreeArr['el']['pid']);
 						} else {
 							$linkEdit = '';
@@ -998,7 +998,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 						if ($canEditContent && $this->modTSconfig['properties']['enableDeleteIconForLocalElements'] && $elementBelongsToCurrentPage) {
 							$hasForeignReferences = \Extension\Templavoila\Utility\GeneralUtility::hasElementForeignReferences($contentTreeArr['el'], $contentTreeArr['el']['pid']);
-							$iconDelete = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-delete', array('title' => $LANG->getLL('deleteRecord')));
+							$iconDelete = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-delete', array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('deleteRecord')));
 							$linkDelete = !in_array('delete', $this->blindIcons) ? $this->link_unlink($iconDelete, $parentPointer, TRUE, $hasForeignReferences, $elementPointer) : '';
 						} else {
 							$linkDelete = '';
@@ -1022,7 +1022,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		}
 
 		// If there was a language icon and the language was not default or [all] and if that langauge is accessible for the user, then wrap the  flag with an edit link (to support the "Click the flag!" principle for translators)
-		if ($languageIcon && $languageUid > 0 && $GLOBALS['BE_USER']->checkLanguageAccess($languageUid) && $contentTreeArr['el']['table'] === 'tt_content') {
+		if ($languageIcon && $languageUid > 0 && \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->checkLanguageAccess($languageUid) && $contentTreeArr['el']['table'] === 'tt_content') {
 			$languageIcon = $this->link_edit($languageIcon, 'tt_content', $contentTreeArr['el']['uid'], TRUE, $contentTreeArr['el']['pid'], 'tpm-langIcon');
 		} elseif ($languageIcon) {
 			$languageIcon = '<span class="tpm-langIcon">' . $languageIcon . '</span>';
@@ -1032,11 +1032,11 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$warnings = '';
 
 		if (!$this->modTSconfig['properties']['disableReferencedElementNotification'] && !$elementBelongsToCurrentPage) {
-			$warnings .= $this->doc->icons(1) . ' <em>' . htmlspecialchars(sprintf($LANG->getLL('info_elementfromotherpage'), $contentTreeArr['el']['uid'], $contentTreeArr['el']['pid'])) . '</em><br />';
+			$warnings .= $this->doc->icons(1) . ' <em>' . htmlspecialchars(sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('info_elementfromotherpage'), $contentTreeArr['el']['uid'], $contentTreeArr['el']['pid'])) . '</em><br />';
 		}
 
 		if (!$this->modTSconfig['properties']['disableElementMoreThanOnceWarning'] && $this->global_tt_content_elementRegister[$contentTreeArr['el']['uid']] > 1 && $this->rootElementLangParadigm != 'free') {
-			$warnings .= $this->doc->icons(2) . ' <em>' . htmlspecialchars(sprintf($LANG->getLL('warning_elementusedmorethanonce', ''), $this->global_tt_content_elementRegister[$contentTreeArr['el']['uid']], $contentTreeArr['el']['uid'])) . '</em><br />';
+			$warnings .= $this->doc->icons(2) . ' <em>' . htmlspecialchars(sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('warning_elementusedmorethanonce', ''), $this->global_tt_content_elementRegister[$contentTreeArr['el']['uid']], $contentTreeArr['el']['uid'])) . '</em><br />';
 		}
 
 		// Displaying warning for container content (in default sheet - a limitation) elements if localization is enabled:
@@ -1044,10 +1044,10 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		if (!$this->modTSconfig['properties']['disableContainerElementLocalizationWarning'] && $this->rootElementLangParadigm != 'free' && $isContainerEl && $contentTreeArr['el']['table'] === 'tt_content' && $contentTreeArr['el']['CType'] === 'templavoila_pi1' && !$contentTreeArr['ds_meta']['langDisable']) {
 			if ($contentTreeArr['ds_meta']['langChildren']) {
 				if (!$this->modTSconfig['properties']['disableContainerElementLocalizationWarning_warningOnly']) {
-					$warnings .= $this->doc->icons(2) . ' <em>' . $LANG->getLL('warning_containerInheritance') . '</em><br />';
+					$warnings .= $this->doc->icons(2) . ' <em>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('warning_containerInheritance') . '</em><br />';
 				}
 			} else {
-				$warnings .= $this->doc->icons(3) . ' <em>' . $LANG->getLL('warning_containerSeparate') . '</em><br />';
+				$warnings .= $this->doc->icons(3) . ' <em>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('warning_containerSeparate') . '</em><br />';
 			}
 		}
 
@@ -1114,7 +1114,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$beTemplate = '';
 		$flagRenderBeLayout = FALSE;
 
-		$canEditContent = $GLOBALS['BE_USER']->isPSet($calcPerms, 'pages', 'editcontent');
+		$canEditContent = \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isPSet($calcPerms, 'pages', 'editcontent');
 
 		// Define l/v keys for current language:
 		$langChildren = intval($elementContentTreeArr['ds_meta']['langChildren']);
@@ -1127,11 +1127,11 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				$lKey = $this->determineFlexLanguageKey(1, $langChildren, $languageKey);
 				$vKey = $this->determineFlexValueKey(1, $langChildren, $languageKey);
 			} else {
-				if (!$GLOBALS['BE_USER']->isAdmin()) {
+				if (!\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isAdmin()) {
 					$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
 						'\TYPO3\CMS\Core\Messaging\FlashMessage',
-						$GLOBALS['LANG']->getLL('page_structure_inherited_detail'),
-						$GLOBALS['LANG']->getLL('page_structure_inherited'),
+						\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('page_structure_inherited_detail'),
+						\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('page_structure_inherited'),
 						\TYPO3\CMS\Core\Messaging\FlashMessage::INFO
 					);
 					$this->flashMessageService->getMessageQueueByIdentifier('ext.templavoila')->enqueue($flashMessage);
@@ -1212,7 +1212,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 						'\TYPO3\CMS\Core\Messaging\FlashMessage',
 						'',
 						sprintf(
-							$GLOBALS['LANG']->getLL('maximal_content_elements'),
+							\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('maximal_content_elements'),
 							$maxCnt,
 							$elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['tx_templavoila']['title']
 						),
@@ -1291,7 +1291,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				if ($flagRenderBeLayout == TRUE) {
 					$beTemplateCell = '<table width="100%" class="beTemplateCell">
 					<tr>
-						<td class="bgColor6 tpm-title-cell">' . $LANG->sL($fieldContent['meta']['title'], 1) . '</td>
+						<td class="bgColor6 tpm-title-cell">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL($fieldContent['meta']['title'], 1) . '</td>
 					</tr>
 					<tr>
 						<td ' . $cellIdStr . ' class="tpm-content-cell">' . $cellContent . '</td>
@@ -1303,7 +1303,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 					$cells[] = array(
 						'id' => $cellId,
 						'idStr' => $cellIdStr,
-						'title' => $LANG->sL($fieldContent['meta']['title'], 1),
+						'title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL($fieldContent['meta']['title'], 1),
 						'width' => $width,
 						'content' => $cellContent
 					);
@@ -1391,7 +1391,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 */
 	protected function disablePageStructureInheritance($elementContentTreeArr, $sheet, $lKey, $vKey) {
 		$disable = FALSE;
-		if ($GLOBALS['BE_USER']->isAdmin()) {
+		if (\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isAdmin()) {
 			//if page DS and the checkbox is not set use always langDisable in inheritance mode
 			$disable = $this->MOD_SETTINGS['disablePageStructureInheritance'] != '1';
 		} else {
@@ -1439,7 +1439,6 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @return    string        HTML content
 	 */
 	function render_previewData($previewData, $elData, $ds_meta, $languageKey, $sheet) {
-		global $LANG;
 
 		$this->currentElementBelongsToCurrentPage = $elData['table'] == 'pages' || $elData['pid'] == $this->rootElementUid_pidForContent;
 
@@ -1668,7 +1667,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 							list($flagLink_begin, $flagLink_end) = explode('|*|', $this->link_edit('|*|', 'tt_content', $localizedRecordInfo['uid'], TRUE));
 							if ($this->translatorMode) {
-								$l10nInfo .= '<br/>' . $flagLink_begin . '<em>' . $LANG->getLL('clickToEditTranslation') . '</em>' . $flagLink_end;
+								$l10nInfo .= '<br/>' . $flagLink_begin . '<em>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('clickToEditTranslation') . '</em>' . $flagLink_end;
 							}
 
 							// Wrap workspace notification colors:
@@ -1707,7 +1706,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 									$onClick = "document.location='" . $GLOBALS['SOBE']->doc->issueCommand($params, \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI') . '#c' . md5($this->apiObj->flexform_getStringFromPointer($parentPointer) . $contentTreeArr['el']['uid'] . $sys_language_uid)) . "'; return false;";
 								}
 
-								$linkLabel = $LANG->getLL('createcopyfortranslation', 1) . ' (' . htmlspecialchars($sLInfo['title']) . ')';
+								$linkLabel = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('createcopyfortranslation', 1) . ' (' . htmlspecialchars($sLInfo['title']) . ')';
 								$localizeIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-copy', array('title' => $linkLabel));
 
 								$l10nInfo = '<a class="tpm-clipCopyTranslation" href="#" onclick="' . htmlspecialchars($onClick) . '">' . $localizeIcon . '</a>';
@@ -1727,7 +1726,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 							// Change of strategy (27/11): Because there does not have to be content fields; could be in sections or arrays and if thats the case you still want to localize them! There has to be another way...
 							// if (count($contentTreeArr['contentFields']['sDEF']))	{
 							list($flagLink_begin, $flagLink_end) = explode('|*|', $this->link_edit('|*|', 'tt_content', $contentTreeArr['el']['uid'], TRUE));
-							$l10nInfo = $flagLink_begin . '<em>[' . $LANG->getLL('performTranslation') . ']</em>' . $flagLink_end;
+							$l10nInfo = $flagLink_begin . '<em>[' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('performTranslation') . ']</em>' . $flagLink_end;
 							$this->global_localization_status[$sys_language_uid][] = array(
 								'status' => 'flex',
 								'parent_uid' => $contentTreeArr['el']['uid'],
@@ -1737,7 +1736,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 							break;
 					}
 
-					if ($l10nInfo && $BE_USER->checkLanguageAccess($sys_language_uid)) {
+					if ($l10nInfo && \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->checkLanguageAccess($sys_language_uid)) {
 						$tRows[] = '
 							<tr class="bgColor4">
 								<td width="1%">' . $flagLink_begin . \Extension\Templavoila\Utility\IconUtility::getFlagIconForLanguage($sLInfo['flagIcon'], array('title' => $sLInfo['title'], 'alt' => $sLInfo['title'])) . $flagLink_end . '</td>
@@ -1750,7 +1749,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			$output = count($tRows) ? '
 				<table border="0" cellpadding="0" cellspacing="1" width="100%" class="lrPadding tpm-localisation-info-table">
 					<tr class="bgColor4-20">
-						<td colspan="2">' . $LANG->getLL('element_localizations', 1) . ':</td>
+						<td colspan="2">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('element_localizations', 1) . ':</td>
 					</tr>
 					' . implode('', $tRows) . '
 				</table>
@@ -1797,10 +1796,10 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		// Header of table:
 		$output = '';
 		$output .= '<tr class="bgColor5 tableheader">
-				<td class="nobr">' . $LANG->getLL('outline_header_title', 1) . '</td>
-				<td class="nobr">' . $LANG->getLL('outline_header_controls', 1) . '</td>
-				<td class="nobr">' . $LANG->getLL('outline_header_status', 1) . '</td>
-				<td class="nobr">' . $LANG->getLL('outline_header_element', 1) . '</td>
+				<td class="nobr">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('outline_header_title', 1) . '</td>
+				<td class="nobr">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('outline_header_controls', 1) . '</td>
+				<td class="nobr">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('outline_header_status', 1) . '</td>
+				<td class="nobr">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('outline_header_element', 1) . '</td>
 			</tr>';
 
 		// Render all entries:
@@ -1843,10 +1842,10 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 					// Render status:
 					$xmlUrl = '../cm2/index.php?viewRec[table]=' . $entry['table'] . '&viewRec[uid]=' . $entry['uid'] . '&viewRec[field_flex]=tx_templavoila_flex';
 					if (md5($recRow['tx_templavoila_flex']) != md5($newXML)) {
-						$status = $this->doc->icons(1) . '<a href="' . htmlspecialchars($xmlUrl) . '">' . $LANG->getLL('outline_status_dirty', 1) . '</a><br/>';
+						$status = $this->doc->icons(1) . '<a href="' . htmlspecialchars($xmlUrl) . '">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('outline_status_dirty', 1) . '</a><br/>';
 						$xmlCleanCandidates = TRUE;
 					} else {
-						$status = $this->doc->icons(-1) . '<a href="' . htmlspecialchars($xmlUrl) . '">' . $LANG->getLL('outline_status_clean', 1) . '</a><br/>';
+						$status = $this->doc->icons(-1) . '<a href="' . htmlspecialchars($xmlUrl) . '">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('outline_status_clean', 1) . '</a><br/>';
 					}
 				}
 			}
@@ -1866,7 +1865,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		if ($xmlCleanCandidates) {
 			$output .= '<br/>
 				' . \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_txtemplavoilaM1', 'outline_status_cleanall', $this->doc->backPath) . '
-				<input type="submit" value="' . $LANG->getLL('outline_status_cleanAll', 1) . '" name="_CLEAN_XML_ALL" /><br/><br/>
+				<input type="submit" value="' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('outline_status_cleanAll', 1) . '" name="_CLEAN_XML_ALL" /><br/><br/>
 			';
 		}
 
@@ -1905,13 +1904,13 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		// Prepare table specific settings:
 		switch ($contentTreeArr['el']['table']) {
 			case 'pages' :
-				$iconEdit = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open', array('title' => $LANG->sL('LLL:EXT:lang/locallang_mod_web_list.xml:editPage')));
+				$iconEdit = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open', array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_mod_web_list.xml:editPage')));
 				$titleBarLeftButtons .= $this->translatorMode ? '' : $this->link_edit($iconEdit, $contentTreeArr['el']['table'], $contentTreeArr['el']['uid']);
 				$titleBarRightButtons = '';
 
 				$addGetVars = ($this->currentLanguageUid ? '&L=' . $this->currentLanguageUid : '');
 				$viewPageOnClick = 'onclick= "' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::viewOnClick($contentTreeArr['el']['uid'], $this->doc->backPath, \TYPO3\CMS\Backend\Utility\BackendUtility::BEgetRootLine($contentTreeArr['el']['uid']), '', '', $addGetVars)) . '"';
-				$viewPageIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-view', array('title' => $LANG->sL('LLL:EXT:lang/locallang_core.xml:labels.showPage', 1)));
+				$viewPageIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-view', array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xml:labels.showPage', 1)));
 				$titleBarLeftButtons .= '<a href="#" ' . $viewPageOnClick . '>' . $viewPageIcon . '</a>';
 				break;
 			case 'tt_content' :
@@ -1922,25 +1921,25 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 					$titleBarRightButtons = '';
 				} else {
 					// Create CE specific buttons:
-					$iconMakeLocal = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('extensions-templavoila-makelocalcopy', array('title' => $LANG->getLL('makeLocal')));
+					$iconMakeLocal = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('extensions-templavoila-makelocalcopy', array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('makeLocal')));
 					$linkMakeLocal = !$elementBelongsToCurrentPage ? $this->link_makeLocal($iconMakeLocal, $parentPointer) : '';
 					if ($this->modTSconfig['properties']['enableDeleteIconForLocalElements'] < 2 ||
 						!$elementBelongsToCurrentPage ||
 						$this->global_tt_content_elementRegister[$contentTreeArr['el']['uid']] > 1
 					) {
-						$iconUnlink = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('extensions-templavoila-unlink', array('title' => $LANG->getLL('unlinkRecord')));
+						$iconUnlink = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('extensions-templavoila-unlink', array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('unlinkRecord')));
 						$linkUnlink = $this->link_unlink($iconUnlink, $parentPointer, FALSE);
 					} else {
 						$linkUnlink = '';
 					}
 					if ($this->modTSconfig['properties']['enableDeleteIconForLocalElements'] && $elementBelongsToCurrentPage) {
 						$hasForeignReferences = \Extension\Templavoila\Utility\GeneralUtility::hasElementForeignReferences($contentTreeArr['el'], $contentTreeArr['el']['pid']);
-						$iconDelete = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-delete', array('title' => $LANG->getLL('deleteRecord')));
+						$iconDelete = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-delete', array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('deleteRecord')));
 						$linkDelete = $this->link_unlink($iconDelete, $parentPointer, TRUE, $hasForeignReferences);
 					} else {
 						$linkDelete = '';
 					}
-					$iconEdit = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open', array('title' => $LANG->getLL('editrecord')));
+					$iconEdit = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open', array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('editrecord')));
 					$linkEdit = ($elementBelongsToCurrentPage ? $this->link_edit($iconEdit, $contentTreeArr['el']['table'], $contentTreeArr['el']['uid']) : '');
 
 					$titleBarRightButtons = $linkEdit . $this->clipboardObj->element_getSelectButtons($parentPointer) . $linkMakeLocal . $linkUnlink . $linkDelete;
@@ -1962,14 +1961,14 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		}
 
 		// If there was a langauge icon and the language was not default or [all] and if that langauge is accessible for the user, then wrap the flag with an edit link (to support the "Click the flag!" principle for translators)
-		if ($languageIcon && $languageUid > 0 && $GLOBALS['BE_USER']->checkLanguageAccess($languageUid) && $contentTreeArr['el']['table'] === 'tt_content') {
+		if ($languageIcon && $languageUid > 0 && \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->checkLanguageAccess($languageUid) && $contentTreeArr['el']['table'] === 'tt_content') {
 			$languageIcon = $this->link_edit($languageIcon, 'tt_content', $contentTreeArr['el']['uid'], TRUE);
 		}
 
 		// Create warning messages if neccessary:
 		$warnings = '';
 		if ($this->global_tt_content_elementRegister[$contentTreeArr['el']['uid']] > 1 && $this->rootElementLangParadigm != 'free') {
-			$warnings .= '<br/>' . $this->doc->icons(2) . ' <em>' . htmlspecialchars(sprintf($LANG->getLL('warning_elementusedmorethanonce', ''), $this->global_tt_content_elementRegister[$contentTreeArr['el']['uid']], $contentTreeArr['el']['uid'])) . '</em>';
+			$warnings .= '<br/>' . $this->doc->icons(2) . ' <em>' . htmlspecialchars(sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('warning_elementusedmorethanonce', ''), $this->global_tt_content_elementRegister[$contentTreeArr['el']['uid']], $contentTreeArr['el']['uid'])) . '</em>';
 		}
 
 		// Displaying warning for container content (in default sheet - a limitation) elements if localization is enabled:
@@ -1977,10 +1976,10 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		if (!$this->modTSconfig['properties']['disableContainerElementLocalizationWarning'] && $this->rootElementLangParadigm != 'free' && $isContainerEl && $contentTreeArr['el']['table'] === 'tt_content' && $contentTreeArr['el']['CType'] === 'templavoila_pi1' && !$contentTreeArr['ds_meta']['langDisable']) {
 			if ($contentTreeArr['ds_meta']['langChildren']) {
 				if (!$this->modTSconfig['properties']['disableContainerElementLocalizationWarning_warningOnly']) {
-					$warnings .= '<br/>' . $this->doc->icons(2) . ' <b>' . $LANG->getLL('warning_containerInheritance_short') . '</b>';
+					$warnings .= '<br/>' . $this->doc->icons(2) . ' <b>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('warning_containerInheritance_short') . '</b>';
 				}
 			} else {
-				$warnings .= '<br/>' . $this->doc->icons(3) . ' <b>' . $LANG->getLL('warning_containerSeparate_short') . '</b>';
+				$warnings .= '<br/>' . $this->doc->icons(3) . ' <b>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('warning_containerSeparate_short') . '</b>';
 			}
 		}
 
@@ -2055,7 +2054,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 							if (!$this->translatorMode) {
 								// "New" and "Paste" icon:
-								$newIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-new', array('title' => $LANG->getLL('createnewrecord')));
+								$newIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-new', array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('createnewrecord')));
 								$controls = $this->link_new($newIcon, $subElementPointer);
 								$controls .= $this->clipboardObj->element_getPasteButtons($subElementPointer);
 							}
@@ -2065,7 +2064,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 							$entries[] = array(
 								'indentLevel' => $indentLevel,
 								'icon' => '',
-								'title' => '<b>' . $LANG->sL($fieldContent['meta']['title'], 1) . '</b>' . ($specialPath ? ' <em>' . htmlspecialchars($specialPath) . '</em>' : ''),
+								'title' => '<b>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL($fieldContent['meta']['title'], 1) . '</b>' . ($specialPath ? ' <em>' . htmlspecialchars($specialPath) . '</em>' : ''),
 								'id' => '<' . $sheet . '><' . $lKey . '><' . $fieldID . '><' . $vKey . '>',
 								'controls' => $controls,
 								'elementTitlebarClass' => 'tpm-container tpm-outline-level' . $indentLevel,
@@ -2082,7 +2081,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 										if (!$this->translatorMode) {
 											// "New" and "Paste" icon:
-											$newIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-new', array('title' => $LANG->getLL('createnewrecord')));
+											$newIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-new', array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('createnewrecord')));
 											$controls = $this->link_new($newIcon, $subElementPointer);
 											$controls .= $this->clipboardObj->element_getPasteButtons($subElementPointer);
 										}
@@ -2116,7 +2115,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 			// Traverse the available languages of the page (not default and [All])
 			foreach ($this->translatedLanguagesArr as $sys_language_uid => $sLInfo) {
-				if ($sys_language_uid > 0 && $BE_USER->checkLanguageAccess($sys_language_uid)) {
+				if ($sys_language_uid > 0 && \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->checkLanguageAccess($sys_language_uid)) {
 					switch ((string) $contentTreeArr['localizationInfo'][$sys_language_uid]['mode']) {
 						case 'exists':
 
@@ -2232,12 +2231,12 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		global $LANG;
 
 		$iconOptions = array(
-			'title' => ($el['table'] == 'pages' ? $LANG->sL('LLL:EXT:lang/locallang_mod_web_list.xml:hidePage') : $LANG->sL('LLL:EXT:lang/locallang_mod_web_list.xml:hide'))
+			'title' => ($el['table'] == 'pages' ? \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_mod_web_list.xml:hidePage') : \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_mod_web_list.xml:hide'))
 		);
 		$hideIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-hide', $iconOptions);
 
 		$iconOptions = array(
-			'title' => ($el['table'] == 'pages' ? $LANG->sL('LLL:EXT:lang/locallang_mod_web_list.xml:unHidePage') : $LANG->sL('LLL:EXT:lang/locallang_mod_web_list.xml:unHide'))
+			'title' => ($el['table'] == 'pages' ? \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_mod_web_list.xml:unHidePage') : \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_mod_web_list.xml:unHide'))
 		);
 		$unhideIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-unhide', $iconOptions);
 
@@ -2273,7 +2272,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				(!$this->translatorMode || $forced)
 			) {
 
-				$workspaceRec = \TYPO3\CMS\Backend\Utility\BackendUtility::getWorkspaceVersionOfRecord($GLOBALS['BE_USER']->workspace, $table, $uid);
+				$workspaceRec = \TYPO3\CMS\Backend\Utility\BackendUtility::getWorkspaceVersionOfRecord(\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->workspace, $table, $uid);
 				$workspaceId = ($workspaceRec['uid'] > 0) ? $workspaceRec['uid'] : $uid;
 				if ($table == "pages" && $this->currentLanguageUid) {
 					$params = '&data[' . $table . '][' . $workspaceId . '][hidden]=' . (1 - $hidden);
@@ -2364,9 +2363,9 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		if ($realDelete) {
 			$LLlabel = $foreignReferences ? 'deleteRecordWithReferencesMsg' : 'deleteRecordMsg';
 
-			return '<a class="tpm-delete" href="index.php?' . $this->link_getParameters() . '&amp;deleteRecord=' . $encodedUnlinkPointerString . '" onclick="' . htmlspecialchars('return confirm(' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($GLOBALS['LANG']->getLL($LLlabel)) . ');') . '">' . $label . '</a>';
+			return '<a class="tpm-delete" href="index.php?' . $this->link_getParameters() . '&amp;deleteRecord=' . $encodedUnlinkPointerString . '" onclick="' . htmlspecialchars('return confirm(' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL($LLlabel)) . ');') . '">' . $label . '</a>';
 		} else {
-			return '<a class="tpm-unlink" href="javascript:' . htmlspecialchars('if (confirm(' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($GLOBALS['LANG']->getLL('unlinkRecordMsg')) . '))') . 'sortable_unlinkRecord(\'' . $encodedUnlinkPointerString . '\',\'' . $this->addSortableItem($unlinkPointerString) . '\',\'' . $elementPointer . '\');">' . $label . '</a>';
+			return '<a class="tpm-unlink" href="javascript:' . htmlspecialchars('if (confirm(' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('unlinkRecordMsg')) . '))') . 'sortable_unlinkRecord(\'' . $encodedUnlinkPointerString . '\',\'' . $this->addSortableItem($unlinkPointerString) . '\',\'' . $elementPointer . '\');">' . $label . '</a>';
 		}
 	}
 
@@ -2382,7 +2381,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	function link_makeLocal($label, $makeLocalPointer) {
 		global $LANG;
 
-		return '<a class="tpm-makeLocal" href="index.php?' . $this->link_getParameters() . '&amp;makeLocalRecord=' . rawurlencode($this->apiObj->flexform_getStringFromPointer($makeLocalPointer)) . '" onclick="' . htmlspecialchars('return confirm(' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($LANG->getLL('makeLocalMsg')) . ');') . '">' . $label . '</a>';
+		return '<a class="tpm-makeLocal" href="index.php?' . $this->link_getParameters() . '&amp;makeLocalRecord=' . rawurlencode($this->apiObj->flexform_getStringFromPointer($makeLocalPointer)) . '" onclick="' . htmlspecialchars('return confirm(' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('makeLocalMsg')) . ');') . '">' . $label . '</a>';
 	}
 
 	/**
@@ -2416,7 +2415,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		// "New" icon:
 		if ($canCreateNew && !in_array('new', $this->blindIcons)) {
 			$iconOptions = array(
-				'title' => $GLOBALS['LANG']->getLL('createnewrecord')
+				'title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('createnewrecord')
 			);
 			$newIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-new', $iconOptions);
 			$output .= $this->link_new($newIcon, $elementPointer);
@@ -2425,7 +2424,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		// "Browse Record" icon
 		if ($canCreateNew && !in_array('browse', $this->blindIcons)) {
 			$iconOptions = array(
-				'title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.browse_db'),
+				'title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xml:labels.browse_db'),
 				'class' => 'browse'
 			);
 			$newIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-insert-record', $iconOptions);
@@ -2555,7 +2554,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 						$params = '';
 						if ($sys_language_uid != 0) {
 							// Edit overlay record
-							list($pLOrecord) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+							list($pLOrecord) = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTgetRows(
 								'*',
 								'pages_language_overlay',
 								'pid=' . intval($this->id) . ' AND sys_language_uid=' . $sys_language_uid .
@@ -2619,11 +2618,11 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		global $LANG, $TYPO3_DB, $BE_USER, $TCA, $BACK_PATH;
 
 		$output = array();
-		$excludeHidden = $BE_USER->isAdmin() ? '1=1' : 'sys_language.hidden=0';
+		$excludeHidden = \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isAdmin() ? '1=1' : 'sys_language.hidden=0';
 
 		if ($id) {
 			$excludeHidden .= ' AND pages_language_overlay.deleted=0';
-			$res = $TYPO3_DB->exec_SELECTquery(
+			$res = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTquery(
 				'DISTINCT sys_language.*, pages_language_overlay.hidden as PLO_hidden, pages_language_overlay.title as PLO_title',
 				'pages_language_overlay,sys_language',
 				'pages_language_overlay.sys_language_uid=sys_language.uid AND pages_language_overlay.pid=' . intval($id) . ' AND ' . $excludeHidden,
@@ -2631,7 +2630,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				'sys_language.title'
 			);
 		} else {
-			$res = $TYPO3_DB->exec_SELECTquery(
+			$res = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTquery(
 				'sys_language.*',
 				'sys_language',
 				$excludeHidden,
@@ -2643,7 +2642,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		if ($setDefault) {
 			$output[0] = array(
 				'uid' => 0,
-				'title' => strlen($this->modSharedTSconfig['properties']['defaultLanguageLabel']) ? $this->modSharedTSconfig['properties']['defaultLanguageLabel'] : $LANG->getLL('defaultLanguage'),
+				'title' => strlen($this->modSharedTSconfig['properties']['defaultLanguageLabel']) ? $this->modSharedTSconfig['properties']['defaultLanguageLabel'] : \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('defaultLanguage'),
 				'ISOcode' => 'DEF',
 				'flagIcon' => strlen($this->modSharedTSconfig['properties']['defaultLanguageFlag']) ? $this->modSharedTSconfig['properties']['defaultLanguageFlag'] : NULL
 			);
@@ -2652,13 +2651,13 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		if ($setMulti) {
 			$output[-1] = array(
 				'uid' => -1,
-				'title' => $LANG->getLL('multipleLanguages'),
+				'title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('multipleLanguages'),
 				'ISOcode' => 'DEF',
 				'flagIcon' => 'multiple',
 			);
 		}
 
-		while (TRUE == ($row = $TYPO3_DB->sql_fetch_assoc($res))) {
+		while (TRUE == ($row = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_fetch_assoc($res))) {
 			\TYPO3\CMS\Backend\Utility\BackendUtility::workspaceOL('sys_language', $row);
 			if ($id) {
 				$table = 'pages_language_overlay';
@@ -2669,7 +2668,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				$enableFields .= \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($table);
 
 				// Selecting overlay record:
-				$resP = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+				$resP = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTquery(
 					'*',
 					'pages_language_overlay',
 					'pid=' . intval($id) . '
@@ -2678,8 +2677,8 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 					'',
 					'1'
 				);
-				$pageRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($resP);
-				$GLOBALS['TYPO3_DB']->sql_free_result($resP);
+				$pageRow = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_fetch_assoc($resP);
+				\Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_free_result($resP);
 				\TYPO3\CMS\Backend\Utility\BackendUtility::workspaceOL('pages_language_overlay', $pageRow);
 				$row['PLO_hidden'] = $pageRow['hidden'];
 				$row['PLO_title'] = $pageRow['title'];
@@ -2779,15 +2778,10 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 */
 	function localizedFFLabel($label, $hsc) {
 
-		$charset = $GLOBALS['LANG']->origCharSet;
-		if ($GLOBALS['LANG']->origCharSet != $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset']) {
-			$GLOBALS['LANG']->origCharSet = $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'];
-		}
 		if (substr($label, 0, 4) === 'LLL:') {
-			$label = $GLOBALS['LANG']->sL($label);
+			$label = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL($label);
 		}
 		$result = htmlspecialchars($label, $hsc);
-		$GLOBALS['LANG']->origCharSet = $charset;
 
 		return $result;
 	}
@@ -2821,7 +2815,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			$obj = @unserialize(base64_decode($ser));
 
 			if ($obj instanceof \tx_templavoila_contentElementDescriptor) {
-				$data = (array) @unserialize($GLOBALS['BE_USER']->uc['tx_templavoila_recentce']);
+				$data = (array) @unserialize(\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->uc['tx_templavoila_recentce']);
 				// Find this element
 				$pos = FALSE;
 				for ($i = 0; $i < count($data); $i++) {
@@ -2842,8 +2836,8 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 						}
 					}
 					array_unshift($data, $obj);
-					$GLOBALS['BE_USER']->uc['tx_templavoila_recentce'] = serialize($data);
-					$GLOBALS['BE_USER']->writeUC();
+					\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->uc['tx_templavoila_recentce'] = serialize($data);
+					\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->writeUC();
 				}
 			}
 		}
@@ -2903,7 +2897,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	protected function getCalcPerms($pid) {
 		if (!isset(self::$calcPermCache[$pid])) {
 			$row = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('pages', $pid);
-			$calcPerms = $GLOBALS['BE_USER']->calcPerms($row);
+			$calcPerms = \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->calcPerms($row);
 			if (!$this->hasBasicEditRights('pages', $row)) {
 				// unsetting the "edit content" right - which is 16
 				$calcPerms = $calcPerms & ~16;
@@ -2932,15 +2926,15 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			$record = $this->rootElementRecord;
 		}
 
-		if ($GLOBALS['BE_USER']->isAdmin()) {
+		if (\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isAdmin()) {
 			$hasEditRights = TRUE;
 		} else {
 			$id = $record[($table == 'pages' ? 'uid' : 'pid')];
 			$pageRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('pages', $id);
 
-			$mayEditPage = $GLOBALS['BE_USER']->doesUserHaveAccess($pageRecord, 16);
-			$mayModifyTable = \TYPO3\CMS\Core\Utility\GeneralUtility::inList($GLOBALS['BE_USER']->groupData['tables_modify'], $table);
-			$mayEditContentField = \TYPO3\CMS\Core\Utility\GeneralUtility::inList($GLOBALS['BE_USER']->groupData['non_exclude_fields'], $table . ':tx_templavoila_flex');
+			$mayEditPage = \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->doesUserHaveAccess($pageRecord, 16);
+			$mayModifyTable = \TYPO3\CMS\Core\Utility\GeneralUtility::inList(\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->groupData['tables_modify'], $table);
+			$mayEditContentField = \TYPO3\CMS\Core\Utility\GeneralUtility::inList(\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->groupData['non_exclude_fields'], $table . ':tx_templavoila_flex');
 			$hasEditRights = $mayEditPage && $mayModifyTable && $mayEditContentField;
 		}
 

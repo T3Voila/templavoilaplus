@@ -51,10 +51,10 @@ class TemplateRepository {
 	 * @return array
 	 */
 	public function getTemplatesByDatastructure(\Extension\Templavoila\Domain\Model\AbstractDataStructure $ds, $storagePid = 0) {
-		$toList = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+		$toList = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTgetRows(
 			'tx_templavoila_tmplobj.uid',
 			'tx_templavoila_tmplobj',
-			'tx_templavoila_tmplobj.datastructure=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($ds->getKey(), 'tx_templavoila_tmplobj')
+			'tx_templavoila_tmplobj.datastructure=' . \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr($ds->getKey(), 'tx_templavoila_tmplobj')
 			. (intval($storagePid) > 0 ? ' AND tx_templavoila_tmplobj.pid = ' . intval($storagePid) : '')
 			. \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoila_tmplobj')
 			. ' AND pid!=-1 '
@@ -98,10 +98,10 @@ class TemplateRepository {
 	 * @return array
 	 */
 	public function getTemplatesByParentTemplate(\Extension\Templavoila\Domain\Model\Template $to, $storagePid = 0) {
-		$toList = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+		$toList = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTgetRows(
 			'tx_templavoila_tmplobj.uid',
 			'tx_templavoila_tmplobj',
-			'tx_templavoila_tmplobj.parent=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($to->getKey(), 'tx_templavoila_tmplobj')
+			'tx_templavoila_tmplobj.parent=' . \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr($to->getKey(), 'tx_templavoila_tmplobj')
 			. (intval($storagePid) > 0 ? ' AND tx_templavoila_tmplobj.pid = ' . intval($storagePid) : ' AND pid!=-1')
 			. \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoila_tmplobj')
 			. \TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause('tx_templavoila_tmplobj')
@@ -121,7 +121,7 @@ class TemplateRepository {
 	 * @return array
 	 */
 	public function getAll($storagePid = 0) {
-		$toList = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+		$toList = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTgetRows(
 			'tx_templavoila_tmplobj.uid',
 			'tx_templavoila_tmplobj',
 			'1=1'
@@ -158,16 +158,16 @@ class TemplateRepository {
 	 * @return array
 	 */
 	public function getTemplateStoragePids() {
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+		$res = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTquery(
 			'pid',
 			'tx_templavoila_tmplobj',
 			'pid>=0' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoila_tmplobj'),
 			'pid'
 		);
-		while ($res && FALSE !== ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))) {
+		while ($res && FALSE !== ($row = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_fetch_assoc($res))) {
 			$list[] = $row['pid'];
 		}
-		$GLOBALS['TYPO3_DB']->sql_free_result($res);
+		\Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_free_result($res);
 
 		return $list;
 	}
@@ -178,7 +178,7 @@ class TemplateRepository {
 	 * @return integer
 	 */
 	public function getTemplateCountForPid($pid) {
-		$toCnt = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+		$toCnt = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTgetRows(
 			'count(*) as cnt',
 			'tx_templavoila_tmplobj',
 			'pid=' . intval($pid) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoila_tmplobj')

@@ -563,7 +563,7 @@ class ApiService {
 				$elementUids[] = $elementUid;
 
 				// Reduce the list to local elements to make sure that references are kept instead of moving the referenced record
-				$localRecords = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,pid', 'tt_content', 'uid IN (' . implode(',', $elementUids) . ') AND pid=' . intval($sourcePID) . ' ' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tt_content'));
+				$localRecords = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTgetRows('uid,pid', 'tt_content', 'uid IN (' . implode(',', $elementUids) . ') AND pid=' . intval($sourcePID) . ' ' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tt_content'));
 				if (!empty($localRecords) && is_array($localRecords)) {
 					foreach ($localRecords as $localRecord) {
 						$cmdArray['tt_content'][$localRecord['uid']]['move'] = $destinationPID;
@@ -1434,7 +1434,7 @@ class ApiService {
 
 		$tTO = 'tx_templavoila_tmplobj';
 		$tDS = 'tx_templavoila_datastructure';
-		$res = $TYPO3_DB->exec_SELECTquery(
+		$res = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTquery(
 			"$tTO.*",
 			"$tTO LEFT JOIN $tDS ON $tTO.datastructure = $tDS.uid",
 			"$tTO.pid=" . intval($storageFolderPID) . " AND $tDS.scope=1" .
@@ -1446,7 +1446,7 @@ class ApiService {
 		}
 
 		$templateObjectRecords = array();
-		while (FALSE != ($row = $TYPO3_DB->sql_fetch_assoc($res))) {
+		while (FALSE != ($row = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_fetch_assoc($res))) {
 			$templateObjectRecords[$row['uid']] = $row;
 		}
 
@@ -1571,9 +1571,9 @@ class ApiService {
 				$tree['sub'][$sheetKey] = array();
 				$tree['contentFields'][$sheetKey] = array();
 				$tree['meta'][$sheetKey] = array(
-					'title' => (is_array($sheetData) && $sheetData['ROOT']['TCEforms']['sheetTitle'] ? $LANG->sL($sheetData['ROOT']['TCEforms']['sheetTitle']) : ''),
-					'description' => (is_array($sheetData) && $sheetData['ROOT']['TCEforms']['sheetDescription'] ? $LANG->sL($sheetData['ROOT']['TCEforms']['sheetDescription']) : ''),
-					'short' => (is_array($sheetData) && $sheetData['ROOT']['TCEforms']['sheetShortDescr'] ? $LANG->sL($sheetData['ROOT']['TCEforms']['sheetShortDescr']) : ''),
+					'title' => (is_array($sheetData) && $sheetData['ROOT']['TCEforms']['sheetTitle'] ? \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL($sheetData['ROOT']['TCEforms']['sheetTitle']) : ''),
+					'description' => (is_array($sheetData) && $sheetData['ROOT']['TCEforms']['sheetDescription'] ? \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL($sheetData['ROOT']['TCEforms']['sheetDescription']) : ''),
+					'short' => (is_array($sheetData) && $sheetData['ROOT']['TCEforms']['sheetShortDescr'] ? \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL($sheetData['ROOT']['TCEforms']['sheetShortDescr']) : ''),
 				);
 
 				// Traverse the sheet's elements:
@@ -1741,7 +1741,7 @@ class ApiService {
 			$fakeElementRow = array('uid' => $contentTreeArr['el']['uid'], 'pid' => $contentTreeArr['el']['pid']);
 			\TYPO3\CMS\Backend\Utility\BackendUtility::fixVersioningPID('tt_content', $fakeElementRow);
 
-			$res = $TYPO3_DB->exec_SELECTquery(
+			$res = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTquery(
 				'*',
 				'tt_content',
 				'pid=' . $fakeElementRow['pid'] .
@@ -1751,7 +1751,7 @@ class ApiService {
 			);
 
 			$attachedLocalizations = array();
-			while (TRUE == ($olrow = $TYPO3_DB->sql_fetch_assoc($res))) {
+			while (TRUE == ($olrow = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_fetch_assoc($res))) {
 				\TYPO3\CMS\Backend\Utility\BackendUtility::workspaceOL('tt_content', $olrow);
 				if (!isset($attachedLocalizations[$olrow['sys_language_uid']])) {
 					$attachedLocalizations[$olrow['sys_language_uid']] = $olrow['uid'];
@@ -1918,7 +1918,7 @@ class ApiService {
 		$this->allSystemWebsiteLanguages['all_vKeys'][] = 'vDEF';
 
 		// Select all website languages:
-		$this->allSystemWebsiteLanguages['rows'] = $TYPO3_DB->exec_SELECTgetRows(
+		$this->allSystemWebsiteLanguages['rows'] = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTgetRows(
 			'sys_language.*',
 			'sys_language',
 			'1=1' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('sys_language'),

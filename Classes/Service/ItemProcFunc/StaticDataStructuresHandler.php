@@ -94,22 +94,22 @@ class StaticDataStructuresHandler {
 		if ($templateRef && $storagePid) {
 
 			// Select all Template Object Records from storage folder, which are parent records and which has the data structure for the plugin:
-			$res = $TYPO3_DB->exec_SELECTquery(
+			$res = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTquery(
 				'title,uid,previewicon',
 				'tx_templavoila_tmplobj',
-				'tx_templavoila_tmplobj.pid=' . $storagePid . ' AND tx_templavoila_tmplobj.datastructure=' . $TYPO3_DB->fullQuoteStr($templateRef, 'tx_templavoila_tmplobj') . ' AND tx_templavoila_tmplobj.parent=0',
+				'tx_templavoila_tmplobj.pid=' . $storagePid . ' AND tx_templavoila_tmplobj.datastructure=' .  \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr($templateRef, 'tx_templavoila_tmplobj') . ' AND tx_templavoila_tmplobj.parent=0',
 				'',
 				'tx_templavoila_tmplobj.title'
 			);
 
 			// Traverse these and add them. Icons are set too if applicable.
-			while (FALSE != ($row = $TYPO3_DB->sql_fetch_assoc($res))) {
+			while (FALSE != ($row = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_fetch_assoc($res))) {
 				if ($row['previewicon']) {
 					$icon = '../' . $GLOBALS['TCA']['tx_templavoila_tmplobj']['columns']['previewicon']['config']['uploadfolder'] . '/' . $row['previewicon'];
 				} else {
 					$icon = '';
 				}
-				$params['items'][] = array($GLOBALS['LANG']->sL($row['title']), $row['uid'], $icon);
+				$params['items'][] = array(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL($row['title']), $row['uid'], $icon);
 			}
 		}
 	}

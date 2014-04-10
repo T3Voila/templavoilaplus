@@ -94,7 +94,7 @@ class tx_templavoila_mod1_clipboard {
 		$this->t3libClipboardObj->endClipboard(); // Save the clipboard content
 
 		// Add a list of non-used elements to the sidebar:
-		$this->pObj->sideBarObj->addItem('nonUsedElements', $this, 'sidebar_renderNonUsedElements', $LANG->getLL('nonusedelements'), 30);
+		$this->pObj->sideBarObj->addItem('nonUsedElements', $this, 'sidebar_renderNonUsedElements', \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('nonusedelements'), 30);
 	}
 
 	/**
@@ -146,9 +146,9 @@ class tx_templavoila_mod1_clipboard {
 			}
 		}
 
-		$copyIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-copy' . ($clipActive_copy ? '-release' : ''), array('title' => $LANG->getLL('copyrecord')));
-		$cutIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-cut' . ($clipActive_cut ? '-release' : ''), array('title' => $LANG->getLL('cutrecord')));
-		$refIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('extensions-templavoila-clip_ref' . ($clipActive_ref ? '-release' : ''), array('title' => $LANG->getLL('createreference')));
+		$copyIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-copy' . ($clipActive_copy ? '-release' : ''), array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('copyrecord')));
+		$cutIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-cut' . ($clipActive_cut ? '-release' : ''), array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('cutrecord')));
+		$refIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('extensions-templavoila-clip_ref' . ($clipActive_ref ? '-release' : ''), array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('createreference')));
 
 		$removeElement = '&amp;CB[removeAll]=normal';
 		$setElement = '&amp;CB[el][' . rawurlencode('tt_content|' . $elementRecord['uid']) . ']=' . rawurlencode($this->pObj->apiObj->flexform_getStringFromPointer($elementPointer));
@@ -225,8 +225,8 @@ class tx_templavoila_mod1_clipboard {
 
 		// Prepare the ingredients for the different buttons:
 		$pasteMode = isset ($this->t3libClipboardObj->clipData['normal']['flexMode']) ? $this->t3libClipboardObj->clipData['normal']['flexMode'] : ($this->t3libClipboardObj->clipData['normal']['mode'] == 'copy' ? 'copy' : 'cut');
-		$pasteAfterIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('extensions-templavoila-paste', array('title' => $LANG->getLL('pasterecord')));
-		$pasteSubRefIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('extensions-templavoila-pasteSubRef', array('title' => $LANG->getLL('pastefce_andreferencesubs')));
+		$pasteAfterIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('extensions-templavoila-paste', array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('pasterecord')));
+		$pasteSubRefIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('extensions-templavoila-pasteSubRef', array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('pastefce_andreferencesubs')));
 
 		$sourcePointerString = $this->pObj->apiObj->flexform_getStringFromPointer($clipboardElementPointer);
 		$destinationPointerString = $this->pObj->apiObj->flexform_getStringFromPointer($destinationPointer);
@@ -261,12 +261,12 @@ class tx_templavoila_mod1_clipboard {
 		$usedUids[] = 0;
 		$pid = $this->pObj->id; // If workspaces should evaluated non-used elements it must consider the id: For "element" and "branch" versions it should accept the incoming id, for "page" type versions it must be remapped (because content elements are then related to the id of the offline version)
 
-		$res = $TYPO3_DB->exec_SELECTquery(
+		$res = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTquery(
 			\TYPO3\CMS\Backend\Utility\BackendUtility::getCommonSelectFields('tt_content', '', array('uid', 'header', 'bodytext', 'sys_language_uid')),
 			'tt_content',
 			'pid=' . intval($pid) . ' ' .
 			'AND uid NOT IN (' . implode(',', $usedUids) . ') ' .
-			'AND ( t3ver_state NOT IN (1,3) OR (t3ver_wsid > 0 AND t3ver_wsid = ' . intval($GLOBALS['BE_USER']->workspace) . ') )' .
+			'AND ( t3ver_state NOT IN (1,3) OR (t3ver_wsid > 0 AND t3ver_wsid = ' . intval(\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->workspace) . ') )' .
 			\TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tt_content') .
 			\TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause('tt_content'),
 			'',
@@ -274,7 +274,7 @@ class tx_templavoila_mod1_clipboard {
 		);
 
 		$this->deleteUids = array(); // Used to collect all those tt_content uids with no references which can be deleted
-		while (FALSE !== ($row = $TYPO3_DB->sql_fetch_assoc($res))) {
+		while (FALSE !== ($row = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_fetch_assoc($res))) {
 			$elementPointerString = 'tt_content:' . $row['uid'];
 
 			// Prepare the language icon:
@@ -290,7 +290,7 @@ class tx_templavoila_mod1_clipboard {
 			$recordIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('tt_content', $row);
 			$recordButton = $this->pObj->doc->wrapClickMenuOnIcon($recordIcon, 'tt_content', $row['uid'], 1, '&callingScriptId=' . rawurlencode($this->pObj->doc->scriptID), 'new,copy,cut,pasteinto,pasteafter,delete');
 
-			if ($GLOBALS['BE_USER']->workspace) {
+			if (\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->workspace) {
 				$wsRow = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('tt_content', $row['uid']);
 				$isDeletedInWorkspace = $wsRow['t3ver_state'] == 2;
 			} else {
@@ -322,7 +322,7 @@ class tx_templavoila_mod1_clipboard {
 				foreach ($this->deleteUids as $deleteUid) {
 					$params .= '&cmd[tt_content][' . $deleteUid . '][delete]=1';
 				}
-				$label = $LANG->getLL('rendernonusedelements_deleteall');
+				$label = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('rendernonusedelements_deleteall');
 				$deleteAll = '<a href="#" onclick="' . htmlspecialchars('jumpToUrl(\'' . $this->doc->issueCommand($params, -1) . '\');') . '">' .
 					\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-delete', array('title' => htmlspecialchars($label))) .
 					htmlspecialchars($label) .
@@ -333,7 +333,7 @@ class tx_templavoila_mod1_clipboard {
 			$output = '
 				<table class="tpm-nonused-elements lrPadding" border="0" cellpadding="0" cellspacing="1" width="100%">
 					<tr class="bgColor4-20">
-						<td colspan="3">' . $LANG->getLL('inititemno_elementsNotBeingUsed', '1') . ':</td>
+						<td colspan="3">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('inititemno_elementsNotBeingUsed', '1') . ':</td>
 					</tr>
 					' . implode('', $elementRows) . '
 					<tr class="bgColor4">
@@ -358,10 +358,10 @@ class tx_templavoila_mod1_clipboard {
 	function renderReferenceCount($uid) {
 		global $TYPO3_DB, $BE_USER, $LANG;
 
-		$rows = $TYPO3_DB->exec_SELECTgetRows(
+		$rows = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTgetRows(
 			'*',
 			'sys_refindex',
-			'ref_table=' . $TYPO3_DB->fullQuoteStr('tt_content', 'sys_refindex') .
+			'ref_table=' .  \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr('tt_content', 'sys_refindex') .
 			' AND ref_uid=' . intval($uid) .
 			' AND deleted=0'
 		);
@@ -371,9 +371,9 @@ class tx_templavoila_mod1_clipboard {
 		if (is_array($rows)) {
 			foreach ($rows as $row) {
 
-				if ($GLOBALS['BE_USER']->workspace && $row['tablename'] == 'pages' && $this->pObj->id == $row['recuid']) {
+				if (\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->workspace && $row['tablename'] == 'pages' && $this->pObj->id == $row['recuid']) {
 					// We would have found you but we didn't - you're most likely deleted
-				} elseif ($GLOBALS['BE_USER']->workspace && $row['tablename'] == 'tt_content' && $this->pObj->global_tt_content_elementRegister[$row['recuid']] > 0) {
+				} elseif (\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->workspace && $row['tablename'] == 'tt_content' && $this->pObj->global_tt_content_elementRegister[$row['recuid']] > 0) {
 					// We would have found you but we didn't - you're most likely deleted
 				} else {
 					$infoData[] = $row['tablename'] . ':' . $row['recuid'] . ':' . $row['field'];
@@ -387,7 +387,7 @@ class tx_templavoila_mod1_clipboard {
 			$params = '&cmd[tt_content][' . $uid . '][delete]=1';
 
 			return '<a class="tpm-countRef" href="#" onclick="' . htmlspecialchars('jumpToUrl(\'' . $this->doc->issueCommand($params, -1) . '\');') . '">' .
-			\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-delete', array('title' => $LANG->getLL('renderreferencecount_delete', 1))) .
+			\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-delete', array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('renderreferencecount_delete', 1))) .
 			'</a>';
 		}
 	}

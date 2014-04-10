@@ -52,7 +52,7 @@ class Access {
 	function recordEditAccessInternals($params, $ref) {
 		if ($params['table'] == 'tt_content' && is_array($params['idOrRow']) && $params['idOrRow']['CType'] == 'templavoila_pi1') {
 			if (!$ref) {
-				$user = & $GLOBALS['BE_USER'];
+				$user = & \Extension\Templavoila\Utility\GeneralUtility::getBackendUser();
 			} else {
 				$user = & $ref;
 			}
@@ -68,13 +68,8 @@ class Access {
 				return TRUE;
 			}
 			if ($ref) {
-				if ($GLOBALS['LANG']) {
-					$lang = & $GLOBALS['LANG'];
-				} else {
-					$lang = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('language');
-					$lang->init($BE_USER->uc['lang']);
-				}
-				$ref->errorMsg = $lang->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang_access.xml:' . $error);
+				\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->init($user->uc['lang']);
+				$ref->errorMsg = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang_access.xml:' . $error);
 			}
 
 			return FALSE;
@@ -94,7 +89,7 @@ class Access {
 	 */
 	function checkObjectAccess($table, $uid, $be_user) {
 		if (!$be_user) {
-			$be_user = $GLOBALS['BE_USER'];
+			$be_user = \Extension\Templavoila\Utility\GeneralUtility::getBackendUser();
 		}
 		if (!$be_user->isAdmin()) {
 			$prefLen = strlen($table) + 1;
