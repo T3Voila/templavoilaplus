@@ -263,7 +263,7 @@ class tx_templavoila_mod1_wizards {
 
 		$storageFolderPID = $this->apiObj->getStorageFolderPid($parentPageId);
 		$tmplHTML = array();
-		$defaultIcon = $this->doc->backPath . '../' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath($this->extKey) . 'res1/default_previewicon.gif';
+		$defaultIcon = $this->doc->backPath . '../' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath($this->extKey) . 'Resources/Public/Image/default_previewicon.gif';
 
 		// look for TCEFORM.pages.tx_templavoila_ds.removeItems / TCEFORM.pages.tx_templavoila_to.removeItems
 		$disallowedPageTemplateItems = $this->getDisallowedTSconfigItemsByFieldName($parentPageId, 'tx_templavoila_ds');
