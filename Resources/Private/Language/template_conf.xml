@@ -4,7 +4,7 @@
 		<description>Language file for TV template settings</description>
 		<type>module</type>
 		<csh_table></csh_table>
-		<fileId>EXT:templavoila/res1/language/template_conf.xml</fileId>
+		<fileId>EXT:templavoila/Resources/Private/Language/template_conf.xml</fileId>
 		<labelContext type="array"></labelContext>
 	</meta>
 	<data type="array">
