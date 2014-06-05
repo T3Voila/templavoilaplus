@@ -1,5 +1,4 @@
 <?php
-# TYPO3 CVS ID: $Id$
 if (!defined('TYPO3_MODE')) {
 	die('Access denied.');
 }
@@ -29,6 +28,13 @@ if (TYPO3_MODE === 'BE') {
 		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'mod2/'
 	);
 
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
+		'tools_txextdevevalM1',
+		'tx_templavoila_extdeveval',
+		NULL,
+		'TemplaVoila L10N Mode Conversion Tool'
+	);
+
 	// Remove default Page module (layout) manually if wanted:
 	if (!$_EXTCONF['enable.']['oldPageModule']) {
 		$tmp = $GLOBALS['TBE_MODULES']['web'];
@@ -37,20 +43,37 @@ if (TYPO3_MODE === 'BE') {
 	}
 
 	// Registering CSH:
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('be_groups', 'EXT:templavoila/Resources/Private/Language/locallang_csh_begr.xml');
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('pages', 'EXT:templavoila/Resources/Private/Language/locallang_csh_pages.xml');
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('tt_content', 'EXT:templavoila/Resources/Private/Language/locallang_csh_ttc.xml');
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('tx_templavoila_datastructure', 'EXT:templavoila/Resources/Private/Language/locallang_csh_ds.xml');
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('tx_templavoila_tmplobj', 'EXT:templavoila/Resources/Private/Language/locallang_csh_to.xml');
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('xMOD_tx_templavoila', 'EXT:templavoila/Resources/Private/Language/locallang_csh_module.xml');
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('xEXT_templavoila', 'EXT:templavoila/Resources/Private/Language/locallang_csh_intro.xml');
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('_MOD_web_txtemplavoilaM1', 'EXT:templavoila/Resources/Private/Language/locallang_csh_pm.xml');
-
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
-		'tools_txextdevevalM1',
-		'tx_templavoila_extdeveval',
-		NULL,
-		'TemplaVoila L10N Mode Conversion Tool'
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
+		'be_groups',
+		'EXT:templavoila/Resources/Private/Language/locallang_csh_begr.xml'
+	);
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
+		'pages',
+		'EXT:templavoila/Resources/Private/Language/locallang_csh_pages.xml'
+	);
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
+		'tt_content',
+		'EXT:templavoila/Resources/Private/Language/locallang_csh_ttc.xml'
+	);
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
+		'tx_templavoila_datastructure',
+		'EXT:templavoila/Resources/Private/Language/locallang_csh_ds.xml'
+	);
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
+		'tx_templavoila_tmplobj',
+		'EXT:templavoila/Resources/Private/Language/locallang_csh_to.xml'
+	);
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
+		'xMOD_tx_templavoila',
+		'EXT:templavoila/Resources/Private/Language/locallang_csh_module.xml'
+	);
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
+		'xEXT_templavoila',
+		'EXT:templavoila/Resources/Private/Language/locallang_csh_intro.xml'
+	);
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
+		'_MOD_web_txtemplavoilaM1',
+		'EXT:templavoila/Resources/Private/Language/locallang_csh_pm.xml'
 	);
 }
 
@@ -144,10 +167,17 @@ $tempColumns = array(
 
 $GLOBALS['TCA']['tt_content']['ctrl']['typeicons'][$_EXTKEY . '_pi1'] = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . '/Resources/Public/Icon/icon_fce_ce.png';
 $GLOBALS['TCA']['tt_content']['ctrl']['typeicon_classes'][$_EXTKEY . '_pi1'] = 'extensions-templavoila-type-fce';
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin(array('LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xml:tt_content.CType_pi1', $_EXTKEY . '_pi1', 'EXT:' . $_EXTKEY . '/Resources/Public/Icon/icon_fce_ce.png'), 'CType');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin(
+	array(
+		'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xml:tt_content.CType_pi1',
+		$_EXTKEY . '_pi1',
+		'EXT:' . $_EXTKEY . '/Resources/Public/Icon/icon_fce_ce.png'
+	),
+	'CType'
+);
 
 if ($_EXTCONF['enable.']['selectDataStructure']) {
-	if ($GLOBALS['TCA']['tt_content']['ctrl']['requestUpdate'] != '') {
+	if ($GLOBALS['TCA']['tt_content']['ctrl']['requestUpdate'] !== '') {
 		$GLOBALS['TCA']['tt_content']['ctrl']['requestUpdate'] .= ',';
 	}
 	$GLOBALS['TCA']['tt_content']['ctrl']['requestUpdate'] .= 'tx_templavoila_ds';
@@ -179,6 +209,40 @@ $tempColumns = array(
 		'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xml:pages.tx_templavoila_ds',
 		'config' => array(
 			'type' => 'select',
+			'items' => array(
+				array('', 0),
+			),
+			'allowNonIdValues' => 1,
+			'itemsProcFunc' => '\Extension\Templavoila\Service\ItemProcFunc\StaticDataStructuresHandler->dataSourceItemsProcFunc',
+			'size' => 1,
+			'minitems' => 0,
+			'maxitems' => 1,
+			'suppress_icons' => 'ONLY_SELECTED',
+			'selicon_cols' => 10,
+		)
+	),
+	'tx_templavoila_to' => array(
+		'exclude' => 1,
+		'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xml:pages.tx_templavoila_to',
+		'displayCond' => 'FIELD:tx_templavoila_ds:REQ:true',
+		'config' => array(
+			'type' => 'select',
+			'items' => array(
+				array('', 0),
+			),
+			'itemsProcFunc' => '\Extension\Templavoila\Service\ItemProcFunc\StaticDataStructuresHandler->templateObjectItemsProcFunc',
+			'size' => 1,
+			'minitems' => 0,
+			'maxitems' => 1,
+			'suppress_icons' => 'ONLY_SELECTED',
+			'selicon_cols' => 10,
+		)
+	),
+	'tx_templavoila_next_ds' => array(
+		'exclude' => 1,
+		'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xml:pages.tx_templavoila_next_ds',
+		'config' => array(
+			'type' => 'select',
 			'items' => Array(
 				array('', 0),
 			),
@@ -191,48 +255,14 @@ $tempColumns = array(
 			'selicon_cols' => 10,
 		)
 	),
-	'tx_templavoila_to' => Array(
-		'exclude' => 1,
-		'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xml:pages.tx_templavoila_to',
-		'displayCond' => 'FIELD:tx_templavoila_ds:REQ:true',
-		'config' => Array(
-			'type' => 'select',
-			'items' => Array(
-				Array('', 0),
-			),
-			'itemsProcFunc' => '\Extension\Templavoila\Service\ItemProcFunc\StaticDataStructuresHandler->templateObjectItemsProcFunc',
-			'size' => 1,
-			'minitems' => 0,
-			'maxitems' => 1,
-			'suppress_icons' => 'ONLY_SELECTED',
-			'selicon_cols' => 10,
-		)
-	),
-	'tx_templavoila_next_ds' => Array(
-		'exclude' => 1,
-		'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xml:pages.tx_templavoila_next_ds',
-		'config' => Array(
-			'type' => 'select',
-			'items' => Array(
-				Array('', 0),
-			),
-			'allowNonIdValues' => 1,
-			'itemsProcFunc' => '\Extension\Templavoila\Service\ItemProcFunc\StaticDataStructuresHandler->dataSourceItemsProcFunc',
-			'size' => 1,
-			'minitems' => 0,
-			'maxitems' => 1,
-			'suppress_icons' => 'ONLY_SELECTED',
-			'selicon_cols' => 10,
-		)
-	),
-	'tx_templavoila_next_to' => Array(
+	'tx_templavoila_next_to' => array(
 		'exclude' => 1,
 		'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xml:pages.tx_templavoila_next_to',
 		'displayCond' => 'FIELD:tx_templavoila_next_ds:REQ:true',
-		'config' => Array(
+		'config' => array(
 			'type' => 'select',
-			'items' => Array(
-				Array('', 0),
+			'items' => array(
+				array('', 0),
 			),
 			'itemsProcFunc' => '\Extension\Templavoila\Service\ItemProcFunc\StaticDataStructuresHandler->templateObjectItemsProcFunc',
 			'size' => 1,
@@ -242,10 +272,10 @@ $tempColumns = array(
 			'selicon_cols' => 10,
 		)
 	),
-	'tx_templavoila_flex' => Array(
+	'tx_templavoila_flex' => array(
 		'exclude' => 1,
 		'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xml:pages.tx_templavoila_flex',
-		'config' => Array(
+		'config' => array(
 			'type' => 'flex',
 			'ds_pointerField' => 'tx_templavoila_ds',
 			'ds_pointerField_searchParent' => 'pid',
@@ -261,7 +291,7 @@ if ($_EXTCONF['enable.']['selectDataStructure']) {
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('pages', 'tx_templavoila_next_ds;;;;1-1-1,tx_templavoila_next_to', '', 'replace:backend_layout_next_level');
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('pages', 'tx_templavoila_flex;;;;1-1-1', '', 'after:title');
 
-	if ($GLOBALS['TCA']['pages']['ctrl']['requestUpdate'] != '') {
+	if ($GLOBALS['TCA']['pages']['ctrl']['requestUpdate'] !== '') {
 		$GLOBALS['TCA']['pages']['ctrl']['requestUpdate'] .= ',';
 	}
 	$GLOBALS['TCA']['pages']['ctrl']['requestUpdate'] .= 'tx_templavoila_ds,tx_templavoila_next_ds';
@@ -298,8 +328,14 @@ if (TYPO3_MODE === 'BE') {
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('_MOD_web_func', 'EXT:wizard_crpages/locallang_csh.xml');
 }
 // complex condition to make sure the icons are available during frontend editing...
-if (TYPO3_MODE === 'BE' ||
-	(TYPO3_MODE === 'FE' && isset($GLOBALS['BE_USER']) && method_exists($GLOBALS['BE_USER'], 'isFrontendEditingActive') && $GLOBALS['BE_USER']->isFrontendEditingActive())
+if (
+	TYPO3_MODE === 'BE' ||
+	(
+		TYPO3_MODE === 'FE'
+		&& isset($GLOBALS['BE_USER'])
+		&& method_exists($GLOBALS['BE_USER'], 'isFrontendEditingActive')
+		&& $GLOBALS['BE_USER']->isFrontendEditingActive()
+	)
 ) {
 	$icons = array(
 		'paste' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila') . 'mod1/clip_pasteafter.gif',

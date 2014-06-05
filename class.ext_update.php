@@ -26,7 +26,7 @@
  ***************************************************************/
 
 /**
- * Ext update class
+ * Update wizard for the extension manager
  */
 class ext_update {
 
@@ -42,7 +42,7 @@ class ext_update {
 	}
 
 	/**
-	 * Checks how many rows are found and returns true if there are any
+	 * Checks if backend user is an administrator
 	 * (this function is called from the extension manager)
 	 *
 	 * @param string $what What should be updated

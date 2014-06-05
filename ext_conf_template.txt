@@ -16,5 +16,5 @@ staticDS.path_fce = fileadmin/templates/ds/fce/
 	#cat=static DS;type=string;label=LLL:EXT:templavoila/Resources/Private/Language/template_conf.xml:staticDS.path_page
 staticDS.path_page = fileadmin/templates/ds/page/
 
-  #cat=static DS; type=user[EXT:templavoila/classes/staticds/class.tx_templavoila_staticds_check.php:tx_templavoila_staticds_check->displayMessage]; label=LLL:EXT:tt_news/locallang.xml:extmng.updatermsgOption
+	#cat=static DS; type=user[EXT:templavoila/classes/staticds/class.tx_templavoila_staticds_check.php:tx_templavoila_staticds_check->displayMessage]; label=LLL:EXT:tt_news/locallang.xml:extmng.updatermsgOption
 updateMessage=0

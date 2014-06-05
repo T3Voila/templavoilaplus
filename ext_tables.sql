@@ -1,5 +1,3 @@
-# TYPO3 CVS ID: $Id$
-
 #
 # Table structure for table 'tx_templavoila_tmplobj'
 #
@@ -40,8 +38,6 @@ CREATE TABLE tx_templavoila_tmplobj (
 	KEY parent (pid)
 );
 
-
-
 #
 # Table structure for table 'tx_templavoila_datastructure'
 #
@@ -67,7 +63,7 @@ CREATE TABLE tx_templavoila_datastructure (
 	scope tinyint(4) unsigned DEFAULT '0' NOT NULL,
 	previewicon tinytext,
 	belayout tinytext,
-	
+
 	PRIMARY KEY (uid),
 	KEY t3ver_oid (t3ver_oid,t3ver_wsid),
 	KEY parent (pid)
@@ -92,7 +88,6 @@ CREATE TABLE pages (
 	tx_templavoila_next_ds varchar(100) DEFAULT '' NOT NULL,
 	tx_templavoila_next_to int(11) DEFAULT '0' NOT NULL,
 	tx_templavoila_flex mediumtext,
-
 );
 
 #

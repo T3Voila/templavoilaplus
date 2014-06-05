@@ -1,5 +1,4 @@
 <?php
-# TYPO3 CVS ID: $Id$
 if (!defined('TYPO3_MODE')) {
 	die('Access denied.');
 }
@@ -20,7 +19,6 @@ $tvSetup[] = 'tt_content.menu.20.3 = USER
 	tt_content.menu.20.3.select.where >
 	tt_content.menu.20.3.indexField.data = register:tx_templavoila_pi1.current_field
 ';
-
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript($_EXTKEY, 'setup', implode(PHP_EOL, $tvSetup), 43);
 
