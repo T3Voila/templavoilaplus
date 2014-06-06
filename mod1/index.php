@@ -322,11 +322,11 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			$this->doc->form = '<form action="' . htmlspecialchars('index.php?' . $this->link_getParameters()) . '" method="post">';
 
 			// Add custom styles
-			$styleSheetFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($this->extKey) . 'Resources/styles/mod1_' . substr(TYPO3_version, 0, 3) . '.css';
+			$styleSheetFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($this->extKey) . 'Resources/Public/StyleSheet/mod1_' . substr(TYPO3_version, 0, 3) . '.css';
 			if (file_exists($styleSheetFile)) {
-				$styleSheetFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->extKey) . 'Resources/styles/mod1_' . substr(TYPO3_version, 0, 3) . '.css';
+				$styleSheetFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->extKey) . 'Resources/Public/StyleSheet/mod1_' . substr(TYPO3_version, 0, 3) . '.css';
 			} else {
-				$styleSheetFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->extKey) . 'Resources/styles/mod1_default.css';
+				$styleSheetFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->extKey) . 'Resources/Public/StyleSheet/mod1_default.css';
 			}
 
 			if (isset($this->modTSconfig['properties']['stylesheet'])) {
