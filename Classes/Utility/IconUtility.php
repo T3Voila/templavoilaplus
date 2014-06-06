@@ -37,25 +37,9 @@ final class IconUtility {
 	 * @return string
 	 */
 	public static function getFlagIconForLanguage($flagName, $options = array()) {
+		$flagName = (strlen($flagName) > 0) ? $flagName : 'unknown';
 
-		$flag = NULL;
-		if (!strlen($flagName)) {
-			$flagName = 'unknown';
-		}
-		if (\Extension\Templavoila\Utility\GeneralUtility::convertVersionNumberToInteger(TYPO3_version) < 4005000) {
-			if ($flagName == 'unknown') {
-				$flagName = $flagName . '.gif';
-			} elseif ($flagName == 'multiple') {
-				$flagName = 'multi-language.gif';
-			}
-			$alt = isset($options['alt']) ? ' alt="' . $options['alt'] . '"' : ' alt=""';
-			$title = isset($options['title']) ? ' title="' . $options['title'] . '"' : '';
-			$flag = '<img src="' . self::getFlagIconFileForLanguage($flagName) . '"' . $title . $alt . '/>';
-		} else {
-			$flag = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('flags-' . $flagName, $options);
-		}
-
-		return $flag;
+		return \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('flags-' . ($flagName ? : 'unknown') , $options);
 	}
 
 	/**
@@ -65,23 +49,13 @@ final class IconUtility {
 	 * @return string
 	 */
 	public static function getFlagIconFileForLanguage($flagName) {
+		$flag = '';
+		$flagName = (strlen($flagName) > 0) ? $flagName : 'unknown';
 
-		$flag = NULL;
-		if (!strlen($flagName)) {
-			$flagName = 'unknown';
-		}
-		if (\Extension\Templavoila\Utility\GeneralUtility::convertVersionNumberToInteger(TYPO3_version) < 4005000) {
-			$flagAbsPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($GLOBALS['TCA']['sys_language']['columns']['flag']['config']['fileFolder']);
-			$flagIconPath = $GLOBALS['BACK_PATH'] . '../' . substr($flagAbsPath, strlen(PATH_site));
-			if (is_file($flagAbsPath . $flagName)) {
-				$flag = $flagIconPath . $flagName;
-			}
-		} else {
-			// same dirty trick as for #17286 in Core
-			if (is_file(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('EXT:t3skin/images/flags/' . $flagName . '.png', FALSE))) {
-				// resolving extpath on its own because otherwise this might not return a relative path
-				$flag = $GLOBALS['BACK_PATH'] . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('t3skin') . '/images/flags/' . $flagName . '.png';
-			}
+		// same dirty trick as for #17286 in Core
+		if (is_file(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('EXT:t3skin/images/flags/' . $flagName . '.png', FALSE))) {
+			// resolving extpath on its own because otherwise this might not return a relative path
+			$flag = $GLOBALS['BACK_PATH'] . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('t3skin') . '/images/flags/' . $flagName . '.png';
 		}
 
 		return $flag;
