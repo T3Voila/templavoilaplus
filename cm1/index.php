@@ -418,11 +418,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			}
 		');
 
-		if (\Extension\Templavoila\Utility\GeneralUtility::convertVersionNumberToInteger(TYPO3_version) < 4005000) {
-			$this->doc->getDynTabMenuJScode();
-		} else {
-			$this->doc->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/tabmenu.js');
-		}
+		$this->doc->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/tabmenu.js');
 
 		// Setting up the context sensitive menu:
 		$CMparts = $this->doc->getContextMenuCode();
@@ -2239,8 +2235,6 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 					if ($this->_preview) {
 						if (!is_array($value['tx_templavoila']['sample_data'])) {
 							$rowCells['description'] = '[' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('noSampleData') . ']';
-						} elseif (\Extension\Templavoila\Utility\GeneralUtility::convertVersionNumberToInteger(TYPO3_version) < 4005000) {
-							$rowCells['description'] = \TYPO3\CMS\Core\Utility\GeneralUtility::view_array($value['tx_templavoila']['sample_data']);
 						} else {
 							$rowCells['description'] = \TYPO3\CMS\Core\Utility\DebugUtility::viewArray($value['tx_templavoila']['sample_data']);
 						}

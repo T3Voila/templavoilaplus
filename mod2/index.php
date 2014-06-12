@@ -134,11 +134,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				}
 			');
 
-			if (\Extension\Templavoila\Utility\GeneralUtility::convertVersionNumberToInteger(TYPO3_version) < 4005000) {
-				$this->doc->getDynTabMenuJScode();
-			} else {
-				$this->doc->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/tabmenu.js');
-			}
+			$this->doc->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/tabmenu.js');
 
 			$this->renderModuleContent();
 
@@ -1639,11 +1635,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				unset($elCfg['tx_templavoila']['tags']);
 				unset($elCfg['tx_templavoila']['eType']);
 
-				if (\Extension\Templavoila\Utility\GeneralUtility::convertVersionNumberToInteger(TYPO3_version) < 4005000) {
-					$rootElementsHTML .= '<b>' . $elCfg['tx_templavoila']['title'] . '</b>' . \TYPO3\CMS\Core\Utility\GeneralUtility::view_array($elCfg);
-				} else {
-					$rootElementsHTML .= '<b>' . $elCfg['tx_templavoila']['title'] . '</b>' . \TYPO3\CMS\Core\Utility\DebugUtility::viewArray($elCfg);
-				}
+				$rootElementsHTML .= '<b>' . $elCfg['tx_templavoila']['title'] . '</b>' . \TYPO3\CMS\Core\Utility\DebugUtility::viewArray($elCfg);
 			}
 		}
 

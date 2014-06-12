@@ -109,11 +109,7 @@ class tx_templavoila_dbnewcontentel {
 
 		$this->doc->getPageRenderer()->loadPrototype();
 
-		if (\Extension\Templavoila\Utility\GeneralUtility::convertVersionNumberToInteger(TYPO3_version) < 4005000) {
-			$this->doc->JScodeLibArray['dyntabmenu'] = $this->doc->getDynTabMenuJScode();
-		} else {
-			$this->doc->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/tabmenu.js');
-		}
+		$this->doc->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/tabmenu.js');
 
 		$this->doc->form = '<form action="" name="editForm">';
 

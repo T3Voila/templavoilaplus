@@ -426,11 +426,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			}
 
 			// Set up JS for dynamic tab menu and side bar
-			if (\Extension\Templavoila\Utility\GeneralUtility::convertVersionNumberToInteger(TYPO3_version) < 4005000) {
-				$this->doc->JScode .= $this->doc->getDynTabMenuJScode();
-			} else {
-				$this->doc->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/tabmenu.js');
-			}
+			$this->doc->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/tabmenu.js');
 
 			$this->doc->JScode .= $this->modTSconfig['properties']['sideBarEnable'] ? $this->sideBarObj->getJScode() : '';
 
@@ -676,11 +672,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 		// If access to Web>List for user, then link to that module.
 		if (\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->check('modules', 'web_list')) {
-			if (\Extension\Templavoila\Utility\GeneralUtility::convertVersionNumberToInteger(TYPO3_version) < 4005000) {
-				$href = $GLOBALS['BACK_PATH'] . 'db_list.php?id=' . $this->id . '&returnUrl=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI'));
-			} else {
-				$href = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_list', array('id' => $this->id, 'returnUrl' => \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')));
-			}
+			$href = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_list', array('id' => $this->id, 'returnUrl' => \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')));
 			$buttons['record_list'] = '<a href="' . htmlspecialchars($href) . '">' .
 				\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-system-list-open', array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_core.php:labels.showList', 1))) .
 				'</a>';
@@ -715,16 +707,10 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			$buttons['csh'] = \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_txtemplavoilaM1', 'pagemodule', $BACK_PATH);
 
 			if ($this->id) {
-				if (version_compare(TYPO3_version, '4.5.0', '<')) {
-					$cacheUrl = $GLOBALS['BACK_PATH'] . 'tce_db.php?vC=' . \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->veriCode() .
-						'&redirect=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')) .
-						'&cacheCmd=' . $this->id;
-				} else {
-					$cacheUrl = $GLOBALS['BACK_PATH'] . 'tce_db.php?vC=' . \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->veriCode() .
-						\TYPO3\CMS\Backend\Utility\BackendUtility::getUrlToken('tceAction') .
-						'&redirect=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')) .
-						'&cacheCmd=' . $this->id;
-				}
+				$cacheUrl = $GLOBALS['BACK_PATH'] . 'tce_db.php?vC=' . \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->veriCode() .
+					\TYPO3\CMS\Backend\Utility\BackendUtility::getUrlToken('tceAction') .
+					'&redirect=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')) .
+					'&cacheCmd=' . $this->id;
 
 				$buttons['cache'] = '<a href="' . $cacheUrl . '" title="' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_core.php:labels.clear_cache', TRUE) . '">' .
 					\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-system-cache-clear') .
