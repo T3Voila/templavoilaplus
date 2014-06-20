@@ -26,20 +26,16 @@ namespace Extension\Templavoila\Comand;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+
 /**
  * Cleaner module: Finding unused content elements on pages.
  * User function called from tx_lowlevel_cleaner_core configured in ext_localconf.php
  * See system extension, lowlevel!
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
-
-/**
- * Finding unused content elements
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage tx_lowlevel
  */
 class UnusedContentElementComand extends \TYPO3\CMS\Lowlevel\CleanerCommand {
 
@@ -48,18 +44,30 @@ class UnusedContentElementComand extends \TYPO3\CMS\Lowlevel\CleanerCommand {
 	 */
 	protected $resultArray;
 
-	var $checkRefIndex = TRUE;
+	/**
+	 * @var boolean
+	 */
+	public $checkRefIndex = TRUE;
 
-	var $genTree_traverseDeleted = FALSE;
+	/**
+	 * @var boolean
+	 */
+	public $genTree_traverseDeleted = FALSE;
 
-	var $genTree_traverseVersions = FALSE;
+	/**
+	 * @var boolean
+	 */
+	public $genTree_traverseVersions = FALSE;
 
-	var $excludePageIdList = array();
+	/**
+	 * @var array
+	 */
+	protected $excludePageIdList = array();
 
 	/**
 	 * @return \Extension\Templavoila\Comand\UnusedContentElementComand
 	 */
-	function __construct() {
+	public function __construct() {
 		parent::__construct();
 
 		// Setting up help:
@@ -81,12 +89,11 @@ Automatic Repair:
 	}
 
 	/**
+	 * Main function
+	 *
 	 * @return array
 	 */
-	function main() {
-		global $TYPO3_DB;
-
-		// Initialize result array:
+	public function main() {
 		$resultArray = array(
 			'message' => $this->cli_help['name'] . chr(10) . chr(10) . $this->cli_help['description'],
 			'headers' => array(
@@ -99,7 +106,7 @@ Automatic Repair:
 
 		$startingPoint = $this->cli_isArg('--pid') ? \Extension\Templavoila\Utility\GeneralUtility::forceIntegerInRange($this->cli_argValue('--pid'), 0) : 0;
 		$depth = $this->cli_isArg('--depth') ? \Extension\Templavoila\Utility\GeneralUtility::forceIntegerInRange($this->cli_argValue('--depth'), 0) : 1000;
-		$this->excludePageIdList = $this->cli_isArg('--excludePageIdList') ? \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $this->cli_argValue('--excludePageIdList')) : array();
+		$this->excludePageIdList = $this->cli_isArg('--excludePageIdList') ? GeneralUtility::intExplode(',', $this->cli_argValue('--excludePageIdList')) : array();
 
 		$this->resultArray = & $resultArray;
 		$this->genTree($startingPoint, $depth, (int) $this->cli_argValue('--echotree'), 'main_parseTreeCallBack');
@@ -121,16 +128,15 @@ Automatic Repair:
 	 *
 	 * @return void
 	 */
-	function main_parseTreeCallBack($tableName, $uid, $echoLevel, $versionSwapmode, $rootIsVersion) {
-
-		if ($tableName == 'pages' && $uid > 0 && !in_array($uid, $this->excludePageIdList)) {
+	public function main_parseTreeCallBack($tableName, $uid, $echoLevel, $versionSwapmode, $rootIsVersion) {
+		if ($tableName === 'pages' && $uid > 0 && !in_array($uid, $this->excludePageIdList)) {
 			if (!$versionSwapmode) {
 
 				// Initialize TemplaVoila API class:
-				$apiObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Service\\ApiService', 'pages');
+				$apiObj = GeneralUtility::makeInstance('Extension\\Templavoila\\Service\\ApiService', 'pages');
 
 				// Fetch the content structure of page:
-				$contentTreeData = $apiObj->getContentTree('pages', \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw('pages', 'uid=' . intval($uid)));
+				$contentTreeData = $apiObj->getContentTree('pages', BackendUtility::getRecordRaw('pages', 'uid=' . intval($uid)));
 				if ($contentTreeData['tree']['ds_is_found']) {
 					$usedUids = array_keys($contentTreeData['contentElementUsage']);
 					$usedUids[] = 0;
@@ -143,8 +149,8 @@ Automatic Repair:
 						'AND uid NOT IN (' . implode(',', $usedUids) . ') ' .
 						'AND t3ver_state!=1 ' .
 						'AND t3ver_state!=3 ' .
-						\TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tt_content') .
-						\TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause('tt_content'),
+						BackendUtility::deleteClause('tt_content') .
+						BackendUtility::versioningPlaceholderClause('tt_content'),
 						'',
 						'uid'
 					);
@@ -169,11 +175,10 @@ Automatic Repair:
 							'tablename=' . \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr('tt_content', 'sys_refindex') .
 							' AND recuid=' . intval($row['uid']) .
 							' AND field=' . \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr('l18n_parent', 'sys_refindex')
-#								' AND deleted=0'
 						);
 						// Check if that other record is deleted or not:
 						if ($refrows_From[0] && $refrows_From[0]['ref_uid']) {
-							$isATranslationChild = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('tt_content', $refrows_From[0]['ref_uid'], 'uid') ? TRUE : FALSE;
+							$isATranslationChild = BackendUtility::getRecord('tt_content', $refrows_From[0]['ref_uid'], 'uid') ? TRUE : FALSE;
 						}
 
 						// Register elements etc:
@@ -219,7 +224,7 @@ Automatic Repair:
 	 *
 	 * @return void
 	 */
-	function main_autoFix($resultArray) {
+	public function main_autoFix($resultArray) {
 		foreach ($resultArray['deleteMe'] as $uid) {
 			echo 'Deleting "tt_content:' . $uid . '": ';
 			if ($bypass = $this->cli_noExecutionCheck('tt_content:' . $uid)) {
@@ -227,7 +232,7 @@ Automatic Repair:
 			} else {
 
 				// Execute CMD array:
-				$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+				$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 				$tce->stripslashes_values = FALSE;
 				$tce->start(array(), array());
 				$tce->deleteAction('tt_content', $uid);
