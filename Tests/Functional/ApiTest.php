@@ -49,7 +49,7 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 	);
 
 	/**
-	 * @var \tx_templavoila_api
+	 * @var \Extension\Templavoila\Service\ApiService
 	 */
 	protected $api;
 
@@ -68,8 +68,7 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 	 */
 	public function setUp() {
 		parent::setUp();
-
-		$this->api = new \tx_templavoila_api();
+		$this->api = new \Extension\Templavoila\Service\ApiService();
 
 		$this->dataHandler = $this->getMock('TYPO3\CMS\Core\DataHandling\DataHandler', array('dummy'));
 
