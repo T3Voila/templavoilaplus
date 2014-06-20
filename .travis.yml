@@ -1,0 +1,29 @@
+language: php
+
+php:
+  - 5.3
+  - 5.4
+  - 5.5
+  - 5.6
+
+env:
+  - DB=mysql
+
+before_script:
+  - composer self-update
+  - cd ..
+  - cp templavoila/composer.json .
+  - composer --dev install
+  - mkdir -p uploads typo3temp typo3conf/ext
+  - mv templavoila typo3conf/ext/templavoila
+  - git clone https://github.com/typo3-ter/static_info_tables.git typo3conf/ext/static_info_tables
+
+script:
+  - >
+    echo;
+    echo "Running functional tests";
+    export typo3DatabaseName="typo3";
+    export typo3DatabaseHost="localhost";
+    export typo3DatabaseUsername="root";
+    export typo3DatabasePassword="";
+    ./bin/phpunit --colors -c typo3/sysext/core/Build/FunctionalTests.xml ./typo3conf/ext/templavoila/Tests/Functional/ApiTest.php
