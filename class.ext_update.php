@@ -1,5 +1,4 @@
 <?php
-
 /***************************************************************
  *  Copyright notice
  *
@@ -25,18 +24,20 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+/**
+ * Ext update class
+ */
 class ext_update {
 
 	/**
 	 * Main function, returning the HTML content of the module
 	 *
-	 * @return    string        HTML
+	 * @return string HTML
 	 */
 	public function main() {
-
-		/* @var $dsTools tx_templavoila_staticds_wizard */
+		/** @var $dsWizard tx_templavoila_staticds_wizard */
 		$dsWizard = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_staticds_wizard');
-
 		return $dsWizard->staticDsWizard();
 	}
 
@@ -44,9 +45,9 @@ class ext_update {
 	 * Checks how many rows are found and returns true if there are any
 	 * (this function is called from the extension manager)
 	 *
-	 * @param    string $what : what should be updated
+	 * @param string $what What should be updated
 	 *
-	 * @return    boolean
+	 * @return boolean
 	 */
 	public function access($what = 'all') {
 		return \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isAdmin();

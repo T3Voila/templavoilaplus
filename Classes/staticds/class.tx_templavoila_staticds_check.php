@@ -1,5 +1,4 @@
 <?php
-
 /***************************************************************
  *  Copyright notice
  *
@@ -25,23 +24,34 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+/**
+ * Static DS check
+ */
 class tx_templavoila_staticds_check {
 
 	/**
-	 * @param $params
-	 * @param $tsObj
+	 * Display message
 	 *
+	 * @param array $params
+	 * @param \TYPO3\CMS\Extensionmanager\ViewHelpers\Form\TypoScriptConstantsViewHelper $tsObj
 	 * @return string
 	 */
 	public function displayMessage(&$params, &$tsObj) {
-
-		if (!$this->staticDsIsEnabled() || $this->datastructureDbCount() == 0) {
+		if (!$this->staticDsIsEnabled() || $this->datastructureDbCount() === 0) {
 			return;
 		}
 
-		$link = 'mod.php?&amp;id=0&amp;M=tools_em&amp;CMD[showExt]=templavoila&amp;SET[singleDetails]=updateModule';
+		$link = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl(
+			'tools_ExtensionmanagerExtensionmanager',
+			array(
+				'tx_extensionmanager_tools_extensionmanagerextensionmanager[extensionKey]' => 'templavoila',
+				'tx_extensionmanager_tools_extensionmanagerextensionmanager[action]' => 'show',
+				'tx_extensionmanager_tools_extensionmanagerextensionmanager[controller]' => 'UpdateScript'
+			)
+		);
 
-		$out = '
+		return '
 		<div style="position:absolute;top:10px;right:10px; width:300px;">
 			<div class="typo3-message message-information">
 				<div class="message-header">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang.xml:extconf.staticWizard.header') . '</div>
@@ -53,23 +63,28 @@ class tx_templavoila_staticds_check {
 			</div>
 		</div>
 		';
-
-		return $out;
 	}
 
 	/**
-	 * @return
+	 * Is static DS enabled?
+	 *
+	 * @return bool
 	 */
 	protected function staticDsIsEnabled() {
 		$conf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
-
-		return $conf['staticDS.']['enable'];
+		return (bool)$conf['staticDS.']['enable'];
 	}
 
 	/**
+	 * Get data structure count
+	 *
 	 * @return int
 	 */
 	protected function datastructureDbCount() {
-		return \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTcountRows('*', 'tx_templavoila_datastructure', 'deleted=0');
+		return \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTcountRows(
+			'*',
+			'tx_templavoila_datastructure',
+			'deleted=0'
+		);
 	}
 }
