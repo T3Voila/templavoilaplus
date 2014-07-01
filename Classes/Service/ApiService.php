@@ -30,6 +30,9 @@ namespace Extension\Templavoila\Service;
  *
  * @author     Robert Lemke <robert@typo3.org>
  */
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Public API class for proper handling of content elements and other useful TemplaVoila related functions
@@ -91,12 +94,12 @@ class ApiService {
 	 */
 	public function insertElement($destinationPointer, $elementRow) {
 		if ($this->debug) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('API: insertElement()', 'templavoila', 0, array('destinationPointer' => $destinationPointer, 'elementRow' => $elementRow));
+			GeneralUtility::devLog('API: insertElement()', 'templavoila', 0, array('destinationPointer' => $destinationPointer, 'elementRow' => $elementRow));
 		}
 
 		if (!$destinationPointer = $this->flexform_getValidPointer($destinationPointer)) {
 			if ($this->debug) {
-				\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('API#insertElement: flexform_getValidPointer() failed', 'templavoila', 0);
+				GeneralUtility::devLog('API#insertElement: flexform_getValidPointer() failed', 'templavoila', 0);
 			}
 
 			return FALSE;
@@ -105,7 +108,7 @@ class ApiService {
 		$newRecordUid = $this->insertElement_createRecord($destinationPointer, $elementRow);
 		if ($newRecordUid === FALSE) {
 			if ($this->debug) {
-				\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('API#insertElement: insertElement_createRecord() failed', 'templavoila', 0);
+				GeneralUtility::devLog('API#insertElement: insertElement_createRecord() failed', 'templavoila', 0);
 			}
 
 			return FALSE;
@@ -114,7 +117,7 @@ class ApiService {
 		$result = $this->insertElement_setElementReferences($destinationPointer, $newRecordUid);
 		if ($result === FALSE) {
 			if ($this->debug) {
-				\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('API#insertElement: insertElement_setElementReferences() failed', 'templavoila', 0);
+				GeneralUtility::devLog('API#insertElement: insertElement_setElementReferences() failed', 'templavoila', 0);
 			}
 
 			return FALSE;
@@ -133,10 +136,10 @@ class ApiService {
 	 */
 	public function insertElement_createRecord($destinationPointer, $row) {
 		if ($this->debug) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('API: insertElement_createRecord()', 'templavoila', 0, array('destinationPointer' => $destinationPointer, 'row' => $row));
+			GeneralUtility::devLog('API: insertElement_createRecord()', 'templavoila', 0, array('destinationPointer' => $destinationPointer, 'row' => $row));
 		}
 
-		$parentRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL($destinationPointer['table'], $destinationPointer['uid'], 'uid,pid,t3ver_oid,tx_templavoila_flex');
+		$parentRecord = BackendUtility::getRecordWSOL($destinationPointer['table'], $destinationPointer['uid'], 'uid,pid,t3ver_oid,tx_templavoila_flex');
 
 		if ($destinationPointer['position'] > 0) {
 			$currentReferencesArr = $this->flexform_getElementReferencesFromXML($parentRecord['tx_templavoila_flex'], $destinationPointer);
@@ -151,9 +154,9 @@ class ApiService {
 		// If the destination is not the default language, try to set the old-style sys_language_uid field accordingly
 		if ($destinationPointer['sLang'] != 'lDEF' || $destinationPointer['vLang'] != 'vDEF') {
 			$languageKey = $destinationPointer['vLang'] != 'vDEF' ? $destinationPointer['vLang'] : $destinationPointer['sLang'];
-			$staticLanguageRows = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordsByField('static_languages', 'lg_iso_2', substr($languageKey, 1));
+			$staticLanguageRows = BackendUtility::getRecordsByField('static_languages', 'lg_iso_2', substr($languageKey, 1));
 			if (isset($staticLanguageRows[0]['uid'])) {
-				$languageRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw('sys_language', 'static_lang_isocode=' . intval($staticLanguageRows[0]['uid']));
+				$languageRecord = BackendUtility::getRecordRaw('sys_language', 'static_lang_isocode=' . intval($staticLanguageRows[0]['uid']));
 				if (isset($languageRecord['uid'])) {
 					$dataArr['tt_content']['NEW']['sys_language_uid'] = $languageRecord['uid'];
 				}
@@ -161,11 +164,11 @@ class ApiService {
 		}
 
 		// Instantiate TCEmain and create the record:
-		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+		$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 		/* @var $tce \TYPO3\CMS\Core\DataHandling\DataHandler */
 
 		// set default TCA values specific for the page and user
-		$TCAdefaultOverride = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($newRecordPid, 'TCAdefaults');
+		$TCAdefaultOverride = BackendUtility::getModTSconfig($newRecordPid, 'TCAdefaults');
 		if (is_array($TCAdefaultOverride['properties'])) {
 			$tce->setDefaultsFromUserTS($TCAdefaultOverride['properties']);
 		}
@@ -175,13 +178,13 @@ class ApiService {
 		$this->setTCEmainRunningFlag(TRUE);
 
 		if ($this->debug) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('API: insertElement_createRecord()', 'templavoila', 0, array('dataArr' => $dataArr));
+			GeneralUtility::devLog('API: insertElement_createRecord()', 'templavoila', 0, array('dataArr' => $dataArr));
 		}
 
 		$tce->start($dataArr, array());
 		$tce->process_datamap();
 		if ($this->debug && count($tce->errorLog)) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('API: insertElement_createRecord(): tcemain failed', 'templavoila', 0, array('errorLog' => $tce->errorLog));
+			GeneralUtility::devLog('API: insertElement_createRecord(): tcemain failed', 'templavoila', 0, array('errorLog' => $tce->errorLog));
 		}
 		$newUid = $tce->substNEWwithIDs['NEW'];
 		if (!$flagWasSet) {
@@ -202,10 +205,10 @@ class ApiService {
 	 */
 	public function insertElement_setElementReferences($destinationPointer, $uid) {
 		if ($this->debug) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('API: insertElement_setElementReferences()', 'templavoila', 0, array('destinationPointer' => $destinationPointer, 'uid' => $uid));
+			GeneralUtility::devLog('API: insertElement_setElementReferences()', 'templavoila', 0, array('destinationPointer' => $destinationPointer, 'uid' => $uid));
 		}
 
-		$parentRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL($destinationPointer['table'], $destinationPointer['uid'], 'uid,pid,tx_templavoila_flex');
+		$parentRecord = BackendUtility::getRecordWSOL($destinationPointer['table'], $destinationPointer['uid'], 'uid,pid,tx_templavoila_flex');
 		if (!is_array($parentRecord)) {
 			return FALSE;
 		}
@@ -228,7 +231,7 @@ class ApiService {
 	 */
 	public function moveElement($sourcePointer, $destinationPointer) {
 		if ($this->debug) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('API: moveElement()', 'templavoila', 0, array('sourcePointer' => $sourcePointer, 'destinationPointer' => $destinationPointer));
+			GeneralUtility::devLog('API: moveElement()', 'templavoila', 0, array('sourcePointer' => $sourcePointer, 'destinationPointer' => $destinationPointer));
 		}
 
 		return $this->process('move', $sourcePointer, $destinationPointer);
@@ -246,7 +249,7 @@ class ApiService {
 	 */
 	public function moveElement_setElementReferences($sourcePointer, $destinationPointer) {
 		if ($this->debug) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('API: moveElement_setElementReferences()', 'templavoila', 0, array('sourcePointer' => $sourcePointer, 'destinationPointer' => $destinationPointer));
+			GeneralUtility::devLog('API: moveElement_setElementReferences()', 'templavoila', 0, array('sourcePointer' => $sourcePointer, 'destinationPointer' => $destinationPointer));
 		}
 
 		return $this->process('move', $sourcePointer, $destinationPointer, TRUE);
@@ -265,7 +268,7 @@ class ApiService {
 	 */
 	public function copyElement($sourcePointer, $destinationPointer, $copySubElements = TRUE) {
 		if ($this->debug) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('API: copyElement()', 'templavoila', 0, array('sourcePointer' => $sourcePointer, 'destinationPointer' => $destinationPointer, 'copySubElements' => $copySubElements));
+			GeneralUtility::devLog('API: copyElement()', 'templavoila', 0, array('sourcePointer' => $sourcePointer, 'destinationPointer' => $destinationPointer, 'copySubElements' => $copySubElements));
 		}
 
 		return $this->process($copySubElements ? 'copyrecursively' : 'copy', $sourcePointer, $destinationPointer);
@@ -286,19 +289,19 @@ class ApiService {
 	 */
 	public function localizeElement($sourcePointer, $languageKey) {
 		if ($this->debug) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('API: localizeElement()', 'templavoila', 0, array('sourcePointer' => $sourcePointer, 'languageKey' => $languageKey));
+			GeneralUtility::devLog('API: localizeElement()', 'templavoila', 0, array('sourcePointer' => $sourcePointer, 'languageKey' => $languageKey));
 		}
 
 		$sourceElementRecord = $this->flexform_getRecordByPointer($sourcePointer);
-		$parentPageRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('pages', $sourceElementRecord['pid']);
-		$rawPageDataStructureArr = \TYPO3\CMS\Backend\Utility\BackendUtility::getFlexFormDS($GLOBALS['TCA']['pages']['columns']['tx_templavoila_flex']['config'], $parentPageRecord, 'pages');
+		$parentPageRecord = BackendUtility::getRecordWSOL('pages', $sourceElementRecord['pid']);
+		$rawPageDataStructureArr = BackendUtility::getFlexFormDS($GLOBALS['TCA']['pages']['columns']['tx_templavoila_flex']['config'], $parentPageRecord, 'pages');
 
 		if (!is_array($rawPageDataStructureArr)) {
 			return FALSE;
 		}
 		if ($rawPageDataStructureArr['meta']['langDisable'] == 1) {
 			if ($this->debug) {
-				\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('API: localizeElement(): Cannot localize element because localization is disabled for the active page datastructure!', 'templavoila', 0);
+				GeneralUtility::devLog('API: localizeElement(): Cannot localize element because localization is disabled for the active page datastructure!', 'templavoila', 0);
 			}
 
 			return FALSE;
@@ -327,7 +330,7 @@ class ApiService {
 	 */
 	public function referenceElement($sourcePointer, $destinationPointer) {
 		if ($this->debug) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('API: referenceElement()', 'templavoila', 0, array('sourcePointer' => $sourcePointer, 'destinationPointer' => $destinationPointer));
+			GeneralUtility::devLog('API: referenceElement()', 'templavoila', 0, array('sourcePointer' => $sourcePointer, 'destinationPointer' => $destinationPointer));
 		}
 
 		return $this->process('reference', $sourcePointer, $destinationPointer);
@@ -347,7 +350,7 @@ class ApiService {
 	 */
 	public function referenceElementByUid($uid, $destinationPointer) {
 		if ($this->debug) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('API: referenceElementByUid()', 'templavoila', 0, array('uid' => $uid, 'destinationPointer' => $destinationPointer));
+			GeneralUtility::devLog('API: referenceElementByUid()', 'templavoila', 0, array('uid' => $uid, 'destinationPointer' => $destinationPointer));
 		}
 		$sourcePointer = array(
 			'table' => 'tt_content',
@@ -366,7 +369,7 @@ class ApiService {
 	 */
 	public function unlinkElement($sourcePointer) {
 		if ($this->debug) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('API: unlinkElement()', 'templavoila', 0, array('sourcePointer' => $sourcePointer));
+			GeneralUtility::devLog('API: unlinkElement()', 'templavoila', 0, array('sourcePointer' => $sourcePointer));
 		}
 
 		return $this->process('unlink', $sourcePointer);
@@ -382,7 +385,7 @@ class ApiService {
 	 */
 	public function deleteElement($sourcePointer) {
 		if ($this->debug) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('API: deleteElement()', 'templavoila', 0, array('sourcePointer' => $sourcePointer));
+			GeneralUtility::devLog('API: deleteElement()', 'templavoila', 0, array('sourcePointer' => $sourcePointer));
 		}
 
 		return $this->process('delete', $sourcePointer);
@@ -410,10 +413,10 @@ class ApiService {
 		if (!$sourcePointer = $this->flexform_getValidPointer($sourcePointer)) {
 			return FALSE;
 		}
-		$sourceParentRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL($sourcePointer['table'], $sourcePointer['uid'], 'uid,pid,tx_templavoila_flex');
+		$sourceParentRecord = BackendUtility::getRecordWSOL($sourcePointer['table'], $sourcePointer['uid'], 'uid,pid,tx_templavoila_flex');
 		if (!is_array($sourceParentRecord)) {
 			if ($this->debug) {
-				\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('process: Parent record of the element specified by source pointer does not exist!', 2, $sourcePointer);
+				GeneralUtility::devLog('process: Parent record of the element specified by source pointer does not exist!', 2, $sourcePointer);
 			}
 
 			return FALSE;
@@ -425,16 +428,16 @@ class ApiService {
 			if (!$destinationPointer = $this->flexform_getValidPointer($destinationPointer)) {
 				return FALSE;
 			}
-			$destinationParentRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL($destinationPointer['table'], $destinationPointer['uid'], 'uid,pid,tx_templavoila_flex');
+			$destinationParentRecord = BackendUtility::getRecordWSOL($destinationPointer['table'], $destinationPointer['uid'], 'uid,pid,tx_templavoila_flex');
 			if (!is_array($destinationParentRecord)) {
 				if ($this->debug) {
-					\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('process: Parent record of the element specified by destination pointer does not exist!', 2, $destinationPointer);
+					GeneralUtility::devLog('process: Parent record of the element specified by destination pointer does not exist!', 2, $destinationPointer);
 				}
 
 				return FALSE;
 			} elseif ($destinationParentRecord['pid'] < 0 && $destinationPointer['table'] != 'pages') {
 				if ($this->debug) {
-					\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('process: The destination pointer must always point to a live record, not an offline version!', 2, $destinationPointer);
+					GeneralUtility::devLog('process: The destination pointer must always point to a live record, not an offline version!', 2, $destinationPointer);
 				}
 
 				return FALSE;
@@ -444,9 +447,9 @@ class ApiService {
 
 		// Get information about the element to be processed:
 		if (isset ($sourcePointer['sheet'])) {
-			$sourceElementRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('tt_content', $sourceReferencesArr[$sourcePointer['position']], '*');
+			$sourceElementRecord = BackendUtility::getRecordWSOL('tt_content', $sourceReferencesArr[$sourcePointer['position']], '*');
 		} else {
-			$sourceElementRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('tt_content', $sourcePointer['uid'], '*');
+			$sourceElementRecord = BackendUtility::getRecordWSOL('tt_content', $sourcePointer['uid'], '*');
 		}
 
 		switch ($mode) {
@@ -542,7 +545,7 @@ class ApiService {
 				$elementUids[] = $elementUid;
 
 				// Reduce the list to local elements to make sure that references are kept instead of moving the referenced record
-				$localRecords = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTgetRows('uid,pid', 'tt_content', 'uid IN (' . implode(',', $elementUids) . ') AND pid=' . intval($sourcePID) . ' ' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tt_content'));
+				$localRecords = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTgetRows('uid,pid', 'tt_content', 'uid IN (' . implode(',', $elementUids) . ') AND pid=' . intval($sourcePID) . ' ' . BackendUtility::deleteClause('tt_content'));
 				if (!empty($localRecords) && is_array($localRecords)) {
 					foreach ($localRecords as $localRecord) {
 						$cmdArray['tt_content'][$localRecord['uid']]['move'] = $destinationPID;
@@ -550,7 +553,7 @@ class ApiService {
 
 					$flagWasSet = $this->getTCEmainRunningFlag();
 					$this->setTCEmainRunningFlag(TRUE);
-					$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+					$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 					$tce->stripslashes_values = 0;
 					$tce->start(array(), $cmdArray);
 					$tce->process_cmdmap();
@@ -579,7 +582,7 @@ class ApiService {
 		$destinationPID = $destinationPointer['table'] == 'pages' ? $destinationParentRecord['uid'] : $destinationParentRecord['pid'];
 
 		// Initialize TCEmain and create configuration for copying the specified record
-		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+		$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 		$cmdArray = array();
 		$cmdArray['tt_content'][$sourceElementUid]['copy'] = $destinationPID;
 
@@ -618,7 +621,7 @@ class ApiService {
 		$subElementUids = $this->flexform_getListOfSubElementUidsRecursively('tt_content', $sourceElementUid, $dummyArr);
 
 		// Initialize TCEmain and create configuration for copying the specified record (the parent element) and all sub elements:
-		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+		$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 		$cmdArray = array();
 		$cmdArray['tt_content'][$sourceElementUid]['copy'] = $destinationPID;
 
@@ -654,22 +657,22 @@ class ApiService {
 	protected function process_localize($sourceElementUid, $destinationPointer, $destinationReferencesArr) {
 
 		// Determine language record UID of the language we localize to:
-		$staticLanguageRows = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordsByField('static_languages', 'lg_iso_2', $destinationPointer['_languageKey']);
+		$staticLanguageRows = BackendUtility::getRecordsByField('static_languages', 'lg_iso_2', $destinationPointer['_languageKey']);
 		if (is_array($staticLanguageRows) && isset($staticLanguageRows[0]['uid'])) {
-			$languageRecords = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordsByField('sys_language', 'static_lang_isocode', $staticLanguageRows[0]['uid']);
+			$languageRecords = BackendUtility::getRecordsByField('sys_language', 'static_lang_isocode', $staticLanguageRows[0]['uid']);
 		}
 		if (is_array($languageRecords) && isset($languageRecords[0]['uid'])) {
 			$destinationLanguageUid = $languageRecords[0]['uid'];
 		} else {
 			if ($this->debug) {
-				\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('API: process_localize(): Cannot localize element because sys_language record can not be found !', 'templavoila', 2);
+				GeneralUtility::devLog('API: process_localize(): Cannot localize element because sys_language record can not be found !', 'templavoila', 2);
 			}
 
 			return FALSE;
 		}
 
 		// Initialize TCEmain and create configuration for localizing the specified record
-		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+		$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 		$cmdArray = array();
 		$cmdArray['tt_content'][$sourceElementUid]['localize'] = $destinationLanguageUid;
 
@@ -743,7 +746,7 @@ class ApiService {
 		// Store:
 		$flagWasSet = $this->getTCEmainRunningFlag();
 		$this->setTCEmainRunningFlag(TRUE);
-		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+		$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 		$tce->stripslashes_values = 0;
 		$tce->start(array(), $cmdArray);
 		$tce->process_cmdmap();
@@ -780,17 +783,17 @@ class ApiService {
 			$flexformPointer = $this->flexform_getPointerFromString($flexformPointer);
 		}
 
-		if (!\TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->rootTable . ',tt_content', $flexformPointer['table'])) {
+		if (!GeneralUtility::inList($this->rootTable . ',tt_content', $flexformPointer['table'])) {
 			if ($this->debug) {
-				\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('flexform_getValidPointer: Table "' . $flexformPointer['table'] . '" is not in the list of allowed tables!', 'TemplaVoila API', 2, $this->rootTable . ',tt_content');
+				GeneralUtility::devLog('flexform_getValidPointer: Table "' . $flexformPointer['table'] . '" is not in the list of allowed tables!', 'TemplaVoila API', 2, $this->rootTable . ',tt_content');
 			}
 
 			return FALSE;
 		}
 
-		if (!$destinationRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL($flexformPointer['table'], $flexformPointer['uid'], 'uid,pid,tx_templavoila_flex')) {
+		if (!$destinationRecord = BackendUtility::getRecordWSOL($flexformPointer['table'], $flexformPointer['uid'], 'uid,pid,tx_templavoila_flex')) {
 			if ($this->debug) {
-				\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('flexform_getValidPointer: Pointer destination record not found!', 'TemplaVoila API', 2, $flexformPointer);
+				GeneralUtility::devLog('flexform_getValidPointer: Pointer destination record not found!', 'TemplaVoila API', 2, $flexformPointer);
 			}
 
 			return FALSE;
@@ -800,14 +803,14 @@ class ApiService {
 			$elementReferencesArr = $this->flexform_getElementReferencesFromXML($destinationRecord['tx_templavoila_flex'], $flexformPointer);
 			if (!isset ($elementReferencesArr[$flexformPointer['position']]) && $flexformPointer['position'] != -1) {
 				if ($this->debug) {
-					\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('flexform_getValidPointer: The position in the specified flexform pointer does not exist!', 'TemplaVoila API', 2, $flexformPointer);
+					GeneralUtility::devLog('flexform_getValidPointer: The position in the specified flexform pointer does not exist!', 'TemplaVoila API', 2, $flexformPointer);
 				}
 
 				return FALSE;
 			}
 			if (isset ($flexformPointer['targetCheckUid']) && $elementReferencesArr[$flexformPointer['position']] != $flexformPointer['targetCheckUid']) {
 				if ($this->debug) {
-					\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('flexform_getValidPointer: The target record uid does not match the targetCheckUid!', 'TemplaVoila API', 2, array($flexformPointer, $elementReferencesArr));
+					GeneralUtility::devLog('flexform_getValidPointer: The target record uid does not match the targetCheckUid!', 'TemplaVoila API', 2, array($flexformPointer, $elementReferencesArr));
 				}
 
 				return FALSE;
@@ -912,13 +915,13 @@ class ApiService {
 		}
 
 		if (isset ($flexformPointer['sheet'])) {
-			if (!$parentRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL($flexformPointer['table'], $flexformPointer['uid'], 'uid,tx_templavoila_flex')) {
+			if (!$parentRecord = BackendUtility::getRecordWSOL($flexformPointer['table'], $flexformPointer['uid'], 'uid,tx_templavoila_flex')) {
 				return FALSE;
 			}
 			$elementReferencesArr = $this->flexform_getElementReferencesFromXML($parentRecord['tx_templavoila_flex'], $flexformPointer); // This should work, because both flexFormPointer and tx_templavoila_flex will be based on any workspace overlaid record.
-			return \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('tt_content', $elementReferencesArr[$flexformPointer['position']]);
+			return BackendUtility::getRecordWSOL('tt_content', $elementReferencesArr[$flexformPointer['position']]);
 		} else {
-			return \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('tt_content', $flexformPointer['uid']);
+			return BackendUtility::getRecordWSOL('tt_content', $flexformPointer['uid']);
 		}
 	}
 
@@ -960,20 +963,20 @@ class ApiService {
 	public function flexform_getElementReferencesFromXML($flexformXML, $flexformPointer) {
 
 		// Getting value of the field containing the relations:
-		$flexformXMLArr = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($flexformXML);
+		$flexformXMLArr = GeneralUtility::xml2array($flexformXML);
 		if (!is_array($flexformXMLArr) && strlen($flexformXML) > 0) {
 			if ($this->debug) {
-				\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('flexform_getReferencesToElementsFromXML: flexformXML seems to be no valid XML. Parser error message: ' . $flexformXMLArr, 'TemplaVoila API', 2, $flexformXML);
+				GeneralUtility::devLog('flexform_getReferencesToElementsFromXML: flexformXML seems to be no valid XML. Parser error message: ' . $flexformXMLArr, 'TemplaVoila API', 2, $flexformXML);
 			}
 
 			return FALSE;
 		}
 
 		$listOfUIDs = is_array($flexformXMLArr) && is_array($flexformXMLArr['data']) ? $flexformXMLArr['data'][$flexformPointer['sheet']][$flexformPointer['sLang']][$flexformPointer['field']][$flexformPointer['vLang']] : '';
-		$arrayOfUIDs = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $listOfUIDs);
+		$arrayOfUIDs = GeneralUtility::intExplode(',', $listOfUIDs);
 
 		// Getting the relation uids out and use only tt_content records which are not deleted:
-		$dbAnalysis = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
+		$dbAnalysis = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
 		$dbAnalysis->start($listOfUIDs, 'tt_content');
 		$dbAnalysis->getFromDB();
 
@@ -1004,8 +1007,8 @@ class ApiService {
 		if (!is_array($recordUids)) {
 			$recordUids = array();
 		}
-		$parentRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL($table, $uid, 'uid,pid,tx_templavoila_ds,tx_templavoila_flex');
-		$flexFieldArr = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($parentRecord['tx_templavoila_flex']);
+		$parentRecord = BackendUtility::getRecordWSOL($table, $uid, 'uid,pid,tx_templavoila_ds,tx_templavoila_flex');
+		$flexFieldArr = GeneralUtility::xml2array($parentRecord['tx_templavoila_flex']);
 		$expandedDataStructure = $this->ds_getExpandedDataStructure($table, $parentRecord);
 
 		if (is_array($flexFieldArr) && is_array($flexFieldArr['data'])) {
@@ -1017,7 +1020,7 @@ class ApiService {
 								if (is_array($valuesArr)) {
 									foreach ($valuesArr as $value) {
 										if ($expandedDataStructure[$sheetKey]['ROOT']['el'][$fieldName]['tx_templavoila']['eType'] == 'ce') {
-											$valueItems = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $value);
+											$valueItems = GeneralUtility::intExplode(',', $value);
 											if (is_array($valueItems)) {
 												foreach ($valueItems as $subElementUid) {
 													if ($subElementUid > 0) {
@@ -1056,8 +1059,8 @@ class ApiService {
 		if (!is_array($flexformPointers)) {
 			$flexformPointers = array();
 		}
-		$parentRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL($table, $uid, 'uid,pid,tx_templavoila_flex,tx_templavoila_ds,tx_templavoila_to');
-		$flexFieldArr = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($parentRecord['tx_templavoila_flex']);
+		$parentRecord = BackendUtility::getRecordWSOL($table, $uid, 'uid,pid,tx_templavoila_flex,tx_templavoila_ds,tx_templavoila_to');
+		$flexFieldArr = GeneralUtility::xml2array($parentRecord['tx_templavoila_flex']);
 		$expandedDataStructure = $this->ds_getExpandedDataStructure($table, $parentRecord);
 
 		if (is_array($flexFieldArr) && is_array($flexFieldArr['data'])) {
@@ -1069,7 +1072,7 @@ class ApiService {
 								if (is_array($valuesArr)) {
 									foreach ($valuesArr as $valueName => $value) {
 										if ($expandedDataStructure[$sheetKey]['ROOT']['el'][$fieldName]['tx_templavoila']['eType'] == 'ce') {
-											$valueItems = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $value);
+											$valueItems = GeneralUtility::intExplode(',', $value);
 											if (is_array($valueItems)) {
 												$position = 1;
 												foreach ($valueItems as $subElementUid) {
@@ -1185,11 +1188,11 @@ class ApiService {
 	 */
 	protected function flexform_storeElementReferencesListInRecord($referencesArr, $destinationPointer) {
 		if ($this->debug) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('API: flexform_storeElementReferencesListInRecord()', 'templavoila', 0, array('referencesArr' => $referencesArr, 'destinationPointer' => $destinationPointer));
+			GeneralUtility::devLog('API: flexform_storeElementReferencesListInRecord()', 'templavoila', 0, array('referencesArr' => $referencesArr, 'destinationPointer' => $destinationPointer));
 		}
 
 		$dataArr = array();
-		$uid = \TYPO3\CMS\Backend\Utility\BackendUtility::wsMapId($destinationPointer['table'], $destinationPointer['uid']);
+		$uid = BackendUtility::wsMapId($destinationPointer['table'], $destinationPointer['uid']);
 		$containerHasWorkspaceVersion = FALSE;
 		if ($uid != $destinationPointer['uid']) {
 			$containerHasWorkspaceVersion = TRUE;
@@ -1199,7 +1202,7 @@ class ApiService {
 
 		$flagWasSet = $this->getTCEmainRunningFlag();
 		$this->setTCEmainRunningFlag(TRUE);
-		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+		$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 		$tce->stripslashes_values = 0;
 		$tce->start($dataArr, array());
 
@@ -1248,7 +1251,7 @@ class ApiService {
 		$columnsAndFieldNamesArr = array();
 		$fieldNameOfFirstCEField = NULL;
 
-		$pageRow = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('pages', $contextPageUid);
+		$pageRow = BackendUtility::getRecordWSOL('pages', $contextPageUid);
 		if (!is_array($pageRow)) {
 			return FALSE;
 		}
@@ -1302,7 +1305,7 @@ class ApiService {
 	 * @return integer The column number as used in the "colpos" field in tt_content
 	 */
 	public function ds_getColumnPositionByFieldName($contextPageUid, $fieldName) {
-		$pageRow = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('pages', $contextPageUid);
+		$pageRow = BackendUtility::getRecordWSOL('pages', $contextPageUid);
 		if (is_array($pageRow)) {
 			$dataStructureArr = $this->ds_getExpandedDataStructure('pages', $pageRow);
 
@@ -1334,7 +1337,7 @@ class ApiService {
 	 */
 	public function ds_getExpandedDataStructure($table, $row) {
 		$conf = $GLOBALS['TCA'][$table]['columns']['tx_templavoila_flex']['config'];
-		$dataStructureArr = \TYPO3\CMS\Backend\Utility\BackendUtility::getFlexFormDS($conf, $row, $table);
+		$dataStructureArr = BackendUtility::getFlexFormDS($conf, $row, $table);
 
 		$expandedDataStructureArr = array();
 		if (!is_array($dataStructureArr)) {
@@ -1343,14 +1346,14 @@ class ApiService {
 
 		if (is_array($dataStructureArr['sheets'])) {
 			foreach (array_keys($dataStructureArr['sheets']) as $sheetKey) {
-				list ($sheetDataStructureArr, $sheet) = \TYPO3\CMS\Core\Utility\GeneralUtility::resolveSheetDefInDS($dataStructureArr, $sheetKey);
+				list ($sheetDataStructureArr, $sheet) = GeneralUtility::resolveSheetDefInDS($dataStructureArr, $sheetKey);
 				if ($sheet == $sheetKey) {
 					$expandedDataStructureArr[$sheetKey] = $sheetDataStructureArr;
 				}
 			}
 		} else {
 			$sheetKey = 'sDEF';
-			list ($sheetDataStructureArr, $sheet) = \TYPO3\CMS\Core\Utility\GeneralUtility::resolveSheetDefInDS($dataStructureArr, $sheetKey);
+			list ($sheetDataStructureArr, $sheet) = GeneralUtility::resolveSheetDefInDS($dataStructureArr, $sheetKey);
 			if ($sheet == $sheetKey) {
 				$expandedDataStructureArr[$sheetKey] = $sheetDataStructureArr;
 			}
@@ -1378,8 +1381,8 @@ class ApiService {
 			"$tTO.*",
 			"$tTO LEFT JOIN $tDS ON $tTO.datastructure = $tDS.uid",
 			"$tTO.pid=" . intval($storageFolderPID) . " AND $tDS.scope=1" .
-			\TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($tTO) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($tDS) .
-			\TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause($tTO) . \TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause($tDS)
+			BackendUtility::deleteClause($tTO) . BackendUtility::deleteClause($tDS) .
+			BackendUtility::versioningPlaceholderClause($tTO) . BackendUtility::versioningPlaceholderClause($tDS)
 		);
 		if (!$res) {
 			return FALSE;
@@ -1441,17 +1444,17 @@ class ApiService {
 	 * @return array The content tree
 	 */
 	protected function getContentTree_element($table, $row, &$tt_content_elementRegister, $prevRecList = '', $depth = 0) {
-		$alttext = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordIconAltText($row, $table);
+		$alttext = BackendUtility::getRecordIconAltText($row, $table);
 		$tree = array();
 		$tree['el'] = array(
 			'table' => $table,
 			'uid' => $row['uid'],
 			'pid' => $row['pid'],
 			'_ORIG_uid' => $row['_ORIG_uid'],
-			'title' => \TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs(\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle($table, $row), 50),
-			'fullTitle' => \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle($table, $row),
-			'icon' => \TYPO3\CMS\Backend\Utility\IconUtility::getIcon($table, $row), // kept because it's not clear if this is used elsewhere
-			'iconTag' => \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord($table, $row, array('title' => $alttext)),
+			'title' => GeneralUtility::fixed_lgd_cs(BackendUtility::getRecordTitle($table, $row), 50),
+			'fullTitle' => BackendUtility::getRecordTitle($table, $row),
+			'icon' => IconUtility::getIcon($table, $row), // kept because it's not clear if this is used elsewhere
+			'iconTag' => IconUtility::getSpriteIconForRecord($table, $row, array('title' => $alttext)),
 			'sys_language_uid' => $row['sys_language_uid'],
 			'l18n_parent' => $row['l18n_parent'],
 			'CType' => $row['CType'],
@@ -1467,7 +1470,7 @@ class ApiService {
 		// If element is a Flexible Content Element (or a page) then look at the content inside:
 		if ($table == 'pages' || $table == $this->rootTable || ($table == 'tt_content' && $row['CType'] == 'templavoila_pi1')) {
 
-			$rawDataStructureArr = \TYPO3\CMS\Backend\Utility\BackendUtility::getFlexFormDS($GLOBALS['TCA'][$table]['columns']['tx_templavoila_flex']['config'], $row, $table);
+			$rawDataStructureArr = BackendUtility::getFlexFormDS($GLOBALS['TCA'][$table]['columns']['tx_templavoila_flex']['config'], $row, $table);
 			$expandedDataStructureArr = $this->ds_getExpandedDataStructure($table, $row);
 
 			switch ($table) {
@@ -1475,7 +1478,7 @@ class ApiService {
 					$currentTemplateObject = $this->getContentTree_fetchPageTemplateObject($row);
 					break;
 				case 'tt_content':
-					$currentTemplateObject = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('tx_templavoila_tmplobj', $row['tx_templavoila_to']);
+					$currentTemplateObject = BackendUtility::getRecordWSOL('tx_templavoila_tmplobj', $row['tx_templavoila_to']);
 					break;
 				default:
 					$currentTemplateObject = FALSE;
@@ -1485,7 +1488,7 @@ class ApiService {
 			}
 			$tree['ds_is_found'] = is_array($rawDataStructureArr);
 			$tree['ds_meta'] = $rawDataStructureArr['meta'];
-			$flexformContentArr = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($row['tx_templavoila_flex']);
+			$flexformContentArr = GeneralUtility::xml2array($row['tx_templavoila_flex']);
 			if (!is_array($flexformContentArr)) {
 				$flexformContentArr = array();
 			}
@@ -1621,7 +1624,7 @@ class ApiService {
 		$subTree = array();
 
 		// Get records:
-		$dbAnalysis = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
+		$dbAnalysis = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
 		$dbAnalysis->start($listOfSubElementUids, 'tt_content');
 
 		// Traverse records:
@@ -1629,8 +1632,8 @@ class ApiService {
 		foreach ($dbAnalysis->itemArray as $recIdent) {
 			$idStr = 'tt_content:' . $recIdent['id'];
 
-			if (!\TYPO3\CMS\Core\Utility\GeneralUtility::inList($prevRecList, $idStr)) {
-				$nextSubRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('tt_content', $recIdent['id']);
+			if (!GeneralUtility::inList($prevRecList, $idStr)) {
+				$nextSubRecord = BackendUtility::getRecordWSOL('tt_content', $recIdent['id']);
 
 				if (is_array($nextSubRecord)) {
 					$tt_content_elementRegister[$recIdent['id']]++;
@@ -1666,7 +1669,7 @@ class ApiService {
 
 			// Finding translations of this record and select overlay record:
 			$fakeElementRow = array('uid' => $contentTreeArr['el']['uid'], 'pid' => $contentTreeArr['el']['pid']);
-			\TYPO3\CMS\Backend\Utility\BackendUtility::fixVersioningPID('tt_content', $fakeElementRow);
+			BackendUtility::fixVersioningPID('tt_content', $fakeElementRow);
 
 			$res = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTquery(
 				'*',
@@ -1674,12 +1677,12 @@ class ApiService {
 				'pid=' . $fakeElementRow['pid'] .
 				' AND sys_language_uid>0' .
 				' AND l18n_parent=' . intval($contentTreeArr['el']['uid']) .
-				\TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tt_content')
+				BackendUtility::deleteClause('tt_content')
 			);
 
 			$attachedLocalizations = array();
 			while (TRUE == ($olrow = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_fetch_assoc($res))) {
-				\TYPO3\CMS\Backend\Utility\BackendUtility::workspaceOL('tt_content', $olrow);
+				BackendUtility::workspaceOL('tt_content', $olrow);
 				if (!isset($attachedLocalizations[$olrow['sys_language_uid']])) {
 					$attachedLocalizations[$olrow['sys_language_uid']] = $olrow['uid'];
 				}
@@ -1725,9 +1728,9 @@ class ApiService {
 	protected function getContentTree_fetchPageTemplateObject($row) {
 		$templateObjectUid = $row['tx_templavoila_ds'] ? intval($row['tx_templavoila_to']) : 0;
 		if (!$templateObjectUid) {
-			$rootLine = \TYPO3\CMS\Backend\Utility\BackendUtility::BEgetRootLine($row['uid'], '', TRUE);
+			$rootLine = BackendUtility::BEgetRootLine($row['uid'], '', TRUE);
 			foreach ($rootLine as $rootLineRecord) {
-				$pageRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('pages', $rootLineRecord['uid']);
+				$pageRecord = BackendUtility::getRecordWSOL('pages', $rootLineRecord['uid']);
 				if (($row['uid'] != $pageRecord['uid']) && $pageRecord['tx_templavoila_next_ds'] && $pageRecord['tx_templavoila_next_to']) { // If there is a next-level TO:
 					$templateObjectUid = $pageRecord['tx_templavoila_next_to'];
 					break;
@@ -1738,7 +1741,7 @@ class ApiService {
 			}
 		}
 
-		return \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('tx_templavoila_tmplobj', $templateObjectUid);
+		return BackendUtility::getRecordWSOL('tx_templavoila_tmplobj', $templateObjectUid);
 	}
 
 	/**
@@ -1805,16 +1808,16 @@ class ApiService {
 
 		// Negative PID values is pointing to a page on the same level as the current.
 		if ($pageUid < 0) {
-			$pidRow = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('pages', abs($pageUid), 'pid');
+			$pidRow = BackendUtility::getRecordWSOL('pages', abs($pageUid), 'pid');
 			$pageUid = $pidRow['pid'];
 		}
-		$row = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('pages', $pageUid);
+		$row = BackendUtility::getRecordWSOL('pages', $pageUid);
 
-		$TSconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getTCEFORM_TSconfig('pages', $row);
+		$TSconfig = BackendUtility::getTCEFORM_TSconfig('pages', $row);
 		$storagePid = intval($TSconfig['_STORAGE_PID']);
 
 		// Check for alternative storage folder
-		$modTSConfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($pageUid, 'tx_templavoila.storagePid');
+		$modTSConfig = BackendUtility::getModTSconfig($pageUid, 'tx_templavoila.storagePid');
 		if (is_array($modTSConfig) && \Extension\Templavoila\Utility\GeneralUtility::canBeInterpretedAsInteger($modTSConfig['value'])) {
 			$storagePid = intval($modTSConfig['value']);
 		}
@@ -1836,7 +1839,7 @@ class ApiService {
 		$this->allSystemWebsiteLanguages['rows'] = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTgetRows(
 			'sys_language.*',
 			'sys_language',
-			'1=1' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('sys_language'),
+			'1=1' . BackendUtility::deleteClause('sys_language'),
 			'',
 			'uid',
 			'',
@@ -1846,7 +1849,7 @@ class ApiService {
 		// Traverse and set ISO codes if found:
 		foreach ($this->allSystemWebsiteLanguages['rows'] as $row) {
 			if ($row['static_lang_isocode']) {
-				$staticLangRow = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('static_languages', $row['static_lang_isocode'], 'lg_iso_2');
+				$staticLangRow = BackendUtility::getRecord('static_languages', $row['static_lang_isocode'], 'lg_iso_2');
 				if ($staticLangRow['lg_iso_2']) {
 					$this->allSystemWebsiteLanguages['rows'][$row['uid']]['_ISOcode'] = $staticLangRow['lg_iso_2'];
 					$this->allSystemWebsiteLanguages['all_lKeys'][] = 'l' . $staticLangRow['lg_iso_2'];
@@ -1876,7 +1879,7 @@ class ApiService {
 	 */
 	protected function getModWebTSconfig($pageId) {
 		if (!isset($this->cachedModWebTSconfig[$pageId])) {
-			$modTSconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($pageId, 'mod.web_txtemplavoilaM1');
+			$modTSconfig = BackendUtility::getModTSconfig($pageId, 'mod.web_txtemplavoilaM1');
 			$this->cachedModWebTSconfig[$pageId] = $modTSconfig;
 		}
 
