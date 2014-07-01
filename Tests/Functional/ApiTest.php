@@ -72,54 +72,27 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 
 		$this->dataHandler = $this->getMock('TYPO3\CMS\Core\DataHandling\DataHandler', array('dummy'));
 
-		$this->backendUser = $this->setUpBackendUserFromFixture();
-		$this->backendUser->setWorkspace(0);
-
-		\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->initializeLanguageObject();
+		$fixtureTables = array(
+			'sys_language',
+			'pages',
+			'pages_language_overlay',
+			'sys_template',
+			'tx_templavoila_datastructure',
+			'tx_templavoila_tmplobj',
+			'static_languages',
+		);
 
 		$fixtureRootPath = ORIGINAL_ROOT . 'typo3conf/ext/templavoila/Tests/Functional/Fixtures/';
 
-		$this->importDataSet($fixtureRootPath . 'sys_language.xml');
-		$this->importDataSet($fixtureRootPath . 'pages.xml');
-		$this->importDataSet($fixtureRootPath . 'pages_language_overlay.xml');
-		$this->importDataSet($fixtureRootPath . 'sys_template.xml');
-		$this->importDataSet($fixtureRootPath . 'tx_templavoila_datastructure.xml');
-		$this->importDataSet($fixtureRootPath . 'tx_templavoila_tmplobj.xml');
-	}
-
-	/**
-	 * Initialize backend user
-	 *
-	 * @param int $userUid uid of the user we want to initialize. This user must exist in the fixture file
-	 *
-	 * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
-	 * @throws \Exception
-	 */
-	protected function setUpBackendUserFromFixture($userUid = 1) {
-		$this->importDataSet(ORIGINAL_ROOT . 'typo3conf/ext/templavoila/Tests/Functional/Fixtures/be_users.xml');
-		$database = $this->getDatabaseConnection();
-		$userRow = $database->exec_SELECTgetSingleRow('*', 'be_users', 'uid = ' . $userUid);
-
-		/** @var $backendUser \TYPO3\CMS\Core\Authentication\BackendUserAuthentication */
-		$backendUser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication');
-		$sessionId = $backendUser->createSessionId();
-		$_SERVER['HTTP_COOKIE'] = 'be_typo_user=' . $sessionId . '; path=/';
-		$backendUser->id = $sessionId;
-		$backendUser->sendNoCacheHeaders = FALSE;
-		$backendUser->dontSetCookie = TRUE;
-		$backendUser->createUserSession($userRow);
-
-		$GLOBALS['BE_USER'] = $backendUser;
-		$GLOBALS['BE_USER']->start();
-		if (!is_array($GLOBALS['BE_USER']->user) || !$GLOBALS['BE_USER']->user['uid']) {
-			throw new \Exception(
-				'Can not initialize backend user',
-				1377095807
-			);
+		foreach ($fixtureTables as $table) {
+			$this->getDatabaseConnection()->exec_TRUNCATEquery($table);
+			$this->importDataSet($fixtureRootPath . $table . '.xml');
 		}
-		$GLOBALS['BE_USER']->backendCheckLogin();
 
-		return $backendUser;
+		$this->backendUser = $this->setUpBackendUserFromFixture(1);
+		$this->backendUser->setWorkspace(0);
+
+		\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->initializeLanguageObject();
 	}
 
 	/**
