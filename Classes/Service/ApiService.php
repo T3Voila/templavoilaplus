@@ -61,21 +61,6 @@ class ApiService {
 		$this->rootTable = $rootTable;
 	}
 
-	/**
-	 * PHP4 compatible constructor
-	 *
-	 * @param    string $alternativeRootTable : Usually the root table is "pages" but another table can be specified (eg. "tt_content")
-	 *
-	 * @return    void
-	 */
-	function ApiService($alternativeRootTable = 'pages') {
-		return $this->__construct($alternativeRootTable);
-	}
-
-
-
-
-
 	/******************************************************
 	 *
 	 * Element manipulation functions (public)
