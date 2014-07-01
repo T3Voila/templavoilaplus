@@ -11,8 +11,7 @@ if (TYPO3_MODE === 'BE') {
 
 	// Adding click menu item:
 	$GLOBALS['TBE_MODULES_EXT']['xMOD_alt_clickmenu']['extendCMclasses'][] = array(
-		'name' => 'tx_templavoila_cm1',
-		'path' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'class.tx_templavoila_cm1.php'
+		'name' => 'Extension\\Templavoila\\Service\\ClickMenu\\MainClickMenu',
 	);
 
 	// Adding backend modules:
