@@ -1,0 +1,6 @@
+﻿.. |img-17|     image:: ../../../Images/manual_html_m25b01471.png
+   :height: 84
+   :width: 237
+.. :align: left
+.. :border: 0
+.. :name: Graphic7
