@@ -24,11 +24,12 @@ namespace Extension\Templavoila\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Reference elements wizard,
  * References all unused elements in a treebranch to a specific point in the TV-DS
- *
- * $Id$
  *
  * @author Robert Lemke <robert@typo3.org>
  */
@@ -37,12 +38,12 @@ class ReferenceElementWizardController extends \TYPO3\CMS\Backend\Module\Abstrac
 	/**
 	 * @var array
 	 */
-	protected $modSharedTSconfig;
+	protected $modSharedTSconfig = array();
 
 	/**
 	 * @var array
 	 */
-	protected $allAvailableLanguages;
+	protected $allAvailableLanguages = array();
 
 	/**
 	 * @var \Extension\Templavoila\Service\ApiService
@@ -54,9 +55,7 @@ class ReferenceElementWizardController extends \TYPO3\CMS\Backend\Module\Abstrac
 	 *
 	 * @return array
 	 */
-	function modMenu() {
-		global $LANG;
-
+	public function modMenu() {
 		return array(
 			'depth' => array(
 				0 => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_core.php:labels.depth_0'),
@@ -71,27 +70,23 @@ class ReferenceElementWizardController extends \TYPO3\CMS\Backend\Module\Abstrac
 	/**
 	 * Main function
 	 *
-	 * @return string Output HTML for the module.
-	 * @access public
+	 * @return string Output HTML for the module
 	 */
-	function main() {
-		global $BACK_PATH, $LANG, $SOBE, $BE_USER, $TYPO3_DB;
-
-		$this->modSharedTSconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($this->pObj->id, 'mod.SHARED');
+	public function main() {
+		$this->modSharedTSconfig = BackendUtility::getModTSconfig($this->pObj->id, 'mod.SHARED');
 		$this->allAvailableLanguages = $this->getAvailableLanguages(0, TRUE, TRUE, TRUE);
 
-		$output = '';
-		$this->templavoilaAPIObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Service\\ApiService');
+		$this->templavoilaAPIObj = GeneralUtility::makeInstance('Extension\\Templavoila\\Service\\ApiService');
 
 		// Showing the tree:
 		// Initialize starting point of page tree:
-		$treeStartingPoint = intval($this->pObj->id);
-		$treeStartingRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', $treeStartingPoint);
+		$treeStartingPoint = (int)$this->pObj->id;
+		$treeStartingRecord = BackendUtility::getRecord('pages', $treeStartingPoint);
 		$depth = $this->pObj->MOD_SETTINGS['depth'];
 
 		// Initialize tree object:
 		/** @var \TYPO3\CMS\Backend\Tree\View\PageTreeView $tree */
-		$tree = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\View\\PageTreeView');
+		$tree = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\View\\PageTreeView');
 		$tree->init('AND ' . \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->getPagePermsClause(1));
 
 		// Creating top icon; the current page
@@ -112,10 +107,10 @@ class ReferenceElementWizardController extends \TYPO3\CMS\Backend\Module\Abstrac
 		', $this->pObj->content);
 
 		// Process commands:
-		if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('createReferencesForPage')) {
-			$this->createReferencesForPage(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('createReferencesForPage'));
+		if (GeneralUtility::_GP('createReferencesForPage')) {
+			$this->createReferencesForPage(GeneralUtility::_GP('createReferencesForPage'));
 		}
-		if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('createReferencesForTree')) {
+		if (GeneralUtility::_GP('createReferencesForTree')) {
 			$this->createReferencesForTree($tree);
 		}
 
@@ -131,7 +126,7 @@ class ReferenceElementWizardController extends \TYPO3\CMS\Backend\Module\Abstrac
 				$createReferencesLink = '';
 			}
 
-			$rowTitle = $row['HTML'] . \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle('pages', $row['row'], TRUE);
+			$rowTitle = $row['HTML'] . BackendUtility::getRecordTitle('pages', $row['row'], TRUE);
 			$cellAttrib = ($row['row']['_CSSCLASS'] ? ' class="' . $row['row']['_CSSCLASS'] . '"' : '');
 
 			$tCells = array();
@@ -155,9 +150,15 @@ class ReferenceElementWizardController extends \TYPO3\CMS\Backend\Module\Abstrac
 		$tCells[] = '<td>&nbsp;</td>';
 
 		// Depth selector:
-		$depthSelectorBox = \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncMenu($this->pObj->id, 'SET[depth]', $this->pObj->MOD_SETTINGS['depth'], $this->pObj->MOD_MENU['depth'], 'index.php');
+		$depthSelectorBox = BackendUtility::getFuncMenu(
+			$this->pObj->id,
+			'SET[depth]',
+			$this->pObj->MOD_SETTINGS['depth'],
+			$this->pObj->MOD_MENU['depth'],
+			'index.php'
+		);
 
-		$finalOutput = '
+		return '
 			<br />
 			' . $depthSelectorBox . '
 			<a href="index.php?id=' . $this->pObj->id . '&createReferencesForTree=1">Reference elements for whole tree</a><br />
@@ -170,8 +171,6 @@ class ReferenceElementWizardController extends \TYPO3\CMS\Backend\Module\Abstrac
 			$output . '
 			</table>
 		';
-
-		return $finalOutput;
 	}
 
 	/**
@@ -180,9 +179,8 @@ class ReferenceElementWizardController extends \TYPO3\CMS\Backend\Module\Abstrac
 	 * @param \TYPO3\CMS\Backend\Tree\View\PageTreeView $tree : Page tree array
 	 *
 	 * @return void
-	 * @access protected
 	 */
-	function createReferencesForTree($tree) {
+	protected function createReferencesForTree($tree) {
 		foreach ($tree->tree as $row) {
 			$this->createReferencesForPage($row['row']['uid']);
 		}
@@ -192,23 +190,26 @@ class ReferenceElementWizardController extends \TYPO3\CMS\Backend\Module\Abstrac
 	 * References all unreferenced elements with the specified
 	 * parent id (page uid)
 	 *
-	 * @param integer $pageUid : Parent id of the elements to reference
+	 * @param integer $pageUid Parent id of the elements to reference
 	 *
 	 * @return void
-	 * @access protected
 	 */
-	function createReferencesForPage($pageUid) {
-
+	protected function createReferencesForPage($pageUid) {
 		$unreferencedElementRecordsArr = $this->getUnreferencedElementsRecords($pageUid);
 		$langField = $GLOBALS['TCA']['tt_content']['ctrl']['languageField'];
 		foreach ($unreferencedElementRecordsArr as $elementUid => $elementRecord) {
 			$lDef = array();
 			$vDef = array();
 			if ($langField && $elementRecord[$langField]) {
-				$pageRec = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('pages', $pageUid);
-				$xml = \TYPO3\CMS\Backend\Utility\BackendUtility::getFlexFormDS($GLOBALS['TCA']['pages']['columns']['tx_templavoila_flex']['config'], $pageRec, 'pages', 'tx_templavoila_ds');
-				$langChildren = intval($xml['meta']['langChildren']);
-				$langDisable = intval($xml['meta']['langDisable']);
+				$pageRec = BackendUtility::getRecordWSOL('pages', $pageUid);
+				$xml = BackendUtility::getFlexFormDS(
+					$GLOBALS['TCA']['pages']['columns']['tx_templavoila_flex']['config'],
+					$pageRec,
+					'pages',
+					'tx_templavoila_ds'
+				);
+				$langChildren = (int)$xml['meta']['langChildren'];
+				$langDisable = (int)$xml['meta']['langDisable'];
 				if ($elementRecord[$langField] == -1) {
 					$translatedLanguagesArr = $this->getAvailableLanguages($pageUid);
 					foreach ($translatedLanguagesArr as $lUid => $lArr) {
@@ -252,25 +253,23 @@ class ReferenceElementWizardController extends \TYPO3\CMS\Backend\Module\Abstrac
 	 * Returns an array of tt_content records which are not referenced on
 	 * the page with the given uid (= parent id).
 	 *
-	 * @param integer $pid : Parent id of the content elements (= uid of the page)
+	 * @param integer $pid Parent id of the content elements (= uid of the page)
 	 *
 	 * @return array Array of tt_content records with the following fields: uid, header, bodytext, sys_language_uid and colpos
-	 * @access protected
 	 */
-	function getUnreferencedElementsRecords($pid) {
-
+	protected function getUnreferencedElementsRecords($pid) {
 		$elementRecordsArr = array();
 		$referencedElementsArr = $this->templavoilaAPIObj->flexform_getListOfSubElementUidsRecursively('pages', $pid, $dummyArr = array());
 
 		$res = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTquery(
 			'uid, header, bodytext, sys_language_uid, colPos',
 			'tt_content',
-			'pid=' . intval($pid) .
+			'pid=' . (int)$pid .
 			(count($referencedElementsArr) ? ' AND uid NOT IN (' . implode(',', $referencedElementsArr) . ')' : '') .
-			' AND t3ver_wsid=' . intval(\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->workspace) .
+			' AND t3ver_wsid=' . (int)\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->workspace .
 			' AND l18n_parent=0' .
-			\TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tt_content') .
-			\TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause('tt_content'),
+			BackendUtility::deleteClause('tt_content') .
+			BackendUtility::versioningPlaceholderClause('tt_content'),
 			'',
 			'sorting'
 		);
@@ -279,12 +278,15 @@ class ReferenceElementWizardController extends \TYPO3\CMS\Backend\Module\Abstrac
 			while (($elementRecordArr = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_fetch_assoc($res)) !== FALSE) {
 				$elementRecordsArr[$elementRecordArr['uid']] = $elementRecordArr;
 			}
+			\Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_free_result($res);
 		}
 
 		return $elementRecordsArr;
 	}
 
 	/**
+	 * Get available languages
+	 *
 	 * @param integer $id
 	 * @param boolean $onlyIsoCoded
 	 * @param boolean $setDefault
@@ -292,11 +294,11 @@ class ReferenceElementWizardController extends \TYPO3\CMS\Backend\Module\Abstrac
 	 *
 	 * @return array
 	 */
-	function getAvailableLanguages($id = 0, $onlyIsoCoded = TRUE, $setDefault = TRUE, $setMulti = FALSE) {
-		global $LANG, $TYPO3_DB, $BE_USER, $TCA, $BACK_PATH;
-
-		$flagAbsPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($TCA['sys_language']['columns']['flag']['config']['fileFolder']);
-		$flagIconPath = $BACK_PATH . '../' . substr($flagAbsPath, strlen(PATH_site));
+	protected function getAvailableLanguages($id = 0, $onlyIsoCoded = TRUE, $setDefault = TRUE, $setMulti = FALSE) {
+		$flagAbsPath = GeneralUtility::getFileAbsFileName(
+			$GLOBALS['TCA']['sys_language']['columns']['flag']['config']['fileFolder']
+		);
+		$flagIconPath = $GLOBALS['BACK_PATH'] . '../' . substr($flagAbsPath, strlen(PATH_site));
 
 		$output = array();
 		$excludeHidden = \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isAdmin() ? '1' : 'sys_language.hidden=0';
@@ -306,7 +308,7 @@ class ReferenceElementWizardController extends \TYPO3\CMS\Backend\Module\Abstrac
 			$res = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTquery(
 				'DISTINCT sys_language.*',
 				'pages_language_overlay,sys_language',
-				'pages_language_overlay.sys_language_uid=sys_language.uid AND pages_language_overlay.pid=' . intval($id) . ' AND ' . $excludeHidden,
+				'pages_language_overlay.sys_language_uid=sys_language.uid AND pages_language_overlay.pid=' . (int)$id . ' AND ' . $excludeHidden,
 				'',
 				'sys_language.title'
 			);
@@ -338,12 +340,12 @@ class ReferenceElementWizardController extends \TYPO3\CMS\Backend\Module\Abstrac
 			);
 		}
 
-		while (TRUE == ($row = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_fetch_assoc($res))) {
-			\TYPO3\CMS\Backend\Utility\BackendUtility::workspaceOL('sys_language', $row);
+		while (($row = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_fetch_assoc($res)) !== FALSE) {
+			BackendUtility::workspaceOL('sys_language', $row);
 			$output[$row['uid']] = $row;
 
 			if ($row['static_lang_isocode']) {
-				$staticLangRow = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('static_languages', $row['static_lang_isocode'], 'lg_iso_2');
+				$staticLangRow = BackendUtility::getRecord('static_languages', $row['static_lang_isocode'], 'lg_iso_2');
 				if ($staticLangRow['lg_iso_2']) {
 					$output[$row['uid']]['ISOcode'] = $staticLangRow['lg_iso_2'];
 				}
@@ -356,6 +358,7 @@ class ReferenceElementWizardController extends \TYPO3\CMS\Backend\Module\Abstrac
 				unset($output[$row['uid']]);
 			}
 		}
+		\Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_free_result($res);
 
 		return $output;
 	}
