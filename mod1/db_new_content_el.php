@@ -566,7 +566,7 @@ class tx_templavoila_dbnewcontentel {
 	 *
 	 * @return string additional URL arguments with configured default values
 	 */
-	function getDsDefaultValues(tx_templavoila_template $toObj) {
+	function getDsDefaultValues(\Extension\Templavoila\Domain\Model\Template $toObj) {
 
 		$dsStructure = $toObj->getLocalDataprotArray();
 

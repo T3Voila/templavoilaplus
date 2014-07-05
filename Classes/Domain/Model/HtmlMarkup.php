@@ -814,7 +814,7 @@ class HtmlMarkup {
 							case 'STYLE':
 								$cont = $htmlParse->removeFirstAndLastTag($MappingData_head_cached['cArray']['el_' . $kk]);
 								if ($GLOBALS['TSFE']->config['config']['inlineStyle2TempFile']) {
-									$pageRenderer->addCssFile(TSpagegen::inline2TempFile($cont, 'css'));
+									$pageRenderer->addCssFile(\TYPO3\CMS\Frontend\Page\PageGenerator::inline2TempFile($cont, 'css'));
 								} else {
 									$pageRenderer->addCssInlineBlock($name, $cont);
 								}
