@@ -37,6 +37,8 @@ class StaticDataStructure extends AbstractDataStructure {
 	protected $filename;
 
 	/**
+	 * @throws \InvalidArgumentException
+	 *
 	 * @param integer $key
 	 */
 	public function __construct($key) {

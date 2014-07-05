@@ -342,6 +342,8 @@ class Template {
 	 *
 	 * @param  string $fieldName XPath expression to look up for an value.
 	 *
+	 * @throws \UnexpectedValueException
+	 *
 	 * @return string
 	 */
 	public function getLocalDataprotValueByXpath($fieldName) {

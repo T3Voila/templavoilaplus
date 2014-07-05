@@ -135,6 +135,8 @@ class tx_templavoila_dbnewcontentel {
 	/**
 	 * Creating the module output.
 	 *
+	 * @throws \UnexpectedValueException
+	 *
 	 * @return void
 	 * @todo    provide position mapping if no position is given already. Like the columns selector but for our cascading element style ...
 	 */
