@@ -407,7 +407,7 @@ class ApiService {
 	 *
 	 * @return mixed TRUE or something else (depends on operation) if operation was successful, otherwise FALSE
 	 */
-	protected function process($mode, $sourcePointer, $destinationPointer = NULL, $onlyHandleReferences = FALSE) {
+	public function process($mode, $sourcePointer, $destinationPointer = NULL, $onlyHandleReferences = FALSE) {
 
 		// Check and get all information about the source position:
 		if (!$sourcePointer = $this->flexform_getValidPointer($sourcePointer)) {
@@ -497,7 +497,7 @@ class ApiService {
 	 *
 	 * @return boolean TRUE if operation was successfuly, otherwise false
 	 */
-	protected function process_move($sourcePointer, $destinationPointer, $sourceReferencesArr, $destinationReferencesArr, $sourceParentRecord, $destinationParentRecord, $elementRecord, $onlyHandleReferences) {
+	public function process_move($sourcePointer, $destinationPointer, $sourceReferencesArr, $destinationReferencesArr, $sourceParentRecord, $destinationParentRecord, $elementRecord, $onlyHandleReferences) {
 
 		$elementUid = $elementRecord['uid'];
 
@@ -577,7 +577,7 @@ class ApiService {
 	 *
 	 * @return mixed The UID of the newly created copy or FALSE if an error occurred.
 	 */
-	protected function process_copy($sourceElementUid, $destinationPointer, $destinationReferencesArr, $destinationParentRecord) {
+	public function process_copy($sourceElementUid, $destinationPointer, $destinationReferencesArr, $destinationParentRecord) {
 
 		$destinationPID = $destinationPointer['table'] == 'pages' ? $destinationParentRecord['uid'] : $destinationParentRecord['pid'];
 
@@ -613,7 +613,7 @@ class ApiService {
 	 *
 	 * @return mixed The UID of the newly created copy or FALSE if an error occurred.
 	 */
-	protected function process_copyRecursively($sourceElementUid, $destinationPointer, $destinationReferencesArr, $destinationParentRecord) {
+	public function process_copyRecursively($sourceElementUid, $destinationPointer, $destinationReferencesArr, $destinationParentRecord) {
 
 		// Determine the PID of the new location and get uids of all sub elements of the element to be copied:
 		$dummyArr = array();
@@ -654,7 +654,7 @@ class ApiService {
 	 *
 	 * @return mixed The UID of the newly created copy or FALSE if an error occurred.
 	 */
-	protected function process_localize($sourceElementUid, $destinationPointer, $destinationReferencesArr) {
+	public function process_localize($sourceElementUid, $destinationPointer, $destinationReferencesArr) {
 
 		// Determine language record UID of the language we localize to:
 		$staticLanguageRows = BackendUtility::getRecordsByField('static_languages', 'lg_iso_2', $destinationPointer['_languageKey']);
@@ -701,7 +701,7 @@ class ApiService {
 	 *
 	 * @return boolean TRUE if the operation was successful or FALSE if an error occurred.
 	 */
-	protected function process_reference($destinationPointer, $destinationReferencesArr, $elementUid) {
+	public function process_reference($destinationPointer, $destinationReferencesArr, $elementUid) {
 
 		$newDestinationReferencesArr = $this->flexform_insertElementReferenceIntoList($destinationReferencesArr, $destinationPointer['position'], $elementUid);
 		$this->flexform_storeElementReferencesListInRecord($newDestinationReferencesArr, $destinationPointer);
@@ -717,7 +717,7 @@ class ApiService {
 	 *
 	 * @return boolean TRUE if the operation was successful, otherwise FALSE
 	 */
-	protected function process_unlink($sourcePointer, $sourceReferencesArr) {
+	public function process_unlink($sourcePointer, $sourceReferencesArr) {
 
 		$newSourceReferencesArr = $this->flexform_removeElementReferenceFromList($sourceReferencesArr, $sourcePointer['position']);
 		$this->flexform_storeElementReferencesListInRecord($newSourceReferencesArr, $sourcePointer);
@@ -734,7 +734,7 @@ class ApiService {
 	 *
 	 * @return boolean TRUE if the operation was successful, otherwise FALSE
 	 */
-	protected function process_delete($sourcePointer, $sourceReferencesArr, $elementUid) {
+	public function process_delete($sourcePointer, $sourceReferencesArr, $elementUid) {
 
 		if (!$this->process_unlink($sourcePointer, $sourceReferencesArr)) {
 			return FALSE;
@@ -1123,7 +1123,7 @@ class ApiService {
 	 * @return array Array with an updated reference list
 	 * @see flexform_getElementReferencesFromXML(), flexform_removeElementReferenceFromList()
 	 */
-	protected function flexform_insertElementReferenceIntoList($currentReferencesArr, $position, $elementUid) {
+	public function flexform_insertElementReferenceIntoList($currentReferencesArr, $position, $elementUid) {
 
 		$inserted = FALSE;
 		$newReferencesArr = array();
@@ -1164,7 +1164,7 @@ class ApiService {
 	 * @return array Array with an updated reference list
 	 * @see flexform_getElementReferencesFromXML(), flexform_insertElementReferenceIntoList()
 	 */
-	protected function flexform_removeElementReferenceFromList($currentReferencesArr, $position) {
+	public function flexform_removeElementReferenceFromList($currentReferencesArr, $position) {
 
 		unset($currentReferencesArr[$position]);
 
@@ -1186,7 +1186,7 @@ class ApiService {
 	 *
 	 * @return void
 	 */
-	protected function flexform_storeElementReferencesListInRecord($referencesArr, $destinationPointer) {
+	public function flexform_storeElementReferencesListInRecord($referencesArr, $destinationPointer) {
 		if ($this->debug) {
 			GeneralUtility::devLog('API: flexform_storeElementReferencesListInRecord()', 'templavoila', 0, array('referencesArr' => $referencesArr, 'destinationPointer' => $destinationPointer));
 		}
@@ -1443,7 +1443,7 @@ class ApiService {
 	 *
 	 * @return array The content tree
 	 */
-	protected function getContentTree_element($table, $row, &$tt_content_elementRegister, $prevRecList = '', $depth = 0) {
+	public function getContentTree_element($table, $row, &$tt_content_elementRegister, $prevRecList = '', $depth = 0) {
 		$alttext = BackendUtility::getRecordIconAltText($row, $table);
 		$tree = array();
 		$tree['el'] = array(
@@ -1619,7 +1619,7 @@ class ApiService {
 	 *
 	 * @return array The sub tree for these elements
 	 */
-	protected function getContentTree_processSubContent($listOfSubElementUids, &$tt_content_elementRegister, $prevRecList, $depth = 0) {
+	public function getContentTree_processSubContent($listOfSubElementUids, &$tt_content_elementRegister, $prevRecList, $depth = 0) {
 		// Init variable:
 		$subTree = array();
 
@@ -1663,7 +1663,7 @@ class ApiService {
 	 * @return array Localization information
 	 * @see getContentTree_element()
 	 */
-	protected function getContentTree_getLocalizationInfoForElement($contentTreeArr, &$tt_content_elementRegister) {
+	public function getContentTree_getLocalizationInfoForElement($contentTreeArr, &$tt_content_elementRegister) {
 		$localizationInfoArr = array();
 		if ($contentTreeArr['el']['table'] == 'tt_content' && $contentTreeArr['el']['sys_language_uid'] <= 0) {
 
@@ -1725,7 +1725,7 @@ class ApiService {
 	 *
 	 * @return mixed The template object record or FALSE if none was found
 	 */
-	protected function getContentTree_fetchPageTemplateObject($row) {
+	public function getContentTree_fetchPageTemplateObject($row) {
 		$templateObjectUid = $row['tx_templavoila_ds'] ? intval($row['tx_templavoila_to']) : 0;
 		if (!$templateObjectUid) {
 			$rootLine = BackendUtility::BEgetRootLine($row['uid'], '', TRUE);
@@ -1753,7 +1753,7 @@ class ApiService {
 	 *
 	 * @return boolean TRUE, if all conditions are met to enable localization for the FCE through the page module
 	 */
-	protected function isLocalizationLinkEnabledForFCE($contentTreeArr) {
+	public function isLocalizationLinkEnabledForFCE($contentTreeArr) {
 		$isLocalizationLinkEnabledForFCE = FALSE;
 		$modTSConfig =& $this->getModWebTSconfig($contentTreeArr['el']['pid']);
 		if (intval($modTSConfig['properties']['enableLocalizationLinkForFCEs']) === 1 &&
@@ -1782,7 +1782,7 @@ class ApiService {
 	 *
 	 * @return void
 	 */
-	protected function setTCEmainRunningFlag($flag) {
+	public function setTCEmainRunningFlag($flag) {
 		$GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_api']['apiIsRunningTCEmain'] = $flag;
 	}
 
@@ -1793,7 +1793,7 @@ class ApiService {
 	 *
 	 * @return boolean TRUE if flag is set, otherwise FALSE;
 	 */
-	protected function getTCEmainRunningFlag() {
+	public function getTCEmainRunningFlag() {
 		return $GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_api']['apiIsRunningTCEmain'] ? TRUE : FALSE;
 	}
 
@@ -1877,7 +1877,7 @@ class ApiService {
 	 *
 	 * @return array The fetched modTSconfig for the web module
 	 */
-	protected function getModWebTSconfig($pageId) {
+	public function getModWebTSconfig($pageId) {
 		if (!isset($this->cachedModWebTSconfig[$pageId])) {
 			$modTSconfig = BackendUtility::getModTSconfig($pageId, 'mod.web_txtemplavoilaM1');
 			$this->cachedModWebTSconfig[$pageId] = $modTSconfig;
