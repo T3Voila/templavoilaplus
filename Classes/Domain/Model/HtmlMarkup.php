@@ -283,7 +283,7 @@ class HtmlMarkup {
 	 * Returns content based on input $pathStrArray.    (an array with values which are paths to get out of HTML.)
 	 *
 	 * @param string $content Input HTML to get path from.
-	 * @param string $pathStrArr The array where the values are paths, eg. array('td#content table[1] tr[1]','td#content table[1]','map#cdf / INNER') - takes only the first level in a path!
+	 * @param array $pathStrArr The array where the values are paths, eg. array('td#content table[1] tr[1]','td#content table[1]','map#cdf / INNER') - takes only the first level in a path!
 	 *
 	 * @return array Content... (not welldefined yet)
 	 */

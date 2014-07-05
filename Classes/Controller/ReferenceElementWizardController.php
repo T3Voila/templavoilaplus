@@ -75,6 +75,7 @@ class ReferenceElementWizardController extends \TYPO3\CMS\Backend\Module\Abstrac
 		$depth = $this->pObj->MOD_SETTINGS['depth'];
 
 		// Initialize tree object:
+		/** @var \TYPO3\CMS\Backend\Tree\View\PageTreeView $tree */
 		$tree = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\View\\PageTreeView');
 		$tree->init('AND ' . \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->getPagePermsClause(1));
 
@@ -161,7 +162,7 @@ class ReferenceElementWizardController extends \TYPO3\CMS\Backend\Module\Abstrac
 	/**
 	 * References all unreferenced elements in the given page tree
 	 *
-	 * @param array $tree : Page tree array
+	 * @param \TYPO3\CMS\Backend\Tree\View\PageTreeView $tree : Page tree array
 	 *
 	 * @return void
 	 * @access protected

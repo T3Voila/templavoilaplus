@@ -80,7 +80,7 @@ class StaticDataStructuresHandler {
 	 * Adds Template Object records to selector box for Content Elements of the "Plugin" type.
 	 *
 	 * @param array &$params Array of items passed by reference.
-	 * @param object $pObj The parent object (\TYPO3\CMS\Backend\Form\FormEngine / \TYPO3\CMS\Backend\Form\DataPreprocessor depending on context)
+	 * @param \TYPO3\CMS\Backend\Form\FormEngine|\TYPO3\CMS\Backend\Form\DataPreprocessor $pObj The parent object (\TYPO3\CMS\Backend\Form\FormEngine / \TYPO3\CMS\Backend\Form\DataPreprocessor depending on context)
 	 *
 	 * @return void
 	 */

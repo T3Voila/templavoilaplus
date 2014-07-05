@@ -489,6 +489,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 					$title = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle('pages', $contentPage);
 					$linkToPid = 'index.php?id=' . intval($this->rootElementRecord['content_from_pid']);
 					$link = '<a href="' . $linkToPid . '">' . htmlspecialchars($title) . ' (PID ' . intval($this->rootElementRecord['content_from_pid']) . ')</a>';
+					/** @var \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage */
 					$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
 						'\TYPO3\CMS\Core\Messaging\FlashMessage',
 						'',
@@ -781,6 +782,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		// We show a warning if the user may edit the pagecontent and is not permitted to edit the "content" fields at the same time
 		if (!\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isAdmin() && $this->modTSconfig['properties']['enableContentAccessWarning']) {
 			if (!($this->hasBasicEditRights())) {
+				/** @var \TYPO3\CMS\Core\Messaging\FlashMessage $message */
 				$message = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
 					'\TYPO3\CMS\Core\Messaging\FlashMessage',
 					\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('missing_edit_right_detail'),
@@ -1114,6 +1116,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				$vKey = $this->determineFlexValueKey(1, $langChildren, $languageKey);
 			} else {
 				if (!\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isAdmin()) {
+					/** @var \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage */
 					$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
 						'\TYPO3\CMS\Core\Messaging\FlashMessage',
 						\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('page_structure_inherited_detail'),
@@ -1194,6 +1197,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				}
 
 				if ($maxItemsReached) {
+					/** @var \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage */
 					$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
 						'\TYPO3\CMS\Core\Messaging\FlashMessage',
 						'',

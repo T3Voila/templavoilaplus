@@ -199,7 +199,7 @@ class ApiService {
 	 * record.
 	 *
 	 * @param array $destinationPointer : Flexform pointer defining the parent element of the new element. Position refers to the element _after_ which the new element should be inserted. Position == 0 means before the first element.
-	 * @param array $uid : UID of the tt_content record
+	 * @param integer $uid : UID of the tt_content record
 	 *
 	 * @return void
 	 */
@@ -1241,7 +1241,7 @@ class ApiService {
 	 *
 	 * If all that fails, this function returns FALSE.
 	 *
-	 * @param array $contextPageUid : The (current) page uid, used to determine which page datastructure is selected
+	 * @param integer $contextPageUid : The (current) page uid, used to determine which page datastructure is selected
 	 * @param integer $columnPosition : Column number to search a field for
 	 *
 	 * @return mixed Either the field name relating to the given column number or FALSE if all fall back methods failed and no suitable field could be found.
@@ -1299,7 +1299,7 @@ class ApiService {
 	 *
 	 * Reverse function of ds_getFieldNameByColumnPosition()
 	 *
-	 * @param array $contextPageUid : The (current) page uid, used to determine which page datastructure is selected
+	 * @param integer $contextPageUid : The (current) page uid, used to determine which page datastructure is selected
 	 * @param string $fieldName : Field name in the data structure we are searching the column number for
 	 *
 	 * @return integer The column number as used in the "colpos" field in tt_content
@@ -1574,7 +1574,7 @@ class ApiService {
 	 * @param string $table
 	 * @param array $row
 	 * @param array $fieldData
-	 * @param object $tt_content_elementRegister
+	 * @param array $tt_content_elementRegister
 	 * @param array $contentArr
 	 * @param array $vKeys
 	 *

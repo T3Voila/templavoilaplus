@@ -249,8 +249,7 @@ class DataStructureRepository {
 	}
 
 	/**
-	 *
-	 * @return boolean
+	 * @return array
 	 */
 	public static function getStaticDatastructureConfiguration() {
 		$config = array();

@@ -1009,7 +1009,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Creates listings of pages / content elements where NO or WRONG template objects are used.
 	 *
-	 * @param array $dsObj Data Structure ID
+	 * @param \Extension\Templavoila\Domain\Model\AbstractDataStructure $dsObj Data Structure ID
 	 * @param integer $scope Scope value. 1) page,  2) content elements
 	 * @param array $toIdArray Array with numerical toIDs. Must be integers and never be empty. You can always put in "-1" as dummy element.
 	 *
