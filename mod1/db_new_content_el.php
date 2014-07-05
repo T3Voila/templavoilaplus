@@ -122,7 +122,10 @@ class tx_templavoila_dbnewcontentel {
 	var $altRoot; // Array with alternative table, uid and flex-form field (see index.php in module for details, same thing there.)
 
 	// Internal, static:
-	var $doc; // Internal backend template object
+	/**
+	 * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
+	 */
+	public $doc; // Internal backend template object
 	protected $extConf; // Templavoila extension configuration
 
 	// Internal, dynamic:
@@ -500,6 +503,7 @@ class tx_templavoila_dbnewcontentel {
 		$toRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Domain\\Repository\\TemplateRepository');
 		$toList = $toRepo->getTemplatesByStoragePidAndScope($storageFolderPID, \Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_FCE);
 		foreach ($toList as $toObj) {
+			/** @var \Extension\Templavoila\Domain\Model\Template $toObj */
 			if ($toObj->isPermittedForUser()) {
 				$tmpFilename = $toObj->getIcon();
 				$returnElements['fce.']['elements.']['fce_' . $toObj->getKey() . '.'] = array(

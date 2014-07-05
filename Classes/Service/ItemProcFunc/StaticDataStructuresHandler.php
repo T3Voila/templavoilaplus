@@ -71,6 +71,7 @@ class StaticDataStructuresHandler {
 		);
 
 		foreach ($dsList as $dsObj) {
+			/** @var \Extension\Templavoila\Domain\Model\AbstractDataStructure $dsObj */
 			if ($dsObj->isPermittedForUser($params['row'], $removeDSItems)) {
 				$params['items'][] = array(
 					$dsObj->getLabel(),
@@ -145,6 +146,7 @@ class StaticDataStructuresHandler {
 		);
 
 		foreach ($dsList as $dsObj) {
+			/** @var \Extension\Templavoila\Domain\Model\AbstractDataStructure $dsObj */
 			if ($dsObj->isPermittedForUser($params['row'], $removeDSItems)) {
 				$params['items'][] = array(
 					$dsObj->getLabel(),
@@ -207,6 +209,7 @@ class StaticDataStructuresHandler {
 			if (strlen($dataSource)) {
 				$toList = $toRepo->getTemplatesByDatastructure($ds, $storagePid);
 				foreach ($toList as $toObj) {
+					/** @var \Extension\Templavoila\Domain\Model\Template $toObj */
 					if (!$toObj->hasParent() && $toObj->isPermittedForUser($params['table'], $removeTOItems)) {
 						$params['items'][] = array(
 							$toObj->getLabel(),
@@ -248,6 +251,7 @@ class StaticDataStructuresHandler {
 		);
 
 		foreach ($dsList as $dsObj) {
+			/** @var \Extension\Templavoila\Domain\Model\AbstractDataStructure $dsObj */
 			if (!$dsObj->isPermittedForUser($params['row'], $removeDSItems)) {
 				continue;
 			}
@@ -259,6 +263,7 @@ class StaticDataStructuresHandler {
 
 			$toList = $toRepo->getTemplatesByDatastructure($dsObj, $storagePid);
 			foreach ($toList as $toObj) {
+				/** @var \Extension\Templavoila\Domain\Model\Template $toObj */
 				if (!$toObj->hasParent() && $toObj->isPermittedForUser($params['row'], $removeTOItems)) {
 					$curDS[] = array(
 						$toObj->getLabel(),

@@ -94,6 +94,7 @@ class tx_templavoila_extdeveval {
 	function renderMenuOfDataStructures() {
 
 		// Get data structures we should display
+		/** @var \Extension\Templavoila\Domain\Repository\DataStructureRepository $dsRepo */
 		$dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Domain\\Repository\\DataStructureRepository');
 
 		// For each category (page/content element/unknown) we display :
@@ -109,6 +110,7 @@ class tx_templavoila_extdeveval {
 				</tr>';
 			$dsList = $dsRepo->getDatastructuresByScope($type);
 			foreach ($dsList as $dsObj) {
+				/** @var $dsObj \Extension\Templavoila\Domain\Model\AbstractDataStructure */
 				$table .= '
 						<tr class="bgColor4">
 							<td><a href="index.php?dsId=' . rawurlencode($dsObj->getKey()) . '">' . htmlspecialchars($dsObj->getLabel()) . '</a></td>

@@ -155,8 +155,15 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	var $limitTags; // String, list of tags to limit display by
 	var $path; // HTML-path to explode in template.
 
-	var $dsEdit; // instance of class tx_templavoila_cm1_dsEdit
-	var $eTypes; // instance of class tx_templavoila_cm1_eTypes
+	/**
+	 * @var \tx_templavoila_cm1_dsEdit
+	 */
+	public $dsEdit; // instance of class tx_templavoila_cm1_dsEdit
+
+	/**
+	 * @var \tx_templavoila_cm1_eTypes
+	 */
+	public $eTypes; // instance of class tx_templavoila_cm1_eTypes
 
 	var $extConf; // holds the extconf configuration
 	var $staticDS = FALSE; // Boolean; if true DS records are file based

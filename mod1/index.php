@@ -116,10 +116,26 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	var $translatorMode = FALSE; // If this is set, the whole page module scales down functionality so that a translator only needs  to look for and click the "Flags" in the interface to localize the page! This flag is set if a user does not have access to the default language; then translator mode is assumed.
 	var $calcPerms; // Permissions for the parrent record (normally page). Used for hiding icons.
 
+	/**
+	 * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
+	 */
 	var $doc; // Instance of template doc class
+
+	/**
+	 * @var \tx_templavoila_mod1_sidebar
+	 */
 	var $sideBarObj; // Instance of sidebar class
-	var $wizardsObj; // Instance of wizards class
-	var $clipboardObj; // Instance of clipboard class
+
+	/**
+	 * @var \tx_templavoila_mod1_wizards
+	 */
+	public $wizardsObj; // Instance of wizards class
+
+	/**
+	 * @var \tx_templavoila_mod1_clipboard
+	 */
+	public $clipboardObj; // Instance of clipboard class
+
 	var $recordsObj; // Instance of records class
 	/**
 	 * @var \Extension\Templavoila\Service\ApiService
@@ -2902,6 +2918,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		}
 		$editingEnabled = TRUE;
 		try {
+			/** @var \Extension\Templavoila\Domain\Repository\TemplateRepository $toRepo */
 			$toRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Domain\\Repository\\TemplateRepository');
 			$to = $toRepo->getTemplateByUid($toUid);
 			$xml = $to->getLocalDataprotArray();

@@ -33,7 +33,10 @@
  */
 class tx_templavoila_cm1_dsEdit {
 
-	var $pObj;
+	/**
+	 * @var \tx_templavoila_cm1
+	 */
+	protected $pObj;
 
 	/**
 	 * @var integer

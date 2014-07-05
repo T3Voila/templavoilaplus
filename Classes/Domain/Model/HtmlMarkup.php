@@ -204,7 +204,11 @@ class HtmlMarkup {
 	var $tags;
 
 	// INTERNAL dynamic
-	var $htmlParse = ''; // Will contain the HTML-parser object. (See init())
+	/**
+	 * @var \TYPO3\CMS\Core\Html\HtmlParser
+	 */
+	public $htmlParse; // Will contain the HTML-parser object. (See init())
+
 	var $backPath = ''; // Will contain the backend back-path which is necessary when marking-up the code in order to fix all media paths.
 	var $gnyfStyle = ''; // will contain style-part for gnyf images. (see init())
 	var $gnyfImgAdd = ''; // Eg. 	onclick="return parent.mod.updPath('###PATH###');"
@@ -817,6 +821,7 @@ class HtmlMarkup {
 						$types[$tag] == $attr[0]['type']
 					) {
 						$name = 'templavoila#' . md5($MappingData_head_cached['cArray']['el_' . $kk]);
+						/** @var \TYPO3\CMS\Core\Page\PageRenderer $pageRenderer */
 						$pageRenderer = $GLOBALS['TSFE']->getPageRenderer();
 						switch ($tag) {
 							case 'LINK':

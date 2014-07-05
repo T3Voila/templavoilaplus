@@ -48,7 +48,11 @@ class tx_templavoila_mod1_wizards {
 
 	// References to the page module object
 	var $pObj; // A pointer to the parent object, that is the templavoila page module script. Set by calling the method init() of this class.
-	var $doc; // A reference to the doc object of the parent object.
+
+	/**
+	 * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
+	 */
+	public $doc; // A reference to the doc object of the parent object.
 	var $extKey; // A reference to extension key of the parent object.
 	var $TCAdefaultOverride; // Config of TCAdefaults
 
@@ -307,6 +311,7 @@ class tx_templavoila_mod1_wizards {
 				$toRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Domain\\Repository\\TemplateRepository');
 				$dsList = $dsRepo->getDatastructuresByStoragePidAndScope($storageFolderPID, \Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_PAGE);
 				foreach ($dsList as $dsObj) {
+					/** @var \Extension\Templavoila\Domain\Model\AbstractDataStructure $dsObj */
 					if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList($disallowedPageTemplateItems, $dsObj->getKey()) ||
 						!$dsObj->isPermittedForUser()
 					) {
@@ -315,6 +320,7 @@ class tx_templavoila_mod1_wizards {
 
 					$toList = $toRepo->getTemplatesByDatastructure($dsObj, $storageFolderPID);
 					foreach ($toList as $toObj) {
+						/** @var \Extension\Templavoila\Domain\Model\Template $toObj */
 						if ($toObj->getKey() === $defaultTO['uid'] ||
 							!$toObj->isPermittedForUser() ||
 							\TYPO3\CMS\Core\Utility\GeneralUtility::inList($disallowedDesignTemplateItems, $toObj->getKey())

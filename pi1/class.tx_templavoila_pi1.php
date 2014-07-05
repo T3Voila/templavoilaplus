@@ -118,6 +118,7 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 		$data['tx_templavoila_ds'] = $conf['ds'];
 		$data['tx_templavoila_to'] = $conf['to'];
 
+		/** @var \Extension\Templavoila\Domain\Repository\DataStructureRepository $dsRepo */
 		$dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Domain\\Repository\\DataStructureRepository');
 
 		// prepare fake flexform

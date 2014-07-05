@@ -67,7 +67,10 @@ namespace Extension\Templavoila\Service;
 class SyntaxHighlightingService {
 
 	// Internal, dynamic:
-	var $htmlParse; // Parse object.
+	/**
+	 * @var \TYPO3\CMS\Core\Html\HtmlParser
+	 */
+	protected $htmlParse; // Parse object.
 
 	// External, static:
 	var $DS_wrapTags = array(

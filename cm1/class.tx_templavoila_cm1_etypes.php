@@ -33,7 +33,10 @@
  */
 class tx_templavoila_cm1_eTypes {
 
-	var $pObj;
+	/**
+	 * @var tx_templavoila_cm1
+	 */
+	public $pObj;
 
 	/**
 	 * @var array

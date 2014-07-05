@@ -38,12 +38,18 @@
  */
 class tx_templavoila_mod1_records {
 
-	var $pObj; // Reference to parent module
+	/**
+	 * @var tx_templavoila_module1
+	 */
+	public $pObj; // Reference to parent module
 	var $tables;
 
 	var $calcPerms;
 
-	var $dblist;
+	/**
+	 * @var \tx_templavoila_mod1_recordlist
+	 */
+	public $dblist;
 
 	/**
 	 * Initializes sidebar object. Checks if there any tables to display and

@@ -370,6 +370,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$toRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Domain\\Repository\\TemplateRepository');
 		$toList = $toRepo->getAll($this->id);
 		foreach ($toList as $toObj) {
+			/** @var \Extension\Templavoila\Domain\Model\Template $toObj */
 			if (!in_array($toObj->getKey(), $toIdArray)) {
 				$rTODres = $this->renderTODisplay($toObj, -1, 1);
 				$lostTOs .= $rTODres['HTML'];
@@ -443,6 +444,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		// Traverse data structures to list:
 		if (count($dsList)) {
 			foreach ($dsList as $dsObj) {
+				/** @var \Extension\Templavoila\Domain\Model\AbstractDataStructure $dsObj */
 
 				// Traverse template objects which are not children of anything:
 				$TOcontent = '';
@@ -455,6 +457,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				$newTitle = $dsObj->getLabel() . ' [TEMPLATE]';
 				if (count($toList)) {
 					foreach ($toList as $toObj) {
+						/** @var \Extension\Templavoila\Domain\Model\Template $toObj */
 						$toIdArray[] = $toObj->getKey();
 						if ($toObj->hasParentTemplate()) {
 							continue;
@@ -656,7 +659,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Render display of a Template Object
 	 *
-	 * @param array $toObj Template Object record to render
+	 * @param \Extension\Templavoila\Domain\Model\Template $toObj Template Object record to render
 	 * @param integer $scope Scope of DS
 	 * @param integer $children If set, the function is asked to render children to template objects (and should not call it self recursively again).
 	 *
@@ -874,7 +877,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Creates listings of pages / content elements where template objects are used.
 	 *
-	 * @param array $toObj Template Object record
+	 * @param \Extension\Templavoila\Domain\Model\Template $toObj Template Object record
 	 * @param integer $scope Scope value. 1) page,  2) content elements
 	 *
 	 * @return string HTML table listing usages.
