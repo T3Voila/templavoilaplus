@@ -28,13 +28,13 @@ namespace Extension\Templavoila\Domain\Model;
  *
  * $Id$
  *
- * @author    Kasper Skaarhoj <kasper@typo3.com>
+ * @author Kasper Skaarhoj <kasper@typo3.com>
  */
 
 /**
  * HTML markup/search class; can mark up HTML with small images for each element AND as well help you extract parts of the HTML based on a socalled 'PATH'.
  *
- * @author    Kasper Skaarhoj <kasper@typo3.com>
+ * @author Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage tx_templavoila
  */
@@ -213,13 +213,13 @@ class HtmlMarkup {
 	/**
 	 * Marks up input HTML content string with tag-images based on the list in $showTags
 	 *
-	 * @param    string        HTML content
-	 * @param    string        Backend module BACK_PATH - used to set the right position for the tag-images (gnyfs)
-	 * @param    string        The relative path from module position back to the HTML-file position; used to correct paths of HTML since the HTML is modified so it can display correctly from the path of the module using this class.
-	 * @param    string        Comma list of tags which should be exploded. Notice that tags in this list which does not appear in $this->tags will be ignored.
-	 * @param    string        The mode of display; [blank], explode, borders. Set in $this->mode. "checkbox" is also an option, used for header data.
+	 * @param string $content HTML content
+	 * @param string $backPath Backend module BACK_PATH - used to set the right position for the tag-images (gnyfs)
+	 * @param string $relPathFix The relative path from module position back to the HTML-file position; used to correct paths of HTML since the HTML is modified so it can display correctly from the path of the module using this class.
+	 * @param string $showTags Comma list of tags which should be exploded. Notice that tags in this list which does not appear in $this->tags will be ignored.
+	 * @param string $mode The mode of display; [blank], explode, borders. Set in $this->mode. "checkbox" is also an option, used for header data.
 	 *
-	 * @return    string        Modified HTML
+	 * @return string Modified HTML
 	 */
 	function markupHTMLcontent($content, $backPath, $relPathFix, $showTags, $mode = '') {
 		// Initialize:
@@ -254,12 +254,12 @@ class HtmlMarkup {
 	/**
 	 * Passes through input HTML content string BUT substitutes relative paths. Used to format the parts of the file which are NOT marked up with markupHTMLcontent()
 	 *
-	 * @param    string        HTML content
-	 * @param    string        The relative path from module position back to the HTML-file position; used to correct paths of HTML since the HTML is modified so it can display correctly from the path of the module using this class.
-	 * @param    string        The mode of display; [blank], explode, borders. Set in $this->mode
-	 * @param    string        Alternative CSS style value from the style attribute of the <pre></pre>-section
+	 * @param string $content HTML content
+	 * @param string $relPathFix The relative path from module position back to the HTML-file position; used to correct paths of HTML since the HTML is modified so it can display correctly from the path of the module using this class.
+	 * @param string $mode The mode of display; [blank], explode, borders. Set in $this->mode
+	 * @param string $altStyle Alternative CSS style value from the style attribute of the <pre></pre>-section
 	 *
-	 * @return    string        Modified HTML
+	 * @return string Modified HTML
 	 * @see markupHTMLcontent()
 	 */
 	function passthroughHTMLcontent($content, $relPathFix, $mode = '', $altStyle = '') {
@@ -279,10 +279,10 @@ class HtmlMarkup {
 	/**
 	 * Returns content based on input $pathStrArray.    (an array with values which are paths to get out of HTML.)
 	 *
-	 * @param    string        Input HTML to get path from.
-	 * @param    string        The array where the values are paths, eg. array('td#content table[1] tr[1]','td#content table[1]','map#cdf / INNER') - takes only the first level in a path!
+	 * @param string $content Input HTML to get path from.
+	 * @param string $pathStrArr The array where the values are paths, eg. array('td#content table[1] tr[1]','td#content table[1]','map#cdf / INNER') - takes only the first level in a path!
 	 *
-	 * @return    array        Content... (not welldefined yet)
+	 * @return array Content... (not welldefined yet)
 	 */
 	function getContentBasedOnPath($content, $pathStrArr) {
 		// INIT:
@@ -317,12 +317,10 @@ class HtmlMarkup {
 	}
 
 	/**
-	 * [Describe function...]
+	 * @param string $content
+	 * @param string $pathString
 	 *
-	 * @param    [type]        $content: ...
-	 * @param    [type]        $pathString: ...
-	 *
-	 * @return    [type]        ...
+	 * @return array|string
 	 */
 	function splitByPath($content, $pathString) {
 		$outArray = array('', $content, '');
@@ -348,12 +346,10 @@ class HtmlMarkup {
 	}
 
 	/**
-	 * [Describe function...]
+	 * @param string $fileContent
+	 * @param array $currentMappingInfo
 	 *
-	 * @param    [type]        $fileContent: ...
-	 * @param    [type]        $currentMappingInfo: ...
-	 *
-	 * @return    [type]        ...
+	 * @return array
 	 */
 	function splitContentToMappingInfo($fileContent, $currentMappingInfo) {
 		// Get paths into an array
@@ -416,11 +412,9 @@ class HtmlMarkup {
 	}
 
 	/**
-	 * [Describe function...]
+	 * @param array $currentMappingInfo
 	 *
-	 * @param    [type]        $currentMappingInfo: ...
-	 *
-	 * @return    [type]        ...
+	 * @return array
 	 */
 	function mappingInfoToSearchPath($currentMappingInfo) {
 		$paths = array();
@@ -457,11 +451,11 @@ class HtmlMarkup {
 	/**
 	 * Substitutes all placeholders in $content string which are found in the $searchParts array (see syntax from getContentBasedOnPath())
 	 *
-	 * @param    string        Content string with markers
-	 * @param    array        Array with searchPaths which has been modified by $this->recursiveBlockSplitting in search mode to contain content and subparts.
-	 * @param    [type]        $token: ...
+	 * @param string $content Content string with markers
+	 * @param array $searchParts Array with searchPaths which has been modified by $this->recursiveBlockSplitting in search mode to contain content and subparts.
+	 * @param string $token
 	 *
-	 * @return    string        HTML .
+	 * @return string HTML .
 	 */
 	function mergeSearchpartsIntoContent($content, $searchParts, $token = '') {
 		foreach ($searchParts as $path => $pathInfo) {
@@ -487,14 +481,12 @@ class HtmlMarkup {
 	}
 
 	/**
-	 * [Describe function...]
+	 * @param array $dataStruct
+	 * @param array $currentMappingInfo
+	 * @param string $firstLevelImplodeToken
+	 * @param string $sampleOrder
 	 *
-	 * @param    [type]        $dataStruct: ...
-	 * @param    [type]        $currentMappingInfo: ...
-	 * @param    [type]        $firstLevelImplodeToken: ...
-	 * @param    [type]        $sampleOrder: ...
-	 *
-	 * @return    [type]        ...
+	 * @return string
 	 */
 	function mergeSampleDataIntoTemplateStructure($dataStruct, $currentMappingInfo, $firstLevelImplodeToken = '', $sampleOrder = '') {
 
@@ -533,14 +525,12 @@ class HtmlMarkup {
 	}
 
 	/**
-	 * [Describe function...]
+	 * @param array $editStruct
+	 * @param array $currentMappingInfo
+	 * @param string $firstLevelImplodeToken
+	 * @param string $valueKey
 	 *
-	 * @param    [type]        $editStruct: ...
-	 * @param    [type]        $currentMappingInfo: ...
-	 * @param    [type]        $firstLevelImplodeToken: ...
-	 * @param    [type]        $valueKey: ...
-	 *
-	 * @return    [type]        ...
+	 * @return string
 	 */
 	function mergeFormDataIntoTemplateStructure($editStruct, $currentMappingInfo, $firstLevelImplodeToken = '', $valueKey = 'vDEF') {
 		$isSection = 0;
@@ -584,9 +574,9 @@ class HtmlMarkup {
 	/**
 	 * Processing of a path; It splits the path by tokens like "|", "/" and " " etc and returns an array with path-levels and properties etc.
 	 *
-	 * @param    string        The total path string to explode into smaller units.
+	 * @param string $pathStr The total path string to explode into smaller units.
 	 *
-	 * @return    array        Array with the information inside.
+	 * @return array Array with the information inside.
 	 */
 	function splitPath($pathStr) {
 		$subPaths = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('|', $pathStr, 1);
@@ -641,9 +631,9 @@ class HtmlMarkup {
 	/**
 	 * For use in both frontend and backend
 	 *
-	 * @param    [type]        $uid: ...
+	 * @param integer $uid
 	 *
-	 * @return    [type]        ...
+	 * @return string|boolean
 	 */
 	function getTemplateArrayForTO($uid) {
 		global $TCA, $TYPO3_DB;
@@ -663,12 +653,10 @@ class HtmlMarkup {
 	}
 
 	/**
-	 * [Describe function...]
+	 * @param array $TA
+	 * @param array $data
 	 *
-	 * @param    [type]        $TA: ...
-	 * @param    [type]        $data: ...
-	 *
-	 * @return    mixed        ??? or <code>false</code> if ???
+	 * @return boolean|string
 	 */
 	function mergeDataArrayToTemplateArray($TA, $data) {
 		if (is_array($TA['cArray'])) {
@@ -688,11 +676,11 @@ class HtmlMarkup {
 	 * Returns the right template record for the current display
 	 * Requires the extension "TemplaVoila"
 	 *
-	 * @param    integer        The UID of the template record
-	 * @param    [type]        $renderType: ...
-	 * @param    [type]        $langUid: ...
+	 * @param integer $uid The UID of the template record
+	 * @param string $renderType
+	 * @param integer $langUid
 	 *
-	 * @return    mixed        The record array or <code>false</code>
+	 * @return mixed The record array or <code>false</code>
 	 */
 	function getTemplateRecord($uid, $renderType, $langUid) {
 		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('templavoila')) {
@@ -745,14 +733,12 @@ class HtmlMarkup {
 	}
 
 	/**
-	 * [Describe function...]
+	 * @param integer $uid
+	 * @param string $renderType
+	 * @param integer $langUid
+	 * @param string $sheet
 	 *
-	 * @param    [type]        $uid: ...
-	 * @param    [type]        $renderType: ...
-	 * @param    [type]        $langUid: ...
-	 * @param    [type]        $sheet: ...
-	 *
-	 * @return    [type]        ...
+	 * @return mixed
 	 */
 	function getTemplateMappingArray($uid, $renderType, $langUid, $sheet) {
 		$row = $this->getTemplateRecord($uid, $renderType, $langUid);
@@ -764,11 +750,11 @@ class HtmlMarkup {
 	/**
 	 * Helper function to build the query for searching print/language templates.
 	 *
-	 * @param    integer        The UID of the template record
-	 * @param    string        The where clause.
+	 * @param integer $uid The UID of the template record
+	 * @param string $where The where clause.
 	 *
-	 * @return    mixed        An array if a record is found, otherwise null
-	 * @access    private
+	 * @return mixed An array if a record is found, otherwise null
+	 * @access private
 	 * @see getTemplateRecord()
 	 */
 	function getTemplateRecord_query($uid, $where) {
@@ -787,12 +773,12 @@ class HtmlMarkup {
 	/**
 	 * Will set header content and BodyTag for template.
 	 *
-	 * @param    array $MappingInfo_head : ...
-	 * @param    array $MappingData_head_cached : ...
-	 * @param    string $BodyTag_cached : ...
-	 * @param    boolean $pageRenderer : try to use the pageRenderer for script and style inclusion
+	 * @param array $MappingInfo_head : ...
+	 * @param array $MappingData_head_cached : ...
+	 * @param string $BodyTag_cached : ...
+	 * @param boolean $pageRenderer : try to use the pageRenderer for script and style inclusion
 	 *
-	 * @return    void
+	 * @return void
 	 */
 	function setHeaderBodyParts($MappingInfo_head, $MappingData_head_cached, $BodyTag_cached = '', $pageRenderer = FALSE) {
 
@@ -886,7 +872,7 @@ class HtmlMarkup {
 	/**
 	 * Init function, should be called by the processing functions above before doing any recursive parsing of the HTML code.
 	 *
-	 * @return    void
+	 * @return void
 	 */
 	function init() {
 		// HTML parser object initialized.
@@ -907,9 +893,9 @@ class HtmlMarkup {
 	 * The idea is to parse the XML in $contnet and set the internal TAG array with all these tags so they can be mapped...
 	 * NOT WORKING YET - experiment.
 	 *
-	 * @param    [type]        $content: ...
+	 * @param string $content
 	 *
-	 * @return    [type]        ...
+	 * @return string|void
 	 */
 	function setTagsFromXML($content) {
 		$parser = xml_parser_create();
@@ -937,9 +923,9 @@ class HtmlMarkup {
 	 * Takes the input list of tags to markup and validates it against $this->tags array.
 	 * Returns an array with two strings, the list of block tags and the list of single tags.
 	 *
-	 * @param    string        Comma list of tags, input to processing functions in top of class.
+	 * @param string $showTags Comma list of tags, input to processing functions in top of class.
 	 *
-	 * @return    array        array with two strings, the list of block tags and the list of single tags.
+	 * @return array array with two strings, the list of block tags and the list of single tags.
 	 */
 	function splitTagTypes($showTags) {
 		$showTagsArr = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', strtolower($showTags), 1);
@@ -983,14 +969,14 @@ class HtmlMarkup {
 	 * Main splitting function - will split the input $content HTML string into sections based on the strings with tags, $tagsBlock and $tagsSolo
 	 * WARNING: No currect support for XML-ended tags, eg. <p/>. In fact there is not even support for block tags like <p> which does not have a counter part ending it!!! (This support must come from the htmlparser class btw.)
 	 *
-	 * @param    string $content : HTML content
-	 * @param    string $tagsBlock : list of block tags; which has a start and end (eg. <p>...</p>, <table>...</table>, <tr>...</tr>, <div>...</div>)
-	 * @param    string $tagsSolo : list of solo (single) tags; which are stand-alone (eg. <img>, <br>, <hr>, <input>)
-	 * @param    string $mode : Denotes which mode of operation to apply: 'markup' will markup the html, 'search' will return HTML code with markers inserted for the found paths. Default does nothing.
-	 * @param    string $path : Used to accumulate the tags 'path' in the document
-	 * @param    integer $recursion : Used internally to control recursion.
+	 * @param string $content : HTML content
+	 * @param string $tagsBlock : list of block tags; which has a start and end (eg. <p>...</p>, <table>...</table>, <tr>...</tr>, <div>...</div>)
+	 * @param string $tagsSolo : list of solo (single) tags; which are stand-alone (eg. <img>, <br>, <hr>, <input>)
+	 * @param string $mode : Denotes which mode of operation to apply: 'markup' will markup the html, 'search' will return HTML code with markers inserted for the found paths. Default does nothing.
+	 * @param string $path : Used to accumulate the tags 'path' in the document
+	 * @param integer $recursion : Used internally to control recursion.
 	 *
-	 * @return    string        HTML
+	 * @return string HTML
 	 */
 	function recursiveBlockSplitting($content, $tagsBlock, $tagsSolo, $mode, $path = '', $recursion = 0) {
 
@@ -1125,16 +1111,16 @@ class HtmlMarkup {
 	/**
 	 * In markup mode, this function is used to add the gnyf image to the HTML plus set all necessary attributes etc in order to mark up the code visually.
 	 *
-	 * @param    string        Element type: block or '' (single/solo)
-	 * @param    string        Sub HTML code.
-	 * @param    array        Attributes of the current tag
-	 * @param    string        Current tags name (lowercase)
-	 * @param    string        Current tag, full
-	 * @param    string        End tag for the current tag
-	 * @param    string        Current path of element
-	 * @param    integer        The recursion number
+	 * @param string $mode Element type: block or '' (single/solo)
+	 * @param string $v Sub HTML code.
+	 * @param array $params Attributes of the current tag
+	 * @param string $firstTagName Current tags name (lowercase)
+	 * @param string $firstTag Current tag, full
+	 * @param string $endTag End tag for the current tag
+	 * @param string $subPath Current path of element
+	 * @param integer $recursion The recursion number
 	 *
-	 * @return    string        Modified sub HTML code ($v)
+	 * @return string Modified sub HTML code ($v)
 	 */
 	function getMarkupCode($mode, $v, $params, $firstTagName, $firstTag, $endTag, $subPath, $recursion) {
 
@@ -1215,17 +1201,17 @@ class HtmlMarkup {
 	/**
 	 * In search mode, this function is used to process the content.
 	 *
-	 * @param    string        Element type: block or '' (single/solo)
-	 * @param    string        Sub HTML code.
-	 * @param    array        Attributes of the current tag
-	 * @param    string        Current tags name (lowercase)
-	 * @param    string        Current tag, full
-	 * @param    string        End tag for the current tag
-	 * @param    string        Current path of element
-	 * @param    integer        The recursion number
-	 * @param    [type]        $recursion: ...
+	 * @param string $mode Element type: block or '' (single/solo)
+	 * @param string $v Sub HTML code.
+	 * @param array $params Attributes of the current tag
+	 * @param string $firstTagName Current tags name (lowercase)
+	 * @param string $firstTag Current tag, full
+	 * @param string $endTag End tag for the current tag
+	 * @param string $subPath Current path of element
+	 * @param string $path
+	 * @param integer $recursion The recursion number
 	 *
-	 * @return    string        Modified sub HTML code ($v)
+	 * @return string Modified sub HTML code ($v)
 	 */
 	function getSearchCode($mode, $v, $params, $firstTagName, $firstTag, $endTag, $subPath, $path, $recursion) {
 		if ($this->rangeEndSearch[$recursion]) {
@@ -1304,12 +1290,12 @@ class HtmlMarkup {
 	/**
 	 * Will format content for display in 'source' mode.
 	 *
-	 * @param    string        Input string to format.
-	 * @param    integer        The recursion integer - used to indent the code.
-	 * @param    string        The gnyf-image to display.
-	 * @param    boolean        If set, then the line will be formatted in color as a "value" (means outside of the tag which might otherwise be what is shown)
+	 * @param string $str Input string to format.
+	 * @param integer $recursion The recursion integer - used to indent the code.
+	 * @param string $gnyf The gnyf-image to display.
+	 * @param integer $valueStr If set, then the line will be formatted in color as a "value" (means outside of the tag which might otherwise be what is shown)
 	 *
-	 * @return    string        Formatted input.
+	 * @return string Formatted input.
 	 */
 	function sourceDisplay($str, $recursion, $gnyf = '', $valueStr = 0) {
 		if (strcmp(trim($str), '')) {
@@ -1327,13 +1313,13 @@ class HtmlMarkup {
 	/**
 	 * Will format content for display in 'checkbox' mode.
 	 *
-	 * @param    string        Input string to format.
-	 * @param    integer        The recursion integer - used to indent the code.
-	 * @param    string        HTML path
-	 * @param    string        The gnyf-image to display.
-	 * @param    boolean        If set, then the line will be formatted in color as a "value" (means outside of the tag which might otherwise be what is shown)
+	 * @param string $str Input string to format.
+	 * @param integer $recursion The recursion integer - used to indent the code.
+	 * @param string $path HTML path
+	 * @param string $gnyf The gnyf-image to display.
+	 * @param integer $valueStr If set, then the line will be formatted in color as a "value" (means outside of the tag which might otherwise be what is shown)
 	 *
-	 * @return    string        Formatted input.
+	 * @return string Formatted input.
 	 */
 	function checkboxDisplay($str, $recursion, $path, $gnyf = '', $valueStr = 0) {
 		static $rows = 0;
@@ -1358,11 +1344,11 @@ class HtmlMarkup {
 	/**
 	 * Compile the path value for the current path/tagname and attributes
 	 *
-	 * @param    string        Current path string for the parent level.
-	 * @param    string        The tag name for the current element on that level
-	 * @param    string        The attributes for the tag in an array with key/value pairs
+	 * @param string $path Current path string for the parent level.
+	 * @param string $firstTagName The tag name for the current element on that level
+	 * @param string $attr The attributes for the tag in an array with key/value pairs
 	 *
-	 * @return    string        The sub path.
+	 * @return string The sub path.
 	 */
 	function makePath($path, $firstTagName, $attr) {
 		// Detect if pathMode is set and then construct the path based on the mode set.
@@ -1390,11 +1376,11 @@ class HtmlMarkup {
 	/**
 	 * Returns the GNYF image (tag-image)
 	 *
-	 * @param    string        The tag name in lowercase, eg. "table" or "tr"
-	 * @param    string        Path string for the link and title-attribute of the image.
-	 * @param    [type]        $title: ...
+	 * @param string $firstTagName The tag name in lowercase, eg. "table" or "tr"
+	 * @param string $path Path string for the link and title-attribute of the image.
+	 * @param string $title
 	 *
-	 * @return    string        HTML
+	 * @return string HTML
 	 */
 	function getGnyf($firstTagName, $path, $title) {
 		if (!$this->onlyElements || \TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->onlyElements, $firstTagName)) {

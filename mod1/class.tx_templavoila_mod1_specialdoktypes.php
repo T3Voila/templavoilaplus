@@ -26,16 +26,16 @@
  *
  * $Id$
  *
- * @author     Robert Lemke <robert@typo3.org>
+ * @author Robert Lemke <robert@typo3.org>
  */
 
 /**
  * Submodule 'clipboard' for the templavoila page module
  *
- * @author        Robert Lemke <robert@typo3.org>
- * @package        TYPO3
+ * @author Robert Lemke <robert@typo3.org>
+ * @package TYPO3
  * @subpackage    tx_templavoila
- * @todo        This class wants to be refactored because there's quite some redundancy in it. But that's not urgent ...
+ * @todo This class wants to be refactored because there's quite some redundancy in it. But that's not urgent ...
  */
 class tx_templavoila_mod1_specialdoktypes {
 
@@ -46,10 +46,10 @@ class tx_templavoila_mod1_specialdoktypes {
 	/**
 	 * Does some basic initialization
 	 *
-	 * @param    $pObj :        Reference to the parent object ($this)
+	 * @param $pObj : Reference to the parent object ($this)
 	 *
-	 * @return    void
-	 * @access    public
+	 * @return void
+	 * @access public
 	 */
 	function init(&$pObj) {
 		global $LANG, $BE_USER, $BACK_PATH;
@@ -64,10 +64,10 @@ class tx_templavoila_mod1_specialdoktypes {
 	/**
 	 * Displays the edit page screen if the currently selected page is of the doktype "External URL"
 	 *
-	 * @param    array $pageRecord : The current page record
+	 * @param array $pageRecord : The current page record
 	 *
-	 * @return    mixed        HTML output from this submodule or FALSE if this submodule doesn't feel responsible
-	 * @access    public
+	 * @return mixed HTML output from this submodule or FALSE if this submodule doesn't feel responsible
+	 * @access public
 	 */
 	function renderDoktype_3($pageRecord) {
 		global $LANG, $BE_USER, $TYPO3_CONF_VARS;
@@ -122,10 +122,10 @@ class tx_templavoila_mod1_specialdoktypes {
 	/**
 	 * Displays the edit page screen if the currently selected page is of the doktype "Shortcut"
 	 *
-	 * @param    array $pageRecord : The current page record
+	 * @param array $pageRecord : The current page record
 	 *
-	 * @return    mixed        HTML output from this submodule or FALSE if this submodule doesn't feel responsible
-	 * @access    public
+	 * @return mixed HTML output from this submodule or FALSE if this submodule doesn't feel responsible
+	 * @access public
 	 */
 	function renderDoktype_4($pageRecord) {
 		global $LANG, $BE_USER, $TYPO3_CONF_VARS;
@@ -157,10 +157,10 @@ class tx_templavoila_mod1_specialdoktypes {
 	/**
 	 * Displays the edit page screen if the currently selected page is of the doktype "Mount Point"
 	 *
-	 * @param    array $pageRecord : The current page record
+	 * @param array $pageRecord : The current page record
 	 *
-	 * @return    mixed        HTML output from this submodule or FALSE if this submodule doesn't feel responsible
-	 * @access    protected
+	 * @return mixed HTML output from this submodule or FALSE if this submodule doesn't feel responsible
+	 * @access protected
 	 */
 	function renderDoktype_7($pageRecord) {
 		global $LANG, $BE_USER, $TYPO3_CONF_VARS;
@@ -197,10 +197,10 @@ class tx_templavoila_mod1_specialdoktypes {
 	/**
 	 * Displays the edit page screen if the currently selected page is of the doktype "Sysfolder"
 	 *
-	 * @param    array $pageRecord : The current page record
+	 * @param array $pageRecord : The current page record
 	 *
-	 * @return    mixed        HTML output from this submodule or FALSE if this submodule doesn't feel responsible
-	 * @access    public
+	 * @return mixed HTML output from this submodule or FALSE if this submodule doesn't feel responsible
+	 * @access public
 	 */
 	function renderDoktype_254($pageRecord) {
 		global $LANG, $BE_USER, $TYPO3_CONF_VARS;
@@ -236,8 +236,8 @@ class tx_templavoila_mod1_specialdoktypes {
 	/**
 	 * Returns TRUE if the logged in BE user has access to the list module.
 	 *
-	 * @return    boolean        TRUE or FALSE
-	 * @access    protected
+	 * @return boolean TRUE or FALSE
+	 * @access protected
 	 */
 	function userHasAccessToListModule() {
 		global $BE_USER;

@@ -27,7 +27,7 @@ namespace Extension\Templavoila\Domain\Model;
 /**
  * Class to provide unique access to datastructure
  *
- * @author    Tolleiv Nietsch <tolleiv.nietsch@typo3.org>
+ * @author Tolleiv Nietsch <tolleiv.nietsch@typo3.org>
  */
 abstract class AbstractDataStructure {
 

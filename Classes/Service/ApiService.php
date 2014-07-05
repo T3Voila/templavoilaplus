@@ -28,7 +28,7 @@ namespace Extension\Templavoila\Service;
  *
  * $Id$
  *
- * @author     Robert Lemke <robert@typo3.org>
+ * @author Robert Lemke <robert@typo3.org>
  */
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
@@ -71,7 +71,7 @@ class ApiService {
 	/**
 	 * @param string $rootTable : Usually the root table is "pages" but another table can be specified (eg. "tt_content")
 	 *
-	 * @return void
+	 * @return \Extension\Templavoila\Service\ApiService
 	 */
 	public function __construct($rootTable = 'pages') {
 		$this->rootTable = $rootTable;
@@ -650,7 +650,7 @@ class ApiService {
 	 *
 	 * @param integer $sourceElementUid : UID of the element to be copied
 	 * @param array $destinationPointer : flexform pointer to the destination location
-	 * @param array $destinationParentRecord : Database record of the destination location (either from table 'pages' or 'tt_content')
+	 * @param array $destinationReferencesArr : Database record of the destination location (either from table 'pages' or 'tt_content')
 	 *
 	 * @return mixed The UID of the newly created copy or FALSE if an error occurred.
 	 */
@@ -1410,7 +1410,7 @@ class ApiService {
 	 * @param boolean $includePreviewData : If set, preview related data is included.
 	 *
 	 * @return array Array with tree and register of used content elements
-	 * @access    public
+	 * @access public
 	 */
 	public function getContentTree($table, $row, $includePreviewData = TRUE) {
 

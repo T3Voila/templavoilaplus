@@ -26,7 +26,7 @@
  *
  * $Id$
  *
- * @author     Robert Lemke <robert@typo3.org>
+ * @author Robert Lemke <robert@typo3.org>
  */
 
 /**
@@ -35,8 +35,8 @@
  * Note: This class is closely bound to the page module class and uses many variables and functions directly. After major modifications of
  *       the page module all functions of this wizard class should be checked to make sure that they still work.
  *
- * @author        Robert Lemke <robert@typo3.org>
- * @package        TYPO3
+ * @author Robert Lemke <robert@typo3.org>
+ * @package TYPO3
  * @subpackage    tx_templavoila
  */
 class tx_templavoila_mod1_wizards {
@@ -53,9 +53,9 @@ class tx_templavoila_mod1_wizards {
 	 * Initializes the wizards object. The calling class must make sure that the right locallang files are already loaded.
 	 * This method is usually called by the templavoila page module.
 	 *
-	 * @param    $pObj :        Reference to the parent object ($this)
+	 * @param $pObj : Reference to the parent object ($this)
 	 *
-	 * @return    void
+	 * @return void
 	 */
 	function init(&$pObj) {
 		// Make local reference to some important variables:
@@ -78,10 +78,10 @@ class tx_templavoila_mod1_wizards {
 	/**
 	 * Creates the screen for "new page wizard"
 	 *
-	 * @param    integer $positionPid : Can be positive and negative depending of where the new page is going: Negative always points to a position AFTER the page having the abs. value of the positionId. Positive numbers means to create as the first subpage to another page.
+	 * @param integer $positionPid : Can be positive and negative depending of where the new page is going: Negative always points to a position AFTER the page having the abs. value of the positionId. Positive numbers means to create as the first subpage to another page.
 	 *
-	 * @return    string        Content for the screen output.
-	 * @todo                Check required field(s), support t3d
+	 * @return string Content for the screen output.
+	 * @todo  Check required field(s), support t3d
 	 */
 	function renderWizard_createNewPage($positionPid) {
 		global $LANG, $BE_USER, $TYPO3_CONF_VARS;
@@ -245,10 +245,10 @@ class tx_templavoila_mod1_wizards {
 	/**
 	 * Renders the template selector.
 	 *
-	 * @param    integer        Position id. Can be positive and negative depending of where the new page is going: Negative always points to a position AFTER the page having the abs. value of the positionId. Positive numbers means to create as the first subpage to another page.
-	 * @param    string $templateType : The template type, 'tmplobj' or 't3d'
+	 * @param integer $positionPid Position id. Can be positive and negative depending of where the new page is going: Negative always points to a position AFTER the page having the abs. value of the positionId. Positive numbers means to create as the first subpage to another page.
+	 * @param string $templateType : The template type, 'tmplobj' or 't3d'
 	 *
-	 * @return    string        HTML output containing a table with the template selector
+	 * @return string HTML output containing a table with the template selector
 	 */
 	function renderTemplateSelector($positionPid, $templateType = 'tmplobj') {
 		global $LANG, $TYPO3_DB;
@@ -401,10 +401,10 @@ class tx_templavoila_mod1_wizards {
 	/**
 	 * Performs the neccessary steps to creates a new page
 	 *
-	 * @param    array $pageArray : array containing the fields for the new page
-	 * @param    integer $positionPid : location within the page tree (parent id)
+	 * @param array $pageArray : array containing the fields for the new page
+	 * @param integer $positionPid : location within the page tree (parent id)
 	 *
-	 * @return    integer        uid of the new page record
+	 * @return integer uid of the new page record
 	 */
 	function createPage($pageArray, $positionPid) {
 		$positionPageMoveToRow = \TYPO3\CMS\Backend\Utility\BackendUtility::getMovePlaceholder('pages', abs($positionPid));
@@ -440,9 +440,7 @@ class tx_templavoila_mod1_wizards {
 	}
 
 	/**
-	 * [Describe function...]
-	 *
-	 * @return    [type]        ...
+	 * @return \TYPO3\CMS\Impexp\ImportExport
 	 */
 	function getImportObject() {
 		global $TYPO3_CONF_VARS;
@@ -456,9 +454,9 @@ class tx_templavoila_mod1_wizards {
 	/**
 	 * Create sql condition for given table to limit records according to user access.
 	 *
-	 * @param    string $table Table nme to fetch records from
+	 * @param string $table Table nme to fetch records from
 	 *
-	 * @return    string    Condition or empty string
+	 * @return string    Condition or empty string
 	 */
 	function buildRecordWhere($table) {
 		$result = array();
@@ -480,11 +478,11 @@ class tx_templavoila_mod1_wizards {
 	/**
 	 * Extract the disallowed TCAFORM field values of $fieldName given field
 	 *
-	 * @param    integer $parentPageId
-	 * @param    string        field name of TCAFORM
+	 * @param integer $positionPid
+	 * @param string $fieldName field name of TCAFORM
 	 *
 	 * @access    private
-	 * @return    string        comma seperated list of integer
+	 * @return string comma seperated list of integer
 	 */
 	function getDisallowedTSconfigItemsByFieldName($positionPid, $fieldName) {
 

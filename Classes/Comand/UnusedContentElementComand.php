@@ -31,13 +31,13 @@ namespace Extension\Templavoila\Comand;
  * User function called from tx_lowlevel_cleaner_core configured in ext_localconf.php
  * See system extension, lowlevel!
  *
- * @author    Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 
 /**
  * Finding unused content elements
  *
- * @author    Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tx_lowlevel
  */
@@ -52,9 +52,7 @@ class UnusedContentElementComand extends \TYPO3\CMS\Lowlevel\CleanerCommand {
 	var $excludePageIdList = array();
 
 	/**
-	 * Constructor
-	 *
-	 * @return    void
+	 * @return \Extension\Templavoila\Comand\UnusedContentElementComand
 	 */
 	function __construct() {
 		parent::__construct();
@@ -78,9 +76,7 @@ Automatic Repair:
 	}
 
 	/**
-	 *
-	 *
-	 * @return    array
+	 * @return array
 	 */
 	function main() {
 		global $TYPO3_DB;
@@ -112,13 +108,13 @@ Automatic Repair:
 	/**
 	 * Call back function for page tree traversal!
 	 *
-	 * @param    string        Table name
-	 * @param    integer        UID of record in processing
-	 * @param    integer        Echo level  (see calling function
-	 * @param    string        Version swap mode on that level (see calling function
-	 * @param    integer        Is root version (see calling function
+	 * @param string $tableName Table name
+	 * @param integer $uid UID of record in processing
+	 * @param integer $echoLevel Echo level  (see calling function
+	 * @param string $versionSwapmode Version swap mode on that level (see calling function
+	 * @param integer $rootIsVersion Is root version (see calling function
 	 *
-	 * @return    void
+	 * @return void
 	 */
 	function main_parseTreeCallBack($tableName, $uid, $echoLevel, $versionSwapmode, $rootIsVersion) {
 
@@ -214,9 +210,9 @@ Automatic Repair:
 	 * Mandatory autofix function
 	 * Will run auto-fix on the result array. Echos status during processing.
 	 *
-	 * @param    array        Result array from main() function
+	 * @param array $resultArray Result array from main() function
 	 *
-	 * @return    void
+	 * @return void
 	 */
 	function main_autoFix($resultArray) {
 		foreach ($resultArray['deleteMe'] as $uid) {

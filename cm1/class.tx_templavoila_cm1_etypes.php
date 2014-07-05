@@ -27,7 +27,7 @@
  *
  * $Id: index.php 17597 2009-03-08 17:59:14Z steffenk $
  *
- * @author        Kasper Skaarhoj <kasperYYYY@typo3.com>
+ * @author Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @co-author    Robert Lemke <robert@typo3.org>
  * @co-author    Steffen kamper <info@sk-typo3.de>
  */
@@ -46,11 +46,11 @@ class tx_templavoila_cm1_eTypes {
 	 * Typically called like: ->substEtypeWithRealStuff($storeDataStruct['ROOT']['el'],$contentSplittedByMapping['sub']['ROOT']);
 	 * Notice: this function is used to preview XML also. In this case it is always called with $scope=0, so XML for 'ce' type will not contain wrap with TYPO3SEARCH_xxx. Currently there is no way to avoid it.
 	 *
-	 * @param    array $elArray : Data Structure, passed by reference!
-	 * @param    array $v_sub : Actual template content splitted by Data Structure
-	 * @param    int $scope : Scope as defined in tx_templavoila_datastructure.scope
+	 * @param array $elArray : Data Structure, passed by reference!
+	 * @param array $v_sub : Actual template content splitted by Data Structure
+	 * @param int $scope : Scope as defined in tx_templavoila_datastructure.scope
 	 *
-	 * @return    void        Note: The result is directly written in $elArray
+	 * @return void Note: The result is directly written in $elArray
 	 * @see renderFile()
 	 */
 	function substEtypeWithRealStuff(&$elArray, $v_sub = array(), $scope = 0) {
@@ -398,9 +398,9 @@ class tx_templavoila_cm1_eTypes {
 	 * Analyzes the input content for various stuff which can be used to generate the DS.
 	 * Basically this tries to intelligently guess some settings.
 	 *
-	 * @param    string        HTML Content string
+	 * @param string $content HTML Content string
 	 *
-	 * @return    array        Configuration
+	 * @return array Configuration
 	 * @see substEtypeWithRealStuff()
 	 */
 	function substEtypeWithRealStuff_contentInfo($content) {
@@ -432,7 +432,7 @@ class tx_templavoila_cm1_eTypes {
 	/**
 	 * Defined eTypes for field creation
 	 *
-	 * @return    array    Array with default eTypes
+	 * @return array    Array with default eTypes
 	 */
 	function defaultEtypes() {
 		// formFields: input, input_h, input_g, text, rte, link, int, image, imagefixed, select, ce

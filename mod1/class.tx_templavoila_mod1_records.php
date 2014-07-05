@@ -26,14 +26,14 @@
  *
  * $Id$
  *
- * @author     Dmitry Dulepov <dmitry@typo3.org>
+ * @author Dmitry Dulepov <dmitry@typo3.org>
  */
 
 /**
  * Submodule 'records' for the templavoila page module
  *
- * @author        Dmitry Dulepov <dmitry@typo3.org>
- * @package        TYPO3
+ * @author Dmitry Dulepov <dmitry@typo3.org>
+ * @package TYPO3
  * @subpackage    tx_templavoila
  */
 class tx_templavoila_mod1_records {
@@ -49,9 +49,9 @@ class tx_templavoila_mod1_records {
 	 * Initializes sidebar object. Checks if there any tables to display and
 	 * adds sidebar item if there are any.
 	 *
-	 * @param    object $pObj Parent object
+	 * @param object $pObj Parent object
 	 *
-	 * @return    void
+	 * @return void
 	 */
 	function init(&$pObj) {
 		$this->pObj = & $pObj;
@@ -73,9 +73,7 @@ class tx_templavoila_mod1_records {
 	/**
 	 * Displays a list of local content elements on the page which were NOT used in the hierarchical structure of the page.
 	 *
-	 * @param    $pObj :        Reference to the parent object ($this)
-	 *
-	 * @return    string        HTML output
+	 * @return string HTML output
 	 * @access protected
 	 */
 	function sidebar_renderRecords() {
@@ -93,7 +91,7 @@ class tx_templavoila_mod1_records {
 	/**
 	 * Renders table selector.
 	 *
-	 * @return    string        Genrated content
+	 * @return string Genrated content
 	 */
 	function renderTableSelector() {
 		$content = '<tr class="bgColor4">';
@@ -137,7 +135,7 @@ class tx_templavoila_mod1_records {
 	/**
 	 * Renders record list.
 	 *
-	 * @return    void
+	 * @return void
 	 */
 	function renderRecords() {
 		$table = $this->pObj->MOD_SETTINGS['recordsView_table'];
@@ -154,9 +152,9 @@ class tx_templavoila_mod1_records {
 	/**
 	 * Checks if table can be displayed to the current user.
 	 *
-	 * @param    string $table Table name
+	 * @param string $table Table name
 	 *
-	 * @return    boolean        <code>true</code> if table can be displayed.
+	 * @return boolean <code>true</code> if table can be displayed.
 	 */
 	function canDisplayTable($table) {
 		return ($table != 'pages' && $table != 'tt_content' && isset($GLOBALS['TCA'][$table]) && \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->check('tables_select', $table));
@@ -165,9 +163,9 @@ class tx_templavoila_mod1_records {
 	/**
 	 * Initializes List classes.
 	 *
-	 * @param    string $table Table name to show
+	 * @param string $table Table name to show
 	 *
-	 * @return    void
+	 * @return void
 	 */
 	function initDbList($table) {
 		// Initialize the dblist object:

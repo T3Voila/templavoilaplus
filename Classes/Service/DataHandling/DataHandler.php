@@ -27,7 +27,7 @@ namespace Extension\Templavoila\Service\DataHandling;
 /**
  * Class being included by TCEmain using a hook
  *
- * @author    Robert Lemke <robert@typo3.org>
+ * @author Robert Lemke <robert@typo3.org>
  * @package TYPO3
  * @subpackage templavoila
  */
@@ -43,9 +43,7 @@ class DataHandler {
 	protected $extConf = array();
 
 	/**
-	 * Creates an instance of this class
-	 *
-	 * @return    void
+	 * @return \Extension\Templavoila\Service\DataHandling\DataHandler
 	 */
 	public function __construct() {
 		$this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
@@ -62,13 +60,13 @@ class DataHandler {
 	 * going to be processed, this function saves the "incomingFieldArray" for later use in some
 	 * post processing functions (see other functions below).
 	 *
-	 * @param    array $incomingFieldArray : The original field names and their values before they are processed
-	 * @param    string $table : The table TCEmain is currently processing
-	 * @param    string $id : The records id (if any)
-	 * @param    \TYPO3\CMS\Core\DataHandling\DataHandler $reference : Reference to the parent object (TCEmain)
+	 * @param array $incomingFieldArray : The original field names and their values before they are processed
+	 * @param string $table : The table TCEmain is currently processing
+	 * @param string $id : The records id (if any)
+	 * @param \TYPO3\CMS\Core\DataHandling\DataHandler $reference : Reference to the parent object (TCEmain)
 	 *
-	 * @return    void
-	 * @access    public
+	 * @return void
+	 * @access public
 	 */
 	function processDatamap_preProcessFieldArray(array &$incomingFieldArray, $table, $id, \TYPO3\CMS\Core\DataHandling\DataHandler &$reference) {
 		global $TYPO3_DB, $TCA;
@@ -97,14 +95,14 @@ class DataHandler {
 	 * If a record from table "pages" is created or updated with a new DS but no TO is selected, this function
 	 * tries to find a suitable TO and adds it to the fieldArray.
 	 *
-	 * @param    string $status : The TCEmain operation status, fx. 'update'
-	 * @param    string $table : The table TCEmain is currently processing
-	 * @param    string $id : The records id (if any)
-	 * @param    array $fieldArray : The field names and their values to be processed
-	 * @param    object $reference : Reference to the parent object (TCEmain)
+	 * @param string $status : The TCEmain operation status, fx. 'update'
+	 * @param string $table : The table TCEmain is currently processing
+	 * @param string $id : The records id (if any)
+	 * @param array $fieldArray : The field names and their values to be processed
+	 * @param object $reference : Reference to the parent object (TCEmain)
 	 *
-	 * @return    void
-	 * @access    public
+	 * @return void
+	 * @access public
 	 */
 	function processDatamap_postProcessFieldArray($status, $table, $id, &$fieldArray, &$reference) {
 		if ($this->debug) {
@@ -188,14 +186,14 @@ page.10.disableExplosivePreview = 1
 	 * This function is called by TCEmain after a new record has been inserted into the database.
 	 * If a new content element has been created, we make sure that it is referenced by its page.
 	 *
-	 * @param    string $status : The command which has been sent to processDatamap
-	 * @param    string $table :    The table we're dealing with
-	 * @param    mixed $id : Either the record UID or a string if a new record has been created
-	 * @param    array $fieldArray : The record row how it has been inserted into the database
-	 * @param    object $reference : A reference to the TCEmain instance
+	 * @param string $status : The command which has been sent to processDatamap
+	 * @param string $table :    The table we're dealing with
+	 * @param mixed $id : Either the record UID or a string if a new record has been created
+	 * @param array $fieldArray : The record row how it has been inserted into the database
+	 * @param object $reference : A reference to the TCEmain instance
 	 *
-	 * @return    void
-	 * @access    public
+	 * @return void
+	 * @access public
 	 */
 	function processDatamap_afterDatabaseOperations($status, $table, $id, $fieldArray, &$reference) {
 
@@ -287,14 +285,14 @@ page.10.disableExplosivePreview = 1
 	/**
 	 * This method is called by a hook in the TYPO3 Core Engine (TCEmain).
 	 *
-	 * @param    string $status : The TCEmain operation status, fx. 'update'
-	 * @param    string $table : The table TCEmain is currently processing
-	 * @param    string $id : The records id (if any)
-	 * @param    array $fieldArray : The field names and their values to be processed
-	 * @param    object $reference : Reference to the parent object (TCEmain)
+	 * @param string $command : The TCEmain operation status, fx. 'update'
+	 * @param string $table : The table TCEmain is currently processing
+	 * @param string $id : The records id (if any)
+	 * @param array $value : The field names and their values to be processed
+	 * @param object $reference : Reference to the parent object (TCEmain)
 	 *
-	 * @return    void
-	 * @access    public
+	 * @return void
+	 * @access public
 	 * @todo    "delete" should search for all references to the element.
 	 */
 	function processCmdmap_preProcess(&$command, $table, $id, $value, &$reference) {
@@ -356,14 +354,14 @@ page.10.disableExplosivePreview = 1
 	/**
 	 * This method is called by a hook in the TYPO3 Core Engine (TCEmain).
 	 *
-	 * @param    string $status : The TCEmain operation status, fx. 'update'
-	 * @param    string $table : The table TCEmain is currently processing
-	 * @param    string $id : The records id (if any)
-	 * @param    array $fieldArray : The field names and their values to be processed
-	 * @param    object $reference : Reference to the parent object (TCEmain)
+	 * @param string $command : The TCEmain operation status, fx. 'update'
+	 * @param string $table : The table TCEmain is currently processing
+	 * @param string $id : The records id (if any)
+	 * @param array $value : The field names and their values to be processed
+	 * @param object &$reference : Reference to the parent object (TCEmain)
 	 *
-	 * @return    void
-	 * @access    public
+	 * @return void
+	 * @access public
 	 */
 	function processCmdmap_postProcess($command, $table, $id, $value, &$reference) {
 
@@ -383,15 +381,15 @@ page.10.disableExplosivePreview = 1
 	 * This function is called by TCEmain after a record has been moved to the first position of
 	 * the page. We make sure that this is also reflected in the pages references.
 	 *
-	 * @param    string $table :    The table we're dealing with
-	 * @param    integer $uid : The record UID
-	 * @param    integer $destPid : The page UID of the page the element has been moved to
-	 * @param    array $sourceRecordBeforeMove : (A part of) the record before it has been moved (and thus the PID has possibly been changed)
-	 * @param    array $updateFields : The updated fields of the record row in question (we don't use that)
-	 * @param    object $reference : A reference to the TCEmain instance
+	 * @param string $table :    The table we're dealing with
+	 * @param integer $uid : The record UID
+	 * @param integer $destPid : The page UID of the page the element has been moved to
+	 * @param array $sourceRecordBeforeMove : (A part of) the record before it has been moved (and thus the PID has possibly been changed)
+	 * @param array $updateFields : The updated fields of the record row in question (we don't use that)
+	 * @param object $reference : A reference to the TCEmain instance
 	 *
-	 * @return    void
-	 * @access    public
+	 * @return void
+	 * @access public
 	 */
 	function moveRecord_firstElementPostProcess($table, $uid, $destPid, $sourceRecordBeforeMove, $updateFields, &$reference) {
 		global $TCA;
@@ -430,16 +428,16 @@ page.10.disableExplosivePreview = 1
 	 * This function is called by TCEmain after a record has been moved to after another record on some
 	 * the page. We make sure that this is also reflected in the pages references.
 	 *
-	 * @param    string $table :    The table we're dealing with
-	 * @param    integer $uid : The record UID
-	 * @param    integer $destPid : The page UID of the page the element has been moved to
-	 * @param    integer $origDestPid : The "original" PID: This tells us more about after which record our record wants to be moved. So it's not a page uid but a tt_content uid!
-	 * @param    array $sourceRecordBeforeMove : (A part of) the record before it has been moved (and thus the PID has possibly been changed)
-	 * @param    array $updateFields : The updated fields of the record row in question (we don't use that)
-	 * @param    object $reference : A reference to the TCEmain instance
+	 * @param string $table :    The table we're dealing with
+	 * @param integer $uid : The record UID
+	 * @param integer $destPid : The page UID of the page the element has been moved to
+	 * @param integer $origDestPid : The "original" PID: This tells us more about after which record our record wants to be moved. So it's not a page uid but a tt_content uid!
+	 * @param array $sourceRecordBeforeMove : (A part of) the record before it has been moved (and thus the PID has possibly been changed)
+	 * @param array $updateFields : The updated fields of the record row in question (we don't use that)
+	 * @param object $reference : A reference to the TCEmain instance
 	 *
-	 * @return    void
-	 * @access    public
+	 * @return void
+	 * @access public
 	 */
 	function moveRecord_afterAnotherElementPostProcess($table, $uid, $destPid, $origDestPid, $sourceRecordBeforeMove, $updateFields, &$reference) {
 
@@ -475,11 +473,11 @@ page.10.disableExplosivePreview = 1
 	 * Sets the sorting field of all tt_content elements found on the specified page
 	 * so they reflect the order of the references.
 	 *
-	 * @param    string $flexformXML : The flexform XML data of the page
-	 * @param    integer $pid : Current page id
+	 * @param string $flexformXML : The flexform XML data of the page
+	 * @param integer $pid : Current page id
 	 *
-	 * @return    void
-	 * @access    protected
+	 * @return void
+	 * @access protected
 	 */
 	function correctSortingAndColposFieldsForPage($flexformXML, $pid) {
 		global $TCA, $TYPO3_DB;
@@ -556,11 +554,11 @@ page.10.disableExplosivePreview = 1
 	 * Checks if template object was changed (== exists in the $incomingFieldArray)
 	 * and sets data source accordingly.
 	 *
-	 * @param    string $table Table name
-	 * @param    string $incomingFieldArray Array with fields
-	 * @param    \TYPO3\CMS\Core\Authentication\BackendUserAuthentication $beUser Current backend user for this operation
+	 * @param string $table Table name
+	 * @param array &$incomingFieldArray Array with fields
+	 * @param \TYPO3\CMS\Core\Authentication\BackendUserAuthentication &$beUser Current backend user for this operation
 	 *
-	 * @return    void
+	 * @return void
 	 */
 	protected function updateDataSourceFromTemplateObject($table, array &$incomingFieldArray, \TYPO3\CMS\Core\Authentication\BackendUserAuthentication &$beUser) {
 		if (($table == 'pages' || $table == 'tt_content') &&
@@ -577,12 +575,12 @@ page.10.disableExplosivePreview = 1
 	 * Finds data source value for the current template object and sets it to the
 	 * $incomingFieldArray.
 	 *
-	 * @param    array $incomingFieldArray Array with fields
-	 * @param    string $dsField Data source field name in the $incomingFieldArray
-	 * @param    string $toField Template object field name in the $incomingFieldArray
-	 * @param    \TYPO3\CMS\Core\Authentication\BackendUserAuthentication $beUser Current backend user for this operation
+	 * @param array $incomingFieldArray Array with fields
+	 * @param string $dsField Data source field name in the $incomingFieldArray
+	 * @param string $toField Template object field name in the $incomingFieldArray
+	 * @param \TYPO3\CMS\Core\Authentication\BackendUserAuthentication $beUser Current backend user for this operation
 	 *
-	 * @return    void
+	 * @return void
 	 */
 	protected function updateDataSourceFieldFromTemplateObjectField(array &$incomingFieldArray, $dsField, $toField, \TYPO3\CMS\Core\Authentication\BackendUserAuthentication &$beUser) {
 		$toId = $incomingFieldArray[$toField];

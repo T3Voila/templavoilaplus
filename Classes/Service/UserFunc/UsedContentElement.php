@@ -30,13 +30,13 @@ namespace Extension\Templavoila\Service\UserFunc;
  * Finding used content elements on pages. Used as a filter for other extensions
  * which wants to know which elements are used on a templavoila page.
  *
- * @author    Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 
 /**
  * Finding used content elements
  *
- * @author    Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tx_templavoila
  */
@@ -47,9 +47,9 @@ class UsedContentElement {
 	/**
 	 * Initialize object with page id.
 	 *
-	 * @param    integer        UID of page in processing
+	 * @param integer $page_uid UID of page in processing
 	 *
-	 * @return    void
+	 * @return void
 	 */
 	function init($page_uid) {
 

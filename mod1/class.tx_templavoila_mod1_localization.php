@@ -26,14 +26,14 @@
  *
  * $Id$
  *
- * @author     Robert Lemke <robert@typo3.org>
+ * @author Robert Lemke <robert@typo3.org>
  */
 
 /**
  * Submodule 'localization' for the templavoila page module
  *
- * @author        Robert Lemke <robert@typo3.org>
- * @package        TYPO3
+ * @author Robert Lemke <robert@typo3.org>
+ * @package TYPO3
  * @subpackage    tx_templavoila
  */
 class tx_templavoila_mod1_localization {
@@ -46,10 +46,10 @@ class tx_templavoila_mod1_localization {
 	 * Initializes the sub module object. The calling class must make sure that the right locallang files are already loaded.
 	 * This method is usually called by the templavoila page module.
 	 *
-	 * @param    $pObj :        Reference to the parent object ($this)
+	 * @param $pObj : Reference to the parent object ($this)
 	 *
-	 * @return    void
-	 * @access    public
+	 * @return void
+	 * @access public
 	 */
 	function init(&$pObj) {
 		global $LANG;
@@ -75,10 +75,10 @@ class tx_templavoila_mod1_localization {
 	 * Renders the localization menu item. It contains the language selector, the create new translation button and other settings
 	 * related to localization.
 	 *
-	 * @param    $pObj :        Reference to the sidebar's parent object (the page module). Not used here, we use our own reference, $this->pObj.
+	 * @param $pObj : Reference to the sidebar's parent object (the page module). Not used here, we use our own reference, $this->pObj.
 	 *
-	 * @return    string        HTML output
-	 * @access    public
+	 * @return string HTML output
+	 * @access public
 	 */
 	function sidebar_renderItem(&$pObj) {
 		global $LANG;
@@ -103,8 +103,8 @@ class tx_templavoila_mod1_localization {
 	 * Renders the HTML code for a selectorbox for selecting the language version of the current
 	 * page.
 	 *
-	 * @return    mixed        HTML code for the selectorbox or FALSE if no language is available.
-	 * @access    protected
+	 * @return mixed HTML code for the selectorbox or FALSE if no language is available.
+	 * @access protected
 	 */
 	function sidebar_renderItem_renderLanguageSelectorbox() {
 		global $LANG, $BE_USER, $BACK_PATH;
@@ -224,8 +224,8 @@ class tx_templavoila_mod1_localization {
 	 * Renders the HTML code for a selectorbox for selecting a new translation language for the current
 	 * page (create a new "Alternative Page Header".
 	 *
-	 * @return    mixed        HTML code for the selectorbox or FALSE if no new translation can be created.
-	 * @access    protected
+	 * @return mixed HTML code for the selectorbox or FALSE if no new translation can be created.
+	 * @access protected
 	 */
 	function sidebar_renderItem_renderNewTranslationSelectorbox() {
 		global $LANG, $BE_USER;

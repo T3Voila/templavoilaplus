@@ -29,13 +29,13 @@ namespace Extension\Templavoila\Service\UserFunc;
  *
  * $Id$
  *
- * @author     Dmitry Dulepov <dmitry@typo3.org>
+ * @author Dmitry Dulepov <dmitry@typo3.org>
  */
 
 /**
  * Class being included by UserAuthGroup using a hook
  *
- * @author    Dmitry Dulepov <dmitry@typo3.org>
+ * @author Dmitry Dulepov <dmitry@typo3.org>
  * @package TYPO3
  * @subpackage templavoila
  */
@@ -44,10 +44,10 @@ class Access {
 	/**
 	 * Checks if user is allowed to modify FCE.
 	 *
-	 * @param    array $params Parameters
-	 * @param    object $ref Parent object
+	 * @param array $params Parameters
+	 * @param object $ref Parent object
 	 *
-	 * @return    boolean        <code>true</code> if change is allowed
+	 * @return boolean <code>true</code> if change is allowed
 	 */
 	function recordEditAccessInternals($params, $ref) {
 		if ($params['table'] == 'tt_content' && is_array($params['idOrRow']) && $params['idOrRow']['CType'] == 'templavoila_pi1') {
@@ -81,11 +81,11 @@ class Access {
 	/**
 	 * Checks user's access to given database object
 	 *
-	 * @param    string $table Table name
-	 * @param    int $uid UID of the record
-	 * @param    object $be_user BE user object
+	 * @param string $table Table name
+	 * @param int $uid UID of the record
+	 * @param object $be_user BE user object
 	 *
-	 * @return    boolean        <code>true</code> if access is allowed
+	 * @return boolean <code>true</code> if access is allowed
 	 */
 	function checkObjectAccess($table, $uid, $be_user) {
 		if (!$be_user) {

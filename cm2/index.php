@@ -26,7 +26,7 @@
  *
  * $Id$
  *
- * @author        Kasper Skaarhoj <kasper@typo3.com>
+ * @author Kasper Skaarhoj <kasper@typo3.com>
  * @co-author    Robert Lemke <robert@typo3.org>
  */
 
@@ -39,7 +39,7 @@ $LANG->includeLLFile('EXT:templavoila/cm2/locallang.xml');
 /**
  * Class for displaying color-marked-up version of FlexForm XML content.
  *
- * @author    Kasper Skaarhoj <kasper@typo3.com>
+ * @author Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage tx_templavoila
  */
@@ -55,7 +55,7 @@ class tx_templavoila_cm2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Main function, drawing marked up XML.
 	 *
-	 * @return    void
+	 * @return void
 	 */
 	function main() {
 		global $LANG, $BACK_PATH;
@@ -194,7 +194,7 @@ class tx_templavoila_cm2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Prints module content.
 	 *
-	 * @return    void
+	 * @return void
 	 */
 	function printContent() {
 		echo $this->content;
@@ -203,7 +203,7 @@ class tx_templavoila_cm2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Gets the buttons that shall be rendered in the docHeader.
 	 *
-	 * @return    array        Available buttons for the docHeader
+	 * @return array Available buttons for the docHeader
 	 */
 	protected function getDocHeaderButtons() {
 		$buttons = array(
@@ -226,7 +226,7 @@ class tx_templavoila_cm2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Gets the button to set a new shortcut in the backend (if current user is allowed to).
 	 *
-	 * @return    string        HTML representiation of the shortcut button
+	 * @return string HTML representiation of the shortcut button
 	 */
 	protected function getShortcutButton() {
 		$result = '';
@@ -240,9 +240,9 @@ class tx_templavoila_cm2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Mark up XML content
 	 *
-	 * @param    string        XML input
+	 * @param string $str XML input
 	 *
-	 * @return    string        HTML formatted output, marked up in colors
+	 * @return string HTML formatted output, marked up in colors
 	 */
 	function markUpXML($str) {
 

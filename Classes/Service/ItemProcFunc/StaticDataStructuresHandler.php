@@ -28,13 +28,13 @@ namespace Extension\Templavoila\Service\ItemProcFunc;
  *
  * $Id$
  *
- * @author    Kasper Skaarhoj <kasper@typo3.com>
+ * @author Kasper Skaarhoj <kasper@typo3.com>
  */
 
 /**
  * Class/Function which manipulates the item-array for table/field tx_templavoila_tmplobj_datastructure.
  *
- * @author    Kasper Skaarhoj <kasper@typo3.com>
+ * @author Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage tx_templavoila
  */
@@ -48,10 +48,10 @@ class StaticDataStructuresHandler {
 	 * Adds static data structures to selector box items arrays.
 	 * Adds ALL available structures
 	 *
-	 * @param    array        Array of items passed by reference.
-	 * @param    object        The parent object (\TYPO3\CMS\Backend\Form\FormEngine / \TYPO3\CMS\Backend\Form\DataPreprocessor depending on context)
+	 * @param array &$params Array of items passed by reference.
+	 * @param object &$pObj The parent object (\TYPO3\CMS\Backend\Form\FormEngine / \TYPO3\CMS\Backend\Form\DataPreprocessor depending on context)
 	 *
-	 * @return    void
+	 * @return void
 	 */
 	function main(&$params, &$pObj) {
 		$removeDSItems = $this->getRemoveItems($params, substr($params['field'], 0, -2) . 'ds');
@@ -79,10 +79,10 @@ class StaticDataStructuresHandler {
 	/**
 	 * Adds Template Object records to selector box for Content Elements of the "Plugin" type.
 	 *
-	 * @param    array        Array of items passed by reference.
-	 * @param    object        The parent object (\TYPO3\CMS\Backend\Form\FormEngine / \TYPO3\CMS\Backend\Form\DataPreprocessor depending on context)
+	 * @param array &$params Array of items passed by reference.
+	 * @param object $pObj The parent object (\TYPO3\CMS\Backend\Form\FormEngine / \TYPO3\CMS\Backend\Form\DataPreprocessor depending on context)
 	 *
-	 * @return    void
+	 * @return void
 	 */
 	function pi_templates(&$params, $pObj) {
 		global $TYPO3_DB;
@@ -118,10 +118,10 @@ class StaticDataStructuresHandler {
 	 * Creates the DS selector box. This function takes into account TS
 	 * config override of the GRSP.
 	 *
-	 * @param    array $params Parameters to the itemsProcFunc
-	 * @param    \TYPO3\CMS\Backend\Form\FormEngine $pObj Calling object
+	 * @param array $params Parameters to the itemsProcFunc
+	 * @param \TYPO3\CMS\Backend\Form\FormEngine $pObj Calling object
 	 *
-	 * @return    void
+	 * @return void
 	 */
 	public function dataSourceItemsProcFunc(array &$params, \TYPO3\CMS\Backend\Form\FormEngine& $pObj) {
 
@@ -154,10 +154,10 @@ class StaticDataStructuresHandler {
 	 * Adds items to the template object selector according to the current
 	 * extension mode.
 	 *
-	 * @param    array $params Parameters for itemProcFunc
-	 * @param    \TYPO3\CMS\Backend\Form\FormEngine $pObj Calling class
+	 * @param array $params Parameters for itemProcFunc
+	 * @param \TYPO3\CMS\Backend\Form\FormEngine $pObj Calling class
 	 *
-	 * @return    void
+	 * @return void
 	 */
 	public function templateObjectItemsProcFunc(array &$params, \TYPO3\CMS\Backend\Form\FormEngine &$pObj) {
 		$this->conf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
@@ -173,10 +173,10 @@ class StaticDataStructuresHandler {
 	 * Adds items to the template object selector according to the scope and
 	 * storage folder of the current page/element.
 	 *
-	 * @param    array $params Parameters for itemProcFunc
-	 * @param    \TYPO3\CMS\Backend\Form\FormEngine $pObj Calling class
+	 * @param array $params Parameters for itemProcFunc
+	 * @param \TYPO3\CMS\Backend\Form\FormEngine $pObj Calling class
 	 *
-	 * @return    void
+	 * @return void
 	 */
 	protected function templateObjectItemsProcFuncForCurrentDS(array &$params, \TYPO3\CMS\Backend\Form\FormEngine &$pObj) {
 		// Get DS
@@ -220,10 +220,10 @@ class StaticDataStructuresHandler {
 	 * Adds items to the template object selector according to the scope and
 	 * storage folder of the current page/element.
 	 *
-	 * @param    array $params Parameters for itemProcFunc
-	 * @param    \TYPO3\CMS\Backend\Form\FormEngine $pObj Calling class
+	 * @param array $params Parameters for itemProcFunc
+	 * @param \TYPO3\CMS\Backend\Form\FormEngine $pObj Calling class
 	 *
-	 * @return    void
+	 * @return void
 	 */
 	protected function templateObjectItemsProcFuncForAllDSes(array &$params, \TYPO3\CMS\Backend\Form\FormEngine &$pObj) {
 		$storagePid = $this->getStoragePid($params, $pObj);
@@ -272,10 +272,10 @@ class StaticDataStructuresHandler {
 	 * Retrieves DS/TO storage pid for the current page. This function expectes
 	 * to be called from the itemsProcFunc only!
 	 *
-	 * @param    array $params Parameters as come to the itemsProcFunc
-	 * @param    \TYPO3\CMS\Backend\Form\FormEngine $pObj Calling object
+	 * @param array $params Parameters as come to the itemsProcFunc
+	 * @param \TYPO3\CMS\Backend\Form\FormEngine $pObj Calling object
 	 *
-	 * @return    int    Storage pid
+	 * @return int    Storage pid
 	 */
 	protected function getStoragePid(array &$params, \TYPO3\CMS\Backend\Form\FormEngine &$pObj) {
 		// Get default first

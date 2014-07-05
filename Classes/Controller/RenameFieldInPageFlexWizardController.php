@@ -30,7 +30,7 @@ namespace Extension\Templavoila\Controller;
  *
  * $Id$
  *
- * @author     Kay Strobach <typo3@kay-strobach.de>
+ * @author Kay Strobach <typo3@kay-strobach.de>
  */
 class RenameFieldInPageFlexWizardController extends \TYPO3\CMS\Backend\Module\AbstractFunctionModule {
 

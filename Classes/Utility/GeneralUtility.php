@@ -27,7 +27,7 @@ namespace Extension\Templavoila\Utility;
 /**
  * Class with static functions for templavoila.
  *
- * @author    Steffen Kamper  <info@sk-typo3.de>
+ * @author Steffen Kamper  <info@sk-typo3.de>
  */
 final class GeneralUtility {
 
@@ -59,7 +59,7 @@ final class GeneralUtility {
 	 * @param string $url potential URL to check
 	 *
 	 * @return string either $url if $url is considered to be harmless, or an
-	 *                empty string otherwise
+	 *  empty string otherwise
 	 */
 	private static function internalSanitizeLocalUrl($url = '') {
 		$sanitizedUrl = '';
@@ -103,9 +103,9 @@ final class GeneralUtility {
 	/**
 	 * Checks if a given string is a Uniform Resource Locator (URL).
 	 *
-	 * @param    string $url : The URL to be validated
+	 * @param string $url : The URL to be validated
 	 *
-	 * @return    boolean        Whether the given URL is valid
+	 * @return boolean Whether the given URL is valid
 	 */
 	private static function isValidUrl($url) {
 		return (filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_SCHEME_REQUIRED) !== FALSE);
@@ -115,9 +115,9 @@ final class GeneralUtility {
 	 * Checks if a given URL matches the host that currently handles this HTTP request.
 	 * Scheme, hostname and (optional) port of the given URL are compared.
 	 *
-	 * @param    string $url : URL to compare with the TYPO3 request host
+	 * @param string $url : URL to compare with the TYPO3 request host
 	 *
-	 * @return    boolean        Whether the URL matches the TYPO3 request host
+	 * @return boolean Whether the URL matches the TYPO3 request host
 	 */
 	private static function isOnCurrentHost($url) {
 		return (stripos($url . '/', \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST') . '/') === 0);
@@ -136,10 +136,10 @@ final class GeneralUtility {
 	/**
 	 * Get a list of referencing elements other than the given pid.
 	 *
-	 * @param array    array with tablename and uid for a element
-	 * @param int      the suppoed source-pid
-	 * @param int      recursion limiter
-	 * @param array    array containing a list of the actual references
+	 * @param array $element array with tablename and uid for a element
+	 * @param int $pid the suppoed source-pid
+	 * @param int $recursion recursion limiter
+	 * @param array &$references array containing a list of the actual references
 	 *
 	 * @return boolean true if there are other references for this element
 	 */
@@ -180,10 +180,10 @@ final class GeneralUtility {
 	/**
 	 * Checks if a element is referenced from other pages / elements on other pages than his own.
 	 *
-	 * @param array    array with tablename and uid for a element
-	 * @param int      the suppoed source-pid
-	 * @param int      recursion limiter
-	 * @param array    array containing a list of the actual references
+	 * @param array $element array with tablename and uid for a element
+	 * @param int $pid the suppoed source-pid
+	 * @param int $recursion recursion limiter
+	 * @param array &$references array containing a list of the actual references
 	 *
 	 * @return boolean true if there are other references for this element
 	 */
@@ -204,7 +204,7 @@ final class GeneralUtility {
 	 *
 	 * @see \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger
 	 *
-	 * @param $versionNumber string Version number on format x.x.x
+	 * @param $version string Version number on format x.x.x
 	 *
 	 * @return integer Integer version of version number (where each part can count to 999)
 	 */
@@ -220,16 +220,9 @@ final class GeneralUtility {
 	}
 
 	/**
-	 * Forces the integer $theInt into the boundaries of $min and $max. If the $theInt is FALSE then the $defaultValue is applied.
+	 * @param mixed $var
 	 *
-	 * @see \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger
-	 *
-	 * @param $theInt integer Input value
-	 * @param $min integer Lower limit
-	 * @param $max integer Higher limit
-	 * @param $defaultValue integer Default value if input is FALSE.
-	 *
-	 * @return integer The input value forced into the boundaries of $min and $max
+	 * @return boolean
 	 */
 	public static function canBeInterpretedAsInteger($var) {
 

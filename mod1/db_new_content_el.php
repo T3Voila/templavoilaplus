@@ -31,7 +31,7 @@
  * Originally based on the CE wizard / cms extension by Kasper Skaarhoj <kasper@typo3.com>
  * XHTML compatible.
  *
- * @author        Robert Lemke <robert@typo3.org>
+ * @author Robert Lemke <robert@typo3.org>
  * @coauthor    Kasper Skaarhoj <kasper@typo3.com>
  */
 
@@ -55,7 +55,7 @@ $LOCAL_LANG = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_over
 /**
  * Script Class for the New Content element wizard
  *
- * @author    Robert Lemke <robert@typo3.org>
+ * @author Robert Lemke <robert@typo3.org>
  * @package TYPO3
  * @subpackage templavoila
  */
@@ -79,7 +79,7 @@ class tx_templavoila_dbnewcontentel {
 	/**
 	 * Initialize internal variables.
 	 *
-	 * @return    void
+	 * @return void
 	 */
 	function init() {
 		global $BE_USER, $BACK_PATH, $TBE_MODULES_EXT;
@@ -135,7 +135,7 @@ class tx_templavoila_dbnewcontentel {
 	/**
 	 * Creating the module output.
 	 *
-	 * @return    void
+	 * @return void
 	 * @todo    provide position mapping if no position is given already. Like the columns selector but for our cascading element style ...
 	 */
 	function main() {
@@ -272,7 +272,7 @@ class tx_templavoila_dbnewcontentel {
 	/**
 	 * Gets the buttons that shall be rendered in the docHeader.
 	 *
-	 * @return    array        Available buttons for the docHeader
+	 * @return array Available buttons for the docHeader
 	 */
 	protected function getDocHeaderButtons() {
 		$buttons = array(
@@ -295,7 +295,7 @@ class tx_templavoila_dbnewcontentel {
 	/**
 	 * Gets the button to set a new shortcut in the backend (if current user is allowed to).
 	 *
-	 * @return    string        HTML representiation of the shortcut button
+	 * @return string HTML representiation of the shortcut button
 	 */
 	protected function getShortcutButton() {
 		$result = '';
@@ -310,7 +310,7 @@ class tx_templavoila_dbnewcontentel {
 	/**
 	 * Print out the accumulated content:
 	 *
-	 * @return    void
+	 * @return void
 	 */
 	function printContent() {
 		$this->content = $this->doc->insertStylesAndJS($this->content);
@@ -318,9 +318,7 @@ class tx_templavoila_dbnewcontentel {
 	}
 
 	/**
-	 * [Describe function...]
-	 *
-	 * @return    [type]        ...
+	 * @return string
 	 */
 	function linkParams() {
 		$output = 'id=' . $this->id . (is_array($this->altRoot) ? \TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl('altRoot', $this->altRoot) : '');
@@ -337,7 +335,7 @@ class tx_templavoila_dbnewcontentel {
 	/**
 	 * Returns the content of wizardArray() function...
 	 *
-	 * @return    array        Returns the content of wizardArray() function...
+	 * @return array Returns the content of wizardArray() function...
 	 */
 	function getWizardItems() {
 		return $this->wizardArray();
@@ -347,7 +345,7 @@ class tx_templavoila_dbnewcontentel {
 	 * Returns the array of elements in the wizard display.
 	 * For the plugin section there is support for adding elements there from a global variable.
 	 *
-	 * @return    array
+	 * @return array
 	 */
 	function wizardArray() {
 
@@ -476,9 +474,9 @@ class tx_templavoila_dbnewcontentel {
 	 * Checks the array for elements which might contain unallowed default values and will unset them!
 	 * Looks for the "tt_content_defValues" key in each element and if found it will traverse that array as fieldname / value pairs and check. The values will be added to the "params" key of the array (which should probably be unset or empty by default).
 	 *
-	 * @param    array        Wizard items, passed by reference
+	 * @param array &$wizardItems Wizard items, passed by reference
 	 *
-	 * @return    void
+	 * @return void
 	 */
 	function removeInvalidElements(&$wizardItems) {
 		global $TCA;
@@ -540,9 +538,9 @@ class tx_templavoila_dbnewcontentel {
 	/**
 	 * Create sql condition for given table to limit records according to user access.
 	 *
-	 * @param    string $table Table nme to fetch records from
+	 * @param string $table Table nme to fetch records from
 	 *
-	 * @return    string    Condition or empty string
+	 * @return string    Condition or empty string
 	 */
 	function buildRecordWhere($table) {
 		$result = array();
@@ -566,7 +564,7 @@ class tx_templavoila_dbnewcontentel {
 	 *
 	 * @param \Extension\Templavoila\Domain\Model\Template $toObj LocalProcessing as array
 	 *
-	 * @return string    additional URL arguments with configured default values
+	 * @return string additional URL arguments with configured default values
 	 */
 	function getDsDefaultValues(tx_templavoila_template $toObj) {
 

@@ -41,10 +41,10 @@ class tx_templavoila_mod1_ajax {
 	/**
 	 * Performs a move action for the requested element
 	 *
-	 * @param    array $params
-	 * @param    object $ajaxObj
+	 * @param array $params
+	 * @param object $ajaxObj
 	 *
-	 * @return    void
+	 * @return void
 	 */
 	public function moveRecord($params, &$ajaxObj) {
 

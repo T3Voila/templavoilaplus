@@ -26,14 +26,14 @@
  *
  * $Id$
  *
- * @author    Kasper Skaarhoj <kasper@typo3.com>
+ * @author Kasper Skaarhoj <kasper@typo3.com>
  * @coauthor  Robert Lemke <robert@typo3.org>
  */
 
 /**
  * Plugin 'Flexible Content' for the 'templavoila' extension.
  *
- * @author    Kasper Skaarhoj <kasper@typo3.com>
+ * @author Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage tx_templavoila
  */
@@ -57,10 +57,10 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	/**
 	 * Main function for rendering of Flexible Content elements of TemplaVoila
 	 *
-	 * @param    string        Standard content input. Ignore.
-	 * @param    array        TypoScript array for the plugin.
+	 * @param string $content Standard content input. Ignore.
+	 * @param array $conf TypoScript array for the plugin.
 	 *
-	 * @return    string        HTML content for the Flexible Content elements.
+	 * @return string HTML content for the Flexible Content elements.
 	 */
 	function main($content, $conf) {
 		$this->initVars($conf);
@@ -78,16 +78,16 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * lib.members = CONTENT
 	 * lib.members {
 	 *    select {
-	 *        pidInList = {$styles.content.loginform.pid}
-	 *        orderBy = tx_lglalv_mysorting,uid
+	 * pidInList = {$styles.content.loginform.pid}
+	 * orderBy = tx_lglalv_mysorting,uid
 	 *    }
 	 *    table = fe_users
 	 *    renderObj = USER
 	 *    renderObj {
-	 *        userFunc = tx_templavoila_pi1->main_record
-	 *        ds = 2
-	 *        to = 4
-	 *        table = fe_users
+	 * userFunc = tx_templavoila_pi1->main_record
+	 * ds = 2
+	 * to = 4
+	 * table = fe_users
 	 *    }
 	 * }
 	 * </pre/></code>
@@ -157,10 +157,10 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	/**
 	 * Main function for rendering of Page Templates of TemplaVoila
 	 *
-	 * @param    string        Standard content input. Ignore.
-	 * @param    array        TypoScript array for the plugin.
+	 * @param string $content Standard content input. Ignore.
+	 * @param array $conf TypoScript array for the plugin.
 	 *
-	 * @return    string        HTML content for the Page Template elements.
+	 * @return string HTML content for the Page Template elements.
 	 */
 	function main_page($content, $conf) {
 		$this->initVars($conf);
@@ -200,9 +200,9 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	/**
 	 * Will set up various stuff in the class based on input TypoScript
 	 *
-	 * @param    array        TypoScript options
+	 * @param array $conf TypoScript options
 	 *
-	 * @return    void
+	 * @return void
 	 */
 	function initVars($conf) {
 		$this->inheritValueFromDefault = $conf['dontInheritValueFromDefault'] ? 0 : 1;
@@ -215,10 +215,10 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * Common function for rendering of the Flexible Content / Page Templates.
 	 * For Page Templates the input row may be manipulated to contain the proper reference to a data structure (pages can have those inherited which content elements cannot).
 	 *
-	 * @param    array        Current data record, either a tt_content element or page record.
-	 * @param    string        Table name, either "pages" or "tt_content".
+	 * @param array $row Current data record, either a tt_content element or page record.
+	 * @param string $table Table name, either "pages" or "tt_content".
 	 *
-	 * @return    string        HTML output.
+	 * @return string HTML output.
 	 */
 	function renderElement($row, $table) {
 		global $TYPO3_CONF_VARS;
@@ -410,13 +410,13 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * This will transform the data in the data array according to various rules before the data is merged with the template HTML
 	 * Notice that $dataValues is changed internally as a reference so the function returns no content but internally changes the passed variable for $dataValues.
 	 *
-	 * @param    array        The data values from the XML file (converted to array). Passed by reference.
-	 * @param    array        The data structure definition which the data in the dataValues array reflects.
-	 * @param    array        The local XML processing information found in associated Template Objects (TO)
-	 * @param    string        Value key
-	 * @param    mixed        Mapping information
+	 * @param array &$dataValues The data values from the XML file (converted to array). Passed by reference.
+	 * @param array $DSelements The data structure definition which the data in the dataValues array reflects.
+	 * @param array $TOelements The local XML processing information found in associated Template Objects (TO)
+	 * @param string $valueKey Value key
+	 * @param mixed $mappingInfo Mapping information
 	 *
-	 * @return    void
+	 * @return void
 	 */
 	function processDataValues(&$dataValues, $DSelements, $TOelements, $valueKey = 'vDEF', $mappingInfo = TRUE) {
 		if (is_array($DSelements) && is_array($dataValues)) {
@@ -665,11 +665,11 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * Processing of language fallback values (inheritance/overlaying)
 	 * You never need to call this function when "$valueKey" is "vDEF"
 	 *
-	 * @param    array        Array where the values for language and default might be in as keys for "vDEF" and "vXXX"
-	 * @param    string        Language key, "vXXX"
-	 * @param    string        Overriding overlay mode from local processing in Data Structure / TO.
+	 * @param array $dV Array where the values for language and default might be in as keys for "vDEF" and "vXXX"
+	 * @param string $valueKey Language key, "vXXX"
+	 * @param string $overlayMode Overriding overlay mode from local processing in Data Structure / TO.
 	 *
-	 * @return    string        The value
+	 * @return string The value
 	 */
 	function inheritValue($dV, $valueKey, $overlayMode = '') {
 #debug(array($dV['vDEF'],$valueKey,$overlayMode,$this->inheritValueFromDefault),'inheritValue()');
@@ -707,10 +707,10 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	/**
 	 * Creates an error message for frontend output
 	 *
-	 * @param    [type]        $string: ...
+	 * @param [type] $string: ...
 	 *
-	 * @return    string        Error message output
-	 * @string    string        Error message input
+	 * @return string Error message output
+	 * @string    string Error message input
 	 */
 	function formatError($string) {
 
@@ -740,14 +740,14 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	/**
 	 * Creates a visual response to the TemplaVoila blocks on the page.
 	 *
-	 * @param    [type]        $content: ...
-	 * @param    [type]        $srcPointer: ...
-	 * @param    [type]        $DSrec: ...
-	 * @param    [type]        $TOrec: ...
-	 * @param    [type]        $row: ...
-	 * @param    [type]        $table: ...
+	 * @param string $content
+	 * @param string $srcPointer
+	 * @param array $DSrec
+	 * @param array $TOrec
+	 * @param array $row
+	 * @param string $table
 	 *
-	 * @return    [type]        ...
+	 * @return string
 	 */
 	function visualID($content, $srcPointer, $DSrec, $TOrec, $row, $table) {
 
@@ -845,8 +845,8 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	/**
 	 * Render section index for TV
 	 *
-	 * @param  $content
-	 * @param  $conf config of tt_content.menu.20.3
+	 * @param string $content
+	 * @param array $conf config of tt_content.menu.20.3
 	 *
 	 * @return string rendered section index
 	 */

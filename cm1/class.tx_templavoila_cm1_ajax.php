@@ -27,10 +27,10 @@ class tx_templavoila_cm1_ajax {
 	/**
 	 * Return the content of the current "displayFile"
 	 *
-	 * @param    array $params
-	 * @param    object $ajaxObj
+	 * @param array $params
+	 * @param object $ajaxObj
 	 *
-	 * @return    void
+	 * @return void
 	 */
 	public function getDisplayFileContent($params, &$ajaxObj) {
 		$session = \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->getSessionData(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('key'));

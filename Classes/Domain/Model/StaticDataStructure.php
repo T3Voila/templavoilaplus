@@ -27,15 +27,17 @@ namespace Extension\Templavoila\Domain\Model;
 /**
  * Class to provide unique access to datastructure
  *
- * @author    Tolleiv Nietsch <tolleiv.nietsch@typo3.org>
+ * @author Tolleiv Nietsch <tolleiv.nietsch@typo3.org>
  */
 class StaticDataStructure extends AbstractDataStructure {
 
+	/**
+	 * @var string
+	 */
 	protected $filename;
 
 	/**
-	 *
-	 * @param integer $uid
+	 * @param integer $key
 	 */
 	public function __construct($key) {
 

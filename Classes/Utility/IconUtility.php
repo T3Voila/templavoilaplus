@@ -31,8 +31,8 @@ namespace Extension\Templavoila\Utility;
 final class IconUtility {
 
 	/**
-	 *
-	 * @param string $lang
+	 * @param string $flagName
+	 * @param array $options
 	 *
 	 * @return string
 	 */
@@ -43,8 +43,7 @@ final class IconUtility {
 	}
 
 	/**
-	 *
-	 * @param string $lang
+	 * @param string $flagName
 	 *
 	 * @return string
 	 */

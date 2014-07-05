@@ -25,15 +25,15 @@
  * Conversion of localization mode in Data Structures
  * Is integrated into the extdeveval extension framework
  *
- * @author    Nicolas Cerisier <>
- * @author    Kasper Skaarhoj
+ * @author Nicolas Cerisier <>
+ * @author Kasper Skaarhoj
  */
 
 /**
  * Conversion of localization mode in Data Structures
  *
- * @author    Nicolas Cerisier <>
- * @author    Kasper Skaarhoj
+ * @author Nicolas Cerisier <>
+ * @author Kasper Skaarhoj
  * @package tc_templavoila
  */
 class tx_templavoila_extdeveval {
@@ -52,7 +52,7 @@ class tx_templavoila_extdeveval {
 	/**
 	 * Initialization (none needed)
 	 *
-	 * @return    void
+	 * @return void
 	 */
 	function init() {
 	}
@@ -60,7 +60,7 @@ class tx_templavoila_extdeveval {
 	/**
 	 * The main function in the class
 	 *
-	 * @return    string        HTML content
+	 * @return string HTML content
 	 */
 	function main() {
 		/*
@@ -89,7 +89,7 @@ class tx_templavoila_extdeveval {
 	/**
 	 * Rendering menu of available data structures to work on
 	 *
-	 * @return    string        HTML content
+	 * @return string HTML content
 	 */
 	function renderMenuOfDataStructures() {
 
@@ -125,9 +125,9 @@ class tx_templavoila_extdeveval {
 	/**
 	 * Extract Language mode from DataStructure XML
 	 *
-	 * @param    array        Data Structure XML
+	 * @param array $DSstring Data Structure XML
 	 *
-	 * @return    string        Type keyword
+	 * @return string Type keyword
 	 */
 	function DSlanguageMode($DSstring) {
 
@@ -149,9 +149,9 @@ class tx_templavoila_extdeveval {
 	/**
 	 * Rendering view for converting
 	 *
-	 * @param    string        Data Structure id (either uid or string pointing to XML file)
+	 * @param string $dsIdForConversion Data Structure id (either uid or string pointing to XML file)
 	 *
-	 * @return    string        HTML
+	 * @return string HTML
 	 */
 	function renderConversionView($dsIdForConversion) {
 		global $TCA;

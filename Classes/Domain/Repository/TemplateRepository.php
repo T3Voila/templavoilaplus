@@ -27,7 +27,7 @@ namespace Extension\Templavoila\Domain\Repository;
 /**
  * Class to provide unique access to datastructure
  *
- * @author    Tolleiv Nietsch <tolleiv.nietsch@typo3.org>
+ * @author Tolleiv Nietsch <tolleiv.nietsch@typo3.org>
  */
 class TemplateRepository {
 
@@ -45,8 +45,8 @@ class TemplateRepository {
 	/**
 	 * Retrieve template objects which are related to a specific datastructure
 	 *
-	 * @param \Extension\Templavoila\Domain\Model\AbstractDataStructure
-	 * @param integer $pid
+	 * @param \Extension\Templavoila\Domain\Model\AbstractDataStructure $ds
+	 * @param integer $storagePid
 	 *
 	 * @return array
 	 */
@@ -72,7 +72,7 @@ class TemplateRepository {
 	/**
 	 * Retrieve template objects with a certain scope within the given storage folder
 	 *
-	 * @param integer $pid
+	 * @param integer $storagePid
 	 * @param integer $scope
 	 *
 	 * @return array
@@ -92,8 +92,8 @@ class TemplateRepository {
 	/**
 	 * Retrieve template objects which have a specific template as their parent
 	 *
-	 * @param \Extension\Templavoila\Domain\Model\AbstractDataStructure
-	 * @param integer $pid
+	 * @param \Extension\Templavoila\Domain\Model\Template $to
+	 * @param integer $storagePid
 	 *
 	 * @return array
 	 */
@@ -118,6 +118,8 @@ class TemplateRepository {
 	/**
 	 * Retrieve a collection (array) of tx_templavoila_datastructure objects
 	 *
+	 * @param integer $storagePid
+	 *
 	 * @return array
 	 */
 	public function getAll($storagePid = 0) {
@@ -141,12 +143,12 @@ class TemplateRepository {
 	/**
 	 * Sorts datastructure alphabetically
 	 *
-	 * @param    \Extension\Templavoila\Domain\Model\Template $obj1
-	 * @param    \Extension\Templavoila\Domain\Model\Template $obj2
+	 * @param \Extension\Templavoila\Domain\Model\Template $obj1
+	 * @param \Extension\Templavoila\Domain\Model\Template $obj2
 	 *
-	 * @return    int    Result of the comparison (see strcmp())
-	 * @see    usort()
-	 * @see    strcmp()
+	 * @return integer Result of the comparison (see strcmp())
+	 * @see usort()
+	 * @see strcmp()
 	 */
 	public function sortTemplates($obj1, $obj2) {
 		return strcmp(strtolower($obj1->getSortingFieldValue()), strtolower($obj2->getSortingFieldValue()));
@@ -173,7 +175,7 @@ class TemplateRepository {
 	}
 
 	/**
-	 *
+	 * @param integer $pid
 	 *
 	 * @return integer
 	 */

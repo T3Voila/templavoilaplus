@@ -26,7 +26,7 @@
  *
  * $Id$
  *
- * @author   Kasper Sk�rh�j <kasper@typo3.com>
+ * @author  Kasper Sk�rh�j <kasper@typo3.com>
  */
 unset($MCONF);
 require(dirname(__FILE__) . '/conf.php');
@@ -37,8 +37,8 @@ $BE_USER->modAccess($MCONF, 1); // This checks permissions and exits if the user
 /**
  * Module 'TemplaVoila' for the 'templavoila' extension.
  *
- * @author    Kasper Skaarhoj <kasper@typo3.com>
- * @package        TYPO3
+ * @author Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
  * @subpackage    tx_templavoila
  */
 class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
@@ -71,7 +71,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Preparing menu content
 	 *
-	 * @return    void
+	 * @return void
 	 */
 	function menuConfig() {
 		$this->MOD_MENU = array(
@@ -91,7 +91,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Main function of the module.
 	 *
-	 * @return    void        Nothing.
+	 * @return void Nothing.
 	 */
 	function main() {
 		global $BE_USER, $LANG, $BACK_PATH;
@@ -168,7 +168,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Prints out the module HTML
 	 *
-	 * @return    void
+	 * @return void
 	 */
 	function printContent() {
 		echo $this->content;
@@ -177,7 +177,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Gets the buttons that shall be rendered in the docHeader.
 	 *
-	 * @return    array        Available buttons for the docHeader
+	 * @return array Available buttons for the docHeader
 	 */
 	protected function getDocHeaderButtons() {
 		$buttons = array(
@@ -191,7 +191,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Gets the button to set a new shortcut in the backend (if current user is allowed to).
 	 *
-	 * @return    string        HTML representiation of the shortcut button
+	 * @return string HTML representiation of the shortcut button
 	 */
 	protected function getShortcutButton() {
 		$result = '';
@@ -217,7 +217,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Renders module content:
 	 *
-	 * @return    void
+	 * @return void
 	 */
 	function renderModuleContent() {
 
@@ -256,7 +256,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Renders module content, overview of pages with DS/TO on.
 	 *
-	 * @return    void
+	 * @return void
 	 */
 	function renderModuleContent_searchForTODS() {
 		global $LANG;
@@ -301,7 +301,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Renders module content main view:
 	 *
-	 * @return    void
+	 * @return void
 	 */
 	function renderModuleContent_mainView() {
 		global $LANG;
@@ -408,9 +408,9 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Renders Data Structures from $dsScopeArray
 	 *
-	 * @param    [type]        $scope: ...
+	 * @param [type] $scope: ...
 	 *
-	 * @return    array        Returns array with three elements: 0: content, 1: number of DS shown, 2: number of root-level template objects shown.
+	 * @return array Returns array with three elements: 0: content, 1: number of DS shown, 2: number of root-level template objects shown.
 	 */
 	function renderDSlisting($scope) {
 
@@ -519,11 +519,11 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Rendering a single data structures information
 	 *
-	 * @param    array        Data Structure information
-	 * @param    array        Array with TO found for this ds
-	 * @param    integer        Scope.
+	 * @param \Extension\Templavoila\Domain\Model\AbstractDataStructure $dsObj Structure information
+	 * @param integer $scope Scope.
+	 * @param array $toIdArray
 	 *
-	 * @return    string        HTML content
+	 * @return string HTML content
 	 */
 	function renderDataStructureDisplay(\Extension\Templavoila\Domain\Model\AbstractDataStructure $dsObj, $scope, $toIdArray) {
 
@@ -646,12 +646,11 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Render display of a Template Object
 	 *
-	 * @param    array        Template Object record to render
-	 * @param    array        Array of all Template Objects (passed by reference. From here records are unset)
-	 * @param    integer        Scope of DS
-	 * @param    boolean        If set, the function is asked to render children to template objects (and should not call it self recursively again).
+	 * @param array $toObj Template Object record to render
+	 * @param integer $scope Scope of DS
+	 * @param integer $children If set, the function is asked to render children to template objects (and should not call it self recursively again).
 	 *
-	 * @return    string        HTML content
+	 * @return string HTML content
 	 */
 	function renderTODisplay($toObj, $scope, $children = 0) {
 
@@ -865,10 +864,10 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Creates listings of pages / content elements where template objects are used.
 	 *
-	 * @param    array        Template Object record
-	 * @param    integer        Scope value. 1) page,  2) content elements
+	 * @param array $toObj Template Object record
+	 * @param integer $scope Scope value. 1) page,  2) content elements
 	 *
-	 * @return    string        HTML table listing usages.
+	 * @return string HTML table listing usages.
 	 */
 	function findRecordsWhereTOUsed($toObj, $scope) {
 
@@ -1010,11 +1009,11 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Creates listings of pages / content elements where NO or WRONG template objects are used.
 	 *
-	 * @param    array        Data Structure ID
-	 * @param    integer        Scope value. 1) page,  2) content elements
-	 * @param    array        Array with numerical toIDs. Must be integers and never be empty. You can always put in "-1" as dummy element.
+	 * @param array $dsObj Data Structure ID
+	 * @param integer $scope Scope value. 1) page,  2) content elements
+	 * @param array $toIdArray Array with numerical toIDs. Must be integers and never be empty. You can always put in "-1" as dummy element.
 	 *
-	 * @return    string        HTML table listing usages.
+	 * @return string HTML table listing usages.
 	 */
 	function findDSUsageWithImproperTOs($dsObj, $scope, $toIdArray) {
 
@@ -1133,9 +1132,9 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * Checks if a PID value is accessible and if so returns the path for the page.
 	 * Processing is cached so many calls to the function are OK.
 	 *
-	 * @param    integer        Page id for check
+	 * @param integer $pid Page id for check
 	 *
-	 * @return    string        Page path of PID if accessible. otherwise zero.
+	 * @return string Page path of PID if accessible. otherwise zero.
 	 */
 	function findRecordsWhereUsed_pid($pid) {
 		if (!isset($this->pidCache[$pid])) {
@@ -1151,7 +1150,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Creates a list of all template files used in TOs
 	 *
-	 * @return    string        HTML table
+	 * @return string HTML table
 	 */
 	function completeTemplateFileList() {
 		$output = '';
@@ -1239,11 +1238,11 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * Get the processed value analog to \TYPO3\CMS\Backend\Utility\BackendUtility::getProcessedValue
 	 * but take additional TSconfig values into account
 	 *
-	 * @param  $table
-	 * @param  $typeField
-	 * @param  $typeValue
+	 * @param string $table
+	 * @param string $typeField
+	 * @param string $typeValue
 	 *
-	 * @return
+	 * @return string
 	 */
 	protected function getProcessedValue($table, $typeField, $typeValue) {
 		$value = \TYPO3\CMS\Backend\Utility\BackendUtility::getProcessedValue($table, $typeField, $typeValue);
@@ -1260,11 +1259,11 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Stores errors/warnings inside the class.
 	 *
-	 * @param    string        Scope string, 1=page, 2=ce, _ALL= all errors
-	 * @param    string "fatal" or "warning"
-	 * @param    string        HTML content for the error.
+	 * @param string $scope Scope string, 1=page, 2=ce, _ALL= all errors
+	 * @param string $type "fatal" or "warning"
+	 * @param string $HTML HTML content for the error.
 	 *
-	 * @return    void
+	 * @return void
 	 * @see getErrorLog()
 	 */
 	function setErrorLog($scope, $type, $HTML) {
@@ -1274,9 +1273,9 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Returns status for a single scope
 	 *
-	 * @param    string        Scope string
+	 * @param string $scope Scope string
 	 *
-	 * @return    array        Array with content
+	 * @return array Array with content
 	 * @see setErrorLog()
 	 */
 	function getErrorLog($scope) {
@@ -1304,9 +1303,9 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * Shows a graphical summary of a array-tree, which suppose was a XML
 	 * (but don't need to). This function works recursively.
 	 *
-	 * @param    [type]        $DStree: an array holding the DSs defined structure
+	 * @param array $DStree : an array holding the DSs defined structure
 	 *
-	 * @return    [type]        HTML showing an overview of the DS-structure
+	 * @return string HTML showing an overview of the DS-structure
 	 */
 	function renderDSdetails($DStree) {
 		$HTML = '';
@@ -1607,9 +1606,9 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Show meta data part of Data Structure
 	 *
-	 * @param    [type]        $DSstring: ...
+	 * @param string $DSstring
 	 *
-	 * @return    [type]        ...
+	 * @return array
 	 */
 	function DSdetails($DSstring) {
 		$DScontent = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($DSstring);
@@ -1687,7 +1686,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Wizard overview page - before the wizard is started.
 	 *
-	 * @return    void
+	 * @return void
 	 */
 	function renderNewSiteWizard_overview() {
 		global $BE_USER, $LANG;
@@ -1740,7 +1739,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * Running the wizard. Basically branching out to sub functions.
 	 * Also gets and saves session data in $this->wizardData
 	 *
-	 * @return    void
+	 * @return void
 	 */
 	function renderNewSiteWizard_run() {
 		global $BE_USER, $LANG;
@@ -1789,7 +1788,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Pre-checking for extensions
 	 *
-	 * @return    string        If string is returned, an error occured.
+	 * @return string If string is returned, an error occured.
 	 */
 	function wizard_checkMissingExtensions() {
 
@@ -1826,7 +1825,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Pre-checking for TemplaVoila configuration
 	 *
-	 * @return    string        If string is returned, an error occured.
+	 * @return string If string is returned, an error occured.
 	 */
 	function wizard_checkConfiguration() {
 		$TVconfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
@@ -1837,7 +1836,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Pre-checking for directory of extensions.
 	 *
-	 * @return    string        If string is returned, an error occured.
+	 * @return string If string is returned, an error occured.
 	 */
 	function wizard_checkDirectory() {
 		$paths = $this->getTemplatePaths(TRUE);
@@ -1851,7 +1850,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Wizard Step 1: Selecting template file.
 	 *
-	 * @return    void
+	 * @return void
 	 */
 	function wizard_step1() {
 		$paths = $this->getTemplatePaths();
@@ -1912,7 +1911,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Step 2: Enter default values:
 	 *
-	 * @return    void
+	 * @return void
 	 */
 	function wizard_step2() {
 
@@ -1962,7 +1961,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Step 3: Begin template mapping
 	 *
-	 * @return    void
+	 * @return void
 	 */
 	function wizard_step3() {
 
@@ -2074,7 +2073,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Step 4: Select HTML header parts.
 	 *
-	 * @return    void
+	 * @return void
 	 */
 	function wizard_step4() {
 		$url = '../cm1/index.php?table=tx_templavoila_tmplobj&uid=' . $this->wizardData['templateObjectId'] . '&SET[selectHeaderContent]=1&_reload_from=1&id=' . $this->id . '&returnUrl=' . rawurlencode('../mod2/index.php?SET[wiz_step]=5');
@@ -2092,9 +2091,9 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Step 5: Create dynamic menu
 	 *
-	 * @param    string        Type of menu (main or sub), values: "field_menu" or "field_submenu"
+	 * @param string $menuField Type of menu (main or sub), values: "field_menu" or "field_submenu"
 	 *
-	 * @return    void
+	 * @return void
 	 */
 	function wizard_step5($menuField) {
 
@@ -2323,7 +2322,7 @@ lib.' . $menuType . '.1.ACT {
 	/**
 	 * Step 6: Done.
 	 *
-	 * @return    void
+	 * @return void
 	 */
 	function wizard_step6() {
 
@@ -2343,7 +2342,7 @@ lib.' . $menuType . '.1.ACT {
 	/**
 	 * Initialize the import-engine
 	 *
-	 * @return    object        Returns object ready to import the import-file used to create the basic site!
+	 * @return object Returns object ready to import the import-file used to create the basic site!
 	 */
 	function getImportObj() {
 		global $TYPO3_CONF_VARS;
@@ -2358,9 +2357,9 @@ lib.' . $menuType . '.1.ACT {
 	/**
 	 * Syntax Highlighting of TypoScript code
 	 *
-	 * @param    string        String of TypoScript code
+	 * @param string String of TypoScript code
 	 *
-	 * @return    string        HTML content with it highlighted.
+	 * @return string HTML content with it highlighted.
 	 */
 	function syntaxHLTypoScript($v) {
 		$tsparser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
@@ -2373,9 +2372,9 @@ lib.' . $menuType . '.1.ACT {
 	/**
 	 * Produce WRAP value
 	 *
-	 * @param    array        menuItemSuggestion configuration
+	 * @param array $cfg menuItemSuggestion configuration
 	 *
-	 * @return    string        Wrap for TypoScript
+	 * @return string Wrap for TypoScript
 	 */
 	function makeWrap($cfg) {
 		if (!$cfg['bulletwrap']) {
@@ -2390,9 +2389,9 @@ lib.' . $menuType . '.1.ACT {
 	/**
 	 * Returns the code that the menu was mapped to in the HTML
 	 *
-	 * @param    string "Field" from Data structure, either "field_menu" or "field_submenu"
+	 * @param string "Field" from Data structure, either "field_menu" or "field_submenu"
 	 *
-	 * @return    string
+	 * @return string
 	 */
 	function getMenuDefaultCode($field) {
 		// Select template record and extract menu HTML content
@@ -2405,7 +2404,7 @@ lib.' . $menuType . '.1.ACT {
 	/**
 	 * Saves the menu TypoScript code
 	 *
-	 * @return    void
+	 * @return void
 	 */
 	function saveMenuCode() {
 
@@ -2441,9 +2440,9 @@ lib.' . $menuType . '.1.ACT {
 	/**
 	 * Tries to fetch the background color of a GIF or PNG image.
 	 *
-	 * @param    string        Filepath (absolute) of the image (must exist)
+	 * @param string $filePath Filepath (absolute) of the image (must exist)
 	 *
-	 * @return    string        HTML hex color code, if any.
+	 * @return string HTML hex color code, if any.
 	 */
 	function getBackgroundColor($filePath) {
 
@@ -2468,10 +2467,10 @@ lib.' . $menuType . '.1.ACT {
 	/**
 	 * Find and check all template paths
 	 *
-	 * @param    boolean        if true returned paths are relative
-	 * @param    boolean        if true the patchs are checked
+	 * @param boolean $relative if true returned paths are relative
+	 * @param boolean $check if true the patchs are checked
 	 *
-	 * @return    array        all relevant template paths
+	 * @return array all relevant template paths
 	 */
 	protected function getTemplatePaths($relative = FALSE, $check = TRUE) {
 		$templatePaths = array();
@@ -2504,7 +2503,7 @@ lib.' . $menuType . '.1.ACT {
 	/**
 	 * Find and check all templates within the template paths
 	 *
-	 * @return    array        all relevant templates
+	 * @return array all relevant templates
 	 */
 	protected function getTemplateFiles() {
 		$paths = $this->getTemplatePaths();

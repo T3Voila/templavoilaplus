@@ -26,7 +26,7 @@
  *
  * $Id$
  *
- * @author     Robert Lemke <robert@typo3.org>
+ * @author Robert Lemke <robert@typo3.org>
  */
 
 /**
@@ -35,8 +35,8 @@
  * Note: This class is closely bound to the page module class and uses many variables and functions directly. After major modifications of
  *       the page module all functions of this sidebar should be checked to make sure that they still work.
  *
- * @author        Robert Lemke <robert@typo3.org>
- * @package        TYPO3
+ * @author Robert Lemke <robert@typo3.org>
+ * @package TYPO3
  * @subpackage    tx_templavoila
  */
 class tx_templavoila_mod1_sidebar {
@@ -57,10 +57,10 @@ class tx_templavoila_mod1_sidebar {
 	 * Initializes the side bar object. The calling class must make sure that the right locallang files are already loaded.
 	 * This method is usually called by the templavoila page module.
 	 *
-	 * @param    $pObj :        Reference to the parent object ($this)
+	 * @param $pObj : Reference to the parent object ($this)
 	 *
-	 * @return    void
-	 * @access    public
+	 * @return void
+	 * @access public
 	 */
 	function init(&$pObj) {
 		global $LANG;
@@ -106,14 +106,15 @@ class tx_templavoila_mod1_sidebar {
 	 * Adds an item to the sidebar. You are encouraged to use this function from your own extension to extend the sidebar
 	 * with new features. See the parameter descriptions for more details.
 	 *
-	 * @param    string $itemKey : A unique identifier for your sidebar item. Generally use your extension key to make sure it is unique (eg. 'tx_templavoila_sidebar_item1').
-	 * @param    object $object : A reference to the instantiated class containing the method which renders the sidebar item (usually $this).
-	 * @param    string $method : Name of the method within your instantiated class which renders the sidebar item. Case sensitive!
-	 * @param    string $label : The label which will be shown for your item in the sidebar menu. Make sure that this label is localized!
-	 * @param    integer $priority : An integer between 0 and 100. The higher the value, the higher the item will be displayed in the sidebar. Default is 50
+	 * @param string $itemKey : A unique identifier for your sidebar item. Generally use your extension key to make sure it is unique (eg. 'tx_templavoila_sidebar_item1').
+	 * @param object &$object : A reference to the instantiated class containing the method which renders the sidebar item (usually $this).
+	 * @param string $method : Name of the method within your instantiated class which renders the sidebar item. Case sensitive!
+	 * @param string $label : The label which will be shown for your item in the sidebar menu. Make sure that this label is localized!
+	 * @param integer $priority : An integer between 0 and 100. The higher the value, the higher the item will be displayed in the sidebar. Default is 50
+	 * @param boolean $hideIfEmpty
 	 *
-	 * @return    void
-	 * @access    public
+	 * @return void
+	 * @access public
 	 */
 	function addItem($itemKey, &$object, $method, $label, $priority = 50, $hideIfEmpty = FALSE) {
 		$hideIfEmpty = $pObj->modTSconfig['properties']['showTabsIfEmpty'] ? FALSE : $hideIfEmpty;
@@ -129,10 +130,10 @@ class tx_templavoila_mod1_sidebar {
 	/**
 	 * Removes a certain item from the sidebar.
 	 *
-	 * @param    string $itemKey : The key identifying the sidebar item.
+	 * @param string $itemKey : The key identifying the sidebar item.
 	 *
-	 * @return    void
-	 * @access    public
+	 * @return void
+	 * @access public
 	 */
 	function removeItem($itemKey) {
 		unset ($this->sideBarItems[$itemKey]);
@@ -141,8 +142,8 @@ class tx_templavoila_mod1_sidebar {
 	/**
 	 * Renders the sidebar and all its items.
 	 *
-	 * @return    string        HTML
-	 * @access    public
+	 * @return string HTML
+	 * @access public
 	 */
 	function render() {
 		if (is_array($this->sideBarItems) && count($this->sideBarItems)) {
@@ -254,10 +255,10 @@ class tx_templavoila_mod1_sidebar {
 	 * as a header above the content zones while editing the content of a page. This function renders those fields.
 	 * The fields to be displayed are defined in the page's datastructure.
 	 *
-	 * @param    $pObj :        Reference to the parent object ($this)
+	 * @param $pObj : Reference to the parent object ($this)
 	 *
-	 * @return    string        HTML output
-	 * @access    private
+	 * @return string HTML output
+	 * @access private
 	 */
 	function renderItem_headerFields(&$pObj) {
 		global $LANG, $TCA;
@@ -319,10 +320,10 @@ class tx_templavoila_mod1_sidebar {
 	/**
 	 * Renders the versioning sidebar item. Basically this is a copy from the template class.
 	 *
-	 * @param    object &$pObj : Reference to the page object (the templavoila page module)
+	 * @param object &$pObj : Reference to the page object (the templavoila page module)
 	 *
-	 * @return    string        HTML output
-	 * @access    public
+	 * @return string HTML output
+	 * @access public
 	 */
 	function renderItem_versioning(&$pObj) {
 		if ($pObj->id > 0) {
@@ -353,10 +354,10 @@ class tx_templavoila_mod1_sidebar {
 	/**
 	 * Renders the "advanced functions" sidebar item.
 	 *
-	 * @param    object &$pObj : Reference to the page object (the templavoila page module)
+	 * @param object &$pObj : Reference to the page object (the templavoila page module)
 	 *
-	 * @return    string        HTML output
-	 * @access    public
+	 * @return string HTML output
+	 * @access public
 	 */
 	function renderItem_advancedFunctions(&$pObj) {
 		global $LANG;
@@ -408,7 +409,7 @@ class tx_templavoila_mod1_sidebar {
 	/**
 	 * Returns sidebar JS code.
 	 *
-	 * @return    string        JavaScript section for the HTML header.
+	 * @return string JavaScript section for the HTML header.
 	 */
 	function getJScode() {
 		if ($this->position == 'left') {
@@ -447,11 +448,11 @@ class tx_templavoila_mod1_sidebar {
 	/**
 	 * Comparison callback function for sidebar items sorting
 	 *
-	 * @param    array $a : Array A
-	 * @param    array $b : Array B
+	 * @param array $a : Array A
+	 * @param array $b : Array B
 	 *
-	 * @return    boolean
-	 * @access    private
+	 * @return boolean
+	 * @access private
 	 */
 	function sortItemsCompare($a, $b) {
 		return ($a['priority'] < $b['priority']);

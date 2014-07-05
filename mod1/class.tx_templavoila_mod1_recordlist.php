@@ -26,7 +26,7 @@
  *
  * $Id$
  *
- * @author     Dmitry Dulepov <dmitry@typo3.org>
+ * @author Dmitry Dulepov <dmitry@typo3.org>
  */
 
 // Need List lables for delete confirmation
@@ -35,8 +35,8 @@ $LANG->includeLLFile('EXT:lang/locallang_mod_web_list.xml');
 /**
  * Extension of standard List module
  *
- * @author        Dmitry Dulepov <dmitry@typo3.org>
- * @package        TYPO3
+ * @author Dmitry Dulepov <dmitry@typo3.org>
+ * @package TYPO3
  * @subpackage    tx_templavoila
  */
 class tx_templavoila_mod1_recordlist extends \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList {
@@ -46,9 +46,9 @@ class tx_templavoila_mod1_recordlist extends \TYPO3\CMS\Recordlist\RecordList\Da
 	/**
 	 * Prepares object to run.
 	 *
-	 * @param    object &$pObj Parent object (mod1/index.php)
+	 * @param object &$pObj Parent object (mod1/index.php)
 	 *
-	 * @return    void
+	 * @return void
 	 */
 	function start(&$pObj) {
 		$this->pObj = & $pObj;
@@ -63,11 +63,11 @@ class tx_templavoila_mod1_recordlist extends \TYPO3\CMS\Recordlist\RecordList\Da
 	/**
 	 * Creates the button with link to either forward or reverse
 	 *
-	 * @param    string        Type: "fwd" or "rwd"
-	 * @param    integer        Pointer
-	 * @param    string        Table name
+	 * @param string $type Type: "fwd" or "rwd"
+	 * @param integer $pointer Pointer
+	 * @param string $table Table name
 	 *
-	 * @return    string
+	 * @return string
 	 */
 	function fwd_rwd_HTML($type, $pointer, $table = '') {
 		$content = '';

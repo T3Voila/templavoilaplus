@@ -27,13 +27,13 @@ namespace Extension\Templavoila\Utility\StaticDataStructure;
 /**
  * Class for userFuncs within the Extension Manager.
  *
- * @author    Steffen Kamper  <info@sk-typo3.de>
+ * @author Steffen Kamper  <info@sk-typo3.de>
  */
 class ToolsUtility {
 
 	/**
 	 *
-	 * @param unknown_type $conf
+	 * @param array $conf
 	 */
 	public static function readStaticDsFilesIntoArray($conf) {
 		$paths = array_unique(array('fce' => $conf['staticDS.']['path_fce'], 'page' => $conf['staticDS.']['path_page']));

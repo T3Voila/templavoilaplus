@@ -27,7 +27,7 @@
  *
  * $Id: index.php 17597 2009-03-08 17:59:14Z steffenk $
  *
- * @author        Kasper Skaarhoj <kasperYYYY@typo3.com>
+ * @author Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @co-author    Robert Lemke <robert@typo3.org>
  * @co-author    Steffen kamper <info@sk-typo3.de>
  */
@@ -44,13 +44,13 @@ class tx_templavoila_cm1_dsEdit {
 	/**
 	 * Creates the editing row for a Data Structure element - when DS's are build...
 	 *
-	 * @param    string        Form element prefix
-	 * @param    string        Key for form element
-	 * @param    array        Values for element
-	 * @param    integer        Indentation level
-	 * @param    array        Array containing mapping links and commands
+	 * @param string $formPrefix Form element prefix
+	 * @param string $key Key for form element
+	 * @param array $value Values for element
+	 * @param integer $level Indentation level
+	 * @param array $rowCells Array containing mapping links and commands
 	 *
-	 * @return    array        Two values, first is addEditRows (string HTML content), second is boolean whether to place row before or after.
+	 * @return array Two values, first is addEditRows (string HTML content), second is boolean whether to place row before or after.
 	 */
 	function drawDataStructureMap_editItem($formPrefix, $key, $value, $level, $rowCells) {
 
@@ -435,13 +435,13 @@ class tx_templavoila_cm1_dsEdit {
 	/**
 	 * Renders extra form fields for configuration of the Editing Types.
 	 *
-	 * @param    string        Editing Type string
-	 * @param    string        Form field name prefix
-	 * @param    array        Current values for the form field name prefix.
-	 * @param    string        Templavoila field name.
+	 * @param string $type Editing Type string
+	 * @param string $formFieldName Form field name prefix
+	 * @param array $curValue Current values for the form field name prefix.
+	 * @param string $key Templavoila field name.
 	 *
-	 * @return    string        HTML with extra form fields
-	 * @access    private
+	 * @return string HTML with extra form fields
+	 * @access private
 	 * @see drawDataStructureMap_editItem()
 	 */
 	function drawDataStructureMap_editItem_editTypeExtra($type, $formFieldName, $curValue, $key = '') {

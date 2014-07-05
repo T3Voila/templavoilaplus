@@ -71,11 +71,11 @@ class TextController {
 	/**
 	 * Performs a cleanup of the field values before they're passed into the preview
 	 *
-	 *.@param    string $str : input usually taken from bodytext or any other field
-	 * @param    integer $max : some items might not need to cover the full maximum
-	 * @param    boolean $stripTags : HTML-blocks usually keep their tags
+	 * @param string $str : input usually taken from bodytext or any other field
+	 * @param integer $max : some items might not need to cover the full maximum
+	 * @param boolean $stripTags : HTML-blocks usually keep their tags
 	 *
-	 * @return    string        the properly prepared string
+	 * @return string the properly prepared string
 	 */
 	protected function preparePreviewData($str, $max = NULL, $stripTags = TRUE) {
 		//Enable to omit that parameter

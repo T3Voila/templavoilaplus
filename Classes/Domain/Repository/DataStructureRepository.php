@@ -27,16 +27,21 @@ namespace Extension\Templavoila\Domain\Repository;
 /**
  * Class to provide unique access to datastructure
  *
- * @author    Tolleiv Nietsch <tolleiv.nietsch@typo3.org>
+ * @author Tolleiv Nietsch <tolleiv.nietsch@typo3.org>
  */
 class DataStructureRepository {
 
+	/**
+	 * @var boolean
+	 */
 	protected static $staticDsInitComplete = FALSE;
 
 	/**
 	 * Retrieve a single datastructure by uid or xml-file path
 	 *
-	 * @param integer $uid
+	 * @param integer $uidOrFile
+	 *
+	 * @throws \InvalidArgumentException
 	 *
 	 * @return \Extension\Templavoila\Domain\Model\AbstractDataStructure
 	 */
@@ -276,10 +281,10 @@ class DataStructureRepository {
 	/**
 	 * Sorts datastructure alphabetically
 	 *
-	 * @param    \Extension\Templavoila\Domain\Model\AbstractDataStructure $obj1
-	 * @param    \Extension\Templavoila\Domain\Model\AbstractDataStructure $obj2
+	 * @param \Extension\Templavoila\Domain\Model\AbstractDataStructure $obj1
+	 * @param \Extension\Templavoila\Domain\Model\AbstractDataStructure $obj2
 	 *
-	 * @return    int    Result of the comparison (see strcmp())
+	 * @return int    Result of the comparison (see strcmp())
 	 * @see    usort()
 	 * @see    strcmp()
 	 */
@@ -288,7 +293,7 @@ class DataStructureRepository {
 	}
 
 	/**
-	 *
+	 * @param integer $pid
 	 *
 	 * @return integer
 	 */

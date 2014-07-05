@@ -31,7 +31,7 @@ namespace Extension\Templavoila\Service;
  *
  * $Id$
  *
- * @author    Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -40,15 +40,15 @@ namespace Extension\Templavoila\Service;
  *
  *   84: class tx_templavoila_syntaxhl
  *
- *              SECTION: Markup of Data Structure, <T3DataStructure>
+ *  SECTION: Markup of Data Structure, <T3DataStructure>
  *  156:     function highLight_DS($str)
  *  183:     function highLight_DS_markUpRecursively($struct,$parent='',$app='')
  *
- *              SECTION: Markup of Data Structure, <T3FlexForms>
+ *  SECTION: Markup of Data Structure, <T3FlexForms>
  *  268:     function highLight_FF($str)
  *  295:     function highLight_FF_markUpRecursively($struct,$parent='',$app='')
  *
- *              SECTION: Various
+ *  SECTION: Various
  *  376:     function getAllTags($str)
  *  407:     function splitXMLbyTags($tagList,$str)
  *
@@ -60,7 +60,7 @@ namespace Extension\Templavoila\Service;
 /**
  * Syntax Highlighting class.
  *
- * @author    Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  */
@@ -126,9 +126,9 @@ class SyntaxHighlightingService {
 	/**
 	 * Makes syntax highlighting of a Data Structure, <T3DataStructure>
 	 *
-	 * @param    string        Data Structure XML, must be valid since it's parsed.
+	 * @param $str string Data Structure XML, must be valid since it's parsed.
 	 *
-	 * @return    string        HTML code with highlighted content. Must be wrapped in <PRE> tags
+	 * @return string HTML code with highlighted content. Must be wrapped in <PRE> tags
 	 */
 	function highLight_DS($str) {
 
@@ -155,11 +155,11 @@ class SyntaxHighlightingService {
 	 * Making syntax highlighting of the parsed Data Structure XML.
 	 * Called recursively.
 	 *
-	 * @param    array        The structure, see splitXMLbyTags()
-	 * @param    string        Parent tag.
-	 * @param    string "Application" - used to denote if we are 'inside' a section
+	 * @param array $struct The structure, see splitXMLbyTags()
+	 * @param string $parent Parent tag.
+	 * @param string $app "Application" - used to denote if we are 'inside' a section
 	 *
-	 * @return    string        HTML
+	 * @return string HTML
 	 */
 	function highLight_DS_markUpRecursively($struct, $parent = '', $app = '') {
 		$output = '';
@@ -224,9 +224,9 @@ class SyntaxHighlightingService {
 	/**
 	 * Makes syntax highlighting of a FlexForm Data, <T3FlexForms>
 	 *
-	 * @param    string        Data Structure XML, must be valid since it's parsed.
+	 * @param string $str Data Structure XML, must be valid since it's parsed.
 	 *
-	 * @return    string        HTML code with highlighted content. Must be wrapped in <PRE> tags
+	 * @return string HTML code with highlighted content. Must be wrapped in <PRE> tags
 	 */
 	function highLight_FF($str) {
 
@@ -253,11 +253,11 @@ class SyntaxHighlightingService {
 	 * Making syntax highlighting of the parsed FlexForm XML.
 	 * Called recursively.
 	 *
-	 * @param    array        The structure, see splitXMLbyTags()
-	 * @param    string        Parent tag.
-	 * @param    string "Application" - used to denote if we are 'inside' a section
+	 * @param array $struct The structure, see splitXMLbyTags()
+	 * @param string $parent Parent tag.
+	 * @param string $app "Application" - used to denote if we are 'inside' a section
 	 *
-	 * @return    string        HTML
+	 * @return string HTML
 	 */
 	function highLight_FF_markUpRecursively($struct, $parent = '', $app = '') {
 		$output = '';
@@ -327,9 +327,9 @@ class SyntaxHighlightingService {
 	/**
 	 * Returning all tag names found in XML/HTML input string
 	 *
-	 * @param    string        HTML/XML input
+	 * @param string $str HTML/XML input
 	 *
-	 * @return    array        Array with all found tags (starttags only)
+	 * @return array Array with all found tags (starttags only)
 	 */
 	function getAllTags($str) {
 
@@ -358,10 +358,10 @@ class SyntaxHighlightingService {
 	 * Splitting the input source by the tags listing in $tagList.
 	 * Called recursively.
 	 *
-	 * @param    string        Commalist of tags to split source by (into blocks, ALL being block-tags!)
-	 * @param    string        Input string.
+	 * @param string $tagList Commalist of tags to split source by (into blocks, ALL being block-tags!)
+	 * @param string $str Input string.
 	 *
-	 * @return    array        Array with the content arranged hierarchically.
+	 * @return array Array with the content arranged hierarchically.
 	 */
 	function splitXMLbyTags($tagList, $str) {
 		$struct = $this->htmlParse->splitIntoBlock($tagList, $str);

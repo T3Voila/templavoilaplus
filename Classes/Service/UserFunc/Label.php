@@ -29,7 +29,7 @@ namespace Extension\Templavoila\Service\UserFunc;
  *
  * This library contains several functions for displaying the labels in the list view.
  *
- * @author      Michael Klapper <michael.klapper@aoemedia.de>
+ * @author  Michael Klapper <michael.klapper@aoemedia.de>
  *
  * @package     TYPO3
  * @subpackage  tx_templavoila
@@ -45,7 +45,7 @@ class Label {
 	 * @access  public
 	 * @return  void
 	 *
-	 * @author  Michael Klapper <michael.klapper@aoemedia.de>
+	 * @author Michael Klapper <michael.klapper@aoemedia.de>
 	 */
 	public function getLabel(&$params, &$pObj) {
 		$params['title'] = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL($params['row']['title']);

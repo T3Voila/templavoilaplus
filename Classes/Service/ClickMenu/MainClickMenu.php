@@ -28,14 +28,14 @@ namespace Extension\Templavoila\Service\ClickMenu;
  *
  * $Id$
  *
- * @author        Kasper Skaarhoj <kasper@typo3.com>
+ * @author Kasper Skaarhoj <kasper@typo3.com>
  * @coauthor    Robert Lemke <robert@typo3.org>
  */
 
 /**
  * Class which will add menu items to click menus for the extension TemplaVoila
  *
- * @author        Kasper Skaarhoj <kasper@typo3.com>
+ * @author Kasper Skaarhoj <kasper@typo3.com>
  * @coauthor    Robert Lemke <robert@typo3.org>
  * @package    TYPO3
  * @subpackage    tx_templavoila
@@ -45,12 +45,12 @@ class MainClickMenu {
 	/**
 	 * Main function, adding items to the click menu array.
 	 *
-	 * @param    object        Reference to the parent object of the clickmenu class which calls this function
-	 * @param    array        The current array of menu items - you have to add or remove items to this array in this function. Thats the point...
-	 * @param    string        The database table OR filename
-	 * @param    integer        For database tables, the UID
+	 * @param object &$backRef Reference to the parent object of the clickmenu class which calls this function
+	 * @param array $menuItems The current array of menu items - you have to add or remove items to this array in this function. Thats the point...
+	 * @param string $table The database table OR filename
+	 * @param integer $uid For database tables, the UID
 	 *
-	 * @return    array        The modified menu array.
+	 * @return array The modified menu array.
 	 */
 	function main(&$backRef, $menuItems, $table, $uid) {
 		global $BE_USER, $LANG, $TYPO3_DB;

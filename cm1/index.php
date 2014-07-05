@@ -26,7 +26,7 @@
  *
  * $Id$
  *
- * @author        Kasper Skaarhoj <kasperYYYY@typo3.com>
+ * @author Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @co-author    Robert Lemke <robert@typo3.org>
  */
 
@@ -50,7 +50,7 @@ $LANG->includeLLFile('EXT:templavoila/cm1/locallang.xml');
 /**
  * Class for controlling the TemplaVoila module.
  *
- * @author    Kasper Skaarhoj <kasperYYYY@typo3.com>
+ * @author Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @co-author    Robert Lemke <robert@typo3.org>
  * @package TYPO3
  * @subpackage tx_templavoila
@@ -159,7 +159,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Adds items to the ->MOD_MENU array. Used for the function menu selector.
 	 *
-	 * @return    void
+	 * @return void
 	 */
 	function menuConfig() {
 		$this->MOD_MENU = Array(
@@ -177,7 +177,9 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Returns an abbrevation and a description for a given element-type.
 	 *
-	 * @return    array
+	 * @param array $conf
+	 *
+	 * @return array
 	 */
 	function dsTypeInfo($conf) {
 		// Icon:
@@ -208,7 +210,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * Main function, distributes the load between the module and display modes.
 	 * "Display" mode is when the exploded template file is shown in an IFRAME
 	 *
-	 * @return    void
+	 * @return void
 	 */
 	function main() {
 
@@ -241,7 +243,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * Prints module content.
 	 * Is only used in case of &mode = "mod" since both "display" mode and frameset is outputted + exiting before this is called.
 	 *
-	 * @return    void
+	 * @return void
 	 */
 	function printContent() {
 		$this->content .= $this->doc->endPage();
@@ -251,7 +253,10 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Makes a context-free xml-string from an array.
 	 *
-	 * @return    string
+	 * @param array $array
+	 * @param string $pfx
+	 *
+	 * @return string
 	 */
 	function flattenarray($array, $pfx = '') {
 		if (!is_array($array)) {
@@ -268,7 +273,9 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Makes an array from a context-free xml-string.
 	 *
-	 * @return    array
+	 * @param string $string
+	 *
+	 * @return array
 	 */
 	function unflattenarray($string) {
 		if (!is_string($string) || !trim($string)) {
@@ -287,13 +294,13 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * In case of identical keys, ie. keeping the values of the second.
 	 * Usage: 0
 	 *
-	 * @param    array        First array
-	 * @param    array        Second array, overruling the first array
-	 * @param    boolean        If set, keys that are NOT found in $arr0 (first array) will not be set. Thus only existing value can/will be overruled from second array.
-	 * @param    boolean        If set, values from $arr1 will overrule if they are empty or zero. Default: true
-	 * @param    boolean        If set, anything will override arrays in $arr0
+	 * @param array $arr0 First array
+	 * @param array $arr1 Second array, overruling the first array
+	 * @param integer $notAddKeys If set, keys that are NOT found in $arr0 (first array) will not be set. Thus only existing value can/will be overruled from second array.
+	 * @param boolean $includeEmtpyValues If set, values from $arr1 will overrule if they are empty or zero. Default: true
+	 * @param boolean $kill If set, anything will override arrays in $arr0
 	 *
-	 * @return    array        Resulting array where $arr1 values has overruled $arr0 values
+	 * @return array Resulting array where $arr1 values has overruled $arr0 values
 	 */
 	function array_merge_recursive_overrule($arr0, $arr1, $notAddKeys = 0, $includeEmtpyValues = TRUE, $kill = TRUE) {
 		foreach ($arr1 as $key => $val) {
@@ -339,7 +346,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * - Based on a Template Object uid, remapping
 	 * - Based on a Data Structure uid, selecting a Template Object to map.
 	 *
-	 * @return    void
+	 * @return void
 	 */
 	function main_mode() {
 		global $LANG, $BACK_PATH;
@@ -483,7 +490,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Gets the buttons that shall be rendered in the docHeader.
 	 *
-	 * @return    array        Available buttons for the docHeader
+	 * @return array Available buttons for the docHeader
 	 */
 	protected function getDocHeaderButtons() {
 		$buttons = array(
@@ -506,7 +513,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Gets the button to set a new shortcut in the backend (if current user is allowed to).
 	 *
-	 * @return    string        HTML representiation of the shortcut button
+	 * @return string HTML representiation of the shortcut button
 	 */
 	protected function getShortcutButton() {
 		$result = '';
@@ -520,7 +527,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Renders the display of DS/TO creation directly from a file
 	 *
-	 * @return    void
+	 * @return void
 	 */
 	function renderFile() {
 		global $TYPO3_DB;
@@ -1130,7 +1137,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Renders the display of Data Structure Objects.
 	 *
-	 * @return    void
+	 * @return void
 	 */
 	function renderDSO() {
 		global $TYPO3_DB;
@@ -1263,7 +1270,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Renders the display of Template Objects.
 	 *
-	 * @return    void
+	 * @return void
 	 */
 	function renderTO() {
 		if (intval($this->displayUid) > 0) {
@@ -1473,12 +1480,12 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Process editing of a TO for renderTO() function
 	 *
-	 * @param    array        Data Structure. Passed by reference; The sheets found inside will be resolved if found!
-	 * @param    array        TO record row
-	 * @param    string        Template file path (absolute)
-	 * @param   integer        Process the headerPart instead of the bodyPart
+	 * @param array &$dataStruct Data Structure. Passed by reference; The sheets found inside will be resolved if found!
+	 * @param array $row TO record row
+	 * @param string Template file path (absolute)
+	 * @param integer $headerPart Process the headerPart instead of the bodyPart
 	 *
-	 * @return    array        Array with two keys (0/1) with a) content and b) currentMappingInfo which is retrieved inside (currentMappingInfo will be different based on whether "head" or "body" content is "mapped")
+	 * @return array Array with two keys (0/1) with a) content and b) currentMappingInfo which is retrieved inside (currentMappingInfo will be different based on whether "head" or "body" content is "mapped")
 	 * @see renderTO()
 	 */
 	function renderTO_editProcessing(&$dataStruct, $row, $theFile, $headerPart = 0) {
@@ -1704,12 +1711,12 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Renders the table with selection of part from the HTML header + bodytag.
 	 *
-	 * @param    string        The abs file name to read
-	 * @param    array        Header mapping information
-	 * @param    boolean        If true, show body tag.
-	 * @param    string        HTML content to show after the Data Structure table.
+	 * @param string $displayFile The abs file name to read
+	 * @param array $currentHeaderMappingInfo Header mapping information
+	 * @param boolean $showBodyTag If true, show body tag.
+	 * @param string $htmlAfterDSTable HTML content to show after the Data Structure table.
 	 *
-	 * @return    string        HTML table.
+	 * @return string HTML table.
 	 */
 	function renderHeaderSelection($displayFile, $currentHeaderMappingInfo, $showBodyTag, $htmlAfterDSTable = '') {
 
@@ -1775,13 +1782,13 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Creates the template mapper table + form for either direct file mapping or Template Object
 	 *
-	 * @param    string        The abs file name to read
-	 * @param    string        The HTML-path to follow. Eg. 'td#content table[1] tr[1] / INNER | img[0]' or so. Normally comes from clicking a tag-image in the display frame.
-	 * @param    array        The data Structure to map to
-	 * @param    array        The current mapping information
-	 * @param    string        HTML content to show after the Data Structure table.
+	 * @param string $displayFile The abs file name to read
+	 * @param string $path The HTML-path to follow. Eg. 'td#content table[1] tr[1] / INNER | img[0]' or so. Normally comes from clicking a tag-image in the display frame.
+	 * @param array $dataStruct The data Structure to map to
+	 * @param array $currentMappingInfo The current mapping information
+	 * @param string $htmlAfterDSTable HTML content to show after the Data Structure table.
 	 *
-	 * @return    string        HTML table.
+	 * @return string HTML table.
 	 */
 	function renderTemplateMapper($displayFile, $path, $dataStruct = array(), $currentMappingInfo = array(), $htmlAfterDSTable = '') {
 
@@ -1959,7 +1966,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * Determines parentElement and sameLevelElements for the RANGE mapping mode
 	 *
 	 * @todo    this functions return value pretty dirty, but due to the fact that this is something which
-	 *            should at least be encapsulated the bad coding habit it preferred just for readability of the remaining code
+	 *     should at least be encapsulated the bad coding habit it preferred just for readability of the remaining code
 	 *
 	 * @param array    Array containing information about the current element
 	 * @param array    Array containing information about all mapable elements
@@ -2027,19 +2034,21 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * Renders the hierarchical display for a Data Structure.
 	 * Calls itself recursively
 	 *
-	 * @param    array        Part of Data Structure (array of elements)
-	 * @param    boolean        If true, the Data Structure table will show links for mapping actions. Otherwise it will just layout the Data Structure visually.
-	 * @param    array        Part of Current mapping information corresponding to the $dataStruct array - used to evaluate the status of mapping for a certain point in the structure.
-	 * @param    array        Array of HTML paths
-	 * @param    array        Options for mapping mode control (INNER, OUTER etc...)
-	 * @param    array        Content from template file splitted by current mapping info - needed to evaluate whether mapping information for a certain level actually worked on live content!
-	 * @param    integer        Recursion level, counting up
-	 * @param    array        Accumulates the table rows containing the structure. This is the array returned from the function.
-	 * @param    string        Form field prefix. For each recursion of this function, two [] parts are added to this prefix
-	 * @param    string        HTML path. For each recursion a section (divided by "|") is added.
-	 * @param    boolean        If true, the "Map" link can be shown, otherwise not. Used internally in the recursions.
+	 * @param array $dataStruct Part of Data Structure (array of elements)
+	 * @param integer $mappingMode If true, the Data Structure table will show links for mapping actions. Otherwise it will just layout the Data Structure visually.
+	 * @param array $currentMappingInfo Part of Current mapping information corresponding to the $dataStruct array - used to evaluate the status of mapping for a certain point in the structure.
+	 * @param array $pathLevels Array of HTML paths
+	 * @param array $optDat Options for mapping mode control (INNER, OUTER etc...)
+	 * @param array $contentSplittedByMapping Content from template file splitted by current mapping info - needed to evaluate whether mapping information for a certain level actually worked on live content!
+	 * @param integer $level Recursion level, counting up
+	 * @param array $tRows Accumulates the table rows containing the structure. This is the array returned from the function.
+	 * @param string $formPrefix Form field prefix. For each recursion of this function, two [] parts are added to this prefix
+	 * @param string $path HTML path. For each recursion a section (divided by "|") is added.
+	 * @param integer $mapOK
 	 *
-	 * @return    array        Table rows as an array of <tr> tags, $tRows
+	 * @internal param boolean $mapOk If true, the "Map" link can be shown, otherwise not. Used internally in the recursions.
+	 *
+	 * @return array Table rows as an array of <tr> tags, $tRows
 	 */
 	function drawDataStructureMap($dataStruct, $mappingMode = 0, $currentMappingInfo = array(), $pathLevels = array(), $optDat = array(), $contentSplittedByMapping = array(), $level = 0, $tRows = array(), $formPrefix = '', $path = '', $mapOK = 1) {
 
@@ -2307,10 +2316,10 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Returns Data Structure from the $datString
 	 *
-	 * @param    string        XML content which is parsed into an array, which is returned.
-	 * @param    string        Absolute filename from which to read the XML data. Will override any input in $datString
+	 * @param string $datString XML content which is parsed into an array, which is returned.
+	 * @param string $file Absolute filename from which to read the XML data. Will override any input in $datString
 	 *
-	 * @return    mixed        The variable $dataStruct. Should be array. If string, then no structures was found and the function returns the XML parser error.
+	 * @return mixed The variable $dataStruct. Should be array. If string, then no structures was found and the function returns the XML parser error.
 	 */
 	function getDataStructFromDSO($datString, $file = '') {
 		if ($file) {
@@ -2325,10 +2334,10 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Creating a link to the display frame for display of the "HTML-path" given as $path
 	 *
-	 * @param    string        The text to link
-	 * @param    string        The path string ("HTML-path")
+	 * @param string $title The text to link
+	 * @param string $path The path string ("HTML-path")
 	 *
-	 * @return    string        HTML link, pointing to the display frame.
+	 * @return string HTML link, pointing to the display frame.
 	 */
 	function linkForDisplayOfPath($title, $path) {
 		$theArray = array(
@@ -2347,9 +2356,9 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * Creates a link to this script, maintaining the values of the displayFile, displayTable, displayUid variables.
 	 * Primarily used by ->drawDataStructureMap
 	 *
-	 * @param    array        Overriding parameters.
+	 * @param array $array Overriding parameters.
 	 *
-	 * @return    string        URL, already htmlspecialchars()'ed
+	 * @return string URL, already htmlspecialchars()'ed
 	 * @see drawDataStructureMap()
 	 */
 	function linkThisScript($array = array()) {
@@ -2369,13 +2378,13 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Creates the HTML code for the IFRAME in which the display mode is shown:
 	 *
-	 * @param    string        File name to display in exploded mode.
-	 * @param    string        HTML-page
-	 * @param    string        Tags which is the only ones to show
-	 * @param    boolean        If set, the template is only shown, mapping links disabled.
-	 * @param    boolean        Preview enabled.
+	 * @param string $file File name to display in exploded mode.
+	 * @param string $path HTML-page
+	 * @param string $limitTags Tags which is the only ones to show
+	 * @param boolean $showOnly If set, the template is only shown, mapping links disabled.
+	 * @param integer $preview Preview enabled.
 	 *
-	 * @return    string        HTML code for the IFRAME.
+	 * @return string HTML code for the IFRAME.
 	 * @see main_display()
 	 */
 	function makeIframeForVisual($file, $path, $limitTags, $showOnly, $preview = 0) {
@@ -2391,10 +2400,10 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Converts a list of mapping rules to an array
 	 *
-	 * @param    string        Mapping rules in a list
-	 * @param    boolean        If set, then the ALL rule (key "*") will be unset.
+	 * @param string $mappingToTags Mapping rules in a list
+	 * @param integer $unsetAll If set, then the ALL rule (key "*") will be unset.
 	 *
-	 * @return    array        Mapping rules in a multidimensional array.
+	 * @return array Mapping rules in a multidimensional array.
 	 */
 	function explodeMappingToTagsStr($mappingToTags, $unsetAll = 0) {
 		$elements = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', strtolower($mappingToTags));
@@ -2413,10 +2422,10 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * General purpose unsetting of elements in a multidimensional array
 	 *
-	 * @param    array        Array from which to remove elements (passed by reference!)
-	 * @param    array        An array where the values in the specified order points to the position in the array to unset.
+	 * @param array &$dataStruct Array from which to remove elements (passed by reference!)
+	 * @param array $ref An array where the values in the specified order points to the position in the array to unset.
 	 *
-	 * @return    void
+	 * @return void
 	 */
 	function unsetArrayPath(&$dataStruct, $ref) {
 		$key = array_shift($ref);
@@ -2431,10 +2440,10 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Function to clean up "old" stuff in the currentMappingInfo array. Basically it will remove EVERYTHING which is not known according to the input Data Structure
 	 *
-	 * @param    array        Current Mapping info (passed by reference)
-	 * @param    array        Data Structure
+	 * @param array &$currentMappingInfo Current Mapping info (passed by reference)
+	 * @param array $dataStruct Data Structure
 	 *
-	 * @return    void
+	 * @return void
 	 */
 	function cleanUpMappingInfoAccordingToDS(&$currentMappingInfo, $dataStruct) {
 		if (is_array($currentMappingInfo)) {
@@ -2453,7 +2462,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Generates $this->storageFolders with available sysFolders linked to as storageFolders for the user
 	 *
-	 * @return    void        Modification in $this->storageFolders array
+	 * @return void Modification in $this->storageFolders array
 	 */
 	function findingStorageFolderIds() {
 		global $TYPO3_DB;
@@ -2517,7 +2526,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Outputs the display of a marked-up HTML file in the IFRAME
 	 *
-	 * @return    void        Exits before return
+	 * @return void Exits before return
 	 * @see makeIframeForVisual()
 	 */
 	function main_display() {
@@ -2558,12 +2567,12 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * This will mark up the part of the HTML file which is pointed to by $path
 	 *
-	 * @param    string        The file content as a string
-	 * @param    string        The "HTML-path" to split by
-	 * @param    string        The rel-path string to fix images/links with.
-	 * @param    string        List of tags to show
+	 * @param string $content The file content as a string
+	 * @param string $path The "HTML-path" to split by
+	 * @param string $relPathFix The rel-path string to fix images/links with.
+	 * @param string $limitTags List of tags to show
 	 *
-	 * @return    void        Exits...
+	 * @return void Exits...
 	 * @see main_display()
 	 */
 	function displayFileContentWithMarkup($content, $path, $relPathFix, $limitTags) {
@@ -2607,10 +2616,10 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * This will add preview data to the HTML file used as a template according to the currentMappingInfo
 	 *
-	 * @param    string        The file content as a string
-	 * @param    string        The rel-path string to fix images/links with.
+	 * @param string $content The file content as a string
+	 * @param string $relPathFix The rel-path string to fix images/links with.
 	 *
-	 * @return    void        Exits...
+	 * @return void Exits...
 	 * @see main_display()
 	 */
 	function displayFileContentWithPreview($content, $relPathFix) {
@@ -2653,9 +2662,9 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Outputs a simple HTML page with an error message
 	 *
-	 * @param    string        Error message for output in <h2> tags
+	 * @param string Error message for output in <h2> tags
 	 *
-	 * @return    void        Echos out an HTML page.
+	 * @return void Echos out an HTML page.
 	 */
 	function displayFrameError($error) {
 		echo '
@@ -2676,14 +2685,14 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Wrapper function for context sensitive help - for downwards compatibility with TYPO3 prior 3.7.x
 	 *
-	 * @param    string        Table name ('_MOD_'+module name)
-	 * @param    string        Field name (CSH locallang main key)
-	 * @param    string        Back path
-	 * @param    string        Wrap code for icon-mode, splitted by "|". Not used for full-text mode.
-	 * @param    boolean        If set, the full text will never be shown (only icon). Useful for places where it will break the page if the table with full text is shown.
-	 * @param    string        Additional style-attribute content for wrapping table (full text mode only)
+	 * @param string $table Table name ('_MOD_'+module name)
+	 * @param string $field Field name (CSH locallang main key)
+	 * @param string $BACK_PATH Back path
+	 * @param string $wrap Wrap code for icon-mode, splitted by "|". Not used for full-text mode.
+	 * @param boolean $onlyIconMode If set, the full text will never be shown (only icon). Useful for places where it will break the page if the table with full text is shown.
+	 * @param string $styleAttrib Additional style-attribute content for wrapping table (full text mode only)
 	 *
-	 * @return    string        HTML content for help text
+	 * @return string HTML content for help text
 	 */
 	function cshItem($table, $field, $BACK_PATH, $wrap = '', $onlyIconMode = FALSE, $styleAttrib = '') {
 		if (is_callable(array('\TYPO3\CMS\Backend\Utility\BackendUtility', 'cshItem'))) {
@@ -2694,11 +2703,9 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	}
 
 	/**
-	 * [Describe function...]
+	 * @param string $formElementName
 	 *
-	 * @param    [type]        $formElementName: ...
-	 *
-	 * @return    [type]        ...
+	 * @return string
 	 */
 	function lipsumLink($formElementName) {
 		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('lorem_ipsum')) {
@@ -2737,11 +2744,11 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Checks if link points to local marker or not and sets prefix accordingly.
 	 *
-	 * @param    string $relPathFix Prefix
-	 * @param    string $fileContent Content
-	 * @param    string $uniqueMarker Marker inside links
+	 * @param string $relPathFix Prefix
+	 * @param string $fileContent Content
+	 * @param string $uniqueMarker Marker inside links
 	 *
-	 * @return    string    Content
+	 * @return string Content
 	 */
 	function fixPrefixForLinks($relPathFix, $fileContent, $uniqueMarker) {
 		$parts = explode($uniqueMarker, $fileContent);

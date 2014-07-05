@@ -118,9 +118,9 @@ class File {
 	 * Check whether the given file can be used for mapping
 	 * purposes (is an XML file) based on the finfo toolset.
 	 *
-	 * @param $filenam
+	 * @param $filename
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	protected static function is_xmlFile_finfo($filename) {
 		$isXml = FALSE;
