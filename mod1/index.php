@@ -1499,11 +1499,11 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @param integer $uid
 	 * @param string $vKey
 	 *
-	 * @return array
+	 * @return string
 	 */
 	function render_previewSubData($fieldData, $table, $uid, $vKey) {
 		if (!is_array($fieldData)) {
-			return;
+			return '';
 		}
 
 		$result = '';
@@ -2790,6 +2790,8 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 			return $stat;
 		}
+
+		return '';
 	}
 
 	/**

@@ -898,7 +898,7 @@ class HtmlMarkup {
 	 *
 	 * @param string $content
 	 *
-	 * @return string|void
+	 * @return string
 	 */
 	function setTagsFromXML($content) {
 		$parser = xml_parser_create();
@@ -920,6 +920,8 @@ class HtmlMarkup {
 		}
 
 		$this->textGnyf = 1;
+
+		return '';
 	}
 
 	/**

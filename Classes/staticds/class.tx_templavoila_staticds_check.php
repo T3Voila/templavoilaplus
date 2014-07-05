@@ -39,7 +39,7 @@ class tx_templavoila_staticds_check {
 	 */
 	public function displayMessage(&$params, &$tsObj) {
 		if (!$this->staticDsIsEnabled() || $this->datastructureDbCount() === 0) {
-			return;
+			return '';
 		}
 
 		$link = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl(

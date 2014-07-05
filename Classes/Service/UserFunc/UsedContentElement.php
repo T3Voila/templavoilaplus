@@ -66,10 +66,17 @@ class UsedContentElement {
 
 	/**
 	 * Returns TRUE if either table is NOT tt_content OR (in case it is tt_content) if the uid is in the built page.
+	 *
+	 * @param string $table
+	 * @param integer $uid
+	 *
+	 * @return boolean
 	 */
 	function filter($table, $uid) {
 		if ($table != 'tt_content' || in_array($uid, $this->usedUids)) {
 			return TRUE;
 		}
+
+		return FALSE;
 	}
 }

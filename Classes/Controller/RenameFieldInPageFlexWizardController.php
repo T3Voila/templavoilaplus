@@ -78,8 +78,9 @@ class RenameFieldInPageFlexWizardController extends \TYPO3\CMS\Backend\Module\Ab
 	 * @return string
 	 */
 	protected function executeCommand() {
+		$buffer = '';
+
 		if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('executeRename') == 1) {
-			$buffer = '';
 			if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('sourceField') === \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('destinationField')) {
 				$message = new \TYPO3\CMS\Core\Messaging\FlashMessage(
 					'Renaming a field to itself is senseless, execution aborted.',
@@ -128,10 +129,9 @@ class RenameFieldInPageFlexWizardController extends \TYPO3\CMS\Backend\Module\Ab
 				$message = new \TYPO3\CMS\Core\Messaging\FlashMessage('Nothing to do, can´t find something to replace.', '', \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 				$buffer .= $message->render();
 			}
-
-			return $buffer;
-			#
 		}
+
+		return $buffer;
 	}
 
 	/**

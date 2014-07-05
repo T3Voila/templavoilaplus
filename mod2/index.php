@@ -1817,9 +1817,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$outputString .= '<table border="0" cellpadding="1" cellspacing="1">' . implode('', $tRows) . '</table>';
 
 		// If no extensions are missing, simply go to step two:
-		if ($missingExtensions) {
-			return $outputString;
-		}
+		return ($missingExtensions) ? $outputString : '';
 	}
 
 	/**

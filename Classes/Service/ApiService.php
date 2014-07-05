@@ -201,7 +201,7 @@ class ApiService {
 	 * @param array $destinationPointer : Flexform pointer defining the parent element of the new element. Position refers to the element _after_ which the new element should be inserted. Position == 0 means before the first element.
 	 * @param integer $uid : UID of the tt_content record
 	 *
-	 * @return void
+	 * @return boolean
 	 */
 	public function insertElement_setElementReferences($destinationPointer, $uid) {
 		if ($this->debug) {

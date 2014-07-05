@@ -2572,7 +2572,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @param string $relPathFix The rel-path string to fix images/links with.
 	 * @param string $limitTags List of tags to show
 	 *
-	 * @return void Exits...
+	 * @return string
 	 * @see main_display()
 	 */
 	function displayFileContentWithMarkup($content, $path, $relPathFix, $limitTags) {
@@ -2619,7 +2619,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @param string $content The file content as a string
 	 * @param string $relPathFix The rel-path string to fix images/links with.
 	 *
-	 * @return void Exits...
+	 * @return string
 	 * @see main_display()
 	 */
 	function displayFileContentWithPreview($content, $relPathFix) {

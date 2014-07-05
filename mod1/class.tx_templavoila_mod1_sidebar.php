@@ -349,6 +349,8 @@ class tx_templavoila_mod1_sidebar {
 
 			return '<table border="0" cellpadding="0" cellspacing="1" class="lrPadding" width="100%">' . implode('', $tableRows) . '</table>';
 		}
+
+		return '';
 	}
 
 	/**

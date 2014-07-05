@@ -55,7 +55,7 @@ class tx_templavoila_mod1_recordlist extends \TYPO3\CMS\Recordlist\RecordList\Da
 		$GLOBALS['SOBE']->MOD_SETTINGS['bigControlPanel'] = 1; // enable extended view
 		$this->script = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila') . 'mod1/index.php';
 
-		return parent::start($this->pObj->rootElementUid_pidForContent,
+		parent::start($this->pObj->rootElementUid_pidForContent,
 			'', //$this->pObj->MOD_SETTINGS['recordsView_table'],
 			intval($this->pObj->MOD_SETTINGS['recordsView_start']));
 	}

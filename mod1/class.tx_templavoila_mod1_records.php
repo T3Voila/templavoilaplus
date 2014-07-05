@@ -135,7 +135,7 @@ class tx_templavoila_mod1_records {
 	/**
 	 * Renders record list.
 	 *
-	 * @return void
+	 * @return string
 	 */
 	function renderRecords() {
 		$table = $this->pObj->MOD_SETTINGS['recordsView_table'];
