@@ -40,6 +40,16 @@ namespace Extension\Templavoila\Domain\Model;
  */
 class HtmlMarkup {
 
+	/**
+	 * @var array
+	 */
+	protected $rangeEndSearch;
+
+	/**
+	 * @var array
+	 */
+	protected $rangeStartPath;
+
 	// CONFIG:
 	/**
 	 * Determines which mode is used for markup. Options are:

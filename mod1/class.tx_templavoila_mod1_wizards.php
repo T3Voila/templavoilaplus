@@ -41,6 +41,11 @@
  */
 class tx_templavoila_mod1_wizards {
 
+	/**
+	 * @var \Extension\Templavoila\Service\ApiService
+	 */
+	protected $apiObj;
+
 	// References to the page module object
 	var $pObj; // A pointer to the parent object, that is the templavoila page module script. Set by calling the method init() of this class.
 	var $doc; // A reference to the doc object of the parent object.

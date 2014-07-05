@@ -61,6 +61,61 @@ $LOCAL_LANG = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_over
  */
 class tx_templavoila_dbnewcontentel {
 
+	/**
+	 * @var
+	 */
+	protected $defVals;
+
+	/**
+	 * @var
+	 */
+	protected $config;
+
+	/**
+	 * @var \Extension\Templavoila\Service\ApiService
+	 */
+	protected $apiObj;
+
+	/**
+	 * @var array
+	 */
+	protected $elementWrapper;
+
+	/**
+	 * @var array
+	 */
+	protected $elementWrapperForTabs;
+
+	/**
+	 * @var string
+	 */
+	protected $onClickEvent;
+
+	/**
+	 * @var integer
+	 */
+	protected $perms_clause;
+
+	/**
+	 * @var array
+	 */
+	protected $pageinfo;
+
+	/**
+	 * @var array
+	 */
+	protected $MOD_MENU;
+
+	/**
+	 * @var array
+	 */
+	protected $MCONF;
+
+	/**
+	 * @var string
+	 */
+	protected $backPath;
+
 	// Internal, static (from GPvars):
 	var $id; // Page id
 	var $parentRecord; // Parameters for the new record

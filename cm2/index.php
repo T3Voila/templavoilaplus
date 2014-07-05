@@ -45,6 +45,11 @@ $LANG->includeLLFile('EXT:templavoila/cm2/locallang.xml');
  */
 class tx_templavoila_cm2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
+	/**
+	 * @var string
+	 */
+	protected $backPath;
+
 	// External, static:
 	var $option_linenumbers = TRUE; // Showing linenumbers if true.
 

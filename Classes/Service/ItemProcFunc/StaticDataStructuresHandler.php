@@ -40,6 +40,11 @@ namespace Extension\Templavoila\Service\ItemProcFunc;
  */
 class StaticDataStructuresHandler {
 
+	/**
+	 * @var array
+	 */
+	protected $conf;
+
 	var $prefix = 'Static: ';
 
 	var $iconPath = '../uploads/tx_templavoila/';

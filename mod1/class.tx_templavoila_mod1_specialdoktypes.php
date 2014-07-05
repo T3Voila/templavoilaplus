@@ -39,7 +39,25 @@
  */
 class tx_templavoila_mod1_specialdoktypes {
 
+	/**
+	 * @var integer
+	 */
+	protected $id;
+
+	/**
+	 * @var string
+	 */
+	protected $extKey;
+
+	/**
+	 * @var array
+	 */
+	protected $MOD_SETTINGS;
+
 	// References to the page module object
+	/**
+	 * @var \tx_templavoila_module1
+	 */
 	var $pObj; // A pointer to the parent object, that is the templavoila page module script. Set by calling the method init() of this class.
 	var $doc; // A reference to the doc object of the parent object.
 

@@ -44,6 +44,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class ApiService {
 
 	/**
+	 * @var boolean
+	 */
+	protected $includePreviewData;
+
+	/**
 	 * @var string
 	 */
 	protected $rootTable;

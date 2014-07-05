@@ -43,6 +43,16 @@ $BE_USER->modAccess($MCONF, 1); // This checks permissions and exits if the user
  */
 class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
+	/**
+	 * @var array
+	 */
+	protected $pidCache;
+
+	/**
+	 * @var string
+	 */
+	protected $backPath;
+
 	// External static:
 	var $importPageUid = 0; // Import as first page in root!
 

@@ -43,6 +43,11 @@ namespace Extension\Templavoila\Comand;
  */
 class UnusedContentElementComand extends \TYPO3\CMS\Lowlevel\CleanerCommand {
 
+	/**
+	 * @var array
+	 */
+	protected $resultArray;
+
 	var $checkRefIndex = TRUE;
 
 	var $genTree_traverseDeleted = FALSE;

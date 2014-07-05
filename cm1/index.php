@@ -57,6 +57,26 @@ $LANG->includeLLFile('EXT:templavoila/cm1/locallang.xml');
  */
 class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
+	/**
+	 * @var string
+	 */
+	protected $DS_element_DELETE;
+
+	/**
+	 * @var array
+	 */
+	protected $pageinfo;
+
+	/**
+	 * @var string
+	 */
+	protected $sessionKey;
+
+	/**
+	 * @var string
+	 */
+	protected $backPath;
+
 	// Static:
 	var $theDisplayMode = ''; // Set to ->MOD_SETTINGS[]
 	var $head_markUpTags = array(
@@ -75,7 +95,11 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 	// Internal, dynamic:
 	var $markupFile = ''; // Used to store the name of the file to mark up with a given path.
-	var $markupObj = '';
+
+	/**
+	 * @var \Extension\Templavoila\Domain\Model\HtmlMarkup
+	 */
+	var $markupObj;
 
 	var $elNames = array();
 

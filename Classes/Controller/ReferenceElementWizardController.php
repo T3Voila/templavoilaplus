@@ -35,6 +35,21 @@ namespace Extension\Templavoila\Controller;
 class ReferenceElementWizardController extends \TYPO3\CMS\Backend\Module\AbstractFunctionModule {
 
 	/**
+	 * @var array
+	 */
+	protected $modSharedTSconfig;
+
+	/**
+	 * @var array
+	 */
+	protected $allAvailableLanguages;
+
+	/**
+	 * @var \Extension\Templavoila\Service\ApiService
+	 */
+	protected $templavoilaAPIObj;
+
+	/**
 	 * Returns the menu array
 	 *
 	 * @return array

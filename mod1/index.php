@@ -48,6 +48,56 @@ $BE_USER->modAccess($MCONF, 1); // This checks permissions and exits if the user
  */
 class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
+	/**
+	 * @var \tx_templavoila_mod1_localization
+	 */
+	protected $localizationObj;
+
+	/**
+	 * @var string
+	 */
+	public $rootElementTable;
+
+	/**
+	 * @var integer
+	 */
+	protected $rootElementUid;
+
+	/**
+	 * @var array
+	 */
+	public $rootElementRecord;
+
+	/**
+	 * @var integer
+	 */
+	protected $containedElementsPointer;
+
+	/**
+	 * @var integer
+	 */
+	protected $rootElementUid_pidForContent;
+
+	/**
+	 * @var string
+	 */
+	public $rootElementLangParadigm;
+
+	/**
+	 * @var string
+	 */
+	public $rootElementLangMode;
+
+	/**
+	 * @var object
+	 */
+	protected $pObj;
+
+	/**
+	 * @var array
+	 */
+	protected $containedElements;
+
 	var $modTSconfig; // This module's TSconfig
 	var $modSharedTSconfig; // TSconfig from mod.SHARED
 	var $extKey = 'templavoila'; // Extension key of this module
