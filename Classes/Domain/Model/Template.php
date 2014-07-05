@@ -391,8 +391,6 @@ class Template {
 	}
 
 	/**
-	 * @param void
-	 *
 	 * @return string
 	 */
 	public function getSortingFieldValue() {
@@ -407,14 +405,25 @@ class Template {
 		return $fieldVal;
 	}
 
+	/**
+	 * @param integer $parent
+	 *
+	 * @return void
+	 */
 	public function setParent($parent) {
 		$this->parent = $parent;
 	}
 
+	/**
+	 * @return integer
+	 */
 	public function getParent() {
 		return $this->parent;
 	}
 
+	/**
+	 * @return boolean
+	 */
 	public function hasParent() {
 		return $this->parent > 0;
 	}

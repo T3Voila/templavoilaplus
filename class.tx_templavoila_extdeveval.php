@@ -296,6 +296,13 @@ class tx_templavoila_extdeveval {
 		return $output;
 	}
 
+	/**
+	 * @param array $dsArr
+	 * @param mixed $data
+	 * @param array $PA
+	 * @param string $path
+	 * @param object &$pObj
+	 */
 	function traverseFlexFormXMLData_callBackFunction_Inheritance($dsArr, $data, $PA, $path, &$pObj) {
 		$pathArray = explode('/', $path);
 		$langId = $pathArray[sizeof($pathArray) - 1];
@@ -310,6 +317,13 @@ class tx_templavoila_extdeveval {
 		$pObj->setArrayValueByPath($path, $this->newFlexFormData, $data);
 	}
 
+	/**
+	 * @param array $dsArr
+	 * @param mixed $data
+	 * @param array $PA
+	 * @param string $path
+	 * @param object &$pObj
+	 */
 	function traverseFlexFormXMLData_callBackFunction_Separate($dsArr, $data, $PA, $path, &$pObj) {
 		$pathArray = explode('/', $path);
 		$langId = $pathArray[2];
@@ -326,6 +340,13 @@ class tx_templavoila_extdeveval {
 		$pObj->setArrayValueByPath($path, $this->newFlexFormData, $data);
 	}
 
+	/**
+	 * @param array $dsArr
+	 * @param mixed $data
+	 * @param array $PA
+	 * @param string $path
+	 * @param object &$pObj
+	 */
 	function traverseFlexFormXMLData_callBackFunction_Disabled($dsArr, $data, $PA, $path, &$pObj) {
 		// Just setting value in our own result array, basically replicating the structure:
 		$pObj->setArrayValueByPath($path . "/kqsper", $this->newFlexFormData, $data);

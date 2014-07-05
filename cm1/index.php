@@ -2730,6 +2730,12 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		return '';
 	}
 
+	/**
+	 * @param array $currentMappingInfo_head
+	 * @param mixed $html_header
+	 *
+	 * @return mixed
+	 */
 	function buildCachedMappingInfo_head($currentMappingInfo_head, $html_header) {
 		$h_currentMappingInfo = array();
 		if (is_array($currentMappingInfo_head['headElementPaths'])) {
@@ -2766,6 +2772,12 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 }
 
 if (!function_exists('md5_file')) {
+	/**
+	 * @param string $file
+	 * @param boolean $raw
+	 *
+	 * @return string
+	 */
 	function md5_file($file, $raw = FALSE) {
 		return md5(file_get_contents($file), $raw);
 	}

@@ -35,8 +35,14 @@ class tx_templavoila_cm1_dsEdit {
 
 	var $pObj;
 
+	/**
+	 * @var integer
+	 */
 	protected $oldStyleColumnNumber = 0;
 
+	/**
+	 * @param $pObj
+	 */
 	function init($pObj) {
 		$this->pObj = $pObj;
 	}

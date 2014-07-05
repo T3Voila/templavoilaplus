@@ -25,6 +25,9 @@ namespace Extension\Templavoila\Domain\Model;
  ***************************************************************/
 class File {
 
+	/**
+	 * @return boolean
+	 */
 	public static function includesFal() {
 		return class_exists('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
 	}

@@ -268,6 +268,14 @@ class ReferenceElementWizardController extends \TYPO3\CMS\Backend\Module\Abstrac
 		return $elementRecordsArr;
 	}
 
+	/**
+	 * @param integer $id
+	 * @param boolean $onlyIsoCoded
+	 * @param boolean $setDefault
+	 * @param boolean $setMulti
+	 *
+	 * @return array
+	 */
 	function getAvailableLanguages($id = 0, $onlyIsoCoded = TRUE, $setDefault = TRUE, $setMulti = FALSE) {
 		global $LANG, $TYPO3_DB, $BE_USER, $TCA, $BACK_PATH;
 

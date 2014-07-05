@@ -2769,6 +2769,12 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		return $result;
 	}
 
+	/**
+	 * @param string $table
+	 * @param integer $id
+	 *
+	 * @return string
+	 */
 	function getRecordStatHookValue($table, $id) {
 		// Call stats information hook
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks'])) {

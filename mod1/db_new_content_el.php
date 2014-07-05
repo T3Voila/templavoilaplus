@@ -459,6 +459,13 @@ class tx_templavoila_dbnewcontentel {
 		return $returnElements;
 	}
 
+	/**
+	 * @param mixed $groupKey
+	 * @param mixed $itemKey
+	 * @param array $itemConf
+	 *
+	 * @return mixed
+	 */
 	function wizard_getItem($groupKey, $itemKey, $itemConf) {
 		$itemConf['title'] = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL($itemConf['title']);
 		$itemConf['description'] = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL($itemConf['description']);
@@ -468,6 +475,12 @@ class tx_templavoila_dbnewcontentel {
 		return $itemConf;
 	}
 
+	/**
+	 * @param mixed $groupKey
+	 * @param array $wizardGroup
+	 *
+	 * @return array
+	 */
 	function wizard_getGroupHeader($groupKey, $wizardGroup) {
 		return array('header' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL($wizardGroup['header']));
 	}

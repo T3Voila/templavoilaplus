@@ -205,6 +205,9 @@ class HtmlMarkup {
 	var $elParentLevel = array(); // Used to register the all elements on the same level
 	var $searchPaths = ''; // Used to contain the paths to search for when searching for a paths. (see getContentBasedOnPath())
 
+	/**
+	 * @return HtmlMarkup
+	 */
 	function __construct() {
 		// kept for compatibility reasons since references to this->tags are still present
 		$this->tags = self::$tagConf;
@@ -1399,6 +1402,13 @@ class HtmlMarkup {
 		return '';
 	}
 
+	/**
+	 * @param string $tagName
+	 * @param string $title
+	 * @param string $onclick
+	 *
+	 * @return string
+	 */
 	public static function getGnyfMarkup($tagName, $title = '', $onclick = '') {
 		$tag = strtolower($tagName);
 		if (!isset(self::$tagConf[$tag])) {

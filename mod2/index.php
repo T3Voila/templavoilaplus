@@ -2517,6 +2517,12 @@ lib.' . $menuType . '.1.ACT {
 }
 
 if (!function_exists('md5_file')) {
+	/**
+	 * @param string $file
+	 * @param boolean $raw
+	 *
+	 * @return string
+	 */
 	function md5_file($file, $raw = FALSE) {
 		return md5(file_get_contents($file), $raw);
 	}

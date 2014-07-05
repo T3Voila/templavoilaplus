@@ -123,6 +123,9 @@ final class GeneralUtility {
 		return (stripos($url . '/', \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST') . '/') === 0);
 	}
 
+	/**
+	 * @return array
+	 */
 	public static function getDenyListForUser() {
 		$denyItems = array();
 		foreach (\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->userGroups as $group) {
