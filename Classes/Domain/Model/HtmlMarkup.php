@@ -222,7 +222,7 @@ class HtmlMarkup {
 	/**
 	 * @return HtmlMarkup
 	 */
-	function __construct() {
+	public function __construct() {
 		// kept for compatibility reasons since references to this->tags are still present
 		$this->tags = self::$tagConf;
 	}
@@ -238,7 +238,7 @@ class HtmlMarkup {
 	 *
 	 * @return string Modified HTML
 	 */
-	function markupHTMLcontent($content, $backPath, $relPathFix, $showTags, $mode = '') {
+	public function markupHTMLcontent($content, $backPath, $relPathFix, $showTags, $mode = '') {
 		// Initialize:
 		$this->mode = $mode;
 
@@ -279,7 +279,7 @@ class HtmlMarkup {
 	 * @return string Modified HTML
 	 * @see markupHTMLcontent()
 	 */
-	function passthroughHTMLcontent($content, $relPathFix, $mode = '', $altStyle = '') {
+	public function passthroughHTMLcontent($content, $relPathFix, $mode = '', $altStyle = '') {
 		// Fix links/paths
 		if ($mode != 'source') {
 			$content = $this->htmlParse->prefixResourcePath($relPathFix, $content);
@@ -301,7 +301,7 @@ class HtmlMarkup {
 	 *
 	 * @return array Content... (not welldefined yet)
 	 */
-	function getContentBasedOnPath($content, $pathStrArr) {
+	public function getContentBasedOnPath($content, $pathStrArr) {
 		// INIT:
 		$this->init();
 		$this->searchPaths = array();
@@ -339,7 +339,7 @@ class HtmlMarkup {
 	 *
 	 * @return array|string
 	 */
-	function splitByPath($content, $pathString) {
+	public function splitByPath($content, $pathString) {
 		$outArray = array('', $content, '');
 		if ($pathString) {
 			$pathInfo = $this->splitPath($pathString);
@@ -368,7 +368,7 @@ class HtmlMarkup {
 	 *
 	 * @return array
 	 */
-	function splitContentToMappingInfo($fileContent, $currentMappingInfo) {
+	public function splitContentToMappingInfo($fileContent, $currentMappingInfo) {
 		// Get paths into an array
 		$paths = $this->mappingInfoToSearchPath($currentMappingInfo);
 #debug($paths);
@@ -433,7 +433,7 @@ class HtmlMarkup {
 	 *
 	 * @return array
 	 */
-	function mappingInfoToSearchPath($currentMappingInfo) {
+	public function mappingInfoToSearchPath($currentMappingInfo) {
 		$paths = array();
 		$pathsArrays = array();
 
@@ -474,7 +474,7 @@ class HtmlMarkup {
 	 *
 	 * @return string HTML .
 	 */
-	function mergeSearchpartsIntoContent($content, $searchParts, $token = '') {
+	public function mergeSearchpartsIntoContent($content, $searchParts, $token = '') {
 		foreach ($searchParts as $path => $pathInfo) {
 			if ($pathInfo['placeholder']) {
 				$content = str_replace(
@@ -505,7 +505,7 @@ class HtmlMarkup {
 	 *
 	 * @return string
 	 */
-	function mergeSampleDataIntoTemplateStructure($dataStruct, $currentMappingInfo, $firstLevelImplodeToken = '', $sampleOrder = '') {
+	public function mergeSampleDataIntoTemplateStructure($dataStruct, $currentMappingInfo, $firstLevelImplodeToken = '', $sampleOrder = '') {
 
 		foreach ($currentMappingInfo['cArray'] as $key => $val) {
 			if (!\Extension\Templavoila\Utility\GeneralUtility::canBeInterpretedAsInteger($key) && $dataStruct[$key]) {
@@ -549,7 +549,7 @@ class HtmlMarkup {
 	 *
 	 * @return string
 	 */
-	function mergeFormDataIntoTemplateStructure($editStruct, $currentMappingInfo, $firstLevelImplodeToken = '', $valueKey = 'vDEF') {
+	public function mergeFormDataIntoTemplateStructure($editStruct, $currentMappingInfo, $firstLevelImplodeToken = '', $valueKey = 'vDEF') {
 		$isSection = 0;
 		$htmlParse = ($this->htmlParse ? $this->htmlParse : \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\HtmlParser'));
 		if (is_array($editStruct) && count($editStruct)) {
@@ -595,7 +595,7 @@ class HtmlMarkup {
 	 *
 	 * @return array Array with the information inside.
 	 */
-	function splitPath($pathStr) {
+	public function splitPath($pathStr) {
 		$subPaths = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('|', $pathStr, 1);
 
 		foreach ($subPaths as $index => $path) {
@@ -652,7 +652,7 @@ class HtmlMarkup {
 	 *
 	 * @return string|boolean
 	 */
-	function getTemplateArrayForTO($uid) {
+	public function getTemplateArrayForTO($uid) {
 		global $TCA, $TYPO3_DB;
 		if (isset($TCA['tx_templavoila_tmplobj'])) {
 			$res = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTquery(
@@ -675,7 +675,7 @@ class HtmlMarkup {
 	 *
 	 * @return boolean|string
 	 */
-	function mergeDataArrayToTemplateArray($TA, $data) {
+	public function mergeDataArrayToTemplateArray($TA, $data) {
 		if (is_array($TA['cArray'])) {
 			foreach ($data as $key => $value) {
 				if (isset($TA['cArray'][$key])) {
@@ -699,7 +699,7 @@ class HtmlMarkup {
 	 *
 	 * @return mixed The record array or <code>false</code>
 	 */
-	function getTemplateRecord($uid, $renderType, $langUid) {
+	public function getTemplateRecord($uid, $renderType, $langUid) {
 		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('templavoila')) {
 			$rec = $GLOBALS['TSFE']->sys_page->checkRecord('tx_templavoila_tmplobj', $uid);
 			$parentUid = $rec['uid'];
@@ -757,7 +757,7 @@ class HtmlMarkup {
 	 *
 	 * @return mixed
 	 */
-	function getTemplateMappingArray($uid, $renderType, $langUid, $sheet) {
+	public function getTemplateMappingArray($uid, $renderType, $langUid, $sheet) {
 		$row = $this->getTemplateRecord($uid, $renderType, $langUid);
 		$tDat = unserialize($row['templatemapping']);
 
@@ -774,7 +774,7 @@ class HtmlMarkup {
 	 * @access private
 	 * @see getTemplateRecord()
 	 */
-	function getTemplateRecord_query($uid, $where) {
+	public function getTemplateRecord_query($uid, $where) {
 		global $TYPO3_DB, $TSFE;
 
 		$res = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTquery(
@@ -797,7 +797,7 @@ class HtmlMarkup {
 	 *
 	 * @return void
 	 */
-	function setHeaderBodyParts($MappingInfo_head, $MappingData_head_cached, $BodyTag_cached = '', $pageRenderer = FALSE) {
+	public function setHeaderBodyParts($MappingInfo_head, $MappingData_head_cached, $BodyTag_cached = '', $pageRenderer = FALSE) {
 
 		$htmlParse = ($this->htmlParse ? $this->htmlParse : \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\HtmlParser'));
 		/* @var $htmlParse \TYPO3\CMS\Core\Html\HtmlParser */
@@ -892,7 +892,7 @@ class HtmlMarkup {
 	 *
 	 * @return void
 	 */
-	function init() {
+	public function init() {
 		// HTML parser object initialized.
 		$this->htmlParse = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\HtmlParser');
 		/* @var $this ->htmlParse \TYPO3\CMS\Core\Html\HtmlParser */
@@ -915,7 +915,7 @@ class HtmlMarkup {
 	 *
 	 * @return string
 	 */
-	function setTagsFromXML($content) {
+	public function setTagsFromXML($content) {
 		$parser = xml_parser_create();
 		$vals = array();
 		$index = array();
@@ -947,7 +947,7 @@ class HtmlMarkup {
 	 *
 	 * @return array array with two strings, the list of block tags and the list of single tags.
 	 */
-	function splitTagTypes($showTags) {
+	public function splitTagTypes($showTags) {
 		$showTagsArr = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', strtolower($showTags), 1);
 		$showTagsArr = array_flip($showTagsArr);
 		$tagList_elements = array();
@@ -998,7 +998,7 @@ class HtmlMarkup {
 	 *
 	 * @return string HTML
 	 */
-	function recursiveBlockSplitting($content, $tagsBlock, $tagsSolo, $mode, $path = '', $recursion = 0) {
+	public function recursiveBlockSplitting($content, $tagsBlock, $tagsSolo, $mode, $path = '', $recursion = 0) {
 
 		// Splitting HTML string by all block-tags
 		$blocks = $this->htmlParse->splitIntoBlock($tagsBlock, $content, 1);
@@ -1142,7 +1142,7 @@ class HtmlMarkup {
 	 *
 	 * @return string Modified sub HTML code ($v)
 	 */
-	function getMarkupCode($mode, $v, $params, $firstTagName, $firstTag, $endTag, $subPath, $recursion) {
+	public function getMarkupCode($mode, $v, $params, $firstTagName, $firstTag, $endTag, $subPath, $recursion) {
 
 		// Get gnyf:
 		$attrInfo = '';
@@ -1233,7 +1233,7 @@ class HtmlMarkup {
 	 *
 	 * @return string Modified sub HTML code ($v)
 	 */
-	function getSearchCode($mode, $v, $params, $firstTagName, $firstTag, $endTag, $subPath, $path, $recursion) {
+	public function getSearchCode($mode, $v, $params, $firstTagName, $firstTag, $endTag, $subPath, $path, $recursion) {
 		if ($this->rangeEndSearch[$recursion]) {
 			$this->searchPaths[$this->rangeStartPath[$recursion]]['content'] .= $firstTag . $v . $endTag;
 			$v = '';
@@ -1317,7 +1317,7 @@ class HtmlMarkup {
 	 *
 	 * @return string Formatted input.
 	 */
-	function sourceDisplay($str, $recursion, $gnyf = '', $valueStr = 0) {
+	public function sourceDisplay($str, $recursion, $gnyf = '', $valueStr = 0) {
 		if (strcmp(trim($str), '')) {
 			return str_pad('', $recursion * 2, ' ', STR_PAD_LEFT) .
 			$gnyf .
@@ -1341,7 +1341,7 @@ class HtmlMarkup {
 	 *
 	 * @return string Formatted input.
 	 */
-	function checkboxDisplay($str, $recursion, $path, $gnyf = '', $valueStr = 0) {
+	public function checkboxDisplay($str, $recursion, $path, $gnyf = '', $valueStr = 0) {
 		static $rows = 0;
 
 		if ($valueStr) {
@@ -1370,7 +1370,7 @@ class HtmlMarkup {
 	 *
 	 * @return string The sub path.
 	 */
-	function makePath($path, $firstTagName, $attr) {
+	public function makePath($path, $firstTagName, $attr) {
 		// Detect if pathMode is set and then construct the path based on the mode set.
 #debug($path,1);
 		if ($this->pathMode) {
@@ -1402,7 +1402,7 @@ class HtmlMarkup {
 	 *
 	 * @return string HTML
 	 */
-	function getGnyf($firstTagName, $path, $title) {
+	public function getGnyf($firstTagName, $path, $title) {
 		if (!$this->onlyElements || \TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->onlyElements, $firstTagName)) {
 			$onclick = str_replace('###PATH###', $this->pathPrefix . $path, $this->gnyfImgAdd);
 

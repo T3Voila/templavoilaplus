@@ -72,7 +72,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 	var $cm1Link = '../cm1/index.php';
 
-	function init() {
+	public function init() {
 		parent::init();
 
 		$this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
@@ -83,7 +83,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 *
 	 * @return void
 	 */
-	function menuConfig() {
+	public function menuConfig() {
 		$this->MOD_MENU = array(
 #			'set_showDSxml' => '',
 			'set_details' => '',
@@ -103,7 +103,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 *
 	 * @return void Nothing.
 	 */
-	function main() {
+	public function main() {
 		global $BE_USER, $LANG, $BACK_PATH;
 
 		// Access check!
@@ -180,7 +180,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 *
 	 * @return void
 	 */
-	function printContent() {
+	public function printContent() {
 		echo $this->content;
 	}
 
@@ -229,7 +229,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 *
 	 * @return void
 	 */
-	function renderModuleContent() {
+	public function renderModuleContent() {
 
 		if ($this->MOD_SETTINGS['wiz_step']) { // Run wizard instead of showing overview.
 			$this->renderNewSiteWizard_run();
@@ -268,7 +268,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 *
 	 * @return void
 	 */
-	function renderModuleContent_searchForTODS() {
+	public function renderModuleContent_searchForTODS() {
 		global $LANG;
 
 		$dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Domain\\Repository\\DataStructureRepository');
@@ -313,7 +313,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 *
 	 * @return void
 	 */
-	function renderModuleContent_mainView() {
+	public function renderModuleContent_mainView() {
 		global $LANG;
 
 		// Traverse scopes of data structures display template records belonging to them:
@@ -423,7 +423,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 *
 	 * @return array Returns array with three elements: 0: content, 1: number of DS shown, 2: number of root-level template objects shown.
 	 */
-	function renderDSlisting($scope) {
+	public function renderDSlisting($scope) {
 
 		$currentPid = intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id'));
 		$dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Domain\\Repository\\DataStructureRepository');
@@ -538,7 +538,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 *
 	 * @return string HTML content
 	 */
-	function renderDataStructureDisplay(\Extension\Templavoila\Domain\Model\AbstractDataStructure $dsObj, $scope, $toIdArray) {
+	public function renderDataStructureDisplay(\Extension\Templavoila\Domain\Model\AbstractDataStructure $dsObj, $scope, $toIdArray) {
 
 		$tableAttribs = ' border="0" cellpadding="1" cellspacing="1" width="98%" style="margin-top: 10px;" class="lrPadding"';
 
@@ -665,7 +665,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 *
 	 * @return string HTML content
 	 */
-	function renderTODisplay($toObj, $scope, $children = 0) {
+	public function renderTODisplay($toObj, $scope, $children = 0) {
 
 		// Put together the records icon including content sensitive menu link wrapped around it:
 		$recordIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('tx_templavoila_tmplobj', array(), array('title' => $toObj->getKey()));
@@ -882,7 +882,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 *
 	 * @return string HTML table listing usages.
 	 */
-	function findRecordsWhereTOUsed($toObj, $scope) {
+	public function findRecordsWhereTOUsed($toObj, $scope) {
 
 		$output = array();
 
@@ -1028,7 +1028,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 *
 	 * @return string HTML table listing usages.
 	 */
-	function findDSUsageWithImproperTOs($dsObj, $scope, $toIdArray) {
+	public function findDSUsageWithImproperTOs($dsObj, $scope, $toIdArray) {
 
 		$output = array();
 
@@ -1149,7 +1149,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 *
 	 * @return string Page path of PID if accessible. otherwise zero.
 	 */
-	function findRecordsWhereUsed_pid($pid) {
+	public function findRecordsWhereUsed_pid($pid) {
 		if (!isset($this->pidCache[$pid])) {
 			$this->pidCache[$pid] = array();
 
@@ -1165,7 +1165,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 *
 	 * @return string HTML table
 	 */
-	function completeTemplateFileList() {
+	public function completeTemplateFileList() {
 		$output = '';
 		if (is_array($this->tFileList)) {
 			$output = '';
@@ -1279,7 +1279,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @return void
 	 * @see getErrorLog()
 	 */
-	function setErrorLog($scope, $type, $HTML) {
+	public function setErrorLog($scope, $type, $HTML) {
 		$this->errorsWarnings['_ALL'][$type][] = $this->errorsWarnings[$scope][$type][] = $HTML;
 	}
 
@@ -1291,7 +1291,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @return array Array with content
 	 * @see setErrorLog()
 	 */
-	function getErrorLog($scope) {
+	public function getErrorLog($scope) {
 		$errStat = FALSE;
 		if (is_array($this->errorsWarnings[$scope])) {
 			$errStat = array();
@@ -1320,7 +1320,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 *
 	 * @return string HTML showing an overview of the DS-structure
 	 */
-	function renderDSdetails($DStree) {
+	public function renderDSdetails($DStree) {
 		$HTML = '';
 
 		if (is_array($DStree) && (count($DStree) > 0)) {
@@ -1623,7 +1623,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 *
 	 * @return array
 	 */
-	function DSdetails($DSstring) {
+	public function DSdetails($DSstring) {
 		$DScontent = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($DSstring);
 
 		$inputFields = 0;
@@ -1701,7 +1701,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 *
 	 * @return void
 	 */
-	function renderNewSiteWizard_overview() {
+	public function renderNewSiteWizard_overview() {
 		global $BE_USER, $LANG;
 
 		if ($this->modTSconfig['properties']['hideNewSiteWizard']) {
@@ -1754,7 +1754,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 *
 	 * @return void
 	 */
-	function renderNewSiteWizard_run() {
+	public function renderNewSiteWizard_run() {
 		global $BE_USER, $LANG;
 
 		// Getting session data:
@@ -1803,7 +1803,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 *
 	 * @return string If string is returned, an error occured.
 	 */
-	function wizard_checkMissingExtensions() {
+	public function wizard_checkMissingExtensions() {
 
 		$outputString = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_missingext_description', 1);
 
@@ -1838,7 +1838,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 *
 	 * @return string If string is returned, an error occured.
 	 */
-	function wizard_checkConfiguration() {
+	public function wizard_checkConfiguration() {
 		$TVconfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
 
 		return !is_array($TVconfig);
@@ -1849,7 +1849,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 *
 	 * @return string If string is returned, an error occured.
 	 */
-	function wizard_checkDirectory() {
+	public function wizard_checkDirectory() {
 		$paths = $this->getTemplatePaths(TRUE);
 		if (empty($paths)) {
 			return nl2br(sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_missingdir_instruction'), implode(' or ', $this->getTemplatePaths(TRUE, FALSE)), $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir']));
@@ -1863,7 +1863,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 *
 	 * @return void
 	 */
-	function wizard_step1() {
+	public function wizard_step1() {
 		$paths = $this->getTemplatePaths();
 		$files = $this->getTemplateFiles();
 		if (!empty($paths) && !empty($files)) {
@@ -1924,7 +1924,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 *
 	 * @return void
 	 */
-	function wizard_step2() {
+	public function wizard_step2() {
 
 		// Save session data with filename:
 		$cfg = \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('CFG');
@@ -1974,7 +1974,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 *
 	 * @return void
 	 */
-	function wizard_step3() {
+	public function wizard_step3() {
 
 		// Save session data with filename:
 		$cfg = \TYPO3\CMS\Core\Utility\GeneralUtility::_POST('CFG');
@@ -2086,7 +2086,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 *
 	 * @return void
 	 */
-	function wizard_step4() {
+	public function wizard_step4() {
 		$url = '../cm1/index.php?table=tx_templavoila_tmplobj&uid=' . $this->wizardData['templateObjectId'] . '&SET[selectHeaderContent]=1&_reload_from=1&id=' . $this->id . '&returnUrl=' . rawurlencode('../mod2/index.php?SET[wiz_step]=5');
 		$outputString .= \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_headerinclude') . '
 			<br/>
@@ -2106,7 +2106,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 *
 	 * @return void
 	 */
-	function wizard_step5($menuField) {
+	public function wizard_step5($menuField) {
 
 		$menuPart = $this->getMenuDefaultCode($menuField);
 		$menuType = $menuField === 'field_menu' ? 'mainMenu' : 'subMenu';
@@ -2335,7 +2335,7 @@ lib.' . $menuType . '.1.ACT {
 	 *
 	 * @return void
 	 */
-	function wizard_step6() {
+	public function wizard_step6() {
 
 		$this->saveMenuCode();
 
@@ -2355,7 +2355,7 @@ lib.' . $menuType . '.1.ACT {
 	 *
 	 * @return object Returns object ready to import the import-file used to create the basic site!
 	 */
-	function getImportObj() {
+	public function getImportObj() {
 		global $TYPO3_CONF_VARS;
 
 		$import = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_impexp');
@@ -2372,7 +2372,7 @@ lib.' . $menuType . '.1.ACT {
 	 *
 	 * @return string HTML content with it highlighted.
 	 */
-	function syntaxHLTypoScript($v) {
+	public function syntaxHLTypoScript($v) {
 		$tsparser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
 		$tsparser->lineNumberOffset = 0;
 		$TScontent = $tsparser->doSyntaxHighlight(trim($v) . chr(10), '', 1);
@@ -2387,7 +2387,7 @@ lib.' . $menuType . '.1.ACT {
 	 *
 	 * @return string Wrap for TypoScript
 	 */
-	function makeWrap($cfg) {
+	public function makeWrap($cfg) {
 		if (!$cfg['bulletwrap']) {
 			$wrap = $cfg['wrap'];
 		} else {
@@ -2404,7 +2404,7 @@ lib.' . $menuType . '.1.ACT {
 	 *
 	 * @return string
 	 */
-	function getMenuDefaultCode($field) {
+	public function getMenuDefaultCode($field) {
 		// Select template record and extract menu HTML content
 		$toRec = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('tx_templavoila_tmplobj', $this->wizardData['templateObjectId']);
 		$tMapping = unserialize($toRec['templatemapping']);
@@ -2417,7 +2417,7 @@ lib.' . $menuType . '.1.ACT {
 	 *
 	 * @return void
 	 */
-	function saveMenuCode() {
+	public function saveMenuCode() {
 
 		// Save menu code to template record:
 		$cfg = \TYPO3\CMS\Core\Utility\GeneralUtility::_POST('CFG');
@@ -2455,7 +2455,7 @@ lib.' . $menuType . '.1.ACT {
 	 *
 	 * @return string HTML hex color code, if any.
 	 */
-	function getBackgroundColor($filePath) {
+	public function getBackgroundColor($filePath) {
 
 		if (substr($filePath, -4) == '.gif' && function_exists('imagecreatefromgif')) {
 			$im = @imagecreatefromgif($filePath);

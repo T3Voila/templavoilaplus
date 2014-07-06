@@ -59,7 +59,7 @@ class tx_templavoila_mod1_records {
 	 *
 	 * @return void
 	 */
-	function init(&$pObj) {
+	public function init(&$pObj) {
 		$this->pObj = & $pObj;
 
 		$this->tables = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->pObj->modTSconfig['properties']['recordDisplay_tables'], TRUE);
@@ -82,7 +82,7 @@ class tx_templavoila_mod1_records {
 	 * @return string HTML output
 	 * @access protected
 	 */
-	function sidebar_renderRecords() {
+	public function sidebar_renderRecords() {
 		$content = '<table border="0" cellpadding="0" cellspacing="1" class="lrPadding" width="100%">';
 		$content .= '<tr class="bgColor4-20"><th colspan="3">&nbsp;</th></tr>';
 
@@ -99,7 +99,7 @@ class tx_templavoila_mod1_records {
 	 *
 	 * @return string Genrated content
 	 */
-	function renderTableSelector() {
+	public function renderTableSelector() {
 		$content = '<tr class="bgColor4">';
 		$content .= '<td width="20">&nbsp;</td>'; //space for csh icon
 		$content .= '<td width="200">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('displayRecordsFrom') . '</td><td>';
@@ -143,7 +143,7 @@ class tx_templavoila_mod1_records {
 	 *
 	 * @return string
 	 */
-	function renderRecords() {
+	public function renderRecords() {
 		$table = $this->pObj->MOD_SETTINGS['recordsView_table'];
 		$content = '';
 		if ($table) {
@@ -162,7 +162,7 @@ class tx_templavoila_mod1_records {
 	 *
 	 * @return boolean <code>true</code> if table can be displayed.
 	 */
-	function canDisplayTable($table) {
+	public function canDisplayTable($table) {
 		return ($table != 'pages' && $table != 'tt_content' && isset($GLOBALS['TCA'][$table]) && \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->check('tables_select', $table));
 	}
 
@@ -173,7 +173,7 @@ class tx_templavoila_mod1_records {
 	 *
 	 * @return void
 	 */
-	function initDbList($table) {
+	public function initDbList($table) {
 		// Initialize the dblist object:
 		$this->dblist = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_mod1_recordlist');
 		$this->dblist->backPath = $this->pObj->doc->backPath;

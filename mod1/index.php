@@ -182,7 +182,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @return void
 	 * @access public
 	 */
-	function init() {
+	public function init() {
 		parent::init();
 
 		$this->modSharedTSconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($this->id, 'mod.SHARED');
@@ -262,7 +262,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @return void
 	 * @access public
 	 */
-	function menuConfig() {
+	public function menuConfig() {
 		global $TYPO3_CONF_VARS;
 		$this->modTSconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($this->id, 'mod.' . $this->MCONF['name']);
 
@@ -320,7 +320,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @return void
 	 * @access public
 	 */
-	function main() {
+	public function main() {
 		global $BE_USER, $LANG, $BACK_PATH;
 
 		$this->content = '';
@@ -651,7 +651,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @return void
 	 * @access public
 	 */
-	function printContent() {
+	public function printContent() {
 		echo $this->content;
 	}
 
@@ -815,7 +815,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @return string The modules content
 	 * @access protected
 	 */
-	function render_editPageScreen() {
+	public function render_editPageScreen() {
 		global $LANG, $BE_USER, $TYPO3_CONF_VARS;
 
 		$output = '';
@@ -909,7 +909,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @access protected
 	 * @see    render_framework_singleSheet()
 	 */
-	function render_framework_allSheets($contentTreeArr, $languageKey = 'DEF', $parentPointer = array(), $parentDsMeta = array()) {
+	public function render_framework_allSheets($contentTreeArr, $languageKey = 'DEF', $parentPointer = array(), $parentDsMeta = array()) {
 
 		// If more than one sheet is available, render a dynamic sheet tab menu, otherwise just render the single sheet framework
 		if (is_array($contentTreeArr['sub']) && (count($contentTreeArr['sub']) > 1 || !isset($contentTreeArr['sub']['sDEF']))) {
@@ -949,7 +949,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @access protected
 	 * @see    render_framework_singleSheet()
 	 */
-	function render_framework_singleSheet($contentTreeArr, $languageKey, $sheet, $parentPointer = array(), $parentDsMeta = array()) {
+	public function render_framework_singleSheet($contentTreeArr, $languageKey, $sheet, $parentPointer = array(), $parentDsMeta = array()) {
 		global $LANG, $TYPO3_CONF_VARS;
 
 		$elementBelongsToCurrentPage = FALSE;
@@ -1162,7 +1162,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @access protected
 	 * @see render_framework_allSheets(), render_framework_singleSheet()
 	 */
-	function render_framework_subElements($elementContentTreeArr, $languageKey, $sheet, $calcPerms = 0) {
+	public function render_framework_subElements($elementContentTreeArr, $languageKey, $sheet, $calcPerms = 0) {
 		global $LANG;
 
 		$beTemplate = '';
@@ -1494,7 +1494,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 *
 	 * @return string HTML content
 	 */
-	function render_previewData($previewData, $elData, $ds_meta, $languageKey, $sheet) {
+	public function render_previewData($previewData, $elData, $ds_meta, $languageKey, $sheet) {
 
 		$this->currentElementBelongsToCurrentPage = $elData['table'] == 'pages' || $elData['pid'] == $this->rootElementUid_pidForContent;
 
@@ -1567,7 +1567,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 *
 	 * @return string
 	 */
-	function render_previewSubData($fieldData, $table, $uid, $vKey) {
+	public function render_previewSubData($fieldData, $table, $uid, $vKey) {
 		if (!is_array($fieldData)) {
 			return '';
 		}
@@ -1640,7 +1640,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @access protected
 	 * @see getContentTree(), render_localizationInfoTable()
 	 */
-	function render_previewContent($row) {
+	public function render_previewContent($row) {
 		global $TYPO3_CONF_VARS, $LANG;
 
 		$hookObjectsArr = $this->hooks_prepareObjectsArray('renderPreviewContentClass');
@@ -1680,7 +1680,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @access protected
 	 * @see    render_framework_singleSheet()
 	 */
-	function render_localizationInfoTable($contentTreeArr, $parentPointer, $parentDsMeta = array()) {
+	public function render_localizationInfoTable($contentTreeArr, $parentPointer, $parentDsMeta = array()) {
 		global $LANG, $BE_USER;
 
 		// LOCALIZATION information for content elements (non Flexible Content Elements)
@@ -1833,7 +1833,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 *
 	 * @return string HTML
 	 */
-	function render_outline($contentTreeArr) {
+	public function render_outline($contentTreeArr) {
 		global $LANG;
 
 		// Load possible website languages:
@@ -1941,7 +1941,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @access protected
 	 * @see    render_outline_allSheets()
 	 */
-	function render_outline_element($contentTreeArr, &$entries, $indentLevel = 0, $parentPointer = array(), $controls = '') {
+	public function render_outline_element($contentTreeArr, &$entries, $indentLevel = 0, $parentPointer = array(), $controls = '') {
 		global $LANG, $TYPO3_CONF_VARS;
 
 		// Get record of element:
@@ -2077,7 +2077,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @return void
 	 * @access protected
 	 */
-	function render_outline_subElements($contentTreeArr, $sheet, &$entries, $indentLevel) {
+	public function render_outline_subElements($contentTreeArr, $sheet, &$entries, $indentLevel) {
 		global $LANG;
 
 		// Define l/v keys for current language:
@@ -2164,7 +2164,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @access protected
 	 * @see    render_framework_singleSheet()
 	 */
-	function render_outline_localizations($contentTreeArr, &$entries, $indentLevel) {
+	public function render_outline_localizations($contentTreeArr, &$entries, $indentLevel) {
 		global $LANG, $BE_USER;
 
 		if ($contentTreeArr['el']['table'] == 'tt_content' && $contentTreeArr['el']['sys_language_uid'] <= 0) {
@@ -2246,7 +2246,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @return string HTML anchor tag containing the label and the correct link
 	 * @access protected
 	 */
-	function link_edit($label, $table, $uid, $forced = FALSE, $usePid = 0, $linkClass = '') {
+	public function link_edit($label, $table, $uid, $forced = FALSE, $usePid = 0, $linkClass = '') {
 		if ($label) {
 			$class = $linkClass ? $linkClass : 'tpm-edit';
 			$pid = $table == 'pages' ? $uid : $usePid;
@@ -2281,7 +2281,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @return string HTML anchor tag containing the label and the correct link
 	 * @access protected
 	 */
-	function icon_hide($el) {
+	public function icon_hide($el) {
 		global $LANG;
 
 		$iconOptions = array(
@@ -2313,7 +2313,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 *
 	 * @return string
 	 */
-	function link_hide($label, $table, $uid, $hidden, $forced = FALSE, $usePid = 0) {
+	public function link_hide($label, $table, $uid, $hidden, $forced = FALSE, $usePid = 0) {
 		if ($label) {
 
 			$pid = $table == 'pages' ? $uid : $usePid;
@@ -2361,7 +2361,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @return string HTML anchor tag containing the label and the correct link
 	 * @access protected
 	 */
-	function link_browse($label, $parentPointer) {
+	public function link_browse($label, $parentPointer) {
 
 		$parameters =
 			$this->link_getParameters() .
@@ -2385,7 +2385,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @return string HTML anchor tag containing the label and the correct link
 	 * @access protected
 	 */
-	function link_new($label, $parentPointer) {
+	public function link_new($label, $parentPointer) {
 
 		$parameters =
 			$this->link_getParameters() .
@@ -2408,7 +2408,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @return string HTML anchor tag containing the label and the unlink-link
 	 * @access protected
 	 */
-	function link_unlink($label, $unlinkPointer, $realDelete = FALSE, $foreignReferences = FALSE, $elementPointer = '') {
+	public function link_unlink($label, $unlinkPointer, $realDelete = FALSE, $foreignReferences = FALSE, $elementPointer = '') {
 
 		$unlinkPointerString = $this->apiObj->flexform_getStringFromPointer($unlinkPointer);
 		$encodedUnlinkPointerString = rawurlencode($unlinkPointerString);
@@ -2431,7 +2431,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @return string HTML anchor tag containing the label and the unlink-link
 	 * @access protected
 	 */
-	function link_makeLocal($label, $makeLocalPointer) {
+	public function link_makeLocal($label, $makeLocalPointer) {
 		global $LANG;
 
 		return '<a class="tpm-makeLocal" href="index.php?' . $this->link_getParameters() . '&amp;makeLocalRecord=' . rawurlencode($this->apiObj->flexform_getStringFromPointer($makeLocalPointer)) . '" onclick="' . htmlspecialchars('return confirm(' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('makeLocalMsg')) . ');') . '">' . $label . '</a>';
@@ -2443,7 +2443,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @return string parameters
 	 * @access public
 	 */
-	function link_getParameters() {
+	public function link_getParameters() {
 		$output =
 			'id=' . $this->id .
 			(is_array($this->altRoot) ? \TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl('altRoot', $this->altRoot) : '') .
@@ -2515,7 +2515,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @return void
 	 * @access protected
 	 */
-	function handleIncomingCommands() {
+	public function handleIncomingCommands() {
 
 		$possibleCommands = array('createNewRecord', 'unlinkRecord', 'deleteRecord', 'pasteRecord', 'makeLocalRecord', 'localizeElement', 'createNewPageTranslation', 'editPageLanguageOverlay');
 
@@ -2667,7 +2667,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @return array
 	 * @access protected
 	 */
-	function getAvailableLanguages($id = 0, $onlyIsoCoded = TRUE, $setDefault = TRUE, $setMulti = FALSE) {
+	public function getAvailableLanguages($id = 0, $onlyIsoCoded = TRUE, $setDefault = TRUE, $setMulti = FALSE) {
 		global $LANG, $TYPO3_DB, $BE_USER, $TCA, $BACK_PATH;
 
 		$output = array();
@@ -2770,7 +2770,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @return array Array of object references
 	 * @access protected
 	 */
-	function hooks_prepareObjectsArray($hookName) {
+	public function hooks_prepareObjectsArray($hookName) {
 		global $TYPO3_CONF_VARS;
 
 		$hookObjectsArr = array();
@@ -2788,7 +2788,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 *
 	 * @return boolean <code>true</code> if alternative languages exist
 	 */
-	function alternativeLanguagesDefined() {
+	public function alternativeLanguagesDefined() {
 		return count($this->allAvailableLanguages) > 2;
 	}
 
@@ -2799,7 +2799,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 *
 	 * @return boolean Display or not
 	 */
-	function displayElement($subElementArr) {
+	public function displayElement($subElementArr) {
 		// Don't display when "selectedLanguage" is choosen
 		$displayElement = !$this->MOD_SETTINGS['langDisplayMode'];
 		// Set to true when current language is not an alteranative (in this case display all elements)
@@ -2829,7 +2829,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 *
 	 * @return string    Converted label
 	 */
-	function localizedFFLabel($label, $hsc) {
+	public function localizedFFLabel($label, $hsc) {
 
 		if (substr($label, 0, 4) === 'LLL:') {
 			$label = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL($label);
@@ -2845,7 +2845,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 *
 	 * @return string
 	 */
-	function getRecordStatHookValue($table, $id) {
+	public function getRecordStatHookValue($table, $id) {
 		// Call stats information hook
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks'])) {
 			$stat = '';

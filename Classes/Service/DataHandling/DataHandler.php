@@ -68,7 +68,7 @@ class DataHandler {
 	 * @return void
 	 * @access public
 	 */
-	function processDatamap_preProcessFieldArray(array &$incomingFieldArray, $table, $id, \TYPO3\CMS\Core\DataHandling\DataHandler &$reference) {
+	public function processDatamap_preProcessFieldArray(array &$incomingFieldArray, $table, $id, \TYPO3\CMS\Core\DataHandling\DataHandler &$reference) {
 		global $TYPO3_DB, $TCA;
 
 		if ($this->debug) {
@@ -104,7 +104,7 @@ class DataHandler {
 	 * @return void
 	 * @access public
 	 */
-	function processDatamap_postProcessFieldArray($status, $table, $id, &$fieldArray, &$reference) {
+	public function processDatamap_postProcessFieldArray($status, $table, $id, &$fieldArray, &$reference) {
 		if ($this->debug) {
 			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('processDatamap_postProcessFieldArray', 'templavoila', 0, array($status, $table, $id, $fieldArray));
 		}
@@ -195,7 +195,7 @@ page.10.disableExplosivePreview = 1
 	 * @return void
 	 * @access public
 	 */
-	function processDatamap_afterDatabaseOperations($status, $table, $id, $fieldArray, &$reference) {
+	public function processDatamap_afterDatabaseOperations($status, $table, $id, $fieldArray, &$reference) {
 
 		if ($this->debug) {
 			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('processDatamap_afterDatabaseOperations ', 'templavoila', 0, array($status, $table, $id, $fieldArray));
@@ -295,7 +295,7 @@ page.10.disableExplosivePreview = 1
 	 * @access public
 	 * @todo    "delete" should search for all references to the element.
 	 */
-	function processCmdmap_preProcess(&$command, $table, $id, $value, &$reference) {
+	public function processCmdmap_preProcess(&$command, $table, $id, $value, &$reference) {
 
 		if ($this->debug) {
 			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('processCmdmap_preProcess', 'templavoila', 0, array($command, $table, $id, $value));
@@ -363,7 +363,7 @@ page.10.disableExplosivePreview = 1
 	 * @return void
 	 * @access public
 	 */
-	function processCmdmap_postProcess($command, $table, $id, $value, &$reference) {
+	public function processCmdmap_postProcess($command, $table, $id, $value, &$reference) {
 
 		if ($this->debug) {
 			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('processCmdmap_postProcess', 'templavoila', 0, array($command, $table, $id, $value));
@@ -391,7 +391,7 @@ page.10.disableExplosivePreview = 1
 	 * @return void
 	 * @access public
 	 */
-	function moveRecord_firstElementPostProcess($table, $uid, $destPid, $sourceRecordBeforeMove, $updateFields, &$reference) {
+	public function moveRecord_firstElementPostProcess($table, $uid, $destPid, $sourceRecordBeforeMove, $updateFields, &$reference) {
 		global $TCA;
 
 		if ($this->debug) {
@@ -439,7 +439,7 @@ page.10.disableExplosivePreview = 1
 	 * @return void
 	 * @access public
 	 */
-	function moveRecord_afterAnotherElementPostProcess($table, $uid, $destPid, $origDestPid, $sourceRecordBeforeMove, $updateFields, &$reference) {
+	public function moveRecord_afterAnotherElementPostProcess($table, $uid, $destPid, $origDestPid, $sourceRecordBeforeMove, $updateFields, &$reference) {
 
 		if ($this->debug) {
 			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('moveRecord_afterAnotherElementPostProcess', 'templavoila', 0, array($table, $uid, $destPid, $origDestPid, $sourceRecordBeforeMove, $updateFields));
@@ -479,7 +479,7 @@ page.10.disableExplosivePreview = 1
 	 * @return void
 	 * @access protected
 	 */
-	function correctSortingAndColposFieldsForPage($flexformXML, $pid) {
+	public function correctSortingAndColposFieldsForPage($flexformXML, $pid) {
 		global $TCA, $TYPO3_DB;
 
 		$elementsOnThisPage = array();
@@ -615,7 +615,7 @@ page.10.disableExplosivePreview = 1
 	 *
 	 * @return mixed - "1" if we grant access and "false" if we can't decide whether to give access or not
 	 */
-	function checkRecordUpdateAccess($table, $id, $data, $res, &$pObj) {
+	public function checkRecordUpdateAccess($table, $id, $data, $res, &$pObj) {
 
 		global $TCA;
 		// Only perform additional checks if not admin and just for pages table.

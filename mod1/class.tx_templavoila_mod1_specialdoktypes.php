@@ -73,7 +73,7 @@ class tx_templavoila_mod1_specialdoktypes {
 	 * @return void
 	 * @access public
 	 */
-	function init(&$pObj) {
+	public function init(&$pObj) {
 		global $LANG, $BE_USER, $BACK_PATH;
 
 		// Make local reference to some important variables:
@@ -91,7 +91,7 @@ class tx_templavoila_mod1_specialdoktypes {
 	 * @return mixed HTML output from this submodule or FALSE if this submodule doesn't feel responsible
 	 * @access public
 	 */
-	function renderDoktype_3($pageRecord) {
+	public function renderDoktype_3($pageRecord) {
 		global $LANG, $BE_USER, $TYPO3_CONF_VARS;
 
 		// Prepare the record icon including a content sensitive menu link wrapped around it:
@@ -149,7 +149,7 @@ class tx_templavoila_mod1_specialdoktypes {
 	 * @return mixed HTML output from this submodule or FALSE if this submodule doesn't feel responsible
 	 * @access public
 	 */
-	function renderDoktype_4($pageRecord) {
+	public function renderDoktype_4($pageRecord) {
 		global $LANG, $BE_USER, $TYPO3_CONF_VARS;
 
 		// Prepare the record icon including a content sensitive menu link wrapped around it:
@@ -184,7 +184,7 @@ class tx_templavoila_mod1_specialdoktypes {
 	 * @return mixed HTML output from this submodule or FALSE if this submodule doesn't feel responsible
 	 * @access protected
 	 */
-	function renderDoktype_7($pageRecord) {
+	public function renderDoktype_7($pageRecord) {
 		global $LANG, $BE_USER, $TYPO3_CONF_VARS;
 
 		if (!$pageRecord['mount_pid_ol']) {
@@ -224,7 +224,7 @@ class tx_templavoila_mod1_specialdoktypes {
 	 * @return mixed HTML output from this submodule or FALSE if this submodule doesn't feel responsible
 	 * @access public
 	 */
-	function renderDoktype_254($pageRecord) {
+	public function renderDoktype_254($pageRecord) {
 		global $LANG, $BE_USER, $TYPO3_CONF_VARS;
 
 		// Prepare the record icon including a content sensitive menu link wrapped around it:
@@ -261,7 +261,7 @@ class tx_templavoila_mod1_specialdoktypes {
 	 * @return boolean TRUE or FALSE
 	 * @access protected
 	 */
-	function userHasAccessToListModule() {
+	public function userHasAccessToListModule() {
 		global $BE_USER;
 
 		if (!\TYPO3\CMS\Backend\Utility\BackendUtility::isModuleSetInTBE_MODULES('web_list')) {

@@ -49,7 +49,7 @@ class Access {
 	 *
 	 * @return boolean <code>true</code> if change is allowed
 	 */
-	function recordEditAccessInternals($params, $ref) {
+	public function recordEditAccessInternals($params, $ref) {
 		if ($params['table'] == 'tt_content' && is_array($params['idOrRow']) && $params['idOrRow']['CType'] == 'templavoila_pi1') {
 			if (!$ref) {
 				$user = & \Extension\Templavoila\Utility\GeneralUtility::getBackendUser();
@@ -87,7 +87,7 @@ class Access {
 	 *
 	 * @return boolean <code>true</code> if access is allowed
 	 */
-	function checkObjectAccess($table, $uid, $be_user) {
+	public function checkObjectAccess($table, $uid, $be_user) {
 		if (!$be_user) {
 			$be_user = \Extension\Templavoila\Utility\GeneralUtility::getBackendUser();
 		}

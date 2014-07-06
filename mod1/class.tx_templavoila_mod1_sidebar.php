@@ -69,7 +69,7 @@ class tx_templavoila_mod1_sidebar {
 	 * @return void
 	 * @access public
 	 */
-	function init(&$pObj) {
+	public function init(&$pObj) {
 		global $LANG;
 
 		// Make local reference to some important variables:
@@ -123,7 +123,7 @@ class tx_templavoila_mod1_sidebar {
 	 * @return void
 	 * @access public
 	 */
-	function addItem($itemKey, &$object, $method, $label, $priority = 50, $hideIfEmpty = FALSE) {
+	public function addItem($itemKey, &$object, $method, $label, $priority = 50, $hideIfEmpty = FALSE) {
 		$hideIfEmpty = $pObj->modTSconfig['properties']['showTabsIfEmpty'] ? FALSE : $hideIfEmpty;
 		$this->sideBarItems[$itemKey] = array(
 			'object' => $object,
@@ -142,7 +142,7 @@ class tx_templavoila_mod1_sidebar {
 	 * @return void
 	 * @access public
 	 */
-	function removeItem($itemKey) {
+	public function removeItem($itemKey) {
 		unset ($this->sideBarItems[$itemKey]);
 	}
 
@@ -152,7 +152,7 @@ class tx_templavoila_mod1_sidebar {
 	 * @return string HTML
 	 * @access public
 	 */
-	function render() {
+	public function render() {
 		if (is_array($this->sideBarItems) && count($this->sideBarItems)) {
 			uasort($this->sideBarItems, array($this, 'sortItemsCompare'));
 
@@ -267,7 +267,7 @@ class tx_templavoila_mod1_sidebar {
 	 * @return string HTML output
 	 * @access private
 	 */
-	function renderItem_headerFields(&$pObj) {
+	public function renderItem_headerFields(&$pObj) {
 		global $LANG, $TCA;
 
 		$output = '';
@@ -332,7 +332,7 @@ class tx_templavoila_mod1_sidebar {
 	 * @return string HTML output
 	 * @access public
 	 */
-	function renderItem_versioning(&$pObj) {
+	public function renderItem_versioning(&$pObj) {
 		if ($pObj->id > 0) {
 			$versionSelector = trim($pObj->doc->getVersionSelector($pObj->id));
 			if (!$versionSelector) {
@@ -368,7 +368,7 @@ class tx_templavoila_mod1_sidebar {
 	 * @return string HTML output
 	 * @access public
 	 */
-	function renderItem_advancedFunctions(&$pObj) {
+	public function renderItem_advancedFunctions(&$pObj) {
 		global $LANG;
 
 		$tableRows = array('
@@ -420,7 +420,7 @@ class tx_templavoila_mod1_sidebar {
 	 *
 	 * @return string JavaScript section for the HTML header.
 	 */
-	function getJScode() {
+	public function getJScode() {
 		if ($this->position == 'left') {
 			return '
 				<script type="text/javascript">
@@ -463,7 +463,7 @@ class tx_templavoila_mod1_sidebar {
 	 * @return boolean
 	 * @access private
 	 */
-	function sortItemsCompare($a, $b) {
+	public function sortItemsCompare($a, $b) {
 		return ($a['priority'] < $b['priority']);
 	}
 }

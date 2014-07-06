@@ -58,7 +58,7 @@ class StaticDataStructuresHandler {
 	 *
 	 * @return void
 	 */
-	function main(&$params, &$pObj) {
+	public function main(&$params, &$pObj) {
 		$removeDSItems = $this->getRemoveItems($params, substr($params['field'], 0, -2) . 'ds');
 
 		$dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Domain\\Repository\\DataStructureRepository');
@@ -90,7 +90,7 @@ class StaticDataStructuresHandler {
 	 *
 	 * @return void
 	 */
-	function pi_templates(&$params, $pObj) {
+	public function pi_templates(&$params, $pObj) {
 		global $TYPO3_DB;
 		// Find the template data structure that belongs to this plugin:
 		$piKey = $params['row']['list_type'];

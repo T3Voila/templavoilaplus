@@ -64,7 +64,7 @@ class tx_templavoila_mod1_localization {
 	 * @return void
 	 * @access public
 	 */
-	function init(&$pObj) {
+	public function init(&$pObj) {
 		global $LANG;
 
 		// Make local reference to some important variables:
@@ -93,7 +93,7 @@ class tx_templavoila_mod1_localization {
 	 * @return string HTML output
 	 * @access public
 	 */
-	function sidebar_renderItem(&$pObj) {
+	public function sidebar_renderItem(&$pObj) {
 		global $LANG;
 
 		$iOutput = $this->sidebar_renderItem_renderLanguageSelectorbox() .
@@ -119,7 +119,7 @@ class tx_templavoila_mod1_localization {
 	 * @return mixed HTML code for the selectorbox or FALSE if no language is available.
 	 * @access protected
 	 */
-	function sidebar_renderItem_renderLanguageSelectorbox() {
+	public function sidebar_renderItem_renderLanguageSelectorbox() {
 		global $LANG, $BE_USER, $BACK_PATH;
 
 		$availableLanguagesArr = $this->pObj->translatedLanguagesArr;
@@ -240,7 +240,7 @@ class tx_templavoila_mod1_localization {
 	 * @return mixed HTML code for the selectorbox or FALSE if no new translation can be created.
 	 * @access protected
 	 */
-	function sidebar_renderItem_renderNewTranslationSelectorbox() {
+	public function sidebar_renderItem_renderNewTranslationSelectorbox() {
 		global $LANG, $BE_USER;
 
 		if (!\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isPSet($this->pObj->calcPerms, 'pages', 'edit')) {

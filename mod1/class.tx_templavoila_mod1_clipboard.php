@@ -81,7 +81,7 @@ class tx_templavoila_mod1_clipboard {
 	 * @return void
 	 * @access public
 	 */
-	function init(&$pObj) {
+	public function init(&$pObj) {
 		global $LANG, $BACK_PATH;
 
 		// Make local reference to some important variables:
@@ -134,7 +134,7 @@ class tx_templavoila_mod1_clipboard {
 	 * @return string HTML output: linked images which act as copy, cut and reference buttons
 	 * @access public
 	 */
-	function element_getSelectButtons($elementPointer, $listOfButtons = 'copy,cut,ref') {
+	public function element_getSelectButtons($elementPointer, $listOfButtons = 'copy,cut,ref') {
 		global $LANG;
 
 		$clipActive_copy = $clipActive_cut = $clipActive_ref = FALSE;
@@ -202,7 +202,7 @@ class tx_templavoila_mod1_clipboard {
 	 *
 	 * @return string HTML output: linked image(s) which act as paste button(s)
 	 */
-	function element_getPasteButtons($destinationPointer) {
+	public function element_getPasteButtons($destinationPointer) {
 		global $LANG, $BE_USER;
 
 		if (in_array('paste', $this->pObj->blindIcons)) {
@@ -277,7 +277,7 @@ class tx_templavoila_mod1_clipboard {
 	 * @return string HTML output
 	 * @access protected
 	 */
-	function sidebar_renderNonUsedElements() {
+	public function sidebar_renderNonUsedElements() {
 		global $LANG, $TYPO3_DB, $BE_USER;
 
 		$output = '';
@@ -380,7 +380,7 @@ class tx_templavoila_mod1_clipboard {
 	 * @return string HTML-table
 	 * @access protected
 	 */
-	function renderReferenceCount($uid) {
+	public function renderReferenceCount($uid) {
 		global $TYPO3_DB, $BE_USER, $LANG;
 
 		$rows = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTgetRows(

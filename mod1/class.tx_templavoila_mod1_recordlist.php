@@ -50,7 +50,7 @@ class tx_templavoila_mod1_recordlist extends \TYPO3\CMS\Recordlist\RecordList\Da
 	 *
 	 * @return void
 	 */
-	function start(&$pObj) {
+	public function start(&$pObj) {
 		$this->pObj = & $pObj;
 		$GLOBALS['SOBE']->MOD_SETTINGS['bigControlPanel'] = 1; // enable extended view
 		$this->script = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila') . 'mod1/index.php';
@@ -69,7 +69,7 @@ class tx_templavoila_mod1_recordlist extends \TYPO3\CMS\Recordlist\RecordList\Da
 	 *
 	 * @return string
 	 */
-	function fwd_rwd_HTML($type, $pointer, $table = '') {
+	public function fwd_rwd_HTML($type, $pointer, $table = '') {
 		$content = '';
 		switch ($type) {
 			case 'fwd':

@@ -139,7 +139,7 @@ class tx_templavoila_dbnewcontentel {
 	 *
 	 * @return void
 	 */
-	function init() {
+	public function init() {
 		global $BE_USER, $BACK_PATH, $TBE_MODULES_EXT;
 
 		// Setting class files to include:
@@ -198,7 +198,7 @@ class tx_templavoila_dbnewcontentel {
 	 * @return void
 	 * @todo    provide position mapping if no position is given already. Like the columns selector but for our cascading element style ...
 	 */
-	function main() {
+	public function main() {
 		global $LANG, $BACK_PATH;
 
 		if ($this->id && $this->access) {
@@ -372,7 +372,7 @@ class tx_templavoila_dbnewcontentel {
 	 *
 	 * @return void
 	 */
-	function printContent() {
+	public function printContent() {
 		$this->content = $this->doc->insertStylesAndJS($this->content);
 		echo $this->content;
 	}
@@ -380,7 +380,7 @@ class tx_templavoila_dbnewcontentel {
 	/**
 	 * @return string
 	 */
-	function linkParams() {
+	public function linkParams() {
 		$output = 'id=' . $this->id . (is_array($this->altRoot) ? \TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl('altRoot', $this->altRoot) : '');
 
 		return $output;
@@ -397,7 +397,7 @@ class tx_templavoila_dbnewcontentel {
 	 *
 	 * @return array Returns the content of wizardArray() function...
 	 */
-	function getWizardItems() {
+	public function getWizardItems() {
 		return $this->wizardArray();
 	}
 
@@ -407,7 +407,7 @@ class tx_templavoila_dbnewcontentel {
 	 *
 	 * @return array
 	 */
-	function wizardArray() {
+	public function wizardArray() {
 
 		if (is_array($this->config)) {
 			$wizards = $this->config['wizardItems.'];
@@ -462,7 +462,7 @@ class tx_templavoila_dbnewcontentel {
 	 *
 	 * @return array $returnElements
 	 */
-	function wizard_appendWizards($wizardElements) {
+	public function wizard_appendWizards($wizardElements) {
 		if (!is_array($wizardElements)) {
 			$wizardElements = array();
 		}
@@ -490,7 +490,7 @@ class tx_templavoila_dbnewcontentel {
 	 *
 	 * @return array $returnElements
 	 */
-	function wizard_renderFCEs($wizardElements) {
+	public function wizard_renderFCEs($wizardElements) {
 		if (!is_array($wizardElements)) {
 			$wizardElements = array();
 		}
@@ -525,7 +525,7 @@ class tx_templavoila_dbnewcontentel {
 	 *
 	 * @return mixed
 	 */
-	function wizard_getItem($groupKey, $itemKey, $itemConf) {
+	public function wizard_getItem($groupKey, $itemKey, $itemConf) {
 		$itemConf['title'] = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL($itemConf['title']);
 		$itemConf['description'] = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL($itemConf['description']);
 		$itemConf['tt_content_defValues'] = $itemConf['tt_content_defValues.'];
@@ -540,7 +540,7 @@ class tx_templavoila_dbnewcontentel {
 	 *
 	 * @return array
 	 */
-	function wizard_getGroupHeader($groupKey, $wizardGroup) {
+	public function wizard_getGroupHeader($groupKey, $wizardGroup) {
 		return array('header' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL($wizardGroup['header']));
 	}
 
@@ -552,7 +552,7 @@ class tx_templavoila_dbnewcontentel {
 	 *
 	 * @return void
 	 */
-	function removeInvalidElements(&$wizardItems) {
+	public function removeInvalidElements(&$wizardItems) {
 		global $TCA;
 
 		// Get TCEFORM from TSconfig of current page
@@ -616,7 +616,7 @@ class tx_templavoila_dbnewcontentel {
 	 *
 	 * @return string    Condition or empty string
 	 */
-	function buildRecordWhere($table) {
+	public function buildRecordWhere($table) {
 		$result = array();
 		if (!\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isAdmin()) {
 			$prefLen = strlen($table) + 1;
@@ -640,7 +640,7 @@ class tx_templavoila_dbnewcontentel {
 	 *
 	 * @return string additional URL arguments with configured default values
 	 */
-	function getDsDefaultValues(\Extension\Templavoila\Domain\Model\Template $toObj) {
+	public function getDsDefaultValues(\Extension\Templavoila\Domain\Model\Template $toObj) {
 
 		$dsStructure = $toObj->getLocalDataprotArray();
 

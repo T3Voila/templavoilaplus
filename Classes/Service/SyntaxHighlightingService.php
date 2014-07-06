@@ -133,7 +133,7 @@ class SyntaxHighlightingService {
 	 *
 	 * @return string HTML code with highlighted content. Must be wrapped in <PRE> tags
 	 */
-	function highLight_DS($str) {
+	public function highLight_DS($str) {
 
 		// Parse DS to verify that it is valid:
 		$DS = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($str);
@@ -164,7 +164,7 @@ class SyntaxHighlightingService {
 	 *
 	 * @return string HTML
 	 */
-	function highLight_DS_markUpRecursively($struct, $parent = '', $app = '') {
+	public function highLight_DS_markUpRecursively($struct, $parent = '', $app = '') {
 		$output = '';
 		foreach ($struct as $k => $v) {
 			if ($k % 2) {
@@ -231,7 +231,7 @@ class SyntaxHighlightingService {
 	 *
 	 * @return string HTML code with highlighted content. Must be wrapped in <PRE> tags
 	 */
-	function highLight_FF($str) {
+	public function highLight_FF($str) {
 
 		// Parse DS to verify that it is valid:
 		$DS = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($str);
@@ -262,7 +262,7 @@ class SyntaxHighlightingService {
 	 *
 	 * @return string HTML
 	 */
-	function highLight_FF_markUpRecursively($struct, $parent = '', $app = '') {
+	public function highLight_FF_markUpRecursively($struct, $parent = '', $app = '') {
 		$output = '';
 
 		// Setting levels:
@@ -334,7 +334,7 @@ class SyntaxHighlightingService {
 	 *
 	 * @return array Array with all found tags (starttags only)
 	 */
-	function getAllTags($str) {
+	public function getAllTags($str) {
 
 		// Init:
 		$tags = array();
@@ -366,7 +366,7 @@ class SyntaxHighlightingService {
 	 *
 	 * @return array Array with the content arranged hierarchically.
 	 */
-	function splitXMLbyTags($tagList, $str) {
+	public function splitXMLbyTags($tagList, $str) {
 		$struct = $this->htmlParse->splitIntoBlock($tagList, $str);
 
 		// Traverse level:

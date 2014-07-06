@@ -62,7 +62,7 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 *
 	 * @return string HTML content for the Flexible Content elements.
 	 */
-	function main($content, $conf) {
+	public function main($content, $conf) {
 		$this->initVars($conf);
 
 		return $this->renderElement($this->cObj->data, 'tt_content');
@@ -108,7 +108,7 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * @todo Create TS element with this functionality?
 	 * @todo Support sheet selector?
 	 */
-	function main_record($content, $conf) {
+	public function main_record($content, $conf) {
 		$this->initVars($conf);
 
 		// Make a copy of the data, do not spoil original!
@@ -163,7 +163,7 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 *
 	 * @return string HTML content for the Page Template elements.
 	 */
-	function main_page($content, $conf) {
+	public function main_page($content, $conf) {
 		$this->initVars($conf);
 
 		// Current page record which we MIGHT manipulate a little:
@@ -205,7 +205,7 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 *
 	 * @return void
 	 */
-	function initVars($conf) {
+	public function initVars($conf) {
 		$this->inheritValueFromDefault = $conf['dontInheritValueFromDefault'] ? 0 : 1;
 		// naming choosen to fit the regular TYPO3 integrators needs ;)
 		self::$enablePageRenderer = isset($conf['advancedHeaderInclusion']) ? $conf['advancedHeaderInclusion'] : self::$enablePageRenderer;
@@ -221,7 +221,7 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 *
 	 * @return string HTML output.
 	 */
-	function renderElement($row, $table) {
+	public function renderElement($row, $table) {
 		global $TYPO3_CONF_VARS;
 
 		// First prepare user defined objects (if any) for hooks which extend this function:
@@ -419,7 +419,7 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 *
 	 * @return void
 	 */
-	function processDataValues(&$dataValues, $DSelements, $TOelements, $valueKey = 'vDEF', $mappingInfo = TRUE) {
+	public function processDataValues(&$dataValues, $DSelements, $TOelements, $valueKey = 'vDEF', $mappingInfo = TRUE) {
 		if (is_array($DSelements) && is_array($dataValues)) {
 
 			// Create local processing information array:
@@ -672,7 +672,7 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 *
 	 * @return string The value
 	 */
-	function inheritValue($dV, $valueKey, $overlayMode = '') {
+	public function inheritValue($dV, $valueKey, $overlayMode = '') {
 #debug(array($dV['vDEF'],$valueKey,$overlayMode,$this->inheritValueFromDefault),'inheritValue()');
 		if ($valueKey != 'vDEF') {
 
@@ -713,7 +713,7 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * @return string Error message output
 	 * @string    string Error message input
 	 */
-	function formatError($string) {
+	public function formatError($string) {
 
 		// Set no-cache since the error message shouldn't be cached of course...
 		$GLOBALS['TSFE']->set_no_cache();
@@ -750,7 +750,7 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 *
 	 * @return string
 	 */
-	function visualID($content, $srcPointer, $DSrec, $TOrec, $row, $table) {
+	public function visualID($content, $srcPointer, $DSrec, $TOrec, $row, $table) {
 
 		// Create table rows:
 		$tRows = array();

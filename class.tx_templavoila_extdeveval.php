@@ -54,7 +54,7 @@ class tx_templavoila_extdeveval {
 	 *
 	 * @return void
 	 */
-	function init() {
+	public function init() {
 	}
 
 	/**
@@ -62,7 +62,7 @@ class tx_templavoila_extdeveval {
 	 *
 	 * @return string HTML content
 	 */
-	function main() {
+	public function main() {
 		/*
 				- Select data structure
 				- Search all TCA defined tables for flexform fields with this data structure
@@ -91,7 +91,7 @@ class tx_templavoila_extdeveval {
 	 *
 	 * @return string HTML content
 	 */
-	function renderMenuOfDataStructures() {
+	public function renderMenuOfDataStructures() {
 
 		// Get data structures we should display
 		/** @var \Extension\Templavoila\Domain\Repository\DataStructureRepository $dsRepo */
@@ -131,7 +131,7 @@ class tx_templavoila_extdeveval {
 	 *
 	 * @return string Type keyword
 	 */
-	function DSlanguageMode($DSstring) {
+	public function DSlanguageMode($DSstring) {
 
 		$DScontent = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($DSstring);
 		$DScontent = array('meta' => $DScontent['meta']);
@@ -155,7 +155,7 @@ class tx_templavoila_extdeveval {
 	 *
 	 * @return string HTML
 	 */
-	function renderConversionView($dsIdForConversion) {
+	public function renderConversionView($dsIdForConversion) {
 		global $TCA;
 
 		$output = '';
@@ -305,7 +305,7 @@ class tx_templavoila_extdeveval {
 	 * @param string $path
 	 * @param object &$pObj
 	 */
-	function traverseFlexFormXMLData_callBackFunction_Inheritance($dsArr, $data, $PA, $path, &$pObj) {
+	public function traverseFlexFormXMLData_callBackFunction_Inheritance($dsArr, $data, $PA, $path, &$pObj) {
 		$pathArray = explode('/', $path);
 		$langId = $pathArray[sizeof($pathArray) - 1];
 		if (substr($langId, 0, 1) == 'v') {
@@ -326,7 +326,7 @@ class tx_templavoila_extdeveval {
 	 * @param string $path
 	 * @param object &$pObj
 	 */
-	function traverseFlexFormXMLData_callBackFunction_Separate($dsArr, $data, $PA, $path, &$pObj) {
+	public function traverseFlexFormXMLData_callBackFunction_Separate($dsArr, $data, $PA, $path, &$pObj) {
 		$pathArray = explode('/', $path);
 		$langId = $pathArray[2];
 		if (substr($langId, 0, 1) == 'l') {
@@ -349,7 +349,7 @@ class tx_templavoila_extdeveval {
 	 * @param string $path
 	 * @param object &$pObj
 	 */
-	function traverseFlexFormXMLData_callBackFunction_Disabled($dsArr, $data, $PA, $path, &$pObj) {
+	public function traverseFlexFormXMLData_callBackFunction_Disabled($dsArr, $data, $PA, $path, &$pObj) {
 		// Just setting value in our own result array, basically replicating the structure:
 		$pObj->setArrayValueByPath($path . "/kqsper", $this->newFlexFormData, $data);
 		debug('TODO');

@@ -192,7 +192,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 *
 	 * @return void
 	 */
-	function menuConfig() {
+	public function menuConfig() {
 		$this->MOD_MENU = Array(
 			'displayMode' => array(
 				'explode' => 'Mode: Exploded Visual',
@@ -212,7 +212,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 *
 	 * @return array
 	 */
-	function dsTypeInfo($conf) {
+	public function dsTypeInfo($conf) {
 		// Icon:
 		if ($conf['type'] == 'section') {
 			return $this->dsTypes['sc'];
@@ -243,7 +243,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 *
 	 * @return void
 	 */
-	function main() {
+	public function main() {
 
 		// Initialize ds_edit
 		$this->dsEdit = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj('tx_templavoila_cm1_dsedit', '');
@@ -276,7 +276,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 *
 	 * @return void
 	 */
-	function printContent() {
+	public function printContent() {
 		$this->content .= $this->doc->endPage();
 		echo $this->content;
 	}
@@ -289,7 +289,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 *
 	 * @return string
 	 */
-	function flattenarray($array, $pfx = '') {
+	public function flattenarray($array, $pfx = '') {
 		if (!is_array($array)) {
 			if (is_string($array)) {
 				return $array;
@@ -308,7 +308,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 *
 	 * @return array
 	 */
-	function unflattenarray($string) {
+	public function unflattenarray($string) {
 		if (!is_string($string) || !trim($string)) {
 			if (is_array($string)) {
 				return $string;
@@ -333,7 +333,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 *
 	 * @return array Resulting array where $arr1 values has overruled $arr0 values
 	 */
-	function array_merge_recursive_overrule($arr0, $arr1, $notAddKeys = 0, $includeEmtpyValues = TRUE, $kill = TRUE) {
+	public function array_merge_recursive_overrule($arr0, $arr1, $notAddKeys = 0, $includeEmtpyValues = TRUE, $kill = TRUE) {
 		foreach ($arr1 as $key => $val) {
 			if (is_array($arr0[$key])) {
 				if (is_array($arr1[$key])) {
@@ -379,7 +379,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 *
 	 * @return void
 	 */
-	function main_mode() {
+	public function main_mode() {
 		global $LANG, $BACK_PATH;
 
 		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('template');
@@ -560,7 +560,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 *
 	 * @return void
 	 */
-	function renderFile() {
+	public function renderFile() {
 		global $TYPO3_DB;
 
 		if (@is_file($this->displayFile) && \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->displayFile)) {
@@ -1170,7 +1170,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 *
 	 * @return void
 	 */
-	function renderDSO() {
+	public function renderDSO() {
 		global $TYPO3_DB;
 		if (intval($this->displayUid) > 0) { // TODO: static ds support
 			$row = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('tx_templavoila_datastructure', $this->displayUid);
@@ -1303,7 +1303,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 *
 	 * @return void
 	 */
-	function renderTO() {
+	public function renderTO() {
 		if (intval($this->displayUid) > 0) {
 			$row = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('tx_templavoila_tmplobj', $this->displayUid);
 
@@ -1519,7 +1519,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @return array Array with two keys (0/1) with a) content and b) currentMappingInfo which is retrieved inside (currentMappingInfo will be different based on whether "head" or "body" content is "mapped")
 	 * @see renderTO()
 	 */
-	function renderTO_editProcessing(&$dataStruct, $row, $theFile, $headerPart = 0) {
+	public function renderTO_editProcessing(&$dataStruct, $row, $theFile, $headerPart = 0) {
 		$msg = array();
 
 		// Converting GPvars into a "cmd" value:
@@ -1749,7 +1749,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 *
 	 * @return string HTML table.
 	 */
-	function renderHeaderSelection($displayFile, $currentHeaderMappingInfo, $showBodyTag, $htmlAfterDSTable = '') {
+	public function renderHeaderSelection($displayFile, $currentHeaderMappingInfo, $showBodyTag, $htmlAfterDSTable = '') {
 
 		// Get file content
 		$this->markupFile = $displayFile;
@@ -1821,7 +1821,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 *
 	 * @return string HTML table.
 	 */
-	function renderTemplateMapper($displayFile, $path, $dataStruct = array(), $currentMappingInfo = array(), $htmlAfterDSTable = '') {
+	public function renderTemplateMapper($displayFile, $path, $dataStruct = array(), $currentMappingInfo = array(), $htmlAfterDSTable = '') {
 
 		// Get file content
 		$this->markupFile = $displayFile;
@@ -2081,7 +2081,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 *
 	 * @return array Table rows as an array of <tr> tags, $tRows
 	 */
-	function drawDataStructureMap($dataStruct, $mappingMode = 0, $currentMappingInfo = array(), $pathLevels = array(), $optDat = array(), $contentSplittedByMapping = array(), $level = 0, $tRows = array(), $formPrefix = '', $path = '', $mapOK = 1) {
+	public function drawDataStructureMap($dataStruct, $mappingMode = 0, $currentMappingInfo = array(), $pathLevels = array(), $optDat = array(), $contentSplittedByMapping = array(), $level = 0, $tRows = array(), $formPrefix = '', $path = '', $mapOK = 1) {
 
 		$bInfo = \TYPO3\CMS\Core\Utility\GeneralUtility::clientInfo();
 		$multilineTooltips = ($bInfo['BROWSER'] == 'msie');
@@ -2352,7 +2352,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 *
 	 * @return mixed The variable $dataStruct. Should be array. If string, then no structures was found and the function returns the XML parser error.
 	 */
-	function getDataStructFromDSO($datString, $file = '') {
+	public function getDataStructFromDSO($datString, $file = '') {
 		if ($file) {
 			$dataStruct = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array(\TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($file));
 		} else {
@@ -2370,7 +2370,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 *
 	 * @return string HTML link, pointing to the display frame.
 	 */
-	function linkForDisplayOfPath($title, $path) {
+	public function linkForDisplayOfPath($title, $path) {
 		$theArray = array(
 			'file' => $this->markupFile,
 			'path' => $path,
@@ -2392,7 +2392,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @return string URL, already htmlspecialchars()'ed
 	 * @see drawDataStructureMap()
 	 */
-	function linkThisScript($array = array()) {
+	public function linkThisScript($array = array()) {
 		$theArray = array(
 			'id' => $this->id, // id of the current sysfolder
 			'file' => $this->displayFile,
@@ -2418,7 +2418,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @return string HTML code for the IFRAME.
 	 * @see main_display()
 	 */
-	function makeIframeForVisual($file, $path, $limitTags, $showOnly, $preview = 0) {
+	public function makeIframeForVisual($file, $path, $limitTags, $showOnly, $preview = 0) {
 		$url = 'index.php?mode=display' .
 			'&file=' . rawurlencode($file) .
 			'&path=' . rawurlencode($path) .
@@ -2436,7 +2436,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 *
 	 * @return array Mapping rules in a multidimensional array.
 	 */
-	function explodeMappingToTagsStr($mappingToTags, $unsetAll = 0) {
+	public function explodeMappingToTagsStr($mappingToTags, $unsetAll = 0) {
 		$elements = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', strtolower($mappingToTags));
 		$output = array();
 		foreach ($elements as $v) {
@@ -2458,7 +2458,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 *
 	 * @return void
 	 */
-	function unsetArrayPath(&$dataStruct, $ref) {
+	public function unsetArrayPath(&$dataStruct, $ref) {
 		$key = array_shift($ref);
 
 		if (!count($ref)) {
@@ -2476,7 +2476,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 *
 	 * @return void
 	 */
-	function cleanUpMappingInfoAccordingToDS(&$currentMappingInfo, $dataStruct) {
+	public function cleanUpMappingInfoAccordingToDS(&$currentMappingInfo, $dataStruct) {
 		if (is_array($currentMappingInfo)) {
 			foreach ($currentMappingInfo as $key => $value) {
 				if (!isset($dataStruct[$key])) {
@@ -2495,7 +2495,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 *
 	 * @return void Modification in $this->storageFolders array
 	 */
-	function findingStorageFolderIds() {
+	public function findingStorageFolderIds() {
 		global $TYPO3_DB;
 
 		// Init:
@@ -2560,7 +2560,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @return void Exits before return
 	 * @see makeIframeForVisual()
 	 */
-	function main_display() {
+	public function main_display() {
 
 		// Setting GPvars:
 		$this->displayFile = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('file');
@@ -2606,7 +2606,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @return string
 	 * @see main_display()
 	 */
-	function displayFileContentWithMarkup($content, $path, $relPathFix, $limitTags) {
+	public function displayFileContentWithMarkup($content, $path, $relPathFix, $limitTags) {
 		$markupObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Domain\\Model\\HtmlMarkup');
 		$markupObj->gnyfImgAdd = $this->show ? '' : 'onclick="return parent.updPath(\'###PATH###\');"';
 		$markupObj->pathPrefix = $path ? $path . '|' : '';
@@ -2653,7 +2653,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @return string
 	 * @see main_display()
 	 */
-	function displayFileContentWithPreview($content, $relPathFix) {
+	public function displayFileContentWithPreview($content, $relPathFix) {
 
 		// Getting session data to get currentMapping info:
 		$sesDat = \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->getSessionData($this->sessionKey);
@@ -2697,7 +2697,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 *
 	 * @return void Echos out an HTML page.
 	 */
-	function displayFrameError($error) {
+	public function displayFrameError($error) {
 		echo '
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 
@@ -2725,7 +2725,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 *
 	 * @return string HTML content for help text
 	 */
-	function cshItem($table, $field, $BACK_PATH, $wrap = '', $onlyIconMode = FALSE, $styleAttrib = '') {
+	public function cshItem($table, $field, $BACK_PATH, $wrap = '', $onlyIconMode = FALSE, $styleAttrib = '') {
 		if (is_callable(array('\TYPO3\CMS\Backend\Utility\BackendUtility', 'cshItem'))) {
 			return \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem($table, $field, $BACK_PATH, $wrap, $onlyIconMode, $styleAttrib);
 		}
@@ -2738,7 +2738,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 *
 	 * @return string
 	 */
-	function lipsumLink($formElementName) {
+	public function lipsumLink($formElementName) {
 		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('lorem_ipsum')) {
 			$LRobj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_loremipsum_wiz');
 			$LRobj->backPath = $this->doc->backPath;
@@ -2767,7 +2767,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 *
 	 * @return mixed
 	 */
-	function buildCachedMappingInfo_head($currentMappingInfo_head, $html_header) {
+	public function buildCachedMappingInfo_head($currentMappingInfo_head, $html_header) {
 		$h_currentMappingInfo = array();
 		if (is_array($currentMappingInfo_head['headElementPaths'])) {
 			foreach ($currentMappingInfo_head['headElementPaths'] as $kk => $vv) {
@@ -2787,7 +2787,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 *
 	 * @return string Content
 	 */
-	function fixPrefixForLinks($relPathFix, $fileContent, $uniqueMarker) {
+	public function fixPrefixForLinks($relPathFix, $fileContent, $uniqueMarker) {
 		$parts = explode($uniqueMarker, $fileContent);
 		$count = count($parts);
 		if ($count > 1) {

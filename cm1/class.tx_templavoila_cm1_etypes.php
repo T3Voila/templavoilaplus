@@ -46,7 +46,7 @@ class tx_templavoila_cm1_eTypes {
 	/**
 	 * @param $pObj
 	 */
-	function init($pObj) {
+	public function init($pObj) {
 		$this->pObj = $pObj;
 	}
 
@@ -62,7 +62,7 @@ class tx_templavoila_cm1_eTypes {
 	 * @return void Note: The result is directly written in $elArray
 	 * @see renderFile()
 	 */
-	function substEtypeWithRealStuff(&$elArray, $v_sub = array(), $scope = 0) {
+	public function substEtypeWithRealStuff(&$elArray, $v_sub = array(), $scope = 0) {
 
 		$eTypeCECounter = 0;
 
@@ -412,7 +412,7 @@ class tx_templavoila_cm1_eTypes {
 	 * @return array Configuration
 	 * @see substEtypeWithRealStuff()
 	 */
-	function substEtypeWithRealStuff_contentInfo($content) {
+	public function substEtypeWithRealStuff_contentInfo($content) {
 		if ($content) {
 			if (substr($content, 0, 4) == '<img') {
 				$attrib = \TYPO3\CMS\Core\Utility\GeneralUtility::get_tag_attributes($content);
@@ -443,7 +443,7 @@ class tx_templavoila_cm1_eTypes {
 	 *
 	 * @return array    Array with default eTypes
 	 */
-	function defaultEtypes() {
+	public function defaultEtypes() {
 		// formFields: input, input_h, input_g, text, rte, link, int, image, imagefixed, select, ce
 		// typoscriptElements: TypoScriptObject, none
 		// misc: custom

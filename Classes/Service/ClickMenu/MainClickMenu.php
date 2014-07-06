@@ -52,7 +52,7 @@ class MainClickMenu {
 	 *
 	 * @return array The modified menu array.
 	 */
-	function main(&$backRef, $menuItems, $table, $uid) {
+	public function main(&$backRef, $menuItems, $table, $uid) {
 		global $BE_USER, $LANG, $TYPO3_DB;
 
 		$localItems = array();

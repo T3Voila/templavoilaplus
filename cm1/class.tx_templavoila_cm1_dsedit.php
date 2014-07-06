@@ -46,7 +46,7 @@ class tx_templavoila_cm1_dsEdit {
 	/**
 	 * @param $pObj
 	 */
-	function init($pObj) {
+	public function init($pObj) {
 		$this->pObj = $pObj;
 	}
 
@@ -61,7 +61,7 @@ class tx_templavoila_cm1_dsEdit {
 	 *
 	 * @return array Two values, first is addEditRows (string HTML content), second is boolean whether to place row before or after.
 	 */
-	function drawDataStructureMap_editItem($formPrefix, $key, $value, $level, $rowCells) {
+	public function drawDataStructureMap_editItem($formPrefix, $key, $value, $level, $rowCells) {
 
 		// Init:
 		$addEditRows = '';
@@ -453,7 +453,7 @@ class tx_templavoila_cm1_dsEdit {
 	 * @access private
 	 * @see drawDataStructureMap_editItem()
 	 */
-	function drawDataStructureMap_editItem_editTypeExtra($type, $formFieldName, $curValue, $key = '') {
+	public function drawDataStructureMap_editItem_editTypeExtra($type, $formFieldName, $curValue, $key = '') {
 		// If a user function was registered, use that instead of our own handlers:
 		if (isset ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['cm1']['eTypesExtraFormFields'][$type])) {
 			$_params = array(

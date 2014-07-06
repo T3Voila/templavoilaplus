@@ -62,7 +62,7 @@ class tx_templavoila_cm2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 *
 	 * @return void
 	 */
-	function main() {
+	public function main() {
 		global $LANG, $BACK_PATH;
 
 		// Check admin: If this is changed some day to other than admin users we HAVE to check if there is read access to the record being selected!
@@ -201,7 +201,7 @@ class tx_templavoila_cm2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 *
 	 * @return void
 	 */
-	function printContent() {
+	public function printContent() {
 		echo $this->content;
 	}
 
@@ -249,7 +249,7 @@ class tx_templavoila_cm2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 *
 	 * @return string HTML formatted output, marked up in colors
 	 */
-	function markUpXML($str) {
+	public function markUpXML($str) {
 
 		// Make instance of syntax highlight class:
 		$hlObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Service\\SyntaxHighlightingService');

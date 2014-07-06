@@ -51,7 +51,7 @@ class UsedContentElement {
 	 *
 	 * @return void
 	 */
-	function init($page_uid) {
+	public function init($page_uid) {
 
 		// Initialize TemplaVoila API class:
 		$apiObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Service\\ApiService', 'pages');
@@ -72,7 +72,7 @@ class UsedContentElement {
 	 *
 	 * @return boolean
 	 */
-	function filter($table, $uid) {
+	public function filter($table, $uid) {
 		if ($table != 'tt_content' || in_array($uid, $this->usedUids)) {
 			return TRUE;
 		}

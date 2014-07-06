@@ -66,7 +66,7 @@ class tx_templavoila_mod1_wizards {
 	 *
 	 * @return void
 	 */
-	function init(&$pObj) {
+	public function init(&$pObj) {
 		// Make local reference to some important variables:
 		$this->pObj =& $pObj;
 		$this->doc =& $this->pObj->doc;
@@ -92,7 +92,7 @@ class tx_templavoila_mod1_wizards {
 	 * @return string Content for the screen output.
 	 * @todo  Check required field(s), support t3d
 	 */
-	function renderWizard_createNewPage($positionPid) {
+	public function renderWizard_createNewPage($positionPid) {
 		global $LANG, $BE_USER, $TYPO3_CONF_VARS;
 
 		// Get default TCA values specific for the page and user
@@ -259,7 +259,7 @@ class tx_templavoila_mod1_wizards {
 	 *
 	 * @return string HTML output containing a table with the template selector
 	 */
-	function renderTemplateSelector($positionPid, $templateType = 'tmplobj') {
+	public function renderTemplateSelector($positionPid, $templateType = 'tmplobj') {
 		global $LANG, $TYPO3_DB;
 
 		// Negative PID values is pointing to a page on the same level as the current.
@@ -417,7 +417,7 @@ class tx_templavoila_mod1_wizards {
 	 *
 	 * @return integer uid of the new page record
 	 */
-	function createPage($pageArray, $positionPid) {
+	public function createPage($pageArray, $positionPid) {
 		$positionPageMoveToRow = \TYPO3\CMS\Backend\Utility\BackendUtility::getMovePlaceholder('pages', abs($positionPid));
 		if (is_array($positionPageMoveToRow)) {
 			$positionPid = ($positionPid > 0) ? $positionPageMoveToRow['uid'] : '-' . $positionPageMoveToRow['uid'];
@@ -453,7 +453,7 @@ class tx_templavoila_mod1_wizards {
 	/**
 	 * @return \TYPO3\CMS\Impexp\ImportExport
 	 */
-	function getImportObject() {
+	public function getImportObject() {
 		global $TYPO3_CONF_VARS;
 
 		$import = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_impexp');
@@ -469,7 +469,7 @@ class tx_templavoila_mod1_wizards {
 	 *
 	 * @return string    Condition or empty string
 	 */
-	function buildRecordWhere($table) {
+	public function buildRecordWhere($table) {
 		$result = array();
 		if (!\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isAdmin()) {
 			$prefLen = strlen($table) + 1;
@@ -495,7 +495,7 @@ class tx_templavoila_mod1_wizards {
 	 * @access    private
 	 * @return string comma seperated list of integer
 	 */
-	function getDisallowedTSconfigItemsByFieldName($positionPid, $fieldName) {
+	public function getDisallowedTSconfigItemsByFieldName($positionPid, $fieldName) {
 
 		$disallowPageTemplateItems = '';
 		$disallowPageTemplateList = array();
