@@ -42,7 +42,7 @@ namespace Extension\Templavoila\Service\UserFunc;
  */
 class UsedContentElement {
 
-	var $usedUids = array();
+	public $usedUids = array();
 
 	/**
 	 * Initialize object with page id.

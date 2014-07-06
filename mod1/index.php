@@ -98,33 +98,33 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 */
 	protected $containedElements;
 
-	var $modTSconfig; // This module's TSconfig
-	var $modSharedTSconfig; // TSconfig from mod.SHARED
-	var $extKey = 'templavoila'; // Extension key of this module
+	public $modTSconfig; // This module's TSconfig
+	public $modSharedTSconfig; // TSconfig from mod.SHARED
+	public $extKey = 'templavoila'; // Extension key of this module
 
-	var $global_tt_content_elementRegister = array(); // Contains a list of all content elements which are used on the page currently being displayed (with version, sheet and language currently set). Mainly used for showing "unused elements" in sidebar.
-	var $global_localization_status = array(); // Contains structure telling the localization status of each element
+	public $global_tt_content_elementRegister = array(); // Contains a list of all content elements which are used on the page currently being displayed (with version, sheet and language currently set). Mainly used for showing "unused elements" in sidebar.
+	public $global_localization_status = array(); // Contains structure telling the localization status of each element
 
-	var $altRoot = array(); // Keys: "table", "uid" - thats all to define another "rootTable" than "pages" (using default field "tx_templavoila_flex" for flex form content)
-	var $versionId = 0; // Versioning: The current version id
+	public $altRoot = array(); // Keys: "table", "uid" - thats all to define another "rootTable" than "pages" (using default field "tx_templavoila_flex" for flex form content)
+	public $versionId = 0; // Versioning: The current version id
 
-	var $currentLanguageKey; // Contains the currently selected language key (Example: DEF or DE)
-	var $currentLanguageUid; // Contains the currently selected language uid (Example: -1, 0, 1, 2, ...)
-	var $allAvailableLanguages = array(); // Contains records of all available languages (not hidden, with ISOcode), including the default language and multiple languages. Used for displaying the flags for content elements, set in init().
-	var $translatedLanguagesArr = array(); // Select language for which there is a page translation
-	var $translatedLanguagesArr_isoCodes = array(); // ISO codes (for l/v pairs) of translated languages.
-	var $translatorMode = FALSE; // If this is set, the whole page module scales down functionality so that a translator only needs  to look for and click the "Flags" in the interface to localize the page! This flag is set if a user does not have access to the default language; then translator mode is assumed.
-	var $calcPerms; // Permissions for the parrent record (normally page). Used for hiding icons.
+	public $currentLanguageKey; // Contains the currently selected language key (Example: DEF or DE)
+	public $currentLanguageUid; // Contains the currently selected language uid (Example: -1, 0, 1, 2, ...)
+	public $allAvailableLanguages = array(); // Contains records of all available languages (not hidden, with ISOcode), including the default language and multiple languages. Used for displaying the flags for content elements, set in init().
+	public $translatedLanguagesArr = array(); // Select language for which there is a page translation
+	public $translatedLanguagesArr_isoCodes = array(); // ISO codes (for l/v pairs) of translated languages.
+	public $translatorMode = FALSE; // If this is set, the whole page module scales down functionality so that a translator only needs  to look for and click the "Flags" in the interface to localize the page! This flag is set if a user does not have access to the default language; then translator mode is assumed.
+	public $calcPerms; // Permissions for the parrent record (normally page). Used for hiding icons.
 
 	/**
 	 * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
 	 */
-	var $doc; // Instance of template doc class
+	public $doc; // Instance of template doc class
 
 	/**
 	 * @var \tx_templavoila_mod1_sidebar
 	 */
-	var $sideBarObj; // Instance of sidebar class
+	public $sideBarObj; // Instance of sidebar class
 
 	/**
 	 * @var \tx_templavoila_mod1_wizards
@@ -136,18 +136,18 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 */
 	public $clipboardObj; // Instance of clipboard class
 
-	var $recordsObj; // Instance of records class
+	public $recordsObj; // Instance of records class
 	/**
 	 * @var \Extension\Templavoila\Service\ApiService
 	 */
-	var $apiObj; // Instance of tx_templavoila_api
-	var $sortableContainers = array(); // Contains the containers for drag and drop
-	var $allItems = array(); // Registry for all id => flexPointer-Pairs
-	var $sortableItems = array(); // Registry for sortable id => flexPointer-Pairs
+	public $apiObj; // Instance of tx_templavoila_api
+	public $sortableContainers = array(); // Contains the containers for drag and drop
+	public $allItems = array(); // Registry for all id => flexPointer-Pairs
+	public $sortableItems = array(); // Registry for sortable id => flexPointer-Pairs
 
-	var $extConf; // holds the extconf configuration
+	public $extConf; // holds the extconf configuration
 
-	var $blindIcons = array(); // Icons which shouldn't be rendered by configuration, can contain elements of "new,edit,copy,cut,ref,paste,browse,delete,makeLocal,unlink,hide"
+	public $blindIcons = array(); // Icons which shouldn't be rendered by configuration, can contain elements of "new,edit,copy,cut,ref,paste,browse,delete,makeLocal,unlink,hide"
 
 	protected $renderPreviewObjects = NULL; // Classes for preview render
 	protected $renderPreviewDataObjects = NULL; // Classes for preview render

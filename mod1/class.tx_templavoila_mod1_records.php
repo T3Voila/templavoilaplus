@@ -42,9 +42,9 @@ class tx_templavoila_mod1_records {
 	 * @var tx_templavoila_module1
 	 */
 	public $pObj; // Reference to parent module
-	var $tables;
+	public $tables;
 
-	var $calcPerms;
+	public $calcPerms;
 
 	/**
 	 * @var \tx_templavoila_mod1_recordlist

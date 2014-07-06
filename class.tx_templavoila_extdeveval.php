@@ -38,16 +38,16 @@
  */
 class tx_templavoila_extdeveval {
 
-	var $typeNames = array(
+	public $typeNames = array(
 		1 => 'Page DS',
 		2 => 'Flexible Content Element DS',
 		0 => 'Unspecified DS',
 	);
 
 	// Internal:
-	var $newFlexFormData = array();
+	public $newFlexFormData = array();
 
-	var $language;
+	public $language;
 
 	/**
 	 * Initialization (none needed)

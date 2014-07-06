@@ -45,9 +45,9 @@ class StaticDataStructuresHandler {
 	 */
 	protected $conf;
 
-	var $prefix = 'Static: ';
+	public $prefix = 'Static: ';
 
-	var $iconPath = '../uploads/tx_templavoila/';
+	public $iconPath = '../uploads/tx_templavoila/';
 
 	/**
 	 * Adds static data structures to selector box items arrays.

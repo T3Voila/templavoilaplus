@@ -51,11 +51,11 @@ class tx_templavoila_cm2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	protected $backPath;
 
 	// External, static:
-	var $option_linenumbers = TRUE; // Showing linenumbers if true.
+	public $option_linenumbers = TRUE; // Showing linenumbers if true.
 
 	// Internal, GPvars:
-	var $viewTable = array(); // Array with tablename, uid and fieldname
-	var $returnUrl = ''; // (GPvar "returnUrl") Return URL if the script is supplied with that.
+	public $viewTable = array(); // Array with tablename, uid and fieldname
+	public $returnUrl = ''; // (GPvar "returnUrl") Return URL if the script is supplied with that.
 
 	/**
 	 * Main function, drawing marked up XML.

@@ -58,8 +58,8 @@ class HtmlMarkup {
 	 *  'source'  : In this mode all the HTML code is shown as source code. This mode should be used if you want code-insight OR analyse non-HTML code (like XML or WML)
 	 *  default   :    Original page is preserved and tag-images are added as layers (thus non-destructive). However tag-images may overlap each other so you cannot access the tag images you want.
 	 */
-	var $mode = ''; // [blank],
-	var $maxLineLengthInSourceMode = 150; // When in source mode the lines are truncated with "..." if longer than this number of characters.
+	public $mode = ''; // [blank],
+	public $maxLineLengthInSourceMode = 150; // When in source mode the lines are truncated with "..." if longer than this number of characters.
 
 	/**
 	 * The mode by which to detect the path of elements
@@ -68,18 +68,18 @@ class HtmlMarkup {
 	 *
 	 * Currently only one path mode is used. However the idea is if other path modes might be liked in the future. But for now, that is not the case.
 	 */
-	var $pathMode = '1';
+	public $pathMode = '1';
 
 	/**
 	 * Maximum recursions into the HTML code. Works as a break to avoid run-away function calls if that is potentially possible.
 	 */
-	var $maxRecursion = 99;
+	public $maxRecursion = 99;
 
-	var $onlyElements = ''; // Commalist of lowercase tag names which are the only ones which will be added as "GNYF" tag images. If empty, ALL HTML tags will have these elements.
-	var $checkboxPathsSet = array(); // Array with header section paths to set checkbox for.
+	public $onlyElements = ''; // Commalist of lowercase tag names which are the only ones which will be added as "GNYF" tag images. If empty, ALL HTML tags will have these elements.
+	public $checkboxPathsSet = array(); // Array with header section paths to set checkbox for.
 
 	// INTERNAL STATIC:
-	var $textGnyf = FALSE;
+	public $textGnyf = FALSE;
 
 	/**
 	 * This defines which tags can be exploded. Input lists of tags will be limited to those entered here.
@@ -201,7 +201,7 @@ class HtmlMarkup {
 		'wbr' => array('blocktype' => 'text'),
 	);
 
-	var $tags;
+	public $tags;
 
 	// INTERNAL dynamic
 	/**
@@ -209,15 +209,15 @@ class HtmlMarkup {
 	 */
 	public $htmlParse; // Will contain the HTML-parser object. (See init())
 
-	var $backPath = ''; // Will contain the backend back-path which is necessary when marking-up the code in order to fix all media paths.
-	var $gnyfStyle = ''; // will contain style-part for gnyf images. (see init())
-	var $gnyfImgAdd = ''; // Eg. 	onclick="return parent.mod.updPath('###PATH###');"
-	var $pathPrefix = ''; // Prefix for the path returned to the mod frame when tag image is clicked.
-	var $tDat = '';
+	public $backPath = ''; // Will contain the backend back-path which is necessary when marking-up the code in order to fix all media paths.
+	public $gnyfStyle = ''; // will contain style-part for gnyf images. (see init())
+	public $gnyfImgAdd = ''; // Eg. 	onclick="return parent.mod.updPath('###PATH###');"
+	public $pathPrefix = ''; // Prefix for the path returned to the mod frame when tag image is clicked.
+	public $tDat = '';
 
-	var $elCountArray = array(); // Used to register the paths during parsing the code (see init())
-	var $elParentLevel = array(); // Used to register the all elements on the same level
-	var $searchPaths = ''; // Used to contain the paths to search for when searching for a paths. (see getContentBasedOnPath())
+	public $elCountArray = array(); // Used to register the paths during parsing the code (see init())
+	public $elParentLevel = array(); // Used to register the all elements on the same level
+	public $searchPaths = ''; // Used to contain the paths to search for when searching for a paths. (see getContentBasedOnPath())
 
 	/**
 	 * @return HtmlMarkup

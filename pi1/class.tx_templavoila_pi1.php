@@ -39,11 +39,11 @@
  */
 class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 
-	var $prefixId = 'tx_templavoila_pi1'; // Same as class name
-	var $scriptRelPath = 'pi1/class.tx_templavoila_pi1.php'; // Path to this script relative to the extension dir.
-	var $extKey = 'templavoila'; // The extension key.
+	public $prefixId = 'tx_templavoila_pi1'; // Same as class name
+	public $scriptRelPath = 'pi1/class.tx_templavoila_pi1.php'; // Path to this script relative to the extension dir.
+	public $extKey = 'templavoila'; // The extension key.
 
-	var $inheritValueFromDefault = 1; // If set, children-translations will take the value from the default if "false" (zero or blank)
+	public $inheritValueFromDefault = 1; // If set, children-translations will take the value from the default if "false" (zero or blank)
 
 	static $enablePageRenderer = TRUE;
 
@@ -52,7 +52,7 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 *
 	 * @var \Extension\Templavoila\Domain\Model\HtmlMarkup
 	 */
-	var $markupObj;
+	public $markupObj;
 
 	/**
 	 * Main function for rendering of Flexible Content elements of TemplaVoila

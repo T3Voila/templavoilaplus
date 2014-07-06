@@ -51,14 +51,14 @@ class tx_templavoila_mod1_sidebar {
 	 * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
 	 */
 	public $doc; // A reference to the doc object of the parent object.
-	var $extKey; // A reference to extension key of the parent object.
+	public $extKey; // A reference to extension key of the parent object.
 
 	// Public variables
-	var $position = 'toptabs'; // The visual position of the navigation bar. Possible values: toptabs, toprows, left
+	public $position = 'toptabs'; // The visual position of the navigation bar. Possible values: toptabs, toprows, left
 
 	// Local variables
-	var $sideBarWidth = 180; // More or less a constant: The side bar's total width in position "left"
-	var $sideBarItems = array(); // Contains menuitems for the dynamic sidebar (associative array indexed by item key)
+	public $sideBarWidth = 180; // More or less a constant: The side bar's total width in position "left"
+	public $sideBarItems = array(); // Contains menuitems for the dynamic sidebar (associative array indexed by item key)
 
 	/**
 	 * Initializes the side bar object. The calling class must make sure that the right locallang files are already loaded.

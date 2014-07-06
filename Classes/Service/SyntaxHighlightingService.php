@@ -73,7 +73,7 @@ class SyntaxHighlightingService {
 	protected $htmlParse; // Parse object.
 
 	// External, static:
-	var $DS_wrapTags = array(
+	public $DS_wrapTags = array(
 		'T3DataStructure' => array('<span style="font-weight: bold;">', '</span>'),
 		'type' => array('<span style="font-weight: bold; color: #000080;">', '</span>'),
 		'section' => array('<span style="font-weight: bold; color: #000080;">', '</span>'),
@@ -94,7 +94,7 @@ class SyntaxHighlightingService {
 		'langChildren' => array('<span style="color: #000080;">', '</span>'),
 	);
 
-	var $FF_wrapTags = array(
+	public $FF_wrapTags = array(
 		'T3FlexForms' => array('<span style="font-weight: bold;">', '</span>'),
 		'meta' => array('<span style="font-weight: bold; color: #800080;">', '</span>'),
 		'data' => array('<span style="font-weight: bold; color: #800080;">', '</span>'),

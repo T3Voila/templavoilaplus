@@ -33,7 +33,7 @@ namespace Extension\Templavoila\Service\DataHandling;
  */
 class DataHandler {
 
-	var $debug = FALSE;
+	public $debug = FALSE;
 
 	/**
 	 * Extension configuration

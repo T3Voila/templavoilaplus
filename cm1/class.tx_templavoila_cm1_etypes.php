@@ -41,7 +41,7 @@ class tx_templavoila_cm1_eTypes {
 	/**
 	 * @var array
 	 */
-	var $eTypeArray;
+	public $eTypeArray;
 
 	/**
 	 * @param $pObj

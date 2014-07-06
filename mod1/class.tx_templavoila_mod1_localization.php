@@ -52,8 +52,8 @@ class tx_templavoila_mod1_localization {
 	/**
 	 * @var \tx_templavoila_module1
 	 */
-	var $pObj; // A pointer to the parent object, that is the templavoila page module script. Set by calling the method init() of this class.
-	var $doc; // A reference to the doc object of the parent object.
+	public $pObj; // A pointer to the parent object, that is the templavoila page module script. Set by calling the method init() of this class.
+	public $doc; // A reference to the doc object of the parent object.
 
 	/**
 	 * Initializes the sub module object. The calling class must make sure that the right locallang files are already loaded.

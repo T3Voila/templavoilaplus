@@ -47,14 +47,14 @@ class tx_templavoila_mod1_wizards {
 	protected $apiObj;
 
 	// References to the page module object
-	var $pObj; // A pointer to the parent object, that is the templavoila page module script. Set by calling the method init() of this class.
+	public $pObj; // A pointer to the parent object, that is the templavoila page module script. Set by calling the method init() of this class.
 
 	/**
 	 * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
 	 */
 	public $doc; // A reference to the doc object of the parent object.
-	var $extKey; // A reference to extension key of the parent object.
-	var $TCAdefaultOverride; // Config of TCAdefaults
+	public $extKey; // A reference to extension key of the parent object.
+	public $TCAdefaultOverride; // Config of TCAdefaults
 
 	// Local variables
 

@@ -62,7 +62,7 @@ class tx_templavoila_mod1_clipboard {
 	/**
 	 * @var \tx_templavoila_module1
 	 */
-	var $pObj; // A pointer to the parent object, that is the templavoila page module script. Set by calling the method init() of this class.
+	public $pObj; // A pointer to the parent object, that is the templavoila page module script. Set by calling the method init() of this class.
 
 	/**
 	 * @var \TYPO3\CMS\Backend\Template\DocumentTemplate

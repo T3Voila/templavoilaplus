@@ -117,9 +117,9 @@ class tx_templavoila_dbnewcontentel {
 	protected $backPath;
 
 	// Internal, static (from GPvars):
-	var $id; // Page id
-	var $parentRecord; // Parameters for the new record
-	var $altRoot; // Array with alternative table, uid and flex-form field (see index.php in module for details, same thing there.)
+	public $id; // Page id
+	public $parentRecord; // Parameters for the new record
+	public $altRoot; // Array with alternative table, uid and flex-form field (see index.php in module for details, same thing there.)
 
 	// Internal, static:
 	/**
@@ -129,10 +129,10 @@ class tx_templavoila_dbnewcontentel {
 	protected $extConf; // Templavoila extension configuration
 
 	// Internal, dynamic:
-	var $include_once = array(); // Includes a list of files to include between init() and main() - see init()
-	var $content; // Used to accumulate the content of the module.
-	var $access; // Access boolean.
-	var $returnUrl = ''; // (GPvar "returnUrl") Return URL if the script is supplied with that.
+	public $include_once = array(); // Includes a list of files to include between init() and main() - see init()
+	public $content; // Used to accumulate the content of the module.
+	public $access; // Access boolean.
+	public $returnUrl = ''; // (GPvar "returnUrl") Return URL if the script is supplied with that.
 
 	/**
 	 * Initialize internal variables.

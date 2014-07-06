@@ -54,23 +54,23 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	protected $backPath;
 
 	// External static:
-	var $importPageUid = 0; // Import as first page in root!
+	public $importPageUid = 0; // Import as first page in root!
 
-	var $wizardData = array(); // Session data during wizard
+	public $wizardData = array(); // Session data during wizard
 
-	var $pageinfo;
+	public $pageinfo;
 
-	var $modTSconfig;
+	public $modTSconfig;
 
-	var $extKey = 'templavoila'; // Extension key of this module
+	public $extKey = 'templavoila'; // Extension key of this module
 
-	var $tFileList = array();
+	public $tFileList = array();
 
-	var $errorsWarnings = array();
+	public $errorsWarnings = array();
 
-	var $extConf; // holds the extconf configuration
+	public $extConf; // holds the extconf configuration
 
-	var $cm1Link = '../cm1/index.php';
+	public $cm1Link = '../cm1/index.php';
 
 	public function init() {
 		parent::init();

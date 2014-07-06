@@ -78,8 +78,8 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	protected $backPath;
 
 	// Static:
-	var $theDisplayMode = ''; // Set to ->MOD_SETTINGS[]
-	var $head_markUpTags = array(
+	public $theDisplayMode = ''; // Set to ->MOD_SETTINGS[]
+	public $head_markUpTags = array(
 		// Block elements:
 		'title' => array(),
 		'script' => array(),
@@ -90,70 +90,70 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		'meta' => array('single' => 1),
 	);
 
-	var $extKey = 'templavoila'; // Extension key of this module
-	var $dsTypes;
+	public $extKey = 'templavoila'; // Extension key of this module
+	public $dsTypes;
 
 	// Internal, dynamic:
-	var $markupFile = ''; // Used to store the name of the file to mark up with a given path.
+	public $markupFile = ''; // Used to store the name of the file to mark up with a given path.
 
 	/**
 	 * @var \Extension\Templavoila\Domain\Model\HtmlMarkup
 	 */
-	var $markupObj;
+	public $markupObj;
 
-	var $elNames = array();
+	public $elNames = array();
 
-	var $editDataStruct = 0; // Setting whether we are editing a data structure or not.
-	var $storageFolders = array(); // Storage folders as key(uid) / value (title) pairs.
-	var $storageFolders_pidList = 0; // The storageFolders pids imploded to a comma list including "0"
+	public $editDataStruct = 0; // Setting whether we are editing a data structure or not.
+	public $storageFolders = array(); // Storage folders as key(uid) / value (title) pairs.
+	public $storageFolders_pidList = 0; // The storageFolders pids imploded to a comma list including "0"
 
 	// GPvars:
-	var $mode; // Looking for "&mode", which defines if we draw a frameset (default), the module (mod) or display (display)
+	public $mode; // Looking for "&mode", which defines if we draw a frameset (default), the module (mod) or display (display)
 
 	// GPvars for MODULE mode
-	var $displayFile = ''; // (GPvar "file", shared with DISPLAY mode!) The file to display, if file is referenced directly from filelist module. Takes precedence over displayTable/displayUid
-	var $displayTable = ''; // (GPvar "table") The table from which to display element (Data Structure object [tx_templavoila_datastructure], template object [tx_templavoila_tmplobj])
-	var $displayUid = ''; // (GPvar "uid") The UID to display (from ->displayTable)
-	var $displayPath = ''; // (GPvar "htmlPath") The "HTML-path" to display from the current file
-	var $returnUrl = ''; // (GPvar "returnUrl") Return URL if the script is supplied with that.
+	public $displayFile = ''; // (GPvar "file", shared with DISPLAY mode!) The file to display, if file is referenced directly from filelist module. Takes precedence over displayTable/displayUid
+	public $displayTable = ''; // (GPvar "table") The table from which to display element (Data Structure object [tx_templavoila_datastructure], template object [tx_templavoila_tmplobj])
+	public $displayUid = ''; // (GPvar "uid") The UID to display (from ->displayTable)
+	public $displayPath = ''; // (GPvar "htmlPath") The "HTML-path" to display from the current file
+	public $returnUrl = ''; // (GPvar "returnUrl") Return URL if the script is supplied with that.
 
 	// GPvars for MODULE mode, specific to mapping a DS:
-	var $_preview;
+	public $_preview;
 
-	var $htmlPath;
+	public $htmlPath;
 
-	var $mapElPath;
+	public $mapElPath;
 
-	var $doMappingOfPath;
+	public $doMappingOfPath;
 
-	var $showPathOnly;
+	public $showPathOnly;
 
-	var $mappingToTags;
+	public $mappingToTags;
 
-	var $DS_element;
+	public $DS_element;
 
-	var $DS_cmd;
+	public $DS_cmd;
 
-	var $fieldName;
+	public $fieldName;
 
 	// GPvars for MODULE mode, specific to creating a DS:
-	var $_load_ds_xml_content;
+	public $_load_ds_xml_content;
 
-	var $_load_ds_xml_to;
+	public $_load_ds_xml_to;
 
-	var $_saveDSandTO_TOuid;
+	public $_saveDSandTO_TOuid;
 
-	var $_saveDSandTO_title;
+	public $_saveDSandTO_title;
 
-	var $_saveDSandTO_type;
+	public $_saveDSandTO_type;
 
-	var $_saveDSandTO_pid;
+	public $_saveDSandTO_pid;
 
 	// GPvars for DISPLAY mode:
-	var $show; // Boolean; if true no mapping-links are rendered.
-	var $preview; // Boolean; if true, the currentMappingInfo preview data is merged in
-	var $limitTags; // String, list of tags to limit display by
-	var $path; // HTML-path to explode in template.
+	public $show; // Boolean; if true no mapping-links are rendered.
+	public $preview; // Boolean; if true, the currentMappingInfo preview data is merged in
+	public $limitTags; // String, list of tags to limit display by
+	public $path; // HTML-path to explode in template.
 
 	/**
 	 * @var \tx_templavoila_cm1_dsEdit
@@ -165,8 +165,8 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 */
 	public $eTypes; // instance of class tx_templavoila_cm1_eTypes
 
-	var $extConf; // holds the extconf configuration
-	var $staticDS = FALSE; // Boolean; if true DS records are file based
+	public $extConf; // holds the extconf configuration
+	public $staticDS = FALSE; // Boolean; if true DS records are file based
 
 	static $gnyfStyleBlock = '
 	.gnyfBox { position:relative; }

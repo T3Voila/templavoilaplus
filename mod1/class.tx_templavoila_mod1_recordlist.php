@@ -41,7 +41,7 @@ $LANG->includeLLFile('EXT:lang/locallang_mod_web_list.xml');
  */
 class tx_templavoila_mod1_recordlist extends \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList {
 
-	var $pObj;
+	public $pObj;
 
 	/**
 	 * Prepares object to run.
