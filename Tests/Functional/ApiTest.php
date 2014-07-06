@@ -370,6 +370,7 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		}
 
 		// Check if the sorting field has been set correctly:
+		$elementRecords = array();
 		$elementRecords[1] = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw('tt_content', 'uid=' . $elementUids[1], 'uid,sorting');
 		$elementRecords[2] = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw('tt_content', 'uid=' . $elementUids[2], 'uid,sorting');
 		$elementRecords[3] = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw('tt_content', 'uid=' . $elementUids[3], 'uid,sorting');
@@ -393,6 +394,7 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		$elementUids[4] = $this->api->insertElement($destinationPointer, $row);
 
 		// Check if the sorting field has been set correctly:
+		$elementRecords = array();
 		$elementRecords[1] = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw('tt_content', 'uid=' . $elementUids[1], 'uid,sorting');
 		$elementRecords[2] = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw('tt_content', 'uid=' . $elementUids[2], 'uid,sorting');
 		$elementRecords[3] = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw('tt_content', 'uid=' . $elementUids[3], 'uid,sorting');
@@ -441,6 +443,7 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		);
 		$elementUids[2] = $this->api->insertElement($destinationPointer, $row);
 
+		$elementRecords = array();
 		$elementRecords[1] = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw('tt_content', 'uid=' . $elementUids[1], 'uid,sorting,colpos');
 		$elementRecords[2] = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw('tt_content', 'uid=' . $elementUids[2], 'uid,sorting,colpos');
 

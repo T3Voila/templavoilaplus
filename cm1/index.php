@@ -168,7 +168,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	public $extConf; // holds the extconf configuration
 	public $staticDS = FALSE; // Boolean; if true DS records are file based
 
-	static $gnyfStyleBlock = '
+	public static $gnyfStyleBlock = '
 	.gnyfBox { position:relative; }
 	.gnyfElement {	color: black; font-family:monospace;font-size:12px !important; line-height:1.3em !important; font-weight:normal; text-transform:none; letter-spacing:auto; cursor: pointer; margin: 0; padding:0 7px; overflow: hidden; text-align: center; position: absolute;  border-radius: 0.4em; -o-border-radius: 0.4em; -moz-border-radius: 0.4em; -webkit-border-radius: 0.4em; background-color: #ffffff;	}
 	.dso_table .gnyfElement { position: relative; }

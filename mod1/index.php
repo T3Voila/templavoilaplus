@@ -2879,7 +2879,8 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				$data = (array) @unserialize(\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->uc['tx_templavoila_recentce']);
 				// Find this element
 				$pos = FALSE;
-				for ($i = 0; $i < count($data); $i++) {
+				$count = count($data);
+				for ($i = 0; $i < $count; $i++) {
 					// Notice: must be "==", not "==="!
 					if ($data[$i] == $obj) {
 						$pos = $i;
@@ -2892,7 +2893,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 						array_splice($data, $pos, 1);
 					} else {
 						// Check if there are more than necessary elements
-						if (count($data) >= 10) {
+						if ($count >= 10) {
 							$data = array_slice($data, 0, 9);
 						}
 					}

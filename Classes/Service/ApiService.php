@@ -552,6 +552,7 @@ class ApiService {
 				// Reduce the list to local elements to make sure that references are kept instead of moving the referenced record
 				$localRecords = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTgetRows('uid,pid', 'tt_content', 'uid IN (' . implode(',', $elementUids) . ') AND pid=' . intval($sourcePID) . ' ' . BackendUtility::deleteClause('tt_content'));
 				if (!empty($localRecords) && is_array($localRecords)) {
+					$cmdArray = array();
 					foreach ($localRecords as $localRecord) {
 						$cmdArray['tt_content'][$localRecord['uid']]['move'] = $destinationPID;
 					}

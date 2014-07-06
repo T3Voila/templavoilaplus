@@ -266,6 +266,7 @@ class tx_templavoila_dbnewcontentel {
 			// Traverse items for the wizard.
 			// An item is either a header or an item rendered with a title/description and icon:
 			$counter = 0;
+			$menuItems = array();
 			foreach ($wizardItems as $k => $wInfo) {
 				if ($wInfo['header']) {
 					$menuItems[] = array('label' => htmlspecialchars($wInfo['header']), 'content' => $this->elementWrapper['section'][0]);

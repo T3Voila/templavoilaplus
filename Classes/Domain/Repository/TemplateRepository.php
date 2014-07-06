@@ -166,6 +166,7 @@ class TemplateRepository {
 			'pid>=0' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoila_tmplobj'),
 			'pid'
 		);
+		$list = array();
 		while ($res && FALSE !== ($row = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_fetch_assoc($res))) {
 			$list[] = $row['pid'];
 		}
