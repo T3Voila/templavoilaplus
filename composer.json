@@ -4,16 +4,5 @@
 	"description": "One of many availabe template engines for TYPO3 CMS",
 	"homepage": "http://forge.typo3.org/projects/extension-templavoila/",
 	"license": ["GPL-2.0+"],
-	"version": "2.0.0",
-	"require": {
-		"typo3/cms-cms": "~6.2.0"
-	},
-	"config": {
-		"vendor-dir": "Packages/Libraries",
-		"bin-dir": "bin"
-	},
-	"require-dev": {
-		"mikey179/vfsStream": "1.3.*@dev",
-		"phpunit/phpunit": "4.1.*"
-	}
+	"version": "2.0.0"
 }
