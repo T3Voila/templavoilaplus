@@ -1,7 +1,5 @@
 <?php
-if (!defined('TYPO3_MODE')) {
-	die('Access denied.');
-}
+defined('TYPO3_MODE') or die();
 
 // unserializing the configuration so we can use it here:
 $_EXTCONF = unserialize($_EXTCONF);

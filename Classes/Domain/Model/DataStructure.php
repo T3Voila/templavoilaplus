@@ -36,7 +36,7 @@ class DataStructure extends AbstractDataStructure {
 	 */
 	public function __construct($uid) {
 		// getting the DS for the DB and make sure the workspace-overlay is performed (done internally)
-		if (TYPO3_MODE == 'FE') {
+		if (TYPO3_MODE === 'FE') {
 			$this->row = $GLOBALS['TSFE']->sys_page->checkRecord('tx_templavoila_datastructure', $uid);
 		} else {
 			$this->row = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('tx_templavoila_datastructure', $uid);
