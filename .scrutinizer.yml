@@ -27,5 +27,8 @@ tools:
 
     php_analyzer:
         enabled: true
+        filter:
+          excluded_paths:
+            - cm1/index.php
 
     sensiolabs_security_checker: true
