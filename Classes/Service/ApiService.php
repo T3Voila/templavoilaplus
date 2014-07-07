@@ -1817,7 +1817,7 @@ class ApiService {
 
 		// Check for alternative storage folder
 		$modTSConfig = BackendUtility::getModTSconfig($pageUid, 'tx_templavoila.storagePid');
-		if (is_array($modTSConfig) && \Extension\Templavoila\Utility\GeneralUtility::canBeInterpretedAsInteger($modTSConfig['value'])) {
+		if (is_array($modTSConfig) && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($modTSConfig['value'])) {
 			$storagePid = intval($modTSConfig['value']);
 		}
 

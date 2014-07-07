@@ -553,7 +553,7 @@ class HtmlMarkup {
 	public function mergeSampleDataIntoTemplateStructure($dataStruct, $currentMappingInfo, $firstLevelImplodeToken = '', $sampleOrder = '') {
 
 		foreach ($currentMappingInfo['cArray'] as $key => $val) {
-			if (!\Extension\Templavoila\Utility\GeneralUtility::canBeInterpretedAsInteger($key) && $dataStruct[$key]) {
+			if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($key) && $dataStruct[$key]) {
 				if ($dataStruct[$key]['type'] == 'array') {
 					if (is_array($currentMappingInfo['sub'][$key])) {
 						$currentMappingInfo['cArray'][$key] = $this->mergeSampleDataIntoTemplateStructure($dataStruct[$key]['el'], $currentMappingInfo['sub'][$key], '',
@@ -615,7 +615,7 @@ class HtmlMarkup {
 		} else {
 			if (is_array($currentMappingInfo['cArray'])) {
 				foreach ($currentMappingInfo['cArray'] as $key => $val) {
-					if (!\Extension\Templavoila\Utility\GeneralUtility::canBeInterpretedAsInteger($key)) {
+					if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($key)) {
 						if (is_array($editStruct[$key]['el']) && $currentMappingInfo['sub'][$key]) {
 							$currentMappingInfo['cArray'][$key] = $this->mergeFormDataIntoTemplateStructure($editStruct[$key]['el'], $currentMappingInfo['sub'][$key], '', $valueKey);
 						} else {

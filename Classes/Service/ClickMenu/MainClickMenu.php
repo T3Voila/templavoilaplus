@@ -97,7 +97,7 @@ class MainClickMenu {
 			// Adding link for "View: DS/TO" (admin only):
 			if (\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isAdmin() && $isTVelement) {
 
-				if (\Extension\Templavoila\Utility\GeneralUtility::canBeInterpretedAsInteger($backRef->rec['tx_templavoila_ds'])) {
+				if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($backRef->rec['tx_templavoila_ds'])) {
 					$url = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila') . 'cm1/index.php?' .
 						'table=tx_templavoila_datastructure&uid=' . $backRef->rec['tx_templavoila_ds'];
 

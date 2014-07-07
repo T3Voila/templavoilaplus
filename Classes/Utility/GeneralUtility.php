@@ -213,24 +213,6 @@ final class GeneralUtility {
 	}
 
 	/**
-	 * @param mixed $var
-	 *
-	 * @return boolean
-	 *
-	 * @todo: obsolete, to be refactored
-	 */
-	public static function canBeInterpretedAsInteger($var) {
-
-		if (class_exists('\TYPO3\CMS\Core\Utility\MathUtility')) {
-			$result = \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($var);
-		} else {
-			$result = \TYPO3\CMS\Core\Utility\GeneralUtility::testInt($var);
-		}
-
-		return $result;
-	}
-
-	/**
 	 * Forces the integer $theInt into the boundaries of $min and $max. If the $theInt is FALSE then the $defaultValue is applied.
 	 *
 	 * @param integer $theInt Input value
