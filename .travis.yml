@@ -12,7 +12,7 @@ env:
 before_script:
   - composer self-update
   - cd ..
-  - cp templavoila/Build/composer.json .
+  - cp templavoila/Tests/Build/composer.json .
   - composer --dev install
   - mkdir -p uploads typo3temp typo3conf/ext
   - mv templavoila typo3conf/ext/templavoila
