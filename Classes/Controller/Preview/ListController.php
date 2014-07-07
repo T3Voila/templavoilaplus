@@ -26,12 +26,15 @@ namespace Extension\Templavoila\Controller\Preview;
  ***************************************************************/
 class ListController extends TextController {
 
+	/**
+	 * @var string
+	 */
 	protected $previewField = 'list_type';
 
 	/**
-	 * (non-PHPdoc)
+	 * @param array $row
 	 *
-	 * @see classes/preview/tx_templavoila_preview_type_text#getPreviewData($row)
+	 * @return string
 	 */
 	protected function getPreviewData($row) {
 
@@ -45,7 +48,6 @@ class ListController extends TextController {
 	}
 
 	/**
-	 *
 	 * @param array $row
 	 *
 	 * @return string

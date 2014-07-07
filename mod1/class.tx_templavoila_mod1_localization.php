@@ -21,20 +21,11 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-/**
- * Submodule 'localization' for the templavoila page module
- *
- * $Id$
- *
- * @author Robert Lemke <robert@typo3.org>
- */
 
 /**
  * Submodule 'localization' for the templavoila page module
  *
  * @author Robert Lemke <robert@typo3.org>
- * @package TYPO3
- * @subpackage    tx_templavoila
  */
 class tx_templavoila_mod1_localization {
 
@@ -48,18 +39,25 @@ class tx_templavoila_mod1_localization {
 	 */
 	protected $MOD_SETTINGS;
 
-	// References to the page module object
 	/**
+	 * A pointer to the parent object, that is the templavoila page module script. Set by calling the method init() of this class.
+	 *
 	 * @var \tx_templavoila_module1
 	 */
-	public $pObj; // A pointer to the parent object, that is the templavoila page module script. Set by calling the method init() of this class.
-	public $doc; // A reference to the doc object of the parent object.
+	public $pObj; //
+
+	/**
+	 * A reference to the doc object of the parent object.
+	 *
+	 * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
+	 */
+	public $doc;
 
 	/**
 	 * Initializes the sub module object. The calling class must make sure that the right locallang files are already loaded.
 	 * This method is usually called by the templavoila page module.
 	 *
-	 * @param $pObj : Reference to the parent object ($this)
+	 * @param \tx_templavoila_module1 $pObj Reference to the parent object ($this)
 	 *
 	 * @return void
 	 * @access public
@@ -88,7 +86,7 @@ class tx_templavoila_mod1_localization {
 	 * Renders the localization menu item. It contains the language selector, the create new translation button and other settings
 	 * related to localization.
 	 *
-	 * @param $pObj : Reference to the sidebar's parent object (the page module). Not used here, we use our own reference, $this->pObj.
+	 * @param \tx_templavoila_module1 $pObj Reference to the sidebar's parent object (the page module). Not used here, we use our own reference, $this->pObj.
 	 *
 	 * @return string HTML output
 	 * @access public
@@ -113,10 +111,9 @@ class tx_templavoila_mod1_localization {
 	}
 
 	/**
-	 * Renders the HTML code for a selectorbox for selecting the language version of the current
-	 * page.
+	 * Renders the HTML code for a selectorbox for selecting the language version of the current page.
 	 *
-	 * @return mixed HTML code for the selectorbox or FALSE if no language is available.
+	 * @return boolean|string HTML code for the selectorbox or FALSE if no language is available.
 	 * @access protected
 	 */
 	public function sidebar_renderItem_renderLanguageSelectorbox() {
@@ -237,7 +234,7 @@ class tx_templavoila_mod1_localization {
 	 * Renders the HTML code for a selectorbox for selecting a new translation language for the current
 	 * page (create a new "Alternative Page Header".
 	 *
-	 * @return mixed HTML code for the selectorbox or FALSE if no new translation can be created.
+	 * @return boolean|string HTML code for the selectorbox or FALSE if no new translation can be created.
 	 * @access protected
 	 */
 	public function sidebar_renderItem_renderNewTranslationSelectorbox() {

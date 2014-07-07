@@ -25,19 +25,9 @@ namespace Extension\Templavoila\Service\UserFunc;
  ***************************************************************/
 
 /**
- * Class 'tx_templavoila_access' for the templavoila extension.
- *
- * $Id$
- *
- * @author Dmitry Dulepov <dmitry@typo3.org>
- */
-
-/**
  * Class being included by UserAuthGroup using a hook
  *
  * @author Dmitry Dulepov <dmitry@typo3.org>
- * @package TYPO3
- * @subpackage templavoila
  */
 class Access {
 

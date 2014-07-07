@@ -26,7 +26,6 @@ namespace Extension\Templavoila\Utility;
 
 /**
  * Class which adds an additional layer for icon creation
- *
  */
 final class IconUtility {
 

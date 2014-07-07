@@ -26,22 +26,18 @@ namespace Extension\Templavoila\Service\UserFunc;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Finding used content elements on pages. Used as a filter for other extensions
  * which wants to know which elements are used on a templavoila page.
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-
-/**
- * Finding used content elements
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage tx_templavoila
- */
 class UsedContentElement {
 
+	/**
+	 * @var array
+	 */
 	public $usedUids = array();
 
 	/**

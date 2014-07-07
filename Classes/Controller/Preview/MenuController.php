@@ -26,12 +26,15 @@ namespace Extension\Templavoila\Controller\Preview;
  ***************************************************************/
 class MenuController extends TextController {
 
+	/**
+	 * @var string
+	 */
 	protected $previewField = 'menu_type';
 
 	/**
-	 * (non-PHPdoc)
+	 * @param array $row
 	 *
-	 * @see classes/preview/tx_templavoila_preview_type_text#getPreviewData($row)
+	 * @return string
 	 */
 	protected function getPreviewData($row) {
 		return \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL(\TYPO3\CMS\Backend\Utility\BackendUtility::getLabelFromItemlist('tt_content', $this->previewField, $row[$this->previewField]));

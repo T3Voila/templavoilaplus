@@ -31,26 +31,52 @@ namespace Extension\Templavoila\Domain\Model;
  */
 class Template {
 
+	/**
+	 * @var array
+	 */
 	protected $row;
 
+	/**
+	 * @var string
+	 */
 	protected $label;
 
+	/**
+	 * @var string
+	 */
 	protected $description;
 
+	/**
+	 * @var string
+	 */
 	protected $iconFile;
 
+	/**
+	 * @var string
+	 */
 	protected $fileref;
 
+	/**
+	 * @var integer
+	 */
 	protected $fileref_mtime;
 
+	/**
+	 * @var string
+	 */
 	protected $fileref_md5;
 
+	/**
+	 * @var string
+	 */
 	protected $sortbyField;
 
+	/**
+	 * @var integer
+	 */
 	protected $parent;
 
 	/**
-	 *
 	 * @param integer $uid
 	 */
 	public function __construct($uid) {
@@ -95,7 +121,6 @@ class Template {
 	}
 
 	/**
-	 *
 	 * @param string $str
 	 *
 	 * @return void
@@ -119,7 +144,6 @@ class Template {
 	}
 
 	/**
-	 *
 	 * @param string $filename
 	 *
 	 * @return void
@@ -150,14 +174,13 @@ class Template {
 	/**
 	 * Retrieve the filereference of the template
 	 *
-	 * @return string
+	 * @return integer
 	 */
 	public function getFilerefMtime() {
 		return $this->fileref_mtime;
 	}
 
 	/**
-	 *
 	 * @param string $str
 	 *
 	 * @return void
@@ -176,7 +199,6 @@ class Template {
 	}
 
 	/**
-	 *
 	 * @param string $str
 	 *
 	 * @return void
@@ -186,7 +208,6 @@ class Template {
 	}
 
 	/**
-	 *
 	 * @return string - numeric string
 	 */
 	public function getKey() {
@@ -302,7 +323,7 @@ class Template {
 	}
 
 	/**
-	 * @return int
+	 * @return integer
 	 */
 	protected function getScope() {
 		return $this->getDatastructure()->getScope();
@@ -311,7 +332,7 @@ class Template {
 	/**
 	 * @param boolean $skipDsDataprot
 	 *
-	 * @return array
+	 * @return string
 	 */
 	public function getLocalDataprotXML($skipDsDataprot = FALSE) {
 		return \TYPO3\CMS\Core\Utility\GeneralUtility::array2xml_cs($this->getLocalDataprotArray($skipDsDataprot), 'T3DataStructure', array('useCDATA' => 1));
@@ -340,7 +361,7 @@ class Template {
 	/**
 	 * Fetch the the field value based on the given XPath expression.
 	 *
-	 * @param  string $fieldName XPath expression to look up for an value.
+	 * @param string $fieldName XPath expression to look up for an value.
 	 *
 	 * @throws \UnexpectedValueException
 	 *
@@ -362,8 +383,6 @@ class Template {
 	}
 
 	/**
-	 * @param void
-	 *
 	 * @return mixed
 	 */
 	public function getBeLayout() {

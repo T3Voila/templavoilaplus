@@ -23,20 +23,11 @@ namespace Extension\Templavoila\Service\ItemProcFunc;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-/**
- * Class/Function which manipulates the item-array for table/field tx_templavoila_tmplobj_datastructure.
- *
- * $Id$
- *
- * @author Kasper Skaarhoj <kasper@typo3.com>
- */
 
 /**
  * Class/Function which manipulates the item-array for table/field tx_templavoila_tmplobj_datastructure.
  *
  * @author Kasper Skaarhoj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage tx_templavoila
  */
 class StaticDataStructuresHandler {
 
@@ -45,8 +36,14 @@ class StaticDataStructuresHandler {
 	 */
 	protected $conf;
 
+	/**
+	 * @var string
+	 */
 	public $prefix = 'Static: ';
 
+	/**
+	 * @var string
+	 */
 	public $iconPath = '../uploads/tx_templavoila/';
 
 	/**
@@ -285,7 +282,7 @@ class StaticDataStructuresHandler {
 	 * @param array $params Parameters as come to the itemsProcFunc
 	 * @param \TYPO3\CMS\Backend\Form\FormEngine $pObj Calling object
 	 *
-	 * @return int    Storage pid
+	 * @return integer Storage pid
 	 */
 	protected function getStoragePid(array &$params, \TYPO3\CMS\Backend\Form\FormEngine &$pObj) {
 		// Get default first

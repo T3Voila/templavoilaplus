@@ -27,7 +27,6 @@ namespace Extension\Templavoila\Controller\Preview;
 class NullController {
 
 	/**
-	 *
 	 * @param array $row
 	 * @param string $table
 	 * @param string $output

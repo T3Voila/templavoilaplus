@@ -21,30 +21,46 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-/**
- * Plugin 'Flexible Content' for the 'templavoila' extension.
- *
- * $Id$
- *
- * @author Kasper Skaarhoj <kasper@typo3.com>
- * @coauthor  Robert Lemke <robert@typo3.org>
- */
 
 /**
  * Plugin 'Flexible Content' for the 'templavoila' extension.
  *
  * @author Kasper Skaarhoj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage tx_templavoila
+ * @coauthor Robert Lemke <robert@typo3.org>
  */
 class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 
-	public $prefixId = 'tx_templavoila_pi1'; // Same as class name
-	public $scriptRelPath = 'pi1/class.tx_templavoila_pi1.php'; // Path to this script relative to the extension dir.
-	public $extKey = 'templavoila'; // The extension key.
+	/**
+	 * Same as class name
+	 *
+	 * @var string
+	 */
+	public $prefixId = 'tx_templavoila_pi1';
 
-	public $inheritValueFromDefault = 1; // If set, children-translations will take the value from the default if "false" (zero or blank)
+	/**
+	 * Path to this script relative to the extension dir.
+	 *
+	 * @var string
+	 */
+	public $scriptRelPath = 'pi1/class.tx_templavoila_pi1.php';
 
+	/**
+	 * The extension key.
+	 *
+	 * @var string
+	 */
+	public $extKey = 'templavoila';
+
+	/**
+	 * If set, children-translations will take the value from the default if "false" (zero or blank)
+	 *
+	 * @var integer
+	 */
+	public $inheritValueFromDefault = 1;
+
+	/**
+	 * @var boolean
+	 */
 	public static $enablePageRenderer = TRUE;
 
 	/**
@@ -708,10 +724,10 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	/**
 	 * Creates an error message for frontend output
 	 *
-	 * @param [type] $string: ...
+	 * @param string $string
 	 *
 	 * @return string Error message output
-	 * @string    string Error message input
+	 * @string string Error message input
 	 */
 	public function formatError($string) {
 

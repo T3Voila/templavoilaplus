@@ -159,7 +159,7 @@ class RenameFieldInPageFlexWizardController extends \TYPO3\CMS\Backend\Module\Ab
 	}
 
 	/**
-	 * @param $name
+	 * @param string $name
 	 * @param string $value
 	 * @param string $type
 	 * @param array $options

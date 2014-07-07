@@ -26,12 +26,19 @@ namespace Extension\Templavoila\Controller\Preview;
  ***************************************************************/
 class TextpicController extends TextController {
 
+	/**
+	 * @var string
+	 */
 	protected $previewField = 'bodytext';
 
 	/**
-	 * (non-PHPdoc)
+	 * @param array $row
+	 * @param string $table
+	 * @param string $output
+	 * @param bool $alreadyRendered
+	 * @param object $ref
 	 *
-	 * @see classes/preview/tx_templavoila_preview_type_text#render_previewContent($row, $table, $output, $alreadyRendered, $ref)
+	 * @return string
 	 */
 	public function render_previewContent($row, $table, $output, $alreadyRendered, &$ref) {
 

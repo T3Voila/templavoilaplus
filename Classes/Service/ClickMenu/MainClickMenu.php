@@ -23,22 +23,12 @@ namespace Extension\Templavoila\Service\ClickMenu;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-/**
- * Addition of an item to the clickmenu
- *
- * $Id$
- *
- * @author Kasper Skaarhoj <kasper@typo3.com>
- * @coauthor    Robert Lemke <robert@typo3.org>
- */
 
 /**
  * Class which will add menu items to click menus for the extension TemplaVoila
  *
  * @author Kasper Skaarhoj <kasper@typo3.com>
- * @coauthor    Robert Lemke <robert@typo3.org>
- * @package    TYPO3
- * @subpackage    tx_templavoila
+ * @coauthor Robert Lemke <robert@typo3.org>
  */
 class MainClickMenu {
 
@@ -131,17 +121,6 @@ class MainClickMenu {
 					);
 				}
 			}
-
-#			if ($table=='tt_content') {
-#					// Adding link for "Pages using this element":
-#				$localItems[] = $backRef->linkItem(
-#					$LANG->getLLL('cm1_pagesusingthiselement',$LL),
-#					$backRef->excludeIcon('<img src="'.\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila').'cm1/cm_icon_activate.gif" width="15" height="12" border=0 align=top>'),
-#					"top.loadTopMenu('".\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript()."&cmLevel=1&subname=tx_templavoila_cm1_pagesusingthiselement');return false;",
-#					0,
-#					1
-#				);
-#			}
 		} else {
 			if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('subname') == 'tx_templavoila_cm1_pagesusingthiselement') {
 				$menuItems = array();
@@ -153,12 +132,7 @@ class MainClickMenu {
 					while (FALSE != ($referenceRecord = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_fetch_assoc($res))) {
 						$pageRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', $referenceRecord['pid']);
 						$icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', $pageRecord);
-						// To do: Display language flag icon and jump to correct language
-#						if ($referenceRecord['lkey'] != 'lDEF') {
-#							$icon .= ' lKey:'.$referenceRecord['lkey'];
-#						} elseif ($referenceRecord['vkey'] != 'vDEF') {
-#							$icon .= ' vKey:'.$referenceRecord['vkey'];
-#						}
+						// @todo: Display language flag icon and jump to correct language
 						if (is_array($pageRecord)) {
 							$menuItems[] = $backRef->linkItem(
 								$icon,

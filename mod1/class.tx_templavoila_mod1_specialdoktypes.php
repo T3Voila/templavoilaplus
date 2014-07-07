@@ -54,21 +54,24 @@ class tx_templavoila_mod1_specialdoktypes {
 	 */
 	protected $MOD_SETTINGS;
 
-	// References to the page module object
 	/**
+	 * A pointer to the parent object, that is the templavoila page module script. Set by calling the method init() of this class.
+	 *
 	 * @var \tx_templavoila_module1
 	 */
-	public $pObj; // A pointer to the parent object, that is the templavoila page module script. Set by calling the method init() of this class.
+	public $pObj;
 
 	/**
+	 * A reference to the doc object of the parent object.
+	 *
 	 * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
 	 */
-	public $doc; // A reference to the doc object of the parent object.
+	public $doc;
 
 	/**
 	 * Does some basic initialization
 	 *
-	 * @param $pObj : Reference to the parent object ($this)
+	 * @param \tx_templavoila_module1 $pObj Reference to the parent object ($this)
 	 *
 	 * @return void
 	 * @access public
@@ -86,10 +89,9 @@ class tx_templavoila_mod1_specialdoktypes {
 	/**
 	 * Displays the edit page screen if the currently selected page is of the doktype "External URL"
 	 *
-	 * @param array $pageRecord : The current page record
+	 * @param array $pageRecord The current page record
 	 *
-	 * @return mixed HTML output from this submodule or FALSE if this submodule doesn't feel responsible
-	 * @access public
+	 * @return string HTML output from this submodule or FALSE if this submodule doesn't feel responsible
 	 */
 	public function renderDoktype_3($pageRecord) {
 		global $LANG, $BE_USER, $TYPO3_CONF_VARS;
@@ -144,10 +146,9 @@ class tx_templavoila_mod1_specialdoktypes {
 	/**
 	 * Displays the edit page screen if the currently selected page is of the doktype "Shortcut"
 	 *
-	 * @param array $pageRecord : The current page record
+	 * @param array $pageRecord The current page record
 	 *
-	 * @return mixed HTML output from this submodule or FALSE if this submodule doesn't feel responsible
-	 * @access public
+	 * @return string HTML output from this submodule or FALSE if this submodule doesn't feel responsible
 	 */
 	public function renderDoktype_4($pageRecord) {
 		global $LANG, $BE_USER, $TYPO3_CONF_VARS;
@@ -179,9 +180,9 @@ class tx_templavoila_mod1_specialdoktypes {
 	/**
 	 * Displays the edit page screen if the currently selected page is of the doktype "Mount Point"
 	 *
-	 * @param array $pageRecord : The current page record
+	 * @param array $pageRecord The current page record
 	 *
-	 * @return mixed HTML output from this submodule or FALSE if this submodule doesn't feel responsible
+	 * @return boolean|string HTML output from this submodule or FALSE if this submodule doesn't feel responsible
 	 * @access protected
 	 */
 	public function renderDoktype_7($pageRecord) {
@@ -219,10 +220,9 @@ class tx_templavoila_mod1_specialdoktypes {
 	/**
 	 * Displays the edit page screen if the currently selected page is of the doktype "Sysfolder"
 	 *
-	 * @param array $pageRecord : The current page record
+	 * @param array $pageRecord The current page record
 	 *
-	 * @return mixed HTML output from this submodule or FALSE if this submodule doesn't feel responsible
-	 * @access public
+	 * @return string HTML output from this submodule or FALSE if this submodule doesn't feel responsible
 	 */
 	public function renderDoktype_254($pageRecord) {
 		global $LANG, $BE_USER, $TYPO3_CONF_VARS;

@@ -217,7 +217,6 @@ class DataStructureRepository {
 	}
 
 	/**
-	 *
 	 * @param string $file
 	 *
 	 * @return mixed
@@ -239,7 +238,6 @@ class DataStructureRepository {
 	}
 
 	/**
-	 *
 	 * @return boolean
 	 */
 	protected function isStaticDsEnabled() {
@@ -283,9 +281,9 @@ class DataStructureRepository {
 	 * @param \Extension\Templavoila\Domain\Model\AbstractDataStructure $obj1
 	 * @param \Extension\Templavoila\Domain\Model\AbstractDataStructure $obj2
 	 *
-	 * @return int    Result of the comparison (see strcmp())
-	 * @see    usort()
-	 * @see    strcmp()
+	 * @return integer Result of the comparison (see strcmp())
+	 * @see usort()
+	 * @see strcmp()
 	 */
 	public function sortDatastructures($obj1, $obj2) {
 		return strcmp(strtolower($obj1->getSortingFieldValue()), strtolower($obj2->getSortingFieldValue()));

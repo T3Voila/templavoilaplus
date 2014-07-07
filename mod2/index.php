@@ -21,13 +21,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-/**
- * Module 'TemplaVoila' for the 'templavoila' extension.
- *
- * $Id$
- *
- * @author  Kasper Sk�rh�j <kasper@typo3.com>
- */
+
 unset($MCONF);
 require(dirname(__FILE__) . '/conf.php');
 require($BACK_PATH . 'init.php');
@@ -38,8 +32,6 @@ $BE_USER->modAccess($MCONF, 1); // This checks permissions and exits if the user
  * Module 'TemplaVoila' for the 'templavoila' extension.
  *
  * @author Kasper Skaarhoj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage    tx_templavoila
  */
 class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
@@ -53,25 +45,62 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 */
 	protected $backPath;
 
-	// External static:
-	public $importPageUid = 0; // Import as first page in root!
+	/**
+	 * Import as first page in root!
+	 *
+	 * @var integer
+	 */
+	public $importPageUid = 0;
 
-	public $wizardData = array(); // Session data during wizard
+	/**
+	 * Session data during wizard
+	 *
+	 * @var array
+	 */
+	public $wizardData = array();
 
+	/**
+	 * @var array
+	 */
 	public $pageinfo;
 
+	/**
+	 * @var array
+	 */
 	public $modTSconfig;
 
-	public $extKey = 'templavoila'; // Extension key of this module
+	/**
+	 * Extension key of this module
+	 *
+	 * @var string
+	 */
+	public $extKey = 'templavoila';
 
+	/**
+	 * @var array
+	 */
 	public $tFileList = array();
 
+	/**
+	 * @var array
+	 */
 	public $errorsWarnings = array();
 
-	public $extConf; // holds the extconf configuration
+	/**
+	 * holds the extconf configuration
+	 *
+	 * @var array
+	 */
+	public $extConf;
 
+	/**
+	 * @var string
+	 */
 	public $cm1Link = '../cm1/index.php';
 
+	/**
+	 * @return void
+	 */
 	public function init() {
 		parent::init();
 
@@ -85,7 +114,6 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 */
 	public function menuConfig() {
 		$this->MOD_MENU = array(
-#			'set_showDSxml' => '',
 			'set_details' => '',
 			'set_unusedDs' => '',
 			'wiz_step' => ''
@@ -101,7 +129,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Main function of the module.
 	 *
-	 * @return void Nothing.
+	 * @return void
 	 */
 	public function main() {
 		global $BE_USER, $LANG, $BACK_PATH;
@@ -211,12 +239,6 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 		return $result;
 	}
-
-
-
-
-
-
 
 	/******************************
 	 *
@@ -419,14 +441,16 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Renders Data Structures from $dsScopeArray
 	 *
-	 * @param [type] $scope: ...
+	 * @param integer $scope
 	 *
 	 * @return array Returns array with three elements: 0: content, 1: number of DS shown, 2: number of root-level template objects shown.
 	 */
 	public function renderDSlisting($scope) {
 
 		$currentPid = intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id'));
+		/** @var \Extension\Templavoila\Domain\Repository\DataStructureRepository $dsRepo */
 		$dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Domain\\Repository\\DataStructureRepository');
+		/** @var \Extension\Templavoila\Domain\Repository\TemplateRepository $toRepo */
 		$toRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Domain\\Repository\\TemplateRepository');
 
 		if ($this->MOD_SETTINGS['set_unusedDs']) {
@@ -1316,7 +1340,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * Shows a graphical summary of a array-tree, which suppose was a XML
 	 * (but don't need to). This function works recursively.
 	 *
-	 * @param array $DStree : an array holding the DSs defined structure
+	 * @param array $DStree an array holding the DSs defined structure
 	 *
 	 * @return string HTML showing an overview of the DS-structure
 	 */
@@ -1676,20 +1700,6 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		);
 	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	/******************************
 	 *
 	 * Wizard for new site
@@ -1836,7 +1846,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Pre-checking for TemplaVoila configuration
 	 *
-	 * @return string If string is returned, an error occured.
+	 * @return boolean If string is returned, an error occured.
 	 */
 	public function wizard_checkConfiguration() {
 		$TVconfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
@@ -2211,8 +2221,6 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				$menu_normal = next($menuWraps);
 			}
 
-#debug($menuWraps);
-#debug($mouseOver);
 			if ($GMENU) {
 				$typoScript = '
 lib.' . $menuType . ' = HMENU
@@ -2353,11 +2361,12 @@ lib.' . $menuType . '.1.ACT {
 	/**
 	 * Initialize the import-engine
 	 *
-	 * @return object Returns object ready to import the import-file used to create the basic site!
+	 * @return \TYPO3\CMS\Impexp\ImportExport Returns object ready to import the import-file used to create the basic site!
 	 */
 	public function getImportObj() {
 		global $TYPO3_CONF_VARS;
 
+		/** @var \TYPO3\CMS\Impexp\ImportExport $import */
 		$import = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_impexp');
 		$import->init(0, 'import');
 		$import->enableLogging = TRUE;
@@ -2368,7 +2377,7 @@ lib.' . $menuType . '.1.ACT {
 	/**
 	 * Syntax Highlighting of TypoScript code
 	 *
-	 * @param string String of TypoScript code
+	 * @param string $v String of TypoScript code
 	 *
 	 * @return string HTML content with it highlighted.
 	 */
@@ -2400,7 +2409,7 @@ lib.' . $menuType . '.1.ACT {
 	/**
 	 * Returns the code that the menu was mapped to in the HTML
 	 *
-	 * @param string "Field" from Data structure, either "field_menu" or "field_submenu"
+	 * @param string $field "Field" from Data structure, either "field_menu" or "field_submenu"
 	 *
 	 * @return string
 	 */

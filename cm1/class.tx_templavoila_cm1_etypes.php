@@ -44,7 +44,7 @@ class tx_templavoila_cm1_eTypes {
 	public $eTypeArray;
 
 	/**
-	 * @param $pObj
+	 * @param mixed $pObj
 	 */
 	public function init($pObj) {
 		$this->pObj = $pObj;
@@ -55,9 +55,9 @@ class tx_templavoila_cm1_eTypes {
 	 * Typically called like: ->substEtypeWithRealStuff($storeDataStruct['ROOT']['el'],$contentSplittedByMapping['sub']['ROOT']);
 	 * Notice: this function is used to preview XML also. In this case it is always called with $scope=0, so XML for 'ce' type will not contain wrap with TYPO3SEARCH_xxx. Currently there is no way to avoid it.
 	 *
-	 * @param array $elArray : Data Structure, passed by reference!
-	 * @param array $v_sub : Actual template content splitted by Data Structure
-	 * @param int $scope : Scope as defined in tx_templavoila_datastructure.scope
+	 * @param array $elArray Data Structure, passed by reference!
+	 * @param array $v_sub Actual template content splitted by Data Structure
+	 * @param integer $scope Scope as defined in tx_templavoila_datastructure.scope
 	 *
 	 * @return void Note: The result is directly written in $elArray
 	 * @see renderFile()
@@ -441,7 +441,7 @@ class tx_templavoila_cm1_eTypes {
 	/**
 	 * Defined eTypes for field creation
 	 *
-	 * @return array    Array with default eTypes
+	 * @return array Array with default eTypes
 	 */
 	public function defaultEtypes() {
 		// formFields: input, input_h, input_g, text, rte, link, int, image, imagefixed, select, ce

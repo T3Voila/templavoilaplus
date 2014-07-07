@@ -26,12 +26,15 @@ namespace Extension\Templavoila\Controller\Preview;
  ***************************************************************/
 class BulletsController extends TextController {
 
+	/**
+	 * @var string
+	 */
 	protected $previewField = 'bodytext';
 
 	/**
-	 * (non-PHPdoc)
+	 * @param array $row
 	 *
-	 * @see classes/preview/tx_templavoila_preview_type_text#getPreviewData($row)
+	 * @return string
 	 */
 	protected function getPreviewData($row) {
 		if (isset($this->parentObj->modTSconfig['properties']['previewDataMaxLen'])) {

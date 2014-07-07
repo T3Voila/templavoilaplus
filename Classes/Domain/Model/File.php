@@ -73,9 +73,9 @@ class File {
 	/**
 	 * Check whether the given input points to an (existing) file.
 	 *
-	 * @param $filename
+	 * @param string $filename
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public static function is_file($filename) {
 		if (!self::includesFal()) {
@@ -96,9 +96,9 @@ class File {
 	 * purposes (is an XML file).
 	 *
 	 *
-	 * @param $filename
+	 * @param string $filename
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public static function is_xmlFile($filename) {
 

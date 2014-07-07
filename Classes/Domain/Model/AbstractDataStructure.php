@@ -31,16 +31,34 @@ namespace Extension\Templavoila\Domain\Model;
  */
 abstract class AbstractDataStructure {
 
+	/**
+	 * @var integer
+	 */
 	const SCOPE_UNKNOWN = 0;
 
+	/**
+	 * @var integer
+	 */
 	const SCOPE_PAGE = 1;
 
+	/**
+	 * @var integer
+	 */
 	const SCOPE_FCE = 2;
 
+	/**
+	 * @var integer
+	 */
 	protected $scope = self::SCOPE_UNKNOWN;
 
+	/**
+	 * @var string
+	 */
 	protected $label = '';
 
+	/**
+	 * @var string
+	 */
 	protected $iconFile = '';
 
 	/**
@@ -53,7 +71,6 @@ abstract class AbstractDataStructure {
 	}
 
 	/**
-	 *
 	 * @param string $str
 	 *
 	 * @return void
@@ -65,14 +82,13 @@ abstract class AbstractDataStructure {
 	/**
 	 * Retrieve the label of the datastructure
 	 *
-	 * @return string
+	 * @return integer
 	 */
 	public function getScope() {
 		return $this->scope;
 	}
 
 	/**
-	 *
 	 * @param integer $scope
 	 *
 	 * @return void
@@ -105,7 +121,6 @@ abstract class AbstractDataStructure {
 	}
 
 	/**
-	 *
 	 * @param string $filename
 	 *
 	 * @return void
@@ -148,8 +163,8 @@ abstract class AbstractDataStructure {
 	 * Determine whether the current user has permission to create elements based on this
 	 * datastructure or not
 	 *
-	 * @param mixed $parentRow
-	 * @param mixed $removeItems
+	 * @param array $parentRow
+	 * @param array $removeItems
 	 *
 	 * @return boolean
 	 */

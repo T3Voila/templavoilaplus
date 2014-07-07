@@ -32,7 +32,7 @@ class tx_templavoila_staticds_wizard {
 	/**
 	 * Step for the wizard. Can be manipulated by internal function
 	 *
-	 * @var int
+	 * @var integer
 	 */
 	protected $step = 0;
 
@@ -262,7 +262,7 @@ class tx_templavoila_staticds_wizard {
 	/**
 	 * Get datastructure count
 	 *
-	 * @return int
+	 * @return integer
 	 */
 	protected function datastructureDbCount() {
 		return \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTcountRows(

@@ -25,10 +25,12 @@ namespace Extension\Templavoila\Controller\Preview;
  ***************************************************************/
 class MediaController {
 
+	/**
+	 * @var string
+	 */
 	protected $previewField = 'media';
 
 	/**
-	 *
 	 * @param array $row
 	 * @param string $table
 	 * @param string $output
@@ -49,7 +51,6 @@ class MediaController {
 	}
 
 	/**
-	 *
 	 * @param array $row
 	 *
 	 * @return string

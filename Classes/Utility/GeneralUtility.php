@@ -58,8 +58,7 @@ final class GeneralUtility {
 	 *
 	 * @param string $url potential URL to check
 	 *
-	 * @return string either $url if $url is considered to be harmless, or an
-	 *  empty string otherwise
+	 * @return string either $url if $url is considered to be harmless, or an empty string otherwise
 	 */
 	private static function internalSanitizeLocalUrl($url = '') {
 		$sanitizedUrl = '';
@@ -103,7 +102,7 @@ final class GeneralUtility {
 	/**
 	 * Checks if a given string is a Uniform Resource Locator (URL).
 	 *
-	 * @param string $url : The URL to be validated
+	 * @param string $url The URL to be validated
 	 *
 	 * @return boolean Whether the given URL is valid
 	 */
@@ -115,7 +114,7 @@ final class GeneralUtility {
 	 * Checks if a given URL matches the host that currently handles this HTTP request.
 	 * Scheme, hostname and (optional) port of the given URL are compared.
 	 *
-	 * @param string $url : URL to compare with the TYPO3 request host
+	 * @param string $url URL to compare with the TYPO3 request host
 	 *
 	 * @return boolean Whether the URL matches the TYPO3 request host
 	 */
@@ -140,8 +139,8 @@ final class GeneralUtility {
 	 * Get a list of referencing elements other than the given pid.
 	 *
 	 * @param array $element array with tablename and uid for a element
-	 * @param int $pid the suppoed source-pid
-	 * @param int $recursion recursion limiter
+	 * @param integer $pid the suppoed source-pid
+	 * @param integer $recursion recursion limiter
 	 * @param array &$references array containing a list of the actual references
 	 *
 	 * @return boolean true if there are other references for this element
@@ -184,8 +183,8 @@ final class GeneralUtility {
 	 * Checks if a element is referenced from other pages / elements on other pages than his own.
 	 *
 	 * @param array $element array with tablename and uid for a element
-	 * @param int $pid the suppoed source-pid
-	 * @param int $recursion recursion limiter
+	 * @param integer $pid the suppoed source-pid
+	 * @param integer $recursion recursion limiter
 	 * @param array &$references array containing a list of the actual references
 	 *
 	 * @return boolean true if there are other references for this element
@@ -210,6 +209,8 @@ final class GeneralUtility {
 	 * @param $version string Version number on format x.x.x
 	 *
 	 * @return integer Integer version of version number (where each part can count to 999)
+	 *
+	 * @todo: obsolete, to be refactored
 	 */
 	public static function convertVersionNumberToInteger($version) {
 		$result = 0;
@@ -226,6 +227,8 @@ final class GeneralUtility {
 	 * @param mixed $var
 	 *
 	 * @return boolean
+	 *
+	 * @todo: obsolete, to be refactored
 	 */
 	public static function canBeInterpretedAsInteger($var) {
 
@@ -241,12 +244,14 @@ final class GeneralUtility {
 	/**
 	 * Forces the integer $theInt into the boundaries of $min and $max. If the $theInt is FALSE then the $defaultValue is applied.
 	 *
-	 * @param $theInt integer Input value
-	 * @param $min integer Lower limit
-	 * @param $max integer Higher limit
-	 * @param $defaultValue integer Default value if input is FALSE.
+	 * @param integer $theInt Input value
+	 * @param integer $min Lower limit
+	 * @param integer $max Higher limit
+	 * @param integer $defaultValue Default value if input is FALSE.
 	 *
 	 * @return integer The input value forced into the boundaries of $min and $max
+	 *
+	 * @todo: obsolete, to be refactored
 	 */
 	public static function forceIntegerInRange($theInt, $min, $max = 2000000000, $defaultValue = 0) {
 		if (class_exists('\TYPO3\CMS\Core\Utility\MathUtility')) {

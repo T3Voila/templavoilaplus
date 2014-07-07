@@ -61,7 +61,6 @@ class StaticDataStructure extends AbstractDataStructure {
 	}
 
 	/**
-	 *
 	 * @return string;
 	 */
 	public function getStoragePids() {
@@ -79,7 +78,6 @@ class StaticDataStructure extends AbstractDataStructure {
 	}
 
 	/**
-	 *
 	 * @return string - the filename
 	 */
 	public function getKey() {
@@ -130,7 +128,7 @@ class StaticDataStructure extends AbstractDataStructure {
 	/**
 	 * Retrieve the filereference of the template
 	 *
-	 * @return string
+	 * @return integer
 	 */
 	public function getTstamp() {
 		$file = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->filename);
@@ -146,7 +144,7 @@ class StaticDataStructure extends AbstractDataStructure {
 	/**
 	 * Retrieve the filereference of the template
 	 *
-	 * @return string
+	 * @return integer
 	 */
 	public function getCrdate() {
 		$file = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->filename);
@@ -162,7 +160,7 @@ class StaticDataStructure extends AbstractDataStructure {
 	/**
 	 * Retrieve the filereference of the template
 	 *
-	 * @return string
+	 * @return integer
 	 */
 	public function getCruser() {
 		return 0;

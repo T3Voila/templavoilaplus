@@ -32,7 +32,6 @@ namespace Extension\Templavoila\Utility\StaticDataStructure;
 class ToolsUtility {
 
 	/**
-	 *
 	 * @param array $conf
 	 */
 	public static function readStaticDsFilesIntoArray($conf) {

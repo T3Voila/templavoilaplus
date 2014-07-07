@@ -21,14 +21,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-/**
- * templavoila module cm2
- *
- * $Id$
- *
- * @author Kasper Skaarhoj <kasper@typo3.com>
- * @co-author    Robert Lemke <robert@typo3.org>
- */
 
 // DEFAULT initialization of a module [BEGIN]
 unset($MCONF);
@@ -40,8 +32,7 @@ $LANG->includeLLFile('EXT:templavoila/cm2/locallang.xml');
  * Class for displaying color-marked-up version of FlexForm XML content.
  *
  * @author Kasper Skaarhoj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage tx_templavoila
+ * @co-author Robert Lemke <robert@typo3.org>
  */
 class tx_templavoila_cm2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
@@ -50,12 +41,26 @@ class tx_templavoila_cm2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 */
 	protected $backPath;
 
-	// External, static:
-	public $option_linenumbers = TRUE; // Showing linenumbers if true.
+	/**
+	 * Showing linenumbers if true.
+	 *
+	 * @var boolean
+	 */
+	public $option_linenumbers = TRUE;
 
-	// Internal, GPvars:
-	public $viewTable = array(); // Array with tablename, uid and fieldname
-	public $returnUrl = ''; // (GPvar "returnUrl") Return URL if the script is supplied with that.
+	/**
+	 * Array with tablename, uid and fieldname
+	 *
+	 * @var array
+	 */
+	public $viewTable = array();
+
+	/**
+	 * (GPvar "returnUrl") Return URL if the script is supplied with that.
+	 *
+	 * @var string
+	 */
+	public $returnUrl = '';
 
 	/**
 	 * Main function, drawing marked up XML.

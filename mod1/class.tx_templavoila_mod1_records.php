@@ -21,29 +21,27 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-/**
- * Submodule 'records' for the templavoila page module
- *
- * $Id$
- *
- * @author Dmitry Dulepov <dmitry@typo3.org>
- */
 
 /**
  * Submodule 'records' for the templavoila page module
  *
  * @author Dmitry Dulepov <dmitry@typo3.org>
- * @package TYPO3
- * @subpackage    tx_templavoila
  */
 class tx_templavoila_mod1_records {
 
 	/**
-	 * @var tx_templavoila_module1
+	 * @var \tx_templavoila_module1
 	 */
-	public $pObj; // Reference to parent module
+	public $pObj;
+
+	/**
+	 * @var array
+	 */
 	public $tables;
 
+	/**
+	 * @var integer
+	 */
 	public $calcPerms;
 
 	/**

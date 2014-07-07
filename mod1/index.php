@@ -76,7 +76,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * @var integer
 	 */
-	protected $rootElementUid_pidForContent;
+	public $rootElementUid_pidForContent;
 
 	/**
 	 * @var string
@@ -98,77 +98,251 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 */
 	protected $containedElements;
 
-	public $modTSconfig; // This module's TSconfig
-	public $modSharedTSconfig; // TSconfig from mod.SHARED
-	public $extKey = 'templavoila'; // Extension key of this module
-
-	public $global_tt_content_elementRegister = array(); // Contains a list of all content elements which are used on the page currently being displayed (with version, sheet and language currently set). Mainly used for showing "unused elements" in sidebar.
-	public $global_localization_status = array(); // Contains structure telling the localization status of each element
-
-	public $altRoot = array(); // Keys: "table", "uid" - thats all to define another "rootTable" than "pages" (using default field "tx_templavoila_flex" for flex form content)
-	public $versionId = 0; // Versioning: The current version id
-
-	public $currentLanguageKey; // Contains the currently selected language key (Example: DEF or DE)
-	public $currentLanguageUid; // Contains the currently selected language uid (Example: -1, 0, 1, 2, ...)
-	public $allAvailableLanguages = array(); // Contains records of all available languages (not hidden, with ISOcode), including the default language and multiple languages. Used for displaying the flags for content elements, set in init().
-	public $translatedLanguagesArr = array(); // Select language for which there is a page translation
-	public $translatedLanguagesArr_isoCodes = array(); // ISO codes (for l/v pairs) of translated languages.
-	public $translatorMode = FALSE; // If this is set, the whole page module scales down functionality so that a translator only needs  to look for and click the "Flags" in the interface to localize the page! This flag is set if a user does not have access to the default language; then translator mode is assumed.
-	public $calcPerms; // Permissions for the parrent record (normally page). Used for hiding icons.
+	/**
+	 * This module's TSconfig
+	 *
+	 * @var array
+	 */
+	public $modTSconfig;
 
 	/**
+	 * TSconfig from mod.SHARED
+	 *
+	 * @var array
+	 */
+	public $modSharedTSconfig;
+
+	/**
+	 * Extension key of this module
+	 *
+	 * @var string
+	 */
+	public $extKey = 'templavoila';
+
+	/**
+	 * Contains a list of all content elements which are used on the page currently being displayed
+	 * (with version, sheet and language currently set). Mainly used for showing "unused elements" in sidebar.
+	 *
+	 * @var array
+	 */
+	public $global_tt_content_elementRegister = array();
+
+	/**
+	 * Contains structure telling the localization status of each element
+	 *
+	 * @var array
+	 */
+	public $global_localization_status = array();
+
+	/**
+	 * Keys: "table", "uid" - thats all to define another "rootTable" than "pages" (using default field "tx_templavoila_flex" for flex form content)
+	 *
+	 * @var array
+	 */
+	public $altRoot = array();
+
+	/**
+	 * Versioning: The current version id
+	 *
+	 * @var integer
+	 */
+	public $versionId = 0;
+
+	/**
+	 * Contains the currently selected language key (Example: DEF or DE)
+	 *
+	 * @var string
+	 */
+	public $currentLanguageKey;
+
+	/**
+	 * Contains the currently selected language uid (Example: -1, 0, 1, 2, ...)
+	 *
+	 * @var integer
+	 */
+	public $currentLanguageUid;
+
+	/**
+	 * Contains records of all available languages (not hidden, with ISOcode), including the default
+	 * language and multiple languages. Used for displaying the flags for content elements, set in init().
+	 *
+	 * @var array
+	 */
+	public $allAvailableLanguages = array();
+
+	/**
+	 * Select language for which there is a page translation
+	 *
+	 * @var array
+	 */
+	public $translatedLanguagesArr = array();
+
+	/**
+	 * ISO codes (for l/v pairs) of translated languages.
+	 *
+	 * @var array
+	 */
+	public $translatedLanguagesArr_isoCodes = array();
+
+	/**
+	 * If this is set, the whole page module scales down functionality so that a translator only needs
+	 * to look for and click the "Flags" in the interface to localize the page! This flag is set if a
+	 * user does not have access to the default language; then translator mode is assumed.
+	 *
+	 * @var bool
+	 */
+	public $translatorMode = FALSE; //
+
+	/**
+	 * Permissions for the parrent record (normally page). Used for hiding icons.
+	 *
+	 * @var integer
+	 */
+	public $calcPerms;
+
+	/**
+	 * Instance of template doc class
+	 *
 	 * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
 	 */
-	public $doc; // Instance of template doc class
+	public $doc;
 
 	/**
+	 *  Instance of sidebar class
+	 *
 	 * @var \tx_templavoila_mod1_sidebar
 	 */
-	public $sideBarObj; // Instance of sidebar class
+	public $sideBarObj;
 
 	/**
+	 * Instance of wizards class
+	 *
 	 * @var \tx_templavoila_mod1_wizards
 	 */
-	public $wizardsObj; // Instance of wizards class
+	public $wizardsObj;
 
 	/**
+	 * Instance of clipboard class
+	 *
 	 * @var \tx_templavoila_mod1_clipboard
 	 */
-	public $clipboardObj; // Instance of clipboard class
+	public $clipboardObj;
 
-	public $recordsObj; // Instance of records class
 	/**
+	 * Instance of records class
+	 *
+	 * @var \tx_templavoila_mod1_records
+	 */
+	public $recordsObj;
+
+	/**
+	 * Instance of tx_templavoila_api
+	 *
 	 * @var \Extension\Templavoila\Service\ApiService
 	 */
-	public $apiObj; // Instance of tx_templavoila_api
-	public $sortableContainers = array(); // Contains the containers for drag and drop
-	public $allItems = array(); // Registry for all id => flexPointer-Pairs
-	public $sortableItems = array(); // Registry for sortable id => flexPointer-Pairs
+	public $apiObj;
 
-	public $extConf; // holds the extconf configuration
+	/**
+	 * Contains the containers for drag and drop
+	 *
+	 * @var array
+	 */
+	public $sortableContainers = array();
 
-	public $blindIcons = array(); // Icons which shouldn't be rendered by configuration, can contain elements of "new,edit,copy,cut,ref,paste,browse,delete,makeLocal,unlink,hide"
+	/**
+	 * Registry for all id => flexPointer-Pairs
+	 *
+	 * @var array
+	 */
+	public $allItems = array(); //
 
-	protected $renderPreviewObjects = NULL; // Classes for preview render
-	protected $renderPreviewDataObjects = NULL; // Classes for preview render
+	/**
+	 * Registry for sortable id => flexPointer-Pairs
+	 *
+	 * @var array
+	 */
+	public $sortableItems = array();
+
+	/**
+	 * holds the extconf configuration
+	 *
+	 * @var array
+	 */
+	public $extConf;
+
+	/**
+	 * Icons which shouldn't be rendered by configuration, can contain elements of "new,edit,copy,cut,ref,paste,browse,delete,makeLocal,unlink,hide"
+	 *
+	 * @var array
+	 */
+	public $blindIcons = array();
+
+	/**
+	 * Classes for preview render
+	 *
+	 * @var null
+	 */
+	protected $renderPreviewObjects = NULL;
+
+	/**
+	 * Classes for preview render
+	 *
+	 * @var null
+	 */
+	protected $renderPreviewDataObjects = NULL;
+
+	/**
+	 * @var integer
+	 */
 	protected $previewTitleMaxLen = 50;
 
+	/**
+	 * @var null
+	 */
 	protected $visibleContentHookObjects = NULL;
 
+	/**
+	 * @var boolean
+	 */
 	protected $debug = FALSE;
 
+	/**
+	 * @var array
+	 */
 	protected static $calcPermCache = array();
 
-	protected $newContentWizScriptPath = 'db_new_content_el.php'; // Setting which new content wizard to use
+	/**
+	 * Setting which new content wizard to use
+	 *
+	 * @var string
+	 */
+	protected $newContentWizScriptPath = 'db_new_content_el.php';
 
 	/**
 	 * @var \TYPO3\CMS\Core\Messaging\FlashMessageService
 	 */
 	protected $flashMessageService;
 
-	public $currentElementBelongsToCurrentPage; // Used for Content preview and is used as flag if content should be linked or not
-	public $currentElementParentPointer; // Used for edit link of content elements
-	const DOKTYPE_NORMAL_EDIT = 1; // With this doktype the normal Edit screen is rendered
+	/**
+	 * Used for Content preview and is used as flag if content should be linked or not
+	 *
+	 * @var boolean
+	 */
+	public $currentElementBelongsToCurrentPage;
+
+	/**
+	 * Used for edit link of content elements
+	 *
+	 * @var array
+	 */
+	public $currentElementParentPointer;
+
+	/**
+	 * With this doktype the normal Edit screen is rendered
+	 *
+	 * @var integer
+	 */
+	const DOKTYPE_NORMAL_EDIT = 1;
 
 	/*******************************************
 	 *
@@ -180,7 +354,6 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * Initialisation of this backend module
 	 *
 	 * @return void
-	 * @access public
 	 */
 	public function init() {
 		parent::init();
@@ -260,7 +433,6 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * Preparing menu content and initializing clipboard and module TSconfig
 	 *
 	 * @return void
-	 * @access public
 	 */
 	public function menuConfig() {
 		global $TYPO3_CONF_VARS;
@@ -304,10 +476,6 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$this->MOD_SETTINGS = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData($this->MOD_MENU, \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('SET'), $this->MCONF['name']);
 	}
 
-
-
-
-
 	/*******************************************
 	 *
 	 * Main functions
@@ -318,7 +486,6 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * Main function of the module.
 	 *
 	 * @return void
-	 * @access public
 	 */
 	public function main() {
 		global $BE_USER, $LANG, $BACK_PATH;
@@ -649,12 +816,10 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * Echoes the HTML output of this module
 	 *
 	 * @return void
-	 * @access public
 	 */
 	public function printContent() {
 		echo $this->content;
 	}
-
 
 	/*************************
 	 *
@@ -802,7 +967,6 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		return $result;
 	}
 
-
 	/********************************************
 	 *
 	 * Rendering functions
@@ -887,10 +1051,6 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		return $output;
 	}
 
-
-
-
-
 	/*******************************************
 	 *
 	 * Framework rendering functions
@@ -900,14 +1060,14 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Rendering the sheet tabs if applicable for the content Tree Array
 	 *
-	 * @param array $contentTreeArr : DataStructure info array (the whole tree)
-	 * @param string $languageKey : Language key for the display
-	 * @param array $parentPointer : Flexform Pointer to parent element
-	 * @param array $parentDsMeta : Meta array from parent DS (passing information about parent containers localization mode)
+	 * @param array $contentTreeArr DataStructure info array (the whole tree)
+	 * @param string $languageKey Language key for the display
+	 * @param array $parentPointer Flexform Pointer to parent element
+	 * @param array $parentDsMeta Meta array from parent DS (passing information about parent containers localization mode)
 	 *
 	 * @return string HTML
 	 * @access protected
-	 * @see    render_framework_singleSheet()
+	 * @see render_framework_singleSheet()
 	 */
 	public function render_framework_allSheets($contentTreeArr, $languageKey = 'DEF', $parentPointer = array(), $parentDsMeta = array()) {
 
@@ -939,15 +1099,15 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Renders the display framework of a single sheet. Calls itself recursively
 	 *
-	 * @param array $contentTreeArr : DataStructure info array (the whole tree)
-	 * @param string $languageKey : Language key for the display
-	 * @param string $sheet : The sheet key of the sheet which should be rendered
-	 * @param array $parentPointer : Flexform pointer to parent element
-	 * @param array $parentDsMeta : Meta array from parent DS (passing information about parent containers localization mode)
+	 * @param array $contentTreeArr DataStructure info array (the whole tree)
+	 * @param string $languageKey Language key for the display
+	 * @param string $sheet The sheet key of the sheet which should be rendered
+	 * @param array $parentPointer Flexform pointer to parent element
+	 * @param array $parentDsMeta Meta array from parent DS (passing information about parent containers localization mode)
 	 *
 	 * @return string HTML
 	 * @access protected
-	 * @see    render_framework_singleSheet()
+	 * @see render_framework_singleSheet()
 	 */
 	public function render_framework_singleSheet($contentTreeArr, $languageKey, $sheet, $parentPointer = array(), $parentDsMeta = array()) {
 		global $LANG, $TYPO3_CONF_VARS;
@@ -1153,10 +1313,10 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 *
 	 * Calls render_framework_allSheets() and therefore generates a recursion.
 	 *
-	 * @param array $elementContentTreeArr : Content tree starting with the element which possibly has sub elements
-	 * @param string $languageKey : Language key for current display
-	 * @param string $sheet : Key of the sheet we want to render
-	 * @param integer $calcPerms : Defined the access rights for the enclosing parent
+	 * @param array $elementContentTreeArr Content tree starting with the element which possibly has sub elements
+	 * @param string $languageKey Language key for current display
+	 * @param string $sheet Key of the sheet we want to render
+	 * @param integer $calcPerms Defined the access rights for the enclosing parent
 	 *
 	 * @return string HTML output (a table) of the sub elements and some "insert new" and "paste" buttons
 	 * @access protected
@@ -1416,9 +1576,9 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	}
 
 	/**
-	 * @param $langDisable
-	 * @param $langChildren
-	 * @param $languageKey
+	 * @param string $langDisable
+	 * @param string $langChildren
+	 * @param string $languageKey
 	 *
 	 * @return string
 	 */
@@ -1438,12 +1598,12 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	}
 
 	/**
-	 * @param $elementContentTreeArr
-	 * @param $sheet
-	 * @param $lKey
-	 * @param $vKey
+	 * @param array $elementContentTreeArr
+	 * @param string $sheet
+	 * @param string $lKey
+	 * @param string $vKey
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	protected function disablePageStructureInheritance($elementContentTreeArr, $sheet, $lKey, $vKey) {
 		$disable = FALSE;
@@ -1476,7 +1636,6 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		return $disable;
 	}
 
-
 	/*******************************************
 	 *
 	 * Rendering functions for certain subparts
@@ -1486,11 +1645,11 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Rendering the preview of content for Page module.
 	 *
-	 * @param array $previewData : Array with data from which a preview can be rendered.
-	 * @param array $elData : Element data
-	 * @param array $ds_meta : Data Structure Meta data
-	 * @param string $languageKey : Current language key (so localized content can be shown)
-	 * @param string $sheet : Sheet key
+	 * @param array $previewData Array with data from which a preview can be rendered.
+	 * @param array $elData Element data
+	 * @param array $ds_meta Data Structure Meta data
+	 * @param string $languageKey Current language key (so localized content can be shown)
+	 * @param string $sheet Sheet key
 	 *
 	 * @return string HTML content
 	 */
@@ -1634,7 +1793,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * Returns an HTMLized preview of a certain content element. If you'd like to register a new content type, you can easily use the hook
 	 * provided at the beginning of the function.
 	 *
-	 * @param array $row : The row of tt_content containing the content element record.
+	 * @param array $row The row of tt_content containing the content element record.
 	 *
 	 * @return string HTML preview content
 	 * @access protected
@@ -1672,13 +1831,13 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Renders a little table containing previews of translated version of the current content element.
 	 *
-	 * @param array $contentTreeArr : Part of the contentTreeArr for the element
-	 * @param string $parentPointer : Flexform pointer pointing to the current element (from the parent's perspective)
-	 * @param array $parentDsMeta : Meta array from parent DS (passing information about parent containers localization mode)
+	 * @param array $contentTreeArr Part of the contentTreeArr for the element
+	 * @param string $parentPointer Flexform pointer pointing to the current element (from the parent's perspective)
+	 * @param array $parentDsMeta Meta array from parent DS (passing information about parent containers localization mode)
 	 *
 	 * @return string HTML
 	 * @access protected
-	 * @see    render_framework_singleSheet()
+	 * @see render_framework_singleSheet()
 	 */
 	public function render_localizationInfoTable($contentTreeArr, $parentPointer, $parentDsMeta = array()) {
 		global $LANG, $BE_USER;
@@ -1815,11 +1974,6 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		return $output;
 	}
 
-
-
-
-
-
 	/*******************************************
 	 *
 	 * Outline rendering:
@@ -1829,7 +1983,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Rendering the outline display of the page structure
 	 *
-	 * @param array $contentTreeArr : DataStructure info array (the whole tree)
+	 * @param array $contentTreeArr DataStructure info array (the whole tree)
 	 *
 	 * @return string HTML
 	 */
@@ -1931,15 +2085,15 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Rendering a single element in outline:
 	 *
-	 * @param array $contentTreeArr : DataStructure info array (the whole tree)
-	 * @param array $entries : Entries accumulated in this array (passed by reference)
-	 * @param integer $indentLevel : Indentation level
-	 * @param array $parentPointer : Element position in structure
-	 * @param string $controls : HTML for controls to add for this element
+	 * @param array $contentTreeArr DataStructure info array (the whole tree)
+	 * @param array $entries Entries accumulated in this array (passed by reference)
+	 * @param integer $indentLevel Indentation level
+	 * @param array $parentPointer Element position in structure
+	 * @param string $controls HTML for controls to add for this element
 	 *
 	 * @return void
 	 * @access protected
-	 * @see    render_outline_allSheets()
+	 * @see render_outline_allSheets()
 	 */
 	public function render_outline_element($contentTreeArr, &$entries, $indentLevel = 0, $parentPointer = array(), $controls = '') {
 		global $LANG, $TYPO3_CONF_VARS;
@@ -2069,10 +2223,10 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Rendering outline for child-elements
 	 *
-	 * @param array $contentTreeArr : DataStructure info array (the whole tree)
-	 * @param string $sheet : Which sheet to display
-	 * @param array $entries : Entries accumulated in this array (passed by reference)
-	 * @param integer $indentLevel : Indentation level
+	 * @param array $contentTreeArr DataStructure info array (the whole tree)
+	 * @param string $sheet Which sheet to display
+	 * @param array $entries Entries accumulated in this array (passed by reference)
+	 * @param integer $indentLevel Indentation level
 	 *
 	 * @return void
 	 * @access protected
@@ -2156,13 +2310,13 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Renders localized elements of a record
 	 *
-	 * @param array $contentTreeArr : Part of the contentTreeArr for the element
-	 * @param array $entries : Entries accumulated in this array (passed by reference)
-	 * @param integer $indentLevel : Indentation level
+	 * @param array $contentTreeArr Part of the contentTreeArr for the element
+	 * @param array $entries Entries accumulated in this array (passed by reference)
+	 * @param integer $indentLevel Indentation level
 	 *
 	 * @return string HTML
 	 * @access protected
-	 * @see    render_framework_singleSheet()
+	 * @see render_framework_singleSheet()
 	 */
 	public function render_outline_localizations($contentTreeArr, &$entries, $indentLevel) {
 		global $LANG, $BE_USER;
@@ -2221,12 +2375,6 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		return $this->sideBarObj->render();
 	}
 
-
-
-
-
-
-
 	/*******************************************
 	 *
 	 * Link functions (protected)
@@ -2236,12 +2384,12 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Returns an HTML link for editing
 	 *
-	 * @param string $label : The label (or image)
-	 * @param string $table : The table, fx. 'tt_content'
-	 * @param integer $uid : The uid of the element to be edited
-	 * @param boolean $forced : By default the link is not shown if translatorMode is set, but with this boolean it can be forced anyway.
-	 * @param integer $usePid : ...
-	 * @param string $linkClass : css class to use for regular content elements
+	 * @param string $label The label (or image)
+	 * @param string $table The table, fx. 'tt_content'
+	 * @param integer $uid The uid of the element to be edited
+	 * @param boolean $forced By default the link is not shown if translatorMode is set, but with this boolean it can be forced anyway.
+	 * @param integer $usePid ...
+	 * @param string $linkClass css class to use for regular content elements
 	 *
 	 * @return string HTML anchor tag containing the label and the correct link
 	 * @access protected
@@ -2274,7 +2422,6 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 	/**
 	 * Returns an HTML link for hiding
-	 *
 	 *
 	 * @param array $el
 	 *
@@ -2355,8 +2502,8 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Returns an HTML link for browse for record
 	 *
-	 * @param string $label : The label (or image)
-	 * @param array $parentPointer : Flexform pointer defining the parent element of the new record
+	 * @param string $label The label (or image)
+	 * @param array $parentPointer Flexform pointer defining the parent element of the new record
 	 *
 	 * @return string HTML anchor tag containing the label and the correct link
 	 * @access protected
@@ -2379,8 +2526,8 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Returns an HTML link for creating a new record
 	 *
-	 * @param string $label : The label (or image)
-	 * @param array $parentPointer : Flexform pointer defining the parent element of the new record
+	 * @param string $label The label (or image)
+	 * @param array $parentPointer Flexform pointer defining the parent element of the new record
 	 *
 	 * @return string HTML anchor tag containing the label and the correct link
 	 * @access protected
@@ -2399,10 +2546,10 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * Returns an HTML link for unlinking a content element. Unlinking means that the record still exists but
 	 * is not connected to any other content element or page.
 	 *
-	 * @param string $label : The label
-	 * @param array $unlinkPointer : Flexform pointer pointing to the element to be unlinked
-	 * @param boolean $realDelete : If set, the record is not just unlinked but deleted!
-	 * @param boolean $foreignReferences : If set, the record seems to have references on other pages
+	 * @param string $label The label
+	 * @param array $unlinkPointer Flexform pointer pointing to the element to be unlinked
+	 * @param boolean $realDelete If set, the record is not just unlinked but deleted!
+	 * @param boolean $foreignReferences If set, the record seems to have references on other pages
 	 * @param string $elementPointer
 	 *
 	 * @return string HTML anchor tag containing the label and the unlink-link
@@ -2425,8 +2572,8 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Returns an HTML link for making a reference content element local to the page (copying it).
 	 *
-	 * @param string $label : The label
-	 * @param array $makeLocalPointer : Flexform pointer pointing to the element which shall be copied
+	 * @param string $label The label
+	 * @param array $makeLocalPointer Flexform pointer pointing to the element which shall be copied
 	 *
 	 * @return string HTML anchor tag containing the label and the unlink-link
 	 * @access protected
@@ -2495,9 +2642,6 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 		return $output;
 	}
-
-
-
 
 	/*************************************************
 	 *
@@ -2645,11 +2789,6 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		}
 	}
 
-
-
-
-
-
 	/***********************************************
 	 *
 	 * Miscelleaneous helper functions (protected)
@@ -2659,10 +2798,10 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Returns an array of available languages (to use for FlexForms)
 	 *
-	 * @param integer $id : If zero, the query will select all sys_language records from root level. If set to another value, the query will select all sys_language records that has a pages_language_overlay record on that page (and is not hidden, unless you are admin user)
-	 * @param boolean $onlyIsoCoded : If set, only languages which are paired with a static_info_table / static_language record will be returned.
-	 * @param boolean $setDefault : If set, an array entry for a default language is set.
-	 * @param boolean $setMulti : If set, an array entry for "multiple languages" is added (uid -1)
+	 * @param integer $id If zero, the query will select all sys_language records from root level. If set to another value, the query will select all sys_language records that has a pages_language_overlay record on that page (and is not hidden, unless you are admin user)
+	 * @param boolean $onlyIsoCoded If set, only languages which are paired with a static_info_table / static_language record will be returned.
+	 * @param boolean $setDefault If set, an array entry for a default language is set.
+	 * @param boolean $setMulti If set, an array entry for "multiple languages" is added (uid -1)
 	 *
 	 * @return array
 	 * @access protected
@@ -2765,7 +2904,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Returns an array of registered instantiated classes for a certain hook.
 	 *
-	 * @param string $hookName : Name of the hook
+	 * @param string $hookName Name of the hook
 	 *
 	 * @return array Array of object references
 	 * @access protected
@@ -2827,7 +2966,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @param string $label Label
 	 * @param boolean $hsc <code>true</code> if HSC required
 	 *
-	 * @return string    Converted label
+	 * @return string Converted label
 	 */
 	public function localizedFFLabel($label, $hsc) {
 
@@ -2952,7 +3091,6 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	}
 
 	/**
-	 *
 	 * @param integer $pid
 	 *
 	 * @return integer
@@ -2972,10 +3110,10 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	}
 
 	/**
-	 * @param  $table
-	 * @param  $record
+	 * @param string $table
+	 * @param array $record
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	protected function hasBasicEditRights($table = NULL, array $record = NULL) {
 

@@ -21,14 +21,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-/**
- * templavoila module cm1
- *
- * $Id$
- *
- * @author Kasper Skaarhoj <kasperYYYY@typo3.com>
- * @co-author    Robert Lemke <robert@typo3.org>
- */
 
 // DEFAULT initialization of a module [BEGIN]
 unset($MCONF);
@@ -36,24 +28,11 @@ require(dirname(__FILE__) . '/conf.php');
 require($BACK_PATH . 'init.php');
 $LANG->includeLLFile('EXT:templavoila/cm1/locallang.xml');
 
-/*************************************
- *
- * Short glossary;
- *
- * DS - Data Structure
- * DSO - Data Structure Object (table record)
- * TO - Template Object
- *
- ************************************/
-
-
 /**
  * Class for controlling the TemplaVoila module.
  *
  * @author Kasper Skaarhoj <kasperYYYY@typo3.com>
- * @co-author    Robert Lemke <robert@typo3.org>
- * @package TYPO3
- * @subpackage tx_templavoila
+ * @co-author Robert Lemke <robert@typo3.org>
  */
 class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
@@ -77,8 +56,16 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 */
 	protected $backPath;
 
-	// Static:
-	public $theDisplayMode = ''; // Set to ->MOD_SETTINGS[]
+	/**
+	 * Set to ->MOD_SETTINGS[]
+	 *
+	 * @var string
+	 */
+	public $theDisplayMode = '';
+
+	/**
+	 * @var array
+	 */
 	public $head_markUpTags = array(
 		// Block elements:
 		'title' => array(),
@@ -90,84 +77,227 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		'meta' => array('single' => 1),
 	);
 
-	public $extKey = 'templavoila'; // Extension key of this module
+	/**
+	 * Extension key of this module
+	 *
+	 * @var string
+	 */
+	public $extKey = 'templavoila';
+
+	/**
+	 * @var array
+	 */
 	public $dsTypes;
 
-	// Internal, dynamic:
-	public $markupFile = ''; // Used to store the name of the file to mark up with a given path.
+	/**
+	 * Used to store the name of the file to mark up with a given path.
+	 *
+	 * @var string
+	 */
+	public $markupFile = '';
 
 	/**
 	 * @var \Extension\Templavoila\Domain\Model\HtmlMarkup
 	 */
 	public $markupObj;
 
+	/**
+	 * @var array
+	 */
 	public $elNames = array();
 
-	public $editDataStruct = 0; // Setting whether we are editing a data structure or not.
-	public $storageFolders = array(); // Storage folders as key(uid) / value (title) pairs.
-	public $storageFolders_pidList = 0; // The storageFolders pids imploded to a comma list including "0"
+	/**
+	 * Setting whether we are editing a data structure or not.
+	 *
+	 * @var integer
+	 */
+	public $editDataStruct = 0;
 
-	// GPvars:
-	public $mode; // Looking for "&mode", which defines if we draw a frameset (default), the module (mod) or display (display)
+	/**
+	 * Storage folders as key(uid) / value (title) pairs.
+	 *
+	 * @var array
+	 */
+	public $storageFolders = array();
 
-	// GPvars for MODULE mode
-	public $displayFile = ''; // (GPvar "file", shared with DISPLAY mode!) The file to display, if file is referenced directly from filelist module. Takes precedence over displayTable/displayUid
-	public $displayTable = ''; // (GPvar "table") The table from which to display element (Data Structure object [tx_templavoila_datastructure], template object [tx_templavoila_tmplobj])
-	public $displayUid = ''; // (GPvar "uid") The UID to display (from ->displayTable)
-	public $displayPath = ''; // (GPvar "htmlPath") The "HTML-path" to display from the current file
-	public $returnUrl = ''; // (GPvar "returnUrl") Return URL if the script is supplied with that.
+	/**
+	 * The storageFolders pids imploded to a comma list including "0"
+	 *
+	 * @var integer
+	 */
+	public $storageFolders_pidList = 0;
 
-	// GPvars for MODULE mode, specific to mapping a DS:
+	/**
+	 * Looking for "&mode", which defines if we draw a frameset (default), the module (mod) or display (display)
+	 *
+	 * @var string
+	 */
+	public $mode;
+
+	/**
+	 * (GPvar "file", shared with DISPLAY mode!) The file to display, if file is referenced directly from filelist module. Takes precedence over displayTable/displayUid
+	 *
+	 * @var string
+	 */
+	public $displayFile = '';
+
+	/**
+	 * (GPvar "table") The table from which to display element (Data Structure object [tx_templavoila_datastructure], template object [tx_templavoila_tmplobj])
+	 *
+	 * @var string
+	 */
+	public $displayTable = '';
+
+	/**
+	 * (GPvar "uid") The UID to display (from ->displayTable)
+	 *
+	 * @var string
+	 */
+	public $displayUid = '';
+
+	/**
+	 * (GPvar "htmlPath") The "HTML-path" to display from the current file
+	 *
+	 * @var string
+	 */
+	public $displayPath = '';
+
+	/**
+	 * (GPvar "returnUrl") Return URL if the script is supplied with that.
+	 *
+	 * @var string
+	 */
+	public $returnUrl = ''; //
+
+	/**
+	 * @var boolean
+	 */
 	public $_preview;
 
-	public $htmlPath;
-
+	/**
+	 * @var string
+	 */
 	public $mapElPath;
 
+	/**
+	 * @var boolean
+	 */
 	public $doMappingOfPath;
 
+	/**
+	 * @var boolean
+	 */
 	public $showPathOnly;
 
+	/**
+	 * @var string
+	 */
 	public $mappingToTags;
 
+	/**
+	 * @var string
+	 */
 	public $DS_element;
 
+	/**
+	 * @var string
+	 */
 	public $DS_cmd;
 
+	/**
+	 * @var string
+	 */
 	public $fieldName;
 
-	// GPvars for MODULE mode, specific to creating a DS:
+	/**
+	 * @var boolean
+	 */
 	public $_load_ds_xml_content;
 
+	/**
+	 * @var boolean
+	 */
 	public $_load_ds_xml_to;
 
+	/**
+	 * @var integer
+	 */
 	public $_saveDSandTO_TOuid;
 
+	/**
+	 * @var string
+	 */
 	public $_saveDSandTO_title;
 
+	/**
+	 * @var string
+	 */
 	public $_saveDSandTO_type;
 
+	/**
+	 * @var integer
+	 */
 	public $_saveDSandTO_pid;
 
-	// GPvars for DISPLAY mode:
-	public $show; // Boolean; if true no mapping-links are rendered.
-	public $preview; // Boolean; if true, the currentMappingInfo preview data is merged in
-	public $limitTags; // String, list of tags to limit display by
-	public $path; // HTML-path to explode in template.
+	/**
+	 * Boolean; if true no mapping-links are rendered.
+	 *
+	 * @var boolean
+	 */
+	public $show;
 
 	/**
+	 * Boolean; if true, the currentMappingInfo preview data is merged in
+	 *
+	 * @var boolean
+	 */
+	public $preview;
+
+	/**
+	 * String, list of tags to limit display by
+	 *
+	 * @var string
+	 */
+	public $limitTags;
+
+	/**
+	 * HTML-path to explode in template.
+	 *
+	 * @var string
+	 */
+	public $path;
+
+	/**
+	 * instance of class tx_templavoila_cm1_dsEdit
+	 *
 	 * @var \tx_templavoila_cm1_dsEdit
 	 */
-	public $dsEdit; // instance of class tx_templavoila_cm1_dsEdit
+	public $dsEdit;
 
 	/**
+	 * instance of class tx_templavoila_cm1_eTypes
+	 *
 	 * @var \tx_templavoila_cm1_eTypes
 	 */
-	public $eTypes; // instance of class tx_templavoila_cm1_eTypes
+	public $eTypes;
 
-	public $extConf; // holds the extconf configuration
-	public $staticDS = FALSE; // Boolean; if true DS records are file based
+	/**
+	 * holds the extconf configuration
+	 *
+	 * @var array
+	 */
+	public $extConf;
 
+	/**
+	 * Boolean; if true DS records are file based
+	 *
+	 * @var boolean
+	 */
+	public $staticDS = FALSE;
+
+	/**
+	 * @var string
+	 */
 	public static $gnyfStyleBlock = '
 	.gnyfBox { position:relative; }
 	.gnyfElement {	color: black; font-family:monospace;font-size:12px !important; line-height:1.3em !important; font-weight:normal; text-transform:none; letter-spacing:auto; cursor: pointer; margin: 0; padding:0 7px; overflow: hidden; text-align: center; position: absolute;  border-radius: 0.4em; -o-border-radius: 0.4em; -moz-border-radius: 0.4em; -webkit-border-radius: 0.4em; background-color: #ffffff;	}
@@ -196,9 +326,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$this->MOD_MENU = Array(
 			'displayMode' => array(
 				'explode' => 'Mode: Exploded Visual',
-#				'_' => 'Mode: Overlay',
 				'source' => 'Mode: HTML Source ',
-#				'borders' => 'Mode: Table Borders',
 			),
 			'showDSxml' => ''
 		);
@@ -1729,10 +1857,6 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		return array($content, $headerPart ? $currentMappingInfo_head : $currentMappingInfo);
 	}
 
-
-
-
-
 	/*******************************
 	 *
 	 * Mapper functions
@@ -1996,13 +2120,13 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Determines parentElement and sameLevelElements for the RANGE mapping mode
 	 *
-	 * @todo    this functions return value pretty dirty, but due to the fact that this is something which
-	 *     should at least be encapsulated the bad coding habit it preferred just for readability of the remaining code
+	 * @todo this functions return value pretty dirty, but due to the fact that this is something which
+	 * should at least be encapsulated the bad coding habit it preferred just for readability of the remaining code
 	 *
-	 * @param array    Array containing information about the current element
-	 * @param array    Array containing information about all mapable elements
+	 * @param array Array containing information about the current element
+	 * @param array Array containing information about all mapable elements
 	 *
-	 * @return array    Array containing 0 => parentElement (string) and 1 => sameLevelElements (array)
+	 * @return array Array containing 0 => parentElement (string) and 1 => sameLevelElements (array)
 	 */
 	protected function getRangeParameters($lastEl, $elParentLevel) {
 		/**
@@ -2337,7 +2461,6 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		return $tRows;
 	}
 
-
 	/*******************************
 	 *
 	 * Various helper functions
@@ -2541,12 +2664,6 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$sysFolderPIDs[] = 0;
 		$this->storageFolders_pidList = implode(',', $sysFolderPIDs);
 	}
-
-
-
-
-
-
 
 	/*****************************************
 	 *

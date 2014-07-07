@@ -26,5 +26,8 @@ namespace Extension\Templavoila\Controller\Preview;
  ***************************************************************/
 class MultimediaController extends UploadsController {
 
+	/**
+	 * @var string
+	 */
 	protected $previewField = 'multimedia';
 }

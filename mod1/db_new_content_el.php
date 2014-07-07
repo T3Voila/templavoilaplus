@@ -56,18 +56,16 @@ $LOCAL_LANG = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_over
  * Script Class for the New Content element wizard
  *
  * @author Robert Lemke <robert@typo3.org>
- * @package TYPO3
- * @subpackage templavoila
  */
 class tx_templavoila_dbnewcontentel {
 
 	/**
-	 * @var
+	 * @var string
 	 */
 	protected $defVals;
 
 	/**
-	 * @var
+	 * @var array
 	 */
 	protected $config;
 
@@ -116,23 +114,66 @@ class tx_templavoila_dbnewcontentel {
 	 */
 	protected $backPath;
 
-	// Internal, static (from GPvars):
-	public $id; // Page id
-	public $parentRecord; // Parameters for the new record
-	public $altRoot; // Array with alternative table, uid and flex-form field (see index.php in module for details, same thing there.)
-
-	// Internal, static:
 	/**
+	 * Page id
+	 *
+	 * @var integer
+	 */
+	public $id;
+
+	/**
+	 * Parameters for the new record
+	 *
+	 * @var integer
+	 */
+	public $parentRecord;
+
+	/**
+	 * Array with alternative table, uid and flex-form field (see index.php in module for details, same thing there.)
+	 *
+	 * @var array
+	 */
+	public $altRoot;
+
+	/**
+	 * Internal backend template object
+	 *
 	 * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
 	 */
-	public $doc; // Internal backend template object
-	protected $extConf; // Templavoila extension configuration
+	public $doc;
 
-	// Internal, dynamic:
-	public $include_once = array(); // Includes a list of files to include between init() and main() - see init()
-	public $content; // Used to accumulate the content of the module.
-	public $access; // Access boolean.
-	public $returnUrl = ''; // (GPvar "returnUrl") Return URL if the script is supplied with that.
+	/**
+	 * Templavoila extension configuration
+	 *
+	 * @var array
+	 */
+	protected $extConf;
+
+	/**
+	 * Includes a list of files to include between init() and main() - see init()
+	 *
+	 * @var array
+	 */
+	public $include_once = array();
+
+	/**
+	 * Used to accumulate the content of the module.
+	 *
+	 * @var string
+	 */
+	public $content;
+
+	/**
+	 * @var boolean
+	 */
+	public $access;
+
+	/**
+	 * (GPvar "returnUrl") Return URL if the script is supplied with that.
+	 *
+	 * @var string
+	 */
+	public $returnUrl = '';
 
 	/**
 	 * Initialize internal variables.
@@ -196,7 +237,7 @@ class tx_templavoila_dbnewcontentel {
 	 * @throws \UnexpectedValueException
 	 *
 	 * @return void
-	 * @todo    provide position mapping if no position is given already. Like the columns selector but for our cascading element style ...
+	 * @todo provide position mapping if no position is given already. Like the columns selector but for our cascading element style ...
 	 */
 	public function main() {
 		global $LANG, $BACK_PATH;
@@ -520,8 +561,8 @@ class tx_templavoila_dbnewcontentel {
 	}
 
 	/**
-	 * @param mixed $groupKey
-	 * @param mixed $itemKey
+	 * @param string $groupKey
+	 * @param string $itemKey
 	 * @param array $itemConf
 	 *
 	 * @return mixed
@@ -536,7 +577,7 @@ class tx_templavoila_dbnewcontentel {
 	}
 
 	/**
-	 * @param mixed $groupKey
+	 * @param string $groupKey
 	 * @param array $wizardGroup
 	 *
 	 * @return array
@@ -615,7 +656,7 @@ class tx_templavoila_dbnewcontentel {
 	 *
 	 * @param string $table Table nme to fetch records from
 	 *
-	 * @return string    Condition or empty string
+	 * @return string Condition or empty string
 	 */
 	public function buildRecordWhere($table) {
 		$result = array();

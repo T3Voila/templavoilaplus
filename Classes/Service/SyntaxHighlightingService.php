@@ -26,53 +26,22 @@ namespace Extension\Templavoila\Service;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-/**
- * Contains a class for various syntax highlighting.
- *
- * $Id$
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   84: class tx_templavoila_syntaxhl
- *
- *  SECTION: Markup of Data Structure, <T3DataStructure>
- *  156:     function highLight_DS($str)
- *  183:     function highLight_DS_markUpRecursively($struct,$parent='',$app='')
- *
- *  SECTION: Markup of Data Structure, <T3FlexForms>
- *  268:     function highLight_FF($str)
- *  295:     function highLight_FF_markUpRecursively($struct,$parent='',$app='')
- *
- *  SECTION: Various
- *  376:     function getAllTags($str)
- *  407:     function splitXMLbyTags($tagList,$str)
- *
- * TOTAL FUNCTIONS: 6
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 /**
  * Syntax Highlighting class.
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
  */
 class SyntaxHighlightingService {
 
-	// Internal, dynamic:
 	/**
 	 * @var \TYPO3\CMS\Core\Html\HtmlParser
 	 */
 	protected $htmlParse; // Parse object.
 
-	// External, static:
+	/**
+	 * @var array
+	 */
 	public $DS_wrapTags = array(
 		'T3DataStructure' => array('<span style="font-weight: bold;">', '</span>'),
 		'type' => array('<span style="font-weight: bold; color: #000080;">', '</span>'),
@@ -94,6 +63,9 @@ class SyntaxHighlightingService {
 		'langChildren' => array('<span style="color: #000080;">', '</span>'),
 	);
 
+	/**
+	 * @var array
+	 */
 	public $FF_wrapTags = array(
 		'T3FlexForms' => array('<span style="font-weight: bold;">', '</span>'),
 		'meta' => array('<span style="font-weight: bold; color: #800080;">', '</span>'),
@@ -119,7 +91,6 @@ class SyntaxHighlightingService {
 		'currentLangId' => array('<span style="color: #000080;">', '</span>'),
 	);
 
-
 	/*************************************
 	 *
 	 * Markup of Data Structure, <T3DataStructure>
@@ -129,7 +100,7 @@ class SyntaxHighlightingService {
 	/**
 	 * Makes syntax highlighting of a Data Structure, <T3DataStructure>
 	 *
-	 * @param $str string Data Structure XML, must be valid since it's parsed.
+	 * @param string $str Data Structure XML, must be valid since it's parsed.
 	 *
 	 * @return string HTML code with highlighted content. Must be wrapped in <PRE> tags
 	 */
@@ -216,7 +187,6 @@ class SyntaxHighlightingService {
 
 		return $output;
 	}
-
 
 	/*************************************
 	 *
@@ -319,7 +289,6 @@ class SyntaxHighlightingService {
 
 		return $output;
 	}
-
 
 	/*************************************
 	 *

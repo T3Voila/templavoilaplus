@@ -31,12 +31,17 @@ namespace Extension\Templavoila\Domain\Model;
  */
 class DataStructure extends AbstractDataStructure {
 
+	/**
+	 * @var array
+	 */
 	protected $row;
 
+	/**
+	 * @var string
+	 */
 	protected $sortbyField;
 
 	/**
-	 *
 	 * @param integer $uid
 	 */
 	public function __construct($uid) {
@@ -55,7 +60,6 @@ class DataStructure extends AbstractDataStructure {
 	}
 
 	/**
-	 *
 	 * @return string;
 	 */
 	public function getStoragePids() {
@@ -63,7 +67,6 @@ class DataStructure extends AbstractDataStructure {
 	}
 
 	/**
-	 *
 	 * @return string - numeric string
 	 */
 	public function getKey() {
@@ -83,8 +86,8 @@ class DataStructure extends AbstractDataStructure {
 	 * Determine whether the current user has permission to create elements based on this
 	 * datastructure or not
 	 *
-	 * @param mixed $parentRow
-	 * @param mixed $removeItems
+	 * @param array $parentRow
+	 * @param array $removeItems
 	 *
 	 * @return boolean
 	 */
@@ -172,8 +175,6 @@ class DataStructure extends AbstractDataStructure {
 	}
 
 	/**
-	 * @param void
-	 *
 	 * @return string
 	 */
 	public function getSortingFieldValue() {

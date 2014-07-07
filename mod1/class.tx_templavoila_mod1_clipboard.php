@@ -21,20 +21,11 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-/**
- * Submodule 'clipboard' for the templavoila page module
- *
- * $Id$
- *
- * @author Robert Lemke <robert@typo3.org>
- */
 
 /**
  * Submodule 'clipboard' for the templavoila page module
  *
  * @author Robert Lemke <robert@typo3.org>
- * @package TYPO3
- * @subpackage    tx_templavoila
  */
 class tx_templavoila_mod1_clipboard {
 
@@ -58,16 +49,19 @@ class tx_templavoila_mod1_clipboard {
 	 */
 	protected $MOD_SETTINGS;
 
-	// References to the page module object
 	/**
+	 * A pointer to the parent object, that is the templavoila page module script. Set by calling the method init() of this class.
+	 *
 	 * @var \tx_templavoila_module1
 	 */
-	public $pObj; // A pointer to the parent object, that is the templavoila page module script. Set by calling the method init() of this class.
+	public $pObj;
 
 	/**
+	 * A reference to the doc object of the parent object.
+	 *
 	 * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
 	 */
-	public $doc; // A reference to the doc object of the parent object.
+	public $doc;
 
 	/**
 	 * Initializes the clipboard object. The calling class must make sure that the right locallang files are already loaded.
@@ -76,10 +70,9 @@ class tx_templavoila_mod1_clipboard {
 	 * Also takes the GET variable "CB" and submits it to the t3lib clipboard class which handles all
 	 * the incoming information and stores it in the user session.
 	 *
-	 * @param $pObj : Reference to the parent object ($this)
+	 * @param \tx_templavoila_module1 $pObj Reference to the parent object ($this)
 	 *
 	 * @return void
-	 * @access public
 	 */
 	public function init(&$pObj) {
 		global $LANG, $BACK_PATH;
@@ -128,11 +121,10 @@ class tx_templavoila_mod1_clipboard {
 	 * Renders the copy, cut and reference buttons for the element specified by the
 	 * flexform pointer.
 	 *
-	 * @param array $elementPointer : Flex form pointer specifying the element we want to render the buttons for
-	 * @param string $listOfButtons : A comma separated list of buttons which should be rendered. Possible values: 'copy', 'cut' and 'ref'
+	 * @param array $elementPointer Flex form pointer specifying the element we want to render the buttons for
+	 * @param string $listOfButtons A comma separated list of buttons which should be rendered. Possible values: 'copy', 'cut' and 'ref'
 	 *
 	 * @return string HTML output: linked images which act as copy, cut and reference buttons
-	 * @access public
 	 */
 	public function element_getSelectButtons($elementPointer, $listOfButtons = 'copy,cut,ref') {
 		global $LANG;
@@ -198,7 +190,7 @@ class tx_templavoila_mod1_clipboard {
 	 * The buttons are (or is) only rendered if a suitable element is found in the "normal" clipboard
 	 * and if it is valid to paste it at the given position.
 	 *
-	 * @param array $destinationPointer : Flexform pointer defining the destination location where a possible element would be pasted.
+	 * @param array $destinationPointer Flexform pointer defining the destination location where a possible element would be pasted.
 	 *
 	 * @return string HTML output: linked image(s) which act as paste button(s)
 	 */
@@ -375,7 +367,7 @@ class tx_templavoila_mod1_clipboard {
 	 * Render a reference count in form of an HTML table for the content
 	 * element specified by $uid.
 	 *
-	 * @param integer $uid : Element record Uid
+	 * @param integer $uid Element record Uid
 	 *
 	 * @return string HTML-table
 	 * @access protected

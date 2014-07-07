@@ -21,13 +21,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-/**
- * Submodule 'sidebar' for the templavoila page module
- *
- * $Id$
- *
- * @author Robert Lemke <robert@typo3.org>
- */
 
 /**
  * Submodule 'Sidebar' for the templavoila page module
@@ -36,38 +29,58 @@
  *       the page module all functions of this sidebar should be checked to make sure that they still work.
  *
  * @author Robert Lemke <robert@typo3.org>
- * @package TYPO3
- * @subpackage    tx_templavoila
  */
 class tx_templavoila_mod1_sidebar {
 
-	// References to the page module object
 	/**
+	 * A pointer to the parent object, that is the templavoila page module script. Set by calling the method init() of this class.
+	 *
 	 * @var \tx_templavoila_module1
 	 */
-	public $pObj; // A pointer to the parent object, that is the templavoila page module script. Set by calling the method init() of this class.
+	public $pObj;
 
 	/**
+	 * A reference to the doc object of the parent object.
+	 *
 	 * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
 	 */
-	public $doc; // A reference to the doc object of the parent object.
-	public $extKey; // A reference to extension key of the parent object.
+	public $doc;
 
-	// Public variables
-	public $position = 'toptabs'; // The visual position of the navigation bar. Possible values: toptabs, toprows, left
+	/**
+	 * A reference to extension key of the parent object.
+	 *
+	 * @var string
+	 */
+	public $extKey;
 
-	// Local variables
-	public $sideBarWidth = 180; // More or less a constant: The side bar's total width in position "left"
-	public $sideBarItems = array(); // Contains menuitems for the dynamic sidebar (associative array indexed by item key)
+	/**
+	 * The visual position of the navigation bar. Possible values: toptabs, toprows, left
+	 *
+	 * @var string
+	 */
+	public $position = 'toptabs';
+
+	/**
+	 * More or less a constant: The side bar's total width in position "left"
+	 *
+	 * @var integer
+	 */
+	public $sideBarWidth = 180;
+
+	/**
+	 * Contains menuitems for the dynamic sidebar (associative array indexed by item key)
+	 *
+	 * @var array
+	 */
+	public $sideBarItems = array();
 
 	/**
 	 * Initializes the side bar object. The calling class must make sure that the right locallang files are already loaded.
 	 * This method is usually called by the templavoila page module.
 	 *
-	 * @param $pObj : Reference to the parent object ($this)
+	 * @param \tx_templavoila_module1 $pObj Reference to the parent object ($this)
 	 *
 	 * @return void
-	 * @access public
 	 */
 	public function init(&$pObj) {
 		global $LANG;
@@ -113,15 +126,14 @@ class tx_templavoila_mod1_sidebar {
 	 * Adds an item to the sidebar. You are encouraged to use this function from your own extension to extend the sidebar
 	 * with new features. See the parameter descriptions for more details.
 	 *
-	 * @param string $itemKey : A unique identifier for your sidebar item. Generally use your extension key to make sure it is unique (eg. 'tx_templavoila_sidebar_item1').
-	 * @param object &$object : A reference to the instantiated class containing the method which renders the sidebar item (usually $this).
-	 * @param string $method : Name of the method within your instantiated class which renders the sidebar item. Case sensitive!
-	 * @param string $label : The label which will be shown for your item in the sidebar menu. Make sure that this label is localized!
-	 * @param integer $priority : An integer between 0 and 100. The higher the value, the higher the item will be displayed in the sidebar. Default is 50
+	 * @param string $itemKey A unique identifier for your sidebar item. Generally use your extension key to make sure it is unique (eg. 'tx_templavoila_sidebar_item1').
+	 * @param object &$object A reference to the instantiated class containing the method which renders the sidebar item (usually $this).
+	 * @param string $method Name of the method within your instantiated class which renders the sidebar item. Case sensitive!
+	 * @param string $label The label which will be shown for your item in the sidebar menu. Make sure that this label is localized!
+	 * @param integer $priority An integer between 0 and 100. The higher the value, the higher the item will be displayed in the sidebar. Default is 50
 	 * @param boolean $hideIfEmpty
 	 *
 	 * @return void
-	 * @access public
 	 */
 	public function addItem($itemKey, &$object, $method, $label, $priority = 50, $hideIfEmpty = FALSE) {
 		$hideIfEmpty = $pObj->modTSconfig['properties']['showTabsIfEmpty'] ? FALSE : $hideIfEmpty;
@@ -137,10 +149,9 @@ class tx_templavoila_mod1_sidebar {
 	/**
 	 * Removes a certain item from the sidebar.
 	 *
-	 * @param string $itemKey : The key identifying the sidebar item.
+	 * @param string $itemKey The key identifying the sidebar item.
 	 *
 	 * @return void
-	 * @access public
 	 */
 	public function removeItem($itemKey) {
 		unset ($this->sideBarItems[$itemKey]);
@@ -150,7 +161,6 @@ class tx_templavoila_mod1_sidebar {
 	 * Renders the sidebar and all its items.
 	 *
 	 * @return string HTML
-	 * @access public
 	 */
 	public function render() {
 		if (is_array($this->sideBarItems) && count($this->sideBarItems)) {
@@ -246,10 +256,6 @@ class tx_templavoila_mod1_sidebar {
 		return FALSE;
 	}
 
-
-
-
-
 	/********************************************
 	 *
 	 * Render functions for the sidebar items
@@ -262,7 +268,7 @@ class tx_templavoila_mod1_sidebar {
 	 * as a header above the content zones while editing the content of a page. This function renders those fields.
 	 * The fields to be displayed are defined in the page's datastructure.
 	 *
-	 * @param $pObj : Reference to the parent object ($this)
+	 * @param \tx_templavoila_module1 $pObj Reference to the parent object ($this)
 	 *
 	 * @return string HTML output
 	 * @access private
@@ -327,10 +333,9 @@ class tx_templavoila_mod1_sidebar {
 	/**
 	 * Renders the versioning sidebar item. Basically this is a copy from the template class.
 	 *
-	 * @param object &$pObj : Reference to the page object (the templavoila page module)
+	 * @param \tx_templavoila_module1 &$pObj Reference to the page object (the templavoila page module)
 	 *
 	 * @return string HTML output
-	 * @access public
 	 */
 	public function renderItem_versioning(&$pObj) {
 		if ($pObj->id > 0) {
@@ -363,10 +368,9 @@ class tx_templavoila_mod1_sidebar {
 	/**
 	 * Renders the "advanced functions" sidebar item.
 	 *
-	 * @param object &$pObj : Reference to the page object (the templavoila page module)
+	 * @param \tx_templavoila_module1 &$pObj Reference to the page object (the templavoila page module)
 	 *
 	 * @return string HTML output
-	 * @access public
 	 */
 	public function renderItem_advancedFunctions(&$pObj) {
 		global $LANG;
@@ -405,9 +409,6 @@ class tx_templavoila_mod1_sidebar {
 
 		return (count($tableRows)) ? '<table border="0" cellpadding="0" cellspacing="1" class="lrPadding" width="100%">' . implode('', $tableRows) . '</table>' : '';
 	}
-
-
-
 
 	/********************************************
 	 *
@@ -457,8 +458,8 @@ class tx_templavoila_mod1_sidebar {
 	/**
 	 * Comparison callback function for sidebar items sorting
 	 *
-	 * @param array $a : Array A
-	 * @param array $b : Array B
+	 * @param array $a Array A
+	 * @param array $b Array B
 	 *
 	 * @return boolean
 	 * @access private

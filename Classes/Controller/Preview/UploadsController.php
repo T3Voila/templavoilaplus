@@ -26,10 +26,12 @@ namespace Extension\Templavoila\Controller\Preview;
  ***************************************************************/
 class UploadsController extends TextController {
 
+	/**
+	 * @var string
+	 */
 	protected $previewField = 'media';
 
 	/**
-	 *
 	 * @param array $row
 	 *
 	 * @return string

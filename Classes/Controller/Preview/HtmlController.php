@@ -27,9 +27,9 @@ namespace Extension\Templavoila\Controller\Preview;
 class HtmlController extends TextController {
 
 	/**
-	 * (non-PHPdoc)
+	 * @param array $row
 	 *
-	 * @see classes/preview/tx_templavoila_preview_type_text#getPreviewData($row)
+	 * @return string
 	 */
 	protected function getPreviewData($row) {
 		return $this->preparePreviewData($row[$this->previewField], NULL, FALSE);

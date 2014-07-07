@@ -26,5 +26,8 @@ namespace Extension\Templavoila\Controller\Preview;
  ***************************************************************/
 class HeaderController extends TextController {
 
+	/**
+	 * @var string
+	 */
 	protected $previewField = 'header';
 }

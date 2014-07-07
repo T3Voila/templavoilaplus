@@ -23,20 +23,11 @@ namespace Extension\Templavoila\Domain\Model;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-/**
- * Contains HTML markup class
- *
- * $Id$
- *
- * @author Kasper Skaarhoj <kasper@typo3.com>
- */
 
 /**
  * HTML markup/search class; can mark up HTML with small images for each element AND as well help you extract parts of the HTML based on a socalled 'PATH'.
  *
  * @author Kasper Skaarhoj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage tx_templavoila
  */
 class HtmlMarkup {
 
@@ -50,35 +41,59 @@ class HtmlMarkup {
 	 */
 	protected $rangeStartPath;
 
-	// CONFIG:
 	/**
 	 * Determines which mode is used for markup. Options are:
-	 *    'explode' : In this mode A) container elementers (tables, tablecells...) are marked with borders and B) all the tag-images inserted are inserted 'relative' to the content which means no tag images can be layered over each other. Best mode if you want access to all elements (analytic) BUT it also spoils the page design the most of the options.
-	 *  'borders' : In this mode container elementers (tables, tablecells...) are marked with borders
-	 *  'source'  : In this mode all the HTML code is shown as source code. This mode should be used if you want code-insight OR analyse non-HTML code (like XML or WML)
-	 *  default   :    Original page is preserved and tag-images are added as layers (thus non-destructive). However tag-images may overlap each other so you cannot access the tag images you want.
+	 *    'explode' In this mode A) container elementers (tables, tablecells...) are marked with borders and B) all the tag-images inserted are inserted 'relative' to the content which means no tag images can be layered over each other. Best mode if you want access to all elements (analytic) BUT it also spoils the page design the most of the options.
+	 *  'borders' In this mode container elementers (tables, tablecells...) are marked with borders
+	 *  'source'  In this mode all the HTML code is shown as source code. This mode should be used if you want code-insight OR analyse non-HTML code (like XML or WML)
+	 *  default      Original page is preserved and tag-images are added as layers (thus non-destructive). However tag-images may overlap each other so you cannot access the tag images you want.
+	 *
+	 * @var string
 	 */
-	public $mode = ''; // [blank],
-	public $maxLineLengthInSourceMode = 150; // When in source mode the lines are truncated with "..." if longer than this number of characters.
+	public $mode = '';
+
+	/**
+	 * When in source mode the lines are truncated with "..." if longer than this number of characters.
+	 *
+	 * @var integer
+	 */
+	public $maxLineLengthInSourceMode = 150;
 
 	/**
 	 * The mode by which to detect the path of elements
-	 * TRUE (1)    : Default path detection; Will reset path by #id attributes. Will include class-attributes for elements. For the rest, its numeric.
-	 * FALSE    : No path detection applied
+	 * TRUE (1)    Default path detection; Will reset path by #id attributes. Will include class-attributes for elements. For the rest, its numeric.
+	 * FALSE    No path detection applied
 	 *
 	 * Currently only one path mode is used. However the idea is if other path modes might be liked in the future. But for now, that is not the case.
+	 *
+	 * @var string
 	 */
 	public $pathMode = '1';
 
 	/**
 	 * Maximum recursions into the HTML code. Works as a break to avoid run-away function calls if that is potentially possible.
+	 *
+	 * @var integer
 	 */
 	public $maxRecursion = 99;
 
-	public $onlyElements = ''; // Commalist of lowercase tag names which are the only ones which will be added as "GNYF" tag images. If empty, ALL HTML tags will have these elements.
-	public $checkboxPathsSet = array(); // Array with header section paths to set checkbox for.
+	/**
+	 * Commalist of lowercase tag names which are the only ones which will be added as "GNYF" tag images. If empty, ALL HTML tags will have these elements.
+	 *
+	 * @var string
+	 */
+	public $onlyElements = '';
 
-	// INTERNAL STATIC:
+	/**
+	 * Array with header section paths to set checkbox for.
+	 *
+	 * @var array
+	 */
+	public $checkboxPathsSet = array(); //
+
+	/**
+	 * @var boolean
+	 */
 	public $textGnyf = FALSE;
 
 	/**
@@ -87,11 +102,12 @@ class HtmlMarkup {
 	 *
 	 * Notice that there is a distinction between "block elements" which has a begin AND end tag (eg. '<table>...</table>' or '<p>...</p>') and "single elements" which is stand-alone (eg. '<img>'). I KNOW that in XML '<p>..</p>' with no content can legally be '<p/>', however this class does not support that at the moment (and will in fact choke..)
 	 * For each element you can define and array with key/values;
-	 *   'single' => TRUE                    :    Tells the parser that this tag is a single-tag, stand alone (eg. '<img>', '<input>' or '<br>')
-	 *   'anchor_outside' => TRUE            :    (Block elements only) This means that the tag-image for this element will be placed outside of the block. Default is to place the image inside.
-	 *   'wrap' => array('before','after')    :    (Block elements only) This means that the tag-image for this element will be wrapped in those HTML codes before being placed. Notice how this is cleverly used to represent '<tr>...</tr>' blocks.
+	 *   'single' => TRUE                       Tells the parser that this tag is a single-tag, stand alone (eg. '<img>', '<input>' or '<br>')
+	 *   'anchor_outside' => TRUE               (Block elements only) This means that the tag-image for this element will be placed outside of the block. Default is to place the image inside.
+	 *   'wrap' => array('before','after')       (Block elements only) This means that the tag-image for this element will be wrapped in those HTML codes before being placed. Notice how this is cleverly used to represent '<tr>...</tr>' blocks.
+	 *
+	 * @var array
 	 */
-
 	public static $tagConf = array(
 		'a' => array('anchor_outside' => 1, 'blocktype' => 'text'),
 		'abbr' => array('blocktype' => 'text'),
@@ -201,23 +217,71 @@ class HtmlMarkup {
 		'wbr' => array('blocktype' => 'text'),
 	);
 
+	/**
+	 * @var array
+	 */
 	public $tags;
 
-	// INTERNAL dynamic
 	/**
+	 * Will contain the HTML-parser object. (See init())
+	 *
 	 * @var \TYPO3\CMS\Core\Html\HtmlParser
 	 */
-	public $htmlParse; // Will contain the HTML-parser object. (See init())
+	public $htmlParse;
 
-	public $backPath = ''; // Will contain the backend back-path which is necessary when marking-up the code in order to fix all media paths.
-	public $gnyfStyle = ''; // will contain style-part for gnyf images. (see init())
-	public $gnyfImgAdd = ''; // Eg. 	onclick="return parent.mod.updPath('###PATH###');"
-	public $pathPrefix = ''; // Prefix for the path returned to the mod frame when tag image is clicked.
+	/**
+	 * Will contain the backend back-path which is necessary when marking-up the code in order to fix all media paths.
+	 *
+	 * @var string
+	 */
+	public $backPath = '';
+
+	/**
+	 * will contain style-part for gnyf images. (see init())
+	 *
+	 * @var string
+	 */
+	public $gnyfStyle = '';
+
+	/**
+	 * Eg. onclick="return parent.mod.updPath('###PATH###');"
+	 *
+	 * @var string
+	 */
+	public $gnyfImgAdd = '';
+
+	/**
+	 * Prefix for the path returned to the mod frame when tag image is clicked.
+	 *
+	 * @var string
+	 */
+	public $pathPrefix = '';
+
+	/**
+	 * @var string
+	 */
 	public $tDat = '';
 
-	public $elCountArray = array(); // Used to register the paths during parsing the code (see init())
-	public $elParentLevel = array(); // Used to register the all elements on the same level
-	public $searchPaths = ''; // Used to contain the paths to search for when searching for a paths. (see getContentBasedOnPath())
+	/**
+	 * Used to register the paths during parsing the code (see init())
+	 *
+	 * @var array
+	 */
+	public $elCountArray = array();
+
+	/**
+	 * Used to register the all elements on the same level
+	 *
+	 * @var array
+	 */
+	public $elParentLevel = array();
+
+	/**
+	 * Used to contain the paths to search for when searching for a paths. (see getContentBasedOnPath())
+	 *
+	 * @var string
+	 */
+	public $searchPaths = '';
 
 	/**
 	 * @return HtmlMarkup
@@ -320,11 +384,8 @@ class HtmlMarkup {
 
 		list($tagsBlock, $tagsSolo) = $this->splitTagTypes($tagList);
 		// sort array by key so that smallest keys are first - thus we don't get ... ???
-#debug(array($tagsBlock,$tagsSolo),'$tagsBlock,$tagsSolo');
 
 		$newBase = $this->recursiveBlockSplitting($content, $tagsBlock, $tagsSolo, 'search');
-
-#debug($this->elCountArray,'getContentBasedOnPath: '.md5(serialize($this->elCountArray)));
 
 		return array(
 			'searchparts' => $this->searchPaths,
@@ -345,7 +406,6 @@ class HtmlMarkup {
 			$pathInfo = $this->splitPath($pathString);
 			foreach ($pathInfo as $v) {
 				$contentP = $this->getContentBasedOnPath($outArray[1], array($v['fullpath']));
-#debug(array($contentP,$v['path']));
 				$pathExtract = $contentP['searchparts'][$v['path']];
 				if (isset($pathExtract['placeholder'])) {
 					$cSplit = explode($pathExtract['placeholder'], $contentP['content'], 2);
@@ -371,10 +431,8 @@ class HtmlMarkup {
 	public function splitContentToMappingInfo($fileContent, $currentMappingInfo) {
 		// Get paths into an array
 		$paths = $this->mappingInfoToSearchPath($currentMappingInfo);
-#debug($paths);
 		// Split content by the paths.
 		$divContent = $this->getContentBasedOnPath($fileContent, $paths);
-#debug($divContent);
 
 		// Token for splitting the content further.
 		$token = md5(microtime());
@@ -423,8 +481,6 @@ class HtmlMarkup {
 			}
 		}
 
-#		debug(array(md5(implode('',$newArray['cArray'])),md5($fileContent)));
-#		debug($newArray);
 		return $newArray;
 	}
 
@@ -673,7 +729,7 @@ class HtmlMarkup {
 	 * @param array $TA
 	 * @param array $data
 	 *
-	 * @return boolean|string
+	 * @return string|boolean
 	 */
 	public function mergeDataArrayToTemplateArray($TA, $data) {
 		if (is_array($TA['cArray'])) {
@@ -790,10 +846,10 @@ class HtmlMarkup {
 	/**
 	 * Will set header content and BodyTag for template.
 	 *
-	 * @param array $MappingInfo_head : ...
-	 * @param array $MappingData_head_cached : ...
-	 * @param string $BodyTag_cached : ...
-	 * @param boolean $pageRenderer : try to use the pageRenderer for script and style inclusion
+	 * @param array $MappingInfo_head ...
+	 * @param array $MappingData_head_cached ...
+	 * @param string $BodyTag_cached ...
+	 * @param boolean $pageRenderer try to use the pageRenderer for script and style inclusion
 	 *
 	 * @return void
 	 */
@@ -875,11 +931,6 @@ class HtmlMarkup {
 			$GLOBALS['TSFE']->defaultBodyTag = $BodyTag_cached;
 		}
 	}
-
-
-
-
-
 
 	/**
 	 *
@@ -966,19 +1017,6 @@ class HtmlMarkup {
 		return array(implode(',', $tagList_elements), implode(',', $tagList_single));
 	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 	/**
 	 *
 	 * SPLITTING functions
@@ -989,12 +1027,12 @@ class HtmlMarkup {
 	 * Main splitting function - will split the input $content HTML string into sections based on the strings with tags, $tagsBlock and $tagsSolo
 	 * WARNING: No currect support for XML-ended tags, eg. <p/>. In fact there is not even support for block tags like <p> which does not have a counter part ending it!!! (This support must come from the htmlparser class btw.)
 	 *
-	 * @param string $content : HTML content
-	 * @param string $tagsBlock : list of block tags; which has a start and end (eg. <p>...</p>, <table>...</table>, <tr>...</tr>, <div>...</div>)
-	 * @param string $tagsSolo : list of solo (single) tags; which are stand-alone (eg. <img>, <br>, <hr>, <input>)
-	 * @param string $mode : Denotes which mode of operation to apply: 'markup' will markup the html, 'search' will return HTML code with markers inserted for the found paths. Default does nothing.
-	 * @param string $path : Used to accumulate the tags 'path' in the document
-	 * @param integer $recursion : Used internally to control recursion.
+	 * @param string $content HTML content
+	 * @param string $tagsBlock list of block tags; which has a start and end (eg. <p>...</p>, <table>...</table>, <tr>...</tr>, <div>...</div>)
+	 * @param string $tagsSolo list of solo (single) tags; which are stand-alone (eg. <img>, <br>, <hr>, <input>)
+	 * @param string $mode Denotes which mode of operation to apply: 'markup' will markup the html, 'search' will return HTML code with markers inserted for the found paths. Default does nothing.
+	 * @param string $path Used to accumulate the tags 'path' in the document
+	 * @param integer $recursion Used internally to control recursion.
 	 *
 	 * @return string HTML
 	 */
@@ -1372,7 +1410,6 @@ class HtmlMarkup {
 	 */
 	public function makePath($path, $firstTagName, $attr) {
 		// Detect if pathMode is set and then construct the path based on the mode set.
-#debug($path,1);
 		if ($this->pathMode) {
 			switch ($this->pathMode) {
 				default:

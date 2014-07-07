@@ -21,13 +21,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-/**
- * Submodule 'wizards' for the templavoila page module
- *
- * $Id$
- *
- * @author Robert Lemke <robert@typo3.org>
- */
 
 /**
  * Submodule 'Wizards' for the templavoila page module
@@ -36,8 +29,6 @@
  *       the page module all functions of this wizard class should be checked to make sure that they still work.
  *
  * @author Robert Lemke <robert@typo3.org>
- * @package TYPO3
- * @subpackage    tx_templavoila
  */
 class tx_templavoila_mod1_wizards {
 
@@ -46,23 +37,37 @@ class tx_templavoila_mod1_wizards {
 	 */
 	protected $apiObj;
 
-	// References to the page module object
+	/**
+	 * @var \tx_templavoila_module1
+	 */
 	public $pObj; // A pointer to the parent object, that is the templavoila page module script. Set by calling the method init() of this class.
 
 	/**
+	 * A reference to the doc object of the parent object.
+	 *
 	 * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
 	 */
-	public $doc; // A reference to the doc object of the parent object.
-	public $extKey; // A reference to extension key of the parent object.
-	public $TCAdefaultOverride; // Config of TCAdefaults
+	public $doc;
 
-	// Local variables
+	/**
+	 * A reference to extension key of the parent object.
+	 *
+	 * @var string
+	 */
+	public $extKey;
+
+	/**
+	 * Config of TCAdefaults
+	 *
+	 * @var array
+	 */
+	public $TCAdefaultOverride;
 
 	/**
 	 * Initializes the wizards object. The calling class must make sure that the right locallang files are already loaded.
 	 * This method is usually called by the templavoila page module.
 	 *
-	 * @param $pObj : Reference to the parent object ($this)
+	 * @param \tx_templavoila_module1 $pObj Reference to the parent object ($this)
 	 *
 	 * @return void
 	 */
@@ -74,10 +79,6 @@ class tx_templavoila_mod1_wizards {
 		$this->apiObj =& $this->pObj->apiObj;
 	}
 
-
-
-
-
 	/********************************************
 	 *
 	 * Wizards render functions
@@ -87,7 +88,7 @@ class tx_templavoila_mod1_wizards {
 	/**
 	 * Creates the screen for "new page wizard"
 	 *
-	 * @param integer $positionPid : Can be positive and negative depending of where the new page is going: Negative always points to a position AFTER the page having the abs. value of the positionId. Positive numbers means to create as the first subpage to another page.
+	 * @param integer $positionPid Can be positive and negative depending of where the new page is going: Negative always points to a position AFTER the page having the abs. value of the positionId. Positive numbers means to create as the first subpage to another page.
 	 *
 	 * @return string Content for the screen output.
 	 * @todo  Check required field(s), support t3d
@@ -211,7 +212,6 @@ class tx_templavoila_mod1_wizards {
 		$tmplSelectorCode = '';
 		$tmplSelector = $this->renderTemplateSelector($positionPid, 'tmplobj');
 		if ($tmplSelector) {
-#			$tmplSelectorCode.='<em>'.$LANG->getLL ('createnewpage_templateobject_createemptypage').'</em>';
 			$tmplSelectorCode .= $this->doc->spacer(5);
 			$tmplSelectorCode .= $tmplSelector;
 			$tmplSelectorCode .= $this->doc->spacer(10);
@@ -241,10 +241,6 @@ class tx_templavoila_mod1_wizards {
 		return $content;
 	}
 
-
-
-
-
 	/********************************************
 	 *
 	 * Wizard related helper functions
@@ -255,7 +251,7 @@ class tx_templavoila_mod1_wizards {
 	 * Renders the template selector.
 	 *
 	 * @param integer $positionPid Position id. Can be positive and negative depending of where the new page is going: Negative always points to a position AFTER the page having the abs. value of the positionId. Positive numbers means to create as the first subpage to another page.
-	 * @param string $templateType : The template type, 'tmplobj' or 't3d'
+	 * @param string $templateType The template type, 'tmplobj' or 't3d'
 	 *
 	 * @return string HTML output containing a table with the template selector
 	 */
@@ -412,8 +408,8 @@ class tx_templavoila_mod1_wizards {
 	/**
 	 * Performs the neccessary steps to creates a new page
 	 *
-	 * @param array $pageArray : array containing the fields for the new page
-	 * @param integer $positionPid : location within the page tree (parent id)
+	 * @param array $pageArray array containing the fields for the new page
+	 * @param integer $positionPid location within the page tree (parent id)
 	 *
 	 * @return integer uid of the new page record
 	 */
@@ -467,7 +463,7 @@ class tx_templavoila_mod1_wizards {
 	 *
 	 * @param string $table Table nme to fetch records from
 	 *
-	 * @return string    Condition or empty string
+	 * @return string Condition or empty string
 	 */
 	public function buildRecordWhere($table) {
 		$result = array();
@@ -492,7 +488,7 @@ class tx_templavoila_mod1_wizards {
 	 * @param integer $positionPid
 	 * @param string $fieldName field name of TCAFORM
 	 *
-	 * @access    private
+	 * @access private
 	 * @return string comma seperated list of integer
 	 */
 	public function getDisallowedTSconfigItemsByFieldName($positionPid, $fieldName) {

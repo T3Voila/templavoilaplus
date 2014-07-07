@@ -25,11 +25,9 @@
 /**
  * Submodule 'dsEdit' for the mapping module
  *
- * $Id: index.php 17597 2009-03-08 17:59:14Z steffenk $
- *
  * @author Kasper Skaarhoj <kasperYYYY@typo3.com>
- * @co-author    Robert Lemke <robert@typo3.org>
- * @co-author    Steffen kamper <info@sk-typo3.de>
+ * @co-author Robert Lemke <robert@typo3.org>
+ * @co-author Steffen kamper <info@sk-typo3.de>
  */
 class tx_templavoila_cm1_dsEdit {
 
@@ -44,7 +42,7 @@ class tx_templavoila_cm1_dsEdit {
 	protected $oldStyleColumnNumber = 0;
 
 	/**
-	 * @param $pObj
+	 * @param mixed $pObj
 	 */
 	public function init($pObj) {
 		$this->pObj = $pObj;

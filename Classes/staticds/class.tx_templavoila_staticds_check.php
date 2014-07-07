@@ -68,7 +68,7 @@ class tx_templavoila_staticds_check {
 	/**
 	 * Is static DS enabled?
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	protected function staticDsIsEnabled() {
 		$conf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
@@ -78,7 +78,7 @@ class tx_templavoila_staticds_check {
 	/**
 	 * Get data structure count
 	 *
-	 * @return int
+	 * @return integer
 	 */
 	protected function datastructureDbCount() {
 		return \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTcountRows(

@@ -176,7 +176,7 @@ class ReferenceElementWizardController extends \TYPO3\CMS\Backend\Module\Abstrac
 	/**
 	 * References all unreferenced elements in the given page tree
 	 *
-	 * @param \TYPO3\CMS\Backend\Tree\View\PageTreeView $tree : Page tree array
+	 * @param \TYPO3\CMS\Backend\Tree\View\PageTreeView $tree Page tree array
 	 *
 	 * @return void
 	 */

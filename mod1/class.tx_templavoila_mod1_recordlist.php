@@ -21,13 +21,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-/**
- * Submodule 'records' for the templavoila page module
- *
- * $Id$
- *
- * @author Dmitry Dulepov <dmitry@typo3.org>
- */
 
 // Need List lables for delete confirmation
 $LANG->includeLLFile('EXT:lang/locallang_mod_web_list.xml');
@@ -36,17 +29,18 @@ $LANG->includeLLFile('EXT:lang/locallang_mod_web_list.xml');
  * Extension of standard List module
  *
  * @author Dmitry Dulepov <dmitry@typo3.org>
- * @package TYPO3
- * @subpackage    tx_templavoila
  */
 class tx_templavoila_mod1_recordlist extends \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList {
 
+	/**
+	 * @var \tx_templavoila_module1
+	 */
 	public $pObj;
 
 	/**
 	 * Prepares object to run.
 	 *
-	 * @param object &$pObj Parent object (mod1/index.php)
+	 * @param \tx_templavoila_module1 &$pObj Parent object (mod1/index.php)
 	 *
 	 * @return void
 	 */

@@ -25,13 +25,13 @@
 /**
  * Class 'tx_templavoila_mod1_ajax' for the 'templavoila' extension.
  *
- * $Id$
- *
  * @author Nikolas Hagelstein <lists@shr-now.de>
- *
  */
 class tx_templavoila_mod1_ajax {
 
+	/**
+	 * @var \Extension\Templavoila\Service\ApiService
+	 */
 	private $apiObj;
 
 	/**
@@ -51,11 +51,9 @@ class tx_templavoila_mod1_ajax {
 	 */
 	public function moveRecord($params, &$ajaxObj) {
 
-		$sourcePointer = $this->apiObj
-			->flexform_getPointerFromString(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('source'));
+		$sourcePointer = $this->apiObj->flexform_getPointerFromString(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('source'));
 
-		$destinationPointer = $this->apiObj
-			->flexform_getPointerFromString(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('destination'));
+		$destinationPointer = $this->apiObj->flexform_getPointerFromString(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('destination'));
 
 		$this->apiObj->moveElement($sourcePointer, $destinationPointer);
 	}
