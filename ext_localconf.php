@@ -236,20 +236,6 @@ templavoila.wizards.newContentElement.renderMode =
 
 ');
 
-if (\TYPO3\CMS\Core\Utility\GeneralUtility::compat_version('4.3')) {
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('
-templavoila.wizards.newContentElement.wizardItems.special.elements.media {
-	icon = gfx/c_wiz/multimedia.gif
-	title = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:special_media_title
-	description = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:special_media_description
-	tt_content_defValues {
-		CType = media
-	}
-}
-templavoila.wizards.newContentElement.wizardItems.special.show = uploads,media,menu,html,div
-');
-}
-
 $GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX']['tx_templavoila_mod1_ajax::moveRecord'] =
 	'EXT:templavoila/mod1/class.tx_templavoila_mod1_ajax.php:tx_templavoila_mod1_ajax->moveRecord';
 
