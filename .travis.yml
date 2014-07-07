@@ -27,14 +27,3 @@ script:
     export typo3DatabaseUsername="root";
     export typo3DatabasePassword="";
     ./bin/phpunit --colors -c typo3/sysext/core/Build/FunctionalTests.xml ./typo3conf/ext/templavoila/Tests/Functional/ApiTest.php
-
-    echo;
-    echo "Running unit tests";
-    ./bin/phpunit --coverage-clover=./typo3conf/ext/templavoila/coverage.clover --colors -c typo3conf/ext/templavoila/Tests/Build/UnitTests.xml ./typo3conf/ext/templavoila/Tests/Unit/
-
-after_script:
-  - echo;
-  - echo "Sending code coverage data";
-  - cd ./typo3conf/ext/templavoila/
-  - wget https://scrutinizer-ci.com/ocular.phar
-  - php ocular.phar code-coverage:upload --format=php-clover coverage.clover
