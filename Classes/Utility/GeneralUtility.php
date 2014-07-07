@@ -190,26 +190,4 @@ final class GeneralUtility {
 		return $foreignRefs;
 	}
 
-	/**
-	 * Returns an integer from a three part version number, eg '4.12.3' -> 4012003
-	 * Compatibility layer to make sure TV works in systems < 4.6
-	 *
-	 * @see \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger
-	 *
-	 * @param $version string Version number on format x.x.x
-	 *
-	 * @return integer Integer version of version number (where each part can count to 999)
-	 *
-	 * @todo: obsolete, to be refactored
-	 */
-	public static function convertVersionNumberToInteger($version) {
-		if (class_exists('\TYPO3\CMS\Core\Utility\VersionNumberUtility')) {
-			$result = \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger($version);
-		} else {
-			$result = \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger($version);
-		}
-
-		return $result;
-	}
-
 }
