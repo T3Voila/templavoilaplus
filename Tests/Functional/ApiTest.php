@@ -14,10 +14,6 @@ namespace Extension\Templavoila\Tests\Functional;
  * The TYPO3 project - inspiring people to share!
  */
 
-if (!class_exists('TYPO3\CMS\Core\Tests\FunctionalTestCase')) {
-	return;
-}
-
 /**
  * @author Robert Lemke <robert@typo3.org>
  * @author Alexander Schnitzler <typo3@alexanderschnitzler.de>
