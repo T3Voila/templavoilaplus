@@ -91,8 +91,8 @@ Automatic Repair:
 			'deleteMe' => array(),
 		);
 
-		$startingPoint = $this->cli_isArg('--pid') ? \Extension\Templavoila\Utility\GeneralUtility::forceIntegerInRange($this->cli_argValue('--pid'), 0) : 0;
-		$depth = $this->cli_isArg('--depth') ? \Extension\Templavoila\Utility\GeneralUtility::forceIntegerInRange($this->cli_argValue('--depth'), 0) : 1000;
+		$startingPoint = $this->cli_isArg('--pid') ? \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->cli_argValue('--pid'), 0) : 0;
+		$depth = $this->cli_isArg('--depth') ? \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->cli_argValue('--depth'), 0) : 1000;
 		$this->excludePageIdList = $this->cli_isArg('--excludePageIdList') ? GeneralUtility::intExplode(',', $this->cli_argValue('--excludePageIdList')) : array();
 
 		$this->resultArray = & $resultArray;

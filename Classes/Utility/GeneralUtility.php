@@ -212,25 +212,4 @@ final class GeneralUtility {
 		return $result;
 	}
 
-	/**
-	 * Forces the integer $theInt into the boundaries of $min and $max. If the $theInt is FALSE then the $defaultValue is applied.
-	 *
-	 * @param integer $theInt Input value
-	 * @param integer $min Lower limit
-	 * @param integer $max Higher limit
-	 * @param integer $defaultValue Default value if input is FALSE.
-	 *
-	 * @return integer The input value forced into the boundaries of $min and $max
-	 *
-	 * @todo: obsolete, to be refactored
-	 */
-	public static function forceIntegerInRange($theInt, $min, $max = 2000000000, $defaultValue = 0) {
-		if (class_exists('\TYPO3\CMS\Core\Utility\MathUtility')) {
-			$result = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($theInt, $min, $max, $defaultValue);
-		} else {
-			$result = \TYPO3\CMS\Core\Utility\GeneralUtility::intInRange($theInt, $min, $max, $defaultValue);
-		}
-
-		return $result;
-	}
 }
