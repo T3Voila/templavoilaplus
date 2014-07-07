@@ -259,7 +259,8 @@ class ReferenceElementWizardController extends \TYPO3\CMS\Backend\Module\Abstrac
 	 */
 	protected function getUnreferencedElementsRecords($pid) {
 		$elementRecordsArr = array();
-		$referencedElementsArr = $this->templavoilaAPIObj->flexform_getListOfSubElementUidsRecursively('pages', $pid, $dummyArr = array());
+		$dummyArr = array();
+		$referencedElementsArr = $this->templavoilaAPIObj->flexform_getListOfSubElementUidsRecursively('pages', $pid, $dummyArr);
 
 		$res = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTquery(
 			'uid, header, bodytext, sys_language_uid, colPos',
@@ -295,11 +296,6 @@ class ReferenceElementWizardController extends \TYPO3\CMS\Backend\Module\Abstrac
 	 * @return array
 	 */
 	protected function getAvailableLanguages($id = 0, $onlyIsoCoded = TRUE, $setDefault = TRUE, $setMulti = FALSE) {
-		$flagAbsPath = GeneralUtility::getFileAbsFileName(
-			$GLOBALS['TCA']['sys_language']['columns']['flag']['config']['fileFolder']
-		);
-		$flagIconPath = $GLOBALS['BACK_PATH'] . '../' . substr($flagAbsPath, strlen(PATH_site));
-
 		$output = array();
 		$excludeHidden = \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isAdmin() ? '1' : 'sys_language.hidden=0';
 

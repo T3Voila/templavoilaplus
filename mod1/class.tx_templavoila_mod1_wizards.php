@@ -94,7 +94,7 @@ class tx_templavoila_mod1_wizards {
 	 * @todo  Check required field(s), support t3d
 	 */
 	public function renderWizard_createNewPage($positionPid) {
-		global $LANG, $BE_USER, $TYPO3_CONF_VARS;
+		global $TYPO3_CONF_VARS;
 
 		// Get default TCA values specific for the page and user
 		$temp = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig(abs($positionPid), 'TCAdefaults');
@@ -205,6 +205,7 @@ class tx_templavoila_mod1_wizards {
 		// fix due to #13762
 		$this->doc->inDocStyles .= '.c-inputButton{ cursor:pointer; }';
 
+		$content = '';
 		$content .= $this->doc->header(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xml:db_new.php.pagetitle'));
 		$content .= $this->doc->startPage(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('createnewpage_title'));
 
@@ -256,8 +257,6 @@ class tx_templavoila_mod1_wizards {
 	 * @return string HTML output containing a table with the template selector
 	 */
 	public function renderTemplateSelector($positionPid, $templateType = 'tmplobj') {
-		global $LANG, $TYPO3_DB;
-
 		// Negative PID values is pointing to a page on the same level as the current.
 		if ($positionPid < 0) {
 			$pidRow = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('pages', abs($positionPid), 'pid');
@@ -355,6 +354,7 @@ class tx_templavoila_mod1_wizards {
 								$pageTree = current($import->dat['header']['pagetree']);
 
 								// Thumbnail icon:
+								$iconTag = '';
 								if (is_array($import->dat['header']['thumbnail'])) {
 									$pI = pathinfo($import->dat['header']['thumbnail']['filename']);
 									if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList('gif,jpg,png,jpeg', strtolower($pI['extension']))) {
@@ -370,7 +370,6 @@ class tx_templavoila_mod1_wizards {
 											$iconTag = '<img src="' . $this->doc->backPath . '../' . substr($fileName, strlen(PATH_site)) . '" ' . $import->dat['header']['thumbnail']['imgInfo'][3] . ' vspace="5" style="border: solid black 1px;" alt="" />';
 										} else {
 											\TYPO3\CMS\Core\Utility\GeneralUtility::unlink_tempfile($fileName);
-											$iconTag = '';
 										}
 									}
 								}
@@ -389,6 +388,7 @@ class tx_templavoila_mod1_wizards {
 				break;
 		}
 
+		$content = '';
 		if (is_array($tmplHTML) && count($tmplHTML)) {
 			$counter = 0;
 			$content .= '<table>';
@@ -450,8 +450,6 @@ class tx_templavoila_mod1_wizards {
 	 * @return \TYPO3\CMS\Impexp\ImportExport
 	 */
 	public function getImportObject() {
-		global $TYPO3_CONF_VARS;
-
 		$import = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_impexp');
 		$import->init();
 
@@ -493,9 +491,6 @@ class tx_templavoila_mod1_wizards {
 	 */
 	public function getDisallowedTSconfigItemsByFieldName($positionPid, $fieldName) {
 
-		$disallowPageTemplateItems = '';
-		$disallowPageTemplateList = array();
-
 		// Negative PID values is pointing to a page on the same level as the current.
 		if ($positionPid < 0) {
 			$pidRow = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('pages', abs($positionPid), 'pid');
@@ -509,6 +504,8 @@ class tx_templavoila_mod1_wizards {
 
 		if (isset($disallowPageTemplateStruct['properties']['removeItems'])) {
 			$disallowedPageTemplateList = $disallowPageTemplateStruct['properties']['removeItems'];
+		} else {
+			$disallowedPageTemplateList = '';
 		}
 
 		$tmp_disallowedPageTemplateItems = array_unique(\TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', \TYPO3\CMS\Core\Utility\GeneralUtility::expandList($disallowedPageTemplateList), TRUE));

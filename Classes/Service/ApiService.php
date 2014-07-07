@@ -140,6 +140,9 @@ class ApiService {
 
 		if ($destinationPointer['position'] > 0) {
 			$currentReferencesArr = $this->flexform_getElementReferencesFromXML($parentRecord['tx_templavoila_flex'], $destinationPointer);
+			/**
+			 * @todo: check why $currentReferencesArr isn't used
+			 */
 		}
 		$newRecordPid = ($destinationPointer['table'] == 'pages' ? ($parentRecord['pid'] == -1 ? $parentRecord['t3ver_oid'] : $parentRecord['uid']) : $parentRecord['pid']);
 
@@ -405,6 +408,8 @@ class ApiService {
 	 * @return mixed TRUE or something else (depends on operation) if operation was successful, otherwise FALSE
 	 */
 	public function process($mode, $sourcePointer, $destinationPointer = NULL, $onlyHandleReferences = FALSE) {
+		$destinationReferencesArr = array();
+		$destinationParentRecord = array();
 
 		// Check and get all information about the source position:
 		if (!$sourcePointer = $this->flexform_getValidPointer($sourcePointer)) {
@@ -473,6 +478,9 @@ class ApiService {
 				break;
 			case 'delete':
 				$result = $this->process_delete($sourcePointer, $sourceReferencesArr, $sourceElementRecord['uid']);
+				break;
+			default:
+				$result = FALSE;
 				break;
 		}
 
@@ -658,7 +666,10 @@ class ApiService {
 		$staticLanguageRows = BackendUtility::getRecordsByField('static_languages', 'lg_iso_2', $destinationPointer['_languageKey']);
 		if (is_array($staticLanguageRows) && isset($staticLanguageRows[0]['uid'])) {
 			$languageRecords = BackendUtility::getRecordsByField('sys_language', 'static_lang_isocode', $staticLanguageRows[0]['uid']);
+		} else {
+			$languageRecords = array();
 		}
+
 		if (is_array($languageRecords) && isset($languageRecords[0]['uid'])) {
 			$destinationLanguageUid = $languageRecords[0]['uid'];
 		} else {

@@ -34,7 +34,7 @@
 class tx_templavoila_cm1_eTypes {
 
 	/**
-	 * @var tx_templavoila_cm1
+	 * @var \tx_templavoila_cm1
 	 */
 	public $pObj;
 
@@ -44,7 +44,7 @@ class tx_templavoila_cm1_eTypes {
 	public $eTypeArray;
 
 	/**
-	 * @param mixed $pObj
+	 * @param \tx_templavoila_cm1 $pObj
 	 */
 	public function init($pObj) {
 		$this->pObj = $pObj;
@@ -63,9 +63,6 @@ class tx_templavoila_cm1_eTypes {
 	 * @see renderFile()
 	 */
 	public function substEtypeWithRealStuff(&$elArray, $v_sub = array(), $scope = 0) {
-
-		$eTypeCECounter = 0;
-
 		// Traverse array
 		foreach ($elArray as $key => $value) {
 			// this MUST not ever enter the XMLs (it will break TV)

@@ -508,7 +508,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @return void
 	 */
 	public function main_mode() {
-		global $LANG, $BACK_PATH;
+		global $BACK_PATH;
 
 		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('template');
 		$this->doc->docType = 'xhtml_trans';
@@ -689,8 +689,6 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @return void
 	 */
 	public function renderFile() {
-		global $TYPO3_DB;
-
 		if (@is_file($this->displayFile) && \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->displayFile)) {
 
 			// Converting GPvars into a "cmd" value:
@@ -895,7 +893,6 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			switch ($cmd) {
 				// If it is requested to save the current DS and mapping information to a DS and TO record, then...:
 				case 'saveDSandTO':
-					$newID = '';
 					// Init TCEmain object and store:
 					$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance("TYPO3\\CMS\\Core\\DataHandling\\DataHandler");
 					$tce->stripslashes_values = 0;
@@ -1299,7 +1296,6 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @return void
 	 */
 	public function renderDSO() {
-		global $TYPO3_DB;
 		if (intval($this->displayUid) > 0) { // TODO: static ds support
 			$row = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('tx_templavoila_datastructure', $this->displayUid);
 			if (is_array($row)) {
@@ -1967,7 +1963,6 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		array_unshift($pathRendered, $this->linkForDisplayOfPath('[ROOT]', ''));
 
 		// Get attributes of the extracted content:
-		$attrDat = array();
 		$contentFromPath = $this->markupObj->splitByPath($fileContent, $path); // ,'td#content table[1] tr[1]','td#content table[1]','map#cdf / INNER','td#content table[2] tr[1] td[1] table[1] tr[4] td.bckgd1[2] table[1] tr[1] td[1] table[1] tr[1] td.bold1px[1] img[1] / RANGE:img[2]'
 		$firstTag = $this->markupObj->htmlParse->getFirstTag($contentFromPath[1]);
 		list($attrDat) = $this->markupObj->htmlParse->get_tag_attributes($firstTag, 1);
@@ -2264,8 +2259,6 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 								// Render HTML path:
 								list($pI) = $this->markupObj->splitPath($currentMappingInfo[$key]['MAP_EL']);
 
-								$tagIcon = \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila') . 'html_tags/' . $pI['el'] . '.gif', 'height="17"') . ' alt="" border="0"';
-
 								$okTitle = htmlspecialchars($cF ? sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('displayDSContentFound'), strlen($contentSplittedByMapping['cArray'][$key])) . ($multilineTooltips ? ':' . chr(10) . chr(10) . $cF : '') : \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('displayDSContentEmpty'));
 
 								$rowCells['htmlPath'] = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-ok', array('title' => $okTitle)) .
@@ -2316,7 +2309,6 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 								}
 
 								// Create mapping options:
-								$didSetSel = 0;
 								$opt = array();
 								foreach ($optDat as $k => $v) {
 									list($pI) = $this->markupObj->splitPath($k);
@@ -2330,7 +2322,6 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 											if ($k == $currentMappingInfo[$key]['MAP_EL']) {
 												$sel = ' selected="selected"';
-												$didSetSel = 1;
 											} else {
 												$sel = '';
 											}
@@ -2619,8 +2610,6 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @return void Modification in $this->storageFolders array
 	 */
 	public function findingStorageFolderIds() {
-		global $TYPO3_DB;
-
 		// Init:
 		$readPerms = \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->getPagePermsClause(1);
 		$this->storageFolders = array();

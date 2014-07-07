@@ -83,8 +83,6 @@ class tx_templavoila_mod1_sidebar {
 	 * @return void
 	 */
 	public function init(&$pObj) {
-		global $LANG;
-
 		// Make local reference to some important variables:
 		$this->pObj =& $pObj;
 		$this->doc =& $this->pObj->doc;
@@ -274,7 +272,7 @@ class tx_templavoila_mod1_sidebar {
 	 * @access private
 	 */
 	public function renderItem_headerFields(&$pObj) {
-		global $LANG, $TCA;
+		global $TCA;
 
 		$output = '';
 		if ($pObj->rootElementTable != 'pages') {
@@ -373,8 +371,6 @@ class tx_templavoila_mod1_sidebar {
 	 * @return string HTML output
 	 */
 	public function renderItem_advancedFunctions(&$pObj) {
-		global $LANG;
-
 		$tableRows = array('
 			<tr class="bgColor4-20">
 				<th colspan="3">&nbsp;</th>

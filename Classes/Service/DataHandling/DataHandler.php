@@ -71,8 +71,6 @@ class DataHandler {
 	 * @return void
 	 */
 	public function processDatamap_preProcessFieldArray(array &$incomingFieldArray, $table, $id, \TYPO3\CMS\Core\DataHandling\DataHandler &$reference) {
-		global $TYPO3_DB, $TCA;
-
 		if ($this->debug) {
 			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('processDatamap_preProcessFieldArray', 'templavoila', 0, array($incomingFieldArray, $table, $id));
 		}
@@ -130,6 +128,8 @@ class DataHandler {
 					$templaVoilaAPI = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Service\\ApiService');
 					$templateObjectRecords = $templaVoilaAPI->ds_getAvailablePageTORecords($pid);
 
+					$matchingTOUid = 0;
+					$matchingNextTOUid = 0;
 					if (is_array($templateObjectRecords)) {
 						foreach ($templateObjectRecords as $templateObjectRecord) {
 							if (!isset ($matchingTOUid) && $templateObjectRecord['datastructure'] == $fieldArray['tx_templavoila_ds']) {
@@ -212,6 +212,7 @@ page.10.disableExplosivePreview = 1
 		switch ($status) {
 			case 'new' :
 				if (!isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_tcemain']['doNotInsertElementRefsToPage'])) {
+					$destinationFlexformPointer = FALSE;
 
 					\TYPO3\CMS\Backend\Utility\BackendUtility::fixVersioningPid($table, $fieldArray);
 
@@ -257,8 +258,7 @@ page.10.disableExplosivePreview = 1
 								}
 							}
 						}
-					}
-					if (is_array($destinationFlexformPointer)) {
+					} else {
 						$templaVoilaAPI->insertElement_setElementReferences($destinationFlexformPointer, $reference->substNEWwithIDs[$id]);
 					}
 				}
@@ -324,7 +324,7 @@ page.10.disableExplosivePreview = 1
 				);
 				$ref = NULL;
 				if (!\TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction('EXT:templavoila/Classes/Service/UserFunc/Access.php:&\Extension\Templavoila\Service\UserFunc\Access->recordEditAccessInternals', $params, $ref)) {
-					$reference->newlog(sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL($status != 'new' ? 'access_noModifyAccess' : 'access_noCrateAccess'), $table, $id), 1);
+					$reference->newlog(sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('access_noModifyAccess'), $table, $id), 1);
 					$command = ''; // Do not delete! A hack but there is no other way to prevent deletion...
 				} else {
 					if (intval($record['t3ver_oid']) > 0 && $record['pid'] == -1) {
@@ -389,8 +389,6 @@ page.10.disableExplosivePreview = 1
 	 * @return void
 	 */
 	public function moveRecord_firstElementPostProcess($table, $uid, $destPid, $sourceRecordBeforeMove, $updateFields, &$reference) {
-		global $TCA;
-
 		if ($this->debug) {
 			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('moveRecord_firstElementPostProcess', 'templavoila', 0, array($table, $uid, $destPid, $sourceRecordBeforeMove, $updateFields));
 		}
@@ -476,7 +474,7 @@ page.10.disableExplosivePreview = 1
 	 * @access protected
 	 */
 	public function correctSortingAndColposFieldsForPage($flexformXML, $pid) {
-		global $TCA, $TYPO3_DB;
+		global $TCA;
 
 		$elementsOnThisPage = array();
 		$templaVoilaAPI = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Service\\ApiService');
@@ -525,7 +523,6 @@ page.10.disableExplosivePreview = 1
 			}
 		}
 
-		$elementCounter = 1;
 		$sortNumber = 100;
 
 		$sortByField = $TCA['tt_content']['ctrl']['sortby'];
@@ -637,12 +634,12 @@ page.10.disableExplosivePreview = 1
 				$conf = $TCA[$table]['columns'][$field]['config'];
 				$currentRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $id);
 				$dataStructArray = \TYPO3\CMS\Backend\Utility\BackendUtility::getFlexFormDS($conf, $currentRecord, $table, $field, TRUE);
-				foreach ($data[$field]['data'] as $sheet => $sheetData) {
+				foreach ($data[$field]['data'] as $sheetData) {
 					if (!is_array($sheetData) || !is_array($dataStructArray['ROOT']['el'])) {
 						$res = FALSE;
 						break;
 					}
-					foreach ($sheetData as $lDef => $lData) {
+					foreach ($sheetData as $lData) {
 						if (!is_array($lData)) {
 							$res = FALSE;
 							break;

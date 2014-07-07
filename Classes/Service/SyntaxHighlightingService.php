@@ -140,7 +140,6 @@ class SyntaxHighlightingService {
 		foreach ($struct as $k => $v) {
 			if ($k % 2) {
 				$nextApp = $app;
-				$wrap = array('', '');
 
 				switch ($app) {
 					case 'TCEforms':
@@ -251,7 +250,6 @@ class SyntaxHighlightingService {
 		// Traverse structure:
 		foreach ($struct as $k => $v) {
 			if ($k % 2) {
-				$wrap = array('', '');
 
 				if ($v['tagName'] == 'numIndex') {
 					$app = 'numIndex';

@@ -127,7 +127,7 @@ final class GeneralUtility {
 	 */
 	public static function getDenyListForUser() {
 		$denyItems = array();
-		foreach (\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->userGroups as $group) {
+		foreach (static::getBackendUser()->userGroups as $group) {
 			$groupDenyItems = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $group['tx_templavoila_access'], TRUE);
 			$denyItems = array_merge($denyItems, $groupDenyItems);
 		}
@@ -152,10 +152,10 @@ final class GeneralUtility {
 		if (!is_array($references)) {
 			$references = array();
 		}
-		$refrows = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTgetRows(
+		$refrows = static::getDatabaseConnection()->exec_SELECTgetRows(
 			'*',
 			'sys_refindex',
-			'ref_table=' . \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr($element['table'], 'sys_refindex') .
+			'ref_table=' . static::getDatabaseConnection()->fullQuoteStr($element['table'], 'sys_refindex') .
 			' AND ref_uid=' . intval($element['uid']) .
 			' AND deleted=0'
 		);
@@ -213,7 +213,6 @@ final class GeneralUtility {
 	 * @todo: obsolete, to be refactored
 	 */
 	public static function convertVersionNumberToInteger($version) {
-		$result = 0;
 		if (class_exists('\TYPO3\CMS\Core\Utility\VersionNumberUtility')) {
 			$result = \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger($version);
 		} else {

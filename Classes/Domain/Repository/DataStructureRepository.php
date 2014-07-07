@@ -78,7 +78,7 @@ class DataStructureRepository {
 		$dscollection = array();
 		$confArr = self::getStaticDatastructureConfiguration();
 		if (count($confArr)) {
-			foreach ($confArr as $key => $conf) {
+			foreach ($confArr as $conf) {
 				$ds = $this->getDatastructureByUidOrFilename($conf['path']);
 				$pids = $ds->getStoragePids();
 				if ($pids == '' || \TYPO3\CMS\Core\Utility\GeneralUtility::inList($pids, $pid)) {
@@ -117,7 +117,7 @@ class DataStructureRepository {
 		$dscollection = array();
 		$confArr = self::getStaticDatastructureConfiguration();
 		if (count($confArr)) {
-			foreach ($confArr as $key => $conf) {
+			foreach ($confArr as $conf) {
 				if ($conf['scope'] == $scope) {
 					$ds = $this->getDatastructureByUidOrFilename($conf['path']);
 					$pids = $ds->getStoragePids();
@@ -157,7 +157,7 @@ class DataStructureRepository {
 		$dscollection = array();
 		$confArr = self::getStaticDatastructureConfiguration();
 		if (count($confArr)) {
-			foreach ($confArr as $key => $conf) {
+			foreach ($confArr as $conf) {
 				if ($conf['scope'] == $scope) {
 					$ds = $this->getDatastructureByUidOrFilename($conf['path']);
 					$dscollection[] = $ds;
@@ -192,7 +192,7 @@ class DataStructureRepository {
 		$dscollection = array();
 		$confArr = self::getStaticDatastructureConfiguration();
 		if (count($confArr)) {
-			foreach ($confArr as $key => $conf) {
+			foreach ($confArr as $conf) {
 				$ds = $this->getDatastructureByUidOrFilename($conf['path']);
 				$dscollection[] = $ds;
 			}

@@ -68,7 +68,7 @@ class tx_templavoila_cm2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @return void
 	 */
 	public function main() {
-		global $LANG, $BACK_PATH;
+		global $BACK_PATH;
 
 		// Check admin: If this is changed some day to other than admin users we HAVE to check if there is read access to the record being selected!
 		if (!\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isAdmin()) {

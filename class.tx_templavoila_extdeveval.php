@@ -92,6 +92,8 @@ class tx_templavoila_extdeveval {
 	 * @return string HTML content
 	 */
 	public function renderMenuOfDataStructures() {
+		$output = '';
+		$arrayOfDS = array();
 
 		// Get data structures we should display
 		/** @var \Extension\Templavoila\Domain\Repository\DataStructureRepository $dsRepo */
@@ -110,11 +112,11 @@ class tx_templavoila_extdeveval {
 				</tr>';
 			$dsList = $dsRepo->getDatastructuresByScope($type);
 			foreach ($dsList as $dsObj) {
-				/** @var $dsObj \Extension\Templavoila\Domain\Model\AbstractDataStructure */
+				/** @var $dsObj \Extension\Templavoila\Domain\Model\DataStructure */
 				$table .= '
 						<tr class="bgColor4">
 							<td><a href="index.php?dsId=' . rawurlencode($dsObj->getKey()) . '">' . htmlspecialchars($dsObj->getLabel()) . '</a></td>
-							<td>' . htmlspecialchars($dsObj->getLanguageMode()) . '</td>
+							<td>Undefined</td>
 							<td>' . htmlspecialchars($dsObj->getKey()) . '</td>
 						</tr>';
 			}
@@ -136,7 +138,6 @@ class tx_templavoila_extdeveval {
 		$DScontent = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($DSstring);
 		$DScontent = array('meta' => $DScontent['meta']);
 
-		$languageMode = '';
 		if ($DScontent['meta']['langDisable']) {
 			$languageMode = 'Disabled';
 		} elseif ($DScontent['meta']['langChildren']) {
@@ -153,12 +154,16 @@ class tx_templavoila_extdeveval {
 	 *
 	 * @param string $dsIdForConversion Data Structure id (either uid or string pointing to XML file)
 	 *
+	 * @throws RuntimeException
+	 *
 	 * @return string HTML
 	 */
 	public function renderConversionView($dsIdForConversion) {
 		global $TCA;
 
 		$output = '';
+		$language = 'Undefined';
+		$DStitle = 'Undefined';
 
 		// Language Mode For DS
 		$dbQuery = "SELECT dataprot,title
@@ -169,6 +174,11 @@ class tx_templavoila_extdeveval {
 				$language = $this->DSlanguageMode($row['dataprot']);
 				$DStitle = $row['title'];
 			}
+
+			/**
+			 * @todo: maybe stop further execution of method here
+			 * as a lot of important data is missing.
+			 */
 		}
 
 		// Define which method you should use
@@ -178,6 +188,8 @@ class tx_templavoila_extdeveval {
 			$traverseMethod = 'traverseFlexFormXMLData_callBackFunction_Separate';
 		} elseif ($language == 'Disabled') {
 			$traverseMethod = 'traverseFlexFormXMLData_callBackFunction_Disabled';
+		} else {
+			$traverseMethod = 'Undefined';
 		}
 
 		// If POST, then update in database
@@ -185,6 +197,8 @@ class tx_templavoila_extdeveval {
 
 			if (in_array($SET['ds']['table'], array_keys($TCA))) {
 				$setTable = $SET['ds']['table'];
+			} else {
+				throw new \RuntimeException('Further execution of code leads to PHP errors.', 1404750505);
 			}
 
 			$setField = $SET['ds']['field'];
@@ -239,6 +253,7 @@ class tx_templavoila_extdeveval {
 				$output .= 'Sorry, but I found a flexform field ("' . $table . ':' . $field . '") with "ds_pointerField_searchParent" set which means I cannot safely find all records to convert. It was used in uids: ' . implode(',', array_keys($rows)) . '. Please consider to abort the process.';
 			}
 
+			$htmlTABLE = '';
 			if (count($rows)) {
 				foreach ($rows as $row) {
 

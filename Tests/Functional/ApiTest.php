@@ -147,7 +147,6 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 			'vLang' => 'vDEF',
 			'position' => '0' // Before first element
 		);
-		$testPageRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw('pages', 'uid=' . $pageUid, 'tx_templavoila_flex');
 
 		// run insertElement():
 		$secondElementUid = $this->api->insertElement($destinationPointer, $row);
@@ -1585,16 +1584,6 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 			'position' => 2
 		);
 
-		$destinationPointer = array(
-			'table' => 'pages',
-			'uid' => $pageUid,
-			'sheet' => 'sDEF',
-			'sLang' => 'lDEF',
-			'field' => 'field_content',
-			'vLang' => 'vDE',
-			'position' => 0
-		);
-
 		$result = $this->api->localizeElement($sourcePointer, 'DE');
 		self::assertTrue($result !== FALSE, 'localizeElement()returned FALSE!');
 
@@ -1649,16 +1638,6 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 			'field' => 'field_content',
 			'vLang' => 'vDEF',
 			'position' => 2
-		);
-
-		$destinationPointer = array(
-			'table' => 'pages',
-			'uid' => $pageUid,
-			'sheet' => 'sDEF',
-			'sLang' => 'lDEF',
-			'field' => 'field_content',
-			'vLang' => 'vDE',
-			'position' => 0
 		);
 
 		$result = $this->api->localizeElement($sourcePointer, 'DE');

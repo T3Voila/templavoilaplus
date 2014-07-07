@@ -42,7 +42,7 @@ class tx_templavoila_cm1_dsEdit {
 	protected $oldStyleColumnNumber = 0;
 
 	/**
-	 * @param mixed $pObj
+	 * @param \tx_templavoila_cm1 $pObj
 	 */
 	public function init($pObj) {
 		$this->pObj = $pObj;
@@ -462,6 +462,7 @@ class tx_templavoila_cm1_dsEdit {
 			$output = \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['cm1']['eTypesExtraFormFields'][$type], $_params, $this);
 		} else {
 			switch ($type) {
+				default:
 				case 'TypoScriptObject':
 					$value = $curValue['objPath'] ? $curValue['objPath'] : 'lib.' . $key;
 					$output = '

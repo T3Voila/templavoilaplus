@@ -49,7 +49,7 @@ class Access {
 			if ($user->isAdmin()) {
 				return TRUE;
 			}
-			$error = '';
+
 			if (!$this->checkObjectAccess('tx_templavoila_datastructure', $params['idOrRow']['tx_templavoila_ds'], $ref)) {
 				$error = 'access_noDSaccess';
 			} elseif (!$this->checkObjectAccess('tx_templavoila_tmplobj', $params['idOrRow']['tx_templavoila_to'], $ref)) {

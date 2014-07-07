@@ -43,8 +43,6 @@ class MainClickMenu {
 	 * @return array The modified menu array.
 	 */
 	public function main(&$backRef, $menuItems, $table, $uid) {
-		global $BE_USER, $LANG, $TYPO3_DB;
-
 		$localItems = array();
 		if (!$backRef->cmLevel) {
 			$LL = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->includeLLFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('templavoila') . 'Resources/Private/Language/locallang.xml', 0);

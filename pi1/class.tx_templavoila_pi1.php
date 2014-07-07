@@ -235,6 +235,8 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * @param array $row Current data record, either a tt_content element or page record.
 	 * @param string $table Table name, either "pages" or "tt_content".
 	 *
+	 * @throws RuntimeException
+	 *
 	 * @return string HTML output.
 	 */
 	public function renderElement($row, $table) {
@@ -257,6 +259,7 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 
 		$dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Domain\\Repository\\DataStructureRepository');
 		try {
+			/** @var \Extension\Templavoila\Domain\Model\DataStructure $dsObj */
 			$dsObj = $dsRepo->getDatastructureByUidOrFilename($row['tx_templavoila_ds']);
 			$DS = $dsObj->getDataprotArray();
 		} catch (InvalidArgumentException $e) {
@@ -398,6 +401,7 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 						$feedit = is_object(\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()) && method_exists(\Extension\Templavoila\Utility\GeneralUtility::getBackendUser(), 'isFrontendEditingActive') && \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isFrontendEditingActive();
 
 						if ($GLOBALS['TSFE']->fePreview && $GLOBALS['TSFE']->beUserLogin && !$GLOBALS['TSFE']->workspacePreview && !$this->conf['disableExplosivePreview'] && !$feedit) {
+							throw new \RuntimeException('Further execution of code leads to PHP errors.', 1404750505);
 							$content = $this->visualID($content, $srcPointer, $DSrec, $TOrec, $row, $table);
 						}
 					} else {
@@ -702,11 +706,11 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 
 				case 'never':
 					return $dV[$valueKey]; // Always return its own value
-
 				case 'removeIfBlank':
 					if (!strcmp(trim($dV[$valueKey]), '')) {
 						return array('ERROR' => '__REMOVE');
 					}
+					break;
 				default:
 
 					// If none of the overlay modes matched, simply use the default:

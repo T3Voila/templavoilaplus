@@ -124,7 +124,7 @@ class tx_templavoila_dbnewcontentel {
 	/**
 	 * Parameters for the new record
 	 *
-	 * @var integer
+	 * @var string
 	 */
 	public $parentRecord;
 
@@ -181,7 +181,7 @@ class tx_templavoila_dbnewcontentel {
 	 * @return void
 	 */
 	public function init() {
-		global $BE_USER, $BACK_PATH, $TBE_MODULES_EXT;
+		global $BACK_PATH, $TBE_MODULES_EXT;
 
 		// Setting class files to include:
 		if (is_array($TBE_MODULES_EXT['xMOD_db_new_content_el']['addElClasses'])) {
@@ -218,7 +218,7 @@ class tx_templavoila_dbnewcontentel {
 		// Getting the current page and receiving access information (used in main())
 		$perms_clause = \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->getPagePermsClause(1);
 		$pageinfo = \TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess($this->id, $perms_clause);
-		$this->access = is_array($pageinfo) ? 1 : 0;
+		$this->access = is_array($pageinfo) ? TRUE : FALSE;
 
 		$this->apiObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Service\\ApiService');
 
@@ -240,8 +240,6 @@ class tx_templavoila_dbnewcontentel {
 	 * @todo provide position mapping if no position is given already. Like the columns selector but for our cascading element style ...
 	 */
 	public function main() {
-		global $LANG, $BACK_PATH;
-
 		if ($this->id && $this->access) {
 
 			// Creating content
@@ -255,8 +253,6 @@ class tx_templavoila_dbnewcontentel {
 			$this->content .= $this->doc->spacer(10);
 
 			// Wizard
-			$wizardCode = '';
-			$tableRows = array();
 			$wizardItems = $this->getWizardItems();
 
 			// Wrapper for wizards
@@ -306,9 +302,11 @@ class tx_templavoila_dbnewcontentel {
 
 			// Traverse items for the wizard.
 			// An item is either a header or an item rendered with a title/description and icon:
-			$counter = 0;
 			$menuItems = array();
 			foreach ($wizardItems as $k => $wInfo) {
+				/**
+				 * @todo: Find out what exactly happens here. The whole loop feels strange
+				 */
 				if ($wInfo['header']) {
 					$menuItems[] = array('label' => htmlspecialchars($wInfo['header']), 'content' => $this->elementWrapper['section'][0]);
 					$key = count($menuItems) - 1;
@@ -451,6 +449,7 @@ class tx_templavoila_dbnewcontentel {
 	 */
 	public function wizardArray() {
 
+		$wizards = array();
 		if (is_array($this->config)) {
 			$wizards = $this->config['wizardItems.'];
 		}
@@ -532,10 +531,7 @@ class tx_templavoila_dbnewcontentel {
 	 *
 	 * @return array $returnElements
 	 */
-	public function wizard_renderFCEs($wizardElements) {
-		if (!is_array($wizardElements)) {
-			$wizardElements = array();
-		}
+	public function wizard_renderFCEs($wizardElements = array()) {
 		$returnElements = array();
 
 		// Flexible content elements:

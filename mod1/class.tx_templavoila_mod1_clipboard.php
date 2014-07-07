@@ -75,7 +75,7 @@ class tx_templavoila_mod1_clipboard {
 	 * @return void
 	 */
 	public function init(&$pObj) {
-		global $LANG, $BACK_PATH;
+		global $BACK_PATH;
 
 		// Make local reference to some important variables:
 		$this->pObj =& $pObj;
@@ -127,8 +127,6 @@ class tx_templavoila_mod1_clipboard {
 	 * @return string HTML output: linked images which act as copy, cut and reference buttons
 	 */
 	public function element_getSelectButtons($elementPointer, $listOfButtons = 'copy,cut,ref') {
-		global $LANG;
-
 		$clipActive_copy = $clipActive_cut = $clipActive_ref = FALSE;
 		if (!$elementPointer = $this->pObj->apiObj->flexform_getValidPointer($elementPointer)) {
 			return '';
@@ -144,11 +142,6 @@ class tx_templavoila_mod1_clipboard {
 			// If we have no flexform reference pointing to the element, we create a short flexform pointer pointing to the record directly:
 			if (!is_array($clipboardElementPointer)) {
 				list ($clipboardElementTable, $clipboardElementUid) = explode('|', $clipboardElementTableAndUid);
-
-				$clipboardElementPointer = array(
-					'table' => 'tt_content',
-					'uid' => $clipboardElementUid
-				);
 				$pointToTheSameRecord = ($elementRecord['uid'] == $clipboardElementUid);
 			} else {
 				unset ($clipboardElementPointer['targetCheckUid']);
@@ -195,8 +188,6 @@ class tx_templavoila_mod1_clipboard {
 	 * @return string HTML output: linked image(s) which act as paste button(s)
 	 */
 	public function element_getPasteButtons($destinationPointer) {
-		global $LANG, $BE_USER;
-
 		if (in_array('paste', $this->pObj->blindIcons)) {
 			return '';
 		}
@@ -270,8 +261,6 @@ class tx_templavoila_mod1_clipboard {
 	 * @access protected
 	 */
 	public function sidebar_renderNonUsedElements() {
-		global $LANG, $TYPO3_DB, $BE_USER;
-
 		$output = '';
 		$elementRows = array();
 		$usedUids = array_keys($this->pObj->global_tt_content_elementRegister);
@@ -373,8 +362,6 @@ class tx_templavoila_mod1_clipboard {
 	 * @access protected
 	 */
 	public function renderReferenceCount($uid) {
-		global $TYPO3_DB, $BE_USER, $LANG;
-
 		$rows = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTgetRows(
 			'*',
 			'sys_refindex',

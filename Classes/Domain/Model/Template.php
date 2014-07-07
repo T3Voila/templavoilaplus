@@ -181,7 +181,7 @@ class Template {
 	}
 
 	/**
-	 * @param string $str
+	 * @param integer $str
 	 *
 	 * @return void
 	 */
@@ -368,7 +368,6 @@ class Template {
 	 * @return string
 	 */
 	public function getLocalDataprotValueByXpath($fieldName) {
-		$value = '';
 		$doc = new \DOMDocument;
 		$doc->preserveWhiteSpace = FALSE;
 		$doc->loadXML($this->getLocalDataprotXML());
@@ -386,7 +385,6 @@ class Template {
 	 * @return mixed
 	 */
 	public function getBeLayout() {
-		$beLayout = FALSE;
 		if ($this->row['belayout']) {
 			$beLayout = \TYPO3\CMS\Core\Utility\GeneralUtility::getURL(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->row['belayout']));
 		} else {

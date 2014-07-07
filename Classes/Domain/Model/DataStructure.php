@@ -103,7 +103,7 @@ class DataStructure extends AbstractDataStructure {
 		$denyItems = \Extension\Templavoila\Utility\GeneralUtility::getDenyListForUser();
 
 		$currentSetting = $parentRow['tx_templavoila_ds'];
-		if ($this->getScope() == \Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_PAGE) {
+		if ($this->getScope() == static::SCOPE_PAGE) {
 			$inheritSetting = $parentRow['tx_templavoila_next_ds'];
 		} else {
 			$inheritSetting = -1;

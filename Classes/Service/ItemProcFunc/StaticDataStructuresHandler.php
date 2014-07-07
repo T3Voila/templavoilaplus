@@ -88,7 +88,6 @@ class StaticDataStructuresHandler {
 	 * @return void
 	 */
 	public function pi_templates(&$params, $pObj) {
-		global $TYPO3_DB;
 		// Find the template data structure that belongs to this plugin:
 		$piKey = $params['row']['list_type'];
 		$templateRef = $GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['piKey2DSMap'][$piKey]; // This should be a value of a Data Structure.

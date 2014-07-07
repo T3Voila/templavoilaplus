@@ -279,9 +279,9 @@ class HtmlMarkup {
 	/**
 	 * Used to contain the paths to search for when searching for a paths. (see getContentBasedOnPath())
 	 *
-	 * @var string
+	 * @var array
 	 */
-	public $searchPaths = '';
+	public $searchPaths = array();
 
 	/**
 	 * @return HtmlMarkup
@@ -366,10 +366,8 @@ class HtmlMarkup {
 	 * @return array Content... (not welldefined yet)
 	 */
 	public function getContentBasedOnPath($content, $pathStrArr) {
-		// INIT:
 		$this->init();
 		$this->searchPaths = array();
-		$tagList = '';
 
 		foreach ($pathStrArr as $pathStr) {
 			list($pathInfo) = $this->splitPath($pathStr);
@@ -494,7 +492,7 @@ class HtmlMarkup {
 		$pathsArrays = array();
 
 		// Post processing, putting together all duplicate data in arrays which are easy to traverse in the next run.
-		foreach ($currentMappingInfo as $key => $val) {
+		foreach ($currentMappingInfo as $val) {
 			if ($val['MAP_EL']) {
 				list($pathInfo) = $this->splitPath($val['MAP_EL']);
 				$pathsArrays[$pathInfo['path']][$pathInfo['modifier']][] = $pathInfo['modifier_value'];
@@ -709,7 +707,7 @@ class HtmlMarkup {
 	 * @return string|boolean
 	 */
 	public function getTemplateArrayForTO($uid) {
-		global $TCA, $TYPO3_DB;
+		global $TCA;
 		if (isset($TCA['tx_templavoila_tmplobj'])) {
 			$res = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTquery(
 				'*',
@@ -831,7 +829,7 @@ class HtmlMarkup {
 	 * @see getTemplateRecord()
 	 */
 	public function getTemplateRecord_query($uid, $where) {
-		global $TYPO3_DB, $TSFE;
+		global $TSFE;
 
 		$res = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTquery(
 			'*',
@@ -985,7 +983,7 @@ class HtmlMarkup {
 			$this->tags[$idx] = array();
 		}
 
-		$this->textGnyf = 1;
+		$this->textGnyf = TRUE;
 
 		return '';
 	}
@@ -1057,7 +1055,6 @@ class HtmlMarkup {
 					if ($matchCount2 < $matchCount1) {
 						$startCCTag = $matches1[0][$matchCount1 - 1];
 						//endtag is start of block3
-						$matchCount2 = preg_match_all('/(<!-->)?<!([-]+)?\[endif\]([-]+)?>/', $blocks[2], $matches2);
 						$endCCTag = $matches2[0][0];
 						//manipulate blocks
 						$blocks[$key] = substr(rtrim($block), 0, -1 * strlen($startCCTag));
@@ -1143,8 +1140,6 @@ class HtmlMarkup {
 								$vv = $this->getMarkupCode('', $vv, $params, $firstTagName, $firstTag, '', $subPath, $recursion + 1);
 							} elseif ($mode == 'search') {
 								$vv = $this->getSearchCode('', $vv, $params, $firstTagName, '', '', $subPath, $path, $recursion);
-							} else {
-								$vv = $vv;
 							}
 						} elseif ($this->mode == 'source' && $mode == 'markup') {
 							$vv = $this->sourceDisplay($vv, $recursion, '', 1);
@@ -1410,6 +1405,7 @@ class HtmlMarkup {
 	 */
 	public function makePath($path, $firstTagName, $attr) {
 		// Detect if pathMode is set and then construct the path based on the mode set.
+		$subPath = 'Undefined';
 		if ($this->pathMode) {
 			switch ($this->pathMode) {
 				default:

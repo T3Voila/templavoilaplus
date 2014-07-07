@@ -63,8 +63,6 @@ class tx_templavoila_mod1_localization {
 	 * @access public
 	 */
 	public function init(&$pObj) {
-		global $LANG;
-
 		// Make local reference to some important variables:
 		$this->pObj =& $pObj;
 		$this->doc =& $this->pObj->doc;
@@ -92,8 +90,6 @@ class tx_templavoila_mod1_localization {
 	 * @access public
 	 */
 	public function sidebar_renderItem(&$pObj) {
-		global $LANG;
-
 		$iOutput = $this->sidebar_renderItem_renderLanguageSelectorbox() .
 			$this->sidebar_renderItem_renderNewTranslationSelectorbox();
 		$output = (!$iOutput ? '' : '
@@ -117,8 +113,6 @@ class tx_templavoila_mod1_localization {
 	 * @access protected
 	 */
 	public function sidebar_renderItem_renderLanguageSelectorbox() {
-		global $LANG, $BE_USER, $BACK_PATH;
-
 		$availableLanguagesArr = $this->pObj->translatedLanguagesArr;
 		$availableTranslationsFlags = '';
 		$newLanguagesArr = $this->pObj->getAvailableLanguages(0, TRUE, FALSE);
@@ -238,8 +232,6 @@ class tx_templavoila_mod1_localization {
 	 * @access protected
 	 */
 	public function sidebar_renderItem_renderNewTranslationSelectorbox() {
-		global $LANG, $BE_USER;
-
 		if (!\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isPSet($this->pObj->calcPerms, 'pages', 'edit')) {
 			return FALSE;
 		}
@@ -259,6 +251,7 @@ class tx_templavoila_mod1_localization {
 			}
 		}
 
+		$output = '';
 		if (count($optionsArr) > 1) {
 			$linkParam = $this->pObj->rootElementTable == 'pages' ? '&doktype=' . $this->pObj->rootElementRecord['doktype'] : '';
 			$link = 'index.php?' . $this->pObj->link_getParameters() . '&createNewPageTranslation=\'+this.options[this.selectedIndex].value+\'&pid=' . $this->pObj->id . $linkParam;
