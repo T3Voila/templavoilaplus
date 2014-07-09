@@ -9,6 +9,13 @@ php:
 env:
   - DB=mysql
 
+notifications:
+  slack:
+    rooms:
+      secure: rnQbOa1Nh0F75DfAYjdW/09a5xuwW9qNU6ifOywtnscJ+4OREQpFyu6ArCspCtkHdaX/BDdrx083m62kQZmzm8FLfzXu+EXq4dvzHagQ8D6a/Zbl8iNPB3X7UXxVdKTwWjWaraeK3o9CjO1j1BfuGz97ewzQWP/71EP1u5LRyUI=
+    on_success: always
+    on_failure: always
+
 before_script:
   - composer self-update
   - cd ..
