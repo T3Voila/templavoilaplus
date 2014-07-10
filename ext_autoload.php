@@ -6,7 +6,6 @@ $extensionPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('te
 $extensionClassesPath = $extensionPath . 'Classes/';
 return array(
 	'tx_templavoila_cm1' => $extensionPath . 'cm1/index.php',
-	'tx_templavoila_extdeveval' => $extensionPath . 'class.tx_templavoila_extdeveval.php',
 	'tx_templavoila_staticds_check' => $extensionClassesPath . 'staticds/class.tx_templavoila_staticds_check.php',
 	'tx_templavoila_staticds_wizard' => $extensionClassesPath . 'staticds/class.tx_templavoila_staticds_wizard.php',
 	'tx_templavoila_cm1_ajax' => $extensionPath . 'cm1/class.tx_templavoila_cm1_ajax.php',
