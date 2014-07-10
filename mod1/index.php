@@ -1414,24 +1414,25 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 					'position' => 0
 				);
 
+				$maxItemsReached = FALSE;
 				if (isset($elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['TCEforms']['config']['maxitems'])) {
-					$maxCnt = $elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['TCEforms']['config']['maxitems'];
+					$maxCnt = (int)$elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['TCEforms']['config']['maxitems'];
 					$maxItemsReached = is_array($fieldContent['el_list']) && count($fieldContent['el_list']) >= $maxCnt;
 
-					/** @var \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage */
-					$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-						'\TYPO3\CMS\Core\Messaging\FlashMessage',
-						'',
-						sprintf(
-							\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('maximal_content_elements'),
-							$maxCnt,
-							$elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['tx_templavoila']['title']
-						),
-						\TYPO3\CMS\Core\Messaging\FlashMessage::INFO
-					);
-					$this->flashMessageService->getMessageQueueByIdentifier('ext.templavoila')->enqueue($flashMessage);
-				} else {
-					$maxItemsReached = FALSE;
+					if ($maxItemsReached) {
+						/** @var \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage */
+						$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+							'\TYPO3\CMS\Core\Messaging\FlashMessage',
+							'',
+							sprintf(
+								\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('maximal_content_elements'),
+								$maxCnt,
+								$elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['tx_templavoila']['title']
+							),
+							\TYPO3\CMS\Core\Messaging\FlashMessage::INFO
+						);
+						$this->flashMessageService->getMessageQueueByIdentifier('ext.templavoila')->enqueue($flashMessage);
+					}
 				}
 
 				$canCreateNew = $canEditContent && !$maxItemsReached;
