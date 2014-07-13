@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2014-07-13T20:54:56Z" product-name="templavoila">
+		<header/>
+		<body>
+			<trans-unit id=".description" xml:space="preserve">
+				<source>The Template Object maps a predefined data structure with an actual HTML template. It thus allows you to define when</source>
+			</trans-unit>
+			<trans-unit id="title.description" xml:space="preserve">
+				<source>Enter a title that describes this Template Object.</source>
+			</trans-unit>
+			<trans-unit id="datastructure.description" xml:space="preserve">
+				<source>Select a data structure that this Template Object makes use of.</source>
+			</trans-unit>
+			<trans-unit id="fileref.description" xml:space="preserve">
+				<source>Choose a HTML template as a basis for the mapping.</source>
+			</trans-unit>
+			<trans-unit id="templatemapping.description" xml:space="preserve">
+				<source>This data holds all information needed for TemplaVoilà to map the data structure to the actual HTML template file.</source>
+			</trans-unit>
+			<trans-unit id="previewicon.description" xml:space="preserve">
+				<source>Select a preview image to this Template Structure to</source>
+			</trans-unit>
+			<trans-unit id="description.description" xml:space="preserve">
+				<source>Add a small description that is used in the wizards to help users distinguish your templates.</source>
+			</trans-unit>
+			<trans-unit id="rendertype.description" xml:space="preserve">
+				<source>Select whether this is a special Template Object, used for print or other uses, or for the default page.</source>
+			</trans-unit>
+			<trans-unit id="sys_language_uid.description" xml:space="preserve">
+				<source>Select the language where this template object is applicable.</source>
+			</trans-unit>
+			<trans-unit id="parent.description" xml:space="preserve">
+				<source>If this template object is a sub-template object, select a parent where the defaults should be inherited.</source>
+			</trans-unit>
+			<trans-unit id="localprocessing.description" xml:space="preserve">
+				<source>You can override the processing of fields defined in the data structure. For example, if you have an image field in your data structure, it will have TypoScript with defined maxW and maxH. You can override them here.</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

@@ -196,7 +196,7 @@ class tx_templavoila_mod1_wizards {
 		$this->doc->inDocStyles .= '.c-inputButton{ cursor:pointer; }';
 
 		$content = '';
-		$content .= $this->doc->header(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xml:db_new.php.pagetitle'));
+		$content .= $this->doc->header(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:db_new.php.pagetitle'));
 		$content .= $this->doc->startPage(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('createnewpage_title'));
 
 		// Add template selectors

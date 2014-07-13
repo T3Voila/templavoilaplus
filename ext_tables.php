@@ -34,52 +34,52 @@ if (TYPO3_MODE === 'BE') {
 	// Registering CSH:
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
 		'be_groups',
-		'EXT:templavoila/Resources/Private/Language/locallang_csh_begr.xml'
+		'EXT:templavoila/Resources/Private/Language/locallang_csh_begr.xlf'
 	);
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
 		'pages',
-		'EXT:templavoila/Resources/Private/Language/locallang_csh_pages.xml'
+		'EXT:templavoila/Resources/Private/Language/locallang_csh_pages.xlf'
 	);
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
 		'tt_content',
-		'EXT:templavoila/Resources/Private/Language/locallang_csh_ttc.xml'
+		'EXT:templavoila/Resources/Private/Language/locallang_csh_ttc.xlf'
 	);
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
 		'tx_templavoila_datastructure',
-		'EXT:templavoila/Resources/Private/Language/locallang_csh_ds.xml'
+		'EXT:templavoila/Resources/Private/Language/locallang_csh_ds.xlf'
 	);
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
 		'tx_templavoila_tmplobj',
-		'EXT:templavoila/Resources/Private/Language/locallang_csh_to.xml'
+		'EXT:templavoila/Resources/Private/Language/locallang_csh_to.xlf'
 	);
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
 		'xMOD_tx_templavoila',
-		'EXT:templavoila/Resources/Private/Language/locallang_csh_module.xml'
+		'EXT:templavoila/Resources/Private/Language/locallang_csh_module.xlf'
 	);
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
 		'xEXT_templavoila',
-		'EXT:templavoila/Resources/Private/Language/locallang_csh_intro.xml'
+		'EXT:templavoila/Resources/Private/Language/locallang_csh_intro.xlf'
 	);
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
 		'_MOD_web_txtemplavoilaM1',
-		'EXT:templavoila/Resources/Private/Language/locallang_csh_pm.xml'
+		'EXT:templavoila/Resources/Private/Language/locallang_csh_pm.xlf'
 	);
 
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
 		'web_func',
 		'Extension\\Templavoila\\Controller\\ReferenceElementWizardController',
 		NULL,
-		'LLL:EXT:templavoila/Resources/Private/Language/locallang.xml:wiz_refElements',
+		'LLL:EXT:templavoila/Resources/Private/Language/locallang.xlf:wiz_refElements',
 		'wiz'
 	);
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
 		'web_func',
 		'Extension\\Templavoila\\Controller\\RenameFieldInPageFlexWizardController',
 		NULL,
-		'LLL:EXT:templavoila/Resources/Private/Language/locallang.xml:wiz_renameFieldsInPage',
+		'LLL:EXT:templavoila/Resources/Private/Language/locallang.xlf:wiz_renameFieldsInPage',
 		'wiz'
 	);
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('_MOD_web_func', 'EXT:wizard_crpages/locallang_csh.xml');
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('_MOD_web_func', 'EXT:wizard_crpages/locallang_csh.xlf');
 }
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_templavoila_datastructure');
@@ -87,7 +87,7 @@ if (TYPO3_MODE === 'BE') {
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin(
 	array(
-		'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xml:tt_content.CType_pi1',
+		'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tt_content.CType_pi1',
 		$_EXTKEY . '_pi1',
 		'EXT:' . $_EXTKEY . '/Resources/Public/Icon/icon_fce_ce.png'
 	),

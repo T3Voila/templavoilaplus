@@ -2,7 +2,7 @@
 
 return array(
 	'ctrl' => array(
-		'title' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xml:tx_templavoila_datastructure',
+		'title' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tx_templavoila_datastructure',
 		'label' => 'title',
 		'label_userFunc' => 'EXT:templavoila/Classes/Service/UserFunc/Label.php:&\Extension\Templavoila\Service\UserFunc\Label->getLabel',
 		'tstamp' => 'tstamp',
@@ -24,7 +24,7 @@ return array(
 	),
 	'columns' => array(
 		'title' => array(
-			'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xml:tx_templavoila_datastructure.title',
+			'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tx_templavoila_datastructure.title',
 			'config' => array(
 				'type' => 'input',
 				'size' => '48',
@@ -33,7 +33,7 @@ return array(
 		),
 		'dataprot' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xml:tx_templavoila_datastructure.dataprot',
+			'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tx_templavoila_datastructure.dataprot',
 			'config' => array(
 				'type' => 'text',
 				'wrap' => 'OFF',
@@ -44,18 +44,18 @@ return array(
 		),
 		'scope' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xml:tx_templavoila_datastructure.scope',
+			'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tx_templavoila_datastructure.scope',
 			'config' => array(
 				'type' => 'select',
 				'items' => array(
-					array('LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xml:tx_templavoila_datasource.scope.I.0', 0),
-					array('LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xml:tx_templavoila_datastructure.scope.I.1', 1),
-					array('LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xml:tx_templavoila_datastructure.scope.I.2', 2),
+					array('LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tx_templavoila_datasource.scope.I.0', 0),
+					array('LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tx_templavoila_datastructure.scope.I.1', 1),
+					array('LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tx_templavoila_datastructure.scope.I.2', 2),
 				),
 			)
 		),
 		'previewicon' => array(
-			'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xml:tx_templavoila_tmplobj.previewicon',
+			'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tx_templavoila_tmplobj.previewicon',
 			'config' => array(
 				'type' => 'group',
 				'internal_type' => 'file',
@@ -70,7 +70,7 @@ return array(
 		),
 		'belayout' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xml:tx_templavoila_tmplobj.belayout',
+			'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tx_templavoila_tmplobj.belayout',
 			'config' => array(
 				'type' => 'input',
 				'size' => '48',

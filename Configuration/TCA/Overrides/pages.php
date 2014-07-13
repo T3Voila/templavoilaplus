@@ -4,7 +4,7 @@ defined('TYPO3_MODE') or die();
 $tempColumns = array(
 	'tx_templavoila_ds' => array(
 		'exclude' => 1,
-		'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xml:pages.tx_templavoila_ds',
+		'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:pages.tx_templavoila_ds',
 		'config' => array(
 			'type' => 'select',
 			'items' => array(
@@ -21,7 +21,7 @@ $tempColumns = array(
 	),
 	'tx_templavoila_to' => array(
 		'exclude' => 1,
-		'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xml:pages.tx_templavoila_to',
+		'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:pages.tx_templavoila_to',
 		'displayCond' => 'FIELD:tx_templavoila_ds:REQ:true',
 		'config' => array(
 			'type' => 'select',
@@ -38,7 +38,7 @@ $tempColumns = array(
 	),
 	'tx_templavoila_next_ds' => array(
 		'exclude' => 1,
-		'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xml:pages.tx_templavoila_next_ds',
+		'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:pages.tx_templavoila_next_ds',
 		'config' => array(
 			'type' => 'select',
 			'items' => array(
@@ -55,7 +55,7 @@ $tempColumns = array(
 	),
 	'tx_templavoila_next_to' => array(
 		'exclude' => 1,
-		'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xml:pages.tx_templavoila_next_to',
+		'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:pages.tx_templavoila_next_to',
 		'displayCond' => 'FIELD:tx_templavoila_next_ds:REQ:true',
 		'config' => array(
 			'type' => 'select',
@@ -72,7 +72,7 @@ $tempColumns = array(
 	),
 	'tx_templavoila_flex' => array(
 		'exclude' => 1,
-		'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xml:pages.tx_templavoila_flex',
+		'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:pages.tx_templavoila_flex',
 		'config' => array(
 			'type' => 'flex',
 			'ds_pointerField' => 'tx_templavoila_ds',

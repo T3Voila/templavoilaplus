@@ -4,7 +4,7 @@ defined('TYPO3_MODE') or die();
 // Adding access list to be_groups
 $tempColumns = array(
 	'tx_templavoila_access' => array(
-		'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xml:be_groups.tx_templavoila_access',
+		'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:be_groups.tx_templavoila_access',
 		'config' => array(
 			'type' => 'group',
 			'internal_type' => 'db',

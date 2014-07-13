@@ -16,7 +16,7 @@
 unset($MCONF);
 require(dirname(__FILE__) . '/conf.php');
 require($BACK_PATH . 'init.php');
-$LANG->includeLLFile('EXT:templavoila/cm1/locallang.xml');
+$LANG->includeLLFile('EXT:templavoila/cm1/locallang.xlf');
 
 /**
  * Class for controlling the TemplaVoila module.
@@ -651,7 +651,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		// Back
 		if ($this->returnUrl) {
 			$backIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-view-go-back');
-			$buttons['back'] = '<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisUrl($this->returnUrl)) . '" class="typo3-goBack" title="' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_core.php:labels.goBack', TRUE) . '">' .
+			$buttons['back'] = '<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisUrl($this->returnUrl)) . '" class="typo3-goBack" title="' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.goBack', TRUE) . '">' .
 				$backIcon .
 				'</a>';
 		}

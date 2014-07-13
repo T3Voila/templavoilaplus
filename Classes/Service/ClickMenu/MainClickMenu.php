@@ -35,7 +35,7 @@ class MainClickMenu {
 	public function main(&$backRef, $menuItems, $table, $uid) {
 		$localItems = array();
 		if (!$backRef->cmLevel) {
-			$LL = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->includeLLFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('templavoila') . 'Resources/Private/Language/locallang.xml', 0);
+			$LL = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->includeLLFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('templavoila') . 'Resources/Private/Language/locallang.xlf', 0);
 
 			// Adding link for Mapping tool:
 			if (\Extension\Templavoila\Domain\Model\File::is_file($table)) {

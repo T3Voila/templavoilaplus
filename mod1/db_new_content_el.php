@@ -31,9 +31,9 @@ unset($MCONF);
 unset($MLANG);
 
 // Merging locallang files/arrays:
-$LANG->includeLLFile('EXT:lang/locallang_misc.xml');
+$LANG->includeLLFile('EXT:lang/locallang_misc.xlf');
 $LOCAL_LANG_orig = $LOCAL_LANG;
-$LANG->includeLLFile('EXT:templavoila/mod1/locallang_db_new_content_el.xml');
+$LANG->includeLLFile('EXT:templavoila/mod1/locallang_db_new_content_el.xlf');
 $LOCAL_LANG = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($LOCAL_LANG_orig, $LOCAL_LANG);
 
 // Exits if 'cms' extension is not loaded:
@@ -371,7 +371,7 @@ class tx_templavoila_dbnewcontentel {
 		// Back
 		if ($this->returnUrl) {
 			$backIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-view-go-back');
-			$buttons['back'] = '<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisUrl($this->returnUrl)) . '" class="typo3-goBack" title="' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_core.php:labels.goBack', TRUE) . '">' .
+			$buttons['back'] = '<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisUrl($this->returnUrl)) . '" class="typo3-goBack" title="' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.goBack', TRUE) . '">' .
 				$backIcon .
 				'</a>';
 		}

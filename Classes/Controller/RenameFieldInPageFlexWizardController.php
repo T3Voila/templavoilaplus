@@ -167,13 +167,13 @@ class RenameFieldInPageFlexWizardController extends \TYPO3\CMS\Backend\Module\Ab
 				}
 
 				return '<div id="form-line-0">'
-				. '<label for="' . $name . '" style="width:200px;display:block;float:left;">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang.xml:field_' . $name) . '</label>'
+				. '<label for="' . $name . '" style="width:200px;display:block;float:left;">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang.xlf:field_' . $name) . '</label>'
 				. '<input type="checkbox" id="' . $name . '" name="' . $name . '" ' . $checked . ' value="1">'
 				. '</div>';
 				break;
 			case 'submit':
 				return '<div id="form-line-0">'
-				. '<input type="submit" id="' . $name . '" name="' . $name . '" value="' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang.xml:field_' . $name) . '">'
+				. '<input type="submit" id="' . $name . '" name="' . $name . '" value="' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang.xlf:field_' . $name) . '">'
 				. '</div>';
 				break;
 			case 'hidden':
@@ -194,14 +194,14 @@ class RenameFieldInPageFlexWizardController extends \TYPO3\CMS\Backend\Module\Ab
 				}
 
 				return '<div id="form-line-0">'
-				. '<label style="width:200px;display:block;float:left;" for="' . $name . '">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang.xml:field_' . $name) . '</label>'
+				. '<label style="width:200px;display:block;float:left;" for="' . $name . '">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang.xlf:field_' . $name) . '</label>'
 				. '<select id="' . $name . '" name="' . $name . '">' . $buffer . '</select>'
 				. '</div>';
 				break;
 			case 'text':
 			default:
 				return '<div id="form-line-0">'
-				. '<label for="' . $name . '">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang.xml:field_' . $name) . '</label>'
+				. '<label for="' . $name . '">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang.xlf:field_' . $name) . '</label>'
 				. '<input type="text" id="' . $name . '" name="' . $name . '" value="' . htmlspecialchars($value) . '">'
 				. '</div>';
 		}

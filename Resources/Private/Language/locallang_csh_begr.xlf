@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2014-07-13T20:54:32Z" product-name="templavoila">
+		<header/>
+		<body>
+			<trans-unit id="tx_templavoila_access.description" xml:space="preserve">
+				<source>Select TemplaVoilà objects to disallow access to. Notice that disallowing access to DS (data structure) implicitly disallows access to any TO (template object) associated with this DS.</source>
+			</trans-unit>
+			<trans-unit id="datastructure.description" xml:space="preserve">
+				<source>Select data structure of this template object</source>
+			</trans-unit>
+			<trans-unit id="fileref.description" xml:space="preserve">
+				<source>Reference to a file to map with this template object</source>
+			</trans-unit>
+			<trans-unit id="templatemapping.description" xml:space="preserve">
+				<source></source>
+			</trans-unit>
+			<trans-unit id="previewicon.description" xml:space="preserve">
+				<source>Select preview icon (optional)</source>
+			</trans-unit>
+			<trans-unit id="description.description" xml:space="preserve">
+				<source>Description of this template object</source>
+			</trans-unit>
+			<trans-unit id="rendertype.description" xml:space="preserve">
+				<source>Select rendering type</source>
+			</trans-unit>
+			<trans-unit id="sys_language_uid.description" xml:space="preserve">
+				<source></source>
+			</trans-unit>
+			<trans-unit id="parent.description" xml:space="preserve">
+				<source>Select parent template</source>
+			</trans-unit>
+			<trans-unit id="localprocessing.description" xml:space="preserve">
+				<source>Local processing XML overrides parts of Data Source XML. If you want to override parts of DS XML, enter it here</source>
+			</trans-unit>
+			<trans-unit id="enableaccessctrl.description" xml:space="preserve">
+				<source>Access control for this template object. To enable access control, check the box</source>
+			</trans-unit>
+			<trans-unit id="access.description" xml:space="preserve">
+				<source>Lists groups and users. Select users and/or groups that will have access to this template object</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

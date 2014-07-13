@@ -5,7 +5,7 @@ defined('TYPO3_MODE') or die();
 $tempColumns = array(
 	'tx_templavoila_ds' => array(
 		'exclude' => 1,
-		'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xml:tt_content.tx_templavoila_ds',
+		'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tt_content.tx_templavoila_ds',
 		'config' => array(
 			'type' => 'select',
 			'items' => array(
@@ -21,7 +21,7 @@ $tempColumns = array(
 	),
 	'tx_templavoila_to' => array(
 		'exclude' => 1,
-		'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xml:tt_content.tx_templavoila_to',
+		'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tt_content.tx_templavoila_to',
 		'displayCond' => 'FIELD:CType:=:templavoila_pi1',
 		'config' => array(
 			'type' => 'select',
@@ -38,7 +38,7 @@ $tempColumns = array(
 	'tx_templavoila_flex' => array(
 		'l10n_cat' => 'text',
 		'exclude' => 1,
-		'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xml:tt_content.tx_templavoila_flex',
+		'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tt_content.tx_templavoila_flex',
 		'displayCond' => 'FIELD:tx_templavoila_ds:REQ:true',
 		'config' => array(
 			'type' => 'flex',
@@ -48,7 +48,7 @@ $tempColumns = array(
 	),
 	'tx_templavoila_pito' => array(
 		'exclude' => 1,
-		'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xml:tt_content.tx_templavoila_pito',
+		'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tt_content.tx_templavoila_pito',
 		'config' => array(
 			'type' => 'select',
 			'items' => array(
@@ -68,14 +68,14 @@ $GLOBALS['TCA']['tt_content']['ctrl']['typeicons']['templavoila_pi1'] = \TYPO3\C
 $GLOBALS['TCA']['tt_content']['ctrl']['typeicon_classes']['templavoila_pi1'] = 'extensions-templavoila-type-fce';
 
 $GLOBALS['TCA']['tt_content']['types']['templavoila_pi1']['showitem'] =
-	'--palette--;LLL:EXT:cms/locallang_ttc.xml:palette.general;general,'
-	. '--palette--;LLL:EXT:cms/locallang_ttc.xml:palette.headers;headers,'
-	. '--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.access,'
-	. '--palette--;LLL:EXT:cms/locallang_ttc.xml:palette.visibility;visibility,'
-	. '--palette--;LLL:EXT:cms/locallang_ttc.xml:palette.access;access,'
-	. '--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.appearance,'
-	. '--palette--;LLL:EXT:cms/locallang_ttc.xml:palette.frames;frames,'
-	. '--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.extended';
+	'--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.general;general,'
+	. '--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.headers;headers,'
+	. '--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access,'
+	. '--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.visibility;visibility,'
+	. '--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.access;access,'
+	. '--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.appearance,'
+	. '--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.frames;frames,'
+	. '--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.extended';
 
 $_EXTCONF = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
 if ($_EXTCONF['enable.']['selectDataStructure']) {

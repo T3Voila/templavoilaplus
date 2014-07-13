@@ -13,7 +13,7 @@
  */
 
 // Need List lables for delete confirmation
-$LANG->includeLLFile('EXT:lang/locallang_mod_web_list.xml');
+$LANG->includeLLFile('EXT:lang/locallang_mod_web_list.xlf');
 
 /**
  * Extension of standard List module

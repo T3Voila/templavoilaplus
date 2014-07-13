@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2014-07-13T20:55:38Z" product-name="templavoila">
+		<header/>
+		<body>
+			<trans-unit id="sel1" xml:space="preserve">
+				<source>Please select which kind of page content you wish to create:</source>
+			</trans-unit>
+			<trans-unit id="sel2" xml:space="preserve">
+				<source>Now, click at the position where you wish to place the element on the page:</source>
+			</trans-unit>
+			<trans-unit id="common" xml:space="preserve">
+				<source>Typical page content</source>
+			</trans-unit>
+			<trans-unit id="common_1_title" xml:space="preserve">
+				<source>Regular text element</source>
+			</trans-unit>
+			<trans-unit id="common_1_description" xml:space="preserve">
+				<source>A regular text element with header and bodytext fields.</source>
+			</trans-unit>
+			<trans-unit id="common_2_title" xml:space="preserve">
+				<source>Text with image below</source>
+			</trans-unit>
+			<trans-unit id="common_2_description" xml:space="preserve">
+				<source>Regular text element with a field which can contain any number of images which are positioned below the text.</source>
+			</trans-unit>
+			<trans-unit id="common_3_title" xml:space="preserve">
+				<source>Text with image to the right</source>
+			</trans-unit>
+			<trans-unit id="common_3_description" xml:space="preserve">
+				<source>Like above but with the images placed to the right of the text with the text wrapping around the images.</source>
+			</trans-unit>
+			<trans-unit id="common_4_title" xml:space="preserve">
+				<source>Images only</source>
+			</trans-unit>
+			<trans-unit id="common_4_description" xml:space="preserve">
+				<source>Any number of images aligned in columns and rows with caption. Like the image options above but without text.</source>
+			</trans-unit>
+			<trans-unit id="common_5_title" xml:space="preserve">
+				<source>Bullet list</source>
+			</trans-unit>
+			<trans-unit id="common_5_description" xml:space="preserve">
+				<source>A single bullet list.</source>
+			</trans-unit>
+			<trans-unit id="common_6_title" xml:space="preserve">
+				<source>Table</source>
+			</trans-unit>
+			<trans-unit id="common_6_description" xml:space="preserve">
+				<source>A simple table with up to 8 columns.</source>
+			</trans-unit>
+			<trans-unit id="special" xml:space="preserve">
+				<source>Special elements</source>
+			</trans-unit>
+			<trans-unit id="special_1_title" xml:space="preserve">
+				<source>Filelinks</source>
+			</trans-unit>
+			<trans-unit id="special_1_description" xml:space="preserve">
+				<source>Makes a list of files for download.</source>
+			</trans-unit>
+			<trans-unit id="special_2_title" xml:space="preserve">
+				<source>Multimedia</source>
+			</trans-unit>
+			<trans-unit id="special_2_description" xml:space="preserve">
+				<source>Inserts a media element like a Flash animation, audio file or video clip.</source>
+			</trans-unit>
+			<trans-unit id="special_3_title" xml:space="preserve">
+				<source>Sitemap</source>
+			</trans-unit>
+			<trans-unit id="special_3_description" xml:space="preserve">
+				<source>Creates a sitemap of the website.</source>
+			</trans-unit>
+			<trans-unit id="special_4_title" xml:space="preserve">
+				<source>Plain HTML</source>
+			</trans-unit>
+			<trans-unit id="special_4_description" xml:space="preserve">
+				<source>With this element you can insert raw HTML code on the page.</source>
+			</trans-unit>
+			<trans-unit id="forms" xml:space="preserve">
+				<source>Form elements</source>
+			</trans-unit>
+			<trans-unit id="forms_1_title" xml:space="preserve">
+				<source>Mail form</source>
+			</trans-unit>
+			<trans-unit id="forms_1_description" xml:space="preserve">
+				<source>A response mail form by which users of the website can submit responses.</source>
+			</trans-unit>
+			<trans-unit id="forms_2_title" xml:space="preserve">
+				<source>Search form</source>
+			</trans-unit>
+			<trans-unit id="forms_2_description" xml:space="preserve">
+				<source>Draws a search form and the searchresult if a search is performed.</source>
+			</trans-unit>
+			<trans-unit id="forms_3_title" xml:space="preserve">
+				<source>Login form</source>
+			</trans-unit>
+			<trans-unit id="forms_3_description" xml:space="preserve">
+				<source>Login/logout form for website users. This is used to password protect pages. You must create website users and groups for this to work.</source>
+			</trans-unit>
+			<trans-unit id="plugins" xml:space="preserve">
+				<source>Plugins</source>
+			</trans-unit>
+			<trans-unit id="plugins_1_title" xml:space="preserve">
+				<source>General Plugin</source>
+			</trans-unit>
+			<trans-unit id="plugins_1_description" xml:space="preserve">
+				<source>If you want to insert a plugin which cannot be found among the options below, just select this element type and you can select your specific plugin in a selector box afterward.</source>
+			</trans-unit>
+			<trans-unit id="fce" xml:space="preserve">
+				<source>Flexible content</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
