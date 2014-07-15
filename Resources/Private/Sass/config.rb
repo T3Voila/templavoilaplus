@@ -1,0 +1,10 @@
+http_path            = '/'
+sass_dir             = '.'
+css_dir              = '../../Public/StyleSheet'
+images_dir           = '../../Public/Image'
+javascripts_dir      = '../../Public/JavaScript'
+fonts_dir            = '../../Public/Font'
+generated_images_dir = '../../Public/Image/_Generated'
+relative_assets      = true
+line_comments        = false
+output_style         = :compressed
