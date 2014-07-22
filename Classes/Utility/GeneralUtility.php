@@ -45,7 +45,7 @@ final class GeneralUtility {
 	/**
 	 * @return array
 	 */
-	public static function getDenyListForUser() {
+	static public function getDenyListForUser() {
 		$denyItems = array();
 		foreach (static::getBackendUser()->userGroups as $group) {
 			$groupDenyItems = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $group['tx_templavoila_access'], TRUE);
@@ -65,7 +65,7 @@ final class GeneralUtility {
 	 *
 	 * @return boolean true if there are other references for this element
 	 */
-	public static function getElementForeignReferences($element, $pid, $recursion = 99, &$references = NULL) {
+	static public function getElementForeignReferences($element, $pid, $recursion = 99, &$references = NULL) {
 		if (!$recursion) {
 			return FALSE;
 		}
@@ -109,7 +109,7 @@ final class GeneralUtility {
 	 *
 	 * @return boolean true if there are other references for this element
 	 */
-	public static function hasElementForeignReferences($element, $pid, $recursion = 99, &$references = NULL) {
+	static public function hasElementForeignReferences($element, $pid, $recursion = 99, &$references = NULL) {
 		$references = self::getElementForeignReferences($element, $pid, $recursion, $references);
 		$foreignRefs = FALSE;
 		if (is_array($references)) {

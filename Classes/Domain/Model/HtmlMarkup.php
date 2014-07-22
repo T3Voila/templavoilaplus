@@ -99,7 +99,7 @@ class HtmlMarkup {
 	 *
 	 * @var array
 	 */
-	public static $tagConf = array(
+	static public $tagConf = array(
 		'a' => array('anchor_outside' => 1, 'blocktype' => 'text'),
 		'abbr' => array('blocktype' => 'text'),
 		'address' => array('blocktype' => 'sections'),
@@ -1450,7 +1450,7 @@ class HtmlMarkup {
 	 *
 	 * @return string
 	 */
-	public static function getGnyfMarkup($tagName, $title = '', $onclick = '') {
+	static public function getGnyfMarkup($tagName, $title = '', $onclick = '') {
 		$tag = strtolower($tagName);
 		if (!isset(self::$tagConf[$tag])) {
 			return '';

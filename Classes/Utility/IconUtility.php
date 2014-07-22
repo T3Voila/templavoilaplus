@@ -25,7 +25,7 @@ final class IconUtility {
 	 *
 	 * @return string
 	 */
-	public static function getFlagIconForLanguage($flagName, $options = array()) {
+	static public function getFlagIconForLanguage($flagName, $options = array()) {
 		$flagName = (strlen($flagName) > 0) ? $flagName : 'unknown';
 
 		return \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('flags-' . ($flagName ? : 'unknown') , $options);
@@ -36,7 +36,7 @@ final class IconUtility {
 	 *
 	 * @return string
 	 */
-	public static function getFlagIconFileForLanguage($flagName) {
+	static public function getFlagIconFileForLanguage($flagName) {
 		$flag = '';
 		$flagName = (strlen($flagName) > 0) ? $flagName : 'unknown';
 

@@ -22,7 +22,7 @@ class File {
 	/**
 	 * @return boolean
 	 */
-	public static function includesFal() {
+	static public function includesFal() {
 		return class_exists('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
 	}
 
@@ -33,7 +33,7 @@ class File {
 	 *
 	 * @return \TYPO3\CMS\Core\Resource\FileInterface|\TYPO3\CMS\Core\Resource\Folder
 	 */
-	protected static function file($filename) {
+	static protected function file($filename) {
 		/** @var $resourceFactory \TYPO3\CMS\Core\Resource\ResourceFactory */
 		$resourceFactory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
 		$file = $resourceFactory->getObjectFromCombinedIdentifier($filename);
@@ -49,7 +49,7 @@ class File {
 	 *
 	 * @return string
 	 */
-	public static function filename($filename) {
+	static public function filename($filename) {
 
 		if (!self::includesFal()) {
 			return $filename;
@@ -71,7 +71,7 @@ class File {
 	 *
 	 * @return boolean
 	 */
-	public static function is_file($filename) {
+	static public function is_file($filename) {
 		if (!self::includesFal()) {
 			return @is_file($filename);
 		}
@@ -94,7 +94,7 @@ class File {
 	 *
 	 * @return boolean
 	 */
-	public static function is_xmlFile($filename) {
+	static public function is_xmlFile($filename) {
 
 		if (!self::includesFal()) {
 			return self::is_xmlFile_finfo($filename);
@@ -119,7 +119,7 @@ class File {
 	 *
 	 * @return boolean
 	 */
-	protected static function is_xmlFile_finfo($filename) {
+	static protected function is_xmlFile_finfo($filename) {
 		$isXml = FALSE;
 		if (function_exists('finfo_open')) {
 			$finfoMode = defined('FILEINFO_MIME_TYPE') ? FILEINFO_MIME_TYPE : FILEINFO_MIME;

@@ -24,7 +24,7 @@ class ToolsUtility {
 	/**
 	 * @param array $conf
 	 */
-	public static function readStaticDsFilesIntoArray($conf) {
+	static public function readStaticDsFilesIntoArray($conf) {
 		$paths = array_unique(array('fce' => $conf['staticDS.']['path_fce'], 'page' => $conf['staticDS.']['path_page']));
 		foreach ($paths as $type => $path) {
 			$absolutePath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($path);

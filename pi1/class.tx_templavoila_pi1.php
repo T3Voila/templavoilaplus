@@ -51,7 +51,7 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	/**
 	 * @var boolean
 	 */
-	public static $enablePageRenderer = TRUE;
+	static public $enablePageRenderer = TRUE;
 
 	/**
 	 * Markup object

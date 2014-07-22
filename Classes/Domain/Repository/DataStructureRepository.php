@@ -24,7 +24,7 @@ class DataStructureRepository {
 	/**
 	 * @var boolean
 	 */
-	protected static $staticDsInitComplete = FALSE;
+	static protected $staticDsInitComplete = FALSE;
 
 	/**
 	 * Retrieve a single datastructure by uid or xml-file path
@@ -239,7 +239,7 @@ class DataStructureRepository {
 	/**
 	 * @return array
 	 */
-	public static function getStaticDatastructureConfiguration() {
+	static public function getStaticDatastructureConfiguration() {
 		$config = array();
 		if (!self::$staticDsInitComplete) {
 			$extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);

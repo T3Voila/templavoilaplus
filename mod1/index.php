@@ -293,7 +293,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * @var boolean
 	 */
-	protected static $visibleContentHookObjectsPrepared = FALSE;
+	static protected $visibleContentHookObjectsPrepared = FALSE;
 
 	/**
 	 * @var boolean
@@ -303,7 +303,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * @var array
 	 */
-	protected static $calcPermCache = array();
+	static protected $calcPermCache = array();
 
 	/**
 	 * Setting which new content wizard to use
