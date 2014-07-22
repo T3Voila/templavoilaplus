@@ -1474,7 +1474,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 						$dsValue = $parentRec['datastructure'];
 					}
 
-					if (\Extension\Templavoila\Utility\GeneralUtility::canBeInterpretedAsInteger($dsValue)) {
+					if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($dsValue)) {
 						$DS_row = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('tx_templavoila_datastructure', $dsValue);
 					} else {
 						$DSOfile = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($dsValue);
