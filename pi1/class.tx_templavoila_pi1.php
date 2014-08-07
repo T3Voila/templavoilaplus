@@ -285,9 +285,9 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 				}
 			}
 
-			$dataValues = is_array($data['data']) ? $data['data'][$sheet][$lKey] : '';
-			if (!is_array($dataValues)) {
-				$dataValues = array();
+			$dataValues = array();
+			if (is_array($data) && isset($data['data'][$sheet][$lKey]) && is_array($data['data'][$sheet][$lKey])) {
+				$dataValues = $data['data'][$sheet][$lKey];
 			}
 
 			// Init mark up object.
