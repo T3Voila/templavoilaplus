@@ -45,7 +45,7 @@ class TemplateRepository {
 			'tx_templavoila_tmplobj.uid',
 			'tx_templavoila_tmplobj',
 			'tx_templavoila_tmplobj.datastructure=' . \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr($ds->getKey(), 'tx_templavoila_tmplobj')
-			. (intval($storagePid) > 0 ? ' AND tx_templavoila_tmplobj.pid = ' . intval($storagePid) : '')
+			. ((int)$storagePid > 0 ? ' AND tx_templavoila_tmplobj.pid = ' . (int)$storagePid : '')
 			. \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoila_tmplobj')
 			. ' AND pid!=-1 '
 			. \TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause('tx_templavoila_tmplobj')
@@ -92,7 +92,7 @@ class TemplateRepository {
 			'tx_templavoila_tmplobj.uid',
 			'tx_templavoila_tmplobj',
 			'tx_templavoila_tmplobj.parent=' . \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr($to->getKey(), 'tx_templavoila_tmplobj')
-			. (intval($storagePid) > 0 ? ' AND tx_templavoila_tmplobj.pid = ' . intval($storagePid) : ' AND pid!=-1')
+			. ((int)$storagePid > 0 ? ' AND tx_templavoila_tmplobj.pid = ' . (int)$storagePid : ' AND pid!=-1')
 			. \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoila_tmplobj')
 			. \TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause('tx_templavoila_tmplobj')
 		);
@@ -117,7 +117,7 @@ class TemplateRepository {
 			'tx_templavoila_tmplobj.uid',
 			'tx_templavoila_tmplobj',
 			'1=1'
-			. (intval($storagePid) > 0 ? ' AND tx_templavoila_tmplobj.pid = ' . intval($storagePid) : ' AND tx_templavoila_tmplobj.pid!=-1')
+			. ((int)$storagePid > 0 ? ' AND tx_templavoila_tmplobj.pid = ' . (int)$storagePid : ' AND tx_templavoila_tmplobj.pid!=-1')
 			. \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoila_tmplobj')
 			. \TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause('tx_templavoila_tmplobj')
 		);
@@ -174,7 +174,7 @@ class TemplateRepository {
 		$toCnt = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTgetRows(
 			'count(*) as cnt',
 			'tx_templavoila_tmplobj',
-			'pid=' . intval($pid) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoila_tmplobj')
+			'pid=' . (int)$pid . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoila_tmplobj')
 		);
 
 		return $toCnt[0]['cnt'];

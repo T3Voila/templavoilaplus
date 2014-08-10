@@ -461,7 +461,7 @@ class tx_templavoila_mod1_wizards {
 				$items = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $group['tx_templavoila_access'], 1);
 				foreach ($items as $ref) {
 					if (strstr($ref, $table)) {
-						$result[] = intval(substr($ref, $prefLen));
+						$result[] = (int)substr($ref, $prefLen);
 					}
 				}
 			}

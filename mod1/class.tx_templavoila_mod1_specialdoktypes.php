@@ -126,7 +126,7 @@ class tx_templavoila_mod1_specialdoktypes {
 	 */
 	public function renderDoktype_4($pageRecord) {
 		$jumpToShortcutSourceLink = '';
-		if (intval($pageRecord['shortcut_mode']) == 0) {
+		if ((int)$pageRecord['shortcut_mode'] == 0) {
 			$shortcutSourcePageRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('pages', $pageRecord['shortcut']);
 			$jumpToShortcutSourceLink = '<strong><a href="index.php?id=' . $pageRecord['shortcut'] . '">' .
 				\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('apps-pagetree-page-shortcut') .
@@ -135,7 +135,7 @@ class tx_templavoila_mod1_specialdoktypes {
 
 		$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
 			'\TYPO3\CMS\Core\Messaging\FlashMessage',
-			sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('cannotedit_shortcut_' . intval($pageRecord['shortcut_mode'])), $shortcutSourcePageRecord['title']),
+			sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('cannotedit_shortcut_' . (int)$pageRecord['shortcut_mode']), $shortcutSourcePageRecord['title']),
 			'',
 			\TYPO3\CMS\Core\Messaging\FlashMessage::INFO
 		);
@@ -185,8 +185,8 @@ class tx_templavoila_mod1_specialdoktypes {
 	 */
 	public function renderDoktype_254($pageRecord) {
 		if ($this->userHasAccessToListModule()) {
-			$listModuleURL = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_list', array('id' => intval($this->pObj->id)), '');
-			$onClick = "top.nextLoadModuleUrl='" . $listModuleURL . "';top.fsMod.recentIds['web']=" . intval($this->pObj->id) . ";top.goToModule('web_list',1);";
+			$listModuleURL = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_list', array('id' => (int)$this->pObj->id), '');
+			$onClick = "top.nextLoadModuleUrl='" . $listModuleURL . "';top.fsMod.recentIds['web']=" . (int)$this->pObj->id . ";top.goToModule('web_list',1);";
 			$listModuleLink = '<br /><br />' .
 				\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-system-list-open') .
 				'<strong><a href="#" onClick="' . $onClick . '">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('editpage_sysfolder_switchtolistview', '', 1) . '</a></strong>

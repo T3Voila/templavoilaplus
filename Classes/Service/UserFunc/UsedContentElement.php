@@ -40,7 +40,7 @@ class UsedContentElement {
 		$apiObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Service\\ApiService', 'pages');
 
 		// Fetch the content structure of page:
-		$contentTreeData = $apiObj->getContentTree('pages', \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw('pages', 'uid=' . intval($page_uid)));
+		$contentTreeData = $apiObj->getContentTree('pages', \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw('pages', 'uid=' . (int)$page_uid));
 		if ($contentTreeData['tree']['ds_is_found']) {
 			$this->usedUids = array_keys($contentTreeData['contentElementUsage']);
 			$this->usedUids[] = 0;

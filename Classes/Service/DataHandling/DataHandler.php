@@ -104,13 +104,13 @@ class DataHandler {
 			$this->correctSortingAndColposFieldsForPage($fieldArray['tx_templavoila_flex'], $id);
 
 			// If a new data structure has been selected, set a valid template object automatically:
-			if (intval($fieldArray['tx_templavoila_ds']) || intval($fieldArray['tx_templavoila_next_ds'])) {
+			if ((int)$fieldArray['tx_templavoila_ds'] || (int)$fieldArray['tx_templavoila_next_ds']) {
 
 				// Determine the page uid which ds_getAvailablePageTORecords() can use for finding the storage folder:
 				$pid = NULL;
 				if ($status == 'update') {
 					$pid = $id;
-				} elseif ($status == 'new' && intval($fieldArray['storage_pid'] == 0)) {
+				} elseif ($status == 'new' && (int)$fieldArray['storage_pid'] == 0) {
 					$pid = $fieldArray['pid'];
 				}
 
@@ -130,10 +130,10 @@ class DataHandler {
 							}
 						}
 						// Finally set the Template Objects if one was found:
-						if (intval($fieldArray['tx_templavoila_ds']) && ($fieldArray['tx_templavoila_to'] == 0)) {
+						if ((int)$fieldArray['tx_templavoila_ds'] && ($fieldArray['tx_templavoila_to'] == 0)) {
 							$fieldArray['tx_templavoila_to'] = $matchingTOUid;
 						}
-						if (intval($fieldArray['tx_templavoila_next_ds']) && ($fieldArray['tx_templavoila_next_to'] == 0)) {
+						if ((int)$fieldArray['tx_templavoila_next_ds'] && ($fieldArray['tx_templavoila_next_to'] == 0)) {
 							$fieldArray['tx_templavoila_next_to'] = $matchingNextTOUid;
 						}
 					}
@@ -219,7 +219,7 @@ page.10.disableExplosivePreview = 1
 					}
 
 					if (!is_array($destinationFlexformPointer)) {
-						$mainContentAreaFieldName = $templaVoilaAPI->ds_getFieldNameByColumnPosition($fieldArray['pid'], intval($fieldArray['colPos']));
+						$mainContentAreaFieldName = $templaVoilaAPI->ds_getFieldNameByColumnPosition($fieldArray['pid'], (int)$fieldArray['colPos']);
 						if ($mainContentAreaFieldName !== FALSE) {
 							$sorting_field = $GLOBALS['TCA'][$table]['ctrl']['sortby'];
 							$sorting = (!$sorting_field ? 0 : ($fieldArray[$sorting_field] ? -$fieldArray[$sorting_field] : 0));
@@ -317,10 +317,10 @@ page.10.disableExplosivePreview = 1
 					$reference->newlog(sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('access_noModifyAccess'), $table, $id), 1);
 					$command = ''; // Do not delete! A hack but there is no other way to prevent deletion...
 				} else {
-					if (intval($record['t3ver_oid']) > 0 && $record['pid'] == -1) {
+					if ((int)$record['t3ver_oid'] > 0 && $record['pid'] == -1) {
 						// we unlink a offline version in a workspace
 						if (abs($record['t3ver_wsid']) !== 0) {
-							$record = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('tt_content', intval($record['t3ver_oid']));
+							$record = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('tt_content', (int)$record['t3ver_oid']);
 						}
 					}
 					// avoid that deleting offline version in the live workspace unlinks the online version - see #11359
@@ -493,7 +493,7 @@ page.10.disableExplosivePreview = 1
 										$uidsArr = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $uidList);
 										if (is_array($uidsArr)) {
 											foreach ($uidsArr as $uid) {
-												if (intval($uid)) {
+												if ((int)$uid) {
 													$elementsOnThisPage[] = array(
 														'uid' => $uid,
 														'skey' => $currentSheet,
@@ -525,7 +525,7 @@ page.10.disableExplosivePreview = 1
 				);
 				 \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_UPDATEquery(
 					'tt_content',
-					'uid=' . intval($elementArr['uid']),
+					'uid=' . (int)$elementArr['uid'],
 					$updateFields
 				);
 				$sortNumber += 100;
@@ -567,7 +567,7 @@ page.10.disableExplosivePreview = 1
 	 */
 	protected function updateDataSourceFieldFromTemplateObjectField(array &$incomingFieldArray, $dsField, $toField, \TYPO3\CMS\Core\Authentication\BackendUserAuthentication &$beUser) {
 		$toId = $incomingFieldArray[$toField];
-		if (intval($toId) == 0) {
+		if ((int)$toId == 0) {
 			$incomingFieldArray[$dsField] = '';
 		} else {
 			if ($beUser->workspace) {

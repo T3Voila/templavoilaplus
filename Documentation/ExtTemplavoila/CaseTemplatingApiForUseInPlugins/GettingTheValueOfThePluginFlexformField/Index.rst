@@ -40,18 +40,18 @@ detects the record. Comments below
 ::
 
       1: function listView($content,$conf)    {
-      2: 
+      2:
       3:         // Init FlexForm configuration for plugin:
       4:     $this->pi_initPIflexForm();
-      5:     
+      5:
       6:         // Looking for TemplaVoila TO record and if found, initialize template object:
       7:     if (t3lib_extMgm::isLoaded('templavoila'))    {
       8:         $field_templateObject = $this->pi_getFFvalue($this->cObj->data['pi_flexform'],'field_templateObject');
-      9:         if (intval($field_templateObject))    {
+      9:         if ((int)$field_templateObject)    {
      10:             $this->TMPLobj = t3lib_div::makeInstance('tx_templavoila_htmlmarkup');
-     11:             $this->TA = $this->TMPLobj->getTemplateArrayForTO(intval($field_templateObject));
+     11:             $this->TA = $this->TMPLobj->getTemplateArrayForTO((int)$field_templateObject);
      12:             if (is_array($this->TA))    {
-     13:                 $this->TMPLobj->setHeaderBodyParts($this->TMPLobj->tDat['MappingInfo_head'],$this->TMPLobj->tDat['MappingData_head_cached']);                
+     13:                 $this->TMPLobj->setHeaderBodyParts($this->TMPLobj->tDat['MappingInfo_head'],$this->TMPLobj->tDat['MappingData_head_cached']);
      14:             }
      15:         }
      16:     }
@@ -149,7 +149,7 @@ the “ARCHIVE LISTING” template:
      33:                                                                           <n0>6th August 10:34</n0>
      34:                                                                           <n1>29/12 2003</n1>
      35:                                                                   </sample_data>
-     36:                                                           </tx_templavoila>                                                                                               
+     36:                                                           </tx_templavoila>
      37:                                                   </field_date>
      38:                                                   <field_header>
      39:                                                           <tx_templavoila>
@@ -160,7 +160,7 @@ the “ARCHIVE LISTING” template:
      44:                                                                           <n0>People on mars!</n0>
      45:                                                                           <n1>Snow in Sydney</n1>
      46:                                                                   </sample_data>
-     47:                                                           </tx_templavoila>                                                                                               
+     47:                                                           </tx_templavoila>
      48:                                                   </field_header>
      49:                                                   <field_teaser>
      50:                                                           <tx_templavoila>
@@ -170,7 +170,7 @@ the “ARCHIVE LISTING” template:
      54:                                                                   <sample_data>
      55:                                                                           <n0>Capthurim Chanaan vero genuit Sidonem primogenitum et Heth Iebuseum quoque </n0>
      56:                                                                   </sample_data>
-     57:                                                           </tx_templavoila>                                                                                               
+     57:                                                           </tx_templavoila>
      58:                                                   </field_teaser>
 
 This is a part of the Data Structure which is nested inside of
@@ -192,7 +192,7 @@ for
 ::
 
    <T3DataStructure><sheets><sArchive><ROOT><el><field_archiveListing><el><element_even>
-   
+
    $this->TA['sub']['sArchive']['sub']['field_archiveListing']['sub']['element_even']
 
 **Putting it all together**
@@ -203,7 +203,7 @@ whose output is finally returned:
 
 ::
 
-      1:     // Wrap the elements in their containers:            
+      1:     // Wrap the elements in their containers:
       2: $out = $this->TMPLobj->mergeDataArrayToTemplateArray(
       3:         $this->TA['sub']['sArchive'],
       4:         array(
@@ -214,8 +214,8 @@ whose output is finally returned:
       9:             'field_browseBox_displayRange' => $rangeLabel,
      10:             'field_browseBox_displayCount' => $this->internal['res_count']
      11:         )
-     12:     );    
-     13:     
+     12:     );
+     13:
      14: return $out;
 
 This time you will see that the accumulated content of the list rows
@@ -225,7 +225,7 @@ other fields you can look them up in the DS as well:
 ::
 
    ...
-    105: 
+    105:
     106:                   <!--
     107:                           Defining mappings for the search box:
     108:                   -->
@@ -253,7 +253,7 @@ other fields you can look them up in the DS as well:
     130:                                   </sample_data>
     131:                           </tx_templavoila>
     132:                   </field_searchBox_sword>
-    133: 
+    133:
     134:                   <!--
     135:                           Defining mappings for the browse box, display note:
     136:                   -->

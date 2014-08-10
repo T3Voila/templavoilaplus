@@ -27,7 +27,7 @@ class RenameFieldInPageFlexWizardController extends \TYPO3\CMS\Backend\Module\Ab
 	 */
 	public function main() {
 		if (\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isAdmin()) {
-			if (intval($this->pObj->id) > 0) {
+			if ((int)$this->pObj->id > 0) {
 				return $this->showForm() . $this->executeCommand();
 			} else {
 				// should never happen, as function module catches this already,
@@ -95,7 +95,7 @@ class RenameFieldInPageFlexWizardController extends \TYPO3\CMS\Backend\Module\Ab
 				// build message for simulation
 				$mbuffer = 'Affects ' . count($rows) . ': <ul>';
 				foreach ($rows as $row) {
-					$mbuffer .= '<li>' . htmlspecialchars($row['title']) . ' (uid: ' . intval($row['uid']) . ')</li>';
+					$mbuffer .= '<li>' . htmlspecialchars($row['title']) . ' (uid: ' . (int)$row['uid'] . ')</li>';
 				}
 				$mbuffer .= '</ul>';
 				$message = new \TYPO3\CMS\Core\Messaging\FlashMessage($mbuffer, '', \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);

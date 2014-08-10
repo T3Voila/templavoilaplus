@@ -135,7 +135,7 @@ class tx_templavoila_cm1_dsEdit {
 						<optgroup class="c-divider" label="' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapPresetGroups_tceFields') . '">';
 					foreach ($eTypes_formFields as $eType) {
 						$label = htmlspecialchars($eType == 'ce' ?
-							sprintf($eTypes['eType'][$eType]['label'], $insertDataArray['tx_templavoila']['oldStyleColumnNumber'] ? intval($insertDataArray['tx_templavoila']['oldStyleColumnNumber']) : $this->oldStyleColumnNumber) :
+							sprintf($eTypes['eType'][$eType]['label'], $insertDataArray['tx_templavoila']['oldStyleColumnNumber'] ? (int)$insertDataArray['tx_templavoila']['oldStyleColumnNumber'] : $this->oldStyleColumnNumber) :
 							$eTypes['eType'][$eType]['label']);
 						$form .= chr(10) . '<option value="' . $eType . '"' . ($insertDataArray['tx_templavoila']['eType'] == $eType ? ' selected="selected"' : '') . '>' . $label . '</option>';
 					}
@@ -230,8 +230,8 @@ class tx_templavoila_cm1_dsEdit {
 							<label for="tv_proc_int_">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapPPcastInteger') . '</label><br />
 							<input type="checkbox" class="checkbox" id="tv_proc_hsc_" value="1" ' . ($insertDataArray['tx_templavoila']['proc']['HSC'] ? 'checked="checked"' : '') . ' onclick="$(\'tv_proc_hsc\').value=(this.checked ? 1 : 0);" />
 							<label for="tv_proc_hsc_">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapPPhsc') . '</label>
-							<input type="hidden" id="tv_proc_int" name="' . $formFieldName . '[tx_templavoila][proc][int]" value="' . intval($insertDataArray['tx_templavoila']['proc']['int']) . '" />
-							<input type="hidden" id="tv_proc_hsc" name="' . $formFieldName . '[tx_templavoila][proc][HSC]" value="' . intval($insertDataArray['tx_templavoila']['proc']['HSC']) . '" />
+							<input type="hidden" id="tv_proc_int" name="' . $formFieldName . '[tx_templavoila][proc][int]" value="' . (int)$insertDataArray['tx_templavoila']['proc']['int'] . '" />
+							<input type="hidden" id="tv_proc_hsc" name="' . $formFieldName . '[tx_templavoila][proc][HSC]" value="' . (int)$insertDataArray['tx_templavoila']['proc']['HSC'] . '" />
 						</dd>
 
 						<dt><label>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapCustomStdWrap') . ':</label></dt>
@@ -250,7 +250,7 @@ class tx_templavoila_cm1_dsEdit {
 							<dt>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapOldStyleColumnNumber') . '</dt>
 							<dd>
 								<label for="tv_oldstylecolumnnumber">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapOldStyleColumnNumber_label') . ':</label><br />
-								<input type="text" id="tv_oldstylecolumnnumber" name="' . $formFieldName . '[tx_templavoila][oldStyleColumnNumber]" value="' . intval($insertDataArray['tx_templavoila']['oldStyleColumnNumber']) . '" />
+								<input type="text" id="tv_oldstylecolumnnumber" name="' . $formFieldName . '[tx_templavoila][oldStyleColumnNumber]" value="' . (int)$insertDataArray['tx_templavoila']['oldStyleColumnNumber'] . '" />
 
 							</dd>';
 
@@ -258,7 +258,7 @@ class tx_templavoila_cm1_dsEdit {
 							<dt><label for="tv_enabledragdrop_">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapEnableDragDrop') . '</label></dt>
 							<dd>
 								<input type="checkbox" class="checkbox" id="tv_enabledragdrop_" value="1" ' . (($insertDataArray['tx_templavoila']['enableDragDrop'] === '0') ? '' : 'checked="checked"') . ' onclick="$(\'tv_enabledragdrop\').value=(this.checked ? 1 : 0);" />
-								<input type="hidden" id="tv_enabledragdrop" name="' . $formFieldName . '[tx_templavoila][enableDragDrop]" value="' . intval($insertDataArray['tx_templavoila']['enableDragDrop']) . '" />
+								<input type="hidden" id="tv_enabledragdrop" name="' . $formFieldName . '[tx_templavoila][enableDragDrop]" value="' . (int)$insertDataArray['tx_templavoila']['enableDragDrop'] . '" />
 							</dd>';
 					}
 					$form .= '</dl>';

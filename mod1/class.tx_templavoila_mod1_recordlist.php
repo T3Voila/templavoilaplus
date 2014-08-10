@@ -41,7 +41,7 @@ class tx_templavoila_mod1_recordlist extends \TYPO3\CMS\Recordlist\RecordList\Da
 
 		parent::start($this->pObj->rootElementUid_pidForContent,
 			'', //$this->pObj->MOD_SETTINGS['recordsView_table'],
-			intval($this->pObj->MOD_SETTINGS['recordsView_start']));
+			(int)$this->pObj->MOD_SETTINGS['recordsView_start']);
 	}
 
 	/**

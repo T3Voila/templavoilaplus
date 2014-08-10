@@ -178,7 +178,7 @@ class tx_templavoila_dbnewcontentel {
 		$this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
 
 		// Setting internal vars:
-		$this->id = intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id'));
+		$this->id = (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id');
 		$this->parentRecord = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('parentRecord');
 		$this->altRoot = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('altRoot');
 		$this->defVals = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('defVals');
@@ -649,7 +649,7 @@ class tx_templavoila_dbnewcontentel {
 				$items = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $group['tx_templavoila_access'], 1);
 				foreach ($items as $ref) {
 					if (strstr($ref, $table)) {
-						$result[] = intval(substr($ref, $prefLen));
+						$result[] = (int)substr($ref, $prefLen);
 					}
 				}
 			}

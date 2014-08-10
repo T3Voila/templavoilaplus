@@ -536,7 +536,7 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 
 		$this->getDatabaseConnection()->exec_UPDATEquery(
 			'tt_content',
-			'uid=' . intval($elementUids[2]),
+			'uid=' . (int)$elementUids[2],
 			array('deleted' => 1)
 		);
 
@@ -1573,7 +1573,7 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		self::assertTrue($result !== FALSE, 'localizeElement()returned FALSE!');
 
 		// Check if the localized element has been referenced correctly:
-		$localizedUid = intval($result);
+		$localizedUid = (int)$result;
 		$testPageRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw('pages', 'uid=' . $pageUid, 'tx_templavoila_flex');
 		$flexform = simplexml_load_string($testPageRecord['tx_templavoila_flex']);
 		$xpathResArr = $flexform->xpath("//data/sheet[@index='sDEF']/language[@index='lDEF']/field[@index='field_content']/value[@index='vDE']");
@@ -1629,7 +1629,7 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		self::assertTrue($result !== FALSE, 'localizeElement()returned FALSE!');
 
 		// Check if the localized element has been referenced correctly:
-		$localizedUid = intval($result);
+		$localizedUid = (int)$result;
 		$testPageRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('pages', $pageUid, 'uid,pid,tx_templavoila_flex');
 		$flexform = simplexml_load_string($testPageRecord['tx_templavoila_flex']);
 		$xpathResArr = $flexform->xpath("//data/sheet[@index='sDEF']/language[@index='lDEF']/field[@index='field_content']/value[@index='vDE']");
@@ -1766,7 +1766,7 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		$elementsBySortingFieldArr = $this->getDatabaseConnection()->exec_SELECTgetRows(
 			'uid',
 			'tt_content',
-			'pid=' . intval($pageUid),
+			'pid=' . (int)$pageUid,
 			'',
 			'sorting'
 		);

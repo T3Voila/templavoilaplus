@@ -78,7 +78,7 @@ class TextController {
 		//Enable to omit that parameter
 		if ($max === NULL) {
 			if (isset($this->parentObj->modTSconfig['properties']['previewDataMaxLen'])) {
-				$max = intval($this->parentObj->modTSconfig['properties']['previewDataMaxLen']);
+				$max = (int)$this->parentObj->modTSconfig['properties']['previewDataMaxLen'];
 			} else {
 				$max = 2000;
 			}
@@ -91,7 +91,7 @@ class TextController {
 		}
 
 		if (isset($this->parentObj->modTSconfig['properties']['previewDataMaxWordLen'])) {
-			$wordLen = intval($this->parentObj->modTSconfig['properties']['previewDataMaxWordLen']);
+			$wordLen = (int)$this->parentObj->modTSconfig['properties']['previewDataMaxWordLen'];
 		} else {
 			$wordLen = 75;
 		}

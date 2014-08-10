@@ -260,9 +260,9 @@ class tx_templavoila_mod1_clipboard {
 		$res = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTquery(
 			\TYPO3\CMS\Backend\Utility\BackendUtility::getCommonSelectFields('tt_content', '', array('uid', 'header', 'bodytext', 'sys_language_uid')),
 			'tt_content',
-			'pid=' . intval($pid) . ' ' .
+			'pid=' . (int)$pid . ' ' .
 			'AND uid NOT IN (' . implode(',', $usedUids) . ') ' .
-			'AND ( t3ver_state NOT IN (1,3) OR (t3ver_wsid > 0 AND t3ver_wsid = ' . intval(\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->workspace) . ') )' .
+			'AND ( t3ver_state NOT IN (1,3) OR (t3ver_wsid > 0 AND t3ver_wsid = ' . (int)\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->workspace . ') )' .
 			\TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tt_content') .
 			\TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause('tt_content'),
 			'',
@@ -355,8 +355,8 @@ class tx_templavoila_mod1_clipboard {
 		$rows = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTgetRows(
 			'*',
 			'sys_refindex',
-			'ref_table=' .  \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr('tt_content', 'sys_refindex') .
-			' AND ref_uid=' . intval($uid) .
+			'ref_table=' . \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr('tt_content', 'sys_refindex') .
+			' AND ref_uid=' . (int)$uid .
 			' AND deleted=0'
 		);
 

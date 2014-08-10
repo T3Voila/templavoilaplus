@@ -37,7 +37,7 @@ class DataStructureRepository {
 	 */
 	public function getDatastructureByUidOrFilename($uidOrFile) {
 
-		if (intval($uidOrFile) > 0) {
+		if ((int)$uidOrFile > 0) {
 			$className = 'Extension\\Templavoila\\Domain\\Model\\DataStructure';
 		} else {
 			if (($staticKey = $this->validateStaticDS($uidOrFile)) !== FALSE) {
@@ -81,7 +81,7 @@ class DataStructureRepository {
 			$dsRows = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTgetRows(
 				'uid',
 				'tx_templavoila_datastructure',
-				'pid=' . intval($pid)
+				'pid=' . (int)$pid
 				. \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoila_datastructure')
 				. ' AND pid!=-1 '
 				. \TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause('tx_templavoila_datastructure')
@@ -122,7 +122,7 @@ class DataStructureRepository {
 			$dsRows = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTgetRows(
 				'uid',
 				'tx_templavoila_datastructure',
-				'scope=' . intval($scope) . ' AND pid=' . intval($pid)
+				'scope=' . (int)$scope . ' AND pid=' . (int)$pid
 				. \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoila_datastructure')
 				. ' AND pid!=-1 '
 				. \TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause('tx_templavoila_datastructure')
@@ -159,7 +159,7 @@ class DataStructureRepository {
 			$dsRows = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTgetRows(
 				'uid',
 				'tx_templavoila_datastructure',
-				'scope=' . intval($scope)
+				'scope=' . (int)$scope
 				. \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoila_datastructure')
 				. ' AND pid!=-1 '
 				. \TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause('tx_templavoila_datastructure')
@@ -288,7 +288,7 @@ class DataStructureRepository {
 		$dsCnt = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTgetRows(
 			'DISTINCT datastructure',
 			'tx_templavoila_tmplobj',
-			'pid=' . intval($pid) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoila_tmplobj'),
+			'pid=' . (int)$pid . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoila_tmplobj'),
 			'datastructure'
 		);
 		array_unique($dsCnt);

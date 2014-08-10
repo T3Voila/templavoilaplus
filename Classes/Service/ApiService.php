@@ -146,7 +146,7 @@ class ApiService {
 			$languageKey = $destinationPointer['vLang'] != 'vDEF' ? $destinationPointer['vLang'] : $destinationPointer['sLang'];
 			$staticLanguageRows = BackendUtility::getRecordsByField('static_languages', 'lg_iso_2', substr($languageKey, 1));
 			if (isset($staticLanguageRows[0]['uid'])) {
-				$languageRecord = BackendUtility::getRecordRaw('sys_language', 'static_lang_isocode=' . intval($staticLanguageRows[0]['uid']));
+				$languageRecord = BackendUtility::getRecordRaw('sys_language', 'static_lang_isocode=' . (int)$staticLanguageRows[0]['uid']);
 				if (isset($languageRecord['uid'])) {
 					$dataArr['tt_content']['NEW']['sys_language_uid'] = $languageRecord['uid'];
 				}
@@ -181,7 +181,7 @@ class ApiService {
 			$this->setTCEmainRunningFlag(FALSE);
 		}
 
-		return (intval($newUid) ? intval($newUid) : FALSE);
+		return ((int)$newUid ? (int)$newUid : FALSE);
 	}
 
 	/**
@@ -344,7 +344,7 @@ class ApiService {
 		}
 		$sourcePointer = array(
 			'table' => 'tt_content',
-			'uid' => intval($uid)
+			'uid' => (int)$uid
 		);
 
 		return $this->process('referencebyuid', $sourcePointer, $destinationPointer);
@@ -540,7 +540,7 @@ class ApiService {
 				$elementUids[] = $elementUid;
 
 				// Reduce the list to local elements to make sure that references are kept instead of moving the referenced record
-				$localRecords = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTgetRows('uid,pid', 'tt_content', 'uid IN (' . implode(',', $elementUids) . ') AND pid=' . intval($sourcePID) . ' ' . BackendUtility::deleteClause('tt_content'));
+				$localRecords = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTgetRows('uid,pid', 'tt_content', 'uid IN (' . implode(',', $elementUids) . ') AND pid=' . (int)$sourcePID . ' ' . BackendUtility::deleteClause('tt_content'));
 				if (!empty($localRecords) && is_array($localRecords)) {
 					$cmdArray = array();
 					foreach ($localRecords as $localRecord) {
@@ -1314,7 +1314,7 @@ class ApiService {
 					if (is_array($sheetDataStructureArr['ROOT']['el'])) {
 						if (is_array($sheetDataStructureArr['ROOT']['el'][$fieldName])) {
 							if (isset ($sheetDataStructureArr['ROOT']['el'][$fieldName]['tx_templavoila']['oldStyleColumnNumber'])) {
-								return intval($sheetDataStructureArr['ROOT']['el'][$fieldName]['tx_templavoila']['oldStyleColumnNumber']);
+								return (int)$sheetDataStructureArr['ROOT']['el'][$fieldName]['tx_templavoila']['oldStyleColumnNumber'];
 							}
 						}
 					}
@@ -1379,7 +1379,7 @@ class ApiService {
 		$res = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTquery(
 			"$tTO.*",
 			"$tTO LEFT JOIN $tDS ON $tTO.datastructure = $tDS.uid",
-			"$tTO.pid=" . intval($storageFolderPID) . " AND $tDS.scope=1" .
+			"$tTO.pid=" . (int)$storageFolderPID . " AND $tDS.scope=1" .
 			BackendUtility::deleteClause($tTO) . BackendUtility::deleteClause($tDS) .
 			BackendUtility::versioningPlaceholderClause($tTO) . BackendUtility::versioningPlaceholderClause($tDS)
 		);
@@ -1493,8 +1493,8 @@ class ApiService {
 			}
 
 			// Respect the currently selected language, for both concepts - with langChildren enabled and disabled:
-			$langChildren = intval($tree['ds_meta']['langChildren']);
-			$langDisable = intval($tree['ds_meta']['langDisable']);
+			$langChildren = (int)$tree['ds_meta']['langChildren'];
+			$langDisable = (int)$tree['ds_meta']['langDisable'];
 
 			$lKeys = $langDisable ? array('lDEF') : ($langChildren ? array('lDEF') : $this->allSystemWebsiteLanguages['all_lKeys']);
 			$vKeys = $langDisable ? array('vDEF') : ($langChildren ? $this->allSystemWebsiteLanguages['all_vKeys'] : array('vDEF'));
@@ -1675,7 +1675,7 @@ class ApiService {
 				'tt_content',
 				'pid=' . $fakeElementRow['pid'] .
 				' AND sys_language_uid>0' .
-				' AND l18n_parent=' . intval($contentTreeArr['el']['uid']) .
+				' AND l18n_parent=' . (int)$contentTreeArr['el']['uid'] .
 				BackendUtility::deleteClause('tt_content')
 			);
 
@@ -1725,7 +1725,7 @@ class ApiService {
 	 * @return mixed The template object record or FALSE if none was found
 	 */
 	public function getContentTree_fetchPageTemplateObject($row) {
-		$templateObjectUid = $row['tx_templavoila_ds'] ? intval($row['tx_templavoila_to']) : 0;
+		$templateObjectUid = $row['tx_templavoila_ds'] ? (int)$row['tx_templavoila_to'] : 0;
 		if (!$templateObjectUid) {
 			$rootLine = BackendUtility::BEgetRootLine($row['uid'], '', TRUE);
 			foreach ($rootLine as $rootLineRecord) {
@@ -1755,10 +1755,10 @@ class ApiService {
 	public function isLocalizationLinkEnabledForFCE($contentTreeArr) {
 		$isLocalizationLinkEnabledForFCE = FALSE;
 		$modTSConfig =& $this->getModWebTSconfig($contentTreeArr['el']['pid']);
-		if (intval($modTSConfig['properties']['enableLocalizationLinkForFCEs']) === 1 &&
+		if ((int)$modTSConfig['properties']['enableLocalizationLinkForFCEs'] === 1 &&
 			$contentTreeArr['el']['CType'] === 'templavoila_pi1' &&
 			isset($contentTreeArr['ds_meta']['langDisable']) &&
-			intval($contentTreeArr['ds_meta']['langDisable']) === 1
+			(int)$contentTreeArr['ds_meta']['langDisable'] === 1
 		) {
 			$isLocalizationLinkEnabledForFCE = TRUE;
 		}
@@ -1813,12 +1813,12 @@ class ApiService {
 		$row = BackendUtility::getRecordWSOL('pages', $pageUid);
 
 		$TSconfig = BackendUtility::getTCEFORM_TSconfig('pages', $row);
-		$storagePid = intval($TSconfig['_STORAGE_PID']);
+		$storagePid = (int)$TSconfig['_STORAGE_PID'];
 
 		// Check for alternative storage folder
 		$modTSConfig = BackendUtility::getModTSconfig($pageUid, 'tx_templavoila.storagePid');
 		if (is_array($modTSConfig) && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($modTSConfig['value'])) {
-			$storagePid = intval($modTSConfig['value']);
+			$storagePid = (int)$modTSConfig['value'];
 		}
 
 		return $storagePid;

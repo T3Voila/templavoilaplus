@@ -77,7 +77,7 @@ class Access {
 				$items = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $group['tx_templavoila_access'], 1);
 				foreach ($items as $ref) {
 					if (strstr($ref, $table)) {
-						if ($uid == intval(substr($ref, $prefLen))) {
+						if ($uid == (int)substr($ref, $prefLen)) {
 							return FALSE;
 						}
 					}

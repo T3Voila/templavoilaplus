@@ -703,7 +703,7 @@ class HtmlMarkup {
 			$res = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTquery(
 				'*',
 				'tx_templavoila_tmplobj',
-				'uid=' . intval($uid) . ($TCA['tx_templavoila_tmplobj']['ctrl']['delete'] ? ' AND NOT ' . $TCA['tx_templavoila_tmplobj']['ctrl']['delete'] : '')
+				'uid=' . (int)$uid . ($TCA['tx_templavoila_tmplobj']['ctrl']['delete'] ? ' AND NOT ' . $TCA['tx_templavoila_tmplobj']['ctrl']['delete'] : '')
 			);
 			$row = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_fetch_assoc($res);
 			$this->tDat = unserialize($row['templatemapping']);
@@ -765,22 +765,22 @@ class HtmlMarkup {
 					}
 
 					if ($langUid) { // If lang_uid is set, try to look up for current language:
-						$printRow = $this->getTemplateRecord_query($parentUid, 'AND rendertype=' . \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr($renderType, 'tx_templavoila_tmplobj') . ' AND sys_language_uid=' . intval($langUid));
+						$printRow = $this->getTemplateRecord_query($parentUid, 'AND rendertype=' . \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr($renderType, 'tx_templavoila_tmplobj') . ' AND sys_language_uid=' . (int)$langUid);
 						if (is_array($printRow)) {
 							$rec = $printRow;
 						} elseif ($rendertype_ref) { // Look in rendertype_ref record:
-							$printRow = $this->getTemplateRecord_query($rendertype_ref['uid'], 'AND rendertype=' . \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr($renderType, 'tx_templavoila_tmplobj') . ' AND sys_language_uid=' . intval($langUid));
+							$printRow = $this->getTemplateRecord_query($rendertype_ref['uid'], 'AND rendertype=' . \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr($renderType, 'tx_templavoila_tmplobj') . ' AND sys_language_uid=' . (int)$langUid);
 							if (is_array($printRow)) {
 								$rec = $printRow;
 							}
 						}
 					}
 				} elseif ($langUid) { // If the language uid is set, then try to find a regular record with sys_language_uid
-					$printRow = $this->getTemplateRecord_query($parentUid, 'AND rendertype=\'\' AND sys_language_uid=' . intval($langUid));
+					$printRow = $this->getTemplateRecord_query($parentUid, 'AND rendertype=\'\' AND sys_language_uid=' . (int)$langUid);
 					if (is_array($printRow)) {
 						$rec = $printRow;
 					} elseif ($rendertype_ref) { // Look in rendertype_ref record:
-						$printRow = $this->getTemplateRecord_query($rendertype_ref['uid'], 'AND rendertype=\'\' AND sys_language_uid=' . intval($langUid));
+						$printRow = $this->getTemplateRecord_query($rendertype_ref['uid'], 'AND rendertype=\'\' AND sys_language_uid=' . (int)$langUid);
 						if (is_array($printRow)) {
 							$rec = $printRow;
 						}
@@ -825,7 +825,7 @@ class HtmlMarkup {
 		$res = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTquery(
 			'*',
 			'tx_templavoila_tmplobj',
-			'parent=' . intval($uid) . ' ' . $where . $TSFE->sys_page->enableFields('tx_templavoila_tmplobj')
+			'parent=' . (int)$uid . ' ' . $where . $TSFE->sys_page->enableFields('tx_templavoila_tmplobj')
 		);
 		$printRow = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_fetch_assoc($res);
 

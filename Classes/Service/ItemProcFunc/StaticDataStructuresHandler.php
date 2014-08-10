@@ -276,13 +276,13 @@ class StaticDataStructuresHandler {
 	protected function getStoragePid(array &$params, \TYPO3\CMS\Backend\Form\FormEngine &$pObj) {
 		// Get default first
 		$tsConfig = & $pObj->cachedTSconfig[$params['table'] . ':' . $params['row']['uid']];
-		$storagePid = intval($tsConfig['_STORAGE_PID']);
+		$storagePid = (int)$tsConfig['_STORAGE_PID'];
 
 		// Check for alternative storage folder
 		$field = $params['table'] == 'pages' ? 'uid' : 'pid';
 		$modTSConfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($params['row'][$field], 'tx_templavoila.storagePid');
 		if (is_array($modTSConfig) && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($modTSConfig['value'])) {
-			$storagePid = intval($modTSConfig['value']);
+			$storagePid = (int)$modTSConfig['value'];
 		}
 
 		return $storagePid;

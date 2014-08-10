@@ -76,7 +76,7 @@ final class GeneralUtility {
 			'*',
 			'sys_refindex',
 			'ref_table=' . static::getDatabaseConnection()->fullQuoteStr($element['table'], 'sys_refindex') .
-			' AND ref_uid=' . intval($element['uid']) .
+			' AND ref_uid=' . (int)$element['uid'] .
 			' AND deleted=0'
 		);
 

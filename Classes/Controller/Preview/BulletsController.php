@@ -31,7 +31,7 @@ class BulletsController extends TextController {
 	 */
 	protected function getPreviewData($row) {
 		if (isset($this->parentObj->modTSconfig['properties']['previewDataMaxLen'])) {
-			$max = intval($this->parentObj->modTSconfig['properties']['previewDataMaxLen']);
+			$max = (int)$this->parentObj->modTSconfig['properties']['previewDataMaxLen'];
 		} else {
 			$max = 2000;
 		}

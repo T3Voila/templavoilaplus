@@ -123,7 +123,7 @@ Automatic Repair:
 				$apiObj = GeneralUtility::makeInstance('Extension\\Templavoila\\Service\\ApiService', 'pages');
 
 				// Fetch the content structure of page:
-				$contentTreeData = $apiObj->getContentTree('pages', BackendUtility::getRecordRaw('pages', 'uid=' . intval($uid)));
+				$contentTreeData = $apiObj->getContentTree('pages', BackendUtility::getRecordRaw('pages', 'uid=' . (int)$uid));
 				if ($contentTreeData['tree']['ds_is_found']) {
 					$usedUids = array_keys($contentTreeData['contentElementUsage']);
 					$usedUids[] = 0;
@@ -132,7 +132,7 @@ Automatic Repair:
 					$res = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTquery(
 						'uid, header',
 						'tt_content',
-						'pid=' . intval($uid) . ' ' .
+						'pid=' . (int)$uid . ' ' .
 						'AND uid NOT IN (' . implode(',', $usedUids) . ') ' .
 						'AND t3ver_state!=1 ' .
 						'AND t3ver_state!=3 ' .
@@ -150,7 +150,7 @@ Automatic Repair:
 							'hash',
 							'sys_refindex',
 							'ref_table=' . \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr('tt_content', 'sys_refindex') .
-							' AND ref_uid=' . intval($row['uid']) .
+							' AND ref_uid=' . (int)$row['uid'] .
 							' AND deleted=0'
 						);
 
@@ -160,7 +160,7 @@ Automatic Repair:
 							'ref_uid',
 							'sys_refindex',
 							'tablename=' . \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr('tt_content', 'sys_refindex') .
-							' AND recuid=' . intval($row['uid']) .
+							' AND recuid=' . (int)$row['uid'] .
 							' AND field=' . \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr('l18n_parent', 'sys_refindex')
 						);
 						// Check if that other record is deleted or not:

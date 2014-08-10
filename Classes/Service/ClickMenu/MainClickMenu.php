@@ -77,7 +77,7 @@ class MainClickMenu {
 			if ($table === 'tt_content' && $isTVelement) {
 				$localItems = array();
 
-				$url = $extensionRelativePath . 'mod1/index.php?id=' . intval($backRef->rec['pid']) .
+				$url = $extensionRelativePath . 'mod1/index.php?id=' . (int)$backRef->rec['pid'] .
 					'&altRoot[table]=' . rawurlencode($table) .
 					'&altRoot[uid]=' . $uid .
 					'&altRoot[field_flex]=tx_templavoila_flex';

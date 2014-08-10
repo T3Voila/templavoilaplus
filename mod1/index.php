@@ -367,7 +367,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$this->versionId = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('versionId');
 
 		if (isset($this->modTSconfig['properties']['previewTitleMaxLen'])) {
-			$this->previewTitleMaxLen = intval($this->modTSconfig['properties']['previewTitleMaxLen']);
+			$this->previewTitleMaxLen = (int)$this->modTSconfig['properties']['previewTitleMaxLen'];
 		}
 
 		// enable debug for development
@@ -495,7 +495,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			$pageInfoArr = \TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess($altRootRecord['pid'], $this->perms_clause);
 		} else {
 			$pageInfoArr = \TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess($this->id, $this->perms_clause);
-			$access = (intval($pageInfoArr['uid'] > 0));
+			$access = (int)$pageInfoArr['uid'] > 0;
 		}
 
 		if ($access) {
@@ -578,7 +578,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 			// Adding classic jumpToUrl function, needed for the function menu. Also, the id in the parent frameset is configured.
 			$this->doc->JScode = $this->doc->wrapScriptTags('
-				if (top.fsMod) top.fsMod.recentIds["web"] = ' . intval($this->id) . ';
+				if (top.fsMod) top.fsMod.recentIds["web"] = ' . (int)$this->id . ';
 				' . $this->doc->redirectUrls() . '
 				var T3_TV_MOD1_BACKPATH = "' . $BACK_PATH . '";
 				var T3_TV_MOD1_RETURNURL = "' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')) . '";
@@ -712,10 +712,10 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 				// warn if page renders content from other page
 				if ($this->rootElementRecord['content_from_pid']) {
-					$contentPage = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', intval($this->rootElementRecord['content_from_pid']));
+					$contentPage = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', (int)$this->rootElementRecord['content_from_pid']);
 					$title = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle('pages', $contentPage);
-					$linkToPid = 'index.php?id=' . intval($this->rootElementRecord['content_from_pid']);
-					$link = '<a href="' . $linkToPid . '">' . htmlspecialchars($title) . ' (PID ' . intval($this->rootElementRecord['content_from_pid']) . ')</a>';
+					$linkToPid = 'index.php?id=' . (int)$this->rootElementRecord['content_from_pid'];
+					$link = '<a href="' . $linkToPid . '">' . htmlspecialchars($title) . ' (PID ' . (int)$this->rootElementRecord['content_from_pid'] . ')</a>';
 					/** @var \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage */
 					$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
 						'\TYPO3\CMS\Core\Messaging\FlashMessage',
@@ -1169,7 +1169,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				}
 				if ($contentTreeArr['el']['CType'] == 'templavoila_pi1') {
 					//fce
-					$elementClass .= ' tpm-fce tpm-fce_' . intval($contentTreeArr['el']['TO']);
+					$elementClass .= ' tpm-fce tpm-fce_' . (int)$contentTreeArr['el']['TO'];
 				}
 
 				$languageUid = $contentTreeArr['el']['sys_language_uid'];
@@ -1325,8 +1325,8 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$canEditContent = \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isPSet($calcPerms, 'pages', 'editcontent');
 
 		// Define l/v keys for current language:
-		$langChildren = intval($elementContentTreeArr['ds_meta']['langChildren']);
-		$langDisable = intval($elementContentTreeArr['ds_meta']['langDisable']);
+		$langChildren = (int)$elementContentTreeArr['ds_meta']['langChildren'];
+		$langDisable = (int)$elementContentTreeArr['ds_meta']['langDisable'];
 
 		$lKey = $this->determineFlexLanguageKey($langDisable, $langChildren, $languageKey);
 		$vKey = $this->determineFlexValueKey($langDisable, $langChildren, $languageKey);
@@ -1356,8 +1356,8 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$cells = array();
 
 		// get used TO
-		if (isset($elementContentTreeArr['el']['TO']) && intval($elementContentTreeArr['el']['TO'])) {
-			$toRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('tx_templavoila_tmplobj', intval($elementContentTreeArr['el']['TO']));
+		if (isset($elementContentTreeArr['el']['TO']) && (int)$elementContentTreeArr['el']['TO']) {
+			$toRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('tx_templavoila_tmplobj', (int)$elementContentTreeArr['el']['TO']);
 		} else {
 			$toRecord = $this->apiObj->getContentTree_fetchPageTemplateObject($this->rootElementRecord);
 		}
@@ -1661,8 +1661,8 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		if (is_array($previewData['sheets'][$sheet])) {
 
 			// Define l/v keys for current language:
-			$langChildren = intval($ds_meta['langChildren']);
-			$langDisable = intval($ds_meta['langDisable']);
+			$langChildren = (int)$ds_meta['langChildren'];
+			$langDisable = (int)$ds_meta['langDisable'];
 			$lKey = $langDisable ? 'lDEF' : ($langChildren ? 'lDEF' : 'l' . $languageKey);
 			$vKey = $langDisable ? 'vDEF' : ($langChildren ? 'v' . $languageKey : 'vDEF');
 
@@ -2222,8 +2222,8 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 */
 	public function render_outline_subElements($contentTreeArr, $sheet, &$entries, $indentLevel) {
 		// Define l/v keys for current language:
-		$langChildren = intval($contentTreeArr['ds_meta']['langChildren']);
-		$langDisable = intval($contentTreeArr['ds_meta']['langDisable']);
+		$langChildren = (int)$contentTreeArr['ds_meta']['langChildren'];
+		$langDisable = (int)$contentTreeArr['ds_meta']['langDisable'];
 		$lKeys = $langDisable ? array('lDEF') : ($langChildren ? array('lDEF') : $this->translatedLanguagesArr_isoCodes['all_lKeys']);
 		$vKeys = $langDisable ? array('vDEF') : ($langChildren ? $this->translatedLanguagesArr_isoCodes['all_vKeys'] : array('vDEF'));
 
@@ -2722,21 +2722,21 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 					case 'createNewPageTranslation':
 						// Create parameters and finally run the classic page module for creating a new page translation
-						$params = '&edit[pages_language_overlay][' . intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('pid')) . ']=new&overrideVals[pages_language_overlay][doktype]=' . intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('doktype')) . '&overrideVals[pages_language_overlay][sys_language_uid]=' . intval($commandParameters);
+						$params = '&edit[pages_language_overlay][' . (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('pid') . ']=new&overrideVals[pages_language_overlay][doktype]=' . (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('doktype') . '&overrideVals[pages_language_overlay][sys_language_uid]=' . (int)$commandParameters;
 						$returnUrl = '&returnUrl=' . rawurlencode(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila') . 'mod1/index.php?' . $this->link_getParameters());
 						$redirectLocation = $GLOBALS['BACK_PATH'] . 'alt_doc.php?' . $params . $returnUrl;
 						break;
 
 					case 'editPageLanguageOverlay':
 						// Look for pages language overlay record for language:
-						$sys_language_uid = intval($commandParameters);
+						$sys_language_uid = (int)$commandParameters;
 						$params = '';
 						if ($sys_language_uid != 0) {
 							// Edit overlay record
 							list($pLOrecord) = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTgetRows(
 								'*',
 								'pages_language_overlay',
-								'pid=' . intval($this->id) . ' AND sys_language_uid=' . $sys_language_uid .
+								'pid=' . (int)$this->id . ' AND sys_language_uid=' . $sys_language_uid .
 								\TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('pages_language_overlay') .
 								\TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause('pages_language_overlay')
 							);
@@ -2749,7 +2749,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 						} else {
 							// Edit default language (page properties)
 							// No workspace overlay because we already on this page
-							$params = '&edit[pages][' . intval($this->id) . ']=edit';
+							$params = '&edit[pages][' . (int)$this->id . ']=edit';
 						}
 						if ($params) {
 							$returnUrl = '&returnUrl=' . rawurlencode(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila') . 'mod1/index.php?' . $this->link_getParameters());
@@ -2797,7 +2797,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			$res = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTquery(
 				'DISTINCT sys_language.*, pages_language_overlay.hidden as PLO_hidden, pages_language_overlay.title as PLO_title',
 				'pages_language_overlay,sys_language',
-				'pages_language_overlay.sys_language_uid=sys_language.uid AND pages_language_overlay.pid=' . intval($id) . ' AND ' . $excludeHidden,
+				'pages_language_overlay.sys_language_uid=sys_language.uid AND pages_language_overlay.pid=' . (int)$id . ' AND ' . $excludeHidden,
 				'',
 				'sys_language.title'
 			);
@@ -2846,7 +2846,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				$resP = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTquery(
 					'*',
 					'pages_language_overlay',
-					'pid=' . intval($id) . ' AND sys_language_uid=' . intval($row['uid']),
+					'pid=' . (int)$id . ' AND sys_language_uid=' . (int)$row['uid'],
 					'',
 					'',
 					'1'
@@ -3039,7 +3039,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @return boolean
 	 */
 	protected function editingOfNewElementIsEnabled($dsUid, $toUid) {
-		if (!strlen($dsUid) || !intval($toUid)) {
+		if (!strlen($dsUid) || !(int)$toUid) {
 			return TRUE;
 		}
 		$editingEnabled = TRUE;

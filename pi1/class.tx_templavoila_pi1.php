@@ -625,7 +625,7 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 							// Copy current global TypoScript configuration except numerical objects:
 							if (is_array($GLOBALS['TSFE']->tmpl->setup)) {
 								foreach ($GLOBALS['TSFE']->tmpl->setup as $tsObjectKey => $tsObjectValue) {
-									if ($tsObjectKey !== intval($tsObjectKey)) {
+									if ($tsObjectKey !== (int)$tsObjectKey) {
 										$tsparserObj->setup[$tsObjectKey] = $tsObjectValue;
 									}
 								}
@@ -644,7 +644,7 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 					$pOptions = $LP[$key]['proc'];
 					if (is_array($pOptions)) {
 						if ($pOptions['int']) {
-							$dataValues[$key][$valueKey] = intval($dataValues[$key][$valueKey]);
+							$dataValues[$key][$valueKey] = (int)$dataValues[$key][$valueKey];
 						}
 						// HSC of all values by default:
 						if ($pOptions['HSC']) {
@@ -728,7 +728,7 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 		// Set no-cache since the error message shouldn't be cached of course...
 		$GLOBALS['TSFE']->set_no_cache();
 
-		if (intval($this->conf['disableErrorMessages'])) {
+		if ((int)$this->conf['disableErrorMessages']) {
 			return '';
 		}
 		//

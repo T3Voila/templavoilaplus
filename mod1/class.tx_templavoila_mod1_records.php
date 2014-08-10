@@ -174,14 +174,14 @@ class tx_templavoila_mod1_records {
 		$this->dblist->disableSingleTableView = TRUE;
 		$this->dblist->listOnlyInSingleTableMode = FALSE;
 //		$this->dblist->clickTitleMode = $this->modTSconfig['properties']['clickTitleMode'];
-		$this->dblist->alternateBgColors = (isset($this->pObj->MOD_SETTINGS['recordsView_alternateBgColors']) ? intval($this->pObj->MOD_SETTINGS['recordsView_alternateBgColors']) : FALSE);
+		$this->dblist->alternateBgColors = (isset($this->pObj->MOD_SETTINGS['recordsView_alternateBgColors']) ? (int)$this->pObj->MOD_SETTINGS['recordsView_alternateBgColors'] : FALSE);
 		$this->dblist->allowedNewTables = array($table);
 		$this->dblist->newWizards = FALSE;
 		$this->dblist->tableList = $table;
 		$this->dblist->itemsLimitPerTable = ($GLOBALS['TCA'][$table]['interface']['maxDBListItems'] ?
 			$GLOBALS['TCA'][$table]['interface']['maxDBListItems'] :
-			(intval($this->pObj->modTSconfig['properties']['recordDisplay_maxItems']) ?
-				intval($this->pObj->modTSconfig['properties']['recordDisplay_maxItems']) : 10));
+			((int)$this->pObj->modTSconfig['properties']['recordDisplay_maxItems'] ?
+				(int)$this->pObj->modTSconfig['properties']['recordDisplay_maxItems'] : 10));
 		$this->dblist->start($this->pObj);
 	}
 }

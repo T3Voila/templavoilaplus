@@ -903,7 +903,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 						$newID = substr($path, strlen(PATH_site));
 					} else {
 						$dataArr = array();
-						$dataArr['tx_templavoila_datastructure']['NEW']['pid'] = intval($this->_saveDSandTO_pid);
+						$dataArr['tx_templavoila_datastructure']['NEW']['pid'] = (int)$this->_saveDSandTO_pid;
 						$dataArr['tx_templavoila_datastructure']['NEW']['title'] = $this->_saveDSandTO_title;
 						$dataArr['tx_templavoila_datastructure']['NEW']['scope'] = $this->_saveDSandTO_type;
 						$dataArr['tx_templavoila_datastructure']['NEW']['dataprot'] = $dataProtXML;
@@ -911,13 +911,13 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 						// start data processing
 						$tce->start($dataArr, array());
 						$tce->process_datamap();
-						$newID = intval($tce->substNEWwithIDs['NEW']);
+						$newID = (int)$tce->substNEWwithIDs['NEW'];
 					}
 
 					// If that succeeded, create the TO as well:
 					if ($newID) {
 						$dataArr = array();
-						$dataArr['tx_templavoila_tmplobj']['NEW']['pid'] = intval($this->_saveDSandTO_pid);
+						$dataArr['tx_templavoila_tmplobj']['NEW']['pid'] = (int)$this->_saveDSandTO_pid;
 						$dataArr['tx_templavoila_tmplobj']['NEW']['title'] = $this->_saveDSandTO_title . ' [Template]';
 						$dataArr['tx_templavoila_tmplobj']['NEW']['datastructure'] = $newID;
 						$dataArr['tx_templavoila_tmplobj']['NEW']['fileref'] = substr($this->displayFile, strlen(PATH_site));
@@ -928,7 +928,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 						// Init TCEmain object and store:
 						$tce->start($dataArr, array());
 						$tce->process_datamap();
-						$newToID = intval($tce->substNEWwithIDs['NEW']);
+						$newToID = (int)$tce->substNEWwithIDs['NEW'];
 						if ($newToID) {
 							$msg[] = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-ok') .
 								sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('msgDSTOSaved'),
@@ -944,7 +944,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 					unset($tce);
 					if ($newID && $newToID) {
 						//redirect to edit view
-						$redirectUrl = 'index.php?file=' . rawurlencode($this->displayFile) . '&_load_ds_xml=1&_load_ds_xml_to=' . $newToID . '&uid=' . rawurlencode($newID) . '&returnUrl=' . rawurlencode('../mod2/index.php?id=' . intval($this->_saveDSandTO_pid));
+						$redirectUrl = 'index.php?file=' . rawurlencode($this->displayFile) . '&_load_ds_xml=1&_load_ds_xml_to=' . $newToID . '&uid=' . rawurlencode($newID) . '&returnUrl=' . rawurlencode('../mod2/index.php?id=' . (int)$this->_saveDSandTO_pid);
 						header('Location:' . \TYPO3\CMS\Core\Utility\GeneralUtility::locationHeaderUrl($redirectUrl));
 						exit;
 					} else {
@@ -1014,7 +1014,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 						if ($cmd == 'updateDSandTO') {
 							if (!$this->_load_ds_xml_to) {
 								//new created was saved to existing DS/TO, redirect to edit view
-								$redirectUrl = 'index.php?file=' . rawurlencode($this->displayFile) . '&_load_ds_xml=1&_load_ds_xml_to=' . $toREC['uid'] . '&uid=' . rawurlencode($dsREC['uid']) . '&returnUrl=' . rawurlencode('../mod2/index.php?id=' . intval($this->_saveDSandTO_pid));
+								$redirectUrl = 'index.php?file=' . rawurlencode($this->displayFile) . '&_load_ds_xml=1&_load_ds_xml_to=' . $toREC['uid'] . '&uid=' . rawurlencode($dsREC['uid']) . '&returnUrl=' . rawurlencode('../mod2/index.php?id=' . (int)$this->_saveDSandTO_pid);
 								header('Location:' . \TYPO3\CMS\Core\Utility\GeneralUtility::locationHeaderUrl($redirectUrl));
 								exit;
 							} else {
@@ -1286,7 +1286,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @return void
 	 */
 	public function renderDSO() {
-		if (intval($this->displayUid) > 0) { // TODO: static ds support
+		if ((int)$this->displayUid > 0) { // TODO: static ds support
 			$row = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('tx_templavoila_datastructure', $this->displayUid);
 			if (is_array($row)) {
 
@@ -1335,7 +1335,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				$res = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTquery(
 					'*',
 					'tx_templavoila_tmplobj',
-					'pid IN (' . $this->storageFolders_pidList . ') AND datastructure=' . intval($row['uid']) .
+					'pid IN (' . $this->storageFolders_pidList . ') AND datastructure=' . (int)$row['uid'] .
 					\TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoila_tmplobj') .
 					\TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause('tx_templavoila_tmplobj')
 				);
@@ -1418,7 +1418,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @return void
 	 */
 	public function renderTO() {
-		if (intval($this->displayUid) > 0) {
+		if ((int)$this->displayUid > 0) {
 			$row = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('tx_templavoila_tmplobj', $this->displayUid);
 
 			if (is_array($row)) {

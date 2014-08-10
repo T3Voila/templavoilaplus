@@ -32,7 +32,7 @@ class tx_templavoila_staticds_wizard {
 	 * @return string
 	 */
 	public function staticDsWizard() {
-		$this->step = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('dsWizardDoIt') ? intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('dsWizardStep')) : 0;
+		$this->step = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('dsWizardDoIt') ? (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('dsWizardStep') : 0;
 		$conf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
 
 		$title = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL(

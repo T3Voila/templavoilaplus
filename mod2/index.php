@@ -251,7 +251,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			$res = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTquery(
 				'count(*)',
 				'tx_templavoila_datastructure',
-				'pid=' . intval($this->id) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoila_datastructure')
+				'pid=' . (int)$this->id . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoila_datastructure')
 			);
 			list($countDS) = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_fetch_row($res);
 			\Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_free_result($res);
@@ -260,7 +260,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			$res = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTquery(
 				'count(*)',
 				'tx_templavoila_tmplobj',
-				'pid=' . intval($this->id) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoila_tmplobj')
+				'pid=' . (int)$this->id . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoila_tmplobj')
 			);
 			list($countTO) = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_fetch_row($res);
 			\Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_free_result($res);
@@ -433,7 +433,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 */
 	public function renderDSlisting($scope) {
 
-		$currentPid = intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id'));
+		$currentPid = (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id');
 		/** @var \Extension\Templavoila\Domain\Repository\DataStructureRepository $dsRepo */
 		$dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Domain\\Repository\\DataStructureRepository');
 		/** @var \Extension\Templavoila\Domain\Repository\TemplateRepository $toRepo */
@@ -462,7 +462,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 				$toList = $toRepo->getTemplatesByDatastructure($dsObj, $currentPid);
 
-				$newPid = intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id'));
+				$newPid = (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id');
 				$newFileRef = '';
 				$newTitle = $dsObj->getLabel() . ' [TEMPLATE]';
 				if (count($toList)) {
@@ -910,8 +910,8 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 					'uid,title,pid,t3ver_wsid,t3ver_id',
 					'pages',
 					'(
-						(tx_templavoila_to=' . intval($toObj->getKey()) . ' AND tx_templavoila_ds=' . \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr($dsKey, 'pages') . ') OR
-						(tx_templavoila_next_to=' . intval($toObj->getKey()) . ' AND tx_templavoila_next_ds=' . \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr($dsKey, 'pages') . ')
+						(tx_templavoila_to=' . (int)$toObj->getKey() . ' AND tx_templavoila_ds=' . \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr($dsKey, 'pages') . ') OR
+						(tx_templavoila_next_to=' . (int)$toObj->getKey() . ' AND tx_templavoila_next_ds=' . \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr($dsKey, 'pages') . ')
 					)' .
 					\TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('pages')
 				);
@@ -957,7 +957,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 					'uid,header,pid,t3ver_wsid,t3ver_id',
 					'tt_content',
 					'CType=' . \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr('templavoila_pi1', 'tt_content') .
-					' AND tx_templavoila_to=' . intval($toObj->getKey()) .
+					' AND tx_templavoila_to=' . (int)$toObj->getKey() .
 					' AND tx_templavoila_ds=' . \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr($toObj->getDatastructure()->getKey(), 'tt_content') .
 					\TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tt_content'),
 					'',
