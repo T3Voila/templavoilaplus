@@ -245,10 +245,6 @@ div.warning a {
   filter: alpha(opacity=50);
 }
 
-.t3-page-ce-header, .t3-row-header {
-  height: 20px;
-}
-
 .tpm-localisation-info-table tr.bgColor4 {
   color: inherit;
 }
