@@ -330,7 +330,7 @@ class tx_templavoila_mod1_sidebar {
 			$versionSelector = trim($pObj->doc->getVersionSelector($pObj->id));
 			if (!$versionSelector) {
 				$onClick = 'jumpToUrl(\'' . $GLOBALS['BACK_PATH'] . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('version') . 'cm1/index.php?table=pages&uid=' . $pObj->id . '&returnUrl=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')) . '\')';
-				$versionSelector = '<input type="button" value="' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('sidebar_versionSelector_createVersion', 1) . '" onclick="' . htmlspecialchars($onClick) . '" />';
+				$versionSelector = '<input type="button" value="' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('sidebar_versionSelector_createVersion', TRUE) . '" onclick="' . htmlspecialchars($onClick) . '" />';
 			}
 			$tableRows = array('
 				<tr class="bgColor4-20">
@@ -373,7 +373,7 @@ class tx_templavoila_mod1_sidebar {
 				<td width="20">
 					' . \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_txtemplavoilaM1', 'advancedfunctions_showhiddenelements', $this->doc->backPath) . '
 				</td><td width="200">
-					' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('sidebar_advancedfunctions_labelshowhidden', 1) . ':
+					' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('sidebar_advancedfunctions_labelshowhidden', TRUE) . ':
 				</td>
 				<td>' . \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($pObj->id, 'SET[tt_content_showHidden]', $pObj->MOD_SETTINGS['tt_content_showHidden'] !== '0', 'index.php', '') . '</td>
 			</tr>
@@ -386,7 +386,7 @@ class tx_templavoila_mod1_sidebar {
 					<td width="20">
 						' . \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_txtemplavoilaM1', 'advancedfunctions_showoutline', $this->doc->backPath) . '
 					</td><td width="200">
-						' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('sidebar_advancedfunctions_labelshowoutline', 1) . ':
+						' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('sidebar_advancedfunctions_labelshowoutline', TRUE) . ':
 					</td>
 					<td>' . \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($pObj->id, 'SET[showOutline]', $pObj->MOD_SETTINGS['showOutline'], 'index.php', '') . '</td>
 				</tr>

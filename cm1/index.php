@@ -1271,7 +1271,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 					<!--
 						Data Structure creation table:
 					-->
-					<h3>' . $this->cshItem('xMOD_tx_templavoila', 'mapping_file', $this->doc->backPath, '|') . $GLOBALS['LANG']->getLL('buildingDS') . ':</h3>' .
+					<h3>' . $this->cshItem('xMOD_tx_templavoila', 'mapping_file', $this->doc->backPath, '|') . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('buildingDS') . ':</h3>' .
 						$this->renderTemplateMapper($this->displayFile, $this->displayPath, $dataStruct, $currentMappingInfo, $menuContent);
 					break;
 			}

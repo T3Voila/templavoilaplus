@@ -64,7 +64,7 @@ class tx_templavoila_mod1_localization {
 			'localization',
 			$this,
 			'sidebar_renderItem',
-			\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('localization', 1),
+			\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('localization', TRUE),
 			60,
 			FALSE
 		);
@@ -137,7 +137,7 @@ class tx_templavoila_mod1_localization {
 				<td width="20">
 					' . \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_txtemplavoilaM1', 'selectlanguageversion', $this->doc->backPath) . '
 				</td><td width="200" style="vertical-align:middle;">
-					' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('selectlanguageversion', 1) . ':
+					' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('selectlanguageversion', TRUE) . ':
 				</td>
 				<td style="vertical-align:middle;"><select onchange="document.location=' . htmlspecialchars($link) . '">' . implode('', $optionsArr) . '</select></td>
 			</tr>
@@ -155,7 +155,7 @@ class tx_templavoila_mod1_localization {
 						<td width="20">
 							' . \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_txtemplavoilaM1', 'pagelocalizationdisplaymode', $this->doc->backPath) . '
 						</td><td width="200" style="vertical-align:middle;">
-							' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('pageLocalizationDisplayMode', 1) . ':
+							' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('pageLocalizationDisplayMode', TRUE) . ':
 						</td>
 						<td style="vertical-align:middle;">
 							<select onchange="document.location=' . htmlspecialchars($link) . '">
@@ -173,9 +173,9 @@ class tx_templavoila_mod1_localization {
 					<td  width="20">
 						' . \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_txtemplavoilaM1', 'pagelocalizationmode', $this->doc->backPath) . '
 					</td><td width="200" style="vertical-align:middle;">
-						' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('pageLocalizationMode', 1) . ':
+						' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('pageLocalizationMode', TRUE) . ':
 					</td>
-					<td style="vertical-align:middle;"><em>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('pageLocalizationMode_' . $this->pObj->rootElementLangMode, 1) . ($this->pObj->rootElementLangParadigm != 'free' ? (' / ' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('pageLocalizationParadigm_' . $this->pObj->rootElementLangParadigm)) : '') . '</em></td>
+					<td style="vertical-align:middle;"><em>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('pageLocalizationMode_' . $this->pObj->rootElementLangMode, TRUE) . ($this->pObj->rootElementLangParadigm != 'free' ? (' / ' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('pageLocalizationParadigm_' . $this->pObj->rootElementLangParadigm)) : '') . '</em></td>
 				</tr>
 			';
 		}
@@ -189,7 +189,7 @@ class tx_templavoila_mod1_localization {
 					<td  width="20">
 						' . \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_txtemplavoilaM1', 'disablePageStructureInheritance', $this->doc->backPath) . '
 					</td><td width="200" style="vertical-align:middle;">
-						' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('pageLocalizationMode_inheritance.disableInheritance', 1) . ':
+						' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('pageLocalizationMode_inheritance.disableInheritance', TRUE) . ':
 					</td>
 					<td style="vertical-align:middle;">
 						<input type="checkbox" onchange="document.location=' . $link . '" ' . ($this->pObj->MOD_SETTINGS['disablePageStructureInheritance'] == '1' ? ' checked="checked"' : '') . '/>
@@ -203,7 +203,7 @@ class tx_templavoila_mod1_localization {
 				<td  width="20">
 					' . \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_txtemplavoilaM1', 'editlanguageversion', $this->doc->backPath) . '
 				</td><td width="200" style="vertical-align:middle;">
-					' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('editlanguageversion', 1) . ':
+					' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('editlanguageversion', TRUE) . ':
 				</td>
 				<td style="vertical-align:middle;">
 					' . $availableTranslationsFlags . '
@@ -250,7 +250,7 @@ class tx_templavoila_mod1_localization {
 					<td width="20">
 						' . \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_txtemplavoilaM1', 'createnewtranslation', $this->doc->backPath) . '
 					</td><td width="200" style="vertical-align:middle;">
-						' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('createnewtranslation', 1) . ':
+						' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('createnewtranslation', TRUE) . ':
 					</td>
 					<td style="vertical-align:middle;"><select onChange="document.location=\'' . htmlspecialchars($link) . '\'">' . implode('', $optionsArr) . '</select></td>
 				</tr>

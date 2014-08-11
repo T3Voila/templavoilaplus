@@ -329,7 +329,7 @@ class tx_templavoila_mod1_clipboard {
 			$output = '
 				<table class="tpm-nonused-elements lrPadding" border="0" cellpadding="0" cellspacing="1" width="100%">
 					<tr class="bgColor4-20">
-						<td colspan="3">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('inititemno_elementsNotBeingUsed', '1') . ':</td>
+						<td colspan="3">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('inititemno_elementsNotBeingUsed', TRUE) . ':</td>
 					</tr>
 					' . implode('', $elementRows) . '
 					<tr class="bgColor4">
@@ -381,7 +381,7 @@ class tx_templavoila_mod1_clipboard {
 			$params = '&cmd[tt_content][' . $uid . '][delete]=1';
 
 			return '<a class="tpm-countRef" href="#" onclick="' . htmlspecialchars('jumpToUrl(\'' . $this->doc->issueCommand($params, -1) . '\');') . '">' .
-			\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-delete', array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('renderreferencecount_delete', 1))) .
+			\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-delete', array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('renderreferencecount_delete', TRUE))) .
 			'</a>';
 		}
 	}

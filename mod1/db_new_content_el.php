@@ -324,9 +324,9 @@ class tx_templavoila_dbnewcontentel {
 					.typo3-dyntabmenu-divs table { margin: 15px; }
 					.typo3-dyntabmenu-divs table td { padding: 3px; }
 				';
-				$code = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('sel1', 1) . '<br /><br />' . $this->doc->getDynTabMenu($menuItems, 'new-content-element-wizard', FALSE, FALSE, 100);
+				$code = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('sel1', TRUE) . '<br /><br />' . $this->doc->getDynTabMenu($menuItems, 'new-content-element-wizard', FALSE, FALSE, 100);
 			} else {
-				$code = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('sel1', 1) . '<br /><br />';
+				$code = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('sel1', TRUE) . '<br /><br />';
 				foreach ($menuItems as $section) {
 					$code .= $this->elementWrapper['sectionHeader'][0] . $section['label'] . $this->elementWrapper['sectionHeader'][1] . $section['content'];
 				}

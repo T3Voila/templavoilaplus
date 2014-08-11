@@ -1245,7 +1245,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		}
 
 		if (!$this->modTSconfig['properties']['disableElementMoreThanOnceWarning'] && $this->global_tt_content_elementRegister[$contentTreeArr['el']['uid']] > 1 && $this->rootElementLangParadigm != 'free') {
-			$warnings .= $this->doc->icons(2) . ' <em>' . htmlspecialchars(sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('warning_elementusedmorethanonce', ''), $this->global_tt_content_elementRegister[$contentTreeArr['el']['uid']], $contentTreeArr['el']['uid'])) . '</em><br />';
+			$warnings .= $this->doc->icons(2) . ' <em>' . htmlspecialchars(sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('warning_elementusedmorethanonce'), $this->global_tt_content_elementRegister[$contentTreeArr['el']['uid']], $contentTreeArr['el']['uid'])) . '</em><br />';
 		}
 
 		// Displaying warning for container content (in default sheet - a limitation) elements if localization is enabled:
@@ -1915,7 +1915,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 									$onClick = "document.location='" . $GLOBALS['SOBE']->doc->issueCommand($params, \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI') . '#c' . md5($this->apiObj->flexform_getStringFromPointer($parentPointer) . $contentTreeArr['el']['uid'] . $sys_language_uid)) . "'; return false;";
 								}
 
-								$linkLabel = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('createcopyfortranslation', 1) . ' (' . htmlspecialchars($sLInfo['title']) . ')';
+								$linkLabel = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('createcopyfortranslation', TRUE) . ' (' . htmlspecialchars($sLInfo['title']) . ')';
 								$localizeIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-copy', array('title' => $linkLabel));
 
 								$l10nInfo = '<a class="tpm-clipCopyTranslation" href="#" onclick="' . htmlspecialchars($onClick) . '">' . $localizeIcon . '</a>';
@@ -1958,7 +1958,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			$output = count($tRows) ? '
 				<table border="0" cellpadding="0" cellspacing="1" width="100%" class="lrPadding tpm-localisation-info-table">
 					<tr class="bgColor4-20">
-						<td colspan="2">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('element_localizations', 1) . ':</td>
+						<td colspan="2">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('element_localizations', TRUE) . ':</td>
 					</tr>
 					' . implode('', $tRows) . '
 				</table>
@@ -1998,10 +1998,10 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		// Header of table:
 		$output = '';
 		$output .= '<tr class="bgColor5 tableheader">
-				<td class="nobr">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('outline_header_title', 1) . '</td>
-				<td class="nobr">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('outline_header_controls', 1) . '</td>
-				<td class="nobr">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('outline_header_status', 1) . '</td>
-				<td class="nobr">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('outline_header_element', 1) . '</td>
+				<td class="nobr">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('outline_header_title', TRUE) . '</td>
+				<td class="nobr">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('outline_header_controls', TRUE) . '</td>
+				<td class="nobr">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('outline_header_status', TRUE) . '</td>
+				<td class="nobr">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('outline_header_element', TRUE) . '</td>
 			</tr>';
 
 		// Render all entries:
@@ -2067,7 +2067,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		if ($xmlCleanCandidates) {
 			$output .= '<br/>
 				' . \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_txtemplavoilaM1', 'outline_status_cleanall', $this->doc->backPath) . '
-				<input type="submit" value="' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('outline_status_cleanAll', 1) . '" name="_CLEAN_XML_ALL" /><br/><br/>
+				<input type="submit" value="' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('outline_status_cleanAll', TRUE) . '" name="_CLEAN_XML_ALL" /><br/><br/>
 			';
 		}
 

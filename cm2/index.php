@@ -118,7 +118,7 @@ class tx_templavoila_cm2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 				$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
 					'\TYPO3\CMS\Core\Messaging\FlashMessage',
-					\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('needsCleaning', 1),
+					\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('needsCleaning', TRUE),
 					'',
 					\TYPO3\CMS\Core\Messaging\FlashMessage::INFO
 				);
@@ -126,26 +126,26 @@ class tx_templavoila_cm2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 				$xmlContentMarkedUp .= '<table border="0">
 					<tr class="bgColor5 tableheader">
-						<td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('current', 1) . '</td>
+						<td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('current', TRUE) . '</td>
 					</tr>
 					<tr>
 						<td>' . $this->markUpXML($currentXML) . '<br/><br/></td>
 					</tr>
 					<tr class="bgColor5 tableheader">
-						<td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('clean', 1) . '</td>
+						<td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('clean', TRUE) . '</td>
 					</tr>
 					<tr>
 						<td>' . $this->markUpXML($cleanXML) . '</td>
 					</tr>
 					<tr class="bgColor5 tableheader">
-						<td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('diff', 1) . '</td>
+						<td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('diff', TRUE) . '</td>
 					</tr>
 					<tr>
 						<td>' . $diffres . '
 						<br/><br/><br/>
 
 						<form action="' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI') . '" method="post">
-							<input type="submit" value="' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('cleanUp', 1) . '" name="_CLEAN_XML" />
+							<input type="submit" value="' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('cleanUp', TRUE) . '" name="_CLEAN_XML" />
 						</form>
 
 						</td>
@@ -158,7 +158,7 @@ class tx_templavoila_cm2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				if ($cleanXML) {
 					$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
 						'\TYPO3\CMS\Core\Messaging\FlashMessage',
-						\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('XMLclean', 1),
+						\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('XMLclean', TRUE),
 						'',
 						\TYPO3\CMS\Core\Messaging\FlashMessage::OK
 					);

@@ -210,7 +210,6 @@ class tx_templavoila_mod1_wizards {
 
 		$tmplSelector = $this->renderTemplateSelector($positionPid, 't3d');
 		if ($tmplSelector) {
-			#$tmplSelectorCode.='<em>'.$LANG->getLL ('createnewpage_templateobject_createpagewithdefaultcontent').'</em>';
 			$tmplSelectorCode .= $this->doc->spacer(5);
 			$tmplSelectorCode .= $tmplSelector;
 			$tmplSelectorCode .= $this->doc->spacer(10);
@@ -278,7 +277,7 @@ class tx_templavoila_mod1_wizards {
 				}
 
 				$previewIcon = '<input type="image" class="c-inputButton" name="i0" value="0" src="' . $previewIconFilename . '" title="" />';
-				$description = $defaultTO['description'] ? htmlspecialchars($defaultTO['description']) : \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('template_descriptiondefault', 1);
+				$description = $defaultTO['description'] ? htmlspecialchars($defaultTO['description']) : \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('template_descriptiondefault', TRUE);
 				$tmplHTML [] = '<table style="float:left; width: 100%;" valign="top">
 				<tr>
 					<td colspan="2" nowrap="nowrap">

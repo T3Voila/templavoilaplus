@@ -100,9 +100,9 @@ class tx_templavoila_mod1_specialdoktypes {
 		}
 
 		// check if there is a notice on this URL type
-		$notice = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('cannotedit_externalurl_' . $pageRecord['urltype'], '', 1);
+		$notice = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('cannotedit_externalurl_' . $pageRecord['urltype'], TRUE);
 		if (!$notice) {
-			$notice = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('cannotedit_externalurl_1', '', 1);
+			$notice = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('cannotedit_externalurl_1', TRUE);
 		}
 
 		$urlInfo = ' <br /><br /><strong><a href="' . $url . '" target="_new">' . htmlspecialchars(sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('jumptoexternalurl'), $url)) . '</a></strong>';
@@ -130,7 +130,7 @@ class tx_templavoila_mod1_specialdoktypes {
 			$shortcutSourcePageRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('pages', $pageRecord['shortcut']);
 			$jumpToShortcutSourceLink = '<strong><a href="index.php?id=' . $pageRecord['shortcut'] . '">' .
 				\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('apps-pagetree-page-shortcut') .
-				\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('jumptoshortcutdestination', '', 1) . '</a></strong>';
+				\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('jumptoshortcutdestination', TRUE) . '</a></strong>';
 		}
 
 		$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
@@ -189,15 +189,15 @@ class tx_templavoila_mod1_specialdoktypes {
 			$onClick = "top.nextLoadModuleUrl='" . $listModuleURL . "';top.fsMod.recentIds['web']=" . (int)$this->pObj->id . ";top.goToModule('web_list',1);";
 			$listModuleLink = '<br /><br />' .
 				\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-system-list-open') .
-				'<strong><a href="#" onClick="' . $onClick . '">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('editpage_sysfolder_switchtolistview', '', 1) . '</a></strong>
+				'<strong><a href="#" onClick="' . $onClick . '">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('editpage_sysfolder_switchtolistview', TRUE) . '</a></strong>
 			';
 		} else {
-			$listModuleLink = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('editpage_sysfolder_listview_noaccess', '', 1);
+			$listModuleLink = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('editpage_sysfolder_listview_noaccess', TRUE);
 		}
 
 		$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
 			'\TYPO3\CMS\Core\Messaging\FlashMessage',
-			\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('editpage_sysfolder_intro', '', 1),
+			\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('editpage_sysfolder_intro', TRUE),
 			'',
 			\TYPO3\CMS\Core\Messaging\FlashMessage::INFO
 		);
