@@ -49,7 +49,7 @@ class Access {
 			}
 			if ($ref) {
 				\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->init($user->uc['lang']);
-				$ref->errorMsg = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang_access.xml:' . $error);
+				$ref->errorMsg = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang_access.xlf:' . $error);
 			}
 
 			return FALSE;

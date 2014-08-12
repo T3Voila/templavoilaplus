@@ -41,11 +41,11 @@ class tx_templavoila_staticds_check {
 		return '
 		<div style="position:absolute;top:10px;right:10px; width:300px;">
 			<div class="typo3-message message-information">
-				<div class="message-header">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang.xml:extconf.staticWizard.header') . '</div>
+				<div class="message-header">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang.xlf:extconf.staticWizard.header') . '</div>
 				<div class="message-body">
-					' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang.xml:extconf.staticWizard.message') . '<br />
+					' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang.xlf:extconf.staticWizard.message') . '<br />
 					<a style="text-decoration:underline;" href="' . $link . '">
-					' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang.xml:extconf.staticWizard.link') . '</a>
+					' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang.xlf:extconf.staticWizard.link') . '</a>
 				</div>
 			</div>
 		</div>
