@@ -537,11 +537,11 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('template');
 			$this->doc->backPath = $BACK_PATH;
 
-			$templateFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($this->extKey) . 'Resources/templates/mod1_' . substr(TYPO3_version, 0, 3) . '.html';
+			$templateFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($this->extKey) . 'Resources/Private/Templates/mod1_' . substr(TYPO3_version, 0, 3) . '.html';
 			if (file_exists($templateFile)) {
-				$this->doc->setModuleTemplate('EXT:templavoila/Resources/templates/mod1_' . substr(TYPO3_version, 0, 3) . '.html');
+				$this->doc->setModuleTemplate('EXT:templavoila/Resources/Private/Templates/mod1_' . substr(TYPO3_version, 0, 3) . '.html');
 			} else {
-				$this->doc->setModuleTemplate('EXT:templavoila/Resources/templates/mod1_default.html');
+				$this->doc->setModuleTemplate('EXT:templavoila/Resources/Private/Templates/mod1_default.html');
 			}
 
 			$this->doc->docType = 'xhtml_trans';
@@ -763,7 +763,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		} else { // No access or no current page uid:
 			$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('template');
 			$this->doc->backPath = $BACK_PATH;
-			$this->doc->setModuleTemplate('EXT:templavoila/Resources/templates/mod1_noaccess.html');
+			$this->doc->setModuleTemplate('EXT:templavoila/Resources/Private/Templates/mod1_noaccess.html');
 			$this->doc->docType = 'xhtml_trans';
 
 			$this->doc->bodyTagId = 'typo3-mod-php';

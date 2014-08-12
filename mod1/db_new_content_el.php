@@ -188,7 +188,7 @@ class tx_templavoila_dbnewcontentel {
 		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('template');
 		$this->doc->docType = 'xhtml_trans';
 		$this->doc->backPath = $BACK_PATH;
-		$this->doc->setModuleTemplate('EXT:templavoila/Resources/templates/mod1_new_content.html');
+		$this->doc->setModuleTemplate('EXT:templavoila/Resources/Private/Templates/mod1_new_content.html');
 		$this->doc->bodyTagId = 'typo3-mod-php';
 		$this->doc->divClass = '';
 		$this->doc->JScode = '';
