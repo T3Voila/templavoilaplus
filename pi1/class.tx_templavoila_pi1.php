@@ -683,7 +683,6 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * @return string The value
 	 */
 	public function inheritValue($dV, $valueKey, $overlayMode = '') {
-#debug(array($dV['vDEF'],$valueKey,$overlayMode,$this->inheritValueFromDefault),'inheritValue()');
 		if ($valueKey != 'vDEF') {
 
 			// Consider overlay modes:
