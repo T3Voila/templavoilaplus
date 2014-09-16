@@ -609,7 +609,7 @@ page.10.disableExplosivePreview = 1
 					continue;
 				}
 				// we're not inserting useful data - can't make a decission
-				if (!is_array($data[$field]['data'])) {
+				if (!is_array($data[$field]) || !is_array($data[$field]['data'])) {
 					$res = FALSE;
 					break;
 				}
