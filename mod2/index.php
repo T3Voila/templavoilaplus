@@ -1633,7 +1633,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @return array
 	 */
 	public function DSdetails($DSstring) {
-		$DScontent = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($DSstring);
+		$DScontent = (array) \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($DSstring);
 
 		$inputFields = 0;
 		$referenceFields = 0;
