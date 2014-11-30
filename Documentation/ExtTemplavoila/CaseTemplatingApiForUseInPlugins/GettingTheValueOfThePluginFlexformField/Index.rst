@@ -48,7 +48,7 @@ detects the record. Comments below
       7:     if (t3lib_extMgm::isLoaded('templavoila'))    {
       8:         $field_templateObject = $this->pi_getFFvalue($this->cObj->data['pi_flexform'],'field_templateObject');
       9:         if ((int)$field_templateObject)    {
-     10:             $this->TMPLobj = t3lib_div::makeInstance('tx_templavoila_htmlmarkup');
+     10:             $this->TMPLobj = t3lib_div::makeInstance(\Extension\Templavoila\Domain\Model\HtmlMarkup::class);
      11:             $this->TA = $this->TMPLobj->getTemplateArrayForTO((int)$field_templateObject);
      12:             if (is_array($this->TA))    {
      13:                 $this->TMPLobj->setHeaderBodyParts($this->TMPLobj->tDat['MappingInfo_head'],$this->TMPLobj->tDat['MappingData_head_cached']);

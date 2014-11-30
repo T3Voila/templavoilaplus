@@ -500,7 +500,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	public function main_mode() {
 		global $BACK_PATH;
 
-		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
 		$this->doc->docType = 'xhtml_trans';
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->setModuleTemplate('EXT:templavoila/Resources/Private/Templates/cm1_default.html');
@@ -692,7 +692,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				if (!strlen(trim($this->_saveDSandTO_title))) {
 					$cmd = 'saveScreen';
 					$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-						'\TYPO3\CMS\Core\Messaging\FlashMessage',
+						\TYPO3\CMS\Core\Messaging\FlashMessage::class,
 						\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('errorNoToTitleDefined'),
 						'',
 						\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR
@@ -828,10 +828,10 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				// Getting cached data:
 				reset($dataStruct);
 				$fileContent = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($this->displayFile);
-				$htmlParse = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\HtmlParser');
+				$htmlParse = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class);
 				$relPathFix = dirname(substr($this->displayFile, strlen(PATH_site))) . '/';
 				$fileContent = $htmlParse->prefixResourcePath($relPathFix, $fileContent);
-				$this->markupObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Domain\\Model\\HtmlMarkup');
+				$this->markupObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Model\HtmlMarkup::class);
 				$contentSplittedByMapping = $this->markupObj->splitContentToMappingInfo($fileContent, $currentMappingInfo);
 				$templatemapping['MappingData_cached'] = $contentSplittedByMapping['sub']['ROOT'];
 
@@ -884,7 +884,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				// If it is requested to save the current DS and mapping information to a DS and TO record, then...:
 				case 'saveDSandTO':
 					// Init TCEmain object and store:
-					$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance("TYPO3\\CMS\\Core\\DataHandling\\DataHandler");
+					$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
 					$tce->stripslashes_values = 0;
 
 					// DS:
@@ -973,7 +973,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 					// If they are found, continue:
 					if ($toREC['uid'] && $dsREC['uid']) {
 						// Init TCEmain object and store:
-						$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+						$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
 						$tce->stripslashes_values = 0;
 
 						// Modifying data structure with conversion of preset values for field types to actual settings:
@@ -1157,7 +1157,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				case 'showXMLDS':
 
 					// Make instance of syntax highlight class:
-					$hlObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Service\\SyntaxHighlightingService');
+					$hlObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Service\SyntaxHighlightingService::class);
 
 					$storeDataStruct = $dataStruct;
 					if (is_array($storeDataStruct['ROOT']['el'])) {
@@ -1384,7 +1384,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				if (is_array($dataStruct)) {
 
 					// Make instance of syntax highlight class:
-					$hlObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Service\\SyntaxHighlightingService');
+					$hlObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Service\SyntaxHighlightingService::class);
 
 					$dataStructureXML = \TYPO3\CMS\Core\Utility\GeneralUtility::array2xml_cs($origDataStruct, 'T3DataStructure', array('useCDATA' => 1));
 					$content .= '
@@ -1733,8 +1733,8 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			reset($dataStruct);
 			// Init; read file, init objects:
 			$fileContent = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($theFile);
-			$htmlParse = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\HtmlParser');
-			$this->markupObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Domain\\Model\\HtmlMarkup');
+			$htmlParse = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class);
+			$this->markupObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Model\HtmlMarkup::class);
 
 			// Fix relative paths in source:
 			$relPathFix = dirname(substr($theFile, strlen(PATH_site))) . '/';
@@ -1770,13 +1770,13 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			$dataArr['tx_templavoila_tmplobj'][$TOuid]['fileref_mtime'] = @filemtime($theFile);
 			$dataArr['tx_templavoila_tmplobj'][$TOuid]['fileref_md5'] = @md5_file($theFile);
 
-			$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+			$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
 			$tce->stripslashes_values = 0;
 			$tce->start($dataArr, array());
 			$tce->process_datamap();
 			unset($tce);
 			$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-				'\TYPO3\CMS\Core\Messaging\FlashMessage',
+				\TYPO3\CMS\Core\Messaging\FlashMessage::class,
 				\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('msgMappingSaved'),
 				'',
 				\TYPO3\CMS\Core\Messaging\FlashMessage::OK
@@ -1816,7 +1816,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			$menuItems[] = '<input type="submit" name="_reload_from" value="' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('buttonRevert') . '" title="' . sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('buttonRevertTitle'), $headerPart ? 'HEAD' : 'BODY') . '" />';
 
 			$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-				'\TYPO3\CMS\Core\Messaging\FlashMessage',
+				\TYPO3\CMS\Core\Messaging\FlashMessage::class,
 				\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('msgMappingIsDifferent'),
 				'',
 				\TYPO3\CMS\Core\Messaging\FlashMessage::INFO
@@ -1866,7 +1866,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$fileContent = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($this->markupFile);
 
 		// Init mark up object.
-		$this->markupObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Domain\\Model\\HtmlMarkup');
+		$this->markupObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Model\HtmlMarkup::class);
 		$this->markupObj->init();
 
 		// Get <body> tag:
@@ -1907,7 +1907,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			</table><br />';
 
 		$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-			'\TYPO3\CMS\Core\Messaging\FlashMessage',
+			\TYPO3\CMS\Core\Messaging\FlashMessage::class,
 			\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('msgHeaderSet'),
 			'',
 			\TYPO3\CMS\Core\Messaging\FlashMessage::WARNING
@@ -1938,7 +1938,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$fileContent = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($this->markupFile);
 
 		// Init mark up object.
-		$this->markupObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Domain\\Model\\HtmlMarkup');
+		$this->markupObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Model\HtmlMarkup::class);
 
 		// Load splitted content from currentMappingInfo array (used to show us which elements maps to some real content).
 		$contentSplittedByMapping = $this->markupObj->splitContentToMappingInfo($fileContent, $currentMappingInfo);
@@ -2703,7 +2703,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @see main_display()
 	 */
 	public function displayFileContentWithMarkup($content, $path, $relPathFix, $limitTags) {
-		$markupObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Domain\\Model\\HtmlMarkup');
+		$markupObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Model\HtmlMarkup::class);
 		$markupObj->gnyfImgAdd = $this->show ? '' : 'onclick="return parent.updPath(\'###PATH###\');"';
 		$markupObj->pathPrefix = $path ? $path . '|' : '';
 		$markupObj->onlyElements = $limitTags;
@@ -2756,8 +2756,8 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$currentMappingInfo = is_array($sesDat['currentMappingInfo']) ? $sesDat['currentMappingInfo'] : array();
 
 		// Init mark up object.
-		$this->markupObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Domain\\Model\\HtmlMarkup');
-		$this->markupObj->htmlParse = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\HtmlParser');
+		$this->markupObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Model\HtmlMarkup::class);
+		$this->markupObj->htmlParse = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class);
 
 		// Splitting content, adding a random token for the part to be previewed:
 		$contentSplittedByMapping = $this->markupObj->splitContentToMappingInfo($content, $currentMappingInfo);
@@ -2836,7 +2836,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 */
 	public function lipsumLink($formElementName) {
 		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('lorem_ipsum')) {
-			$LRobj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_loremipsum_wiz');
+			$LRobj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\tx_loremipsum_wiz::class);
 			$LRobj->backPath = $this->doc->backPath;
 
 			$PA = array(
@@ -2911,7 +2911,7 @@ if (!function_exists('md5_file')) {
 }
 
 // Make instance:
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_cm1');
+$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\tx_templavoila_cm1::class);
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();

@@ -37,7 +37,7 @@ class UsedContentElement {
 	public function init($page_uid) {
 
 		// Initialize TemplaVoila API class:
-		$apiObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Service\\ApiService', 'pages');
+		$apiObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Service\ApiService::class, 'pages');
 
 		// Fetch the content structure of page:
 		$contentTreeData = $apiObj->getContentTree('pages', \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw('pages', 'uid=' . (int)$page_uid));

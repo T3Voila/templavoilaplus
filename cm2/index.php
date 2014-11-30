@@ -68,7 +68,7 @@ class tx_templavoila_cm2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$this->returnUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::sanitizeLocalUrl(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('returnUrl'));
 
 		// Draw the header.
-		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
 		$this->doc->docType = 'xhtml_trans';
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->setModuleTemplate('EXT:templavoila/Resources/Private/Templates/cm2_default.html');
@@ -88,7 +88,7 @@ class tx_templavoila_cm2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			$cleanXML = '';
 			if (\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isAdmin()) {
 				if ('tx_templavoila_flex' == $this->viewTable['field_flex']) {
-					$flexObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\FlexForm\\FlexFormTools');
+					$flexObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class);
 					if ($record['tx_templavoila_flex']) {
 						$cleanXML = $flexObj->cleanFlexFormXML($this->viewTable['table'], 'tx_templavoila_flex', $record);
 
@@ -98,7 +98,7 @@ class tx_templavoila_cm2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 							$dataArr[$this->viewTable['table']][$this->viewTable['uid']]['tx_templavoila_flex'] = $cleanXML;
 
 							// Init TCEmain object and store:
-							$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+							$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
 							$tce->stripslashes_values = 0;
 							$tce->start($dataArr, array());
 							$tce->process_datamap();
@@ -113,11 +113,11 @@ class tx_templavoila_cm2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 			if (md5($currentXML) != md5($cleanXML)) {
 				// Create diff-result:
-				$t3lib_diff_Obj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\DiffUtility');
+				$t3lib_diff_Obj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Utility\DiffUtility::class);
 				$diffres = $t3lib_diff_Obj->makeDiffDisplay($currentXML, $cleanXML);
 
 				$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-					'\TYPO3\CMS\Core\Messaging\FlashMessage',
+					\TYPO3\CMS\Core\Messaging\FlashMessage::class,
 					\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('needsCleaning', TRUE),
 					'',
 					\TYPO3\CMS\Core\Messaging\FlashMessage::INFO
@@ -157,7 +157,7 @@ class tx_templavoila_cm2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				$xmlContentMarkedUp = '';
 				if ($cleanXML) {
 					$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-						'\TYPO3\CMS\Core\Messaging\FlashMessage',
+						\TYPO3\CMS\Core\Messaging\FlashMessage::class,
 						\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('XMLclean', TRUE),
 						'',
 						\TYPO3\CMS\Core\Messaging\FlashMessage::OK
@@ -247,7 +247,7 @@ class tx_templavoila_cm2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	public function markUpXML($str) {
 
 		// Make instance of syntax highlight class:
-		$hlObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Service\\SyntaxHighlightingService');
+		$hlObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Service\SyntaxHighlightingService::class);
 
 		// Check which document type, if applicable:
 		if (strstr(substr($str, 0, 100), '<T3DataStructure')) {
@@ -279,7 +279,7 @@ class tx_templavoila_cm2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 }
 
 // Make instance:
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_cm2');
+$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\tx_templavoila_cm2::class);
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();

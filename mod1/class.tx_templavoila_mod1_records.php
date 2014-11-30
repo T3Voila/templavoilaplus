@@ -163,7 +163,7 @@ class tx_templavoila_mod1_records {
 	 */
 	public function initDbList($table) {
 		// Initialize the dblist object:
-		$this->dblist = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_mod1_recordlist');
+		$this->dblist = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\tx_templavoila_mod1_recordlist::class);
 		$this->dblist->backPath = $this->pObj->doc->backPath;
 		$this->dblist->calcPerms = $this->calcPerms;
 		$this->dblist->thumbs = \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->uc['thumbnailsByDefault'];

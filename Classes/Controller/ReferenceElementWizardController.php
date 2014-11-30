@@ -66,7 +66,7 @@ class ReferenceElementWizardController extends \TYPO3\CMS\Backend\Module\Abstrac
 		$this->modSharedTSconfig = BackendUtility::getModTSconfig($this->pObj->id, 'mod.SHARED');
 		$this->allAvailableLanguages = $this->getAvailableLanguages(0, TRUE, TRUE, TRUE);
 
-		$this->templavoilaAPIObj = GeneralUtility::makeInstance('Extension\\Templavoila\\Service\\ApiService');
+		$this->templavoilaAPIObj = GeneralUtility::makeInstance(\Extension\Templavoila\Service\ApiService::class);
 
 		// Showing the tree:
 		// Initialize starting point of page tree:
@@ -76,7 +76,7 @@ class ReferenceElementWizardController extends \TYPO3\CMS\Backend\Module\Abstrac
 
 		// Initialize tree object:
 		/** @var \TYPO3\CMS\Backend\Tree\View\PageTreeView $tree */
-		$tree = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\View\\PageTreeView');
+		$tree = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\View\PageTreeView::class);
 		$tree->init('AND ' . \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->getPagePermsClause(1));
 
 		// Creating top icon; the current page

@@ -120,7 +120,7 @@ Automatic Repair:
 			if (!$versionSwapmode) {
 
 				// Initialize TemplaVoila API class:
-				$apiObj = GeneralUtility::makeInstance('Extension\\Templavoila\\Service\\ApiService', 'pages');
+				$apiObj = GeneralUtility::makeInstance(\Extension\Templavoila\Service\ApiService::class, 'pages');
 
 				// Fetch the content structure of page:
 				$contentTreeData = $apiObj->getContentTree('pages', BackendUtility::getRecordRaw('pages', 'uid=' . (int)$uid));
@@ -219,7 +219,7 @@ Automatic Repair:
 			} else {
 
 				// Execute CMD array:
-				$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+				$tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
 				$tce->stripslashes_values = FALSE;
 				$tce->start(array(), array());
 				$tce->deleteAction('tt_content', $uid);

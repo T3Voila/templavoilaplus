@@ -24,7 +24,7 @@ class ext_update {
 	 */
 	public function main() {
 		/** @var $dsWizard tx_templavoila_staticds_wizard */
-		$dsWizard = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_staticds_wizard');
+		$dsWizard = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\tx_templavoila_staticds_wizard::class);
 		return $dsWizard->staticDsWizard();
 	}
 

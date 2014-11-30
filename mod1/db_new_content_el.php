@@ -187,7 +187,7 @@ class tx_templavoila_dbnewcontentel {
 		$this->returnUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::sanitizeLocalUrl(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('returnUrl'));
 
 		// Starting the document template object:
-		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
 		$this->doc->docType = 'xhtml_trans';
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->setModuleTemplate('EXT:templavoila/Resources/Private/Templates/mod1_new_content.html');
@@ -209,7 +209,7 @@ class tx_templavoila_dbnewcontentel {
 		$pageinfo = \TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess($this->id, $perms_clause);
 		$this->access = is_array($pageinfo) ? TRUE : FALSE;
 
-		$this->apiObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Service\\ApiService');
+		$this->apiObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Service\ApiService::class);
 
 		// If no parent record was specified, find one:
 		if (!$this->parentRecord) {
@@ -528,7 +528,7 @@ class tx_templavoila_dbnewcontentel {
 		$positionPid = $this->id;
 		$storageFolderPID = $this->apiObj->getStorageFolderPid($positionPid);
 
-		$toRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Domain\\Repository\\TemplateRepository');
+		$toRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\TemplateRepository::class);
 		$toList = $toRepo->getTemplatesByStoragePidAndScope($storageFolderPID, \Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_FCE);
 		foreach ($toList as $toObj) {
 			/** @var \Extension\Templavoila\Domain\Model\Template $toObj */
@@ -687,7 +687,7 @@ class tx_templavoila_dbnewcontentel {
 }
 
 // Make instance:
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_dbnewcontentel');
+$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\tx_templavoila_dbnewcontentel::class);
 $SOBE->init();
 
 // Include files?

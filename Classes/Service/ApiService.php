@@ -154,7 +154,7 @@ class ApiService {
 		}
 
 		// Instantiate TCEmain and create the record:
-		$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+		$tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
 		/* @var $tce \TYPO3\CMS\Core\DataHandling\DataHandler */
 
 		// set default TCA values specific for the page and user
@@ -549,7 +549,7 @@ class ApiService {
 
 					$flagWasSet = $this->getTCEmainRunningFlag();
 					$this->setTCEmainRunningFlag(TRUE);
-					$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+					$tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
 					$tce->stripslashes_values = 0;
 					$tce->start(array(), $cmdArray);
 					$tce->process_cmdmap();
@@ -578,7 +578,7 @@ class ApiService {
 		$destinationPID = $destinationPointer['table'] == 'pages' ? $destinationParentRecord['uid'] : $destinationParentRecord['pid'];
 
 		// Initialize TCEmain and create configuration for copying the specified record
-		$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+		$tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
 		$cmdArray = array();
 		$cmdArray['tt_content'][$sourceElementUid]['copy'] = $destinationPID;
 
@@ -617,7 +617,7 @@ class ApiService {
 		$subElementUids = $this->flexform_getListOfSubElementUidsRecursively('tt_content', $sourceElementUid, $dummyArr);
 
 		// Initialize TCEmain and create configuration for copying the specified record (the parent element) and all sub elements:
-		$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+		$tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
 		$cmdArray = array();
 		$cmdArray['tt_content'][$sourceElementUid]['copy'] = $destinationPID;
 
@@ -671,7 +671,7 @@ class ApiService {
 		}
 
 		// Initialize TCEmain and create configuration for localizing the specified record
-		$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+		$tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
 		$cmdArray = array();
 		$cmdArray['tt_content'][$sourceElementUid]['localize'] = $destinationLanguageUid;
 
@@ -745,7 +745,7 @@ class ApiService {
 		// Store:
 		$flagWasSet = $this->getTCEmainRunningFlag();
 		$this->setTCEmainRunningFlag(TRUE);
-		$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+		$tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
 		$tce->stripslashes_values = 0;
 		$tce->start(array(), $cmdArray);
 		$tce->process_cmdmap();
@@ -975,7 +975,7 @@ class ApiService {
 		$arrayOfUIDs = GeneralUtility::intExplode(',', $listOfUIDs);
 
 		// Getting the relation uids out and use only tt_content records which are not deleted:
-		$dbAnalysis = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
+		$dbAnalysis = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\RelationHandler::class);
 		$dbAnalysis->start($listOfUIDs, 'tt_content');
 		$dbAnalysis->getFromDB();
 
@@ -1201,7 +1201,7 @@ class ApiService {
 
 		$flagWasSet = $this->getTCEmainRunningFlag();
 		$this->setTCEmainRunningFlag(TRUE);
-		$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+		$tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
 		$tce->stripslashes_values = 0;
 		$tce->start($dataArr, array());
 
@@ -1627,7 +1627,7 @@ class ApiService {
 		$subTree = array();
 
 		// Get records:
-		$dbAnalysis = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
+		$dbAnalysis = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\RelationHandler::class);
 		$dbAnalysis->start($listOfSubElementUids, 'tt_content');
 
 		// Traverse records:

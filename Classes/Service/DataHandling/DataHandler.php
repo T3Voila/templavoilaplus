@@ -115,7 +115,7 @@ class DataHandler {
 				}
 
 				if (!is_null($pid)) {
-					$templaVoilaAPI = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Service\\ApiService');
+					$templaVoilaAPI = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Service\ApiService::class);
 					$templateObjectRecords = $templaVoilaAPI->ds_getAvailablePageTORecords($pid);
 
 					$matchingTOUid = 0;
@@ -197,7 +197,7 @@ page.10.disableExplosivePreview = 1
 			return;
 		}
 
-		$templaVoilaAPI = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Service\\ApiService');
+		$templaVoilaAPI = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Service\ApiService::class);
 
 		switch ($status) {
 			case 'new' :
@@ -302,7 +302,7 @@ page.10.disableExplosivePreview = 1
 			return;
 		}
 
-		$templaVoilaAPI = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Service\\ApiService');
+		$templaVoilaAPI = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Service\ApiService::class);
 
 		switch ($command) {
 			case 'delete' :
@@ -389,7 +389,7 @@ page.10.disableExplosivePreview = 1
 			return;
 		}
 
-		$templaVoilaAPI = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Service\\ApiService');
+		$templaVoilaAPI = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Service\ApiService::class);
 
 		$sourceFlexformPointersArr = $templaVoilaAPI->flexform_getPointersByRecord($uid, $sourceRecordBeforeMove['pid']);
 		$sourceFlexformPointer = $sourceFlexformPointersArr[0];
@@ -435,7 +435,7 @@ page.10.disableExplosivePreview = 1
 			return;
 		}
 
-		$templaVoilaAPI = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Service\\ApiService');
+		$templaVoilaAPI = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Service\ApiService::class);
 
 		$sourceFlexformPointersArr = $templaVoilaAPI->flexform_getPointersByRecord($uid, $sourceRecordBeforeMove['pid']);
 		$sourceFlexformPointer = $sourceFlexformPointersArr[0];
@@ -467,7 +467,7 @@ page.10.disableExplosivePreview = 1
 		global $TCA;
 
 		$elementsOnThisPage = array();
-		$templaVoilaAPI = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Service\\ApiService');
+		$templaVoilaAPI = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Service\ApiService::class);
 		/* @var $templaVoilaAPI \Extension\Templavoila\Service\ApiService */
 
 		$diffBaseEnabled = isset($GLOBALS['TYPO3_CONF_VARS']['BE']['flexFormXMLincludeDiffBase'])

@@ -307,7 +307,7 @@ class Template {
 	 * @return \Extension\Templavoila\Domain\Model\AbstractDataStructure
 	 */
 	public function getDatastructure() {
-		$dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Domain\\Repository\\DataStructureRepository');
+		$dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\DataStructureRepository::class);
 
 		return $dsRepo->getDatastructureByUidOrFilename($this->row['datastructure']);
 	}

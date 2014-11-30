@@ -403,7 +403,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$this->wizardsObj->init($this);
 
 		// Initialize TemplaVoila API class:
-		$this->apiObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Service\\ApiService', $this->altRoot ? $this->altRoot : 'pages');
+		$this->apiObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Service\ApiService::class, $this->altRoot ? $this->altRoot : 'pages');
 		if (isset($this->modSharedTSconfig['properties']['useLiveWorkspaceForReferenceListUpdates'])) {
 			$this->apiObj->modifyReferencesInLiveWS(TRUE);
 		}
@@ -420,7 +420,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			$this->localizationObj->init($this);
 		}
 
-		$this->flashMessageService  = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessageService');
+		$this->flashMessageService  = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessageService::class);
 	}
 
 	/**
@@ -534,7 +534,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			}
 
 			// Draw the header.
-			$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+			$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
 			$this->doc->backPath = $BACK_PATH;
 
 			$templateFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($this->extKey) . 'Resources/Private/Templates/mod1_' . substr(TYPO3_version, 0, 3) . '.html';
@@ -718,7 +718,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 					$link = '<a href="' . $linkToPid . '">' . htmlspecialchars($title) . ' (PID ' . (int)$this->rootElementRecord['content_from_pid'] . ')</a>';
 					/** @var \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage */
 					$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-						'\TYPO3\CMS\Core\Messaging\FlashMessage',
+						\TYPO3\CMS\Core\Messaging\FlashMessage::class,
 						'',
 						sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('content_from_pid_title'), $link),
 						\TYPO3\CMS\Core\Messaging\FlashMessage::INFO
@@ -761,7 +761,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				$this->doc->divClass = 'tpm-editPageScreen';
 			}
 		} else { // No access or no current page uid:
-			$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+			$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
 			$this->doc->backPath = $BACK_PATH;
 			$this->doc->setModuleTemplate('EXT:templavoila/Resources/Private/Templates/mod1_noaccess.html');
 			$this->doc->docType = 'xhtml_trans';
@@ -775,7 +775,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			} else {
 				if (!isset($pageInfoArr['uid'])) {
 					$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-						'\TYPO3\CMS\Core\Messaging\FlashMessage',
+						\TYPO3\CMS\Core\Messaging\FlashMessage::class,
 						\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('page_not_found'),
 						\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('title'),
 						\TYPO3\CMS\Core\Messaging\FlashMessage::INFO
@@ -783,7 +783,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 					$this->content .= $flashMessage->render();
 				} else {
 					$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-						'\TYPO3\CMS\Core\Messaging\FlashMessage',
+						\TYPO3\CMS\Core\Messaging\FlashMessage::class,
 						\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('default_introduction'),
 						\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('title'),
 						\TYPO3\CMS\Core\Messaging\FlashMessage::INFO
@@ -1008,7 +1008,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			if (!($this->hasBasicEditRights())) {
 				/** @var \TYPO3\CMS\Core\Messaging\FlashMessage $message */
 				$message = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-					'\TYPO3\CMS\Core\Messaging\FlashMessage',
+					\TYPO3\CMS\Core\Messaging\FlashMessage::class,
 					\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('missing_edit_right_detail'),
 					\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('missing_edit_right'),
 					\TYPO3\CMS\Core\Messaging\FlashMessage::INFO
@@ -1338,7 +1338,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				if (!\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isAdmin()) {
 					/** @var \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage */
 					$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-						'\TYPO3\CMS\Core\Messaging\FlashMessage',
+						\TYPO3\CMS\Core\Messaging\FlashMessage::class,
 						\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('page_structure_inherited_detail'),
 						\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('page_structure_inherited'),
 						\TYPO3\CMS\Core\Messaging\FlashMessage::INFO
@@ -1363,7 +1363,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		}
 
 		try {
-			$toRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Domain\\Repository\\TemplateRepository');
+			$toRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\TemplateRepository::class);
 			/** @var $toRepo \Extension\Templavoila\Domain\Repository\TemplateRepository */
 			$to = $toRepo->getTemplateByUid($toRecord['uid']);
 			/** @var $to \Extension\Templavoila\Domain\Model\Template */
@@ -1422,7 +1422,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 					if ($maxItemsReached) {
 						/** @var \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage */
 						$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-							'\TYPO3\CMS\Core\Messaging\FlashMessage',
+							\TYPO3\CMS\Core\Messaging\FlashMessage::class,
 							'',
 							sprintf(
 								\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('maximal_content_elements'),
@@ -2019,7 +2019,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			// @Robert: How would you like this implementation better? Please advice and I will change it according to your wish!
 			$status = '';
 			if ($entry['table'] && $entry['uid']) {
-				$flexObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\FlexForm\\FlexFormTools');
+				$flexObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class);
 				$recRow = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL($entry['table'], $entry['uid']);
 				if ($recRow['tx_templavoila_flex']) {
 
@@ -2032,7 +2032,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 						$dataArr[$entry['table']][$entry['uid']]['tx_templavoila_flex'] = $newXML;
 
 						// Init TCEmain object and store:
-						$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+						$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
 						$tce->stripslashes_values = 0;
 						$tce->start($dataArr, array());
 						$tce->process_datamap();
@@ -3045,7 +3045,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$editingEnabled = TRUE;
 		try {
 			/** @var \Extension\Templavoila\Domain\Repository\TemplateRepository $toRepo */
-			$toRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Domain\\Repository\\TemplateRepository');
+			$toRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\TemplateRepository::class);
 			$to = $toRepo->getTemplateByUid($toUid);
 			$xml = $to->getLocalDataprotArray();
 			if (isset($xml['meta']['noEditOnCreation'])) {
@@ -3128,7 +3128,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 // Make instance:
 /* @var $SOBE tx_templavoila_module1 */
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_module1');
+$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\tx_templavoila_module1::class);
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();

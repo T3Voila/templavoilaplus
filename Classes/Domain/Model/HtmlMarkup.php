@@ -596,7 +596,7 @@ class HtmlMarkup {
 	 */
 	public function mergeFormDataIntoTemplateStructure($editStruct, $currentMappingInfo, $firstLevelImplodeToken = '', $valueKey = 'vDEF') {
 		$isSection = 0;
-		$htmlParse = ($this->htmlParse ? $this->htmlParse : \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\HtmlParser'));
+		$htmlParse = ($this->htmlParse ? $this->htmlParse : \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class));
 		if (is_array($editStruct) && count($editStruct)) {
 			$testInt = implode('', array_keys($editStruct));
 			$isSection = !preg_match('/[^0-9]/', $testInt);
@@ -844,7 +844,7 @@ class HtmlMarkup {
 	 */
 	public function setHeaderBodyParts($MappingInfo_head, $MappingData_head_cached, $BodyTag_cached = '', $pageRenderer = FALSE) {
 
-		$htmlParse = ($this->htmlParse ? $this->htmlParse : \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\HtmlParser'));
+		$htmlParse = ($this->htmlParse ? $this->htmlParse : \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class));
 		/* @var $htmlParse \TYPO3\CMS\Core\Html\HtmlParser */
 
 		$types = array(
@@ -934,7 +934,7 @@ class HtmlMarkup {
 	 */
 	public function init() {
 		// HTML parser object initialized.
-		$this->htmlParse = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\HtmlParser');
+		$this->htmlParse = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class);
 		/* @var $this ->htmlParse \TYPO3\CMS\Core\Html\HtmlParser */
 
 		// Resetting element count array

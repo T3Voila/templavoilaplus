@@ -74,7 +74,7 @@ class tx_templavoila_mod1_clipboard {
 		$this->MOD_SETTINGS =& $this->pObj->MOD_SETTINGS;
 
 		// Initialize the t3lib clipboard:
-		$this->t3libClipboardObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Clipboard\\Clipboard');
+		$this->t3libClipboardObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Clipboard\Clipboard::class);
 		$this->t3libClipboardObj->backPath = $BACK_PATH;
 		$this->t3libClipboardObj->initializeClipboard();
 		$this->t3libClipboardObj->lockToNormal();

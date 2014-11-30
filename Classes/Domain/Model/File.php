@@ -35,7 +35,7 @@ class File {
 	 */
 	static protected function file($filename) {
 		/** @var $resourceFactory \TYPO3\CMS\Core\Resource\ResourceFactory */
-		$resourceFactory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
+		$resourceFactory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\ResourceFactory::class);
 		$file = $resourceFactory->getObjectFromCombinedIdentifier($filename);
 
 		return $file;

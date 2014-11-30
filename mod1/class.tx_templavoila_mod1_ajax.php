@@ -28,7 +28,7 @@ class tx_templavoila_mod1_ajax {
 	 * @return \tx_templavoila_mod1_ajax
 	 */
 	public function __construct() {
-		$this->apiObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Service\\ApiService');
+		$this->apiObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Service\ApiService::class);
 	}
 
 	/**

@@ -48,7 +48,7 @@ class StaticDataStructuresHandler {
 	public function main(&$params, &$pObj) {
 		$removeDSItems = $this->getRemoveItems($params, substr($params['field'], 0, -2) . 'ds');
 
-		$dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Domain\\Repository\\DataStructureRepository');
+		$dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\DataStructureRepository::class);
 		$dsList = $dsRepo->getAll();
 
 		$params['items'] = array(
@@ -122,7 +122,7 @@ class StaticDataStructuresHandler {
 
 		$removeDSItems = $this->getRemoveItems($params, substr($params['field'], 0, -2) . 'ds');
 
-		$dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Domain\\Repository\\DataStructureRepository');
+		$dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\DataStructureRepository::class);
 		$dsList = $dsRepo->getDatastructuresByStoragePidAndScope($storagePid, $scope);
 
 		$params['items'] = array(
@@ -181,8 +181,8 @@ class StaticDataStructuresHandler {
 
 		$removeTOItems = $this->getRemoveItems($params, substr($params['field'], 0, -2) . 'to');
 
-		$dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Domain\\Repository\\DataStructureRepository');
-		$toRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Domain\\Repository\\TemplateRepository');
+		$dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\DataStructureRepository::class);
+		$toRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\TemplateRepository::class);
 
 		$params['items'] = array(
 			array(
@@ -226,8 +226,8 @@ class StaticDataStructuresHandler {
 		$removeDSItems = $this->getRemoveItems($params, substr($params['field'], 0, -2) . 'ds');
 		$removeTOItems = $this->getRemoveItems($params, substr($params['field'], 0, -2) . 'to');
 
-		$dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Domain\\Repository\\DataStructureRepository');
-		$toRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Domain\\Repository\\TemplateRepository');
+		$dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\DataStructureRepository::class);
+		$toRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\TemplateRepository::class);
 		$dsList = $dsRepo->getDatastructuresByStoragePidAndScope($storagePid, $scope);
 
 		$params['items'] = array(

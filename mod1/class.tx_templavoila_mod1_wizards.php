@@ -181,7 +181,7 @@ class tx_templavoila_mod1_wizards {
 		$this->doc->getTabMenu(0, '_', 0, array('' => ''));
 
 		// init tceforms for javascript printing
-		$tceforms = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\FormEngine');
+		$tceforms = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\FormEngine::class);
 		$tceforms->initDefaultBEMode();
 		$tceforms->backPath = $GLOBALS['BACK_PATH'];
 		$tceforms->doSaveFieldName = 'doSave';
@@ -291,8 +291,8 @@ class tx_templavoila_mod1_wizards {
 				</tr>
 				</table>';
 
-				$dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Domain\\Repository\\DataStructureRepository');
-				$toRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Domain\\Repository\\TemplateRepository');
+				$dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\DataStructureRepository::class);
+				$toRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\TemplateRepository::class);
 				$dsList = $dsRepo->getDatastructuresByStoragePidAndScope($storageFolderPID, \Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_PAGE);
 				foreach ($dsList as $dsObj) {
 					/** @var \Extension\Templavoila\Domain\Model\AbstractDataStructure $dsObj */
@@ -422,7 +422,7 @@ class tx_templavoila_mod1_wizards {
 			$dataArr['pages']['NEW']['tx_templavoila_ds'] = $templateObjectRow['datastructure'];
 		}
 
-		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
 
 		if (is_array($this->TCAdefaultOverride)) {
 			$tce->setDefaultsFromUserTS($this->TCAdefaultOverride);
@@ -439,7 +439,7 @@ class tx_templavoila_mod1_wizards {
 	 * @return \TYPO3\CMS\Impexp\ImportExport
 	 */
 	public function getImportObject() {
-		$import = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_impexp');
+		$import = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\tx_impexp::class);
 		$import->init();
 
 		return $import;

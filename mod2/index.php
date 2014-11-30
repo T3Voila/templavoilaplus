@@ -129,7 +129,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$this->pageinfo = \TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess($this->id, $this->perms_clause);
 		$access = is_array($this->pageinfo) ? 1 : 0;
 
-		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
 		$this->doc->docType = 'xhtml_trans';
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->setModuleTemplate('EXT:templavoila/Resources/Private/Templates/mod2_default.html');
@@ -173,7 +173,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			$this->doc->postCode .= $CMparts[2];
 		} else {
 			$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-				'\TYPO3\CMS\Core\Messaging\FlashMessage',
+				\TYPO3\CMS\Core\Messaging\FlashMessage::class,
 				\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('noaccess'),
 				'',
 				\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR
@@ -281,8 +281,8 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @return void
 	 */
 	public function renderModuleContent_searchForTODS() {
-		$dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Domain\\Repository\\DataStructureRepository');
-		$toRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Domain\\Repository\\TemplateRepository');
+		$dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\DataStructureRepository::class);
+		$toRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\TemplateRepository::class);
 		$list = $toRepo->getTemplateStoragePids();
 
 		// Traverse the pages found and list in a table:
@@ -375,7 +375,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$lostTOs = '';
 		$lostTOCount = 0;
 
-		$toRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Domain\\Repository\\TemplateRepository');
+		$toRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\TemplateRepository::class);
 		$toList = $toRepo->getAll($this->id);
 		foreach ($toList as $toObj) {
 			/** @var \Extension\Templavoila\Domain\Model\Template $toObj */
@@ -435,9 +435,9 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 		$currentPid = (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id');
 		/** @var \Extension\Templavoila\Domain\Repository\DataStructureRepository $dsRepo */
-		$dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Domain\\Repository\\DataStructureRepository');
+		$dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\DataStructureRepository::class);
 		/** @var \Extension\Templavoila\Domain\Repository\TemplateRepository $toRepo */
-		$toRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Domain\\Repository\\TemplateRepository');
+		$toRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\TemplateRepository::class);
 
 		if ($this->MOD_SETTINGS['set_unusedDs']) {
 			$dsList = $dsRepo->getDatastructuresByScope($scope);
@@ -632,7 +632,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		// Format XML if requested (renders VERY VERY slow)
 		if ($this->MOD_SETTINGS['set_showDSxml']) {
 			if ($dsObj->getDataprotXML()) {
-				$hlObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Service\\SyntaxHighlightingService');
+				$hlObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Service\SyntaxHighlightingService::class);
 				$content .= '<pre>' . str_replace(chr(9), '&nbsp;&nbsp;&nbsp;', $hlObj->highLight_DS($dsObj->getDataprotXML())) . '</pre>';
 			}
 		}
@@ -754,7 +754,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$lpXML = '';
 		if ($this->MOD_SETTINGS['set_details']) {
 			if ($toObj->getLocalDataprotXML(TRUE)) {
-				$hlObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Service\\SyntaxHighlightingService');
+				$hlObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Service\SyntaxHighlightingService::class);
 				$lpXML = '<pre>' . str_replace(chr(9), '&nbsp;&nbsp;&nbsp;', $hlObj->highLight_DS($toObj->getLocalDataprotXML(TRUE))) . '</pre>';
 			}
 		}
@@ -865,7 +865,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		}
 
 		// Traverse template objects which are not children of anything:
-		$toRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Domain\\Repository\\TemplateRepository');
+		$toRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\TemplateRepository::class);
 		$toChildren = $toRepo->getTemplatesByParentTemplate($toObj);
 
 		if (!$children && count($toChildren)) {
@@ -1722,13 +1722,13 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 			// Missing extension warning:
 			if ($missingExt) {
-				$msg = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $missingExt, \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_missingext'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+				$msg = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $missingExt, \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_missingext'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 				$this->content .= $msg->render();
 			}
 
 			// Missing configuration warning:
 			if ($missingConf) {
-				$msg = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_missingconf_description'), \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_missingconf'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+				$msg = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_missingconf_description'), \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_missingconf'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 				$this->content .= $msg->render();
 			}
 
@@ -2034,7 +2034,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 					}
 
 					// Execute changes:
-					$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+					$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
 					$tce->stripslashes_values = 0;
 					$tce->dontProcessTransformations = 1;
 					$tce->start($data, Array());
@@ -2113,7 +2113,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			$outputString = sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_basicsshouldwork', TRUE), $menuTypeText, $menuType, $menuTypeText);
 
 			// Start up HTML parser:
-			$htmlParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\HtmlParser');
+			$htmlParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class);
 
 			// Parse into blocks
 			$parts = $htmlParser->splitIntoBlock('td,tr,table,a,div,span,ol,ul,li,p,h1,h2,h3,h4,h5', $menuPart, 1);
@@ -2345,7 +2345,7 @@ lib.' . $menuType . '.1.ACT {
 	 */
 	public function getImportObj() {
 		/** @var \TYPO3\CMS\Impexp\ImportExport $import */
-		$import = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_impexp');
+		$import = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\tx_impexp::class);
 		$import->init(0, 'import');
 		$import->enableLogging = TRUE;
 
@@ -2360,7 +2360,7 @@ lib.' . $menuType . '.1.ACT {
 	 * @return string HTML content with it highlighted.
 	 */
 	public function syntaxHLTypoScript($v) {
-		$tsparser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
+		$tsparser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::class);
 		$tsparser->lineNumberOffset = 0;
 		$TScontent = $tsparser->doSyntaxHighlight(trim($v) . chr(10), '', 1);
 
@@ -2425,7 +2425,7 @@ lib.' . $menuType . '.1.ACT {
 ' . $TSrecord['config'];
 
 				// Execute changes:
-				$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+				$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
 				$tce->stripslashes_values = 0;
 				$tce->dontProcessTransformations = 1;
 				$tce->start($data, Array());
@@ -2528,7 +2528,7 @@ if (!function_exists('md5_file')) {
 }
 
 // Make instance:
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_templavoila_module2');
+$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\tx_templavoila_module2::class);
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();

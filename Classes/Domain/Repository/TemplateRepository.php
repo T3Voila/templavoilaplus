@@ -29,7 +29,7 @@ class TemplateRepository {
 	 * @return \Extension\Templavoila\Domain\Model\Template
 	 */
 	public function getTemplateByUid($uid) {
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Domain\\Model\\Template', $uid);
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Model\Template::class, $uid);
 	}
 
 	/**
@@ -68,7 +68,7 @@ class TemplateRepository {
 	 * @return array
 	 */
 	public function getTemplatesByStoragePidAndScope($storagePid, $scope) {
-		$dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Extension\\Templavoila\\Domain\\Repository\\DataStructureRepository');
+		$dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\DataStructureRepository::class);
 		$dsList = $dsRepo->getDatastructuresByStoragePidAndScope($storagePid, $scope);
 		$toCollection = array();
 		foreach ($dsList as $dsObj) {

@@ -99,7 +99,7 @@ class SyntaxHighlightingService {
 			$completeTagList = array_unique($this->getAllTags($str)); // Complete list of tags in DS
 
 			// Highlighting source:
-			$this->htmlParse = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\HtmlParser'); // Init parser object
+			$this->htmlParse = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class); // Init parser object
 			$struct = $this->splitXMLbyTags(implode(',', $completeTagList), $str); // Split the XML by the found tags, recursively into LARGE array.
 			$markUp = $this->highLight_DS_markUpRecursively($struct); // Perform color-markup on the parsed content. Markup preserves the LINE formatting of the XML.
 
@@ -195,7 +195,7 @@ class SyntaxHighlightingService {
 			$completeTagList = array_unique($this->getAllTags($str)); // Complete list of tags in DS
 
 			// Highlighting source:
-			$this->htmlParse = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\HtmlParser'); // Init parser object
+			$this->htmlParse = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class); // Init parser object
 			$struct = $this->splitXMLbyTags(implode(',', $completeTagList), $str); // Split the XML by the found tags, recursively into LARGE array.
 			$markUp = $this->highLight_FF_markUpRecursively($struct); // Perform color-markup on the parsed content. Markup preserves the LINE formatting of the XML.
 
