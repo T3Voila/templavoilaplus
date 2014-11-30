@@ -534,7 +534,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			}
 
 			// Draw the header.
-			$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('template');
+			$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 			$this->doc->backPath = $BACK_PATH;
 
 			$templateFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($this->extKey) . 'Resources/Private/Templates/mod1_' . substr(TYPO3_version, 0, 3) . '.html';
@@ -761,7 +761,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				$this->doc->divClass = 'tpm-editPageScreen';
 			}
 		} else { // No access or no current page uid:
-			$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('template');
+			$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 			$this->doc->backPath = $BACK_PATH;
 			$this->doc->setModuleTemplate('EXT:templavoila/Resources/Private/Templates/mod1_noaccess.html');
 			$this->doc->docType = 'xhtml_trans';

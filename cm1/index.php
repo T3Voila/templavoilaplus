@@ -500,7 +500,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	public function main_mode() {
 		global $BACK_PATH;
 
-		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('template');
+		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 		$this->doc->docType = 'xhtml_trans';
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->setModuleTemplate('EXT:templavoila/Resources/Private/Templates/cm1_default.html');
@@ -1235,7 +1235,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 							</tr>
 						</table>
 
-						<input type="submit" name="_updateDSandTO" value="UPDATE TO (and DS)" onclick="return confirm(' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->JScharCode(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('saveDSTOconfirm')) . ');" />
+						<input type="submit" name="_updateDSandTO" value="UPDATE TO (and DS)" onclick="return confirm(' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('saveDSTOconfirm')) . ');" />
 						<input type="submit" name="_" value="' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('buttonCancel') . '" />
 						';
 					break;
@@ -1497,7 +1497,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 							// Link to updating DS/TO:
 							$onCl = 'index.php?file=' . rawurlencode($theFile) . '&_load_ds_xml=1&_load_ds_xml_to=' . $row['uid'] . '&uid=' . $DS_row['uid'] . '&returnUrl=' . $this->returnUrl;
 							$onClMsg = '
-								if (confirm(' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->JScharCode(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('renderTO_updateWarningConfirm')) . ')) {
+								if (confirm(' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('renderTO_updateWarningConfirm')) . ')) {
 									document.location=\'' . $onCl . '\';
 								}
 								return false;
@@ -1523,7 +1523,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 								</tr>';
 							$onCl = 'index.php?file=' . rawurlencode($theFile) . '&_load_ds_xml=1&_load_ds_xml_to=' . $row['uid'] . '&uid=' . rawurlencode($DSOfile) . '&returnUrl=' . $this->returnUrl;
 							$onClMsg = '
-								if (confirm(' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->JScharCode(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('renderTO_updateWarningConfirm')) . ')) {
+								if (confirm(' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('renderTO_updateWarningConfirm')) . ')) {
 									document.location=\'' . $onCl . '\';
 								}
 								return false;
@@ -2368,7 +2368,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 							<a href="' . $this->linkThisScript(array(
 								'DS_element_DELETE' => $formPrefix . '[' . $key . ']'
 							)) . '"
-											onClick="return confirm(' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->JScharCode(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('confirmDeleteEntry')) . ');">' .
+											onClick="return confirm(' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('confirmDeleteEntry')) . ');">' .
 							\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-delete', array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('deleteEntry'))) .
 							'</a>';
 						$editAddCol = '<td nowrap="nowrap">' . $editAddCol . '</td>';

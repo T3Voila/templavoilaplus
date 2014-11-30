@@ -442,6 +442,7 @@ class tx_templavoila_cm1_dsEdit {
 	 * @see drawDataStructureMap_editItem()
 	 */
 	public function drawDataStructureMap_editItem_editTypeExtra($type, $formFieldName, $curValue, $key = '') {
+		$curValue = (array)$curValue;
 		// If a user function was registered, use that instead of our own handlers:
 		if (isset ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['cm1']['eTypesExtraFormFields'][$type])) {
 			$_params = array(

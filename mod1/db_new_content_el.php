@@ -34,7 +34,9 @@ unset($MLANG);
 $LANG->includeLLFile('EXT:lang/locallang_misc.xlf');
 $LOCAL_LANG_orig = $LOCAL_LANG;
 $LANG->includeLLFile('EXT:templavoila/mod1/locallang_db_new_content_el.xlf');
-$LOCAL_LANG = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($LOCAL_LANG_orig, $LOCAL_LANG);
+
+\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($LOCAL_LANG_orig, $LOCAL_LANG);
+$LOCAL_LANG = $LOCAL_LANG_orig;
 
 // Exits if 'cms' extension is not loaded:
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cms', 1);
@@ -185,7 +187,7 @@ class tx_templavoila_dbnewcontentel {
 		$this->returnUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::sanitizeLocalUrl(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('returnUrl'));
 
 		// Starting the document template object:
-		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('template');
+		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 		$this->doc->docType = 'xhtml_trans';
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->setModuleTemplate('EXT:templavoila/Resources/Private/Templates/mod1_new_content.html');
@@ -454,7 +456,8 @@ class tx_templavoila_dbnewcontentel {
 				$groupItems = array();
 
 				if (is_array($appendWizards[$groupKey . '.']['elements.'])) {
-					$wizardElements = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule((array) $wizardGroup['elements.'], $appendWizards[$groupKey . '.']['elements.']);
+					$wizardElements = (array)$wizardGroup['elements.'];
+					\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($wizardElements, $appendWizards[$groupKey . '.']['elements.']);
 				} else {
 					$wizardElements = $wizardGroup['elements.'];
 				}

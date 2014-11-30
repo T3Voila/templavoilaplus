@@ -1470,6 +1470,10 @@ class ApiService {
 		if ($table == 'pages' || $table == $this->rootTable || ($table == 'tt_content' && $row['CType'] == 'templavoila_pi1')) {
 
 			$rawDataStructureArr = BackendUtility::getFlexFormDS($GLOBALS['TCA'][$table]['columns']['tx_templavoila_flex']['config'], $row, $table);
+			if (!is_array($rawDataStructureArr)) {
+				return array();
+			}
+
 			$expandedDataStructureArr = $this->ds_getExpandedDataStructure($table, $row);
 
 			switch ($table) {

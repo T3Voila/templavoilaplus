@@ -68,7 +68,7 @@ class tx_templavoila_cm2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$this->returnUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::sanitizeLocalUrl(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('returnUrl'));
 
 		// Draw the header.
-		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('template');
+		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 		$this->doc->docType = 'xhtml_trans';
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->setModuleTemplate('EXT:templavoila/Resources/Private/Templates/cm2_default.html');
