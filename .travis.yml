@@ -22,6 +22,7 @@ before_script:
   - mkdir -p uploads typo3temp typo3conf/ext
   - mv templavoila typo3conf/ext/templavoila
   - git clone https://github.com/typo3-ter/static_info_tables.git typo3conf/ext/static_info_tables
+  - mv typo3conf/ext/static_info_tables/Configuration/Tca/ typo3conf/ext/static_info_tables/Configuration/TCA/
 
 script:
   - >
