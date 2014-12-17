@@ -680,38 +680,58 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * @param string $valueKey Language key, "vXXX"
 	 * @param string $overlayMode Overriding overlay mode from local processing in Data Structure / TO.
 	 *
-	 * @return string The value
+	 * @return string|array The value
 	 */
 	public function inheritValue($dV, $valueKey, $overlayMode = '') {
-		if ($valueKey != 'vDEF') {
+		$returnValue = '';
 
-			// Consider overlay modes:
-			switch ((string) $overlayMode) {
-				case 'ifFalse': // Normal inheritance based on whether the value evaluates false or not (zero or blank string)
-					return trim($dV[$valueKey]) ? $dV[$valueKey] : $dV['vDEF'];
-
-				case 'ifBlank': // Only if the value is truely blank!
-					return strcmp(trim($dV[$valueKey]), '') ? $dV[$valueKey] : $dV['vDEF'];
-
-				case 'never':
-					return $dV[$valueKey]; // Always return its own value
-				case 'removeIfBlank':
-					if (!strcmp(trim($dV[$valueKey]), '')) {
-						return array('ERROR' => '__REMOVE');
-					}
-					break;
-				default:
-
-					// If none of the overlay modes matched, simply use the default:
-					if ($this->inheritValueFromDefault) {
-						return trim($dV[$valueKey]) ? $dV[$valueKey] : $dV['vDEF'];
-					}
-					break;
+		try {
+			if (!is_array($dV)) {
+				throw new \InvalidArgumentException(sprintf('Argument "%s" must be of type array, "%s" given', '$dV', gettype($dV)));
 			}
+
+			if (!isset($dV[$valueKey])) {
+				throw new RuntimeException(sprintf('Key "%s" of array "%s" doesn\'t exist', $valueKey, '\$dV'));
+			}
+
+			if (!isset($dV['vDEF'])) {
+				throw new RuntimeException(sprintf('Key "%vDEF" of array "%s" doesn\'t exist', '\$dV'));
+			}
+
+			if ($valueKey != 'vDEF') {
+
+				// Consider overlay modes:
+				switch ((string) $overlayMode) {
+					case 'ifFalse': // Normal inheritance based on whether the value evaluates false or not (zero or blank string)
+						$returnValue .= trim($dV[$valueKey]) ? $dV[$valueKey] : $dV['vDEF'];
+						break;
+					case 'ifBlank': // Only if the value is truely blank!
+						$returnValue .= strcmp(trim($dV[$valueKey]), '') ? $dV[$valueKey] : $dV['vDEF'];
+						break;
+					case 'never':
+						$returnValue .= $dV[$valueKey]; // Always return its own value
+						break;
+					case 'removeIfBlank':
+						if (!strcmp(trim($dV[$valueKey]), '')) {
+							// Find a way to avoid returning an array here
+							return array('ERROR' => '__REMOVE');
+						}
+						break;
+					default:
+						// If none of the overlay modes matched, simply use the default:
+						if ($this->inheritValueFromDefault) {
+							$returnValue .= trim($dV[$valueKey]) ? $dV[$valueKey] : $dV['vDEF'];
+						}
+						break;
+				}
+			} else {
+				$returnValue .= $dV[$valueKey];
+			}
+		} catch(\Exception $e) {
+			$this->log($e->getMessage(),  \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_ERROR);
 		}
 
-		// Default is to just return the value:
-		return $dV[$valueKey];
+		return $returnValue;
 	}
 
 	/**
@@ -907,5 +927,15 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 		}
 
 		return $renderedIndex;
+	}
+
+	/**
+	 * @param string $message
+	 * @param int $severity \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_* constant
+	 *
+	 * @return void
+	 */
+	public function log($message, $severity) {
+		\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog($message, 'templavoila', $severity);
 	}
 }
