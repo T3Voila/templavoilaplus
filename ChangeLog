@@ -1,3 +1,139 @@
+
+n.n.n / 2014-12-19
+==================
+
+  * [BUGFIX] Explicitly cast flexform result to array
+  * [BUGFIX] Fix failing tests caused by static_info_tables
+  * [TASK] Raise PHP requirement to 5.5
+  * [BUGFIX] Remove all dependencies to compatiblity extension
+  * [FEATURE] Add TYPO3 7.0 compatible module icons
+  * [BUGFIX] Insufficient array check
+  * [BUGFIX] Wrong height for .t3-row-header
+  * [TASK] Fix failing functional tests
+  * [BUGFIX] Missing translation file template_conf.xlf
+  * [TASK] Move template files to Resources/Private/Templates/
+  * [TASK] Use new class name for tslib_cObj
+  * [TASK] Remove debug information
+  * [TASK] Use real boolean for second parameter in getLL function
+  * [TASK] Remove css files and add scss files and gruntfile instead
+  * [TASK] Use (int) instead of intval()
+  * [TASK] Refactor MainClickMenu
+  * [TASK] Migrate locallang files to XLF format
+  * [BUGFIX] Illegal string offset 'data' in tx_templavoila_pi1
+  * [BUGFIX] Error when update mapping via module
+  * [TASK] Change order of public static to static public
+  * [FEATURE] Added support for installation via Bower
+  * [BUGFIX] Max items reached message always shown
+  * [TASK] Remove extdeveval class
+  * [TASK] Move TCA modification to TCA/Overrides
+  * [TASK] Move User and Page TSConfig into Configuration folder
+  * [TASK] Add .htaccess in Resources/Private/
+  * [TASK] Enable notifications of travis builds for slack
+  * [TASK] Remove not used methods from GeneralUtility
+  * [TASK] Remove not used convertVersionNumberToInteger
+  * [TASK] Remove forceIntegerInRange and use core API
+  * [TASK] Remove canBeInterpretedAsInteger and use core API
+  * [TASK] Change check for TYPO3_MODE
+  * [TASK] Remove code for compatibility to TYPO3 CMS 4.3
+  * [TASK] Remove check for existence of FunctionalTestCase
+  * [CLEANUP] ext_emconf file
+  * [TASK] Re-work/simplify copyright header in PHP files
+  * [TASK] Move build composer.json from Build/ to Tests/Build/
+  * [TASK] Again fix several issues mentioned in scrutinizer
+  * [TASK] Deactivate code coverage until unit tests are written
+  * [TASK][CLEANUP] Cleanup a lot of php doc comments
+  * [TASK] Ignore cm1/index.php in scrutinizer php analyzer
+  * [TASK] Fix several code style issues mentioned in scrutinizer
+  * [TASK] Define visibility of fields explicitly
+  * [TASK] Adjust .travis.yml to generate code coverage data
+  * [TASK] Add .scrutinizer.yml
+  * [TASK] Mark all methods public that didn't define accessibility
+  * [TASK] Remove dependencies in composer.json
+  * [TASK] Remove wrong line endings in SyntaxHighlightingService
+  * [TASK] Cleanup UnusedContentElementComand
+  * [TASK] Cleanup ReferenceElementWizardController
+  * [TASK] Adjust php doc comments to detect undefined methods
+  * [TASK] Add missing undefined class fields
+  * [TASK] Avoid inconsistent return points
+  * [BUGFIX] Temporarily mark all methods of ApiService public
+  * [TASK] Adjust php doc comments due to type incompatibility
+  * [TASK] Add missing php doc comments for methods
+  * [TASK] Add missing @throws annotations
+  * [BUGFIX] Replace usage of undefined classes
+  * [TASK][CLEANUP] Huge cleanup of php doc comments
+  * [BUGFIX] Configure extension TemplaVoila results in a fatal error
+  * [TASK] Code cleanup
+  * [TASK] Move doc/TODO.txt and remove doc folder
+  * [TASK] Add converted ReST documentation
+  * [BUGFIX] Add missing fixture data for table static_languages
+  * [TASK] Import class names and use short hand syntax in ApiService
+  * [TASK] Avoid usage of "global" keyword in ApiService
+  * [TASK] General cleanup in ApiService
+  * [TASK] Explicitly define method/property accessibility in ApiService
+  * [TASK] Remove PHP4 compatible constructor in ApiService
+  * [BUGFIX] Fix registration of click menus
+  * [BUGFIX] Wrong dependency for the CMS package
+  * [BUGFIX] No module "tools_em" could be found
+  * [TASK] Mark several failing functional tests as skipped
+  * [TASK] Add .travis.yml
+  * [TASK] Add composer.json
+  * [BUGFIX] Replace legacy class in ApiTest.php
+  * [BUGFIX] Move files from tests to Tests
+  * [TASK] Remove TYPO3_version switches
+  * [TASK] Remove support for legacy versions in IconUtility
+  * [TASK] Move css files to Resources/Public/StyleSheet/
+  * [TASK] Move language file from res1 to Resources/Private/Language/
+  * [TASK] Move images from res1 to Resources/Public/Image/
+  * [TASK] Change author information in ext_emconf.php
+  * [TASK] Replace usage of $GLOBALS for correct type hinting
+  * [BUGFIX] Prevent PHP Warning in class.tx_templavoila_api.php
+  * [BUGFIX] Adjust missing folder detection for usage with FAL
+  * [TASK] Remove 4.5 functional tests and related outdated files
+  * [TASK] Add 6.2 only functional tests
+  * [BUGFIX] Prevent PHP Warning in class.tx_templavoila_api.php
+  * [!!!][TASK] Namespace and cleanup most classes
+  * [TASK] Adjust browse_links wizard registration
+  * Merge pull request #10 from alexanderschnitzler/develop
+  * [TASK] Cleanup $TCA and fix 2 font references
+  * [TASK] Move, rename and adjust registration of several wizards
+  * Merge pull request #9 from alexanderschnitzler/develop
+  * [TASK] Move tca configurations to Configuration/TCA
+  * [TASK] Move context sensitive help image
+  * [TASK] Move html_go.png icon into right folder
+  * [TASK] Use uppercase "Resources" in files
+  * [BUGFIX] Fix function calls to BackendUtility::getFuncCheck
+  * [TASK] Use uppercase "Classes" in files
+  * [TASK] Move tests to Tests
+  * [TASK] Rename classes to Classes
+  * [TASK] Rename resources to Resources
+  * [TASK][CLEANUP] Move icon files to resources/Public/Icon
+  * [TASK][CLEANUP] Move language files to resources/Private/Language
+  * [BUGFIX] Fix function call to BackendUtility::getFuncMenu
+  * Merge pull request #3 from bmack/master
+  * Merge pull request #5 from alexanderschnitzler/develop
+  * [TASK] Adjust makeInstance method call
+  * [TASK] Adjust call of method ExtensionManagementUtility::addTCAcolumns
+  * [TASK] Adjust call of method ExtensionManagementUtility::insertModuleFunction
+  * [TASK] Replace deprecated calls to $GLOBALS['LANG']->JScharCode()
+  * [TASK] Replace deprecated usage of FlashMessages
+  * [TASK] Remove deprecated calls to \TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA()
+  * [BUGFIX] Disable call of not existing recordList::showSysNotesForPage
+  * [BUGFIX] Add missing float for adjusting content element titles
+  * [TASK] Copy mod1_default.css to mod1_6.2.css
+  * [TASK] Followup: Remove closing php tags
+  * [TASK] Remove closing php tags
+  * [TASK] Replace several occurrences of not namespaces classes
+  * [TASK] Replace t3lib_FlashMessageQueue with \TYPO3\CMS\Core\Messaging\FlashMessageQueue
+  * [TASK] Replace t3lib_utility_Debug with \TYPO3\CMS\Core\Utility\DebugUtility
+  * [TASK] Replace t3lib_utility_Math with \TYPO3\CMS\Core\Utility\MathUtility
+  * [TASK] Replace t3lib_FlashMessage with \TYPO3\CMS\Core\Messaging\FlashMessage
+  * [TASK] Replace t3lib_utility_VersionNumber with \TYPO3\CMS\Core\Utility\VersionNumberUtility
+  * [TASK] Replace t3lib_SpriteManager with \TYPO3\CMS\Backend\Sprite\SpriteManager
+  * [TASK] Replace t3lib_extMgm with \TYPO3\CMS\Core\Utility\ExtensionManagementUtility
+  * [TASK] Replace t3lib_BEfunc with \TYPO3\CMS\Backend\Utility\BackendUtility
+  * [TASK] Replace t3lib_iconWorks with \TYPO3\CMS\Backend\Utility\IconUtility
+  * [TASK] Replace t3lib_div with \TYPO3\CMS\Core\Utility\GeneralUtility
+  * [TASK] Reformat code according to coding guidelines
 2011-09-28 Tolleiv Nietsch <tolleiv.nietsch@typo3.org> 
 
 	* Fixed issue: #18291: Section index might be wrong if it's placed after an FCE  (Thanks to Thomas Layh)
