@@ -12,7 +12,7 @@ $tempColumns = array(
 				array('', 0),
 			),
 			'allowNonIdValues' => 1,
-			'itemsProcFunc' => '\Extension\Templavoila\Service\ItemProcFunc\StaticDataStructuresHandler->dataSourceItemsProcFunc',
+			'itemsProcFunc' => 'Extension\Templavoila\Service\ItemProcFunc\StaticDataStructuresHandler->dataSourceItemsProcFunc',
 			'size' => 1,
 			'minitems' => 0,
 			'maxitems' => 1,
@@ -28,7 +28,7 @@ $tempColumns = array(
 			'items' => array(
 				array('', 0),
 			),
-			'itemsProcFunc' => '\Extension\Templavoila\Service\ItemProcFunc\StaticDataStructuresHandler->templateObjectItemsProcFunc',
+			'itemsProcFunc' => 'Extension\Templavoila\Service\ItemProcFunc\StaticDataStructuresHandler->templateObjectItemsProcFunc',
 			'size' => 1,
 			'minitems' => 0,
 			'maxitems' => 1,
@@ -54,7 +54,7 @@ $tempColumns = array(
 			'items' => array(
 				array('', 0),
 			),
-			'itemsProcFunc' => '\Extension\Templavoila\Service\ItemProcFunc\StaticDataStructuresHandler->pi_templates',
+			'itemsProcFunc' => 'Extension\Templavoila\Service\ItemProcFunc\StaticDataStructuresHandler->pi_templates',
 			'size' => 1,
 			'minitems' => 0,
 			'maxitems' => 1,

@@ -4,7 +4,7 @@ return array(
 	'ctrl' => array(
 		'title' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tx_templavoila_datastructure',
 		'label' => 'title',
-		'label_userFunc' => 'EXT:templavoila/Classes/Service/UserFunc/Label.php:&\Extension\Templavoila\Service\UserFunc\Label->getLabel',
+		'label_userFunc' => 'EXT:templavoila/Classes/Service/UserFunc/Label.php:&Extension\Templavoila\Service\UserFunc\Label->getLabel',
 		'tstamp' => 'tstamp',
 		'crdate' => 'crdate',
 		'cruser_id' => 'cruser_id',
