@@ -69,15 +69,13 @@ if (TYPO3_MODE === 'BE') {
 		'web_func',
 		'Extension\\Templavoila\\Controller\\ReferenceElementWizardController',
 		NULL,
-		'LLL:EXT:templavoila/Resources/Private/Language/locallang.xlf:wiz_refElements',
-		'wiz'
+		'LLL:EXT:templavoila/Resources/Private/Language/locallang.xlf:wiz_refElements'
 	);
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
 		'web_func',
 		'Extension\\Templavoila\\Controller\\RenameFieldInPageFlexWizardController',
 		NULL,
-		'LLL:EXT:templavoila/Resources/Private/Language/locallang.xlf:wiz_renameFieldsInPage',
-		'wiz'
+		'LLL:EXT:templavoila/Resources/Private/Language/locallang.xlf:wiz_renameFieldsInPage'
 	);
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('_MOD_web_func', 'EXT:wizard_crpages/locallang_csh.xlf');
 }
