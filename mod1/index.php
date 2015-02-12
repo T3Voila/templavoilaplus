@@ -584,6 +584,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				var T3_TV_MOD1_RETURNURL = "' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')) . '";
 			');
 
+			$this->doc->getPageRenderer()->loadPrototype();
 			$this->doc->getPageRenderer()->loadExtJs();
 			$this->doc->JScode .= $this->doc->wrapScriptTags('
 				var typo3pageModule = {
