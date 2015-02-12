@@ -1,7 +1,7 @@
 <?php
 namespace Extension\Templavoila\Controller\Preview;
 
-/**
+/*
  * This file is part of the TYPO3 CMS project.
  *
  * It is free software; you can redistribute it and/or modify it under
