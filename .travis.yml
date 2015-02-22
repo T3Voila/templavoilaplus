@@ -25,6 +25,10 @@ before_script:
 script:
   - >
     echo;
+    echo "Running unit tests";
+    ./bin/phpunit --colors -c typo3/sysext/core/Build/UnitTests.xml ./typo3conf/ext/templavoila/Tests/Unit
+  - >
+    echo;
     echo "Running functional tests";
     export typo3DatabaseName="typo3";
     export typo3DatabaseHost="localhost";
