@@ -1,5 +1,17 @@
+2.0.1 / 2015-02-23
+==================
 
-n.n.n / 2014-12-19
+  * [TASK] Enable unit testing in .travis.yml
+  * [TASK] Adjust composer.json for travis.ci
+  * [BUGFIX] illegal offset vDEF
+  * [CLEANUP] Use comments not PHPDoc style comments in copyright block
+  * [BUGFIX] Enable prototype again to make D&D work again in page module
+  * [TASK] Move wizards to Web=>Functions
+  * [BUGFIX] makeInstance is called with \ in front
+  * [BUGFIX] makeInstance is called with \ in front
+  * [TASK] Use fully class name resolution in PHP 5.5
+
+2.0.0 / 2014-12-19
 ==================
 
   * [BUGFIX] Explicitly cast flexform result to array
