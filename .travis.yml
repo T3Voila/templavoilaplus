@@ -3,9 +3,18 @@ language: php
 php:
   - 5.5
   - 5.6
+  - 7
+  - hhvm-nightly
 
 env:
-  - DB=mysql
+  - TYPO3_VERSION="6.2" UNIT_TESTS=yes FUNCTIONAL_TESTS=yes PHP_LINT=yes
+  - TYPO3_VERSION="7.0" UNIT_TESTS=yes FUNCTIONAL_TESTS=yes PHP_LINT=yes
+  - TYPO3_VERSION="7.1" UNIT_TESTS=yes FUNCTIONAL_TESTS=yes PHP_LINT=yes
+
+matrix:
+  allow_failures:
+    - php: 7
+    - php: hhvm-nightly
 
 notifications:
   slack:
@@ -14,24 +23,48 @@ notifications:
     on_success: always
     on_failure: always
 
+install:
+  - sudo apt-get install parallel
+
 before_script:
-  - composer self-update
   - cd ..
   - cp templavoila/Tests/Build/composer.json .
-  - composer install
-  - mkdir -p uploads typo3temp typo3conf/ext
+  - mkdir -p uploads typo3temp typo3conf/ext typo3_src
+  - wget -O - "http://get.typo3.org/$TYPO3_VERSION" | tar -xzf - -C typo3_src --strip-components=1
+  - ln -s typo3_src/index.php .
+  - ln -s typo3_src/typo3 .
+  - wget https://raw.github.com/oliversalzburg/typo3scripts/master/extExtract.php
+  - chmod 777 extExtract.php
+  - php ./extExtract.php --extension=static_info_tables --force-version=6.2.1 --output-dir=typo3conf/ext/static_info_tables
+  - composer self-update
+  - composer update
   - mv templavoila typo3conf/ext/templavoila
 
 script:
   - >
-    echo;
-    echo "Running unit tests";
-    ./bin/phpunit --colors -c typo3/sysext/core/Build/UnitTests.xml ./typo3conf/ext/templavoila/Tests/Unit
+    if [[ "$UNIT_TESTS" == "yes" ]]; then
+      echo;
+      echo "Running unit tests";
+      ./bin/phpunit --colors -c typo3/sysext/core/Build/UnitTests.xml ./typo3conf/ext/templavoila/Tests/Unit
+    fi
   - >
-    echo;
-    echo "Running functional tests";
-    export typo3DatabaseName="typo3";
-    export typo3DatabaseHost="localhost";
-    export typo3DatabaseUsername="root";
-    export typo3DatabasePassword="";
-    ./bin/phpunit --colors -c typo3/sysext/core/Build/FunctionalTests.xml ./typo3conf/ext/templavoila/Tests/Functional/ApiTest.php
+    if [[ "$FUNCTIONAL_TESTS" == "yes" ]]; then
+      echo;
+      echo "Running functional tests";
+      export typo3DatabaseName="typo3";
+      export typo3DatabaseHost="localhost";
+      export typo3DatabaseUsername="root";
+      export typo3DatabasePassword="";
+      ./bin/phpunit --colors -c typo3/sysext/core/Build/FunctionalTests.xml ./typo3conf/ext/templavoila/Tests/Functional/ApiTest.php
+    fi
+  - >
+    if [[ "$PHP_LINT" == "yes" ]]; then
+      echo;
+      echo "Running php lint";
+      /bin/bash -c "
+          if ! find typo3conf/ext/templavoila -name \*.php | parallel --gnu 'php -l {}' > /tmp/errors 2>&1; then
+              grep -v \"No syntax errors detected in\" /tmp/errors;
+              exit 99;
+          fi
+      "
+    fi
