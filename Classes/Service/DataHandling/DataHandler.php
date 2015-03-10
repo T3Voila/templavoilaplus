@@ -154,7 +154,7 @@ class DataHandler {
 					'row' => $row,
 				);
 				$ref = NULL;
-				if (!\TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction('EXT:templavoila/Classes/Service/UserFunc/Access.php:&\Extension\Templavoila\Service\UserFunc\Access->recordEditAccessInternals', $params, $ref)) {
+				if (!\TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction('EXT:templavoila/Classes/Service/UserFunc/Access.php:&Extension\Templavoila\Service\UserFunc\Access->recordEditAccessInternals', $params, $ref)) {
 					$reference->newlog(sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL($status != 'new' ? 'access_noModifyAccess' : 'access_noCrateAccess'), $table, $id), 1);
 					$fieldArray = NULL;
 				}
@@ -313,7 +313,7 @@ page.10.disableExplosivePreview = 1
 					'row' => $record,
 				);
 				$ref = NULL;
-				if (!\TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction('EXT:templavoila/Classes/Service/UserFunc/Access.php:&\Extension\Templavoila\Service\UserFunc\Access->recordEditAccessInternals', $params, $ref)) {
+				if (!\TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction('EXT:templavoila/Classes/Service/UserFunc/Access.php:&Extension\Templavoila\Service\UserFunc\Access->recordEditAccessInternals', $params, $ref)) {
 					$reference->newlog(sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('access_noModifyAccess'), $table, $id), 1);
 					$command = ''; // Do not delete! A hack but there is no other way to prevent deletion...
 				} else {
