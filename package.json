@@ -1,6 +1,6 @@
 {
   "name": "templavoila",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Point-and-click, popular and easy template engine for TYPO3. Public free support is provided only through TYPO3 mailing lists! Contact by e-mail for commercial support.",
   "devDependencies": {
     "grunt": "^0.4.5",
