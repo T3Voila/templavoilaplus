@@ -32,16 +32,6 @@ class Pi1Test extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 */
-	public function inheritValueLogsErrorIfSecondParamIsNotAKeyOfFirstParam() {
-		/** @var $mockObject \tx_templavoila_pi1 | \PHPUnit_Framework_MockObject_MockObject  */
-		$mockObject = $this->getMock('tx_templavoila_pi1', array('log'));
-		$mockObject->expects($this->once())->method('log');
-		$mockObject->inheritValue(array(), 'foo');
-	}
-
-	/**
-	 * @test
-	 */
 	public function inheritValueLogsErrorIfvDefIsNotAKeyOfFirstParam() {
 		/** @var $mockObject \tx_templavoila_pi1 | \PHPUnit_Framework_MockObject_MockObject  */
 		$mockObject = $this->getMock('tx_templavoila_pi1', array('log'));
@@ -56,6 +46,7 @@ class Pi1Test extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function inheritValueResultsWithParamMatrix($data, $expected) {
 		/** @var $mockObject \tx_templavoila_pi1 | \PHPUnit_Framework_MockObject_MockObject  */
 		$mockObject = $this->getMock('tx_templavoila_pi1', array('log'));
+		$mockObject->inheritValueFromDefault = TRUE;
 
 		$this->assertSame($expected, call_user_func_array(array($mockObject, 'inheritValue'), $data));
 	}
@@ -78,6 +69,27 @@ class Pi1Test extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 					'vDEF',
 				),
 				'en',
+			),
+			array(
+				array(
+					array('vDEF' => '1', 'vFR' => '2'),
+					'vFR',
+				),
+				'2',
+			),
+			array(
+				array(
+					array('vDEF' => '1'),
+					'vFR',
+				),
+				'1',
+			),
+			array(
+				array(
+					array(),
+					'vFR',
+				),
+				'',
 			),
 			array(
 				array(

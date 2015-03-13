@@ -690,29 +690,28 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 				throw new \InvalidArgumentException(sprintf('Argument "%s" must be of type array, "%s" given', '$dV', gettype($dV)));
 			}
 
-			if (!isset($dV[$valueKey])) {
-				throw new RuntimeException(sprintf('Key "%s" of array "%s" doesn\'t exist', $valueKey, '\$dV'));
-			}
-
 			if (!isset($dV['vDEF'])) {
 				throw new RuntimeException(sprintf('Key "%vDEF" of array "%s" doesn\'t exist', '\$dV'));
 			}
 
 			if ($valueKey != 'vDEF') {
+				// Prevent PHP warnings
+				$defaultValue = isset($dV['vDEF']) ? $dV['vDEF'] : '';
+				$languageValue = isset($dV[$valueKey]) ? $dV[$valueKey] : '';
 
 				// Consider overlay modes:
 				switch ((string) $overlayMode) {
 					case 'ifFalse': // Normal inheritance based on whether the value evaluates false or not (zero or blank string)
-						$returnValue .= trim($dV[$valueKey]) ? $dV[$valueKey] : $dV['vDEF'];
+						$returnValue .= trim($languageValue) ? $languageValue : $defaultValue;
 						break;
 					case 'ifBlank': // Only if the value is truely blank!
-						$returnValue .= strcmp(trim($dV[$valueKey]), '') ? $dV[$valueKey] : $dV['vDEF'];
+						$returnValue .= strcmp(trim($languageValue), '') ? $languageValue : $defaultValue;
 						break;
 					case 'never':
-						$returnValue .= $dV[$valueKey]; // Always return its own value
+						$returnValue .= $languageValue; // Always return its own value
 						break;
 					case 'removeIfBlank':
-						if (!strcmp(trim($dV[$valueKey]), '')) {
+						if (!strcmp(trim($languageValue), '')) {
 							// Find a way to avoid returning an array here
 							return array('ERROR' => '__REMOVE');
 						}
@@ -720,7 +719,7 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 					default:
 						// If none of the overlay modes matched, simply use the default:
 						if ($this->inheritValueFromDefault) {
-							$returnValue .= trim($dV[$valueKey]) ? $dV[$valueKey] : $dV['vDEF'];
+							$returnValue .= trim($languageValue) ? $languageValue : $defaultValue;
 						}
 						break;
 				}
