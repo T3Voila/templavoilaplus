@@ -35,7 +35,7 @@ class Pi1Test extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function inheritValueLogsErrorIfvDefIsNotAKeyOfFirstParam() {
 		/** @var $mockObject \tx_templavoila_pi1 | \PHPUnit_Framework_MockObject_MockObject  */
 		$mockObject = $this->getMock('tx_templavoila_pi1', array('log'));
-		$mockObject->expects($this->once())->method('log');
+		$mockObject->expects($this->once())->method('log')->with('Key "vDEF" of array "$dV" doesn\'t exist');
 		$mockObject->inheritValue(array(), 'vDEF');
 	}
 

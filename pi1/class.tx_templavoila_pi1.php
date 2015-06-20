@@ -691,7 +691,7 @@ class tx_templavoila_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 			}
 
 			if (!isset($dV['vDEF'])) {
-				throw new RuntimeException(sprintf('Key "%vDEF" of array "%s" doesn\'t exist', '\$dV'));
+				throw new \RuntimeException('Key "vDEF" of array "$dV" doesn\'t exist');
 			}
 
 			if ($valueKey != 'vDEF') {
