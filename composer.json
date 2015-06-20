@@ -4,5 +4,5 @@
 	"description": "One of many availabe template engines for TYPO3 CMS",
 	"homepage": "http://forge.typo3.org/projects/extension-templavoila/",
 	"license": ["GPL-2.0+"],
-	"version": "2.0.3"
+	"version": "2.0.4"
 }
