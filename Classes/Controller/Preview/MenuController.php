@@ -13,6 +13,7 @@ namespace Extension\Templavoila\Controller\Preview;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /**
  * Menu controller
@@ -30,6 +31,13 @@ class MenuController extends TextController {
 	 * @return string
 	 */
 	protected function getPreviewData($row) {
-		return \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL(\TYPO3\CMS\Backend\Utility\BackendUtility::getLabelFromItemlist('tt_content', $this->previewField, $row[$this->previewField]));
+		return $this->getLanguageService()->sL(BackendUtility::getLabelFromItemlist('tt_content', $this->previewField, $row[$this->previewField]));
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Lang\LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
 	}
 }

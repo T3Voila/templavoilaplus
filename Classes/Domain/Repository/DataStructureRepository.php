@@ -13,6 +13,8 @@ namespace Extension\Templavoila\Domain\Repository;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class to provide unique access to datastructure
@@ -51,7 +53,7 @@ class DataStructureRepository {
 			}
 		}
 
-		$ds = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($className, $uidOrFile);
+		$ds = GeneralUtility::makeInstance($className, $uidOrFile);
 
 		return $ds;
 	}
@@ -71,7 +73,7 @@ class DataStructureRepository {
 			foreach ($confArr as $conf) {
 				$ds = $this->getDatastructureByUidOrFilename($conf['path']);
 				$pids = $ds->getStoragePids();
-				if ($pids == '' || \TYPO3\CMS\Core\Utility\GeneralUtility::inList($pids, $pid)) {
+				if ($pids == '' || GeneralUtility::inList($pids, $pid)) {
 					$dscollection[] = $ds;
 				}
 			}
@@ -82,9 +84,9 @@ class DataStructureRepository {
 				'uid',
 				'tx_templavoila_datastructure',
 				'pid=' . (int)$pid
-				. \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoila_datastructure')
+				. BackendUtility::deleteClause('tx_templavoila_datastructure')
 				. ' AND pid!=-1 '
-				. \TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause('tx_templavoila_datastructure')
+				. BackendUtility::versioningPlaceholderClause('tx_templavoila_datastructure')
 			);
 			foreach ($dsRows as $ds) {
 				$dscollection[] = $this->getDatastructureByUidOrFilename($ds['uid']);
@@ -111,7 +113,7 @@ class DataStructureRepository {
 				if ($conf['scope'] == $scope) {
 					$ds = $this->getDatastructureByUidOrFilename($conf['path']);
 					$pids = $ds->getStoragePids();
-					if ($pids == '' || \TYPO3\CMS\Core\Utility\GeneralUtility::inList($pids, $pid)) {
+					if ($pids == '' || GeneralUtility::inList($pids, $pid)) {
 						$dscollection[] = $ds;
 					}
 				}
@@ -123,9 +125,9 @@ class DataStructureRepository {
 				'uid',
 				'tx_templavoila_datastructure',
 				'scope=' . (int)$scope . ' AND pid=' . (int)$pid
-				. \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoila_datastructure')
+				. BackendUtility::deleteClause('tx_templavoila_datastructure')
 				. ' AND pid!=-1 '
-				. \TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause('tx_templavoila_datastructure')
+				. BackendUtility::versioningPlaceholderClause('tx_templavoila_datastructure')
 			);
 			foreach ($dsRows as $ds) {
 				$dscollection[] = $this->getDatastructureByUidOrFilename($ds['uid']);
@@ -160,9 +162,9 @@ class DataStructureRepository {
 				'uid',
 				'tx_templavoila_datastructure',
 				'scope=' . (int)$scope
-				. \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoila_datastructure')
+				. BackendUtility::deleteClause('tx_templavoila_datastructure')
 				. ' AND pid!=-1 '
-				. \TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause('tx_templavoila_datastructure')
+				. BackendUtility::versioningPlaceholderClause('tx_templavoila_datastructure')
 			);
 			foreach ($dsRows as $ds) {
 				$dscollection[] = $this->getDatastructureByUidOrFilename($ds['uid']);
@@ -193,9 +195,9 @@ class DataStructureRepository {
 				'uid',
 				'tx_templavoila_datastructure',
 				'1=1'
-				. \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoila_datastructure')
+				. BackendUtility::deleteClause('tx_templavoila_datastructure')
 				. ' AND pid!=-1 '
-				. \TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause('tx_templavoila_datastructure')
+				. BackendUtility::versioningPlaceholderClause('tx_templavoila_datastructure')
 			);
 			foreach ($dsRows as $ds) {
 				$dscollection[] = $this->getDatastructureByUidOrFilename($ds['uid']);
@@ -215,9 +217,9 @@ class DataStructureRepository {
 		$confArr = self::getStaticDatastructureConfiguration();
 		$confKey = FALSE;
 		if (count($confArr)) {
-			$fileAbsName = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($file);
+			$fileAbsName = GeneralUtility::getFileAbsFileName($file);
 			foreach ($confArr as $key => $conf) {
-				if (\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($conf['path']) == $fileAbsName) {
+				if (GeneralUtility::getFileAbsFileName($conf['path']) == $fileAbsName) {
 					$confKey = $key;
 					break;
 				}
@@ -244,7 +246,7 @@ class DataStructureRepository {
 		if (!self::$staticDsInitComplete) {
 			$extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
 			if ($extConfig['staticDS.']['enable']) {
-				\Extension\Templavoila\Utility\StaticDataStructure\ToolsUtility::readStaticDsFilesIntoArray($extConfig);
+				self::readStaticDsFilesIntoArray($extConfig);
 			}
 			self::$staticDsInitComplete = TRUE;
 		}
@@ -288,11 +290,46 @@ class DataStructureRepository {
 		$dsCnt = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTgetRows(
 			'DISTINCT datastructure',
 			'tx_templavoila_tmplobj',
-			'pid=' . (int)$pid . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoila_tmplobj'),
+			'pid=' . (int)$pid . BackendUtility::deleteClause('tx_templavoila_tmplobj'),
 			'datastructure'
 		);
 		array_unique($dsCnt);
 
 		return count($dsCnt);
+	}
+
+
+	/**
+	 * @param array $conf
+	 */
+	static protected function readStaticDsFilesIntoArray($conf) {
+		$paths = array_unique(array('fce' => $conf['staticDS.']['path_fce'], 'page' => $conf['staticDS.']['path_page']));
+		foreach ($paths as $type => $path) {
+			$absolutePath = GeneralUtility::getFileAbsFileName($path);
+			$files = GeneralUtility::getFilesInDir($absolutePath, 'xml', TRUE);
+			// if all files are in the same folder, don't resolve the scope by path type
+			if (count($paths) == 1) {
+				$type = FALSE;
+			}
+			foreach ($files as $filePath) {
+				$staticDataStructure = array();
+				$pathInfo = pathinfo($filePath);
+
+				$staticDataStructure['title'] = $pathInfo['filename'];
+				$staticDataStructure['path'] = substr($filePath, strlen(PATH_site));
+				$iconPath = $pathInfo['dirname'] . '/' . $pathInfo['filename'] . '.gif';
+				if (file_exists($iconPath)) {
+					$staticDataStructure['icon'] = substr($iconPath, strlen(PATH_site));
+				}
+
+				if (($type !== FALSE && $type === 'fce') || strpos($pathInfo['filename'], '(fce)') !== FALSE) {
+					$staticDataStructure['scope'] = \Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_FCE;
+				} else {
+					$staticDataStructure['scope'] = \Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_PAGE;
+				}
+
+				$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['staticDataStructures'][] = $staticDataStructure;
+			}
+		}
 	}
 }

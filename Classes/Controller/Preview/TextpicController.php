@@ -13,6 +13,7 @@ namespace Extension\Templavoila\Controller\Preview;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /**
  * Textpic controller
@@ -39,8 +40,8 @@ class TextpicController extends TextController {
 
 		$uploadDir = $GLOBALS['TCA']['tt_content']['columns']['image']['config']['internal_type'] == 'file_reference' ? '' : NULL;
 
-		$thumbnail = '<strong>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL(\TYPO3\CMS\Backend\Utility\BackendUtility::getItemLabel('tt_content', 'image'), 1) . '</strong><br />';
-		$thumbnail .= \TYPO3\CMS\Backend\Utility\BackendUtility::thumbCode($row, 'tt_content', 'image', $ref->doc->backPath, '', $uploadDir);
+		$thumbnail = '<strong>' . $this->getLanguageService()->sL(BackendUtility::getItemLabel('tt_content', 'image'), 1) . '</strong><br />';
+		$thumbnail .= BackendUtility::thumbCode($row, 'tt_content', 'image', $ref->doc->backPath, '', $uploadDir);
 
 		$label = $this->getPreviewLabel();
 		$data = $this->getPreviewData($row);
@@ -58,5 +59,12 @@ class TextpicController extends TextController {
 				<td valign="top">' . $thumbnail . '</td>
 			</tr>
 		</table>';
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Lang\LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
 	}
 }

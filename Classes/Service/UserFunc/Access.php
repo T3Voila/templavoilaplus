@@ -13,11 +13,11 @@ namespace Extension\Templavoila\Service\UserFunc;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class being included by UserAuthGroup using a hook
- *
- * @author Dmitry Dulepov <dmitry@typo3.org>
  */
 class Access {
 
@@ -25,31 +25,30 @@ class Access {
 	 * Checks if user is allowed to modify FCE.
 	 *
 	 * @param array $params Parameters
-	 * @param object $ref Parent object
+	 * @param BackendUserAuthentication $backendUser Parent object
 	 *
 	 * @return boolean <code>true</code> if change is allowed
 	 */
-	public function recordEditAccessInternals($params, $ref) {
+	public function recordEditAccessInternals($params, $backendUser) {
 		if ($params['table'] == 'tt_content' && is_array($params['idOrRow']) && $params['idOrRow']['CType'] == 'templavoila_pi1') {
-			if (!$ref) {
-				$user = & \Extension\Templavoila\Utility\GeneralUtility::getBackendUser();
-			} else {
-				$user = & $ref;
+			$originalBackendUser = $backendUser;
+			if (!$backendUser) {
+				$backendUser = $this->getBackendUser();
 			}
-			if ($user->isAdmin()) {
+			if ($backendUser->isAdmin()) {
 				return TRUE;
 			}
 
-			if (!$this->checkObjectAccess('tx_templavoila_datastructure', $params['idOrRow']['tx_templavoila_ds'], $ref)) {
+			if (!$this->checkObjectAccess('tx_templavoila_datastructure', $params['idOrRow']['tx_templavoila_ds'], $backendUser)) {
 				$error = 'access_noDSaccess';
-			} elseif (!$this->checkObjectAccess('tx_templavoila_tmplobj', $params['idOrRow']['tx_templavoila_to'], $ref)) {
+			} elseif (!$this->checkObjectAccess('tx_templavoila_tmplobj', $params['idOrRow']['tx_templavoila_to'], $backendUser)) {
 				$error = 'access_noTOaccess';
 			} else {
 				return TRUE;
 			}
-			if ($ref) {
-				\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->init($user->uc['lang']);
-				$ref->errorMsg = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang_access.xlf:' . $error);
+			if ($originalBackendUser) {
+				$this->getLanguageService()->init($originalBackendUser->uc['lang']);
+				$originalBackendUser->errorMsg = $this->getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang_access.xlf:' . $error);
 			}
 
 			return FALSE;
@@ -63,18 +62,18 @@ class Access {
 	 *
 	 * @param string $table Table name
 	 * @param int $uid UID of the record
-	 * @param object $be_user BE user object
+	 * @param BackendUserAuthentication $backendUser BE user object
 	 *
 	 * @return boolean <code>true</code> if access is allowed
 	 */
-	public function checkObjectAccess($table, $uid, $be_user) {
-		if (!$be_user) {
-			$be_user = \Extension\Templavoila\Utility\GeneralUtility::getBackendUser();
+	public function checkObjectAccess($table, $uid, $backendUser) {
+		if (!$backendUser) {
+			$backendUser = $this->getBackendUser();
 		}
-		if (!$be_user->isAdmin()) {
+		if (!$backendUser->isAdmin()) {
 			$prefLen = strlen($table) + 1;
-			foreach ($be_user->userGroups as $group) {
-				$items = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $group['tx_templavoila_access'], 1);
+			foreach ($backendUser->userGroups as $group) {
+				$items = GeneralUtility::trimExplode(',', $group['tx_templavoila_access'], 1);
 				foreach ($items as $ref) {
 					if (strstr($ref, $table)) {
 						if ($uid == (int)substr($ref, $prefLen)) {
@@ -86,5 +85,20 @@ class Access {
 		}
 
 		return TRUE;
+	}
+
+
+	/**
+	 * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+	 */
+	public function getBackendUser() {
+		return $GLOBALS['BE_USER'];
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Lang\LanguageService
+	 */
+	public function getLanguageService() {
+		return $GLOBALS['LANG'];
 	}
 }

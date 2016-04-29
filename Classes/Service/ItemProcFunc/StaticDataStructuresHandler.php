@@ -13,6 +13,9 @@ namespace Extension\Templavoila\Service\ItemProcFunc;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Class/Function which manipulates the item-array for table/field tx_templavoila_tmplobj_datastructure.
@@ -48,7 +51,7 @@ class StaticDataStructuresHandler {
 	public function main(&$params, &$pObj) {
 		$removeDSItems = $this->getRemoveItems($params, substr($params['field'], 0, -2) . 'ds');
 
-		$dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\DataStructureRepository::class);
+		$dsRepo = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\DataStructureRepository::class);
 		$dsList = $dsRepo->getAll();
 
 		$params['items'] = array(
@@ -86,22 +89,22 @@ class StaticDataStructuresHandler {
 		if ($templateRef && $storagePid) {
 
 			// Select all Template Object Records from storage folder, which are parent records and which has the data structure for the plugin:
-			$res = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTquery(
+			$res = $this->getDatabaseConnection()->exec_SELECTquery(
 				'title,uid,previewicon',
 				'tx_templavoila_tmplobj',
-				'tx_templavoila_tmplobj.pid=' . $storagePid . ' AND tx_templavoila_tmplobj.datastructure=' .  \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr($templateRef, 'tx_templavoila_tmplobj') . ' AND tx_templavoila_tmplobj.parent=0',
+				'tx_templavoila_tmplobj.pid=' . $storagePid . ' AND tx_templavoila_tmplobj.datastructure=' .  $this->getDatabaseConnection()->fullQuoteStr($templateRef, 'tx_templavoila_tmplobj') . ' AND tx_templavoila_tmplobj.parent=0',
 				'',
 				'tx_templavoila_tmplobj.title'
 			);
 
 			// Traverse these and add them. Icons are set too if applicable.
-			while (FALSE != ($row = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_fetch_assoc($res))) {
+			while (FALSE != ($row = $this->getDatabaseConnection()->sql_fetch_assoc($res))) {
 				if ($row['previewicon']) {
 					$icon = '../' . $GLOBALS['TCA']['tx_templavoila_tmplobj']['columns']['previewicon']['config']['uploadfolder'] . '/' . $row['previewicon'];
 				} else {
 					$icon = '';
 				}
-				$params['items'][] = array(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL($row['title']), $row['uid'], $icon);
+				$params['items'][] = array($this->getLanguageService()->sL($row['title']), $row['uid'], $icon);
 			}
 		}
 	}
@@ -122,7 +125,7 @@ class StaticDataStructuresHandler {
 
 		$removeDSItems = $this->getRemoveItems($params, substr($params['field'], 0, -2) . 'ds');
 
-		$dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\DataStructureRepository::class);
+		$dsRepo = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\DataStructureRepository::class);
 		$dsList = $dsRepo->getDatastructuresByStoragePidAndScope($storagePid, $scope);
 
 		$params['items'] = array(
@@ -181,8 +184,8 @@ class StaticDataStructuresHandler {
 
 		$removeTOItems = $this->getRemoveItems($params, substr($params['field'], 0, -2) . 'to');
 
-		$dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\DataStructureRepository::class);
-		$toRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\TemplateRepository::class);
+		$dsRepo = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\DataStructureRepository::class);
+		$toRepo = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\TemplateRepository::class);
 
 		$params['items'] = array(
 			array(
@@ -226,8 +229,8 @@ class StaticDataStructuresHandler {
 		$removeDSItems = $this->getRemoveItems($params, substr($params['field'], 0, -2) . 'ds');
 		$removeTOItems = $this->getRemoveItems($params, substr($params['field'], 0, -2) . 'to');
 
-		$dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\DataStructureRepository::class);
-		$toRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\TemplateRepository::class);
+		$dsRepo = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\DataStructureRepository::class);
+		$toRepo = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\TemplateRepository::class);
 		$dsList = $dsRepo->getDatastructuresByStoragePidAndScope($storagePid, $scope);
 
 		$params['items'] = array(
@@ -280,8 +283,8 @@ class StaticDataStructuresHandler {
 
 		// Check for alternative storage folder
 		$field = $params['table'] == 'pages' ? 'uid' : 'pid';
-		$modTSConfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($params['row'][$field], 'tx_templavoila.storagePid');
-		if (is_array($modTSConfig) && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($modTSConfig['value'])) {
+		$modTSConfig = BackendUtility::getModTSconfig($params['row'][$field], 'tx_templavoila.storagePid');
+		if (is_array($modTSConfig) && MathUtility::canBeInterpretedAsInteger($modTSConfig['value'])) {
 			$storagePid = (int)$modTSConfig['value'];
 		}
 
@@ -296,13 +299,16 @@ class StaticDataStructuresHandler {
 	 * @return integer
 	 */
 	protected function getScope(array $params) {
-		$scope = \Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_UNKNOWN;
-		if ($params['table'] == 'pages') {
-			$scope = \Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_PAGE;
-		} elseif ($params['table'] == 'tt_content') {
-			$scope = \Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_FCE;
+		switch ($params['table']) {
+			case 'pages':
+				$scope = \Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_PAGE;
+			break;
+			case 'tt_content':
+				$scope = \Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_FCE;
+			break;
+			default:
+				$scope = \Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_UNKNOWN;
 		}
-
 		return $scope;
 	}
 
@@ -316,8 +322,23 @@ class StaticDataStructuresHandler {
 	 */
 	protected function getRemoveItems($params, $field) {
 		$pid = $params['row'][$params['table'] == 'pages' ? 'uid' : 'pid'];
-		$modTSConfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($pid, 'TCEFORM.' . $params['table'] . '.' . $field . '.removeItems');
+		$modTSConfig = BackendUtility::getModTSconfig($pid, 'TCEFORM.' . $params['table'] . '.' . $field . '.removeItems');
 
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $modTSConfig['value'], TRUE);
+		return GeneralUtility::trimExplode(',', $modTSConfig['value'], TRUE);
+	}
+
+
+	/**
+	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+	 */
+	protected function getDatabaseConnection() {
+		return $GLOBALS['TYPO3_DB'];
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Lang\LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
 	}
 }

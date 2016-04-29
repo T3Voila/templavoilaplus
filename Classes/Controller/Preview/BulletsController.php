@@ -13,6 +13,7 @@ namespace Extension\Templavoila\Controller\Preview;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Bullets controller
@@ -39,7 +40,7 @@ class BulletsController extends TextController {
 		$bulletsArr = explode("\n", $this->preparePreviewData($row['bodytext']));
 		if (is_array($bulletsArr)) {
 			foreach ($bulletsArr as $listItem) {
-				$processedItem = \TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs(trim(strip_tags($listItem)), $max);
+				$processedItem = GeneralUtility::fixed_lgd_cs(trim(strip_tags($listItem)), $max);
 				$max -= strlen($processedItem);
 				$htmlBullets .= '<li>' . htmlspecialchars($processedItem) . '</li>';
 				if (!$max) {

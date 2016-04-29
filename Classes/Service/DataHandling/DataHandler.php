@@ -13,6 +13,8 @@ namespace Extension\Templavoila\Service\DataHandling;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class being included by TCEmain using a hook
@@ -62,7 +64,7 @@ class DataHandler {
 	 */
 	public function processDatamap_preProcessFieldArray(array &$incomingFieldArray, $table, $id, \TYPO3\CMS\Core\DataHandling\DataHandler &$reference) {
 		if ($this->debug) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('processDatamap_preProcessFieldArray', 'templavoila', 0, array($incomingFieldArray, $table, $id));
+			GeneralUtility::devLog('processDatamap_preProcessFieldArray', 'templavoila', 0, array($incomingFieldArray, $table, $id));
 		}
 
 		if ($GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_api']['apiIsRunningTCEmain']) {
@@ -95,7 +97,7 @@ class DataHandler {
 	 */
 	public function processDatamap_postProcessFieldArray($status, $table, $id, &$fieldArray, &$reference) {
 		if ($this->debug) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('processDatamap_postProcessFieldArray', 'templavoila', 0, array($status, $table, $id, $fieldArray));
+			GeneralUtility::devLog('processDatamap_postProcessFieldArray', 'templavoila', 0, array($status, $table, $id, $fieldArray));
 		}
 
 		// If the references for content element changed at the current page, save that information into the reference table:
@@ -115,7 +117,7 @@ class DataHandler {
 				}
 
 				if (!is_null($pid)) {
-					$templaVoilaAPI = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Service\ApiService::class);
+					$templaVoilaAPI = GeneralUtility::makeInstance(\Extension\Templavoila\Service\ApiService::class);
 					$templateObjectRecords = $templaVoilaAPI->ds_getAvailablePageTORecords($pid);
 
 					$matchingTOUid = 0;
@@ -144,7 +146,7 @@ class DataHandler {
 		// Access check for FCE
 		if ($table == 'tt_content') {
 			if ($status != 'new') {
-				$row = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $id);
+				$row = BackendUtility::getRecord($table, $id);
 			} else {
 				$row = & $fieldArray;
 			}
@@ -154,8 +156,8 @@ class DataHandler {
 					'row' => $row,
 				);
 				$ref = NULL;
-				if (!\TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction('EXT:templavoila/Classes/Service/UserFunc/Access.php:&Extension\Templavoila\Service\UserFunc\Access->recordEditAccessInternals', $params, $ref)) {
-					$reference->newlog(sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL($status != 'new' ? 'access_noModifyAccess' : 'access_noCrateAccess'), $table, $id), 1);
+				if (!GeneralUtility::callUserFunction('EXT:templavoila/Classes/Service/UserFunc/Access.php:&Extension\Templavoila\Service\UserFunc\Access->recordEditAccessInternals', $params, $ref)) {
+					$reference->newlog(sprintf($this->getLanguageService()->getLL($status != 'new' ? 'access_noModifyAccess' : 'access_noCrateAccess'), $table, $id), 1);
 					$fieldArray = NULL;
 				}
 			}
@@ -188,7 +190,7 @@ page.10.disableExplosivePreview = 1
 	public function processDatamap_afterDatabaseOperations($status, $table, $id, $fieldArray, &$reference) {
 
 		if ($this->debug) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('processDatamap_afterDatabaseOperations ', 'templavoila', 0, array($status, $table, $id, $fieldArray));
+			GeneralUtility::devLog('processDatamap_afterDatabaseOperations ', 'templavoila', 0, array($status, $table, $id, $fieldArray));
 		}
 		if ($GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_api']['apiIsRunningTCEmain']) {
 			return;
@@ -197,14 +199,14 @@ page.10.disableExplosivePreview = 1
 			return;
 		}
 
-		$templaVoilaAPI = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Service\ApiService::class);
+		$templaVoilaAPI = GeneralUtility::makeInstance(\Extension\Templavoila\Service\ApiService::class);
 
 		switch ($status) {
 			case 'new' :
 				if (!isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_tcemain']['doNotInsertElementRefsToPage'])) {
 					$destinationFlexformPointer = FALSE;
 
-					\TYPO3\CMS\Backend\Utility\BackendUtility::fixVersioningPid($table, $fieldArray);
+					BackendUtility::fixVersioningPid($table, $fieldArray);
 
 					if (isset ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_tcemain']['preProcessFieldArrays'][$id])) {
 						$positionReferenceUid = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_tcemain']['preProcessFieldArrays'][$id]['pid'];
@@ -235,10 +237,10 @@ page.10.disableExplosivePreview = 1
 							);
 
 							if ($sorting < 0) {
-								$parentRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL($destinationFlexformPointer['table'], $destinationFlexformPointer['uid'], 'uid,pid,tx_templavoila_flex');
+								$parentRecord = BackendUtility::getRecordWSOL($destinationFlexformPointer['table'], $destinationFlexformPointer['uid'], 'uid,pid,tx_templavoila_flex');
 								$currentReferencesArr = $templaVoilaAPI->flexform_getElementReferencesFromXML($parentRecord['tx_templavoila_flex'], $destinationFlexformPointer);
 								if (count($currentReferencesArr)) {
-									$rows = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTgetRows('uid,' . $sorting_field, $table, 'uid IN (' . implode(',', $currentReferencesArr) . ')' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($table));
+									$rows = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTgetRows('uid,' . $sorting_field, $table, 'uid IN (' . implode(',', $currentReferencesArr) . ')' . BackendUtility::deleteClause($table));
 									$sort = array($reference->substNEWwithIDs[$id] => -$sorting);
 									foreach ($rows as $row) {
 										$sort[$row['uid']] = $row[$sorting_field];
@@ -287,7 +289,7 @@ page.10.disableExplosivePreview = 1
 	public function processCmdmap_preProcess(&$command, $table, $id, $value, &$reference) {
 
 		if ($this->debug) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('processCmdmap_preProcess', 'templavoila', 0, array($command, $table, $id, $value));
+			GeneralUtility::devLog('processCmdmap_preProcess', 'templavoila', 0, array($command, $table, $id, $value));
 		}
 		if ($GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_api']['apiIsRunningTCEmain']) {
 			return;
@@ -302,25 +304,25 @@ page.10.disableExplosivePreview = 1
 			return;
 		}
 
-		$templaVoilaAPI = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Service\ApiService::class);
+		$templaVoilaAPI = GeneralUtility::makeInstance(\Extension\Templavoila\Service\ApiService::class);
 
 		switch ($command) {
 			case 'delete' :
-				$record = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('tt_content', $id);
+				$record = BackendUtility::getRecord('tt_content', $id);
 				// Check for FCE access
 				$params = array(
 					'table' => $table,
 					'row' => $record,
 				);
 				$ref = NULL;
-				if (!\TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction('EXT:templavoila/Classes/Service/UserFunc/Access.php:&Extension\Templavoila\Service\UserFunc\Access->recordEditAccessInternals', $params, $ref)) {
-					$reference->newlog(sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('access_noModifyAccess'), $table, $id), 1);
+				if (!GeneralUtility::callUserFunction('EXT:templavoila/Classes/Service/UserFunc/Access.php:&Extension\Templavoila\Service\UserFunc\Access->recordEditAccessInternals', $params, $ref)) {
+					$reference->newlog(sprintf($this->getLanguageService()->getLL('access_noModifyAccess'), $table, $id), 1);
 					$command = ''; // Do not delete! A hack but there is no other way to prevent deletion...
 				} else {
 					if ((int)$record['t3ver_oid'] > 0 && $record['pid'] == -1) {
 						// we unlink a offline version in a workspace
 						if (abs($record['t3ver_wsid']) !== 0) {
-							$record = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('tt_content', (int)$record['t3ver_oid']);
+							$record = BackendUtility::getRecord('tt_content', (int)$record['t3ver_oid']);
 						}
 					}
 					// avoid that deleting offline version in the live workspace unlinks the online version - see #11359
@@ -354,7 +356,7 @@ page.10.disableExplosivePreview = 1
 	public function processCmdmap_postProcess($command, $table, $id, $value, &$reference) {
 
 		if ($this->debug) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('processCmdmap_postProcess', 'templavoila', 0, array($command, $table, $id, $value));
+			GeneralUtility::devLog('processCmdmap_postProcess', 'templavoila', 0, array($command, $table, $id, $value));
 		}
 
 		if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_tcemain']['doNotInsertElementRefsToPage'])) {
@@ -380,7 +382,7 @@ page.10.disableExplosivePreview = 1
 	 */
 	public function moveRecord_firstElementPostProcess($table, $uid, $destPid, $sourceRecordBeforeMove, $updateFields, &$reference) {
 		if ($this->debug) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('moveRecord_firstElementPostProcess', 'templavoila', 0, array($table, $uid, $destPid, $sourceRecordBeforeMove, $updateFields));
+			GeneralUtility::devLog('moveRecord_firstElementPostProcess', 'templavoila', 0, array($table, $uid, $destPid, $sourceRecordBeforeMove, $updateFields));
 		}
 		if ($GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_api']['apiIsRunningTCEmain']) {
 			return;
@@ -389,7 +391,7 @@ page.10.disableExplosivePreview = 1
 			return;
 		}
 
-		$templaVoilaAPI = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Service\ApiService::class);
+		$templaVoilaAPI = GeneralUtility::makeInstance(\Extension\Templavoila\Service\ApiService::class);
 
 		$sourceFlexformPointersArr = $templaVoilaAPI->flexform_getPointersByRecord($uid, $sourceRecordBeforeMove['pid']);
 		$sourceFlexformPointer = $sourceFlexformPointersArr[0];
@@ -426,7 +428,7 @@ page.10.disableExplosivePreview = 1
 	public function moveRecord_afterAnotherElementPostProcess($table, $uid, $destPid, $origDestPid, $sourceRecordBeforeMove, $updateFields, &$reference) {
 
 		if ($this->debug) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('moveRecord_afterAnotherElementPostProcess', 'templavoila', 0, array($table, $uid, $destPid, $origDestPid, $sourceRecordBeforeMove, $updateFields));
+			GeneralUtility::devLog('moveRecord_afterAnotherElementPostProcess', 'templavoila', 0, array($table, $uid, $destPid, $origDestPid, $sourceRecordBeforeMove, $updateFields));
 		}
 		if ($GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_api']['apiIsRunningTCEmain']) {
 			return;
@@ -435,7 +437,7 @@ page.10.disableExplosivePreview = 1
 			return;
 		}
 
-		$templaVoilaAPI = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Service\ApiService::class);
+		$templaVoilaAPI = GeneralUtility::makeInstance(\Extension\Templavoila\Service\ApiService::class);
 
 		$sourceFlexformPointersArr = $templaVoilaAPI->flexform_getPointersByRecord($uid, $sourceRecordBeforeMove['pid']);
 		$sourceFlexformPointer = $sourceFlexformPointersArr[0];
@@ -467,14 +469,14 @@ page.10.disableExplosivePreview = 1
 		global $TCA;
 
 		$elementsOnThisPage = array();
-		$templaVoilaAPI = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Service\ApiService::class);
+		$templaVoilaAPI = GeneralUtility::makeInstance(\Extension\Templavoila\Service\ApiService::class);
 		/* @var $templaVoilaAPI \Extension\Templavoila\Service\ApiService */
 
 		$diffBaseEnabled = isset($GLOBALS['TYPO3_CONF_VARS']['BE']['flexFormXMLincludeDiffBase'])
 			&& ($GLOBALS['TYPO3_CONF_VARS']['BE']['flexFormXMLincludeDiffBase'] != FALSE);
 
 		// Getting value of the field containing the relations:
-		$xmlContentArr = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($flexformXML);
+		$xmlContentArr = GeneralUtility::xml2array($flexformXML);
 
 		// And extract all content element uids and their context from the XML structure:
 		if (is_array($xmlContentArr['data'])) {
@@ -490,7 +492,7 @@ page.10.disableExplosivePreview = 1
 											continue;
 										}
 
-										$uidsArr = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $uidList);
+										$uidsArr = GeneralUtility::trimExplode(',', $uidList);
 										if (is_array($uidsArr)) {
 											foreach ($uidsArr as $uid) {
 												if ((int)$uid) {
@@ -523,7 +525,7 @@ page.10.disableExplosivePreview = 1
 					$sortByField => $sortNumber,
 					'colPos' => $colPos
 				);
-				 \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_UPDATEquery(
+				 $this->getDatabaseConnection()->exec_UPDATEquery(
 					'tt_content',
 					'uid=' . (int)$elementArr['uid'],
 					$updateFields
@@ -571,12 +573,12 @@ page.10.disableExplosivePreview = 1
 			$incomingFieldArray[$dsField] = '';
 		} else {
 			if ($beUser->workspace) {
-				$record = \TYPO3\CMS\Backend\Utility\BackendUtility::getWorkspaceVersionOfRecord($beUser->workspace, 'tx_templavoila_tmplobj', $toId, 'datastructure');
+				$record = BackendUtility::getWorkspaceVersionOfRecord($beUser->workspace, 'tx_templavoila_tmplobj', $toId, 'datastructure');
 				if (!is_array($record)) {
-					$record = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('tx_templavoila_tmplobj', $toId, 'datastructure');
+					$record = BackendUtility::getRecord('tx_templavoila_tmplobj', $toId, 'datastructure');
 				}
 			} else {
-				$record = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('tx_templavoila_tmplobj', $toId, 'datastructure');
+				$record = BackendUtility::getRecord('tx_templavoila_tmplobj', $toId, 'datastructure');
 			}
 			if (is_array($record) && isset($record['datastructure'])) {
 				$incomingFieldArray[$dsField] = $record['datastructure'];
@@ -622,8 +624,8 @@ page.10.disableExplosivePreview = 1
 				}
 				// get the field-information and check if only "ce" fields are updated
 				$conf = $TCA[$table]['columns'][$field]['config'];
-				$currentRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $id);
-				$dataStructArray = \TYPO3\CMS\Backend\Utility\BackendUtility::getFlexFormDS($conf, $currentRecord, $table, $field, TRUE);
+				$currentRecord = BackendUtility::getRecord($table, $id);
+				$dataStructArray = BackendUtility::getFlexFormDS($conf, $currentRecord, $table, $field, TRUE);
 				foreach ($data[$field]['data'] as $sheetData) {
 					if (!is_array($sheetData) || !is_array($dataStructArray['ROOT']['el'])) {
 						$res = FALSE;
@@ -656,5 +658,19 @@ page.10.disableExplosivePreview = 1
 		}
 
 		return $res;
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+	 */
+	public function getDatabaseConnection() {
+		return $GLOBALS['TYPO3_DB'];
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Lang\LanguageService
+	 */
+	public function getLanguageService() {
+		return $GLOBALS['LANG'];
 	}
 }

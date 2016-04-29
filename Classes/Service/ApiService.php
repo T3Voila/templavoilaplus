@@ -16,12 +16,13 @@ namespace Extension\Templavoila\Service;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Database\RelationHandler;
+use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Public API class for proper handling of content elements and other useful TemplaVoila related functions
- *
- * @author Robert Lemke <robert@typo3.org>
  */
 class ApiService {
 
@@ -41,9 +42,10 @@ class ApiService {
 	public $debug = FALSE;
 
 	/**
+	 * ->loadWebsiteLanguages() will set this to content of sys_language
 	 * @var array
 	 */
-	protected $allSystemWebsiteLanguages = array(); // ->loadWebsiteLanguages() will set this to content of sys_language
+	protected $allSystemWebsiteLanguages = array();
 
 	/**
 	 * @var boolean
@@ -57,8 +59,6 @@ class ApiService {
 
 	/**
 	 * @param string $rootTable Usually the root table is "pages" but another table can be specified (eg. "tt_content")
-	 *
-	 * @return \Extension\Templavoila\Service\ApiService
 	 */
 	public function __construct($rootTable = 'pages') {
 		$this->rootTable = $rootTable;
@@ -154,8 +154,8 @@ class ApiService {
 		}
 
 		// Instantiate TCEmain and create the record:
-		$tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
-		/* @var $tce \TYPO3\CMS\Core\DataHandling\DataHandler */
+		$tce = GeneralUtility::makeInstance(DataHandler::class);
+		/* @var $tce DataHandler */
 
 		// set default TCA values specific for the page and user
 		$TCAdefaultOverride = BackendUtility::getModTSconfig($newRecordPid, 'TCAdefaults');
@@ -540,7 +540,7 @@ class ApiService {
 				$elementUids[] = $elementUid;
 
 				// Reduce the list to local elements to make sure that references are kept instead of moving the referenced record
-				$localRecords = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTgetRows('uid,pid', 'tt_content', 'uid IN (' . implode(',', $elementUids) . ') AND pid=' . (int)$sourcePID . ' ' . BackendUtility::deleteClause('tt_content'));
+				$localRecords = $this->getDatabaseConnection()->exec_SELECTgetRows('uid,pid', 'tt_content', 'uid IN (' . implode(',', $elementUids) . ') AND pid=' . (int)$sourcePID . ' ' . BackendUtility::deleteClause('tt_content'));
 				if (!empty($localRecords) && is_array($localRecords)) {
 					$cmdArray = array();
 					foreach ($localRecords as $localRecord) {
@@ -549,7 +549,7 @@ class ApiService {
 
 					$flagWasSet = $this->getTCEmainRunningFlag();
 					$this->setTCEmainRunningFlag(TRUE);
-					$tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
+					$tce = GeneralUtility::makeInstance(DataHandler::class);
 					$tce->stripslashes_values = 0;
 					$tce->start(array(), $cmdArray);
 					$tce->process_cmdmap();
@@ -578,7 +578,7 @@ class ApiService {
 		$destinationPID = $destinationPointer['table'] == 'pages' ? $destinationParentRecord['uid'] : $destinationParentRecord['pid'];
 
 		// Initialize TCEmain and create configuration for copying the specified record
-		$tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
+		$tce = GeneralUtility::makeInstance(DataHandler::class);
 		$cmdArray = array();
 		$cmdArray['tt_content'][$sourceElementUid]['copy'] = $destinationPID;
 
@@ -617,7 +617,7 @@ class ApiService {
 		$subElementUids = $this->flexform_getListOfSubElementUidsRecursively('tt_content', $sourceElementUid, $dummyArr);
 
 		// Initialize TCEmain and create configuration for copying the specified record (the parent element) and all sub elements:
-		$tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
+		$tce = GeneralUtility::makeInstance(DataHandler::class);
 		$cmdArray = array();
 		$cmdArray['tt_content'][$sourceElementUid]['copy'] = $destinationPID;
 
@@ -671,7 +671,7 @@ class ApiService {
 		}
 
 		// Initialize TCEmain and create configuration for localizing the specified record
-		$tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
+		$tce = GeneralUtility::makeInstance(DataHandler::class);
 		$cmdArray = array();
 		$cmdArray['tt_content'][$sourceElementUid]['localize'] = $destinationLanguageUid;
 
@@ -745,7 +745,7 @@ class ApiService {
 		// Store:
 		$flagWasSet = $this->getTCEmainRunningFlag();
 		$this->setTCEmainRunningFlag(TRUE);
-		$tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
+		$tce = GeneralUtility::makeInstance(DataHandler::class);
 		$tce->stripslashes_values = 0;
 		$tce->start(array(), $cmdArray);
 		$tce->process_cmdmap();
@@ -975,7 +975,7 @@ class ApiService {
 		$arrayOfUIDs = GeneralUtility::intExplode(',', $listOfUIDs);
 
 		// Getting the relation uids out and use only tt_content records which are not deleted:
-		$dbAnalysis = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\RelationHandler::class);
+		$dbAnalysis = GeneralUtility::makeInstance(RelationHandler::class);
 		$dbAnalysis->start($listOfUIDs, 'tt_content');
 		$dbAnalysis->getFromDB();
 
@@ -1201,9 +1201,9 @@ class ApiService {
 
 		$flagWasSet = $this->getTCEmainRunningFlag();
 		$this->setTCEmainRunningFlag(TRUE);
-		$tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
-		$tce->stripslashes_values = 0;
-		$tce->start($dataArr, array());
+		/** @var DataHandler $tce */
+		$tce = GeneralUtility::makeInstance(DataHandler::class);
+		$tce->start($dataArr, []);
 
 		/**
 		 * Set workspace to 0 because:
@@ -1269,7 +1269,7 @@ class ApiService {
 									$columnsAndFieldNamesArr[$columnNumber] = $fieldName;
 								}
 							}
-							if ($fieldConfiguration['tx_templavoila']['eType'] == 'ce' && !isset ($fieldNameOfFirstCEField)) {
+							if ($fieldConfiguration['tx_templavoila']['eType'] == 'ce' && !isset($fieldNameOfFirstCEField)) {
 								$fieldNameOfFirstCEField = $fieldName;
 							}
 						}
@@ -1376,7 +1376,7 @@ class ApiService {
 
 		$tTO = 'tx_templavoila_tmplobj';
 		$tDS = 'tx_templavoila_datastructure';
-		$res = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTquery(
+		$res = $this->getDatabaseConnection()->exec_SELECTquery(
 			"$tTO.*",
 			"$tTO LEFT JOIN $tDS ON $tTO.datastructure = $tDS.uid",
 			"$tTO.pid=" . (int)$storageFolderPID . " AND $tDS.scope=1" .
@@ -1388,7 +1388,7 @@ class ApiService {
 		}
 
 		$templateObjectRecords = array();
-		while (FALSE != ($row = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_fetch_assoc($res))) {
+		while (FALSE != ($row = $this->getDatabaseConnection()->sql_fetch_assoc($res))) {
 			$templateObjectRecords[$row['uid']] = $row;
 		}
 
@@ -1510,9 +1510,9 @@ class ApiService {
 				$tree['sub'][$sheetKey] = array();
 				$tree['contentFields'][$sheetKey] = array();
 				$tree['meta'][$sheetKey] = array(
-					'title' => (is_array($sheetData) && $sheetData['ROOT']['TCEforms']['sheetTitle'] ? \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL($sheetData['ROOT']['TCEforms']['sheetTitle']) : ''),
-					'description' => (is_array($sheetData) && $sheetData['ROOT']['TCEforms']['sheetDescription'] ? \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL($sheetData['ROOT']['TCEforms']['sheetDescription']) : ''),
-					'short' => (is_array($sheetData) && $sheetData['ROOT']['TCEforms']['sheetShortDescr'] ? \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL($sheetData['ROOT']['TCEforms']['sheetShortDescr']) : ''),
+					'title' => (is_array($sheetData) && $sheetData['ROOT']['TCEforms']['sheetTitle'] ? $this->getLanguageService()->sL($sheetData['ROOT']['TCEforms']['sheetTitle']) : ''),
+					'description' => (is_array($sheetData) && $sheetData['ROOT']['TCEforms']['sheetDescription'] ? $this->getLanguageService()->sL($sheetData['ROOT']['TCEforms']['sheetDescription']) : ''),
+					'short' => (is_array($sheetData) && $sheetData['ROOT']['TCEforms']['sheetShortDescr'] ? $this->getLanguageService()->sL($sheetData['ROOT']['TCEforms']['sheetShortDescr']) : ''),
 				);
 
 				// Traverse the sheet's elements:
@@ -1627,7 +1627,8 @@ class ApiService {
 		$subTree = array();
 
 		// Get records:
-		$dbAnalysis = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\RelationHandler::class);
+		/** @var RelationHandler $dbAnalysis */
+		$dbAnalysis = GeneralUtility::makeInstance(RelationHandler::class);
 		$dbAnalysis->start($listOfSubElementUids, 'tt_content');
 
 		// Traverse records:
@@ -1672,9 +1673,9 @@ class ApiService {
 
 			// Finding translations of this record and select overlay record:
 			$fakeElementRow = array('uid' => $contentTreeArr['el']['uid'], 'pid' => $contentTreeArr['el']['pid']);
-			BackendUtility::fixVersioningPID('tt_content', $fakeElementRow);
+			BackendUtility::fixVersioningPid('tt_content', $fakeElementRow);
 
-			$res = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTquery(
+			$res = $this->getDatabaseConnection()->exec_SELECTquery(
 				'*',
 				'tt_content',
 				'pid=' . $fakeElementRow['pid'] .
@@ -1684,7 +1685,7 @@ class ApiService {
 			);
 
 			$attachedLocalizations = array();
-			while (TRUE == ($olrow = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_fetch_assoc($res))) {
+			while (TRUE == ($olrow = $this->getDatabaseConnection()->sql_fetch_assoc($res))) {
 				BackendUtility::workspaceOL('tt_content', $olrow);
 				if (!isset($attachedLocalizations[$olrow['sys_language_uid']])) {
 					$attachedLocalizations[$olrow['sys_language_uid']] = $olrow['uid'];
@@ -1821,7 +1822,7 @@ class ApiService {
 
 		// Check for alternative storage folder
 		$modTSConfig = BackendUtility::getModTSconfig($pageUid, 'tx_templavoila.storagePid');
-		if (is_array($modTSConfig) && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($modTSConfig['value'])) {
+		if (is_array($modTSConfig) && MathUtility::canBeInterpretedAsInteger($modTSConfig['value'])) {
 			$storagePid = (int)$modTSConfig['value'];
 		}
 
@@ -1839,7 +1840,7 @@ class ApiService {
 		$this->allSystemWebsiteLanguages['all_vKeys'][] = 'vDEF';
 
 		// Select all website languages:
-		$this->allSystemWebsiteLanguages['rows'] = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTgetRows(
+		$this->allSystemWebsiteLanguages['rows'] = $this->getDatabaseConnection()->exec_SELECTgetRows(
 			'sys_language.*',
 			'sys_language',
 			'1=1' . BackendUtility::deleteClause('sys_language'),
@@ -1887,5 +1888,19 @@ class ApiService {
 		}
 
 		return $this->cachedModWebTSconfig[$pageId];
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+	 */
+	public function getDatabaseConnection() {
+		return $GLOBALS['TYPO3_DB'];
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Lang\LanguageService
+	 */
+	public function getLanguageService() {
+		return $GLOBALS['LANG'];
 	}
 }

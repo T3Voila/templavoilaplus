@@ -17,8 +17,6 @@ namespace Extension\Templavoila\Domain\Model;
 /**
  * HTML markup/search class; can mark up HTML with small images for each element AND
  * as well help you extract parts of the HTML based on a socalled 'PATH'.
- *
- * @author Kasper Skaarhoj <kasper@typo3.com>
  */
 class HtmlMarkup {
 

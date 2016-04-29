@@ -13,6 +13,8 @@ namespace Extension\Templavoila\Controller\Preview;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Text controller
@@ -53,7 +55,7 @@ class TextController {
 	 * @return string
 	 */
 	protected function getPreviewLabel() {
-		return \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL(\TYPO3\CMS\Backend\Utility\BackendUtility::getItemLabel('tt_content', $this->previewField), 1);
+		return $this->getLanguageService()->sL(BackendUtility::getItemLabel('tt_content', $this->previewField), 1);
 	}
 
 	/**
@@ -100,6 +102,13 @@ class TextController {
 			$newStr = preg_replace('/(\S{' . $wordLen . '})/', '\1 ', $newStr);
 		}
 
-		return htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs(trim($newStr), $max));
+		return htmlspecialchars(GeneralUtility::fixed_lgd_cs(trim($newStr), $max));
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Lang\LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
 	}
 }

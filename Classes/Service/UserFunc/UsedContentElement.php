@@ -13,12 +13,13 @@ namespace Extension\Templavoila\Service\UserFunc;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use Extension\Templavoila\Service\ApiService;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Finding used content elements on pages. Used as a filter for other extensions
  * which wants to know which elements are used on a templavoila page.
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class UsedContentElement {
 
@@ -37,10 +38,11 @@ class UsedContentElement {
 	public function init($page_uid) {
 
 		// Initialize TemplaVoila API class:
-		$apiObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Service\ApiService::class, 'pages');
+		/** @var ApiService $apiObj */
+		$apiObj = GeneralUtility::makeInstance(ApiService::class, 'pages');
 
 		// Fetch the content structure of page:
-		$contentTreeData = $apiObj->getContentTree('pages', \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw('pages', 'uid=' . (int)$page_uid));
+		$contentTreeData = $apiObj->getContentTree('pages', BackendUtility::getRecordRaw('pages', 'uid=' . (int)$page_uid));
 		if ($contentTreeData['tree']['ds_is_found']) {
 			$this->usedUids = array_keys($contentTreeData['contentElementUsage']);
 			$this->usedUids[] = 0;

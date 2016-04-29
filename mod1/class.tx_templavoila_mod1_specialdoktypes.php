@@ -11,6 +11,8 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Submodule 'clipboard' for the templavoila page module
@@ -100,13 +102,13 @@ class tx_templavoila_mod1_specialdoktypes {
 		}
 
 		// check if there is a notice on this URL type
-		$notice = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('cannotedit_externalurl_' . $pageRecord['urltype'], TRUE);
+		$notice = $this->getLanguageService()->getLL('cannotedit_externalurl_' . $pageRecord['urltype'], TRUE);
 		if (!$notice) {
-			$notice = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('cannotedit_externalurl_1', TRUE);
+			$notice = $this->getLanguageService()->getLL('cannotedit_externalurl_1', TRUE);
 		}
 
-		$urlInfo = ' <br /><br /><strong><a href="' . $url . '" target="_new">' . htmlspecialchars(sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('jumptoexternalurl'), $url)) . '</a></strong>';
-		$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+		$urlInfo = ' <br /><br /><strong><a href="' . $url . '" target="_new">' . htmlspecialchars(sprintf($this->getLanguageService()->getLL('jumptoexternalurl'), $url)) . '</a></strong>';
+		$flashMessage = GeneralUtility::makeInstance(
 			\TYPO3\CMS\Core\Messaging\FlashMessage::class,
 			$notice,
 			'',
@@ -127,21 +129,19 @@ class tx_templavoila_mod1_specialdoktypes {
 	public function renderDoktype_4($pageRecord) {
 		$jumpToShortcutSourceLink = '';
 		if ((int)$pageRecord['shortcut_mode'] == 0) {
-			$shortcutSourcePageRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('pages', $pageRecord['shortcut']);
+			$shortcutSourcePageRecord = BackendUtility::getRecordWSOL('pages', $pageRecord['shortcut']);
 			$jumpToShortcutSourceLink = '<strong><a href="index.php?id=' . $pageRecord['shortcut'] . '">' .
 				\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('apps-pagetree-page-shortcut') .
-				\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('jumptoshortcutdestination', TRUE) . '</a></strong>';
+				$this->getLanguageService()->getLL('jumptoshortcutdestination', TRUE) . '</a></strong>';
 		}
 
-		$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+		$flashMessage = GeneralUtility::makeInstance(
 			\TYPO3\CMS\Core\Messaging\FlashMessage::class,
-			sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('cannotedit_shortcut_' . (int)$pageRecord['shortcut_mode']), $shortcutSourcePageRecord['title']),
+			sprintf($this->getLanguageService()->getLL('cannotedit_shortcut_' . (int)$pageRecord['shortcut_mode']), $shortcutSourcePageRecord['title']),
 			'',
 			\TYPO3\CMS\Core\Messaging\FlashMessage::INFO
 		);
-		$content = $flashMessage->render() . $jumpToShortcutSourceLink;
-
-		return $content;
+		return $flashMessage->render() . $jumpToShortcutSourceLink;
 	}
 
 	/**
@@ -157,17 +157,17 @@ class tx_templavoila_mod1_specialdoktypes {
 			return FALSE;
 		}
 
-		$mountSourcePageRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('pages', $pageRecord['mount_pid']);
+		$mountSourcePageRecord = BackendUtility::getRecordWSOL('pages', $pageRecord['mount_pid']);
 		$mountSourceIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', $mountSourcePageRecord);
 		$mountSourceButton = $this->doc->wrapClickMenuOnIcon($mountSourceIcon, 'pages', $mountSourcePageRecord['uid'], 1, '&callingScriptId=' . rawurlencode($this->doc->scriptID), 'new,copy,cut,pasteinto,pasteafter,delete');
 
 		$mountSourceLink = '<br /><br />
-			<a href="index.php?id=' . $pageRecord['mount_pid'] . '">' . htmlspecialchars(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('jumptomountsourcepage')) . '</a>
+			<a href="index.php?id=' . $pageRecord['mount_pid'] . '">' . htmlspecialchars($this->getLanguageService()->getLL('jumptomountsourcepage')) . '</a>
 		';
 
-		$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+		$flashMessage = GeneralUtility::makeInstance(
 			\TYPO3\CMS\Core\Messaging\FlashMessage::class,
-			sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('cannotedit_doktypemountpoint'), $mountSourceButton . $mountSourcePageRecord['title']),
+			sprintf($this->getLanguageService()->getLL('cannotedit_doktypemountpoint'), $mountSourceButton . $mountSourcePageRecord['title']),
 			'',
 			\TYPO3\CMS\Core\Messaging\FlashMessage::INFO
 		);
@@ -185,25 +185,23 @@ class tx_templavoila_mod1_specialdoktypes {
 	 */
 	public function renderDoktype_254($pageRecord) {
 		if ($this->userHasAccessToListModule()) {
-			$listModuleURL = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_list', array('id' => (int)$this->pObj->id), '');
+			$listModuleURL = BackendUtility::getModuleUrl('web_list', array('id' => (int)$this->pObj->id), '');
 			$onClick = "top.nextLoadModuleUrl='" . $listModuleURL . "';top.fsMod.recentIds['web']=" . (int)$this->pObj->id . ";top.goToModule('web_list',1);";
 			$listModuleLink = '<br /><br />' .
 				\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-system-list-open') .
-				'<strong><a href="#" onClick="' . $onClick . '">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('editpage_sysfolder_switchtolistview', TRUE) . '</a></strong>
+				'<strong><a href="#" onClick="' . $onClick . '">' . $this->getLanguageService()->getLL('editpage_sysfolder_switchtolistview', TRUE) . '</a></strong>
 			';
 		} else {
-			$listModuleLink = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('editpage_sysfolder_listview_noaccess', TRUE);
+			$listModuleLink = $this->getLanguageService()->getLL('editpage_sysfolder_listview_noaccess', TRUE);
 		}
 
-		$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+		$flashMessage = GeneralUtility::makeInstance(
 			\TYPO3\CMS\Core\Messaging\FlashMessage::class,
-			\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('editpage_sysfolder_intro', TRUE),
+			$this->getLanguageService()->getLL('editpage_sysfolder_intro', TRUE),
 			'',
 			\TYPO3\CMS\Core\Messaging\FlashMessage::INFO
 		);
-		$content = $flashMessage->render() . $listModuleLink;
-
-		return $content;
+		return $flashMessage->render() . $listModuleLink;
 	}
 
 	/**
@@ -213,13 +211,30 @@ class tx_templavoila_mod1_specialdoktypes {
 	 * @access protected
 	 */
 	public function userHasAccessToListModule() {
-		if (!\TYPO3\CMS\Backend\Utility\BackendUtility::isModuleSetInTBE_MODULES('web_list')) {
+		if (!BackendUtility::isModuleSetInTBE_MODULES('web_list')) {
 			return FALSE;
 		}
-		if (\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isAdmin()) {
-			return TRUE;
-		}
+		return $this->getBackendUser()->isAdmin() || $this->getBackendUser()->check('modules', 'web_list');
+	}
 
-		return \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->check('modules', 'web_list');
+	/**
+	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+	 */
+	protected function getDatabaseConnection() {
+		return $GLOBALS['TYPO3_DB'];
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+	 */
+	protected function getBackendUser() {
+		return $GLOBALS['BE_USER'];
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Lang\LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
 	}
 }

@@ -13,11 +13,11 @@ namespace Extension\Templavoila\Domain\Model;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class to provide unique access to datastructure
- *
- * @author Tolleiv Nietsch <tolleiv.nietsch@typo3.org>
  */
 class DataStructure extends AbstractDataStructure {
 
@@ -39,7 +39,7 @@ class DataStructure extends AbstractDataStructure {
 		if (TYPO3_MODE === 'FE') {
 			$this->row = $GLOBALS['TSFE']->sys_page->checkRecord('tx_templavoila_datastructure', $uid);
 		} else {
-			$this->row = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('tx_templavoila_datastructure', $uid);
+			$this->row = BackendUtility::getRecordWSOL('tx_templavoila_datastructure', $uid);
 		}
 
 		$this->setLabel($this->row['title']);
@@ -145,7 +145,7 @@ class DataStructure extends AbstractDataStructure {
 	public function getBeLayout() {
 		$beLayout = FALSE;
 		if ($this->row['belayout']) {
-			$beLayout = \TYPO3\CMS\Core\Utility\GeneralUtility::getURL(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->row['belayout']));
+			$beLayout = GeneralUtility::getURL(GeneralUtility::getFileAbsFileName($this->row['belayout']));
 		}
 
 		return $beLayout;

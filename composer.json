@@ -1,8 +1,18 @@
 {
 	"name": "templavoila/templavoila",
 	"type": "typo3-cms-extension",
-	"description": "One of many availabe template engines for TYPO3 CMS",
+	"description": "One of many available template engines for TYPO3 CMS",
 	"homepage": "http://forge.typo3.org/projects/extension-templavoila/",
 	"license": ["GPL-2.0+"],
-	"version": "2.0.4"
+	"require": {
+		"typo3/cms-core": "*"
+	},
+	"replace": {
+		"templavoila": "*"
+	},
+	"autoload": {
+		"psr-4": {
+			"Extension\Templavoila\\": "Classes/"
+		}
+	}
 }

@@ -13,18 +13,18 @@ namespace Extension\Templavoila\Service;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Html\HtmlParser;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Syntax Highlighting class.
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class SyntaxHighlightingService {
 
 	/**
-	 * @var \TYPO3\CMS\Core\Html\HtmlParser
+	 * @var HtmlParser
 	 */
-	protected $htmlParse; // Parse object.
+	protected $htmlParser;
 
 	/**
 	 * @var array
@@ -93,18 +93,18 @@ class SyntaxHighlightingService {
 	 */
 	public function highLight_DS($str) {
 
-		// Parse DS to verify that it is valid:
-		$DS = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($str);
+		// Parse DS to verify that it is valid
+		$DS = GeneralUtility::xml2array($str);
 		if (is_array($DS)) {
-			$completeTagList = array_unique($this->getAllTags($str)); // Complete list of tags in DS
+			// Complete list of tags in DS
+			$completeTagList = array_unique($this->getAllTags($str));
 
-			// Highlighting source:
-			$this->htmlParse = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class); // Init parser object
-			$struct = $this->splitXMLbyTags(implode(',', $completeTagList), $str); // Split the XML by the found tags, recursively into LARGE array.
-			$markUp = $this->highLight_DS_markUpRecursively($struct); // Perform color-markup on the parsed content. Markup preserves the LINE formatting of the XML.
-
-			// Return content:
-			return $markUp;
+			// Highlighting source
+			$this->htmlParser = GeneralUtility::makeInstance(HtmlParser::class);
+			// Split the XML by the found tags, recursively into LARGE array.
+			$struct = $this->splitXMLbyTags(implode(',', $completeTagList), $str);
+			// Perform color-markup on the parsed content. Markup preserves the LINE formatting of the XML.
+			return $this->highLight_DS_markUpRecursively($struct);
 		} else {
 			$error = 'ERROR: The input content failed XML parsing: ' . $DS;
 		}
@@ -190,14 +190,18 @@ class SyntaxHighlightingService {
 	public function highLight_FF($str) {
 
 		// Parse DS to verify that it is valid:
-		$DS = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($str);
+		$DS = GeneralUtility::xml2array($str);
 		if (is_array($DS)) {
-			$completeTagList = array_unique($this->getAllTags($str)); // Complete list of tags in DS
+			// Complete list of tags in DS
+			$completeTagList = array_unique($this->getAllTags($str));
 
-			// Highlighting source:
-			$this->htmlParse = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class); // Init parser object
-			$struct = $this->splitXMLbyTags(implode(',', $completeTagList), $str); // Split the XML by the found tags, recursively into LARGE array.
-			$markUp = $this->highLight_FF_markUpRecursively($struct); // Perform color-markup on the parsed content. Markup preserves the LINE formatting of the XML.
+			// Highlighting source
+			/** @var HtmlParser htmlParser */
+			$this->htmlParser = GeneralUtility::makeInstance(HtmlParser::class);
+			// Split the XML by the found tags, recursively into LARGE array.
+			$struct = $this->splitXMLbyTags(implode(',', $completeTagList), $str);
+			// Perform color-markup on the parsed content. Markup preserves the LINE formatting of the XML.
+			$markUp = $this->highLight_FF_markUpRecursively($struct);
 
 			// Return content:
 			return $markUp;
@@ -218,7 +222,7 @@ class SyntaxHighlightingService {
 	 *
 	 * @return string HTML
 	 */
-	public function highLight_FF_markUpRecursively($struct, $parent = '', $app = '') {
+	protected function highLight_FF_markUpRecursively($struct, $parent = '', $app = '') {
 		$output = '';
 
 		// Setting levels:
@@ -289,8 +293,6 @@ class SyntaxHighlightingService {
 	 * @return array Array with all found tags (starttags only)
 	 */
 	public function getAllTags($str) {
-
-		// Init:
 		$tags = array();
 		$token = md5(microtime());
 
@@ -321,21 +323,21 @@ class SyntaxHighlightingService {
 	 * @return array Array with the content arranged hierarchically.
 	 */
 	public function splitXMLbyTags($tagList, $str) {
-		$struct = $this->htmlParse->splitIntoBlock($tagList, $str);
+		$structure = $this->htmlParser->splitIntoBlock($tagList, $str);
 
 		// Traverse level:
-		foreach ($struct as $k => $v) {
+		foreach ($structure as $k => $v) {
 			if ($k % 2) {
-				$tag = $this->htmlParse->getFirstTag($v);
-				$tagName = $this->htmlParse->getFirstTagName($tag, TRUE);
-				$struct[$k] = array(
+				$tag = $this->htmlParser->getFirstTag($v);
+				$tagName = $this->htmlParser->getFirstTagName($tag, TRUE);
+				$structure[$k] = array(
 					'tag' => $tag,
 					'tagName' => $tagName,
-					'sub' => $this->splitXMLbyTags($tagList, $this->htmlParse->removeFirstAndLastTag($struct[$k]))
+					'sub' => $this->splitXMLbyTags($tagList, $this->htmlParser->removeFirstAndLastTag($structure[$k]))
 				);
 			}
 		}
 
-		return $struct;
+		return $structure;
 	}
 }

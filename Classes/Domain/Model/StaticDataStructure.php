@@ -13,6 +13,7 @@ namespace Extension\Templavoila\Domain\Model;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class to provide unique access to static datastructure
@@ -81,7 +82,7 @@ class StaticDataStructure extends AbstractDataStructure {
 	 */
 	public function getDataprotXML() {
 		$xml = '';
-		$file = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->filename);
+		$file = GeneralUtility::getFileAbsFileName($this->filename);
 		if (is_readable($file)) {
 			$xml = file_get_contents($file);
 		} else {
@@ -121,7 +122,7 @@ class StaticDataStructure extends AbstractDataStructure {
 	 * @return integer
 	 */
 	public function getTstamp() {
-		$file = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->filename);
+		$file = GeneralUtility::getFileAbsFileName($this->filename);
 		if (is_readable($file)) {
 			$tstamp = filemtime($file);
 		} else {
@@ -137,7 +138,7 @@ class StaticDataStructure extends AbstractDataStructure {
 	 * @return integer
 	 */
 	public function getCrdate() {
-		$file = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->filename);
+		$file = GeneralUtility::getFileAbsFileName($this->filename);
 		if (is_readable($file)) {
 			$tstamp = filectime($file);
 		} else {
@@ -163,9 +164,9 @@ class StaticDataStructure extends AbstractDataStructure {
 	 */
 	public function getBeLayout() {
 		$beLayout = FALSE;
-		$file = substr(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->filename), 0, -3) . 'html';
+		$file = substr(GeneralUtility::getFileAbsFileName($this->filename), 0, -3) . 'html';
 		if (file_exists($file)) {
-			$beLayout = \TYPO3\CMS\Core\Utility\GeneralUtility::getURL($file);
+			$beLayout = GeneralUtility::getUrl($file);
 		}
 
 		return $beLayout;

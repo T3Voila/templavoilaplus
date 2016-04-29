@@ -20,8 +20,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Reference elements wizard,
  * References all unused elements in a treebranch to a specific point in the TV-DS
- *
- * @author Robert Lemke <robert@typo3.org>
  */
 class ReferenceElementWizardController extends \TYPO3\CMS\Backend\Module\AbstractFunctionModule {
 
@@ -48,11 +46,11 @@ class ReferenceElementWizardController extends \TYPO3\CMS\Backend\Module\Abstrac
 	public function modMenu() {
 		return array(
 			'depth' => array(
-				0 => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_0'),
-				1 => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_1'),
-				2 => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_2'),
-				3 => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_3'),
-				999 => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_infi'),
+				0 => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_0'),
+				1 => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_1'),
+				2 => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_2'),
+				3 => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_3'),
+				999 => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_infi'),
 			)
 		);
 	}
@@ -77,7 +75,7 @@ class ReferenceElementWizardController extends \TYPO3\CMS\Backend\Module\Abstrac
 		// Initialize tree object:
 		/** @var \TYPO3\CMS\Backend\Tree\View\PageTreeView $tree */
 		$tree = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\View\PageTreeView::class);
-		$tree->init('AND ' . \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->getPagePermsClause(1));
+		$tree->init('AND ' . $this->getBackendUser()->getPagePermsClause(1));
 
 		// Creating top icon; the current page
 		$HTML = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', $treeStartingRecord);
@@ -252,12 +250,12 @@ class ReferenceElementWizardController extends \TYPO3\CMS\Backend\Module\Abstrac
 		$dummyArr = array();
 		$referencedElementsArr = $this->templavoilaAPIObj->flexform_getListOfSubElementUidsRecursively('pages', $pid, $dummyArr);
 
-		$res = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTquery(
+		$res = $this->getDatabaseConnection()->exec_SELECTquery(
 			'uid, header, bodytext, sys_language_uid, colPos',
 			'tt_content',
 			'pid=' . (int)$pid .
 			(count($referencedElementsArr) ? ' AND uid NOT IN (' . implode(',', $referencedElementsArr) . ')' : '') .
-			' AND t3ver_wsid=' . (int)\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->workspace .
+			' AND t3ver_wsid=' . (int)$this->getBackendUser()->workspace .
 			' AND l18n_parent=0' .
 			BackendUtility::deleteClause('tt_content') .
 			BackendUtility::versioningPlaceholderClause('tt_content'),
@@ -266,10 +264,10 @@ class ReferenceElementWizardController extends \TYPO3\CMS\Backend\Module\Abstrac
 		);
 
 		if ($res) {
-			while (($elementRecordArr = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_fetch_assoc($res)) !== FALSE) {
+			while (($elementRecordArr = $this->getDatabaseConnection()->sql_fetch_assoc($res)) !== FALSE) {
 				$elementRecordsArr[$elementRecordArr['uid']] = $elementRecordArr;
 			}
-			\Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_free_result($res);
+			$this->getDatabaseConnection()->sql_free_result($res);
 		}
 
 		return $elementRecordsArr;
@@ -287,11 +285,11 @@ class ReferenceElementWizardController extends \TYPO3\CMS\Backend\Module\Abstrac
 	 */
 	protected function getAvailableLanguages($id = 0, $onlyIsoCoded = TRUE, $setDefault = TRUE, $setMulti = FALSE) {
 		$output = array();
-		$excludeHidden = \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isAdmin() ? '1' : 'sys_language.hidden=0';
+		$excludeHidden = $this->getBackendUser()->isAdmin() ? '1' : 'sys_language.hidden=0';
 
 		if ($id) {
 			$excludeHidden .= ' AND pages_language_overlay.deleted=0';
-			$res = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTquery(
+			$res = $this->getDatabaseConnection()->exec_SELECTgetRows(
 				'DISTINCT sys_language.*',
 				'pages_language_overlay,sys_language',
 				'pages_language_overlay.sys_language_uid=sys_language.uid AND pages_language_overlay.pid=' . (int)$id . ' AND ' . $excludeHidden,
@@ -299,7 +297,7 @@ class ReferenceElementWizardController extends \TYPO3\CMS\Backend\Module\Abstrac
 				'sys_language.title'
 			);
 		} else {
-			$res = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTquery(
+			$res = $this->getDatabaseConnection()->exec_SELECTgetRows(
 				'sys_language.*',
 				'sys_language',
 				$excludeHidden,
@@ -311,7 +309,7 @@ class ReferenceElementWizardController extends \TYPO3\CMS\Backend\Module\Abstrac
 		if ($setDefault) {
 			$output[0] = array(
 				'uid' => 0,
-				'title' => strlen($this->modSharedTSconfig['properties']['defaultLanguageLabel']) ? $this->modSharedTSconfig['properties']['defaultLanguageLabel'] : \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('defaultLanguage'),
+				'title' => strlen($this->modSharedTSconfig['properties']['defaultLanguageLabel']) ? $this->modSharedTSconfig['properties']['defaultLanguageLabel'] : $this->getLanguageService()->getLL('defaultLanguage'),
 				'ISOcode' => 'DEF',
 				'flagIcon' => strlen($this->modSharedTSconfig['properties']['defaultLanguageFlag']) ? $this->modSharedTSconfig['properties']['defaultLanguageFlag'] : NULL
 			);
@@ -320,13 +318,13 @@ class ReferenceElementWizardController extends \TYPO3\CMS\Backend\Module\Abstrac
 		if ($setMulti) {
 			$output[-1] = array(
 				'uid' => -1,
-				'title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('multipleLanguages'),
+				'title' => $this->getLanguageService()->getLL('multipleLanguages'),
 				'ISOcode' => 'DEF',
 				'flagIcon' => 'multiple',
 			);
 		}
 
-		while (($row = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_fetch_assoc($res)) !== FALSE) {
+		foreach ($res as $row) {
 			BackendUtility::workspaceOL('sys_language', $row);
 			$output[$row['uid']] = $row;
 
@@ -344,8 +342,28 @@ class ReferenceElementWizardController extends \TYPO3\CMS\Backend\Module\Abstrac
 				unset($output[$row['uid']]);
 			}
 		}
-		\Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_free_result($res);
 
 		return $output;
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+	 */
+	protected function getDatabaseConnection() {
+		return $GLOBALS['TYPO3_DB'];
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+	 */
+	protected function getBackendUser() {
+		return $GLOBALS['BE_USER'];
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Lang\LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
 	}
 }

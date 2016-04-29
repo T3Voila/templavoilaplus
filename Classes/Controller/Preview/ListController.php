@@ -13,6 +13,8 @@ namespace Extension\Templavoila\Controller\Preview;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * List controller
@@ -33,7 +35,7 @@ class ListController extends TextController {
 
 		$extraInfo = $this->getExtraInfo($row);
 
-		$info = htmlspecialchars(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL(\TYPO3\CMS\Backend\Utility\BackendUtility::getLabelFromItemlist('tt_content', 'list_type', $row['list_type'])));
+		$info = htmlspecialchars($this->getLanguageService()->sL(BackendUtility::getLabelFromItemlist('tt_content', 'list_type', $row['list_type'])));
 		$info .= $extraInfo ? ' &ndash; ' . $extraInfo : '';
 
 		return $info;
@@ -57,10 +59,17 @@ class ListController extends TextController {
 		if (count($hookArr) > 0) {
 			$_params = array('pObj' => &$this, 'row' => $row, 'infoArr' => array());
 			foreach ($hookArr as $_funcRef) {
-				$extraInfo .= \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($_funcRef, $_params, $this);
+				$extraInfo .= GeneralUtility::callUserFunction($_funcRef, $_params, $this);
 			}
 		}
 
-		return $extraInfo ? $extraInfo : '';
+		return $extraInfo;
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Lang\LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
 	}
 }

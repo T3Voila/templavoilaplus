@@ -15,16 +15,12 @@ namespace Extension\Templavoila\Service\UserFunc;
  */
 
 /**
- * Class 'tx_templavoila_label' for the 'templavoila' extension.
- *
  * This library contains several functions for displaying the labels in the list view.
- *
- * @author  Michael Klapper <michael.klapper@aoemedia.de>
  */
 class Label {
 
 	/**
-	 * Retrive the label for TCAFORM title attribute.
+	 * Retrive the label for TCEFORM title attribute.
 	 *
 	 * @param array $params Current record array
 	 * @param object
@@ -32,6 +28,13 @@ class Label {
 	 * @return void
 	 */
 	public function getLabel(&$params, &$pObj) {
-		$params['title'] = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL($params['row']['title']);
+		$params['title'] = $this->getLanguageService()->sL($params['row']['title']);
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Lang\LanguageService
+	 */
+	public function getLanguageService() {
+		return $GLOBALS['LANG'];
 	}
 }

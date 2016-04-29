@@ -11,7 +11,7 @@ $tempColumns = array(
 				array('', 0),
 			),
 			'allowNonIdValues' => 1,
-			'itemsProcFunc' => 'Extension\Templavoila\Service\ItemProcFunc\StaticDataStructuresHandler->dataSourceItemsProcFunc',
+			'itemsProcFunc' => \Extension\Templavoila\Service\ItemProcFunc\StaticDataStructuresHandler::class . '->dataSourceItemsProcFunc',
 			'size' => 1,
 			'minitems' => 0,
 			'maxitems' => 1,
@@ -88,19 +88,19 @@ $_EXTCONF = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoi
 if ($_EXTCONF['enable.']['selectDataStructure']) {
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
 		'pages',
-		'tx_templavoila_ds;;;;1-1-1,tx_templavoila_to',
+		'tx_templavoila_ds,tx_templavoila_to',
 		'',
 		'replace:backend_layout'
 	);
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
 		'pages',
-		'tx_templavoila_next_ds;;;;1-1-1,tx_templavoila_next_to',
+		'tx_templavoila_next_ds,tx_templavoila_next_to',
 		'',
 		'replace:backend_layout_next_level'
 	);
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
 		'pages',
-		'tx_templavoila_flex;;;;1-1-1',
+		'tx_templavoila_flex',
 		'',
 		'after:title'
 	);
@@ -113,19 +113,19 @@ if ($_EXTCONF['enable.']['selectDataStructure']) {
 	if (!$_EXTCONF['enable.']['oldPageModule']) {
 		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
 			'pages',
-			'tx_templavoila_to;;;;1-1-1',
+			'tx_templavoila_to',
 			'',
 			'replace:backend_layout'
 		);
 		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
 			'pages',
-			'tx_templavoila_next_to;;;;1-1-1',
+			'tx_templavoila_next_to',
 			'',
 			'replace:backend_layout_next_level'
 		);
 		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
 			'pages',
-			'tx_templavoila_flex;;;;1-1-1',
+			'tx_templavoila_flex',
 			'',
 			'after:title'
 		);
@@ -133,12 +133,12 @@ if ($_EXTCONF['enable.']['selectDataStructure']) {
 		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToPalette(
 			'pages',
 			'layout',
-			'--linebreak--, tx_templavoila_to;;;;1-1-1, tx_templavoila_next_to;;;;1-1-1',
+			'--linebreak--, tx_templavoila_to, tx_templavoila_next_to',
 			'after:backend_layout_next_level'
 		);
 		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
 			'pages',
-			'tx_templavoila_flex;;;;1-1-1',
+			'tx_templavoila_flex',
 			'',
 			'after:title'
 		);

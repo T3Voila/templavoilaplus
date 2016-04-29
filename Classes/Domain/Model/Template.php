@@ -13,6 +13,8 @@ namespace Extension\Templavoila\Domain\Model;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class to provide unique access to template
@@ -70,7 +72,7 @@ class Template {
 	 * @param integer $uid
 	 */
 	public function __construct($uid) {
-		$this->row = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('tx_templavoila_tmplobj', $uid);
+		$this->row = BackendUtility::getRecordWSOL('tx_templavoila_tmplobj', $uid);
 
 		$this->setLabel($this->row['title']);
 		$this->setDescription($this->row['description']);
@@ -307,7 +309,7 @@ class Template {
 	 * @return \Extension\Templavoila\Domain\Model\AbstractDataStructure
 	 */
 	public function getDatastructure() {
-		$dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\DataStructureRepository::class);
+		$dsRepo = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\DataStructureRepository::class);
 
 		return $dsRepo->getDatastructureByUidOrFilename($this->row['datastructure']);
 	}
@@ -325,7 +327,7 @@ class Template {
 	 * @return string
 	 */
 	public function getLocalDataprotXML($skipDsDataprot = FALSE) {
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::array2xml_cs($this->getLocalDataprotArray($skipDsDataprot), 'T3DataStructure', array('useCDATA' => 1));
+		return GeneralUtility::array2xml_cs($this->getLocalDataprotArray($skipDsDataprot), 'T3DataStructure', array('useCDATA' => 1));
 	}
 
 	/**
@@ -339,10 +341,10 @@ class Template {
 		} else {
 			$dataprot = array();
 		}
-		$toDataprot = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($this->row['localprocessing']);
+		$toDataprot = GeneralUtility::xml2array($this->row['localprocessing']);
 
 		if (is_array($toDataprot)) {
-			$dataprot = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($dataprot, $toDataprot);
+			$dataprot = ArrayUtility::mergeRecursiveWithOverrule($dataprot, $toDataprot);
 		}
 
 		return $dataprot;
@@ -376,7 +378,7 @@ class Template {
 	 */
 	public function getBeLayout() {
 		if ($this->row['belayout']) {
-			$beLayout = \TYPO3\CMS\Core\Utility\GeneralUtility::getURL(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->row['belayout']));
+			$beLayout = GeneralUtility::getURL(GeneralUtility::getFileAbsFileName($this->row['belayout']));
 		} else {
 			$beLayout = $this->getDatastructure()->getBeLayout();
 		}

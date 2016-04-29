@@ -13,11 +13,10 @@ namespace Extension\Templavoila\Domain\Model;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class to provide unique access to datastructure
- *
- * @author Tolleiv Nietsch <tolleiv.nietsch@typo3.org>
  */
 abstract class AbstractDataStructure {
 
@@ -143,7 +142,7 @@ abstract class AbstractDataStructure {
 		$arr = array();
 		$ds = $this->getDataprotXML();
 		if (strlen($ds) > 1) {
-			$arr = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($ds);
+			$arr = GeneralUtility::xml2array($ds);
 		}
 
 		return $arr;
