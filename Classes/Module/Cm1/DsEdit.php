@@ -1,4 +1,6 @@
 <?php
+namespace Extension\Templavoila\Module\Cm1;
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -20,7 +22,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @co-author Robert Lemke <robert@typo3.org>
  * @co-author Steffen kamper <info@sk-typo3.de>
  */
-class tx_templavoila_cm1_dsEdit {
+class DsEdit {
 
 	/**
 	 * @var \tx_templavoila_cm1

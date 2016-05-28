@@ -1,4 +1,6 @@
 <?php
+namespace Extension\Templavoila\Module\Mod1;
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -13,6 +15,7 @@
  */
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\SingletonInterface;
 
 /**
  * Submodule 'clipboard' for the templavoila page module
@@ -22,7 +25,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @subpackage    tx_templavoila
  * @todo This class wants to be refactored because there's quite some redundancy in it. But that's not urgent ...
  */
-class tx_templavoila_mod1_specialdoktypes {
+class Specialdoktypes implements SingletonInterface {
 
 	/**
 	 * @var integer

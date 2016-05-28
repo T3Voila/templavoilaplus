@@ -29,8 +29,8 @@ sidebar]
    class tx_myext_templavoila_sidebar {
        function init() {
                // Create / get instances:
-           $thisObj =& t3lib_div::getUserObj ('&tx_myext_templavoila_sidebar', '');
-           $sideBarObj =& t3lib_div::getUserObj ('&tx_templavoila_mod1_sidebar', '');
+           $thisObj =& t3lib_div::getUserObj ('tx_myext_templavoila_sidebar', '');
+           $sideBarObj =& t3lib_div::getUserObj ('Extension\\Templavoila\\Module\\Mod1\\Sidebar', '');
                // Register sidebar item:
            $sideBarObj->addItem ('tx_myext_templavoila_sidebar_item1', $thisObj, 'renderItem_myext', 'My Extension', 50);
        }

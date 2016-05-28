@@ -1,4 +1,6 @@
 <?php
+namespace Extension\Templavoila\Module\Cm1;
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -21,7 +23,7 @@
  * @co-author    Robert Lemke <robert@typo3.org>
  * @co-author    Steffen kamper <info@sk-typo3.de>
  */
-class tx_templavoila_cm1_eTypes {
+class ETypes {
 
 	/**
 	 * @var \tx_templavoila_cm1

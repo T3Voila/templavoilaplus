@@ -260,16 +260,16 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	public $path;
 
 	/**
-	 * instance of class tx_templavoila_cm1_dsEdit
+	 * instance of class Extension\Templavoila\Module\Cm1\DsEdit
 	 *
-	 * @var \tx_templavoila_cm1_dsEdit
+	 * @var \Extension\Templavoila\Module\Cm1\DsEdit
 	 */
 	public $dsEdit;
 
 	/**
-	 * instance of class tx_templavoila_cm1_eTypes
+	 * instance of class Extension\Templavoila\Module\Cm1\ETypes
 	 *
-	 * @var \tx_templavoila_cm1_eTypes
+	 * @var \Extension\Templavoila\Module\Cm1\ETypes
 	 */
 	public $eTypes;
 
@@ -366,11 +366,11 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	public function main() {
 
 		// Initialize ds_edit
-		$this->dsEdit = GeneralUtility::getUserObj('tx_templavoila_cm1_dsedit', '');
+		$this->dsEdit = GeneralUtility::getUserObj('Extension\\Templavoila\\Module\\Cm1\\DsEdit', '');
 		$this->dsEdit->init($this);
 
 		// Initialize eTypes
-		$this->eTypes = GeneralUtility::getUserObj('tx_templavoila_cm1_eTypes', '');
+		$this->eTypes = GeneralUtility::getUserObj('Extension\\Templavoila\\Module\\Cm1\\ETypes', '');
 		$this->eTypes->init($this);
 
 		$this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
@@ -566,7 +566,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			}
 
 			function openValidator(key) {
-				new Ajax.Request("' . $GLOBALS['BACK_PATH'] . 'ajax.php?ajaxID=tx_templavoila_cm1_ajax::getDisplayFileContent&key=" + key, {
+				new Ajax.Request("' . $GLOBALS['BACK_PATH'] . 'ajax.php?ajaxID=Extension\\Templavoila\\Module\\Cm1\\Ajax::getDisplayFileContent&key=" + key, {
 					onSuccess: function(response) {
 						var valform = new Element(\'form\',{method: \'post\', target:\'_blank\', action: \'http://validator.w3.org/check#validate_by_input\'});
 						valform.insert(new Element(\'input\',{name: \'fragment\', value:response.responseText, type: \'hidden\'}));$(document.body).insert(valform);

@@ -1,4 +1,6 @@
 <?php
+namespace Extension\Templavoila\Module\Mod1;
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -12,6 +14,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\SingletonInterface;
+
 /**
  * Submodule 'Sidebar' for the templavoila page module
  *
@@ -20,7 +24,7 @@
  *
  * @author Robert Lemke <robert@typo3.org>
  */
-class tx_templavoila_mod1_sidebar {
+class Sidebar implements SingletonInterface {
 
 	/**
 	 * A pointer to the parent object, that is the templavoila page module script. Set by calling the method init() of this class.

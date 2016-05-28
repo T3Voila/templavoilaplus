@@ -1,4 +1,6 @@
 <?php
+namespace Extension\Templavoila\Module\Cm1;
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -15,7 +17,7 @@
 /**
  * Ajax class for displaying content form a file
  */
-class tx_templavoila_cm1_ajax {
+class Ajax {
 
 	/**
 	 * Return the content of the current "displayFile"

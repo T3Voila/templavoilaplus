@@ -186,7 +186,7 @@ function sortable_update(el) {
 	while (node != null) {
 		if (!(typeof node.className == "undefined") && node.className.search(/tpm-element(?!-)/) > -1) {
 			if (sortable_currentItem && node.id == sortable_currentItem.id) {
-				var url = T3_TV_MOD1_BACKPATH + "ajax.php?ajaxID=tx_templavoila_mod1_ajax::moveRecord&source=" + all_items[sortable_currentItem.id] + "&destination=" + all_items[el.id] + (i - 1);
+				var url = T3_TV_MOD1_BACKPATH + "ajax.php?ajaxID=Extension\\Templavoila\\Module\\Mod1\\Ajax::moveRecord&source=" + all_items[sortable_currentItem.id] + "&destination=" + all_items[el.id] + (i - 1);
 				/* xxx */
 				new Ajax.Request(url);
 				sortable_currentItem = false;

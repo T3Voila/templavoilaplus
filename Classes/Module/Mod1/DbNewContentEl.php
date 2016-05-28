@@ -1,4 +1,6 @@
 <?php
+namespace Extension\Templavoila\Module\Mod1;
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -46,7 +48,7 @@ $LOCAL_LANG = $LOCAL_LANG_orig;
  *
  * @author Robert Lemke <robert@typo3.org>
  */
-class tx_templavoila_dbnewcontentel {
+class DbNewContentEl {
 
 	/**
 	 * @var string
@@ -687,7 +689,7 @@ class tx_templavoila_dbnewcontentel {
 }
 
 // Make instance:
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\tx_templavoila_dbnewcontentel::class);
+$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Module\Mod1\DbNewContentEl::class);
 $SOBE->init();
 
 // Include files?

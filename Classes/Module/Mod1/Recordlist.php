@@ -1,4 +1,6 @@
 <?php
+namespace Extension\Templavoila\Module\Mod1;
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -20,7 +22,7 @@ $LANG->includeLLFile('EXT:lang/locallang_mod_web_list.xlf');
  *
  * @author Dmitry Dulepov <dmitry@typo3.org>
  */
-class tx_templavoila_mod1_recordlist extends \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList {
+class Recordlist extends \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList {
 
 	/**
 	 * @var \tx_templavoila_module1

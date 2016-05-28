@@ -1,4 +1,6 @@
 <?php
+namespace Extension\Templavoila\Module\Mod1;
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -12,12 +14,14 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\SingletonInterface;
+
 /**
  * Submodule 'clipboard' for the templavoila page module
  *
  * @author Robert Lemke <robert@typo3.org>
  */
-class tx_templavoila_mod1_clipboard {
+class Clipboard implements SingletonInterface {
 
 	/**
 	 * @var \TYPO3\CMS\Backend\Clipboard\Clipboard

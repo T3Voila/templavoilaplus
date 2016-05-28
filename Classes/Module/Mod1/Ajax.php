@@ -1,4 +1,5 @@
 <?php
+namespace Extension\Templavoila\Module\Mod1;
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -13,11 +14,11 @@
  */
 
 /**
- * Class 'tx_templavoila_mod1_ajax' for the 'templavoila' extension.
+ * Class 'Ajax' for module 1 of the 'templavoila' extension.
  *
  * @author Nikolas Hagelstein <lists@shr-now.de>
  */
-class tx_templavoila_mod1_ajax {
+class Ajax {
 
 	/**
 	 * @var \Extension\Templavoila\Service\ApiService
@@ -25,7 +26,7 @@ class tx_templavoila_mod1_ajax {
 	private $apiObj;
 
 	/**
-	 * @return \tx_templavoila_mod1_ajax
+	 * @return \Ajax
 	 */
 	public function __construct() {
 		$this->apiObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Service\ApiService::class);
