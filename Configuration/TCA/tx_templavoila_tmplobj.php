@@ -87,8 +87,10 @@ return array(
 							'pid' => '###CURRENT_PID###',
 							'setValue' => 'set'
 						),
-						'script' => 'wizard_add.php',
-					),
+						'module' => array(
+							'name' => 'wizard_add.php'
+						)
+					)
 				)
 			),
 			'displayCond' => 'FIELD:parent:=:0'
