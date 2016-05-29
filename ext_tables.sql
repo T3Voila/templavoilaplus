@@ -88,6 +88,7 @@ CREATE TABLE pages (
 	tx_templavoila_next_ds varchar(100) DEFAULT '' NOT NULL,
 	tx_templavoila_next_to int(11) DEFAULT '0' NOT NULL,
 	tx_templavoila_flex mediumtext,
+	storage_pid int(11) DEFAULT '0' NOT NULL,
 );
 
 #

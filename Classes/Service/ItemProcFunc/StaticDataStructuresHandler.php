@@ -84,7 +84,7 @@ class StaticDataStructuresHandler {
 		// Find the template data structure that belongs to this plugin:
 		$piKey = $params['row']['list_type'];
 		$templateRef = $GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['piKey2DSMap'][$piKey]; // This should be a value of a Data Structure.
-		$storagePid = $this->getStoragePid($params, $pObj);
+		$storagePid = $this->getStoragePid($params);
 
 		if ($templateRef && $storagePid) {
 
@@ -120,7 +120,7 @@ class StaticDataStructuresHandler {
 	 */
 	public function dataSourceItemsProcFunc(array &$params, \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems &$pObj) {
 
-		$storagePid = $this->getStoragePid($params, $pObj);
+		$storagePid = $this->getStoragePid($params);
 		$scope = $this->getScope($params);
 
 		$removeDSItems = $this->getRemoveItems($params, substr($params['field'], 0, -2) . 'ds');
@@ -180,7 +180,7 @@ class StaticDataStructuresHandler {
 		$fieldName = $params['field'] == 'tx_templavoila_next_to' ? 'tx_templavoila_next_ds' : 'tx_templavoila_ds';
 		$dataSource = $tsConfig['_THIS_ROW'][$fieldName];
 
-		$storagePid = $this->getStoragePid($params, $pObj);
+		$storagePid = $this->getStoragePid($params);
 
 		$removeTOItems = $this->getRemoveItems($params, substr($params['field'], 0, -2) . 'to');
 
@@ -223,7 +223,7 @@ class StaticDataStructuresHandler {
 	 * @return void
 	 */
 	protected function templateObjectItemsProcFuncForAllDSes(array &$params, \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems &$pObj) {
-		$storagePid = $this->getStoragePid($params, $pObj);
+		$storagePid = $this->getStoragePid($params);
 		$scope = $this->getScope($params);
 
 		$removeDSItems = $this->getRemoveItems($params, substr($params['field'], 0, -2) . 'ds');
@@ -272,15 +272,25 @@ class StaticDataStructuresHandler {
 	 * to be called from the itemsProcFunc only!
 	 *
 	 * @param array $params Parameters as come to the itemsProcFunc
-	 * @param \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems $pObj Calling object
 	 *
 	 * @return integer Storage pid
 	 */
-	protected function getStoragePid(array &$params, \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems &$pObj) {
-		// Get default first
-		$tsConfig = & $pObj->cachedTSconfig[$params['table'] . ':' . $params['row']['uid']];
-		$storagePid = (int)$tsConfig['_STORAGE_PID'];
-
+	protected function getStoragePid(array &$params) {
+		/**
+		 * // Get default first
+		 * $tsConfig = & $pObj->cachedTSconfig[$params['table'] . ':' . $params['row']['uid']];
+		 * $storagePid = (int)$tsConfig['_STORAGE_PID'];
+		 * 
+		 * StoragePid no longer available since CMS 7
+		 * Could be done via BackendUtility::getTCEFORM_TSconfig($params['table'], $params['row']);
+		 * But field 'storage_pid' is no longer part of BEgetRootLine method
+		 */
+		$rootLine = $this->BEgetRootLine($params['row']['uid'], '', true);
+		foreach ($rootLine as $rC) {
+			if (!$storagePid) {
+				$storagePid = (int)$rC['storage_pid'];
+			}
+		}
 		// Check for alternative storage folder
 		$field = $params['table'] == 'pages' ? 'uid' : 'pid';
 		$modTSConfig = BackendUtility::getModTSconfig($params['row'][$field], 'tx_templavoila.storagePid');
@@ -289,6 +299,108 @@ class StaticDataStructuresHandler {
 		}
 
 		return $storagePid;
+	}
+
+	/**
+	 * From TYPO3 CMS 7.6.9
+	 * Returns what is called the 'RootLine'. That is an array with information about the page records from a page id ($uid) and back to the root.
+	 * By default deleted pages are filtered.
+	 * This RootLine will follow the tree all the way to the root. This is opposite to another kind of root line known from the frontend where the rootline stops when a root-template is found.
+	 *
+	 * @param int $uid Page id for which to create the root line.
+	 * @param string $clause Clause can be used to select other criteria. It would typically be where-clauses that stops the process if we meet a page, the user has no reading access to.
+	 * @param bool $workspaceOL If TRUE, version overlay is applied. This must be requested specifically because it is usually only wanted when the rootline is used for visual output while for permission checking you want the raw thing!
+	 * @return array Root line array, all the way to the page tree root (or as far as $clause allows!)
+	 */
+	public function BEgetRootLine($uid, $clause = '', $workspaceOL = false)
+	{
+		static $BEgetRootLine_cache = array();
+		$output = array();
+		$pid = $uid;
+		$ident = $pid . '-' . $clause . '-' . $workspaceOL;
+		if (is_array($BEgetRootLine_cache[$ident])) {
+			$output = $BEgetRootLine_cache[$ident];
+		} else {
+			$loopCheck = 100;
+			$theRowArray = array();
+			while ($uid != 0 && $loopCheck) {
+				$loopCheck--;
+				$row = $this->getPageForRootline($uid, $clause, $workspaceOL);
+				if (is_array($row)) {
+					$uid = $row['pid'];
+					$theRowArray[] = $row;
+				} else {
+					break;
+				}
+			}
+			if ($uid == 0) {
+				$theRowArray[] = array('uid' => 0, 'title' => '');
+			}
+			$c = count($theRowArray);
+			foreach ($theRowArray as $val) {
+				$c--;
+				$output[$c] = array(
+					'uid' => $val['uid'],
+					'pid' => $val['pid'],
+					'title' => $val['title'],
+					'doktype' => $val['doktype'],
+					'tsconfig_includes' => $val['tsconfig_includes'],
+					'TSconfig' => $val['TSconfig'],
+					'is_siteroot' => $val['is_siteroot'],
+					'storage_pid' => $val['storage_pid'],
+					't3ver_oid' => $val['t3ver_oid'],
+					't3ver_wsid' => $val['t3ver_wsid'],
+					't3ver_state' => $val['t3ver_state'],
+					't3ver_stage' => $val['t3ver_stage'],
+					'backend_layout_next_level' => $val['backend_layout_next_level']
+				);
+				if (isset($val['_ORIG_pid'])) {
+					$output[$c]['_ORIG_pid'] = $val['_ORIG_pid'];
+				}
+			}
+			$BEgetRootLine_cache[$ident] = $output;
+		}
+		return $output;
+	}
+
+	/**
+	 * From TYPO3 CMS 7.6.9
+	 * Gets the cached page record for the rootline
+	 *
+	 * @param int $uid Page id for which to create the root line.
+	 * @param string $clause Clause can be used to select other criteria. It would typically be where-clauses that stops the process if we meet a page, the user has no reading access to.
+	 * @param bool $workspaceOL If TRUE, version overlay is applied. This must be requested specifically because it is usually only wanted when the rootline is used for visual output while for permission checking you want the raw thing!
+	 * @return array Cached page record for the rootline
+	 * @see BEgetRootLine
+	 */
+	protected function getPageForRootline($uid, $clause, $workspaceOL)
+	{
+		static $getPageForRootline_cache = array();
+		$ident = $uid . '-' . $clause . '-' . $workspaceOL;
+		if (is_array($getPageForRootline_cache[$ident])) {
+			$row = $getPageForRootline_cache[$ident];
+		} else {
+			$db = $this->getDatabaseConnection();
+			$res = $db->exec_SELECTquery('pid,uid,title,doktype,tsconfig_includes,TSconfig,is_siteroot,storage_pid,t3ver_oid,t3ver_wsid,t3ver_state,t3ver_stage,backend_layout_next_level', 'pages', 'uid=' . (int)$uid . ' ' . BackendUtility::deleteClause('pages') . ' ' . $clause);
+			$row = $db->sql_fetch_assoc($res);
+			if ($row) {
+				$newLocation = false;
+				if ($workspaceOL) {
+					BackendUtility::workspaceOL('pages', $row);
+					$newLocation = BackendUtility::getMovePlaceholder('pages', $row['uid'], 'pid');
+				}
+				if (is_array($row)) {
+					if ($newLocation !== false) {
+						$row['pid'] = $newLocation['pid'];
+					} else {
+						BackendUtility::fixVersioningPid('pages', $row);
+					}
+					$getPageForRootline_cache[$ident] = $row;
+				}
+			}
+			$db->sql_free_result($res);
+		}
+		return $row;
 	}
 
 	/**
