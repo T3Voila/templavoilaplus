@@ -114,11 +114,11 @@ class StaticDataStructuresHandler {
 	 * config override of the GRSP.
 	 *
 	 * @param array $params Parameters to the itemsProcFunc
-	 * @param \TYPO3\CMS\Backend\Form\FormEngine $pObj Calling object
+	 * @param \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems $pObj Calling object
 	 *
 	 * @return void
 	 */
-	public function dataSourceItemsProcFunc(array &$params, \TYPO3\CMS\Backend\Form\FormEngine& $pObj) {
+	public function dataSourceItemsProcFunc(array &$params, \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems &$pObj) {
 
 		$storagePid = $this->getStoragePid($params, $pObj);
 		$scope = $this->getScope($params);
@@ -151,11 +151,11 @@ class StaticDataStructuresHandler {
 	 * extension mode.
 	 *
 	 * @param array $params Parameters for itemProcFunc
-	 * @param \TYPO3\CMS\Backend\Form\FormEngine $pObj Calling class
+	 * @param \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems $pObj Calling class
 	 *
 	 * @return void
 	 */
-	public function templateObjectItemsProcFunc(array &$params, \TYPO3\CMS\Backend\Form\FormEngine &$pObj) {
+	public function templateObjectItemsProcFunc(array &$params, \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems &$pObj) {
 		$this->conf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
 
 		if ($this->conf['enable.']['selectDataStructure']) {
@@ -170,11 +170,11 @@ class StaticDataStructuresHandler {
 	 * storage folder of the current page/element.
 	 *
 	 * @param array $params Parameters for itemProcFunc
-	 * @param \TYPO3\CMS\Backend\Form\FormEngine $pObj Calling class
+	 * @param \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems $pObj Calling class
 	 *
 	 * @return void
 	 */
-	protected function templateObjectItemsProcFuncForCurrentDS(array &$params, \TYPO3\CMS\Backend\Form\FormEngine &$pObj) {
+	protected function templateObjectItemsProcFuncForCurrentDS(array &$params, \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems &$pObj) {
 		// Get DS
 		$tsConfig = & $pObj->cachedTSconfig[$params['table'] . ':' . $params['row']['uid']];
 		$fieldName = $params['field'] == 'tx_templavoila_next_to' ? 'tx_templavoila_next_ds' : 'tx_templavoila_ds';
@@ -218,11 +218,11 @@ class StaticDataStructuresHandler {
 	 * storage folder of the current page/element.
 	 *
 	 * @param array $params Parameters for itemProcFunc
-	 * @param \TYPO3\CMS\Backend\Form\FormEngine $pObj Calling class
+	 * @param \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems $pObj Calling class
 	 *
 	 * @return void
 	 */
-	protected function templateObjectItemsProcFuncForAllDSes(array &$params, \TYPO3\CMS\Backend\Form\FormEngine &$pObj) {
+	protected function templateObjectItemsProcFuncForAllDSes(array &$params, \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems &$pObj) {
 		$storagePid = $this->getStoragePid($params, $pObj);
 		$scope = $this->getScope($params);
 
@@ -272,11 +272,11 @@ class StaticDataStructuresHandler {
 	 * to be called from the itemsProcFunc only!
 	 *
 	 * @param array $params Parameters as come to the itemsProcFunc
-	 * @param \TYPO3\CMS\Backend\Form\FormEngine $pObj Calling object
+	 * @param \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems $pObj Calling object
 	 *
 	 * @return integer Storage pid
 	 */
-	protected function getStoragePid(array &$params, \TYPO3\CMS\Backend\Form\FormEngine &$pObj) {
+	protected function getStoragePid(array &$params, \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems &$pObj) {
 		// Get default first
 		$tsConfig = & $pObj->cachedTSconfig[$params['table'] . ':' . $params['row']['uid']];
 		$storagePid = (int)$tsConfig['_STORAGE_PID'];
