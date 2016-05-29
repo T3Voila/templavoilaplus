@@ -137,7 +137,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$this->doc->setModuleTemplate('EXT:templavoila/Resources/Private/Templates/mod2_default.html');
 		$this->doc->bodyTagId = 'typo3-mod-php';
 		$this->doc->divClass = '';
-		$this->doc->form = '<form action="' . htmlspecialchars('index.php?id=' . $this->id) . '" method="post" autocomplete="off">';
+		$this->doc->form = '<form action="' . \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_txtemplavoilaM2', array('id' => $this->id)) . '" method="post" autocomplete="off">';
 
 		if ($access) {
 			// Draw the header.
@@ -300,9 +300,10 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			foreach ($list as $pid) {
 				$path = $this->findRecordsWhereUsed_pid($pid);
 				if ($path) {
+					$editUrl = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_txtemplavoilaM2', array('id' => $pid));
 					$tRows[] = '
 						<tr class="bgColor4">
-							<td><a href="index.php?id=' . $pid . '" onclick="setHighlight(' . $pid . ')">' .
+							<td><a href="' . $editUrl . '" onclick="setHighlight(' . $pid . ')">' .
 						\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', $pid)) .
 						htmlspecialchars($path) . '</a></td>
 							<td>' . $dsRepo->getDatastructureCountForPid($pid) . '</td>
