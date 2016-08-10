@@ -719,9 +719,9 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             '_reload_from' => 1,
             'uid' => $toObj->getKey(),
             'id' => $this->id
-            // TODO Backpath
+            // TODO returnUrl
         ];
-        $linkUrl = BackendUtilityCore::getModuleUrl('web_txtemplavoilaCM1', $uriParameters);
+        $linkUrl = BackendUtilityCore::getModuleUrl('_txtemplavoilaCM1', $uriParameters);
 
         $fileReference = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($toObj->getFileref());
         if (@is_file($fileReference)) {

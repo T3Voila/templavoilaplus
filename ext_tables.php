@@ -25,7 +25,7 @@ if (TYPO3_MODE === 'BE') {
 
     // Adding backend modules:
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
-        'web',
+        '',
         'txtemplavoilaCM1',
         '',
         \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'cm1/'
