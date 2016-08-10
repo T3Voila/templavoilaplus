@@ -23,6 +23,14 @@ if (TYPO3_MODE === 'BE') {
 		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'mod2/'
 	);
 
+    // Adding backend modules:
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
+        'web',
+        'txtemplavoilaCM1',
+        '',
+        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'cm1/'
+    );
+
 	$_EXTCONF = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
 	// Remove default Page module (layout) manually if wanted:
 	if (!$_EXTCONF['enable.']['oldPageModule']) {
