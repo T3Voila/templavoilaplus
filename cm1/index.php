@@ -370,11 +370,11 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     public function main()
     {
         // Initialize ds_edit
-        $this->dsEdit = GeneralUtility::getUserObj('Extension\\Templavoila\\Module\\Cm1\\DsEdit', '');
+        $this->dsEdit = GeneralUtility::getUserObj(Extension\Templavoila\Module\Cm1\DsEdit::class, '');
         $this->dsEdit->init($this);
 
         // Initialize eTypes
-        $this->eTypes = GeneralUtility::getUserObj('Extension\\Templavoila\\Module\\Cm1\\ETypes', '');
+        $this->eTypes = GeneralUtility::getUserObj(Extension\Templavoila\Module\Cm1\ETypes::class, '');
         $this->eTypes->init($this);
 
         $this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
