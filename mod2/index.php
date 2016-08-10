@@ -12,11 +12,13 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Utility\BackendUtility as BackendUtilityCore;
+
 if (!isset($MCONF)) {
     require('conf.php');
 }
 
-$GLOBALS['LANG']->includeLLFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('templavoila') . 'mod2/locallang.xlf');#
+$GLOBALS['LANG']->includeLLFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('templavoila') . 'mod2/locallang.xlf');
 $GLOBALS['BE_USER']->modAccess($MCONF, 1); // This checks permissions and exits if the users has no permission for entry.
 
 
@@ -712,7 +714,14 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         }
 
         // Mapping status / link:
-        $linkUrl = '../cm1/index.php?table=tx_templavoila_tmplobj&uid=' . $toObj->getKey() . '&_reload_from=1&id=' . $this->id . '&returnUrl=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI'));
+        $uriParameters = [
+            'table' => 'tx_templavoila_tmplobj',
+            '_reload_from' => 1,
+            'uid' => $toObj->getKey(),
+            'id' => $this->id
+            // TODO Backpath
+        ];
+        $linkUrl = BackendUtilityCore::getModuleUrl('web_txtemplavoilaCM1', $uriParameters);
 
         $fileReference = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($toObj->getFileref());
         if (@is_file($fileReference)) {

@@ -15,10 +15,11 @@
 // DEFAULT initialization of a module [BEGIN]
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-unset($MCONF);
-require(dirname(__FILE__) . '/conf.php');
-require($BACK_PATH . 'init.php');
-$LANG->includeLLFile('EXT:templavoila/cm1/locallang.xlf');
+if (!isset($MCONF)) {
+    require('conf.php');
+}
+
+$GLOBALS['LANG']->includeLLFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('templavoila') . 'cm1/locallang.xlf');
 
 /**
  * Class for controlling the TemplaVoila module.
