@@ -14,6 +14,7 @@
 
 // DEFAULT initialization of a module [BEGIN]
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Backend\Utility\BackendUtility as BackendUtilityCore;
 
 if (!isset($MCONF)) {
     require('conf.php');
@@ -2499,9 +2500,10 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             'path' => $path,
             'mode' => 'display'
         );
-        $p = GeneralUtility::implodeArrayForUrl('', $theArray);
 
-        $content .= '<strong><a href="' . htmlspecialchars('index.php?' . $p) . '" target="display">' . $title . '</a></strong>';
+        $content .= '<strong><a href="'
+            . BackendUtilityCore::getModuleUrl('_txtemplavoilaCM1', $theArray)
+            . '" target="display">' . $title . '</a></strong>';
 
         return $content;
     }
@@ -2525,9 +2527,8 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             'returnUrl' => $this->returnUrl,
             '_load_ds_xml_to' => $this->_load_ds_xml_to
         );
-        $p = GeneralUtility::implodeArrayForUrl('', array_merge($theArray, $array), '', 1);
 
-        return htmlspecialchars('index.php?' . $p);
+        return BackendUtilityCore::getModuleUrl('_txtemplavoilaCM1', array_merge($theArray, $array));
     }
 
     /**
