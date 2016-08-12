@@ -958,8 +958,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                     unset($tce);
                     if ($newID && $newToID) {
                         //redirect to edit view
-                        $redirectUrl = 'index.php?file=' . rawurlencode($this->displayFile) . '&_load_ds_xml=1&_load_ds_xml_to=' . $newToID . '&uid=' . rawurlencode($newID) . '&returnUrl=' . rawurlencode('../mod2/index.php?id=' . (int)$this->_saveDSandTO_pid);
-                        header('Location:' . GeneralUtility::locationHeaderUrl($redirectUrl));
+                        $this->redirectToModifyDSTO($newToID, $newID);
                         exit;
                     } else {
                         // Clear cached header info because saveDSandTO always resets headers
@@ -1028,8 +1027,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                         if ($cmd == 'updateDSandTO') {
                             if (!$this->_load_ds_xml_to) {
                                 //new created was saved to existing DS/TO, redirect to edit view
-                                $redirectUrl = 'index.php?file=' . rawurlencode($this->displayFile) . '&_load_ds_xml=1&_load_ds_xml_to=' . $toREC['uid'] . '&uid=' . rawurlencode($dsREC['uid']) . '&returnUrl=' . rawurlencode('../mod2/index.php?id=' . (int)$this->_saveDSandTO_pid);
-                                header('Location:' . GeneralUtility::locationHeaderUrl($redirectUrl));
+                                $this->redirectToModifyDSTO($toREC['uid'], $dsREC['uid']);
                                 exit;
                             } else {
                                 // Clear cached header info because updateDSandTO always resets headers
@@ -1511,7 +1509,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                                 </tr>';
 
                             // Link to updating DS/TO:
-                            $onCl = 'index.php?file=' . rawurlencode($theFile) . '&_load_ds_xml=1&_load_ds_xml_to=' . $row['uid'] . '&uid=' . $DS_row['uid'] . '&returnUrl=' . $this->returnUrl;
+                            $onCl = $this->getUrlToModifyDSTO($theFile, $row['uid'], $DS_row['uid'], $this->returnUrl);
                             $onClMsg = '
                                 if (confirm(' . GeneralUtility::quoteJSvalue(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('renderTO_updateWarningConfirm')) . ')) {
                                     document.location=\'' . $onCl . '\';
@@ -1537,7 +1535,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                                     <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('renderTO_dsFile') . ':</td>
                                     <td><a href="#" onclick="' . htmlspecialchars($onCl) . '">' . htmlspecialchars($relFilePath) . '</a></td>
                                 </tr>';
-                            $onCl = 'index.php?file=' . rawurlencode($theFile) . '&_load_ds_xml=1&_load_ds_xml_to=' . $row['uid'] . '&uid=' . rawurlencode($DSOfile) . '&returnUrl=' . $this->returnUrl;
+                            $onCl = $this->getUrlToModifyDSTO($theFile, $row['uid'], $DSOfile, $this->returnUrl);
                             $onClMsg = '
                                 if (confirm(' . GeneralUtility::quoteJSvalue(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('renderTO_updateWarningConfirm')) . ')) {
                                     document.location=\'' . $onCl . '\';
@@ -2495,11 +2493,11 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      */
     public function linkForDisplayOfPath($title, $path)
     {
-        $theArray = array(
+        $theArray = [
             'file' => $this->markupFile,
             'path' => $path,
             'mode' => 'display'
-        );
+        ];
 
         $content .= '<strong><a href="'
             . BackendUtilityCore::getModuleUrl('_txtemplavoilaCM1', $theArray)
@@ -2519,16 +2517,51 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      */
     public function linkThisScript($array = array())
     {
-        $theArray = array(
+        $theArray = [
             'id' => $this->id, // id of the current sysfolder
             'file' => $this->displayFile,
             'table' => $this->displayTable,
             'uid' => $this->displayUid,
             'returnUrl' => $this->returnUrl,
             '_load_ds_xml_to' => $this->_load_ds_xml_to
-        );
+        ];
 
         return BackendUtilityCore::getModuleUrl('_txtemplavoilaCM1', array_merge($theArray, $array));
+    }
+
+    public function redirectToModifyDSTO($toUid, $dsUid)
+    {
+        $params = [
+            'file' => $this->displayFile,
+            '_load_ds_xml' => 1,
+            '_load_ds_xml_to' => $toUid,
+            'uid' => $dsUid,
+            'returnUrl' => BackendUtilityCore::getModuleUrl('web_txtemplavoilaM2', ['id' => (int)$this->_saveDSandTO_pid])
+        ];
+
+        header(
+            'Location:' . GeneralUtility::locationHeaderUrl(
+                $this->getUrlToModifyDSTO(
+                    $this->displayFile,
+                    $toUid,
+                    $dsUid,
+                    BackendUtilityCore::getModuleUrl('web_txtemplavoilaM2', ['id' => (int)$this->_saveDSandTO_pid])
+                )
+            )
+        );
+    }
+
+    public function getUrlToModifyDSTO($file, $toUid, $dsUid, $returnUrl)
+    {
+        $params = [
+            'file' => $file,
+            '_load_ds_xml' => 1,
+            '_load_ds_xml_to' => $toUid,
+            'uid' => $dsUid,
+            'returnUrl' => $returnUrl
+        ];
+
+        return BackendUtilityCore::getModuleUrl('_txtemplavoilaCM1', $params);
     }
 
     /**
