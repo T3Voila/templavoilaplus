@@ -14,9 +14,9 @@ plugin.tx_templavoila_pi1.disableExplosivePreview = 1
 tt_content.templavoila_pi1 = COA
 tt_content.templavoila_pi1 {
 ' . ($_EXTCONF['enable.']['renderFCEHeader'] ? '
-	10 =< lib.stdheader
-	' : '') . '
-	20 =< plugin.tx_templavoila_pi1
+    10 =< lib.stdheader
+    ' : '') . '
+    20 =< plugin.tx_templavoila_pi1
 }
 
 tt_content.menu.20.3 = USER
@@ -28,24 +28,30 @@ tt_content.menu.20.3.indexField.data = register:tx_templavoila_pi1.current_field
 
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(
-	'<INCLUDE_TYPOSCRIPT: source="FILE:EXT:templavoila/Configuration/TSConfig/Page.ts">'
+    '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:templavoila/Configuration/TSConfig/Page.ts">'
 );
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addUserTSConfig(
-	'<INCLUDE_TYPOSCRIPT: source="FILE:EXT:templavoila/Configuration/TSConfig/User.ts">'
+    '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:templavoila/Configuration/TSConfig/User.ts">'
 );
 
 // Adding Page Template Selector Fields to root line:
 $GLOBALS['TYPO3_CONF_VARS']['FE']['addRootLineFields'] .= ',tx_templavoila_ds,tx_templavoila_to,tx_templavoila_next_ds,tx_templavoila_next_to,storage_pid';
 
 // Register our classes at a the hooks:
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass']['templavoila'] = \Extension\Templavoila\Service\DataHandling\DataHandler::class;
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass']['templavoila'] = \Extension\Templavoila\Service\DataHandling\DataHandler::class;
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['moveRecordClass']['templavoila'] = \Extension\Templavoila\Service\DataHandling\DataHandler::class;
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['recordEditAccessInternals']['templavoila'] = \Extension\Templavoila\Service\UserFunc\Access::class . '->recordEditAccessInternals';
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass']['templavoila']
+    = \Extension\Templavoila\Service\DataHandling\DataHandler::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass']['templavoila']
+    = \Extension\Templavoila\Service\DataHandling\DataHandler::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['moveRecordClass']['templavoila']
+    = \Extension\Templavoila\Service\DataHandling\DataHandler::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['recordEditAccessInternals']['templavoila']
+    = \Extension\Templavoila\Service\UserFunc\Access::class . '->recordEditAccessInternals';
 
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['lowlevel']['cleanerModules']['tx_templavoila_unusedce'] = array(\Extension\Templavoila\Command\UnusedContentElementCommand::class);
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['l10nmgr']['indexFilter']['tx_templavoila_usedCE'] = array(\Extension\Templavoila\Service\UserFunc\UsedContentElement::class);
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['lowlevel']['cleanerModules']['tx_templavoila_unusedce']
+    = array(\Extension\Templavoila\Command\UnusedContentElementCommand::class);
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['l10nmgr']['indexFilter']['tx_templavoila_usedCE']
+    = array(\Extension\Templavoila\Service\UserFunc\UsedContentElement::class);
 
 // Register Preview Classes for Page Module
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['mod1']['renderPreviewContent']['default']  = \Extension\Templavoila\Controller\Preview\DefaultController::class;
@@ -70,7 +76,7 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['mod1']['renderPreviewCont
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['mod1']['renderPreviewContent']['templavoila_pi1'] = \Extension\Templavoila\Controller\Preview\NullController::class;
 
 $GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX']['Extension\\Templavoila\\Module\\Mod1\\Ajax::moveRecord'] =
-	'EXT:templavoila/Classes/Module/Mod1/Ajax->moveRecord';
+    'EXT:templavoila/Classes/Module/Mod1/Ajax->moveRecord';
 
 $GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX']['Extension\\Templavoila\\Module\\Cm1\\Ajax::getDisplayFileContent'] =
-	'EXT:templavoila/Classes/Module/Cm1/Ajax->getDisplayFileContent';
+    'EXT:templavoila/Classes/Module/Cm1/Ajax->getDisplayFileContent';
