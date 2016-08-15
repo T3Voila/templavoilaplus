@@ -14,9 +14,9 @@ plugin.tx_templavoila_pi1.disableExplosivePreview = 1
 tt_content.templavoila_pi1 = COA
 tt_content.templavoila_pi1 {
 ' . ($_EXTCONF['enable.']['renderFCEHeader'] ? '
-    10 =< lib.stdheader
+    10 < lib.stdheader
     ' : '') . '
-    20 =< plugin.tx_templavoila_pi1
+    20 < plugin.tx_templavoila_pi1
 }
 
 tt_content.menu.20.3 = USER

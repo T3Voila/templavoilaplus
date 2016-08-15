@@ -3,7 +3,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'title' => 'TemplaVoila!',
 	'description' => 'Point-and-click, popular and easy template engine for TYPO3. Public free support is provided only through TYPO3 mailing lists! Contact by e-mail for commercial support.',
 	'category' => 'misc',
-	'version' => '2.0.4',
+	'version' => '2.1.0-dev',
 	'state' => 'stable',
 	'uploadfolder' => 0,
 	'createDirs' => 'uploads/tx_templavoila/',
@@ -14,7 +14,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'constraints' => array(
 		'depends' => array(
 			'php' => '5.5.0-5.6.99',
-			'typo3' => '7.0.0-7.9.99',
+			'typo3' => '7.6.0-7.6.99',
 			'static_info_tables' => '',
 		),
 		'conflicts' => array(

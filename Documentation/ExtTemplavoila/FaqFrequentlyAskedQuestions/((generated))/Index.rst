@@ -45,7 +45,7 @@ section of this manual:
    page = PAGE
    page.typeNum = 0
    page.10 = USER
-   page.10.userFunc = tx_templavoila_pi1->main_page
+   page.10.userFunc = Extension\Templavoila\Controller\FrontendController->main_page
 
 **Q:**  *I made “Content Elements” field, added content elements there
 but nothing is displayed in FrontEnd. What should I do now?*
