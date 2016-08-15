@@ -26,8 +26,8 @@ use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
 /**
  * Plugin 'Flexible Content' for the 'templavoila' extension.
  */
-class FrontendController extends AbstractPlugin {
-
+class FrontendController extends AbstractPlugin
+{
     /**
      * Same as class name
      *
@@ -61,14 +61,14 @@ class FrontendController extends AbstractPlugin {
      */
     static public $enablePageRenderer = TRUE;
 
-	/**
+    /**
      * Markup object
      *
      * @var HtmlMarkup
      */
-	protected $markupObj;
+    protected $markupObj;
 
-	/**
+    /**
      * Main function for rendering of Flexible Content elements of TemplaVoila
      *
      * @param string $content Standard content input. Ignore.
@@ -76,13 +76,14 @@ class FrontendController extends AbstractPlugin {
      *
      * @return string HTML content for the Flexible Content elements.
      */
-	public function main($content, $conf) {
+    public function main($content, $conf)
+    {
         $this->initVars($conf);
 
         return $this->renderElement($this->cObj->data, 'tt_content');
     }
 
-	/**
+    /**
      * Main function for rendering records from system tables (like fe_users) using TemplaVoila. Function creates fake flexform, ds and to fields for the record and calls {@link #renderElement($row,$table) renderElement} for processing.
      *
      * <strong>This is still undocumented and unsupported! Do not use unless you are ready to risk!</strong>.
@@ -119,7 +120,8 @@ class FrontendController extends AbstractPlugin {
      *
      * @return string Generated content
      */
-	public function main_record($content, $conf) {
+    public function main_record($content, $conf)
+    {
         $this->initVars($conf);
 
         // Make a copy of the data, do not spoil original!
@@ -151,8 +153,8 @@ class FrontendController extends AbstractPlugin {
                     $vKey = (!$langDisabled && $langChildren) ? 'v' . $GLOBALS['TSFE']->sys_language_isocode : 'vDEF';
                 } else {
                     return $this->formatError('
-						Couldn\'t find a Data Structure set with uid/file=' . $conf['ds'] . '
-						Please put correct DS and TO into your TS setup first.');
+                        Couldn\'t find a Data Structure set with uid/file=' . $conf['ds'] . '
+                        Please put correct DS and TO into your TS setup first.');
                 }
             } else {
                 $lKey = 'lDEF';
@@ -167,7 +169,7 @@ class FrontendController extends AbstractPlugin {
         return $this->renderElement($data, $conf['table']);
     }
 
-	/**
+    /**
      * Main function for rendering of Page Templates of TemplaVoila
      *
      * @param string $content Standard content input. Ignore.
@@ -175,7 +177,8 @@ class FrontendController extends AbstractPlugin {
      *
      * @return string HTML content for the Page Template elements.
      */
-	public function main_page($content, $conf) {
+    public function main_page($content, $conf)
+    {
         $this->initVars($conf);
 
         // Current page record which we MIGHT manipulate a little:
@@ -210,21 +213,22 @@ class FrontendController extends AbstractPlugin {
         return $this->renderElement($pageRecord, 'pages');
     }
 
-	/**
+    /**
      * Will set up various stuff in the class based on input TypoScript
      *
      * @param array $conf TypoScript options
      *
      * @return void
      */
-	public function initVars($conf) {
+    public function initVars($conf)
+    {
         $this->inheritValueFromDefault = $conf['dontInheritValueFromDefault'] ? 0 : 1;
         // naming choosen to fit the regular TYPO3 integrators needs ;)
         self::$enablePageRenderer = isset($conf['advancedHeaderInclusion']) ? $conf['advancedHeaderInclusion'] : self::$enablePageRenderer;
         $this->conf = $conf;
     }
 
-	/**
+    /**
      * Common function for rendering of the Flexible Content / Page Templates.
      * For Page Templates the input row may be manipulated to contain the proper reference to a data structure (pages can have those inherited which content elements cannot).
      *
@@ -235,7 +239,8 @@ class FrontendController extends AbstractPlugin {
      *
      * @return string HTML output.
      */
-	public function renderElement($row, $table) {
+    public function renderElement($row, $table)
+    {
         global $TYPO3_CONF_VARS;
 
         // First prepare user defined objects (if any) for hooks which extend this function:
@@ -401,27 +406,27 @@ class FrontendController extends AbstractPlugin {
                         }
                     } else {
                         $content = $this->formatError('Template Object could not be unserialized successfully.
-							Are you sure you saved mapping information into Template Object with UID "' . $row['tx_templavoila_to'] . '"?');
+                            Are you sure you saved mapping information into Template Object with UID "' . $row['tx_templavoila_to'] . '"?');
                     }
                 } else {
                     $content = $this->formatError('Couldn\'t find Template Object with UID "' . $row['tx_templavoila_to'] . '".
-						Please make sure a Template Object is accessible.');
+                        Please make sure a Template Object is accessible.');
                 }
             } else {
                 $content = $this->formatError('You haven\'t selected a Template Object yet for table/uid "' . $table . '/' . $row['uid'] . '".
-					Without a Template Object TemplaVoila cannot map the XML content into HTML.
-					Please select a Template Object now.');
+                    Without a Template Object TemplaVoila cannot map the XML content into HTML.
+                    Please select a Template Object now.');
             }
         } else {
             $content = $this->formatError('
-				Couldn\'t find a Data Structure set for table/row "' . $table . ':' . $row['uid'] . '".
-				Please select a Data Structure and Template Object first.');
+                Couldn\'t find a Data Structure set for table/row "' . $table . ':' . $row['uid'] . '".
+                Please select a Data Structure and Template Object first.');
         }
 
         return $content;
     }
 
-	/**
+    /**
      * Performing pre-processing of the data array.
      * This will transform the data in the data array according to various rules before the data is merged with the template HTML
      * Notice that $dataValues is changed internally as a reference so the function returns no content but internally changes the passed variable for $dataValues.
@@ -434,7 +439,8 @@ class FrontendController extends AbstractPlugin {
      *
      * @return void
      */
-	public function processDataValues(&$dataValues, $DSelements, $TOelements, $valueKey = 'vDEF', $mappingInfo = TRUE) {
+    public function processDataValues(&$dataValues, $DSelements, $TOelements, $valueKey = 'vDEF', $mappingInfo = TRUE)
+    {
         if (is_array($DSelements) && is_array($dataValues)) {
 
             // Create local processing information array:
@@ -523,8 +529,7 @@ class FrontendController extends AbstractPlugin {
                     /* no DS-childs: bail out
                      * no EL-childs: progress (they may all be TypoScript elements without visual representation)
                      */
-                    if (is_array($DSelements[$key]['el']) /* &&
-					    is_array($TOelements[$key]['el'])*/
+                    if (is_array($DSelements[$key]['el']) /* && is_array($TOelements[$key]['el'])*/
                     ) {
                         if (!isset($dataValues[$key]['el'])) {
                             $dataValues[$key]['el'] = array();
@@ -679,7 +684,7 @@ class FrontendController extends AbstractPlugin {
         }
     }
 
-	/**
+    /**
      * Processing of language fallback values (inheritance/overlaying)
      * You never need to call this function when "$valueKey" is "vDEF"
      *
@@ -689,7 +694,8 @@ class FrontendController extends AbstractPlugin {
      *
      * @return string|array The value
      */
-	public function inheritValue($dV, $valueKey, $overlayMode = '') {
+    public function inheritValue($dV, $valueKey, $overlayMode = '')
+    {
         $returnValue = '';
 
         try {
@@ -740,7 +746,7 @@ class FrontendController extends AbstractPlugin {
         return $returnValue;
     }
 
-	/**
+    /**
      * Creates an error message for frontend output
      *
      * @param string $string
@@ -748,8 +754,8 @@ class FrontendController extends AbstractPlugin {
      * @return string Error message output
      * @string string Error message input
      */
-	public function formatError($string) {
-
+    public function formatError($string)
+    {
         // Set no-cache since the error message shouldn't be cached of course...
         $GLOBALS['TSFE']->set_no_cache();
 
@@ -758,22 +764,22 @@ class FrontendController extends AbstractPlugin {
         }
         //
         $output = '
-			<!-- TemplaVoila ERROR message: -->
-			<div class="tx_templavoila_pi1-error" style="
-					border: 2px red solid;
-					background-color: yellow;
-					color: black;
-					text-align: center;
-					padding: 20px 20px 20px 20px;
-					margin: 20px 20px 20px 20px;
-					">' .
+            <!-- TemplaVoila ERROR message: -->
+            <div class="tx_templavoila_pi1-error" style="
+                    border: 2px red solid;
+                    background-color: yellow;
+                    color: black;
+                    text-align: center;
+                    padding: 20px 20px 20px 20px;
+                    margin: 20px 20px 20px 20px;
+                    ">' .
             '<strong>TemplaVoila ERROR:</strong><br /><br />' . nl2br(htmlspecialchars(trim($string))) .
             '</div>';
 
         return $output;
     }
 
-	/**
+    /**
      * Creates a visual response to the TemplaVoila blocks on the page.
      *
      * @param string $content
@@ -785,107 +791,106 @@ class FrontendController extends AbstractPlugin {
      *
      * @return string
      */
-	public function visualID($content, $srcPointer, $DSrec, $TOrec, $row, $table) {
-
+    public function visualID($content, $srcPointer, $DSrec, $TOrec, $row, $table)
+    {
         // Create table rows:
         $tRows = array();
 
         switch ($table) {
             case 'pages':
                 $tRows[] = '<tr style="background-color: #ABBBB4;">
-						<td colspan="2"><b>Page:</b> ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($row['title'], 30)) . ' <em>[UID:' . $row['uid'] . ']</em></td>
-					</tr>';
+                        <td colspan="2"><b>Page:</b> ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($row['title'], 30)) . ' <em>[UID:' . $row['uid'] . ']</em></td>
+                    </tr>';
                 break;
             case 'tt_content':
                 $tRows[] = '<tr style="background-color: #ABBBB4;">
-						<td colspan="2"><b>Flexible Content:</b> ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($row['header'], 30)) . ' <em>[UID:' . $row['uid'] . ']</em></td>
-					</tr>';
+                        <td colspan="2"><b>Flexible Content:</b> ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($row['header'], 30)) . ' <em>[UID:' . $row['uid'] . ']</em></td>
+                    </tr>';
                 break;
             default:
                 $tRows[] = '<tr style="background-color: #ABBBB4;">
-						<td colspan="2">Table "' . $table . '" <em>[UID:' . $row['uid'] . ']</em></td>
-					</tr>';
+                        <td colspan="2">Table "' . $table . '" <em>[UID:' . $row['uid'] . ']</em></td>
+                    </tr>';
                 break;
         }
 
         // Draw data structure:
         if (is_numeric($srcPointer)) {
             $tRows[] = '<tr>
-					<td valign="top"><b>Data Structure:</b></td>
-					<td>' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($DSrec['title'], 30)) . ' <em>[UID:' . $srcPointer . ']</em>' .
+                    <td valign="top"><b>Data Structure:</b></td>
+                    <td>' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($DSrec['title'], 30)) . ' <em>[UID:' . $srcPointer . ']</em>' .
                 ($DSrec['previewicon'] ? '<br/><img src="uploads/tx_templavoila/' . $DSrec['previewicon'] . '" alt="" />' : '') .
                 '</td>
-		</tr>';
+        </tr>';
         } else {
             $tRows[] = '<tr>
-					<td valign="top"><b>Data Structure:</b></td>
-					<td>' . htmlspecialchars($srcPointer) . '</td>
-				</tr>';
+                    <td valign="top"><b>Data Structure:</b></td>
+                    <td>' . htmlspecialchars($srcPointer) . '</td>
+                </tr>';
         }
 
         // Template Object:
         $tRows[] = '<tr>
-				<td valign="top"><b>Template Object:</b></td>
-				<td>' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($TOrec['title'], 30)) . ' <em>[UID:' . $TOrec['uid'] . ']</em>' .
+                <td valign="top"><b>Template Object:</b></td>
+                <td>' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($TOrec['title'], 30)) . ' <em>[UID:' . $TOrec['uid'] . ']</em>' .
             ($TOrec['previewicon'] ? '<br/><img src="uploads/tx_templavoila/' . $TOrec['previewicon'] . '" alt="" />' : '') .
             '</td>
-	</tr>';
+    </tr>';
         if ($TOrec['description']) {
             $tRows[] = '<tr>
-					<td valign="top" nowrap="nowrap">&nbsp; &nbsp; &nbsp; Description:</td>
-					<td>' . htmlspecialchars($TOrec['description']) . '</td>
-				</tr>';
+                    <td valign="top" nowrap="nowrap">&nbsp; &nbsp; &nbsp; Description:</td>
+                    <td>' . htmlspecialchars($TOrec['description']) . '</td>
+                </tr>';
         }
         $tRows[] = '<tr>
-				<td valign="top" nowrap="nowrap">&nbsp; &nbsp; &nbsp; Template File:</td>
-				<td>' . htmlspecialchars($TOrec['fileref']) . '</td>
-			</tr>';
+                <td valign="top" nowrap="nowrap">&nbsp; &nbsp; &nbsp; Template File:</td>
+                <td>' . htmlspecialchars($TOrec['fileref']) . '</td>
+            </tr>';
         $tRows[] = '<tr>
-				<td valign="top" nowrap="nowrap">&nbsp; &nbsp; &nbsp; Render type:</td>
-				<td>' . htmlspecialchars($TOrec['rendertype'] ? $TOrec['rendertype'] : 'Normal') . '</td>
-			</tr>';
+                <td valign="top" nowrap="nowrap">&nbsp; &nbsp; &nbsp; Render type:</td>
+                <td>' . htmlspecialchars($TOrec['rendertype'] ? $TOrec['rendertype'] : 'Normal') . '</td>
+            </tr>';
         $tRows[] = '<tr>
-				<td valign="top" nowrap="nowrap">&nbsp; &nbsp; &nbsp; Language:</td>
-				<td>' . htmlspecialchars($TOrec['sys_language_uid'] ? $TOrec['sys_language_uid'] : 'Default') . '</td>
-			</tr>';
+                <td valign="top" nowrap="nowrap">&nbsp; &nbsp; &nbsp; Language:</td>
+                <td>' . htmlspecialchars($TOrec['sys_language_uid'] ? $TOrec['sys_language_uid'] : 'Default') . '</td>
+            </tr>';
         $tRows[] = '<tr>
-				<td valign="top" nowrap="nowrap">&nbsp; &nbsp; &nbsp; Local Proc.:</td>
-				<td>' . htmlspecialchars($TOrec['localprocessing'] ? 'Yes' : '-') . '</td>
-			</tr>';
+                <td valign="top" nowrap="nowrap">&nbsp; &nbsp; &nbsp; Local Proc.:</td>
+                <td>' . htmlspecialchars($TOrec['localprocessing'] ? 'Yes' : '-') . '</td>
+            </tr>';
 
         // Compile information table:
         $infoArray = '<table style="border:1px solid black; background-color: #D9D5C9; font-family: verdana,arial; font-size: 10px;" border="0" cellspacing="1" cellpadding="1">
-						' . implode('', $tRows) . '
-						</table>';
+                        ' . implode('', $tRows) . '
+                        </table>';
 
         // Compile information:
         $id = 'templavoila-preview-' . GeneralUtility::shortMD5(microtime());
         $content = '<div style="text-align: left; position: absolute; display:none; filter: alpha(Opacity=90);" id="' . $id . '">
-						' . $infoArray . '
-					</div>
-					<div id="' . $id . '-wrapper" style=""
-						onmouseover="
-							document.getElementById(\'' . $id . '\').style.display=\'block\';
-							document.getElementById(\'' . $id . '-wrapper\').attributes.getNamedItem(\'style\').nodeValue = \'border: 2px dashed #333366;\';
-								"
-						onmouseout="
-							document.getElementById(\'' . $id . '\').style.display=\'none\';
-							document.getElementById(\'' . $id . '-wrapper\').attributes.getNamedItem(\'style\').nodeValue = \'\';
-								">' .
+                        ' . $infoArray . '
+                    </div>
+                    <div id="' . $id . '-wrapper" style=""
+                        onmouseover="
+                            document.getElementById(\'' . $id . '\').style.display=\'block\';
+                            document.getElementById(\'' . $id . '-wrapper\').attributes.getNamedItem(\'style\').nodeValue = \'border: 2px dashed #333366;\';
+                                "
+                        onmouseout="
+                            document.getElementById(\'' . $id . '\').style.display=\'none\';
+                            document.getElementById(\'' . $id . '-wrapper\').attributes.getNamedItem(\'style\').nodeValue = \'\';
+                                ">' .
             $content .
             '</div>';
 
         return $content;
     }
 
-	/**
+    /**
      * @param string $message
      * @param int $severity GeneralUtility::SYSLOG_SEVERITY_* constant
      *
      * @return void
      */
-	public function log($message, $severity) {
+    public function log($message, $severity)
+    {
         GeneralUtility::sysLog($message, 'templavoila', $severity);
     }
-
-}
