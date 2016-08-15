@@ -605,18 +605,24 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                      * to the mouseenter event and the "setInactive" to the mouseleave event.
                      */
                     enableHighlighting: function() {
-                        typo3pageModule.setActive(null, \'nothing\');
+                        TYPO3.jQuery(\'#typo3-inner-docbody\').on(\'mouseover\', typo3pageModule.setActive);
                     },
 
                     /**
                      * This method is used as an event handler when the
                      * user hovers the a content element.
                      */
-                    setActive: function(e, t) {
-                        TYPO3.jQuery(\'.active\').removeClass(\'active\').addClass(\'inactive\');
-                        var parent = TYPO3.jQuery(t).parent(\'.t3-page-ce\', null, true);
-                        if (parent) {
-                            parent.removeClass(\'inactive\').addClass(\'active\');
+                    setActive: function(e) {
+                        TYPO3.jQuery(\'#typo3-inner-docbody .active\').removeClass(\'active\').addClass(\'inactive\');
+                        if (e) {
+                            $element = TYPO3.jQuery(e.target);
+                            if (!$element.hasClass(\'t3-page-ce\')) {
+                                $element = $element.closest(\'.t3-page-ce\');
+                            }
+                            if ($element) {
+                                $element.removeClass(\'inactive\').addClass(\'active\');
+                                e.stopPropagation();
+                            }
                         }
                     }
                 }
@@ -658,7 +664,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             }
 
             // Set up JS for dynamic tab menu and side bar
-            $this->doc->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/tabmenu.js');
+            $this->doc->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Tabs');
 
             $this->doc->JScode .= $this->modTSconfig['properties']['sideBarEnable'] ? $this->sideBarObj->getJScode() : '';
 
@@ -1094,7 +1100,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 $this->containedElementsPointer--;
             }
 
-            return $this->doc->getDynTabMenu($parts, 'TEMPLAVOILA:pagemodule:' . $this->apiObj->flexform_getStringFromPointer($parentPointer));
+            return $this->doc->getDynamicTabMenu($parts, 'TEMPLAVOILA:pagemodule:' . $this->apiObj->flexform_getStringFromPointer($parentPointer));
         } else {
             return $this->render_framework_singleSheet($contentTreeArr, $languageKey, 'sDEF', $parentPointer, $parentDsMeta);
         }

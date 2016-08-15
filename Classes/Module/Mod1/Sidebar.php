@@ -193,7 +193,7 @@ class Sidebar implements SingletonInterface {
 
 						<div id="tx_templavoila_mod1_sidebar-bar" style="height: 100%; width: ' . $this->sideBarWidth . 'px; margin: 0 4px 0 0; display:none;" class="bgColor-10">
 							<div style="text-align:right;"><a href="#" onClick="tx_templavoila_mod1_sidebar_toggle();">' . $minusIcon . '</a></div>
-							' . $this->doc->getDynTabMenu($numSortedSideBarItems, 'TEMPLAVOILA:pagemodule:sidebar', 1, TRUE) . '
+							' . $this->doc->getDynamicTabMenu($numSortedSideBarItems, 'TEMPLAVOILA:pagemodule:sidebar', 1, TRUE) . '
 						</div>
 						<div id="tx_templavoila_mod1_sidebar-showbutton" style="height: 100%; width: 18px; margin: 0 4px 0 0; display:block; " class="bgColor-10">
 							<a href="#" onClick="tx_templavoila_mod1_sidebar_toggle();">' . $plusIcon . '</a>
@@ -216,7 +216,7 @@ class Sidebar implements SingletonInterface {
 						<!-- TemplaVoila Sidebar (top) begin -->
 
 						<div id="tx_templavoila_mod1_sidebar-bar" style="width:100%; margin-bottom: 10px;" class="bgColor-10">
-							' . $this->doc->getDynTabMenu($numSortedSideBarItems, 'TEMPLAVOILA:pagemodule:sidebar', 1, TRUE) . '
+							' . $this->doc->getDynamicTabMenu($numSortedSideBarItems, 'TEMPLAVOILA:pagemodule:sidebar', 1, TRUE) . '
 						</div>
 
 						<!-- TemplaVoila Sidebar end -->
@@ -228,7 +228,7 @@ class Sidebar implements SingletonInterface {
 						<!-- TemplaVoila Sidebar (top) begin -->
 
 						<div id="tx_templavoila_mod1_sidebar-bar" style="width:100%;" class="bgColor-10">
-							' . $this->doc->getDynTabMenu($numSortedSideBarItems, 'TEMPLAVOILA:pagemodule:sidebar', 1, FALSE, 100, 0, TRUE) . '
+							' . $this->doc->getDynamicTabMenu($numSortedSideBarItems, 'TEMPLAVOILA:pagemodule:sidebar', 0, FALSE) . '
 						</div>
 
 						<!-- TemplaVoila Sidebar end -->
