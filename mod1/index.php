@@ -589,8 +589,8 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 var T3_TV_MOD1_RETURNURL = "' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')) . '";
             ');
 
-            #$this->doc->getPageRenderer()->loadPrototype();
-            #$this->doc->getPageRenderer()->loadExtJs();
+            $this->doc->getPageRenderer()->loadJquery();
+
             $this->doc->JScode .= $this->doc->wrapScriptTags('
                 var typo3pageModule = {
                     /**
@@ -605,8 +605,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                      * to the mouseenter event and the "setInactive" to the mouseleave event.
                      */
                     enableHighlighting: function() {
-                        Ext.get(\'typo3-docbody\')
-                            .on(\'mouseover\', typo3pageModule.setActive,typo3pageModule);
+                        typo3pageModule.setActive(null, \'nothing\');
                     },
 
                     /**
@@ -614,15 +613,15 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                      * user hovers the a content element.
                      */
                     setActive: function(e, t) {
-                        Ext.select(\'.active\').removeClass(\'active\').addClass(\'inactive\');
-                        var parent = Ext.get(t).findParent(\'.t3-page-ce\', null, true);
+                        TYPO3.jQuery(\'.active\').removeClass(\'active\').addClass(\'inactive\');
+                        var parent = TYPO3.jQuery(t).parent(\'.t3-page-ce\', null, true);
                         if (parent) {
                             parent.removeClass(\'inactive\').addClass(\'active\');
                         }
                     }
                 }
 
-                Ext.onReady(function() {
+                TYPO3.jQuery(function() {
                     typo3pageModule.init();
                 });
             ');
@@ -756,7 +755,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                         'var sortable_linkParameters = \'' . $this->link_getParameters() . '\';';
 
                     $containment = '[' . \TYPO3\CMS\Core\Utility\GeneralUtility::csvValues($this->sortableContainers, ',', '"') . ']';
-                    $script .= 'Event.observe(window,"load",function(){';
+                    $script .= 'TYPO3.jQuery.ready(function() {';
                     foreach ($this->sortableContainers as $s) {
                         $script .= 'tv_createSortable(\'' . $s . '\',' . $containment . ');';
                     }
