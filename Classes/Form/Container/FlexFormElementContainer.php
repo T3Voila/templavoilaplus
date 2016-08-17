@@ -15,13 +15,13 @@ namespace Extension\Templavoila\Form\Container;
  */
 
 use TYPO3\CMS\Backend\Form\Container\AbstractContainer;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /**
  * The container handles single elements.
@@ -70,8 +70,8 @@ class FlexFormElementContainer extends AbstractContainer
                 }
 
                 $sectionTitle = '';
-                if (!empty($flexFormFieldArray['title'])) {
-                    $sectionTitle = $languageService->sL($flexFormFieldArray['title']);
+                if (!empty(trim($flexFormFieldArray['title']))) {
+                    $sectionTitle = $languageService->sL(trim($flexFormFieldArray['title']));
                 }
 
                 $options = $this->data;
@@ -98,6 +98,7 @@ class FlexFormElementContainer extends AbstractContainer
                         'fieldConf' => array(
                             'label' => $languageService->sL(trim($flexFormFieldArray['label'])),
                             'config' => $flexFormFieldArray['config'],
+                            'children' => $flexFormFieldArray['children'],
                             'defaultExtras' => $flexFormFieldArray['defaultExtras'],
                             'onChange' => $flexFormFieldArray['onChange'],
                         ),
@@ -122,7 +123,16 @@ class FlexFormElementContainer extends AbstractContainer
 
                     $fakeParameterArray['onFocus'] = $parameterArray['onFocus'];
                     $fakeParameterArray['label'] = $parameterArray['label'];
+                    $originalFieldName = $parameterArray['itemFormElName'];
                     $fakeParameterArray['itemFormElName'] = $parameterArray['itemFormElName'] . $flexFormFormPrefix . '[' . $flexFormFieldName . '][' . $lkey . ']';
+                    if ($fakeParameterArray['itemFormElName'] !== $originalFieldName) {
+                        // If calculated itemFormElName is different from originalFieldName
+                        // change the originalFieldName in TBE_EDITOR_fieldChanged. This is
+                        // especially relevant for wizards writing their content back to hidden fields
+                        if (!empty($fakeParameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged'])) {
+                            $fakeParameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged'] = str_replace($originalFieldName, $fakeParameterArray['itemFormElName'], $fakeParameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged']);
+                        }
+                    }
                     $fakeParameterArray['itemFormElID'] = $fakeParameterArray['itemFormElName'];
                     if (isset($flexFormRowData[$flexFormFieldName][$lkey])) {
                         $fakeParameterArray['itemFormElValue'] = $flexFormRowData[$flexFormFieldName][$lkey];
