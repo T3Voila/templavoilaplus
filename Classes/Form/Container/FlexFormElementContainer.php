@@ -150,6 +150,12 @@ class FlexFormElementContainer extends AbstractContainer
                         // Fallback to type if no renderType is given
                         $options['renderType'] = $flexFormFieldArray['config']['type'];
                     }
+
+                    // After all we may a TemplaVoila type which do not have any rendering.
+                    if (empty($options['renderType'])) {
+                        continue;
+                    }
+
                     $childResult = $this->nodeFactory->create($options)->render();
 
                     $theTitle = htmlspecialchars($fakeParameterArray['fieldConf']['label']);
