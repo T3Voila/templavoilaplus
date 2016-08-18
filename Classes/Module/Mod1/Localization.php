@@ -125,7 +125,7 @@ class Localization implements SingletonInterface
                 $grayedOut = $languageArr['PLO_hidden'] ? ' style="Filter: alpha(opacity=25); -moz-opacity: 0.25; opacity: 0.25"' : '';
 
                 $flag = \Extension\Templavoila\Utility\IconUtility::getFlagIconFileForLanguage($languageArr['flagIcon']);
-                $style = isset ($languageArr['flagIcon']) ? 'background-image: url(' . $flag . '); background-repeat: no-repeat; padding-left: 22px;' : '';
+                $style = isset ($languageArr['flagIcon']) ? 'background-image: url(' . $flag . '); background-size: 16px auto; background-position: left center; background-repeat: no-repeat; padding-left: 22px;' : '';
                 $optionsArr [] = '<option style="' . $style . '" value="' . $languageArr['uid'] . '"' . ($this->pObj->MOD_SETTINGS['language'] == $languageArr['uid'] ? ' selected="selected"' : '') . '>' . htmlspecialchars($languageArr['title']) . '</option>';
 
                 // Link to editing of language header:
