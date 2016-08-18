@@ -12,10 +12,10 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-// DEFAULT initialization of a module [BEGIN]
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Backend\Utility\BackendUtility as BackendUtilityCore;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 
+// DEFAULT initialization of a module [BEGIN]
 if (!isset($MCONF)) {
     require('conf.php');
 }
@@ -2500,7 +2500,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         ];
 
         $content .= '<strong><a href="'
-            . BackendUtilityCore::getModuleUrl('_txtemplavoilaCM1', $theArray)
+            . BackendUtility::getModuleUrl('_txtemplavoilaCM1', $theArray)
             . '" target="display">' . $title . '</a></strong>';
 
         return $content;
@@ -2526,7 +2526,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             '_load_ds_xml_to' => $this->_load_ds_xml_to
         ];
 
-        return BackendUtilityCore::getModuleUrl('_txtemplavoilaCM1', array_merge($theArray, $array));
+        return BackendUtility::getModuleUrl('_txtemplavoilaCM1', array_merge($theArray, $array));
     }
 
     public function redirectToModifyDSTO($toUid, $dsUid)
@@ -2536,7 +2536,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             '_load_ds_xml' => 1,
             '_load_ds_xml_to' => $toUid,
             'uid' => $dsUid,
-            'returnUrl' => BackendUtilityCore::getModuleUrl('web_txtemplavoilaM2', ['id' => (int)$this->_saveDSandTO_pid])
+            'returnUrl' => BackendUtility::getModuleUrl('web_txtemplavoilaM2', ['id' => (int)$this->_saveDSandTO_pid])
         ];
 
         header(
@@ -2545,7 +2545,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                     $this->displayFile,
                     $toUid,
                     $dsUid,
-                    BackendUtilityCore::getModuleUrl('web_txtemplavoilaM2', ['id' => (int)$this->_saveDSandTO_pid])
+                    BackendUtility::getModuleUrl('web_txtemplavoilaM2', ['id' => (int)$this->_saveDSandTO_pid])
                 )
             )
         );
@@ -2561,7 +2561,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             'returnUrl' => $returnUrl
         ];
 
-        return BackendUtilityCore::getModuleUrl('_txtemplavoilaCM1', $params);
+        return BackendUtility::getModuleUrl('_txtemplavoilaCM1', $params);
     }
 
     /**
