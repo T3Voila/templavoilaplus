@@ -2629,11 +2629,11 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         );
     }
 
-    public function getReturnUrl()
+    public function getBaseUrl(array $extraParams = [])
     {
         return BackendUtility::getModuleUrl(
             'web_txtemplavoilaM1',
-            $this->getLinkParameters()
+            $this->getLinkParameters($extraParams)
         );
     }
 
@@ -2820,7 +2820,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                             ];
                         }
                         if ($params) {
-                            $params['returnUrl'] = $this->getReturnUrl();
+                            $params['returnUrl'] = $this->getBaseUrl();
                             $redirectLocation = BackendUtility::getModuleUrl('record_edit', $params);
                         }
                         break;

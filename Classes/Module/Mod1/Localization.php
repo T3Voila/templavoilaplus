@@ -119,29 +119,29 @@ class Localization implements SingletonInterface
         }
 
         $optionsArr = array();
-        foreach ($availableLanguagesArr as $languageArr) {
-            unset($newLanguagesArr[$languageArr['uid']]); // Remove this language from possible new translation languages array (PNTLA ;-)
+        foreach ($availableLanguagesArr as $language) {
+            unset($newLanguagesArr[$language['uid']]); // Remove this language from possible new translation languages array (PNTLA ;-)
 
-            if ($languageArr['uid'] <= 0 || \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->checkLanguageAccess($languageArr['uid'])) {
-                $grayedOut = $languageArr['PLO_hidden'] ? ' style="Filter: alpha(opacity=25); -moz-opacity: 0.25; opacity: 0.25"' : '';
+            if ($language['uid'] <= 0 || \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->checkLanguageAccess($language['uid'])) {
+                $grayedOut = $language['PLO_hidden'] ? ' style="Filter: alpha(opacity=25); -moz-opacity: 0.25; opacity: 0.25"' : '';
 
-                $flag = \Extension\Templavoila\Utility\IconUtility::getFlagIconFileForLanguage($languageArr['flagIcon']);
-                $style = isset ($languageArr['flagIcon']) ? 'background-image: url(' . $flag . '); background-size: 16px auto; background-position: left center; background-repeat: no-repeat; padding-left: 22px;' : '';
-                $optionsArr [] = '<option style="' . $style . '" value="' . $languageArr['uid'] . '"' . ($this->pObj->MOD_SETTINGS['language'] == $languageArr['uid'] ? ' selected="selected"' : '') . '>' . htmlspecialchars($languageArr['title']) . '</option>';
+                $flag = \Extension\Templavoila\Utility\IconUtility::getFlagIconFileForLanguage($language['flagIcon']);
+                $style = isset ($language['flagIcon']) ? 'background-image: url(' . $flag . '); background-size: 16px auto; background-position: left center; background-repeat: no-repeat; padding-left: 22px;' : '';
+                $optionsArr [] = '<option style="' . $style . '" value="' . $language['uid'] . '"' . ($this->pObj->MOD_SETTINGS['language'] == $language['uid'] ? ' selected="selected"' : '') . '>' . htmlspecialchars($language['title']) . '</option>';
 
                 // Link to editing of language header:
                 $availableTranslationsFlags .= '<a href="'
                     . BackendUtility::getModuleUrl(
                         'web_txtemplavoilaM1',
-                        $this->pObj->getLinkParameters(['editPageLanguageOverlay' => $languageArr['uid']])
+                        $this->pObj->getLinkParameters(['editPageLanguageOverlay' => $language['uid']])
                     ) . '" style="margin-right:4px">' .
                     '<span ' . $grayedOut . '>' .
-                    \Extension\Templavoila\Utility\IconUtility::getFlagIconForLanguage($languageArr['flagIcon'], array('title' => $languageArr['title'], 'alt' => $languageArr['title'])) .
+                    \Extension\Templavoila\Utility\IconUtility::getFlagIconForLanguage($language['flagIcon'], array('title' => $language['title'], 'alt' => $language['title'])) .
                     '</span></a>';
             }
         }
 
-        $link = '\'index.php?' . $this->pObj->link_getParameters() . '&SET[language]=\'+this.options[this.selectedIndex].value';
+        $baseLink = $this->pObj->getBaseUrl();
 
         $output = '
             <tr class="bgColor4">
@@ -150,7 +150,7 @@ class Localization implements SingletonInterface
                 </td><td width="200" style="vertical-align:middle;">
                     ' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('selectlanguageversion', true) . ':
                 </td>
-                <td style="vertical-align:middle;"><select onchange="document.location=' . htmlspecialchars($link) . '">' . implode('', $optionsArr) . '</select></td>
+                <td style="vertical-align:middle;"><select onchange="document.location=\'' . $baseLink . '&amp;SET[language]=\'+this.options[this.selectedIndex].value">' . implode('', $optionsArr) . '</select></td>
             </tr>
         ';
 
@@ -159,7 +159,6 @@ class Localization implements SingletonInterface
             $options[] = \TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->pObj->modTSconfig['properties']['disableDisplayMode'], 'default') ? '' : '<option value=""' . ($this->pObj->MOD_SETTINGS['langDisplayMode'] === '' ? ' selected="selected"' : '') . '>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_general.xlf:LGL.default_value') . '</option>';
             $options[] = \TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->pObj->modTSconfig['properties']['disableDisplayMode'], 'selectedLanguage') ? '' : '<option value="selectedLanguage"' . ($this->pObj->MOD_SETTINGS['langDisplayMode'] === 'selectedLanguage' ? ' selected="selected"' : '') . '>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('pageLocalizationDisplayMode_selectedLanguage') . '</option>';
             $options[] = \TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->pObj->modTSconfig['properties']['disableDisplayMode'], 'onlyLocalized') ? '' : '<option value="onlyLocalized"' . ($this->pObj->MOD_SETTINGS['langDisplayMode'] === 'onlyLocalized' ? ' selected="selected"' : '') . '>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('pageLocalizationDisplayMode_onlyLocalized') . '</option>';
-            $link = '\'index.php?' . $this->pObj->link_getParameters() . '&SET[langDisplayMode]=\'+this.options[this.selectedIndex].value';
             if (count($options)) {
                 $output .= '
                     <tr class="bgColor4">
@@ -169,7 +168,7 @@ class Localization implements SingletonInterface
                             ' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('pageLocalizationDisplayMode', true) . ':
                         </td>
                         <td style="vertical-align:middle;">
-                            <select onchange="document.location=' . htmlspecialchars($link) . '">
+                            <select onchange="document.location=\'' . $baseLink . '&SET[langDisplayMode]=\'+this.options[this.selectedIndex].value">
                                 ' . implode(chr(10), $options) . '
                             </select>
                         </td>
@@ -194,7 +193,6 @@ class Localization implements SingletonInterface
         // enable/disable structure inheritance - see #7082 for details
         $adminOnlySetting = isset($this->pObj->modTSconfig['properties']['adminOnlyPageStructureInheritance']) ? $this->pObj->modTSconfig['properties']['adminOnlyPageStructureInheritance'] : 'strict';
         if ((\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isAdmin() || $adminOnlySetting === 'false') && $this->pObj->rootElementLangMode == 'inheritance') {
-            $link = '\'index.php?' . $this->pObj->link_getParameters() . '&SET[disablePageStructureInheritance]=' . ($this->pObj->MOD_SETTINGS['disablePageStructureInheritance'] == '1' ? '0' : '1') . '\'';
             $output .= '
                 <tr class="bgColor4">
                     <td  width="20">
@@ -203,7 +201,7 @@ class Localization implements SingletonInterface
                         ' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('pageLocalizationMode_inheritance.disableInheritance', true) . ':
                     </td>
                     <td style="vertical-align:middle;">
-                        <input type="checkbox" onchange="document.location=' . $link . '" ' . ($this->pObj->MOD_SETTINGS['disablePageStructureInheritance'] == '1' ? ' checked="checked"' : '') . '/>
+                        <input type="checkbox" onchange="document.location=\'' . $baseLink . '&SET[disablePageStructureInheritance]=\'+(this.checked ? 1 : 0)" ' . ($this->pObj->MOD_SETTINGS['disablePageStructureInheritance'] == '1' ? ' checked="checked"' : '') . '/>
                     </td>
                 </tr>
             ';
@@ -248,15 +246,19 @@ class Localization implements SingletonInterface
         foreach ($newLanguagesArr as $language) {
             if (\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->checkLanguageAccess($language['uid']) && !isset($translatedLanguagesArr[$language['uid']])) {
                 $flag = \Extension\Templavoila\Utility\IconUtility::getFlagIconFileForLanguage($language['flagIcon']);
-                $style = isset ($language['flagIcon']) ? 'background-image: url(' . $flag . '); background-repeat: no-repeat; padding-top: 0px; padding-left: 22px;' : '';
+                $style = isset ($language['flagIcon']) ? 'background-image: url(' . $flag . '); background-size: 16px auto; background-position: left center; background-repeat: no-repeat; padding-top: 0px; padding-left: 22px;' : '';
                 $optionsArr [] = '<option style="' . $style . '" name="createNewPageTranslation" value="' . $language['uid'] . '">' . htmlspecialchars($language['title']) . '</option>';
             }
         }
 
         $output = '';
         if (count($optionsArr) > 1) {
-            $linkParam = $this->pObj->rootElementTable == 'pages' ? '&doktype=' . $this->pObj->rootElementRecord['doktype'] : '';
-            $link = 'index.php?' . $this->pObj->link_getParameters() . '&createNewPageTranslation=\'+this.options[this.selectedIndex].value+\'&pid=' . $this->pObj->id . $linkParam;
+            $linkParam = ['pid' => $this->pObj->id];
+            if ($this->pObj->rootElementTable === 'pages') {
+                $linkParam['doktype'] = $this->pObj->rootElementRecord['doktype'];
+            }
+            $link = $this->pObj->getBaseUrl($linkParam)
+                . '&createNewPageTranslation=\'+this.options[this.selectedIndex].value';
             $output = '
                 <tr class="bgColor4">
                     <td width="20">
@@ -264,7 +266,7 @@ class Localization implements SingletonInterface
                     </td><td width="200" style="vertical-align:middle;">
                         ' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('createnewtranslation', true) . ':
                     </td>
-                    <td style="vertical-align:middle;"><select onChange="document.location=\'' . htmlspecialchars($link) . '\'">' . implode('', $optionsArr) . '</select></td>
+                    <td style="vertical-align:middle;"><select onChange="document.location=\'' . $link . '">' . implode('', $optionsArr) . '</select></td>
                 </tr>
             ';
         }
