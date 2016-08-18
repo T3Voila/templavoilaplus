@@ -15,6 +15,7 @@ namespace Extension\Templavoila\Module\Mod1;
  */
 
 use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /**
  * Submodule 'localization' for the templavoila page module
@@ -129,8 +130,11 @@ class Localization implements SingletonInterface
                 $optionsArr [] = '<option style="' . $style . '" value="' . $languageArr['uid'] . '"' . ($this->pObj->MOD_SETTINGS['language'] == $languageArr['uid'] ? ' selected="selected"' : '') . '>' . htmlspecialchars($languageArr['title']) . '</option>';
 
                 // Link to editing of language header:
-                $availableTranslationsFlags .= '<a href="index.php?' .
-                    htmlspecialchars($this->pObj->link_getParameters() . '&editPageLanguageOverlay=' . $languageArr['uid']) . '">' .
+                $availableTranslationsFlags .= '<a href="'
+                    . BackendUtility::getModuleUrl(
+                        'web_txtemplavoilaM1',
+                        $this->pObj->getLinkParameters(['editPageLanguageOverlay' => $languageArr['uid']])
+                    ) . '" style="margin-right:4px">' .
                     '<span ' . $grayedOut . '>' .
                     \Extension\Templavoila\Utility\IconUtility::getFlagIconForLanguage($languageArr['flagIcon'], array('title' => $languageArr['title'], 'alt' => $languageArr['title'])) .
                     '</span></a>';

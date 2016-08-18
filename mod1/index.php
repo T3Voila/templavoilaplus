@@ -12,6 +12,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+
 /**
  * Module 'Page' for the 'templavoila' extension.
  *
@@ -2615,6 +2617,26 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         return $output;
     }
 
+    public function getLinkParameters(array $extraParams = [])
+    {
+        return array_merge(
+            [
+                'id' => $this->id,
+                'altRoot' => $this->altRoot,
+                'versionId' => $this->versionId,
+            ],
+            $extraParams
+        );
+    }
+
+    public function getReturnUrl()
+    {
+        return BackendUtility::getModuleUrl(
+            'web_txtemplavoilaM1',
+            $this->getLinkParameters()
+        );
+    }
+
     /**
      * Render the bottom controls which (might) contain the new, browse and paste-buttons
      * which sit below each content element
@@ -2764,7 +2786,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                     case 'editPageLanguageOverlay':
                         // Look for pages language overlay record for language:
                         $sys_language_uid = (int)$commandParameters;
-                        $params = '';
+                        $params = null;
                         if ($sys_language_uid != 0) {
                             // Edit overlay record
                             list($pLOrecord) = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTgetRows(
@@ -2777,17 +2799,29 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                             if ($pLOrecord) {
                                 \TYPO3\CMS\Backend\Utility\BackendUtility::workspaceOL('pages_language_overlay', $pLOrecord);
                                 if (is_array($pLOrecord)) {
-                                    $params = '&edit[pages_language_overlay][' . $pLOrecord['uid'] . ']=edit';
+                                    $params = [
+                                        'edit' => [
+                                            'pages_language_overlay' => [
+                                                $pLOrecord['uid'] => 'edit',
+                                            ]
+                                        ]
+                                    ];
                                 }
                             }
                         } else {
                             // Edit default language (page properties)
                             // No workspace overlay because we already on this page
-                            $params = '&edit[pages][' . (int)$this->id . ']=edit';
+                            $params = [
+                                'edit' => [
+                                    'pages' => [
+                                        (int)$this->id => 'edit',
+                                    ]
+                                ]
+                            ];
                         }
                         if ($params) {
-                            $returnUrl = '&returnUrl=' . rawurlencode(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila') . 'mod1/index.php?' . $this->link_getParameters());
-                            $redirectLocation = $GLOBALS['BACK_PATH'] . 'alt_doc.php?' . $params . $returnUrl; //.'&localizationMode=text';
+                            $params['returnUrl'] = $this->getReturnUrl();
+                            $redirectLocation = BackendUtility::getModuleUrl('record_edit', $params);
                         }
                         break;
                 }
