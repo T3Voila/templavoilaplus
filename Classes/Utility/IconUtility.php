@@ -17,35 +17,37 @@ namespace Extension\Templavoila\Utility;
 /**
  * Class which adds an additional layer for icon creation
  */
-final class IconUtility {
+final class IconUtility
+{
+    /**
+     * @param string $flagName
+     * @param array $options
+     *
+     * @return string
+     */
+    static public function getFlagIconForLanguage($flagName, $options = array())
+    {
+        $flagName = (strlen($flagName) > 0) ? $flagName : 'unknown';
 
-	/**
-	 * @param string $flagName
-	 * @param array $options
-	 *
-	 * @return string
-	 */
-	static public function getFlagIconForLanguage($flagName, $options = array()) {
-		$flagName = (strlen($flagName) > 0) ? $flagName : 'unknown';
+        return \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('flags-' . ($flagName ? : 'unknown') , $options);
+    }
 
-		return \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('flags-' . ($flagName ? : 'unknown') , $options);
-	}
+    /**
+     * @param string $flagName
+     *
+     * @return string
+     */
+    static public function getFlagIconFileForLanguage($flagName)
+    {
+        $flag = '';
+        $flagName = (strlen($flagName) > 0) ? $flagName : 'unknown';
 
-	/**
-	 * @param string $flagName
-	 *
-	 * @return string
-	 */
-	static public function getFlagIconFileForLanguage($flagName) {
-		$flag = '';
-		$flagName = (strlen($flagName) > 0) ? $flagName : 'unknown';
+        // same dirty trick as for #17286 in Core
+        if (is_file(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('EXT:t3skin/images/flags/' . $flagName . '.png', FALSE))) {
+            // resolving extpath on its own because otherwise this might not return a relative path
+            $flag = $GLOBALS['BACK_PATH'] . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('t3skin') . '/images/flags/' . $flagName . '.png';
+        }
 
-		// same dirty trick as for #17286 in Core
-		if (is_file(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('EXT:t3skin/images/flags/' . $flagName . '.png', FALSE))) {
-			// resolving extpath on its own because otherwise this might not return a relative path
-			$flag = $GLOBALS['BACK_PATH'] . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('t3skin') . '/images/flags/' . $flagName . '.png';
-		}
-
-		return $flag;
-	}
+        return $flag;
+    }
 }
