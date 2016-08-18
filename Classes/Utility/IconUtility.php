@@ -14,6 +14,12 @@ namespace Extension\Templavoila\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconRegistry;
+use TYPO3\CMS\Core\Utility\GeneralUtility as CoreGeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility as PathUtility;
+
 /**
  * Class which adds an additional layer for icon creation
  */
@@ -27,9 +33,10 @@ final class IconUtility
      */
     static public function getFlagIconForLanguage($flagName, $options = array())
     {
-        $flagName = (strlen($flagName) > 0) ? $flagName : 'unknown';
-
-        return \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('flags-' . ($flagName ? : 'unknown') , $options);
+        $iconFactory = CoreGeneralUtility::makeInstance(IconFactory::class);
+        return '<span alt="' . htmlspecialchars($options['alt']) . '" title="' . htmlspecialchars($options['title']) . '">'
+            . $iconFactory->getIcon('flags-' . ($flagName ? : 'unknown'), Icon::SIZE_SMALL)->render()
+            . '</span>';
     }
 
     /**
@@ -39,15 +46,22 @@ final class IconUtility
      */
     static public function getFlagIconFileForLanguage($flagName)
     {
-        $flag = '';
-        $flagName = (strlen($flagName) > 0) ? $flagName : 'unknown';
+        $identifier = 'flags-' . ($flagName ? : 'unknown');
 
-        // same dirty trick as for #17286 in Core
-        if (is_file(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('EXT:t3skin/images/flags/' . $flagName . '.png', FALSE))) {
-            // resolving extpath on its own because otherwise this might not return a relative path
-            $flag = $GLOBALS['BACK_PATH'] . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('t3skin') . '/images/flags/' . $flagName . '.png';
+        $iconRegistry = CoreGeneralUtility::makeInstance(IconRegistry::class);
+
+        if (!$iconRegistry->isRegistered($identifier)) {
+            $identifier = $iconRegistry->getDefaultIconIdentifier();
         }
 
-        return $flag;
+        $iconConfiguration = $iconRegistry->getIconConfigurationByIdentifier($identifier);
+
+        if (isset($iconConfiguration['options']['source'])) {
+            return '/' . PathUtility::stripPathSitePrefix(
+                CoreGeneralUtility::getFileAbsFileName($iconConfiguration['options']['source'])
+            );
+        }
+
+        return '';
     }
 }
