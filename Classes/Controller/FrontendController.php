@@ -894,3 +894,4 @@ class FrontendController extends AbstractPlugin
     {
         GeneralUtility::sysLog($message, 'templavoila', $severity);
     }
+}
