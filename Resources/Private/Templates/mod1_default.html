@@ -27,6 +27,8 @@ TYPO3.jQuery(document).on('click.tab.data-api', '[data-toggle="tab"]', function 
     TYPO3.jQuery('ul.nav.nav-tabs>li.active').removeClass('active');
     if (activate) {
         TYPO3.jQuery(this).tab('show')
+    } else {
+        TYPO3.Tabs.storeActiveTab(e.currentTarget.id, '');
     }
     return true;
 });

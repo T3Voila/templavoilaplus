@@ -89,16 +89,12 @@ class Localization implements SingletonInterface
     {
         $iOutput = $this->sidebar_renderItem_renderLanguageSelectorbox() .
             $this->sidebar_renderItem_renderNewTranslationSelectorbox();
-        $output = (!$iOutput ? '' : '
-            <table border="0" cellpadding="0" cellspacing="1" width="100%" class="lrPadding">
-                <tr class="bgColor4-20">
-                    <th colspan="3">&nbsp;</th>
-                </tr>
-                ' .
-            $iOutput .
-            '
-        </table>
-    ');
+        $output = (!$iOutput
+            ? ''
+            : '<table border="0" cellpadding="0" cellspacing="1" width="100%" class="lrPadding">'
+                . $iOutput
+                . '</table>'
+        );
 
         return $output;
     }

@@ -193,7 +193,7 @@ class Sidebar implements SingletonInterface {
 
 						<div id="tx_templavoila_mod1_sidebar-bar" style="height: 100%; width: ' . $this->sideBarWidth . 'px; margin: 0 4px 0 0; display:none;" class="bgColor-10">
 							<div style="text-align:right;"><a href="#" onClick="tx_templavoila_mod1_sidebar_toggle();">' . $minusIcon . '</a></div>
-							' . $this->doc->getDynamicTabMenu($numSortedSideBarItems, 'TEMPLAVOILA:pagemodule:sidebar', 1, TRUE) . '
+							' . $this->doc->getDynamicTabMenu($numSortedSideBarItems, 'TEMPLAVOILA:pagemodule:sidebar', 1, TRUE, true, false) . '
 						</div>
 						<div id="tx_templavoila_mod1_sidebar-showbutton" style="height: 100%; width: 18px; margin: 0 4px 0 0; display:block; " class="bgColor-10">
 							<a href="#" onClick="tx_templavoila_mod1_sidebar_toggle();">' . $plusIcon . '</a>
@@ -216,7 +216,7 @@ class Sidebar implements SingletonInterface {
 						<!-- TemplaVoila Sidebar (top) begin -->
 
 						<div id="tx_templavoila_mod1_sidebar-bar" style="width:100%; margin-bottom: 10px;" class="bgColor-10">
-							' . $this->doc->getDynamicTabMenu($numSortedSideBarItems, 'TEMPLAVOILA:pagemodule:sidebar', 1, TRUE) . '
+							' . $this->doc->getDynamicTabMenu($numSortedSideBarItems, 'TEMPLAVOILA:pagemodule:sidebar', 1, TRUE, true, false) . '
 						</div>
 
 						<!-- TemplaVoila Sidebar end -->
@@ -228,7 +228,7 @@ class Sidebar implements SingletonInterface {
 						<!-- TemplaVoila Sidebar (top) begin -->
 
 						<div id="tx_templavoila_mod1_sidebar-bar" style="width:100%;" class="bgColor-10">
-							' . $this->doc->getDynamicTabMenu($numSortedSideBarItems, 'TEMPLAVOILA:pagemodule:sidebar', 0, FALSE) . '
+							' . $this->doc->getDynamicTabMenu($numSortedSideBarItems, 'TEMPLAVOILA:pagemodule:sidebar', 0, FALSE, true, false) . '
 						</div>
 
 						<!-- TemplaVoila Sidebar end -->
@@ -336,11 +336,7 @@ class Sidebar implements SingletonInterface {
 				$onClick = 'jumpToUrl(\'' . $GLOBALS['BACK_PATH'] . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('version') . 'cm1/index.php?table=pages&uid=' . $pObj->id . '&returnUrl=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')) . '\')';
 				$versionSelector = '<input type="button" value="' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('sidebar_versionSelector_createVersion', TRUE) . '" onclick="' . htmlspecialchars($onClick) . '" />';
 			}
-			$tableRows = array('
-				<tr class="bgColor4-20">
-					<th colspan="3">&nbsp;</th>
-				</tr>
-			');
+			$tableRows = [];
 
 			$tableRows[] = '
 			<tr class="bgColor4">
@@ -365,11 +361,7 @@ class Sidebar implements SingletonInterface {
 	 * @return string HTML output
 	 */
 	public function renderItem_advancedFunctions(&$pObj) {
-		$tableRows = array('
-			<tr class="bgColor4-20">
-				<th colspan="3">&nbsp;</th>
-			</tr>
-		');
+		$tableRows = [];
 
 		// Render checkbox for showing hidden elements:
 		$tableRows[] = '
