@@ -618,13 +618,6 @@ class TcaFlexProcess implements FormDataProviderInterface
                             }
                         } // End of preparation for each possible container
 
-                    // type without section is not ok
-                    } elseif (isset($dataStructureSheetElementDefinition['type']) || isset($dataStructureSheetElementDefinition['section'])) {
-                        throw new \UnexpectedValueException(
-                            'Broken data structure on field name ' . $fieldName . '. section without type or vice versa is not allowed',
-                            1440685208
-                        );
-
                     // A "normal" TCA element
                     } else {
                         foreach ($languagesOnElementLevel as $isoElementLevel) {
