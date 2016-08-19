@@ -818,7 +818,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         $content .= $this->doc->moduleBody(
             array(),
             $this->getDocHeaderButtons(!isset($pageInfoArr['uid'])),
-            $this->getBodyMarkers()
+            $this->getBodyMarkers($pageInfoArr)
         );
         $content .= $this->doc->endPage();
 
@@ -847,10 +847,32 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      *
      * @return array The filled marker array
      */
-    protected function getBodyMarkers()
+    protected function getBodyMarkers($pageRecord)
     {
+        // Taken from TYPO3\CMS\Backend\Template\Components\MetaInformation::getPath
+        // and TYPO3\CMS\Backend\Template\Components\MetaInformation::getRecordInformation
+        $path = substr($pageRecord['_thePathFull'], 0, -1);
+        $pos = strrpos($path, $pageRecord['title']);
+        if ($pos !== false) {
+            $path = substr($path, 0, $pos);
+        }
+
+        $icon = BackendUtility::wrapClickMenuOnIcon(
+            // @TODO Tooltip do not work as of missing bootstrap?
+            '<span ' . BackendUtility::getRecordToolTip($pageRecord, 'pages') . '>'
+            . $this->iconFactory->getIconForRecord('pages', $pageRecord, Icon::SIZE_SMALL)->render()
+            . '</span>',
+            'pages',
+            $pageRecord['uid']
+        );
+
         $bodyMarkers = array(
             'TITLE' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('title'),
+            'FULLPAGEPATH' => $path,
+            'PAGEINFORMATION' => $icon
+                . ' <strong>' . htmlspecialchars(BackendUtility::getRecordTitle('pages', $pageRecord))
+                . ($pageRecord['uid'] !== '' ? '&nbsp;[' . $pageRecord['uid'] . ']' : '')
+                . '</strong>'
         );
 
         if ($this->modTSconfig['properties']['sideBarEnable'] && $this->sideBarObj->position == 'left') {
@@ -968,7 +990,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 $buttons['edit_page'] = $this->buildButton(
                     'edit_page',
                     TemplavoilaGeneralUtility::getLanguageService()->sL('LLL:EXT:cms/layout/locallang.xlf:editPageProperties', 1),
-                    'actions-document-open'
+                    'actions-page-open'
                 );
                 // Move page
                 $buttons['move_page'] = $this->buildButton(

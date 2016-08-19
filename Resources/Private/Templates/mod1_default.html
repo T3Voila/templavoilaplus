@@ -2,7 +2,12 @@
 <div class="typo3-fullDoc typo3-templavoila-pagemodule">
     <!-- Page header with buttons, path details and csh -->
     <div id="typo3-docheader" class="module-docheader t3js-module-docheader">
-        <div class="module-docheader-bar module-docheader-bar-buttons t3js-module-docheader-bar t3js-module-docheader-bar-buttons"></div>
+        <div class="module-docheader-bar module-docheader-bar-buttons t3js-module-docheader-bar t3js-module-docheader-bar-buttons">
+            <div class="module-docheader-bar-column-right">
+                <span class="typo3-docheader-pagePath">###PAGEPATH######FULLPAGEPATH###</span>
+                ###PAGEINFORMATION###
+            </div>
+        </div>
         <div class="module-docheader-bar module-docheader-bar-buttons t3js-module-docheader-bar t3js-module-docheader-bar-buttons">
             <div class="module-docheader-bar-column-left"><div aria-label="" role="toolbar" class="btn-toolbar">###BUTTONLIST_LEFT###</div></div>
             <div class="module-docheader-bar-column-right"><div aria-label="" role="toolbar" class="btn-toolbar">###BUTTONLIST_RIGHT###</div></div>
@@ -58,10 +63,11 @@
 <!-- ###BUTTON_GROUP_WRAP### -->
 
 <!-- ###BUTTON_GROUPS_LEFT### -->
-<!-- ###BUTTON_GROUP1### -->###CSH######NEW_PAGE###<!-- ###BUTTON_GROUP1### -->
+<!-- ###BUTTON_GROUP1### -->###NEW_PAGE###<!-- ###BUTTON_GROUP1### -->
 <!-- ###BUTTON_GROUP2### -->###VIEW######EDIT_PAGE######MOVE_PAGE######HISTORY_PAGE###<!-- ###BUTTON_GROUP2### -->
 <!-- ###BUTTON_GROUPS_LEFT### -->
 
 <!-- ###BUTTON_GROUPS_RIGHT### -->
 <!-- ###BUTTON_GROUP1### -->###RECORD_LIST######CACHE######SHORTCUT###<!-- ###BUTTON_GROUP1### -->
+<!-- ###BUTTON_GROUP2### -->###CSH###<!-- ###BUTTON_GROUP2### -->
 <!-- ###BUTTON_GROUPS_RIGHT### -->
