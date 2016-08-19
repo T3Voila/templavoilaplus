@@ -16,6 +16,21 @@
     <!-- Content of module, for instance listing, info or editing -->
     ###EDITAREA###
 </div>
+<script>
+TYPO3.jQuery(document).off('click.tab.data-api', '[data-toggle="tab"]');
+TYPO3.jQuery(document).on('click.tab.data-api', '[data-toggle="tab"]', function (e) {
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    var tab = TYPO3.jQuery(TYPO3.jQuery(this).attr('href'));
+    var activate = !tab.hasClass('active');
+    TYPO3.jQuery('div.tab-content>div.tab-pane.active').removeClass('active');
+    TYPO3.jQuery('ul.nav.nav-tabs>li.active').removeClass('active');
+    if (activate) {
+        TYPO3.jQuery(this).tab('show')
+    }
+    return true;
+});
+</script>
 <!-- ###FULLDOC### end -->
 
 <!-- Sidebar Disabled -->
