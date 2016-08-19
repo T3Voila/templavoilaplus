@@ -13,6 +13,11 @@
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility as CoreGeneralUtility;
+
+use \Extension\Templavoila\Utility\GeneralUtility as TemplavoilaGeneralUtility;
 
 /**
  * Module 'Page' for the 'templavoila' extension.
@@ -356,6 +361,8 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     public function init()
     {
         parent::init();
+
+        $this->iconFactory = CoreGeneralUtility::makeInstance(IconFactory::class);
 
         $this->modSharedTSconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($this->id, 'mod.SHARED');
         $this->MOD_SETTINGS = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData($this->MOD_MENU, \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('SET'), $this->MCONF['name']);
@@ -901,65 +908,138 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         }
 
         // View page
-        $viewAddGetVars = $this->currentLanguageUid ? '&L=' . $this->currentLanguageUid : '';
-        $buttons['view'] = '<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::viewOnClick($this->id, $BACK_PATH, \TYPO3\CMS\Backend\Utility\BackendUtility::BEgetRootLine($this->id), '', '', $viewAddGetVars)) . '">' .
-            \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-view', array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_core.php:labels.showPage', 1))) .
-            '</a>';
+        $buttons['view'] = $this->buildButton(
+            'view',
+            TemplavoilaGeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_core.php:labels.showPage', 1),
+            'actions-document-view'
+        );
 
         // Shortcut
-        if (\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->mayMakeShortcut()) {
-            $buttons['shortcut'] = $this->doc->makeShortcutIcon('id, edit_record, pointer, new_unique_uid, search_field, search_levels, showLimit', implode(',', array_keys($this->MOD_MENU)), $this->MCONF['name']);
+        if (TemplavoilaGeneralUtility::getBackendUser()->mayMakeShortcut()) {
+            $buttons['shortcut'] = $this->doc->makeShortcutIcon(
+                'id, edit_record, pointer, new_unique_uid, search_field, search_levels, showLimit',
+                implode(',', array_keys($this->MOD_MENU)),
+                $this->MCONF['name'],
+                '',
+                'btn btn-default btn-sm'
+            );
         }
 
         // If access to Web>List for user, then link to that module.
-        if (\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->check('modules', 'web_list')) {
-            $href = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_list', array('id' => $this->id, 'returnUrl' => \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')));
-            $buttons['record_list'] = '<a href="' . htmlspecialchars($href) . '">' .
-                \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-system-list-open', array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_core.php:labels.showList', 1))) .
-                '</a>';
+        if (TemplavoilaGeneralUtility::getBackendUser()->check('modules', 'web_list')) {
+            $buttons['record_list'] = $this->buildButton(
+                'web_list',
+                TemplavoilaGeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_core.php:labels.showList', 1),
+                'actions-system-list-open',
+                [
+                    'id' => $this->id,
+                ]
+            );
         }
 
         if (!$this->modTSconfig['properties']['disableIconToolbar']) {
 
             // Page history
-            $buttons['history_page'] = '<a href="#" onclick="' . htmlspecialchars('jumpToUrl(\'' . $BACK_PATH . 'show_rechis.php?element=' . rawurlencode('pages:' . $this->id) . '&returnUrl=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')) . '#latest\');return false;') . '">' .
-                \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-history-open', array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:cms/layout/locallang.xlf:recordHistory', 1))) .
-                '</a>';
+            $buttons['history_page'] = $this->buildButton(
+                    'record_history',
+                    TemplavoilaGeneralUtility::getLanguageService()->sL('LLL:EXT:cms/layout/locallang.xlf:recordHistory', 1),
+                    'actions-document-history-open',
+                    [
+                        'element' => 'pages:' . $this->id,
+                    ]
+            );
 
-            if (!$this->translatorMode && \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isPSet($this->calcPerms, 'pages', 'new')) {
+            if (!$this->translatorMode && TemplavoilaGeneralUtility::getBackendUser()->isPSet($this->calcPerms, 'pages', 'new')) {
                 // Create new page (wizard)
-                $buttons['new_page'] = '<a href="#" onclick="' . htmlspecialchars('jumpToUrl(\'' . $BACK_PATH . 'db_new.php?id=' . $this->id . '&pagesOnly=1&returnUrl=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI') . '&updatePageTree=true') . '\');return false;') . '">' .
-                    \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-page-new', array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:cms/layout/locallang.xlf:newPage', 1))) .
-                    '</a>';
+                $buttons['new_page'] = $this->buildButton(
+                    'db_new',
+                    TemplavoilaGeneralUtility::getLanguageService()->sL('LLL:EXT:cms/layout/locallang.xlf:newPage', 1),
+                    'actions-page-new',
+                    [
+                        'id' => $this->id,
+                        'pagesOnly' => 1,
+                    ]
+                );
+                // 'returnUrl' => \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI') . '&updatePageTree=true',
             }
 
-            if (!$this->translatorMode && \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isPSet($this->calcPerms, 'pages', 'edit')) {
+            if (!$this->translatorMode && TemplavoilaGeneralUtility::getBackendUser()->isPSet($this->calcPerms, 'pages', 'edit')) {
                 // Edit page properties
-                $params = '&edit[pages][' . $this->id . ']=edit';
-                $buttons['edit_page'] = '<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick($params, $BACK_PATH)) . '">' .
-                    \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open', array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:cms/layout/locallang.xlf:editPageProperties', 1))) .
-                    '</a>';
+                $buttons['edit_page'] = $this->buildButton(
+                    'edit_page',
+                    TemplavoilaGeneralUtility::getLanguageService()->sL('LLL:EXT:cms/layout/locallang.xlf:editPageProperties', 1),
+                    'actions-document-open'
+                );
                 // Move page
-                $buttons['move_page'] = '<a href="' . htmlspecialchars($BACK_PATH . 'move_el.php?table=pages&uid=' . $this->id . '&returnUrl=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI'))) . '">' .
-                    \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-page-move', array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:cms/layout/locallang.xlf:move_page', 1))) .
-                    '</a>';
+                $buttons['move_page'] = $this->buildButton(
+                    'move_element',
+                    TemplavoilaGeneralUtility::getLanguageService()->sL('LLL:EXT:cms/layout/locallang.xlf:move_page', 1),
+                    'actions-page-move',
+                    [
+                        'table' => 'pages',
+                        'uid'=> $this->id,
+                    ]
+                );
             }
 
-            $buttons['csh'] = \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_txtemplavoilaM1', 'pagemodule', $BACK_PATH);
+            $buttons['csh'] = \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem(
+                '_MOD_web_txtemplavoilaM1', 'pagemodule', null, '<span class="btn btn-default btn-sm">|</span>'
+            );
 
             if ($this->id) {
-                $cacheUrl = $GLOBALS['BACK_PATH'] . 'tce_db.php?vC=' . \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->veriCode() .
-                    \TYPO3\CMS\Backend\Utility\BackendUtility::getUrlToken('tceAction') .
-                    '&redirect=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')) .
-                    '&cacheCmd=' . $this->id;
+                $buttons['cache'] = $this->buildButton(
+                    'tce_db',
+                    TemplavoilaGeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.clear_cache', 1),
+                    'actions-system-cache-clear',
+                    [
+                        'vC' => \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->veriCode(),
+                        'cacheCmd'=> $this->id,
+                        'redirect' => CoreGeneralUtility::getIndpEnv('REQUEST_URI'),
+                    ]
+                );
 
-                $buttons['cache'] = '<a href="' . $cacheUrl . '" title="' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.clear_cache', TRUE) . '">' .
-                    \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-system-cache-clear') .
-                    '</a>';
             }
         }
 
         return $buttons;
+    }
+
+    protected function buildButton($module, $title, $icon, $params = [])
+    {
+        global $BACK_PATH;
+
+        $clickUrl = '';
+
+        switch ($module) {
+            case 'edit_page':
+                $clickUrl = htmlspecialchars(BackendUtility::editOnClick('&edit[pages][' . $this->id . ']=edit'));
+                break;
+            case 'view':
+                $viewAddGetVars = $this->currentLanguageUid ? '&L=' . $this->currentLanguageUid : '';
+                $clickUrl = htmlspecialchars(BackendUtility::viewOnClick(
+                    $this->id,
+                    $BACK_PATH,
+                    BackendUtility::BEgetRootLine($this->id),
+                    '',
+                    '',
+                    $viewAddGetVars)
+                );
+                break;
+            default:
+                $url = BackendUtility::getModuleUrl(
+                    $module,
+                    array_merge(
+                        $params,
+                        [
+                            'returnUrl' => CoreGeneralUtility::getIndpEnv('REQUEST_URI'),
+                        ]
+                    )
+                );
+                $clickUrl = 'jumpToUrl(\'' . $url . '\');return false;';
+        }
+        return '<a href="#" class="btn btn-default btn-sm" onclick="' . $clickUrl . '" title="' . $title . '">'
+            . $this->iconFactory->getIcon($icon, Icon::SIZE_SMALL)->render()
+            . '</a>';
     }
 
     /**
