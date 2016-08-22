@@ -39,14 +39,18 @@ class FlexFormEntryContainer extends AbstractContainer
         $flexFormDataStructureArray = $this->data['parameterArray']['fieldConf']['config']['ds'];
         $flexFormRowData = $this->data['parameterArray']['itemFormElValue'];
 
+        $countSheets = count($flexFormDataStructureArray['sheets']);
+
+        // If we have no Sheet, we do not need to render something
+        if ($countSheets === 0) {
+            return $this->initializeResultArray();
+        }
+
         /** @var IconFactory $iconFactory */
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 
         // Tabs or no tabs - that's the question
-        $hasTabs = false;
-        if (count($flexFormDataStructureArray['sheets']) > 1) {
-            $hasTabs = true;
-        }
+        $hasTabs = ($countSheets > 1 ? true : false);
 
         $resultArray = $this->initializeResultArray();
 

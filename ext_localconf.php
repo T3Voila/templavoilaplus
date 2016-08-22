@@ -30,6 +30,8 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1443361300] = [
     [
         \TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexProcess::class
             => \Extension\Templavoila\Form\FormDataProvider\TcaFlexProcess::class,
+        \TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexFetch::class
+            => \Extension\Templavoila\Form\FormDataProvider\TcaFlexFetch::class,
     ]
 );
 
