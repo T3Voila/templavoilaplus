@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Backend\Form\FormDataProvider;
+namespace Extension\Templavoila\Form\FormDataProvider;
 
 /*
  * This file is part of the TYPO3 CMS project.
