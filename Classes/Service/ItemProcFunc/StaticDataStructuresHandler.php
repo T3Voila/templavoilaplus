@@ -22,435 +22,424 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  *
  * @author Kasper Skaarhoj <kasper@typo3.com>
  */
-class StaticDataStructuresHandler {
+class StaticDataStructuresHandler
+{
+    /**
+     * @var array
+     */
+    protected $conf;
 
-	/**
-	 * @var array
-	 */
-	protected $conf;
+    /**
+     * @var string
+     */
+    public $prefix = 'Static: ';
 
-	/**
-	 * @var string
-	 */
-	public $prefix = 'Static: ';
+    /**
+     * @var string
+     */
+    public $iconPath = '../uploads/tx_templavoila/';
 
-	/**
-	 * @var string
-	 */
-	public $iconPath = '../uploads/tx_templavoila/';
+    /**
+     * Adds static data structures to selector box items arrays.
+     * Adds ALL available structures
+     *
+     * @param array &$params Array of items passed by reference.
+     * @param object &$pObj The parent object (\TYPO3\CMS\Backend\Form\FormEngine / \TYPO3\CMS\Backend\Form\DataPreprocessor depending on context)
+     *
+     * @return void
+     */
+    public function main(&$params, &$pObj)
+    {
+        $removeDSItems = $this->getRemoveItems($params, substr($params['field'], 0, -2) . 'ds');
 
-	/**
-	 * Adds static data structures to selector box items arrays.
-	 * Adds ALL available structures
-	 *
-	 * @param array &$params Array of items passed by reference.
-	 * @param object &$pObj The parent object (\TYPO3\CMS\Backend\Form\FormEngine / \TYPO3\CMS\Backend\Form\DataPreprocessor depending on context)
-	 *
-	 * @return void
-	 */
-	public function main(&$params, &$pObj) {
-		$removeDSItems = $this->getRemoveItems($params, substr($params['field'], 0, -2) . 'ds');
+        $dsRepo = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\DataStructureRepository::class);
+        $dsList = $dsRepo->getAll();
 
-		$dsRepo = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\DataStructureRepository::class);
-		$dsList = $dsRepo->getAll();
+        $params['items'] = array(
+            array(
+                '', ''
+            )
+        );
 
-		$params['items'] = array(
-			array(
-				'', ''
-			)
-		);
+        foreach ($dsList as $dsObj) {
+            /** @var \Extension\Templavoila\Domain\Model\AbstractDataStructure $dsObj */
+            if ($dsObj->isPermittedForUser($params['row'], $removeDSItems)) {
+                $params['items'][] = array(
+                    $dsObj->getLabel(),
+                    $dsObj->getKey(),
+                    $dsObj->getIcon()
+                );
+            }
+        }
+    }
 
-		foreach ($dsList as $dsObj) {
-			/** @var \Extension\Templavoila\Domain\Model\AbstractDataStructure $dsObj */
-			if ($dsObj->isPermittedForUser($params['row'], $removeDSItems)) {
-				$params['items'][] = array(
-					$dsObj->getLabel(),
-					$dsObj->getKey(),
-					$dsObj->getIcon()
-				);
-			}
-		}
-	}
+    /**
+     * Adds Template Object records to selector box for Content Elements of the "Plugin" type.
+     *
+     * @param array &$params Array of items passed by reference.
+     * @param \TYPO3\CMS\Backend\Form\FormEngine|\TYPO3\CMS\Backend\Form\DataPreprocessor $pObj The parent object (\TYPO3\CMS\Backend\Form\FormEngine / \TYPO3\CMS\Backend\Form\DataPreprocessor depending on context)
+     *
+     * @return void
+     */
+    public function pi_templates(&$params, $pObj)
+    {
+        // Find the template data structure that belongs to this plugin:
+        $piKey = $params['row']['list_type'];
+        $templateRef = $GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['piKey2DSMap'][$piKey]; // This should be a value of a Data Structure.
+        $storagePid = $this->getStoragePid($params);
 
-	/**
-	 * Adds Template Object records to selector box for Content Elements of the "Plugin" type.
-	 *
-	 * @param array &$params Array of items passed by reference.
-	 * @param \TYPO3\CMS\Backend\Form\FormEngine|\TYPO3\CMS\Backend\Form\DataPreprocessor $pObj The parent object (\TYPO3\CMS\Backend\Form\FormEngine / \TYPO3\CMS\Backend\Form\DataPreprocessor depending on context)
-	 *
-	 * @return void
-	 */
-	public function pi_templates(&$params, $pObj) {
-		// Find the template data structure that belongs to this plugin:
-		$piKey = $params['row']['list_type'];
-		$templateRef = $GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['piKey2DSMap'][$piKey]; // This should be a value of a Data Structure.
-		$storagePid = $this->getStoragePid($params);
+        if ($templateRef && $storagePid) {
 
-		if ($templateRef && $storagePid) {
+            // Select all Template Object Records from storage folder, which are parent records and which has the data structure for the plugin:
+            $res = $this->getDatabaseConnection()->exec_SELECTquery(
+                'title,uid,previewicon',
+                'tx_templavoila_tmplobj',
+                'tx_templavoila_tmplobj.pid=' . $storagePid . ' AND tx_templavoila_tmplobj.datastructure=' .  $this->getDatabaseConnection()->fullQuoteStr($templateRef, 'tx_templavoila_tmplobj') . ' AND tx_templavoila_tmplobj.parent=0',
+                '',
+                'tx_templavoila_tmplobj.title'
+            );
 
-			// Select all Template Object Records from storage folder, which are parent records and which has the data structure for the plugin:
-			$res = $this->getDatabaseConnection()->exec_SELECTquery(
-				'title,uid,previewicon',
-				'tx_templavoila_tmplobj',
-				'tx_templavoila_tmplobj.pid=' . $storagePid . ' AND tx_templavoila_tmplobj.datastructure=' .  $this->getDatabaseConnection()->fullQuoteStr($templateRef, 'tx_templavoila_tmplobj') . ' AND tx_templavoila_tmplobj.parent=0',
-				'',
-				'tx_templavoila_tmplobj.title'
-			);
+            // Traverse these and add them. Icons are set too if applicable.
+            while (false != ($row = $this->getDatabaseConnection()->sql_fetch_assoc($res))) {
+                if ($row['previewicon']) {
+                    $icon = '../' . $GLOBALS['TCA']['tx_templavoila_tmplobj']['columns']['previewicon']['config']['uploadfolder'] . '/' . $row['previewicon'];
+                } else {
+                    $icon = '';
+                }
+                $params['items'][] = array($this->getLanguageService()->sL($row['title']), $row['uid'], $icon);
+            }
+        }
+    }
 
-			// Traverse these and add them. Icons are set too if applicable.
-			while (FALSE != ($row = $this->getDatabaseConnection()->sql_fetch_assoc($res))) {
-				if ($row['previewicon']) {
-					$icon = '../' . $GLOBALS['TCA']['tx_templavoila_tmplobj']['columns']['previewicon']['config']['uploadfolder'] . '/' . $row['previewicon'];
-				} else {
-					$icon = '';
-				}
-				$params['items'][] = array($this->getLanguageService()->sL($row['title']), $row['uid'], $icon);
-			}
-		}
-	}
+    /**
+     * Creates the DS selector box. This function takes into account TS
+     * config override of the GRSP.
+     *
+     * @param array $params Parameters to the itemsProcFunc
+     * @param \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems $pObj Calling object
+     *
+     * @return void
+     */
+    public function dataSourceItemsProcFunc(array &$params, \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems &$pObj)
+    {
+        $storagePid = $this->getStoragePid($params);
+        $scope = $this->getScope($params);
 
-	/**
-	 * Creates the DS selector box. This function takes into account TS
-	 * config override of the GRSP.
-	 *
-	 * @param array $params Parameters to the itemsProcFunc
-	 * @param \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems $pObj Calling object
-	 *
-	 * @return void
-	 */
-	public function dataSourceItemsProcFunc(array &$params, \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems &$pObj) {
+        $removeDSItems = $this->getRemoveItems($params, substr($params['field'], 0, -2) . 'ds');
 
-		$storagePid = $this->getStoragePid($params);
-		$scope = $this->getScope($params);
+        $dsRepo = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\DataStructureRepository::class);
+        $dsList = $dsRepo->getDatastructuresByStoragePidAndScope($storagePid, $scope);
 
-		$removeDSItems = $this->getRemoveItems($params, substr($params['field'], 0, -2) . 'ds');
+        $params['items'] = array(
+            array(
+                '', ''
+            )
+        );
 
-		$dsRepo = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\DataStructureRepository::class);
-		$dsList = $dsRepo->getDatastructuresByStoragePidAndScope($storagePid, $scope);
+        foreach ($dsList as $dsObj) {
+            /** @var \Extension\Templavoila\Domain\Model\AbstractDataStructure $dsObj */
+            if ($dsObj->isPermittedForUser($params['row'], $removeDSItems)) {
+                $params['items'][] = array(
+                    $dsObj->getLabel(),
+                    $dsObj->getKey(),
+                    $dsObj->getIcon()
+                );
+            }
+        }
+    }
 
-		$params['items'] = array(
-			array(
-				'', ''
-			)
-		);
+    /**
+     * Adds items to the template object selector according to the current
+     * extension mode.
+     *
+     * @param array $params Parameters for itemProcFunc
+     * @param \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems $pObj Calling class
+     *
+     * @return void
+     */
+    public function templateObjectItemsProcFunc(array &$params, \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems &$pObj)
+    {
+        $this->conf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
 
-		foreach ($dsList as $dsObj) {
-			/** @var \Extension\Templavoila\Domain\Model\AbstractDataStructure $dsObj */
-			if ($dsObj->isPermittedForUser($params['row'], $removeDSItems)) {
-				$params['items'][] = array(
-					$dsObj->getLabel(),
-					$dsObj->getKey(),
-					$dsObj->getIcon()
-				);
-			}
-		}
-	}
+        if ($this->conf['enable.']['selectDataStructure']) {
+            $this->templateObjectItemsProcFuncForCurrentDS($params, $pObj);
+        } else {
+            $this->templateObjectItemsProcFuncForAllDSes($params, $pObj);
+        }
+    }
 
-	/**
-	 * Adds items to the template object selector according to the current
-	 * extension mode.
-	 *
-	 * @param array $params Parameters for itemProcFunc
-	 * @param \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems $pObj Calling class
-	 *
-	 * @return void
-	 */
-	public function templateObjectItemsProcFunc(array &$params, \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems &$pObj) {
-		$this->conf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
+    /**
+     * Adds items to the template object selector according to the scope and
+     * storage folder of the current page/element.
+     *
+     * @param array $params Parameters for itemProcFunc
+     * @param \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems $pObj Calling class
+     *
+     * @return void
+     */
+    protected function templateObjectItemsProcFuncForCurrentDS(array &$params, \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems &$pObj)
+    {
+        // Get DS
+        $tsConfig = & $pObj->cachedTSconfig[$params['table'] . ':' . $params['row']['uid']];
+        $fieldName = $params['field'] == 'tx_templavoila_next_to' ? 'tx_templavoila_next_ds' : 'tx_templavoila_ds';
+        $dataSource = $tsConfig['_THIS_ROW'][$fieldName];
 
-		if ($this->conf['enable.']['selectDataStructure']) {
-			$this->templateObjectItemsProcFuncForCurrentDS($params, $pObj);
-		} else {
-			$this->templateObjectItemsProcFuncForAllDSes($params, $pObj);
-		}
-	}
+        $storagePid = $this->getStoragePid($params);
 
-	/**
-	 * Adds items to the template object selector according to the scope and
-	 * storage folder of the current page/element.
-	 *
-	 * @param array $params Parameters for itemProcFunc
-	 * @param \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems $pObj Calling class
-	 *
-	 * @return void
-	 */
-	protected function templateObjectItemsProcFuncForCurrentDS(array &$params, \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems &$pObj) {
-		// Get DS
-		$tsConfig = & $pObj->cachedTSconfig[$params['table'] . ':' . $params['row']['uid']];
-		$fieldName = $params['field'] == 'tx_templavoila_next_to' ? 'tx_templavoila_next_ds' : 'tx_templavoila_ds';
-		$dataSource = $tsConfig['_THIS_ROW'][$fieldName];
+        $removeTOItems = $this->getRemoveItems($params, substr($params['field'], 0, -2) . 'to');
 
-		$storagePid = $this->getStoragePid($params);
+        $dsRepo = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\DataStructureRepository::class);
+        $toRepo = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\TemplateRepository::class);
 
-		$removeTOItems = $this->getRemoveItems($params, substr($params['field'], 0, -2) . 'to');
+        $params['items'] = array(
+            array(
+                '', ''
+            )
+        );
 
-		$dsRepo = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\DataStructureRepository::class);
-		$toRepo = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\TemplateRepository::class);
+        try {
+            $ds = $dsRepo->getDatastructureByUidOrFilename($dataSource);
+            if (strlen($dataSource)) {
+                $toList = $toRepo->getTemplatesByDatastructure($ds, $storagePid);
+                foreach ($toList as $toObj) {
+                    /** @var \Extension\Templavoila\Domain\Model\Template $toObj */
+                    if (!$toObj->hasParent() && $toObj->isPermittedForUser($params['table'], $removeTOItems)) {
+                        $params['items'][] = array(
+                            $toObj->getLabel(),
+                            $toObj->getKey(),
+                            $toObj->getIcon()
+                        );
+                    }
+                }
+            }
+        } catch (\InvalidArgumentException $e) {
+            // we didn't find the DS which we were looking for therefore an empty list is returned
+        }
+    }
 
-		$params['items'] = array(
-			array(
-				'', ''
-			)
-		);
+    /**
+     * Adds items to the template object selector according to the scope and
+     * storage folder of the current page/element.
+     *
+     * @param array $params Parameters for itemProcFunc
+     * @param \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems $pObj Calling class
+     *
+     * @return void
+     */
+    protected function templateObjectItemsProcFuncForAllDSes(array &$params, \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems &$pObj)
+    {
+        $storagePid = $this->getStoragePid($params);
+        $scope = $this->getScope($params);
 
-		try {
-			$ds = $dsRepo->getDatastructureByUidOrFilename($dataSource);
-			if (strlen($dataSource)) {
-				$toList = $toRepo->getTemplatesByDatastructure($ds, $storagePid);
-				foreach ($toList as $toObj) {
-					/** @var \Extension\Templavoila\Domain\Model\Template $toObj */
-					if (!$toObj->hasParent() && $toObj->isPermittedForUser($params['table'], $removeTOItems)) {
-						$params['items'][] = array(
-							$toObj->getLabel(),
-							$toObj->getKey(),
-							$toObj->getIcon()
-						);
-					}
-				}
-			}
-		} catch (\InvalidArgumentException $e) {
-			// we didn't find the DS which we were looking for therefore an empty list is returned
-		}
-	}
+        $removeDSItems = $this->getRemoveItems($params, substr($params['field'], 0, -2) . 'ds');
+        $removeTOItems = $this->getRemoveItems($params, substr($params['field'], 0, -2) . 'to');
 
-	/**
-	 * Adds items to the template object selector according to the scope and
-	 * storage folder of the current page/element.
-	 *
-	 * @param array $params Parameters for itemProcFunc
-	 * @param \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems $pObj Calling class
-	 *
-	 * @return void
-	 */
-	protected function templateObjectItemsProcFuncForAllDSes(array &$params, \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems &$pObj) {
-		$storagePid = $this->getStoragePid($params);
-		$scope = $this->getScope($params);
+        $dsRepo = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\DataStructureRepository::class);
+        $toRepo = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\TemplateRepository::class);
+        $dsList = $dsRepo->getDatastructuresByStoragePidAndScope($storagePid, $scope);
 
-		$removeDSItems = $this->getRemoveItems($params, substr($params['field'], 0, -2) . 'ds');
-		$removeTOItems = $this->getRemoveItems($params, substr($params['field'], 0, -2) . 'to');
+        $params['items'] = array(
+            array(
+                '', ''
+            )
+        );
 
-		$dsRepo = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\DataStructureRepository::class);
-		$toRepo = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\TemplateRepository::class);
-		$dsList = $dsRepo->getDatastructuresByStoragePidAndScope($storagePid, $scope);
+        foreach ($dsList as $dsObj) {
+            /** @var \Extension\Templavoila\Domain\Model\AbstractDataStructure $dsObj */
+            if (!$dsObj->isPermittedForUser($params['row'], $removeDSItems)) {
+                continue;
+            }
+            $curDS = array();
+            $curDS[] = array(
+                $dsObj->getLabel(),
+                '--div--'
+            );
 
-		$params['items'] = array(
-			array(
-				'', ''
-			)
-		);
+            $toList = $toRepo->getTemplatesByDatastructure($dsObj, $storagePid);
+            foreach ($toList as $toObj) {
+                /** @var \Extension\Templavoila\Domain\Model\Template $toObj */
+                if (!$toObj->hasParent() && $toObj->isPermittedForUser($params['row'], $removeTOItems)) {
+                    $curDS[] = array(
+                        $toObj->getLabel(),
+                        $toObj->getKey(),
+                        $toObj->getIcon()
+                    );
+                }
+            }
+            if (count($curDS) > 1) {
+                $params['items'] = array_merge($params['items'], $curDS);
+            }
+        }
+    }
 
-		foreach ($dsList as $dsObj) {
-			/** @var \Extension\Templavoila\Domain\Model\AbstractDataStructure $dsObj */
-			if (!$dsObj->isPermittedForUser($params['row'], $removeDSItems)) {
-				continue;
-			}
-			$curDS = array();
-			$curDS[] = array(
-				$dsObj->getLabel(),
-				'--div--'
-			);
+    /**
+     * Retrieves DS/TO storage pid for the current page. This function expectes
+     * to be called from the itemsProcFunc only!
+     *
+     * @param array $params Parameters as come to the itemsProcFunc
+     *
+     * @return integer Storage pid
+     */
+    protected function getStoragePid(array &$params)
+    {
+        /**
+         * // Get default first
+         * $tsConfig = & $pObj->cachedTSconfig[$params['table'] . ':' . $params['row']['uid']];
+         * $storagePid = (int)$tsConfig['_STORAGE_PID'];
+         *
+         * StoragePid no longer available since CMS 7
+         * Could be done via BackendUtility::getTCEFORM_TSconfig($params['table'], $params['row']);
+         * But field 'storage_pid' is no longer part of BEgetRootLine method
+         */
 
-			$toList = $toRepo->getTemplatesByDatastructure($dsObj, $storagePid);
-			foreach ($toList as $toObj) {
-				/** @var \Extension\Templavoila\Domain\Model\Template $toObj */
-				if (!$toObj->hasParent() && $toObj->isPermittedForUser($params['row'], $removeTOItems)) {
-					$curDS[] = array(
-						$toObj->getLabel(),
-						$toObj->getKey(),
-						$toObj->getIcon()
-					);
-				}
-			}
-			if (count($curDS) > 1) {
-				$params['items'] = array_merge($params['items'], $curDS);
-			}
-		}
-	}
+        // Check for alternative storage folder
+        $field = $params['table'] == 'pages' ? 'uid' : 'pid';
+        $modTSConfig = BackendUtility::getModTSconfig($params['row'][$field], 'tx_templavoila.storagePid');
+        if (is_array($modTSConfig) && MathUtility::canBeInterpretedAsInteger($modTSConfig['value'])) {
+            $storagePid = (int)$modTSConfig['value'];
+        } else {
+            // @TODO Deprecate this part, configuration in pageTS should be enough
+            $rootLine = $this->BEgetRootLine($params['row']['pid'], '', true);
+            foreach ($rootLine as $rC) {
+                if (!empty($rC['storage_pid'])) {
+                    $storagePid = (int)$rC['storage_pid'];
+                    break;
+                }
+            }
+        }
 
-	/**
-	 * Retrieves DS/TO storage pid for the current page. This function expectes
-	 * to be called from the itemsProcFunc only!
-	 *
-	 * @param array $params Parameters as come to the itemsProcFunc
-	 *
-	 * @return integer Storage pid
-	 */
-	protected function getStoragePid(array &$params) {
-		/**
-		 * // Get default first
-		 * $tsConfig = & $pObj->cachedTSconfig[$params['table'] . ':' . $params['row']['uid']];
-		 * $storagePid = (int)$tsConfig['_STORAGE_PID'];
-		 *
-		 * StoragePid no longer available since CMS 7
-		 * Could be done via BackendUtility::getTCEFORM_TSconfig($params['table'], $params['row']);
-		 * But field 'storage_pid' is no longer part of BEgetRootLine method
-		 */
-		$rootLine = $this->BEgetRootLine($params['row']['pid'], '', true);
-		foreach ($rootLine as $rC) {
-			if (!$storagePid) {
-				$storagePid = (int)$rC['storage_pid'];
-			}
-		}
-		// Check for alternative storage folder
-		$field = $params['table'] == 'pages' ? 'uid' : 'pid';
-		$modTSConfig = BackendUtility::getModTSconfig($params['row'][$field], 'tx_templavoila.storagePid');
-		if (is_array($modTSConfig) && MathUtility::canBeInterpretedAsInteger($modTSConfig['value'])) {
-			$storagePid = (int)$modTSConfig['value'];
-		}
+        return $storagePid;
+    }
 
-		return $storagePid;
-	}
+    /**
+     * From TYPO3 CMS 7.6.9
+     * Returns what is called the 'RootLine'. That is an array with information about the page records from a page id ($uid) and back to the root.
+     * By default deleted pages are filtered.
+     * This RootLine will follow the tree all the way to the root. This is opposite to another kind of root line known from the frontend where the rootline stops when a root-template is found.
+     *
+     * @param int $uid Page id for which to create the root line.
+     * @param string $clause Clause can be used to select other criteria. It would typically be where-clauses that stops the process if we meet a page, the user has no reading access to.
+     * @param bool $workspaceOL If true, version overlay is applied. This must be requested specifically because it is usually only wanted when the rootline is used for visual output while for permission checking you want the raw thing!
+     * @return array Root line array, all the way to the page tree root (or as far as $clause allows!)
+     */
+    public function BEgetRootLine($uid, $clause = '', $workspaceOL = false)
+    {
+        static $BEgetRootLine_cache = array();
+        $output = array();
+        $pid = $uid;
+        $ident = $pid . '-' . $clause . '-' . $workspaceOL;
+        if (is_array($BEgetRootLine_cache[$ident])) {
+            $output = $BEgetRootLine_cache[$ident];
+        } else {
+            $loopCheck = 100;
+            $theRowArray = array();
+            while ($uid != 0 && $loopCheck) {
+                $loopCheck--;
+                $row = $this->getPageForRootline($uid, $clause, $workspaceOL);
+                if (is_array($row)) {
+                    $uid = $row['pid'];
+                    $theRowArray[] = $row;
+                } else {
+                    break;
+                }
+            }
+            $c = count($theRowArray);
+            foreach ($theRowArray as $val) {
+                $c--;
+                $output[$c] = array(
+                    'storage_pid' => $val['storage_pid'],
+                );
+            }
+            $BEgetRootLine_cache[$ident] = $output;
+        }
+        return $output;
+    }
 
-	/**
-	 * From TYPO3 CMS 7.6.9
-	 * Returns what is called the 'RootLine'. That is an array with information about the page records from a page id ($uid) and back to the root.
-	 * By default deleted pages are filtered.
-	 * This RootLine will follow the tree all the way to the root. This is opposite to another kind of root line known from the frontend where the rootline stops when a root-template is found.
-	 *
-	 * @param int $uid Page id for which to create the root line.
-	 * @param string $clause Clause can be used to select other criteria. It would typically be where-clauses that stops the process if we meet a page, the user has no reading access to.
-	 * @param bool $workspaceOL If TRUE, version overlay is applied. This must be requested specifically because it is usually only wanted when the rootline is used for visual output while for permission checking you want the raw thing!
-	 * @return array Root line array, all the way to the page tree root (or as far as $clause allows!)
-	 */
-	public function BEgetRootLine($uid, $clause = '', $workspaceOL = false)
-	{
-		static $BEgetRootLine_cache = array();
-		$output = array();
-		$pid = $uid;
-		$ident = $pid . '-' . $clause . '-' . $workspaceOL;
-		if (is_array($BEgetRootLine_cache[$ident])) {
-			$output = $BEgetRootLine_cache[$ident];
-		} else {
-			$loopCheck = 100;
-			$theRowArray = array();
-			while ($uid != 0 && $loopCheck) {
-				$loopCheck--;
-				$row = $this->getPageForRootline($uid, $clause, $workspaceOL);
-				if (is_array($row)) {
-					$uid = $row['pid'];
-					$theRowArray[] = $row;
-				} else {
-					break;
-				}
-			}
-			if ($uid == 0) {
-				$theRowArray[] = array('uid' => 0, 'title' => '');
-			}
-			$c = count($theRowArray);
-			foreach ($theRowArray as $val) {
-				$c--;
-				$output[$c] = array(
-					'uid' => $val['uid'],
-					'pid' => $val['pid'],
-					'title' => $val['title'],
-					'doktype' => $val['doktype'],
-					'tsconfig_includes' => $val['tsconfig_includes'],
-					'TSconfig' => $val['TSconfig'],
-					'is_siteroot' => $val['is_siteroot'],
-					'storage_pid' => $val['storage_pid'],
-					't3ver_oid' => $val['t3ver_oid'],
-					't3ver_wsid' => $val['t3ver_wsid'],
-					't3ver_state' => $val['t3ver_state'],
-					't3ver_stage' => $val['t3ver_stage'],
-					'backend_layout_next_level' => $val['backend_layout_next_level']
-				);
-				if (isset($val['_ORIG_pid'])) {
-					$output[$c]['_ORIG_pid'] = $val['_ORIG_pid'];
-				}
-			}
-			$BEgetRootLine_cache[$ident] = $output;
-		}
-		return $output;
-	}
+    /**
+     * From TYPO3 CMS 7.6.9
+     * Gets the cached page record for the rootline
+     *
+     * @param int $uid Page id for which to create the root line.
+     * @param string $clause Clause can be used to select other criteria. It would typically be where-clauses that stops the process if we meet a page, the user has no reading access to.
+     * @param bool $workspaceOL If true, version overlay is applied. This must be requested specifically because it is usually only wanted when the rootline is used for visual output while for permission checking you want the raw thing!
+     * @return array Cached page record for the rootline
+     * @see BEgetRootLine
+     */
+    protected function getPageForRootline($uid, $clause, $workspaceOL)
+    {
+        $db = $this->getDatabaseConnection();
+        $res = $db->exec_SELECTquery('pid,uid,storage_pid,t3ver_oid,t3ver_wsid', 'pages', 'uid=' . (int)$uid . ' ' . BackendUtility::deleteClause('pages') . ' ' . $clause);
+        $row = $db->sql_fetch_assoc($res);
+        if ($row) {
+            $newLocation = false;
+            if ($workspaceOL) {
+                BackendUtility::workspaceOL('pages', $row);
+                $newLocation = BackendUtility::getMovePlaceholder('pages', $row['uid'], 'pid');
+            }
+            if (is_array($row)) {
+                if ($newLocation !== false) {
+                    $row['pid'] = $newLocation['pid'];
+                } else {
+                    BackendUtility::fixVersioningPid('pages', $row);
+                }
+            }
+        }
+        $db->sql_free_result($res);
+        return $row;
+    }
 
-	/**
-	 * From TYPO3 CMS 7.6.9
-	 * Gets the cached page record for the rootline
-	 *
-	 * @param int $uid Page id for which to create the root line.
-	 * @param string $clause Clause can be used to select other criteria. It would typically be where-clauses that stops the process if we meet a page, the user has no reading access to.
-	 * @param bool $workspaceOL If TRUE, version overlay is applied. This must be requested specifically because it is usually only wanted when the rootline is used for visual output while for permission checking you want the raw thing!
-	 * @return array Cached page record for the rootline
-	 * @see BEgetRootLine
-	 */
-	protected function getPageForRootline($uid, $clause, $workspaceOL)
-	{
-		static $getPageForRootline_cache = array();
-		$ident = $uid . '-' . $clause . '-' . $workspaceOL;
-		if (is_array($getPageForRootline_cache[$ident])) {
-			$row = $getPageForRootline_cache[$ident];
-		} else {
-			$db = $this->getDatabaseConnection();
-			$res = $db->exec_SELECTquery('pid,uid,title,doktype,tsconfig_includes,TSconfig,is_siteroot,storage_pid,t3ver_oid,t3ver_wsid,t3ver_state,t3ver_stage,backend_layout_next_level', 'pages', 'uid=' . (int)$uid . ' ' . BackendUtility::deleteClause('pages') . ' ' . $clause);
-			$row = $db->sql_fetch_assoc($res);
-			if ($row) {
-				$newLocation = false;
-				if ($workspaceOL) {
-					BackendUtility::workspaceOL('pages', $row);
-					$newLocation = BackendUtility::getMovePlaceholder('pages', $row['uid'], 'pid');
-				}
-				if (is_array($row)) {
-					if ($newLocation !== false) {
-						$row['pid'] = $newLocation['pid'];
-					} else {
-						BackendUtility::fixVersioningPid('pages', $row);
-					}
-					$getPageForRootline_cache[$ident] = $row;
-				}
-			}
-			$db->sql_free_result($res);
-		}
-		return $row;
-	}
+    /**
+     * Determine scope from current paramset
+     *
+     * @param array $params
+     *
+     * @return integer
+     */
+    protected function getScope(array $params)
+    {
+        switch ($params['table']) {
+            case 'pages':
+                $scope = \Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_PAGE;
+            break;
+            case 'tt_content':
+                $scope = \Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_FCE;
+            break;
+            default:
+                $scope = \Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_UNKNOWN;
+        }
+        return $scope;
+    }
 
-	/**
-	 * Determine scope from current paramset
-	 *
-	 * @param array $params
-	 *
-	 * @return integer
-	 */
-	protected function getScope(array $params) {
-		switch ($params['table']) {
-			case 'pages':
-				$scope = \Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_PAGE;
-			break;
-			case 'tt_content':
-				$scope = \Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_FCE;
-			break;
-			default:
-				$scope = \Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_UNKNOWN;
-		}
-		return $scope;
-	}
+    /**
+     * Find relevant removeItems blocks for a certain field with the given paramst
+     *
+     * @param array $params
+     * @param string $field
+     *
+     * @return array
+     */
+    protected function getRemoveItems($params, $field)
+    {
+        $pid = $params['row'][$params['table'] == 'pages' ? 'uid' : 'pid'];
+        $modTSConfig = BackendUtility::getModTSconfig($pid, 'TCEFORM.' . $params['table'] . '.' . $field . '.removeItems');
 
-	/**
-	 * Find relevant removeItems blocks for a certain field with the given paramst
-	 *
-	 * @param array $params
-	 * @param string $field
-	 *
-	 * @return array
-	 */
-	protected function getRemoveItems($params, $field) {
-		$pid = $params['row'][$params['table'] == 'pages' ? 'uid' : 'pid'];
-		$modTSConfig = BackendUtility::getModTSconfig($pid, 'TCEFORM.' . $params['table'] . '.' . $field . '.removeItems');
-
-		return GeneralUtility::trimExplode(',', $modTSConfig['value'], TRUE);
-	}
+        return GeneralUtility::trimExplode(',', $modTSConfig['value'], true);
+    }
 
 
-	/**
-	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-	 */
-	protected function getDatabaseConnection() {
-		return $GLOBALS['TYPO3_DB'];
-	}
+    /**
+     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+     */
+    protected function getDatabaseConnection()
+    {
+        return $GLOBALS['TYPO3_DB'];
+    }
 
-	/**
-	 * @return \TYPO3\CMS\Lang\LanguageService
-	 */
-	protected function getLanguageService() {
-		return $GLOBALS['LANG'];
-	}
+    /**
+     * @return \TYPO3\CMS\Lang\LanguageService
+     */
+    protected function getLanguageService()
+    {
+        return $GLOBALS['LANG'];
+    }
 }
