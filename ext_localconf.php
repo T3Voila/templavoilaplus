@@ -25,22 +25,14 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1443361300] = [
     'priority' => 40,
     'class' => \Extension\Templavoila\Form\Container\FlexFormElementContainer::class,
 ];
-// Unregister stock TcaFlexProcess data provider and substitute with own data provider at the same position
-unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaDatabaseRecord']
-    [\TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexProcess::class]
+// Unregister stock TcaFlex* data provider and substitute with own data provider at the same position
+\Extension\Templavoila\Utility\FormEngineUtility::replaceInTcaDatabaseRecord(
+    [
+        \TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexProcess::class
+            => \Extension\Templavoila\Form\FormDataProvider\TcaFlexProcess::class,
+    ]
 );
-$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaDatabaseRecord']
-    [\Extension\Templavoila\Form\FormDataProvider\TcaFlexProcess::class] = [
-        'depends' => [
-            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexPrepare::class,
-        ]
-    ];
-unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaDatabaseRecord']
-    [\TYPO3\CMS\Backend\Form\FormDataProvider\TcaRadioItems::class]['depends'][\TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexProcess::class]
-);
-$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaDatabaseRecord']
-    [\TYPO3\CMS\Backend\Form\FormDataProvider\TcaRadioItems::class]['depends'][]
-        = \Extension\Templavoila\Form\FormDataProvider\TcaFlexProcess::class;
+
 // Register "XCLASS" of FlexFormTools for language parsing
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class]['className']
     = \Extension\Templavoila\Configuration\FlexForm\FlexFormTools::class;
