@@ -280,12 +280,12 @@ class StaticDataStructuresHandler {
 		 * // Get default first
 		 * $tsConfig = & $pObj->cachedTSconfig[$params['table'] . ':' . $params['row']['uid']];
 		 * $storagePid = (int)$tsConfig['_STORAGE_PID'];
-		 * 
+		 *
 		 * StoragePid no longer available since CMS 7
 		 * Could be done via BackendUtility::getTCEFORM_TSconfig($params['table'], $params['row']);
 		 * But field 'storage_pid' is no longer part of BEgetRootLine method
 		 */
-		$rootLine = $this->BEgetRootLine($params['row']['uid'], '', true);
+		$rootLine = $this->BEgetRootLine($params['row']['pid'], '', true);
 		foreach ($rootLine as $rC) {
 			if (!$storagePid) {
 				$storagePid = (int)$rC['storage_pid'];
