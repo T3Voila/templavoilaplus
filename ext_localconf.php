@@ -114,8 +114,17 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['mod1']['renderPreviewCont
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['mod1']['renderPreviewContent']['div']      = \Extension\Templavoila\Controller\Preview\NullController::class;
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['mod1']['renderPreviewContent']['templavoila_pi1'] = \Extension\Templavoila\Controller\Preview\NullController::class;
 
-$GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX']['Extension\\Templavoila\\Module\\Mod1\\Ajax::moveRecord'] =
-    'EXT:templavoila/Classes/Module/Mod1/Ajax->moveRecord';
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler (
+    'Extension\\Templavoila\\Module\\Mod1\\Ajax::moveRecord',
+    \Extension\Templavoila\Module\Mod1\Ajax::class . '->moveRecord'
+);
 
-$GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX']['Extension\\Templavoila\\Module\\Cm1\\Ajax::getDisplayFileContent'] =
-    'EXT:templavoila/Classes/Module/Cm1/Ajax->getDisplayFileContent';
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler (
+    'Extension\\Templavoila\\Module\\Mod1\\Ajax::unlinkRecord',
+    \Extension\Templavoila\Module\Mod1\Ajax::class . '->unlinkRecord'
+);
+
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler (
+    'Extension\\Templavoila\\Module\\Cm1\\Ajax::getDisplayFileContent',
+    \Extension\Templavoila\Module\Cm1\Ajax::class . '->getDisplayFileContent'
+);

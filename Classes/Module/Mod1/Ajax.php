@@ -48,4 +48,19 @@ class Ajax
 
         $this->apiObj->moveElement($sourcePointer, $destinationPointer);
     }
+
+    /**
+     * Performs a move action for the requested element
+     *
+     * @param array $params
+     * @param object $ajaxObj
+     *
+     * @return void
+     */
+    public function unlinkRecord($params, &$ajaxObj) {
+
+        $unlinkPointer = $this->apiObj->flexform_getPointerFromString(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('unlink'));
+
+        $this->apiObj->unlinkElement($unlinkPointer);
+    }
 }
