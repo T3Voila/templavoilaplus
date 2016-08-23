@@ -23,13 +23,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class FlexFormTools
 {
     /**
-     * If set, the charset of data XML is converted to system charset.
-     *
-     * @var bool
-     */
-    public $convertCharset = false;
-
-    /**
      * If set, section indexes are re-numbered before processing
      *
      * @var bool
@@ -104,18 +97,8 @@ class FlexFormTools
         $dataStructArray = BackendUtility::getFlexFormDS($GLOBALS['TCA'][$table]['columns'][$field]['config'], $row, $table, $field);
         // If data structure was ok, proceed:
         if (is_array($dataStructArray)) {
-            // Get flexform XML data:
-            $xmlData = $row[$field];
-            // Convert charset:
-            if ($this->convertCharset) {
-                $xmlHeaderAttributes = GeneralUtility::xmlGetHeaderAttribs($xmlData);
-                $storeInCharset = strtolower($xmlHeaderAttributes['encoding']);
-                if ($storeInCharset) {
-                    $currentCharset = $GLOBALS['LANG']->charSet;
-                    $xmlData = $GLOBALS['LANG']->csConvObj->conv($xmlData, $storeInCharset, $currentCharset, 1);
-                }
-            }
-            $editData = GeneralUtility::xml2array($xmlData);
+            // Get flexform XML data
+            $editData = GeneralUtility::xml2array($row[$field]);
             if (!is_array($editData)) {
                 return 'Parsing error: ' . $editData;
             }
@@ -408,9 +391,7 @@ class FlexFormTools
         if ($GLOBALS['TYPO3_CONF_VARS']['BE']['flexformForceCDATA']) {
             $this->flexArray2Xml_options['useCDATA'] = 1;
         }
-        $options = $GLOBALS['TYPO3_CONF_VARS']['BE']['niceFlexFormXMLtags'] ? $this->flexArray2Xml_options : array();
-        $spaceInd = $GLOBALS['TYPO3_CONF_VARS']['BE']['compactFlexFormXML'] ? -1 : 4;
-        $output = GeneralUtility::array2xml($array, '', 0, 'T3FlexForms', $spaceInd, $options);
+        $output = GeneralUtility::array2xml($array, '', 0, 'T3FlexForms', 4, $this->flexArray2Xml_options);
         if ($addPrologue) {
             $output = '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>' . LF . $output;
         }
