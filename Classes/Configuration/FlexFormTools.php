@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Compatibility6\Configuration\FlexForm;
+namespace Extension\Templavoila\Configuration\FlexForm;
 
 /*
  * This file is part of the TYPO3 CMS project.
