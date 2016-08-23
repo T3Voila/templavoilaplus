@@ -143,8 +143,7 @@ div.warning a {
   min-width: 100px;
   margin-right: 140px;
   vertical-align: top;
-  padding: 4px 1px 1px 1px;
-  line-height: 15px;
+  padding: 4px 1px 4px 5px;
 }
 .tpm-element-title a {
   float: left;
@@ -183,43 +182,21 @@ div.warning a {
   background: #FFF;
 }
 
-.tpm-nonused-controls {
-  width: 40px;
-  padding-left: 4px;
-}
-
-.tpm-nonused-ref {
-  width: 20px;
-  white-space: nowrap;
-}
-
-.tpm-nonused-element img, .tpm-nonused-deleteall img {
-  vertical-align: middle;
-  padding: 2px 1px;
-}
-
-.tpm-nonused-element .tpm-nonused-preview img {
-  padding-right: 3px;
-}
-
-.tpm-nonused-deleteall {
-  padding: 5px 0;
-}
-
 .t3-row-header .tpm-element-title {
-  padding: 1px;
-  line-height: 15px;
+  line-height: 18px;
 }
+
 .t3-row-header .tpm-element-control {
   float: right;
   min-width: 120px;
-  height: 20px;
+  height: 22px;
   padding-right: 4px;
-  margin-top: 2px;
 }
 
 .t3-row-header {
   color: #fff;
+  padding: 1px;
+  height: 28px;
 }
 
 .t3-page-ce {

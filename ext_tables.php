@@ -123,4 +123,13 @@ if (
         'templavoila-logo-small' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila') . 'Resources/Public/Image/templavoila-logo-small.png',
     );
     \TYPO3\CMS\Backend\Sprite\SpriteManager::addSingleIcons($icons, 'templavoila');
+
+    $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
+    foreach ($icons as $identifier => $file) {
+        $iconRegistry->registerIcon(
+            'extensions-templavoila-' . $identifier,
+            \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
+            ['source' => str_replace(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila'), 'EXT:templavoila/', $file)]
+        );
+    }
 }

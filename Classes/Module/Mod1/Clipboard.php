@@ -14,6 +14,8 @@ namespace Extension\Templavoila\Module\Mod1;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\SingletonInterface;
 
 /**
@@ -154,22 +156,60 @@ class Clipboard implements SingletonInterface
             }
         }
 
-        $copyIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-copy' . ($clipActive_copy ? '-release' : ''), array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('copyrecord')));
-        $cutIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-cut' . ($clipActive_cut ? '-release' : ''), array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('cutrecord')));
-        $refIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('extensions-templavoila-clip_ref' . ($clipActive_ref ? '-release' : ''), array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('createreference')));
+        $output = '';
 
-        $removeElement = '&amp;CB[removeAll]=normal';
-        $setElement = '&amp;CB[el][' . rawurlencode('tt_content|' . $elementRecord['uid']) . ']=' . rawurlencode($this->pObj->apiObj->flexform_getStringFromPointer($elementPointer));
-        $setElementRef = '&amp;CB[el][' . rawurlencode('tt_content|' . $elementRecord['uid']) . ']=1';
+        foreach (explode(',', $listOfButtons) as $button) {
+            if (!in_array($button, $this->pObj->blindIcons)) {
+                switch ($button) {
+                    case 'copy':
+                        $title = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('copyrecord');
+                        $icon = 'actions-edit-copy';
+                        $copyMode = 1;
+                        $clipBoardElement = [
+                            'tt_content|' . $elementRecord['uid'] => $this->pObj->apiObj->flexform_getStringFromPointer($elementPointer)
+                        ];
+                        break;
+                    case 'cut':
+                        $title = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('cutrecord');
+                        $icon = 'actions-edit-cut';
+                        $copyMode = 0;
+                        $clipBoardElement = [
+                            'tt_content|' . $elementRecord['uid'] => $this->pObj->apiObj->flexform_getStringFromPointer($elementPointer)
+                        ];
+                        break;
+                    case 'ref':
+                        $title = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('createreference');
+                        $icon = 'extensions-templavoila-clip_ref';
+                        $copyMode = 1;
+                        $clipBoardElement = [
+                            'tt_content|' . $elementRecord['uid'] => 1
+                        ];
+                        break;
+                    default:
+                        continue;
+                }
 
-        $linkCopy = '<a class="tpm-copy" href="index.php?' . $this->pObj->link_getParameters() . '&amp;CB[setCopyMode]=1&amp;CB[setFlexMode]=copy' . ($clipActive_copy ? $removeElement : $setElement) . '">' . $copyIcon . '</a>';
-        $linkCut = '<a class="tpm-cut" href="index.php?' . $this->pObj->link_getParameters() . '&amp;CB[setCopyMode]=0&amp;CB[setFlexMode]=cut' . ($clipActive_cut ? $removeElement : $setElement) . '">' . $cutIcon . '</a>';
-        $linkRef = '<a class="tpm-ref" href="index.php?' . $this->pObj->link_getParameters() . '&amp;CB[setCopyMode]=1&amp;CB[setFlexMode]=ref' . ($clipActive_ref ? $removeElement : $setElementRef) . '">' . $refIcon . '</a>';
+                $isActive = ($selectMode === $button);
 
-        $output =
-            (\TYPO3\CMS\Core\Utility\GeneralUtility::inList($listOfButtons, 'copy') && !in_array('copy', $this->pObj->blindIcons) ? $linkCopy : '') .
-            (\TYPO3\CMS\Core\Utility\GeneralUtility::inList($listOfButtons, 'ref') && !in_array('ref', $this->pObj->blindIcons) ? $linkRef : '') .
-            (\TYPO3\CMS\Core\Utility\GeneralUtility::inList($listOfButtons, 'cut') && !in_array('cut', $this->pObj->blindIcons) ? $linkCut : '');
+                $params = $this->pObj->getLinkParameters(
+                    [
+                        'CB' => [
+                            'setCopyMode' => $copyMode,
+                            'setFlexMode' => $button,
+                            'removeAll' => ($isActive ? 'normal' : ''),
+                            'el' => ($isActive ? '' : $clipBoardElement),
+                        ],
+                    ]
+                );
+
+                $output .= $this->pObj->buildButton(
+                    'web_txtemplavoilaM1',
+                    $title,
+                    $icon . ($isActive ? '-release' : ''),
+                    $params
+                );
+            }
+        }
 
         return $output;
     }
@@ -266,13 +306,13 @@ class Clipboard implements SingletonInterface
         $pid = $this->pObj->id; // If workspaces should evaluated non-used elements it must consider the id: For "element" and "branch" versions it should accept the incoming id, for "page" type versions it must be remapped (because content elements are then related to the id of the offline version)
 
         $res = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTquery(
-            \TYPO3\CMS\Backend\Utility\BackendUtility::getCommonSelectFields('tt_content', '', array('uid', 'header', 'bodytext', 'sys_language_uid')),
+            BackendUtility::getCommonSelectFields('tt_content', '', array('uid', 'header', 'bodytext', 'sys_language_uid')),
             'tt_content',
             'pid=' . (int)$pid . ' ' .
             'AND uid NOT IN (' . implode(',', $usedUids) . ') ' .
             'AND ( t3ver_state NOT IN (1,3) OR (t3ver_wsid > 0 AND t3ver_wsid = ' . (int)\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->workspace . ') )' .
-            \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tt_content') .
-            \TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause('tt_content'),
+            BackendUtility::deleteClause('tt_content') .
+            BackendUtility::versioningPlaceholderClause('tt_content'),
             '',
             'uid'
         );
@@ -291,11 +331,17 @@ class Clipboard implements SingletonInterface
 
             // Prepare buttons:
             $cutButton = $this->element_getSelectButtons($elementPointerString, 'ref');
-            $recordIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('tt_content', $row);
-            $recordButton = $this->pObj->doc->wrapClickMenuOnIcon($recordIcon, 'tt_content', $row['uid'], 1, '&callingScriptId=' . rawurlencode($this->pObj->doc->scriptID), 'new,copy,cut,pasteinto,pasteafter,delete');
+            $recordButton = $this->pObj->doc->wrapClickMenuOnIcon(
+                $this->pObj->iconFactory->getIconForRecord('tt_content', $row, Icon::SIZE_SMALL)->render(),
+                'tt_content',
+                $row['uid'],
+                1,
+                '&callingScriptId=' . rawurlencode($this->pObj->doc->scriptID),
+                'new,copy,cut,pasteinto,pasteafter,delete'
+            );
 
             if (\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->workspace) {
-                $wsRow = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('tt_content', $row['uid']);
+                $wsRow = BackendUtility::getRecordWSOL('tt_content', $row['uid']);
                 $isDeletedInWorkspace = $wsRow['t3ver_state'] == 2;
             } else {
                 $isDeletedInWorkspace = false;
@@ -303,17 +349,19 @@ class Clipboard implements SingletonInterface
             if (!$isDeletedInWorkspace) {
                 $elementRows[] = '
                     <tr id="' . $elementPointerString . '" class="tpm-nonused-element">
-                        <td class="tpm-nonused-controls">' .
-                    $cutButton . $languageIcon .
-                    '</td>
-                    <td class="tpm-nonused-ref">' .
-                    $this->renderReferenceCount($row['uid']) .
-                    '</td>
-                    <td class="tpm-nonused-preview">' .
-                    $recordButton . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle('tt_content', $row)) .
-                    '</td>
-                </tr>
-            ';
+                        <td class="tpm-nonused-controls">
+                            <div aria-label="" role="toolbar" class="btn-toolbar">
+                                <div class="btn-group">
+                                    <span class="btn btn-primary disabled btn-sm">' . $languageIcon . '</span>
+                                    ' . $cutButton . $this->renderReferenceCount($row['uid']) . '
+                                    <span class="btn btn-default btn-sm">' . $recordButton . '</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="tpm-nonused-preview">'
+                             . htmlspecialchars(BackendUtility::getRecordTitle('tt_content', $row))
+                    . '</td>
+                    </tr>';
             }
         }
 
@@ -327,10 +375,13 @@ class Clipboard implements SingletonInterface
                     $params .= '&cmd[tt_content][' . $deleteUid . '][delete]=1';
                 }
                 $label = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('rendernonusedelements_deleteall');
-                $deleteAll = '<a href="#" onclick="' . htmlspecialchars('jumpToUrl(\'' . $this->doc->issueCommand($params, -1) . '\');') . '">' .
-                    \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-delete', array('title' => htmlspecialchars($label))) .
-                    htmlspecialchars($label) .
-                    '</a>';
+                $deleteAll = $this->pObj->buildButtonFromUrl(
+                    'jumpToUrl(' . $this->doc->issueCommand($params, -1) . ');return false;',
+                    $label,
+                    'actions-edit-delete',
+                    $label,
+                    'warning'
+                );
             }
 
             // Create table and header cell:
@@ -384,14 +435,23 @@ class Clipboard implements SingletonInterface
             }
         }
         if (count($infoData)) {
-            return '<a class="tpm-countRef" href="#" onclick="' . htmlspecialchars('top.launchView(\'tt_content\', \'' . $uid . '\'); return false;') . '" title="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs(implode(' / ', $infoData), 100)) . '">Ref: ' . count($infoData) . '</a>';
+            return $this->pObj->buildButtonFromUrl(
+                'top.launchView(\'tt_content\', \'' . $uid . '\'); return false;',
+                \TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs(implode(' / ', $infoData), 100),
+                '',
+                'Ref: ' . count($infoData)
+            );
         } else {
             $this->deleteUids[] = $uid;
             $params = '&cmd[tt_content][' . $uid . '][delete]=1';
 
-            return '<a class="tpm-countRef" href="#" onclick="' . htmlspecialchars('jumpToUrl(\'' . $this->doc->issueCommand($params, -1) . '\');') . '">' .
-            \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-delete', array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('renderreferencecount_delete', true))) .
-            '</a>';
+            return $this->pObj->buildButtonFromUrl(
+                'jumpToUrl(' . $this->doc->issueCommand($params, -1). ');return false;',
+                \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('renderreferencecount_delete', true),
+                'actions-edit-delete',
+                '',
+                'warning'
+            );
         }
     }
 }
