@@ -1,6 +1,6 @@
 var browserPos = null;
 
-function setFormValueOpenBrowser(mode, params) {	//
+function setFormValueOpenBrowser(mode, params) {
 	var url = T3_TV_MOD1_BACKPATH + "browser.php?mode=" + mode + "&bparams=" + params;
 
 	browserWin = window.open(url, "templavoilareferencebrowser", "height=350,width=" + (mode == "db" ? 650 : 600) + ",status=0,menubar=0,resizable=1,scrollbars=1");
@@ -16,21 +16,21 @@ function setFormValueFromBrowseWin(fName, value, label, exclusiveValues) {
 	}
 }
 
-function jumpToUrl(URL) {	//
+function jumpToUrl(URL) {
 	window.location.href = URL;
 	return false;
 }
-function jumpExt(URL, anchor) {	//
+function jumpExt(URL, anchor) {
 	var anc = anchor ? anchor : "";
 	window.location.href = URL + (T3_THIS_LOCATION ? "&returnUrl=" + T3_THIS_LOCATION : "") + anc;
 	return false;
 }
-function jumpSelf(URL) {	//
+function jumpSelf(URL) {
 	window.location.href = URL + (T3_RETURN_URL ? "&returnUrl=" + T3_RETURN_URL : "");
 	return false;
 }
 
-function setHighlight(id) {	//
+function setHighlight(id) {
 	top.fsMod.recentIds["web"] = id;
 	top.fsMod.navFrameHighlightedID["web"] = "pages" + id + "_" + top.fsMod.currentBank;	// For highlighting
 
@@ -39,10 +39,10 @@ function setHighlight(id) {	//
 	}
 }
 
-function editRecords(table, idList, addParams, CBflag) {	//
+function editRecords(table, idList, addParams, CBflag) {
 	window.location.href = T3_TV_MOD1_BACKPATH + "alt_doc.php?returnUrl=" + T3_TV_MOD1_RETURNURL + "&edit[" + table + "][" + idList + "]=edit" + addParams;
 }
-function editList(table, idList) {	//
+function editList(table, idList) {
 	var list = "";
 
 	// Checking how many is checked, how many is not
@@ -95,28 +95,28 @@ function sortable_hideRecordCallBack(obj) {
 }
 
 function sortable_unlinkRecordCallBack(obj) {
-	var el = obj.element;
-	var pn = el.parentNode;
-	pn.removeChild(el);
-	sortable_update(pn);
+    var pn = obj.parent();
+    obj.remove();
+    sortable_update(pn);
 }
 
 function sortable_unlinkRecord(pointer, id, elementPointer) {
-	new Ajax.Request("index.php?" + sortable_linkParameters + "&ajaxUnlinkRecord=" + escape(pointer), {
-		onSuccess: function(response) {
-			var node = Builder.build(response.responseText);
-			$('tx_templavoila_mod1_sidebar-bar').setStyle({height: $('tx_templavoila_mod1_sidebar-bar').getHeight() + 'px'});
-			$('tx_templavoila_mod1_sidebar-bar').innerHTML = node.innerHTML;
-			//we can't do that instantanious because the browser won't calculate the hights properly
-			setTimeout(function() {
-				sortable_unlinkRecordSidebarCallBack(elementPointer);
-			}, 100);
-		}
-	});
-	new Effect.Fade(id, {
-		duration: 0.5,
-		afterFinish: sortable_unlinkRecordCallBack
-	});
+    new TYPO3.jQuery.ajax({
+        url: TYPO3.settings.ajaxUrls['Extension\\Templavoila\\Module\\Mod1\\Ajax::unlinkRecord'],
+        type: 'post',
+        cache: false,
+        data: {
+            'unlink': pointer
+        }
+    }).done(function(data) {
+        // @TODO insert unlinked element into sidebar, so it is viewable without reloading?
+        // This was functional in older TV releases.
+
+        // Fade out unlinked element
+        new TYPO3.jQuery('#' + id).fadeTo('fast', 0.0, function() {
+            sortable_unlinkRecordCallBack(TYPO3.jQuery(this))
+        });
+    });
 }
 
 function sortable_unlinkRecordSidebarCallBack(pointer) {
