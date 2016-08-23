@@ -491,8 +491,11 @@ page.10.disableExplosivePreview = 1
 										if ($diffBaseEnabled && preg_match('/\.vDEFbase$/', $currentValueKey)) {
 											continue;
 										}
-
-										$uidsArr = GeneralUtility::trimExplode(',', $uidList);
+                                        if (is_array($uidList)) {
+                                            $uidsArr = $uidList;
+                                        } else {
+                                            $uidsArr = GeneralUtility::trimExplode(',', $uidList);
+                                        }
 										if (is_array($uidsArr)) {
 											foreach ($uidsArr as $uid) {
 												if ((int)$uid) {
