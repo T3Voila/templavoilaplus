@@ -567,7 +567,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
             $this->doc->bodyTagId = 'typo3-mod-php';
             $this->doc->divClass = '';
-            $this->doc->form = '<form action="' . htmlspecialchars('index.php?' . $this->link_getParameters()) . '" method="post">';
+            $this->doc->form = '<form action="' . BackendUtility::getModuleUrl('web_txtemplavoilaM1', $this->getLinkParameters()) . '" method="post">';
 
             // Add custom styles
             $styleSheetFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($this->extKey) . 'Resources/Public/StyleSheet/mod1_' . substr(TYPO3_version, 0, 3) . '.css';
@@ -739,7 +739,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 if ($this->rootElementRecord['content_from_pid']) {
                     $contentPage = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', (int)$this->rootElementRecord['content_from_pid']);
                     $title = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle('pages', $contentPage);
-                    $linkToPid = 'index.php?id=' . (int)$this->rootElementRecord['content_from_pid'];
+                    $linkToPid = BackendUtility::getModuleUrl('web_txtemplavoilaM1', ['id' => (int)$this->rootElementRecord['content_from_pid']]);
                     $link = '<a href="' . $linkToPid . '">' . htmlspecialchars($title) . ' (PID ' . (int)$this->rootElementRecord['content_from_pid'] . ')</a>';
                     /** @var \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage */
                     $flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
@@ -1031,6 +1031,15 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         return $buttons;
     }
 
+    /**
+     * Builds a bootstrap button
+     *
+     * @param string $module
+     * @param string $icon
+     * @param array $params
+     * @param string $buttonType Type of the html button, see bootstrap
+     * @return string
+     */
     public function buildButton($module, $title, $icon, $params = [], $buttonType = 'default')
     {
         global $BACK_PATH;
@@ -1067,6 +1076,16 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         return $this->buildButtonFromUrl($clickUrl, $title, $icon);
     }
 
+    /**
+     * Builds a bootstrap button for given url
+     *
+     * @param string $clickUrl
+     * @param string $title
+     * @param string $icon
+     * @param string $text
+     * @param string $buttonType Type of the html button, see bootstrap
+     * @return string
+     */
     public function buildButtonFromUrl($clickUrl, $title, $icon, $text = '', $buttonType = 'default')
     {
         return '<a href="#" class="btn btn-' . $buttonType . ' btn-sm" onclick="' . $clickUrl . '" title="' . $title . '">'
@@ -1120,9 +1139,16 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
         // Create a back button if neccessary:
         if (is_array($this->altRoot)) {
-            $output .= '<div style="text-align:right; width:100%; margin-bottom:5px;"><a href="index.php?id=' . $this->id . '">' .
-                \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-view-go-back', array('title' => htmlspecialchars(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('goback')))) .
-                '</a></div>';
+            $output .= '<div style="text-align:right; width:100%; margin-bottom:5px;">'
+            . $this->buildButton(
+                'web_txtemplavoilaM1',
+                \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('goback'),
+                'actions-view-go-back',
+                [
+                    'id' => $this->id,
+                ]
+            )
+            . '</div>';
         }
 
         // Hook for content at the very top (fx. a toolbar):
@@ -2052,7 +2078,10 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                                 // Copy for language:
                                 if ($this->rootElementLangParadigm == 'free') {
                                     $sourcePointerString = $this->apiObj->flexform_getStringFromPointer($parentPointer);
-                                    $onClick = "document.location='index.php?" . $this->link_getParameters() . '&source=' . rawurlencode($sourcePointerString) . '&localizeElement=' . $sLInfo['ISOcode'] . "'; return false;";
+                                    $onClick = "document.location='"
+                                        . BackendUtility::getModuleUrl('web_txtemplavoilaM1', $this->getLinkParameters(['source' => $sourcePointerString, 'localizeElement' => $sLInfo['ISOcode']]))
+                                        . "'; return false;";
+
                                 } else {
                                     $params = '&cmd[tt_content][' . $contentTreeArr['el']['uid'] . '][localize]=' . $sys_language_uid;
                                     $onClick = "document.location='" . $GLOBALS['SOBE']->doc->issueCommand($params, \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI') . '#c' . md5($this->apiObj->flexform_getStringFromPointer($parentPointer) . $contentTreeArr['el']['uid'] . $sys_language_uid)) . "'; return false;";
@@ -2541,7 +2570,9 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 (!$this->translatorMode || $forced)
             ) {
                 if ($table == "pages" && $this->currentLanguageUid) {
-                    return '<a class="tpm-pageedit" href="index.php?' . $this->link_getParameters() . '&amp;editPageLanguageOverlay=' . $this->currentLanguageUid . '">' . $label . '</a>';
+                    return '<a class="tpm-pageedit" href="'
+                        . BackendUtility::getModuleUrl('web_txtemplavoilaM1', $this->getLinkParameters(['editPageLanguageOverlay' => $this->currentLanguageUid]))
+                        . '">' . $label . '</a>';
                 } else {
                     $onClick = \TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick('&edit[' . $table . '][' . $uid . ']=edit', '', -1);
                     return '<a class="' . $class . '" href="#" onclick="' . htmlspecialchars($onClick) . '">' . $label . '</a>';
@@ -2696,7 +2727,9 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         if ($realDelete) {
             $LLlabel = $foreignReferences ? 'deleteRecordWithReferencesMsg' : 'deleteRecordMsg';
 
-            return '<a class="btn btn-warning btn-sm tpm-delete" href="index.php?' . $this->link_getParameters() . '&amp;deleteRecord=' . $encodedUnlinkPointerString . '" onclick="' . htmlspecialchars('return confirm(' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL($LLlabel)) . ');') . '">' . $label . '</a>';
+            return '<a class="btn btn-warning btn-sm tpm-delete" href="'
+                . BackendUtility::getModuleUrl('web_txtemplavoilaM1', $this->getLinkParameters(['deleteRecord' => $unlinkPointerString]))
+                . '" onclick="' . htmlspecialchars('return confirm(' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL($LLlabel)) . ');') . '">' . $label . '</a>';
         } else {
             return '<a class="btn btn-default btn-sm tpm-unlink" href="javascript:' . htmlspecialchars('if (confirm(' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('unlinkRecordMsg')) . '))') . 'sortable_unlinkRecord(\'' . $encodedUnlinkPointerString . '\',\'' . $this->addSortableItem($unlinkPointerString) . '\',\'' . $elementPointer . '\');">' . $label . '</a>';
         }
@@ -2713,7 +2746,9 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      */
     public function link_makeLocal($label, $makeLocalPointer)
     {
-        return '<a class="tpm-makeLocal" href="index.php?' . $this->link_getParameters() . '&amp;makeLocalRecord=' . rawurlencode($this->apiObj->flexform_getStringFromPointer($makeLocalPointer)) . '" onclick="' . htmlspecialchars('return confirm(' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('makeLocalMsg')) . ');') . '">' . $label . '</a>';
+        return '<a class="tpm-makeLocal" href="'
+            . BackendUtility::getModuleUrl('web_txtemplavoilaM1', $this->getLinkParameters(['makeLocalRecord' => $this->apiObj->flexform_getStringFromPointer($makeLocalPointer)]))
+            . '" onclick="' . htmlspecialchars('return confirm(' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('makeLocalMsg')) . ');') . '">' . $label . '</a>';
     }
 
     /**
@@ -2821,7 +2856,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         foreach ($possibleCommands as $command) {
             if (($commandParameters = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP($command)) != '') {
 
-                $redirectLocation = 'index.php?' . $this->link_getParameters();
+                $redirectLocation = BackendUtility::getModuleUrl('web_txtemplavoilaM1', $this->getLinkParameters());
 
                 $skipCurrentCommand = FALSE;
                 foreach ($hooks as $hookObj) {
@@ -2846,7 +2881,10 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                         $newUid = $this->apiObj->insertElement($destinationPointer, $newRow);
                         if ($this->editingOfNewElementIsEnabled($newRow['tx_templavoila_ds'], $newRow['tx_templavoila_to'])) {
                             // TODO If $newUid==0, than we could create new element. Need to handle it...
-                            $redirectLocation = $GLOBALS['BACK_PATH'] . 'alt_doc.php?edit[tt_content][' . $newUid . ']=edit&returnUrl=' . rawurlencode(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila') . 'mod1/index.php?' . $this->link_getParameters());
+                            $redirectLocation = BackendUtility::getModuleUrl('record_edit', [
+                                'edit' => ['tt_content' => [$newUid => 'edit']],
+                                'returnUrl' => $redirectLocation
+                            ]);
                         }
                         break;
 
@@ -2893,9 +2931,16 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
                     case 'createNewPageTranslation':
                         // Create parameters and finally run the classic page module for creating a new page translation
-                        $params = '&edit[pages_language_overlay][' . (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('pid') . ']=new&overrideVals[pages_language_overlay][doktype]=' . (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('doktype') . '&overrideVals[pages_language_overlay][sys_language_uid]=' . (int)$commandParameters;
-                        $returnUrl = '&returnUrl=' . rawurlencode(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila') . 'mod1/index.php?' . $this->link_getParameters());
-                        $redirectLocation = $GLOBALS['BACK_PATH'] . 'alt_doc.php?' . $params . $returnUrl;
+                        $redirectLocation = BackendUtility::getModuleUrl('record_edit', [
+                                'edit' => ['pages_language_overlay' => [(int)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('pid') => 'new']],
+                                'overrideVals' => [
+                                    'pages_language_overlay' => [
+                                        'doktype' => (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('doktype'),
+                                        'sys_language_uid' => (int)$commandParameters,
+                                    ]
+                                ],
+                                'returnUrl' => $redirectLocation
+                            ]);
                         break;
 
                     case 'editPageLanguageOverlay':

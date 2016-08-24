@@ -271,21 +271,51 @@ class Clipboard implements SingletonInterface
         }
 
         // Prepare the ingredients for the different buttons:
-        $pasteMode = isset ($this->t3libClipboardObj->clipData['normal']['flexMode']) ? $this->t3libClipboardObj->clipData['normal']['flexMode'] : ($this->t3libClipboardObj->clipData['normal']['mode'] == 'copy' ? 'copy' : 'cut');
-        $pasteAfterIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('extensions-templavoila-paste', array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('pasterecord')));
-        $pasteSubRefIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('extensions-templavoila-pasteSubRef', array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('pastefce_andreferencesubs')));
+        $pasteMode = isset ($this->t3libClipboardObj->clipData['normal']['flexMode'])
+            ? $this->t3libClipboardObj->clipData['normal']['flexMode']
+            : ($this->t3libClipboardObj->clipData['normal']['mode'] == 'copy'
+                ? 'copy'
+                : 'cut'
+            );
 
         $sourcePointerString = $this->pObj->apiObj->flexform_getStringFromPointer($clipboardElementPointer);
         $destinationPointerString = $this->pObj->apiObj->flexform_getStringFromPointer($destinationPointer);
 
         $output = '';
-        $clearCB = $this->pObj->modTSconfig['properties']['keepElementsInClipboard'] ? '' : '&amp;CB[removeAll]=normal';
         if (!in_array('pasteAfter', $this->pObj->blindIcons)) {
-            $output .= '<a class="tpm-pasteAfter" href="index.php?' . $this->pObj->link_getParameters() . $clearCB . '&amp;pasteRecord=' . $pasteMode . '&amp;source=' . rawurlencode($sourcePointerString) . '&amp;destination=' . rawurlencode($destinationPointerString) . '">' . $pasteAfterIcon . '</a>';
+            $output .= $this->pObj->buildButton(
+                'web_txtemplavoilaM1',
+                \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('pasterecord'),
+                'extensions-templavoila-paste',
+                $this->pObj->getLinkParameters(
+                    [
+                        'CB' => [
+                            'removeAll' => ($this->pObj->modTSconfig['properties']['keepElementsInClipboard'] ? '' : 'normal'),
+                        ],
+                        'pasteRecord' => $pasteMode,
+                        'source' => $sourcePointerString,
+                        'destination' => $destinationPointerString,
+                    ]
+                )
+            );
         }
         // FCEs with sub elements have two different paste icons, normal elements only one:
         if ($pasteMode == 'copy' && $clipboardElementHasSubElements && !in_array('pasteSubRef', $this->pObj->blindIcons)) {
-            $output .= '<a class="tpm-pasteSubRef" href="index.php?' . $this->pObj->link_getParameters() . $clearCB . '&amp;pasteRecord=copyref&amp;source=' . rawurlencode($sourcePointerString) . '&amp;destination=' . rawurlencode($destinationPointerString) . '">' . $pasteSubRefIcon . '</a>';
+            $output .= $this->pObj->buildButton(
+                'web_txtemplavoilaM1',
+                \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('pastefce_andreferencesubs'),
+                'extensions-templavoila-pasteSubRef',
+                $this->pObj->getLinkParameters(
+                    [
+                        'CB' => [
+                            'removeAll' => ($this->pObj->modTSconfig['properties']['keepElementsInClipboard'] ? '' : 'normal'),
+                        ],
+                        'pasteRecord' => 'copyref',
+                        'source' => $sourcePointerString,
+                        'destination' => $destinationPointerString,
+                    ]
+                )
+            );
         }
 
         return $output;
