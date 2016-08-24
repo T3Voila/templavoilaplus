@@ -23,12 +23,23 @@ if (TYPO3_MODE === 'BE') {
         \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'mod2/'
     );
 
-    // Adding backend modules:
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
         '',
         'txtemplavoilaCM1',
         '',
         \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'cm1/'
+    );
+
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
+        '',
+        'txtemplavoilaM1NewContentElement',
+        '',
+        '',
+        array(
+            'routeTarget' => \Extension\Templavoila\Module\Mod1\DbNewContentEl::class . '::main',
+            'access' => 'user,group',
+            'name' => '_txtemplavoilaM1NewContentElement',
+        )
     );
 
     $_EXTCONF = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);

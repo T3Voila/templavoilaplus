@@ -319,7 +319,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      *
      * @var string
      */
-    protected $newContentWizScriptPath = 'db_new_content_el.php';
+    protected $newContentWizModuleName = '_txtemplavoilaM1NewContentElement';
 
     /**
      * @var \TYPO3\CMS\Core\Messaging\FlashMessageService
@@ -373,10 +373,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         $this->MOD_SETTINGS = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData($this->MOD_MENU, \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('SET'), $this->MCONF['name']);
 
         $tmpTSc = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($this->id, 'mod.web_list');
-        $tmpTSc = $tmpTSc ['properties']['newContentWiz.']['overrideWithExtension'];
-        if ($tmpTSc != 'templavoila' && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($tmpTSc)) {
-            $this->newContentWizScriptPath = $GLOBALS['BACK_PATH'] . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($tmpTSc) . 'mod1/db_new_content_el.php';
-        }
+        $this->newContentWizModuleName = $tmpTSc['properties']['newContentWiz.']['overrideWithExtension'];
 
         $this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
 
@@ -821,7 +818,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         // Place content inside template
         $content = $this->doc->startPage(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('title'));
         $content .= $this->doc->moduleBody(
-            array(),
+            $pageInfoArr,
             $this->getDocHeaderButtons(!isset($pageInfoArr['uid'])),
             $this->getBodyMarkers($pageInfoArr)
         );
@@ -872,12 +869,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         );
 
         $bodyMarkers = array(
-            'TITLE' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('title'),
-            'FULLPAGEPATH' => $path,
-            'PAGEINFORMATION' => $icon
-                . ' <strong>' . htmlspecialchars(BackendUtility::getRecordTitle('pages', $pageRecord))
-                . ($pageRecord['uid'] !== '' ? '&nbsp;[' . $pageRecord['uid'] . ']' : '')
-                . '</strong>'
+            'TITLE' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('title')
         );
 
         if ($this->modTSconfig['properties']['sideBarEnable'] && $this->sideBarObj->position == 'left') {
@@ -1035,6 +1027,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      * Builds a bootstrap button
      *
      * @param string $module
+     * @param string $title
      * @param string $icon
      * @param array $params
      * @param string $buttonType Type of the html button, see bootstrap
@@ -2426,8 +2419,8 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
                             if (!$this->translatorMode) {
                                 // "New" and "Paste" icon:
-                                $newIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-new', array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('createnewrecord')));
-                                $controls = $this->link_new($newIcon, $subElementPointer);
+                                $controls = $this->buildButtonNew($subElementPointer);
+
                                 $controls .= $this->clipboardObj->element_getPasteButtons($subElementPointer);
                             } else {
                                 $controls = '';
@@ -2455,8 +2448,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
                                         if (!$this->translatorMode) {
                                             // "New" and "Paste" icon:
-                                            $newIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-new', array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('createnewrecord')));
-                                            $controls = $this->link_new($newIcon, $subElementPointer);
+                                            $controls = $this->buildButtonNew($subElementPointer);
                                             $controls .= $this->clipboardObj->element_getPasteButtons($subElementPointer);
                                         }
 
@@ -2696,14 +2688,18 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      * @return string HTML anchor tag containing the label and the correct link
      * @access protected
      */
-    public function link_new($label, $parentPointer)
+    public function buildButtonNew($parentPointer)
     {
-        $parameters =
-            $this->link_getParameters() .
-            '&amp;parentRecord=' . rawurlencode($this->apiObj->flexform_getStringFromPointer($parentPointer)) .
-            '&amp;returnUrl=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI'));
-
-        return '<a class="tpm-new" href="' . $this->newContentWizScriptPath . '?' . $parameters . '">' . $label . '</a>';
+        return $this->buildButton(
+            $this->newContentWizModuleName,
+            \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('createnewrecord'),
+            'actions-document-new',
+            $this->getLinkParameters([
+                'parentRecord' => $this->apiObj->flexform_getStringFromPointer($parentPointer),
+                'returnUrl' => \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI'),
+            ])
+        );
+        //'<a class="tpm-new" href="' .  . '?' . $parameters . '">' . $label . '</a>';
     }
 
     /**
@@ -2802,11 +2798,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
         // "New" icon:
         if ($canCreateNew && !in_array('new', $this->blindIcons)) {
-            $iconOptions = array(
-                'title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('createnewrecord')
-            );
-            $newIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-new', $iconOptions);
-            $output .= $this->link_new($newIcon, $elementPointer);
+            $output .= $this->buildButtonNew($elementPointer);
         }
 
         // "Browse Record" icon

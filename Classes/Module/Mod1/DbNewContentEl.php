@@ -24,24 +24,13 @@ namespace Extension\Templavoila\Module\Mod1;
  * @coauthor    Kasper Skaarhoj <kasper@typo3.com>
  */
 
-unset($MCONF);
-require(dirname(__FILE__) . '/conf.php');
-require($BACK_PATH . 'init.php');
-
-// Unset MCONF/MLANG since all we wanted was back path etc. for this particular script.
-unset($MCONF);
-unset($MLANG);
-
 // Merging locallang files/arrays:
-$LANG->includeLLFile('EXT:lang/locallang_misc.xlf');
-$LOCAL_LANG_orig = $LOCAL_LANG;
-$LANG->includeLLFile('EXT:templavoila/mod1/locallang_db_new_content_el.xlf');
-
-\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($LOCAL_LANG_orig, $LOCAL_LANG);
-$LOCAL_LANG = $LOCAL_LANG_orig;
-
-// Exits if 'cms' extension is not loaded:
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cms', 1);
+// $LANG->includeLLFile('EXT:lang/locallang_misc.xlf');
+// $LOCAL_LANG_orig = $LOCAL_LANG;
+// $LANG->includeLLFile('EXT:templavoila/mod1/locallang_db_new_content_el.xlf');
+//
+// \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($LOCAL_LANG_orig, $LOCAL_LANG);
+// $LOCAL_LANG = $LOCAL_LANG_orig;
 
 /**
  * Script Class for the New Content element wizard
@@ -197,9 +186,7 @@ class DbNewContentEl {
 		$this->doc->divClass = '';
 		$this->doc->JScode = '';
 
-		$this->doc->getPageRenderer()->loadPrototype();
-
-		$this->doc->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/tabmenu.js');
+		//$this->doc->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/tabmenu.js');
 
 		$this->doc->form = '<form action="" name="editForm">';
 
@@ -231,6 +218,7 @@ class DbNewContentEl {
 	 * @todo provide position mapping if no position is given already. Like the columns selector but for our cascading element style ...
 	 */
 	public function main() {
+        $this->init();
 		if ($this->id && $this->access) {
 
 			// Creating content
@@ -358,6 +346,7 @@ class DbNewContentEl {
 
 		// Replace content with templated content
 		$this->content = $content;
+		$this->printContent();
 	}
 
 	/**
@@ -502,8 +491,8 @@ class DbNewContentEl {
 		// plugins
 		if (is_array($GLOBALS['TBE_MODULES_EXT']['xMOD_db_new_content_el']['addElClasses'])) {
 			foreach ($GLOBALS['TBE_MODULES_EXT']['xMOD_db_new_content_el']['addElClasses'] as $class => $path) {
-				$modObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($class);
-				$wizardElements = $modObj->proc($wizardElements);
+// 				$modObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($class);
+// 				$wizardElements = $modObj->proc($wizardElements);
 			}
 		}
 		$returnElements = array();
@@ -687,15 +676,3 @@ class DbNewContentEl {
 		return $dsValues;
 	}
 }
-
-// Make instance:
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Module\Mod1\DbNewContentEl::class);
-$SOBE->init();
-
-// Include files?
-foreach ($SOBE->include_once as $INC_FILE) {
-	include_once($INC_FILE);
-}
-
-$SOBE->main();
-$SOBE->printContent();

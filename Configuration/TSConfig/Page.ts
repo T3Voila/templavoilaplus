@@ -1,7 +1,7 @@
 # Use templavoila's wizard instead the default create new page wizard
 
 mod.web_list.newPageWiz.overrideWithExtension = templavoila
-mod.web_list.newContentWiz.overrideWithExtension = templavoila
+mod.web_list.newContentWiz.overrideWithExtension = _txtemplavoilaM1NewContentElement
 mod.web_txtemplavoilaM2.templatePath = templates,default/templates
 mod.web_txtemplavoilaM1.enableDeleteIconForLocalElements = 0
 mod.web_txtemplavoilaM1.enableContentAccessWarning = 1
