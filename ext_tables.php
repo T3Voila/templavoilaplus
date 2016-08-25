@@ -8,6 +8,9 @@ if (TYPO3_MODE === 'BE') {
         'name' => \Extension\Templavoila\Service\ClickMenu\MainClickMenu::class
     ];
 
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms']['db_new_content_el']['wizardItemsHook'][] = \Extension\Templavoila\Hooks\WizardItems::class;
+
+
     // Adding backend modules:
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
         'web',
@@ -28,18 +31,6 @@ if (TYPO3_MODE === 'BE') {
         'txtemplavoilaCM1',
         '',
         \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'cm1/'
-    );
-
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
-        '',
-        'txtemplavoilaM1NewContentElement',
-        '',
-        '',
-        array(
-            'routeTarget' => \Extension\Templavoila\Module\Mod1\DbNewContentEl::class . '::main',
-            'access' => 'user,group',
-            'name' => '_txtemplavoilaM1NewContentElement',
-        )
     );
 
     $_EXTCONF = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);

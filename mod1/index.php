@@ -2696,7 +2696,9 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             'actions-document-new',
             $this->getLinkParameters([
                 'parentRecord' => $this->apiObj->flexform_getStringFromPointer($parentPointer),
+                'colPos' => 0,
                 'returnUrl' => \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI'),
+                'uid_pid' => $this->id,
             ])
         );
         //'<a class="tpm-new" href="' .  . '?' . $parameters . '">' . $label . '</a>';
