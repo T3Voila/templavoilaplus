@@ -280,7 +280,7 @@ class StaticDataStructuresHandler
      *
      * @return integer Storage pid
      */
-    protected function getStoragePid(array &$params)
+    public function getStoragePid(array $params)
     {
         /**
          * // Get default first

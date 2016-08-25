@@ -1817,6 +1817,11 @@ class ApiService {
 		}
 		$row = BackendUtility::getRecordWSOL('pages', $pageUid);
 
+        $itemsProcFunc = new \Extension\Templavoila\Service\ItemProcFunc\StaticDataStructuresHandler();
+
+        return $itemsProcFunc->getStoragePid(['table' => 'pages', 'row' => $row]);
+
+        // @TODO Is that all implemented in StaticDataStructuresHandler?
 		$TSconfig = BackendUtility::getTCEFORM_TSconfig('pages', $row);
 		$storagePid = (int)$TSconfig['_STORAGE_PID'];
 
