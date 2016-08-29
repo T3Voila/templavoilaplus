@@ -52,6 +52,7 @@ class FlexFormElementContainer extends AbstractContainer
         /** @var IconFactory $iconFactory */
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $resultArray = $this->initializeResultArray();
+
         foreach ($flexFormDataStructureArray as $flexFormFieldName => $flexFormFieldArray) {
             if (
                 // No item array found at all
@@ -189,13 +190,11 @@ class FlexFormElementContainer extends AbstractContainer
                     $html[] = $this->renderVDEFDiff($flexFormRowData[$flexFormFieldName], $lkey);
                     $html[] = '</div>';
                     $html[] = '</div>';
-                }
 
-                if (!empty($html)) {
-                    $resultArray['html'] .= '<div class="form-section">' . implode(LF, $html) . '</div>';
+                    $childResult['html'] = '';
+                    $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $childResult);
                 }
-                $childResult['html'] = '';
-                $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $childResult);
+                $resultArray['html'] .= '<div class="form-section">' . implode(LF, $html) . '</div>';
             }
         }
 
