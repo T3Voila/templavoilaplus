@@ -246,3 +246,7 @@ div.warning a {
 #typo3-docbody > .typo3-message {
   margin: 5px 8px;
 }
+
+.drag-placeholder {
+  background-color: #DDEEF9;
+}

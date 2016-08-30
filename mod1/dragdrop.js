@@ -94,10 +94,11 @@ function sortable_hideRecordCallBack(obj) {
 	}
 }
 
-function sortable_unlinkRecordCallBack(obj) {
-    var pn = obj.parent();
+function sortable_unlinkRecordCallBack(obj)
+{
+    $parentSortable = TYPO3.jQuery(obj).parents('.ui-sortable');
     obj.remove();
-    sortable_update(pn);
+    sortable_updateItemButtons($parentSortable[0], $parentSortable.sortable('toArray'))
 }
 
 function sortable_unlinkRecord(pointer, id, elementPointer) {
@@ -139,84 +140,96 @@ function sortable_unlinkRecordSidebarCallBack(pointer) {
 	);
 }
 
-function sortable_updateItemButtons(el, position, pID) {
-	var p = [], p1 = [];
-	var newPos = escape(pID + position);
-	el.childElements().each(function(node) {
-		if (node.nodeName == 'A' && node.href) {
-			switch (node.className) {
-				case 'tpm-new':
-					node.href = node.href.replace(/&parentRecord=[^&]+/, "&parentRecord=" + newPos);
-					break;
-				case 'tpm-browse':
-					if (node.rel) {
-						node.rel = node.rel.replace(/&destination=[^&]+/, "&destination=" + newPos);
-					}
-					break;
-				case 'tpm-delete':
-					node.href = node.href.replace(/&deleteRecord=[^&]+/, "&deleteRecord=" + newPos);
-					break;
-				case 'tpm-unlink':
-					node.href = node.href.replace(/unlinkRecord\('[^']+'/, "unlinkRecord(\'" + newPos + "\'");
-					break;
-				case 'tpm-cut':
-				case 'tpm-copy':
-				case 'tpm-ref':
-					node.href = node.href.replace(/CB\[el\]\[([^\]]+)\]=[^&]+/, "CB[el][$1]=" + newPos);
-					break;
-				case 'tpm-pasteAfter':
-				case 'tpm-pasteSubRef':
-					node.href = node.href.replace(/&destination=[^&]+/, "&destination=" + newPos);
-					break;
-				case 'tpm-makeLocal':
-					node.href = node.href.replace(/&makeLocalRecord=[^&]+/, "&makeLocalRecord=" + newPos);
-					break;
-			}
-		} else if (node.childElements() && node.className != 'tpm-subelement-table') {
-			// recursion within current container to "find" all pointers
-			// we don't want to update nested containers since their inner references didn't change
-			sortable_updateItemButtons(node, position, pID);
-		}
-	});
+function sortable_updateItemButtons(list, sortOrder)
+{
+    sortOrder.forEach(function(itemId, position) {
+        var newPos = sortable_containers['#' + list.id] + (position + 1);
+        TYPO3.jQuery('#' + itemId).find('a').each(function() {
+            $this = TYPO3.jQuery(this);
+            if ($this.hasClass('tpm-new')) {
+                this.setAttribute('onclick', this.getAttribute('onclick').replace(/&parentRecord=[^&]+/, "&parentRecord=" + newPos));
+            }
+            if ($this.hasClass('tpm-browse')) {
+                if (this.rel) {
+                    this.rel = this.rel.replace(/&destination=[^&]+/, "&destination=" + newPos);
+                }
+            }
+            if ($this.hasClass('tpm-delete')) {
+                this.href = this.href.replace(/&deleteRecord=[^&]+/, "&deleteRecord=" + newPos);
+            }
+            if ($this.hasClass('tpm-unlink')) {
+                this.href = this.href.replace(/unlinkRecord\('[^']+'/, "unlinkRecord(\'" + newPos + "\'");
+            }
+            if ($this.hasClass('tpm-cut') || $this.hasClass('tpm-copy') || $this.hasClass('tpm-ref') ) {
+                this.href = this.href.replace(/CB\[el\]\[([^\]]+)\]=[^&]+/, "CB[el][$1]=" + newPos);
+            }
+            if ($this.hasClass('tpm-pasteAfter') || $this.hasClass('tpm-pasteSubRef')) {
+                this.href = this.href.replace(/&destination=[^&]+/, "&destination=" + newPos);
+            }
+            if ($this.hasClass('tpm-makeLocal')) {
+                this.href = this.href.replace(/&makeLocalRecord=[^&]+/, "&makeLocalRecord=" + newPos);
+            }
+        });
+    });
 }
 
-function sortable_update(el) {
-	var node = el.firstChild;
-	var i = 1;
-	while (node != null) {
-		if (!(typeof node.className == "undefined") && node.className.search(/tpm-element(?!-)/) > -1) {
-			if (sortable_currentItem && node.id == sortable_currentItem.id) {
-				var url = T3_TV_MOD1_BACKPATH + "ajax.php?ajaxID=Extension\\Templavoila\\Module\\Mod1\\Ajax::moveRecord&source=" + all_items[sortable_currentItem.id] + "&destination=" + all_items[el.id] + (i - 1);
-				/* xxx */
-				new Ajax.Request(url);
-				sortable_currentItem = false;
-			}
-			sortable_updateItemButtons(node, i, all_items[el.id]);
-			all_items[node.id] = all_items[el.id] + i;
-			i++;
-		}
+function sortable_update(list, element, sortOrder)
+{
+    destinationIndex = sortOrder.indexOf(element.id);
 
-		node = node.nextSibling;
-	}
+    // If it wasn't found in sortOrder then it was removed from given list'
+    if (destinationIndex != -1 && sortableSource != null) {
+        var destination = sortable_containers['#' + list.id] + destinationIndex;
+        new TYPO3.jQuery.ajax({
+            url: TYPO3.settings.ajaxUrls['Extension\\Templavoila\\Module\\Mod1\\Ajax::moveRecord'],
+            type: 'post',
+            cache: false,
+            data: {
+                'source': sortableSource,
+                'destination': destination
+            }
+        }).done(function(data) {
+        });
+    }
+
+    sortable_updateItemButtons(list, sortOrder);
 }
 
-function sortable_change(el) {
-	sortable_currentItem = el;
+function sortable_start(list, element, sortOrder)
+{
+    sortableSource = sortable_containers['#' + list.id] + (sortOrder.indexOf(element.id) + 1);
+    sortableSourceList = '#' + list.id;
 }
 
-function tv_createSortable(s, containment) {
-	Position.includeScrollOffsets = true;
-	Position.prepare();
-	Sortable.create(s, {
-		tag: "div",
-		ghosting: false,
-		format: /(.*)/,
-		handle: "sortable_handle",
-		scroll: "typo3-docbody",
-		scrollSpeed: 30,
-		dropOnEmpty: true,
-		constraint: false,
-		containment: containment,
-		onChange: sortable_change,
-		onUpdate: sortable_update});
+function sortable_stop()
+{
+    sortableSource = null;
+    sortableSourceList = null;
+}
+
+function tv_createSortable(container, connectWith)
+{
+        var $sortingContainer = TYPO3.jQuery(container);
+        $sortingContainer.sortable(
+        {
+            connectWith: connectWith,
+            handle: '.sortable_handle',
+            items: '.sortableItem',
+            //zIndex: '4000',
+            tolerance: 'pointer',
+            opacity: 0.5,
+            revert: true,
+            start: function (event, ui) {
+                sortable_start(TYPO3.jQuery(this)[0], ui.item[0], TYPO3.jQuery(this).sortable('toArray'));
+            },
+            update: function (event, ui) {
+                sortable_update(TYPO3.jQuery(this)[0], ui.item[0], TYPO3.jQuery(this).sortable('toArray'));
+            },
+            stop: function (event, ui) {
+                sortable_stop();
+            },
+            forcePlaceholderSize: true,
+            placeholder: 'drag-placeholder'
+        });
+        $sortingContainer.disableSelection();
 }

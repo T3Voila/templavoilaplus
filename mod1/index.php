@@ -189,7 +189,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      *
      * @var bool
      */
-    public $translatorMode = FALSE; //
+    public $translatorMode = FALSE;
 
     /**
      * Permissions for the parrent record (normally page). Used for hiding icons.
@@ -241,25 +241,11 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     public $apiObj;
 
     /**
-     * Contains the containers for drag and drop
+     * Registry for containers for drag and drop id => flexPointer-Pairs
      *
      * @var array
      */
     public $sortableContainers = array();
-
-    /**
-     * Registry for all id => flexPointer-Pairs
-     *
-     * @var array
-     */
-    public $allItems = array(); //
-
-    /**
-     * Registry for sortable id => flexPointer-Pairs
-     *
-     * @var array
-     */
-    public $sortableItems = array();
 
     /**
      * holds the extconf configuration
@@ -645,7 +631,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
             // Preparing context menues
             $CMparts = $this->doc->getContextMenuCode();
-
+$this->debug = true;
             $mod1_file = 'dragdrop' . ($this->debug ? '.js' : '-min.js');
             if (method_exists('\TYPO3\CMS\Core\Utility\GeneralUtility', 'createVersionNumberedFilename')) {
                 $mod1_file = \TYPO3\CMS\Core\Utility\GeneralUtility::createVersionNumberedFilename($mod1_file);
@@ -757,22 +743,18 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
                 // Create sortables
                 if (is_array($this->sortableContainers)) {
-                    $script = '';
-                    $sortable_items_json = json_encode($this->sortableItems);
-                    $all_items_json = json_encode($this->allItems);
+                    $script =
+                        'var sortableSource = null' . "\n"
+                        . 'var sortable_containers = ' . json_encode($this->sortableContainers) . ';' . "\n"
+                        . 'var sortable_removeHidden = ' . ($this->MOD_SETTINGS['tt_content_showHidden'] !== '0' ? 'false;' : 'true;') . "\n"
+                        . 'var sortable_linkParameters = \'' . $this->link_getParameters() . '\';';
 
-                    $script .=
-                        'var all_items = ' . $all_items_json . ';' .
-                        'var sortable_items = ' . $sortable_items_json . ';' .
-                        'var sortable_removeHidden = ' . ($this->MOD_SETTINGS['tt_content_showHidden'] !== '0' ? 'false;' : 'true;') .
-                        'var sortable_linkParameters = \'' . $this->link_getParameters() . '\';';
-
-                    $containment = '[' . \TYPO3\CMS\Core\Utility\GeneralUtility::csvValues($this->sortableContainers, ',', '"') . ']';
-                    $script .= 'TYPO3.jQuery.ready(function() {';
-                    foreach ($this->sortableContainers as $s) {
-                        $script .= 'tv_createSortable(\'' . $s . '\',' . $containment . ');';
+                    $linkedTogether = json_encode(array_keys($this->sortableContainers));
+                    $script .= 'require([\'jquery\', \'jquery-ui/sortable\'], function ($) {TYPO3.jQuery(function() {';
+                    foreach ($this->sortableContainers as $key => $unused) {
+                        $script .= "\n" . 'tv_createSortable(\'' . $key . '\',' . $linkedTogether . ');';
                     }
-                    $script .= '});';
+                    $script .= '});});';
                     $this->content .= \TYPO3\CMS\Core\Utility\GeneralUtility::wrapJS($script);
                 }
 
@@ -1027,9 +1009,10 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      * @param string $icon
      * @param array $params
      * @param string $buttonType Type of the html button, see bootstrap
+     * @param string $extraClass Extra class names to add to the bootstrap button classes
      * @return string
      */
-    public function buildButton($module, $title, $icon, $params = [], $buttonType = 'default')
+    public function buildButton($module, $title, $icon, $params = [], $buttonType = 'default', $extraClass = '')
     {
         global $BACK_PATH;
 
@@ -1062,7 +1045,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 );
                 $clickUrl = 'jumpToUrl(\'' . $url . '\');return false;';
         }
-        return $this->buildButtonFromUrl($clickUrl, $title, $icon);
+        return $this->buildButtonFromUrl($clickUrl, $title, $icon, '', $buttonType, $extraClass);
     }
 
     /**
@@ -1073,11 +1056,13 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      * @param string $icon
      * @param string $text
      * @param string $buttonType Type of the html button, see bootstrap
+     * @param string $extraClass Extra class names to add to the bootstrap button classes
      * @return string
      */
-    public function buildButtonFromUrl($clickUrl, $title, $icon, $text = '', $buttonType = 'default')
+    public function buildButtonFromUrl($clickUrl, $title, $icon, $text = '', $buttonType = 'default', $extraClass = '')
     {
-        return '<a href="#" class="btn btn-' . $buttonType . ' btn-sm" onclick="' . $clickUrl . '" title="' . $title . '">'
+        return '<a href="#" class="btn btn-' . $buttonType . ' btn-sm' . ($extraClass ? ' ' . $extraClass : '') . '"'
+            . ' onclick="' . $clickUrl . '" title="' . $title . '">'
             . $this->iconFactory->getIcon($icon, Icon::SIZE_SMALL)->render()
             . ($text ? ' ' . $text : '')
             . '</a>';
@@ -1619,7 +1604,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                             $subElementPointer['position'] = $position;
 
                             if (!$this->translatorMode) {
-                                $cellContent .= '<div' . ($canDragDrop ? ' class="sortableItem tpm-element t3-page-ce inactive"' : ' class="tpm-element t3-page-ce inactive"') . ' id="' . $this->addSortableItem($this->apiObj->flexform_getStringFromPointer($subElementPointer), $canDragDrop) . '">';
+                                $cellContent .= '<div' . ($canDragDrop ? ' class="sortableItem tpm-element t3-page-ce inactive"' : ' class="tpm-element t3-page-ce inactive"') . ' id="' . $this->getSortableItemHash($this->apiObj->flexform_getStringFromPointer($subElementPointer)) . '">';
                             }
 
                             $cellContent .= $this->render_framework_allSheets($subElementArr, $languageKey, $subElementPointer, $elementContentTreeArr['ds_meta']);
@@ -1635,7 +1620,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                             // Modify the flexform pointer so it points to the position of the curren sub element:
                             $subElementPointer['position'] = $position;
 
-                            $cellId = $this->addSortableItem($this->apiObj->flexform_getStringFromPointer($subElementPointer), $canDragDrop);
+                            $cellId = $this->getSortableItemHash($this->apiObj->flexform_getStringFromPointer($subElementPointer));
                             $cellFragment = '<div' . ($canDragDrop ? ' class="sortableItem tpm-element"' : ' class="tpm-element"') . ' id="' . $cellId . '"></div>';
 
                             $cellContent .= $cellFragment;
@@ -1645,11 +1630,10 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
                 $tmpArr = $subElementPointer;
                 unset($tmpArr['position']);
-                $cellId = $this->addSortableItem($this->apiObj->flexform_getStringFromPointer($tmpArr), $canDragDrop);
+                $cellId = $this->getSortableItemHash($this->apiObj->flexform_getStringFromPointer($tmpArr));
                 $cellIdStr = ' id="' . $cellId . '"';
-                if ($canDragDrop) {
-                    $this->sortableContainers[] = $cellId;
-                }
+
+                $this->sortableContainers['#' . $cellId] = $this->apiObj->flexform_getStringFromPointer($tmpArr);
 
                 // Add cell content to registers:
                 if ($flagRenderBeLayout == TRUE) {
@@ -2695,9 +2679,10 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 'colPos' => 0,
                 'returnUrl' => \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI'),
                 'uid_pid' => $this->id,
-            ])
+            ]),
+            'default',
+            'tpm-new'
         );
-        //'<a class="tpm-new" href="' .  . '?' . $parameters . '">' . $label . '</a>';
     }
 
     /**
@@ -2725,7 +2710,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 . BackendUtility::getModuleUrl('web_txtemplavoilaM1', $this->getLinkParameters(['deleteRecord' => $unlinkPointerString]))
                 . '" onclick="' . htmlspecialchars('return confirm(' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL($LLlabel)) . ');') . '">' . $label . '</a>';
         } else {
-            return '<a class="btn btn-default btn-sm tpm-unlink" href="javascript:' . htmlspecialchars('if (confirm(' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('unlinkRecordMsg')) . '))') . 'sortable_unlinkRecord(\'' . $encodedUnlinkPointerString . '\',\'' . $this->addSortableItem($unlinkPointerString) . '\',\'' . $elementPointer . '\');">' . $label . '</a>';
+            return '<a class="btn btn-default btn-sm tpm-unlink" href="javascript:' . htmlspecialchars('if (confirm(' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('unlinkRecordMsg')) . '))') . 'sortable_unlinkRecord(\'' . $encodedUnlinkPointerString . '\',\'' . $this->getSortableItemHash($unlinkPointerString) . '\',\'' . $elementPointer . '\');">' . $label . '</a>';
         }
     }
 
@@ -3284,21 +3269,15 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     }
 
     /**
-     * Adds a flexPointer to the stack of sortable items for drag&drop
+     * Generates a hash for sortable items for html drag'n'drop.
      *
      * @param string $pointerStr the sourcePointer for the referenced element
-     * @param boolean $addToSortables determine wether the element should be used for drag and drop
      *
      * @return string the key for the related html-element
      */
-    protected function addSortableItem($pointerStr, $addToSortables = TRUE)
+    protected function getSortableItemHash($pointerStr)
     {
         $key = 'item' . md5($pointerStr);
-        if ($addToSortables) {
-            $this->sortableItems[$key] = $pointerStr;
-        }
-        $this->allItems[$key] = $pointerStr;
-
         return $key;
     }
 
