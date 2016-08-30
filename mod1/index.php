@@ -631,7 +631,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
             // Preparing context menues
             $CMparts = $this->doc->getContextMenuCode();
-$this->debug = true;
+
             $mod1_file = 'dragdrop' . ($this->debug ? '.js' : '-min.js');
             if (method_exists('\TYPO3\CMS\Core\Utility\GeneralUtility', 'createVersionNumberedFilename')) {
                 $mod1_file = \TYPO3\CMS\Core\Utility\GeneralUtility::createVersionNumberedFilename($mod1_file);
