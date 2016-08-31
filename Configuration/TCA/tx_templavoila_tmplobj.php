@@ -40,7 +40,6 @@ return array(
                 'renderType' => 'selectSingle',
                 'foreign_table' => 'tx_templavoila_tmplobj',
                 'foreign_table_where' => 'AND tx_templavoila_tmplobj.parent=0 AND tx_templavoila_tmplobj.uid!=\'###REC_FIELD_uid###\' ORDER BY tx_templavoila_tmplobj.title',
-                'suppress_icons' => 'ONLY_SELECTED',
                 'items' => array(
                     array('', 0)
                 )
@@ -54,7 +53,6 @@ return array(
                 'renderType' => 'selectSingle',
                 'foreign_table' => 'tx_templavoila_tmplobj',
                 'foreign_table_where' => 'AND tx_templavoila_tmplobj.parent=0 AND tx_templavoila_tmplobj.uid!=\'###REC_FIELD_uid###\' ORDER BY tx_templavoila_tmplobj.title',
-                'suppress_icons' => 'ONLY_SELECTED',
                 'items' => array(
                     array('', 0)
                 )
@@ -77,14 +75,13 @@ return array(
                 'maxitems' => 1,
                 'itemsProcFunc' => 'tx_templavoila_handleStaticdatastructures->main',
                 'allowNonIdValues' => 1,
-                'suppress_icons' => 'ONLY_SELECTED',
                 'wizards' => array(
                     '_PADDING' => 2,
                     '_VERTICAL' => 1,
                     'add' => array(
                         'type' => 'script',
                         'title' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tx_templavoila_tmplobj.ds_createnew',
-                        'icon' => 'add.gif',
+                        'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_add.gif',
                         'params' => array(
                             'table' => 'tx_templavoila_datastructure',
                             'pid' => '###CURRENT_PID###',
@@ -109,11 +106,10 @@ return array(
                     'link' => array(
                         'type' => 'popup',
                         'title' => 'Link',
-                        'icon' => 'link_popup.gif',
+                        'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif',
                         'module' => array(
-                            'name' => 'wizard_element_browser',
+                            'name' => 'wizard_link',
                             'urlParameters' => array(
-                                'mode' => 'wizard',
                             ),
                         ),
                         'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1',
@@ -138,11 +134,10 @@ return array(
                     'link' => array(
                         'type' => 'popup',
                         'title' => 'Link',
-                        'icon' => 'link_popup.gif',
+                        'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif',
                         'module' => array(
-                            'name' => 'wizard_element_browser',
+                            'name' => 'wizard_link',
                             'urlParameters' => array(
-                                'mode' => 'wizard',
                                 'act' => 'file',
                             ),
                         ),

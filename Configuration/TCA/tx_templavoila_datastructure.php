@@ -80,11 +80,10 @@ return array(
                     'link' => array(
                         'type' => 'popup',
                         'title' => 'Link',
-                        'icon' => 'link_popup.gif',
+                        'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif',
                         'module' => array(
-                            'name' => 'wizard_element_browser',
+                            'name' => 'wizard_link',
                             'urlParameters' => array(
-                                'mode' => 'wizard',
                                 'act' => 'file',
                             ),
                         ),

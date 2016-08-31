@@ -16,7 +16,7 @@ $tempColumns = array(
             'size' => 1,
             'minitems' => 0,
             'maxitems' => 1,
-            'suppress_icons' => 'ONLY_SELECTED',
+            'showIconTable' => true,
             'selicon_cols' => 10,
         )
     ),
@@ -34,7 +34,7 @@ $tempColumns = array(
             'size' => 1,
             'minitems' => 0,
             'maxitems' => 1,
-            'suppress_icons' => 'ONLY_SELECTED',
+            'showIconTable' => true,
             'selicon_cols' => 10,
         )
     ),
@@ -52,7 +52,7 @@ $tempColumns = array(
             'size' => 1,
             'minitems' => 0,
             'maxitems' => 1,
-            'suppress_icons' => 'ONLY_SELECTED',
+            'showIconTable' => true,
             'selicon_cols' => 10,
         )
     ),
@@ -70,7 +70,7 @@ $tempColumns = array(
             'size' => 1,
             'minitems' => 0,
             'maxitems' => 1,
-            'suppress_icons' => 'ONLY_SELECTED',
+            'showIconTable' => true,
             'selicon_cols' => 10,
         )
     ),
