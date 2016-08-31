@@ -180,9 +180,9 @@ class StaticDataStructuresHandler
     protected function templateObjectItemsProcFuncForCurrentDS(array &$params, \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems &$pObj)
     {
         // Get DS
-        $tsConfig = & $pObj->cachedTSconfig[$params['table'] . ':' . $params['row']['uid']];
+
         $fieldName = $params['field'] == 'tx_templavoila_next_to' ? 'tx_templavoila_next_ds' : 'tx_templavoila_ds';
-        $dataSource = $tsConfig['_THIS_ROW'][$fieldName];
+        $dataSource = $params['row'][$fieldName][0];
 
         $storagePid = $this->getStoragePid($params);
 
