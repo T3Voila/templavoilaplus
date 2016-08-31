@@ -11,7 +11,7 @@ return array(
         'sortby' => 'sorting',
         'default_sortby' => 'ORDER BY title',
         'delete' => 'deleted',
-        'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila') . 'Resources/Public/Icon/icon_to.gif',
+        'iconfile' => 'EXT:templavoila/Resources/Public/Icon/icon_to.gif',
         'selicon_field' => 'previewicon',
         'selicon_field_path' => 'uploads/tx_templavoila',
         'type' => 'parent', // kept to make sure the user is force to reload the form
@@ -37,6 +37,7 @@ return array(
             'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tx_templavoila_tmplobj.parent',
             'config' => array(
                 'type' => 'select',
+                'renderType' => 'selectSingle',
                 'foreign_table' => 'tx_templavoila_tmplobj',
                 'foreign_table_where' => 'AND tx_templavoila_tmplobj.parent=0 AND tx_templavoila_tmplobj.uid!=\'###REC_FIELD_uid###\' ORDER BY tx_templavoila_tmplobj.title',
                 'suppress_icons' => 'ONLY_SELECTED',
@@ -50,6 +51,7 @@ return array(
             'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tx_templavoila_tmplobj.rendertype_ref',
             'config' => array(
                 'type' => 'select',
+                'renderType' => 'selectSingle',
                 'foreign_table' => 'tx_templavoila_tmplobj',
                 'foreign_table_where' => 'AND tx_templavoila_tmplobj.parent=0 AND tx_templavoila_tmplobj.uid!=\'###REC_FIELD_uid###\' ORDER BY tx_templavoila_tmplobj.title',
                 'suppress_icons' => 'ONLY_SELECTED',
@@ -64,6 +66,7 @@ return array(
             'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tx_templavoila_tmplobj.datastructure',
             'config' => array(
                 'type' => 'select',
+                'renderType' => 'selectSingle',
                 'items' => array(
                     array('', 0),
                 ),
@@ -185,6 +188,7 @@ return array(
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.language',
             'config' => array(
                 'type' => 'select',
+                'renderType' => 'selectSingle',
                 'foreign_table' => 'sys_language',
                 'foreign_table_where' => 'ORDER BY sys_language.title',
                 'items' => array(
@@ -198,6 +202,7 @@ return array(
             'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tx_templavoila_tmplobj.rendertype',
             'config' => array(
                 'type' => 'select',
+                'renderType' => 'selectSingle',
                 'items' => array(
                     array('LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tx_templavoila_tmplobj.rendertype.I.0', ''),
                     array('LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tx_templavoila_tmplobj.rendertype.I.1', 'print'),
@@ -221,7 +226,7 @@ return array(
         ),
     ),
     'types' => array(
-        '0' => array('showitem' => 'title;;;;2-2-2, parent, fileref, belayout, datastructure;;;;3-3-3, sys_language_uid;;;;3-3-3, rendertype, rendertype_ref, previewicon, description, localprocessing;;;;1-1-1'),
-        '1' => array('showitem' => 'title;;;;2-2-2, parent, fileref, belayout, datastructure;;;;3-3-3, sys_language_uid;;;;3-3-3, rendertype, rendertype_ref, previewicon, description, localprocessing;;;;1-1-1'),
+        '0' => array('showitem' => 'title, parent, fileref, belayout, datastructure, sys_language_uid, rendertype, rendertype_ref, previewicon, description, localprocessing'),
+        '1' => array('showitem' => 'title, parent, fileref, belayout, datastructure, sys_language_uid, rendertype, rendertype_ref, previewicon, description, localprocessing'),
     )
 );

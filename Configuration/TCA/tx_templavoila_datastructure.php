@@ -11,7 +11,7 @@ return array(
         'sortby' => 'sorting',
         'default_sortby' => 'ORDER BY title',
         'delete' => 'deleted',
-        'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila') . 'Resources/Public/Icon/icon_ds.gif',
+        'iconfile' => 'EXT:templavoila/Resources/Public/Icon/icon_ds.gif',
         'selicon_field' => 'previewicon',
         'selicon_field_path' => 'uploads/tx_templavoila',
         'versioningWS' => TRUE,
@@ -47,6 +47,7 @@ return array(
             'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tx_templavoila_datastructure.scope',
             'config' => array(
                 'type' => 'select',
+                'renderType' => 'selectSingle',
                 'items' => array(
                     array('LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tx_templavoila_datasource.scope.I.0', 0),
                     array('LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tx_templavoila_datastructure.scope.I.1', 1),
@@ -100,6 +101,6 @@ return array(
         ),
     ),
     'types' => array(
-        '0' => array('showitem' => 'title;;;;2-2-2, scope, previewicon, belayout, dataprot;;;;3-3-3')
+        '0' => array('showitem' => 'title, scope, previewicon, belayout, dataprot')
     )
 );

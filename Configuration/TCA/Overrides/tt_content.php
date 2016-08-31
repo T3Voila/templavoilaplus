@@ -8,6 +8,7 @@ $tempColumns = array(
         'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tt_content.tx_templavoila_ds',
         'config' => array(
             'type' => 'select',
+            'renderType' => 'selectSingle',
             'items' => array(
                 array('', 0),
             ),
@@ -25,6 +26,7 @@ $tempColumns = array(
         'displayCond' => 'FIELD:CType:=:templavoila_pi1',
         'config' => array(
             'type' => 'select',
+            'renderType' => 'selectSingle',
             'items' => array(
                 array('', 0),
             ),
@@ -51,6 +53,7 @@ $tempColumns = array(
         'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tt_content.tx_templavoila_pito',
         'config' => array(
             'type' => 'select',
+            'renderType' => 'selectSingle',
             'items' => array(
                 array('', 0),
             ),
@@ -88,7 +91,7 @@ if ($_EXTCONF['enable.']['selectDataStructure']) {
 if ($_EXTCONF['enable.']['selectDataStructure']) {
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
         'tt_content',
-        'tx_templavoila_ds;;;;1-1-1,tx_templavoila_to',
+        'tx_templavoila_ds,tx_templavoila_to',
         'templavoila_pi1',
         'after:layout'
     );
@@ -102,7 +105,7 @@ if ($_EXTCONF['enable.']['selectDataStructure']) {
 }
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
     'tt_content',
-    'tx_templavoila_flex;;;;1-1-1',
+    'tx_templavoila_flex',
     'templavoila_pi1',
     'after:subheader'
 );

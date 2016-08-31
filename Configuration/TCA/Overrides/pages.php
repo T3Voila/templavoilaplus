@@ -7,6 +7,7 @@ $tempColumns = array(
         'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:pages.tx_templavoila_ds',
         'config' => array(
             'type' => 'select',
+            'renderType' => 'selectSingle',
             'items' => array(
                 array('', 0),
             ),
@@ -25,6 +26,7 @@ $tempColumns = array(
         'displayCond' => 'FIELD:tx_templavoila_ds:REQ:true',
         'config' => array(
             'type' => 'select',
+            'renderType' => 'selectSingle',
             'items' => array(
                 array('', 0),
             ),
@@ -41,6 +43,7 @@ $tempColumns = array(
         'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:pages.tx_templavoila_next_ds',
         'config' => array(
             'type' => 'select',
+            'renderType' => 'selectSingle',
             'items' => array(
                 array('', 0),
             ),
@@ -59,6 +62,7 @@ $tempColumns = array(
         'displayCond' => 'FIELD:tx_templavoila_next_ds:REQ:true',
         'config' => array(
             'type' => 'select',
+            'renderType' => 'selectSingle',
             'items' => array(
                 array('', 0),
             ),
