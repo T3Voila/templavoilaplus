@@ -8,5 +8,5 @@ $MCONF['name'] = 'web_txtemplavoilaM1';
 $MCONF['access'] = 'user,group';
 $MCONF['script'] = '_DISPATCH';
 
-$MLANG['default']['tabs_images']['tab'] = '../Resources/Public/Icon/Modules/PageModuleIcon.png';
+$MLANG['default']['tabs_images']['tab'] = '../Resources/Public/Icon/Modules/PageModuleIcon.svg';
 $MLANG['default']['ll_ref'] = 'LLL:EXT:templavoila/mod1/locallang_mod.xlf';
