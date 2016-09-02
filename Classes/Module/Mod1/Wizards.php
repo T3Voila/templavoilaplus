@@ -187,7 +187,6 @@ class Wizards implements SingletonInterface {
 		// init tceforms for javascript printing
 		$tceforms = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\FormEngine::class);
 		$tceforms->initDefaultBEMode();
-		$tceforms->backPath = $GLOBALS['BACK_PATH'];
 		$tceforms->doSaveFieldName = 'doSave';
 
 		// Setting up the context sensitive menu:
@@ -275,7 +274,7 @@ class Wizards implements SingletonInterface {
 
 				// Create the "Default template" entry
 				if ($defaultTO['previewicon']) {
-					$previewIconFilename = (@is_file(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('uploads/tx_templavoila/' . $defaultTO['previewicon']))) ? ($GLOBALS['BACK_PATH'] . '../' . 'uploads/tx_templavoila/' . $defaultTO['previewicon']) : $defaultIcon;
+					$previewIconFilename = (@is_file(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('uploads/tx_templavoila/' . $defaultTO['previewicon']))) ? ('../' . 'uploads/tx_templavoila/' . $defaultTO['previewicon']) : $defaultIcon;
 				} else {
 					$previewIconFilename = $defaultIcon;
 				}
@@ -317,7 +316,7 @@ class Wizards implements SingletonInterface {
 						}
 
 						$tmpFilename = $toObj->getIcon();
-						$previewIconFilename = (@is_file(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(PATH_site . substr($tmpFilename, 3)))) ? ($GLOBALS['BACK_PATH'] . $tmpFilename) : $defaultIcon;
+						$previewIconFilename = (@is_file(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(PATH_site . substr($tmpFilename, 3)))) ? ($tmpFilename) : $defaultIcon;
 						// Note: we cannot use value of image input element because MSIE replaces this value with mouse coordinates! Thus on click we set value to a hidden field. See http://bugs.typo3.org/view.php?id=3376
 						$previewIcon = '<input type="image" class="c-inputButton" name="i' . $row['uid'] . '" onclick="document.getElementById(\'data_tx_templavoila_to\').value=' . $toObj->getKey() . '" src="' . $previewIconFilename . '" title="" />';
 						$description = $toObj->getDescription() ? htmlspecialchars($toObj->getDescription()) : \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('template_nodescriptionavailable');

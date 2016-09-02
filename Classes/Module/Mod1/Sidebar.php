@@ -339,7 +339,7 @@ class Sidebar implements SingletonInterface
         if ($pObj->id > 0) {
             $versionSelector = trim($pObj->doc->getVersionSelector($pObj->id));
             if (!$versionSelector) {
-                $onClick = 'jumpToUrl(\'' . $GLOBALS['BACK_PATH'] . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('version') . 'cm1/index.php?table=pages&uid=' . $pObj->id . '&returnUrl=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')) . '\')';
+                $onClick = 'jumpToUrl(\'' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('version') . 'cm1/index.php?table=pages&uid=' . $pObj->id . '&returnUrl=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')) . '\')';
                 $versionSelector = '<input type="button" value="' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('sidebar_versionSelector_createVersion', true) . '" onclick="' . htmlspecialchars($onClick) . '" />';
             }
             $tableRows = [];

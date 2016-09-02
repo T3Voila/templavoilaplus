@@ -16,7 +16,12 @@ if (TYPO3_MODE === 'BE') {
         'web',
         'txtemplavoilaM1',
         'top',
-        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'mod1/'
+        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'mod1/',
+        array(
+            'access' => 'user,group',
+            'icon' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icon/Modules/PageModuleIcon.svg',
+            'labels' => 'LLL:EXT:' . $_EXTKEY . '/mod1/locallang_mod.xlf'
+        )
     );
 
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(

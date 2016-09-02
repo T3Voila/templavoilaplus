@@ -72,8 +72,6 @@ class Clipboard implements SingletonInterface
      */
     public function init(&$pObj)
     {
-        global $BACK_PATH;
-
         // Make local reference to some important variables:
         $this->pObj =& $pObj;
         $this->doc =& $this->pObj->doc;
@@ -82,7 +80,6 @@ class Clipboard implements SingletonInterface
 
         // Initialize the t3lib clipboard:
         $this->t3libClipboardObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Clipboard\Clipboard::class);
-        $this->t3libClipboardObj->backPath = $BACK_PATH;
         $this->t3libClipboardObj->initializeClipboard();
         $this->t3libClipboardObj->lockToNormal();
 

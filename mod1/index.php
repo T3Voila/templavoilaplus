@@ -485,8 +485,6 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      */
     public function main()
     {
-        global $BACK_PATH;
-
         $this->content = '';
 
         // Access check! The page will show only if there is a valid page and if this page may be viewed by the user
@@ -537,7 +535,6 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
             // Draw the header.
             $this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
-            $this->doc->backPath = $BACK_PATH;
 
             $templateFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($this->extKey) . 'Resources/Private/Templates/mod1_' . substr(TYPO3_version, 0, 3) . '.html';
             if (file_exists($templateFile)) {
@@ -564,7 +561,8 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 $styleSheetFile = $this->modTSconfig['properties']['stylesheet'];
             }
 
-            $this->doc->getPageRenderer()->addCssFile($GLOBALS['BACK_PATH'] . $styleSheetFile);
+
+            $this->getPageRenderer()->addCssFile($styleSheetFile);
 
             if (isset($this->modTSconfig['properties']['stylesheet.'])) {
                 foreach ($this->modTSconfig['properties']['stylesheet.'] as $file) {
@@ -574,7 +572,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                             $file = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($extKey) . $local;
                         }
                     }
-                    $this->doc->getPageRenderer()->addCssFile($GLOBALS['BACK_PATH'] . $file);
+                    $this->getPageRenderer()->addCssFile($file);
                 }
             }
 
@@ -582,11 +580,11 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             $this->doc->JScode = $this->doc->wrapScriptTags('
                 if (top.fsMod) top.fsMod.recentIds["web"] = ' . (int)$this->id . ';
                 ' . $this->doc->redirectUrls() . '
-                var T3_TV_MOD1_BACKPATH = "' . $BACK_PATH . '";
+                var T3_TV_MOD1_BACKPATH = "' . $relativeExtensionPath . '";
                 var T3_TV_MOD1_RETURNURL = "' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')) . '";
             ');
 
-            $this->doc->getPageRenderer()->loadJquery();
+            $this->getPageRenderer()->loadJquery();
 
             $this->doc->JScode .= $this->doc->wrapScriptTags('
                 var typo3pageModule = {
@@ -657,7 +655,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             }
 
             // Set up JS for dynamic tab menu and side bar
-            $this->doc->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Tabs');
+            $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Tabs');
 
             $this->doc->JScode .= $this->modTSconfig['properties']['sideBarEnable'] ? $this->sideBarObj->getJScode() : '';
 
@@ -885,8 +883,6 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      */
     protected function getDocHeaderButtons($noButtons = FALSE)
     {
-        global $BACK_PATH;
-
         $buttons = array(
             'csh' => '',
             'view' => '',
