@@ -20,7 +20,10 @@ if (TYPO3_MODE === 'BE') {
         array(
             'access' => 'user,group',
             'icon' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icon/Modules/PageModuleIcon.svg',
-            'labels' => 'LLL:EXT:' . $_EXTKEY . '/mod1/locallang_mod.xlf'
+            'labels' => 'LLL:EXT:' . $_EXTKEY . '/mod1/locallang_mod.xlf',
+            'name' => 'web_txtemplavoilaM1',
+            'extensionName' => 'templavoila',
+            'extRelPath' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'mod1/',
         )
     );
 
