@@ -20,12 +20,9 @@ if (TYPO3_MODE === 'BE') {
         [
             'access' => 'user,group',
             'icon' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icon/Modules/PageModuleIcon.svg',
-            'labels' => [
-                'll_ref' => 'LLL:EXT:' . $_EXTKEY . '/mod1/locallang_mod.xlf',
-                'tabs_images' => [
-                    'tab' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icon/Modules/PageModuleIcon.svg',
-                ],
-            ],
+            'labels' => 'LLL:EXT:' . $_EXTKEY . '/mod1/locallang_mod.xlf',
+            'configureModuleFunction' => [\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::class, 'configureModule'],
+
             'name' => 'web_txtemplavoilaM1',
             'extensionName' => 'templavoila',
             'script' => '_DISPATCH',
@@ -40,12 +37,9 @@ if (TYPO3_MODE === 'BE') {
         [
             'access' => 'user,group',
             'icon' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icon/Modules/AdministrationModuleIcon.svg',
-            'labels' => [
-                'll_ref' => 'LLL:EXT:' . $_EXTKEY . '/mod2/locallang_mod.xlf',
-                'tabs_images' => [
-                    'tab' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icon/Modules/AdministrationModuleIcon.svg',
-                ],
-            ],
+            'labels' => 'LLL:EXT:' . $_EXTKEY . '/mod2/locallang_mod.xlf',
+            'configureModuleFunction' => [\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::class, 'configureModule'],
+
             'name' => 'web_txtemplavoilaM2',
             'extensionName' => 'templavoila',
             'script' => '_DISPATCH',
