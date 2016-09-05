@@ -14,13 +14,7 @@
 
 use TYPO3\CMS\Backend\Utility\BackendUtility as BackendUtilityCore;
 
-if (!isset($MCONF)) {
-    require('conf.php');
-}
-
 $GLOBALS['LANG']->includeLLFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('templavoila') . 'mod2/locallang.xlf');
-$GLOBALS['BE_USER']->modAccess($MCONF, 1); // This checks permissions and exits if the users has no permission for entry.
-
 
 /**
  * Module 'TemplaVoila' for the 'templavoila' extension.

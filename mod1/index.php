@@ -27,12 +27,7 @@ use \Extension\Templavoila\Utility\GeneralUtility as TemplavoilaGeneralUtility;
  * @coauthor   Dmitry Dulepov <dmitry@typo3.org>
  */
 
-if (!isset($MCONF)) {
-    require('conf.php');
-}
-
 $GLOBALS['LANG']->includeLLFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('templavoila') . 'mod1/locallang.xlf');#
-$GLOBALS['BE_USER']->modAccess($MCONF, 1); // This checks permissions and exits if the users has no permission for entry.
 
 #\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cms', 1);
 

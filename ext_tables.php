@@ -17,28 +17,61 @@ if (TYPO3_MODE === 'BE') {
         'txtemplavoilaM1',
         'top',
         \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'mod1/',
-        array(
+        [
             'access' => 'user,group',
             'icon' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icon/Modules/PageModuleIcon.svg',
-            'labels' => 'LLL:EXT:' . $_EXTKEY . '/mod1/locallang_mod.xlf',
+            'labels' => [
+                'll_ref' => 'LLL:EXT:' . $_EXTKEY . '/mod1/locallang_mod.xlf',
+                'tabs_images' => [
+                    'tab' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icon/Modules/PageModuleIcon.svg',
+                ],
+            ],
             'name' => 'web_txtemplavoilaM1',
             'extensionName' => 'templavoila',
-            'extRelPath' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'mod1/',
-        )
+            'script' => '_DISPATCH',
+        ]
     );
 
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
         'web',
         'txtemplavoilaM2',
         '',
-        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'mod2/'
+        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'mod2/',
+        [
+            'access' => 'user,group',
+            'icon' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icon/Modules/AdministrationModuleIcon.svg',
+            'labels' => [
+                'll_ref' => 'LLL:EXT:' . $_EXTKEY . '/mod2/locallang_mod.xlf',
+                'tabs_images' => [
+                    'tab' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icon/Modules/AdministrationModuleIcon.svg',
+                ],
+            ],
+            'name' => 'web_txtemplavoilaM2',
+            'extensionName' => 'templavoila',
+            'script' => '_DISPATCH',
+        ]
     );
 
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
         '',
         'txtemplavoilaCM1',
         '',
-        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'cm1/'
+        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'cm1/',
+        [
+            'name' => 'xMOD_tx_templavoila_cm1',
+            'script' => '_DISPATCH',
+        ]
+    );
+
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
+        '',
+        'txtemplavoilaCM2',
+        '',
+        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'cm2/',
+        [
+            'name' => 'xMOD_tx_templavoila_cm2',
+            'script' => '_DISPATCH',
+        ]
     );
 
     $_EXTCONF = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);

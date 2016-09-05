@@ -15,11 +15,6 @@
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 
-// DEFAULT initialization of a module [BEGIN]
-if (!isset($MCONF)) {
-    require('conf.php');
-}
-
 $GLOBALS['LANG']->includeLLFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('templavoila') . 'cm1/locallang.xlf');
 
 /**

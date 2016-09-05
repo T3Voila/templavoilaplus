@@ -12,10 +12,6 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-// DEFAULT initialization of a module [BEGIN]
-unset($MCONF);
-require(dirname(__FILE__) . '/conf.php');
-require($BACK_PATH . 'init.php');
 $LANG->includeLLFile('EXT:templavoila/cm2/locallang.xlf');
 
 /**
