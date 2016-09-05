@@ -25,7 +25,6 @@ if (TYPO3_MODE === 'BE') {
 
             'name' => 'web_txtemplavoilaM1',
             'extensionName' => 'templavoila',
-            'script' => '_DISPATCH',
         ]
     );
 
@@ -42,7 +41,6 @@ if (TYPO3_MODE === 'BE') {
 
             'name' => 'web_txtemplavoilaM2',
             'extensionName' => 'templavoila',
-            'script' => '_DISPATCH',
         ]
     );
 
