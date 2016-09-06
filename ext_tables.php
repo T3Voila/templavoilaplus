@@ -25,6 +25,7 @@ if (TYPO3_MODE === 'BE') {
 
             'name' => 'web_txtemplavoilaM1',
             'extensionName' => 'templavoila',
+            'navigationComponentId' => 'typo3-pagetree',
         ]
     );
 
