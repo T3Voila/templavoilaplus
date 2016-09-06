@@ -16,7 +16,7 @@ class WizardItems implements NewContentElementWizardHookInterface
     {
         $addingItems = [
             'fce' => [
-                'header' => $this->getLanguageService()->sL('LLL:EXT:templavoila/mod1/locallang_db_new_content_el.xlf:fce'),
+                'header' => $this->getLanguageService()->sL('LLL:EXT:templavoila/mod1/locallang.xlf:fce'),
             ],
         ];
         $apiObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Service\ApiService::class);

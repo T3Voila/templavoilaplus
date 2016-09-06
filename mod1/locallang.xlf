@@ -315,6 +315,9 @@
 			<trans-unit id="page_not_found" xml:space="preserve">
 				<source>The requested page can't be found or is not accessible.</source>
 			</trans-unit>
+			<trans-unit id="fce" xml:space="preserve">
+				<source>Flexible content</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
