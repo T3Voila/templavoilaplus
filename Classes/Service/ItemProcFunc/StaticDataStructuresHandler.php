@@ -191,12 +191,6 @@ class StaticDataStructuresHandler
         $dsRepo = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\DataStructureRepository::class);
         $toRepo = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\TemplateRepository::class);
 
-        $params['items'] = array(
-            array(
-                '', ''
-            )
-        );
-
         try {
             $ds = $dsRepo->getDatastructureByUidOrFilename($dataSource);
             if (strlen($dataSource)) {
@@ -237,12 +231,6 @@ class StaticDataStructuresHandler
         $dsRepo = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\DataStructureRepository::class);
         $toRepo = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\TemplateRepository::class);
         $dsList = $dsRepo->getDatastructuresByStoragePidAndScope($storagePid, $scope);
-
-        $params['items'] = array(
-            array(
-                '', ''
-            )
-        );
 
         foreach ($dsList as $dsObj) {
             /** @var \Extension\Templavoila\Domain\Model\AbstractDataStructure $dsObj */
@@ -299,7 +287,7 @@ class StaticDataStructuresHandler
             $storagePid = (int)$modTSConfig['value'];
         } else {
             // @TODO Deprecate this part, configuration in pageTS should be enough
-            $rootLine = $this->BEgetRootLine($params['row']['pid'], '', true);
+            $rootLine = $this->BEgetRootLine($params['row']['uid'], '', true);
             foreach ($rootLine as $rC) {
                 if (!empty($rC['storage_pid'])) {
                     $storagePid = (int)$rC['storage_pid'];
