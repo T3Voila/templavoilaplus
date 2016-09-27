@@ -371,7 +371,7 @@ class Template
         $toDataprot = GeneralUtility::xml2array($this->row['localprocessing']);
 
         if (is_array($toDataprot)) {
-            $dataprot = ArrayUtility::mergeRecursiveWithOverrule($dataprot, $toDataprot);
+            ArrayUtility::mergeRecursiveWithOverrule($dataprot, $toDataprot);
         }
 
         return $dataprot;
