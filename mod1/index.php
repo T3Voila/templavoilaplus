@@ -791,7 +791,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         $content .= $this->doc->moduleBody(
             $pageInfoArr,
             $this->getDocHeaderButtons(!isset($pageInfoArr['uid'])),
-            $this->getBodyMarkers($pageInfoArr)
+            $this->getBodyMarkers()
         );
         $content .= $this->doc->endPage();
 
@@ -820,7 +820,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      *
      * @return array The filled marker array
      */
-    protected function getBodyMarkers($pageRecord)
+    protected function getBodyMarkers()
     {
         // Taken from TYPO3\CMS\Backend\Template\Components\MetaInformation::getPath
         // and TYPO3\CMS\Backend\Template\Components\MetaInformation::getRecordInformation
@@ -829,15 +829,6 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         if ($pos !== false) {
             $path = substr($path, 0, $pos);
         }
-
-        $icon = BackendUtility::wrapClickMenuOnIcon(
-            // @TODO Tooltip do not work as of missing bootstrap?
-            '<span ' . BackendUtility::getRecordToolTip($pageRecord, 'pages') . '>'
-            . $this->iconFactory->getIconForRecord('pages', $pageRecord, Icon::SIZE_SMALL)->render()
-            . '</span>',
-            'pages',
-            $pageRecord['uid']
-        );
 
         $bodyMarkers = array(
             'TITLE' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('title')
