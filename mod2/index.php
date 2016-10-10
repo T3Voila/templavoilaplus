@@ -13,6 +13,7 @@
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility as BackendUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility as CoreGeneralUtility;
 
 $GLOBALS['LANG']->includeLLFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('templavoila') . 'mod2/locallang.xlf');
 
@@ -110,10 +111,10 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         );
 
         // page/be_user TSconfig settings and blinding of menu-items
-        $this->modTSconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($this->id, 'mod.' . $this->MCONF['name']);
+        $this->modTSconfig = BackendUtility::getModTSconfig($this->id, 'mod.' . $this->MCONF['name']);
 
         // CLEANSE SETTINGS
-        $this->MOD_SETTINGS = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData($this->MOD_MENU, \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('SET'), $this->MCONF['name']);
+        $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, CoreGeneralUtility::_GP('SET'), $this->MCONF['name']);
     }
 
     /**
@@ -127,16 +128,16 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
         // Access check!
         // The page will show only if there is a valid page and if this page may be viewed by the user
-        $this->pageinfo = \TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess($this->id, $this->perms_clause);
+        $this->pageinfo = BackendUtility::readPageAccess($this->id, $this->perms_clause);
         $access = is_array($this->pageinfo) ? 1 : 0;
 
-        $this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
+        $this->doc = CoreGeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
         $this->doc->docType = 'xhtml_trans';
         $this->doc->backPath = $BACK_PATH;
         $this->doc->setModuleTemplate('EXT:templavoila/Resources/Private/Templates/mod2_default.html');
         $this->doc->bodyTagId = 'typo3-mod-php';
         $this->doc->divClass = '';
-        $this->doc->form = '<form action="' . \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_txtemplavoilaM2', array('id' => $this->id)) . '" method="post" autocomplete="off">';
+        $this->doc->form = '<form action="' . BackendUtility::getModuleUrl('web_txtemplavoilaM2', array('id' => $this->id)) . '" method="post" autocomplete="off">';
 
         if ($access) {
             // Draw the header.
@@ -173,7 +174,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             $this->doc->JScode .= $CMparts[0];
             $this->doc->postCode .= $CMparts[2];
         } else {
-            $flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+            $flashMessage = CoreGeneralUtility::makeInstance(
                 \TYPO3\CMS\Core\Messaging\FlashMessage::class,
                 \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('noaccess'),
                 '',
@@ -212,7 +213,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     protected function getDocHeaderButtons()
     {
         $buttons = array(
-            'csh' => \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_txtemplavoilaM2', '', $this->backPath),
+            'csh' => BackendUtility::cshItem('_MOD_web_txtemplavoilaM2', '', $this->backPath),
             'shortcut' => $this->getShortcutButton(),
         );
 
@@ -255,7 +256,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             $res = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTquery(
                 'count(*)',
                 'tx_templavoila_datastructure',
-                'pid=' . (int)$this->id . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoila_datastructure')
+                'pid=' . (int)$this->id . BackendUtility::deleteClause('tx_templavoila_datastructure')
             );
             list($countDS) = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_fetch_row($res);
             \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_free_result($res);
@@ -264,7 +265,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             $res = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTquery(
                 'count(*)',
                 'tx_templavoila_tmplobj',
-                'pid=' . (int)$this->id . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoila_tmplobj')
+                'pid=' . (int)$this->id . BackendUtility::deleteClause('tx_templavoila_tmplobj')
             );
             list($countTO) = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_fetch_row($res);
             \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_free_result($res);
@@ -286,8 +287,8 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      */
     public function renderModuleContent_searchForTODS()
     {
-        $dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\DataStructureRepository::class);
-        $toRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\TemplateRepository::class);
+        $dsRepo = CoreGeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\DataStructureRepository::class);
+        $toRepo = CoreGeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\TemplateRepository::class);
         $list = $toRepo->getTemplateStoragePids();
 
         // Traverse the pages found and list in a table:
@@ -303,11 +304,11 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             foreach ($list as $pid) {
                 $path = $this->findRecordsWhereUsed_pid($pid);
                 if ($path) {
-                    $editUrl = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_txtemplavoilaM2', array('id' => $pid));
+                    $editUrl = BackendUtility::getModuleUrl('web_txtemplavoilaM2', array('id' => $pid));
                     $tRows[] = '
                         <tr class="bgColor4">
                             <td><a href="' . $editUrl . '" onclick="setHighlight(' . $pid . ')">' .
-                        \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', $pid)) .
+                        \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', BackendUtility::getRecord('pages', $pid)) .
                         htmlspecialchars($path) . '</a></td>
                             <td>' . $dsRepo->getDatastructureCountForPid($pid) . '</td>
                             <td>' . $toRepo->getTemplateCountForPid($pid) . '</td>
@@ -382,7 +383,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         $lostTOs = '';
         $lostTOCount = 0;
 
-        $toRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\TemplateRepository::class);
+        $toRepo = CoreGeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\TemplateRepository::class);
         $toList = $toRepo->getAll($this->id);
         foreach ($toList as $toObj) {
             /** @var \Extension\Templavoila\Domain\Model\Template $toObj */
@@ -420,8 +421,8 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
         // Create setting handlers:
         $settings = '<p>' .
-            \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck('', 'SET[set_details]', $this->MOD_SETTINGS['set_details'], 'index.php', \TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl('', $_GET, '', 1, 1), 'id="set_details"') . $showDetails .
-            \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck('', 'SET[set_unusedDs]', $this->MOD_SETTINGS['set_unusedDs'], 'index.php', \TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl('', $_GET, '', 1, 1), 'id="set_unusedDs"') . $showUnused .
+            BackendUtility::getFuncCheck('', 'SET[set_details]', $this->MOD_SETTINGS['set_details'], 'index.php', CoreGeneralUtility::implodeArrayForUrl('', $_GET, '', 1, 1), 'id="set_details"') . $showDetails .
+            BackendUtility::getFuncCheck('', 'SET[set_unusedDs]', $this->MOD_SETTINGS['set_unusedDs'], 'index.php', CoreGeneralUtility::implodeArrayForUrl('', $_GET, '', 1, 1), 'id="set_unusedDs"') . $showUnused .
             '</p>';
 
         // Add output:
@@ -440,11 +441,11 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      */
     public function renderDSlisting($scope)
     {
-        $currentPid = (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id');
+        $currentPid = (int)CoreGeneralUtility::_GP('id');
         /** @var \Extension\Templavoila\Domain\Repository\DataStructureRepository $dsRepo */
-        $dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\DataStructureRepository::class);
+        $dsRepo = CoreGeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\DataStructureRepository::class);
         /** @var \Extension\Templavoila\Domain\Repository\TemplateRepository $toRepo */
-        $toRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\TemplateRepository::class);
+        $toRepo = CoreGeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\TemplateRepository::class);
 
         if ($this->MOD_SETTINGS['set_unusedDs']) {
             $dsList = $dsRepo->getDatastructuresByScope($scope);
@@ -469,7 +470,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
                 $toList = $toRepo->getTemplatesByDatastructure($dsObj, $currentPid);
 
-                $newPid = (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id');
+                $newPid = (int)CoreGeneralUtility::_GP('id');
                 $newFileRef = '';
                 $newTitle = $dsObj->getLabel() . ' [TEMPLATE]';
                 if (count($toList)) {
@@ -498,7 +499,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                     }
                 }
                 // New-TO link:
-                $TOcontent .= '<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick(
+                $TOcontent .= '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick(
                         '&edit[tx_templavoila_tmplobj][' . $newPid . ']=new' .
                         '&defVals[tx_templavoila_tmplobj][datastructure]=' . rawurlencode($dsObj->getKey()) .
                         '&defVals[tx_templavoila_tmplobj][title]=' . rawurlencode($newTitle) .
@@ -565,7 +566,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         }
 
         if ($dsObj->isFilebased()) {
-            $onClick = 'document.location=\'' . $this->doc->backPath . 'file_edit.php?target=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($dsObj->getKey())) . '&returnUrl=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::sanitizeLocalUrl(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI'))) . '\';';
+            $onClick = 'document.location=\'' . $this->doc->backPath . 'file_edit.php?target=' . rawurlencode(CoreGeneralUtility::getFileAbsFileName($dsObj->getKey())) . '&returnUrl=' . rawurlencode(CoreGeneralUtility::sanitizeLocalUrl(CoreGeneralUtility::getIndpEnv('REQUEST_URI'))) . '\';';
             $dsIcon = '<a href="#" onclick="' . htmlspecialchars($onClick) . '"><img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, 'gfx/fileicons/xml.gif', 'width="18" height="16"') . ' alt="" title="' . $dsObj->getKey() . '" class="absmiddle" /></a>';
         } else {
             $dsIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('tx_templavoila_datastructure', array(), array('title' => $dsObj->getKey()));
@@ -580,7 +581,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 if ($path == FALSE) {
                     $previewIcon = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('noicon', TRUE);
                 } else {
-                    $previewIcon = \TYPO3\CMS\Backend\Utility\BackendUtility::getThumbNail($this->doc->backPath . 'thumbs.php', $path,
+                    $previewIcon = BackendUtility::getThumbNail($this->doc->backPath . 'thumbs.php', $path,
                         'hspace="5" vspace="5" border="1"',
                         strpos($this->modTSconfig['properties']['dsPreviewIconThumb'], 'x') ? $this->modTSconfig['properties']['dsPreviewIconThumb'] : '');
                 }
@@ -597,8 +598,8 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             $editLink = $editDataprotLink = '';
             $dsTitle = $dsObj->getLabel();
         } else {
-            $editLink = $lpXML .= '<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick('&edit[tx_templavoila_datastructure][' . $dsObj->getKey() . ']=edit', $this->doc->backPath)) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open') . '</a>';
-            $dsTitle = '<a href="' . htmlspecialchars('../cm1/index.php?table=tx_templavoila_datastructure&uid=' . $dsObj->getKey() . '&id=' . $this->id . '&returnUrl=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::sanitizeLocalUrl(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')))) . '">' . htmlspecialchars($dsObj->getLabel()) . '</a>';
+            $editLink = $lpXML .= '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick('&edit[tx_templavoila_datastructure][' . $dsObj->getKey() . ']=edit', $this->doc->backPath)) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open') . '</a>';
+            $dsTitle = '<a href="' . htmlspecialchars('../cm1/index.php?table=tx_templavoila_datastructure&uid=' . $dsObj->getKey() . '&id=' . $this->id . '&returnUrl=' . rawurlencode(CoreGeneralUtility::sanitizeLocalUrl(CoreGeneralUtility::getIndpEnv('REQUEST_URI')))) . '">' . htmlspecialchars($dsObj->getLabel()) . '</a>';
         }
 
         // Compile info table:
@@ -621,17 +622,17 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('globalprocessing_xml') . '</td>
                 <td>
                     ' . $lpXML . ($dsObj->getDataprotXML() ?
-                \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize(strlen($dsObj->getDataprotXML())) . ' bytes' .
+                CoreGeneralUtility::formatSize(strlen($dsObj->getDataprotXML())) . ' bytes' .
                 ($this->MOD_SETTINGS['set_details'] ? '<hr/>' . $XMLinfo['HTML'] : '') : '') . '
                 </td>
             </tr>' . ($this->MOD_SETTINGS['set_details'] ? '
             <tr class="bgColor4">
                 <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('created', TRUE) . '</td>
-                <td>' . \TYPO3\CMS\Backend\Utility\BackendUtility::datetime($dsObj->getCrdate()) . ' ' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('byuser', TRUE) . ' [' . $dsObj->getCruser() . ']</td>
+                <td>' . BackendUtility::datetime($dsObj->getCrdate()) . ' ' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('byuser', TRUE) . ' [' . $dsObj->getCruser() . ']</td>
             </tr>
             <tr class="bgColor4">
                 <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('updated', TRUE) . '</td>
-                <td>' . \TYPO3\CMS\Backend\Utility\BackendUtility::datetime($dsObj->getTstamp()) . '</td>
+                <td>' . BackendUtility::datetime($dsObj->getTstamp()) . '</td>
             </tr>' : '') . '
         </table>
         ';
@@ -639,7 +640,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         // Format XML if requested (renders VERY VERY slow)
         if ($this->MOD_SETTINGS['set_showDSxml']) {
             if ($dsObj->getDataprotXML()) {
-                $hlObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Service\SyntaxHighlightingService::class);
+                $hlObj = CoreGeneralUtility::makeInstance(\Extension\Templavoila\Service\SyntaxHighlightingService::class);
                 $content .= '<pre>' . str_replace(chr(9), '&nbsp;&nbsp;&nbsp;', $hlObj->highLight_DS($dsObj->getDataprotXML())) . '</pre>';
             }
         }
@@ -696,7 +697,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 if ($path == FALSE) {
                     $icon = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('noicon', TRUE);
                 } else {
-                    $icon = \TYPO3\CMS\Backend\Utility\BackendUtility::getThumbNail($this->doc->backPath . 'thumbs.php', $path,
+                    $icon = BackendUtility::getThumbNail($this->doc->backPath . 'thumbs.php', $path,
                         'hspace="5" vspace="5" border="1"',
                         strpos($this->modTSconfig['properties']['toPreviewIconThumb'], 'x') ? $this->modTSconfig['properties']['toPreviewIconThumb'] : '');
                 }
@@ -717,7 +718,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         ];
         $linkUrl = BackendUtility::getModuleUrl('_txtemplavoilaCM1', $uriParameters);
 
-        $fileReference = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($toObj->getFileref());
+        $fileReference = CoreGeneralUtility::getFileAbsFileName($toObj->getFileref());
         if (@is_file($fileReference)) {
             $this->tFileList[$fileReference]++;
             $fileRef = '<a href="' . htmlspecialchars($this->doc->backPath . '../' . substr($fileReference, strlen(PATH_site))) . '" target="_blank">' . htmlspecialchars($toObj->getFileref()) . '</a>';
@@ -738,7 +739,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             }
             if ($modified) {
                 $mappingStatus = $mappingStatus_index = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-warning');
-                $mappingStatus .= sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('towasupdated', TRUE), \TYPO3\CMS\Backend\Utility\BackendUtility::datetime($toObj->getTstamp()));
+                $mappingStatus .= sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('towasupdated', TRUE), BackendUtility::datetime($toObj->getTstamp()));
                 $this->setErrorLog($scope, 'warning', sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('warning_mappingstatus', TRUE), $mappingStatus, $toObj->getLabel()));
             } else {
                 $mappingStatus = $mappingStatus_index = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-ok');
@@ -768,18 +769,18 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         $lpXML = '';
         if ($this->MOD_SETTINGS['set_details']) {
             if ($toObj->getLocalDataprotXML(TRUE)) {
-                $hlObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Service\SyntaxHighlightingService::class);
+                $hlObj = CoreGeneralUtility::makeInstance(\Extension\Templavoila\Service\SyntaxHighlightingService::class);
                 $lpXML = '<pre>' . str_replace(chr(9), '&nbsp;&nbsp;&nbsp;', $hlObj->highLight_DS($toObj->getLocalDataprotXML(TRUE))) . '</pre>';
             }
         }
-        $lpXML .= '<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick('&edit[tx_templavoila_tmplobj][' . $toObj->getKey() . ']=edit&columnsOnly=localprocessing', $this->doc->backPath)) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open') . '</a>';
+        $lpXML .= '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick('&edit[tx_templavoila_tmplobj][' . $toObj->getKey() . ']=edit&columnsOnly=localprocessing', $this->doc->backPath)) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open') . '</a>';
 
         // Compile info table:
         $tableAttribs = ' border="0" cellpadding="1" cellspacing="1" width="98%" style="margin-top: 3px;" class="lrPadding"';
 
         // Links:
         $toTitle = '<a href="' . htmlspecialchars($linkUrl) . '">' . htmlspecialchars(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL($toObj->getLabel())) . '</a>';
-        $editLink = '<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick('&edit[tx_templavoila_tmplobj][' . $toObj->getKey() . ']=edit', $this->doc->backPath)) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open') . '</a>';
+        $editLink = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick('&edit[tx_templavoila_tmplobj][' . $toObj->getKey() . ']=edit', $this->doc->backPath)) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open') . '</a>';
 
         $fRWTOUres = array();
 
@@ -814,7 +815,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                     <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('localprocessing_xml') . ':</td>
                     <td>
                         ' . $lpXML . ($toObj->getLocalDataprotXML(TRUE) ?
-                    \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize(strlen($toObj->getLocalDataprotXML(TRUE))) . ' bytes' .
+                    CoreGeneralUtility::formatSize(strlen($toObj->getLocalDataprotXML(TRUE))) . ' bytes' .
                     ($this->MOD_SETTINGS['set_details'] ? '<hr/>' . $XMLinfo['HTML'] : '') : '') . '
                     </td>
                 </tr>' . ($this->MOD_SETTINGS['set_details'] ? '
@@ -824,11 +825,11 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 </tr>
                 <tr class="bgColor4">
                     <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('created', TRUE) . ':</td>
-                    <td>' . \TYPO3\CMS\Backend\Utility\BackendUtility::datetime($toObj->getCrdate()) . ' ' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('byuser', TRUE) . ' [' . $toObj->getCruser() . ']</td>
+                    <td>' . BackendUtility::datetime($toObj->getCrdate()) . ' ' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('byuser', TRUE) . ' [' . $toObj->getCruser() . ']</td>
                 </tr>
                 <tr class="bgColor4">
                     <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('updated', TRUE) . ':</td>
-                    <td>' . \TYPO3\CMS\Backend\Utility\BackendUtility::datetime($toObj->getTstamp()) . '</td>
+                    <td>' . BackendUtility::datetime($toObj->getTstamp()) . '</td>
                 </tr>' : '') . '
             </table>
             ';
@@ -862,24 +863,24 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                     <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('localprocessing_xml') . ':</td>
                     <td>
                         ' . $lpXML . ($toObj->getLocalDataprotXML(TRUE) ?
-                    \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize(strlen($toObj->getLocalDataprotXML(TRUE))) . ' bytes' .
+                    CoreGeneralUtility::formatSize(strlen($toObj->getLocalDataprotXML(TRUE))) . ' bytes' .
                     ($this->MOD_SETTINGS['set_details'] ? '<hr/>' . $XMLinfo['HTML'] : '') : '') . '
                     </td>
                 </tr>' . ($this->MOD_SETTINGS['set_details'] ? '
                 <tr class="bgColor4">
                     <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('created', TRUE) . ':</td>
-                    <td>' . \TYPO3\CMS\Backend\Utility\BackendUtility::datetime($toObj->getCrdate()) . ' ' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('byuser', TRUE) . ' [' . $toObj->getCruser() . ']</td>
+                    <td>' . BackendUtility::datetime($toObj->getCrdate()) . ' ' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('byuser', TRUE) . ' [' . $toObj->getCruser() . ']</td>
                 </tr>
                 <tr class="bgColor4">
                     <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('updated', TRUE) . ':</td>
-                    <td>' . \TYPO3\CMS\Backend\Utility\BackendUtility::datetime($toObj->getTstamp()) . '</td>
+                    <td>' . BackendUtility::datetime($toObj->getTstamp()) . '</td>
                 </tr>' : '') . '
             </table>
             ';
         }
 
         // Traverse template objects which are not children of anything:
-        $toRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\TemplateRepository::class);
+        $toRepo = CoreGeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\TemplateRepository::class);
         $toChildren = $toRepo->getTemplatesByParentTemplate($toObj);
 
         if (!$children && count($toChildren)) {
@@ -927,7 +928,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                         (tx_templavoila_to=' . (int)$toObj->getKey() . ' AND tx_templavoila_ds=' . \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr($dsKey, 'pages') . ') OR
                         (tx_templavoila_next_to=' . (int)$toObj->getKey() . ' AND tx_templavoila_next_ds=' . \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr($dsKey, 'pages') . ')
                     )' .
-                    \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('pages')
+                    BackendUtility::deleteClause('pages')
                 );
 
                 while (FALSE !== ($pRow = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_fetch_assoc($res))) {
@@ -936,14 +937,14 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                         $output[] = '
                             <tr class="bgColor4-20">
                                 <td nowrap="nowrap">' .
-                            '<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick('&edit[pages][' . $pRow['uid'] . ']=edit', $this->doc->backPath)) . '" title="Edit">' .
+                            '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick('&edit[pages][' . $pRow['uid'] . ']=edit', $this->doc->backPath)) . '" title="Edit">' .
                             htmlspecialchars($pRow['uid']) .
                             '</a></td>
                         <td nowrap="nowrap">' .
                             htmlspecialchars($pRow['title']) .
                             '</td>
                         <td nowrap="nowrap">' .
-                            '<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::viewOnClick($pRow['uid'], $this->doc->backPath) . 'return false;') . '" title="View">' .
+                            '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($pRow['uid'], $this->doc->backPath) . 'return false;') . '" title="View">' .
                             htmlspecialchars($path) .
                             '</a></td>
                         <td nowrap="nowrap">' .
@@ -973,7 +974,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                     'CType=' . \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr('templavoila_pi1', 'tt_content') .
                     ' AND tx_templavoila_to=' . (int)$toObj->getKey() .
                     ' AND tx_templavoila_ds=' . \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr($toObj->getDatastructure()->getKey(), 'tt_content') .
-                    \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tt_content'),
+                    BackendUtility::deleteClause('tt_content'),
                     '',
                     'pid'
                 );
@@ -994,14 +995,14 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                         $output[] = '
                             <tr class="bgColor4-20">
                                 <td nowrap="nowrap">' .
-                            '<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick('&edit[tt_content][' . $pRow['uid'] . ']=edit', $this->doc->backPath)) . '" title="Edit">' .
+                            '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick('&edit[tt_content][' . $pRow['uid'] . ']=edit', $this->doc->backPath)) . '" title="Edit">' .
                             htmlspecialchars($pRow['uid']) .
                             '</a></td>
                         <td nowrap="nowrap">' .
                             htmlspecialchars($pRow['header']) .
                             '</td>
                         <td nowrap="nowrap">' .
-                            '<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::viewOnClick($pRow['pid'], $this->doc->backPath) . 'return false;') . '" title="View page">' .
+                            '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($pRow['pid'], $this->doc->backPath) . 'return false;') . '" title="View page">' .
                             htmlspecialchars($path) .
                             '</a></td>
                         <td nowrap="nowrap">' .
@@ -1071,7 +1072,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                         (tx_templavoila_to NOT IN (' . implode(',', $toIdArray) . ') AND tx_templavoila_ds=' . \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr($dsObj->getKey(), 'pages') . ') OR
                         (tx_templavoila_next_to NOT IN (' . implode(',', $toIdArray) . ') AND tx_templavoila_next_ds=' . \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr($dsObj->getKey(), 'pages') . ')
                     )' .
-                    \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('pages')
+                    BackendUtility::deleteClause('pages')
                 );
 
                 while (FALSE !== ($pRow = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_fetch_assoc($res))) {
@@ -1080,11 +1081,11 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                         $output[] = '
                             <tr class="bgColor4-20">
                                 <td nowrap="nowrap">' .
-                            '<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick('&edit[pages][' . $pRow['uid'] . ']=edit', $this->doc->backPath)) . '">' .
+                            '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick('&edit[pages][' . $pRow['uid'] . ']=edit', $this->doc->backPath)) . '">' .
                             htmlspecialchars($pRow['title']) .
                             '</a></td>
                         <td nowrap="nowrap">' .
-                            '<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::viewOnClick($pRow['uid'], $this->doc->backPath) . 'return false;') . '">' .
+                            '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($pRow['uid'], $this->doc->backPath) . 'return false;') . '">' .
                             htmlspecialchars($path) .
                             '</a></td>
                     </tr>';
@@ -1107,7 +1108,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                     'CType=' . \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr('templavoila_pi1', 'tt_content') .
                     ' AND tx_templavoila_to NOT IN (' . implode(',', $toIdArray) . ')' .
                     ' AND tx_templavoila_ds=' . \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr($dsObj->getKey(), 'tt_content') .
-                    \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tt_content'),
+                    BackendUtility::deleteClause('tt_content'),
                     '',
                     'pid'
                 );
@@ -1126,11 +1127,11 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                         $output[] = '
                             <tr class="bgColor4-20">
                                 <td nowrap="nowrap">' .
-                            '<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick('&edit[tt_content][' . $pRow['uid'] . ']=edit', $this->doc->backPath)) . '" title="Edit">' .
+                            '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick('&edit[tt_content][' . $pRow['uid'] . ']=edit', $this->doc->backPath)) . '" title="Edit">' .
                             htmlspecialchars($pRow['header']) .
                             '</a></td>
                         <td nowrap="nowrap">' .
-                            '<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::viewOnClick($pRow['pid'], $this->doc->backPath) . 'return false;') . '" title="View page">' .
+                            '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($pRow['pid'], $this->doc->backPath) . 'return false;') . '" title="View page">' .
                             htmlspecialchars($path) .
                             '</a></td>
                     </tr>';
@@ -1177,7 +1178,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         if (!isset($this->pidCache[$pid])) {
             $this->pidCache[$pid] = array();
 
-            $pageinfo = \TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess($pid, $this->perms_clause);
+            $pageinfo = BackendUtility::readPageAccess($pid, $this->perms_clause);
             $this->pidCache[$pid]['path'] = $pageinfo['_thePath'];
         }
 
@@ -1273,7 +1274,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     }
 
     /**
-     * Get the processed value analog to \TYPO3\CMS\Backend\Utility\BackendUtility::getProcessedValue
+     * Get the processed value analog to BackendUtility::getProcessedValue
      * but take additional TSconfig values into account
      *
      * @param string $table
@@ -1284,9 +1285,9 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      */
     protected function getProcessedValue($table, $typeField, $typeValue)
     {
-        $value = \TYPO3\CMS\Backend\Utility\BackendUtility::getProcessedValue($table, $typeField, $typeValue);
+        $value = BackendUtility::getProcessedValue($table, $typeField, $typeValue);
         if (!$value) {
-            $TSConfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($this->id);
+            $TSConfig = BackendUtility::getPagesTSconfig($this->id);
             if (isset($TSConfig['TCEFORM.'][$table . '.'][$typeField . '.']['addItems.'][$typeValue])) {
                 $value = $TSConfig['TCEFORM.'][$table . '.'][$typeField . '.']['addItems.'][$typeValue];
             }
@@ -1654,7 +1655,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      */
     public function DSdetails($DSstring)
     {
-        $DScontent = (array) \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($DSstring);
+        $DScontent = (array) CoreGeneralUtility::xml2array($DSstring);
 
         $inputFields = 0;
         $referenceFields = 0;
@@ -1693,7 +1694,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         }
 
         return array(
-            'HTML' => /*\TYPO3\CMS\Core\Utility\GeneralUtility::view_array($DScontent).'Language Mode => "'.$languageMode.'"<hr/>
+            'HTML' => /*CoreGeneralUtility::view_array($DScontent).'Language Mode => "'.$languageMode.'"<hr/>
                         Root Elements = '.$rootelements.', hereof ref/input fields = '.($referenceFields.'/'.$inputFields).'<hr/>
                         '.$rootElementsHTML*/
                 $this->renderDSdetails($DScontent),
@@ -1744,13 +1745,13 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
             // Missing extension warning:
             if ($missingExt) {
-                $msg = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $missingExt, \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_missingext'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+                $msg = CoreGeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $missingExt, \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_missingext'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
                 $this->content .= $msg->render();
             }
 
             // Missing configuration warning:
             if ($missingConf) {
-                $msg = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_missingconf_description'), \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_missingconf'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+                $msg = CoreGeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_missingconf_description'), \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_missingconf'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
                 $this->content .= $msg->render();
             }
 
@@ -1885,11 +1886,11 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         if (!empty($paths) && !empty($files)) {
 
             $this->wizardData = array();
-            $pathArr = \TYPO3\CMS\Core\Utility\GeneralUtility::removePrefixPathFromList($paths, PATH_site);
+            $pathArr = CoreGeneralUtility::removePrefixPathFromList($paths, PATH_site);
             $outputString = sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_firststep'), implode('", "', $pathArr)) . '<br/>';
 
             // Get all HTML files:
-            $fileArr = \TYPO3\CMS\Core\Utility\GeneralUtility::removePrefixPathFromList($files, PATH_site);
+            $fileArr = CoreGeneralUtility::removePrefixPathFromList($files, PATH_site);
 
             // Prepare header:
             $tRows = array();
@@ -1907,7 +1908,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                     'uid',
                     'tx_templavoila_tmplobj',
                     'fileref=' . \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr($file, 'tx_templavoila_tmplobj') .
-                    \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoila_tmplobj')
+                    BackendUtility::deleteClause('tx_templavoila_tmplobj')
                 );
 
                 // Preview link
@@ -1943,8 +1944,8 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     public function wizard_step2()
     {
         // Save session data with filename:
-        $cfg = \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('CFG');
-        if ($cfg['file'] && \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($cfg['file'])) {
+        $cfg = CoreGeneralUtility::_GET('CFG');
+        if ($cfg['file'] && CoreGeneralUtility::getFileAbsFileName($cfg['file'])) {
             $this->wizardData['file'] = $cfg['file'];
         }
 
@@ -1993,7 +1994,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     public function wizard_step3()
     {
         // Save session data with filename:
-        $cfg = \TYPO3\CMS\Core\Utility\GeneralUtility::_POST('CFG');
+        $cfg = CoreGeneralUtility::_POST('CFG');
         if (isset($cfg['sitetitle'])) {
             $this->wizardData['sitetitle'] = trim($cfg['sitetitle']);
         }
@@ -2006,7 +2007,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
         // If the create-site button WAS clicked:
         $outputString = '';
-        if (\TYPO3\CMS\Core\Utility\GeneralUtility::_POST('_create_site')) {
+        if (CoreGeneralUtility::_POST('_create_site')) {
 
             // Show selected template file:
             if ($this->wizardData['file'] && $this->wizardData['sitetitle'] && $this->wizardData['username']) {
@@ -2014,7 +2015,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 // DO import:
                 $import = $this->getImportObj();
                 if (isset($this->modTSconfig['properties']['newTvSiteFile'])) {
-                    $inFile = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->modTSconfig['properties']['newTVsiteTemplate']);
+                    $inFile = CoreGeneralUtility::getFileAbsFileName($this->modTSconfig['properties']['newTVsiteTemplate']);
                 } else {
                     $inFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('templavoila') . 'mod2/new_tv_site.xml';
                 }
@@ -2024,11 +2025,11 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
                     // Update various fields (the index values, eg. the "1" in "$import->import_mapId['pages'][1]]..." are the UIDs of the original records from the import file!)
                     $data = array();
-                    $data['pages'][\TYPO3\CMS\Backend\Utility\BackendUtility::wsMapId('pages', $import->import_mapId['pages'][1])]['title'] = $this->wizardData['sitetitle'];
-                    $data['sys_template'][\TYPO3\CMS\Backend\Utility\BackendUtility::wsMapId('sys_template', $import->import_mapId['sys_template'][1])]['title'] = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_maintemplate', TRUE) . ' ' . $this->wizardData['sitetitle'];
-                    $data['sys_template'][\TYPO3\CMS\Backend\Utility\BackendUtility::wsMapId('sys_template', $import->import_mapId['sys_template'][1])]['sitetitle'] = $this->wizardData['sitetitle'];
-                    $data['tx_templavoila_tmplobj'][\TYPO3\CMS\Backend\Utility\BackendUtility::wsMapId('tx_templavoila_tmplobj', $import->import_mapId['tx_templavoila_tmplobj'][1])]['fileref'] = $this->wizardData['file'];
-                    $data['tx_templavoila_tmplobj'][\TYPO3\CMS\Backend\Utility\BackendUtility::wsMapId('tx_templavoila_tmplobj', $import->import_mapId['tx_templavoila_tmplobj'][1])]['templatemapping'] = serialize(
+                    $data['pages'][BackendUtility::wsMapId('pages', $import->import_mapId['pages'][1])]['title'] = $this->wizardData['sitetitle'];
+                    $data['sys_template'][BackendUtility::wsMapId('sys_template', $import->import_mapId['sys_template'][1])]['title'] = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_maintemplate', TRUE) . ' ' . $this->wizardData['sitetitle'];
+                    $data['sys_template'][BackendUtility::wsMapId('sys_template', $import->import_mapId['sys_template'][1])]['sitetitle'] = $this->wizardData['sitetitle'];
+                    $data['tx_templavoila_tmplobj'][BackendUtility::wsMapId('tx_templavoila_tmplobj', $import->import_mapId['tx_templavoila_tmplobj'][1])]['fileref'] = $this->wizardData['file'];
+                    $data['tx_templavoila_tmplobj'][BackendUtility::wsMapId('tx_templavoila_tmplobj', $import->import_mapId['tx_templavoila_tmplobj'][1])]['templatemapping'] = serialize(
                         array(
                             'MappingInfo' => array(
                                 'ROOT' => array(
@@ -2043,8 +2044,8 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                     );
 
                     // Update user settings
-                    $newUserID = \TYPO3\CMS\Backend\Utility\BackendUtility::wsMapId('be_users', $import->import_mapId['be_users'][2]);
-                    $newGroupID = \TYPO3\CMS\Backend\Utility\BackendUtility::wsMapId('be_groups', $import->import_mapId['be_groups'][1]);
+                    $newUserID = BackendUtility::wsMapId('be_users', $import->import_mapId['be_users'][2]);
+                    $newGroupID = BackendUtility::wsMapId('be_groups', $import->import_mapId['be_groups'][1]);
 
                     $data['be_users'][$newUserID]['username'] = $this->wizardData['username'];
                     $data['be_groups'][$newGroupID]['title'] = $this->wizardData['username'];
@@ -2056,12 +2057,12 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
                     // Set URL if applicable:
                     if (strlen($this->wizardData['siteurl'])) {
-                        $data['sys_domain']['NEW']['pid'] = \TYPO3\CMS\Backend\Utility\BackendUtility::wsMapId('pages', $import->import_mapId['pages'][1]);
+                        $data['sys_domain']['NEW']['pid'] = BackendUtility::wsMapId('pages', $import->import_mapId['pages'][1]);
                         $data['sys_domain']['NEW']['domainName'] = $this->wizardData['siteurl'];
                     }
 
                     // Execute changes:
-                    $tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
+                    $tce = CoreGeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
                     $tce->stripslashes_values = 0;
                     $tce->dontProcessTransformations = 1;
                     $tce->start($data, Array());
@@ -2069,10 +2070,10 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
                     // Setting environment:
                     $this->wizardData['rootPageId'] = $import->import_mapId['pages'][1];
-                    $this->wizardData['templateObjectId'] = \TYPO3\CMS\Backend\Utility\BackendUtility::wsMapId('tx_templavoila_tmplobj', $import->import_mapId['tx_templavoila_tmplobj'][1]);
-                    $this->wizardData['typoScriptTemplateID'] = \TYPO3\CMS\Backend\Utility\BackendUtility::wsMapId('sys_template', $import->import_mapId['sys_template'][1]);
+                    $this->wizardData['templateObjectId'] = BackendUtility::wsMapId('tx_templavoila_tmplobj', $import->import_mapId['tx_templavoila_tmplobj'][1]);
+                    $this->wizardData['typoScriptTemplateID'] = BackendUtility::wsMapId('sys_template', $import->import_mapId['sys_template'][1]);
 
-                    \TYPO3\CMS\Backend\Utility\BackendUtility::setUpdateSignal('updatePageTree');
+                    BackendUtility::setUpdateSignal('updatePageTree');
 
                     $outputString .= \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_maintemplate', TRUE) . '<hr/>';
                 }
@@ -2141,7 +2142,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             $outputString = sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_basicsshouldwork', TRUE), $menuTypeText, $menuType, $menuTypeText);
 
             // Start up HTML parser:
-            $htmlParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class);
+            $htmlParser = CoreGeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class);
 
             // Parse into blocks
             $parts = $htmlParser->splitIntoBlock('td,tr,table,a,div,span,ol,ul,li,p,h1,h2,h3,h4,h5', $menuPart, 1);
@@ -2185,7 +2186,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                             $newValue['I-width'] = $attribs[0]['width'];
                             $newValue['I-height'] = $attribs[0]['height'];
 
-                            $filePath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(\TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath(PATH_site . $attribs[0]['src']));
+                            $filePath = CoreGeneralUtility::getFileAbsFileName(CoreGeneralUtility::resolveBackPath(PATH_site . $attribs[0]['src']));
                             if (@is_file($filePath)) {
                                 $newValue['backColorGuess'] = $this->getBackgroundColor($filePath);
                             } else $newValue['backColorGuess'] = '';
@@ -2255,7 +2256,7 @@ lib.' . $menuType . '.1.NO {
 lib.' . $menuType . '.1.RO < lib.' . $menuType . '.1.NO
 lib.' . $menuType . '.1.RO = 1
 lib.' . $menuType . '.1.RO {
-    backColor = ' . \TYPO3\CMS\Core\Utility\GeneralUtility::modifyHTMLColorAll(($menu_normal['backColorGuess'] ? $menu_normal['backColorGuess'] : '#FFFFFF'), -20) . '
+    backColor = ' . CoreGeneralUtility::modifyHTMLColorAll(($menu_normal['backColorGuess'] ? $menu_normal['backColorGuess'] : '#FFFFFF'), -20) . '
     10.fontColor = red
 }
             ';
@@ -2333,7 +2334,7 @@ lib.' . $menuType . '.1.ACT {
             $outputString .= '<hr/>' . $this->syntaxHLTypoScript($typoScript) . '<hr/><br/>';
 
             $outputString .= \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_menufinetune', TRUE);
-            $outputString .= '<textarea name="CFG[menuCode]"' . $GLOBALS['TBE_TEMPLATE']->formWidthText() . ' rows="10">' . \TYPO3\CMS\Core\Utility\GeneralUtility::formatForTextarea($typoScript) . '</textarea><br/><br/>';
+            $outputString .= '<textarea name="CFG[menuCode]"' . $GLOBALS['TBE_TEMPLATE']->formWidthText() . ' rows="10">' . CoreGeneralUtility::formatForTextarea($typoScript) . '</textarea><br/><br/>';
             $outputString .= '<input type="hidden" name="SET[wiz_step]" value="' . $menuTypeNextStep . '" />';
             $outputString .= '<input type="submit" name="_" value="' . sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_menuwritets', TRUE), $menuTypeText) . '" />';
         } else {
@@ -2359,7 +2360,7 @@ lib.' . $menuType . '.1.ACT {
 
         <br/>
         <br/>
-        <input type="submit" value="' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_finish', TRUE) . '" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::viewOnClick($this->wizardData['rootPageId'], $this->doc->backPath) . 'document.location=\'index.php?SET[wiz_step]=0\'; return false;') . '" />
+        <input type="submit" value="' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_finish', TRUE) . '" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($this->wizardData['rootPageId'], $this->doc->backPath) . 'document.location=\'index.php?SET[wiz_step]=0\'; return false;') . '" />
         ';
 
         // Add output:
@@ -2374,7 +2375,7 @@ lib.' . $menuType . '.1.ACT {
     public function getImportObj()
     {
         /** @var \TYPO3\CMS\Impexp\ImportExport $import */
-        $import = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\tx_impexp::class);
+        $import = CoreGeneralUtility::makeInstance(\tx_impexp::class);
         $import->init(0, 'import');
         $import->enableLogging = TRUE;
 
@@ -2390,7 +2391,7 @@ lib.' . $menuType . '.1.ACT {
      */
     public function syntaxHLTypoScript($v)
     {
-        $tsparser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::class);
+        $tsparser = CoreGeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::class);
         $tsparser->lineNumberOffset = 0;
         $TScontent = $tsparser->doSyntaxHighlight(trim($v) . chr(10), '', 1);
 
@@ -2425,7 +2426,7 @@ lib.' . $menuType . '.1.ACT {
     public function getMenuDefaultCode($field)
     {
         // Select template record and extract menu HTML content
-        $toRec = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('tx_templavoila_tmplobj', $this->wizardData['templateObjectId']);
+        $toRec = BackendUtility::getRecordWSOL('tx_templavoila_tmplobj', $this->wizardData['templateObjectId']);
         $tMapping = unserialize($toRec['templatemapping']);
 
         return $tMapping['MappingData_cached']['cArray'][$field];
@@ -2439,11 +2440,11 @@ lib.' . $menuType . '.1.ACT {
     public function saveMenuCode()
     {
         // Save menu code to template record:
-        $cfg = \TYPO3\CMS\Core\Utility\GeneralUtility::_POST('CFG');
+        $cfg = CoreGeneralUtility::_POST('CFG');
         if (isset($cfg['menuCode'])) {
 
             // Get template record:
-            $TSrecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('sys_template', $this->wizardData['typoScriptTemplateID']);
+            $TSrecord = BackendUtility::getRecord('sys_template', $this->wizardData['typoScriptTemplateID']);
             if (is_array($TSrecord)) {
                 $data = array();
                 $data['sys_template'][$TSrecord['uid']]['config'] = '
@@ -2457,7 +2458,7 @@ lib.' . $menuType . '.1.ACT {
 ' . $TSrecord['config'];
 
                 // Execute changes:
-                $tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
+                $tce = CoreGeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
                 $tce->stripslashes_values = 0;
                 $tce->dontProcessTransformations = 1;
                 $tce->start($data, Array());
@@ -2507,19 +2508,19 @@ lib.' . $menuType . '.1.ACT {
     {
         $templatePaths = array();
         if (strlen($this->modTSconfig['properties']['templatePath'])) {
-            $paths = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->modTSconfig['properties']['templatePath'], TRUE);
+            $paths = CoreGeneralUtility::trimExplode(',', $this->modTSconfig['properties']['templatePath'], TRUE);
         } else {
             $paths = array('templates');
         }
 
-        $prefix = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir']);
+        $prefix = CoreGeneralUtility::getFileAbsFileName($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir']);
 
         foreach (\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->getFileStorages() AS $driver) {
             /** @var TYPO3\CMS\Core\Resource\ResourceStorage $driver */
             $driverpath = $driver->getConfiguration();
-            $driverpath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($driverpath['basePath']);
+            $driverpath = CoreGeneralUtility::getFileAbsFileName($driverpath['basePath']);
             foreach ($paths as $path) {
-                if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($prefix . $path, $driverpath) && is_dir($prefix . $path)) {
+                if (CoreGeneralUtility::isFirstPartOfStr($prefix . $path, $driverpath) && is_dir($prefix . $path)) {
                     $templatePaths[] = ($relative ? $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'] : $prefix) . $path;
                 } else {
                     if (!$check) {
@@ -2542,7 +2543,7 @@ lib.' . $menuType . '.1.ACT {
         $paths = $this->getTemplatePaths();
         $files = array();
         foreach ($paths as $path) {
-            $files = array_merge(\TYPO3\CMS\Core\Utility\GeneralUtility::getAllFilesAndFoldersInPath(array(), $path . ((substr($path, -1) != '/') ? '/' : ''), 'html,htm,tmpl', 0), $files);
+            $files = array_merge(CoreGeneralUtility::getAllFilesAndFoldersInPath(array(), $path . ((substr($path, -1) != '/') ? '/' : ''), 'html,htm,tmpl', 0), $files);
         }
 
         return $files;
@@ -2550,7 +2551,7 @@ lib.' . $menuType . '.1.ACT {
 }
 
 // Make instance:
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\tx_templavoila_module2::class);
+$SOBE = CoreGeneralUtility::makeInstance(\tx_templavoila_module2::class);
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();
