@@ -1004,6 +1004,9 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             case 'edit_page':
                 $clickUrl = htmlspecialchars(BackendUtility::editOnClick('&edit[pages][' . $this->id . ']=edit'));
                 break;
+            case 'browse':
+                $clickUrl = 'setFormValueOpenBrowser(\'db\',\'browser[communication]|||tt_content\'); return false;';
+                break;
             case 'view':
                 $viewAddGetVars = $this->currentLanguageUid ? '&L=' . $this->currentLanguageUid : '';
                 $clickUrl = htmlspecialchars(BackendUtility::viewOnClick(
@@ -2620,35 +2623,33 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     /**
      * Returns an HTML link for browse for record
      *
-     * @param string $label The label (or image)
      * @param array $parentPointer Flexform pointer defining the parent element of the new record
      *
      * @return string HTML anchor tag containing the label and the correct link
-     * @access protected
      */
-    public function link_browse($label, $parentPointer)
+    public function buildButtonBrowse($parentPointer)
     {
-        $parameters =
-            $this->link_getParameters() .
-            '&pasteRecord=ref' .
-            '&source=' . rawurlencode('###') .
-            '&destination=' . rawurlencode($this->apiObj->flexform_getStringFromPointer($parentPointer));
-        $onClick =
-            'browserPos = this;' .
-            'setFormValueOpenBrowser(\'db\',\'browser[communication]|||tt_content\');' .
-            'return false;';
-
-        return '<a href="#" class="tpm-browse" rel="index.php?' . htmlspecialchars($parameters) . '" onclick="' . htmlspecialchars($onClick) . '">' . $label . '</a>';
+        return $this->buildButton(
+            'browse',
+            \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.browse_db'),
+            'actions-insert-record',
+            $this->getLinkParameters([
+                'parentRecord' => 'ref',
+                'source' => '###',
+                'destination' => $this->apiObj->flexform_getStringFromPointer($parentPointer),
+                'returnUrl' => \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI'),
+            ]),
+            'default',
+            'tpm-new'
+        );
     }
 
     /**
      * Returns an HTML link for creating a new record
      *
-     * @param string $label The label (or image)
      * @param array $parentPointer Flexform pointer defining the parent element of the new record
      *
      * @return string HTML anchor tag containing the label and the correct link
-     * @access protected
      */
     public function buildButtonNew($parentPointer)
     {
@@ -2768,12 +2769,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
         // "Browse Record" icon
         if ($canCreateNew && !in_array('browse', $this->blindIcons)) {
-            $iconOptions = array(
-                'title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.browse_db'),
-                'class' => 'browse'
-            );
-            $newIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-insert-record', $iconOptions);
-            $output .= $this->link_browse($newIcon, $elementPointer);
+            $output .= $this->buildButtonBrowse($elementPointer);
         }
 
         // "Paste" icon
