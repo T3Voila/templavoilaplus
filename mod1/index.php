@@ -2048,7 +2048,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
                                 } else {
                                     $params = '&cmd[tt_content][' . $contentTreeArr['el']['uid'] . '][localize]=' . $sys_language_uid;
-                                    $onClick = "document.location='" . $GLOBALS['SOBE']->doc->issueCommand($params, CoreGeneralUtility::getIndpEnv('REQUEST_URI') . '#c' . md5($this->apiObj->flexform_getStringFromPointer($parentPointer) . $contentTreeArr['el']['uid'] . $sys_language_uid)) . "'; return false;";
+                                    $onClick = "document.location='" . BackendUtility::getLinkToDataHandlerAction($params, CoreGeneralUtility::getIndpEnv('REQUEST_URI') . '#c' . md5($this->apiObj->flexform_getStringFromPointer($parentPointer) . $contentTreeArr['el']['uid'] . $sys_language_uid)) . "'; return false;";
                                 }
 
                                 $linkLabel = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('createcopyfortranslation', TRUE) . ' (' . htmlspecialchars($sLInfo['title']) . ')';
@@ -2602,10 +2602,10 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 $workspaceRec = BackendUtility::getWorkspaceVersionOfRecord(\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->workspace, $table, $uid);
                 $workspaceId = ($workspaceRec['uid'] > 0) ? $workspaceRec['uid'] : $uid;
                 if ($table == "pages" && $this->currentLanguageUid) {
-                    //    return '<a href="#" onclick="' . htmlspecialchars('return jumpToUrl(\'' . $GLOBALS['SOBE']->doc->issueCommand($params, -1) . '\');') . '">'.$label.'</a>';
+                    //    return '<a href="#" onclick="' . htmlspecialchars('return jumpToUrl(\'' . BackendUtility::getLinkToDataHandlerAction($params, -1) . '\');') . '">'.$label.'</a>';
                 } else {
                     $params = '&data[' . $table . '][' . $workspaceId . '][hidden]=' . (1 - $hidden);
-                    //    return '<a href="#" onclick="' . htmlspecialchars('return jumpToUrl(\'' . $GLOBALS['SOBE']->doc->issueCommand($params, -1) . '\');') . '">'.$label.'</a>';
+                    //    return '<a href="#" onclick="' . htmlspecialchars('return jumpToUrl(\'' . BackendUtility::getLinkToDataHandlerAction($params, -1) . '\');') . '">'.$label.'</a>';
 
                     /* the commands are indipendent of the position,
                      * so sortable doesn't need to update these and we
@@ -2613,9 +2613,9 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                      */
                     $returnUrl = ($this->currentElementParentPointer) ? CoreGeneralUtility::getIndpEnv('REQUEST_URI') . '#c' . md5($this->apiObj->flexform_getStringFromPointer($this->currentElementParentPointer) . $uid) : CoreGeneralUtility::getIndpEnv('REQUEST_URI');
                     if ($hidden) {
-                        return '<a href="#" class="btn btn-default btn-sm" onclick="sortable_unhideRecord(this, \'' . htmlspecialchars($GLOBALS['SOBE']->doc->issueCommand($params, $returnUrl)) . '\');">' . $label . '</a>';
+                        return '<a href="#" class="btn btn-default btn-sm" onclick="sortable_unhideRecord(this, \'' . htmlspecialchars(BackendUtility::getLinkToDataHandlerAction($params, $returnUrl)) . '\');">' . $label . '</a>';
                     } else {
-                        return '<a href="#" class="btn btn-default btn-sm" onclick="sortable_hideRecord(this, \'' . htmlspecialchars($GLOBALS['SOBE']->doc->issueCommand($params, $returnUrl)) . '\');">' . $label . '</a>';
+                        return '<a href="#" class="btn btn-default btn-sm" onclick="sortable_hideRecord(this, \'' . htmlspecialchars(BackendUtility::getLinkToDataHandlerAction($params, $returnUrl)) . '\');">' . $label . '</a>';
                     }
                 }
             } else {

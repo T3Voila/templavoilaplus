@@ -404,7 +404,7 @@ class Clipboard implements SingletonInterface
                 }
                 $label = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('rendernonusedelements_deleteall');
                 $deleteAll = $this->pObj->buildButtonFromUrl(
-                    'jumpToUrl(' . $this->doc->issueCommand($params, -1) . ');return false;',
+                    'jumpToUrl(' . BackendUtility::getLinkToDataHandlerAction($params, -1) . ');return false;',
                     $label,
                     'actions-edit-delete',
                     $label,
@@ -474,7 +474,7 @@ class Clipboard implements SingletonInterface
             $params = '&cmd[tt_content][' . $uid . '][delete]=1';
 
             return $this->pObj->buildButtonFromUrl(
-                'jumpToUrl(' . $this->doc->issueCommand($params, -1). ');return false;',
+                'jumpToUrl(' . BackendUtility::getLinkToDataHandlerAction($params, -1). ');return false;',
                 \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('renderreferencecount_delete', true),
                 'actions-edit-delete',
                 '',
