@@ -624,7 +624,6 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
             // Preparing context menues
             $CMparts = $this->doc->getContextMenuCode();
-
             $mod1_file = 'dragdrop' . ($this->debug ? '.js' : '-min.js');
             if (method_exists('\TYPO3\CMS\Core\Utility\GeneralUtility', 'createVersionNumberedFilename')) {
                 $mod1_file = \TYPO3\CMS\Core\Utility\GeneralUtility::createVersionNumberedFilename($mod1_file);
@@ -999,13 +998,17 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         global $BACK_PATH;
 
         $clickUrl = '';
+        $rel = null;
 
         switch ($module) {
             case 'edit_page':
                 $clickUrl = htmlspecialchars(BackendUtility::editOnClick('&edit[pages][' . $this->id . ']=edit'));
                 break;
-            case 'browse':
-                $clickUrl = 'setFormValueOpenBrowser(\'db\',\'browser[communication]|||tt_content\'); return false;';
+            case 'wizard_element_browser':
+                $clickUrl = 'browserPos = this;setFormValueOpenBrowser('
+                    . CoreGeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl($module))
+                    . ',\'db\',\'browser[communication]|||tt_content\'); return false;';
+                $rel = BackendUtility::getModuleUrl('web_txtemplavoilaM1', $params);
                 break;
             case 'view':
                 $viewAddGetVars = $this->currentLanguageUid ? '&L=' . $this->currentLanguageUid : '';
@@ -1030,7 +1033,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 );
                 $clickUrl = 'jumpToUrl(\'' . $url . '\');return false;';
         }
-        return $this->buildButtonFromUrl($clickUrl, $title, $icon, '', $buttonType, $extraClass);
+        return $this->buildButtonFromUrl($clickUrl, $title, $icon, '', $buttonType, $extraClass, $rel);
     }
 
     /**
@@ -1042,11 +1045,14 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      * @param string $text
      * @param string $buttonType Type of the html button, see bootstrap
      * @param string $extraClass Extra class names to add to the bootstrap button classes
+     * @param string $rel Data for the rel attrib
      * @return string
      */
-    public function buildButtonFromUrl($clickUrl, $title, $icon, $text = '', $buttonType = 'default', $extraClass = '')
-    {
-        return '<a href="#" class="btn btn-' . $buttonType . ' btn-sm' . ($extraClass ? ' ' . $extraClass : '') . '"'
+    public function buildButtonFromUrl(
+        $clickUrl, $title, $icon, $text = '', $buttonType = 'default', $extraClass = '', $rel = null
+    ) {
+        return '<a href="#"' . ($rel ? ' rel="' . $rel . '"' : '')
+            . ' class="btn btn-' . $buttonType . ' btn-sm' . ($extraClass ? ' ' . $extraClass : '') . '"'
             . ' onclick="' . $clickUrl . '" title="' . $title . '">'
             . $this->iconFactory->getIcon($icon, Icon::SIZE_SMALL)->render()
             . ($text ? ' ' . $text : '')
@@ -2623,21 +2629,22 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     /**
      * Returns an HTML link for browse for record
      *
+     * @param string $label The label (or image)
      * @param array $parentPointer Flexform pointer defining the parent element of the new record
      *
      * @return string HTML anchor tag containing the label and the correct link
+     * @access protected
      */
     public function buildButtonBrowse($parentPointer)
     {
         return $this->buildButton(
-            'browse',
+            'wizard_element_browser',
             \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.browse_db'),
             'actions-insert-record',
             $this->getLinkParameters([
-                'parentRecord' => 'ref',
+                'pasteRecord' => 'ref',
                 'source' => '###',
-                'destination' => $this->apiObj->flexform_getStringFromPointer($parentPointer),
-                'returnUrl' => \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI'),
+                'destination' => $this->apiObj->flexform_getStringFromPointer($parentPointer)
             ]),
             'default',
             'tpm-new'
@@ -2650,6 +2657,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      * @param array $parentPointer Flexform pointer defining the parent element of the new record
      *
      * @return string HTML anchor tag containing the label and the correct link
+     * @access protected
      */
     public function buildButtonNew($parentPointer)
     {

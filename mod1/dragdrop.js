@@ -1,11 +1,12 @@
 var browserPos = null;
 
-function setFormValueOpenBrowser(mode, params) {
-	var url = T3_TV_MOD1_BACKPATH + "browser.php?mode=" + mode + "&bparams=" + params;
+function setFormValueOpenBrowser(url, mode, params) {
+	var url = url + "&mode=" + mode + "&bparams=" + params;
 
 	browserWin = window.open(url, "templavoilareferencebrowser", "height=350,width=" + (mode == "db" ? 650 : 600) + ",status=0,menubar=0,resizable=1,scrollbars=1");
 	browserWin.focus();
 }
+
 function setFormValueFromBrowseWin(fName, value, label, exclusiveValues) {
 	if (value) {
 		var ret = value.split('_');
