@@ -358,11 +358,11 @@ class Clipboard implements SingletonInterface
 
             // Prepare buttons:
             $cutButton = $this->element_getSelectButtons($elementPointerString, 'ref');
-            $recordButton = $this->pObj->doc->wrapClickMenuOnIcon(
+            $recordButton = BackendUtility::wrapClickMenuOnIcon(
                 $this->pObj->iconFactory->getIconForRecord('tt_content', $row, Icon::SIZE_SMALL)->render(),
                 'tt_content',
                 $row['uid'],
-                1,
+                true,
                 '&callingScriptId=' . rawurlencode($this->pObj->doc->scriptID),
                 'new,copy,cut,pasteinto,pasteafter,delete'
             );

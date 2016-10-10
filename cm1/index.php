@@ -1301,7 +1301,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 // Get title and icon:
                 $icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('tx_templavoila_datastructure', $row);
                 $title = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle('tx_templavoila_datastructure', $row, 1);
-                $content .= $this->doc->wrapClickMenuOnIcon($icon, 'tx_templavoila_datastructure', $row['uid'], 1) .
+                $content .= BackendUtility::wrapClickMenuOnIcon($icon, 'tx_templavoila_datastructure', $row['uid'], true) .
                     '<strong>' . $title . '</strong><br />';
 
                 // Get Data Structure:
@@ -1363,7 +1363,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                     $tRows[] = '
                             <tr class="bgColor4">
                                 <td>[' . $TO_Row['uid'] . ']</td>
-                                <td nowrap="nowrap">' . $this->doc->wrapClickMenuOnIcon($TOicon, 'tx_templavoila_tmplobj', $TO_Row['uid'], 1) .
+                                <td nowrap="nowrap">' . BackendUtility::wrapClickMenuOnIcon($TOicon, 'tx_templavoila_tmplobj', $TO_Row['uid'], true) .
                         '<a href="' . htmlspecialchars('index.php?table=tx_templavoila_tmplobj&uid=' . $TO_Row['uid'] . '&_reload_from=1') . '">' .
                         \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle('tx_templavoila_tmplobj', $TO_Row, 1) . '</a>' .
                         '</td>
@@ -1448,7 +1448,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 $tRows[] = '
                     <tr class="bgColor4">
                         <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('templateObject') . ':</td>
-                        <td>' . $this->doc->wrapClickMenuOnIcon($icon, 'tx_templavoila_tmplobj', $row['uid'], 1) . $title . '</td>
+                        <td>' . BackendUtility::wrapClickMenuOnIcon($icon, 'tx_templavoila_tmplobj', $row['uid'], true) . $title . '</td>
                     </tr>';
 
                 // Session data
@@ -1500,7 +1500,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                             $tRows[] = '
                                 <tr class="bgColor4">
                                     <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('renderTO_dsRecord') . ':</td>
-                                    <td>' . $this->doc->wrapClickMenuOnIcon($icon, 'tx_templavoila_datastructure', $DS_row['uid'], 1) . $title . '</td>
+                                    <td>' . BackendUtility::wrapClickMenuOnIcon($icon, 'tx_templavoila_datastructure', $DS_row['uid'], true) . $title . '</td>
                                 </tr>';
 
                             // Link to updating DS/TO:

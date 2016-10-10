@@ -12,7 +12,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Utility\BackendUtility as BackendUtilityCore;
+use TYPO3\CMS\Backend\Utility\BackendUtility as BackendUtility;
 
 $GLOBALS['LANG']->includeLLFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('templavoila') . 'mod2/locallang.xlf');
 
@@ -569,7 +569,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             $dsIcon = '<a href="#" onclick="' . htmlspecialchars($onClick) . '"><img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, 'gfx/fileicons/xml.gif', 'width="18" height="16"') . ' alt="" title="' . $dsObj->getKey() . '" class="absmiddle" /></a>';
         } else {
             $dsIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('tx_templavoila_datastructure', array(), array('title' => $dsObj->getKey()));
-            $dsIcon = $this->doc->wrapClickMenuOnIcon($dsIcon, 'tx_templavoila_datastructure', $dsObj->getKey(), 1, '&callingScriptId=' . rawurlencode($this->doc->scriptID));
+            $dsIcon = BackendUtility::wrapClickMenuOnIcon($dsIcon, 'tx_templavoila_datastructure', $dsObj->getKey(), true, '&callingScriptId=' . rawurlencode($this->doc->scriptID));
         }
 
         // Preview icon:
@@ -686,7 +686,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     {
         // Put together the records icon including content sensitive menu link wrapped around it:
         $recordIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('tx_templavoila_tmplobj', array(), array('title' => $toObj->getKey()));
-        $recordIcon = $this->doc->wrapClickMenuOnIcon($recordIcon, 'tx_templavoila_tmplobj', $toObj->getKey(), 1, '&callingScriptId=' . rawurlencode($this->doc->scriptID));
+        $recordIcon = BackendUtility::wrapClickMenuOnIcon($recordIcon, 'tx_templavoila_tmplobj', $toObj->getKey(), true, '&callingScriptId=' . rawurlencode($this->doc->scriptID));
 
         // Preview icon:
         if ($toObj->getIcon()) {
@@ -715,7 +715,7 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             'id' => $this->id
             // TODO returnUrl
         ];
-        $linkUrl = BackendUtilityCore::getModuleUrl('_txtemplavoilaCM1', $uriParameters);
+        $linkUrl = BackendUtility::getModuleUrl('_txtemplavoilaCM1', $uriParameters);
 
         $fileReference = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($toObj->getFileref());
         if (@is_file($fileReference)) {

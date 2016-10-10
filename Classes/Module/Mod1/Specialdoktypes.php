@@ -166,7 +166,14 @@ class Specialdoktypes implements SingletonInterface
 
         $mountSourcePageRecord = BackendUtility::getRecordWSOL('pages', $pageRecord['mount_pid']);
         $mountSourceIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', $mountSourcePageRecord);
-        $mountSourceButton = $this->doc->wrapClickMenuOnIcon($mountSourceIcon, 'pages', $mountSourcePageRecord['uid'], 1, '&callingScriptId=' . rawurlencode($this->doc->scriptID), 'new,copy,cut,pasteinto,pasteafter,delete');
+        $mountSourceButton = BackendUtility::wrapClickMenuOnIcon(
+            $mountSourceIcon,
+            'pages',
+            $mountSourcePageRecord['uid'],
+            true,
+            '&callingScriptId=' . rawurlencode($this->doc->scriptID),
+            'new,copy,cut,pasteinto,pasteafter,delete'
+        );
 
         $mountSourceLink = '<br /><br />
             <a href="index.php?id=' . $pageRecord['mount_pid'] . '">' . htmlspecialchars($this->getLanguageService()->getLL('jumptomountsourcepage')) . '</a>
