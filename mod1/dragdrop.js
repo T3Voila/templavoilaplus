@@ -113,23 +113,23 @@ function sortable_unlinkRecord(pointer, id, elementPointer) {
 }
 
 function sortable_unlinkRecordSidebarCallBack(pointer) {
-	var childNodes = $('tx_templavoila_mod1_sidebar-bar').childElements();
-	var innerHeight = 0;
-	for (var i = 0; i < childNodes.length; i++) {
-		innerHeight += childNodes[i].getHeight();
-	}
-	$('tx_templavoila_mod1_sidebar-bar').morph(
-		{ height: innerHeight + 'px'},
-		{
-			duration: 0.1,
-			afterFinish: function() {
-				$('tx_templavoila_mod1_sidebar-bar').setStyle({height: 'auto'});
-				if (pointer && $(pointer)) {
-					$(pointer).highlight();
-				}
-			}
-		}
-	);
+    var childNodes = $('tx_templavoila_mod1_sidebar-bar').childElements();
+    var innerHeight = 0;
+    for (var i = 0; i < childNodes.length; i++) {
+        innerHeight += childNodes[i].getHeight();
+    }
+    $('tx_templavoila_mod1_sidebar-bar').morph(
+        { height: innerHeight + 'px'},
+        {
+            duration: 0.1,
+            afterFinish: function() {
+                $('tx_templavoila_mod1_sidebar-bar').setStyle({height: 'auto'});
+                if (pointer && $(pointer)) {
+                    $(pointer).highlight();
+                }
+            }
+        }
+    );
 }
 
 function sortable_updateItemButtons(list, sortOrder)
