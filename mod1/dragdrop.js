@@ -31,9 +31,6 @@ function setHighlight(id) {
     }
 }
 
-function editRecords(table, idList, addParams, CBflag) {
-    window.location.href = T3_TV_MOD1_BACKPATH + "alt_doc.php?returnUrl=" + T3_TV_MOD1_RETURNURL + "&edit[" + table + "][" + idList + "]=edit" + addParams;
-}
 function editList(table, idList) {
     var list = "";
 
