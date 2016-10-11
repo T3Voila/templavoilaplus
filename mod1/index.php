@@ -624,26 +624,26 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
             // Preparing context menues
             $CMparts = $this->doc->getContextMenuCode();
-            $mod1_file = 'dragdrop' . ($this->debug ? '.js' : '-min.js');
-            if (method_exists('\TYPO3\CMS\Core\Utility\GeneralUtility', 'createVersionNumberedFilename')) {
-                $mod1_file = CoreGeneralUtility::createVersionNumberedFilename($mod1_file);
-            } else {
-                $mod1_file .= '?' . filemtime(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('templavoila') . 'mod1/' . $mod1_file);
-            }
 
-            $this->doc->JScodeLibArray['templavoila_mod1'] = '<script src="' . $this->doc->backPath . '../' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('templavoila') . 'mod1/' . $mod1_file . '" type="text/javascript"></script>';
+            $this->addJsLibrary(
+                'templavoila_mod1',
+                \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila') . 'mod1/dragdrop.js'
+            );
 
             if (isset($this->modTSconfig['properties']['javascript.']) && is_array($this->modTSconfig['properties']['javascript.'])) {
                 // add custom javascript files
-                foreach ($this->modTSconfig['properties']['javascript.'] as $key => $value) {
-                    if ($value) {
-                        if (substr($value, 0, 4) == 'EXT:') {
-                            list($extKey, $local) = explode('/', substr($value, 4), 2);
-                            if (strcmp($extKey, '') && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extKey) && strcmp($local, '')) {
-                                $value = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($extKey) . $local;
+                foreach ($this->modTSconfig['properties']['javascript.'] as $key => $filename) {
+                    if ($filename) {
+                        if (substr($filename, 0, 4) == 'EXT:') {
+                            list($extKey, $local) = explode('/', substr($filename, 4), 2);
+                            if (strcmp($extKey, '')
+                                && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extKey)
+                                && strcmp($local, '')
+                            ) {
+                                $filename = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($extKey) . $local;
                             }
                         }
-                        $this->doc->JScodeLibArray[$key] = '<script src="' . $this->doc->backPath . htmlspecialchars($value) . '" type="text/javascript"></script>';
+                        $this->addJsLibrary($key, $filename);
                     }
                 }
             }
@@ -813,6 +813,19 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      * RENDERING UTILITIES
      *
      *************************/
+
+    protected function addJsLibrary($key, $filename)
+    {
+        $this->getPageRenderer()->addJsLibrary(
+            $key,
+            $filename,
+            null,
+            !$this->debug, // Compress if not debug
+            false,
+            '',
+            $this->debug // Exclude from concatenation if debug
+        );
+    }
 
     /**
      * Gets the filled markers that are used in the HTML template.
