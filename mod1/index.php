@@ -933,7 +933,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             // Page history
             $buttons['history_page'] = $this->buildButton(
                     'record_history',
-                    TemplavoilaGeneralUtility::getLanguageService()->sL('LLL:EXT:cms/layout/locallang.xlf:recordHistory', 1),
+                    TemplavoilaGeneralUtility::getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:recordHistory', 1),
                     'actions-document-history-open',
                     [
                         'element' => 'pages:' . $this->id,
@@ -944,7 +944,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 // Create new page (wizard)
                 $buttons['new_page'] = $this->buildButton(
                     'db_new',
-                    TemplavoilaGeneralUtility::getLanguageService()->sL('LLL:EXT:cms/layout/locallang.xlf:newPage', 1),
+                    TemplavoilaGeneralUtility::getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newPage', 1),
                     'actions-page-new',
                     [
                         'id' => $this->id,
@@ -958,13 +958,13 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 // Edit page properties
                 $buttons['edit_page'] = $this->buildButton(
                     'edit_page',
-                    TemplavoilaGeneralUtility::getLanguageService()->sL('LLL:EXT:cms/layout/locallang.xlf:editPageProperties', 1),
+                    TemplavoilaGeneralUtility::getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:editPageProperties', 1),
                     'actions-page-open'
                 );
                 // Move page
                 $buttons['move_page'] = $this->buildButton(
                     'move_element',
-                    TemplavoilaGeneralUtility::getLanguageService()->sL('LLL:EXT:cms/layout/locallang.xlf:move_page', 1),
+                    TemplavoilaGeneralUtility::getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:move_page', 1),
                     'actions-page-move',
                     [
                         'table' => 'pages',
@@ -1174,7 +1174,19 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         if (FALSE) {
             $sys_notes = '';
             // @todo: Check if and how this is to replace
-            $output .= '</div><div>' . $this->doc->section(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:cms/layout/locallang.xlf:internalNotes'), str_replace('sysext/sys_note/ext_icon.gif', $GLOBALS['BACK_PATH'] . 'sysext/sys_note/ext_icon.gif', $sys_notes), 0, 1);
+            $output .= '</div><div>'
+                . $this->doc->section(
+                    \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL(
+                        'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:internalNotes'
+                    ),
+                    str_replace(
+                        'sysext/sys_note/ext_icon.gif',
+                        $GLOBALS['BACK_PATH'] . 'sysext/sys_note/ext_icon.gif',
+                        $sys_notes
+                    ),
+                    0,
+                    1
+                );
         }
 
         return $output;
