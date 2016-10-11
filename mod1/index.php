@@ -854,7 +854,9 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             $sidebarMode = 'SIDEBAR_DISABLED';
         }
 
-        $editareaTpl = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($this->doc->moduleTemplate, $sidebarMode);
+        $templateService = CoreGeneralUtility::makeInstance(\TYPO3\CMS\Core\Service\MarkerBasedTemplateService::class);
+
+        $editareaTpl = $templateService->getSubpart($this->doc->moduleTemplate, $sidebarMode);
         if ($editareaTpl) {
             $editareaMarkers = array(
                 'TABROW' => $this->render_sidebar(),
@@ -862,7 +864,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             );
             $editareaMarkers['FLASHMESSAGES'] = $this->flashMessageService->getMessageQueueByIdentifier('ext.templavoila')->renderFlashMessages();
 
-            $editareaContent = \TYPO3\CMS\Core\Html\HtmlParser::substituteMarkerArray($editareaTpl, $editareaMarkers, '###|###', TRUE);
+            $editareaContent = $templateService->substituteMarkerArray($editareaTpl, $editareaMarkers, '###|###', TRUE);
 
             $bodyMarkers['EDITAREA'] = $editareaContent;
         } else {
