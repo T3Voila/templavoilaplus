@@ -80,7 +80,7 @@ class Sidebar implements SingletonInterface
     {
         // Make local reference to some important variables:
         $this->pObj = $pObj;
-        $this->doc = &$this->pObj->doc;
+        $this->moduleTemplate = $this->pObj->moduleTemplate;
         $this->extKey = $this->pObj->extKey;
 
         $hideIfEmpty = $pObj->modTSconfig['properties']['showTabsIfEmpty'] ? false : true;
@@ -197,7 +197,7 @@ class Sidebar implements SingletonInterface
 
                         <div id="tx_templavoila_mod1_sidebar-bar" style="height: 100%; width: ' . $this->sideBarWidth . 'px; margin: 0 4px 0 0; display:none;" class="bgColor-10">
                             <div style="text-align:right;"><a href="#" onClick="tx_templavoila_mod1_sidebar_toggle();">' . $minusIcon . '</a></div>
-                            ' . $this->doc->getDynamicTabMenu($numSortedSideBarItems, 'TEMPLAVOILA:pagemodule:sidebar', 1, true, true, false) . '
+                            ' . $this->moduleTemplate->getDynamicTabMenu($numSortedSideBarItems, 'TEMPLAVOILA:pagemodule:sidebar', 1, true, true, false) . '
                         </div>
                         <div id="tx_templavoila_mod1_sidebar-showbutton" style="height: 100%; width: 18px; margin: 0 4px 0 0; display:block; " class="bgColor-10">
                             <a href="#" onClick="tx_templavoila_mod1_sidebar_toggle();">' . $plusIcon . '</a>
@@ -220,7 +220,7 @@ class Sidebar implements SingletonInterface
                         <!-- TemplaVoila Sidebar (top) begin -->
 
                         <div id="tx_templavoila_mod1_sidebar-bar" style="width:100%; margin-bottom: 10px;" class="bgColor-10">
-                            ' . $this->doc->getDynamicTabMenu($numSortedSideBarItems, 'TEMPLAVOILA:pagemodule:sidebar', 1, true, true, false) . '
+                            ' . $this->moduleTemplate->getDynamicTabMenu($numSortedSideBarItems, 'TEMPLAVOILA:pagemodule:sidebar', 1, true, true, false) . '
                         </div>
 
                         <!-- TemplaVoila Sidebar end -->
@@ -232,7 +232,7 @@ class Sidebar implements SingletonInterface
                         <!-- TemplaVoila Sidebar (top) begin -->
 
                         <div id="tx_templavoila_mod1_sidebar-bar" style="width:100%;" class="bgColor-10">
-                            ' . $this->doc->getDynamicTabMenu($numSortedSideBarItems, 'TEMPLAVOILA:pagemodule:sidebar', 0, false, true, false) . '
+                            ' . $this->moduleTemplate->getDynamicTabMenu($numSortedSideBarItems, 'TEMPLAVOILA:pagemodule:sidebar', 0, false, true, false) . '
                         </div>
 
                         <!-- TemplaVoila Sidebar end -->

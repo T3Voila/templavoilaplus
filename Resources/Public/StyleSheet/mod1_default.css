@@ -29,11 +29,6 @@ div#typo3-docbody {
   padding-bottom: 1px;
 }
 
-.pagecontainer {
-  display: table-cell;
-  padding: 7px;
-}
-
 table {
   position: relative;
 }

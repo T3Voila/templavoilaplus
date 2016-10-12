@@ -12,6 +12,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -348,7 +349,28 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     {
         parent::init();
 
-        $this->iconFactory = CoreGeneralUtility::makeInstance(IconFactory::class);
+        $this->moduleTemplate = CoreGeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\ModuleTemplate::class);
+        $this->iconFactory = $this->moduleTemplate->getIconFactory();
+        $this->buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
+
+        $view = $this->moduleTemplate->getView();
+        $view->setPartialRootPaths(
+            array_merge(
+                $view->getPartialRootPaths(),
+                ['EXT:templavoila/Resources/Private/Partials']
+            )
+        );
+        $view->setTemplateRootPaths(
+//             array_merge(
+//                 $view->getTemplateRootPaths(),
+//                 ['EXT:templavoila/Resources/Private/Templates']
+//             )
+            [
+                'EXT:backend/Resources/Private/Templates',
+                'EXT:templavoila/Resources/Private/Templates'
+            ]
+        );
+        $view->setTemplate('Module.html');
 
         $this->modSharedTSconfig = BackendUtility::getModTSconfig($this->id, 'mod.SHARED');
         $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, CoreGeneralUtility::_GP('SET'), $this->MCONF['name']);
@@ -414,8 +436,6 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             $this->localizationObj =& CoreGeneralUtility::getUserObj('Extension\\Templavoila\\Module\\Mod1\\Localization', '');
             $this->localizationObj->init($this);
         }
-
-        $this->flashMessageService  = CoreGeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessageService::class);
     }
 
     /**
@@ -528,29 +548,10 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 BackendUtility::setUpdateSignal('updatePageTree');
             }
 
-            // Draw the header.
-            $this->doc = CoreGeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
-
-            $templateFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($this->extKey) . 'Resources/Private/Templates/mod1_' . substr(TYPO3_version, 0, 3) . '.html';
-            if (file_exists($templateFile)) {
-                $this->doc->setModuleTemplate('EXT:templavoila/Resources/Private/Templates/mod1_' . substr(TYPO3_version, 0, 3) . '.html');
-            } else {
-                $this->doc->setModuleTemplate('EXT:templavoila/Resources/Private/Templates/mod1_default.html');
-            }
-
-            $this->doc->docType = 'xhtml_trans';
-
-            $this->doc->bodyTagId = 'typo3-mod-php';
-            $this->doc->divClass = '';
-            $this->doc->form = '<form action="' . BackendUtility::getModuleUrl('web_txtemplavoilaM1', $this->getLinkParameters()) . '" method="post">';
+//             $this->doc->form = '<form action="' . BackendUtility::getModuleUrl('web_txtemplavoilaM1', $this->getLinkParameters()) . '" method="post">';
 
             // Add custom styles
-            $styleSheetFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($this->extKey) . 'Resources/Public/StyleSheet/mod1_' . substr(TYPO3_version, 0, 3) . '.css';
-            if (file_exists($styleSheetFile)) {
-                $styleSheetFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->extKey) . 'Resources/Public/StyleSheet/mod1_' . substr(TYPO3_version, 0, 3) . '.css';
-            } else {
-                $styleSheetFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->extKey) . 'Resources/Public/StyleSheet/mod1_default.css';
-            }
+            $styleSheetFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->extKey) . 'Resources/Public/StyleSheet/mod1_default.css';
 
             if (isset($this->modTSconfig['properties']['stylesheet'])) {
                 $styleSheetFile = $this->modTSconfig['properties']['stylesheet'];
@@ -572,16 +573,37 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             }
 
             // Adding classic jumpToUrl function, needed for the function menu. Also, the id in the parent frameset is configured.
-            $this->doc->JScode = $this->doc->wrapScriptTags('
+            $this->moduleTemplate->addJavaScriptCode('templavoila_base', '
                 if (top.fsMod) top.fsMod.recentIds["web"] = ' . (int)$this->id . ';
-                ' . $this->doc->redirectUrls() . '
+                ' . $this->moduleTemplate->redirectUrls() . '
                 var T3_TV_MOD1_BACKPATH = "' . $relativeExtensionPath . '";
                 var T3_TV_MOD1_RETURNURL = "' . rawurlencode(CoreGeneralUtility::getIndpEnv('REQUEST_URI')) . '";
             ');
 
             $this->getPageRenderer()->loadJquery();
 
-            $this->doc->JScode .= $this->doc->wrapScriptTags('
+            // Setup JS for ClickMenu which isn't loaded by ModuleTemplate
+            $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ClickMenu');
+
+            // Set up JS for dynamic tab menu and side bar
+            $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Tabs');
+
+            $this->moduleTemplate->addJavaScriptCode('templavoila_function', '
+                TYPO3.jQuery(document).off(\'click.tab.data-api\', \'[data-toggle="tab"]\');
+                TYPO3.jQuery(document).on(\'click.tab.data-api\', \'[data-toggle="tab"]\', function (e) {
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+                    var tab = TYPO3.jQuery(TYPO3.jQuery(this).attr(\'href\'));
+                    var activate = !tab.hasClass(\'active\');
+                    TYPO3.jQuery(\'div.tab-content>div.tab-pane.active\').removeClass(\'active\');
+                    TYPO3.jQuery(\'ul.nav.nav-tabs>li.active\').removeClass(\'active\');
+                    if (activate) {
+                        TYPO3.jQuery(this).tab(\'show\')
+                    } else {
+                        TYPO3.Tabs.storeActiveTab(e.currentTarget.id, \'\');
+                    }
+                    return true;
+                });
                 var typo3pageModule = {
                     /**
                      * Initialization
@@ -595,7 +617,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                      * to the mouseenter event and the "setInactive" to the mouseleave event.
                      */
                     enableHighlighting: function() {
-                        TYPO3.jQuery(\'#typo3-inner-docbody\').on(\'mouseover\', typo3pageModule.setActive);
+                        TYPO3.jQuery(\'.pagecontainer\').on(\'mouseover\', typo3pageModule.setActive);
                     },
 
                     /**
@@ -603,7 +625,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                      * user hovers the a content element.
                      */
                     setActive: function(e) {
-                        TYPO3.jQuery(\'#typo3-inner-docbody .active\').removeClass(\'active\').addClass(\'inactive\');
+                        TYPO3.jQuery(\'.pagecontainer .active\').removeClass(\'active\').addClass(\'inactive\');
                         if (e) {
                             $element = TYPO3.jQuery(e.target);
                             if (!$element.hasClass(\'t3-page-ce\')) {
@@ -621,9 +643,6 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                     typo3pageModule.init();
                 });
             ');
-
-            // Preparing context menues
-            $CMparts = $this->doc->getContextMenuCode();
 
             $this->addJsLibrary(
                 'templavoila_mod1',
@@ -648,23 +667,9 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 }
             }
 
-            // Set up JS for dynamic tab menu and side bar
-            $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Tabs');
 
-            $this->doc->JScode .= $this->modTSconfig['properties']['sideBarEnable'] ? $this->sideBarObj->getJScode() : '';
-
-            // Setting up support for context menus (when clicking the items icon)
-            $this->doc->bodyTagAdditions = $CMparts[1];
-            $this->doc->JScode .= $CMparts[0];
-            $this->doc->postCode .= $CMparts[2];
-
-            // CSS for drag and drop
-
-            if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('t3skin')) {
-                // Fix padding for t3skin in disabled tabs
-                $this->doc->inDocStyles .= '
-                    table.typo3-dyntabmenu td.disabled, table.typo3-dyntabmenu td.disabled_over, table.typo3-dyntabmenu td.disabled:hover { padding-left: 10px; }
-                ';
+            if ($this->modTSconfig['properties']['sideBarEnable']) {
+                $this->moduleTemplate->addJavaScriptCode('templavoila_sidebar', $this->sideBarObj->getJScode());
             }
 
             $this->handleIncomingCommands();
@@ -712,15 +717,12 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                     $title = BackendUtility::getRecordTitle('pages', $contentPage);
                     $linkToPid = BackendUtility::getModuleUrl('web_txtemplavoilaM1', ['id' => (int)$this->rootElementRecord['content_from_pid']]);
                     $link = '<a href="' . $linkToPid . '">' . htmlspecialchars($title) . ' (PID ' . (int)$this->rootElementRecord['content_from_pid'] . ')</a>';
-                    /** @var \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage */
-                    $flashMessage = CoreGeneralUtility::makeInstance(
-                        \TYPO3\CMS\Core\Messaging\FlashMessage::class,
-                        '',
+
+                    $this->moduleTemplate->addFlashMessage(
                         sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('content_from_pid_title'), $link),
-                        \TYPO3\CMS\Core\Messaging\FlashMessage::INFO
+                        '',
+                        \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING
                     );
-                    $editCurrentPageHTML = '';
-                    $this->flashMessageService->getMessageQueueByIdentifier('ext.templavoila')->enqueue($flashMessage);
                 }
                 // Render "edit current page" (important to do before calling ->sideBarObj->render() - otherwise the translation tab is not rendered!
                 $editCurrentPageHTML .= $this->render_editPageScreen();
@@ -749,53 +751,45 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                     $script .= '});});';
                     $this->content .= CoreGeneralUtility::wrapJS($script);
                 }
-
-                $this->doc->divClass = 'tpm-editPageScreen';
             }
         } else { // No access or no current page uid:
-            $this->doc = CoreGeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
-            $this->doc->backPath = $BACK_PATH;
-            $this->doc->setModuleTemplate('EXT:templavoila/Resources/Private/Templates/mod1_noaccess.html');
-            $this->doc->docType = 'xhtml_trans';
-
-            $this->doc->bodyTagId = 'typo3-mod-php';
-
             $cmd = CoreGeneralUtility::_GP('cmd');
 
             if ($cmd == 'crPage') { // create a new page
                 $this->content .= $this->wizardsObj->renderWizard_createNewPage(CoreGeneralUtility::_GP('positionPid'));
             } else {
                 if (!isset($pageInfoArr['uid'])) {
-                    $flashMessage = CoreGeneralUtility::makeInstance(
-                        \TYPO3\CMS\Core\Messaging\FlashMessage::class,
+                    $this->moduleTemplate->addFlashMessage(
                         \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('page_not_found'),
                         \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('title'),
                         \TYPO3\CMS\Core\Messaging\FlashMessage::INFO
                     );
-                    $this->content .= $flashMessage->render();
                 } else {
-                    $flashMessage = CoreGeneralUtility::makeInstance(
-                        \TYPO3\CMS\Core\Messaging\FlashMessage::class,
+                    $this->moduleTemplate->addFlashMessage(
                         \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('default_introduction'),
                         \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('title'),
                         \TYPO3\CMS\Core\Messaging\FlashMessage::INFO
                     );
-                    $this->content .= $flashMessage->render();
                 }
             }
         }
 
         // Place content inside template
-        $content = $this->doc->startPage(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('title'));
-        $content .= $this->doc->moduleBody(
-            $pageInfoArr,
-            $this->getDocHeaderButtons(!isset($pageInfoArr['uid'])),
-            $this->getBodyMarkers()
-        );
-        $content .= $this->doc->endPage();
+//         $content = $this->doc->startPage(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('title'));
+//         $content .= $this->doc->moduleBody(
+//             $pageInfoArr,
+//             $this->getDocHeaderButtons(!isset($pageInfoArr['uid'])),
+//             $this->getBodyMarkers()
+//         );
+//         $content .= $this->doc->endPage();
 
         // Replace content with templated content
-        $this->content = $content;
+        //$this->content = $content;
+        $this->moduleTemplate->setTitle(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('title'));
+        $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($pageInfoArr);
+        $this->setDocHeaderButtons(!isset($pageInfoArr['uid']));
+        $this->moduleTemplate->getView()->assign('tabMenu', $this->render_sidebar());
+        $this->moduleTemplate->setContent($this->content);
     }
 
     /**
@@ -805,7 +799,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      */
     public function printContent()
     {
-        echo $this->content;
+        echo $this->moduleTemplate->renderContent();
     }
 
     /*************************
@@ -828,170 +822,118 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     }
 
     /**
-     * Gets the filled markers that are used in the HTML template.
-     *
-     * @return array The filled marker array
-     */
-    protected function getBodyMarkers()
-    {
-        // Taken from TYPO3\CMS\Backend\Template\Components\MetaInformation::getPath
-        // and TYPO3\CMS\Backend\Template\Components\MetaInformation::getRecordInformation
-        $path = substr($pageRecord['_thePathFull'], 0, -1);
-        $pos = strrpos($path, $pageRecord['title']);
-        if ($pos !== false) {
-            $path = substr($path, 0, $pos);
-        }
-
-        $bodyMarkers = array(
-            'TITLE' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('title')
-        );
-
-        if ($this->modTSconfig['properties']['sideBarEnable'] && $this->sideBarObj->position == 'left') {
-            $sidebarMode = 'SIDEBAR_LEFT';
-        } elseif ($this->modTSconfig['properties']['sideBarEnable']) {
-            $sidebarMode = 'SIDEBAR_TOP';
-        } else {
-            $sidebarMode = 'SIDEBAR_DISABLED';
-        }
-
-        $templateService = CoreGeneralUtility::makeInstance(\TYPO3\CMS\Core\Service\MarkerBasedTemplateService::class);
-
-        $editareaTpl = $templateService->getSubpart($this->doc->moduleTemplate, $sidebarMode);
-        if ($editareaTpl) {
-            $editareaMarkers = array(
-                'TABROW' => $this->render_sidebar(),
-                'CONTENT' => $this->content
-            );
-            $editareaMarkers['FLASHMESSAGES'] = $this->flashMessageService->getMessageQueueByIdentifier('ext.templavoila')->renderFlashMessages();
-
-            $editareaContent = $templateService->substituteMarkerArray($editareaTpl, $editareaMarkers, '###|###', TRUE);
-
-            $bodyMarkers['EDITAREA'] = $editareaContent;
-        } else {
-            $bodyMarkers['CONTENT'] = $this->content;
-        }
-
-        return $bodyMarkers;
-    }
-
-    /**
      * Create the panel of buttons for submitting the form or otherwise perform operations.
      *
      * @param boolean $noButtons Determine whether to show any icons or not
-     *
-     * @return array all available buttons as an assoc. array
      */
-    protected function getDocHeaderButtons($noButtons = FALSE)
+    protected function setDocHeaderButtons($noButtons = FALSE)
     {
-        $buttons = array(
-            'csh' => '',
-            'view' => '',
-            'history_page' => '',
-            'move_page' => '',
-            'move_record' => '',
-            'new_page' => '',
-            'edit_page' => '',
-            'record_list' => '',
-            'shortcut' => '',
-            'cache' => ''
-        );
-
         if ($noButtons) {
-            return $buttons;
+            return;
         }
 
         // View page
-        $buttons['view'] = $this->buildButton(
+        $this->addDocHeaderButton(
             'view',
             TemplavoilaGeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_core.php:labels.showPage', 1),
             'actions-document-view'
         );
 
-        // Shortcut
-        if (TemplavoilaGeneralUtility::getBackendUser()->mayMakeShortcut()) {
-            $buttons['shortcut'] = $this->doc->makeShortcutIcon(
-                'id, edit_record, pointer, new_unique_uid, search_field, search_levels, showLimit',
-                implode(',', array_keys($this->MOD_MENU)),
-                $this->MCONF['name'],
-                '',
-                'btn btn-default btn-sm'
+        if (!$this->modTSconfig['properties']['disableIconToolbar']) {
+            if (!$this->translatorMode) {
+                if (TemplavoilaGeneralUtility::getBackendUser()->isPSet($this->calcPerms, 'pages', 'new')) {
+                    // Create new page (wizard)
+                    $this->addDocHeaderButton(
+                        'db_new',
+                        TemplavoilaGeneralUtility::getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newPage', 1),
+                        'actions-page-new',
+                        [
+                            'id' => $this->id,
+                            'pagesOnly' => 1,
+                        ],
+                        ButtonBar::BUTTON_POSITION_LEFT,
+                        2
+                    );
+                }
+
+                if (TemplavoilaGeneralUtility::getBackendUser()->isPSet($this->calcPerms, 'pages', 'edit')) {
+                    // Edit page properties
+                    $this->addDocHeaderButton(
+                        'edit_page',
+                        TemplavoilaGeneralUtility::getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:editPageProperties', 1),
+                        'actions-page-open'
+                    );
+                    // Move page
+                    $this->addDocHeaderButton(
+                        'move_element',
+                        TemplavoilaGeneralUtility::getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:move_page', 1),
+                        'actions-page-move',
+                        [
+                            'table' => 'pages',
+                            'uid'=> $this->id,
+                        ],
+                        ButtonBar::BUTTON_POSITION_LEFT,
+                        2
+                    );
+                }
+            }
+
+            // Page history
+            $this->addDocHeaderButton(
+                'record_history',
+                TemplavoilaGeneralUtility::getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:recordHistory', 1),
+                'actions-document-history-open',
+                [
+                    'element' => 'pages:' . $this->id,
+                ],
+                ButtonBar::BUTTON_POSITION_LEFT,
+                3
+            );
+
+            $buttons['csh'] = BackendUtility::cshItem(
+                '_MOD_web_txtemplavoilaM1', 'pagemodule', null, '<span class="btn btn-default btn-sm">|</span>'
             );
         }
 
+        // Shortcut
+//         if (TemplavoilaGeneralUtility::getBackendUser()->mayMakeShortcut()) {
+//             $buttons['shortcut'] = $this->doc->makeShortcutIcon(
+//                 'id, edit_record, pointer, new_unique_uid, search_field, search_levels, showLimit',
+//                 implode(',', array_keys($this->MOD_MENU)),
+//                 $this->MCONF['name'],
+//                 '',
+//                 'btn btn-default btn-sm'
+//             );
+//         }
+
         // If access to Web>List for user, then link to that module.
         if (TemplavoilaGeneralUtility::getBackendUser()->check('modules', 'web_list')) {
-            $buttons['record_list'] = $this->buildButton(
+            $this->addDocHeaderButton(
                 'web_list',
                 TemplavoilaGeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_core.php:labels.showList', 1),
                 'actions-system-list-open',
                 [
                     'id' => $this->id,
-                ]
+                ],
+                ButtonBar::BUTTON_POSITION_RIGHT,
+                1
             );
         }
 
-        if (!$this->modTSconfig['properties']['disableIconToolbar']) {
-
-            // Page history
-            $buttons['history_page'] = $this->buildButton(
-                    'record_history',
-                    TemplavoilaGeneralUtility::getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:recordHistory', 1),
-                    'actions-document-history-open',
-                    [
-                        'element' => 'pages:' . $this->id,
-                    ]
+        if ($this->id) {
+            $this->addDocHeaderButton(
+                'tce_db',
+                TemplavoilaGeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.clear_cache', 1),
+                'actions-system-cache-clear',
+                [
+                    'vC' => \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->veriCode(),
+                    'cacheCmd'=> $this->id,
+                    'redirect' => CoreGeneralUtility::getIndpEnv('REQUEST_URI'),
+                ],
+                ButtonBar::BUTTON_POSITION_RIGHT,
+                2
             );
 
-            if (!$this->translatorMode && TemplavoilaGeneralUtility::getBackendUser()->isPSet($this->calcPerms, 'pages', 'new')) {
-                // Create new page (wizard)
-                $buttons['new_page'] = $this->buildButton(
-                    'db_new',
-                    TemplavoilaGeneralUtility::getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newPage', 1),
-                    'actions-page-new',
-                    [
-                        'id' => $this->id,
-                        'pagesOnly' => 1,
-                    ]
-                );
-                // 'returnUrl' => CoreGeneralUtility::getIndpEnv('REQUEST_URI') . '&updatePageTree=true',
-            }
-
-            if (!$this->translatorMode && TemplavoilaGeneralUtility::getBackendUser()->isPSet($this->calcPerms, 'pages', 'edit')) {
-                // Edit page properties
-                $buttons['edit_page'] = $this->buildButton(
-                    'edit_page',
-                    TemplavoilaGeneralUtility::getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:editPageProperties', 1),
-                    'actions-page-open'
-                );
-                // Move page
-                $buttons['move_page'] = $this->buildButton(
-                    'move_element',
-                    TemplavoilaGeneralUtility::getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:move_page', 1),
-                    'actions-page-move',
-                    [
-                        'table' => 'pages',
-                        'uid'=> $this->id,
-                    ]
-                );
-            }
-
-            $buttons['csh'] = BackendUtility::cshItem(
-                '_MOD_web_txtemplavoilaM1', 'pagemodule', null, '<span class="btn btn-default btn-sm">|</span>'
-            );
-
-            if ($this->id) {
-                $buttons['cache'] = $this->buildButton(
-                    'tce_db',
-                    TemplavoilaGeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.clear_cache', 1),
-                    'actions-system-cache-clear',
-                    [
-                        'vC' => \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->veriCode(),
-                        'cacheCmd'=> $this->id,
-                        'redirect' => CoreGeneralUtility::getIndpEnv('REQUEST_URI'),
-                    ]
-                );
-
-            }
         }
 
         return $buttons;
@@ -1049,6 +991,34 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 $clickUrl = 'jumpToUrl(\'' . $url . '\');return false;';
         }
         return $this->buildButtonFromUrl($clickUrl, $title, $icon, '', $buttonType, $extraClass, $rel);
+    }
+
+    public function addDocHeaderButton(
+        $module,
+        $title,
+        $icon,
+        array $params = [],
+        $buttonPosition = ButtonBar::BUTTON_POSITION_LEFT,
+        $buttonGroup = 1
+    ) {
+        $url = BackendUtility::getModuleUrl(
+            $module,
+            array_merge(
+                $params,
+                [
+                    'returnUrl' => CoreGeneralUtility::getIndpEnv('REQUEST_URI'),
+                ]
+            )
+        );
+
+        /** @var ButtonBar $buttonBar */
+        $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
+
+        $button = $buttonBar->makeLinkButton()
+            ->setHref($url)
+            ->setTitle($title)
+            ->setIcon($this->iconFactory->getIcon($icon, Icon::SIZE_SMALL));
+        $buttonBar->addButton($button, $buttonPosition, $buttonGroup);
     }
 
     /**
@@ -1394,11 +1364,11 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         $warnings = '';
 
         if (!$this->modTSconfig['properties']['disableReferencedElementNotification'] && !$elementBelongsToCurrentPage) {
-            $warnings .= $this->doc->icons(1) . ' <em>' . htmlspecialchars(sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('info_elementfromotherpage'), $contentTreeArr['el']['uid'], $contentTreeArr['el']['pid'])) . '</em><br />';
+            $warnings .= $this->moduleTemplate->icons(1) . ' <em>' . htmlspecialchars(sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('info_elementfromotherpage'), $contentTreeArr['el']['uid'], $contentTreeArr['el']['pid'])) . '</em><br />';
         }
 
         if (!$this->modTSconfig['properties']['disableElementMoreThanOnceWarning'] && $this->global_tt_content_elementRegister[$contentTreeArr['el']['uid']] > 1 && $this->rootElementLangParadigm != 'free') {
-            $warnings .= $this->doc->icons(2) . ' <em>' . htmlspecialchars(sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('warning_elementusedmorethanonce'), $this->global_tt_content_elementRegister[$contentTreeArr['el']['uid']], $contentTreeArr['el']['uid'])) . '</em><br />';
+            $warnings .= $this->moduleTemplate->icons(2) . ' <em>' . htmlspecialchars(sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('warning_elementusedmorethanonce'), $this->global_tt_content_elementRegister[$contentTreeArr['el']['uid']], $contentTreeArr['el']['uid'])) . '</em><br />';
         }
 
         // Displaying warning for container content (in default sheet - a limitation) elements if localization is enabled:
@@ -2208,10 +2178,10 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                     // Render status:
                     $xmlUrl = '../cm2/index.php?viewRec[table]=' . $entry['table'] . '&viewRec[uid]=' . $entry['uid'] . '&viewRec[field_flex]=tx_templavoila_flex';
                     if (md5($recRow['tx_templavoila_flex']) != md5($newXML)) {
-                        $status = $this->doc->icons(1) . '<a href="' . htmlspecialchars($xmlUrl) . '">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('outline_status_dirty', 1) . '</a><br/>';
+                        $status = $this->moduleTemplate->icons(1) . '<a href="' . htmlspecialchars($xmlUrl) . '">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('outline_status_dirty', 1) . '</a><br/>';
                         $xmlCleanCandidates = TRUE;
                     } else {
-                        $status = $this->doc->icons(-1) . '<a href="' . htmlspecialchars($xmlUrl) . '">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('outline_status_clean', 1) . '</a><br/>';
+                        $status = $this->moduleTemplate->icons(-1) . '<a href="' . htmlspecialchars($xmlUrl) . '">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('outline_status_clean', 1) . '</a><br/>';
                     }
                 }
             }
