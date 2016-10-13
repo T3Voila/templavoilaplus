@@ -555,8 +555,6 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 BackendUtility::setUpdateSignal('updatePageTree');
             }
 
-//             $this->doc->form = '<form action="' . BackendUtility::getModuleUrl($this->moduleName, $this->getLinkParameters()) . '" method="post">';
-
             // Add custom styles
             $styleSheetFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->extKey) . 'Resources/Public/StyleSheet/mod1_default.css';
 
@@ -1247,12 +1245,8 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         $elementClass .= ' tpm-container-element-depth-' . $contentTreeArr['depth'];
         $elementClass .= ' tpm-container-element-depth-' . ($contentTreeArr['depth'] % 2 ? 'odd' : 'even');
 
-        // Prepare the record icon including a content sensitive menu link wrapped around it:
-        if (isset($contentTreeArr['el']['iconTag'])) {
-            $recordIcon = $contentTreeArr['el']['iconTag'];
-        } else {
-            $recordIcon = '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, $contentTreeArr['el']['icon'], '') . ' border="0" title="' . htmlspecialchars('[' . $contentTreeArr['el']['table'] . ':' . $contentTreeArr['el']['uid'] . ']') . '" alt="" />';
-        }
+        $recordIcon = $contentTreeArr['el']['iconTag'];
+
         $menuCommands = array();
         if (\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isPSet($calcPerms, 'pages', 'new')) {
             $menuCommands[] = 'new';
@@ -2227,12 +2221,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         // Get record of element:
         $elementBelongsToCurrentPage = $contentTreeArr['el']['table'] == 'pages' || $contentTreeArr['el']['pid'] == $this->rootElementUid_pidForContent;
 
-        // Prepare the record icon including a context sensitive menu link wrapped around it:
-        if (isset($contentTreeArr['el']['iconTag'])) {
-            $recordIcon = $contentTreeArr['el']['iconTag'];
-        } else {
-            $recordIcon = '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, $contentTreeArr['el']['icon'], '') . ' border="0" title="' . htmlspecialchars('[' . $contentTreeArr['el']['table'] . ':' . $contentTreeArr['el']['uid'] . ']') . '" alt="" />';
-        }
+        $recordIcon = $contentTreeArr['el']['iconTag'];
 
         $titleBarLeftButtons = $this->translatorMode ? $recordIcon : BackendUtility::wrapClickMenuOnIcon($recordIcon, $contentTreeArr['el']['table'], $contentTreeArr['el']['uid'], true, '', 'new,copy,cut,pasteinto,pasteafter,delete');
         $titleBarLeftButtons .= $this->getRecordStatHookValue($contentTreeArr['el']['table'], $contentTreeArr['el']['uid']);
