@@ -41,27 +41,6 @@ class Sidebar implements SingletonInterface
     public $doc;
 
     /**
-     * A reference to extension key of the parent object.
-     *
-     * @var string
-     */
-    public $extKey;
-
-    /**
-     * The visual position of the navigation bar. Possible values: toptabs, toprows, left
-     *
-     * @var string
-     */
-    public $position = 'toptabs';
-
-    /**
-     * More or less a constant: The side bar's total width in position "left"
-     *
-     * @var integer
-     */
-    public $sideBarWidth = 180;
-
-    /**
      * Contains menuitems for the dynamic sidebar (associative array indexed by item key)
      *
      * @var array
@@ -81,7 +60,6 @@ class Sidebar implements SingletonInterface
         // Make local reference to some important variables:
         $this->pObj = $pObj;
         $this->moduleTemplate = $this->pObj->moduleTemplate;
-        $this->extKey = $this->pObj->extKey;
 
         $hideIfEmpty = $pObj->modTSconfig['properties']['showTabsIfEmpty'] ? false : true;
 
@@ -186,65 +164,15 @@ class Sidebar implements SingletonInterface
                     $index++;
                 }
             }
+            $sideBar = '
+                <!-- TemplaVoila Sidebar (top) begin -->
 
-            // Create the whole sidebar:
-            switch ($this->position) {
-                case 'left':
-                    $minusIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-view-table-collapse');
-                    $plusIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-view-table-expand');
-                    $sideBar = '
-                        <!-- TemplaVoila Sidebar (left) begin -->
+                <div id="tx_templavoila_mod1_sidebar-bar" style="width:100%;" class="bgColor-10">
+                    ' . $this->moduleTemplate->getDynamicTabMenu($numSortedSideBarItems, 'TEMPLAVOILA:pagemodule:sidebar', 0, false, true, false) . '
+                </div>
 
-                        <div id="tx_templavoila_mod1_sidebar-bar" style="height: 100%; width: ' . $this->sideBarWidth . 'px; margin: 0 4px 0 0; display:none;" class="bgColor-10">
-                            <div style="text-align:right;"><a href="#" onClick="tx_templavoila_mod1_sidebar_toggle();">' . $minusIcon . '</a></div>
-                            ' . $this->moduleTemplate->getDynamicTabMenu($numSortedSideBarItems, 'TEMPLAVOILA:pagemodule:sidebar', 1, true, true, false) . '
-                        </div>
-                        <div id="tx_templavoila_mod1_sidebar-showbutton" style="height: 100%; width: 18px; margin: 0 4px 0 0; display:block; " class="bgColor-10">
-                            <a href="#" onClick="tx_templavoila_mod1_sidebar_toggle();">' . $plusIcon . '</a>
-                        </div>
-
-                        <script type="text/javascript">
-                        /*<![CDATA[*/
-
-                            tx_templavoila_mod1_sidebar_activate();
-
-                        /*]]>*/
-                        </script>
-
-                        <!-- TemplaVoila Sidebar end -->
-                    ';
-                    break;
-
-                case 'toprows':
-                    $sideBar = '
-                        <!-- TemplaVoila Sidebar (top) begin -->
-
-                        <div id="tx_templavoila_mod1_sidebar-bar" style="width:100%; margin-bottom: 10px;" class="bgColor-10">
-                            ' . $this->moduleTemplate->getDynamicTabMenu($numSortedSideBarItems, 'TEMPLAVOILA:pagemodule:sidebar', 1, true, true, false) . '
-                        </div>
-
-                        <!-- TemplaVoila Sidebar end -->
-                    ';
-                    break;
-
-                case 'toptabs':
-                    $sideBar = '
-                        <!-- TemplaVoila Sidebar (top) begin -->
-
-                        <div id="tx_templavoila_mod1_sidebar-bar" style="width:100%;" class="bgColor-10">
-                            ' . $this->moduleTemplate->getDynamicTabMenu($numSortedSideBarItems, 'TEMPLAVOILA:pagemodule:sidebar', 0, false, true, false) . '
-                        </div>
-
-                        <!-- TemplaVoila Sidebar end -->
-                    ';
-                    break;
-
-                default:
-                    $sideBar = '
-                        <!-- TemplaVoila Sidebar ERROR: Invalid position -->
-                    ';
-                    break;
-            }
+                <!-- TemplaVoila Sidebar end -->
+            ';
 
             return $sideBar;
         }
@@ -404,46 +332,6 @@ class Sidebar implements SingletonInterface
      * Helper functions
      *
      ********************************************/
-
-    /**
-     * Returns sidebar JS code.
-     *
-     * @return string JavaScript section for the HTML header.
-     */
-    public function getJScode()
-    {
-        if ($this->position == 'left') {
-            return '
-                <script type="text/javascript">
-                /*<![CDATA[*/
-
-                    function tx_templavoila_mod1_sidebar_activate ()    {    //
-                        if (top.tx_templavoila_mod1_sidebar_visible) {
-                            document.getElementById("tx_templavoila_mod1_sidebar-bar").style.display="none";
-                            document.getElementById("tx_templavoila_mod1_sidebar-showbutton").style.display="block";
-                        } else {
-                            document.getElementById("tx_templavoila_mod1_sidebar-bar").style.display="block";
-                            document.getElementById("tx_templavoila_mod1_sidebar-showbutton").style.display="none";
-                        }
-                    }
-
-                    function tx_templavoila_mod1_sidebar_toggle ()    {    //
-                        if (top.tx_templavoila_mod1_sidebar_visible) {
-                            top.tx_templavoila_mod1_sidebar_visible = false;
-                            this.tx_templavoila_mod1_sidebar_activate();
-                        } else {
-                            top.tx_templavoila_mod1_sidebar_visible = true;
-                            this.tx_templavoila_mod1_sidebar_activate();
-                        }
-                    }
-
-                /*]]>*/
-                </script>
-            ';
-        } else {
-            return '';
-        }
-    }
 
     /**
      * Comparison callback function for sidebar items sorting

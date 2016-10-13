@@ -488,10 +488,6 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         // page/be_user TSconfig settings and blinding of menu-items
         $this->MOD_MENU['view'] = BackendUtility::unsetMenuItems($this->modTSconfig['properties'], $this->MOD_MENU['view'], 'menu.function');
 
-        if (!isset($this->modTSconfig['properties']['sideBarEnable'])) {
-            $this->modTSconfig['properties']['sideBarEnable'] = 1;
-        }
-
         // CLEANSE SETTINGS
         $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, CoreGeneralUtility::_GP('SET'), $this->moduleName);
     }
@@ -690,11 +686,6 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                         $this->addJsLibrary($key, $filename);
                     }
                 }
-            }
-
-
-            if ($this->modTSconfig['properties']['sideBarEnable']) {
-                $this->moduleTemplate->addJavaScriptCode('templavoila_sidebar', $this->sideBarObj->getJScode());
             }
 
             $this->handleIncomingCommands();
