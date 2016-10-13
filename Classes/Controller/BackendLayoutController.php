@@ -1,4 +1,6 @@
 <?php
+namespace Extension\Templavoila\Controller;
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -12,6 +14,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -40,7 +44,7 @@ $GLOBALS['LANG']->includeLLFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtili
  * @package TYPO3
  * @subpackage    tx_templavoila
  */
-class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
+class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 {
     /**
      * @var \tx_templavoila_mod1_localization
@@ -380,7 +384,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         $view->setTemplate('Module.html');
 
         $this->modSharedTSconfig = BackendUtility::getModTSconfig($this->id, 'mod.SHARED');
-        $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, CoreGeneralUtility::_GP('SET'), $this->MCONF['name']);
+        $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, CoreGeneralUtility::_GP('SET'), $this->moduleName);
 
         $tmpTSc = BackendUtility::getModTSconfig($this->id, 'mod.web_list');
         $this->newContentWizModuleName = $tmpTSc['properties']['newContentWiz.']['overrideWithExtension'];
@@ -452,7 +456,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      */
     public function menuConfig()
     {
-        $this->modTSconfig = BackendUtility::getModTSconfig($this->id, 'mod.' . $this->MCONF['name']);
+        $this->modTSconfig = BackendUtility::getModTSconfig($this->id, 'mod.' . $this->moduleName);
 
         // Prepare array of sys_language uids for available translations:
         $this->translatedLanguagesArr = $this->getAvailableLanguages($this->id);
@@ -489,7 +493,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         }
 
         // CLEANSE SETTINGS
-        $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, CoreGeneralUtility::_GP('SET'), $this->MCONF['name']);
+        $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, CoreGeneralUtility::_GP('SET'), $this->moduleName);
     }
 
     /*******************************************
@@ -497,6 +501,22 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      * Main functions
      *
      *******************************************/
+
+    /**
+     * Injects the request object for the current request or subrequest
+     * As this controller goes only through the main() method, it is rather simple for now
+     *
+     * @param ServerRequestInterface $request the current request
+     * @param ResponseInterface $response
+     * @return ResponseInterface the response with the content
+     */
+    public function mainAction(ServerRequestInterface $request, ResponseInterface $response)
+    {
+        $this->init();
+        $this->main();
+        $response->getBody()->write($this->moduleTemplate->renderContent());
+        return $response;
+    }
 
     /**
      * Main function of the module.
@@ -784,16 +804,6 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         $this->setDocHeaderButtons(!isset($pageInfoArr['uid']));
         $this->moduleTemplate->getView()->assign('tabMenu', $this->render_sidebar());
         $this->moduleTemplate->setContent($this->content);
-    }
-
-    /**
-     * Echoes the HTML output of this module
-     *
-     * @return void
-     */
-    public function printContent()
-    {
-        echo $this->moduleTemplate->renderContent();
     }
 
     /*************************
@@ -3305,10 +3315,3 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         return $hasEditRights;
     }
 }
-
-// Make instance:
-/* @var $SOBE tx_templavoila_module1 */
-$SOBE = CoreGeneralUtility::makeInstance(\tx_templavoila_module1::class);
-$SOBE->init();
-$SOBE->main();
-$SOBE->printContent();
