@@ -302,7 +302,7 @@ class Sidebar implements SingletonInterface
                 if (count($headerFields)) {
                     foreach ($headerFields as $headerFieldArr) {
                         if ($headerFieldArr['table'] == 'pages') {
-                            $onClick = \TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick('&edit[pages][' . $pObj->id . ']=edit&columnsOnly=' . implode(',', $fieldNames['pages']), $this->doc->backPath);
+                            $onClick = \TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick('&edit[pages][' . $pObj->id . ']=edit&columnsOnly=' . implode(',', $fieldNames['pages']));
                             $linkedValue = '<a style="text-decoration: none;" href="#" onclick="' . htmlspecialchars($onClick) . '">' . htmlspecialchars($headerFieldArr['value']) . '</a>';
                             $linkedLabel = '<a style="text-decoration: none;" href="#" onclick="' . htmlspecialchars($onClick) . '">' . htmlspecialchars($headerFieldArr['label']) . '</a>';
                             $headerFieldRows[] = '
@@ -374,7 +374,7 @@ class Sidebar implements SingletonInterface
         $tableRows[] = '
             <tr class="bgColor4">
                 <td width="20">
-                    ' . \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_txtemplavoilaM1', 'advancedfunctions_showhiddenelements', $this->doc->backPath) . '
+                    ' . \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_txtemplavoilaM1', 'advancedfunctions_showhiddenelements') . '
                 </td><td width="200">
                     ' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('sidebar_advancedfunctions_labelshowhidden', true) . ':
                 </td>
@@ -387,7 +387,7 @@ class Sidebar implements SingletonInterface
             $tableRows[] = '
                 <tr class="bgColor4">
                     <td width="20">
-                        ' . \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_txtemplavoilaM1', 'advancedfunctions_showoutline', $this->doc->backPath) . '
+                        ' . \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_txtemplavoilaM1', 'advancedfunctions_showoutline') . '
                     </td><td width="200">
                         ' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('sidebar_advancedfunctions_labelshowoutline', true) . ':
                     </td>

@@ -168,7 +168,7 @@ class Records implements SingletonInterface {
 	public function initDbList($table) {
 		// Initialize the dblist object:
 		$this->dblist = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Module\Mod1\Recordlist::class);
-		$this->dblist->backPath = $this->pObj->doc->backPath;
+		$this->dblist->backPath = '';
 		$this->dblist->calcPerms = $this->calcPerms;
 		$this->dblist->thumbs = \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->uc['thumbnailsByDefault'];
 		$this->dblist->returnUrl = $GLOBALS['BACK_PATH'] . TYPO3_MOD_PATH . 'index.php?' . $this->pObj->link_getParameters();

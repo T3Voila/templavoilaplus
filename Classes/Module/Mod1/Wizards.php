@@ -120,7 +120,7 @@ class Wizards implements SingletonInterface {
 					$params = '&edit[pages][' . $newID . ']=edit' . $columnsOnly;
 					$returnUrl = rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('SCRIPT_NAME') . '?id=' . $newID . '&updatePageTree=1');
 
-					header('Location: ' . \TYPO3\CMS\Core\Utility\GeneralUtility::locationHeaderUrl($this->doc->backPath . 'alt_doc.php?returnUrl=' . $returnUrl . $params));
+					header('Location: ' . \TYPO3\CMS\Core\Utility\GeneralUtility::locationHeaderUrl($GLOBALS['BACK_PATH'] . 'alt_doc.php?returnUrl=' . $returnUrl . $params));
 					exit();
 				} else {
 					debug('Error: Could not create page!');
@@ -169,7 +169,7 @@ class Wizards implements SingletonInterface {
 						$params = '&edit[pages][' . $newID . ']=edit&columnsOnly=' . rawurlencode($fieldNames);
 						$returnUrl = rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('SCRIPT_NAME') . '?id=' . $newID . '&updatePageTree=1');
 
-						header('Location: ' . \TYPO3\CMS\Core\Utility\GeneralUtility::locationHeaderUrl($this->doc->backPath . 'alt_doc.php?returnUrl=' . $returnUrl . $params));
+						header('Location: ' . \TYPO3\CMS\Core\Utility\GeneralUtility::locationHeaderUrl($GLOBALS['BACK_PATH'] . 'alt_doc.php?returnUrl=' . $returnUrl . $params));
 						exit();
 						// PLAIN COPY FROM ABOVE - END
 					} else {
@@ -259,7 +259,7 @@ class Wizards implements SingletonInterface {
 
 		$storageFolderPID = $this->apiObj->getStorageFolderPid($parentPageId);
 		$tmplHTML = array();
-		$defaultIcon = $this->doc->backPath . '../' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath($this->extKey) . 'Resources/Public/Image/default_previewicon.gif';
+		$defaultIcon = $GLOBALS['BACK_PATH'] . '../' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath($this->extKey) . 'Resources/Public/Image/default_previewicon.gif';
 
 		// look for TCEFORM.pages.tx_templavoila_ds.removeItems / TCEFORM.pages.tx_templavoila_to.removeItems
 		$disallowedPageTemplateItems = $this->getDisallowedTSconfigItemsByFieldName($parentPageId, 'tx_templavoila_ds');
@@ -359,7 +359,7 @@ class Wizards implements SingletonInterface {
 										// Check that the image really is an image and not a malicious PHP script...
 										if (getimagesize($fileName)) {
 											// Create icon tag:
-											$iconTag = '<img src="' . $this->doc->backPath . '../' . substr($fileName, strlen(PATH_site)) . '" ' . $import->dat['header']['thumbnail']['imgInfo'][3] . ' vspace="5" style="border: solid black 1px;" alt="" />';
+											$iconTag = '<img src="' . $GLOBALS['BACK_PATH'] . '../' . substr($fileName, strlen(PATH_site)) . '" ' . $import->dat['header']['thumbnail']['imgInfo'][3] . ' vspace="5" style="border: solid black 1px;" alt="" />';
 										} else {
 											\TYPO3\CMS\Core\Utility\GeneralUtility::unlink_tempfile($fileName);
 										}

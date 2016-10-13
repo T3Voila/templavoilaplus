@@ -356,7 +356,7 @@ class DsEdit {
 							</li>
 							<li class="last-child"><a id="dssel-tce" href="#" title="' . $this->getLanguageService()->getLL('mapEditTCEform') . '">' . $this->getLanguageService()->getLL('mapTCEform') . '</a></li>
 						</ul>
-						' . $this->pObj->cshItem('xMOD_tx_templavoila', 'mapping_editform', $this->pObj->doc->backPath, '', FALSE, 'margin-bottom: 0px;') . '
+						' . $this->pObj->cshItem('xMOD_tx_templavoila', 'mapping_editform', '', '', FALSE, 'margin-bottom: 0px;') . '
 					</td>
 
 					<td valign="top" style="padding: 0.5em;" colspan="2">
@@ -422,7 +422,7 @@ class DsEdit {
 					<td colspan="7"><img src="clear.gif" width="' . (($level + 1) * 16) . '" height="1" alt="" />' .
 					'<input type="text" name="' . md5($formPrefix . '[' . $key . ']') . '" value="[' . htmlspecialchars($this->getLanguageService()->getLL('mapEnterNewFieldname')) . ']" onfocus="if (this.value==\'[' . $this->getLanguageService()->getLL('mapEnterNewFieldname') . ']\'){this.value=\'field_\';}" />' .
 					'<input type="submit" name="_" value="Add" onclick="document.location=\'' . $this->pObj->linkThisScript(array('DS_element' => $formPrefix . '[' . $key . ']', 'DS_cmd' => 'add')) . '&amp;fieldName=\'+document.pageform[\'' . md5($formPrefix . '[' . $key . ']') . '\'].value; return false;" />' .
-					$this->pObj->cshItem('xMOD_tx_templavoila', 'mapping_addfield', $this->pObj->doc->backPath, '', FALSE, 'margin-bottom: 0px;') .
+					$this->pObj->cshItem('xMOD_tx_templavoila', 'mapping_addfield', '', '', FALSE, 'margin-bottom: 0px;') .
 					'</td>
 				</tr>';
 			}

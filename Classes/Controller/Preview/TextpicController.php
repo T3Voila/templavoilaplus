@@ -41,7 +41,7 @@ class TextpicController extends TextController {
 		$uploadDir = $GLOBALS['TCA']['tt_content']['columns']['image']['config']['internal_type'] == 'file_reference' ? '' : NULL;
 
 		$thumbnail = '<strong>' . $this->getLanguageService()->sL(BackendUtility::getItemLabel('tt_content', 'image'), 1) . '</strong><br />';
-		$thumbnail .= BackendUtility::thumbCode($row, 'tt_content', 'image', $ref->doc->backPath, '', $uploadDir);
+		$thumbnail .= BackendUtility::thumbCode($row, 'tt_content', 'image', '', '', $uploadDir);
 
 		$label = $this->getPreviewLabel();
 		$data = $this->getPreviewData($row);

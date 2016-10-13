@@ -507,11 +507,9 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      */
     public function main_mode()
     {
-        global $BACK_PATH;
-
         $this->doc = CoreGeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
         $this->doc->docType = 'xhtml_trans';
-        $this->doc->backPath = $BACK_PATH;
+        $this->doc->backPath = $GLOBALS['BACK_PATH'];
         $this->doc->setModuleTemplate('EXT:templavoila/Resources/Private/Templates/cm1_default.html');
         $this->doc->bodyTagId = 'typo3-mod-php';
         $this->doc->divClass = '';

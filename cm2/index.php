@@ -23,11 +23,6 @@ $LANG->includeLLFile('EXT:templavoila/cm2/locallang.xlf');
 class tx_templavoila_cm2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 	/**
-	 * @var string
-	 */
-	protected $backPath;
-
-	/**
 	 * Showing linenumbers if true.
 	 *
 	 * @var boolean
@@ -54,8 +49,6 @@ class tx_templavoila_cm2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @return void
 	 */
 	public function main() {
-		global $BACK_PATH;
-
 		// Check admin: If this is changed some day to other than admin users we HAVE to check if there is read access to the record being selected!
 		if (!\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isAdmin()) {
 			die('no access.');
@@ -66,7 +59,6 @@ class tx_templavoila_cm2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		// Draw the header.
 		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
 		$this->doc->docType = 'xhtml_trans';
-		$this->doc->backPath = $BACK_PATH;
 		$this->doc->setModuleTemplate('EXT:templavoila/Resources/Private/Templates/cm2_default.html');
 		$this->doc->bodyTagId = 'typo3-mod-php';
 		$this->doc->divClass = '';
@@ -203,7 +195,7 @@ class tx_templavoila_cm2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 */
 	protected function getDocHeaderButtons() {
 		$buttons = array(
-			'csh' => \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_txtemplavoilaCM1', '', $this->backPath),
+			'csh' => \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_txtemplavoilaCM1', ''),
 			'back' => '',
 			'shortcut' => $this->getShortcutButton(),
 		);

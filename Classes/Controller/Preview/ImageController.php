@@ -43,7 +43,7 @@ class ImageController extends TextController {
 		} else {
 			$text = '<strong>' . $label . '</strong>';
 		}
-		$text .= BackendUtility::thumbCode($row, 'tt_content', 'image', $ref->doc->backPath);
+		$text .= BackendUtility::thumbCode($row, 'tt_content', 'image');
 
 		return $text;
 	}
