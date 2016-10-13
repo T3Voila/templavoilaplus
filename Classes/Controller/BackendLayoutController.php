@@ -856,9 +856,16 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 if (TemplavoilaGeneralUtility::getBackendUser()->isPSet($this->calcPerms, 'pages', 'edit')) {
                     // Edit page properties
                     $this->addDocHeaderButton(
-                        'edit_page',
+                        'record_edit',
                         TemplavoilaGeneralUtility::getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:editPageProperties', 1),
-                        'actions-page-open'
+                        'actions-page-open',
+                        [
+                            'edit' => [
+                                'pages' => [
+                                    $this->id => 'edit',
+                                ],
+                            ],
+                        ]
                     );
                     // Move page
                     $this->addDocHeaderButton(
@@ -946,9 +953,6 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         $rel = null;
 
         switch ($module) {
-            case 'edit_page':
-                $clickUrl = htmlspecialchars(BackendUtility::editOnClick('&edit[pages][' . $this->id . ']=edit'));
-                break;
             case 'wizard_element_browser':
                 $clickUrl = 'browserPos = this;setFormValueOpenBrowser('
                     . CoreGeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl($module))
