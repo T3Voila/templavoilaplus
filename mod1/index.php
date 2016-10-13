@@ -781,17 +781,6 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             }
         }
 
-        // Place content inside template
-//         $content = $this->doc->startPage(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('title'));
-//         $content .= $this->doc->moduleBody(
-//             $pageInfoArr,
-//             $this->getDocHeaderButtons(!isset($pageInfoArr['uid'])),
-//             $this->getBodyMarkers()
-//         );
-//         $content .= $this->doc->endPage();
-
-        // Replace content with templated content
-        //$this->content = $content;
         $this->moduleTemplate->setTitle(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('title'));
         $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($pageInfoArr);
         $this->setDocHeaderButtons(!isset($pageInfoArr['uid']));
@@ -991,6 +980,16 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         return $this->buildButtonFromUrl($clickUrl, $title, $icon, '', $buttonType, $extraClass, $rel);
     }
 
+    /**
+     * Adds an icon button to the document header button bar (left or right)
+     *
+     * @param string $module Name of the module this icon should link to
+     * @param string $title Title of the button
+     * @param string $icon Name of the Icon (inside IconFactory)
+     * @param array $params Array of parameters which should be added to module call
+     * @param string $buttonPosition left|right to position button inside the bar
+     * @param integer $buttonGroup Number of the group the icon should go in
+     */
     public function addDocHeaderButton(
         $module,
         $title,
@@ -1016,6 +1015,9 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         $this->buttonBar->addButton($button, $buttonPosition, $buttonGroup);
     }
 
+    /**
+     * Adds shortcut icon to the right document header button bar
+     */
     public function addShortcutButton()
     {
         $shortcutButton = $this->buttonBar->makeShortcutButton()
@@ -1032,9 +1034,8 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 ]
             )
             ->setSetVariables(array_keys($this->MOD_MENU));
-        $this->buttonBar->addButton($shortcutButton);
+        $this->buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
     }
-
 
     /**
      * Builds a bootstrap button for given url
@@ -1057,21 +1058,6 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             . $this->iconFactory->getIcon($icon, Icon::SIZE_SMALL)->render()
             . ($text ? ' ' . $text : '')
             . '</a>';
-    }
-
-    /**
-     * Gets the button to set a new shortcut in the backend (if current user is allowed to).
-     *
-     * @return string HTML representiation of the shortcut button
-     */
-    protected function getShortcutButton()
-    {
-        $result = '';
-        if (\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->mayMakeShortcut()) {
-            $result = $this->doc->makeShortcutIcon('', 'function', $this->MCONF['name']);
-        }
-
-        return $result;
     }
 
     /********************************************
@@ -1162,7 +1148,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             $sys_notes = '';
             // @todo: Check if and how this is to replace
             $output .= '</div><div>'
-                . $this->doc->section(
+                . $this->moduleTemplate->section(
                     \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL(
                         'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:internalNotes'
                     ),
@@ -1218,7 +1204,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 $this->containedElementsPointer--;
             }
 
-            return $this->doc->getDynamicTabMenu($parts, 'TEMPLAVOILA:pagemodule:' . $this->apiObj->flexform_getStringFromPointer($parentPointer));
+            return $this->moduleTemplate->getDynamicTabMenu($parts, 'TEMPLAVOILA:pagemodule:' . $this->apiObj->flexform_getStringFromPointer($parentPointer));
         } else {
             return $this->render_framework_singleSheet($contentTreeArr, $languageKey, 'sDEF', $parentPointer, $parentDsMeta);
         }
@@ -1277,7 +1263,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             $menuCommands[] = 'copy';
         }
 
-        $titleBarLeftButtons = $this->translatorMode ? $recordIcon : (count($menuCommands) == 0 ? $recordIcon : BackendUtility::wrapClickMenuOnIcon($recordIcon, $contentTreeArr['el']['table'], $contentTreeArr['el']['uid'], true, '&amp;callingScriptId=' . rawurlencode($this->doc->scriptID), implode(',', $menuCommands)));
+        $titleBarLeftButtons = $this->translatorMode ? $recordIcon : (count($menuCommands) == 0 ? $recordIcon : BackendUtility::wrapClickMenuOnIcon($recordIcon, $contentTreeArr['el']['table'], $contentTreeArr['el']['uid'], true, '', implode(',', $menuCommands)));
         $titleBarLeftButtons .= $this->getRecordStatHookValue($contentTreeArr['el']['table'], $contentTreeArr['el']['uid']);
         unset($menuCommands);
 
@@ -1391,10 +1377,10 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         if (!$this->modTSconfig['properties']['disableContainerElementLocalizationWarning'] && $this->rootElementLangParadigm != 'free' && $isContainerEl && $contentTreeArr['el']['table'] === 'tt_content' && $contentTreeArr['el']['CType'] === 'templavoila_pi1' && !$contentTreeArr['ds_meta']['langDisable']) {
             if ($contentTreeArr['ds_meta']['langChildren']) {
                 if (!$this->modTSconfig['properties']['disableContainerElementLocalizationWarning_warningOnly']) {
-                    $warnings .= $this->doc->icons(2) . ' <em>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('warning_containerInheritance') . '</em><br />';
+                    $warnings .= $this->moduleTemplate->icons(2) . ' <em>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('warning_containerInheritance') . '</em><br />';
                 }
             } else {
-                $warnings .= $this->doc->icons(3) . ' <em>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('warning_containerSeparate') . '</em><br />';
+                $warnings .= $this->moduleTemplate->icons(3) . ' <em>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('warning_containerSeparate') . '</em><br />';
             }
         }
 
@@ -2008,7 +1994,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                             // Put together the records icon including content sensitive menu link wrapped around it:
                             $recordIcon_l10n = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('tt_content', $localizedRecordInfo['row']);
                             if (!$this->translatorMode) {
-                                $recordIcon_l10n = BackendUtility::wrapClickMenuOnIcon($recordIcon_l10n, 'tt_content', $localizedRecordInfo['uid'], true, '&amp;callingScriptId=' . rawurlencode($this->doc->scriptID), 'new,copy,cut,pasteinto,pasteafter');
+                                $recordIcon_l10n = BackendUtility::wrapClickMenuOnIcon($recordIcon_l10n, 'tt_content', $localizedRecordInfo['uid'], true, '', 'new,copy,cut,pasteinto,pasteafter');
                             }
                             $l10nInfo =
                                 '<a name="c' . md5($this->apiObj->flexform_getStringFromPointer($this->currentElementParentPointer) . $localizedRecordInfo['row']['uid']) . '"></a>' .
@@ -2206,7 +2192,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             $output .= '<tr class="' . $class . '">
                     <td class="nobr">' . $indent . $entry['icon'] . $entry['flag'] . $entry['title'] . '</td>
                     <td class="nobr">' . $entry['controls'] . '</td>
-                    <td>' . $status . $entry['warnings'] . ($entry['isNewVersion'] ? $this->doc->icons(1) . 'New version!' : '') . '</td>
+                    <td>' . $status . $entry['warnings'] . ($entry['isNewVersion'] ? $this->moduleTemplate->icons(1) . 'New version!' : '') . '</td>
                     <td class="nobr">' . htmlspecialchars($entry['id'] ? $entry['id'] : $entry['table'] . ':' . $entry['uid']) . '</td>
                 </tr>';
         }
@@ -2248,7 +2234,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             $recordIcon = '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, $contentTreeArr['el']['icon'], '') . ' border="0" title="' . htmlspecialchars('[' . $contentTreeArr['el']['table'] . ':' . $contentTreeArr['el']['uid'] . ']') . '" alt="" />';
         }
 
-        $titleBarLeftButtons = $this->translatorMode ? $recordIcon : BackendUtility::wrapClickMenuOnIcon($recordIcon, $contentTreeArr['el']['table'], $contentTreeArr['el']['uid'], true, '&amp;callingScriptId=' . rawurlencode($this->doc->scriptID), 'new,copy,cut,pasteinto,pasteafter,delete');
+        $titleBarLeftButtons = $this->translatorMode ? $recordIcon : BackendUtility::wrapClickMenuOnIcon($recordIcon, $contentTreeArr['el']['table'], $contentTreeArr['el']['uid'], true, '', 'new,copy,cut,pasteinto,pasteafter,delete');
         $titleBarLeftButtons .= $this->getRecordStatHookValue($contentTreeArr['el']['table'], $contentTreeArr['el']['uid']);
 
         $languageUid = 0;
@@ -2317,7 +2303,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         // Create warning messages if neccessary:
         $warnings = '';
         if ($this->global_tt_content_elementRegister[$contentTreeArr['el']['uid']] > 1 && $this->rootElementLangParadigm != 'free') {
-            $warnings .= '<br/>' . $this->doc->icons(2) . ' <em>' . htmlspecialchars(sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('warning_elementusedmorethanonce', ''), $this->global_tt_content_elementRegister[$contentTreeArr['el']['uid']], $contentTreeArr['el']['uid'])) . '</em>';
+            $warnings .= '<br/>' . $this->moduleTemplate->icons(2) . ' <em>' . htmlspecialchars(sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('warning_elementusedmorethanonce', ''), $this->global_tt_content_elementRegister[$contentTreeArr['el']['uid']], $contentTreeArr['el']['uid'])) . '</em>';
         }
 
         // Displaying warning for container content (in default sheet - a limitation) elements if localization is enabled:
@@ -2325,10 +2311,10 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         if (!$this->modTSconfig['properties']['disableContainerElementLocalizationWarning'] && $this->rootElementLangParadigm != 'free' && $isContainerEl && $contentTreeArr['el']['table'] === 'tt_content' && $contentTreeArr['el']['CType'] === 'templavoila_pi1' && !$contentTreeArr['ds_meta']['langDisable']) {
             if ($contentTreeArr['ds_meta']['langChildren']) {
                 if (!$this->modTSconfig['properties']['disableContainerElementLocalizationWarning_warningOnly']) {
-                    $warnings .= '<br/>' . $this->doc->icons(2) . ' <b>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('warning_containerInheritance_short') . '</b>';
+                    $warnings .= '<br/>' . $this->moduleTemplate->icons(2) . ' <b>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('warning_containerInheritance_short') . '</b>';
                 }
             } else {
-                $warnings .= '<br/>' . $this->doc->icons(3) . ' <b>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('warning_containerSeparate_short') . '</b>';
+                $warnings .= '<br/>' . $this->moduleTemplate->icons(3) . ' <b>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('warning_containerSeparate_short') . '</b>';
             }
         }
 
@@ -2474,7 +2460,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                             $recordIcon_l10n = $this->getRecordStatHookValue('tt_content', $olrow['uid']) .
                                 \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('tt_content', $olrow);
                             if (!$this->translatorMode) {
-                                $recordIcon_l10n = BackendUtility::wrapClickMenuOnIcon($recordIcon_l10n, 'tt_content', $olrow['uid'], true, '&amp;callingScriptId=' . rawurlencode($this->doc->scriptID), 'new,copy,cut,pasteinto,pasteafter');
+                                $recordIcon_l10n = BackendUtility::wrapClickMenuOnIcon($recordIcon_l10n, 'tt_content', $olrow['uid'], true, '', 'new,copy,cut,pasteinto,pasteafter');
                             }
 
                             list($flagLink_begin, $flagLink_end) = explode('|*|', $this->link_edit('|*|', 'tt_content', $olrow['uid'], TRUE));
