@@ -14,6 +14,7 @@ namespace Extension\Templavoila\Module\Mod1;
  * The TYPO3 project - inspiring people to share!
  */
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\SingletonInterface;
 
@@ -28,33 +29,11 @@ use TYPO3\CMS\Core\SingletonInterface;
 class Specialdoktypes implements SingletonInterface
 {
     /**
-     * @var integer
-     */
-    protected $id;
-
-    /**
-     * @var string
-     */
-    protected $extKey;
-
-    /**
-     * @var array
-     */
-    protected $MOD_SETTINGS;
-
-    /**
      * A pointer to the parent object, that is the templavoila page module script. Set by calling the method init() of this class.
      *
      * @var \tx_templavoila_module1
      */
     public $pObj;
-
-    /**
-     * A reference to the doc object of the parent object.
-     *
-     * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
-     */
-    public $doc;
 
     /**
      * Does some basic initialization
@@ -64,13 +43,10 @@ class Specialdoktypes implements SingletonInterface
      * @return void
      * @access public
      */
-    public function init(&$pObj)
+    public function init($pObj)
     {
         // Make local reference to some important variables:
-        $this->pObj =& $pObj;
-        $this->doc =& $this->pObj->doc;
-        $this->extKey =& $this->pObj->extKey;
-        $this->MOD_SETTINGS =& $this->pObj->MOD_SETTINGS;
+        $this->pObj = $pObj;
     }
 
     /**
@@ -136,9 +112,11 @@ class Specialdoktypes implements SingletonInterface
         $jumpToShortcutSourceLink = '';
         if ((int)$pageRecord['shortcut_mode'] == 0) {
             $shortcutSourcePageRecord = BackendUtility::getRecordWSOL('pages', $pageRecord['shortcut']);
-            $jumpToShortcutSourceLink = '<strong><a href="index.php?id=' . $pageRecord['shortcut'] . '">' .
-                \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('apps-pagetree-page-shortcut') .
-                $this->getLanguageService()->getLL('jumptoshortcutdestination', true) . '</a></strong>';
+            $jumpToShortcutSourceLink = $this->pObj->buildButtonFromUrl(
+                $this->pObj->getBaseUrl(['id' => $pageRecord['shortcut']]),
+                $this->getLanguageService()->getLL('jumptoshortcutdestination', true),
+                'apps-pagetree-page-shortcut'
+            );
         }
 
         $flashMessage = GeneralUtility::makeInstance(
@@ -165,13 +143,13 @@ class Specialdoktypes implements SingletonInterface
         }
 
         $mountSourcePageRecord = BackendUtility::getRecordWSOL('pages', $pageRecord['mount_pid']);
-        $mountSourceIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', $mountSourcePageRecord);
+        $mountSourceIcon = $this->pObj->getIconFactory()->getSpriteIconForRecord('pages', $mountSourcePageRecord, Icon::SIZE_SMALL);
         $mountSourceButton = BackendUtility::wrapClickMenuOnIcon(
             $mountSourceIcon,
             'pages',
             $mountSourcePageRecord['uid'],
             true,
-            '&callingScriptId=' . rawurlencode($this->doc->scriptID),
+            '',
             'new,copy,cut,pasteinto,pasteafter,delete'
         );
 
@@ -203,7 +181,7 @@ class Specialdoktypes implements SingletonInterface
             $listModuleURL = BackendUtility::getModuleUrl('web_list', array('id' => (int)$this->pObj->id), '');
             $onClick = "top.nextLoadModuleUrl='" . $listModuleURL . "';top.fsMod.recentIds['web']=" . (int)$this->pObj->id . ";top.goToModule('web_list',1);";
             $listModuleLink = '<br /><br />' .
-                \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-system-list-open') .
+                $this->pObj->getIconFactory()->getIcon('actions-system-list-open', Icon::SIZE_SMALL) .
                 '<strong><a href="#" onClick="' . $onClick . '">' . $this->getLanguageService()->getLL('editpage_sysfolder_switchtolistview', true) . '</a></strong>
             ';
         } else {
@@ -231,14 +209,6 @@ class Specialdoktypes implements SingletonInterface
             return false;
         }
         return $this->getBackendUser()->isAdmin() || $this->getBackendUser()->check('modules', 'web_list');
-    }
-
-    /**
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 
     /**

@@ -343,7 +343,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     /**
      * @var IconFactory
      */
-    public $iconFactory;
+    protected $iconFactory;
 
     /*******************************************
      *
@@ -3171,6 +3171,11 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         }
 
         return '';
+    }
+
+    public function getIconFactory()
+    {
+        return $this->iconFactory;
     }
 
     /**
