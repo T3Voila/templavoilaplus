@@ -1353,7 +1353,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
         // If there was a language icon and the language was not default or [all] and if that langauge is accessible for the user, then wrap the  flag with an edit link (to support the "Click the flag!" principle for translators)
         if ($languageIcon && $languageUid > 0 && \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->checkLanguageAccess($languageUid) && $contentTreeArr['el']['table'] === 'tt_content') {
-            $languageIcon = $this->link_edit($languageIcon, 'tt_content', $contentTreeArr['el']['uid'], TRUE, $contentTreeArr['el']['pid'], 'tpm-langIcon');
+            $languageIcon = $this->link_edit($languageIcon, 'tt_content', $contentTreeArr['el']['uid'], TRUE, $contentTreeArr['el']['pid'], 'btn btn-default btn-sm tpm-langIcon');
         } elseif ($languageIcon) {
             $languageIcon = '<span class="tpm-langIcon">' . $languageIcon . '</span>';
         }
@@ -2267,7 +2267,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                         $linkDelete = '';
                     }
                     $iconEdit = $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render();
-                    $linkEdit = ($elementBelongsToCurrentPage ? $this->link_edit($iconEdit, $contentTreeArr['el']['table'], $contentTreeArr['el']['uid']) : '');
+                    $linkEdit = ($elementBelongsToCurrentPage ? $this->link_edit($iconEdit, $contentTreeArr['el']['table'], $contentTreeArr['el']['uid'], false, 0, 'btn btn-default btn-sm') : '');
 
                     $titleBarRightButtons = $linkEdit . $this->clipboardObj->element_getSelectButtons($parentPointer) . $linkMakeLocal . $linkUnlink . $linkDelete;
                 }
@@ -2706,7 +2706,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      */
     public function link_makeLocal($label, $makeLocalPointer)
     {
-        return '<a class="tpm-makeLocal" href="'
+        return '<a class="btn btn-default btn-sm tpm-makeLocal" href="'
             . BackendUtility::getModuleUrl($this->moduleName, $this->getLinkParameters(['makeLocalRecord' => $this->apiObj->flexform_getStringFromPointer($makeLocalPointer)]))
             . '" onclick="' . htmlspecialchars('return confirm(' . CoreGeneralUtility::quoteJSvalue(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('makeLocalMsg')) . ');') . '">' . $label . '</a>';
     }
