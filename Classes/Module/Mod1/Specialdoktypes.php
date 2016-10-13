@@ -89,15 +89,14 @@ class Specialdoktypes implements SingletonInterface
         }
 
         $urlInfo = ' <br /><br /><strong><a href="' . $url . '" target="_new">' . htmlspecialchars(sprintf($this->getLanguageService()->getLL('jumptoexternalurl'), $url)) . '</a></strong>';
-        $flashMessage = GeneralUtility::makeInstance(
-            \TYPO3\CMS\Core\Messaging\FlashMessage::class,
+
+        $this->pObj->getModuleTemplate()->addFlashMessage(
             $notice,
             '',
             \TYPO3\CMS\Core\Messaging\FlashMessage::INFO
         );
-        $content = $flashMessage->render() . $urlInfo;
 
-        return $content;
+        return $urlInfo;
     }
 
     /**
@@ -119,13 +118,13 @@ class Specialdoktypes implements SingletonInterface
             );
         }
 
-        $flashMessage = GeneralUtility::makeInstance(
-            \TYPO3\CMS\Core\Messaging\FlashMessage::class,
+        $this->pObj->getModuleTemplate()->addFlashMessage(
             sprintf($this->getLanguageService()->getLL('cannotedit_shortcut_' . (int)$pageRecord['shortcut_mode']), $shortcutSourcePageRecord['title']),
             '',
             \TYPO3\CMS\Core\Messaging\FlashMessage::INFO
         );
-        return $flashMessage->render() . $jumpToShortcutSourceLink;
+
+        return $jumpToShortcutSourceLink;
     }
 
     /**
@@ -157,15 +156,13 @@ class Specialdoktypes implements SingletonInterface
             <a href="index.php?id=' . $pageRecord['mount_pid'] . '">' . htmlspecialchars($this->getLanguageService()->getLL('jumptomountsourcepage')) . '</a>
         ';
 
-        $flashMessage = GeneralUtility::makeInstance(
-            \TYPO3\CMS\Core\Messaging\FlashMessage::class,
+        $this->pObj->getModuleTemplate()->addFlashMessage(
             sprintf($this->getLanguageService()->getLL('cannotedit_doktypemountpoint'), $mountSourceButton . $mountSourcePageRecord['title']),
             '',
             \TYPO3\CMS\Core\Messaging\FlashMessage::INFO
         );
-        $content = $flashMessage->render() . '<strong>' . $mountSourceLink . '</strong>';
 
-        return $content;
+        return '<strong>' . $mountSourceLink . '</strong>';
     }
 
     /**
@@ -188,13 +185,12 @@ class Specialdoktypes implements SingletonInterface
             $listModuleLink = $this->getLanguageService()->getLL('editpage_sysfolder_listview_noaccess', true);
         }
 
-        $flashMessage = GeneralUtility::makeInstance(
-            \TYPO3\CMS\Core\Messaging\FlashMessage::class,
+        $this->pObj->getModuleTemplate()->addFlashMessage(
             $this->getLanguageService()->getLL('editpage_sysfolder_intro', true),
             '',
             \TYPO3\CMS\Core\Messaging\FlashMessage::INFO
         );
-        return $flashMessage->render() . $listModuleLink;
+        return $listModuleLink;
     }
 
     /**

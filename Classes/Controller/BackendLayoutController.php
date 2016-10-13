@@ -3173,6 +3173,11 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         return '';
     }
 
+    public function getModuleTemplate()
+    {
+        return $this->moduleTemplate;
+    }
+
     public function getIconFactory()
     {
         return $this->iconFactory;
