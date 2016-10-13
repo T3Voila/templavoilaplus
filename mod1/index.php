@@ -1810,7 +1810,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                     if ($TCEformsConfiguration['type'] == 'group') {
                         if ($TCEformsConfiguration['internal_type'] == 'file') {
                             // Render preview for images:
-                            $thumbnail = BackendUtility::thumbCode(array('dummyFieldName' => $fieldValue), '', 'dummyFieldName', $this->doc->backPath, '', $TCEformsConfiguration['uploadfolder']);
+                            $thumbnail = BackendUtility::thumbCode(array('dummyFieldName' => $fieldValue), '', 'dummyFieldName', '', '', $TCEformsConfiguration['uploadfolder']);
                             $previewContent .= '<strong>' . $TCEformsLabel . '</strong> ' . $thumbnail . '<br />';
                         } elseif ($TCEformsConfiguration['internal_type'] === 'db') {
                             if (!$this->renderPreviewDataObjects) {
@@ -1882,7 +1882,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 if (isset($fieldValue['config']['TCEforms']['config']['type']) && $fieldValue['config']['TCEforms']['config']['type'] == 'group') {
                     if ($fieldValue['config']['TCEforms']['config']['internal_type'] == 'file') {
                         // Render preview for images:
-                        $thumbnail = BackendUtility::thumbCode(array('dummyFieldName' => $fieldValue['data'][$vKey]), '', 'dummyFieldName', $this->doc->backPath, '', $fieldValue['config']['TCEforms']['config']['uploadfolder']);
+                        $thumbnail = BackendUtility::thumbCode(array('dummyFieldName' => $fieldValue['data'][$vKey]), '', 'dummyFieldName', '', '', $fieldValue['config']['TCEforms']['config']['uploadfolder']);
                         if (isset($fieldValue['config']['TCEforms']['label'])) {
                             $label = $this->localizedFFLabel($fieldValue['config']['TCEforms']['label'], 1);
                         }
@@ -2195,7 +2195,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         // Show link for cleaning all XML structures:
         if ($xmlCleanCandidates) {
             $output .= '<br/>
-                ' . BackendUtility::cshItem('_MOD_web_txtemplavoilaM1', 'outline_status_cleanall', $this->doc->backPath) . '
+                ' . BackendUtility::cshItem('_MOD_web_txtemplavoilaM1', 'outline_status_cleanall') . '
                 <input type="submit" value="' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('outline_status_cleanAll', TRUE) . '" name="_CLEAN_XML_ALL" /><br/><br/>
             ';
         }
@@ -2236,7 +2236,7 @@ class tx_templavoila_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 $titleBarRightButtons = '';
 
                 $addGetVars = ($this->currentLanguageUid ? '&L=' . $this->currentLanguageUid : '');
-                $viewPageOnClick = 'onclick= "' . htmlspecialchars(BackendUtility::viewOnClick($contentTreeArr['el']['uid'], $this->doc->backPath, BackendUtility::BEgetRootLine($contentTreeArr['el']['uid']), '', '', $addGetVars)) . '"';
+                $viewPageOnClick = 'onclick= "' . htmlspecialchars(BackendUtility::viewOnClick($contentTreeArr['el']['uid'], '', BackendUtility::BEgetRootLine($contentTreeArr['el']['uid']), '', '', $addGetVars)) . '"';
                 $viewPageIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-view', array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', 1)));
                 $titleBarLeftButtons .= '<a href="#" ' . $viewPageOnClick . '>' . $viewPageIcon . '</a>';
                 break;
