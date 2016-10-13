@@ -360,7 +360,7 @@ class Clipboard implements SingletonInterface
             // Prepare buttons:
             $cutButton = $this->element_getSelectButtons($elementPointerString, 'ref');
             $recordButton = BackendUtility::wrapClickMenuOnIcon(
-                $this->pObj->iconFactory->getIconForRecord('tt_content', $row, Icon::SIZE_SMALL)->render(),
+                $this->pObj->getIconFactory()->getIconForRecord('tt_content', $row, Icon::SIZE_SMALL)->render(),
                 'tt_content',
                 $row['uid'],
                 true,
