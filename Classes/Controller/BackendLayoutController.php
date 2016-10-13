@@ -725,8 +725,10 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                         $this->content .= $result;
                         if (\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isPSet($this->calcPerms, 'pages', 'edit')) {
                             // Edit icon only if page can be modified by user
-                            $iconEdit = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open', array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:editPage')));
-                            $this->content .= '<br/><br/><strong>' . $this->link_edit($iconEdit . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:editPage'), 'pages', $this->id) . '</strong>';
+                            $editLinkContent
+                                = $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render()
+                                . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:editPage');
+                            $this->content .= '<br/><br/><strong>' . $this->link_edit($editLinkContent, 'pages', $this->id) . '</strong>';
                         }
                         $render_editPageScreen = FALSE; // Do not output editing code for special doctypes!
                     }
@@ -1996,7 +1998,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                             );
 
                             // Put together the records icon including content sensitive menu link wrapped around it:
-                            $recordIcon_l10n = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('tt_content', $localizedRecordInfo['row']);
+                            $recordIcon_l10n = $this->iconFactory->getIconForRecord('tt_content', $localizedRecordInfo['row'], Icon::SIZE_SMALL)->render();
                             if (!$this->translatorMode) {
                                 $recordIcon_l10n = BackendUtility::wrapClickMenuOnIcon($recordIcon_l10n, 'tt_content', $localizedRecordInfo['uid'], true, '', 'new,copy,cut,pasteinto,pasteafter');
                             }
@@ -2054,7 +2056,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                                 }
 
                                 $linkLabel = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('createcopyfortranslation', TRUE) . ' (' . htmlspecialchars($sLInfo['title']) . ')';
-                                $localizeIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-copy', array('title' => $linkLabel));
+                                $localizeIcon = $this->iconFactory->getIcon('actions-edit-copy', Icon::SIZE_SMALL)->render();
 
                                 $l10nInfo = '<a class="tpm-clipCopyTranslation" href="#" onclick="' . htmlspecialchars($onClick) . '">' . $localizeIcon . '</a>';
                                 $l10nInfo .= ' <em><a href="#" onclick="' . htmlspecialchars($onClick) . '">' . $linkLabel . '</a></em>';
@@ -2241,13 +2243,13 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         // Prepare table specific settings:
         switch ($contentTreeArr['el']['table']) {
             case 'pages' :
-                $iconEdit = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open', array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:editPage')));
+                $iconEdit = $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render();
                 $titleBarLeftButtons .= $this->translatorMode ? '' : $this->link_edit($iconEdit, $contentTreeArr['el']['table'], $contentTreeArr['el']['uid']);
                 $titleBarRightButtons = '';
 
                 $addGetVars = ($this->currentLanguageUid ? '&L=' . $this->currentLanguageUid : '');
                 $viewPageOnClick = 'onclick= "' . htmlspecialchars(BackendUtility::viewOnClick($contentTreeArr['el']['uid'], '', BackendUtility::BEgetRootLine($contentTreeArr['el']['uid']), '', '', $addGetVars)) . '"';
-                $viewPageIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-view', array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', 1)));
+                $viewPageIcon = $this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL)->render();
                 $titleBarLeftButtons .= '<a href="#" ' . $viewPageOnClick . '>' . $viewPageIcon . '</a>';
                 break;
             case 'tt_content' :
@@ -2255,25 +2257,25 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
                 if (!$this->translatorMode) {
                     // Create CE specific buttons:
-                    $iconMakeLocal = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('extensions-templavoila-makelocalcopy', array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('makeLocal')));
+                    $iconMakeLocal = $this->iconFactory->getIcon('extensions-templavoila-makelocalcopy', Icon::SIZE_SMALL)->render();
                     $linkMakeLocal = !$elementBelongsToCurrentPage ? $this->link_makeLocal($iconMakeLocal, $parentPointer) : '';
                     if ($this->modTSconfig['properties']['enableDeleteIconForLocalElements'] < 2 ||
                         !$elementBelongsToCurrentPage ||
                         $this->global_tt_content_elementRegister[$contentTreeArr['el']['uid']] > 1
                     ) {
-                        $iconUnlink = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('extensions-templavoila-unlink', array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('unlinkRecord')));
+                        $iconUnlink = $this->iconFactory->getIcon('extensions-templavoila-unlink', Icon::SIZE_SMALL)->render();
                         $linkUnlink = $this->link_unlink($iconUnlink, $parentPointer, FALSE);
                     } else {
                         $linkUnlink = '';
                     }
                     if ($this->modTSconfig['properties']['enableDeleteIconForLocalElements'] && $elementBelongsToCurrentPage) {
                         $hasForeignReferences = \Extension\Templavoila\Utility\GeneralUtility::hasElementForeignReferences($contentTreeArr['el'], $contentTreeArr['el']['pid']);
-                        $iconDelete = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-delete', array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('deleteRecord')));
+                        $iconDelete = $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render();
                         $linkDelete = $this->link_unlink($iconDelete, $parentPointer, TRUE, $hasForeignReferences);
                     } else {
                         $linkDelete = '';
                     }
-                    $iconEdit = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open', array('title' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('editrecord')));
+                    $iconEdit = $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render();
                     $linkEdit = ($elementBelongsToCurrentPage ? $this->link_edit($iconEdit, $contentTreeArr['el']['table'], $contentTreeArr['el']['uid']) : '');
 
                     $titleBarRightButtons = $linkEdit . $this->clipboardObj->element_getSelectButtons($parentPointer) . $linkMakeLocal . $linkUnlink . $linkDelete;
@@ -2457,7 +2459,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
                             // Put together the records icon including content sensitive menu link wrapped around it:
                             $recordIcon_l10n = $this->getRecordStatHookValue('tt_content', $olrow['uid']) .
-                                \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('tt_content', $olrow);
+                                $this->iconFactory->getIconForRecord('tt_content', $olrow, Icon::SIZE_SMALL)->render();
                             if (!$this->translatorMode) {
                                 $recordIcon_l10n = BackendUtility::wrapClickMenuOnIcon($recordIcon_l10n, 'tt_content', $olrow['uid'], true, '', 'new,copy,cut,pasteinto,pasteafter');
                             }
