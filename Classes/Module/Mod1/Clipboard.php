@@ -37,28 +37,11 @@ class Clipboard implements SingletonInterface
     protected $deleteUids;
 
     /**
-     * @var string
-     */
-    protected $extKey;
-
-    /**
-     * @var array
-     */
-    protected $MOD_SETTINGS;
-
-    /**
      * A pointer to the parent object, that is the templavoila page module script. Set by calling the method init() of this class.
      *
      * @var \tx_templavoila_module1
      */
     public $pObj;
-
-    /**
-     * A reference to the doc object of the parent object.
-     *
-     * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
-     */
-    public $doc;
 
     /**
      * Initializes the clipboard object. The calling class must make sure that the right locallang files are already loaded.
@@ -71,13 +54,10 @@ class Clipboard implements SingletonInterface
      *
      * @return void
      */
-    public function init(&$pObj)
+    public function init($pObj)
     {
         // Make local reference to some important variables:
-        $this->pObj =& $pObj;
-        $this->doc =& $this->pObj->doc;
-        $this->extKey =& $this->pObj->extKey;
-        $this->MOD_SETTINGS =& $this->pObj->MOD_SETTINGS;
+        $this->pObj = $pObj;
 
         // Initialize the t3lib clipboard:
         $this->t3libClipboardObj = CoreGeneralUtility::makeInstance(\TYPO3\CMS\Backend\Clipboard\Clipboard::class);
