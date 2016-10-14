@@ -34,7 +34,7 @@ if (TYPO3_MODE === 'BE') {
         'web',
         'txtemplavoilaM2',
         '',
-        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'mod2/',
+        '',
         [
             'access' => 'user,group',
             'icon' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icon/Modules/AdministrationModuleIcon.svg',
@@ -43,6 +43,7 @@ if (TYPO3_MODE === 'BE') {
 
             'name' => 'web_txtemplavoilaM2',
             'extensionName' => 'templavoila',
+            'routeTarget' => \Extension\Templavoila\Controller\BackendTemplateController::class . '::mainAction',
         ]
     );
 

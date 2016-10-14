@@ -1,4 +1,6 @@
 <?php
+namespace Extension\Templavoila\Controller;
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -12,6 +14,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -27,7 +31,7 @@ $GLOBALS['LANG']->includeLLFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtili
  *
  * @author Kasper Skaarhoj <kasper@typo3.com>
  */
-class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
+class BackendTemplateController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 {
     /**
      * @var array
@@ -127,10 +131,32 @@ class tx_templavoila_module2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         );
 
         // page/be_user TSconfig settings and blinding of menu-items
-        $this->modTSconfig = BackendUtility::getModTSconfig($this->id, 'mod.' . $this->MCONF['name']);
+        $this->modTSconfig = BackendUtility::getModTSconfig($this->id, 'mod.' . $this->moduleName);
 
         // CLEANSE SETTINGS
-        $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, CoreGeneralUtility::_GP('SET'), $this->MCONF['name']);
+        $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, CoreGeneralUtility::_GP('SET'), $this->moduleName);
+    }
+
+    /*******************************************
+     *
+     * Main functions
+     *
+     *******************************************/
+
+    /**
+     * Injects the request object for the current request or subrequest
+     * As this controller goes only through the main() method, it is rather simple for now
+     *
+     * @param ServerRequestInterface $request the current request
+     * @param ResponseInterface $response
+     * @return ResponseInterface the response with the content
+     */
+    public function mainAction(ServerRequestInterface $request, ResponseInterface $response)
+    {
+        $this->init();
+        $this->main();
+        $response->getBody()->write($this->moduleTemplate->renderContent());
+        return $response;
     }
 
     /**
@@ -2663,9 +2689,3 @@ lib.' . $menuType . '.1.ACT {
         $this->buttonBar->addButton($button, $buttonPosition, $buttonGroup);
     }
 }
-
-// Make instance:
-$SOBE = CoreGeneralUtility::makeInstance(\tx_templavoila_module2::class);
-$SOBE->init();
-$SOBE->main();
-$SOBE->printContent();
