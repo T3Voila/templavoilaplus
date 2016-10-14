@@ -894,9 +894,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 3
             );
 
-            $buttons['csh'] = BackendUtility::cshItem(
-                '_MOD_web_txtemplavoilaM1', 'pagemodule', null, '<span class="btn btn-default btn-sm">|</span>'
-            );
+            $this->addCshButton('pagemodule');
         }
 
         $this->addShortcutButton();
@@ -1018,6 +1016,17 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             ->setTitle($title)
             ->setIcon($this->iconFactory->getIcon($icon, Icon::SIZE_SMALL));
         $this->buttonBar->addButton($button, $buttonPosition, $buttonGroup);
+    }
+
+    /**
+     * Adds csh icon to the right document header button bar
+     */
+    public function addCshButton($fieldName)
+    {
+        $contextSensitiveHelpButton = $this->buttonBar->makeHelpButton()
+            ->setModuleName('_MOD_' . $this->moduleName)
+            ->setFieldName($fieldName);
+        $this->buttonBar->addButton($contextSensitiveHelpButton, ButtonBar::BUTTON_POSITION_RIGHT);
     }
 
     /**
