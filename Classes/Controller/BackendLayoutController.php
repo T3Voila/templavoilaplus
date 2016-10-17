@@ -1001,18 +1001,36 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         $buttonPosition = ButtonBar::BUTTON_POSITION_LEFT,
         $buttonGroup = 1
     ) {
-        $url = BackendUtility::getModuleUrl(
-            $module,
-            array_merge(
-                $params,
-                [
-                    'returnUrl' => CoreGeneralUtility::getIndpEnv('REQUEST_URI'),
-                ]
-            )
-        );
+        $url = '#';
+        $onClick = null;
+
+        switch ($module) {
+            case 'view':
+                $viewAddGetVars = $this->currentLanguageUid ? '&L=' . $this->currentLanguageUid : '';
+                $onClick = BackendUtility::viewOnClick(
+                    $this->id,
+                    '',
+                    BackendUtility::BEgetRootLine($this->id),
+                    '',
+                    '',
+                    $viewAddGetVars
+                );
+                break;
+            default:
+                $url = BackendUtility::getModuleUrl(
+                    $module,
+                    array_merge(
+                        $params,
+                        [
+                            'returnUrl' => CoreGeneralUtility::getIndpEnv('REQUEST_URI'),
+                        ]
+                    )
+                );
+        }
 
         $button = $this->buttonBar->makeLinkButton()
             ->setHref($url)
+            ->setOnClick($onClick)
             ->setTitle($title)
             ->setIcon($this->iconFactory->getIcon($icon, Icon::SIZE_SMALL));
         $this->buttonBar->addButton($button, $buttonPosition, $buttonGroup);
