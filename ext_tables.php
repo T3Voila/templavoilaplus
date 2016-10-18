@@ -10,7 +10,6 @@ if (TYPO3_MODE === 'BE') {
 
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms']['db_new_content_el']['wizardItemsHook'][] = \Extension\Templavoila\Hooks\WizardItems::class;
 
-
     // Adding backend modules:
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
         'web',
@@ -130,11 +129,11 @@ if (TYPO3_MODE === 'BE') {
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_templavoila_tmplobj');
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin(
-    array(
+    [
         'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tt_content.CType_pi1',
         'templavoila_pi1',
         'EXT:templavoila/Resources/Public/Icon/icon_fce_ce.png'
-    ),
+    ],
     'CType'
 );
 
@@ -148,26 +147,25 @@ if (
         && $GLOBALS['BE_USER']->isFrontendEditingActive()
     )
 ) {
-    $icons = array(
-        'paste' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila') . 'Resources/Public/Icon/clip_pasteafter.gif',
-        'pasteSubRef' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila') . 'Resources/Public/Icon/clip_pastesubref.gif',
-        'makelocalcopy' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila') . 'Resources/Public/Icon/makelocalcopy.gif',
-        'clip_ref' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila') . 'Resources/Public/Icon/clip_ref.gif',
-        'clip_ref-release' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila') . 'Resources/Public/Icon/clip_ref_h.gif',
-        'unlink' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila') . 'Resources/Public/Icon/unlink.png',
-        'htmlvalidate' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila') . 'Resources/Public/Icon/html_go.png',
-        'type-fce' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila') . 'Resources/Public/Icon/icon_fce_ce.png',
-        'templavoila-logo' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila') . 'Resources/Public/Image/templavoila-logo.png',
-        'templavoila-logo-small' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila') . 'Resources/Public/Image/templavoila-logo-small.png',
-    );
-//     \TYPO3\CMS\Backend\Sprite\SpriteManager::addSingleIcons($icons, 'templavoila');
+    $icons = [
+        'paste' =>  'EXT:templavoila/Resources/Public/Icon/clip_pasteafter.gif',
+        'pasteSubRef' => 'EXT:templavoila/Resources/Public/Icon/clip_pastesubref.gif',
+        'makelocalcopy' => 'EXT:templavoila/Resources/Public/Icon/makelocalcopy.gif',
+        'clip_ref' => 'EXT:templavoila/Resources/Public/Icon/clip_ref.gif',
+        'clip_ref-release' => 'EXT:templavoila/Resources/Public/Icon/clip_ref_h.gif',
+        'unlink' => 'EXT:templavoila/Resources/Public/Icon/unlink.png',
+        'htmlvalidate' => 'EXT:templavoila/Resources/Public/Icon/html_go.png',
+        'type-fce' => 'EXT:templavoila/Resources/Public/Icon/icon_fce_ce.png',
+        'templavoila-logo' => 'EXT:templavoila/Resources/Public/Image/templavoila-logo.png',
+        'templavoila-logo-small' => 'EXT:templavoila/Resources/Public/Image/templavoila-logo-small.png',
+    ];
 
     $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
     foreach ($icons as $identifier => $file) {
         $iconRegistry->registerIcon(
             'extensions-templavoila-' . $identifier,
             \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
-            ['source' => str_replace(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila'), 'EXT:templavoila/', $file)]
+            ['source' => $file]
         );
     }
 }
