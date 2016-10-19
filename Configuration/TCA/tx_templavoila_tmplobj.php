@@ -73,7 +73,7 @@ return array(
                 'size' => 1,
                 'minitems' => 0,
                 'maxitems' => 1,
-                'itemsProcFunc' => 'tx_templavoila_handleStaticdatastructures->main',
+                'itemsProcFunc' => \Extension\Templavoila\Service\ItemProcFunc\StaticDataStructuresHandler::class . '->main',
                 'allowNonIdValues' => 1,
                 'wizards' => array(
                     '_PADDING' => 2,
