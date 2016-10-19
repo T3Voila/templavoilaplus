@@ -217,7 +217,7 @@ class FlexFormElementContainer extends AbstractContainer
         ) {
             // Create diff-result:
             $diffUtility = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Utility\DiffUtility::class);
-            $diffres = $diffUtility->makeDiffDisplay($vArray[$vDEFkey . '.vDEFbase'], $vArray['vDEF']);
+            $diffres = $diffUtility->makeDiffDisplay($vArray[$vDEFkey . '.vDEFbase'], $vArray['vDEF'][0]);
             $item = '<div class="typo3-TCEforms-diffBox">' . '<div class="typo3-TCEforms-diffBox-header">'
                 . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:compatibility6/Resources/Private/Language/locallang.xlf:labels.changeInOrig')) . ':</div>' . $diffres . '</div>';
         }
