@@ -358,6 +358,7 @@ class TcaFlexProcess implements FormDataProviderInterface
         $dataStructure = $result['processedTca']['columns'][$fieldName]['config']['ds'];
         $dataValues = $result['databaseRow'][$fieldName];
         $tableName = $result['tableName'];
+        $tcaValueArrayLanguage = [];
 
         $availableLanguageCodes = $result['processedTca']['columns'][$fieldName]['config']['ds']['meta']['availableLanguageCodes'];
         if ($dataStructure['meta']['langChildren']) {
@@ -625,12 +626,11 @@ class TcaFlexProcess implements FormDataProviderInterface
                             if (isset($dataValues['data'][$dataStructureSheetName][$langSheetLevel][$dataStructureSheetElementName])
                                 && array_key_exists($langElementLevel, $dataValues['data'][$dataStructureSheetName][$langSheetLevel][$dataStructureSheetElementName])
                             ) {
-                                $command = 'edit';
                                 $tcaEditColumns[$dataStructureSheetElementName] = $dataStructureSheetElementDefinition;
-                                $tcaValueArrayLanguage[$langElementLevel][$dataStructureSheetElementName] = $dataValues['data'][$dataStructureSheetName][$langSheetLevel][$dataStructureSheetElementName][$langElementLevel];
                             } else {
                                 $tcaNewColumns[$dataStructureSheetElementName] = $dataStructureSheetElementDefinition;
                             }
+                            $tcaValueArrayLanguage[$langElementLevel][$dataStructureSheetElementName] = $dataValues['data'][$dataStructureSheetName][$langSheetLevel][$dataStructureSheetElementName][$langElementLevel];
                         }
                     } // End of single element handling
                 }
