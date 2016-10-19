@@ -282,12 +282,13 @@ class StaticDataStructuresHandler
 
         // Check for alternative storage folder
         $field = $params['table'] == 'pages' ? 'uid' : 'pid';
+
         $modTSConfig = BackendUtility::getModTSconfig($params['row'][$field], 'tx_templavoila.storagePid');
         if (is_array($modTSConfig) && MathUtility::canBeInterpretedAsInteger($modTSConfig['value'])) {
             $storagePid = (int)$modTSConfig['value'];
         } else {
             // @TODO Deprecate this part, configuration in pageTS should be enough
-            $rootLine = $this->BEgetRootLine($params['row']['uid'], '', true);
+            $rootLine = $this->BEgetRootLine($params['row'][$field], '', true);
             foreach ($rootLine as $rC) {
                 if (!empty($rC['storage_pid'])) {
                     $storagePid = (int)$rC['storage_pid'];
