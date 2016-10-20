@@ -37,7 +37,7 @@ if (TYPO3_MODE === 'BE') {
         [
             'access' => 'user,group',
             'icon' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icon/Modules/AdministrationModuleIcon.svg',
-            'labels' => 'LLL:EXT:' . $_EXTKEY . '/mod2/locallang_mod.xlf',
+            'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/BackendControlCenter.xlf',
             'configureModuleFunction' => [\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::class, 'configureModule'],
 
             'name' => 'web_txtemplavoilaM2',

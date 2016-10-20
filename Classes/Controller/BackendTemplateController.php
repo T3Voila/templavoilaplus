@@ -24,7 +24,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility as CoreGeneralUtility;
 
 use Extension\Templavoila\Utility\GeneralUtility as TemplavoilaGeneralUtility;
 
-$GLOBALS['LANG']->includeLLFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('templavoila') . 'mod2/locallang.xlf');
+$GLOBALS['LANG']->includeLLFile(
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('templavoila') . 'Resources/Private/Language/BackendControlCenter.xlf'
+);
 
 /**
  * Module 'TemplaVoila' for the 'templavoila' extension.
