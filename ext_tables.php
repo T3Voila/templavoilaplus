@@ -157,7 +157,6 @@ if (
         'htmlvalidate' => 'EXT:templavoila/Resources/Public/Icon/html_go.png',
         'type-fce' => 'EXT:templavoila/Resources/Public/Icon/icon_fce_ce.png',
         'templavoila-logo' => 'EXT:templavoila/Resources/Public/Image/templavoila-logo.png',
-        'templavoila-logo-small' => 'EXT:templavoila/Resources/Public/Image/templavoila-logo-small.png',
     ];
 
     $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
