@@ -42,7 +42,7 @@ if (TYPO3_MODE === 'BE') {
 
             'name' => 'web_txtemplavoilaM2',
             'extensionName' => 'templavoila',
-            'routeTarget' => \Extension\Templavoila\Controller\BackendTemplateController::class . '::mainAction',
+            'routeTarget' => \Extension\Templavoila\Controller\BackendControlCenterController::class . '::mainAction',
         ]
     );
 

@@ -33,7 +33,7 @@ $GLOBALS['LANG']->includeLLFile(
  *
  * @author Kasper Skaarhoj <kasper@typo3.com>
  */
-class BackendTemplateController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
+class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 {
     /**
      * @var array
