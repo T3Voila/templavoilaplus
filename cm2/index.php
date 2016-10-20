@@ -12,7 +12,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-$LANG->includeLLFile('EXT:templavoila/cm2/locallang.xlf');
+$GLOBALS['LANG']->includeLLFile('EXT:templavoila/cm2/locallang.xlf');
 
 /**
  * Class for displaying color-marked-up version of FlexForm XML content.
