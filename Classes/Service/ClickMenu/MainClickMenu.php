@@ -105,7 +105,7 @@ class MainClickMenu
                     $iconFactory->getIcon('extensions-templavoila-templavoila-logo', Icon::SIZE_SMALL)->render(),
                     $clickMenu->urlRefForCM(
                         BackendUtility::getModuleUrl(
-                            'txtemplavoilaM1',
+                            'web_txtemplavoilaM1',
                             [
                                 'id' => (int)$clickMenu->rec['pid'],
                                 'altRoot' => [
@@ -183,7 +183,7 @@ class MainClickMenu
                             BackendUtility::getRecordTitle('pages', $pageRecord, TRUE),
                             $clickMenu->urlRefForCM(
                                 BackendUtility::getModuleUrl(
-                                    'txtemplavoilaM1',
+                                    'web_txtemplavoilaM1',
                                     [
                                         'id' => $pageRecord['uid'],
                                     ]
