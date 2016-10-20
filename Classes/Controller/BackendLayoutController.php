@@ -32,9 +32,9 @@ use Extension\Templavoila\Utility\GeneralUtility as TemplavoilaGeneralUtility;
  * @coauthor   Dmitry Dulepov <dmitry@typo3.org>
  */
 
-$GLOBALS['LANG']->includeLLFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('templavoila') . 'mod1/locallang.xlf');#
-
-#\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cms', 1);
+$GLOBALS['LANG']->includeLLFile(
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('templavoila') . 'Resources/Private/Language/BackendLayout.xlf'
+);
 
 /**
  * Module 'Page' for the 'templavoila' extension.
