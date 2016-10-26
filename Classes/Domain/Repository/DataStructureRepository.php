@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @author Tolleiv Nietsch <tolleiv.nietsch@typo3.org>
  */
-class DataStructureRepository {
+class DataStructureRepository implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * @var boolean

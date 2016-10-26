@@ -19,7 +19,7 @@ namespace Extension\Templavoila\Domain\Repository;
  *
  * @author Tolleiv Nietsch <tolleiv.nietsch@typo3.org>
  */
-class TemplateRepository {
+class TemplateRepository implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * Retrieve a single templateobject by uid or xml-file path
