@@ -106,7 +106,9 @@ class SyntaxHighlightingService {
 			// Perform color-markup on the parsed content. Markup preserves the LINE formatting of the XML.
 			return $this->highLight_DS_markUpRecursively($struct);
 		} else {
-			$error = 'ERROR: The input content failed XML parsing: ' . $DS;
+            if (trim($DS) !== '') {
+                $error = 'ERROR: The input content failed XML parsing: ' . $DS;
+            }
 		}
 
 		return $error;
@@ -206,7 +208,9 @@ class SyntaxHighlightingService {
 			// Return content:
 			return $markUp;
 		} else {
-			$error = 'ERROR: The input content failed XML parsing: ' . $DS;
+            if (trim($DS) !== '') {
+                $error = 'ERROR: The input content failed XML parsing: ' . $DS;
+            }
 		}
 
 		return $error;

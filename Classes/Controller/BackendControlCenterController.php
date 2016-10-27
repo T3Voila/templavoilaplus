@@ -1712,7 +1712,23 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
      */
     public function DSdetails($DSstring)
     {
-        $DScontent = (array) CoreGeneralUtility::xml2array($DSstring);
+        if (trim($DSstring) === '') {
+            // Empty DS
+            return [];
+        }
+        $DScontent = CoreGeneralUtility::xml2array($DSstring);
+
+        if (!is_array($DScontent)) {
+            if (trim($DScontent) === '') {
+                // Empty DS XML
+                return [];
+            } else {
+                // Errors in DS XML
+                return [
+                    'HTML' => '<p>' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-error') . $DScontent,
+                ];
+            }
+        }
 
         $inputFields = 0;
         $referenceFields = 0;
