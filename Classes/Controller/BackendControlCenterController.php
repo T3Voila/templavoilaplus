@@ -989,19 +989,19 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
                 );
 
                 while (FALSE !== ($pRow = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_fetch_assoc($res))) {
-                    $path = $this->findRecordsWhereUsed_pid($pRow['uid']);
+//                     $path = $this->findRecordsWhereUsed_pid($pRow['uid']);
                     if ($path) {
                         $output[] = '
                             <tr class="bgColor4-20">
                                 <td nowrap="nowrap">' .
-                            '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick('&edit[pages][' . $pRow['uid'] . ']=edit', $this->doc->backPath)) . '" title="Edit">' .
+//                             '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick('&edit[pages][' . $pRow['uid'] . ']=edit', $this->doc->backPath)) . '" title="Edit">' .
                             htmlspecialchars($pRow['uid']) .
                             '</a></td>
                         <td nowrap="nowrap">' .
                             htmlspecialchars($pRow['title']) .
                             '</td>
                         <td nowrap="nowrap">' .
-                            '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($pRow['uid'], $this->doc->backPath) . 'return false;') . '" title="View">' .
+//                             '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($pRow['uid'], $this->doc->backPath) . 'return false;') . '" title="View">' .
                             htmlspecialchars($path) .
                             '</a></td>
                         <td nowrap="nowrap">' .
@@ -1047,19 +1047,19 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
 
                 // Elements:
                 while (FALSE !== ($pRow = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_fetch_assoc($res))) {
-                    $path = $this->findRecordsWhereUsed_pid($pRow['pid']);
+//                     $path = $this->findRecordsWhereUsed_pid($pRow['pid']);
                     if ($path) {
                         $output[] = '
                             <tr class="bgColor4-20">
                                 <td nowrap="nowrap">' .
-                            '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick('&edit[tt_content][' . $pRow['uid'] . ']=edit', $this->doc->backPath)) . '" title="Edit">' .
+//                             '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick('&edit[tt_content][' . $pRow['uid'] . ']=edit', $this->doc->backPath)) . '" title="Edit">' .
                             htmlspecialchars($pRow['uid']) .
                             '</a></td>
                         <td nowrap="nowrap">' .
                             htmlspecialchars($pRow['header']) .
                             '</td>
                         <td nowrap="nowrap">' .
-                            '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($pRow['pid'], $this->doc->backPath) . 'return false;') . '" title="View page">' .
+//                             '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($pRow['pid'], $this->doc->backPath) . 'return false;') . '" title="View page">' .
                             htmlspecialchars($path) .
                             '</a></td>
                         <td nowrap="nowrap">' .
