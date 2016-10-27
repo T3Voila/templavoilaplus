@@ -295,7 +295,7 @@ class TcaFlexProcess implements FormDataProviderInterface
                 $isAvailable = false;
             }
             if ($isAvailable) {
-                $availableLanguageCodes[] = $isoCode;
+                $availableLanguageCodes[] = strtoupper($isoCode);
             }
             if ($isoCode === 'DEF') {
                 $defaultCodeWasAdded = true;

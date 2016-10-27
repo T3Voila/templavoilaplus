@@ -149,8 +149,8 @@ class FrontendController extends AbstractPlugin
                 if (is_array($DS)) {
                     $langChildren = $DS['meta']['langChildren'] ? 1 : 0;
                     $langDisabled = $DS['meta']['langDisable'] ? 1 : 0;
-                    $lKey = (!$langDisabled && !$langChildren) ? 'l' . $GLOBALS['TSFE']->sys_language_isocode : 'lDEF';
-                    $vKey = (!$langDisabled && $langChildren) ? 'v' . $GLOBALS['TSFE']->sys_language_isocode : 'vDEF';
+                    $lKey = (!$langDisabled && !$langChildren) ? 'l' . strtoupper($GLOBALS['TSFE']->sys_language_isocode) : 'lDEF';
+                    $vKey = (!$langDisabled && $langChildren) ? 'v' . strtoupper($GLOBALS['TSFE']->sys_language_isocode) : 'vDEF';
                 } else {
                     return $this->formatError('
                         Couldn\'t find a Data Structure set with uid/file=' . $conf['ds'] . '
@@ -162,6 +162,7 @@ class FrontendController extends AbstractPlugin
             }
             $values['data']['sDEF'][$lKey][$k][$vKey] = $v;
         }
+
         /** @var FlexFormTools $ff */
         $ff = GeneralUtility::makeInstance(FlexFormTools::class);
         $data['tx_templavoila_flex'] = $ff->flexArray2Xml($values);
@@ -287,7 +288,7 @@ class FrontendController extends AbstractPlugin
             // Data from FlexForm field:
             $data = GeneralUtility::xml2array($row['tx_templavoila_flex']);
 
-            $lKey = ($GLOBALS['TSFE']->sys_language_isocode && !$langDisabled && !$langChildren) ? 'l' . $GLOBALS['TSFE']->sys_language_isocode : 'lDEF';
+            $lKey = ($GLOBALS['TSFE']->sys_language_isocode && !$langDisabled && !$langChildren) ? 'l' . strtoupper($GLOBALS['TSFE']->sys_language_isocode) : 'lDEF';
 
             /* Hook to modify language key - e.g. used for EXT:languagevisibility */
             foreach ($hookObjectsArr as $hookObj) {
@@ -343,7 +344,7 @@ class FrontendController extends AbstractPlugin
                         if ($GLOBALS['TT']->LR) {
                             $GLOBALS['TT']->push('Processing data');
                         }
-                        $vKey = ($GLOBALS['TSFE']->sys_language_isocode && !$langDisabled && $langChildren) ? 'v' . $GLOBALS['TSFE']->sys_language_isocode : 'vDEF';
+                        $vKey = ($GLOBALS['TSFE']->sys_language_isocode && !$langDisabled && $langChildren) ? 'v' . strtoupper($GLOBALS['TSFE']->sys_language_isocode) : 'vDEF';
 
                         /* Hook to modify value key - e.g. used for EXT:languagevisibility */
                         foreach ($hookObjectsArr as $hookObj) {
