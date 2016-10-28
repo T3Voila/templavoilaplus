@@ -173,7 +173,7 @@ class FlexFormElementContainer extends AbstractContainer
                         $lKeyWithoutV = substr($lkey, 1);
                         if ($lKeyWithoutV !== 'DEF') {
                             foreach ($this->data['systemLanguageRows'] as $systemLanguageRow) {
-                                if ($systemLanguageRow['iso'] === $lKeyWithoutV) {
+                                if ($systemLanguageRow['iso'] === strtolower($lKeyWithoutV)) {
                                     $languageUid = $systemLanguageRow['uid'];
                                     break;
                                 }

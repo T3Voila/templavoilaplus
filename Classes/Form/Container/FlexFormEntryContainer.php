@@ -61,7 +61,7 @@ class FlexFormEntryContainer extends AbstractContainer
                 $languageUid = 0;
                 if ($lKey !== 'DEF') {
                     foreach ($this->data['systemLanguageRows'] as $systemLanguageRow) {
-                        if ($systemLanguageRow['iso'] === $lKey) {
+                        if ($systemLanguageRow['iso'] === strtolower($lKey)) {
                             $languageUid = $systemLanguageRow['uid'];
                             break;
                         }
