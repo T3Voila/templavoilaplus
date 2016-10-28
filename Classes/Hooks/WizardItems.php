@@ -31,12 +31,12 @@ class WizardItems implements NewContentElementWizardHookInterface
             /** @var \Extension\Templavoila\Domain\Model\Template $toObj */
             if ($toObj->isPermittedForUser()) {
                 $tmpFilename = $toObj->getIcon();
-                $addingItems['fce_' . $toObj->getKey()] = array(
+                $addingItems['fce_' . $toObj->getKey()] = [
                     'icon' => (@is_file(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(substr($tmpFilename, 3)))) ? $tmpFilename : ('../' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('templavoila') . 'Resources/Public/Image/default_previewicon.gif'),
                     'description' => $toObj->getDescription() ? $this->getLanguageService()->sL($toObj->getDescription()) : \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('template_nodescriptionavailable'),
                     'title' => $toObj->getLabel(),
-                    'params' => ''//$this->getDsDefaultValues($toObj)
-                );
+                    'params' => $this->getDsDefaultValues($toObj)
+                ];
             }
         }
 
@@ -51,6 +51,31 @@ class WizardItems implements NewContentElementWizardHookInterface
         }
         $wizardItems = array_slice($wizardItems, 0, $offset, true) + $addingItems + array_slice($wizardItems, $offset, null, true);
     }
+
+    /**
+     * Process the default-value settings
+     *
+     * @param \Extension\Templavoila\Domain\Model\Template $toObj LocalProcessing as array
+     *
+     * @return string additional URL arguments with configured default values
+     */
+    public function getDsDefaultValues(\Extension\Templavoila\Domain\Model\Template $toObj)
+    {
+        $dsStructure = $toObj->getLocalDataprotArray();
+
+        $dsValues = '&defVals[tt_content][CType]=templavoila_pi1'
+                . '&defVals[tt_content][tx_templavoila_ds]=' . $toObj->getDatastructure()->getKey()
+                . '&defVals[tt_content][tx_templavoila_to]=' . $toObj->getKey();
+
+        if (is_array($dsStructure) && is_array($dsStructure['meta']['default']['TCEForms'])) {
+                foreach ($dsStructure['meta']['default']['TCEForms'] as $field => $value) {
+                        $dsValues .= '&defVals[tt_content][' . $field . ']=' . $value;
+                }
+        }
+
+        return $dsValues;
+    }
+
 
     /**
      * Returns LanguageService
