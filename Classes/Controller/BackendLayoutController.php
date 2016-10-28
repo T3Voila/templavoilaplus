@@ -1543,7 +1543,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             try {
                 $newValue = $to->getLocalDataprotValueByXpath('//' . $fieldID . '/tx_templavoila/preview');
                 $elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['tx_templavoila']['preview'] = $newValue;
-            } catch (UnexpectedValueException $e) {
+            } catch (\UnexpectedValueException $e) {
             }
 
             if (is_array($fieldValuesContent[$vKey]) && (
