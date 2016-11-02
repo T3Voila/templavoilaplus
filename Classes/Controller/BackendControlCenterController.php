@@ -556,12 +556,18 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
                     }
                 }
                 // New-TO link:
-                $TOcontent .= '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick(
+                $TOcontent .= '<a href="#" onclick="' . htmlspecialchars(
+                    BackendUtility::editOnClick(
                         '&edit[tx_templavoila_tmplobj][' . $newPid . ']=new' .
                         '&defVals[tx_templavoila_tmplobj][datastructure]=' . rawurlencode($dsObj->getKey()) .
                         '&defVals[tx_templavoila_tmplobj][title]=' . rawurlencode($newTitle) .
-                        '&defVals[tx_templavoila_tmplobj][fileref]=' . rawurlencode($newFileRef)
-                        , $this->doc->backPath)) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-new') . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('createnewto', true) . '</a>';
+                        '&defVals[tx_templavoila_tmplobj][fileref]=' . rawurlencode($newFileRef),
+                        $this->doc->backPath
+                    )
+                )
+                . '">' . $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render() . ' '
+                . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('createnewto', true)
+                . '</a>';
 
                 // Render data structure display
                 $rDSDres = $this->renderDataStructureDisplay($dsObj, $scope, $toIdArray);
@@ -624,9 +630,9 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
 
         if ($dsObj->isFilebased()) {
             $onClick = 'document.location=\'' . $this->doc->backPath . 'file_edit.php?target=' . rawurlencode(CoreGeneralUtility::getFileAbsFileName($dsObj->getKey())) . '&returnUrl=' . rawurlencode(CoreGeneralUtility::sanitizeLocalUrl(CoreGeneralUtility::getIndpEnv('REQUEST_URI'))) . '\';';
-            $dsIcon = '<a href="#" onclick="' . htmlspecialchars($onClick) . '"><img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, 'gfx/fileicons/xml.gif', 'width="18" height="16"') . ' alt="" title="' . $dsObj->getKey() . '" class="absmiddle" /></a>';
+            $dsIcon = '<a href="#" onclick="' . htmlspecialchars($onClick) . '">' . $this->iconFactory->getIconForFileExtension('xml', Icon::SIZE_SMALL)->render() . '</a>';
         } else {
-            $dsIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('tx_templavoila_datastructure', array(), array('title' => $dsObj->getKey()));
+            $dsIcon = $this->iconFactory->getIconForRecord('tx_templavoila_datastructure', [], Icon::SIZE_SMALL)->render();
             $dsIcon = BackendUtility::wrapClickMenuOnIcon($dsIcon, 'tx_templavoila_datastructure', $dsObj->getKey(), true, '&callingScriptId=' . rawurlencode($this->doc->scriptID));
         }
 
@@ -643,7 +649,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
                         strpos($this->modTSconfig['properties']['dsPreviewIconThumb'], 'x') ? $this->modTSconfig['properties']['dsPreviewIconThumb'] : '');
                 }
             } else {
-                $previewIcon = '<img src="' . $this->doc->backPath . $dsObj->getIcon() . '" alt="" />';
+                $previewIcon = '<img src="' . $dsObj->getIcon() . '" alt="" />';
             }
         } else {
             $previewIcon = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('noicon', true);
@@ -658,14 +664,12 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
             $editLink = $lpXML .= '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick('&edit[tx_templavoila_datastructure][' . $dsObj->getKey() . ']=edit', $this->doc->backPath)) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open') . '</a>';
             $dsTitle = '<a href="' . htmlspecialchars('../cm1/index.php?table=tx_templavoila_datastructure&uid=' . $dsObj->getKey() . '&id=' . $this->id . '&returnUrl=' . rawurlencode(CoreGeneralUtility::sanitizeLocalUrl(CoreGeneralUtility::getIndpEnv('REQUEST_URI')))) . '">' . htmlspecialchars($dsObj->getLabel()) . '</a>';
         }
-
         // Compile info table:
         $content = '
         <table' . $tableAttribs . '>
             <tr class="bgColor5">
                 <td colspan="3" style="border-top: 1px solid black;">' .
-            $dsIcon .
-            $dsTitle .
+            $dsIcon . ' ' . $dsTitle .
             $editLink .
             '</td>
     </tr>
@@ -743,7 +747,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
     public function renderTODisplay($toObj, $scope, $children = 0)
     {
         // Put together the records icon including content sensitive menu link wrapped around it:
-        $recordIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('tx_templavoila_tmplobj', array(), array('title' => $toObj->getKey()));
+        $recordIcon = $this->iconFactory->getIconForRecord('tx_templavoila_tmplobj', [], Icon::SIZE_SMALL)->render();
         $recordIcon = BackendUtility::wrapClickMenuOnIcon($recordIcon, 'tx_templavoila_tmplobj', $toObj->getKey(), true, '&callingScriptId=' . rawurlencode($this->doc->scriptID));
 
         // Preview icon:
@@ -759,7 +763,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
                         strpos($this->modTSconfig['properties']['toPreviewIconThumb'], 'x') ? $this->modTSconfig['properties']['toPreviewIconThumb'] : '');
                 }
             } else {
-                $icon = '<img src="' . $this->doc->backPath . $toObj->getIcon() . '" alt="" />';
+                $icon = '<img src="' . $toObj->getIcon() . '" alt="" />';
             }
         } else {
             $icon = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('noicon', true);
