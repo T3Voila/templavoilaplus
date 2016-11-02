@@ -201,7 +201,7 @@ class StaticDataStructuresHandler
                         $params['items'][] = array(
                             $toObj->getLabel(),
                             $toObj->getKey(),
-                            $toObj->getIcon()
+                            '../' . $toObj->getIcon()
                         );
                     }
                 }
@@ -250,7 +250,7 @@ class StaticDataStructuresHandler
                     $curDS[] = array(
                         $toObj->getLabel(),
                         $toObj->getKey(),
-                        $toObj->getIcon()
+                        '..' . $toObj->getIcon()
                     );
                 }
             }

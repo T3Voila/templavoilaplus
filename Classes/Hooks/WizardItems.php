@@ -32,7 +32,7 @@ class WizardItems implements NewContentElementWizardHookInterface
             if ($toObj->isPermittedForUser()) {
                 $tmpFilename = $toObj->getIcon();
                 $addingItems['fce_' . $toObj->getKey()] = [
-                    'icon' => (@is_file(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(substr($tmpFilename, 3)))) ? $tmpFilename : ('../' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('templavoila') . 'Resources/Public/Image/default_previewicon.gif'),
+                    'icon' => (@is_file(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(substr($tmpFilename, 3)))) ? $tmpFilename : (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('templavoila') . 'Resources/Public/Image/default_previewicon.gif'),
                     'description' => $toObj->getDescription() ? $this->getLanguageService()->sL($toObj->getDescription()) : \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('template_nodescriptionavailable'),
                     'title' => $toObj->getLabel(),
                     'params' => $this->getDsDefaultValues($toObj)
