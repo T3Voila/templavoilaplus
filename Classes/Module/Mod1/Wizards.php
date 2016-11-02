@@ -38,13 +38,6 @@ class Wizards implements SingletonInterface
     public $pObj; // A pointer to the parent object, that is the templavoila page module script. Set by calling the method init() of this class.
 
     /**
-     * A reference to extension key of the parent object.
-     *
-     * @var string
-     */
-    public $extKey;
-
-    /**
      * Config of TCAdefaults
      *
      * @var array
@@ -64,7 +57,6 @@ class Wizards implements SingletonInterface
         // Make local reference to some important variables:
         $this->pObj = $pObj;
         $this->moduleTemplate = $this->pObj->moduleTemplate;
-        $this->extKey = $this->pObj->extKey;
         $this->apiObj = $this->pObj->apiObj;
     }
 
