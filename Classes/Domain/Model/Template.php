@@ -137,7 +137,7 @@ class Template
     {
         $icon = '';
         if ($this->iconFile) {
-            $icon = PATH_site . 'uploads/tx_templavoila/' . $this->iconFile;
+            $icon = 'uploads/tx_templavoila/' . $this->iconFile;
         }
 
         return $icon;

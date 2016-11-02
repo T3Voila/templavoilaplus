@@ -763,7 +763,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
                         strpos($this->modTSconfig['properties']['toPreviewIconThumb'], 'x') ? $this->modTSconfig['properties']['toPreviewIconThumb'] : '');
                 }
             } else {
-                $icon = '<img src="' . $toObj->getIcon() . '" alt="" />';
+                $icon = '<img src="/' . $toObj->getIcon() . '" alt="" />';
             }
         } else {
             $icon = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('noicon', true);
