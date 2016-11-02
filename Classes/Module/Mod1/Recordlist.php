@@ -39,7 +39,6 @@ class Recordlist extends \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList {
 	public function start(&$pObj) {
 		$this->pObj = & $pObj;
 		$GLOBALS['SOBE']->MOD_SETTINGS['bigControlPanel'] = 1; // enable extended view
-		$this->script = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila') . 'mod1/index.php';
 
 		parent::start($this->pObj->rootElementUid_pidForContent,
 			'', //$this->pObj->MOD_SETTINGS['recordsView_table'],

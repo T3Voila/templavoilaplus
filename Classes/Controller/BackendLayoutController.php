@@ -422,6 +422,12 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             $this->translatorMode = TRUE;
         }
 
+        // Initialize TemplaVoila API class:
+        $this->apiObj = CoreGeneralUtility::makeInstance(\Extension\Templavoila\Service\ApiService::class, $this->altRoot ? $this->altRoot : 'pages');
+        if (isset($this->modSharedTSconfig['properties']['useLiveWorkspaceForReferenceListUpdates'])) {
+            $this->apiObj->modifyReferencesInLiveWS(TRUE);
+        }
+
         // Initialize side bar and wizards:
         $this->sideBarObj =& CoreGeneralUtility::getUserObj('Extension\\Templavoila\\Module\\Mod1\\Sidebar', '');
         $this->sideBarObj->init($this);
@@ -429,12 +435,6 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
         $this->wizardsObj = CoreGeneralUtility::getUserObj('Extension\\Templavoila\\Module\\Mod1\\Wizards', '');
         $this->wizardsObj->init($this);
-
-        // Initialize TemplaVoila API class:
-        $this->apiObj = CoreGeneralUtility::makeInstance(\Extension\Templavoila\Service\ApiService::class, $this->altRoot ? $this->altRoot : 'pages');
-        if (isset($this->modSharedTSconfig['properties']['useLiveWorkspaceForReferenceListUpdates'])) {
-            $this->apiObj->modifyReferencesInLiveWS(TRUE);
-        }
         // Initialize the clipboard
         $this->clipboardObj =& CoreGeneralUtility::getUserObj('Extension\\Templavoila\\Module\\Mod1\\Clipboard', '');
         $this->clipboardObj->init($this);
@@ -771,33 +771,34 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 }
             }
         } else { // No access or no current page uid:
-            $cmd = CoreGeneralUtility::_GP('cmd');
-
-            if ($cmd == 'crPage') { // create a new page
-                $this->content .= $this->wizardsObj->renderWizard_createNewPage(CoreGeneralUtility::_GP('positionPid'));
+            if (!isset($pageInfoArr['uid'])) {
+                $this->moduleTemplate->addFlashMessage(
+                    \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('page_not_found'),
+                    \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('title'),
+                    \TYPO3\CMS\Core\Messaging\FlashMessage::INFO
+                );
             } else {
-                if (!isset($pageInfoArr['uid'])) {
-                    $this->moduleTemplate->addFlashMessage(
-                        \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('page_not_found'),
-                        \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('title'),
-                        \TYPO3\CMS\Core\Messaging\FlashMessage::INFO
-                    );
-                } else {
-                    $this->moduleTemplate->addFlashMessage(
-                        \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('default_introduction'),
-                        \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('title'),
-                        \TYPO3\CMS\Core\Messaging\FlashMessage::INFO
-                    );
-                }
+                $this->moduleTemplate->addFlashMessage(
+                    \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('default_introduction'),
+                    \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('title'),
+                    \TYPO3\CMS\Core\Messaging\FlashMessage::INFO
+                );
             }
+        }
+
+        $cmd = CoreGeneralUtility::_GP('cmd');
+        if ($cmd == 'crPage') { // create a new page
+            $this->content = $this->wizardsObj->renderWizard_createNewPage(CoreGeneralUtility::_GP('positionPid'));
         }
 
         $this->moduleTemplate->setTitle(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('title'));
         if (is_array($pageInfoArr)) {
             $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($pageInfoArr);
-            $this->moduleTemplate->getView()->assign('tabMenu', $this->render_sidebar());
+            if ($cmd != 'crPage') {
+                $this->moduleTemplate->getView()->assign('tabMenu', $this->render_sidebar());
+                $this->setDocHeaderButtons();
+            }
         }
-        $this->setDocHeaderButtons();
         $this->moduleTemplate->setContent($this->content);
     }
 

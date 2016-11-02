@@ -14,6 +14,7 @@ namespace Extension\Templavoila\Module\Mod1;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\SingletonInterface;
 
 /**
@@ -35,13 +36,6 @@ class Wizards implements SingletonInterface
      * @var \tx_templavoila_module1
      */
     public $pObj; // A pointer to the parent object, that is the templavoila page module script. Set by calling the method init() of this class.
-
-    /**
-     * A reference to the doc object of the parent object.
-     *
-     * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
-     */
-    public $doc;
 
     /**
      * A reference to extension key of the parent object.
@@ -69,7 +63,7 @@ class Wizards implements SingletonInterface
     {
         // Make local reference to some important variables:
         $this->pObj = $pObj;
-        $this->doc = $this->pObj->doc;
+        $this->moduleTemplate = $this->pObj->moduleTemplate;
         $this->extKey = $this->pObj->extKey;
         $this->apiObj = $this->pObj->apiObj;
     }
@@ -113,16 +107,32 @@ class Wizards implements SingletonInterface
                     // Get TSconfig for a different selection of fields in the editing form
                     $TSconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($newID, 'mod.web_txtemplavoilaM1.createPageWizard.fieldNames');
                     $fieldNames = trim(isset ($TSconfig['value']) ? $TSconfig['value'] : 'hidden,title,alias');
-                    $columnsOnly = '';
-                    if ($fieldNames !== '*') {
-                        $columnsOnly = '&columnsOnly=' . rawurlencode($fieldNames);
-                    }
+
+                    $returnUrl = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl(
+                        'web_txtemplavoilaM1',
+                        [
+                            'id' => $newID,
+                            'updatePageTree' => 1,
+                        ]
+                    );
 
                     // Create parameters and finally run the classic page module's edit form for the new page:
-                    $params = '&edit[pages][' . $newID . ']=edit' . $columnsOnly;
-                    $returnUrl = rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('SCRIPT_NAME') . '?id=' . $newID . '&updatePageTree=1');
-
-                    header('Location: ' . \TYPO3\CMS\Core\Utility\GeneralUtility::locationHeaderUrl($GLOBALS['BACK_PATH'] . 'alt_doc.php?returnUrl=' . $returnUrl . $params));
+                    header(
+                        'Location: ' . \TYPO3\CMS\Core\Utility\GeneralUtility::locationHeaderUrl(
+                            \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl(
+                                'record_edit',
+                                [
+                                    'returnUrl' => $returnUrl,
+                                    'edit' => [
+                                        'pages' => [
+                                            $newID => 'edit',
+                                        ],
+                                    ],
+                                    'columnsOnly' => $fieldNames,
+                                ]
+                            )
+                        )
+                    );
                     exit();
                 } else {
                     debug('Error: Could not create page!');
@@ -167,11 +177,31 @@ class Wizards implements SingletonInterface
                         $TSconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($newID, 'tx_templavoila.mod1.createPageWizard.fieldNames');
                         $fieldNames = isset ($TSconfig['value']) ? $TSconfig['value'] : 'hidden,title,alias';
 
-                        // Create parameters and finally run the classic page module's edit form for the new page:
-                        $params = '&edit[pages][' . $newID . ']=edit&columnsOnly=' . rawurlencode($fieldNames);
-                        $returnUrl = rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('SCRIPT_NAME') . '?id=' . $newID . '&updatePageTree=1');
+                        $returnUrl = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl(
+                            'web_txtemplavoilaM1',
+                            [
+                                'id' => $newID,
+                                'updatePageTree' => 1,
+                            ]
+                        );
 
-                        header('Location: ' . \TYPO3\CMS\Core\Utility\GeneralUtility::locationHeaderUrl($GLOBALS['BACK_PATH'] . 'alt_doc.php?returnUrl=' . $returnUrl . $params));
+                        // Create parameters and finally run the classic page module's edit form for the new page:
+                        header(
+                            'Location: ' . \TYPO3\CMS\Core\Utility\GeneralUtility::locationHeaderUrl(
+                                \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl(
+                                    'record_edit',
+                                    [
+                                        'returnUrl' => $returnUrl,
+                                        'edit' => [
+                                            'pages' => [
+                                                $newID => 'edit',
+                                            ],
+                                        ],
+                                        'columnsOnly' => $fieldNames,
+                                    ]
+                                )
+                            )
+                        );
                         exit();
                         // PLAIN COPY FROM ABOVE - END
                     } else {
@@ -182,56 +212,54 @@ class Wizards implements SingletonInterface
         }
         // Start assembling the HTML output
 
-        $this->doc->form = '<form action="' . htmlspecialchars('index.php?id=' . $this->pObj->id) . '" method="post" autocomplete="off" enctype="' . $TYPO3_CONF_VARS['SYS']['form_enctype'] . '" onsubmit="return TBE_EDITOR_checkSubmit(1);">';
-        $this->doc->divClass = '';
-        $this->doc->getTabMenu(0, '_', 0, array('' => ''));
+        $this->moduleTemplate->setForm(
+            '<form action="'
+            . \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl(
+                'web_txtemplavoilaM1',
+                [
+                    'id' => $this->pObj->id,
+                ]
+            )
+            . '" method="post" autocomplete="off" enctype="' . $TYPO3_CONF_VARS['SYS']['form_enctype'] . '" onsubmit="return TBE_EDITOR_checkSubmit(1);">'
+        );
+//         $this->moduleTemplate->getDynamicTabMenu(0, '_', 0, []);
 
         // init tceforms for javascript printing
-        $tceforms = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\FormEngine::class);
-        $tceforms->initDefaultBEMode();
-        $tceforms->doSaveFieldName = 'doSave';
+//         $tceforms = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\FormEngine::class);
+//         $tceforms->initDefaultBEMode();
+//         $tceforms->doSaveFieldName = 'doSave';
 
         // Setting up the context sensitive menu:
-        $CMparts = $this->doc->getContextMenuCode();
-        $this->doc->JScode .= $CMparts[0] . $tceforms->printNeededJSFunctions_top();
-        $this->doc->bodyTagAdditions = $CMparts[1];
-        $this->doc->postCode .= $CMparts[2] . $tceforms->printNeededJSFunctions();
-
-        // fix due to #13762
-        $this->doc->inDocStyles .= '.c-inputButton{ cursor:pointer; }';
+//         $CMparts = $this->doc->getContextMenuCode();
+//         $this->doc->JScode .= $CMparts[0] . $tceforms->printNeededJSFunctions_top();
+//         $this->doc->bodyTagAdditions = $CMparts[1];
+//         $this->doc->postCode .= $CMparts[2] . $tceforms->printNeededJSFunctions();
 
         $content = '';
-        $content .= $this->doc->header(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:db_new.php.pagetitle'));
-        $content .= $this->doc->startPage(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('createnewpage_title'));
+//         $content .= $this->doc->header(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:db_new.php.pagetitle'));
+        $this->moduleTemplate->setTitle(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('createnewpage_title'));
 
         // Add template selectors
         $tmplSelectorCode = '';
         $tmplSelector = $this->renderTemplateSelector($positionPid, 'tmplobj');
         if ($tmplSelector) {
-            $tmplSelectorCode .= $this->doc->spacer(5);
             $tmplSelectorCode .= $tmplSelector;
-            $tmplSelectorCode .= $this->doc->spacer(10);
         }
 
         $tmplSelector = $this->renderTemplateSelector($positionPid, 't3d');
         if ($tmplSelector) {
-            $tmplSelectorCode .= $this->doc->spacer(5);
             $tmplSelectorCode .= $tmplSelector;
-            $tmplSelectorCode .= $this->doc->spacer(10);
         }
 
         if ($tmplSelectorCode) {
             $content .= '<h3>' . htmlspecialchars(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('createnewpage_selecttemplate')) . '</h3>';
             $content .= \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('createnewpage_templateobject_description');
-            $content .= $this->doc->spacer(10);
             $content .= $tmplSelectorCode;
         }
 
         $content .= '<input type="hidden" name="positionPid" value="' . $positionPid . '" />';
         $content .= '<input type="hidden" name="doCreate" value="1" />';
         $content .= '<input type="hidden" name="cmd" value="crPage" />';
-
-        $content .= $this->doc->endPage();
 
         return $content;
     }
@@ -262,7 +290,8 @@ class Wizards implements SingletonInterface
 
         $storageFolderPID = $this->apiObj->getStorageFolderPid($parentPageId);
         $tmplHTML = array();
-        $defaultIcon = $GLOBALS['BACK_PATH'] . '../' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath($this->extKey) . 'Resources/Public/Image/default_previewicon.gif';
+        $defaultIcon = $this->pObj->getIconFactory()->getIcon('extensions-templavoila-default-preview-icon', Icon::SIZE_LARGE)->render();
+        $previewIcon = '';
 
         // look for TCEFORM.pages.tx_templavoila_ds.removeItems / TCEFORM.pages.tx_templavoila_to.removeItems
         $disallowedPageTemplateItems = $this->getDisallowedTSconfigItemsByFieldName($parentPageId, 'tx_templavoila_ds');
@@ -275,14 +304,15 @@ class Wizards implements SingletonInterface
                 $fakeRow = array('uid' => $parentPageId);
                 $defaultTO = $this->pObj->apiObj->getContentTree_fetchPageTemplateObject($fakeRow);
 
+                $previewIcon = $defaultIcon;
                 // Create the "Default template" entry
                 if ($defaultTO['previewicon']) {
-                    $previewIconFilename = (@is_file(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('uploads/tx_templavoila/' . $defaultTO['previewicon']))) ? ('../' . 'uploads/tx_templavoila/' . $defaultTO['previewicon']) : $defaultIcon;
-                } else {
-                    $previewIconFilename = $defaultIcon;
+                    if (@is_file(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('uploads/tx_templavoila/' . $defaultTO['previewicon']))) {
+                        $previewIcon = '<input type="image" class="c-inputButton" name="i0" value="0" src="' . '/uploads/tx_templavoila/' . $defaultTO['previewicon'] . '" title="" />';
+                        $previewIcon = '<img src="/uploads/tx_templavoila/' . $defaultTO['previewicon'] . '">';
+                    }
                 }
 
-                $previewIcon = '<input type="image" class="c-inputButton" name="i0" value="0" src="' . $previewIconFilename . '" title="" />';
                 $description = $defaultTO['description'] ? htmlspecialchars($defaultTO['description']) : \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('template_descriptiondefault', TRUE);
                 $tmplHTML [] = '<table style="float:left; width: 100%;" valign="top">
                 <tr>
@@ -290,7 +320,7 @@ class Wizards implements SingletonInterface
                         <h3 class="bgColor3-20">' . htmlspecialchars(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('template_titleInherit')) . '</h3>
                     </td>
                 </tr><tr>
-                    <td valign="top">' . $previewIcon . '</td>
+                    <td style="padding: 0 5px" valign="top"><button type="submit" name="data[tx_templavoila_to]" value="0" style="background: none; border: none;">' . $previewIcon . '</button></td>
                     <td width="120" valign="top">
                         <p><h4>' . htmlspecialchars(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL($defaultTO['title'])) . '</h4>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL($description) . '</p>
                     </td>
@@ -319,15 +349,18 @@ class Wizards implements SingletonInterface
                         }
 
                         $tmpFilename = $toObj->getIcon();
-                        $previewIconFilename = (@is_file(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(PATH_site . substr($tmpFilename, 3)))) ? ($tmpFilename) : $defaultIcon;
-                        // Note: we cannot use value of image input element because MSIE replaces this value with mouse coordinates! Thus on click we set value to a hidden field. See http://bugs.typo3.org/view.php?id=3376
-                        $previewIcon = '<input type="image" class="c-inputButton" name="i' . $row['uid'] . '" onclick="document.getElementById(\'data_tx_templavoila_to\').value=' . $toObj->getKey() . '" src="' . $previewIconFilename . '" title="" />';
+                        $previewIcon = $defaultIcon;
+                        if ($tmpFilename) {
+                            if (@is_file(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(PATH_site . $tmpFilename))) {
+                                // Note: we cannot use value of image input element because MSIE replaces this value with mouse coordinates! Thus on click we set value to a hidden field. See http://bugs.typo3.org/view.php?id=3376
+                                $previewIcon = '<img src="/' . $tmpFilename . '">';
+                            }
+                        }
                         $description = $toObj->getDescription() ? htmlspecialchars($toObj->getDescription()) : \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('template_nodescriptionavailable');
                         $tmplHTML [] = '<table style="width: 100%;" valign="top"><tr><td colspan="2" nowrap="nowrap"><h3 class="bgColor3-20">' . htmlspecialchars($toObj->getLabel()) . '</h3></td></tr>' .
-                            '<tr><td valign="top">' . $previewIcon . '</td><td width="120" valign="top"><p>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL($description) . '</p></td></tr></table>';
+                            '<tr><td style="padding: 0 5px" valign="top"><button type="submit" name="data[tx_templavoila_to]" value="' . $toObj->getKey() . '" style="background: none; border: none;">' . $previewIcon . '</button></td><td width="120" valign="top"><p>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL($description) . '</p></td></tr></table>';
                     }
                 }
-                $tmplHTML[] = '<input type="hidden" id="data_tx_templavoila_to" name="data[tx_templavoila_to]" value="0" />';
                 break;
 
             case 't3d':
