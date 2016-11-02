@@ -214,21 +214,8 @@ class Wizards implements SingletonInterface
             )
             . '" method="post" autocomplete="off" enctype="' . $TYPO3_CONF_VARS['SYS']['form_enctype'] . '" onsubmit="return TBE_EDITOR_checkSubmit(1);">'
         );
-//         $this->moduleTemplate->getDynamicTabMenu(0, '_', 0, []);
 
-        // init tceforms for javascript printing
-//         $tceforms = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\FormEngine::class);
-//         $tceforms->initDefaultBEMode();
-//         $tceforms->doSaveFieldName = 'doSave';
-
-        // Setting up the context sensitive menu:
-//         $CMparts = $this->doc->getContextMenuCode();
-//         $this->doc->JScode .= $CMparts[0] . $tceforms->printNeededJSFunctions_top();
-//         $this->doc->bodyTagAdditions = $CMparts[1];
-//         $this->doc->postCode .= $CMparts[2] . $tceforms->printNeededJSFunctions();
-
-        $content = '';
-//         $content .= $this->doc->header(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:db_new.php.pagetitle'));
+        $content = '<h3>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:db_new.php.pagetitle') . ':</h3>';
         $this->moduleTemplate->setTitle(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('createnewpage_title'));
 
         // Add template selectors
