@@ -312,7 +312,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      *
      * @var string
      */
-    protected $newContentWizModuleName = '_txtemplavoilaM1NewContentElement';
+    protected $newContentWizModuleName = 'new_content_element';
 
     /**
      * @var \TYPO3\CMS\Core\Messaging\FlashMessageService
@@ -386,8 +386,8 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         $this->modSharedTSconfig = BackendUtility::getModTSconfig($this->id, 'mod.SHARED');
         $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, CoreGeneralUtility::_GP('SET'), $this->moduleName);
 
-        $tmpTSc = BackendUtility::getModTSconfig($this->id, 'mod.web_list');
-        $this->newContentWizModuleName = $tmpTSc['properties']['newContentWiz.']['overrideWithExtension'];
+        $tsConfig = BackendUtility::getModTSconfig($this->id, 'mod');
+        $this->newContentWizModuleName = $tsConfig['properties']['newContentElementWizard.']['override'];
 
         $this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
 
