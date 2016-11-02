@@ -793,9 +793,11 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         }
 
         $this->moduleTemplate->setTitle(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('title'));
-        $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($pageInfoArr);
-        $this->setDocHeaderButtons(!isset($pageInfoArr['uid']));
-        $this->moduleTemplate->getView()->assign('tabMenu', $this->render_sidebar());
+        if (is_array($pageInfoArr)) {
+            $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($pageInfoArr);
+            $this->moduleTemplate->getView()->assign('tabMenu', $this->render_sidebar());
+        }
+        $this->setDocHeaderButtons();
         $this->moduleTemplate->setContent($this->content);
     }
 
@@ -819,16 +821,10 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     }
 
     /**
-     * Create the panel of buttons for submitting the form or otherwise perform operations.
-     *
-     * @param boolean $noButtons Determine whether to show any icons or not
+     * Create the buttons for top bar
      */
-    protected function setDocHeaderButtons($noButtons = FALSE)
+    protected function setDocHeaderButtons()
     {
-        if ($noButtons) {
-            return;
-        }
-
         // View page
         $this->addDocHeaderButton(
             'view',
@@ -928,8 +924,6 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             );
 
         }
-
-        return $buttons;
     }
 
     /**
