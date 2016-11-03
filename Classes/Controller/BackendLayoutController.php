@@ -387,7 +387,9 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, CoreGeneralUtility::_GP('SET'), $this->moduleName);
 
         $tsConfig = BackendUtility::getModTSconfig($this->id, 'mod');
-        $this->newContentWizModuleName = $tsConfig['properties']['newContentElementWizard.']['override'];
+        if (isset($tsConfig['properties']['newContentElementWizard.']['override'])) {
+            $this->newContentWizModuleName = $tsConfig['properties']['newContentElementWizard.']['override'];
+        }
 
         $this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
 
