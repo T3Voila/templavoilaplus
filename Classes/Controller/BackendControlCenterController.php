@@ -629,11 +629,25 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
         }
 
         if ($dsObj->isFilebased()) {
-            $onClick = 'document.location=\'' . $this->doc->backPath . 'file_edit.php?target=' . rawurlencode(CoreGeneralUtility::getFileAbsFileName($dsObj->getKey())) . '&returnUrl=' . rawurlencode(CoreGeneralUtility::sanitizeLocalUrl(CoreGeneralUtility::getIndpEnv('REQUEST_URI'))) . '\';';
-            $dsIcon = '<a href="#" onclick="' . htmlspecialchars($onClick) . '">' . $this->iconFactory->getIconForFileExtension('xml', Icon::SIZE_SMALL)->render() . '</a>';
+            $overlay = 'overlay-edit';
+            $fileName = CoreGeneralUtility::getFileAbsFileName($dsObj->getKey());
+            $editUrl = BackendUtility::getModuleUrl(
+                'file_edit',
+                [
+                    'target' => $fileName,
+                    // Edit file do not support returnUrl anymore
+                    // 'returnUrl' => CoreGeneralUtility::sanitizeLocalUrl(CoreGeneralUtility::getIndpEnv('REQUEST_URI')),
+                ]
+            );
+            if (!is_file($fileName)) {
+                $overlay = 'overlay-missing';
+            } elseif (!is_writable($fileName)) {
+                $overlay = 'overlay-locked';
+            }
+            $dsIcon = '<a href="' . htmlspecialchars($editUrl) . '">' . $this->iconFactory->getIconForFileExtension('xml', Icon::SIZE_SMALL, $overlay)->render() . '</a>';
         } else {
             $dsIcon = $this->iconFactory->getIconForRecord('tx_templavoila_datastructure', [], Icon::SIZE_SMALL)->render();
-            $dsIcon = BackendUtility::wrapClickMenuOnIcon($dsIcon, 'tx_templavoila_datastructure', $dsObj->getKey(), true, '&callingScriptId=' . rawurlencode($this->doc->scriptID));
+            $dsIcon = BackendUtility::wrapClickMenuOnIcon($dsIcon, 'tx_templavoila_datastructure', $dsObj->getKey(), true);
         }
 
         // Preview icon:
