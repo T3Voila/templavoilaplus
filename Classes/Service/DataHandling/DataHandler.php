@@ -610,7 +610,7 @@ page.10.disableExplosivePreview = 1
 		if (($table == 'pages') && is_array($data) && !$pObj->admin) {
 			$res = 1;
 			foreach ($data as $field => $value) {
-				if (in_array($table . '-' . $field, $pObj->exclude_array) || $pObj->data_disableFields[$table][$id][$field]) {
+				if (in_array($table . '-' . $field, $pObj->getExcludeListArray()) || $pObj->data_disableFields[$table][$id][$field]) {
 					continue;
 				}
 				// we're not inserting useful data - can't make a decission
