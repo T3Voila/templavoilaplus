@@ -125,6 +125,10 @@ div {
     border-style: none solid solid;
     border-width: medium 1px 1px;
     font-size: 10px;
+
+    th, td {
+        vertical-align: top;
+    }
 }
 
 .tpm-container-element-depth-odd {
@@ -165,7 +169,6 @@ div {
 }
 
 .tpm-element-control {
-    text-align: right;
     vertical-align: top;
 }
 
@@ -187,6 +190,9 @@ div {
         float: left;
         padding-right: 5px;
     }
+    .t3-js-clickmenutrigger {
+        margin-right: 5px;
+    }
 }
 
 .tpm-preview {
@@ -201,7 +207,7 @@ div {
 }
 
 .t3-page-ce {
-    margin-bottom: 0;
+    margin: 0;
 }
 
 .tpm-element {
@@ -235,13 +241,17 @@ div {
     .tpm-element-control {
         float: right;
         min-width: 120px;
-        height: 20px;
-        padding-right: 4px;
-        margin-top: 2px;
+
+        &:after {
+            content: ".";
+            clear: both;
+            display: block;
+            visibility: hidden;
+            height: 0px;
+        }
     }
 
     color: #fff;
-    height: 28px;
 }
 
 .t3-page-ce {
@@ -280,6 +290,7 @@ div {
             }
         }
     }
+
 }
 
 .inactive {
@@ -293,9 +304,37 @@ div {
 }
 
 .tpm-localisation-info-table {
+
+    th, td {
+        padding: 5px;
+    }
+
     tr {
         &.bgColor4 {
             color: inherit;
+        }
+
+        &.tpm-language-row {
+            // matches bgColor4
+            background-color: #f1f1f1;
+            color: #212424;
+            &:nth-child(even) {
+                background-color: lighten(#f1f1f1, 3%);
+            }
+
+        }
+
+        .tpm-language-edit, .tpm-language-info {
+            vertical-align: top;
+        }
+        .tpm-language-edit {
+            width: 1%;
+        }
+        .tpm-language-info {
+            width: 99%;
+            .t3js-icon {
+                margin-right: 4px;
+            }
         }
     }
 }

@@ -2106,9 +2106,9 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
                     if ($l10nInfo && \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->checkLanguageAccess($sys_language_uid)) {
                         $tRows[] = '
-                            <tr class="bgColor4">
-                                <td width="1%">' . $flagLink_begin . \Extension\Templavoila\Utility\IconUtility::getFlagIconForLanguage($sLInfo['flagIcon'], array('title' => $sLInfo['title'], 'alt' => $sLInfo['title'])) . $flagLink_end . '</td>
-                                <td width="99%">' . $l10nInfo . '</td>
+                            <tr class="tpm-language-row">
+                                <td class="tpm-language-edit">' . $flagLink_begin . \Extension\Templavoila\Utility\IconUtility::getFlagIconForLanguage($sLInfo['flagIcon'], array('title' => $sLInfo['title'], 'alt' => $sLInfo['title'])) . $flagLink_end . '</td>
+                                <td class="tpm-language-info">' . $l10nInfo . '</td>
                             </tr>';
                     }
                 }

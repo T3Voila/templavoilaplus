@@ -38,8 +38,8 @@ table {
 }
 
 div.warning {
-  background-color: #ddeef9;
-  border-color: #8aafc4;
+  background-color: #DDEEF9;
+  border-color: #8AAFC4;
   border: 1px solid;
   margin: 4px 0;
   padding: 6px;
@@ -73,7 +73,7 @@ div.warning a {
 .tpm-content-cell {
   vertical-align: top;
   padding: 5px;
-  border-left: 3px solid #5f5f5f;
+  border-left: 3px solid #5F5F5F;
   min-width: 120px;
 }
 
@@ -88,45 +88,47 @@ div.warning a {
 }
 
 .tpm-sub-elements {
-  border-color: #cacaca;
-  border-right: 1px solid #cacaca;
+  border-color: #CACACA;
+  border-right: 1px solid #CACACA;
   border-style: none solid solid;
   border-width: medium 1px 1px;
   font-size: 10px;
 }
+.tpm-sub-elements th, .tpm-sub-elements td {
+  vertical-align: top;
+}
 
 .tpm-container-element-depth-odd {
-  background: #eaeaea;
+  background: #EAEAEA;
 }
 
 .tpm-container-element-depth-even {
-  background: #f7f7f7;
+  background: #F7F7F7;
 }
 
 .active > .tpm-container-element {
-  color: black;
-  background-color: white;
+  color: #000000;
+  background-color: #FFFFFF;
 }
 .active > .tpm-container-element > a {
-  color: black;
+  color: #000000;
 }
 
 /* @todo find a proper "color" for referenced icons */
 .tpm-container-element {
-  color: #5f5f5f;
+  color: #5F5F5F;
   width: 100%;
   margin-bottom: 5px;
 }
 .tpm-container-element a {
-  color: #5f5f5f;
+  color: #5F5F5F;
 }
 .tpm-container-element .tpm-titlebar-fromOtherPage .t3-row-header {
-  background-color: #eaeaea;
-  background-image: -moz-linear-gradient(center top, #888888 10%, #5f5f5f 100%);
+  background-color: #EAEAEA;
+  background-image: -moz-linear-gradient(center top, #888888 10%, #5F5F5F 100%);
 }
 
 .tpm-element-control {
-  text-align: right;
   vertical-align: top;
 }
 
@@ -137,7 +139,7 @@ div.warning a {
 .tpm-element-title {
   min-width: 100px;
   margin-right: 140px;
-  vertical-align: top;
+  line-height: 15px;
   padding: 4px 1px 4px 5px;
 }
 .tpm-element-title a {
@@ -146,6 +148,9 @@ div.warning a {
 .tpm-element-title .tpm-langIcon {
   float: left;
   padding-right: 5px;
+}
+.tpm-element-title .t3-js-clickmenutrigger {
+  margin-right: 5px;
 }
 
 .tpm-preview ul {
@@ -158,7 +163,7 @@ div.warning a {
 }
 
 .t3-page-ce {
-  margin-bottom: 0;
+  margin: 0;
 }
 
 .tpm-element {
@@ -177,21 +182,22 @@ div.warning a {
   background: #FFF;
 }
 
+.t3-row-header {
+  color: #fff;
+}
 .t3-row-header .tpm-element-title {
   line-height: 18px;
 }
-
 .t3-row-header .tpm-element-control {
   float: right;
   min-width: 120px;
-  height: 22px;
-  padding-right: 4px;
 }
-
-.t3-row-header {
-  color: #fff;
-  padding: 1px;
-  height: 28px;
+.t3-row-header .tpm-element-control:after {
+  content: ".";
+  clear: both;
+  display: block;
+  visibility: hidden;
+  height: 0px;
 }
 
 .t3-page-ce {
@@ -202,7 +208,7 @@ div.warning a {
 }
 .t3-page-ce.inactive > .tpm-container-element > .tpm-titlebar > .t3-row-header {
   background: none;
-  color: black;
+  color: #000000;
   opacity: 0.5;
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
   filter: alpha(opacity=50);
@@ -220,8 +226,30 @@ div.warning a {
   filter: alpha(opacity=50);
 }
 
+.tpm-localisation-info-table th, .tpm-localisation-info-table td {
+  padding: 5px;
+}
 .tpm-localisation-info-table tr.bgColor4 {
   color: inherit;
+}
+.tpm-localisation-info-table tr.tpm-language-row {
+  background-color: #f1f1f1;
+  color: #212424;
+}
+.tpm-localisation-info-table tr.tpm-language-row:nth-child(even) {
+  background-color: #f9f9f9;
+}
+.tpm-localisation-info-table tr .tpm-language-edit, .tpm-localisation-info-table tr .tpm-language-info {
+  vertical-align: top;
+}
+.tpm-localisation-info-table tr .tpm-language-edit {
+  width: 1%;
+}
+.tpm-localisation-info-table tr .tpm-language-info {
+  width: 99%;
+}
+.tpm-localisation-info-table tr .tpm-language-info .t3js-icon {
+  margin-right: 4px;
 }
 
 .tpm-outline-table .tpm-container img, .tpm-outline-table .tpm-element img, .tpm-outline-table .tpm-elementRef img {
@@ -243,5 +271,5 @@ div.warning a {
 }
 
 .drag-placeholder {
-  background-color: #DDEEF9;
+  background-color: #8AAFC4;
 }
