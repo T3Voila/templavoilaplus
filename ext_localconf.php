@@ -26,7 +26,7 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1443361300] = [
     'class' => \Extension\Templavoila\Form\Container\FlexFormElementContainer::class,
 ];
 // Unregister stock TcaFlex* data provider and substitute with own data provider at the same position
-\Extension\Templavoila\Utility\FormEngineUtility::replaceInTcaDatabaseRecord(
+\Extension\Templavoila\Utility\FormEngineUtility::replaceInFormDataGroups(
     [
         \TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexProcess::class
             => \Extension\Templavoila\Form\FormDataProvider\TcaFlexProcess::class,

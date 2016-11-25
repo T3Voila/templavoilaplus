@@ -16,19 +16,26 @@ namespace Extension\Templavoila\Utility;
 
 class FormEngineUtility
 {
-    static public function replaceInTcaDatabaseRecord(array $replacements)
+    static public function replaceInFormDataGroups($replacements)
     {
-        $tcaDatabaseRecord = $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaDatabaseRecord'];
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup'] as $group => $_) {
+            static::replaceinFormDataGroup($replacements, $group);
+        }
+    }
+
+    static public function replaceinFormDataGroup(array $replacements, $group)
+    {
+        $groupProvider = $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup'][$group];
 
         // First replace keys
         foreach ($replacements as $from => $to) {
-            $tcaDatabaseRecord[$to] = $tcaDatabaseRecord[$from];
-            unset($tcaDatabaseRecord[$from]);
+            $groupProvider[$to] = $groupProvider[$from];
+            unset($groupProvider[$from]);
         }
 
         // Second replace items
         array_walk_recursive(
-            $tcaDatabaseRecord,
+            $groupProvider,
             function(&$item, $key, $replacements) {
                 if (isset($replacements[$item])) {
                     $item = $replacements[$item];
@@ -37,6 +44,6 @@ class FormEngineUtility
             $replacements
         );
 
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaDatabaseRecord'] = $tcaDatabaseRecord;
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup'][$group] = $groupProvider;
     }
 }
