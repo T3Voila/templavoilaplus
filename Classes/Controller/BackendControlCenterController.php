@@ -168,8 +168,6 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
      */
     public function main()
     {
-        global $BACK_PATH;
-
         // Access check!
         // The page will show only if there is a valid page and if this page may be viewed by the user
         $pageInfoArr = BackendUtility::readPageAccess($this->id, $this->perms_clause);
@@ -179,7 +177,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
             // Draw the header.
 
             // Add custom styles
-            $this->getPageRenderer()->addCssFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->extKey) . 'mod2/styles.css');
+            $this->getPageRenderer()->addCssFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->extKey) . 'Resources/Public/StyleSheet/mod2_default.css');
 
             $this->getPageRenderer()->loadJquery();
 
