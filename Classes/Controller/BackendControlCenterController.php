@@ -279,11 +279,12 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
      */
     protected function isDataAvailable()
     {
+        // We try TO first as DS may be outsourced into files which do not belong to PID
         return ($this->getCountTO($this->id) || $this->getCountDS($this->id));
     }
 
     /**
-     * Returns count of DS in given page id
+     * Returns real count of DS on given page id in contrast to dsRepository::getDatastructureCountForPid()
      *
      * @param integer $id Id of page to look into
      * @return integer Count of available DS
@@ -298,7 +299,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
     }
 
     /**
-     * Returns count of TO in given page id
+     * Returns count of TO in given page id should be same as tsRepository::getTemplateCountForPid()
      *
      * @param integer $id Id of page to look into
      * @return integer Count of available TO
