@@ -2117,7 +2117,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
                 if (isset($this->modTSconfig['properties']['newTvSiteFile'])) {
                     $inFile = CoreGeneralUtility::getFileAbsFileName($this->modTSconfig['properties']['newTVsiteTemplate']);
                 } else {
-                    $inFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('templavoila') . 'mod2/new_tv_site.xml';
+                    $inFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('templavoila') . 'Resources/Private/Template/new_tv_site.xml';
                 }
                 if (@is_file($inFile) && $import->loadFile($inFile, 1)) {
 
