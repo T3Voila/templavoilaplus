@@ -327,11 +327,12 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
         // Traverse the pages found and list in a table:
         $tRows = array();
         $tRows[] = '
-            <tr class="bgColor5 tableheader">
-                <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('storagefolders', true) . '</td>
-                <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('datastructures', true) . '</td>
-                <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('templateobjects', true) . '</td>
-            </tr>';
+            <thead>
+                <th class="col-icon" nowrap="nowrap"></th>
+                <th class="col-title" nowrap="nowrap">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('storagefolders', true) . '</th>
+                <th>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('datastructures', true) . '</th>
+                <th>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('templateobjects', true) . '</th>
+            </thead>';
 
         if (is_array($list)) {
             foreach ($list as $pid) {
@@ -339,10 +340,12 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
                 if ($path) {
                     $editUrl = BackendUtility::getModuleUrl($this->moduleName, array('id' => $pid));
                     $tRows[] = '
-                        <tr class="bgColor4">
-                            <td><a href="' . $editUrl . '" onclick="setHighlight(' . $pid . ')">' .
-                        \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', BackendUtility::getRecord('pages', $pid)) .
-                        htmlspecialchars($path) . '</a></td>
+                        <tr>
+                            <td class="col-icon" nowrap="nowrap">'
+                                . $this->iconFactory->getIconForRecord('pages', BackendUtility::getRecord('pages', $pid), Icon::SIZE_SMALL)->render()
+                            . '</td>'
+                            . '<td><a href="' . $editUrl . '" onclick="setHighlight(' . $pid . ')">'
+                            . htmlspecialchars($path) . '</a></td>
                             <td>' . $dsRepo->getDatastructureCountForPid($pid) . '</td>
                             <td>' . $toRepo->getTemplateCountForPid($pid) . '</td>
                         </tr>';
@@ -351,7 +354,8 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
 
             // Create overview
             $outputString = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('description_pagesWithCertainDsTo');
-            $outputString .= '<br /><table border="0" cellpadding="1" cellspacing="1" class="typo3-dblist">' . implode('', $tRows) . '</table>';
+            $outputString .= '<br/>';
+            $outputString .= '<table border="0" class="table table-striped table-hover">' . implode('', $tRows) . '</table>';
 
             // Add output:
             $this->content .= $outputString;
