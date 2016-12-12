@@ -389,11 +389,11 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
             switch ((string) $scopePointer) {
                 case \Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_PAGE:
                     $label = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('pagetemplates');
-                    $scopeIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', array());
+                    $scopeIcon = $this->iconFactory->getIconForRecord('pages', array(), Icon::SIZE_SMALL);
                     break;
                 case \Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_FCE:
                     $label = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('fces');
-                    $scopeIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('tt_content', array());
+                    $scopeIcon = $this->iconFactory->getIconForRecord('tt_content', array(), Icon::SIZE_SMALL);
                     break;
                 case \Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_UNKNOWN:
                     $label = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('other');
@@ -643,7 +643,9 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
             $editLink = $editDataprotLink = '';
             $dsTitle = $dsObj->getLabel();
         } else {
-            $editLink = $lpXML .= '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick('&edit[tx_templavoila_datastructure][' . $dsObj->getKey() . ']=edit', $this->doc->backPath)) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open') . '</a>';
+            $editLink = $lpXML .= '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick('&edit[tx_templavoila_datastructure][' . $dsObj->getKey() . ']=edit', $this->doc->backPath)) . '">'
+            . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render()
+            . '</a>';
             $dsTitle = '<a href="' . htmlspecialchars('../cm1/index.php?table=tx_templavoila_datastructure&uid=' . $dsObj->getKey() . '&id=' . $this->id . '&returnUrl=' . rawurlencode(CoreGeneralUtility::sanitizeLocalUrl(CoreGeneralUtility::getIndpEnv('REQUEST_URI')))) . '">' . htmlspecialchars($dsObj->getLabel()) . '</a>';
         }
         // Compile info table:
@@ -781,16 +783,16 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
                 $modified = ($toObj->getFilerefMtime() != $fileMtime);
             }
             if ($modified) {
-                $mappingStatus = $mappingStatus_index = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-warning');
+                $mappingStatus = $mappingStatus_index = $this->iconFactory->getIcon('status-dialog-warning', Icon::SIZE_SMALL)->render();
                 $mappingStatus .= sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('towasupdated', true), BackendUtility::datetime($toObj->getTstamp()));
                 $this->setErrorLog($scope, 'warning', sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('warning_mappingstatus', true), $mappingStatus, $toObj->getLabel()));
             } else {
-                $mappingStatus = $mappingStatus_index = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-ok');
+                $mappingStatus = $mappingStatus_index = $this->iconFactory->getIcon('status-dialog-ok', Icon::SIZE_SMALL)->render();
                 $mappingStatus .= \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mapping_uptodate', true);
             }
             $mappingStatus .= '<br/><input type="button" onclick="jumpToUrl(\'' . htmlspecialchars($linkUrl) . '\');" value="' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('update_mapping', true) . '" />';
         } elseif (!$fileMtime) {
-            $mappingStatus = $mappingStatus_index = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-error');
+            $mappingStatus = $mappingStatus_index = $this->iconFactory->getIcon('status-dialog-error', Icon::SIZE_SMALL)->render();
             $mappingStatus .= \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('notmapped', true);
             $this->setErrorLog($scope, 'fatal', sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('warning_mappingstatus', true), $mappingStatus, $toObj->getLabel()));
 
@@ -816,14 +818,18 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
                 $lpXML = '<pre>' . str_replace(chr(9), '&nbsp;&nbsp;&nbsp;', $hlObj->highLight_DS($toObj->getLocalDataprotXML(true))) . '</pre>';
             }
         }
-        $lpXML .= '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick('&edit[tx_templavoila_tmplobj][' . $toObj->getKey() . ']=edit&columnsOnly=localprocessing', $this->doc->backPath)) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open') . '</a>';
+        $lpXML .= '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick('&edit[tx_templavoila_tmplobj][' . $toObj->getKey() . ']=edit&columnsOnly=localprocessing', $this->doc->backPath)) . '">'
+        . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render()
+        . '</a>';
 
         // Compile info table:
         $tableAttribs = ' border="0" cellpadding="1" cellspacing="1" width="98%" style="margin-top: 3px;" class="lrPadding"';
 
         // Links:
         $toTitle = '<a href="' . htmlspecialchars($linkUrl) . '">' . htmlspecialchars(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL($toObj->getLabel())) . '</a>';
-        $editLink = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick('&edit[tx_templavoila_tmplobj][' . $toObj->getKey() . ']=edit', $this->doc->backPath)) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open') . '</a>';
+        $editLink = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick('&edit[tx_templavoila_tmplobj][' . $toObj->getKey() . ']=edit', $this->doc->backPath)) . '">'
+        . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render()
+        . '</a>';
 
         $fRWTOUres = array();
 
@@ -1077,7 +1083,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
                     . implode('', $output) . '
                 </table>';
             } else {
-                $outputString = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-warning') . 'No usage!';
+                $outputString = $this->iconFactory->getIcon('status-dialog-warning', Icon::SIZE_SMALL)->render() . 'No usage!';
                 $this->setErrorLog($scope, 'warning', sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('warning_mappingstatus', true), $outputString, $toObj->getLabel()));
             }
         }
@@ -1194,13 +1200,13 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
         $outputString = '';
         if (count($output)) {
             if (count($output) > 1) {
-                $outputString = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-error') .
+                $outputString = $this->iconFactory->getIcon('status-dialog-error', Icon::SIZE_SMALL)->render() .
                     sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('invalidtemplatevalues', true), count($output) - 1);
                 $this->setErrorLog($scope, 'fatal', $outputString);
 
                 $outputString .= '<table border="0" cellspacing="1" cellpadding="1" class="lrPadding">' . implode('', $output) . '</table>';
             } else {
-                $outputString = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-ok') .
+                $outputString = $this->iconFactory->getIcon('status-dialog-ok', Icon::SIZE_SMALL)->render() .
                     \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('noerrorsfound', true);
             }
         }
@@ -1253,13 +1259,15 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
                 $tRows[] = '
                     <tr class="' . ($i++ % 2 == 0 ? 'bgColor4' : 'bgColor6') . '">
                         <td>' .
-                    '<a href="' . htmlspecialchars($this->doc->backPath . '../' . substr($tFile, strlen(PATH_site))) . '" target="_blank">' .
-                    \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-view') . ' ' . htmlspecialchars(substr($tFile, strlen(PATH_site))) .
-                    '</a></td>
+                    '<a href="' . htmlspecialchars($this->doc->backPath . '../' . substr($tFile, strlen(PATH_site))) . '" target="_blank">'
+                    . $this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL)->render()
+                    . ' ' . htmlspecialchars(substr($tFile, strlen(PATH_site)))
+                    . '</a></td>
                 <td align="center">' . $count . '</td>
                         <td>' .
-                    '<a href="' . htmlspecialchars($this->cm1Link . '?id=' . $this->id . '&file=' . rawurlencode($tFile)) . '&mapElPath=%5BROOT%5D">' .
-                    \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-new') . ' ' . htmlspecialchars('Create...') .
+                    '<a href="' . htmlspecialchars($this->cm1Link . '?id=' . $this->id . '&file=' . rawurlencode($tFile)) . '&mapElPath=%5BROOT%5D">'
+                    . $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render()
+                    . ' ' . htmlspecialchars('Create...') .
                     '</a></td>
             </tr>';
             }
@@ -1291,13 +1299,15 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
                     $tRows[] = '
                         <tr class="' . ($i++ % 2 == 0 ? 'bgColor4' : 'bgColor6') . '">
                             <td>' .
-                        '<a href="' . htmlspecialchars($this->doc->backPath . '../' . substr($tFile, strlen(PATH_site))) . '" target="_blank">' .
-                        \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-view') . ' ' . htmlspecialchars(substr($tFile, strlen(PATH_site))) .
+                        '<a href="' . htmlspecialchars($this->doc->backPath . '../' . substr($tFile, strlen(PATH_site))) . '" target="_blank">'
+                        . $this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL)->render()
+                        . ' ' . htmlspecialchars(substr($tFile, strlen(PATH_site))) .
                         '</a></td>
                     <td align="center">' . ($this->tFileList[$tFile] ? $this->tFileList[$tFile] : '-') . '</td>
                             <td>' .
-                        '<a href="' . htmlspecialchars($this->cm1Link . '?id=' . $this->id . '&file=' . rawurlencode($tFile)) . '&mapElPath=%5BROOT%5D">' .
-                        \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-new') . ' ' . htmlspecialchars('Create...') .
+                        '<a href="' . htmlspecialchars($this->cm1Link . '?id=' . $this->id . '&file=' . rawurlencode($tFile)) . '&mapElPath=%5BROOT%5D">'
+                        . $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render()
+                        . ' ' . htmlspecialchars('Create...') .
                         '</a></td>
                 </tr>';
                 }
@@ -1401,7 +1411,8 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
 
             foreach ($DStree as $elm => $def) {
                 if (!is_array($def)) {
-                    $HTML .= '<p>' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-error') . sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('invaliddatastructure_xmlbroken', true), $elm) . '</p>';
+                    $HTML .= '<p>' . $this->iconFactory->getIcon('status-dialog-error', Icon::SIZE_SMALL)->render()
+                        . sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('invaliddatastructure_xmlbroken', true), $elm) . '</p>';
                     break;
                 }
 
@@ -1428,22 +1439,22 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
                     if (isset($def['langDisable'])) {
                         $conf .= '<li>' .
                             (($def['langDisable'] == 1)
-                                ? \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-error')
-                                : \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-ok')
+                                ? $this->iconFactory->getIcon('status-dialog-error', Icon::SIZE_SMALL)->render()
+                                : $this->iconFactory->getIcon('status-dialog-ok', Icon::SIZE_SMALL)->render()
                             ) . ' ' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('fceislocalized', true) . '</li>';
                     }
                     if (isset($def['langChildren'])) {
                         $conf .= '<li>' .
                             (($def['langChildren'] == 1)
-                                ? \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-ok')
-                                : \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-error')
+                                ? $this->iconFactory->getIcon('status-dialog-ok', Icon::SIZE_SMALL)->render()
+                                : $this->iconFactory->getIcon('status-dialog-error', Icon::SIZE_SMALL)->render()
                             ) . ' ' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('fceinlineislocalized', true) . '</li>';
                     }
                     if (isset($def['sheetSelector'])) {
                         $conf .= '<li>' .
                             (($def['sheetSelector'] != '')
-                                ? \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-ok')
-                                : \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-error')
+                                ? $this->iconFactory->getIcon('status-dialog-ok', Icon::SIZE_SMALL)->render()
+                                : $this->iconFactory->getIcon('status-dialog-error', Icon::SIZE_SMALL)->render()
                             ) . ' custom sheet-selector' .
                             (($def['sheetSelector'] != '')
                                 ? ' [<em>' . $def['sheetSelector'] . '</em>]'
@@ -1504,15 +1515,15 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
                             if (isset($tv['proc']) && isset($tv['proc']['int'])) {
                                 $proc .= '<li>' .
                                     (($tv['proc']['int'] == 1)
-                                        ? \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-ok')
-                                        : \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-error')
+                                        ? $this->iconFactory->getIcon('status-dialog-ok', Icon::SIZE_SMALL)->render()
+                                        : $this->iconFactory->getIcon('status-dialog-error', Icon::SIZE_SMALL)->render()
                                     ) . ' ' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('casttointeger', true) . '</li>';
                             }
                             if (isset($tv['proc']) && isset($tv['proc']['HSC'])) {
                                 $proc .= '<li>' .
                                     (($tv['proc']['HSC'] == 1)
-                                        ? \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-ok')
-                                        : \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-error')
+                                        ? $this->iconFactory->getIcon('status-dialog-ok', Icon::SIZE_SMALL)->render()
+                                        : $this->iconFactory->getIcon('status-dialog-error', Icon::SIZE_SMALL)->render()
                                     ) . ' ' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('hsced', true) .
                                     (($tv['proc']['HSC'] == 1)
                                         ? ' ' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('hsc_on', true)
@@ -1522,8 +1533,8 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
                             if (isset($tv['proc']) && isset($tv['proc']['stdWrap'])) {
                                 $proc .= '<li>' .
                                     (($tv['proc']['stdWrap'] != '')
-                                        ? \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-ok')
-                                        : \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-error')
+                                        ? $this->iconFactory->getIcon('status-dialog-ok', Icon::SIZE_SMALL)->render()
+                                        : $this->iconFactory->getIcon('status-dialog-error', Icon::SIZE_SMALL)->render()
                                     ) . ' ' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('stdwrap', true) . '</li>';
                             }
 
@@ -1684,7 +1695,8 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
 
             $HTML .= '</dl>';
         } else
-            $HTML .= '<p>' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-warning') . ' The element has no children!</p>';
+            $HTML .= '<p>' . $this->iconFactory->getIcon('status-dialog-warning', Icon::SIZE_SMALL)->render()
+                . ' The element has no children!</p>';
 
         return $HTML;
     }
@@ -1711,7 +1723,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
             } else {
                 // Errors in DS XML
                 return [
-                    'HTML' => '<p>' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-error') . $DScontent,
+                    'HTML' => '<p>' . $this->iconFactory->getIcon('status-dialog-error', Icon::SIZE_SMALL)->render() . $DScontent,
                 ];
             }
         }
