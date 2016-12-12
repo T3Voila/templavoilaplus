@@ -2187,7 +2187,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
             $outputString .= \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_step3ready') . '
                 <br/>
                 <br/>
-                <img src="mapbody_animation.gif" style="border: 2px black solid;" alt=""><br/>
+                <img src="Resources/Public/Image/mapbody_animation.gif" style="border: 2px black solid;" alt=""><br/>
                 <br/>
                 <br/><input type="submit" value="' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_startmapping', true) . '" onclick="' . htmlspecialchars('document.location=\'' . $url . '\'; return false;') . '" />
             ';
@@ -2207,7 +2207,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
         $url = '../cm1/index.php?table=tx_templavoila_tmplobj&uid=' . $this->wizardData['templateObjectId'] . '&SET[selectHeaderContent]=1&_reload_from=1&id=' . $this->id . '&returnUrl=' . rawurlencode('../mod2/index.php?SET[wiz_step]=5');
         $outputString = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_headerinclude') . '
             <br/>
-            <img src="maphead_animation.gif" style="border: 2px black solid;" alt=""><br/>
+            <img src="Resources/Public/Image/maphead_animation.gif" style="border: 2px black solid;" alt=""><br/>
             <br/>
             <br/><input type="submit" value="' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_headerselect') . '" onclick="' . htmlspecialchars('document.location=\'' . $url . '\'; return false;') . '" />
             ';
