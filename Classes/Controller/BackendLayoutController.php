@@ -831,7 +831,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         // View page
         $this->addDocHeaderButton(
             'view',
-            TemplavoilaGeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_core.php:labels.showPage', 1),
+            TemplavoilaGeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', 1),
             'actions-document-view'
         );
 
@@ -902,7 +902,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         if (TemplavoilaGeneralUtility::getBackendUser()->check('modules', 'web_list')) {
             $this->addDocHeaderButton(
                 'web_list',
-                TemplavoilaGeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_core.php:labels.showList', 1),
+                TemplavoilaGeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.showList', 1),
                 'actions-system-list-open',
                 [
                     'id' => $this->id,
