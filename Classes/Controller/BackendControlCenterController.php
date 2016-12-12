@@ -264,30 +264,52 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
      */
     public function renderModuleContent()
     {
-        // Select all Data Structures in the PID and put into an array:
-        $res = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTquery(
-            'count(*)',
-            'tx_templavoila_datastructure',
-            'pid=' . (int)$this->id . BackendUtility::deleteClause('tx_templavoila_datastructure')
-        );
-        list($countDS) = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_fetch_row($res);
-        \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_free_result($res);
-
-        // Select all Template Records in PID:
-        $res = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTquery(
-            'count(*)',
-            'tx_templavoila_tmplobj',
-            'pid=' . (int)$this->id . BackendUtility::deleteClause('tx_templavoila_tmplobj')
-        );
-        list($countTO) = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_fetch_row($res);
-        \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_free_result($res);
-
         // If there are TO/DS, render the module as usual, otherwise do something else...:
-        if ($countTO || $countDS) {
+        if ($this->isDataAvailable()) {
             $this->renderModuleContent_mainView();
         } else {
             $this->renderModuleContent_searchForTODS();
         }
+    }
+
+    /**
+     * Returns true if data TO or DS Data is available on this->id
+     *
+     * @return bool
+     */
+    protected function isDataAvailable()
+    {
+        return ($this->getCountTO($this->id) || $this->getCountDS($this->id));
+    }
+
+    /**
+     * Returns count of DS in given page id
+     *
+     * @param integer $id Id of page to look into
+     * @return integer Count of available DS
+     */
+    protected function getCountDS($id)
+    {
+        return $this->getDatabaseConnection()->exec_SELECTcountRows(
+            'uid',
+            'tx_templavoila_datastructure',
+            'pid=' . (int)$this->id . BackendUtility::deleteClause('tx_templavoila_datastructure')
+        );
+    }
+
+    /**
+     * Returns count of TO in given page id
+     *
+     * @param integer $id Id of page to look into
+     * @return integer Count of available TO
+     */
+    protected function getCountTO($id)
+    {
+        return $this->getDatabaseConnection()->exec_SELECTcountRows(
+            'uid',
+            'tx_templavoila_tmplobj',
+            'pid=' . (int)$this->id . BackendUtility::deleteClause('tx_templavoila_tmplobj')
+        );
     }
 
     /**
