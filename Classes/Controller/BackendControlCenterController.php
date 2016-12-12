@@ -94,11 +94,6 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
     public $extConf;
 
     /**
-     * @var string
-     */
-    public $cm1Link = '../cm1/index.php';
-
-    /**
      * @return void
      */
     public function init()
@@ -120,8 +115,6 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
     public function menuConfig()
     {
         $this->MOD_MENU = [
-            'set_details' => '',
-            'set_unusedDs' => '',
         ];
 
         // page/be_user TSconfig settings and blinding of menu-items
@@ -209,21 +202,14 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
             $this->content = $flashMessage->render();
         }
 
-        $this->moduleTemplate->setTitle(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('title'));
+        $title = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('title');
+        $header = $this->moduleTemplate->header($title);
+        $this->moduleTemplate->setTitle($title);
+
         $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($pageInfoArr);
         $this->setDocHeaderButtons(!isset($pageInfoArr['uid']));
 
-        $this->moduleTemplate->setContent($this->content);
-    }
-
-    /**
-     * Prints out the module HTML
-     *
-     * @return void
-     */
-    public function printContent()
-    {
-        echo $this->moduleTemplate->renderContent();
+        $this->moduleTemplate->setContent($header . $this->content);
     }
 
     /**
@@ -345,7 +331,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
             $outputString .= '<br /><table border="0" cellpadding="1" cellspacing="1" class="typo3-dblist">' . implode('', $tRows) . '</table>';
 
             // Add output:
-            $this->content .= $this->moduleTemplate->section(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('title'), $outputString, 0, 1);
+            $this->content .= $outputString;
         }
     }
 
@@ -440,22 +426,8 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
             );
         }
 
-        $showDetails = sprintf(' <label for="set_details">%s</label> &nbsp;&nbsp;&nbsp;', \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('showdetails', true));
-        $showUnused = sprintf(' <label for="set_details">%s</label> &nbsp;&nbsp;&nbsp;', \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('showuused', true));
-
-        // Create setting handlers:
-        $settings = '<p>' .
-            BackendUtility::getFuncCheck('', 'SET[set_details]', $this->MOD_SETTINGS['set_details'], 'index.php', CoreGeneralUtility::implodeArrayForUrl('', $_GET, '', 1, 1), 'id="set_details"') . $showDetails .
-            BackendUtility::getFuncCheck('', 'SET[set_unusedDs]', $this->MOD_SETTINGS['set_unusedDs'], 'index.php', CoreGeneralUtility::implodeArrayForUrl('', $_GET, '', 1, 1), 'id="set_unusedDs"') . $showUnused .
-            '</p>';
-
         // Add output:
-        $this->content .= $this->moduleTemplate->section(
-            \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('title'),
-            $settings . $this->moduleTemplate->getDynamicTabMenu($parts, 'TEMPLAVOILA:templateOverviewModule:' . $this->id, 1, 0, 300),
-            0,
-            1
-        );
+        $this->content .= $this->moduleTemplate->getDynamicTabMenu($parts, 'TEMPLAVOILA:templateOverviewModule:' . $this->id, 1, 0, 300);
     }
 
     /**
