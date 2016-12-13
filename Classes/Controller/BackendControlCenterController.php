@@ -505,6 +505,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
                         $TOcontent .= '<a name="to-' . $toObj->getKey() . '"></a>' . $rTODres['HTML'];
                         $indexTO .= '
                             <tr class="bgColor4">
+                                <td></td>
                                 <td>&nbsp;&nbsp;&nbsp;</td>
                                 <td><a href="#to-' . $toObj->getKey() . '">' . htmlspecialchars($toObj->getLabel()) . $toObj->hasParentTemplate() . '</a></td>
                                 <td>&nbsp;</td>
@@ -538,6 +539,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
                 $content .= '<a name="ds-' . md5($dsObj->getKey()) . '"></a>' . $rDSDres['HTML'];
                 $index .= '
                     <tr class="bgColor4-20">
+                        <td></td>
                         <td colspan="2"><a href="#ds-' . md5($dsObj->getKey()) . '">' . htmlspecialchars($dsObj->getLabel()) . '</a></td>
                         <td align="center">' . $rDSDres['languageMode'] . '</td>
                         <td>' . $rDSDres['container'] . '</td>
@@ -556,20 +558,19 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
             }
         }
 
-        if ($index) {
-            $content = '<h4>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('overview', true) . '</h4>
-                        <table border="0" cellpadding="0" cellspacing="1">
-                            <tr class="bgColor5 tableheader">
-                                <td colspan="2">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('dstotitle', true) . '</td>
-                                <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('localization', true) . '</td>
-                                <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('containerstatus', true) . '</td>
-                                <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mappingstatus', true) . '</td>
-                                <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('usagecount', true) . '</td>
-                            </tr>
-                        ' . $index . '
-                        </table>' .
-                $content;
-        }
+        $content = '
+            <table border="0" class="table table-striped table-hover">
+                <thead>
+                    <th class="col-icon" nowrap="nowrap"></th>
+                    <th class="col-title" nowrap="nowrap" colspan="2">' . TemplavoilaGeneralUtility::getLanguageService()->getLL('dstotitle', true) . '</td>
+                    <th>' . TemplavoilaGeneralUtility::getLanguageService()->getLL('localization', true) . '</th>
+                    <th>' . TemplavoilaGeneralUtility::getLanguageService()->getLL('containerstatus', true) . '</th>
+                    <th>' . TemplavoilaGeneralUtility::getLanguageService()->getLL('mappingstatus', true) . '</th>
+                    <th>' . TemplavoilaGeneralUtility::getLanguageService()->getLL('usagecount', true) . '</th>
+                </thead>
+            ' . $index . '
+            </table>'
+            . $content;
 
         return array($content, $dsCount, $toCount, $toIdArray);
     }
