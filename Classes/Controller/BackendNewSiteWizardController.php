@@ -128,7 +128,6 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
     {
         $this->MOD_MENU = array(
             'set_details' => '',
-            'set_unusedDs' => '',
             'wiz_step' => ''
         );
 

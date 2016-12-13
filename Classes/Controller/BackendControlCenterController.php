@@ -472,11 +472,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
         /** @var \Extension\Templavoila\Domain\Repository\TemplateRepository $toRepo */
         $toRepo = CoreGeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\TemplateRepository::class);
 
-        if ($this->MOD_SETTINGS['set_unusedDs']) {
-            $dsList = $dsRepo->getDatastructuresByScope($scope);
-        } else {
-            $dsList = $dsRepo->getDatastructuresByStoragePidAndScope($currentPid, $scope);
-        }
+        $dsList = $dsRepo->getDatastructuresByStoragePidAndScope($currentPid, $scope);
 
         $dsCount = 0;
         $toCount = 0;
