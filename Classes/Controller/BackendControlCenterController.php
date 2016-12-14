@@ -677,12 +677,12 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
         ';
 
         // Format XML if requested (renders VERY VERY slow)
-        if ($this->MOD_SETTINGS['set_showDSxml']) {
-            if ($dsObj->getDataprotXML()) {
-                $hlObj = CoreGeneralUtility::makeInstance(\Extension\Templavoila\Service\SyntaxHighlightingService::class);
-                $content .= '<pre>' . str_replace(chr(9), '&nbsp;&nbsp;&nbsp;', $hlObj->highLight_DS($dsObj->getDataprotXML())) . '</pre>';
-            }
-        }
+//         if ($this->MOD_SETTINGS['set_showDSxml']) {
+//             if ($dsObj->getDataprotXML()) {
+//                 $hlObj = CoreGeneralUtility::makeInstance(\Extension\Templavoila\Service\SyntaxHighlightingService::class);
+//                 $content .= '<pre>' . str_replace(chr(9), '&nbsp;&nbsp;&nbsp;', $hlObj->highLight_DS($dsObj->getDataprotXML())) . '</pre>';
+//             }
+//         }
 
         $containerMode = '';
         if ($XMLinfo['referenceFields']) {
@@ -725,7 +725,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
     {
         // Put together the records icon including content sensitive menu link wrapped around it:
         $recordIcon = $this->iconFactory->getIconForRecord('tx_templavoila_tmplobj', [], Icon::SIZE_SMALL)->render();
-        $recordIcon = BackendUtility::wrapClickMenuOnIcon($recordIcon, 'tx_templavoila_tmplobj', $toObj->getKey(), true, '&callingScriptId=' . rawurlencode($this->doc->scriptID));
+        $recordIcon = BackendUtility::wrapClickMenuOnIcon($recordIcon, 'tx_templavoila_tmplobj', $toObj->getKey(), true);
 
         // Preview icon:
         if ($toObj->getIcon()) {
@@ -1744,13 +1744,11 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
             }
         }
 
-        /*    $DScontent = array('meta' => $DScontent['meta']);    */
-
         $languageMode = '';
         if (is_array($DScontent['meta'])) {
-            if ($DScontent['meta']['langDisable']) {
+            if (isset($DScontent['meta']['langDisable']) && $DScontent['meta']['langDisable']) {
                 $languageMode = 'Disabled';
-            } elseif ($DScontent['meta']['langChildren']) {
+            } elseif (isset($DScontent['meta']['langChildren']) && $DScontent['meta']['langChildren']) {
                 $languageMode = 'Inheritance';
             } else {
                 $languageMode = 'Separate';
@@ -1758,10 +1756,6 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
         }
 
         return array(
-            'HTML' => /*CoreGeneralUtility::view_array($DScontent).'Language Mode => "'.$languageMode.'"<hr/>
-                        Root Elements = '.$rootelements.', hereof ref/input fields = '.($referenceFields.'/'.$inputFields).'<hr/>
-                        '.$rootElementsHTML*/
-                $this->renderDSdetails($DScontent),
             'languageMode' => $languageMode,
             'rootelements' => $rootelements,
             'inputFields' => $inputFields,

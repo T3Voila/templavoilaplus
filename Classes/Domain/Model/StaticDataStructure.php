@@ -47,8 +47,11 @@ class StaticDataStructure extends AbstractDataStructure
 
         $this->setLabel($conf[$key]['title']);
         $this->setScope($conf[$key]['scope']);
-        // path relative to typo3 maindir
-        $this->setIcon('../' . $conf[$key]['icon']);
+
+        if (isset($conf[$key]['icon'])) {
+            // path relative to typo3 maindir
+            $this->setIcon('../' . $conf[$key]['icon']);
+        }
     }
 
     /**
@@ -58,12 +61,16 @@ class StaticDataStructure extends AbstractDataStructure
     {
         $pids = array();
         $toList = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTgetRows(
-            'tx_templavoila_tmplobj.uid,tx_templavoila_tmplobj.pid',
+            'pid',
             'tx_templavoila_tmplobj',
-            'tx_templavoila_tmplobj.datastructure=' . \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr($this->filename, 'tx_templavoila_tmplobj') . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoila_tmplobj')
+            'tx_templavoila_tmplobj.datastructure='
+                . \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr($this->filename, 'tx_templavoila_tmplobj')
+                . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoila_tmplobj'),
+            'pid'
         );
+
         foreach ($toList as $toRow) {
-            $pids[$toRow['pid']]++;
+            $pids[$toRow['pid']] = 1;
         }
 
         return implode(',', array_keys($pids));
