@@ -20,164 +20,174 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @author Tolleiv Nietsch <tolleiv.nietsch@typo3.org>
  */
-class StaticDataStructure extends AbstractDataStructure {
+class StaticDataStructure extends AbstractDataStructure
+{
+    /**
+     * @var string
+     */
+    protected $filename;
 
-	/**
-	 * @var string
-	 */
-	protected $filename;
+    /**
+     * @throws \InvalidArgumentException
+     *
+     * @param integer $key
+     */
+    public function __construct($key)
+    {
+        $conf = \Extension\Templavoila\Domain\Repository\DataStructureRepository::getStaticDatastructureConfiguration();
 
-	/**
-	 * @throws \InvalidArgumentException
-	 *
-	 * @param integer $key
-	 */
-	public function __construct($key) {
+        if (!isset($conf[$key])) {
+            throw new \InvalidArgumentException(
+                'Argument was supposed to be an existing datastructure',
+                1283192644
+            );
+        }
 
-		$conf = \Extension\Templavoila\Domain\Repository\DataStructureRepository::getStaticDatastructureConfiguration();
+        $this->filename = $conf[$key]['path'];
 
-		if (!isset($conf[$key])) {
-			throw new \InvalidArgumentException(
-				'Argument was supposed to be an existing datastructure',
-				1283192644
-			);
-		}
+        $this->setLabel($conf[$key]['title']);
+        $this->setScope($conf[$key]['scope']);
+        // path relative to typo3 maindir
+        $this->setIcon('../' . $conf[$key]['icon']);
+    }
 
-		$this->filename = $conf[$key]['path'];
+    /**
+     * @return string;
+     */
+    public function getStoragePids()
+    {
+        $pids = array();
+        $toList = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTgetRows(
+            'tx_templavoila_tmplobj.uid,tx_templavoila_tmplobj.pid',
+            'tx_templavoila_tmplobj',
+            'tx_templavoila_tmplobj.datastructure=' . \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr($this->filename, 'tx_templavoila_tmplobj') . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoila_tmplobj')
+        );
+        foreach ($toList as $toRow) {
+            $pids[$toRow['pid']]++;
+        }
 
-		$this->setLabel($conf[$key]['title']);
-		$this->setScope($conf[$key]['scope']);
-		// path relative to typo3 maindir
-		$this->setIcon('../' . $conf[$key]['icon']);
-	}
+        return implode(',', array_keys($pids));
+    }
 
-	/**
-	 * @return string;
-	 */
-	public function getStoragePids() {
-		$pids = array();
-		$toList = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTgetRows(
-			'tx_templavoila_tmplobj.uid,tx_templavoila_tmplobj.pid',
-			'tx_templavoila_tmplobj',
-			'tx_templavoila_tmplobj.datastructure=' . \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr($this->filename, 'tx_templavoila_tmplobj') . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoila_tmplobj')
-		);
-		foreach ($toList as $toRow) {
-			$pids[$toRow['pid']]++;
-		}
+    /**
+     * @return string - the filename
+     */
+    public function getKey()
+    {
+        return $this->filename;
+    }
 
-		return implode(',', array_keys($pids));
-	}
+    /**
+     * Provides the datastructure configuration as XML
+     *
+     * @return string
+     */
+    public function getDataprotXML()
+    {
+        $xml = '';
+        $file = GeneralUtility::getFileAbsFileName($this->filename);
+        if (is_readable($file)) {
+            $xml = file_get_contents($file);
+        } else {
+            // @todo find out if that happens and whether there's a "useful" reaction for that
+        }
 
-	/**
-	 * @return string - the filename
-	 */
-	public function getKey() {
-		return $this->filename;
-	}
+        return $xml;
+    }
 
-	/**
-	 * Provides the datastructure configuration as XML
-	 *
-	 * @return string
-	 */
-	public function getDataprotXML() {
-		$xml = '';
-		$file = GeneralUtility::getFileAbsFileName($this->filename);
-		if (is_readable($file)) {
-			$xml = file_get_contents($file);
-		} else {
-			// @todo find out if that happens and whether there's a "useful" reaction for that
-		}
+    /**
+     * Determine whether the current user has permission to create elements based on this
+     * datastructure or not - not really useable for static datastructure but relevant for
+     * the overall system
+     *
+     * @param mixed $parentRow
+     * @param mixed $removeItems
+     *
+     * @return boolean
+     */
+    public function isPermittedForUser($parentRow = array(), $removeItems = array())
+    {
+        return true;
+    }
 
-		return $xml;
-	}
+    /**
+     * Enables to determine whether this element is based on a record or on a file
+     * Required for view-related tasks (edit-icons)
+     *
+     * @return boolean
+     */
+    public function isFilebased()
+    {
+        return true;
+    }
 
-	/**
-	 * Determine whether the current user has permission to create elements based on this
-	 * datastructure or not - not really useable for static datastructure but relevant for
-	 * the overall system
-	 *
-	 * @param mixed $parentRow
-	 * @param mixed $removeItems
-	 *
-	 * @return boolean
-	 */
-	public function isPermittedForUser($parentRow = array(), $removeItems = array()) {
-		return TRUE;
-	}
+    /**
+     * Retrieve the filereference of the template
+     *
+     * @return integer
+     */
+    public function getTstamp()
+    {
+        $file = GeneralUtility::getFileAbsFileName($this->filename);
+        if (is_readable($file)) {
+            $tstamp = filemtime($file);
+        } else {
+            $tstamp = 0;
+        }
 
-	/**
-	 * Enables to determine whether this element is based on a record or on a file
-	 * Required for view-related tasks (edit-icons)
-	 *
-	 * @return boolean
-	 */
-	public function isFilebased() {
-		return TRUE;
-	}
+        return $tstamp;
+    }
 
-	/**
-	 * Retrieve the filereference of the template
-	 *
-	 * @return integer
-	 */
-	public function getTstamp() {
-		$file = GeneralUtility::getFileAbsFileName($this->filename);
-		if (is_readable($file)) {
-			$tstamp = filemtime($file);
-		} else {
-			$tstamp = 0;
-		}
+    /**
+     * Retrieve the filereference of the template
+     *
+     * @return integer
+     */
+    public function getCrdate()
+    {
+        $file = GeneralUtility::getFileAbsFileName($this->filename);
+        if (is_readable($file)) {
+            $tstamp = filectime($file);
+        } else {
+            $tstamp = 0;
+        }
 
-		return $tstamp;
-	}
+        return $tstamp;
+    }
 
-	/**
-	 * Retrieve the filereference of the template
-	 *
-	 * @return integer
-	 */
-	public function getCrdate() {
-		$file = GeneralUtility::getFileAbsFileName($this->filename);
-		if (is_readable($file)) {
-			$tstamp = filectime($file);
-		} else {
-			$tstamp = 0;
-		}
+    /**
+     * Retrieve the filereference of the template
+     *
+     * @return integer
+     */
+    public function getCruser()
+    {
+        return 0;
+    }
 
-		return $tstamp;
-	}
+    /**
+     * @param void
+     *
+     * @return mixed
+     */
+    public function getBeLayout()
+    {
+        $beLayout = false;
+        $file = substr(GeneralUtility::getFileAbsFileName($this->filename), 0, -3) . 'html';
+        if (file_exists($file)) {
+            $beLayout = GeneralUtility::getUrl($file);
+        }
 
-	/**
-	 * Retrieve the filereference of the template
-	 *
-	 * @return integer
-	 */
-	public function getCruser() {
-		return 0;
-	}
+        return $beLayout;
+    }
 
-	/**
-	 * @param void
-	 *
-	 * @return mixed
-	 */
-	public function getBeLayout() {
-		$beLayout = FALSE;
-		$file = substr(GeneralUtility::getFileAbsFileName($this->filename), 0, -3) . 'html';
-		if (file_exists($file)) {
-			$beLayout = GeneralUtility::getUrl($file);
-		}
-
-		return $beLayout;
-	}
-
-	/**
-	 * @param void
-	 *
-	 * @return string
-	 */
-	public function getSortingFieldValue() {
-		return $this->getLabel(); // required to resolve LLL texts
-	}
+    /**
+     * @param void
+     *
+     * @return string
+     */
+    public function getSortingFieldValue()
+    {
+        return $this->getLabel(); // required to resolve LLL texts
+    }
 }

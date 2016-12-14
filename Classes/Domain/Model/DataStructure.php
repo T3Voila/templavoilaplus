@@ -19,163 +19,174 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Class to provide unique access to datastructure
  */
-class DataStructure extends AbstractDataStructure {
+class DataStructure extends AbstractDataStructure
+{
+    /**
+     * @var array
+     */
+    protected $row;
 
-	/**
-	 * @var array
-	 */
-	protected $row;
+    /**
+     * @var string
+     */
+    protected $sortbyField;
 
-	/**
-	 * @var string
-	 */
-	protected $sortbyField;
+    /**
+     * @param integer $uid
+     */
+    public function __construct($uid)
+    {
+        // getting the DS for the DB and make sure the workspace-overlay is performed (done internally)
+        if (TYPO3_MODE === 'FE') {
+            $this->row = $GLOBALS['TSFE']->sys_page->checkRecord('tx_templavoila_datastructure', $uid);
+        } else {
+            $this->row = BackendUtility::getRecordWSOL('tx_templavoila_datastructure', $uid);
+        }
 
-	/**
-	 * @param integer $uid
-	 */
-	public function __construct($uid) {
-		// getting the DS for the DB and make sure the workspace-overlay is performed (done internally)
-		if (TYPO3_MODE === 'FE') {
-			$this->row = $GLOBALS['TSFE']->sys_page->checkRecord('tx_templavoila_datastructure', $uid);
-		} else {
-			$this->row = BackendUtility::getRecordWSOL('tx_templavoila_datastructure', $uid);
-		}
+        $this->setLabel($this->row['title']);
+        $this->setScope($this->row['scope']);
+        // path relative to typo3 maindir
+        $this->setIcon('../uploads/tx_templavoila/' . $this->row['previewicon']);
+        $this->setSortbyField($GLOBALS['TCA']['tx_templavoila_datastructure']['ctrl']['sortby']);
+    }
 
-		$this->setLabel($this->row['title']);
-		$this->setScope($this->row['scope']);
-		// path relative to typo3 maindir
-		$this->setIcon('../uploads/tx_templavoila/' . $this->row['previewicon']);
-		$this->setSortbyField($GLOBALS['TCA']['tx_templavoila_datastructure']['ctrl']['sortby']);
-	}
+    /**
+     * @return string;
+     */
+    public function getStoragePids()
+    {
+        return $this->row['pid'];
+    }
 
-	/**
-	 * @return string;
-	 */
-	public function getStoragePids() {
-		return $this->row['pid'];
-	}
+    /**
+     * @return string - numeric string
+     */
+    public function getKey()
+    {
+        return $this->row['uid'];
+    }
 
-	/**
-	 * @return string - numeric string
-	 */
-	public function getKey() {
-		return $this->row['uid'];
-	}
+    /**
+     * Provides the datastructure configuration as XML
+     *
+     * @return string
+     */
+    public function getDataprotXML()
+    {
+        return $this->row['dataprot'];
+    }
 
-	/**
-	 * Provides the datastructure configuration as XML
-	 *
-	 * @return string
-	 */
-	public function getDataprotXML() {
-		return $this->row['dataprot'];
-	}
+    /**
+     * Determine whether the current user has permission to create elements based on this
+     * datastructure or not
+     *
+     * @param array $parentRow
+     * @param array $removeItems
+     *
+     * @return boolean
+     */
+    public function isPermittedForUser($parentRow = array(), $removeItems = array())
+    {
+        if (\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isAdmin()) {
+            return true;
+        } else {
+            if (in_array($this->getKey(), $removeItems)) {
+                return false;
+            }
+        }
+        $permission = true;
+        $denyItems = \Extension\Templavoila\Utility\GeneralUtility::getDenyListForUser();
 
-	/**
-	 * Determine whether the current user has permission to create elements based on this
-	 * datastructure or not
-	 *
-	 * @param array $parentRow
-	 * @param array $removeItems
-	 *
-	 * @return boolean
-	 */
-	public function isPermittedForUser($parentRow = array(), $removeItems = array()) {
-		if (\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isAdmin()) {
-			return TRUE;
-		} else {
-			if (in_array($this->getKey(), $removeItems)) {
-				return FALSE;
-			}
-		}
-		$permission = TRUE;
-		$denyItems = \Extension\Templavoila\Utility\GeneralUtility::getDenyListForUser();
+        $currentSetting = $parentRow['tx_templavoila_ds'];
+        if ($this->getScope() == static::SCOPE_PAGE) {
+            $inheritSetting = $parentRow['tx_templavoila_next_ds'];
+        } else {
+            $inheritSetting = -1;
+        }
 
-		$currentSetting = $parentRow['tx_templavoila_ds'];
-		if ($this->getScope() == static::SCOPE_PAGE) {
-			$inheritSetting = $parentRow['tx_templavoila_next_ds'];
-		} else {
-			$inheritSetting = -1;
-		}
+        $key = 'tx_templavoila_datastructure:' . $this->getKey();
+        if (in_array($key, $denyItems) &&
+            $key != $currentSetting &&
+            $key != $inheritSetting
+        ) {
+            $permission = false;
+        }
 
-		$key = 'tx_templavoila_datastructure:' . $this->getKey();
-		if (in_array($key, $denyItems) &&
-			$key != $currentSetting &&
-			$key != $inheritSetting
-		) {
-			$permission = FALSE;
-		}
+        return $permission;
+    }
 
-		return $permission;
-	}
+    /**
+     * Retrieve the filereference of the template
+     *
+     * @return string
+     */
+    public function getTstamp()
+    {
+        return $this->row['tstamp'];
+    }
 
-	/**
-	 * Retrieve the filereference of the template
-	 *
-	 * @return string
-	 */
-	public function getTstamp() {
-		return $this->row['tstamp'];
-	}
+    /**
+     * Retrieve the filereference of the template
+     *
+     * @return string
+     */
+    public function getCrdate()
+    {
+        return $this->row['crdate'];
+    }
 
-	/**
-	 * Retrieve the filereference of the template
-	 *
-	 * @return string
-	 */
-	public function getCrdate() {
-		return $this->row['crdate'];
-	}
+    /**
+     * Retrieve the filereference of the template
+     *
+     * @return string
+     */
+    public function getCruser()
+    {
+        return $this->row['cruser_id'];
+    }
 
-	/**
-	 * Retrieve the filereference of the template
-	 *
-	 * @return string
-	 */
-	public function getCruser() {
-		return $this->row['cruser_id'];
-	}
+    /**
+     * @param void
+     *
+     * @return mixed
+     */
+    public function getBeLayout()
+    {
+        $beLayout = false;
+        if ($this->row['belayout']) {
+            $beLayout = GeneralUtility::getURL(GeneralUtility::getFileAbsFileName($this->row['belayout']));
+        }
 
-	/**
-	 * @param void
-	 *
-	 * @return mixed
-	 */
-	public function getBeLayout() {
-		$beLayout = FALSE;
-		if ($this->row['belayout']) {
-			$beLayout = GeneralUtility::getURL(GeneralUtility::getFileAbsFileName($this->row['belayout']));
-		}
+        return $beLayout;
+    }
 
-		return $beLayout;
-	}
+    /**
+     * @param string $fieldname
+     *
+     * @return void
+     */
+    protected function setSortbyField($fieldname)
+    {
+        if (isset($this->row[$fieldname])) {
+            $this->sortbyField = $fieldname;
+        } elseif (!$this->sortbyField) {
+            $this->sortbyField = 'sorting';
+        }
+    }
 
-	/**
-	 * @param string $fieldname
-	 *
-	 * @return void
-	 */
-	protected function setSortbyField($fieldname) {
-		if (isset($this->row[$fieldname])) {
-			$this->sortbyField = $fieldname;
-		} elseif (!$this->sortbyField) {
-			$this->sortbyField = 'sorting';
-		}
-	}
+    /**
+     * @return string
+     */
+    public function getSortingFieldValue()
+    {
+        if ($this->sortbyField == 'title') {
+            $fieldVal = $this->getLabel(); // required to resolve LLL texts
+        } elseif ($this->sortbyField == 'sorting') {
+            $fieldVal = str_pad($this->row[$this->sortbyField], 15, "0", STR_PAD_LEFT);
+        } else {
+            $fieldVal = $this->row[$this->sortbyField];
+        }
 
-	/**
-	 * @return string
-	 */
-	public function getSortingFieldValue() {
-		if ($this->sortbyField == 'title') {
-			$fieldVal = $this->getLabel(); // required to resolve LLL texts
-		} elseif ($this->sortbyField == 'sorting') {
-			$fieldVal = str_pad($this->row[$this->sortbyField], 15, "0", STR_PAD_LEFT);
-		} else {
-			$fieldVal = $this->row[$this->sortbyField];
-		}
-
-		return $fieldVal;
-	}
+        return $fieldVal;
+    }
 }
