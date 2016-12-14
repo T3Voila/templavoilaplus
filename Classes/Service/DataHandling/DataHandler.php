@@ -479,7 +479,7 @@ page.10.disableExplosivePreview = 1
 		$xmlContentArr = GeneralUtility::xml2array($flexformXML);
 
 		// And extract all content element uids and their context from the XML structure:
-		if (is_array($xmlContentArr['data'])) {
+		if (isset($xmlContentArr['data']) && is_array($xmlContentArr['data'])) {
 			foreach ($xmlContentArr['data'] as $currentSheet => $subArr) {
 				if (is_array($subArr)) {
 					foreach ($subArr as $currentLanguage => $subSubArr) {
