@@ -588,10 +588,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
     {
         $tableAttribs = ' border="0" cellpadding="1" cellspacing="1" width="98%" style="margin-top: 10px;" class="lrPadding"';
 
-        $XMLinfo = array();
-        if ($this->MOD_SETTINGS['set_details']) {
-            $XMLinfo = $this->DSdetails($dsObj->getDataprotXML());
-        }
+        $XMLinfo = $this->DSdetails($dsObj->getDataprotXML());
 
         if ($dsObj->isFilebased()) {
             $overlay = 'overlay-edit';
@@ -688,25 +685,24 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
         }
 
         $containerMode = '';
-        if ($this->MOD_SETTINGS['set_details']) {
-            if ($XMLinfo['referenceFields']) {
-                $containerMode = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('yes', true);
-                if ($XMLinfo['languageMode'] === 'Separate') {
-                    $containerMode .= ' ' . $this->moduleTemplate->icons(3) . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('containerwithseparatelocalization', true);
-                } elseif ($XMLinfo['languageMode'] === 'Inheritance') {
-                    $containerMode .= ' ' . $this->moduleTemplate->icons(2);
-                    if ($XMLinfo['inputFields']) {
-                        $containerMode .= \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mixofcontentandref', true);
-                    } else {
-                        $containerMode .= \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('nocontentfields', true);
-                    }
+        if ($XMLinfo['referenceFields']) {
+            $containerMode = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('yes', true);
+            if ($XMLinfo['languageMode'] === 'Separate') {
+                $containerMode .= ' ' . $this->moduleTemplate->icons(3)
+                    . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('containerwithseparatelocalization', true);
+            } elseif ($XMLinfo['languageMode'] === 'Inheritance') {
+                $containerMode .= ' ' . $this->moduleTemplate->icons(2);
+                if ($XMLinfo['inputFields']) {
+                    $containerMode .= \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('mixofcontentandref', true);
+                } else {
+                    $containerMode .= \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('nocontentfields', true);
                 }
-            } else {
-                $containerMode = 'No';
             }
-
-            $containerMode .= ' (ARI=' . $XMLinfo['rootelements'] . '/' . $XMLinfo['referenceFields'] . '/' . $XMLinfo['inputFields'] . ')';
+        } else {
+            $containerMode = 'No';
         }
+
+        $containerMode .= ' <br/>(ARI=' . $XMLinfo['rootelements'] . '/' . $XMLinfo['referenceFields'] . '/' . $XMLinfo['inputFields'] . ')';
 
         // Return content
         return array(
