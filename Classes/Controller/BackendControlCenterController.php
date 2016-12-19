@@ -827,9 +827,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
         $fRWTOUres = array();
 
         if (!$children) {
-            if ($this->MOD_SETTINGS['set_details']) {
-                $fRWTOUres = $this->findRecordsWhereTOUsed($toObj, $scope);
-            }
+            $count = $this->countRecordsWhereTOUsed($toObj, $scope);
 
             $content = '
             <table' . $tableAttribs . '>
@@ -860,19 +858,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
                     CoreGeneralUtility::formatSize(strlen($toObj->getLocalDataprotXML(true))) . ' bytes' .
                     ($this->MOD_SETTINGS['set_details'] ? '<hr/>' . $XMLinfo['HTML'] : '') : '') . '
                     </td>
-                </tr>' . ($this->MOD_SETTINGS['set_details'] ? '
-                <tr class="bgColor4">
-                    <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('usedby', true) . ':</td>
-                    <td>' . $fRWTOUres['HTML'] . '</td>
                 </tr>
-                <tr class="bgColor4">
-                    <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('created', true) . ':</td>
-                    <td>' . BackendUtility::datetime($toObj->getCrdate()) . ' ' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('byuser', true) . ' [' . $toObj->getCruser() . ']</td>
-                </tr>
-                <tr class="bgColor4">
-                    <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('updated', true) . ':</td>
-                    <td>' . BackendUtility::datetime($toObj->getTstamp()) . '</td>
-                </tr>' : '') . '
             </table>
             ';
         } else {
@@ -908,15 +894,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
                     CoreGeneralUtility::formatSize(strlen($toObj->getLocalDataprotXML(true))) . ' bytes' .
                     ($this->MOD_SETTINGS['set_details'] ? '<hr/>' . $XMLinfo['HTML'] : '') : '') . '
                     </td>
-                </tr>' . ($this->MOD_SETTINGS['set_details'] ? '
-                <tr class="bgColor4">
-                    <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('created', true) . ':</td>
-                    <td>' . BackendUtility::datetime($toObj->getCrdate()) . ' ' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('byuser', true) . ' [' . $toObj->getCruser() . ']</td>
                 </tr>
-                <tr class="bgColor4">
-                    <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('updated', true) . ':</td>
-                    <td>' . BackendUtility::datetime($toObj->getTstamp()) . '</td>
-                </tr>' : '') . '
             </table>
             ';
         }
@@ -935,7 +913,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
         }
 
         // Return content
-        return array('HTML' => $content, 'mappingStatus' => $mappingStatus_index, 'usage' => $fRWTOUres['usage']);
+        return array('HTML' => $content, 'mappingStatus' => $mappingStatus_index, 'usage' => $count);
     }
 
     /**
@@ -946,25 +924,15 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
      *
      * @return string HTML table listing usages.
      */
-    public function findRecordsWhereTOUsed($toObj, $scope)
+    public function countRecordsWhereTOUsed($toObj, $scope)
     {
-        $output = array();
+        $count = 0;
 
         switch ($scope) {
             case 1: // PAGES:
-                // Header:
-                $output[] = '
-                            <tr class="bgColor5 tableheader">
-                                <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('toused_pid', true) . ':</td>
-                                <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('toused_title', true) . ':</td>
-                                <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('toused_path', true) . ':</td>
-                                <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('toused_workspace', true) . ':</td>
-                            </tr>';
-
-                // Main templates:
                 $dsKey = $toObj->getDatastructure()->getKey();
-                $res = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTquery(
-                    'uid,title,pid,t3ver_wsid,t3ver_id',
+                $count = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTcountRows(
+                    'uid',
                     'pages',
                     '(
                         (tx_templavoila_to=' . (int)$toObj->getKey() . ' AND tx_templavoila_ds=' . \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr($dsKey, 'pages') . ') OR
@@ -972,46 +940,10 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
                     )' .
                     BackendUtility::deleteClause('pages')
                 );
-
-                while (false !== ($pRow = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_fetch_assoc($res))) {
-//                     $path = $this->findRecordsWhereUsed_pid($pRow['uid']);
-                    if ($path) {
-                        $output[] = '
-                            <tr class="bgColor4-20">
-                                <td nowrap="nowrap">' .
-//                             '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick('&edit[pages][' . $pRow['uid'] . ']=edit', $this->doc->backPath)) . '" title="Edit">' .
-                            htmlspecialchars($pRow['uid']) .
-                            '</a></td>
-                        <td nowrap="nowrap">' .
-                            htmlspecialchars($pRow['title']) .
-                            '</td>
-                        <td nowrap="nowrap">' .
-//                             '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($pRow['uid'], $this->doc->backPath) . 'return false;') . '" title="View">' .
-                            htmlspecialchars($path) .
-                            '</a></td>
-                        <td nowrap="nowrap">' .
-                            htmlspecialchars($pRow['pid'] == -1 ? 'Offline version 1.' . $pRow['t3ver_id'] . ', WS: ' . $pRow['t3ver_wsid'] : 'LIVE!') .
-                            '</td>
-                    </tr>';
-                    } else {
-                        $output[] = '
-                            <tr class="bgColor4-20">
-                                <td nowrap="nowrap">' .
-                            htmlspecialchars($pRow['uid']) .
-                            '</td>
-                        <td><em>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('noaccess', true) . '</em></td>
-                                <td>-</td>
-                                <td>-</td>
-                            </tr>';
-                    }
-                }
-                \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_free_result($res);
                 break;
             case 2:
-
-                // Select Flexible Content Elements:
-                $res = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTquery(
-                    'uid,header,pid,t3ver_wsid,t3ver_id',
+                $count = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTcountRows(
+                    'uid',
                     'tt_content',
                     'CType=' . \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr('templavoila_pi1', 'tt_content') .
                     ' AND tx_templavoila_to=' . (int)$toObj->getKey() .
@@ -1020,68 +952,10 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
                     '',
                     'pid'
                 );
-
-                // Header:
-                $output[] = '
-                            <tr class="bgColor5 tableheader">
-                                <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('toused_uid', true) . ':</td>
-                                <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('toused_header', true) . ':</td>
-                                <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('toused_path', true) . ':</td>
-                                <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('toused_workspace', true) . ':</td>
-                            </tr>';
-
-                // Elements:
-                while (false !== ($pRow = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_fetch_assoc($res))) {
-//                     $path = $this->findRecordsWhereUsed_pid($pRow['pid']);
-                    if ($path) {
-                        $output[] = '
-                            <tr class="bgColor4-20">
-                                <td nowrap="nowrap">' .
-//                             '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick('&edit[tt_content][' . $pRow['uid'] . ']=edit', $this->doc->backPath)) . '" title="Edit">' .
-                            htmlspecialchars($pRow['uid']) .
-                            '</a></td>
-                        <td nowrap="nowrap">' .
-                            htmlspecialchars($pRow['header']) .
-                            '</td>
-                        <td nowrap="nowrap">' .
-//                             '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($pRow['pid'], $this->doc->backPath) . 'return false;') . '" title="View page">' .
-                            htmlspecialchars($path) .
-                            '</a></td>
-                        <td nowrap="nowrap">' .
-                            htmlspecialchars($pRow['pid'] == -1 ? 'Offline version 1.' . $pRow['t3ver_id'] . ', WS: ' . $pRow['t3ver_wsid'] : 'LIVE!') .
-                            '</td>
-                    </tr>';
-                    } else {
-                        $output[] = '
-                            <tr class="bgColor4-20">
-                                <td nowrap="nowrap">' .
-                            htmlspecialchars($pRow['uid']) .
-                            '</td>
-                        <td><em>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('noaccess', true) . '</em></td>
-                                <td>-</td>
-                                <td>-</td>
-                            </tr>';
-                    }
-                }
-                \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_free_result($res);
                 break;
         }
 
-        // Create final output table:
-        $outputString = '';
-        if (count($output)) {
-            if (count($output) > 1) {
-                $outputString = sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('toused_usedin', true), count($output) - 1) . '
-                    <table border="0" cellspacing="1" cellpadding="1" class="lrPadding">'
-                    . implode('', $output) . '
-                </table>';
-            } else {
-                $outputString = $this->iconFactory->getIcon('status-dialog-warning', Icon::SIZE_SMALL)->render() . 'No usage!';
-                $this->setErrorLog($scope, 'warning', sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('warning_mappingstatus', true), $outputString, $toObj->getLabel()));
-            }
-        }
-
-        return array('HTML' => $outputString, 'usage' => count($output) - 1);
+        return $count;
     }
 
     /**
