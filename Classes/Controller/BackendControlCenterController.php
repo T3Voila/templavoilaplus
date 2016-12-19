@@ -1241,22 +1241,23 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
             // USED FILES:
             $tRows = array();
             $tRows[] = '
-                <tr class="bgColor5 tableheader">
-                    <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('file', true) . '</td>
-                    <td align="center">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('usagecount', true) . '</td>
-                    <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newdsto', true) . '</td>
+                <thead>
+                    <th class="col-icon" nowrap="nowrap"></th>
+                    <th class="col-title" nowrap="nowrap">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('file', true) . '</th>
+                    <th align="center">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('usagecount', true) . '</th>
+                    <th>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newdsto', true) . '</th>
                 </tr>';
 
             $i = 0;
             foreach ($this->tFileList as $tFile => $count) {
                 $tRows[] = '
-                    <tr class="' . ($i++ % 2 == 0 ? 'bgColor4' : 'bgColor6') . '">
+                    <tr>
+                        <td>' . $this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL)->render() . '</td>
                         <td>' .
                     '<a href="' . htmlspecialchars($this->doc->backPath . '../' . substr($tFile, strlen(PATH_site))) . '" target="_blank">'
-                    . $this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL)->render()
-                    . ' ' . htmlspecialchars(substr($tFile, strlen(PATH_site)))
+                    . htmlspecialchars(substr($tFile, strlen(PATH_site)))
                     . '</a></td>
-                <td align="center">' . $count . '</td>
+                    <td align="center">' . $count . '</td>
                         <td>' .
                     '<a href="' . htmlspecialchars($this->cm1Link . '?id=' . $this->id . '&file=' . rawurlencode($tFile)) . '&mapElPath=%5BROOT%5D">'
                     . $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render()
@@ -1268,7 +1269,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
             if (count($tRows) > 1) {
                 $output .= '
                 <h3>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('usedfiles', true) . ':</h3>
-                <table border="0" cellpadding="1" cellspacing="1" class="typo3-dblist">
+                <table border="0" class="table table-striped table-hover">
                     ' . implode('', $tRows) . '
                 </table>
                 ';
@@ -1281,24 +1282,27 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
 
                 $tRows = array();
                 $tRows[] = '
-                    <tr class="bgColor5 tableheader">
-                        <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('file', true) . '</td>
-                        <td align="center">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('usagecount', true) . '</td>
-                        <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newdsto', true) . '</td>
-                    </tr>';
+                    <thead>
+                        <th class="col-icon" nowrap="nowrap"></th>
+                        <th class="col-title" nowrap="nowrap">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('file', true) . '</th>
+                        <th align="center">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('usagecount', true) . '</th>
+                        <th>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newdsto', true) . '</th>
+                    </thead>';
 
                 $i = 0;
-                foreach ($files as $tFile) {
+                foreach ($files as $file) {
+                    // @TODO Only wortks in local storage!
+                    $fullPath = $file->getForLocalProcessing(false);
                     $tRows[] = '
-                        <tr class="' . ($i++ % 2 == 0 ? 'bgColor4' : 'bgColor6') . '">
+                        <tr>
+                            <td>' . $this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL)->render() . '</td>
                             <td>' .
-                        '<a href="' . htmlspecialchars($this->doc->backPath . '../' . substr($tFile, strlen(PATH_site))) . '" target="_blank">'
-                        . $this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL)->render()
-                        . ' ' . htmlspecialchars(substr($tFile, strlen(PATH_site))) .
+                        '<a href="/' . htmlspecialchars($file->getPublicUrl()) . '" target="_blank">'
+                        . htmlspecialchars($file->getPublicUrl()) .
                         '</a></td>
-                    <td align="center">' . ($this->tFileList[$tFile] ? $this->tFileList[$tFile] : '-') . '</td>
+                        <td align="center">' . (isset($this->tFileList[$fullPath]) ? $this->tFileList[$fullPath] : '-') . '</td>
                             <td>' .
-                        '<a href="' . htmlspecialchars($this->cm1Link . '?id=' . $this->id . '&file=' . rawurlencode($tFile)) . '&mapElPath=%5BROOT%5D">'
+                        '<a href="' . htmlspecialchars($this->cm1Link . '?id=' . $this->id . '&file=' . rawurlencode($file->getIdentifier())) . '&mapElPath=%5BROOT%5D">'
                         . $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render()
                         . ' ' . htmlspecialchars('Create...') .
                         '</a></td>
@@ -1307,10 +1311,10 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
 
                 if (count($tRows) > 1) {
                     $output .= '
-                    <h3>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('templatearchive', true) . ':</h3>
-                    <table border="0" cellpadding="1" cellspacing="1" class="typo3-dblist">
-                        ' . implode('', $tRows) . '
-                    </table>
+                        <h3>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('templatearchive', true) . ':</h3>
+                        <table border="0" class="table table-striped table-hover">
+                            ' . implode('', $tRows) . '
+                        </table>
                     ';
                 }
             }
@@ -1895,38 +1899,31 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
     /**
      * Find and check all template paths
      *
-     * @param boolean $relative if true returned paths are relative
-     * @param boolean $check if true the patchs are checked
-     *
      * @return array all relevant template paths
      */
-    protected function getTemplatePaths($relative = false, $check = true)
+    protected function getTemplateFolders()
     {
-        $templatePaths = array();
+        $templateFolders = [];
         if (strlen($this->modTSconfig['properties']['templatePath'])) {
             $paths = CoreGeneralUtility::trimExplode(',', $this->modTSconfig['properties']['templatePath'], true);
         } else {
             $paths = array('templates');
         }
 
-        $prefix = CoreGeneralUtility::getFileAbsFileName($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir']);
+        $resourceFactory = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance();
+        $defaultStorage = $resourceFactory->getDefaultStorage();
 
-        foreach (\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->getFileStorages() AS $driver) {
-            /** @var TYPO3\CMS\Core\Resource\ResourceStorage $driver */
-            $driverpath = $driver->getConfiguration();
-            $driverpath = CoreGeneralUtility::getFileAbsFileName($driverpath['basePath']);
-            foreach ($paths as $path) {
-                if (CoreGeneralUtility::isFirstPartOfStr($prefix . $path, $driverpath) && is_dir($prefix . $path)) {
-                    $templatePaths[] = ($relative ? $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'] : $prefix) . $path;
-                } else {
-                    if (!$check) {
-                        $templatePaths[] = ($relative ? $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'] : $prefix) . $path;
-                    }
-                }
+        foreach ($paths as $path) {
+            try {
+                $folder = $defaultStorage->getFolder('/' . $path);
+            } catch (\Exception $e) {
+                // Blank catch, as we exspect that not all pathes may exists.
+                continue;
             }
+            $templateFolders[] = $folder;
         }
 
-        return $templatePaths;
+        return $templateFolders;
     }
 
     /**
@@ -1936,10 +1933,18 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
      */
     protected function getTemplateFiles()
     {
-        $paths = $this->getTemplatePaths();
+        $paths = $this->getTemplateFolders();
+
+        $filter = CoreGeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter::class);
+        $filter->setAllowedFileExtensions('html,htm,tmpl');
+
         $files = array();
-        foreach ($paths as $path) {
-            $files = array_merge(CoreGeneralUtility::getAllFilesAndFoldersInPath(array(), $path . ((substr($path, -1) != '/') ? '/' : ''), 'html,htm,tmpl', 0), $files);
+        foreach ($paths as $folder) {
+            $folder->setFileAndFolderNameFilters([[$filter, 'filterFileList']]);
+            $files = array_merge(
+                $folder->getFiles(0, 0, \TYPO3\CMS\Core\Resource\Folder::FILTER_MODE_USE_OWN_FILTERS, true),
+                $files
+            );
         }
 
         return $files;
