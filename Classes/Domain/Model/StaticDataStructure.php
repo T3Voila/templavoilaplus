@@ -28,6 +28,11 @@ class StaticDataStructure extends AbstractDataStructure
     protected $filename;
 
     /**
+     * @var string
+     */
+    protected $xmlContent = null;
+
+    /**
      * @throws \InvalidArgumentException
      *
      * @param integer $key
@@ -91,15 +96,16 @@ class StaticDataStructure extends AbstractDataStructure
      */
     public function getDataprotXML()
     {
-        $xml = '';
-        $file = GeneralUtility::getFileAbsFileName($this->filename);
-        if (is_readable($file)) {
-            $xml = file_get_contents($file);
-        } else {
-            // @todo find out if that happens and whether there's a "useful" reaction for that
+        if ($this->xmlContent === null) {
+            $file = GeneralUtility::getFileAbsFileName($this->filename);
+            if (is_readable($file)) {
+                $this->xmlContent = file_get_contents($file);
+            } else {
+                // @todo find out if that happens and whether there's a "useful" reaction for that
+            }
         }
 
-        return $xml;
+        return $this->xmlContent;
     }
 
     /**

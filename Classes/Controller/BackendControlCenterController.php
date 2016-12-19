@@ -650,21 +650,14 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
             $dsIcon . ' ' . $dsTitle .
             $editLink .
             '</td>
-    </tr>
-    <tr class="bgColor4">
-        <td rowspan="' . ($this->MOD_SETTINGS['set_details'] ? 4 : 2) . '" style="width: 100px; text-align: center;">' . $previewIcon . '</td>
-                ' .
-            ($this->MOD_SETTINGS['set_details'] ? '<td style="width:200px">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('templatestatus', true) . '</td>
-                <td>' . $this->findDSUsageWithImproperTOs($dsObj, $scope, $toIdArray) . '</td>' : '') .
-            '</tr>
+        </tr>
+        <tr class="bgColor4">
             <tr class="bgColor4">
                 <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('globalprocessing_xml') . '</td>
                 <td>
-                    ' . $lpXML . ($dsObj->getDataprotXML() ?
-                CoreGeneralUtility::formatSize(strlen($dsObj->getDataprotXML())) . ' bytes' .
-                ($this->MOD_SETTINGS['set_details'] ? '<hr/>' . $XMLinfo['HTML'] : '') : '') . '
+                    ' . $lpXML .  CoreGeneralUtility::formatSize(strlen($dsObj->getDataprotXML())) . ' bytes
                 </td>
-            </tr>' . ($this->MOD_SETTINGS['set_details'] ? '
+            </tr>
             <tr class="bgColor4">
                 <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('created', true) . '</td>
                 <td>' . BackendUtility::datetime($dsObj->getCrdate()) . ' ' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('byuser', true) . ' [' . $dsObj->getCruser() . ']</td>
@@ -672,7 +665,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
             <tr class="bgColor4">
                 <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('updated', true) . '</td>
                 <td>' . BackendUtility::datetime($dsObj->getTstamp()) . '</td>
-            </tr>' : '') . '
+            </tr>
         </table>
         ';
 
@@ -797,20 +790,15 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
             $mappingStatus .= '&nbsp;<input type="button" onclick="jumpToUrl(\'' . htmlspecialchars($linkUrl . '&_preview=1') . '\');" value="' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('preview', true) . '" />';
         }
 
-        if ($this->MOD_SETTINGS['set_details']) {
-            $XMLinfo = $this->DSdetails($toObj->getLocalDataprotXML(true));
-        } else {
-            $XMLinfo = array('HTML' => '');
-        }
+//         $XMLinfo = $this->DSdetails($toObj->getLocalDataprotXML(true));
 
         // Format XML if requested
         $lpXML = '';
-        if ($this->MOD_SETTINGS['set_details']) {
-            if ($toObj->getLocalDataprotXML(true)) {
-                $hlObj = CoreGeneralUtility::makeInstance(\Extension\Templavoila\Service\SyntaxHighlightingService::class);
-                $lpXML = '<pre>' . str_replace(chr(9), '&nbsp;&nbsp;&nbsp;', $hlObj->highLight_DS($toObj->getLocalDataprotXML(true))) . '</pre>';
-            }
-        }
+//         if ($toObj->getLocalDataprotXML(true)) {
+//             $hlObj = CoreGeneralUtility::makeInstance(\Extension\Templavoila\Service\SyntaxHighlightingService::class);
+//             $lpXML = '<pre>' . str_replace(chr(9), '&nbsp;&nbsp;&nbsp;', $hlObj->highLight_DS($toObj->getLocalDataprotXML(true))) . '</pre>';
+//         }
+
         $lpXML .= '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick('&edit[tx_templavoila_tmplobj][' . $toObj->getKey() . ']=edit&columnsOnly=localprocessing', $this->doc->backPath)) . '">'
         . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render()
         . '</a>';
@@ -839,7 +827,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
                 '</td>
         </tr>
         <tr class="bgColor4">
-            <td rowspan="' . ($this->MOD_SETTINGS['set_details'] ? 7 : 4) . '" style="width: 100px; text-align: center;">' . $icon . '</td>
+            <td rowspan="4" style="width: 100px; text-align: center;">' . $icon . '</td>
                     <td style="width:200px;">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('filereference', true) . ':</td>
                     <td>' . $fileRef . $fileMsg . '</td>
                 </tr>
@@ -855,8 +843,8 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
                     <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('localprocessing_xml') . ':</td>
                     <td>
                         ' . $lpXML . ($toObj->getLocalDataprotXML(true) ?
-                    CoreGeneralUtility::formatSize(strlen($toObj->getLocalDataprotXML(true))) . ' bytes' .
-                    ($this->MOD_SETTINGS['set_details'] ? '<hr/>' . $XMLinfo['HTML'] : '') : '') . '
+                    CoreGeneralUtility::formatSize(strlen($toObj->getLocalDataprotXML(true))) . ' bytes'
+                    : '') . '
                     </td>
                 </tr>
             </table>
@@ -891,8 +879,8 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
                     <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('localprocessing_xml') . ':</td>
                     <td>
                         ' . $lpXML . ($toObj->getLocalDataprotXML(true) ?
-                    CoreGeneralUtility::formatSize(strlen($toObj->getLocalDataprotXML(true))) . ' bytes' .
-                    ($this->MOD_SETTINGS['set_details'] ? '<hr/>' . $XMLinfo['HTML'] : '') : '') . '
+                    CoreGeneralUtility::formatSize(strlen($toObj->getLocalDataprotXML(true))) . ' bytes'
+                    : '') . '
                     </td>
                 </tr>
             </table>
@@ -960,6 +948,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
 
     /**
      * Creates listings of pages / content elements where NO or WRONG template objects are used.
+     * @TODO Maybe Move away to an error/analytics tool
      *
      * @param \Extension\Templavoila\Domain\Model\AbstractDataStructure $dsObj Data Structure ID
      * @param integer $scope Scope value. 1) page,  2) content elements
