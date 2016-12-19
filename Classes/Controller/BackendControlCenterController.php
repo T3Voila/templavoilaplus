@@ -41,11 +41,6 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
     protected $pidCache;
 
     /**
-     * @var string
-     */
-    protected $backPath;
-
-    /**
      * Import as first page in root!
      *
      * @var integer
@@ -526,8 +521,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
                         '&edit[tx_templavoila_tmplobj][' . $newPid . ']=new' .
                         '&defVals[tx_templavoila_tmplobj][datastructure]=' . rawurlencode($dsObj->getKey()) .
                         '&defVals[tx_templavoila_tmplobj][title]=' . rawurlencode($newTitle) .
-                        '&defVals[tx_templavoila_tmplobj][fileref]=' . rawurlencode($newFileRef),
-                        $this->doc->backPath
+                        '&defVals[tx_templavoila_tmplobj][fileref]=' . rawurlencode($newFileRef)
                     )
                 )
                 . '">' . $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render() . ' '
@@ -637,7 +631,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
             $editLink = $editDataprotLink = '';
             $dsTitle = $dsObj->getLabel();
         } else {
-            $editLink = $lpXML .= '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick('&edit[tx_templavoila_datastructure][' . $dsObj->getKey() . ']=edit', $this->doc->backPath)) . '">'
+            $editLink = $lpXML .= '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick('&edit[tx_templavoila_datastructure][' . $dsObj->getKey() . ']=edit')) . '">'
             . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render()
             . '</a>';
             $dsTitle = '<a href="' . htmlspecialchars('../cm1/index.php?table=tx_templavoila_datastructure&uid=' . $dsObj->getKey() . '&id=' . $this->id . '&returnUrl=' . rawurlencode(CoreGeneralUtility::sanitizeLocalUrl(CoreGeneralUtility::getIndpEnv('REQUEST_URI')))) . '">' . htmlspecialchars($dsObj->getLabel()) . '</a>';
@@ -752,7 +746,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
         $fileReference = CoreGeneralUtility::getFileAbsFileName($toObj->getFileref());
         if (@is_file($fileReference)) {
             $this->tFileList[$fileReference]++;
-            $fileRef = '<a href="' . htmlspecialchars($this->doc->backPath . '../' . substr($fileReference, strlen(PATH_site))) . '" target="_blank">' . htmlspecialchars($toObj->getFileref()) . '</a>';
+            $fileRef = '<a href="' . htmlspecialchars(substr($fileReference, strlen(PATH_site))) . '" target="_blank">' . htmlspecialchars($toObj->getFileref()) . '</a>';
             $fileMsg = '';
             $fileMtime = filemtime($fileReference);
         } else {
@@ -799,7 +793,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
 //             $lpXML = '<pre>' . str_replace(chr(9), '&nbsp;&nbsp;&nbsp;', $hlObj->highLight_DS($toObj->getLocalDataprotXML(true))) . '</pre>';
 //         }
 
-        $lpXML .= '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick('&edit[tx_templavoila_tmplobj][' . $toObj->getKey() . ']=edit&columnsOnly=localprocessing', $this->doc->backPath)) . '">'
+        $lpXML .= '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick('&edit[tx_templavoila_tmplobj][' . $toObj->getKey() . ']=edit&columnsOnly=localprocessing')) . '">'
         . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render()
         . '</a>';
 
@@ -808,7 +802,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
 
         // Links:
         $toTitle = '<a href="' . htmlspecialchars($linkUrl) . '">' . htmlspecialchars(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL($toObj->getLabel())) . '</a>';
-        $editLink = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick('&edit[tx_templavoila_tmplobj][' . $toObj->getKey() . ']=edit', $this->doc->backPath)) . '">'
+        $editLink = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick('&edit[tx_templavoila_tmplobj][' . $toObj->getKey() . ']=edit')) . '">'
         . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render()
         . '</a>';
 
@@ -986,11 +980,11 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
                         $output[] = '
                             <tr class="bgColor4-20">
                                 <td nowrap="nowrap">' .
-                            '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick('&edit[pages][' . $pRow['uid'] . ']=edit', $this->doc->backPath)) . '">' .
+                            '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick('&edit[pages][' . $pRow['uid'] . ']=edit')) . '">' .
                             htmlspecialchars($pRow['title']) .
                             '</a></td>
                         <td nowrap="nowrap">' .
-                            '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($pRow['uid'], $this->doc->backPath) . 'return false;') . '">' .
+                            '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($pRow['uid']) . 'return false;') . '">' .
                             htmlspecialchars($path) .
                             '</a></td>
                     </tr>';
@@ -1032,11 +1026,11 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
                         $output[] = '
                             <tr class="bgColor4-20">
                                 <td nowrap="nowrap">' .
-                            '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick('&edit[tt_content][' . $pRow['uid'] . ']=edit', $this->doc->backPath)) . '" title="Edit">' .
+                            '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick('&edit[tt_content][' . $pRow['uid'] . ']=edit')) . '" title="Edit">' .
                             htmlspecialchars($pRow['header']) .
                             '</a></td>
                         <td nowrap="nowrap">' .
-                            '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($pRow['pid'], $this->doc->backPath) . 'return false;') . '" title="View page">' .
+                            '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($pRow['pid']) . 'return false;') . '" title="View page">' .
                             htmlspecialchars($path) .
                             '</a></td>
                     </tr>';
@@ -1117,7 +1111,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
                     <tr>
                         <td>' . $this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL)->render() . '</td>
                         <td>' .
-                    '<a href="' . htmlspecialchars($this->doc->backPath . '../' . substr($tFile, strlen(PATH_site))) . '" target="_blank">'
+                    '<a href="' . htmlspecialchars(substr($tFile, strlen(PATH_site))) . '" target="_blank">'
                     . htmlspecialchars(substr($tFile, strlen(PATH_site)))
                     . '</a></td>
                     <td align="center">' . $count . '</td>
