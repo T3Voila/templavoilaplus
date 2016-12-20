@@ -608,19 +608,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
 
         // Preview icon:
         if ($dsObj->getIcon()) {
-            if (isset($this->modTSconfig['properties']['dsPreviewIconThumb']) && $this->modTSconfig['properties']['dsPreviewIconThumb'] != '0') {
-                $path = realpath(dirname(__FILE__) . '/' . preg_replace('/\w+\/\.\.\//', '', $GLOBALS['BACK_PATH'] . $dsObj->getIcon()));
-                $path = str_replace(realpath(PATH_site) . '/', PATH_site, $path);
-                if ($path == false) {
-                    $previewIcon = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('noicon', true);
-                } else {
-                    $previewIcon = BackendUtility::getThumbNail($this->doc->backPath . 'thumbs.php', $path,
-                        'hspace="5" vspace="5" border="1"',
-                        strpos($this->modTSconfig['properties']['dsPreviewIconThumb'], 'x') ? $this->modTSconfig['properties']['dsPreviewIconThumb'] : '');
-                }
-            } else {
-                $previewIcon = '<img src="' . $dsObj->getIcon() . '" alt="" />';
-            }
+            $previewIcon = '<img src="' . $this->getThumbnail($dsObj->getIcon()) . '" alt="" />';
         } else {
             $previewIcon = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('noicon', true);
         }
@@ -716,19 +704,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
 
         // Preview icon:
         if ($toObj->getIcon()) {
-            if (isset($this->modTSconfig['properties']['toPreviewIconThumb']) && $this->modTSconfig['properties']['toPreviewIconThumb'] != '0') {
-                $path = realpath(dirname(__FILE__) . '/' . preg_replace('/\w+\/\.\.\//', '', $GLOBALS['BACK_PATH'] . $toObj->getIcon()));
-                $path = str_replace(realpath(PATH_site) . '/', PATH_site, $path);
-                if ($path == false) {
-                    $icon = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('noicon', true);
-                } else {
-                    $icon = BackendUtility::getThumbNail($this->doc->backPath . 'thumbs.php', $path,
-                        'hspace="5" vspace="5" border="1"',
-                        strpos($this->modTSconfig['properties']['toPreviewIconThumb'], 'x') ? $this->modTSconfig['properties']['toPreviewIconThumb'] : '');
-                }
-            } else {
-                $icon = '<img src="/' . $toObj->getIcon() . '" alt="" />';
-            }
+            $icon = '<img src="/' . $this->getThumbnail($toObj->getIcon()) . '" alt="" />';
         } else {
             $icon = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('noicon', true);
         }
@@ -1881,5 +1857,35 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
             ->setTitle($title)
             ->setIcon($this->iconFactory->getIcon($icon, Icon::SIZE_SMALL));
         $this->buttonBar->addButton($button, $buttonPosition, $buttonGroup);
+    }
+
+    /**
+     * Generates max 64x64 thumbnail of given file.
+     *
+     * @param string $filePathAndName Path and name of file to get thumbnail from
+     * @return string|null Public url or null if file not found.
+     */
+    protected function getThumbnail($filePathAndName)
+    {
+        try {
+            /** @var \TYPO3\CMS\Core\Resource\File $fileObject */
+            $fileObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->retrieveFileOrFolderObject($filePathAndName);
+            // Skip the resource if it's not of type AbstractFile. One case where this can happen if the
+            // storage has been externally modified and the field value now points to a folder
+            // instead of a file.
+            if (!$fileObject instanceof \TYPO3\CMS\Core\Resource\AbstractFile || $fileObject->isMissing()) {
+                return null;
+            }
+        } catch (\TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException $exception) {
+            return null;
+        }
+
+        return $fileObject->process(
+            \TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW,
+            [
+                'width' => 64,
+                'height' => 64,
+            ]
+        )->getPublicUrl(true);
     }
 }
