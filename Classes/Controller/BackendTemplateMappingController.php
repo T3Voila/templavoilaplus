@@ -1321,7 +1321,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
             }
         }
 
-        $this->content .= $this->doc->section('', $content, 0, 1);
+        $this->content .= $content;
     }
 
     /**
@@ -1451,9 +1451,10 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
             } else {
                 $content .= sprintf(TemplavoilaGeneralUtility::getLanguageService()->getLL('errorNoDSrecord'), $this->displayUid);
             }
-            $this->content .= $this->doc->section(TemplavoilaGeneralUtility::getLanguageService()->getLL('renderDSO_DSO'), $content, 0, 1);
+            $this->content .= '<h2>' . TemplavoilaGeneralUtility::getLanguageService()->getLL('renderDSO_DSO') . '</h2>' . $content;
         } else {
-            $this->content .= $this->doc->section(TemplavoilaGeneralUtility::getLanguageService()->getLL('errorInDSO'), '' . TemplavoilaGeneralUtility::getLanguageService()->getLL('renderDSO_noUid'), 0, 1, 3);
+            $this->content .= '<h2>Error:' . TemplavoilaGeneralUtility::getLanguageService()->getLL('errorInDSO') . '</h2>'
+                . TemplavoilaGeneralUtility::getLanguageService()->getLL('renderDSO_noUid');
         }
     }
 
@@ -1657,7 +1658,8 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
 
             $parts[0]['content'] = $content;
         } else {
-            $this->content .= $this->doc->section(TemplavoilaGeneralUtility::getLanguageService()->getLL('templateObject') . ' ' . TemplavoilaGeneralUtility::getLanguageService()->getLL('error'), TemplavoilaGeneralUtility::getLanguageService()->getLL('errorNoUidFound'), 0, 1, 3);
+            $this->content .= '<h2>' . TemplavoilaGeneralUtility::getLanguageService()->getLL('templateObject') . ' ' . TemplavoilaGeneralUtility::getLanguageService()->getLL('error') . '</h2>'
+                . TemplavoilaGeneralUtility::getLanguageService()->getLL('errorNoUidFound');
         }
 
         // show tab menu
