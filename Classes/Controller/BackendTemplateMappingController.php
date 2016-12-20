@@ -1,4 +1,6 @@
 <?php
+namespace Extension\Templavoila\Controller;
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -12,6 +14,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility as CoreGeneralUtility;
 
@@ -26,17 +30,12 @@ $GLOBALS['LANG']->includeLLFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtili
  * @author Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @co-author Robert Lemke <robert@typo3.org>
  */
-class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
+class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 {
     /**
      * @var string
      */
     protected $DS_element_DELETE;
-
-    /**
-     * @var array
-     */
-    protected $pageinfo;
 
     /**
      * @var string
@@ -75,6 +74,13 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      * @var string
      */
     public $extKey = 'templavoila';
+
+    /**
+     * The name of the module
+     *
+     * @var string
+     */
+    protected $moduleName = 'templavoila_mapping';
 
     /**
      * @var array
@@ -310,21 +316,41 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 ';
 
     /**
-     * Adds items to the ->MOD_MENU array. Used for the function menu selector.
+     * @return void
+     */
+    public function init()
+    {
+        parent::init();
+
+        $this->moduleTemplate = CoreGeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\ModuleTemplate::class);
+        $this->iconFactory = $this->moduleTemplate->getIconFactory();
+        $this->buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
+
+        $this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
+    }
+
+    /**
+     * Preparing menu content
      *
      * @return void
      */
     public function menuConfig()
     {
-        $this->MOD_MENU = Array(
-            'displayMode' => array(
+        $this->MOD_MENU = [
+            'displayMode' => [
                 'explode' => 'Mode: Exploded Visual',
                 'source' => 'Mode: HTML Source ',
-            ),
+            ],
             'showDSxml' => ''
-        );
-        parent::menuConfig();
+        ];
+
+        // page/be_user TSconfig settings and blinding of menu-items
+        $this->modTSconfig = BackendUtility::getModTSconfig($this->id, 'mod.' . $this->moduleName);
+
+        // CLEANSE SETTINGS
+        $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, CoreGeneralUtility::_GP('SET'), $this->moduleName);
     }
+
 
     /**
      * Returns an abbrevation and a description for a given element-type.
@@ -359,6 +385,28 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         return $this->dsTypes['el'];
     }
 
+    /*******************************************
+     *
+     * Main functions
+     *
+     *******************************************/
+
+    /**
+     * Injects the request object for the current request or subrequest
+     * As this controller goes only through the main() method, it is rather simple for now
+     *
+     * @param ServerRequestInterface $request the current request
+     * @param ResponseInterface $response
+     * @return ResponseInterface the response with the content
+     */
+    public function mainAction(ServerRequestInterface $request, ResponseInterface $response)
+    {
+        $this->init();
+        $this->main();
+        $response->getBody()->write($this->moduleTemplate->renderContent());
+        return $response;
+    }
+
     /**
      * Main function, distributes the load between the module and display modes.
      * "Display" mode is when the exploded template file is shown in an IFRAME
@@ -368,11 +416,11 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     public function main()
     {
         // Initialize ds_edit
-        $this->dsEdit = CoreGeneralUtility::getUserObj(Extension\Templavoila\Module\Cm1\DsEdit::class, '');
+        $this->dsEdit = CoreGeneralUtility::getUserObj(\Extension\Templavoila\Module\Cm1\DsEdit::class, '');
         $this->dsEdit->init($this);
 
         // Initialize eTypes
-        $this->eTypes = CoreGeneralUtility::getUserObj(Extension\Templavoila\Module\Cm1\ETypes::class, '');
+        $this->eTypes = CoreGeneralUtility::getUserObj(\Extension\Templavoila\Module\Cm1\ETypes::class, '');
         $this->eTypes->init($this);
 
         $this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
@@ -381,27 +429,39 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         // Setting GPvars:
         $this->mode = CoreGeneralUtility::_GP('mode');
 
-        // Selecting display or module mode:
-        switch ((string) $this->mode) {
-            case 'display':
-                $this->main_display();
-                break;
-            default:
-                $this->main_mode();
-                break;
-        }
-    }
+        // Access check!
+        // The page will show only if there is a valid page and if this page may be viewed by the user
+        $pageInfoArr = BackendUtility::readPageAccess($this->id, $this->perms_clause);
+        $access = is_array($pageInfoArr) ? 1 : 0;
 
-    /**
-     * Prints module content.
-     * Is only used in case of &mode = "mod" since both "display" mode and frameset is outputted + exiting before this is called.
-     *
-     * @return void
-     */
-    public function printContent()
-    {
-        $this->content .= $this->doc->endPage();
-        echo $this->content;
+        if ($access) {
+                    // Add custom styles
+            $this->getPageRenderer()->addCssFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->extKey) . 'Resources/Public/StyleSheet/cm1_default.css');
+
+            // Selecting display or module mode:
+            switch ((string) $this->mode) {
+                case 'display':
+                    $this->main_display();
+                    break;
+                default:
+                    $this->main_mode();
+                    break;
+            }
+        } else {
+            $flashMessage = CoreGeneralUtility::makeInstance(
+                \TYPO3\CMS\Core\Messaging\FlashMessage::class,
+                \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('noaccess'),
+                '',
+                \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR
+            );
+            $this->content = $flashMessage->render();
+        }
+
+        $title = TemplavoilaGeneralUtility::getLanguageService()->getLL('mappingTitle');
+        $header = $this->moduleTemplate->header($title);
+//         $this->moduleTemplate->setTitle($title);
+
+        $this->moduleTemplate->setContent($header . $this->content);
     }
 
     /**
@@ -507,26 +567,18 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      */
     public function main_mode()
     {
-        $this->doc = CoreGeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
-        $this->doc->docType = 'xhtml_trans';
-        $this->doc->backPath = $GLOBALS['BACK_PATH'];
-        $this->doc->setModuleTemplate('EXT:templavoila/Resources/Private/Templates/cm1_default.html');
-        $this->doc->bodyTagId = 'typo3-mod-php';
-        $this->doc->divClass = '';
-
-        $this->doc->inDocStylesArray[] = '
-            #templavoila-frame-visual { height:500px; display:block; margin:0 5px; width:98%; border: 1xpx solid black;}
-            DIV.typo3-fullDoc H2 { width: 100%; }
-            TABLE#c-mapInfo {margin-top: 10px; margin-bottom: 5px; }
-            TABLE#c-mapInfo TR TD {padding-right: 20px;}
-            select option.pagetemplate {background-image:url(../Resources/Public/Icon/icon_pagetemplate.gif);background-repeat: no-repeat; background-position: 5px 50%; padding: 1px 0 3px 24px; -webkit-background-size: 0;}
-            select option.fce {background-image:url(../Resources/Public/Icon/icon_fce_ce.png);background-repeat: no-repeat; background-position: 5px 50%; padding: 1px 0 3px 24px; -webkit-background-size: 0;}
-            #c-toMenu { margin-bottom:10px; }
-        ';
-        $this->doc->inDocStylesArray[] = self::$gnyfStyleBlock;
-
-        // Add custom styles
-        $this->doc->styleSheetFile2 = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->extKey) . "cm1/styles.css";
+//         $this->doc->setModuleTemplate('EXT:templavoila/Resources/Private/Templates/cm1_default.html');
+//
+//         $this->doc->inDocStylesArray[] = '
+//             #templavoila-frame-visual { height:500px; display:block; margin:0 5px; width:98%; border: 1xpx solid black;}
+//             DIV.typo3-fullDoc H2 { width: 100%; }
+//             TABLE#c-mapInfo {margin-top: 10px; margin-bottom: 5px; }
+//             TABLE#c-mapInfo TR TD {padding-right: 20px;}
+//             select option.pagetemplate {background-image:url(../Resources/Public/Icon/icon_pagetemplate.gif);background-repeat: no-repeat; background-position: 5px 50%; padding: 1px 0 3px 24px; -webkit-background-size: 0;}
+//             select option.fce {background-image:url(../Resources/Public/Icon/icon_fce_ce.png);background-repeat: no-repeat; background-position: 5px 50%; padding: 1px 0 3px 24px; -webkit-background-size: 0;}
+//             #c-toMenu { margin-bottom:10px; }
+//         ';
+//         $this->doc->inDocStylesArray[] = self::$gnyfStyleBlock;
 
         // General GPvars for module mode:
         $this->displayFile = \Extension\Templavoila\Domain\Model\File::filename(CoreGeneralUtility::_GP('file'));
@@ -558,36 +610,36 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         $this->findingStorageFolderIds();
 
         // Setting up form-wrapper:
-        $this->doc->form = '<form action="' . $this->linkThisScript(array()) . '" method="post" name="pageform">';
-
-        // JavaScript
-        $this->doc->JScode .= $this->doc->wrapScriptTags('
-            script_ended = 0;
-            function jumpToUrl(URL)    {    //
-                document.location = URL;
-            }
-            function updPath(inPath)    {    //
-                document.location = "' . CoreGeneralUtility::linkThisScript(array('htmlPath' => '', 'doMappingOfPath' => 1)) . '&htmlPath="+top.rawurlencode(inPath);
-            }
-
-            function openValidator(key) {
-                new Ajax.Request("' . $GLOBALS['BACK_PATH'] . 'ajax.php?ajaxID=Extension\\Templavoila\\Module\\Cm1\\Ajax::getDisplayFileContent&key=" + key, {
-                    onSuccess: function(response) {
-                        var valform = new Element(\'form\',{method: \'post\', target:\'_blank\', action: \'http://validator.w3.org/check#validate_by_input\'});
-                        valform.insert(new Element(\'input\',{name: \'fragment\', value:response.responseText, type: \'hidden\'}));$(document.body).insert(valform);
-                        valform.submit();
-                    }
-                });
-            }
-        ');
-
-        $this->doc->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/tabmenu.js');
-
-        // Setting up the context sensitive menu:
-        $CMparts = $this->doc->getContextMenuCode();
-        $this->doc->bodyTagAdditions = $CMparts[1];
-        $this->doc->JScode .= $CMparts[0];
-        $this->doc->postCode .= $CMparts[2];
+//         $this->doc->form = '<form action="' . $this->linkThisScript(array()) . '" method="post" name="pageform">';
+//
+//         // JavaScript
+//         $this->doc->JScode .= $this->doc->wrapScriptTags('
+//             script_ended = 0;
+//             function jumpToUrl(URL)    {    //
+//                 document.location = URL;
+//             }
+//             function updPath(inPath)    {    //
+//                 document.location = "' . CoreGeneralUtility::linkThisScript(array('htmlPath' => '', 'doMappingOfPath' => 1)) . '&htmlPath="+top.rawurlencode(inPath);
+//             }
+//
+//             function openValidator(key) {
+//                 new Ajax.Request("' . $GLOBALS['BACK_PATH'] . 'ajax.php?ajaxID=Extension\\Templavoila\\Module\\Cm1\\Ajax::getDisplayFileContent&key=" + key, {
+//                     onSuccess: function(response) {
+//                         var valform = new Element(\'form\',{method: \'post\', target:\'_blank\', action: \'http://validator.w3.org/check#validate_by_input\'});
+//                         valform.insert(new Element(\'input\',{name: \'fragment\', value:response.responseText, type: \'hidden\'}));$(document.body).insert(valform);
+//                         valform.submit();
+//                     }
+//                 });
+//             }
+//         ');
+//
+//         $this->doc->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/tabmenu.js');
+//
+//         // Setting up the context sensitive menu:
+//         $CMparts = $this->doc->getContextMenuCode();
+//         $this->doc->bodyTagAdditions = $CMparts[1];
+//         $this->doc->JScode .= $CMparts[0];
+//         $this->doc->postCode .= $CMparts[2];
 
         // Icons
         $this->dsTypes = array(
@@ -621,10 +673,7 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             $this->renderTO();
         }
 
-        // Add spacer:
-        $this->content .= $this->doc->spacer(10);
-
-        $this->pageinfo = BackendUtility::readPageAccess($this->id, $this->perms_clause);
+        /**
         $docHeaderButtons = $this->getDocHeaderButtons();
         $docContent = array(
             'CSH' => $docHeaderButtons['csh'],
@@ -638,9 +687,9 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             $docContent
         );
         $content .= $this->doc->endPage();
-
+*/
         // Replace content with templated content
-        $this->content = $content;
+//         $this->content = $content;
     }
 
     /**
@@ -1626,9 +1675,8 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
         // show tab menu
         if (is_array($parts)) {
-            $this->content .= $this->doc->section(TemplavoilaGeneralUtility::getLanguageService()->getLL('mappingTitle'), '' .
-                $this->doc->getDynTabMenu($parts, 'TEMPLAVOILA:templateModule:' . $this->id, 0, 0, 300)
-                , 0, 1);
+            // Add output:
+            $this->content .= $this->moduleTemplate->getDynamicTabMenu($parts, 'TEMPLAVOILA:templateModule:' . $this->id, 1, 0, 300);
         }
     }
 
@@ -2958,9 +3006,3 @@ class tx_templavoila_cm1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         return implode($parts);
     }
 }
-
-// Make instance:
-$SOBE = CoreGeneralUtility::makeInstance(\tx_templavoila_cm1::class);
-$SOBE->init();
-$SOBE->main();
-$SOBE->printContent();

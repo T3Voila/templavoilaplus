@@ -717,7 +717,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
             'id' => $this->id
             // TODO returnUrl
         ];
-        $linkUrl = BackendUtility::getModuleUrl('_txtemplavoilaCM1', $uriParameters);
+        $linkUrl = BackendUtility::getModuleUrl('templavoila_mapping', $uriParameters);
 
         $fileReference = CoreGeneralUtility::getFileAbsFileName($toObj->getFileref());
         if (@is_file($fileReference)) {

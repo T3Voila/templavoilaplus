@@ -48,17 +48,6 @@ if (TYPO3_MODE === 'BE') {
 
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
         '',
-        'txtemplavoilaCM1',
-        '',
-        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'cm1/',
-        [
-            'name' => 'xMOD_tx_templavoila_cm1',
-            'script' => '_DISPATCH',
-        ]
-    );
-
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
-        '',
         'txtemplavoilaCM2',
         '',
         \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'cm2/',
