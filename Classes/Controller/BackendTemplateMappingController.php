@@ -2611,11 +2611,17 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
      */
     public function makeIframeForVisual($file, $path, $limitTags, $showOnly, $preview = 0)
     {
-        $url = 'index.php?mode=display' .
-            '&file=' . rawurlencode($file) .
-            '&path=' . rawurlencode($path) .
-            '&preview=' . ($preview ? 1 : 0) .
-            ($showOnly ? '&show=1' : '&limitTags=' . rawurlencode($limitTags));
+        $url = BackendUtility::getModuleUrl(
+            $this->moduleName,
+            [
+                'mode' => 'display',
+                'file' => $file,
+                'path' => $path,
+                'preview' => ($preview ? 1 : 0),
+                'show' => ($show ? 1 : 0),
+                'limitTags' => $limitTags,
+            ]
+        );
 
         return '<iframe id="templavoila-frame-visual" src="' . htmlspecialchars($url) . '#_MARKED_UP_ELEMENT"></iframe>';
     }
