@@ -16,6 +16,7 @@ namespace Extension\Templavoila\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility as CoreGeneralUtility;
 
@@ -459,9 +460,51 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
 
         $title = TemplavoilaGeneralUtility::getLanguageService()->getLL('mappingTitle');
         $header = $this->moduleTemplate->header($title);
-//         $this->moduleTemplate->setTitle($title);
+        $this->moduleTemplate->setTitle($title);
+
+        $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($pageInfoArr);
+        $this->setDocHeaderButtons(!isset($pageInfoArr['uid']));
 
         $this->moduleTemplate->setContent($header . $this->content);
+    }
+
+    /**
+     * Gets the buttons that shall be rendered in the docHeader.
+     *
+     * @return array Available buttons for the docHeader
+     */
+    protected function setDocHeaderButtons()
+    {
+        $this->addCshButton('');
+        $this->addShortcutButton();
+    }
+
+    /**
+     * Adds csh icon to the right document header button bar
+     */
+    public function addCshButton($fieldName)
+    {
+        $contextSensitiveHelpButton = $this->buttonBar->makeHelpButton()
+            ->setModuleName('_MOD_' . $this->moduleName)
+            ->setFieldName($fieldName);
+        $this->buttonBar->addButton($contextSensitiveHelpButton, ButtonBar::BUTTON_POSITION_RIGHT);
+    }
+
+    /**
+     * Adds shortcut icon to the right document header button bar
+     */
+    public function addShortcutButton()
+    {
+        $shortcutButton = $this->buttonBar->makeShortcutButton()
+            ->setModuleName($this->moduleName)
+            ->setGetVariables(
+                [
+                    'id',
+                    'uid',
+                ]
+            )
+            ->setSetVariables(array_keys($this->MOD_MENU));
+        $this->buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
     }
 
     /**
@@ -672,64 +715,8 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
         } elseif ($this->displayTable == 'tx_templavoila_tmplobj') { // Data source display
             $this->renderTO();
         }
-
-        /**
-        $docHeaderButtons = $this->getDocHeaderButtons();
-        $docContent = array(
-            'CSH' => $docHeaderButtons['csh'],
-            'CONTENT' => $this->content
-        );
-
-        $content = $this->doc->startPage(TemplavoilaGeneralUtility::getLanguageService()->getLL('title'));
-        $content .= $this->doc->moduleBody(
-            $this->pageinfo,
-            $docHeaderButtons,
-            $docContent
-        );
-        $content .= $this->doc->endPage();
-*/
-        // Replace content with templated content
-//         $this->content = $content;
     }
 
-    /**
-     * Gets the buttons that shall be rendered in the docHeader.
-     *
-     * @return array Available buttons for the docHeader
-     */
-    protected function getDocHeaderButtons()
-    {
-        $buttons = array(
-            'csh' => BackendUtility::cshItem('_MOD_web_txtemplavoilaCM1', '', $this->backPath),
-            'back' => '',
-            'shortcut' => $this->getShortcutButton(),
-        );
-
-        // Back
-        if ($this->returnUrl) {
-            $backIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-view-go-back');
-            $buttons['back'] = '<a href="' . htmlspecialchars(CoreGeneralUtility::linkThisUrl($this->returnUrl)) . '" class="typo3-goBack" title="' . TemplavoilaGeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.goBack', TRUE) . '">' .
-                $backIcon .
-                '</a>';
-        }
-
-        return $buttons;
-    }
-
-    /**
-     * Gets the button to set a new shortcut in the backend (if current user is allowed to).
-     *
-     * @return string HTML representiation of the shortcut button
-     */
-    protected function getShortcutButton()
-    {
-        $result = '';
-        if (TemplavoilaGeneralUtility::getBackendUser()->mayMakeShortcut()) {
-            $result = $this->doc->makeShortcutIcon('id', implode(',', array_keys($this->MOD_MENU)), $this->MCONF['name']);
-        }
-
-        return $result;
-    }
 
     /**
      * Renders the display of DS/TO creation directly from a file
