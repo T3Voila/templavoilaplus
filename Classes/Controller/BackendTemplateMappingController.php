@@ -2531,7 +2531,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
         ];
 
         $content .= '<strong><a href="'
-            . BackendUtility::getModuleUrl('_txtemplavoilaCM1', $theArray)
+            . BackendUtility::getModuleUrl('templavoila_mapping', $theArray)
             . '" target="display">' . $title . '</a></strong>';
 
         return $content;
@@ -2557,7 +2557,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
             '_load_ds_xml_to' => $this->_load_ds_xml_to
         ];
 
-        return BackendUtility::getModuleUrl('_txtemplavoilaCM1', array_merge($theArray, $array));
+        return BackendUtility::getModuleUrl('templavoila_mapping', array_merge($theArray, $array));
     }
 
     public function redirectToModifyDSTO($toUid, $dsUid)
@@ -2592,7 +2592,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
             'returnUrl' => $returnUrl
         ];
 
-        return BackendUtility::getModuleUrl('_txtemplavoilaCM1', $params);
+        return BackendUtility::getModuleUrl('templavoila_mapping', $params);
     }
 
     /**
