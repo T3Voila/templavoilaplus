@@ -62,7 +62,7 @@ class MainClickMenu
                     $iconFactory->getIcon('extensions-templavoila-templavoila-logo', Icon::SIZE_SMALL)->render(),
                     $clickMenu->urlRefForCM(
                         BackendUtility::getModuleUrl(
-                            '_txtemplavoilaCM1',
+                            'templavoila_mapping',
                             [
                                 'file' => $table,
                             ]
@@ -74,16 +74,15 @@ class MainClickMenu
             } elseif (
                 $table === 'tx_templavoila_tmplobj'
                 || $table === 'tx_templavoila_datastructure'
-                || $table === 'tx_templavoila_content'
             ) {
                 $localItems[] = $clickMenu->linkItem(
                     $this->getLanguageService()->getLLL('cm1_title', $LL, TRUE),
                     $iconFactory->getIcon('extensions-templavoila-templavoila-logo', Icon::SIZE_SMALL)->render(),
                     $clickMenu->urlRefForCM(
                         BackendUtility::getModuleUrl(
-                            '_txtemplavoilaCM1',
+                            'templavoila_mapping',
                             [
-                                'file' => $table,
+                                'table' => $table,
                                 'uid' => $uid,
                                 '_reload_from' => 1,
                             ]
@@ -151,7 +150,7 @@ class MainClickMenu
                         $iconFactory->getIcon('extensions-templavoila-templavoila-logo', Icon::SIZE_SMALL)->render(),
                         $clickMenu->urlRefForCM(
                             BackendUtility::getModuleUrl(
-                                '_txtemplavoilaCM1',
+                                'templavoila_mapping',
                                 [
                                     'uid' => $clickMenu->rec['tx_templavoila_ds'],
                                     'table' => 'tx_templavoila_datastructure',
