@@ -714,8 +714,8 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
             'table' => 'tx_templavoila_tmplobj',
             '_reload_from' => 1,
             'uid' => $toObj->getKey(),
-            'id' => $this->id
-            // TODO returnUrl
+            'id' => $this->id,
+            'returnUrl' => $this->getBaseUrl(),
         ];
         $linkUrl = BackendUtility::getModuleUrl('templavoila_mapping', $uriParameters);
 
