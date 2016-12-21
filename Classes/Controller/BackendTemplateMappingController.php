@@ -18,6 +18,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Utility\GeneralUtility as CoreGeneralUtility;
 
 use Extension\Templavoila\Utility\GeneralUtility as TemplavoilaGeneralUtility;
@@ -431,6 +432,12 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
 
         // Setting GPvars:
         $this->mode = CoreGeneralUtility::_GP('mode');
+        // It can be, that we get a storeg:file link from clickmenu
+        $this->displayFile = \Extension\Templavoila\Domain\Model\File::filename(CoreGeneralUtility::_GP('file'));
+        $this->displayTable = CoreGeneralUtility::_GP('table');
+        $this->displayUid = CoreGeneralUtility::_GP('uid');
+
+        $this->returnUrl = CoreGeneralUtility::sanitizeLocalUrl(CoreGeneralUtility::_GP('returnUrl'));
 
         // Access check!
         // The page will show only if there is a valid page and if this page may be viewed by the user
@@ -444,6 +451,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
             // Selecting display or module mode:
             switch ((string) $this->mode) {
                 case 'display':
+                    // @TODO This should go in another controller
                     $this->main_display();
                     break;
                 default:
@@ -467,6 +475,8 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
         $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($pageInfoArr);
         $this->setDocHeaderButtons(!isset($pageInfoArr['uid']));
 
+        $this->moduleTemplate->setForm('<form action="' . $this->linkThisScript([]) . '" method="post" name="pageform">');
+
         $this->moduleTemplate->setContent($header . $this->content);
     }
 
@@ -479,6 +489,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
     {
         $this->addCshButton('');
         $this->addShortcutButton();
+        $this->addBackButton();
     }
 
     /**
@@ -507,6 +518,29 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
             )
             ->setSetVariables(array_keys($this->MOD_MENU));
         $this->buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
+    }
+
+    public function addBackButton()
+    {
+        if ($this->returnUrl) {
+            $url = $this->returnUrl;
+        } else {
+            // @TODO Go back to ControlCenter if we are on "start page"
+            $url = BackendUtility::getModuleUrl(
+                'templavoila_mapping',
+                [
+                    'id' => $this->id,
+                    'file' => $this->displayFile,
+                    'table' => $this->displayTable,
+                    'uid' => $this->displayUid,
+                ]
+            );
+        }
+        $backButton = $this->buttonBar->makeLinkButton()
+            ->setHref($url)
+            ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc'))
+            ->setIcon($this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
+        $this->buttonBar->addButton($backButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
     }
 
     /**
@@ -624,11 +658,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
 //         $this->doc->inDocStylesArray[] = self::$gnyfStyleBlock;
 
         // General GPvars for module mode:
-        $this->displayFile = \Extension\Templavoila\Domain\Model\File::filename(CoreGeneralUtility::_GP('file'));
-        $this->displayTable = CoreGeneralUtility::_GP('table');
-        $this->displayUid = CoreGeneralUtility::_GP('uid');
         $this->displayPath = CoreGeneralUtility::_GP('htmlPath');
-        $this->returnUrl = CoreGeneralUtility::sanitizeLocalUrl(CoreGeneralUtility::_GP('returnUrl'));
 
         // GPvars specific to the DS listing/table and mapping features:
         $this->_preview = CoreGeneralUtility::_GP('_preview');
@@ -653,8 +683,6 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
         $this->findingStorageFolderIds();
 
         // Setting up form-wrapper:
-//         $this->doc->form = '<form action="' . $this->linkThisScript(array()) . '" method="post" name="pageform">';
-//
 //         // JavaScript
 //         $this->doc->JScode .= $this->doc->wrapScriptTags('
 //             script_ended = 0;
@@ -676,13 +704,8 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
 //             }
 //         ');
 //
-//         $this->doc->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/tabmenu.js');
-//
 //         // Setting up the context sensitive menu:
 //         $CMparts = $this->doc->getContextMenuCode();
-//         $this->doc->bodyTagAdditions = $CMparts[1];
-//         $this->doc->JScode .= $CMparts[0];
-//         $this->doc->postCode .= $CMparts[2];
 
         // Icons
         $this->dsTypes = array(
