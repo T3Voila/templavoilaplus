@@ -2025,37 +2025,33 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
 
         // Create Data Structure table:
         $content = '
-
             <!--
                 Data Structure table:
             -->
             <table border="0" cellspacing="2" cellpadding="2" class="dso_table">
             <tr class="bgColor5">
-                <td nowrap="nowrap"><strong>' . TemplavoilaGeneralUtility::getLanguageService()->getLL('mapDataElement') . ':</strong>' .
-            $this->cshItem('xMOD_tx_templavoila', 'mapping_head_dataElement', $this->doc->backPath, '', TRUE) .
-            '</td>
-        ' . ($this->editDataStruct ? '<td nowrap="nowrap"><strong>' . TemplavoilaGeneralUtility::getLanguageService()->getLL('mapField') . ':</strong>' .
-                $this->cshItem('xMOD_tx_templavoila', 'mapping_head_Field', $this->doc->backPath, '', TRUE) .
-                '</td>' : '') . '
-                <td nowrap="nowrap"><strong>' . (!$this->_preview ? TemplavoilaGeneralUtility::getLanguageService()->getLL('mapInstructions') : TemplavoilaGeneralUtility::getLanguageService()->getLL('mapSampleData')) . '</strong>' .
-            $this->cshItem('xMOD_tx_templavoila', 'mapping_head_' . (!$this->_preview ? 'mapping_instructions' : 'sample_data'), $this->doc->backPath, '', TRUE) .
-            '<br /><img src="clear.gif" width="200" height="1" alt="" /></td>
-        <td nowrap="nowrap"><strong>' . TemplavoilaGeneralUtility::getLanguageService()->getLL('mapHTMLpath') . ':</strong>' .
-            $this->cshItem('xMOD_tx_templavoila', 'mapping_head_HTMLpath', $this->doc->backPath, '', TRUE) .
-            '</td>
-        <td nowrap="nowrap"><strong>' . TemplavoilaGeneralUtility::getLanguageService()->getLL('mapAction') . ':</strong>' .
-            $this->cshItem('xMOD_tx_templavoila', 'mapping_head_Action', $this->doc->backPath, '', TRUE) .
-            '</td>
-        <td nowrap="nowrap"><strong>' . TemplavoilaGeneralUtility::getLanguageService()->getLL('mapRules') . ':</strong>' .
-            $this->cshItem('xMOD_tx_templavoila', 'mapping_head_Rules', $this->doc->backPath, '', TRUE) .
-            '</td>
-        ' . ($this->editDataStruct ? '<td nowrap="nowrap"><strong>' . TemplavoilaGeneralUtility::getLanguageService()->getLL('mapEdit') . ':</strong>' .
-                $this->cshItem('xMOD_tx_templavoila', 'mapping_head_Edit', $this->doc->backPath, '', TRUE) .
-                '</td>' : '') . '
-            </tr>
-            ' . implode('', $this->drawDataStructureMap($dataStruct, 1, $currentMappingInfo, $pathLevels, $optDat, $contentSplittedByMapping)) . '</table>
-            ' . $htmlAfterDSTable .
-            $this->cshItem('xMOD_tx_templavoila', 'mapping_basics', $this->doc->backPath, '');
+                <td nowrap="nowrap"><strong>' . TemplavoilaGeneralUtility::getLanguageService()->getLL('mapDataElement') . ':</strong>'
+                . $this->cshItem('xMOD_tx_templavoila', 'mapping_head_dataElement', $this->doc->backPath, '', TRUE) .
+                '</td>'
+                . ($this->editDataStruct ? '<td nowrap="nowrap"><strong>' . TemplavoilaGeneralUtility::getLanguageService()->getLL('mapField') . ':</strong>'
+                    . $this->cshItem('xMOD_tx_templavoila', 'mapping_head_Field', $this->doc->backPath, '', TRUE)
+                    . '</td>' : '')
+                . '<td nowrap="nowrap"><strong>' . (!$this->_preview ? TemplavoilaGeneralUtility::getLanguageService()->getLL('mapInstructions') : TemplavoilaGeneralUtility::getLanguageService()->getLL('mapSampleData')) . '</strong>'
+                . $this->cshItem('xMOD_tx_templavoila', 'mapping_head_' . (!$this->_preview ? 'mapping_instructions' : 'sample_data'), $this->doc->backPath, '', TRUE)
+                . '</td><td nowrap="nowrap"><strong>' . TemplavoilaGeneralUtility::getLanguageService()->getLL('mapHTMLpath') . ':</strong>'
+                . $this->cshItem('xMOD_tx_templavoila', 'mapping_head_HTMLpath', $this->doc->backPath, '', TRUE)
+                .'</td><td nowrap="nowrap"><strong>' . TemplavoilaGeneralUtility::getLanguageService()->getLL('mapAction') . ':</strong>'
+                . $this->cshItem('xMOD_tx_templavoila', 'mapping_head_Action', $this->doc->backPath, '', TRUE)
+                . '</td><td nowrap="nowrap"><strong>' . TemplavoilaGeneralUtility::getLanguageService()->getLL('mapRules') . ':</strong>'
+                . $this->cshItem('xMOD_tx_templavoila', 'mapping_head_Rules', $this->doc->backPath, '', TRUE)
+                . '</td>'
+                . ($this->editDataStruct ? '<td nowrap="nowrap"><strong>' . TemplavoilaGeneralUtility::getLanguageService()->getLL('mapEdit') . ':</strong>'
+                    . $this->cshItem('xMOD_tx_templavoila', 'mapping_head_Edit', $this->doc->backPath, '', TRUE)
+                    . '</td>' : '')
+                . '</tr>'
+                . implode('', $this->drawDataStructureMap($dataStruct, 1, $currentMappingInfo, $pathLevels, $optDat, $contentSplittedByMapping))
+            . '</table>' . $htmlAfterDSTable
+            . $this->cshItem('xMOD_tx_templavoila', 'mapping_basics', $this->doc->backPath, '');
 
         // Make mapping window:
         $limitTags = implode(',', array_keys($this->explodeMappingToTagsStr($this->mappingToTags, 1)));
@@ -2256,7 +2252,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                         $translateIcon = '';
                     }
                     $this->elNames[$formPrefix . '[' . $key . ']']['tx_templavoila']['title'] = $icon . '<strong>' . htmlspecialchars(CoreGeneralUtility::fixed_lgd_cs($translatedTitle, 30)) . '</strong>' . $translateIcon;
-                    $rowCells['title'] = '<img src="clear.gif" width="' . ($level * 16) . '" height="1" alt="" />' . $this->elNames[$formPrefix . '[' . $key . ']']['tx_templavoila']['title'];
+                    $rowCells['title'] = $this->elNames[$formPrefix . '[' . $key . ']']['tx_templavoila']['title'];
 
                     // Description:
                     $this->elNames[$formPrefix . '[' . $key . ']']['tx_templavoila']['description'] = $rowCells['description'] = htmlspecialchars($value['tx_templavoila']['description']);
