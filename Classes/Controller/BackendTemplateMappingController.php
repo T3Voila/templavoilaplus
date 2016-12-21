@@ -610,8 +610,6 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
      */
     public function main_mode()
     {
-//         $this->doc->setModuleTemplate('EXT:templavoila/Resources/Private/Templates/cm1_default.html');
-//
 //         $this->doc->inDocStylesArray[] = '
 //             #templavoila-frame-visual { height:500px; display:block; margin:0 5px; width:98%; border: 1xpx solid black;}
 //             DIV.typo3-fullDoc H2 { width: 100%; }
