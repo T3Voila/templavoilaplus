@@ -2605,7 +2605,8 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
             '_load_ds_xml' => 1,
             '_load_ds_xml_to' => $toUid,
             'uid' => $dsUid,
-            'returnUrl' => $returnUrl
+            'id' => $this->id,
+            'returnUrl' => $returnUrl,
         ];
 
         return BackendUtility::getModuleUrl('templavoila_mapping', $params);
