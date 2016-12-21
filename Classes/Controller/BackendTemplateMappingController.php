@@ -242,34 +242,6 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
     public $_saveDSandTO_pid;
 
     /**
-     * Boolean; if true no mapping-links are rendered.
-     *
-     * @var boolean
-     */
-    public $show;
-
-    /**
-     * Boolean; if true, the currentMappingInfo preview data is merged in
-     *
-     * @var boolean
-     */
-    public $preview;
-
-    /**
-     * String, list of tags to limit display by
-     *
-     * @var string
-     */
-    public $limitTags;
-
-    /**
-     * HTML-path to explode in template.
-     *
-     * @var string
-     */
-    public $path;
-
-    /**
      * instance of class Extension\Templavoila\Module\Cm1\DsEdit
      *
      * @var \Extension\Templavoila\Module\Cm1\DsEdit
@@ -295,7 +267,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
      *
      * @var boolean
      */
-    public $staticDS = FALSE;
+    public $staticDS = false;
 
     /**
      * @return void
@@ -566,7 +538,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
      *
      * @return array Resulting array where $arr1 values has overruled $arr0 values
      */
-    public function array_merge_recursive_overrule($arr0, $arr1, $notAddKeys = 0, $includeEmtpyValues = TRUE, $kill = TRUE)
+    public function array_merge_recursive_overrule($arr0, $arr1, $notAddKeys = 0, $includeEmtpyValues = true, $kill = true)
     {
         foreach ($arr1 as $key => $val) {
             if (is_array($arr0[$key])) {
@@ -1126,7 +1098,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                 '',
                 'title'
             );
-            while (FALSE !== ($row = TemplavoilaGeneralUtility::getDatabaseConnection()->sql_fetch_assoc($res))) {
+            while (false !== ($row = TemplavoilaGeneralUtility::getDatabaseConnection()->sql_fetch_assoc($res))) {
                 $sf_opt[] = '<option value="' . htmlspecialchars($row['uid']) . '">' . htmlspecialchars($row['title'] . ' (UID:' . $row['uid'] . ')') . '</option>';
             }
 
@@ -1155,8 +1127,8 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                 );
             }
             $storageFolderPid = 0;
-            $optGroupOpen = FALSE;
-            while (FALSE !== ($row = TemplavoilaGeneralUtility::getDatabaseConnection()->sql_fetch_assoc($res))) {
+            $optGroupOpen = false;
+            while (false !== ($row = TemplavoilaGeneralUtility::getDatabaseConnection()->sql_fetch_assoc($res))) {
                 $scope = $row['scope'];
                 unset($row['scope']);
                 BackendUtility::workspaceOL('tx_templavoila_tmplobj', $row);
@@ -1166,7 +1138,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                         $opt[] = '</optgroup>';
                     }
                     $opt[] = '<optgroup label="' . htmlspecialchars($this->storageFolders[$storageFolderPid] . ' (PID: ' . $storageFolderPid . ')') . '">';
-                    $optGroupOpen = TRUE;
+                    $optGroupOpen = true;
                 }
                 $opt[] = '<option value="' . htmlspecialchars($row['uid']) . '" ' .
                     ($scope == 1 ? 'class="pagetemplate">' : 'class="fce">') .
@@ -1338,13 +1310,13 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                         <table border="0" cellspacing="2" cellpadding="2" class="dso_table">
                                     <tr class="bgColor5">
                                         <td nowrap="nowrap"><strong>' . TemplavoilaGeneralUtility::getLanguageService()->getLL('renderDSO_dataElement') . ':</strong>' .
-                        $this->cshItem('xMOD_tx_templavoila', 'mapping_head_dataElement', $this->doc->backPath, '', TRUE) .
+                        $this->cshItem('xMOD_tx_templavoila', 'mapping_head_dataElement', $this->doc->backPath, '', true) .
                         '</td>
                     <td nowrap="nowrap"><strong>' . TemplavoilaGeneralUtility::getLanguageService()->getLL('renderDSO_mappingInstructions') . ':</strong>' .
-                        $this->cshItem('xMOD_tx_templavoila', 'mapping_head_mapping_instructions', $this->doc->backPath, '', TRUE) .
+                        $this->cshItem('xMOD_tx_templavoila', 'mapping_head_mapping_instructions', $this->doc->backPath, '', true) .
                         '</td>
                     <td nowrap="nowrap"><strong>' . TemplavoilaGeneralUtility::getLanguageService()->getLL('renderDSO_rules') . ':</strong>' .
-                        $this->cshItem('xMOD_tx_templavoila', 'mapping_head_Rules', $this->doc->backPath, '', TRUE) .
+                        $this->cshItem('xMOD_tx_templavoila', 'mapping_head_Rules', $this->doc->backPath, '', true) .
                         '</td>
                 </tr>
     ' . implode('', $tRows) . '
@@ -1376,7 +1348,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                 $TOicon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('tx_templavoila_tmplobj', array());
 
                 // Listing Template Objects with links:
-                while (FALSE !== ($TO_Row = TemplavoilaGeneralUtility::getDatabaseConnection()->sql_fetch_assoc($res))) {
+                while (false !== ($TO_Row = TemplavoilaGeneralUtility::getDatabaseConnection()->sql_fetch_assoc($res))) {
                     BackendUtility::workspaceOL('tx_templavoila_tmplobj', $TO_Row);
                     $tRows[] = '
                             <tr class="bgColor4">
@@ -1589,7 +1561,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                             list($editContent, $currentHeaderMappingInfo) = $this->renderTO_editProcessing($dataStruct, $row, $theFile, 1);
 
                             // Determine if DS is a template record and if it is a page template:
-                            $showBodyTag = !is_array($DS_row) || $DS_row['scope'] == 1 ? TRUE : FALSE;
+                            $showBodyTag = !is_array($DS_row) || $DS_row['scope'] == 1 ? true : false;
 
                             $parts = array();
                             $parts[] = array(
@@ -2031,22 +2003,22 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
             <table border="0" cellspacing="2" cellpadding="2" class="dso_table">
             <tr class="bgColor5">
                 <td nowrap="nowrap"><strong>' . TemplavoilaGeneralUtility::getLanguageService()->getLL('mapDataElement') . ':</strong>'
-                . $this->cshItem('xMOD_tx_templavoila', 'mapping_head_dataElement', $this->doc->backPath, '', TRUE) .
+                . $this->cshItem('xMOD_tx_templavoila', 'mapping_head_dataElement', $this->doc->backPath, '', true) .
                 '</td>'
                 . ($this->editDataStruct ? '<td nowrap="nowrap"><strong>' . TemplavoilaGeneralUtility::getLanguageService()->getLL('mapField') . ':</strong>'
-                    . $this->cshItem('xMOD_tx_templavoila', 'mapping_head_Field', $this->doc->backPath, '', TRUE)
+                    . $this->cshItem('xMOD_tx_templavoila', 'mapping_head_Field', $this->doc->backPath, '', true)
                     . '</td>' : '')
                 . '<td nowrap="nowrap"><strong>' . (!$this->_preview ? TemplavoilaGeneralUtility::getLanguageService()->getLL('mapInstructions') : TemplavoilaGeneralUtility::getLanguageService()->getLL('mapSampleData')) . '</strong>'
-                . $this->cshItem('xMOD_tx_templavoila', 'mapping_head_' . (!$this->_preview ? 'mapping_instructions' : 'sample_data'), $this->doc->backPath, '', TRUE)
+                . $this->cshItem('xMOD_tx_templavoila', 'mapping_head_' . (!$this->_preview ? 'mapping_instructions' : 'sample_data'), $this->doc->backPath, '', true)
                 . '</td><td nowrap="nowrap"><strong>' . TemplavoilaGeneralUtility::getLanguageService()->getLL('mapHTMLpath') . ':</strong>'
-                . $this->cshItem('xMOD_tx_templavoila', 'mapping_head_HTMLpath', $this->doc->backPath, '', TRUE)
+                . $this->cshItem('xMOD_tx_templavoila', 'mapping_head_HTMLpath', $this->doc->backPath, '', true)
                 .'</td><td nowrap="nowrap"><strong>' . TemplavoilaGeneralUtility::getLanguageService()->getLL('mapAction') . ':</strong>'
-                . $this->cshItem('xMOD_tx_templavoila', 'mapping_head_Action', $this->doc->backPath, '', TRUE)
+                . $this->cshItem('xMOD_tx_templavoila', 'mapping_head_Action', $this->doc->backPath, '', true)
                 . '</td><td nowrap="nowrap"><strong>' . TemplavoilaGeneralUtility::getLanguageService()->getLL('mapRules') . ':</strong>'
-                . $this->cshItem('xMOD_tx_templavoila', 'mapping_head_Rules', $this->doc->backPath, '', TRUE)
+                . $this->cshItem('xMOD_tx_templavoila', 'mapping_head_Rules', $this->doc->backPath, '', true)
                 . '</td>'
                 . ($this->editDataStruct ? '<td nowrap="nowrap"><strong>' . TemplavoilaGeneralUtility::getLanguageService()->getLL('mapEdit') . ':</strong>'
-                    . $this->cshItem('xMOD_tx_templavoila', 'mapping_head_Edit', $this->doc->backPath, '', TRUE)
+                    . $this->cshItem('xMOD_tx_templavoila', 'mapping_head_Edit', $this->doc->backPath, '', true)
                     . '</td>' : '')
                 . '</tr>'
                 . implode('', $this->drawDataStructureMap($dataStruct, 1, $currentMappingInfo, $pathLevels, $optDat, $contentSplittedByMapping))
@@ -2178,12 +2150,12 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                 $sameLevelElements = array_slice($elParentLevel[$parentElement], $pos - 1);
             } else {
                 // we have to search ourselfs because there was no parent and no numerical index to find the right elements
-                $foundCurrent = FALSE;
+                $foundCurrent = false;
                 if (is_array($elParentLevel[$parentElement])) {
                     foreach ($elParentLevel[$parentElement] as $element) {
                         $curPath = stristr($element, '#') ? preg_replace('/^(\w+)\.?.*#(.*)$/i', '\1#\2', $element) : $element;
                         if ($curPath == $lastEl['path']) {
-                            $foundCurrent = TRUE;
+                            $foundCurrent = true;
                         }
                         if ($foundCurrent) {
                             $sameLevelElements[] = $curPath;
@@ -2357,7 +2329,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                                     <input type="submit" name="_save_data_mapping" value="' . TemplavoilaGeneralUtility::getLanguageService()->getLL('buttonSet') . '" />
                                     <input type="submit" name="_" value="' . TemplavoilaGeneralUtility::getLanguageService()->getLL('buttonCancel') . '" />';
                                 $rowCells['cmdLinks'] .=
-                                    $this->cshItem('xMOD_tx_templavoila', 'mapping_modeset', $this->doc->backPath, '', FALSE, 'margin-bottom: 0px;');
+                                    $this->cshItem('xMOD_tx_templavoila', 'mapping_modeset', $this->doc->backPath, '', false, 'margin-bottom: 0px;');
                             } else {
                                 $rowCells['cmdLinks'] = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-notification') . '
                                                         <strong>' . TemplavoilaGeneralUtility::getLanguageService()->getLL('msgHowToMap') . '</strong>';
@@ -2685,7 +2657,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
             'pages',
             'storage_pid>0' . BackendUtility::deleteClause('pages')
         );
-        while (FALSE !== ($row = TemplavoilaGeneralUtility::getDatabaseConnection()->sql_fetch_assoc($res))) {
+        while (false !== ($row = TemplavoilaGeneralUtility::getDatabaseConnection()->sql_fetch_assoc($res))) {
             if (TemplavoilaGeneralUtility::getBackendUser()->isInWebMount($row['storage_pid'], $readPerms)) {
                 $storageFolder = BackendUtility::getRecord('pages', $row['storage_pid'], 'uid,title');
                 if ($storageFolder['uid']) {
@@ -2700,7 +2672,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
             'sys_template',
             'root=1' . BackendUtility::deleteClause('sys_template')
         );
-        while (FALSE !== ($row = TemplavoilaGeneralUtility::getDatabaseConnection()->sql_fetch_assoc($res))) {
+        while (false !== ($row = TemplavoilaGeneralUtility::getDatabaseConnection()->sql_fetch_assoc($res))) {
             $tsCconfig = BackendUtility::getModTSconfig($row['pid'], 'tx_templavoila');
             if (
                 isset($tsCconfig['properties']['storagePid']) &&
@@ -2731,7 +2703,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
      *
      * @return string HTML content for help text
      */
-    public function cshItem($table, $field, $BACK_PATH, $wrap = '', $onlyIconMode = FALSE, $styleAttrib = '')
+    public function cshItem($table, $field, $BACK_PATH, $wrap = '', $onlyIconMode = false, $styleAttrib = '')
     {
         if (is_callable(array('\TYPO3\CMS\Backend\Utility\BackendUtility', 'cshItem'))) {
             return BackendUtility::cshItem($table, $field, $BACK_PATH, $wrap, $onlyIconMode, $styleAttrib);
