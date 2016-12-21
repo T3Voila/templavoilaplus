@@ -646,15 +646,6 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
      */
     public function main_mode()
     {
-//         $this->doc->inDocStylesArray[] = '
-//             #templavoila-frame-visual { height:500px; display:block; margin:0 5px; width:98%; border: 1xpx solid black;}
-//             DIV.typo3-fullDoc H2 { width: 100%; }
-//             TABLE#c-mapInfo {margin-top: 10px; margin-bottom: 5px; }
-//             TABLE#c-mapInfo TR TD {padding-right: 20px;}
-//             select option.pagetemplate {background-image:url(../Resources/Public/Icon/icon_pagetemplate.gif);background-repeat: no-repeat; background-position: 5px 50%; padding: 1px 0 3px 24px; -webkit-background-size: 0;}
-//             select option.fce {background-image:url(../Resources/Public/Icon/icon_fce_ce.png);background-repeat: no-repeat; background-position: 5px 50%; padding: 1px 0 3px 24px; -webkit-background-size: 0;}
-//             #c-toMenu { margin-bottom:10px; }
-//         ';
 //         $this->doc->inDocStylesArray[] = self::$gnyfStyleBlock;
 
         // General GPvars for module mode:
@@ -1211,7 +1202,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                     $optGroupOpen = TRUE;
                 }
                 $opt[] = '<option value="' . htmlspecialchars($row['uid']) . '" ' .
-                    ($scope == 1 ? 'class="pagetemplate"">' : 'class="fce">') .
+                    ($scope == 1 ? 'class="pagetemplate">' : 'class="fce">') .
                     htmlspecialchars(TemplavoilaGeneralUtility::getLanguageService()->sL($row['title']) . ' (UID:' . $row['uid'] . ')') . '</option>';
             }
             if ($optGroupOpen) {

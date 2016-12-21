@@ -1,4 +1,4 @@
-/* 
+/*
  * mod2: detail-view, alanysis of the settings made to the DS-XML
  */
 dl.DS-details dl,
@@ -25,7 +25,7 @@ dl.DS-details > dd {
 
 dl.DS-details > dd {
 	padding-left: 22px;
-	background: left top url(../Resources/Public/Image/line.gif) repeat-y transparent;
+	background: left top url('../Image/line.gif') repeat-y transparent;
 }
 
 dl.DS-details ul.DS-config,
@@ -80,7 +80,7 @@ dl.DS-details > dd {
 
 dl.DS-details > dd {
 	padding-left: 22px;
-	background: left top url(../Resources/Public/Image/line.gif) repeat-y transparent;
+	background: left top url('../Image/line.gif') repeat-y transparent;
 }
 
 dl.DS-details ul.DS-config,
@@ -135,7 +135,7 @@ dl.DS-details > dd {
 
 dl.DS-details > dd {
 	padding-left: 22px;
-	background: left top url(../Resources/Public/Image/line.gif) repeat-y transparent;
+	background: left top url('../Image/line.gif') repeat-y transparent;
 }
 
 dl.DS-details ul.DS-config,
@@ -190,7 +190,7 @@ dl.DS-details > dd {
 
 dl.DS-details > dd {
 	padding-left: 22px;
-	background: left top url(../Resources/Public/Image/line.gif) repeat-y transparent;
+	background: left top url('../Image/line.gif') repeat-y transparent;
 }
 
 dl.DS-details ul.DS-config,

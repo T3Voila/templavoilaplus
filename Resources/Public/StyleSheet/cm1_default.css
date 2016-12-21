@@ -25,13 +25,13 @@ ul.DS-tree li {
 	border: 0;
 	padding: 0;
 	list-style-position: inside;
-	list-style-image: url(../Resources/Public/Image/join.gif);
-	background: 0 0 url(../Resources/Public/Image/line.gif) repeat-y transparent; "typo3conf/templavoila14/cm1/styles.css"
+	list-style-image: url('../Image/join.gif');
+	background: 0 0 url('../Image/line.gif') repeat-y transparent;
 }
 
 ul.DS-tree li.last-child {
-	list-style-image: url(../Resources/Public/Image/blank.gif);
-	background: 0 0 url(../Resources/Public/Image/joinbottom.gif) no-repeat transparent;
+	list-style-image: url('../Image/blank.gif');
+	background: 0 0 url('../Image/joinbottom.gif') no-repeat transparent;
 }
 
 ul.DS-tree a {
@@ -112,4 +112,29 @@ tr.tv-edit-row div.tv-ts-tree {
 tr.tv-edit-row td.edit-ds-actioncontrols {
 	vertical-align: bottom;
 	padding: 0.5em 1em 1em;
+}
+
+#templavoila-frame-visual {
+    height:500px;
+    display:block;
+    margin:0 5px;
+    width:98%;
+    border: 1xpx solid black;
+}
+
+TABLE#c-mapInfo {margin-top: 10px; margin-bottom: 5px; }
+TABLE#c-mapInfo TR TD {padding-right: 20px;}
+#c-toMenu { margin-bottom:10px; }
+
+select option.pagetemplate {
+    background-image:url('../Icon/icon_pagetemplate.gif');
+    background-repeat: no-repeat;
+    background-position: 5px 50%;
+    padding: 1px 0 3px 24px;
+}
+select option.fce {
+    background-image:url('../Icon/icon_fce_ce.png');
+    background-repeat: no-repeat;
+    background-position: 5px 50%;
+    padding: 1px 0 3px 24px;
 }
