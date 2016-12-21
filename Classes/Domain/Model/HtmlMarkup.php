@@ -50,8 +50,8 @@ class HtmlMarkup
 
     /**
      * The mode by which to detect the path of elements
-     * TRUE (1)    Default path detection; Will reset path by #id attributes. Will include class-attributes for elements. For the rest, its numeric.
-     * FALSE    No path detection applied
+     * true (1)    Default path detection; Will reset path by #id attributes. Will include class-attributes for elements. For the rest, its numeric.
+     * false    No path detection applied
      *
      * Currently only one path mode is used. However the idea is if other path modes might be liked in the future. But for now, that is not the case.
      *
@@ -83,7 +83,7 @@ class HtmlMarkup
     /**
      * @var boolean
      */
-    public $textGnyf = FALSE;
+    public $textGnyf = false;
 
     /**
      * This defines which tags can be exploded. Input lists of tags will be limited to those entered here.
@@ -91,8 +91,8 @@ class HtmlMarkup
      *
      * Notice that there is a distinction between "block elements" which has a begin AND end tag (eg. '<table>...</table>' or '<p>...</p>') and "single elements" which is stand-alone (eg. '<img>'). I KNOW that in XML '<p>..</p>' with no content can legally be '<p/>', however this class does not support that at the moment (and will in fact choke..)
      * For each element you can define and array with key/values;
-     *   'single' => TRUE                       Tells the parser that this tag is a single-tag, stand alone (eg. '<img>', '<input>' or '<br>')
-     *   'anchor_outside' => TRUE               (Block elements only) This means that the tag-image for this element will be placed outside of the block. Default is to place the image inside.
+     *   'single' => true                       Tells the parser that this tag is a single-tag, stand alone (eg. '<img>', '<input>' or '<br>')
+     *   'anchor_outside' => true               (Block elements only) This means that the tag-image for this element will be placed outside of the block. Default is to place the image inside.
      *   'wrap' => array('before','after')       (Block elements only) This means that the tag-image for this element will be wrapped in those HTML codes before being placed. Notice how this is cleverly used to represent '<tr>...</tr>' blocks.
      *
      * @var array
@@ -721,7 +721,7 @@ class HtmlMarkup
             return $this->tDat['MappingData_cached'];
         }
 
-        return FALSE;
+        return false;
     }
 
     /**
@@ -742,7 +742,7 @@ class HtmlMarkup
             return implode('', $TA['cArray']);
         }
 
-        return FALSE;
+        return false;
     }
 
     /**
@@ -760,7 +760,7 @@ class HtmlMarkup
         if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('templavoila')) {
             $rec = $GLOBALS['TSFE']->sys_page->checkRecord('tx_templavoila_tmplobj', $uid);
             $parentUid = $rec['uid'];
-            $rendertype_ref = $rec['rendertype_ref'] ? $GLOBALS['TSFE']->sys_page->checkRecord('tx_templavoila_tmplobj', $rec['rendertype_ref']) : FALSE;
+            $rendertype_ref = $rec['rendertype_ref'] ? $GLOBALS['TSFE']->sys_page->checkRecord('tx_templavoila_tmplobj', $rec['rendertype_ref']) : false;
 
             if (is_array($rec)) {
                 if ($renderType) { // If print-flag try to find a proper print-record. If the lang-uid is also set, try to find a combined print/lang record, but if not found, the print rec. will take precedence.
@@ -803,7 +803,7 @@ class HtmlMarkup
             return $rec;
         }
 
-        return FALSE;
+        return false;
     }
 
     /**
@@ -857,7 +857,7 @@ class HtmlMarkup
      * @return void
      */
     public function setHeaderBodyParts(
-        $MappingInfo_head, $MappingData_head_cached, $BodyTag_cached = '', $pageRenderer = FALSE
+        $MappingInfo_head, $MappingData_head_cached, $BodyTag_cached = '', $pageRenderer = false
     ) {
         $htmlParse = ($this->htmlParse ? $this->htmlParse : \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class));
         /* @var $htmlParse \TYPO3\CMS\Core\Html\HtmlParser */
@@ -961,39 +961,6 @@ class HtmlMarkup
         $style = '';
         $style .= (!\TYPO3\CMS\Core\Utility\GeneralUtility::inList('explode,checkbox', $this->mode) ? 'position:absolute;' : '');
         $this->gnyfStyle = $style ? ' style="' . htmlspecialchars($style) . '"' : '';
-    }
-
-    /**
-     * The idea is to parse the XML in $contnet and set the internal TAG array with all these tags so they can be mapped...
-     * NOT WORKING YET - experiment.
-     *
-     * @param string $content
-     *
-     * @return string
-     */
-    public function setTagsFromXML($content)
-    {
-        $parser = xml_parser_create();
-        $vals = array();
-        $index = array();
-
-        xml_parser_set_option($parser, XML_OPTION_CASE_FOLDING, 0);
-        xml_parser_set_option($parser, XML_OPTION_SKIP_WHITE, 0);
-        xml_parse_into_struct($parser, $content, $vals, $index);
-
-        if (xml_get_error_code($parser)) {
-            return 'Line ' . xml_get_current_line_number($parser) . ': ' . xml_error_string(xml_get_error_code($parser));
-        }
-        xml_parser_free($parser);
-
-        $this->tags = $index;
-        foreach ($index as $idx => $value) {
-            $this->tags[$idx] = array();
-        }
-
-        $this->textGnyf = TRUE;
-
-        return '';
     }
 
     /**
@@ -1287,7 +1254,7 @@ class HtmlMarkup
                 $this->rangeStartPath[$recursion] = '';
             }
         } elseif ($this->searchPaths[$subPath]) {
-            $placeholder = md5(uniqid(rand(), TRUE));
+            $placeholder = md5(uniqid(rand(), true));
 
             switch ((string) $this->searchPaths[$subPath]['modifier']) {
                 case 'ATTR':
@@ -1300,7 +1267,7 @@ class HtmlMarkup
                             $this->searchPaths[$subPath]['attr'][$attr]['placeholder'] = $placeholder;
                             $this->searchPaths[$subPath]['attr'][$attr]['content'] = $params[0][$attr];
                             $params[0][$attr] = $placeholder;
-                            $placeholder = md5(uniqid(rand(), TRUE));
+                            $placeholder = md5(uniqid(rand(), true));
                         }
                         $firstTag = '<' . trim($firstTagName . ' ' . \TYPO3\CMS\Core\Utility\GeneralUtility::implodeAttributes($params[0])) . ($mode != 'block' ? ' /' : '') . '>';
                         if ($mode != 'block') {
