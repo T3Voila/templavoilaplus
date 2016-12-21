@@ -298,28 +298,6 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
     public $staticDS = FALSE;
 
     /**
-     * @var string
-     */
-    static public $gnyfStyleBlock = '
-    .gnyfBox { position:relative; }
-    .gnyfElement {    color: black; font-family:monospace;font-size:12px !important; line-height:1.3em !important; font-weight:normal; text-transform:none; letter-spacing:auto; cursor: pointer; margin: 0; padding:0 7px; overflow: hidden; text-align: center; position: absolute;  border-radius: 0.4em; -o-border-radius: 0.4em; -moz-border-radius: 0.4em; -webkit-border-radius: 0.4em; background-color: #ffffff;    }
-    .dso_table .gnyfElement { position: relative; }
-    span.gnyfElement:hover {    z-index: 100;    box-shadow: rgba(0, 0, 0, 0.5) 0 0 4px 2px;    -o-box-shadow: rgba(0, 0, 0, 0.5) 0 0 4px 2px;    -moz-box-shadow: rgba(0, 0, 0, 0.5) 0 0 4px 2px;    -webkit-box-shadow: rgba(0, 0, 0, 0.5) 0 0 4px 2px;    }
-    a > span.gnyfElement, td > span.gnyfElement {    position:relative;    }
-    a > .gnyfElement:hover, td > .gnyfElement:hover  { box-shadow: none;    -o-box-shadow: none;    -moz-box-shadow: none;    -webkit-box-shadow: none;    }
-    .gnyfRoot { background-color:#9bff9b; }
-    .gnyfDocument { background-color:#788cff; }
-    .gnyfText { background-color:#ffff64; }
-    .gnyfGrouping { background-color:#ff9650; }
-    .gnyfForm { background-color:#64ff64; }
-    .gnyfSections { background-color:#a0afff; }
-    .gnyfInterative { background-color:#0096ff; }
-    .gnyfTable { background-color:#ff9664; }
-    .gnyfEmbedding { background-color:#ff96ff; }
-    .gnyfInteractive { background-color: #d3d3d3; }
-';
-
-    /**
      * @return void
      */
     public function init()
@@ -646,8 +624,6 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
      */
     public function main_mode()
     {
-//         $this->doc->inDocStylesArray[] = self::$gnyfStyleBlock;
-
         // General GPvars for module mode:
         $this->displayPath = CoreGeneralUtility::_GP('htmlPath');
 
@@ -2840,7 +2816,9 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
             }
 
             $markup = implode('', $cParts);
-            $styleBlock = '<style type="text/css">' . self::$gnyfStyleBlock . '</style>';
+            $styleBlock = '<link media="all" href="/'
+                . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('templavoila')
+                . '/Resources/Public/StyleSheet/HtmlMarkup.css" type="text/css" rel="stylesheet" />';
             if (preg_match('/<\/head/i', $markup)) {
                 $finalMarkup = preg_replace('/(<\/head)/i', $styleBlock . '\1', $markup);
             } else {
@@ -2890,7 +2868,9 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
         }
         // Implode content and return it:
         $markup = implode('', $pp);
-        $styleBlock = '<style type="text/css">' . self::$gnyfStyleBlock . '</style>';
+        $styleBlock = '<link media="all" href="/'
+            . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('templavoila')
+            . '/Resources/Public/StyleSheet/HtmlMarkup.css" type="text/css" rel="stylesheet" />';
         if (preg_match('/<\/head/i', $markup)) {
             $finalMarkup = preg_replace('/(<\/head)/i', $styleBlock . '\1', $markup);
         } else {
