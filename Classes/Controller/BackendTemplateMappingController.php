@@ -398,6 +398,28 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
             $this->getPageRenderer()->addCssFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->extKey) . 'Resources/Public/StyleSheet/cm1_default.css');
             $this->getPageRenderer()->addCssFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->extKey) . 'Resources/Public/StyleSheet/HtmlMarkup.css');
 
+            // Adding classic jumpToUrl function, needed for the function menu.
+            // And some more functions
+            $this->moduleTemplate->addJavaScriptCode('templavoila_function', '
+                script_ended = 0;
+                function jumpToUrl(URL)    {    //
+                    document.location = URL;
+                }
+                function updPath(inPath)    {    //
+                    document.location = "' . CoreGeneralUtility::linkThisScript(array('htmlPath' => '', 'doMappingOfPath' => 1)) . '&htmlPath="+top.rawurlencode(inPath);
+                }
+
+                function openValidator(key) {
+                    new Ajax.Request("' . $GLOBALS['BACK_PATH'] . 'ajax.php?ajaxID=Extension\\Templavoila\\Module\\Cm1\\Ajax::getDisplayFileContent&key=" + key, {
+                        onSuccess: function(response) {
+                            var valform = new Element(\'form\',{method: \'post\', target:\'_blank\', action: \'http://validator.w3.org/check#validate_by_input\'});
+                            valform.insert(new Element(\'input\',{name: \'fragment\', value:response.responseText, type: \'hidden\'}));$(document.body).insert(valform);
+                            valform.submit();
+                        }
+                    });
+                }
+            ');
+
             $this->main_mode();
         } else {
             $flashMessage = CoreGeneralUtility::makeInstance(
@@ -612,31 +634,6 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
         // Finding Storage folder:
         $this->findingStorageFolderIds();
 
-        // Setting up form-wrapper:
-//         // JavaScript
-//         $this->doc->JScode .= $this->doc->wrapScriptTags('
-//             script_ended = 0;
-//             function jumpToUrl(URL)    {    //
-//                 document.location = URL;
-//             }
-//             function updPath(inPath)    {    //
-//                 document.location = "' . CoreGeneralUtility::linkThisScript(array('htmlPath' => '', 'doMappingOfPath' => 1)) . '&htmlPath="+top.rawurlencode(inPath);
-//             }
-//
-//             function openValidator(key) {
-//                 new Ajax.Request("' . $GLOBALS['BACK_PATH'] . 'ajax.php?ajaxID=Extension\\Templavoila\\Module\\Cm1\\Ajax::getDisplayFileContent&key=" + key, {
-//                     onSuccess: function(response) {
-//                         var valform = new Element(\'form\',{method: \'post\', target:\'_blank\', action: \'http://validator.w3.org/check#validate_by_input\'});
-//                         valform.insert(new Element(\'input\',{name: \'fragment\', value:response.responseText, type: \'hidden\'}));$(document.body).insert(valform);
-//                         valform.submit();
-//                     }
-//                 });
-//             }
-//         ');
-//
-//         // Setting up the context sensitive menu:
-//         $CMparts = $this->doc->getContextMenuCode();
-
         // Icons
         $this->dsTypes = array(
             'sc' => TemplavoilaGeneralUtility::getLanguageService()->getLL('dsTypes_section') . ': ',
@@ -644,6 +641,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
             'el' => TemplavoilaGeneralUtility::getLanguageService()->getLL('dsTypes_attribute') . ': ',
             'at' => TemplavoilaGeneralUtility::getLanguageService()->getLL('dsTypes_element') . ': ',
             'no' => TemplavoilaGeneralUtility::getLanguageService()->getLL('dsTypes_notmapped') . 'Not : ');
+
         foreach ($this->dsTypes as $id => $title) {
             $this->dsTypes[$id] = array(
                 // abbrevation
@@ -651,13 +649,9 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                 // descriptive title
                 $title,
                 // image-path
-                \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila') . 'cm1/item_' . $id . '.gif', 'width="24" height="16" border="0" style="margin-right: 5px;"'),
-                // background-path
-                \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila') . 'cm1/item_' . $id . '.gif', '', 1)
+                ' src="' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila') . 'cm1/item_' . $id . '.gif"'
+                . ' width="24" height="16" border="0" style="margin-right: 5px;"'
             );
-
-            // information
-            $this->dsTypes[$id][4] = @getimagesize($this->dsTypes[$id][3]);
         }
 
         // Render content, depending on input values:
