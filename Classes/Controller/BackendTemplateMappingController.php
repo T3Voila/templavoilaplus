@@ -409,7 +409,6 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
         $this->staticDS = ($this->extConf['staticDS.']['enable']);
 
         // Setting GPvars:
-        $this->mode = CoreGeneralUtility::_GP('mode');
         // It can be, that we get a storeg:file link from clickmenu
         $this->displayFile = \Extension\Templavoila\Domain\Model\File::filename(CoreGeneralUtility::_GP('file'));
         $this->displayTable = CoreGeneralUtility::_GP('table');
@@ -425,17 +424,9 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
         if ($access) {
                     // Add custom styles
             $this->getPageRenderer()->addCssFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->extKey) . 'Resources/Public/StyleSheet/cm1_default.css');
+            $this->getPageRenderer()->addCssFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->extKey) . 'Resources/Public/StyleSheet/HtmlMarkup.css');
 
-            // Selecting display or module mode:
-            switch ((string) $this->mode) {
-                case 'display':
-                    // @TODO This should go in another controller
-                    $this->main_display();
-                    break;
-                default:
-                    $this->main_mode();
-                    break;
-            }
+            $this->main_mode();
         } else {
             $flashMessage = CoreGeneralUtility::makeInstance(
                 \TYPO3\CMS\Core\Messaging\FlashMessage::class,
@@ -2519,11 +2510,10 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
         $theArray = [
             'file' => $this->markupFile,
             'path' => $path,
-            'mode' => 'display'
         ];
 
         $content .= '<strong><a href="'
-            . BackendUtility::getModuleUrl('templavoila_mapping', $theArray)
+            . BackendUtility::getModuleUrl('templavoila_template_disply', $theArray)
             . '" target="display">' . $title . '</a></strong>';
 
         return $content;
@@ -2603,14 +2593,14 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
     public function makeIframeForVisual($file, $path, $limitTags, $showOnly, $preview = 0)
     {
         $url = BackendUtility::getModuleUrl(
-            $this->moduleName,
+            'templavoila_template_disply',
             [
-                'mode' => 'display',
                 'file' => $file,
                 'path' => $path,
                 'preview' => ($preview ? 1 : 0),
                 'show' => ($show ? 1 : 0),
                 'limitTags' => $limitTags,
+                'mode' => $this->MOD_SETTINGS['displayMode'],
             ]
         );
 
@@ -2731,177 +2721,6 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
         $sysFolderPIDs = array_keys($this->storageFolders);
         $sysFolderPIDs[] = 0;
         $this->storageFolders_pidList = implode(',', $sysFolderPIDs);
-    }
-
-    /*****************************************
-     *
-     * DISPLAY mode
-     *
-     *****************************************/
-
-    /**
-     * Outputs the display of a marked-up HTML file in the IFRAME
-     *
-     * @return void Exits before return
-     * @see makeIframeForVisual()
-     */
-    public function main_display()
-    {
-        // Setting GPvars:
-        $this->displayFile = CoreGeneralUtility::_GP('file');
-        $this->show = CoreGeneralUtility::_GP('show');
-        $this->preview = CoreGeneralUtility::_GP('preview');
-        $this->limitTags = CoreGeneralUtility::_GP('limitTags');
-        $this->path = CoreGeneralUtility::_GP('path');
-
-        // Checking if the displayFile parameter is set:
-        if (@is_file($this->displayFile) && CoreGeneralUtility::getFileAbsFileName($this->displayFile)) { // FUTURE: grabbing URLS?:         .... || substr($this->displayFile,0,7)=='http://'
-            $content = CoreGeneralUtility::getUrl($this->displayFile);
-            if ($content) {
-                $relPathFix = $GLOBALS['BACK_PATH'] . '../' . dirname(substr($this->displayFile, strlen(PATH_site))) . '/';
-
-                if ($this->preview) { // In preview mode, merge preview data into the template:
-                    // Add preview data to file:
-                    $content = $this->displayFileContentWithPreview($content, $relPathFix);
-                } else {
-                    // Markup file:
-                    $content = $this->displayFileContentWithMarkup($content, $this->path, $relPathFix, $this->limitTags);
-                }
-                // Output content:
-                echo $content;
-            } else {
-                $this->displayFrameError(TemplavoilaGeneralUtility::getLanguageService()->getLL('errorNoContentInFile') . ': <em>' . htmlspecialchars($this->displayFile) . '</em>');
-            }
-        } else {
-            $this->displayFrameError(TemplavoilaGeneralUtility::getLanguageService()->getLL('errorNoFileToDisplay'));
-        }
-
-        // Exit since a full page has been outputted now.
-        exit;
-    }
-
-    /**
-     * This will mark up the part of the HTML file which is pointed to by $path
-     *
-     * @param string $content The file content as a string
-     * @param string $path The "HTML-path" to split by
-     * @param string $relPathFix The rel-path string to fix images/links with.
-     * @param string $limitTags List of tags to show
-     *
-     * @return string
-     * @see main_display()
-     */
-    public function displayFileContentWithMarkup($content, $path, $relPathFix, $limitTags)
-    {
-        $markupObj = CoreGeneralUtility::makeInstance(\Extension\Templavoila\Domain\Model\HtmlMarkup::class);
-        $markupObj->gnyfImgAdd = $this->show ? '' : 'onclick="return parent.updPath(\'###PATH###\');"';
-        $markupObj->pathPrefix = $path ? $path . '|' : '';
-        $markupObj->onlyElements = $limitTags;
-
-#        $markupObj->setTagsFromXML($content);
-
-        $cParts = $markupObj->splitByPath($content, $path);
-        if (is_array($cParts)) {
-            $cParts[1] = $markupObj->markupHTMLcontent(
-                $cParts[1],
-                $GLOBALS['BACK_PATH'],
-                $relPathFix,
-                implode(',', array_keys($markupObj->tags)),
-                $this->MOD_SETTINGS['displayMode']
-            );
-            $cParts[0] = $markupObj->passthroughHTMLcontent($cParts[0], $relPathFix, $this->MOD_SETTINGS['displayMode']);
-            $cParts[2] = $markupObj->passthroughHTMLcontent($cParts[2], $relPathFix, $this->MOD_SETTINGS['displayMode']);
-            if (trim($cParts[0])) {
-                $cParts[1] = '<a name="_MARKED_UP_ELEMENT"></a>' . $cParts[1];
-            }
-
-            $markup = implode('', $cParts);
-            $styleBlock = '<link media="all" href="/'
-                . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('templavoila')
-                . '/Resources/Public/StyleSheet/HtmlMarkup.css" type="text/css" rel="stylesheet" />';
-            if (preg_match('/<\/head/i', $markup)) {
-                $finalMarkup = preg_replace('/(<\/head)/i', $styleBlock . '\1', $markup);
-            } else {
-                $finalMarkup = $styleBlock . $markup;
-            }
-
-            return $finalMarkup;
-        }
-        $this->displayFrameError($cParts);
-
-        return '';
-    }
-
-    /**
-     * This will add preview data to the HTML file used as a template according to the currentMappingInfo
-     *
-     * @param string $content The file content as a string
-     * @param string $relPathFix The rel-path string to fix images/links with.
-     *
-     * @return string
-     * @see main_display()
-     */
-    public function displayFileContentWithPreview($content, $relPathFix)
-    {
-        // Getting session data to get currentMapping info:
-        $sesDat = TemplavoilaGeneralUtility::getBackendUser()->getSessionData($this->sessionKey);
-        $currentMappingInfo = is_array($sesDat['currentMappingInfo']) ? $sesDat['currentMappingInfo'] : array();
-
-        // Init mark up object.
-        $this->markupObj = CoreGeneralUtility::makeInstance(\Extension\Templavoila\Domain\Model\HtmlMarkup::class);
-        $this->markupObj->htmlParse = CoreGeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class);
-
-        // Splitting content, adding a random token for the part to be previewed:
-        $contentSplittedByMapping = $this->markupObj->splitContentToMappingInfo($content, $currentMappingInfo);
-        $token = md5(microtime());
-        $content = $this->markupObj->mergeSampleDataIntoTemplateStructure($sesDat['dataStruct'], $contentSplittedByMapping, $token);
-
-        // Exploding by that token and traverse content:
-        $pp = explode($token, $content);
-        foreach ($pp as $kk => $vv) {
-            $pp[$kk] = $this->markupObj->passthroughHTMLcontent($vv, $relPathFix, $this->MOD_SETTINGS['displayMode'], $kk == 1 ? 'font-size:11px; color:#000066;' : '');
-        }
-
-        // Adding a anchor point (will work in most cases unless put into a table/tr tag etc).
-        if (trim($pp[0])) {
-            $pp[1] = '<a name="_MARKED_UP_ELEMENT"></a>' . $pp[1];
-        }
-        // Implode content and return it:
-        $markup = implode('', $pp);
-        $styleBlock = '<link media="all" href="/'
-            . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('templavoila')
-            . '/Resources/Public/StyleSheet/HtmlMarkup.css" type="text/css" rel="stylesheet" />';
-        if (preg_match('/<\/head/i', $markup)) {
-            $finalMarkup = preg_replace('/(<\/head)/i', $styleBlock . '\1', $markup);
-        } else {
-            $finalMarkup = $styleBlock . $markup;
-        }
-
-        return $finalMarkup;
-    }
-
-    /**
-     * Outputs a simple HTML page with an error message
-     *
-     * @param string Error message for output in <h2> tags
-     *
-     * @return void Echos out an HTML page.
-     */
-    public function displayFrameError($error)
-    {
-        echo '
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-
-<html>
-<head>
-    <title>Untitled</title>
-</head>
-
-<body bgcolor="#eeeeee">
-<h2>ERROR: ' . $error . '</h2>
-</body>
-</html>
-            ';
     }
 
     /**

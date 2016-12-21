@@ -17,4 +17,9 @@ return [
         'access' => 'user,group',
         'target' => Controller\BackendTemplateMappingController::class . '::mainAction',
     ],
+    'templavoila_template_disply' => [
+        'path' => '/templavoila/template/display',
+        'access' => 'user,group',
+        'target' => Controller\BackendTemplateDisplayController::class . '::mainAction',
+    ],
 ];
