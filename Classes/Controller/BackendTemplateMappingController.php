@@ -722,7 +722,9 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
 
             // Checking Storage Folder PID:
             if (!count($this->storageFolders)) {
-                $msg[] = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-error') . '<strong>' . TemplavoilaGeneralUtility::getLanguageService()->getLL('error') . '</strong> ' . TemplavoilaGeneralUtility::getLanguageService()->getLL('errorNoStorageFolder');
+                $msg[] = $this->iconFactory->getIcon('status-dialog-error', Icon::SIZE_SMALL)->render()
+                    . '<strong>' . TemplavoilaGeneralUtility::getLanguageService()->getLL('error') . '</strong> '
+                    . TemplavoilaGeneralUtility::getLanguageService()->getLL('errorNoStorageFolder');
             }
 
             // Session data
@@ -923,15 +925,20 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                         $tce->process_datamap();
                         $newToID = (int)$tce->substNEWwithIDs['NEW'];
                         if ($newToID) {
-                            $msg[] = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-ok') .
-                                sprintf(TemplavoilaGeneralUtility::getLanguageService()->getLL('msgDSTOSaved'),
+                            $msg[] = $this->iconFactory->getIcon('status-dialog-ok', Icon::SIZE_SMALL)->render()
+                                . sprintf(TemplavoilaGeneralUtility::getLanguageService()->getLL('msgDSTOSaved'),
                                     $dataArr['tx_templavoila_tmplobj']['NEW']['datastructure'],
                                     $tce->substNEWwithIDs['NEW'], $this->_saveDSandTO_pid);
                         } else {
-                            $msg[] = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-warning') . '<strong>' . TemplavoilaGeneralUtility::getLanguageService()->getLL('error') . ':</strong> ' . sprintf(TemplavoilaGeneralUtility::getLanguageService()->getLL('errorTONotSaved'), $dataArr['tx_templavoila_tmplobj']['NEW']['datastructure']);
+                            $msg[] = $this->iconFactory->getIcon('status-dialog-warning', Icon::SIZE_SMALL)->render()
+                                . '<strong>' . TemplavoilaGeneralUtility::getLanguageService()->getLL('error') . ':</strong> '
+                                . sprintf(TemplavoilaGeneralUtility::getLanguageService()->getLL('errorTONotSaved'), $dataArr['tx_templavoila_tmplobj']['NEW']['datastructure']);
                         }
                     } else {
-                        $msg[] = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-warning') . ' border="0" align="top" class="absmiddle" alt="" /><strong>' . TemplavoilaGeneralUtility::getLanguageService()->getLL('error') . ':</strong> ' . TemplavoilaGeneralUtility::getLanguageService()->getLL('errorTONotCreated');
+                        $msg[] = $this->iconFactory->getIcon('status-dialog-warning', Icon::SIZE_SMALL)->render()
+                            . ' border="0" align="top" class="absmiddle" alt="" />'
+                            . '<strong>' . TemplavoilaGeneralUtility::getLanguageService()->getLL('error') . ':</strong> '
+                            . TemplavoilaGeneralUtility::getLanguageService()->getLL('errorTONotCreated');
                     }
 
                     unset($tce);
@@ -1001,7 +1008,8 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
 
                         unset($tce);
 
-                        $msg[] = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-notification') . sprintf(TemplavoilaGeneralUtility::getLanguageService()->getLL('msgDSTOUpdated'), $dsREC['uid'], $toREC['uid']);
+                        $msg[] = $this->iconFactory->getIcon('status-dialog-notification', Icon::SIZE_SMALL)->render()
+                            . sprintf(TemplavoilaGeneralUtility::getLanguageService()->getLL('msgDSTOUpdated'), $dsREC['uid'], $toREC['uid']);
 
                         if ($cmd == 'updateDSandTO') {
                             if (!$this->_load_ds_xml_to) {
@@ -1032,9 +1040,10 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                 </tr>
                  <tr>
                     <td class="bgColor4">
-                        <a href="#" onclick ="openValidator(\'' . $this->sessionKey . '\');return false;">
-                        ' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('extensions-templavoila-htmlvalidate') . '
-                            ' . TemplavoilaGeneralUtility::getLanguageService()->getLL('validateTpl') . '
+                        <a href="#" onclick ="openValidator(\'' . $this->sessionKey . '\');return false;">'
+                            . $this->iconFactory->getIcon('extensions-templavoila-htmlvalidate', Icon::SIZE_SMALL)->render()
+                            . ' ' . TemplavoilaGeneralUtility::getLanguageService()->getLL('validateTpl')
+                            . '
                         </a>
                     </td>
                 </tr>
@@ -1453,9 +1462,10 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                         </tr>
                         <tr class="bgColor4">
                             <td>
-                                <a href="#" onclick ="openValidator(\'' . $sessionKey . '\');return false;">
-                                    ' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('extensions-templavoila-htmlvalidate') . '
-                                    ' . TemplavoilaGeneralUtility::getLanguageService()->getLL('validateTpl') . '
+                                <a href="#" onclick ="openValidator(\'' . $sessionKey . '\');return false;">'
+                                    . $this->iconFactory->getIcon('extensions-templavoila-htmlvalidate', Icon::SIZE_SMALL)->render()
+                                    . ' ' . TemplavoilaGeneralUtility::getLanguageService()->getLL('validateTpl')
+                                    . '
                                 </a>
                             </td>
                         </tr>';
@@ -2243,8 +2253,8 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
 
                                 $okTitle = htmlspecialchars($cF ? sprintf(TemplavoilaGeneralUtility::getLanguageService()->getLL('displayDSContentFound'), strlen($contentSplittedByMapping['cArray'][$key])) . ($multilineTooltips ? ':' . chr(10) . chr(10) . $cF : '') : TemplavoilaGeneralUtility::getLanguageService()->getLL('displayDSContentEmpty'));
 
-                                $rowCells['htmlPath'] = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-ok', array('title' => $okTitle)) .
-                                    \Extension\Templavoila\Domain\Model\HtmlMarkup::getGnyfMarkup($pI['el'], '---' . htmlspecialchars(CoreGeneralUtility::fixed_lgd_cs($mappingElement, -80))) .
+                                $rowCells['htmlPath'] = $this->iconFactory->getIcon('status-dialog-ok', Icon::SIZE_SMALL)->render()
+                                    . \Extension\Templavoila\Domain\Model\HtmlMarkup::getGnyfMarkup($pI['el'], '---' . htmlspecialchars(CoreGeneralUtility::fixed_lgd_cs($mappingElement, -80))) .
                                     ($pI['modifier'] ? $pI['modifier'] . ($pI['modifier_value'] ? ':' . ($pI['modifier'] != 'RANGE' ? $pI['modifier_value'] : '...') : '') : '');
                                 $rowCells['htmlPath'] = '<a href="' . $this->linkThisScript(array(
                                         'htmlPath' => $path . ($path ? '|' : '') . preg_replace('/\/[^ ]*$/', '', $currentMappingInfo[$key]['MAP_EL']),
@@ -2271,7 +2281,8 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                                 // If content mapped ok, set flag:
                                 $isMapOK = 1;
                             } else { // Issue warning if mapping was lost:
-                                $rowCells['htmlPath'] = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-warning', array('title' => TemplavoilaGeneralUtility::getLanguageService()->getLL('msgNoContentFound'))) . htmlspecialchars($mappingElement);
+                                $rowCells['htmlPath'] = $this->iconFactory->getIcon('status-dialog-warning', Icon::SIZE_SMALL)->render()
+                                    . htmlspecialchars($mappingElement);
                             }
                         } else { // For non-mapped cases, just output a no-break-space:
                             $rowCells['htmlPath'] = '&nbsp;';
@@ -2325,8 +2336,8 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                                 $rowCells['cmdLinks'] .=
                                     $this->cshItem('xMOD_tx_templavoila', 'mapping_modeset', $this->doc->backPath, '', false, 'margin-bottom: 0px;');
                             } else {
-                                $rowCells['cmdLinks'] = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-notification') . '
-                                                        <strong>' . TemplavoilaGeneralUtility::getLanguageService()->getLL('msgHowToMap') . '</strong>';
+                                $rowCells['cmdLinks'] = $this->iconFactory->getIcon('status-dialog-notification', Icon::SIZE_SMALL)->render()
+                                    . '<strong>' . TemplavoilaGeneralUtility::getLanguageService()->getLL('msgHowToMap') . '</strong>';
                                 $rowCells['cmdLinks'] .= '<br />
                                         <input type="submit" value="' . TemplavoilaGeneralUtility::getLanguageService()->getLL('buttonCancel') . '" name="_" onclick="document.location=\'' .
                                     $this->linkThisScript(array(
@@ -2354,15 +2365,16 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                     if ($this->editDataStruct) {
                         $editAddCol = '<a href="' . $this->linkThisScript(array(
                                 'DS_element' => $formPrefix . '[' . $key . ']'
-                            )) . '">' .
-                            \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open', array('title' => TemplavoilaGeneralUtility::getLanguageService()->getLL('editEntry'))) .
-                            '</a>
+                            )) . '">'
+                            . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render()
+                            . '</a>
                             <a href="' . $this->linkThisScript(array(
                                 'DS_element_DELETE' => $formPrefix . '[' . $key . ']'
                             )) . '"
-                                            onClick="return confirm(' . CoreGeneralUtility::quoteJSvalue(TemplavoilaGeneralUtility::getLanguageService()->getLL('confirmDeleteEntry')) . ');">' .
-                            \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-delete', array('title' => TemplavoilaGeneralUtility::getLanguageService()->getLL('deleteEntry'))) .
-                            '</a>';
+                                            onClick="return confirm(' . CoreGeneralUtility::quoteJSvalue(TemplavoilaGeneralUtility::getLanguageService()->getLL('confirmDeleteEntry'))
+                            . ');">'
+                            . $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render()
+                            . '</a>';
                         $editAddCol = '<td nowrap="nowrap">' . $editAddCol . '</td>';
                     } else {
                         $editAddCol = '';
