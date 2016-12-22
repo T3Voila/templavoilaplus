@@ -1292,7 +1292,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
             if (is_array($row)) {
 
                 // Get title and icon:
-                $icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('tx_templavoila_datastructure', $row);
+                $icon = $this->iconFactory->getIconForRecord('tx_templavoila_datastructure', $row, Icon::SIZE_SMALL)->render();
                 $title = BackendUtility::getRecordTitle('tx_templavoila_datastructure', $row, 1);
                 $content .= BackendUtility::wrapClickMenuOnIcon($icon, 'tx_templavoila_datastructure', $row['uid'], true) .
                     '<strong>' . $title . '</strong><br />';
@@ -1348,7 +1348,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                                 <td><strong>' . TemplavoilaGeneralUtility::getLanguageService()->getLL('renderDSO_fileRef') . ':</strong></td>
                                 <td><strong>' . TemplavoilaGeneralUtility::getLanguageService()->getLL('renderDSO_dataLgd') . ':</strong></td>
                             </tr>';
-                $TOicon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('tx_templavoila_tmplobj', array());
+                $TOicon = $this->iconFactory->getIconForRecord('tx_templavoila_tmplobj', [], Icon::SIZE_SMALL)->render();
 
                 // Listing Template Objects with links:
                 while (false !== ($TO_Row = TemplavoilaGeneralUtility::getDatabaseConnection()->sql_fetch_assoc($res))) {
@@ -1435,7 +1435,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
             </tr>';
 
                 // Get title and icon:
-                $icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('tx_templavoila_tmplobj', $row);
+                $icon = $this->iconFactory->getIconForRecord('tx_templavoila_tmplobj', $row, Icon::SIZE_SMALL)->render();
 
                 $title = BackendUtility::getRecordTitle('tx_templavoila_tmplobj', $row);
                 $title = BackendUtility::getRecordTitlePrep(TemplavoilaGeneralUtility::getLanguageService()->sL($title));
@@ -1488,7 +1488,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                         // Get main DS array:
                         if (is_array($DS_row)) {
                             // Get title and icon:
-                            $icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('tx_templavoila_datastructure', $DS_row);
+                            $icon = $this->iconFactory->getIconForRecord('tx_templavoila_datastructure', $DS_row, Icon::SIZE_SMALL)->render();
                             $title = BackendUtility::getRecordTitle('tx_templavoila_datastructure', $DS_row);
                             $title = BackendUtility::getRecordTitlePrep(TemplavoilaGeneralUtility::getLanguageService()->sL($title));
 
