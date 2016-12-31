@@ -216,6 +216,9 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
     {
         $this->addCshButton('');
         $this->addShortcutButton();
+        if (empty($this->modTSconfig['properties']['hideNewSiteWizard'])) {
+            $this->addNewSiteWizardButton();
+        }
     }
 
     /**
@@ -227,6 +230,15 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
             ->setModuleName('_MOD_' . $this->moduleName)
             ->setFieldName($fieldName);
         $this->buttonBar->addButton($contextSensitiveHelpButton, ButtonBar::BUTTON_POSITION_RIGHT);
+    }
+    
+    public function addNewSiteWizardButton()
+    {
+        $newSiteWizardButton = $this->buttonBar->makeLinkButton()
+            ->setHref(BackendUtility::getModuleUrl('templavoila_new_site_wizard'))
+            ->setTitle('Wizard')
+            ->setIcon($this->iconFactory->getIcon('actions-file-html', Icon::SIZE_SMALL, 'overlay-new'));
+        $this->buttonBar->addButton($newSiteWizardButton, ButtonBar::BUTTON_POSITION_LEFT);
     }
 
     /**

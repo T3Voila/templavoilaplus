@@ -412,61 +412,6 @@
             <trans-unit id="description_pagesWithCertainDsTo" xml:space="preserve">
                 <source>The following pages in the root line contain data structures and template objects</source>
             </trans-unit>
-            <trans-unit id="newsitewizard_intro" xml:space="preserve">
-                <source>If you want to start a new website based on the TemplaVoila template engine you can start this wizard which will set up all the boring initial stuff for you.
-                You will be taken through these steps:
-                - Creation of a new website root, storage folder, sample pages.
-                - Creation of the main TemplaVoila template, including mapping of one content area and a main menu.
-                - Creation of a backend user and group to manage only that website.
-                You should prepare an HTML template before you begin the wizard; simply make a design in HTML and place the HTML file including graphics and stylesheets in a subfolder of &quot;%s&quot; relative to the websites root directory.
-                Tip about menus: If you include a main menu in the template, try to place the whole menu inside a container (like &lt;div&gt;, &lt;table&gt; or &lt;tr&gt;) and encapsulate each menu item in a block tag (like &lt;tr&gt;, &lt;td&gt; or &lt;div&gt;). Use A-tags for the links. If you want different designs for normal and active menu elements, design the first menu item as &quot;Active&quot; and the second (and rest) as &quot;Normal&quot;, then the wizard might be able to capture the right configuration.
-                Tip about stylesheets: The content elements from TYPO3 will be outputted in regular HTML tags like &lt;p&gt;, &lt;h1&gt; to &lt;h6&gt;, &lt;ol&gt; etc. You will prepare yourself well if your stylesheet in the HTML template provides good styles for these standard elements from the start. Then you will have less finetuning to do later.
-            </source>
-            </trans-unit>
-            <trans-unit id="newsitewizard_startnow" xml:space="preserve">
-                <source>Start wizard now!</source>
-            </trans-unit>
-            <trans-unit id="newsitewizard_cancel" xml:space="preserve">
-                <source>Cancel wizard</source>
-            </trans-unit>
-            <trans-unit id="newsitewizard_problem" xml:space="preserve">
-                <source>&lt;em&gt;There are some technical problems you have to solve before you can start the wizard! Please see below for details. Solve these problems first and come back.&lt;/em&gt;</source>
-            </trans-unit>
-            <trans-unit id="newsitewizard_missingext" xml:space="preserve">
-                <source>Missing extension!</source>
-            </trans-unit>
-            <trans-unit id="newsitewizard_missingconf" xml:space="preserve">
-                <source>Missing configuration!</source>
-            </trans-unit>
-            <trans-unit id="newsitewizard_missingconf_description" xml:space="preserve">
-                <source>The TemplaVoila extension configuration is missing. Please clear the cache and recheck the configuration within the extension manager.</source>
-            </trans-unit>
-            <trans-unit id="newsitewizard_missingdir" xml:space="preserve">
-                <source>Missing directory!</source>
-            </trans-unit>
-            <trans-unit id="newsitewizard_missingext_description" xml:space="preserve">
-                <source>Before the wizard can run some extensions are required to be installed. Below you will see the which extensions are required and which are not available at this moment. Please go to the Extension Manager and install these first.</source>
-            </trans-unit>
-            <trans-unit id="newsitewizard_missingext_extkey" xml:space="preserve">
-                <source>Extension Key:</source>
-            </trans-unit>
-            <trans-unit id="newsitewizard_missingext_installed" xml:space="preserve">
-                <source>Installed?</source>
-            </trans-unit>
-            <trans-unit id="newsitewizard_missingext_yes" xml:space="preserve">
-                <source>Yes</source>
-            </trans-unit>
-            <trans-unit id="newsitewizard_missingext_no" xml:space="preserve">
-                <source>No</source>
-            </trans-unit>
-            <trans-unit id="newsitewizard_missingdir_instruction" xml:space="preserve">
-                <source>The directory &quot;%s&quot; (relative to the website root) does not exist! This is where you must place your HTML templates. Please create that directory &lt;u&gt;before you start the wizard&lt;/u&gt;. In order to do so, follow these directions:
-                - Go to the module File &gt; Filelist
-                - Click the icon of the &quot;%s&quot; root and select &quot;Create&quot; from the context menu.
-                - Enter the name &quot;templates&quot; of the folder and press the &quot;Create&quot; button.
-                - Return to this wizard
-            </source>
-            </trans-unit>
         </body>
     </file>
 </xliff>

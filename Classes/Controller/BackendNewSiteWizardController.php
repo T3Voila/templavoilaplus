@@ -41,11 +41,6 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
     protected $pidCache;
 
     /**
-     * @var string
-     */
-    protected $backPath;
-
-    /**
      * Import as first page in root!
      *
      * @var integer
@@ -81,7 +76,7 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
      *
      * @var string
      */
-    protected $moduleName = 'web_txtemplavoilaM2';
+    protected $moduleName = 'templavoila_new_site_wizard';
 
     /**
      * @var array
@@ -99,11 +94,6 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
      * @var array
      */
     public $extConf;
-
-    /**
-     * @var string
-     */
-    public $cm1Link = '../cm1/index.php';
 
     /**
      * @return void
@@ -224,16 +214,6 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
     }
 
     /**
-     * Prints out the module HTML
-     *
-     * @return void
-     */
-    public function printContent()
-    {
-        echo $this->moduleTemplate->renderContent();
-    }
-
-    /**
      * Gets the buttons that shall be rendered in the docHeader.
      *
      * @return array Available buttons for the docHeader
@@ -303,25 +283,6 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
         if ($this->MOD_SETTINGS['wiz_step']) { // Run wizard instead of showing overview.
             $this->renderNewSiteWizard_run();
         } else {
-
-            // Select all Data Structures in the PID and put into an array:
-            $res = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTquery(
-                'count(*)',
-                'tx_templavoila_datastructure',
-                'pid=' . (int)$this->id . BackendUtility::deleteClause('tx_templavoila_datastructure')
-            );
-            list($countDS) = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_fetch_row($res);
-            \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_free_result($res);
-
-            // Select all Template Records in PID:
-            $res = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTquery(
-                'count(*)',
-                'tx_templavoila_tmplobj',
-                'pid=' . (int)$this->id . BackendUtility::deleteClause('tx_templavoila_tmplobj')
-            );
-            list($countTO) = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_fetch_row($res);
-            \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_free_result($res);
-
             $this->renderNewSiteWizard_overview();
         }
     }
@@ -385,12 +346,7 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
      */
     public function renderNewSiteWizard_overview()
     {
-        if ($this->modTSconfig['properties']['hideNewSiteWizard']) {
-            return;
-        }
-
         if (\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isAdmin()) {
-
             // Introduction:
             $outputString = nl2br(sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_intro', true), implode('", "', $this->getTemplatePaths(true, false))));
 
@@ -409,7 +365,7 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
             } else {
                 $outputString .= '<br/><br/>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_problem');
             }
-
+    
             // Add output:
             $this->content .= $this->moduleTemplate->section(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('wiz_title'), $outputString, 0, 1);
 

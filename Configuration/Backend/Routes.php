@@ -22,4 +22,9 @@ return [
         'access' => 'user,group',
         'target' => Controller\BackendTemplateDisplayController::class . '::mainAction',
     ],
+    'templavoila_new_site_wizard' => [
+        'path' => '/templavoila/new_site_wizard',
+        'access' => 'user,group',
+        'target' => Controller\BackendNewSiteWizardController::class . '::mainAction',
+    ],
 ];
