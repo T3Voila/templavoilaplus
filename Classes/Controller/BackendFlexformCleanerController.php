@@ -1,4 +1,6 @@
 <?php
+namespace Extension\Templavoila\Controller;
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -12,7 +14,15 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-$GLOBALS['LANG']->includeLLFile('EXT:templavoila/cm2/locallang.xlf');
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Utility\GeneralUtility as CoreGeneralUtility;
+
+$GLOBALS['LANG']->includeLLFile(
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('templavoila') . 'Resources/Private/Language/BackendFlexformCleaner.xlf'
+);
 
 /**
  * Class for displaying color-marked-up version of FlexForm XML content.
@@ -20,21 +30,14 @@ $GLOBALS['LANG']->includeLLFile('EXT:templavoila/cm2/locallang.xlf');
  * @author Kasper Skaarhoj <kasper@typo3.com>
  * @co-author Robert Lemke <robert@typo3.org>
  */
-class tx_templavoila_cm2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
+class BackendFlexformCleanerController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 {
-    /**
-     * Showing linenumbers if true.
-     *
-     * @var boolean
-     */
-    public $option_linenumbers = TRUE;
-
     /**
      * Array with tablename, uid and fieldname
      *
      * @var array
      */
-    public $viewTable = array();
+    public $viewTable = [];
 
     /**
      * (GPvar "returnUrl") Return URL if the script is supplied with that.
@@ -44,32 +47,78 @@ class tx_templavoila_cm2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     public $returnUrl = '';
 
     /**
+     * Extension key of this module
+     *
+     * @var string
+     */
+    public $extKey = 'templavoila';
+
+    /**
+     * The name of the module
+     *
+     * @var string
+     */
+    protected $moduleName = 'templavoila_flexform_cleaner';
+
+    /**
+     * Preparing menu content
+     *
+     * @return void
+     */
+    public function menuConfig()
+    {
+    }
+
+    /**
+     * @return void
+     */
+    public function init()
+    {
+        parent::init();
+
+        $this->moduleTemplate = CoreGeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\ModuleTemplate::class);
+        $this->iconFactory = $this->moduleTemplate->getIconFactory();
+        $this->buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
+
+        $this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
+    }
+
+    /*******************************************
+     *
+     * Main functions
+     *
+     *******************************************/
+
+    /**
+     * Injects the request object for the current request or subrequest
+     * As this controller goes only through the main() method, it is rather simple for now
+     *
+     * @param ServerRequestInterface $request the current request
+     * @param ResponseInterface $response
+     * @return ResponseInterface the response with the content
+     */
+    public function mainAction(ServerRequestInterface $request, ResponseInterface $response)
+    {
+        $this->init();
+        $this->main();
+        $response->getBody()->write($this->moduleTemplate->renderContent());
+        return $response;
+    }
+
+    /**
      * Main function, drawing marked up XML.
      *
      * @return void
      */
     public function main()
     {
-        // Check admin: If this is changed some day to other than admin users we HAVE to check if there is read access to the record being selected!
-        if (!\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isAdmin()) {
-            die('no access.');
-        }
-
         $this->returnUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::sanitizeLocalUrl(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('returnUrl'));
-
-        // Draw the header.
-        $this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
-        $this->doc->docType = 'xhtml_trans';
-        $this->doc->setModuleTemplate('EXT:templavoila/Resources/Private/Templates/cm2_default.html');
-        $this->doc->bodyTagId = 'typo3-mod-php';
-        $this->doc->divClass = '';
 
         // XML code:
         $this->viewTable = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('viewRec');
 
         $record = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL($this->viewTable['table'], $this->viewTable['uid']); // Selecting record based on table/uid since adding the field might impose a SQL-injection problem; at least the field name would have to be checked first.
         if (is_array($record)) {
-
             // Set current XML data:
             $currentXML = $record[$this->viewTable['field_flex']];
 
@@ -156,38 +205,17 @@ class tx_templavoila_cm2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 $xmlContentMarkedUp .= $this->markUpXML($currentXML);
             }
 
-            $this->content .= $this->doc->section('', $xmlContentMarkedUp, 0, 1);
+            $this->content .= $xmlContentMarkedUp;
         }
 
-        // Add spacer:
-        $this->content .= $this->doc->spacer(10);
+        $title = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('title');
+        $header = $this->moduleTemplate->header($title);
+        $this->moduleTemplate->setTitle($title);
 
-        $docHeaderButtons = $this->getDocHeaderButtons();
-        $docContent = array(
-            'CSH' => $docHeaderButtons['csh'],
-            'CONTENT' => $this->content
-        );
+        $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($record);
+        $this->setDocHeaderButtons();
 
-        $content = $this->doc->startPage(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('title'));
-        $content .= $this->doc->moduleBody(
-            array(),
-            $docHeaderButtons,
-            $docContent
-        );
-        $content .= $this->doc->endPage();
-
-        // Replace content with templated content
-        $this->content = $content;
-    }
-
-    /**
-     * Prints module content.
-     *
-     * @return void
-     */
-    public function printContent()
-    {
-        echo $this->content;
+        $this->moduleTemplate->setContent($header . $this->content);
     }
 
     /**
@@ -195,38 +223,52 @@ class tx_templavoila_cm2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      *
      * @return array Available buttons for the docHeader
      */
-    protected function getDocHeaderButtons()
+    protected function setDocHeaderButtons()
     {
-        $buttons = array(
-            'csh' => \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_txtemplavoilaCM1', ''),
-            'back' => '',
-            'shortcut' => $this->getShortcutButton(),
-        );
-
-        // Back
-        if ($this->returnUrl) {
-            $backIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-view-go-back');
-            $buttons['back'] = '<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisUrl($this->returnUrl)) . '" class="typo3-goBack" title="' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.goBack', TRUE) . '">' .
-                $backIcon .
-                '</a>';
-        }
-
-        return $buttons;
+        $this->addCshButton('');
+        $this->addShortcutButton();
+        $this->addBackButton();
     }
 
     /**
-     * Gets the button to set a new shortcut in the backend (if current user is allowed to).
-     *
-     * @return string HTML representiation of the shortcut button
+     * Adds csh icon to the right document header button bar
      */
-    protected function getShortcutButton()
+    public function addCshButton($fieldName)
     {
-        $result = '';
-        if (\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->mayMakeShortcut()) {
-            $result = $this->doc->makeShortcutIcon('id', implode(',', array_keys($this->MOD_MENU)), $this->MCONF['name']);
-        }
+        $contextSensitiveHelpButton = $this->buttonBar->makeHelpButton()
+            ->setModuleName('_MOD_' . $this->moduleName)
+            ->setFieldName($fieldName);
+        $this->buttonBar->addButton($contextSensitiveHelpButton, ButtonBar::BUTTON_POSITION_RIGHT);
+    }
 
-        return $result;
+    /**
+     * Adds shortcut icon to the right document header button bar
+     */
+    public function addShortcutButton()
+    {
+        $shortcutButton = $this->buttonBar->makeShortcutButton()
+            ->setModuleName($this->moduleName)
+            ->setGetVariables(
+                [
+                    'id',
+                ]
+            )
+            ->setSetVariables(array_keys($this->MOD_MENU));
+        $this->buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
+    }
+
+    /**
+     * Adds a back button, if returnUrl exists
+     */
+    public function addBackButton()
+    {
+        if ($this->returnUrl) {
+            $backButton = $this->buttonBar->makeLinkButton()
+                ->setHref($this->returnUrl)
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc'))
+                ->setIcon($this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
+            $this->buttonBar->addButton($backButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
+        }
     }
 
     /**
@@ -253,14 +295,12 @@ class tx_templavoila_cm2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             $formattedContent = '<span style="font-style: italic; color: #666666;">' . htmlspecialchars($str) . '</span>';
         }
 
-        // Check line number display:
-        if ($this->option_linenumbers) {
-            $lines = explode(chr(10), $formattedContent);
-            foreach ($lines as $k => $v) {
-                $lines[$k] = '<span style="color: black; font-weight:normal;">' . str_pad($k + 1, 4, ' ', STR_PAD_LEFT) . ':</span> ' . $v;
-            }
-            $formattedContent = implode(chr(10), $lines);
+        // Add line numbers
+        $lines = explode(chr(10), $formattedContent);
+        foreach ($lines as $k => $v) {
+            $lines[$k] = '<span style="color: black; font-weight:normal;">' . str_pad($k + 1, 4, ' ', STR_PAD_LEFT) . ':</span> ' . $v;
         }
+        $formattedContent = implode(chr(10), $lines);
 
         // Output:
         return '
@@ -269,9 +309,3 @@ class tx_templavoila_cm2 extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             ';
     }
 }
-
-// Make instance:
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\tx_templavoila_cm2::class);
-$SOBE->init();
-$SOBE->main();
-$SOBE->printContent();

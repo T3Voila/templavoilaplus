@@ -231,7 +231,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
             ->setFieldName($fieldName);
         $this->buttonBar->addButton($contextSensitiveHelpButton, ButtonBar::BUTTON_POSITION_RIGHT);
     }
-    
+
     public function addNewSiteWizardButton()
     {
         $newSiteWizardButton = $this->buttonBar->makeLinkButton()
@@ -256,7 +256,6 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
             ->setSetVariables(array_keys($this->MOD_MENU));
         $this->buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
     }
-
 
     /******************************
      *

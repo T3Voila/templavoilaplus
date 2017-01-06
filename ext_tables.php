@@ -46,17 +46,6 @@ if (TYPO3_MODE === 'BE') {
         ]
     );
 
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
-        '',
-        'txtemplavoilaCM2',
-        '',
-        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'cm2/',
-        [
-            'name' => 'xMOD_tx_templavoila_cm2',
-            'script' => '_DISPATCH',
-        ]
-    );
-
     $_EXTCONF = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
     // Remove default Page module (layout) manually if wanted:
     if (!$_EXTCONF['enable.']['oldPageModule']) {

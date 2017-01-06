@@ -27,4 +27,9 @@ return [
         'access' => 'user,group',
         'target' => Controller\BackendNewSiteWizardController::class . '::mainAction',
     ],
+    'templavoila_flexform_cleaner' => [
+        'path' => '/templavoila/flexform_cleaner',
+        'access' => 'admin',
+        'target' => Controller\BackendFlexformCleanerController::class . '::mainAction',
+    ],
 ];

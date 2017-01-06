@@ -128,7 +128,7 @@ class MainClickMenu
                     $iconFactory->getIcon('extensions-templavoila-templavoila-logo', Icon::SIZE_SMALL)->render(),
                     $clickMenu->urlRefForCM(
                         BackendUtility::getModuleUrl(
-                            '_txtemplavoilaCM2',
+                            'templavoila_flexform_cleaner',
                             [
                                 'id' => (int)$clickMenu->rec['pid'],
                                 'viewRec' => [
