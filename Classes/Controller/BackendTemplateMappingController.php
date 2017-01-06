@@ -310,33 +310,22 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
      * Returns an abbrevation and a description for a given element-type.
      *
      * @param array $conf
+     * @TODO Clean up that array has 2 meanings (container or section!!)
      *
      * @return array
      */
     public function dsTypeInfo($conf)
     {
-        // Icon:
-        if ($conf['type'] == 'section') {
-            return $this->dsTypes['sc'];
-        }
-
-        if ($conf['type'] == 'array') {
-            if (!$conf['section']) {
-                return $this->dsTypes['co'];
+        if ($conf['type'] !== null && isset($this->dsTypes[$conf['type']])) {
+            if ($conf['type'] == 'array') {
+                if (!$conf['section']) {
+                    return $this->dsTypes['container'];
+                }
             }
-
-            return $this->dsTypes['sc'];
+            return $this->dsTypes[$conf['type']];
         }
 
-        if ($conf['type'] == 'attr') {
-            return $this->dsTypes['at'];
-        }
-
-        if ($conf['type'] == 'no_map') {
-            return $this->dsTypes['no'];
-        }
-
-        return $this->dsTypes['el'];
+        return $this->dsTypes['element'];
     }
 
     /*******************************************
@@ -634,25 +623,34 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
         // Finding Storage folder:
         $this->findingStorageFolderIds();
 
-        // Icons
-        $this->dsTypes = array(
-            'sc' => TemplavoilaGeneralUtility::getLanguageService()->getLL('dsTypes_section') . ': ',
-            'co' => TemplavoilaGeneralUtility::getLanguageService()->getLL('dsTypes_container') . ': ',
-            'el' => TemplavoilaGeneralUtility::getLanguageService()->getLL('dsTypes_attribute') . ': ',
-            'at' => TemplavoilaGeneralUtility::getLanguageService()->getLL('dsTypes_element') . ': ',
-            'no' => TemplavoilaGeneralUtility::getLanguageService()->getLL('dsTypes_notmapped') . 'Not : ');
-
-        foreach ($this->dsTypes as $id => $title) {
-            $this->dsTypes[$id] = array(
-                // abbrevation
-                $id,
-                // descriptive title
-                $title,
-                // image-path
-                ' src="' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila') . 'cm1/item_' . $id . '.gif"'
-                . ' width="24" height="16" border="0" style="margin-right: 5px;"'
-            );
-        }
+        // dsType configuration
+        // @TODO Clean up that type array can have 2 meanings!
+        $this->dsTypes = [
+            'section' => [
+                'id' => 'sc',
+                'title' => TemplavoilaGeneralUtility::getLanguageService()->getLL('dsTypes_section') . ': ',
+            ],
+            'array' => [
+                'id' => 'sc',
+                'title' => TemplavoilaGeneralUtility::getLanguageService()->getLL('dsTypes_section') . ': ',
+            ],
+            'container' => [
+                'id' => 'co',
+                'title' => TemplavoilaGeneralUtility::getLanguageService()->getLL('dsTypes_container') . ': ',
+            ],
+            'attr' => [
+                'id' => 'at',
+                'title' => TemplavoilaGeneralUtility::getLanguageService()->getLL('dsTypes_attribute') . ': ',
+            ],
+            'element' => [
+                'id' => 'el',
+                'title' => TemplavoilaGeneralUtility::getLanguageService()->getLL('dsTypes_element') . ': ',
+            ],
+            'no_map' => [
+                'id' => 'no',
+                'title' => TemplavoilaGeneralUtility::getLanguageService()->getLL('dsTypes_notmapped') . ': ',
+            ],
+        ];
 
         // Render content, depending on input values:
         if ($this->displayFile) { // Browsing file directly, possibly creating a template/data object records.
@@ -2217,7 +2215,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
 
                     // Icon:
                     $info = $this->dsTypeInfo($value);
-                    $icon = '<span class="dsType_Icon dsType_' . $info[0] . '">' . strtoupper($info[0]) . '</span>';
+                    $icon = '<span class="dsType_Icon dsType_' . $info['id'] . '" title="' . $info['title'] . '">' . strtoupper($info['id']) . '</span>';
 
                     // Composing title-cell:
                     if (preg_match('/^LLL:/', $value['tx_templavoila']['title'])) {
