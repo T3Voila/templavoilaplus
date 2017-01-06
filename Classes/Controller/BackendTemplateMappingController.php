@@ -2399,7 +2399,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                             $tRows[] = '
 
                             <tr class="' . ($rowIndex % 2 ? 'bgColor4' : 'bgColor6') . '">
-                            <td nowrap="nowrap" valign="top">' . $rowCells['title'] . '</td>
+                            <td nowrap="nowrap" valign="top" style="padding-left: ' . (($level) * 16) . 'px">' . $rowCells['title'] . '</td>
                             ' . ($this->editDataStruct ? '<td nowrap="nowrap">' . $key . '</td>' : '') . '
                             <td>' . $rowCells['description'] . '</td>
                             ' . ($mappingMode
