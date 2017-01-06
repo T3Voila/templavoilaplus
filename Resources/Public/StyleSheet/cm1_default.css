@@ -138,3 +138,40 @@ select option.fce {
     background-position: 5px 50%;
     padding: 1px 0 3px 24px;
 }
+
+/* NEW */
+
+.dsType_Icon {
+    background: #FFF;
+    border: 3px solid;
+    width: 30px;
+    display: inline-block;
+    text-align: center;
+    margin: 1px 5px 1px 1px;
+    line-height: 14px;
+}
+
+.dsType_sc {
+    border-color: red;
+    color: red;
+}
+
+.dsType_co {
+    border-color: red;
+    color: red;
+}
+
+.dsType_el {
+    border-color: blue;
+    color: blue;
+}
+
+.dsType_at {
+    border-color: green;
+    color: green;
+}
+
+.dsType_no {
+    border-color: gray;
+    color: gray;
+}

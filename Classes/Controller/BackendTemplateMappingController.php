@@ -2217,7 +2217,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
 
                     // Icon:
                     $info = $this->dsTypeInfo($value);
-                    $icon = '<img' . $info[2] . ' alt="" title="' . $info[1] . $key . '" class="absmiddle" />';
+                    $icon = '<span class="dsType_Icon dsType_' . $info[0] . '">' . strtoupper($info[0]) . '</span>';
 
                     // Composing title-cell:
                     if (preg_match('/^LLL:/', $value['tx_templavoila']['title'])) {
