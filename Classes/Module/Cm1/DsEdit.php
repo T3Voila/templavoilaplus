@@ -419,13 +419,13 @@ class DsEdit
                     </td>
                 </tr>';
             } elseif (($value['type'] == 'array' || $value['type'] == 'section') && !$this->pObj->mapElPath) {
-                $addEditRows = '<tr class="bgColor4">
-                    <td colspan="7"><img src="clear.gif" width="' . (($level + 1) * 16) . '" height="1" alt="" />' .
-                    '<input type="text" name="' . md5($formPrefix . '[' . $key . ']') . '" value="[' . htmlspecialchars($this->getLanguageService()->getLL('mapEnterNewFieldname')) . ']" onfocus="if (this.value==\'[' . $this->getLanguageService()->getLL('mapEnterNewFieldname') . ']\'){this.value=\'field_\';}" />' .
-                    '<input type="submit" name="_" value="Add" onclick="document.location=\'' . $this->pObj->linkThisScript(array('DS_element' => $formPrefix . '[' . $key . ']', 'DS_cmd' => 'add')) . '&amp;fieldName=\'+document.pageform[\'' . md5($formPrefix . '[' . $key . ']') . '\'].value; return false;" />' .
-                    $this->pObj->cshItem('xMOD_tx_templavoila', 'mapping_addfield', '', '', false, 'margin-bottom: 0px;') .
-                    '</td>
-                </tr>';
+                $addEditRows
+                    = '<tr class="bgColor4">'
+                    . '<td colspan="7" style="padding-left: ' . (($level + 1) * 16) . 'px">'
+                    . '<input type="text" name="' . md5($formPrefix . '[' . $key . ']') . '" value="[' . htmlspecialchars($this->getLanguageService()->getLL('mapEnterNewFieldname')) . ']" onfocus="if (this.value==\'[' . $this->getLanguageService()->getLL('mapEnterNewFieldname') . ']\'){this.value=\'field_\';}" />'
+                    . '<input type="submit" name="_" value="Add" onclick="document.location=\'' . $this->pObj->linkThisScript(array('DS_element' => $formPrefix . '[' . $key . ']', 'DS_cmd' => 'add')) . '&amp;fieldName=\'+document.pageform[\'' . md5($formPrefix . '[' . $key . ']') . '\'].value; return false;" />'
+                    . $this->pObj->cshItem('xMOD_tx_templavoila', 'mapping_addfield', '', '', false, 'margin-bottom: 0px;')
+                    . '</td></tr>';
             }
         }
 
