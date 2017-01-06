@@ -47,11 +47,6 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
     protected $sessionKey;
 
     /**
-     * @var string
-     */
-    protected $backPath;
-
-    /**
      * Set to ->MOD_SETTINGS[]
      *
      * @var string
@@ -2722,7 +2717,6 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
     {
         if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('lorem_ipsum')) {
             $LRobj = CoreGeneralUtility::makeInstance(\tx_loremipsum_wiz::class);
-            $LRobj->backPath = $this->doc->backPath;
 
             $PA = array(
                 'fieldChangeFunc' => array(),
