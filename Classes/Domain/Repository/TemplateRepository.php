@@ -14,6 +14,8 @@ namespace Extension\Templavoila\Domain\Repository;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 use Extension\Templavoila\Utility\TemplaVoilaUtility;
 
 /**
@@ -31,7 +33,7 @@ class TemplateRepository implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return \Extension\Templavoila\Domain\Model\Template
 	 */
 	public function getTemplateByUid($uid) {
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Model\Template::class, $uid);
+		return GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Model\Template::class, $uid);
 	}
 
 	/**
@@ -70,7 +72,7 @@ class TemplateRepository implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return array
 	 */
 	public function getTemplatesByStoragePidAndScope($storagePid, $scope) {
-		$dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\DataStructureRepository::class);
+		$dsRepo = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\DataStructureRepository::class);
 		$dsList = $dsRepo->getDatastructuresByStoragePidAndScope($storagePid, $scope);
 		$toCollection = array();
 		foreach ($dsList as $dsObj) {

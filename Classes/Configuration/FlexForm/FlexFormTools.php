@@ -259,7 +259,7 @@ class FlexFormTools
             if (!empty($row['language_isocode'])) {
                 $output[$row['uid']]['ISOcode'] = $row['language_isocode'];
             } elseif ($isL && $row['static_lang_isocode']) {
-                \TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog('Usage of the field "static_lang_isocode" is discouraged, and will stop working with CMS 8. Use the built-in language field "language_isocode" in your sys_language records.');
+                GeneralUtility::deprecationLog('Usage of the field "static_lang_isocode" is discouraged, and will stop working with CMS 8. Use the built-in language field "language_isocode" in your sys_language records.');
                 $rr = BackendUtility::getRecord('static_languages', $row['static_lang_isocode'], 'lg_iso_2');
                 if ($rr['lg_iso_2']) {
                     $output[$row['uid']]['ISOcode'] = $rr['lg_iso_2'];

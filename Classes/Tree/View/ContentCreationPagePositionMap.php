@@ -14,6 +14,8 @@ namespace Extension\Templavoila\Tree\View;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Local position map class when creating new Content Elements
  */
@@ -35,9 +37,9 @@ class ContentCreationPagePositionMap extends \TYPO3\CMS\Backend\Tree\View\Conten
             'web_txtemplavoilaM1',
             [
                 'id' => $pid,
-                'createNewRecord' => \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('parentRecord'),
+                'createNewRecord' => GeneralUtility::_GP('parentRecord'),
             ]
         );
-        return 'window.location.href=' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($location) . '+document.editForm.defValues.value; return false;';
+        return 'window.location.href=' . GeneralUtility::quoteJSvalue($location) . '+document.editForm.defValues.value; return false;';
     }
 }

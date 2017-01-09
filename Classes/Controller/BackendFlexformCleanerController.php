@@ -114,10 +114,10 @@ class BackendFlexformCleanerController extends \TYPO3\CMS\Backend\Module\BaseScr
      */
     public function main()
     {
-        $this->returnUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::sanitizeLocalUrl(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('returnUrl'));
+        $this->returnUrl = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('returnUrl'));
 
         // XML code:
-        $this->viewTable = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('viewRec');
+        $this->viewTable = GeneralUtility::_GP('viewRec');
 
         $record = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL($this->viewTable['table'], $this->viewTable['uid']); // Selecting record based on table/uid since adding the field might impose a SQL-injection problem; at least the field name would have to be checked first.
         if (is_array($record)) {
@@ -128,17 +128,17 @@ class BackendFlexformCleanerController extends \TYPO3\CMS\Backend\Module\BaseScr
             $cleanXML = '';
             if (TemplaVoilaUtility::getBackendUser()->isAdmin()) {
                 if ('tx_templavoila_flex' == $this->viewTable['field_flex']) {
-                    $flexObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class);
+                    $flexObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class);
                     if ($record['tx_templavoila_flex']) {
                         $cleanXML = $flexObj->cleanFlexFormXML($this->viewTable['table'], 'tx_templavoila_flex', $record);
 
                         // If the clean-button was pressed, save right away:
-                        if (\TYPO3\CMS\Core\Utility\GeneralUtility::_POST('_CLEAN_XML')) {
+                        if (GeneralUtility::_POST('_CLEAN_XML')) {
                             $dataArr = array();
                             $dataArr[$this->viewTable['table']][$this->viewTable['uid']]['tx_templavoila_flex'] = $cleanXML;
 
                             // Init TCEmain object and store:
-                            $tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
+                            $tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
                             $tce->stripslashes_values = 0;
                             $tce->start($dataArr, array());
                             $tce->process_datamap();
@@ -153,10 +153,10 @@ class BackendFlexformCleanerController extends \TYPO3\CMS\Backend\Module\BaseScr
 
             if (md5($currentXML) != md5($cleanXML)) {
                 // Create diff-result:
-                $t3lib_diff_Obj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Utility\DiffUtility::class);
+                $t3lib_diff_Obj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Utility\DiffUtility::class);
                 $diffres = $t3lib_diff_Obj->makeDiffDisplay($currentXML, $cleanXML);
 
-                $flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+                $flashMessage = GeneralUtility::makeInstance(
                     \TYPO3\CMS\Core\Messaging\FlashMessage::class,
                     TemplaVoilaUtility::getLanguageService()->getLL('needsCleaning', TRUE),
                     '',
@@ -184,7 +184,7 @@ class BackendFlexformCleanerController extends \TYPO3\CMS\Backend\Module\BaseScr
                         <td>' . $diffres . '
                         <br/><br/><br/>
 
-                        <form action="' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI') . '" method="post">
+                        <form action="' . GeneralUtility::getIndpEnv('REQUEST_URI') . '" method="post">
                             <input type="submit" value="' . TemplaVoilaUtility::getLanguageService()->getLL('cleanUp', TRUE) . '" name="_CLEAN_XML" />
                         </form>
 
@@ -196,7 +196,7 @@ class BackendFlexformCleanerController extends \TYPO3\CMS\Backend\Module\BaseScr
             } else {
                 $xmlContentMarkedUp = '';
                 if ($cleanXML) {
-                    $flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+                    $flashMessage = GeneralUtility::makeInstance(
                         \TYPO3\CMS\Core\Messaging\FlashMessage::class,
                         TemplaVoilaUtility::getLanguageService()->getLL('XMLclean', TRUE),
                         '',
@@ -283,7 +283,7 @@ class BackendFlexformCleanerController extends \TYPO3\CMS\Backend\Module\BaseScr
     public function markUpXML($str)
     {
         // Make instance of syntax highlight class:
-        $hlObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Service\SyntaxHighlightingService::class);
+        $hlObj = GeneralUtility::makeInstance(\Extension\Templavoila\Service\SyntaxHighlightingService::class);
 
         // Check which document type, if applicable:
         if (strstr(substr($str, 0, 100), '<T3DataStructure')) {

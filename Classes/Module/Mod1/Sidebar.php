@@ -15,6 +15,7 @@ namespace Extension\Templavoila\Module\Mod1;
  */
 
 use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 use Extension\Templavoila\Utility\TemplaVoilaUtility;
 
@@ -145,7 +146,7 @@ class Sidebar implements SingletonInterface
             // sort and order the visible tabs
             $tablist = $this->pObj->modTSconfig['properties']['tabList'];
             if ($tablist) {
-                $tabs = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $tablist);
+                $tabs = GeneralUtility::trimExplode(',', $tablist);
                 $finalSideBarItems = array();
                 foreach ($tabs as $itemKey) {
                     if (isset($this->sideBarItems[$itemKey])) {
@@ -213,7 +214,7 @@ class Sidebar implements SingletonInterface
         $dataStructureArr = \TYPO3\CMS\Backend\Utility\BackendUtility::getFlexFormDS($conf, $pObj->rootElementRecord, 'pages');
 
         if (is_array($dataStructureArr) && is_array($dataStructureArr['ROOT']['tx_templavoila']['pageModule'])) {
-            $headerTablesAndFieldNames = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(chr(10), str_replace(chr(13), '', $dataStructureArr['ROOT']['tx_templavoila']['pageModule']['displayHeaderFields']), 1);
+            $headerTablesAndFieldNames = GeneralUtility::trimExplode(chr(10), str_replace(chr(13), '', $dataStructureArr['ROOT']['tx_templavoila']['pageModule']['displayHeaderFields']), 1);
             if (is_array($headerTablesAndFieldNames)) {
                 $fieldNames = array();
                 $headerFieldRows = array();
@@ -269,7 +270,7 @@ class Sidebar implements SingletonInterface
         if ($pObj->id > 0) {
             $versionSelector = trim($pObj->doc->getVersionSelector($pObj->id));
             if (!$versionSelector) {
-                $onClick = 'jumpToUrl(\'' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('version') . 'cm1/index.php?table=pages&uid=' . $pObj->id . '&returnUrl=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')) . '\')';
+                $onClick = 'jumpToUrl(\'' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('version') . 'cm1/index.php?table=pages&uid=' . $pObj->id . '&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI')) . '\')';
                 $versionSelector = '<input type="button" value="' . TemplaVoilaUtility::getLanguageService()->getLL('sidebar_versionSelector_createVersion', true) . '" onclick="' . htmlspecialchars($onClick) . '" />';
             }
             $tableRows = [];

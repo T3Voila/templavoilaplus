@@ -15,6 +15,7 @@ namespace Extension\Templavoila\Module\Mod1;
  */
 
 use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 use Extension\Templavoila\Utility\TemplaVoilaUtility;
 
@@ -56,7 +57,7 @@ class Records implements SingletonInterface {
 	public function init(&$pObj) {
 		$this->pObj = & $pObj;
 
-		$this->tables = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->pObj->modTSconfig['properties']['recordDisplay_tables'], TRUE);
+		$this->tables = GeneralUtility::trimExplode(',', $this->pObj->modTSconfig['properties']['recordDisplay_tables'], TRUE);
 		if ($this->tables) {
 			// Get permissions
 			$this->calcPerms = TemplaVoilaUtility::getBackendUser()->calcPerms(\TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess($this->pObj->id, $this->pObj->perms_clause));
@@ -169,7 +170,7 @@ class Records implements SingletonInterface {
 	 */
 	public function initDbList($table) {
 		// Initialize the dblist object:
-		$this->dblist = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Module\Mod1\Recordlist::class);
+		$this->dblist = GeneralUtility::makeInstance(\Extension\Templavoila\Module\Mod1\Recordlist::class);
 		$this->dblist->backPath = '';
 		$this->dblist->calcPerms = $this->calcPerms;
 		$this->dblist->thumbs = TemplaVoilaUtility::getBackendUser()->uc['thumbnailsByDefault'];

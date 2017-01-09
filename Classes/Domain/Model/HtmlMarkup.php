@@ -14,6 +14,8 @@ namespace Extension\Templavoila\Domain\Model;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 use Extension\Templavoila\Utility\TemplaVoilaUtility;
 
 /**
@@ -601,7 +603,7 @@ class HtmlMarkup
         $editStruct, $currentMappingInfo, $firstLevelImplodeToken = '', $valueKey = 'vDEF'
     ) {
         $isSection = 0;
-        $htmlParse = ($this->htmlParse ? $this->htmlParse : \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class));
+        $htmlParse = ($this->htmlParse ? $this->htmlParse : GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class));
         if (is_array($editStruct) && count($editStruct)) {
             $testInt = implode('', array_keys($editStruct));
             $isSection = !preg_match('/[^0-9]/', $testInt);
@@ -647,20 +649,20 @@ class HtmlMarkup
      */
     public function splitPath($pathStr)
     {
-        $subPaths = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('|', $pathStr, 1);
+        $subPaths = GeneralUtility::trimExplode('|', $pathStr, 1);
 
         foreach ($subPaths as $index => $path) {
             $subPaths[$index] = array();
             $subPaths[$index]['fullpath'] = $path;
 
             // Get base parts of the page: the PATH and the COMMAND
-            list($thePath, $theCmd) = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('/', $path, 1);
+            list($thePath, $theCmd) = GeneralUtility::trimExplode('/', $path, 1);
 
             // Split the path part into its units: results in an array with path units.
             $splitParts = preg_split('/\s+/', $thePath);
 
             // modifier:
-            $modArr = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(':', $theCmd, 1);
+            $modArr = GeneralUtility::trimExplode(':', $theCmd, 1);
             if ($modArr[0]) {
                 $subPaths[$index]['modifier'] = $modArr[0];
                 $subPaths[$index]['modifier_value'] = $modArr[1];
@@ -856,7 +858,7 @@ class HtmlMarkup
     public function setHeaderBodyParts(
         $MappingInfo_head, $MappingData_head_cached, $BodyTag_cached = '', $pageRenderer = false
     ) {
-        $htmlParse = ($this->htmlParse ? $this->htmlParse : \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class));
+        $htmlParse = ($this->htmlParse ? $this->htmlParse : GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class));
         /* @var $htmlParse \TYPO3\CMS\Core\Html\HtmlParser */
 
         $types = array(
@@ -947,7 +949,7 @@ class HtmlMarkup
     public function init()
     {
         // HTML parser object initialized.
-        $this->htmlParse = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class);
+        $this->htmlParse = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class);
         /* @var $this ->htmlParse \TYPO3\CMS\Core\Html\HtmlParser */
 
         // Resetting element count array
@@ -956,7 +958,7 @@ class HtmlMarkup
 
         // Setting gnyf style
         $style = '';
-        $style .= (!\TYPO3\CMS\Core\Utility\GeneralUtility::inList('explode,checkbox', $this->mode) ? 'position:absolute;' : '');
+        $style .= (!GeneralUtility::inList('explode,checkbox', $this->mode) ? 'position:absolute;' : '');
         $this->gnyfStyle = $style ? ' style="' . htmlspecialchars($style) . '"' : '';
     }
 
@@ -970,7 +972,7 @@ class HtmlMarkup
      */
     public function splitTagTypes($showTags)
     {
-        $showTagsArr = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', strtolower($showTags), 1);
+        $showTagsArr = GeneralUtility::trimExplode(',', strtolower($showTags), 1);
         $showTagsArr = array_flip($showTagsArr);
         $tagList_elements = array();
         $tagList_single = array();
@@ -1017,7 +1019,7 @@ class HtmlMarkup
         $startCCTag = $endCCTag = '';
 
         //pre-processing of blocks
-        if ((\TYPO3\CMS\Core\Utility\GeneralUtility::inList($tagsBlock, 'script') && \TYPO3\CMS\Core\Utility\GeneralUtility::inList($tagsBlock, 'style')) && count($blocks) > 1) {
+        if ((GeneralUtility::inList($tagsBlock, 'script') && GeneralUtility::inList($tagsBlock, 'style')) && count($blocks) > 1) {
             // correct the blocks (start of CC could be in prior block, end of CC in net block)
 
             if (count($blocks) > 1) {
@@ -1164,7 +1166,7 @@ class HtmlMarkup
             // Disable A tags:
             if ($firstTagName == 'a') {
                 $params[0]['onclick'] = 'return false;';
-                $firstTag = '<' . trim($firstTagName . ' ' . \TYPO3\CMS\Core\Utility\GeneralUtility::implodeAttributes($params[0])) . '>';
+                $firstTag = '<' . trim($firstTagName . ' ' . GeneralUtility::implodeAttributes($params[0])) . '>';
             }
             // Display modes:
             if ($this->mode == 'explode') {
@@ -1173,20 +1175,20 @@ class HtmlMarkup
                     $params[0]['cellspacing'] = 4;
                     $params[0]['cellpadding'] = 0;
                     $params[0]['style'] .= '; border: 1px dotted #666666;';
-                    $firstTag = '<' . trim($firstTagName . ' ' . \TYPO3\CMS\Core\Utility\GeneralUtility::implodeAttributes($params[0])) . '>';
+                    $firstTag = '<' . trim($firstTagName . ' ' . GeneralUtility::implodeAttributes($params[0])) . '>';
                 } elseif ($firstTagName == 'td') {
                     $params[0]['style'] .= '; border: 1px dotted #666666;';
-                    $firstTag = '<' . trim($firstTagName . ' ' . \TYPO3\CMS\Core\Utility\GeneralUtility::implodeAttributes($params[0])) . '>';
+                    $firstTag = '<' . trim($firstTagName . ' ' . GeneralUtility::implodeAttributes($params[0])) . '>';
 
                     $v = (string) $v != '' ? $v : '&nbsp;';
                 }
             } elseif ($this->mode == 'borders') {
                 if ($firstTagName == 'table') {
                     $params[0]['style'] .= '; border: 1px dotted #666666;';
-                    $firstTag = '<' . trim($firstTagName . ' ' . \TYPO3\CMS\Core\Utility\GeneralUtility::implodeAttributes($params[0])) . '>';
+                    $firstTag = '<' . trim($firstTagName . ' ' . GeneralUtility::implodeAttributes($params[0])) . '>';
                 } elseif ($firstTagName == 'td') {
                     $params[0]['style'] .= '; border: 1px dotted #666666;';
-                    $firstTag = '<' . trim($firstTagName . ' ' . \TYPO3\CMS\Core\Utility\GeneralUtility::implodeAttributes($params[0])) . '>';
+                    $firstTag = '<' . trim($firstTagName . ' ' . GeneralUtility::implodeAttributes($params[0])) . '>';
                 }
             }
             // Get tag configuration
@@ -1258,7 +1260,7 @@ class HtmlMarkup
                 case 'INNER+ATTR':
                     // Attribute
                     if ($this->searchPaths[$subPath]['modifier_value']) {
-                        $attributeArray = array_unique(\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->searchPaths[$subPath]['modifier_value'], 1));
+                        $attributeArray = array_unique(GeneralUtility::trimExplode(',', $this->searchPaths[$subPath]['modifier_value'], 1));
                         foreach ($attributeArray as $attr) {
                             $placeholder = '###' . $placeholder . '###';
                             $this->searchPaths[$subPath]['attr'][$attr]['placeholder'] = $placeholder;
@@ -1266,7 +1268,7 @@ class HtmlMarkup
                             $params[0][$attr] = $placeholder;
                             $placeholder = md5(uniqid(rand(), true));
                         }
-                        $firstTag = '<' . trim($firstTagName . ' ' . \TYPO3\CMS\Core\Utility\GeneralUtility::implodeAttributes($params[0])) . ($mode != 'block' ? ' /' : '') . '>';
+                        $firstTag = '<' . trim($firstTagName . ' ' . GeneralUtility::implodeAttributes($params[0])) . ($mode != 'block' ? ' /' : '') . '>';
                         if ($mode != 'block') {
                             $v = $firstTag;
                             $firstTag = '';
@@ -1330,7 +1332,7 @@ class HtmlMarkup
             return str_pad('', $recursion * 2, ' ', STR_PAD_LEFT) .
             $gnyf .
             ($valueStr ? '<font color="#6666FF"><em>' : '') .
-            htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs(preg_replace('/\s+/', ' ', $str), $this->maxLineLengthInSourceMode)) .
+            htmlspecialchars(GeneralUtility::fixed_lgd_cs(preg_replace('/\s+/', ' ', $str), $this->maxLineLengthInSourceMode)) .
             ($valueStr ? '</em></font>' : '') .
             chr(10);
         }
@@ -1414,7 +1416,7 @@ class HtmlMarkup
      */
     public function getGnyf($firstTagName, $path, $title)
     {
-        if (!$this->onlyElements || \TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->onlyElements, $firstTagName)) {
+        if (!$this->onlyElements || GeneralUtility::inList($this->onlyElements, $firstTagName)) {
             $onclick = str_replace('###PATH###', $this->pathPrefix . $path, $this->gnyfImgAdd);
 
             $gnyf = self::getGnyfMarkup($firstTagName, $title, $onclick);
@@ -1439,7 +1441,7 @@ class HtmlMarkup
         if (!isset(self::$tagConf[$tag])) {
             return '';
         } else {
-            return '<span ' . $onclick . ' class="gnyfElement gnyf' . ucfirst(self::$tagConf[$tag]['blocktype']) . '" title="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($title, -200)) . '">' . htmlspecialchars($tag) . '</span>';
+            return '<span ' . $onclick . ' class="gnyfElement gnyf' . ucfirst(self::$tagConf[$tag]['blocktype']) . '" title="' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($title, -200)) . '">' . htmlspecialchars($tag) . '</span>';
         }
     }
 }

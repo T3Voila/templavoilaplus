@@ -2,6 +2,8 @@
 
 namespace Extension\Templavoila\Xclass;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 class PagePositionMap extends \TYPO3\CMS\Backend\Tree\View\PagePositionMap
 {
     /**
@@ -21,6 +23,6 @@ class PagePositionMap extends \TYPO3\CMS\Backend\Tree\View\PagePositionMap
                 'id' => $newPagePID,
             ]
         );
-        return 'window.location.href=' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($location) . '; return false;';
+        return 'window.location.href=' . GeneralUtility::quoteJSvalue($location) . '; return false;';
     }
 }

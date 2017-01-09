@@ -16,6 +16,7 @@ namespace Extension\Templavoila\Module\Mod1;
 
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 use Extension\Templavoila\Utility\TemplaVoilaUtility;
 
@@ -87,15 +88,15 @@ class Wizards implements SingletonInterface
         }
 
         // The user already submitted the create page form:
-        if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('doCreate') || isset($this->TCAdefaultOverride['pages.']['tx_templavoila_to'])) {
+        if (GeneralUtility::_GP('doCreate') || isset($this->TCAdefaultOverride['pages.']['tx_templavoila_to'])) {
 
             // Check if the HTTP_REFERER is valid
-            $refInfo = parse_url(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_REFERER'));
-            $httpHost = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY');
-            if ($httpHost == $refInfo['host'] || \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('vC') == TemplaVoilaUtility::getBackendUser()->veriCode() || $GLOBALS['TYPO3_CONF_VARS']['SYS']['doNotCheckReferer']) {
+            $refInfo = parse_url(GeneralUtility::getIndpEnv('HTTP_REFERER'));
+            $httpHost = GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY');
+            if ($httpHost == $refInfo['host'] || GeneralUtility::_GP('vC') == TemplaVoilaUtility::getBackendUser()->veriCode() || $GLOBALS['TYPO3_CONF_VARS']['SYS']['doNotCheckReferer']) {
 
                 // Create new page
-                $newID = $this->createPage(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('data'), $positionPid);
+                $newID = $this->createPage(GeneralUtility::_GP('data'), $positionPid);
                 if ($newID > 0) {
 
                     // Get TSconfig for a different selection of fields in the editing form
@@ -112,7 +113,7 @@ class Wizards implements SingletonInterface
 
                     // Create parameters and finally run the classic page module's edit form for the new page:
                     header(
-                        'Location: ' . \TYPO3\CMS\Core\Utility\GeneralUtility::locationHeaderUrl(
+                        'Location: ' . GeneralUtility::locationHeaderUrl(
                             \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl(
                                 'record_edit',
                                 [
@@ -137,9 +138,9 @@ class Wizards implements SingletonInterface
         }
 
         // Based on t3d/xml templates:
-        if (FALSE != ($templateFile = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('templateFile'))) {
+        if (FALSE != ($templateFile = GeneralUtility::_GP('templateFile'))) {
 
-            if (\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($templateFile) && @is_file($templateFile)) {
+            if (GeneralUtility::getFileAbsFileName($templateFile) && @is_file($templateFile)) {
 
                 // First, find positive PID for import of the page:
                 $importPID = \TYPO3\CMS\Backend\Utility\BackendUtility::getTSconfig_pidValue('pages', '', $positionPid);
@@ -181,7 +182,7 @@ class Wizards implements SingletonInterface
 
                         // Create parameters and finally run the classic page module's edit form for the new page:
                         header(
-                            'Location: ' . \TYPO3\CMS\Core\Utility\GeneralUtility::locationHeaderUrl(
+                            'Location: ' . GeneralUtility::locationHeaderUrl(
                                 \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl(
                                     'record_edit',
                                     [
@@ -288,7 +289,7 @@ class Wizards implements SingletonInterface
                 $previewIcon = $defaultIcon;
                 // Create the "Default template" entry
                 if ($defaultTO['previewicon']) {
-                    if (@is_file(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('uploads/tx_templavoila/' . $defaultTO['previewicon']))) {
+                    if (@is_file(GeneralUtility::getFileAbsFileName('uploads/tx_templavoila/' . $defaultTO['previewicon']))) {
                         $previewIcon = '<input type="image" class="c-inputButton" name="i0" value="0" src="' . '/uploads/tx_templavoila/' . $defaultTO['previewicon'] . '" title="" />';
                         $previewIcon = '<img src="/uploads/tx_templavoila/' . $defaultTO['previewicon'] . '">';
                     }
@@ -308,12 +309,12 @@ class Wizards implements SingletonInterface
                 </tr>
                 </table>';
 
-                $dsRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\DataStructureRepository::class);
-                $toRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\TemplateRepository::class);
+                $dsRepo = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\DataStructureRepository::class);
+                $toRepo = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\TemplateRepository::class);
                 $dsList = $dsRepo->getDatastructuresByStoragePidAndScope($storageFolderPID, \Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_PAGE);
                 foreach ($dsList as $dsObj) {
                     /** @var \Extension\Templavoila\Domain\Model\AbstractDataStructure $dsObj */
-                    if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList($disallowedPageTemplateItems, $dsObj->getKey()) ||
+                    if (GeneralUtility::inList($disallowedPageTemplateItems, $dsObj->getKey()) ||
                         !$dsObj->isPermittedForUser()
                     ) {
                         continue;
@@ -324,7 +325,7 @@ class Wizards implements SingletonInterface
                         /** @var \Extension\Templavoila\Domain\Model\Template $toObj */
                         if ($toObj->getKey() === $defaultTO['uid'] ||
                             !$toObj->isPermittedForUser() ||
-                            \TYPO3\CMS\Core\Utility\GeneralUtility::inList($disallowedDesignTemplateItems, $toObj->getKey())
+                            GeneralUtility::inList($disallowedDesignTemplateItems, $toObj->getKey())
                         ) {
                             continue;
                         }
@@ -332,7 +333,7 @@ class Wizards implements SingletonInterface
                         $tmpFilename = $toObj->getIcon();
                         $previewIcon = $defaultIcon;
                         if ($tmpFilename) {
-                            if (@is_file(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(PATH_site . $tmpFilename))) {
+                            if (@is_file(GeneralUtility::getFileAbsFileName(PATH_site . $tmpFilename))) {
                                 // Note: we cannot use value of image input element because MSIE replaces this value with mouse coordinates! Thus on click we set value to a hidden field. See http://bugs.typo3.org/view.php?id=3376
                                 $previewIcon = '<img src="/' . $tmpFilename . '">';
                             }
@@ -348,8 +349,8 @@ class Wizards implements SingletonInterface
                 if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('impexp')) {
 
                     // Read template files from a certain folder. I suggest this is configurable in some way. But here it is hardcoded for initial tests.
-                    $templateFolder = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'] . '/export/templates/');
-                    $files = \TYPO3\CMS\Core\Utility\GeneralUtility::getFilesInDir($templateFolder, 't3d,xml', 1, 1);
+                    $templateFolder = GeneralUtility::getFileAbsFileName($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'] . '/export/templates/');
+                    $files = GeneralUtility::getFilesInDir($templateFolder, 't3d,xml', 1, 1);
 
                     // Traverse the files found:
                     foreach ($files as $absPath) {
@@ -366,24 +367,24 @@ class Wizards implements SingletonInterface
                                 $iconTag = '';
                                 if (is_array($import->dat['header']['thumbnail'])) {
                                     $pI = pathinfo($import->dat['header']['thumbnail']['filename']);
-                                    if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList('gif,jpg,png,jpeg', strtolower($pI['extension']))) {
+                                    if (GeneralUtility::inList('gif,jpg,png,jpeg', strtolower($pI['extension']))) {
 
                                         // Construct filename and write it:
-                                        $fileName = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(
-                                            'typo3temp/importthumb_' . \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5($absPath) . '.' . $pI['extension']);
-                                        \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($fileName, $import->dat['header']['thumbnail']['content']);
+                                        $fileName = GeneralUtility::getFileAbsFileName(
+                                            'typo3temp/importthumb_' . GeneralUtility::shortMD5($absPath) . '.' . $pI['extension']);
+                                        GeneralUtility::writeFile($fileName, $import->dat['header']['thumbnail']['content']);
 
                                         // Check that the image really is an image and not a malicious PHP script...
                                         if (getimagesize($fileName)) {
                                             // Create icon tag:
                                             $iconTag = '<img src="' . $GLOBALS['BACK_PATH'] . '../' . substr($fileName, strlen(PATH_site)) . '" ' . $import->dat['header']['thumbnail']['imgInfo'][3] . ' vspace="5" style="border: solid black 1px;" alt="" />';
                                         } else {
-                                            \TYPO3\CMS\Core\Utility\GeneralUtility::unlink_tempfile($fileName);
+                                            GeneralUtility::unlink_tempfile($fileName);
                                         }
                                     }
                                 }
 
-                                $aTagB = '<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('templateFile' => $absPath))) . '">';
+                                $aTagB = '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('templateFile' => $absPath))) . '">';
                                 $aTagE = '</a>';
                                 $tmplHTML [] = '<table style="float:left; width: 100%;" valign="top"><tr><td colspan="2" nowrap="nowrap">
                     <h3 class="bgColor3-20">' . $aTagB . htmlspecialchars($import->dat['header']['meta']['title'] ? $import->dat['header']['meta']['title'] : basename($absPath)) . $aTagE . '</h3></td></tr>
@@ -443,7 +444,7 @@ class Wizards implements SingletonInterface
             $dataArr['pages']['NEW']['tx_templavoila_ds'] = $templateObjectRow['datastructure'];
         }
 
-        $tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
+        $tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
 
         if (is_array($this->TCAdefaultOverride)) {
             $tce->setDefaultsFromUserTS($this->TCAdefaultOverride);
@@ -461,7 +462,7 @@ class Wizards implements SingletonInterface
      */
     public function getImportObject()
     {
-        $import = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\tx_impexp::class);
+        $import = GeneralUtility::makeInstance(\tx_impexp::class);
         $import->init();
 
         return $import;
@@ -480,7 +481,7 @@ class Wizards implements SingletonInterface
         if (!TemplaVoilaUtility::getBackendUser()->isAdmin()) {
             $prefLen = strlen($table) + 1;
             foreach (TemplaVoilaUtility::getBackendUser()->userGroups as $group) {
-                $items = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $group['tx_templavoila_access'], 1);
+                $items = GeneralUtility::trimExplode(',', $group['tx_templavoila_access'], 1);
                 foreach ($items as $ref) {
                     if (strstr($ref, $table)) {
                         $result[] = (int)substr($ref, $prefLen);
@@ -520,7 +521,7 @@ class Wizards implements SingletonInterface
             $disallowedPageTemplateList = '';
         }
 
-        $tmp_disallowedPageTemplateItems = array_unique(\TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', \TYPO3\CMS\Core\Utility\GeneralUtility::expandList($disallowedPageTemplateList), TRUE));
+        $tmp_disallowedPageTemplateItems = array_unique(GeneralUtility::intExplode(',', GeneralUtility::expandList($disallowedPageTemplateList), TRUE));
 
         return (count($tmp_disallowedPageTemplateItems)) ? implode(',', $tmp_disallowedPageTemplateItems) : '0';
     }

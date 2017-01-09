@@ -2,6 +2,7 @@
 namespace Extension\Templavoila\Hooks;
 
 use TYPO3\CMS\Backend\Wizard\NewContentElementWizardHookInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 use Extension\Templavoila\Utility\TemplaVoilaUtility;
 
@@ -21,20 +22,20 @@ class WizardItems implements NewContentElementWizardHookInterface
                 'header' => $this->getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/BackendLayout.xlf:fce'),
             ],
         ];
-        $apiObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Service\ApiService::class);
+        $apiObj = GeneralUtility::makeInstance(\Extension\Templavoila\Service\ApiService::class);
 
         // Flexible content elements:
         $positionPid = $parentObject->id;
         $storageFolderPID = $apiObj->getStorageFolderPid($positionPid);
 
-        $toRepo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\TemplateRepository::class);
+        $toRepo = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\TemplateRepository::class);
         $toList = $toRepo->getTemplatesByStoragePidAndScope($storageFolderPID, \Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_FCE);
         foreach ($toList as $toObj) {
             /** @var \Extension\Templavoila\Domain\Model\Template $toObj */
             if ($toObj->isPermittedForUser()) {
                 $tmpFilename = $toObj->getIcon();
                 $addingItems['fce_' . $toObj->getKey()] = [
-                    'icon' => (@is_file(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(substr($tmpFilename, 3)))) ? $tmpFilename : (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('templavoila') . 'Resources/Public/Image/default_previewicon.gif'),
+                    'icon' => (@is_file(GeneralUtility::getFileAbsFileName(substr($tmpFilename, 3)))) ? $tmpFilename : (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('templavoila') . 'Resources/Public/Image/default_previewicon.gif'),
                     'description' => $toObj->getDescription() ? $this->getLanguageService()->sL($toObj->getDescription()) : TemplaVoilaUtility::getLanguageService()->getLL('template_nodescriptionavailable'),
                     'title' => $toObj->getLabel(),
                     'params' => $this->getDsDefaultValues($toObj)

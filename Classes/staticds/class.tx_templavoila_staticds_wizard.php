@@ -12,6 +12,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 use Extension\Templavoila\Utility\TemplaVoilaUtility;
 
 /**
@@ -34,7 +36,7 @@ class tx_templavoila_staticds_wizard {
 	 * @return string
 	 */
 	public function staticDsWizard() {
-		$this->step = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('dsWizardDoIt') ? (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('dsWizardStep') : 0;
+		$this->step = GeneralUtility::_GP('dsWizardDoIt') ? (int)GeneralUtility::_GP('dsWizardStep') : 0;
 		$conf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
 
 		$title = TemplaVoilaUtility::getLanguageService()->sL(
@@ -51,7 +53,7 @@ class tx_templavoila_staticds_wizard {
 		switch ($this->step) {
 			case 1:
 				$ok = array(TRUE, TRUE);
-				if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('dsWizardDoIt')) {
+				if (GeneralUtility::_GP('dsWizardDoIt')) {
 
 					if (!isset($conf['staticDS.']['path_fce']) || !strlen($conf['staticDS.']['path_fce'])) {
 						$ok[0] = FALSE;
@@ -109,14 +111,14 @@ class tx_templavoila_staticds_wizard {
 	protected function checkDirectory($path) {
 		$status = FALSE;
 		$path = rtrim($path, '/') . '/';
-		$absolutePath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($path);
+		$absolutePath = GeneralUtility::getFileAbsFileName($path);
 		if (!empty($absolutePath)) {
 			if (@is_writable($absolutePath)) {
 				$status = TRUE;
 			}
 			if (!is_dir($absolutePath)) {
 				try {
-					$errors = \TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep(PATH_site, $path);
+					$errors = GeneralUtility::mkdir_deep(PATH_site, $path);
 					if ($errors === NULL) {
 						$status = TRUE;
 					}
@@ -137,9 +139,9 @@ class tx_templavoila_staticds_wizard {
 	protected function getDsRecords($conf) {
 		$updateMessage = '';
 		$writeDsIds = array();
-		$writeIds = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('staticDSwizard');
-		$options = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('staticDSwizardoptions');
-		$checkAll = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('sdw-checkall');
+		$writeIds = GeneralUtility::_GP('staticDSwizard');
+		$options = GeneralUtility::_GP('staticDSwizardoptions');
+		$checkAll = GeneralUtility::_GP('sdw-checkall');
 
 		if (count($writeIds)) {
 			$writeDsIds = array_keys($writeIds);
@@ -164,7 +166,7 @@ class tx_templavoila_staticds_wizard {
 					($checkAll ? 'checked="checked"' : '') . ' /></td>
 		</tr></thead><tbody>';
 		foreach ($rows as $row) {
-			$dirPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($row['scope'] == 2 ? $conf['path_fce'] : $conf['path_page']);
+			$dirPath = GeneralUtility::getFileAbsFileName($row['scope'] == 2 ? $conf['path_fce'] : $conf['path_page']);
 			$dirPath = $dirPath . (substr($dirPath, -1) == '/' ? '' : '/');
 			$title = preg_replace('|[/,\."\']+|', '_', $row['title']);
 			$path = $dirPath . $title . ' (' . ($row['scope'] == 1 ? 'page' : 'fce') . ').xml';
@@ -176,9 +178,9 @@ class tx_templavoila_staticds_wizard {
 				'datastructure=' . (int) $row['uid'] . \TYPO3\CMS\Backend\Utility\BackendUtility::BEenableFields('tx_templavoila_tmplobj')
 			);
 			if (count($writeDsIds) && in_array($row['uid'], $writeDsIds)) {
-				\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($path, $row['dataprot']);
+				GeneralUtility::writeFile($path, $row['dataprot']);
 				if ($row['previewicon']) {
-					copy(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('uploads/tx_templavoila/' . $row['previewicon']), $dirPath . $title . ' (' . ($row['scope'] == 1
+					copy(GeneralUtility::getFileAbsFileName('uploads/tx_templavoila/' . $row['previewicon']), $dirPath . $title . ' (' . ($row['scope'] == 1
 							? 'page' : 'fce') . ').gif');
 				}
 				if ($options['updateRecords']) {
