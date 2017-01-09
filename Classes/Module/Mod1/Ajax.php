@@ -13,6 +13,8 @@ namespace Extension\Templavoila\Module\Mod1;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Class 'Ajax' for module 1 of the 'templavoila' extension.
  *
@@ -29,7 +31,7 @@ class Ajax
      * @return \Ajax
      */
     public function __construct() {
-        $this->apiObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Extension\Templavoila\Service\ApiService::class);
+        $this->apiObj = GeneralUtility::makeInstance(\Extension\Templavoila\Service\ApiService::class);
     }
 
     /**
@@ -42,9 +44,9 @@ class Ajax
      */
     public function moveRecord($params, &$ajaxObj) {
 
-        $sourcePointer = $this->apiObj->flexform_getPointerFromString(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('source'));
+        $sourcePointer = $this->apiObj->flexform_getPointerFromString(GeneralUtility::_GP('source'));
 
-        $destinationPointer = $this->apiObj->flexform_getPointerFromString(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('destination'));
+        $destinationPointer = $this->apiObj->flexform_getPointerFromString(GeneralUtility::_GP('destination'));
 
         $this->apiObj->moveElement($sourcePointer, $destinationPointer);
     }
@@ -59,7 +61,7 @@ class Ajax
      */
     public function unlinkRecord($params, &$ajaxObj) {
 
-        $unlinkPointer = $this->apiObj->flexform_getPointerFromString(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('unlink'));
+        $unlinkPointer = $this->apiObj->flexform_getPointerFromString(GeneralUtility::_GP('unlink'));
 
         $this->apiObj->unlinkElement($unlinkPointer);
     }
