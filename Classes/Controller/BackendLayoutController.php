@@ -20,7 +20,7 @@ use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
-use TYPO3\CMS\Core\Utility\GeneralUtility as CoreGeneralUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 use Extension\Templavoila\Utility\TemplaVoilaUtility;
 
@@ -360,7 +360,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     {
         parent::init();
 
-        $this->moduleTemplate = CoreGeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\ModuleTemplate::class);
+        $this->moduleTemplate = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\ModuleTemplate::class);
         $this->iconFactory = $this->moduleTemplate->getIconFactory();
         $this->buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
 
@@ -384,7 +384,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         $view->setTemplate('Module.html');
 
         $this->modSharedTSconfig = BackendUtility::getModTSconfig($this->id, 'mod.SHARED');
-        $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, CoreGeneralUtility::_GP('SET'), $this->moduleName);
+        $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, GeneralUtility::_GP('SET'), $this->moduleName);
 
         $tsConfig = BackendUtility::getModTSconfig($this->id, 'mod');
         if (isset($tsConfig['properties']['newContentElementWizard.']['override'])) {
@@ -393,8 +393,8 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
         $this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
 
-        $this->altRoot = CoreGeneralUtility::_GP('altRoot');
-        $this->versionId = CoreGeneralUtility::_GP('versionId');
+        $this->altRoot = GeneralUtility::_GP('altRoot');
+        $this->versionId = GeneralUtility::_GP('versionId');
 
         if (isset($this->modTSconfig['properties']['previewTitleMaxLen'])) {
             $this->previewTitleMaxLen = (int)$this->modTSconfig['properties']['previewTitleMaxLen'];
@@ -404,7 +404,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         if ($this->modTSconfig['properties']['debug']) {
             $this->debug = TRUE;
         }
-        $this->blindIcons = isset($this->modTSconfig['properties']['blindIcons']) ? CoreGeneralUtility::trimExplode(',', $this->modTSconfig['properties']['blindIcons'], TRUE) : array();
+        $this->blindIcons = isset($this->modTSconfig['properties']['blindIcons']) ? GeneralUtility::trimExplode(',', $this->modTSconfig['properties']['blindIcons'], TRUE) : array();
 
         $this->addToRecentElements();
 
@@ -425,28 +425,28 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         }
 
         // Initialize TemplaVoila API class:
-        $this->apiObj = CoreGeneralUtility::makeInstance(\Extension\Templavoila\Service\ApiService::class, $this->altRoot ? $this->altRoot : 'pages');
+        $this->apiObj = GeneralUtility::makeInstance(\Extension\Templavoila\Service\ApiService::class, $this->altRoot ? $this->altRoot : 'pages');
         if (isset($this->modSharedTSconfig['properties']['useLiveWorkspaceForReferenceListUpdates'])) {
             $this->apiObj->modifyReferencesInLiveWS(TRUE);
         }
 
         // Initialize side bar and wizards:
-        $this->sideBarObj =& CoreGeneralUtility::getUserObj('Extension\\Templavoila\\Module\\Mod1\\Sidebar', '');
+        $this->sideBarObj =& GeneralUtility::getUserObj('Extension\\Templavoila\\Module\\Mod1\\Sidebar', '');
         $this->sideBarObj->init($this);
         $this->sideBarObj->position = isset($this->modTSconfig['properties']['sideBarPosition']) ? $this->modTSconfig['properties']['sideBarPosition'] : 'toptabs';
 
-        $this->wizardsObj = CoreGeneralUtility::getUserObj('Extension\\Templavoila\\Module\\Mod1\\Wizards', '');
+        $this->wizardsObj = GeneralUtility::getUserObj('Extension\\Templavoila\\Module\\Mod1\\Wizards', '');
         $this->wizardsObj->init($this);
         // Initialize the clipboard
-        $this->clipboardObj =& CoreGeneralUtility::getUserObj('Extension\\Templavoila\\Module\\Mod1\\Clipboard', '');
+        $this->clipboardObj =& GeneralUtility::getUserObj('Extension\\Templavoila\\Module\\Mod1\\Clipboard', '');
         $this->clipboardObj->init($this);
 
         // Initialize the record module
-        $this->recordsObj =& CoreGeneralUtility::getUserObj('Extension\\Templavoila\\Module\\Mod1\\Records', '');
+        $this->recordsObj =& GeneralUtility::getUserObj('Extension\\Templavoila\\Module\\Mod1\\Records', '');
         $this->recordsObj->init($this);
         // Add the localization module if localization is enabled:
         if ($this->alternativeLanguagesDefined()) {
-            $this->localizationObj =& CoreGeneralUtility::getUserObj('Extension\\Templavoila\\Module\\Mod1\\Localization', '');
+            $this->localizationObj =& GeneralUtility::getUserObj('Extension\\Templavoila\\Module\\Mod1\\Localization', '');
             $this->localizationObj->init($this);
         }
     }
@@ -491,7 +491,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         $this->MOD_MENU['view'] = BackendUtility::unsetMenuItems($this->modTSconfig['properties'], $this->MOD_MENU['view'], 'menu.function');
 
         // CLEANSE SETTINGS
-        $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, CoreGeneralUtility::_GP('SET'), $this->moduleName);
+        $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, GeneralUtility::_GP('SET'), $this->moduleName);
     }
 
     /*******************************************
@@ -539,8 +539,8 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         }
 
         if ($access) {
-            if (CoreGeneralUtility::_GP('ajaxUnlinkRecord')) {
-                $unlinkDestinationPointer = $this->apiObj->flexform_getPointerFromString(CoreGeneralUtility::_GP('ajaxUnlinkRecord'));
+            if (GeneralUtility::_GP('ajaxUnlinkRecord')) {
+                $unlinkDestinationPointer = $this->apiObj->flexform_getPointerFromString(GeneralUtility::_GP('ajaxUnlinkRecord'));
                 $this->apiObj->unlinkElement($unlinkDestinationPointer);
             }
 
@@ -569,7 +569,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             }
 
             // Check if we have to update the pagetree:
-            if (CoreGeneralUtility::_GP('updatePageTree')) {
+            if (GeneralUtility::_GP('updatePageTree')) {
                 BackendUtility::setUpdateSignal('updatePageTree');
             }
 
@@ -600,7 +600,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 if (top.fsMod) top.fsMod.recentIds["web"] = ' . (int)$this->id . ';
                 ' . $this->moduleTemplate->redirectUrls() . '
                 var T3_TV_MOD1_BACKPATH = "' . $relativeExtensionPath . '";
-                var T3_TV_MOD1_RETURNURL = "' . rawurlencode(CoreGeneralUtility::getIndpEnv('REQUEST_URI')) . '";
+                var T3_TV_MOD1_RETURNURL = "' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI')) . '";
             ');
 
             $this->getPageRenderer()->loadJquery();
@@ -700,13 +700,13 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             if ($this->rootElementTable == 'pages') {
 
                 // Initialize the special doktype class:
-                $specialDoktypesObj =& CoreGeneralUtility::getUserObj('Extension\\Templavoila\\Module\\Mod1\\Specialdoktypes', '');
+                $specialDoktypesObj =& GeneralUtility::getUserObj('Extension\\Templavoila\\Module\\Mod1\\Specialdoktypes', '');
                 $specialDoktypesObj->init($this);
                 $doktype = $this->rootElementRecord['doktype'];
 
                 // if doktype is configured as editType render normal edit view
                 $docTypesToEdit = $this->modTSconfig['properties']['additionalDoktypesRenderToEditView'];
-                if ($docTypesToEdit && CoreGeneralUtility::inList($docTypesToEdit, $doktype)) {
+                if ($docTypesToEdit && GeneralUtility::inList($docTypesToEdit, $doktype)) {
                     //Make sure it is editable by page module
                     $doktype = self::DOKTYPE_NORMAL_EDIT;
                 }
@@ -747,7 +747,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 // Render "edit current page" (important to do before calling ->sideBarObj->render() - otherwise the translation tab is not rendered!
                 $editCurrentPageHTML .= $this->render_editPageScreen();
 
-                if (CoreGeneralUtility::_GP('ajaxUnlinkRecord')) {
+                if (GeneralUtility::_GP('ajaxUnlinkRecord')) {
                     $this->render_editPageScreen();
                     echo $this->render_sidebar();
                     exit;
@@ -769,7 +769,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                         $script .= "\n" . 'tv_createSortable(\'' . $key . '\',' . $linkedTogether . ');';
                     }
                     $script .= '});});';
-                    $this->content .= CoreGeneralUtility::wrapJS($script);
+                    $this->content .= GeneralUtility::wrapJS($script);
                 }
             }
         } else { // No access or no current page uid:
@@ -788,9 +788,9 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             }
         }
 
-        $cmd = CoreGeneralUtility::_GP('cmd');
+        $cmd = GeneralUtility::_GP('cmd');
         if ($cmd == 'crPage') { // create a new page
-            $this->content = $this->wizardsObj->renderWizard_createNewPage(CoreGeneralUtility::_GP('positionPid'));
+            $this->content = $this->wizardsObj->renderWizard_createNewPage(GeneralUtility::_GP('positionPid'));
         }
 
         $this->moduleTemplate->setTitle(TemplaVoilaUtility::getLanguageService()->getLL('title'));
@@ -920,7 +920,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 [
                     'vC' => TemplaVoilaUtility::getBackendUser()->veriCode(),
                     'cacheCmd'=> $this->id,
-                    'redirect' => CoreGeneralUtility::getIndpEnv('REQUEST_URI'),
+                    'redirect' => GeneralUtility::getIndpEnv('REQUEST_URI'),
                 ],
                 ButtonBar::BUTTON_POSITION_RIGHT,
                 2
@@ -950,7 +950,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         switch ($module) {
             case 'wizard_element_browser':
                 $clickUrl = 'browserPos = this;setFormValueOpenBrowser('
-                    . CoreGeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl($module))
+                    . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl($module))
                     . ',\'db\',\'browser[communication]|||tt_content\'); return false;';
                 $rel = BackendUtility::getModuleUrl($this->moduleName, $params);
                 break;
@@ -971,7 +971,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                     array_merge(
                         $params,
                         [
-                            'returnUrl' => CoreGeneralUtility::getIndpEnv('REQUEST_URI'),
+                            'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI'),
                         ]
                     )
                 );
@@ -1019,7 +1019,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                     array_merge(
                         $params,
                         [
-                            'returnUrl' => CoreGeneralUtility::getIndpEnv('REQUEST_URI'),
+                            'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI'),
                         ]
                     )
                 );
@@ -1135,7 +1135,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         if (is_array($TYPO3_CONF_VARS['EXTCONF']['templavoila']['mod1']['renderTopToolbar'])) {
             foreach ($TYPO3_CONF_VARS['EXTCONF']['templavoila']['mod1']['renderTopToolbar'] as $_funcRef) {
                 $_params = array();
-                $output .= CoreGeneralUtility::callUserFunction($_funcRef, $_params, $this);
+                $output .= GeneralUtility::callUserFunction($_funcRef, $_params, $this);
             }
         }
 
@@ -1143,7 +1143,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         if (!TemplaVoilaUtility::getBackendUser()->isAdmin() && $this->modTSconfig['properties']['enableContentAccessWarning']) {
             if (!($this->hasBasicEditRights())) {
                 /** @var \TYPO3\CMS\Core\Messaging\FlashMessage $message */
-                $message = CoreGeneralUtility::makeInstance(
+                $message = GeneralUtility::makeInstance(
                     \TYPO3\CMS\Core\Messaging\FlashMessage::class,
                     TemplaVoilaUtility::getLanguageService()->getLL('missing_edit_right_detail'),
                     TemplaVoilaUtility::getLanguageService()->getLL('missing_edit_right'),
@@ -1417,7 +1417,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         $previewContent = '<div class="ver-element">' . ($previewContent ? $previewContent : '<em>[New version]</em>') . '</div>';
         //}
 
-        $title = CoreGeneralUtility::fixed_lgd_cs($contentTreeArr['el']['fullTitle'], $this->previewTitleMaxLen);
+        $title = GeneralUtility::fixed_lgd_cs($contentTreeArr['el']['fullTitle'], $this->previewTitleMaxLen);
 
         // Finally assemble the table:
         $finalContent = '
@@ -1487,7 +1487,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             } else {
                 if (!TemplaVoilaUtility::getBackendUser()->isAdmin()) {
                     /** @var \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage */
-                    $flashMessage = CoreGeneralUtility::makeInstance(
+                    $flashMessage = GeneralUtility::makeInstance(
                         \TYPO3\CMS\Core\Messaging\FlashMessage::class,
                         TemplaVoilaUtility::getLanguageService()->getLL('page_structure_inherited_detail'),
                         TemplaVoilaUtility::getLanguageService()->getLL('page_structure_inherited'),
@@ -1513,7 +1513,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         }
 
         try {
-            $toRepo = CoreGeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\TemplateRepository::class);
+            $toRepo = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\TemplateRepository::class);
             /** @var $toRepo \Extension\Templavoila\Domain\Repository\TemplateRepository */
             $to = $toRepo->getTemplateByUid($toRecord['uid']);
             /** @var $to \Extension\Templavoila\Domain\Model\Template */
@@ -1571,7 +1571,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
                     if ($maxItemsReached) {
                         /** @var \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage */
-                        $flashMessage = CoreGeneralUtility::makeInstance(
+                        $flashMessage = GeneralUtility::makeInstance(
                             \TYPO3\CMS\Core\Messaging\FlashMessage::class,
                             '',
                             sprintf(
@@ -1856,7 +1856,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                     } else {
                         if ($TCEformsConfiguration['type'] != '') {
                             // Render for everything else:
-                            $previewContent .= '<strong>' . $TCEformsLabel . '</strong> ' . (!$fieldValue ? '' : $this->link_edit(htmlspecialchars(CoreGeneralUtility::fixed_lgd_cs(strip_tags($fieldValue), 200)), $elData['table'], $previewData['fullRow']['uid'])) . '<br />';
+                            $previewContent .= '<strong>' . $TCEformsLabel . '</strong> ' . (!$fieldValue ? '' : $this->link_edit(htmlspecialchars(GeneralUtility::fixed_lgd_cs(strip_tags($fieldValue), 200)), $elData['table'], $previewData['fullRow']['uid'])) . '<br />';
                         }
                     }
                 }
@@ -1925,7 +1925,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                         if (isset($fieldValue['config']['TCEforms']['label'])) {
                             $label = $this->localizedFFLabel($fieldValue['config']['TCEforms']['label'], 1);
                         }
-                        $data = (!$fieldValue['data'][$vKey] ? '' : $this->link_edit(htmlspecialchars(CoreGeneralUtility::fixed_lgd_cs(strip_tags($fieldValue['data'][$vKey]), 200)), $table, $uid));
+                        $data = (!$fieldValue['data'][$vKey] ? '' : $this->link_edit(htmlspecialchars(GeneralUtility::fixed_lgd_cs(strip_tags($fieldValue['data'][$vKey]), 200)), $table, $uid));
                     } else {
                         // @todo no idea what we should to here
                     }
@@ -2026,7 +2026,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                                 '<a name="c' . md5($this->apiObj->flexform_getStringFromPointer($this->currentElementParentPointer) . $localizedRecordInfo['row']['l18n_parent'] . $localizedRecordInfo['row']['sys_language_uid']) . '"></a>' .
                                 $this->getRecordStatHookValue('tt_content', $localizedRecordInfo['row']['uid']) .
                                 $recordIcon_l10n .
-                                htmlspecialchars(CoreGeneralUtility::fixed_lgd_cs(strip_tags(BackendUtility::getRecordTitle('tt_content', $localizedRecordInfo['row'])), $this->previewTitleMaxLen));
+                                htmlspecialchars(GeneralUtility::fixed_lgd_cs(strip_tags(BackendUtility::getRecordTitle('tt_content', $localizedRecordInfo['row'])), $this->previewTitleMaxLen));
 
                             $l10nInfo .= '<br/>' . $localizedRecordInfo['content'];
 
@@ -2071,7 +2071,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
                                 } else {
                                     $params = '&cmd[tt_content][' . $contentTreeArr['el']['uid'] . '][localize]=' . $sys_language_uid;
-                                    $onClick = "document.location='" . BackendUtility::getLinkToDataHandlerAction($params, CoreGeneralUtility::getIndpEnv('REQUEST_URI') . '#c' . md5($this->apiObj->flexform_getStringFromPointer($parentPointer) . $contentTreeArr['el']['uid'] . $sys_language_uid)) . "'; return false;";
+                                    $onClick = "document.location='" . BackendUtility::getLinkToDataHandlerAction($params, GeneralUtility::getIndpEnv('REQUEST_URI') . '#c' . md5($this->apiObj->flexform_getStringFromPointer($parentPointer) . $contentTreeArr['el']['uid'] . $sys_language_uid)) . "'; return false;";
                                 }
 
                                 $linkLabel = TemplaVoilaUtility::getLanguageService()->getLL('createcopyfortranslation', TRUE) . ' (' . htmlspecialchars($sLInfo['title']) . ')';
@@ -2179,7 +2179,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             // @Robert: How would you like this implementation better? Please advice and I will change it according to your wish!
             $status = '';
             if ($entry['table'] && $entry['uid']) {
-                $flexObj = CoreGeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class);
+                $flexObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class);
                 $recRow = BackendUtility::getRecordWSOL($entry['table'], $entry['uid']);
                 if ($recRow['tx_templavoila_flex']) {
 
@@ -2187,12 +2187,12 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                     $newXML = $flexObj->cleanFlexFormXML($entry['table'], 'tx_templavoila_flex', $recRow);
 
                     // If the clean-all command is sent AND there is a difference in current/clean XML, save the clean:
-                    if (CoreGeneralUtility::_POST('_CLEAN_XML_ALL') && md5($recRow['tx_templavoila_flex']) != md5($newXML)) {
+                    if (GeneralUtility::_POST('_CLEAN_XML_ALL') && md5($recRow['tx_templavoila_flex']) != md5($newXML)) {
                         $dataArr = array();
                         $dataArr[$entry['table']][$entry['uid']]['tx_templavoila_flex'] = $newXML;
 
                         // Init TCEmain object and store:
-                        $tce = CoreGeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
+                        $tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
                         $tce->stripslashes_values = 0;
                         $tce->start($dataArr, array());
                         $tce->process_datamap();
@@ -2629,7 +2629,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                      * so sortable doesn't need to update these and we
                      * can safely use '#'
                      */
-                    $returnUrl = ($this->currentElementParentPointer) ? CoreGeneralUtility::getIndpEnv('REQUEST_URI') . '#c' . md5($this->apiObj->flexform_getStringFromPointer($this->currentElementParentPointer) . $uid) : CoreGeneralUtility::getIndpEnv('REQUEST_URI');
+                    $returnUrl = ($this->currentElementParentPointer) ? GeneralUtility::getIndpEnv('REQUEST_URI') . '#c' . md5($this->apiObj->flexform_getStringFromPointer($this->currentElementParentPointer) . $uid) : GeneralUtility::getIndpEnv('REQUEST_URI');
                     if ($hidden) {
                         return '<a href="#" class="btn btn-default btn-sm" onclick="sortable_unhideRecord(this, \'' . htmlspecialchars(BackendUtility::getLinkToDataHandlerAction($params, $returnUrl)) . '\');">' . $label . '</a>';
                     } else {
@@ -2686,7 +2686,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             $this->getLinkParameters([
                 'parentRecord' => $this->apiObj->flexform_getStringFromPointer($parentPointer),
                 'colPos' => 0,
-                'returnUrl' => CoreGeneralUtility::getIndpEnv('REQUEST_URI'),
+                'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI'),
                 'uid_pid' => $this->id,
             ]),
             'default',
@@ -2717,9 +2717,9 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
             return '<a class="btn btn-warning btn-sm tpm-delete" href="'
                 . BackendUtility::getModuleUrl($this->moduleName, $this->getLinkParameters(['deleteRecord' => $unlinkPointerString]))
-                . '" onclick="' . htmlspecialchars('return confirm(' . CoreGeneralUtility::quoteJSvalue(TemplaVoilaUtility::getLanguageService()->getLL($LLlabel)) . ');') . '">' . $label . '</a>';
+                . '" onclick="' . htmlspecialchars('return confirm(' . GeneralUtility::quoteJSvalue(TemplaVoilaUtility::getLanguageService()->getLL($LLlabel)) . ');') . '">' . $label . '</a>';
         } else {
-            return '<a class="btn btn-default btn-sm tpm-unlink" href="javascript:' . htmlspecialchars('if (confirm(' . CoreGeneralUtility::quoteJSvalue(TemplaVoilaUtility::getLanguageService()->getLL('unlinkRecordMsg')) . '))') . 'sortable_unlinkRecord(\'' . $encodedUnlinkPointerString . '\',\'' . $this->getSortableItemHash($unlinkPointerString) . '\',\'' . $elementPointer . '\');">' . $label . '</a>';
+            return '<a class="btn btn-default btn-sm tpm-unlink" href="javascript:' . htmlspecialchars('if (confirm(' . GeneralUtility::quoteJSvalue(TemplaVoilaUtility::getLanguageService()->getLL('unlinkRecordMsg')) . '))') . 'sortable_unlinkRecord(\'' . $encodedUnlinkPointerString . '\',\'' . $this->getSortableItemHash($unlinkPointerString) . '\',\'' . $elementPointer . '\');">' . $label . '</a>';
         }
     }
 
@@ -2736,7 +2736,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     {
         return '<a class="btn btn-default btn-sm tpm-makeLocal" href="'
             . BackendUtility::getModuleUrl($this->moduleName, $this->getLinkParameters(['makeLocalRecord' => $this->apiObj->flexform_getStringFromPointer($makeLocalPointer)]))
-            . '" onclick="' . htmlspecialchars('return confirm(' . CoreGeneralUtility::quoteJSvalue(TemplaVoilaUtility::getLanguageService()->getLL('makeLocalMsg')) . ');') . '">' . $label . '</a>';
+            . '" onclick="' . htmlspecialchars('return confirm(' . GeneralUtility::quoteJSvalue(TemplaVoilaUtility::getLanguageService()->getLL('makeLocalMsg')) . ');') . '">' . $label . '</a>';
     }
 
     /**
@@ -2749,7 +2749,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     {
         $output =
             'id=' . $this->id .
-            (is_array($this->altRoot) ? CoreGeneralUtility::implodeArrayForUrl('altRoot', $this->altRoot) : '') .
+            (is_array($this->altRoot) ? GeneralUtility::implodeArrayForUrl('altRoot', $this->altRoot) : '') .
             ($this->versionId ? '&amp;versionId=' . rawurlencode($this->versionId) : '');
 
         return $output;
@@ -2833,7 +2833,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         $hooks = $this->hooks_prepareObjectsArray('handleIncomingCommands');
 
         foreach ($possibleCommands as $command) {
-            if (($commandParameters = CoreGeneralUtility::_GP($command)) != '') {
+            if (($commandParameters = GeneralUtility::_GP($command)) != '') {
 
                 $redirectLocation = BackendUtility::getModuleUrl($this->moduleName, $this->getLinkParameters());
 
@@ -2852,7 +2852,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
                     case 'createNewRecord':
                         // Historically "defVals" has been used for submitting the preset row data for the new element, so we still support it here:
-                        $defVals = CoreGeneralUtility::_GP('defVals');
+                        $defVals = GeneralUtility::_GP('defVals');
                         $newRow = is_array($defVals['tt_content']) ? $defVals['tt_content'] : array();
 
                         // Create new record and open it for editing
@@ -2878,8 +2878,8 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                         break;
 
                     case 'pasteRecord':
-                        $sourcePointer = $this->apiObj->flexform_getPointerFromString(CoreGeneralUtility::_GP('source'));
-                        $destinationPointer = $this->apiObj->flexform_getPointerFromString(CoreGeneralUtility::_GP('destination'));
+                        $sourcePointer = $this->apiObj->flexform_getPointerFromString(GeneralUtility::_GP('source'));
+                        $destinationPointer = $this->apiObj->flexform_getPointerFromString(GeneralUtility::_GP('destination'));
                         switch ($commandParameters) {
                             case 'copy' :
                                 $this->apiObj->copyElement($sourcePointer, $destinationPointer);
@@ -2891,7 +2891,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                                 $this->apiObj->moveElement($sourcePointer, $destinationPointer);
                                 break;
                             case 'ref':
-                                list(, $uid) = explode(':', CoreGeneralUtility::_GP('source'));
+                                list(, $uid) = explode(':', GeneralUtility::_GP('source'));
                                 $this->apiObj->referenceElementByUid($uid, $destinationPointer);
                                 break;
                         }
@@ -2904,17 +2904,17 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                         break;
 
                     case 'localizeElement':
-                        $sourcePointer = $this->apiObj->flexform_getPointerFromString(CoreGeneralUtility::_GP('source'));
+                        $sourcePointer = $this->apiObj->flexform_getPointerFromString(GeneralUtility::_GP('source'));
                         $this->apiObj->localizeElement($sourcePointer, $commandParameters);
                         break;
 
                     case 'createNewPageTranslation':
                         // Create parameters and finally run the classic page module for creating a new page translation
                         $redirectLocation = BackendUtility::getModuleUrl('record_edit', [
-                                'edit' => ['pages_language_overlay' => [(int)CoreGeneralUtility::_GP('pid') => 'new']],
+                                'edit' => ['pages_language_overlay' => [(int)GeneralUtility::_GP('pid') => 'new']],
                                 'overrideVals' => [
                                     'pages_language_overlay' => [
-                                        'doktype' => (int)CoreGeneralUtility::_GP('doktype'),
+                                        'doktype' => (int)GeneralUtility::_GP('doktype'),
                                         'sys_language_uid' => (int)$commandParameters,
                                     ]
                                 ],
@@ -2974,7 +2974,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         }
 
         if (isset ($redirectLocation)) {
-            header('Location: ' . CoreGeneralUtility::locationHeaderUrl($redirectLocation));
+            header('Location: ' . GeneralUtility::locationHeaderUrl($redirectLocation));
         }
     }
 
@@ -3081,7 +3081,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 unset($output[$row['uid']]);
             }
 
-            $disableLanguages = CoreGeneralUtility::trimExplode(',', $this->modSharedTSconfig['properties']['disableLanguages'], 1);
+            $disableLanguages = GeneralUtility::trimExplode(',', $this->modSharedTSconfig['properties']['disableLanguages'], 1);
             foreach ($disableLanguages as $language) {
                 // $language is the uid of a sys_language
                 unset($output[$language]);
@@ -3106,7 +3106,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         $hookObjectsArr = array();
         if (is_array($TYPO3_CONF_VARS['EXTCONF']['templavoila']['mod1'][$hookName])) {
             foreach ($TYPO3_CONF_VARS['EXTCONF']['templavoila']['mod1'][$hookName] as $key => $classRef) {
-                $hookObjectsArr[$key] = & CoreGeneralUtility::getUserObj($classRef);
+                $hookObjectsArr[$key] = & GeneralUtility::getUserObj($classRef);
             }
         }
 
@@ -3185,7 +3185,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             $stat = '';
             $_params = array($table, $id);
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks'] as $_funcRef) {
-                $stat .= CoreGeneralUtility::callUserFunction($_funcRef, $_params, $this);
+                $stat .= GeneralUtility::callUserFunction($_funcRef, $_params, $this);
             }
 
             return $stat;
@@ -3214,12 +3214,12 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     protected function addToRecentElements()
     {
         // Add recent element
-        $ser = CoreGeneralUtility::_GP('ser');
+        $ser = GeneralUtility::_GP('ser');
         if ($ser) {
             throw new \RuntimeException('Further execution of code leads to PHP errors.', 1404750505);
 
             // Include file required to unserialization
-            CoreGeneralUtility::requireOnce(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('templavoila', 'newcewizard/model/class.tx_templavoila_contentelementdescriptor.php'));
+            GeneralUtility::requireOnce(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('templavoila', 'newcewizard/model/class.tx_templavoila_contentelementdescriptor.php'));
 
             $obj = @unserialize(base64_decode($ser));
 
@@ -3269,7 +3269,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         $editingEnabled = TRUE;
         try {
             /** @var \Extension\Templavoila\Domain\Repository\TemplateRepository $toRepo */
-            $toRepo = CoreGeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\TemplateRepository::class);
+            $toRepo = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\TemplateRepository::class);
             $to = $toRepo->getTemplateByUid($toUid);
             $xml = $to->getLocalDataprotArray();
             if (isset($xml['meta']['noEditOnCreation'])) {
@@ -3338,8 +3338,8 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             $pageRecord = BackendUtility::getRecordWSOL('pages', $id);
 
             $mayEditPage = TemplaVoilaUtility::getBackendUser()->doesUserHaveAccess($pageRecord, 16);
-            $mayModifyTable = CoreGeneralUtility::inList(TemplaVoilaUtility::getBackendUser()->groupData['tables_modify'], $table);
-            $mayEditContentField = CoreGeneralUtility::inList(TemplaVoilaUtility::getBackendUser()->groupData['non_exclude_fields'], $table . ':tx_templavoila_flex');
+            $mayModifyTable = GeneralUtility::inList(TemplaVoilaUtility::getBackendUser()->groupData['tables_modify'], $table);
+            $mayEditContentField = GeneralUtility::inList(TemplaVoilaUtility::getBackendUser()->groupData['non_exclude_fields'], $table . ':tx_templavoila_flex');
             $hasEditRights = $mayEditPage && $mayModifyTable && $mayEditContentField;
         }
 

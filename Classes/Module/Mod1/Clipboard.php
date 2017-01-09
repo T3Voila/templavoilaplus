@@ -17,7 +17,7 @@ namespace Extension\Templavoila\Module\Mod1;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\SingletonInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility as CoreGeneralUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 use Extension\Templavoila\Utility\TemplaVoilaUtility;
 
@@ -62,12 +62,12 @@ class Clipboard implements SingletonInterface
         $this->pObj = $pObj;
 
         // Initialize the t3lib clipboard:
-        $this->t3libClipboardObj = CoreGeneralUtility::makeInstance(\TYPO3\CMS\Backend\Clipboard\Clipboard::class);
+        $this->t3libClipboardObj = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Clipboard\Clipboard::class);
         $this->t3libClipboardObj->initializeClipboard();
         $this->t3libClipboardObj->lockToNormal();
 
         // Clipboard actions are handled:
-        $CB = CoreGeneralUtility::_GP('CB'); // CB is the clipboard command array
+        $CB = GeneralUtility::_GP('CB'); // CB is the clipboard command array
         $this->t3libClipboardObj->setCmd($CB); // Execute commands.
 
         if (isset ($CB['setFlexMode'])) {
@@ -447,7 +447,7 @@ class Clipboard implements SingletonInterface
         if (count($infoData)) {
             return $this->pObj->buildButtonFromUrl(
                 'top.launchView(\'tt_content\', \'' . $uid . '\'); return false;',
-                CoreGeneralUtility::fixed_lgd_cs(implode(' / ', $infoData), 100),
+                GeneralUtility::fixed_lgd_cs(implode(' / ', $infoData), 100),
                 '',
                 'Ref: ' . count($infoData)
             );

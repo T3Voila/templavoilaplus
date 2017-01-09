@@ -16,7 +16,7 @@ namespace Extension\Templavoila\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility as CoreGeneralUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 use Extension\Templavoila\Utility\TemplaVoilaUtility;
 
@@ -104,24 +104,24 @@ class BackendTemplateDisplayController extends \TYPO3\CMS\Backend\Module\BaseScr
     public function main()
     {
         // Setting GPvars:
-        $displayFile = CoreGeneralUtility::_GP('file');
-        $show = CoreGeneralUtility::_GP('show');
-        $preview = CoreGeneralUtility::_GP('preview');
-        $limitTags = CoreGeneralUtility::_GP('limitTags');
-        $path = CoreGeneralUtility::_GP('path');
+        $displayFile = GeneralUtility::_GP('file');
+        $show = GeneralUtility::_GP('show');
+        $preview = GeneralUtility::_GP('preview');
+        $limitTags = GeneralUtility::_GP('limitTags');
+        $path = GeneralUtility::_GP('path');
 
-        switch (CoreGeneralUtility::_GP('mode')) {
+        switch (GeneralUtility::_GP('mode')) {
             case 'explode':
             case 'source':
-                $mode = CoreGeneralUtility::_GP('mode');
+                $mode = GeneralUtility::_GP('mode');
                 break;
             default:
                 $mode = '';
         }
 
         // Checking if the displayFile parameter is set:
-        if (@is_file($displayFile) && CoreGeneralUtility::getFileAbsFileName($displayFile)) {
-            $fileData = CoreGeneralUtility::getUrl($displayFile);
+        if (@is_file($displayFile) && GeneralUtility::getFileAbsFileName($displayFile)) {
+            $fileData = GeneralUtility::getUrl($displayFile);
             if ($fileData) {
                 $relPathFix = $GLOBALS['BACK_PATH'] . '../' . dirname(substr($displayFile, strlen(PATH_site))) . '/';
 
@@ -153,7 +153,7 @@ class BackendTemplateDisplayController extends \TYPO3\CMS\Backend\Module\BaseScr
      */
     public function displayFileContentWithMarkup($content, $path, $relPathFix, $limitTags, $show, $mode)
     {
-        $markupObj = CoreGeneralUtility::makeInstance(\Extension\Templavoila\Domain\Model\HtmlMarkup::class);
+        $markupObj = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Model\HtmlMarkup::class);
         $markupObj->gnyfImgAdd = $show ? '' : 'onclick="return parent.updPath(\'###PATH###\');"';
         $markupObj->pathPrefix = $path ? $path . '|' : '';
         $markupObj->onlyElements = $limitTags;
@@ -211,8 +211,8 @@ class BackendTemplateDisplayController extends \TYPO3\CMS\Backend\Module\BaseScr
         $currentMappingInfo = is_array($sesDat['currentMappingInfo']) ? $sesDat['currentMappingInfo'] : array();
 
         // Init mark up object.
-        $this->markupObj = CoreGeneralUtility::makeInstance(\Extension\Templavoila\Domain\Model\HtmlMarkup::class);
-        $this->markupObj->htmlParse = CoreGeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class);
+        $this->markupObj = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Model\HtmlMarkup::class);
+        $this->markupObj->htmlParse = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class);
 
         // Splitting content, adding a random token for the part to be previewed:
         $contentSplittedByMapping = $this->markupObj->splitContentToMappingInfo($content, $currentMappingInfo);

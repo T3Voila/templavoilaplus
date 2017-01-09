@@ -20,7 +20,7 @@ use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
-use TYPO3\CMS\Core\Utility\GeneralUtility as CoreGeneralUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 use Extension\Templavoila\Utility\TemplaVoilaUtility;
 
@@ -95,7 +95,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
     {
         parent::init();
 
-        $this->moduleTemplate = CoreGeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\ModuleTemplate::class);
+        $this->moduleTemplate = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\ModuleTemplate::class);
         $this->iconFactory = $this->moduleTemplate->getIconFactory();
         $this->buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
 
@@ -116,7 +116,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
         $this->modTSconfig = BackendUtility::getModTSconfig($this->id, 'mod.' . $this->moduleName);
 
         // CLEANSE SETTINGS
-        $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, CoreGeneralUtility::_GP('SET'), $this->moduleName);
+        $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, GeneralUtility::_GP('SET'), $this->moduleName);
     }
 
     /*******************************************
@@ -188,7 +188,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
 
             $this->renderModuleContent();
         } else {
-            $flashMessage = CoreGeneralUtility::makeInstance(
+            $flashMessage = GeneralUtility::makeInstance(
                 \TYPO3\CMS\Core\Messaging\FlashMessage::class,
                 TemplaVoilaUtility::getLanguageService()->getLL('noaccess'),
                 '',
@@ -326,8 +326,8 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
      */
     public function renderModuleContent_searchForTODS()
     {
-        $dsRepo = CoreGeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\DataStructureRepository::class);
-        $toRepo = CoreGeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\TemplateRepository::class);
+        $dsRepo = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\DataStructureRepository::class);
+        $toRepo = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\TemplateRepository::class);
         $list = $toRepo->getTemplateStoragePids();
 
         // Traverse the pages found and list in a table:
@@ -426,7 +426,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
         $lostTOs = '';
         $lostTOCount = 0;
 
-        $toRepo = CoreGeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\TemplateRepository::class);
+        $toRepo = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\TemplateRepository::class);
         $toList = $toRepo->getAll($this->id);
         foreach ($toList as $toObj) {
             /** @var \Extension\Templavoila\Domain\Model\Template $toObj */
@@ -472,11 +472,11 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
      */
     public function renderDSlisting($scope)
     {
-        $currentPid = (int)CoreGeneralUtility::_GP('id');
+        $currentPid = (int)GeneralUtility::_GP('id');
         /** @var \Extension\Templavoila\Domain\Repository\DataStructureRepository $dsRepo */
-        $dsRepo = CoreGeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\DataStructureRepository::class);
+        $dsRepo = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\DataStructureRepository::class);
         /** @var \Extension\Templavoila\Domain\Repository\TemplateRepository $toRepo */
-        $toRepo = CoreGeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\TemplateRepository::class);
+        $toRepo = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\TemplateRepository::class);
 
         $dsList = $dsRepo->getDatastructuresByStoragePidAndScope($currentPid, $scope);
 
@@ -497,7 +497,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
 
                 $toList = $toRepo->getTemplatesByDatastructure($dsObj, $currentPid);
 
-                $newPid = (int)CoreGeneralUtility::_GP('id');
+                $newPid = (int)GeneralUtility::_GP('id');
                 $newFileRef = '';
                 $newTitle = $dsObj->getLabel() . ' [TEMPLATE]';
                 if (count($toList)) {
@@ -597,13 +597,13 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
 
         if ($dsObj->isFilebased()) {
             $overlay = 'overlay-edit';
-            $fileName = CoreGeneralUtility::getFileAbsFileName($dsObj->getKey());
+            $fileName = GeneralUtility::getFileAbsFileName($dsObj->getKey());
             $editUrl = BackendUtility::getModuleUrl(
                 'file_edit',
                 [
                     'target' => $fileName,
                     // Edit file do not support returnUrl anymore
-                    // 'returnUrl' => CoreGeneralUtility::sanitizeLocalUrl(CoreGeneralUtility::getIndpEnv('REQUEST_URI')),
+                    // 'returnUrl' => GeneralUtility::sanitizeLocalUrl(GeneralUtility::getIndpEnv('REQUEST_URI')),
                 ]
             );
             if (!is_file($fileName)) {
@@ -633,7 +633,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
             $editLink = $lpXML .= '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick('&edit[tx_templavoila_datastructure][' . $dsObj->getKey() . ']=edit')) . '">'
             . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render()
             . '</a>';
-            $dsTitle = '<a href="' . htmlspecialchars('../cm1/index.php?table=tx_templavoila_datastructure&uid=' . $dsObj->getKey() . '&id=' . $this->id . '&returnUrl=' . rawurlencode(CoreGeneralUtility::sanitizeLocalUrl(CoreGeneralUtility::getIndpEnv('REQUEST_URI')))) . '">' . htmlspecialchars($dsObj->getLabel()) . '</a>';
+            $dsTitle = '<a href="' . htmlspecialchars('../cm1/index.php?table=tx_templavoila_datastructure&uid=' . $dsObj->getKey() . '&id=' . $this->id . '&returnUrl=' . rawurlencode(GeneralUtility::sanitizeLocalUrl(GeneralUtility::getIndpEnv('REQUEST_URI')))) . '">' . htmlspecialchars($dsObj->getLabel()) . '</a>';
         }
         // Compile info table:
         $content = '
@@ -648,7 +648,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
             <tr class="bgColor4">
                 <td>' . TemplaVoilaUtility::getLanguageService()->getLL('globalprocessing_xml') . '</td>
                 <td>
-                    ' . $lpXML .  CoreGeneralUtility::formatSize(strlen($dsObj->getDataprotXML())) . ' bytes
+                    ' . $lpXML .  GeneralUtility::formatSize(strlen($dsObj->getDataprotXML())) . ' bytes
                 </td>
             </tr>
             <tr class="bgColor4">
@@ -665,7 +665,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
         // Format XML if requested (renders VERY VERY slow)
 //         if ($this->MOD_SETTINGS['set_showDSxml']) {
 //             if ($dsObj->getDataprotXML()) {
-//                 $hlObj = CoreGeneralUtility::makeInstance(\Extension\Templavoila\Service\SyntaxHighlightingService::class);
+//                 $hlObj = GeneralUtility::makeInstance(\Extension\Templavoila\Service\SyntaxHighlightingService::class);
 //                 $content .= '<pre>' . str_replace(chr(9), '&nbsp;&nbsp;&nbsp;', $hlObj->highLight_DS($dsObj->getDataprotXML())) . '</pre>';
 //             }
 //         }
@@ -730,7 +730,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
         ];
         $linkUrl = BackendUtility::getModuleUrl('templavoila_mapping', $uriParameters);
 
-        $fileReference = CoreGeneralUtility::getFileAbsFileName($toObj->getFileref());
+        $fileReference = GeneralUtility::getFileAbsFileName($toObj->getFileref());
         if (@is_file($fileReference)) {
             $this->tFileList[$fileReference]++;
             $fileRef = '<a href="' . htmlspecialchars(substr($fileReference, strlen(PATH_site))) . '" target="_blank">' . htmlspecialchars($toObj->getFileref()) . '</a>';
@@ -776,7 +776,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
         // Format XML if requested
         $lpXML = '';
 //         if ($toObj->getLocalDataprotXML(true)) {
-//             $hlObj = CoreGeneralUtility::makeInstance(\Extension\Templavoila\Service\SyntaxHighlightingService::class);
+//             $hlObj = GeneralUtility::makeInstance(\Extension\Templavoila\Service\SyntaxHighlightingService::class);
 //             $lpXML = '<pre>' . str_replace(chr(9), '&nbsp;&nbsp;&nbsp;', $hlObj->highLight_DS($toObj->getLocalDataprotXML(true))) . '</pre>';
 //         }
 
@@ -824,7 +824,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
                     <td>' . TemplaVoilaUtility::getLanguageService()->getLL('localprocessing_xml') . ':</td>
                     <td>
                         ' . $lpXML . ($toObj->getLocalDataprotXML(true) ?
-                    CoreGeneralUtility::formatSize(strlen($toObj->getLocalDataprotXML(true))) . ' bytes'
+                    GeneralUtility::formatSize(strlen($toObj->getLocalDataprotXML(true))) . ' bytes'
                     : '') . '
                     </td>
                 </tr>
@@ -860,7 +860,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
                     <td>' . TemplaVoilaUtility::getLanguageService()->getLL('localprocessing_xml') . ':</td>
                     <td>
                         ' . $lpXML . ($toObj->getLocalDataprotXML(true) ?
-                    CoreGeneralUtility::formatSize(strlen($toObj->getLocalDataprotXML(true))) . ' bytes'
+                    GeneralUtility::formatSize(strlen($toObj->getLocalDataprotXML(true))) . ' bytes'
                     : '') . '
                     </td>
                 </tr>
@@ -869,7 +869,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
         }
 
         // Traverse template objects which are not children of anything:
-        $toRepo = CoreGeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\TemplateRepository::class);
+        $toRepo = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\TemplateRepository::class);
         $toChildren = $toRepo->getTemplatesByParentTemplate($toObj);
 
         if (!$children && count($toChildren)) {
@@ -1555,7 +1555,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
             // Empty DS
             return [];
         }
-        $DScontent = CoreGeneralUtility::xml2array($DSstring);
+        $DScontent = GeneralUtility::xml2array($DSstring);
 
         if (!is_array($DScontent)) {
             if (trim($DScontent) === '') {
@@ -1619,7 +1619,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
     public function getImportObj()
     {
         /** @var \TYPO3\CMS\Impexp\ImportExport $import */
-        $import = CoreGeneralUtility::makeInstance(\tx_impexp::class);
+        $import = GeneralUtility::makeInstance(\tx_impexp::class);
         $import->init(0, 'import');
         $import->enableLogging = true;
 
@@ -1635,7 +1635,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
      */
     public function syntaxHLTypoScript($v)
     {
-        $tsparser = CoreGeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::class);
+        $tsparser = GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::class);
         $tsparser->lineNumberOffset = 0;
         $TScontent = $tsparser->doSyntaxHighlight(trim($v) . chr(10), '', 1);
 
@@ -1684,7 +1684,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
     public function saveMenuCode()
     {
         // Save menu code to template record:
-        $cfg = CoreGeneralUtility::_POST('CFG');
+        $cfg = GeneralUtility::_POST('CFG');
         if (isset($cfg['menuCode'])) {
 
             // Get template record:
@@ -1702,7 +1702,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
 ' . $TSrecord['config'];
 
                 // Execute changes:
-                $tce = CoreGeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
+                $tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
                 $tce->stripslashes_values = 0;
                 $tce->dontProcessTransformations = 1;
                 $tce->start($data, Array());
@@ -1749,7 +1749,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
     {
         $templateFolders = [];
         if (strlen($this->modTSconfig['properties']['templatePath'])) {
-            $paths = CoreGeneralUtility::trimExplode(',', $this->modTSconfig['properties']['templatePath'], true);
+            $paths = GeneralUtility::trimExplode(',', $this->modTSconfig['properties']['templatePath'], true);
         } else {
             $paths = array('templates');
         }
@@ -1779,7 +1779,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
     {
         $paths = $this->getTemplateFolders();
 
-        $filter = CoreGeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter::class);
+        $filter = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter::class);
         $filter->setAllowedFileExtensions('html,htm,tmpl');
 
         $files = array();
@@ -1858,7 +1858,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
             array_merge(
                 $params,
                 [
-                    'returnUrl' => CoreGeneralUtility::getIndpEnv('REQUEST_URI'),
+                    'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI'),
                 ]
             )
         );

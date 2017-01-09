@@ -20,7 +20,7 @@ use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
-use TYPO3\CMS\Core\Utility\GeneralUtility as CoreGeneralUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 use Extension\Templavoila\Utility\TemplaVoilaUtility;
 
@@ -102,7 +102,7 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
     {
         parent::init();
 
-        $this->moduleTemplate = CoreGeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\ModuleTemplate::class);
+        $this->moduleTemplate = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\ModuleTemplate::class);
         $this->iconFactory = $this->moduleTemplate->getIconFactory();
         $this->buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
 
@@ -125,7 +125,7 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
         $this->modTSconfig = BackendUtility::getModTSconfig($this->id, 'mod.' . $this->moduleName);
 
         // CLEANSE SETTINGS
-        $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, CoreGeneralUtility::_GP('SET'), $this->moduleName);
+        $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, GeneralUtility::_GP('SET'), $this->moduleName);
     }
 
     /*******************************************
@@ -197,7 +197,7 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
 
             $this->renderModuleContent();
         } else {
-            $flashMessage = CoreGeneralUtility::makeInstance(
+            $flashMessage = GeneralUtility::makeInstance(
                 \TYPO3\CMS\Core\Messaging\FlashMessage::class,
                 TemplaVoilaUtility::getLanguageService()->getLL('noaccess'),
                 '',
@@ -371,13 +371,13 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
 
             // Missing extension warning:
             if ($missingExt) {
-                $msg = CoreGeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $missingExt, TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_missingext'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+                $msg = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $missingExt, TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_missingext'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
                 $this->content .= $msg->render();
             }
 
             // Missing configuration warning:
             if ($missingConf) {
-                $msg = CoreGeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_missingconf_description'), TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_missingconf'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+                $msg = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_missingconf_description'), TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_missingconf'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
                 $this->content .= $msg->render();
             }
 
@@ -507,11 +507,11 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
         if (!empty($paths) && !empty($files)) {
 
             $this->wizardData = array();
-            $pathArr = CoreGeneralUtility::removePrefixPathFromList($paths, PATH_site);
+            $pathArr = GeneralUtility::removePrefixPathFromList($paths, PATH_site);
             $outputString = sprintf(TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_firststep'), implode('", "', $pathArr)) . '<br/>';
 
             // Get all HTML files:
-            $fileArr = CoreGeneralUtility::removePrefixPathFromList($files, PATH_site);
+            $fileArr = GeneralUtility::removePrefixPathFromList($files, PATH_site);
 
             // Prepare header:
             $tRows = array();
@@ -576,8 +576,8 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
     public function wizard_step2()
     {
         // Save session data with filename:
-        $cfg = CoreGeneralUtility::_GET('CFG');
-        if ($cfg['file'] && CoreGeneralUtility::getFileAbsFileName($cfg['file'])) {
+        $cfg = GeneralUtility::_GET('CFG');
+        if ($cfg['file'] && GeneralUtility::getFileAbsFileName($cfg['file'])) {
             $this->wizardData['file'] = $cfg['file'];
         }
 
@@ -626,7 +626,7 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
     public function wizard_step3()
     {
         // Save session data with filename:
-        $cfg = CoreGeneralUtility::_POST('CFG');
+        $cfg = GeneralUtility::_POST('CFG');
         if (isset($cfg['sitetitle'])) {
             $this->wizardData['sitetitle'] = trim($cfg['sitetitle']);
         }
@@ -639,7 +639,7 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
 
         // If the create-site button WAS clicked:
         $outputString = '';
-        if (CoreGeneralUtility::_POST('_create_site')) {
+        if (GeneralUtility::_POST('_create_site')) {
 
             // Show selected template file:
             if ($this->wizardData['file'] && $this->wizardData['sitetitle'] && $this->wizardData['username']) {
@@ -647,7 +647,7 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
                 // DO import:
                 $import = $this->getImportObj();
                 if (isset($this->modTSconfig['properties']['newTvSiteFile'])) {
-                    $inFile = CoreGeneralUtility::getFileAbsFileName($this->modTSconfig['properties']['newTVsiteTemplate']);
+                    $inFile = GeneralUtility::getFileAbsFileName($this->modTSconfig['properties']['newTVsiteTemplate']);
                 } else {
                     $inFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('templavoila') . 'Resources/Private/Template/new_tv_site.xml';
                 }
@@ -694,7 +694,7 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
                     }
 
                     // Execute changes:
-                    $tce = CoreGeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
+                    $tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
                     $tce->stripslashes_values = 0;
                     $tce->dontProcessTransformations = 1;
                     $tce->start($data, Array());
@@ -774,7 +774,7 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
             $outputString = sprintf(TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_basicsshouldwork', true), $menuTypeText, $menuType, $menuTypeText);
 
             // Start up HTML parser:
-            $htmlParser = CoreGeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class);
+            $htmlParser = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class);
 
             // Parse into blocks
             $parts = $htmlParser->splitIntoBlock('td,tr,table,a,div,span,ol,ul,li,p,h1,h2,h3,h4,h5', $menuPart, 1);
@@ -818,7 +818,7 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
                             $newValue['I-width'] = $attribs[0]['width'];
                             $newValue['I-height'] = $attribs[0]['height'];
 
-                            $filePath = CoreGeneralUtility::getFileAbsFileName(CoreGeneralUtility::resolveBackPath(PATH_site . $attribs[0]['src']));
+                            $filePath = GeneralUtility::getFileAbsFileName(GeneralUtility::resolveBackPath(PATH_site . $attribs[0]['src']));
                             if (@is_file($filePath)) {
                                 $newValue['backColorGuess'] = $this->getBackgroundColor($filePath);
                             } else $newValue['backColorGuess'] = '';
@@ -888,7 +888,7 @@ lib.' . $menuType . '.1.NO {
 lib.' . $menuType . '.1.RO < lib.' . $menuType . '.1.NO
 lib.' . $menuType . '.1.RO = 1
 lib.' . $menuType . '.1.RO {
-    backColor = ' . CoreGeneralUtility::modifyHTMLColorAll(($menu_normal['backColorGuess'] ? $menu_normal['backColorGuess'] : '#FFFFFF'), -20) . '
+    backColor = ' . GeneralUtility::modifyHTMLColorAll(($menu_normal['backColorGuess'] ? $menu_normal['backColorGuess'] : '#FFFFFF'), -20) . '
     10.fontColor = red
 }
             ';
@@ -966,7 +966,7 @@ lib.' . $menuType . '.1.ACT {
             $outputString .= '<hr/>' . $this->syntaxHLTypoScript($typoScript) . '<hr/><br/>';
 
             $outputString .= TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_menufinetune', true);
-            $outputString .= '<textarea name="CFG[menuCode]"' . $GLOBALS['TBE_TEMPLATE']->formWidthText() . ' rows="10">' . CoreGeneralUtility::formatForTextarea($typoScript) . '</textarea><br/><br/>';
+            $outputString .= '<textarea name="CFG[menuCode]"' . $GLOBALS['TBE_TEMPLATE']->formWidthText() . ' rows="10">' . GeneralUtility::formatForTextarea($typoScript) . '</textarea><br/><br/>';
             $outputString .= '<input type="hidden" name="SET[wiz_step]" value="' . $menuTypeNextStep . '" />';
             $outputString .= '<input type="submit" name="_" value="' . sprintf(TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_menuwritets', true), $menuTypeText) . '" />';
         } else {
@@ -1007,7 +1007,7 @@ lib.' . $menuType . '.1.ACT {
     public function getImportObj()
     {
         /** @var \TYPO3\CMS\Impexp\ImportExport $import */
-        $import = CoreGeneralUtility::makeInstance(\tx_impexp::class);
+        $import = GeneralUtility::makeInstance(\tx_impexp::class);
         $import->init(0, 'import');
         $import->enableLogging = true;
 
@@ -1023,7 +1023,7 @@ lib.' . $menuType . '.1.ACT {
      */
     public function syntaxHLTypoScript($v)
     {
-        $tsparser = CoreGeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::class);
+        $tsparser = GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::class);
         $tsparser->lineNumberOffset = 0;
         $TScontent = $tsparser->doSyntaxHighlight(trim($v) . chr(10), '', 1);
 
@@ -1072,7 +1072,7 @@ lib.' . $menuType . '.1.ACT {
     public function saveMenuCode()
     {
         // Save menu code to template record:
-        $cfg = CoreGeneralUtility::_POST('CFG');
+        $cfg = GeneralUtility::_POST('CFG');
         if (isset($cfg['menuCode'])) {
 
             // Get template record:
@@ -1090,7 +1090,7 @@ lib.' . $menuType . '.1.ACT {
 ' . $TSrecord['config'];
 
                 // Execute changes:
-                $tce = CoreGeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
+                $tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
                 $tce->stripslashes_values = 0;
                 $tce->dontProcessTransformations = 1;
                 $tce->start($data, Array());
@@ -1140,19 +1140,19 @@ lib.' . $menuType . '.1.ACT {
     {
         $templatePaths = array();
         if (strlen($this->modTSconfig['properties']['templatePath'])) {
-            $paths = CoreGeneralUtility::trimExplode(',', $this->modTSconfig['properties']['templatePath'], true);
+            $paths = GeneralUtility::trimExplode(',', $this->modTSconfig['properties']['templatePath'], true);
         } else {
             $paths = array('templates');
         }
 
-        $prefix = CoreGeneralUtility::getFileAbsFileName($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir']);
+        $prefix = GeneralUtility::getFileAbsFileName($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir']);
 
         foreach (TemplaVoilaUtility::getBackendUser()->getFileStorages() AS $driver) {
             /** @var TYPO3\CMS\Core\Resource\ResourceStorage $driver */
             $driverpath = $driver->getConfiguration();
-            $driverpath = CoreGeneralUtility::getFileAbsFileName($driverpath['basePath']);
+            $driverpath = GeneralUtility::getFileAbsFileName($driverpath['basePath']);
             foreach ($paths as $path) {
-                if (CoreGeneralUtility::isFirstPartOfStr($prefix . $path, $driverpath) && is_dir($prefix . $path)) {
+                if (GeneralUtility::isFirstPartOfStr($prefix . $path, $driverpath) && is_dir($prefix . $path)) {
                     $templatePaths[] = ($relative ? $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'] : $prefix) . $path;
                 } else {
                     if (!$check) {
@@ -1175,7 +1175,7 @@ lib.' . $menuType . '.1.ACT {
         $paths = $this->getTemplatePaths();
         $files = array();
         foreach ($paths as $path) {
-            $files = array_merge(CoreGeneralUtility::getAllFilesAndFoldersInPath(array(), $path . ((substr($path, -1) != '/') ? '/' : ''), 'html,htm,tmpl', 0), $files);
+            $files = array_merge(GeneralUtility::getAllFilesAndFoldersInPath(array(), $path . ((substr($path, -1) != '/') ? '/' : ''), 'html,htm,tmpl', 0), $files);
         }
 
         return $files;
@@ -1245,7 +1245,7 @@ lib.' . $menuType . '.1.ACT {
             array_merge(
                 $params,
                 [
-                    'returnUrl' => CoreGeneralUtility::getIndpEnv('REQUEST_URI'),
+                    'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI'),
                 ]
             )
         );

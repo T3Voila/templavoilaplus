@@ -17,8 +17,8 @@ namespace Extension\Templavoila\Utility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
-use TYPO3\CMS\Core\Utility\GeneralUtility as CoreGeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility as PathUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Class which adds an additional layer for icon creation
@@ -33,7 +33,7 @@ final class IconUtility
      */
     static public function getFlagIconForLanguage($flagName, $options = array())
     {
-        $iconFactory = CoreGeneralUtility::makeInstance(IconFactory::class);
+        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         return '<span alt="' . htmlspecialchars($options['alt']) . '" title="' . htmlspecialchars($options['title']) . '">'
             . $iconFactory->getIcon('flags-' . ($flagName ? : 'unknown'), Icon::SIZE_SMALL)->render()
             . '</span>';
@@ -48,7 +48,7 @@ final class IconUtility
     {
         $identifier = 'flags-' . ($flagName ? : 'unknown');
 
-        $iconRegistry = CoreGeneralUtility::makeInstance(IconRegistry::class);
+        $iconRegistry = GeneralUtility::makeInstance(IconRegistry::class);
 
         if (!$iconRegistry->isRegistered($identifier)) {
             $identifier = $iconRegistry->getDefaultIconIdentifier();
@@ -58,7 +58,7 @@ final class IconUtility
 
         if (isset($iconConfiguration['options']['source'])) {
             return '/' . PathUtility::stripPathSitePrefix(
-                CoreGeneralUtility::getFileAbsFileName($iconConfiguration['options']['source'])
+                GeneralUtility::getFileAbsFileName($iconConfiguration['options']['source'])
             );
         }
 
