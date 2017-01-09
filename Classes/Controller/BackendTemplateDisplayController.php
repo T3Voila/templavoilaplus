@@ -18,7 +18,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility as CoreGeneralUtility;
 
-use Extension\Templavoila\Utility\GeneralUtility as TemplavoilaGeneralUtility;
+use Extension\Templavoila\Utility\TemplaVoilaUtility;
 
 
 $GLOBALS['LANG']->includeLLFile(
@@ -133,10 +133,10 @@ class BackendTemplateDisplayController extends \TYPO3\CMS\Backend\Module\BaseScr
                     $this->content = $this->displayFileContentWithMarkup($fileData, $path, $relPathFix, $limitTags, $show, $mode);
                 }
             } else {
-                $this->displayFrameError(TemplavoilaGeneralUtility::getLanguageService()->getLL('errorNoContentInFile') . ': <em>' . htmlspecialchars($displayFile) . '</em>');
+                $this->displayFrameError(TemplaVoilaUtility::getLanguageService()->getLL('errorNoContentInFile') . ': <em>' . htmlspecialchars($displayFile) . '</em>');
             }
         } else {
-            $this->displayFrameError(TemplavoilaGeneralUtility::getLanguageService()->getLL('errorNoFileToDisplay'));
+            $this->displayFrameError(TemplaVoilaUtility::getLanguageService()->getLL('errorNoFileToDisplay'));
         }
     }
 
@@ -207,7 +207,7 @@ class BackendTemplateDisplayController extends \TYPO3\CMS\Backend\Module\BaseScr
     public function displayFileContentWithPreview($content, $relPathFix)
     {
         // Getting session data to get currentMapping info:
-        $sesDat = TemplavoilaGeneralUtility::getBackendUser()->getSessionData($this->sessionKey);
+        $sesDat = TemplaVoilaUtility::getBackendUser()->getSessionData($this->sessionKey);
         $currentMappingInfo = is_array($sesDat['currentMappingInfo']) ? $sesDat['currentMappingInfo'] : array();
 
         // Init mark up object.

@@ -13,8 +13,11 @@ namespace Extension\Templavoila\Domain\Model;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+
+use Extension\Templavoila\Utility\TemplaVoilaUtility;
 
 /**
  * Class to provide unique access to datastructure
@@ -87,7 +90,7 @@ class DataStructure extends AbstractDataStructure
      */
     public function isPermittedForUser($parentRow = array(), $removeItems = array())
     {
-        if (\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isAdmin()) {
+        if (TemplaVoilaUtility::getBackendUser()->isAdmin()) {
             return true;
         } else {
             if (in_array($this->getKey(), $removeItems)) {
@@ -95,7 +98,7 @@ class DataStructure extends AbstractDataStructure
             }
         }
         $permission = true;
-        $denyItems = \Extension\Templavoila\Utility\GeneralUtility::getDenyListForUser();
+        $denyItems = TemplaVoilaUtility::getDenyListForUser();
 
         $currentSetting = $parentRow['tx_templavoila_ds'];
         if ($this->getScope() == static::SCOPE_PAGE) {

@@ -14,6 +14,8 @@ namespace Extension\Templavoila\Domain\Repository;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Extension\Templavoila\Utility\TemplaVoilaUtility;
+
 /**
  * Class to provide unique access to datastructure
  *
@@ -41,10 +43,10 @@ class TemplateRepository implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return array
 	 */
 	public function getTemplatesByDatastructure(\Extension\Templavoila\Domain\Model\AbstractDataStructure $ds, $storagePid = 0) {
-		$toList = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTgetRows(
+		$toList = TemplaVoilaUtility::getDatabaseConnection()->exec_SELECTgetRows(
 			'tx_templavoila_tmplobj.uid',
 			'tx_templavoila_tmplobj',
-			'tx_templavoila_tmplobj.datastructure=' . \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr($ds->getKey(), 'tx_templavoila_tmplobj')
+			'tx_templavoila_tmplobj.datastructure=' . TemplaVoilaUtility::getDatabaseConnection()->fullQuoteStr($ds->getKey(), 'tx_templavoila_tmplobj')
 			. ((int)$storagePid > 0 ? ' AND tx_templavoila_tmplobj.pid = ' . (int)$storagePid : '')
 			. \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoila_tmplobj')
 			. ' AND pid!=-1 '
@@ -88,10 +90,10 @@ class TemplateRepository implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return array
 	 */
 	public function getTemplatesByParentTemplate(\Extension\Templavoila\Domain\Model\Template $to, $storagePid = 0) {
-		$toList = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTgetRows(
+		$toList = TemplaVoilaUtility::getDatabaseConnection()->exec_SELECTgetRows(
 			'tx_templavoila_tmplobj.uid',
 			'tx_templavoila_tmplobj',
-			'tx_templavoila_tmplobj.parent=' . \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr($to->getKey(), 'tx_templavoila_tmplobj')
+			'tx_templavoila_tmplobj.parent=' . TemplaVoilaUtility::getDatabaseConnection()->fullQuoteStr($to->getKey(), 'tx_templavoila_tmplobj')
 			. ((int)$storagePid > 0 ? ' AND tx_templavoila_tmplobj.pid = ' . (int)$storagePid : ' AND pid!=-1')
 			. \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoila_tmplobj')
 			. \TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause('tx_templavoila_tmplobj')
@@ -113,7 +115,7 @@ class TemplateRepository implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return array
 	 */
 	public function getAll($storagePid = 0) {
-		$toList = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTgetRows(
+		$toList = TemplaVoilaUtility::getDatabaseConnection()->exec_SELECTgetRows(
 			'tx_templavoila_tmplobj.uid',
 			'tx_templavoila_tmplobj',
 			'1=1'
@@ -150,17 +152,17 @@ class TemplateRepository implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return array
 	 */
 	public function getTemplateStoragePids() {
-		$res = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTquery(
+		$res = TemplaVoilaUtility::getDatabaseConnection()->exec_SELECTquery(
 			'pid',
 			'tx_templavoila_tmplobj',
 			'pid>=0' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoila_tmplobj'),
 			'pid'
 		);
 		$list = array();
-		while ($res && FALSE !== ($row = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_fetch_assoc($res))) {
+		while ($res && FALSE !== ($row = TemplaVoilaUtility::getDatabaseConnection()->sql_fetch_assoc($res))) {
 			$list[] = $row['pid'];
 		}
-		\Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_free_result($res);
+		TemplaVoilaUtility::getDatabaseConnection()->sql_free_result($res);
 
 		return $list;
 	}
@@ -171,7 +173,7 @@ class TemplateRepository implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return integer
 	 */
 	public function getTemplateCountForPid($pid) {
-		$toCnt = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTgetRows(
+		$toCnt = TemplaVoilaUtility::getDatabaseConnection()->exec_SELECTgetRows(
 			'count(*) as cnt',
 			'tx_templavoila_tmplobj',
 			'pid=' . (int)$pid . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoila_tmplobj')

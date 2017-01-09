@@ -13,7 +13,10 @@ namespace Extension\Templavoila\Domain\Model;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+
+use Extension\Templavoila\Utility\TemplaVoilaUtility;
 
 /**
  * Class to provide unique access to datastructure
@@ -56,7 +59,7 @@ abstract class AbstractDataStructure {
 	 * @return string
 	 */
 	public function getLabel() {
-		return \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL($this->label);
+		return TemplaVoilaUtility::getLanguageService()->sL($this->label);
 	}
 
 	/**

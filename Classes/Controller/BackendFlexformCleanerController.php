@@ -20,6 +20,8 @@ use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Utility\GeneralUtility as CoreGeneralUtility;
 
+use Extension\Templavoila\Utility\TemplaVoilaUtility;
+
 $GLOBALS['LANG']->includeLLFile(
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('templavoila') . 'Resources/Private/Language/BackendFlexformCleaner.xlf'
 );
@@ -124,7 +126,7 @@ class BackendFlexformCleanerController extends \TYPO3\CMS\Backend\Module\BaseScr
 
             // Clean up XML:
             $cleanXML = '';
-            if (\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isAdmin()) {
+            if (TemplaVoilaUtility::getBackendUser()->isAdmin()) {
                 if ('tx_templavoila_flex' == $this->viewTable['field_flex']) {
                     $flexObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class);
                     if ($record['tx_templavoila_flex']) {
@@ -156,7 +158,7 @@ class BackendFlexformCleanerController extends \TYPO3\CMS\Backend\Module\BaseScr
 
                 $flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
                     \TYPO3\CMS\Core\Messaging\FlashMessage::class,
-                    \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('needsCleaning', TRUE),
+                    TemplaVoilaUtility::getLanguageService()->getLL('needsCleaning', TRUE),
                     '',
                     \TYPO3\CMS\Core\Messaging\FlashMessage::INFO
                 );
@@ -164,26 +166,26 @@ class BackendFlexformCleanerController extends \TYPO3\CMS\Backend\Module\BaseScr
 
                 $xmlContentMarkedUp .= '<table border="0">
                     <tr class="bgColor5 tableheader">
-                        <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('current', TRUE) . '</td>
+                        <td>' . TemplaVoilaUtility::getLanguageService()->getLL('current', TRUE) . '</td>
                     </tr>
                     <tr>
                         <td>' . $this->markUpXML($currentXML) . '<br/><br/></td>
                     </tr>
                     <tr class="bgColor5 tableheader">
-                        <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('clean', TRUE) . '</td>
+                        <td>' . TemplaVoilaUtility::getLanguageService()->getLL('clean', TRUE) . '</td>
                     </tr>
                     <tr>
                         <td>' . $this->markUpXML($cleanXML) . '</td>
                     </tr>
                     <tr class="bgColor5 tableheader">
-                        <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('diff', TRUE) . '</td>
+                        <td>' . TemplaVoilaUtility::getLanguageService()->getLL('diff', TRUE) . '</td>
                     </tr>
                     <tr>
                         <td>' . $diffres . '
                         <br/><br/><br/>
 
                         <form action="' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI') . '" method="post">
-                            <input type="submit" value="' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('cleanUp', TRUE) . '" name="_CLEAN_XML" />
+                            <input type="submit" value="' . TemplaVoilaUtility::getLanguageService()->getLL('cleanUp', TRUE) . '" name="_CLEAN_XML" />
                         </form>
 
                         </td>
@@ -196,7 +198,7 @@ class BackendFlexformCleanerController extends \TYPO3\CMS\Backend\Module\BaseScr
                 if ($cleanXML) {
                     $flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
                         \TYPO3\CMS\Core\Messaging\FlashMessage::class,
-                        \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('XMLclean', TRUE),
+                        TemplaVoilaUtility::getLanguageService()->getLL('XMLclean', TRUE),
                         '',
                         \TYPO3\CMS\Core\Messaging\FlashMessage::OK
                     );
@@ -208,7 +210,7 @@ class BackendFlexformCleanerController extends \TYPO3\CMS\Backend\Module\BaseScr
             $this->content .= $xmlContentMarkedUp;
         }
 
-        $title = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('title');
+        $title = TemplaVoilaUtility::getLanguageService()->getLL('title');
         $header = $this->moduleTemplate->header($title);
         $this->moduleTemplate->setTitle($title);
 

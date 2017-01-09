@@ -3,6 +3,8 @@ namespace Extension\Templavoila\Hooks;
 
 use TYPO3\CMS\Backend\Wizard\NewContentElementWizardHookInterface;
 
+use Extension\Templavoila\Utility\TemplaVoilaUtility;
+
 class WizardItems implements NewContentElementWizardHookInterface
 {
     /**
@@ -33,7 +35,7 @@ class WizardItems implements NewContentElementWizardHookInterface
                 $tmpFilename = $toObj->getIcon();
                 $addingItems['fce_' . $toObj->getKey()] = [
                     'icon' => (@is_file(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(substr($tmpFilename, 3)))) ? $tmpFilename : (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('templavoila') . 'Resources/Public/Image/default_previewicon.gif'),
-                    'description' => $toObj->getDescription() ? $this->getLanguageService()->sL($toObj->getDescription()) : \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('template_nodescriptionavailable'),
+                    'description' => $toObj->getDescription() ? $this->getLanguageService()->sL($toObj->getDescription()) : TemplaVoilaUtility::getLanguageService()->getLL('template_nodescriptionavailable'),
                     'title' => $toObj->getLabel(),
                     'params' => $this->getDsDefaultValues($toObj)
                 ];

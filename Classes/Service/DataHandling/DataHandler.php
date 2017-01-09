@@ -16,6 +16,8 @@ namespace Extension\Templavoila\Service\DataHandling;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
+use Extension\Templavoila\Utility\TemplaVoilaUtility;
+
 /**
  * Class being included by TCEmain using a hook
  *
@@ -240,7 +242,7 @@ page.10.disableExplosivePreview = 1
 								$parentRecord = BackendUtility::getRecordWSOL($destinationFlexformPointer['table'], $destinationFlexformPointer['uid'], 'uid,pid,tx_templavoila_flex');
 								$currentReferencesArr = $templaVoilaAPI->flexform_getElementReferencesFromXML($parentRecord['tx_templavoila_flex'], $destinationFlexformPointer);
 								if (count($currentReferencesArr)) {
-									$rows = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTgetRows('uid,' . $sorting_field, $table, 'uid IN (' . implode(',', $currentReferencesArr) . ')' . BackendUtility::deleteClause($table));
+									$rows = TemplaVoilaUtility::getDatabaseConnection()->exec_SELECTgetRows('uid,' . $sorting_field, $table, 'uid IN (' . implode(',', $currentReferencesArr) . ')' . BackendUtility::deleteClause($table));
 									$sort = array($reference->substNEWwithIDs[$id] => -$sorting);
 									foreach ($rows as $row) {
 										$sort[$row['uid']] = $row[$sorting_field];
@@ -263,7 +265,7 @@ page.10.disableExplosivePreview = 1
 				'table' => $table,
 				'uid' => $id
 			);
-			$references = \Extension\Templavoila\Utility\GeneralUtility::getElementForeignReferences($element, $fieldArray['pid']);
+			$references = TemplaVoilaUtility::getElementForeignReferences($element, $fieldArray['pid']);
 			if (is_array($references) && is_array($references['pages'])) {
 				foreach ($references['pages'] as $pageUid => $__) {
 					$reference->clear_cacheCmd($pageUid);

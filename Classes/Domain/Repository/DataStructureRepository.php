@@ -13,8 +13,11 @@ namespace Extension\Templavoila\Domain\Repository;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+
+use Extension\Templavoila\Utility\TemplaVoilaUtility;
 
 /**
  * Class to provide unique access to datastructure
@@ -80,7 +83,7 @@ class DataStructureRepository implements \TYPO3\CMS\Core\SingletonInterface
         }
 
         if (!self::isStaticDsEnabled()) {
-            $dsRows = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTgetRows(
+            $dsRows = TemplaVoilaUtility::getDatabaseConnection()->exec_SELECTgetRows(
                 'uid',
                 'tx_templavoila_datastructure',
                 'pid=' . (int)$pid
@@ -122,7 +125,7 @@ class DataStructureRepository implements \TYPO3\CMS\Core\SingletonInterface
         }
 
         if (!self::isStaticDsEnabled()) {
-            $dsRows = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTgetRows(
+            $dsRows = TemplaVoilaUtility::getDatabaseConnection()->exec_SELECTgetRows(
                 'uid',
                 'tx_templavoila_datastructure',
                 'scope=' . (int)$scope . ' AND pid=' . (int)$pid
@@ -160,7 +163,7 @@ class DataStructureRepository implements \TYPO3\CMS\Core\SingletonInterface
         }
 
         if (!self::isStaticDsEnabled()) {
-            $dsRows = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTgetRows(
+            $dsRows = TemplaVoilaUtility::getDatabaseConnection()->exec_SELECTgetRows(
                 'uid',
                 'tx_templavoila_datastructure',
                 'scope=' . (int)$scope
@@ -194,7 +197,7 @@ class DataStructureRepository implements \TYPO3\CMS\Core\SingletonInterface
         }
 
         if (!self::isStaticDsEnabled()) {
-            $dsRows = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTgetRows(
+            $dsRows = TemplaVoilaUtility::getDatabaseConnection()->exec_SELECTgetRows(
                 'uid',
                 'tx_templavoila_datastructure',
                 '1=1'
@@ -299,7 +302,7 @@ class DataStructureRepository implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function getDatastructureCountForPid($pid)
     {
-        $dsCnt = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTgetRows(
+        $dsCnt = TemplaVoilaUtility::getDatabaseConnection()->exec_SELECTgetRows(
             'DISTINCT datastructure',
             'tx_templavoila_tmplobj',
             'pid=' . (int)$pid . BackendUtility::deleteClause('tx_templavoila_tmplobj'),

@@ -13,7 +13,10 @@ namespace Extension\Templavoila\Controller\Preview;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+
+use Extension\Templavoila\Utility\TemplaVoilaUtility;
 
 /**
  * Media controller
@@ -66,6 +69,6 @@ class MediaController {
 	 * @return string
 	 */
 	protected function getPreviewLabel() {
-		return \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL(\TYPO3\CMS\Backend\Utility\BackendUtility::getLabelFromItemlist('tt_content', 'CType', $this->previewField));
+		return TemplaVoilaUtility::getLanguageService()->sL(\TYPO3\CMS\Backend\Utility\BackendUtility::getLabelFromItemlist('tt_content', 'CType', $this->previewField));
 	}
 }

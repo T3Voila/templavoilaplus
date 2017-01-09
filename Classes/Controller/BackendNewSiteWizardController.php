@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility as CoreGeneralUtility;
 
-use Extension\Templavoila\Utility\GeneralUtility as TemplavoilaGeneralUtility;
+use Extension\Templavoila\Utility\TemplaVoilaUtility;
 
 $GLOBALS['LANG']->includeLLFile(
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('templavoila') . 'Resources/Private/Language/BackendNewSiteWizard.xlf'
@@ -199,14 +199,14 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
         } else {
             $flashMessage = CoreGeneralUtility::makeInstance(
                 \TYPO3\CMS\Core\Messaging\FlashMessage::class,
-                \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('noaccess'),
+                TemplaVoilaUtility::getLanguageService()->getLL('noaccess'),
                 '',
                 \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR
             );
             $this->content = $flashMessage->render();
         }
 
-        $this->moduleTemplate->setTitle(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('title'));
+        $this->moduleTemplate->setTitle(TemplaVoilaUtility::getLanguageService()->getLL('title'));
         $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($pageInfoArr);
         $this->setDocHeaderButtons(!isset($pageInfoArr['uid']));
 
@@ -226,7 +226,7 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
         if ($this->MOD_SETTINGS['wiz_step']) {
             $this->addDocHeaderButton(
                 $this->moduleName,
-                TemplavoilaGeneralUtility::getLanguageService()->getLL('newsitewizard_cancel', true),
+                TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_cancel', true),
                 'actions-close',
                 [
                     'SET' => [
@@ -318,13 +318,13 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
 
             if (is_array($this->errorsWarnings[$scope]['warning'])) {
                 $errStat['count'] = count($this->errorsWarnings[$scope]['warning']);
-                $errStat['content'] = '<h3>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('warnings', true) . '</h3>' . implode('<hr/>', $this->errorsWarnings[$scope]['warning']);
+                $errStat['content'] = '<h3>' . TemplaVoilaUtility::getLanguageService()->getLL('warnings', true) . '</h3>' . implode('<hr/>', $this->errorsWarnings[$scope]['warning']);
                 $errStat['iconCode'] = 2;
             }
 
             if (is_array($this->errorsWarnings[$scope]['fatal'])) {
                 $errStat['count'] = count($this->errorsWarnings[$scope]['fatal']) . ($errStat['count'] ? '/' . $errStat['count'] : '');
-                $errStat['content'] .= '<h3>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('fatalerrors', true) . '</h3>' . implode('<hr/>', $this->errorsWarnings[$scope]['fatal']);
+                $errStat['content'] .= '<h3>' . TemplaVoilaUtility::getLanguageService()->getLL('fatalerrors', true) . '</h3>' . implode('<hr/>', $this->errorsWarnings[$scope]['fatal']);
                 $errStat['iconCode'] = 3;
             }
         }
@@ -346,9 +346,9 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
      */
     public function renderNewSiteWizard_overview()
     {
-        if (\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isAdmin()) {
+        if (TemplaVoilaUtility::getBackendUser()->isAdmin()) {
             // Introduction:
-            $outputString = nl2br(sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_intro', true), implode('", "', $this->getTemplatePaths(true, false))));
+            $outputString = nl2br(sprintf(TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_intro', true), implode('", "', $this->getTemplatePaths(true, false))));
 
             // Checks:
             $missingExt = $this->wizard_checkMissingExtensions();
@@ -360,30 +360,30 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
                         'document.location=\'' . $this->getBaseUrl(['SET' => ['wiz_step' => 1]]) . '\'; return false;',
                         '',
                         'content-special-html',
-                        \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_startnow', true)
+                        TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_startnow', true)
                     );
             } else {
-                $outputString .= '<br/><br/>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_problem');
+                $outputString .= '<br/><br/>' . TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_problem');
             }
-    
+
             // Add output:
-            $this->content .= $this->moduleTemplate->section(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('wiz_title'), $outputString, 0, 1);
+            $this->content .= $this->moduleTemplate->section(TemplaVoilaUtility::getLanguageService()->getLL('wiz_title'), $outputString, 0, 1);
 
             // Missing extension warning:
             if ($missingExt) {
-                $msg = CoreGeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $missingExt, \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_missingext'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+                $msg = CoreGeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $missingExt, TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_missingext'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
                 $this->content .= $msg->render();
             }
 
             // Missing configuration warning:
             if ($missingConf) {
-                $msg = CoreGeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_missingconf_description'), \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_missingconf'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+                $msg = CoreGeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_missingconf_description'), TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_missingconf'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
                 $this->content .= $msg->render();
             }
 
             // Missing directory warning:
             if ($missingDir) {
-                $this->content .= $this->moduleTemplate->section(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_missingdir'), $missingDir, 0, 1, 3);
+                $this->content .= $this->moduleTemplate->section(TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_missingdir'), $missingDir, 0, 1, 3);
             }
         }
     }
@@ -397,9 +397,9 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
     public function renderNewSiteWizard_run()
     {
         // Getting session data:
-        $this->wizardData = \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->getSessionData('tx_templavoila_wizard');
+        $this->wizardData = TemplaVoilaUtility::getBackendUser()->getSessionData('tx_templavoila_wizard');
 
-        if (\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isAdmin()) {
+        if (TemplaVoilaUtility::getBackendUser()->isAdmin()) {
             switch ($this->MOD_SETTINGS['wiz_step']) {
                 case 1:
                     $this->wizard_step1();
@@ -429,7 +429,7 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
         }
 
         // Save session data:
-        \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->setAndSaveSessionData('tx_templavoila_wizard', $this->wizardData);
+        TemplaVoilaUtility::getBackendUser()->setAndSaveSessionData('tx_templavoila_wizard', $this->wizardData);
     }
 
     /**
@@ -440,7 +440,7 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
     public function wizard_checkMissingExtensions()
     {
 
-        $outputString = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_missingext_description', true);
+        $outputString = TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_missingext_description', true);
 
         // Create extension status:
         $checkExtensions = explode(',', 'css_styled_content,impexp');
@@ -448,14 +448,14 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
 
         $tRows = array();
         $tRows[] = '<tr class="tableheader bgColor5">
-            <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_missingext_extkey', true) . '</td>
-            <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_missingext_installed', true) . '</td>
+            <td>' . TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_missingext_extkey', true) . '</td>
+            <td>' . TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_missingext_installed', true) . '</td>
         </tr>';
 
         foreach ($checkExtensions as $extKey) {
             $tRows[] = '<tr class="bgColor4">
                 <td>' . $extKey . '</td>
-                <td align="center">' . (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extKey) ? \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_missingext_yes', true) : '<span class="typo3-red">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_missingext_no', true) . '</span>') . '</td>
+                <td align="center">' . (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extKey) ? TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_missingext_yes', true) : '<span class="typo3-red">' . TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_missingext_no', true) . '</span>') . '</td>
             </tr>';
 
             if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extKey))
@@ -489,7 +489,7 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
     {
         $paths = $this->getTemplatePaths(true);
         if (empty($paths)) {
-            return nl2br(sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_missingdir_instruction'), implode(' or ', $this->getTemplatePaths(true, false)), $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir']));
+            return nl2br(sprintf(TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_missingdir_instruction'), implode(' or ', $this->getTemplatePaths(true, false)), $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir']));
         }
 
         return false;
@@ -508,7 +508,7 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
 
             $this->wizardData = array();
             $pathArr = CoreGeneralUtility::removePrefixPathFromList($paths, PATH_site);
-            $outputString = sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_firststep'), implode('", "', $pathArr)) . '<br/>';
+            $outputString = sprintf(TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_firststep'), implode('", "', $pathArr)) . '<br/>';
 
             // Get all HTML files:
             $fileArr = CoreGeneralUtility::removePrefixPathFromList($files, PATH_site);
@@ -516,19 +516,19 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
             // Prepare header:
             $tRows = array();
             $tRows[] = '<tr class="tableheader bgColor5">
-                <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('toused_path', true) . ':</td>
-                <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('usage', true) . ':</td>
-                <td>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('action', true) . ':</td>
+                <td>' . TemplaVoilaUtility::getLanguageService()->getLL('toused_path', true) . ':</td>
+                <td>' . TemplaVoilaUtility::getLanguageService()->getLL('usage', true) . ':</td>
+                <td>' . TemplaVoilaUtility::getLanguageService()->getLL('action', true) . ':</td>
             </tr>';
 
             // Traverse available template files:
             foreach ($fileArr as $file) {
 
                 // Has been used:
-                $tosForTemplate = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTgetRows(
+                $tosForTemplate = TemplaVoilaUtility::getDatabaseConnection()->exec_SELECTgetRows(
                     'uid',
                     'tx_templavoila_tmplobj',
-                    'fileref=' . \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr($file, 'tx_templavoila_tmplobj') .
+                    'fileref=' . TemplaVoilaUtility::getDatabaseConnection()->fullQuoteStr($file, 'tx_templavoila_tmplobj') .
                     BackendUtility::deleteClause('tx_templavoila_tmplobj')
                 );
 
@@ -538,10 +538,10 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
                 // Make row:
                 $tRows[] = '<tr class="bgColor4">
                     <td>' . htmlspecialchars($file) . '</td>
-                    <td>' . (count($tosForTemplate) ? sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_usedtimes', true), count($tosForTemplate)) : \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_notused', true)) . '</td>
+                    <td>' . (count($tosForTemplate) ? sprintf(TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_usedtimes', true), count($tosForTemplate)) : TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_notused', true)) . '</td>
                     <td>' .
-                    '<a href="#" onclick="' . htmlspecialchars($onClick) . '">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_preview', true) . '</a> ' .
-                    '<a href="' . htmlspecialchars('index.php?SET[wiz_step]=2&CFG[file]=' . rawurlencode($file)) . '">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_choose', true) . '</a> ' .
+                    '<a href="#" onclick="' . htmlspecialchars($onClick) . '">' . TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_preview', true) . '</a> ' .
+                    '<a href="' . htmlspecialchars('index.php?SET[wiz_step]=2&CFG[file]=' . rawurlencode($file)) . '">' . TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_choose', true) . '</a> ' .
                     '</td>
             </tr>';
             }
@@ -550,7 +550,7 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
             // Refresh button:
             $this->addDocHeaderButton(
                 $this->moduleName,
-                TemplavoilaGeneralUtility::getLanguageService()->getLL('refresh', true),
+                TemplaVoilaUtility::getLanguageService()->getLL('refresh', true),
                 'actions-system-refresh',
                 [
                     'SET' => [
@@ -562,9 +562,9 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
             );
 
             // Add output:
-            $this->content .= $this->moduleTemplate->section(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_selecttemplate', true), $outputString, 0, 1);
+            $this->content .= $this->moduleTemplate->section(TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_selecttemplate', true), $outputString, 0, 1);
         } else {
-            $this->content .= $this->moduleTemplate->section('TemplaVoila wizard error', \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_errornodir', true), 0, 1);
+            $this->content .= $this->moduleTemplate->section('TemplaVoila wizard error', TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_errornodir', true), 0, 1);
         }
     }
 
@@ -583,39 +583,39 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
 
         // Show selected template file:
         if ($this->wizardData['file']) {
-            $outputString = htmlspecialchars(sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_templateselected'), $this->wizardData['file']));
+            $outputString = htmlspecialchars(sprintf(TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_templateselected'), $this->wizardData['file']));
             $outputString .= '<br/><iframe src="' . htmlspecialchars($this->doc->backPath . '../' . $this->wizardData['file']) . '" width="640" height="300"></iframe>';
 
             // Enter default data:
             $outputString .= '
                 <br/><br/><br/>
-                ' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_step2next', true) . '
+                ' . TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_step2next', true) . '
                 <br/>
     <br/>
-                <b>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_step2_name', true) . ':</b><br/>
-                ' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_step2_required', true) . '<br/>
-                ' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_step2_valuename', true) . '<br/>
+                <b>' . TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_step2_name', true) . ':</b><br/>
+                ' . TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_step2_required', true) . '<br/>
+                ' . TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_step2_valuename', true) . '<br/>
                 <input type="text" name="CFG[sitetitle]" value="' . htmlspecialchars($this->wizardData['sitetitle']) . '" /><br/>
     <br/>
-                <b>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_step2_url', true) . ':</b><br/>
-                ' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_step2_optional', true) . '<br/>
-                ' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_step2_valueurl', true) . '<br/>
+                <b>' . TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_step2_url', true) . ':</b><br/>
+                ' . TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_step2_optional', true) . '<br/>
+                ' . TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_step2_valueurl', true) . '<br/>
                 <input type="text" name="CFG[siteurl]" value="' . htmlspecialchars($this->wizardData['siteurl']) . '" /><br/>
     <br/>
-                <b>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_step2_editor', true) . ':</b><br/>
-                ' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_step2_required', true) . '<br/>
-                ' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_step2_username', true) . '<br/>
+                <b>' . TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_step2_editor', true) . ':</b><br/>
+                ' . TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_step2_required', true) . '<br/>
+                ' . TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_step2_username', true) . '<br/>
                 <input type="text" name="CFG[username]" value="' . htmlspecialchars($this->wizardData['username']) . '" /><br/>
     <br/>
                 <input type="hidden" name="SET[wiz_step]" value="3" />
-                <input type="submit" name="_create_site" value="' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_step2_createnewsite', true) . '" />
+                <input type="submit" name="_create_site" value="' . TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_step2_createnewsite', true) . '" />
             ';
         } else {
-            $outputString = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_step2_notemplatefound', true);
+            $outputString = TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_step2_notemplatefound', true);
         }
 
         // Add output:
-        $this->content .= $this->moduleTemplate->section(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_step2', true), $outputString, 0, 1);
+        $this->content .= $this->moduleTemplate->section(TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_step2', true), $outputString, 0, 1);
     }
 
     /**
@@ -658,7 +658,7 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
                     // Update various fields (the index values, eg. the "1" in "$import->import_mapId['pages'][1]]..." are the UIDs of the original records from the import file!)
                     $data = array();
                     $data['pages'][BackendUtility::wsMapId('pages', $import->import_mapId['pages'][1])]['title'] = $this->wizardData['sitetitle'];
-                    $data['sys_template'][BackendUtility::wsMapId('sys_template', $import->import_mapId['sys_template'][1])]['title'] = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_maintemplate', true) . ' ' . $this->wizardData['sitetitle'];
+                    $data['sys_template'][BackendUtility::wsMapId('sys_template', $import->import_mapId['sys_template'][1])]['title'] = TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_maintemplate', true) . ' ' . $this->wizardData['sitetitle'];
                     $data['sys_template'][BackendUtility::wsMapId('sys_template', $import->import_mapId['sys_template'][1])]['sitetitle'] = $this->wizardData['sitetitle'];
                     $data['tx_templavoila_tmplobj'][BackendUtility::wsMapId('tx_templavoila_tmplobj', $import->import_mapId['tx_templavoila_tmplobj'][1])]['fileref'] = $this->wizardData['file'];
                     $data['tx_templavoila_tmplobj'][BackendUtility::wsMapId('tx_templavoila_tmplobj', $import->import_mapId['tx_templavoila_tmplobj'][1])]['templatemapping'] = serialize(
@@ -707,10 +707,10 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
 
                     BackendUtility::setUpdateSignal('updatePageTree');
 
-                    $outputString .= \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_maintemplate', true) . '<hr/>';
+                    $outputString .= TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_maintemplate', true) . '<hr/>';
                 }
             } else {
-                $outputString .= \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_maintemplate', true);
+                $outputString .= TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_maintemplate', true);
             }
         }
 
@@ -718,17 +718,17 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
         if ($this->wizardData['templateObjectId']) {
             $url = '../cm1/index.php?table=tx_templavoila_tmplobj&uid=' . $this->wizardData['templateObjectId'] . '&SET[selectHeaderContent]=0&_reload_from=1&id=' . $this->id . '&returnUrl=' . rawurlencode('../mod2/index.php?SET[wiz_step]=4');
 
-            $outputString .= \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_step3ready') . '
+            $outputString .= TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_step3ready') . '
                 <br/>
                 <br/>
                 <img src="Resources/Public/Image/mapbody_animation.gif" style="border: 2px black solid;" alt=""><br/>
                 <br/>
-                <br/><input type="submit" value="' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_startmapping', true) . '" onclick="' . htmlspecialchars('document.location=\'' . $url . '\'; return false;') . '" />
+                <br/><input type="submit" value="' . TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_startmapping', true) . '" onclick="' . htmlspecialchars('document.location=\'' . $url . '\'; return false;') . '" />
             ';
         }
 
         // Add output:
-        $this->content .= $this->moduleTemplate->section(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_beginmapping', true), $outputString, 0, 1);
+        $this->content .= $this->moduleTemplate->section(TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_beginmapping', true), $outputString, 0, 1);
     }
 
     /**
@@ -739,15 +739,15 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
     public function wizard_step4()
     {
         $url = '../cm1/index.php?table=tx_templavoila_tmplobj&uid=' . $this->wizardData['templateObjectId'] . '&SET[selectHeaderContent]=1&_reload_from=1&id=' . $this->id . '&returnUrl=' . rawurlencode('../mod2/index.php?SET[wiz_step]=5');
-        $outputString = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_headerinclude') . '
+        $outputString = TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_headerinclude') . '
             <br/>
             <img src="Resources/Public/Image/maphead_animation.gif" style="border: 2px black solid;" alt=""><br/>
             <br/>
-            <br/><input type="submit" value="' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_headerselect') . '" onclick="' . htmlspecialchars('document.location=\'' . $url . '\'; return false;') . '" />
+            <br/><input type="submit" value="' . TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_headerselect') . '" onclick="' . htmlspecialchars('document.location=\'' . $url . '\'; return false;') . '" />
             ';
 
         // Add output:
-        $this->content .= $this->moduleTemplate->section(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_step4'), $outputString, 0, 1);
+        $this->content .= $this->moduleTemplate->section(TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_step4'), $outputString, 0, 1);
     }
 
     /**
@@ -771,7 +771,7 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
         if (strlen($menuPart)) {
 
             // Main message:
-            $outputString = sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_basicsshouldwork', true), $menuTypeText, $menuType, $menuTypeText);
+            $outputString = sprintf(TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_basicsshouldwork', true), $menuTypeText, $menuType, $menuTypeText);
 
             // Start up HTML parser:
             $htmlParser = CoreGeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class);
@@ -936,47 +936,47 @@ lib.' . $menuType . '.1.ACT {
             $outputString .= '
             <br/>
             <br/>
-            ' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_menuhtmlcode', true) . '
+            ' . TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_menuhtmlcode', true) . '
             <hr/>
             <pre>' . htmlspecialchars($menuPart_HTML) . '</pre>
             <hr/>
             <br/>';
 
             if (trim($menu_normal['wrap']) != '|') {
-                $outputString .= sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_menuenc', true), htmlspecialchars(str_replace('|', ' ... ', $menu_normal['wrap'])));
+                $outputString .= sprintf(TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_menuenc', true), htmlspecialchars(str_replace('|', ' ... ', $menu_normal['wrap'])));
             } else {
-                $outputString .= \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_menunoa', true);
+                $outputString .= TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_menunoa', true);
             }
             if (count($totalWrap)) {
-                $outputString .= sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_menuwrap', true), htmlspecialchars(str_replace('|', ' ... ', implode('|', $totalWrap))));
+                $outputString .= sprintf(TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_menuwrap', true), htmlspecialchars(str_replace('|', ' ... ', implode('|', $totalWrap))));
             }
             if ($menu_normal['bulletwrap']) {
-                $outputString .= sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_menudiv', true), htmlspecialchars($menu_normal['bulletwrap']));
+                $outputString .= sprintf(TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_menudiv', true), htmlspecialchars($menu_normal['bulletwrap']));
             }
             if ($GMENU) {
-                $outputString .= \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_menuimg', true);
+                $outputString .= TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_menuimg', true);
             }
             if ($mouseOver) {
-                $outputString .= \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_menumouseover', true);
+                $outputString .= TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_menumouseover', true);
             }
 
             $outputString .= '<br/><br/>';
-            $outputString .= \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_menuts', true) . '
+            $outputString .= TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_menuts', true) . '
             <br/><br/>';
             $outputString .= '<hr/>' . $this->syntaxHLTypoScript($typoScript) . '<hr/><br/>';
 
-            $outputString .= \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_menufinetune', true);
+            $outputString .= TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_menufinetune', true);
             $outputString .= '<textarea name="CFG[menuCode]"' . $GLOBALS['TBE_TEMPLATE']->formWidthText() . ' rows="10">' . CoreGeneralUtility::formatForTextarea($typoScript) . '</textarea><br/><br/>';
             $outputString .= '<input type="hidden" name="SET[wiz_step]" value="' . $menuTypeNextStep . '" />';
-            $outputString .= '<input type="submit" name="_" value="' . sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_menuwritets', true), $menuTypeText) . '" />';
+            $outputString .= '<input type="submit" name="_" value="' . sprintf(TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_menuwritets', true), $menuTypeText) . '" />';
         } else {
-            $outputString = sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_menufinished', true), $menuTypeText) . '<br />';
+            $outputString = sprintf(TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_menufinished', true), $menuTypeText) . '<br />';
             $outputString .= '<input type="hidden" name="SET[wiz_step]" value="' . $menuTypeNextStep . '" />';
-            $outputString .= '<input type="submit" name="_" value="' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_menunext', true) . '" />';
+            $outputString .= '<input type="submit" name="_" value="' . TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_menunext', true) . '" />';
         }
 
         // Add output:
-        $this->content .= $this->moduleTemplate->section(sprintf(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_step5', true), $menuTypeLetter), $outputString, 0, 1);
+        $this->content .= $this->moduleTemplate->section(sprintf(TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_step5', true), $menuTypeLetter), $outputString, 0, 1);
     }
 
     /**
@@ -988,15 +988,15 @@ lib.' . $menuType . '.1.ACT {
     {
         $this->saveMenuCode();
 
-        $outputString = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_sitecreated') . '
+        $outputString = TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_sitecreated') . '
 
         <br/>
         <br/>
-        <input type="submit" value="' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_finish', true) . '" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($this->wizardData['rootPageId'], $this->doc->backPath) . 'document.location=\'index.php?SET[wiz_step]=0\'; return false;') . '" />
+        <input type="submit" value="' . TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_finish', true) . '" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($this->wizardData['rootPageId'], $this->doc->backPath) . 'document.location=\'index.php?SET[wiz_step]=0\'; return false;') . '" />
         ';
 
         // Add output:
-        $this->content .= $this->moduleTemplate->section(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('newsitewizard_done', true), $outputString, 0, 1);
+        $this->content .= $this->moduleTemplate->section(TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_done', true), $outputString, 0, 1);
     }
 
     /**
@@ -1147,7 +1147,7 @@ lib.' . $menuType . '.1.ACT {
 
         $prefix = CoreGeneralUtility::getFileAbsFileName($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir']);
 
-        foreach (\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->getFileStorages() AS $driver) {
+        foreach (TemplaVoilaUtility::getBackendUser()->getFileStorages() AS $driver) {
             /** @var TYPO3\CMS\Core\Resource\ResourceStorage $driver */
             $driverpath = $driver->getConfiguration();
             $driverpath = CoreGeneralUtility::getFileAbsFileName($driverpath['basePath']);

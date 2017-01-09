@@ -19,6 +19,8 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility as CoreGeneralUtility;
 
+use Extension\Templavoila\Utility\TemplaVoilaUtility;
+
 /**
  * Submodule 'clipboard' for the templavoila page module
  *
@@ -89,7 +91,7 @@ class Clipboard implements SingletonInterface
         $this->t3libClipboardObj->endClipboard(); // Save the clipboard content
 
         // Add a list of non-used elements to the sidebar:
-        $this->pObj->sideBarObj->addItem('nonUsedElements', $this, 'sidebar_renderNonUsedElements', \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('nonusedelements'), 30);
+        $this->pObj->sideBarObj->addItem('nonUsedElements', $this, 'sidebar_renderNonUsedElements', TemplaVoilaUtility::getLanguageService()->getLL('nonusedelements'), 30);
     }
 
     /**
@@ -140,7 +142,7 @@ class Clipboard implements SingletonInterface
             if (!in_array($button, $this->pObj->blindIcons)) {
                 switch ($button) {
                     case 'copy':
-                        $title = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('copyrecord');
+                        $title = TemplaVoilaUtility::getLanguageService()->getLL('copyrecord');
                         $icon = 'actions-edit-copy';
                         $copyMode = 1;
                         $clipBoardElement = [
@@ -148,7 +150,7 @@ class Clipboard implements SingletonInterface
                         ];
                         break;
                     case 'cut':
-                        $title = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('cutrecord');
+                        $title = TemplaVoilaUtility::getLanguageService()->getLL('cutrecord');
                         $icon = 'actions-edit-cut';
                         $copyMode = 0;
                         $clipBoardElement = [
@@ -156,7 +158,7 @@ class Clipboard implements SingletonInterface
                         ];
                         break;
                     case 'ref':
-                        $title = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('createreference');
+                        $title = TemplaVoilaUtility::getLanguageService()->getLL('createreference');
                         $icon = 'extensions-templavoila-clip_ref';
                         $copyMode = 1;
                         $clipBoardElement = [
@@ -263,7 +265,7 @@ class Clipboard implements SingletonInterface
         if (!in_array('pasteAfter', $this->pObj->blindIcons)) {
             $output .= $this->pObj->buildButton(
                 'web_txtemplavoilaM1',
-                \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('pasterecord'),
+                TemplaVoilaUtility::getLanguageService()->getLL('pasterecord'),
                 'extensions-templavoila-paste',
                 $this->pObj->getLinkParameters(
                     [
@@ -281,7 +283,7 @@ class Clipboard implements SingletonInterface
         if ($pasteMode == 'copy' && $clipboardElementHasSubElements && !in_array('pasteSubRef', $this->pObj->blindIcons)) {
             $output .= $this->pObj->buildButton(
                 'web_txtemplavoilaM1',
-                \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('pastefce_andreferencesubs'),
+                TemplaVoilaUtility::getLanguageService()->getLL('pastefce_andreferencesubs'),
                 'extensions-templavoila-pasteSubRef',
                 $this->pObj->getLinkParameters(
                     [
@@ -313,12 +315,12 @@ class Clipboard implements SingletonInterface
         $usedUids[] = 0;
         $pid = $this->pObj->id; // If workspaces should evaluated non-used elements it must consider the id: For "element" and "branch" versions it should accept the incoming id, for "page" type versions it must be remapped (because content elements are then related to the id of the offline version)
 
-        $res = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTquery(
+        $res = TemplaVoilaUtility::getDatabaseConnection()->exec_SELECTquery(
             BackendUtility::getCommonSelectFields('tt_content', '', array('uid', 'header', 'bodytext', 'sys_language_uid')),
             'tt_content',
             'pid=' . (int)$pid . ' ' .
             'AND uid NOT IN (' . implode(',', $usedUids) . ') ' .
-            'AND ( t3ver_state NOT IN (1,3) OR (t3ver_wsid > 0 AND t3ver_wsid = ' . (int)\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->workspace . ') )' .
+            'AND ( t3ver_state NOT IN (1,3) OR (t3ver_wsid > 0 AND t3ver_wsid = ' . (int)TemplaVoilaUtility::getBackendUser()->workspace . ') )' .
             BackendUtility::deleteClause('tt_content') .
             BackendUtility::versioningPlaceholderClause('tt_content'),
             '',
@@ -326,7 +328,7 @@ class Clipboard implements SingletonInterface
         );
 
         $this->deleteUids = array(); // Used to collect all those tt_content uids with no references which can be deleted
-        while (false !== ($row = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_fetch_assoc($res))) {
+        while (false !== ($row = TemplaVoilaUtility::getDatabaseConnection()->sql_fetch_assoc($res))) {
             $elementPointerString = 'tt_content:' . $row['uid'];
 
             // Prepare the language icon:
@@ -348,7 +350,7 @@ class Clipboard implements SingletonInterface
                 'new,copy,cut,pasteinto,pasteafter,delete'
             );
 
-            if (\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->workspace) {
+            if (TemplaVoilaUtility::getBackendUser()->workspace) {
                 $wsRow = BackendUtility::getRecordWSOL('tt_content', $row['uid']);
                 $isDeletedInWorkspace = $wsRow['t3ver_state'] == 2;
             } else {
@@ -382,7 +384,7 @@ class Clipboard implements SingletonInterface
                 foreach ($this->deleteUids as $deleteUid) {
                     $params .= '&cmd[tt_content][' . $deleteUid . '][delete]=1';
                 }
-                $label = \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('rendernonusedelements_deleteall');
+                $label = TemplaVoilaUtility::getLanguageService()->getLL('rendernonusedelements_deleteall');
                 $deleteAll = $this->pObj->buildButtonFromUrl(
                     'jumpToUrl(' . BackendUtility::getLinkToDataHandlerAction($params, -1) . ');return false;',
                     $label,
@@ -396,7 +398,7 @@ class Clipboard implements SingletonInterface
             $output = '
                 <table class="tpm-nonused-elements lrPadding" border="0" cellpadding="0" cellspacing="1" width="100%">
                     <tr class="bgColor4-20">
-                        <td colspan="3">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('inititemno_elementsNotBeingUsed', true) . ':</td>
+                        <td colspan="3">' . TemplaVoilaUtility::getLanguageService()->getLL('inititemno_elementsNotBeingUsed', true) . ':</td>
                     </tr>
                     ' . implode('', $elementRows) . '
                     <tr class="bgColor4">
@@ -420,10 +422,10 @@ class Clipboard implements SingletonInterface
      */
     public function renderReferenceCount($uid)
     {
-        $rows = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTgetRows(
+        $rows = TemplaVoilaUtility::getDatabaseConnection()->exec_SELECTgetRows(
             '*',
             'sys_refindex',
-            'ref_table=' . \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr('tt_content', 'sys_refindex') .
+            'ref_table=' . TemplaVoilaUtility::getDatabaseConnection()->fullQuoteStr('tt_content', 'sys_refindex') .
             ' AND ref_uid=' . (int)$uid .
             ' AND deleted=0'
         );
@@ -433,9 +435,9 @@ class Clipboard implements SingletonInterface
         if (is_array($rows)) {
             foreach ($rows as $row) {
 
-                if (\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->workspace && $row['tablename'] == 'pages' && $this->pObj->id == $row['recuid']) {
+                if (TemplaVoilaUtility::getBackendUser()->workspace && $row['tablename'] == 'pages' && $this->pObj->id == $row['recuid']) {
                     // We would have found you but we didn't - you're most likely deleted
-                } elseif (\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->workspace && $row['tablename'] == 'tt_content' && $this->pObj->global_tt_content_elementRegister[$row['recuid']] > 0) {
+                } elseif (TemplaVoilaUtility::getBackendUser()->workspace && $row['tablename'] == 'tt_content' && $this->pObj->global_tt_content_elementRegister[$row['recuid']] > 0) {
                     // We would have found you but we didn't - you're most likely deleted
                 } else {
                     $infoData[] = $row['tablename'] . ':' . $row['recuid'] . ':' . $row['field'];
@@ -455,7 +457,7 @@ class Clipboard implements SingletonInterface
 
             return $this->pObj->buildButtonFromUrl(
                 'jumpToUrl(' . BackendUtility::getLinkToDataHandlerAction($params, -1). ');return false;',
-                \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('renderreferencecount_delete', true),
+                TemplaVoilaUtility::getLanguageService()->getLL('renderreferencecount_delete', true),
                 'actions-edit-delete',
                 '',
                 'warning'

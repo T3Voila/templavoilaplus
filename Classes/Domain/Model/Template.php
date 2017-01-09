@@ -18,6 +18,8 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
+use Extension\Templavoila\Utility\TemplaVoilaUtility;
+
 /**
  * Class to provide unique access to template
  *
@@ -94,7 +96,7 @@ class Template
      */
     public function getLabel()
     {
-        return \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL($this->label);
+        return TemplaVoilaUtility::getLanguageService()->sL($this->label);
     }
 
     /**
@@ -293,7 +295,7 @@ class Template
      */
     public function isPermittedForUser($parentRow = array(), $removeItems = array())
     {
-        if (\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isAdmin()) {
+        if (TemplaVoilaUtility::getBackendUser()->isAdmin()) {
             return true;
         } else {
             if (in_array($this->getKey(), $removeItems)) {
@@ -301,7 +303,7 @@ class Template
             }
         }
         $permission = true;
-        $denyItems = \Extension\Templavoila\Utility\GeneralUtility::getDenyListForUser();
+        $denyItems = TemplaVoilaUtility::getDenyListForUser();
 
         if (isset($parentRow['tx_templavoila_to'])) {
             $currentSetting = $parentRow['tx_templavoila_to'];

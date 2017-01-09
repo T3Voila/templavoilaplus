@@ -14,6 +14,8 @@ namespace Extension\Templavoila\Module\Cm1;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Extension\Templavoila\Utility\TemplaVoilaUtility;
+
 /**
  * Ajax class for displaying content form a file
  */
@@ -28,7 +30,7 @@ class Ajax {
 	 * @return void
 	 */
 	public function getDisplayFileContent($params, &$ajaxObj) {
-		$session = \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->getSessionData(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('key'));
+		$session = TemplaVoilaUtility::getBackendUser()->getSessionData(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('key'));
 		echo \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($session['displayFile']));
 	}
 }

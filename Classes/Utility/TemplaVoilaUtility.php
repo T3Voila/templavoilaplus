@@ -19,7 +19,7 @@ namespace Extension\Templavoila\Utility;
  *
  * @author Steffen Kamper  <info@sk-typo3.de>
  */
-final class GeneralUtility {
+final class TemplaVoilaUtility {
 
 	/**
 	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection

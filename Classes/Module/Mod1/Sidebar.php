@@ -16,6 +16,8 @@ namespace Extension\Templavoila\Module\Mod1;
 
 use TYPO3\CMS\Core\SingletonInterface;
 
+use Extension\Templavoila\Utility\TemplaVoilaUtility;
+
 /**
  * Submodule 'Sidebar' for the templavoila page module
  *
@@ -65,12 +67,12 @@ class Sidebar implements SingletonInterface
 
         // Register the locally available sidebar items. Additional items may be added by other extensions.
         if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('version') && !\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('workspaces')
-            && \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->check('modules', 'web_txversionM1')
+            && TemplaVoilaUtility::getBackendUser()->check('modules', 'web_txversionM1')
         ) {
             $this->sideBarItems['versioning'] = array(
                 'object' => &$this,
                 'method' => 'renderItem_versioning',
-                'label' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('versioning'),
+                'label' => TemplaVoilaUtility::getLanguageService()->getLL('versioning'),
                 'priority' => 60,
                 'hideIfEmpty' => $hideIfEmpty,
             );
@@ -79,7 +81,7 @@ class Sidebar implements SingletonInterface
         $this->sideBarItems['headerFields'] = array(
             'object' => &$this,
             'method' => 'renderItem_headerFields',
-            'label' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('pagerelatedinformation'),
+            'label' => TemplaVoilaUtility::getLanguageService()->getLL('pagerelatedinformation'),
             'priority' => 50,
             'hideIfEmpty' => $hideIfEmpty,
         );
@@ -87,7 +89,7 @@ class Sidebar implements SingletonInterface
         $this->sideBarItems['advancedFunctions'] = array(
             'object' => &$this,
             'method' => 'renderItem_advancedFunctions',
-            'label' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('advancedfunctions'),
+            'label' => TemplaVoilaUtility::getLanguageService()->getLL('advancedfunctions'),
             'priority' => 20,
             'hideIfEmpty' => $hideIfEmpty,
         );
@@ -223,7 +225,7 @@ class Sidebar implements SingletonInterface
                     $headerFields[] = array(
                         'table' => $table,
                         'field' => $field,
-                        'label' => \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL(\TYPO3\CMS\Backend\Utility\BackendUtility::getItemLabel('pages', $field)),
+                        'label' => TemplaVoilaUtility::getLanguageService()->sL(\TYPO3\CMS\Backend\Utility\BackendUtility::getItemLabel('pages', $field)),
                         'value' => \TYPO3\CMS\Backend\Utility\BackendUtility::getProcessedValue('pages', $field, $pObj->rootElementRecord[$field], 200)
                     );
                 }
@@ -243,7 +245,7 @@ class Sidebar implements SingletonInterface
                     $output = '
                         <table border="0" cellpadding="0" cellspacing="1" width="100%" class="lrPadding">
                             <tr>
-                                <td colspan="2" class="bgColor4-20">' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('pagerelatedinformation') . ':</td>
+                                <td colspan="2" class="bgColor4-20">' . TemplaVoilaUtility::getLanguageService()->getLL('pagerelatedinformation') . ':</td>
                             </tr>
                             ' . implode('', $headerFieldRows) . '
                         </table>
@@ -268,7 +270,7 @@ class Sidebar implements SingletonInterface
             $versionSelector = trim($pObj->doc->getVersionSelector($pObj->id));
             if (!$versionSelector) {
                 $onClick = 'jumpToUrl(\'' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('version') . 'cm1/index.php?table=pages&uid=' . $pObj->id . '&returnUrl=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')) . '\')';
-                $versionSelector = '<input type="button" value="' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('sidebar_versionSelector_createVersion', true) . '" onclick="' . htmlspecialchars($onClick) . '" />';
+                $versionSelector = '<input type="button" value="' . TemplaVoilaUtility::getLanguageService()->getLL('sidebar_versionSelector_createVersion', true) . '" onclick="' . htmlspecialchars($onClick) . '" />';
             }
             $tableRows = [];
 
@@ -304,20 +306,20 @@ class Sidebar implements SingletonInterface
                 <td width="20">
                     ' . \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_txtemplavoilaM1', 'advancedfunctions_showhiddenelements') . '
                 </td><td width="200">
-                    ' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('sidebar_advancedfunctions_labelshowhidden', true) . ':
+                    ' . TemplaVoilaUtility::getLanguageService()->getLL('sidebar_advancedfunctions_labelshowhidden', true) . ':
                 </td>
                 <td>' . \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($pObj->id, 'SET[tt_content_showHidden]', $pObj->MOD_SETTINGS['tt_content_showHidden'] !== '0', 'index.php', '') . '</td>
             </tr>
         ';
 
         // Render checkbox for showing outline:
-        if (\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isAdmin() || $this->pObj->modTSconfig['properties']['enableOutlineForNonAdmin']) {
+        if (TemplaVoilaUtility::getBackendUser()->isAdmin() || $this->pObj->modTSconfig['properties']['enableOutlineForNonAdmin']) {
             $tableRows[] = '
                 <tr class="bgColor4">
                     <td width="20">
                         ' . \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_txtemplavoilaM1', 'advancedfunctions_showoutline') . '
                     </td><td width="200">
-                        ' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('sidebar_advancedfunctions_labelshowoutline', true) . ':
+                        ' . TemplaVoilaUtility::getLanguageService()->getLL('sidebar_advancedfunctions_labelshowoutline', true) . ':
                     </td>
                     <td>' . \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($pObj->id, 'SET[showOutline]', $pObj->MOD_SETTINGS['showOutline'], 'index.php', '') . '</td>
                 </tr>

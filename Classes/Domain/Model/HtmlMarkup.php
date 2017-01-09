@@ -14,6 +14,8 @@ namespace Extension\Templavoila\Domain\Model;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Extension\Templavoila\Utility\TemplaVoilaUtility;
+
 /**
  * HTML markup/search class; can mark up HTML with small images for each element AND
  * as well help you extract parts of the HTML based on a socalled 'PATH'.
@@ -705,12 +707,12 @@ class HtmlMarkup
     {
         global $TCA;
         if (isset($TCA['tx_templavoila_tmplobj'])) {
-            $res = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTquery(
+            $res = TemplaVoilaUtility::getDatabaseConnection()->exec_SELECTquery(
                 '*',
                 'tx_templavoila_tmplobj',
                 'uid=' . (int)$uid . ($TCA['tx_templavoila_tmplobj']['ctrl']['delete'] ? ' AND NOT ' . $TCA['tx_templavoila_tmplobj']['ctrl']['delete'] : '')
             );
-            $row = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_fetch_assoc($res);
+            $row = TemplaVoilaUtility::getDatabaseConnection()->sql_fetch_assoc($res);
             $this->tDat = unserialize($row['templatemapping']);
 
             return $this->tDat['MappingData_cached'];
@@ -761,22 +763,22 @@ class HtmlMarkup
                 if ($renderType) { // If print-flag try to find a proper print-record. If the lang-uid is also set, try to find a combined print/lang record, but if not found, the print rec. will take precedence.
 
                     // Look up print-row for default language:
-                    $printRow = $this->getTemplateRecord_query($parentUid, 'AND rendertype=' . \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr($renderType, 'tx_templavoila_tmplobj') . ' AND sys_language_uid=0');
+                    $printRow = $this->getTemplateRecord_query($parentUid, 'AND rendertype=' . TemplaVoilaUtility::getDatabaseConnection()->fullQuoteStr($renderType, 'tx_templavoila_tmplobj') . ' AND sys_language_uid=0');
                     if (is_array($printRow)) {
                         $rec = $printRow;
                     } elseif ($rendertype_ref) { // Look in rendertype_ref record:
-                        $printRow = $this->getTemplateRecord_query($rendertype_ref['uid'], 'AND rendertype=' . \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr($renderType, 'tx_templavoila_tmplobj') . ' AND sys_language_uid=0');
+                        $printRow = $this->getTemplateRecord_query($rendertype_ref['uid'], 'AND rendertype=' . TemplaVoilaUtility::getDatabaseConnection()->fullQuoteStr($renderType, 'tx_templavoila_tmplobj') . ' AND sys_language_uid=0');
                         if (is_array($printRow)) {
                             $rec = $printRow;
                         }
                     }
 
                     if ($langUid) { // If lang_uid is set, try to look up for current language:
-                        $printRow = $this->getTemplateRecord_query($parentUid, 'AND rendertype=' . \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr($renderType, 'tx_templavoila_tmplobj') . ' AND sys_language_uid=' . (int)$langUid);
+                        $printRow = $this->getTemplateRecord_query($parentUid, 'AND rendertype=' . TemplaVoilaUtility::getDatabaseConnection()->fullQuoteStr($renderType, 'tx_templavoila_tmplobj') . ' AND sys_language_uid=' . (int)$langUid);
                         if (is_array($printRow)) {
                             $rec = $printRow;
                         } elseif ($rendertype_ref) { // Look in rendertype_ref record:
-                            $printRow = $this->getTemplateRecord_query($rendertype_ref['uid'], 'AND rendertype=' . \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr($renderType, 'tx_templavoila_tmplobj') . ' AND sys_language_uid=' . (int)$langUid);
+                            $printRow = $this->getTemplateRecord_query($rendertype_ref['uid'], 'AND rendertype=' . TemplaVoilaUtility::getDatabaseConnection()->fullQuoteStr($renderType, 'tx_templavoila_tmplobj') . ' AND sys_language_uid=' . (int)$langUid);
                             if (is_array($printRow)) {
                                 $rec = $printRow;
                             }
@@ -831,12 +833,12 @@ class HtmlMarkup
     {
         global $TSFE;
 
-        $res = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTquery(
+        $res = TemplaVoilaUtility::getDatabaseConnection()->exec_SELECTquery(
             '*',
             'tx_templavoila_tmplobj',
             'parent=' . (int)$uid . ' ' . $where . $TSFE->sys_page->enableFields('tx_templavoila_tmplobj')
         );
-        $printRow = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->sql_fetch_assoc($res);
+        $printRow = TemplaVoilaUtility::getDatabaseConnection()->sql_fetch_assoc($res);
 
         return $printRow;
     }

@@ -13,7 +13,10 @@ namespace Extension\Templavoila\Domain\Model;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+
+use Extension\Templavoila\Utility\TemplaVoilaUtility;
 
 /**
  * Class to provide unique access to static datastructure
@@ -65,11 +68,11 @@ class StaticDataStructure extends AbstractDataStructure
     public function getStoragePids()
     {
         $pids = array();
-        $toList = \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->exec_SELECTgetRows(
+        $toList = TemplaVoilaUtility::getDatabaseConnection()->exec_SELECTgetRows(
             'pid',
             'tx_templavoila_tmplobj',
             'tx_templavoila_tmplobj.datastructure='
-                . \Extension\Templavoila\Utility\GeneralUtility::getDatabaseConnection()->fullQuoteStr($this->filename, 'tx_templavoila_tmplobj')
+                . TemplaVoilaUtility::getDatabaseConnection()->fullQuoteStr($this->filename, 'tx_templavoila_tmplobj')
                 . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoila_tmplobj'),
             'pid'
         );

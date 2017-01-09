@@ -23,6 +23,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
 
+use Extension\Templavoila\Utility\TemplaVoilaUtility;
+
 /**
  * Plugin 'Flexible Content' for the 'templavoila' extension.
  */
@@ -399,7 +401,7 @@ class FrontendController extends AbstractPlugin
 
                         // Visual identification aids:
 
-                        $feedit = is_object(\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()) && method_exists(\Extension\Templavoila\Utility\GeneralUtility::getBackendUser(), 'isFrontendEditingActive') && \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isFrontendEditingActive();
+                        $feedit = is_object(TemplaVoilaUtility::getBackendUser()) && method_exists(TemplaVoilaUtility::getBackendUser(), 'isFrontendEditingActive') && TemplaVoilaUtility::getBackendUser()->isFrontendEditingActive();
 
                         if ($GLOBALS['TSFE']->fePreview && $GLOBALS['TSFE']->beUserLogin && !$GLOBALS['TSFE']->workspacePreview && !$this->conf['disableExplosivePreview'] && !$feedit) {
                             throw new \RuntimeException('Further execution of code leads to PHP errors.', 1404750505);

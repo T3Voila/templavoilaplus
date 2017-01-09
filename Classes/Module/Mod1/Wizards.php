@@ -17,6 +17,8 @@ namespace Extension\Templavoila\Module\Mod1;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\SingletonInterface;
 
+use Extension\Templavoila\Utility\TemplaVoilaUtility;
+
 /**
  * Submodule 'Wizards' for the templavoila page module
  *
@@ -90,7 +92,7 @@ class Wizards implements SingletonInterface
             // Check if the HTTP_REFERER is valid
             $refInfo = parse_url(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_REFERER'));
             $httpHost = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY');
-            if ($httpHost == $refInfo['host'] || \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('vC') == \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->veriCode() || $GLOBALS['TYPO3_CONF_VARS']['SYS']['doNotCheckReferer']) {
+            if ($httpHost == $refInfo['host'] || \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('vC') == TemplaVoilaUtility::getBackendUser()->veriCode() || $GLOBALS['TYPO3_CONF_VARS']['SYS']['doNotCheckReferer']) {
 
                 // Create new page
                 $newID = $this->createPage(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('data'), $positionPid);
@@ -215,8 +217,8 @@ class Wizards implements SingletonInterface
             . '" method="post" autocomplete="off" enctype="' . $TYPO3_CONF_VARS['SYS']['form_enctype'] . '" onsubmit="return TBE_EDITOR_checkSubmit(1);">'
         );
 
-        $content = '<h3>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:db_new.php.pagetitle') . ':</h3>';
-        $this->moduleTemplate->setTitle(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('createnewpage_title'));
+        $content = '<h3>' . TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:db_new.php.pagetitle') . ':</h3>';
+        $this->moduleTemplate->setTitle(TemplaVoilaUtility::getLanguageService()->getLL('createnewpage_title'));
 
         // Add template selectors
         $tmplSelectorCode = '';
@@ -231,8 +233,8 @@ class Wizards implements SingletonInterface
         }
 
         if ($tmplSelectorCode) {
-            $content .= '<h3>' . htmlspecialchars(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('createnewpage_selecttemplate')) . '</h3>';
-            $content .= \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('createnewpage_templateobject_description');
+            $content .= '<h3>' . htmlspecialchars(TemplaVoilaUtility::getLanguageService()->getLL('createnewpage_selecttemplate')) . '</h3>';
+            $content .= TemplaVoilaUtility::getLanguageService()->getLL('createnewpage_templateobject_description');
             $content .= $tmplSelectorCode;
         }
 
@@ -292,16 +294,16 @@ class Wizards implements SingletonInterface
                     }
                 }
 
-                $description = $defaultTO['description'] ? htmlspecialchars($defaultTO['description']) : \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('template_descriptiondefault', TRUE);
+                $description = $defaultTO['description'] ? htmlspecialchars($defaultTO['description']) : TemplaVoilaUtility::getLanguageService()->getLL('template_descriptiondefault', TRUE);
                 $tmplHTML [] = '<table style="float:left; width: 100%;" valign="top">
                 <tr>
                     <td colspan="2" nowrap="nowrap">
-                        <h3 class="bgColor3-20">' . htmlspecialchars(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('template_titleInherit')) . '</h3>
+                        <h3 class="bgColor3-20">' . htmlspecialchars(TemplaVoilaUtility::getLanguageService()->getLL('template_titleInherit')) . '</h3>
                     </td>
                 </tr><tr>
                     <td style="padding: 0 5px" valign="top"><button type="submit" name="data[tx_templavoila_to]" value="0" style="background: none; border: none;">' . $previewIcon . '</button></td>
                     <td width="120" valign="top">
-                        <p><h4>' . htmlspecialchars(\Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL($defaultTO['title'])) . '</h4>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL($description) . '</p>
+                        <p><h4>' . htmlspecialchars(TemplaVoilaUtility::getLanguageService()->sL($defaultTO['title'])) . '</h4>' . TemplaVoilaUtility::getLanguageService()->sL($description) . '</p>
                     </td>
                 </tr>
                 </table>';
@@ -335,9 +337,9 @@ class Wizards implements SingletonInterface
                                 $previewIcon = '<img src="/' . $tmpFilename . '">';
                             }
                         }
-                        $description = $toObj->getDescription() ? htmlspecialchars($toObj->getDescription()) : \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->getLL('template_nodescriptionavailable');
+                        $description = $toObj->getDescription() ? htmlspecialchars($toObj->getDescription()) : TemplaVoilaUtility::getLanguageService()->getLL('template_nodescriptionavailable');
                         $tmplHTML [] = '<table style="width: 100%;" valign="top"><tr><td colspan="2" nowrap="nowrap"><h3 class="bgColor3-20">' . htmlspecialchars($toObj->getLabel()) . '</h3></td></tr>' .
-                            '<tr><td style="padding: 0 5px" valign="top"><button type="submit" name="data[tx_templavoila_to]" value="' . $toObj->getKey() . '" style="background: none; border: none;">' . $previewIcon . '</button></td><td width="120" valign="top"><p>' . \Extension\Templavoila\Utility\GeneralUtility::getLanguageService()->sL($description) . '</p></td></tr></table>';
+                            '<tr><td style="padding: 0 5px" valign="top"><button type="submit" name="data[tx_templavoila_to]" value="' . $toObj->getKey() . '" style="background: none; border: none;">' . $previewIcon . '</button></td><td width="120" valign="top"><p>' . TemplaVoilaUtility::getLanguageService()->sL($description) . '</p></td></tr></table>';
                     }
                 }
                 break;
@@ -475,9 +477,9 @@ class Wizards implements SingletonInterface
     public function buildRecordWhere($table)
     {
         $result = array();
-        if (!\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isAdmin()) {
+        if (!TemplaVoilaUtility::getBackendUser()->isAdmin()) {
             $prefLen = strlen($table) + 1;
-            foreach (\Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->userGroups as $group) {
+            foreach (TemplaVoilaUtility::getBackendUser()->userGroups as $group) {
                 $items = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $group['tx_templavoila_access'], 1);
                 foreach ($items as $ref) {
                     if (strstr($ref, $table)) {
