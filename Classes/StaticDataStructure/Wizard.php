@@ -1,4 +1,6 @@
 <?php
+namespace Extension\Templavoila\StaticDataStructure;
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -21,7 +23,7 @@ use Extension\Templavoila\Utility\TemplaVoilaUtility;
  *
  * @author Steffen Kamper <info@sk-typo3.de>
  */
-class tx_templavoila_staticds_wizard
+class Wizard
 {
     /**
      * Step for the wizard. Can be manipulated by internal function

@@ -1,4 +1,6 @@
 <?php
+namespace Extension\Templavoila\StaticDataStructure;
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -17,7 +19,7 @@ use Extension\Templavoila\Utility\TemplaVoilaUtility;
 /**
  * Static DS check
  */
-class tx_templavoila_staticds_check
+class Check
 {
     /**
      * Display message

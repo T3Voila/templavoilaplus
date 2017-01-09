@@ -14,6 +14,8 @@
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
+use Extension\Templavoila\Utility\TemplaVoilaUtility;
+
 /**
  * Update wizard for the extension manager
  */
@@ -27,7 +29,7 @@ class ext_update
     public function main()
     {
         /** @var $dsWizard tx_templavoila_staticds_wizard */
-        $dsWizard = GeneralUtility::makeInstance(\tx_templavoila_staticds_wizard::class);
+        $dsWizard = GeneralUtility::makeInstance(\Extension\Templavoila\StaticDataStructure\Wizard::class);
         return $dsWizard->staticDsWizard();
     }
 
@@ -41,6 +43,6 @@ class ext_update
      */
     public function access($what = 'all')
     {
-        return \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isAdmin();
+        return TemplaVoilaUtility::getBackendUser()->isAdmin();
     }
 }
