@@ -17,28 +17,30 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Update wizard for the extension manager
  */
-class ext_update {
+class ext_update
+{
+    /**
+     * Main function, returning the HTML content of the module
+     *
+     * @return string HTML
+     */
+    public function main()
+    {
+        /** @var $dsWizard tx_templavoila_staticds_wizard */
+        $dsWizard = GeneralUtility::makeInstance(\tx_templavoila_staticds_wizard::class);
+        return $dsWizard->staticDsWizard();
+    }
 
-	/**
-	 * Main function, returning the HTML content of the module
-	 *
-	 * @return string HTML
-	 */
-	public function main() {
-		/** @var $dsWizard tx_templavoila_staticds_wizard */
-		$dsWizard = GeneralUtility::makeInstance(\tx_templavoila_staticds_wizard::class);
-		return $dsWizard->staticDsWizard();
-	}
-
-	/**
-	 * Checks if backend user is an administrator
-	 * (this function is called from the extension manager)
-	 *
-	 * @param string $what What should be updated
-	 *
-	 * @return boolean
-	 */
-	public function access($what = 'all') {
-		return \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isAdmin();
-	}
+    /**
+     * Checks if backend user is an administrator
+     * (this function is called from the extension manager)
+     *
+     * @param string $what What should be updated
+     *
+     * @return boolean
+     */
+    public function access($what = 'all')
+    {
+        return \Extension\Templavoila\Utility\GeneralUtility::getBackendUser()->isAdmin();
+    }
 }
