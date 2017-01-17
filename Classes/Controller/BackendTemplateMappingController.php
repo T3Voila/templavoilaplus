@@ -1752,7 +1752,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
             // Fix relative paths in source:
             $relPathFix = dirname(substr($theFile, strlen(PATH_site))) . '/';
             $uniqueMarker = uniqid('###') . '###';
-            $fileContent = $this->markupObj->prefixResourcePath($relPathFix, $fileContent, array('A' => $uniqueMarker));
+            $fileContent = $this->markupObj->htmlParse->prefixResourcePath($relPathFix, $fileContent, array('A' => $uniqueMarker));
             $fileContent = $this->fixPrefixForLinks($relPathFix, $fileContent, $uniqueMarker);
 
             // Get BODY content for caching:
