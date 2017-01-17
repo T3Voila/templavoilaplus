@@ -218,13 +218,6 @@ class HtmlMarkup
     public $htmlParse;
 
     /**
-     * Will contain the backend back-path which is necessary when marking-up the code in order to fix all media paths.
-     *
-     * @var string
-     */
-    public $backPath = '';
-
-    /**
      * will contain style-part for gnyf images. (see init())
      *
      * @var string
@@ -283,24 +276,22 @@ class HtmlMarkup
      * Marks up input HTML content string with tag-images based on the list in $showTags
      *
      * @param string $content HTML content
-     * @param string $backPath Backend module BACK_PATH - used to set the right position for the tag-images (gnyfs)
      * @param string $relPathFix The relative path from module position back to the HTML-file position; used to correct paths of HTML since the HTML is modified so it can display correctly from the path of the module using this class.
      * @param string $showTags Comma list of tags which should be exploded. Notice that tags in this list which does not appear in $this->tags will be ignored.
      * @param string $mode The mode of display; [blank], explode, borders. Set in $this->mode. "checkbox" is also an option, used for header data.
      *
      * @return string Modified HTML
      */
-    public function markupHTMLcontent($content, $backPath, $relPathFix, $showTags, $mode = '')
+    public function markupHTMLcontent($content, $relPathFix, $showTags, $mode = '')
     {
         // Initialize:
         $this->mode = $mode;
 
         $this->init();
-        $this->backPath = $backPath;
 
         /* build primary cache for icon-images */
         foreach ($this->tags as $tag => &$conf) {
-            $conf['icon'] = \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila') . 'html_tags/' . $tag . '.gif', 'height="17"') . ' alt="" border="0"';
+            $conf['icon'] = 'src="' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila') . 'html_tags/' . $tag . '.gif" height="17" alt="" border="0"';
         }
 
         list($tagList_elements, $tagList_single) = $this->splitTagTypes($showTags);

@@ -1881,7 +1881,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
         $this->markupObj->maxRecursion = 0; // Should not enter more than one level.
 
         // Markup the header section data with the header tags, using "checkbox" mode:
-        $tRows = $this->markupObj->markupHTMLcontent($html_header, $GLOBALS['BACK_PATH'], '', 'script,style,link,meta', 'checkbox');
+        $tRows = $this->markupObj->markupHTMLcontent($html_header, '', 'script,style,link,meta', 'checkbox');
         $bodyTagRow = $showBodyTag ? '
                 <tr class="bgColor2">
                     <td><input type="checkbox" name="addBodyTag" value="1"' . ($currentHeaderMappingInfo['addBodyTag'] ? ' checked="checked"' : '') . ' /></td>

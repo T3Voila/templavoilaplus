@@ -162,7 +162,6 @@ class BackendTemplateDisplayController extends \TYPO3\CMS\Backend\Module\BaseScr
         if (is_array($cParts)) {
             $cParts[1] = $markupObj->markupHTMLcontent(
                 $cParts[1],
-                $GLOBALS['BACK_PATH'],
                 $relPathFix,
                 implode(',', array_keys($markupObj->tags)),
                 $mode
