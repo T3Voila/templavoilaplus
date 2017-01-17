@@ -814,14 +814,23 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                 // Getting cached data:
                 reset($dataStruct);
                 $fileContent = GeneralUtility::getUrl($this->displayFile);
-                $htmlParse = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class);
                 $relPathFix = dirname(substr($this->displayFile, strlen(PATH_site))) . '/';
-                $fileContent = $htmlParse->prefixResourcePath($relPathFix, $fileContent);
+
+                // @TODO We have this init multiple in this class => BAD
+                // @TODO We have this loading 3 times in this class => BAD
+                // Init mark up object.
                 $this->markupObj = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Model\HtmlMarkup::class);
+                $this->markupObj->init();
+
+                $fileContent = $this->markupObj->htmlParse->prefixResourcePath($relPathFix, $fileContent);
                 $contentSplittedByMapping = $this->markupObj->splitContentToMappingInfo($fileContent, $currentMappingInfo);
                 $templatemapping['MappingData_cached'] = $contentSplittedByMapping['sub']['ROOT'];
 
-                list($html_header) = $this->markupObj->htmlParse->getAllParts($htmlParse->splitIntoBlock('head', $fileContent), 1, 0);
+                // Get <head>...</head> from template:
+                $splitByHeader = $this->markupObj->htmlParse->splitIntoBlock('head', $fileContent);
+                // There should be only one head tag
+                $html_header = $this->markupObj->htmlParse->removeFirstAndLastTag($splitByHeader[1]);
+
                 $this->markupObj->tags = $this->head_markUpTags; // Set up the markupObject to process only header-section tags:
 
                 if (isset($templatemapping['MappingInfo_head'])) {
@@ -1735,13 +1744,15 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
             reset($dataStruct);
             // Init; read file, init objects:
             $fileContent = GeneralUtility::getUrl($theFile);
-            $htmlParse = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class);
+
+            // Init mark up object.
             $this->markupObj = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Model\HtmlMarkup::class);
+            $this->markupObj->init();
 
             // Fix relative paths in source:
             $relPathFix = dirname(substr($theFile, strlen(PATH_site))) . '/';
             $uniqueMarker = uniqid('###') . '###';
-            $fileContent = $htmlParse->prefixResourcePath($relPathFix, $fileContent, array('A' => $uniqueMarker));
+            $fileContent = $this->markupObj->prefixResourcePath($relPathFix, $fileContent, array('A' => $uniqueMarker));
             $fileContent = $this->fixPrefixForLinks($relPathFix, $fileContent, $uniqueMarker);
 
             // Get BODY content for caching:
@@ -1749,7 +1760,11 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
             $templatemapping['MappingData_cached'] = $contentSplittedByMapping['sub']['ROOT'];
 
             // Get HEAD content for caching:
-            list($html_header) = $this->markupObj->htmlParse->getAllParts($htmlParse->splitIntoBlock('head', $fileContent), 1, 0);
+            // Get <head>...</head> from template:
+            $splitByHeader = $this->markupObj->htmlParse->splitIntoBlock('head', $fileContent);
+            // There should be only one head tag
+            $html_header = $this->markupObj->htmlParse->removeFirstAndLastTag($splitByHeader[1]);
+
             $this->markupObj->tags = $this->head_markUpTags; // Set up the markupObject to process only header-section tags:
 
             $h_currentMappingInfo = array();
@@ -1872,7 +1887,8 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
 
         // Get <head>...</head> from template:
         $splitByHeader = $this->markupObj->htmlParse->splitIntoBlock('head', $fileContent);
-        list($html_header) = $this->markupObj->htmlParse->getAllParts($splitByHeader, 1, 0);
+        // There should be only one head tag
+        $html_header = $this->markupObj->htmlParse->removeFirstAndLastTag($splitByHeader[1]);
 
         // Set up the markupObject to process only header-section tags:
         $this->markupObj->tags = $this->head_markUpTags;
