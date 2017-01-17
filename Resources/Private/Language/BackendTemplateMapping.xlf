@@ -1,588 +1,588 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2014-07-13T20:55:24Z" product-name="templavoila">
-		<header/>
-		<body>
-			<trans-unit id="title" xml:space="preserve">
-				<source>TemplaVoilà</source>
-			</trans-unit>
-			<trans-unit id="templateFile" xml:space="preserve">
-				<source>Template File</source>
-			</trans-unit>
-			<trans-unit id="templateObject" xml:space="preserve">
-				<source>Template Object</source>
-			</trans-unit>
-			<trans-unit id="titleXmlConfiguration" xml:space="preserve">
-				<source>XML configuration</source>
-			</trans-unit>
-			<trans-unit id="titleLoadDSXml" xml:space="preserve">
-				<source>Load DS XML</source>
-			</trans-unit>
-			<trans-unit id="mappingTitle" xml:space="preserve">
-				<source>TemplaVoilà Template Mapping</source>
-			</trans-unit>
-			<trans-unit id="mappingNEW" xml:space="preserve">
-				<source>[NEW]</source>
-			</trans-unit>
-			<trans-unit id="mappingHeadParts" xml:space="preserve">
-				<source>Adding parts from HTML header</source>
-			</trans-unit>
-			<trans-unit id="mappingBodyParts" xml:space="preserve">
-				<source>Data Structure to be mapped to HTML template</source>
-			</trans-unit>
-			<trans-unit id="rootDescription" xml:space="preserve">
-				<source>Select the HTML element on the page which you want to be the overall container element for the template.</source>
-			</trans-unit>
-			<trans-unit id="selectTOrecrdToLoadDSFrom" xml:space="preserve">
-				<source>Select a Template Object record to load a Data Structure/Mapping information from</source>
-			</trans-unit>
-			<trans-unit id="noDSDefined" xml:space="preserve">
-				<source>No Data Structure was defined in the record... (Must be T3DataStructure XML content)</source>
-			</trans-unit>
-			<trans-unit id="pasteDSXml" xml:space="preserve">
-				<source>Alternatively, paste the Data Structure XML into this form</source>
-			</trans-unit>
-			<trans-unit id="loadDSXml" xml:space="preserve">
-				<source>Load Data Structure</source>
-			</trans-unit>
-			<trans-unit id="instrunctions" xml:space="preserve">
-				<source>Instructions</source>
-			</trans-unit>
-			<trans-unit id="toBeDefined" xml:space="preserve">
-				<source>to be defined</source>
-			</trans-unit>
-			<trans-unit id="tabTODetails" xml:space="preserve">
-				<source>Information</source>
-			</trans-unit>
-			<trans-unit id="tabHeadParts" xml:space="preserve">
-				<source>Header Parts</source>
-			</trans-unit>
-			<trans-unit id="tabBodyParts" xml:space="preserve">
-				<source>Mapping</source>
-			</trans-unit>
-			<trans-unit id="dsTypes_section" xml:space="preserve">
-				<source>Section</source>
-			</trans-unit>
-			<trans-unit id="dsTypes_container" xml:space="preserve">
-				<source>Container</source>
-			</trans-unit>
-			<trans-unit id="dsTypes_attribute" xml:space="preserve">
-				<source>Attribute</source>
-			</trans-unit>
-			<trans-unit id="dsTypes_element" xml:space="preserve">
-				<source>Element</source>
-			</trans-unit>
-			<trans-unit id="dsTypes_notmapped" xml:space="preserve">
-				<source>Not Mapped</source>
-			</trans-unit>
-			<trans-unit id="buttonGoBack" xml:space="preserve">
-				<source>Go back</source>
-			</trans-unit>
-			<trans-unit id="buttonCancel" xml:space="preserve">
-				<source>Cancel</source>
-			</trans-unit>
-			<trans-unit id="buttonShowXML" xml:space="preserve">
-				<source>Show XML</source>
-			</trans-unit>
-			<trans-unit id="buttonClearAll" xml:space="preserve">
-				<source>Clear all</source>
-			</trans-unit>
-			<trans-unit id="buttonPreview" xml:space="preserve">
-				<source>Preview</source>
-			</trans-unit>
-			<trans-unit id="buttonSave" xml:space="preserve">
-				<source>Save</source>
-			</trans-unit>
-			<trans-unit id="buttonSaveExit" xml:space="preserve">
-				<source>Save and Exit</source>
-			</trans-unit>
-			<trans-unit id="buttonSaveAs" xml:space="preserve">
-				<source>Save as</source>
-			</trans-unit>
-			<trans-unit id="buttonLoad" xml:space="preserve">
-				<source>Load</source>
-			</trans-unit>
-			<trans-unit id="buttonRefresh" xml:space="preserve">
-				<source>Refresh</source>
-			</trans-unit>
-			<trans-unit id="buttonAdd" xml:space="preserve">
-				<source>Add</source>
-			</trans-unit>
-			<trans-unit id="buttonUpdate" xml:space="preserve">
-				<source>Update</source>
-			</trans-unit>
-			<trans-unit id="buttonDelete" xml:space="preserve">
-				<source>Delete</source>
-			</trans-unit>
-			<trans-unit id="buttonCancelClose" xml:space="preserve">
-				<source>Cancel / Close</source>
-			</trans-unit>
-			<trans-unit id="buttonTitle_showXML" xml:space="preserve">
-				<source>Preview the currently build Data Structure as XML</source>
-			</trans-unit>
-			<trans-unit id="buttonTitle_clearAll" xml:space="preserve">
-				<source>Clear all Data Structure and Mapping information</source>
-			</trans-unit>
-			<trans-unit id="buttonTitle_preview" xml:space="preserve">
-				<source>Preview the mapping to the template</source>
-			</trans-unit>
-			<trans-unit id="buttonTitle_save" xml:space="preserve">
-				<source>Save to current TO and DS</source>
-			</trans-unit>
-			<trans-unit id="buttonTitle_saveExit" xml:space="preserve">
-				<source>Save to current TO and DS and return to Overview</source>
-			</trans-unit>
-			<trans-unit id="buttonTitle_saveAs" xml:space="preserve">
-				<source>Go to save menu</source>
-			</trans-unit>
-			<trans-unit id="buttonTitle_load" xml:space="preserve">
-				<source>Go to load menu</source>
-			</trans-unit>
-			<trans-unit id="buttonTitle_refresh" xml:space="preserve">
-				<source>Redraw screen</source>
-			</trans-unit>
-			<trans-unit id="buttonSet" xml:space="preserve">
-				<source>Set</source>
-			</trans-unit>
-			<trans-unit id="buttonSetTitle" xml:space="preserve">
-				<source>Will update session data with current settings.</source>
-			</trans-unit>
-			<trans-unit id="buttonClearAllMappingTitle" xml:space="preserve">
-				<source>Clears all mapping information currently set.</source>
-			</trans-unit>
-			<trans-unit id="buttonPreviewMappingTitle" xml:space="preserve">
-				<source>Will merge sample content into the template according to the current mapping information.</source>
-			</trans-unit>
-			<trans-unit id="buttonSaveTOTitle" xml:space="preserve">
-				<source>Saving all mapping data into the Template Object.</source>
-			</trans-unit>
-			<trans-unit id="buttonSaveAndReturn" xml:space="preserve">
-				<source>Save and Return</source>
-			</trans-unit>
-			<trans-unit id="buttonSaveAndReturnTitle" xml:space="preserve">
-				<source>Saving all mapping data into the Template Object and return.</source>
-			</trans-unit>
-			<trans-unit id="buttonRevert" xml:space="preserve">
-				<source>Revert</source>
-			</trans-unit>
-			<trans-unit id="buttonRevertTitle" xml:space="preserve">
-				<source>Reverting %s mapping data to original data in the Template Object.</source>
-			</trans-unit>
-			<trans-unit id="createDSTO" xml:space="preserve">
-				<source>CREATE Data Structure / Template Object</source>
-			</trans-unit>
-			<trans-unit id="updateDSTO" xml:space="preserve">
-				<source>UPDATE existing Data Structure / Template Object</source>
-			</trans-unit>
-			<trans-unit id="updateDSTOshort" xml:space="preserve">
-				<source>UPDATE TO (and DS)</source>
-			</trans-unit>
-			<trans-unit id="saveDSTOconfirm" xml:space="preserve">
-				<source>Are you sure you want to override the current contents of these records?\nThis feature is meant to support the process of creating new Data Structures which have not been manually edited yet.</source>
-			</trans-unit>
-			<trans-unit id="createDSTOshort" xml:space="preserve">
-				<source>CREATE DS / TO</source>
-			</trans-unit>
-			<trans-unit id="titleDSTO" xml:space="preserve">
-				<source>Title of DS/TO</source>
-			</trans-unit>
-			<trans-unit id="templateType" xml:space="preserve">
-				<source>Template Type</source>
-			</trans-unit>
-			<trans-unit id="pageTemplate" xml:space="preserve">
-				<source>Page Template</source>
-			</trans-unit>
-			<trans-unit id="contentElement" xml:space="preserve">
-				<source>Content Element</source>
-			</trans-unit>
-			<trans-unit id="undefined" xml:space="preserve">
-				<source>Undefined</source>
-			</trans-unit>
-			<trans-unit id="storeInPID" xml:space="preserve">
-				<source>Store in PID</source>
-			</trans-unit>
-			<trans-unit id="selectTO" xml:space="preserve">
-				<source>Select TO</source>
-			</trans-unit>
-			<trans-unit id="buildingDS" xml:space="preserve">
-				<source>Building Data Structure</source>
-			</trans-unit>
-			<trans-unit id="renderDSO_dataStructure" xml:space="preserve">
-				<source>Data Structure in record</source>
-			</trans-unit>
-			<trans-unit id="renderDSO_dataElement" xml:space="preserve">
-				<source>Data Element</source>
-			</trans-unit>
-			<trans-unit id="renderDSO_mappingInstructions" xml:space="preserve">
-				<source>Mapping Instructions</source>
-			</trans-unit>
-			<trans-unit id="renderDSO_rules" xml:space="preserve">
-				<source>Rules</source>
-			</trans-unit>
-			<trans-unit id="renderDSO_uid" xml:space="preserve">
-				<source>Uid</source>
-			</trans-unit>
-			<trans-unit id="renderDSO_title" xml:space="preserve">
-				<source>Title</source>
-			</trans-unit>
-			<trans-unit id="renderDSO_fileRef" xml:space="preserve">
-				<source>File reference</source>
-			</trans-unit>
-			<trans-unit id="renderDSO_dataLgd" xml:space="preserve">
-				<source>Mapping Data Lgd</source>
-			</trans-unit>
-			<trans-unit id="renderDSO_usedTO" xml:space="preserve">
-				<source>Template Objects using this Data Structure</source>
-			</trans-unit>
-			<trans-unit id="renderDSO_XML" xml:space="preserve">
-				<source>Data Structure XML</source>
-			</trans-unit>
-			<trans-unit id="renderDSO_DSO" xml:space="preserve">
-				<source>Data Structure Object</source>
-			</trans-unit>
-			<trans-unit id="renderDSO_noUid" xml:space="preserve">
-				<source>No UID was found pointing to a Data Structure Object record.</source>
-			</trans-unit>
-			<trans-unit id="renderDSO_notFound" xml:space="preserve">
-				<source>(NOT FOUND)</source>
-			</trans-unit>
-			<trans-unit id="all" xml:space="preserve">
-				<source>(ALL)</source>
-			</trans-unit>
-			<trans-unit id="renderTO_toDetails" xml:space="preserve">
-				<source>Template Object Details</source>
-			</trans-unit>
-			<trans-unit id="renderTO_dsRecord" xml:space="preserve">
-				<source>Data Structure Record</source>
-			</trans-unit>
-			<trans-unit id="renderTO_updateWarningConfirm" xml:space="preserve">
-				<source>Warning: You should only modify Data Structures and Template Objects which have not been manually edited.
+    <file source-language="en" datatype="plaintext" original="messages" date="2014-07-13T20:55:24Z" product-name="templavoila">
+        <header/>
+        <body>
+            <trans-unit id="title" xml:space="preserve">
+                <source>TemplaVoilà</source>
+            </trans-unit>
+            <trans-unit id="templateFile" xml:space="preserve">
+                <source>Template File</source>
+            </trans-unit>
+            <trans-unit id="templateObject" xml:space="preserve">
+                <source>Template Object</source>
+            </trans-unit>
+            <trans-unit id="titleXmlConfiguration" xml:space="preserve">
+                <source>XML configuration</source>
+            </trans-unit>
+            <trans-unit id="titleLoadDSXml" xml:space="preserve">
+                <source>Load DS XML</source>
+            </trans-unit>
+            <trans-unit id="mappingTitle" xml:space="preserve">
+                <source>TemplaVoilà Template Mapping</source>
+            </trans-unit>
+            <trans-unit id="mappingNEW" xml:space="preserve">
+                <source>[NEW]</source>
+            </trans-unit>
+            <trans-unit id="mappingHeadParts" xml:space="preserve">
+                <source>Adding parts from HTML header</source>
+            </trans-unit>
+            <trans-unit id="mappingBodyParts" xml:space="preserve">
+                <source>Data Structure to be mapped to HTML template</source>
+            </trans-unit>
+            <trans-unit id="rootDescription" xml:space="preserve">
+                <source>Select the HTML element on the page which you want to be the overall container element for the template.</source>
+            </trans-unit>
+            <trans-unit id="selectTOrecrdToLoadDSFrom" xml:space="preserve">
+                <source>Select a Template Object record to load a Data Structure/Mapping information from</source>
+            </trans-unit>
+            <trans-unit id="noDSDefined" xml:space="preserve">
+                <source>No Data Structure was defined in the record... (Must be T3DataStructure XML content)</source>
+            </trans-unit>
+            <trans-unit id="pasteDSXml" xml:space="preserve">
+                <source>Alternatively, paste the Data Structure XML into this form</source>
+            </trans-unit>
+            <trans-unit id="loadDSXml" xml:space="preserve">
+                <source>Load Data Structure</source>
+            </trans-unit>
+            <trans-unit id="instrunctions" xml:space="preserve">
+                <source>Instructions</source>
+            </trans-unit>
+            <trans-unit id="toBeDefined" xml:space="preserve">
+                <source>to be defined</source>
+            </trans-unit>
+            <trans-unit id="tabTODetails" xml:space="preserve">
+                <source>Information</source>
+            </trans-unit>
+            <trans-unit id="tabHeadParts" xml:space="preserve">
+                <source>Header Parts</source>
+            </trans-unit>
+            <trans-unit id="tabBodyParts" xml:space="preserve">
+                <source>Mapping</source>
+            </trans-unit>
+            <trans-unit id="dsTypes_section" xml:space="preserve">
+                <source>Section</source>
+            </trans-unit>
+            <trans-unit id="dsTypes_container" xml:space="preserve">
+                <source>Container</source>
+            </trans-unit>
+            <trans-unit id="dsTypes_attribute" xml:space="preserve">
+                <source>Attribute</source>
+            </trans-unit>
+            <trans-unit id="dsTypes_element" xml:space="preserve">
+                <source>Element</source>
+            </trans-unit>
+            <trans-unit id="dsTypes_notmapped" xml:space="preserve">
+                <source>Not Mapped</source>
+            </trans-unit>
+            <trans-unit id="buttonGoBack" xml:space="preserve">
+                <source>Go back</source>
+            </trans-unit>
+            <trans-unit id="buttonCancel" xml:space="preserve">
+                <source>Cancel</source>
+            </trans-unit>
+            <trans-unit id="buttonShowXML" xml:space="preserve">
+                <source>Show XML</source>
+            </trans-unit>
+            <trans-unit id="buttonClearAll" xml:space="preserve">
+                <source>Clear all</source>
+            </trans-unit>
+            <trans-unit id="buttonPreview" xml:space="preserve">
+                <source>Preview</source>
+            </trans-unit>
+            <trans-unit id="buttonSave" xml:space="preserve">
+                <source>Save</source>
+            </trans-unit>
+            <trans-unit id="buttonSaveExit" xml:space="preserve">
+                <source>Save and Exit</source>
+            </trans-unit>
+            <trans-unit id="buttonSaveAs" xml:space="preserve">
+                <source>Save as</source>
+            </trans-unit>
+            <trans-unit id="buttonLoad" xml:space="preserve">
+                <source>Load</source>
+            </trans-unit>
+            <trans-unit id="buttonRefresh" xml:space="preserve">
+                <source>Refresh</source>
+            </trans-unit>
+            <trans-unit id="buttonAdd" xml:space="preserve">
+                <source>Add</source>
+            </trans-unit>
+            <trans-unit id="buttonUpdate" xml:space="preserve">
+                <source>Update</source>
+            </trans-unit>
+            <trans-unit id="buttonDelete" xml:space="preserve">
+                <source>Delete</source>
+            </trans-unit>
+            <trans-unit id="buttonCancelClose" xml:space="preserve">
+                <source>Cancel / Close</source>
+            </trans-unit>
+            <trans-unit id="buttonTitle_showXML" xml:space="preserve">
+                <source>Preview the currently build Data Structure as XML</source>
+            </trans-unit>
+            <trans-unit id="buttonTitle_clearAll" xml:space="preserve">
+                <source>Clear all Data Structure and Mapping information</source>
+            </trans-unit>
+            <trans-unit id="buttonTitle_preview" xml:space="preserve">
+                <source>Preview the mapping to the template</source>
+            </trans-unit>
+            <trans-unit id="buttonTitle_save" xml:space="preserve">
+                <source>Save to current TO and DS</source>
+            </trans-unit>
+            <trans-unit id="buttonTitle_saveExit" xml:space="preserve">
+                <source>Save to current TO and DS and return to Overview</source>
+            </trans-unit>
+            <trans-unit id="buttonTitle_saveAs" xml:space="preserve">
+                <source>Go to save menu</source>
+            </trans-unit>
+            <trans-unit id="buttonTitle_load" xml:space="preserve">
+                <source>Go to load menu</source>
+            </trans-unit>
+            <trans-unit id="buttonTitle_refresh" xml:space="preserve">
+                <source>Redraw screen</source>
+            </trans-unit>
+            <trans-unit id="buttonSet" xml:space="preserve">
+                <source>Set</source>
+            </trans-unit>
+            <trans-unit id="buttonSetTitle" xml:space="preserve">
+                <source>Will update session data with current settings.</source>
+            </trans-unit>
+            <trans-unit id="buttonClearAllMappingTitle" xml:space="preserve">
+                <source>Clears all mapping information currently set.</source>
+            </trans-unit>
+            <trans-unit id="buttonPreviewMappingTitle" xml:space="preserve">
+                <source>Will merge sample content into the template according to the current mapping information.</source>
+            </trans-unit>
+            <trans-unit id="buttonSaveTOTitle" xml:space="preserve">
+                <source>Saving all mapping data into the Template Object.</source>
+            </trans-unit>
+            <trans-unit id="buttonSaveAndReturn" xml:space="preserve">
+                <source>Save and Return</source>
+            </trans-unit>
+            <trans-unit id="buttonSaveAndReturnTitle" xml:space="preserve">
+                <source>Saving all mapping data into the Template Object and return.</source>
+            </trans-unit>
+            <trans-unit id="buttonRevert" xml:space="preserve">
+                <source>Revert</source>
+            </trans-unit>
+            <trans-unit id="buttonRevertTitle" xml:space="preserve">
+                <source>Reverting %s mapping data to original data in the Template Object.</source>
+            </trans-unit>
+            <trans-unit id="createDSTO" xml:space="preserve">
+                <source>CREATE Data Structure / Template Object</source>
+            </trans-unit>
+            <trans-unit id="updateDSTO" xml:space="preserve">
+                <source>UPDATE existing Data Structure / Template Object</source>
+            </trans-unit>
+            <trans-unit id="updateDSTOshort" xml:space="preserve">
+                <source>UPDATE TO (and DS)</source>
+            </trans-unit>
+            <trans-unit id="saveDSTOconfirm" xml:space="preserve">
+                <source>Are you sure you want to override the current contents of these records?\nThis feature is meant to support the process of creating new Data Structures which have not been manually edited yet.</source>
+            </trans-unit>
+            <trans-unit id="createDSTOshort" xml:space="preserve">
+                <source>CREATE DS / TO</source>
+            </trans-unit>
+            <trans-unit id="titleDSTO" xml:space="preserve">
+                <source>Title of DS/TO</source>
+            </trans-unit>
+            <trans-unit id="templateType" xml:space="preserve">
+                <source>Template Type</source>
+            </trans-unit>
+            <trans-unit id="pageTemplate" xml:space="preserve">
+                <source>Page Template</source>
+            </trans-unit>
+            <trans-unit id="contentElement" xml:space="preserve">
+                <source>Content Element</source>
+            </trans-unit>
+            <trans-unit id="undefined" xml:space="preserve">
+                <source>Undefined</source>
+            </trans-unit>
+            <trans-unit id="storeInPID" xml:space="preserve">
+                <source>Store in PID</source>
+            </trans-unit>
+            <trans-unit id="selectTO" xml:space="preserve">
+                <source>Select TO</source>
+            </trans-unit>
+            <trans-unit id="buildingDS" xml:space="preserve">
+                <source>Building Data Structure</source>
+            </trans-unit>
+            <trans-unit id="renderDSO_dataStructure" xml:space="preserve">
+                <source>Data Structure in record</source>
+            </trans-unit>
+            <trans-unit id="renderDSO_dataElement" xml:space="preserve">
+                <source>Data Element</source>
+            </trans-unit>
+            <trans-unit id="renderDSO_mappingInstructions" xml:space="preserve">
+                <source>Mapping Instructions</source>
+            </trans-unit>
+            <trans-unit id="renderDSO_rules" xml:space="preserve">
+                <source>Rules</source>
+            </trans-unit>
+            <trans-unit id="renderDSO_uid" xml:space="preserve">
+                <source>Uid</source>
+            </trans-unit>
+            <trans-unit id="renderDSO_title" xml:space="preserve">
+                <source>Title</source>
+            </trans-unit>
+            <trans-unit id="renderDSO_fileRef" xml:space="preserve">
+                <source>File reference</source>
+            </trans-unit>
+            <trans-unit id="renderDSO_dataLgd" xml:space="preserve">
+                <source>Mapping Data Lgd</source>
+            </trans-unit>
+            <trans-unit id="renderDSO_usedTO" xml:space="preserve">
+                <source>Template Objects using this Data Structure</source>
+            </trans-unit>
+            <trans-unit id="renderDSO_XML" xml:space="preserve">
+                <source>Data Structure XML</source>
+            </trans-unit>
+            <trans-unit id="renderDSO_DSO" xml:space="preserve">
+                <source>Data Structure Object</source>
+            </trans-unit>
+            <trans-unit id="renderDSO_noUid" xml:space="preserve">
+                <source>No UID was found pointing to a Data Structure Object record.</source>
+            </trans-unit>
+            <trans-unit id="renderDSO_notFound" xml:space="preserve">
+                <source>(NOT FOUND)</source>
+            </trans-unit>
+            <trans-unit id="all" xml:space="preserve">
+                <source>(ALL)</source>
+            </trans-unit>
+            <trans-unit id="renderTO_toDetails" xml:space="preserve">
+                <source>Template Object Details</source>
+            </trans-unit>
+            <trans-unit id="renderTO_dsRecord" xml:space="preserve">
+                <source>Data Structure Record</source>
+            </trans-unit>
+            <trans-unit id="renderTO_updateWarningConfirm" xml:space="preserve">
+                <source>Warning: You should only modify Data Structures and Template Objects which have not been manually edited.
 You risk that manual changes will be removed without further notice!</source>
-			</trans-unit>
-			<trans-unit id="renderTO_editDSTO" xml:space="preserve">
-				<source>Modify DS / TO</source>
-			</trans-unit>
-			<trans-unit id="renderTO_dsFile" xml:space="preserve">
-				<source>Data Structure File</source>
-			</trans-unit>
-			<trans-unit id="renderTO_toInfo" xml:space="preserve">
-				<source>Template Object Information</source>
-			</trans-unit>
-			<trans-unit id="rootMultiTemplate_title" xml:space="preserve">
-				<source>ROOT of MultiTemplate</source>
-			</trans-unit>
-			<trans-unit id="rootMultiTemplate_description" xml:space="preserve">
-				<source>Select the ROOT container for this template project. Probably just select a body-tag or some other HTML element which encapsulates ALL sub templates!</source>
-			</trans-unit>
-			<trans-unit id="msgMappingIsDifferent" xml:space="preserve">
-				<source>The current mapping information is different from the mapping information in the Template Object</source>
-			</trans-unit>
-			<trans-unit id="msgDSTOSaved" xml:space="preserve">
-				<source>Data Structure (UID %s) and Template Record (UID %s) was saved in PID %s</source>
-			</trans-unit>
-			<trans-unit id="msgDSTOUpdated" xml:space="preserve">
-				<source>Data Structure (UID %s) and Template Record (UID %s) was updated</source>
-			</trans-unit>
-			<trans-unit id="msgMappingSaved" xml:space="preserve">
-				<source>Mapping information was saved to the current Template Object!</source>
-			</trans-unit>
-			<trans-unit id="msgHeaderSet" xml:space="preserve">
-				<source>Do not forget to press &quot;Set&quot; if header parts are changed!</source>
-			</trans-unit>
-			<trans-unit id="include" xml:space="preserve">
-				<source>Include</source>
-			</trans-unit>
-			<trans-unit id="tag" xml:space="preserve">
-				<source>Tag</source>
-			</trans-unit>
-			<trans-unit id="tagContent" xml:space="preserve">
-				<source>Tag Content</source>
-			</trans-unit>
-			<trans-unit id="mapDataElement" xml:space="preserve">
-				<source>Data Element</source>
-			</trans-unit>
-			<trans-unit id="mapField" xml:space="preserve">
-				<source>Field</source>
-			</trans-unit>
-			<trans-unit id="mapInstructions" xml:space="preserve">
-				<source>Mapping Instructions</source>
-			</trans-unit>
-			<trans-unit id="mapSampleData" xml:space="preserve">
-				<source>Sample Data</source>
-			</trans-unit>
-			<trans-unit id="mapElementPreset" xml:space="preserve">
-				<source>Element Preset</source>
-			</trans-unit>
-			<trans-unit id="mapHTMLpath" xml:space="preserve">
-				<source>HTML-path</source>
-			</trans-unit>
-			<trans-unit id="mapAction" xml:space="preserve">
-				<source>Action</source>
-			</trans-unit>
-			<trans-unit id="mapRules" xml:space="preserve">
-				<source>Rules</source>
-			</trans-unit>
-			<trans-unit id="mapEdit" xml:space="preserve">
-				<source>Edit</source>
-			</trans-unit>
-			<trans-unit id="mapMappingWindow" xml:space="preserve">
-				<source>Mapping Window</source>
-			</trans-unit>
-			<trans-unit id="mapPreviewInfo" xml:space="preserve">
-				<source>Preview of Data Structure sample data merged into the mapped tags</source>
-			</trans-unit>
-			<trans-unit id="mapDSelement" xml:space="preserve">
-				<source>Mapping Data Element</source>
-			</trans-unit>
-			<trans-unit id="mapLimitToTags" xml:space="preserve">
-				<source>Limiting to tags</source>
-			</trans-unit>
-			<trans-unit id="mapWarningElementChange" xml:space="preserve">
-				<source>Changing element type will change your existing settings!</source>
-			</trans-unit>
-			<trans-unit id="displayDSTitleTranslated" xml:space="preserve">
-				<source>This title is translated!</source>
-			</trans-unit>
-			<trans-unit id="displayDSContentFound" xml:space="preserve">
-				<source>Content found (%s chars)</source>
-			</trans-unit>
-			<trans-unit id="displayDSContentEmpty" xml:space="preserve">
-				<source>Content empty.</source>
-			</trans-unit>
-			<trans-unit id="buttonRemap" xml:space="preserve">
-				<source>Re-Map</source>
-			</trans-unit>
-			<trans-unit id="buttonRemapTitle" xml:space="preserve">
-				<source>Map this DS element to another HTML element in template file.</source>
-			</trans-unit>
-			<trans-unit id="buttonChangeMode" xml:space="preserve">
-				<source>Change Mode</source>
-			</trans-unit>
-			<trans-unit id="buttonChangeModeTitle" xml:space="preserve">
-				<source>Change mapping mode, eg. from INNER to OUTER etc.</source>
-			</trans-unit>
-			<trans-unit id="msgNoContentFound" xml:space="preserve">
-				<source>No content found!</source>
-			</trans-unit>
-			<trans-unit id="msgHowToMap" xml:space="preserve">
-				<source>Click a tag-icon in the window below to map this element.</source>
-			</trans-unit>
-			<trans-unit id="buttonMap" xml:space="preserve">
-				<source>Map</source>
-			</trans-unit>
-			<trans-unit id="editEntry" xml:space="preserve">
-				<source>Edit entry</source>
-			</trans-unit>
-			<trans-unit id="deleteEntry" xml:space="preserve">
-				<source>DELETE entry</source>
-			</trans-unit>
-			<trans-unit id="confirmDeleteEntry" xml:space="preserve">
-				<source>Are you sure to delete this Data Structure entry?</source>
-			</trans-unit>
-			<trans-unit id="noSampleData" xml:space="preserve">
-				<source>No sample data</source>
-			</trans-unit>
-			<trans-unit id="mapEnterNewFieldname" xml:space="preserve">
-				<source>Enter new fieldname</source>
-			</trans-unit>
-			<trans-unit id="mapPresets_plainInput" xml:space="preserve">
-				<source>Plain input field</source>
-			</trans-unit>
-			<trans-unit id="mapPresets_headerField" xml:space="preserve">
-				<source>Header field</source>
-			</trans-unit>
-			<trans-unit id="mapPresets_gHederField" xml:space="preserve">
-				<source>Header field, Graphical</source>
-			</trans-unit>
-			<trans-unit id="mapPresets_textarea" xml:space="preserve">
-				<source>Text area for bodytext</source>
-			</trans-unit>
-			<trans-unit id="mapPresets_rte" xml:space="preserve">
-				<source>Rich text editor for bodytext</source>
-			</trans-unit>
-			<trans-unit id="mapPresets_linkField" xml:space="preserve">
-				<source>Link field</source>
-			</trans-unit>
-			<trans-unit id="mapPresets_integer" xml:space="preserve">
-				<source>Integer value</source>
-			</trans-unit>
-			<trans-unit id="mapPresets_imageFixed" xml:space="preserve">
-				<source>Image field, fixed W+H</source>
-			</trans-unit>
-			<trans-unit id="mapPresets_select" xml:space="preserve">
-				<source>Selector box</source>
-			</trans-unit>
-			<trans-unit id="mapPresets_check" xml:space="preserve">
-				<source>Check box</source>
-			</trans-unit>
-			<trans-unit id="mapPresets_image" xml:space="preserve">
-				<source>Image field</source>
-			</trans-unit>
-			<trans-unit id="mapPresets_ce" xml:space="preserve">
-				<source>Page-Content Elements [Pos.: %s]</source>
-			</trans-unit>
-			<trans-unit id="mapPresets_TSobjectPath" xml:space="preserve">
-				<source>TypoScript Object Path</source>
-			</trans-unit>
-			<trans-unit id="mapPresets_none" xml:space="preserve">
-				<source>None (TypoScript only)</source>
-			</trans-unit>
-			<trans-unit id="mapPresets_customTCA" xml:space="preserve">
-				<source>Custom form setup (no preset used)</source>
-			</trans-unit>
-			<trans-unit id="mapPresetGroups_tceFields" xml:space="preserve">
-				<source>Form Fields</source>
-			</trans-unit>
-			<trans-unit id="mapPresetGroups_ts" xml:space="preserve">
-				<source>TypoScript Elements</source>
-			</trans-unit>
-			<trans-unit id="mapPresetGroups_other" xml:space="preserve">
-				<source>Other</source>
-			</trans-unit>
-			<trans-unit id="mapTSconstants" xml:space="preserve">
-				<source>TypoScript Constants</source>
-			</trans-unit>
-			<trans-unit id="mapTScode" xml:space="preserve">
-				<source>TypoScript Code</source>
-			</trans-unit>
-			<trans-unit id="mapExtraOptions" xml:space="preserve">
-				<source>Extra options</source>
-			</trans-unit>
-			<trans-unit id="mapPostProcesses" xml:space="preserve">
-				<source>Applied post-processes</source>
-			</trans-unit>
-			<trans-unit id="mapEnablePreview" xml:space="preserve">
-				<source>Enable data preview in Page-Module</source>
-			</trans-unit>
-			<trans-unit id="mapEnablePreview.enable" xml:space="preserve">
-				<source>Enable</source>
-			</trans-unit>
-			<trans-unit id="mapEnablePreview.disable" xml:space="preserve">
-				<source>Disable</source>
-			</trans-unit>
-			<trans-unit id="mapPPcastInteger" xml:space="preserve">
-				<source>Cast content to integer</source>
-			</trans-unit>
-			<trans-unit id="mapPPhsc" xml:space="preserve">
-				<source>Pass content through htmlSpecialChars (HSC)</source>
-			</trans-unit>
-			<trans-unit id="mapCustomStdWrap" xml:space="preserve">
-				<source>Custom stdWrap</source>
-			</trans-unit>
-			<trans-unit id="mapTCElabel" xml:space="preserve">
-				<source>Form label</source>
-			</trans-unit>
-			<trans-unit id="mapTCEconf" xml:space="preserve">
-				<source>Form configuration</source>
-			</trans-unit>
-			<trans-unit id="mapTCEextras" xml:space="preserve">
-				<source>Form extras</source>
-			</trans-unit>
-			<trans-unit id="mapElContainers" xml:space="preserve">
-				<source>Containers</source>
-			</trans-unit>
-			<trans-unit id="mapElElements" xml:space="preserve">
-				<source>Elements</source>
-			</trans-unit>
-			<trans-unit id="mapSection" xml:space="preserve">
-				<source>Section of elements</source>
-			</trans-unit>
-			<trans-unit id="mapContainer" xml:space="preserve">
-				<source>Container for elements</source>
-			</trans-unit>
-			<trans-unit id="mapElement" xml:space="preserve">
-				<source>Element</source>
-			</trans-unit>
-			<trans-unit id="mapAttribute" xml:space="preserve">
-				<source>Attribute</source>
-			</trans-unit>
-			<trans-unit id="mapNotMapped" xml:space="preserve">
-				<source>Not mapped</source>
-			</trans-unit>
-			<trans-unit id="mapConfiguration" xml:space="preserve">
-				<source>Configuration</source>
-			</trans-unit>
-			<trans-unit id="mapEditConfiguration" xml:space="preserve">
-				<source>Edit general configuration</source>
-			</trans-unit>
-			<trans-unit id="mapDataProcessing" xml:space="preserve">
-				<source>Data processing</source>
-			</trans-unit>
-			<trans-unit id="mapEditDataProcessing" xml:space="preserve">
-				<source>Edit data processing modifications</source>
-			</trans-unit>
-			<trans-unit id="mapTyposcript" xml:space="preserve">
-				<source>Typoscript</source>
-			</trans-unit>
-			<trans-unit id="mapEditTyposcript" xml:space="preserve">
-				<source>Edit Typoscript</source>
-			</trans-unit>
-			<trans-unit id="mapExtra" xml:space="preserve">
-				<source>Extra</source>
-			</trans-unit>
-			<trans-unit id="mapEditExtra" xml:space="preserve">
-				<source>Edit extra options</source>
-			</trans-unit>
-			<trans-unit id="mapTCEform" xml:space="preserve">
-				<source>Form</source>
-			</trans-unit>
-			<trans-unit id="mapEditTCEform" xml:space="preserve">
-				<source>Edit form configuration</source>
-			</trans-unit>
-			<trans-unit id="mapObjectPath" xml:space="preserve">
-				<source>Object path</source>
-			</trans-unit>
-			<trans-unit id="mapOldStyleColumnNumber" xml:space="preserve">
-				<source>Old style column number</source>
-			</trans-unit>
-			<trans-unit id="mapOldStyleColumnNumber_label" xml:space="preserve">
-				<source>Column number (0=normal, 1=left, 2=right, 3=border)</source>
-			</trans-unit>
-			<trans-unit id="mapEnableDragDrop" xml:space="preserve">
-				<source>Enable Drag&amp;Drop in this container</source>
-			</trans-unit>
-			<trans-unit id="errorNoContentInFile" xml:space="preserve">
-				<source>No content found in file reference</source>
-			</trans-unit>
-			<trans-unit id="errorNoFileToDisplay" xml:space="preserve">
-				<source>No file to display</source>
-			</trans-unit>
-			<trans-unit id="error" xml:space="preserve">
-				<source>Error</source>
-			</trans-unit>
-			<trans-unit id="errorNoStorageFolder" xml:space="preserve">
-				<source>No accessible Storage Folder found - please create one immediately!</source>
-			</trans-unit>
-			<trans-unit id="errorTONotSaved" xml:space="preserve">
-				<source>No Template Object was created although the Data Structure was (UID %s)!</source>
-			</trans-unit>
-			<trans-unit id="errorTONotCreated" xml:space="preserve">
-				<source>No Data Structure was created!</source>
-			</trans-unit>
-			<trans-unit id="errorNoUidFound" xml:space="preserve">
-				<source>No UID was found pointing to a Template Object record.</source>
-			</trans-unit>
-			<trans-unit id="errorNoDSrecord" xml:space="preserve">
-				<source>ERROR: No Data Structure Record with the UID %s</source>
-			</trans-unit>
-			<trans-unit id="errorInDSO" xml:space="preserve">
-				<source>Data Structure Object ERROR</source>
-			</trans-unit>
-			<trans-unit id="errorNoDSfound" xml:space="preserve">
-				<source>No Data Structure Record could be found with UID &quot;%s&quot;!</source>
-			</trans-unit>
-			<trans-unit id="errorFileNotFound" xml:space="preserve">
-				<source>The file &quot;%s&quot; could not be found!</source>
-			</trans-unit>
-			<trans-unit id="errorNoTOfound" xml:space="preserve">
-				<source>No Template Object Record with the UID &quot;%s&quot;!</source>
-			</trans-unit>
-			<trans-unit id="errorNoToTitleDefined" xml:space="preserve">
-				<source>No &quot;title&quot; defined, unable to create DS/TO.</source>
-			</trans-unit>
-			<trans-unit id="validateTpl" xml:space="preserve">
-				<source>Validate template file (on validator.w3c.org)</source>
-			</trans-unit>
-		</body>
-	</file>
+            </trans-unit>
+            <trans-unit id="renderTO_editDSTO" xml:space="preserve">
+                <source>Modify DS / TO</source>
+            </trans-unit>
+            <trans-unit id="renderTO_dsFile" xml:space="preserve">
+                <source>Data Structure File</source>
+            </trans-unit>
+            <trans-unit id="renderTO_toInfo" xml:space="preserve">
+                <source>Template Object Information</source>
+            </trans-unit>
+            <trans-unit id="rootMultiTemplate_title" xml:space="preserve">
+                <source>ROOT of MultiTemplate</source>
+            </trans-unit>
+            <trans-unit id="rootMultiTemplate_description" xml:space="preserve">
+                <source>Select the ROOT container for this template project. Probably just select a body-tag or some other HTML element which encapsulates ALL sub templates!</source>
+            </trans-unit>
+            <trans-unit id="msgMappingIsDifferent" xml:space="preserve">
+                <source>The current mapping information is different from the mapping information in the Template Object</source>
+            </trans-unit>
+            <trans-unit id="msgDSTOSaved" xml:space="preserve">
+                <source>Data Structure (UID %s) and Template Record (UID %s) was saved in PID %s</source>
+            </trans-unit>
+            <trans-unit id="msgDSTOUpdated" xml:space="preserve">
+                <source>Data Structure (UID %s) and Template Record (UID %s) was updated</source>
+            </trans-unit>
+            <trans-unit id="msgMappingSaved" xml:space="preserve">
+                <source>Mapping information was saved to the current Template Object!</source>
+            </trans-unit>
+            <trans-unit id="msgHeaderSet" xml:space="preserve">
+                <source>Do not forget to press &quot;Set&quot; if header parts are changed!</source>
+            </trans-unit>
+            <trans-unit id="include" xml:space="preserve">
+                <source>Include</source>
+            </trans-unit>
+            <trans-unit id="tag" xml:space="preserve">
+                <source>Tag</source>
+            </trans-unit>
+            <trans-unit id="tagContent" xml:space="preserve">
+                <source>Tag Content</source>
+            </trans-unit>
+            <trans-unit id="mapDataElement" xml:space="preserve">
+                <source>Data Element</source>
+            </trans-unit>
+            <trans-unit id="mapField" xml:space="preserve">
+                <source>Field</source>
+            </trans-unit>
+            <trans-unit id="mapInstructions" xml:space="preserve">
+                <source>Mapping Instructions</source>
+            </trans-unit>
+            <trans-unit id="mapSampleData" xml:space="preserve">
+                <source>Sample Data</source>
+            </trans-unit>
+            <trans-unit id="mapElementPreset" xml:space="preserve">
+                <source>Element Preset</source>
+            </trans-unit>
+            <trans-unit id="mapHTMLpath" xml:space="preserve">
+                <source>HTML-path</source>
+            </trans-unit>
+            <trans-unit id="mapAction" xml:space="preserve">
+                <source>Action</source>
+            </trans-unit>
+            <trans-unit id="mapRules" xml:space="preserve">
+                <source>Rules</source>
+            </trans-unit>
+            <trans-unit id="mapEdit" xml:space="preserve">
+                <source>Edit</source>
+            </trans-unit>
+            <trans-unit id="mapMappingWindow" xml:space="preserve">
+                <source>Mapping Window</source>
+            </trans-unit>
+            <trans-unit id="mapPreviewInfo" xml:space="preserve">
+                <source>Preview of Data Structure sample data merged into the mapped tags</source>
+            </trans-unit>
+            <trans-unit id="mapDSelement" xml:space="preserve">
+                <source>Mapping Data Element</source>
+            </trans-unit>
+            <trans-unit id="mapLimitToTags" xml:space="preserve">
+                <source>Limiting to tags</source>
+            </trans-unit>
+            <trans-unit id="mapWarningElementChange" xml:space="preserve">
+                <source>Changing element type will change your existing settings!</source>
+            </trans-unit>
+            <trans-unit id="displayDSTitleTranslated" xml:space="preserve">
+                <source>This title is translated!</source>
+            </trans-unit>
+            <trans-unit id="displayDSContentFound" xml:space="preserve">
+                <source>Content found (%s chars)</source>
+            </trans-unit>
+            <trans-unit id="displayDSContentEmpty" xml:space="preserve">
+                <source>Content empty.</source>
+            </trans-unit>
+            <trans-unit id="buttonRemap" xml:space="preserve">
+                <source>Re-Map</source>
+            </trans-unit>
+            <trans-unit id="buttonRemapTitle" xml:space="preserve">
+                <source>Map this DS element to another HTML element in template file.</source>
+            </trans-unit>
+            <trans-unit id="buttonChangeMode" xml:space="preserve">
+                <source>Change Mode</source>
+            </trans-unit>
+            <trans-unit id="buttonChangeModeTitle" xml:space="preserve">
+                <source>Change mapping mode, eg. from INNER to OUTER etc.</source>
+            </trans-unit>
+            <trans-unit id="msgNoContentFound" xml:space="preserve">
+                <source>No content found!</source>
+            </trans-unit>
+            <trans-unit id="msgHowToMap" xml:space="preserve">
+                <source>Click a tag-icon in the window below to map this element.</source>
+            </trans-unit>
+            <trans-unit id="buttonMap" xml:space="preserve">
+                <source>Map</source>
+            </trans-unit>
+            <trans-unit id="editEntry" xml:space="preserve">
+                <source>Edit entry</source>
+            </trans-unit>
+            <trans-unit id="deleteEntry" xml:space="preserve">
+                <source>DELETE entry</source>
+            </trans-unit>
+            <trans-unit id="confirmDeleteEntry" xml:space="preserve">
+                <source>Are you sure to delete this Data Structure entry?</source>
+            </trans-unit>
+            <trans-unit id="noSampleData" xml:space="preserve">
+                <source>No sample data</source>
+            </trans-unit>
+            <trans-unit id="mapEnterNewFieldname" xml:space="preserve">
+                <source>Enter new fieldname</source>
+            </trans-unit>
+            <trans-unit id="mapPresets_plainInput" xml:space="preserve">
+                <source>Plain input field</source>
+            </trans-unit>
+            <trans-unit id="mapPresets_headerField" xml:space="preserve">
+                <source>Header field</source>
+            </trans-unit>
+            <trans-unit id="mapPresets_gHederField" xml:space="preserve">
+                <source>Header field, Graphical</source>
+            </trans-unit>
+            <trans-unit id="mapPresets_textarea" xml:space="preserve">
+                <source>Text area for bodytext</source>
+            </trans-unit>
+            <trans-unit id="mapPresets_rte" xml:space="preserve">
+                <source>Rich text editor for bodytext</source>
+            </trans-unit>
+            <trans-unit id="mapPresets_linkField" xml:space="preserve">
+                <source>Link field</source>
+            </trans-unit>
+            <trans-unit id="mapPresets_integer" xml:space="preserve">
+                <source>Integer value</source>
+            </trans-unit>
+            <trans-unit id="mapPresets_imageFixed" xml:space="preserve">
+                <source>Image field, fixed W+H</source>
+            </trans-unit>
+            <trans-unit id="mapPresets_select" xml:space="preserve">
+                <source>Selector box</source>
+            </trans-unit>
+            <trans-unit id="mapPresets_check" xml:space="preserve">
+                <source>Check box</source>
+            </trans-unit>
+            <trans-unit id="mapPresets_image" xml:space="preserve">
+                <source>Image field</source>
+            </trans-unit>
+            <trans-unit id="mapPresets_ce" xml:space="preserve">
+                <source>Page-Content Elements [Pos.: %s]</source>
+            </trans-unit>
+            <trans-unit id="mapPresets_TSobjectPath" xml:space="preserve">
+                <source>TypoScript Object Path</source>
+            </trans-unit>
+            <trans-unit id="mapPresets_none" xml:space="preserve">
+                <source>None (TypoScript only)</source>
+            </trans-unit>
+            <trans-unit id="mapPresets_customTCA" xml:space="preserve">
+                <source>Custom form setup (no preset used)</source>
+            </trans-unit>
+            <trans-unit id="mapPresetGroups_tceFields" xml:space="preserve">
+                <source>Form Fields</source>
+            </trans-unit>
+            <trans-unit id="mapPresetGroups_ts" xml:space="preserve">
+                <source>TypoScript Elements</source>
+            </trans-unit>
+            <trans-unit id="mapPresetGroups_other" xml:space="preserve">
+                <source>Other</source>
+            </trans-unit>
+            <trans-unit id="mapTSconstants" xml:space="preserve">
+                <source>TypoScript Constants</source>
+            </trans-unit>
+            <trans-unit id="mapTScode" xml:space="preserve">
+                <source>TypoScript Code</source>
+            </trans-unit>
+            <trans-unit id="mapExtraOptions" xml:space="preserve">
+                <source>Extra options</source>
+            </trans-unit>
+            <trans-unit id="mapPostProcesses" xml:space="preserve">
+                <source>Applied post-processes</source>
+            </trans-unit>
+            <trans-unit id="mapEnablePreview" xml:space="preserve">
+                <source>Enable data preview in Page-Module</source>
+            </trans-unit>
+            <trans-unit id="mapEnablePreview.enable" xml:space="preserve">
+                <source>Enable</source>
+            </trans-unit>
+            <trans-unit id="mapEnablePreview.disable" xml:space="preserve">
+                <source>Disable</source>
+            </trans-unit>
+            <trans-unit id="mapPPcastInteger" xml:space="preserve">
+                <source>Cast content to integer</source>
+            </trans-unit>
+            <trans-unit id="mapPPhsc" xml:space="preserve">
+                <source>Pass content through htmlSpecialChars (HSC)</source>
+            </trans-unit>
+            <trans-unit id="mapCustomStdWrap" xml:space="preserve">
+                <source>Custom stdWrap</source>
+            </trans-unit>
+            <trans-unit id="mapTCElabel" xml:space="preserve">
+                <source>Form label</source>
+            </trans-unit>
+            <trans-unit id="mapTCEconf" xml:space="preserve">
+                <source>Form configuration</source>
+            </trans-unit>
+            <trans-unit id="mapTCEextras" xml:space="preserve">
+                <source>Form extras</source>
+            </trans-unit>
+            <trans-unit id="mapElContainers" xml:space="preserve">
+                <source>Containers</source>
+            </trans-unit>
+            <trans-unit id="mapElElements" xml:space="preserve">
+                <source>Elements</source>
+            </trans-unit>
+            <trans-unit id="mapSection" xml:space="preserve">
+                <source>Section of elements</source>
+            </trans-unit>
+            <trans-unit id="mapContainer" xml:space="preserve">
+                <source>Container for elements</source>
+            </trans-unit>
+            <trans-unit id="mapElement" xml:space="preserve">
+                <source>Element</source>
+            </trans-unit>
+            <trans-unit id="mapAttribute" xml:space="preserve">
+                <source>Attribute</source>
+            </trans-unit>
+            <trans-unit id="mapNotMapped" xml:space="preserve">
+                <source>Not mapped</source>
+            </trans-unit>
+            <trans-unit id="mapConfiguration" xml:space="preserve">
+                <source>Configuration</source>
+            </trans-unit>
+            <trans-unit id="mapEditConfiguration" xml:space="preserve">
+                <source>Edit general configuration</source>
+            </trans-unit>
+            <trans-unit id="mapDataProcessing" xml:space="preserve">
+                <source>Data processing</source>
+            </trans-unit>
+            <trans-unit id="mapEditDataProcessing" xml:space="preserve">
+                <source>Edit data processing modifications</source>
+            </trans-unit>
+            <trans-unit id="mapTyposcript" xml:space="preserve">
+                <source>Typoscript</source>
+            </trans-unit>
+            <trans-unit id="mapEditTyposcript" xml:space="preserve">
+                <source>Edit Typoscript</source>
+            </trans-unit>
+            <trans-unit id="mapExtra" xml:space="preserve">
+                <source>Extra</source>
+            </trans-unit>
+            <trans-unit id="mapEditExtra" xml:space="preserve">
+                <source>Edit extra options</source>
+            </trans-unit>
+            <trans-unit id="mapTCEform" xml:space="preserve">
+                <source>Form</source>
+            </trans-unit>
+            <trans-unit id="mapEditTCEform" xml:space="preserve">
+                <source>Edit form configuration</source>
+            </trans-unit>
+            <trans-unit id="mapObjectPath" xml:space="preserve">
+                <source>Object path</source>
+            </trans-unit>
+            <trans-unit id="mapOldStyleColumnNumber" xml:space="preserve">
+                <source>Old style column number</source>
+            </trans-unit>
+            <trans-unit id="mapOldStyleColumnNumber_label" xml:space="preserve">
+                <source>Column number (0=normal, 1=left, 2=right, 3=border)</source>
+            </trans-unit>
+            <trans-unit id="mapEnableDragDrop" xml:space="preserve">
+                <source>Enable Drag&amp;Drop in this container</source>
+            </trans-unit>
+            <trans-unit id="errorNoContentInFile" xml:space="preserve">
+                <source>No content found in file reference</source>
+            </trans-unit>
+            <trans-unit id="errorNoFileToDisplay" xml:space="preserve">
+                <source>No file to display</source>
+            </trans-unit>
+            <trans-unit id="error" xml:space="preserve">
+                <source>Error</source>
+            </trans-unit>
+            <trans-unit id="errorNoStorageFolder" xml:space="preserve">
+                <source>No accessible Storage Folder found - please create one immediately!</source>
+            </trans-unit>
+            <trans-unit id="errorTONotSaved" xml:space="preserve">
+                <source>No Template Object was created although the Data Structure was (UID %s)!</source>
+            </trans-unit>
+            <trans-unit id="errorTONotCreated" xml:space="preserve">
+                <source>No Data Structure was created!</source>
+            </trans-unit>
+            <trans-unit id="errorNoUidFound" xml:space="preserve">
+                <source>No UID was found pointing to a Template Object record.</source>
+            </trans-unit>
+            <trans-unit id="errorNoDSrecord" xml:space="preserve">
+                <source>ERROR: No Data Structure Record with the UID %s</source>
+            </trans-unit>
+            <trans-unit id="errorInDSO" xml:space="preserve">
+                <source>Data Structure Object ERROR</source>
+            </trans-unit>
+            <trans-unit id="errorNoDSfound" xml:space="preserve">
+                <source>No Data Structure Record could be found with UID &quot;%s&quot;!</source>
+            </trans-unit>
+            <trans-unit id="errorFileNotFound" xml:space="preserve">
+                <source>The file &quot;%s&quot; could not be found!</source>
+            </trans-unit>
+            <trans-unit id="errorNoTOfound" xml:space="preserve">
+                <source>No Template Object Record with the UID &quot;%s&quot;!</source>
+            </trans-unit>
+            <trans-unit id="errorNoToTitleDefined" xml:space="preserve">
+                <source>No &quot;title&quot; defined, unable to create DS/TO.</source>
+            </trans-unit>
+            <trans-unit id="validateTpl" xml:space="preserve">
+                <source>Validate template file (on validator.w3c.org)</source>
+            </trans-unit>
+        </body>
+    </file>
 </xliff>
