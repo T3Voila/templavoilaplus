@@ -328,6 +328,9 @@
             <trans-unit id="fce" xml:space="preserve">
                 <source>Flexible content</source>
             </trans-unit>
+            <trans-unit id="noaccess" xml:space="preserve">
+                <source>No Access</source>
+            </trans-unit>
         </body>
     </file>
 </xliff>

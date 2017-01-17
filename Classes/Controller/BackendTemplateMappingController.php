@@ -374,7 +374,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
         // Access check!
         // The page will show only if there is a valid page and if this page may be viewed by the user
         $pageInfoArr = BackendUtility::readPageAccess($this->id, $this->perms_clause);
-        $access = is_array($pageInfoArr) ? 1 : 0;
+        $access = is_array($pageInfoArr);
 
         if ($access) {
                     // Add custom styles
@@ -405,13 +405,11 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
 
             $this->main_mode();
         } else {
-            $flashMessage = GeneralUtility::makeInstance(
-                \TYPO3\CMS\Core\Messaging\FlashMessage::class,
+            $this->moduleTemplate->addFlashMessage(
                 TemplaVoilaUtility::getLanguageService()->getLL('noaccess'),
-                '',
-                \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR
+                TemplaVoilaUtility::getLanguageService()->getLL('title'),
+                \TYPO3\CMS\Core\Messaging\FlashMessage::INFO
             );
-            $this->content = $flashMessage->render();
         }
 
         $title = TemplaVoilaUtility::getLanguageService()->getLL('mappingTitle');
@@ -423,7 +421,9 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
 
         $this->moduleTemplate->setForm('<form action="' . $this->linkThisScript([]) . '" method="post" name="pageform">');
 
-        $this->moduleTemplate->setContent($header . $this->content);
+        if ($this->content) {
+            $this->moduleTemplate->setContent($header . $this->content);
+        }
     }
 
     /**

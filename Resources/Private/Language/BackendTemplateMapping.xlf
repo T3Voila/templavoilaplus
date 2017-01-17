@@ -583,6 +583,9 @@ You risk that manual changes will be removed without further notice!</source>
             <trans-unit id="validateTpl" xml:space="preserve">
                 <source>Validate template file (on validator.w3c.org)</source>
             </trans-unit>
+            <trans-unit id="noaccess" xml:space="preserve">
+                <source>No Access</source>
+            </trans-unit>
         </body>
     </file>
 </xliff>

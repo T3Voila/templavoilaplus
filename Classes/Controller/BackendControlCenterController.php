@@ -151,7 +151,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
         // Access check!
         // The page will show only if there is a valid page and if this page may be viewed by the user
         $pageInfoArr = BackendUtility::readPageAccess($this->id, $this->perms_clause);
-        $access = is_array($pageInfoArr) ? 1 : 0;
+        $access = is_array($pageInfoArr);
 
         if ($access) {
             // Draw the header.
@@ -188,13 +188,11 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
 
             $this->renderModuleContent();
         } else {
-            $flashMessage = GeneralUtility::makeInstance(
-                \TYPO3\CMS\Core\Messaging\FlashMessage::class,
+            $this->moduleTemplate->addFlashMessage(
                 TemplaVoilaUtility::getLanguageService()->getLL('noaccess'),
-                '',
-                \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR
+                TemplaVoilaUtility::getLanguageService()->getLL('title'),
+                \TYPO3\CMS\Core\Messaging\FlashMessage::INFO
             );
-            $this->content = $flashMessage->render();
         }
 
         $title = TemplaVoilaUtility::getLanguageService()->getLL('title');
@@ -204,7 +202,9 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
         $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($pageInfoArr);
         $this->setDocHeaderButtons(!isset($pageInfoArr['uid']));
 
-        $this->moduleTemplate->setContent($header . $this->content);
+        if ($this->content) {
+            $this->moduleTemplate->setContent($header . $this->content);
+        }
     }
 
     /**
