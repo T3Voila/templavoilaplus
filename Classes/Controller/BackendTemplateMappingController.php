@@ -668,7 +668,6 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
 
             // Converting GPvars into a "cmd" value:
             $cmd = '';
-            $msg = array();
             if (GeneralUtility::_GP('_load_ds_xml')) { // Loading DS from XML or TO uid
                 $cmd = 'load_ds_xml';
             } elseif (GeneralUtility::_GP('_clear')) { // Resetting mapping/DS
@@ -676,13 +675,11 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
             } elseif (GeneralUtility::_GP('_saveDSandTO')) { // Saving DS and TO to records.
                 if (!strlen(trim($this->_saveDSandTO_title))) {
                     $cmd = 'saveScreen';
-                    $flashMessage = GeneralUtility::makeInstance(
-                        \TYPO3\CMS\Core\Messaging\FlashMessage::class,
+                    $this->moduleTemplate->addFlashMessage(
                         TemplaVoilaUtility::getLanguageService()->getLL('errorNoToTitleDefined'),
-                        '',
+                        TemplaVoilaUtility::getLanguageService()->getLL('error'),
                         \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR
                     );
-                    $msg[] = $flashMessage->render();
                 } else {
                     $cmd = 'saveDSandTO';
                 }
@@ -714,9 +711,11 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
 
             // Checking Storage Folder PID:
             if (!count($this->storageFolders)) {
-                $msg[] = $this->iconFactory->getIcon('status-dialog-error', Icon::SIZE_SMALL)->render()
-                    . '<strong>' . TemplaVoilaUtility::getLanguageService()->getLL('error') . '</strong> '
-                    . TemplaVoilaUtility::getLanguageService()->getLL('errorNoStorageFolder');
+                $this->moduleTemplate->addFlashMessage(
+                    TemplaVoilaUtility::getLanguageService()->getLL('errorNoStorageFolder'),
+                    TemplaVoilaUtility::getLanguageService()->getLL('error'),
+                    \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR
+                );
             }
 
             // Session data
@@ -917,20 +916,31 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                         $tce->process_datamap();
                         $newToID = (int)$tce->substNEWwithIDs['NEW'];
                         if ($newToID) {
-                            $msg[] = $this->iconFactory->getIcon('status-dialog-ok', Icon::SIZE_SMALL)->render()
-                                . sprintf(TemplaVoilaUtility::getLanguageService()->getLL('msgDSTOSaved'),
+                            $this->moduleTemplate->addFlashMessage(
+                                sprintf(
+                                    TemplaVoilaUtility::getLanguageService()->getLL('msgDSTOSaved'),
                                     $dataArr['tx_templavoila_tmplobj']['NEW']['datastructure'],
-                                    $tce->substNEWwithIDs['NEW'], $this->_saveDSandTO_pid);
+                                    $tce->substNEWwithIDs['NEW'], $this->_saveDSandTO_pid
+                                ),
+                                '',
+                                \TYPO3\CMS\Core\Messaging\FlashMessage::OK
+                            );
                         } else {
-                            $msg[] = $this->iconFactory->getIcon('status-dialog-warning', Icon::SIZE_SMALL)->render()
-                                . '<strong>' . TemplaVoilaUtility::getLanguageService()->getLL('error') . ':</strong> '
-                                . sprintf(TemplaVoilaUtility::getLanguageService()->getLL('errorTONotSaved'), $dataArr['tx_templavoila_tmplobj']['NEW']['datastructure']);
+                            $this->moduleTemplate->addFlashMessage(
+                                sprintf(
+                                    TemplaVoilaUtility::getLanguageService()->getLL('errorTONotSaved'),
+                                    $dataArr['tx_templavoila_tmplobj']['NEW']['datastructure']
+                                ),
+                                TemplaVoilaUtility::getLanguageService()->getLL('error'),
+                                \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR
+                            );
                         }
                     } else {
-                        $msg[] = $this->iconFactory->getIcon('status-dialog-warning', Icon::SIZE_SMALL)->render()
-                            . ' border="0" align="top" class="absmiddle" alt="" />'
-                            . '<strong>' . TemplaVoilaUtility::getLanguageService()->getLL('error') . ':</strong> '
-                            . TemplaVoilaUtility::getLanguageService()->getLL('errorTONotCreated');
+                        $this->moduleTemplate->addFlashMessage(
+                            TemplaVoilaUtility::getLanguageService()->getLL('errorTONotCreated'),
+                            TemplaVoilaUtility::getLanguageService()->getLL('error'),
+                            \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR
+                        );
                     }
 
                     unset($tce);
@@ -1000,8 +1010,15 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
 
                         unset($tce);
 
-                        $msg[] = $this->iconFactory->getIcon('status-dialog-notification', Icon::SIZE_SMALL)->render()
-                            . sprintf(TemplaVoilaUtility::getLanguageService()->getLL('msgDSTOUpdated'), $dsREC['uid'], $toREC['uid']);
+                        $this->moduleTemplate->addFlashMessage(
+                            sprintf(
+                                TemplaVoilaUtility::getLanguageService()->getLL('msgDSTOUpdated'),
+                                $dsREC['uid'],
+                                $toREC['uid']
+                            ),
+                            '',
+                            \TYPO3\CMS\Core\Messaging\FlashMessage::NOTICE
+                        );
 
                         if ($cmd == 'updateDSandTO') {
                             if (!$this->_load_ds_xml_to) {
@@ -1071,17 +1088,6 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                     ' . implode('', $tRows) . '
                 </table><br />
             ';
-
-            // Messages:
-            if (is_array($msg)) {
-                $content .= '
-
-                    <!--
-                        Messages:
-                    -->
-                    ' . implode('<br />', $msg) . '
-                ';
-            }
 
             // Generate selector box options:
             // Storage Folders for elements:
@@ -1628,11 +1634,10 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
      *
      * @return array Array with two keys (0/1) with a) content and b) currentMappingInfo which is retrieved inside (currentMappingInfo will be different based on whether "head" or "body" content is "mapped")
      * @see renderTO()
+     * @TODO Is called twice for viewing tabs header parts and body mapping: As it also does processing, it does all processing twice.
      */
     public function renderTO_editProcessing(&$dataStruct, $row, $theFile, $headerPart = 0)
     {
-        $msg = array();
-
         // Converting GPvars into a "cmd" value:
         $cmd = '';
         if (GeneralUtility::_GP('_reload_from')) { // Reverting to old values in TO
@@ -1772,13 +1777,13 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
             $tce->start($dataArr, array());
             $tce->process_datamap();
             unset($tce);
-            $flashMessage = GeneralUtility::makeInstance(
-                \TYPO3\CMS\Core\Messaging\FlashMessage::class,
+
+            $this->moduleTemplate->addFlashMessage(
                 TemplaVoilaUtility::getLanguageService()->getLL('msgMappingSaved'),
                 '',
                 \TYPO3\CMS\Core\Messaging\FlashMessage::OK
             );
-            $msg[] .= $flashMessage->render();
+
             $row = BackendUtility::getRecordWSOL('tx_templavoila_tmplobj', $this->displayUid);
             $templatemapping = unserialize($row['templatemapping']);
 
@@ -1812,17 +1817,14 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
         ) {
             $menuItems[] = '<input type="submit" name="_reload_from" value="' . TemplaVoilaUtility::getLanguageService()->getLL('buttonRevert') . '" title="' . sprintf(TemplaVoilaUtility::getLanguageService()->getLL('buttonRevertTitle'), $headerPart ? 'HEAD' : 'BODY') . '" />';
 
-            $flashMessage = GeneralUtility::makeInstance(
-                \TYPO3\CMS\Core\Messaging\FlashMessage::class,
+            $this->moduleTemplate->addFlashMessage(
                 TemplaVoilaUtility::getLanguageService()->getLL('msgMappingIsDifferent'),
                 '',
                 \TYPO3\CMS\Core\Messaging\FlashMessage::INFO
             );
-            $msg[] .= $flashMessage->render();
         }
 
         $content = '
-
             <!--
                 Menu for saving Template Objects
             -->
@@ -1833,9 +1835,6 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                 </tr>
             </table>
         ';
-
-        // @todo - replace with FlashMessage Queue
-        $content .= implode('', $msg);
 
         return array($content, $headerPart ? $currentMappingInfo_head : $currentMappingInfo);
     }
@@ -1903,13 +1902,11 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                 ' . $bodyTagRow . '
             </table><br />';
 
-        $flashMessage = GeneralUtility::makeInstance(
-            \TYPO3\CMS\Core\Messaging\FlashMessage::class,
+        $this->moduleTemplate->addFlashMessage(
             TemplaVoilaUtility::getLanguageService()->getLL('msgHeaderSet'),
             '',
             \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING
         );
-        $headerParts .= $flashMessage->render();
 
         $headerParts .= $this->cshItem('xMOD_tx_templavoila', 'mapping_to_headerParts_buttons') . $htmlAfterDSTable;
 
