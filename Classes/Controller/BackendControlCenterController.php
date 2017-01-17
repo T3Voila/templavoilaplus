@@ -1757,14 +1757,17 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
         $resourceFactory = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance();
         $defaultStorage = $resourceFactory->getDefaultStorage();
 
-        foreach ($paths as $path) {
-            try {
-                $folder = $defaultStorage->getFolder('/' . $path);
-            } catch (\Exception $e) {
-                // Blank catch, as we exspect that not all pathes may exists.
-                continue;
+        // Check if a default storage was defined
+        if ($defaultStorage) {
+            foreach ($paths as $path) {
+                try {
+                    $folder = $defaultStorage->getFolder('/' . $path);
+                } catch (\Exception $e) {
+                    // Blank catch, as we exspect that not all pathes may exists.
+                    continue;
+                }
+                $templateFolders[] = $folder;
             }
-            $templateFolders[] = $folder;
         }
 
         return $templateFolders;
