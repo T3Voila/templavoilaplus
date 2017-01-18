@@ -441,6 +441,8 @@ class TcaFlexProcess implements FormDataProviderInterface
 
             foreach ($languagesOnSheetLevel as $isoSheetLevel) {
                 $langSheetLevel = 'l' . $isoSheetLevel;
+                $result['processedTca']['columns'][$fieldName]['config']['ds']['sheets'][$dataStructureSheetName][$langSheetLevel]
+                    = $result['processedTca']['columns'][$fieldName]['config']['ds']['sheets'][$dataStructureSheetName];
                 foreach ($dataStructureSheetElements as $dataStructureSheetElementName => $dataStructureSheetElementDefinition) {
                     if (isset($dataStructureSheetElementDefinition['type']) && $dataStructureSheetElementDefinition['type'] === 'array'
                         && isset($dataStructureSheetElementDefinition['section']) && (string)$dataStructureSheetElementDefinition['section'] === '1'
@@ -518,7 +520,7 @@ class TcaFlexProcess implements FormDataProviderInterface
                                                 // Set TCA structure result, actually, this call *might* be obsolete since the "dummy"
                                                 // handling below will set it again.
                                                 $result['processedTca']['columns'][$fieldName]['config']['ds']
-                                                ['sheets'][$dataStructureSheetName]['ROOT']['el'][$dataStructureSheetElementName]['el']
+                                                ['sheets'][$dataStructureSheetName][$langSheetLevel]['ROOT']['el'][$dataStructureSheetElementName]['el']
                                                 [$aContainerName]['el'][$singleFieldName]
                                                     = $flexSegmentResult['processedTca']['columns'][$singleFieldName];
                                             }
@@ -531,16 +533,18 @@ class TcaFlexProcess implements FormDataProviderInterface
                                                     // Set data value result
                                                     if (array_key_exists($singleFieldName, $flexSegmentResult['databaseRow'])) {
                                                         $result['databaseRow'][$fieldName]
-                                                        ['data'][$dataStructureSheetName][$langSheetLevel][$dataStructureSheetElementName]
-                                                        ['el'][$aContainerNumber][$aContainerName]['el'][$singleFieldName][$langElementLevel] =
-                                                            $flexSegmentResult['databaseRow'][$singleFieldName];
+                                                        ['data'][$dataStructureSheetName][$langSheetLevel][$dataStructureSheetElementName]['el']
+                                                        [$aContainerNumber][$aContainerName]['el']
+                                                        [$singleFieldName][$langElementLevel]
+                                                            = $flexSegmentResult['databaseRow'][$singleFieldName];
                                                     }
                                                     // Set TCA structure result, actually, this call *might* be obsolete since the "dummy"
                                                     // handling below will set it again.
                                                     $result['processedTca']['columns'][$fieldName]['config']['ds']
-                                                    ['sheets'][$dataStructureSheetName]['ROOT']['el']
-                                                    [$dataStructureSheetElementName]['el'][$aContainerName]['el'][$singleFieldName] =
-                                                        $flexSegmentResult['processedTca']['columns'][$singleFieldName];
+                                                    ['sheets'][$dataStructureSheetName][$langSheetLevel]['ROOT']['el'][$dataStructureSheetElementName]['el']
+                                                    [$aContainerName]['el']
+                                                    [$singleFieldName]
+                                                        = $flexSegmentResult['processedTca']['columns'][$singleFieldName];
                                                 }
                                             }
                                         }
@@ -610,8 +614,8 @@ class TcaFlexProcess implements FormDataProviderInterface
                                                  = $flexSegmentResult['databaseRow'][$singleFieldName];
                                             }
                                             $result['processedTca']['columns'][$fieldName]['config']['ds']
-                                            ['sheets'][$dataStructureSheetName]['ROOT']['el'][$dataStructureSheetElementName]['el']
-                                            [$possibleContainerName]['el'][$singleFieldName]
+                                            ['sheets'][$dataStructureSheetName][$langSheetLevel]['ROOT']['el'][$dataStructureSheetElementName]['el']
+                                            [$possibleContainerName]['el'][$singleFieldName][$langElementLevel]
                                                 = $flexSegmentResult['processedTca']['columns'][$singleFieldName];
                                         }
                                     }
@@ -664,7 +668,7 @@ class TcaFlexProcess implements FormDataProviderInterface
                             }
                             // Set TCA structure result
                             $result['processedTca']['columns'][$fieldName]['config']['ds']
-                            ['sheets'][$dataStructureSheetName]['ROOT']['el'][$dataStructureSheetElementName]
+                            ['sheets'][$dataStructureSheetName][$langSheetLevel]['ROOT']['el'][$dataStructureSheetElementName][$langElementLevel]
                                 = $flexSegmentResult['processedTca']['columns'][$dataStructureSheetElementName];
                         }
                     }
@@ -683,7 +687,7 @@ class TcaFlexProcess implements FormDataProviderInterface
                             }
                             // Set TCA structure result
                             $result['processedTca']['columns'][$fieldName]['config']['ds']
-                            ['sheets'][$dataStructureSheetName]['ROOT']['el'][$dataStructureSheetElementName]
+                            ['sheets'][$dataStructureSheetName][$langSheetLevel]['ROOT']['el'][$dataStructureSheetElementName][$langElementLevel]
                                 = $flexSegmentResult['processedTca']['columns'][$dataStructureSheetElementName];
                         }
                     }

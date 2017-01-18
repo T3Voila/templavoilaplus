@@ -50,6 +50,7 @@ class FlexFormTabsContainer extends AbstractContainer
         $domIdPrefix = 'DTM-' . GeneralUtility::shortMD5($this->data['parameterArray']['itemFormElName'] . $flexFormCurrentLanguage);
         $tabCounter = 0;
         $tabElements = array();
+
         foreach ($flexFormDataStructureArray['sheets'] as $sheetName => $sheetDataStructure) {
             $flexFormRowSheetDataSubPart = $flexFormRowData['data'][$sheetName][$flexFormCurrentLanguage];
 
@@ -73,7 +74,7 @@ class FlexFormTabsContainer extends AbstractContainer
             }
 
             $options = $this->data;
-            $options['flexFormDataStructureArray'] = $sheetDataStructure['ROOT']['el'];
+            $options['flexFormDataStructureArray'] = $sheetDataStructure[$flexFormCurrentLanguage]['ROOT']['el'];
             $options['flexFormRowData'] = $flexFormRowSheetDataSubPart;
             $options['flexFormFormPrefix'] = '[data][' . $sheetName . '][' . $flexFormCurrentLanguage . ']';
             $options['parameterArray'] = $parameterArray;

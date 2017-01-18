@@ -68,7 +68,7 @@ class FlexFormNoTabsContainer extends AbstractContainer
         }
 
         $options = $this->data;
-        $options['flexFormDataStructureArray'] = $flexFormDataStructureArray['sheets'][$sheetName]['ROOT']['el'];
+        $options['flexFormDataStructureArray'] = $flexFormDataStructureArray['sheets'][$sheetName][$flexFormCurrentLanguage]['ROOT']['el'];
         $options['flexFormRowData'] = $flexFormRowDataSubPart;
         $options['flexFormFormPrefix'] = '[data][' . $sheetName . '][' . $flexFormCurrentLanguage . ']';
         $options['parameterArray'] = $parameterArray;

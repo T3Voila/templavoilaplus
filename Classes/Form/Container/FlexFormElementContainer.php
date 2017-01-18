@@ -53,6 +53,15 @@ class FlexFormElementContainer extends AbstractContainer
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $resultArray = $this->initializeResultArray();
 
+        if (is_array($metaData) && isset($metaData['langChildren']) && isset($metaData['languagesOnElement'])) {
+            $lkeys = $metaData['languagesOnElement'];
+            array_walk($lkeys, function (&$value) {
+                $value = 'v' . $value;
+            });
+        } else {
+            $lkeys = array('vDEF');
+        }
+
         foreach ($flexFormDataStructureArray as $flexFormFieldName => $flexFormFieldArray) {
             if (
                 // No item array found at all
@@ -62,7 +71,6 @@ class FlexFormElementContainer extends AbstractContainer
             ) {
                 continue;
             }
-
             if ($flexFormFieldArray['type'] === 'array') {
                 // Section
                 if (empty($flexFormFieldArray['section'])) {
@@ -84,24 +92,16 @@ class FlexFormElementContainer extends AbstractContainer
                 $sectionContainerResult = $this->nodeFactory->create($options)->render();
                 $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $sectionContainerResult);
             } else {
-                if (is_array($metaData) && isset($metaData['langChildren']) && isset($metaData['languagesOnElement'])) {
-                    $lkeys = $metaData['languagesOnElement'];
-                    array_walk($lkeys, function (&$value) {
-                        $value = 'v' . $value;
-                    });
-                } else {
-                    $lkeys = array('vDEF');
-                }
-                $html = array();
+                $html = [];
                 foreach ($lkeys as $lkey) {
                     // Set up options for single element
                     $fakeParameterArray = array(
                         'fieldConf' => array(
-                            'label' => $languageService->sL(trim($flexFormFieldArray['label'])),
-                            'config' => $flexFormFieldArray['config'],
-                            'children' => $flexFormFieldArray['children'],
-                            'defaultExtras' => $flexFormFieldArray['defaultExtras'],
-                            'onChange' => $flexFormFieldArray['onChange'],
+                            'label' => $languageService->sL(trim($flexFormFieldArray[$lkey]['label'])),
+                            'config' => $flexFormFieldArray[$lkey]['config'],
+                            'children' => $flexFormFieldArray[$lkey]['children'],
+                            'defaultExtras' => $flexFormFieldArray[$lkey]['defaultExtras'],
+                            'onChange' => $flexFormFieldArray[$lkey]['onChange'],
                         ),
                     );
 
@@ -145,11 +145,11 @@ class FlexFormElementContainer extends AbstractContainer
                     $options['parameterArray'] = $fakeParameterArray;
                     $options['elementBaseName'] = $this->data['elementBaseName'] . $flexFormFormPrefix . '[' . $flexFormFieldName . '][' . $lkey . ']';
 
-                    if (!empty($flexFormFieldArray['config']['renderType'])) {
-                        $options['renderType'] = $flexFormFieldArray['config']['renderType'];
+                    if (!empty($flexFormFieldArray[$lkey]['config']['renderType'])) {
+                        $options['renderType'] = $flexFormFieldArray[$lkey]['config']['renderType'];
                     } else {
                         // Fallback to type if no renderType is given
-                        $options['renderType'] = $flexFormFieldArray['config']['type'];
+                        $options['renderType'] = $flexFormFieldArray[$lkey]['config']['type'];
                     }
 
                     // After all we may a TemplaVoila type which do not have any rendering.
@@ -182,6 +182,7 @@ class FlexFormElementContainer extends AbstractContainer
                         $languageIcon = $iconFactory->getIcon($this->data['systemLanguageRows'][$languageUid]['flagIconIdentifier'], Icon::SIZE_SMALL)->render();
                         $html[] = $languageIcon;
                     }
+
                     $html[] = BackendUtility::wrapInHelp($parameterArray['_cshKey'], $flexFormFieldName, $processedTitle);
                     $html[] = '</label>';
                     $html[] = '<div class="t3js-formengine-field-item">';
