@@ -646,7 +646,9 @@ class TcaFlexProcess implements FormDataProviderInterface
                         'tableName' => $result['tableName'],
                         'command' => '',
                         'pageTsConfig' => $pageTsConfig,
-                        'databaseRow' => $tcaValueArray,
+                        'databaseRow' => [
+                            'uid' => $result['databaseRow']['uid']
+                        ],
                         'processedTca' => [
                             'ctrl' => [],
                             'columns' => [],
