@@ -491,6 +491,9 @@ class TcaFlexProcess implements FormDataProviderInterface
                                         }
 
                                         foreach ($valueArray as $langElementLevel => $tcaValueArray) {
+                                            // uid of "parent" is given down for inline elements to resolve correctly
+                                            $tcaValueArray['uid'] = $result['databaseRow']['uid'];
+
                                             $inputToFlexFormSegment = [
                                                 'tableName' => $result['tableName'],
                                                 'command' => '',
