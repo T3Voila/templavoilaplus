@@ -640,15 +640,16 @@ class TcaFlexProcess implements FormDataProviderInterface
                 }
 
                 foreach ($tcaValueArrayLanguage as $langElementLevel => $tcaValueArray) {
+                    // uid of "parent" is given down for inline elements to resolve correctly
+                    $tcaValueArray['uid'] = $result['databaseRow']['uid'];
+
                     // process the tca columns for the current sheet
                     $inputToFlexFormSegment = [
                         // tablename of "parent" is given down for inline elements to resolve correctly
                         'tableName' => $result['tableName'],
                         'command' => '',
                         'pageTsConfig' => $pageTsConfig,
-                        'databaseRow' => [
-                            'uid' => $result['databaseRow']['uid']
-                        ],
+                        'databaseRow' => $tcaValueArray,
                         'processedTca' => [
                             'ctrl' => [],
                             'columns' => [],
