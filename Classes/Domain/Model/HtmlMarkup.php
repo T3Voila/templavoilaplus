@@ -1344,19 +1344,16 @@ class HtmlMarkup
      */
     public function checkboxDisplay($str, $recursion, $path, $gnyf = '', $valueStr = 0)
     {
-        static $rows = 0;
-
         if ($valueStr) {
             return trim($str) ? '
-                <tr class="bgColor4">
+                <tr>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
                     <td>' . $this->passthroughHTMLcontent(trim($str), '', 'source') . '</td>
                 </tr>' : '';
         }
 
-        return '
-                <tr class="bgColor' . ($rows++ % 2 == 0 ? '4' : '6') . '">
+        return '<tr>
                     <td><input type="checkbox" name="checkboxElement[]" value="' . $path . '"' . (in_array($path, $this->checkboxPathsSet) ? ' checked="checked"' : '') . ' /></td>
                     <td>' . $gnyf . '</td>
                     <td><pre>' . trim(htmlspecialchars($str)) . '</pre></td>
