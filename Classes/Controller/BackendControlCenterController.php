@@ -331,7 +331,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
         $list = $toRepo->getTemplateStoragePids();
 
         // Traverse the pages found and list in a table:
-        $tRows = array();
+        $tRows = [];
         $tRows[] = '
             <thead>
                 <th class="col-icon" nowrap="nowrap"></th>
@@ -361,7 +361,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
             // Create overview
             $outputString = TemplaVoilaUtility::getLanguageService()->getLL('description_pagesWithCertainDsTo');
             $outputString .= '<br/>';
-            $outputString .= '<table border="0" class="table table-striped table-hover">' . implode('', $tRows) . '</table>';
+            $outputString .= '<table class="table table-striped table-hover">' . implode('', $tRows) . '</table>';
 
             // Add output:
             $this->content .= $outputString;
@@ -413,13 +413,13 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
             $errStat = $this->getErrorLog($scopePointer);
 
             // Add parts for Tab menu:
-            $parts[] = array(
+            $parts[] = [
                 'label' => $label,
                 'icon' => $scopeIcon,
                 'content' => $content,
                 'linkTitle' => 'DS/TO = ' . $dsCount . '/' . $toCount,
-                'stateIcon' => $errStat['iconCode']
-            );
+                'stateIcon' => $errStat['iconCode'],
+            ];
         }
 
         // Find lost Template Objects and add them to a TAB if any are found:
@@ -510,7 +510,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
                         $rTODres = $this->renderTODisplay($toObj, $scope);
                         $TOcontent .= '<a name="to-' . $toObj->getKey() . '"></a>' . $rTODres['HTML'];
                         $indexTO .= '
-                            <tr class="bgColor4">
+                            <tr>
                                 <td></td>
                                 <td>&nbsp;&nbsp;&nbsp;</td>
                                 <td><a href="#to-' . $toObj->getKey() . '">' . htmlspecialchars($toObj->getLabel()) . $toObj->hasParentTemplate() . '</a></td>
@@ -527,23 +527,24 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
                     }
                 }
                 // New-TO link:
-                $TOcontent .= '<a href="#" onclick="' . htmlspecialchars(
-                    BackendUtility::editOnClick(
-                        '&edit[tx_templavoila_tmplobj][' . $newPid . ']=new' .
-                        '&defVals[tx_templavoila_tmplobj][datastructure]=' . rawurlencode($dsObj->getKey()) .
-                        '&defVals[tx_templavoila_tmplobj][title]=' . rawurlencode($newTitle) .
-                        '&defVals[tx_templavoila_tmplobj][fileref]=' . rawurlencode($newFileRef)
+                $TOcontent .= '<a href="#" class="btn btn-default" onclick="'
+                    . htmlspecialchars(
+                        BackendUtility::editOnClick(
+                            '&edit[tx_templavoila_tmplobj][' . $newPid . ']=new'
+                            . '&defVals[tx_templavoila_tmplobj][datastructure]=' . rawurlencode($dsObj->getKey())
+                            . '&defVals[tx_templavoila_tmplobj][title]=' . rawurlencode($newTitle)
+                            . '&defVals[tx_templavoila_tmplobj][fileref]=' . rawurlencode($newFileRef)
+                        )
                     )
-                )
-                . '">' . $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render() . ' '
-                . TemplaVoilaUtility::getLanguageService()->getLL('createnewto', true)
-                . '</a>';
+                    . '">' . $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render() . ' '
+                    . TemplaVoilaUtility::getLanguageService()->getLL('createnewto', true)
+                    . '</a>';
 
                 // Render data structure display
                 $rDSDres = $this->renderDataStructureDisplay($dsObj, $scope, $toIdArray);
                 $content .= '<a name="ds-' . md5($dsObj->getKey()) . '"></a>' . $rDSDres['HTML'];
                 $index .= '
-                    <tr class="bgColor4-20">
+                    <tr class="active">
                         <td></td>
                         <td colspan="2"><a href="#ds-' . md5($dsObj->getKey()) . '">' . htmlspecialchars($dsObj->getLabel()) . '</a></td>
                         <td align="center">' . $rDSDres['languageMode'] . '</td>
@@ -558,13 +559,13 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
 
                 // Wrap TO elements in a div-tag and add to content:
                 if ($TOcontent) {
-                    $content .= '<div style="margin-left: 102px;">' . $TOcontent . '</div>';
+                    $content .= '<div style="margin: 0 0 5px 102px;">' . $TOcontent . '</div>';
                 }
             }
         }
 
         $content = '
-            <table border="0" class="table table-striped table-hover">
+            <table border="0" class="table table-hover">
                 <thead>
                     <th class="col-icon" nowrap="nowrap"></th>
                     <th class="col-title" nowrap="nowrap" colspan="2">' . TemplaVoilaUtility::getLanguageService()->getLL('dstotitle', true) . '</td>
@@ -591,8 +592,6 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
      */
     public function renderDataStructureDisplay(\Extension\Templavoila\Domain\Model\AbstractDataStructure $dsObj, $scope, $toIdArray)
     {
-        $tableAttribs = ' border="0" cellpadding="1" cellspacing="1" width="98%" style="margin-top: 10px;" class="lrPadding"';
-
         $XMLinfo = $this->DSdetails($dsObj->getDataprotXML());
 
         if ($dsObj->isFilebased()) {
@@ -637,30 +636,35 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
         }
         // Compile info table:
         $content = '
-        <table' . $tableAttribs . '>
-            <tr class="bgColor5">
-                <td colspan="3" style="border-top: 1px solid black;">' .
-            $dsIcon . ' ' . $dsTitle .
-            $editLink .
-            '</td>
-        </tr>
-        <tr class="bgColor4">
-            <tr class="bgColor4">
-                <td>' . TemplaVoilaUtility::getLanguageService()->getLL('globalprocessing_xml') . '</td>
-                <td>
-                    ' . $lpXML .  GeneralUtility::formatSize(strlen($dsObj->getDataprotXML())) . ' bytes
-                </td>
-            </tr>
-            <tr class="bgColor4">
-                <td>' . TemplaVoilaUtility::getLanguageService()->getLL('created', true) . '</td>
-                <td>' . BackendUtility::datetime($dsObj->getCrdate()) . ' ' . TemplaVoilaUtility::getLanguageService()->getLL('byuser', true) . ' [' . $dsObj->getCruser() . ']</td>
-            </tr>
-            <tr class="bgColor4">
-                <td>' . TemplaVoilaUtility::getLanguageService()->getLL('updated', true) . '</td>
-                <td>' . BackendUtility::datetime($dsObj->getTstamp()) . '</td>
-            </tr>
-        </table>
-        ';
+        <table class="table table-hover" style="margin-bottom: 0px">
+            <thead>
+                <th class="col-icon">'
+                .  $dsIcon
+                . '</th>
+                <th class="col-title" colspan="3">'
+                . $dsTitle . $editLink
+            . '</th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td></td>
+                    <td>' . TemplaVoilaUtility::getLanguageService()->getLL('globalprocessing_xml') . '</td>
+                    <td>
+                        ' . $lpXML .  GeneralUtility::formatSize(strlen($dsObj->getDataprotXML())) . ' bytes
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>' . TemplaVoilaUtility::getLanguageService()->getLL('created', true) . '</td>
+                    <td>' . BackendUtility::datetime($dsObj->getCrdate()) . ' ' . TemplaVoilaUtility::getLanguageService()->getLL('byuser', true) . ' [' . $dsObj->getCruser() . ']</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>' . TemplaVoilaUtility::getLanguageService()->getLL('updated', true) . '</td>
+                    <td>' . BackendUtility::datetime($dsObj->getTstamp()) . '</td>
+                </tr>
+            </tbody>
+        </table>';
 
         // Format XML if requested (renders VERY VERY slow)
 //         if ($this->MOD_SETTINGS['set_showDSxml']) {
@@ -757,19 +761,24 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
                 $mappingStatus = $mappingStatus_index = $this->iconFactory->getIcon('status-dialog-ok', Icon::SIZE_SMALL)->render();
                 $mappingStatus .= TemplaVoilaUtility::getLanguageService()->getLL('mapping_uptodate', true);
             }
-            $mappingStatus .= '<br/><input type="button" onclick="jumpToUrl(\'' . htmlspecialchars($linkUrl) . '\');" value="' . TemplaVoilaUtility::getLanguageService()->getLL('update_mapping', true) . '" />';
+            $mappingStatus .= '<br/>';
+            $mappingStateLL = TemplaVoilaUtility::getLanguageService()->getLL('update_mapping', true);
         } elseif (!$fileMtime) {
             $mappingStatus = $mappingStatus_index = $this->iconFactory->getIcon('status-dialog-error', Icon::SIZE_SMALL)->render();
             $mappingStatus .= TemplaVoilaUtility::getLanguageService()->getLL('notmapped', true);
             $this->setErrorLog($scope, 'fatal', sprintf(TemplaVoilaUtility::getLanguageService()->getLL('warning_mappingstatus', true), $mappingStatus, $toObj->getLabel()));
 
             $mappingStatus .= TemplaVoilaUtility::getLanguageService()->getLL('updatemapping_info');
-            $mappingStatus .= '<br/><input type="button" onclick="jumpToUrl(\'' . htmlspecialchars($linkUrl) . '\');" value="' . TemplaVoilaUtility::getLanguageService()->getLL('map', true) . '" />';
+            $mappingStatus .= '<br/>';
+            $mappingStateLL = TemplaVoilaUtility::getLanguageService()->getLL('map', true);
         } else {
             $mappingStatus = '';
             $mappingStatus .= '<input type="button" onclick="jumpToUrl(\'' . htmlspecialchars($linkUrl) . '\');" value="' . TemplaVoilaUtility::getLanguageService()->getLL('remap', true) . '" />';
-            $mappingStatus .= '&nbsp;<input type="button" onclick="jumpToUrl(\'' . htmlspecialchars($linkUrl . '&_preview=1') . '\');" value="' . TemplaVoilaUtility::getLanguageService()->getLL('preview', true) . '" />';
+            $mappingStatus .= '&nbsp;';
+            $mappingStateLL = TemplaVoilaUtility::getLanguageService()->getLL('preview', true);
         }
+        $mappingStatus .= '<span class="btn btn-info" onclick="jumpToUrl(\'' . htmlspecialchars($linkUrl) . '\');">'
+            . '<i class="fa fa-pencil" aria-hidden="true"></i> ' . $mappingStateLL . '</span>';
 
 //         $XMLinfo = $this->DSdetails($toObj->getLocalDataprotXML(true));
 
@@ -784,9 +793,6 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
         . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render()
         . '</a>';
 
-        // Compile info table:
-        $tableAttribs = ' border="0" cellpadding="1" cellspacing="1" width="98%" style="margin-top: 3px;" class="lrPadding"';
-
         // Links:
         $toTitle = '<a href="' . htmlspecialchars($linkUrl) . '">' . htmlspecialchars(TemplaVoilaUtility::getLanguageService()->sL($toObj->getLabel())) . '</a>';
         $editLink = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick('&edit[tx_templavoila_tmplobj][' . $toObj->getKey() . ']=edit')) . '">'
@@ -799,28 +805,28 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
             $count = $this->countRecordsWhereTOUsed($toObj, $scope);
 
             $content = '
-            <table' . $tableAttribs . '>
-                <tr class="bgColor4-20">
-                    <td colspan="3">' .
-                $recordIcon .
-                $toTitle .
-                $editLink .
-                '</td>
-        </tr>
-        <tr class="bgColor4">
-            <td rowspan="4" style="width: 100px; text-align: center;">' . $icon . '</td>
+            <table class="table table-hover" style="margin-bottom:5px;">
+                <thead>
+                    <th colspan="3">'
+                    .  $recordIcon . ' ' . $toTitle . ' ' . $editLink
+                    . '</th>
+                </thead>
+                <tr>
+                    <td rowspan="5" style="width:100px">' . $icon . '</td>
+                </tr>
+                <tr>
                     <td style="width:200px;">' . TemplaVoilaUtility::getLanguageService()->getLL('filereference', true) . ':</td>
                     <td>' . $fileRef . $fileMsg . '</td>
                 </tr>
-                <tr class="bgColor4">
+                <tr>
                     <td>' . TemplaVoilaUtility::getLanguageService()->getLL('description', true) . ':</td>
                     <td>' . htmlspecialchars($toObj->getDescription()) . '</td>
                 </tr>
-                <tr class="bgColor4">
+                <tr>
                     <td>' . TemplaVoilaUtility::getLanguageService()->getLL('mappingstatus', true) . ':</td>
                     <td>' . $mappingStatus . '</td>
                 </tr>
-                <tr class="bgColor4">
+                <tr>
                     <td>' . TemplaVoilaUtility::getLanguageService()->getLL('localprocessing_xml') . ':</td>
                     <td>
                         ' . $lpXML . ($toObj->getLocalDataprotXML(true) ?
@@ -828,44 +834,39 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
                     : '') . '
                     </td>
                 </tr>
-            </table>
-            ';
+            </table>';
         } else {
             $content = '
-            <table' . $tableAttribs . '>
-                <tr class="bgColor4-20">
-                    <td colspan="3">' .
-                $recordIcon .
-                $toTitle .
-                $editLink .
-                '</td>
-        </tr>
-        <tr class="bgColor4">
-            <td style="width:200px;">' . TemplaVoilaUtility::getLanguageService()->getLL('filereference', true) . ':</td>
+            <table class="table table-hover" style="margin-bottom:5px;">
+                <thead>
+                    <th colspan="3">'
+                    . $recordIcon . $toTitle . $editLink
+                . '</th>
+                </thead>
+                <tr>
+                    <td style="width:200px;">' . TemplaVoilaUtility::getLanguageService()->getLL('filereference', true) . ':</td>
                     <td>' . $fileRef . $fileMsg . '</td>
                 </tr>
-                <tr class="bgColor4">
+                <tr>
                     <td>' . TemplaVoilaUtility::getLanguageService()->getLL('mappingstatus', true) . ':</td>
                     <td>' . $mappingStatus . '</td>
                 </tr>
-                <tr class="bgColor4">
+                <tr>
                     <td>' . TemplaVoilaUtility::getLanguageService()->getLL('rendertype', true) . ':</td>
                     <td>' . $this->getProcessedValue('tx_templavoila_tmplobj', 'rendertype', $toObj->getRendertype()) . '</td>
                 </tr>
-                <tr class="bgColor4">
+                <tr>
                     <td>' . TemplaVoilaUtility::getLanguageService()->getLL('language', true) . ':</td>
                     <td>' . $this->getProcessedValue('tx_templavoila_tmplobj', 'sys_language_uid', $toObj->getSyslang()) . '</td>
                 </tr>
-                <tr class="bgColor4">
+                <tr>
                     <td>' . TemplaVoilaUtility::getLanguageService()->getLL('localprocessing_xml') . ':</td>
-                    <td>
-                        ' . $lpXML . ($toObj->getLocalDataprotXML(true) ?
+                    <td>' . $lpXML . ($toObj->getLocalDataprotXML(true) ?
                     GeneralUtility::formatSize(strlen($toObj->getLocalDataprotXML(true))) . ' bytes'
                     : '') . '
                     </td>
                 </tr>
-            </table>
-            ';
+            </table>';
         }
 
         // Traverse template objects which are not children of anything:
