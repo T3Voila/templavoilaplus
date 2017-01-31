@@ -125,7 +125,7 @@ if (
         && $GLOBALS['BE_USER']->isFrontendEditingActive()
     )
 ) {
-    $icons = [
+    $iconsBitmap = [
         'paste' =>  'EXT:templavoila/Resources/Public/Icon/clip_pasteafter.gif',
         'pasteSubRef' => 'EXT:templavoila/Resources/Public/Icon/clip_pastesubref.gif',
         'makelocalcopy' => 'EXT:templavoila/Resources/Public/Icon/makelocalcopy.gif',
@@ -135,14 +135,24 @@ if (
         'htmlvalidate' => 'EXT:templavoila/Resources/Public/Icon/html_go.png',
         'type-fce' => 'EXT:templavoila/Resources/Public/Icon/icon_fce_ce.png',
         'templavoila-logo' => 'EXT:templavoila/Resources/Public/Image/templavoila-logo.png',
+    ];
+    $iconsSvg = [
         'default-preview-icon' => 'EXT:templavoila/Resources/Public/Icon/icon_fce_default.svg',
     ];
 
     $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
-    foreach ($icons as $identifier => $file) {
+    foreach ($iconsBitmap as $identifier => $file) {
         $iconRegistry->registerIcon(
             'extensions-templavoila-' . $identifier,
             \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
+            ['source' => $file]
+        );
+    }
+
+    foreach ($iconsSvg as $identifier => $file) {
+        $iconRegistry->registerIcon(
+            'extensions-templavoila-' . $identifier,
+            \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
             ['source' => $file]
         );
     }
