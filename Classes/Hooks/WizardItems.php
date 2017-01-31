@@ -2,6 +2,8 @@
 namespace Extension\Templavoila\Hooks;
 
 use TYPO3\CMS\Backend\Wizard\NewContentElementWizardHookInterface;
+use TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider;
+use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 use Extension\Templavoila\Utility\TemplaVoilaUtility;
@@ -17,6 +19,8 @@ class WizardItems implements NewContentElementWizardHookInterface
      */
     public function manipulateWizardItems(&$wizardItems, &$parentObject)
     {
+        $iconRegistry = GeneralUtility::makeInstance(IconRegistry::class);
+
         $addingItems = [
             'fce' => [
                 'header' => $this->getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/BackendLayout.xlf:fce'),
@@ -31,12 +35,25 @@ class WizardItems implements NewContentElementWizardHookInterface
         $toRepo = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\TemplateRepository::class);
         $toList = $toRepo->getTemplatesByStoragePidAndScope($storageFolderPID, \Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_FCE);
         foreach ($toList as $toObj) {
+            $iconIdentifier = '';
+
             /** @var \Extension\Templavoila\Domain\Model\Template $toObj */
             if ($toObj->isPermittedForUser()) {
                 $tmpFilename = $toObj->getIcon();
+
+                // Create own iconIdentifier
+                if ($tmpFilename && @is_file(GeneralUtility::getFileAbsFileName($tmpFilename))) {
+                    $iconIdentifier = 'fce_' . $toObj->getKey();
+                    $iconRegistry->registerIcon($iconIdentifier, BitmapIconProvider::class, [
+                        'source' => GeneralUtility::resolveBackPath($tmpFilename)
+                    ]);
+                }
+
                 $addingItems['fce_' . $toObj->getKey()] = [
-                    'icon' => (@is_file(GeneralUtility::getFileAbsFileName(substr($tmpFilename, 3)))) ? $tmpFilename : (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila') . 'Resources/Public/Icon/icon_fce_default.svg'),
-                    'description' => $toObj->getDescription() ? $this->getLanguageService()->sL($toObj->getDescription()) : TemplaVoilaUtility::getLanguageService()->getLL('template_nodescriptionavailable'),
+                    'iconIdentifier' => ($iconIdentifier?: 'extensions-templavoila-default-preview-icon'),
+                    'description' => $toObj->getDescription()
+                        ? $this->getLanguageService()->sL($toObj->getDescription())
+                        : TemplaVoilaUtility::getLanguageService()->getLL('template_nodescriptionavailable'),
                     'title' => $toObj->getLabel(),
                     'params' => $this->getDsDefaultValues($toObj)
                 ];
@@ -67,13 +84,13 @@ class WizardItems implements NewContentElementWizardHookInterface
         $dsStructure = $toObj->getLocalDataprotArray();
 
         $dsValues = '&defVals[tt_content][CType]=templavoila_pi1'
-                . '&defVals[tt_content][tx_templavoila_ds]=' . $toObj->getDatastructure()->getKey()
-                . '&defVals[tt_content][tx_templavoila_to]=' . $toObj->getKey();
+            . '&defVals[tt_content][tx_templavoila_ds]=' . $toObj->getDatastructure()->getKey()
+            . '&defVals[tt_content][tx_templavoila_to]=' . $toObj->getKey();
 
         if (is_array($dsStructure) && is_array($dsStructure['meta']['default']['TCEForms'])) {
-                foreach ($dsStructure['meta']['default']['TCEForms'] as $field => $value) {
-                        $dsValues .= '&defVals[tt_content][' . $field . ']=' . $value;
-                }
+            foreach ($dsStructure['meta']['default']['TCEForms'] as $field => $value) {
+                $dsValues .= '&defVals[tt_content][' . $field . ']=' . $value;
+            }
         }
 
         return $dsValues;
