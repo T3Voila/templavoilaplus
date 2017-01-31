@@ -30,8 +30,16 @@ class Check
      */
     public function displayMessage(&$params, &$tsObj)
     {
-        if (!$this->staticDsIsEnabled() || $this->datastructureDbCount() === 0) {
-            return '';
+        if (!$this->staticDsIsEnabled()) {
+            return TemplaVoilaUtility::getLanguageService()->sL(
+                'LLL:EXT:templavoila/Resources/Private/Language/locallang.xlf:extconf.staticWizard.messageNoMigration'
+            );
+        }
+
+        if ($this->datastructureDbCount() === 0) {
+            return TemplaVoilaUtility::getLanguageService()->sL(
+                'LLL:EXT:templavoila/Resources/Private/Language/locallang.xlf:extconf.staticWizard.messageMigrationDone'
+            );
         }
 
         $link = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl(
@@ -44,11 +52,11 @@ class Check
         );
 
         return '
-        <div style="position:absolute;top:10px;right:10px; width:300px;">
+        <div style="position:absolute;top:10px;right:10px; width:300px;z-index:500">
             <div class="typo3-message message-information">
                 <div class="message-header">' . TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang.xlf:extconf.staticWizard.header') . '</div>
                 <div class="message-body">
-                    ' . TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang.xlf:extconf.staticWizard.message') . '<br />
+                    ' . TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang.xlf:extconf.staticWizard.messageMigration') . '<br />
                     <a style="text-decoration:underline;" href="' . $link . '">
                     ' . TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang.xlf:extconf.staticWizard.link') . '</a>
                 </div>

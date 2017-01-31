@@ -39,8 +39,14 @@
             <trans-unit id="extconf.staticWizard.header" xml:space="preserve">
                 <source>Migrate</source>
             </trans-unit>
-            <trans-unit id="extconf.staticWizard.message" xml:space="preserve">
+            <trans-unit id="extconf.staticWizard.messageMigration" xml:space="preserve">
                 <source>Please use the migration wizard to move all datastructures from your database to the filesystem.</source>
+            </trans-unit>
+            <trans-unit id="extconf.staticWizard.messageNoMigration" xml:space="preserve">
+                <source>You do not use staticDS, so no migration needed.</source>
+            </trans-unit>
+            <trans-unit id="extconf.staticWizard.messageMigrationDone" xml:space="preserve">
+                <source>Fine, no migration needed. There is no datastructure inside your database.</source>
             </trans-unit>
             <trans-unit id="extconf.staticWizard.link" xml:space="preserve">
                 <source>Click here to run the wizard</source>
