@@ -1,53 +1,53 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2014-07-13T20:54:17Z" product-name="templavoila">
-		<header/>
-		<body>
-			<trans-unit id="cm1_title" xml:space="preserve">
-				<source>TemplaVoilà</source>
-			</trans-unit>
-			<trans-unit id="cm1_viewsubelements" xml:space="preserve">
-				<source>View: Sub elements</source>
-			</trans-unit>
-			<trans-unit id="cm1_viewflexformxml" xml:space="preserve">
-				<source>View: Flexform XML</source>
-			</trans-unit>
-			<trans-unit id="cm_viewdsto" xml:space="preserve">
-				<source>View: DS/TO</source>
-			</trans-unit>
-			<trans-unit id="cm1_pagesusingthiselement" xml:space="preserve">
-				<source>Pages using this element -&gt;</source>
-			</trans-unit>
-			<trans-unit id="wiz_refElements" xml:space="preserve">
-				<source>Reference unused content elements (templavoila)</source>
-			</trans-unit>
-			<trans-unit id="wiz_renameFieldsInPage" xml:space="preserve">
-				<source>Rename a field in pages.tx_templavoila_flex</source>
-			</trans-unit>
-			<trans-unit id="field_sourceField" xml:space="preserve">
-				<source>source field</source>
-			</trans-unit>
-			<trans-unit id="field_destinationField" xml:space="preserve">
-				<source>destination field</source>
-			</trans-unit>
-			<trans-unit id="field_simulateField" xml:space="preserve">
-				<source>Simulate Change only</source>
-			</trans-unit>
-			<trans-unit id="field_submit" xml:space="preserve">
-				<source>submit</source>
-			</trans-unit>
-			<trans-unit id="extconf.staticWizard.header" xml:space="preserve">
-				<source>Migrate</source>
-			</trans-unit>
-			<trans-unit id="extconf.staticWizard.message" xml:space="preserve">
-				<source>Please use the migration wizard to move all datastructures from your database to the filesystem.</source>
-			</trans-unit>
-			<trans-unit id="extconf.staticWizard.link" xml:space="preserve">
-				<source>Click here to run the wizard</source>
-			</trans-unit>
-			<trans-unit id="extmng.updatermsgOption" xml:space="preserve">
-				<source>Updater</source>
-			</trans-unit>
-		</body>
-	</file>
+    <file source-language="en" datatype="plaintext" original="messages" date="2014-07-13T20:54:17Z" product-name="templavoila">
+        <header/>
+        <body>
+            <trans-unit id="cm1_title" xml:space="preserve">
+                <source>TemplaVoilà</source>
+            </trans-unit>
+            <trans-unit id="cm1_viewsubelements" xml:space="preserve">
+                <source>View: Sub elements</source>
+            </trans-unit>
+            <trans-unit id="cm1_viewflexformxml" xml:space="preserve">
+                <source>View: Flexform XML</source>
+            </trans-unit>
+            <trans-unit id="cm_viewdsto" xml:space="preserve">
+                <source>View: DS/TO</source>
+            </trans-unit>
+            <trans-unit id="cm1_pagesusingthiselement" xml:space="preserve">
+                <source>Pages using this element -&gt;</source>
+            </trans-unit>
+            <trans-unit id="wiz_refElements" xml:space="preserve">
+                <source>Reference unused content elements (templavoila)</source>
+            </trans-unit>
+            <trans-unit id="wiz_renameFieldsInPage" xml:space="preserve">
+                <source>Rename a field in pages.tx_templavoila_flex</source>
+            </trans-unit>
+            <trans-unit id="field_sourceField" xml:space="preserve">
+                <source>source field</source>
+            </trans-unit>
+            <trans-unit id="field_destinationField" xml:space="preserve">
+                <source>destination field</source>
+            </trans-unit>
+            <trans-unit id="field_simulateField" xml:space="preserve">
+                <source>Simulate Change only</source>
+            </trans-unit>
+            <trans-unit id="field_submit" xml:space="preserve">
+                <source>submit</source>
+            </trans-unit>
+            <trans-unit id="extconf.staticWizard.header" xml:space="preserve">
+                <source>Migrate</source>
+            </trans-unit>
+            <trans-unit id="extconf.staticWizard.message" xml:space="preserve">
+                <source>Please use the migration wizard to move all datastructures from your database to the filesystem.</source>
+            </trans-unit>
+            <trans-unit id="extconf.staticWizard.link" xml:space="preserve">
+                <source>Click here to run the wizard</source>
+            </trans-unit>
+            <trans-unit id="extmng.updatermsgOption" xml:space="preserve">
+                <source>Updater</source>
+            </trans-unit>
+        </body>
+    </file>
 </xliff>
