@@ -565,7 +565,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
         }
 
         $content = '
-            <table border="0" class="table table-hover">
+            <table class="table table-hover">
                 <thead>
                     <th class="col-icon" nowrap="nowrap"></th>
                     <th class="col-title" nowrap="nowrap" colspan="2">' . TemplaVoilaUtility::getLanguageService()->getLL('dstotitle', true) . '</td>
@@ -931,6 +931,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
     /**
      * Creates listings of pages / content elements where NO or WRONG template objects are used.
      * @TODO Maybe Move away to an error/analytics tool
+     * At the moment unused code.
      *
      * @param \Extension\Templavoila\Domain\Model\AbstractDataStructure $dsObj Data Structure ID
      * @param integer $scope Scope value. 1) page,  2) content elements
@@ -1091,30 +1092,30 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
                     <th class="col-title" nowrap="nowrap">' . TemplaVoilaUtility::getLanguageService()->getLL('file', true) . '</th>
                     <th align="center">' . TemplaVoilaUtility::getLanguageService()->getLL('usagecount', true) . '</th>
                     <th>' . TemplaVoilaUtility::getLanguageService()->getLL('newdsto', true) . '</th>
-                </tr>';
+                </thead>';
 
             $i = 0;
             foreach ($this->tFileList as $tFile => $count) {
                 $tRows[] = '
                     <tr>
                         <td>' . $this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL)->render() . '</td>
-                        <td>' .
-                    '<a href="' . htmlspecialchars(substr($tFile, strlen(PATH_site))) . '" target="_blank">'
-                    . htmlspecialchars(substr($tFile, strlen(PATH_site)))
-                    . '</a></td>
-                    <td align="center">' . $count . '</td>
-                        <td>' .
-                    '<a href="' . htmlspecialchars($this->cm1Link . '?id=' . $this->id . '&file=' . rawurlencode($tFile)) . '&mapElPath=%5BROOT%5D">'
-                    . $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render()
-                    . ' ' . htmlspecialchars('Create...') .
-                    '</a></td>
-            </tr>';
+                        <td>'
+                        . '<a href="' . htmlspecialchars(substr($tFile, strlen(PATH_site))) . '" target="_blank">'
+                        . htmlspecialchars(substr($tFile, strlen(PATH_site)))
+                        . '</a></td>
+                        <td align="center">' . $count . '</td>
+                        <td>'
+                        . '<a href="' . htmlspecialchars($this->cm1Link . '?id=' . $this->id . '&file=' . rawurlencode($tFile)) . '&mapElPath=%5BROOT%5D">'
+                        . $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render()
+                        . ' ' . htmlspecialchars('Create...')
+                        . '</a></td>
+                    </tr>';
             }
 
             if (count($tRows) > 1) {
                 $output .= '
                 <h3>' . TemplaVoilaUtility::getLanguageService()->getLL('usedfiles', true) . ':</h3>
-                <table border="0" class="table table-striped table-hover">
+                <table class="table table-striped table-hover">
                     ' . implode('', $tRows) . '
                 </table>
                 ';
@@ -1141,26 +1142,23 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
                     $tRows[] = '
                         <tr>
                             <td>' . $this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL)->render() . '</td>
-                            <td>' .
-                        '<a href="/' . htmlspecialchars($file->getPublicUrl()) . '" target="_blank">'
-                        . htmlspecialchars($file->getPublicUrl()) .
-                        '</a></td>
-                        <td align="center">' . (isset($this->tFileList[$fullPath]) ? $this->tFileList[$fullPath] : '-') . '</td>
-                            <td>' .
-                        '<a href="' . htmlspecialchars($this->cm1Link . '?id=' . $this->id . '&file=' . rawurlencode($file->getIdentifier())) . '&mapElPath=%5BROOT%5D">'
-                        . $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render()
-                        . ' ' . htmlspecialchars('Create...') .
-                        '</a></td>
-                </tr>';
+                            <td>'
+                            . '<a href="/' . htmlspecialchars($file->getPublicUrl()) . '" target="_blank">'
+                            . htmlspecialchars($file->getPublicUrl())
+                            . '</a></td>
+                            <td align="center">' . (isset($this->tFileList[$fullPath]) ? $this->tFileList[$fullPath] : '-') . '</td>
+                            <td>'
+                            . '<a href="' . htmlspecialchars($this->cm1Link . '?id=' . $this->id . '&file=' . rawurlencode($file->getIdentifier())) . '&mapElPath=%5BROOT%5D">'
+                            . $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render()
+                            . ' ' . htmlspecialchars('Create...')
+                            . '</a></td>
+                        </tr>';
                 }
 
                 if (count($tRows) > 1) {
                     $output .= '
                         <h3>' . TemplaVoilaUtility::getLanguageService()->getLL('templatearchive', true) . ':</h3>
-                        <table border="0" class="table table-striped table-hover">
-                            ' . implode('', $tRows) . '
-                        </table>
-                    ';
+                        <table class="table table-striped table-hover">' . implode('', $tRows) . '</table>';
                 }
             }
         }
