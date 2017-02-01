@@ -385,7 +385,6 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
 
         $toIdArray = $parts = array();
         foreach ($dsScopes as $scopePointer) {
-
             // Create listing for a DS:
             list($content, $dsCount, $toCount, $toIdArrayTmp) = $this->renderDSlisting($scopePointer);
             $toIdArray = array_merge($toIdArrayTmp, $toIdArray);
@@ -840,8 +839,8 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
             <table class="table table-hover" style="margin-bottom:5px;">
                 <thead>
                     <th colspan="3">'
-                    . $recordIcon . $toTitle . $editLink
-                . '</th>
+                    .  $recordIcon . ' ' . $toTitle . ' ' . $editLink
+                    . '</th>
                 </thead>
                 <tr>
                     <td style="width:200px;">' . TemplaVoilaUtility::getLanguageService()->getLL('filereference', true) . ':</td>
@@ -988,7 +987,6 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
                 TemplaVoilaUtility::getDatabaseConnection()->sql_free_result($res);
                 break;
             case 2:
-
                 // Select Flexible Content Elements:
                 $res = TemplaVoilaUtility::getDatabaseConnection()->exec_SELECTquery(
                     'uid,header,pid',
@@ -1125,7 +1123,6 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
 
             // TEMPLATE ARCHIVE:
             if (count($files)) {
-
                 $tRows = array();
                 $tRows[] = '
                     <thead>
@@ -1306,7 +1303,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
                         $HTML .= '<ul class="DS-config">' . $conf . '</ul>';
                     }
                 } /* this a container for repetitive elements --------------------- */
-                else if (isset($def['section']) && ($def['section'] == 1)) {
+                elseif (isset($def['section']) && ($def['section'] == 1)) {
                     $HTML .= '<p>[..., ..., ...]</p>';
                 } /* this a container for cellections of elements ----------------- */
                 else {
@@ -1523,21 +1520,19 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
 
                 /* there are some childs to process ----------------------------- */
                 if (isset($def['type']) && ($def['type'] == "array")) {
-
-                    if (isset($def['section']))
-                        ;
-                    if (isset($def['el']))
+                    if (isset($def['el'])) {
                         $HTML .= $this->renderDSdetails($def['el']);
+                    }
                 }
 
                 $HTML .= '</dd>';
             }
 
             $HTML .= '</dl>';
-        } else
+        } else {
             $HTML .= '<p>' . $this->iconFactory->getIcon('status-dialog-warning', Icon::SIZE_SMALL)->render()
                 . ' The element has no children!</p>';
-
+        }
         return $HTML;
     }
 
@@ -1575,7 +1570,6 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
             foreach ($DScontent['ROOT']['el'] as $elCfg) {
                 $rootelements++;
                 if (isset($elCfg['TCEforms'])) {
-
                     // Assuming that a reference field for content elements is recognized like this, increment counter. Otherwise assume input field of some sort.
                     if ($elCfg['TCEforms']['config']['type'] === 'group' && $elCfg['TCEforms']['config']['allowed'] === 'tt_content') {
                         $referenceFields++;
@@ -1583,8 +1577,9 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
                         $inputFields++;
                     }
                 }
-                if (isset($elCfg['el']))
+                if (isset($elCfg['el'])) {
                     $elCfg['el'] = '...';
+                }
                 unset($elCfg['tx_templavoila']['sample_data']);
                 unset($elCfg['tx_templavoila']['tags']);
                 unset($elCfg['tx_templavoila']['eType']);
@@ -1685,26 +1680,21 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
         // Save menu code to template record:
         $cfg = GeneralUtility::_POST('CFG');
         if (isset($cfg['menuCode'])) {
-
             // Get template record:
             $TSrecord = BackendUtility::getRecord('sys_template', $this->wizardData['typoScriptTemplateID']);
             if (is_array($TSrecord)) {
                 $data = array();
-                $data['sys_template'][$TSrecord['uid']]['config'] = '
-
-## Menu [Begin]
-' . trim($cfg['menuCode']) . '
-## Menu [End]
-
-
-
-' . $TSrecord['config'];
+                $data['sys_template'][$TSrecord['uid']]['config']
+                    = '## Menu [Begin]'
+                    . trim($cfg['menuCode'])
+                    . '## Menu [End]'
+                    . $TSrecord['config'];
 
                 // Execute changes:
                 $tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
                 $tce->stripslashes_values = 0;
                 $tce->dontProcessTransformations = 1;
-                $tce->start($data, Array());
+                $tce->start($data, []);
                 $tce->process_datamap();
             }
         }
@@ -1827,7 +1817,13 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
      * @return string
      */
     public function buildButtonFromUrl(
-        $clickUrl, $title, $icon, $text = '', $buttonType = 'default', $extraClass = '', $rel = null
+        $clickUrl,
+        $title,
+        $icon,
+        $text = '',
+        $buttonType = 'default',
+        $extraClass = '',
+        $rel = null
     ) {
         return '<a href="#"' . ($rel ? ' rel="' . $rel . '"' : '')
             . ' class="btn btn-' . $buttonType . ' btn-sm' . ($extraClass ? ' ' . $extraClass : '') . '"'
