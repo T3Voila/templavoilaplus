@@ -196,7 +196,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      *
      * @var bool
      */
-    public $translatorMode = FALSE;
+    public $translatorMode = false;
 
     /**
      * Permissions for the parrent record (normally page). Used for hiding icons.
@@ -273,14 +273,14 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      *
      * @var null
      */
-    protected $renderPreviewObjects = NULL;
+    protected $renderPreviewObjects = null;
 
     /**
      * Classes for preview render
      *
      * @var null
      */
-    protected $renderPreviewDataObjects = NULL;
+    protected $renderPreviewDataObjects = null;
 
     /**
      * @var integer
@@ -295,12 +295,12 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     /**
      * @var boolean
      */
-    static protected $visibleContentHookObjectsPrepared = FALSE;
+    static protected $visibleContentHookObjectsPrepared = false;
 
     /**
      * @var boolean
      */
-    protected $debug = FALSE;
+    protected $debug = false;
 
     /**
      * @var array
@@ -402,14 +402,14 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
         // enable debug for development
         if ($this->modTSconfig['properties']['debug']) {
-            $this->debug = TRUE;
+            $this->debug = true;
         }
-        $this->blindIcons = isset($this->modTSconfig['properties']['blindIcons']) ? GeneralUtility::trimExplode(',', $this->modTSconfig['properties']['blindIcons'], TRUE) : array();
+        $this->blindIcons = isset($this->modTSconfig['properties']['blindIcons']) ? GeneralUtility::trimExplode(',', $this->modTSconfig['properties']['blindIcons'], true) : array();
 
         $this->addToRecentElements();
 
         // Fill array allAvailableLanguages and currently selected language (from language selector or from outside)
-        $this->allAvailableLanguages = $this->getAvailableLanguages(0, TRUE, TRUE, TRUE);
+        $this->allAvailableLanguages = $this->getAvailableLanguages(0, true, true, true);
         $this->currentLanguageKey = $this->allAvailableLanguages[$this->MOD_SETTINGS['language']]['ISOcode'];
         $this->currentLanguageUid = $this->allAvailableLanguages[$this->MOD_SETTINGS['language']]['uid'];
 
@@ -421,13 +421,13 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
         // Set translator mode if the default langauge is not accessible for the user:
         if (!TemplaVoilaUtility::getBackendUser()->checkLanguageAccess(0) && !TemplaVoilaUtility::getBackendUser()->isAdmin()) {
-            $this->translatorMode = TRUE;
+            $this->translatorMode = true;
         }
 
         // Initialize TemplaVoila API class:
         $this->apiObj = GeneralUtility::makeInstance(\Extension\Templavoila\Service\ApiService::class, $this->altRoot ? $this->altRoot : 'pages');
         if (isset($this->modSharedTSconfig['properties']['useLiveWorkspaceForReferenceListUpdates'])) {
-            $this->apiObj->modifyReferencesInLiveWS(TRUE);
+            $this->apiObj->modifyReferencesInLiveWS(true);
         }
 
         // Initialize side bar and wizards:
@@ -529,7 +529,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
         // Access check! The page will show only if there is a valid page and if this page may be viewed by the user
         if (is_array($this->altRoot)) {
-            $access = TRUE;
+            $access = true;
             // get PID of altRoot Element to get pageInfoArr
             $altRootRecord = BackendUtility::getRecordWSOL($this->altRoot['table'], $this->altRoot['uid'], 'pid');
             $pageInfoArr = BackendUtility::readPageAccess($altRootRecord['pid'], $this->perms_clause);
@@ -694,11 +694,10 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
             // Start creating HTML output
 
-            $render_editPageScreen = TRUE;
+            $render_editPageScreen = true;
 
             // Show message if the page is of a special doktype:
             if ($this->rootElementTable == 'pages') {
-
                 // Initialize the special doktype class:
                 $specialDoktypesObj =& GeneralUtility::getUserObj('Extension\\Templavoila\\Module\\Mod1\\Specialdoktypes', '');
                 $specialDoktypesObj->init($this);
@@ -714,7 +713,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 $methodName = 'renderDoktype_' . $doktype;
                 if (method_exists($specialDoktypesObj, $methodName)) {
                     $result = $specialDoktypesObj->$methodName($this->rootElementRecord);
-                    if ($result !== FALSE) {
+                    if ($result !== false) {
                         $this->content .= $result;
                         if (TemplaVoilaUtility::getBackendUser()->isPSet($this->calcPerms, 'pages', 'edit')) {
                             // Edit icon only if page can be modified by user
@@ -723,7 +722,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                                 . TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:editPage');
                             $this->content .= '<br/><br/><strong>' . $this->link_edit($editLinkContent, 'pages', $this->id) . '</strong>';
                         }
-                        $render_editPageScreen = FALSE; // Do not output editing code for special doctypes!
+                        $render_editPageScreen = false; // Do not output editing code for special doctypes!
                     }
                 }
             }
@@ -925,7 +924,6 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 ButtonBar::BUTTON_POSITION_RIGHT,
                 2
             );
-
         }
     }
 
@@ -956,13 +954,15 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 break;
             case 'view':
                 $viewAddGetVars = $this->currentLanguageUid ? '&L=' . $this->currentLanguageUid : '';
-                $clickUrl = htmlspecialchars(BackendUtility::viewOnClick(
-                    $this->id,
-                    $BACK_PATH,
-                    BackendUtility::BEgetRootLine($this->id),
-                    '',
-                    '',
-                    $viewAddGetVars)
+                $clickUrl = htmlspecialchars(
+                    BackendUtility::viewOnClick(
+                        $this->id,
+                        $BACK_PATH,
+                        BackendUtility::BEgetRootLine($this->id),
+                        '',
+                        '',
+                        $viewAddGetVars
+                    )
                 );
                 break;
             default:
@@ -1079,7 +1079,13 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      * @return string
      */
     public function buildButtonFromUrl(
-        $clickUrl, $title, $icon, $text = '', $buttonType = 'default', $extraClass = '', $rel = null
+        $clickUrl,
+        $title,
+        $icon,
+        $text = '',
+        $buttonType = 'default',
+        $extraClass = '',
+        $rel = null
     ) {
         return '<a href="#"' . ($rel ? ' rel="' . $rel . '"' : '')
             . ' class="btn btn-' . $buttonType . ' btn-sm' . ($extraClass ? ' ' . $extraClass : '') . '"'
@@ -1173,7 +1179,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
         // show sys_notes
 //        $sys_notes = recordList::showSysNotesForPage();
-        if (FALSE) {
+        if (false) {
             $sys_notes = '';
             // @todo: Check if and how this is to replace
             $output .= '</div><div>'
@@ -1218,7 +1224,6 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         if (is_array($contentTreeArr['sub']) && (count($contentTreeArr['sub']) > 1 || !isset($contentTreeArr['sub']['sDEF']))) {
             $parts = array();
             foreach (array_keys($contentTreeArr['sub']) as $sheetKey) {
-
                 $this->containedElementsPointer++;
                 $this->containedElements[$this->containedElementsPointer] = 0;
                 $frContent = $this->render_framework_singleSheet($contentTreeArr, $languageKey, $sheetKey, $parentPointer, $parentDsMeta);
@@ -1254,10 +1259,10 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      */
     public function render_framework_singleSheet($contentTreeArr, $languageKey, $sheet, $parentPointer = array(), $parentDsMeta = array())
     {
-        $elementBelongsToCurrentPage = FALSE;
+        $elementBelongsToCurrentPage = false;
         $pid = $contentTreeArr['el']['table'] == 'pages' ? $contentTreeArr['el']['uid'] : $contentTreeArr['el']['pid'];
         if ($contentTreeArr['el']['table'] == 'pages' || $contentTreeArr['el']['pid'] == $this->rootElementUid_pidForContent) {
-            $elementBelongsToCurrentPage = TRUE;
+            $elementBelongsToCurrentPage = true;
         } else {
             if ($contentTreeArr['el']['_ORIG_uid']) {
                 $record = BackendUtility::getMovePlaceholder('tt_content', $contentTreeArr['el']['uid']);
@@ -1297,13 +1302,12 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         $titleBarRightButtons = '';
         // Prepare table specific settings:
         switch ($contentTreeArr['el']['table']) {
-
-            case 'pages' :
+            case 'pages':
                 $elementTitlebarClass = 'tpm-titlebar-page';
                 $elementClass .= ' pagecontainer';
                 break;
 
-            case 'tt_content' :
+            case 'tt_content':
                 $this->currentElementParentPointer = $parentPointer;
 
                 $elementTitlebarClass = $elementBelongsToCurrentPage ? 'tpm-titlebar' : 'tpm-titlebar-fromOtherPage';
@@ -1323,7 +1327,6 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 $linkCopy = $this->clipboardObj->element_getSelectButtons($parentPointer, 'copy,ref');
 
                 if (!$this->translatorMode) {
-
                     if ($canEditContent) {
                         // array('title' => TemplaVoilaUtility::getLanguageService()->getLL('makeLocal'));
                         $iconMakeLocal = $this->iconFactory->getIcon('extensions-templavoila-makelocalcopy', Icon::SIZE_SMALL)->render();
@@ -1335,7 +1338,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                         ) {
                             // array('title' => TemplaVoilaUtility::getLanguageService()->getLL('unlinkRecord'));
                             $iconUnlink = $this->iconFactory->getIcon('extensions-templavoila-unlink', Icon::SIZE_SMALL)->render();
-                            $linkUnlink = !in_array('unlink', $this->blindIcons) ? $this->link_unlink($iconUnlink, $parentPointer, FALSE, FALSE, $elementPointer) : '';
+                            $linkUnlink = !in_array('unlink', $this->blindIcons) ? $this->link_unlink($iconUnlink, $parentPointer, false, false, $elementPointer) : '';
                         } else {
                             $linkUnlink = '';
                         }
@@ -1347,7 +1350,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                         if (($elementBelongsToCurrentPage || $this->modTSconfig['properties']['enableEditIconForRefElements']) && !in_array('edit', $this->blindIcons)) {
                             // array('title' => TemplaVoilaUtility::getLanguageService()->getLL('editrecord'));
                             $iconEdit = $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render();
-                            $linkEdit = $this->link_edit($iconEdit, $contentTreeArr['el']['table'], $contentTreeArr['el']['uid'], FALSE, $contentTreeArr['el']['pid'], 'btn btn-default btn-sm');
+                            $linkEdit = $this->link_edit($iconEdit, $contentTreeArr['el']['table'], $contentTreeArr['el']['uid'], false, $contentTreeArr['el']['pid'], 'btn btn-default btn-sm');
                         } else {
                             $linkEdit = '';
                         }
@@ -1357,7 +1360,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                             $hasForeignReferences = TemplaVoilaUtility::hasElementForeignReferences($contentTreeArr['el'], $contentTreeArr['el']['pid']);
                             // array('title' => TemplaVoilaUtility::getLanguageService()->getLL('deleteRecord'));
                             $iconDelete = $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render();
-                            $linkDelete = !in_array('delete', $this->blindIcons) ? $this->link_unlink($iconDelete, $parentPointer, TRUE, $hasForeignReferences, $elementPointer) : '';
+                            $linkDelete = !in_array('delete', $this->blindIcons) ? $this->link_unlink($iconDelete, $parentPointer, true, $hasForeignReferences, $elementPointer) : '';
                         } else {
                             $linkDelete = '';
                         }
@@ -1381,7 +1384,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
         // If there was a language icon and the language was not default or [all] and if that langauge is accessible for the user, then wrap the  flag with an edit link (to support the "Click the flag!" principle for translators)
         if ($languageIcon && $languageUid > 0 && TemplaVoilaUtility::getBackendUser()->checkLanguageAccess($languageUid) && $contentTreeArr['el']['table'] === 'tt_content') {
-            $languageIcon = $this->link_edit($languageIcon, 'tt_content', $contentTreeArr['el']['uid'], TRUE, $contentTreeArr['el']['pid'], 'btn btn-default btn-sm tpm-langIcon');
+            $languageIcon = $this->link_edit($languageIcon, 'tt_content', $contentTreeArr['el']['uid'], true, $contentTreeArr['el']['pid'], 'btn btn-default btn-sm tpm-langIcon');
         } elseif ($languageIcon) {
             $languageIcon = '<span class="tpm-langIcon">' . $languageIcon . '</span>';
         }
@@ -1519,7 +1522,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             /** @var $to \Extension\Templavoila\Domain\Model\Template */
             $beTemplate = $to->getBeLayout();
         } catch (InvalidArgumentException $e) {
-            $to = NULL;
+            $to = null;
             // might happen if uid was not what the Repo expected - that's ok here
         }
 
@@ -1527,16 +1530,15 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             throw new \RuntimeException('Further execution of code leads to PHP errors.', 1404750505);
         }
 
-        if ($beTemplate === FALSE && isset($elementContentTreeArr['ds_meta']['beLayout'])) {
+        if ($beTemplate === false && isset($elementContentTreeArr['ds_meta']['beLayout'])) {
             $beTemplate = $elementContentTreeArr['ds_meta']['beLayout'];
         }
 
         // no layout, no special rendering
-        $flagRenderBeLayout = $beTemplate ? TRUE : FALSE;
+        $flagRenderBeLayout = $beTemplate ? true : false;
 
         // Traverse container fields:
         foreach ($elementContentTreeArr['sub'][$sheet][$lKey] as $fieldID => $fieldValuesContent) {
-
             try {
                 $newValue = $to->getLocalDataprotValueByXpath('//' . $fieldID . '/tx_templavoila/preview');
                 $elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['tx_templavoila']['preview'] = $newValue;
@@ -1564,7 +1566,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                     'position' => 0
                 );
 
-                $maxItemsReached = FALSE;
+                $maxItemsReached = false;
                 if (isset($elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['TCEforms']['config']['maxitems'])) {
                     $maxCnt = (int)$elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['TCEforms']['config']['maxitems'];
                     $maxItemsReached = is_array($fieldContent['el_list']) && count($fieldContent['el_list']) >= $maxCnt;
@@ -1601,10 +1603,8 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                         $subElementArr = $fieldContent['el'][$subElementKey];
 
                         if ((!$subElementArr['el']['isHidden'] || $this->MOD_SETTINGS['tt_content_showHidden'] !== '0') && $this->displayElement($subElementArr)) {
-
                             // When "onlyLocalized" display mode is set and an alternative language gets displayed
                             if (($this->MOD_SETTINGS['langDisplayMode'] == 'onlyLocalized') && $this->currentLanguageUid > 0) {
-
                                 // Default language element. Subsitute displayed element with localized element
                                 if (($subElementArr['el']['sys_language_uid'] == 0) && is_array($subElementArr['localizationInfo'][$this->currentLanguageUid]) && ($localizedUid = $subElementArr['localizationInfo'][$this->currentLanguageUid]['localization_uid'])) {
                                     $localizedRecord = BackendUtility::getRecordWSOL('tt_content', $localizedUid, '*');
@@ -1650,7 +1650,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 $this->sortableContainers['#' . $cellId] = $this->apiObj->flexform_getStringFromPointer($tmpArr);
 
                 // Add cell content to registers:
-                if ($flagRenderBeLayout == TRUE) {
+                if ($flagRenderBeLayout == true) {
                     $beTemplateCell = '<table width="100%" class="beTemplateCell">
                     <tr>
                         <td class="bgColor6 tpm-title-cell">' . TemplaVoilaUtility::getLanguageService()->sL($fieldContent['meta']['title'], 1) . '</td>
@@ -1692,9 +1692,8 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
         // Compile the content area for the current element
         if (count($cells)) {
-
             $hookObjectsArr = $this->hooks_prepareObjectsArray('renderFrameworkClass');
-            $alreadyRendered = FALSE;
+            $alreadyRendered = false;
             $output = '';
             foreach ($hookObjectsArr as $hookObj) {
                 if (method_exists($hookObj, 'composeSubelements')) {
@@ -1755,21 +1754,21 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      */
     protected function disablePageStructureInheritance($elementContentTreeArr, $sheet, $lKey, $vKey)
     {
-        $disable = FALSE;
+        $disable = false;
         if (TemplaVoilaUtility::getBackendUser()->isAdmin()) {
             //if page DS and the checkbox is not set use always langDisable in inheritance mode
             $disable = $this->MOD_SETTINGS['disablePageStructureInheritance'] != '1';
         } else {
-            $hasLocalizedValues = FALSE;
+            $hasLocalizedValues = false;
             $adminOnly = $this->modTSconfig['properties']['adminOnlyPageStructureInheritance'];
             if ($adminOnly == 'strict') {
-                $disable = TRUE;
+                $disable = true;
             } else {
                 if ($adminOnly == 'fallback' && isset($elementContentTreeArr['sub'][$sheet][$lKey])) {
                     foreach ($elementContentTreeArr['previewData']['sheets'][$sheet] as $fieldData) {
                         $hasLocalizedValues |= isset($fieldData['data'][$lKey][$vKey])
-                            && ($fieldData['data'][$lKey][$vKey] != NULL)
-                            && ($fieldData['isMapped'] == TRUE)
+                            && ($fieldData['data'][$lKey][$vKey] != null)
+                            && ($fieldData['isMapped'] == true)
                             && (!isset($fieldData['TCEforms']['displayCond']) || $fieldData['TCEforms']['displayCond'] != 'HIDE_L10N_SIBLINGS');
                     }
                 } else {
@@ -1812,7 +1811,6 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
         // Preview of FlexForm content if any:
         if (is_array($previewData['sheets'][$sheet])) {
-
             // Define l/v keys for current language:
             $langChildren = (int)$ds_meta['langChildren'];
             $langDisable = (int)$ds_meta['langDisable'];
@@ -1820,7 +1818,6 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             $vKey = $langDisable ? 'vDEF' : ($langChildren ? 'v' . $languageKey : 'vDEF');
 
             foreach ($previewData['sheets'][$sheet] as $fieldData) {
-
                 if (isset($fieldData['tx_templavoila']['preview']) && $fieldData['tx_templavoila']['preview'] == 'disable') {
                     continue;
                 }
@@ -1884,7 +1881,6 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
         $result = '';
         foreach ($fieldData as $fieldValue) {
-
             if (isset($fieldValue['config']['tx_templavoila']['preview']) && $fieldValue['config']['tx_templavoila']['preview'] == 'disable') {
                 continue;
             }
@@ -1954,7 +1950,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     {
         $output = '';
         $hookObjectsArr = $this->hooks_prepareObjectsArray('renderPreviewContentClass');
-        $alreadyRendered = FALSE;
+        $alreadyRendered = false;
         // Hook: renderPreviewContent_preProcess. Set 'alreadyRendered' to true if you provided a preview content for the current cType !
         foreach ($hookObjectsArr as $hookObj) {
             if (method_exists($hookObj, 'renderPreviewContent_preProcess')) {
@@ -1995,7 +1991,6 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         // LOCALIZATION information for content elements (non Flexible Content Elements)
         $output = '';
         if ($contentTreeArr['el']['table'] == 'tt_content' && $contentTreeArr['el']['sys_language_uid'] <= 0) {
-
             // Traverse the available languages of the page (not default and [All])
             $tRows = array();
             foreach ($this->translatedLanguagesArr as $sys_language_uid => $sLInfo) {
@@ -2030,7 +2025,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
                             $l10nInfo .= '<br/>' . $localizedRecordInfo['content'];
 
-                            list($flagLink_begin, $flagLink_end) = explode('|*|', $this->link_edit('|*|', 'tt_content', $localizedRecordInfo['uid'], TRUE));
+                            list($flagLink_begin, $flagLink_end) = explode('|*|', $this->link_edit('|*|', 'tt_content', $localizedRecordInfo['uid'], true));
                             if ($this->translatorMode) {
                                 $l10nInfo .= '<br/>' . $flagLink_begin . '<em>' . TemplaVoilaUtility::getLanguageService()->getLL('clickToEditTranslation') . '</em>' . $flagLink_end;
                             }
@@ -2048,7 +2043,6 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                             );
                             break;
                         case 'localize':
-
                             if (isset($this->modTSconfig['properties']['hideCopyForTranslation'])) {
                                 $showLocalizationLinks = 0;
                             } else {
@@ -2061,20 +2055,18 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
                             // Assuming that only elements which have the default language set are candidates for localization. In case the language is [ALL] then it is assumed that the element should stay "international".
                             if ((int) $contentTreeArr['el']['sys_language_uid'] === 0 && $showLocalizationLinks) {
-
                                 // Copy for language:
                                 if ($this->rootElementLangParadigm == 'free') {
                                     $sourcePointerString = $this->apiObj->flexform_getStringFromPointer($parentPointer);
                                     $onClick = "document.location='"
                                         . BackendUtility::getModuleUrl($this->moduleName, $this->getLinkParameters(['source' => $sourcePointerString, 'localizeElement' => $sLInfo['ISOcode']]))
                                         . "'; return false;";
-
                                 } else {
                                     $params = '&cmd[tt_content][' . $contentTreeArr['el']['uid'] . '][localize]=' . $sys_language_uid;
                                     $onClick = "document.location='" . BackendUtility::getLinkToDataHandlerAction($params, GeneralUtility::getIndpEnv('REQUEST_URI') . '#c' . md5($this->apiObj->flexform_getStringFromPointer($parentPointer) . $contentTreeArr['el']['uid'] . $sys_language_uid)) . "'; return false;";
                                 }
 
-                                $linkLabel = TemplaVoilaUtility::getLanguageService()->getLL('createcopyfortranslation', TRUE) . ' (' . htmlspecialchars($sLInfo['title']) . ')';
+                                $linkLabel = TemplaVoilaUtility::getLanguageService()->getLL('createcopyfortranslation', true) . ' (' . htmlspecialchars($sLInfo['title']) . ')';
                                 $localizeIcon = $this->iconFactory->getIcon('actions-edit-copy', Icon::SIZE_SMALL)->render();
 
                                 $l10nInfo = '<a class="tpm-clipCopyTranslation" href="#" onclick="' . htmlspecialchars($onClick) . '">' . $localizeIcon . '</a>';
@@ -2093,7 +2085,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                             // Here we want to show the "Localized FlexForm" information (and link to edit record) _only_ if there are other fields than group-fields for content elements: It only makes sense for a translator to deal with the record if that is the case.
                             // Change of strategy (27/11): Because there does not have to be content fields; could be in sections or arrays and if thats the case you still want to localize them! There has to be another way...
                             // if (count($contentTreeArr['contentFields']['sDEF']))    {
-                            list($flagLink_begin, $flagLink_end) = explode('|*|', $this->link_edit('|*|', 'tt_content', $contentTreeArr['el']['uid'], TRUE));
+                            list($flagLink_begin, $flagLink_end) = explode('|*|', $this->link_edit('|*|', 'tt_content', $contentTreeArr['el']['uid'], true));
                             $l10nInfo = $flagLink_begin . '<em>[' . TemplaVoilaUtility::getLanguageService()->getLL('performTranslation') . ']</em>' . $flagLink_end;
                             $this->global_localization_status[$sys_language_uid][] = array(
                                 'status' => 'flex',
@@ -2117,7 +2109,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             $output = count($tRows) ? '
                 <table border="0" cellpadding="0" cellspacing="1" width="100%" class="lrPadding tpm-localisation-info-table">
                     <tr class="bgColor4-20">
-                        <td colspan="2">' . TemplaVoilaUtility::getLanguageService()->getLL('element_localizations', TRUE) . ':</td>
+                        <td colspan="2">' . TemplaVoilaUtility::getLanguageService()->getLL('element_localizations', true) . ':</td>
                     </tr>
                     ' . implode('', $tRows) . '
                 </table>
@@ -2158,16 +2150,15 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         // Header of table:
         $output = '';
         $output .= '<tr class="bgColor5 tableheader">
-                <td class="nobr">' . TemplaVoilaUtility::getLanguageService()->getLL('outline_header_title', TRUE) . '</td>
-                <td class="nobr">' . TemplaVoilaUtility::getLanguageService()->getLL('outline_header_controls', TRUE) . '</td>
-                <td class="nobr">' . TemplaVoilaUtility::getLanguageService()->getLL('outline_header_status', TRUE) . '</td>
-                <td class="nobr">' . TemplaVoilaUtility::getLanguageService()->getLL('outline_header_element', TRUE) . '</td>
+                <td class="nobr">' . TemplaVoilaUtility::getLanguageService()->getLL('outline_header_title', true) . '</td>
+                <td class="nobr">' . TemplaVoilaUtility::getLanguageService()->getLL('outline_header_controls', true) . '</td>
+                <td class="nobr">' . TemplaVoilaUtility::getLanguageService()->getLL('outline_header_status', true) . '</td>
+                <td class="nobr">' . TemplaVoilaUtility::getLanguageService()->getLL('outline_header_element', true) . '</td>
             </tr>';
 
         // Render all entries:
-        $xmlCleanCandidates = FALSE;
+        $xmlCleanCandidates = false;
         foreach ($entries as $entry) {
-
             // Create indentation code:
             $indent = '';
             for ($a = 0; $a < $entry['indentLevel']; $a++) {
@@ -2182,7 +2173,6 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 $flexObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class);
                 $recRow = BackendUtility::getRecordWSOL($entry['table'], $entry['uid']);
                 if ($recRow['tx_templavoila_flex']) {
-
                     // Clean XML:
                     $newXML = $flexObj->cleanFlexFormXML($entry['table'], 'tx_templavoila_flex', $recRow);
 
@@ -2205,7 +2195,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                     $xmlUrl = '../cm2/index.php?viewRec[table]=' . $entry['table'] . '&viewRec[uid]=' . $entry['uid'] . '&viewRec[field_flex]=tx_templavoila_flex';
                     if (md5($recRow['tx_templavoila_flex']) != md5($newXML)) {
                         $status = $this->moduleTemplate->icons(1) . '<a href="' . htmlspecialchars($xmlUrl) . '">' . TemplaVoilaUtility::getLanguageService()->getLL('outline_status_dirty', 1) . '</a><br/>';
-                        $xmlCleanCandidates = TRUE;
+                        $xmlCleanCandidates = true;
                     } else {
                         $status = $this->moduleTemplate->icons(-1) . '<a href="' . htmlspecialchars($xmlUrl) . '">' . TemplaVoilaUtility::getLanguageService()->getLL('outline_status_clean', 1) . '</a><br/>';
                     }
@@ -2227,7 +2217,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         if ($xmlCleanCandidates) {
             $output .= '<br/>
                 ' . BackendUtility::cshItem('_MOD_web_txtemplavoilaM1', 'outline_status_cleanall') . '
-                <input type="submit" value="' . TemplaVoilaUtility::getLanguageService()->getLL('outline_status_cleanAll', TRUE) . '" name="_CLEAN_XML_ALL" /><br/><br/>
+                <input type="submit" value="' . TemplaVoilaUtility::getLanguageService()->getLL('outline_status_cleanAll', true) . '" name="_CLEAN_XML_ALL" /><br/><br/>
             ';
         }
 
@@ -2261,7 +2251,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         $titleBarRightButtons = '';
         // Prepare table specific settings:
         switch ($contentTreeArr['el']['table']) {
-            case 'pages' :
+            case 'pages':
                 $iconEdit = $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render();
                 $titleBarLeftButtons .= $this->translatorMode ? '' : $this->link_edit($iconEdit, $contentTreeArr['el']['table'], $contentTreeArr['el']['uid']);
                 $titleBarRightButtons = '';
@@ -2271,7 +2261,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 $viewPageIcon = $this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL)->render();
                 $titleBarLeftButtons .= '<a href="#" ' . $viewPageOnClick . '>' . $viewPageIcon . '</a>';
                 break;
-            case 'tt_content' :
+            case 'tt_content':
                 $languageUid = $contentTreeArr['el']['sys_language_uid'];
 
                 if (!$this->translatorMode) {
@@ -2283,14 +2273,14 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                         $this->global_tt_content_elementRegister[$contentTreeArr['el']['uid']] > 1
                     ) {
                         $iconUnlink = $this->iconFactory->getIcon('extensions-templavoila-unlink', Icon::SIZE_SMALL)->render();
-                        $linkUnlink = $this->link_unlink($iconUnlink, $parentPointer, FALSE);
+                        $linkUnlink = $this->link_unlink($iconUnlink, $parentPointer, false);
                     } else {
                         $linkUnlink = '';
                     }
                     if ($this->modTSconfig['properties']['enableDeleteIconForLocalElements'] && $elementBelongsToCurrentPage) {
                         $hasForeignReferences = TemplaVoilaUtility::hasElementForeignReferences($contentTreeArr['el'], $contentTreeArr['el']['pid']);
                         $iconDelete = $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render();
-                        $linkDelete = $this->link_unlink($iconDelete, $parentPointer, TRUE, $hasForeignReferences);
+                        $linkDelete = $this->link_unlink($iconDelete, $parentPointer, true, $hasForeignReferences);
                     } else {
                         $linkDelete = '';
                     }
@@ -2317,7 +2307,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
         // If there was a langauge icon and the language was not default or [all] and if that langauge is accessible for the user, then wrap the flag with an edit link (to support the "Click the flag!" principle for translators)
         if ($languageIcon && $languageUid > 0 && TemplaVoilaUtility::getBackendUser()->checkLanguageAccess($languageUid) && $contentTreeArr['el']['table'] === 'tt_content') {
-            $languageIcon = $this->link_edit($languageIcon, 'tt_content', $contentTreeArr['el']['uid'], TRUE);
+            $languageIcon = $this->link_edit($languageIcon, 'tt_content', $contentTreeArr['el']['uid'], true);
         }
 
         // Create warning messages if neccessary:
@@ -2348,7 +2338,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             'table' => $contentTreeArr['el']['table'],
             'uid' => $contentTreeArr['el']['uid'],
             'flag' => $languageIcon,
-            'isNewVersion' => $contentTreeArr['el']['_ORIG_uid'] ? TRUE : FALSE,
+            'isNewVersion' => $contentTreeArr['el']['_ORIG_uid'] ? true : false,
             'elementTitlebarClass' => (!$elementBelongsToCurrentPage ? 'tpm-elementRef' : 'tpm-element') . ' tpm-outline-level' . $indentLevel
         );
 
@@ -2386,12 +2376,10 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
         // Traverse container fields:
         foreach ($lKeys as $lKey) {
-
             // Traverse fields:
             if (is_array($contentTreeArr['sub'][$sheet][$lKey])) {
                 foreach ($contentTreeArr['sub'][$sheet][$lKey] as $fieldID => $fieldValuesContent) {
                     foreach ($vKeys as $vKey) {
-
                         if (is_array($fieldValuesContent[$vKey])) {
                             $fieldContent = $fieldValuesContent[$vKey];
 
@@ -2431,7 +2419,6 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                                 foreach ($fieldContent['el_list'] as $position => $subElementKey) {
                                     $subElementArr = $fieldContent['el'][$subElementKey];
                                     if (!$subElementArr['el']['isHidden'] || $this->MOD_SETTINGS['tt_content_showHidden'] !== '0') {
-
                                         // Modify the flexform pointer so it points to the position of the curren sub element:
                                         $subElementPointer['position'] = $position;
 
@@ -2466,13 +2453,11 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     public function render_outline_localizations($contentTreeArr, &$entries, $indentLevel)
     {
         if ($contentTreeArr['el']['table'] == 'tt_content' && $contentTreeArr['el']['sys_language_uid'] <= 0) {
-
             // Traverse the available languages of the page (not default and [All])
             foreach ($this->translatedLanguagesArr as $sys_language_uid => $sLInfo) {
                 if ($sys_language_uid > 0 && TemplaVoilaUtility::getBackendUser()->checkLanguageAccess($sys_language_uid)) {
                     switch ((string) $contentTreeArr['localizationInfo'][$sys_language_uid]['mode']) {
                         case 'exists':
-
                             // Get localized record:
                             $olrow = BackendUtility::getRecordWSOL('tt_content', $contentTreeArr['localizationInfo'][$sys_language_uid]['localization_uid']);
 
@@ -2483,7 +2468,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                                 $recordIcon_l10n = BackendUtility::wrapClickMenuOnIcon($recordIcon_l10n, 'tt_content', $olrow['uid'], true, '', 'new,copy,cut,pasteinto,pasteafter');
                             }
 
-                            list($flagLink_begin, $flagLink_end) = explode('|*|', $this->link_edit('|*|', 'tt_content', $olrow['uid'], TRUE));
+                            list($flagLink_begin, $flagLink_end) = explode('|*|', $this->link_edit('|*|', 'tt_content', $olrow['uid'], true));
 
                             // Create entry for this element:
                             $entries[] = array(
@@ -2493,7 +2478,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                                 'table' => 'tt_content',
                                 'uid' => $olrow['uid'],
                                 'flag' => $flagLink_begin . \Extension\Templavoila\Utility\IconUtility::getFlagIconForLanguage($sLInfo['flagIcon'], array('title' => $sLInfo['title'], 'alt' => $sLInfo['title'])) . $flagLink_end,
-                                'isNewVersion' => $olrow['_ORIG_uid'] ? TRUE : FALSE,
+                                'isNewVersion' => $olrow['_ORIG_uid'] ? true : false,
                             );
                             break;
                     }
@@ -2539,7 +2524,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      * @return string HTML anchor tag containing the label and the correct link
      * @access protected
      */
-    public function link_edit($label, $table, $uid, $forced = FALSE, $usePid = 0, $linkClass = '')
+    public function link_edit($label, $table, $uid, $forced = false, $usePid = 0, $linkClass = '')
     {
         if ($label) {
             $class = $linkClass ? $linkClass : 'tpm-edit';
@@ -2592,7 +2577,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             $label = $hideIcon;
         }
 
-        return $this->link_hide($label, $el['table'], $el['uid'], $el['isHidden'], FALSE, $el['pid']);
+        return $this->link_hide($label, $el['table'], $el['uid'], $el['isHidden'], false, $el['pid']);
     }
 
     /**
@@ -2605,10 +2590,9 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      *
      * @return string
      */
-    public function link_hide($label, $table, $uid, $hidden, $forced = FALSE, $usePid = 0)
+    public function link_hide($label, $table, $uid, $hidden, $forced = false, $usePid = 0)
     {
         if ($label) {
-
             $pid = $table == 'pages' ? $uid : $usePid;
             $calcPerms = $pid == 0 ? $this->calcPerms : $this->getCalcPerms($pid);
 
@@ -2616,7 +2600,6 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                     $table != 'pages' && ($calcPerms & 16)) &&
                 (!$this->translatorMode || $forced)
             ) {
-
                 $workspaceRec = BackendUtility::getWorkspaceVersionOfRecord(TemplaVoilaUtility::getBackendUser()->workspace, $table, $uid);
                 $workspaceId = ($workspaceRec['uid'] > 0) ? $workspaceRec['uid'] : $uid;
                 if ($table == "pages" && $this->currentLanguageUid) {
@@ -2707,7 +2690,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      * @return string HTML anchor tag containing the label and the unlink-link
      * @access protected
      */
-    public function link_unlink($label, $unlinkPointer, $realDelete = FALSE, $foreignReferences = FALSE, $elementPointer = '')
+    public function link_unlink($label, $unlinkPointer, $realDelete = false, $foreignReferences = false, $elementPointer = '')
     {
         $unlinkPointerString = $this->apiObj->flexform_getStringFromPointer($unlinkPointer);
         $encodedUnlinkPointerString = rawurlencode($unlinkPointerString);
@@ -2834,10 +2817,9 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
         foreach ($possibleCommands as $command) {
             if (($commandParameters = GeneralUtility::_GP($command)) != '') {
-
                 $redirectLocation = BackendUtility::getModuleUrl($this->moduleName, $this->getLinkParameters());
 
-                $skipCurrentCommand = FALSE;
+                $skipCurrentCommand = false;
                 foreach ($hooks as $hookObj) {
                     if (method_exists($hookObj, 'handleIncomingCommands_preProcess')) {
                         $skipCurrentCommand = $skipCurrentCommand || $hookObj->handleIncomingCommands_preProcess($command, $redirectLocation, $this);
@@ -2849,7 +2831,6 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 }
 
                 switch ($command) {
-
                     case 'createNewRecord':
                         // Historically "defVals" has been used for submitting the preset row data for the new element, so we still support it here:
                         $defVals = GeneralUtility::_GP('defVals');
@@ -2881,11 +2862,11 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                         $sourcePointer = $this->apiObj->flexform_getPointerFromString(GeneralUtility::_GP('source'));
                         $destinationPointer = $this->apiObj->flexform_getPointerFromString(GeneralUtility::_GP('destination'));
                         switch ($commandParameters) {
-                            case 'copy' :
+                            case 'copy':
                                 $this->apiObj->copyElement($sourcePointer, $destinationPointer);
                                 break;
                             case 'copyref':
-                                $this->apiObj->copyElement($sourcePointer, $destinationPointer, FALSE);
+                                $this->apiObj->copyElement($sourcePointer, $destinationPointer, false);
                                 break;
                             case 'cut':
                                 $this->apiObj->moveElement($sourcePointer, $destinationPointer);
@@ -2973,7 +2954,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             }
         }
 
-        if (isset ($redirectLocation)) {
+        if (isset($redirectLocation)) {
             header('Location: ' . GeneralUtility::locationHeaderUrl($redirectLocation));
         }
     }
@@ -2995,7 +2976,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      * @return array
      * @access protected
      */
-    public function getAvailableLanguages($id = 0, $onlyIsoCoded = TRUE, $setDefault = TRUE, $setMulti = FALSE)
+    public function getAvailableLanguages($id = 0, $onlyIsoCoded = true, $setDefault = true, $setMulti = false)
     {
         $output = array();
         $excludeHidden = TemplaVoilaUtility::getBackendUser()->isAdmin() ? '1=1' : 'sys_language.hidden=0';
@@ -3024,7 +3005,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 'uid' => 0,
                 'title' => strlen($this->modSharedTSconfig['properties']['defaultLanguageLabel']) ? $this->modSharedTSconfig['properties']['defaultLanguageLabel'] : TemplaVoilaUtility::getLanguageService()->getLL('defaultLanguage'),
                 'ISOcode' => 'DEF',
-                'flagIcon' => strlen($this->modSharedTSconfig['properties']['defaultLanguageFlag']) ? $this->modSharedTSconfig['properties']['defaultLanguageFlag'] : NULL
+                'flagIcon' => strlen($this->modSharedTSconfig['properties']['defaultLanguageFlag']) ? $this->modSharedTSconfig['properties']['defaultLanguageFlag'] : null
             );
         }
 
@@ -3037,7 +3018,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             );
         }
 
-        while (TRUE == ($row = TemplaVoilaUtility::getDatabaseConnection()->sql_fetch_assoc($res))) {
+        while (true == ($row = TemplaVoilaUtility::getDatabaseConnection()->sql_fetch_assoc($res))) {
             BackendUtility::workspaceOL('sys_language', $row);
             if ($id) {
                 $table = 'pages_language_overlay';
@@ -3143,7 +3124,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
         if (!static::$visibleContentHookObjectsPrepared) {
             $this->visibleContentHookObjects = $this->hooks_prepareObjectsArray('visibleContentClass');
-            static::$visibleContentHookObjectsPrepared = TRUE;
+            static::$visibleContentHookObjectsPrepared = true;
         }
         foreach ($this->visibleContentHookObjects as $hookObj) {
             if (method_exists($hookObj, 'displayElement')) {
@@ -3226,7 +3207,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             if ($obj instanceof \tx_templavoila_contentElementDescriptor) {
                 $data = (array) @unserialize(TemplaVoilaUtility::getBackendUser()->uc['tx_templavoila_recentce']);
                 // Find this element
-                $pos = FALSE;
+                $pos = false;
                 $count = count($data);
                 for ($i = 0; $i < $count; $i++) {
                     // Notice: must be "==", not "==="!
@@ -3236,7 +3217,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                     }
                 }
                 if ($pos !== 0) {
-                    if ($pos !== FALSE) {
+                    if ($pos !== false) {
                         // Remove it
                         array_splice($data, $pos, 1);
                     } else {
@@ -3264,9 +3245,9 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     protected function editingOfNewElementIsEnabled($dsUid, $toUid)
     {
         if (!strlen($dsUid) || !(int)$toUid) {
-            return TRUE;
+            return true;
         }
-        $editingEnabled = TRUE;
+        $editingEnabled = true;
         try {
             /** @var \Extension\Templavoila\Domain\Repository\TemplateRepository $toRepo */
             $toRepo = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\TemplateRepository::class);
@@ -3321,9 +3302,9 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      *
      * @return boolean
      */
-    protected function hasBasicEditRights($table = NULL, array $record = NULL)
+    protected function hasBasicEditRights($table = null, array $record = null)
     {
-        if ($table == NULL) {
+        if ($table == null) {
             $table = $this->rootElementTable;
         }
 
@@ -3332,7 +3313,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         }
 
         if (TemplaVoilaUtility::getBackendUser()->isAdmin()) {
-            $hasEditRights = TRUE;
+            $hasEditRights = true;
         } else {
             $id = $record[($table == 'pages' ? 'uid' : 'pid')];
             $pageRecord = BackendUtility::getRecordWSOL('pages', $id);
