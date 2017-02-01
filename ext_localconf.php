@@ -49,6 +49,9 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Backend\Tree\View\Conte
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Backend\Tree\View\PagePositionMap::class]['className']
     = \Extension\Templavoila\Xclass\PagePositionMap::class;
 
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Backend\Controller\ContentElement\NewContentElementController::class]['className']
+    = \Extension\Templavoila\Xclass\NewContentElementController::class;
+
 // Adding the two plugins TypoScript:
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript('templavoila', 'setup', '
 # Setting templavoila plugin TypoScript
