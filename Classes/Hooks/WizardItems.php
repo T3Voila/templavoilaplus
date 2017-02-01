@@ -35,6 +35,9 @@ class WizardItems implements NewContentElementWizardHookInterface
         $toRepo = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\TemplateRepository::class);
         $toList = $toRepo->getTemplatesByStoragePidAndScope($storageFolderPID, \Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_FCE);
         foreach ($toList as $toObj) {
+            if ($toObj->hasParentTemplate() && $toObj->getRendertype() !== '') {
+                continue;
+            }
             $iconIdentifier = '';
 
             /** @var \Extension\Templavoila\Domain\Model\Template $toObj */
