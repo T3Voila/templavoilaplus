@@ -21,7 +21,7 @@ CREATE TABLE tx_templavoila_tmplobj (
     deleted tinyint(4) unsigned DEFAULT '0' NOT NULL,
     sorting int(11) unsigned DEFAULT '0' NOT NULL,
     title varchar(255) DEFAULT '' NOT NULL,
-    datastructure varchar(100) DEFAULT '' NOT NULL,
+    datastructure tinytext DEFAULT '' NOT NULL,
     fileref tinytext,
     templatemapping mediumblob,
     previewicon tinytext,
