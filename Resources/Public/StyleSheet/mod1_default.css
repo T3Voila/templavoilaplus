@@ -48,10 +48,12 @@ div.warning {
   font-weight: bold;
   font-size: 11px;
 }
+
 div.warning img {
   vertical-align: middle;
   padding: 2px 1px;
 }
+
 div.warning a {
   text-decoration: underline;
 }
@@ -59,6 +61,7 @@ div.warning a {
 .tpm-bottom-controls {
   display: block;
 }
+
 .tpm-bottom-controls img {
   border: none;
   text-align: center;
@@ -82,7 +85,7 @@ div.warning a {
 .tpm-subelement-table {
   border-bottom: 0px;
   font-size: 10px;
-  margin: 4px;
+  margin: 0 4px;
 }
 
 .tpm-subelement-table .tpm-title-cell {
@@ -96,6 +99,7 @@ div.warning a {
   border-width: medium 1px 1px;
   font-size: 10px;
 }
+
 .tpm-sub-elements th, .tpm-sub-elements td {
   vertical-align: top;
 }
@@ -122,9 +126,11 @@ div.warning a {
   width: 100%;
   margin-bottom: 5px;
 }
+
 .tpm-container-element a {
   color: #5F5F5F;
 }
+
 .tpm-container-element .tpm-titlebar-fromOtherPage .t3-row-header {
   background-color: #EAEAEA;
   background-image: -moz-linear-gradient(center top, #888888 10%, #5F5F5F 100%);
@@ -144,13 +150,16 @@ div.warning a {
   line-height: 15px;
   padding: 4px 1px 4px 5px;
 }
+
 .tpm-element-title a {
   float: left;
 }
+
 .tpm-element-title .tpm-langIcon {
   float: left;
   padding-right: 5px;
 }
+
 .tpm-element-title .t3-js-clickmenutrigger {
   margin-right: 5px;
 }
@@ -180,6 +189,7 @@ div.warning a {
   padding: 2px 3px;
   vertical-align: middle;
 }
+
 .tpm-nonused-element:nth-child(odd) {
   background: #FFF;
 }
@@ -187,13 +197,16 @@ div.warning a {
 .t3-row-header {
   color: #fff;
 }
+
 .t3-row-header .tpm-element-title {
   line-height: 18px;
 }
+
 .t3-row-header .tpm-element-control {
   float: right;
   min-width: 120px;
 }
+
 .t3-row-header .tpm-element-control:after {
   content: ".";
   clear: both;
@@ -205,9 +218,11 @@ div.warning a {
 .t3-page-ce {
   margin-bottom: 0;
 }
+
 .t3-page-ce.inactive .t3-row-header, .t3-page-ce.active .t3-row-header {
   visibility: visible;
 }
+
 .t3-page-ce.inactive > .tpm-container-element > .tpm-titlebar > .t3-row-header {
   background: none;
   color: #000000;
@@ -215,9 +230,11 @@ div.warning a {
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
   filter: alpha(opacity=50);
 }
+
 .t3-page-ce.inactive > .tpm-container-element > .tpm-titlebar > .t3-row-header > .tpm-element-control {
   visibility: hidden;
 }
+
 .t3-page-ce.inactive > .tpm-container-element.tpm-hidden > .tpm-titlebar > .t3-row-header {
   color: #888888;
 }
