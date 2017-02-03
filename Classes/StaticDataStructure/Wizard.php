@@ -248,14 +248,18 @@ class Wizard
 
         if ($conf['enable']) {
             if ($updateMessage) {
-                $out .= '<p>' . $updateMessage . '</p><p><strong>' . TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.clearcache') . '</strong></p>';
+                $out .= '<div class="alert alert-info">'
+                    . '<p>' . $updateMessage . '</p><p><strong>' . TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.clearcache') . '</strong></p>'
+                    . '</div>';
             } else {
-                $out .= '<h4>' . TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.description2.1') . '</h4>'
+                $out .= '<div class="alert alert-danger">'
+                    . '<h4 class="alert-title">' . TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.description2.1') . '</h4>'
                     . '<p class="checkbox">
                         <label for="sdw-updateRecords">
                             <input type="checkbox" name="staticDSwizardoptions[updateRecords]" id="sdw-updateRecords" value="1" />'
                             . TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.updaterecords')
-                    . '</label></p>';
+                    . '</label></p>'
+                    . '</div>';
             }
         }
 
