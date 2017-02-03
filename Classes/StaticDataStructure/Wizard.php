@@ -292,6 +292,11 @@ class Wizard
     {
         // Take sanitizer from local driver
         $localdriver = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Driver\LocalDriver::class);
-        return $localdriver->sanitizeFileName($fileName);
+
+        // After sanitizing remove double underscores and trim underscore
+        return trim(
+            preg_replace('/__/', '_', $localdriver->sanitizeFileName($fileName)),
+            '_'
+        );
     }
 }
