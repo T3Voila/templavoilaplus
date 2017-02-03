@@ -158,18 +158,21 @@ class Wizard
             '',
             'scope, title'
         );
-        $out = '<table id="staticDSwizard_getdsrecords"><thead>
-            <tr class="bgColor5">
-                <td style="vertical-align:middle;">' . TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.uid') . '</td>
-                <td style="vertical-align:middle;">' . TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.pid') . '</td>
-                <td style="vertical-align:middle;">' . TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.title') . '</td>
-                <td style="vertical-align:middle;">' . TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.scope') . '</td>
-                <td style="vertical-align:middle;">' . TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.usage') . '</td>
-                <td>
-                    <label for="sdw-checkall">' . TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.selectall') . '</label>
-                    <input type="checkbox" class="checkbox" id="sdw-checkall" name="sdw-checkall" onclick="$$(\'.staticDScheck\').each(function(e){e.checked=$(\'sdw-checkall\').checked;});" value="1" ' .
-                    ($checkAll ? 'checked="checked"' : '') . ' /></td>
-        </tr></thead><tbody>';
+        $out = '<table class="table table-hover"><thead>
+            <tr>
+                <th>' . TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.uid') . '</th>
+                <th>' . TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.pid') . '</th>
+                <th class="col-title">' . TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.title') . '</th>
+                <th>' . TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.scope') . '</th>
+                <th>' . TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.usage') . '</th>
+                <th class="col-checkbox">
+                    <label for="sdw-checkall">
+                    <input type="checkbox" id="sdw-checkall" name="sdw-checkall" onclick="$(\'.staticDScheck\').prop(\'checked\', $(\'#sdw-checkall\')[0].checked)" value="1" ' .
+                    ($checkAll ? 'checked="checked"' : '') . ' />&nbsp;
+                    ' . TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.selectall') . '</label>
+                    </label>
+                </th>
+            </tr></thead><tbody>';
         foreach ($rows as $row) {
             $dirPath = GeneralUtility::getFileAbsFileName($row['scope'] == 2 ? $conf['path_fce'] : $conf['path_page']);
             $dirPath = $dirPath . (substr($dirPath, -1) == '/' ? '' : '/');
@@ -228,16 +231,16 @@ class Wizard
                     $this->step = 3;
                 }
             }
-            $out .= '<tr class="bgColor' . ($row['scope'] == 1 ? 3 : 6) . '">
-            <td style="text-align: center;padding: 0,3px;">' . $row['uid'] . '</td>
-            <td style="text-align: center;padding: 0,3px;">' . $row['pid'] . '</td>
-            <td style="padding: 0,3px;">' . htmlspecialchars($row['title']) . '</td>
-            <td style="padding: 0,3px;">' . ($row['scope'] == 1 ? 'Page' : 'FCE') . '</td>
-            <td style="text-align: center;padding: 0,3px;">' . $usage[0]['count(*)'] . '</td>';
+            $out .= '<tr class="' . ($row['scope'] == 1 ? '' : 'active') . '">
+            <td class="text-right" nowrap="nowrap">' . $row['uid'] . '</td>
+            <td class="text-right" nowrap="nowrap">' . $row['pid'] . '</td>
+            <td nowrap="nowrap">' . htmlspecialchars($row['title']) . '</td>
+            <td nowrap="nowrap">' . ($row['scope'] == 1 ? 'Page' : 'FCE') . '</td>
+            <td class="text-right" nowrap="nowrap">' . $usage[0]['count(*)'] . '</td>';
             if (count($writeDsIds) && in_array($row['uid'], $writeDsIds)) {
-                $out .= '<td class="nobr" style="text-align: right;padding: 0,3px;">written to "' . $outPath . '"</td>';
+                $out .= '<td nowrap="nowrap">written to "' . $outPath . '"</td>';
             } else {
-                $out .= '<td class="nobr" style="text-align: right;padding: 0,3px;"><input type="checkbox" class="checkbox staticDScheck" name="staticDSwizard[' . $row['uid'] . ']" value="1" /></td>';
+                $out .= '<td class="col-checkbox" nowrap="nowrap"><input type="checkbox" class="staticDScheck" name="staticDSwizard[' . $row['uid'] . ']" value="1" /></td>';
             }
             $out .= '</tr>';
         }
@@ -247,11 +250,12 @@ class Wizard
             if ($updateMessage) {
                 $out .= '<p>' . $updateMessage . '</p><p><strong>' . TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.clearcache') . '</strong></p>';
             } else {
-                $out .= '<h4>' . TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.description2.1') . '</h4>';
-                $out .= '<p>
-                <input type="checkbox" class="checkbox" name="staticDSwizardoptions[updateRecords]" id="sdw-updateRecords" value="1" />
-                <label for="sdw-updateRecords">' . TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.updaterecords') . '</label><br />
-                </p>';
+                $out .= '<h4>' . TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.description2.1') . '</h4>'
+                    . '<p class="checkbox">
+                        <label for="sdw-updateRecords">
+                            <input type="checkbox" name="staticDSwizardoptions[updateRecords]" id="sdw-updateRecords" value="1" />'
+                            . TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.updaterecords')
+                    . '</label></p>';
             }
         }
 
