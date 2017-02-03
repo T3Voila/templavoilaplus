@@ -36,6 +36,9 @@
             <trans-unit id="staticDS.wizard.scope" xml:space="preserve">
                 <source>Scope</source>
             </trans-unit>
+            <trans-unit id="staticDS.wizard.path" xml:space="preserve">
+                <source>Path</source>
+            </trans-unit>
             <trans-unit id="staticDS.wizard.usage" xml:space="preserve">
                 <source>Usage</source>
             </trans-unit>

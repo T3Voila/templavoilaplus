@@ -39,6 +39,8 @@ class Wizard
      */
     public function staticDsWizard()
     {
+        $this->iconFactory = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconFactory::class);
+
         $this->step = GeneralUtility::_GP('dsWizardDoIt') ? (int)GeneralUtility::_GP('dsWizardStep') : 0;
         $conf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
 
@@ -164,6 +166,7 @@ class Wizard
                 <th>' . TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.pid') . '</th>
                 <th class="col-title">' . TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.title') . '</th>
                 <th>' . TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.scope') . '</th>
+                <th>' . TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.path') . '</th>
                 <th>' . TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.usage') . '</th>
                 <th class="col-checkbox">
                     <label for="sdw-checkall">
@@ -176,8 +179,8 @@ class Wizard
         foreach ($rows as $row) {
             $dirPath = GeneralUtility::getFileAbsFileName($row['scope'] == 2 ? $conf['path_fce'] : $conf['path_page']);
             $dirPath = $dirPath . (substr($dirPath, -1) == '/' ? '' : '/');
-            $title = preg_replace('|[/,\."\']+|', '_', $row['title']);
-            $path = $dirPath . $title . ' (' . ($row['scope'] == 1 ? 'page' : 'fce') . ').xml';
+            $title = $this->makeCleanFileName($row['title']);
+            $path = $dirPath . $title . '.xml';
             $outPath = substr($path, strlen(PATH_site));
 
             $usage = TemplaVoilaUtility::getDatabaseConnection()->exec_SELECTgetRows(
@@ -188,8 +191,10 @@ class Wizard
             if (count($writeDsIds) && in_array($row['uid'], $writeDsIds)) {
                 GeneralUtility::writeFile($path, $row['dataprot']);
                 if ($row['previewicon']) {
-                    copy(GeneralUtility::getFileAbsFileName('uploads/tx_templavoila/' . $row['previewicon']), $dirPath . $title . ' (' . ($row['scope'] == 1
-                            ? 'page' : 'fce') . ').gif');
+                    copy(
+                        GeneralUtility::getFileAbsFileName('uploads/tx_templavoila/' . $row['previewicon']),
+                        $dirPath . $title . '.gif'
+                    );
                 }
                 if ($options['updateRecords']) {
                     // remove DS records
@@ -236,9 +241,12 @@ class Wizard
             <td class="text-right" nowrap="nowrap">' . $row['pid'] . '</td>
             <td nowrap="nowrap">' . htmlspecialchars($row['title']) . '</td>
             <td nowrap="nowrap">' . ($row['scope'] == 1 ? 'Page' : 'FCE') . '</td>
+            <td nowrap="nowrap">' . $outPath . '</td>
             <td class="text-right" nowrap="nowrap">' . $usage[0]['count(*)'] . '</td>';
             if (count($writeDsIds) && in_array($row['uid'], $writeDsIds)) {
-                $out .= '<td nowrap="nowrap">written to "' . $outPath . '"</td>';
+                $out .= '<td nowrap="nowrap">'
+                    . $this->iconFactory->getIcon('status-dialog-ok', \TYPO3\CMS\Core\Imaging\Icon::SIZE_SMALL)->render()
+                    . '</td>';
             } else {
                 $out .= '<td class="col-checkbox" nowrap="nowrap"><input type="checkbox" class="staticDScheck" name="staticDSwizard[' . $row['uid'] . ']" value="1" /></td>';
             }
@@ -278,5 +286,12 @@ class Wizard
             'tx_templavoila_datastructure',
             'deleted=0'
         );
+    }
+
+    protected function makeCleanFileName($fileName)
+    {
+        // Take sanitizer from local driver
+        $localdriver = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Driver\LocalDriver::class);
+        return $localdriver->sanitizeFileName($fileName);
     }
 }
