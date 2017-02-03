@@ -1,89 +1,89 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2014-08-12T17:03:18Z" product-name="templavoila">
-		<header/>
-		<body>
-			<trans-unit id="enable.oldPageModule" xml:space="preserve">
-				<source>Enable the classic Page module:Check this box to enable classic Page module in the list of modules.</source>
-			</trans-unit>
-			<trans-unit id="enable.selectDataStructure" xml:space="preserve">
-				<source>Enable data structure selection: If this checkbox is checked, page and content elements will have data structure selector as they had in older TemplaVoila versions. If current installation has very few template objects, it is recommended to have this checkbox unchecked.</source>
-			</trans-unit>
-			<trans-unit id="enable.renderFCEHeader" xml:space="preserve">
-				<source>Enable Header for FCE's:If this checkbox is checked the header of Content Element type FCE will be rendered like headers of other Content Elements.</source>
-			</trans-unit>
-			<trans-unit id="staticDS.enable" xml:space="preserve">
-				<source>Enable static files for data structures:Experimental! Use Static DS Conversion Wizard below!</source>
-			</trans-unit>
-			<trans-unit id="staticDS.path_fce" xml:space="preserve">
-				<source>FCE Data Structure Path:Path to the static data structures for flexible content elements</source>
-			</trans-unit>
-			<trans-unit id="staticDS.path_page" xml:space="preserve">
-				<source>Page Data Structure Path:Path to the static data structures for pages</source>
-			</trans-unit>
-			<trans-unit id="staticDS.wizard" xml:space="preserve">
-				<source>Static DS Conversion Wizard</source>
-			</trans-unit>
-			<trans-unit id="staticDS.wizard.uid" xml:space="preserve">
-				<source>UID</source>
-			</trans-unit>
-			<trans-unit id="staticDS.wizard.pid" xml:space="preserve">
-				<source>PID</source>
-			</trans-unit>
-			<trans-unit id="staticDS.wizard.title" xml:space="preserve">
-				<source>Title</source>
-			</trans-unit>
-			<trans-unit id="staticDS.wizard.scope" xml:space="preserve">
-				<source>Scope</source>
-			</trans-unit>
-			<trans-unit id="staticDS.wizard.usage" xml:space="preserve">
-				<source>Usage</source>
-			</trans-unit>
-			<trans-unit id="staticDS.wizard.selectall" xml:space="preserve">
-				<source>select/deselect all</source>
-			</trans-unit>
-			<trans-unit id="staticDS.wizard.title.0" xml:space="preserve">
-				<source>Check data structure paths</source>
-			</trans-unit>
-			<trans-unit id="staticDS.wizard.description.0" xml:space="preserve">
-				<source>The wizard checks if the data structure paths exist and are writeable. If a path does not exist, it attempts to create the necessary directory.&lt;br /&gt;&lt;br /&gt;If you want to update your records, ensure you checked &quot;staticDS.enable&quot; before starting the wizard.</source>
-			</trans-unit>
-			<trans-unit id="staticDS.wizard.title.1" xml:space="preserve">
-				<source>Convert existing data structures</source>
-			</trans-unit>
-			<trans-unit id="staticDS.wizard.description.1" xml:space="preserve">
-				<source>This step copies your existing data structures into static files using the specified data structure paths. Static files that already exist will be overwritten.&lt;br /&gt;Since the existing data structures remain unchanged, this is also an easy way to back up data structure records without actually using the static data structure functionality.</source>
-			</trans-unit>
-			<trans-unit id="staticDS.wizard.description2.1" xml:space="preserve">
-				<source>Are you sure you want to enable static data structures? This feature is experimental and it is recommended that you perform a database backup of all tables involved (pages, tt_content, tx_templavoila_datastructure, and tx_templavoila_tmplobj) before continuing.</source>
-			</trans-unit>
-			<trans-unit id="staticDS.wizard.dircheck.ok" xml:space="preserve">
-				<source>Directory &quot;%s&quot; exists and is writable. Ready for usage.</source>
-			</trans-unit>
-			<trans-unit id="staticDS.wizard.dircheck.notok" xml:space="preserve">
-				<source>&lt;strong&gt;Error:&lt;/strong&gt; Directory &quot;%s&quot; could not be created or is not writable!</source>
-			</trans-unit>
-			<trans-unit id="staticDS.wizard.dircheck.notset" xml:space="preserve">
-				<source>&lt;strong&gt;Setting:&lt;/strong&gt; &quot;%s&quot; missing. Please check and update the existing configuration.</source>
-			</trans-unit>
-			<trans-unit id="staticDS.wizard.submit1" xml:space="preserve">
-				<source>static DS Wizard - Step 1: Check paths</source>
-			</trans-unit>
-			<trans-unit id="staticDS.wizard.submit2" xml:space="preserve">
-				<source>static DS Wizard - Step 2: Copy your existing data structures to files</source>
-			</trans-unit>
-			<trans-unit id="staticDS.wizard.submit3" xml:space="preserve">
-				<source>static DS Wizard - Step 2: Update database records and enable static data structures</source>
-			</trans-unit>
-			<trans-unit id="staticDS.wizard.updaterecords" xml:space="preserve">
-				<source>Update database records and enable static data structure</source>
-			</trans-unit>
-			<trans-unit id="staticDS.wizard.updated" xml:space="preserve">
-				<source>All tables were updated, Templavoila now is ready to work with created static data structure files.</source>
-			</trans-unit>
-			<trans-unit id="staticDS.wizard.clearcache" xml:space="preserve">
-				<source>You have to clear the configuration cache for reading the new data structures!</source>
-			</trans-unit>
-		</body>
-	</file>
+    <file source-language="en" datatype="plaintext" original="messages" date="2014-08-12T17:03:18Z" product-name="templavoila">
+        <header/>
+        <body>
+            <trans-unit id="enable.oldPageModule" xml:space="preserve">
+                <source>Enable the classic Page module:Check this box to enable classic Page module in the list of modules.</source>
+            </trans-unit>
+            <trans-unit id="enable.selectDataStructure" xml:space="preserve">
+                <source>Enable data structure selection: If this checkbox is checked, page and content elements will have data structure selector as they had in older TemplaVoila versions. If current installation has very few template objects, it is recommended to have this checkbox unchecked.</source>
+            </trans-unit>
+            <trans-unit id="enable.renderFCEHeader" xml:space="preserve">
+                <source>Enable Header for FCE's:If this checkbox is checked the header of Content Element type FCE will be rendered like headers of other Content Elements.</source>
+            </trans-unit>
+            <trans-unit id="staticDS.enable" xml:space="preserve">
+                <source>Enable static files for data structures:Experimental! Use Static DS Conversion Wizard below!</source>
+            </trans-unit>
+            <trans-unit id="staticDS.path_fce" xml:space="preserve">
+                <source>FCE Data Structure Path:Path to the static data structures for flexible content elements</source>
+            </trans-unit>
+            <trans-unit id="staticDS.path_page" xml:space="preserve">
+                <source>Page Data Structure Path:Path to the static data structures for pages</source>
+            </trans-unit>
+            <trans-unit id="staticDS.wizard" xml:space="preserve">
+                <source>Static DS Conversion Wizard</source>
+            </trans-unit>
+            <trans-unit id="staticDS.wizard.uid" xml:space="preserve">
+                <source>UID</source>
+            </trans-unit>
+            <trans-unit id="staticDS.wizard.pid" xml:space="preserve">
+                <source>PID</source>
+            </trans-unit>
+            <trans-unit id="staticDS.wizard.title" xml:space="preserve">
+                <source>Title</source>
+            </trans-unit>
+            <trans-unit id="staticDS.wizard.scope" xml:space="preserve">
+                <source>Scope</source>
+            </trans-unit>
+            <trans-unit id="staticDS.wizard.usage" xml:space="preserve">
+                <source>Usage</source>
+            </trans-unit>
+            <trans-unit id="staticDS.wizard.selectall" xml:space="preserve">
+                <source>select/deselect all</source>
+            </trans-unit>
+            <trans-unit id="staticDS.wizard.title.0" xml:space="preserve">
+                <source>Check data structure paths</source>
+            </trans-unit>
+            <trans-unit id="staticDS.wizard.description.0" xml:space="preserve">
+                <source>The wizard checks if the data structure paths exist and are writeable. If a path does not exist, it attempts to create the necessary directory.&lt;br /&gt;&lt;br /&gt;If you want to update your records, ensure you checked &quot;staticDS.enable&quot; before starting the wizard.</source>
+            </trans-unit>
+            <trans-unit id="staticDS.wizard.title.1" xml:space="preserve">
+                <source>Convert existing data structures</source>
+            </trans-unit>
+            <trans-unit id="staticDS.wizard.description.1" xml:space="preserve">
+                <source>This step copies your existing data structures into static files using the specified data structure paths. Static files that already exist will be overwritten.&lt;br /&gt;Since the existing data structures remain unchanged, this is also an easy way to back up data structure records without actually using the static data structure functionality.</source>
+            </trans-unit>
+            <trans-unit id="staticDS.wizard.description2.1" xml:space="preserve">
+                <source>Are you sure you want to enable static data structures? This feature is experimental and it is recommended that you perform a database backup of all tables involved (pages, tt_content, tx_templavoila_datastructure, and tx_templavoila_tmplobj) before continuing.</source>
+            </trans-unit>
+            <trans-unit id="staticDS.wizard.dircheck.ok" xml:space="preserve">
+                <source>Directory &quot;%s&quot; exists and is writable. Ready for usage.</source>
+            </trans-unit>
+            <trans-unit id="staticDS.wizard.dircheck.notok" xml:space="preserve">
+                <source>&lt;strong&gt;Error:&lt;/strong&gt; Directory &quot;%s&quot; could not be created or is not writable!</source>
+            </trans-unit>
+            <trans-unit id="staticDS.wizard.dircheck.notset" xml:space="preserve">
+                <source>&lt;strong&gt;Setting:&lt;/strong&gt; &quot;%s&quot; missing. Please check and update the existing configuration.</source>
+            </trans-unit>
+            <trans-unit id="staticDS.wizard.submit1" xml:space="preserve">
+                <source>static DS Wizard - Step 1: Check paths</source>
+            </trans-unit>
+            <trans-unit id="staticDS.wizard.submit2" xml:space="preserve">
+                <source>static DS Wizard - Step 2: Copy your existing data structures to files</source>
+            </trans-unit>
+            <trans-unit id="staticDS.wizard.submit3" xml:space="preserve">
+                <source>static DS Wizard - Step 2: Update database records and enable static data structures</source>
+            </trans-unit>
+            <trans-unit id="staticDS.wizard.updaterecords" xml:space="preserve">
+                <source>Update database records and enable static data structure</source>
+            </trans-unit>
+            <trans-unit id="staticDS.wizard.updated" xml:space="preserve">
+                <source>All tables were updated, Templavoila now is ready to work with created static data structure files.</source>
+            </trans-unit>
+            <trans-unit id="staticDS.wizard.clearcache" xml:space="preserve">
+                <source>You have to clear the configuration cache for reading the new data structures!</source>
+            </trans-unit>
+        </body>
+    </file>
 </xliff>
