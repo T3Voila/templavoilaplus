@@ -349,6 +349,15 @@ class Template
     }
 
     /**
+     * Returns the local processing data without any transformation
+     *
+     * @return string
+     */
+    public function getLocalProcessing() {
+        return $this->row['localprocessing'];
+    }
+
+    /**
      * @param boolean $skipDsDataprot
      *
      * @return string

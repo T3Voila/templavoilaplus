@@ -828,8 +828,8 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
                 <tr>
                     <td>' . TemplaVoilaUtility::getLanguageService()->getLL('localprocessing_xml') . ':</td>
                     <td>
-                        ' . $lpXML . ($toObj->getLocalDataprotXML(true) ?
-                    GeneralUtility::formatSize(strlen($toObj->getLocalDataprotXML(true))) . ' bytes'
+                        ' . $lpXML . ($toObj->getLocalProcessing() ?
+                    GeneralUtility::formatSize(strlen($toObj->getLocalProcessing())) . ' bytes'
                     : '') . '
                     </td>
                 </tr>
@@ -860,8 +860,8 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
                 </tr>
                 <tr>
                     <td>' . TemplaVoilaUtility::getLanguageService()->getLL('localprocessing_xml') . ':</td>
-                    <td>' . $lpXML . ($toObj->getLocalDataprotXML(true) ?
-                    GeneralUtility::formatSize(strlen($toObj->getLocalDataprotXML(true))) . ' bytes'
+                    <td>' . $lpXML . ($toObj->getLocalProcessing() ?
+                    GeneralUtility::formatSize(strlen($toObj->getLocalProcessing())) . ' bytes'
                     : '') . '
                     </td>
                 </tr>
