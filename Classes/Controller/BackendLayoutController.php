@@ -406,8 +406,6 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         }
         $this->blindIcons = isset($this->modTSconfig['properties']['blindIcons']) ? GeneralUtility::trimExplode(',', $this->modTSconfig['properties']['blindIcons'], true) : array();
 
-        $this->addToRecentElements();
-
         // Fill array allAvailableLanguages and currently selected language (from language selector or from outside)
         $this->allAvailableLanguages = $this->getAvailableLanguages(0, true, true, true);
         $this->currentLanguageKey = $this->allAvailableLanguages[$this->MOD_SETTINGS['language']]['ISOcode'];
@@ -3187,55 +3185,6 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     public function getIconFactory()
     {
         return $this->iconFactory;
-    }
-
-    /**
-     * Adds element to the list of recet elements
-     *
-     * @throws RuntimeException
-     *
-     * @return void
-     */
-    protected function addToRecentElements()
-    {
-        // Add recent element
-        $ser = GeneralUtility::_GP('ser');
-        if ($ser) {
-            throw new \RuntimeException('Further execution of code leads to PHP errors.', 1404750505);
-
-            // Include file required to unserialization
-            GeneralUtility::requireOnce(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('templavoila', 'newcewizard/model/class.tx_templavoila_contentelementdescriptor.php'));
-
-            $obj = @unserialize(base64_decode($ser));
-
-            if ($obj instanceof \tx_templavoila_contentElementDescriptor) {
-                $data = (array) @unserialize(TemplaVoilaUtility::getBackendUser()->uc['tx_templavoila_recentce']);
-                // Find this element
-                $pos = false;
-                $count = count($data);
-                for ($i = 0; $i < $count; $i++) {
-                    // Notice: must be "==", not "==="!
-                    if ($data[$i] == $obj) {
-                        $pos = $i;
-                        break;
-                    }
-                }
-                if ($pos !== 0) {
-                    if ($pos !== false) {
-                        // Remove it
-                        array_splice($data, $pos, 1);
-                    } else {
-                        // Check if there are more than necessary elements
-                        if ($count >= 10) {
-                            $data = array_slice($data, 0, 9);
-                        }
-                    }
-                    array_unshift($data, $obj);
-                    TemplaVoilaUtility::getBackendUser()->uc['tx_templavoila_recentce'] = serialize($data);
-                    TemplaVoilaUtility::getBackendUser()->writeUC();
-                }
-            }
-        }
     }
 
     /**
