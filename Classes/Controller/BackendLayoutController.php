@@ -1388,7 +1388,10 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         } else {
             $languageIcon = ($languageLabel && $languageUid ? '[' . $languageLabel . ']' : '');
         }
-        $languageIcon = '<span class="tpm-langIcon">' . $languageIcon . '</span>';
+
+        $languageIcon = '<span class="tpm-langIcon">'
+            . $this->link_edit($languageIcon, 'tt_content', $contentTreeArr['el']['uid'], true, $contentTreeArr['el']['pid'], 'tpm-langIcon')
+            . '</span>';
 
         // Create warning messages if neccessary:
         $warnings = '';
