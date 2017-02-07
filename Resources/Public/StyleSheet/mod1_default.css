@@ -151,11 +151,8 @@ div.warning a {
   padding: 4px 1px 4px 5px;
 }
 
-.tpm-element-title a {
-  float: left;
-}
-
-.tpm-element-title .tpm-langIcon {
+.tpm-element-title .tpm-langIcon,
+.tpm-element-title .tpm-buttonsLeft {
   float: left;
   padding-right: 5px;
 }

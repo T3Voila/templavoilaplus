@@ -1295,6 +1295,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
         $titleBarLeftButtons = $this->translatorMode ? $recordIcon : (count($menuCommands) == 0 ? $recordIcon : BackendUtility::wrapClickMenuOnIcon($recordIcon, $contentTreeArr['el']['table'], $contentTreeArr['el']['uid'], true, '', implode(',', $menuCommands)));
         $titleBarLeftButtons .= $this->getRecordStatHookValue($contentTreeArr['el']['table'], $contentTreeArr['el']['uid']);
+        $titleBarLeftButtons = '<span class="tpm-buttonsLeft">' . $titleBarLeftButtons . '</span>';
         unset($menuCommands);
 
         $languageUid = 0;
@@ -1377,17 +1378,17 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         // Prepare the language icon:
         $languageLabel = htmlspecialchars($this->allAvailableLanguages[$contentTreeArr['el']['sys_language_uid']]['title']);
         if ($this->allAvailableLanguages[$languageUid]['flagIcon']) {
-            $languageIcon = \Extension\Templavoila\Utility\IconUtility::getFlagIconForLanguage($this->allAvailableLanguages[$languageUid]['flagIcon'], array('title' => $languageLabel, 'alt' => $languageLabel));
+            $languageIcon = \Extension\Templavoila\Utility\IconUtility::getFlagIconForLanguage(
+                $this->allAvailableLanguages[$languageUid]['flagIcon'],
+                [
+                    'title' => $languageLabel,
+                    'alt' => $languageLabel
+                ]
+            );
         } else {
             $languageIcon = ($languageLabel && $languageUid ? '[' . $languageLabel . ']' : '');
         }
-
-        // If there was a language icon and the language was not default or [all] and if that langauge is accessible for the user, then wrap the  flag with an edit link (to support the "Click the flag!" principle for translators)
-        if ($languageIcon && $languageUid > 0 && TemplaVoilaUtility::getBackendUser()->checkLanguageAccess($languageUid) && $contentTreeArr['el']['table'] === 'tt_content') {
-            $languageIcon = $this->link_edit($languageIcon, 'tt_content', $contentTreeArr['el']['uid'], true, $contentTreeArr['el']['pid'], 'btn btn-default btn-sm tpm-langIcon');
-        } elseif ($languageIcon) {
-            $languageIcon = '<span class="tpm-langIcon">' . $languageIcon . '</span>';
-        }
+        $languageIcon = '<span class="tpm-langIcon">' . $languageIcon . '</span>';
 
         // Create warning messages if neccessary:
         $warnings = '';
