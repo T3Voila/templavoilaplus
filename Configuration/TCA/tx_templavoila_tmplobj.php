@@ -1,7 +1,7 @@
 <?php
 
-return array(
-    'ctrl' => array(
+return [
+    'ctrl' => [
         'title' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tx_templavoila_tmplobj',
         'label' => 'title',
         'label_userFunc' => 'EXT:templavoila/Classes/Service/UserFunc/Label.php:&Extension\Templavoila\Service\UserFunc\Label->getLabel',
@@ -18,12 +18,12 @@ return array(
         'versioningWS' => true,
         'origUid' => 't3_origuid',
         'shadowColumnsForNewPlaceholders' => 'title,datastructure,rendertype,sys_language_uid,parent,rendertype_ref',
-    ),
-    'interface' => array(
+    ],
+    'interface' => [
         'showRecordFieldList' => 'title,datastructure,fileref',
         'maxDBListItems' => 60,
-    ),
-    'columns' => array(
+    ],
+    'columns' => [
         'sys_language_uid' => [
             'exclude' => 1,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.language',
@@ -41,50 +41,50 @@ return array(
                 'default' => 0,
             ]
         ],
-        'title' => array(
+        'title' => [
             'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tx_templavoila_tmplobj.title',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => '48',
                 'eval' => 'required,trim',
-            )
-        ),
-        'parent' => array(
+            ]
+        ],
+        'parent' => [
             'exclude' => 1,
             'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tx_templavoila_tmplobj.parent',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'foreign_table' => 'tx_templavoila_tmplobj',
                 'foreign_table_where' => 'AND tx_templavoila_tmplobj.parent=0 AND tx_templavoila_tmplobj.uid!=\'###REC_FIELD_uid###\' ORDER BY tx_templavoila_tmplobj.title',
-                'items' => array(
-                    array('', 0)
-                )
-            )
-        ),
-        'rendertype_ref' => array(
+                'items' => [
+                    ['', 0]
+                ]
+            ]
+        ],
+        'rendertype_ref' => [
             'exclude' => 1,
             'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tx_templavoila_tmplobj.rendertype_ref',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'foreign_table' => 'tx_templavoila_tmplobj',
                 'foreign_table_where' => 'AND tx_templavoila_tmplobj.parent=0 AND tx_templavoila_tmplobj.uid!=\'###REC_FIELD_uid###\' ORDER BY tx_templavoila_tmplobj.title',
-                'items' => array(
-                    array('', 0)
-                )
-            ),
+                'items' => [
+                    ['', 0]
+                ]
+            ],
             'displayCond' => 'FIELD:parent:=:0'
-        ),
-        'datastructure' => array(
+        ],
+        'datastructure' => [
             'exclude' => 1,
             'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tx_templavoila_tmplobj.datastructure',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'items' => array(
-                    array('', 0),
-                ),
+                'items' => [
+                    ['', 0],
+                ],
                 'foreign_table' => 'tx_templavoila_datastructure',
                 'foreign_table_where' => 'AND tx_templavoila_datastructure.pid=###CURRENT_PID### ORDER BY tx_templavoila_datastructure.uid',
                 'size' => 1,
@@ -92,87 +92,87 @@ return array(
                 'maxitems' => 1,
                 'itemsProcFunc' => \Extension\Templavoila\Service\ItemProcFunc\StaticDataStructuresHandler::class . '->main',
                 'allowNonIdValues' => 1,
-                'wizards' => array(
+                'wizards' => [
                     '_PADDING' => 2,
                     '_VERTICAL' => 1,
-                    'add' => array(
+                    'add' => [
                         'type' => 'script',
                         'title' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tx_templavoila_tmplobj.ds_createnew',
                         'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_add.gif',
-                        'params' => array(
+                        'params' => [
                             'table' => 'tx_templavoila_datastructure',
                             'pid' => '###CURRENT_PID###',
                             'setValue' => 'set'
-                        ),
-                        'module' => array(
+                        ],
+                        'module' => [
                             'name' => 'wizard_add.php'
-                        )
-                    )
-                )
-            ),
+                        ]
+                    ]
+                ]
+            ],
             'displayCond' => 'FIELD:parent:=:0'
-        ),
-        'fileref' => array(
+        ],
+        'fileref' => [
             'exclude' => 1,
             'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tx_templavoila_tmplobj.fileref',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => '48',
-                'wizards' => array(
+                'wizards' => [
                     '_PADDING' => 2,
-                    'link' => array(
+                    'link' => [
                         'type' => 'popup',
                         'title' => 'Link',
                         'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif',
-                        'module' => array(
+                        'module' => [
                             'name' => 'wizard_link',
-                            'urlParameters' => array(
-                            ),
-                        ),
+                            'urlParameters' => [
+                            ],
+                        ],
                         'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1',
-                        'params' => array(
+                        'params' => [
                             'blindLinkOptions' => 'page,url,mail,spec,folder',
                             'allowedExtensions' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'],
-                        )
-                    ),
-                ),
+                        ]
+                    ],
+                ],
                 'eval' => 'required,nospace',
                 'softref' => 'typolink'
-            )
-        ),
-        'belayout' => array(
+            ]
+        ],
+        'belayout' => [
             'exclude' => 1,
             'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tx_templavoila_tmplobj.belayout',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => '48',
-                'wizards' => array(
+                'wizards' => [
                     '_PADDING' => 2,
-                    'link' => array(
+                    'link' => [
                         'type' => 'popup',
                         'title' => 'Link',
                         'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif',
-                        'module' => array(
+                        'module' => [
                             'name' => 'wizard_link',
-                            'urlParameters' => array(
+                            'urlParameters' => [
                                 'act' => 'file',
-                            ),
-                        ),
-                        'params' => array(
+                            ],
+                        ],
+                        'params' => [
                             'blindLinkOptions' => 'page,folder,mail,spec,url',
                             'allowedExtensions' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'],
-                        ),
+                        ],
                         'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1'
-                    ),
-                ),
+                    ],
+                ],
                 'eval' => 'nospace',
                 'softref' => 'typolink'
-            )
-        ),
-        'previewicon' => array(
+            ]
+        ],
+        'previewicon' => [
             'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tx_templavoila_tmplobj.previewicon',
             'displayCond' => 'REC:NEW:false',
-            'config' => array(
+            'config' => [
                 'type' => 'group',
                 'internal_type' => 'file',
                 'allowed' => 'gif,png',
@@ -182,49 +182,49 @@ return array(
                 'size' => '1',
                 'maxitems' => '1',
                 'minitems' => '0'
-            ),
+            ],
             'displayCond' => 'FIELD:parent:=:0'
-        ),
-        'description' => array(
+        ],
+        'description' => [
             'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tx_templavoila_tmplobj.description',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => '48',
                 'max' => '256',
                 'eval' => 'trim'
-            ),
+            ],
             'displayCond' => 'FIELD:parent:=:0'
-        ),
-        'rendertype' => array(
+        ],
+        'rendertype' => [
             'exclude' => 1,
             'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tx_templavoila_tmplobj.rendertype',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'items' => array(
-                    array('LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tx_templavoila_tmplobj.rendertype.I.0', ''),
-                    array('LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tx_templavoila_tmplobj.rendertype.I.1', 'print'),
-                )
-            ),
+                'items' => [
+                    ['LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tx_templavoila_tmplobj.rendertype.I.0', ''],
+                    ['LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tx_templavoila_tmplobj.rendertype.I.1', 'print'],
+                ]
+            ],
             'displayCond' => 'FIELD:parent:!=:0'
-        ),
-        'templatemapping' => array('config' => array('type' => 'passthrough')),
-        'fileref_mtime' => array('config' => array('type' => 'passthrough')),
-        'fileref_md5' => array('config' => array('type' => 'passthrough')),
-        'localprocessing' => Array(
+        ],
+        'templatemapping' => ['config' => ['type' => 'passthrough']],
+        'fileref_mtime' => ['config' => ['type' => 'passthrough']],
+        'fileref_md5' => ['config' => ['type' => 'passthrough']],
+        'localprocessing' => [
             'exclude' => 1,
             'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tx_templavoila_tmplobj.localProc',
-            'config' => array(
+            'config' => [
                 'type' => 'text',
                 'wrap' => 'OFF',
                 'cols' => '30',
                 'rows' => '2',
-            ),
+            ],
             'defaultExtras' => 'fixed-font:enable-tab'
-        ),
-    ),
-    'types' => array(
-        '0' => array('showitem' => 'title, parent, fileref, belayout, datastructure, sys_language_uid, rendertype, rendertype_ref, previewicon, description, localprocessing'),
-        '1' => array('showitem' => 'title, parent, fileref, belayout, datastructure, sys_language_uid, rendertype, rendertype_ref, previewicon, description, localprocessing'),
-    )
-);
+        ],
+    ],
+    'types' => [
+        '0' => ['showitem' => 'title, parent, fileref, belayout, datastructure, sys_language_uid, rendertype, rendertype_ref, previewicon, description, localprocessing'],
+        '1' => ['showitem' => 'title, parent, fileref, belayout, datastructure, sys_language_uid, rendertype, rendertype_ref, previewicon, description, localprocessing'],
+    ]
+];
