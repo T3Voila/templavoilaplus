@@ -15,7 +15,7 @@ return array(
         'selicon_field' => 'previewicon',
         'selicon_field_path' => 'uploads/tx_templavoila',
         'type' => 'parent', // kept to make sure the user is force to reload the form
-        'versioningWS' => TRUE,
+        'versioningWS' => true,
         'origUid' => 't3_origuid',
         'shadowColumnsForNewPlaceholders' => 'title,datastructure,rendertype,sys_language_uid,parent,rendertype_ref',
     ),
@@ -24,6 +24,23 @@ return array(
         'maxDBListItems' => 60,
     ),
     'columns' => array(
+        'sys_language_uid' => [
+            'exclude' => 1,
+            'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.language',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'special' => 'languages',
+                'items' => [
+                    [
+                        'LLL:EXT:lang/locallang_general.xlf:LGL.allLanguages',
+                        -1,
+                        'flags-multiple',
+                    ],
+                ],
+                'default' => 0,
+            ]
+        ],
         'title' => array(
             'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tx_templavoila_tmplobj.title',
             'config' => array(
@@ -177,20 +194,6 @@ return array(
                 'eval' => 'trim'
             ),
             'displayCond' => 'FIELD:parent:=:0'
-        ),
-        'sys_language_uid' => array(
-            'exclude' => 1,
-            'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.language',
-            'config' => array(
-                'type' => 'select',
-                'renderType' => 'selectSingle',
-                'foreign_table' => 'sys_language',
-                'foreign_table_where' => 'ORDER BY sys_language.title',
-                'items' => array(
-                    array('', 0)
-                )
-            ),
-            'displayCond' => 'FIELD:parent:!=:0'
         ),
         'rendertype' => array(
             'exclude' => 1,
