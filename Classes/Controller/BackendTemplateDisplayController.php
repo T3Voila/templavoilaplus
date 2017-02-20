@@ -20,7 +20,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 use Extension\Templavoila\Utility\TemplaVoilaUtility;
 
-
 $GLOBALS['LANG']->includeLLFile(
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('templavoila') . 'Resources/Private/Language/BackendTemplateMapping.xlf'
 );

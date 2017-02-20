@@ -372,10 +372,10 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             )
         );
         $view->setTemplateRootPaths(
-//             array_merge(
-//                 $view->getTemplateRootPaths(),
-//                 ['EXT:templavoila/Resources/Private/Templates']
-//             )
+            //             array_merge(
+            //                 $view->getTemplateRootPaths(),
+            //                 ['EXT:templavoila/Resources/Private/Templates']
+            //             )
             [
                 'EXT:backend/Resources/Private/Templates',
                 'EXT:templavoila/Resources/Private/Templates'
@@ -1158,8 +1158,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         }
 
         // Display the content as outline or the nested page structure:
-        if (
-            (TemplaVoilaUtility::getBackendUser()->isAdmin() || $this->modTSconfig['properties']['enableOutlineForNonAdmin'])
+        if ((TemplaVoilaUtility::getBackendUser()->isAdmin() || $this->modTSconfig['properties']['enableOutlineForNonAdmin'])
             && $this->MOD_SETTINGS['showOutline']
         ) {
             $output .= $this->render_outline($contentTreeData['tree']);

@@ -63,8 +63,7 @@ class FlexFormElementContainer extends AbstractContainer
         }
 
         foreach ($flexFormDataStructureArray as $flexFormFieldName => $flexFormFieldArray) {
-            if (
-                // No item array found at all
+            if (// No item array found at all
                 !is_array($flexFormFieldArray)
                 // Not a section or container and not a list of single items
                 || (!isset($flexFormFieldArray['type']) && !is_array($flexFormFieldArray['config']))
@@ -106,8 +105,7 @@ class FlexFormElementContainer extends AbstractContainer
                     );
 
                     $alertMsgOnChange = '';
-                    if (
-                        $fakeParameterArray['fieldConf']['onChange'] === 'reload'
+                    if ($fakeParameterArray['fieldConf']['onChange'] === 'reload'
                         || !empty($GLOBALS['TCA'][$table]['ctrl']['type']) && $GLOBALS['TCA'][$table]['ctrl']['type'] === $flexFormFieldName
                         || !empty($GLOBALS['TCA'][$table]['ctrl']['requestUpdate']) && GeneralUtility::inList($GLOBALS['TCA'][$table]['ctrl']['requestUpdate'], $flexFormFieldName)
                     ) {
@@ -212,8 +210,7 @@ class FlexFormElementContainer extends AbstractContainer
     protected function renderVDEFDiff($vArray, $vDEFkey)
     {
         $item = null;
-        if (
-            $GLOBALS['TYPO3_CONF_VARS']['BE']['flexFormXMLincludeDiffBase'] && isset($vArray[$vDEFkey . '.vDEFbase'])
+        if ($GLOBALS['TYPO3_CONF_VARS']['BE']['flexFormXMLincludeDiffBase'] && isset($vArray[$vDEFkey . '.vDEFbase'])
             && !is_array($vArray['vDEF']) && !is_array($vArray[$vDEFkey . '.vDEFbase'])
             && $vArray[$vDEFkey . '.vDEFbase'] !== $vArray['vDEF']
         ) {

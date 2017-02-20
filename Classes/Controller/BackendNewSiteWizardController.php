@@ -458,8 +458,9 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
                 <td align="center">' . (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extKey) ? TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_missingext_yes', true) : '<span class="typo3-red">' . TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_missingext_no', true) . '</span>') . '</td>
             </tr>';
 
-            if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extKey))
+            if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extKey)) {
                 $missingExtensions = true;
+            }
         }
 
         $outputString .= '<table border="0" cellpadding="1" cellspacing="1">' . implode('', $tRows) . '</table>';
@@ -505,7 +506,6 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
         $paths = $this->getTemplatePaths();
         $files = $this->getTemplateFiles();
         if (!empty($paths) && !empty($files)) {
-
             $this->wizardData = array();
             $pathArr = GeneralUtility::removePrefixPathFromList($paths, PATH_site);
             $outputString = sprintf(TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_firststep'), implode('", "', $pathArr)) . '<br/>';
@@ -523,7 +523,6 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
 
             // Traverse available template files:
             foreach ($fileArr as $file) {
-
                 // Has been used:
                 $tosForTemplate = TemplaVoilaUtility::getDatabaseConnection()->exec_SELECTgetRows(
                     'uid',
@@ -640,10 +639,8 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
         // If the create-site button WAS clicked:
         $outputString = '';
         if (GeneralUtility::_POST('_create_site')) {
-
             // Show selected template file:
             if ($this->wizardData['file'] && $this->wizardData['sitetitle'] && $this->wizardData['username']) {
-
                 // DO import:
                 $import = $this->getImportObj();
                 if (isset($this->modTSconfig['properties']['newTvSiteFile'])) {
@@ -652,7 +649,6 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
                     $inFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('templavoila') . 'Resources/Private/Template/new_tv_site.xml';
                 }
                 if (@is_file($inFile) && $import->loadFile($inFile, 1)) {
-
                     $import->importData($this->importPageUid);
 
                     // Update various fields (the index values, eg. the "1" in "$import->import_mapId['pages'][1]]..." are the UIDs of the original records from the import file!)
@@ -697,7 +693,7 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
                     $tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
                     $tce->stripslashes_values = 0;
                     $tce->dontProcessTransformations = 1;
-                    $tce->start($data, Array());
+                    $tce->start($data, array());
                     $tce->process_datamap();
 
                     // Setting environment:
@@ -769,7 +765,6 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
         $this->saveMenuCode();
 
         if (strlen($menuPart)) {
-
             // Main message:
             $outputString = sprintf(TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_basicsshouldwork', true), $menuTypeText, $menuType, $menuTypeText);
 
@@ -806,8 +801,9 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
                         $newValue = array();
                         $attribs = $htmlParser->get_tag_attributes($htmlParser->getFirstTag($linkTag[1]), 1);
                         $newValue['A-class'] = $attribs[0]['class'];
-                        if ($attribs[0]['onmouseover'] && $attribs[0]['onmouseout'])
+                        if ($attribs[0]['onmouseover'] && $attribs[0]['onmouseout']) {
                             $mouseOver = true;
+                        }
 
                         // Check if the complete content is an image - then make GMENU!
                         $linkContent = trim($htmlParser->removeFirstAndLastTag($linkTag[1]));
@@ -821,10 +817,13 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
                             $filePath = GeneralUtility::getFileAbsFileName(GeneralUtility::resolveBackPath(PATH_site . $attribs[0]['src']));
                             if (@is_file($filePath)) {
                                 $newValue['backColorGuess'] = $this->getBackgroundColor($filePath);
-                            } else $newValue['backColorGuess'] = '';
+                            } else {
+                                $newValue['backColorGuess'] = '';
+                            }
 
-                            if ($attribs[0]['onmouseover'] && $attribs[0]['onmouseout'])
+                            if ($attribs[0]['onmouseover'] && $attribs[0]['onmouseout']) {
                                 $mouseOver = true;
+                            }
                         }
 
                         $linkTag[1] = '|';
@@ -845,7 +844,6 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
                             $key = '';
                         }
                     } elseif ($key) {
-
                         // Add this to the previous wrap:
                         $menuWraps[$key]['bulletwrap'] .= str_replace('|', '&#' . ord('|') . ';', preg_replace('/[' . chr(10) . chr(13) . ']*/', '', $value));
                     }
@@ -1074,7 +1072,6 @@ lib.' . $menuType . '.1.ACT {
         // Save menu code to template record:
         $cfg = GeneralUtility::_POST('CFG');
         if (isset($cfg['menuCode'])) {
-
             // Get template record:
             $TSrecord = BackendUtility::getRecord('sys_template', $this->wizardData['typoScriptTemplateID']);
             if (is_array($TSrecord)) {
@@ -1093,7 +1090,7 @@ lib.' . $menuType . '.1.ACT {
                 $tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
                 $tce->stripslashes_values = 0;
                 $tce->dontProcessTransformations = 1;
-                $tce->start($data, Array());
+                $tce->start($data, array());
                 $tce->process_datamap();
             }
         }
@@ -1147,7 +1144,7 @@ lib.' . $menuType . '.1.ACT {
 
         $prefix = GeneralUtility::getFileAbsFileName($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir']);
 
-        foreach (TemplaVoilaUtility::getBackendUser()->getFileStorages() AS $driver) {
+        foreach (TemplaVoilaUtility::getBackendUser()->getFileStorages() as $driver) {
             /** @var TYPO3\CMS\Core\Resource\ResourceStorage $driver */
             $driverpath = $driver->getConfiguration();
             $driverpath = GeneralUtility::getFileAbsFileName($driverpath['basePath']);
@@ -1212,7 +1209,13 @@ lib.' . $menuType . '.1.ACT {
      * @return string
      */
     public function buildButtonFromUrl(
-        $clickUrl, $title, $icon, $text = '', $buttonType = 'default', $extraClass = '', $rel = null
+        $clickUrl,
+        $title,
+        $icon,
+        $text = '',
+        $buttonType = 'default',
+        $extraClass = '',
+        $rel = null
     ) {
         return '<a href="#"' . ($rel ? ' rel="' . $rel . '"' : '')
             . ' class="btn btn-' . $buttonType . ' btn-sm' . ($extraClass ? ' ' . $extraClass : '') . '"'

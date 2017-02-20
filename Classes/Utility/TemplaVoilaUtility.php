@@ -19,105 +19,111 @@ namespace Extension\Templavoila\Utility;
  *
  * @author Steffen Kamper  <info@sk-typo3.de>
  */
-final class TemplaVoilaUtility {
+final class TemplaVoilaUtility
+{
 
-	/**
-	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-	 */
-	static public function getDatabaseConnection() {
-		return $GLOBALS['TYPO3_DB'];
-	}
+    /**
+     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+     */
+    public static function getDatabaseConnection()
+    {
+        return $GLOBALS['TYPO3_DB'];
+    }
 
-	/**
-	 * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
-	 */
-	static public function getBackendUser() {
-		return $GLOBALS['BE_USER'];
-	}
+    /**
+     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+     */
+    public static function getBackendUser()
+    {
+        return $GLOBALS['BE_USER'];
+    }
 
-	/**
-	 * @return \TYPO3\CMS\Lang\LanguageService
-	 */
-	static public function getLanguageService() {
-		return $GLOBALS['LANG'];
-	}
+    /**
+     * @return \TYPO3\CMS\Lang\LanguageService
+     */
+    public static function getLanguageService()
+    {
+        return $GLOBALS['LANG'];
+    }
 
-	/**
-	 * @return array
-	 */
-	static public function getDenyListForUser() {
-		$denyItems = array();
-		foreach (static::getBackendUser()->userGroups as $group) {
-			$groupDenyItems = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $group['tx_templavoila_access'], TRUE);
-			$denyItems = array_merge($denyItems, $groupDenyItems);
-		}
+    /**
+     * @return array
+     */
+    public static function getDenyListForUser()
+    {
+        $denyItems = array();
+        foreach (static::getBackendUser()->userGroups as $group) {
+            $groupDenyItems = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $group['tx_templavoila_access'], true);
+            $denyItems = array_merge($denyItems, $groupDenyItems);
+        }
 
-		return $denyItems;
-	}
+        return $denyItems;
+    }
 
-	/**
-	 * Get a list of referencing elements other than the given pid.
-	 *
-	 * @param array $element array with tablename and uid for a element
-	 * @param integer $pid the suppoed source-pid
-	 * @param integer $recursion recursion limiter
-	 * @param array &$references array containing a list of the actual references
-	 *
-	 * @return boolean true if there are other references for this element
-	 */
-	static public function getElementForeignReferences($element, $pid, $recursion = 99, &$references = NULL) {
-		if (!$recursion) {
-			return FALSE;
-		}
-		if (!is_array($references)) {
-			$references = array();
-		}
-		$refrows = static::getDatabaseConnection()->exec_SELECTgetRows(
-			'*',
-			'sys_refindex',
-			'ref_table=' . static::getDatabaseConnection()->fullQuoteStr($element['table'], 'sys_refindex') .
-			' AND ref_uid=' . (int)$element['uid'] .
-			' AND deleted=0'
-		);
+    /**
+     * Get a list of referencing elements other than the given pid.
+     *
+     * @param array $element array with tablename and uid for a element
+     * @param integer $pid the suppoed source-pid
+     * @param integer $recursion recursion limiter
+     * @param array &$references array containing a list of the actual references
+     *
+     * @return boolean true if there are other references for this element
+     */
+    public static function getElementForeignReferences($element, $pid, $recursion = 99, &$references = null)
+    {
+        if (!$recursion) {
+            return false;
+        }
+        if (!is_array($references)) {
+            $references = array();
+        }
+        $refrows = static::getDatabaseConnection()->exec_SELECTgetRows(
+            '*',
+            'sys_refindex',
+            'ref_table=' . static::getDatabaseConnection()->fullQuoteStr($element['table'], 'sys_refindex') .
+            ' AND ref_uid=' . (int)$element['uid'] .
+            ' AND deleted=0'
+        );
 
-		if (is_array($refrows)) {
-			foreach ($refrows as $ref) {
-				if (strcmp($ref['tablename'], 'pages') === 0) {
-					$references[$ref['tablename']][$ref['recuid']] = TRUE;
-				} else {
-					if (!isset($references[$ref['tablename']][$ref['recuid']])) {
-						// initialize with false to avoid recursion without affecting inner OR combinations
-						$references[$ref['tablename']][$ref['recuid']] = FALSE;
-						$references[$ref['tablename']][$ref['recuid']] = self::hasElementForeignReferences(array('table' => $ref['tablename'], 'uid' => $ref['recuid']), $pid, $recursion - 1, $references);
-					}
-				}
-			}
-		}
+        if (is_array($refrows)) {
+            foreach ($refrows as $ref) {
+                if (strcmp($ref['tablename'], 'pages') === 0) {
+                    $references[$ref['tablename']][$ref['recuid']] = true;
+                } else {
+                    if (!isset($references[$ref['tablename']][$ref['recuid']])) {
+                        // initialize with false to avoid recursion without affecting inner OR combinations
+                        $references[$ref['tablename']][$ref['recuid']] = false;
+                        $references[$ref['tablename']][$ref['recuid']] = self::hasElementForeignReferences(array('table' => $ref['tablename'], 'uid' => $ref['recuid']), $pid, $recursion - 1, $references);
+                    }
+                }
+            }
+        }
 
-		unset($references['pages'][$pid]);
+        unset($references['pages'][$pid]);
 
-		return $references;
-	}
+        return $references;
+    }
 
-	/**
-	 * Checks if a element is referenced from other pages / elements on other pages than his own.
-	 *
-	 * @param array $element array with tablename and uid for a element
-	 * @param integer $pid the suppoed source-pid
-	 * @param integer $recursion recursion limiter
-	 * @param array &$references array containing a list of the actual references
-	 *
-	 * @return boolean true if there are other references for this element
-	 */
-	static public function hasElementForeignReferences($element, $pid, $recursion = 99, &$references = NULL) {
-		$references = self::getElementForeignReferences($element, $pid, $recursion, $references);
-		$foreignRefs = FALSE;
-		if (is_array($references)) {
-			unset($references['pages'][$pid]);
-			$foreignRefs = count($references['pages']) || count($references['pages_language_overlay']);
-		}
+    /**
+     * Checks if a element is referenced from other pages / elements on other pages than his own.
+     *
+     * @param array $element array with tablename and uid for a element
+     * @param integer $pid the suppoed source-pid
+     * @param integer $recursion recursion limiter
+     * @param array &$references array containing a list of the actual references
+     *
+     * @return boolean true if there are other references for this element
+     */
+    public static function hasElementForeignReferences($element, $pid, $recursion = 99, &$references = null)
+    {
+        $references = self::getElementForeignReferences($element, $pid, $recursion, $references);
+        $foreignRefs = false;
+        if (is_array($references)) {
+            unset($references['pages'][$pid]);
+            $foreignRefs = count($references['pages']) || count($references['pages_language_overlay']);
+        }
 
-		return $foreignRefs;
-	}
-
+        return $foreignRefs;
+    }
 }

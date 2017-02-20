@@ -158,7 +158,7 @@ class BackendFlexformCleanerController extends \TYPO3\CMS\Backend\Module\BaseScr
 
                 $flashMessage = GeneralUtility::makeInstance(
                     \TYPO3\CMS\Core\Messaging\FlashMessage::class,
-                    TemplaVoilaUtility::getLanguageService()->getLL('needsCleaning', TRUE),
+                    TemplaVoilaUtility::getLanguageService()->getLL('needsCleaning', true),
                     '',
                     \TYPO3\CMS\Core\Messaging\FlashMessage::INFO
                 );
@@ -166,26 +166,26 @@ class BackendFlexformCleanerController extends \TYPO3\CMS\Backend\Module\BaseScr
 
                 $xmlContentMarkedUp .= '<table border="0">
                     <tr class="bgColor5 tableheader">
-                        <td>' . TemplaVoilaUtility::getLanguageService()->getLL('current', TRUE) . '</td>
+                        <td>' . TemplaVoilaUtility::getLanguageService()->getLL('current', true) . '</td>
                     </tr>
                     <tr>
                         <td>' . $this->markUpXML($currentXML) . '<br/><br/></td>
                     </tr>
                     <tr class="bgColor5 tableheader">
-                        <td>' . TemplaVoilaUtility::getLanguageService()->getLL('clean', TRUE) . '</td>
+                        <td>' . TemplaVoilaUtility::getLanguageService()->getLL('clean', true) . '</td>
                     </tr>
                     <tr>
                         <td>' . $this->markUpXML($cleanXML) . '</td>
                     </tr>
                     <tr class="bgColor5 tableheader">
-                        <td>' . TemplaVoilaUtility::getLanguageService()->getLL('diff', TRUE) . '</td>
+                        <td>' . TemplaVoilaUtility::getLanguageService()->getLL('diff', true) . '</td>
                     </tr>
                     <tr>
                         <td>' . $diffres . '
                         <br/><br/><br/>
 
                         <form action="' . GeneralUtility::getIndpEnv('REQUEST_URI') . '" method="post">
-                            <input type="submit" value="' . TemplaVoilaUtility::getLanguageService()->getLL('cleanUp', TRUE) . '" name="_CLEAN_XML" />
+                            <input type="submit" value="' . TemplaVoilaUtility::getLanguageService()->getLL('cleanUp', true) . '" name="_CLEAN_XML" />
                         </form>
 
                         </td>
@@ -198,7 +198,7 @@ class BackendFlexformCleanerController extends \TYPO3\CMS\Backend\Module\BaseScr
                 if ($cleanXML) {
                     $flashMessage = GeneralUtility::makeInstance(
                         \TYPO3\CMS\Core\Messaging\FlashMessage::class,
-                        TemplaVoilaUtility::getLanguageService()->getLL('XMLclean', TRUE),
+                        TemplaVoilaUtility::getLanguageService()->getLL('XMLclean', true),
                         '',
                         \TYPO3\CMS\Core\Messaging\FlashMessage::OK
                     );

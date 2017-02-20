@@ -218,7 +218,8 @@ class Specialdoktypes implements SingletonInterface
     /**
      * @return \TYPO3\CMS\Lang\LanguageService
      */
-    protected function getLanguageService() {
+    protected function getLanguageService()
+    {
         return $GLOBALS['LANG'];
     }
 }

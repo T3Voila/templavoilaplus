@@ -353,7 +353,8 @@ class Template
      *
      * @return string
      */
-    public function getLocalProcessing() {
+    public function getLocalProcessing()
+    {
         return $this->row['localprocessing'];
     }
 

@@ -48,17 +48,16 @@ class MainClickMenu
         if ($clickMenu->cmLevel === 0) {
             $LL = $this->getLanguageService()->includeLLFile(
                 'EXT:templavoila/Resources/Private/Language/locallang.xlf',
-                FALSE
+                false
             );
 
             // Adding link for Mapping tool:
-            if (
-                \Extension\Templavoila\Domain\Model\File::is_file($table)
+            if (\Extension\Templavoila\Domain\Model\File::is_file($table)
                 && $this->getBackendUser()->isAdmin()
                 && \Extension\Templavoila\Domain\Model\File::is_xmlFile($table)
             ) {
                 $localItems[] = $clickMenu->linkItem(
-                    $this->getLanguageService()->getLLL('cm1_title', $LL, TRUE),
+                    $this->getLanguageService()->getLLL('cm1_title', $LL, true),
                     $iconFactory->getIcon('extensions-templavoila-templavoila-logo', Icon::SIZE_SMALL)->render(),
                     $clickMenu->urlRefForCM(
                         BackendUtility::getModuleUrl(
@@ -69,14 +68,13 @@ class MainClickMenu
                         ),
                         'returnUrl'
                     ),
-                    TRUE // Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
+                    true // Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
                 );
-            } elseif (
-                $table === 'tx_templavoila_tmplobj'
+            } elseif ($table === 'tx_templavoila_tmplobj'
                 || $table === 'tx_templavoila_datastructure'
             ) {
                 $localItems[] = $clickMenu->linkItem(
-                    $this->getLanguageService()->getLLL('cm1_title', $LL, TRUE),
+                    $this->getLanguageService()->getLLL('cm1_title', $LL, true),
                     $iconFactory->getIcon('extensions-templavoila-templavoila-logo', Icon::SIZE_SMALL)->render(),
                     $clickMenu->urlRefForCM(
                         BackendUtility::getModuleUrl(
@@ -89,7 +87,7 @@ class MainClickMenu
                         ),
                         'returnUrl'
                     ),
-                    TRUE // Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
+                    true // Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
                 );
             }
 
@@ -100,7 +98,7 @@ class MainClickMenu
                 $localItems = array();
 
                 $localItems[] = $clickMenu->linkItem(
-                    $this->getLanguageService()->getLLL('cm1_viewsubelements', $LL, TRUE),
+                    $this->getLanguageService()->getLLL('cm1_viewsubelements', $LL, true),
                     $iconFactory->getIcon('extensions-templavoila-templavoila-logo', Icon::SIZE_SMALL)->render(),
                     $clickMenu->urlRefForCM(
                         BackendUtility::getModuleUrl(
@@ -116,15 +114,14 @@ class MainClickMenu
                         ),
                         'returnUrl'
                     ),
-                    TRUE // Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
+                    true // Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
                 );
             }
 
             // Adding link for "View: Flexform XML" (admin only):
             if ($this->getBackendUser()->isAdmin() && $isTVelement) {
-
                 $localItems[] = $clickMenu->linkItem(
-                    $this->getLanguageService()->getLLL('cm1_viewflexformxml', $LL, TRUE),
+                    $this->getLanguageService()->getLLL('cm1_viewflexformxml', $LL, true),
                     $iconFactory->getIcon('extensions-templavoila-templavoila-logo', Icon::SIZE_SMALL)->render(),
                     $clickMenu->urlRefForCM(
                         BackendUtility::getModuleUrl(
@@ -140,13 +137,13 @@ class MainClickMenu
                         ),
                         'returnUrl'
                     ),
-                    TRUE // Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
+                    true // Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
                 );
 
                 // Adding link for "View: DS/TO" (admin only):
                 if (MathUtility::canBeInterpretedAsInteger($clickMenu->rec['tx_templavoila_ds'])) {
                     $localItems[] = $clickMenu->linkItem(
-                        $this->getLanguageService()->getLLL('cm_viewdsto', $LL, TRUE) . ' [' . $clickMenu->rec['tx_templavoila_ds'] . '/' . $clickMenu->rec['tx_templavoila_to'] . ']',
+                        $this->getLanguageService()->getLLL('cm_viewdsto', $LL, true) . ' [' . $clickMenu->rec['tx_templavoila_ds'] . '/' . $clickMenu->rec['tx_templavoila_to'] . ']',
                         $iconFactory->getIcon('extensions-templavoila-templavoila-logo', Icon::SIZE_SMALL)->render(),
                         $clickMenu->urlRefForCM(
                             BackendUtility::getModuleUrl(
@@ -158,7 +155,7 @@ class MainClickMenu
                             ),
                             'returnUrl'
                         ),
-                        TRUE // Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
+                        true // Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
                     );
                 }
             }
@@ -176,10 +173,10 @@ class MainClickMenu
                 foreach ($referenceRecords as $referenceRecord) {
                     $pageRecord = BackendUtility::getRecord('pages', $referenceRecord['pid']);
                     // @todo: Display language flag icon and jump to correct language
-                    if ($pageRecord !== NULL) {
+                    if ($pageRecord !== null) {
                         $menuItems[] = $clickMenu->linkItem(
                             $iconFactory->getIconForRecord('pages', $pageRecord, Icon::SIZE_SMALL)->render(),
-                            BackendUtility::getRecordTitle('pages', $pageRecord, TRUE),
+                            BackendUtility::getRecordTitle('pages', $pageRecord, true),
                             $clickMenu->urlRefForCM(
                                 BackendUtility::getModuleUrl(
                                     'web_txtemplavoilaM1',
@@ -189,7 +186,7 @@ class MainClickMenu
                                 ),
                                 'returnUrl'
                             ),
-                            TRUE // Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
+                            true // Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
                         );
                     }
                 }

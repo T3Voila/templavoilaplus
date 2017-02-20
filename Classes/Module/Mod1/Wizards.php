@@ -89,19 +89,16 @@ class Wizards implements SingletonInterface
 
         // The user already submitted the create page form:
         if (GeneralUtility::_GP('doCreate') || isset($this->TCAdefaultOverride['pages.']['tx_templavoila_to'])) {
-
             // Check if the HTTP_REFERER is valid
             $refInfo = parse_url(GeneralUtility::getIndpEnv('HTTP_REFERER'));
             $httpHost = GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY');
             if ($httpHost == $refInfo['host'] || GeneralUtility::_GP('vC') == TemplaVoilaUtility::getBackendUser()->veriCode() || $GLOBALS['TYPO3_CONF_VARS']['SYS']['doNotCheckReferer']) {
-
                 // Create new page
                 $newID = $this->createPage(GeneralUtility::_GP('data'), $positionPid);
                 if ($newID > 0) {
-
                     // Get TSconfig for a different selection of fields in the editing form
                     $TSconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($newID, 'mod.web_txtemplavoilaM1.createPageWizard.fieldNames');
-                    $fieldNames = trim(isset ($TSconfig['value']) ? $TSconfig['value'] : 'hidden,title,alias');
+                    $fieldNames = trim(isset($TSconfig['value']) ? $TSconfig['value'] : 'hidden,title,alias');
 
                     $returnUrl = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl(
                         'web_txtemplavoilaM1',
@@ -138,10 +135,8 @@ class Wizards implements SingletonInterface
         }
 
         // Based on t3d/xml templates:
-        if (FALSE != ($templateFile = GeneralUtility::_GP('templateFile'))) {
-
+        if (false != ($templateFile = GeneralUtility::_GP('templateFile'))) {
             if (GeneralUtility::getFileAbsFileName($templateFile) && @is_file($templateFile)) {
-
                 // First, find positive PID for import of the page:
                 $importPID = \TYPO3\CMS\Backend\Utility\BackendUtility::getTSconfig_pidValue('pages', '', $positionPid);
 
@@ -170,7 +165,7 @@ class Wizards implements SingletonInterface
                         // PLAIN COPY FROM ABOVE - BEGIN
                         // Get TSconfig for a different selection of fields in the editing form
                         $TSconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($newID, 'tx_templavoila.mod1.createPageWizard.fieldNames');
-                        $fieldNames = isset ($TSconfig['value']) ? $TSconfig['value'] : 'hidden,title,alias';
+                        $fieldNames = isset($TSconfig['value']) ? $TSconfig['value'] : 'hidden,title,alias';
 
                         $returnUrl = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl(
                             'web_txtemplavoilaM1',
@@ -295,7 +290,7 @@ class Wizards implements SingletonInterface
                     }
                 }
 
-                $description = $defaultTO['description'] ? htmlspecialchars($defaultTO['description']) : TemplaVoilaUtility::getLanguageService()->getLL('template_descriptiondefault', TRUE);
+                $description = $defaultTO['description'] ? htmlspecialchars($defaultTO['description']) : TemplaVoilaUtility::getLanguageService()->getLL('template_descriptiondefault', true);
                 $tmplHTML [] = '<table style="float:left; width: 100%;" valign="top">
                 <tr>
                     <td colspan="2" nowrap="nowrap">
@@ -347,7 +342,6 @@ class Wizards implements SingletonInterface
 
             case 't3d':
                 if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('impexp')) {
-
                     // Read template files from a certain folder. I suggest this is configurable in some way. But here it is hardcoded for initial tests.
                     $templateFolder = GeneralUtility::getFileAbsFileName($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'] . '/export/templates/');
                     $files = GeneralUtility::getFilesInDir($templateFolder, 't3d,xml', 1, 1);
@@ -368,10 +362,10 @@ class Wizards implements SingletonInterface
                                 if (is_array($import->dat['header']['thumbnail'])) {
                                     $pI = pathinfo($import->dat['header']['thumbnail']['filename']);
                                     if (GeneralUtility::inList('gif,jpg,png,jpeg', strtolower($pI['extension']))) {
-
                                         // Construct filename and write it:
                                         $fileName = GeneralUtility::getFileAbsFileName(
-                                            'typo3temp/importthumb_' . GeneralUtility::shortMD5($absPath) . '.' . $pI['extension']);
+                                            'typo3temp/importthumb_' . GeneralUtility::shortMD5($absPath) . '.' . $pI['extension']
+                                        );
                                         GeneralUtility::writeFile($fileName, $import->dat['header']['thumbnail']['content']);
 
                                         // Check that the image really is an image and not a malicious PHP script...
@@ -521,7 +515,7 @@ class Wizards implements SingletonInterface
             $disallowedPageTemplateList = '';
         }
 
-        $tmp_disallowedPageTemplateItems = array_unique(GeneralUtility::intExplode(',', GeneralUtility::expandList($disallowedPageTemplateList), TRUE));
+        $tmp_disallowedPageTemplateItems = array_unique(GeneralUtility::intExplode(',', GeneralUtility::expandList($disallowedPageTemplateList), true));
 
         return (count($tmp_disallowedPageTemplateItems)) ? implode(',', $tmp_disallowedPageTemplateItems) : '0';
     }

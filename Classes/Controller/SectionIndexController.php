@@ -37,7 +37,8 @@ class SectionIndexController
      *
      * @return string rendered section index
      */
-    public function mainAction($content, $conf) {
+    public function mainAction($content, $conf)
+    {
 
         $ceField = $this->cObj->stdWrap($conf['indexField'], $conf['indexField.']);
         $pids = isset($conf['select.']['pidInList.'])
@@ -85,5 +86,4 @@ class SectionIndexController
 
         return $renderedIndex;
     }
-
 }

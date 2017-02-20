@@ -18,25 +18,28 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 /**
  * Default controller
  */
-class DefaultController {
+class DefaultController
+{
 
-	/**
-	 * @param array $row
-	 * @param string $table
-	 * @param string $output
-	 * @param boolean $alreadyRendered
-	 * @param object $ref
-	 *
-	 * @return string
-	 */
-	public function render_previewContent($row, $table, $output, $alreadyRendered, &$ref) {
-		return '<strong>' . $this->getLanguageService()->sL(BackendUtility::getLabelFromItemlist('tt_content', 'CType', $row['CType'])) . '</strong>';
-	}
+    /**
+     * @param array $row
+     * @param string $table
+     * @param string $output
+     * @param boolean $alreadyRendered
+     * @param object $ref
+     *
+     * @return string
+     */
+    public function render_previewContent($row, $table, $output, $alreadyRendered, &$ref)
+    {
+        return '<strong>' . $this->getLanguageService()->sL(BackendUtility::getLabelFromItemlist('tt_content', 'CType', $row['CType'])) . '</strong>';
+    }
 
-	/**
-	 * @return \TYPO3\CMS\Lang\LanguageService
-	 */
-	protected function getLanguageService() {
-		return $GLOBALS['LANG'];
-	}
+    /**
+     * @return \TYPO3\CMS\Lang\LanguageService
+     */
+    protected function getLanguageService()
+    {
+        return $GLOBALS['LANG'];
+    }
 }

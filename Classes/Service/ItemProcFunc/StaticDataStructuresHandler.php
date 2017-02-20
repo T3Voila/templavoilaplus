@@ -89,7 +89,6 @@ class StaticDataStructuresHandler
         $storagePid = $this->getStoragePid($params);
 
         if ($templateRef && $storagePid) {
-
             // Select all Template Object Records from storage folder, which are parent records and which has the data structure for the plugin:
             $res = $this->getDatabaseConnection()->exec_SELECTquery(
                 'title,uid,previewicon',
@@ -389,10 +388,10 @@ class StaticDataStructuresHandler
         switch ($params['table']) {
             case 'pages':
                 $scope = \Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_PAGE;
-            break;
+                break;
             case 'tt_content':
                 $scope = \Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_FCE;
-            break;
+                break;
             default:
                 $scope = \Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_UNKNOWN;
         }

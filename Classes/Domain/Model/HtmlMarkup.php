@@ -267,7 +267,8 @@ class HtmlMarkup
     /**
      * @return HtmlMarkup
      */
-    public function __construct() {
+    public function __construct()
+    {
         // kept for compatibility reasons since references to this->tags are still present
         $this->tags = self::$tagConf;
     }
@@ -426,8 +427,8 @@ class HtmlMarkup
         $cP = explode($token, $divContent['content']);
 
         $newArray = array();
-        $newArray['cArray'] = Array();
-        $newArray['sub'] = Array();
+        $newArray['cArray'] = array();
+        $newArray['sub'] = array();
         foreach ($cP as $k => $v) {
             if ($k % 2) {
                 // Based on the path, find the element in 'searchparts':
@@ -546,13 +547,19 @@ class HtmlMarkup
      * @return string
      */
     public function mergeSampleDataIntoTemplateStructure(
-        $dataStruct, $currentMappingInfo, $firstLevelImplodeToken = '', $sampleOrder = ''
+        $dataStruct,
+        $currentMappingInfo,
+        $firstLevelImplodeToken = '',
+        $sampleOrder = ''
     ) {
         foreach ($currentMappingInfo['cArray'] as $key => $val) {
             if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($key) && $dataStruct[$key]) {
                 if ($dataStruct[$key]['type'] == 'array') {
                     if (is_array($currentMappingInfo['sub'][$key])) {
-                        $currentMappingInfo['cArray'][$key] = $this->mergeSampleDataIntoTemplateStructure($dataStruct[$key]['el'], $currentMappingInfo['sub'][$key], '',
+                        $currentMappingInfo['cArray'][$key] = $this->mergeSampleDataIntoTemplateStructure(
+                            $dataStruct[$key]['el'],
+                            $currentMappingInfo['sub'][$key],
+                            '',
                             ($dataStruct[$key]['section'] ?
                                 (is_array($dataStruct[$key]['tx_templavoila']['sample_order']) ? $dataStruct[$key]['tx_templavoila']['sample_order'] : array_keys($dataStruct[$key]['el'])) :
                                 '')
@@ -591,7 +598,10 @@ class HtmlMarkup
      * @return string
      */
     public function mergeFormDataIntoTemplateStructure(
-        $editStruct, $currentMappingInfo, $firstLevelImplodeToken = '', $valueKey = 'vDEF'
+        $editStruct,
+        $currentMappingInfo,
+        $firstLevelImplodeToken = '',
+        $valueKey = 'vDEF'
     ) {
         $isSection = 0;
         $htmlParse = ($this->htmlParse ? $this->htmlParse : GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class));
@@ -847,10 +857,12 @@ class HtmlMarkup
      * @return void
      */
     public function setHeaderBodyParts(
-        $MappingInfo_head, $MappingData_head_cached, $BodyTag_cached = '', $pageRenderer = false
+        $MappingInfo_head,
+        $MappingData_head_cached,
+        $BodyTag_cached = '',
+        $pageRenderer = false
     ) {
         if (is_array($MappingInfo_head)) {
-
             $htmlParse = ($this->htmlParse ? $this->htmlParse : GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class));
             /* @var $htmlParse \TYPO3\CMS\Core\Html\HtmlParser */
 
@@ -862,8 +874,7 @@ class HtmlMarkup
 
             // Traversing mapped header parts:
             if (array_key_exists('headElementPaths', $MappingInfo_head)
-                && is_array($MappingInfo_head['headElementPaths']))
-            {
+                && is_array($MappingInfo_head['headElementPaths'])) {
                 $extraHeaderData = array();
                 foreach (array_keys($MappingInfo_head['headElementPaths']) as $kk) {
                     if (isset($MappingData_head_cached['cArray']['el_' . $kk])) {
@@ -1429,7 +1440,7 @@ class HtmlMarkup
      *
      * @return string
      */
-    static public function getGnyfMarkup($tagName, $title = '', $onclick = '')
+    public static function getGnyfMarkup($tagName, $title = '', $onclick = '')
     {
         $tag = strtolower($tagName);
         if (!isset(self::$tagConf[$tag])) {

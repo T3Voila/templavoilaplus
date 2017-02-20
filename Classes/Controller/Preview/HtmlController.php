@@ -17,14 +17,16 @@ namespace Extension\Templavoila\Controller\Preview;
 /**
  * HTML controller
  */
-class HtmlController extends TextController {
+class HtmlController extends TextController
+{
 
-	/**
-	 * @param array $row
-	 *
-	 * @return string
-	 */
-	protected function getPreviewData($row) {
-		return $this->preparePreviewData($row[$this->previewField], NULL, FALSE);
-	}
+    /**
+     * @param array $row
+     *
+     * @return string
+     */
+    protected function getPreviewData($row)
+    {
+        return $this->preparePreviewData($row[$this->previewField], null, false);
+    }
 }

@@ -182,7 +182,8 @@ $GLOBALS['TCA']['pages']['palettes']['storage'] = array(
 );
 
 // Add to "normal" pages, "external URL", "shortcut page" and "storage PID"
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('pages',
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
+    'pages',
     '--palette--;LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:pages.palettes.storage;storage',
     \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_DEFAULT . ','
     . \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_LINK . ','

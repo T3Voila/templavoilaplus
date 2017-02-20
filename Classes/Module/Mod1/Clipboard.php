@@ -70,9 +70,9 @@ class Clipboard implements SingletonInterface
         $CB = GeneralUtility::_GP('CB'); // CB is the clipboard command array
         $this->t3libClipboardObj->setCmd($CB); // Execute commands.
 
-        if (isset ($CB['setFlexMode'])) {
+        if (isset($CB['setFlexMode'])) {
             switch ($CB['setFlexMode']) {
-                case 'copy' :
+                case 'copy':
                     $this->t3libClipboardObj->clipData['normal']['flexMode'] = 'copy';
                     break;
                 case 'cut':
@@ -82,7 +82,7 @@ class Clipboard implements SingletonInterface
                     $this->t3libClipboardObj->clipData['normal']['flexMode'] = 'ref';
                     break;
                 default:
-                    unset ($this->t3libClipboardObj->clipData['normal']['flexMode']);
+                    unset($this->t3libClipboardObj->clipData['normal']['flexMode']);
                     break;
             }
         }
@@ -122,14 +122,14 @@ class Clipboard implements SingletonInterface
                 list ($clipboardElementTable, $clipboardElementUid) = explode('|', $clipboardElementTableAndUid);
                 $pointToTheSameRecord = ($elementRecord['uid'] == $clipboardElementUid);
             } else {
-                unset ($clipboardElementPointer['targetCheckUid']);
-                unset ($elementPointer['targetCheckUid']);
+                unset($clipboardElementPointer['targetCheckUid']);
+                unset($elementPointer['targetCheckUid']);
                 $pointToTheSameRecord = ($clipboardElementPointer == $elementPointer);
             }
 
             // Set whether the current element is selected for copy/cut/reference or not:
             if ($pointToTheSameRecord) {
-                $selectMode = isset ($this->t3libClipboardObj->clipData['normal']['flexMode']) ? $this->t3libClipboardObj->clipData['normal']['flexMode'] : ($this->t3libClipboardObj->clipData['normal']['mode'] == 'copy' ? 'copy' : 'cut');
+                $selectMode = isset($this->t3libClipboardObj->clipData['normal']['flexMode']) ? $this->t3libClipboardObj->clipData['normal']['flexMode'] : ($this->t3libClipboardObj->clipData['normal']['mode'] == 'copy' ? 'copy' : 'cut');
                 $clipActive_copy = ($selectMode == 'copy');
                 $clipActive_cut = ($selectMode == 'cut');
                 $clipActive_ref = ($selectMode == 'ref');
@@ -251,7 +251,7 @@ class Clipboard implements SingletonInterface
         }
 
         // Prepare the ingredients for the different buttons:
-        $pasteMode = isset ($this->t3libClipboardObj->clipData['normal']['flexMode'])
+        $pasteMode = isset($this->t3libClipboardObj->clipData['normal']['flexMode'])
             ? $this->t3libClipboardObj->clipData['normal']['flexMode']
             : ($this->t3libClipboardObj->clipData['normal']['mode'] == 'copy'
                 ? 'copy'
@@ -376,7 +376,6 @@ class Clipboard implements SingletonInterface
         }
 
         if (count($elementRows)) {
-
             // Control for deleting all deleteable records:
             $deleteAll = '';
             if (count($this->deleteUids)) {
@@ -434,7 +433,6 @@ class Clipboard implements SingletonInterface
         $infoData = array();
         if (is_array($rows)) {
             foreach ($rows as $row) {
-
                 if (TemplaVoilaUtility::getBackendUser()->workspace && $row['tablename'] == 'pages' && $this->pObj->id == $row['recuid']) {
                     // We would have found you but we didn't - you're most likely deleted
                 } elseif (TemplaVoilaUtility::getBackendUser()->workspace && $row['tablename'] == 'tt_content' && $this->pObj->global_tt_content_elementRegister[$row['recuid']] > 0) {

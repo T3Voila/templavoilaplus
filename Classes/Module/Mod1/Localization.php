@@ -105,7 +105,7 @@ class Localization implements SingletonInterface
                 $grayedOut = $language['PLO_hidden'] ? ' style="Filter: alpha(opacity=25); -moz-opacity: 0.25; opacity: 0.25"' : '';
 
                 $flag = \Extension\Templavoila\Utility\IconUtility::getFlagIconFileForLanguage($language['flagIcon']);
-                $style = isset ($language['flagIcon']) ? 'background-image: url(' . $flag . '); background-size: 16px auto; background-position: left center; background-repeat: no-repeat; padding-left: 22px;' : '';
+                $style = isset($language['flagIcon']) ? 'background-image: url(' . $flag . '); background-size: 16px auto; background-position: left center; background-repeat: no-repeat; padding-left: 22px;' : '';
                 $optionsArr [] = '<option style="' . $style . '" value="' . $language['uid'] . '"' . ($this->pObj->MOD_SETTINGS['language'] == $language['uid'] ? ' selected="selected"' : '') . '>' . htmlspecialchars($language['title']) . '</option>';
 
                 // Link to editing of language header:
@@ -225,7 +225,7 @@ class Localization implements SingletonInterface
         foreach ($newLanguagesArr as $language) {
             if (TemplaVoilaUtility::getBackendUser()->checkLanguageAccess($language['uid']) && !isset($translatedLanguagesArr[$language['uid']])) {
                 $flag = \Extension\Templavoila\Utility\IconUtility::getFlagIconFileForLanguage($language['flagIcon']);
-                $style = isset ($language['flagIcon']) ? 'background-image: url(' . $flag . '); background-size: 16px auto; background-position: left center; background-repeat: no-repeat; padding-top: 0px; padding-left: 22px;' : '';
+                $style = isset($language['flagIcon']) ? 'background-image: url(' . $flag . '); background-size: 16px auto; background-position: left center; background-repeat: no-repeat; padding-top: 0px; padding-left: 22px;' : '';
                 $optionsArr [] = '<option style="' . $style . '" name="createNewPageTranslation" value="' . $language['uid'] . '">' . htmlspecialchars($language['title']) . '</option>';
             }
         }

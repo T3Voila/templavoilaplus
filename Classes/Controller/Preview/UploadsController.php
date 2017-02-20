@@ -17,21 +17,23 @@ namespace Extension\Templavoila\Controller\Preview;
 /**
  * Uploads controller
  */
-class UploadsController extends TextController {
+class UploadsController extends TextController
+{
 
-	/**
-	 * @var string
-	 */
-	protected $previewField = 'media';
+    /**
+     * @var string
+     */
+    protected $previewField = 'media';
 
-	/**
-	 * @param array $row
-	 *
-	 * @return string
-	 */
-	protected function getPreviewData($row) {
-		$data = $this->preparePreviewData($row[$this->previewField]);
+    /**
+     * @param array $row
+     *
+     * @return string
+     */
+    protected function getPreviewData($row)
+    {
+        $data = $this->preparePreviewData($row[$this->previewField]);
 
-		return str_replace(',', '<br />', $data);
-	}
+        return str_replace(',', '<br />', $data);
+    }
 }

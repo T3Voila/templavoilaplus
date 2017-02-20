@@ -1,5 +1,6 @@
 <?php
 namespace Extension\Templavoila\Module\Mod1;
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -30,7 +31,8 @@ class Ajax
     /**
      * @return \Ajax
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->apiObj = GeneralUtility::makeInstance(\Extension\Templavoila\Service\ApiService::class);
     }
 
@@ -42,7 +44,8 @@ class Ajax
      *
      * @return void
      */
-    public function moveRecord($params, &$ajaxObj) {
+    public function moveRecord($params, &$ajaxObj)
+    {
 
         $sourcePointer = $this->apiObj->flexform_getPointerFromString(GeneralUtility::_GP('source'));
 
@@ -59,7 +62,8 @@ class Ajax
      *
      * @return void
      */
-    public function unlinkRecord($params, &$ajaxObj) {
+    public function unlinkRecord($params, &$ajaxObj)
+    {
 
         $unlinkPointer = $this->apiObj->flexform_getPointerFromString(GeneralUtility::_GP('unlink'));
 

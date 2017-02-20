@@ -17,18 +17,20 @@ namespace Extension\Templavoila\Controller\Preview;
 /**
  * Null controller
  */
-class NullController {
+class NullController
+{
 
-	/**
-	 * @param array $row
-	 * @param string $table
-	 * @param string $output
-	 * @param boolean $alreadyRendered
-	 * @param object $ref
-	 *
-	 * @return string
-	 */
-	public function render_previewContent($row, $table, $output, $alreadyRendered, &$ref) {
-		return $output;
-	}
+    /**
+     * @param array $row
+     * @param string $table
+     * @param string $output
+     * @param boolean $alreadyRendered
+     * @param object $ref
+     *
+     * @return string
+     */
+    public function render_previewContent($row, $table, $output, $alreadyRendered, &$ref)
+    {
+        return $output;
+    }
 }

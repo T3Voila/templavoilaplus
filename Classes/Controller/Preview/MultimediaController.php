@@ -17,10 +17,11 @@ namespace Extension\Templavoila\Controller\Preview;
 /**
  * Multimedia controller
  */
-class MultimediaController extends UploadsController {
+class MultimediaController extends UploadsController
+{
 
-	/**
-	 * @var string
-	 */
-	protected $previewField = 'multimedia';
+    /**
+     * @var string
+     */
+    protected $previewField = 'multimedia';
 }

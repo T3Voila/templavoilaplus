@@ -31,7 +31,7 @@ final class IconUtility
      *
      * @return string
      */
-    static public function getFlagIconForLanguage($flagName, $options = array())
+    public static function getFlagIconForLanguage($flagName, $options = array())
     {
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         return '<span alt="' . htmlspecialchars($options['alt']) . '" title="' . htmlspecialchars($options['title']) . '">'
@@ -44,7 +44,7 @@ final class IconUtility
      *
      * @return string
      */
-    static public function getFlagIconFileForLanguage($flagName)
+    public static function getFlagIconFileForLanguage($flagName)
     {
         $identifier = 'flags-' . ($flagName ? : 'unknown');
 

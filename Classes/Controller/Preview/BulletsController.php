@@ -18,37 +18,39 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Bullets controller
  */
-class BulletsController extends TextController {
+class BulletsController extends TextController
+{
 
-	/**
-	 * @var string
-	 */
-	protected $previewField = 'bodytext';
+    /**
+     * @var string
+     */
+    protected $previewField = 'bodytext';
 
-	/**
-	 * @param array $row
-	 *
-	 * @return string
-	 */
-	protected function getPreviewData($row) {
-		if (isset($this->parentObj->modTSconfig['properties']['previewDataMaxLen'])) {
-			$max = (int)$this->parentObj->modTSconfig['properties']['previewDataMaxLen'];
-		} else {
-			$max = 2000;
-		}
-		$htmlBullets = '';
-		$bulletsArr = explode("\n", $this->preparePreviewData($row['bodytext']));
-		if (is_array($bulletsArr)) {
-			foreach ($bulletsArr as $listItem) {
-				$processedItem = GeneralUtility::fixed_lgd_cs(trim(strip_tags($listItem)), $max);
-				$max -= strlen($processedItem);
-				$htmlBullets .= '<li>' . htmlspecialchars($processedItem) . '</li>';
-				if (!$max) {
-					break;
-				}
-			}
-		}
+    /**
+     * @param array $row
+     *
+     * @return string
+     */
+    protected function getPreviewData($row)
+    {
+        if (isset($this->parentObj->modTSconfig['properties']['previewDataMaxLen'])) {
+            $max = (int)$this->parentObj->modTSconfig['properties']['previewDataMaxLen'];
+        } else {
+            $max = 2000;
+        }
+        $htmlBullets = '';
+        $bulletsArr = explode("\n", $this->preparePreviewData($row['bodytext']));
+        if (is_array($bulletsArr)) {
+            foreach ($bulletsArr as $listItem) {
+                $processedItem = GeneralUtility::fixed_lgd_cs(trim(strip_tags($listItem)), $max);
+                $max -= strlen($processedItem);
+                $htmlBullets .= '<li>' . htmlspecialchars($processedItem) . '</li>';
+                if (!$max) {
+                    break;
+                }
+            }
+        }
 
-		return '<ul>' . $htmlBullets . '</ul>';
-	}
+        return '<ul>' . $htmlBullets . '</ul>';
+    }
 }

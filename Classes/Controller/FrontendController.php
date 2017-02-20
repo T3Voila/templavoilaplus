@@ -61,7 +61,7 @@ class FrontendController extends AbstractPlugin
     /**
      * @var boolean
      */
-    static public $enablePageRenderer = TRUE;
+    static public $enablePageRenderer = true;
 
     /**
      * Markup object
@@ -141,12 +141,11 @@ class FrontendController extends AbstractPlugin
         foreach ($data as $k => $v) {
             // Make correct language identifiers here!
             if ($GLOBALS['TSFE']->sys_language_isocode) {
-
                 try {
                     $dsObj = $dsRepo->getDatastructureByUidOrFilename($data['tx_templavoila_ds']);
                     $DS = $dsObj->getDataprotArray();
                 } catch (\InvalidArgumentException $e) {
-                    $DS = NULL;
+                    $DS = null;
                 }
                 if (is_array($DS)) {
                     $langChildren = $DS['meta']['langChildren'] ? 1 : 0;
@@ -267,12 +266,11 @@ class FrontendController extends AbstractPlugin
             $dsObj = $dsRepo->getDatastructureByUidOrFilename($row['tx_templavoila_ds']);
             $DS = $dsObj->getDataprotArray();
         } catch (\InvalidArgumentException $e) {
-            $DS = NULL;
+            $DS = null;
         }
 
         // If a Data Structure was found:
         if (is_array($DS)) {
-
             // Sheet Selector:
             if ($DS['meta']['sheetSelector']) {
                 // <meta><sheetSelector> could be something like "EXT:user_extension/class.user_extension_selectsheet.php:&amp;user_extension_selectsheet"
@@ -309,7 +307,6 @@ class FrontendController extends AbstractPlugin
 
             // Get template record:
             if ($row['tx_templavoila_to']) {
-
                 // Initialize rendering type:
                 if ($this->conf['childTemplate']) {
                     $renderType = $this->conf['childTemplate'];
@@ -327,11 +324,9 @@ class FrontendController extends AbstractPlugin
                 // Get Template Object record:
                 $TOrec = $this->markupObj->getTemplateRecord($row['tx_templavoila_to'], $renderType, $GLOBALS['TSFE']->sys_language_uid);
                 if (is_array($TOrec)) {
-
                     // Get mapping information from Template Record:
                     $TO = unserialize($TOrec['templatemapping']);
                     if (is_array($TO)) {
-
                         // Get local processing:
                         $TOproc = array();
                         if ($TOrec['localprocessing']) {
@@ -358,7 +353,7 @@ class FrontendController extends AbstractPlugin
                         $TOlocalProc = $singleSheet ? $TOproc['ROOT']['el'] : $TOproc['sheets'][$sheet]['ROOT']['el'];
                         // Store the original data values before the get processed.
                         $originalDataValues = $dataValues;
-                        $this->processDataValues($dataValues, $dataStruct['ROOT']['el'], $TOlocalProc, $vKey, ($this->conf['renderUnmapped'] !== 'false' ? TRUE : $TO['MappingInfo']['ROOT']['el']));
+                        $this->processDataValues($dataValues, $dataStruct['ROOT']['el'], $TOlocalProc, $vKey, ($this->conf['renderUnmapped'] !== 'false' ? true : $TO['MappingInfo']['ROOT']['el']));
 
                         // Hook: renderElement_postProcessDataValues
                         foreach ($hookObjectsArr as $hookObj) {
@@ -442,14 +437,13 @@ class FrontendController extends AbstractPlugin
      *
      * @return void
      */
-    public function processDataValues(&$dataValues, $DSelements, $TOelements, $valueKey = 'vDEF', $mappingInfo = TRUE)
+    public function processDataValues(&$dataValues, $DSelements, $TOelements, $valueKey = 'vDEF', $mappingInfo = true)
     {
         if (is_array($DSelements) && is_array($dataValues)) {
-
             // Create local processing information array:
             $LP = array();
             foreach ($DSelements as $key => $dsConf) {
-                if ($mappingInfo === TRUE || array_key_exists($key, $mappingInfo)) {
+                if ($mappingInfo === true || array_key_exists($key, $mappingInfo)) {
                     if ($DSelements[$key]['type'] != 'array') { // For all non-arrays:
                         // Set base configuration:
                         $LP[$key] = $DSelements[$key]['tx_templavoila'];
@@ -475,12 +469,11 @@ class FrontendController extends AbstractPlugin
             $savedParentInfo = array();
             $registerKeys = array();
             if (is_array($this->cObj->data)) {
-
                 $tArray = $this->cObj->data;
                 ksort($tArray);
                 $checksum = md5(serialize($tArray));
 
-                $sameParent = FALSE;
+                $sameParent = false;
                 if (isset($GLOBALS['TSFE']->register['tx_templavoila_pi1.parentRec.__SERIAL'])) {
                     $sameParent = ($checksum === $GLOBALS['TSFE']->register['tx_templavoila_pi1.parentRec.__SERIAL']);
                 }
@@ -500,7 +493,7 @@ class FrontendController extends AbstractPlugin
 
                     // Step 2: unset previous parent info
                     foreach ($unsetKeys as $dkey) {
-                        unset ($GLOBALS['TSFE']->register[$dkey]);
+                        unset($GLOBALS['TSFE']->register[$dkey]);
                     }
                     unset($unsetKeys); // free memory
 
@@ -563,7 +556,6 @@ class FrontendController extends AbstractPlugin
                         }
                     }
                 } else {
-
                     // Language inheritance:
                     if ($valueKey != 'vDEF') {
                         $dataValues[$key][$valueKey] = $this->inheritValue($dataValues[$key], $valueKey, $LP[$key]['langOverlayMode']);
@@ -599,13 +591,10 @@ class FrontendController extends AbstractPlugin
 
                     // TypoScript / TypoScriptObjPath:
                     if (trim($LP[$key]['TypoScript']) || trim($LP[$key]['TypoScriptObjPath'])) {
-
                         if (trim($LP[$key]['TypoScript'])) {
-
                             // If constants were found locally/internally in DS/TO:
                             if (is_array($LP[$key]['TypoScript_constants'])) {
                                 foreach ($LP[$key]['TypoScript_constants'] as $constant => $value) {
-
                                     // First, see if the constant is itself a constant referring back to TypoScript Setup Object Tree:
                                     if (substr(trim($value), 0, 2) == '{$' && substr(trim($value), -1) == '}') {
                                         $objPath = substr(trim($value), 2, -1);
@@ -742,8 +731,8 @@ class FrontendController extends AbstractPlugin
             } else {
                 $returnValue .= $dV[$valueKey];
             }
-        } catch(\Exception $e) {
-            $this->log($e->getMessage(),  GeneralUtility::SYSLOG_SEVERITY_ERROR);
+        } catch (\Exception $e) {
+            $this->log($e->getMessage(), GeneralUtility::SYSLOG_SEVERITY_ERROR);
         }
 
         return $returnValue;

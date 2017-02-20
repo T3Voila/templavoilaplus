@@ -17,24 +17,27 @@ namespace Extension\Templavoila\Service\UserFunc;
 /**
  * This library contains several functions for displaying the labels in the list view.
  */
-class Label {
+class Label
+{
 
-	/**
-	 * Retrive the label for TCEFORM title attribute.
-	 *
-	 * @param array $params Current record array
-	 * @param object
-	 *
-	 * @return void
-	 */
-	public function getLabel(&$params, &$pObj) {
-		$params['title'] = $this->getLanguageService()->sL($params['row']['title']);
-	}
+    /**
+     * Retrive the label for TCEFORM title attribute.
+     *
+     * @param array $params Current record array
+     * @param object
+     *
+     * @return void
+     */
+    public function getLabel(&$params, &$pObj)
+    {
+        $params['title'] = $this->getLanguageService()->sL($params['row']['title']);
+    }
 
-	/**
-	 * @return \TYPO3\CMS\Lang\LanguageService
-	 */
-	public function getLanguageService() {
-		return $GLOBALS['LANG'];
-	}
+    /**
+     * @return \TYPO3\CMS\Lang\LanguageService
+     */
+    public function getLanguageService()
+    {
+        return $GLOBALS['LANG'];
+    }
 }

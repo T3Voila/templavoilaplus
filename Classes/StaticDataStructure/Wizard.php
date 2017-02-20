@@ -59,7 +59,6 @@ class Wizard
             case 1:
                 $ok = array(true, true);
                 if (GeneralUtility::_GP('dsWizardDoIt')) {
-
                     if (!isset($conf['staticDS.']['path_fce']) || !strlen($conf['staticDS.']['path_fce'])) {
                         $ok[0] = false;
                         $description .= sprintf('||' . TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.dircheck.notset'), 'staticDS.path_fce');

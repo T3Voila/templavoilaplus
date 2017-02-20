@@ -657,7 +657,6 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
     public function renderFile()
     {
         if (@is_file($this->displayFile) && GeneralUtility::getFileAbsFileName($this->displayFile)) {
-
             // Converting GPvars into a "cmd" value:
             $cmd = '';
             if (GeneralUtility::_GP('_load_ds_xml')) { // Loading DS from XML or TO uid
@@ -795,7 +794,6 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
 
             // Creating $templatemapping array with cached mapping content:
             if (GeneralUtility::inList('showXMLDS,saveDSandTO,updateDSandTO,saveUpdatedDSandTO,saveUpdatedDSandTOandExit', $cmd)) {
-
                 // Template mapping prepared:
                 $templatemapping = [];
                 $templatemapping['MappingInfo'] = $currentMappingInfo;
@@ -921,7 +919,8 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                                 sprintf(
                                     TemplaVoilaUtility::getLanguageService()->getLL('msgDSTOSaved'),
                                     $dataArr['tx_templavoila_tmplobj']['NEW']['datastructure'],
-                                    $tce->substNEWwithIDs['NEW'], $this->_saveDSandTO_pid
+                                    $tce->substNEWwithIDs['NEW'],
+                                    $this->_saveDSandTO_pid
                                 ),
                                 '',
                                 \TYPO3\CMS\Core\Messaging\FlashMessage::OK
@@ -959,7 +958,6 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                 case 'updateDSandTO':
                 case 'saveUpdatedDSandTO':
                 case 'saveUpdatedDSandTOandExit':
-
                     if ($cmd == 'updateDSandTO') {
                         // Looking up the records by their uids:
                         $toREC = BackendUtility::getRecordWSOL('tx_templavoila_tmplobj', $this->_saveDSandTO_TOuid);
@@ -1150,7 +1148,6 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
             switch ($cmd) {
                 // Show XML DS
                 case 'showXMLDS':
-
                     // Make instance of syntax highlight class:
                     $hlObj = GeneralUtility::makeInstance(\Extension\Templavoila\Service\SyntaxHighlightingService::class);
 
@@ -1167,7 +1164,6 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                         <pre>' . $hlObj->highLight_DS($dataStructureXML) . '</pre>';
                     break;
                 case 'loadScreen':
-
                     $content .= '
                         <h3>' . TemplaVoilaUtility::getLanguageService()->getLL('titleLoadDSXml') . '</h3>
                         ' . $this->cshItem('xMOD_tx_templavoila', 'mapping_file_loadDSXML', '|<br/>') . '
@@ -1182,7 +1178,6 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                         ';
                     break;
                 case 'saveScreen':
-
                     $content .= '
                         <h3>' . TemplaVoilaUtility::getLanguageService()->getLL('createDSTO') . ':</h3>
                         ' . $this->cshItem('xMOD_tx_templavoila', 'mapping_file_createDSTO', '|<br/>') . '
@@ -1276,7 +1271,6 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
         if ((int)$this->displayUid > 0) { // TODO: static ds support
             $row = BackendUtility::getRecordWSOL('tx_templavoila_datastructure', $this->displayUid);
             if (is_array($row)) {
-
                 // Get title and icon:
                 $icon = $this->iconFactory->getIconForRecord('tx_templavoila_datastructure', $row, Icon::SIZE_SMALL)->render();
                 $title = BackendUtility::getRecordTitle('tx_templavoila_datastructure', $row, 1);
@@ -1369,7 +1363,6 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
 
                 // Display XML of data structure:
                 if (is_array($dataStruct)) {
-
                     // Make instance of syntax highlight class:
                     $hlObj = GeneralUtility::makeInstance(\Extension\Templavoila\Service\SyntaxHighlightingService::class);
 
@@ -1534,7 +1527,6 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
 
                         // If there is a valid data structure, draw table:
                         if (is_array($dataStruct)) {
-
                             // Working on Header and Body of HTML source:
 
                             // -- Processing the header editing --
@@ -1796,8 +1788,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
         }
 
         // If a difference is detected...:
-        if (
-            (serialize($templatemapping['MappingInfo_head']) != serialize($currentMappingInfo_head)) ||
+        if ((serialize($templatemapping['MappingInfo_head']) != serialize($currentMappingInfo_head)) ||
             (serialize($templatemapping['MappingInfo']) != serialize($currentMappingInfo))
         ) {
             $menuItems[] = '<input type="submit" name="_reload_from" value="' . TemplaVoilaUtility::getLanguageService()->getLL('buttonRevert') . '" title="' . sprintf(TemplaVoilaUtility::getLanguageService()->getLL('buttonRevertTitle'), $headerPart ? 'HEAD' : 'BODY') . '" />';
@@ -2190,7 +2181,6 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
 
                     // In "mapping mode", render HTML page and Command links:
                     if ($mappingMode) {
-
                         // HTML-path + CMD links:
                         $isMapOK = 0;
                         if ($currentMappingInfo[$key]['MAP_EL']) { // If mapping information exists...:
@@ -2247,7 +2237,6 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                         // CMD links; Content when current element is under mapping, then display control panel or message:
                         if ($this->mapElPath == $formPrefix . '[' . $key . ']') {
                             if ($this->doMappingOfPath) {
-
                                 // Creating option tags:
                                 $lastLevel = end($pathLevels);
                                 $tagsMapping = $this->explodeMappingToTagsStr($value['tx_templavoila']['tags']);
@@ -2263,12 +2252,10 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                                     list($pI) = $this->markupObj->splitPath($k);
 
                                     if (($value['type'] == 'attr' && $pI['modifier'] == 'ATTR') || ($value['type'] != 'attr' && $pI['modifier'] != 'ATTR')) {
-                                        if (
-                                            (!$this->markupObj->tags[$lastLevel['el']]['single'] || $pI['modifier'] != 'INNER') &&
+                                        if ((!$this->markupObj->tags[$lastLevel['el']]['single'] || $pI['modifier'] != 'INNER') &&
                                             (!is_array($mapDat) || ($pI['modifier'] != 'ATTR' && isset($mapDat[strtolower($pI['modifier'] ? $pI['modifier'] : 'outer')])) || ($pI['modifier'] == 'ATTR' && (isset($mapDat['attr']['*']) || isset($mapDat['attr'][$pI['modifier_value']]))))
 
                                         ) {
-
                                             if ($k == $currentMappingInfo[$key]['MAP_EL']) {
                                                 $sel = ' selected="selected"';
                                             } else {
@@ -2636,8 +2623,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
         );
         while (false !== ($row = TemplaVoilaUtility::getDatabaseConnection()->sql_fetch_assoc($res))) {
             $tsCconfig = BackendUtility::getModTSconfig($row['pid'], 'tx_templavoila');
-            if (
-                isset($tsCconfig['properties']['storagePid']) &&
+            if (isset($tsCconfig['properties']['storagePid']) &&
                 TemplaVoilaUtility::getBackendUser()->isInWebMount($tsCconfig['properties']['storagePid'], $readPerms)
             ) {
                 $storageFolder = BackendUtility::getRecord('pages', $tsCconfig['properties']['storagePid'], 'uid,title');

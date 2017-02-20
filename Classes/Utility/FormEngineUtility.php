@@ -16,14 +16,14 @@ namespace Extension\Templavoila\Utility;
 
 class FormEngineUtility
 {
-    static public function replaceInFormDataGroups($replacements)
+    public static function replaceInFormDataGroups($replacements)
     {
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup'] as $group => $_) {
             static::replaceinFormDataGroup($replacements, $group);
         }
     }
 
-    static public function replaceinFormDataGroup(array $replacements, $group)
+    public static function replaceinFormDataGroup(array $replacements, $group)
     {
         $groupProvider = $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup'][$group];
 
@@ -36,7 +36,7 @@ class FormEngineUtility
         // Second replace items
         array_walk_recursive(
             $groupProvider,
-            function(&$item, $key, $replacements) {
+            function (&$item, $key, $replacements) {
                 if (isset($replacements[$item])) {
                     $item = $replacements[$item];
                 }

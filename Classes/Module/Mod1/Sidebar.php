@@ -130,7 +130,7 @@ class Sidebar implements SingletonInterface
      */
     public function removeItem($itemKey)
     {
-        unset ($this->sideBarItems[$itemKey]);
+        unset($this->sideBarItems[$itemKey]);
     }
 
     /**

@@ -17,10 +17,11 @@ namespace Extension\Templavoila\Controller\Preview;
 /**
  * Header controller
  */
-class HeaderController extends TextController {
+class HeaderController extends TextController
+{
 
-	/**
-	 * @var string
-	 */
-	protected $previewField = 'header';
+    /**
+     * @var string
+     */
+    protected $previewField = 'header';
 }

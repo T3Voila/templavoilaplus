@@ -18,26 +18,29 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 /**
  * Menu controller
  */
-class MenuController extends TextController {
+class MenuController extends TextController
+{
 
-	/**
-	 * @var string
-	 */
-	protected $previewField = 'menu_type';
+    /**
+     * @var string
+     */
+    protected $previewField = 'menu_type';
 
-	/**
-	 * @param array $row
-	 *
-	 * @return string
-	 */
-	protected function getPreviewData($row) {
-		return $this->getLanguageService()->sL(BackendUtility::getLabelFromItemlist('tt_content', $this->previewField, $row[$this->previewField]));
-	}
+    /**
+     * @param array $row
+     *
+     * @return string
+     */
+    protected function getPreviewData($row)
+    {
+        return $this->getLanguageService()->sL(BackendUtility::getLabelFromItemlist('tt_content', $this->previewField, $row[$this->previewField]));
+    }
 
-	/**
-	 * @return \TYPO3\CMS\Lang\LanguageService
-	 */
-	protected function getLanguageService() {
-		return $GLOBALS['LANG'];
-	}
+    /**
+     * @return \TYPO3\CMS\Lang\LanguageService
+     */
+    protected function getLanguageService()
+    {
+        return $GLOBALS['LANG'];
+    }
 }

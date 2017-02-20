@@ -21,54 +21,58 @@ use Extension\Templavoila\Utility\TemplaVoilaUtility;
 /**
  * Media controller
  */
-class MediaController {
+class MediaController
+{
 
-	/**
-	 * @var string
-	 */
-	protected $previewField = 'media';
+    /**
+     * @var string
+     */
+    protected $previewField = 'media';
 
-	/**
-	 * @param array $row
-	 * @param string $table
-	 * @param string $output
-	 * @param boolean $alreadyRendered
-	 * @param object $ref
-	 *
-	 * @return string
-	 */
-	public function render_previewContent($row, $table, $output, $alreadyRendered, &$ref) {
-		$label = $this->getPreviewLabel();
-		$data = $this->getPreviewData($row);
+    /**
+     * @param array $row
+     * @param string $table
+     * @param string $output
+     * @param boolean $alreadyRendered
+     * @param object $ref
+     *
+     * @return string
+     */
+    public function render_previewContent($row, $table, $output, $alreadyRendered, &$ref)
+    {
+        $label = $this->getPreviewLabel();
+        $data = $this->getPreviewData($row);
 
-		if ($ref->currentElementBelongsToCurrentPage) {
-			return $ref->link_edit('<strong>' . $label . '</strong> ' . $data, 'tt_content', $row['uid']);
-		} else {
-			return '<strong>' . $label . '</strong> ' . $data;
-		}
-	}
+        if ($ref->currentElementBelongsToCurrentPage) {
+            return $ref->link_edit('<strong>' . $label . '</strong> ' . $data, 'tt_content', $row['uid']);
+        } else {
+            return '<strong>' . $label . '</strong> ' . $data;
+        }
+    }
 
-	/**
-	 * @param array $row
-	 *
-	 * @return string
-	 */
-	protected function getPreviewData($row) {
-		$data = '';
-		if (is_array($row) && $row['pi_flexform']) {
-			$flexform = GeneralUtility::xml2array($row['pi_flexform']);
-			if (isset($flexform['data']['sDEF']['lDEF']['mmFile']['vDEF'])) {
-				$data = '<span>' . $flexform['data']['sDEF']['lDEF']['mmFile']['vDEF'] . '</span>';
-			}
-		}
+    /**
+     * @param array $row
+     *
+     * @return string
+     */
+    protected function getPreviewData($row)
+    {
+        $data = '';
+        if (is_array($row) && $row['pi_flexform']) {
+            $flexform = GeneralUtility::xml2array($row['pi_flexform']);
+            if (isset($flexform['data']['sDEF']['lDEF']['mmFile']['vDEF'])) {
+                $data = '<span>' . $flexform['data']['sDEF']['lDEF']['mmFile']['vDEF'] . '</span>';
+            }
+        }
 
-		return $data;
-	}
+        return $data;
+    }
 
-	/**
-	 * @return string
-	 */
-	protected function getPreviewLabel() {
-		return TemplaVoilaUtility::getLanguageService()->sL(\TYPO3\CMS\Backend\Utility\BackendUtility::getLabelFromItemlist('tt_content', 'CType', $this->previewField));
-	}
+    /**
+     * @return string
+     */
+    protected function getPreviewLabel()
+    {
+        return TemplaVoilaUtility::getLanguageService()->sL(\TYPO3\CMS\Backend\Utility\BackendUtility::getLabelFromItemlist('tt_content', 'CType', $this->previewField));
+    }
 }

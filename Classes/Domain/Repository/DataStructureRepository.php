@@ -249,7 +249,7 @@ class DataStructureRepository implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * @return array
      */
-    static public function getStaticDatastructureConfiguration()
+    public static function getStaticDatastructureConfiguration()
     {
         $config = array();
         if (!self::$staticDsInitComplete) {
@@ -317,7 +317,7 @@ class DataStructureRepository implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * @param array $conf
      */
-    static protected function readStaticDsFilesIntoArray($conf)
+    protected static function readStaticDsFilesIntoArray($conf)
     {
         $paths = array_unique(array('fce' => $conf['staticDS.']['path_fce'], 'page' => $conf['staticDS.']['path_page']));
         foreach ($paths as $type => $path) {
