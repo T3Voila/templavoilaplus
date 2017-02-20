@@ -74,14 +74,14 @@ $GLOBALS['TCA']['tt_content']['ctrl']['typeicons']['templavoila_pi1'] = \TYPO3\C
 $GLOBALS['TCA']['tt_content']['ctrl']['typeicon_classes']['templavoila_pi1'] = 'extensions-templavoila-type-fce';
 
 $GLOBALS['TCA']['tt_content']['types']['templavoila_pi1']['showitem'] =
-    '--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.general;general,'
-    . '--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.headers;headers,'
-    . '--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access,'
-    . '--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.visibility;visibility,'
-    . '--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.access;access,'
-    . '--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.appearance,'
-    . '--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.frames;frames,'
-    . '--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.extended';
+    '--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.general;general,'
+    . '--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.headers;headers,'
+    . '--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access,'
+    . '--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.visibility;visibility,'
+    . '--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.access;access,'
+    . '--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.appearance,'
+    . '--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.frames;frames,'
+    . '--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.extended';
 
 $_EXTCONF = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
 if ($_EXTCONF['enable.']['selectDataStructure']) {
