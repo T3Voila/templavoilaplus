@@ -283,7 +283,7 @@ class Wizard
         return TemplaVoilaUtility::getDatabaseConnection()->exec_SELECTcountRows(
             '*',
             'tx_templavoila_datastructure',
-            'deleted=0'
+            'deleted=0 AND pid > 0'
         );
     }
 
