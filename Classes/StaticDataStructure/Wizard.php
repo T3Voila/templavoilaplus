@@ -179,8 +179,8 @@ class Wizard
             $dirPath = GeneralUtility::getFileAbsFileName($row['scope'] == 2 ? $conf['path_fce'] : $conf['path_page']);
             $dirPath = $dirPath . (substr($dirPath, -1) == '/' ? '' : '/');
             $title = $this->makeCleanFileName($row['title']);
-            $path = $dirPath . $title . '.xml';
-            $outPath = substr($path, strlen(PATH_site));
+            $pathAndFilename = $dirPath . $title . '.xml';
+            $outPath = substr($pathAndFilename, strlen(PATH_site));
 
             $usage = TemplaVoilaUtility::getDatabaseConnection()->exec_SELECTgetRows(
                 'count(*)',
@@ -188,7 +188,7 @@ class Wizard
                 'datastructure=' . (int) $row['uid'] . \TYPO3\CMS\Backend\Utility\BackendUtility::BEenableFields('tx_templavoila_tmplobj')
             );
             if (count($writeDsIds) && in_array($row['uid'], $writeDsIds)) {
-                GeneralUtility::writeFile($path, $row['dataprot']);
+                $this->writeXmlWithTitle($pathAndFilename, $row['dataprot'], $row['title']);
                 if ($row['previewicon']) {
                     copy(
                         GeneralUtility::getFileAbsFileName('uploads/tx_templavoila/' . $row['previewicon']),
@@ -271,6 +271,26 @@ class Wizard
         }
 
         return $out;
+    }
+
+    /**
+     * Adds title, if not already set, into dsStructure XML and writes this into given file.
+     *
+     * @param string $pathAndFilename Filename with path to write
+     * @param string $dsXml The dsStructure XML to write as string
+     * @param string $title The tiotle to set for this dsStructure
+     * @return void
+     */
+    protected function writeXmlWithTitle($pathAndFilename, $dsXml, $title)
+    {
+        $dsStructure = GeneralUtility::xml2array($dsXml);
+        if (empty($dsStructure['ROOT']['tx_templavoila']['title'])
+            || $dsStructure['ROOT']['tx_templavoila']['title'] === 'ROOT'
+        ) {
+            $dsStructure['ROOT']['tx_templavoila']['title'] = $title;
+        }
+        $dsXml = GeneralUtility::array2xml_cs($dsStructure, 'T3DataStructure', ['useCDATA' => 1]);
+        GeneralUtility::writeFile($pathAndFilename, $dsXml);
     }
 
     /**
