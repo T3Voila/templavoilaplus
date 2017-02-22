@@ -7,7 +7,7 @@
                 <source>Enable the classic Page module:Check this box to enable classic Page module in the list of modules.</source>
             </trans-unit>
             <trans-unit id="enable.selectDataStructure" xml:space="preserve">
-                <source>Enable data structure selection: If this checkbox is checked, page and content elements will have data structure selector as they had in older TemplaVoila versions. If current installation has very few template objects, it is recommended to have this checkbox unchecked.</source>
+                <source>DEPRECATED will be removed with 8. Enable data structure selection: If this checkbox is checked, page and content elements will have data structure selector as they had in older TemplaVoila versions. If current installation has very few template objects, it is recommended to have this checkbox unchecked.</source>
             </trans-unit>
             <trans-unit id="enable.renderFCEHeader" xml:space="preserve">
                 <source>Enable Header for FCE's:If this checkbox is checked the header of Content Element type FCE will be rendered like headers of other Content Elements.</source>
