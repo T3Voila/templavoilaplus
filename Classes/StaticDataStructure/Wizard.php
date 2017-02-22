@@ -155,7 +155,7 @@ class Wizard
         $rows = TemplaVoilaUtility::getDatabaseConnection()->exec_SELECTgetRows(
             '*',
             'tx_templavoila_datastructure',
-            'deleted=0',
+            'deleted=0 AND pid > 0',
             '',
             'scope, title'
         );
