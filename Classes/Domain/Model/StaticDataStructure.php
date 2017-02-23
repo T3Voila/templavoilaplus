@@ -60,6 +60,16 @@ class StaticDataStructure extends AbstractDataStructure
             // path relative to typo3 maindir
             $this->setIcon('../' . $conf[$key]['icon']);
         }
+
+        // Read title from XML file and set, if not empty or ROOT
+        $dsXml = $this->getDataprotXML();
+        $dsStructure = GeneralUtility::xml2array($dsXml);
+
+        if (!empty($dsStructure['ROOT']['tx_templavoila']['title'])
+            && $dsStructure['ROOT']['tx_templavoila']['title'] !== 'ROOT'
+        ) {
+            $this->setLabel($dsStructure['ROOT']['tx_templavoila']['title']);
+        }
     }
 
     /**
