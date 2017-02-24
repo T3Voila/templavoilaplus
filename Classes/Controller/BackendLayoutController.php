@@ -2027,7 +2027,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                             $l10nInfo .= '<br/>' . $localizedRecordInfo['content'];
 
                             list($flagLink_begin, $flagLink_end) = explode('|*|', $this->link_edit('|*|', 'tt_content', $localizedRecordInfo['uid'], true));
-                            if ($this->translatorMode) {
+                            if ($this->translatorMode && $flagLink_begin !== '') {
                                 $l10nInfo .= '<br/>' . $flagLink_begin . '<em>' . TemplaVoilaUtility::getLanguageService()->getLL('clickToEditTranslation') . '</em>' . $flagLink_end;
                             }
 
