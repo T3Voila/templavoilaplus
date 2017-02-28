@@ -157,6 +157,7 @@ class HtmlMarkup
         'li' => ['blocktype' => 'grouping'],
         'link' => ['blocktype' => 'document', 'single' => 1],
         'map' => ['anchor_outside' => 1, 'blocktype' => 'embedding'],
+        'main' => ['blocktype' => 'sections'],
         'mark' => ['blocktype' => 'text'],
         'menu' => ['blocktype' => 'interactive'],
         'meta' => ['blocktype' => 'document', 'single' => 1],
