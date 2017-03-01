@@ -38,13 +38,6 @@ class FrontendController extends AbstractPlugin
     public $prefixId = 'tx_templavoila_pi1';
 
     /**
-     * Path to this script relative to the extension dir.
-     *
-     * @var string
-     */
-    public $scriptRelPath = 'pi1/class.tx_templavoila_pi1.php';
-
-    /**
      * The extension key.
      *
      * @var string
