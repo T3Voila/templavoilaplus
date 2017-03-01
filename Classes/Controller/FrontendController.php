@@ -688,30 +688,29 @@ class FrontendController extends AbstractPlugin
      */
     public function inheritValue($dV, $valueKey, $overlayMode = '')
     {
-        $returnValue = '';
+        // Elements without values like TypoScriptObjects
+        if (!is_array($dV)) {
+            return '';
+        }
 
-        if ($valueKey != 'vDEF') {
-            if (!is_array($dV)) {
-                return '';
-            }
+        $languageValue = isset($dV[$valueKey]) ? $dV[$valueKey] : '';
 
-            // Prevent PHP warnings
+        if ($valueKey !== 'vDEF') {
             $defaultValue = isset($dV['vDEF']) ? $dV['vDEF'] : '';
-            $languageValue = isset($dV[$valueKey]) ? $dV[$valueKey] : '';
 
             // Consider overlay modes:
             switch ((string) $overlayMode) {
                 case 'ifFalse': // Normal inheritance based on whether the value evaluates false or not (zero or blank string)
-                    $returnValue .= trim($languageValue) ? $languageValue : $defaultValue;
+                    $languageValue = trim($languageValue) ? $languageValue : $defaultValue;
                     break;
                 case 'ifBlank': // Only if the value is truely blank!
-                    $returnValue .= strcmp(trim($languageValue), '') ? $languageValue : $defaultValue;
+                    $languageValue = trim($languageValue) !== '' ? $languageValue : $defaultValue;
                     break;
                 case 'never':
-                    $returnValue .= $languageValue; // Always return its own value
+                    // Always return its own value
                     break;
                 case 'removeIfBlank':
-                    if (!strcmp(trim($languageValue), '')) {
+                    if (trim($languageValue) !== '') {
                         // Find a way to avoid returning an array here
                         return array('ERROR' => '__REMOVE');
                     }
@@ -719,15 +718,13 @@ class FrontendController extends AbstractPlugin
                 default:
                     // If none of the overlay modes matched, simply use the default:
                     if ($this->inheritValueFromDefault) {
-                        $returnValue .= trim($languageValue) ? $languageValue : $defaultValue;
+                        $languageValue = trim($languageValue) ? $languageValue : $defaultValue;
                     }
                     break;
             }
-        } else {
-            return isset($dV[$valueKey]) ? $dV[$valueKey] : '';
         }
 
-        return $returnValue;
+        return $languageValue;
     }
 
     /**
