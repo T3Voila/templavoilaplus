@@ -690,49 +690,41 @@ class FrontendController extends AbstractPlugin
     {
         $returnValue = '';
 
-        try {
+        if ($valueKey != 'vDEF') {
             if (!is_array($dV)) {
-                throw new \InvalidArgumentException(sprintf('Argument "%s" must be of type array, "%s" given', '$dV', gettype($dV)));
+                return '';
             }
 
-            if (!isset($dV['vDEF'])) {
-                throw new \RuntimeException('Key "vDEF" of array "$dV" doesn\'t exist');
-            }
+            // Prevent PHP warnings
+            $defaultValue = isset($dV['vDEF']) ? $dV['vDEF'] : '';
+            $languageValue = isset($dV[$valueKey]) ? $dV[$valueKey] : '';
 
-            if ($valueKey != 'vDEF') {
-                // Prevent PHP warnings
-                $defaultValue = isset($dV['vDEF']) ? $dV['vDEF'] : '';
-                $languageValue = isset($dV[$valueKey]) ? $dV[$valueKey] : '';
-
-                // Consider overlay modes:
-                switch ((string) $overlayMode) {
-                    case 'ifFalse': // Normal inheritance based on whether the value evaluates false or not (zero or blank string)
+            // Consider overlay modes:
+            switch ((string) $overlayMode) {
+                case 'ifFalse': // Normal inheritance based on whether the value evaluates false or not (zero or blank string)
+                    $returnValue .= trim($languageValue) ? $languageValue : $defaultValue;
+                    break;
+                case 'ifBlank': // Only if the value is truely blank!
+                    $returnValue .= strcmp(trim($languageValue), '') ? $languageValue : $defaultValue;
+                    break;
+                case 'never':
+                    $returnValue .= $languageValue; // Always return its own value
+                    break;
+                case 'removeIfBlank':
+                    if (!strcmp(trim($languageValue), '')) {
+                        // Find a way to avoid returning an array here
+                        return array('ERROR' => '__REMOVE');
+                    }
+                    break;
+                default:
+                    // If none of the overlay modes matched, simply use the default:
+                    if ($this->inheritValueFromDefault) {
                         $returnValue .= trim($languageValue) ? $languageValue : $defaultValue;
-                        break;
-                    case 'ifBlank': // Only if the value is truely blank!
-                        $returnValue .= strcmp(trim($languageValue), '') ? $languageValue : $defaultValue;
-                        break;
-                    case 'never':
-                        $returnValue .= $languageValue; // Always return its own value
-                        break;
-                    case 'removeIfBlank':
-                        if (!strcmp(trim($languageValue), '')) {
-                            // Find a way to avoid returning an array here
-                            return array('ERROR' => '__REMOVE');
-                        }
-                        break;
-                    default:
-                        // If none of the overlay modes matched, simply use the default:
-                        if ($this->inheritValueFromDefault) {
-                            $returnValue .= trim($languageValue) ? $languageValue : $defaultValue;
-                        }
-                        break;
-                }
-            } else {
-                $returnValue .= $dV[$valueKey];
+                    }
+                    break;
             }
-        } catch (\Exception $e) {
-            $this->log($e->getMessage(), GeneralUtility::SYSLOG_SEVERITY_ERROR);
+        } else {
+            return isset($dV[$valueKey]) ? $dV[$valueKey] : '';
         }
 
         return $returnValue;
