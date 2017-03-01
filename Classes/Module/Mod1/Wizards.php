@@ -318,9 +318,12 @@ class Wizards implements SingletonInterface
                     $toList = $toRepo->getTemplatesByDatastructure($dsObj, $storageFolderPID);
                     foreach ($toList as $toObj) {
                         /** @var \Extension\Templavoila\Domain\Model\Template $toObj */
-                        if ($toObj->getKey() === $defaultTO['uid'] ||
-                            !$toObj->isPermittedForUser() ||
-                            GeneralUtility::inList($disallowedDesignTemplateItems, $toObj->getKey())
+                        if ($toObj->hasParentTemplate() && $toObj->getRendertype() !== '') {
+                            continue;
+                        }
+                        if ($toObj->getKey() === $defaultTO['uid']
+                            || !$toObj->isPermittedForUser()
+                            || GeneralUtility::inList($disallowedDesignTemplateItems, $toObj->getKey())
                         ) {
                             continue;
                         }
