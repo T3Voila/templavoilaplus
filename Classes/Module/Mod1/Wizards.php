@@ -96,9 +96,7 @@ class Wizards implements SingletonInterface
                 // Create new page
                 $newID = $this->createPage(GeneralUtility::_GP('data'), $positionPid);
                 if ($newID > 0) {
-                    // Get TSconfig for a different selection of fields in the editing form
-                    $TSconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($newID, 'mod.web_txtemplavoilaM1.createPageWizard.fieldNames');
-                    $fieldNames = trim(isset($TSconfig['value']) ? $TSconfig['value'] : 'hidden,title,alias');
+                    $pageColumnsOnly = $this->getPageColumnsOnlyConfig($newID);
 
                     $returnUrl = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl(
                         'web_txtemplavoilaM1',
@@ -120,7 +118,7 @@ class Wizards implements SingletonInterface
                                             $newID => 'edit',
                                         ],
                                     ],
-                                    'columnsOnly' => $fieldNames,
+                                    'columnsOnly' => $pageColumnsOnly,
                                 ]
                             )
                         )
@@ -163,9 +161,7 @@ class Wizards implements SingletonInterface
                         }
 
                         // PLAIN COPY FROM ABOVE - BEGIN
-                        // Get TSconfig for a different selection of fields in the editing form
-                        $TSconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($newID, 'tx_templavoila.mod1.createPageWizard.fieldNames');
-                        $fieldNames = isset($TSconfig['value']) ? $TSconfig['value'] : 'hidden,title,alias';
+                        $pageColumnsOnly = $this->getPageColumnsOnlyConfig($newID);
 
                         $returnUrl = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl(
                             'web_txtemplavoilaM1',
@@ -187,7 +183,7 @@ class Wizards implements SingletonInterface
                                                 $newID => 'edit',
                                             ],
                                         ],
-                                        'columnsOnly' => $fieldNames,
+                                        'columnsOnly' => $pageColumnsOnly,
                                     ]
                                 )
                             )
@@ -246,6 +242,31 @@ class Wizards implements SingletonInterface
      * Wizard related helper functions
      *
      ********************************************/
+
+    /**
+     * Returns comma seperated field names of page columns to show only on new page. Default this is hidden,title,alias.
+     * You configure this with TSconfig 'mod.web_txtemplavoilaM1.createPageWizard.fieldNames'. A value of "*" means show
+     * all fields.
+     *
+     * @param integer $newID Page uid
+     * @return string
+     */
+    private function getPageColumnsOnlyConfig($newID)
+    {
+        $pageColumnsOnly = 'hidden,title,alias';
+        // Get TSconfig for a different selection of fields in the editing form
+        $fieldNamesTs = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($newID, 'mod.web_txtemplavoilaM1.createPageWizard.fieldNames');
+        if (isset($fieldNamesTs['value'])) {
+            $fieldNamesTsValue = trim($fieldNamesTs['value']);
+            if ($fieldNamesTsValue && $fieldNamesTsValue !== '*') {
+                $pageColumnsOnly = $fieldNamesTsValue;
+            } elseif($fieldNamesTsValue === '*') {
+                $pageColumnsOnly = '';
+            }
+        }
+
+        return $pageColumnsOnly;
+    }
 
     /**
      * Renders the template selector.
