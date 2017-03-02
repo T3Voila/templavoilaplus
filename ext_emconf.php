@@ -13,8 +13,8 @@ $EM_CONF[$_EXTKEY] = [
     'author_company' => 'PLUSPOL interactive,,',
     'constraints' => [
         'depends' => [
-            'php' => '5.5.0-7.0.99',
-            'typo3' => '7.6.0-7.6.99',
+            'php' => '5.5.0-7.1.99',
+            'typo3' => '7.6.0-7.6.99, 8.5.0-8.6.99',
             'static_info_tables' => '',
         ],
         'conflicts' => [
