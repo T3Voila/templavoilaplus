@@ -63,6 +63,10 @@ class TcaFlexPrepare implements FormDataProviderInterface
     protected function createDefaultSheetInDataStructureIfNotGiven(array $result, $fieldName)
     {
         $modifiedDataStructure = $result['processedTca']['columns'][$fieldName]['config']['ds'];
+        if (!$modifiedDataStructure) {
+            // It may happen that there isn't a DS defined yet, so do not break process give them empty data
+            $modifiedDataStructure = ['sheets' => []];
+        }
         if (isset($modifiedDataStructure['ROOT']) && isset($modifiedDataStructure['sheets'])) {
             throw new \UnexpectedValueException(
                 'Parsed data structure has both ROOT and sheets on top level',
