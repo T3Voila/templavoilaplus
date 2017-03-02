@@ -889,7 +889,7 @@ class HtmlMarkup
                         ) {
                             $name = 'templavoila#' . md5($MappingData_head_cached['cArray']['el_' . $kk]);
                             /** @var \TYPO3\CMS\Core\Page\PageRenderer $pageRenderer */
-                            $pageRenderer = $GLOBALS['TSFE']->getPageRenderer();
+                            $pageRenderer = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Page\PageRenderer::class);
                             switch ($tag) {
                                 case 'LINK':
                                     $rel = isset($attr[0]['rel']) ? $attr[0]['rel'] : 'stylesheet';
