@@ -25,5 +25,5 @@ $EM_CONF[$_EXTKEY] = [
             'me_templavoilalayout2' => '',
         ],
         'suggests' => [],
-    ),
+    ],
 ];
