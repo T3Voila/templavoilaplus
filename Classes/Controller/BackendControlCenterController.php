@@ -387,38 +387,41 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
         foreach ($dsScopes as $scopePointer) {
             // Create listing for a DS:
             list($content, $dsCount, $toCount, $toIdArrayTmp) = $this->renderDSlisting($scopePointer);
-            $toIdArray = array_merge($toIdArrayTmp, $toIdArray);
-            $scopeIcon = '';
+            if ($dsCount > 0 || $toCount > 0) {
+                $toIdArray = array_merge($toIdArrayTmp, $toIdArray);
+                $scopeIcon = '';
 
-            // Label for the tab:
-            switch ((string) $scopePointer) {
-                case \Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_PAGE:
-                    $label = TemplaVoilaUtility::getLanguageService()->getLL('pagetemplates');
-                    $scopeIcon = $this->iconFactory->getIconForRecord('pages', array(), Icon::SIZE_SMALL);
-                    break;
-                case \Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_FCE:
-                    $label = TemplaVoilaUtility::getLanguageService()->getLL('fces');
-                    $scopeIcon = $this->iconFactory->getIconForRecord('tt_content', array(), Icon::SIZE_SMALL);
-                    break;
-                case \Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_UNKNOWN:
-                    $label = TemplaVoilaUtility::getLanguageService()->getLL('other');
-                    break;
-                default:
-                    $label = sprintf(TemplaVoilaUtility::getLanguageService()->getLL('unknown'), $scopePointer);
-                    break;
+                // Label for the tab:
+                switch ((string) $scopePointer) {
+                    case \Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_PAGE:
+                        $label = TemplaVoilaUtility::getLanguageService()->getLL('pagetemplates');
+                        $scopeIcon = $this->iconFactory->getIconForRecord('pages', array(), Icon::SIZE_SMALL);
+                        break;
+                    case \Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_FCE:
+                        $label = TemplaVoilaUtility::getLanguageService()->getLL('fces');
+                        $scopeIcon = $this->iconFactory->getIconForRecord('tt_content', array(), Icon::SIZE_SMALL);
+                        break;
+                    case \Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_UNKNOWN:
+                        $label = TemplaVoilaUtility::getLanguageService()->getLL('other');
+                        $scopeIcon = $this->iconFactory->getIconForRecord('', array(), Icon::SIZE_SMALL);
+                        break;
+                    default:
+                        $label = sprintf(TemplaVoilaUtility::getLanguageService()->getLL('unknown'), $scopePointer);
+                        break;
+                }
+
+                // Error/Warning log:
+                $errStat = $this->getErrorLog($scopePointer);
+
+                // Add parts for Tab menu:
+                $parts[] = [
+                    'label' => $label,
+                    'icon' => $scopeIcon,
+                    'content' => $content,
+                    'linkTitle' => 'DS/TO = ' . $dsCount . '/' . $toCount,
+                    'stateIcon' => $errStat['iconCode'],
+                ];
             }
-
-            // Error/Warning log:
-            $errStat = $this->getErrorLog($scopePointer);
-
-            // Add parts for Tab menu:
-            $parts[] = [
-                'label' => $label,
-                'icon' => $scopeIcon,
-                'content' => $content,
-                'linkTitle' => 'DS/TO = ' . $dsCount . '/' . $toCount,
-                'stateIcon' => $errStat['iconCode'],
-            ];
         }
 
         // Find lost Template Objects and add them to a TAB if any are found:
