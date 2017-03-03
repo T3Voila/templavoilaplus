@@ -196,12 +196,6 @@ class Wizard
                     );
                 }
                 if ($options['updateRecords']) {
-                    // remove DS records
-                    TemplaVoilaUtility::getDatabaseConnection()->exec_UPDATEquery(
-                        'tx_templavoila_datastructure',
-                        'uid="' . $row['uid'] . '"',
-                        array('deleted' => 1)
-                    );
                     // update TO records
                     TemplaVoilaUtility::getDatabaseConnection()->exec_UPDATEquery(
                         'tx_templavoila_tmplobj',
@@ -228,7 +222,7 @@ class Wizard
                     // delete DS records
                     TemplaVoilaUtility::getDatabaseConnection()->exec_UPDATEquery(
                         'tx_templavoila_datastructure',
-                        'uid=' . $row['uid'],
+                        'uid="' . $row['uid'] . '"',
                         array('deleted' => 1)
                     );
                     $updateMessage = TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.wizard.updated');
