@@ -196,6 +196,14 @@ class Wizard
                     );
                 }
                 if ($options['updateRecords']) {
+                    // Update TOs belayout if ds belayout was set and TO not.
+                    if ($row['belayout']) {
+                        TemplaVoilaUtility::getDatabaseConnection()->exec_UPDATEquery(
+                            'tx_templavoila_tmplobj',
+                            'datastructure="' . $row['uid'] . '" AND belayout=""',
+                            array('belayout' => $row['belayout'])
+                        );
+                    }
                     // update TO records
                     TemplaVoilaUtility::getDatabaseConnection()->exec_UPDATEquery(
                         'tx_templavoila_tmplobj',
