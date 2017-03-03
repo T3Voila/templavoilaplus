@@ -200,7 +200,10 @@ class StaticDataStructuresHandler
                         $params['items'][] = array(
                             $toObj->getLabel(),
                             $toObj->getKey(),
-                            '../' . $toObj->getIcon()
+                            ($toObj->getIcon()
+                                ? '../' . $toObj->getIcon()
+                                : 'EXT:templavoila/Resources/Public/Icon/icon_pagetemplate.gif'
+                            )
                         );
                     }
                 }
@@ -249,7 +252,10 @@ class StaticDataStructuresHandler
                     $curDS[] = array(
                         $toObj->getLabel(),
                         $toObj->getKey(),
-                        '..' . $toObj->getIcon()
+                        ($toObj->getIcon()
+                            ? '../' . $toObj->getIcon()
+                            : 'EXT:templavoila/Resources/Public/Icon/icon_pagetemplate.gif'
+                        )
                     );
                 }
             }
