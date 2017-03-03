@@ -389,11 +389,12 @@ class FrontendController extends AbstractPlugin
 
                         // Visual identification aids:
 
-                        $feedit = is_object(TemplaVoilaUtility::getBackendUser()) && method_exists(TemplaVoilaUtility::getBackendUser(), 'isFrontendEditingActive') && TemplaVoilaUtility::getBackendUser()->isFrontendEditingActive();
+                        $feedit = is_object(TemplaVoilaUtility::getBackendUser())
+                            && TemplaVoilaUtility::getBackendUser()->isFrontendEditingActive()
+                            && isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/classes/class.frontendedit.php']['edit']);
 
                         if ($GLOBALS['TSFE']->fePreview && $GLOBALS['TSFE']->beUserLogin && !$GLOBALS['TSFE']->workspacePreview && !$this->conf['disableExplosivePreview'] && !$feedit) {
-                            throw new \RuntimeException('Further execution of code leads to PHP errors.', 1404750505);
-                            // $content = $this->visualID($content, $srcPointer, $DSrec, $TOrec, $row, $table);
+                            $content = $this->visualID($content, $row['tx_templavoila_ds'], $dsObj, $TOrec, $row, $table);
                         }
                     } else {
                         $content = $this->formatError('Template Object could not be unserialized successfully.
@@ -840,7 +841,7 @@ class FrontendController extends AbstractPlugin
 
         // Compile information:
         $id = 'templavoila-preview-' . GeneralUtility::shortMD5(microtime());
-        $content = '<div style="text-align: left; position: absolute; display:none; filter: alpha(Opacity=90);" id="' . $id . '">
+        $content = '<div style="text-align: left; position: absolute; display:none; filter: alpha(Opacity=90);z-index:10000" id="' . $id . '">
                         ' . $infoArray . '
                     </div>
                     <div id="' . $id . '-wrapper" style=""
