@@ -632,7 +632,7 @@ class HtmlMarkup
                             $currentMappingInfo['cArray'][$key] = $editStruct[$key][$valueKey];
                         }
                     } else {
-                        $currentMappingInfo['cArray'][$key] = $htmlParse->HTMLcleaner($currentMappingInfo['cArray'][$key]);
+                        $currentMappingInfo['cArray'][$key] = $htmlParse->HTMLcleaner($currentMappingInfo['cArray'][$key], [], true);
                     }
                 }
                 $out = implode($firstLevelImplodeToken, $currentMappingInfo['cArray']);
