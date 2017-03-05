@@ -1,0 +1,17 @@
+{namespace core=TYPO3\CMS\Core\ViewHelpers}
+
+<style>
+.t3js-module-body h1:first-child {display: none;}
+</style>
+
+<h1>TemplaVoilà! Update Script Selection</h1>
+<div class="alert alert-danger" role="alert">
+    <div class="alert-title"><core:icon identifier="status-dialog-warning" /> Warning</div>
+    <p class="alert-message">Please backup your data before running any of the update scripts!</p>
+</div>
+<h2>Please select an update script.</h2>
+<form action="#" method="POST">
+    <button class="btn btn-primary" type="submit" name="update" value="StaticData">
+        <core:icon identifier="extensions-scheduler-run-task" /> Convert to Static Data
+    </button>
+</form>
