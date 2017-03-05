@@ -216,9 +216,10 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
     {
         $this->addCshButton('');
         $this->addShortcutButton();
-        if (empty($this->modTSconfig['properties']['hideNewSiteWizard'])) {
-            $this->addNewSiteWizardButton();
-        }
+// @TODO Disabled for now, as Wizard isn't ready for 7/8 LTS
+//         if (empty($this->modTSconfig['properties']['hideNewSiteWizard'])) {
+//             $this->addNewSiteWizardButton();
+//         }
     }
 
     /**
