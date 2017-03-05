@@ -36,6 +36,9 @@ class ExtensionManagerUpdateController
             case 'StaticData':
                 $controller = GeneralUtility::makeInstance(Update\StaticDataUpdateController::class);
                 break;
+            case 'DataStructure':
+                $controller = GeneralUtility::makeInstance(Update\DataStructureUpdateController::class);
+                break;
             default:
                 $controller = GeneralUtility::makeInstance(Update\SwitchUpdateController::class);
                 break;

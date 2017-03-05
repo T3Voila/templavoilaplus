@@ -24,6 +24,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class AbstractUpdateController
 {
     protected $fluid;
+    
+    protected $template;
 
     public function __construct()
     {
@@ -35,7 +37,17 @@ class AbstractUpdateController
             GeneralUtility::getFileAbsFileName('EXT:templavoila/Resources/Private/Templates/')
         ]);
         $classPartsName = explode('\\', get_class($this));
-        $this->fluid->setTemplate('Update/' . substr(array_pop($classPartsName), 0, -16));
+        $this->setTemplate('Update/' . substr(array_pop($classPartsName), 0, -16));
+    }
+    
+    public function setTemplate($template)
+    {
+        $this->template = $template;
+    }
+    
+    public function getTemplate()
+    {
+        return $this->template;
     }
 
     /**
@@ -43,6 +55,7 @@ class AbstractUpdateController
      */
     public function run()
     {
+        $this->fluid->setTemplate($this->template);
         return $this->fluid->render();
     }
 }

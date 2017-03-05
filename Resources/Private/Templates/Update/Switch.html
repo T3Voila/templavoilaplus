@@ -5,13 +5,18 @@
 </style>
 
 <h1>TemplaVoilà! Update Script Selection</h1>
-<div class="alert alert-danger" role="alert">
-    <div class="alert-title"><core:icon identifier="status-dialog-warning" /> Warning</div>
-    <p class="alert-message">Please backup your data before running any of the update scripts!</p>
-</div>
-<h2>Please select an update script.</h2>
+<f:be.infobox title="Warning" state="2">Please backup your data before running any of the update scripts!</f:be.infobox>
+<h2>Please select an update script</h2>
 <form action="#" method="POST">
-    <button class="btn btn-primary" type="submit" name="update" value="StaticData">
-        <core:icon identifier="extensions-scheduler-run-task" /> Convert to Static Data
-    </button>
+    <f:be.infobox title="You should run this, to fix the TYPO3 TCA Changes between 6.2 and 7/8 LTS" state="-1">
+        <button class="btn btn-primary btn-block btn-lg" type="submit" name="update" value="DataStructure">
+            <core:icon identifier="extensions-scheduler-run-task" /> Update DataStructure
+        </button>
+    </f:be.infobox>
+    <f:be.infobox title="Static Data Structure will be the way to gut. But it may be need some love/tests yet." state="1">
+        <button class="btn btn-warning btn-block btn-lg" type="submit" name="update" value="StaticData">
+            <core:icon identifier="extensions-scheduler-run-task" /> Convert to Static Data Structure
+        </button>
+    </div>
+    </f:be.infobox>
 </form>
