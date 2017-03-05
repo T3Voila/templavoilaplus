@@ -1,4 +1,5 @@
 <?php
+namespace Extension\Templavoila;
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -12,15 +13,21 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-
-use Extension\Templavoila\Utility\TemplaVoilaUtility;
-
 /**
  * Update wizard for the extension manager
  */
 class ext_update
 {
+    /**
+     * @var Extension\Templavoila\Controller\ExtensionManagerUpdateController
+     */
+    protected $controller;
+    
+    public function __construct()
+    {
+        $this->controller = new Controller\ExtensionManagerUpdateController();
+    }
+
     /**
      * Main function, returning the HTML content of the module
      *
@@ -28,21 +35,17 @@ class ext_update
      */
     public function main()
     {
-        /** @var $dsWizard tx_templavoila_staticds_wizard */
-        $dsWizard = GeneralUtility::makeInstance(\Extension\Templavoila\StaticDataStructure\Wizard::class);
-        return $dsWizard->staticDsWizard();
+        return $this->controller->run();
     }
 
     /**
      * Checks if backend user is an administrator
      * (this function is called from the extension manager)
      *
-     * @param string $what What should be updated
-     *
      * @return boolean
      */
-    public function access($what = 'all')
+    public function access()
     {
-        return TemplaVoilaUtility::getBackendUser()->isAdmin();
+        return $this->controller->shouldBeShown();
     }
 }
