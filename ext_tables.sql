@@ -21,7 +21,7 @@ CREATE TABLE tx_templavoila_tmplobj (
     deleted tinyint(4) unsigned DEFAULT '0' NOT NULL,
     sorting int(11) unsigned DEFAULT '0' NOT NULL,
     title varchar(255) DEFAULT '' NOT NULL,
-    datastructure tinytext DEFAULT '' NOT NULL,
+    datastructure tinytext NOT NULL,
     fileref tinytext,
     templatemapping mediumblob,
     previewicon tinytext,
@@ -75,7 +75,7 @@ CREATE TABLE tx_templavoila_datastructure (
 # Table structure for table 'tt_content'
 #
 CREATE TABLE tt_content (
-    tx_templavoila_ds tinytext DEFAULT '' NOT NULL,
+    tx_templavoila_ds tinytext,
     tx_templavoila_to int(11) DEFAULT '0' NOT NULL,
     tx_templavoila_flex mediumtext,
     tx_templavoila_pito int(11) DEFAULT '0' NOT NULL
@@ -85,9 +85,9 @@ CREATE TABLE tt_content (
 # Table structure for table 'pages'
 #
 CREATE TABLE pages (
-    tx_templavoila_ds tinytext DEFAULT '' NOT NULL,
+    tx_templavoila_ds tinytext,
     tx_templavoila_to int(11) DEFAULT '0' NOT NULL,
-    tx_templavoila_next_ds tinytext DEFAULT '' NOT NULL,
+    tx_templavoila_next_ds tinytext,
     tx_templavoila_next_to int(11) DEFAULT '0' NOT NULL,
     tx_templavoila_flex mediumtext,
     storage_pid int(11) DEFAULT '0' NOT NULL,
