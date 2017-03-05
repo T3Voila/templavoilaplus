@@ -179,14 +179,14 @@ class Specialdoktypes implements SingletonInterface
             $onClick = "top.nextLoadModuleUrl='" . $listModuleURL . "';top.fsMod.recentIds['web']=" . (int)$this->pObj->id . ";top.goToModule('web_list',1);";
             $listModuleLink = '<br /><br />' .
                 $this->pObj->getIconFactory()->getIcon('actions-system-list-open', Icon::SIZE_SMALL) .
-                '<strong><a href="#" onClick="' . $onClick . '">' . $this->getLanguageService()->getLL('editpage_sysfolder_switchtolistview', true) . '</a></strong>
+                '<strong><a href="#" onClick="' . $onClick . '">' . $this->getLanguageService()->getLL('editpage_sysfolder_switchtolistview') . '</a></strong>
             ';
         } else {
-            $listModuleLink = $this->getLanguageService()->getLL('editpage_sysfolder_listview_noaccess', true);
+            $listModuleLink = $this->getLanguageService()->getLL('editpage_sysfolder_listview_noaccess');
         }
 
         $this->pObj->getModuleTemplate()->addFlashMessage(
-            $this->getLanguageService()->getLL('editpage_sysfolder_intro', true),
+            $this->getLanguageService()->getLL('editpage_sysfolder_intro'),
             '',
             \TYPO3\CMS\Core\Messaging\FlashMessage::INFO
         );
