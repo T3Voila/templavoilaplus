@@ -1,5 +1,5 @@
 <?php
-use Extension\Templavoila\Controller;
+use Ppi\TemplaVoilaPlus\Controller;
 
 /**
  * Definitions for routes provided by EXT:backend

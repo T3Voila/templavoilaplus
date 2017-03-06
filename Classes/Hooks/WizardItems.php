@@ -1,12 +1,12 @@
 <?php
-namespace Extension\Templavoila\Hooks;
+namespace Ppi\TemplaVoilaPlus\Hooks;
 
 use TYPO3\CMS\Backend\Wizard\NewContentElementWizardHookInterface;
 use TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-use Extension\Templavoila\Utility\TemplaVoilaUtility;
+use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 class WizardItems implements NewContentElementWizardHookInterface
 {
@@ -23,24 +23,24 @@ class WizardItems implements NewContentElementWizardHookInterface
 
         $addingItems = [
             'fce' => [
-                'header' => $this->getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/BackendLayout.xlf:fce'),
+                'header' => $this->getLanguageService()->sL('LLL:EXT:templavoilaplus/Resources/Private/Language/BackendLayout.xlf:fce'),
             ],
         ];
-        $apiObj = GeneralUtility::makeInstance(\Extension\Templavoila\Service\ApiService::class);
+        $apiObj = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Service\ApiService::class);
 
         // Flexible content elements:
         $positionPid = $parentObject->id;
         $storageFolderPID = $apiObj->getStorageFolderPid($positionPid);
 
-        $toRepo = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\TemplateRepository::class);
-        $toList = $toRepo->getTemplatesByStoragePidAndScope($storageFolderPID, \Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_FCE);
+        $toRepo = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Domain\Repository\TemplateRepository::class);
+        $toList = $toRepo->getTemplatesByStoragePidAndScope($storageFolderPID, \Ppi\TemplaVoilaPlus\Domain\Model\AbstractDataStructure::SCOPE_FCE);
         foreach ($toList as $toObj) {
             if ($toObj->hasParentTemplate() && $toObj->getRendertype() !== '') {
                 continue;
             }
             $iconIdentifier = '';
 
-            /** @var \Extension\Templavoila\Domain\Model\Template $toObj */
+            /** @var \Ppi\TemplaVoilaPlus\Domain\Model\Template $toObj */
             if ($toObj->isPermittedForUser()) {
                 $tmpFilename = $toObj->getIcon();
 
@@ -78,17 +78,17 @@ class WizardItems implements NewContentElementWizardHookInterface
     /**
      * Process the default-value settings
      *
-     * @param \Extension\Templavoila\Domain\Model\Template $toObj LocalProcessing as array
+     * @param \Ppi\TemplaVoilaPlus\Domain\Model\Template $toObj LocalProcessing as array
      *
      * @return string additional URL arguments with configured default values
      */
-    public function getDsDefaultValues(\Extension\Templavoila\Domain\Model\Template $toObj)
+    public function getDsDefaultValues(\Ppi\TemplaVoilaPlus\Domain\Model\Template $toObj)
     {
         $dsStructure = $toObj->getLocalDataprotArray();
 
         $dsValues = '&defVals[tt_content][CType]=templavoila_pi1'
-            . '&defVals[tt_content][tx_templavoila_ds]=' . $toObj->getDatastructure()->getKey()
-            . '&defVals[tt_content][tx_templavoila_to]=' . $toObj->getKey();
+            . '&defVals[tt_content][tx_templavoilaplus_ds]=' . $toObj->getDatastructure()->getKey()
+            . '&defVals[tt_content][tx_templavoilaplus_to]=' . $toObj->getKey();
 
         if (is_array($dsStructure) && is_array($dsStructure['meta']['default']['TCEForms'])) {
             foreach ($dsStructure['meta']['default']['TCEForms'] as $field => $value) {

@@ -1,5 +1,5 @@
 <?php
-namespace Extension\Templavoila\Controller\Preview;
+namespace Ppi\TemplaVoilaPlus\Controller\Preview;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -16,7 +16,7 @@ namespace Extension\Templavoila\Controller\Preview;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-use Extension\Templavoila\Utility\TemplaVoilaUtility;
+use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 /**
  * Media controller

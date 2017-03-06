@@ -1,4 +1,4 @@
-﻿.. include:: Images.txt
+.. include:: Images.txt
 
 .. ==================================================
 .. FOR YOUR INFORMATION
@@ -51,12 +51,12 @@ configuration in the “mininews” extension:
                                                                   <n1>0</n1>
                                                           </n0>
                                                   </items>
-                                                  <foreign_table>tx_templavoila_tmplobj</foreign_table>
+                                                  <foreign_table>tx_templavoilaplus_tmplobj</foreign_table>
                                                   <foreign_table_where>
-                                                           AND tx_templavoila_tmplobj.pid=###STORAGE_PID### 
-                                                           AND tx_templavoila_tmplobj.datastructure="EXT:mininews/template_datastructure.xml" 
-                                                           AND tx_templavoila_tmplobj.parent=0 
-                                                           ORDER BY tx_templavoila_tmplobj.title
+                                                           AND tx_templavoilaplus_tmplobj.pid=###STORAGE_PID### 
+                                                           AND tx_templavoilaplus_tmplobj.datastructure="EXT:mininews/template_datastructure.xml" 
+                                                           AND tx_templavoilaplus_tmplobj.parent=0 
+                                                           ORDER BY tx_templavoilaplus_tmplobj.title
                                                   </foreign_table_where>
                                                   <size>1</size>
                                                   <minitems>0</minitems>

@@ -1,5 +1,5 @@
 <?php
-namespace Extension\Templavoila\Module\Mod1;
+namespace Ppi\TemplaVoilaPlus\Module\Mod1;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -18,7 +18,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-use Extension\Templavoila\Utility\TemplaVoilaUtility;
+use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 /**
  * Submodule 'localization' for the templavoila page module
@@ -30,7 +30,7 @@ class Localization implements SingletonInterface
     /**
      * A pointer to the parent object, that is the templavoila page module script. Set by calling the method init() of this class.
      *
-     * @var \tx_templavoila_module1
+     * @var \tx_templavoilaplus_module1
      */
     public $pObj; //
 
@@ -38,7 +38,7 @@ class Localization implements SingletonInterface
      * Initializes the sub module object. The calling class must make sure that the right locallang files are already loaded.
      * This method is usually called by the templavoila page module.
      *
-     * @param \tx_templavoila_module1 $pObj Reference to the parent object ($this)
+     * @param \tx_templavoilaplus_module1 $pObj Reference to the parent object ($this)
      *
      * @return void
      * @access public
@@ -63,7 +63,7 @@ class Localization implements SingletonInterface
      * Renders the localization menu item. It contains the language selector, the create new translation button and other settings
      * related to localization.
      *
-     * @param \tx_templavoila_module1 $pObj Reference to the sidebar's parent object (the page module). Not used here, we use our own reference, $this->pObj.
+     * @param \tx_templavoilaplus_module1 $pObj Reference to the sidebar's parent object (the page module). Not used here, we use our own reference, $this->pObj.
      *
      * @return string HTML output
      * @access public
@@ -104,7 +104,7 @@ class Localization implements SingletonInterface
             if ($language['uid'] <= 0 || TemplaVoilaUtility::getBackendUser()->checkLanguageAccess($language['uid'])) {
                 $grayedOut = $language['PLO_hidden'] ? ' style="Filter: alpha(opacity=25); -moz-opacity: 0.25; opacity: 0.25"' : '';
 
-                $flag = \Extension\Templavoila\Utility\IconUtility::getFlagIconFileForLanguage($language['flagIcon']);
+                $flag = \Ppi\TemplaVoilaPlus\Utility\IconUtility::getFlagIconFileForLanguage($language['flagIcon']);
                 $style = isset($language['flagIcon']) ? 'background-image: url(' . $flag . '); background-size: 16px auto; background-position: left center; background-repeat: no-repeat; padding-left: 22px;' : '';
                 $optionsArr [] = '<option style="' . $style . '" value="' . $language['uid'] . '"' . ($this->pObj->MOD_SETTINGS['language'] == $language['uid'] ? ' selected="selected"' : '') . '>' . htmlspecialchars($language['title']) . '</option>';
 
@@ -115,7 +115,7 @@ class Localization implements SingletonInterface
                         $this->pObj->getLinkParameters(['editPageLanguageOverlay' => $language['uid']])
                     ) . '" style="margin-right:4px">' .
                     '<span ' . $grayedOut . '>' .
-                    \Extension\Templavoila\Utility\IconUtility::getFlagIconForLanguage($language['flagIcon'], array('title' => $language['title'], 'alt' => $language['title'])) .
+                    \Ppi\TemplaVoilaPlus\Utility\IconUtility::getFlagIconForLanguage($language['flagIcon'], array('title' => $language['title'], 'alt' => $language['title'])) .
                     '</span></a>';
             }
         }
@@ -224,7 +224,7 @@ class Localization implements SingletonInterface
         $optionsArr = array('<option value=""></option>');
         foreach ($newLanguagesArr as $language) {
             if (TemplaVoilaUtility::getBackendUser()->checkLanguageAccess($language['uid']) && !isset($translatedLanguagesArr[$language['uid']])) {
-                $flag = \Extension\Templavoila\Utility\IconUtility::getFlagIconFileForLanguage($language['flagIcon']);
+                $flag = \Ppi\TemplaVoilaPlus\Utility\IconUtility::getFlagIconFileForLanguage($language['flagIcon']);
                 $style = isset($language['flagIcon']) ? 'background-image: url(' . $flag . '); background-size: 16px auto; background-position: left center; background-repeat: no-repeat; padding-top: 0px; padding-left: 22px;' : '';
                 $optionsArr [] = '<option style="' . $style . '" name="createNewPageTranslation" value="' . $language['uid'] . '">' . htmlspecialchars($language['title']) . '</option>';
             }

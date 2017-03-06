@@ -19,7 +19,7 @@ namespace Extension\Templavoila;
 class ext_update
 {
     /**
-     * @var Extension\Templavoila\Controller\ExtensionManagerUpdateController
+     * @var Ppi\TemplaVoilaPlus\Controller\ExtensionManagerUpdateController
      */
     protected $controller;
     

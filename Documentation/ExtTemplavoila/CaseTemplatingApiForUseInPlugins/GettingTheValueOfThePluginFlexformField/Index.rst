@@ -1,4 +1,4 @@
-﻿
+
 
 .. ==================================================
 .. FOR YOUR INFORMATION
@@ -45,10 +45,10 @@ detects the record. Comments below
       4:     $this->pi_initPIflexForm();
       5:
       6:         // Looking for TemplaVoila TO record and if found, initialize template object:
-      7:     if (t3lib_extMgm::isLoaded('templavoila'))    {
+      7:     if (t3lib_extMgm::isLoaded('templavoilaplus'))    {
       8:         $field_templateObject = $this->pi_getFFvalue($this->cObj->data['pi_flexform'],'field_templateObject');
       9:         if ((int)$field_templateObject)    {
-     10:             $this->TMPLobj = t3lib_div::makeInstance(\Extension\Templavoila\Domain\Model\HtmlMarkup::class);
+     10:             $this->TMPLobj = t3lib_div::makeInstance(\Ppi\TemplaVoilaPlus\Domain\Model\HtmlMarkup::class);
      11:             $this->TA = $this->TMPLobj->getTemplateArrayForTO((int)$field_templateObject);
      12:             if (is_array($this->TA))    {
      13:                 $this->TMPLobj->setHeaderBodyParts($this->TMPLobj->tDat['MappingInfo_head'],$this->TMPLobj->tDat['MappingData_head_cached']);

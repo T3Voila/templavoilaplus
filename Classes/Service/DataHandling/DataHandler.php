@@ -1,5 +1,5 @@
 <?php
-namespace Extension\Templavoila\Service\DataHandling;
+namespace Ppi\TemplaVoilaPlus\Service\DataHandling;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -16,7 +16,7 @@ namespace Extension\Templavoila\Service\DataHandling;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-use Extension\Templavoila\Utility\TemplaVoilaUtility;
+use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 /**
  * Class being included by TCEmain using a hook
@@ -41,11 +41,11 @@ class DataHandler
     protected $extConf = array();
 
     /**
-     * @return \Extension\Templavoila\Service\DataHandling\DataHandler
+     * @return \Ppi\TemplaVoilaPlus\Service\DataHandling\DataHandler
      */
     public function __construct()
     {
-        $this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
+        $this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoilaplus']);
     }
 
     /********************************************
@@ -69,10 +69,10 @@ class DataHandler
     public function processDatamap_preProcessFieldArray(array &$incomingFieldArray, $table, $id, \TYPO3\CMS\Core\DataHandling\DataHandler &$reference)
     {
         if ($this->debug) {
-            GeneralUtility::devLog('processDatamap_preProcessFieldArray', 'templavoila', 0, array($incomingFieldArray, $table, $id));
+            GeneralUtility::devLog('processDatamap_preProcessFieldArray', 'templavoilaplus', 0, array($incomingFieldArray, $table, $id));
         }
 
-        if ($GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_api']['apiIsRunningTCEmain']) {
+        if ($GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_api']['apiIsRunningTCEmain']) {
             return;
         }
 
@@ -82,7 +82,7 @@ class DataHandler
         }
 
         if ($table == 'tt_content') {
-            $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_tcemain']['preProcessFieldArrays'][$id] = $incomingFieldArray;
+            $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_tcemain']['preProcessFieldArrays'][$id] = $incomingFieldArray;
         }
     }
 
@@ -103,15 +103,15 @@ class DataHandler
     public function processDatamap_postProcessFieldArray($status, $table, $id, &$fieldArray, &$reference)
     {
         if ($this->debug) {
-            GeneralUtility::devLog('processDatamap_postProcessFieldArray', 'templavoila', 0, array($status, $table, $id, $fieldArray));
+            GeneralUtility::devLog('processDatamap_postProcessFieldArray', 'templavoilaplus', 0, array($status, $table, $id, $fieldArray));
         }
 
         // If the references for content element changed at the current page, save that information into the reference table:
-        if ($status == 'update' && $table == 'pages' && isset($fieldArray['tx_templavoila_flex'])) {
-            $this->correctSortingAndColposFieldsForPage($fieldArray['tx_templavoila_flex'], $id);
+        if ($status == 'update' && $table == 'pages' && isset($fieldArray['tx_templavoilaplus_flex'])) {
+            $this->correctSortingAndColposFieldsForPage($fieldArray['tx_templavoilaplus_flex'], $id);
 
             // If a new data structure has been selected, set a valid template object automatically:
-            if ((int)$fieldArray['tx_templavoila_ds'] || (int)$fieldArray['tx_templavoila_next_ds']) {
+            if ((int)$fieldArray['tx_templavoilaplus_ds'] || (int)$fieldArray['tx_templavoilaplus_next_ds']) {
                 // Determine the page uid which ds_getAvailablePageTORecords() can use for finding the storage folder:
                 $pid = null;
                 if ($status == 'update') {
@@ -121,26 +121,26 @@ class DataHandler
                 }
 
                 if (!is_null($pid)) {
-                    $templaVoilaAPI = GeneralUtility::makeInstance(\Extension\Templavoila\Service\ApiService::class);
+                    $templaVoilaAPI = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Service\ApiService::class);
                     $templateObjectRecords = $templaVoilaAPI->ds_getAvailablePageTORecords($pid);
 
                     $matchingTOUid = 0;
                     $matchingNextTOUid = 0;
                     if (is_array($templateObjectRecords)) {
                         foreach ($templateObjectRecords as $templateObjectRecord) {
-                            if (!isset($matchingTOUid) && $templateObjectRecord['datastructure'] == $fieldArray['tx_templavoila_ds']) {
+                            if (!isset($matchingTOUid) && $templateObjectRecord['datastructure'] == $fieldArray['tx_templavoilaplus_ds']) {
                                 $matchingTOUid = $templateObjectRecord['uid'];
                             }
-                            if (!isset($matchingNextTOUid) && $templateObjectRecord['datastructure'] == $fieldArray['tx_templavoila_next_ds']) {
+                            if (!isset($matchingNextTOUid) && $templateObjectRecord['datastructure'] == $fieldArray['tx_templavoilaplus_next_ds']) {
                                 $matchingNextTOUid = $templateObjectRecord['uid'];
                             }
                         }
                         // Finally set the Template Objects if one was found:
-                        if ((int)$fieldArray['tx_templavoila_ds'] && ($fieldArray['tx_templavoila_to'] == 0)) {
-                            $fieldArray['tx_templavoila_to'] = $matchingTOUid;
+                        if ((int)$fieldArray['tx_templavoilaplus_ds'] && ($fieldArray['tx_templavoilaplus_to'] == 0)) {
+                            $fieldArray['tx_templavoilaplus_to'] = $matchingTOUid;
                         }
-                        if ((int)$fieldArray['tx_templavoila_next_ds'] && ($fieldArray['tx_templavoila_next_to'] == 0)) {
-                            $fieldArray['tx_templavoila_next_to'] = $matchingNextTOUid;
+                        if ((int)$fieldArray['tx_templavoilaplus_next_ds'] && ($fieldArray['tx_templavoilaplus_next_to'] == 0)) {
+                            $fieldArray['tx_templavoilaplus_next_to'] = $matchingNextTOUid;
                         }
                     }
                 }
@@ -160,7 +160,7 @@ class DataHandler
                     'row' => $row,
                 );
                 $ref = null;
-                if (!GeneralUtility::callUserFunction('EXT:templavoila/Classes/Service/UserFunc/Access.php:&Extension\Templavoila\Service\UserFunc\Access->recordEditAccessInternals', $params, $ref)) {
+                if (!GeneralUtility::callUserFunction('EXT:templavoilaplus/Classes/Service/UserFunc/Access.php:&Ppi\TemplaVoilaPlus\Service\UserFunc\Access->recordEditAccessInternals', $params, $ref)) {
                     $reference->newlog(sprintf($this->getLanguageService()->getLL($status != 'new' ? 'access_noModifyAccess' : 'access_noCrateAccess'), $table, $id), 1);
                     $fieldArray = null;
                 }
@@ -171,7 +171,7 @@ class DataHandler
                     $fieldArray['config'] = '
 page = PAGE
 page.10 = USER
-page.10.userFunc = tx_templavoila_pi1->main_page
+page.10.userFunc = tx_templavoilaplus_pi1->main_page
 page.10.disableExplosivePreview = 1
 				';
                 }
@@ -195,26 +195,26 @@ page.10.disableExplosivePreview = 1
     {
 
         if ($this->debug) {
-            GeneralUtility::devLog('processDatamap_afterDatabaseOperations ', 'templavoila', 0, array($status, $table, $id, $fieldArray));
+            GeneralUtility::devLog('processDatamap_afterDatabaseOperations ', 'templavoilaplus', 0, array($status, $table, $id, $fieldArray));
         }
-        if ($GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_api']['apiIsRunningTCEmain']) {
+        if ($GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_api']['apiIsRunningTCEmain']) {
             return;
         }
         if ($table != 'tt_content') {
             return;
         }
 
-        $templaVoilaAPI = GeneralUtility::makeInstance(\Extension\Templavoila\Service\ApiService::class);
+        $templaVoilaAPI = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Service\ApiService::class);
 
         switch ($status) {
             case 'new':
-                if (!isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_tcemain']['doNotInsertElementRefsToPage'])) {
+                if (!isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_tcemain']['doNotInsertElementRefsToPage'])) {
                     $destinationFlexformPointer = false;
 
                     BackendUtility::fixVersioningPid($table, $fieldArray);
 
-                    if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_tcemain']['preProcessFieldArrays'][$id])) {
-                        $positionReferenceUid = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_tcemain']['preProcessFieldArrays'][$id]['pid'];
+                    if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_tcemain']['preProcessFieldArrays'][$id])) {
+                        $positionReferenceUid = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_tcemain']['preProcessFieldArrays'][$id]['pid'];
                         if ($positionReferenceUid < 0) {
                             $neighbourFlexformPointersArr = $templaVoilaAPI->flexform_getPointersByRecord(abs($positionReferenceUid), $fieldArray['pid']);
                             $neighbourFlexformPointer = $neighbourFlexformPointersArr[0];
@@ -242,8 +242,8 @@ page.10.disableExplosivePreview = 1
                             );
 
                             if ($sorting < 0) {
-                                $parentRecord = BackendUtility::getRecordWSOL($destinationFlexformPointer['table'], $destinationFlexformPointer['uid'], 'uid,pid,tx_templavoila_flex');
-                                $currentReferencesArr = $templaVoilaAPI->flexform_getElementReferencesFromXML($parentRecord['tx_templavoila_flex'], $destinationFlexformPointer);
+                                $parentRecord = BackendUtility::getRecordWSOL($destinationFlexformPointer['table'], $destinationFlexformPointer['uid'], 'uid,pid,tx_templavoilaplus_flex');
+                                $currentReferencesArr = $templaVoilaAPI->flexform_getElementReferencesFromXML($parentRecord['tx_templavoilaplus_flex'], $destinationFlexformPointer);
                                 if (count($currentReferencesArr)) {
                                     $rows = TemplaVoilaUtility::getDatabaseConnection()->exec_SELECTgetRows('uid,' . $sorting_field, $table, 'uid IN (' . implode(',', $currentReferencesArr) . ')' . BackendUtility::deleteClause($table));
                                     $sort = array($reference->substNEWwithIDs[$id] => -$sorting);
@@ -276,7 +276,7 @@ page.10.disableExplosivePreview = 1
             }
         }
 
-        unset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_tcemain']['preProcessFieldArrays']);
+        unset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_tcemain']['preProcessFieldArrays']);
     }
 
     /**
@@ -295,22 +295,22 @@ page.10.disableExplosivePreview = 1
     {
 
         if ($this->debug) {
-            GeneralUtility::devLog('processCmdmap_preProcess', 'templavoila', 0, array($command, $table, $id, $value));
+            GeneralUtility::devLog('processCmdmap_preProcess', 'templavoilaplus', 0, array($command, $table, $id, $value));
         }
-        if ($GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_api']['apiIsRunningTCEmain']) {
+        if ($GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_api']['apiIsRunningTCEmain']) {
             return;
         }
-        if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_tcemain']['doNotInsertElementRefsToPage'])) {
-            $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_tcemain']['doNotInsertElementRefsToPage']++;
+        if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_tcemain']['doNotInsertElementRefsToPage'])) {
+            $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_tcemain']['doNotInsertElementRefsToPage']++;
         } else {
-            $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_tcemain']['doNotInsertElementRefsToPage'] = 1;
+            $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_tcemain']['doNotInsertElementRefsToPage'] = 1;
         }
 
         if ($table != 'tt_content') {
             return;
         }
 
-        $templaVoilaAPI = GeneralUtility::makeInstance(\Extension\Templavoila\Service\ApiService::class);
+        $templaVoilaAPI = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Service\ApiService::class);
 
         switch ($command) {
             case 'delete':
@@ -321,7 +321,7 @@ page.10.disableExplosivePreview = 1
                     'row' => $record,
                 );
                 $ref = null;
-                if (!GeneralUtility::callUserFunction('EXT:templavoila/Classes/Service/UserFunc/Access.php:&Extension\Templavoila\Service\UserFunc\Access->recordEditAccessInternals', $params, $ref)) {
+                if (!GeneralUtility::callUserFunction('EXT:templavoilaplus/Classes/Service/UserFunc/Access.php:&Ppi\TemplaVoilaPlus\Service\UserFunc\Access->recordEditAccessInternals', $params, $ref)) {
                     $reference->newlog(sprintf($this->getLanguageService()->getLL('access_noModifyAccess'), $table, $id), 1);
                     $command = ''; // Do not delete! A hack but there is no other way to prevent deletion...
                 } else {
@@ -340,11 +340,11 @@ page.10.disableExplosivePreview = 1
                 }
                 break;
             case 'copy':
-                unset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_tcemain']['doNotInsertElementRefsToPage']);
+                unset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_tcemain']['doNotInsertElementRefsToPage']);
                 break;
         }
-        if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_tcemain']['doNotInsertElementRefsToPage'])) {
-            $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_tcemain']['doNotInsertElementRefsToPage']--;
+        if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_tcemain']['doNotInsertElementRefsToPage'])) {
+            $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_tcemain']['doNotInsertElementRefsToPage']--;
         }
     }
 
@@ -363,13 +363,13 @@ page.10.disableExplosivePreview = 1
     {
 
         if ($this->debug) {
-            GeneralUtility::devLog('processCmdmap_postProcess', 'templavoila', 0, array($command, $table, $id, $value));
+            GeneralUtility::devLog('processCmdmap_postProcess', 'templavoilaplus', 0, array($command, $table, $id, $value));
         }
 
-        if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_tcemain']['doNotInsertElementRefsToPage'])) {
-            $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_tcemain']['doNotInsertElementRefsToPage']--;
-            if ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_tcemain']['doNotInsertElementRefsToPage'] == 0) {
-                unset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_tcemain']['doNotInsertElementRefsToPage']);
+        if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_tcemain']['doNotInsertElementRefsToPage'])) {
+            $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_tcemain']['doNotInsertElementRefsToPage']--;
+            if ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_tcemain']['doNotInsertElementRefsToPage'] == 0) {
+                unset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_tcemain']['doNotInsertElementRefsToPage']);
             }
         }
     }
@@ -390,16 +390,16 @@ page.10.disableExplosivePreview = 1
     public function moveRecord_firstElementPostProcess($table, $uid, $destPid, $sourceRecordBeforeMove, $updateFields, &$reference)
     {
         if ($this->debug) {
-            GeneralUtility::devLog('moveRecord_firstElementPostProcess', 'templavoila', 0, array($table, $uid, $destPid, $sourceRecordBeforeMove, $updateFields));
+            GeneralUtility::devLog('moveRecord_firstElementPostProcess', 'templavoilaplus', 0, array($table, $uid, $destPid, $sourceRecordBeforeMove, $updateFields));
         }
-        if ($GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_api']['apiIsRunningTCEmain']) {
+        if ($GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_api']['apiIsRunningTCEmain']) {
             return;
         }
         if ($table != 'tt_content') {
             return;
         }
 
-        $templaVoilaAPI = GeneralUtility::makeInstance(\Extension\Templavoila\Service\ApiService::class);
+        $templaVoilaAPI = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Service\ApiService::class);
 
         $sourceFlexformPointersArr = $templaVoilaAPI->flexform_getPointersByRecord($uid, $sourceRecordBeforeMove['pid']);
         $sourceFlexformPointer = $sourceFlexformPointersArr[0];
@@ -437,16 +437,16 @@ page.10.disableExplosivePreview = 1
     {
 
         if ($this->debug) {
-            GeneralUtility::devLog('moveRecord_afterAnotherElementPostProcess', 'templavoila', 0, array($table, $uid, $destPid, $origDestPid, $sourceRecordBeforeMove, $updateFields));
+            GeneralUtility::devLog('moveRecord_afterAnotherElementPostProcess', 'templavoilaplus', 0, array($table, $uid, $destPid, $origDestPid, $sourceRecordBeforeMove, $updateFields));
         }
-        if ($GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoila_api']['apiIsRunningTCEmain']) {
+        if ($GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_api']['apiIsRunningTCEmain']) {
             return;
         }
         if ($table != 'tt_content') {
             return;
         }
 
-        $templaVoilaAPI = GeneralUtility::makeInstance(\Extension\Templavoila\Service\ApiService::class);
+        $templaVoilaAPI = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Service\ApiService::class);
 
         $sourceFlexformPointersArr = $templaVoilaAPI->flexform_getPointersByRecord($uid, $sourceRecordBeforeMove['pid']);
         $sourceFlexformPointer = $sourceFlexformPointersArr[0];
@@ -479,8 +479,8 @@ page.10.disableExplosivePreview = 1
         global $TCA;
 
         $elementsOnThisPage = array();
-        $templaVoilaAPI = GeneralUtility::makeInstance(\Extension\Templavoila\Service\ApiService::class);
-        /* @var $templaVoilaAPI \Extension\Templavoila\Service\ApiService */
+        $templaVoilaAPI = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Service\ApiService::class);
+        /* @var $templaVoilaAPI \Ppi\TemplaVoilaPlus\Service\ApiService */
 
         $diffBaseEnabled = isset($GLOBALS['TYPO3_CONF_VARS']['BE']['flexFormXMLincludeDiffBase'])
             && ($GLOBALS['TYPO3_CONF_VARS']['BE']['flexFormXMLincludeDiffBase'] != false);
@@ -560,12 +560,12 @@ page.10.disableExplosivePreview = 1
     protected function updateDataSourceFromTemplateObject($table, array &$incomingFieldArray, \TYPO3\CMS\Core\Authentication\BackendUserAuthentication &$beUser)
     {
         if (($table == 'pages' || $table == 'tt_content') &&
-            isset($incomingFieldArray['tx_templavoila_to'])
+            isset($incomingFieldArray['tx_templavoilaplus_to'])
         ) {
-            $this->updateDataSourceFieldFromTemplateObjectField($incomingFieldArray, 'tx_templavoila_ds', 'tx_templavoila_to', $beUser);
+            $this->updateDataSourceFieldFromTemplateObjectField($incomingFieldArray, 'tx_templavoilaplus_ds', 'tx_templavoilaplus_to', $beUser);
         }
-        if ($table == 'pages' && isset($incomingFieldArray['tx_templavoila_next_to'])) {
-            $this->updateDataSourceFieldFromTemplateObjectField($incomingFieldArray, 'tx_templavoila_next_ds', 'tx_templavoila_next_to', $beUser);
+        if ($table == 'pages' && isset($incomingFieldArray['tx_templavoilaplus_next_to'])) {
+            $this->updateDataSourceFieldFromTemplateObjectField($incomingFieldArray, 'tx_templavoilaplus_next_ds', 'tx_templavoilaplus_next_to', $beUser);
         }
     }
 
@@ -587,12 +587,12 @@ page.10.disableExplosivePreview = 1
             $incomingFieldArray[$dsField] = '';
         } else {
             if ($beUser->workspace) {
-                $record = BackendUtility::getWorkspaceVersionOfRecord($beUser->workspace, 'tx_templavoila_tmplobj', $toId, 'datastructure');
+                $record = BackendUtility::getWorkspaceVersionOfRecord($beUser->workspace, 'tx_templavoilaplus_tmplobj', $toId, 'datastructure');
                 if (!is_array($record)) {
-                    $record = BackendUtility::getRecord('tx_templavoila_tmplobj', $toId, 'datastructure');
+                    $record = BackendUtility::getRecord('tx_templavoilaplus_tmplobj', $toId, 'datastructure');
                 }
             } else {
-                $record = BackendUtility::getRecord('tx_templavoila_tmplobj', $toId, 'datastructure');
+                $record = BackendUtility::getRecord('tx_templavoilaplus_tmplobj', $toId, 'datastructure');
             }
             if (is_array($record) && isset($record['datastructure'])) {
                 $incomingFieldArray[$dsField] = $record['datastructure'];

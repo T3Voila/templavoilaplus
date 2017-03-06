@@ -92,7 +92,7 @@ function sortable_unlinkRecordCallBack(obj)
 
 function sortable_unlinkRecord(pointer, id, elementPointer) {
     new TYPO3.jQuery.ajax({
-        url: TYPO3.settings.ajaxUrls['Extension\\Templavoila\\Module\\Mod1\\Ajax::unlinkRecord'],
+        url: TYPO3.settings.ajaxUrls['Ppi\\TemplaVoilaPlus\Module\\Mod1\\Ajax::unlinkRecord'],
         type: 'post',
         cache: false,
         data: {
@@ -110,17 +110,17 @@ function sortable_unlinkRecord(pointer, id, elementPointer) {
 }
 
 function sortable_unlinkRecordSidebarCallBack(pointer) {
-    var childNodes = $('tx_templavoila_mod1_sidebar-bar').childElements();
+    var childNodes = $('tx_templavoilaplus_mod1_sidebar-bar').childElements();
     var innerHeight = 0;
     for (var i = 0; i < childNodes.length; i++) {
         innerHeight += childNodes[i].getHeight();
     }
-    $('tx_templavoila_mod1_sidebar-bar').morph(
+    $('tx_templavoilaplus_mod1_sidebar-bar').morph(
         { height: innerHeight + 'px'},
         {
             duration: 0.1,
             afterFinish: function() {
-                $('tx_templavoila_mod1_sidebar-bar').setStyle({height: 'auto'});
+                $('tx_templavoilaplus_mod1_sidebar-bar').setStyle({height: 'auto'});
                 if (pointer && $(pointer)) {
                     $(pointer).highlight();
                 }
@@ -170,7 +170,7 @@ function sortable_update(list, element, sortOrder)
     if (destinationIndex != -1 && sortableSource != null) {
         var destination = sortable_containers['#' + list.id] + destinationIndex;
         new TYPO3.jQuery.ajax({
-            url: TYPO3.settings.ajaxUrls['Extension\\Templavoila\\Module\\Mod1\\Ajax::moveRecord'],
+            url: TYPO3.settings.ajaxUrls['Ppi\\TemplaVoilaPlus\Module\\Mod1\\Ajax::moveRecord'],
             type: 'post',
             cache: false,
             data: {

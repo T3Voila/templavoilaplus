@@ -1,5 +1,5 @@
 <?php
-namespace Extension\Templavoila\Controller;
+namespace Ppi\TemplaVoilaPlus\Controller;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -35,7 +35,7 @@ class ReferenceElementWizardController extends \TYPO3\CMS\Backend\Module\Abstrac
     protected $allAvailableLanguages = array();
 
     /**
-     * @var \Extension\Templavoila\Service\ApiService
+     * @var \Ppi\TemplaVoilaPlus\Service\ApiService
      */
     protected $templavoilaAPIObj;
 
@@ -67,7 +67,7 @@ class ReferenceElementWizardController extends \TYPO3\CMS\Backend\Module\Abstrac
         $this->modSharedTSconfig = BackendUtility::getModTSconfig($this->pObj->id, 'mod.SHARED');
         $this->allAvailableLanguages = $this->getAvailableLanguages(0, true, true, true);
 
-        $this->templavoilaAPIObj = GeneralUtility::makeInstance(\Extension\Templavoila\Service\ApiService::class);
+        $this->templavoilaAPIObj = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Service\ApiService::class);
 
         // Showing the tree:
         // Initialize starting point of page tree:
@@ -196,10 +196,10 @@ class ReferenceElementWizardController extends \TYPO3\CMS\Backend\Module\Abstrac
             if ($langField && $elementRecord[$langField]) {
                 $pageRec = BackendUtility::getRecordWSOL('pages', $pageUid);
                 $xml = BackendUtility::getFlexFormDS(
-                    $GLOBALS['TCA']['pages']['columns']['tx_templavoila_flex']['config'],
+                    $GLOBALS['TCA']['pages']['columns']['tx_templavoilaplus_flex']['config'],
                     $pageRec,
                     'pages',
-                    'tx_templavoila_ds'
+                    'tx_templavoilaplus_ds'
                 );
                 $langChildren = (int)$xml['meta']['langChildren'];
                 $langDisable = (int)$xml['meta']['langDisable'];

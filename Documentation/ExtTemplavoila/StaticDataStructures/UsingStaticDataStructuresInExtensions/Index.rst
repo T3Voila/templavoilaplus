@@ -1,4 +1,4 @@
-﻿
+
 
 .. ==================================================
 .. FOR YOUR INFORMATION
@@ -22,7 +22,7 @@ If you want to add your own Static Data Structures inside an extension
 they can simply be added to a global array (within your
 ext\_localconf.php):
 
-$GLOBALS['TYPO3\_CONF\_VARS']['EXTCONF']['templavoila']['staticDataStr
+$GLOBALS['TYPO3\_CONF\_VARS']['EXTCONF']['templavoilaplus']['staticDataStr
 uctures'][] =array(
 
 'title'=>'My DS',

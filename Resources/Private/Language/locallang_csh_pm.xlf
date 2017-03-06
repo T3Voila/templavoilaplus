@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2014-07-13T20:54:53Z" product-name="templavoila">
+	<file source-language="en" datatype="plaintext" original="messages" date="2014-07-13T20:54:53Z" product-name="templavoilaplus">
 		<header/>
 		<body>
 			<trans-unit id="pagemodule.alttitle" xml:space="preserve">
-				<source>Page Module (TemplaVoilà)</source>
+				<source>Page Module (TemplaVoilà Plus)</source>
 			</trans-unit>
 			<trans-unit id="pagemodule.description" xml:space="preserve">
-				<source>The TemplaVoilà Page Module lets you easily edit content of your web page. You see the content fitted according to the layout of how it is displayed in the frontend.</source>
+				<source>The TemplaVoilà Plus Page Module lets you easily edit content of your web page. You see the content fitted according to the layout of how it is displayed in the frontend.</source>
 			</trans-unit>
 			<trans-unit id="pagemodule_notUsed.description" xml:space="preserve">
 				<source>Lists all elements that are added but not visually linked (and therefore not displayed) to this page. Usually these elements were unlinked (using the trash icon below) but are not completely deleted yet. Once you are sure</source>

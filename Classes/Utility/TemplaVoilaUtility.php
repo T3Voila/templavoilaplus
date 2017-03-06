@@ -1,5 +1,5 @@
 <?php
-namespace Extension\Templavoila\Utility;
+namespace Ppi\TemplaVoilaPlus\Utility;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -53,7 +53,7 @@ final class TemplaVoilaUtility
     {
         $denyItems = array();
         foreach (static::getBackendUser()->userGroups as $group) {
-            $groupDenyItems = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $group['tx_templavoila_access'], true);
+            $groupDenyItems = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $group['tx_templavoilaplus_access'], true);
             $denyItems = array_merge($denyItems, $groupDenyItems);
         }
 

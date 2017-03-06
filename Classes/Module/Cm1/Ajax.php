@@ -1,5 +1,5 @@
 <?php
-namespace Extension\Templavoila\Module\Cm1;
+namespace Ppi\TemplaVoilaPlus\Module\Cm1;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -16,7 +16,7 @@ namespace Extension\Templavoila\Module\Cm1;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-use Extension\Templavoila\Utility\TemplaVoilaUtility;
+use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 /**
  * Ajax class for displaying content form a file

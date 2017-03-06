@@ -1,5 +1,5 @@
 <?php
-namespace Extension\Templavoila\Module\Mod1;
+namespace Ppi\TemplaVoilaPlus\Module\Mod1;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -17,14 +17,14 @@ namespace Extension\Templavoila\Module\Mod1;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Class 'Ajax' for module 1 of the 'templavoila' extension.
+ * Class 'Ajax' for module 1 of the 'templavoilaplus' extension.
  *
  * @author Nikolas Hagelstein <lists@shr-now.de>
  */
 class Ajax
 {
     /**
-     * @var \Extension\Templavoila\Service\ApiService
+     * @var \Ppi\TemplaVoilaPlus\Service\ApiService
      */
     private $apiObj;
 
@@ -33,7 +33,7 @@ class Ajax
      */
     public function __construct()
     {
-        $this->apiObj = GeneralUtility::makeInstance(\Extension\Templavoila\Service\ApiService::class);
+        $this->apiObj = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Service\ApiService::class);
     }
 
     /**

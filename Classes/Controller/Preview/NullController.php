@@ -1,5 +1,5 @@
 <?php
-namespace Extension\Templavoila\Controller\Preview;
+namespace Ppi\TemplaVoilaPlus\Controller\Preview;
 
 /*
  * This file is part of the TYPO3 CMS project.

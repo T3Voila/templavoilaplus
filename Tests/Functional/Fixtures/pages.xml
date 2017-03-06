@@ -9,8 +9,8 @@
 		<title>*** t3unit templavoila testcase page ***</title>
 		<doktype>1</doktype>
 		<storage_pid>3</storage_pid>
-		<tx_templavoila_ds>1</tx_templavoila_ds>
-		<tx_templavoila_to>1</tx_templavoila_to>
+		<tx_templavoilaplus_ds>1</tx_templavoilaplus_ds>
+		<tx_templavoilaplus_to>1</tx_templavoilaplus_to>
 	</pages>
 	<pages>
 		<uid>2</uid>
@@ -21,8 +21,8 @@
 		<title>*** t3unit templavoila testcase page ***</title>
 		<doktype>1</doktype>
 		<storage_pid>3</storage_pid>
-		<tx_templavoila_ds>2</tx_templavoila_ds>
-		<tx_templavoila_to>2</tx_templavoila_to>
+		<tx_templavoilaplus_ds>2</tx_templavoilaplus_ds>
+		<tx_templavoilaplus_to>2</tx_templavoilaplus_to>
 	</pages>
 	<pages>
 		<uid>3</uid>

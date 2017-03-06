@@ -1,5 +1,5 @@
 <?php
-namespace Extension\Templavoila\Controller;
+namespace Ppi\TemplaVoilaPlus\Controller;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -22,14 +22,14 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-use Extension\Templavoila\Utility\TemplaVoilaUtility;
+use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 $GLOBALS['LANG']->includeLLFile(
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('templavoila') . 'Resources/Private/Language/BackendControlCenter.xlf'
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('templavoilaplus') . 'Resources/Private/Language/BackendControlCenter.xlf'
 );
 
 /**
- * Module 'TemplaVoila' for the 'templavoila' extension.
+ * Module 'TemplaVoila' for the 'templavoilaplus' extension.
  *
  * @author Kasper Skaarhoj <kasper@typo3.com>
  */
@@ -62,7 +62,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
      *
      * @var string
      */
-    public $extKey = 'templavoila';
+    public $extKey = 'templavoilaplus';
 
     /**
      * The name of the module
@@ -99,7 +99,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
         $this->iconFactory = $this->moduleTemplate->getIconFactory();
         $this->buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
 
-        $this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
+        $this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoilaplus']);
     }
 
     /**
@@ -300,8 +300,8 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
     {
         return $this->getDatabaseConnection()->exec_SELECTcountRows(
             'uid',
-            'tx_templavoila_datastructure',
-            'pid=' . (int)$this->id . BackendUtility::deleteClause('tx_templavoila_datastructure')
+            'tx_templavoilaplus_datastructure',
+            'pid=' . (int)$this->id . BackendUtility::deleteClause('tx_templavoilaplus_datastructure')
         );
     }
 
@@ -315,8 +315,8 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
     {
         return $this->getDatabaseConnection()->exec_SELECTcountRows(
             'uid',
-            'tx_templavoila_tmplobj',
-            'pid=' . (int)$this->id . BackendUtility::deleteClause('tx_templavoila_tmplobj')
+            'tx_templavoilaplus_tmplobj',
+            'pid=' . (int)$this->id . BackendUtility::deleteClause('tx_templavoilaplus_tmplobj')
         );
     }
 
@@ -327,8 +327,8 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
      */
     public function renderModuleContent_searchForTODS()
     {
-        $dsRepo = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\DataStructureRepository::class);
-        $toRepo = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\TemplateRepository::class);
+        $dsRepo = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Domain\Repository\DataStructureRepository::class);
+        $toRepo = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Domain\Repository\TemplateRepository::class);
         $list = $toRepo->getTemplateStoragePids();
 
         // Traverse the pages found and list in a table:
@@ -379,9 +379,9 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
         // Traverse scopes of data structures display template records belonging to them:
         // Each scope is places in its own tab in the tab menu:
         $dsScopes = array(
-            \Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_PAGE,
-            \Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_FCE,
-            \Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_UNKNOWN
+            \Ppi\TemplaVoilaPlus\Domain\Model\AbstractDataStructure::SCOPE_PAGE,
+            \Ppi\TemplaVoilaPlus\Domain\Model\AbstractDataStructure::SCOPE_FCE,
+            \Ppi\TemplaVoilaPlus\Domain\Model\AbstractDataStructure::SCOPE_UNKNOWN
         );
 
         $toIdArray = $parts = array();
@@ -394,15 +394,15 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
 
                 // Label for the tab:
                 switch ((string) $scopePointer) {
-                    case \Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_PAGE:
+                    case \Ppi\TemplaVoilaPlus\Domain\Model\AbstractDataStructure::SCOPE_PAGE:
                         $label = TemplaVoilaUtility::getLanguageService()->getLL('pagetemplates');
                         $scopeIcon = $this->iconFactory->getIconForRecord('pages', array(), Icon::SIZE_SMALL);
                         break;
-                    case \Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_FCE:
+                    case \Ppi\TemplaVoilaPlus\Domain\Model\AbstractDataStructure::SCOPE_FCE:
                         $label = TemplaVoilaUtility::getLanguageService()->getLL('fces');
                         $scopeIcon = $this->iconFactory->getIconForRecord('tt_content', array(), Icon::SIZE_SMALL);
                         break;
-                    case \Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_UNKNOWN:
+                    case \Ppi\TemplaVoilaPlus\Domain\Model\AbstractDataStructure::SCOPE_UNKNOWN:
                         $label = TemplaVoilaUtility::getLanguageService()->getLL('other');
                         $scopeIcon = $this->iconFactory->getIconForRecord('', array(), Icon::SIZE_SMALL);
                         break;
@@ -429,10 +429,10 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
         $lostTOs = '';
         $lostTOCount = 0;
 
-        $toRepo = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\TemplateRepository::class);
+        $toRepo = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Domain\Repository\TemplateRepository::class);
         $toList = $toRepo->getAll($this->id);
         foreach ($toList as $toObj) {
-            /** @var \Extension\Templavoila\Domain\Model\Template $toObj */
+            /** @var \Ppi\TemplaVoilaPlus\Domain\Model\Template $toObj */
             if (!in_array($toObj->getKey(), $toIdArray)) {
                 $rTODres = $this->renderTODisplay($toObj, -1, 1);
                 $lostTOs .= $rTODres['HTML'];
@@ -476,10 +476,10 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
     public function renderDSlisting($scope)
     {
         $currentPid = (int)GeneralUtility::_GP('id');
-        /** @var \Extension\Templavoila\Domain\Repository\DataStructureRepository $dsRepo */
-        $dsRepo = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\DataStructureRepository::class);
-        /** @var \Extension\Templavoila\Domain\Repository\TemplateRepository $toRepo */
-        $toRepo = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\TemplateRepository::class);
+        /** @var \Ppi\TemplaVoilaPlus\Domain\Repository\DataStructureRepository $dsRepo */
+        $dsRepo = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Domain\Repository\DataStructureRepository::class);
+        /** @var \Ppi\TemplaVoilaPlus\Domain\Repository\TemplateRepository $toRepo */
+        $toRepo = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Domain\Repository\TemplateRepository::class);
 
         $dsList = $dsRepo->getDatastructuresByStoragePidAndScope($currentPid, $scope);
 
@@ -492,7 +492,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
         // Traverse data structures to list:
         if (count($dsList)) {
             foreach ($dsList as $dsObj) {
-                /** @var \Extension\Templavoila\Domain\Model\AbstractDataStructure $dsObj */
+                /** @var \Ppi\TemplaVoilaPlus\Domain\Model\AbstractDataStructure $dsObj */
 
                 // Traverse template objects which are not children of anything:
                 $TOcontent = '';
@@ -505,7 +505,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
                 $newTitle = $dsObj->getLabel() . ' [TEMPLATE]';
                 if (count($toList)) {
                     foreach ($toList as $toObj) {
-                        /** @var \Extension\Templavoila\Domain\Model\Template $toObj */
+                        /** @var \Ppi\TemplaVoilaPlus\Domain\Model\Template $toObj */
                         $toIdArray[] = $toObj->getKey();
                         if ($toObj->hasParentTemplate()) {
                             continue;
@@ -533,10 +533,10 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
                 $TOcontent .= '<a href="#" class="btn btn-default" onclick="'
                     . htmlspecialchars(
                         BackendUtility::editOnClick(
-                            '&edit[tx_templavoila_tmplobj][' . $newPid . ']=new'
-                            . '&defVals[tx_templavoila_tmplobj][datastructure]=' . rawurlencode($dsObj->getKey())
-                            . '&defVals[tx_templavoila_tmplobj][title]=' . rawurlencode($newTitle)
-                            . '&defVals[tx_templavoila_tmplobj][fileref]=' . rawurlencode($newFileRef)
+                            '&edit[tx_templavoilaplus_tmplobj][' . $newPid . ']=new'
+                            . '&defVals[tx_templavoilaplus_tmplobj][datastructure]=' . rawurlencode($dsObj->getKey())
+                            . '&defVals[tx_templavoilaplus_tmplobj][title]=' . rawurlencode($newTitle)
+                            . '&defVals[tx_templavoilaplus_tmplobj][fileref]=' . rawurlencode($newFileRef)
                         )
                     )
                     . '">' . $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render() . ' '
@@ -587,13 +587,13 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
     /**
      * Rendering a single data structures information
      *
-     * @param \Extension\Templavoila\Domain\Model\AbstractDataStructure $dsObj Structure information
+     * @param \Ppi\TemplaVoilaPlus\Domain\Model\AbstractDataStructure $dsObj Structure information
      * @param integer $scope Scope.
      * @param array $toIdArray
      *
      * @return string HTML content
      */
-    public function renderDataStructureDisplay(\Extension\Templavoila\Domain\Model\AbstractDataStructure $dsObj, $scope, $toIdArray)
+    public function renderDataStructureDisplay(\Ppi\TemplaVoilaPlus\Domain\Model\AbstractDataStructure $dsObj, $scope, $toIdArray)
     {
         $XMLinfo = $this->DSdetails($dsObj->getDataprotXML());
 
@@ -615,8 +615,8 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
             }
             $dsIcon = '<a href="' . htmlspecialchars($editUrl) . '">' . $this->iconFactory->getIconForFileExtension('xml', Icon::SIZE_SMALL, $overlay)->render() . '</a>';
         } else {
-            $dsIcon = $this->iconFactory->getIconForRecord('tx_templavoila_datastructure', [], Icon::SIZE_SMALL)->render();
-            $dsIcon = BackendUtility::wrapClickMenuOnIcon($dsIcon, 'tx_templavoila_datastructure', $dsObj->getKey(), true);
+            $dsIcon = $this->iconFactory->getIconForRecord('tx_templavoilaplus_datastructure', [], Icon::SIZE_SMALL)->render();
+            $dsIcon = BackendUtility::wrapClickMenuOnIcon($dsIcon, 'tx_templavoilaplus_datastructure', $dsObj->getKey(), true);
         }
 
         // Preview icon:
@@ -632,10 +632,10 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
             $editLink = $editDataprotLink = '';
             $dsTitle = $dsObj->getLabel();
         } else {
-            $editLink = $lpXML .= '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick('&edit[tx_templavoila_datastructure][' . $dsObj->getKey() . ']=edit')) . '">'
+            $editLink = $lpXML .= '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick('&edit[tx_templavoilaplus_datastructure][' . $dsObj->getKey() . ']=edit')) . '">'
             . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render()
             . '</a>';
-            $dsTitle = '<a href="' . htmlspecialchars('../cm1/index.php?table=tx_templavoila_datastructure&uid=' . $dsObj->getKey() . '&id=' . $this->id . '&returnUrl=' . rawurlencode(GeneralUtility::sanitizeLocalUrl(GeneralUtility::getIndpEnv('REQUEST_URI')))) . '">' . htmlspecialchars($dsObj->getLabel()) . '</a>';
+            $dsTitle = '<a href="' . htmlspecialchars('../cm1/index.php?table=tx_templavoilaplus_datastructure&uid=' . $dsObj->getKey() . '&id=' . $this->id . '&returnUrl=' . rawurlencode(GeneralUtility::sanitizeLocalUrl(GeneralUtility::getIndpEnv('REQUEST_URI')))) . '">' . htmlspecialchars($dsObj->getLabel()) . '</a>';
         }
         // Compile info table:
         $content = '
@@ -672,7 +672,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
         // Format XML if requested (renders VERY VERY slow)
 //         if ($this->MOD_SETTINGS['set_showDSxml']) {
 //             if ($dsObj->getDataprotXML()) {
-//                 $hlObj = GeneralUtility::makeInstance(\Extension\Templavoila\Service\SyntaxHighlightingService::class);
+//                 $hlObj = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Service\SyntaxHighlightingService::class);
 //                 $content .= '<pre>' . str_replace(chr(9), '&nbsp;&nbsp;&nbsp;', $hlObj->highLight_DS($dsObj->getDataprotXML())) . '</pre>';
 //             }
 //         }
@@ -708,7 +708,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
     /**
      * Render display of a Template Object
      *
-     * @param \Extension\Templavoila\Domain\Model\Template $toObj Template Object record to render
+     * @param \Ppi\TemplaVoilaPlus\Domain\Model\Template $toObj Template Object record to render
      * @param integer $scope Scope of DS
      * @param integer $children If set, the function is asked to render children to template objects (and should not call it self recursively again).
      *
@@ -717,8 +717,8 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
     public function renderTODisplay($toObj, $scope, $children = 0)
     {
         // Put together the records icon including content sensitive menu link wrapped around it:
-        $recordIcon = $this->iconFactory->getIconForRecord('tx_templavoila_tmplobj', [], Icon::SIZE_SMALL)->render();
-        $recordIcon = BackendUtility::wrapClickMenuOnIcon($recordIcon, 'tx_templavoila_tmplobj', $toObj->getKey(), true);
+        $recordIcon = $this->iconFactory->getIconForRecord('tx_templavoilaplus_tmplobj', [], Icon::SIZE_SMALL)->render();
+        $recordIcon = BackendUtility::wrapClickMenuOnIcon($recordIcon, 'tx_templavoilaplus_tmplobj', $toObj->getKey(), true);
 
         // Preview icon:
         if ($toObj->getIcon()) {
@@ -729,7 +729,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
 
         // Mapping status / link:
         $uriParameters = [
-            'table' => 'tx_templavoila_tmplobj',
+            'table' => 'tx_templavoilaplus_tmplobj',
             '_reload_from' => 1,
             'uid' => $toObj->getKey(),
             'id' => $this->id,
@@ -788,17 +788,17 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
         // Format XML if requested
         $lpXML = '';
 //         if ($toObj->getLocalDataprotXML(true)) {
-//             $hlObj = GeneralUtility::makeInstance(\Extension\Templavoila\Service\SyntaxHighlightingService::class);
+//             $hlObj = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Service\SyntaxHighlightingService::class);
 //             $lpXML = '<pre>' . str_replace(chr(9), '&nbsp;&nbsp;&nbsp;', $hlObj->highLight_DS($toObj->getLocalDataprotXML(true))) . '</pre>';
 //         }
 
-        $lpXML .= '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick('&edit[tx_templavoila_tmplobj][' . $toObj->getKey() . ']=edit&columnsOnly=localprocessing')) . '">'
+        $lpXML .= '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick('&edit[tx_templavoilaplus_tmplobj][' . $toObj->getKey() . ']=edit&columnsOnly=localprocessing')) . '">'
         . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render()
         . '</a>';
 
         // Links:
         $toTitle = '<a href="' . htmlspecialchars($linkUrl) . '">' . htmlspecialchars(TemplaVoilaUtility::getLanguageService()->sL($toObj->getLabel())) . '</a>';
-        $editLink = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick('&edit[tx_templavoila_tmplobj][' . $toObj->getKey() . ']=edit')) . '">'
+        $editLink = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick('&edit[tx_templavoilaplus_tmplobj][' . $toObj->getKey() . ']=edit')) . '">'
         . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render()
         . '</a>';
 
@@ -856,11 +856,11 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
                 </tr>
                 <tr>
                     <td>' . TemplaVoilaUtility::getLanguageService()->getLL('rendertype', true) . ':</td>
-                    <td>' . $this->getProcessedValue('tx_templavoila_tmplobj', 'rendertype', $toObj->getRendertype()) . '</td>
+                    <td>' . $this->getProcessedValue('tx_templavoilaplus_tmplobj', 'rendertype', $toObj->getRendertype()) . '</td>
                 </tr>
                 <tr>
                     <td>' . TemplaVoilaUtility::getLanguageService()->getLL('language', true) . ':</td>
-                    <td>' . $this->getProcessedValue('tx_templavoila_tmplobj', 'sys_language_uid', $toObj->getSyslang()) . '</td>
+                    <td>' . $this->getProcessedValue('tx_templavoilaplus_tmplobj', 'sys_language_uid', $toObj->getSyslang()) . '</td>
                 </tr>
                 <tr>
                     <td>' . TemplaVoilaUtility::getLanguageService()->getLL('localprocessing_xml') . ':</td>
@@ -873,7 +873,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
         }
 
         // Traverse template objects which are not children of anything:
-        $toRepo = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\TemplateRepository::class);
+        $toRepo = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Domain\Repository\TemplateRepository::class);
         $toChildren = $toRepo->getTemplatesByParentTemplate($toObj);
 
         if (!$children && count($toChildren)) {
@@ -892,7 +892,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
     /**
      * Creates listings of pages / content elements where template objects are used.
      *
-     * @param \Extension\Templavoila\Domain\Model\Template $toObj Template Object record
+     * @param \Ppi\TemplaVoilaPlus\Domain\Model\Template $toObj Template Object record
      * @param integer $scope Scope value. 1) page,  2) content elements
      *
      * @return string HTML table listing usages.
@@ -908,8 +908,8 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
                     'uid',
                     'pages',
                     '(
-                        (tx_templavoila_to=' . (int)$toObj->getKey() . ' AND tx_templavoila_ds=' . TemplaVoilaUtility::getDatabaseConnection()->fullQuoteStr($dsKey, 'pages') . ') OR
-                        (tx_templavoila_next_to=' . (int)$toObj->getKey() . ' AND tx_templavoila_next_ds=' . TemplaVoilaUtility::getDatabaseConnection()->fullQuoteStr($dsKey, 'pages') . ')
+                        (tx_templavoilaplus_to=' . (int)$toObj->getKey() . ' AND tx_templavoilaplus_ds=' . TemplaVoilaUtility::getDatabaseConnection()->fullQuoteStr($dsKey, 'pages') . ') OR
+                        (tx_templavoilaplus_next_to=' . (int)$toObj->getKey() . ' AND tx_templavoilaplus_next_ds=' . TemplaVoilaUtility::getDatabaseConnection()->fullQuoteStr($dsKey, 'pages') . ')
                     )' .
                     BackendUtility::deleteClause('pages')
                 );
@@ -919,8 +919,8 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
                     'uid',
                     'tt_content',
                     'CType=' . TemplaVoilaUtility::getDatabaseConnection()->fullQuoteStr('templavoila_pi1', 'tt_content') .
-                    ' AND tx_templavoila_to=' . (int)$toObj->getKey() .
-                    ' AND tx_templavoila_ds=' . TemplaVoilaUtility::getDatabaseConnection()->fullQuoteStr($toObj->getDatastructure()->getKey(), 'tt_content') .
+                    ' AND tx_templavoilaplus_to=' . (int)$toObj->getKey() .
+                    ' AND tx_templavoilaplus_ds=' . TemplaVoilaUtility::getDatabaseConnection()->fullQuoteStr($toObj->getDatastructure()->getKey(), 'tt_content') .
                     BackendUtility::deleteClause('tt_content'),
                     '',
                     'pid'
@@ -936,7 +936,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
      * @TODO Maybe Move away to an error/analytics tool
      * At the moment unused code.
      *
-     * @param \Extension\Templavoila\Domain\Model\AbstractDataStructure $dsObj Data Structure ID
+     * @param \Ppi\TemplaVoilaPlus\Domain\Model\AbstractDataStructure $dsObj Data Structure ID
      * @param integer $scope Scope value. 1) page,  2) content elements
      * @param array $toIdArray Array with numerical toIDs. Must be integers and never be empty. You can always put in "-1" as dummy element.
      *
@@ -960,8 +960,8 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
                     'uid,title,pid',
                     'pages',
                     '(
-                        (tx_templavoila_to NOT IN (' . implode(',', $toIdArray) . ') AND tx_templavoila_ds=' . TemplaVoilaUtility::getDatabaseConnection()->fullQuoteStr($dsObj->getKey(), 'pages') . ') OR
-                        (tx_templavoila_next_to NOT IN (' . implode(',', $toIdArray) . ') AND tx_templavoila_next_ds=' . TemplaVoilaUtility::getDatabaseConnection()->fullQuoteStr($dsObj->getKey(), 'pages') . ')
+                        (tx_templavoilaplus_to NOT IN (' . implode(',', $toIdArray) . ') AND tx_templavoilaplus_ds=' . TemplaVoilaUtility::getDatabaseConnection()->fullQuoteStr($dsObj->getKey(), 'pages') . ') OR
+                        (tx_templavoilaplus_next_to NOT IN (' . implode(',', $toIdArray) . ') AND tx_templavoilaplus_next_ds=' . TemplaVoilaUtility::getDatabaseConnection()->fullQuoteStr($dsObj->getKey(), 'pages') . ')
                     )' .
                     BackendUtility::deleteClause('pages')
                 );
@@ -996,8 +996,8 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
                     'uid,header,pid',
                     'tt_content',
                     'CType=' . TemplaVoilaUtility::getDatabaseConnection()->fullQuoteStr('templavoila_pi1', 'tt_content') .
-                    ' AND tx_templavoila_to NOT IN (' . implode(',', $toIdArray) . ')' .
-                    ' AND tx_templavoila_ds=' . TemplaVoilaUtility::getDatabaseConnection()->fullQuoteStr($dsObj->getKey(), 'tt_content') .
+                    ' AND tx_templavoilaplus_to NOT IN (' . implode(',', $toIdArray) . ')' .
+                    ' AND tx_templavoilaplus_ds=' . TemplaVoilaUtility::getDatabaseConnection()->fullQuoteStr($dsObj->getKey(), 'tt_content') .
                     BackendUtility::deleteClause('tt_content'),
                     '',
                     'pid'
@@ -1668,7 +1668,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
     public function getMenuDefaultCode($field)
     {
         // Select template record and extract menu HTML content
-        $toRec = BackendUtility::getRecordWSOL('tx_templavoila_tmplobj', $this->wizardData['templateObjectId']);
+        $toRec = BackendUtility::getRecordWSOL('tx_templavoilaplus_tmplobj', $this->wizardData['templateObjectId']);
         $tMapping = unserialize($toRec['templatemapping']);
 
         return $tMapping['MappingData_cached']['cArray'][$field];

@@ -1,5 +1,5 @@
 <?php
-namespace Extension\Templavoila\Service\UserFunc;
+namespace Ppi\TemplaVoilaPlus\Service\UserFunc;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -13,7 +13,7 @@ namespace Extension\Templavoila\Service\UserFunc;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use Extension\Templavoila\Service\ApiService;
+use Ppi\TemplaVoilaPlus\Service\ApiService;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 

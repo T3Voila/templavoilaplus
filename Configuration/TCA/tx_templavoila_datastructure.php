@@ -2,16 +2,16 @@
 
 return [
     'ctrl' => [
-        'title' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tx_templavoila_datastructure',
+        'title' => 'LLL:EXT:templavoilaplus/Resources/Private/Language/locallang_db.xlf:tx_templavoilaplus_datastructure',
         'label' => 'title',
-        'label_userFunc' => 'EXT:templavoila/Classes/Service/UserFunc/Label.php:&Extension\Templavoila\Service\UserFunc\Label->getLabel',
+        'label_userFunc' => 'EXT:templavoilaplus/Classes/Service/UserFunc/Label.php:&Ppi\TemplaVoilaPlus\Service\UserFunc\Label->getLabel',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
         'cruser_id' => 'cruser_id',
         'sortby' => 'sorting',
         'default_sortby' => 'ORDER BY title',
         'delete' => 'deleted',
-        'iconfile' => 'EXT:templavoila/Resources/Public/Icon/icon_ds.gif',
+        'iconfile' => 'EXT:templavoilaplus/Resources/Public/Icon/icon_ds.gif',
         'selicon_field' => 'previewicon',
         'selicon_field_path' => 'uploads/tx_templavoila',
         'versioningWS' => true,
@@ -24,7 +24,7 @@ return [
     ],
     'columns' => [
         'title' => [
-            'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tx_templavoila_datastructure.title',
+            'label' => 'LLL:EXT:templavoilaplus/Resources/Private/Language/locallang_db.xlf:tx_templavoilaplus_datastructure.title',
             'config' => [
                 'type' => 'input',
                 'size' => '48',
@@ -33,7 +33,7 @@ return [
         ],
         'dataprot' => [
             'exclude' => 1,
-            'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tx_templavoila_datastructure.dataprot',
+            'label' => 'LLL:EXT:templavoilaplus/Resources/Private/Language/locallang_db.xlf:tx_templavoilaplus_datastructure.dataprot',
             'config' => [
                 'type' => 'text',
                 'wrap' => 'OFF',
@@ -44,19 +44,19 @@ return [
         ],
         'scope' => [
             'exclude' => 1,
-            'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tx_templavoila_datastructure.scope',
+            'label' => 'LLL:EXT:templavoilaplus/Resources/Private/Language/locallang_db.xlf:tx_templavoilaplus_datastructure.scope',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    ['LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tx_templavoila_datasource.scope.I.0', 0],
-                    ['LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tx_templavoila_datastructure.scope.I.1', 1],
-                    ['LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tx_templavoila_datastructure.scope.I.2', 2],
+                    ['LLL:EXT:templavoilaplus/Resources/Private/Language/locallang_db.xlf:tx_templavoilaplus_datasource.scope.I.0', 0],
+                    ['LLL:EXT:templavoilaplus/Resources/Private/Language/locallang_db.xlf:tx_templavoilaplus_datastructure.scope.I.1', 1],
+                    ['LLL:EXT:templavoilaplus/Resources/Private/Language/locallang_db.xlf:tx_templavoilaplus_datastructure.scope.I.2', 2],
                 ],
             ]
         ],
         'previewicon' => [
-            'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tx_templavoila_tmplobj.previewicon',
+            'label' => 'LLL:EXT:templavoilaplus/Resources/Private/Language/locallang_db.xlf:tx_templavoilaplus_tmplobj.previewicon',
             'config' => [
                 'type' => 'group',
                 'internal_type' => 'file',
@@ -71,7 +71,7 @@ return [
         ],
         'belayout' => [
             'exclude' => 1,
-            'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:tx_templavoila_tmplobj.belayout',
+            'label' => 'LLL:EXT:templavoilaplus/Resources/Private/Language/locallang_db.xlf:tx_templavoilaplus_tmplobj.belayout',
             'config' => [
                 'type' => 'input',
                 'size' => '48',

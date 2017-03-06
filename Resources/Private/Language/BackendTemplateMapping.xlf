@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-    <file source-language="en" datatype="plaintext" original="messages" date="2014-07-13T20:55:24Z" product-name="templavoila">
+    <file source-language="en" datatype="plaintext" original="messages" date="2014-07-13T20:55:24Z" product-name="templavoilaplus">
         <header/>
         <body>
             <trans-unit id="title" xml:space="preserve">
-                <source>TemplaVoilà</source>
+                <source>TemplaVoilà Plus</source>
             </trans-unit>
             <trans-unit id="templateFile" xml:space="preserve">
                 <source>Template File</source>
@@ -19,7 +19,7 @@
                 <source>Load DS XML</source>
             </trans-unit>
             <trans-unit id="mappingTitle" xml:space="preserve">
-                <source>TemplaVoilà Template Mapping</source>
+                <source>TemplaVoilà Plus Template Mapping</source>
             </trans-unit>
             <trans-unit id="mappingNEW" xml:space="preserve">
                 <source>[NEW]</source>

@@ -1,5 +1,5 @@
 <?php
-namespace Extension\Templavoila\Module\Mod1;
+namespace Ppi\TemplaVoilaPlus\Module\Mod1;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -17,7 +17,7 @@ namespace Extension\Templavoila\Module\Mod1;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-use Extension\Templavoila\Utility\TemplaVoilaUtility;
+use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 /**
  * Submodule 'records' for the templavoila page module
@@ -28,7 +28,7 @@ class Records implements SingletonInterface
 {
 
     /**
-     * @var \tx_templavoila_module1
+     * @var \tx_templavoilaplus_module1
      */
     public $pObj;
 
@@ -43,7 +43,7 @@ class Records implements SingletonInterface
     public $calcPerms;
 
     /**
-     * @var \Extension\Templavoila\Module\Mod1\Recordlist
+     * @var \Ppi\TemplaVoilaPlus\Module\Mod1\Recordlist
      */
     public $dblist;
 
@@ -177,7 +177,7 @@ class Records implements SingletonInterface
     public function initDbList($table)
     {
         // Initialize the dblist object:
-        $this->dblist = GeneralUtility::makeInstance(\Extension\Templavoila\Module\Mod1\Recordlist::class);
+        $this->dblist = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Module\Mod1\Recordlist::class);
         $this->dblist->backPath = '';
         $this->dblist->calcPerms = $this->calcPerms;
         $this->dblist->thumbs = TemplaVoilaUtility::getBackendUser()->uc['thumbnailsByDefault'];

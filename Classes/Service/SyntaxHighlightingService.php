@@ -1,5 +1,5 @@
 <?php
-namespace Extension\Templavoila\Service;
+namespace Ppi\TemplaVoilaPlus\Service;
 
 /*
  * This file is part of the TYPO3 CMS project.

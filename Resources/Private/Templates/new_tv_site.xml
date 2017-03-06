@@ -1199,16 +1199,16 @@
 					</softrefs>
 				</rec>
 			</table>
-			<table index="tx_templavoila_tmplobj" type="array">
+			<table index="tx_templavoilaplus_tmplobj" type="array">
 				<rec index="1" type="array">
 					<uid>1</uid>
 					<pid>2</pid>
 					<title>Main Template [Template]</title>
 					<size>10815</size>
 					<relations index="rels" type="array">
-						<element index="tx_templavoila_datastructure:1" type="array">
+						<element index="tx_templavoilaplus_datastructure:1" type="array">
 							<id>1</id>
-							<table>tx_templavoila_datastructure</table>
+							<table>tx_templavoilaplus_datastructure</table>
 						</element>
 					</relations>
 					<softrefs type="array">
@@ -1227,7 +1227,7 @@
 					</softrefs>
 				</rec>
 			</table>
-			<table index="tx_templavoila_datastructure" type="array">
+			<table index="tx_templavoilaplus_datastructure" type="array">
 				<rec index="1" type="array">
 					<uid>1</uid>
 					<pid>2</pid>
@@ -1292,10 +1292,10 @@
 				</table>
 			</page_contents>
 			<page_contents index="2" type="array">
-				<table index="tx_templavoila_tmplobj" type="array">
+				<table index="tx_templavoilaplus_tmplobj" type="array">
 					<item index="1">1</item>
 				</table>
-				<table index="tx_templavoila_datastructure" type="array">
+				<table index="tx_templavoilaplus_datastructure" type="array">
 					<item index="1">1</item>
 				</table>
 			</page_contents>
@@ -1624,7 +1624,7 @@
 				<field index="subgroup"></field>
 				<field index="hide_in_lists">0</field>
 				<field index="workspace_perms">0</field>
-				<field index="tx_templavoila_access"></field>
+				<field index="tx_templavoilaplus_access"></field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="db_mountpoints" type="array">
@@ -1703,11 +1703,11 @@
 				<field index="alias"></field>
 				<field index="l18n_cfg">0</field>
 				<field index="fe_login_mode">0</field>
-				<field index="tx_templavoila_ds">1</field>
-				<field index="tx_templavoila_to">1</field>
-				<field index="tx_templavoila_next_ds">1</field>
-				<field index="tx_templavoila_next_to">1</field>
-				<field index="tx_templavoila_flex">&lt;?xml version=&quot;1.0&quot; encoding=&quot;iso-8859-1&quot; standalone=&quot;yes&quot; ?&gt;
+				<field index="tx_templavoilaplus_ds">1</field>
+				<field index="tx_templavoilaplus_to">1</field>
+				<field index="tx_templavoilaplus_next_ds">1</field>
+				<field index="tx_templavoilaplus_next_to">1</field>
+				<field index="tx_templavoilaplus_flex">&lt;?xml version=&quot;1.0&quot; encoding=&quot;iso-8859-1&quot; standalone=&quot;yes&quot; ?&gt;
 					&lt;T3FlexForms&gt;
 					&lt;data&gt;
 					&lt;sheet index=&quot;sDEF&quot;&gt;
@@ -1730,7 +1730,7 @@
 						</element>
 					</relations>
 				</field>
-				<field index="tx_templavoila_flex" type="array">
+				<field index="tx_templavoilaplus_flex" type="array">
 					<type>flex</type>
 					<flexform index="flexFormRels" type="array">
 						<db_relations index="db" type="array">
@@ -1830,10 +1830,10 @@
 				<field index="pi_flexform"></field>
 				<field index="l18n_parent">0</field>
 				<field index="l18n_diffsource">a:1:{s:5:&quot;image&quot;;N;}</field>
-				<field index="tx_templavoila_ds"></field>
-				<field index="tx_templavoila_to">0</field>
-				<field index="tx_templavoila_flex"></field>
-				<field index="tx_templavoila_pito">0</field>
+				<field index="tx_templavoilaplus_ds"></field>
+				<field index="tx_templavoilaplus_to">0</field>
+				<field index="tx_templavoilaplus_flex"></field>
+				<field index="tx_templavoilaplus_pito">0</field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="image" type="array">
@@ -1908,7 +1908,7 @@
 					page = PAGE
 					page.typeNum = 0
 					page.10 = USER
-					page.10.userFunc = tx_templavoila_pi1-&gt;main_page
+					page.10.userFunc = tx_templavoilaplus_pi1-&gt;main_page
 				</field>
 				<field index="editorcfg"></field>
 				<field index="resources"></field>
@@ -1999,15 +1999,15 @@
 				<field index="alias"></field>
 				<field index="l18n_cfg">0</field>
 				<field index="fe_login_mode">0</field>
-				<field index="tx_templavoila_ds"></field>
-				<field index="tx_templavoila_to">0</field>
-				<field index="tx_templavoila_next_ds"></field>
-				<field index="tx_templavoila_next_to">0</field>
-				<field index="tx_templavoila_flex"></field>
+				<field index="tx_templavoilaplus_ds"></field>
+				<field index="tx_templavoilaplus_to">0</field>
+				<field index="tx_templavoilaplus_next_ds"></field>
+				<field index="tx_templavoilaplus_next_to">0</field>
+				<field index="tx_templavoilaplus_flex"></field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
-		<tablerow index="tx_templavoila_tmplobj:1" type="array">
+		<tablerow index="tx_templavoilaplus_tmplobj:1" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid">1</field>
 				<field index="pid">2</field>
@@ -2227,7 +2227,7 @@
 					<relations index="itemArray" type="array">
 						<element index="0" type="array">
 							<id>1</id>
-							<table>tx_templavoila_datastructure</table>
+							<table>tx_templavoilaplus_datastructure</table>
 						</element>
 					</relations>
 				</field>
@@ -2252,7 +2252,7 @@
 				</field>
 			</related>
 		</tablerow>
-		<tablerow index="tx_templavoila_datastructure:1" type="array">
+		<tablerow index="tx_templavoilaplus_datastructure:1" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid">1</field>
 				<field index="pid">2</field>
@@ -2418,11 +2418,11 @@
 				<field index="alias"></field>
 				<field index="l18n_cfg">0</field>
 				<field index="fe_login_mode">0</field>
-				<field index="tx_templavoila_ds"></field>
-				<field index="tx_templavoila_to">0</field>
-				<field index="tx_templavoila_next_ds"></field>
-				<field index="tx_templavoila_next_to">0</field>
-				<field index="tx_templavoila_flex">&lt;?xml version=&quot;1.0&quot; encoding=&quot;iso-8859-1&quot; standalone=&quot;yes&quot; ?&gt;
+				<field index="tx_templavoilaplus_ds"></field>
+				<field index="tx_templavoilaplus_to">0</field>
+				<field index="tx_templavoilaplus_next_ds"></field>
+				<field index="tx_templavoilaplus_next_to">0</field>
+				<field index="tx_templavoilaplus_flex">&lt;?xml version=&quot;1.0&quot; encoding=&quot;iso-8859-1&quot; standalone=&quot;yes&quot; ?&gt;
 					&lt;T3FlexForms&gt;
 					&lt;data&gt;
 					&lt;sheet index=&quot;sDEF&quot;&gt;
@@ -2436,7 +2436,7 @@
 					&lt;/T3FlexForms&gt;</field>
 			</fieldlist>
 			<related index="rels" type="array">
-				<field index="tx_templavoila_flex" type="array">
+				<field index="tx_templavoilaplus_flex" type="array">
 					<type>flex</type>
 					<flexform index="flexFormRels" type="array">
 						<db_relations index="db" type="array">
@@ -2536,10 +2536,10 @@
 				<field index="pi_flexform"></field>
 				<field index="l18n_parent">0</field>
 				<field index="l18n_diffsource">a:18:{s:5:&quot;CType&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:6:&quot;colPos&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:13:&quot;section_frame&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:6:&quot;header&quot;;N;s:15:&quot;header_position&quot;;N;s:13:&quot;header_layout&quot;;N;s:11:&quot;header_link&quot;;N;s:4:&quot;date&quot;;N;s:8:&quot;bodytext&quot;;N;s:6:&quot;hidden&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:8:&quot;fe_group&quot;;N;}</field>
-				<field index="tx_templavoila_ds"></field>
-				<field index="tx_templavoila_to">0</field>
-				<field index="tx_templavoila_flex"></field>
-				<field index="tx_templavoila_pito">0</field>
+				<field index="tx_templavoilaplus_ds"></field>
+				<field index="tx_templavoilaplus_to">0</field>
+				<field index="tx_templavoilaplus_flex"></field>
+				<field index="tx_templavoilaplus_pito">0</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
@@ -2608,11 +2608,11 @@
 				<field index="alias"></field>
 				<field index="l18n_cfg">0</field>
 				<field index="fe_login_mode">0</field>
-				<field index="tx_templavoila_ds"></field>
-				<field index="tx_templavoila_to">0</field>
-				<field index="tx_templavoila_next_ds"></field>
-				<field index="tx_templavoila_next_to">0</field>
-				<field index="tx_templavoila_flex">&lt;?xml version=&quot;1.0&quot; encoding=&quot;iso-8859-1&quot; standalone=&quot;yes&quot; ?&gt;
+				<field index="tx_templavoilaplus_ds"></field>
+				<field index="tx_templavoilaplus_to">0</field>
+				<field index="tx_templavoilaplus_next_ds"></field>
+				<field index="tx_templavoilaplus_next_to">0</field>
+				<field index="tx_templavoilaplus_flex">&lt;?xml version=&quot;1.0&quot; encoding=&quot;iso-8859-1&quot; standalone=&quot;yes&quot; ?&gt;
 					&lt;T3FlexForms&gt;
 					&lt;data&gt;
 					&lt;sheet index=&quot;sDEF&quot;&gt;
@@ -2626,7 +2626,7 @@
 					&lt;/T3FlexForms&gt;</field>
 			</fieldlist>
 			<related index="rels" type="array">
-				<field index="tx_templavoila_flex" type="array">
+				<field index="tx_templavoilaplus_flex" type="array">
 					<type>flex</type>
 					<flexform index="flexFormRels" type="array">
 						<db_relations index="db" type="array">
@@ -2725,10 +2725,10 @@
 				<field index="pi_flexform"></field>
 				<field index="l18n_parent">0</field>
 				<field index="l18n_diffsource">a:18:{s:5:&quot;CType&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:6:&quot;colPos&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:13:&quot;section_frame&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:6:&quot;header&quot;;N;s:15:&quot;header_position&quot;;N;s:13:&quot;header_layout&quot;;N;s:11:&quot;header_link&quot;;N;s:4:&quot;date&quot;;N;s:8:&quot;bodytext&quot;;N;s:6:&quot;hidden&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:8:&quot;fe_group&quot;;N;}</field>
-				<field index="tx_templavoila_ds"></field>
-				<field index="tx_templavoila_to">0</field>
-				<field index="tx_templavoila_flex"></field>
-				<field index="tx_templavoila_pito">0</field>
+				<field index="tx_templavoilaplus_ds"></field>
+				<field index="tx_templavoilaplus_to">0</field>
+				<field index="tx_templavoilaplus_flex"></field>
+				<field index="tx_templavoilaplus_pito">0</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
@@ -2797,11 +2797,11 @@
 				<field index="alias"></field>
 				<field index="l18n_cfg">0</field>
 				<field index="fe_login_mode">0</field>
-				<field index="tx_templavoila_ds"></field>
-				<field index="tx_templavoila_to">0</field>
-				<field index="tx_templavoila_next_ds"></field>
-				<field index="tx_templavoila_next_to">0</field>
-				<field index="tx_templavoila_flex">&lt;?xml version=&quot;1.0&quot; encoding=&quot;iso-8859-1&quot; standalone=&quot;yes&quot; ?&gt;
+				<field index="tx_templavoilaplus_ds"></field>
+				<field index="tx_templavoilaplus_to">0</field>
+				<field index="tx_templavoilaplus_next_ds"></field>
+				<field index="tx_templavoilaplus_next_to">0</field>
+				<field index="tx_templavoilaplus_flex">&lt;?xml version=&quot;1.0&quot; encoding=&quot;iso-8859-1&quot; standalone=&quot;yes&quot; ?&gt;
 					&lt;T3FlexForms&gt;
 					&lt;data&gt;
 					&lt;sheet index=&quot;sDEF&quot;&gt;
@@ -2815,7 +2815,7 @@
 					&lt;/T3FlexForms&gt;</field>
 			</fieldlist>
 			<related index="rels" type="array">
-				<field index="tx_templavoila_flex" type="array">
+				<field index="tx_templavoilaplus_flex" type="array">
 					<type>flex</type>
 					<flexform index="flexFormRels" type="array">
 						<db_relations index="db" type="array">
@@ -2915,10 +2915,10 @@
 				<field index="pi_flexform"></field>
 				<field index="l18n_parent">0</field>
 				<field index="l18n_diffsource">a:18:{s:5:&quot;CType&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:6:&quot;colPos&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:13:&quot;section_frame&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:6:&quot;header&quot;;N;s:15:&quot;header_position&quot;;N;s:13:&quot;header_layout&quot;;N;s:11:&quot;header_link&quot;;N;s:4:&quot;date&quot;;N;s:8:&quot;bodytext&quot;;N;s:6:&quot;hidden&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:8:&quot;fe_group&quot;;N;}</field>
-				<field index="tx_templavoila_ds"></field>
-				<field index="tx_templavoila_to">0</field>
-				<field index="tx_templavoila_flex"></field>
-				<field index="tx_templavoila_pito">0</field>
+				<field index="tx_templavoilaplus_ds"></field>
+				<field index="tx_templavoilaplus_to">0</field>
+				<field index="tx_templavoilaplus_flex"></field>
+				<field index="tx_templavoilaplus_pito">0</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
@@ -2987,11 +2987,11 @@
 				<field index="alias"></field>
 				<field index="l18n_cfg">0</field>
 				<field index="fe_login_mode">0</field>
-				<field index="tx_templavoila_ds"></field>
-				<field index="tx_templavoila_to">0</field>
-				<field index="tx_templavoila_next_ds"></field>
-				<field index="tx_templavoila_next_to">0</field>
-				<field index="tx_templavoila_flex">&lt;?xml version=&quot;1.0&quot; encoding=&quot;iso-8859-1&quot; standalone=&quot;yes&quot; ?&gt;
+				<field index="tx_templavoilaplus_ds"></field>
+				<field index="tx_templavoilaplus_to">0</field>
+				<field index="tx_templavoilaplus_next_ds"></field>
+				<field index="tx_templavoilaplus_next_to">0</field>
+				<field index="tx_templavoilaplus_flex">&lt;?xml version=&quot;1.0&quot; encoding=&quot;iso-8859-1&quot; standalone=&quot;yes&quot; ?&gt;
 					&lt;T3FlexForms&gt;
 					&lt;data&gt;
 					&lt;sheet index=&quot;sDEF&quot;&gt;
@@ -3005,7 +3005,7 @@
 					&lt;/T3FlexForms&gt;</field>
 			</fieldlist>
 			<related index="rels" type="array">
-				<field index="tx_templavoila_flex" type="array">
+				<field index="tx_templavoilaplus_flex" type="array">
 					<type>flex</type>
 					<flexform index="flexFormRels" type="array">
 						<db_relations index="db" type="array">
@@ -3109,10 +3109,10 @@
 				<field index="pi_flexform"></field>
 				<field index="l18n_parent">0</field>
 				<field index="l18n_diffsource">a:18:{s:5:&quot;CType&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:6:&quot;colPos&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:13:&quot;section_frame&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:6:&quot;header&quot;;N;s:15:&quot;header_position&quot;;N;s:13:&quot;header_layout&quot;;N;s:11:&quot;header_link&quot;;N;s:4:&quot;date&quot;;N;s:8:&quot;bodytext&quot;;N;s:6:&quot;hidden&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:8:&quot;fe_group&quot;;N;}</field>
-				<field index="tx_templavoila_ds"></field>
-				<field index="tx_templavoila_to">0</field>
-				<field index="tx_templavoila_flex"></field>
-				<field index="tx_templavoila_pito">0</field>
+				<field index="tx_templavoilaplus_ds"></field>
+				<field index="tx_templavoilaplus_to">0</field>
+				<field index="tx_templavoilaplus_flex"></field>
+				<field index="tx_templavoilaplus_pito">0</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
@@ -3181,11 +3181,11 @@
 				<field index="alias"></field>
 				<field index="l18n_cfg">0</field>
 				<field index="fe_login_mode">0</field>
-				<field index="tx_templavoila_ds"></field>
-				<field index="tx_templavoila_to">0</field>
-				<field index="tx_templavoila_next_ds"></field>
-				<field index="tx_templavoila_next_to">0</field>
-				<field index="tx_templavoila_flex">&lt;?xml version=&quot;1.0&quot; encoding=&quot;iso-8859-1&quot; standalone=&quot;yes&quot; ?&gt;
+				<field index="tx_templavoilaplus_ds"></field>
+				<field index="tx_templavoilaplus_to">0</field>
+				<field index="tx_templavoilaplus_next_ds"></field>
+				<field index="tx_templavoilaplus_next_to">0</field>
+				<field index="tx_templavoilaplus_flex">&lt;?xml version=&quot;1.0&quot; encoding=&quot;iso-8859-1&quot; standalone=&quot;yes&quot; ?&gt;
 					&lt;T3FlexForms&gt;
 					&lt;data&gt;
 					&lt;sheet index=&quot;sDEF&quot;&gt;
@@ -3199,7 +3199,7 @@
 					&lt;/T3FlexForms&gt;</field>
 			</fieldlist>
 			<related index="rels" type="array">
-				<field index="tx_templavoila_flex" type="array">
+				<field index="tx_templavoilaplus_flex" type="array">
 					<type>flex</type>
 					<flexform index="flexFormRels" type="array">
 						<db_relations index="db" type="array">
@@ -3307,10 +3307,10 @@
 				<field index="pi_flexform"></field>
 				<field index="l18n_parent">0</field>
 				<field index="l18n_diffsource">a:18:{s:5:&quot;CType&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:6:&quot;colPos&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:13:&quot;section_frame&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:6:&quot;header&quot;;N;s:15:&quot;header_position&quot;;N;s:13:&quot;header_layout&quot;;N;s:11:&quot;header_link&quot;;N;s:4:&quot;date&quot;;N;s:8:&quot;bodytext&quot;;N;s:6:&quot;hidden&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:8:&quot;fe_group&quot;;N;}</field>
-				<field index="tx_templavoila_ds"></field>
-				<field index="tx_templavoila_to">0</field>
-				<field index="tx_templavoila_flex"></field>
-				<field index="tx_templavoila_pito">0</field>
+				<field index="tx_templavoilaplus_ds"></field>
+				<field index="tx_templavoilaplus_to">0</field>
+				<field index="tx_templavoilaplus_flex"></field>
+				<field index="tx_templavoilaplus_pito">0</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
@@ -3396,10 +3396,10 @@
 				<field index="pi_flexform"></field>
 				<field index="l18n_parent">0</field>
 				<field index="l18n_diffsource">a:18:{s:5:&quot;CType&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:6:&quot;colPos&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:13:&quot;section_frame&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:6:&quot;header&quot;;N;s:15:&quot;header_position&quot;;N;s:13:&quot;header_layout&quot;;N;s:11:&quot;header_link&quot;;N;s:4:&quot;date&quot;;N;s:8:&quot;bodytext&quot;;N;s:6:&quot;hidden&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:8:&quot;fe_group&quot;;N;}</field>
-				<field index="tx_templavoila_ds"></field>
-				<field index="tx_templavoila_to">0</field>
-				<field index="tx_templavoila_flex"></field>
-				<field index="tx_templavoila_pito">0</field>
+				<field index="tx_templavoilaplus_ds"></field>
+				<field index="tx_templavoilaplus_to">0</field>
+				<field index="tx_templavoilaplus_flex"></field>
+				<field index="tx_templavoilaplus_pito">0</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
@@ -3468,11 +3468,11 @@
 				<field index="alias">cetest_firstpage</field>
 				<field index="l18n_cfg">0</field>
 				<field index="fe_login_mode">0</field>
-				<field index="tx_templavoila_ds"></field>
-				<field index="tx_templavoila_to">0</field>
-				<field index="tx_templavoila_next_ds"></field>
-				<field index="tx_templavoila_next_to">0</field>
-				<field index="tx_templavoila_flex">&lt;?xml version=&quot;1.0&quot; encoding=&quot;iso-8859-1&quot; standalone=&quot;yes&quot; ?&gt;
+				<field index="tx_templavoilaplus_ds"></field>
+				<field index="tx_templavoilaplus_to">0</field>
+				<field index="tx_templavoilaplus_next_ds"></field>
+				<field index="tx_templavoilaplus_next_to">0</field>
+				<field index="tx_templavoilaplus_flex">&lt;?xml version=&quot;1.0&quot; encoding=&quot;iso-8859-1&quot; standalone=&quot;yes&quot; ?&gt;
 					&lt;T3FlexForms&gt;
 					&lt;data&gt;
 					&lt;sheet index=&quot;sDEF&quot;&gt;
@@ -3512,7 +3512,7 @@
 						</keys>
 					</softrefs>
 				</field>
-				<field index="tx_templavoila_flex" type="array">
+				<field index="tx_templavoilaplus_flex" type="array">
 					<type>flex</type>
 					<flexform index="flexFormRels" type="array">
 						<db_relations index="db" type="array">
@@ -3617,11 +3617,11 @@
 				<field index="tx_impexp_origuid">39</field>
 				<field index="pi_flexform"></field>
 				<field index="l18n_parent">0</field>
-				<field index="l18n_diffsource">a:61:{s:6:&quot;hidden&quot;;N;s:5:&quot;CType&quot;;N;s:6:&quot;header&quot;;N;s:15:&quot;header_position&quot;;N;s:8:&quot;bodytext&quot;;N;s:5:&quot;image&quot;;N;s:10:&quot;imagewidth&quot;;N;s:11:&quot;imageorient&quot;;N;s:12:&quot;imagecaption&quot;;N;s:9:&quot;imagecols&quot;;N;s:11:&quot;imageborder&quot;;N;s:5:&quot;media&quot;;N;s:6:&quot;layout&quot;;N;s:4:&quot;cols&quot;;N;s:7:&quot;records&quot;;N;s:5:&quot;pages&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:6:&quot;colPos&quot;;N;s:9:&quot;subheader&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:8:&quot;fe_group&quot;;N;s:11:&quot;header_link&quot;;N;s:21:&quot;imagecaption_position&quot;;N;s:10:&quot;image_link&quot;;N;s:10:&quot;image_zoom&quot;;N;s:12:&quot;image_noRows&quot;;N;s:13:&quot;image_effects&quot;;N;s:17:&quot;image_compression&quot;;N;s:13:&quot;header_layout&quot;;N;s:10:&quot;text_align&quot;;N;s:9:&quot;text_face&quot;;N;s:9:&quot;text_size&quot;;N;s:10:&quot;text_color&quot;;N;s:15:&quot;text_properties&quot;;N;s:9:&quot;menu_type&quot;;N;s:9:&quot;list_type&quot;;N;s:12:&quot;table_border&quot;;N;s:17:&quot;table_cellspacing&quot;;N;s:17:&quot;table_cellpadding&quot;;N;s:13:&quot;table_bgColor&quot;;N;s:10:&quot;select_key&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:13:&quot;filelink_size&quot;;N;s:13:&quot;section_frame&quot;;N;s:4:&quot;date&quot;;N;s:13:&quot;splash_layout&quot;;N;s:10:&quot;multimedia&quot;;N;s:12:&quot;image_frames&quot;;N;s:9:&quot;recursive&quot;;N;s:11:&quot;imageheight&quot;;N;s:11:&quot;rte_enabled&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:17:&quot;tx_impexp_origuid&quot;;N;s:11:&quot;pi_flexform&quot;;N;s:17:&quot;tx_templavoila_ds&quot;;N;s:17:&quot;tx_templavoila_to&quot;;N;s:19:&quot;tx_templavoila_flex&quot;;N;s:19:&quot;tx_templavoila_pito&quot;;N;}</field>
-				<field index="tx_templavoila_ds"></field>
-				<field index="tx_templavoila_to">0</field>
-				<field index="tx_templavoila_flex"></field>
-				<field index="tx_templavoila_pito">0</field>
+				<field index="l18n_diffsource">a:61:{s:6:&quot;hidden&quot;;N;s:5:&quot;CType&quot;;N;s:6:&quot;header&quot;;N;s:15:&quot;header_position&quot;;N;s:8:&quot;bodytext&quot;;N;s:5:&quot;image&quot;;N;s:10:&quot;imagewidth&quot;;N;s:11:&quot;imageorient&quot;;N;s:12:&quot;imagecaption&quot;;N;s:9:&quot;imagecols&quot;;N;s:11:&quot;imageborder&quot;;N;s:5:&quot;media&quot;;N;s:6:&quot;layout&quot;;N;s:4:&quot;cols&quot;;N;s:7:&quot;records&quot;;N;s:5:&quot;pages&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:6:&quot;colPos&quot;;N;s:9:&quot;subheader&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:8:&quot;fe_group&quot;;N;s:11:&quot;header_link&quot;;N;s:21:&quot;imagecaption_position&quot;;N;s:10:&quot;image_link&quot;;N;s:10:&quot;image_zoom&quot;;N;s:12:&quot;image_noRows&quot;;N;s:13:&quot;image_effects&quot;;N;s:17:&quot;image_compression&quot;;N;s:13:&quot;header_layout&quot;;N;s:10:&quot;text_align&quot;;N;s:9:&quot;text_face&quot;;N;s:9:&quot;text_size&quot;;N;s:10:&quot;text_color&quot;;N;s:15:&quot;text_properties&quot;;N;s:9:&quot;menu_type&quot;;N;s:9:&quot;list_type&quot;;N;s:12:&quot;table_border&quot;;N;s:17:&quot;table_cellspacing&quot;;N;s:17:&quot;table_cellpadding&quot;;N;s:13:&quot;table_bgColor&quot;;N;s:10:&quot;select_key&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:13:&quot;filelink_size&quot;;N;s:13:&quot;section_frame&quot;;N;s:4:&quot;date&quot;;N;s:13:&quot;splash_layout&quot;;N;s:10:&quot;multimedia&quot;;N;s:12:&quot;image_frames&quot;;N;s:9:&quot;recursive&quot;;N;s:11:&quot;imageheight&quot;;N;s:11:&quot;rte_enabled&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:17:&quot;tx_impexp_origuid&quot;;N;s:11:&quot;pi_flexform&quot;;N;s:17:&quot;tx_templavoilaplus_ds&quot;;N;s:17:&quot;tx_templavoilaplus_to&quot;;N;s:19:&quot;tx_templavoilaplus_flex&quot;;N;s:19:&quot;tx_templavoilaplus_pito&quot;;N;}</field>
+				<field index="tx_templavoilaplus_ds"></field>
+				<field index="tx_templavoilaplus_to">0</field>
+				<field index="tx_templavoilaplus_flex"></field>
+				<field index="tx_templavoilaplus_pito">0</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
@@ -3705,11 +3705,11 @@
 				<field index="tx_impexp_origuid">38</field>
 				<field index="pi_flexform"></field>
 				<field index="l18n_parent">0</field>
-				<field index="l18n_diffsource">a:61:{s:6:&quot;hidden&quot;;N;s:5:&quot;CType&quot;;N;s:6:&quot;header&quot;;N;s:15:&quot;header_position&quot;;N;s:8:&quot;bodytext&quot;;N;s:5:&quot;image&quot;;N;s:10:&quot;imagewidth&quot;;N;s:11:&quot;imageorient&quot;;N;s:12:&quot;imagecaption&quot;;N;s:9:&quot;imagecols&quot;;N;s:11:&quot;imageborder&quot;;N;s:5:&quot;media&quot;;N;s:6:&quot;layout&quot;;N;s:4:&quot;cols&quot;;N;s:7:&quot;records&quot;;N;s:5:&quot;pages&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:6:&quot;colPos&quot;;N;s:9:&quot;subheader&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:8:&quot;fe_group&quot;;N;s:11:&quot;header_link&quot;;N;s:21:&quot;imagecaption_position&quot;;N;s:10:&quot;image_link&quot;;N;s:10:&quot;image_zoom&quot;;N;s:12:&quot;image_noRows&quot;;N;s:13:&quot;image_effects&quot;;N;s:17:&quot;image_compression&quot;;N;s:13:&quot;header_layout&quot;;N;s:10:&quot;text_align&quot;;N;s:9:&quot;text_face&quot;;N;s:9:&quot;text_size&quot;;N;s:10:&quot;text_color&quot;;N;s:15:&quot;text_properties&quot;;N;s:9:&quot;menu_type&quot;;N;s:9:&quot;list_type&quot;;N;s:12:&quot;table_border&quot;;N;s:17:&quot;table_cellspacing&quot;;N;s:17:&quot;table_cellpadding&quot;;N;s:13:&quot;table_bgColor&quot;;N;s:10:&quot;select_key&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:13:&quot;filelink_size&quot;;N;s:13:&quot;section_frame&quot;;N;s:4:&quot;date&quot;;N;s:13:&quot;splash_layout&quot;;N;s:10:&quot;multimedia&quot;;N;s:12:&quot;image_frames&quot;;N;s:9:&quot;recursive&quot;;N;s:11:&quot;imageheight&quot;;N;s:11:&quot;rte_enabled&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:17:&quot;tx_impexp_origuid&quot;;N;s:11:&quot;pi_flexform&quot;;N;s:17:&quot;tx_templavoila_ds&quot;;N;s:17:&quot;tx_templavoila_to&quot;;N;s:19:&quot;tx_templavoila_flex&quot;;N;s:19:&quot;tx_templavoila_pito&quot;;N;}</field>
-				<field index="tx_templavoila_ds"></field>
-				<field index="tx_templavoila_to">0</field>
-				<field index="tx_templavoila_flex"></field>
-				<field index="tx_templavoila_pito">0</field>
+				<field index="l18n_diffsource">a:61:{s:6:&quot;hidden&quot;;N;s:5:&quot;CType&quot;;N;s:6:&quot;header&quot;;N;s:15:&quot;header_position&quot;;N;s:8:&quot;bodytext&quot;;N;s:5:&quot;image&quot;;N;s:10:&quot;imagewidth&quot;;N;s:11:&quot;imageorient&quot;;N;s:12:&quot;imagecaption&quot;;N;s:9:&quot;imagecols&quot;;N;s:11:&quot;imageborder&quot;;N;s:5:&quot;media&quot;;N;s:6:&quot;layout&quot;;N;s:4:&quot;cols&quot;;N;s:7:&quot;records&quot;;N;s:5:&quot;pages&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:6:&quot;colPos&quot;;N;s:9:&quot;subheader&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:8:&quot;fe_group&quot;;N;s:11:&quot;header_link&quot;;N;s:21:&quot;imagecaption_position&quot;;N;s:10:&quot;image_link&quot;;N;s:10:&quot;image_zoom&quot;;N;s:12:&quot;image_noRows&quot;;N;s:13:&quot;image_effects&quot;;N;s:17:&quot;image_compression&quot;;N;s:13:&quot;header_layout&quot;;N;s:10:&quot;text_align&quot;;N;s:9:&quot;text_face&quot;;N;s:9:&quot;text_size&quot;;N;s:10:&quot;text_color&quot;;N;s:15:&quot;text_properties&quot;;N;s:9:&quot;menu_type&quot;;N;s:9:&quot;list_type&quot;;N;s:12:&quot;table_border&quot;;N;s:17:&quot;table_cellspacing&quot;;N;s:17:&quot;table_cellpadding&quot;;N;s:13:&quot;table_bgColor&quot;;N;s:10:&quot;select_key&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:13:&quot;filelink_size&quot;;N;s:13:&quot;section_frame&quot;;N;s:4:&quot;date&quot;;N;s:13:&quot;splash_layout&quot;;N;s:10:&quot;multimedia&quot;;N;s:12:&quot;image_frames&quot;;N;s:9:&quot;recursive&quot;;N;s:11:&quot;imageheight&quot;;N;s:11:&quot;rte_enabled&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:17:&quot;tx_impexp_origuid&quot;;N;s:11:&quot;pi_flexform&quot;;N;s:17:&quot;tx_templavoilaplus_ds&quot;;N;s:17:&quot;tx_templavoilaplus_to&quot;;N;s:19:&quot;tx_templavoilaplus_flex&quot;;N;s:19:&quot;tx_templavoilaplus_pito&quot;;N;}</field>
+				<field index="tx_templavoilaplus_ds"></field>
+				<field index="tx_templavoilaplus_to">0</field>
+				<field index="tx_templavoilaplus_flex"></field>
+				<field index="tx_templavoilaplus_pito">0</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
@@ -3778,11 +3778,11 @@
 				<field index="alias"></field>
 				<field index="l18n_cfg">0</field>
 				<field index="fe_login_mode">0</field>
-				<field index="tx_templavoila_ds"></field>
-				<field index="tx_templavoila_to">0</field>
-				<field index="tx_templavoila_next_ds"></field>
-				<field index="tx_templavoila_next_to">0</field>
-				<field index="tx_templavoila_flex">&lt;?xml version=&quot;1.0&quot; encoding=&quot;iso-8859-1&quot; standalone=&quot;yes&quot; ?&gt;
+				<field index="tx_templavoilaplus_ds"></field>
+				<field index="tx_templavoilaplus_to">0</field>
+				<field index="tx_templavoilaplus_next_ds"></field>
+				<field index="tx_templavoilaplus_next_to">0</field>
+				<field index="tx_templavoilaplus_flex">&lt;?xml version=&quot;1.0&quot; encoding=&quot;iso-8859-1&quot; standalone=&quot;yes&quot; ?&gt;
 					&lt;T3FlexForms&gt;
 					&lt;meta&gt;
 					&lt;currentSheetId&gt;sDEF&lt;/currentSheetId&gt;
@@ -3799,7 +3799,7 @@
 					&lt;/T3FlexForms&gt;</field>
 			</fieldlist>
 			<related index="rels" type="array">
-				<field index="tx_templavoila_flex" type="array">
+				<field index="tx_templavoilaplus_flex" type="array">
 					<type>flex</type>
 					<flexform index="flexFormRels" type="array">
 						<db_relations index="db" type="array"></db_relations>
@@ -3939,11 +3939,11 @@
 				<field index="alias"></field>
 				<field index="l18n_cfg">0</field>
 				<field index="fe_login_mode">0</field>
-				<field index="tx_templavoila_ds"></field>
-				<field index="tx_templavoila_to">0</field>
-				<field index="tx_templavoila_next_ds"></field>
-				<field index="tx_templavoila_next_to">0</field>
-				<field index="tx_templavoila_flex">&lt;?xml version=&quot;1.0&quot; encoding=&quot;iso-8859-1&quot; standalone=&quot;yes&quot; ?&gt;
+				<field index="tx_templavoilaplus_ds"></field>
+				<field index="tx_templavoilaplus_to">0</field>
+				<field index="tx_templavoilaplus_next_ds"></field>
+				<field index="tx_templavoilaplus_next_to">0</field>
+				<field index="tx_templavoilaplus_flex">&lt;?xml version=&quot;1.0&quot; encoding=&quot;iso-8859-1&quot; standalone=&quot;yes&quot; ?&gt;
 					&lt;T3FlexForms&gt;
 					&lt;data&gt;
 					&lt;sheet index=&quot;sDEF&quot;&gt;
@@ -3957,7 +3957,7 @@
 					&lt;/T3FlexForms&gt;</field>
 			</fieldlist>
 			<related index="rels" type="array">
-				<field index="tx_templavoila_flex" type="array">
+				<field index="tx_templavoilaplus_flex" type="array">
 					<type>flex</type>
 					<flexform index="flexFormRels" type="array">
 						<db_relations index="db" type="array">
@@ -4085,11 +4085,11 @@
 				<field index="tx_impexp_origuid">31</field>
 				<field index="pi_flexform"></field>
 				<field index="l18n_parent">0</field>
-				<field index="l18n_diffsource">a:61:{s:6:&quot;hidden&quot;;N;s:5:&quot;CType&quot;;N;s:6:&quot;header&quot;;N;s:15:&quot;header_position&quot;;N;s:8:&quot;bodytext&quot;;N;s:5:&quot;image&quot;;N;s:10:&quot;imagewidth&quot;;N;s:11:&quot;imageorient&quot;;N;s:12:&quot;imagecaption&quot;;N;s:9:&quot;imagecols&quot;;N;s:11:&quot;imageborder&quot;;N;s:5:&quot;media&quot;;N;s:6:&quot;layout&quot;;N;s:4:&quot;cols&quot;;N;s:7:&quot;records&quot;;N;s:5:&quot;pages&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:6:&quot;colPos&quot;;N;s:9:&quot;subheader&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:8:&quot;fe_group&quot;;N;s:11:&quot;header_link&quot;;N;s:21:&quot;imagecaption_position&quot;;N;s:10:&quot;image_link&quot;;N;s:10:&quot;image_zoom&quot;;N;s:12:&quot;image_noRows&quot;;N;s:13:&quot;image_effects&quot;;N;s:17:&quot;image_compression&quot;;N;s:13:&quot;header_layout&quot;;N;s:10:&quot;text_align&quot;;N;s:9:&quot;text_face&quot;;N;s:9:&quot;text_size&quot;;N;s:10:&quot;text_color&quot;;N;s:15:&quot;text_properties&quot;;N;s:9:&quot;menu_type&quot;;N;s:9:&quot;list_type&quot;;N;s:12:&quot;table_border&quot;;N;s:17:&quot;table_cellspacing&quot;;N;s:17:&quot;table_cellpadding&quot;;N;s:13:&quot;table_bgColor&quot;;N;s:10:&quot;select_key&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:13:&quot;filelink_size&quot;;N;s:13:&quot;section_frame&quot;;N;s:4:&quot;date&quot;;N;s:13:&quot;splash_layout&quot;;N;s:10:&quot;multimedia&quot;;N;s:12:&quot;image_frames&quot;;N;s:9:&quot;recursive&quot;;N;s:11:&quot;imageheight&quot;;N;s:11:&quot;rte_enabled&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:17:&quot;tx_impexp_origuid&quot;;N;s:11:&quot;pi_flexform&quot;;N;s:17:&quot;tx_templavoila_ds&quot;;N;s:17:&quot;tx_templavoila_to&quot;;N;s:19:&quot;tx_templavoila_flex&quot;;N;s:19:&quot;tx_templavoila_pito&quot;;N;}</field>
-				<field index="tx_templavoila_ds"></field>
-				<field index="tx_templavoila_to">0</field>
-				<field index="tx_templavoila_flex"></field>
-				<field index="tx_templavoila_pito">0</field>
+				<field index="l18n_diffsource">a:61:{s:6:&quot;hidden&quot;;N;s:5:&quot;CType&quot;;N;s:6:&quot;header&quot;;N;s:15:&quot;header_position&quot;;N;s:8:&quot;bodytext&quot;;N;s:5:&quot;image&quot;;N;s:10:&quot;imagewidth&quot;;N;s:11:&quot;imageorient&quot;;N;s:12:&quot;imagecaption&quot;;N;s:9:&quot;imagecols&quot;;N;s:11:&quot;imageborder&quot;;N;s:5:&quot;media&quot;;N;s:6:&quot;layout&quot;;N;s:4:&quot;cols&quot;;N;s:7:&quot;records&quot;;N;s:5:&quot;pages&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:6:&quot;colPos&quot;;N;s:9:&quot;subheader&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:8:&quot;fe_group&quot;;N;s:11:&quot;header_link&quot;;N;s:21:&quot;imagecaption_position&quot;;N;s:10:&quot;image_link&quot;;N;s:10:&quot;image_zoom&quot;;N;s:12:&quot;image_noRows&quot;;N;s:13:&quot;image_effects&quot;;N;s:17:&quot;image_compression&quot;;N;s:13:&quot;header_layout&quot;;N;s:10:&quot;text_align&quot;;N;s:9:&quot;text_face&quot;;N;s:9:&quot;text_size&quot;;N;s:10:&quot;text_color&quot;;N;s:15:&quot;text_properties&quot;;N;s:9:&quot;menu_type&quot;;N;s:9:&quot;list_type&quot;;N;s:12:&quot;table_border&quot;;N;s:17:&quot;table_cellspacing&quot;;N;s:17:&quot;table_cellpadding&quot;;N;s:13:&quot;table_bgColor&quot;;N;s:10:&quot;select_key&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:13:&quot;filelink_size&quot;;N;s:13:&quot;section_frame&quot;;N;s:4:&quot;date&quot;;N;s:13:&quot;splash_layout&quot;;N;s:10:&quot;multimedia&quot;;N;s:12:&quot;image_frames&quot;;N;s:9:&quot;recursive&quot;;N;s:11:&quot;imageheight&quot;;N;s:11:&quot;rte_enabled&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:17:&quot;tx_impexp_origuid&quot;;N;s:11:&quot;pi_flexform&quot;;N;s:17:&quot;tx_templavoilaplus_ds&quot;;N;s:17:&quot;tx_templavoilaplus_to&quot;;N;s:19:&quot;tx_templavoilaplus_flex&quot;;N;s:19:&quot;tx_templavoilaplus_pito&quot;;N;}</field>
+				<field index="tx_templavoilaplus_ds"></field>
+				<field index="tx_templavoilaplus_to">0</field>
+				<field index="tx_templavoilaplus_flex"></field>
+				<field index="tx_templavoilaplus_pito">0</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
@@ -4176,11 +4176,11 @@
 				<field index="tx_impexp_origuid">30</field>
 				<field index="pi_flexform"></field>
 				<field index="l18n_parent">0</field>
-				<field index="l18n_diffsource">a:61:{s:6:&quot;hidden&quot;;N;s:5:&quot;CType&quot;;N;s:6:&quot;header&quot;;N;s:15:&quot;header_position&quot;;N;s:8:&quot;bodytext&quot;;N;s:5:&quot;image&quot;;N;s:10:&quot;imagewidth&quot;;N;s:11:&quot;imageorient&quot;;N;s:12:&quot;imagecaption&quot;;N;s:9:&quot;imagecols&quot;;N;s:11:&quot;imageborder&quot;;N;s:5:&quot;media&quot;;N;s:6:&quot;layout&quot;;N;s:4:&quot;cols&quot;;N;s:7:&quot;records&quot;;N;s:5:&quot;pages&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:6:&quot;colPos&quot;;N;s:9:&quot;subheader&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:8:&quot;fe_group&quot;;N;s:11:&quot;header_link&quot;;N;s:21:&quot;imagecaption_position&quot;;N;s:10:&quot;image_link&quot;;N;s:10:&quot;image_zoom&quot;;N;s:12:&quot;image_noRows&quot;;N;s:13:&quot;image_effects&quot;;N;s:17:&quot;image_compression&quot;;N;s:13:&quot;header_layout&quot;;N;s:10:&quot;text_align&quot;;N;s:9:&quot;text_face&quot;;N;s:9:&quot;text_size&quot;;N;s:10:&quot;text_color&quot;;N;s:15:&quot;text_properties&quot;;N;s:9:&quot;menu_type&quot;;N;s:9:&quot;list_type&quot;;N;s:12:&quot;table_border&quot;;N;s:17:&quot;table_cellspacing&quot;;N;s:17:&quot;table_cellpadding&quot;;N;s:13:&quot;table_bgColor&quot;;N;s:10:&quot;select_key&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:13:&quot;filelink_size&quot;;N;s:13:&quot;section_frame&quot;;N;s:4:&quot;date&quot;;N;s:13:&quot;splash_layout&quot;;N;s:10:&quot;multimedia&quot;;N;s:12:&quot;image_frames&quot;;N;s:9:&quot;recursive&quot;;N;s:11:&quot;imageheight&quot;;N;s:11:&quot;rte_enabled&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:17:&quot;tx_impexp_origuid&quot;;N;s:11:&quot;pi_flexform&quot;;N;s:17:&quot;tx_templavoila_ds&quot;;N;s:17:&quot;tx_templavoila_to&quot;;N;s:19:&quot;tx_templavoila_flex&quot;;N;s:19:&quot;tx_templavoila_pito&quot;;N;}</field>
-				<field index="tx_templavoila_ds"></field>
-				<field index="tx_templavoila_to">0</field>
-				<field index="tx_templavoila_flex"></field>
-				<field index="tx_templavoila_pito">0</field>
+				<field index="l18n_diffsource">a:61:{s:6:&quot;hidden&quot;;N;s:5:&quot;CType&quot;;N;s:6:&quot;header&quot;;N;s:15:&quot;header_position&quot;;N;s:8:&quot;bodytext&quot;;N;s:5:&quot;image&quot;;N;s:10:&quot;imagewidth&quot;;N;s:11:&quot;imageorient&quot;;N;s:12:&quot;imagecaption&quot;;N;s:9:&quot;imagecols&quot;;N;s:11:&quot;imageborder&quot;;N;s:5:&quot;media&quot;;N;s:6:&quot;layout&quot;;N;s:4:&quot;cols&quot;;N;s:7:&quot;records&quot;;N;s:5:&quot;pages&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:6:&quot;colPos&quot;;N;s:9:&quot;subheader&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:8:&quot;fe_group&quot;;N;s:11:&quot;header_link&quot;;N;s:21:&quot;imagecaption_position&quot;;N;s:10:&quot;image_link&quot;;N;s:10:&quot;image_zoom&quot;;N;s:12:&quot;image_noRows&quot;;N;s:13:&quot;image_effects&quot;;N;s:17:&quot;image_compression&quot;;N;s:13:&quot;header_layout&quot;;N;s:10:&quot;text_align&quot;;N;s:9:&quot;text_face&quot;;N;s:9:&quot;text_size&quot;;N;s:10:&quot;text_color&quot;;N;s:15:&quot;text_properties&quot;;N;s:9:&quot;menu_type&quot;;N;s:9:&quot;list_type&quot;;N;s:12:&quot;table_border&quot;;N;s:17:&quot;table_cellspacing&quot;;N;s:17:&quot;table_cellpadding&quot;;N;s:13:&quot;table_bgColor&quot;;N;s:10:&quot;select_key&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:13:&quot;filelink_size&quot;;N;s:13:&quot;section_frame&quot;;N;s:4:&quot;date&quot;;N;s:13:&quot;splash_layout&quot;;N;s:10:&quot;multimedia&quot;;N;s:12:&quot;image_frames&quot;;N;s:9:&quot;recursive&quot;;N;s:11:&quot;imageheight&quot;;N;s:11:&quot;rte_enabled&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:17:&quot;tx_impexp_origuid&quot;;N;s:11:&quot;pi_flexform&quot;;N;s:17:&quot;tx_templavoilaplus_ds&quot;;N;s:17:&quot;tx_templavoilaplus_to&quot;;N;s:19:&quot;tx_templavoilaplus_flex&quot;;N;s:19:&quot;tx_templavoilaplus_pito&quot;;N;}</field>
+				<field index="tx_templavoilaplus_ds"></field>
+				<field index="tx_templavoilaplus_to">0</field>
+				<field index="tx_templavoilaplus_flex"></field>
+				<field index="tx_templavoilaplus_pito">0</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
@@ -4266,11 +4266,11 @@
 				<field index="tx_impexp_origuid">32</field>
 				<field index="pi_flexform"></field>
 				<field index="l18n_parent">0</field>
-				<field index="l18n_diffsource">a:61:{s:6:&quot;hidden&quot;;N;s:5:&quot;CType&quot;;N;s:6:&quot;header&quot;;N;s:15:&quot;header_position&quot;;N;s:8:&quot;bodytext&quot;;N;s:5:&quot;image&quot;;N;s:10:&quot;imagewidth&quot;;N;s:11:&quot;imageorient&quot;;N;s:12:&quot;imagecaption&quot;;N;s:9:&quot;imagecols&quot;;N;s:11:&quot;imageborder&quot;;N;s:5:&quot;media&quot;;N;s:6:&quot;layout&quot;;N;s:4:&quot;cols&quot;;N;s:7:&quot;records&quot;;N;s:5:&quot;pages&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:6:&quot;colPos&quot;;N;s:9:&quot;subheader&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:8:&quot;fe_group&quot;;N;s:11:&quot;header_link&quot;;N;s:21:&quot;imagecaption_position&quot;;N;s:10:&quot;image_link&quot;;N;s:10:&quot;image_zoom&quot;;N;s:12:&quot;image_noRows&quot;;N;s:13:&quot;image_effects&quot;;N;s:17:&quot;image_compression&quot;;N;s:13:&quot;header_layout&quot;;N;s:10:&quot;text_align&quot;;N;s:9:&quot;text_face&quot;;N;s:9:&quot;text_size&quot;;N;s:10:&quot;text_color&quot;;N;s:15:&quot;text_properties&quot;;N;s:9:&quot;menu_type&quot;;N;s:9:&quot;list_type&quot;;N;s:12:&quot;table_border&quot;;N;s:17:&quot;table_cellspacing&quot;;N;s:17:&quot;table_cellpadding&quot;;N;s:13:&quot;table_bgColor&quot;;N;s:10:&quot;select_key&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:13:&quot;filelink_size&quot;;N;s:13:&quot;section_frame&quot;;N;s:4:&quot;date&quot;;N;s:13:&quot;splash_layout&quot;;N;s:10:&quot;multimedia&quot;;N;s:12:&quot;image_frames&quot;;N;s:9:&quot;recursive&quot;;N;s:11:&quot;imageheight&quot;;N;s:11:&quot;rte_enabled&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:17:&quot;tx_impexp_origuid&quot;;N;s:11:&quot;pi_flexform&quot;;N;s:17:&quot;tx_templavoila_ds&quot;;N;s:17:&quot;tx_templavoila_to&quot;;N;s:19:&quot;tx_templavoila_flex&quot;;N;s:19:&quot;tx_templavoila_pito&quot;;N;}</field>
-				<field index="tx_templavoila_ds"></field>
-				<field index="tx_templavoila_to">0</field>
-				<field index="tx_templavoila_flex"></field>
-				<field index="tx_templavoila_pito">0</field>
+				<field index="l18n_diffsource">a:61:{s:6:&quot;hidden&quot;;N;s:5:&quot;CType&quot;;N;s:6:&quot;header&quot;;N;s:15:&quot;header_position&quot;;N;s:8:&quot;bodytext&quot;;N;s:5:&quot;image&quot;;N;s:10:&quot;imagewidth&quot;;N;s:11:&quot;imageorient&quot;;N;s:12:&quot;imagecaption&quot;;N;s:9:&quot;imagecols&quot;;N;s:11:&quot;imageborder&quot;;N;s:5:&quot;media&quot;;N;s:6:&quot;layout&quot;;N;s:4:&quot;cols&quot;;N;s:7:&quot;records&quot;;N;s:5:&quot;pages&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:6:&quot;colPos&quot;;N;s:9:&quot;subheader&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:8:&quot;fe_group&quot;;N;s:11:&quot;header_link&quot;;N;s:21:&quot;imagecaption_position&quot;;N;s:10:&quot;image_link&quot;;N;s:10:&quot;image_zoom&quot;;N;s:12:&quot;image_noRows&quot;;N;s:13:&quot;image_effects&quot;;N;s:17:&quot;image_compression&quot;;N;s:13:&quot;header_layout&quot;;N;s:10:&quot;text_align&quot;;N;s:9:&quot;text_face&quot;;N;s:9:&quot;text_size&quot;;N;s:10:&quot;text_color&quot;;N;s:15:&quot;text_properties&quot;;N;s:9:&quot;menu_type&quot;;N;s:9:&quot;list_type&quot;;N;s:12:&quot;table_border&quot;;N;s:17:&quot;table_cellspacing&quot;;N;s:17:&quot;table_cellpadding&quot;;N;s:13:&quot;table_bgColor&quot;;N;s:10:&quot;select_key&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:13:&quot;filelink_size&quot;;N;s:13:&quot;section_frame&quot;;N;s:4:&quot;date&quot;;N;s:13:&quot;splash_layout&quot;;N;s:10:&quot;multimedia&quot;;N;s:12:&quot;image_frames&quot;;N;s:9:&quot;recursive&quot;;N;s:11:&quot;imageheight&quot;;N;s:11:&quot;rte_enabled&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:17:&quot;tx_impexp_origuid&quot;;N;s:11:&quot;pi_flexform&quot;;N;s:17:&quot;tx_templavoilaplus_ds&quot;;N;s:17:&quot;tx_templavoilaplus_to&quot;;N;s:19:&quot;tx_templavoilaplus_flex&quot;;N;s:19:&quot;tx_templavoilaplus_pito&quot;;N;}</field>
+				<field index="tx_templavoilaplus_ds"></field>
+				<field index="tx_templavoilaplus_to">0</field>
+				<field index="tx_templavoilaplus_flex"></field>
+				<field index="tx_templavoilaplus_pito">0</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
@@ -4354,11 +4354,11 @@
 				<field index="tx_impexp_origuid">33</field>
 				<field index="pi_flexform"></field>
 				<field index="l18n_parent">0</field>
-				<field index="l18n_diffsource">a:61:{s:6:&quot;hidden&quot;;N;s:5:&quot;CType&quot;;N;s:6:&quot;header&quot;;N;s:15:&quot;header_position&quot;;N;s:8:&quot;bodytext&quot;;N;s:5:&quot;image&quot;;N;s:10:&quot;imagewidth&quot;;N;s:11:&quot;imageorient&quot;;N;s:12:&quot;imagecaption&quot;;N;s:9:&quot;imagecols&quot;;N;s:11:&quot;imageborder&quot;;N;s:5:&quot;media&quot;;N;s:6:&quot;layout&quot;;N;s:4:&quot;cols&quot;;N;s:7:&quot;records&quot;;N;s:5:&quot;pages&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:6:&quot;colPos&quot;;N;s:9:&quot;subheader&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:8:&quot;fe_group&quot;;N;s:11:&quot;header_link&quot;;N;s:21:&quot;imagecaption_position&quot;;N;s:10:&quot;image_link&quot;;N;s:10:&quot;image_zoom&quot;;N;s:12:&quot;image_noRows&quot;;N;s:13:&quot;image_effects&quot;;N;s:17:&quot;image_compression&quot;;N;s:13:&quot;header_layout&quot;;N;s:10:&quot;text_align&quot;;N;s:9:&quot;text_face&quot;;N;s:9:&quot;text_size&quot;;N;s:10:&quot;text_color&quot;;N;s:15:&quot;text_properties&quot;;N;s:9:&quot;menu_type&quot;;N;s:9:&quot;list_type&quot;;N;s:12:&quot;table_border&quot;;N;s:17:&quot;table_cellspacing&quot;;N;s:17:&quot;table_cellpadding&quot;;N;s:13:&quot;table_bgColor&quot;;N;s:10:&quot;select_key&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:13:&quot;filelink_size&quot;;N;s:13:&quot;section_frame&quot;;N;s:4:&quot;date&quot;;N;s:13:&quot;splash_layout&quot;;N;s:10:&quot;multimedia&quot;;N;s:12:&quot;image_frames&quot;;N;s:9:&quot;recursive&quot;;N;s:11:&quot;imageheight&quot;;N;s:11:&quot;rte_enabled&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:17:&quot;tx_impexp_origuid&quot;;N;s:11:&quot;pi_flexform&quot;;N;s:17:&quot;tx_templavoila_ds&quot;;N;s:17:&quot;tx_templavoila_to&quot;;N;s:19:&quot;tx_templavoila_flex&quot;;N;s:19:&quot;tx_templavoila_pito&quot;;N;}</field>
-				<field index="tx_templavoila_ds"></field>
-				<field index="tx_templavoila_to">0</field>
-				<field index="tx_templavoila_flex"></field>
-				<field index="tx_templavoila_pito">0</field>
+				<field index="l18n_diffsource">a:61:{s:6:&quot;hidden&quot;;N;s:5:&quot;CType&quot;;N;s:6:&quot;header&quot;;N;s:15:&quot;header_position&quot;;N;s:8:&quot;bodytext&quot;;N;s:5:&quot;image&quot;;N;s:10:&quot;imagewidth&quot;;N;s:11:&quot;imageorient&quot;;N;s:12:&quot;imagecaption&quot;;N;s:9:&quot;imagecols&quot;;N;s:11:&quot;imageborder&quot;;N;s:5:&quot;media&quot;;N;s:6:&quot;layout&quot;;N;s:4:&quot;cols&quot;;N;s:7:&quot;records&quot;;N;s:5:&quot;pages&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:6:&quot;colPos&quot;;N;s:9:&quot;subheader&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:8:&quot;fe_group&quot;;N;s:11:&quot;header_link&quot;;N;s:21:&quot;imagecaption_position&quot;;N;s:10:&quot;image_link&quot;;N;s:10:&quot;image_zoom&quot;;N;s:12:&quot;image_noRows&quot;;N;s:13:&quot;image_effects&quot;;N;s:17:&quot;image_compression&quot;;N;s:13:&quot;header_layout&quot;;N;s:10:&quot;text_align&quot;;N;s:9:&quot;text_face&quot;;N;s:9:&quot;text_size&quot;;N;s:10:&quot;text_color&quot;;N;s:15:&quot;text_properties&quot;;N;s:9:&quot;menu_type&quot;;N;s:9:&quot;list_type&quot;;N;s:12:&quot;table_border&quot;;N;s:17:&quot;table_cellspacing&quot;;N;s:17:&quot;table_cellpadding&quot;;N;s:13:&quot;table_bgColor&quot;;N;s:10:&quot;select_key&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:13:&quot;filelink_size&quot;;N;s:13:&quot;section_frame&quot;;N;s:4:&quot;date&quot;;N;s:13:&quot;splash_layout&quot;;N;s:10:&quot;multimedia&quot;;N;s:12:&quot;image_frames&quot;;N;s:9:&quot;recursive&quot;;N;s:11:&quot;imageheight&quot;;N;s:11:&quot;rte_enabled&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:17:&quot;tx_impexp_origuid&quot;;N;s:11:&quot;pi_flexform&quot;;N;s:17:&quot;tx_templavoilaplus_ds&quot;;N;s:17:&quot;tx_templavoilaplus_to&quot;;N;s:19:&quot;tx_templavoilaplus_flex&quot;;N;s:19:&quot;tx_templavoilaplus_pito&quot;;N;}</field>
+				<field index="tx_templavoilaplus_ds"></field>
+				<field index="tx_templavoilaplus_to">0</field>
+				<field index="tx_templavoilaplus_flex"></field>
+				<field index="tx_templavoilaplus_pito">0</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
@@ -4442,11 +4442,11 @@
 				<field index="tx_impexp_origuid">34</field>
 				<field index="pi_flexform"></field>
 				<field index="l18n_parent">0</field>
-				<field index="l18n_diffsource">a:61:{s:6:&quot;hidden&quot;;N;s:5:&quot;CType&quot;;N;s:6:&quot;header&quot;;N;s:15:&quot;header_position&quot;;N;s:8:&quot;bodytext&quot;;N;s:5:&quot;image&quot;;N;s:10:&quot;imagewidth&quot;;N;s:11:&quot;imageorient&quot;;N;s:12:&quot;imagecaption&quot;;N;s:9:&quot;imagecols&quot;;N;s:11:&quot;imageborder&quot;;N;s:5:&quot;media&quot;;N;s:6:&quot;layout&quot;;N;s:4:&quot;cols&quot;;N;s:7:&quot;records&quot;;N;s:5:&quot;pages&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:6:&quot;colPos&quot;;N;s:9:&quot;subheader&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:8:&quot;fe_group&quot;;N;s:11:&quot;header_link&quot;;N;s:21:&quot;imagecaption_position&quot;;N;s:10:&quot;image_link&quot;;N;s:10:&quot;image_zoom&quot;;N;s:12:&quot;image_noRows&quot;;N;s:13:&quot;image_effects&quot;;N;s:17:&quot;image_compression&quot;;N;s:13:&quot;header_layout&quot;;N;s:10:&quot;text_align&quot;;N;s:9:&quot;text_face&quot;;N;s:9:&quot;text_size&quot;;N;s:10:&quot;text_color&quot;;N;s:15:&quot;text_properties&quot;;N;s:9:&quot;menu_type&quot;;N;s:9:&quot;list_type&quot;;N;s:12:&quot;table_border&quot;;N;s:17:&quot;table_cellspacing&quot;;N;s:17:&quot;table_cellpadding&quot;;N;s:13:&quot;table_bgColor&quot;;N;s:10:&quot;select_key&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:13:&quot;filelink_size&quot;;N;s:13:&quot;section_frame&quot;;N;s:4:&quot;date&quot;;N;s:13:&quot;splash_layout&quot;;N;s:10:&quot;multimedia&quot;;N;s:12:&quot;image_frames&quot;;N;s:9:&quot;recursive&quot;;N;s:11:&quot;imageheight&quot;;N;s:11:&quot;rte_enabled&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:17:&quot;tx_impexp_origuid&quot;;N;s:11:&quot;pi_flexform&quot;;N;s:17:&quot;tx_templavoila_ds&quot;;N;s:17:&quot;tx_templavoila_to&quot;;N;s:19:&quot;tx_templavoila_flex&quot;;N;s:19:&quot;tx_templavoila_pito&quot;;N;}</field>
-				<field index="tx_templavoila_ds"></field>
-				<field index="tx_templavoila_to">0</field>
-				<field index="tx_templavoila_flex"></field>
-				<field index="tx_templavoila_pito">0</field>
+				<field index="l18n_diffsource">a:61:{s:6:&quot;hidden&quot;;N;s:5:&quot;CType&quot;;N;s:6:&quot;header&quot;;N;s:15:&quot;header_position&quot;;N;s:8:&quot;bodytext&quot;;N;s:5:&quot;image&quot;;N;s:10:&quot;imagewidth&quot;;N;s:11:&quot;imageorient&quot;;N;s:12:&quot;imagecaption&quot;;N;s:9:&quot;imagecols&quot;;N;s:11:&quot;imageborder&quot;;N;s:5:&quot;media&quot;;N;s:6:&quot;layout&quot;;N;s:4:&quot;cols&quot;;N;s:7:&quot;records&quot;;N;s:5:&quot;pages&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:6:&quot;colPos&quot;;N;s:9:&quot;subheader&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:8:&quot;fe_group&quot;;N;s:11:&quot;header_link&quot;;N;s:21:&quot;imagecaption_position&quot;;N;s:10:&quot;image_link&quot;;N;s:10:&quot;image_zoom&quot;;N;s:12:&quot;image_noRows&quot;;N;s:13:&quot;image_effects&quot;;N;s:17:&quot;image_compression&quot;;N;s:13:&quot;header_layout&quot;;N;s:10:&quot;text_align&quot;;N;s:9:&quot;text_face&quot;;N;s:9:&quot;text_size&quot;;N;s:10:&quot;text_color&quot;;N;s:15:&quot;text_properties&quot;;N;s:9:&quot;menu_type&quot;;N;s:9:&quot;list_type&quot;;N;s:12:&quot;table_border&quot;;N;s:17:&quot;table_cellspacing&quot;;N;s:17:&quot;table_cellpadding&quot;;N;s:13:&quot;table_bgColor&quot;;N;s:10:&quot;select_key&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:13:&quot;filelink_size&quot;;N;s:13:&quot;section_frame&quot;;N;s:4:&quot;date&quot;;N;s:13:&quot;splash_layout&quot;;N;s:10:&quot;multimedia&quot;;N;s:12:&quot;image_frames&quot;;N;s:9:&quot;recursive&quot;;N;s:11:&quot;imageheight&quot;;N;s:11:&quot;rte_enabled&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:17:&quot;tx_impexp_origuid&quot;;N;s:11:&quot;pi_flexform&quot;;N;s:17:&quot;tx_templavoilaplus_ds&quot;;N;s:17:&quot;tx_templavoilaplus_to&quot;;N;s:19:&quot;tx_templavoilaplus_flex&quot;;N;s:19:&quot;tx_templavoilaplus_pito&quot;;N;}</field>
+				<field index="tx_templavoilaplus_ds"></field>
+				<field index="tx_templavoilaplus_to">0</field>
+				<field index="tx_templavoilaplus_flex"></field>
+				<field index="tx_templavoilaplus_pito">0</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
@@ -4530,11 +4530,11 @@
 				<field index="tx_impexp_origuid">36</field>
 				<field index="pi_flexform"></field>
 				<field index="l18n_parent">0</field>
-				<field index="l18n_diffsource">a:61:{s:6:&quot;hidden&quot;;N;s:5:&quot;CType&quot;;N;s:6:&quot;header&quot;;N;s:15:&quot;header_position&quot;;N;s:8:&quot;bodytext&quot;;N;s:5:&quot;image&quot;;N;s:10:&quot;imagewidth&quot;;N;s:11:&quot;imageorient&quot;;N;s:12:&quot;imagecaption&quot;;N;s:9:&quot;imagecols&quot;;N;s:11:&quot;imageborder&quot;;N;s:5:&quot;media&quot;;N;s:6:&quot;layout&quot;;N;s:4:&quot;cols&quot;;N;s:7:&quot;records&quot;;N;s:5:&quot;pages&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:6:&quot;colPos&quot;;N;s:9:&quot;subheader&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:8:&quot;fe_group&quot;;N;s:11:&quot;header_link&quot;;N;s:21:&quot;imagecaption_position&quot;;N;s:10:&quot;image_link&quot;;N;s:10:&quot;image_zoom&quot;;N;s:12:&quot;image_noRows&quot;;N;s:13:&quot;image_effects&quot;;N;s:17:&quot;image_compression&quot;;N;s:13:&quot;header_layout&quot;;N;s:10:&quot;text_align&quot;;N;s:9:&quot;text_face&quot;;N;s:9:&quot;text_size&quot;;N;s:10:&quot;text_color&quot;;N;s:15:&quot;text_properties&quot;;N;s:9:&quot;menu_type&quot;;N;s:9:&quot;list_type&quot;;N;s:12:&quot;table_border&quot;;N;s:17:&quot;table_cellspacing&quot;;N;s:17:&quot;table_cellpadding&quot;;N;s:13:&quot;table_bgColor&quot;;N;s:10:&quot;select_key&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:13:&quot;filelink_size&quot;;N;s:13:&quot;section_frame&quot;;N;s:4:&quot;date&quot;;N;s:13:&quot;splash_layout&quot;;N;s:10:&quot;multimedia&quot;;N;s:12:&quot;image_frames&quot;;N;s:9:&quot;recursive&quot;;N;s:11:&quot;imageheight&quot;;N;s:11:&quot;rte_enabled&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:17:&quot;tx_impexp_origuid&quot;;N;s:11:&quot;pi_flexform&quot;;N;s:17:&quot;tx_templavoila_ds&quot;;N;s:17:&quot;tx_templavoila_to&quot;;N;s:19:&quot;tx_templavoila_flex&quot;;N;s:19:&quot;tx_templavoila_pito&quot;;N;}</field>
-				<field index="tx_templavoila_ds"></field>
-				<field index="tx_templavoila_to">0</field>
-				<field index="tx_templavoila_flex"></field>
-				<field index="tx_templavoila_pito">0</field>
+				<field index="l18n_diffsource">a:61:{s:6:&quot;hidden&quot;;N;s:5:&quot;CType&quot;;N;s:6:&quot;header&quot;;N;s:15:&quot;header_position&quot;;N;s:8:&quot;bodytext&quot;;N;s:5:&quot;image&quot;;N;s:10:&quot;imagewidth&quot;;N;s:11:&quot;imageorient&quot;;N;s:12:&quot;imagecaption&quot;;N;s:9:&quot;imagecols&quot;;N;s:11:&quot;imageborder&quot;;N;s:5:&quot;media&quot;;N;s:6:&quot;layout&quot;;N;s:4:&quot;cols&quot;;N;s:7:&quot;records&quot;;N;s:5:&quot;pages&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:6:&quot;colPos&quot;;N;s:9:&quot;subheader&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:8:&quot;fe_group&quot;;N;s:11:&quot;header_link&quot;;N;s:21:&quot;imagecaption_position&quot;;N;s:10:&quot;image_link&quot;;N;s:10:&quot;image_zoom&quot;;N;s:12:&quot;image_noRows&quot;;N;s:13:&quot;image_effects&quot;;N;s:17:&quot;image_compression&quot;;N;s:13:&quot;header_layout&quot;;N;s:10:&quot;text_align&quot;;N;s:9:&quot;text_face&quot;;N;s:9:&quot;text_size&quot;;N;s:10:&quot;text_color&quot;;N;s:15:&quot;text_properties&quot;;N;s:9:&quot;menu_type&quot;;N;s:9:&quot;list_type&quot;;N;s:12:&quot;table_border&quot;;N;s:17:&quot;table_cellspacing&quot;;N;s:17:&quot;table_cellpadding&quot;;N;s:13:&quot;table_bgColor&quot;;N;s:10:&quot;select_key&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:13:&quot;filelink_size&quot;;N;s:13:&quot;section_frame&quot;;N;s:4:&quot;date&quot;;N;s:13:&quot;splash_layout&quot;;N;s:10:&quot;multimedia&quot;;N;s:12:&quot;image_frames&quot;;N;s:9:&quot;recursive&quot;;N;s:11:&quot;imageheight&quot;;N;s:11:&quot;rte_enabled&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:17:&quot;tx_impexp_origuid&quot;;N;s:11:&quot;pi_flexform&quot;;N;s:17:&quot;tx_templavoilaplus_ds&quot;;N;s:17:&quot;tx_templavoilaplus_to&quot;;N;s:19:&quot;tx_templavoilaplus_flex&quot;;N;s:19:&quot;tx_templavoilaplus_pito&quot;;N;}</field>
+				<field index="tx_templavoilaplus_ds"></field>
+				<field index="tx_templavoilaplus_to">0</field>
+				<field index="tx_templavoilaplus_flex"></field>
+				<field index="tx_templavoilaplus_pito">0</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
@@ -4618,11 +4618,11 @@
 				<field index="tx_impexp_origuid">35</field>
 				<field index="pi_flexform"></field>
 				<field index="l18n_parent">0</field>
-				<field index="l18n_diffsource">a:61:{s:6:&quot;hidden&quot;;N;s:5:&quot;CType&quot;;N;s:6:&quot;header&quot;;N;s:15:&quot;header_position&quot;;N;s:8:&quot;bodytext&quot;;N;s:5:&quot;image&quot;;N;s:10:&quot;imagewidth&quot;;N;s:11:&quot;imageorient&quot;;N;s:12:&quot;imagecaption&quot;;N;s:9:&quot;imagecols&quot;;N;s:11:&quot;imageborder&quot;;N;s:5:&quot;media&quot;;N;s:6:&quot;layout&quot;;N;s:4:&quot;cols&quot;;N;s:7:&quot;records&quot;;N;s:5:&quot;pages&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:6:&quot;colPos&quot;;N;s:9:&quot;subheader&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:8:&quot;fe_group&quot;;N;s:11:&quot;header_link&quot;;N;s:21:&quot;imagecaption_position&quot;;N;s:10:&quot;image_link&quot;;N;s:10:&quot;image_zoom&quot;;N;s:12:&quot;image_noRows&quot;;N;s:13:&quot;image_effects&quot;;N;s:17:&quot;image_compression&quot;;N;s:13:&quot;header_layout&quot;;N;s:10:&quot;text_align&quot;;N;s:9:&quot;text_face&quot;;N;s:9:&quot;text_size&quot;;N;s:10:&quot;text_color&quot;;N;s:15:&quot;text_properties&quot;;N;s:9:&quot;menu_type&quot;;N;s:9:&quot;list_type&quot;;N;s:12:&quot;table_border&quot;;N;s:17:&quot;table_cellspacing&quot;;N;s:17:&quot;table_cellpadding&quot;;N;s:13:&quot;table_bgColor&quot;;N;s:10:&quot;select_key&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:13:&quot;filelink_size&quot;;N;s:13:&quot;section_frame&quot;;N;s:4:&quot;date&quot;;N;s:13:&quot;splash_layout&quot;;N;s:10:&quot;multimedia&quot;;N;s:12:&quot;image_frames&quot;;N;s:9:&quot;recursive&quot;;N;s:11:&quot;imageheight&quot;;N;s:11:&quot;rte_enabled&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:17:&quot;tx_impexp_origuid&quot;;N;s:11:&quot;pi_flexform&quot;;N;s:17:&quot;tx_templavoila_ds&quot;;N;s:17:&quot;tx_templavoila_to&quot;;N;s:19:&quot;tx_templavoila_flex&quot;;N;s:19:&quot;tx_templavoila_pito&quot;;N;}</field>
-				<field index="tx_templavoila_ds"></field>
-				<field index="tx_templavoila_to">0</field>
-				<field index="tx_templavoila_flex"></field>
-				<field index="tx_templavoila_pito">0</field>
+				<field index="l18n_diffsource">a:61:{s:6:&quot;hidden&quot;;N;s:5:&quot;CType&quot;;N;s:6:&quot;header&quot;;N;s:15:&quot;header_position&quot;;N;s:8:&quot;bodytext&quot;;N;s:5:&quot;image&quot;;N;s:10:&quot;imagewidth&quot;;N;s:11:&quot;imageorient&quot;;N;s:12:&quot;imagecaption&quot;;N;s:9:&quot;imagecols&quot;;N;s:11:&quot;imageborder&quot;;N;s:5:&quot;media&quot;;N;s:6:&quot;layout&quot;;N;s:4:&quot;cols&quot;;N;s:7:&quot;records&quot;;N;s:5:&quot;pages&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:6:&quot;colPos&quot;;N;s:9:&quot;subheader&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:8:&quot;fe_group&quot;;N;s:11:&quot;header_link&quot;;N;s:21:&quot;imagecaption_position&quot;;N;s:10:&quot;image_link&quot;;N;s:10:&quot;image_zoom&quot;;N;s:12:&quot;image_noRows&quot;;N;s:13:&quot;image_effects&quot;;N;s:17:&quot;image_compression&quot;;N;s:13:&quot;header_layout&quot;;N;s:10:&quot;text_align&quot;;N;s:9:&quot;text_face&quot;;N;s:9:&quot;text_size&quot;;N;s:10:&quot;text_color&quot;;N;s:15:&quot;text_properties&quot;;N;s:9:&quot;menu_type&quot;;N;s:9:&quot;list_type&quot;;N;s:12:&quot;table_border&quot;;N;s:17:&quot;table_cellspacing&quot;;N;s:17:&quot;table_cellpadding&quot;;N;s:13:&quot;table_bgColor&quot;;N;s:10:&quot;select_key&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:13:&quot;filelink_size&quot;;N;s:13:&quot;section_frame&quot;;N;s:4:&quot;date&quot;;N;s:13:&quot;splash_layout&quot;;N;s:10:&quot;multimedia&quot;;N;s:12:&quot;image_frames&quot;;N;s:9:&quot;recursive&quot;;N;s:11:&quot;imageheight&quot;;N;s:11:&quot;rte_enabled&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:17:&quot;tx_impexp_origuid&quot;;N;s:11:&quot;pi_flexform&quot;;N;s:17:&quot;tx_templavoilaplus_ds&quot;;N;s:17:&quot;tx_templavoilaplus_to&quot;;N;s:19:&quot;tx_templavoilaplus_flex&quot;;N;s:19:&quot;tx_templavoilaplus_pito&quot;;N;}</field>
+				<field index="tx_templavoilaplus_ds"></field>
+				<field index="tx_templavoilaplus_to">0</field>
+				<field index="tx_templavoilaplus_flex"></field>
+				<field index="tx_templavoilaplus_pito">0</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
@@ -4709,11 +4709,11 @@
 				<field index="tx_impexp_origuid">37</field>
 				<field index="pi_flexform"></field>
 				<field index="l18n_parent">0</field>
-				<field index="l18n_diffsource">a:61:{s:6:&quot;hidden&quot;;N;s:5:&quot;CType&quot;;N;s:6:&quot;header&quot;;N;s:15:&quot;header_position&quot;;N;s:8:&quot;bodytext&quot;;N;s:5:&quot;image&quot;;N;s:10:&quot;imagewidth&quot;;N;s:11:&quot;imageorient&quot;;N;s:12:&quot;imagecaption&quot;;N;s:9:&quot;imagecols&quot;;N;s:11:&quot;imageborder&quot;;N;s:5:&quot;media&quot;;N;s:6:&quot;layout&quot;;N;s:4:&quot;cols&quot;;N;s:7:&quot;records&quot;;N;s:5:&quot;pages&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:6:&quot;colPos&quot;;N;s:9:&quot;subheader&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:8:&quot;fe_group&quot;;N;s:11:&quot;header_link&quot;;N;s:21:&quot;imagecaption_position&quot;;N;s:10:&quot;image_link&quot;;N;s:10:&quot;image_zoom&quot;;N;s:12:&quot;image_noRows&quot;;N;s:13:&quot;image_effects&quot;;N;s:17:&quot;image_compression&quot;;N;s:13:&quot;header_layout&quot;;N;s:10:&quot;text_align&quot;;N;s:9:&quot;text_face&quot;;N;s:9:&quot;text_size&quot;;N;s:10:&quot;text_color&quot;;N;s:15:&quot;text_properties&quot;;N;s:9:&quot;menu_type&quot;;N;s:9:&quot;list_type&quot;;N;s:12:&quot;table_border&quot;;N;s:17:&quot;table_cellspacing&quot;;N;s:17:&quot;table_cellpadding&quot;;N;s:13:&quot;table_bgColor&quot;;N;s:10:&quot;select_key&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:13:&quot;filelink_size&quot;;N;s:13:&quot;section_frame&quot;;N;s:4:&quot;date&quot;;N;s:13:&quot;splash_layout&quot;;N;s:10:&quot;multimedia&quot;;N;s:12:&quot;image_frames&quot;;N;s:9:&quot;recursive&quot;;N;s:11:&quot;imageheight&quot;;N;s:11:&quot;rte_enabled&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:17:&quot;tx_impexp_origuid&quot;;N;s:11:&quot;pi_flexform&quot;;N;s:17:&quot;tx_templavoila_ds&quot;;N;s:17:&quot;tx_templavoila_to&quot;;N;s:19:&quot;tx_templavoila_flex&quot;;N;s:19:&quot;tx_templavoila_pito&quot;;N;}</field>
-				<field index="tx_templavoila_ds"></field>
-				<field index="tx_templavoila_to">0</field>
-				<field index="tx_templavoila_flex"></field>
-				<field index="tx_templavoila_pito">0</field>
+				<field index="l18n_diffsource">a:61:{s:6:&quot;hidden&quot;;N;s:5:&quot;CType&quot;;N;s:6:&quot;header&quot;;N;s:15:&quot;header_position&quot;;N;s:8:&quot;bodytext&quot;;N;s:5:&quot;image&quot;;N;s:10:&quot;imagewidth&quot;;N;s:11:&quot;imageorient&quot;;N;s:12:&quot;imagecaption&quot;;N;s:9:&quot;imagecols&quot;;N;s:11:&quot;imageborder&quot;;N;s:5:&quot;media&quot;;N;s:6:&quot;layout&quot;;N;s:4:&quot;cols&quot;;N;s:7:&quot;records&quot;;N;s:5:&quot;pages&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:6:&quot;colPos&quot;;N;s:9:&quot;subheader&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:8:&quot;fe_group&quot;;N;s:11:&quot;header_link&quot;;N;s:21:&quot;imagecaption_position&quot;;N;s:10:&quot;image_link&quot;;N;s:10:&quot;image_zoom&quot;;N;s:12:&quot;image_noRows&quot;;N;s:13:&quot;image_effects&quot;;N;s:17:&quot;image_compression&quot;;N;s:13:&quot;header_layout&quot;;N;s:10:&quot;text_align&quot;;N;s:9:&quot;text_face&quot;;N;s:9:&quot;text_size&quot;;N;s:10:&quot;text_color&quot;;N;s:15:&quot;text_properties&quot;;N;s:9:&quot;menu_type&quot;;N;s:9:&quot;list_type&quot;;N;s:12:&quot;table_border&quot;;N;s:17:&quot;table_cellspacing&quot;;N;s:17:&quot;table_cellpadding&quot;;N;s:13:&quot;table_bgColor&quot;;N;s:10:&quot;select_key&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:13:&quot;filelink_size&quot;;N;s:13:&quot;section_frame&quot;;N;s:4:&quot;date&quot;;N;s:13:&quot;splash_layout&quot;;N;s:10:&quot;multimedia&quot;;N;s:12:&quot;image_frames&quot;;N;s:9:&quot;recursive&quot;;N;s:11:&quot;imageheight&quot;;N;s:11:&quot;rte_enabled&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:17:&quot;tx_impexp_origuid&quot;;N;s:11:&quot;pi_flexform&quot;;N;s:17:&quot;tx_templavoilaplus_ds&quot;;N;s:17:&quot;tx_templavoilaplus_to&quot;;N;s:19:&quot;tx_templavoilaplus_flex&quot;;N;s:19:&quot;tx_templavoilaplus_pito&quot;;N;}</field>
+				<field index="tx_templavoilaplus_ds"></field>
+				<field index="tx_templavoilaplus_to">0</field>
+				<field index="tx_templavoilaplus_flex"></field>
+				<field index="tx_templavoilaplus_pito">0</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
@@ -4782,11 +4782,11 @@
 				<field index="alias"></field>
 				<field index="l18n_cfg">0</field>
 				<field index="fe_login_mode">0</field>
-				<field index="tx_templavoila_ds"></field>
-				<field index="tx_templavoila_to">0</field>
-				<field index="tx_templavoila_next_ds"></field>
-				<field index="tx_templavoila_next_to">0</field>
-				<field index="tx_templavoila_flex">&lt;?xml version=&quot;1.0&quot; encoding=&quot;iso-8859-1&quot; standalone=&quot;yes&quot; ?&gt;
+				<field index="tx_templavoilaplus_ds"></field>
+				<field index="tx_templavoilaplus_to">0</field>
+				<field index="tx_templavoilaplus_next_ds"></field>
+				<field index="tx_templavoilaplus_next_to">0</field>
+				<field index="tx_templavoilaplus_flex">&lt;?xml version=&quot;1.0&quot; encoding=&quot;iso-8859-1&quot; standalone=&quot;yes&quot; ?&gt;
 					&lt;T3FlexForms&gt;
 					&lt;meta&gt;
 					&lt;currentSheetId&gt;sDEF&lt;/currentSheetId&gt;
@@ -4803,7 +4803,7 @@
 					&lt;/T3FlexForms&gt;</field>
 			</fieldlist>
 			<related index="rels" type="array">
-				<field index="tx_templavoila_flex" type="array">
+				<field index="tx_templavoilaplus_flex" type="array">
 					<type>flex</type>
 					<flexform index="flexFormRels" type="array">
 						<db_relations index="db" type="array">
@@ -4904,11 +4904,11 @@
 				<field index="tx_impexp_origuid">28</field>
 				<field index="pi_flexform"></field>
 				<field index="l18n_parent">0</field>
-				<field index="l18n_diffsource">a:61:{s:6:&quot;hidden&quot;;N;s:5:&quot;CType&quot;;N;s:6:&quot;header&quot;;N;s:15:&quot;header_position&quot;;N;s:8:&quot;bodytext&quot;;N;s:5:&quot;image&quot;;N;s:10:&quot;imagewidth&quot;;N;s:11:&quot;imageorient&quot;;N;s:12:&quot;imagecaption&quot;;N;s:9:&quot;imagecols&quot;;N;s:11:&quot;imageborder&quot;;N;s:5:&quot;media&quot;;N;s:6:&quot;layout&quot;;N;s:4:&quot;cols&quot;;N;s:7:&quot;records&quot;;N;s:5:&quot;pages&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:6:&quot;colPos&quot;;N;s:9:&quot;subheader&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:8:&quot;fe_group&quot;;N;s:11:&quot;header_link&quot;;N;s:21:&quot;imagecaption_position&quot;;N;s:10:&quot;image_link&quot;;N;s:10:&quot;image_zoom&quot;;N;s:12:&quot;image_noRows&quot;;N;s:13:&quot;image_effects&quot;;N;s:17:&quot;image_compression&quot;;N;s:13:&quot;header_layout&quot;;N;s:10:&quot;text_align&quot;;N;s:9:&quot;text_face&quot;;N;s:9:&quot;text_size&quot;;N;s:10:&quot;text_color&quot;;N;s:15:&quot;text_properties&quot;;N;s:9:&quot;menu_type&quot;;N;s:9:&quot;list_type&quot;;N;s:12:&quot;table_border&quot;;N;s:17:&quot;table_cellspacing&quot;;N;s:17:&quot;table_cellpadding&quot;;N;s:13:&quot;table_bgColor&quot;;N;s:10:&quot;select_key&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:13:&quot;filelink_size&quot;;N;s:13:&quot;section_frame&quot;;N;s:4:&quot;date&quot;;N;s:13:&quot;splash_layout&quot;;N;s:10:&quot;multimedia&quot;;N;s:12:&quot;image_frames&quot;;N;s:9:&quot;recursive&quot;;N;s:11:&quot;imageheight&quot;;N;s:11:&quot;rte_enabled&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:17:&quot;tx_impexp_origuid&quot;;N;s:11:&quot;pi_flexform&quot;;N;s:17:&quot;tx_templavoila_ds&quot;;N;s:17:&quot;tx_templavoila_to&quot;;N;s:19:&quot;tx_templavoila_flex&quot;;N;s:19:&quot;tx_templavoila_pito&quot;;N;}</field>
-				<field index="tx_templavoila_ds"></field>
-				<field index="tx_templavoila_to">0</field>
-				<field index="tx_templavoila_flex"></field>
-				<field index="tx_templavoila_pito">0</field>
+				<field index="l18n_diffsource">a:61:{s:6:&quot;hidden&quot;;N;s:5:&quot;CType&quot;;N;s:6:&quot;header&quot;;N;s:15:&quot;header_position&quot;;N;s:8:&quot;bodytext&quot;;N;s:5:&quot;image&quot;;N;s:10:&quot;imagewidth&quot;;N;s:11:&quot;imageorient&quot;;N;s:12:&quot;imagecaption&quot;;N;s:9:&quot;imagecols&quot;;N;s:11:&quot;imageborder&quot;;N;s:5:&quot;media&quot;;N;s:6:&quot;layout&quot;;N;s:4:&quot;cols&quot;;N;s:7:&quot;records&quot;;N;s:5:&quot;pages&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:6:&quot;colPos&quot;;N;s:9:&quot;subheader&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:8:&quot;fe_group&quot;;N;s:11:&quot;header_link&quot;;N;s:21:&quot;imagecaption_position&quot;;N;s:10:&quot;image_link&quot;;N;s:10:&quot;image_zoom&quot;;N;s:12:&quot;image_noRows&quot;;N;s:13:&quot;image_effects&quot;;N;s:17:&quot;image_compression&quot;;N;s:13:&quot;header_layout&quot;;N;s:10:&quot;text_align&quot;;N;s:9:&quot;text_face&quot;;N;s:9:&quot;text_size&quot;;N;s:10:&quot;text_color&quot;;N;s:15:&quot;text_properties&quot;;N;s:9:&quot;menu_type&quot;;N;s:9:&quot;list_type&quot;;N;s:12:&quot;table_border&quot;;N;s:17:&quot;table_cellspacing&quot;;N;s:17:&quot;table_cellpadding&quot;;N;s:13:&quot;table_bgColor&quot;;N;s:10:&quot;select_key&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:13:&quot;filelink_size&quot;;N;s:13:&quot;section_frame&quot;;N;s:4:&quot;date&quot;;N;s:13:&quot;splash_layout&quot;;N;s:10:&quot;multimedia&quot;;N;s:12:&quot;image_frames&quot;;N;s:9:&quot;recursive&quot;;N;s:11:&quot;imageheight&quot;;N;s:11:&quot;rte_enabled&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:17:&quot;tx_impexp_origuid&quot;;N;s:11:&quot;pi_flexform&quot;;N;s:17:&quot;tx_templavoilaplus_ds&quot;;N;s:17:&quot;tx_templavoilaplus_to&quot;;N;s:19:&quot;tx_templavoilaplus_flex&quot;;N;s:19:&quot;tx_templavoilaplus_pito&quot;;N;}</field>
+				<field index="tx_templavoilaplus_ds"></field>
+				<field index="tx_templavoilaplus_to">0</field>
+				<field index="tx_templavoilaplus_flex"></field>
+				<field index="tx_templavoilaplus_pito">0</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
@@ -4993,10 +4993,10 @@
 				<field index="pi_flexform"></field>
 				<field index="l18n_parent">0</field>
 				<field index="l18n_diffsource">a:1:{s:5:&quot;pages&quot;;N;}</field>
-				<field index="tx_templavoila_ds"></field>
-				<field index="tx_templavoila_to">0</field>
-				<field index="tx_templavoila_flex"></field>
-				<field index="tx_templavoila_pito">0</field>
+				<field index="tx_templavoilaplus_ds"></field>
+				<field index="tx_templavoilaplus_to">0</field>
+				<field index="tx_templavoilaplus_flex"></field>
+				<field index="tx_templavoilaplus_pito">0</field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="pages" type="array">
@@ -5079,11 +5079,11 @@
 				<field index="alias"></field>
 				<field index="l18n_cfg">0</field>
 				<field index="fe_login_mode">0</field>
-				<field index="tx_templavoila_ds"></field>
-				<field index="tx_templavoila_to">0</field>
-				<field index="tx_templavoila_next_ds"></field>
-				<field index="tx_templavoila_next_to">0</field>
-				<field index="tx_templavoila_flex">&lt;?xml version=&quot;1.0&quot; encoding=&quot;iso-8859-1&quot; standalone=&quot;yes&quot; ?&gt;
+				<field index="tx_templavoilaplus_ds"></field>
+				<field index="tx_templavoilaplus_to">0</field>
+				<field index="tx_templavoilaplus_next_ds"></field>
+				<field index="tx_templavoilaplus_next_to">0</field>
+				<field index="tx_templavoilaplus_flex">&lt;?xml version=&quot;1.0&quot; encoding=&quot;iso-8859-1&quot; standalone=&quot;yes&quot; ?&gt;
 					&lt;T3FlexForms&gt;
 					&lt;data&gt;
 					&lt;sheet index=&quot;sDEF&quot;&gt;
@@ -5106,7 +5106,7 @@
 						</element>
 					</relations>
 				</field>
-				<field index="tx_templavoila_flex" type="array">
+				<field index="tx_templavoilaplus_flex" type="array">
 					<type>flex</type>
 					<flexform index="flexFormRels" type="array">
 						<db_relations index="db" type="array">
@@ -5206,10 +5206,10 @@
 				<field index="pi_flexform"></field>
 				<field index="l18n_parent">0</field>
 				<field index="l18n_diffsource">a:18:{s:5:&quot;CType&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:6:&quot;colPos&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:13:&quot;section_frame&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:6:&quot;header&quot;;N;s:15:&quot;header_position&quot;;N;s:13:&quot;header_layout&quot;;N;s:11:&quot;header_link&quot;;N;s:4:&quot;date&quot;;N;s:8:&quot;bodytext&quot;;N;s:6:&quot;hidden&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:8:&quot;fe_group&quot;;N;}</field>
-				<field index="tx_templavoila_ds"></field>
-				<field index="tx_templavoila_to">0</field>
-				<field index="tx_templavoila_flex"></field>
-				<field index="tx_templavoila_pito">0</field>
+				<field index="tx_templavoilaplus_ds"></field>
+				<field index="tx_templavoilaplus_to">0</field>
+				<field index="tx_templavoilaplus_flex"></field>
+				<field index="tx_templavoilaplus_pito">0</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
@@ -5278,11 +5278,11 @@
 				<field index="alias"></field>
 				<field index="l18n_cfg">0</field>
 				<field index="fe_login_mode">0</field>
-				<field index="tx_templavoila_ds"></field>
-				<field index="tx_templavoila_to">0</field>
-				<field index="tx_templavoila_next_ds"></field>
-				<field index="tx_templavoila_next_to">0</field>
-				<field index="tx_templavoila_flex">&lt;?xml version=&quot;1.0&quot; encoding=&quot;iso-8859-1&quot; standalone=&quot;yes&quot; ?&gt;
+				<field index="tx_templavoilaplus_ds"></field>
+				<field index="tx_templavoilaplus_to">0</field>
+				<field index="tx_templavoilaplus_next_ds"></field>
+				<field index="tx_templavoilaplus_next_to">0</field>
+				<field index="tx_templavoilaplus_flex">&lt;?xml version=&quot;1.0&quot; encoding=&quot;iso-8859-1&quot; standalone=&quot;yes&quot; ?&gt;
 					&lt;T3FlexForms&gt;
 					&lt;meta&gt;
 					&lt;currentSheetId&gt;sDEF&lt;/currentSheetId&gt;
@@ -5299,7 +5299,7 @@
 					&lt;/T3FlexForms&gt;</field>
 			</fieldlist>
 			<related index="rels" type="array">
-				<field index="tx_templavoila_flex" type="array">
+				<field index="tx_templavoilaplus_flex" type="array">
 					<type>flex</type>
 					<flexform index="flexFormRels" type="array">
 						<db_relations index="db" type="array">
@@ -5405,10 +5405,10 @@
 				<field index="pi_flexform"></field>
 				<field index="l18n_parent">0</field>
 				<field index="l18n_diffsource">a:1:{s:5:&quot;pages&quot;;N;}</field>
-				<field index="tx_templavoila_ds"></field>
-				<field index="tx_templavoila_to">0</field>
-				<field index="tx_templavoila_flex"></field>
-				<field index="tx_templavoila_pito">0</field>
+				<field index="tx_templavoilaplus_ds"></field>
+				<field index="tx_templavoilaplus_to">0</field>
+				<field index="tx_templavoilaplus_flex"></field>
+				<field index="tx_templavoilaplus_pito">0</field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="pages" type="array">
@@ -5507,10 +5507,10 @@
 				<field index="pi_flexform"></field>
 				<field index="l18n_parent">0</field>
 				<field index="l18n_diffsource">a:1:{s:8:&quot;fe_group&quot;;N;}</field>
-				<field index="tx_templavoila_ds"></field>
-				<field index="tx_templavoila_to">0</field>
-				<field index="tx_templavoila_flex"></field>
-				<field index="tx_templavoila_pito">0</field>
+				<field index="tx_templavoilaplus_ds"></field>
+				<field index="tx_templavoilaplus_to">0</field>
+				<field index="tx_templavoilaplus_flex"></field>
+				<field index="tx_templavoilaplus_pito">0</field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="fe_group" type="array">
@@ -5605,10 +5605,10 @@
 				<field index="pi_flexform"></field>
 				<field index="l18n_parent">0</field>
 				<field index="l18n_diffsource">a:1:{s:8:&quot;bodytext&quot;;N;}</field>
-				<field index="tx_templavoila_ds"></field>
-				<field index="tx_templavoila_to">0</field>
-				<field index="tx_templavoila_flex"></field>
-				<field index="tx_templavoila_pito">0</field>
+				<field index="tx_templavoilaplus_ds"></field>
+				<field index="tx_templavoilaplus_to">0</field>
+				<field index="tx_templavoilaplus_flex"></field>
+				<field index="tx_templavoilaplus_pito">0</field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="bodytext" type="array">
@@ -5705,11 +5705,11 @@
 				<field index="alias"></field>
 				<field index="l18n_cfg">0</field>
 				<field index="fe_login_mode">0</field>
-				<field index="tx_templavoila_ds"></field>
-				<field index="tx_templavoila_to">0</field>
-				<field index="tx_templavoila_next_ds"></field>
-				<field index="tx_templavoila_next_to">0</field>
-				<field index="tx_templavoila_flex">&lt;?xml version=&quot;1.0&quot; encoding=&quot;iso-8859-1&quot; standalone=&quot;yes&quot; ?&gt;
+				<field index="tx_templavoilaplus_ds"></field>
+				<field index="tx_templavoilaplus_to">0</field>
+				<field index="tx_templavoilaplus_next_ds"></field>
+				<field index="tx_templavoilaplus_next_to">0</field>
+				<field index="tx_templavoilaplus_flex">&lt;?xml version=&quot;1.0&quot; encoding=&quot;iso-8859-1&quot; standalone=&quot;yes&quot; ?&gt;
 					&lt;T3FlexForms&gt;
 					&lt;meta&gt;
 					&lt;currentSheetId&gt;sDEF&lt;/currentSheetId&gt;
@@ -5726,7 +5726,7 @@
 					&lt;/T3FlexForms&gt;</field>
 			</fieldlist>
 			<related index="rels" type="array">
-				<field index="tx_templavoila_flex" type="array">
+				<field index="tx_templavoilaplus_flex" type="array">
 					<type>flex</type>
 					<flexform index="flexFormRels" type="array">
 						<db_relations index="db" type="array">
@@ -5824,10 +5824,10 @@
 				<field index="pi_flexform"></field>
 				<field index="l18n_parent">0</field>
 				<field index="l18n_diffsource">a:1:{s:5:&quot;pages&quot;;N;}</field>
-				<field index="tx_templavoila_ds"></field>
-				<field index="tx_templavoila_to">0</field>
-				<field index="tx_templavoila_flex"></field>
-				<field index="tx_templavoila_pito">0</field>
+				<field index="tx_templavoilaplus_ds"></field>
+				<field index="tx_templavoilaplus_to">0</field>
+				<field index="tx_templavoilaplus_flex"></field>
+				<field index="tx_templavoilaplus_pito">0</field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="pages" type="array">
@@ -5906,11 +5906,11 @@
 				<field index="alias"></field>
 				<field index="l18n_cfg">0</field>
 				<field index="fe_login_mode">0</field>
-				<field index="tx_templavoila_ds"></field>
-				<field index="tx_templavoila_to">0</field>
-				<field index="tx_templavoila_next_ds"></field>
-				<field index="tx_templavoila_next_to">0</field>
-				<field index="tx_templavoila_flex">&lt;?xml version=&quot;1.0&quot; encoding=&quot;iso-8859-1&quot; standalone=&quot;yes&quot; ?&gt;
+				<field index="tx_templavoilaplus_ds"></field>
+				<field index="tx_templavoilaplus_to">0</field>
+				<field index="tx_templavoilaplus_next_ds"></field>
+				<field index="tx_templavoilaplus_next_to">0</field>
+				<field index="tx_templavoilaplus_flex">&lt;?xml version=&quot;1.0&quot; encoding=&quot;iso-8859-1&quot; standalone=&quot;yes&quot; ?&gt;
 					&lt;T3FlexForms&gt;
 					&lt;data&gt;
 					&lt;sheet index=&quot;sDEF&quot;&gt;
@@ -5924,7 +5924,7 @@
 					&lt;/T3FlexForms&gt;</field>
 			</fieldlist>
 			<related index="rels" type="array">
-				<field index="tx_templavoila_flex" type="array">
+				<field index="tx_templavoilaplus_flex" type="array">
 					<type>flex</type>
 					<flexform index="flexFormRels" type="array">
 						<db_relations index="db" type="array">
@@ -6021,11 +6021,11 @@
 				<field index="tx_impexp_origuid">22</field>
 				<field index="pi_flexform"></field>
 				<field index="l18n_parent">0</field>
-				<field index="l18n_diffsource">a:61:{s:6:&quot;hidden&quot;;N;s:5:&quot;CType&quot;;N;s:6:&quot;header&quot;;N;s:15:&quot;header_position&quot;;N;s:8:&quot;bodytext&quot;;N;s:5:&quot;image&quot;;N;s:10:&quot;imagewidth&quot;;N;s:11:&quot;imageorient&quot;;N;s:12:&quot;imagecaption&quot;;N;s:9:&quot;imagecols&quot;;N;s:11:&quot;imageborder&quot;;N;s:5:&quot;media&quot;;N;s:6:&quot;layout&quot;;N;s:4:&quot;cols&quot;;N;s:7:&quot;records&quot;;N;s:5:&quot;pages&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:6:&quot;colPos&quot;;N;s:9:&quot;subheader&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:8:&quot;fe_group&quot;;N;s:11:&quot;header_link&quot;;N;s:21:&quot;imagecaption_position&quot;;N;s:10:&quot;image_link&quot;;N;s:10:&quot;image_zoom&quot;;N;s:12:&quot;image_noRows&quot;;N;s:13:&quot;image_effects&quot;;N;s:17:&quot;image_compression&quot;;N;s:13:&quot;header_layout&quot;;N;s:10:&quot;text_align&quot;;N;s:9:&quot;text_face&quot;;N;s:9:&quot;text_size&quot;;N;s:10:&quot;text_color&quot;;N;s:15:&quot;text_properties&quot;;N;s:9:&quot;menu_type&quot;;N;s:9:&quot;list_type&quot;;N;s:12:&quot;table_border&quot;;N;s:17:&quot;table_cellspacing&quot;;N;s:17:&quot;table_cellpadding&quot;;N;s:13:&quot;table_bgColor&quot;;N;s:10:&quot;select_key&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:13:&quot;filelink_size&quot;;N;s:13:&quot;section_frame&quot;;N;s:4:&quot;date&quot;;N;s:13:&quot;splash_layout&quot;;N;s:10:&quot;multimedia&quot;;N;s:12:&quot;image_frames&quot;;N;s:9:&quot;recursive&quot;;N;s:11:&quot;imageheight&quot;;N;s:11:&quot;rte_enabled&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:17:&quot;tx_impexp_origuid&quot;;N;s:11:&quot;pi_flexform&quot;;N;s:17:&quot;tx_templavoila_ds&quot;;N;s:17:&quot;tx_templavoila_to&quot;;N;s:19:&quot;tx_templavoila_flex&quot;;N;s:19:&quot;tx_templavoila_pito&quot;;N;}</field>
-				<field index="tx_templavoila_ds"></field>
-				<field index="tx_templavoila_to">0</field>
-				<field index="tx_templavoila_flex"></field>
-				<field index="tx_templavoila_pito">0</field>
+				<field index="l18n_diffsource">a:61:{s:6:&quot;hidden&quot;;N;s:5:&quot;CType&quot;;N;s:6:&quot;header&quot;;N;s:15:&quot;header_position&quot;;N;s:8:&quot;bodytext&quot;;N;s:5:&quot;image&quot;;N;s:10:&quot;imagewidth&quot;;N;s:11:&quot;imageorient&quot;;N;s:12:&quot;imagecaption&quot;;N;s:9:&quot;imagecols&quot;;N;s:11:&quot;imageborder&quot;;N;s:5:&quot;media&quot;;N;s:6:&quot;layout&quot;;N;s:4:&quot;cols&quot;;N;s:7:&quot;records&quot;;N;s:5:&quot;pages&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:6:&quot;colPos&quot;;N;s:9:&quot;subheader&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:8:&quot;fe_group&quot;;N;s:11:&quot;header_link&quot;;N;s:21:&quot;imagecaption_position&quot;;N;s:10:&quot;image_link&quot;;N;s:10:&quot;image_zoom&quot;;N;s:12:&quot;image_noRows&quot;;N;s:13:&quot;image_effects&quot;;N;s:17:&quot;image_compression&quot;;N;s:13:&quot;header_layout&quot;;N;s:10:&quot;text_align&quot;;N;s:9:&quot;text_face&quot;;N;s:9:&quot;text_size&quot;;N;s:10:&quot;text_color&quot;;N;s:15:&quot;text_properties&quot;;N;s:9:&quot;menu_type&quot;;N;s:9:&quot;list_type&quot;;N;s:12:&quot;table_border&quot;;N;s:17:&quot;table_cellspacing&quot;;N;s:17:&quot;table_cellpadding&quot;;N;s:13:&quot;table_bgColor&quot;;N;s:10:&quot;select_key&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:13:&quot;filelink_size&quot;;N;s:13:&quot;section_frame&quot;;N;s:4:&quot;date&quot;;N;s:13:&quot;splash_layout&quot;;N;s:10:&quot;multimedia&quot;;N;s:12:&quot;image_frames&quot;;N;s:9:&quot;recursive&quot;;N;s:11:&quot;imageheight&quot;;N;s:11:&quot;rte_enabled&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:17:&quot;tx_impexp_origuid&quot;;N;s:11:&quot;pi_flexform&quot;;N;s:17:&quot;tx_templavoilaplus_ds&quot;;N;s:17:&quot;tx_templavoilaplus_to&quot;;N;s:19:&quot;tx_templavoilaplus_flex&quot;;N;s:19:&quot;tx_templavoilaplus_pito&quot;;N;}</field>
+				<field index="tx_templavoilaplus_ds"></field>
+				<field index="tx_templavoilaplus_to">0</field>
+				<field index="tx_templavoilaplus_flex"></field>
+				<field index="tx_templavoilaplus_pito">0</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
@@ -6094,11 +6094,11 @@
 				<field index="alias"></field>
 				<field index="l18n_cfg">0</field>
 				<field index="fe_login_mode">0</field>
-				<field index="tx_templavoila_ds"></field>
-				<field index="tx_templavoila_to">0</field>
-				<field index="tx_templavoila_next_ds"></field>
-				<field index="tx_templavoila_next_to">0</field>
-				<field index="tx_templavoila_flex">&lt;?xml version=&quot;1.0&quot; encoding=&quot;iso-8859-1&quot; standalone=&quot;yes&quot; ?&gt;
+				<field index="tx_templavoilaplus_ds"></field>
+				<field index="tx_templavoilaplus_to">0</field>
+				<field index="tx_templavoilaplus_next_ds"></field>
+				<field index="tx_templavoilaplus_next_to">0</field>
+				<field index="tx_templavoilaplus_flex">&lt;?xml version=&quot;1.0&quot; encoding=&quot;iso-8859-1&quot; standalone=&quot;yes&quot; ?&gt;
 					&lt;T3FlexForms&gt;
 					&lt;meta&gt;
 					&lt;currentSheetId&gt;sDEF&lt;/currentSheetId&gt;
@@ -6115,7 +6115,7 @@
 					&lt;/T3FlexForms&gt;</field>
 			</fieldlist>
 			<related index="rels" type="array">
-				<field index="tx_templavoila_flex" type="array">
+				<field index="tx_templavoilaplus_flex" type="array">
 					<type>flex</type>
 					<flexform index="flexFormRels" type="array">
 						<db_relations index="db" type="array">
@@ -6220,10 +6220,10 @@
 				<field index="pi_flexform"></field>
 				<field index="l18n_parent">0</field>
 				<field index="l18n_diffsource">a:1:{s:9:&quot;subheader&quot;;N;}</field>
-				<field index="tx_templavoila_ds"></field>
-				<field index="tx_templavoila_to">0</field>
-				<field index="tx_templavoila_flex"></field>
-				<field index="tx_templavoila_pito">0</field>
+				<field index="tx_templavoilaplus_ds"></field>
+				<field index="tx_templavoilaplus_to">0</field>
+				<field index="tx_templavoilaplus_flex"></field>
+				<field index="tx_templavoilaplus_pito">0</field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="pages" type="array">
@@ -6319,11 +6319,11 @@
 				<field index="alias"></field>
 				<field index="l18n_cfg">0</field>
 				<field index="fe_login_mode">0</field>
-				<field index="tx_templavoila_ds"></field>
-				<field index="tx_templavoila_to">0</field>
-				<field index="tx_templavoila_next_ds"></field>
-				<field index="tx_templavoila_next_to">0</field>
-				<field index="tx_templavoila_flex">&lt;?xml version=&quot;1.0&quot; encoding=&quot;iso-8859-1&quot; standalone=&quot;yes&quot; ?&gt;
+				<field index="tx_templavoilaplus_ds"></field>
+				<field index="tx_templavoilaplus_to">0</field>
+				<field index="tx_templavoilaplus_next_ds"></field>
+				<field index="tx_templavoilaplus_next_to">0</field>
+				<field index="tx_templavoilaplus_flex">&lt;?xml version=&quot;1.0&quot; encoding=&quot;iso-8859-1&quot; standalone=&quot;yes&quot; ?&gt;
 					&lt;T3FlexForms&gt;
 					&lt;meta&gt;
 					&lt;currentSheetId&gt;sDEF&lt;/currentSheetId&gt;
@@ -6340,7 +6340,7 @@
 					&lt;/T3FlexForms&gt;</field>
 			</fieldlist>
 			<related index="rels" type="array">
-				<field index="tx_templavoila_flex" type="array">
+				<field index="tx_templavoilaplus_flex" type="array">
 					<type>flex</type>
 					<flexform index="flexFormRels" type="array">
 						<db_relations index="db" type="array">
@@ -6439,11 +6439,11 @@
 				<field index="tx_impexp_origuid">20</field>
 				<field index="pi_flexform"></field>
 				<field index="l18n_parent">0</field>
-				<field index="l18n_diffsource">a:61:{s:6:&quot;hidden&quot;;N;s:5:&quot;CType&quot;;N;s:6:&quot;header&quot;;N;s:15:&quot;header_position&quot;;N;s:8:&quot;bodytext&quot;;N;s:5:&quot;image&quot;;N;s:10:&quot;imagewidth&quot;;N;s:11:&quot;imageorient&quot;;N;s:12:&quot;imagecaption&quot;;N;s:9:&quot;imagecols&quot;;N;s:11:&quot;imageborder&quot;;N;s:5:&quot;media&quot;;N;s:6:&quot;layout&quot;;N;s:4:&quot;cols&quot;;N;s:7:&quot;records&quot;;N;s:5:&quot;pages&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:6:&quot;colPos&quot;;N;s:9:&quot;subheader&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:8:&quot;fe_group&quot;;N;s:11:&quot;header_link&quot;;N;s:21:&quot;imagecaption_position&quot;;N;s:10:&quot;image_link&quot;;N;s:10:&quot;image_zoom&quot;;N;s:12:&quot;image_noRows&quot;;N;s:13:&quot;image_effects&quot;;N;s:17:&quot;image_compression&quot;;N;s:13:&quot;header_layout&quot;;N;s:10:&quot;text_align&quot;;N;s:9:&quot;text_face&quot;;N;s:9:&quot;text_size&quot;;N;s:10:&quot;text_color&quot;;N;s:15:&quot;text_properties&quot;;N;s:9:&quot;menu_type&quot;;N;s:9:&quot;list_type&quot;;N;s:12:&quot;table_border&quot;;N;s:17:&quot;table_cellspacing&quot;;N;s:17:&quot;table_cellpadding&quot;;N;s:13:&quot;table_bgColor&quot;;N;s:10:&quot;select_key&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:13:&quot;filelink_size&quot;;N;s:13:&quot;section_frame&quot;;N;s:4:&quot;date&quot;;N;s:13:&quot;splash_layout&quot;;N;s:10:&quot;multimedia&quot;;N;s:12:&quot;image_frames&quot;;N;s:9:&quot;recursive&quot;;N;s:11:&quot;imageheight&quot;;N;s:11:&quot;rte_enabled&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:17:&quot;tx_impexp_origuid&quot;;N;s:11:&quot;pi_flexform&quot;;N;s:17:&quot;tx_templavoila_ds&quot;;N;s:17:&quot;tx_templavoila_to&quot;;N;s:19:&quot;tx_templavoila_flex&quot;;N;s:19:&quot;tx_templavoila_pito&quot;;N;}</field>
-				<field index="tx_templavoila_ds"></field>
-				<field index="tx_templavoila_to">0</field>
-				<field index="tx_templavoila_flex"></field>
-				<field index="tx_templavoila_pito">0</field>
+				<field index="l18n_diffsource">a:61:{s:6:&quot;hidden&quot;;N;s:5:&quot;CType&quot;;N;s:6:&quot;header&quot;;N;s:15:&quot;header_position&quot;;N;s:8:&quot;bodytext&quot;;N;s:5:&quot;image&quot;;N;s:10:&quot;imagewidth&quot;;N;s:11:&quot;imageorient&quot;;N;s:12:&quot;imagecaption&quot;;N;s:9:&quot;imagecols&quot;;N;s:11:&quot;imageborder&quot;;N;s:5:&quot;media&quot;;N;s:6:&quot;layout&quot;;N;s:4:&quot;cols&quot;;N;s:7:&quot;records&quot;;N;s:5:&quot;pages&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:6:&quot;colPos&quot;;N;s:9:&quot;subheader&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:8:&quot;fe_group&quot;;N;s:11:&quot;header_link&quot;;N;s:21:&quot;imagecaption_position&quot;;N;s:10:&quot;image_link&quot;;N;s:10:&quot;image_zoom&quot;;N;s:12:&quot;image_noRows&quot;;N;s:13:&quot;image_effects&quot;;N;s:17:&quot;image_compression&quot;;N;s:13:&quot;header_layout&quot;;N;s:10:&quot;text_align&quot;;N;s:9:&quot;text_face&quot;;N;s:9:&quot;text_size&quot;;N;s:10:&quot;text_color&quot;;N;s:15:&quot;text_properties&quot;;N;s:9:&quot;menu_type&quot;;N;s:9:&quot;list_type&quot;;N;s:12:&quot;table_border&quot;;N;s:17:&quot;table_cellspacing&quot;;N;s:17:&quot;table_cellpadding&quot;;N;s:13:&quot;table_bgColor&quot;;N;s:10:&quot;select_key&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:13:&quot;filelink_size&quot;;N;s:13:&quot;section_frame&quot;;N;s:4:&quot;date&quot;;N;s:13:&quot;splash_layout&quot;;N;s:10:&quot;multimedia&quot;;N;s:12:&quot;image_frames&quot;;N;s:9:&quot;recursive&quot;;N;s:11:&quot;imageheight&quot;;N;s:11:&quot;rte_enabled&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:17:&quot;tx_impexp_origuid&quot;;N;s:11:&quot;pi_flexform&quot;;N;s:17:&quot;tx_templavoilaplus_ds&quot;;N;s:17:&quot;tx_templavoilaplus_to&quot;;N;s:19:&quot;tx_templavoilaplus_flex&quot;;N;s:19:&quot;tx_templavoilaplus_pito&quot;;N;}</field>
+				<field index="tx_templavoilaplus_ds"></field>
+				<field index="tx_templavoilaplus_to">0</field>
+				<field index="tx_templavoilaplus_flex"></field>
+				<field index="tx_templavoilaplus_pito">0</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
@@ -6512,11 +6512,11 @@
 				<field index="alias"></field>
 				<field index="l18n_cfg">0</field>
 				<field index="fe_login_mode">0</field>
-				<field index="tx_templavoila_ds"></field>
-				<field index="tx_templavoila_to">0</field>
-				<field index="tx_templavoila_next_ds"></field>
-				<field index="tx_templavoila_next_to">0</field>
-				<field index="tx_templavoila_flex">&lt;?xml version=&quot;1.0&quot; encoding=&quot;iso-8859-1&quot; standalone=&quot;yes&quot; ?&gt;
+				<field index="tx_templavoilaplus_ds"></field>
+				<field index="tx_templavoilaplus_to">0</field>
+				<field index="tx_templavoilaplus_next_ds"></field>
+				<field index="tx_templavoilaplus_next_to">0</field>
+				<field index="tx_templavoilaplus_flex">&lt;?xml version=&quot;1.0&quot; encoding=&quot;iso-8859-1&quot; standalone=&quot;yes&quot; ?&gt;
 					&lt;T3FlexForms&gt;
 					&lt;meta&gt;
 					&lt;currentSheetId&gt;sDEF&lt;/currentSheetId&gt;
@@ -6533,7 +6533,7 @@
 					&lt;/T3FlexForms&gt;</field>
 			</fieldlist>
 			<related index="rels" type="array">
-				<field index="tx_templavoila_flex" type="array">
+				<field index="tx_templavoilaplus_flex" type="array">
 					<type>flex</type>
 					<flexform index="flexFormRels" type="array">
 						<db_relations index="db" type="array">
@@ -6649,10 +6649,10 @@
 				<field index="pi_flexform"></field>
 				<field index="l18n_parent">0</field>
 				<field index="l18n_diffsource">a:24:{s:5:&quot;CType&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:6:&quot;colPos&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:13:&quot;section_frame&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:6:&quot;header&quot;;N;s:15:&quot;header_position&quot;;N;s:13:&quot;header_layout&quot;;N;s:11:&quot;header_link&quot;;N;s:4:&quot;date&quot;;N;s:6:&quot;layout&quot;;N;s:13:&quot;table_bgColor&quot;;N;s:12:&quot;table_border&quot;;N;s:17:&quot;table_cellspacing&quot;;N;s:17:&quot;table_cellpadding&quot;;N;s:4:&quot;cols&quot;;N;s:8:&quot;bodytext&quot;;N;s:6:&quot;hidden&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:8:&quot;fe_group&quot;;N;}</field>
-				<field index="tx_templavoila_ds"></field>
-				<field index="tx_templavoila_to">0</field>
-				<field index="tx_templavoila_flex"></field>
-				<field index="tx_templavoila_pito">0</field>
+				<field index="tx_templavoilaplus_ds"></field>
+				<field index="tx_templavoilaplus_to">0</field>
+				<field index="tx_templavoilaplus_flex"></field>
+				<field index="tx_templavoilaplus_pito">0</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
@@ -6744,10 +6744,10 @@
 				<field index="pi_flexform"></field>
 				<field index="l18n_parent">0</field>
 				<field index="l18n_diffsource">a:24:{s:5:&quot;CType&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:6:&quot;colPos&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:13:&quot;section_frame&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:6:&quot;header&quot;;N;s:15:&quot;header_position&quot;;N;s:13:&quot;header_layout&quot;;N;s:11:&quot;header_link&quot;;N;s:4:&quot;date&quot;;N;s:6:&quot;layout&quot;;N;s:13:&quot;table_bgColor&quot;;N;s:12:&quot;table_border&quot;;N;s:17:&quot;table_cellspacing&quot;;N;s:17:&quot;table_cellpadding&quot;;N;s:4:&quot;cols&quot;;N;s:8:&quot;bodytext&quot;;N;s:6:&quot;hidden&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:8:&quot;fe_group&quot;;N;}</field>
-				<field index="tx_templavoila_ds"></field>
-				<field index="tx_templavoila_to">0</field>
-				<field index="tx_templavoila_flex"></field>
-				<field index="tx_templavoila_pito">0</field>
+				<field index="tx_templavoilaplus_ds"></field>
+				<field index="tx_templavoilaplus_to">0</field>
+				<field index="tx_templavoilaplus_flex"></field>
+				<field index="tx_templavoilaplus_pito">0</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
@@ -6837,10 +6837,10 @@
 				<field index="pi_flexform"></field>
 				<field index="l18n_parent">0</field>
 				<field index="l18n_diffsource">a:24:{s:5:&quot;CType&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:6:&quot;colPos&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:13:&quot;section_frame&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:6:&quot;header&quot;;N;s:15:&quot;header_position&quot;;N;s:13:&quot;header_layout&quot;;N;s:11:&quot;header_link&quot;;N;s:4:&quot;date&quot;;N;s:6:&quot;layout&quot;;N;s:13:&quot;table_bgColor&quot;;N;s:12:&quot;table_border&quot;;N;s:17:&quot;table_cellspacing&quot;;N;s:17:&quot;table_cellpadding&quot;;N;s:4:&quot;cols&quot;;N;s:8:&quot;bodytext&quot;;N;s:6:&quot;hidden&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:8:&quot;fe_group&quot;;N;}</field>
-				<field index="tx_templavoila_ds"></field>
-				<field index="tx_templavoila_to">0</field>
-				<field index="tx_templavoila_flex"></field>
-				<field index="tx_templavoila_pito">0</field>
+				<field index="tx_templavoilaplus_ds"></field>
+				<field index="tx_templavoilaplus_to">0</field>
+				<field index="tx_templavoilaplus_flex"></field>
+				<field index="tx_templavoilaplus_pito">0</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
@@ -6939,10 +6939,10 @@
 				<field index="pi_flexform"></field>
 				<field index="l18n_parent">0</field>
 				<field index="l18n_diffsource">a:1:{s:8:&quot;bodytext&quot;;N;}</field>
-				<field index="tx_templavoila_ds"></field>
-				<field index="tx_templavoila_to">0</field>
-				<field index="tx_templavoila_flex"></field>
-				<field index="tx_templavoila_pito">0</field>
+				<field index="tx_templavoilaplus_ds"></field>
+				<field index="tx_templavoilaplus_to">0</field>
+				<field index="tx_templavoilaplus_flex"></field>
+				<field index="tx_templavoilaplus_pito">0</field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="bodytext" type="array">
@@ -7085,11 +7085,11 @@
 				<field index="alias"></field>
 				<field index="l18n_cfg">0</field>
 				<field index="fe_login_mode">0</field>
-				<field index="tx_templavoila_ds"></field>
-				<field index="tx_templavoila_to">0</field>
-				<field index="tx_templavoila_next_ds"></field>
-				<field index="tx_templavoila_next_to">0</field>
-				<field index="tx_templavoila_flex">&lt;?xml version=&quot;1.0&quot; encoding=&quot;iso-8859-1&quot; standalone=&quot;yes&quot; ?&gt;
+				<field index="tx_templavoilaplus_ds"></field>
+				<field index="tx_templavoilaplus_to">0</field>
+				<field index="tx_templavoilaplus_next_ds"></field>
+				<field index="tx_templavoilaplus_next_to">0</field>
+				<field index="tx_templavoilaplus_flex">&lt;?xml version=&quot;1.0&quot; encoding=&quot;iso-8859-1&quot; standalone=&quot;yes&quot; ?&gt;
 					&lt;T3FlexForms&gt;
 					&lt;meta&gt;
 					&lt;currentSheetId&gt;sDEF&lt;/currentSheetId&gt;
@@ -7106,7 +7106,7 @@
 					&lt;/T3FlexForms&gt;</field>
 			</fieldlist>
 			<related index="rels" type="array">
-				<field index="tx_templavoila_flex" type="array">
+				<field index="tx_templavoilaplus_flex" type="array">
 					<type>flex</type>
 					<flexform index="flexFormRels" type="array">
 						<db_relations index="db" type="array">
@@ -7229,10 +7229,10 @@
 				<field index="pi_flexform"></field>
 				<field index="l18n_parent">0</field>
 				<field index="l18n_diffsource">a:1:{s:8:&quot;bodytext&quot;;N;}</field>
-				<field index="tx_templavoila_ds"></field>
-				<field index="tx_templavoila_to">0</field>
-				<field index="tx_templavoila_flex"></field>
-				<field index="tx_templavoila_pito">0</field>
+				<field index="tx_templavoilaplus_ds"></field>
+				<field index="tx_templavoilaplus_to">0</field>
+				<field index="tx_templavoilaplus_flex"></field>
+				<field index="tx_templavoilaplus_pito">0</field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="bodytext" type="array">
@@ -7366,11 +7366,11 @@
 				<field index="tx_impexp_origuid">14</field>
 				<field index="pi_flexform"></field>
 				<field index="l18n_parent">0</field>
-				<field index="l18n_diffsource">a:61:{s:6:&quot;hidden&quot;;N;s:5:&quot;CType&quot;;N;s:6:&quot;header&quot;;N;s:15:&quot;header_position&quot;;N;s:8:&quot;bodytext&quot;;N;s:5:&quot;image&quot;;N;s:10:&quot;imagewidth&quot;;N;s:11:&quot;imageorient&quot;;N;s:12:&quot;imagecaption&quot;;N;s:9:&quot;imagecols&quot;;N;s:11:&quot;imageborder&quot;;N;s:5:&quot;media&quot;;N;s:6:&quot;layout&quot;;N;s:4:&quot;cols&quot;;N;s:7:&quot;records&quot;;N;s:5:&quot;pages&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:6:&quot;colPos&quot;;N;s:9:&quot;subheader&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:8:&quot;fe_group&quot;;N;s:11:&quot;header_link&quot;;N;s:21:&quot;imagecaption_position&quot;;N;s:10:&quot;image_link&quot;;N;s:10:&quot;image_zoom&quot;;N;s:12:&quot;image_noRows&quot;;N;s:13:&quot;image_effects&quot;;N;s:17:&quot;image_compression&quot;;N;s:13:&quot;header_layout&quot;;N;s:10:&quot;text_align&quot;;N;s:9:&quot;text_face&quot;;N;s:9:&quot;text_size&quot;;N;s:10:&quot;text_color&quot;;N;s:15:&quot;text_properties&quot;;N;s:9:&quot;menu_type&quot;;N;s:9:&quot;list_type&quot;;N;s:12:&quot;table_border&quot;;N;s:17:&quot;table_cellspacing&quot;;N;s:17:&quot;table_cellpadding&quot;;N;s:13:&quot;table_bgColor&quot;;N;s:10:&quot;select_key&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:13:&quot;filelink_size&quot;;N;s:13:&quot;section_frame&quot;;N;s:4:&quot;date&quot;;N;s:13:&quot;splash_layout&quot;;N;s:10:&quot;multimedia&quot;;N;s:12:&quot;image_frames&quot;;N;s:9:&quot;recursive&quot;;N;s:11:&quot;imageheight&quot;;N;s:11:&quot;rte_enabled&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:17:&quot;tx_impexp_origuid&quot;;N;s:11:&quot;pi_flexform&quot;;N;s:17:&quot;tx_templavoila_ds&quot;;N;s:17:&quot;tx_templavoila_to&quot;;N;s:19:&quot;tx_templavoila_flex&quot;;N;s:19:&quot;tx_templavoila_pito&quot;;N;}</field>
-				<field index="tx_templavoila_ds"></field>
-				<field index="tx_templavoila_to">0</field>
-				<field index="tx_templavoila_flex"></field>
-				<field index="tx_templavoila_pito">0</field>
+				<field index="l18n_diffsource">a:61:{s:6:&quot;hidden&quot;;N;s:5:&quot;CType&quot;;N;s:6:&quot;header&quot;;N;s:15:&quot;header_position&quot;;N;s:8:&quot;bodytext&quot;;N;s:5:&quot;image&quot;;N;s:10:&quot;imagewidth&quot;;N;s:11:&quot;imageorient&quot;;N;s:12:&quot;imagecaption&quot;;N;s:9:&quot;imagecols&quot;;N;s:11:&quot;imageborder&quot;;N;s:5:&quot;media&quot;;N;s:6:&quot;layout&quot;;N;s:4:&quot;cols&quot;;N;s:7:&quot;records&quot;;N;s:5:&quot;pages&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:6:&quot;colPos&quot;;N;s:9:&quot;subheader&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:8:&quot;fe_group&quot;;N;s:11:&quot;header_link&quot;;N;s:21:&quot;imagecaption_position&quot;;N;s:10:&quot;image_link&quot;;N;s:10:&quot;image_zoom&quot;;N;s:12:&quot;image_noRows&quot;;N;s:13:&quot;image_effects&quot;;N;s:17:&quot;image_compression&quot;;N;s:13:&quot;header_layout&quot;;N;s:10:&quot;text_align&quot;;N;s:9:&quot;text_face&quot;;N;s:9:&quot;text_size&quot;;N;s:10:&quot;text_color&quot;;N;s:15:&quot;text_properties&quot;;N;s:9:&quot;menu_type&quot;;N;s:9:&quot;list_type&quot;;N;s:12:&quot;table_border&quot;;N;s:17:&quot;table_cellspacing&quot;;N;s:17:&quot;table_cellpadding&quot;;N;s:13:&quot;table_bgColor&quot;;N;s:10:&quot;select_key&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:13:&quot;filelink_size&quot;;N;s:13:&quot;section_frame&quot;;N;s:4:&quot;date&quot;;N;s:13:&quot;splash_layout&quot;;N;s:10:&quot;multimedia&quot;;N;s:12:&quot;image_frames&quot;;N;s:9:&quot;recursive&quot;;N;s:11:&quot;imageheight&quot;;N;s:11:&quot;rte_enabled&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:17:&quot;tx_impexp_origuid&quot;;N;s:11:&quot;pi_flexform&quot;;N;s:17:&quot;tx_templavoilaplus_ds&quot;;N;s:17:&quot;tx_templavoilaplus_to&quot;;N;s:19:&quot;tx_templavoilaplus_flex&quot;;N;s:19:&quot;tx_templavoilaplus_pito&quot;;N;}</field>
+				<field index="tx_templavoilaplus_ds"></field>
+				<field index="tx_templavoilaplus_to">0</field>
+				<field index="tx_templavoilaplus_flex"></field>
+				<field index="tx_templavoilaplus_pito">0</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
@@ -7458,11 +7458,11 @@
 				<field index="tx_impexp_origuid">13</field>
 				<field index="pi_flexform"></field>
 				<field index="l18n_parent">0</field>
-				<field index="l18n_diffsource">a:61:{s:6:&quot;hidden&quot;;N;s:5:&quot;CType&quot;;N;s:6:&quot;header&quot;;N;s:15:&quot;header_position&quot;;N;s:8:&quot;bodytext&quot;;N;s:5:&quot;image&quot;;N;s:10:&quot;imagewidth&quot;;N;s:11:&quot;imageorient&quot;;N;s:12:&quot;imagecaption&quot;;N;s:9:&quot;imagecols&quot;;N;s:11:&quot;imageborder&quot;;N;s:5:&quot;media&quot;;N;s:6:&quot;layout&quot;;N;s:4:&quot;cols&quot;;N;s:7:&quot;records&quot;;N;s:5:&quot;pages&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:6:&quot;colPos&quot;;N;s:9:&quot;subheader&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:8:&quot;fe_group&quot;;N;s:11:&quot;header_link&quot;;N;s:21:&quot;imagecaption_position&quot;;N;s:10:&quot;image_link&quot;;N;s:10:&quot;image_zoom&quot;;N;s:12:&quot;image_noRows&quot;;N;s:13:&quot;image_effects&quot;;N;s:17:&quot;image_compression&quot;;N;s:13:&quot;header_layout&quot;;N;s:10:&quot;text_align&quot;;N;s:9:&quot;text_face&quot;;N;s:9:&quot;text_size&quot;;N;s:10:&quot;text_color&quot;;N;s:15:&quot;text_properties&quot;;N;s:9:&quot;menu_type&quot;;N;s:9:&quot;list_type&quot;;N;s:12:&quot;table_border&quot;;N;s:17:&quot;table_cellspacing&quot;;N;s:17:&quot;table_cellpadding&quot;;N;s:13:&quot;table_bgColor&quot;;N;s:10:&quot;select_key&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:13:&quot;filelink_size&quot;;N;s:13:&quot;section_frame&quot;;N;s:4:&quot;date&quot;;N;s:13:&quot;splash_layout&quot;;N;s:10:&quot;multimedia&quot;;N;s:12:&quot;image_frames&quot;;N;s:9:&quot;recursive&quot;;N;s:11:&quot;imageheight&quot;;N;s:11:&quot;rte_enabled&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:17:&quot;tx_impexp_origuid&quot;;N;s:11:&quot;pi_flexform&quot;;N;s:17:&quot;tx_templavoila_ds&quot;;N;s:17:&quot;tx_templavoila_to&quot;;N;s:19:&quot;tx_templavoila_flex&quot;;N;s:19:&quot;tx_templavoila_pito&quot;;N;}</field>
-				<field index="tx_templavoila_ds"></field>
-				<field index="tx_templavoila_to">0</field>
-				<field index="tx_templavoila_flex"></field>
-				<field index="tx_templavoila_pito">0</field>
+				<field index="l18n_diffsource">a:61:{s:6:&quot;hidden&quot;;N;s:5:&quot;CType&quot;;N;s:6:&quot;header&quot;;N;s:15:&quot;header_position&quot;;N;s:8:&quot;bodytext&quot;;N;s:5:&quot;image&quot;;N;s:10:&quot;imagewidth&quot;;N;s:11:&quot;imageorient&quot;;N;s:12:&quot;imagecaption&quot;;N;s:9:&quot;imagecols&quot;;N;s:11:&quot;imageborder&quot;;N;s:5:&quot;media&quot;;N;s:6:&quot;layout&quot;;N;s:4:&quot;cols&quot;;N;s:7:&quot;records&quot;;N;s:5:&quot;pages&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:6:&quot;colPos&quot;;N;s:9:&quot;subheader&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:8:&quot;fe_group&quot;;N;s:11:&quot;header_link&quot;;N;s:21:&quot;imagecaption_position&quot;;N;s:10:&quot;image_link&quot;;N;s:10:&quot;image_zoom&quot;;N;s:12:&quot;image_noRows&quot;;N;s:13:&quot;image_effects&quot;;N;s:17:&quot;image_compression&quot;;N;s:13:&quot;header_layout&quot;;N;s:10:&quot;text_align&quot;;N;s:9:&quot;text_face&quot;;N;s:9:&quot;text_size&quot;;N;s:10:&quot;text_color&quot;;N;s:15:&quot;text_properties&quot;;N;s:9:&quot;menu_type&quot;;N;s:9:&quot;list_type&quot;;N;s:12:&quot;table_border&quot;;N;s:17:&quot;table_cellspacing&quot;;N;s:17:&quot;table_cellpadding&quot;;N;s:13:&quot;table_bgColor&quot;;N;s:10:&quot;select_key&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:13:&quot;filelink_size&quot;;N;s:13:&quot;section_frame&quot;;N;s:4:&quot;date&quot;;N;s:13:&quot;splash_layout&quot;;N;s:10:&quot;multimedia&quot;;N;s:12:&quot;image_frames&quot;;N;s:9:&quot;recursive&quot;;N;s:11:&quot;imageheight&quot;;N;s:11:&quot;rte_enabled&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:17:&quot;tx_impexp_origuid&quot;;N;s:11:&quot;pi_flexform&quot;;N;s:17:&quot;tx_templavoilaplus_ds&quot;;N;s:17:&quot;tx_templavoilaplus_to&quot;;N;s:19:&quot;tx_templavoilaplus_flex&quot;;N;s:19:&quot;tx_templavoilaplus_pito&quot;;N;}</field>
+				<field index="tx_templavoilaplus_ds"></field>
+				<field index="tx_templavoilaplus_to">0</field>
+				<field index="tx_templavoilaplus_flex"></field>
+				<field index="tx_templavoilaplus_pito">0</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
@@ -7550,11 +7550,11 @@
 				<field index="tx_impexp_origuid">12</field>
 				<field index="pi_flexform"></field>
 				<field index="l18n_parent">0</field>
-				<field index="l18n_diffsource">a:61:{s:6:&quot;hidden&quot;;N;s:5:&quot;CType&quot;;N;s:6:&quot;header&quot;;N;s:15:&quot;header_position&quot;;N;s:8:&quot;bodytext&quot;;N;s:5:&quot;image&quot;;N;s:10:&quot;imagewidth&quot;;N;s:11:&quot;imageorient&quot;;N;s:12:&quot;imagecaption&quot;;N;s:9:&quot;imagecols&quot;;N;s:11:&quot;imageborder&quot;;N;s:5:&quot;media&quot;;N;s:6:&quot;layout&quot;;N;s:4:&quot;cols&quot;;N;s:7:&quot;records&quot;;N;s:5:&quot;pages&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:6:&quot;colPos&quot;;N;s:9:&quot;subheader&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:8:&quot;fe_group&quot;;N;s:11:&quot;header_link&quot;;N;s:21:&quot;imagecaption_position&quot;;N;s:10:&quot;image_link&quot;;N;s:10:&quot;image_zoom&quot;;N;s:12:&quot;image_noRows&quot;;N;s:13:&quot;image_effects&quot;;N;s:17:&quot;image_compression&quot;;N;s:13:&quot;header_layout&quot;;N;s:10:&quot;text_align&quot;;N;s:9:&quot;text_face&quot;;N;s:9:&quot;text_size&quot;;N;s:10:&quot;text_color&quot;;N;s:15:&quot;text_properties&quot;;N;s:9:&quot;menu_type&quot;;N;s:9:&quot;list_type&quot;;N;s:12:&quot;table_border&quot;;N;s:17:&quot;table_cellspacing&quot;;N;s:17:&quot;table_cellpadding&quot;;N;s:13:&quot;table_bgColor&quot;;N;s:10:&quot;select_key&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:13:&quot;filelink_size&quot;;N;s:13:&quot;section_frame&quot;;N;s:4:&quot;date&quot;;N;s:13:&quot;splash_layout&quot;;N;s:10:&quot;multimedia&quot;;N;s:12:&quot;image_frames&quot;;N;s:9:&quot;recursive&quot;;N;s:11:&quot;imageheight&quot;;N;s:11:&quot;rte_enabled&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:17:&quot;tx_impexp_origuid&quot;;N;s:11:&quot;pi_flexform&quot;;N;s:17:&quot;tx_templavoila_ds&quot;;N;s:17:&quot;tx_templavoila_to&quot;;N;s:19:&quot;tx_templavoila_flex&quot;;N;s:19:&quot;tx_templavoila_pito&quot;;N;}</field>
-				<field index="tx_templavoila_ds"></field>
-				<field index="tx_templavoila_to">0</field>
-				<field index="tx_templavoila_flex"></field>
-				<field index="tx_templavoila_pito">0</field>
+				<field index="l18n_diffsource">a:61:{s:6:&quot;hidden&quot;;N;s:5:&quot;CType&quot;;N;s:6:&quot;header&quot;;N;s:15:&quot;header_position&quot;;N;s:8:&quot;bodytext&quot;;N;s:5:&quot;image&quot;;N;s:10:&quot;imagewidth&quot;;N;s:11:&quot;imageorient&quot;;N;s:12:&quot;imagecaption&quot;;N;s:9:&quot;imagecols&quot;;N;s:11:&quot;imageborder&quot;;N;s:5:&quot;media&quot;;N;s:6:&quot;layout&quot;;N;s:4:&quot;cols&quot;;N;s:7:&quot;records&quot;;N;s:5:&quot;pages&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:6:&quot;colPos&quot;;N;s:9:&quot;subheader&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:8:&quot;fe_group&quot;;N;s:11:&quot;header_link&quot;;N;s:21:&quot;imagecaption_position&quot;;N;s:10:&quot;image_link&quot;;N;s:10:&quot;image_zoom&quot;;N;s:12:&quot;image_noRows&quot;;N;s:13:&quot;image_effects&quot;;N;s:17:&quot;image_compression&quot;;N;s:13:&quot;header_layout&quot;;N;s:10:&quot;text_align&quot;;N;s:9:&quot;text_face&quot;;N;s:9:&quot;text_size&quot;;N;s:10:&quot;text_color&quot;;N;s:15:&quot;text_properties&quot;;N;s:9:&quot;menu_type&quot;;N;s:9:&quot;list_type&quot;;N;s:12:&quot;table_border&quot;;N;s:17:&quot;table_cellspacing&quot;;N;s:17:&quot;table_cellpadding&quot;;N;s:13:&quot;table_bgColor&quot;;N;s:10:&quot;select_key&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:13:&quot;filelink_size&quot;;N;s:13:&quot;section_frame&quot;;N;s:4:&quot;date&quot;;N;s:13:&quot;splash_layout&quot;;N;s:10:&quot;multimedia&quot;;N;s:12:&quot;image_frames&quot;;N;s:9:&quot;recursive&quot;;N;s:11:&quot;imageheight&quot;;N;s:11:&quot;rte_enabled&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:17:&quot;tx_impexp_origuid&quot;;N;s:11:&quot;pi_flexform&quot;;N;s:17:&quot;tx_templavoilaplus_ds&quot;;N;s:17:&quot;tx_templavoilaplus_to&quot;;N;s:19:&quot;tx_templavoilaplus_flex&quot;;N;s:19:&quot;tx_templavoilaplus_pito&quot;;N;}</field>
+				<field index="tx_templavoilaplus_ds"></field>
+				<field index="tx_templavoilaplus_to">0</field>
+				<field index="tx_templavoilaplus_flex"></field>
+				<field index="tx_templavoilaplus_pito">0</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
@@ -7623,11 +7623,11 @@
 				<field index="alias"></field>
 				<field index="l18n_cfg">0</field>
 				<field index="fe_login_mode">0</field>
-				<field index="tx_templavoila_ds"></field>
-				<field index="tx_templavoila_to">0</field>
-				<field index="tx_templavoila_next_ds"></field>
-				<field index="tx_templavoila_next_to">0</field>
-				<field index="tx_templavoila_flex">&lt;?xml version=&quot;1.0&quot; encoding=&quot;iso-8859-1&quot; standalone=&quot;yes&quot; ?&gt;
+				<field index="tx_templavoilaplus_ds"></field>
+				<field index="tx_templavoilaplus_to">0</field>
+				<field index="tx_templavoilaplus_next_ds"></field>
+				<field index="tx_templavoilaplus_next_to">0</field>
+				<field index="tx_templavoilaplus_flex">&lt;?xml version=&quot;1.0&quot; encoding=&quot;iso-8859-1&quot; standalone=&quot;yes&quot; ?&gt;
 					&lt;T3FlexForms&gt;
 					&lt;data&gt;
 					&lt;sheet index=&quot;sDEF&quot;&gt;
@@ -7641,7 +7641,7 @@
 					&lt;/T3FlexForms&gt;</field>
 			</fieldlist>
 			<related index="rels" type="array">
-				<field index="tx_templavoila_flex" type="array">
+				<field index="tx_templavoilaplus_flex" type="array">
 					<type>flex</type>
 					<flexform index="flexFormRels" type="array">
 						<db_relations index="db" type="array">
@@ -7782,10 +7782,10 @@
 				<field index="pi_flexform"></field>
 				<field index="l18n_parent">0</field>
 				<field index="l18n_diffsource">a:1:{s:8:&quot;bodytext&quot;;N;}</field>
-				<field index="tx_templavoila_ds"></field>
-				<field index="tx_templavoila_to">0</field>
-				<field index="tx_templavoila_flex"></field>
-				<field index="tx_templavoila_pito">0</field>
+				<field index="tx_templavoilaplus_ds"></field>
+				<field index="tx_templavoilaplus_to">0</field>
+				<field index="tx_templavoilaplus_flex"></field>
+				<field index="tx_templavoilaplus_pito">0</field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="bodytext" type="array">
@@ -7958,10 +7958,10 @@
 				<field index="pi_flexform"></field>
 				<field index="l18n_parent">0</field>
 				<field index="l18n_diffsource">a:2:{s:8:&quot;bodytext&quot;;N;s:12:&quot;imagecaption&quot;;N;}</field>
-				<field index="tx_templavoila_ds"></field>
-				<field index="tx_templavoila_to">0</field>
-				<field index="tx_templavoila_flex"></field>
-				<field index="tx_templavoila_pito">0</field>
+				<field index="tx_templavoilaplus_ds"></field>
+				<field index="tx_templavoilaplus_to">0</field>
+				<field index="tx_templavoilaplus_flex"></field>
+				<field index="tx_templavoilaplus_pito">0</field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="bodytext" type="array">
@@ -8109,11 +8109,11 @@
 				<field index="alias"></field>
 				<field index="l18n_cfg">0</field>
 				<field index="fe_login_mode">0</field>
-				<field index="tx_templavoila_ds"></field>
-				<field index="tx_templavoila_to">0</field>
-				<field index="tx_templavoila_next_ds"></field>
-				<field index="tx_templavoila_next_to">0</field>
-				<field index="tx_templavoila_flex">&lt;?xml version=&quot;1.0&quot; encoding=&quot;iso-8859-1&quot; standalone=&quot;yes&quot; ?&gt;
+				<field index="tx_templavoilaplus_ds"></field>
+				<field index="tx_templavoilaplus_to">0</field>
+				<field index="tx_templavoilaplus_next_ds"></field>
+				<field index="tx_templavoilaplus_next_to">0</field>
+				<field index="tx_templavoilaplus_flex">&lt;?xml version=&quot;1.0&quot; encoding=&quot;iso-8859-1&quot; standalone=&quot;yes&quot; ?&gt;
 					&lt;T3FlexForms&gt;
 					&lt;meta&gt;
 					&lt;currentSheetId&gt;sDEF&lt;/currentSheetId&gt;
@@ -8130,7 +8130,7 @@
 					&lt;/T3FlexForms&gt;</field>
 			</fieldlist>
 			<related index="rels" type="array">
-				<field index="tx_templavoila_flex" type="array">
+				<field index="tx_templavoilaplus_flex" type="array">
 					<type>flex</type>
 					<flexform index="flexFormRels" type="array">
 						<db_relations index="db" type="array">
@@ -8252,10 +8252,10 @@
 				<field index="pi_flexform"></field>
 				<field index="l18n_parent">0</field>
 				<field index="l18n_diffsource">a:1:{s:11:&quot;header_link&quot;;N;}</field>
-				<field index="tx_templavoila_ds"></field>
-				<field index="tx_templavoila_to">0</field>
-				<field index="tx_templavoila_flex"></field>
-				<field index="tx_templavoila_pito">0</field>
+				<field index="tx_templavoilaplus_ds"></field>
+				<field index="tx_templavoilaplus_to">0</field>
+				<field index="tx_templavoilaplus_flex"></field>
+				<field index="tx_templavoilaplus_pito">0</field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="header_link" type="array">
@@ -8357,11 +8357,11 @@
 				<field index="tx_impexp_origuid">8</field>
 				<field index="pi_flexform"></field>
 				<field index="l18n_parent">0</field>
-				<field index="l18n_diffsource">a:61:{s:6:&quot;hidden&quot;;N;s:5:&quot;CType&quot;;N;s:6:&quot;header&quot;;N;s:15:&quot;header_position&quot;;N;s:8:&quot;bodytext&quot;;N;s:5:&quot;image&quot;;N;s:10:&quot;imagewidth&quot;;N;s:11:&quot;imageorient&quot;;N;s:12:&quot;imagecaption&quot;;N;s:9:&quot;imagecols&quot;;N;s:11:&quot;imageborder&quot;;N;s:5:&quot;media&quot;;N;s:6:&quot;layout&quot;;N;s:4:&quot;cols&quot;;N;s:7:&quot;records&quot;;N;s:5:&quot;pages&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:6:&quot;colPos&quot;;N;s:9:&quot;subheader&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:8:&quot;fe_group&quot;;N;s:11:&quot;header_link&quot;;N;s:21:&quot;imagecaption_position&quot;;N;s:10:&quot;image_link&quot;;N;s:10:&quot;image_zoom&quot;;N;s:12:&quot;image_noRows&quot;;N;s:13:&quot;image_effects&quot;;N;s:17:&quot;image_compression&quot;;N;s:13:&quot;header_layout&quot;;N;s:10:&quot;text_align&quot;;N;s:9:&quot;text_face&quot;;N;s:9:&quot;text_size&quot;;N;s:10:&quot;text_color&quot;;N;s:15:&quot;text_properties&quot;;N;s:9:&quot;menu_type&quot;;N;s:9:&quot;list_type&quot;;N;s:12:&quot;table_border&quot;;N;s:17:&quot;table_cellspacing&quot;;N;s:17:&quot;table_cellpadding&quot;;N;s:13:&quot;table_bgColor&quot;;N;s:10:&quot;select_key&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:13:&quot;filelink_size&quot;;N;s:13:&quot;section_frame&quot;;N;s:4:&quot;date&quot;;N;s:13:&quot;splash_layout&quot;;N;s:10:&quot;multimedia&quot;;N;s:12:&quot;image_frames&quot;;N;s:9:&quot;recursive&quot;;N;s:11:&quot;imageheight&quot;;N;s:11:&quot;rte_enabled&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:17:&quot;tx_impexp_origuid&quot;;N;s:11:&quot;pi_flexform&quot;;N;s:17:&quot;tx_templavoila_ds&quot;;N;s:17:&quot;tx_templavoila_to&quot;;N;s:19:&quot;tx_templavoila_flex&quot;;N;s:19:&quot;tx_templavoila_pito&quot;;N;}</field>
-				<field index="tx_templavoila_ds"></field>
-				<field index="tx_templavoila_to">0</field>
-				<field index="tx_templavoila_flex"></field>
-				<field index="tx_templavoila_pito">0</field>
+				<field index="l18n_diffsource">a:61:{s:6:&quot;hidden&quot;;N;s:5:&quot;CType&quot;;N;s:6:&quot;header&quot;;N;s:15:&quot;header_position&quot;;N;s:8:&quot;bodytext&quot;;N;s:5:&quot;image&quot;;N;s:10:&quot;imagewidth&quot;;N;s:11:&quot;imageorient&quot;;N;s:12:&quot;imagecaption&quot;;N;s:9:&quot;imagecols&quot;;N;s:11:&quot;imageborder&quot;;N;s:5:&quot;media&quot;;N;s:6:&quot;layout&quot;;N;s:4:&quot;cols&quot;;N;s:7:&quot;records&quot;;N;s:5:&quot;pages&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:6:&quot;colPos&quot;;N;s:9:&quot;subheader&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:8:&quot;fe_group&quot;;N;s:11:&quot;header_link&quot;;N;s:21:&quot;imagecaption_position&quot;;N;s:10:&quot;image_link&quot;;N;s:10:&quot;image_zoom&quot;;N;s:12:&quot;image_noRows&quot;;N;s:13:&quot;image_effects&quot;;N;s:17:&quot;image_compression&quot;;N;s:13:&quot;header_layout&quot;;N;s:10:&quot;text_align&quot;;N;s:9:&quot;text_face&quot;;N;s:9:&quot;text_size&quot;;N;s:10:&quot;text_color&quot;;N;s:15:&quot;text_properties&quot;;N;s:9:&quot;menu_type&quot;;N;s:9:&quot;list_type&quot;;N;s:12:&quot;table_border&quot;;N;s:17:&quot;table_cellspacing&quot;;N;s:17:&quot;table_cellpadding&quot;;N;s:13:&quot;table_bgColor&quot;;N;s:10:&quot;select_key&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:13:&quot;filelink_size&quot;;N;s:13:&quot;section_frame&quot;;N;s:4:&quot;date&quot;;N;s:13:&quot;splash_layout&quot;;N;s:10:&quot;multimedia&quot;;N;s:12:&quot;image_frames&quot;;N;s:9:&quot;recursive&quot;;N;s:11:&quot;imageheight&quot;;N;s:11:&quot;rte_enabled&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:17:&quot;tx_impexp_origuid&quot;;N;s:11:&quot;pi_flexform&quot;;N;s:17:&quot;tx_templavoilaplus_ds&quot;;N;s:17:&quot;tx_templavoilaplus_to&quot;;N;s:19:&quot;tx_templavoilaplus_flex&quot;;N;s:19:&quot;tx_templavoilaplus_pito&quot;;N;}</field>
+				<field index="tx_templavoilaplus_ds"></field>
+				<field index="tx_templavoilaplus_to">0</field>
+				<field index="tx_templavoilaplus_flex"></field>
+				<field index="tx_templavoilaplus_pito">0</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
@@ -8445,11 +8445,11 @@
 				<field index="tx_impexp_origuid">7</field>
 				<field index="pi_flexform"></field>
 				<field index="l18n_parent">0</field>
-				<field index="l18n_diffsource">a:61:{s:6:&quot;hidden&quot;;N;s:5:&quot;CType&quot;;N;s:6:&quot;header&quot;;N;s:15:&quot;header_position&quot;;N;s:8:&quot;bodytext&quot;;N;s:5:&quot;image&quot;;N;s:10:&quot;imagewidth&quot;;N;s:11:&quot;imageorient&quot;;N;s:12:&quot;imagecaption&quot;;N;s:9:&quot;imagecols&quot;;N;s:11:&quot;imageborder&quot;;N;s:5:&quot;media&quot;;N;s:6:&quot;layout&quot;;N;s:4:&quot;cols&quot;;N;s:7:&quot;records&quot;;N;s:5:&quot;pages&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:6:&quot;colPos&quot;;N;s:9:&quot;subheader&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:8:&quot;fe_group&quot;;N;s:11:&quot;header_link&quot;;N;s:21:&quot;imagecaption_position&quot;;N;s:10:&quot;image_link&quot;;N;s:10:&quot;image_zoom&quot;;N;s:12:&quot;image_noRows&quot;;N;s:13:&quot;image_effects&quot;;N;s:17:&quot;image_compression&quot;;N;s:13:&quot;header_layout&quot;;N;s:10:&quot;text_align&quot;;N;s:9:&quot;text_face&quot;;N;s:9:&quot;text_size&quot;;N;s:10:&quot;text_color&quot;;N;s:15:&quot;text_properties&quot;;N;s:9:&quot;menu_type&quot;;N;s:9:&quot;list_type&quot;;N;s:12:&quot;table_border&quot;;N;s:17:&quot;table_cellspacing&quot;;N;s:17:&quot;table_cellpadding&quot;;N;s:13:&quot;table_bgColor&quot;;N;s:10:&quot;select_key&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:13:&quot;filelink_size&quot;;N;s:13:&quot;section_frame&quot;;N;s:4:&quot;date&quot;;N;s:13:&quot;splash_layout&quot;;N;s:10:&quot;multimedia&quot;;N;s:12:&quot;image_frames&quot;;N;s:9:&quot;recursive&quot;;N;s:11:&quot;imageheight&quot;;N;s:11:&quot;rte_enabled&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:17:&quot;tx_impexp_origuid&quot;;N;s:11:&quot;pi_flexform&quot;;N;s:17:&quot;tx_templavoila_ds&quot;;N;s:17:&quot;tx_templavoila_to&quot;;N;s:19:&quot;tx_templavoila_flex&quot;;N;s:19:&quot;tx_templavoila_pito&quot;;N;}</field>
-				<field index="tx_templavoila_ds"></field>
-				<field index="tx_templavoila_to">0</field>
-				<field index="tx_templavoila_flex"></field>
-				<field index="tx_templavoila_pito">0</field>
+				<field index="l18n_diffsource">a:61:{s:6:&quot;hidden&quot;;N;s:5:&quot;CType&quot;;N;s:6:&quot;header&quot;;N;s:15:&quot;header_position&quot;;N;s:8:&quot;bodytext&quot;;N;s:5:&quot;image&quot;;N;s:10:&quot;imagewidth&quot;;N;s:11:&quot;imageorient&quot;;N;s:12:&quot;imagecaption&quot;;N;s:9:&quot;imagecols&quot;;N;s:11:&quot;imageborder&quot;;N;s:5:&quot;media&quot;;N;s:6:&quot;layout&quot;;N;s:4:&quot;cols&quot;;N;s:7:&quot;records&quot;;N;s:5:&quot;pages&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:6:&quot;colPos&quot;;N;s:9:&quot;subheader&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:8:&quot;fe_group&quot;;N;s:11:&quot;header_link&quot;;N;s:21:&quot;imagecaption_position&quot;;N;s:10:&quot;image_link&quot;;N;s:10:&quot;image_zoom&quot;;N;s:12:&quot;image_noRows&quot;;N;s:13:&quot;image_effects&quot;;N;s:17:&quot;image_compression&quot;;N;s:13:&quot;header_layout&quot;;N;s:10:&quot;text_align&quot;;N;s:9:&quot;text_face&quot;;N;s:9:&quot;text_size&quot;;N;s:10:&quot;text_color&quot;;N;s:15:&quot;text_properties&quot;;N;s:9:&quot;menu_type&quot;;N;s:9:&quot;list_type&quot;;N;s:12:&quot;table_border&quot;;N;s:17:&quot;table_cellspacing&quot;;N;s:17:&quot;table_cellpadding&quot;;N;s:13:&quot;table_bgColor&quot;;N;s:10:&quot;select_key&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:13:&quot;filelink_size&quot;;N;s:13:&quot;section_frame&quot;;N;s:4:&quot;date&quot;;N;s:13:&quot;splash_layout&quot;;N;s:10:&quot;multimedia&quot;;N;s:12:&quot;image_frames&quot;;N;s:9:&quot;recursive&quot;;N;s:11:&quot;imageheight&quot;;N;s:11:&quot;rte_enabled&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:17:&quot;tx_impexp_origuid&quot;;N;s:11:&quot;pi_flexform&quot;;N;s:17:&quot;tx_templavoilaplus_ds&quot;;N;s:17:&quot;tx_templavoilaplus_to&quot;;N;s:19:&quot;tx_templavoilaplus_flex&quot;;N;s:19:&quot;tx_templavoilaplus_pito&quot;;N;}</field>
+				<field index="tx_templavoilaplus_ds"></field>
+				<field index="tx_templavoilaplus_to">0</field>
+				<field index="tx_templavoilaplus_flex"></field>
+				<field index="tx_templavoilaplus_pito">0</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
@@ -8533,11 +8533,11 @@
 				<field index="tx_impexp_origuid">6</field>
 				<field index="pi_flexform"></field>
 				<field index="l18n_parent">0</field>
-				<field index="l18n_diffsource">a:61:{s:6:&quot;hidden&quot;;N;s:5:&quot;CType&quot;;N;s:6:&quot;header&quot;;N;s:15:&quot;header_position&quot;;N;s:8:&quot;bodytext&quot;;N;s:5:&quot;image&quot;;N;s:10:&quot;imagewidth&quot;;N;s:11:&quot;imageorient&quot;;N;s:12:&quot;imagecaption&quot;;N;s:9:&quot;imagecols&quot;;N;s:11:&quot;imageborder&quot;;N;s:5:&quot;media&quot;;N;s:6:&quot;layout&quot;;N;s:4:&quot;cols&quot;;N;s:7:&quot;records&quot;;N;s:5:&quot;pages&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:6:&quot;colPos&quot;;N;s:9:&quot;subheader&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:8:&quot;fe_group&quot;;N;s:11:&quot;header_link&quot;;N;s:21:&quot;imagecaption_position&quot;;N;s:10:&quot;image_link&quot;;N;s:10:&quot;image_zoom&quot;;N;s:12:&quot;image_noRows&quot;;N;s:13:&quot;image_effects&quot;;N;s:17:&quot;image_compression&quot;;N;s:13:&quot;header_layout&quot;;N;s:10:&quot;text_align&quot;;N;s:9:&quot;text_face&quot;;N;s:9:&quot;text_size&quot;;N;s:10:&quot;text_color&quot;;N;s:15:&quot;text_properties&quot;;N;s:9:&quot;menu_type&quot;;N;s:9:&quot;list_type&quot;;N;s:12:&quot;table_border&quot;;N;s:17:&quot;table_cellspacing&quot;;N;s:17:&quot;table_cellpadding&quot;;N;s:13:&quot;table_bgColor&quot;;N;s:10:&quot;select_key&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:13:&quot;filelink_size&quot;;N;s:13:&quot;section_frame&quot;;N;s:4:&quot;date&quot;;N;s:13:&quot;splash_layout&quot;;N;s:10:&quot;multimedia&quot;;N;s:12:&quot;image_frames&quot;;N;s:9:&quot;recursive&quot;;N;s:11:&quot;imageheight&quot;;N;s:11:&quot;rte_enabled&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:17:&quot;tx_impexp_origuid&quot;;N;s:11:&quot;pi_flexform&quot;;N;s:17:&quot;tx_templavoila_ds&quot;;N;s:17:&quot;tx_templavoila_to&quot;;N;s:19:&quot;tx_templavoila_flex&quot;;N;s:19:&quot;tx_templavoila_pito&quot;;N;}</field>
-				<field index="tx_templavoila_ds"></field>
-				<field index="tx_templavoila_to">0</field>
-				<field index="tx_templavoila_flex"></field>
-				<field index="tx_templavoila_pito">0</field>
+				<field index="l18n_diffsource">a:61:{s:6:&quot;hidden&quot;;N;s:5:&quot;CType&quot;;N;s:6:&quot;header&quot;;N;s:15:&quot;header_position&quot;;N;s:8:&quot;bodytext&quot;;N;s:5:&quot;image&quot;;N;s:10:&quot;imagewidth&quot;;N;s:11:&quot;imageorient&quot;;N;s:12:&quot;imagecaption&quot;;N;s:9:&quot;imagecols&quot;;N;s:11:&quot;imageborder&quot;;N;s:5:&quot;media&quot;;N;s:6:&quot;layout&quot;;N;s:4:&quot;cols&quot;;N;s:7:&quot;records&quot;;N;s:5:&quot;pages&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:6:&quot;colPos&quot;;N;s:9:&quot;subheader&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:8:&quot;fe_group&quot;;N;s:11:&quot;header_link&quot;;N;s:21:&quot;imagecaption_position&quot;;N;s:10:&quot;image_link&quot;;N;s:10:&quot;image_zoom&quot;;N;s:12:&quot;image_noRows&quot;;N;s:13:&quot;image_effects&quot;;N;s:17:&quot;image_compression&quot;;N;s:13:&quot;header_layout&quot;;N;s:10:&quot;text_align&quot;;N;s:9:&quot;text_face&quot;;N;s:9:&quot;text_size&quot;;N;s:10:&quot;text_color&quot;;N;s:15:&quot;text_properties&quot;;N;s:9:&quot;menu_type&quot;;N;s:9:&quot;list_type&quot;;N;s:12:&quot;table_border&quot;;N;s:17:&quot;table_cellspacing&quot;;N;s:17:&quot;table_cellpadding&quot;;N;s:13:&quot;table_bgColor&quot;;N;s:10:&quot;select_key&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:13:&quot;filelink_size&quot;;N;s:13:&quot;section_frame&quot;;N;s:4:&quot;date&quot;;N;s:13:&quot;splash_layout&quot;;N;s:10:&quot;multimedia&quot;;N;s:12:&quot;image_frames&quot;;N;s:9:&quot;recursive&quot;;N;s:11:&quot;imageheight&quot;;N;s:11:&quot;rte_enabled&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:17:&quot;tx_impexp_origuid&quot;;N;s:11:&quot;pi_flexform&quot;;N;s:17:&quot;tx_templavoilaplus_ds&quot;;N;s:17:&quot;tx_templavoilaplus_to&quot;;N;s:19:&quot;tx_templavoilaplus_flex&quot;;N;s:19:&quot;tx_templavoilaplus_pito&quot;;N;}</field>
+				<field index="tx_templavoilaplus_ds"></field>
+				<field index="tx_templavoilaplus_to">0</field>
+				<field index="tx_templavoilaplus_flex"></field>
+				<field index="tx_templavoilaplus_pito">0</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
@@ -8622,10 +8622,10 @@
 				<field index="pi_flexform"></field>
 				<field index="l18n_parent">0</field>
 				<field index="l18n_diffsource">a:1:{s:11:&quot;header_link&quot;;N;}</field>
-				<field index="tx_templavoila_ds"></field>
-				<field index="tx_templavoila_to">0</field>
-				<field index="tx_templavoila_flex"></field>
-				<field index="tx_templavoila_pito">0</field>
+				<field index="tx_templavoilaplus_ds"></field>
+				<field index="tx_templavoilaplus_to">0</field>
+				<field index="tx_templavoilaplus_flex"></field>
+				<field index="tx_templavoilaplus_pito">0</field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="header_link" type="array">
@@ -8727,11 +8727,11 @@
 				<field index="tx_impexp_origuid">4</field>
 				<field index="pi_flexform"></field>
 				<field index="l18n_parent">0</field>
-				<field index="l18n_diffsource">a:61:{s:6:&quot;hidden&quot;;N;s:5:&quot;CType&quot;;N;s:6:&quot;header&quot;;N;s:15:&quot;header_position&quot;;N;s:8:&quot;bodytext&quot;;N;s:5:&quot;image&quot;;N;s:10:&quot;imagewidth&quot;;N;s:11:&quot;imageorient&quot;;N;s:12:&quot;imagecaption&quot;;N;s:9:&quot;imagecols&quot;;N;s:11:&quot;imageborder&quot;;N;s:5:&quot;media&quot;;N;s:6:&quot;layout&quot;;N;s:4:&quot;cols&quot;;N;s:7:&quot;records&quot;;N;s:5:&quot;pages&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:6:&quot;colPos&quot;;N;s:9:&quot;subheader&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:8:&quot;fe_group&quot;;N;s:11:&quot;header_link&quot;;N;s:21:&quot;imagecaption_position&quot;;N;s:10:&quot;image_link&quot;;N;s:10:&quot;image_zoom&quot;;N;s:12:&quot;image_noRows&quot;;N;s:13:&quot;image_effects&quot;;N;s:17:&quot;image_compression&quot;;N;s:13:&quot;header_layout&quot;;N;s:10:&quot;text_align&quot;;N;s:9:&quot;text_face&quot;;N;s:9:&quot;text_size&quot;;N;s:10:&quot;text_color&quot;;N;s:15:&quot;text_properties&quot;;N;s:9:&quot;menu_type&quot;;N;s:9:&quot;list_type&quot;;N;s:12:&quot;table_border&quot;;N;s:17:&quot;table_cellspacing&quot;;N;s:17:&quot;table_cellpadding&quot;;N;s:13:&quot;table_bgColor&quot;;N;s:10:&quot;select_key&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:13:&quot;filelink_size&quot;;N;s:13:&quot;section_frame&quot;;N;s:4:&quot;date&quot;;N;s:13:&quot;splash_layout&quot;;N;s:10:&quot;multimedia&quot;;N;s:12:&quot;image_frames&quot;;N;s:9:&quot;recursive&quot;;N;s:11:&quot;imageheight&quot;;N;s:11:&quot;rte_enabled&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:17:&quot;tx_impexp_origuid&quot;;N;s:11:&quot;pi_flexform&quot;;N;s:17:&quot;tx_templavoila_ds&quot;;N;s:17:&quot;tx_templavoila_to&quot;;N;s:19:&quot;tx_templavoila_flex&quot;;N;s:19:&quot;tx_templavoila_pito&quot;;N;}</field>
-				<field index="tx_templavoila_ds"></field>
-				<field index="tx_templavoila_to">0</field>
-				<field index="tx_templavoila_flex"></field>
-				<field index="tx_templavoila_pito">0</field>
+				<field index="l18n_diffsource">a:61:{s:6:&quot;hidden&quot;;N;s:5:&quot;CType&quot;;N;s:6:&quot;header&quot;;N;s:15:&quot;header_position&quot;;N;s:8:&quot;bodytext&quot;;N;s:5:&quot;image&quot;;N;s:10:&quot;imagewidth&quot;;N;s:11:&quot;imageorient&quot;;N;s:12:&quot;imagecaption&quot;;N;s:9:&quot;imagecols&quot;;N;s:11:&quot;imageborder&quot;;N;s:5:&quot;media&quot;;N;s:6:&quot;layout&quot;;N;s:4:&quot;cols&quot;;N;s:7:&quot;records&quot;;N;s:5:&quot;pages&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:6:&quot;colPos&quot;;N;s:9:&quot;subheader&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:8:&quot;fe_group&quot;;N;s:11:&quot;header_link&quot;;N;s:21:&quot;imagecaption_position&quot;;N;s:10:&quot;image_link&quot;;N;s:10:&quot;image_zoom&quot;;N;s:12:&quot;image_noRows&quot;;N;s:13:&quot;image_effects&quot;;N;s:17:&quot;image_compression&quot;;N;s:13:&quot;header_layout&quot;;N;s:10:&quot;text_align&quot;;N;s:9:&quot;text_face&quot;;N;s:9:&quot;text_size&quot;;N;s:10:&quot;text_color&quot;;N;s:15:&quot;text_properties&quot;;N;s:9:&quot;menu_type&quot;;N;s:9:&quot;list_type&quot;;N;s:12:&quot;table_border&quot;;N;s:17:&quot;table_cellspacing&quot;;N;s:17:&quot;table_cellpadding&quot;;N;s:13:&quot;table_bgColor&quot;;N;s:10:&quot;select_key&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:13:&quot;filelink_size&quot;;N;s:13:&quot;section_frame&quot;;N;s:4:&quot;date&quot;;N;s:13:&quot;splash_layout&quot;;N;s:10:&quot;multimedia&quot;;N;s:12:&quot;image_frames&quot;;N;s:9:&quot;recursive&quot;;N;s:11:&quot;imageheight&quot;;N;s:11:&quot;rte_enabled&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:17:&quot;tx_impexp_origuid&quot;;N;s:11:&quot;pi_flexform&quot;;N;s:17:&quot;tx_templavoilaplus_ds&quot;;N;s:17:&quot;tx_templavoilaplus_to&quot;;N;s:19:&quot;tx_templavoilaplus_flex&quot;;N;s:19:&quot;tx_templavoilaplus_pito&quot;;N;}</field>
+				<field index="tx_templavoilaplus_ds"></field>
+				<field index="tx_templavoilaplus_to">0</field>
+				<field index="tx_templavoilaplus_flex"></field>
+				<field index="tx_templavoilaplus_pito">0</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
@@ -8815,11 +8815,11 @@
 				<field index="tx_impexp_origuid">3</field>
 				<field index="pi_flexform"></field>
 				<field index="l18n_parent">0</field>
-				<field index="l18n_diffsource">a:61:{s:6:&quot;hidden&quot;;N;s:5:&quot;CType&quot;;N;s:6:&quot;header&quot;;N;s:15:&quot;header_position&quot;;N;s:8:&quot;bodytext&quot;;N;s:5:&quot;image&quot;;N;s:10:&quot;imagewidth&quot;;N;s:11:&quot;imageorient&quot;;N;s:12:&quot;imagecaption&quot;;N;s:9:&quot;imagecols&quot;;N;s:11:&quot;imageborder&quot;;N;s:5:&quot;media&quot;;N;s:6:&quot;layout&quot;;N;s:4:&quot;cols&quot;;N;s:7:&quot;records&quot;;N;s:5:&quot;pages&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:6:&quot;colPos&quot;;N;s:9:&quot;subheader&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:8:&quot;fe_group&quot;;N;s:11:&quot;header_link&quot;;N;s:21:&quot;imagecaption_position&quot;;N;s:10:&quot;image_link&quot;;N;s:10:&quot;image_zoom&quot;;N;s:12:&quot;image_noRows&quot;;N;s:13:&quot;image_effects&quot;;N;s:17:&quot;image_compression&quot;;N;s:13:&quot;header_layout&quot;;N;s:10:&quot;text_align&quot;;N;s:9:&quot;text_face&quot;;N;s:9:&quot;text_size&quot;;N;s:10:&quot;text_color&quot;;N;s:15:&quot;text_properties&quot;;N;s:9:&quot;menu_type&quot;;N;s:9:&quot;list_type&quot;;N;s:12:&quot;table_border&quot;;N;s:17:&quot;table_cellspacing&quot;;N;s:17:&quot;table_cellpadding&quot;;N;s:13:&quot;table_bgColor&quot;;N;s:10:&quot;select_key&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:13:&quot;filelink_size&quot;;N;s:13:&quot;section_frame&quot;;N;s:4:&quot;date&quot;;N;s:13:&quot;splash_layout&quot;;N;s:10:&quot;multimedia&quot;;N;s:12:&quot;image_frames&quot;;N;s:9:&quot;recursive&quot;;N;s:11:&quot;imageheight&quot;;N;s:11:&quot;rte_enabled&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:17:&quot;tx_impexp_origuid&quot;;N;s:11:&quot;pi_flexform&quot;;N;s:17:&quot;tx_templavoila_ds&quot;;N;s:17:&quot;tx_templavoila_to&quot;;N;s:19:&quot;tx_templavoila_flex&quot;;N;s:19:&quot;tx_templavoila_pito&quot;;N;}</field>
-				<field index="tx_templavoila_ds"></field>
-				<field index="tx_templavoila_to">0</field>
-				<field index="tx_templavoila_flex"></field>
-				<field index="tx_templavoila_pito">0</field>
+				<field index="l18n_diffsource">a:61:{s:6:&quot;hidden&quot;;N;s:5:&quot;CType&quot;;N;s:6:&quot;header&quot;;N;s:15:&quot;header_position&quot;;N;s:8:&quot;bodytext&quot;;N;s:5:&quot;image&quot;;N;s:10:&quot;imagewidth&quot;;N;s:11:&quot;imageorient&quot;;N;s:12:&quot;imagecaption&quot;;N;s:9:&quot;imagecols&quot;;N;s:11:&quot;imageborder&quot;;N;s:5:&quot;media&quot;;N;s:6:&quot;layout&quot;;N;s:4:&quot;cols&quot;;N;s:7:&quot;records&quot;;N;s:5:&quot;pages&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:6:&quot;colPos&quot;;N;s:9:&quot;subheader&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:8:&quot;fe_group&quot;;N;s:11:&quot;header_link&quot;;N;s:21:&quot;imagecaption_position&quot;;N;s:10:&quot;image_link&quot;;N;s:10:&quot;image_zoom&quot;;N;s:12:&quot;image_noRows&quot;;N;s:13:&quot;image_effects&quot;;N;s:17:&quot;image_compression&quot;;N;s:13:&quot;header_layout&quot;;N;s:10:&quot;text_align&quot;;N;s:9:&quot;text_face&quot;;N;s:9:&quot;text_size&quot;;N;s:10:&quot;text_color&quot;;N;s:15:&quot;text_properties&quot;;N;s:9:&quot;menu_type&quot;;N;s:9:&quot;list_type&quot;;N;s:12:&quot;table_border&quot;;N;s:17:&quot;table_cellspacing&quot;;N;s:17:&quot;table_cellpadding&quot;;N;s:13:&quot;table_bgColor&quot;;N;s:10:&quot;select_key&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:13:&quot;filelink_size&quot;;N;s:13:&quot;section_frame&quot;;N;s:4:&quot;date&quot;;N;s:13:&quot;splash_layout&quot;;N;s:10:&quot;multimedia&quot;;N;s:12:&quot;image_frames&quot;;N;s:9:&quot;recursive&quot;;N;s:11:&quot;imageheight&quot;;N;s:11:&quot;rte_enabled&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:17:&quot;tx_impexp_origuid&quot;;N;s:11:&quot;pi_flexform&quot;;N;s:17:&quot;tx_templavoilaplus_ds&quot;;N;s:17:&quot;tx_templavoilaplus_to&quot;;N;s:19:&quot;tx_templavoilaplus_flex&quot;;N;s:19:&quot;tx_templavoilaplus_pito&quot;;N;}</field>
+				<field index="tx_templavoilaplus_ds"></field>
+				<field index="tx_templavoilaplus_to">0</field>
+				<field index="tx_templavoilaplus_flex"></field>
+				<field index="tx_templavoilaplus_pito">0</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
@@ -8888,11 +8888,11 @@
 				<field index="alias"></field>
 				<field index="l18n_cfg">0</field>
 				<field index="fe_login_mode">0</field>
-				<field index="tx_templavoila_ds"></field>
-				<field index="tx_templavoila_to">0</field>
-				<field index="tx_templavoila_next_ds"></field>
-				<field index="tx_templavoila_next_to">0</field>
-				<field index="tx_templavoila_flex">&lt;?xml version=&quot;1.0&quot; encoding=&quot;iso-8859-1&quot; standalone=&quot;yes&quot; ?&gt;
+				<field index="tx_templavoilaplus_ds"></field>
+				<field index="tx_templavoilaplus_to">0</field>
+				<field index="tx_templavoilaplus_next_ds"></field>
+				<field index="tx_templavoilaplus_next_to">0</field>
+				<field index="tx_templavoilaplus_flex">&lt;?xml version=&quot;1.0&quot; encoding=&quot;iso-8859-1&quot; standalone=&quot;yes&quot; ?&gt;
 					&lt;T3FlexForms&gt;
 					&lt;data&gt;
 					&lt;sheet index=&quot;sDEF&quot;&gt;
@@ -8906,7 +8906,7 @@
 					&lt;/T3FlexForms&gt;</field>
 			</fieldlist>
 			<related index="rels" type="array">
-				<field index="tx_templavoila_flex" type="array">
+				<field index="tx_templavoilaplus_flex" type="array">
 					<type>flex</type>
 					<flexform index="flexFormRels" type="array">
 						<db_relations index="db" type="array">
@@ -9010,10 +9010,10 @@
 				<field index="pi_flexform"></field>
 				<field index="l18n_parent">0</field>
 				<field index="l18n_diffsource">a:18:{s:5:&quot;CType&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:6:&quot;colPos&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:13:&quot;section_frame&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:6:&quot;header&quot;;N;s:15:&quot;header_position&quot;;N;s:13:&quot;header_layout&quot;;N;s:11:&quot;header_link&quot;;N;s:4:&quot;date&quot;;N;s:8:&quot;bodytext&quot;;N;s:6:&quot;hidden&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:8:&quot;fe_group&quot;;N;}</field>
-				<field index="tx_templavoila_ds"></field>
-				<field index="tx_templavoila_to">0</field>
-				<field index="tx_templavoila_flex"></field>
-				<field index="tx_templavoila_pito">0</field>
+				<field index="tx_templavoilaplus_ds"></field>
+				<field index="tx_templavoilaplus_to">0</field>
+				<field index="tx_templavoilaplus_flex"></field>
+				<field index="tx_templavoilaplus_pito">0</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
@@ -9102,10 +9102,10 @@
 				<field index="pi_flexform"></field>
 				<field index="l18n_parent">0</field>
 				<field index="l18n_diffsource">a:19:{s:5:&quot;CType&quot;;N;s:16:&quot;sys_language_uid&quot;;N;s:6:&quot;colPos&quot;;N;s:11:&quot;spaceBefore&quot;;N;s:10:&quot;spaceAfter&quot;;N;s:13:&quot;section_frame&quot;;N;s:12:&quot;sectionIndex&quot;;N;s:9:&quot;linkToTop&quot;;N;s:6:&quot;header&quot;;N;s:15:&quot;header_position&quot;;N;s:13:&quot;header_layout&quot;;N;s:11:&quot;header_link&quot;;N;s:4:&quot;date&quot;;N;s:6:&quot;layout&quot;;N;s:8:&quot;bodytext&quot;;N;s:6:&quot;hidden&quot;;N;s:9:&quot;starttime&quot;;N;s:7:&quot;endtime&quot;;N;s:8:&quot;fe_group&quot;;N;}</field>
-				<field index="tx_templavoila_ds"></field>
-				<field index="tx_templavoila_to">0</field>
-				<field index="tx_templavoila_flex"></field>
-				<field index="tx_templavoila_pito">0</field>
+				<field index="tx_templavoilaplus_ds"></field>
+				<field index="tx_templavoilaplus_to">0</field>
+				<field index="tx_templavoilaplus_flex"></field>
+				<field index="tx_templavoilaplus_pito">0</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>

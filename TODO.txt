@@ -81,18 +81,18 @@ Related to rendering/content elements (css_styled_content):
 - Benoit request: "Anchor in the HTML page when you are mapping fields... you are scrolling for each field"
 
 RULES:
-		a = CType={text,textpic},list_type=tx_templavoila_pi1
+		a = CType={text,textpic},list_type=tx_templavoilaplus_pi1
 
 
 		b :
 			CType = list
-			list_type = tx_templavoila_pi1
+			list_type = tx_templavoilaplus_pi1
 			txtemplavoila_to = 3
 			width = 0-200
 
 		a :
 			CType = list
-			list_type = tx_templavoila_pi1
+			list_type = tx_templavoilaplus_pi1
 
 		c :
 			CType = list

@@ -1,5 +1,5 @@
 <?php
-namespace Extension\Templavoila\Controller;
+namespace Ppi\TemplaVoilaPlus\Controller;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -22,14 +22,14 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-use Extension\Templavoila\Utility\TemplaVoilaUtility;
+use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 $GLOBALS['LANG']->includeLLFile(
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('templavoila') . 'Resources/Private/Language/BackendNewSiteWizard.xlf'
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('templavoilaplus') . 'Resources/Private/Language/BackendNewSiteWizard.xlf'
 );
 
 /**
- * Module 'TemplaVoila' for the 'templavoila' extension.
+ * Module 'TemplaVoila' for the 'templavoilaplus' extension.
  *
  * @author Kasper Skaarhoj <kasper@typo3.com>
  */
@@ -69,7 +69,7 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
      *
      * @var string
      */
-    public $extKey = 'templavoila';
+    public $extKey = 'templavoilaplus';
 
     /**
      * The name of the module
@@ -106,7 +106,7 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
         $this->iconFactory = $this->moduleTemplate->getIconFactory();
         $this->buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
 
-        $this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
+        $this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoilaplus']);
     }
 
     /**
@@ -397,7 +397,7 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
     public function renderNewSiteWizard_run()
     {
         // Getting session data:
-        $this->wizardData = TemplaVoilaUtility::getBackendUser()->getSessionData('tx_templavoila_wizard');
+        $this->wizardData = TemplaVoilaUtility::getBackendUser()->getSessionData('tx_templavoilaplus_wizard');
 
         if (TemplaVoilaUtility::getBackendUser()->isAdmin()) {
             switch ($this->MOD_SETTINGS['wiz_step']) {
@@ -429,7 +429,7 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
         }
 
         // Save session data:
-        TemplaVoilaUtility::getBackendUser()->setAndSaveSessionData('tx_templavoila_wizard', $this->wizardData);
+        TemplaVoilaUtility::getBackendUser()->setAndSaveSessionData('tx_templavoilaplus_wizard', $this->wizardData);
     }
 
     /**
@@ -476,7 +476,7 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
      */
     public function wizard_checkConfiguration()
     {
-        $TVconfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
+        $TVconfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoilaplus']);
 
         return !is_array($TVconfig);
     }
@@ -526,9 +526,9 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
                 // Has been used:
                 $tosForTemplate = TemplaVoilaUtility::getDatabaseConnection()->exec_SELECTgetRows(
                     'uid',
-                    'tx_templavoila_tmplobj',
-                    'fileref=' . TemplaVoilaUtility::getDatabaseConnection()->fullQuoteStr($file, 'tx_templavoila_tmplobj') .
-                    BackendUtility::deleteClause('tx_templavoila_tmplobj')
+                    'tx_templavoilaplus_tmplobj',
+                    'fileref=' . TemplaVoilaUtility::getDatabaseConnection()->fullQuoteStr($file, 'tx_templavoilaplus_tmplobj') .
+                    BackendUtility::deleteClause('tx_templavoilaplus_tmplobj')
                 );
 
                 // Preview link
@@ -646,7 +646,7 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
                 if (isset($this->modTSconfig['properties']['newTvSiteFile'])) {
                     $inFile = GeneralUtility::getFileAbsFileName($this->modTSconfig['properties']['newTVsiteTemplate']);
                 } else {
-                    $inFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('templavoila') . 'Resources/Private/Template/new_tv_site.xml';
+                    $inFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('templavoilaplus') . 'Resources/Private/Template/new_tv_site.xml';
                 }
                 if (@is_file($inFile) && $import->loadFile($inFile, 1)) {
                     $import->importData($this->importPageUid);
@@ -656,8 +656,8 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
                     $data['pages'][BackendUtility::wsMapId('pages', $import->import_mapId['pages'][1])]['title'] = $this->wizardData['sitetitle'];
                     $data['sys_template'][BackendUtility::wsMapId('sys_template', $import->import_mapId['sys_template'][1])]['title'] = TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_maintemplate', true) . ' ' . $this->wizardData['sitetitle'];
                     $data['sys_template'][BackendUtility::wsMapId('sys_template', $import->import_mapId['sys_template'][1])]['sitetitle'] = $this->wizardData['sitetitle'];
-                    $data['tx_templavoila_tmplobj'][BackendUtility::wsMapId('tx_templavoila_tmplobj', $import->import_mapId['tx_templavoila_tmplobj'][1])]['fileref'] = $this->wizardData['file'];
-                    $data['tx_templavoila_tmplobj'][BackendUtility::wsMapId('tx_templavoila_tmplobj', $import->import_mapId['tx_templavoila_tmplobj'][1])]['templatemapping'] = serialize(
+                    $data['tx_templavoilaplus_tmplobj'][BackendUtility::wsMapId('tx_templavoilaplus_tmplobj', $import->import_mapId['tx_templavoilaplus_tmplobj'][1])]['fileref'] = $this->wizardData['file'];
+                    $data['tx_templavoilaplus_tmplobj'][BackendUtility::wsMapId('tx_templavoilaplus_tmplobj', $import->import_mapId['tx_templavoilaplus_tmplobj'][1])]['templatemapping'] = serialize(
                         array(
                             'MappingInfo' => array(
                                 'ROOT' => array(
@@ -698,7 +698,7 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
 
                     // Setting environment:
                     $this->wizardData['rootPageId'] = $import->import_mapId['pages'][1];
-                    $this->wizardData['templateObjectId'] = BackendUtility::wsMapId('tx_templavoila_tmplobj', $import->import_mapId['tx_templavoila_tmplobj'][1]);
+                    $this->wizardData['templateObjectId'] = BackendUtility::wsMapId('tx_templavoilaplus_tmplobj', $import->import_mapId['tx_templavoilaplus_tmplobj'][1]);
                     $this->wizardData['typoScriptTemplateID'] = BackendUtility::wsMapId('sys_template', $import->import_mapId['sys_template'][1]);
 
                     BackendUtility::setUpdateSignal('updatePageTree');
@@ -712,7 +712,7 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
 
         // If a template Object id was found, continue with mapping:
         if ($this->wizardData['templateObjectId']) {
-            $url = '../cm1/index.php?table=tx_templavoila_tmplobj&uid=' . $this->wizardData['templateObjectId'] . '&SET[selectHeaderContent]=0&_reload_from=1&id=' . $this->id . '&returnUrl=' . rawurlencode('../mod2/index.php?SET[wiz_step]=4');
+            $url = '../cm1/index.php?table=tx_templavoilaplus_tmplobj&uid=' . $this->wizardData['templateObjectId'] . '&SET[selectHeaderContent]=0&_reload_from=1&id=' . $this->id . '&returnUrl=' . rawurlencode('../mod2/index.php?SET[wiz_step]=4');
 
             $outputString .= TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_step3ready') . '
                 <br/>
@@ -734,7 +734,7 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
      */
     public function wizard_step4()
     {
-        $url = '../cm1/index.php?table=tx_templavoila_tmplobj&uid=' . $this->wizardData['templateObjectId'] . '&SET[selectHeaderContent]=1&_reload_from=1&id=' . $this->id . '&returnUrl=' . rawurlencode('../mod2/index.php?SET[wiz_step]=5');
+        $url = '../cm1/index.php?table=tx_templavoilaplus_tmplobj&uid=' . $this->wizardData['templateObjectId'] . '&SET[selectHeaderContent]=1&_reload_from=1&id=' . $this->id . '&returnUrl=' . rawurlencode('../mod2/index.php?SET[wiz_step]=5');
         $outputString = TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_headerinclude') . '
             <br/>
             <img src="Resources/Public/Image/maphead_animation.gif" style="border: 2px black solid;" alt=""><br/>
@@ -1056,7 +1056,7 @@ lib.' . $menuType . '.1.ACT {
     public function getMenuDefaultCode($field)
     {
         // Select template record and extract menu HTML content
-        $toRec = BackendUtility::getRecordWSOL('tx_templavoila_tmplobj', $this->wizardData['templateObjectId']);
+        $toRec = BackendUtility::getRecordWSOL('tx_templavoilaplus_tmplobj', $this->wizardData['templateObjectId']);
         $tMapping = unserialize($toRec['templatemapping']);
 
         return $tMapping['MappingData_cached']['cArray'][$field];

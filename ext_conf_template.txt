@@ -1,20 +1,20 @@
-	# cat=basic/enable; type=boolean; label=LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:enable.oldPageModule
+	# cat=basic/enable; type=boolean; label=LLL:EXT:templavoilaplus/Resources/Private/Language/template_conf.xlf:enable.oldPageModule
 enable.oldPageModule = 0
 
-	# cat=basic/enable; type=boolean; label=LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:enable.selectDataStructure
+	# cat=basic/enable; type=boolean; label=LLL:EXT:templavoilaplus/Resources/Private/Language/template_conf.xlf:enable.selectDataStructure
 enable.selectDataStructure = 0
 
-	# cat=basic/enable; type=boolean; label=LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:enable.renderFCEHeader
+	# cat=basic/enable; type=boolean; label=LLL:EXT:templavoilaplus/Resources/Private/Language/template_conf.xlf:enable.renderFCEHeader
 enable.renderFCEHeader = 0
 
-	# cat=static DS; type=boolean; label=LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.enable
+	# cat=static DS; type=boolean; label=LLL:EXT:templavoilaplus/Resources/Private/Language/template_conf.xlf:staticDS.enable
 staticDS.enable = 0
 
- 	#cat=static DS;type=string;label=LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.path_fce
+ 	#cat=static DS;type=string;label=LLL:EXT:templavoilaplus/Resources/Private/Language/template_conf.xlf:staticDS.path_fce
 staticDS.path_fce = fileadmin/templates/ds/fce/
 
-	#cat=static DS;type=string;label=LLL:EXT:templavoila/Resources/Private/Language/template_conf.xlf:staticDS.path_page
+	#cat=static DS;type=string;label=LLL:EXT:templavoilaplus/Resources/Private/Language/template_conf.xlf:staticDS.path_page
 staticDS.path_page = fileadmin/templates/ds/page/
 
-	#cat=static DS; type=user[Extension\Templavoila\StaticDataStructure\Check->displayMessage]; label=LLL:EXT:templavoila/Resources/Private/Language/locallang.xlf:extmng.updatermsgOption
+	#cat=static DS; type=user[Ppi\TemplaVoilaPlus\StaticDataStructure\Check->displayMessage]; label=LLL:EXT:templavoilaplus/Resources/Private/Language/locallang.xlf:extmng.updatermsgOption
 updateMessage=0

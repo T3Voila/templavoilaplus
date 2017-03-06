@@ -1,5 +1,5 @@
 <?php
-namespace Extension\Templavoila\Module\Mod1;
+namespace Ppi\TemplaVoilaPlus\Module\Mod1;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -26,14 +26,14 @@ class Recordlist extends \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList
 {
 
     /**
-     * @var \tx_templavoila_module1
+     * @var \tx_templavoilaplus_module1
      */
     public $pObj;
 
     /**
      * Prepares object to run.
      *
-     * @param \tx_templavoila_module1 &$pObj Parent object (mod1/index.php)
+     * @param \tx_templavoilaplus_module1 &$pObj Parent object (mod1/index.php)
      *
      * @return void
      */

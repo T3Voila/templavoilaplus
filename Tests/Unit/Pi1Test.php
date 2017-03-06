@@ -1,5 +1,5 @@
 <?php
-namespace Extension\Templavoila\Tests\Unit;
+namespace Ppi\TemplaVoilaPlus\Tests\Unit;
 
 /**
  * This file is part of the TYPO3 CMS project.
@@ -23,8 +23,8 @@ class Pi1Test extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function inheritValueLogsErrorIfFirstParamNotAnArray() {
-		/** @var $mockObject \tx_templavoila_pi1 | \PHPUnit_Framework_MockObject_MockObject  */
-		$mockObject = $this->getMock('tx_templavoila_pi1', array('log'));
+		/** @var $mockObject \tx_templavoilaplus_pi1 | \PHPUnit_Framework_MockObject_MockObject  */
+		$mockObject = $this->getMock('tx_templavoilaplus_pi1', array('log'));
 		$mockObject->expects($this->once())->method('log');
 		$mockObject->inheritValue(NULL, NULL);
 	}
@@ -33,8 +33,8 @@ class Pi1Test extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function inheritValueLogsErrorIfvDefIsNotAKeyOfFirstParam() {
-		/** @var $mockObject \tx_templavoila_pi1 | \PHPUnit_Framework_MockObject_MockObject  */
-		$mockObject = $this->getMock('tx_templavoila_pi1', array('log'));
+		/** @var $mockObject \tx_templavoilaplus_pi1 | \PHPUnit_Framework_MockObject_MockObject  */
+		$mockObject = $this->getMock('tx_templavoilaplus_pi1', array('log'));
 		$mockObject->expects($this->once())->method('log')->with('Key "vDEF" of array "$dV" doesn\'t exist');
 		$mockObject->inheritValue(array(), 'vDEF');
 	}
@@ -44,8 +44,8 @@ class Pi1Test extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @dataProvider inheritValueDataProvider
 	 */
 	public function inheritValueResultsWithParamMatrix($data, $expected) {
-		/** @var $mockObject \tx_templavoila_pi1 | \PHPUnit_Framework_MockObject_MockObject  */
-		$mockObject = $this->getMock('tx_templavoila_pi1', array('log'));
+		/** @var $mockObject \tx_templavoilaplus_pi1 | \PHPUnit_Framework_MockObject_MockObject  */
+		$mockObject = $this->getMock('tx_templavoilaplus_pi1', array('log'));
 		$mockObject->inheritValueFromDefault = TRUE;
 
 		$this->assertSame($expected, call_user_func_array(array($mockObject, 'inheritValue'), $data));

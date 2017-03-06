@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2014-07-13T20:54:32Z" product-name="templavoila">
+	<file source-language="en" datatype="plaintext" original="messages" date="2014-07-13T20:54:32Z" product-name="templavoilaplus">
 		<header/>
 		<body>
-			<trans-unit id="tx_templavoila_access.description" xml:space="preserve">
-				<source>Select TemplaVoilà objects to disallow access to. Notice that disallowing access to DS (data structure) implicitly disallows access to any TO (template object) associated with this DS.</source>
+			<trans-unit id="tx_templavoilaplus_access.description" xml:space="preserve">
+				<source>Select TemplaVoilà Plus objects to disallow access to. Notice that disallowing access to DS (data structure) implicitly disallows access to any TO (template object) associated with this DS.</source>
 			</trans-unit>
 			<trans-unit id="datastructure.description" xml:space="preserve">
 				<source>Select data structure of this template object</source>

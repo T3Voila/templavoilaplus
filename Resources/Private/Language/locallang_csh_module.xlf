@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2014-07-13T20:54:46Z" product-name="templavoila">
+	<file source-language="en" datatype="plaintext" original="messages" date="2014-07-13T20:54:46Z" product-name="templavoilaplus">
 		<header/>
 		<body>
 			<trans-unit id=".alttitle" xml:space="preserve">
-				<source>TemplaVoilà Mapping</source>
+				<source>TemplaVoilà Plus Mapping</source>
 			</trans-unit>
 			<trans-unit id="mapping_file.description" xml:space="preserve">
 				<source>Modify the structure of this Template and map it with a certain HTML.</source>
@@ -16,7 +16,7 @@
 				<source>On this page, you can select to load an existing XML (either through an existing Data Structure or through a simple copy / paste of XML in the area below, to replace the existing data structure.</source>
 			</trans-unit>
 			<trans-unit id="mapping_file_createDSTO.description" xml:space="preserve">
-				<source>Add the Data Structure and Template Object (TemplaVoilà will create both of them for you) to a certain Storage Folder. Please be aware that you have to have an existing Storage Folder in your page tree to select it from the dropdown. If you choose &quot;Page Template&quot; as the &quot;Template Type&quot;, the new DS/TO Combo will appear when you edit the page properties. If you select &quot;Content Element&quot;, the new TO will appear as a new content element type option when you add a new Content Element within any page.</source>
+				<source>Add the Data Structure and Template Object (TemplaVoilà Plus will create both of them for you) to a certain Storage Folder. Please be aware that you have to have an existing Storage Folder in your page tree to select it from the dropdown. If you choose &quot;Page Template&quot; as the &quot;Template Type&quot;, the new DS/TO Combo will appear when you edit the page properties. If you select &quot;Content Element&quot;, the new TO will appear as a new content element type option when you add a new Content Element within any page.</source>
 			</trans-unit>
 			<trans-unit id="mapping_to.description" xml:space="preserve">
 				<source>This tab shows a list of the Template Object (TO), the file and the correspondig Data Structure (DS)</source>
@@ -67,7 +67,7 @@
 				<source>When adding a new page template, the Mapping (see other tab) only works on the &lt;body&gt; tag, if you need to add other HTML tags from the HTML &lt;head&gt; tag, you can do this on this screen. Please make sure to hit the &quot;Set&quot; button on the bottom of this list to save your changes. Additional tags in the head part of your HTML can of course be added via regular TypoScript.</source>
 			</trans-unit>
 			<trans-unit id="mapping_to_headerParts_buttons.description" xml:space="preserve">
-				<source>Press &quot;Clear All&quot; to unset all checkboxes above; &quot;Set&quot; saves the changes of this page (the additional tags), &quot;Save&quot; writes the changes of the Mapping (see other tab) to the database. &quot;Save and return&quot; also writes the mapping to the database, but will also return to the TemplaVoilà Control Center.</source>
+				<source>Press &quot;Clear All&quot; to unset all checkboxes above; &quot;Set&quot; saves the changes of this page (the additional tags), &quot;Save&quot; writes the changes of the Mapping (see other tab) to the database. &quot;Save and return&quot; also writes the mapping to the database, but will also return to the TemplaVoilà Plus Control Center.</source>
 			</trans-unit>
 			<trans-unit id="mapping_editform.description" xml:space="preserve">
 				<source>Select the Mapping Type, a distinguishable name, instructions for the one who will map the data to a HTML template later on (optional). The Editing Type determines how the data on the field should be entered. Mapping rules allow to only map to certain HTML tags or HTML attributes. &quot;a:attr:href&quot; to only allows mapping to href attributes of HTML anchor tags.</source>

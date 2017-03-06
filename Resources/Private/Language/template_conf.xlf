@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-    <file source-language="en" datatype="plaintext" original="messages" date="2014-08-12T17:03:18Z" product-name="templavoila">
+    <file source-language="en" datatype="plaintext" original="messages" date="2014-08-12T17:03:18Z" product-name="templavoilaplus">
         <header/>
         <body>
             <trans-unit id="enable.oldPageModule" xml:space="preserve">
                 <source>Enable the classic Page module:Check this box to enable classic Page module in the list of modules.</source>
             </trans-unit>
             <trans-unit id="enable.selectDataStructure" xml:space="preserve">
-                <source>DEPRECATED will be removed with 8. Enable data structure selection: If this checkbox is checked, page and content elements will have data structure selector as they had in older TemplaVoila versions. If current installation has very few template objects, it is recommended to have this checkbox unchecked.</source>
+                <source>DEPRECATED will be removed with 8. Enable data structure selection: If this checkbox is checked, page and content elements will have data structure selector as they had in older TemplaVoilà versions. If current installation has very few template objects, it is recommended to have this checkbox unchecked.</source>
             </trans-unit>
             <trans-unit id="enable.renderFCEHeader" xml:space="preserve">
                 <source>Enable Header for FCE's:If this checkbox is checked the header of Content Element type FCE will be rendered like headers of other Content Elements.</source>
@@ -58,7 +58,7 @@
                 <source>This step copies your existing data structures into static files using the specified data structure paths. Static files that already exist will be overwritten.&lt;br /&gt;Since the existing data structures remain unchanged, this is also an easy way to back up data structure records without actually using the static data structure functionality.</source>
             </trans-unit>
             <trans-unit id="staticDS.wizard.description2.1" xml:space="preserve">
-                <source>Are you sure you want to enable static data structures? This feature is experimental and it is recommended that you perform a database backup of all tables involved (pages, tt_content, tx_templavoila_datastructure, and tx_templavoila_tmplobj) before continuing.</source>
+                <source>Are you sure you want to enable static data structures? This feature is experimental and it is recommended that you perform a database backup of all tables involved (pages, tt_content, tx_templavoilaplus_datastructure, and tx_templavoilaplus_tmplobj) before continuing.</source>
             </trans-unit>
             <trans-unit id="staticDS.wizard.dircheck.ok" xml:space="preserve">
                 <source>Directory &quot;%s&quot; exists and is writable. Ready for usage.</source>
@@ -82,7 +82,7 @@
                 <source>Update database records and enable static data structure</source>
             </trans-unit>
             <trans-unit id="staticDS.wizard.updated" xml:space="preserve">
-                <source>All tables were updated, Templavoila now is ready to work with created static data structure files.</source>
+                <source>All tables were updated, Templavoilà Plus now is ready to work with created static data structure files.</source>
             </trans-unit>
             <trans-unit id="staticDS.wizard.clearcache" xml:space="preserve">
                 <source>You have to clear the configuration cache for reading the new data structures!</source>

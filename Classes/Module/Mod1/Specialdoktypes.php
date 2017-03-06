@@ -1,5 +1,5 @@
 <?php
-namespace Extension\Templavoila\Module\Mod1;
+namespace Ppi\TemplaVoilaPlus\Module\Mod1;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -31,14 +31,14 @@ class Specialdoktypes implements SingletonInterface
     /**
      * A pointer to the parent object, that is the templavoila page module script. Set by calling the method init() of this class.
      *
-     * @var \tx_templavoila_module1
+     * @var \tx_templavoilaplus_module1
      */
     public $pObj;
 
     /**
      * Does some basic initialization
      *
-     * @param \tx_templavoila_module1 $pObj Reference to the parent object ($this)
+     * @param \tx_templavoilaplus_module1 $pObj Reference to the parent object ($this)
      *
      * @return void
      * @access public

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2014-07-13T20:54:56Z" product-name="templavoila">
+	<file source-language="en" datatype="plaintext" original="messages" date="2014-07-13T20:54:56Z" product-name="templavoilaplus">
 		<header/>
 		<body>
 			<trans-unit id=".description" xml:space="preserve">
@@ -16,7 +16,7 @@
 				<source>Choose a HTML template as a basis for the mapping.</source>
 			</trans-unit>
 			<trans-unit id="templatemapping.description" xml:space="preserve">
-				<source>This data holds all information needed for TemplaVoilà to map the data structure to the actual HTML template file.</source>
+				<source>This data holds all information needed for TemplaVoilà Plus to map the data structure to the actual HTML template file.</source>
 			</trans-unit>
 			<trans-unit id="previewicon.description" xml:space="preserve">
 				<source>Select a preview image to this Template Structure to</source>

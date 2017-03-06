@@ -24,9 +24,9 @@ div#typo3-docbody {
   margin-right: 10px;
   width: auto;
 }
-.typo3-templavoila-pagemodule #typo3-docbody #tx_templavoila_mod1_sidebar-bar .typo3-dyntabmenu-tabs table.typo3-dyntabmenu td a,
-.typo3-templavoila-pagemodule #typo3-docbody #tx_templavoila_mod1_sidebar-bar .typo3-dyntabmenu-tabs table.typo3-dyntabmenu td.disabled,
-.typo3-templavoila-pagemodule #typo3-docbody #tx_templavoila_mod1_sidebar-bar .typo3-dyntabmenu-tabs table.typo3-dyntabmenu td.disabled_over {
+.typo3-templavoila-pagemodule #typo3-docbody #tx_templavoilaplus_mod1_sidebar-bar .typo3-dyntabmenu-tabs table.typo3-dyntabmenu td a,
+.typo3-templavoila-pagemodule #typo3-docbody #tx_templavoilaplus_mod1_sidebar-bar .typo3-dyntabmenu-tabs table.typo3-dyntabmenu td.disabled,
+.typo3-templavoila-pagemodule #typo3-docbody #tx_templavoilaplus_mod1_sidebar-bar .typo3-dyntabmenu-tabs table.typo3-dyntabmenu td.disabled_over {
   padding-top: 3px;
   padding-bottom: 1px;
 }

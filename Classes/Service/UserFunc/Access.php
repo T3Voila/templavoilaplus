@@ -1,5 +1,5 @@
 <?php
-namespace Extension\Templavoila\Service\UserFunc;
+namespace Ppi\TemplaVoilaPlus\Service\UserFunc;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -41,16 +41,16 @@ class Access
                 return true;
             }
 
-            if (!$this->checkObjectAccess('tx_templavoila_datastructure', $params['idOrRow']['tx_templavoila_ds'], $backendUser)) {
+            if (!$this->checkObjectAccess('tx_templavoilaplus_datastructure', $params['idOrRow']['tx_templavoilaplus_ds'], $backendUser)) {
                 $error = 'access_noDSaccess';
-            } elseif (!$this->checkObjectAccess('tx_templavoila_tmplobj', $params['idOrRow']['tx_templavoila_to'], $backendUser)) {
+            } elseif (!$this->checkObjectAccess('tx_templavoilaplus_tmplobj', $params['idOrRow']['tx_templavoilaplus_to'], $backendUser)) {
                 $error = 'access_noTOaccess';
             } else {
                 return true;
             }
             if ($originalBackendUser) {
                 $this->getLanguageService()->init($originalBackendUser->uc['lang']);
-                $originalBackendUser->errorMsg = $this->getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang_access.xlf:' . $error);
+                $originalBackendUser->errorMsg = $this->getLanguageService()->sL('LLL:EXT:templavoilaplus/Resources/Private/Language/locallang_access.xlf:' . $error);
             }
 
             return false;
@@ -76,7 +76,7 @@ class Access
         if (!$backendUser->isAdmin()) {
             $prefLen = strlen($table) + 1;
             foreach ($backendUser->userGroups as $group) {
-                $items = GeneralUtility::trimExplode(',', $group['tx_templavoila_access'], 1);
+                $items = GeneralUtility::trimExplode(',', $group['tx_templavoilaplus_access'], 1);
                 foreach ($items as $ref) {
                     if (strstr($ref, $table)) {
                         if ($uid == (int)substr($ref, $prefLen)) {

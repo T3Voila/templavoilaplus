@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <dataset>
-	<tx_templavoila_datastructure>
+	<tx_templavoilaplus_datastructure>
 		<uid>1</uid>
 		<pid>3</pid>
 		<tstamp>1396692010</tstamp>
@@ -67,8 +67,8 @@
 	</ROOT>
 </T3DataStructure>]]></dataprot>
 		<scope>1</scope>
-	</tx_templavoila_datastructure>
-	<tx_templavoila_datastructure>
+	</tx_templavoilaplus_datastructure>
+	<tx_templavoilaplus_datastructure>
 		<uid>2</uid>
 		<pid>3</pid>
 		<tstamp>1396692010</tstamp>
@@ -164,9 +164,9 @@
 	</ROOT>
 </T3DataStructure>]]></dataprot>
 		<scope>1</scope>
-	</tx_templavoila_datastructure>
+	</tx_templavoilaplus_datastructure>
 
-	<tx_templavoila_datastructure>
+	<tx_templavoilaplus_datastructure>
 		<uid>3</uid>
 		<pid>3</pid>
 		<tstamp>1396692010</tstamp>
@@ -247,5 +247,5 @@
 	</ROOT>
 </T3DataStructure>]]></dataprot>
 		<scope>2</scope>
-	</tx_templavoila_datastructure>
+	</tx_templavoilaplus_datastructure>
 </dataset>

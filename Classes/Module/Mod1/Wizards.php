@@ -1,5 +1,5 @@
 <?php
-namespace Extension\Templavoila\Module\Mod1;
+namespace Ppi\TemplaVoilaPlus\Module\Mod1;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -18,7 +18,7 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-use Extension\Templavoila\Utility\TemplaVoilaUtility;
+use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 /**
  * Submodule 'Wizards' for the templavoila page module
@@ -31,12 +31,12 @@ use Extension\Templavoila\Utility\TemplaVoilaUtility;
 class Wizards implements SingletonInterface
 {
     /**
-     * @var \Extension\Templavoila\Service\ApiService
+     * @var \Ppi\TemplaVoilaPlus\Service\ApiService
      */
     protected $apiObj;
 
     /**
-     * @var \tx_templavoila_module1
+     * @var \tx_templavoilaplus_module1
      */
     public $pObj; // A pointer to the parent object, that is the templavoila page module script. Set by calling the method init() of this class.
 
@@ -51,7 +51,7 @@ class Wizards implements SingletonInterface
      * Initializes the wizards object. The calling class must make sure that the right locallang files are already loaded.
      * This method is usually called by the templavoila page module.
      *
-     * @param \tx_templavoila_module1 $pObj Reference to the parent object ($this)
+     * @param \tx_templavoilaplus_module1 $pObj Reference to the parent object ($this)
      *
      * @return void
      */
@@ -88,7 +88,7 @@ class Wizards implements SingletonInterface
         }
 
         // The user already submitted the create page form:
-        if (GeneralUtility::_GP('doCreate') || isset($this->TCAdefaultOverride['pages.']['tx_templavoila_to'])) {
+        if (GeneralUtility::_GP('doCreate') || isset($this->TCAdefaultOverride['pages.']['tx_templavoilaplus_to'])) {
             // Check if the HTTP_REFERER is valid
             $refInfo = parse_url(GeneralUtility::getIndpEnv('HTTP_REFERER'));
             $httpHost = GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY');
@@ -291,9 +291,9 @@ class Wizards implements SingletonInterface
         $defaultIcon = $this->pObj->getIconFactory()->getIcon('extensions-templavoila-default-preview-icon', Icon::SIZE_LARGE)->render();
         $previewIcon = '';
 
-        // look for TCEFORM.pages.tx_templavoila_ds.removeItems / TCEFORM.pages.tx_templavoila_to.removeItems
-        $disallowedPageTemplateItems = $this->getDisallowedTSconfigItemsByFieldName($parentPageId, 'tx_templavoila_ds');
-        $disallowedDesignTemplateItems = $this->getDisallowedTSconfigItemsByFieldName($parentPageId, 'tx_templavoila_to');
+        // look for TCEFORM.pages.tx_templavoilaplus_ds.removeItems / TCEFORM.pages.tx_templavoilaplus_to.removeItems
+        $disallowedPageTemplateItems = $this->getDisallowedTSconfigItemsByFieldName($parentPageId, 'tx_templavoilaplus_ds');
+        $disallowedDesignTemplateItems = $this->getDisallowedTSconfigItemsByFieldName($parentPageId, 'tx_templavoilaplus_to');
 
         switch ($templateType) {
             case 'tmplobj':
@@ -318,18 +318,18 @@ class Wizards implements SingletonInterface
                         <h3 class="bgColor3-20">' . htmlspecialchars(TemplaVoilaUtility::getLanguageService()->getLL('template_titleInherit')) . '</h3>
                     </td>
                 </tr><tr>
-                    <td style="padding: 0 5px" valign="top"><button type="submit" name="data[tx_templavoila_to]" value="0" style="background: none; border: none;">' . $previewIcon . '</button></td>
+                    <td style="padding: 0 5px" valign="top"><button type="submit" name="data[tx_templavoilaplus_to]" value="0" style="background: none; border: none;">' . $previewIcon . '</button></td>
                     <td width="120" valign="top">
                         <p><h4>' . htmlspecialchars(TemplaVoilaUtility::getLanguageService()->sL($defaultTO['title'])) . '</h4>' . TemplaVoilaUtility::getLanguageService()->sL($description) . '</p>
                     </td>
                 </tr>
                 </table>';
 
-                $dsRepo = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\DataStructureRepository::class);
-                $toRepo = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\TemplateRepository::class);
-                $dsList = $dsRepo->getDatastructuresByStoragePidAndScope($storageFolderPID, \Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_PAGE);
+                $dsRepo = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Domain\Repository\DataStructureRepository::class);
+                $toRepo = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Domain\Repository\TemplateRepository::class);
+                $dsList = $dsRepo->getDatastructuresByStoragePidAndScope($storageFolderPID, \Ppi\TemplaVoilaPlus\Domain\Model\AbstractDataStructure::SCOPE_PAGE);
                 foreach ($dsList as $dsObj) {
-                    /** @var \Extension\Templavoila\Domain\Model\AbstractDataStructure $dsObj */
+                    /** @var \Ppi\TemplaVoilaPlus\Domain\Model\AbstractDataStructure $dsObj */
                     if (GeneralUtility::inList($disallowedPageTemplateItems, $dsObj->getKey()) ||
                         !$dsObj->isPermittedForUser()
                     ) {
@@ -338,7 +338,7 @@ class Wizards implements SingletonInterface
 
                     $toList = $toRepo->getTemplatesByDatastructure($dsObj, $storageFolderPID);
                     foreach ($toList as $toObj) {
-                        /** @var \Extension\Templavoila\Domain\Model\Template $toObj */
+                        /** @var \Ppi\TemplaVoilaPlus\Domain\Model\Template $toObj */
                         if ($toObj->hasParentTemplate() && $toObj->getRendertype() !== '') {
                             continue;
                         }
@@ -359,7 +359,7 @@ class Wizards implements SingletonInterface
                         }
                         $description = $toObj->getDescription() ? htmlspecialchars($toObj->getDescription()) : TemplaVoilaUtility::getLanguageService()->getLL('template_nodescriptionavailable');
                         $tmplHTML [] = '<table style="width: 100%;" valign="top"><tr><td colspan="2" nowrap="nowrap"><h3 class="bgColor3-20">' . htmlspecialchars($toObj->getLabel()) . '</h3></td></tr>' .
-                            '<tr><td style="padding: 0 5px" valign="top"><button type="submit" name="data[tx_templavoila_to]" value="' . $toObj->getKey() . '" style="background: none; border: none;">' . $previewIcon . '</button></td><td width="120" valign="top"><p>' . TemplaVoilaUtility::getLanguageService()->sL($description) . '</p></td></tr></table>';
+                            '<tr><td style="padding: 0 5px" valign="top"><button type="submit" name="data[tx_templavoilaplus_to]" value="' . $toObj->getKey() . '" style="background: none; border: none;">' . $previewIcon . '</button></td><td width="120" valign="top"><p>' . TemplaVoilaUtility::getLanguageService()->sL($description) . '</p></td></tr></table>';
                     }
                 }
                 break;
@@ -457,9 +457,9 @@ class Wizards implements SingletonInterface
         unset($dataArr['pages']['NEW']['uid']);
 
         // If no data structure is set, try to find one by using the template object
-        if ($dataArr['pages']['NEW']['tx_templavoila_to'] && !$dataArr['pages']['NEW']['tx_templavoila_ds']) {
-            $templateObjectRow = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('tx_templavoila_tmplobj', $dataArr['pages']['NEW']['tx_templavoila_to'], 'uid,pid,datastructure');
-            $dataArr['pages']['NEW']['tx_templavoila_ds'] = $templateObjectRow['datastructure'];
+        if ($dataArr['pages']['NEW']['tx_templavoilaplus_to'] && !$dataArr['pages']['NEW']['tx_templavoilaplus_ds']) {
+            $templateObjectRow = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('tx_templavoilaplus_tmplobj', $dataArr['pages']['NEW']['tx_templavoilaplus_to'], 'uid,pid,datastructure');
+            $dataArr['pages']['NEW']['tx_templavoilaplus_ds'] = $templateObjectRow['datastructure'];
         }
 
         $tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
@@ -499,7 +499,7 @@ class Wizards implements SingletonInterface
         if (!TemplaVoilaUtility::getBackendUser()->isAdmin()) {
             $prefLen = strlen($table) + 1;
             foreach (TemplaVoilaUtility::getBackendUser()->userGroups as $group) {
-                $items = GeneralUtility::trimExplode(',', $group['tx_templavoila_access'], 1);
+                $items = GeneralUtility::trimExplode(',', $group['tx_templavoilaplus_access'], 1);
                 foreach ($items as $ref) {
                     if (strstr($ref, $table)) {
                         $result[] = (int)substr($ref, $prefLen);

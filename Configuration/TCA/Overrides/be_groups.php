@@ -3,12 +3,12 @@ defined('TYPO3_MODE') or die();
 
 // Adding access list to be_groups
 $tempColumns = array(
-    'tx_templavoila_access' => array(
-        'label' => 'LLL:EXT:templavoila/Resources/Private/Language/locallang_db.xlf:be_groups.tx_templavoila_access',
+    'tx_templavoilaplus_access' => array(
+        'label' => 'LLL:EXT:templavoilaplus/Resources/Private/Language/locallang_db.xlf:be_groups.tx_templavoilaplus_access',
         'config' => array(
             'type' => 'group',
             'internal_type' => 'db',
-            'allowed' => 'tx_templavoila_datastructure,tx_templavoila_tmplobj',
+            'allowed' => 'tx_templavoilaplus_datastructure,tx_templavoilaplus_tmplobj',
             'prepend_tname' => 1,
             'size' => 5,
             'autoSizeMax' => 15,
@@ -20,4 +20,4 @@ $tempColumns = array(
     )
 );
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('be_groups', $tempColumns);
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('be_groups', 'tx_templavoila_access');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('be_groups', 'tx_templavoilaplus_access');

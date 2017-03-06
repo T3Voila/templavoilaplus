@@ -1,5 +1,5 @@
 <?php
-namespace Extension\Templavoila\Command;
+namespace Ppi\TemplaVoilaPlus\Command;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -65,7 +65,7 @@ class UnusedContentElementCommand extends \TYPO3\CMS\Lowlevel\CleanerCommand
         $this->cli_options[] = array('--depth int', 'Setting traversal depth. 0 (zero) will only analyse start page (see --pid), 1 will traverse one level of subpages etc.');
         $this->cli_options[] = array('--excludePageIdList commalist', 'Specifies page ids to exclude from the processing.');
 
-        $this->cli_help['name'] = 'tx_templavoila_unusedce -- Find unused content elements on pages';
+        $this->cli_help['name'] = 'tx_templavoilaplus_unusedce -- Find unused content elements on pages';
         $this->cli_help['description'] = trim('
 Traversing page tree and finding content elements which are not used on pages and seems to have no references to them - hence is probably "lost" and could be deleted.
 
@@ -123,7 +123,7 @@ Automatic Repair:
         if ($tableName === 'pages' && $uid > 0 && !in_array($uid, $this->excludePageIdList)) {
             if (!$versionSwapmode) {
                 // Initialize TemplaVoila API class:
-                $apiObj = GeneralUtility::makeInstance(\Extension\Templavoila\Service\ApiService::class, 'pages');
+                $apiObj = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Service\ApiService::class, 'pages');
 
                 // Fetch the content structure of page:
                 $contentTreeData = $apiObj->getContentTree('pages', BackendUtility::getRecordRaw('pages', 'uid=' . (int)$uid));
@@ -173,7 +173,7 @@ Automatic Repair:
                         // Register elements etc:
                         $this->resultArray['all_unused'][$row['uid']] = array($row['header'], count($refrows));
                         if ($echoLevel > 2) {
-                            echo chr(10) . '			[tx_templavoila_unusedce:] tt_content:' . $row['uid'] . ' was not used on page...';
+                            echo chr(10) . '			[tx_templavoilaplus_unusedce:] tt_content:' . $row['uid'] . ' was not used on page...';
                         }
                         if (!count($refrows)) {
                             if ($isATranslationChild) {
@@ -194,12 +194,12 @@ Automatic Repair:
                     }
                 } else {
                     if ($echoLevel > 2) {
-                        echo chr(10) . '			[tx_templavoila_unusedce:] Did not check page - did not have a Data Structure set.';
+                        echo chr(10) . '			[tx_templavoilaplus_unusedce:] Did not check page - did not have a Data Structure set.';
                     }
                 }
             } else {
                 if ($echoLevel > 2) {
-                    echo chr(10) . '			[tx_templavoila_unusedce:] Did not check page - was on offline page.';
+                    echo chr(10) . '			[tx_templavoilaplus_unusedce:] Did not check page - was on offline page.';
                 }
             }
         }

@@ -1,5 +1,5 @@
 <?php
-namespace Extension\Templavoila\Module\Cm1;
+namespace Ppi\TemplaVoilaPlus\Module\Cm1;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -16,7 +16,7 @@ namespace Extension\Templavoila\Module\Cm1;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-use Extension\Templavoila\Utility\TemplaVoilaUtility;
+use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 /**
  * Submodule 'eTypes' for the mapping module
@@ -31,7 +31,7 @@ class ETypes
 {
 
     /**
-     * @var \tx_templavoila_cm1
+     * @var \tx_templavoilaplus_cm1
      */
     public $pObj;
 
@@ -41,7 +41,7 @@ class ETypes
     public $eTypeArray;
 
     /**
-     * @param \tx_templavoila_cm1 $pObj
+     * @param \tx_templavoilaplus_cm1 $pObj
      */
     public function init($pObj)
     {
@@ -55,7 +55,7 @@ class ETypes
      *
      * @param array $elArray Data Structure, passed by reference!
      * @param array $v_sub Actual template content splitted by Data Structure
-     * @param integer $scope Scope as defined in tx_templavoila_datastructure.scope
+     * @param integer $scope Scope as defined in tx_templavoilaplus_datastructure.scope
      *
      * @return void Note: The result is directly written in $elArray
      * @see renderFile()
@@ -108,7 +108,7 @@ class ETypes
 
                 // Based on the eType (the preset type) we make configuration settings.
                 // If a user function was registered, use that instead of our own handlers:
-                if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['cm1']['eTypesConfGen'][$elArray[$key]['tx_templavoila']['eType']])) {
+                if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoilaplus']['cm1']['eTypesConfGen'][$elArray[$key]['tx_templavoila']['eType']])) {
                     $_params = array(
                         'key' => $key,
                         'elArray' => &$elArray,
@@ -117,7 +117,7 @@ class ETypes
 
                     $bef = $elArray[$key]['tx_templavoila']['TypoScript'];
 
-                    GeneralUtility::callUserFunction($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['cm1']['eTypesConfGen'][$elArray[$key]['tx_templavoila']['eType']], $_params, $this, '');
+                    GeneralUtility::callUserFunction($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoilaplus']['cm1']['eTypesConfGen'][$elArray[$key]['tx_templavoila']['eType']], $_params, $this, '');
 
                     if (!$reset && trim($bef)) {
                         $elArray[$key]['tx_templavoila']['TypoScript'] = $bef;
@@ -648,14 +648,14 @@ backColor = #999999
         }
 
         // Hook
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['templavoila']['eTypes'])) {
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['templavoilaplus']['eTypes'])) {
             $params = array(
                 'eType' => &$eTypes['eType'],
                 'defaultTypes_formFields' => &$eTypes['defaultTypes_formFields'],
                 'defaultTypes_typoscriptElements' => &$eTypes['defaultTypes_typoscriptElements'],
                 'defaultTypes_misc' => &$eTypes['defaultTypes_misc']
             );
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['templavoila']['eTypes'] as $hook) {
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['templavoilaplus']['eTypes'] as $hook) {
                 GeneralUtility::callUserFunction($hook, $params, $this);
             }
         }

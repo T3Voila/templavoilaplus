@@ -1,5 +1,5 @@
 <?php
-namespace Extension\Templavoila\Module\Mod1;
+namespace Ppi\TemplaVoilaPlus\Module\Mod1;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -19,7 +19,7 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-use Extension\Templavoila\Utility\TemplaVoilaUtility;
+use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 /**
  * Submodule 'clipboard' for the templavoila page module
@@ -41,7 +41,7 @@ class Clipboard implements SingletonInterface
     /**
      * A pointer to the parent object, that is the templavoila page module script. Set by calling the method init() of this class.
      *
-     * @var \tx_templavoila_module1
+     * @var \tx_templavoilaplus_module1
      */
     public $pObj;
 
@@ -52,7 +52,7 @@ class Clipboard implements SingletonInterface
      * Also takes the GET variable "CB" and submits it to the t3lib clipboard class which handles all
      * the incoming information and stores it in the user session.
      *
-     * @param \tx_templavoila_module1 $pObj Reference to the parent object ($this)
+     * @param \tx_templavoilaplus_module1 $pObj Reference to the parent object ($this)
      *
      * @return void
      */
@@ -334,7 +334,7 @@ class Clipboard implements SingletonInterface
             // Prepare the language icon:
             $languageLabel = htmlspecialchars($this->pObj->allAvailableLanguages[$row['sys_language_uid']]['title']);
             if ($this->pObj->allAvailableLanguages[$row['sys_language_uid']]['flagIcon']) {
-                $languageIcon = \Extension\Templavoila\Utility\IconUtility::getFlagIconForLanguage($this->pObj->allAvailableLanguages[$row['sys_language_uid']]['flagIcon'], array('title' => $languageLabel, 'alt' => $languageLabel));
+                $languageIcon = \Ppi\TemplaVoilaPlus\Utility\IconUtility::getFlagIconForLanguage($this->pObj->allAvailableLanguages[$row['sys_language_uid']]['flagIcon'], array('title' => $languageLabel, 'alt' => $languageLabel));
             } else {
                 $languageIcon = ($languageLabel && $row['sys_language_uid'] ? '[' . $languageLabel . ']' : '');
             }

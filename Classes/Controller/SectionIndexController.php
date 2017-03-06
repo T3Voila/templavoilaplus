@@ -1,5 +1,5 @@
 <?php
-namespace Extension\Templavoila\Controller;
+namespace Ppi\TemplaVoilaPlus\Controller;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -49,15 +49,15 @@ class SectionIndexController
             $pageIds = GeneralUtility::trimExplode(',', $pids);
             foreach ($pageIds as $pageId) {
                 $page = $GLOBALS['TSFE']->sys_page->checkRecord('pages', $pageId);
-                if (isset($page) && isset($page['tx_templavoila_flex'])) {
+                if (isset($page) && isset($page['tx_templavoilaplus_flex'])) {
                     $flex = array();
-                    $this->cObj->readFlexformIntoConf($page['tx_templavoila_flex'], $flex);
+                    $this->cObj->readFlexformIntoConf($page['tx_templavoilaplus_flex'], $flex);
                     $contentIds = array_merge($contentIds, GeneralUtility::trimExplode(',', $flex[$ceField]));
                 }
             }
         } else {
             $flex = array();
-            $this->cObj->readFlexformIntoConf($GLOBALS['TSFE']->page['tx_templavoila_flex'], $flex);
+            $this->cObj->readFlexformIntoConf($GLOBALS['TSFE']->page['tx_templavoilaplus_flex'], $flex);
             $contentIds = array_merge($contentIds, GeneralUtility::trimExplode(',', $flex[$ceField]));
         }
 

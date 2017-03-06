@@ -1,5 +1,5 @@
 <?php
-namespace Extension\Templavoila\Module\Mod1;
+namespace Ppi\TemplaVoilaPlus\Module\Mod1;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -18,7 +18,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-use Extension\Templavoila\Utility\TemplaVoilaUtility;
+use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 /**
  * Submodule 'Sidebar' for the templavoila page module
@@ -33,7 +33,7 @@ class Sidebar implements SingletonInterface
     /**
      * A pointer to the parent object, that is the templavoila page module script. Set by calling the method init() of this class.
      *
-     * @var \tx_templavoila_module1
+     * @var \tx_templavoilaplus_module1
      */
     public $pObj;
 
@@ -60,7 +60,7 @@ class Sidebar implements SingletonInterface
      * Initializes the side bar object. The calling class must make sure that the right locallang files are already loaded.
      * This method is usually called by the templavoila page module.
      *
-     * @param \tx_templavoila_module1 $pObj Reference to the parent object ($this)
+     * @param \tx_templavoilaplus_module1 $pObj Reference to the parent object ($this)
      *
      * @return void
      */
@@ -106,7 +106,7 @@ class Sidebar implements SingletonInterface
      * Adds an item to the sidebar. You are encouraged to use this function from your own extension to extend the sidebar
      * with new features. See the parameter descriptions for more details.
      *
-     * @param string $itemKey A unique identifier for your sidebar item. Generally use your extension key to make sure it is unique (eg. 'tx_templavoila_sidebar_item1').
+     * @param string $itemKey A unique identifier for your sidebar item. Generally use your extension key to make sure it is unique (eg. 'tx_templavoilaplus_sidebar_item1').
      * @param object &$object A reference to the instantiated class containing the method which renders the sidebar item (usually $this).
      * @param string $method Name of the method within your instantiated class which renders the sidebar item. Case sensitive!
      * @param string $label The label which will be shown for your item in the sidebar menu. Make sure that this label is localized!
@@ -176,7 +176,7 @@ class Sidebar implements SingletonInterface
             $sideBar = '
                 <!-- TemplaVoila Sidebar (top) begin -->
 
-                <div id="tx_templavoila_mod1_sidebar-bar" style="width:100%;" class="bgColor-10">
+                <div id="tx_templavoilaplus_mod1_sidebar-bar" style="width:100%;" class="bgColor-10">
                     ' . $this->moduleTemplate->getDynamicTabMenu($numSortedSideBarItems, 'TEMPLAVOILA:pagemodule:sidebar', 0, false, true, false) . '
                 </div>
 
@@ -201,7 +201,7 @@ class Sidebar implements SingletonInterface
      * as a header above the content zones while editing the content of a page. This function renders those fields.
      * The fields to be displayed are defined in the page's datastructure.
      *
-     * @param \tx_templavoila_module1 $pObj Reference to the parent object ($this)
+     * @param \tx_templavoilaplus_module1 $pObj Reference to the parent object ($this)
      *
      * @return string HTML output
      * @access private
@@ -215,7 +215,7 @@ class Sidebar implements SingletonInterface
             return '';
         }
 
-        $conf = $TCA['pages']['columns']['tx_templavoila_flex']['config'];
+        $conf = $TCA['pages']['columns']['tx_templavoilaplus_flex']['config'];
 
         $dataStructureArr = BackendUtility::getFlexFormDS($conf, $pObj->rootElementRecord, 'pages');
 
@@ -267,7 +267,7 @@ class Sidebar implements SingletonInterface
     /**
      * Renders the versioning sidebar item. Basically this is a copy from the template class.
      *
-     * @param \tx_templavoila_module1 $pObj Reference to the page object (the templavoila page module)
+     * @param \tx_templavoilaplus_module1 $pObj Reference to the page object (the templavoila page module)
      *
      * @return string HTML output
      */
@@ -311,7 +311,7 @@ class Sidebar implements SingletonInterface
     /**
      * Renders the "advanced functions" sidebar item.
      *
-     * @param \tx_templavoila_module1 &$pObj Reference to the page object (the templavoila page module)
+     * @param \tx_templavoilaplus_module1 &$pObj Reference to the page object (the templavoila page module)
      *
      * @return string HTML output
      */

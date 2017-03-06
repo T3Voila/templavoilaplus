@@ -1,5 +1,5 @@
 <?php
-namespace Extension\Templavoila\Controller;
+namespace Ppi\TemplaVoilaPlus\Controller;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -14,8 +14,8 @@ namespace Extension\Templavoila\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Extension\Templavoila\Domain\Model\HtmlMarkup;
-use Extension\Templavoila\Domain\Repository\DataStructureRepository;
+use Ppi\TemplaVoilaPlus\Domain\Model\HtmlMarkup;
+use Ppi\TemplaVoilaPlus\Domain\Repository\DataStructureRepository;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -23,10 +23,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
 
-use Extension\Templavoila\Utility\TemplaVoilaUtility;
+use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 /**
- * Plugin 'Flexible Content' for the 'templavoila' extension.
+ * Plugin 'Flexible Content' for the 'templavoilaplus' extension.
  */
 class FrontendController extends AbstractPlugin
 {
@@ -35,14 +35,14 @@ class FrontendController extends AbstractPlugin
      *
      * @var string
      */
-    public $prefixId = 'tx_templavoila_pi1';
+    public $prefixId = 'tx_templavoilaplus_pi1';
 
     /**
      * The extension key.
      *
      * @var string
      */
-    public $extKey = 'templavoila';
+    public $extKey = 'templavoilaplus';
 
     /**
      * If set, children-translations will take the value from the default if "false" (zero or blank)
@@ -94,7 +94,7 @@ class FrontendController extends AbstractPlugin
      *    table = fe_users
      *    renderObj = USER
      *    renderObj {
-     * userFunc = tx_templavoila_pi1->main_record
+     * userFunc = tx_templavoilaplus_pi1->main_record
      * ds = 2
      * to = 4
      * table = fe_users
@@ -123,8 +123,8 @@ class FrontendController extends AbstractPlugin
         $data = $this->cObj->data;
 
         // setup ds/to
-        $data['tx_templavoila_ds'] = $conf['ds'];
-        $data['tx_templavoila_to'] = $conf['to'];
+        $data['tx_templavoilaplus_ds'] = $conf['ds'];
+        $data['tx_templavoilaplus_to'] = $conf['to'];
 
         /** @var DataStructureRepository $dsRepo */
         $dsRepo = GeneralUtility::makeInstance(DataStructureRepository::class);
@@ -135,7 +135,7 @@ class FrontendController extends AbstractPlugin
             // Make correct language identifiers here!
             if ($GLOBALS['TSFE']->sys_language_isocode) {
                 try {
-                    $dsObj = $dsRepo->getDatastructureByUidOrFilename($data['tx_templavoila_ds']);
+                    $dsObj = $dsRepo->getDatastructureByUidOrFilename($data['tx_templavoilaplus_ds']);
                     $DS = $dsObj->getDataprotArray();
                 } catch (\InvalidArgumentException $e) {
                     $DS = null;
@@ -159,7 +159,7 @@ class FrontendController extends AbstractPlugin
 
         /** @var FlexFormTools $ff */
         $ff = GeneralUtility::makeInstance(FlexFormTools::class);
-        $data['tx_templavoila_flex'] = $ff->flexArray2Xml($values);
+        $data['tx_templavoilaplus_flex'] = $ff->flexArray2Xml($values);
 
         return $this->renderElement($data, $conf['table']);
     }
@@ -180,15 +180,15 @@ class FrontendController extends AbstractPlugin
         $pageRecord = $GLOBALS['TSFE']->page;
 
         // Find DS and Template in root line IF there is no Data Structure set for the current page:
-        if (!$pageRecord['tx_templavoila_ds']) {
+        if (!$pageRecord['tx_templavoilaplus_ds']) {
             foreach ($GLOBALS['TSFE']->tmpl->rootLine as $pRec) {
                 if ($pageRecord['uid'] != $pRec['uid']) {
-                    if ($pRec['tx_templavoila_next_ds']) { // If there is a next-level DS:
-                        $pageRecord['tx_templavoila_ds'] = $pRec['tx_templavoila_next_ds'];
-                        $pageRecord['tx_templavoila_to'] = $pRec['tx_templavoila_next_to'];
-                    } elseif ($pRec['tx_templavoila_ds']) { // Otherwise try the NORMAL DS:
-                        $pageRecord['tx_templavoila_ds'] = $pRec['tx_templavoila_ds'];
-                        $pageRecord['tx_templavoila_to'] = $pRec['tx_templavoila_to'];
+                    if ($pRec['tx_templavoilaplus_next_ds']) { // If there is a next-level DS:
+                        $pageRecord['tx_templavoilaplus_ds'] = $pRec['tx_templavoilaplus_next_ds'];
+                        $pageRecord['tx_templavoilaplus_to'] = $pRec['tx_templavoilaplus_next_to'];
+                    } elseif ($pRec['tx_templavoilaplus_ds']) { // Otherwise try the NORMAL DS:
+                        $pageRecord['tx_templavoilaplus_ds'] = $pRec['tx_templavoilaplus_ds'];
+                        $pageRecord['tx_templavoilaplus_to'] = $pRec['tx_templavoilaplus_to'];
                     }
                 } else {
                     break;
@@ -198,11 +198,11 @@ class FrontendController extends AbstractPlugin
 
         // "Show content from this page instead" support. Note: using current DS/TO!
         if ($pageRecord['content_from_pid']) {
-            $ds = $pageRecord['tx_templavoila_ds'];
-            $to = $pageRecord['tx_templavoila_to'];
+            $ds = $pageRecord['tx_templavoilaplus_ds'];
+            $to = $pageRecord['tx_templavoilaplus_to'];
             $pageRecord = $GLOBALS['TSFE']->sys_page->getPage($pageRecord['content_from_pid']);
-            $pageRecord['tx_templavoila_ds'] = $ds;
-            $pageRecord['tx_templavoila_to'] = $to;
+            $pageRecord['tx_templavoilaplus_ds'] = $ds;
+            $pageRecord['tx_templavoilaplus_to'] = $to;
         }
 
         return $this->renderElement($pageRecord, 'pages');
@@ -240,8 +240,8 @@ class FrontendController extends AbstractPlugin
 
         // First prepare user defined objects (if any) for hooks which extend this function:
         $hookObjectsArr = array();
-        if (is_array($TYPO3_CONF_VARS['EXTCONF']['templavoila']['pi1']['renderElementClass'])) {
-            foreach ($TYPO3_CONF_VARS['EXTCONF']['templavoila']['pi1']['renderElementClass'] as $classRef) {
+        if (is_array($TYPO3_CONF_VARS['EXTCONF']['templavoilaplus']['pi1']['renderElementClass'])) {
+            foreach ($TYPO3_CONF_VARS['EXTCONF']['templavoilaplus']['pi1']['renderElementClass'] as $classRef) {
                 $hookObjectsArr[] = & GeneralUtility::getUserObj($classRef);
             }
         }
@@ -255,8 +255,8 @@ class FrontendController extends AbstractPlugin
 
         $dsRepo = GeneralUtility::makeInstance(DataStructureRepository::class);
         try {
-            /** @var \Extension\Templavoila\Domain\Model\DataStructure $dsObj */
-            $dsObj = $dsRepo->getDatastructureByUidOrFilename($row['tx_templavoila_ds']);
+            /** @var \Ppi\TemplaVoilaPlus\Domain\Model\DataStructure $dsObj */
+            $dsObj = $dsRepo->getDatastructureByUidOrFilename($row['tx_templavoilaplus_ds']);
             $DS = $dsObj->getDataprotArray();
         } catch (\InvalidArgumentException $e) {
             $DS = null;
@@ -279,7 +279,7 @@ class FrontendController extends AbstractPlugin
             list ($dataStruct, $sheet, $singleSheet) = GeneralUtility::resolveSheetDefInDS($DS, $renderSheet);
 
             // Data from FlexForm field:
-            $data = GeneralUtility::xml2array($row['tx_templavoila_flex']);
+            $data = GeneralUtility::xml2array($row['tx_templavoilaplus_flex']);
 
             $lKey = ($GLOBALS['TSFE']->sys_language_isocode && !$langDisabled && !$langChildren) ? 'l' . strtoupper($GLOBALS['TSFE']->sys_language_isocode) : 'lDEF';
 
@@ -299,7 +299,7 @@ class FrontendController extends AbstractPlugin
             $this->markupObj = GeneralUtility::makeInstance(HtmlMarkup::class);
 
             // Get template record:
-            if ($row['tx_templavoila_to']) {
+            if ($row['tx_templavoilaplus_to']) {
                 // Initialize rendering type:
                 if ($this->conf['childTemplate']) {
                     $renderType = $this->conf['childTemplate'];
@@ -315,7 +315,7 @@ class FrontendController extends AbstractPlugin
                 }
 
                 // Get Template Object record:
-                $TOrec = $this->markupObj->getTemplateRecord($row['tx_templavoila_to'], $renderType, $GLOBALS['TSFE']->sys_language_uid);
+                $TOrec = $this->markupObj->getTemplateRecord($row['tx_templavoilaplus_to'], $renderType, $GLOBALS['TSFE']->sys_language_uid);
                 if (is_array($TOrec)) {
                     // Get mapping information from Template Record:
                     $TO = unserialize($TOrec['templatemapping']);
@@ -385,7 +385,7 @@ class FrontendController extends AbstractPlugin
                         if ($table == 'pages') {
                             $eIconf['beforeLastTag'] = -1;
                         } // For "pages", set icon in top, not after.
-                        $content = $this->pi_getEditIcon($content, 'tx_templavoila_flex', 'Edit element', $row, $table, $eIconf);
+                        $content = $this->pi_getEditIcon($content, 'tx_templavoilaplus_flex', 'Edit element', $row, $table, $eIconf);
 
                         // Visual identification aids:
 
@@ -394,14 +394,14 @@ class FrontendController extends AbstractPlugin
                             && isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/classes/class.frontendedit.php']['edit']);
 
                         if ($GLOBALS['TSFE']->fePreview && $GLOBALS['TSFE']->beUserLogin && !$GLOBALS['TSFE']->workspacePreview && !$this->conf['disableExplosivePreview'] && !$feedit) {
-                            $content = $this->visualID($content, $row['tx_templavoila_ds'], $dsObj, $TOrec, $row, $table);
+                            $content = $this->visualID($content, $row['tx_templavoilaplus_ds'], $dsObj, $TOrec, $row, $table);
                         }
                     } else {
                         $content = $this->formatError('Template Object could not be unserialized successfully.
-                            Are you sure you saved mapping information into Template Object with UID "' . $row['tx_templavoila_to'] . '"?');
+                            Are you sure you saved mapping information into Template Object with UID "' . $row['tx_templavoilaplus_to'] . '"?');
                     }
                 } else {
-                    $content = $this->formatError('Couldn\'t find Template Object with UID "' . $row['tx_templavoila_to'] . '".
+                    $content = $this->formatError('Couldn\'t find Template Object with UID "' . $row['tx_templavoilaplus_to'] . '".
                         Please make sure a Template Object is accessible.');
                 }
             } else {
@@ -468,19 +468,19 @@ class FrontendController extends AbstractPlugin
                 $checksum = md5(serialize($tArray));
 
                 $sameParent = false;
-                if (isset($GLOBALS['TSFE']->register['tx_templavoila_pi1.parentRec.__SERIAL'])) {
-                    $sameParent = ($checksum === $GLOBALS['TSFE']->register['tx_templavoila_pi1.parentRec.__SERIAL']);
+                if (isset($GLOBALS['TSFE']->register['tx_templavoilaplus_pi1.parentRec.__SERIAL'])) {
+                    $sameParent = ($checksum === $GLOBALS['TSFE']->register['tx_templavoilaplus_pi1.parentRec.__SERIAL']);
                 }
 
                 if (!$sameParent) {
                     // Step 1: save previous parent records from registers. This happens when pi1 is called for FCEs on a page.
                     $unsetKeys = array();
                     foreach ($GLOBALS['TSFE']->register as $dkey => $dvalue) {
-                        if (preg_match('/^tx_templavoila_pi1\.parentRec\./', $dkey)) {
+                        if (preg_match('/^tx_templavoilaplus_pi1\.parentRec\./', $dkey)) {
                             $savedParentInfo[$dkey] = $dvalue;
                             $unsetKeys[] = $dkey;
                         }
-                        if (preg_match('/^tx_templavoila_pi1\.(nested_fields|current_field)/', $dkey)) {
+                        if (preg_match('/^tx_templavoilaplus_pi1\.(nested_fields|current_field)/', $dkey)) {
                             $savedParentInfo[$dkey] = $dvalue;
                         }
                     }
@@ -494,13 +494,13 @@ class FrontendController extends AbstractPlugin
                     // Step 3: set new parent record to register
                     $registerKeys = array();
                     foreach ($this->cObj->data as $dkey => $dvalue) {
-                        $registerKeys[] = $tkey = 'tx_templavoila_pi1.parentRec.' . $dkey;
+                        $registerKeys[] = $tkey = 'tx_templavoilaplus_pi1.parentRec.' . $dkey;
                         $GLOBALS['TSFE']->register[$tkey] = $dvalue;
                     }
 
                     // Step 4: update checksum
-                    $GLOBALS['TSFE']->register['tx_templavoila_pi1.parentRec.__SERIAL'] = $checksum;
-                    $registerKeys[] = 'tx_templavoila_pi1.parentRec.__SERIAL';
+                    $GLOBALS['TSFE']->register['tx_templavoilaplus_pi1.parentRec.__SERIAL'] = $checksum;
+                    $registerKeys[] = 'tx_templavoilaplus_pi1.parentRec.__SERIAL';
                 }
             }
 
@@ -508,11 +508,11 @@ class FrontendController extends AbstractPlugin
             foreach ($DSelements as $key => $dsConf) {
                 // Store key of DS element and the parents being handled in global register
                 if (isset($savedParentInfo['nested_fields'])) {
-                    $GLOBALS['TSFE']->register['tx_templavoila_pi1.nested_fields'] = $savedParentInfo['nested_fields'] . ',' . $key;
+                    $GLOBALS['TSFE']->register['tx_templavoilaplus_pi1.nested_fields'] = $savedParentInfo['nested_fields'] . ',' . $key;
                 } else {
-                    $GLOBALS['TSFE']->register['tx_templavoila_pi1.nested_fields'] = $key;
+                    $GLOBALS['TSFE']->register['tx_templavoilaplus_pi1.nested_fields'] = $key;
                 }
-                $GLOBALS['TSFE']->register['tx_templavoila_pi1.current_field'] = $key;
+                $GLOBALS['TSFE']->register['tx_templavoilaplus_pi1.current_field'] = $key;
 
                 // Array/Section:
                 if ($DSelements[$key]['type'] == 'array') {
@@ -528,10 +528,10 @@ class FrontendController extends AbstractPlugin
                         if ($DSelements[$key]['section'] && is_array($dataValues[$key]['el'])) {
                             $registerCounter = 1;
                             foreach ($dataValues[$key]['el'] as $ik => $el) {
-                                $GLOBALS['TSFE']->register["tx_templavoila_pi1.sectionPos"] = $registerCounter;
-                                $GLOBALS['TSFE']->register["tx_templavoila_pi1.sectionCount"] = count($dataValues[$key]['el']);
-                                $GLOBALS['TSFE']->register["tx_templavoila_pi1.sectionIsFirstItem"] = ($registerCounter == 1);
-                                $GLOBALS['TSFE']->register["tx_templavoila_pi1.sectionIsLastItem"] = count($dataValues[$key]['el']) == $registerCounter;
+                                $GLOBALS['TSFE']->register["tx_templavoilaplus_pi1.sectionPos"] = $registerCounter;
+                                $GLOBALS['TSFE']->register["tx_templavoilaplus_pi1.sectionCount"] = count($dataValues[$key]['el']);
+                                $GLOBALS['TSFE']->register["tx_templavoilaplus_pi1.sectionIsFirstItem"] = ($registerCounter == 1);
+                                $GLOBALS['TSFE']->register["tx_templavoilaplus_pi1.sectionIsLastItem"] = count($dataValues[$key]['el']) == $registerCounter;
                                 $registerCounter++;
                                 if (is_array($el)) {
                                     $theKey = key($el);
@@ -610,7 +610,7 @@ class FrontendController extends AbstractPlugin
                                 }
                             }
 
-                            // If constants were found in Plugin configuration, "plugins.tx_templavoila_pi1.TSconst":
+                            // If constants were found in Plugin configuration, "plugins.tx_templavoilaplus_pi1.TSconst":
                             if (is_array($this->conf['TSconst.'])) {
                                 foreach ($this->conf['TSconst.'] as $constant => $value) {
                                     if (!is_array($value)) {
@@ -740,7 +740,7 @@ class FrontendController extends AbstractPlugin
         //
         $output = '
             <!-- TemplaVoila ERROR message: -->
-            <div class="tx_templavoila_pi1-error" style="
+            <div class="tx_templavoilaplus_pi1-error" style="
                     border: 2px red solid;
                     background-color: yellow;
                     color: black;
@@ -867,6 +867,6 @@ class FrontendController extends AbstractPlugin
      */
     public function log($message, $severity)
     {
-        GeneralUtility::sysLog($message, 'templavoila', $severity);
+        GeneralUtility::sysLog($message, 'templavoilaplus', $severity);
     }
 }

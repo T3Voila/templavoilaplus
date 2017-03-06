@@ -1,5 +1,5 @@
 <?php
-namespace Extension\Templavoila\Domain\Model;
+namespace Ppi\TemplaVoilaPlus\Domain\Model;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -16,7 +16,7 @@ namespace Extension\Templavoila\Domain\Model;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-use Extension\Templavoila\Utility\TemplaVoilaUtility;
+use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 /**
  * HTML markup/search class; can mark up HTML with small images for each element AND
@@ -293,7 +293,7 @@ class HtmlMarkup
 
         /* build primary cache for icon-images */
         foreach ($this->tags as $tag => &$conf) {
-            $conf['icon'] = 'src="' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila') . 'html_tags/' . $tag . '.gif" height="17" alt="" border="0"';
+            $conf['icon'] = 'src="' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoilaplus') . 'html_tags/' . $tag . '.gif" height="17" alt="" border="0"';
         }
 
         list($tagList_elements, $tagList_single) = $this->splitTagTypes($showTags);
@@ -710,11 +710,11 @@ class HtmlMarkup
     public function getTemplateArrayForTO($uid)
     {
         global $TCA;
-        if (isset($TCA['tx_templavoila_tmplobj'])) {
+        if (isset($TCA['tx_templavoilaplus_tmplobj'])) {
             $res = TemplaVoilaUtility::getDatabaseConnection()->exec_SELECTquery(
                 '*',
-                'tx_templavoila_tmplobj',
-                'uid=' . (int)$uid . ($TCA['tx_templavoila_tmplobj']['ctrl']['delete'] ? ' AND NOT ' . $TCA['tx_templavoila_tmplobj']['ctrl']['delete'] : '')
+                'tx_templavoilaplus_tmplobj',
+                'uid=' . (int)$uid . ($TCA['tx_templavoilaplus_tmplobj']['ctrl']['delete'] ? ' AND NOT ' . $TCA['tx_templavoilaplus_tmplobj']['ctrl']['delete'] : '')
             );
             $row = TemplaVoilaUtility::getDatabaseConnection()->sql_fetch_assoc($res);
             $this->tDat = unserialize($row['templatemapping']);
@@ -758,31 +758,31 @@ class HtmlMarkup
      */
     public function getTemplateRecord($uid, $renderType, $langUid)
     {
-        if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('templavoila')) {
-            $rec = $GLOBALS['TSFE']->sys_page->checkRecord('tx_templavoila_tmplobj', $uid);
+        if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('templavoilaplus')) {
+            $rec = $GLOBALS['TSFE']->sys_page->checkRecord('tx_templavoilaplus_tmplobj', $uid);
             $parentUid = $rec['uid'];
-            $rendertype_ref = $rec['rendertype_ref'] ? $GLOBALS['TSFE']->sys_page->checkRecord('tx_templavoila_tmplobj', $rec['rendertype_ref']) : false;
+            $rendertype_ref = $rec['rendertype_ref'] ? $GLOBALS['TSFE']->sys_page->checkRecord('tx_templavoilaplus_tmplobj', $rec['rendertype_ref']) : false;
 
             if (is_array($rec)) {
                 if ($renderType) { // If print-flag try to find a proper print-record. If the lang-uid is also set, try to find a combined print/lang record, but if not found, the print rec. will take precedence.
 
                     // Look up print-row for default language:
-                    $printRow = $this->getTemplateRecord_query($parentUid, 'AND rendertype=' . TemplaVoilaUtility::getDatabaseConnection()->fullQuoteStr($renderType, 'tx_templavoila_tmplobj') . ' AND sys_language_uid=0');
+                    $printRow = $this->getTemplateRecord_query($parentUid, 'AND rendertype=' . TemplaVoilaUtility::getDatabaseConnection()->fullQuoteStr($renderType, 'tx_templavoilaplus_tmplobj') . ' AND sys_language_uid=0');
                     if (is_array($printRow)) {
                         $rec = $printRow;
                     } elseif ($rendertype_ref) { // Look in rendertype_ref record:
-                        $printRow = $this->getTemplateRecord_query($rendertype_ref['uid'], 'AND rendertype=' . TemplaVoilaUtility::getDatabaseConnection()->fullQuoteStr($renderType, 'tx_templavoila_tmplobj') . ' AND sys_language_uid=0');
+                        $printRow = $this->getTemplateRecord_query($rendertype_ref['uid'], 'AND rendertype=' . TemplaVoilaUtility::getDatabaseConnection()->fullQuoteStr($renderType, 'tx_templavoilaplus_tmplobj') . ' AND sys_language_uid=0');
                         if (is_array($printRow)) {
                             $rec = $printRow;
                         }
                     }
 
                     if ($langUid) { // If lang_uid is set, try to look up for current language:
-                        $printRow = $this->getTemplateRecord_query($parentUid, 'AND rendertype=' . TemplaVoilaUtility::getDatabaseConnection()->fullQuoteStr($renderType, 'tx_templavoila_tmplobj') . ' AND sys_language_uid=' . (int)$langUid);
+                        $printRow = $this->getTemplateRecord_query($parentUid, 'AND rendertype=' . TemplaVoilaUtility::getDatabaseConnection()->fullQuoteStr($renderType, 'tx_templavoilaplus_tmplobj') . ' AND sys_language_uid=' . (int)$langUid);
                         if (is_array($printRow)) {
                             $rec = $printRow;
                         } elseif ($rendertype_ref) { // Look in rendertype_ref record:
-                            $printRow = $this->getTemplateRecord_query($rendertype_ref['uid'], 'AND rendertype=' . TemplaVoilaUtility::getDatabaseConnection()->fullQuoteStr($renderType, 'tx_templavoila_tmplobj') . ' AND sys_language_uid=' . (int)$langUid);
+                            $printRow = $this->getTemplateRecord_query($rendertype_ref['uid'], 'AND rendertype=' . TemplaVoilaUtility::getDatabaseConnection()->fullQuoteStr($renderType, 'tx_templavoilaplus_tmplobj') . ' AND sys_language_uid=' . (int)$langUid);
                             if (is_array($printRow)) {
                                 $rec = $printRow;
                             }
@@ -839,8 +839,8 @@ class HtmlMarkup
 
         $res = TemplaVoilaUtility::getDatabaseConnection()->exec_SELECTquery(
             '*',
-            'tx_templavoila_tmplobj',
-            'parent=' . (int)$uid . ' ' . $where . $TSFE->sys_page->enableFields('tx_templavoila_tmplobj')
+            'tx_templavoilaplus_tmplobj',
+            'parent=' . (int)$uid . ' ' . $where . $TSFE->sys_page->enableFields('tx_templavoilaplus_tmplobj')
         );
         $printRow = TemplaVoilaUtility::getDatabaseConnection()->sql_fetch_assoc($res);
 

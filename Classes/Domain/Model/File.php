@@ -1,5 +1,5 @@
 <?php
-namespace Extension\Templavoila\Domain\Model;
+namespace Ppi\TemplaVoilaPlus\Domain\Model;
 
 /*
  * This file is part of the TYPO3 CMS project.

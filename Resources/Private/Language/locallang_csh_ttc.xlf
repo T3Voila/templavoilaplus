@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2014-07-13T20:55:00Z" product-name="templavoila">
+	<file source-language="en" datatype="plaintext" original="messages" date="2014-07-13T20:55:00Z" product-name="templavoilaplus">
 		<header/>
 		<body>
-			<trans-unit id="tx_templavoila_ds.description" xml:space="preserve">
+			<trans-unit id="tx_templavoilaplus_ds.description" xml:space="preserve">
 				<source>Choose a Data Structure for this Flexible Content Element</source>
 			</trans-unit>
-			<trans-unit id="tx_templavoila_to.description" xml:space="preserve">
+			<trans-unit id="tx_templavoilaplus_to.description" xml:space="preserve">
 				<source>Select a Template Object that automatically maps the Data Structure to the HTML template</source>
 			</trans-unit>
-			<trans-unit id="tx_templavoila_flex.description" xml:space="preserve">
+			<trans-unit id="tx_templavoilaplus_flex.description" xml:space="preserve">
 				<source>Fill in the flexible content for this content element structure.</source>
 			</trans-unit>
-			<trans-unit id="tx_templavoila_pito.description" xml:space="preserve">
-				<source>[FILL IN] tx_templavoila_pito</source>
+			<trans-unit id="tx_templavoilaplus_pito.description" xml:space="preserve">
+				<source>[FILL IN] tx_templavoilaplus_pito</source>
 			</trans-unit>
 		</body>
 	</file>

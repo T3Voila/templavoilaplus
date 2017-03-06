@@ -1,5 +1,5 @@
 <?php
-namespace Extension\Templavoila\Controller;
+namespace Ppi\TemplaVoilaPlus\Controller;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -20,10 +20,10 @@ use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-use Extension\Templavoila\Utility\TemplaVoilaUtility;
+use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 $GLOBALS['LANG']->includeLLFile(
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('templavoila') . 'Resources/Private/Language/BackendFlexformCleaner.xlf'
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('templavoilaplus') . 'Resources/Private/Language/BackendFlexformCleaner.xlf'
 );
 
 /**
@@ -53,7 +53,7 @@ class BackendFlexformCleanerController extends \TYPO3\CMS\Backend\Module\BaseScr
      *
      * @var string
      */
-    public $extKey = 'templavoila';
+    public $extKey = 'templavoilaplus';
 
     /**
      * The name of the module
@@ -82,7 +82,7 @@ class BackendFlexformCleanerController extends \TYPO3\CMS\Backend\Module\BaseScr
         $this->iconFactory = $this->moduleTemplate->getIconFactory();
         $this->buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
 
-        $this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
+        $this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoilaplus']);
     }
 
     /*******************************************
@@ -127,15 +127,15 @@ class BackendFlexformCleanerController extends \TYPO3\CMS\Backend\Module\BaseScr
             // Clean up XML:
             $cleanXML = '';
             if (TemplaVoilaUtility::getBackendUser()->isAdmin()) {
-                if ('tx_templavoila_flex' == $this->viewTable['field_flex']) {
+                if ('tx_templavoilaplus_flex' == $this->viewTable['field_flex']) {
                     $flexObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class);
-                    if ($record['tx_templavoila_flex']) {
-                        $cleanXML = $flexObj->cleanFlexFormXML($this->viewTable['table'], 'tx_templavoila_flex', $record);
+                    if ($record['tx_templavoilaplus_flex']) {
+                        $cleanXML = $flexObj->cleanFlexFormXML($this->viewTable['table'], 'tx_templavoilaplus_flex', $record);
 
                         // If the clean-button was pressed, save right away:
                         if (GeneralUtility::_POST('_CLEAN_XML')) {
                             $dataArr = array();
-                            $dataArr[$this->viewTable['table']][$this->viewTable['uid']]['tx_templavoila_flex'] = $cleanXML;
+                            $dataArr[$this->viewTable['table']][$this->viewTable['uid']]['tx_templavoilaplus_flex'] = $cleanXML;
 
                             // Init TCEmain object and store:
                             $tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
@@ -283,7 +283,7 @@ class BackendFlexformCleanerController extends \TYPO3\CMS\Backend\Module\BaseScr
     public function markUpXML($str)
     {
         // Make instance of syntax highlight class:
-        $hlObj = GeneralUtility::makeInstance(\Extension\Templavoila\Service\SyntaxHighlightingService::class);
+        $hlObj = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Service\SyntaxHighlightingService::class);
 
         // Check which document type, if applicable:
         if (strstr(substr($str, 0, 100), '<T3DataStructure')) {

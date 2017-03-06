@@ -1,5 +1,5 @@
 <?php
-namespace Extension\Templavoila\Form\FormDataProvider;
+namespace Ppi\TemplaVoilaPlus\Form\FormDataProvider;
 
 /*
  * This file is part of the TYPO3 CMS project.

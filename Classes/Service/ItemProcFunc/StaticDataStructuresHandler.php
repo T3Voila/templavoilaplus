@@ -1,5 +1,5 @@
 <?php
-namespace Extension\Templavoila\Service\ItemProcFunc;
+namespace Ppi\TemplaVoilaPlus\Service\ItemProcFunc;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -18,7 +18,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
- * Class/Function which manipulates the item-array for table/field tx_templavoila_tmplobj_datastructure.
+ * Class/Function which manipulates the item-array for table/field tx_templavoilaplus_tmplobj_datastructure.
  *
  * @author Kasper Skaarhoj <kasper@typo3.com>
  */
@@ -52,7 +52,7 @@ class StaticDataStructuresHandler
     {
         $removeDSItems = $this->getRemoveItems($params, substr($params['field'], 0, -2) . 'ds');
 
-        $dsRepo = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\DataStructureRepository::class);
+        $dsRepo = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Domain\Repository\DataStructureRepository::class);
         $dsList = $dsRepo->getAll();
 
         $params['items'] = array(
@@ -62,7 +62,7 @@ class StaticDataStructuresHandler
         );
 
         foreach ($dsList as $dsObj) {
-            /** @var \Extension\Templavoila\Domain\Model\AbstractDataStructure $dsObj */
+            /** @var \Ppi\TemplaVoilaPlus\Domain\Model\AbstractDataStructure $dsObj */
             if ($dsObj->isPermittedForUser($params['row'], $removeDSItems)) {
                 $params['items'][] = array(
                     $dsObj->getLabel(),
@@ -85,23 +85,23 @@ class StaticDataStructuresHandler
     {
         // Find the template data structure that belongs to this plugin:
         $piKey = $params['row']['list_type'];
-        $templateRef = $GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoila_cm1']['piKey2DSMap'][$piKey]; // This should be a value of a Data Structure.
+        $templateRef = $GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoilaplus_cm1']['piKey2DSMap'][$piKey]; // This should be a value of a Data Structure.
         $storagePid = $this->getStoragePid($params);
 
         if ($templateRef && $storagePid) {
             // Select all Template Object Records from storage folder, which are parent records and which has the data structure for the plugin:
             $res = $this->getDatabaseConnection()->exec_SELECTquery(
                 'title,uid,previewicon',
-                'tx_templavoila_tmplobj',
-                'tx_templavoila_tmplobj.pid=' . $storagePid . ' AND tx_templavoila_tmplobj.datastructure=' .  $this->getDatabaseConnection()->fullQuoteStr($templateRef, 'tx_templavoila_tmplobj') . ' AND tx_templavoila_tmplobj.parent=0',
+                'tx_templavoilaplus_tmplobj',
+                'tx_templavoilaplus_tmplobj.pid=' . $storagePid . ' AND tx_templavoilaplus_tmplobj.datastructure=' .  $this->getDatabaseConnection()->fullQuoteStr($templateRef, 'tx_templavoilaplus_tmplobj') . ' AND tx_templavoilaplus_tmplobj.parent=0',
                 '',
-                'tx_templavoila_tmplobj.title'
+                'tx_templavoilaplus_tmplobj.title'
             );
 
             // Traverse these and add them. Icons are set too if applicable.
             while (false != ($row = $this->getDatabaseConnection()->sql_fetch_assoc($res))) {
                 if ($row['previewicon']) {
-                    $icon = '../' . $GLOBALS['TCA']['tx_templavoila_tmplobj']['columns']['previewicon']['config']['uploadfolder'] . '/' . $row['previewicon'];
+                    $icon = '../' . $GLOBALS['TCA']['tx_templavoilaplus_tmplobj']['columns']['previewicon']['config']['uploadfolder'] . '/' . $row['previewicon'];
                 } else {
                     $icon = '';
                 }
@@ -126,7 +126,7 @@ class StaticDataStructuresHandler
 
         $removeDSItems = $this->getRemoveItems($params, substr($params['field'], 0, -2) . 'ds');
 
-        $dsRepo = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\DataStructureRepository::class);
+        $dsRepo = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Domain\Repository\DataStructureRepository::class);
         $dsList = $dsRepo->getDatastructuresByStoragePidAndScope($storagePid, $scope);
 
         $params['items'] = array(
@@ -136,7 +136,7 @@ class StaticDataStructuresHandler
         );
 
         foreach ($dsList as $dsObj) {
-            /** @var \Extension\Templavoila\Domain\Model\AbstractDataStructure $dsObj */
+            /** @var \Ppi\TemplaVoilaPlus\Domain\Model\AbstractDataStructure $dsObj */
             if ($dsObj->isPermittedForUser($params['row'], $removeDSItems)) {
                 $params['items'][] = array(
                     $dsObj->getLabel(),
@@ -158,7 +158,7 @@ class StaticDataStructuresHandler
      */
     public function templateObjectItemsProcFunc(array &$params, \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems &$pObj)
     {
-        $this->conf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
+        $this->conf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoilaplus']);
 
         if ($this->conf['enable.']['selectDataStructure']) {
             $this->templateObjectItemsProcFuncForCurrentDS($params, $pObj);
@@ -180,29 +180,29 @@ class StaticDataStructuresHandler
     {
         // Get DS
 
-        $fieldName = $params['field'] == 'tx_templavoila_next_to' ? 'tx_templavoila_next_ds' : 'tx_templavoila_ds';
+        $fieldName = $params['field'] == 'tx_templavoilaplus_next_to' ? 'tx_templavoilaplus_next_ds' : 'tx_templavoilaplus_ds';
         $dataSource = $params['row'][$fieldName][0];
 
         $storagePid = $this->getStoragePid($params);
 
         $removeTOItems = $this->getRemoveItems($params, substr($params['field'], 0, -2) . 'to');
 
-        $dsRepo = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\DataStructureRepository::class);
-        $toRepo = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\TemplateRepository::class);
+        $dsRepo = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Domain\Repository\DataStructureRepository::class);
+        $toRepo = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Domain\Repository\TemplateRepository::class);
 
         try {
             $ds = $dsRepo->getDatastructureByUidOrFilename($dataSource);
             if (strlen($dataSource)) {
                 $toList = $toRepo->getTemplatesByDatastructure($ds, $storagePid);
                 foreach ($toList as $toObj) {
-                    /** @var \Extension\Templavoila\Domain\Model\Template $toObj */
+                    /** @var \Ppi\TemplaVoilaPlus\Domain\Model\Template $toObj */
                     if (!$toObj->hasParent() && $toObj->isPermittedForUser($params['table'], $removeTOItems)) {
                         $params['items'][] = array(
                             $toObj->getLabel(),
                             $toObj->getKey(),
                             ($toObj->getIcon()
                                 ? '../' . $toObj->getIcon()
-                                : 'EXT:templavoila/Resources/Public/Icon/icon_pagetemplate.gif'
+                                : 'EXT:templavoilaplus/Resources/Public/Icon/icon_pagetemplate.gif'
                             )
                         );
                     }
@@ -230,12 +230,12 @@ class StaticDataStructuresHandler
         $removeDSItems = $this->getRemoveItems($params, substr($params['field'], 0, -2) . 'ds');
         $removeTOItems = $this->getRemoveItems($params, substr($params['field'], 0, -2) . 'to');
 
-        $dsRepo = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\DataStructureRepository::class);
-        $toRepo = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\TemplateRepository::class);
+        $dsRepo = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Domain\Repository\DataStructureRepository::class);
+        $toRepo = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Domain\Repository\TemplateRepository::class);
         $dsList = $dsRepo->getDatastructuresByStoragePidAndScope($storagePid, $scope);
 
         foreach ($dsList as $dsObj) {
-            /** @var \Extension\Templavoila\Domain\Model\AbstractDataStructure $dsObj */
+            /** @var \Ppi\TemplaVoilaPlus\Domain\Model\AbstractDataStructure $dsObj */
             if (!$dsObj->isPermittedForUser($params['row'], $removeDSItems)) {
                 continue;
             }
@@ -247,14 +247,14 @@ class StaticDataStructuresHandler
 
             $toList = $toRepo->getTemplatesByDatastructure($dsObj, $storagePid);
             foreach ($toList as $toObj) {
-                /** @var \Extension\Templavoila\Domain\Model\Template $toObj */
+                /** @var \Ppi\TemplaVoilaPlus\Domain\Model\Template $toObj */
                 if (!$toObj->hasParent() && $toObj->isPermittedForUser($params['row'], $removeTOItems)) {
                     $curDS[] = array(
                         $toObj->getLabel(),
                         $toObj->getKey(),
                         ($toObj->getIcon()
                             ? '../' . $toObj->getIcon()
-                            : 'EXT:templavoila/Resources/Public/Icon/icon_pagetemplate.gif'
+                            : 'EXT:templavoilaplus/Resources/Public/Icon/icon_pagetemplate.gif'
                         )
                     );
                 }
@@ -393,13 +393,13 @@ class StaticDataStructuresHandler
     {
         switch ($params['table']) {
             case 'pages':
-                $scope = \Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_PAGE;
+                $scope = \Ppi\TemplaVoilaPlus\Domain\Model\AbstractDataStructure::SCOPE_PAGE;
                 break;
             case 'tt_content':
-                $scope = \Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_FCE;
+                $scope = \Ppi\TemplaVoilaPlus\Domain\Model\AbstractDataStructure::SCOPE_FCE;
                 break;
             default:
-                $scope = \Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_UNKNOWN;
+                $scope = \Ppi\TemplaVoilaPlus\Domain\Model\AbstractDataStructure::SCOPE_UNKNOWN;
         }
         return $scope;
     }

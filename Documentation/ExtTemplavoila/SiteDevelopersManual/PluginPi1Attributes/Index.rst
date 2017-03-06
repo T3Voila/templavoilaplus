@@ -1,4 +1,4 @@
-﻿
+
 
 .. ==================================================
 .. FOR YOUR INFORMATION
@@ -125,7 +125,7 @@ Plugin “pi1” attributes
          
          ::
          
-            plugin.tx_templavoila_pi1.disableExplosivePreview >
+            plugin.tx_templavoilaplus_pi1.disableExplosivePreview >
             page.10.disableExplosivePreview >
    
    Default
@@ -147,7 +147,7 @@ Plugin “pi1” attributes
          
          ::
          
-            plugin.tx_templavoila_pi1.disableErrorMessages = 1
+            plugin.tx_templavoilaplus_pi1.disableErrorMessages = 1
    
    Default
          FALSE

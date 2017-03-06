@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-    <file source-language="en" datatype="plaintext" original="messages" date="2014-07-13T20:55:46Z" product-name="templavoila">
+    <file source-language="en" datatype="plaintext" original="messages" date="2014-07-13T20:55:46Z" product-name="templavoilaplus">
         <header/>
         <body>
             <trans-unit id="newsitewizard_intro" xml:space="preserve">
-                <source>If you want to start a new website based on the TemplaVoila template engine you can start this wizard which will set up all the boring initial stuff for you.
+                <source>If you want to start a new website based on the TemplaVoilà Plus template engine you can start this wizard which will set up all the boring initial stuff for you.
                     You will be taken through these steps:
                     - Creation of a new website root, storage folder, sample pages.
-                    - Creation of the main TemplaVoila template, including mapping of one content area and a main menu.
+                    - Creation of the main TemplaVoilà Plus template, including mapping of one content area and a main menu.
                     - Creation of a backend user and group to manage only that website.
                     You should prepare an HTML template before you begin the wizard; simply make a design in HTML and place the HTML file including graphics and stylesheets in a subfolder of &quot;%s&quot; relative to the websites root directory.
                     Tip about menus: If you include a main menu in the template, try to place the whole menu inside a container (like &lt;div&gt;, &lt;table&gt; or &lt;tr&gt;) and encapsulate each menu item in a block tag (like &lt;tr&gt;, &lt;td&gt; or &lt;div&gt;). Use A-tags for the links. If you want different designs for normal and active menu elements, design the first menu item as &quot;Active&quot; and the second (and rest) as &quot;Normal&quot;, then the wizard might be able to capture the right configuration.
@@ -30,7 +30,7 @@
                 <source>Missing configuration!</source>
             </trans-unit>
             <trans-unit id="newsitewizard_missingconf_description" xml:space="preserve">
-                <source>The TemplaVoila extension configuration is missing. Please clear the cache and recheck the configuration within the extension manager.</source>
+                <source>The TemplaVoilà Plus extension configuration is missing. Please clear the cache and recheck the configuration within the extension manager.</source>
             </trans-unit>
             <trans-unit id="newsitewizard_missingdir" xml:space="preserve">
                 <source>Missing directory!</source>

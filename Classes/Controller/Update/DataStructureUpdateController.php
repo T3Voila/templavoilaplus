@@ -1,5 +1,5 @@
 <?php
-namespace Extension\Templavoila\Controller\Update;
+namespace Ppi\TemplaVoilaPlus\Controller\Update;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -17,7 +17,7 @@ namespace Extension\Templavoila\Controller\Update;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
-use Extension\Templavoila\Domain\Repository\DataStructureRepository;
+use Ppi\TemplaVoilaPlus\Domain\Repository\DataStructureRepository;
 
 /**
  * Controller to migrate/update the DataStructure
@@ -62,7 +62,7 @@ class DataStructureUpdateController extends StepUpdateController
         return $count;
     }
     
-    protected function convertDs(\Extension\Templavoila\Domain\Model\AbstractDataStructure $ds)
+    protected function convertDs(\Ppi\TemplaVoilaPlus\Domain\Model\AbstractDataStructure $ds)
     {
         $changed = false;
         $data = $ds->getDataprotArray();
@@ -96,7 +96,7 @@ class DataStructureUpdateController extends StepUpdateController
             $tce->stripslashes_values = 0;
 
             $dataArr = [];
-            $dataArr['tx_templavoila_datastructure'][$ds->getKey()]['dataprot'] = $dataProtXML;
+            $dataArr['tx_templavoilaplus_datastructure'][$ds->getKey()]['dataprot'] = $dataProtXML;
 
             // process data
             $tce->start($dataArr, array());

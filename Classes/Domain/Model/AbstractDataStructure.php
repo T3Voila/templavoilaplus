@@ -1,5 +1,5 @@
 <?php
-namespace Extension\Templavoila\Domain\Model;
+namespace Ppi\TemplaVoilaPlus\Domain\Model;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -16,7 +16,7 @@ namespace Extension\Templavoila\Domain\Model;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-use Extension\Templavoila\Utility\TemplaVoilaUtility;
+use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 /**
  * Class to provide unique access to datastructure

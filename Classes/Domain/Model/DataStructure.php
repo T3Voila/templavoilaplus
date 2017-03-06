@@ -1,5 +1,5 @@
 <?php
-namespace Extension\Templavoila\Domain\Model;
+namespace Ppi\TemplaVoilaPlus\Domain\Model;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -17,7 +17,7 @@ namespace Extension\Templavoila\Domain\Model;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-use Extension\Templavoila\Utility\TemplaVoilaUtility;
+use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 /**
  * Class to provide unique access to datastructure
@@ -41,16 +41,16 @@ class DataStructure extends AbstractDataStructure
     {
         // getting the DS for the DB and make sure the workspace-overlay is performed (done internally)
         if (TYPO3_MODE === 'FE') {
-            $this->row = $GLOBALS['TSFE']->sys_page->checkRecord('tx_templavoila_datastructure', $uid);
+            $this->row = $GLOBALS['TSFE']->sys_page->checkRecord('tx_templavoilaplus_datastructure', $uid);
         } else {
-            $this->row = BackendUtility::getRecordWSOL('tx_templavoila_datastructure', $uid);
+            $this->row = BackendUtility::getRecordWSOL('tx_templavoilaplus_datastructure', $uid);
         }
 
         $this->setLabel($this->row['title']);
         $this->setScope($this->row['scope']);
         // path relative to typo3 maindir
         $this->setIcon('../uploads/tx_templavoila/' . $this->row['previewicon']);
-        $this->setSortbyField($GLOBALS['TCA']['tx_templavoila_datastructure']['ctrl']['sortby']);
+        $this->setSortbyField($GLOBALS['TCA']['tx_templavoilaplus_datastructure']['ctrl']['sortby']);
     }
 
     /**
@@ -100,14 +100,14 @@ class DataStructure extends AbstractDataStructure
         $permission = true;
         $denyItems = TemplaVoilaUtility::getDenyListForUser();
 
-        $currentSetting = $parentRow['tx_templavoila_ds'];
+        $currentSetting = $parentRow['tx_templavoilaplus_ds'];
         if ($this->getScope() == static::SCOPE_PAGE) {
-            $inheritSetting = $parentRow['tx_templavoila_next_ds'];
+            $inheritSetting = $parentRow['tx_templavoilaplus_next_ds'];
         } else {
             $inheritSetting = -1;
         }
 
-        $key = 'tx_templavoila_datastructure:' . $this->getKey();
+        $key = 'tx_templavoilaplus_datastructure:' . $this->getKey();
         if (in_array($key, $denyItems) &&
             $key != $currentSetting &&
             $key != $inheritSetting

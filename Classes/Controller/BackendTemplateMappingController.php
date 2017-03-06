@@ -1,5 +1,5 @@
 <?php
-namespace Extension\Templavoila\Controller;
+namespace Ppi\TemplaVoilaPlus\Controller;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -21,10 +21,10 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-use Extension\Templavoila\Utility\TemplaVoilaUtility;
+use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 $GLOBALS['LANG']->includeLLFile(
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('templavoila') . 'Resources/Private/Language/BackendTemplateMapping.xlf'
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('templavoilaplus') . 'Resources/Private/Language/BackendTemplateMapping.xlf'
 );
 
 /**
@@ -63,7 +63,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
      *
      * @var string
      */
-    public $extKey = 'templavoila';
+    public $extKey = 'templavoilaplus';
 
     /**
      * The name of the module
@@ -85,7 +85,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
     public $markupFile = '';
 
     /**
-     * @var \Extension\Templavoila\Domain\Model\HtmlMarkup
+     * @var \Ppi\TemplaVoilaPlus\Domain\Model\HtmlMarkup
      */
     public $markupObj;
 
@@ -130,7 +130,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
     public $displayFile = '';
 
     /**
-     * (GPvar "table") The table from which to display element (Data Structure object [tx_templavoila_datastructure], template object [tx_templavoila_tmplobj])
+     * (GPvar "table") The table from which to display element (Data Structure object [tx_templavoilaplus_datastructure], template object [tx_templavoilaplus_tmplobj])
      *
      * @var string
      */
@@ -228,16 +228,16 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
     public $_saveDSandTO_pid;
 
     /**
-     * instance of class Extension\Templavoila\Module\Cm1\DsEdit
+     * instance of class Ppi\TemplaVoilaPlus\Module\Cm1\DsEdit
      *
-     * @var \Extension\Templavoila\Module\Cm1\DsEdit
+     * @var \Ppi\TemplaVoilaPlus\Module\Cm1\DsEdit
      */
     public $dsEdit;
 
     /**
-     * instance of class Extension\Templavoila\Module\Cm1\ETypes
+     * instance of class Ppi\TemplaVoilaPlus\Module\Cm1\ETypes
      *
-     * @var \Extension\Templavoila\Module\Cm1\ETypes
+     * @var \Ppi\TemplaVoilaPlus\Module\Cm1\ETypes
      */
     public $eTypes;
 
@@ -266,7 +266,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
         $this->iconFactory = $this->moduleTemplate->getIconFactory();
         $this->buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
 
-        $this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
+        $this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoilaplus']);
     }
 
     /**
@@ -345,19 +345,19 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
     public function main()
     {
         // Initialize ds_edit
-        $this->dsEdit = GeneralUtility::getUserObj(\Extension\Templavoila\Module\Cm1\DsEdit::class, '');
+        $this->dsEdit = GeneralUtility::getUserObj(\Ppi\TemplaVoilaPlus\Module\Cm1\DsEdit::class, '');
         $this->dsEdit->init($this);
 
         // Initialize eTypes
-        $this->eTypes = GeneralUtility::getUserObj(\Extension\Templavoila\Module\Cm1\ETypes::class, '');
+        $this->eTypes = GeneralUtility::getUserObj(\Ppi\TemplaVoilaPlus\Module\Cm1\ETypes::class, '');
         $this->eTypes->init($this);
 
-        $this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
+        $this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoilaplus']);
         $this->staticDS = ($this->extConf['staticDS.']['enable']);
 
         // Setting GPvars:
         // It can be, that we get a storeg:file link from clickmenu
-        $this->displayFile = \Extension\Templavoila\Domain\Model\File::filename(GeneralUtility::_GP('file'));
+        $this->displayFile = \Ppi\TemplaVoilaPlus\Domain\Model\File::filename(GeneralUtility::_GP('file'));
         $this->displayTable = GeneralUtility::_GP('table');
         $this->displayUid = GeneralUtility::_GP('uid');
 
@@ -385,7 +385,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                 }
 
                 function openValidator(key) {
-                    new Ajax.Request("' . $GLOBALS['BACK_PATH'] . 'ajax.php?ajaxID=Extension\\Templavoila\\Module\\Cm1\\Ajax::getDisplayFileContent&key=" + key, {
+                    new Ajax.Request("' . $GLOBALS['BACK_PATH'] . 'ajax.php?ajaxID=Ppi\\TemplaVoilaPlus\Module\\Cm1\\Ajax::getDisplayFileContent&key=" + key, {
                         onSuccess: function(response) {
                             var valform = new Element(\'form\',{method: \'post\', target:\'_blank\', action: \'http://validator.w3.org/check#validate_by_input\'});
                             valform.insert(new Element(\'input\',{name: \'fragment\', value:response.responseText, type: \'hidden\'}));$(document.body).insert(valform);
@@ -641,9 +641,9 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
         // Render content, depending on input values:
         if ($this->displayFile) { // Browsing file directly, possibly creating a template/data object records.
             $this->renderFile();
-        } elseif ($this->displayTable == 'tx_templavoila_datastructure') { // Data source display
+        } elseif ($this->displayTable == 'tx_templavoilaplus_datastructure') { // Data source display
             $this->renderDSO();
-        } elseif ($this->displayTable == 'tx_templavoila_tmplobj') { // Data source display
+        } elseif ($this->displayTable == 'tx_templavoilaplus_tmplobj') { // Data source display
             $this->renderTO();
         }
     }
@@ -718,11 +718,11 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                 $sesDat = TemplaVoilaUtility::getBackendUser()->getSessionData($this->sessionKey);
             }
             if ($this->_load_ds_xml_to) {
-                $toREC = BackendUtility::getRecordWSOL('tx_templavoila_tmplobj', $this->_load_ds_xml_to);
+                $toREC = BackendUtility::getRecordWSOL('tx_templavoilaplus_tmplobj', $this->_load_ds_xml_to);
                 if ($this->staticDS) {
                     $dsREC['dataprot'] = GeneralUtility::getURL(GeneralUtility::getFileAbsFileName($toREC['datastructure']));
                 } else {
-                    $dsREC = BackendUtility::getRecordWSOL('tx_templavoila_datastructure', $toREC['datastructure']);
+                    $dsREC = BackendUtility::getRecordWSOL('tx_templavoilaplus_datastructure', $toREC['datastructure']);
                 }
             }
 
@@ -809,7 +809,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                 // @TODO We have this init multiple in this class => BAD
                 // @TODO We have this loading 3 times in this class => BAD
                 // Init mark up object.
-                $this->markupObj = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Model\HtmlMarkup::class);
+                $this->markupObj = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Domain\Model\HtmlMarkup::class);
                 $this->markupObj->init();
 
                 $fileContent = $this->markupObj->htmlParse->prefixResourcePath($relPathFix, $fileContent);
@@ -877,7 +877,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                     // Modifying data structure with conversion of preset values for field types to actual settings:
                     $storeDataStruct = $dataStruct;
                     if (is_array($storeDataStruct['ROOT']['el'])) {
-                        $this->eTypes->substEtypeWithRealStuff($storeDataStruct['ROOT']['el'], $contentSplittedByMapping['sub']['ROOT'], $dataArr['tx_templavoila_datastructure']['NEW']['scope']);
+                        $this->eTypes->substEtypeWithRealStuff($storeDataStruct['ROOT']['el'], $contentSplittedByMapping['sub']['ROOT'], $dataArr['tx_templavoilaplus_datastructure']['NEW']['scope']);
                     }
                     $dataProtXML = GeneralUtility::array2xml_cs($storeDataStruct, 'T3DataStructure', array('useCDATA' => 1));
 
@@ -888,10 +888,10 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                         $newID = substr($path, strlen(PATH_site));
                     } else {
                         $dataArr = [];
-                        $dataArr['tx_templavoila_datastructure']['NEW']['pid'] = (int)$this->_saveDSandTO_pid;
-                        $dataArr['tx_templavoila_datastructure']['NEW']['title'] = $this->_saveDSandTO_title;
-                        $dataArr['tx_templavoila_datastructure']['NEW']['scope'] = $this->_saveDSandTO_type;
-                        $dataArr['tx_templavoila_datastructure']['NEW']['dataprot'] = $dataProtXML;
+                        $dataArr['tx_templavoilaplus_datastructure']['NEW']['pid'] = (int)$this->_saveDSandTO_pid;
+                        $dataArr['tx_templavoilaplus_datastructure']['NEW']['title'] = $this->_saveDSandTO_title;
+                        $dataArr['tx_templavoilaplus_datastructure']['NEW']['scope'] = $this->_saveDSandTO_type;
+                        $dataArr['tx_templavoilaplus_datastructure']['NEW']['dataprot'] = $dataProtXML;
 
                         // start data processing
                         $tce->start($dataArr, array());
@@ -902,13 +902,13 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                     // If that succeeded, create the TO as well:
                     if ($newID) {
                         $dataArr = [];
-                        $dataArr['tx_templavoila_tmplobj']['NEW']['pid'] = (int)$this->_saveDSandTO_pid;
-                        $dataArr['tx_templavoila_tmplobj']['NEW']['title'] = $this->_saveDSandTO_title . ' [Template]';
-                        $dataArr['tx_templavoila_tmplobj']['NEW']['datastructure'] = $newID;
-                        $dataArr['tx_templavoila_tmplobj']['NEW']['fileref'] = substr($this->displayFile, strlen(PATH_site));
-                        $dataArr['tx_templavoila_tmplobj']['NEW']['templatemapping'] = serialize($templatemapping);
-                        $dataArr['tx_templavoila_tmplobj']['NEW']['fileref_mtime'] = @filemtime($this->displayFile);
-                        $dataArr['tx_templavoila_tmplobj']['NEW']['fileref_md5'] = @md5_file($this->displayFile);
+                        $dataArr['tx_templavoilaplus_tmplobj']['NEW']['pid'] = (int)$this->_saveDSandTO_pid;
+                        $dataArr['tx_templavoilaplus_tmplobj']['NEW']['title'] = $this->_saveDSandTO_title . ' [Template]';
+                        $dataArr['tx_templavoilaplus_tmplobj']['NEW']['datastructure'] = $newID;
+                        $dataArr['tx_templavoilaplus_tmplobj']['NEW']['fileref'] = substr($this->displayFile, strlen(PATH_site));
+                        $dataArr['tx_templavoilaplus_tmplobj']['NEW']['templatemapping'] = serialize($templatemapping);
+                        $dataArr['tx_templavoilaplus_tmplobj']['NEW']['fileref_mtime'] = @filemtime($this->displayFile);
+                        $dataArr['tx_templavoilaplus_tmplobj']['NEW']['fileref_md5'] = @md5_file($this->displayFile);
 
                         // Init TCEmain object and store:
                         $tce->start($dataArr, array());
@@ -918,7 +918,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                             $this->moduleTemplate->addFlashMessage(
                                 sprintf(
                                     TemplaVoilaUtility::getLanguageService()->getLL('msgDSTOSaved'),
-                                    $dataArr['tx_templavoila_tmplobj']['NEW']['datastructure'],
+                                    $dataArr['tx_templavoilaplus_tmplobj']['NEW']['datastructure'],
                                     $tce->substNEWwithIDs['NEW'],
                                     $this->_saveDSandTO_pid
                                 ),
@@ -929,7 +929,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                             $this->moduleTemplate->addFlashMessage(
                                 sprintf(
                                     TemplaVoilaUtility::getLanguageService()->getLL('errorTONotSaved'),
-                                    $dataArr['tx_templavoila_tmplobj']['NEW']['datastructure']
+                                    $dataArr['tx_templavoilaplus_tmplobj']['NEW']['datastructure']
                                 ),
                                 TemplaVoilaUtility::getLanguageService()->getLL('error'),
                                 \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR
@@ -960,14 +960,14 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                 case 'saveUpdatedDSandTOandExit':
                     if ($cmd == 'updateDSandTO') {
                         // Looking up the records by their uids:
-                        $toREC = BackendUtility::getRecordWSOL('tx_templavoila_tmplobj', $this->_saveDSandTO_TOuid);
+                        $toREC = BackendUtility::getRecordWSOL('tx_templavoilaplus_tmplobj', $this->_saveDSandTO_TOuid);
                     } else {
-                        $toREC = BackendUtility::getRecordWSOL('tx_templavoila_tmplobj', $this->_load_ds_xml_to);
+                        $toREC = BackendUtility::getRecordWSOL('tx_templavoilaplus_tmplobj', $this->_load_ds_xml_to);
                     }
                     if ($this->staticDS) {
                         $dsREC['uid'] = $toREC['datastructure'];
                     } else {
-                        $dsREC = BackendUtility::getRecordWSOL('tx_templavoila_datastructure', $toREC['datastructure']);
+                        $dsREC = BackendUtility::getRecordWSOL('tx_templavoilaplus_datastructure', $toREC['datastructure']);
                     }
 
                     // If they are found, continue:
@@ -989,7 +989,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                             GeneralUtility::writeFile($path, $dataProtXML);
                         } else {
                             $dataArr = [];
-                            $dataArr['tx_templavoila_datastructure'][$dsREC['uid']]['dataprot'] = $dataProtXML;
+                            $dataArr['tx_templavoilaplus_datastructure'][$dsREC['uid']]['dataprot'] = $dataProtXML;
 
                             // process data
                             $tce->start($dataArr, array());
@@ -997,12 +997,12 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                         }
 
                         // TO:
-                        $TOuid = BackendUtility::wsMapId('tx_templavoila_tmplobj', $toREC['uid']);
+                        $TOuid = BackendUtility::wsMapId('tx_templavoilaplus_tmplobj', $toREC['uid']);
                         $dataArr = [];
-                        $dataArr['tx_templavoila_tmplobj'][$TOuid]['fileref'] = substr($this->displayFile, strlen(PATH_site));
-                        $dataArr['tx_templavoila_tmplobj'][$TOuid]['templatemapping'] = serialize($templatemapping);
-                        $dataArr['tx_templavoila_tmplobj'][$TOuid]['fileref_mtime'] = @filemtime($this->displayFile);
-                        $dataArr['tx_templavoila_tmplobj'][$TOuid]['fileref_md5'] = @md5_file($this->displayFile);
+                        $dataArr['tx_templavoilaplus_tmplobj'][$TOuid]['fileref'] = substr($this->displayFile, strlen(PATH_site));
+                        $dataArr['tx_templavoilaplus_tmplobj'][$TOuid]['templatemapping'] = serialize($templatemapping);
+                        $dataArr['tx_templavoilaplus_tmplobj'][$TOuid]['fileref_mtime'] = @filemtime($this->displayFile);
+                        $dataArr['tx_templavoilaplus_tmplobj'][$TOuid]['fileref_md5'] = @md5_file($this->displayFile);
 
                         $tce->start($dataArr, array());
                         $tce->process_datamap();
@@ -1103,23 +1103,23 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
             $opt[] = '<option value="0"></option>';
             if ($this->staticDS) {
                 $res = TemplaVoilaUtility::getDatabaseConnection()->exec_SELECTquery(
-                    '*, CASE WHEN LOCATE(' . TemplaVoilaUtility::getDatabaseConnection()->fullQuoteStr('(fce)', 'tx_templavoila_tmplobj') . ', datastructure)>0 THEN 2 ELSE 1 END AS scope',
-                    'tx_templavoila_tmplobj',
-                    'pid IN (' . $this->storageFolders_pidList . ') AND datastructure!=' . TemplaVoilaUtility::getDatabaseConnection()->fullQuoteStr('', 'tx_templavoila_tmplobj') .
-                    BackendUtility::deleteClause('tx_templavoila_tmplobj') .
-                    BackendUtility::versioningPlaceholderClause('tx_templavoila_tmplobj'),
+                    '*, CASE WHEN LOCATE(' . TemplaVoilaUtility::getDatabaseConnection()->fullQuoteStr('(fce)', 'tx_templavoilaplus_tmplobj') . ', datastructure)>0 THEN 2 ELSE 1 END AS scope',
+                    'tx_templavoilaplus_tmplobj',
+                    'pid IN (' . $this->storageFolders_pidList . ') AND datastructure!=' . TemplaVoilaUtility::getDatabaseConnection()->fullQuoteStr('', 'tx_templavoilaplus_tmplobj') .
+                    BackendUtility::deleteClause('tx_templavoilaplus_tmplobj') .
+                    BackendUtility::versioningPlaceholderClause('tx_templavoilaplus_tmplobj'),
                     '',
                     'scope,title'
                 );
             } else {
                 $res = TemplaVoilaUtility::getDatabaseConnection()->exec_SELECTquery(
-                    'tx_templavoila_tmplobj.*,tx_templavoila_datastructure.scope',
-                    'tx_templavoila_tmplobj LEFT JOIN tx_templavoila_datastructure ON tx_templavoila_datastructure.uid=tx_templavoila_tmplobj.datastructure',
-                    'tx_templavoila_tmplobj.pid IN (' . $this->storageFolders_pidList . ') AND tx_templavoila_tmplobj.datastructure>0 ' .
-                    BackendUtility::deleteClause('tx_templavoila_tmplobj') .
-                    BackendUtility::versioningPlaceholderClause('tx_templavoila_tmplobj'),
+                    'tx_templavoilaplus_tmplobj.*,tx_templavoilaplus_datastructure.scope',
+                    'tx_templavoilaplus_tmplobj LEFT JOIN tx_templavoilaplus_datastructure ON tx_templavoilaplus_datastructure.uid=tx_templavoilaplus_tmplobj.datastructure',
+                    'tx_templavoilaplus_tmplobj.pid IN (' . $this->storageFolders_pidList . ') AND tx_templavoilaplus_tmplobj.datastructure>0 ' .
+                    BackendUtility::deleteClause('tx_templavoilaplus_tmplobj') .
+                    BackendUtility::versioningPlaceholderClause('tx_templavoilaplus_tmplobj'),
                     '',
-                    'tx_templavoila_datastructure.scope, tx_templavoila_tmplobj.pid, tx_templavoila_tmplobj.title'
+                    'tx_templavoilaplus_datastructure.scope, tx_templavoilaplus_tmplobj.pid, tx_templavoilaplus_tmplobj.title'
                 );
             }
             $storageFolderPid = 0;
@@ -1127,7 +1127,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
             while (false !== ($row = TemplaVoilaUtility::getDatabaseConnection()->sql_fetch_assoc($res))) {
                 $scope = $row['scope'];
                 unset($row['scope']);
-                BackendUtility::workspaceOL('tx_templavoila_tmplobj', $row);
+                BackendUtility::workspaceOL('tx_templavoilaplus_tmplobj', $row);
                 if ($storageFolderPid != $row['pid']) {
                     $storageFolderPid = $row['pid'];
                     if ($optGroupOpen) {
@@ -1149,7 +1149,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                 // Show XML DS
                 case 'showXMLDS':
                     // Make instance of syntax highlight class:
-                    $hlObj = GeneralUtility::makeInstance(\Extension\Templavoila\Service\SyntaxHighlightingService::class);
+                    $hlObj = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Service\SyntaxHighlightingService::class);
 
                     $storeDataStruct = $dataStruct;
                     if (is_array($storeDataStruct['ROOT']['el'])) {
@@ -1269,12 +1269,12 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
     public function renderDSO()
     {
         if ((int)$this->displayUid > 0) { // TODO: static ds support
-            $row = BackendUtility::getRecordWSOL('tx_templavoila_datastructure', $this->displayUid);
+            $row = BackendUtility::getRecordWSOL('tx_templavoilaplus_datastructure', $this->displayUid);
             if (is_array($row)) {
                 // Get title and icon:
-                $icon = $this->iconFactory->getIconForRecord('tx_templavoila_datastructure', $row, Icon::SIZE_SMALL)->render();
-                $title = BackendUtility::getRecordTitle('tx_templavoila_datastructure', $row, 1);
-                $content .= BackendUtility::wrapClickMenuOnIcon($icon, 'tx_templavoila_datastructure', $row['uid'], true) .
+                $icon = $this->iconFactory->getIconForRecord('tx_templavoilaplus_datastructure', $row, Icon::SIZE_SMALL)->render();
+                $title = BackendUtility::getRecordTitle('tx_templavoilaplus_datastructure', $row, 1);
+                $content .= BackendUtility::wrapClickMenuOnIcon($icon, 'tx_templavoilaplus_datastructure', $row['uid'], true) .
                     '<strong>' . $title . '</strong><br />';
 
                 // Get Data Structure:
@@ -1315,10 +1315,10 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                 // Get Template Objects pointing to this Data Structure
                 $res = TemplaVoilaUtility::getDatabaseConnection()->exec_SELECTquery(
                     '*',
-                    'tx_templavoila_tmplobj',
+                    'tx_templavoilaplus_tmplobj',
                     'pid IN (' . $this->storageFolders_pidList . ') AND datastructure=' . (int)$row['uid'] .
-                    BackendUtility::deleteClause('tx_templavoila_tmplobj') .
-                    BackendUtility::versioningPlaceholderClause('tx_templavoila_tmplobj')
+                    BackendUtility::deleteClause('tx_templavoilaplus_tmplobj') .
+                    BackendUtility::versioningPlaceholderClause('tx_templavoilaplus_tmplobj')
                 );
                 $tRows = [];
                 $tRows[] = '
@@ -1328,17 +1328,17 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                                 <td><strong>' . TemplaVoilaUtility::getLanguageService()->getLL('renderDSO_fileRef') . ':</strong></td>
                                 <td><strong>' . TemplaVoilaUtility::getLanguageService()->getLL('renderDSO_dataLgd') . ':</strong></td>
                             </tr>';
-                $TOicon = $this->iconFactory->getIconForRecord('tx_templavoila_tmplobj', [], Icon::SIZE_SMALL)->render();
+                $TOicon = $this->iconFactory->getIconForRecord('tx_templavoilaplus_tmplobj', [], Icon::SIZE_SMALL)->render();
 
                 // Listing Template Objects with links:
                 while (false !== ($TO_Row = TemplaVoilaUtility::getDatabaseConnection()->sql_fetch_assoc($res))) {
-                    BackendUtility::workspaceOL('tx_templavoila_tmplobj', $TO_Row);
+                    BackendUtility::workspaceOL('tx_templavoilaplus_tmplobj', $TO_Row);
                     $tRows[] = '
                             <tr class="bgColor4">
                                 <td>[' . $TO_Row['uid'] . ']</td>
-                                <td nowrap="nowrap">' . BackendUtility::wrapClickMenuOnIcon($TOicon, 'tx_templavoila_tmplobj', $TO_Row['uid'], true) .
-                        '<a href="' . htmlspecialchars('index.php?table=tx_templavoila_tmplobj&uid=' . $TO_Row['uid'] . '&_reload_from=1') . '">' .
-                        BackendUtility::getRecordTitle('tx_templavoila_tmplobj', $TO_Row, 1) . '</a>' .
+                                <td nowrap="nowrap">' . BackendUtility::wrapClickMenuOnIcon($TOicon, 'tx_templavoilaplus_tmplobj', $TO_Row['uid'], true) .
+                        '<a href="' . htmlspecialchars('index.php?table=tx_templavoilaplus_tmplobj&uid=' . $TO_Row['uid'] . '&_reload_from=1') . '">' .
+                        BackendUtility::getRecordTitle('tx_templavoilaplus_tmplobj', $TO_Row, 1) . '</a>' .
                         '</td>
                     <td nowrap="nowrap">' . htmlspecialchars($TO_Row['fileref']) . ' <strong>' .
                         (!GeneralUtility::getFileAbsFileName($TO_Row['fileref'], 1) ? TemplaVoilaUtility::getLanguageService()->getLL('renderDSO_notFound') : TemplaVoilaUtility::getLanguageService()->getLL('renderDSO_ok')) . '</strong></td>
@@ -1364,7 +1364,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                 // Display XML of data structure:
                 if (is_array($dataStruct)) {
                     // Make instance of syntax highlight class:
-                    $hlObj = GeneralUtility::makeInstance(\Extension\Templavoila\Service\SyntaxHighlightingService::class);
+                    $hlObj = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Service\SyntaxHighlightingService::class);
 
                     $dataStructureXML = GeneralUtility::array2xml_cs($origDataStruct, 'T3DataStructure', array('useCDATA' => 1));
                     $content .= '
@@ -1403,7 +1403,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
         $error = null;
 
         if ((int)$this->displayUid > 0) {
-            $row = BackendUtility::getRecordWSOL('tx_templavoila_tmplobj', $this->displayUid);
+            $row = BackendUtility::getRecordWSOL('tx_templavoilaplus_tmplobj', $this->displayUid);
 
             if (is_array($row)) {
                 $tRows = [];
@@ -1414,14 +1414,14 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                         . '</th></thead>';
 
                 // Get title and icon:
-                $icon = $this->iconFactory->getIconForRecord('tx_templavoila_tmplobj', $row, Icon::SIZE_SMALL)->render();
+                $icon = $this->iconFactory->getIconForRecord('tx_templavoilaplus_tmplobj', $row, Icon::SIZE_SMALL)->render();
 
-                $title = BackendUtility::getRecordTitle('tx_templavoila_tmplobj', $row);
+                $title = BackendUtility::getRecordTitle('tx_templavoilaplus_tmplobj', $row);
                 $title = BackendUtility::getRecordTitlePrep(TemplaVoilaUtility::getLanguageService()->sL($title));
                 $tRows[] =
                     '<tr>
                         <td>' . TemplaVoilaUtility::getLanguageService()->getLL('templateObject') . ':</td>
-                        <td>' . BackendUtility::wrapClickMenuOnIcon($icon, 'tx_templavoila_tmplobj', $row['uid']) . ' ' . $title . '</td>
+                        <td>' . BackendUtility::wrapClickMenuOnIcon($icon, 'tx_templavoilaplus_tmplobj', $row['uid']) . ' ' . $title . '</td>
                     </tr>';
 
                 // Session data
@@ -1456,12 +1456,12 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                     $DSOfile = '';
                     $dsValue = $row['datastructure'];
                     if ($row['parent']) {
-                        $parentRec = BackendUtility::getRecordWSOL('tx_templavoila_tmplobj', $row['parent'], 'datastructure');
+                        $parentRec = BackendUtility::getRecordWSOL('tx_templavoilaplus_tmplobj', $row['parent'], 'datastructure');
                         $dsValue = $parentRec['datastructure'];
                     }
 
                     if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($dsValue)) {
-                        $DS_row = BackendUtility::getRecordWSOL('tx_templavoila_datastructure', $dsValue);
+                        $DS_row = BackendUtility::getRecordWSOL('tx_templavoilaplus_datastructure', $dsValue);
                     } else {
                         $DSOfile = GeneralUtility::getFileAbsFileName($dsValue);
                     }
@@ -1470,14 +1470,14 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                         // Get main DS array:
                         if (is_array($DS_row)) {
                             // Get title and icon:
-                            $icon = $this->iconFactory->getIconForRecord('tx_templavoila_datastructure', $DS_row, Icon::SIZE_SMALL)->render();
-                            $title = BackendUtility::getRecordTitle('tx_templavoila_datastructure', $DS_row);
+                            $icon = $this->iconFactory->getIconForRecord('tx_templavoilaplus_datastructure', $DS_row, Icon::SIZE_SMALL)->render();
+                            $title = BackendUtility::getRecordTitle('tx_templavoilaplus_datastructure', $DS_row);
                             $title = BackendUtility::getRecordTitlePrep(TemplaVoilaUtility::getLanguageService()->sL($title));
 
                             $tRows[] =
                                 '<tr>
                                     <td>' . TemplaVoilaUtility::getLanguageService()->getLL('renderTO_dsRecord') . ':</td>
-                                    <td>' . BackendUtility::wrapClickMenuOnIcon($icon, 'tx_templavoila_datastructure', $DS_row['uid']) . ' ' . $title . '</td>
+                                    <td>' . BackendUtility::wrapClickMenuOnIcon($icon, 'tx_templavoilaplus_datastructure', $DS_row['uid']) . ' ' . $title . '</td>
                                 </tr>';
 
                             // Link to updating DS/TO:
@@ -1708,7 +1708,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
             $fileContent = GeneralUtility::getUrl($theFile);
 
             // Init mark up object.
-            $this->markupObj = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Model\HtmlMarkup::class);
+            $this->markupObj = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Domain\Model\HtmlMarkup::class);
             $this->markupObj->init();
 
             // Fix relative paths in source:
@@ -1744,10 +1744,10 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
             preg_match('/<body[^>]*>/i', $fileContent, $reg);
             $templatemapping['BodyTag_cached'] = $currentMappingInfo_head['addBodyTag'] ? $reg[0] : '';
 
-            $TOuid = BackendUtility::wsMapId('tx_templavoila_tmplobj', $row['uid']);
-            $dataArr['tx_templavoila_tmplobj'][$TOuid]['templatemapping'] = serialize($templatemapping);
-            $dataArr['tx_templavoila_tmplobj'][$TOuid]['fileref_mtime'] = @filemtime($theFile);
-            $dataArr['tx_templavoila_tmplobj'][$TOuid]['fileref_md5'] = @md5_file($theFile);
+            $TOuid = BackendUtility::wsMapId('tx_templavoilaplus_tmplobj', $row['uid']);
+            $dataArr['tx_templavoilaplus_tmplobj'][$TOuid]['templatemapping'] = serialize($templatemapping);
+            $dataArr['tx_templavoilaplus_tmplobj'][$TOuid]['fileref_mtime'] = @filemtime($theFile);
+            $dataArr['tx_templavoilaplus_tmplobj'][$TOuid]['fileref_md5'] = @md5_file($theFile);
 
             $tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
             $tce->stripslashes_values = 0;
@@ -1761,7 +1761,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                 \TYPO3\CMS\Core\Messaging\FlashMessage::OK
             );
 
-            $row = BackendUtility::getRecordWSOL('tx_templavoila_tmplobj', $this->displayUid);
+            $row = BackendUtility::getRecordWSOL('tx_templavoilaplus_tmplobj', $this->displayUid);
             $templatemapping = unserialize($row['templatemapping']);
 
             if (GeneralUtility::_GP('_save_to_return')) {
@@ -1838,7 +1838,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
         $fileContent = GeneralUtility::getUrl($this->markupFile);
 
         // Init mark up object.
-        $this->markupObj = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Model\HtmlMarkup::class);
+        $this->markupObj = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Domain\Model\HtmlMarkup::class);
         $this->markupObj->init();
 
         // Get <body> tag:
@@ -1862,7 +1862,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
         $bodyTagRow = $showBodyTag ? '
                 <tr class="info">
                     <td><input type="checkbox" name="addBodyTag" value="1"' . ($currentHeaderMappingInfo['addBodyTag'] ? ' checked="checked"' : '') . ' /></td>
-                    <td>' . \Extension\Templavoila\Domain\Model\HtmlMarkup::getGnyfMarkup('body') . '</td>
+                    <td>' . \Ppi\TemplaVoilaPlus\Domain\Model\HtmlMarkup::getGnyfMarkup('body') . '</td>
                     <td><pre>' . htmlspecialchars($html_body) . '</pre></td>
                 </tr>' : '';
 
@@ -1908,7 +1908,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
         $fileContent = GeneralUtility::getUrl($this->markupFile);
 
         // Init mark up object.
-        $this->markupObj = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Model\HtmlMarkup::class);
+        $this->markupObj = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Domain\Model\HtmlMarkup::class);
 
         // Load splitted content from currentMappingInfo array (used to show us which elements maps to some real content).
         $contentSplittedByMapping = $this->markupObj->splitContentToMappingInfo($fileContent, $currentMappingInfo);
@@ -2199,7 +2199,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                                 $okTitle = htmlspecialchars($cF ? sprintf(TemplaVoilaUtility::getLanguageService()->getLL('displayDSContentFound'), strlen($contentSplittedByMapping['cArray'][$key])) . ($multilineTooltips ? ':' . chr(10) . chr(10) . $cF : '') : TemplaVoilaUtility::getLanguageService()->getLL('displayDSContentEmpty'));
 
                                 $rowCells['htmlPath'] = $this->iconFactory->getIcon('status-dialog-ok', Icon::SIZE_SMALL)->render()
-                                    . \Extension\Templavoila\Domain\Model\HtmlMarkup::getGnyfMarkup($pI['el'], '---' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($mappingElement, -80)))
+                                    . \Ppi\TemplaVoilaPlus\Domain\Model\HtmlMarkup::getGnyfMarkup($pI['el'], '---' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($mappingElement, -80)))
                                     . ' '
                                     . ($pI['modifier'] ? $pI['modifier'] . ($pI['modifier_value'] ? ':' . ($pI['modifier'] != 'RANGE' ? $pI['modifier_value'] : '...') : '') : '');
                                 $rowCells['htmlPath'] = '<a href="' . $this->linkThisScript(array(
@@ -2267,7 +2267,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                                 }
 
                                 // Finally, put together the selector box:
-                                $rowCells['cmdLinks'] = \Extension\Templavoila\Domain\Model\HtmlMarkup::getGnyfMarkup($pI['el'], '---' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($lastLevel['path'], -80))) .
+                                $rowCells['cmdLinks'] = \Ppi\TemplaVoilaPlus\Domain\Model\HtmlMarkup::getGnyfMarkup($pI['el'], '---' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($lastLevel['path'], -80))) .
                                     '<br /><select name="dataMappingForm' . $formPrefix . '[' . $key . '][MAP_EL]">
                                         ' . implode('
                                         ', $opt) . '

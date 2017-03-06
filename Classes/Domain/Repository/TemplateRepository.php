@@ -1,5 +1,5 @@
 <?php
-namespace Extension\Templavoila\Domain\Repository;
+namespace Ppi\TemplaVoilaPlus\Domain\Repository;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -16,7 +16,7 @@ namespace Extension\Templavoila\Domain\Repository;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-use Extension\Templavoila\Utility\TemplaVoilaUtility;
+use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 /**
  * Class to provide unique access to datastructure
@@ -31,31 +31,31 @@ class TemplateRepository implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param integer $uid
      *
-     * @return \Extension\Templavoila\Domain\Model\Template
+     * @return \Ppi\TemplaVoilaPlus\Domain\Model\Template
      */
     public function getTemplateByUid($uid)
     {
-        return GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Model\Template::class, $uid);
+        return GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Domain\Model\Template::class, $uid);
     }
 
     /**
      * Retrieve template objects which are related to a specific datastructure
      *
-     * @param \Extension\Templavoila\Domain\Model\AbstractDataStructure $ds
+     * @param \Ppi\TemplaVoilaPlus\Domain\Model\AbstractDataStructure $ds
      * @param integer $storagePid
      *
      * @return array
      */
-    public function getTemplatesByDatastructure(\Extension\Templavoila\Domain\Model\AbstractDataStructure $ds, $storagePid = 0)
+    public function getTemplatesByDatastructure(\Ppi\TemplaVoilaPlus\Domain\Model\AbstractDataStructure $ds, $storagePid = 0)
     {
         $toList = TemplaVoilaUtility::getDatabaseConnection()->exec_SELECTgetRows(
-            'tx_templavoila_tmplobj.uid',
-            'tx_templavoila_tmplobj',
-            'tx_templavoila_tmplobj.datastructure=' . TemplaVoilaUtility::getDatabaseConnection()->fullQuoteStr($ds->getKey(), 'tx_templavoila_tmplobj')
-            . ((int)$storagePid > 0 ? ' AND tx_templavoila_tmplobj.pid = ' . (int)$storagePid : '')
-            . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoila_tmplobj')
+            'tx_templavoilaplus_tmplobj.uid',
+            'tx_templavoilaplus_tmplobj',
+            'tx_templavoilaplus_tmplobj.datastructure=' . TemplaVoilaUtility::getDatabaseConnection()->fullQuoteStr($ds->getKey(), 'tx_templavoilaplus_tmplobj')
+            . ((int)$storagePid > 0 ? ' AND tx_templavoilaplus_tmplobj.pid = ' . (int)$storagePid : '')
+            . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoilaplus_tmplobj')
             . ' AND pid!=-1 '
-            . \TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause('tx_templavoila_tmplobj')
+            . \TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause('tx_templavoilaplus_tmplobj')
         );
         $toCollection = array();
         foreach ($toList as $toRec) {
@@ -76,7 +76,7 @@ class TemplateRepository implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function getTemplatesByStoragePidAndScope($storagePid, $scope)
     {
-        $dsRepo = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\DataStructureRepository::class);
+        $dsRepo = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Domain\Repository\DataStructureRepository::class);
         $dsList = $dsRepo->getDatastructuresByStoragePidAndScope($storagePid, $scope);
         $toCollection = array();
         foreach ($dsList as $dsObj) {
@@ -90,20 +90,20 @@ class TemplateRepository implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * Retrieve template objects which have a specific template as their parent
      *
-     * @param \Extension\Templavoila\Domain\Model\Template $to
+     * @param \Ppi\TemplaVoilaPlus\Domain\Model\Template $to
      * @param integer $storagePid
      *
      * @return array
      */
-    public function getTemplatesByParentTemplate(\Extension\Templavoila\Domain\Model\Template $to, $storagePid = 0)
+    public function getTemplatesByParentTemplate(\Ppi\TemplaVoilaPlus\Domain\Model\Template $to, $storagePid = 0)
     {
         $toList = TemplaVoilaUtility::getDatabaseConnection()->exec_SELECTgetRows(
-            'tx_templavoila_tmplobj.uid',
-            'tx_templavoila_tmplobj',
-            'tx_templavoila_tmplobj.parent=' . TemplaVoilaUtility::getDatabaseConnection()->fullQuoteStr($to->getKey(), 'tx_templavoila_tmplobj')
-            . ((int)$storagePid > 0 ? ' AND tx_templavoila_tmplobj.pid = ' . (int)$storagePid : ' AND pid!=-1')
-            . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoila_tmplobj')
-            . \TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause('tx_templavoila_tmplobj')
+            'tx_templavoilaplus_tmplobj.uid',
+            'tx_templavoilaplus_tmplobj',
+            'tx_templavoilaplus_tmplobj.parent=' . TemplaVoilaUtility::getDatabaseConnection()->fullQuoteStr($to->getKey(), 'tx_templavoilaplus_tmplobj')
+            . ((int)$storagePid > 0 ? ' AND tx_templavoilaplus_tmplobj.pid = ' . (int)$storagePid : ' AND pid!=-1')
+            . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoilaplus_tmplobj')
+            . \TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause('tx_templavoilaplus_tmplobj')
         );
         $toCollection = array();
         foreach ($toList as $toRec) {
@@ -115,7 +115,7 @@ class TemplateRepository implements \TYPO3\CMS\Core\SingletonInterface
     }
 
     /**
-     * Retrieve a collection (array) of tx_templavoila_datastructure objects
+     * Retrieve a collection (array) of tx_templavoilaplus_datastructure objects
      *
      * @param integer $storagePid
      *
@@ -124,12 +124,12 @@ class TemplateRepository implements \TYPO3\CMS\Core\SingletonInterface
     public function getAll($storagePid = 0)
     {
         $toList = TemplaVoilaUtility::getDatabaseConnection()->exec_SELECTgetRows(
-            'tx_templavoila_tmplobj.uid',
-            'tx_templavoila_tmplobj',
+            'tx_templavoilaplus_tmplobj.uid',
+            'tx_templavoilaplus_tmplobj',
             '1=1'
-            . ((int)$storagePid > 0 ? ' AND tx_templavoila_tmplobj.pid = ' . (int)$storagePid : ' AND tx_templavoila_tmplobj.pid!=-1')
-            . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoila_tmplobj')
-            . \TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause('tx_templavoila_tmplobj')
+            . ((int)$storagePid > 0 ? ' AND tx_templavoilaplus_tmplobj.pid = ' . (int)$storagePid : ' AND tx_templavoilaplus_tmplobj.pid!=-1')
+            . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoilaplus_tmplobj')
+            . \TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause('tx_templavoilaplus_tmplobj')
         );
         $toCollection = array();
         foreach ($toList as $toRec) {
@@ -143,8 +143,8 @@ class TemplateRepository implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * Sorts datastructure alphabetically
      *
-     * @param \Extension\Templavoila\Domain\Model\Template $obj1
-     * @param \Extension\Templavoila\Domain\Model\Template $obj2
+     * @param \Ppi\TemplaVoilaPlus\Domain\Model\Template $obj1
+     * @param \Ppi\TemplaVoilaPlus\Domain\Model\Template $obj2
      *
      * @return integer Result of the comparison (see strcmp())
      * @see usort()
@@ -164,8 +164,8 @@ class TemplateRepository implements \TYPO3\CMS\Core\SingletonInterface
     {
         $res = TemplaVoilaUtility::getDatabaseConnection()->exec_SELECTquery(
             'pid',
-            'tx_templavoila_tmplobj',
-            'pid>=0' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoila_tmplobj'),
+            'tx_templavoilaplus_tmplobj',
+            'pid>=0' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoilaplus_tmplobj'),
             'pid'
         );
         $list = array();
@@ -186,8 +186,8 @@ class TemplateRepository implements \TYPO3\CMS\Core\SingletonInterface
     {
         $toCnt = TemplaVoilaUtility::getDatabaseConnection()->exec_SELECTgetRows(
             'count(*) as cnt',
-            'tx_templavoila_tmplobj',
-            'pid=' . (int)$pid . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoila_tmplobj')
+            'tx_templavoilaplus_tmplobj',
+            'pid=' . (int)$pid . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoilaplus_tmplobj')
         );
 
         return $toCnt[0]['cnt'];

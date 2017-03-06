@@ -1,4 +1,4 @@
-﻿
+
 
 .. ==================================================
 .. FOR YOUR INFORMATION
@@ -23,14 +23,14 @@ sidebar]
 
 ::
 
-   if (t3lib_extMgm::isLoaded('templavoila'))    {
-       require_once (t3lib_extMgm::extPath('templavoila').'mod1/class.tx_templavoila_mod1_sidebar.php');
+   if (t3lib_extMgm::isLoaded('templavoilaplus'))    {
+       require_once (t3lib_extMgm::extPath('templavoilaplus').'mod1/class.tx_templavoilaplus_mod1_sidebar.php');
    }
    class tx_myext_templavoila_sidebar {
        function init() {
                // Create / get instances:
            $thisObj =& t3lib_div::getUserObj ('tx_myext_templavoila_sidebar', '');
-           $sideBarObj =& t3lib_div::getUserObj ('Extension\\Templavoila\\Module\\Mod1\\Sidebar', '');
+           $sideBarObj =& t3lib_div::getUserObj ('Ppi\\TemplaVoilaPlus\Module\\Mod1\\Sidebar', '');
                // Register sidebar item:
            $sideBarObj->addItem ('tx_myext_templavoila_sidebar_item1', $thisObj, 'renderItem_myext', 'My Extension', 50);
        }
@@ -42,7 +42,7 @@ sidebar]
 
 ::
 
-   if (t3lib_extMgm::isLoaded('templavoila'))    {
+   if (t3lib_extMgm::isLoaded('templavoilaplus'))    {
        require_once (t3lib_extMgm::extPath($_EXTKEY).'class.tx_myext_templavoila_sidebar.php');
        tx_myext_templavoila_sidebar::init();
    }

@@ -1,5 +1,5 @@
 <?php
-namespace Extension\Templavoila\Domain\Model;
+namespace Ppi\TemplaVoilaPlus\Domain\Model;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -16,7 +16,7 @@ namespace Extension\Templavoila\Domain\Model;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-use Extension\Templavoila\Utility\TemplaVoilaUtility;
+use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 /**
  * Class to provide unique access to static datastructure
@@ -42,7 +42,7 @@ class StaticDataStructure extends AbstractDataStructure
      */
     public function __construct($key)
     {
-        $conf = \Extension\Templavoila\Domain\Repository\DataStructureRepository::getStaticDatastructureConfiguration();
+        $conf = \Ppi\TemplaVoilaPlus\Domain\Repository\DataStructureRepository::getStaticDatastructureConfiguration();
 
         if (!isset($conf[$key])) {
             throw new \InvalidArgumentException(
@@ -80,10 +80,10 @@ class StaticDataStructure extends AbstractDataStructure
         $pids = array();
         $toList = TemplaVoilaUtility::getDatabaseConnection()->exec_SELECTgetRows(
             'pid',
-            'tx_templavoila_tmplobj',
-            'tx_templavoila_tmplobj.datastructure='
-                . TemplaVoilaUtility::getDatabaseConnection()->fullQuoteStr($this->filename, 'tx_templavoila_tmplobj')
-                . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoila_tmplobj'),
+            'tx_templavoilaplus_tmplobj',
+            'tx_templavoilaplus_tmplobj.datastructure='
+                . TemplaVoilaUtility::getDatabaseConnection()->fullQuoteStr($this->filename, 'tx_templavoilaplus_tmplobj')
+                . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoilaplus_tmplobj'),
             'pid'
         );
 

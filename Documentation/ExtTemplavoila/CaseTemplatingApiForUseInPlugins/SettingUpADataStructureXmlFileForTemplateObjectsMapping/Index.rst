@@ -1,4 +1,4 @@
-﻿.. include:: Images.txt
+.. include:: Images.txt
 
 .. ==================================================
 .. FOR YOUR INFORMATION
@@ -205,7 +205,7 @@ found in ext\_tables.php:
 ::
 
    // Adding datastructure for Mininews:
-   $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['staticDataStructures'][]=array(
+   $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoilaplus']['staticDataStructures'][]=array(
        'title' => 'Mininews Template',
        'path' => 'EXT:'.$_EXTKEY.'/template_datastructure.xml',
        'icon' => '',

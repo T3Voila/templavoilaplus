@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <dataset>
-	<tx_templavoila_tmplobj>
+	<tx_templavoilaplus_tmplobj>
 		<uid>1</uid>
 		<pid>3</pid>
 		<tstamp>1396692010</tstamp>
@@ -30,8 +30,8 @@
 		</table>
 		Some footer text
 	";}s:3:"sub";a:0:{}}}]]></templatemapping>
-	</tx_templavoila_tmplobj>
-	<tx_templavoila_tmplobj>
+	</tx_templavoilaplus_tmplobj>
+	<tx_templavoilaplus_tmplobj>
 		<uid>2</uid>
 		<pid>3</pid>
 		<tstamp>1396692010</tstamp>
@@ -66,8 +66,8 @@
 	";}s:3:"sub";a:0:{}}s:23:"MappingData_head_cached";a:2:{s:6:"cArray";a:1:{i:0;s:50:"
 		<title>TemplaVoila Test Page Template</title>
 	";}s:3:"sub";a:0:{}}s:14:"BodyTag_cached";s:0:"";}]]></templatemapping>
-	</tx_templavoila_tmplobj>
-	<tx_templavoila_tmplobj>
+	</tx_templavoilaplus_tmplobj>
+	<tx_templavoilaplus_tmplobj>
 		<uid>3</uid>
 		<pid>3</pid>
 		<tstamp>1396692010</tstamp>
@@ -85,5 +85,5 @@
 		</div>";}s:3:"sub";a:0:{}}s:23:"MappingData_head_cached";a:2:{s:6:"cArray";a:1:{i:0;s:45:"
 		<title>Fixture for FCE 2 columns</title>
 	";}s:3:"sub";a:0:{}}s:14:"BodyTag_cached";s:0:"";}]]></templatemapping>
-	</tx_templavoila_tmplobj>
+	</tx_templavoilaplus_tmplobj>
 </dataset>

@@ -1,4 +1,4 @@
-﻿
+
 
 .. ==================================================
 .. FOR YOUR INFORMATION
@@ -122,7 +122,7 @@ The following example shows how to use these registers:
 
    <TypoScript>
    10 = TEXT
-   10.data = register:tx_templavoila_pi1.parentRec.uid
+   10.data = register:tx_templavoilaplus_pi1.parentRec.uid
    10.wrap = “uid” field of parent record is |
    </TypoScript>
 
@@ -154,7 +154,7 @@ Example:
    <TypoScript>
    10 = TEXT
    10.current = 1
-   10.dataWrap = {register:tx_templavoila_pi1.sectionPos} / {register:tx_templavoila_pi1.sectionCount} 
-   10.if.isTrue.data = register:tx_templavoila_pi1.sectionIsFirstItem
+   10.dataWrap = {register:tx_templavoilaplus_pi1.sectionPos} / {register:tx_templavoilaplus_pi1.sectionCount} 
+   10.if.isTrue.data = register:tx_templavoilaplus_pi1.sectionIsFirstItem
    </TypoScript>
 

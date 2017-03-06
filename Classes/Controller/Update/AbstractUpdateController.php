@@ -1,5 +1,5 @@
 <?php
-namespace Extension\Templavoila\Controller\Update;
+namespace Ppi\TemplaVoilaPlus\Controller\Update;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -31,10 +31,10 @@ class AbstractUpdateController
     {
         $this->fluid = GeneralUtility::makeInstance(\TYPO3\CMS\Fluid\View\StandaloneView::class);
         $this->fluid->setPartialRootPaths([
-            GeneralUtility::getFileAbsFileName('EXT:templavoila/Resources/Private/Partials/')
+            GeneralUtility::getFileAbsFileName('EXT:templavoilaplus/Resources/Private/Partials/')
         ]);
         $this->fluid->setTemplateRootPaths([
-            GeneralUtility::getFileAbsFileName('EXT:templavoila/Resources/Private/Templates/')
+            GeneralUtility::getFileAbsFileName('EXT:templavoilaplus/Resources/Private/Templates/')
         ]);
         $classPartsName = explode('\\', get_class($this));
         $this->setTemplate('Update/' . substr(array_pop($classPartsName), 0, -16));

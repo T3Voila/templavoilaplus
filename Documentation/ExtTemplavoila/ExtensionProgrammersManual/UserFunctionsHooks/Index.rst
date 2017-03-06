@@ -1,4 +1,4 @@
-﻿
+
 
 .. ==================================================
 .. FOR YOUR INFORMATION
@@ -38,10 +38,10 @@ register your own function in both ways:
 ::
 
         // The getUserObject way:
-   $TYPO3_CONF_VARS['EXTCONF']['templavoila'][ sub_key ][subsub_key][] = 'my_class';
+   $TYPO3_CONF_VARS['EXTCONF']['templavoilaplus'][ sub_key ][subsub_key][] = 'my_class';
    
      // The callUserFunction way:
-   $TYPO3_CONF_VARS['EXTCONF']['templavoila'][ sub_key ][subsub_key][] = 'my_class->my_method';
+   $TYPO3_CONF_VARS['EXTCONF']['templavoilaplus'][ sub_key ][subsub_key][] = 'my_class->my_method';
 
 Which type of hook was implemented, is specified in the column  *type*
 in the reference below. It also states if only one or multiple
@@ -113,7 +113,7 @@ provided before you implement your own userfunction.
          
          ::
          
-            $TYPO3_CONF_VARS['EXTCONF']['templavoila']['cm1']['eTypesConfGen']['input'] = 'tx_myClass->myMethod'
+            $TYPO3_CONF_VARS['EXTCONF']['templavoilaplus']['cm1']['eTypesConfGen']['input'] = 'tx_myClass->myMethod'
          
          For more information on how to design your user function have a look
          at templavoila/cm1/index.php
@@ -141,7 +141,7 @@ provided before you implement your own userfunction.
          
          ::
          
-            $TYPO3_CONF_VARS['EXTCONF']['templavoila']['cm1']['eTypesExtraFormFields']['input'] = 'tx_myClass->myMethod';
+            $TYPO3_CONF_VARS['EXTCONF']['templavoilaplus']['cm1']['eTypesExtraFormFields']['input'] = 'tx_myClass->myMethod';
 
 
 .. container:: table-row
@@ -180,7 +180,7 @@ provided before you implement your own userfunction.
          
          ::
          
-            $TYPO3_CONF_VARS['EXTCONF']['templavoila']['mod1']['renderTopToolbar'][] = 'tx_myClass->myMethod';
+            $TYPO3_CONF_VARS['EXTCONF']['templavoilaplus']['mod1']['renderTopToolbar'][] = 'tx_myClass->myMethod';
 
 
 .. container:: table-row

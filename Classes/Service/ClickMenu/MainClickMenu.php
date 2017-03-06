@@ -1,5 +1,5 @@
 <?php
-namespace Extension\Templavoila\Service\ClickMenu;
+namespace Ppi\TemplaVoilaPlus\Service\ClickMenu;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -47,14 +47,14 @@ class MainClickMenu
 
         if ($clickMenu->cmLevel === 0) {
             $LL = $this->getLanguageService()->includeLLFile(
-                'EXT:templavoila/Resources/Private/Language/locallang.xlf',
+                'EXT:templavoilaplus/Resources/Private/Language/locallang.xlf',
                 false
             );
 
             // Adding link for Mapping tool:
-            if (\Extension\Templavoila\Domain\Model\File::is_file($table)
+            if (\Ppi\TemplaVoilaPlus\Domain\Model\File::is_file($table)
                 && $this->getBackendUser()->isAdmin()
-                && \Extension\Templavoila\Domain\Model\File::is_xmlFile($table)
+                && \Ppi\TemplaVoilaPlus\Domain\Model\File::is_xmlFile($table)
             ) {
                 $localItems[] = $clickMenu->linkItem(
                     $this->getLanguageService()->getLLL('cm1_title', $LL, true),
@@ -70,8 +70,8 @@ class MainClickMenu
                     ),
                     true // Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
                 );
-            } elseif ($table === 'tx_templavoila_tmplobj'
-                || $table === 'tx_templavoila_datastructure'
+            } elseif ($table === 'tx_templavoilaplus_tmplobj'
+                || $table === 'tx_templavoilaplus_datastructure'
             ) {
                 $localItems[] = $clickMenu->linkItem(
                     $this->getLanguageService()->getLLL('cm1_title', $LL, true),
@@ -91,7 +91,7 @@ class MainClickMenu
                 );
             }
 
-            $isTVelement = ('tt_content' === $table && $clickMenu->rec['CType'] === 'templavoila_pi1' || 'pages' === $table) && $clickMenu->rec['tx_templavoila_flex'];
+            $isTVelement = ('tt_content' === $table && $clickMenu->rec['CType'] === 'templavoila_pi1' || 'pages' === $table) && $clickMenu->rec['tx_templavoilaplus_flex'];
 
             // Adding link for "View: Sub elements":
             if ($table === 'tt_content' && $isTVelement) {
@@ -108,7 +108,7 @@ class MainClickMenu
                                 'altRoot' => [
                                     'table' => $table,
                                     'uid' => $uid,
-                                    'field_flex' => 'tx_templavoila_flex',
+                                    'field_flex' => 'tx_templavoilaplus_flex',
                                 ],
                             ]
                         ),
@@ -131,7 +131,7 @@ class MainClickMenu
                                 'viewRec' => [
                                     'table' => $table,
                                     'uid' => $uid,
-                                    'field_flex' => 'tx_templavoila_flex',
+                                    'field_flex' => 'tx_templavoilaplus_flex',
                                 ],
                             ]
                         ),
@@ -141,16 +141,16 @@ class MainClickMenu
                 );
 
                 // Adding link for "View: DS/TO" (admin only):
-                if (MathUtility::canBeInterpretedAsInteger($clickMenu->rec['tx_templavoila_ds'])) {
+                if (MathUtility::canBeInterpretedAsInteger($clickMenu->rec['tx_templavoilaplus_ds'])) {
                     $localItems[] = $clickMenu->linkItem(
-                        $this->getLanguageService()->getLLL('cm_viewdsto', $LL, true) . ' [' . $clickMenu->rec['tx_templavoila_ds'] . '/' . $clickMenu->rec['tx_templavoila_to'] . ']',
+                        $this->getLanguageService()->getLLL('cm_viewdsto', $LL, true) . ' [' . $clickMenu->rec['tx_templavoilaplus_ds'] . '/' . $clickMenu->rec['tx_templavoilaplus_to'] . ']',
                         $iconFactory->getIcon('extensions-templavoila-templavoila-logo', Icon::SIZE_SMALL)->render(),
                         $clickMenu->urlRefForCM(
                             BackendUtility::getModuleUrl(
                                 'templavoila_mapping',
                                 [
-                                    'uid' => $clickMenu->rec['tx_templavoila_ds'],
-                                    'table' => 'tx_templavoila_datastructure',
+                                    'uid' => $clickMenu->rec['tx_templavoilaplus_ds'],
+                                    'table' => 'tx_templavoilaplus_datastructure',
                                 ]
                             ),
                             'returnUrl'
@@ -161,13 +161,13 @@ class MainClickMenu
             }
         } else {
             // @TODO check where this code is used.
-            if (GeneralUtility::_GP('subname') === 'tx_templavoila_cm1_pagesusingthiselement') {
+            if (GeneralUtility::_GP('subname') === 'tx_templavoilaplus_cm1_pagesusingthiselement') {
                 $menuItems = array();
 
                 // Generate a list of pages where this element is also being used:
                 $referenceRecords = $this->getDatabaseConnection()->exec_SELECTgetRows(
                     '*',
-                    'tx_templavoila_elementreferences',
+                    'tx_templavoilaplus_elementreferences',
                     'uid=' . (int)$clickMenu->rec['uid']
                 );
                 foreach ($referenceRecords as $referenceRecord) {

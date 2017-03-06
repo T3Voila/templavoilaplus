@@ -1,5 +1,5 @@
 <?php
-namespace Extension\Templavoila\Controller\Update;
+namespace Ppi\TemplaVoilaPlus\Controller\Update;
 
 /*
  * This file is part of the TYPO3 CMS project.

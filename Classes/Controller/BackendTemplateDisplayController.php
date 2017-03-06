@@ -1,5 +1,5 @@
 <?php
-namespace Extension\Templavoila\Controller;
+namespace Ppi\TemplaVoilaPlus\Controller;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -18,10 +18,10 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-use Extension\Templavoila\Utility\TemplaVoilaUtility;
+use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 $GLOBALS['LANG']->includeLLFile(
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('templavoila') . 'Resources/Private/Language/BackendTemplateMapping.xlf'
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('templavoilaplus') . 'Resources/Private/Language/BackendTemplateMapping.xlf'
 );
 
 /**
@@ -38,7 +38,7 @@ class BackendTemplateDisplayController extends \TYPO3\CMS\Backend\Module\BaseScr
      *
      * @var string
      */
-    public $extKey = 'templavoila';
+    public $extKey = 'templavoilaplus';
 
     /**
      * The name of the module
@@ -61,7 +61,7 @@ class BackendTemplateDisplayController extends \TYPO3\CMS\Backend\Module\BaseScr
     {
         parent::init();
 
-        $this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
+        $this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoilaplus']);
     }
     /**
      * Preparing menu content
@@ -152,7 +152,7 @@ class BackendTemplateDisplayController extends \TYPO3\CMS\Backend\Module\BaseScr
      */
     public function displayFileContentWithMarkup($content, $path, $relPathFix, $limitTags, $show, $mode)
     {
-        $markupObj = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Model\HtmlMarkup::class);
+        $markupObj = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Domain\Model\HtmlMarkup::class);
         $markupObj->gnyfImgAdd = $show ? '' : 'onclick="return parent.updPath(\'###PATH###\');"';
         $markupObj->pathPrefix = $path ? $path . '|' : '';
         $markupObj->onlyElements = $limitTags;
@@ -173,11 +173,11 @@ class BackendTemplateDisplayController extends \TYPO3\CMS\Backend\Module\BaseScr
 
             $markup = implode('', $cParts);
             $styleBlock = '<link media="all" href="/'
-                . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('templavoila')
+                . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('templavoilaplus')
                 . '/Resources/Public/StyleSheet/HtmlMarkup.css" type="text/css" rel="stylesheet" />'
 
                 . '<link media="all" href="/'
-                . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('templavoila')
+                . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('templavoilaplus')
                 . '/Resources/Public/StyleSheet/cm1_default.css" type="text/css" rel="stylesheet" />'
                 ;
             if (preg_match('/<\/head/i', $markup)) {
@@ -209,7 +209,7 @@ class BackendTemplateDisplayController extends \TYPO3\CMS\Backend\Module\BaseScr
         $currentMappingInfo = is_array($sesDat['currentMappingInfo']) ? $sesDat['currentMappingInfo'] : array();
 
         // Init mark up object.
-        $this->markupObj = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Model\HtmlMarkup::class);
+        $this->markupObj = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Domain\Model\HtmlMarkup::class);
         $this->markupObj->htmlParse = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class);
 
         // Splitting content, adding a random token for the part to be previewed:
@@ -230,7 +230,7 @@ class BackendTemplateDisplayController extends \TYPO3\CMS\Backend\Module\BaseScr
         // Implode content and return it:
         $markup = implode('', $pp);
         $styleBlock = '<link media="all" href="/'
-            . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('templavoila')
+            . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('templavoilaplus')
             . '/Resources/Public/StyleSheet/HtmlMarkup.css" type="text/css" rel="stylesheet" />';
         if (preg_match('/<\/head/i', $markup)) {
             $finalMarkup = preg_replace('/(<\/head)/i', $styleBlock . '\1', $markup);

@@ -1,5 +1,5 @@
 <?php
-namespace Extension\Templavoila\Domain\Model;
+namespace Ppi\TemplaVoilaPlus\Domain\Model;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -18,7 +18,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-use Extension\Templavoila\Utility\TemplaVoilaUtility;
+use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 /**
  * Class to provide unique access to template
@@ -77,7 +77,7 @@ class Template
      */
     public function __construct($uid)
     {
-        $this->row = BackendUtility::getRecordWSOL('tx_templavoila_tmplobj', $uid);
+        $this->row = BackendUtility::getRecordWSOL('tx_templavoilaplus_tmplobj', $uid);
 
         $this->setLabel($this->row['title']);
         $this->setDescription($this->row['description']);
@@ -85,7 +85,7 @@ class Template
         $this->setFileref($this->row['fileref']);
         $this->setFilerefMtime($this->row['fileref_mtime']);
         $this->setFilerefMD5($this->row['fileref_md5']);
-        $this->setSortbyField($GLOBALS['TCA']['tx_templavoila_tmplobj']['ctrl']['sortby']);
+        $this->setSortbyField($GLOBALS['TCA']['tx_templavoilaplus_tmplobj']['ctrl']['sortby']);
         $this->setParent($this->row['parent']);
     }
 
@@ -305,21 +305,21 @@ class Template
         $permission = true;
         $denyItems = TemplaVoilaUtility::getDenyListForUser();
 
-        if (isset($parentRow['tx_templavoila_to'])) {
-            $currentSetting = $parentRow['tx_templavoila_to'];
+        if (isset($parentRow['tx_templavoilaplus_to'])) {
+            $currentSetting = $parentRow['tx_templavoilaplus_to'];
         } else {
             $currentSetting = $this->getKey();
         }
 
-        if (isset($parentRow['tx_templavoila_next_to']) &&
-            $this->getScope() == \Extension\Templavoila\Domain\Model\AbstractDataStructure::SCOPE_PAGE
+        if (isset($parentRow['tx_templavoilaplus_next_to']) &&
+            $this->getScope() == \Ppi\TemplaVoilaPlus\Domain\Model\AbstractDataStructure::SCOPE_PAGE
         ) {
-            $inheritSetting = $parentRow['tx_templavoila_next_to'];
+            $inheritSetting = $parentRow['tx_templavoilaplus_next_to'];
         } else {
             $inheritSetting = -1;
         }
 
-        $key = 'tx_templavoila_tmplobj_' . $this->getKey();
+        $key = 'tx_templavoilaplus_tmplobj_' . $this->getKey();
         if (in_array($key, $denyItems) &&
             $key != $currentSetting &&
             $key != $inheritSetting
@@ -331,11 +331,11 @@ class Template
     }
 
     /**
-     * @return \Extension\Templavoila\Domain\Model\AbstractDataStructure
+     * @return \Ppi\TemplaVoilaPlus\Domain\Model\AbstractDataStructure
      */
     public function getDatastructure()
     {
-        $dsRepo = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\DataStructureRepository::class);
+        $dsRepo = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Domain\Repository\DataStructureRepository::class);
 
         return $dsRepo->getDatastructureByUidOrFilename($this->row['datastructure']);
     }

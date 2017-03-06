@@ -1,5 +1,5 @@
 <?php
-namespace Extension\Templavoila\StaticDataStructure;
+namespace Ppi\TemplaVoilaPlus\StaticDataStructure;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -14,7 +14,7 @@ namespace Extension\Templavoila\StaticDataStructure;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Extension\Templavoila\Utility\TemplaVoilaUtility;
+use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 /**
  * Static DS check
@@ -32,20 +32,20 @@ class Check
     {
         if (!$this->staticDsIsEnabled()) {
             return TemplaVoilaUtility::getLanguageService()->sL(
-                'LLL:EXT:templavoila/Resources/Private/Language/locallang.xlf:extconf.staticWizard.messageNoMigration'
+                'LLL:EXT:templavoilaplus/Resources/Private/Language/locallang.xlf:extconf.staticWizard.messageNoMigration'
             );
         }
 
         if ($this->datastructureDbCount() === 0) {
             return TemplaVoilaUtility::getLanguageService()->sL(
-                'LLL:EXT:templavoila/Resources/Private/Language/locallang.xlf:extconf.staticWizard.messageMigrationDone'
+                'LLL:EXT:templavoilaplus/Resources/Private/Language/locallang.xlf:extconf.staticWizard.messageMigrationDone'
             );
         }
 
         $link = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl(
             'tools_ExtensionmanagerExtensionmanager',
             array(
-                'tx_extensionmanager_tools_extensionmanagerextensionmanager[extensionKey]' => 'templavoila',
+                'tx_extensionmanager_tools_extensionmanagerextensionmanager[extensionKey]' => 'templavoilaplus',
                 'tx_extensionmanager_tools_extensionmanagerextensionmanager[action]' => 'show',
                 'tx_extensionmanager_tools_extensionmanagerextensionmanager[controller]' => 'UpdateScript'
             )
@@ -54,11 +54,11 @@ class Check
         return '
         <div style="position:absolute;top:10px;right:10px; width:300px;z-index:500">
             <div class="typo3-message message-information">
-                <div class="message-header">' . TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang.xlf:extconf.staticWizard.header') . '</div>
+                <div class="message-header">' . TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoilaplus/Resources/Private/Language/locallang.xlf:extconf.staticWizard.header') . '</div>
                 <div class="message-body">
-                    ' . TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang.xlf:extconf.staticWizard.messageMigration') . '<br />
+                    ' . TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoilaplus/Resources/Private/Language/locallang.xlf:extconf.staticWizard.messageMigration') . '<br />
                     <a style="text-decoration:underline;" href="' . $link . '">
-                    ' . TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang.xlf:extconf.staticWizard.link') . '</a>
+                    ' . TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoilaplus/Resources/Private/Language/locallang.xlf:extconf.staticWizard.link') . '</a>
                 </div>
             </div>
         </div>
@@ -72,7 +72,7 @@ class Check
      */
     protected function staticDsIsEnabled()
     {
-        $conf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
+        $conf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoilaplus']);
         return (bool)$conf['staticDS.']['enable'];
     }
 
@@ -85,7 +85,7 @@ class Check
     {
         return TemplaVoilaUtility::getDatabaseConnection()->exec_SELECTcountRows(
             '*',
-            'tx_templavoila_datastructure',
+            'tx_templavoilaplus_datastructure',
             'deleted=0'
         );
     }

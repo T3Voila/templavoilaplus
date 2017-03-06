@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-    <file source-language="en" datatype="plaintext" original="messages" date="2014-07-13T20:54:17Z" product-name="templavoila">
+    <file source-language="en" datatype="plaintext" original="messages" date="2014-07-13T20:54:17Z" product-name="templavoilaplus">
         <header/>
         <body>
             <trans-unit id="cm1_title" xml:space="preserve">
-                <source>TemplaVoilà</source>
+                <source>TemplaVoilà Plus</source>
             </trans-unit>
             <trans-unit id="cm1_viewsubelements" xml:space="preserve">
                 <source>View: Sub elements</source>
@@ -19,10 +19,10 @@
                 <source>Pages using this element -&gt;</source>
             </trans-unit>
             <trans-unit id="wiz_refElements" xml:space="preserve">
-                <source>Reference unused content elements (templavoila)</source>
+                <source>Reference unused content elements (templavoilaplus)</source>
             </trans-unit>
             <trans-unit id="wiz_renameFieldsInPage" xml:space="preserve">
-                <source>Rename a field in pages.tx_templavoila_flex</source>
+                <source>Rename a field in pages.tx_templavoilaplus_flex</source>
             </trans-unit>
             <trans-unit id="field_sourceField" xml:space="preserve">
                 <source>source field</source>

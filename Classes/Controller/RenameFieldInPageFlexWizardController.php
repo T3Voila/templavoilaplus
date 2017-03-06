@@ -1,5 +1,5 @@
 <?php
-namespace Extension\Templavoila\Controller;
+namespace Ppi\TemplaVoilaPlus\Controller;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -17,7 +17,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * This wizard renames a field in pages.tx_templavoila_flex, to avoid
+ * This wizard renames a field in pages.tx_templavoilaplus_flex, to avoid
  * a remapping
  */
 class RenameFieldInPageFlexWizardController extends \TYPO3\CMS\Backend\Module\AbstractFunctionModule
@@ -85,8 +85,8 @@ class RenameFieldInPageFlexWizardController extends \TYPO3\CMS\Backend\Module\Ab
             $escapedSource = $this->getDatabaseConnection()->fullQuoteStr('%' . GeneralUtility::_GP('sourceField') . '%', 'pages');
             $escapedDest = $this->getDatabaseConnection()->fullQuoteStr('%' . GeneralUtility::_GP('destinationField') . '%', 'pages');
 
-            $condition = 'tx_templavoila_flex LIKE ' . $escapedSource
-                . ' AND NOT tx_templavoila_flex LIKE ' . $escapedDest . ' '
+            $condition = 'tx_templavoilaplus_flex LIKE ' . $escapedSource
+                . ' AND NOT tx_templavoilaplus_flex LIKE ' . $escapedDest . ' '
                 . ' AND uid IN ('
                 . implode(',', $this->getAllSubPages($this->pObj->id)) . ')';
 
@@ -111,7 +111,7 @@ class RenameFieldInPageFlexWizardController extends \TYPO3\CMS\Backend\Module\Ab
                     $escapedDest = $this->getDatabaseConnection()->fullQuoteStr(GeneralUtility::_GP('destinationField'), 'pages');
                     $this->getDatabaseConnection()->admin_query('
 						UPDATE pages
-						SET tx_templavoila_flex = REPLACE(tx_templavoila_flex, ' . $escapedSource . ', ' . $escapedDest . ')
+						SET tx_templavoilaplus_flex = REPLACE(tx_templavoilaplus_flex, ' . $escapedSource . ', ' . $escapedDest . ')
 						WHERE ' . $condition . '
 					');
                     $message = new \TYPO3\CMS\Core\Messaging\FlashMessage('DONE', '', \TYPO3\CMS\Core\Messaging\FlashMessage::OK);
@@ -173,13 +173,13 @@ class RenameFieldInPageFlexWizardController extends \TYPO3\CMS\Backend\Module\Ab
                 }
 
                 return '<div id="form-line-0">'
-                . '<label for="' . $name . '" style="width:200px;display:block;float:left;">' . $this->getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang.xlf:field_' . $name) . '</label>'
+                . '<label for="' . $name . '" style="width:200px;display:block;float:left;">' . $this->getLanguageService()->sL('LLL:EXT:templavoilaplus/Resources/Private/Language/locallang.xlf:field_' . $name) . '</label>'
                 . '<input type="checkbox" id="' . $name . '" name="' . $name . '" ' . $checked . ' value="1">'
                 . '</div>';
                 break;
             case 'submit':
                 return '<div id="form-line-0">'
-                . '<input type="submit" id="' . $name . '" name="' . $name . '" value="' . $this->getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang.xlf:field_' . $name) . '">'
+                . '<input type="submit" id="' . $name . '" name="' . $name . '" value="' . $this->getLanguageService()->sL('LLL:EXT:templavoilaplus/Resources/Private/Language/locallang.xlf:field_' . $name) . '">'
                 . '</div>';
                 break;
             case 'hidden':
@@ -200,14 +200,14 @@ class RenameFieldInPageFlexWizardController extends \TYPO3\CMS\Backend\Module\Ab
                 }
 
                 return '<div id="form-line-0">'
-                . '<label style="width:200px;display:block;float:left;" for="' . $name . '">' . $this->getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang.xlf:field_' . $name) . '</label>'
+                . '<label style="width:200px;display:block;float:left;" for="' . $name . '">' . $this->getLanguageService()->sL('LLL:EXT:templavoilaplus/Resources/Private/Language/locallang.xlf:field_' . $name) . '</label>'
                 . '<select id="' . $name . '" name="' . $name . '">' . $buffer . '</select>'
                 . '</div>';
                 break;
             case 'text':
             default:
                 return '<div id="form-line-0">'
-                . '<label for="' . $name . '">' . $this->getLanguageService()->sL('LLL:EXT:templavoila/Resources/Private/Language/locallang.xlf:field_' . $name) . '</label>'
+                . '<label for="' . $name . '">' . $this->getLanguageService()->sL('LLL:EXT:templavoilaplus/Resources/Private/Language/locallang.xlf:field_' . $name) . '</label>'
                 . '<input type="text" id="' . $name . '" name="' . $name . '" value="' . htmlspecialchars($value) . '">'
                 . '</div>';
         }
@@ -232,7 +232,7 @@ class RenameFieldInPageFlexWizardController extends \TYPO3\CMS\Backend\Module\Ab
      */
     protected function getKnownPageDS()
     {
-        $dsRepo = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\DataStructureRepository::class);
+        $dsRepo = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Domain\Repository\DataStructureRepository::class);
 
         return $dsRepo->getDatastructuresByScope(1);
     }
@@ -245,7 +245,7 @@ class RenameFieldInPageFlexWizardController extends \TYPO3\CMS\Backend\Module\Ab
         $dsList = $this->getKnownPageDS();
         $return = array();
         foreach ($dsList as $ds) {
-            /** @var $ds \Extension\Templavoila\Domain\Model\AbstractDataStructure */
+            /** @var $ds \Ppi\TemplaVoilaPlus\Domain\Model\AbstractDataStructure */
             $return[$ds->getLabel()] = array();
             $t = $ds->getDataprotArray();
             foreach (array_keys($t['ROOT']['el']) as $field) {

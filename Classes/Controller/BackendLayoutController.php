@@ -1,5 +1,5 @@
 <?php
-namespace Extension\Templavoila\Controller;
+namespace Ppi\TemplaVoilaPlus\Controller;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -22,10 +22,10 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-use Extension\Templavoila\Utility\TemplaVoilaUtility;
+use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 /**
- * Module 'Page' for the 'templavoila' extension.
+ * Module 'Page' for the 'templavoilaplus' extension.
  *
  * @author Robert Lemke <robert@typo3.org>
  * @coauthor   Kasper Skaarhoj <kasperYYYY@typo3.com>
@@ -33,11 +33,11 @@ use Extension\Templavoila\Utility\TemplaVoilaUtility;
  */
 
 $GLOBALS['LANG']->includeLLFile(
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('templavoila') . 'Resources/Private/Language/BackendLayout.xlf'
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('templavoilaplus') . 'Resources/Private/Language/BackendLayout.xlf'
 );
 
 /**
- * Module 'Page' for the 'templavoila' extension.
+ * Module 'Page' for the 'templavoilaplus' extension.
  *
  * @author Robert Lemke <robert@typo3.org>
  * @coauthor    Kasper Skaarhoj <kasperYYYY@typo3.com>
@@ -47,7 +47,7 @@ $GLOBALS['LANG']->includeLLFile(
 class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 {
     /**
-     * @var \tx_templavoila_mod1_localization
+     * @var \tx_templavoilaplus_mod1_localization
      */
     protected $localizationObj;
 
@@ -115,7 +115,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      *
      * @var string
      */
-    public $extKey = 'templavoila';
+    public $extKey = 'templavoilaplus';
 
     /**
      * The name of the module
@@ -140,7 +140,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     public $global_localization_status = array();
 
     /**
-     * Keys: "table", "uid" - thats all to define another "rootTable" than "pages" (using default field "tx_templavoila_flex" for flex form content)
+     * Keys: "table", "uid" - thats all to define another "rootTable" than "pages" (using default field "tx_templavoilaplus_flex" for flex form content)
      *
      * @var array
      */
@@ -215,35 +215,35 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     /**
      *  Instance of sidebar class
      *
-     * @var \tx_templavoila_mod1_sidebar
+     * @var \tx_templavoilaplus_mod1_sidebar
      */
     public $sideBarObj;
 
     /**
      * Instance of wizards class
      *
-     * @var \tx_templavoila_mod1_wizards
+     * @var \tx_templavoilaplus_mod1_wizards
      */
     public $wizardsObj;
 
     /**
      * Instance of clipboard class
      *
-     * @var \tx_templavoila_mod1_clipboard
+     * @var \tx_templavoilaplus_mod1_clipboard
      */
     public $clipboardObj;
 
     /**
      * Instance of records class
      *
-     * @var \tx_templavoila_mod1_records
+     * @var \tx_templavoilaplus_mod1_records
      */
     public $recordsObj;
 
     /**
-     * Instance of tx_templavoila_api
+     * Instance of tx_templavoilaplus_api
      *
-     * @var \Extension\Templavoila\Service\ApiService
+     * @var \Ppi\TemplaVoilaPlus\Service\ApiService
      */
     public $apiObj;
 
@@ -368,17 +368,17 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         $view->setPartialRootPaths(
             array_merge(
                 $view->getPartialRootPaths(),
-                ['EXT:templavoila/Resources/Private/Partials']
+                ['EXT:templavoilaplus/Resources/Private/Partials']
             )
         );
         $view->setTemplateRootPaths(
             //             array_merge(
             //                 $view->getTemplateRootPaths(),
-            //                 ['EXT:templavoila/Resources/Private/Templates']
+            //                 ['EXT:templavoilaplus/Resources/Private/Templates']
             //             )
             [
                 'EXT:backend/Resources/Private/Templates',
-                'EXT:templavoila/Resources/Private/Templates'
+                'EXT:templavoilaplus/Resources/Private/Templates'
             ]
         );
         $view->setTemplate('Module.html');
@@ -391,7 +391,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             $this->newContentWizModuleName = $tsConfig['properties']['newContentElementWizard.']['override'];
         }
 
-        $this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoila']);
+        $this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoilaplus']);
 
         $this->altRoot = GeneralUtility::_GP('altRoot');
         $this->versionId = GeneralUtility::_GP('versionId');
@@ -423,28 +423,28 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         }
 
         // Initialize TemplaVoila API class:
-        $this->apiObj = GeneralUtility::makeInstance(\Extension\Templavoila\Service\ApiService::class, $this->altRoot ? $this->altRoot : 'pages');
+        $this->apiObj = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Service\ApiService::class, $this->altRoot ? $this->altRoot : 'pages');
         if (isset($this->modSharedTSconfig['properties']['useLiveWorkspaceForReferenceListUpdates'])) {
             $this->apiObj->modifyReferencesInLiveWS(true);
         }
 
         // Initialize side bar and wizards:
-        $this->sideBarObj =& GeneralUtility::getUserObj('Extension\\Templavoila\\Module\\Mod1\\Sidebar', '');
+        $this->sideBarObj =& GeneralUtility::getUserObj('Ppi\\TemplaVoilaPlus\Module\\Mod1\\Sidebar', '');
         $this->sideBarObj->init($this);
         $this->sideBarObj->position = isset($this->modTSconfig['properties']['sideBarPosition']) ? $this->modTSconfig['properties']['sideBarPosition'] : 'toptabs';
 
-        $this->wizardsObj = GeneralUtility::getUserObj('Extension\\Templavoila\\Module\\Mod1\\Wizards', '');
+        $this->wizardsObj = GeneralUtility::getUserObj('Ppi\\TemplaVoilaPlus\Module\\Mod1\\Wizards', '');
         $this->wizardsObj->init($this);
         // Initialize the clipboard
-        $this->clipboardObj =& GeneralUtility::getUserObj('Extension\\Templavoila\\Module\\Mod1\\Clipboard', '');
+        $this->clipboardObj =& GeneralUtility::getUserObj('Ppi\\TemplaVoilaPlus\Module\\Mod1\\Clipboard', '');
         $this->clipboardObj->init($this);
 
         // Initialize the record module
-        $this->recordsObj =& GeneralUtility::getUserObj('Extension\\Templavoila\\Module\\Mod1\\Records', '');
+        $this->recordsObj =& GeneralUtility::getUserObj('Ppi\\TemplaVoilaPlus\Module\\Mod1\\Records', '');
         $this->recordsObj->init($this);
         // Add the localization module if localization is enabled:
         if ($this->alternativeLanguagesDefined()) {
-            $this->localizationObj =& GeneralUtility::getUserObj('Extension\\Templavoila\\Module\\Mod1\\Localization', '');
+            $this->localizationObj =& GeneralUtility::getUserObj('Ppi\\TemplaVoilaPlus\Module\\Mod1\\Localization', '');
             $this->localizationObj->init($this);
         }
     }
@@ -667,7 +667,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
             $this->addJsLibrary(
                 'templavoila_mod1',
-                \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoila') . 'Resources/Public/JavaScript/templavoila.js'
+                \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoilaplus') . 'Resources/Public/JavaScript/templavoila.js'
             );
 
             if (isset($this->modTSconfig['properties']['javascript.']) && is_array($this->modTSconfig['properties']['javascript.'])) {
@@ -697,7 +697,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             // Show message if the page is of a special doktype:
             if ($this->rootElementTable == 'pages') {
                 // Initialize the special doktype class:
-                $specialDoktypesObj =& GeneralUtility::getUserObj('Extension\\Templavoila\\Module\\Mod1\\Specialdoktypes', '');
+                $specialDoktypesObj =& GeneralUtility::getUserObj('Ppi\\TemplaVoilaPlus\Module\\Mod1\\Specialdoktypes', '');
                 $specialDoktypesObj->init($this);
                 $doktype = $this->rootElementRecord['doktype'];
 
@@ -1136,8 +1136,8 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         }
 
         // Hook for content at the very top (fx. a toolbar):
-        if (is_array($TYPO3_CONF_VARS['EXTCONF']['templavoila']['mod1']['renderTopToolbar'])) {
-            foreach ($TYPO3_CONF_VARS['EXTCONF']['templavoila']['mod1']['renderTopToolbar'] as $_funcRef) {
+        if (is_array($TYPO3_CONF_VARS['EXTCONF']['templavoilaplus']['mod1']['renderTopToolbar'])) {
+            foreach ($TYPO3_CONF_VARS['EXTCONF']['templavoilaplus']['mod1']['renderTopToolbar'] as $_funcRef) {
                 $_params = array();
                 $output .= GeneralUtility::callUserFunction($_funcRef, $_params, $this);
             }
@@ -1375,7 +1375,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         // Prepare the language icon:
         $languageLabel = htmlspecialchars($this->allAvailableLanguages[$contentTreeArr['el']['sys_language_uid']]['title']);
         if ($this->allAvailableLanguages[$languageUid]['flagIcon']) {
-            $languageIcon = \Extension\Templavoila\Utility\IconUtility::getFlagIconForLanguage(
+            $languageIcon = \Ppi\TemplaVoilaPlus\Utility\IconUtility::getFlagIconForLanguage(
                 $this->allAvailableLanguages[$languageUid]['flagIcon'],
                 [
                     'title' => $languageLabel,
@@ -1511,23 +1511,23 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
         // get used TO
         if (isset($elementContentTreeArr['el']['TO']) && (int)$elementContentTreeArr['el']['TO']) {
-            $toRecord = BackendUtility::getRecordWSOL('tx_templavoila_tmplobj', (int)$elementContentTreeArr['el']['TO']);
+            $toRecord = BackendUtility::getRecordWSOL('tx_templavoilaplus_tmplobj', (int)$elementContentTreeArr['el']['TO']);
         } else {
             $toRecord = $this->apiObj->getContentTree_fetchPageTemplateObject($this->rootElementRecord);
         }
 
         try {
-            $toRepo = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\TemplateRepository::class);
-            /** @var $toRepo \Extension\Templavoila\Domain\Repository\TemplateRepository */
+            $toRepo = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Domain\Repository\TemplateRepository::class);
+            /** @var $toRepo \Ppi\TemplaVoilaPlus\Domain\Repository\TemplateRepository */
             $to = $toRepo->getTemplateByUid($toRecord['uid']);
-            /** @var $to \Extension\Templavoila\Domain\Model\Template */
+            /** @var $to \Ppi\TemplaVoilaPlus\Domain\Model\Template */
             $beTemplate = $to->getBeLayout();
         } catch (InvalidArgumentException $e) {
             $to = null;
             // might happen if uid was not what the Repo expected - that's ok here
         }
 
-        if (!$to instanceof \Extension\Templavoila\Domain\Model\Template) {
+        if (!$to instanceof \Ppi\TemplaVoilaPlus\Domain\Model\Template) {
             throw new \RuntimeException('Further execution of code leads to PHP errors.', 1404750505);
         }
 
@@ -2100,7 +2100,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                     if ($l10nInfo && TemplaVoilaUtility::getBackendUser()->checkLanguageAccess($sys_language_uid)) {
                         $tRows[] = '
                             <tr class="tpm-language-row">
-                                <td class="tpm-language-edit">' . $flagLink_begin . \Extension\Templavoila\Utility\IconUtility::getFlagIconForLanguage($sLInfo['flagIcon'], array('title' => $sLInfo['title'], 'alt' => $sLInfo['title'])) . $flagLink_end . '</td>
+                                <td class="tpm-language-edit">' . $flagLink_begin . \Ppi\TemplaVoilaPlus\Utility\IconUtility::getFlagIconForLanguage($sLInfo['flagIcon'], array('title' => $sLInfo['title'], 'alt' => $sLInfo['title'])) . $flagLink_end . '</td>
                                 <td class="tpm-language-info">' . $l10nInfo . '</td>
                             </tr>';
                     }
@@ -2173,14 +2173,14 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             if ($entry['table'] && $entry['uid']) {
                 $flexObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class);
                 $recRow = BackendUtility::getRecordWSOL($entry['table'], $entry['uid']);
-                if ($recRow['tx_templavoila_flex']) {
+                if ($recRow['tx_templavoilaplus_flex']) {
                     // Clean XML:
-                    $newXML = $flexObj->cleanFlexFormXML($entry['table'], 'tx_templavoila_flex', $recRow);
+                    $newXML = $flexObj->cleanFlexFormXML($entry['table'], 'tx_templavoilaplus_flex', $recRow);
 
                     // If the clean-all command is sent AND there is a difference in current/clean XML, save the clean:
-                    if (GeneralUtility::_POST('_CLEAN_XML_ALL') && md5($recRow['tx_templavoila_flex']) != md5($newXML)) {
+                    if (GeneralUtility::_POST('_CLEAN_XML_ALL') && md5($recRow['tx_templavoilaplus_flex']) != md5($newXML)) {
                         $dataArr = array();
-                        $dataArr[$entry['table']][$entry['uid']]['tx_templavoila_flex'] = $newXML;
+                        $dataArr[$entry['table']][$entry['uid']]['tx_templavoilaplus_flex'] = $newXML;
 
                         // Init TCEmain object and store:
                         $tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
@@ -2193,8 +2193,8 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                     }
 
                     // Render status:
-                    $xmlUrl = '../cm2/index.php?viewRec[table]=' . $entry['table'] . '&viewRec[uid]=' . $entry['uid'] . '&viewRec[field_flex]=tx_templavoila_flex';
-                    if (md5($recRow['tx_templavoila_flex']) != md5($newXML)) {
+                    $xmlUrl = '../cm2/index.php?viewRec[table]=' . $entry['table'] . '&viewRec[uid]=' . $entry['uid'] . '&viewRec[field_flex]=tx_templavoilaplus_flex';
+                    if (md5($recRow['tx_templavoilaplus_flex']) != md5($newXML)) {
                         $status = $this->moduleTemplate->icons(1) . '<a href="' . htmlspecialchars($xmlUrl) . '">' . TemplaVoilaUtility::getLanguageService()->getLL('outline_status_dirty', 1) . '</a><br/>';
                         $xmlCleanCandidates = true;
                     } else {
@@ -2298,7 +2298,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         if ($languageUid > 0) {
             $languageLabel = htmlspecialchars($this->pObj->allAvailableLanguages[$languageUid]['title']);
             if ($this->pObj->allAvailableLanguages[$languageUid]['flagIcon']) {
-                $languageIcon = \Extension\Templavoila\Utility\IconUtility::getFlagIconForLanguage($this->pObj->allAvailableLanguages[$languageUid]['flagIcon'], array('title' => $languageLabel, 'alt' => $languageLabel));
+                $languageIcon = \Ppi\TemplaVoilaPlus\Utility\IconUtility::getFlagIconForLanguage($this->pObj->allAvailableLanguages[$languageUid]['flagIcon'], array('title' => $languageLabel, 'alt' => $languageLabel));
             } else {
                 $languageIcon = '[' . $languageLabel . ']';
             }
@@ -2478,7 +2478,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                                 'title' => BackendUtility::getRecordTitle('tt_content', $olrow),
                                 'table' => 'tt_content',
                                 'uid' => $olrow['uid'],
-                                'flag' => $flagLink_begin . \Extension\Templavoila\Utility\IconUtility::getFlagIconForLanguage($sLInfo['flagIcon'], array('title' => $sLInfo['title'], 'alt' => $sLInfo['title'])) . $flagLink_end,
+                                'flag' => $flagLink_begin . \Ppi\TemplaVoilaPlus\Utility\IconUtility::getFlagIconForLanguage($sLInfo['flagIcon'], array('title' => $sLInfo['title'], 'alt' => $sLInfo['title'])) . $flagLink_end,
                                 'isNewVersion' => $olrow['_ORIG_uid'] ? true : false,
                             );
                             break;
@@ -2840,7 +2840,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                         // Create new record and open it for editing
                         $destinationPointer = $this->apiObj->flexform_getPointerFromString($commandParameters);
                         $newUid = $this->apiObj->insertElement($destinationPointer, $newRow);
-                        if ($this->editingOfNewElementIsEnabled($newRow['tx_templavoila_ds'], $newRow['tx_templavoila_to'])) {
+                        if ($this->editingOfNewElementIsEnabled($newRow['tx_templavoilaplus_ds'], $newRow['tx_templavoilaplus_to'])) {
                             // TODO If $newUid==0, than we could create new element. Need to handle it...
                             $redirectLocation = BackendUtility::getModuleUrl('record_edit', [
                                 'edit' => ['tt_content' => [$newUid => 'edit']],
@@ -3086,8 +3086,8 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         global $TYPO3_CONF_VARS;
 
         $hookObjectsArr = array();
-        if (is_array($TYPO3_CONF_VARS['EXTCONF']['templavoila']['mod1'][$hookName])) {
-            foreach ($TYPO3_CONF_VARS['EXTCONF']['templavoila']['mod1'][$hookName] as $key => $classRef) {
+        if (is_array($TYPO3_CONF_VARS['EXTCONF']['templavoilaplus']['mod1'][$hookName])) {
+            foreach ($TYPO3_CONF_VARS['EXTCONF']['templavoilaplus']['mod1'][$hookName] as $key => $classRef) {
                 $hookObjectsArr[$key] = & GeneralUtility::getUserObj($classRef);
             }
         }
@@ -3201,8 +3201,8 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         }
         $editingEnabled = true;
         try {
-            /** @var \Extension\Templavoila\Domain\Repository\TemplateRepository $toRepo */
-            $toRepo = GeneralUtility::makeInstance(\Extension\Templavoila\Domain\Repository\TemplateRepository::class);
+            /** @var \Ppi\TemplaVoilaPlus\Domain\Repository\TemplateRepository $toRepo */
+            $toRepo = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Domain\Repository\TemplateRepository::class);
             $to = $toRepo->getTemplateByUid($toUid);
             $xml = $to->getLocalDataprotArray();
             if (isset($xml['meta']['noEditOnCreation'])) {
@@ -3272,7 +3272,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
             $mayEditPage = TemplaVoilaUtility::getBackendUser()->doesUserHaveAccess($pageRecord, 16);
             $mayModifyTable = GeneralUtility::inList(TemplaVoilaUtility::getBackendUser()->groupData['tables_modify'], $table);
-            $mayEditContentField = GeneralUtility::inList(TemplaVoilaUtility::getBackendUser()->groupData['non_exclude_fields'], $table . ':tx_templavoila_flex');
+            $mayEditContentField = GeneralUtility::inList(TemplaVoilaUtility::getBackendUser()->groupData['non_exclude_fields'], $table . ':tx_templavoilaplus_flex');
             $hasEditRights = $mayEditPage && $mayModifyTable && $mayEditContentField;
         }
 

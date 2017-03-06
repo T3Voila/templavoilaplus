@@ -1,5 +1,5 @@
 <?php
-namespace Extension\Templavoila\Module\Cm1;
+namespace Ppi\TemplaVoilaPlus\Module\Cm1;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class DsEdit
 {
     /**
-     * @var \tx_templavoila_cm1
+     * @var \tx_templavoilaplus_cm1
      */
     protected $pObj;
 
@@ -35,7 +35,7 @@ class DsEdit
     protected $oldStyleColumnNumber = 0;
 
     /**
-     * @param \tx_templavoila_cm1 $pObj
+     * @param \tx_templavoilaplus_cm1 $pObj
      */
     public function init($pObj)
     {
@@ -449,13 +449,13 @@ class DsEdit
     {
         $curValue = (array)$curValue;
         // If a user function was registered, use that instead of our own handlers:
-        if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['cm1']['eTypesExtraFormFields'][$type])) {
+        if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoilaplus']['cm1']['eTypesExtraFormFields'][$type])) {
             $_params = array(
                 'type' => $type,
                 'formFieldName' => $formFieldName . '[tx_templavoila][eType_EXTRA]',
                 'curValue' => $curValue,
             );
-            $output = GeneralUtility::callUserFunction($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoila']['cm1']['eTypesExtraFormFields'][$type], $_params, $this);
+            $output = GeneralUtility::callUserFunction($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoilaplus']['cm1']['eTypesExtraFormFields'][$type], $_params, $this);
         } else {
             switch ($type) {
                 default:
