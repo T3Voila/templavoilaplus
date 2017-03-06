@@ -1,5 +1,5 @@
 <?php
-namespace Extension\Templavoila;
+namespace Ppi\TemplaVoilaPlus;
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -22,7 +22,7 @@ class ext_update
      * @var Ppi\TemplaVoilaPlus\Controller\ExtensionManagerUpdateController
      */
     protected $controller;
-    
+
     public function __construct()
     {
         $this->controller = new Controller\ExtensionManagerUpdateController();

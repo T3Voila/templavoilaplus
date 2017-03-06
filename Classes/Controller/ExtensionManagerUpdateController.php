@@ -39,6 +39,9 @@ class ExtensionManagerUpdateController
             case 'DataStructure':
                 $controller = GeneralUtility::makeInstance(Update\DataStructureUpdateController::class);
                 break;
+            case 'OldTemplavoila':
+                $controller = GeneralUtility::makeInstance(Update\OldTemplavoilaUpdateController::class);
+                break;
             default:
                 $controller = GeneralUtility::makeInstance(Update\SwitchUpdateController::class);
                 break;
@@ -46,7 +49,7 @@ class ExtensionManagerUpdateController
         return $controller->run();
 
     }
-    
+
     /**
      * Checks if backend user is an administrator
      * (this function is called from the extension manager ext_update)

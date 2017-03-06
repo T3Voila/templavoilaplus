@@ -4,10 +4,15 @@
 .t3js-module-body h1:first-child {display: none;}
 </style>
 
-<h1>TemplaVoilà! Update Script Selection</h1>
+<h1>TemplaVoilà Plus! Update Script Selection</h1>
 <f:be.infobox title="Warning" state="2">Please backup your data before running any of the update scripts!</f:be.infobox>
 <h2>Please select an update script</h2>
 <form action="#" method="POST">
+    <f:be.infobox title="Migrate from the old TemplaVoilà (1.9/2.0) Extension" state="-1">
+        <button class="btn btn-primary btn-block btn-lg" type="submit" name="update" value="OldTemplavoila">
+            <core:icon identifier="extensions-scheduler-run-task" /> Migrate TemplaVoilà 1.9/2.0
+        </button>
+    </f:be.infobox>
     <f:be.infobox title="You should run this, to fix the TYPO3 TCA Changes between 6.2 and 7/8 LTS" state="-1">
         <button class="btn btn-primary btn-block btn-lg" type="submit" name="update" value="DataStructure">
             <core:icon identifier="extensions-scheduler-run-task" /> Update DataStructure
