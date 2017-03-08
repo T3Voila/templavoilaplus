@@ -59,8 +59,8 @@ plugin.tx_templavoilaplus_pi1 = USER
 plugin.tx_templavoilaplus_pi1.userFunc = Ppi\TemplaVoilaPlus\Controller\FrontendController->main
 plugin.tx_templavoilaplus_pi1.disableExplosivePreview = 1
 
-tt_content.templavoila_pi1 = COA
-tt_content.templavoila_pi1 {
+tt_content.templavoilaplus_pi1 = COA
+tt_content.templavoilaplus_pi1 {
 ' . ($_EXTCONF['enable.']['renderFCEHeader'] ? '
     10 < lib.stdheader
     ' : '') . '
@@ -121,7 +121,7 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoilaplus']['mod1']['renderPreview
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoilaplus']['mod1']['renderPreviewContent']['login']    = \Ppi\TemplaVoilaPlus\Controller\Preview\NullController::class;
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoilaplus']['mod1']['renderPreviewContent']['shortcut'] = \Ppi\TemplaVoilaPlus\Controller\Preview\NullController::class;
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoilaplus']['mod1']['renderPreviewContent']['div']      = \Ppi\TemplaVoilaPlus\Controller\Preview\NullController::class;
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoilaplus']['mod1']['renderPreviewContent']['templavoila_pi1'] = \Ppi\TemplaVoilaPlus\Controller\Preview\NullController::class;
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoilaplus']['mod1']['renderPreviewContent']['templavoilaplus_pi1'] = \Ppi\TemplaVoilaPlus\Controller\Preview\NullController::class;
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler (
     'Ppi\\TemplaVoilaPlus\Module\\Mod1\\Ajax::moveRecord',

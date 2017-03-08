@@ -219,8 +219,8 @@ class Sidebar implements SingletonInterface
 
         $dataStructureArr = BackendUtility::getFlexFormDS($conf, $pObj->rootElementRecord, 'pages');
 
-        if (is_array($dataStructureArr) && is_array($dataStructureArr['ROOT']['tx_templavoila']['pageModule'])) {
-            $headerTablesAndFieldNames = GeneralUtility::trimExplode(chr(10), str_replace(chr(13), '', $dataStructureArr['ROOT']['tx_templavoila']['pageModule']['displayHeaderFields']), 1);
+        if (is_array($dataStructureArr) && is_array($dataStructureArr['ROOT']['tx_templavoilaplus']['pageModule'])) {
+            $headerTablesAndFieldNames = GeneralUtility::trimExplode(chr(10), str_replace(chr(13), '', $dataStructureArr['ROOT']['tx_templavoilaplus']['pageModule']['displayHeaderFields']), 1);
             if (is_array($headerTablesAndFieldNames)) {
                 $fieldNames = array();
                 $headerFieldRows = array();
@@ -281,7 +281,7 @@ class Sidebar implements SingletonInterface
                     [
                         'table' => 'pages',
                         'uid' => $pObj->id,
-                        'id' => 'templavoila',
+                        'id' => 'templavoilaplus',
                         'columnsOnly' => 't3ver_label',
                         'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
                     ]
@@ -323,7 +323,7 @@ class Sidebar implements SingletonInterface
         $tableRows[] = '
             <tr class="bgColor4">
                 <td width="20">
-                    ' . BackendUtility::cshItem('_MOD_web_txtemplavoilaM1', 'advancedfunctions_showhiddenelements') . '
+                    ' . BackendUtility::cshItem('_MOD_web_txtemplavoilaplusLayout', 'advancedfunctions_showhiddenelements') . '
                 </td><td width="200">
                     ' . TemplaVoilaUtility::getLanguageService()->getLL('sidebar_advancedfunctions_labelshowhidden', true) . ':
                 </td>
@@ -336,7 +336,7 @@ class Sidebar implements SingletonInterface
             $tableRows[] = '
                 <tr class="bgColor4">
                     <td width="20">
-                        ' . BackendUtility::cshItem('_MOD_web_txtemplavoilaM1', 'advancedfunctions_showoutline') . '
+                        ' . BackendUtility::cshItem('_MOD_web_txtemplavoilaplusLayout', 'advancedfunctions_showoutline') . '
                     </td><td width="200">
                         ' . TemplaVoilaUtility::getLanguageService()->getLL('sidebar_advancedfunctions_labelshowoutline', true) . ':
                     </td>

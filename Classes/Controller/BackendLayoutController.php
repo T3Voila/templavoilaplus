@@ -122,7 +122,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      *
      * @var string
      */
-    protected $moduleName = 'web_txtemplavoilaM1';
+    protected $moduleName = 'web_txtemplavoilaplusLayout';
 
     /**
      * Contains a list of all content elements which are used on the page currently being displayed
@@ -594,7 +594,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             }
 
             // Adding classic jumpToUrl function, needed for the function menu. Also, the id in the parent frameset is configured.
-            $this->moduleTemplate->addJavaScriptCode('templavoila_base', '
+            $this->moduleTemplate->addJavaScriptCode('templavoilaplus_base', '
                 if (top.fsMod) top.fsMod.recentIds["web"] = ' . (int)$this->id . ';
                 ' . $this->moduleTemplate->redirectUrls() . '
                 var T3_TV_MOD1_BACKPATH = "' . $relativeExtensionPath . '";
@@ -609,7 +609,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             // Set up JS for dynamic tab menu and side bar
             $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Tabs');
 
-            $this->moduleTemplate->addJavaScriptCode('templavoila_function', '
+            $this->moduleTemplate->addJavaScriptCode('templavoilaplus_function', '
                 TYPO3.jQuery(document).off(\'click.tab.data-api\', \'[data-toggle="tab"]\');
                 TYPO3.jQuery(document).on(\'click.tab.data-api\', \'[data-toggle="tab"]\', function (e) {
                     e.preventDefault();
@@ -666,7 +666,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             ');
 
             $this->addJsLibrary(
-                'templavoila_mod1',
+                'templavoilaplus_mod1',
                 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoilaplus') . 'Resources/Public/JavaScript/templavoila.js'
             );
 
@@ -1314,7 +1314,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 if ($contentTreeArr['el']['isHidden']) {
                     $elementClass .= ' tpm-hidden t3-page-ce-hidden';
                 }
-                if ($contentTreeArr['el']['CType'] == 'templavoila_pi1') {
+                if ($contentTreeArr['el']['CType'] == 'templavoilaplus_pi1') {
                     //fce
                     $elementClass .= ' tpm-fce tpm-fce_' . (int)$contentTreeArr['el']['TO'];
                 }
@@ -1403,7 +1403,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
         // Displaying warning for container content (in default sheet - a limitation) elements if localization is enabled:
         $isContainerEl = count($contentTreeArr['sub']['sDEF']);
-        if (!$this->modTSconfig['properties']['disableContainerElementLocalizationWarning'] && $this->rootElementLangParadigm != 'free' && $isContainerEl && $contentTreeArr['el']['table'] === 'tt_content' && $contentTreeArr['el']['CType'] === 'templavoila_pi1' && !$contentTreeArr['ds_meta']['langDisable']) {
+        if (!$this->modTSconfig['properties']['disableContainerElementLocalizationWarning'] && $this->rootElementLangParadigm != 'free' && $isContainerEl && $contentTreeArr['el']['table'] === 'tt_content' && $contentTreeArr['el']['CType'] === 'templavoilaplus_pi1' && !$contentTreeArr['ds_meta']['langDisable']) {
             if ($contentTreeArr['ds_meta']['langChildren']) {
                 if (!$this->modTSconfig['properties']['disableContainerElementLocalizationWarning_warningOnly']) {
                     $warnings .= $this->moduleTemplate->icons(2) . ' <em>' . TemplaVoilaUtility::getLanguageService()->getLL('warning_containerInheritance') . '</em><br />';
@@ -1542,7 +1542,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         foreach ($elementContentTreeArr['sub'][$sheet][$lKey] as $fieldID => $fieldValuesContent) {
             try {
                 $newValue = $to->getLocalDataprotValueByXpath('//' . $fieldID . '/tx_templavoila/preview');
-                $elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['tx_templavoila']['preview'] = $newValue;
+                $elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['tx_templavoilaplus']['preview'] = $newValue;
             } catch (\UnexpectedValueException $e) {
             }
 
@@ -1550,7 +1550,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                     $elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['isMapped'] ||
                     $elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['type'] == 'no_map'
                 ) &&
-                $elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['tx_templavoila']['preview'] != 'disable'
+                $elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['tx_templavoilaplus']['preview'] != 'disable'
             ) {
                 $fieldContent = $fieldValuesContent[$vKey];
 
@@ -1580,7 +1580,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                             sprintf(
                                 TemplaVoilaUtility::getLanguageService()->getLL('maximal_content_elements'),
                                 $maxCnt,
-                                $elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['tx_templavoila']['title']
+                                $elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['tx_templavoilaplus']['title']
                             ),
                             \TYPO3\CMS\Core\Messaging\FlashMessage::INFO
                         );
@@ -1591,7 +1591,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 $canCreateNew = $canEditContent && !$maxItemsReached;
 
                 $canDragDrop = !$maxItemsReached && $canEditContent &&
-                    $elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['tx_templavoila']['enableDragDrop'] !== '0' &&
+                    $elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['tx_templavoilaplus']['enableDragDrop'] !== '0' &&
                     $this->modTSconfig['properties']['enableDragDrop'] !== '0';
 
                 if (!$this->translatorMode && $canCreateNew) {
@@ -1819,7 +1819,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             $vKey = $langDisable ? 'vDEF' : ($langChildren ? 'v' . $languageKey : 'vDEF');
 
             foreach ($previewData['sheets'][$sheet] as $fieldData) {
-                if (isset($fieldData['tx_templavoila']['preview']) && $fieldData['tx_templavoila']['preview'] == 'disable') {
+                if (isset($fieldData['tx_templavoilaplus']['preview']) && $fieldData['tx_templavoilaplus']['preview'] == 'disable') {
                     continue;
                 }
 
@@ -1882,7 +1882,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
         $result = '';
         foreach ($fieldData as $fieldValue) {
-            if (isset($fieldValue['config']['tx_templavoila']['preview']) && $fieldValue['config']['tx_templavoila']['preview'] == 'disable') {
+            if (isset($fieldValue['config']['tx_templavoilaplus']['preview']) && $fieldValue['config']['tx_templavoilaplus']['preview'] == 'disable') {
                 continue;
             }
 
@@ -1890,7 +1890,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 if (isset($fieldValue['data']['el'])) {
                     if ($fieldValue['config']['section']) {
                         $result .= '<strong>';
-                        $label = ($fieldValue['config']['TCEforms']['label'] ? $fieldValue['config']['TCEforms']['label'] : $fieldValue['config']['tx_templavoila']['title']);
+                        $label = ($fieldValue['config']['TCEforms']['label'] ? $fieldValue['config']['TCEforms']['label'] : $fieldValue['config']['tx_templavoilaplus']['title']);
                         $result .= $this->localizedFFLabel($label, 1);
                         $result .= '</strong>';
                         $result .= '<ul>';
@@ -2217,7 +2217,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         // Show link for cleaning all XML structures:
         if ($xmlCleanCandidates) {
             $output .= '<br/>
-                ' . BackendUtility::cshItem('_MOD_web_txtemplavoilaM1', 'outline_status_cleanall') . '
+                ' . BackendUtility::cshItem('_MOD_web_txtemplavoilaplusLayout', 'outline_status_cleanall') . '
                 <input type="submit" value="' . TemplaVoilaUtility::getLanguageService()->getLL('outline_status_cleanAll', true) . '" name="_CLEAN_XML_ALL" /><br/><br/>
             ';
         }
@@ -2319,7 +2319,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
         // Displaying warning for container content (in default sheet - a limitation) elements if localization is enabled:
         $isContainerEl = count($contentTreeArr['sub']['sDEF']);
-        if (!$this->modTSconfig['properties']['disableContainerElementLocalizationWarning'] && $this->rootElementLangParadigm != 'free' && $isContainerEl && $contentTreeArr['el']['table'] === 'tt_content' && $contentTreeArr['el']['CType'] === 'templavoila_pi1' && !$contentTreeArr['ds_meta']['langDisable']) {
+        if (!$this->modTSconfig['properties']['disableContainerElementLocalizationWarning'] && $this->rootElementLangParadigm != 'free' && $isContainerEl && $contentTreeArr['el']['table'] === 'tt_content' && $contentTreeArr['el']['CType'] === 'templavoilaplus_pi1' && !$contentTreeArr['ds_meta']['langDisable']) {
             if ($contentTreeArr['ds_meta']['langChildren']) {
                 if (!$this->modTSconfig['properties']['disableContainerElementLocalizationWarning_warningOnly']) {
                     $warnings .= '<br/>' . $this->moduleTemplate->icons(2) . ' <b>' . TemplaVoilaUtility::getLanguageService()->getLL('warning_containerInheritance_short') . '</b>';

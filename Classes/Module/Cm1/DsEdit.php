@@ -88,8 +88,8 @@ class DsEdit
                 }
 
                 /* put these into array-form for preset-completition */
-                $insertDataArray['tx_templavoila']['TypoScript_constants'] =
-                    $this->pObj->unflattenarray($insertDataArray['tx_templavoila']['TypoScript_constants']);
+                $insertDataArray['tx_templavoilaplus']['TypoScript_constants'] =
+                    $this->pObj->unflattenarray($insertDataArray['tx_templavoilaplus']['TypoScript_constants']);
                 $insertDataArray['TCEforms']['config'] =
                     $this->pObj->unflattenarray($insertDataArray['TCEforms']['config']);
 
@@ -122,16 +122,16 @@ class DsEdit
                 <dl id="dsel-general" class="DS-config">
                     <!-- always present options +++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
                     <dt><label>' . $this->getLanguageService()->getLL('renderDSO_title') . ':</label></dt>
-                    <dd><input type="text" size="40" name="' . $formFieldName . '[tx_templavoila][title]" value="' . htmlspecialchars($insertDataArray['tx_templavoila']['title']) . '" /></dd>
+                    <dd><input type="text" size="40" name="' . $formFieldName . '[tx_templavoila][title]" value="' . htmlspecialchars($insertDataArray['tx_templavoilaplus']['title']) . '" /></dd>
 
                     <dt><label>' . $this->getLanguageService()->getLL('renderDSO_mappingInstructions') . ':</label></dt>
-                    <dd><input type="text" size="40" name="' . $formFieldName . '[tx_templavoila][description]" value="' . htmlspecialchars($insertDataArray['tx_templavoila']['description']) . '" /></dd>';
+                    <dd><input type="text" size="40" name="' . $formFieldName . '[tx_templavoila][description]" value="' . htmlspecialchars($insertDataArray['tx_templavoilaplus']['description']) . '" /></dd>';
 
                 if ($insertDataArray['type'] != 'array' && $insertDataArray['type'] != 'section') {
                     $form .= '
                     <!-- non-array options ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
                     <dt><label>' . $this->getLanguageService()->getLL('mapSampleData') . ':</label></dt>
-                    <dd><textarea cols="40" rows="5" name="' . $formFieldName . '[tx_templavoila][sample_data][]">' . htmlspecialchars($insertDataArray['tx_templavoila']['sample_data'][0]) . '</textarea>
+                    <dd><textarea cols="40" rows="5" name="' . $formFieldName . '[tx_templavoila][sample_data][]">' . htmlspecialchars($insertDataArray['tx_templavoilaplus']['sample_data'][0]) . '</textarea>
                     ' . $this->pObj->lipsumLink($formFieldName . '[tx_templavoila][sample_data]') . '</dd>
 
                     <dt><label>' . $this->getLanguageService()->getLL('mapElementPreset') . ':</label></dt>
@@ -139,32 +139,32 @@ class DsEdit
                         <optgroup class="c-divider" label="' . $this->getLanguageService()->getLL('mapPresetGroups_tceFields') . '">';
                     foreach ($eTypes_formFields as $eType) {
                         $label = htmlspecialchars($eType == 'ce' ?
-                            sprintf($eTypes['eType'][$eType]['label'], $insertDataArray['tx_templavoila']['oldStyleColumnNumber'] ? (int)$insertDataArray['tx_templavoila']['oldStyleColumnNumber'] : $this->oldStyleColumnNumber) :
+                            sprintf($eTypes['eType'][$eType]['label'], $insertDataArray['tx_templavoilaplus']['oldStyleColumnNumber'] ? (int)$insertDataArray['tx_templavoilaplus']['oldStyleColumnNumber'] : $this->oldStyleColumnNumber) :
                             $eTypes['eType'][$eType]['label']);
-                        $form .= chr(10) . '<option value="' . $eType . '"' . ($insertDataArray['tx_templavoila']['eType'] == $eType ? ' selected="selected"' : '') . '>' . $label . '</option>';
+                        $form .= chr(10) . '<option value="' . $eType . '"' . ($insertDataArray['tx_templavoilaplus']['eType'] == $eType ? ' selected="selected"' : '') . '>' . $label . '</option>';
                     }
                     $form .= '
                         </optgroup>
                         <optgroup class="c-divider" label="' . $this->getLanguageService()->getLL('mapPresetGroups_ts') . '">';
                     foreach ($eTypes_typoscriptElements as $eType) {
-                        $form .= chr(10) . '<option value="' . $eType . '"' . ($insertDataArray['tx_templavoila']['eType'] == $eType ? ' selected="selected"' : '') . '>' . htmlspecialchars($eTypes['eType'][$eType]['label']) . '</option>';
+                        $form .= chr(10) . '<option value="' . $eType . '"' . ($insertDataArray['tx_templavoilaplus']['eType'] == $eType ? ' selected="selected"' : '') . '>' . htmlspecialchars($eTypes['eType'][$eType]['label']) . '</option>';
                     }
                     $form .= '
                         </optgroup>
                         <optgroup class="c-divider" label="' . $this->getLanguageService()->getLL('mapPresetGroups_other') . '">';
                     foreach ($eTypes_misc as $eType) {
-                        $form .= chr(10) . '<option value="' . $eType . '"' . ($insertDataArray['tx_templavoila']['eType'] == $eType ? ' selected="selected"' : '') . '>' . htmlspecialchars($eTypes['eType'][$eType]['label']) . '</option>';
+                        $form .= chr(10) . '<option value="' . $eType . '"' . ($insertDataArray['tx_templavoilaplus']['eType'] == $eType ? ' selected="selected"' : '') . '>' . htmlspecialchars($eTypes['eType'][$eType]['label']) . '</option>';
                     }
                     $form .= '
                         </optgroup>
                     </select><p>' . $this->getLanguageService()->getLL('mapWarningElementChange') . '</p><input type="hidden"
                         name="' . $formFieldName . '[tx_templavoila][eType_before]"
-                        value="' . $insertDataArray['tx_templavoila']['eType'] . '" /></dd>';
+                        value="' . $insertDataArray['tx_templavoilaplus']['eType'] . '" /></dd>';
                 }
 
                 $form .= '
                     <dt><label>Mapping rules:</label></dt>
-                    <dd><input type="text" size="40" name="' . $formFieldName . '[tx_templavoila][tags]" value="' . htmlspecialchars($insertDataArray['tx_templavoila']['tags']) . '" /></dd>
+                    <dd><input type="text" size="40" name="' . $formFieldName . '[tx_templavoila][tags]" value="' . htmlspecialchars($insertDataArray['tx_templavoilaplus']['tags']) . '" /></dd>
                 </dl>';
 
                 if (($insertDataArray['type'] != 'array') &&
@@ -177,13 +177,13 @@ class DsEdit
                      *     <TypoScript>        ->
                      * </tx_templavoila>
                      */
-                    if ($insertDataArray['tx_templavoila']['eType'] != 'TypoScriptObject') {
+                    if ($insertDataArray['tx_templavoilaplus']['eType'] != 'TypoScriptObject') {
                         $form .= '
                     <dl id="dsel-ts" class="DS-config">
                         <dt><label>' . $this->getLanguageService()->getLL('mapTSconstants') . ':</label></dt>
-                        <dd><textarea class="xml enable-tab" cols="40" rows="10" wrap="off" name="' . $formFieldName . '[tx_templavoila][TypoScript_constants]">' . htmlspecialchars($this->pObj->flattenarray($insertDataArray['tx_templavoila']['TypoScript_constants'])) . '</textarea></dd>
+                        <dd><textarea class="xml enable-tab" cols="40" rows="10" wrap="off" name="' . $formFieldName . '[tx_templavoila][TypoScript_constants]">' . htmlspecialchars($this->pObj->flattenarray($insertDataArray['tx_templavoilaplus']['TypoScript_constants'])) . '</textarea></dd>
                         <dt><label>' . $this->getLanguageService()->getLL('mapTScode') . ':</label></dt>
-                        <dd><textarea class="code enable-tab" cols="40" rows="10" wrap="off" name="' . $formFieldName . '[tx_templavoila][TypoScript]">' . htmlspecialchars($insertDataArray['tx_templavoila']['TypoScript']) . '</textarea></dd>
+                        <dd><textarea class="code enable-tab" cols="40" rows="10" wrap="off" name="' . $formFieldName . '[tx_templavoila][TypoScript]">' . htmlspecialchars($insertDataArray['tx_templavoilaplus']['TypoScript']) . '</textarea></dd>
                     </dl>';
                     }
 
@@ -194,15 +194,15 @@ class DsEdit
                      * </tx_templavoila>
                      */
 
-                    if (isset($insertDataArray['tx_templavoila']['TypoScriptObjPath'])) {
-                        $curValue = array('objPath' => $insertDataArray['tx_templavoila']['TypoScriptObjPath']);
-                    } elseif (isset($insertDataArray['tx_templavoila']['eType_EXTRA'])) {
-                        $curValue = $insertDataArray['tx_templavoila']['eType_EXTRA'];
+                    if (isset($insertDataArray['tx_templavoilaplus']['TypoScriptObjPath'])) {
+                        $curValue = array('objPath' => $insertDataArray['tx_templavoilaplus']['TypoScriptObjPath']);
+                    } elseif (isset($insertDataArray['tx_templavoilaplus']['eType_EXTRA'])) {
+                        $curValue = $insertDataArray['tx_templavoilaplus']['eType_EXTRA'];
                     } else {
                         $curValue = '';
                     }
                     $extra = $this->drawDataStructureMap_editItem_editTypeExtra(
-                        $insertDataArray['tx_templavoila']['eType'],
+                        $insertDataArray['tx_templavoilaplus']['eType'],
                         $formFieldName,
                         $curValue,
                         $key
@@ -230,39 +230,39 @@ class DsEdit
                     <dl id="dsel-proc" class="DS-config">
                         <dt>' . $this->getLanguageService()->getLL('mapPostProcesses') . ':</dt>
                         <dd>
-                            <input type="checkbox" class="checkbox" id="tv_proc_int_" value="1" ' . ($insertDataArray['tx_templavoila']['proc']['int'] ? 'checked="checked"' : '') . ' onclick="$(\'tv_proc_int\').value=(this.checked ? 1 : 0);" />
+                            <input type="checkbox" class="checkbox" id="tv_proc_int_" value="1" ' . ($insertDataArray['tx_templavoilaplus']['proc']['int'] ? 'checked="checked"' : '') . ' onclick="$(\'tv_proc_int\').value=(this.checked ? 1 : 0);" />
                             <label for="tv_proc_int_">' . $this->getLanguageService()->getLL('mapPPcastInteger') . '</label><br />
-                            <input type="checkbox" class="checkbox" id="tv_proc_hsc_" value="1" ' . ($insertDataArray['tx_templavoila']['proc']['HSC'] ? 'checked="checked"' : '') . ' onclick="$(\'tv_proc_hsc\').value=(this.checked ? 1 : 0);" />
+                            <input type="checkbox" class="checkbox" id="tv_proc_hsc_" value="1" ' . ($insertDataArray['tx_templavoilaplus']['proc']['HSC'] ? 'checked="checked"' : '') . ' onclick="$(\'tv_proc_hsc\').value=(this.checked ? 1 : 0);" />
                             <label for="tv_proc_hsc_">' . $this->getLanguageService()->getLL('mapPPhsc') . '</label>
-                            <input type="hidden" id="tv_proc_int" name="' . $formFieldName . '[tx_templavoila][proc][int]" value="' . (int)$insertDataArray['tx_templavoila']['proc']['int'] . '" />
-                            <input type="hidden" id="tv_proc_hsc" name="' . $formFieldName . '[tx_templavoila][proc][HSC]" value="' . (int)$insertDataArray['tx_templavoila']['proc']['HSC'] . '" />
+                            <input type="hidden" id="tv_proc_int" name="' . $formFieldName . '[tx_templavoila][proc][int]" value="' . (int)$insertDataArray['tx_templavoilaplus']['proc']['int'] . '" />
+                            <input type="hidden" id="tv_proc_hsc" name="' . $formFieldName . '[tx_templavoila][proc][HSC]" value="' . (int)$insertDataArray['tx_templavoilaplus']['proc']['HSC'] . '" />
                         </dd>
 
                         <dt><label>' . $this->getLanguageService()->getLL('mapCustomStdWrap') . ':</label></dt>
-                        <dd><textarea class="code" cols="40" rows="10" name="' . $formFieldName . '[tx_templavoila][proc][stdWrap]">' . htmlspecialchars($insertDataArray['tx_templavoila']['proc']['stdWrap']) . '</textarea></dd>
+                        <dd><textarea class="code" cols="40" rows="10" name="' . $formFieldName . '[tx_templavoila][proc][stdWrap]">' . htmlspecialchars($insertDataArray['tx_templavoilaplus']['proc']['stdWrap']) . '</textarea></dd>
 
                         <dt><label>' . $this->getLanguageService()->getLL('mapEnablePreview') . ':</label></dt>
                         <dd>
-                            <input type="radio" class="radio" id="tv_preview_enable" value="" name="' . $formFieldName . '[tx_templavoila][preview]" ' . ($insertDataArray['tx_templavoila']['preview'] != 'disable' ? 'checked="checked"' : '') . '> <label for="tv_preview_enable">' . $this->getLanguageService()->getLL('mapEnablePreview.enable') . '</label><br/>
-                            <input type="radio" class="radio" id="tv_preview_disable" value="disable" name="' . $formFieldName . '[tx_templavoila][preview]" ' . ($insertDataArray['tx_templavoila']['preview'] == 'disable' ? 'checked="checked"' : '') . '> <label for="tv_preview_disable">' . $this->getLanguageService()->getLL('mapEnablePreview.disable') . '</label>
+                            <input type="radio" class="radio" id="tv_preview_enable" value="" name="' . $formFieldName . '[tx_templavoila][preview]" ' . ($insertDataArray['tx_templavoilaplus']['preview'] != 'disable' ? 'checked="checked"' : '') . '> <label for="tv_preview_enable">' . $this->getLanguageService()->getLL('mapEnablePreview.enable') . '</label><br/>
+                            <input type="radio" class="radio" id="tv_preview_disable" value="disable" name="' . $formFieldName . '[tx_templavoila][preview]" ' . ($insertDataArray['tx_templavoilaplus']['preview'] == 'disable' ? 'checked="checked"' : '') . '> <label for="tv_preview_disable">' . $this->getLanguageService()->getLL('mapEnablePreview.disable') . '</label>
                         </dd>';
-                    if ($insertDataArray['tx_templavoila']['eType'] === 'ce') {
-                        if (!isset($insertDataArray['tx_templavoila']['oldStyleColumnNumber'])) {
-                            $insertDataArray['tx_templavoila']['oldStyleColumnNumber'] = $this->oldStyleColumnNumber++;
+                    if ($insertDataArray['tx_templavoilaplus']['eType'] === 'ce') {
+                        if (!isset($insertDataArray['tx_templavoilaplus']['oldStyleColumnNumber'])) {
+                            $insertDataArray['tx_templavoilaplus']['oldStyleColumnNumber'] = $this->oldStyleColumnNumber++;
                         }
                         $form .= '
                             <dt>' . $this->getLanguageService()->getLL('mapOldStyleColumnNumber') . '</dt>
                             <dd>
                                 <label for="tv_oldstylecolumnnumber">' . $this->getLanguageService()->getLL('mapOldStyleColumnNumber_label') . ':</label><br />
-                                <input type="text" id="tv_oldstylecolumnnumber" name="' . $formFieldName . '[tx_templavoila][oldStyleColumnNumber]" value="' . (int)$insertDataArray['tx_templavoila']['oldStyleColumnNumber'] . '" />
+                                <input type="text" id="tv_oldstylecolumnnumber" name="' . $formFieldName . '[tx_templavoila][oldStyleColumnNumber]" value="' . (int)$insertDataArray['tx_templavoilaplus']['oldStyleColumnNumber'] . '" />
 
                             </dd>';
 
                         $form .= '
                             <dt><label for="tv_enabledragdrop_">' . $this->getLanguageService()->getLL('mapEnableDragDrop') . '</label></dt>
                             <dd>
-                                <input type="checkbox" class="checkbox" id="tv_enabledragdrop_" value="1" ' . (($insertDataArray['tx_templavoila']['enableDragDrop'] === '0') ? '' : 'checked="checked"') . ' onclick="$(\'tv_enabledragdrop\').value=(this.checked ? 1 : 0);" />
-                                <input type="hidden" id="tv_enabledragdrop" name="' . $formFieldName . '[tx_templavoila][enableDragDrop]" value="' . (int)$insertDataArray['tx_templavoila']['enableDragDrop'] . '" />
+                                <input type="checkbox" class="checkbox" id="tv_enabledragdrop_" value="1" ' . (($insertDataArray['tx_templavoilaplus']['enableDragDrop'] === '0') ? '' : 'checked="checked"') . ' onclick="$(\'tv_enabledragdrop\').value=(this.checked ? 1 : 0);" />
+                                <input type="hidden" id="tv_enabledragdrop" name="' . $formFieldName . '[tx_templavoila][enableDragDrop]" value="' . (int)$insertDataArray['tx_templavoilaplus']['enableDragDrop'] . '" />
                             </dd>';
                     }
                     $form .= '</dl>';
@@ -274,7 +274,7 @@ class DsEdit
                      *     <config>        -> TCE-configuration array
                      * </TCEforms>
                      */
-                    if ($insertDataArray['tx_templavoila']['eType'] != 'TypoScriptObject') {
+                    if ($insertDataArray['tx_templavoilaplus']['eType'] != 'TypoScriptObject') {
                         $form .= '
                     <dl id="dsel-tce" class="DS-config">
                         <dt><label>' . $this->getLanguageService()->getLL('mapTCElabel') . ':</label></dt>
@@ -292,8 +292,8 @@ class DsEdit
                         <dl id="dsel-proc" class="DS-config">
                             <dt><label>' . $this->getLanguageService()->getLL('mapEnablePreview') . ':</label></dt>
                             <dd>
-                                <input type="radio" class="radio" id="tv_preview_enable" value="" name="' . $formFieldName . '[tx_templavoila][preview]" ' . ($insertDataArray['tx_templavoila']['preview'] != 'disable' ? 'checked="checked"' : '') . '> <label for="tv_preview_enable">' . $this->getLanguageService()->getLL('mapEnablePreview.enable') . '</label><br/>
-                                <input type="radio" class="radio" id="tv_preview_disable" value="disable" name="' . $formFieldName . '[tx_templavoila][preview]" ' . ($insertDataArray['tx_templavoila']['preview'] == 'disable' ? 'checked="checked"' : '') . '> <label for="tv_preview_disable">' . $this->getLanguageService()->getLL('mapEnablePreview.disable') . '</label>
+                                <input type="radio" class="radio" id="tv_preview_enable" value="" name="' . $formFieldName . '[tx_templavoila][preview]" ' . ($insertDataArray['tx_templavoilaplus']['preview'] != 'disable' ? 'checked="checked"' : '') . '> <label for="tv_preview_enable">' . $this->getLanguageService()->getLL('mapEnablePreview.enable') . '</label><br/>
+                                <input type="radio" class="radio" id="tv_preview_disable" value="disable" name="' . $formFieldName . '[tx_templavoila][preview]" ' . ($insertDataArray['tx_templavoilaplus']['preview'] == 'disable' ? 'checked="checked"' : '') . '> <label for="tv_preview_disable">' . $this->getLanguageService()->getLL('mapEnablePreview.disable') . '</label>
                             </dd>
                         </dl>';
                 }

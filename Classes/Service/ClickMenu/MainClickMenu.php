@@ -61,7 +61,7 @@ class MainClickMenu
                     $iconFactory->getIcon('extensions-templavoila-templavoila-logo', Icon::SIZE_SMALL)->render(),
                     $clickMenu->urlRefForCM(
                         BackendUtility::getModuleUrl(
-                            'templavoila_mapping',
+                            'templavoilaplus_mapping',
                             [
                                 'file' => $table,
                             ]
@@ -78,7 +78,7 @@ class MainClickMenu
                     $iconFactory->getIcon('extensions-templavoila-templavoila-logo', Icon::SIZE_SMALL)->render(),
                     $clickMenu->urlRefForCM(
                         BackendUtility::getModuleUrl(
-                            'templavoila_mapping',
+                            'templavoilaplus_mapping',
                             [
                                 'table' => $table,
                                 'uid' => $uid,
@@ -91,7 +91,7 @@ class MainClickMenu
                 );
             }
 
-            $isTVelement = ('tt_content' === $table && $clickMenu->rec['CType'] === 'templavoila_pi1' || 'pages' === $table) && $clickMenu->rec['tx_templavoilaplus_flex'];
+            $isTVelement = ('tt_content' === $table && $clickMenu->rec['CType'] === 'templavoilaplus_pi1' || 'pages' === $table) && $clickMenu->rec['tx_templavoilaplus_flex'];
 
             // Adding link for "View: Sub elements":
             if ($table === 'tt_content' && $isTVelement) {
@@ -102,7 +102,7 @@ class MainClickMenu
                     $iconFactory->getIcon('extensions-templavoila-templavoila-logo', Icon::SIZE_SMALL)->render(),
                     $clickMenu->urlRefForCM(
                         BackendUtility::getModuleUrl(
-                            'web_txtemplavoilaM1',
+                            'web_txtemplavoilaplusLayout',
                             [
                                 'id' => (int)$clickMenu->rec['pid'],
                                 'altRoot' => [
@@ -125,7 +125,7 @@ class MainClickMenu
                     $iconFactory->getIcon('extensions-templavoila-templavoila-logo', Icon::SIZE_SMALL)->render(),
                     $clickMenu->urlRefForCM(
                         BackendUtility::getModuleUrl(
-                            'templavoila_flexform_cleaner',
+                            'templavoilaplus_flexform_cleaner',
                             [
                                 'id' => (int)$clickMenu->rec['pid'],
                                 'viewRec' => [
@@ -147,7 +147,7 @@ class MainClickMenu
                         $iconFactory->getIcon('extensions-templavoila-templavoila-logo', Icon::SIZE_SMALL)->render(),
                         $clickMenu->urlRefForCM(
                             BackendUtility::getModuleUrl(
-                                'templavoila_mapping',
+                                'templavoilaplus_mapping',
                                 [
                                     'uid' => $clickMenu->rec['tx_templavoilaplus_ds'],
                                     'table' => 'tx_templavoilaplus_datastructure',
@@ -179,7 +179,7 @@ class MainClickMenu
                             BackendUtility::getRecordTitle('pages', $pageRecord, true),
                             $clickMenu->urlRefForCM(
                                 BackendUtility::getModuleUrl(
-                                    'web_txtemplavoilaM1',
+                                    'web_txtemplavoilaplusLayout',
                                     [
                                         'id' => $pageRecord['uid'],
                                     ]

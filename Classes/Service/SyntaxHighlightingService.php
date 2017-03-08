@@ -135,7 +135,7 @@ class SyntaxHighlightingService
 
                 switch ($app) {
                     case 'TCEforms':
-                    case 'tx_templavoila':
+                    case 'tx_templavoilaplus':
                         $wrap = $this->DS_wrapTags['_applicationContents'];
                         break;
                     case 'el':
@@ -159,7 +159,7 @@ class SyntaxHighlightingService
                         if ($app == 'el' || $parent == 'ROOT') {
                             switch ($v['tagName']) {
                                 case 'TCEforms':
-                                case 'tx_templavoila':
+                                case 'tx_templavoilaplus':
                                     $nextApp = $v['tagName'];
                                     $wrap = $this->DS_wrapTags['_applicationTag'];
                                     break;

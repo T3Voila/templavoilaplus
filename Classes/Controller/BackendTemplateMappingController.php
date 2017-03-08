@@ -70,7 +70,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
      *
      * @var string
      */
-    protected $moduleName = 'templavoila_mapping';
+    protected $moduleName = 'templavoilaplus_mapping';
 
     /**
      * @var array
@@ -375,7 +375,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
 
             // Adding classic jumpToUrl function, needed for the function menu.
             // And some more functions
-            $this->moduleTemplate->addJavaScriptCode('templavoila_function', '
+            $this->moduleTemplate->addJavaScriptCode('templavoilaplus_function', '
                 script_ended = 0;
                 function jumpToUrl(URL)    {    //
                     document.location = URL;
@@ -465,7 +465,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
         } else {
             // @TODO Go back to ControlCenter if we are on "start page"
             $url = BackendUtility::getModuleUrl(
-                'templavoila_mapping',
+                'templavoilaplus_mapping',
                 [
                     'id' => $this->id,
                     'file' => $this->displayFile,
@@ -751,7 +751,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                     'langDisable' => '1',
                 ),
                 'ROOT' => array(
-                    'tx_templavoila' => array(
+                    'tx_templavoilaplus' => array(
                         'title' => 'ROOT',
                         'description' => TemplaVoilaUtility::getLanguageService()->getLL('rootDescription'),
                     ),
@@ -1632,7 +1632,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
             $dSheets = GeneralUtility::resolveAllSheetsInDS($dataStruct);
             $dataStruct = array(
                 'ROOT' => array(
-                    'tx_templavoila' => array(
+                    'tx_templavoilaplus' => array(
                         'title' => TemplaVoilaUtility::getLanguageService()->getLL('rootMultiTemplate_title'),
                         'description' => TemplaVoilaUtility::getLanguageService()->getLL('rootMultiTemplate_description'),
                     ),
@@ -2026,7 +2026,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                     $tRows[] = '
                         <tr class="bgColor4">
                             <td class="bgColor5"><strong>' . TemplaVoilaUtility::getLanguageService()->getLL('mapDSelement') . ':</strong></td>
-                            <td>' . $this->elNames[$this->mapElPath]['tx_templavoila']['title'] . '</td>
+                            <td>' . $this->elNames[$this->mapElPath]['tx_templavoilaplus']['title'] . '</td>
                         </tr>
                         <tr class="bgColor4">
                             <td class="bgColor5"><strong>' . TemplaVoilaUtility::getLanguageService()->getLL('mapLimitToTags') . ':</strong></td>
@@ -2034,7 +2034,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                         </tr>
                         <tr class="bgColor4">
                             <td class="bgColor5"><strong>' . TemplaVoilaUtility::getLanguageService()->getLL('mapInstructions') . ':</strong></td>
-                            <td>' . htmlspecialchars($this->elNames[$this->mapElPath]['tx_templavoila']['description']) . '</td>
+                            <td>' . htmlspecialchars($this->elNames[$this->mapElPath]['tx_templavoilaplus']['description']) . '</td>
                         </tr>
                     ';
                 }
@@ -2166,18 +2166,18 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                     $icon = '<span class="dsType_Icon dsType_' . $info['id'] . '" title="' . $info['title'] . '">' . strtoupper($info['id']) . '</span>';
 
                     // Composing title-cell:
-                    if (preg_match('/^LLL:/', $value['tx_templavoila']['title'])) {
-                        $translatedTitle = TemplaVoilaUtility::getLanguageService()->sL($value['tx_templavoila']['title']);
+                    if (preg_match('/^LLL:/', $value['tx_templavoilaplus']['title'])) {
+                        $translatedTitle = TemplaVoilaUtility::getLanguageService()->sL($value['tx_templavoilaplus']['title']);
                         $translateIcon = '<sup title="' . TemplaVoilaUtility::getLanguageService()->getLL('displayDSTitleTranslated') . '">*</sup>';
                     } else {
-                        $translatedTitle = $value['tx_templavoila']['title'];
+                        $translatedTitle = $value['tx_templavoilaplus']['title'];
                         $translateIcon = '';
                     }
-                    $this->elNames[$formPrefix . '[' . $key . ']']['tx_templavoila']['title'] = $icon . htmlspecialchars(GeneralUtility::fixed_lgd_cs($translatedTitle, 30)) . $translateIcon;
-                    $rowCells['title'] = $this->elNames[$formPrefix . '[' . $key . ']']['tx_templavoila']['title'];
+                    $this->elNames[$formPrefix . '[' . $key . ']']['tx_templavoilaplus']['title'] = $icon . htmlspecialchars(GeneralUtility::fixed_lgd_cs($translatedTitle, 30)) . $translateIcon;
+                    $rowCells['title'] = $this->elNames[$formPrefix . '[' . $key . ']']['tx_templavoilaplus']['title'];
 
                     // Description:
-                    $this->elNames[$formPrefix . '[' . $key . ']']['tx_templavoila']['description'] = $rowCells['description'] = htmlspecialchars($value['tx_templavoila']['description']);
+                    $this->elNames[$formPrefix . '[' . $key . ']']['tx_templavoilaplus']['description'] = $rowCells['description'] = htmlspecialchars($value['tx_templavoilaplus']['description']);
 
                     // In "mapping mode", render HTML page and Command links:
                     if ($mappingMode) {
@@ -2213,7 +2213,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                                     $this->linkThisScript(array(
                                         'mapElPath' => $formPrefix . '[' . $key . ']',
                                         'htmlPath' => $path,
-                                        'mappingToTags' => $value['tx_templavoila']['tags'],
+                                        'mappingToTags' => $value['tx_templavoilaplus']['tags'],
                                         'DS_element' => GeneralUtility::_GP('DS_element')
                                     )) . '\';return false;" title="' . TemplaVoilaUtility::getLanguageService()->getLL('buttonRemapTitle') . '" />' .
                                     '<input type="submit" value="' . TemplaVoilaUtility::getLanguageService()->getLL('buttonChangeMode') . '" name="_" onclick="document.location=\'' .
@@ -2239,7 +2239,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                             if ($this->doMappingOfPath) {
                                 // Creating option tags:
                                 $lastLevel = end($pathLevels);
-                                $tagsMapping = $this->explodeMappingToTagsStr($value['tx_templavoila']['tags']);
+                                $tagsMapping = $this->explodeMappingToTagsStr($value['tx_templavoilaplus']['tags']);
                                 $mapDat = is_array($tagsMapping[$lastLevel['el']]) ? $tagsMapping[$lastLevel['el']] : $tagsMapping['*'];
                                 unset($mapDat['']);
                                 if (is_array($mapDat) && !count($mapDat)) {
@@ -2292,14 +2292,14 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                                 $this->linkThisScript(array(
                                     'mapElPath' => $formPrefix . '[' . $key . ']',
                                     'htmlPath' => $path,
-                                    'mappingToTags' => $value['tx_templavoila']['tags'],
+                                    'mappingToTags' => $value['tx_templavoilaplus']['tags'],
                                     'DS_element' => GeneralUtility::_GP('DS_element')
                                 )) . '\';return false;" />';
                         }
                     }
 
                     // Display mapping rules:
-                    $rowCells['tagRules'] = implode('<br />', GeneralUtility::trimExplode(',', strtolower($value['tx_templavoila']['tags']), 1));
+                    $rowCells['tagRules'] = implode('<br />', GeneralUtility::trimExplode(',', strtolower($value['tx_templavoilaplus']['tags']), 1));
                     if (!$rowCells['tagRules']) {
                         $rowCells['tagRules'] = $GLOBALS['LANG']->getLL('all');
                     }
@@ -2325,10 +2325,10 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
 
                     // Description:
                     if ($this->_preview) {
-                        if (!is_array($value['tx_templavoila']['sample_data'])) {
+                        if (!is_array($value['tx_templavoilaplus']['sample_data'])) {
                             $rowCells['description'] = '[' . TemplaVoilaUtility::getLanguageService()->getLL('noSampleData') . ']';
                         } else {
-                            $rowCells['description'] = \TYPO3\CMS\Core\Utility\DebugUtility::viewArray($value['tx_templavoila']['sample_data']);
+                            $rowCells['description'] = \TYPO3\CMS\Core\Utility\DebugUtility::viewArray($value['tx_templavoilaplus']['sample_data']);
                         }
                     }
 
@@ -2430,7 +2430,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
         ];
 
         $content .= '<strong><a href="'
-            . BackendUtility::getModuleUrl('templavoila_template_disply', $theArray)
+            . BackendUtility::getModuleUrl('templavoilaplus_template_disply', $theArray)
             . '" target="display">' . $title . '</a></strong>';
 
         return $content;
@@ -2456,7 +2456,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
             '_load_ds_xml_to' => $this->_load_ds_xml_to
         ];
 
-        return BackendUtility::getModuleUrl('templavoila_mapping', array_merge($theArray, $array));
+        return BackendUtility::getModuleUrl('templavoilaplus_mapping', array_merge($theArray, $array));
     }
 
     public function redirectToModifyDSTO($toUid, $dsUid)
@@ -2466,7 +2466,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
             '_load_ds_xml' => 1,
             '_load_ds_xml_to' => $toUid,
             'uid' => $dsUid,
-            'returnUrl' => BackendUtility::getModuleUrl('web_txtemplavoilaM2', ['id' => (int)$this->_saveDSandTO_pid])
+            'returnUrl' => BackendUtility::getModuleUrl('web_txtemplavoilaplusCenter', ['id' => (int)$this->_saveDSandTO_pid])
         ];
 
         header(
@@ -2475,7 +2475,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                     $this->displayFile,
                     $toUid,
                     $dsUid,
-                    BackendUtility::getModuleUrl('web_txtemplavoilaM2', ['id' => (int)$this->_saveDSandTO_pid])
+                    BackendUtility::getModuleUrl('web_txtemplavoilaplusCenter', ['id' => (int)$this->_saveDSandTO_pid])
                 )
             )
         );
@@ -2492,7 +2492,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
             'returnUrl' => $returnUrl,
         ];
 
-        return BackendUtility::getModuleUrl('templavoila_mapping', $params);
+        return BackendUtility::getModuleUrl('templavoilaplus_mapping', $params);
     }
 
     /**
@@ -2510,7 +2510,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
     public function makeIframeForVisual($file, $path, $limitTags, $showOnly, $preview = 0)
     {
         $url = BackendUtility::getModuleUrl(
-            'templavoila_template_disply',
+            'templavoilaplus_template_disply',
             [
                 'file' => $file,
                 'path' => $path,
@@ -2622,7 +2622,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
             'root=1' . BackendUtility::deleteClause('sys_template')
         );
         while (false !== ($row = TemplaVoilaUtility::getDatabaseConnection()->sql_fetch_assoc($res))) {
-            $tsCconfig = BackendUtility::getModTSconfig($row['pid'], 'tx_templavoila');
+            $tsCconfig = BackendUtility::getModTSconfig($row['pid'], 'tx_templavoilaplus');
             if (isset($tsCconfig['properties']['storagePid']) &&
                 TemplaVoilaUtility::getBackendUser()->isInWebMount($tsCconfig['properties']['storagePid'], $readPerms)
             ) {

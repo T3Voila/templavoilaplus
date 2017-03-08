@@ -69,7 +69,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
      *
      * @var string
      */
-    protected $moduleName = 'web_txtemplavoilaM2';
+    protected $moduleName = 'web_txtemplavoilaplusCenter';
 
     /**
      * @var array
@@ -169,7 +169,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
 
             // Adding classic jumpToUrl function, needed for the function menu.
             // Also, the id in the parent frameset is configured.
-            $this->moduleTemplate->addJavaScriptCode('templavoila_function', '
+            $this->moduleTemplate->addJavaScriptCode('templavoilaplus_function', '
                 function jumpToUrl(URL)    { //
                     document.location = URL;
                     return false;
@@ -236,7 +236,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
     public function addNewSiteWizardButton()
     {
         $newSiteWizardButton = $this->buttonBar->makeLinkButton()
-            ->setHref(BackendUtility::getModuleUrl('templavoila_new_site_wizard'))
+            ->setHref(BackendUtility::getModuleUrl('templavoilaplus_new_site_wizard'))
             ->setTitle('Wizard')
             ->setIcon($this->iconFactory->getIcon('actions-file-html', Icon::SIZE_SMALL, 'overlay-new'));
         $this->buttonBar->addButton($newSiteWizardButton, ButtonBar::BUTTON_POSITION_LEFT);
@@ -735,7 +735,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
             'id' => $this->id,
             'returnUrl' => $this->getBaseUrl(),
         ];
-        $linkUrl = BackendUtility::getModuleUrl('templavoila_mapping', $uriParameters);
+        $linkUrl = BackendUtility::getModuleUrl('templavoilaplus_mapping', $uriParameters);
 
         $fileReference = GeneralUtility::getFileAbsFileName($toObj->getFileref());
         if (@is_file($fileReference)) {
@@ -918,7 +918,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
                 $count = TemplaVoilaUtility::getDatabaseConnection()->exec_SELECTcountRows(
                     'uid',
                     'tt_content',
-                    'CType=' . TemplaVoilaUtility::getDatabaseConnection()->fullQuoteStr('templavoila_pi1', 'tt_content') .
+                    'CType=' . TemplaVoilaUtility::getDatabaseConnection()->fullQuoteStr('templavoilaplus_pi1', 'tt_content') .
                     ' AND tx_templavoilaplus_to=' . (int)$toObj->getKey() .
                     ' AND tx_templavoilaplus_ds=' . TemplaVoilaUtility::getDatabaseConnection()->fullQuoteStr($toObj->getDatastructure()->getKey(), 'tt_content') .
                     BackendUtility::deleteClause('tt_content'),
@@ -995,7 +995,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
                 $res = TemplaVoilaUtility::getDatabaseConnection()->exec_SELECTquery(
                     'uid,header,pid',
                     'tt_content',
-                    'CType=' . TemplaVoilaUtility::getDatabaseConnection()->fullQuoteStr('templavoila_pi1', 'tt_content') .
+                    'CType=' . TemplaVoilaUtility::getDatabaseConnection()->fullQuoteStr('templavoilaplus_pi1', 'tt_content') .
                     ' AND tx_templavoilaplus_to NOT IN (' . implode(',', $toIdArray) . ')' .
                     ' AND tx_templavoilaplus_ds=' . TemplaVoilaUtility::getDatabaseConnection()->fullQuoteStr($dsObj->getKey(), 'tt_content') .
                     BackendUtility::deleteClause('tt_content'),
@@ -1258,7 +1258,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
                 }
 
                 $HTML .= '<dt>';
-                $HTML .= ($elm == "meta" ? TemplaVoilaUtility::getLanguageService()->getLL('configuration', true) : $def['tx_templavoila']['title'] . ' (' . $elm . ')');
+                $HTML .= ($elm == "meta" ? TemplaVoilaUtility::getLanguageService()->getLL('configuration', true) : $def['tx_templavoilaplus']['title'] . ' (' . $elm . ')');
                 $HTML .= '</dt>';
                 $HTML .= '<dd>';
 
@@ -1325,7 +1325,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
                          *    <langOverlayMode>    -> ??? (is it the language-key?)
                          * </element>
                          */
-                        if (($tv = $def['tx_templavoila'])) {
+                        if (($tv = $def['tx_templavoilaplus'])) {
                             /* The basic XML-structure of an tx_templavoila-entry is:
                              *
                              * <tx_templavoila>
@@ -1584,9 +1584,9 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
                 if (isset($elCfg['el'])) {
                     $elCfg['el'] = '...';
                 }
-                unset($elCfg['tx_templavoila']['sample_data']);
-                unset($elCfg['tx_templavoila']['tags']);
-                unset($elCfg['tx_templavoila']['eType']);
+                unset($elCfg['tx_templavoilaplus']['sample_data']);
+                unset($elCfg['tx_templavoilaplus']['tags']);
+                unset($elCfg['tx_templavoilaplus']['eType']);
             }
         }
 

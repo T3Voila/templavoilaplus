@@ -99,7 +99,7 @@ class Wizards implements SingletonInterface
                     $pageColumnsOnly = $this->getPageColumnsOnlyConfig($newID);
 
                     $returnUrl = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl(
-                        'web_txtemplavoilaM1',
+                        'web_txtemplavoilaplusLayout',
                         [
                             'id' => $newID,
                             'updatePageTree' => 1,
@@ -164,7 +164,7 @@ class Wizards implements SingletonInterface
                         $pageColumnsOnly = $this->getPageColumnsOnlyConfig($newID);
 
                         $returnUrl = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl(
-                            'web_txtemplavoilaM1',
+                            'web_txtemplavoilaplusLayout',
                             [
                                 'id' => $newID,
                                 'updatePageTree' => 1,
@@ -201,7 +201,7 @@ class Wizards implements SingletonInterface
         $this->moduleTemplate->setForm(
             '<form action="'
             . \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl(
-                'web_txtemplavoilaM1',
+                'web_txtemplavoilaplusLayout',
                 [
                     'id' => $this->pObj->id,
                 ]
@@ -245,7 +245,7 @@ class Wizards implements SingletonInterface
 
     /**
      * Returns comma seperated field names of page columns to show only on new page. Default this is hidden,title,alias.
-     * You configure this with TSconfig 'mod.web_txtemplavoilaM1.createPageWizard.fieldNames'. A value of "*" means show
+     * You configure this with TSconfig 'mod.web_txtemplavoilaplusLayout.createPageWizard.fieldNames'. A value of "*" means show
      * all fields.
      *
      * @param integer $newID Page uid
@@ -255,7 +255,7 @@ class Wizards implements SingletonInterface
     {
         $pageColumnsOnly = 'hidden,title,alias';
         // Get TSconfig for a different selection of fields in the editing form
-        $fieldNamesTs = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($newID, 'mod.web_txtemplavoilaM1.createPageWizard.fieldNames');
+        $fieldNamesTs = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($newID, 'mod.web_txtemplavoilaplusLayout.createPageWizard.fieldNames');
         if (isset($fieldNamesTs['value'])) {
             $fieldNamesTsValue = trim($fieldNamesTs['value']);
             if ($fieldNamesTsValue && $fieldNamesTsValue !== '*') {

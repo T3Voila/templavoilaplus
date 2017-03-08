@@ -1821,7 +1821,7 @@ class ApiTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 	 */
 	protected function fixture_getContentElementRow_FCE($dataStructureUid, $templateObjectUid) {
 		return array(
-			'CType' => 'templavoila_pi1',
+			'CType' => 'templavoilaplus_pi1',
 			'header' => static::CONTENT_ELEMENT_HEADER,
 			'tx_templavoilaplus_ds' => $dataStructureUid,
 			'tx_templavoilaplus_to' => $templateObjectUid,

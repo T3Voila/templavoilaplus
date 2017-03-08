@@ -154,7 +154,7 @@ class DataHandler
             } else {
                 $row = & $fieldArray;
             }
-            if ($row['CType'] == 'templavoila_pi1') {
+            if ($row['CType'] == 'templavoilaplus_pi1') {
                 $params = array(
                     'table' => $table,
                     'row' => $row,
@@ -658,7 +658,7 @@ page.10.disableExplosivePreview = 1
                             }
 
                             $fieldConf = $dataStructArray['ROOT']['el'][$fieldName];
-                            if ($fieldConf['tx_templavoila']['eType'] != 'ce') {
+                            if ($fieldConf['tx_templavoilaplus']['eType'] != 'ce') {
                                 $res = false;
                                 break;
                             }

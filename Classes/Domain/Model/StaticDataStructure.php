@@ -65,10 +65,10 @@ class StaticDataStructure extends AbstractDataStructure
         $dsXml = $this->getDataprotXML();
         $dsStructure = GeneralUtility::xml2array($dsXml);
 
-        if (!empty($dsStructure['ROOT']['tx_templavoila']['title'])
-            && $dsStructure['ROOT']['tx_templavoila']['title'] !== 'ROOT'
+        if (!empty($dsStructure['ROOT']['tx_templavoilaplus']['title'])
+            && $dsStructure['ROOT']['tx_templavoilaplus']['title'] !== 'ROOT'
         ) {
-            $this->setLabel($dsStructure['ROOT']['tx_templavoila']['title']);
+            $this->setLabel($dsStructure['ROOT']['tx_templavoilaplus']['title']);
         }
     }
 

@@ -183,7 +183,7 @@ class Clipboard implements SingletonInterface
                 );
 
                 $output .= $this->pObj->buildButton(
-                    'web_txtemplavoilaM1',
+                    'web_txtemplavoilaplusLayout',
                     $title,
                     $icon . ($isActive ? '-release' : ''),
                     $params
@@ -264,7 +264,7 @@ class Clipboard implements SingletonInterface
         $output = '';
         if (!in_array('pasteAfter', $this->pObj->blindIcons)) {
             $output .= $this->pObj->buildButton(
-                'web_txtemplavoilaM1',
+                'web_txtemplavoilaplusLayout',
                 TemplaVoilaUtility::getLanguageService()->getLL('pasterecord'),
                 'extensions-templavoila-paste',
                 $this->pObj->getLinkParameters(
@@ -282,7 +282,7 @@ class Clipboard implements SingletonInterface
         // FCEs with sub elements have two different paste icons, normal elements only one:
         if ($pasteMode == 'copy' && $clipboardElementHasSubElements && !in_array('pasteSubRef', $this->pObj->blindIcons)) {
             $output .= $this->pObj->buildButton(
-                'web_txtemplavoilaM1',
+                'web_txtemplavoilaplusLayout',
                 TemplaVoilaUtility::getLanguageService()->getLL('pastefce_andreferencesubs'),
                 'extensions-templavoila-pasteSubRef',
                 $this->pObj->getLinkParameters(

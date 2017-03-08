@@ -562,14 +562,14 @@ class HtmlMarkup
                             $currentMappingInfo['sub'][$key],
                             '',
                             ($dataStruct[$key]['section'] ?
-                                (is_array($dataStruct[$key]['tx_templavoila']['sample_order']) ? $dataStruct[$key]['tx_templavoila']['sample_order'] : array_keys($dataStruct[$key]['el'])) :
+                                (is_array($dataStruct[$key]['tx_templavoilaplus']['sample_order']) ? $dataStruct[$key]['tx_templavoilaplus']['sample_order'] : array_keys($dataStruct[$key]['el'])) :
                                 '')
                         );
                     }
                 } else {
-                    if (is_array($dataStruct[$key]['tx_templavoila']['sample_data'])) {
-                        $point = rand(0, count($dataStruct[$key]['tx_templavoila']['sample_data']) - 1);
-                        $sample = $dataStruct[$key]['tx_templavoila']['sample_data'][$point];
+                    if (is_array($dataStruct[$key]['tx_templavoilaplus']['sample_data'])) {
+                        $point = rand(0, count($dataStruct[$key]['tx_templavoilaplus']['sample_data']) - 1);
+                        $sample = $dataStruct[$key]['tx_templavoilaplus']['sample_data'][$point];
                     } else {
                         $sample = '[SAMPLE DATA]';
                     }

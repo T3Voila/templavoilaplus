@@ -86,7 +86,7 @@ class WizardItems implements NewContentElementWizardHookInterface
     {
         $dsStructure = $toObj->getLocalDataprotArray();
 
-        $dsValues = '&defVals[tt_content][CType]=templavoila_pi1'
+        $dsValues = '&defVals[tt_content][CType]=templavoilaplus_pi1'
             . '&defVals[tt_content][tx_templavoilaplus_ds]=' . $toObj->getDatastructure()->getKey()
             . '&defVals[tt_content][tx_templavoilaplus_to]=' . $toObj->getKey();
 

@@ -1,4 +1,4 @@
-﻿.. include:: Images.txt
+.. include:: Images.txt
 
 .. ==================================================
 .. FOR YOUR INFORMATION
@@ -62,7 +62,7 @@ tx\_templavoila
 [tsconfig:tx\_templavoila]
 
 
-mod.web\_txtemplavoilaM1
+mod.web\_txtemplavoilaplusLayout
 """"""""""""""""""""""""
 
 .. ### BEGIN~OF~TABLE ###
@@ -99,7 +99,7 @@ mod.web\_txtemplavoilaM1
          
          ::
          
-            mod.web_txtemplavoilaM1.createPageWizard {
+            mod.web_txtemplavoilaplusLayout.createPageWizard {
              fieldNames = hidden, title, author, description, abstract
             }
          
@@ -446,7 +446,7 @@ mod.web\_txtemplavoilaM1
          
          ::
          
-            mod.web_txtemplavoilaM1 {
+            mod.web_txtemplavoilaplusLayout {
               additionalDoktypesRenderToEditView = 254
             }
    
@@ -471,7 +471,7 @@ mod.web\_txtemplavoilaM1
          
          ::
          
-            mod.web_txtemplavoilaM1 {
+            mod.web_txtemplavoilaplusLayout {
               blindIcons = browse,edit,new
             }
    
@@ -495,7 +495,7 @@ mod.web\_txtemplavoilaM1
          
          ::
          
-            mod.web_txtemplavoilaM1 {
+            mod.web_txtemplavoilaplusLayout {
               stylesheet = ../fileadmin/css/tvpagemodule.css
             }
          
@@ -504,7 +504,7 @@ mod.web\_txtemplavoilaM1
          
          ::
          
-            mod.web_txtemplavoilaM1.stylesheet {
+            mod.web_txtemplavoilaplusLayout.stylesheet {
               file1 = EXT:/res/css/file1.css
             }
    
@@ -528,7 +528,7 @@ mod.web\_txtemplavoilaM1
          
          ::
          
-            mod.web_txtemplavoilaM1.javascript {
+            mod.web_txtemplavoilaplusLayout.javascript {
               file1 = ../fileadmin/templates/js/jquery.js
               file2 = ../fileadmin/templates/css/backend.js
             }
@@ -707,10 +707,10 @@ mod.web\_txtemplavoilaM1
 
 .. ###### END~OF~TABLE ######
 
-[tsconfig:mod.web\_txtemplavoilaM1]
+[tsconfig:mod.web\_txtemplavoilaplusLayout]
 
 
-mod.web\_txtemplavoilaM2
+mod.web\_txtemplavoilaplusCenter
 """"""""""""""""""""""""
 
 .. ### BEGIN~OF~TABLE ###
@@ -744,7 +744,7 @@ mod.web\_txtemplavoilaM2
          
          **Example:**
          
-         mod.web\_txtemplavoilaM2.templatePath =
+         mod.web\_txtemplavoilaplusCenter.templatePath =
          templates,templates/special,templates/main
    
    Default
@@ -768,7 +768,7 @@ mod.web\_txtemplavoilaM2
          
          Example:
          
-         mod.web\_txtemplavoilaM2.dsPreviewIconThumb = 120x80
+         mod.web\_txtemplavoilaplusCenter.dsPreviewIconThumb = 120x80
    
    Default
 
@@ -790,7 +790,7 @@ mod.web\_txtemplavoilaM2
          
          Example:
          
-         mod.web\_txtemplavoilaM2.toPreviewIconThumb = 120x80
+         mod.web\_txtemplavoilaplusCenter.toPreviewIconThumb = 120x80
    
    Default
 
@@ -807,7 +807,7 @@ mod.web\_txtemplavoilaM2
          Path to the xml template for the "New Site Wizard". The original used
          xml template is located in mod2/new\_tv\_site.xml,
          
-         Example:mod.web\_txtemplavoilaM2.newTVsiteTemplate =
+         Example:mod.web\_txtemplavoilaplusCenter.newTVsiteTemplate =
          fileadmin/my\_new\_tv\_site.xml
    
    Default
@@ -830,5 +830,5 @@ mod.web\_txtemplavoilaM2
 
 .. ###### END~OF~TABLE ######
 
-[tsconfig:mod.web\_txtemplavoilaM2]
+[tsconfig:mod.web\_txtemplavoilaplusCenter]
 

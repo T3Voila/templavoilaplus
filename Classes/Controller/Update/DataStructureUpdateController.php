@@ -29,7 +29,7 @@ class DataStructureUpdateController extends StepUpdateController
 {
     protected $errors = [];
     protected $lastKey = '';
-    
+
     protected function stepStart()
     {
         $dsRepo = GeneralUtility::makeInstance(DataStructureRepository::class);
@@ -40,87 +40,16 @@ class DataStructureUpdateController extends StepUpdateController
 
     protected function stepFinal()
     {
-        $count = $this->convertAllDs();
-        
+        $handler = GeneralUtility::makeInstance(DataStructureUpdateHandler::class);
+        $count = $handler->updateAllDs([], [[$this, 'fixWizardScript']]);
+
         $this->fluid->assignMultiple([
             'count' => $count,
             'errors' => $this->errors,
         ]);
     }
-    
-    protected function convertAllDs()
-    {
-        $count = 0;
 
-        $dsRepo = GeneralUtility::makeInstance(DataStructureRepository::class);
-        foreach ($dsRepo->getAll() as $ds) {
-            if ($this->convertDs($ds)) {
-                $count++;
-            }
-        }
-        
-        return $count;
-    }
-    
-    protected function convertDs(\Ppi\TemplaVoilaPlus\Domain\Model\AbstractDataStructure $ds)
-    {
-        $changed = false;
-        $data = $ds->getDataprotArray();
-        $this->lastKey = $ds->getKey();
-
-        foreach($data['ROOT']['el'] as &$element) {
-            $changed = $changed || $this->fixPerElement($element);
-        }
-        
-        if ($changed) {
-            $this->saveChange(
-                $ds, 
-                GeneralUtility::array2xml_cs(   
-                    $data, 
-                    'T3DataStructure', 
-                    ['useCDATA' => 1]
-                )
-            );
-            return true;
-        }
-        return false;
-    }
-    
-    protected function saveChange($ds, $dataProtXML)
-    {
-        if ($ds->isFilebased()) {
-            $path = PATH_site . $ds->getKey();
-            GeneralUtility::writeFile($path, $dataProtXML);
-        } else {
-            $tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
-            $tce->stripslashes_values = 0;
-
-            $dataArr = [];
-            $dataArr['tx_templavoilaplus_datastructure'][$ds->getKey()]['dataprot'] = $dataProtXML;
-
-            // process data
-            $tce->start($dataArr, array());
-            $tce->process_datamap();
-        }
-    }
-    
-    protected function fixPerElement(array &$element)
-    {
-        $changed = false;
-
-        if (isset($element['section']) && $element['section']) {
-            $sections = array_pop($element['el']);
-            foreach($sections['el'] as &$subElement) {
-                $changed = $changed || $this->fixPerElement($subElement);
-            }
-        } else {
-            $changed = $changed || $this->fixWizardScript($element);
-        }
-
-        return $changed;
-    }
-
-    protected function fixWizardScript(array &$element)
+    public function fixWizardScript(array &$element)
     {
         $changed = false;
 
@@ -140,12 +69,12 @@ class DataStructureUpdateController extends StepUpdateController
                     } else {
                         $cleaned = true;
                     }
-                    
+
                     if ($cleaned) {
                         unset($wizard['script']);
                     }
                 }
-                
+
                 // Convert ['module']['name'] = 'wizard_element_browser'
                 // && ['module']['urlParameters']['mode'] = 'wizard'
                 // to ['module']['name'] = 'wizard_link'
@@ -161,7 +90,7 @@ class DataStructureUpdateController extends StepUpdateController
                     }
                     $cleaned = true;
                 }
-                
+
                 $changed = $changed || $cleaned;
             }
         }

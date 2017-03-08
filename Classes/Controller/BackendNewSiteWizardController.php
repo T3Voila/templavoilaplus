@@ -76,7 +76,7 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
      *
      * @var string
      */
-    protected $moduleName = 'templavoila_new_site_wizard';
+    protected $moduleName = 'templavoilaplus_new_site_wizard';
 
     /**
      * @var array
@@ -178,7 +178,7 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
 
             // Adding classic jumpToUrl function, needed for the function menu.
             // Also, the id in the parent frameset is configured.
-            $this->moduleTemplate->addJavaScriptCode('templavoila_function', '
+            $this->moduleTemplate->addJavaScriptCode('templavoilaplus_function', '
                 function jumpToUrl(URL)    { //
                     document.location = URL;
                     return false;

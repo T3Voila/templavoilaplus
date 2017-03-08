@@ -286,10 +286,10 @@ class StaticDataUpdateController
     protected function writeXmlWithTitle($pathAndFilename, $dsXml, $title)
     {
         $dsStructure = GeneralUtility::xml2array($dsXml);
-        if (empty($dsStructure['ROOT']['tx_templavoila']['title'])
-            || $dsStructure['ROOT']['tx_templavoila']['title'] === 'ROOT'
+        if (empty($dsStructure['ROOT']['tx_templavoilaplus']['title'])
+            || $dsStructure['ROOT']['tx_templavoilaplus']['title'] === 'ROOT'
         ) {
-            $dsStructure['ROOT']['tx_templavoila']['title'] = $title;
+            $dsStructure['ROOT']['tx_templavoilaplus']['title'] = $title;
         }
         $dsXml = GeneralUtility::array2xml_cs($dsStructure, 'T3DataStructure', ['useCDATA' => 1]);
         GeneralUtility::writeFile($pathAndFilename, $dsXml);

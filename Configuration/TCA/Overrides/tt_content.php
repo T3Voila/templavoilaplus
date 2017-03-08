@@ -24,7 +24,7 @@ $tempColumns = array(
     'tx_templavoilaplus_to' => array(
         'exclude' => 1,
         'label' => 'LLL:EXT:templavoilaplus/Resources/Private/Language/locallang_db.xlf:tt_content.tx_templavoilaplus_to',
-        'displayCond' => 'FIELD:CType:=:templavoila_pi1',
+        'displayCond' => 'FIELD:CType:=:templavoilaplus_pi1',
         'config' => array(
             'type' => 'select',
             'renderType' => 'selectSingle',
@@ -70,10 +70,10 @@ $tempColumns = array(
 );
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('tt_content', $tempColumns);
 
-$GLOBALS['TCA']['tt_content']['ctrl']['typeicons']['templavoila_pi1'] = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoilaplus') . '/Resources/Public/Icon/icon_fce_ce.png';
-$GLOBALS['TCA']['tt_content']['ctrl']['typeicon_classes']['templavoila_pi1'] = 'extensions-templavoila-type-fce';
+$GLOBALS['TCA']['tt_content']['ctrl']['typeicons']['templavoilaplus_pi1'] = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoilaplus') . '/Resources/Public/Icon/icon_fce_ce.png';
+$GLOBALS['TCA']['tt_content']['ctrl']['typeicon_classes']['templavoilaplus_pi1'] = 'extensions-templavoila-type-fce';
 
-$GLOBALS['TCA']['tt_content']['types']['templavoila_pi1']['showitem'] =
+$GLOBALS['TCA']['tt_content']['types']['templavoilaplus_pi1']['showitem'] =
     '--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.general;general,'
     . '--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.headers;headers,'
     . '--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access,'
@@ -95,20 +95,20 @@ if ($_EXTCONF['enable.']['selectDataStructure']) {
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
         'tt_content',
         'tx_templavoilaplus_ds,tx_templavoilaplus_to',
-        'templavoila_pi1',
+        'templavoilaplus_pi1',
         'after:layout'
     );
 } else {
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
         'tt_content',
         'tx_templavoilaplus_to',
-        'templavoila_pi1',
+        'templavoilaplus_pi1',
         'after:layout'
     );
 }
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
     'tt_content',
     'tx_templavoilaplus_flex',
-    'templavoila_pi1',
+    'templavoilaplus_pi1',
     'after:subheader'
 );

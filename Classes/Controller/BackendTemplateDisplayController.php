@@ -45,7 +45,7 @@ class BackendTemplateDisplayController extends \TYPO3\CMS\Backend\Module\BaseScr
      *
      * @var string
      */
-    protected $moduleName = 'templavoila_display';
+    protected $moduleName = 'templavoilaplus_display';
 
     /**
      * holds the extconf configuration

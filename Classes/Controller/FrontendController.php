@@ -406,7 +406,7 @@ class FrontendController extends AbstractPlugin
                 }
             } else {
                 $content = $this->formatError('You haven\'t selected a Template Object yet for table/uid "' . $table . '/' . $row['uid'] . '".
-                    Without a Template Object TemplaVoila cannot map the XML content into HTML.
+                    Without a Template Object TemplaVoila Plus cannot map the XML content into HTML.
                     Please select a Template Object now.');
             }
         } else {
@@ -440,13 +440,13 @@ class FrontendController extends AbstractPlugin
                 if ($mappingInfo === true || array_key_exists($key, $mappingInfo)) {
                     if ($DSelements[$key]['type'] != 'array') { // For all non-arrays:
                         // Set base configuration:
-                        $LP[$key] = $DSelements[$key]['tx_templavoila'];
+                        $LP[$key] = $DSelements[$key]['tx_templavoilaplus'];
                         // Overlaying local processing:
-                        if (is_array($TOelements[$key]['tx_templavoila'])) {
+                        if (is_array($TOelements[$key]['tx_templavoilaplus'])) {
                             if (is_array($LP[$key])) {
-                                ArrayUtility::mergeRecursiveWithOverrule($LP[$key], $TOelements[$key]['tx_templavoila']);
+                                ArrayUtility::mergeRecursiveWithOverrule($LP[$key], $TOelements[$key]['tx_templavoilaplus']);
                             } else {
-                                $LP[$key] = $TOelements[$key]['tx_templavoila'];
+                                $LP[$key] = $TOelements[$key]['tx_templavoilaplus'];
                             }
                         }
                     }
@@ -594,15 +594,15 @@ class FrontendController extends AbstractPlugin
                                         $objPath = substr(trim($value), 2, -1);
 
                                         // If no value for this object path reference was found, get value:
-                                        if (!isset($GLOBALS['TSFE']->applicationData['tx_templavoila']['TO_constantCache'][$objPath])) {
+                                        if (!isset($GLOBALS['TSFE']->applicationData['tx_templavoilaplus']['TO_constantCache'][$objPath])) {
                                             // Get value from object path:
                                             $cF = GeneralUtility::makeInstance(TypoScriptParser::class);
                                             list($objPathValue) = $cF->getVal($objPath, $GLOBALS['TSFE']->tmpl->setup);
                                             // Set value in cache table:
-                                            $GLOBALS['TSFE']->applicationData['tx_templavoila']['TO_constantCache'][$objPath] .= '' . $objPathValue;
+                                            $GLOBALS['TSFE']->applicationData['tx_templavoilaplus']['TO_constantCache'][$objPath] .= '' . $objPathValue;
                                         }
                                         // Setting value to the value of the TypoScript Setup object path referred to:
-                                        $value = $GLOBALS['TSFE']->applicationData['tx_templavoila']['TO_constantCache'][$objPath];
+                                        $value = $GLOBALS['TSFE']->applicationData['tx_templavoilaplus']['TO_constantCache'][$objPath];
                                     }
 
                                     // Substitute constant:
@@ -748,7 +748,7 @@ class FrontendController extends AbstractPlugin
                     padding: 20px 20px 20px 20px;
                     margin: 20px 20px 20px 20px;
                     ">' .
-            '<strong>TemplaVoila ERROR:</strong><br /><br />' . nl2br(htmlspecialchars(trim($string))) .
+            '<strong>TemplaVoila Plus ERROR:</strong><br /><br />' . nl2br(htmlspecialchars(trim($string))) .
             '</div>';
 
         return $output;

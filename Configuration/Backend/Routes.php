@@ -12,23 +12,23 @@ use Ppi\TemplaVoilaPlus\Controller;
  * but will be extended further.
  */
 return [
-    'templavoila_mapping' => [
-        'path' => '/templavoila/mapping',
+    'templavoilaplus_mapping' => [
+        'path' => '/templavoilaplus/mapping',
         'access' => 'user,group',
         'target' => Controller\BackendTemplateMappingController::class . '::mainAction',
     ],
-    'templavoila_template_disply' => [
-        'path' => '/templavoila/template/display',
+    'templavoilaplus_template_disply' => [
+        'path' => '/templavoilaplus/template/display',
         'access' => 'user,group',
         'target' => Controller\BackendTemplateDisplayController::class . '::mainAction',
     ],
-    'templavoila_new_site_wizard' => [
-        'path' => '/templavoila/new_site_wizard',
+    'templavoilaplus_new_site_wizard' => [
+        'path' => '/templavoilaplus/new_site_wizard',
         'access' => 'user,group',
         'target' => Controller\BackendNewSiteWizardController::class . '::mainAction',
     ],
-    'templavoila_flexform_cleaner' => [
-        'path' => '/templavoila/flexform_cleaner',
+    'templavoilaplus_flexform_cleaner' => [
+        'path' => '/templavoilaplus/flexform_cleaner',
         'access' => 'admin',
         'target' => Controller\BackendFlexformCleanerController::class . '::mainAction',
     ],

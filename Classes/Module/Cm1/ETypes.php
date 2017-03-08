@@ -73,8 +73,8 @@ class ETypes
             }
 
             // put these into array-form for preset-completition
-            if (!is_array($elArray[$key]['tx_templavoila']['TypoScript_constants'])) {
-                $elArray[$key]['tx_templavoila']['TypoScript_constants'] = $this->pObj->unflattenarray($elArray[$key]['tx_templavoila']['TypoScript_constants']);
+            if (!is_array($elArray[$key]['tx_templavoilaplus']['TypoScript_constants'])) {
+                $elArray[$key]['tx_templavoilaplus']['TypoScript_constants'] = $this->pObj->unflattenarray($elArray[$key]['tx_templavoilaplus']['TypoScript_constants']);
             }
             if (!is_array($elArray[$key]['TCEforms']['config'])) {
                 $elArray[$key]['TCEforms']['config'] = $this->pObj->unflattenarray($elArray[$key]['TCEforms']['config']);
@@ -82,25 +82,25 @@ class ETypes
 
             /* ---------------------------------------------------------------------- */
             // this is too much different to preserve any previous information
-            $reset = isset($elArray[$key]['tx_templavoila']['eType_before']) &&
-                ($elArray[$key]['tx_templavoila']['eType_before'] !=
-                    $elArray[$key]['tx_templavoila']['eType']);
+            $reset = isset($elArray[$key]['tx_templavoilaplus']['eType_before']) &&
+                ($elArray[$key]['tx_templavoilaplus']['eType_before'] !=
+                    $elArray[$key]['tx_templavoilaplus']['eType']);
 
-            unset($elArray[$key]['tx_templavoila']['eType_before']);
-            //	unset($elArray[$key]['tx_templavoila']['proc']);
+            unset($elArray[$key]['tx_templavoilaplus']['eType_before']);
+            //	unset($elArray[$key]['tx_templavoilaplus']['proc']);
 
             /* ---------------------------------------------------------------------- */
-            if (is_array($elArray[$key]['tx_templavoila']['sample_data'])) {
-                foreach ($elArray[$key]['tx_templavoila']['sample_data'] as $tmpKey => $tmpValue) {
-                    $elArray[$key]['tx_templavoila']['sample_data'][$tmpKey] = htmlspecialchars($tmpValue);
+            if (is_array($elArray[$key]['tx_templavoilaplus']['sample_data'])) {
+                foreach ($elArray[$key]['tx_templavoilaplus']['sample_data'] as $tmpKey => $tmpValue) {
+                    $elArray[$key]['tx_templavoilaplus']['sample_data'][$tmpKey] = htmlspecialchars($tmpValue);
                 }
             } else {
-                $elArray[$key]['tx_templavoila']['sample_data'] = htmlspecialchars($elArray[$key]['tx_templavoila']['sample_data']);
+                $elArray[$key]['tx_templavoilaplus']['sample_data'] = htmlspecialchars($elArray[$key]['tx_templavoilaplus']['sample_data']);
             }
 
             /* ---------------------------------------------------------------------- */
             if ($elArray[$key]['type'] == 'array') { // If array, then unset:
-                unset($elArray[$key]['tx_templavoila']['sample_data']);
+                unset($elArray[$key]['tx_templavoilaplus']['sample_data']);
             } else { // Only non-arrays can have configuration (that is elements and attributes)
 
                 // Getting some information about the HTML content (eg. images width/height if applicable)
@@ -108,40 +108,40 @@ class ETypes
 
                 // Based on the eType (the preset type) we make configuration settings.
                 // If a user function was registered, use that instead of our own handlers:
-                if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoilaplus']['cm1']['eTypesConfGen'][$elArray[$key]['tx_templavoila']['eType']])) {
+                if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoilaplus']['cm1']['eTypesConfGen'][$elArray[$key]['tx_templavoilaplus']['eType']])) {
                     $_params = array(
                         'key' => $key,
                         'elArray' => &$elArray,
                         'contentInfo' => $contentInfo,
                     );
 
-                    $bef = $elArray[$key]['tx_templavoila']['TypoScript'];
+                    $bef = $elArray[$key]['tx_templavoilaplus']['TypoScript'];
 
-                    GeneralUtility::callUserFunction($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoilaplus']['cm1']['eTypesConfGen'][$elArray[$key]['tx_templavoila']['eType']], $_params, $this, '');
+                    GeneralUtility::callUserFunction($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoilaplus']['cm1']['eTypesConfGen'][$elArray[$key]['tx_templavoilaplus']['eType']], $_params, $this, '');
 
                     if (!$reset && trim($bef)) {
-                        $elArray[$key]['tx_templavoila']['TypoScript'] = $bef;
+                        $elArray[$key]['tx_templavoilaplus']['TypoScript'] = $bef;
                     }
                 } else {
                     $eTypes = $this->defaultEtypes();
-                    $eType = $elArray[$key]['tx_templavoila']['eType'];
+                    $eType = $elArray[$key]['tx_templavoilaplus']['eType'];
                     switch ($eType) {
                         case 'text':
                             /* preserve previous config, if of the right kind */
                             if ($reset || ($elArray[$key]['TCEforms']['config']['type'] != 'text')) {
-                                $elArray[$key]['TCEforms']['label'] = $elArray[$key]['tx_templavoila']['title'];
+                                $elArray[$key]['TCEforms']['label'] = $elArray[$key]['tx_templavoilaplus']['title'];
                                 $elArray[$key]['TCEforms']['config'] = $eTypes['eType'][$eType]['TCEforms']['config'];
                             }
 
                             if ($reset) {
-                                $elArray[$key]['tx_templavoila']['proc']['HSC'] = 1;
-                                unset($elArray[$key]['tx_templavoila']['proc']['int']);
+                                $elArray[$key]['tx_templavoilaplus']['proc']['HSC'] = 1;
+                                unset($elArray[$key]['tx_templavoilaplus']['proc']['int']);
                             }
                             break;
                         case 'rte':
                             /* preserve previous config, if of the right kind */
                             if ($reset || ($elArray[$key]['TCEforms']['config']['type'] != 'text')) {
-                                $elArray[$key]['TCEforms']['label'] = $elArray[$key]['tx_templavoila']['title'];
+                                $elArray[$key]['TCEforms']['label'] = $elArray[$key]['tx_templavoilaplus']['title'];
                                 $elArray[$key]['TCEforms']['config'] = $eTypes['eType'][$eType]['TCEforms']['config'];
                             }
 
@@ -151,19 +151,19 @@ class ETypes
                             }
 
                             if ($reset) {
-                                unset($elArray[$key]['tx_templavoila']['proc']);
+                                unset($elArray[$key]['tx_templavoilaplus']['proc']);
                             }
 
                             /* preserve previous config, if of the right kind */
-                            if ($reset || !trim($elArray[$key]['tx_templavoila']['TypoScript'])) {
-                                $elArray[$key]['tx_templavoila']['TypoScript'] = $eTypes['eType'][$eType]['Typoscript'];
+                            if ($reset || !trim($elArray[$key]['tx_templavoilaplus']['TypoScript'])) {
+                                $elArray[$key]['tx_templavoilaplus']['TypoScript'] = $eTypes['eType'][$eType]['Typoscript'];
                             }
                             break;
                         case 'image':
                         case 'imagefixed':
                             /* preserve previous config, if of the right kind */
                             if ($reset || ($elArray[$key]['TCEforms']['config']['type'] != 'group')) {
-                                $elArray[$key]['TCEforms']['label'] = $elArray[$key]['tx_templavoila']['title'];
+                                $elArray[$key]['TCEforms']['label'] = $elArray[$key]['tx_templavoilaplus']['title'];
                                 $elArray[$key]['TCEforms']['config'] = $eTypes['eType'][$eType]['TCEforms']['config'];
                             }
 
@@ -172,13 +172,13 @@ class ETypes
                             $typoScriptImageObject = ($elArray[$key]['type'] == 'attr') ? 'IMG_RESOURCE' : 'IMAGE';
 
                             if ($reset) {
-                                unset($elArray[$key]['tx_templavoila']['proc']);
+                                unset($elArray[$key]['tx_templavoilaplus']['proc']);
                             }
 
                             /* preserve previous config, if of the right kind */
-                            if ($reset || !trim($elArray[$key]['tx_templavoila']['TypoScript'])) {
-                                $elArray[$key]['tx_templavoila']['TypoScript'] = $eTypes['eType'][$eType]['Typoscript'];
-                                $elArray[$key]['tx_templavoila']['TypoScript'] = strtr($elArray[$key]['tx_templavoila']['TypoScript'], array(
+                            if ($reset || !trim($elArray[$key]['tx_templavoilaplus']['TypoScript'])) {
+                                $elArray[$key]['tx_templavoilaplus']['TypoScript'] = $eTypes['eType'][$eType]['Typoscript'];
+                                $elArray[$key]['tx_templavoilaplus']['TypoScript'] = strtr($elArray[$key]['tx_templavoilaplus']['TypoScript'], array(
                                     'IMAGE' => $typoScriptImageObject,
                                     'MAXW' => $maxW,
                                     'MAXH' => $maxH
@@ -188,73 +188,73 @@ class ETypes
                         case 'link':
                             /* preserve previous config, if of the right kind */
                             if ($reset || ($elArray[$key]['TCEforms']['config']['type'] != 'input')) {
-                                $elArray[$key]['TCEforms']['label'] = $elArray[$key]['tx_templavoila']['title'];
+                                $elArray[$key]['TCEforms']['label'] = $elArray[$key]['tx_templavoilaplus']['title'];
                                 $elArray[$key]['TCEforms']['config'] = $eTypes['eType'][$eType]['TCEforms']['config'];
                             }
 
                             /* preserve previous config, if of the right kind */
-                            if ($reset || !trim($elArray[$key]['tx_templavoila']['TypoScript'])) {
-                                $elArray[$key]['tx_templavoila']['TypoScript'] = $eTypes['eType'][$eType]['Typoscript'];
+                            if ($reset || !trim($elArray[$key]['tx_templavoilaplus']['TypoScript'])) {
+                                $elArray[$key]['tx_templavoilaplus']['TypoScript'] = $eTypes['eType'][$eType]['Typoscript'];
                                 if ($elArray[$key]['type'] == 'attr') {
-                                    $elArray[$key]['tx_templavoila']['TypoScript'] .= chr(10) . '10.typolink.returnLast = url';
+                                    $elArray[$key]['tx_templavoilaplus']['TypoScript'] .= chr(10) . '10.typolink.returnLast = url';
                                     /* preserve previous config, if explicitly set */
                                     if (!isset($elArray[$key]['TCEforms']['proc']['HSC'])) {
-                                        $elArray[$key]['tx_templavoila']['proc']['HSC'] = 1;
+                                        $elArray[$key]['tx_templavoilaplus']['proc']['HSC'] = 1;
                                     }
                                 }
                             }
                             if ($reset) {
-                                unset($elArray[$key]['tx_templavoila']['proc']['int']);
+                                unset($elArray[$key]['tx_templavoilaplus']['proc']['int']);
                             }
                             break;
                         case 'ce':
                             /* preserve previous config, if of the right kind */
                             if ($reset || ($elArray[$key]['TCEforms']['config']['type'] != 'group')) {
-                                $elArray[$key]['TCEforms']['label'] = $elArray[$key]['tx_templavoila']['title'];
+                                $elArray[$key]['TCEforms']['label'] = $elArray[$key]['tx_templavoilaplus']['title'];
                                 $elArray[$key]['TCEforms']['config'] = $eTypes['eType'][$eType]['TCEforms']['config'];
                             }
 
                             /* preserve previous config, if of the right kind */
-                            if ($reset || !trim($elArray[$key]['tx_templavoila']['TypoScript'])) {
-                                $elArray[$key]['tx_templavoila']['TypoScript'] = $eTypes['eType'][$eType]['Typoscript'];
+                            if ($reset || !trim($elArray[$key]['tx_templavoilaplus']['TypoScript'])) {
+                                $elArray[$key]['tx_templavoilaplus']['TypoScript'] = $eTypes['eType'][$eType]['Typoscript'];
                                 if ($scope == 1) {
-                                    $elArray[$key]['tx_templavoila']['TypoScript'] .= chr(10) . '10.wrap = <!--TYPO3SEARCH_begin--> | <!--TYPO3SEARCH_end-->';
+                                    $elArray[$key]['tx_templavoilaplus']['TypoScript'] .= chr(10) . '10.wrap = <!--TYPO3SEARCH_begin--> | <!--TYPO3SEARCH_end-->';
                                 }
                             }
                             if ($reset) {
-                                unset($elArray[$key]['tx_templavoila']['proc']);
-                                $elArray[$key]['tx_templavoila']['enableDragDrop'] = 1;
+                                unset($elArray[$key]['tx_templavoilaplus']['proc']);
+                                $elArray[$key]['tx_templavoilaplus']['enableDragDrop'] = 1;
                             }
                             break;
                         case 'int':
                             /* preserve previous config, if of the right kind */
                             if ($reset || ($elArray[$key]['TCEforms']['config']['type'] != 'input')) {
-                                $elArray[$key]['TCEforms']['label'] = $elArray[$key]['tx_templavoila']['title'];
+                                $elArray[$key]['TCEforms']['label'] = $elArray[$key]['tx_templavoilaplus']['title'];
                                 $elArray[$key]['TCEforms']['config'] = $eTypes['eType'][$eType]['TCEforms']['config'];
                             }
                             if ($reset) {
-                                $elArray[$key]['tx_templavoila']['proc']['int'] = 1;
-                                unset($elArray[$key]['tx_templavoila']['proc']['HSC']);
+                                $elArray[$key]['tx_templavoilaplus']['proc']['int'] = 1;
+                                unset($elArray[$key]['tx_templavoilaplus']['proc']['HSC']);
                             }
                             break;
                         case 'select':
                             /* preserve previous config, if of the right kind */
                             if ($reset || ($elArray[$key]['TCEforms']['config']['type'] != 'select')) {
-                                $elArray[$key]['TCEforms']['label'] = $elArray[$key]['tx_templavoila']['title'];
+                                $elArray[$key]['TCEforms']['label'] = $elArray[$key]['tx_templavoilaplus']['title'];
                                 $elArray[$key]['TCEforms']['config'] = $eTypes['eType'][$eType]['TCEforms']['config'];
                             }
                             if ($reset) {
-                                unset($elArray[$key]['tx_templavoila']['proc']);
+                                unset($elArray[$key]['tx_templavoilaplus']['proc']);
                             }
                             break;
                         case 'check':
                             /* preserve previous config, if of the right kind */
                             if ($reset || ($elArray[$key]['TCEforms']['config']['type'] != 'check')) {
-                                $elArray[$key]['TCEforms']['label'] = $elArray[$key]['tx_templavoila']['title'];
+                                $elArray[$key]['TCEforms']['label'] = $elArray[$key]['tx_templavoilaplus']['title'];
                                 $elArray[$key]['TCEforms']['config'] = $eTypes['eType'][$eType]['TCEforms']['config'];
                             }
                             if ($reset) {
-                                unset($elArray[$key]['tx_templavoila']['proc']);
+                                unset($elArray[$key]['tx_templavoilaplus']['proc']);
                             }
                             break;
                         case 'input':
@@ -262,101 +262,101 @@ class ETypes
                         case 'input_g':
                             /* preserve previous config, if of the right kind */
                             if ($reset || ($elArray[$key]['TCEforms']['config']['type'] != 'input')) {
-                                $elArray[$key]['TCEforms']['label'] = $elArray[$key]['tx_templavoila']['title'];
+                                $elArray[$key]['TCEforms']['label'] = $elArray[$key]['tx_templavoilaplus']['title'];
                                 $elArray[$key]['TCEforms']['config'] = $eTypes['eType'][$eType]['TCEforms']['config'];
                             }
 
-                            if ($reset || !trim($elArray[$key]['tx_templavoila']['TypoScript'])) {
-                                $elArray[$key]['tx_templavoila']['TypoScript'] = $eTypes['eType'][$eType]['Typoscript'];
+                            if ($reset || !trim($elArray[$key]['tx_templavoilaplus']['TypoScript'])) {
+                                $elArray[$key]['tx_templavoilaplus']['TypoScript'] = $eTypes['eType'][$eType]['Typoscript'];
                             }
 
                             if ($eType == 'input_h') { // Text-Header
                                 // Finding link-fields on same level and set the image to be linked by that TypoLink:
                                 $elArrayKeys = array_keys($elArray);
                                 foreach ($elArrayKeys as $theKey) {
-                                    if ($elArray[$theKey]['tx_templavoila']['eType'] == 'link') {
-                                        $elArray[$key]['tx_templavoila']['TypoScript'] .= chr(10) . '10.typolink.parameter.field = ' . $theKey;
+                                    if ($elArray[$theKey]['tx_templavoilaplus']['eType'] == 'link') {
+                                        $elArray[$key]['tx_templavoilaplus']['TypoScript'] .= chr(10) . '10.typolink.parameter.field = ' . $theKey;
                                     }
                                 }
                                 if ($reset) {
-                                    $elArray[$key]['tx_templavoila']['proc']['HSC'] = 1;
+                                    $elArray[$key]['tx_templavoilaplus']['proc']['HSC'] = 1;
                                 }
                             } elseif ($eType == 'input_g') { // Graphical-Header
 
                                 $maxW = $contentInfo['img']['width'] ? $contentInfo['img']['width'] : $eTypes['eType'][$eType]['maxWdefault'];
                                 $maxH = $contentInfo['img']['height'] ? $contentInfo['img']['height'] : $eTypes['eType'][$eType]['maxHdefault'];
 
-                                $elArray[$key]['tx_templavoila']['TypoScript'] = strtr($elArray[$key]['tx_templavoila']['TypoScript'], array(
+                                $elArray[$key]['tx_templavoilaplus']['TypoScript'] = strtr($elArray[$key]['tx_templavoilaplus']['TypoScript'], array(
                                     'MAXW' => $maxW,
                                     'MAXH' => $maxH
                                 ));
                                 if ($reset) {
-                                    unset($elArray[$key]['tx_templavoila']['proc']['HSC']);
+                                    unset($elArray[$key]['tx_templavoilaplus']['proc']['HSC']);
                                 }
                             } else { // Normal output.
                                 if ($reset) {
-                                    $elArray[$key]['tx_templavoila']['proc']['HSC'] = 1;
+                                    $elArray[$key]['tx_templavoilaplus']['proc']['HSC'] = 1;
                                 }
                             }
 
                             if ($reset) {
-                                unset($elArray[$key]['tx_templavoila']['proc']['int']);
-                                unset($elArray[$key]['tx_templavoila']['TypoScript']);
+                                unset($elArray[$key]['tx_templavoilaplus']['proc']['int']);
+                                unset($elArray[$key]['tx_templavoilaplus']['TypoScript']);
                             }
                             break;
                         case 'TypoScriptObject':
                             unset(
-                                $elArray[$key]['tx_templavoila']['TypoScript_constants'],
-                                $elArray[$key]['tx_templavoila']['TypoScript'],
+                                $elArray[$key]['tx_templavoilaplus']['TypoScript_constants'],
+                                $elArray[$key]['tx_templavoilaplus']['TypoScript'],
                                 $elArray[$key]['TCEforms']['config']
                             );
 
                             /* preserve previous config, if of the right kind */
-                            if ($reset || ($elArray[$key]['tx_templavoila']['TypoScriptObjPath'] == '')) {
-                                $elArray[$key]['tx_templavoila']['TypoScriptObjPath'] =
-                                    ($elArray[$key]['tx_templavoila']['eType_EXTRA']['objPath'] ?
-                                        $elArray[$key]['tx_templavoila']['eType_EXTRA']['objPath'] :
-                                        ($elArray[$key]['tx_templavoila']['TypoScriptObjPath'] ?
-                                            $elArray[$key]['tx_templavoila']['TypoScriptObjPath'] : ''));
+                            if ($reset || ($elArray[$key]['tx_templavoilaplus']['TypoScriptObjPath'] == '')) {
+                                $elArray[$key]['tx_templavoilaplus']['TypoScriptObjPath'] =
+                                    ($elArray[$key]['tx_templavoilaplus']['eType_EXTRA']['objPath'] ?
+                                        $elArray[$key]['tx_templavoilaplus']['eType_EXTRA']['objPath'] :
+                                        ($elArray[$key]['tx_templavoilaplus']['TypoScriptObjPath'] ?
+                                            $elArray[$key]['tx_templavoilaplus']['TypoScriptObjPath'] : ''));
                             }
 
                             if ($reset) {
-                                unset($elArray[$key]['tx_templavoila']['proc']);
+                                unset($elArray[$key]['tx_templavoilaplus']['proc']);
                             }
                             break;
                         case 'none':
                             unset($elArray[$key]['TCEforms']['config']);
                             if ($reset) {
-                                unset($elArray[$key]['tx_templavoila']['proc']);
+                                unset($elArray[$key]['tx_templavoilaplus']['proc']);
                             }
                             break;
                         default:
                             /* preserve previous config, if of the right kind */
                             if ($reset || ($elArray[$key]['TCEforms']['config']['type'] != 'text')) {
-                                $elArray[$key]['TCEforms']['label'] = $elArray[$key]['tx_templavoila']['title'];
+                                $elArray[$key]['TCEforms']['label'] = $elArray[$key]['tx_templavoilaplus']['title'];
                                 $elArray[$key]['TCEforms']['config'] = $eTypes['eType'][$eType]['TCEforms']['config'];
                             }
-                            if ($reset || !trim($elArray[$key]['tx_templavoila']['TypoScript'])) {
-                                $elArray[$key]['tx_templavoila']['TypoScript'] = $eTypes['eType'][$eType]['Typoscript'];
+                            if ($reset || !trim($elArray[$key]['tx_templavoilaplus']['TypoScript'])) {
+                                $elArray[$key]['tx_templavoilaplus']['TypoScript'] = $eTypes['eType'][$eType]['Typoscript'];
                             }
                             if ($reset) {
-                                unset($elArray[$key]['tx_templavoila']['proc']['int']);
-                                $elArray[$key]['tx_templavoila']['proc']['HSC'] = 1;
+                                unset($elArray[$key]['tx_templavoilaplus']['proc']['int']);
+                                $elArray[$key]['tx_templavoilaplus']['proc']['HSC'] = 1;
                             }
                             break;
                     }
                 } // End switch else
-                if ($elArray[$key]['tx_templavoila']['eType'] != 'TypoScriptObject') {
-                    if (isset($elArray[$key]['tx_templavoila']['TypoScriptObjPath'])) {
-                        unset($elArray[$key]['tx_templavoila']['TypoScriptObjPath']);
+                if ($elArray[$key]['tx_templavoilaplus']['eType'] != 'TypoScriptObject') {
+                    if (isset($elArray[$key]['tx_templavoilaplus']['TypoScriptObjPath'])) {
+                        unset($elArray[$key]['tx_templavoilaplus']['TypoScriptObjPath']);
                     }
-                    if (isset($elArray[$key]['tx_templavoila']['eType_EXTRA']['objPath'])) {
-                        unset($elArray[$key]['tx_templavoila']['eType_EXTRA']['objPath']);
+                    if (isset($elArray[$key]['tx_templavoilaplus']['eType_EXTRA']['objPath'])) {
+                        unset($elArray[$key]['tx_templavoilaplus']['eType_EXTRA']['objPath']);
                     }
-                } elseif (isset($elArray[$key]['tx_templavoila']['eType_EXTRA']['objPath'])) {
-                    unset($elArray[$key]['tx_templavoila']['eType_EXTRA']['objPath']);
-                    if (count($elArray[$key]['tx_templavoila']['eType_EXTRA']) == 0) {
-                        unset($elArray[$key]['tx_templavoila']['eType_EXTRA']);
+                } elseif (isset($elArray[$key]['tx_templavoilaplus']['eType_EXTRA']['objPath'])) {
+                    unset($elArray[$key]['tx_templavoilaplus']['eType_EXTRA']['objPath']);
+                    if (count($elArray[$key]['tx_templavoilaplus']['eType_EXTRA']) == 0) {
+                        unset($elArray[$key]['tx_templavoilaplus']['eType_EXTRA']);
                     }
                 }
 
@@ -373,20 +373,20 @@ class ETypes
             if (!$elArray[$key]['section']) {
                 unset($elArray[$key]['section']);
             } else {
-                unset($elArray[$key]['tx_templavoila']['TypoScript_constants']);
-                unset($elArray[$key]['tx_templavoila']['TypoScript']);
-                unset($elArray[$key]['tx_templavoila']['proc']);
+                unset($elArray[$key]['tx_templavoilaplus']['TypoScript_constants']);
+                unset($elArray[$key]['tx_templavoilaplus']['TypoScript']);
+                unset($elArray[$key]['tx_templavoilaplus']['proc']);
                 unset($elArray[$key]['TCEforms']);
             }
 
-            if (!$elArray[$key]['tx_templavoila']['description']) {
-                unset($elArray[$key]['tx_templavoila']['description']);
+            if (!$elArray[$key]['tx_templavoilaplus']['description']) {
+                unset($elArray[$key]['tx_templavoilaplus']['description']);
             }
-            if (!$elArray[$key]['tx_templavoila']['tags']) {
-                unset($elArray[$key]['tx_templavoila']['tags']);
+            if (!$elArray[$key]['tx_templavoilaplus']['tags']) {
+                unset($elArray[$key]['tx_templavoilaplus']['tags']);
             }
-            if (!$elArray[$key]['tx_templavoila']['TypoScript_constants']) {
-                unset($elArray[$key]['tx_templavoila']['TypoScript_constants']);
+            if (!$elArray[$key]['tx_templavoilaplus']['TypoScript_constants']) {
+                unset($elArray[$key]['tx_templavoilaplus']['TypoScript_constants']);
             }
             if (!$elArray[$key]['TCEforms']['defaultExtras']) {
                 unset($elArray[$key]['TCEforms']['defaultExtras']);

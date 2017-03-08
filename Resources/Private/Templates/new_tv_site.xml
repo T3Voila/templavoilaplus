@@ -1603,7 +1603,7 @@
 				<field index="tstamp">1265817192</field>
 				<field index="title">editor</field>
 				<field index="non_exclude_fields">pages:doktype,pages:hidden,pages:starttime,pages:endtime,pages:nav_title,pages:nav_hide,pages:shortcut_mode,pages:keywords,pages:description,pages:abstract,tt_content:hidden,tt_content:starttime,tt_content:endtime,tt_content:date,tt_content:header_layout,tt_content:subheader,tt_content:imagewidth,tt_content:imageborder,tt_content:image_link,tt_content:image_zoom,tt_content:spaceBefore,tt_content:spaceAfter</field>
-				<field index="explicit_allowdeny">tt_content:CType:multimedia:DENY,tt_content:CType:login:DENY,tt_content:CType:splash:DENY,tt_content:CType:shortcut:DENY,tt_content:CType:list:DENY,tt_content:CType:script:DENY,tt_content:CType:div:DENY,tt_content:CType:templavoila_pi1:DENY,tt_content:CType:templavoila_pi2:DENY</field>
+				<field index="explicit_allowdeny">tt_content:CType:multimedia:DENY,tt_content:CType:login:DENY,tt_content:CType:splash:DENY,tt_content:CType:shortcut:DENY,tt_content:CType:list:DENY,tt_content:CType:script:DENY,tt_content:CType:div:DENY,tt_content:CType:templavoilaplus_pi1:DENY,tt_content:CType:templavoila_pi2:DENY</field>
 				<field index="allowed_languages"></field>
 				<field index="custom_options"></field>
 				<field index="db_mountpoints">1</field>
@@ -1612,7 +1612,7 @@
 				<field index="tables_modify">pages,tt_content</field>
 				<field index="crdate">1265817192</field>
 				<field index="cruser_id">1</field>
-				<field index="groupMods">web,web_txtemplavoilaM1,doc,user,user_setup</field>
+				<field index="groupMods">web,web_txtemplavoilaplusLayout,doc,user,user_setup</field>
 				<field index="file_mountpoints"></field>
 				<field index="fileoper_perms">7</field>
 				<field index="hidden">0</field>

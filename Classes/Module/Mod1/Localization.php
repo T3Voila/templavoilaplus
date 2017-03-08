@@ -111,7 +111,7 @@ class Localization implements SingletonInterface
                 // Link to editing of language header:
                 $availableTranslationsFlags .= '<a href="'
                     . BackendUtility::getModuleUrl(
-                        'web_txtemplavoilaM1',
+                        'web_txtemplavoilaplusLayout',
                         $this->pObj->getLinkParameters(['editPageLanguageOverlay' => $language['uid']])
                     ) . '" style="margin-right:4px">' .
                     '<span ' . $grayedOut . '>' .
@@ -125,7 +125,7 @@ class Localization implements SingletonInterface
         $output = '
             <tr class="bgColor4">
                 <td width="20">
-                    ' . \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_txtemplavoilaM1', 'selectlanguageversion') . '
+                    ' . \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_txtemplavoilaplusLayout', 'selectlanguageversion') . '
                 </td><td width="200" style="vertical-align:middle;">
                     ' . TemplaVoilaUtility::getLanguageService()->getLL('selectlanguageversion', true) . ':
                 </td>
@@ -142,7 +142,7 @@ class Localization implements SingletonInterface
                 $output .= '
                     <tr class="bgColor4">
                         <td width="20">
-                            ' . \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_txtemplavoilaM1', 'pagelocalizationdisplaymode') . '
+                            ' . \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_txtemplavoilaplusLayout', 'pagelocalizationdisplaymode') . '
                         </td><td width="200" style="vertical-align:middle;">
                             ' . TemplaVoilaUtility::getLanguageService()->getLL('pageLocalizationDisplayMode', true) . ':
                         </td>
@@ -160,7 +160,7 @@ class Localization implements SingletonInterface
             $output .= '
                 <tr class="bgColor4">
                     <td  width="20">
-                        ' . \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_txtemplavoilaM1', 'pagelocalizationmode') . '
+                        ' . \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_txtemplavoilaplusLayout', 'pagelocalizationmode') . '
                     </td><td width="200" style="vertical-align:middle;">
                         ' . TemplaVoilaUtility::getLanguageService()->getLL('pageLocalizationMode', true) . ':
                     </td>
@@ -175,7 +175,7 @@ class Localization implements SingletonInterface
             $output .= '
                 <tr class="bgColor4">
                     <td  width="20">
-                        ' . \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_txtemplavoilaM1', 'disablePageStructureInheritance') . '
+                        ' . \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_txtemplavoilaplusLayout', 'disablePageStructureInheritance') . '
                     </td><td width="200" style="vertical-align:middle;">
                         ' . TemplaVoilaUtility::getLanguageService()->getLL('pageLocalizationMode_inheritance.disableInheritance', true) . ':
                     </td>
@@ -189,7 +189,7 @@ class Localization implements SingletonInterface
         $output .= '
             <tr class="bgColor4">
                 <td  width="20">
-                    ' . \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_txtemplavoilaM1', 'editlanguageversion') . '
+                    ' . \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_txtemplavoilaplusLayout', 'editlanguageversion') . '
                 </td><td width="200" style="vertical-align:middle;">
                     ' . TemplaVoilaUtility::getLanguageService()->getLL('editlanguageversion', true) . ':
                 </td>
@@ -241,7 +241,7 @@ class Localization implements SingletonInterface
             $output = '
                 <tr class="bgColor4">
                     <td width="20">
-                        ' . \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_txtemplavoilaM1', 'createnewtranslation') . '
+                        ' . \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_txtemplavoilaplusLayout', 'createnewtranslation') . '
                     </td><td width="200" style="vertical-align:middle;">
                         ' . TemplaVoilaUtility::getLanguageService()->getLL('createnewtranslation', true) . ':
                     </td>

@@ -1047,7 +1047,7 @@ class ApiService
                             foreach ($fieldsArr as $fieldName => $valuesArr) {
                                 if (is_array($valuesArr)) {
                                     foreach ($valuesArr as $value) {
-                                        if ($expandedDataStructure[$sheetKey]['ROOT']['el'][$fieldName]['tx_templavoila']['eType'] == 'ce') {
+                                        if ($expandedDataStructure[$sheetKey]['ROOT']['el'][$fieldName]['tx_templavoilaplus']['eType'] == 'ce') {
                                             $valueItems = GeneralUtility::intExplode(',', $value);
                                             if (is_array($valueItems)) {
                                                 foreach ($valueItems as $subElementUid) {
@@ -1100,7 +1100,7 @@ class ApiService
                             foreach ($fieldsArr as $fieldName => $valuesArr) {
                                 if (is_array($valuesArr)) {
                                     foreach ($valuesArr as $valueName => $value) {
-                                        if ($expandedDataStructure[$sheetKey]['ROOT']['el'][$fieldName]['tx_templavoila']['eType'] == 'ce') {
+                                        if ($expandedDataStructure[$sheetKey]['ROOT']['el'][$fieldName]['tx_templavoilaplus']['eType'] == 'ce') {
                                             $valueItems = GeneralUtility::intExplode(',', $value);
                                             if (is_array($valueItems)) {
                                                 $position = 1;
@@ -1297,13 +1297,13 @@ class ApiService
                 if (is_array($sheetDataStructureArr['ROOT']['el'])) {
                     foreach ($sheetDataStructureArr['ROOT']['el'] as $fieldName => $fieldConfiguration) {
                         if (is_array($fieldConfiguration)) {
-                            if (isset($fieldConfiguration['tx_templavoila']['oldStyleColumnNumber'])) {
-                                $columnNumber = $fieldConfiguration['tx_templavoila']['oldStyleColumnNumber'];
+                            if (isset($fieldConfiguration['tx_templavoilaplus']['oldStyleColumnNumber'])) {
+                                $columnNumber = $fieldConfiguration['tx_templavoilaplus']['oldStyleColumnNumber'];
                                 if (!isset($columnsAndFieldNamesArr[$columnNumber])) {
                                     $columnsAndFieldNamesArr[$columnNumber] = $fieldName;
                                 }
                             }
-                            if ($fieldConfiguration['tx_templavoila']['eType'] == 'ce' && !isset($fieldNameOfFirstCEField)) {
+                            if ($fieldConfiguration['tx_templavoilaplus']['eType'] == 'ce' && !isset($fieldNameOfFirstCEField)) {
                                 $fieldNameOfFirstCEField = $fieldName;
                             }
                         }
@@ -1348,8 +1348,8 @@ class ApiService
                 foreach ($dataStructureArr as $sheetDataStructureArr) {
                     if (is_array($sheetDataStructureArr['ROOT']['el'])) {
                         if (is_array($sheetDataStructureArr['ROOT']['el'][$fieldName])) {
-                            if (isset($sheetDataStructureArr['ROOT']['el'][$fieldName]['tx_templavoila']['oldStyleColumnNumber'])) {
-                                return (int)$sheetDataStructureArr['ROOT']['el'][$fieldName]['tx_templavoila']['oldStyleColumnNumber'];
+                            if (isset($sheetDataStructureArr['ROOT']['el'][$fieldName]['tx_templavoilaplus']['oldStyleColumnNumber'])) {
+                                return (int)$sheetDataStructureArr['ROOT']['el'][$fieldName]['tx_templavoilaplus']['oldStyleColumnNumber'];
                             }
                         }
                     }
@@ -1506,7 +1506,7 @@ class ApiService
         }
 
         // If element is a Flexible Content Element (or a page) then look at the content inside:
-        if ($table == 'pages' || $table == $this->rootTable || ($table == 'tt_content' && $row['CType'] == 'templavoila_pi1')) {
+        if ($table == 'pages' || $table == $this->rootTable || ($table == 'tt_content' && $row['CType'] == 'templavoilaplus_pi1')) {
             $rawDataStructureArr = BackendUtility::getFlexFormDS($GLOBALS['TCA'][$table]['columns']['tx_templavoilaplus_flex']['config'], $row, $table);
             if (!is_array($rawDataStructureArr)) {
                 return array();
@@ -1559,7 +1559,7 @@ class ApiService
                         if ($this->includePreviewData) {
                             $tree['previewData']['sheets'][$sheetKey][$fieldKey] = array(
                                 'TCEforms' => $fieldData['TCEforms'],
-                                'tx_templavoila' => $fieldData['tx_templavoila'],
+                                'tx_templavoilaplus' => $fieldData['tx_templavoilaplus'],
                                 'type' => $fieldData['type'],
                                 'section' => $fieldData['section'],
                                 'data' => array(),
@@ -1740,7 +1740,7 @@ class ApiService
                             $localizationInfoArr[$sys_language_uid]['localization_uid'] = $attachedLocalizations[$sys_language_uid];
 
                             $tt_content_elementRegister[$attachedLocalizations[$sys_language_uid]]++;
-                        } elseif ($contentTreeArr['el']['CType'] !== 'templavoila_pi1' || $this->isLocalizationLinkEnabledForFCE($contentTreeArr)) { // Only localize content elements with "Default" language set
+                        } elseif ($contentTreeArr['el']['CType'] !== 'templavoilaplus_pi1' || $this->isLocalizationLinkEnabledForFCE($contentTreeArr)) { // Only localize content elements with "Default" language set
                             if ((int) $contentTreeArr['el']['sys_language_uid'] === 0) {
                                 $localizationInfoArr[$sys_language_uid] = array();
                                 $localizationInfoArr[$sys_language_uid]['mode'] = 'localize';
@@ -1801,7 +1801,7 @@ class ApiService
         $isLocalizationLinkEnabledForFCE = false;
         $modTSConfig =& $this->getModWebTSconfig($contentTreeArr['el']['pid']);
         if ((int)$modTSConfig['properties']['enableLocalizationLinkForFCEs'] === 1 &&
-            $contentTreeArr['el']['CType'] === 'templavoila_pi1' &&
+            $contentTreeArr['el']['CType'] === 'templavoilaplus_pi1' &&
             isset($contentTreeArr['ds_meta']['langDisable']) &&
             (int)$contentTreeArr['ds_meta']['langDisable'] === 1
         ) {
@@ -1923,7 +1923,7 @@ class ApiService
     }
 
     /**
-     * Retrieves the mod.web_txtemplavoilaM1 for a page and stores it in an instance variable.
+     * Retrieves the mod.web_txtemplavoilaplusLayout for a page and stores it in an instance variable.
      * This function is e.g. used to determine, if localization is enabled for FCEs.
      * Since they can be stored on different pages, different modTSconfigs might be needed.
      *
@@ -1934,7 +1934,7 @@ class ApiService
     public function getModWebTSconfig($pageId)
     {
         if (!isset($this->cachedModWebTSconfig[$pageId])) {
-            $modTSconfig = BackendUtility::getModTSconfig($pageId, 'mod.web_txtemplavoilaM1');
+            $modTSconfig = BackendUtility::getModTSconfig($pageId, 'mod.web_txtemplavoilaplusLayout');
             $this->cachedModWebTSconfig[$pageId] = $modTSconfig;
         }
 

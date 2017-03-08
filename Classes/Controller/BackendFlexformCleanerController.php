@@ -60,7 +60,7 @@ class BackendFlexformCleanerController extends \TYPO3\CMS\Backend\Module\BaseScr
      *
      * @var string
      */
-    protected $moduleName = 'templavoila_flexform_cleaner';
+    protected $moduleName = 'templavoilaplus_flexform_cleaner';
 
     /**
      * Preparing menu content

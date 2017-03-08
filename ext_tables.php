@@ -13,7 +13,7 @@ if (TYPO3_MODE === 'BE') {
     // Adding backend modules:
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
         'web',
-        'txtemplavoilaM1',
+        'txtemplavoilaplusLayout',
         'top',
         '',
         [
@@ -22,7 +22,7 @@ if (TYPO3_MODE === 'BE') {
             'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/BackendLayout.xlf',
             'configureModuleFunction' => [\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::class, 'configureModule'],
 
-            'name' => 'web_txtemplavoilaM1',
+            'name' => 'web_txtemplavoilaplusLayout',
             'extensionName' => 'templavoilaplus',
             'navigationComponentId' => 'typo3-pagetree',
             'routeTarget' => \Ppi\TemplaVoilaPlus\Controller\BackendLayoutController::class . '::mainAction',
@@ -31,7 +31,7 @@ if (TYPO3_MODE === 'BE') {
 
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
         'web',
-        'txtemplavoilaM2',
+        'txtemplavoilaplusCenter',
         '',
         '',
         [
@@ -40,7 +40,7 @@ if (TYPO3_MODE === 'BE') {
             'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/BackendControlCenter.xlf',
             'configureModuleFunction' => [\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::class, 'configureModule'],
 
-            'name' => 'web_txtemplavoilaM2',
+            'name' => 'web_txtemplavoilaplusCenter',
             'extensionName' => 'templavoilaplus',
             'routeTarget' => \Ppi\TemplaVoilaPlus\Controller\BackendControlCenterController::class . '::mainAction',
         ]
@@ -84,7 +84,7 @@ if (TYPO3_MODE === 'BE') {
         'EXT:templavoilaplus/Resources/Private/Language/locallang_csh_intro.xlf'
     );
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
-        '_MOD_web_txtemplavoilaM1',
+        '_MOD_web_txtemplavoilaplusLayout',
         'EXT:templavoilaplus/Resources/Private/Language/locallang_csh_pm.xlf'
     );
 
@@ -109,7 +109,7 @@ if (TYPO3_MODE === 'BE') {
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin(
     [
         'LLL:EXT:templavoilaplus/Resources/Private/Language/locallang_db.xlf:tt_content.CType_pi1',
-        'templavoila_pi1',
+        'templavoilaplus_pi1',
         'EXT:templavoilaplus/Resources/Public/Icon/icon_fce_ce.png'
     ],
     'CType'
