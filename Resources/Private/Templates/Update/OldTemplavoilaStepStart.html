@@ -5,17 +5,33 @@
 </style>
 
 <h1>TemplaVoilà Plus! Update from old TeamplaVoilà 1.9/2.0</h1>
-<f:be.infobox title="Warning" state="2">
+<f:be.infobox title="Warning" state="1">
     Please backup your database/files before running any of the update scripts!<br />
     This will remove data you already did with this new TemplaVoilà Plus 7.x Extension.
 </f:be.infobox>
-<h2>Migrate from TemplaVoilà 1.9/2.0 to TemplaVoilà Plus 7.x?</h2>
-<form action="#" method="POST">
-    <input type="hidden" name="update" value="OldTemplavoila" />
-    <f:be.infobox title="" state="1">
-        <button class="btn btn-warning btn-block btn-lg" type="submit" name="step" value="final">
-            <core:icon identifier="extensions-scheduler-run-task" /> Yes, migrate data from TemplaVoilà 1.9/2.0 to TemplaVoilà Plus 7.x
-        </button>
-    </div>
-    </f:be.infobox>
-</form>
+<f:if condition="{errors}">
+    <f:then>
+        <f:for each="{errors}" as="error">
+            <f:be.infobox title="Error" state="2">
+            <p>{error}</p>
+            </f:be.infobox>
+        </f:for>
+    </f:then>
+    <f:else>
+        <h2>Migrate from TemplaVoilà 1.9/2.0 to TemplaVoilà Plus 7.x?</h2>
+        <form action="#" method="POST">
+            <input type="hidden" name="update" value="OldTemplavoila" />
+            <p>We will migrate from old TeamplaVoilà {old.ds} / {old.to} Data Structures/Template Objects (in database) over the already existing {new.ds} / {new.to} Data Structures/Template Objects which are in new TemplaVoilà Plus 7.x (in database).</p>
+            <p>We will also migrate all tt_content/pages/groups fields from TemplaVoilà to TemplaVoilà Plus 7.x.</p>
+            <p>User/Group rights get migrated</p>
+            <p>The Data Structures XML part gets migrated as last point.</p>
+            <p><b>This will remove data you already did with this new TemplaVoilà Plus 7.x Extension.</b></p>
+            <f:be.infobox title="" state="1">
+                <button class="btn btn-warning btn-block btn-lg" type="submit" name="step" value="final">
+                    <core:icon identifier="extensions-scheduler-run-task" /> Yes, migrate data from TemplaVoilà 1.9/2.0 to TemplaVoilà Plus 7.x
+                </button>
+            </div>
+            </f:be.infobox>
+        </form>
+    </f:else>
+</f:if>
