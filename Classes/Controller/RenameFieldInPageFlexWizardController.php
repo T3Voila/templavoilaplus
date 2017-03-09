@@ -221,7 +221,7 @@ class RenameFieldInPageFlexWizardController extends \TYPO3\CMS\Backend\Module\Ab
         $urlParams = $this->pObj->MOD_SETTINGS;
         $urlParams['id'] = $this->pObj->id;
 
-        return $this->pObj->doc->scriptID . '?' . GeneralUtility::implodeArrayForUrl(
+        return GeneralUtility::implodeArrayForUrl(
             '',
             $urlParams
         );

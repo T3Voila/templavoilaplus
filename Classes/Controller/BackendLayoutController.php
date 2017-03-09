@@ -787,7 +787,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
         $cmd = GeneralUtility::_GP('cmd');
         if ($cmd == 'crPage') { // create a new page
-            $this->content = $this->wizardsObj->renderWizard_createNewPage(GeneralUtility::_GP('positionPid'));
+            $this->content = $this->wizardsObj->renderWizard_createNewPage((int) GeneralUtility::_GP('positionPid'));
         }
 
         $this->moduleTemplate->setTitle(TemplaVoilaUtility::getLanguageService()->getLL('title'));

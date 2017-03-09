@@ -14,6 +14,7 @@ namespace Extension\Templavoila\Module\Mod1;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -49,6 +50,11 @@ class Sidebar implements SingletonInterface
      * @var array
      */
     public $sideBarItems = array();
+
+    /**
+     * @var TYPO3\CMS\Backend\Template\ModuleTemplate
+     */
+    protected $moduleTemplate;
 
     /**
      * Initializes the side bar object. The calling class must make sure that the right locallang files are already loaded.
@@ -211,7 +217,7 @@ class Sidebar implements SingletonInterface
 
         $conf = $TCA['pages']['columns']['tx_templavoila_flex']['config'];
 
-        $dataStructureArr = \TYPO3\CMS\Backend\Utility\BackendUtility::getFlexFormDS($conf, $pObj->rootElementRecord, 'pages');
+        $dataStructureArr = BackendUtility::getFlexFormDS($conf, $pObj->rootElementRecord, 'pages');
 
         if (is_array($dataStructureArr) && is_array($dataStructureArr['ROOT']['tx_templavoila']['pageModule'])) {
             $headerTablesAndFieldNames = GeneralUtility::trimExplode(chr(10), str_replace(chr(13), '', $dataStructureArr['ROOT']['tx_templavoila']['pageModule']['displayHeaderFields']), 1);
@@ -226,14 +232,14 @@ class Sidebar implements SingletonInterface
                     $headerFields[] = array(
                         'table' => $table,
                         'field' => $field,
-                        'label' => TemplaVoilaUtility::getLanguageService()->sL(\TYPO3\CMS\Backend\Utility\BackendUtility::getItemLabel('pages', $field)),
-                        'value' => \TYPO3\CMS\Backend\Utility\BackendUtility::getProcessedValue('pages', $field, $pObj->rootElementRecord[$field], 200)
+                        'label' => TemplaVoilaUtility::getLanguageService()->sL(BackendUtility::getItemLabel('pages', $field)),
+                        'value' => BackendUtility::getProcessedValue('pages', $field, $pObj->rootElementRecord[$field], 200)
                     );
                 }
                 if (count($headerFields)) {
                     foreach ($headerFields as $headerFieldArr) {
                         if ($headerFieldArr['table'] == 'pages') {
-                            $onClick = \TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick('&edit[pages][' . $pObj->id . ']=edit&columnsOnly=' . implode(',', $fieldNames['pages']));
+                            $onClick = BackendUtility::editOnClick('&edit[pages][' . $pObj->id . ']=edit&columnsOnly=' . implode(',', $fieldNames['pages']));
                             $linkedValue = '<a style="text-decoration: none;" href="#" onclick="' . htmlspecialchars($onClick) . '">' . htmlspecialchars($headerFieldArr['value']) . '</a>';
                             $linkedLabel = '<a style="text-decoration: none;" href="#" onclick="' . htmlspecialchars($onClick) . '">' . htmlspecialchars($headerFieldArr['label']) . '</a>';
                             $headerFieldRows[] = '
@@ -268,10 +274,22 @@ class Sidebar implements SingletonInterface
     public function renderItem_versioning($pObj)
     {
         if ($pObj->id > 0) {
-            $versionSelector = trim($pObj->doc->getVersionSelector($pObj->id));
+            $versionSelector = trim($this->moduleTemplate->getVersionSelector($pObj->id));
             if (!$versionSelector) {
-                $onClick = 'jumpToUrl(\'' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('version') . 'cm1/index.php?table=pages&uid=' . $pObj->id . '&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI')) . '\')';
-                $versionSelector = '<input type="button" value="' . TemplaVoilaUtility::getLanguageService()->getLL('sidebar_versionSelector_createVersion', true) . '" onclick="' . htmlspecialchars($onClick) . '" />';
+                $clickUrl = BackendUtility::getModuleUrl(
+                    'web_txversionM1',
+                    [
+                        'table' => 'pages',
+                        'uid' => $pObj->id,
+                        'id' => 'templavoila',
+                        'columnsOnly' => 't3ver_label',
+                        'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+                    ]
+                );
+
+                $versionSelector = '<input type="button" value="'
+                    . TemplaVoilaUtility::getLanguageService()->getLL('sidebar_versionSelector_createVersion', true)
+                    . '" onclick="jumpToUrl(\'' . htmlspecialchars($clickUrl) . '\')" />';
             }
             $tableRows = [];
 
@@ -305,11 +323,11 @@ class Sidebar implements SingletonInterface
         $tableRows[] = '
             <tr class="bgColor4">
                 <td width="20">
-                    ' . \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_txtemplavoilaM1', 'advancedfunctions_showhiddenelements') . '
+                    ' . BackendUtility::cshItem('_MOD_web_txtemplavoilaM1', 'advancedfunctions_showhiddenelements') . '
                 </td><td width="200">
                     ' . TemplaVoilaUtility::getLanguageService()->getLL('sidebar_advancedfunctions_labelshowhidden', true) . ':
                 </td>
-                <td>' . \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($pObj->id, 'SET[tt_content_showHidden]', $pObj->MOD_SETTINGS['tt_content_showHidden'] !== '0', 'index.php', '') . '</td>
+                <td>' . BackendUtility::getFuncCheck($pObj->id, 'SET[tt_content_showHidden]', $pObj->MOD_SETTINGS['tt_content_showHidden'] !== '0', 'index.php', '') . '</td>
             </tr>
         ';
 
@@ -318,11 +336,11 @@ class Sidebar implements SingletonInterface
             $tableRows[] = '
                 <tr class="bgColor4">
                     <td width="20">
-                        ' . \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_txtemplavoilaM1', 'advancedfunctions_showoutline') . '
+                        ' . BackendUtility::cshItem('_MOD_web_txtemplavoilaM1', 'advancedfunctions_showoutline') . '
                     </td><td width="200">
                         ' . TemplaVoilaUtility::getLanguageService()->getLL('sidebar_advancedfunctions_labelshowoutline', true) . ':
                     </td>
-                    <td>' . \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($pObj->id, 'SET[showOutline]', $pObj->MOD_SETTINGS['showOutline'], 'index.php', '') . '</td>
+                    <td>' . BackendUtility::getFuncCheck($pObj->id, 'SET[showOutline]', $pObj->MOD_SETTINGS['showOutline'], 'index.php', '') . '</td>
                 </tr>
             ';
         }

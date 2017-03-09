@@ -363,7 +363,7 @@ class DsEdit
                     <td valign="top" style="padding: 0.5em;" colspan="2">
                         ' . $form . '
                         <script type="text/javascript">
-                            var dsel_act = "' . (GeneralUtility::_GP('dsel_act') ? GeneralUtility::_GP('dsel_act') : 'general') . '";
+                            var dsel_act = "' . GeneralUtility::quoteJSValue((GeneralUtility::_GP('dsel_act') ? GeneralUtility::_GP('dsel_act') : 'general')) . '";
                             var dsel_menu = [
                                 {"id" : "general",        "avail" : true,    "label" : "' . $this->getLanguageService()->getLL('mapConfiguration') . '",    "title" : "' . $this->getLanguageService()->getLL('mapEditConfiguration') . '",    "childs" : [
                                     {"id" : "ts",        "avail" : true,    "label" : "' . $this->getLanguageService()->getLL('mapDataProcessing') . '",    "title" : "' . $this->getLanguageService()->getLL('mapEditDataProcessing') . '"},
