@@ -83,9 +83,11 @@ class OldTemplavoilaUpdateController extends StepUpdateController
         if (($migratedGroupRights = $this->migrateGroupRights()) === false) {
             $this->errors[] = 'Error while migrate group rights.';
         }
-
         if (($migratedDsData = $this->migrateDataStructureData()) === false) {
             $this->errors[] = 'Error while migrate data of data structures.';
+        }
+        if (($migratedUploadFiles = $this->migrateFiles()) === false) {
+            $this->errors[] = 'Error while copy files from uploads/tx_templavoila to uploads/tx_templavoilaplus.';
         }
 
         $this->fluid->assignMultiple([
@@ -98,6 +100,7 @@ class OldTemplavoilaUpdateController extends StepUpdateController
             'migratedUserRights' => $migratedUserRights,
             'migratedGroupRights' => $migratedGroupRights,
             'migratedDsData' => $migratedDsData,
+            'migratedUploadFiles' => $migratedUploadFiles,
             'errors' => $this->errors,
         ]);
     }
@@ -304,6 +307,43 @@ class OldTemplavoilaUpdateController extends StepUpdateController
             return true;
         }
         return false;
+    }
+
+    public function migrateFiles()
+    {
+        $pathOld = PATH_site . 'uploads/tx_templavoila/';
+        $pathNew = PATH_site . 'uploads/tx_templavoilaplus/';
+
+        // Check or create new directory existence
+        if (!is_dir($pathNew)) {
+            if (!GeneralUtility::mkdir($pathNew)) {
+                $this->errors[] = "Could not create directory: " . $pathNew;
+                return false;
+            }
+        }
+        // Check writeability
+        if (!is_writable($pathNew)) {
+            $this->errors[] = "Could not write into new directory: " . $pathNew;
+            return false;
+        }
+        // Check or old directory existence
+        if (!is_dir($pathOld)) {
+            $this->errors[] = "Could not found old upload directory: " . $pathOld;
+            return false;
+        }
+        // Check readability
+        if (!is_readable($pathOld)) {
+            $this->errors[] = "Could not read from old upload directory: " . $pathOld;
+            return false;
+        }
+        try {
+            GeneralUtility::copyDirectory($pathOld, $pathNew);
+        } catch (\Exception $e) {
+            $this->errors[] = "Could not copy files: " . $e->getMessage();
+            return false;
+        }
+        $iterator = new \FilesystemIterator($pathNew, \FilesystemIterator::SKIP_DOTS);
+        return iterator_count($iterator);
     }
 
     public function changeArrayKey(array &$array, $keyOld, $keyNew)

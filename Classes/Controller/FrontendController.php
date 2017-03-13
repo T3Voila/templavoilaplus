@@ -794,7 +794,7 @@ class FrontendController extends AbstractPlugin
             $tRows[] = '<tr>
                     <td valign="top"><b>Data Structure:</b></td>
                     <td>' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($DSrec['title'], 30)) . ' <em>[UID:' . $srcPointer . ']</em>' .
-                ($DSrec['previewicon'] ? '<br/><img src="uploads/tx_templavoila/' . $DSrec['previewicon'] . '" alt="" />' : '') .
+                ($DSrec['previewicon'] ? '<br/><img src="uploads/tx_templavoilaplus/' . $DSrec['previewicon'] . '" alt="" />' : '') .
                 '</td>
         </tr>';
         } else {
@@ -808,7 +808,7 @@ class FrontendController extends AbstractPlugin
         $tRows[] = '<tr>
                 <td valign="top"><b>Template Object:</b></td>
                 <td>' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($TOrec['title'], 30)) . ' <em>[UID:' . $TOrec['uid'] . ']</em>' .
-            ($TOrec['previewicon'] ? '<br/><img src="uploads/tx_templavoila/' . $TOrec['previewicon'] . '" alt="" />' : '') .
+            ($TOrec['previewicon'] ? '<br/><img src="uploads/tx_templavoilaplus/' . $TOrec['previewicon'] . '" alt="" />' : '') .
             '</td>
     </tr>';
         if ($TOrec['description']) {

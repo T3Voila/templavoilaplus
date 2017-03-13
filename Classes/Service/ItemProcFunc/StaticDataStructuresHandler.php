@@ -37,7 +37,7 @@ class StaticDataStructuresHandler
     /**
      * @var string
      */
-    public $iconPath = '../uploads/tx_templavoila/';
+    public $iconPath = '../uploads/tx_templavoilaplus/';
 
     /**
      * Adds static data structures to selector box items arrays.

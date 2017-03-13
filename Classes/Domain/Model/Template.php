@@ -139,7 +139,7 @@ class Template
     {
         $icon = '';
         if ($this->iconFile) {
-            $icon = 'uploads/tx_templavoila/' . $this->iconFile;
+            $icon = 'uploads/tx_templavoilaplus/' . $this->iconFile;
         }
 
         return $icon;

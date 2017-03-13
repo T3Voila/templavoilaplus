@@ -191,7 +191,7 @@ class StaticDataUpdateController
                 $this->writeXmlWithTitle($pathAndFilename, $row['dataprot'], $row['title']);
                 if ($row['previewicon']) {
                     copy(
-                        GeneralUtility::getFileAbsFileName('uploads/tx_templavoila/' . $row['previewicon']),
+                        GeneralUtility::getFileAbsFileName('uploads/tx_templavoilaplus/' . $row['previewicon']),
                         $dirPath . $title . '.gif'
                     );
                 }

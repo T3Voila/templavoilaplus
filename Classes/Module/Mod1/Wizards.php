@@ -305,9 +305,9 @@ class Wizards implements SingletonInterface
                 $previewIcon = $defaultIcon;
                 // Create the "Default template" entry
                 if ($defaultTO['previewicon']) {
-                    if (@is_file(GeneralUtility::getFileAbsFileName('uploads/tx_templavoila/' . $defaultTO['previewicon']))) {
-                        $previewIcon = '<input type="image" class="c-inputButton" name="i0" value="0" src="' . '/uploads/tx_templavoila/' . $defaultTO['previewicon'] . '" title="" />';
-                        $previewIcon = '<img src="/uploads/tx_templavoila/' . $defaultTO['previewicon'] . '">';
+                    if (@is_file(GeneralUtility::getFileAbsFileName('uploads/tx_templavoilaplus/' . $defaultTO['previewicon']))) {
+                        $previewIcon = '<input type="image" class="c-inputButton" name="i0" value="0" src="' . '/uploads/tx_templavoilaplus/' . $defaultTO['previewicon'] . '" title="" />';
+                        $previewIcon = '<img src="/uploads/tx_templavoilaplus/' . $defaultTO['previewicon'] . '">';
                     }
                 }
 
