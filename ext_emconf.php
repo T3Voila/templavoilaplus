@@ -23,7 +23,7 @@ $EM_CONF[$_EXTKEY] = [
             'eu_tradvoila' => '-0.0.2',
             'me_templavoilalayout' => '',
             'me_templavoilalayout2' => '',
-            'templavoilaplus' => '',
+            'templavoila' => '-3.0.0',
         ],
         'suggests' => [],
     ],
