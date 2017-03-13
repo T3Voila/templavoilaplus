@@ -1,22 +1,7 @@
+﻿.. include:: ../Includes.txt
 
-
-.. ==================================================
-.. FOR YOUR INFORMATION
-.. --------------------------------------------------
-.. -*- coding: utf-8 -*- with BOM.
-
-.. ==================================================
-.. DEFINE SOME TEXTROLES
-.. --------------------------------------------------
-.. role::   underline
-.. role::   typoscript(code)
-.. role::   ts(typoscript)
-   :class:  typoscript
-.. role::   php(code)
-
-
-((generated))
-^^^^^^^^^^^^^
+FAQ
+---
 
 Subpages don't inherit datastructure / template object
 """"""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -28,7 +13,7 @@ Structure set for table/row XXX. Please select a Data Structure and
 Template Object first.*
 
 **A:** Make sure that you have configured the frontend plugin
-(templavoila\_pi1) correctly in your TypoScript template. The
+(templavoilaplus\_pi1) correctly in your TypoScript template. The
 following configuration will produce the error described above:
 
 ::
@@ -51,8 +36,8 @@ section of this manual:
 but nothing is displayed in FrontEnd. What should I do now?*
 
 **A:** You should check if you have <TypoScriptObjectPath> entry in
-that field inside your DS record. If it exists, TemplaVoila will not
-show content. This issue exists in TemplaVoila versions up to and
+that field inside your DS record. If it exists, TemplaVoilà Plus will not
+show content. This issue exists in TemplaVoilà Plus versions up to and
 including 1.0 but will be fixed (removed) in future versions. Inspect
 DS record and remove any occurrences of <TypoScriptObjectPath> from
 the content element fields. Do not forget to clear cache before
@@ -71,12 +56,8 @@ tags loose opening brace.
 **Q:** My template-mapping was lost during upgrade to version 1.4.x
 
 **A:** During the upgrade the database-definition for the field
-“tx\_templavoila\_tmplobj.templatemapping” might have been changed to
+“tx\_templavoilaplus\_tmplobj.templatemapping” might have been changed to
 “blob”. Usually that's not a proplem but especially when your systems
 character-set encoding isn't correct this might have an effect. Try
 either to change back the fieldtype to “mediumtext” or check your
 system's encoding-settings.
-
-34
-
-

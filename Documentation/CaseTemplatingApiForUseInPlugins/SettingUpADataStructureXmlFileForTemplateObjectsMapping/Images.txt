@@ -1,4 +1,4 @@
-﻿.. |img-17|     image:: ../../../Images/manual_html_m25b01471.png
+.. |img-17|     image:: ../../Images/manual_html_m25b01471.png
    :height: 84
    :width: 237
 .. :align: left

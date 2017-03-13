@@ -1,59 +1,75 @@
-﻿.. include:: Images.txt
+﻿.. include:: Includes.txt
 
-.. ==================================================
-.. FOR YOUR INFORMATION
-.. --------------------------------------------------
-.. -*- coding: utf-8 -*- with BOM.
+.. _start:
+=====================
+EXT: TemplaVoilà Plus
+=====================
 
-.. ==================================================
-.. DEFINE SOME TEXTROLES
-.. --------------------------------------------------
-.. role::   underline
-.. role::   typoscript(code)
-.. role::   ts(typoscript)
-   :class:  typoscript
-.. role::   php(code)
+.. only:: html
+    :Classification:
+        **templavoilaplus**
 
-================
-EXT: TemplaVoilà
-================
+    :Version:
+        |release|
 
-:REFRESH:
-      5;URL=http://forge.typo3.org/wiki/extension-mvc_extjs
+    :Language:
+        en
 
-:Created:
-      2009-11-27 15::4:9:
+    :Description:
+        TeamplaVoilà Plus is a templating extension for the TYPO3 content management system. It is the follow up of the
+        popular TemplaVoila extension from Kasper Skårhøj prepared for modern versions of TYPO3.
+        This manual needs to be updated to state of the art of the extension.
 
-:Changed:
-      2012-04-23 22::4:7:
+    :Created:
+        2009-11-27
 
-:Classification:
-      Documentation
+    :Changed:
+        2017-03-13
 
-:Keywords:
-      template, mapping
+    :Keywords:
+        template,mapping
 
-:Author:
-      Kasper Skårhøj , Robert Lemke
+    :Copyright:
+        Copyright 2004 Kasper Skårhøj < `kasperYYYY@typo3.com <mailto:kasperYYYY@typo3.com>`_ >
 
-:Email:
-      kasperYYYY@typo3.com,robert@typo3.org
+        Copyright 2005-2006 Robert Lemke <robert@typo3.org>
 
-:Info 4:
+        Copyright 2007-2009 Dmitry Dulepov <dmitry@typo3.org>
+
+        Copyright 2010 Tolleiv Nietsch <templavoila@tolleiv.de>
+
+        Copyright 2016-2017 Alexander Opitz <opitz@pluspol.info>
+
+    :Author:
+        Kasper Skårhøj, Robert Lemke, Alexander Opitz
+
+    :Email:
+        kasperYYYY@typo3.com,robert@typo3.org, opitz@pluspol.info
+
+    :License:
+        This document is published under the Open Content License available
+        from http://www.opencontent.org/opl.shtml
+
+    :Rendered:
+        |today|
+
+    The content of this document is related to TYPO3,
+    a GNU/GPL CMS/Framework available from `www.typo3.org <https://typo3.org/>`_.
 
 
-:Language:
-      en
-
-
-|img-1| |img-2| EXT: TemplaVoilà -DocumentationFAQ: Frequently Asked
-Questions
-
+    **Table of Contents**
 
 .. toctree::
    :maxdepth: 5
    :titlesonly:
    :glob:
 
-   ExtTemplavoila/Index
-
+   Introduction/Index
+   SiteDevelopersManual/Index
+   NewContentElementWizard/Index
+   ExtensionProgrammersManual/Index
+   TemplavoilaApiForExtensionDevelopers/Index
+   T3datastructureExtensions/Index
+   StaticDataStructures/Index
+   CaseTemplatingApiForUseInPlugins/Index
+   FaqFrequentlyAskedQuestions/Index
