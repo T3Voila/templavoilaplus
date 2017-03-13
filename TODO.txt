@@ -1,9 +1,9 @@
+This TODO is very old, maybe some points aren't valid anymore.
+Hopefully this will be filtered and put into well defined issues in the not so far future.
+
 ******************
 TODO
 ******************
-
-URGENT
-	- Why some modules do not call init() for htmlmarkup?
 
 INBOX
 
@@ -122,17 +122,7 @@ PAGE MODULE:
 	- Create little warning message for FCEs which have no TO selected
 	- Bug: Language selector shows broken images when no flag has been defined in sys_languages
 
-SIDEBAR:
-	- Add [delete] option to non-used elements menu to REALLY delete elements.
-
 DOCUMENTATION:
 	- Create manual:
 		- Description of Page Module
 		- TSconfig reference
-
-
-GRAPHICS/PHOTOSHOP:
-	<body> <table> <tbody> <thead> <ol> <ul> <li> <tr> <td> <div> <blockquote> <pre> <p> <span> <font> <a> <map> <h1> <h2> <h3> <h4> <h5> <h6> <img> <input> <textarea> <select> <option> <br> <hr> <form>
-	<u> <i> <b> <strong> <em> <embed> <area> <head> <script> <style> <title>
-	ARIAL 7 px
-	See "html_tags/prototype.psd"
