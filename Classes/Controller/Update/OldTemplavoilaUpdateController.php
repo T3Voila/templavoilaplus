@@ -83,6 +83,12 @@ class OldTemplavoilaUpdateController extends StepUpdateController
         if (($migratedGroupRights = $this->migrateGroupRights()) === false) {
             $this->errors[] = 'Error while migrate group rights.';
         }
+        if (($migrateGroupTableSelect = $this->migrateGroupTableSelect()) === false) {
+            $this->errors[] = 'Error while migrate group table select.';
+        }
+        if (($migrateGroupTableModify = $this->migrateGroupTableModify()) === false) {
+            $this->errors[] = 'Error while migrate group table modify.';
+        }
         if (($migratedDsData = $this->migrateDataStructureData()) === false) {
             $this->errors[] = 'Error while migrate data of data structures.';
         }
@@ -99,6 +105,8 @@ class OldTemplavoilaUpdateController extends StepUpdateController
             'migratedGroups' => $migratedGroups,
             'migratedUserRights' => $migratedUserRights,
             'migratedGroupRights' => $migratedGroupRights,
+            'migrateGroupTableSelect' => $migrateGroupTableSelect,
+            'migrateGroupTableModify' => $migrateGroupTableModify,
             'migratedDsData' => $migratedDsData,
             'migratedUploadFiles' => $migratedUploadFiles,
             'errors' => $this->errors,
@@ -249,21 +257,60 @@ class OldTemplavoilaUpdateController extends StepUpdateController
 
     private function migrateModuleRights($table, $field)
     {
+        return $this->migrateTableFieldSet(
+            $table,
+            $field,
+            [
+                'web_txtemplavoilaM1' => 'web_txtemplavoilaplusLayout',
+                'web_txtemplavoilaM2' => 'web_txtemplavoilaplusCenter',
+            ]
+        );
+    }
+
+    private function migrateGroupTableSelect()
+    {
+        return $this->migrateTableRights('be_groups', 'tables_select');
+    }
+
+    private function migrateGroupTableModify()
+    {
+        return $this->migrateTableRights('be_groups', 'tables_modify');
+    }
+
+    private function migrateTableRights($table, $field)
+    {
+        return $this->migrateTableFieldSet(
+            $table,
+            $field,
+            [
+                'tx_templavoila_datastructure' => 'tx_templavoilaplus_datastructure',
+                'tx_templavoila_tmplobj' => 'tx_templavoilaplus_tmplobj',
+            ]
+        );
+    }
+
+    private function migrateTableFieldSet($table, $field, $value2value)
+    {
+        $where = [];
+
+        // Get all entries which need convertation
+        foreach ($value2value as $oldVal => $unused) {
+            $where[] = 'FIND_IN_SET("' . $oldVal . '", ' . $field . ')';
+        }
         $result = $this->getDatabaseConnection()->exec_SELECTgetRows(
             'uid,' . $field,
             $table,
-            'FIND_IN_SET("web_txtemplavoilaM1", ' . $field . ') || FIND_IN_SET("web_txtemplavoilaM2", ' . $field . ')'
+            implode(' || ', $where)
         );
+
+        // Convert all found rows
         if (is_array($result)) {
             foreach ($result as $row) {
                 // replace web_txtemplavoilaM2 with web_txtemplavoilaplus
-                $mods = explode(',', $row[$field]);
+                $mods = GeneralUtility::trimExplode(',', $row[$field], true);
                 foreach ($mods as $key => $mod) {
-                    if ($mod === 'web_txtemplavoilaM1') {
-                        $mods[$key] = 'web_txtemplavoilaplusLayout';
-                    }
-                    if ($mod === 'web_txtemplavoilaM2') {
-                        $mods[$key] = 'web_txtemplavoilaplusCenter';
+                    if (isset($value2value[$mod])) {
+                        $mods[$key] = $value2value[$mod];
                     }
                 }
                 $values = [
@@ -273,6 +320,7 @@ class OldTemplavoilaUpdateController extends StepUpdateController
             }
             return count($result);
         }
+
         return false;
     }
 
