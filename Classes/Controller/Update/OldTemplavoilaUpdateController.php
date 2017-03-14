@@ -89,6 +89,9 @@ class OldTemplavoilaUpdateController extends StepUpdateController
         if (($migrateGroupTableModify = $this->migrateGroupTableModify()) === false) {
             $this->errors[] = 'Error while migrate group table modify.';
         }
+        if (($migrateGroupNonExcludeFields = $this->migrateGroupNonExcludeFields()) === false) {
+            $this->errors[] = 'Error while migrate group non exclude fields.';
+        }
         if (($migratedDsData = $this->migrateDataStructureData()) === false) {
             $this->errors[] = 'Error while migrate data of data structures.';
         }
@@ -107,6 +110,7 @@ class OldTemplavoilaUpdateController extends StepUpdateController
             'migratedGroupRights' => $migratedGroupRights,
             'migrateGroupTableSelect' => $migrateGroupTableSelect,
             'migrateGroupTableModify' => $migrateGroupTableModify,
+            'migrateGroupNonExcludeFields' => $migrateGroupNonExcludeFields,
             'migratedDsData' => $migratedDsData,
             'migratedUploadFiles' => $migratedUploadFiles,
             'errors' => $this->errors,
@@ -275,6 +279,35 @@ class OldTemplavoilaUpdateController extends StepUpdateController
     private function migrateGroupTableModify()
     {
         return $this->migrateTableRights('be_groups', 'tables_modify');
+    }
+
+    private function migrateGroupNonExcludeFields()
+    {
+        return $this->migrateTableFieldSet(
+            'be_groups',
+            'non_exclude_fields',
+            [
+                'pages:tx_templavoila_ds' => 'pages:tx_templavoilaplus_ds',
+                'pages:tx_templavoila_to' => 'pages:tx_templavoilaplus_to',
+                'pages:tx_templavoila_next_ds' => 'pages:tx_templavoilaplus_next_ds',
+                'pages:tx_templavoila_next_to' => 'pages:tx_templavoilaplus_next_to',
+                'pages:tx_templavoila_flex' => 'pages:tx_templavoilaplus_flex',
+                'tt_content:tx_templavoila_ds' => 'tt_content:tx_templavoilaplus_ds',
+                'tt_content:tx_templavoila_to' => 'tt_content:tx_templavoilaplus_to',
+                'tt_content:tx_templavoila_flex' => 'tt_content:tx_templavoilaplus_flex',
+                'tt_content:tx_templavoila_pito' => 'tt_content:tx_templavoilaplus_pito',
+                'tx_templavoila_datastructure:belayout' => 'tx_templavoilaplus_datastructure:belayout',
+                'tx_templavoila_datastructure:dataprot' => 'tx_templavoilaplus_datastructure:dataprot',
+                'tx_templavoila_datastructure:scope' => 'tx_templavoilaplus_datastructure:scope',
+                'tx_templavoila_tmplobj:belayout' => 'tx_templavoilaplus_tmplobj:belayout',
+                'tx_templavoila_tmplobj:datastructure' => 'tx_templavoilaplus_tmplobj:datastructure',
+                'tx_templavoila_tmplobj:fileref' => 'tx_templavoilaplus_tmplobj:fileref',
+                'tx_templavoila_tmplobj:localprocessing' => 'tx_templavoilaplus_tmplobj:localprocessing',
+                'tx_templavoila_tmplobj:parent' => 'tx_templavoilaplus_tmplobj:parent',
+                'tx_templavoila_tmplobj:rendertype' => 'tx_templavoilaplus_tmplobj:rendertype',
+                'tx_templavoila_tmplobj:rendertype_ref' => 'tx_templavoilaplus_tmplobj:rendertype_ref',
+                'tx_templavoila_tmplobj:sys_language_uid' => 'tx_templavoilaplus_tmplobj:sys_language_uid',            ]
+        );
     }
 
     private function migrateTableRights($table, $field)
