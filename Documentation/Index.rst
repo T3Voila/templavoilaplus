@@ -16,7 +16,7 @@ EXT: TemplaVoilà Plus
         en
 
     :Description:
-        TeamplaVoilà Plus is a templating extension for the TYPO3 content management system. It is the follow up of the
+        TemplaVoilà Plus is a templating extension for the TYPO3 content management system. It is the follow up of the
         popular TemplaVoila extension from Kasper Skårhøj prepared for modern versions of TYPO3.
         This manual needs to be updated to state of the art of the extension.
 
@@ -30,7 +30,7 @@ EXT: TemplaVoilà Plus
         template,mapping
 
     :Copyright:
-        Copyright 2004 Kasper Skårhøj < `kasperYYYY@typo3.com <mailto:kasperYYYY@typo3.com>`_ >
+        Copyright 2004 Kasper Skårhøj <`kasperYYYY@typo3.com <mailto:kasperYYYY@typo3.com>`_>
 
         Copyright 2005-2006 Robert Lemke <robert@typo3.org>
 
