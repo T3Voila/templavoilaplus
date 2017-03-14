@@ -10,5 +10,4 @@ but it isn't complete yet. Some points in this documentation are outdated and wr
 for TYPO3 4.5 or older.
 So this document maybe non helpfull for newbies. But we will update this documentation
 from time to time. If you find something, which isn't clear please fill in an issue
-report on the `Project page <https://github.com/pluspol-interactive/templavoila/issues>_`.
-
+report on the `Project page <https://github.com/pluspol-interactive/templavoila/issues>`_.

@@ -1,26 +1,16 @@
-﻿
-
-.. ==================================================
-.. FOR YOUR INFORMATION
-.. --------------------------------------------------
-.. -*- coding: utf-8 -*- with BOM.
-
-.. ==================================================
-.. DEFINE SOME TEXTROLES
-.. --------------------------------------------------
-.. role::   underline
-.. role::   typoscript(code)
-.. role::   ts(typoscript)
-   :class:  typoscript
-.. role::   php(code)
-
+﻿.. include:: ../../Includes.txt
 
 Sponsorship
 ^^^^^^^^^^^
 
-The main part of this extension was kindly sponsored by Dassault
+The original TemplaVoilà extension was kindly sponsored by Dassault
 Systémes, France. Thanks a lot for your incredible attitude towards
-Open Source and very generous support of TYPO3. Finalisation of
-version 1.0 was funded by the TYPO3 Association. Thanks to all our
-supporting members who enable us to develop!
+Open Source and very generous support of TYPO3.
 
+The finalisation of TemplaVoilà version 1.0 was funded by the
+`TYPO3 Association <https://typo3.org/>`_. Thanks to all our supporting
+members who enable us to develop!
+
+Updating the TemplaVoilà extension for TYPO3 7/8 LTS under the new
+name "TemplaVoilà Plus" was sponsored by
+`PLUSPOL interactive <https://www.pluspol-interactive.de>`_

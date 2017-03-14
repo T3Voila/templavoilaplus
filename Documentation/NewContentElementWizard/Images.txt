@@ -1,7 +1,0 @@
-﻿.. |img-7|      image:: ../../Images/manual_html_m5191b701.png
-   :height: 283
-   :width: 519
-.. :align: left
-.. :border: 0
-.. :name: Grafik10
-
