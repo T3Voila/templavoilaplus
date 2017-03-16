@@ -24,6 +24,7 @@ $EM_CONF[$_EXTKEY] = [
             'me_templavoilalayout' => '',
             'me_templavoilalayout2' => '',
             'templavoila' => '-3.0.0',
+            'compatibility6' => '',
         ],
         'suggests' => [],
     ],
