@@ -166,10 +166,10 @@ class OldTemplavoilaUpdateController extends StepUpdateController
     private function migrateDsTo()
     {
         $fieldsDs = 'uid,pid,t3ver_oid,t3ver_id,t3ver_wsid,t3ver_label,t3ver_state,t3ver_stage,t3ver_count,'
-            . 't3ver_tstamp,t3ver_move_id,t3_origuid,tstamp,crdate,cruser_id,deleted,sorting,title,dataprot,'
+            . 't3ver_tstamp,t3_origuid,tstamp,crdate,cruser_id,deleted,sorting,title,dataprot,'
             . 'scope,previewicon,belayout';
         $fieldsTo = 'uid,pid,t3ver_oid,t3ver_id,t3ver_wsid,t3ver_label,t3ver_state,t3ver_stage,t3ver_count,'
-            . 't3ver_tstamp,t3ver_move_id,t3_origuid,tstamp,crdate,cruser_id,fileref_mtime,deleted,sorting,title,'
+            . 't3ver_tstamp,t3_origuid,tstamp,crdate,cruser_id,fileref_mtime,deleted,sorting,title,'
             . 'datastructure,fileref,templatemapping,previewicon,description,rendertype,sys_language_uid,parent,'
             . 'rendertype_ref,localprocessing,fileref_md5,belayout';
 
