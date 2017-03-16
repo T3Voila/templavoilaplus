@@ -96,7 +96,7 @@ function sortable_unlinkRecord(pointer, id, elementPointer) {
         type: 'post',
         cache: false,
         data: {
-            'unlink': pointer
+            'ajaxUnlinkRecord': pointer
         }
     }).done(function(data) {
         // @TODO insert unlinked element into sidebar, so it is viewable without reloading?
