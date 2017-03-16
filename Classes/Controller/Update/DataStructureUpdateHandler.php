@@ -95,17 +95,16 @@ class DataStructureUpdateHandler
     {
         $changed = false;
 
-        if (isset($element['section']) && $element['section']) {
-            $sections = array_pop($element['el']);
-            if (is_array($sections['el'])) {
-                foreach($sections['el'] as &$subElement) {
-                    $changed = $this->fixPerElement($subElement, $elementCallbacks) || $changed;
-                }
+        foreach ($elementCallbacks as $callback) {
+            if (is_callable($callback)) {
+                $changed = $callback($element) || $changed;
             }
-        } else {
-            foreach ($elementCallbacks as $callback) {
-                if (is_callable($callback)) {
-                    $changed = $callback($element) || $changed;
+        }
+
+        if (isset($element['type']) && $element['type'] === 'array') {
+            if (is_array($element['el'])) {
+                foreach($element['el'] as &$subElement) {
+                    $changed = $this->fixPerElement($subElement, $elementCallbacks) || $changed;
                 }
             }
         }
