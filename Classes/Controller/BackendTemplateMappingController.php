@@ -1042,7 +1042,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
             $onCl = 'return top.openUrlInWindow(\'' . GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $relFilePath . '\',\'FileView\');';
             $tRows[] = '
                 <tr>
-                    <td class="bgColor5" rowspan="2">' . $this->cshItem('xMOD_tx_templavoila', 'mapping_file', '|') . '</td>
+                    <td class="bgColor5" rowspan="2">' . $this->cshItem('xMOD_tx_templavoilaplus', 'mapping_file', '|') . '</td>
                     <td class="bgColor5" rowspan="2"><strong>' . TemplaVoilaUtility::getLanguageService()->getLL('templateFile') . ':</strong></td>
                     <td class="bgColor4"><a href="#" onclick="' . htmlspecialchars($onCl) . '">' . htmlspecialchars($relFilePath) . '</a></td>
                 </tr>
@@ -1160,13 +1160,13 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                     $content .= '
                         <input type="submit" name="_DO_NOTHING" value="Go back" title="' . TemplaVoilaUtility::getLanguageService()->getLL('buttonGoBack') . '" />
                         <h3>' . TemplaVoilaUtility::getLanguageService()->getLL('titleXmlConfiguration') . ':</h3>
-                        ' . $this->cshItem('xMOD_tx_templavoila', 'mapping_file_showXMLDS', '|<br/>') . '
+                        ' . $this->cshItem('xMOD_tx_templavoilaplus', 'mapping_file_showXMLDS', '|<br/>') . '
                         <pre>' . $hlObj->highLight_DS($dataStructureXML) . '</pre>';
                     break;
                 case 'loadScreen':
                     $content .= '
                         <h3>' . TemplaVoilaUtility::getLanguageService()->getLL('titleLoadDSXml') . '</h3>
-                        ' . $this->cshItem('xMOD_tx_templavoila', 'mapping_file_loadDSXML', '|<br/>') . '
+                        ' . $this->cshItem('xMOD_tx_templavoilaplus', 'mapping_file_loadDSXML', '|<br/>') . '
                         <p>' . TemplaVoilaUtility::getLanguageService()->getLL('selectTOrecrdToLoadDSFrom') . ':</p>
                         <select name="_load_ds_xml_to">' . implode('', $opt) . '</select>
                         <br />
@@ -1180,7 +1180,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                 case 'saveScreen':
                     $content .= '
                         <h3>' . TemplaVoilaUtility::getLanguageService()->getLL('createDSTO') . ':</h3>
-                        ' . $this->cshItem('xMOD_tx_templavoila', 'mapping_file_createDSTO', '|<br/>') . '
+                        ' . $this->cshItem('xMOD_tx_templavoilaplus', 'mapping_file_createDSTO', '|<br/>') . '
                         <table border="0" cellpadding="2" cellspacing="2" class="dso_table">
                             <tr>
                                 <td class="bgColor5"><strong>' . TemplaVoilaUtility::getLanguageService()->getLL('titleDSTO') . ':</strong></td>
@@ -1252,7 +1252,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                         </table>';
 
                     $content .= '<!-- Data Structure creation table: -->'
-                        . '<h3>' . $this->cshItem('xMOD_tx_templavoila', 'mapping_file', '|') . TemplaVoilaUtility::getLanguageService()->getLL('buildingDS') . ':</h3>'
+                        . '<h3>' . $this->cshItem('xMOD_tx_templavoilaplus', 'mapping_file', '|') . TemplaVoilaUtility::getLanguageService()->getLL('buildingDS') . ':</h3>'
                         . $this->renderTemplateMapper($this->displayFile, $this->displayPath, $dataStruct, $currentMappingInfo, $menuContent);
                     break;
             }
@@ -1293,13 +1293,13 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                         <table border="0" cellspacing="2" cellpadding="2" class="dso_table">
                                     <tr class="bgColor5">
                                         <td nowrap="nowrap"><strong>' . TemplaVoilaUtility::getLanguageService()->getLL('renderDSO_dataElement') . ':</strong>' .
-                        $this->cshItem('xMOD_tx_templavoila', 'mapping_head_dataElement') .
+                        $this->cshItem('xMOD_tx_templavoilaplus', 'mapping_head_dataElement') .
                         '</td>
                     <td nowrap="nowrap"><strong>' . TemplaVoilaUtility::getLanguageService()->getLL('renderDSO_mappingInstructions') . ':</strong>' .
-                        $this->cshItem('xMOD_tx_templavoila', 'mapping_head_mapping_instructions') .
+                        $this->cshItem('xMOD_tx_templavoilaplus', 'mapping_head_mapping_instructions') .
                         '</td>
                     <td nowrap="nowrap"><strong>' . TemplaVoilaUtility::getLanguageService()->getLL('renderDSO_rules') . ':</strong>' .
-                        $this->cshItem('xMOD_tx_templavoila', 'mapping_head_Rules') .
+                        $this->cshItem('xMOD_tx_templavoilaplus', 'mapping_head_Rules') .
                         '</td>
                 </tr>
     ' . implode('', $tRows) . '
@@ -1307,7 +1307,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                     </div>';
 
                     // CSH
-                    $content .= $this->cshItem('xMOD_tx_templavoila', 'mapping_ds');
+                    $content .= $this->cshItem('xMOD_tx_templavoilaplus', 'mapping_ds');
                 } else {
                     $content .= '<h4>' . TemplaVoilaUtility::getLanguageService()->getLL('error') . ': ' . TemplaVoilaUtility::getLanguageService()->getLL('noDSDefined') . '</h4>';
                 }
@@ -1359,7 +1359,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                     </div>';
 
                 // CSH
-                $content .= $this->cshItem('xMOD_tx_templavoila', 'mapping_ds_to');
+                $content .= $this->cshItem('xMOD_tx_templavoilaplus', 'mapping_ds_to');
 
                 // Display XML of data structure:
                 if (is_array($dataStruct)) {
@@ -1375,7 +1375,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                     <br />
                     <div id="c-dsxml">
                         <h3>' . TemplaVoilaUtility::getLanguageService()->getLL('renderDSO_XML') . ':</h3>
-                        ' . $this->cshItem('xMOD_tx_templavoila', 'mapping_ds_showXML') . '
+                        ' . $this->cshItem('xMOD_tx_templavoilaplus', 'mapping_ds_showXML') . '
                         <p>' . BackendUtility::getFuncCheck('', 'SET[showDSxml]', $this->MOD_SETTINGS['showDSxml'], '', GeneralUtility::implodeArrayForUrl('', $_GET, '', 1, 1)) . ' Show XML</p>
                         <pre>' .
                         ($this->MOD_SETTINGS['showDSxml'] ? $hlObj->highLight_DS($dataStructureXML) : '') . '
@@ -1410,7 +1410,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                 $tRows[] =
                     '<thead>'
                         . '<th colspan="2"><strong>' . TemplaVoilaUtility::getLanguageService()->getLL('renderTO_toDetails') . ':</strong>'
-                        . $this->cshItem('xMOD_tx_templavoila', 'mapping_to')
+                        . $this->cshItem('xMOD_tx_templavoilaplus', 'mapping_to')
                         . '</th></thead>';
 
                 // Get title and icon:
@@ -1514,7 +1514,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                             '<tr class="danger">
                                 <td>&nbsp;</td>
                                 <td><input type="submit" name="_" value="' . TemplaVoilaUtility::getLanguageService()->getLL('renderTO_editDSTO') . '" onclick="' . htmlspecialchars($onClMsg) . '"/>'
-                                . $this->cshItem('xMOD_tx_templavoila', 'mapping_to_modifyDSTO')
+                                . $this->cshItem('xMOD_tx_templavoilaplus', 'mapping_to_modifyDSTO')
                                 . '</td></tr>';
 
                         // Write header of page:
@@ -1546,7 +1546,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                                 '<!-- HTML header parts selection: -->'
                                 . '<h3>'
                                 . TemplaVoilaUtility::getLanguageService()->getLL('mappingHeadParts') . ': '
-                                . $this->cshItem('xMOD_tx_templavoila', 'mapping_to_headerParts')
+                                . $this->cshItem('xMOD_tx_templavoilaplus', 'mapping_to_headerParts')
                                 . '</h3>'
                                 . $this->renderHeaderSelection($theFile, $currentHeaderMappingInfo, $showBodyTag, $editContent);
 
@@ -1884,7 +1884,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
             \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING
         );
 
-        $headerParts .= $this->cshItem('xMOD_tx_templavoila', 'mapping_to_headerParts_buttons') . $htmlAfterDSTable;
+        $headerParts .= $this->cshItem('xMOD_tx_templavoilaplus', 'mapping_to_headerParts_buttons') . $htmlAfterDSTable;
 
         // Return result:
         return $headerParts;
@@ -1969,27 +1969,27 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
             <table class="table table-striped table-hover">
             <thead>
                 <th>' . TemplaVoilaUtility::getLanguageService()->getLL('mapDataElement') . ':'
-                . $this->cshItem('xMOD_tx_templavoila', 'mapping_head_dataElement')
+                . $this->cshItem('xMOD_tx_templavoilaplus', 'mapping_head_dataElement')
                 . '</th>'
                 . ($this->editDataStruct ? '<th>' . TemplaVoilaUtility::getLanguageService()->getLL('mapField') . ':'
-                    . $this->cshItem('xMOD_tx_templavoila', 'mapping_head_Field')
+                    . $this->cshItem('xMOD_tx_templavoilaplus', 'mapping_head_Field')
                     . '</th>' : '')
                 . '<th>' . (!$this->_preview ? TemplaVoilaUtility::getLanguageService()->getLL('mapInstructions') : TemplaVoilaUtility::getLanguageService()->getLL('mapSampleData')) . ''
-                . $this->cshItem('xMOD_tx_templavoila', 'mapping_head_' . (!$this->_preview ? 'mapping_instructions' : 'sample_data'))
+                . $this->cshItem('xMOD_tx_templavoilaplus', 'mapping_head_' . (!$this->_preview ? 'mapping_instructions' : 'sample_data'))
                 . '</th><th>' . TemplaVoilaUtility::getLanguageService()->getLL('mapHTMLpath') . ':'
-                . $this->cshItem('xMOD_tx_templavoila', 'mapping_head_HTMLpath')
+                . $this->cshItem('xMOD_tx_templavoilaplus', 'mapping_head_HTMLpath')
                 .'</th><th>' . TemplaVoilaUtility::getLanguageService()->getLL('mapAction') . ':'
-                . $this->cshItem('xMOD_tx_templavoila', 'mapping_head_Action')
+                . $this->cshItem('xMOD_tx_templavoilaplus', 'mapping_head_Action')
                 . '</th><th>' . TemplaVoilaUtility::getLanguageService()->getLL('mapRules') . ':'
-                . $this->cshItem('xMOD_tx_templavoila', 'mapping_head_Rules')
+                . $this->cshItem('xMOD_tx_templavoilaplus', 'mapping_head_Rules')
                 . '</th>'
                 . ($this->editDataStruct ? '<th>' . TemplaVoilaUtility::getLanguageService()->getLL('mapEdit') . ':'
-                    . $this->cshItem('xMOD_tx_templavoila', 'mapping_head_Edit')
+                    . $this->cshItem('xMOD_tx_templavoilaplus', 'mapping_head_Edit')
                     . '</th>' : '')
                 . '</thead>'
                 . implode('', $this->drawDataStructureMap($dataStruct, 1, $currentMappingInfo, $pathLevels, $optDat, $contentSplittedByMapping))
             . '</table>' . $htmlAfterDSTable
-            . $this->cshItem('xMOD_tx_templavoila', 'mapping_basics');
+            . $this->cshItem('xMOD_tx_templavoilaplus', 'mapping_basics');
 
         // Make mapping window:
         $limitTags = implode(',', array_keys($this->explodeMappingToTagsStr($this->mappingToTags, 1)));
@@ -2000,7 +2000,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                 <!-- <p><strong>File:</strong> ' . htmlspecialchars($displayFile) . '</p> -->
                 <p>'
                 . BackendUtility::getFuncMenu('', 'SET[displayMode]', $this->MOD_SETTINGS['displayMode'], $this->MOD_MENU['displayMode'], 'index.php', GeneralUtility::implodeArrayForUrl('', $_GET, '', 1, 1))
-                . $this->cshItem('xMOD_tx_templavoila', 'mapping_window_modes')
+                . $this->cshItem('xMOD_tx_templavoilaplus', 'mapping_window_modes')
                 . '</p>';
 
             if ($this->_preview) {
@@ -2008,7 +2008,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                     '<!-- Preview information table -->
                     <table border="0" cellpadding="4" cellspacing="2" id="c-mapInfo">
                         <tr class="bgColor5"><td><strong>' . TemplaVoilaUtility::getLanguageService()->getLL('mapPreviewInfo') . ':</strong>' .
-                    $this->cshItem('xMOD_tx_templavoila', 'mapping_window_help') .
+                    $this->cshItem('xMOD_tx_templavoilaplus', 'mapping_window_help') .
                     '</td></tr></table>';
 
                 // Add the Iframe:
@@ -2277,7 +2277,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                                     <input type="submit" name="_save_data_mapping" value="' . TemplaVoilaUtility::getLanguageService()->getLL('buttonSet') . '" />
                                     <input type="submit" name="_" value="' . TemplaVoilaUtility::getLanguageService()->getLL('buttonCancel') . '" />';
                                 $rowCells['cmdLinks'] .=
-                                    $this->cshItem('xMOD_tx_templavoila', 'mapping_modeset');
+                                    $this->cshItem('xMOD_tx_templavoilaplus', 'mapping_modeset');
                             } else {
                                 $rowCells['cmdLinks'] = $this->iconFactory->getIcon('status-dialog-notification', Icon::SIZE_SMALL)->render()
                                     . '<strong>' . TemplaVoilaUtility::getLanguageService()->getLL('msgHowToMap') . '</strong>';

@@ -76,7 +76,7 @@ if (TYPO3_MODE === 'BE') {
         'EXT:templavoilaplus/Resources/Private/Language/locallang_csh_to.xlf'
     );
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
-        'xMOD_tx_templavoila',
+        'xMOD_tx_templavoilaplus',
         'EXT:templavoilaplus/Resources/Private/Language/locallang_csh_module.xlf'
     );
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
