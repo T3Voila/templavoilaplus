@@ -476,16 +476,17 @@ class TcaFlexProcess implements FormDataProviderInterface
                                                 if (isset($aContainerElementArray['el'][$singleFieldName])
                                                 && is_array($aContainerElementArray['el'][$singleFieldName])
                                                  ) {
-                                                     $singleFieldValueArray = $aContainerElementArray['el'][$singleFieldName];
+                                                    $singleFieldValueArray = $aContainerElementArray['el'][$singleFieldName];
                                                 }
+
                                                 foreach ($languagesOnElementLevel as $isoElementLevel) {
                                                     $langElementLevel = 'v' . $isoElementLevel;
                                                     if (array_key_exists($langElementLevel, $singleFieldValueArray)) {
-                                                        $editColumns[$singleFieldName] = $singleFieldConfiguration;
+                                                        $editColumns[$langElementLevel][$singleFieldName] = $singleFieldConfiguration;
                                                         $valueArray[$langElementLevel][$singleFieldName] = $singleFieldValueArray[$langElementLevel];
                                                     } else {
-                                                        $newColumns[$singleFieldName] = $singleFieldConfiguration;
-                                                        $valueArray[$langElementLevel][$singleFieldName] = [];
+                                                        $newColumns[$langElementLevel][$singleFieldName] = $singleFieldConfiguration;
+                                                        $valueArray[$langElementLevel][$singleFieldName] = null;
                                                     }
                                                 }
                                             }
@@ -495,22 +496,23 @@ class TcaFlexProcess implements FormDataProviderInterface
                                                 $tcaValueArray['uid'] = $result['databaseRow']['uid'];
 
                                                 $inputToFlexFormSegment = [
-                                                'tableName' => $result['tableName'],
-                                                'command' => '',
-                                                // It is currently not possible to have pageTsConfig for section container
-                                                'pageTsConfig' => [],
-                                                'databaseRow' => $tcaValueArray,
-                                                'processedTca' => [
-                                                    'ctrl' => [],
-                                                    'columns' => [],
-                                                ],
-                                                'flexParentDatabaseRow' => $result['databaseRow'],
+                                                    'tableName' => $result['tableName'],
+                                                    'command' => '',
+                                                    // It is currently not possible to have pageTsConfig for section container
+                                                    'pageTsConfig' => [],
+                                                    'databaseRow' => $tcaValueArray,
+                                                    'processedTca' => [
+                                                        'ctrl' => [],
+                                                        'columns' => [],
+                                                    ],
+                                                    'flexParentDatabaseRow' => $result['databaseRow'],
                                                 ];
-                                                if (!empty($newColumns)) {
+                                                if (!empty($newColumns[$langElementLevel])) {
                                                     $inputToFlexFormSegment['command'] = 'new';
-                                                    $inputToFlexFormSegment['processedTca']['columns'] = $newColumns;
+                                                    $inputToFlexFormSegment['processedTca']['columns'] = $newColumns[$langElementLevel];
                                                     $flexSegmentResult = $formDataCompiler->compile($inputToFlexFormSegment);
-                                                    foreach ($newColumns as $singleFieldName => $_) {
+
+                                                    foreach ($newColumns[$langElementLevel] as $singleFieldName => $_) {
                                                         // Set data value result
                                                         if (array_key_exists($singleFieldName, $flexSegmentResult['databaseRow'])) {
                                                             $result['databaseRow'][$fieldName]
@@ -527,12 +529,12 @@ class TcaFlexProcess implements FormDataProviderInterface
                                                     [$aContainerName]['el'][$singleFieldName]
                                                     = $flexSegmentResult['processedTca']['columns'][$singleFieldName];
                                                 }
-                                                if (!empty($editColumns)) {
+                                                if (!empty($editColumns[$langElementLevel])) {
                                                     $inputToFlexFormSegment['command'] = 'edit';
-                                                    $inputToFlexFormSegment['processedTca']['columns'] = $editColumns;
+                                                    $inputToFlexFormSegment['processedTca']['columns'] = $editColumns[$langElementLevel];
                                                     $flexSegmentResult = $formDataCompiler->compile($inputToFlexFormSegment);
 
-                                                    foreach ($editColumns as $singleFieldName => $_) {
+                                                    foreach ($editColumns[$langElementLevel] as $singleFieldName => $_) {
                                                         // Set data value result
                                                         if (array_key_exists($singleFieldName, $flexSegmentResult['databaseRow'])) {
                                                             $result['databaseRow'][$fieldName]
