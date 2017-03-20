@@ -466,9 +466,8 @@ class DsEdit
                             <tr>
                                 <td>' . $this->getLanguageService()->getLL('mapObjectPath') . ':</td>
                                 <td>
-                                    <input type="text" name="' . $formFieldName . '[tx_templavoilaplus][eType_EXTRA][objPath]" value="' . htmlspecialchars($value) . '" onchange="$(\'hiddenTypoScriptObjPath\').value=this.value;" />
+                                    <input type="text" name="' . $formFieldName . '[tx_templavoilaplus][eType_EXTRA][objPath]" value="' . htmlspecialchars($value) . '" onchange="TYPO3.jQuery(\'#hiddenTypoScriptObjPath\').val(this.value);" />
                                     <input type="hidden" id="hiddenTypoScriptObjPath" name="' . $formFieldName . '[tx_templavoilaplus][TypoScriptObjPath]" value="' . htmlspecialchars($value) . '" />
-
                                 </td>
                             </tr>
                         </table>';
