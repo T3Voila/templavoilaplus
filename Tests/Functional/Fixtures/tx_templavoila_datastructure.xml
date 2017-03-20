@@ -15,14 +15,14 @@
 		<langDisable type="integer">0</langDisable>
 	</meta>
 	<ROOT type="array">
-		<tx_templavoila type="array">
+		<tx_templavoilaplus type="array">
 			<title>ROOT</title>
 			<description>Select the HTML element on the page which you want to be the overall container element for the template.</description>
-		</tx_templavoila>
+		</tx_templavoilaplus>
 		<type>array</type>
 		<el type="array">
 			<field_content type="array">
-				<tx_templavoila type="array">
+				<tx_templavoilaplus type="array">
 					<title>Content</title>
 					<sample_data type="array">
 						<numIndex index="0">This is the main content</numIndex>
@@ -35,7 +35,7 @@
 						10.tables = tt_content
 						10.wrap = &lt;!--TYPO3SEARCH_begin--&gt; | &lt;!--TYPO3SEARCH_end--&gt;
 					</TypoScript>
-				</tx_templavoila>
+				</tx_templavoilaplus>
 				<TCEforms type="array">
 					<config type="array">
 						<type>group</type>
@@ -51,7 +51,7 @@
 				</TCEforms>
 			</field_content>
 			<field_menu type="array">
-				<tx_templavoila type="array">
+				<tx_templavoilaplus type="array">
 					<title>Menu</title>
 					<sample_data type="array">
 						<numIndex index="0">Some menu</numIndex>
@@ -61,7 +61,7 @@
 						<objPath>lib.templavoila.t3unittestcase.menu</objPath>
 					</eType_EXTRA>
 					<TypoScriptObjPath>lib.templavoila.t3unittestcase.menu</TypoScriptObjPath>
-				</tx_templavoila>
+				</tx_templavoilaplus>
 			</field_menu>
 		</el>
 	</ROOT>
@@ -83,14 +83,14 @@
 		<langDisable type="integer">0</langDisable>
 	</meta>
 	<ROOT type="array">
-		<tx_templavoila type="array">
+		<tx_templavoilaplus type="array">
 			<title>ROOT</title>
 			<description>Select the HTML element on the page which you want to be the overall container element for the template.</description>
-		</tx_templavoila>
+		</tx_templavoilaplus>
 		<type>array</type>
 		<el type="array">
 			<field_content type="array">
-				<tx_templavoila type="array">
+				<tx_templavoilaplus type="array">
 					<title>Content</title>
 					<sample_data type="array">
 						<numIndex index="0">This is the main content</numIndex>
@@ -103,7 +103,7 @@
 						10.tables = tt_content
 						10.wrap = &lt;!--TYPO3SEARCH_begin--&gt; | &lt;!--TYPO3SEARCH_end--&gt;
 					</TypoScript>
-				</tx_templavoila>
+				</tx_templavoilaplus>
 				<TCEforms type="array">
 					<config type="array">
 						<type>group</type>
@@ -119,7 +119,7 @@
 				</TCEforms>
 			</field_content>
 			<field_rightbar type="array">
-				<tx_templavoila type="array">
+				<tx_templavoilaplus type="array">
 					<title>Right bar</title>
 					<sample_data type="array">
 						<numIndex index="0"></numIndex>
@@ -132,7 +132,7 @@
 						10.wrap = &lt;!--TYPO3SEARCH_begin--&gt; | &lt;!--TYPO3SEARCH_end--&gt;
 					</TypoScript>
 					<oldStyleColumnNumber type="integer">1</oldStyleColumnNumber>
-				</tx_templavoila>
+				</tx_templavoilaplus>
 				<TCEforms type="array">
 					<config type="array">
 						<type>group</type>
@@ -148,7 +148,7 @@
 				</TCEforms>
 			</field_rightbar>
 			<field_menu type="array">
-				<tx_templavoila type="array">
+				<tx_templavoilaplus type="array">
 					<title>Menu</title>
 					<sample_data type="array">
 						<numIndex index="0">Some menu</numIndex>
@@ -158,7 +158,7 @@
 						<objPath>lib.templavoila.t3unittestcase.menu</objPath>
 					</eType_EXTRA>
 					<TypoScriptObjPath>lib.templavoila.t3unittestcase.menu</TypoScriptObjPath>
-				</tx_templavoila>
+				</tx_templavoilaplus>
 			</field_menu>
 		</el>
 	</ROOT>
@@ -181,14 +181,14 @@
 		<langDisable type="integer">1</langDisable>
 	</meta>
 	<ROOT type="array">
-		<tx_templavoila type="array">
+		<tx_templavoilaplus type="array">
 			<title>ROOT</title>
 			<description>Select the HTML element on the page which you want to be the overall container element for the template.</description>
-		</tx_templavoila>
+		</tx_templavoilaplus>
 		<type>array</type>
 		<el type="array">
 			<field_leftcolumn type="array">
-				<tx_templavoila type="array">
+				<tx_templavoilaplus type="array">
 					<title>Left column</title>
 					<sample_data type="array">
 						<numIndex index="0">Left col</numIndex>
@@ -200,7 +200,7 @@
 						10.tables = tt_content
 						10.wrap = &lt;!--TYPO3SEARCH_begin--&gt; | &lt;!--TYPO3SEARCH_end--&gt;
 					</TypoScript>
-				</tx_templavoila>
+				</tx_templavoilaplus>
 				<TCEforms type="array">
 					<config type="array">
 						<type>group</type>
@@ -216,7 +216,7 @@
 				</TCEforms>
 			</field_leftcolumn>
 			<field_rightcolumn type="array">
-				<tx_templavoila type="array">
+				<tx_templavoilaplus type="array">
 					<title>Right column</title>
 					<sample_data type="array">
 						<numIndex index="0">The right column</numIndex>
@@ -228,7 +228,7 @@
 						10.tables = tt_content
 						10.wrap = &lt;!--TYPO3SEARCH_begin--&gt; | &lt;!--TYPO3SEARCH_end--&gt;
 					</TypoScript>
-				</tx_templavoila>
+				</tx_templavoilaplus>
 				<TCEforms type="array">
 					<config type="array">
 						<type>group</type>

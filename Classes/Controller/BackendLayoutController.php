@@ -42,7 +42,6 @@ $GLOBALS['LANG']->includeLLFile(
  * @author Robert Lemke <robert@typo3.org>
  * @coauthor    Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
- * @subpackage    tx_templavoila
  */
 class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 {
@@ -1541,7 +1540,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         // Traverse container fields:
         foreach ($elementContentTreeArr['sub'][$sheet][$lKey] as $fieldID => $fieldValuesContent) {
             try {
-                $newValue = $to->getLocalDataprotValueByXpath('//' . $fieldID . '/tx_templavoila/preview');
+                $newValue = $to->getLocalDataprotValueByXpath('//' . $fieldID . '/tx_templavoilaplus/preview');
                 $elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['tx_templavoilaplus']['preview'] = $newValue;
             } catch (\UnexpectedValueException $e) {
             }

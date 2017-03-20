@@ -23,7 +23,6 @@ use TYPO3\CMS\Core\SingletonInterface;
  *
  * @author Robert Lemke <robert@typo3.org>
  * @package TYPO3
- * @subpackage tx_templavoila
  * @todo This class wants to be refactored because there's quite some redundancy in it. But that's not urgent ...
  */
 class Specialdoktypes implements SingletonInterface

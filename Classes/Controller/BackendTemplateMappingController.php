@@ -2615,7 +2615,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
             }
         }
 
-        // Looking up all root-pages and check if there's a tx_templavoila.storagePid setting present
+        // Looking up all root-pages and check if there's a tx_templavoilaplus.storagePid setting present
         $res = TemplaVoilaUtility::getDatabaseConnection()->exec_SELECTquery(
             'pid,root',
             'sys_template',

@@ -13,7 +13,7 @@ return [
         'delete' => 'deleted',
         'iconfile' => 'EXT:templavoilaplus/Resources/Public/Icon/icon_to.gif',
         'selicon_field' => 'previewicon',
-        'selicon_field_path' => 'uploads/tx_templavoila',
+        'selicon_field_path' => 'uploads/tx_templavoilaplus',
         'type' => 'parent', // kept to make sure the user is force to reload the form
         'versioningWS' => true,
         'origUid' => 't3_origuid',
@@ -177,7 +177,7 @@ return [
                 'internal_type' => 'file',
                 'allowed' => 'gif,png',
                 'max_size' => '100',
-                'uploadfolder' => 'uploads/tx_templavoila',
+                'uploadfolder' => 'uploads/tx_templavoilaplus',
                 'show_thumbs' => '1',
                 'size' => '1',
                 'maxitems' => '1',

@@ -126,22 +126,22 @@ the “ARCHIVE LISTING” template:
      10:                   <field_archiveListing>
      11:                           <type>array</type>
      12:                           <section>1</section>
-     13:                           <tx_templavoila>
+     13:                           <tx_templavoilaplus>
      14:                                   <title>Archive Listing container</title>
      15:                                   <description></description>
      16:                                   <tags>div,table:inner</tags>
-     17:                           </tx_templavoila>
+     17:                           </tx_templavoilaplus>
      18:                           <el>
      19:                                   <element_even>
      20:                                           <type>array</type>
-     21:                                           <tx_templavoila>
+     21:                                           <tx_templavoilaplus>
      22:                                                   <title>Element Container, Even</title>
      23:                                                   <description></description>
      24:                                                   <tags>*:outer</tags>
-     25:                                           </tx_templavoila>
+     25:                                           </tx_templavoilaplus>
      26:                                           <el>
      27:                                                   <field_date>
-     28:                                                           <tx_templavoila>
+     28:                                                           <tx_templavoilaplus>
      29:                                                                   <title>Date</title>
      30:                                                                   <description>News date</description>
      31:                                                                   <tags>*:inner</tags>
@@ -149,10 +149,10 @@ the “ARCHIVE LISTING” template:
      33:                                                                           <n0>6th August 10:34</n0>
      34:                                                                           <n1>29/12 2003</n1>
      35:                                                                   </sample_data>
-     36:                                                           </tx_templavoila>
+     36:                                                           </tx_templavoilaplus>
      37:                                                   </field_date>
      38:                                                   <field_header>
-     39:                                                           <tx_templavoila>
+     39:                                                           <tx_templavoilaplus>
      40:                                                                   <title>Header</title>
      41:                                                                   <description>Header field.</description>
      42:                                                                   <tags>*:inner</tags>
@@ -160,17 +160,17 @@ the “ARCHIVE LISTING” template:
      44:                                                                           <n0>People on mars!</n0>
      45:                                                                           <n1>Snow in Sydney</n1>
      46:                                                                   </sample_data>
-     47:                                                           </tx_templavoila>
+     47:                                                           </tx_templavoilaplus>
      48:                                                   </field_header>
      49:                                                   <field_teaser>
-     50:                                                           <tx_templavoila>
+     50:                                                           <tx_templavoilaplus>
      51:                                                                   <title>Teaser</title>
      52:                                                                   <description>Teaser field.</description>
      53:                                                                   <tags>*:inner</tags>
      54:                                                                   <sample_data>
      55:                                                                           <n0>Capthurim Chanaan vero genuit Sidonem primogenitum et Heth Iebuseum quoque </n0>
      56:                                                                   </sample_data>
-     57:                                                           </tx_templavoila>
+     57:                                                           </tx_templavoilaplus>
      58:                                                   </field_teaser>
 
 This is a part of the Data Structure which is nested inside of
@@ -231,18 +231,18 @@ other fields you can look them up in the DS as well:
     108:                   -->
     109:                   <field_searchBox_submitUrl>
     110:                           <type>attr</type>
-    111:                           <tx_templavoila>
+    111:                           <tx_templavoilaplus>
     112:                                   <title>Search form action</title>
     113:                                   <description>URL of the news-search; Map to the action-attribute of the search form.</description>
     114:                                   <tags>form:attr:action</tags>
     115:                                   <sample_data>
     116:                                           <n0>javascript:alert('Hello, you pressed the search button!');return false;</n0>
     117:                                   </sample_data>
-    118:                           </tx_templavoila>
+    118:                           </tx_templavoilaplus>
     119:                   </field_searchBox_submitUrl>
     120:                   <field_searchBox_sword>
     121:                           <type>attr</type>
-    122:                           <tx_templavoila>
+    122:                           <tx_templavoilaplus>
     123:                                   <title>Search word field</title>
     124:                                   <description>Search word; Map to the forms input-fields value-attribute.</description>
     125:                                   <tags>input:attr:value</tags>
@@ -251,14 +251,14 @@ other fields you can look them up in the DS as well:
     128:                                           <n1>Jack Daniels</n1>
     129:                                           <n2>Flowers</n2>
     130:                                   </sample_data>
-    131:                           </tx_templavoila>
+    131:                           </tx_templavoilaplus>
     132:                   </field_searchBox_sword>
     133:
     134:                   <!--
     135:                           Defining mappings for the browse box, display note:
     136:                   -->
     137:                   <field_browseBox_displayRange>
-    138:                           <tx_templavoila>
+    138:                           <tx_templavoilaplus>
     139:                                   <title>Range</title>
     140:                                   <description>Map to position where "x-y" should be outputted (showing which records are displayed)</description>
     141:                                   <tags>*:inner</tags>
@@ -266,10 +266,10 @@ other fields you can look them up in the DS as well:
     143:                                           <n0>1-10</n0>
     144:                                           <n1>20 to 30</n1>
     145:                                   </sample_data>
-    146:                           </tx_templavoila>
+    146:                           </tx_templavoilaplus>
     147:                   </field_browseBox_displayRange>
     148:                   <field_browseBox_displayCount>
-    149:                           <tx_templavoila>
+    149:                           <tx_templavoilaplus>
     150:                                   <title>Count</title>
     151:                                   <description>Map to position where the total number of found records should be outputted.</description>
     152:                                   <tags>*:inner</tags>
@@ -277,7 +277,7 @@ other fields you can look them up in the DS as well:
     154:                                           <n0>123</n0>
     155:                                           <n1>3402</n1>
     156:                                   </sample_data>
-    157:                           </tx_templavoila>
+    157:                           </tx_templavoilaplus>
     158:                   </field_browseBox_displayCount>
    ...
 

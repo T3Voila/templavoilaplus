@@ -2277,15 +2277,15 @@
 					&lt;langDisable type=&quot;integer&quot;&gt;1&lt;/langDisable&gt;
 					&lt;/meta&gt;
 					&lt;ROOT type=&quot;array&quot;&gt;
-					&lt;tx_templavoila type=&quot;array&quot;&gt;
+					&lt;tx_templavoilaplus type=&quot;array&quot;&gt;
 					&lt;title&gt;ROOT&lt;/title&gt;
 					&lt;description&gt;Select the HTML element on the page which you want to be the overall container element for the template.&lt;/description&gt;
 					&lt;tags&gt;body&lt;/tags&gt;
-					&lt;/tx_templavoila&gt;
+					&lt;/tx_templavoilaplus&gt;
 					&lt;type&gt;array&lt;/type&gt;
 					&lt;el type=&quot;array&quot;&gt;
 					&lt;field_content type=&quot;array&quot;&gt;
-					&lt;tx_templavoila type=&quot;array&quot;&gt;
+					&lt;tx_templavoilaplus type=&quot;array&quot;&gt;
 					&lt;title&gt;Main Content Area&lt;/title&gt;
 					&lt;description&gt;Pick the HTML element in the template where you want to place the main content of the site.&lt;/description&gt;
 					&lt;sample_data type=&quot;array&quot;&gt;
@@ -2299,7 +2299,7 @@
 					10.source.current=1
 					10.tables = tt_content
 					&lt;/TypoScript&gt;
-					&lt;/tx_templavoila&gt;
+					&lt;/tx_templavoilaplus&gt;
 					&lt;TCEforms type=&quot;array&quot;&gt;
 					&lt;config type=&quot;array&quot;&gt;
 					&lt;type&gt;group&lt;/type&gt;
@@ -2315,7 +2315,7 @@
 					&lt;/TCEforms&gt;
 					&lt;/field_content&gt;
 					&lt;field_menu type=&quot;array&quot;&gt;
-					&lt;tx_templavoila type=&quot;array&quot;&gt;
+					&lt;tx_templavoilaplus type=&quot;array&quot;&gt;
 					&lt;title&gt;Main menu&lt;/title&gt;
 					&lt;description&gt;Pick the HTML container element where you want the automatically made menu items to be placed.&lt;/description&gt;
 					&lt;sample_data type=&quot;array&quot;&gt;
@@ -2327,10 +2327,10 @@
 					&lt;objPath&gt;lib.mainMenu&lt;/objPath&gt;
 					&lt;/eType_EXTRA&gt;
 					&lt;TypoScriptObjPath&gt;lib.mainMenu&lt;/TypoScriptObjPath&gt;
-					&lt;/tx_templavoila&gt;
+					&lt;/tx_templavoilaplus&gt;
 					&lt;/field_menu&gt;
 					&lt;field_submenu type=&quot;array&quot;&gt;
-					&lt;tx_templavoila type=&quot;array&quot;&gt;
+					&lt;tx_templavoilaplus type=&quot;array&quot;&gt;
 					&lt;title&gt;Sub menu (if any)&lt;/title&gt;
 					&lt;description&gt;Pick the HTML container element where you want the automatically made submenu items to be placed.&lt;/description&gt;
 					&lt;sample_data type=&quot;array&quot;&gt;
@@ -2342,7 +2342,7 @@
 					&lt;objPath&gt;lib.subMenu&lt;/objPath&gt;
 					&lt;/eType_EXTRA&gt;
 					&lt;TypoScriptObjPath&gt;lib.subMenu&lt;/TypoScriptObjPath&gt;
-					&lt;/tx_templavoila&gt;
+					&lt;/tx_templavoilaplus&gt;
 					&lt;/field_submenu&gt;
 					&lt;/el&gt;
 					&lt;/ROOT&gt;

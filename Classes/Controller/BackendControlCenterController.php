@@ -1319,16 +1319,16 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
                         /* The basic XML-structure of an entry is:
                          *
                          * <element>
-                         *     <tx_templavoila>    -> entries with informational character belonging to this entry
+                         *     <tx_templavoilaplus>    -> entries with informational character belonging to this entry
                          *     <TCEforms>        -> entries being used for TCE-construction
                          *     <type + el + section>    -> subsequent hierarchical construction
                          *    <langOverlayMode>    -> ??? (is it the language-key?)
                          * </element>
                          */
                         if (($tv = $def['tx_templavoilaplus'])) {
-                            /* The basic XML-structure of an tx_templavoila-entry is:
+                            /* The basic XML-structure of an tx_templavoilaplus-entry is:
                              *
-                             * <tx_templavoila>
+                             * <tx_templavoilaplus>
                              *     <title>            -> Human readable title of the element
                              *     <description>        -> A description explaining the elements function
                              *     <sample_data>        -> Some sample-data (can't contain HTML)
@@ -1342,7 +1342,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
                              *    <TypoScript_constants>    -> an array of constants that will be substituted in the <TypoScript>-element
                              *     <TypoScript>        ->
                              *     <TypoScriptObjPath>    ->
-                             * </tx_templavoila>
+                             * </tx_templavoilaplus>
                              */
 
                             if (isset($tv['description']) && ($tv['description'] != '')) {

@@ -29,20 +29,20 @@ The contents look like this:
            <!-- The Archive configuration is so large that we have put it into it's own file,
                            and references it from here: -->
              <sArchive>EXT:mininews/template_datastructure_arc.xml</sArchive>
-   
+
                    <!-- Single display of mininews items: -->
              <sSingle>
                           <ROOT>
-                                  <tx_templavoila>
+                                  <tx_templavoilaplus>
                                           <title>SINGLE DISPLAY</title>
                                                   <description>Select the HTML element which is the container of the
                                                    single display of a news article:</description>
                      <tags>div:inner</tags>
-                                  </tx_templavoila>
+                                  </tx_templavoilaplus>
                                   <type>array</type>
                                   <el>
                                           <field_date>
-                                                  <tx_templavoila>
+                                                  <tx_templavoilaplus>
                                                           <title>Date</title>
                                                           <description>News date</description>
                                                           <tags>*:inner</tags>
@@ -50,10 +50,10 @@ The contents look like this:
                                                                   <n0>6th August 10:34</n0>
                                                                   <n1>29/12 2003</n1>
                                                           </sample_data>
-                                                  </tx_templavoila>                                                                                               
+                                                  </tx_templavoilaplus>
                                           </field_date>
                                           <field_header>
-                                                  <tx_templavoila>
+                                                  <tx_templavoilaplus>
                                                           <title>Header</title>
                                                           <description>Header field.</description>
                                                                   <tags>*:inner</tags>
@@ -61,10 +61,10 @@ The contents look like this:
                                                                           <n0>People on mars!</n0>
                                                                           <n1>Snow in Sydney</n1>
                                                                   </sample_data>
-                                                  </tx_templavoila>                                                                                               
+                                                  </tx_templavoilaplus>
                                           </field_header>
                                           <field_teaser>
-                                                  <tx_templavoila>
+                                                  <tx_templavoilaplus>
                                                           <title>Teaser</title>
                                                           <description>Teaser field.</description>
                                                           <tags>*:inner</tags>
@@ -72,10 +72,10 @@ The contents look like this:
                                                                   <n0>Capthurim Chanaan vero genuit Sidonem primogenitum et
                                                                                    Heth Iebuseum quoque </n0>
                                                           </sample_data>
-                                                  </tx_templavoila>                                                                                               
+                                                  </tx_templavoilaplus>
                                           </field_teaser>
                                           <field_bodytext>
-                                                  <tx_templavoila>
+                                                  <tx_templavoilaplus>
                                                           <title>Bodytext</title>
                                                                   <description>Bodytext field</description>
                                                                   <tags>*:inner</tags>
@@ -85,11 +85,11 @@ The contents look like this:
                                                                                   <p>Capthurim Chanaan vero genuit Sidonem primogenitum et Heth Iebuseum quoque et Amorreum et Gergeseum Evheumque et Aruceum et Asineum Aradium quoque et Samareum et Ematheum filii Sem Aelam et Assur et Arfaxad et Lud et Aram et Us et Hul et Gothor et Mosoch Arfaxad autem genuit Sala qui et ipse genuit Heber porro Heber nati sunt duo filii nomen uni Phaleg quia in diebus eius divisa est terra et nomen fratris eius Iectan Iectan autem genuit Helmodad et Saleph et Asermoth et Iare Aduram quoque et Uzal et Decla Ebal etiam et Abimahel et Saba necnon et Ophir et Evila et Iobab omnes isti filii Iectan Sem Arfaxad Sale.</p>
                                                                            ]]></n0>
                                                                   </sample_data>
-                                                          </tx_templavoila>                                                                                               
+                                                          </tx_templavoilaplus>
                                                   </field_bodytext>
                                                   <field_url>
                                                           <type>attr</type>
-                                                          <tx_templavoila>
+                                                          <tx_templavoilaplus>
                                                                   <title>"Back" URL.</title>
                                                                   <description>Map to a-tags href-attribute of the link back to
                                                                            archive listing.</description>
@@ -97,43 +97,43 @@ The contents look like this:
                                                                   <sample_data>
                                                                           <n0>javascript:alert('You click this link!');</n0>
                                                                   </sample_data>
-                                                          </tx_templavoila>                                                                       
+                                                          </tx_templavoilaplus>
                                                   </field_url>
-                                          </el>                                                                                   
-                                  </ROOT>                 
+                                          </el>
+                                  </ROOT>
                      </sSingle>
-                   
-   
+
+
                            <!-- Frontpage display of a few mininews teaser items: -->
                      <sFrontpage>
                                   <ROOT>
-                                          <tx_templavoila>
+                                          <tx_templavoilaplus>
                                                   <title>FRONTPAGE LISTING</title>
                                                   <description>Select the HTML element which is the container of the
                                                                                    frontpage listing display of a news articles:</description>
                                                   <tags>div:inner</tags>
-                                          </tx_templavoila>
+                                          </tx_templavoilaplus>
                                           <type>array</type>
                                           <el>
                                                   <field_fpListing>
                                                           <type>array</type>
                                                           <section>1</section>
-                                                          <tx_templavoila>
+                                                          <tx_templavoilaplus>
                                                                   <title>Archive Listing container</title>
                                                                   <description></description>
                                                                   <tags>div,table:inner</tags>
-                                                          </tx_templavoila>
+                                                          </tx_templavoilaplus>
                                                           <el>
                                                                   <element_even>
                                                                           <type>array</type>
-                                                                          <tx_templavoila>
+                                                                          <tx_templavoilaplus>
                                                                                   <title>Element Container, Even</title>
                                                                                   <description></description>
                                                                                   <tags>*:outer</tags>
-                                                                          </tx_templavoila>
+                                                                          </tx_templavoilaplus>
                                                                           <el>
                                                                           <field_date>
-                                                                                  <tx_templavoila>
+                                                                                  <tx_templavoilaplus>
                                                                                           <title>Date</title>
                                                                                           <description>News date</description>
                                                                                           <tags>*:inner</tags>
@@ -141,10 +141,10 @@ The contents look like this:
                                                                                                   <n0>6th August 10:34</n0>
                                                                                                   <n1>29/12 2003</n1>
                                                                                           </sample_data>
-                                                                                  </tx_templavoila>                                                                                               
+                                                                                  </tx_templavoilaplus>
                                                                           </field_date>
                                                                           <field_header>
-                                                                                  <tx_templavoila>
+                                                                                  <tx_templavoilaplus>
                                                                                           <title>Header</title>
                                                                                           <description>Header field.</description>
                                                                                           <tags>*:inner</tags>
@@ -152,10 +152,10 @@ The contents look like this:
                                                                                                   <n0>People on mars!</n0>
                                                                                                   <n1>Snow in Sydney</n1>
                                                                                           </sample_data>
-                                                                                  </tx_templavoila>                                                                                               
+                                                                                  </tx_templavoilaplus>
                                                                           </field_header>
                                                                           <field_teaser>
-                                                                                  <tx_templavoila>
+                                                                                  <tx_templavoilaplus>
                                                                                           <title>Teaser</title>
                                                                                           <description>Teaser field.</description>
                                                                                           <tags>*:inner</tags>
@@ -163,11 +163,11 @@ The contents look like this:
                                                                                                   <n0>Capthurim Chanaan vero genuit Sidonem primogenitum et
                                                                                                                    Heth Iebuseum quoque </n0>
                                                                                           </sample_data>
-                                                                                  </tx_templavoila>                                                                                               
+                                                                                  </tx_templavoilaplus>
                                                                           </field_teaser>
                                                                           <field_url>
                                                                                   <type>attr</type>
-                                                                                  <tx_templavoila>
+                                                                                  <tx_templavoilaplus>
                                                                                           <title>"MORE" URL.</title>
                                                                                           <description>Map to a-tags href-attribute of the link pointing
                                                                                                            to the archive!</description>
@@ -175,15 +175,15 @@ The contents look like this:
                                                                                           <sample_data>
                                                                                                   <n0>javascript:alert('You click this link!');</n0>
                                                                                           </sample_data>
-                                                                                  </tx_templavoila>                                                                       
+                                                                                  </tx_templavoilaplus>
                                                                           </field_url>
-                                                                  </el>                                                   
+                                                                  </el>
                                                           </element_even>
                                                   </el>
                                           </field_fpListing>
-                                  </el>                           
-                          </ROOT>                 
-             </sFrontpage>           
+                                  </el>
+                          </ROOT>
+             </sFrontpage>
           </sheets>
    </T3DataStructure>
 

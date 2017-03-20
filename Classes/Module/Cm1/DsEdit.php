@@ -108,15 +108,15 @@ class DsEdit
                 $eTypes_misc = GeneralUtility::trimExplode(',', $eTypes['defaultTypes_misc']);
 
                 // Create form:
-                /* The basic XML-structure of an tx_templavoila-entry is:
+                /* The basic XML-structure of an tx_templavoilaplus-entry is:
                  *
-                 * <tx_templavoila>
+                 * <tx_templavoilaplus>
                  *     <title>            -> Human readable title of the element
                  *     <description>        -> A description explaining the elements function
                  *     <sample_data>        -> Some sample-data (can't contain HTML)
                  *     <eType>            -> The preset-type of the element, used to switch use/content of TCEforms/TypoScriptObjPath
                  *     <oldStyleColumnNumber>    -> for distributing the fields across the tt_content column-positions
-                 * </tx_templavoila>
+                 * </tx_templavoilaplus>
                  */
                 $form = '
                 <dl id="dsel-general" class="DS-config">
@@ -170,12 +170,12 @@ class DsEdit
                 if (($insertDataArray['type'] != 'array') &&
                     ($insertDataArray['type'] != 'section')
                 ) {
-                    /* The Typoscript-related XML-structure of an tx_templavoila-entry is:
+                    /* The Typoscript-related XML-structure of an tx_templavoilaplus-entry is:
                      *
-                     * <tx_templavoila>
+                     * <tx_templavoilaplus>
                      *    <TypoScript_constants>    -> an array of constants that will be substituted in the <TypoScript>-element
                      *     <TypoScript>        ->
-                     * </tx_templavoila>
+                     * </tx_templavoilaplus>
                      */
                     if ($insertDataArray['tx_templavoilaplus']['eType'] != 'TypoScriptObject') {
                         $form .= '
@@ -187,11 +187,11 @@ class DsEdit
                     </dl>';
                     }
 
-                    /* The Typoscript-related XML-structure of an tx_templavoila-entry is:
+                    /* The Typoscript-related XML-structure of an tx_templavoilaplus-entry is:
                      *
-                     * <tx_templavoila>
+                     * <tx_templavoilaplus>
                      *     <TypoScriptObjPath>    ->
-                     * </tx_templavoila>
+                     * </tx_templavoilaplus>
                      */
 
                     if (isset($insertDataArray['tx_templavoilaplus']['TypoScriptObjPath'])) {
@@ -216,15 +216,15 @@ class DsEdit
                         </dl>';
                     }
 
-                    /* The process-related XML-structure of an tx_templavoila-entry is:
+                    /* The process-related XML-structure of an tx_templavoilaplus-entry is:
                      *
-                     * <tx_templavoila>
+                     * <tx_templavoilaplus>
                      *     <proc>            -> define post-processes for this element's value
                      *        <int>        -> this element's value will be cast to an integer (if exist)
                      *        <HSC>        -> this element's value will convert special chars to HTML-entities (if exist)
                      *        <stdWrap>    -> an implicit stdWrap for this element, "stdWrap { ...inside... }"
                      *     </proc>
-                     * </tx_templavoila>
+                     * </tx_templavoilaplus>
                      */
                     $form .= '
                     <dl id="dsel-proc" class="DS-config">
@@ -308,7 +308,7 @@ class DsEdit
                 /* The basic XML-structure of an entry is:
                  *
                  * <element>
-                 *     <tx_templavoila>    -> entries with informational character belonging to this entry
+                 *     <tx_templavoilaplus>    -> entries with informational character belonging to this entry
                  *     <TCEforms>        -> entries being used for TCE-construction
                  *     <type + el + section>    -> subsequent hierarchical construction
                  *    <langOverlayMode>    -> ??? (is it the language-key?)
