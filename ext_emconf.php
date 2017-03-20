@@ -1,9 +1,9 @@
 <?php
 $EM_CONF[$_EXTKEY] = [
     'title' => 'TemplaVoilà Plus',
-    'description' => 'Point-and-click, popular and easy template engine for TYPO3.',
+    'description' => 'Point-and-click, popular and easy template engine for TYPO3. Replacement for old TemplaVoila.',
     'category' => 'misc',
-    'version' => '7.0.2-dev',
+    'version' => '7.0.2',
     'state' => 'stable',
     'uploadfolder' => 0,
     'createDirs' => 'uploads/tx_templavoilaplus/',
