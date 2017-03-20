@@ -1863,18 +1863,6 @@ class ApiService
         $itemsProcFunc = new \Ppi\TemplaVoilaPlus\Service\ItemProcFunc\StaticDataStructuresHandler();
 
         return $itemsProcFunc->getStoragePid(['table' => 'pages', 'row' => $row]);
-
-        // @TODO Is that all implemented in StaticDataStructuresHandler?
-        $TSconfig = BackendUtility::getTCEFORM_TSconfig('pages', $row);
-        $storagePid = (int)$TSconfig['_STORAGE_PID'];
-
-        // Check for alternative storage folder
-        $modTSConfig = BackendUtility::getModTSconfig($pageUid, 'tx_templavoila.storagePid');
-        if (is_array($modTSConfig) && MathUtility::canBeInterpretedAsInteger($modTSConfig['value'])) {
-            $storagePid = (int)$modTSConfig['value'];
-        }
-
-        return $storagePid;
     }
 
     /**

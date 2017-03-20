@@ -288,14 +288,27 @@ class StaticDataStructuresHandler
         // Check for alternative storage folder
         $field = $params['table'] == 'pages' ? 'uid' : 'pid';
 
-        $modTSConfig = BackendUtility::getModTSconfig($params['row'][$field], 'tx_templavoila.storagePid');
+        $modTSConfig = BackendUtility::getModTSconfig($params['row'][$field], 'tx_templavoilaplus.storagePid');
+        $modTSConfigDeprecated = BackendUtility::getModTSconfig($params['row'][$field], 'tx_templavoila.storagePid');
+
         if (is_array($modTSConfig) && MathUtility::canBeInterpretedAsInteger($modTSConfig['value'])) {
             $storagePid = (int)$modTSConfig['value'];
+        } elseif (is_array($modTSConfigDeprecated)
+            && MathUtility::canBeInterpretedAsInteger($modTSConfigDeprecated['value'])
+        ) {
+            GeneralUtility::deprecationLog(
+                'TemplaVoila Plus: tx_templavoila.storagePid is deprecated. Use tx_templavoilaplus.storagePid instead.'
+            );
+            $storagePid = (int)$modTSConfigDeprecated['value'];
         } else {
             // @TODO Deprecate this part, configuration in pageTS should be enough
             $rootLine = $this->BEgetRootLine($params['row'][$field], '', true);
             foreach ($rootLine as $rC) {
                 if (!empty($rC['storage_pid'])) {
+                    GeneralUtility::deprecationLog(
+                        'TemplaVoila Plus: The field storage_pid is deprecated.'
+                        . ' Instead use tx_templavoilaplus.storagePid in page TypoScript.'
+                    );
                     $storagePid = (int)$rC['storage_pid'];
                     break;
                 }
