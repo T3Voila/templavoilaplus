@@ -3,48 +3,12 @@ defined('TYPO3_MODE') or die();
 // Unserializing the configuration so we can use it here
 $_EXTCONF = unserialize($_EXTCONF);
 
-// Register language aware flex form handling in FormEngine
-// Register render elements
-$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1443361297] = [
-    'nodeName' => 'flex',
-    'priority' => 40,
-    'class' => \Ppi\TemplaVoilaPlus\Form\Container\FlexFormEntryContainer::class,
-];
-$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1443361298] = [
-    'nodeName' => 'flexFormNoTabsContainer',
-    'priority' => 40,
-    'class' => \Ppi\TemplaVoilaPlus\Form\Container\FlexFormNoTabsContainer::class,
-];
-$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1443361299] = [
-    'nodeName' => 'flexFormTabsContainer',
-    'priority' => 40,
-    'class' => \Ppi\TemplaVoilaPlus\Form\Container\FlexFormTabsContainer::class,
-];
-$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1443361300] = [
-    'nodeName' => 'flexFormElementContainer',
-    'priority' => 40,
-    'class' => \Ppi\TemplaVoilaPlus\Form\Container\FlexFormElementContainer::class,
-];
-
-// Unregister stock TcaFlex* data provider and substitute with own data provider at the same dependency position
-\Ppi\TemplaVoilaPlus\Utility\FormEngineUtility::replaceInFormDataGroups(
-    [
-        \TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexProcess::class
-            => \Ppi\TemplaVoilaPlus\Form\FormDataProvider\TcaFlexProcess::class,
-        \TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexFetch::class
-            => \Ppi\TemplaVoilaPlus\Form\FormDataProvider\TcaFlexFetch::class,
-        \TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexPrepare::class
-            => \Ppi\TemplaVoilaPlus\Form\FormDataProvider\TcaFlexPrepare::class,
-    ]
-);
-\Ppi\TemplaVoilaPlus\Utility\FormEngineUtility::addTcaFlexFetch();
-
 // Register "XCLASS" of FlexFormTools for language parsing
+// Done also in TableConfigurationPostProcessingHook!
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class]['className']
     = \Ppi\TemplaVoilaPlus\Configuration\FlexForm\FlexFormTools::class;
-// Language diff updating in flex
-$GLOBALS['TYPO3_CONF_VARS']['BE']['flexFormXMLincludeDiffBase'] = true;
 
+// Register XCLASSes
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Backend\Tree\View\ContentCreationPagePositionMap::class]['className']
     = \Ppi\TemplaVoilaPlus\Tree\View\ContentCreationPagePositionMap::class;
 
@@ -53,6 +17,10 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Backend\Tree\View\PageP
 
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Backend\Controller\ContentElement\NewContentElementController::class]['className']
     = \Ppi\TemplaVoilaPlus\Xclass\NewContentElementController::class;
+
+// Language diff updating in flex
+$GLOBALS['TYPO3_CONF_VARS']['BE']['flexFormXMLincludeDiffBase'] = true;
+
 
 // Adding the two plugins TypoScript:
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript('templavoilaplus', 'setup', '
@@ -97,6 +65,9 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['move
     = \Ppi\TemplaVoilaPlus\Service\DataHandling\DataHandler::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['recordEditAccessInternals']['templavoilaplus']
     = \Ppi\TemplaVoilaPlus\Service\UserFunc\Access::class . '->recordEditAccessInternals';
+// Hook after ext_tables run to do all FormHandler registering things
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['extTablesInclusion-PostProcessing']['templavoilaplus']
+    = \Ppi\TemplaVoilaPlus\Hooks\TableConfigurationPostProcessingHook::class;
 
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['lowlevel']['cleanerModules']['tx_templavoilaplus_unusedce']
     = array(\Ppi\TemplaVoilaPlus\Command\UnusedContentElementCommand::class);
