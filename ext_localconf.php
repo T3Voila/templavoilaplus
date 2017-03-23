@@ -25,7 +25,8 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1443361300] = [
     'priority' => 40,
     'class' => \Ppi\TemplaVoilaPlus\Form\Container\FlexFormElementContainer::class,
 ];
-// Unregister stock TcaFlex* data provider and substitute with own data provider at the same position
+
+// Unregister stock TcaFlex* data provider and substitute with own data provider at the same dependency position
 \Ppi\TemplaVoilaPlus\Utility\FormEngineUtility::replaceInFormDataGroups(
     [
         \TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexProcess::class
@@ -36,6 +37,7 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1443361300] = [
             => \Ppi\TemplaVoilaPlus\Form\FormDataProvider\TcaFlexPrepare::class,
     ]
 );
+\Ppi\TemplaVoilaPlus\Utility\FormEngineUtility::addTcaFlexFetch();
 
 // Register "XCLASS" of FlexFormTools for language parsing
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class]['className']

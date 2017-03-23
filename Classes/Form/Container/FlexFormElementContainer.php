@@ -83,10 +83,15 @@ class FlexFormElementContainer extends AbstractContainer
                 }
 
                 $options = $this->data;
-                $options['flexFormDataStructureArray'] = $flexFormFieldArray['el'];
+                if (version_compare(TYPO3_version, '8.6.0', '>=')) {
+                    $options['flexFormDataStructureArray'] = $flexFormFieldArray;
+                    $options['flexFormFieldName'] = $flexFormFieldName;
+                } else {
+                    $options['flexFormDataStructureArray'] = $flexFormFieldArray['el'];
+                    $options['flexFormSectionType'] = $flexFormFieldName;
+                    $options['flexFormSectionTitle'] = $sectionTitle;
+                }
                 $options['flexFormRowData'] = is_array($flexFormRowData[$flexFormFieldName]['el']) ? $flexFormRowData[$flexFormFieldName]['el'] : array();
-                $options['flexFormSectionType'] = $flexFormFieldName;
-                $options['flexFormSectionTitle'] = $sectionTitle;
                 $options['renderType'] = 'flexFormSectionContainer';
                 $sectionContainerResult = $this->nodeFactory->create($options)->render();
                 $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $sectionContainerResult);
