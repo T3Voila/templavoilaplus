@@ -92,7 +92,7 @@ function sortable_unlinkRecordCallBack(obj)
 
 function sortable_unlinkRecord(pointer, id, elementPointer) {
     new TYPO3.jQuery.ajax({
-        url: TYPO3.settings.ajaxUrls['Ppi\\TemplaVoilaPlus\Module\\Mod1\\Ajax::unlinkRecord'],
+        url: TYPO3.settings.ajaxUrls['Ppi\\TemplaVoilaPlus\\Module\\Mod1\\Ajax::unlinkRecord'],
         type: 'post',
         cache: false,
         data: {
@@ -170,7 +170,7 @@ function sortable_update(list, element, sortOrder)
     if (destinationIndex != -1 && sortableSource != null) {
         var destination = sortable_containers['#' + list.id] + destinationIndex;
         new TYPO3.jQuery.ajax({
-            url: TYPO3.settings.ajaxUrls['Ppi\\TemplaVoilaPlus\Module\\Mod1\\Ajax::moveRecord'],
+            url: TYPO3.settings.ajaxUrls['Ppi\\TemplaVoilaPlus\\Module\\Mod1\\Ajax::moveRecord'],
             type: 'post',
             cache: false,
             data: {
