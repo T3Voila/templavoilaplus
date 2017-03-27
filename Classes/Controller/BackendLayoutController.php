@@ -536,11 +536,6 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         }
 
         if ($access) {
-            if (GeneralUtility::_GP('ajaxUnlinkRecord')) {
-                $unlinkDestinationPointer = $this->apiObj->flexform_getPointerFromString(GeneralUtility::_GP('ajaxUnlinkRecord'));
-                $this->apiObj->unlinkElement($unlinkDestinationPointer);
-            }
-
             $this->calcPerms = $this->getCalcPerms($pageInfoArr['uid']);
 
             // Define the root element record:
@@ -742,12 +737,6 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 }
                 // Render "edit current page" (important to do before calling ->sideBarObj->render() - otherwise the translation tab is not rendered!
                 $editCurrentPageHTML .= $this->render_editPageScreen();
-
-                if (GeneralUtility::_GP('ajaxUnlinkRecord')) {
-                    $this->render_editPageScreen();
-                    echo $this->render_sidebar();
-                    exit;
-                }
 
                 $this->content .= $editCurrentPageHTML;
 
