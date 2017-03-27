@@ -18,7 +18,7 @@
 Introduction
 ^^^^^^^^^^^^
 
-You can use TemplaVoilas API for templates in your own plugins if you
+You can use TemplaVoilà Plus API for templates in your own plugins if you
 like. As an example of this, lets look at how the “mininews” extension
 works:
 
@@ -39,6 +39,6 @@ cases since you can style it all by CSS styles. Thus you might not
 need to make an alternative template!
 
 However if you would like to restructure the output more than you can
-do by the CSS styles on the default HTML you can create a TemplaVoila
-template. The mininews extension supports this.
+do by the CSS styles on the default HTML you can create a TemplaVoilà
+Plus template. The mininews extension supports this.
 

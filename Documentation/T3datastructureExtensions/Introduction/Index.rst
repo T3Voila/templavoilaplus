@@ -18,8 +18,8 @@
 Introduction
 ^^^^^^^^^^^^
 
-TemplaVoila extends the Data Structure XML with a set of tags which
-defines two things related to TemplaVoila:
+TemplaVoilà Plus extends the Data Structure XML with a set of tags
+which defines two things related to TemplaVoilà Plus:
 
 - **Mapping:** Definition of mapping rules, descriptions, sample data,
   and field type preset
@@ -28,8 +28,8 @@ defines two things related to TemplaVoila:
   flags and constants
 
 
-<T3DataStructure> extensions for “<tx\_templavoila>”
-""""""""""""""""""""""""""""""""""""""""""""""""""""
+<T3DataStructure> extensions for “<tx\_templavoilaplus>”
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 “ **Array” Elements:**
 
@@ -53,7 +53,7 @@ defines two things related to TemplaVoila:
          <[application tag]>
 
    Description
-         In this case the application tag is “<tx\_templavoila>”
+         In this case the application tag is “<tx\_templavoilaplus>”
 
    Sub-elements
          <title>
@@ -88,7 +88,7 @@ defines two things related to TemplaVoila:
 .. container:: table-row
 
    Element
-         <ROOT><tx\_templavoila>
+         <ROOT><tx\_templavoilaplus>
 
    Description
          For <ROOT> elements in the DS
@@ -343,8 +343,8 @@ defines two things related to TemplaVoila:
 
    Description
          Value pointing to a TCEforms preset. Used for building of Data
-         Structures with templavoila. Automatically set and controlled. This
-         tag only used internally by the mapping tool.
+         Structures with TemplaVoilà Plus. Automatically set and controlled.
+         This tag only used internally by the mapping tool.
 
 
 .. container:: table-row
@@ -356,6 +356,7 @@ defines two things related to TemplaVoila:
          integer
 
    Description
+         @TODO This part seams out of date
          By setting this tag to an integer value (usually between 0 and 3), you
          define to which tt\_content column number this field relates. This
          information is used by the list module, frontend editing and all other
@@ -433,7 +434,7 @@ defines two things related to TemplaVoila:
 
          - In the TypoScript template of the website; In the Setup field you can
            set constants as properties (first level only) in
-           “plugin.tx\_templavoila\_pi1.TSconst” - those can be inserted by
+           “plugin.tx\_templavoilaplus\_pi1.TSconst” - those can be inserted by
            {$TSconst.[constant name]} in the <TypoScript> data!
 
          **General example:**
@@ -688,9 +689,9 @@ defines two things related to TemplaVoila:
 
    Description
          In the Data Structure only “array” or blank makes sense. However for
-         TemplaVoila there is additional values possible, “attr” and “no\_map”.
-         This is a complete TemplaVoila related overview of the <type> /
-         <section> meanings:
+         TemplaVoilà Plus there is additional values possible, “attr” and
+         “no\_map”. This is a complete TemplaVoilà Plus related overview of
+         the <type> / <section> meanings:
 
          - <type>array</type> = Renders an array or objects
 
@@ -708,12 +709,12 @@ defines two things related to TemplaVoila:
 .. ###### END~OF~TABLE ######
 
 
-Sheets and TemplaVoila
-""""""""""""""""""""""
+Sheets and TemplaVoilà Plus
+"""""""""""""""""""""""""""
 
-TemplaVoila is compatible with definition of sheets. In that case a
-sheet <ROOT> element is shown in the mapping structure containing each
+TemplaVoilà Plus is compatible with definition of sheets. In that case
+a sheet <ROOT> element is shown in the mapping structure containing each
 sheet as <ROOT> elements under it. Even if multiple sheets are used
-TemplaVoila renders only one sheet either determined by the
+TemplaVoilà Plus renders only one sheet either determined by the
 sheetSelector or using the “sDEF” sheet by default.
 

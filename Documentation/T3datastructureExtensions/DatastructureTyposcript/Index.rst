@@ -42,7 +42,7 @@ Register overview:
 .. container:: table-row
 
    Register name
-         tx\_templavoila\_pi1.parentRec.<field>
+         tx\_templavoilaplus\_pi1.parentRec.<field>
    
    Description
          Access field data from the database record. See examples below.
@@ -51,7 +51,7 @@ Register overview:
 .. container:: table-row
 
    Register name
-         tx\_templavoila\_pi1.current\_field
+         tx\_templavoilaplus\_pi1.current\_field
    
    Description
          Contains the name of the datastructure field.
@@ -60,7 +60,7 @@ Register overview:
 .. container:: table-row
 
    Register name
-         tx\_templavoila\_pi1.nested\_fields
+         tx\_templavoilaplus\_pi1.nested\_fields
    
    Description
          Contains the list of all fields your TypoScript is rendered in and
@@ -70,7 +70,7 @@ Register overview:
 .. container:: table-row
 
    Register name
-         tx\_templavoila\_pi1.sectionPos
+         tx\_templavoilaplus\_pi1.sectionPos
    
    Description
          Retrieve the current position of your element within a section. See
@@ -80,7 +80,7 @@ Register overview:
 .. container:: table-row
 
    Register name
-         tx\_templavoila\_pi1.sectionCount
+         tx\_templavoilaplus\_pi1.sectionCount
    
    Description
          Retrieve the total amount of elements in the current section. See
@@ -90,7 +90,7 @@ Register overview:
 .. container:: table-row
 
    Register name
-         tx\_templavoila\_pi1.sectionIsFirstItem
+         tx\_templavoilaplus\_pi1.sectionIsFirstItem
    
    Description
          Determine whether the current element is the first element within the
@@ -100,7 +100,7 @@ Register overview:
 .. container:: table-row
 
    Register name
-         tx\_templavoila\_pi1.sectionIsLastItem
+         tx\_templavoilaplus\_pi1.sectionIsLastItem
    
    Description
          Determine whether the current element is the last element within the
@@ -127,12 +127,12 @@ The following example shows how to use these registers:
    </TypoScript>
 
 Thus any field of parent record is defined as
-**tx\_templavoila\_pi1.parentRec.XXX** register, where XXX is replaced
+**tx\_templavoilaplus\_pi1.parentRec.XXX** register, where XXX is replaced
 by a field name from the corresponding table.
 
 Notice that these registers are undefined for static data structures
 because static data structures do not have associated parent record.
-If reference to  **tx\_templavoila\_pi1.parentRec.XXX** appears in the
+If reference to  **tx\_templavoilaplus\_pi1.parentRec.XXX** appears in the
 static data structure, result is undefined.
 
 
@@ -142,10 +142,10 @@ static data structure, result is undefined.
 When using TypoScript for items within sections TemplaVoila 1.4
 introduced 4 new registers to determine the position of the current
 item within the entire section. They are defined as
-**tx\_templavoila\_pi1.sectionPos** ,
-**tx\_templavoila\_pi1.sectionCount** ,
-**tx\_templavoila\_pi1.sectionIsFirstItem** and
-**tx\_templavoila\_pi1.sectionIsLastItem** .
+**tx\_templavoilaplus\_pi1.sectionPos** ,
+**tx\_templavoilaplus\_pi1.sectionCount** ,
+**tx\_templavoilaplus\_pi1.sectionIsFirstItem** and
+**tx\_templavoilaplus\_pi1.sectionIsLastItem** .
 
 Example:
 

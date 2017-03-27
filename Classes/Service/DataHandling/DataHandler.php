@@ -171,9 +171,8 @@ class DataHandler
                     $fieldArray['config'] = '
 page = PAGE
 page.10 = USER
-page.10.userFunc = tx_templavoilaplus_pi1->main_page
-page.10.disableExplosivePreview = 1
-				';
+page.10.userFunc = Ppi\TemplaVoilaPlus\Controller\FrontendController->main_page
+page.10.disableExplosivePreview = 1';
                 }
             }
         }

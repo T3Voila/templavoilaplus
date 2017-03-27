@@ -44,7 +44,7 @@ detects the record. Comments below
       3:         // Init FlexForm configuration for plugin:
       4:     $this->pi_initPIflexForm();
       5:
-      6:         // Looking for TemplaVoila TO record and if found, initialize template object:
+      6:         // Looking for TemplaVoilà Plus TO record and if found, initialize template object:
       7:     if (t3lib_extMgm::isLoaded('templavoilaplus'))    {
       8:         $field_templateObject = $this->pi_getFFvalue($this->cObj->data['pi_flexform'],'field_templateObject');
       9:         if ((int)$field_templateObject)    {
@@ -61,7 +61,7 @@ detects the record. Comments below
   an array with the same XML converted to PHP array by
   t3lib\_div::xml2array()
 
-- Line 7 checks if TemplaVoila is loaded -which it must be of course!
+- Line 7 checks if TemplaVoilà Plus is loaded -which it must be of course!
 
 - Line 8 requests the value of “field\_templateObject” in the FlexForm
   content of “pi\_flexform”
@@ -69,7 +69,7 @@ detects the record. Comments below
 - Line 9 sees in that value is an integer - which means it points to a
   Template Object record “uid”
 
-- In line 10 we create an instance of the “tx\_templavoila\_htmlmarkup”
+- In line 10 we create an instance of the “\Ppi\TemplaVoilaPlus\Domain\Model\HtmlMarkup::class”
   class which will be our API for merging our  *data* from mininews with
   the  *template* from the Template Object record.
 
@@ -97,7 +97,7 @@ examples.
 
 The first example is how to accumulate content for list rows. This is
 basically done by a loop, traversing over the elements and for each
-iteration calling an API function in TemplaVoila with two arguments,
+iteration calling an API function in TemplaVoilà Plus with two arguments,
 the appropriate part of the ->TA variable (Template Array = cached
 template markup) and an array with the mininews data.
 

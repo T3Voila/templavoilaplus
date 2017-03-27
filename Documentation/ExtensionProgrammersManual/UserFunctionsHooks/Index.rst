@@ -19,10 +19,10 @@ User functions / hooks
 ^^^^^^^^^^^^^^^^^^^^^^
 
 Where it made sense, we have implemented some hooks every here and
-there in TemplaVoila in order to give extension programmers a chance
-to override or extend certain functionality. Just register your own
-function and you will take over the control or take influence on that
-part of TemplaVoila.
+there in TemplaVoilà Plus in order to give extension programmers a
+chance to override or extend certain functionality. Just register
+your own function and you will take over the control or take
+influence on that part of TemplaVoilà Plus.
 
 If you need to extend a certain part and don't find a way to include
 your own code, just get in touch with us, we might include some API to
@@ -116,7 +116,7 @@ provided before you implement your own userfunction.
             $TYPO3_CONF_VARS['EXTCONF']['templavoilaplus']['cm1']['eTypesConfGen']['input'] = 'tx_myClass->myMethod'
          
          For more information on how to design your user function have a look
-         at templavoila/cm1/index.php
+         at templavoilaplus/Classes/Module/Cm1/ETypes.php
 
 
 .. container:: table-row

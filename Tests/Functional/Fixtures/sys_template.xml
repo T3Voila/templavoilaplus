@@ -14,7 +14,7 @@
 		<include_static_file><![CDATA[EXT:css_styled_content/static/]]></include_static_file>
 		<config><![CDATA[page = PAGE
 page.10 = USER
-page.10.userFunc = tx_templavoilaplus_pi1->main_page
+page.10.userFunc = Ppi\TemplaVoilaPlus\Controller\FrontendController->main_page
 page.10.disableExplosivePreview = 1]]></config>
 	</sys_template>
 </dataset>

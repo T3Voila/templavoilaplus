@@ -15,8 +15,8 @@
 .. role::   php(code)
 
 
-TemplaVoila API for extension developers
-----------------------------------------
+TemplaVoilà Plus API for extension developers
+---------------------------------------------
 
 - Basic concept
 

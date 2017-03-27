@@ -174,5 +174,5 @@ Plugin “pi1” attributes
 
 .. ###### END~OF~TABLE ######
 
-[tsref:plugin.tx\_templavoila\_pi1]
+[tsref:plugin.tx\_templavoilaplus\_pi1]
 
