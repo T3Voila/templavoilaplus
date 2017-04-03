@@ -95,6 +95,9 @@ class OldTemplavoilaUpdateController extends StepUpdateController
         if (($migratedDsData = $this->migrateDataStructureData()) === false) {
             $this->errors[] = 'Error while migrate data of data structures.';
         }
+        if (($migratedToData = $this->migrateTemplateObjectLocalProcessing()) === false) {
+            $this->errors[] = 'Error while migrate local processing data of template objects.';
+        }
         if (($migratedUploadFiles = $this->migrateFiles()) === false) {
             $this->errors[] = 'Error while copy files from uploads/tx_templavoila to uploads/tx_templavoilaplus.';
         }
@@ -112,6 +115,7 @@ class OldTemplavoilaUpdateController extends StepUpdateController
             'migrateGroupTableModify' => $migrateGroupTableModify,
             'migrateGroupNonExcludeFields' => $migrateGroupNonExcludeFields,
             'migratedDsData' => $migratedDsData,
+            'migratedToData' => $migratedToData,
             'migratedUploadFiles' => $migratedUploadFiles,
             'errors' => $this->errors,
         ]);
@@ -363,6 +367,21 @@ class OldTemplavoilaUpdateController extends StepUpdateController
     {
         $handler = GeneralUtility::makeInstance(DataStructureUpdateHandler::class);
         return $handler->updateAllDs(
+            [
+                [$this, 'migrateRootData'],
+            ],
+            [
+                [$this, 'migrateElementData'],
+            ]
+        );
+    }
+
+    // Convert DS <T3DataStructure><ROOT><tx_templavoila>
+    // Convert DS <T3DataStructure><ROOT><el><field..><tx_templavoila>
+    private function migrateTemplateObjectLocalProcessing()
+    {
+        $handler = GeneralUtility::makeInstance(DataStructureUpdateHandler::class);
+        return $handler->updateAllToLocals(
             [
                 [$this, 'migrateRootData'],
             ],

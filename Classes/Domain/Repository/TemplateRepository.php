@@ -115,7 +115,7 @@ class TemplateRepository implements \TYPO3\CMS\Core\SingletonInterface
     }
 
     /**
-     * Retrieve a collection (array) of tx_templavoilaplus_datastructure objects
+     * Retrieve a collection (array) of tx_templavoilaplus_tmplobj objects
      *
      * @param integer $storagePid
      *
@@ -141,7 +141,7 @@ class TemplateRepository implements \TYPO3\CMS\Core\SingletonInterface
     }
 
     /**
-     * Sorts datastructure alphabetically
+     * Sorts templates alphabetically
      *
      * @param \Ppi\TemplaVoilaPlus\Domain\Model\Template $obj1
      * @param \Ppi\TemplaVoilaPlus\Domain\Model\Template $obj2
