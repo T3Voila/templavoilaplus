@@ -36,7 +36,8 @@ CREATE TABLE tx_templavoilaplus_tmplobj (
 
     PRIMARY KEY (uid),
     KEY t3ver_oid (t3ver_oid,t3ver_wsid),
-    KEY parent (pid)
+    KEY parent (pid),
+    KEY rendering (parent,rendertype)
 );
 
 #
