@@ -17,11 +17,6 @@ $EM_CONF[$_EXTKEY] = [
             'typo3' => '7.6.0-8.6.99',
         ],
         'conflicts' => [
-            'kb_tv_clipboard' => '-0.1.0',
-            'templavoila_cw' => '-0.1.0',
-            'eu_tradvoila' => '-0.0.2',
-            'me_templavoilalayout' => '',
-            'me_templavoilalayout2' => '',
             'templavoila' => '-3.0.0',
         ],
         'suggests' => [],
