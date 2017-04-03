@@ -18,6 +18,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
 use Ppi\TemplaVoilaPlus\Domain\Repository\DataStructureRepository;
+use Ppi\TemplaVoilaPlus\Domain\Repository\TemplateRepository;
 
 /**
  * Handles Updates in DataStructure via Callbacks
@@ -40,28 +41,60 @@ class DataStructureUpdateHandler
         return $count;
     }
 
+    public function updateAllToLocals(array $rootCallbacks, array $elementCallbacks)
+    {
+        $count = 0;
+
+        $tsRepo = GeneralUtility::makeInstance(TemplateRepository::class);
+        foreach ($tsRepo->getAll() as $to) {
+            if ($this->updateTo($to, $rootCallbacks, $elementCallbacks)) {
+                $count++;
+            }
+        }
+
+        return $count;
+    }
+
     public function updateDs(
         \Ppi\TemplaVoilaPlus\Domain\Model\AbstractDataStructure $ds,
         array $rootCallbacks,
         array $elementCallbacks
     ) {
-        $changed = false;
         $data = $ds->getDataprotArray();
-        $this->lastKey = $ds->getKey();
 
-        foreach ($rootCallbacks as $callback) {
-            if (is_callable($callback)) {
-                $changed = $callback($data) || $changed;
-            }
-        }
-
-        foreach($data['ROOT']['el'] as &$element) {
-            $changed = $this->fixPerElement($element, $elementCallbacks) || $changed;
-        }
+        $changed = $this->processUpdate($data, $rootCallbacks, $elementCallbacks);
 
         if ($changed) {
             $this->saveChange(
-                $ds,
+                $ds->getKey(),
+                'tx_templavoilaplus_datastructure',
+                'dataprot',
+                GeneralUtility::array2xml_cs(
+                    $data,
+                    'T3DataStructure',
+                    ['useCDATA' => 1]
+                ),
+                $ds->isFilebased()
+            );
+            return true;
+        }
+        return false;
+    }
+
+    public function updateTo(
+        \Ppi\TemplaVoilaPlus\Domain\Model\Template $to,
+        array $rootCallbacks,
+        array $elementCallbacks
+    ) {
+        $data = $to->getLocalDataprotArray(true);
+
+        $changed = $this->processUpdate($data, $rootCallbacks, $elementCallbacks);
+
+        if ($changed) {
+            $this->saveChange(
+                $to->getKey(),
+                'tx_templavoilaplus_tmplobj',
+                'localprocessing',
                 GeneralUtility::array2xml_cs(
                     $data,
                     'T3DataStructure',
@@ -73,20 +106,45 @@ class DataStructureUpdateHandler
         return false;
     }
 
-    protected function saveChange($ds, $dataProtXML)
+
+    public function processUpdate(
+        array &$data,
+        array $rootCallbacks,
+        array $elementCallbacks
+    ) {
+        $changed = false;
+
+        if (empty($data)) {
+            return false;
+        }
+
+        foreach ($rootCallbacks as $callback) {
+            if (is_callable($callback)) {
+                $changed = $callback($data) || $changed;
+            }
+        }
+
+        foreach($data['ROOT']['el'] as &$element) {
+            $changed = $this->fixPerElement($element, $elementCallbacks) || $changed;
+        }
+
+        return $changed;
+    }
+
+    protected function saveChange($key, $table, $field, $dataProtXML, $filebased = false)
     {
-        if ($ds->isFilebased()) {
-            $path = PATH_site . $ds->getKey();
+        if ($filebased) {
+            $path = PATH_site . $key;
             GeneralUtility::writeFile($path, $dataProtXML);
         } else {
             $tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
             $tce->stripslashes_values = 0;
 
             $dataArr = [];
-            $dataArr['tx_templavoilaplus_datastructure'][$ds->getKey()]['dataprot'] = $dataProtXML;
+            $dataArr[$table][$key][$field] = $dataProtXML;
 
             // process data
-            $tce->start($dataArr, array());
+            $tce->start($dataArr, []);
             $tce->process_datamap();
         }
     }

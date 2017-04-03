@@ -4,7 +4,7 @@
 .t3js-module-body h1:first-child {display: none;}
 </style>
 
-<h1>TemplaVoilà Plus! Update from old TeamplaVoilà 1.9/2.0</h1>
+<h1>TemplaVoilà Plus! Update from old TeamplaVoilà 1.8/1.9/2.0</h1>
 <f:be.infobox title="Warning" state="1">
     Please backup your database/files before running any of the update scripts!<br />
     This will remove data you already did with this new TemplaVoilà Plus 7.x Extension.
@@ -18,7 +18,7 @@
         </f:for>
     </f:then>
     <f:else>
-        <h2>Migrate from TemplaVoilà 1.9/2.0 to TemplaVoilà Plus 7.x?</h2>
+        <h2>Migrate from TemplaVoilà 1.8/1.9/2.0 to TemplaVoilà Plus 7.x?</h2>
         <form action="#" method="POST">
             <input type="hidden" name="update" value="OldTemplavoila" />
             <p>We will migrate from old TeamplaVoilà {old.ds} / {old.to} Data Structures/Template Objects (in database) over the already existing {new.ds} / {new.to} Data Structures/Template Objects which are in new TemplaVoilà Plus 7.x (in database).</p>
@@ -28,7 +28,7 @@
             <p><b>This will remove data you already did with this new TemplaVoilà Plus 7.x Extension.</b></p>
             <f:be.infobox title="" state="1">
                 <button class="btn btn-warning btn-block btn-lg" type="submit" name="step" value="final">
-                    <core:icon identifier="extensions-scheduler-run-task" /> Yes, migrate data from TemplaVoilà 1.9/2.0 to TemplaVoilà Plus 7.x
+                    <core:icon identifier="extensions-scheduler-run-task" /> Yes, migrate data from TemplaVoilà 1.8/1.9/2.0 to TemplaVoilà Plus 7.x
                 </button>
             </div>
             </f:be.infobox>

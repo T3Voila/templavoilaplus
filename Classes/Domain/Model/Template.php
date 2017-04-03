@@ -378,7 +378,7 @@ class Template
         if (!$skipDsDataprot) {
             $dataprot = $this->getDatastructure()->getDataprotArray();
         } else {
-            $dataprot = array();
+            $dataprot = [];
         }
         $toDataprot = GeneralUtility::xml2array($this->row['localprocessing']);
 
