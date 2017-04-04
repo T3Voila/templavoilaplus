@@ -593,8 +593,11 @@ page.10.disableExplosivePreview = 1';
             } else {
                 $record = BackendUtility::getRecord('tx_templavoilaplus_tmplobj', $toId, 'datastructure');
             }
+
+            $is85OrNewer = version_compare(TYPO3_version, '8.5.0', '>=') ? true : false;
+
             if (is_array($record) && isset($record['datastructure'])) {
-                $incomingFieldArray[$dsField] = $record['datastructure'];
+                $incomingFieldArray[$dsField] = ($is85OrNewer? 'FILE:' : '') . $record['datastructure'];
             }
         }
     }
