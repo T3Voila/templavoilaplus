@@ -135,12 +135,14 @@ class StaticDataStructuresHandler
             )
         );
 
+        $is85OrNewer = version_compare(TYPO3_version, '8.5.0', '>=') ? true : false;
+
         foreach ($dsList as $dsObj) {
             /** @var \Ppi\TemplaVoilaPlus\Domain\Model\AbstractDataStructure $dsObj */
             if ($dsObj->isPermittedForUser($params['row'], $removeDSItems)) {
                 $params['items'][] = array(
                     $dsObj->getLabel(),
-                    $dsObj->getKey(),
+                    ($is85OrNewer? 'FILE:' : '') . $dsObj->getKey(),
                     $dsObj->getIcon()
                 );
             }
