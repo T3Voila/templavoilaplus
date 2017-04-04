@@ -30,8 +30,8 @@ class StepUpdateController extends AbstractUpdateController
     {
         $step = GeneralUtility::_GP('step');
 
-        if ($step !== 'start' 
-            && $step !== 'final' 
+        if ($step !== 'start'
+            && $step !== 'final'
             && !is_numeric($step)
             && !$this->stepExists($step)
         ) {
@@ -41,23 +41,23 @@ class StepUpdateController extends AbstractUpdateController
         $stepFunction = 'step' . ucfirst($step);
         $this->$stepFunction();
         $this->setStepTemplate($step);
-        
+
         return parent::run();
     }
-    
+
     public function stepExists($step)
     {
         return method_exists($this, 'step' . ucfirst($step));
     }
-    
+
     public function setStepTemplate($step)
     {
         $this->setTemplate(
-            $this->getTemplate() 
+            $this->getTemplate()
             . 'Step' . ucfirst($step)
         );
     }
-    
+
     protected function stepStart()
     {
     }

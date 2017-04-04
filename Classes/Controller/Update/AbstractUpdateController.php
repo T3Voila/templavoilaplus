@@ -23,9 +23,24 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class AbstractUpdateController
 {
+    /**
+     * @var \TYPO3\CMS\Fluid\View\StandaloneView
+     */
     protected $fluid;
-    
+
+    /**
+     * Filename of template to view in fluid
+     *
+     * @var string
+     */
     protected $template;
+
+    /**
+     * holds the extconf configuration
+     *
+     * @var array
+     */
+    protected $extConf;
 
     public function __construct()
     {
@@ -38,13 +53,15 @@ class AbstractUpdateController
         ]);
         $classPartsName = explode('\\', get_class($this));
         $this->setTemplate('Update/' . substr(array_pop($classPartsName), 0, -16));
+
+        $this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoilaplus']);
     }
-    
+
     public function setTemplate($template)
     {
         $this->template = $template;
     }
-    
+
     public function getTemplate()
     {
         return $this->template;
@@ -56,6 +73,11 @@ class AbstractUpdateController
     public function run()
     {
         $this->fluid->setTemplate($this->template);
+        $this->fluid->assignMultiple([
+            'is85OrNewer' => version_compare(TYPO3_version, '8.5.0', '>=') ? true : false,
+            'typo3Version' => TYPO3_version,
+            'useStaticDS' => ($this->extConf['staticDS.']['enable']),
+        ]);
         return $this->fluid->render();
     }
 }
