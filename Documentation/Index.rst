@@ -65,6 +65,7 @@ EXT: TemplaVoilà Plus
    :glob:
 
    Introduction/Index
+   Migration/Index
    SiteDevelopersManual/Index
    NewContentElementWizard/Index
    ExtensionProgrammersManual/Index
