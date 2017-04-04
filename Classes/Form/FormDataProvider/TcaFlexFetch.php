@@ -58,6 +58,15 @@ class TcaFlexFetch implements FormDataProviderInterface
      */
     protected function initializeDataStructure(array $result, $fieldName)
     {
+        if (version_compare(TYPO3_version, '8.5.0', '>=')) {
+            return $this->initializeDataStructure8($result, $fieldName);
+        } else {
+            return $this->initializeDataStructure7($result, $fieldName);
+        }
+    }
+
+    protected function initializeDataStructure7(array $result, $fieldName)
+    {
         // Fetch / initialize data structure
         $dataStructureArray = BackendUtility::getFlexFormDS(
             $result['processedTca']['columns'][$fieldName]['config'],
@@ -75,6 +84,33 @@ class TcaFlexFetch implements FormDataProviderInterface
             $dataStructureArray['meta'] = array();
         }
         // This kicks one array depth:  config['ds']['matchingIdentifier'] becomes config['ds']
+        $result['processedTca']['columns'][$fieldName]['config']['ds'] = $dataStructureArray;
+        return $result;
+    }
+
+    protected function initializeDataStructure8(array $result, $fieldName)
+    {
+        if (!isset($result['processedTca']['columns'][$fieldName]['config']['dataStructureIdentifier'])) {
+            $flexFormTools = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class);
+            $dataStructureIdentifier = $flexFormTools->getDataStructureIdentifier(
+                $result['processedTca']['columns'][$fieldName],
+                $result['tableName'],
+                $fieldName,
+                $result['databaseRow']
+            );
+            // Add the identifier to TCA to use it later during rendering
+            $result['processedTca']['columns'][$fieldName]['config']['dataStructureIdentifier'] = $dataStructureIdentifier;
+            $dataStructureArray = $flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
+        } else {
+            // Assume the data structure has been given from outside if the data structure identifier is already set.
+            $dataStructureArray = $result['processedTca']['columns'][$fieldName]['config']['ds'];
+        }
+        if (!isset($dataStructureArray['meta']) || !is_array($dataStructureArray['meta'])) {
+            $dataStructureArray['meta'] = [];
+        }
+        // This kicks one array depth:  config['ds']['listOfDataStructures'] becomes config['ds']
+        // This also ensures the final ds can be found in 'ds', even if the DS was fetch from
+        // a record, see FlexFormTools->getDataStructureIdentifier() for details.
         $result['processedTca']['columns'][$fieldName]['config']['ds'] = $dataStructureArray;
         return $result;
     }
