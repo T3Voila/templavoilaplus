@@ -18,6 +18,16 @@
             <core:icon identifier="extensions-scheduler-run-task" /> Update DataStructure from TYPO3 6.2 to 7/8 LTS
         </button>
     </f:be.infobox>
+    <f:if condition="{is85OrNewer}">
+    <f:if condition="{useStaticDS}">
+    <f:be.infobox title="Static Data Structure referencing update for TYPO3 8 LTS." state="-1">
+        <button class="btn btn-primary btn-block btn-lg" type="submit" name="update" value="StaticDataStructureV8">
+            <core:icon identifier="extensions-scheduler-run-task" /> Update Static Data Structure referencing for TYPO3 8 LTS
+        </button>
+    </div>
+    </f:be.infobox>
+    </f:if>
+    </f:if>
     <f:be.infobox title="Static Data Structure will be the way to go. But it may be need some love/tests yet." state="1">
         <button class="btn btn-warning btn-block btn-lg" type="submit" name="update" value="StaticData">
             <core:icon identifier="extensions-scheduler-run-task" /> Convert to Static Data Structure
