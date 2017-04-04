@@ -49,7 +49,7 @@ class DataStructure extends AbstractDataStructure
         $this->setLabel($this->row['title']);
         $this->setScope($this->row['scope']);
         // path relative to typo3 maindir
-        $this->setIcon('../uploads/tx_templavoilaplus/' . $this->row['previewicon']);
+        $this->setIcon('uploads/tx_templavoilaplus/' . $this->row['previewicon']);
         $this->setSortbyField($GLOBALS['TCA']['tx_templavoilaplus_datastructure']['ctrl']['sortby']);
     }
 
