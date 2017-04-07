@@ -141,7 +141,7 @@ class Specialdoktypes implements SingletonInterface
         }
 
         $mountSourcePageRecord = BackendUtility::getRecordWSOL('pages', $pageRecord['mount_pid']);
-        $mountSourceIcon = $this->pObj->getIconFactory()->getSpriteIconForRecord('pages', $mountSourcePageRecord, Icon::SIZE_SMALL);
+        $mountSourceIcon = $this->pObj->getIconFactory()->getIconForRecord('pages', $mountSourcePageRecord, Icon::SIZE_SMALL);
         $mountSourceButton = BackendUtility::wrapClickMenuOnIcon(
             $mountSourceIcon,
             'pages',
