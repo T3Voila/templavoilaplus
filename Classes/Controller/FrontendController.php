@@ -394,7 +394,7 @@ class FrontendController extends AbstractPlugin
                             && isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/classes/class.frontendedit.php']['edit']);
 
                         if ($GLOBALS['TSFE']->fePreview && $GLOBALS['TSFE']->beUserLogin && !$GLOBALS['TSFE']->workspacePreview && !$this->conf['disableExplosivePreview'] && !$feedit) {
-                            $content = $this->visualID($content, $row['tx_templavoilaplus_ds'], $dsObj, $TOrec, $row, $table);
+                            $content = $this->visualID($content, $row['tx_templavoilaplus_ds'], $DS, $TOrec, $row, $table);
                         }
                     } else {
                         $content = $this->formatError('Template Object could not be unserialized successfully.
