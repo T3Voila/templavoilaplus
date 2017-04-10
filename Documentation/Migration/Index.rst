@@ -20,7 +20,8 @@ Steps to work
 #. (This Update script has a own version number, you may recheck it from time to time, you can run it as often you like)
 #. Now the automatic part is done.
 #. Look now through all your TypoScript scripts and replace all occurences of tx_templavoila with tx_templavoilaplus
-#. You may also switch your PAGE object definition to::
+#. You may also switch your PAGE object definition to
+.. code-block:: typoscript
     page = PAGE
     page {
         typeNum = 0
