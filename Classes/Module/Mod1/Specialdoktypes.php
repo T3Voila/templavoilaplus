@@ -17,6 +17,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * Submodule 'clipboard' for the templavoila page module
@@ -108,17 +109,57 @@ class Specialdoktypes implements SingletonInterface
     public function renderDoktype_4($pageRecord)
     {
         $jumpToShortcutSourceLink = '';
-        if ((int)$pageRecord['shortcut_mode'] == 0) {
-            $shortcutSourcePageRecord = BackendUtility::getRecordWSOL('pages', $pageRecord['shortcut']);
+        $shortcutSourcePageRecord = [];
+        $shortcutMode = (int)$pageRecord['shortcut_mode'];
+
+        switch ($shortcutMode) {
+            case PageRepository::SHORTCUT_MODE_NONE: // Should be SHORTCUT_MODE_SELECT
+                // Use selected page
+                $targetUid = (int)$pageRecord['shortcut'];
+                break;
+            case PageRepository::SHORTCUT_MODE_FIRST_SUBPAGE:
+                // First subpage of current/selected page
+                $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
+                $result = $pageRepository->getFirstWebPage((int)$pageRecord['shortcut'] ?: (int)$pageRecord['uid']);
+                if ($result) {
+                    $targetUid = $result['uid'];
+                }
+                break;
+            case PageRepository::SHORTCUT_MODE_PARENT_PAGE:
+                // Parent page of current/selected page
+                if ((int)$pageRecord['shortcut']) {
+                    $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
+                    $shortcutTargetRecord = BackendUtility::getRecordWSOL('pages', (int)$pageRecord['shortcut']);
+                    if ($shortcutTargetRecord) {
+                        $targetUid = (int)$shortcutTargetRecord['pid'];
+                    }
+                } else {
+                    $targetUid = (int)$pageRecord['pid'];
+                }
+                break;
+            case PageRepository::SHORTCUT_MODE_RANDOM_SUBPAGE:
+                // Random subpage of current/selected page
+            default:
+                // Random and other shortcut modes not supported
+                break;
+        }
+
+        if ($targetUid) {
+            $shortcutSourcePageRecord = BackendUtility::getRecordWSOL('pages', $targetUid);
+            $url = $this->pObj->getBaseUrl(['id' => $targetUid]);
+            $clickUrl = 'jumpToUrl(\'' . $url . '\');return false;';
             $jumpToShortcutSourceLink = $this->pObj->buildButtonFromUrl(
-                $this->pObj->getBaseUrl(['id' => $pageRecord['shortcut']]),
+                $clickUrl,
                 $this->getLanguageService()->getLL('jumptoshortcutdestination', true),
                 'apps-pagetree-page-shortcut'
             );
         }
 
         $this->pObj->getModuleTemplate()->addFlashMessage(
-            sprintf($this->getLanguageService()->getLL('cannotedit_shortcut_' . (int)$pageRecord['shortcut_mode']), $shortcutSourcePageRecord['title']),
+            sprintf(
+                $this->getLanguageService()->getLL('cannotedit_shortcut_' . (int)$shortcutMode),
+                $shortcutSourcePageRecord['title'] ? : ''
+            ),
             '',
             \TYPO3\CMS\Core\Messaging\FlashMessage::INFO
         );
