@@ -68,13 +68,16 @@
                 <source>Jump to page containing the content elements</source>
             </trans-unit>
             <trans-unit id="cannotedit_shortcut_0" xml:space="preserve">
-                <source>This page is of the type &quot;shortcut&quot;. Instead of having content on its own, this page shows the content the page &quot;%s&quot;. Therefore you cannot edit the content of this page directly.</source>
+                <source>This page is of the type &quot;shortcut&quot;. Instead of having content on its own, this page shows the content the selected page &quot;%s&quot;. Therefore you cannot edit the content of this page directly.</source>
             </trans-unit>
             <trans-unit id="cannotedit_shortcut_1" xml:space="preserve">
-                <source>This page is of the type &quot;shortcut&quot;. Instead of having content on its own, this page shows the content from the first sub page. Therefore you cannot edit the content of this page directly.</source>
+                <source>This page is of the type &quot;shortcut&quot;. Instead of having content on its own, this page shows the content from the first sub page of current/selected page, which is &quot;%s&quot;. Therefore you cannot edit the content of this page directly.</source>
             </trans-unit>
             <trans-unit id="cannotedit_shortcut_2" xml:space="preserve">
-                <source>This page is of the type &quot;shortcut&quot;. Instead of having content on its own, this page shows the content of a random sub page. Therefore you cannot edit the content of this page directly.</source>
+                <source>This page is of the type &quot;shortcut&quot;. Instead of having content on its own, this page shows the content of a random sub page of current/selected page. Therefore you cannot edit the content of this page directly.</source>
+            </trans-unit>
+            <trans-unit id="cannotedit_shortcut_3" xml:space="preserve">
+                <source>This page is of the type &quot;shortcut&quot;. Instead of having content on its own, this page shows the content of parent page of current/selected page, which is &quot;%s&quot;. Therefore you cannot edit the content of this page directly.</source>
             </trans-unit>
             <trans-unit id="jumptoshortcutdestination" xml:space="preserve">
                 <source>Jump to shortcut destination</source>
