@@ -28,7 +28,6 @@ use Ppi\TemplaVoilaPlus\Domain\Repository\DataStructureRepository;
 class DataStructureUpdateController extends StepUpdateController
 {
     protected $errors = [];
-    protected $lastKey = '';
 
     protected function stepStart()
     {
@@ -44,7 +43,7 @@ class DataStructureUpdateController extends StepUpdateController
         $count = $handler->updateAllDs(
             [],
             [
-                [$this, 'fixWizardScript'],
+                [$this, 'migrateWizardScriptToModule'],
                 [$this, 'migrateT3editorWizardToRenderTypeT3editor'],
                 [$this, 'cleanupEmptyWizardFields'],
             ]
@@ -56,9 +55,27 @@ class DataStructureUpdateController extends StepUpdateController
         ]);
     }
 
-    public function fixWizardScript(array &$element)
+    /*
+     * Migrate ['wizard']['script'] to ['wizard']['module']
+     * Migrate wizard wizard_element_browser and mode = wizard into wizard wizard_link
+     * Partly from TYPO3 6.2 LTS
+     *   TYPO3\CMS\Backend\Form\FormEngine::renderWizards
+     */
+    public function migrateWizardScriptToModule(array &$element)
     {
         $changed = false;
+
+        $convertableScript = [
+            'wizard_add.php',
+            'wizard_colorpicker.php',
+            'wizard_edit.php',
+            'wizard_forms.php',
+            'wizard_list.php',
+            'wizard_rte.php',
+            'wizard_table.php',
+            'browse_links.php',
+            'sysext/cms/layout/wizard_backend_layout.php'
+        ];
 
         if (isset($element['TCEforms']['config']['wizards']) // if wizards is set
             && is_array($element['TCEforms']['config']['wizards']) // and there are wizards
@@ -69,13 +86,34 @@ class DataStructureUpdateController extends StepUpdateController
                 // Convert ['script'] to ['module']['name']
                 if (isset($wizardConfig['script'])) {
                     if (!isset($wizardConfig['module']['name'])) {
-                        if (StringUtility::beginsWith($wizardConfig['script'], 'browse_links.php')) {
-                            $cleaned = true;
-                            $wizardConfig['module']['name'] = 'wizard_link';
+                        // Convert of EXT: calls not possible
+                        if (substr($wizardConfig['script'], 0, 4) === 'EXT:') {
+                            $this->errors[]
+                                = 'Cannot migrate wizard script: ' . $wizardConfig['script']
+                                    . ' Look into documentation of the extension how to use it now.';
+                            continue;
                         } else {
-                            $this->errors[] = 'Cannot fix wizard script: ' . $wizardConfig['script'] . ' Key: ' . $this->lastKey;
+                            $parsedWizardUrl = parse_url($wizardConfig['script']);
+                            if (in_array($parsedWizardUrl['path'], $convertableScript)) {
+                                $wizardConfig['module']['name'] = str_replace(
+                                    array('.php', 'browse_links', 'sysext/cms/layout/wizard_backend_layout'),
+                                    array('', 'wizard_element_browser', 'wizard_backend_layout'),
+                                    $parsedWizardUrl['path']
+                                );
+
+                                if (isset($parsedWizardUrl['query'])) {
+                                    $urlParameters = [];
+                                    parse_str($parsedWizardUrl['query'], $urlParameters);
+                                    $wizardConfig['module']['urlParameters'] = $urlParameters;
+                                }
+
+                                $cleaned = true;
+                            } else {
+                                $this->errors[] = 'Cannot migrate wizard script: ' . $wizardConfig['script'];
+                            }
                         }
                     } else {
+                        // ['module']['name'] already set, so ['script'] can be cleaned
                         $cleaned = true;
                     }
 
@@ -108,7 +146,8 @@ class DataStructureUpdateController extends StepUpdateController
 
     /**
      * Migrate type=text field with t3editor wizard to renderType=t3editor without this wizard
-     * From TYPO3\CMS\Core\Migrations\TcaMigration::migrateT3editorWizardToRenderTypeT3editorIfNotEnabledByTypeConfig
+     * From TYPO3 7 LTS
+     *   TYPO3\CMS\Core\Migrations\TcaMigration::migrateT3editorWizardToRenderTypeT3editorIfNotEnabledByTypeConfig
      */
     public function migrateT3editorWizardToRenderTypeT3editor(array &$element)
     {
