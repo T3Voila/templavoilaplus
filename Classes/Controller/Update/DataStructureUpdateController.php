@@ -41,7 +41,13 @@ class DataStructureUpdateController extends StepUpdateController
     protected function stepFinal()
     {
         $handler = GeneralUtility::makeInstance(DataStructureUpdateHandler::class);
-        $count = $handler->updateAllDs([], [[$this, 'fixWizardScript']]);
+        $count = $handler->updateAllDs(
+            [],
+            [
+                [$this, 'fixWizardScript'],
+                [$this, 'cleanupEmptyWizardFields'],
+            ]
+        );
 
         $this->fluid->assignMultiple([
             'count' => $count,
@@ -53,7 +59,9 @@ class DataStructureUpdateController extends StepUpdateController
     {
         $changed = false;
 
-        if (isset($element['TCEforms']['config']['wizards'])) {
+        if (isset($element['TCEforms']['config']['wizards']) // if wizards is set
+            && is_array($element['TCEforms']['config']['wizards']) // and there are wizards
+        ) {
             foreach ($element['TCEforms']['config']['wizards'] as &$wizard) {
                 $cleaned = false;
 
@@ -94,6 +102,26 @@ class DataStructureUpdateController extends StepUpdateController
                 $changed = $changed || $cleaned;
             }
         }
+        return $changed;
+    }
+
+    /**
+     * removes wizard element, if empty
+     */
+    public function cleanupEmptyWizardFields(array &$element)
+    {
+        $changed = false;
+
+        if (isset($element['TCEforms']['config']['wizards']) // if wizards is set
+            && (
+                ! is_array($element['TCEforms']['config']['wizards']) // and there is no wizard array
+                || empty($element['TCEforms']['config']['wizards'])  // or it is empty
+            )
+        ) {
+            unset($element['TCEforms']['config']['wizards']);
+            $changed = true;
+        }
+
         return $changed;
     }
 }
