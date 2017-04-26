@@ -45,6 +45,7 @@ class DataStructureUpdateController extends StepUpdateController
             [],
             [
                 [$this, 'fixWizardScript'],
+                [$this, 'migrateT3editorWizardToRenderTypeT3editor'],
                 [$this, 'cleanupEmptyWizardFields'],
             ]
         );
@@ -62,39 +63,39 @@ class DataStructureUpdateController extends StepUpdateController
         if (isset($element['TCEforms']['config']['wizards']) // if wizards is set
             && is_array($element['TCEforms']['config']['wizards']) // and there are wizards
         ) {
-            foreach ($element['TCEforms']['config']['wizards'] as &$wizard) {
+            foreach ($element['TCEforms']['config']['wizards'] as &$wizardConfig) {
                 $cleaned = false;
 
                 // Convert ['script'] to ['module']['name']
-                if (isset($wizard['script'])) {
-                    if (!isset($wizard['module']['name'])) {
-                        if (StringUtility::beginsWith($wizard['script'], 'browse_links.php')) {
+                if (isset($wizardConfig['script'])) {
+                    if (!isset($wizardConfig['module']['name'])) {
+                        if (StringUtility::beginsWith($wizardConfig['script'], 'browse_links.php')) {
                             $cleaned = true;
-                            $wizard['module']['name'] = 'wizard_link';
+                            $wizardConfig['module']['name'] = 'wizard_link';
                         } else {
-                            $this->errors[] = 'Cannot fix wizard script: ' . $wizard['script'] . ' Key: ' . $this->lastKey;
+                            $this->errors[] = 'Cannot fix wizard script: ' . $wizardConfig['script'] . ' Key: ' . $this->lastKey;
                         }
                     } else {
                         $cleaned = true;
                     }
 
                     if ($cleaned) {
-                        unset($wizard['script']);
+                        unset($wizardConfig['script']);
                     }
                 }
 
                 // Convert ['module']['name'] = 'wizard_element_browser'
                 // && ['module']['urlParameters']['mode'] = 'wizard'
                 // to ['module']['name'] = 'wizard_link'
-                if (isset($wizard['module']['name'])
-                    && $wizard['module']['name'] === 'wizard_element_browser'
-                    && isset($wizard['module']['urlParameters']['mode'])
-                    && $wizard['module']['urlParameters']['mode'] === 'wizard'
+                if (isset($wizardConfig['module']['name'])
+                    && $wizardConfig['module']['name'] === 'wizard_element_browser'
+                    && isset($wizardConfig['module']['urlParameters']['mode'])
+                    && $wizardConfig['module']['urlParameters']['mode'] === 'wizard'
                 ) {
-                    $wizard['module']['name'] = 'wizard_link';
-                    unset ($wizard['module']['urlParameters']['mode']);
-                    if (empty($wizard['module']['urlParameters'])) {
-                        unset($wizard['module']['urlParameters']);
+                    $wizardConfig['module']['name'] = 'wizard_link';
+                    unset ($wizardConfig['module']['urlParameters']['mode']);
+                    if (empty($wizardConfig['module']['urlParameters'])) {
+                        unset($wizardConfig['module']['urlParameters']);
                     }
                     $cleaned = true;
                 }
@@ -102,6 +103,45 @@ class DataStructureUpdateController extends StepUpdateController
                 $changed = $changed || $cleaned;
             }
         }
+        return $changed;
+    }
+
+    /**
+     * Migrate type=text field with t3editor wizard to renderType=t3editor without this wizard
+     * From TYPO3\CMS\Core\Migrations\TcaMigration::migrateT3editorWizardToRenderTypeT3editorIfNotEnabledByTypeConfig
+     */
+    public function migrateT3editorWizardToRenderTypeT3editor(array &$element)
+    {
+        $changed = false;
+
+        if (isset($element['TCEforms']['config']['wizards']) // if wizards is set
+            && is_array($element['TCEforms']['config']['wizards']) // and there are wizards
+        ) {
+            foreach ($element['TCEforms']['config']['wizards'] as $wizardName => &$wizardConfig) {
+                $cleaned = false;
+
+                if (
+                    !empty($wizardConfig['userFunc']) // a userFunc is defined
+                    && trim($wizardConfig['userFunc']) === 'TYPO3\\CMS\\T3editor\\FormWizard->main' // and set to FormWizard
+                    && (
+                        !isset($wizardConfig['enableByTypeConfig']) // and enableByTypeConfig is not set
+                        || (isset($wizardConfig['enableByTypeConfig']) && !$wizardConfig['enableByTypeConfig'])  // or set, but not enabled
+                    )
+                ) {
+                    // Set renderType from text to t3editor
+                    $element['TCEforms']['config']['renderType'] = 't3editor';
+                    // Move format parameter
+                    if (!empty($wizardConfig['params']['format'])) {
+                        $element['TCEforms']['config']['format'] = $wizardConfig['params']['format'];
+                    }
+                    // Unset this wizard definition
+                    unset($element['TCEforms']['config']['wizards'][$wizardName]);
+                }
+
+                $changed = $changed || $cleaned;
+            }
+        }
+
         return $changed;
     }
 
