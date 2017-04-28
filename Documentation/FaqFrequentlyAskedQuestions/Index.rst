@@ -18,19 +18,21 @@ following configuration will produce the error described above:
 
 ::
 
-   page = PAGE
-   page.typeNum = 0
-   page.10 < plugin.tx_templavoilaplus_pi1
+    page = PAGE
+    page.typeNum = 0
+    page.10 < plugin.tx_templavoilaplus_pi1
 
 Instead use the following code and have a look at the configuration
 section of this manual:
 
 ::
 
-   page = PAGE
-   page.typeNum = 0
-   page.10 = USER
-   page.10.userFunc = Ppi\TemplaVoilaPlus\Controller\FrontendController->main_page
+    page = PAGE
+    page {
+        typeNum = 0
+        10 = USER
+        10.userFunc = Ppi\TemplaVoilaPlus\Controller\FrontendController->main_page
+    }
 
 **Q:**  *I made “Content Elements” field, added content elements there
 but nothing is displayed in FrontEnd. What should I do now?*

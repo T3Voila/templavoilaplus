@@ -30,7 +30,7 @@ Steps to work
     page {
         typeNum = 0
         10 = USER
-        10.userFunc = Extension\Templavoila\Controller\FrontendController->main_page
+        10.userFunc = Ppi\TemplaVoilaPlus\Controller\FrontendController->main_page
     }
 
 Now your system should be ready. If all works you can remove the old TemplaVoilà extension from your system.
