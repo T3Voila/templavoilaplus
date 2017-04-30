@@ -51,9 +51,6 @@
             <trans-unit id="extconf.staticWizard.link" xml:space="preserve">
                 <source>Click here to run the wizard</source>
             </trans-unit>
-            <trans-unit id="extmng.updatermsgOption" xml:space="preserve">
-                <source>Updater</source>
-            </trans-unit>
         </body>
     </file>
 </xliff>
