@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
+use Ppi\TemplaVoilaPlus\Utility\DataStructureUtility;
 
 /**
  * Class to provide unique access to template
@@ -365,7 +366,9 @@ class Template
      */
     public function getLocalDataprotXML($skipDsDataprot = false)
     {
-        return GeneralUtility::array2xml_cs($this->getLocalDataprotArray($skipDsDataprot), 'T3DataStructure', array('useCDATA' => 1));
+        return DataStructureUtility::array2xml(
+            $this->getLocalDataprotArray($skipDsDataprot)
+        );
     }
 
     /**

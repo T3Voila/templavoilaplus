@@ -17,6 +17,7 @@ namespace Ppi\TemplaVoilaPlus\Controller\Update;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
+use Ppi\TemplaVoilaPlus\Utility\DataStructureUtility;
 
 /**
  * Class for userFuncs within the Extension Manager.
@@ -285,13 +286,13 @@ class StaticDataUpdateController
      */
     protected function writeXmlWithTitle($pathAndFilename, $dsXml, $title)
     {
-        $dsStructure = GeneralUtility::xml2array($dsXml);
-        if (empty($dsStructure['ROOT']['tx_templavoilaplus']['title'])
-            || $dsStructure['ROOT']['tx_templavoilaplus']['title'] === 'ROOT'
+        $dataStructure = GeneralUtility::xml2array($dsXml);
+        if (empty($dataStructure['ROOT']['tx_templavoilaplus']['title'])
+            || $dataStructure['ROOT']['tx_templavoilaplus']['title'] === 'ROOT'
         ) {
-            $dsStructure['ROOT']['tx_templavoilaplus']['title'] = $title;
+            $dataStructure['ROOT']['tx_templavoilaplus']['title'] = $title;
         }
-        $dsXml = GeneralUtility::array2xml_cs($dsStructure, 'T3DataStructure', ['useCDATA' => 1]);
+        $dsXml = DataStructureUtility::array2xml($dataStructure);
         GeneralUtility::writeFile($pathAndFilename, $dsXml);
     }
 

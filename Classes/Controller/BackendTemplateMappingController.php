@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
+use Ppi\TemplaVoilaPlus\Utility\DataStructureUtility;
 
 $GLOBALS['LANG']->includeLLFile(
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('templavoilaplus') . 'Resources/Private/Language/BackendTemplateMapping.xlf'
@@ -879,7 +880,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                     if (is_array($storeDataStruct['ROOT']['el'])) {
                         $this->eTypes->substEtypeWithRealStuff($storeDataStruct['ROOT']['el'], $contentSplittedByMapping['sub']['ROOT'], $dataArr['tx_templavoilaplus_datastructure']['NEW']['scope']);
                     }
-                    $dataProtXML = GeneralUtility::array2xml_cs($storeDataStruct, 'T3DataStructure', array('useCDATA' => 1));
+                    $dataProtXML = DataStructureUtility::array2xml($storeDataStruct);
 
                     if ($this->staticDS) {
                         $title = preg_replace('|[/,\."\']+|', '_', $this->_saveDSandTO_title) . ' (' . ($this->_saveDSandTO_type == 1 ? 'page' : 'fce') . ').xml';
@@ -981,7 +982,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                         if (is_array($storeDataStruct['ROOT']['el'])) {
                             $this->eTypes->substEtypeWithRealStuff($storeDataStruct['ROOT']['el'], $contentSplittedByMapping['sub']['ROOT'], $dsREC['scope']);
                         }
-                        $dataProtXML = GeneralUtility::array2xml_cs($storeDataStruct, 'T3DataStructure', array('useCDATA' => 1));
+                        $dataProtXML = DataStructureUtility::array2xml($storeDataStruct);
 
                         // DS:
                         if ($this->staticDS) {
@@ -1155,7 +1156,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                     if (is_array($storeDataStruct['ROOT']['el'])) {
                         $this->eTypes->substEtypeWithRealStuff($storeDataStruct['ROOT']['el'], $contentSplittedByMapping['sub']['ROOT']);
                     }
-                    $dataStructureXML = GeneralUtility::array2xml_cs($storeDataStruct, 'T3DataStructure', array('useCDATA' => 1));
+                    $dataStructureXML = DataStructureUtility::array2xml($storeDataStruct);
 
                     $content .= '
                         <input type="submit" name="_DO_NOTHING" value="Go back" title="' . TemplaVoilaUtility::getLanguageService()->getLL('buttonGoBack') . '" />
@@ -1366,7 +1367,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                     // Make instance of syntax highlight class:
                     $hlObj = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Service\SyntaxHighlightingService::class);
 
-                    $dataStructureXML = GeneralUtility::array2xml_cs($origDataStruct, 'T3DataStructure', array('useCDATA' => 1));
+                    $dataStructureXML = DataStructureUtility::array2xml($origDataStruct);
                     $content .= '
 
                     <!--

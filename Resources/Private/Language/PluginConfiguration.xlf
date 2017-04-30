@@ -12,6 +12,9 @@
             <trans-unit id="enable.renderFCEHeader" xml:space="preserve">
                 <source>Enable Header for FCE's:If this checkbox is checked the header of Content Element type FCE will be rendered like headers of other Content Elements.</source>
             </trans-unit>
+            <trans-unit id="ds.indentation" xml:space="preserve">
+                <source>Defines the XML indentation in the Data Structures.:This is usefull for static Data Structures. Number smaller then zero means no indentation, zero means using tabs and number larger then zero means number of space chars.</source>
+            </trans-unit>
             <trans-unit id="staticDS.enable" xml:space="preserve">
                 <source>Enable static files for data structures:Experimental! Use Static DS Conversion Wizard below!</source>
             </trans-unit>

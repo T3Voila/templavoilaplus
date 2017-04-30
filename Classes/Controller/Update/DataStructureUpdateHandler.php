@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 
 use Ppi\TemplaVoilaPlus\Domain\Repository\DataStructureRepository;
 use Ppi\TemplaVoilaPlus\Domain\Repository\TemplateRepository;
+use Ppi\TemplaVoilaPlus\Utility\DataStructureUtility;
 
 /**
  * Handles Updates in DataStructure via Callbacks
@@ -69,11 +70,7 @@ class DataStructureUpdateHandler
                 $ds->getKey(),
                 'tx_templavoilaplus_datastructure',
                 'dataprot',
-                GeneralUtility::array2xml_cs(
-                    $data,
-                    'T3DataStructure',
-                    ['useCDATA' => 1]
-                ),
+                DataStructureUtility::array2xml($data),
                 $ds->isFilebased()
             );
             return true;
@@ -95,11 +92,7 @@ class DataStructureUpdateHandler
                 $to->getKey(),
                 'tx_templavoilaplus_tmplobj',
                 'localprocessing',
-                GeneralUtility::array2xml_cs(
-                    $data,
-                    'T3DataStructure',
-                    ['useCDATA' => 1]
-                )
+                DataStructureUtility::array2xml($data)
             );
             return true;
         }
