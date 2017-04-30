@@ -444,7 +444,7 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
             }
 
             // Add output:
-            $this->content .= $this->moduleTemplate->section('', $outputString, 0, 1);
+            $this->content .= $outputString;
         }
 
         // Save session data:
@@ -539,11 +539,11 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
 
             // Prepare header:
             $tRows = array();
-            $tRows[] = '<tr class="tableheader bgColor5">
-                <td>' . TemplaVoilaUtility::getLanguageService()->getLL('toused_path', true) . ':</td>
-                <td>' . TemplaVoilaUtility::getLanguageService()->getLL('usage', true) . ':</td>
-                <td>' . TemplaVoilaUtility::getLanguageService()->getLL('action', true) . ':</td>
-            </tr>';
+            $tRows[] = '<thead>
+                <th>' . TemplaVoilaUtility::getLanguageService()->getLL('toused_path', true) . ':</th>
+                <th>' . TemplaVoilaUtility::getLanguageService()->getLL('usage', true) . ':</th>
+                <th>' . TemplaVoilaUtility::getLanguageService()->getLL('action', true) . ':</th>
+            </thead>';
 
             // Traverse available template files:
             foreach ($fileArr as $file) {
@@ -559,21 +559,21 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
                 $onClick = 'vHWin=window.open(\'' . $this->doc->backPath . '../' . $file . '\',\'tvTemplatePreview\',\'status=1,menubar=1,scrollbars=1,location=1\');vHWin.focus();return false;';
 
                 // Make row:
-                $tRows[] = '<tr class="bgColor4">
+                $tRows[] = '<tr>
                     <td>' . htmlspecialchars($file) . '</td>
                     <td>' . (count($tosForTemplate) ? sprintf(TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_usedtimes', true), count($tosForTemplate)) : TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_notused', true)) . '</td>
                     <td>' .
                     '<a href="#" onclick="' . htmlspecialchars($onClick) . '">' . TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_preview', true) . '</a> ' .
-                    '<a href="' . htmlspecialchars('index.php?SET[wiz_step]=2&CFG[file]=' . rawurlencode($file)) . '">' . TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_choose', true) . '</a> ' .
+                    '<a href="' . BackendUtility::getModuleUrl($this->moduleName, ['SET' => ['wiz_step' => 2], 'CFG' => ['file' => $file]]) . '">' . TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_choose', true) . '</a> ' .
                     '</td>
             </tr>';
             }
-            $outputString .= '<table border="0" cellpadding="1" cellspacing="1" class="lrPadding">' . implode('', $tRows) . '</table>';
+            $outputString .= '<table class="table table-striped table-hover">' . implode('', $tRows) . '</table>';
 
             // Refresh button:
             $this->addDocHeaderButton(
                 $this->moduleName,
-                TemplaVoilaUtility::getLanguageService()->getLL('refresh', true),
+                TemplaVoilaUtility::getLanguageService()->getLL('buttonRefresh', true),
                 'actions-system-refresh',
                 [
                     'SET' => [
@@ -585,9 +585,9 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
             );
 
             // Add output:
-            $this->content .= $this->moduleTemplate->section(TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_selecttemplate', true), $outputString, 0, 1);
+            $this->content .= '<h4>' . TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_selecttemplate', true) . '</h4>' . $outputString;
         } else {
-            $this->content .= $this->moduleTemplate->section('TemplaVoila wizard error', TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_errornodir', true), 0, 1);
+            $this->content .= '<h4>TemplaVoila wizard error</h4>' . TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_errornodir', true);
         }
     }
 
@@ -1194,9 +1194,17 @@ lib.' . $menuType . '.1.ACT {
     protected function getTemplateFiles()
     {
         $paths = $this->getTemplatePaths();
-        $files = array();
+        $files = [];
         foreach ($paths as $path) {
-            $files = array_merge(GeneralUtility::getAllFilesAndFoldersInPath(array(), $path . ((substr($path, -1) != '/') ? '/' : ''), 'html,htm,tmpl', 0), $files);
+            $files = array_merge(
+                GeneralUtility::getAllFilesAndFoldersInPath(
+                    [],
+                    rtrim($path, '/') . '/',
+                    'html,htm,tmpl',
+                    0
+                ),
+                $files
+            );
         }
 
         return $files;

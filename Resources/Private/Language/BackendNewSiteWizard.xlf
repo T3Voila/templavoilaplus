@@ -3,6 +3,12 @@
     <file source-language="en" datatype="plaintext" original="messages" date="2014-07-13T20:55:46Z" product-name="templavoilaplus">
         <header/>
         <body>
+            <trans-unit id="wiz_title" xml:space="preserve">
+                <source>New site wizard</source>
+            </trans-unit>
+            <trans-unit id="wiz_step" xml:space="preserve">
+                <source>Step %s</source>
+            </trans-unit>
             <trans-unit id="newsitewizard_intro" xml:space="preserve">
                 <source>If you want to start a new website based on the TemplaVoilà Plus template engine you can start this wizard which will set up all the boring initial stuff for you.
                     You will be taken through these steps:
@@ -58,11 +64,158 @@
                     - Return to this wizard
                 </source>
             </trans-unit>
-            <trans-unit id="wiz_title" xml:space="preserve">
-                <source>New site wizard</source>
+            <trans-unit id="newsitewizard_menuhtmlcode" xml:space="preserve">
+                <source>Here is the HTML code from the Template that encapsulated the menu</source>
             </trans-unit>
-            <trans-unit id="wiz_step" xml:space="preserve">
-                <source>Step %s</source>
+            <trans-unit id="newsitewizard_menuenc" xml:space="preserve">
+                <source>It seems that the menu consists of menu items encapsulated with %s.</source>
+            </trans-unit>
+            <trans-unit id="newsitewizard_menunoa" xml:space="preserve">
+                <source>It seems that the menu consists of menu items not wrapped in any block tags except A-tags.</source>
+            </trans-unit>
+            <trans-unit id="newsitewizard_menuwrap" xml:space="preserve">
+                <source>It also seems that the whole menu is wrapped in this tag %s</source>
+            </trans-unit>
+            <trans-unit id="newsitewizard_menudiv" xml:space="preserve">
+                <source>Between the menu elements there seems to be a visual division element with this HTML code: &quot;%s&quot;. That will be added between each element as well.</source>
+            </trans-unit>
+            <trans-unit id="newsitewizard_menuimg" xml:space="preserve">
+                <source>The menu items were detected to be images - TYPO3 will try to generate graphical menu items automatically (GMENU). You will need to customize the look of these before it will match the originals!</source>
+            </trans-unit>
+            <trans-unit id="newsitewizard_menumouseover" xml:space="preserve">
+                <source>It seems like a mouseover functionality has been applied previously, so roll-over effect has been applied as well.</source>
+            </trans-unit>
+            <trans-unit id="newsitewizard_menuts" xml:space="preserve">
+                <source>Based on this analysis, this TypoScript configuration for the menu is suggested:</source>
+            </trans-unit>
+            <trans-unit id="newsitewizard_menufinetune" xml:space="preserve">
+                <source>You can fine tune the configuration here before it is saved:</source>
+            </trans-unit>
+            <trans-unit id="newsitewizard_menuwritets" xml:space="preserve">
+                <source>Write %s TypoScript code</source>
+            </trans-unit>
+            <trans-unit id="newsitewizard_menufinished" xml:space="preserve">
+                <source>The basics of your website should be working now. It seems like you did not map the %s to any element, so the menu configuration process will be skipped.</source>
+            </trans-unit>
+            <trans-unit id="newsitewizard_menunext" xml:space="preserve">
+                <source>Next...</source>
+            </trans-unit>
+            <trans-unit id="newsitewizard_step5" xml:space="preserve">
+                <source>Step 5 %s: Trying to create dynamic menu</source>
+            </trans-unit>
+            <trans-unit id="newsitewizard_sitecreated" xml:space="preserve">
+                <source>&lt;b&gt;Congratulations!&lt;/b&gt; You have completed the initial creation of a new website in TYPO3 based on the TemplaVoilà Plus engine. After you click the &quot;Finish&quot; button you can go to the Web&gt;Page module to edit your pages!</source>
+            </trans-unit>
+            <trans-unit id="newsitewizard_finish" xml:space="preserve">
+                <source>Finish Wizard!</source>
+            </trans-unit>
+            <trans-unit id="newsitewizard_done" xml:space="preserve">
+                <source>Step 6: Done</source>
+            </trans-unit>
+            <trans-unit id="newsitewizard_basicsshouldwork" xml:space="preserve">
+                <source>The basics of your website should be working now. However the %s still needs to be configured so that TYPO3 automatically generates a menu reflecting the pages in the page tree. This process involves configuration of the TypoScript object path, &quot;lib.%s&quot;. This is a technical job which requires that you know about TypoScript if you want it 100%% customized.&lt;br/&gt;To assist you getting started with the %s this wizard will try to analyse the menu found inside the template file. If the menu was created of a series of repetitive block tags containing A-tags then there is a good chance this will succeed. You can see the result below.</source>
+            </trans-unit>
+            <trans-unit id="newsitewizard_headerinclude" xml:space="preserve">
+                <source>Finally you also have to select which parts of the HTML header you want to include. For instance it is important that you select all sections with CSS styles in order to preserve the correct visual appearance of your website.&lt;br/&gt;You can also select the body-tag of the template if you want to use the original body-tag.&lt;br/&gt;This animations shows an example of this process:</source>
+            </trans-unit>
+            <trans-unit id="newsitewizard_headerselect" xml:space="preserve">
+                <source>Select HTML header parts</source>
+            </trans-unit>
+            <trans-unit id="newsitewizard_step4" xml:space="preserve">
+                <source>Step 4: Select HTML header parts</source>
+            </trans-unit>
+            <trans-unit id="newsitewizard_maintemplate" xml:space="preserve">
+                <source>Main template:</source>
+            </trans-unit>
+            <trans-unit id="newsitewizard_created" xml:space="preserve">
+                <source>New site has been created and adapted.</source>
+            </trans-unit>
+            <trans-unit id="newsitewizard_step3error" xml:space="preserve">
+                <source>Error happened: Either you did not specify a website name or username in the previous form!</source>
+            </trans-unit>
+            <trans-unit id="newsitewizard_step3ready" xml:space="preserve">
+                <source>You are now ready to point out at which position in the HTML code to insert the TYPO3 generated page content and the main menu. This process is called &quot;mapping&quot;.&lt;br/&gt;The process of mapping is shown with this little animation. Please study it closely to understand the flow, then click the button below to start the mapping process on your own. Complete the mapping process by pressing &quot;Save and Return&quot;.</source>
+            </trans-unit>
+            <trans-unit id="newsitewizard_startmapping" xml:space="preserve">
+                <source>Start the mapping process</source>
+            </trans-unit>
+            <trans-unit id="newsitewizard_beginmapping" xml:space="preserve">
+                <source>Step 3: Begin mapping</source>
+            </trans-unit>
+            <trans-unit id="newsitewizard_firststep" xml:space="preserve">
+                <source>The first step is to select the HTML file you want to base the new website design on. Below you see a list of HTML files found in the folder &quot;%s&quot;. Click the &quot;Preview&quot;-link to see what the file looks like and when the right template is found, just click the &quot;Choose as template&quot;-link in order to proceed.&lt;br/&gt;If the list of files is empty you must now copy the HTML file you want to use as a template into the template folder. When you have done that, press the refresh button to refresh the list.</source>
+            </trans-unit>
+            <trans-unit id="newsitewizard_selecttemplate" xml:space="preserve">
+                <source>Step 1: Select the template HTML file</source>
+            </trans-unit>
+            <trans-unit id="newsitewizard_error" xml:space="preserve">
+                <source>TemplaVoilà Plus wizard error</source>
+            </trans-unit>
+            <trans-unit id="newsitewizard_errornodir" xml:space="preserve">
+                <source>The template directory is empty or could not be found. Please, create it and put your template file into it before starting this wizard.</source>
+            </trans-unit>
+            <trans-unit id="newsitewizard_templateselected" xml:space="preserve">
+                <source>The template file &quot;%s&quot; is now selected:</source>
+            </trans-unit>
+            <trans-unit id="newsitewizard_step2next" xml:space="preserve">
+                <source>Next, you should enter default values for the new website. With this basic set of information we are ready to create the initial website structure!</source>
+            </trans-unit>
+            <trans-unit id="newsitewizard_step2_name" xml:space="preserve">
+                <source>Name of the site</source>
+            </trans-unit>
+            <trans-unit id="newsitewizard_step2_url" xml:space="preserve">
+                <source>URL of the website</source>
+            </trans-unit>
+            <trans-unit id="newsitewizard_step2_editor" xml:space="preserve">
+                <source>Editor username</source>
+            </trans-unit>
+            <trans-unit id="newsitewizard_step2_required" xml:space="preserve">
+                <source>(Required)</source>
+            </trans-unit>
+            <trans-unit id="newsitewizard_step2_optional" xml:space="preserve">
+                <source>(Optional)</source>
+            </trans-unit>
+            <trans-unit id="newsitewizard_step2_createnewsite" xml:space="preserve">
+                <source>Create new site</source>
+            </trans-unit>
+            <trans-unit id="newsitewizard_step2_notemplatefound" xml:space="preserve">
+                <source>No template file found!?</source>
+            </trans-unit>
+            <trans-unit id="newsitewizard_step2_valuename" xml:space="preserve">
+                <source>This value is shown in the browsers title bar and will be the default name of the first page in the page tree.</source>
+            </trans-unit>
+            <trans-unit id="newsitewizard_step2_valueurl" xml:space="preserve">
+                <source>If you know the URL of the website already please enter it here, eg. &quot;www.mydomain.com&quot;.</source>
+            </trans-unit>
+            <trans-unit id="newsitewizard_step2_username" xml:space="preserve">
+                <source>Enter the username of a new backend user/group who will be able to edit the pages on the new website. (Password will be &quot;password&quot; by default, make sure to change that!)</source>
+            </trans-unit>
+            <trans-unit id="newsitewizard_step2" xml:space="preserve">
+                <source>Step 2: Enter default values for new site</source>
+            </trans-unit>
+            <trans-unit id="newsitewizard_usedtimes" xml:space="preserve">
+                <source>Used %d times</source>
+            </trans-unit>
+            <trans-unit id="newsitewizard_notused" xml:space="preserve">
+                <source>Not used yet</source>
+            </trans-unit>
+            <trans-unit id="newsitewizard_preview" xml:space="preserve">
+                <source>[Preview first]</source>
+            </trans-unit>
+            <trans-unit id="newsitewizard_choose" xml:space="preserve">
+                <source>[Choose as Template]</source>
+            </trans-unit>
+            <trans-unit id="buttonRefresh" xml:space="preserve">
+                <source>Refresh</source>
+            </trans-unit>
+            <trans-unit id="toused_path" xml:space="preserve">
+                <source>Path</source>
+            </trans-unit>
+            <trans-unit id="usage" xml:space="preserve">
+                <source>Usage</source>
+            </trans-unit>
+            <trans-unit id="action" xml:space="preserve">
+                <source>Action</source>
             </trans-unit>
         </body>
     </file>
