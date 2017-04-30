@@ -21,7 +21,7 @@
                 <source>Cancel wizard</source>
             </trans-unit>
             <trans-unit id="newsitewizard_problem" xml:space="preserve">
-                <source>&lt;em&gt;There are some technical problems you have to solve before you can start the wizard! Please see below for details. Solve these problems first and come back.&lt;/em&gt;</source>
+                <source>There are some technical problems you have to solve before you can start the wizard! Please see below for details. Solve these problems first and come back.</source>
             </trans-unit>
             <trans-unit id="newsitewizard_missingext" xml:space="preserve">
                 <source>Missing extension!</source>
@@ -51,12 +51,18 @@
                 <source>No</source>
             </trans-unit>
             <trans-unit id="newsitewizard_missingdir_instruction" xml:space="preserve">
-                <source>The directory &quot;%s&quot; (relative to the website root) does not exist! This is where you must place your HTML templates. Please create that directory &lt;u&gt;before you start the wizard&lt;/u&gt;. In order to do so, follow these directions:
+                <source>The configured directory &quot;%s&quot; (relative to the website root) does not exist! This is where you must place your HTML templates. To create that directory, follow these instructions:
                     - Go to the module File &gt; Filelist
                     - Click the icon of the &quot;%s&quot; root and select &quot;Create&quot; from the context menu.
                     - Enter the name &quot;templates&quot; of the folder and press the &quot;Create&quot; button.
                     - Return to this wizard
                 </source>
+            </trans-unit>
+            <trans-unit id="wiz_title" xml:space="preserve">
+                <source>New site wizard</source>
+            </trans-unit>
+            <trans-unit id="wiz_step" xml:space="preserve">
+                <source>Step %s</source>
             </trans-unit>
         </body>
     </file>

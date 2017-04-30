@@ -403,12 +403,6 @@
             <trans-unit id="invaliddatastructure_xmlbroken" xml:space="preserve">
                 <source>The the element &quot;%1$s&quot; within the datastructure seems to contain invalid XML, therefore the required data can't be displayed.</source>
             </trans-unit>
-            <trans-unit id="wiz_title" xml:space="preserve">
-                <source>New site wizard</source>
-            </trans-unit>
-            <trans-unit id="wiz_step" xml:space="preserve">
-                <source>Step %s</source>
-            </trans-unit>
             <trans-unit id="description_pagesWithCertainDsTo" xml:space="preserve">
                 <source>The following pages in the root line contain data structures and template objects</source>
             </trans-unit>

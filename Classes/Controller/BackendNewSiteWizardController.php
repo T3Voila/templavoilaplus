@@ -348,42 +348,61 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
     {
         if (TemplaVoilaUtility::getBackendUser()->isAdmin()) {
             // Introduction:
-            $outputString = nl2br(sprintf(TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_intro', true), implode('", "', $this->getTemplatePaths(true, false))));
+            $outputString = nl2br(
+                sprintf(
+                    TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_intro', true),
+                    implode('", "', $this->getTemplatePaths(true, false))
+                )
+            );
 
             // Checks:
             $missingExt = $this->wizard_checkMissingExtensions();
             $missingConf = $this->wizard_checkConfiguration();
             $missingDir = $this->wizard_checkDirectory();
-            if (!$missingExt && !$missingConf) {
+
+            if (!$missingExt && !$missingConf && !$missingDir) {
                 $outputString .= '<br/><br/>'
                     . $this->buildButtonFromUrl(
                         'document.location=\'' . $this->getBaseUrl(['SET' => ['wiz_step' => 1]]) . '\'; return false;',
                         '',
                         'content-special-html',
-                        TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_startnow', true)
+                        TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_startnow')
                     );
             } else {
-                $outputString .= '<br/><br/>' . TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_problem');
+                $outputString .= '<br /><b>' . TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_problem') . '</b>';
             }
 
             // Add output:
-            $this->content .= $this->moduleTemplate->section(TemplaVoilaUtility::getLanguageService()->getLL('wiz_title'), $outputString, 0, 1);
+            $this->content .= '<h3>' . TemplaVoilaUtility::getLanguageService()->getLL('wiz_title') . '</h3>' . $outputString;
 
             // Missing extension warning:
             if ($missingExt) {
-                $msg = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $missingExt, TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_missingext'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
-                $this->content .= $msg->render();
+                $this->moduleTemplate->addFlashMessage(
+                    TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_missingext_description'),
+                    TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_missingext'),
+                    \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR
+                );
+                $this->content .= '<h4>' . TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_missingext') . '</h4>' . $missingExt;
             }
 
             // Missing configuration warning:
             if ($missingConf) {
-                $msg = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_missingconf_description'), TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_missingconf'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
-                $this->content .= $msg->render();
+                $this->moduleTemplate->addFlashMessage(
+                    TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_missingconf_description'),
+                    TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_missingconf'),
+                    \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR
+                );
+                $this->content .= '<h4>' . TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_missingconf') . '</h4>' . $missingExt;
             }
 
             // Missing directory warning:
             if ($missingDir) {
-                $this->content .= $this->moduleTemplate->section(TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_missingdir'), $missingDir, 0, 1, 3);
+                $this->moduleTemplate->addFlashMessage(
+                    TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_missingdir_description'),
+                    TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_missingdir'),
+                    \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR
+                );
+                $this->content .= '<h4>' . TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_missingdir') . '</h4>' . $missingDir;
             }
         }
     }
@@ -439,8 +458,7 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
      */
     public function wizard_checkMissingExtensions()
     {
-
-        $outputString = TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_missingext_description', true);
+        $outputString = '';
 
         // Create extension status:
         $checkExtensions = explode(',', 'css_styled_content,impexp');
@@ -490,7 +508,13 @@ class BackendNewSiteWizardController extends \TYPO3\CMS\Backend\Module\BaseScrip
     {
         $paths = $this->getTemplatePaths(true);
         if (empty($paths)) {
-            return nl2br(sprintf(TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_missingdir_instruction'), implode(' or ', $this->getTemplatePaths(true, false)), $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir']));
+            return nl2br(
+                sprintf(
+                    TemplaVoilaUtility::getLanguageService()->getLL('newsitewizard_missingdir_instruction'),
+                    implode(' or ', $this->getTemplatePaths(true, false)),
+                    $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir']
+                )
+            );
         }
 
         return false;
