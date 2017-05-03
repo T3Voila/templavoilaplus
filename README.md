@@ -1,4 +1,3 @@
-================
 TemplaVoilà Plus
 ================
 
@@ -9,9 +8,8 @@ TeamplaVoilà Plus is a templating extension for the TYPO3 content management sy
 TemplaVoilà extension from Kasper Skårhøj prepared for modern versions of TYPO3.
 
 **NOTE:**
-As we needed to rename the extension to TemaplVoilà Plus, the git repository was also moved to a new location!
-https://github.com/pluspol-interactive/templavoilaplus/
+*   You need to run the Migration Script (The update button in ExtensionManager) to fully migrate from TemplaVoilà 1.8/1.9/2.0.
+    You can find the migration Guide here: https://docs.typo3.org/typo3cms/extensions/templavoilaplus/Migration/Index.html
 
-**NOTE:**
-You need to run the Migration Script (The update button in ExtensionManager) to fully migrate from TemplaVoilà 1.8/1.9/2.0.
-You can find the migration Guide here: https://docs.typo3.org/typo3cms/extensions/templavoilaplus/Migration/Index.html
+*   As we needed to rename the extension to TemaplVoilà Plus, the git repository was also moved to a new location!
+    https://github.com/pluspol-interactive/templavoilaplus/
