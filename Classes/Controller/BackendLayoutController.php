@@ -1994,6 +1994,14 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                         case 'exists':
                             $olrow = BackendUtility::getRecordWSOL('tt_content', $contentTreeArr['localizationInfo'][$sys_language_uid]['localization_uid']);
 
+                            // In my WS or viewable in Live?
+                            if ((int)$olrow['t3ver_state'] !== 0
+                                && (int)$olrow['t3ver_wsid'] !== (int)$GLOBALS['BE_USER']->workspace
+                            ) {
+                                // @TODO Output that it is localized on another WS?
+                                continue;
+                            }
+
                             $localizedRecordInfo = array(
                                 'uid' => $olrow['uid'],
                                 'row' => $olrow,
