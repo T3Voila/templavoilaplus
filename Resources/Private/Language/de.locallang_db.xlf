@@ -1,0 +1,101 @@
+<?xml version='1.0' encoding='utf-8'?>
+<xliff version="1.0">
+  <file source-language="EN" datatype="plaintext" original="messages" date="2013-11-18T20:34:12Z" product-name="templavoila" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="tx_templavoila_tmplobj" xml:space="preserve" approved="yes">
+        <source>TemplaVoilà Template Object</source>
+      <target state="translated">TemplaVoilà-Vorlagenobjekt</target></trans-unit>
+      <trans-unit id="tx_templavoila_tmplobj.title" xml:space="preserve" approved="yes">
+        <source>Title:</source>
+      <target state="translated">Titel:</target></trans-unit>
+      <trans-unit id="tx_templavoila_tmplobj.datastructure" xml:space="preserve" approved="yes">
+        <source>Data Structure:</source>
+      <target state="translated">Datenstruktur:</target></trans-unit>
+      <trans-unit id="tx_templavoila_tmplobj.fileref" xml:space="preserve" approved="yes">
+        <source>File reference:</source>
+      <target state="translated">Dateireferenz:</target></trans-unit>
+      <trans-unit id="tx_templavoila_tmplobj.belayout" xml:space="preserve" approved="yes">
+        <source>BELayout Template File:</source>
+      <target state="translated">Vorlagendatei BE-Layout:</target></trans-unit>
+      <trans-unit id="tx_templavoila_tmplobj.previewicon" xml:space="preserve" approved="yes">
+        <source>Attach preview icon (gif or png in 1:1 size):</source>
+      <target state="translated">Vorschaubild (GIF oder PNG in 1:1 Größe):</target></trans-unit>
+      <trans-unit id="tx_templavoila_tmplobj.description" xml:space="preserve" approved="yes">
+        <source>Description of the template:</source>
+      <target state="translated">Beschreibung der Vorlage:</target></trans-unit>
+      <trans-unit id="tx_templavoila_tmplobj.ds_createnew" xml:space="preserve" approved="yes">
+        <source>Create new data structure!</source>
+      <target state="translated">Neue Datenstruktur erzeugen!</target></trans-unit>
+      <trans-unit id="tx_templavoila_tmplobj.rendertype" xml:space="preserve" approved="yes">
+        <source>Select a type of rendering:</source>
+      <target state="translated">Darstellungsart auswählen:</target></trans-unit>
+      <trans-unit id="tx_templavoila_tmplobj.rendertype.I.0" xml:space="preserve" approved="yes">
+        <source>Default output</source>
+      <target state="translated">Standardausgabe</target></trans-unit>
+      <trans-unit id="tx_templavoila_tmplobj.rendertype.I.1" xml:space="preserve" approved="yes">
+        <source>Printer friendly</source>
+      <target state="translated">Druckerfreundlich</target></trans-unit>
+      <trans-unit id="tx_templavoila_tmplobj.parent" xml:space="preserve" approved="yes">
+        <source>Make this a sub-template of:</source>
+      <target state="translated">Als Untervorlage definieren von:</target></trans-unit>
+      <trans-unit id="tx_templavoila_tmplobj.rendertype_ref" xml:space="preserve" approved="yes">
+        <source>Inherit default subtemplates from:</source>
+      <target state="translated">Standarduntervorlagen erben von:</target></trans-unit>
+      <trans-unit id="tx_templavoila_tmplobj.localProc" xml:space="preserve" approved="yes">
+        <source>Local Processing (XML):</source>
+      <target state="translated">Lokale Verarbeitung (XML):</target></trans-unit>
+      <trans-unit id="be_groups.tx_templavoila_access" xml:space="preserve" approved="yes">
+        <source>Disallow access to TemplaVoilà objects:</source>
+      <target state="translated">Zugriff auf TemplaVoilà-Objekt verbieten:</target></trans-unit>
+      <trans-unit id="tx_templavoila_datastructure" xml:space="preserve" approved="yes">
+        <source>TemplaVoilà Data Structure</source>
+      <target state="translated">TemplaVoilà-Datenstruktur</target></trans-unit>
+      <trans-unit id="tx_templavoila_datastructure.title" xml:space="preserve" approved="yes">
+        <source>Title:</source>
+      <target state="translated">Titel:</target></trans-unit>
+      <trans-unit id="tx_templavoila_datastructure.dataprot" xml:space="preserve" approved="yes">
+        <source>Data Structure XML:</source>
+      <target state="translated">XML der Datenstruktur:</target></trans-unit>
+      <trans-unit id="tx_templavoila_datastructure.scope" xml:space="preserve" approved="yes">
+        <source>Category:</source>
+      <target state="translated">Kategorie:</target></trans-unit>
+      <trans-unit id="tx_templavoila_datastructure.scope.I.1" xml:space="preserve" approved="yes">
+        <source>Page Template</source>
+      <target state="translated">Seitenvorlage</target></trans-unit>
+      <trans-unit id="tx_templavoila_datastructure.scope.I.2" xml:space="preserve" approved="yes">
+        <source>Flexible Content Element</source>
+      <target state="translated">Flexibles Inhaltselement</target></trans-unit>
+      <trans-unit id="tt_content.tx_templavoila_ds" xml:space="preserve" approved="yes">
+        <source>Data Structure:</source>
+      <target state="translated">Datenstruktur:</target></trans-unit>
+      <trans-unit id="tt_content.tx_templavoila_to" xml:space="preserve" approved="yes">
+        <source>Template Object:</source>
+      <target state="translated">Vorlagenobjekt:</target></trans-unit>
+      <trans-unit id="tt_content.tx_templavoila_pito" xml:space="preserve" approved="yes">
+        <source>Plug-In Template Object:</source>
+      <target state="translated">Vorlagenobjekt für Erweiterung:</target></trans-unit>
+      <trans-unit id="tt_content.tx_templavoila_flex" xml:space="preserve" approved="yes">
+        <source>Content:</source>
+      <target state="translated">Inhalt:</target></trans-unit>
+      <trans-unit id="tt_content.CType_pi1" xml:space="preserve" approved="yes">
+        <source>Flexible Content</source>
+      <target state="translated">Flexibler Inhalt</target></trans-unit>
+      <trans-unit id="pages.tx_templavoila_ds" xml:space="preserve" approved="yes">
+        <source>Page Template Structure:</source>
+      <target state="translated">Seitenvorlagenstruktur:</target></trans-unit>
+      <trans-unit id="pages.tx_templavoila_to" xml:space="preserve" approved="yes">
+        <source>Use Template Design:</source>
+      <target state="translated">Vorlagen-Design benutzen:</target></trans-unit>
+      <trans-unit id="pages.tx_templavoila_next_ds" xml:space="preserve" approved="yes">
+        <source>Subpages - Page Template Structure:</source>
+      <target state="translated">Unterseiten - Seitenvorlagenstruktur:</target></trans-unit>
+      <trans-unit id="pages.tx_templavoila_next_to" xml:space="preserve" approved="yes">
+        <source>Subpages - Use Template Design:</source>
+      <target state="translated">Unterseiten - Vorlagen-Design benutzen:</target></trans-unit>
+      <trans-unit id="pages.tx_templavoila_flex" xml:space="preserve" approved="yes">
+        <source>Content:</source>
+      <target state="translated">Inhalt:</target></trans-unit>
+    </body>
+  </file>
+</xliff>

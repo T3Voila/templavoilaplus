@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='utf-8'?>
+<xliff version="1.0">
+  <file source-language="en" datatype="plaintext" original="messages" date="2013-11-18T20:34:12Z" product-name="templavoila" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="tx_templavoila_ds.description" xml:space="preserve" approved="yes">
+        <source>Select the kind of page you want to create. You can see the basic layout in the icon below the selector box.</source>
+      <target state="translated">Wählen Sie die Art (Struktur) der Seite, die Sie erstellen möchten. Das grundlegende Layout der Seite können Sie in einem Vorschaubild unter dem Auswahlfeld erkennen.</target></trans-unit>
+      <trans-unit id="tx_templavoila_next_ds.description" xml:space="preserve" approved="yes">
+        <source>Select alternative page structure for subpages.</source>
+      <target state="translated">Wählen Sie eine alternative Seitenstruktur, die für die Unterseiten gilt.</target></trans-unit>
+      <trans-unit id="tx_templavoila_next_ds.details" xml:space="preserve" approved="yes">
+        <source>Subpages to this page will normally use the same structure as you have set in the "Page Template Structure" field above. However you can select an alternative structure here to be used by all subpages.</source>
+      <target state="translated">Unterseiten verwenden normalerweise dieselbe Struktur, die für eine darüber liegende Seite ausgewählt wurde. Wenn Sie möchten, können Sie hier für die Unterseiten eine abweichende Struktur festlegen.</target></trans-unit>
+      <trans-unit id="tx_templavoila_to.description" xml:space="preserve" approved="yes">
+        <source>Select the template design of the chosen "Page Template Structure" for this page.</source>
+      <target state="translated">Wählen Sie das Vorlagenlayout zur gewählten "Seitenstruktur" dieser Seite.</target></trans-unit>
+      <trans-unit id="tx_templavoila_next_to.description" xml:space="preserve" approved="yes">
+        <source>Select a different template design of the chosen "Page Template Structure" above for all subpages.</source>
+      <target state="translated">Wählen Sie ein abweichendes Vorlagenlayout zur gewählten "Seitenstruktur" für alle Unterseiten.</target></trans-unit>
+      <trans-unit id="tx_templavoila_flex.description" xml:space="preserve" approved="yes">
+        <source>Select the content and / or flexible elements for your page.</source>
+      <target state="translated">Wählen Sie den Inhalt und / oder die flexiblen Inhaltselemente der Seite.</target></trans-unit>
+      <trans-unit id="tx_templavoila_flex.details" xml:space="preserve" approved="yes">
+        <source>Usually, these fields show you the content types that you defined in the selected data structure above. If you use simple content elements, this fields gets automatically altered through the page module once you add content there.</source>
+      <target state="translated">Üblicherweise zeigen diese Felder die Inhaltstypen, welche in der ausgewählten Datenstruktur definiert wurden. Bei der Verwendung einfacher Inhaltselemente werden diese Felder automatisch durch das Seitenmodul angepasst sobald Inhalte hinzugefügt werden.</target></trans-unit>
+    </body>
+  </file>
+</xliff>

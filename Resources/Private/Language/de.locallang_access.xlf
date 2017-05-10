@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='utf-8'?>
+<xliff version="1.0">
+  <file source-language="en" datatype="plaintext" original="messages" date="2013-11-18T20:34:11Z" product-name="templavoila" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="access_noDSaccess" xml:space="preserve" approved="yes">
+        <source>You have no access to data structure of this record</source>
+      <target state="translated">Sie haben für die Datenstruktur dieses Datensatzes keine Zugriffsberechtigung.</target></trans-unit>
+      <trans-unit id="access_noTOaccess" xml:space="preserve" approved="yes">
+        <source>You have no access to template object of this record</source>
+      <target state="translated">Sie haben für das Vorlagenobjekt dieses Datensatzes keine Zugriffsberechtigung.</target></trans-unit>
+      <trans-unit id="access_noModifyAccess" xml:space="preserve" approved="yes">
+        <source>Modification of record %s:%d is not allowed because user has no access to its DS and/or TO</source>
+      <target state="translated">Änderung des Datensatzes %s:%d ist nicht erlaubt, da der Benutzer keine Zugriffsberechtigung für seine DS und/oder VO hat.</target><alt-trans xml:space="preserve" origin="davidarndt"><target>Änderung des Datensatzes %s: %d ist nicht erlaubt, da der Benutzer keine Zugriffsberechtigung für seine DS und/oder VO hat.</target></alt-trans><alt-trans xml:space="preserve" origin="franzholz"><target>Änderung des Datensatzes %s:%d ist nicht erlaubt, da der Benutzer keine Zugriffsberechtigung auf seine DS und/oder TO hat.</target></alt-trans></trans-unit>
+      <trans-unit id="access_noCreateAccess" xml:space="preserve" approved="yes">
+        <source>Creation of record in %s is not allowed because user has no access to its DS and/or TO</source>
+      <target state="translated">Erstellen eines Datensatzes in %s ist nicht erlaubt, da der Benutzer keine Zugriffsberechtigung für seine DS und/oder TO hat.</target></trans-unit>
+    </body>
+  </file>
+</xliff>

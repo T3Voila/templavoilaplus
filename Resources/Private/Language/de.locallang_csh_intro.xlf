@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='utf-8'?>
+<xliff version="1.0">
+  <file source-language="EN" datatype="plaintext" original="messages" date="2013-11-18T20:34:11Z" product-name="templavoila" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id=".alttitle" xml:space="preserve" approved="yes">
+        <source>TemplaVoilà</source>
+      <target state="translated">TemplaVoilà</target></trans-unit>
+      <trans-unit id=".description" xml:space="preserve" approved="yes">
+        <source>The TemplaVoilà extension contains a unique point'n'click template mapping engine, a new content element type "Flexible Content" (for fixed-template elements) and a new page module for building web-pages with nested content elements.</source>
+      <target state="translated">Die Erweiterung TemplaVoilà enthält eine neuartige Vorlagen-Engine für die Integration von HTML-Vorlagen mit einigen Mausklicks, einen neuen Typ für flexible Inhaltselemente ("Flexible Content") und ein neues Seiten-Modul, das die Erstellung von Web-Sites mit verschachtelten Inhaltselementen erlaubt.</target></trans-unit>
+      <trans-unit id="_.seeAlso" xml:space="preserve" approved="yes">
+        <source>Tutorial (Futuristic Template Building) | http://typo3.org/documentation/document-library/doc_tut_ftb1/</source>
+      <target state="translated">Tutorial (Futuristic Template Building) | http://typo3.org/documentation/document-library/doc_tut_ftb1/</target></trans-unit>
+      <trans-unit id="_.image" xml:space="preserve" approved="yes">
+        <source>EXT:templavoila/cshimages/intro.png</source>
+      <target state="translated">EXT:templavoila/cshimages/intro.png</target></trans-unit>
+      <trans-unit id=".image_descr" xml:space="preserve" approved="yes">
+        <source>One part of TemplaVoilà is the unique template mapping system which visually shows HTML tags from the template file and allows the user to map data to HTML elements by a single mouseclick.</source>
+      <target state="translated">Ein Teil von TemplaVoilà ist das neuartige System zur Abbildung auf Vorlagen, welches HTML-Tags einer HTML-Vorlage visuell darstellt und dem Entwickler erlaubt, Daten mit den HTML-Element durch einen einfachen Mausklick zu verbinden.</target></trans-unit>
+      <trans-unit id=".syntax" xml:space="preserve">
+        <source/>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
