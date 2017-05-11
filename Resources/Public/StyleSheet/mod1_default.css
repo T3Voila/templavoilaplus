@@ -1,290 +1,318 @@
 div#typo3-docbody {
-  padding: 0;
+    padding: 0;
 }
 
 .tpm-editPageScreen div#typo3-inner-docbody {
-  display: table;
-  width: 100%;
-  padding: 0;
+    display: table;
+    width: 100%;
+    padding: 0;
 }
 
-.typo3-templavoila-pagemodule > #typo3-docheader > .typo3-docheader-functions {
-  padding-top: 5px;
+.typo3-templavoila-pagemodule>#typo3-docheader>.typo3-docheader-functions {
+    padding-top: 5px;
 }
-.typo3-templavoila-pagemodule > #typo3-docbody {
-  top: 27px;
+
+.typo3-templavoila-pagemodule>#typo3-docbody {
+    top: 27px;
 }
-.typo3-templavoila-pagemodule > #typo3-docbody > .typo3-docheader-buttons {
-  height: auto;
-  padding-top: 0px;
-  padding-bottom: 0px;
+
+.typo3-templavoila-pagemodule>#typo3-docbody>.typo3-docheader-buttons {
+    height: auto;
+    padding-top: 0px;
+    padding-bottom: 0px;
 }
-.typo3-templavoila-pagemodule > #typo3-docbody > .typo3-docheader-buttons > .docheader-buttons-inner {
-  margin-left: 10px;
-  margin-right: 10px;
-  width: auto;
+
+.typo3-templavoila-pagemodule>#typo3-docbody>.typo3-docheader-buttons>.docheader-buttons-inner {
+    margin-left: 10px;
+    margin-right: 10px;
+    width: auto;
 }
+
 .typo3-templavoila-pagemodule #typo3-docbody #tx_templavoilaplus_mod1_sidebar-bar .typo3-dyntabmenu-tabs table.typo3-dyntabmenu td a,
-.typo3-templavoila-pagemodule #typo3-docbody #tx_templavoilaplus_mod1_sidebar-bar .typo3-dyntabmenu-tabs table.typo3-dyntabmenu td.disabled,
-.typo3-templavoila-pagemodule #typo3-docbody #tx_templavoilaplus_mod1_sidebar-bar .typo3-dyntabmenu-tabs table.typo3-dyntabmenu td.disabled_over {
-  padding-top: 3px;
-  padding-bottom: 1px;
+    .typo3-templavoila-pagemodule #typo3-docbody #tx_templavoilaplus_mod1_sidebar-bar .typo3-dyntabmenu-tabs table.typo3-dyntabmenu td.disabled,
+    .typo3-templavoila-pagemodule #typo3-docbody #tx_templavoilaplus_mod1_sidebar-bar .typo3-dyntabmenu-tabs table.typo3-dyntabmenu td.disabled_over
+    {
+    padding-top: 3px;
+    padding-bottom: 1px;
 }
 
 table {
-  position: relative;
+    position: relative;
 }
 
 .sortableItem .sortable_handle {
-  cursor: move;
+    cursor: move;
 }
 
 div.warning {
-  background-color: #DDEEF9;
-  border-color: #8AAFC4;
-  border: 1px solid;
-  margin: 4px 0;
-  padding: 6px;
-  font-weight: bold;
-  font-size: 11px;
+    background-color: #DDEEF9;
+    border-color: #8AAFC4;
+    border: 1px solid;
+    margin: 4px 0;
+    padding: 6px;
+    font-weight: bold;
 }
 
 div.warning img {
-  vertical-align: middle;
-  padding: 2px 1px;
+    vertical-align: middle;
+    padding: 2px 1px;
 }
 
 div.warning a {
-  text-decoration: underline;
+    text-decoration: underline;
 }
 
 .tpm-bottom-controls {
-  display: block;
+    display: block;
 }
 
 .tpm-bottom-controls img {
-  border: none;
-  text-align: center;
-  vertical-align: middle;
+    border: none;
+    text-align: center;
+    vertical-align: middle;
 }
 
 .tpm-title-cell {
-  vertical-align: top;
-  padding-top: 0;
-  padding-bottom: 0;
+    padding: 0 .8em;
+    padding-top: .25em;
 }
 
 .tpm-content-cell {
-  vertical-align: top;
-  padding: 5px;
-  border-left: 3px solid #5F5F5F;
-  min-width: 120px;
+    padding: 0 .8em;
+    min-width: 120px;
+}
+
+.tpm-title-cell, .tpm-content-cell {
+    vertical-align: top;
+    border-left: 3px solid #5F5F5F;
+}
+
+.tpm-title-cell:first-child, .tpm-content-cell:first-child {
+    border-left: none;
 }
 
 .tpm-subelement-table {
-  border-bottom: 0px;
-  font-size: 10px;
-  margin: 0 4px;
+    border-bottom: 0px;
+    margin: 0;
 }
 
 .tpm-subelement-table .tpm-title-cell {
-  background: none;
+    background: none;
 }
 
 .tpm-sub-elements {
-  border-color: #CACACA;
-  border-right: 1px solid #CACACA;
-  border-style: none solid solid;
-  border-width: medium 1px 1px;
-  font-size: 10px;
+    border-width: 0 1px 1px 1px;
+    border-color: #CACACA;
+    border-style: solid;
+    border-collapse: collapse;
 }
 
 .tpm-sub-elements th, .tpm-sub-elements td {
-  vertical-align: top;
+    vertical-align: top;
 }
 
 .tpm-container-element-depth-odd {
-  background: #EAEAEA;
+    background: #FAFAFA;
 }
 
 .tpm-container-element-depth-even {
-  background: #F7F7F7;
+    background: transparent;
 }
 
-.active > .tpm-container-element {
-  color: #000000;
-  background-color: #FFFFFF;
+.active>.tpm-container-element {
+    color: #000000;
+    background-color: #FFFFFF;
 }
-.active > .tpm-container-element > a {
-  color: #000000;
+
+.active>.tpm-container-element>a {
+    color: #000000;
 }
 
 /* @todo find a proper "color" for referenced icons */
 .tpm-container-element {
-  color: #5F5F5F;
-  width: 100%;
-  margin-bottom: 5px;
+    color: #5F5F5F;
+    width: 100%;
+    margin-bottom: 5px;
 }
 
 .tpm-container-element a {
-  color: #5F5F5F;
+    color: #5F5F5F;
 }
 
 .tpm-container-element .tpm-titlebar-fromOtherPage .t3-row-header {
-  background-color: #EAEAEA;
-  background-image: -moz-linear-gradient(center top, #888888 10%, #5F5F5F 100%);
+    background-color: #EAEAEA;
+    background-image: -moz-linear-gradient(center top, #888888 10%, #5F5F5F 100%);
 }
 
 .tpm-element-control {
-  vertical-align: top;
+    vertical-align: top;
 }
 
 .tpm-titlebar {
-  overflow: hidden;
+    overflow: hidden;
 }
 
 .tpm-element-title {
-  min-width: 100px;
-  margin-right: 140px;
-  line-height: 15px;
-  padding: 4px 1px 4px 5px;
+    min-width: 100px;
+    padding: 0px 1px 0px 5px;
 }
 
-.tpm-element-title .tpm-langIcon,
-.tpm-element-title .tpm-buttonsLeft {
-  float: left;
-  padding-right: 5px;
+.tpm-element-title .tpm-langIcon, .tpm-element-title .tpm-buttonsLeft {
+    padding-right: .5em;
+    position: relative;
 }
 
 .tpm-element-title .t3-js-clickmenutrigger {
-  margin-right: 5px;
+    margin-right: .5em;
 }
 
 .tpm-preview ul {
-  padding: 0 0 0 20px;
-  margin: 0;
+    padding: 0 0 0 20px;
+    margin: 0;
 }
 
 .tpm-preview, .tpm-warnings {
-  padding: 5px;
+    padding: 5px;
 }
 
 .t3-page-ce {
-  margin: 0;
+    margin: 0;
 }
 
 .tpm-element {
-  padding: 5px 5px 5px 0;
+    padding: 0;
+    padding-top: 0.8em;
+    padding-bottom: 0.4em;
+}
+
+.tpm-element.t3-page-ce {
+    margin: 0;
 }
 
 .tpm-nonused-elements td:first-child {
-  padding: 3px;
+    padding: 3px;
 }
 
 .tpm-nonused-element td {
-  padding: 2px 3px;
-  vertical-align: middle;
+    padding: 2px 3px;
+    vertical-align: middle;
 }
 
 .tpm-nonused-element:nth-child(odd) {
-  background: #FFF;
+    background: #FFF;
 }
 
 .t3-row-header {
-  color: #fff;
+    color: #FFF;
+    position: relative;
 }
 
 .t3-row-header .tpm-element-title {
-  line-height: 18px;
+    line-height: 1.5em;
+}
+
+.t3-row-header .tpm-element-title .nobr {
+    overflow-x: hidden;
+    width: auto;
+    display: inline-block;
 }
 
 .t3-row-header .tpm-element-control {
-  float: right;
-  min-width: 120px;
+    position: absolute;
+    top: .2em;
+    right: .2em;
+    min-width: 120px;
 }
 
 .t3-row-header .tpm-element-control:after {
-  content: ".";
-  clear: both;
-  display: block;
-  visibility: hidden;
-  height: 0px;
-}
-
-.t3-page-ce {
-  margin-bottom: 0;
+    content: ".";
+    clear: both;
+    display: block;
+    visibility: hidden;
+    height: 0px;
 }
 
 .t3-page-ce.inactive .t3-row-header, .t3-page-ce.active .t3-row-header {
-  visibility: visible;
+    visibility: visible;
 }
 
-.t3-page-ce.inactive > .tpm-container-element > .tpm-titlebar > .t3-row-header {
-  background: none;
-  color: #000000;
-  opacity: 0.5;
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
-  filter: alpha(opacity=50);
+.t3-page-ce.inactive>.tpm-container-element>.tpm-titlebar>.t3-row-header {
+    background: none;
+    color: #000000;
+    opacity: 0.5;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+    filter: alpha(opacity = 50);
 }
 
-.t3-page-ce.inactive > .tpm-container-element > .tpm-titlebar > .t3-row-header > .tpm-element-control {
-  visibility: hidden;
+.t3-page-ce.inactive>.tpm-container-element>.tpm-titlebar>.t3-row-header>.tpm-element-control {
+    visibility: hidden;
 }
 
-.t3-page-ce.inactive > .tpm-container-element.tpm-hidden > .tpm-titlebar > .t3-row-header {
-  color: #888888;
+.t3-page-ce.inactive>.tpm-container-element.tpm-hidden>.tpm-titlebar>.t3-row-header {
+    color: #888888;
 }
 
 .inactive .tpm-hidden .tpm-sub-elements {
-  opacity: 0.5;
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
-  filter: alpha(opacity=50);
+    opacity: 0.5;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+    filter: alpha(opacity = 50);
 }
 
 .tpm-localisation-info-table th, .tpm-localisation-info-table td {
-  padding: 5px;
+    padding: 5px;
 }
+
 .tpm-localisation-info-table tr.bgColor4 {
-  color: inherit;
+    color: inherit;
 }
+
 .tpm-localisation-info-table tr.tpm-language-row {
-  background-color: #f1f1f1;
-  color: #212424;
+    background-color: #f1f1f1;
+    color: #212424;
 }
+
 .tpm-localisation-info-table tr.tpm-language-row:nth-child(even) {
-  background-color: #f9f9f9;
+    background-color: #f9f9f9;
 }
+
 .tpm-localisation-info-table tr .tpm-language-edit, .tpm-localisation-info-table tr .tpm-language-info {
-  vertical-align: top;
+    vertical-align: top;
 }
+
 .tpm-localisation-info-table tr .tpm-language-edit {
-  width: 1%;
+    width: 1%;
 }
+
 .tpm-localisation-info-table tr .tpm-language-info {
-  width: 99%;
+    width: 99%;
 }
+
 .tpm-localisation-info-table tr .tpm-language-info .t3js-icon {
-  margin-right: 4px;
+    margin-right: 4px;
 }
 
 .tpm-outline-table .tpm-container img, .tpm-outline-table .tpm-element img, .tpm-outline-table .tpm-elementRef img {
-  vertical-align: middle;
-  padding: 0 1px;
-}
-.tpm-outline-table .tpm-container .nobr img, .tpm-outline-table .tpm-element .nobr img, .tpm-outline-table .tpm-elementRef .nobr img {
-  padding-right: 3px;
-}
-.tpm-outline-table .tpm-outline-level0 {
-  background-color: #B8BEC9;
-}
-.tpm-outline-table .tpm-outline-level1 {
-  background-color: #F8F9FB;
+    vertical-align: middle;
+    padding: 0 1px;
 }
 
-#typo3-docbody > .typo3-message {
-  margin: 5px 8px;
+.tpm-outline-table .tpm-container .nobr img, .tpm-outline-table .tpm-element .nobr img, .tpm-outline-table .tpm-elementRef .nobr img
+    {
+    padding-right: 3px;
+}
+
+.tpm-outline-table .tpm-outline-level0 {
+    background-color: #B8BEC9;
+}
+
+.tpm-outline-table .tpm-outline-level1 {
+    background-color: #F8F9FB;
+}
+
+#typo3-docbody>.typo3-message {
+    margin: 5px 8px;
 }
 
 .drag-placeholder {
-  background-color: #8AAFC4;
+    background-color: #8AAFC4;
 }
