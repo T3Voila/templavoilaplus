@@ -1,0 +1,438 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" target-language="de"
+		BackendLayout.xlfdatatype="plaintext" original="messages" date="2017-05-10T12:00:00Z"
+		product-name="templavoilaplus">
+		<header />
+		<body>
+			<trans-unit id="mlang_tabs_tab" xml:space="preserve">
+                <source>Page</source>
+                <target state="translated">Seite</target>
+            </trans-unit>
+			<trans-unit id="mlang_labels_tabdescr" xml:space="preserve">
+                <source>This module allows you to create and edit webpages. It provides a template selector and management for different languages. This page module is part of the extension &quot;TemplaVoilà Plus&quot;.</source>
+            <target state="translated">Dieses Modul erlaubt es, Seiten zu erzeugen und zu bearbeiten. Es stellt eine Template-Auswahl bereit und erlaubt die Verwaltung unterschiedlicher Übersetzungen. Dieses Seiten-Modul ist Teil der Extension &quot;TemplaVoilà Plus&quot;.</target>
+            </trans-unit>
+			<trans-unit id="mlang_labels_tablabel" xml:space="preserve">
+                <source>Create and edit pages</source>
+            <target state="translated">Seite erzeugen und bearbeiten</target>
+            </trans-unit>
+
+			<trans-unit id="title" xml:space="preserve" approved="yes">
+                <source>WEB &gt; PAGE MODULE</source>
+            <target state="translated">MODUL WEB &gt; SEITE</target></trans-unit>
+			<trans-unit id="default_introduction" xml:space="preserve"
+				approved="yes">
+                <source>If you wish to edit the content of a page, please click the page title in the page tree to the left.</source>
+            <target state="translated">Wenn Sie den Inhalt einer Seite bearbeiten möchten, klicken Sie bitte im Seitenbaum auf der linken Seite auf einen Seitentitel.</target></trans-unit>
+			<trans-unit id="csh_whatisthetemplavoilapagemodule"
+				xml:space="preserve" approved="yes">
+                <source>What is the TemplaVoilà page module?</source>
+            <target state="translated">Was ist das TemplaVoilà-Seitenmodul?</target></trans-unit>
+			<trans-unit id="createnewpage_selecttemplate" xml:space="preserve"
+				approved="yes">
+                <source>Select a template for your new page:</source>
+            <target state="translated">Vorlage für die neue Seite auswählen:</target></trans-unit>
+			<trans-unit id="createnewpage_defaultlayoutsubmitlabel"
+				xml:space="preserve" approved="yes">
+                <source>Create page with default layout</source>
+            <target state="translated">Neue Seite mit Standardlayout erstellen</target></trans-unit>
+			<trans-unit id="createnewpage_templateobject_createemptypage"
+				xml:space="preserve" approved="yes">
+                <source>Create an empty page based on this template:</source>
+            <target state="translated">Eine leere Seite basierend auf folgender Vorlage erstellen:</target></trans-unit>
+			<trans-unit
+				id="createnewpage_templateobject_createpagewithdefaultcontent"
+				xml:space="preserve" approved="yes">
+                <source>Create a page with default content based on this template:</source>
+            <target state="translated">Eine Seite mit vorausgefülltem Inhalt, basierend auf folgender Vorlage erstellen:</target></trans-unit>
+			<trans-unit id="createnewcontent_newContentElement"
+				xml:space="preserve" approved="yes">
+                <source>New content element</source>
+            <target state="translated">Neues Inhaltselement</target></trans-unit>
+			<trans-unit id="info_elementfromotherpage" xml:space="preserve"
+				approved="yes">
+                <source>This is a reference to an element on page %2$d.</source>
+            <target state="translated">Dies ist eine Referenz zu einem Element auf Seite %2$d.</target></trans-unit>
+			<trans-unit id="warning_elementusedmorethanonce"
+				xml:space="preserve" approved="yes">
+                <source>This element has been used %s times on this page! ID:%s</source>
+            <target state="translated">Dieses Element wird auf der aktuellen Seite %s mal verwendet! ID:%s</target></trans-unit>
+			<trans-unit id="warning_containerSeparate" xml:space="preserve"
+				approved="yes">
+                <source>This container element has localization without inheritance enabled (langChildren = 0). This is most likely a misconfiguration since the localization features of TemplaVoilà does not support localized container fields in the native interface! Please inform the system administrator!</source>
+            <target state="translated">ACHTUNG: Für dieses Container-Element wurde Lokalisierung ohne Vererbung aktiviert (langChildren = 0). Dabei handelt es sich vermutlich um eine Fehlkonfiguration, weil die Standardoberfläche von TemplaVoilà die Darstellung lokalisierter Container-Felder nicht unterstützt! Bitte informieren Sie den Systemadministrator!</target></trans-unit>
+			<trans-unit id="warning_containerInheritance" xml:space="preserve"
+				approved="yes">
+                <source>This container element has localization enabled but with inheritance (langChildren = 1). This situation might produce confusing displays in TemplaVoilà and you are encouraged to disable localization of this container element completely by setting langDisable = 1. Please inform the system administrator!</source>
+            <target state="translated">Für dieses Container-Element wurde Lokalisierung mit Vererbung aktiviert (langChildren = 1). Diese Konfiguration kann zu verwirrenden Darstellungen in TemplaVoilà führen, und es wird empfohlen, die Lokalisierung für dieses Container-Element komplett auszuschalten, indem Sie langDisable auf "1" setzen. Bitte informieren Sie den Systemadministrator.</target></trans-unit>
+			<trans-unit id="warning_containerSeparate_short"
+				xml:space="preserve" approved="yes">
+                <source>L10N mode: Separate!</source>
+            <target state="translated">Übersetzungsmodus: Separat!</target></trans-unit>
+			<trans-unit id="warning_containerInheritance_short"
+				xml:space="preserve" approved="yes">
+                <source>L10N mode: Inheritance</source>
+            <target state="translated">Übersetzungsmodus: Vererbung</target></trans-unit>
+			<trans-unit id="cannotedit_doktypemountpoint" xml:space="preserve"
+				approved="yes">
+                <source>This page acts as a mount point and its content is being replaced by another page ("%s"). Therefore you cannot edit the content of this page directly.</source>
+            <target state="translated">Diese Seite dient als Freigabe und ihr Inhalt wird durch den einer anderen Seite ("%s") ersetzt. Sie können den Inhalt dieser Seite daher nicht direkt bearbeiten.</target></trans-unit>
+			<trans-unit id="jumptomountsourcepage" xml:space="preserve"
+				approved="yes">
+                <source>Jump to source page of this mount point</source>
+            <target state="translated">Springe zur Ursprungsseite für diese Freigabe</target></trans-unit>
+			<trans-unit id="cannotedit_contentfrompid" xml:space="preserve"
+				approved="yes">
+                <source>This page has been configured in a way that it doesn't have any content itself but instead the content of another page ("%s") is shown. Therefore you cannot edit the content of this page directly.</source>
+            <target state="translated">Diese Seite wurde so konfiguriert, dass sie selbst keine Inhalte enthält, sondern stattdessen die Inhalte einer anderen Seite ("%s") anzeigt. Daher können Sie den Inhalt dieser Seite nicht direkt bearbeiten.</target></trans-unit>
+			<trans-unit id="jumptocontentfrompidpage" xml:space="preserve"
+				approved="yes">
+                <source>Jump to page containing the content elements</source>
+            <target state="translated">Springe zur Seite, die die Inhaltselemente enthält.</target></trans-unit>
+			<trans-unit id="cannotedit_shortcut_0" xml:space="preserve"
+				approved="yes">
+                <source>This page is of the type "shortcut". Instead of having content on its own, this page shows the content the page "%s". Therefore you cannot edit the content of this page directly.</source>
+            <target state="translated">Diese Seite ist vom Typ "Verweis" und enthält keinen eigenen Inhaltselemente. Stattdessen wird der Inhalt der Seite "%s" angezeigt. Daher können Sie den Inhalt dieser Seite nicht direkt bearbeiten.</target></trans-unit>
+			<trans-unit id="cannotedit_shortcut_1" xml:space="preserve"
+				approved="yes">
+                <source>This page is of the type "shortcut". Instead of having content on its own, this page shows the content from the first sub page. Therefore you cannot edit the content of this page directly.</source>
+            <target state="translated">Diese Seite ist vom Typ "Verweis" und enthält keinen eigenen Inhaltselemente. Stattdessen wird der Inhalt der ersten Unterseite angezeigt. Daher können Sie den Inhalt dieser Seite nicht direkt bearbeiten.</target></trans-unit>
+			<trans-unit id="cannotedit_shortcut_2" xml:space="preserve"
+				approved="yes">
+                <source>This page is of the type "shortcut". Instead of having content on its own, this page shows the content of a random sub page. Therefore you cannot edit the content of this page directly.</source>
+            <target state="translated">Diese Seite ist vom Typ "Verweis" und enthält keinen eigenen Inhaltselemente. Stattdessen wird der Inhalt einer zufälligen Unterseite angezeigt. Daher können Sie den Inhalt dieser Seite nicht direkt bearbeiten.</target></trans-unit>
+			<trans-unit id="jumptoshortcutdestination" xml:space="preserve"
+				approved="yes">
+                <source>Jump to shortcut destination</source>
+            <target state="translated">Springe zum Ziel des Verweises</target></trans-unit>
+			<trans-unit id="cannotedit_externalurl_1" xml:space="preserve"
+				approved="yes">
+                <source>This page refers to an external website, you therefore cannot edit the content of this page directly.</source>
+            <target state="translated">Diese Seite verweist auf eine externe Web-Site. Daher können Sie den Inhalt dieser Seite nicht direkt bearbeiten.</target></trans-unit>
+			<trans-unit id="cannotedit_externalurl_2" xml:space="preserve"
+				approved="yes">
+                <source>This page refers to an external FTP location, you therefore cannot edit the content of this page directly.</source>
+            <target state="translated">Diese Seite verweist auf einen FTP-Server. Daher können Sie den Inhalt dieser Seite nicht direkt bearbeiten.</target></trans-unit>
+			<trans-unit id="cannotedit_externalurl_3" xml:space="preserve"
+				approved="yes">
+                <source>This page refers to an email address, you therefore cannot edit the content of this page directly.</source>
+            <target state="translated">Diese Seite verweist auf eine E-Mail-Adresse. Daher können Sie den Inhalt dieser Seite nicht direkt bearbeiten.</target></trans-unit>
+			<trans-unit id="jumptoexternalurl" xml:space="preserve"
+				approved="yes">
+                <source>Jump to external URL (%s)</source>
+            <target state="translated">Zu externer URL springen (%s)</target></trans-unit>
+			<trans-unit id="editpage_sysfolder_intro" xml:space="preserve"
+				approved="yes">
+                <source>The current page is of the type "Sysfolder". Sysfolders usually don't contain content elements but are used for collecting other types of records in a single folder.</source>
+            <target state="translated">Die aktuelle Seite ist vom Typ "Systemordner". Systemordner enthalten üblicherweise keine Inhaltselemente, sondern werden zur Ablage anderer Arten von Datensätzen verwendet.</target></trans-unit>
+			<trans-unit id="editpage_sysfolder_listview_noaccess"
+				xml:space="preserve" approved="yes">
+                <source>The content of a Sysfolder is usually managed by the "List" module but you currently don't have access to that module. If you need to access the data in the Sysfolder anyway, please ask your system administrator to grant you access to the List module.</source>
+            <target state="translated">Der Inhalt eines Systemordners wird normalerweise über das Modul "Liste" verwaltet. Zur Zeit haben Sie jedoch keinen Zugriff auf dieses Modul. Wenn Sie dennoch auf die Daten in diesem Systemordner zugreifen möchten, bitten Sie Ihren Systemadministrator, Ihnen Zugriff auf das Modul "Liste" zu gewähren.</target></trans-unit>
+			<trans-unit id="editpage_sysfolder_switchtolistview"
+				xml:space="preserve" approved="yes">
+                <source>Switch to list view</source>
+            <target state="translated">Zur Listenansicht wechseln</target></trans-unit>
+			<trans-unit id="template_nodescriptionavailable"
+				xml:space="preserve" approved="yes">
+                <source>No description available.</source>
+            <target state="translated">Keine Beschreibung verfügbar.</target></trans-unit>
+			<trans-unit id="template_titledefault" xml:space="preserve"
+				approved="yes">
+                <source>Default template</source>
+            <target state="translated">Standardvorlage</target></trans-unit>
+			<trans-unit id="template_titleInherit" xml:space="preserve"
+				approved="yes">
+                <source>No selection (inherit)</source>
+            <target state="translated">Keine Auswahl (Vererbung)</target></trans-unit>
+			<trans-unit id="willbereplacedbydefaultlanguage"
+				xml:space="preserve" approved="yes">
+                <source>(will be replaced by content of default language)</source>
+            <target state="translated">(wird durch Inhalt der Standardsprache ersetzt)</target></trans-unit>
+			<trans-unit id="newce_defaulttext_text" xml:space="preserve"
+				approved="yes">
+                <source>Please enter some text here</source>
+            <target state="translated">Bitte geben Sie hier Text ein</target></trans-unit>
+			<trans-unit id="view_basic" xml:space="preserve" approved="yes">
+                <source>Basic view</source>
+            <target state="translated">Standardansicht</target></trans-unit>
+			<trans-unit id="view_tree" xml:space="preserve" approved="yes">
+                <source>Tree view</source>
+            <target state="translated">Baumstruktur</target></trans-unit>
+			<trans-unit id="createnewtranslation" xml:space="preserve"
+				approved="yes">
+                <source>Create new page translation</source>
+            <target state="translated">Neue Seitenübersetzung anlegen</target></trans-unit>
+			<trans-unit id="selectlanguageversion" xml:space="preserve"
+				approved="yes">
+                <source>Show page language version</source>
+            <target state="translated">Ausgewählte Sprache</target></trans-unit>
+			<trans-unit id="pageLocalizationMode" xml:space="preserve"
+				approved="yes">
+                <source>Page localization mode</source>
+            <target state="translated">Übersetzungsmodus der Seite</target></trans-unit>
+			<trans-unit id="pageLocalizationMode_separate" xml:space="preserve"
+				approved="yes">
+                <source>Separate structures</source>
+            <target state="translated">Separate Strukturen</target></trans-unit>
+			<trans-unit id="pageLocalizationMode_inheritance"
+				xml:space="preserve" approved="yes">
+                <source>Inheritance of values</source>
+            <target state="translated">Vererbung der Werte</target></trans-unit>
+			<trans-unit id="pageLocalizationMode_inheritance.disableInheritance"
+				xml:space="preserve" approved="yes">
+                <source>Don't inherit structure</source>
+            <target state="translated">Struktur nicht vererben</target></trans-unit>
+			<trans-unit id="pageLocalizationParadigm_bound" xml:space="preserve"
+				approved="yes">
+                <source>1:1</source>
+            <target state="translated">1:1</target></trans-unit>
+			<trans-unit id="pageLocalizationDisplayMode" xml:space="preserve"
+				approved="yes">
+                <source>Display mode</source>
+            <target state="translated">Darstellungsmodus</target></trans-unit>
+			<trans-unit id="pageLocalizationDisplayMode_selectedLanguage"
+				xml:space="preserve" approved="yes">
+                <source>Selected language</source>
+            <target state="translated">Ausgewählte Sprache</target></trans-unit>
+			<trans-unit id="pageLocalizationDisplayMode_onlyLocalized"
+				xml:space="preserve" approved="yes">
+                <source>Only localized elements</source>
+            <target state="translated">Nur übersetzte Elemente</target></trans-unit>
+			<trans-unit id="clickToEditTranslation" xml:space="preserve"
+				approved="yes">
+                <source>Click to edit translation</source>
+            <target state="translated">Zum Bearbeiten der Übersetzung klicken</target></trans-unit>
+			<trans-unit id="editlanguageversion" xml:space="preserve"
+				approved="yes">
+                <source>Edit page properties</source>
+            <target state="translated">Seiteneigenschaften bearbeiten</target></trans-unit>
+			<trans-unit id="multipleLanguages" xml:space="preserve"
+				approved="yes">
+                <source>Multiple languages</source>
+            <target state="translated">Mehrere Sprachen</target></trans-unit>
+			<trans-unit id="languageDisabled" xml:space="preserve"
+				approved="yes">
+                <source>Language disabled</source>
+            <target state="translated">Sprache deaktiviert</target></trans-unit>
+			<trans-unit id="viewsubelements" xml:space="preserve"
+				approved="yes">
+                <source>View sub elements</source>
+            <target state="translated">Unterelemente anzeigen</target></trans-unit>
+			<trans-unit id="gobacktooverview" xml:space="preserve"
+				approved="yes">
+                <source>Go back to whole page view</source>
+            <target state="translated">Zurück zur Ansicht der ganzen Seite</target></trans-unit>
+			<trans-unit id="createnewrecord" xml:space="preserve"
+				approved="yes">
+                <source>Create new element</source>
+            <target state="translated">Neues Element anlegen</target></trans-unit>
+			<trans-unit id="editrecord" xml:space="preserve" approved="yes">
+                <source>Edit element</source>
+            <target state="translated">Element bearbeiten</target></trans-unit>
+			<trans-unit id="editrecord_d" xml:space="preserve"
+				approved="yes">
+                <source>Editing is not allowed for this element!</source>
+            <target state="translated">Bearbeiten dieses Elements ist nicht erlaubt!</target></trans-unit>
+			<trans-unit id="pasterecord" xml:space="preserve"
+				approved="yes">
+                <source>Paste element</source>
+            <target state="translated">Element einfügen</target></trans-unit>
+			<trans-unit id="pastefce_andcopyallsubs" xml:space="preserve"
+				approved="yes">
+                <source>Paste copy of element and make copies of all sub elements</source>
+            <target state="translated">Kopie des Elements mit Kopien aller Unterelemente einfügen</target></trans-unit>
+			<trans-unit id="pastefce_andreferencesubs" xml:space="preserve"
+				approved="yes">
+                <source>Paste copy of element and keep references to original sub elements</source>
+            <target state="translated">Kopie des Elements mit Verknüpfung zu den ursprünglichen Unterelementen einfügen</target></trans-unit>
+			<trans-unit id="copyrecord" xml:space="preserve" approved="yes">
+                <source>Copy element</source>
+            <target state="translated">Element kopieren</target></trans-unit>
+			<trans-unit id="cutrecord" xml:space="preserve" approved="yes">
+                <source>Cut element</source>
+            <target state="translated">Element ausschneiden</target></trans-unit>
+			<trans-unit id="createreference" xml:space="preserve"
+				approved="yes">
+                <source>Create reference</source>
+            <target state="translated">Verknüpfung erstellen</target></trans-unit>
+			<trans-unit id="unlinkRecord" xml:space="preserve"
+				approved="yes">
+                <source>Unlink element</source>
+            <target state="translated">Verknüpfung entfernen</target></trans-unit>
+			<trans-unit id="deleteRecord" xml:space="preserve"
+				approved="yes">
+                <source>Delete element (!)</source>
+            <target state="translated">Element löschen(!)</target></trans-unit>
+			<trans-unit id="deleteRecordMsg" xml:space="preserve"
+				approved="yes">
+                <source>Do you really want to delete this element?</source>
+            <target state="translated">Dieses Element tatsächlich löschen?</target></trans-unit>
+			<trans-unit id="deleteRecordWithReferencesMsg" xml:space="preserve"
+				approved="yes">
+                <source>This element is also referenced on other pages. Do you really want to delete this element?</source>
+            <target state="translated">Auf dieses Element wird auf anderen Seiten verwiesen. Dieses Element tatsächlich löschen?</target></trans-unit>
+			<trans-unit id="unlinkRecordMsg" xml:space="preserve"
+				approved="yes">
+                <source>Unlink element?</source>
+            <target state="translated">Verknüpfung für diese Element lösen?</target></trans-unit>
+			<trans-unit id="pagerelatedinformation" xml:space="preserve"
+				approved="yes">
+                <source>Page related information</source>
+            <target state="translated">Seitenbezogene Informationen</target></trans-unit>
+			<trans-unit id="advancedfunctions" xml:space="preserve"
+				approved="yes">
+                <source>Advanced functions</source>
+            <target state="translated">Erweiterte Funktionen</target></trans-unit>
+			<trans-unit id="localization" xml:space="preserve"
+				approved="yes">
+                <source>Translations</source>
+            <target state="translated">Übersetzungen</target></trans-unit>
+			<trans-unit id="availabletranslations" xml:space="preserve"
+				approved="yes">
+                <source>Translations</source>
+            <target state="translated">Übersetzungen</target></trans-unit>
+			<trans-unit id="versioning" xml:space="preserve" approved="yes">
+                <source>Versioning</source>
+            <target state="translated">Versionierung</target></trans-unit>
+			<trans-unit id="nonusedelements" xml:space="preserve"
+				approved="yes">
+                <source>Non-used elements</source>
+            <target state="translated">Nicht verwendete Elemente</target></trans-unit>
+			<trans-unit id="makeLocal" xml:space="preserve" approved="yes">
+                <source>Create local copy</source>
+            <target state="translated">Lokale Kopie erstellen</target></trans-unit>
+			<trans-unit id="makeLocalMsg" xml:space="preserve"
+				approved="yes">
+                <source>Do you want to create a local copy of this referenced element?</source>
+            <target state="translated">Eine lokale Kopie dieses verknüpften Elements erstellen?</target></trans-unit>
+			<trans-unit id="performTranslation" xml:space="preserve"
+				approved="yes">
+                <source>Click to translate FlexForm</source>
+            <target state="translated">Klicken um FlexForm zu übersetzen</target></trans-unit>
+			<trans-unit id="path" xml:space="preserve" approved="yes">
+                <source>Path</source>
+            <target state="translated">Pfad</target></trans-unit>
+			<trans-unit id="defaultLanguage" xml:space="preserve"
+				approved="yes">
+                <source>Default language</source>
+            <target state="translated">Standardsprache</target></trans-unit>
+			<trans-unit id="createcopyfortranslation" xml:space="preserve"
+				approved="yes">
+                <source>Create a copy for translation</source>
+            <target state="translated">Kopie für Übersetzung erstellen</target></trans-unit>
+			<trans-unit id="inititemno_elementsNotBeingUsed"
+				xml:space="preserve" approved="yes">
+                <source>Elements not being used in this language or sheet</source>
+            <target state="translated">Elemente, die in diesem Blatt oder Sprache nicht verwendet werden</target></trans-unit>
+			<trans-unit id="rendernonusedelements_deleteall"
+				xml:space="preserve" approved="yes">
+                <source>Delete all records above marked with delete-icon</source>
+            <target state="translated">Alle obigen mit einem Löschen-Symbol gekennzeichneten Datensätze löschen</target></trans-unit>
+			<trans-unit id="renderreferencecount_delete" xml:space="preserve"
+				approved="yes">
+                <source>Delete!</source>
+            <target state="translated">Löschen!</target></trans-unit>
+			<trans-unit id="sidebar_advancedfunctions_labelshowhidden"
+				xml:space="preserve" approved="yes">
+                <source>Show hidden elements</source>
+            <target state="translated">Verborgene Elemente anzeigen</target></trans-unit>
+			<trans-unit id="sidebar_advancedfunctions_labelshowoutline"
+				xml:space="preserve" approved="yes">
+                <source>Show outline</source>
+            <target state="translated">Listendarstellung anzeigen</target></trans-unit>
+			<trans-unit id="sidebar_advancedfunctions_labelcachefunctions"
+				xml:space="preserve" approved="yes">
+                <source>Cache functions</source>
+            <target state="translated">Cache-Funktionen</target></trans-unit>
+			<trans-unit id="sidebar_renderitem_showtranslationinformation"
+				xml:space="preserve" approved="yes">
+                <source>Display translation information</source>
+            <target state="translated">Übersetzungsinformationen anzeigen</target></trans-unit>
+			<trans-unit id="sidebar_versionSelector" xml:space="preserve"
+				approved="yes">
+                <source>Versioning</source>
+            <target state="translated">Versionierung</target></trans-unit>
+			<trans-unit id="sidebar_versionSelector_createVersion"
+				xml:space="preserve" approved="yes">
+                <source>Create version of this page</source>
+            <target state="translated">Version dieser Seite erstellen</target></trans-unit>
+			<trans-unit id="outline_header_title" xml:space="preserve"
+				approved="yes">
+                <source>Title:</source>
+            <target state="translated">Titel:</target></trans-unit>
+			<trans-unit id="outline_header_controls" xml:space="preserve"
+				approved="yes">
+                <source>Controls:</source>
+            <target state="translated">Bedienungselemente:</target></trans-unit>
+			<trans-unit id="outline_header_status" xml:space="preserve"
+				approved="yes">
+                <source>Status:</source>
+            <target state="translated">Status:</target></trans-unit>
+			<trans-unit id="outline_header_element" xml:space="preserve"
+				approved="yes">
+                <source>Element:</source>
+            <target state="translated">Element:</target></trans-unit>
+			<trans-unit id="outline_status_dirty" xml:space="preserve"
+				approved="yes">
+                <source>Click to clean up XML...</source>
+            <target state="translated">Zum Bereinigen des XML klicken...</target></trans-unit>
+			<trans-unit id="outline_status_clean" xml:space="preserve"
+				approved="yes">
+                <source>XML is clean.</source>
+            <target state="translated">XML ist sauber.</target></trans-unit>
+			<trans-unit id="outline_status_cleanAll" xml:space="preserve"
+				approved="yes">
+                <source>Clean XML of all dirty elements above!</source>
+            <target state="translated">XML um alle obigen Elemente bereinigen!</target></trans-unit>
+			<trans-unit id="element_localizations" xml:space="preserve"
+				approved="yes">
+                <source>Localizations</source>
+            <target state="translated">Übersetzungen</target></trans-unit>
+			<trans-unit id="records" xml:space="preserve" approved="yes">
+                <source>Other elements (non-content)</source>
+            <target state="translated">Andere Elemente (Nicht-Inhalt)</target></trans-unit>
+			<trans-unit id="displayRecordsFrom" xml:space="preserve"
+				approved="yes">
+                <source>Display elements from:</source>
+            <target state="translated">Elemente anzeigen von:</target></trans-unit>
+			<trans-unit id="content_from_pid_title" xml:space="preserve"
+				approved="yes">
+                <source>Page uses content from this page: %s</source>
+            <target state="translated">Seite verwendet Inhalt dieser Seite: %s</target></trans-unit>
+			<trans-unit id="missing_edit_right" xml:space="preserve"
+				approved="yes">
+                <source>Your user settings don't allow creating, moving or removing elements from this page.</source>
+            <target state="translated">Die Benutzereinstellungen erlauben kein Erzeugen, Verschieben oder Entfernen von Elementen auf dieser Seite.</target></trans-unit>
+			<trans-unit id="missing_edit_right_detail" xml:space="preserve"
+				approved="yes">
+                <source>Your settings indicate that you're either don't have the general right to edit page content, or you're not allowed to modify required tables or you're not allowed to edit the content fields. We suggest you recheck the settings or get in touch with your technical support.</source>
+            <target state="translated">Die Benutzereinstellungen deuten darauf hin, dass das allgemeine Recht zur Bearbeitung von Seiteninhalten nicht vorliegt, die benötigten Tabellen oder die Inhaltsfelder nicht bearbeitet werden dürfen. Bitte Einstellungen prüfen und ggf. mit dem Administrator Kontakt aufnehmen.</target></trans-unit>
+			<trans-unit id="maximal_content_elements" xml:space="preserve"
+				approved="yes">
+                <source>The maximal amount of %d content elements is reached in field "%s."</source>
+            <target state="translated">Höchstanzahl von %d Inhaltselementen im Feld "%s" erreicht.</target></trans-unit>
+			<trans-unit id="page_structure_inherited" xml:space="preserve"
+				approved="yes">
+                <source>The content structure for this lanuage differs from the default language.</source>
+            <target state="translated">Die Inhaltsstruktur für diese Sprache unterscheidet sich von der Standardstruktur der Sprache.</target></trans-unit>
+			<trans-unit id="page_structure_inherited_detail"
+				xml:space="preserve" approved="yes">
+                <source>If that's not what you expect, please contact you content administrator.</source>
+            <target state="translated">Sofern Sie dies nicht erwartet haben, informieren Sie bitte den Administrator.</target><alt-trans
+				xml:space="preserve" origin="None"><target>Sofern Sie dies nicht erwartet haben, informieren Sie bitten den Administrator.</target></alt-trans></trans-unit>
+			<trans-unit id="page_not_found" xml:space="preserve"
+				approved="yes">
+                <source>The requested page can't be found or is not accessible.</source>
+            <target state="translated">Die gesuchte Seite wurde nicht gefunden oder Sie haben keinen Zugriff!.</target><alt-trans
+				xml:space="preserve" origin="None"><target>Die gesuchte Seite wurde nicht gefunden oder Sie haben keinen Zugriff!</target></alt-trans></trans-unit>
+			<trans-unit id="fce" xml:space="preserve">
+                <source>Flexible content</source>
+            </trans-unit>
+			<trans-unit id="noaccess" xml:space="preserve">
+                <source>No Access</source>
+            </trans-unit>
+		</body>
+	</file>
+</xliff>

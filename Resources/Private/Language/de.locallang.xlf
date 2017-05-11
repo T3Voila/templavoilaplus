@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='utf-8'?>
+<xliff version="1.0">
+  <file source-language="en" datatype="plaintext" original="messages" date="2013-11-18T20:34:12Z" product-name="templavoila" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="cm1_title" xml:space="preserve" approved="yes">
+        <source>TemplaVoilà</source>
+      <target state="translated">TemplaVoilà</target></trans-unit>
+      <trans-unit id="cm1_viewsubelements" xml:space="preserve" approved="yes">
+        <source>View: Sub elements</source>
+      <target state="translated">Ansicht: Unterelemente</target></trans-unit>
+      <trans-unit id="cm1_viewflexformxml" xml:space="preserve" approved="yes">
+        <source>View: Flexform XML</source>
+      <target state="translated">Ansicht: Flexform-XML</target></trans-unit>
+      <trans-unit id="cm_viewdsto" xml:space="preserve" approved="yes">
+        <source>View: DS/TO</source>
+      <target state="translated">Ansicht: DS/TO</target></trans-unit>
+      <trans-unit id="cm1_pagesusingthiselement" xml:space="preserve" approved="yes">
+        <source>Pages using this element -&gt;</source>
+      <target state="translated">Seiten, die dieses Element nutzen -&gt;</target></trans-unit>
+      <trans-unit id="wiz_refElements" xml:space="preserve" approved="yes">
+        <source>Reference unused content elements (templavoila)</source>
+      <target state="translated">Unbenutzte Inhaltselemente referenzieren (TemplaVoilà)</target></trans-unit>
+      <trans-unit id="wiz_renameFieldsInPage" xml:space="preserve">
+        <source>Rename a field in pages.tx_templavoila_flex</source>
+      </trans-unit>
+      <trans-unit id="wiz_renameFieldsInPage" xml:space="preserve" approved="yes">
+        <source>Rename a field in pages.tx_templavoila_flex</source>
+      <target state="translated">Feld in pages.tx_templavoila_flex umbenennen</target><alt-trans xml:space="preserve" origin="andrehajo"><target>Feld in pages.tx_templavoila_flex umbenennen</target></alt-trans></trans-unit>
+      <trans-unit id="field_sourceField" xml:space="preserve" approved="yes">
+        <source>source field</source>
+      <target state="translated">Quellfeld</target><alt-trans xml:space="preserve" origin="andrehajo"><target>Quelle aus dem Feld</target></alt-trans></trans-unit>
+      <trans-unit id="field_destinationField" xml:space="preserve" approved="yes">
+        <source>destination field</source>
+      <target state="translated">Zielfeld</target><alt-trans xml:space="preserve" origin="andrehajo"><target>Zielfeld</target></alt-trans></trans-unit>
+      <trans-unit id="field_simulateField" xml:space="preserve" approved="yes">
+        <source>Simulate Change only</source>
+      <target state="translated">Änderung nur simulieren</target><alt-trans xml:space="preserve" origin="andrehajo"><target>Änderung nur simulieren</target></alt-trans></trans-unit>
+      <trans-unit id="field_submit" xml:space="preserve" approved="yes">
+        <source>submit</source>
+      <target state="translated">Absenden</target><alt-trans xml:space="preserve" origin="andrehajo"><target>Absenden</target></alt-trans></trans-unit>
+      <trans-unit id="extconf.staticWizard.header" xml:space="preserve" approved="yes">
+        <source>Migrate</source>
+      <target state="translated">Migrieren</target></trans-unit>
+      <trans-unit id="extconf.staticWizard.message" xml:space="preserve" approved="yes">
+        <source>Please use the migration wizard to move all datastructures from your database to the filesystem.</source>
+      <target state="translated">Bitte nutzen Sie den Migrations-Assistenten, um alle Datenstrukturen von der Datenbank in das Dateisystem zu verschieben.</target><alt-trans xml:space="preserve" origin="andrehajo"><target>Nutzen Sie bitte den Migrations-Assistenten, um alle Datenstrukturen von der Datenbank in das Dateisystem zu verschieben.</target></alt-trans></trans-unit>
+      <trans-unit id="extconf.staticWizard.link" xml:space="preserve" approved="yes">
+        <source>Click here to run the wizard</source>
+      <target state="translated">Klicken Sie hier um den Assistenten zu starten</target><alt-trans xml:space="preserve" origin="andrehajo"><target>Klicken Sie hier um den Assistenten zu starten</target></alt-trans></trans-unit>
+    </body>
+  </file>
+</xliff>

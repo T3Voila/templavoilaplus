@@ -572,7 +572,8 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 $styleSheetFile = $this->modTSconfig['properties']['stylesheet'];
             }
 
-
+            
+            $this->getPageRenderer()->addCssFile($styleSheetFile);
             $this->getPageRenderer()->addCssFile($styleSheetFile);
 
             if (isset($this->modTSconfig['properties']['stylesheet.'])) {
@@ -924,7 +925,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      * @param string $extraClass Extra class names to add to the bootstrap button classes
      * @return string
      */
-    public function buildButton($module, $title, $icon, $params = [], $buttonType = 'default', $extraClass = '')
+    public function buildButton($module, $title, $icon, $params = [], $buttonType = 'default', $extraClass = '', $visibleButtonLabel = '')
     {
         global $BACK_PATH;
 
@@ -963,7 +964,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 );
                 $clickUrl = 'jumpToUrl(\'' . $url . '\');return false;';
         }
-        return $this->buildButtonFromUrl($clickUrl, $title, $icon, '', $buttonType, $extraClass, $rel);
+        return $this->buildButtonFromUrl($clickUrl, $title, $icon, $visibleButtonLabel, $buttonType, $extraClass, $rel);
     }
 
     /**
@@ -1698,7 +1699,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 }
 
                 $output = '
-                    <table border="0" cellpadding="2" cellspacing="2" width="100%" class="tpm-subelement-table">
+                    <table class="tpm-subelement-table">
                         <tr>' . (count($headerCells) ? implode('', $headerCells) : '<td>&nbsp;</td>') . '</tr>
                         <tr>' . (count($contentCells) ? implode('', $contentCells) : '<td>&nbsp;</td>') . '</tr>
                     </table>
@@ -2104,7 +2105,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             }
 
             $output = count($tRows) ? '
-                <table border="0" cellpadding="0" cellspacing="1" width="100%" class="lrPadding tpm-localisation-info-table">
+                <table class="lrPadding tpm-localisation-info-table">
                     <tr class="bgColor4-20">
                         <td colspan="2">' . TemplaVoilaUtility::getLanguageService()->getLL('element_localizations', true) . ':</td>
                     </tr>
@@ -2208,7 +2209,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                     <td class="nobr">' . htmlspecialchars($entry['id'] ? $entry['id'] : $entry['table'] . ':' . $entry['uid']) . '</td>
                 </tr>';
         }
-        $output = '<table border="0" cellpadding="1" cellspacing="1" class="tpm-outline-table">' . $output . '</table>';
+        $output = '<table class="tpm-outline-table">' . $output . '</table>';
 
         // Show link for cleaning all XML structures:
         if ($xmlCleanCandidates) {
@@ -2670,7 +2671,8 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 'uid_pid' => $this->id,
             ]),
             'default',
-            'tpm-new'
+            'tpm-new',
+            TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:content')
         );
     }
 
