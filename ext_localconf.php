@@ -110,3 +110,13 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoilaplus']['mod1']['renderPreview
     'Ppi\\TemplaVoilaPlus\Module\\Cm1\\Ajax::getDisplayFileContent',
     \Ppi\TemplaVoilaPlus\Module\Cm1\Ajax::class . '->getDisplayFileContent'
 );
+
+// Register slot for translation mirror url
+/** @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher */
+$signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
+$signalSlotDispatcher->connect(
+    \TYPO3\CMS\Lang\Service\TranslationService::class,
+    'postProcessMirrorUrl',
+    \Ppi\TemplaVoilaPlus\Slots\TranslationServiceSlot::class,
+    'postProcessMirrorUrl'
+);
