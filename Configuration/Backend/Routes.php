@@ -22,11 +22,6 @@ return [
         'access' => 'user,group',
         'target' => Controller\BackendTemplateDisplayController::class . '::mainAction',
     ],
-    'templavoilaplus_new_site_wizard' => [
-        'path' => '/templavoilaplus/new_site_wizard',
-        'access' => 'user,group',
-        'target' => Controller\BackendNewSiteWizardController::class . '::mainAction',
-    ],
     'templavoilaplus_flexform_cleaner' => [
         'path' => '/templavoilaplus/flexform_cleaner',
         'access' => 'admin',
