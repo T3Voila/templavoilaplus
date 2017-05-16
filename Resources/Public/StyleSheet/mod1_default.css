@@ -155,7 +155,7 @@ div.warning a {
   position: relative;
 }
 
-.tpm-container-element .t3-page-ce-header-icons-left {
+.t3-page-ce.tpm-container-element .t3-page-ce-header-icons-left {
     float: unset;
 }
 
