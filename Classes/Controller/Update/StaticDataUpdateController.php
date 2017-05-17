@@ -64,7 +64,7 @@ class StaticDataUpdateController
                         $ok[0] = false;
                         $description .= sprintf('||' . TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoilaplus/Resources/Private/Language/template_conf.xlf:staticDS.wizard.dircheck.notset'), 'staticDS.path_fce');
                     } else {
-                        $ok[0] = $this->checkDirectory($conf['staticDS.']['path_fce']);
+                        $ok[0] = $this->checkDirectory(DataStructureUtility::getFirstDirectoryInList($conf['staticDS.']['path_fce']));
                         if ($ok[0]) {
                             $description .= sprintf('||' . TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoilaplus/Resources/Private/Language/template_conf.xlf:staticDS.wizard.dircheck.ok'), htmlspecialchars($conf['staticDS.']['path_fce']));
                         } else {
@@ -76,7 +76,7 @@ class StaticDataUpdateController
                         $ok[0] = false;
                         $description .= sprintf('||' . TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoilaplus/Resources/Private/Language/template_conf.xlf:staticDS.wizard.dircheck.notset'), 'staticDS.path_page');
                     } else {
-                        $ok[1] = $this->checkDirectory($conf['staticDS.']['path_page']);
+                        $ok[1] = $this->checkDirectory(DataStructureUtility::getFirstDirectoryInList($conf['staticDS.']['path_page']));
                         if ($ok[1]) {
                             $description .= sprintf('|' . TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoilaplus/Resources/Private/Language/template_conf.xlf:staticDS.wizard.dircheck.ok'), htmlspecialchars($conf['staticDS.']['path_page']));
                         } else {
@@ -178,6 +178,7 @@ class StaticDataUpdateController
             </tr></thead><tbody>';
         foreach ($rows as $row) {
             $dirPath = GeneralUtility::getFileAbsFileName($row['scope'] == 2 ? $conf['path_fce'] : $conf['path_page']);
+            $dirPath = DataStructureUtility::getFirstDirectoryInList($dirPath);
             $dirPath = $dirPath . (substr($dirPath, -1) == '/' ? '' : '/');
             $title = $this->makeCleanFileName($row['title']);
             $pathAndFilename = $dirPath . $title . '.xml';

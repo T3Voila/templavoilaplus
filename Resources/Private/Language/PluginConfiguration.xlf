@@ -19,10 +19,10 @@
                 <source>Enable static files for data structures:Experimental! Use Static DS Conversion Wizard below!</source>
             </trans-unit>
             <trans-unit id="staticDS.path_fce" xml:space="preserve">
-                <source>FCE Data Structure Path:Path to the static data structures for flexible content elements</source>
+                <source>FCE Data Structure Path:Path to the static data structures for flexible content elements. Use ';' as a delimiter for multiple paths, first path should be writeable (e.g. starting with fileadmin/).</source>
             </trans-unit>
             <trans-unit id="staticDS.path_page" xml:space="preserve">
-                <source>Page Data Structure Path:Path to the static data structures for pages</source>
+                <source>Page Data Structure Path:Path to the static data structures for pages. Use ';' as a delimiter for multiple paths, first path should be writeable (e.g. starting with fileadmin/).</source>
             </trans-unit>
             <trans-unit id="staticDS.updater" xml:space="preserve">
                 <source>Updater</source>

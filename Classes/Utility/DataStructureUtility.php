@@ -23,6 +23,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 final class DataStructureUtility
 {
+    const pathDelimiter = ';';
+    
     static function array2xml(array $dataStructure)
     {
         $indentation = 0;
@@ -45,5 +47,13 @@ final class DataStructureUtility
             $indentation,
             ['useCDATA' => 1]
         );
+    }
+    
+    static function getFirstPathInList($pathList) {
+        return(static::getPathArray($pathList)[0]);
+    }
+    
+    static function getPathArrayFromList($pathList) {
+        return(explode(static::pathDelimiter,$pathList));
     }
 }
