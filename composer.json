@@ -7,9 +7,6 @@
     "require": {
         "typo3/cms-core": "*"
     },
-    "replace": {
-        "templavoila": "*"
-    },
     "autoload": {
         "psr-4": {
             "Ppi\\TemplaVoilaPlus\\": "Classes/"
