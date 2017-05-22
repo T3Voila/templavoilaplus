@@ -1,39 +1,33 @@
 <?php
 namespace Ppi\TemplaVoilaPlus\Hooks;
 
-use TYPO3\CMS\Backend\Wizard\NewContentElementWizardHookInterface;
 use TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
-class WizardItems implements NewContentElementWizardHookInterface
+class WizardItems
 {
     /**
-     * Processes the items of the new content element wizard
-     * and inserts necessary default values for items created within a grid
+     * Adds the indexed_search pi1 wizard icon
      *
-     * @param array $wizardItems The array containing the current status of the wizard item list before rendering
-     * @param NewContentElementController $parentObject The parent object that triggered this hook
+     * @param array $wizardItems Input array with wizard items for plugins
+     * @return array Modified input array, having the item for indexed_search pi1 added.
      */
-    public function manipulateWizardItems(&$wizardItems, &$parentObject)
+    public function proc($wizardItems)
     {
         $iconRegistry = GeneralUtility::makeInstance(IconRegistry::class);
 
-        $addingItems = [
-            'fce' => [
-                'header' => $this->getLanguageService()->sL('LLL:EXT:templavoilaplus/Resources/Private/Language/BackendLayout.xlf:fce'),
-            ],
-        ];
         $apiObj = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Service\ApiService::class);
 
         // Flexible content elements:
-        $positionPid = $parentObject->id;
+        $positionPid = (int)GeneralUtility::_GP('id'); // No access to parent, but parent also get it only from _GP
         $storageFolderPID = $apiObj->getStorageFolderPid($positionPid);
 
         $toRepo = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Domain\Repository\TemplateRepository::class);
         $toList = $toRepo->getTemplatesByStoragePidAndScope($storageFolderPID, \Ppi\TemplaVoilaPlus\Domain\Model\AbstractDataStructure::SCOPE_FCE);
+
         foreach ($toList as $toObj) {
             if ($toObj->hasParentTemplate() && $toObj->getRendertype() !== '') {
                 continue;
@@ -52,7 +46,7 @@ class WizardItems implements NewContentElementWizardHookInterface
                     ]);
                 }
 
-                $addingItems['fce_' . $toObj->getKey()] = [
+                $wizardItems['fce_' . $toObj->getKey()] = [
                     'iconIdentifier' => ($iconIdentifier?: 'extensions-templavoila-default-preview-icon'),
                     'description' => $toObj->getDescription()
                         ? $this->getLanguageService()->sL($toObj->getDescription())
@@ -63,16 +57,7 @@ class WizardItems implements NewContentElementWizardHookInterface
             }
         }
 
-        // Insert FCE area before forms or plugins or at last.
-        $key_indices = array_flip(array_keys($wizardItems));
-        if (isset($wizardItems['forms'])) {
-            $offset = $key_indices['forms'];
-        } elseif (isset($wizardItems['plugins'])) {
-            $offset = $key_indices['plugins'];
-        } else {
-            $offset = -1;
-        }
-        $wizardItems = array_slice($wizardItems, 0, $offset, true) + $addingItems + array_slice($wizardItems, $offset, null, true);
+        return $wizardItems;
     }
 
     /**

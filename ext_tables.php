@@ -8,7 +8,8 @@ if (TYPO3_MODE === 'BE') {
         'name' => \Ppi\TemplaVoilaPlus\Service\ClickMenu\MainClickMenu::class
     ];
 
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms']['db_new_content_el']['wizardItemsHook'][] = \Ppi\TemplaVoilaPlus\Hooks\WizardItems::class;
+    $GLOBALS['TBE_MODULES_EXT']['xMOD_db_new_content_el']['addElClasses'][\Ppi\TemplaVoilaPlus\Hooks\WizardItems::class]
+        = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Classes/Hooks/WizardItems.php';
 
     // Adding backend modules:
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
