@@ -281,7 +281,19 @@ class FrontendController extends AbstractPlugin
             // Data from FlexForm field:
             $data = GeneralUtility::xml2array($row['tx_templavoilaplus_flex']);
 
-            $lKey = ($GLOBALS['TSFE']->sys_language_isocode && !$langDisabled && !$langChildren) ? 'l' . strtoupper($GLOBALS['TSFE']->sys_language_isocode) : 'lDEF';
+            $lKey = 'lDEF';
+            $vKey = 'vDEF';
+
+            if ($GLOBALS['TSFE']->sys_language_uid
+                && $GLOBALS['TSFE']->sys_language_isocode
+                && !$langDisabled
+            ) {
+                if ($langChildren) {
+                    $vKey = 'v' . strtoupper($GLOBALS['TSFE']->sys_language_isocode);
+                } else {
+                    $lKey = 'l' . strtoupper($GLOBALS['TSFE']->sys_language_isocode);
+                }
+            }
 
             /* Hook to modify language key - e.g. used for EXT:languagevisibility */
             foreach ($hookObjectsArr as $hookObj) {
@@ -334,7 +346,6 @@ class FrontendController extends AbstractPlugin
                         if ($GLOBALS['TT']->LR) {
                             $GLOBALS['TT']->push('Processing data');
                         }
-                        $vKey = ($GLOBALS['TSFE']->sys_language_isocode && !$langDisabled && $langChildren) ? 'v' . strtoupper($GLOBALS['TSFE']->sys_language_isocode) : 'vDEF';
 
                         /* Hook to modify value key - e.g. used for EXT:languagevisibility */
                         foreach ($hookObjectsArr as $hookObj) {
