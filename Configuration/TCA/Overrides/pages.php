@@ -164,6 +164,7 @@ $additionalColumns = array(
             'size' => '1',
             'maxitems' => '1',
             'minitems' => '0',
+            'default' => 0,
             'show_thumbs' => '1',
             'wizards' => array(
                 'suggest' => array(

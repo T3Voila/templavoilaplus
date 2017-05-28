@@ -91,7 +91,7 @@ CREATE TABLE pages (
     tx_templavoilaplus_next_ds tinytext,
     tx_templavoilaplus_next_to int(11) DEFAULT '0' NOT NULL,
     tx_templavoilaplus_flex mediumtext,
-    storage_pid int(11) DEFAULT '0' NOT NULL,
+    storage_pid int(10) unsigned DEFAULT '0' NOT NULL,
 );
 
 #
