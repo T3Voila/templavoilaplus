@@ -113,16 +113,6 @@ class FlexFormTools extends \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools
     }
 
     /**
-     * Recursively traversing flexform data according to data structure and element data
-     *
-     * @param array $dataStruct (Part of) data structure array that applies to the sub section of the flexform data we are processing
-     * @param array $editData (Part of) edit data array, reflecting current part of data structure
-     * @param array $PA Additional parameters passed.
-     * @param string $path Telling the "path" to the element in the flexform XML
-     * @return array
-     */
-
-    /**
      * Returns an array of available languages to use for FlexForm operations
      *
      * @return array

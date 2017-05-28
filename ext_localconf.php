@@ -5,8 +5,13 @@ $_EXTCONF = unserialize($_EXTCONF);
 
 // Register "XCLASS" of FlexFormTools for language parsing
 // Done also in TableConfigurationPostProcessingHook!
-$GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class]['className']
-    = \Ppi\TemplaVoilaPlus\Configuration\FlexForm\FlexFormTools::class;
+if (version_compare(TYPO3_version, '8.5.0', '>=')) {
+    $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class]['className']
+        = \Ppi\TemplaVoilaPlus\Configuration\FlexForm\FlexFormTools8::class;
+} else {
+    $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class]['className']
+        = \Ppi\TemplaVoilaPlus\Configuration\FlexForm\FlexFormTools::class;
+}
 
 // Register XCLASSes
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Backend\Tree\View\ContentCreationPagePositionMap::class]['className']
