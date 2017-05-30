@@ -598,7 +598,12 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             $this->getPageRenderer()->loadJquery();
 
             // Setup JS for ClickMenu which isn't loaded by ModuleTemplate
-            $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ClickMenu');
+            // Setup JS for ClickMenu/ContextMenu which isn't loaded by ModuleTemplate
+            if (version_compare(TYPO3_version, '8.6.0', '>=')) {
+                $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
+            } else {
+                $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ClickMenu');
+            }
 
             // Set up JS for dynamic tab menu and side bar
             $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Tabs');
