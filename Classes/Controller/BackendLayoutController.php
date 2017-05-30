@@ -2171,7 +2171,18 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                     }
 
                     // Render status:
-                    $xmlUrl = '../cm2/index.php?viewRec[table]=' . $entry['table'] . '&viewRec[uid]=' . $entry['uid'] . '&viewRec[field_flex]=tx_templavoilaplus_flex';
+                    $xmlUrl = BackendUtility::getModuleUrl(
+                        'templavoilaplus_flexform_cleaner',
+                        [
+                            'id' => (int)$clickMenu->rec['pid'],
+                            'viewRec' => [
+                                'table' => $entry['table'],
+                                'uid' => $entry['uid'],
+                                'field_flex' => 'tx_templavoilaplus_flex',
+                            ],
+                        ]
+                    );
+
                     if (md5($recRow['tx_templavoilaplus_flex']) != md5($newXML)) {
                         $status = $this->moduleTemplate->icons(1) . '<a href="' . htmlspecialchars($xmlUrl) . '">' . TemplaVoilaUtility::getLanguageService()->getLL('outline_status_dirty', 1) . '</a><br/>';
                         $xmlCleanCandidates = true;
