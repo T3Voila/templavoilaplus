@@ -537,7 +537,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
         if ($access) {
 
-        // Additional header content
+            // Additional header content
             $headerContentHook = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/db_layout.php']['drawHeaderHook'];
             if (is_array($headerContentHook)) {
                 foreach ($headerContentHook as $hook) {
@@ -772,14 +772,15 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                     $this->content .= GeneralUtility::wrapJS($script);
                 }
             }
-    // Additional footer content
-          $footerContentHook = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/db_layout.php']['drawFooterHook'];
-          if (is_array($footerContentHook)) {
-              foreach ($footerContentHook as $hook) {
-                  $params = [];
-                  $this->content .= GeneralUtility::callUserFunction($hook, $params, $this);
-              }
-          }
+
+            // Additional footer content
+            $footerContentHook = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/db_layout.php']['drawFooterHook'];
+            if (is_array($footerContentHook)) {
+                foreach ($footerContentHook as $hook) {
+                    $params = [];
+                    $this->content .= GeneralUtility::callUserFunction($hook, $params, $this);
+                }
+            }
         } else { // No access or no current page uid:
             if (!isset($pageInfoArr['uid'])) {
                 $this->moduleTemplate->addFlashMessage(
