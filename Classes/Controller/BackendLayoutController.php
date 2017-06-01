@@ -524,6 +524,15 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     {
         $this->content = '';
 
+        // Additional header content
+        $headerContentHook = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/db_layout.php']['drawHeaderHook'];
+        if (is_array($headerContentHook)) {
+            foreach ($headerContentHook as $hook) {
+                $params = [];
+                $content .= GeneralUtility::callUserFunction($hook, $params, $this);
+            }
+        }
+
         // Access check! The page will show only if there is a valid page and if this page may be viewed by the user
         if (is_array($this->altRoot)) {
             $access = true;
@@ -786,6 +795,16 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 $this->setDocHeaderButtons();
             }
         }
+
+        // Additional footer content
+          $footerContentHook = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/db_layout.php']['drawFooterHook'];
+          if (is_array($footerContentHook)) {
+              foreach ($footerContentHook as $hook) {
+                  $params = [];
+                  $this->content .= GeneralUtility::callUserFunction($hook, $params, $this);
+              }
+          }
+
         $this->moduleTemplate->setContent($this->content);
     }
 
@@ -1162,26 +1181,6 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             }
         }
 
-        // show sys_notes
-//        $sys_notes = recordList::showSysNotesForPage();
-        if (false) {
-            $sys_notes = '';
-            // @todo: Check if and how this is to replace
-            $output .= '</div><div>'
-                . $this->moduleTemplate->section(
-                    TemplaVoilaUtility::getLanguageService()->sL(
-                        'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:internalNotes'
-                    ),
-                    str_replace(
-                        'sysext/sys_note/ext_icon.gif',
-                        $GLOBALS['BACK_PATH'] . 'sysext/sys_note/ext_icon.gif',
-                        $sys_notes
-                    ),
-                    0,
-                    1
-                );
-        }
-
         return $output;
     }
 
@@ -1281,6 +1280,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         $titleBarLeftButtons = $this->translatorMode ? $recordIcon : (count($menuCommands) == 0 ? $recordIcon : BackendUtility::wrapClickMenuOnIcon($recordIcon, $contentTreeArr['el']['table'], $contentTreeArr['el']['uid'], true, '', implode(',', $menuCommands)));
         $titleBarLeftButtons .= $this->getRecordStatHookValue($contentTreeArr['el']['table'], $contentTreeArr['el']['uid']);
         $titleBarLeftButtons = '<span class="tpm-buttonsLeft">' . $titleBarLeftButtons . '</span>';
+
         unset($menuCommands);
 
         $languageUid = 0;
@@ -1289,7 +1289,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         // Prepare table specific settings:
         switch ($contentTreeArr['el']['table']) {
             case 'pages':
-                $elementTitlebarClass = 'tpm-titlebar-page';
+                $elementTitlebarClass = 't3-row-header';
                 $elementClass .= ' pagecontainer';
                 break;
 
@@ -1297,7 +1297,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 $this->currentElementParentPointer = $parentPointer;
 
                 $elementTitlebarClass = $elementBelongsToCurrentPage ? 'tpm-titlebar' : 'tpm-titlebar-fromOtherPage';
-                $elementClass .= ' tpm-content-element tpm-ctype-' . $contentTreeArr['el']['CType'];
+                $elementClass .= ' t3-page-ce  tpm-content-element tpm-ctype-' . $contentTreeArr['el']['CType'];
 
                 if ($contentTreeArr['el']['isHidden']) {
                     $elementClass .= ' tpm-hidden t3-page-ce-hidden';
@@ -1375,7 +1375,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         }
 
         $languageIcon = '<span class="tpm-langIcon">'
-            . $this->link_edit($languageIcon, 'tt_content', $contentTreeArr['el']['uid'], true, $contentTreeArr['el']['pid'], 'tpm-langIcon')
+            . $this->link_edit($languageIcon, 'tt_content', $contentTreeArr['el']['uid'], true, $contentTreeArr['el']['pid'], '')
             . '</span>';
 
         // Create warning messages if neccessary:
@@ -1416,27 +1416,23 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             <div class="' . $elementClass . '">
                 <a name="c' . md5($this->apiObj->flexform_getStringFromPointer($this->currentElementParentPointer) . $contentTreeArr['el']['uid']) . '"></a>
                 <div class="tpm-titlebar t3-page-ce-header ' . $elementTitlebarClass . '">
-                    <div class="t3-row-header">
-                        <div class="tpm-element-control">
-                        ' . $titleBarRightButtons . '
-                        </div>
-                        <div class="tpm-element-title">' .
-            $languageIcon .
-            $titleBarLeftButtons .
-            '<div class="nobr sortable_handle">' .
+                    <div class="t3-page-ce-header-icons-right">
+                    ' . $titleBarRightButtons . '
+                    </div>
+                    <div class="t3-page-ce-header-icons-left">'
+                     . $languageIcon . ' ' . $titleBarLeftButtons . ' '
+                    . '<div class="nobr sortable_handle ui-sortable-handle">' .
             ($elementBelongsToCurrentPage ? '' : '<em>') . htmlspecialchars($title) . ($elementBelongsToCurrentPage ? '' : '</em>') .
-            '</div>
-        </div>
-    </div>
-</div>
-<div class="tpm-sub-elements">' .
-            ($warnings ? '<div class="tpm-warnings">' . $warnings . '</div>' : '') .
-            $this->render_framework_subElements($contentTreeArr, $languageKey, $sheet, $calcPerms) .
-            '<div class="tpm-preview">' . $previewContent . '</div>' .
-            $this->render_localizationInfoTable($contentTreeArr, $parentPointer, $parentDsMeta) .
-            '</div>
-        </div>
-    ';
+                    '</div>
+                    </div>
+                </div>
+                <div class="t3-page-ce-body tpm-sub-elements">' .
+                    ($warnings ? '<div class="tpm-warnings">' . $warnings . '</div>' : '') .
+                    $this->render_framework_subElements($contentTreeArr, $languageKey, $sheet, $calcPerms) .
+                    '<div class="tpm-preview">' . $previewContent . '</div>' .
+                    $this->render_localizationInfoTable($contentTreeArr, $parentPointer, $parentDsMeta) .
+                '</div>
+            </div>';
 
         return $finalContent;
     }
@@ -1607,7 +1603,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                             $subElementPointer['position'] = $position;
 
                             if (!$this->translatorMode) {
-                                $cellContent .= '<div' . ($canDragDrop ? ' class="sortableItem tpm-element t3-page-ce inactive"' : ' class="tpm-element t3-page-ce inactive"') . ' id="' . $this->getSortableItemHash($this->apiObj->flexform_getStringFromPointer($subElementPointer)) . '">';
+                                $cellContent .= '<div' . ($canDragDrop ? ' class="sortableItem tpm-element"' : ' class="tpm-element"') . ' id="' . $this->getSortableItemHash($this->apiObj->flexform_getStringFromPointer($subElementPointer)) . '">';
                             }
 
                             $cellContent .= $this->render_framework_allSheets($subElementArr, $languageKey, $subElementPointer, $elementContentTreeArr['ds_meta']);
@@ -1640,14 +1636,14 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
                 // Add cell content to registers:
                 if ($flagRenderBeLayout == true) {
-                    $beTemplateCell = '<table width="100%" class="beTemplateCell">
-                    <tr>
-                        <td class="bgColor6 tpm-title-cell">' . TemplaVoilaUtility::getLanguageService()->sL($fieldContent['meta']['title'], 1) . '</td>
-                    </tr>
-                    <tr>
-                        <td ' . $cellIdStr . ' class="tpm-content-cell">' . $cellContent . '</td>
-                    </tr>
-                    </table>';
+                    $beTemplateCell = '<div class="t3-page-column-header">
+                    <div class="t3-page-column-header-label">' . TemplaVoilaUtility::getLanguageService()->sL($fieldContent['meta']['title'], 1) . '</div>
+                    </div>
+                    <div ' . $cellIdStr . ' class="t3-page-ce-wrapper">
+                    ' . $cellContent . '
+                    </div>';
+
+
                     $beTemplate = str_replace('###' . $fieldID . '###', $beTemplateCell, $beTemplate);
                 } else {
                     $width = round(100 / count($elementContentTreeArr['sub'][$sheet][$lKey]));
@@ -1993,6 +1989,14 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                     switch ((string) $contentTreeArr['localizationInfo'][$sys_language_uid]['mode']) {
                         case 'exists':
                             $olrow = BackendUtility::getRecordWSOL('tt_content', $contentTreeArr['localizationInfo'][$sys_language_uid]['localization_uid']);
+
+                            // In my WS or viewable in Live?
+                            if ((int)$olrow['t3ver_state'] !== 0
+                                && (int)$olrow['t3ver_wsid'] !== (int)$GLOBALS['BE_USER']->workspace
+                            ) {
+                                // @TODO Output that it is localized on another WS?
+                                continue;
+                            }
 
                             $localizedRecordInfo = array(
                                 'uid' => $olrow['uid'],
@@ -2758,7 +2762,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      */
     protected function link_bottomControls($elementPointer, $canCreateNew)
     {
-        $output = '<span class="tpm-bottom-controls">';
+        $output = '<div class="t3-page-ce t3js-page-ce">';
 
         // "New" icon:
         if ($canCreateNew && !in_array('new', $this->blindIcons)) {
@@ -2777,7 +2781,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 '&nbsp;</span>';
         }
 
-        $output .= '</span>';
+        $output .= '</div>';
 
         return $output;
     }
