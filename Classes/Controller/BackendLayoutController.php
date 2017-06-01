@@ -524,6 +524,15 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     {
         $this->content = '';
 
+        // Additional header content
+        $headerContentHook = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/db_layout.php']['drawHeaderHook'];
+        if (is_array($headerContentHook)) {
+            foreach ($headerContentHook as $hook) {
+                $params = [];
+                $this->content .= GeneralUtility::callUserFunction($hook, $params, $this);
+            }
+        }
+
         // Access check! The page will show only if there is a valid page and if this page may be viewed by the user
         if (is_array($this->altRoot)) {
             $access = true;
