@@ -538,13 +538,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         if ($access) {
 
             // Additional header content
-            $headerContentHook = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/db_layout.php']['drawHeaderHook'];
-            if (is_array($headerContentHook)) {
-                foreach ($headerContentHook as $hook) {
-                    $params = [];
-                    $this->content .= GeneralUtility::callUserFunction($hook, $params, $this);
-                }
-            }
+            $this->renderFunctionHook('renderHeader');
 
             $this->calcPerms = $this->getCalcPerms($pageInfoArr['uid']);
 
@@ -774,13 +768,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             }
 
             // Additional footer content
-            $footerContentHook = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/db_layout.php']['drawFooterHook'];
-            if (is_array($footerContentHook)) {
-                foreach ($footerContentHook as $hook) {
-                    $params = [];
-                    $this->content .= GeneralUtility::callUserFunction($hook, $params, $this);
-                }
-            }
+            $this->renderFunctionHook('renderFooter');
         } else { // No access or no current page uid:
             if (!isset($pageInfoArr['uid'])) {
                 $this->moduleTemplate->addFlashMessage(
@@ -1149,11 +1137,21 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
         // Hook for content at the very top (fx. a toolbar):
         if (is_array($TYPO3_CONF_VARS['EXTCONF']['templavoilaplus']['mod1']['renderTopToolbar'])) {
+            GeneralUtility::deprecationLog('TemplaVoila Plus: The Hook '
+                . '$TYPO3_CONF_VARS[\'EXTCONF\'][\'templavoilaplus\'][\'mod1\'][\'renderTopToolbar\']'
+                . 'is deprecated. Please use '
+                . '$TYPO3_CONF_VARS[\'SC_OPTIONS\'][\'templavoilaplus\'][\'BackendLayout\'][\'renderEditPageHeaderFunctionHook\']'
+                . 'This Hook will be removed with v8.'
+            );
+
             foreach ($TYPO3_CONF_VARS['EXTCONF']['templavoilaplus']['mod1']['renderTopToolbar'] as $_funcRef) {
                 $_params = array();
                 $output .= GeneralUtility::callUserFunction($_funcRef, $_params, $this);
             }
         }
+
+        // Hook for content at the very top of editable page (fx. a toolbar):
+        $output .= $this->renderFunctionHook('renderEditPageHeader');
 
         // We show a warning if the user may edit the pagecontent and is not permitted to edit the "content" fields at the same time
         if (!TemplaVoilaUtility::getBackendUser()->isAdmin() && $this->modTSconfig['properties']['enableContentAccessWarning']) {
@@ -1180,11 +1178,22 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
         // See http://bugs.typo3.org/view.php?id=4821
         $renderHooks = $this->hooks_prepareObjectsArray('render_editPageScreen');
+        if (!empty($renderHooks)) {
+            GeneralUtility::deprecationLog('TemplaVoila Plus: The Object Hook '
+                . '$TYPO3_CONF_VARS[\'EXTCONF\'][\'templavoilaplus\'][\'mod1\'][\'render_editPageScreen\']'
+                . 'is deprecated. Please use the Function Hook '
+                . '$TYPO3_CONF_VARS[\'SC_OPTIONS\'][\'templavoilaplus\'][\'BackendLayout\'][\'renderEditPageFooterFunctionHook\']'
+                . 'This Hook will be removed with v8.'
+            );
+        }
         foreach ($renderHooks as $hookObj) {
             if (method_exists($hookObj, 'render_editPageScreen_addContent')) {
                 $output .= $hookObj->render_editPageScreen_addContent($this);
             }
         }
+
+        // Hook for content at the very top of editable page (fx. a toolbar):
+        $output .= $this->renderFunctionHook('renderEditPageFooter');
 
         return $output;
     }
@@ -3285,5 +3294,32 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         }
 
         return $hasEditRights;
+    }
+
+    /**
+     * Calls defined hooks from TYPO3_CONF_VARS']['SC_OPTIONS']['templavoilaplus']['BackendLayout'][$hookName . 'FunctionHook']
+     * and returns there result as combined string.
+     *
+     * @param string $hookName Name of the hook to call
+     * @param array $params Paremeters to give to the called hook function
+     *
+     * @return string
+     */
+    protected function renderFunctionHook($hookName, $params = [])
+    {
+        $result = '';
+
+        if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['templavoilaplus']['BackendLayout'][$hookName . 'FunctionHook'])) {
+            $renderFunctionHook = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['templavoilaplus']['BackendLayout'][$hookName . 'FunctionHook'];
+            if (is_array($renderFunctionHook)) {
+                foreach ($renderFunctionHook as $hook) {
+                    $params = [];
+                    $result .= (string) GeneralUtility::callUserFunction($hook, $params, $this);
+                }
+            }
+        }
+
+
+        return $result;
     }
 }
