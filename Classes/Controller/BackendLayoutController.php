@@ -735,13 +735,21 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 if ($this->rootElementRecord['content_from_pid']) {
                     $contentPage = BackendUtility::getRecord('pages', (int)$this->rootElementRecord['content_from_pid']);
                     $title = BackendUtility::getRecordTitle('pages', $contentPage);
-                    $linkToPid = BackendUtility::getModuleUrl($this->moduleName, ['id' => (int)$this->rootElementRecord['content_from_pid']]);
-                    $link = '<a href="' . $linkToPid . '">' . htmlspecialchars($title) . ' (PID ' . (int)$this->rootElementRecord['content_from_pid'] . ')</a>';
+                    $url = $this->getBaseUrl(['id' => (int)$this->rootElementRecord['content_from_pid']]);
+                    $clickUrl = 'jumpToUrl(\'' . $url . '\');return false;';
 
                     $this->moduleTemplate->addFlashMessage(
-                        sprintf(TemplaVoilaUtility::getLanguageService()->getLL('content_from_pid_title'), $link),
+                        sprintf(
+                            TemplaVoilaUtility::getLanguageService()->getLL('content_from_pid_title'),
+                            $title
+                        ),
                         '',
-                        \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING
+                        \TYPO3\CMS\Core\Messaging\FlashMessage::INFO
+                    );
+                    $this->content .= $this->buildButtonFromUrl(
+                        $clickUrl,
+                        $this->getLanguageService()->getLL('jumptocontentfrompidpage', true),
+                        'apps-pagetree-page-content-from-page'
                     );
                 }
                 // Render "edit current page" (important to do before calling ->sideBarObj->render() - otherwise the translation tab is not rendered!
