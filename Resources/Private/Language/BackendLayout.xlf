@@ -334,6 +334,9 @@
             <trans-unit id="noaccess" xml:space="preserve">
                 <source>No Access</source>
             </trans-unit>
+            <trans-unit id="info_selectTemplateDesign" xml:space="preserve">
+                <source>Please select a template design for this page.</source>
+            </trans-unit>
         </body>
     </file>
 </xliff>
