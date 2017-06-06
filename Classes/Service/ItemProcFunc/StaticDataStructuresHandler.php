@@ -142,7 +142,7 @@ class StaticDataStructuresHandler
             if ($dsObj->isPermittedForUser($params['row'], $removeDSItems)) {
                 $params['items'][] = array(
                     $dsObj->getLabel(),
-                    ($is85OrNewer? 'FILE:' : '') . $dsObj->getKey(),
+                    ($is85OrNewer && !is_numeric($dsObj->getKey()) ? 'FILE:' : '') . $dsObj->getKey(),
                     $dsObj->getIcon()
                 );
             }
