@@ -1121,6 +1121,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
         // Fetch the content structure of page:
         $contentTreeData = $this->apiObj->getContentTree($this->rootElementTable, $this->rootElementRecord); // TODO Dima: seems like it does not return <TCEForms> for elements inside sectiions. Thus titles are not visible for these elements!
+
         if (empty($contentTreeData['tree'])) {
             return TemplaVoilaUtility::getLanguageService()->getLL('info_selectTemplateDesign');
         }

@@ -1371,8 +1371,20 @@ class ApiService
      */
     public function ds_getExpandedDataStructure($table, $row)
     {
-        $conf = $GLOBALS['TCA'][$table]['columns']['tx_templavoilaplus_flex']['config'];
-        $dataStructureArr = BackendUtility::getFlexFormDS($conf, $row, $table);
+        $dataStructureArr = [];
+
+        if (version_compare(TYPO3_version, '8.5.0', '>=')) {
+            $flexFormTools = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class);
+            $dataStructureIdentifier = $flexFormTools->getDataStructureIdentifier(
+                $GLOBALS['TCA'][$table]['columns']['tx_templavoilaplus_flex'],
+                $table,
+                'tx_templavoilaplus_flex',
+                $row
+            );
+            $dataStructureArr = $flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
+        } else {
+            $dataStructureArr = BackendUtility::getFlexFormDS($GLOBALS['TCA'][$table]['columns']['tx_templavoilaplus_flex']['config'], $row, $table);
+        }
 
         $expandedDataStructureArr = array();
         if (!is_array($dataStructureArr)) {
@@ -1507,7 +1519,19 @@ class ApiService
 
         // If element is a Flexible Content Element (or a page) then look at the content inside:
         if ($table == 'pages' || $table == $this->rootTable || ($table == 'tt_content' && $row['CType'] == 'templavoilaplus_pi1')) {
-            $rawDataStructureArr = BackendUtility::getFlexFormDS($GLOBALS['TCA'][$table]['columns']['tx_templavoilaplus_flex']['config'], $row, $table);
+            if (version_compare(TYPO3_version, '8.5.0', '>=')) {
+                $flexFormTools = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class);
+                $dataStructureIdentifier = $flexFormTools->getDataStructureIdentifier(
+                    $GLOBALS['TCA'][$table]['columns']['tx_templavoilaplus_flex'],
+                    $table,
+                    'tx_templavoilaplus_flex',
+                    $row
+                );
+                $rawDataStructureArr = $flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
+            } else {
+                $rawDataStructureArr = BackendUtility::getFlexFormDS($GLOBALS['TCA'][$table]['columns']['tx_templavoilaplus_flex']['config'], $row, $table);
+            }
+
             if (!is_array($rawDataStructureArr)) {
                 return array();
             }
