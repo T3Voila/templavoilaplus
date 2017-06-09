@@ -539,6 +539,11 @@ class TcaFlexProcess implements FormDataProviderInterface
                                                     $inputToFlexFormSegment['processedTca']['columns'] = $editColumns[$langElementLevel];
                                                     $flexSegmentResult = $formDataCompiler->compile($inputToFlexFormSegment);
 
+                                                    if (!isset($containerDataStructuresPerContainer[$aContainerIdentifier])) {
+                                                        $containerDataStructuresPerContainer[$aContainerIdentifier] = $vanillaContainerDataStructure;
+                                                        $containerDataStructuresPerContainer[$aContainerIdentifier]['el'] = [];
+                                                    }
+
                                                     foreach ($editColumns[$langElementLevel] as $singleFieldName => $_) {
                                                         // Set data value result
                                                         if (array_key_exists($singleFieldName, $flexSegmentResult['databaseRow'])) {
@@ -552,17 +557,23 @@ class TcaFlexProcess implements FormDataProviderInterface
                                                         // handling below will set it again.
                                                         $result['processedTca']['columns'][$fieldName]['config']['ds']
                                                             ['sheets'][$dataStructureSheetName][$langSheetLevel]['ROOT']['el'][$dataStructureFieldName]['el']
-                                                            [$aContainerName]['el'][$singleFieldName]
+                                                            [$aContainerName]['el'][$langElementLevel]
+                                                            = $flexSegmentResult['processedTca']['columns'][$singleFieldName];
+
+                                                        if (!isset($containerDataStructuresPerContainer[$aContainerIdentifier]['el'][$singleFieldName])) {
+                                                            $containerDataStructuresPerContainer[$aContainerIdentifier]['el'][$singleFieldName]
+                                                                = $flexSegmentResult['processedTca']['columns'][$singleFieldName];
+                                                        }
+                                                        $containerDataStructuresPerContainer[$aContainerIdentifier]['el'][$singleFieldName][$langElementLevel]
                                                             = $flexSegmentResult['processedTca']['columns'][$singleFieldName];
                                                     }
-                                                    $containerDataStructuresPerContainer[$aContainerIdentifier] = $vanillaContainerDataStructure;
-                                                    $containerDataStructuresPerContainer[$aContainerIdentifier]['el'] = $flexSegmentResult['processedTca']['columns'];
                                                 }
                                             }
                                         }
                                     }
                                 } // End of existing data value handling
                                 // Set 'data structures per container' next to 'el' that contains vanilla data structures
+
                                 $result['processedTca']['columns'][$fieldName]['config']['ds']
                                     ['sheets'][$dataStructureSheetName][$langSheetLevel]['ROOT']['el']
                                     [$dataStructureFieldName]['children'] = $containerDataStructuresPerContainer;
@@ -651,7 +662,7 @@ class TcaFlexProcess implements FormDataProviderInterface
                                 } else {
                                     $tcaNewColumns[$dataStructureFieldName] = $dataStructureFieldDefinition;
                                 }
-                                $tcaValueArrayLanguage[$langElementLevel][$dataStructureFieldName] 
+                                $tcaValueArrayLanguage[$langElementLevel][$dataStructureFieldName]
                                     = $dataValues['data'][$dataStructureSheetName][$langSheetLevel][$dataStructureFieldName][$langElementLevel];
                                }
                         } // End of single element handling
