@@ -44,6 +44,11 @@ class FlexFormTools extends \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools
         if (is_array($dataStructArray)) {
             // Get flexform XML data:
             $xmlData = $row[$field];
+            if ($xmlData === null) {
+                // No data, no traversal
+                return;
+            }
+
             // Convert charset:
             if ($this->convertCharset) {
                 $xmlHeaderAttributes = GeneralUtility::xmlGetHeaderAttribs($xmlData);
@@ -53,16 +58,25 @@ class FlexFormTools extends \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools
                     $xmlData = $GLOBALS['LANG']->csConvObj->conv($xmlData, $storeInCharset, $currentCharset, 1);
                 }
             }
+
             $editData = GeneralUtility::xml2array($xmlData);
+            if (!is_array($editData)) {
+                return 'Parsing error: ' . $editData;
+            }
 
             // Language settings:
-            $langChildren = $dataStructArray['meta']['langChildren'] ? 1 : 0;
-            $langDisabled = $dataStructArray['meta']['langDisable'] ? 1 : 0;
-            // Empty or invalid <meta>
-            if (!is_array($editData['meta'])) {
-                $editData['meta'] = array();
+            $langChildren = 0;
+            $langDisabled = 0;
+            if (isset($dataStructArray['meta'])) {
+                $langChildren = $dataStructArray['meta']['langChildren'] ? 1 : 0;
+                $langDisabled = $dataStructArray['meta']['langDisable'] ? 1 : 0;
             }
-            $editData['meta']['currentLangId'] = array();
+
+            // Empty or invalid <meta>
+            if (!isset($editData['meta']) || !is_array($editData['meta'])) {
+                $editData['meta'] = [];
+            }
+            $editData['meta']['currentLangId'] = [];
             $languages = $this->getAvailableLanguages();
             foreach ($languages as $lInfo) {
                 $editData['meta']['currentLangId'][] = $lInfo['ISOcode'];
