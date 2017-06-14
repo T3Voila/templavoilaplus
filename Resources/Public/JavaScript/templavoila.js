@@ -165,7 +165,7 @@ function sortable_updateItemButtons(list, sortOrder)
 function sortable_update(list, element, sortOrder)
 {
     destinationIndex = sortOrder.indexOf(element.id);
-
+    console.log('SortableUpdate:' + sortableSource + 'Destination:' + destinationIndex);
     // If it wasn't found in sortOrder then it was removed from given list'
     if (destinationIndex != -1 && sortableSource != null) {
         var destination = sortable_containers['#' + list.id] + destinationIndex;
@@ -203,7 +203,7 @@ function tv_createSortable(container, connectWith)
     {
         connectWith: connectWith,
         handle: '.sortable_handle',
-        items: '.sortableItem',
+        items: '> .sortableItem',
         //zIndex: '4000',
         tolerance: 'pointer',
         opacity: 0.5,
@@ -212,7 +212,10 @@ function tv_createSortable(container, connectWith)
             sortable_start(TYPO3.jQuery(this)[0], ui.item[0], TYPO3.jQuery(this).sortable('toArray'));
         },
         update: function (event, ui) {
-            sortable_update(TYPO3.jQuery(this)[0], ui.item[0], TYPO3.jQuery(this).sortable('toArray'));
+            if (this === ui.item.parent()[0]) {
+                // Only update for container where item is dropped
+                sortable_update(TYPO3.jQuery(this)[0], ui.item[0], TYPO3.jQuery(this).sortable('toArray'));
+            }
         },
         stop: function (event, ui) {
             sortable_stop();
