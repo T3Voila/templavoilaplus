@@ -538,7 +538,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         if ($access) {
 
             // Additional header content
-            $this->renderFunctionHook('renderHeader');
+            $this->content .= $this->renderFunctionHook('renderHeader');
 
             $this->calcPerms = $this->getCalcPerms($pageInfoArr['uid']);
 
@@ -776,7 +776,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             }
 
             // Additional footer content
-            $this->renderFunctionHook('renderFooter');
+            $this->content .= $this->renderFunctionHook('renderFooter');
         } else { // No access or no current page uid:
             if (!isset($pageInfoArr['uid'])) {
                 $this->moduleTemplate->addFlashMessage(
