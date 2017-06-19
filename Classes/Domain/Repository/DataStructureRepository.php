@@ -18,6 +18,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
+use Ppi\TemplaVoilaPlus\Utility\DataStructureUtility;
 
 /**
  * Class to provide unique access to datastructure
@@ -320,31 +321,35 @@ class DataStructureRepository implements \TYPO3\CMS\Core\SingletonInterface
     protected static function readStaticDsFilesIntoArray($conf)
     {
         $paths = array_unique(array('fce' => $conf['staticDS.']['path_fce'], 'page' => $conf['staticDS.']['path_page']));
-        foreach ($paths as $type => $path) {
-            $absolutePath = GeneralUtility::getFileAbsFileName($path);
-            $files = GeneralUtility::getFilesInDir($absolutePath, 'xml', true);
-            // if all files are in the same folder, don't resolve the scope by path type
-            if (count($paths) == 1) {
-                $type = false;
-            }
-            foreach ($files as $filePath) {
-                $staticDataStructure = array();
-                $pathInfo = pathinfo($filePath);
-
-                $staticDataStructure['title'] = $pathInfo['filename'];
-                $staticDataStructure['path'] = substr($filePath, strlen(PATH_site));
-                $iconPath = $pathInfo['dirname'] . '/' . $pathInfo['filename'] . '.gif';
-                if (file_exists($iconPath)) {
-                    $staticDataStructure['icon'] = substr($iconPath, strlen(PATH_site));
+        $paths['page'] = DataStructureUtility::getPathArrayFromList($paths['page']);
+        $paths['fce'] = DataStructureUtility::getPathArrayFromList($paths['fce']);
+        foreach ($paths as $type => $pathArray) {
+            foreach ($pathArray as $path) {
+                $absolutePath = GeneralUtility::getFileAbsFileName($path);
+                $files = GeneralUtility::getFilesInDir($absolutePath, 'xml', true);
+                // if all files are in the same folder, don't resolve the scope by path type
+                if (count($paths) == 1) {
+                    $type = false;
                 }
-
-                if (($type !== false && $type === 'fce') || strpos($pathInfo['filename'], '(fce)') !== false) {
-                    $staticDataStructure['scope'] = \Ppi\TemplaVoilaPlus\Domain\Model\AbstractDataStructure::SCOPE_FCE;
-                } else {
-                    $staticDataStructure['scope'] = \Ppi\TemplaVoilaPlus\Domain\Model\AbstractDataStructure::SCOPE_PAGE;
+                foreach ($files as $filePath) {
+                    $staticDataStructure = array();
+                    $pathInfo = pathinfo($filePath);
+    
+                    $staticDataStructure['title'] = $pathInfo['filename'];
+                    $staticDataStructure['path'] = substr($filePath, strlen(PATH_site));
+                    $iconPath = $pathInfo['dirname'] . '/' . $pathInfo['filename'] . '.gif';
+                    if (file_exists($iconPath)) {
+                        $staticDataStructure['icon'] = substr($iconPath, strlen(PATH_site));
+                    }
+    
+                    if (($type !== false && $type === 'fce') || strpos($pathInfo['filename'], '(fce)') !== false) {
+                        $staticDataStructure['scope'] = \Ppi\TemplaVoilaPlus\Domain\Model\AbstractDataStructure::SCOPE_FCE;
+                    } else {
+                        $staticDataStructure['scope'] = \Ppi\TemplaVoilaPlus\Domain\Model\AbstractDataStructure::SCOPE_PAGE;
+                    }
+    
+                    $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoilaplus']['staticDataStructures'][] = $staticDataStructure;
                 }
-
-                $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoilaplus']['staticDataStructures'][] = $staticDataStructure;
             }
         }
     }
