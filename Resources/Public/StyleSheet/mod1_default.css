@@ -122,6 +122,15 @@ div.warning a {
   overflow: hidden;
 }
 
+.t3-page-ce .t3-page-ce-header.ver-element {
+    background-color: #fee4c9;
+}
+
+.t3-page-ce:hover .t3-page-ce-header.ver-element {
+    background-color: #f7c898;
+}
+
+
 .t3-page-ce-header-icons-left .tpm-langIcon,
 .t3-page-ce-header-icons-left .tpm-buttonsLeft {
     float: left;

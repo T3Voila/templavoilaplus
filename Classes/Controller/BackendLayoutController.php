@@ -1431,9 +1431,9 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         $previewContent = $contentTreeArr['ds_meta']['disableDataPreview'] ? '&nbsp;' : $this->render_previewData($contentTreeArr['previewData'], $contentTreeArr['el'], $contentTreeArr['ds_meta'], $languageKey, $sheet);
 
         // Wrap workspace notification colors:
-        //if ($contentTreeArr['el']['_ORIG_uid'])    {
-        $previewContent = '<div class="ver-element">' . ($previewContent ? $previewContent : '<em>[New version]</em>') . '</div>';
-        //}
+        if ($contentTreeArr['el']['_ORIG_uid']) {
+            $elementTitlebarClass .= ' ver-element';
+        }
 
         $title = GeneralUtility::fixed_lgd_cs($contentTreeArr['el']['fullTitle'], $this->previewTitleMaxLen);
 
