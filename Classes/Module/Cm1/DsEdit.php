@@ -230,9 +230,9 @@ class DsEdit
                     <dl id="dsel-proc" class="DS-config">
                         <dt>' . $this->getLanguageService()->getLL('mapPostProcesses') . ':</dt>
                         <dd>
-                            <input type="checkbox" class="checkbox" id="tv_proc_int_" value="1" ' . ($insertDataArray['tx_templavoilaplus']['proc']['int'] ? 'checked="checked"' : '') . ' onclick="$(\'tv_proc_int\').value=(this.checked ? 1 : 0);" />
+                            <input type="checkbox" class="checkbox" id="tv_proc_int_" value="1" ' . ($insertDataArray['tx_templavoilaplus']['proc']['int'] ? 'checked="checked"' : '') . ' onclick="TYPO3.jQuery(\'#tv_proc_int\').val(this.checked ? 1 : 0);" />
                             <label for="tv_proc_int_">' . $this->getLanguageService()->getLL('mapPPcastInteger') . '</label><br />
-                            <input type="checkbox" class="checkbox" id="tv_proc_hsc_" value="1" ' . ($insertDataArray['tx_templavoilaplus']['proc']['HSC'] ? 'checked="checked"' : '') . ' onclick="$(\'tv_proc_hsc\').value=(this.checked ? 1 : 0);" />
+                            <input type="checkbox" class="checkbox" id="tv_proc_hsc_" value="1" ' . ($insertDataArray['tx_templavoilaplus']['proc']['HSC'] ? 'checked="checked"' : '') . ' onclick="TYPO3.jQuery(\'#tv_proc_hsc\').val(this.checked ? 1 : 0);" />
                             <label for="tv_proc_hsc_">' . $this->getLanguageService()->getLL('mapPPhsc') . '</label>
                             <input type="hidden" id="tv_proc_int" name="' . $formFieldName . '[tx_templavoilaplus][proc][int]" value="' . (int)$insertDataArray['tx_templavoilaplus']['proc']['int'] . '" />
                             <input type="hidden" id="tv_proc_hsc" name="' . $formFieldName . '[tx_templavoilaplus][proc][HSC]" value="' . (int)$insertDataArray['tx_templavoilaplus']['proc']['HSC'] . '" />
@@ -261,7 +261,7 @@ class DsEdit
                         $form .= '
                             <dt><label for="tv_enabledragdrop_">' . $this->getLanguageService()->getLL('mapEnableDragDrop') . '</label></dt>
                             <dd>
-                                <input type="checkbox" class="checkbox" id="tv_enabledragdrop_" value="1" ' . (($insertDataArray['tx_templavoilaplus']['enableDragDrop'] === '0') ? '' : 'checked="checked"') . ' onclick="$(\'tv_enabledragdrop\').value=(this.checked ? 1 : 0);" />
+                                <input type="checkbox" class="checkbox" id="tv_enabledragdrop_" value="1" ' . (($insertDataArray['tx_templavoilaplus']['enableDragDrop'] === '0') ? '' : 'checked="checked"') . ' onclick="TYPO3.jQuery(\'#tv_enabledragdrop\').val(this.checked ? 1 : 0);" />
                                 <input type="hidden" id="tv_enabledragdrop" name="' . $formFieldName . '[tx_templavoilaplus][enableDragDrop]" value="' . (int)$insertDataArray['tx_templavoilaplus']['enableDragDrop'] . '" />
                             </dd>';
                     }
