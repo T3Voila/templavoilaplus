@@ -202,7 +202,7 @@ function tv_createSortable(container, connectWith)
     $sortingContainer.sortable(
     {
         connectWith: connectWith,
-        handle: '.sortable_handle',
+        handle: '> div > div > div > div.sortable_handle',
         items: '> .sortableItem',
         //zIndex: '4000',
         tolerance: 'pointer',
@@ -220,7 +220,6 @@ function tv_createSortable(container, connectWith)
         stop: function (event, ui) {
             sortable_stop();
         },
-        forcePlaceholderSize: true,
         placeholder: 'drag-placeholder'
     });
     $sortingContainer.disableSelection();
