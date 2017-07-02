@@ -1315,15 +1315,16 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         // Prepare table specific settings:
         switch ($contentTreeArr['el']['table']) {
             case 'pages':
-                $elementTitlebarClass = 't3-row-header';
+                $elementTitlebarClass = 't3-page-column-header';
                 $elementClass .= ' pagecontainer';
                 break;
 
             case 'tt_content':
                 $this->currentElementParentPointer = $parentPointer;
 
-                $elementTitlebarClass = $elementBelongsToCurrentPage ? 'tpm-titlebar' : 'tpm-titlebar-fromOtherPage';
-                $elementClass .= ' t3-page-ce  tpm-content-element tpm-ctype-' . $contentTreeArr['el']['CType'];
+                $elementTitlebarClass = 't3-page-ce-header '
+                    . ($elementBelongsToCurrentPage ? 'tpm-titlebar' : 'tpm-titlebar-fromOtherPage');
+                $elementClass .= ' t3-page-ce tpm-content-element tpm-ctype-' . $contentTreeArr['el']['CType'];
 
                 if ($contentTreeArr['el']['isHidden']) {
                     $elementClass .= ' tpm-hidden t3-page-ce-hidden';
@@ -1441,7 +1442,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         $finalContent = '
             <div class="' . $elementClass . '">
                 <a name="c' . md5($this->apiObj->flexform_getStringFromPointer($this->currentElementParentPointer) . $contentTreeArr['el']['uid']) . '"></a>
-                <div class="tpm-titlebar t3-page-ce-header ' . $elementTitlebarClass . '">
+                <div class="tpm-titlebar ' . $elementTitlebarClass . '">
                     <div class="t3-page-ce-header-icons-right">
                     ' . $titleBarRightButtons . '
                     </div>
