@@ -42,7 +42,7 @@ class NewContentElementController extends \TYPO3\CMS\Backend\Controller\ContentE
             $posMap = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\View\ContentCreationPagePositionMap::class);
             $posMap->cur_sys_language = $this->sys_language;
             // If a column is pre-set:
-            if (isset($this->colPos)) {
+            if ($this->colPos !== null) {
                 if ($this->uid_pid < 0) {
                     $row = [];
                     $row['uid'] = abs($this->uid_pid);
@@ -107,12 +107,12 @@ class NewContentElementController extends \TYPO3\CMS\Backend\Controller\ContentE
 
                     if (!$this->onClickEvent) {
                         // Radio button:
-                        $oC = 'document.editForm.defValues.value=unescape(decodeURI(' . GeneralUtility::quoteJSvalue(rawurlencode($wInfo['params'])) . '));goToalt_doc();' . (!$this->onClickEvent ? 'window.location.hash=\'#sel2\';' : '');
+                        $oC = 'document.editForm.defValues.value=unescape(decodeURI(' . GeneralUtility::quoteJSvalue(rawurlencode($wInfo['params'])) . '));goToalt_doc();window.location.hash=\'#sel2\';';
                         $content .= '<div class="media-left"><input type="radio" name="tempB" value="' . htmlspecialchars($k) . '" onclick="' . htmlspecialchars($oC) . '" /></div>';
                         // Onclick action for icon/title:
                         $aOnClick = 'document.getElementsByName(\'tempB\')[' . $cc . '].checked=1;' . $oC . 'return false;';
                     } else {
-                        $aOnClick = "document.editForm.defValues.value=unescape(decodeURI('" . rawurlencode($wInfo['params']) . "'));goToalt_doc();" . (!$this->onClickEvent?"window.location.hash='#sel2';":'');
+                        $aOnClick = "document.editForm.defValues.value=unescape(decodeURI('" . rawurlencode($wInfo['params']) . "'));goToalt_doc();";
                     }
 
                     if (isset($wInfo['icon'])) {
