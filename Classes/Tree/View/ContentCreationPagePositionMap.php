@@ -33,6 +33,10 @@ class ContentCreationPagePositionMap extends \TYPO3\CMS\Backend\Tree\View\Conten
      */
     public function onClickInsertRecord($row, $vv, $moveUid, $pid, $sys_lang = 0)
     {
+        $parentRecord = GeneralUtility::_GP('parentRecord');
+        if (!$parentRecord) {
+            return parent::onClickInsertRecord($row, $vv, $moveUid, $pid, $sys_lang);
+        }
         $location = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl(
             'web_txtemplavoilaplusLayout',
             [
