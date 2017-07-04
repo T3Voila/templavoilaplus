@@ -314,11 +314,6 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     protected $newContentWizModuleName = 'new_content_element';
 
     /**
-     * @var \TYPO3\CMS\Core\Messaging\FlashMessageService
-     */
-    protected $flashMessageService;
-
-    /**
      * Used for Content preview and is used as flag if content should be linked or not
      *
      * @var boolean
@@ -1168,14 +1163,11 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         // We show a warning if the user may edit the pagecontent and is not permitted to edit the "content" fields at the same time
         if (!TemplaVoilaUtility::getBackendUser()->isAdmin() && $this->modTSconfig['properties']['enableContentAccessWarning']) {
             if (!($this->hasBasicEditRights())) {
-                /** @var \TYPO3\CMS\Core\Messaging\FlashMessage $message */
-                $message = GeneralUtility::makeInstance(
-                    \TYPO3\CMS\Core\Messaging\FlashMessage::class,
+                $this->moduleTemplate->addFlashMessage(
                     TemplaVoilaUtility::getLanguageService()->getLL('missing_edit_right_detail'),
                     TemplaVoilaUtility::getLanguageService()->getLL('missing_edit_right'),
                     \TYPO3\CMS\Core\Messaging\FlashMessage::INFO
                 );
-                $this->flashMessageService->getMessageQueueByIdentifier('ext.templavoila')->enqueue($message);
             }
         }
 
@@ -1501,14 +1493,11 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 $vKey = $this->determineFlexValueKey(1, $langChildren, $languageKey);
             } else {
                 if (!TemplaVoilaUtility::getBackendUser()->isAdmin()) {
-                    /** @var \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage */
-                    $flashMessage = GeneralUtility::makeInstance(
-                        \TYPO3\CMS\Core\Messaging\FlashMessage::class,
+                    $this->moduleTemplate->addFlashMessage(
                         TemplaVoilaUtility::getLanguageService()->getLL('page_structure_inherited_detail'),
                         TemplaVoilaUtility::getLanguageService()->getLL('page_structure_inherited'),
                         \TYPO3\CMS\Core\Messaging\FlashMessage::INFO
                     );
-                    $this->flashMessageService->getMessageQueueByIdentifier('ext.templavoila')->enqueue($flashMessage);
                 }
             }
         }
@@ -1584,18 +1573,15 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                     $maxItemsReached = is_array($fieldContent['el_list']) && count($fieldContent['el_list']) >= $maxCnt;
 
                     if ($maxItemsReached) {
-                        /** @var \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage */
-                        $flashMessage = GeneralUtility::makeInstance(
-                            \TYPO3\CMS\Core\Messaging\FlashMessage::class,
-                            '',
+                        $this->moduleTemplate->addFlashMessage(
                             sprintf(
                                 TemplaVoilaUtility::getLanguageService()->getLL('maximal_content_elements'),
                                 $maxCnt,
                                 $elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['tx_templavoilaplus']['title']
                             ),
+                            '',
                             \TYPO3\CMS\Core\Messaging\FlashMessage::INFO
                         );
-                        $this->flashMessageService->getMessageQueueByIdentifier('ext.templavoila')->enqueue($flashMessage);
                     }
                 }
 
