@@ -2,7 +2,7 @@ TemplaVoilà Plus
 ================
 
 [![license](https://img.shields.io/github/license/pluspol-interactive/templavoilaplus.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0-standalone.html)
-[![version](https://img.shields.io/badge/TER_version-7.1.1-green.svg)](https://typo3.org/extensions/repository/view/templavoilaplus)
+[![version](https://img.shields.io/badge/TER_version-7.1.2-green.svg)](https://typo3.org/extensions/repository/view/templavoilaplus)
 
 TeamplaVoilà Plus is a templating extension for the TYPO3 content management system. It is the follow up of the popular
 TemplaVoilà extension from Kasper Skårhøj prepared for modern versions of TYPO3.
