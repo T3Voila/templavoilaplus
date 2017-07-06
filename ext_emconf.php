@@ -1,6 +1,6 @@
 <?php
 $EM_CONF[$_EXTKEY] = [
-    'title' => 'TemplaVoilà Plus',
+    'title' => 'TemplaVoila Plus!',
     'description' => 'Point-and-click, popular and easy template engine for TYPO3. Replacement for old TemplaVoila.',
     'category' => 'misc',
     'version' => '7.1.3-dev',
