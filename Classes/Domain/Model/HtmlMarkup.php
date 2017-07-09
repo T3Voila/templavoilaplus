@@ -917,7 +917,17 @@ class HtmlMarkup
                             }
                         } else {
                             $uKey = md5(trim($MappingData_head_cached['cArray']['el_' . $kk]));
-                            $extraHeaderData['TV_' . $uKey] = chr(10) . chr(9) . trim($htmlParse->XHTML_clean($MappingData_head_cached['cArray']['el_' . $kk]));
+                            $extraHeaderData['TV_' . $uKey]
+                                = chr(10) . chr(9)
+                                . trim(
+                                    $htmlParse->HTMLcleaner(
+                                        $MappingData_head_cached['cArray']['el_' . $kk],
+                                        [],
+                                        1,
+                                        0,
+                                        ['xhtml' => 1]
+                                    )
+                                );
                         }
                     }
                 }
