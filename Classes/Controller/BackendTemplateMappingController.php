@@ -1502,7 +1502,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                             $onClickUpdateDSTO = $this->getUrlToModifyDSTO($theFile, $row['uid'], $DSOfile, $this->returnUrl);
 
                             // Read Data Structure:
-                            $dataStruct = $this->getDataStructFromDSO('', $DSOfile);
+                            $dataStruct = $this->getDataStructFromDSO(GeneralUtility::getUrl($DSOfile));
                         }
 
                         $onClMsg = '
@@ -2397,19 +2397,22 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
      *******************************/
 
     /**
-     * Returns Data Structure from the $datString
+     * Returns Data Structure from the $dataStructureXML
      *
-     * @param string $datString XML content which is parsed into an array, which is returned.
-     * @param string $file Absolute filename from which to read the XML data. Will override any input in $datString
+     * @param string $dataStructureXML XML content which is parsed into an array, which is returned.
      *
-     * @return mixed The variable $dataStruct. Should be array. If string, then no structures was found and the function returns the XML parser error.
+     * @return array The parsed XML as struct array.
+     * @throws \Exception If a XML parse error happened the parse error will be thrown.
      */
-    public function getDataStructFromDSO($datString, $file = '')
+    public function getDataStructFromDSO($dataStructureXML)
     {
-        if ($file) {
-            $dataStruct = GeneralUtility::xml2array(GeneralUtility::getUrl($file));
+        if ($dataStructureXML !== '') {
+            $dataStruct = GeneralUtility::xml2array($dataStructureXML);
+            if (!is_array($dataStruct)) {
+                throw new \Exception($dataStruct);
+            }
         } else {
-            $dataStruct = GeneralUtility::xml2array($datString);
+            $dataStruct = [];
         }
 
         return $dataStruct;
