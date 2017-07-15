@@ -295,9 +295,11 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
 
     /**
      * Returns an abbrevation and a description for a given element-type.
+     * Silently convert array to section or container for mapping handling
+     * Will be converted back to array in convertDsTypeBack()
+     * so saved FlexForm.xml is correct.
      *
-     * @param array $conf
-     * @TODO Clean up that array has 2 meanings (container or section!!)
+     * @param array $conf DS config of the field.
      *
      * @return array
      */
@@ -313,6 +315,27 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
         }
 
         return $this->dsTypes['element'];
+    }
+
+    public function convertDsTypeBack(&$elArray)
+    {
+        // Traverse array
+        foreach ($elArray as $key => $value) {
+            // this MUST not ever enter the XMLs (it will break TV)
+            if ($elArray[$key]['type'] == 'section' || $elArray[$key]['section']) {
+                $elArray[$key]['type'] = 'array';
+                $elArray[$key]['section'] = '1';
+            } if ($elArray[$key]['type'] == 'container') {
+                $elArray[$key]['type'] = 'array';
+                $elArray[$key]['section'] = '0';
+            } else {
+                $elArray[$key]['section'] = '0';
+            }
+            // Run this function recursively if needed:
+            if (is_array($elArray[$key]['el'])) {
+                $this->convertDsTypeBack($elArray[$key]['el']);
+            }
+        }
     }
 
     /*******************************************
@@ -611,31 +634,42 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
         $this->findingStorageFolderIds();
 
         // dsType configuration
-        // @TODO Clean up that type array can have 2 meanings!
         $this->dsTypes = [
             'section' => [
                 'id' => 'sc',
-                'title' => TemplaVoilaUtility::getLanguageService()->getLL('dsTypes_section') . ': ',
+                'name' => 'section',
+                'title' => TemplaVoilaUtility::getLanguageService()->getLL('dsTypes_section'),
+                'mapping' => TemplaVoilaUtility::getLanguageService()->getLL('mapSection'),
             ],
             'array' => [
                 'id' => 'sc',
-                'title' => TemplaVoilaUtility::getLanguageService()->getLL('dsTypes_section') . ': ',
+                'name' => 'array',
+                'title' => TemplaVoilaUtility::getLanguageService()->getLL('dsTypes_section'),
+                'mapping' => '',
             ],
             'container' => [
                 'id' => 'co',
-                'title' => TemplaVoilaUtility::getLanguageService()->getLL('dsTypes_container') . ': ',
+                'name' => 'container',
+                'title' => TemplaVoilaUtility::getLanguageService()->getLL('dsTypes_container'),
+                'mapping' => TemplaVoilaUtility::getLanguageService()->getLL('mapContainer'),
             ],
             'attr' => [
                 'id' => 'at',
-                'title' => TemplaVoilaUtility::getLanguageService()->getLL('dsTypes_attribute') . ': ',
+                'name' => 'attr',
+                'title' => TemplaVoilaUtility::getLanguageService()->getLL('dsTypes_attribute'),
+                'mapping' => TemplaVoilaUtility::getLanguageService()->getLL('mapAttribute'),
             ],
             'element' => [
                 'id' => 'el',
-                'title' => TemplaVoilaUtility::getLanguageService()->getLL('dsTypes_element') . ': ',
+                'name' => 'element',
+                'title' => TemplaVoilaUtility::getLanguageService()->getLL('dsTypes_element'),
+                'mapping' => TemplaVoilaUtility::getLanguageService()->getLL('mapElement'),
             ],
             'no_map' => [
                 'id' => 'no',
-                'title' => TemplaVoilaUtility::getLanguageService()->getLL('dsTypes_notmapped') . ': ',
+                'name' => 'no_map',
+                'title' => TemplaVoilaUtility::getLanguageService()->getLL('dsTypes_notmapped'),
+                'mapping' => TemplaVoilaUtility::getLanguageService()->getLL('mapNotMapped'),
             ],
         ];
 
@@ -878,6 +912,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                     // Modifying data structure with conversion of preset values for field types to actual settings:
                     $storeDataStruct = $dataStruct;
                     if (is_array($storeDataStruct['ROOT']['el'])) {
+                        $this->convertDsTypeBack($storeDataStruct['ROOT']['el']);
                         $this->eTypes->substEtypeWithRealStuff($storeDataStruct['ROOT']['el'], $contentSplittedByMapping['sub']['ROOT'], $dataArr['tx_templavoilaplus_datastructure']['NEW']['scope']);
                     }
                     $dataProtXML = DataStructureUtility::array2xml($storeDataStruct);
@@ -980,6 +1015,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                         // Modifying data structure with conversion of preset values for field types to actual settings:
                         $storeDataStruct = $dataStruct;
                         if (is_array($storeDataStruct['ROOT']['el'])) {
+                            $this->convertDsTypeBack($storeDataStruct['ROOT']['el']);
                             $this->eTypes->substEtypeWithRealStuff($storeDataStruct['ROOT']['el'], $contentSplittedByMapping['sub']['ROOT'], $dsREC['scope']);
                         }
                         $dataProtXML = DataStructureUtility::array2xml($storeDataStruct);

@@ -31,7 +31,7 @@ class ETypes
 {
 
     /**
-     * @var \tx_templavoilaplus_cm1
+     * @var \Ppi\TemplaVoilaPlus\Controller\BackendTemplateMappingController
      */
     public $pObj;
 
@@ -41,9 +41,9 @@ class ETypes
     public $eTypeArray;
 
     /**
-     * @param \tx_templavoilaplus_cm1 $pObj
+     * @param \Ppi\TemplaVoilaPlus\Controller\BackendTemplateMappingController $pObj
      */
-    public function init($pObj)
+    public function init(\Ppi\TemplaVoilaPlus\Controller\BackendTemplateMappingController $pObj)
     {
         $this->pObj = $pObj;
     }
@@ -64,14 +64,6 @@ class ETypes
     {
         // Traverse array
         foreach ($elArray as $key => $value) {
-            // this MUST not ever enter the XMLs (it will break TV)
-            if ($elArray[$key]['type'] == 'section' || $elArray[$key]['section']) {
-                $elArray[$key]['type'] = 'array';
-                $elArray[$key]['section'] = '1';
-            } else {
-                $elArray[$key]['section'] = '0';
-            }
-
             // put these into array-form for preset-completition
             if (!is_array($elArray[$key]['tx_templavoilaplus']['TypoScript_constants'])) {
                 $elArray[$key]['tx_templavoilaplus']['TypoScript_constants'] = $this->pObj->unflattenarray($elArray[$key]['tx_templavoilaplus']['TypoScript_constants']);

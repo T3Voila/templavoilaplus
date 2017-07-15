@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class DsEdit
 {
     /**
-     * @var \tx_templavoilaplus_cm1
+     * @var \Ppi\TemplaVoilaPlus\Controller\BackendTemplateMappingController
      */
     protected $pObj;
 
@@ -35,9 +35,9 @@ class DsEdit
     protected $oldStyleColumnNumber = 0;
 
     /**
-     * @param \tx_templavoilaplus_cm1 $pObj
+     * @param \Ppi\TemplaVoilaPlus\Controller\BackendTemplateMappingController $pObj
      */
-    public function init($pObj)
+    public function init(\Ppi\TemplaVoilaPlus\Controller\BackendTemplateMappingController $pObj)
     {
         $this->pObj = $pObj;
     }
@@ -315,32 +315,27 @@ class DsEdit
                  * </element>
                  */
 
-                // Icons:
-                $info = $this->pObj->dsTypeInfo($insertDataArray);
-
                 // Find "select" style. This is necessary because Safari
                 // does not support paddings in select elements but supports
                 // backgrounds. The rest is text over background.
                 $selectStyle = 'margin: 4px 0; width: 150px !important; display: block;';
-                $userAgent = GeneralUtility::getIndpEnv('HTTP_USER_AGENT');
-                if (strpos($userAgent, 'WebKit') === false) {
-                    // Not Safai (Can't have "padding" for select elements in Safari)
-                    $selectStyle .= 'padding: 1px 1px 1px 30px; background: 0 50% url(' . $info[3] . ') no-repeat;';
-                }
 
                 $addEditRows = '<tr class="tv-edit-row">
                     <td valign="top" style="padding: 0.5em; padding-left: ' . (($level) * 16 + 3) . 'px" nowrap="nowrap" rowspan="2">
                         <select style="' . $selectStyle . '" title="Mapping Type" name="' . $formFieldName . '[type]">
-                            <optgroup class="c-divider" label="' . $this->getLanguageService()->getLL('mapElContainers') . '">
-                                <option style="padding: 1px 1px 1px 30px; background: 0 50% url(' . $this->pObj->dsTypes['sc'][3] . ') no-repeat;" value="section"' . ($insertDataArray['type'] == 'section' ? ' selected="selected"' : '') . '>' . $this->getLanguageService()->getLL('mapSection') . '</option>
-                                <option style="padding: 1px 1px 1px 30px; background: 0 50% url(' . $this->pObj->dsTypes['co'][3] . ') no-repeat;" value="array"' . ($insertDataArray['type'] == 'array' ? ' selected="selected"' : '') . '>' . $this->getLanguageService()->getLL('mapContainer') . '</option>
+                            <optgroup class="c-divider" label="' . $this->getLanguageService()->getLL('mapElContainers') . '">'
+                                . $this->getDsOption('section', $insertDataArray)
+                                . $this->getDsOption('container', $insertDataArray)
+                                . '
                             </optgroup>
-                            <optgroup class="c-divider" label="' . $this->getLanguageService()->getLL('mapElElements') . '">
-                                <option style="padding: 1px 1px 1px 30px; background: 0 50% url(' . $this->pObj->dsTypes['el'][3] . ') no-repeat;" value=""' . ($insertDataArray['type'] == '' ? ' selected="selected"' : '') . '>' . $this->getLanguageService()->getLL('mapElement') . '</option>
-                                <option style="padding: 1px 1px 1px 30px; background: 0 50% url(' . $this->pObj->dsTypes['at'][3] . ') no-repeat;" value="attr"' . ($insertDataArray['type'] == 'attr' ? ' selected="selected"' : '') . '>' . $this->getLanguageService()->getLL('mapAttribute') . '</option>
+                            <optgroup class="c-divider" label="' . $this->getLanguageService()->getLL('mapElElements') . '">'
+                                . $this->getDsOption('element', $insertDataArray)
+                                . $this->getDsOption('attr', $insertDataArray)
+                                . '
                             </optgroup>
-                            <optgroup class="c-divider" label="' . $this->getLanguageService()->getLL('mapPresetGroups_other') . '">
-                                <option style="padding: 1px 1px 1px 30px; background: 0 50% url(' . $this->pObj->dsTypes['no'][3] . ') no-repeat;" value="no_map"' . ($insertDataArray['type'] == 'no_map' ? ' selected="selected"' : '') . '>' . $this->getLanguageService()->getLL('mapNotMapped') . '</option>
+                            <optgroup class="c-divider" label="' . $this->getLanguageService()->getLL('mapPresetGroups_other') . '">'
+                                . $this->getDsOption('no_map', $insertDataArray)
+                                . '
                             </optgroup>
                         </select>
                         <div style="margin: 0.25em;">' .
@@ -431,6 +426,17 @@ class DsEdit
 
         // Return edit row:
         return array($addEditRows, $placeBefore);
+    }
+
+    public function getDsOption($dsOptionName, $conf)
+    {
+        $info = $this->pObj->dsTypeInfo($conf);
+
+        return '<option value="' . $dsOptionName . '"' . ($dsOptionName === $info['name'] ? ' selected="selected"' : '') . '>'
+            // No span support inside <option> Do we need images for this stupid part?
+            // . '<span class="dsType_Icon dsType_' . $info['id'] . '" title="' . $info['title'] . '">' . strtoupper($info['id']) . '</span>'
+            . $this->pObj->dsTypes[$dsOptionName]['mapping']
+            . '</option>';
     }
 
     /**
