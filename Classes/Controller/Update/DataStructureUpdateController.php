@@ -148,6 +148,9 @@ class DataStructureUpdateController extends StepUpdateController
      * Migrate type=text field with t3editor wizard to renderType=t3editor without this wizard
      * From TYPO3 7 LTS
      *   TYPO3\CMS\Core\Migrations\TcaMigration::migrateT3editorWizardToRenderTypeT3editorIfNotEnabledByTypeConfig
+     *
+     * @param array $element The field element TCA
+     * @return boolean True if changed otherwise false
      */
     public function migrateT3editorWizardToRenderTypeT3editor(array &$element)
     {
@@ -185,7 +188,60 @@ class DataStructureUpdateController extends StepUpdateController
     }
 
     /**
+     * Migrate core icons for form field wizard to new location
+     * From TYPO3 7 LTS
+     *   TYPO3\CMS\Core\Migrations\TcaMigration::migrateIconsForFormFieldWizardToNewLocation
+     *
+     * @param array $element The field element TCA
+     * @return boolean True if changed otherwise false
+     */
+    protected function migrateIconsForFormFieldWizardToNewLocation(array &$element)
+    {
+        $changed = false;
+
+        $old2newFileLocations = [
+            'add.gif' => 'actions-add',
+            'link_popup.gif' => 'actions-wizard-link',
+            'wizard_rte2.gif' => 'actions-wizard-rte',
+            'wizard_table.gif' => 'content-table',
+            'edit2.gif' => 'actions-open',
+            'list.gif' => 'actions-system-list-open',
+            'wizard_forms.gif' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_forms.gif',
+            'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_add.gif' => 'actions-add',
+            'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_table.gif' => 'content-table',
+            'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_edit.gif' => 'actions-open',
+            'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_list.gif' => 'actions-system-list-open',
+            'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif' => 'actions-wizard-link',
+            'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_rte.gif' => 'actions-wizard-rte'
+        ];
+
+        if (
+            isset($element['TCEforms']['config']['wizards']) // if wizards is set
+            && is_array($element['TCEforms']['config']['wizards']) // and there are wizards
+        ) {
+            foreach ($element['TCEforms']['config']['wizards'] as $wizardName => &$wizardConfig) {
+                if (!is_array($wizardConfig)) {
+                    continue;
+                }
+
+                if (
+                    !isset($wizardConfig['icon']) // a icon is defined
+                    && isset($old2newFileLocations[$wizardConfig['icon']]) // and set to known icon
+                ) {
+                    $wizardConfig['icon'] = $old2newFileLocations[$wizardConfig['icon']];
+                    $changed = true;
+                }
+            }
+        }
+
+        return $changed;
+    }
+
+    /**
      * removes wizard element, if empty
+     *
+     * @param array $element The field element TCA
+     * @return boolean True if changed otherwise false
      */
     public function cleanupEmptyWizardFields(array &$element)
     {
