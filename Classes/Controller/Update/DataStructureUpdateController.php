@@ -45,6 +45,7 @@ class DataStructureUpdateController extends StepUpdateController
             [
                 [$this, 'migrateWizardScriptToModule'],
                 [$this, 'migrateT3editorWizardToRenderTypeT3editor'],
+                [$this, 'migrateIconsForFormFieldWizardToNewLocation'],
                 [$this, 'cleanupEmptyWizardFields'],
             ]
         );
