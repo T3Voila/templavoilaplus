@@ -44,7 +44,7 @@ class DataStructureUpdateController extends StepUpdateController
             [],
             [
                 [$this, 'migrateWizardScriptToModule'],
-                [$this, 'migrateT3editorWizardToRenderTypeT3editor'],
+                [$this, 'migrateT3editorWizardToRenderTypeT3editorIfNotEnabledByTypeConfig'],
                 [$this, 'migrateIconsForFormFieldWizardToNewLocation'],
                 [$this, 'cleanupEmptyWizardFields'],
             ]
@@ -153,7 +153,7 @@ class DataStructureUpdateController extends StepUpdateController
      * @param array $element The field element TCA
      * @return boolean True if changed otherwise false
      */
-    public function migrateT3editorWizardToRenderTypeT3editor(array &$element)
+    public function migrateT3editorWizardToRenderTypeT3editorIfNotEnabledByTypeConfig(array &$element)
     {
         $changed = false;
 
@@ -161,7 +161,6 @@ class DataStructureUpdateController extends StepUpdateController
             && is_array($element['TCEforms']['config']['wizards']) // and there are wizards
         ) {
             foreach ($element['TCEforms']['config']['wizards'] as $wizardName => &$wizardConfig) {
-                $cleaned = false;
 
                 if (
                     !empty($wizardConfig['userFunc']) // a userFunc is defined
@@ -179,9 +178,9 @@ class DataStructureUpdateController extends StepUpdateController
                     }
                     // Unset this wizard definition
                     unset($element['TCEforms']['config']['wizards'][$wizardName]);
-                }
 
-                $changed = $changed || $cleaned;
+                    $changed = true;
+                }
             }
         }
 
