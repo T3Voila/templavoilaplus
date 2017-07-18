@@ -46,6 +46,7 @@ class DataStructureUpdateController extends StepUpdateController
                 [$this, 'migrateWizardScriptToModule'],
                 [$this, 'migrateT3editorWizardToRenderTypeT3editorIfNotEnabledByTypeConfig'],
                 [$this, 'migrateIconsForFormFieldWizardToNewLocation'],
+                [$this, 'migrateExtAndSysextPathToEXTPath'],
                 [$this, 'cleanupEmptyWizardFields'],
             ]
         );
@@ -230,6 +231,56 @@ class DataStructureUpdateController extends StepUpdateController
                 ) {
                     $wizardConfig['icon'] = $old2newFileLocations[$wizardConfig['icon']];
                     $changed = true;
+                }
+            }
+        }
+
+        return $changed;
+    }
+
+
+    /**
+     * Migrate file reference which starts with ext/ or sysext/ to EXT:
+     * From TYPO3 7 LTS
+     *   TYPO3\CMS\Core\Migrations\TcaMigration::migrateIconsForFormFieldWizardToNewLocation
+     *
+     * @param array $element The field element TCA
+     * @return boolean True if changed otherwise false
+     */
+    protected function migrateExtAndSysextPathToEXTPath(array &$element)
+    {
+        $changed = false;
+
+        if (
+            !empty($element['TCEforms']['config']['type']) // type is set
+            && trim($element['TCEforms']['config']['type']) === 'select' // to "select"
+            && isset($element['TCEforms']['config']['items'])
+            && is_array($element['TCEforms']['config']['items']) // and there are items
+        ) {
+            foreach ($element['TCEforms']['config']['items'] as &$itemConfig) {
+                // more then two values? then the third entry is the image path
+                if (isset($itemConfig[2]) && !empty($itemConfig[2])) {
+                    $pathParts = GeneralUtility::trimExplode('/', $itemConfig[2]);
+                    // remove first element (ext or sysext)
+                    $pathPartOne = array_shift($pathParts);
+                    $path = implode('/', $pathParts);
+                    if ($pathPartOne === 'ext' || $pathPartOne === 'sysext') {
+                        // If the old path starts with ext/ or sysext/ migrate it
+                        $itemConfig[2] = 'EXT:' . $path;
+                        $changed = true;
+                    } elseif ($pathPartOne === 'i') {
+                        // If the old path starts with i for the old image path
+                        // In v7 this directs IMHO to false gfx path
+                        // In v8 this is changed to backend/Resources/Public/Images/
+                        // but this directory misses the files.
+                        // Personally I never saw such an installation, so don't
+                        // change anything here.
+                        $this->errors[] = 'Cannot migrate icon for a select item.'
+                            . 'It uses a path starting with i/ which is a very old'
+                            . ' configuration. Please change it to a path in your'
+                            . ' extension or from a cores extensions public path.'
+                            . ' But avoid t3skin in v7 as its removed in v8.';
+                    }
                 }
             }
         }
