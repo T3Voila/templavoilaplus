@@ -92,20 +92,21 @@ function sortable_unlinkRecordCallBack(obj)
 
 function sortable_unlinkRecord(pointer, id, elementPointer) {
     new TYPO3.jQuery.ajax({
-        url: TYPO3.settings.ajaxUrls['Ppi\\TemplaVoilaPlus\\Module\\Mod1\\Ajax::unlinkRecord'],
+        url: TYPO3.settings.ajaxUrls['templavoilaplus_record_unlink'],
         type: 'post',
         cache: false,
         data: {
             'unlink': pointer
-        }
-    }).done(function(data) {
-        // @TODO insert unlinked element into sidebar, so it is viewable without reloading?
-        // This was functional in older TV releases.
+        },
+        success: function(result) {
+            // @TODO insert unlinked element into sidebar, so it is viewable without reloading?
+            // This was functional in older TV releases.
 
-        // Fade out unlinked element
-        new TYPO3.jQuery('#' + id).fadeTo('fast', 0.0, function() {
-            sortable_unlinkRecordCallBack(TYPO3.jQuery(this))
-        });
+            // Fade out unlinked element
+            new TYPO3.jQuery('#' + id).fadeTo('fast', 0.0, function() {
+                sortable_unlinkRecordCallBack(TYPO3.jQuery(this))
+            });
+        }
     });
 }
 
@@ -165,19 +166,22 @@ function sortable_updateItemButtons(list, sortOrder)
 function sortable_update(list, element, sortOrder)
 {
     destinationIndex = sortOrder.indexOf(element.id);
-    console.log('SortableUpdate:' + sortableSource + 'Destination:' + destinationIndex);
+
     // If it wasn't found in sortOrder then it was removed from given list'
     if (destinationIndex != -1 && sortableSource != null) {
         var destination = sortable_containers['#' + list.id] + destinationIndex;
         new TYPO3.jQuery.ajax({
-            url: TYPO3.settings.ajaxUrls['Ppi\\TemplaVoilaPlus\\Module\\Mod1\\Ajax::moveRecord'],
+            url: TYPO3.settings.ajaxUrls['templavoilaplus_record_move'],
             type: 'post',
             cache: false,
             data: {
                 'source': sortableSource,
                 'destination': destination
+            },
+            success: function(result) {
+                // @TODO Check if it is possible that only after ajax response
+                // The element gets visually moved in collection (or moved back on failure)
             }
-        }).done(function(data) {
         });
     }
 
@@ -202,8 +206,8 @@ function tv_createSortable(container, connectWith)
     $sortingContainer.sortable(
     {
         connectWith: connectWith,
-        handle: '> div > div > div > div.sortable_handle',
-        items: '> .sortableItem',
+        handle: '.sortable_handle',
+        items: '.sortableItem',
         //zIndex: '4000',
         tolerance: 'pointer',
         opacity: 0.5,
@@ -212,14 +216,12 @@ function tv_createSortable(container, connectWith)
             sortable_start(TYPO3.jQuery(this)[0], ui.item[0], TYPO3.jQuery(this).sortable('toArray'));
         },
         update: function (event, ui) {
-            if (this === ui.item.parent()[0]) {
-                // Only update for container where item is dropped
-                sortable_update(TYPO3.jQuery(this)[0], ui.item[0], TYPO3.jQuery(this).sortable('toArray'));
-            }
+            sortable_update(TYPO3.jQuery(this)[0], ui.item[0], TYPO3.jQuery(this).sortable('toArray'));
         },
         stop: function (event, ui) {
             sortable_stop();
         },
+        forcePlaceholderSize: true,
         placeholder: 'drag-placeholder'
     });
     $sortingContainer.disableSelection();

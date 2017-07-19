@@ -14,6 +14,8 @@ namespace Ppi\TemplaVoilaPlus\Module\Mod1;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -39,34 +41,37 @@ class Ajax
     /**
      * Performs a move action for the requested element
      *
-     * @param array $params
-     * @param object $ajaxObj
-     *
-     * @return void
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
+     * @return ResponseInterface
      */
-    public function moveRecord($params, &$ajaxObj)
+    public function moveRecord(ServerRequestInterface $request, ResponseInterface $response)
     {
-
-        $sourcePointer = $this->apiObj->flexform_getPointerFromString(GeneralUtility::_GP('source'));
-
-        $destinationPointer = $this->apiObj->flexform_getPointerFromString(GeneralUtility::_GP('destination'));
+        $postParams = $request->getParsedBody();
+        $sourcePointer = $this->apiObj->flexform_getPointerFromString($postParams['source']);
+        $destinationPointer = $this->apiObj->flexform_getPointerFromString($postParams['destination']);
 
         $this->apiObj->moveElement($sourcePointer, $destinationPointer);
+
+        $response->getBody()->write(json_encode([]));
+        return $response;
     }
 
     /**
      * Performs a move action for the requested element
      *
-     * @param array $params
-     * @param object $ajaxObj
-     *
-     * @return void
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
+     * @return ResponseInterface
      */
-    public function unlinkRecord($params, &$ajaxObj)
+    public function unlinkRecord(ServerRequestInterface $request, ResponseInterface $response)
     {
-
-        $unlinkPointer = $this->apiObj->flexform_getPointerFromString(GeneralUtility::_GP('unlink'));
+        $postParams = $request->getParsedBody();
+        $unlinkPointer = $this->apiObj->flexform_getPointerFromString($postParams['unlink']);
 
         $this->apiObj->unlinkElement($unlinkPointer);
+
+        $response->getBody()->write(json_encode([]));
+        return $response;
     }
 }

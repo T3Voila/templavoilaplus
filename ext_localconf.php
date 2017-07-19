@@ -101,21 +101,6 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoilaplus']['mod1']['renderPreview
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoilaplus']['mod1']['renderPreviewContent']['div']      = \Ppi\TemplaVoilaPlus\Controller\Preview\NullController::class;
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoilaplus']['mod1']['renderPreviewContent']['templavoilaplus_pi1'] = \Ppi\TemplaVoilaPlus\Controller\Preview\NullController::class;
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler (
-    'Ppi\\TemplaVoilaPlus\Module\\Mod1\\Ajax::moveRecord',
-    \Ppi\TemplaVoilaPlus\Module\Mod1\Ajax::class . '->moveRecord'
-);
-
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler (
-    'Ppi\\TemplaVoilaPlus\Module\\Mod1\\Ajax::unlinkRecord',
-    \Ppi\TemplaVoilaPlus\Module\Mod1\Ajax::class . '->unlinkRecord'
-);
-
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler (
-    'Ppi\\TemplaVoilaPlus\Module\\Cm1\\Ajax::getDisplayFileContent',
-    \Ppi\TemplaVoilaPlus\Module\Cm1\Ajax::class . '->getDisplayFileContent'
-);
-
 // Register slot for translation mirror url
 /** @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher */
 $signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);

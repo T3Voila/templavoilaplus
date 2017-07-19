@@ -409,8 +409,14 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                 }
 
                 function openValidator(key) {
-                    new Ajax.Request("' . $GLOBALS['BACK_PATH'] . 'ajax.php?ajaxID=Ppi\\TemplaVoilaPlus\Module\\Cm1\\Ajax::getDisplayFileContent&key=" + key, {
-                        onSuccess: function(response) {
+                    new TYPO3.jQuery.ajax({
+                        url: TYPO3.settings.ajaxUrls[\'templavoilaplus_displayFileContent\'],
+                        type: \'get\',
+                        cache: false,
+                        data: {
+                            \'key\': key,
+                        },
+                        success: function(result) {
                             var valform = new Element(\'form\',{method: \'post\', target:\'_blank\', action: \'http://validator.w3.org/check#validate_by_input\'});
                             valform.insert(new Element(\'input\',{name: \'fragment\', value:response.responseText, type: \'hidden\'}));$(document.body).insert(valform);
                             valform.submit();
