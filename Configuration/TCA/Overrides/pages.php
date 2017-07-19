@@ -192,3 +192,10 @@ $GLOBALS['TCA']['pages']['palettes']['storage'] = array(
     . \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SYSFOLDER,
     'after:media'
 );
+
+$GLOBALS['TCA']['pages']['ctrl']['typeicon_classes']['contains-tv+'] = 'extensions-templavoila-templavoila-logo';
+$GLOBALS['TCA']['pages']['columns']['module']['config']['items'][] = [
+    'tv+',
+    'tv+',
+    'extensions-templavoila-templavoila-logo',
+];

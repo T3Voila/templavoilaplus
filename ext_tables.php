@@ -55,6 +55,8 @@ if (TYPO3_MODE === 'BE') {
         unset ($GLOBALS['TBE_MODULES']['_PATHS']['web_layout']);
     }
 
+    $GLOBALS['TCA']['pages']['ctrl']['typeicon_classes']['contains-tv+'] = 'extensions-templavoila-templavoila-logo';
+
     // Registering CSH:
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
         'be_groups',
