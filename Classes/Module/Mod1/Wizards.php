@@ -209,7 +209,7 @@ class Wizards implements SingletonInterface
             . '" method="post" autocomplete="off" enctype="' . $TYPO3_CONF_VARS['SYS']['form_enctype'] . '" onsubmit="return TBE_EDITOR_checkSubmit(1);">'
         );
 
-        $content = '<h3>' . TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:db_new.php.pagetitle') . ':</h3>';
+        $content = '<h3>' . TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:' . TemplaVoilaUtility::getCoreLangPath() . 'locallang_core.xlf:db_new.php.pagetitle') . ':</h3>';
         $this->moduleTemplate->setTitle(TemplaVoilaUtility::getLanguageService()->getLL('createnewpage_title'));
 
         // Add template selectors

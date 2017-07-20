@@ -506,7 +506,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
         }
         $backButton = $this->buttonBar->makeLinkButton()
             ->setHref($url)
-            ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc'))
+            ->setTitle($this->getLanguageService()->sL('LLL:EXT:' . TemplaVoilaUtility::getCoreLangPath() . 'locallang_core.xlf:rm.closeDoc'))
             ->setIcon($this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
         $this->buttonBar->addButton($backButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
     }

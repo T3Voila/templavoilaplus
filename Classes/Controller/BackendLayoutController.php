@@ -339,6 +339,11 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      */
     protected $iconFactory;
 
+    /**
+     * @var string path to the locallang_core.xlf (which changed in 8.5.0)
+     */
+    protected $coreLangPath = 'lang/';
+
     /*******************************************
      *
      * Initialization functions
@@ -357,6 +362,8 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         $this->moduleTemplate = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\ModuleTemplate::class);
         $this->iconFactory = $this->moduleTemplate->getIconFactory();
         $this->buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
+
+        $this->coreLangPath = TemplaVoilaUtility::getCoreLangPath();
 
         $view = $this->moduleTemplate->getView();
         $view->setPartialRootPaths(
@@ -715,7 +722,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                             // Edit icon only if page can be modified by user
                             $editLinkContent
                                 = $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render()
-                                . TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:editPage');
+                                . TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:' . $this->coreLangPath . 'locallang_mod_web_list.xlf:editPage');
                             $this->content .= '<br/><br/><strong>' . $this->link_edit($editLinkContent, 'pages', $this->id) . '</strong>';
                         }
                         $render_editPageScreen = false; // Do not output editing code for special doctypes!
@@ -831,7 +838,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         // View page
         $this->addDocHeaderButton(
             'view',
-            TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', 1),
+            TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:' . $this->coreLangPath . 'locallang_core.xlf:labels.showPage', 1),
             'actions-document-view'
         );
 
@@ -902,7 +909,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         if (TemplaVoilaUtility::getBackendUser()->check('modules', 'web_list')) {
             $this->addDocHeaderButton(
                 'web_list',
-                TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.showList', 1),
+                TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:' . $this->coreLangPath . 'locallang_core.xlf:labels.showList', 1),
                 'actions-system-list-open',
                 [
                     'id' => $this->id,
@@ -915,7 +922,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         if ($this->id) {
             $this->addDocHeaderButton(
                 'tce_db',
-                TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.clear_cache', 1),
+                TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:' . $this->coreLangPath . 'locallang_core.xlf:labels.clear_cache', 1),
                 'actions-system-cache-clear',
                 [
                     'vC' => TemplaVoilaUtility::getBackendUser()->veriCode(),
@@ -1025,7 +1032,6 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                     )
                 );
         }
-
         $button = $this->buttonBar->makeLinkButton()
             ->setHref($url)
             ->setOnClick($onClick)
@@ -2579,12 +2585,12 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     public function icon_hide($el)
     {
         $iconOptions = array(
-            'title' => ($el['table'] == 'pages' ? TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:hidePage') : TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_mod_web_list.xml:hide'))
+            'title' => ($el['table'] == 'pages' ? TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:' . $this->coreLangPath . 'locallang_mod_web_list.xlf:hidePage') : TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:' . $this->coreLangPath . 'locallang_mod_web_list.xml:hide'))
         );
         $hideIcon = $this->iconFactory->getIcon('actions-edit-hide', Icon::SIZE_SMALL)->render();
 
         $iconOptions = array(
-            'title' => ($el['table'] == 'pages' ? TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:unHidePage') : TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_mod_web_list.xml:unHide'))
+            'title' => ($el['table'] == 'pages' ? TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:' . $this->coreLangPath . 'locallang_mod_web_list.xlf:unHidePage') : TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:' . $this->coreLangPath . 'locallang_mod_web_list.xml:unHide'))
         );
         $unhideIcon = $this->iconFactory->getIcon('actions-edit-unhide', Icon::SIZE_SMALL)->render();
 
@@ -2657,7 +2663,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     {
         return $this->buildButton(
             'wizard_element_browser',
-            TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.browse_db'),
+            TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:' . $this->coreLangPath . 'locallang_core.xlf:labels.browse_db'),
             'actions-insert-record',
             $this->getLinkParameters([
                 'pasteRecord' => 'ref',

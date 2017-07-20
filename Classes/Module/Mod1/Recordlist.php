@@ -14,8 +14,10 @@ namespace Ppi\TemplaVoilaPlus\Module\Mod1;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
+
 // Need List lables for delete confirmation
-$LANG->includeLLFile('EXT:lang/locallang_mod_web_list.xlf');
+$LANG->includeLLFile('EXT:' . TemplaVoilaUtility::getCoreLangPath() . '/locallang_mod_web_list.xlf');
 
 /**
  * Extension of standard List module

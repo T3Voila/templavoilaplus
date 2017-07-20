@@ -17,6 +17,8 @@ namespace Ppi\TemplaVoilaPlus\Controller;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
+use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
+//
 /**
  * Reference elements wizard,
  * References all unused elements in a treebranch to a specific point in the TV-DS
@@ -48,11 +50,11 @@ class ReferenceElementWizardController extends \TYPO3\CMS\Backend\Module\Abstrac
     {
         return array(
             'depth' => array(
-                0 => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_0'),
-                1 => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_1'),
-                2 => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_2'),
-                3 => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_3'),
-                999 => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_infi'),
+                0 => $this->getLanguageService()->sL('LLL:EXT:' . TemplaVoilaUtility::getCoreLangPath() . 'locallang_core.xlf:labels.depth_0'),
+                1 => $this->getLanguageService()->sL('LLL:EXT:' . TemplaVoilaUtility::getCoreLangPath() . 'locallang_core.xlf:labels.depth_1'),
+                2 => $this->getLanguageService()->sL('LLL:EXT:' . TemplaVoilaUtility::getCoreLangPath() . 'locallang_core.xlf:labels.depth_2'),
+                3 => $this->getLanguageService()->sL('LLL:EXT:' . TemplaVoilaUtility::getCoreLangPath() . 'locallang_core.xlf:labels.depth_3'),
+                999 => $this->getLanguageService()->sL('LLL:EXT:' . TemplaVoilaUtility::getCoreLangPath() . 'locallang_core.xlf:labels.depth_infi'),
             )
         );
     }

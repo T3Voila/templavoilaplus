@@ -47,6 +47,18 @@ final class TemplaVoilaUtility
     }
 
     /**
+     * @return string Path to the core language files as changed with TYPO3 8.5.0
+     */
+    public static function getCoreLangPath()
+    {
+        if (version_compare(TYPO3_version, '8.5.0', '>=')) {
+            return 'lang/Resources/Private/Language/';
+        } else {
+            return 'lang/';
+        }
+    }
+
+    /**
      * @return array
      */
     public static function getDenyListForUser()
