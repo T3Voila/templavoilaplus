@@ -157,7 +157,16 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
             // Draw the header.
 
             // Add custom styles
-            $this->getPageRenderer()->addCssFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->extKey) . 'Resources/Public/StyleSheet/mod2_default.css');
+            if (version_compare(TYPO3_version, '8.3.0', '>=')) {
+                // Since TYPO3 8.3.0 EXT:extname/... is supported.
+                $this->getPageRenderer()->addCssFile(
+                    'EXT:' . $this->extKey . 'Resources/Public/StyleSheet/mod2_default.css'
+                );
+            } else {
+                $this->getPageRenderer()->addCssFile(
+                    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->extKey) . 'Resources/Public/StyleSheet/mod2_default.css'
+                );
+            }
 
             $this->getPageRenderer()->loadJquery();
 

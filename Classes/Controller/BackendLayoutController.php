@@ -572,21 +572,30 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             }
 
             // Add custom styles
-            $styleSheetFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->extKey) . 'Resources/Public/StyleSheet/mod1_default.css';
+            if (version_compare(TYPO3_version, '8.3.0', '>=')) {
+                // Since TYPO3 8.3.0 EXT:extname/... is supported.
+                // https://forge.typo3.org/issues/77589
+                $styleSheetFile = 'EXT:' . $this->extKey . 'Resources/Public/StyleSheet/mod1_default.css';
+            } else {
+                $styleSheetFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->extKey) . 'Resources/Public/StyleSheet/mod1_default.css';
+            }
 
             if (isset($this->modTSconfig['properties']['stylesheet'])) {
                 $styleSheetFile = $this->modTSconfig['properties']['stylesheet'];
             }
 
-
             $this->getPageRenderer()->addCssFile($styleSheetFile);
 
             if (isset($this->modTSconfig['properties']['stylesheet.'])) {
                 foreach ($this->modTSconfig['properties']['stylesheet.'] as $file) {
-                    if (substr($file, 0, 4) == 'EXT:') {
-                        list($extKey, $local) = explode('/', substr($file, 4), 2);
-                        if (strcmp($extKey, '') && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extKey) && strcmp($local, '')) {
-                            $file = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($extKey) . $local;
+                    if (version_compare(TYPO3_version, '8.3.0', '<')) {
+                        // Since TYPO3 8.3.0 EXT:extname/... is supported.
+                        // So we do not need this anymore
+                        if (substr($file, 0, 4) == 'EXT:') {
+                            list($extKey, $local) = explode('/', substr($file, 4), 2);
+                            if (strcmp($extKey, '') && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extKey) && strcmp($local, '')) {
+                                $file = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($extKey) . $local;
+                            }
                         }
                     }
                     $this->getPageRenderer()->addCssFile($file);
@@ -670,22 +679,34 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 });
             ');
 
-            $this->addJsLibrary(
-                'templavoilaplus_mod1',
-                \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoilaplus') . 'Resources/Public/JavaScript/templavoila.js'
-            );
+            if (version_compare(TYPO3_version, '8.3.0', '>=')) {
+                // Since TYPO3 8.3.0 EXT:extname/... is supported.
+                $this->addJsLibrary(
+                    'templavoilaplus_mod1',
+                    'EXT:' . $this->extKey . 'Resources/Public/JavaScript/templavoila.js'
+                );
+            } else {
+                $this->addJsLibrary(
+                    'templavoilaplus_mod1',
+                    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->extKey) . 'Resources/Public/JavaScript/templavoila.js'
+                );
+            }
 
             if (isset($this->modTSconfig['properties']['javascript.']) && is_array($this->modTSconfig['properties']['javascript.'])) {
                 // add custom javascript files
                 foreach ($this->modTSconfig['properties']['javascript.'] as $key => $filename) {
                     if ($filename) {
-                        if (substr($filename, 0, 4) == 'EXT:') {
-                            list($extKey, $local) = explode('/', substr($filename, 4), 2);
-                            if (strcmp($extKey, '')
-                                && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extKey)
-                                && strcmp($local, '')
-                            ) {
-                                $filename = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($extKey) . $local;
+                        if (version_compare(TYPO3_version, '8.3.0', '<')) {
+                            // Since TYPO3 8.3.0 EXT:extname/... is supported.
+                            // So we do not need this anymore
+                            if (substr($filename, 0, 4) == 'EXT:') {
+                                list($extKey, $local) = explode('/', substr($filename, 4), 2);
+                                if (strcmp($extKey, '')
+                                    && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extKey)
+                                    && strcmp($local, '')
+                                ) {
+                                    $filename = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($extKey) . $local;
+                                }
                             }
                         }
                         $this->addJsLibrary($key, $filename);

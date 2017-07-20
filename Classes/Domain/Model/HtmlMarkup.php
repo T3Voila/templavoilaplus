@@ -291,11 +291,6 @@ class HtmlMarkup
 
         $this->init();
 
-        /* build primary cache for icon-images */
-        foreach ($this->tags as $tag => &$conf) {
-            $conf['icon'] = 'src="' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('templavoilaplus') . 'html_tags/' . $tag . '.gif" height="17" alt="" border="0"';
-        }
-
         list($tagList_elements, $tagList_single) = $this->splitTagTypes($showTags);
 
         // Fix links/paths
