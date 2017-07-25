@@ -1082,6 +1082,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             ->setGetVariables(
                 [
                     'id',
+                    'M',
                     'edit_record',
                     'pointer',
                     'new_unique_uid',
