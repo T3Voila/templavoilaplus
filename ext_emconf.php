@@ -17,7 +17,7 @@ $EM_CONF[$_EXTKEY] = [
             'typo3' => '7.6.0-8.7.99',
         ],
         'conflicts' => [
-            'templavoila' => '-3.0.0',
+            'templavoila' => '',
         ],
         'suggests' => [],
     ],

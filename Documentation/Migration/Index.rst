@@ -1,6 +1,6 @@
 ﻿.. include:: ../Includes.txt
 
-Migration from TemplaVoilà 1.8/1.9/2.0 to TemplaVoilà Plus 7.0
+Migration from TemplaVoilà 1.8/1.9/2.0 to TemplaVoilà Plus 7.x
 --------------------------------------------------------------
 
 In short, it is very simple to migrate from old TemplaVoilà to TemplaVoilà Plus. You can do it after you migrated from
