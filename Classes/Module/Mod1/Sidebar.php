@@ -217,7 +217,7 @@ class Sidebar implements SingletonInterface
 
         $conf = $TCA['pages']['columns']['tx_templavoilaplus_flex']['config'];
 
-        $dataStructureArr = BackendUtility::getFlexFormDS($conf, $pObj->rootElementRecord, 'pages');
+        $dataStructureArr = TemplaVoilaUtility::getFlexFormDS($conf, $pObj->rootElementRecord, 'pages');
 
         if (is_array($dataStructureArr) && is_array($dataStructureArr['ROOT']['tx_templavoilaplus']['pageModule'])) {
             $headerTablesAndFieldNames = GeneralUtility::trimExplode(chr(10), str_replace(chr(13), '', $dataStructureArr['ROOT']['tx_templavoilaplus']['pageModule']['displayHeaderFields']), 1);

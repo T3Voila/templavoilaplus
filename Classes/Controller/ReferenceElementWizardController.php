@@ -197,7 +197,7 @@ class ReferenceElementWizardController extends \TYPO3\CMS\Backend\Module\Abstrac
             $vDef = array();
             if ($langField && $elementRecord[$langField]) {
                 $pageRec = BackendUtility::getRecordWSOL('pages', $pageUid);
-                $xml = BackendUtility::getFlexFormDS(
+                $xml = TemplaVoilaUtility::getFlexFormDS(
                     $GLOBALS['TCA']['pages']['columns']['tx_templavoilaplus_flex']['config'],
                     $pageRec,
                     'pages',

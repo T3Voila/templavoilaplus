@@ -295,7 +295,7 @@ class ApiService
 
         $sourceElementRecord = $this->flexform_getRecordByPointer($sourcePointer);
         $parentPageRecord = BackendUtility::getRecordWSOL('pages', $sourceElementRecord['pid']);
-        $rawPageDataStructureArr = BackendUtility::getFlexFormDS($GLOBALS['TCA']['pages']['columns']['tx_templavoilaplus_flex']['config'], $parentPageRecord, 'pages');
+        $rawPageDataStructureArr = TemplaVoilaUtility::getFlexFormDS($GLOBALS['TCA']['pages']['columns']['tx_templavoilaplus_flex']['config'], $parentPageRecord, 'pages');
 
         if (!is_array($rawPageDataStructureArr)) {
             return false;
@@ -1383,7 +1383,7 @@ class ApiService
             );
             $dataStructureArr = $flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
         } else {
-            $dataStructureArr = BackendUtility::getFlexFormDS($GLOBALS['TCA'][$table]['columns']['tx_templavoilaplus_flex']['config'], $row, $table);
+            $dataStructureArr = TemplaVoilaUtility::getFlexFormDS($GLOBALS['TCA'][$table]['columns']['tx_templavoilaplus_flex']['config'], $row, $table);
         }
 
         $expandedDataStructureArr = array();
@@ -1529,7 +1529,7 @@ class ApiService
                 );
                 $rawDataStructureArr = $flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
             } else {
-                $rawDataStructureArr = BackendUtility::getFlexFormDS($GLOBALS['TCA'][$table]['columns']['tx_templavoilaplus_flex']['config'], $row, $table);
+                $rawDataStructureArr = TemplaVoilaUtility::getFlexFormDS($GLOBALS['TCA'][$table]['columns']['tx_templavoilaplus_flex']['config'], $row, $table);
             }
 
             if (!is_array($rawDataStructureArr)) {

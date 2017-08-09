@@ -642,7 +642,7 @@ page.10.disableExplosivePreview = 1';
                 // get the field-information and check if only "ce" fields are updated
                 $conf = $TCA[$table]['columns'][$field]['config'];
                 $currentRecord = BackendUtility::getRecord($table, $id);
-                $dataStructArray = BackendUtility::getFlexFormDS($conf, $currentRecord, $table, $field, true);
+                $dataStructArray = TemplaVoilaUtility::getFlexFormDS($conf, $currentRecord, $table, $field);
                 foreach ($data[$field]['data'] as $sheetData) {
                     if (!is_array($sheetData) || !is_array($dataStructArray['ROOT']['el'])) {
                         $res = false;

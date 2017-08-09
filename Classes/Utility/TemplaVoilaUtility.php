@@ -14,6 +14,8 @@ namespace Ppi\TemplaVoilaPlus\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+ use \TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Class with static functions for templavoila.
  *
@@ -65,7 +67,7 @@ final class TemplaVoilaUtility
     {
         $denyItems = array();
         foreach (static::getBackendUser()->userGroups as $group) {
-            $groupDenyItems = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $group['tx_templavoilaplus_access'], true);
+            $groupDenyItems = GeneralUtility::trimExplode(',', $group['tx_templavoilaplus_access'], true);
             $denyItems = array_merge($denyItems, $groupDenyItems);
         }
 
@@ -137,5 +139,21 @@ final class TemplaVoilaUtility
         }
 
         return $foreignRefs;
+    }
+
+    public static function getFlexFormDS($conf, $row, $table, $fieldName = '')
+    {
+        if (version_compare(TYPO3_version, '8.5.0', '>=')) {
+            $flexFormTools = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class);
+            $dataStructureIdentifier = $flexFormTools->getDataStructureIdentifier(
+                [ 'config' => $conf ],
+                $table,
+                $fieldName,
+                $row
+            );
+            return $flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
+        }
+
+        return \TYPO3\CMS\Core\Utility\BackendUtility::getFlexFormDS($conf, $row, $table, $fieldName);
     }
 }
