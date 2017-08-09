@@ -397,10 +397,10 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
             if (version_compare(TYPO3_version, '8.3.0', '>=')) {
                 // Since TYPO3 8.3.0 EXT:extname/... is supported.
                 $this->getPageRenderer()->addCssFile(
-                    'EXT:' . $this->extKey . 'Resources/Public/StyleSheet/cm1_default.css'
+                    'EXT:' . $this->extKey . '/Resources/Public/StyleSheet/cm1_default.css'
                 );
                 $this->getPageRenderer()->addCssFile(
-                    'EXT:' . $this->extKey . 'Resources/Public/StyleSheet/HtmlMarkup.css'
+                    'EXT:' . $this->extKey . '/Resources/Public/StyleSheet/HtmlMarkup.css'
                 );
             } else {
                 $this->getPageRenderer()->addCssFile(

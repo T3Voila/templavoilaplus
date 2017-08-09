@@ -160,7 +160,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
             if (version_compare(TYPO3_version, '8.3.0', '>=')) {
                 // Since TYPO3 8.3.0 EXT:extname/... is supported.
                 $this->getPageRenderer()->addCssFile(
-                    'EXT:' . $this->extKey . 'Resources/Public/StyleSheet/mod2_default.css'
+                    'EXT:' . $this->extKey . '/Resources/Public/StyleSheet/mod2_default.css'
                 );
             } else {
                 $this->getPageRenderer()->addCssFile(

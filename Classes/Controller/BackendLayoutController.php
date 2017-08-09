@@ -575,7 +575,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             if (version_compare(TYPO3_version, '8.3.0', '>=')) {
                 // Since TYPO3 8.3.0 EXT:extname/... is supported.
                 // https://forge.typo3.org/issues/77589
-                $styleSheetFile = 'EXT:' . $this->extKey . 'Resources/Public/StyleSheet/mod1_default.css';
+                $styleSheetFile = 'EXT:' . $this->extKey . '/Resources/Public/StyleSheet/mod1_default.css';
             } else {
                 $styleSheetFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->extKey) . 'Resources/Public/StyleSheet/mod1_default.css';
             }
@@ -683,7 +683,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 // Since TYPO3 8.3.0 EXT:extname/... is supported.
                 $this->addJsLibrary(
                     'templavoilaplus_mod1',
-                    'EXT:' . $this->extKey . 'Resources/Public/JavaScript/templavoila.js'
+                    'EXT:' . $this->extKey . '/Resources/Public/JavaScript/templavoila.js'
                 );
             } else {
                 $this->addJsLibrary(
