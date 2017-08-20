@@ -325,7 +325,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
             if ($elArray[$key]['type'] == 'section' || $elArray[$key]['section']) {
                 $elArray[$key]['type'] = 'array';
                 $elArray[$key]['section'] = '1';
-            } if ($elArray[$key]['type'] == 'container') {
+            } elseif ($elArray[$key]['type'] == 'container') {
                 $elArray[$key]['type'] = 'array';
                 $elArray[$key]['section'] = '0';
             } else {
