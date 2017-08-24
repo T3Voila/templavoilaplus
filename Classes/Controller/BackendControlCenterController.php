@@ -629,13 +629,24 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
         // Links:
         $lpXML = '';
         if ($dsObj->isFilebased()) {
-            $editLink = $editDataprotLink = '';
+            $editLink = '';
             $dsTitle = $dsObj->getLabel();
         } else {
             $editLink = $lpXML .= '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick('&edit[tx_templavoilaplus_datastructure][' . $dsObj->getKey() . ']=edit')) . '">'
             . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render()
             . '</a>';
-            $dsTitle = '<a href="' . htmlspecialchars('../cm1/index.php?table=tx_templavoilaplus_datastructure&uid=' . $dsObj->getKey() . '&id=' . $this->id . '&returnUrl=' . rawurlencode(GeneralUtility::sanitizeLocalUrl(GeneralUtility::getIndpEnv('REQUEST_URI')))) . '">' . htmlspecialchars($dsObj->getLabel()) . '</a>';
+
+            // Mapping link:
+            $uriParameters = [
+                'table' => 'tx_templavoilaplus_datastructure',
+                'uid' => $dsObj->getKey(),
+                'id' => $this->id,
+                'returnUrl' => $this->getBaseUrl(),
+            ];
+
+            $dsTitle = '<a href="' . BackendUtility::getModuleUrl('templavoilaplus_mapping', $uriParameters) . '">'
+                . htmlspecialchars($dsObj->getLabel())
+                . '</a>';
         }
         // Compile info table:
         $content = '
@@ -1086,6 +1097,13 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
         if (is_array($this->tFileList)) {
             $output = '';
 
+            // Mapping link:
+            $uriParameters = [
+                'id' => $this->id,
+                'mapElPath' => '<ROOT>',
+                'returnUrl' => $this->getBaseUrl(),
+            ];
+
             // USED FILES:
             $tRows = array();
             $tRows[] = '
@@ -1098,6 +1116,8 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
 
             $i = 0;
             foreach ($this->tFileList as $tFile => $count) {
+                $uriParameters['file'] = $tFile;
+                BackendUtility::getModuleUrl('templavoilaplus_mapping', $uriParameters);
                 $tRows[] = '
                     <tr>
                         <td>' . $this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL)->render() . '</td>
@@ -1107,7 +1127,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
                         . '</a></td>
                         <td align="center">' . $count . '</td>
                         <td>'
-                        . '<a href="' . htmlspecialchars($this->cm1Link . '?id=' . $this->id . '&file=' . rawurlencode($tFile)) . '&mapElPath=%5BROOT%5D">'
+                        . '<a href="' . BackendUtility::getModuleUrl('templavoilaplus_mapping', $uriParameters) . '">'
                         . $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render()
                         . ' ' . htmlspecialchars('Create...')
                         . '</a></td>
@@ -1140,6 +1160,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
                 foreach ($files as $file) {
                     // @TODO Only wortks in local storage!
                     $fullPath = $file->getForLocalProcessing(false);
+                    $uriParameters['file'] = $fullPath;
                     $tRows[] = '
                         <tr>
                             <td>' . $this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL)->render() . '</td>
@@ -1149,7 +1170,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
                             . '</a></td>
                             <td align="center">' . (isset($this->tFileList[$fullPath]) ? $this->tFileList[$fullPath] : '-') . '</td>
                             <td>'
-                            . '<a href="' . htmlspecialchars($this->cm1Link . '?id=' . $this->id . '&file=' . rawurlencode($file->getIdentifier())) . '&mapElPath=%5BROOT%5D">'
+                            . '<a href="' . BackendUtility::getModuleUrl('templavoilaplus_mapping', $uriParameters) . '">'
                             . $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render()
                             . ' ' . htmlspecialchars('Create...')
                             . '</a></td>
