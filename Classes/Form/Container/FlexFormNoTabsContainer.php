@@ -44,7 +44,8 @@ class FlexFormNoTabsContainer extends AbstractContainer
 
         // Flex ds was normalized in flex provider to always have a sheet.
         // Determine this single sheet name, most often it ends up with sDEF, except if only one sheet was defined
-        $sheetName = array_pop(array_keys($flexFormDataStructureArray['sheets']));
+        $flexFormSheetNames = array_keys($flexFormDataStructureArray['sheets']);
+        $sheetName = array_pop($flexFormSheetNames);
         $flexFormRowDataSubPart = $flexFormRowData['data'][$sheetName][$flexFormCurrentLanguage];
 
         // That was taken from GeneralUtility::resolveSheetDefInDS - no idea if it is important
@@ -70,6 +71,7 @@ class FlexFormNoTabsContainer extends AbstractContainer
         $options = $this->data;
         $options['flexFormDataStructureArray'] = $flexFormDataStructureArray['sheets'][$sheetName][$flexFormCurrentLanguage]['ROOT']['el'];
         $options['flexFormRowData'] = $flexFormRowDataSubPart;
+        $options['flexFormSheetName'] = $sheetName;
         $options['flexFormFormPrefix'] = '[data][' . $sheetName . '][' . $flexFormCurrentLanguage . ']';
         $options['parameterArray'] = $parameterArray;
 

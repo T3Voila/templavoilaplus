@@ -145,6 +145,14 @@ class FlexFormElementContainer extends AbstractContainer
                     }
 
                     $options = $this->data;
+                    if (version_compare(TYPO3_version, '8.6.0', '>=')) {
+                        // Set either flexFormFieldName or flexFormContainerFieldName, depending on if we are a "regular" field or a flex container section field
+                        if (empty($options['flexFormFieldName'])) {
+                            $options['flexFormFieldName'] = $flexFormFieldName;
+                        } else {
+                            $options['flexFormContainerFieldName'] = $flexFormFieldName;
+                        }
+                    }
                     $options['parameterArray'] = $fakeParameterArray;
                     $options['elementBaseName'] = $this->data['elementBaseName'] . $flexFormFormPrefix . '[' . $flexFormFieldName . '][' . $lkey . ']';
 
