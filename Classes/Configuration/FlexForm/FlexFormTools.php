@@ -101,6 +101,7 @@ class FlexFormTools extends \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools
             foreach ($lKeys as $lKey) {
                 foreach ($sKeys as $sheet) {
                     $sheetCfg = $dataStructArray['sheets'][$sheet];
+                    // This GeneralUtility::resolveSheetDefInDS needs no changes, FlexFormTools8 is used for newer TYPO3
                     list($dataStruct, $sheet) = GeneralUtility::resolveSheetDefInDS($dataStructArray, $sheet);
                     // Render sheet:
                     if (is_array($dataStruct['ROOT']) && is_array($dataStruct['ROOT']['el'])) {

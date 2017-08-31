@@ -1384,27 +1384,28 @@ class ApiService
                 $row
             );
             $dataStructureArr = $flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
+            $expandedDataStructureArr = $dataStructureArr['sheets'];
         } else {
             $dataStructureArr = TemplaVoilaUtility::getFlexFormDS($GLOBALS['TCA'][$table]['columns']['tx_templavoilaplus_flex']['config'], $row, $table);
-        }
 
-        $expandedDataStructureArr = array();
-        if (!is_array($dataStructureArr)) {
-            $dataStructureArr = array();
-        }
+            $expandedDataStructureArr = array();
+            if (!is_array($dataStructureArr)) {
+                $dataStructureArr = array();
+            }
 
-        if (is_array($dataStructureArr['sheets'])) {
-            foreach (array_keys($dataStructureArr['sheets']) as $sheetKey) {
+            if (is_array($dataStructureArr['sheets'])) {
+                foreach (array_keys($dataStructureArr['sheets']) as $sheetKey) {
+                    list ($sheetDataStructureArr, $sheet) = GeneralUtility::resolveSheetDefInDS($dataStructureArr, $sheetKey);
+                    if ($sheet == $sheetKey) {
+                        $expandedDataStructureArr[$sheetKey] = $sheetDataStructureArr;
+                    }
+                }
+            } else {
+                $sheetKey = 'sDEF';
                 list ($sheetDataStructureArr, $sheet) = GeneralUtility::resolveSheetDefInDS($dataStructureArr, $sheetKey);
                 if ($sheet == $sheetKey) {
                     $expandedDataStructureArr[$sheetKey] = $sheetDataStructureArr;
                 }
-            }
-        } else {
-            $sheetKey = 'sDEF';
-            list ($sheetDataStructureArr, $sheet) = GeneralUtility::resolveSheetDefInDS($dataStructureArr, $sheetKey);
-            if ($sheet == $sheetKey) {
-                $expandedDataStructureArr[$sheetKey] = $sheetDataStructureArr;
             }
         }
 

@@ -154,6 +154,8 @@ class TcaFlexFetch implements FormDataProviderInterface
      * @todo: GeneralUtility::resolveSheetDefInDS() and GeneralUtility::resolveAllSheetsInDS() could be killed
      * @todo: since this resolving is basically the only really useful thing they actually do.
      *
+     * @TODO Copied from core, can be removed, is solved with code pathes for TYPO3 8.5.0
+     *
      * @param array $result Result array
      * @param string $fieldName Current handle field name
      * @return array Modified item array
