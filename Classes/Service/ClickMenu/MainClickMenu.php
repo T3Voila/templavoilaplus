@@ -21,6 +21,8 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
+use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
+
 /**
  * Class which will add menu items to click menus for the extension TemplaVoila
  *
@@ -165,7 +167,7 @@ class MainClickMenu
                 $menuItems = array();
 
                 // Generate a list of pages where this element is also being used:
-                $referenceRecords = $this->getDatabaseConnection()->exec_SELECTgetRows(
+                $referenceRecords = TemplaVoilaUtility::getDatabaseConnection()->getDatabaseConnection()->exec_SELECTgetRows(
                     '*',
                     'tx_templavoilaplus_elementreferences',
                     'uid=' . (int)$clickMenu->rec['uid']
@@ -199,15 +201,6 @@ class MainClickMenu
         }
 
         return $menuItems;
-    }
-
-
-    /**
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    public function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 
     /**

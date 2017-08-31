@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
 use Ppi\TemplaVoilaPlus\Domain\Repository\DataStructureRepository;
+use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 /**
  * Controller to migrate/update from old TemplaVoila
@@ -460,6 +461,6 @@ class OldTemplavoilaUpdateController extends StepUpdateController
      */
     private function getDatabaseConnection()
     {
-        return $GLOBALS['TYPO3_DB'];
+        return TemplaVoilaUtility::getDatabaseConnection();
     }
 }

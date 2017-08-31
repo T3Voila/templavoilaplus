@@ -108,12 +108,4 @@ class StaticDataStructureV8UpdateController extends StepUpdateController
             'errors' => $this->errors,
         ]);
     }
-
-    /**
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    private function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
-    }
 }

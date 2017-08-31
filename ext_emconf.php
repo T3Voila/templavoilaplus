@@ -19,6 +19,8 @@ $EM_CONF[$_EXTKEY] = [
         'conflicts' => [
             'templavoila' => '',
         ],
-        'suggests' => [],
+        'suggests' => [
+            'typo3db_legacy' => '1.0.0-1.0.99',
+        ],
     ],
 ];

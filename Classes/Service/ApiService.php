@@ -22,6 +22,8 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
+use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
+
 /**
  * Public API class for proper handling of content elements and other useful TemplaVoila related functions
  */
@@ -1958,7 +1960,7 @@ class ApiService
      */
     public function getDatabaseConnection()
     {
-        return $GLOBALS['TYPO3_DB'];
+        return TemplaVoilaUtility::getDatabaseConnection();
     }
 
     /**

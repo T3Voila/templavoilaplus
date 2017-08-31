@@ -14,7 +14,8 @@ namespace Ppi\TemplaVoilaPlus\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
- use \TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class with static functions for templavoila.
@@ -29,6 +30,13 @@ final class TemplaVoilaUtility
      */
     public static function getDatabaseConnection()
     {
+        if (version_compare(TYPO3_version, '9.0.0', '>=')
+            && !ExtensionManagementUtility::isLoaded('typo3db_legacy')
+        ) {
+            throws \TYPO3\CMS\Core\Exception(
+                'Since TYPO3 9.0.0 you need to install the typo3db_legacy extension or TemplaVoilà! Plus 8.0.0 or newer.'
+            );
+        }
         return $GLOBALS['TYPO3_DB'];
     }
 

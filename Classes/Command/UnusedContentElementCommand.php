@@ -19,6 +19,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
+use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
+
 /**
  * Cleaner module: Finding unused content elements on pages.
  * User function called from tx_lowlevel_cleaner_core configured in ext_localconf.php
@@ -242,6 +244,6 @@ Automatic Repair:
      */
     protected function getDatabaseConnection()
     {
-        return $GLOBALS['TYPO3_DB'];
+        return TemplaVoilaUtility::getDatabaseConnection();
     }
 }

@@ -16,6 +16,8 @@ namespace Ppi\TemplaVoilaPlus\Controller;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
+use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
+
 /**
  * This wizard renames a field in pages.tx_templavoilaplus_flex, to avoid
  * a remapping
@@ -261,7 +263,7 @@ class RenameFieldInPageFlexWizardController extends \TYPO3\CMS\Backend\Module\Ab
      */
     protected function getDatabaseConnection()
     {
-        return $GLOBALS['TYPO3_DB'];
+        return TemplaVoilaUtility::getDatabaseConnection();
     }
 
     /**

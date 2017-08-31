@@ -536,11 +536,11 @@ page.10.disableExplosivePreview = 1';
                     $sortByField => $sortNumber,
                     'colPos' => $colPos
                 );
-                 $this->getDatabaseConnection()->exec_UPDATEquery(
-                     'tt_content',
-                     'uid=' . (int)$elementArr['uid'],
-                     $updateFields
-                 );
+                TemplaVoilaUtility::getDatabaseConnection()->exec_UPDATEquery(
+                    'tt_content',
+                    'uid=' . (int)$elementArr['uid'],
+                    $updateFields
+                );
                 $sortNumber += 100;
             }
         }
@@ -674,14 +674,6 @@ page.10.disableExplosivePreview = 1';
         }
 
         return $res;
-    }
-
-    /**
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    public function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 
     /**

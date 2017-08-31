@@ -18,7 +18,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
-//
+
 /**
  * Reference elements wizard,
  * References all unused elements in a treebranch to a specific point in the TV-DS
@@ -360,7 +360,7 @@ class ReferenceElementWizardController extends \TYPO3\CMS\Backend\Module\Abstrac
      */
     protected function getDatabaseConnection()
     {
-        return $GLOBALS['TYPO3_DB'];
+        return TemplaVoilaUtility::getDatabaseConnection();
     }
 
     /**

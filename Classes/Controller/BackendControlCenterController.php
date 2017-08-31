@@ -89,10 +89,16 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
     public $extConf;
 
     /**
+     * @var \TYPO3\CMS\Core\Database\DatabaseConnection
+     */
+    private $databaseConnection;
+
+    /**
      * @return void
      */
     public function init()
     {
+        $this->databaseConnection = TemplaVoilaUtility::getDatabaseConnection();
         parent::init();
 
         $this->moduleTemplate = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\ModuleTemplate::class);
@@ -298,7 +304,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
      */
     protected function getCountDS($id)
     {
-        return $this->getDatabaseConnection()->exec_SELECTcountRows(
+        return $this->databaseConnection->exec_SELECTcountRows(
             'uid',
             'tx_templavoilaplus_datastructure',
             'pid=' . (int)$this->id . BackendUtility::deleteClause('tx_templavoilaplus_datastructure')
@@ -313,7 +319,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
      */
     protected function getCountTO($id)
     {
-        return $this->getDatabaseConnection()->exec_SELECTcountRows(
+        return $this->databaseConnection->exec_SELECTcountRows(
             'uid',
             'tx_templavoilaplus_tmplobj',
             'pid=' . (int)$this->id . BackendUtility::deleteClause('tx_templavoilaplus_tmplobj')
@@ -915,23 +921,23 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
         switch ($scope) {
             case 1: // PAGES:
                 $dsKey = $toObj->getDatastructure()->getKey();
-                $count = TemplaVoilaUtility::getDatabaseConnection()->exec_SELECTcountRows(
+                $count = $this->databaseConnection->exec_SELECTcountRows(
                     'uid',
                     'pages',
                     '(
-                        (tx_templavoilaplus_to=' . (int)$toObj->getKey() . ' AND tx_templavoilaplus_ds=' . TemplaVoilaUtility::getDatabaseConnection()->fullQuoteStr($dsKey, 'pages') . ') OR
-                        (tx_templavoilaplus_next_to=' . (int)$toObj->getKey() . ' AND tx_templavoilaplus_next_ds=' . TemplaVoilaUtility::getDatabaseConnection()->fullQuoteStr($dsKey, 'pages') . ')
+                        (tx_templavoilaplus_to=' . (int)$toObj->getKey() . ' AND tx_templavoilaplus_ds=' . $this->databaseConnection->fullQuoteStr($dsKey, 'pages') . ') OR
+                        (tx_templavoilaplus_next_to=' . (int)$toObj->getKey() . ' AND tx_templavoilaplus_next_ds=' . $this->databaseConnection->fullQuoteStr($dsKey, 'pages') . ')
                     )' .
                     BackendUtility::deleteClause('pages')
                 );
                 break;
             case 2:
-                $count = TemplaVoilaUtility::getDatabaseConnection()->exec_SELECTcountRows(
+                $count = $this->databaseConnection->exec_SELECTcountRows(
                     'uid',
                     'tt_content',
-                    'CType=' . TemplaVoilaUtility::getDatabaseConnection()->fullQuoteStr('templavoilaplus_pi1', 'tt_content') .
+                    'CType=' . $this->databaseConnection->fullQuoteStr('templavoilaplus_pi1', 'tt_content') .
                     ' AND tx_templavoilaplus_to=' . (int)$toObj->getKey() .
-                    ' AND tx_templavoilaplus_ds=' . TemplaVoilaUtility::getDatabaseConnection()->fullQuoteStr($toObj->getDatastructure()->getKey(), 'tt_content') .
+                    ' AND tx_templavoilaplus_ds=' . $this->databaseConnection->fullQuoteStr($toObj->getDatastructure()->getKey(), 'tt_content') .
                     BackendUtility::deleteClause('tt_content'),
                     '',
                     'pid'
@@ -967,17 +973,17 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
                             </tr>';
 
                 // Main templates:
-                $res = TemplaVoilaUtility::getDatabaseConnection()->exec_SELECTquery(
+                $res = $this->databaseConnection->exec_SELECTquery(
                     'uid,title,pid',
                     'pages',
                     '(
-                        (tx_templavoilaplus_to NOT IN (' . implode(',', $toIdArray) . ') AND tx_templavoilaplus_ds=' . TemplaVoilaUtility::getDatabaseConnection()->fullQuoteStr($dsObj->getKey(), 'pages') . ') OR
-                        (tx_templavoilaplus_next_to NOT IN (' . implode(',', $toIdArray) . ') AND tx_templavoilaplus_next_ds=' . TemplaVoilaUtility::getDatabaseConnection()->fullQuoteStr($dsObj->getKey(), 'pages') . ')
+                        (tx_templavoilaplus_to NOT IN (' . implode(',', $toIdArray) . ') AND tx_templavoilaplus_ds=' . $this->databaseConnection->fullQuoteStr($dsObj->getKey(), 'pages') . ') OR
+                        (tx_templavoilaplus_next_to NOT IN (' . implode(',', $toIdArray) . ') AND tx_templavoilaplus_next_ds=' . $this->databaseConnection->fullQuoteStr($dsObj->getKey(), 'pages') . ')
                     )' .
                     BackendUtility::deleteClause('pages')
                 );
 
-                while (false !== ($pRow = TemplaVoilaUtility::getDatabaseConnection()->sql_fetch_assoc($res))) {
+                while (false !== ($pRow = $this->databaseConnection->sql_fetch_assoc($res))) {
                     $path = $this->findRecordsWhereUsed_pid($pRow['uid']);
                     if ($path) {
                         $output[] = '
@@ -999,16 +1005,16 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
                             </tr>';
                     }
                 }
-                TemplaVoilaUtility::getDatabaseConnection()->sql_free_result($res);
+                $this->databaseConnection->sql_free_result($res);
                 break;
             case 2:
                 // Select Flexible Content Elements:
-                $res = TemplaVoilaUtility::getDatabaseConnection()->exec_SELECTquery(
+                $res = $this->databaseConnection->exec_SELECTquery(
                     'uid,header,pid',
                     'tt_content',
-                    'CType=' . TemplaVoilaUtility::getDatabaseConnection()->fullQuoteStr('templavoilaplus_pi1', 'tt_content') .
+                    'CType=' . $this->databaseConnection->fullQuoteStr('templavoilaplus_pi1', 'tt_content') .
                     ' AND tx_templavoilaplus_to NOT IN (' . implode(',', $toIdArray) . ')' .
-                    ' AND tx_templavoilaplus_ds=' . TemplaVoilaUtility::getDatabaseConnection()->fullQuoteStr($dsObj->getKey(), 'tt_content') .
+                    ' AND tx_templavoilaplus_ds=' . $this->databaseConnection->fullQuoteStr($dsObj->getKey(), 'tt_content') .
                     BackendUtility::deleteClause('tt_content'),
                     '',
                     'pid'
@@ -1022,7 +1028,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
                             </tr>';
 
                 // Elements:
-                while (false !== ($pRow = TemplaVoilaUtility::getDatabaseConnection()->sql_fetch_assoc($res))) {
+                while (false !== ($pRow = $this->databaseConnection->sql_fetch_assoc($res))) {
                     $path = $this->findRecordsWhereUsed_pid($pRow['pid']);
                     if ($path) {
                         $output[] = '
@@ -1044,7 +1050,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
                             </tr>';
                     }
                 }
-                TemplaVoilaUtility::getDatabaseConnection()->sql_free_result($res);
+                $this->databaseConnection->sql_free_result($res);
                 break;
         }
 

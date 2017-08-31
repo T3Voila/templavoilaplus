@@ -17,6 +17,8 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
+use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
+
 /**
  * Class/Function which manipulates the item-array for table/field tx_templavoilaplus_tmplobj_datastructure.
  *
@@ -441,7 +443,7 @@ class StaticDataStructuresHandler
      */
     protected function getDatabaseConnection()
     {
-        return $GLOBALS['TYPO3_DB'];
+        return TemplaVoilaUtility::getDatabaseConnection();
     }
 
     /**

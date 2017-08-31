@@ -485,14 +485,6 @@ class DsEdit
     }
 
     /**
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
-    }
-
-    /**
      * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
      */
     protected function getBackendUser()
