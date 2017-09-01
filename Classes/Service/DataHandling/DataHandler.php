@@ -161,7 +161,8 @@ class DataHandler
                 );
                 if (!GeneralUtility::callUserFunction(
                         \Ppi\TemplaVoilaPlus\Service\UserFunc\Access::class . '->recordEditAccessInternals',
-                        $params
+                        $params,
+                        $this
                     )
                 ) {
                     $reference->newlog(sprintf($this->getLanguageService()->getLL($status != 'new' ? 'access_noModifyAccess' : 'access_noCrateAccess'), $table, $id), 1);
@@ -324,7 +325,8 @@ page.10.disableExplosivePreview = 1';
                 );
                 if (!GeneralUtility::callUserFunction(
                         \Ppi\TemplaVoilaPlus\Service\UserFunc\Access::class . '->recordEditAccessInternals',
-                        $params
+                        $params,
+                        $this
                     )
                 ) {
                     $reference->newlog(sprintf($this->getLanguageService()->getLL('access_noModifyAccess'), $table, $id), 1);
