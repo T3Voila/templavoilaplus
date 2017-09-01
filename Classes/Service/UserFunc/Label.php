@@ -14,10 +14,12 @@ namespace Ppi\TemplaVoilaPlus\Service\UserFunc;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\SingletonInterface;
+
 /**
  * This library contains several functions for displaying the labels in the list view.
  */
-class Label
+class Label implements SingletonInterface
 {
 
     /**

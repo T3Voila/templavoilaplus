@@ -159,8 +159,11 @@ class DataHandler
                     'table' => $table,
                     'row' => $row,
                 );
-                $ref = null;
-                if (!GeneralUtility::callUserFunction('EXT:templavoilaplus/Classes/Service/UserFunc/Access.php:&Ppi\TemplaVoilaPlus\Service\UserFunc\Access->recordEditAccessInternals', $params, $ref)) {
+                if (!GeneralUtility::callUserFunction(
+                        \Ppi\TemplaVoilaPlus\Service\UserFunc\Access::class . '->recordEditAccessInternals',
+                        $params
+                    )
+                ) {
                     $reference->newlog(sprintf($this->getLanguageService()->getLL($status != 'new' ? 'access_noModifyAccess' : 'access_noCrateAccess'), $table, $id), 1);
                     $fieldArray = null;
                 }
@@ -319,8 +322,11 @@ page.10.disableExplosivePreview = 1';
                     'table' => $table,
                     'row' => $record,
                 );
-                $ref = null;
-                if (!GeneralUtility::callUserFunction('EXT:templavoilaplus/Classes/Service/UserFunc/Access.php:&Ppi\TemplaVoilaPlus\Service\UserFunc\Access->recordEditAccessInternals', $params, $ref)) {
+                if (!GeneralUtility::callUserFunction(
+                        \Ppi\TemplaVoilaPlus\Service\UserFunc\Access::class . '->recordEditAccessInternals',
+                        $params
+                    )
+                ) {
                     $reference->newlog(sprintf($this->getLanguageService()->getLL('access_noModifyAccess'), $table, $id), 1);
                     $command = ''; // Do not delete! A hack but there is no other way to prevent deletion...
                 } else {

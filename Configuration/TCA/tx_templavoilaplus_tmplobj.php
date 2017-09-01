@@ -4,7 +4,7 @@ return [
     'ctrl' => [
         'title' => 'LLL:EXT:templavoilaplus/Resources/Private/Language/locallang_db.xlf:tx_templavoilaplus_tmplobj',
         'label' => 'title',
-        'label_userFunc' => 'EXT:templavoilaplus/Classes/Service/UserFunc/Label.php:&Ppi\TemplaVoilaPlus\Service\UserFunc\Label->getLabel',
+        'label_userFunc' => 'Ppi\TemplaVoilaPlus\Service\UserFunc\Label->getLabel',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
         'cruser_id' => 'cruser_id',

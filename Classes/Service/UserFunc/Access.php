@@ -13,13 +13,15 @@ namespace Ppi\TemplaVoilaPlus\Service\UserFunc;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\SingletonInterface;
 
 /**
  * Class being included by UserAuthGroup using a hook
  */
-class Access
+class Access implements SingletonInterface
 {
 
     /**
