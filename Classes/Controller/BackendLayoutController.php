@@ -946,9 +946,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:' . $this->coreLangPath . 'locallang_core.xlf:labels.clear_cache', 1),
                 'actions-system-cache-clear',
                 [
-                    'vC' => TemplaVoilaUtility::getBackendUser()->veriCode(),
                     'cacheCmd'=> $this->id,
-                    'redirect' => GeneralUtility::getIndpEnv('REQUEST_URI'),
                 ],
                 ButtonBar::BUTTON_POSITION_RIGHT,
                 2

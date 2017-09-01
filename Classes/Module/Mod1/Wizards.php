@@ -89,46 +89,39 @@ class Wizards implements SingletonInterface
 
         // The user already submitted the create page form:
         if (GeneralUtility::_GP('doCreate') || isset($this->TCAdefaultOverride['pages.']['tx_templavoilaplus_to'])) {
-            // Check if the HTTP_REFERER is valid
-            $refInfo = parse_url(GeneralUtility::getIndpEnv('HTTP_REFERER'));
-            $httpHost = GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY');
-            if ($httpHost == $refInfo['host'] || GeneralUtility::_GP('vC') == TemplaVoilaUtility::getBackendUser()->veriCode() || $GLOBALS['TYPO3_CONF_VARS']['SYS']['doNotCheckReferer']) {
-                // Create new page
-                $newID = $this->createPage(GeneralUtility::_GP('data'), $positionPid);
-                if ($newID > 0) {
-                    $pageColumnsOnly = $this->getPageColumnsOnlyConfig($newID);
+            // Create new page
+            $newID = $this->createPage(GeneralUtility::_GP('data'), $positionPid);
+            if ($newID > 0) {
+                $pageColumnsOnly = $this->getPageColumnsOnlyConfig($newID);
 
-                    $returnUrl = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl(
-                        'web_txtemplavoilaplusLayout',
-                        [
-                            'id' => $newID,
-                            'updatePageTree' => 1,
-                        ]
-                    );
+                $returnUrl = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl(
+                    'web_txtemplavoilaplusLayout',
+                    [
+                        'id' => $newID,
+                        'updatePageTree' => 1,
+                    ]
+                );
 
-                    // Create parameters and finally run the classic page module's edit form for the new page:
-                    header(
-                        'Location: ' . GeneralUtility::locationHeaderUrl(
-                            \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl(
-                                'record_edit',
-                                [
-                                    'returnUrl' => $returnUrl,
-                                    'edit' => [
-                                        'pages' => [
-                                            $newID => 'edit',
-                                        ],
+                // Create parameters and finally run the classic page module's edit form for the new page:
+                header(
+                    'Location: ' . GeneralUtility::locationHeaderUrl(
+                        \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl(
+                            'record_edit',
+                            [
+                                'returnUrl' => $returnUrl,
+                                'edit' => [
+                                    'pages' => [
+                                        $newID => 'edit',
                                     ],
-                                    'columnsOnly' => $pageColumnsOnly,
-                                ]
-                            )
+                                ],
+                                'columnsOnly' => $pageColumnsOnly,
+                            ]
                         )
-                    );
-                    exit();
-                } else {
-                    debug('Error: Could not create page!');
-                }
+                    )
+                );
+                exit();
             } else {
-                debug('Error: Referer host did not match with server host.');
+                debug('Error: Could not create page!');
             }
         }
 
