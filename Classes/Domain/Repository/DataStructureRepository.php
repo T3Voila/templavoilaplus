@@ -16,6 +16,7 @@ namespace Ppi\TemplaVoilaPlus\Domain\Repository;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 
 use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
@@ -45,6 +46,9 @@ class DataStructureRepository implements \TYPO3\CMS\Core\SingletonInterface
         if ((int)$uidOrFile > 0) {
             $className = 'Ppi\\TemplaVoilaPlus\Domain\\Model\\DataStructure';
         } else {
+            if (StringUtility::beginsWith($uidOrFile, 'FILE:')) {
+                $uidOrFile = substr($uidOrFile, 5);
+            }
             if (($staticKey = $this->validateStaticDS($uidOrFile)) !== false) {
                 $uidOrFile = $staticKey;
                 $className = 'Ppi\\TemplaVoilaPlus\Domain\\Model\\StaticDataStructure';
