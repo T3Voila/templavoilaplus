@@ -25,7 +25,7 @@ use Ppi\TemplaVoilaPlus\Domain\Repository\DataStructureRepository;
  *
  * @author Alexander Opitz <opitz.alexander@pluspol-interactive.de>
  */
-class DataStructureUpdateController extends StepUpdateController
+class DataStructureV7UpdateController extends StepUpdateController
 {
     protected $errors = [];
 

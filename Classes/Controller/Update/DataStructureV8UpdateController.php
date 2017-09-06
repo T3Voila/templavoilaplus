@@ -25,7 +25,7 @@ use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
  *
  * @author Alexander Opitz <opitz.alexander@pluspol-interactive.de>
  */
-class StaticDataStructureV8UpdateController extends StepUpdateController
+class DataStructureV8UpdateController extends StepUpdateController
 {
     protected $errors = [];
 

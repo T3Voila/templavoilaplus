@@ -8,25 +8,24 @@
 <f:be.infobox title="Warning" state="1">Please backup your data before running any of the update scripts!</f:be.infobox>
 <h2>Please select an update script</h2>
 <form action="#" method="POST">
-    <f:be.infobox title="Migrate from the old TemplaVoilà (1.8/1.9/2.0) Extension" state="-1">
-        <button class="btn btn-primary btn-block btn-lg" type="submit" name="update" value="OldTemplavoila">
-            <core:icon identifier="extensions-scheduler-run-task" /> Migrate TemplaVoilà 1.8/1.9/2.0
-        </button>
-    </f:be.infobox>
-    <f:be.infobox title="You should run this, to fix the TYPO3 TCA Changes between 6.2 and 7/8 LTS" state="-1">
-        <button class="btn btn-primary btn-block btn-lg" type="submit" name="update" value="DataStructure">
-            <core:icon identifier="extensions-scheduler-run-task" /> Update DataStructure from TYPO3 6.2 to 7/8 LTS <small><small>(Version: 0.0.3)</small></small>
-        </button>
-    </f:be.infobox>
-    <f:if condition="{is85OrNewer}">
-    <f:if condition="{useStaticDS}">
-    <f:be.infobox title="Static Data Structure referencing update for TYPO3 8 LTS." state="-1">
-        <button class="btn btn-primary btn-block btn-lg" type="submit" name="update" value="StaticDataStructureV8">
-            <core:icon identifier="extensions-scheduler-run-task" /> Update Static Data Structure referencing for TYPO3 8 LTS
-        </button>
-    </div>
-    </f:be.infobox>
+    <f:if condition="{isMigrationPossible}">
+        <f:be.infobox title="Migrate from the old TemplaVoilà (1.8/1.9/2.0) Extension" state="-1">
+            <button class="btn btn-primary btn-block btn-lg" type="submit" name="update" value="OldTemplavoila">
+                <core:icon identifier="extensions-scheduler-run-task" /> Migrate TemplaVoilà 1.8/1.9/2.0
+            </button>
+        </f:be.infobox>
     </f:if>
+    <f:be.infobox title="You should run this, to fix the TYPO3 TCA Changes between TYPO3 v6.2 LTS and v7 LTS" state="-1">
+        <button class="btn btn-primary btn-block btn-lg" type="submit" name="update" value="DataStructureV7">
+            <core:icon identifier="extensions-scheduler-run-task" /> Update DataStructure from TYPO3 v6.2 LTS to v7 LTS <small><small>(Version: 0.0.3)</small></small>
+        </button>
+    </f:be.infobox>
+    <f:if condition="{is8orNewer}">
+        <f:be.infobox title="You should run this, to fix the TYPO3 TCA Changes between TYPO3 v7 LTS and v8 LTS" state="-1">
+            <button class="btn btn-primary btn-block btn-lg" type="submit" name="update" value="DataStructureV8">
+                <core:icon identifier="extensions-scheduler-run-task" /> Update DataStructure from TYPO3 v7 LTS to v8 LTS <small><small>(Version: 0.0.1)</small></small>
+            </button>
+        </f:be.infobox>
     </f:if>
     <f:be.infobox title="Static Data Structure will be the way to go. But it may be need some love/tests yet." state="1">
         <button class="btn btn-warning btn-block btn-lg" type="submit" name="update" value="StaticData">

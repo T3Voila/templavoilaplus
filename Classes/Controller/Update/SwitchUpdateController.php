@@ -14,7 +14,10 @@ namespace Ppi\TemplaVoilaPlus\Controller\Update;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+
+use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 /**
  * Controller to show the switch dialog.
@@ -28,6 +31,31 @@ class SwitchUpdateController extends AbstractUpdateController
      */
     public function run()
     {
+        $this->fluid->assignMultiple([
+            'isMigrationPossible' => $this->isMigrationPossible(),
+        ]);
         return parent::run();
+    }
+
+    /**
+     * Check if old table exists and have non deleted content, which we could migrate
+     *
+     * @return bool
+     */
+    public function isMigrationPossible()
+    {
+        $table = 'tx_templavoila_tmplobj';
+        $tableExistsResult = TemplaVoilaUtility::getDatabaseConnection()->sql_query('SHOW TABLES LIKE "' . $table . '"');
+        if ($tableExistsResult->num_rows) {
+            $count = TemplaVoilaUtility::getDatabaseConnection()->exec_SELECTcountRows(
+                '*',
+                $table,
+                '1=1 ' . BackendUtility::deleteClause($table)
+            );
+            if ($count) {
+                return true;
+            }
+        }
+        return false;
     }
 }
