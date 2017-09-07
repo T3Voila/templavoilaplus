@@ -1435,7 +1435,10 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         }
 
         // Displaying warning for container content (in default sheet - a limitation) elements if localization is enabled:
-        $isContainerEl = count($contentTreeArr['sub']['sDEF']);
+        $isContainerEl = false;
+        if (isset($contentTreeArr['sub']['sDEF']) && !empty($contentTreeArr['sub']['sDEF'])) {
+            $isContainerEl = true;
+        }
         if (!$this->modTSconfig['properties']['disableContainerElementLocalizationWarning'] && $this->rootElementLangParadigm != 'free' && $isContainerEl && $contentTreeArr['el']['table'] === 'tt_content' && $contentTreeArr['el']['CType'] === 'templavoilaplus_pi1' && !$contentTreeArr['ds_meta']['langDisable']) {
             if ($contentTreeArr['ds_meta']['langChildren']) {
                 if (!$this->modTSconfig['properties']['disableContainerElementLocalizationWarning_warningOnly']) {
@@ -2360,7 +2363,10 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         }
 
         // Displaying warning for container content (in default sheet - a limitation) elements if localization is enabled:
-        $isContainerEl = count($contentTreeArr['sub']['sDEF']);
+        $isContainerEl = false;
+        if (isset($contentTreeArr['sub']['sDEF']) && !empty($contentTreeArr['sub']['sDEF'])) {
+            $isContainerEl = true;
+        }
         if (!$this->modTSconfig['properties']['disableContainerElementLocalizationWarning'] && $this->rootElementLangParadigm != 'free' && $isContainerEl && $contentTreeArr['el']['table'] === 'tt_content' && $contentTreeArr['el']['CType'] === 'templavoilaplus_pi1' && !$contentTreeArr['ds_meta']['langDisable']) {
             if ($contentTreeArr['ds_meta']['langChildren']) {
                 if (!$this->modTSconfig['properties']['disableContainerElementLocalizationWarning_warningOnly']) {
