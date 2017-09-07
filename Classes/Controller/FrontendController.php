@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
 
@@ -218,8 +219,21 @@ class FrontendController extends AbstractPlugin
     public function initVars($conf)
     {
         $this->inheritValueFromDefault = $conf['dontInheritValueFromDefault'] ? 0 : 1;
-        // naming choosen to fit the regular TYPO3 integrators needs ;)
+        // naming chosen to fit the regular TYPO3 integrators needs ;)
         self::$enablePageRenderer = isset($conf['advancedHeaderInclusion']) ? $conf['advancedHeaderInclusion'] : self::$enablePageRenderer;
+
+        // add user defined constants
+        $objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+        $configurationManager = $objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManagerInterface');
+
+        $typoscriptArray = $configurationManager->getConfiguration(
+            ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT,
+            NULL,
+            NULL
+        );
+
+        $conf['TSconst.'] = $typoscriptArray['plugin.']['tx_templavoilaplus_pi1.']['TSconst.'];
+
         $this->conf = $conf;
     }
 
