@@ -510,6 +510,7 @@ class TcaFlexProcess implements FormDataProviderInterface
                                                         'ctrl' => [],
                                                         'columns' => [],
                                                     ],
+                                                    'selectTreeCompileItems' => $result['selectTreeCompileItems'],
                                                     'flexParentDatabaseRow' => $result['databaseRow'],
                                                 ];
                                                 if (!empty($newColumns[$langElementLevel])) {
@@ -632,6 +633,7 @@ class TcaFlexProcess implements FormDataProviderInterface
                                                             $singleFieldName => $singleFieldConfiguration,
                                                         ],
                                                     ],
+                                                    'selectTreeCompileItems' => $result['selectTreeCompileItems'],
                                                     'flexParentDatabaseRow' => $result['databaseRow'],
                                                 ];
                                                 $flexSegmentResult = $formDataCompiler->compile($inputToFlexFormSegment);
@@ -683,6 +685,7 @@ class TcaFlexProcess implements FormDataProviderInterface
                                 'ctrl' => [],
                                 'columns' => [],
                             ],
+                            'selectTreeCompileItems' => $result['selectTreeCompileItems'],
                             'flexParentDatabaseRow' => $result['databaseRow'],
                         ];
 
