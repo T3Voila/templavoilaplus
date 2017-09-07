@@ -635,7 +635,7 @@ class FrontendController extends AbstractPlugin
                                 }
                             }
 
-                            // If constants were found in Plugin configuration, "plugins.tx_templavoilaplus_pi1.TSconst":
+                            // If constants were found in Plugin configuration, "plugin.tx_templavoilaplus_pi1.TSconst":
                             if (is_array($this->conf['TSconst.'])) {
                                 foreach ($this->conf['TSconst.'] as $constant => $value) {
                                     if (!is_array($value)) {
