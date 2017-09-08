@@ -21,4 +21,11 @@ return [
         'access' => 'user,group',
         'target' => \Ppi\TemplaVoilaPlus\Module\Cm1\Ajax::class . '::getDisplayFileContent',
     ],
+
+    // Overwrite from core
+    // Fetch the tree-structured data from a record for the tree selection
+    'record_tree_data' => [
+        'path' => '/record/tree/fetchData',
+        'target' => Ppi\TemplaVoilaPlus\Form\Controller\FormSelectTreeAjaxController::class . '::fetchDataAction'
+    ],
 ];
