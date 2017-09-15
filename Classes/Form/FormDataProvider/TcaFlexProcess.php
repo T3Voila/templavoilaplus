@@ -453,6 +453,7 @@ class TcaFlexProcess implements FormDataProviderInterface
                         && isset($dataStructureFieldDefinition['section']) && (string)$dataStructureFieldDefinition['section'] === '1'
                      ) {
                          // A section
+                         $containerDataStructuresPerContainer = [];
 
                          // Existing section container elements
                          if (isset($dataValues['data'][$dataStructureSheetName][$langSheetLevel][$dataStructureFieldName]['el'])
