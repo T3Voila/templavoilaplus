@@ -16,6 +16,7 @@ namespace Ppi\TemplaVoilaPlus\Domain\Model;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
+use Ppi\TemplaVoilaPlus\Exception\DataStructureException;
 use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 /**
@@ -150,10 +151,16 @@ abstract class AbstractDataStructure
      */
     public function getDataprotArray()
     {
-        $arr = array();
+        $arr = [];
         $ds = $this->getDataprotXML();
+
         if (strlen($ds) > 1) {
             $arr = GeneralUtility::xml2array($ds);
+            if (!is_array($arr)) {
+                throw new DataStructureException(
+                    'XML of DS "' . $this->getLabel() . '" cant\'t be read, we get following error: ' . $arr
+                );
+            }
         }
 
         return $arr;
