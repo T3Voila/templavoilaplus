@@ -53,7 +53,11 @@ final class TemplaVoilaUtility
      */
     public static function getLanguageService()
     {
-        return $GLOBALS['LANG'];
+        if (isset($GLOBALS['LANG'])) {
+            return $GLOBALS['LANG'];
+        } else {
+            return GeneralUtility::makeInstance(\TYPO3\CMS\Lang\LanguageService::class);
+        }
     }
 
     /**
