@@ -47,6 +47,9 @@ class SectionIndexController
         $contentIds = array();
         if ($pids) {
             $pageIds = GeneralUtility::trimExplode(',', $pids);
+            if (substr($pageId, 0, 6) === "field:") {
+                $pageId = $this->cObj->data[substr($pageId, 6)];
+            }
             foreach ($pageIds as $pageId) {
                 $page = $GLOBALS['TSFE']->sys_page->checkRecord('pages', $pageId);
                 if (isset($page) && isset($page['tx_templavoilaplus_flex'])) {
