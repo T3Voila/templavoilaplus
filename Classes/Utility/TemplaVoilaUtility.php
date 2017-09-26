@@ -166,6 +166,6 @@ final class TemplaVoilaUtility
             return $flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
         }
 
-        return \TYPO3\CMS\Core\Utility\BackendUtility::getFlexFormDS($conf, $row, $table, $fieldName);
+        return \TYPO3\CMS\Backend\Utility\BackendUtility::getFlexFormDS($conf, $row, $table, $fieldName);
     }
 }
