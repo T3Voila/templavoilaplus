@@ -38,25 +38,25 @@ class ItemProvider extends AbstractProvider
             'type' => 'item',
             'label' => 'LLL:EXT:templavoilaplus/Resources/Private/Language/locallang.xlf:cm1_title',
             'iconIdentifier' => 'extensions-templavoila-templavoila-logo',
-            'callbackAction' => 'templavoilaplus_mapping',
+            'callbackAction' => 'mappingDb', //'templavoilaplus_mapping',
         ],
         'viewsubelements' => [
             'type' => 'item',
             'label' => 'LLL:EXT:templavoilaplus/Resources/Private/Language/locallang.xlf:cm1_viewsubelements',
             'iconIdentifier' => 'extensions-templavoila-templavoila-logo',
-            'callbackAction' => 'web_txtemplavoilaplusLayout',
+            'callbackAction' => 'viewSubelements', //'web_txtemplavoilaplusLayout',
         ],
         'viewflexformxml' => [
             'type' => 'item',
             'label' => 'LLL:EXT:templavoilaplus/Resources/Private/Language/locallang.xlf:cm1_viewflexformxml',
             'iconIdentifier' => 'extensions-templavoila-templavoila-logo',
-            'callbackAction' => 'templavoilaplus_flexform_cleaner',
+            'callbackAction' => 'viewFlexformXml', //'templavoilaplus_flexform_cleaner',
         ],
         'viewdsto' => [
             'type' => 'item',
             'label' => 'LLL:EXT:templavoilaplus/Resources/Private/Language/locallang.xlf:cm_viewdsto',
             'iconIdentifier' => 'extensions-templavoila-templavoila-logo',
-            'callbackAction' => 'templavoilaplus_mapping',
+            'callbackAction' => 'viewDsTo', //'templavoilaplus_mapping',
         ],
     ];
 
@@ -152,30 +152,27 @@ class ItemProvider extends AbstractProvider
                 $attributes = [
                     'table' => $this->table,
                     'uid' => $this->identifier,
-                    '_reload_from' => 1,
                 ];
                 break;
             case 'viewsubelements':
             case 'viewflexformxml':
                 $attributes = [
-                    'id' => (int)$this->record['pid'],
-                    'altRoot' => [
-                        'table' => $this->table,
-                        'uid' => $this->identifier,
-                        'field_flex' => 'tx_templavoilaplus_flex',
-                    ],
+                    'table' => $this->table,
+                    'uid' => $this->identifier,
+                    'data-page-uid' => $this->record['pid'],
                 ];
                 break;
             case 'viewdsto':
                 $attributes = [
-                    'uid' => $this->record['tx_templavoilaplus_ds'],
                     'table' => 'tx_templavoilaplus_datastructure',
+                    'uid' => $this->record['tx_templavoilaplus_ds'],
                 ];
                 break;
             default:
                 // Empty as $attributes is already an empty array
                 break;
         }
+        $attributes += ['data-callback-module' => 'TYPO3/CMS/Templavoilaplus/ContextMenuActions'];
         return $attributes;
     }
 

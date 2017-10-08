@@ -73,6 +73,9 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']
 // Hook after ext_tables run to do all FormHandler registering things
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['extTablesInclusion-PostProcessing']['templavoilaplus']
     = \Ppi\TemplaVoilaPlus\Hooks\TableConfigurationPostProcessingHook::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/backend.php']['constructPostProcess']['templavoilaplus']
+    = \Ppi\TemplaVoilaPlus\Hooks\BackendControllerHook::class . '->addInlineSettings';
+
 
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['lowlevel']['cleanerModules']['tx_templavoilaplus_unusedce']
     = array(\Ppi\TemplaVoilaPlus\Command\UnusedContentElementCommand::class);
