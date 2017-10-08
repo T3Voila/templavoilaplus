@@ -1,6 +1,6 @@
 <?php
 $EM_CONF[$_EXTKEY] = [
-    'title' => 'TemplaVoila Plus!',
+    'title' => 'TemplaVoila! Plus',
     'description' => 'Point-and-click, popular and easy template engine for TYPO3. Replacement for old TemplaVoila.',
     'category' => 'misc',
     'version' => '7.2.0-dev',
@@ -10,7 +10,7 @@ $EM_CONF[$_EXTKEY] = [
     'clearcacheonload' => 1,
     'author' => 'Alexander Opitz',
     'author_email' => 'opitz@pluspol-interactive.de',
-    'author_company' => 'PLUSPOL interactive,,',
+    'author_company' => 'PLUSPOL interactive',
     'constraints' => [
         'depends' => [
             'php' => '5.5.0-7.2.99',
