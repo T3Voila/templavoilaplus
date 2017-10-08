@@ -92,6 +92,9 @@ class ItemProvider extends AbstractProvider
     }
 
     /**
+     * Checks if the context item with given itemName should be rendered for
+     * the element.
+     *
      * @param string $itemName
      * @param string $type
      * @return bool
@@ -134,6 +137,11 @@ class ItemProvider extends AbstractProvider
         return $canRender;
     }
 
+    /**
+     * Checks if we are on sys_file table and if file exists and if it is a XML file
+     *
+     * @return bool
+     */
     protected function isXmlFile(): bool
     {
         return $this->table === 'sys_file'
@@ -141,6 +149,12 @@ class ItemProvider extends AbstractProvider
             && \Ppi\TemplaVoilaPlus\Domain\Model\File::is_xmlFile($this->identifier);
     }
 
+    /**
+     * Checks if we are in table tt_content and have CType for TV+ element with
+     * field tx_templavoilaplus_flex filled.
+     *
+     * @return bool
+     */
     protected function isTvContentElement(): bool
     {
         return $this->table === 'tt_content'
@@ -148,6 +162,11 @@ class ItemProvider extends AbstractProvider
             && $this->record['tx_templavoilaplus_flex'];
     }
 
+    /**
+     * Checks if we are in table pages with field tx_templavoilaplus_flex filled.
+     *
+     * @return bool
+     */
     protected function isTvPage(): bool
     {
         return $this->table === 'pages'
@@ -156,43 +175,47 @@ class ItemProvider extends AbstractProvider
 
 
     /**
+     * Adds the attributes table, uid and data-* depending on itemName.
+     *
      * @param string $itemName
      * @return array
      */
     protected function getAdditionalAttributes(string $itemName): array
     {
-        $attributes = [];
+        $attributes = [
+            'data-callback-module' => 'TYPO3/CMS/Templavoilaplus/ContextMenuActions'
+        ];
+
         switch ($itemName) {
             case 'mappingFile':
-                $attributes = [
+                $attributes += [
                     'uid' => $this->identifier,
                 ];
                 break;
             case 'mappingDb':
-                $attributes = [
+                $attributes += [
                     'table' => $this->table,
                     'uid' => $this->identifier,
                 ];
                 break;
             case 'viewsubelements':
             case 'viewflexformxml':
-                $attributes = [
+                $attributes += [
                     'table' => $this->table,
                     'uid' => $this->identifier,
                     'data-page-uid' => $this->record['pid'],
                 ];
                 break;
             case 'viewdsto':
-                $attributes = [
+                $attributes += [
                     'table' => 'tx_templavoilaplus_datastructure',
                     'uid' => $this->record['tx_templavoilaplus_ds'],
                 ];
                 break;
             default:
-                // Empty as $attributes is already an empty array
+                // Nothing more to set into the array
                 break;
         }
-        $attributes += ['data-callback-module' => 'TYPO3/CMS/Templavoilaplus/ContextMenuActions'];
         return $attributes;
     }
 
