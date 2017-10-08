@@ -151,18 +151,18 @@ class BackendFlexformCleanerController extends \TYPO3\CMS\Backend\Module\BaseScr
                 }
             }
 
+            $xmlContentMarkedUp = '';
+
             if (md5($currentXML) != md5($cleanXML)) {
                 // Create diff-result:
                 $t3lib_diff_Obj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Utility\DiffUtility::class);
                 $diffres = $t3lib_diff_Obj->makeDiffDisplay($currentXML, $cleanXML);
 
-                $flashMessage = GeneralUtility::makeInstance(
-                    \TYPO3\CMS\Core\Messaging\FlashMessage::class,
-                    TemplaVoilaUtility::getLanguageService()->getLL('needsCleaning', true),
-                    '',
+                $this->moduleTemplate->addFlashMessage(
+                    TemplaVoilaUtility::getLanguageService()->getLL('needsCleaning'),
+                    TemplaVoilaUtility::getLanguageService()->getLL('title'),
                     \TYPO3\CMS\Core\Messaging\FlashMessage::INFO
                 );
-                $xmlContentMarkedUp = $flashMessage->render();
 
                 $xmlContentMarkedUp .= '<table border="0">
                     <tr class="bgColor5 tableheader">
@@ -194,15 +194,12 @@ class BackendFlexformCleanerController extends \TYPO3\CMS\Backend\Module\BaseScr
 
                 ';
             } else {
-                $xmlContentMarkedUp = '';
                 if ($cleanXML) {
-                    $flashMessage = GeneralUtility::makeInstance(
-                        \TYPO3\CMS\Core\Messaging\FlashMessage::class,
-                        TemplaVoilaUtility::getLanguageService()->getLL('XMLclean', true),
-                        '',
+                    $this->moduleTemplate->addFlashMessage(
+                        TemplaVoilaUtility::getLanguageService()->getLL('XMLclean'),
+                        TemplaVoilaUtility::getLanguageService()->getLL('title'),
                         \TYPO3\CMS\Core\Messaging\FlashMessage::OK
                     );
-                    $xmlContentMarkedUp = $flashMessage->render();
                 }
                 $xmlContentMarkedUp .= $this->markUpXML($currentXML);
             }
