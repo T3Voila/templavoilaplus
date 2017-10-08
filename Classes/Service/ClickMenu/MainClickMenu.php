@@ -28,6 +28,7 @@ use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
  *
  * @author Kasper Skaarhoj <kasper@typo3.com>
  * @coauthor Robert Lemke <robert@typo3.org>
+ * @deprecated Will be removed with TemplaVoilà! Plus 8
  */
 class MainClickMenu
 {
