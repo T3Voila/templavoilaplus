@@ -947,6 +947,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 'actions-system-cache-clear',
                 [
                     'cacheCmd'=> $this->id,
+                    'redirect' => GeneralUtility::getIndpEnv('REQUEST_URI'),
                 ],
                 ButtonBar::BUTTON_POSITION_RIGHT,
                 2
