@@ -25,7 +25,7 @@ to the website. Here you create a new Template Object an select the
 |img-13|
 
 After having done this you close the document here, click the Template
-Object icon again and select “TemplaVoila”:
+Object icon again and select “TemplaVoilà! Plus”:
 
 |img-14|
 

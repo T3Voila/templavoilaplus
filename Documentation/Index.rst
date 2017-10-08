@@ -1,9 +1,9 @@
 ﻿.. include:: Includes.txt
 
 .. _start:
-=====================
-EXT: TemplaVoilà Plus
-=====================
+======================
+EXT: TemplaVoilà! Plus
+======================
 
 .. only:: html
     :Classification:
@@ -16,7 +16,7 @@ EXT: TemplaVoilà Plus
         en
 
     :Description:
-        TemplaVoilà Plus is a templating extension for the TYPO3 content management system. It is the follow up of the
+        TemplaVoilà! Plus is a templating extension for the TYPO3 content management system. It is the follow up of the
         popular TemplaVoila extension from Kasper Skårhøj prepared for modern versions of TYPO3.
         This manual needs to be updated to state of the art of the extension.
 
@@ -24,7 +24,7 @@ EXT: TemplaVoilà Plus
         2009-11-27
 
     :Changed:
-        2017-03-13
+        2017-10-08
 
     :Keywords:
         template,mapping
@@ -44,7 +44,7 @@ EXT: TemplaVoilà Plus
         Kasper Skårhøj, Robert Lemke, Alexander Opitz
 
     :Email:
-        kasperYYYY@typo3.com,robert@typo3.org, opitz@pluspol.info
+        kasperYYYY@typo3.com, robert@typo3.org, opitz@pluspol.info
 
     :License:
         This document is published under the Open Content License available

@@ -38,8 +38,8 @@ section of this manual:
 but nothing is displayed in FrontEnd. What should I do now?*
 
 **A:** You should check if you have <TypoScriptObjectPath> entry in
-that field inside your DS record. If it exists, TemplaVoilà Plus will not
-show content. This issue exists in TemplaVoilà Plus versions up to and
+that field inside your DS record. If it exists, TemplaVoilà! Plus will not
+show content. This issue exists in TemplaVoilà! Plus versions up to and
 including 1.0 but will be fixed (removed) in future versions. Inspect
 DS record and remove any occurrences of <TypoScriptObjectPath> from
 the content element fields. Do not forget to clear cache before

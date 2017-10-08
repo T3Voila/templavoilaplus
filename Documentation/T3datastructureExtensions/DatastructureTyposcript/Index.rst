@@ -22,7 +22,7 @@ Datastructure TypoScript
 Overview
 """"""""
 
-TemplaVoila offers various special registers to access some context
+TemplaVoilà! Plus offers various special registers to access some context
 information such as information about the enclosing record, the
 current field or the section.
 
@@ -34,7 +34,7 @@ Register overview:
 
    Register name
          Register name
-   
+
    Description
          Description
 
@@ -43,7 +43,7 @@ Register overview:
 
    Register name
          tx\_templavoilaplus\_pi1.parentRec.<field>
-   
+
    Description
          Access field data from the database record. See examples below.
 
@@ -52,7 +52,7 @@ Register overview:
 
    Register name
          tx\_templavoilaplus\_pi1.current\_field
-   
+
    Description
          Contains the name of the datastructure field.
 
@@ -61,7 +61,7 @@ Register overview:
 
    Register name
          tx\_templavoilaplus\_pi1.nested\_fields
-   
+
    Description
          Contains the list of all fields your TypoScript is rendered in and
          provides a way to retriev the context of your rendered element.
@@ -71,7 +71,7 @@ Register overview:
 
    Register name
          tx\_templavoilaplus\_pi1.sectionPos
-   
+
    Description
          Retrieve the current position of your element within a section. See
          example below.
@@ -81,7 +81,7 @@ Register overview:
 
    Register name
          tx\_templavoilaplus\_pi1.sectionCount
-   
+
    Description
          Retrieve the total amount of elements in the current section. See
          example below.
@@ -91,7 +91,7 @@ Register overview:
 
    Register name
          tx\_templavoilaplus\_pi1.sectionIsFirstItem
-   
+
    Description
          Determine whether the current element is the first element within the
          current section.
@@ -101,7 +101,7 @@ Register overview:
 
    Register name
          tx\_templavoilaplus\_pi1.sectionIsLastItem
-   
+
    Description
          Determine whether the current element is the last element within the
          current section.
@@ -154,7 +154,7 @@ Example:
    <TypoScript>
    10 = TEXT
    10.current = 1
-   10.dataWrap = {register:tx_templavoilaplus_pi1.sectionPos} / {register:tx_templavoilaplus_pi1.sectionCount} 
+   10.dataWrap = {register:tx_templavoilaplus_pi1.sectionPos} / {register:tx_templavoilaplus_pi1.sectionCount}
    10.if.isTrue.data = register:tx_templavoilaplus_pi1.sectionIsFirstItem
    </TypoScript>
 

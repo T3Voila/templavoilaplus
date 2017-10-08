@@ -168,7 +168,7 @@ mod.web\_txtemplavoilaplusLayout
          boolean
 
    Description
-         Defines if the toolbar in the TemplaVoila Page Module is visible or
+         Defines if the toolbar in the TemplaVoilà! Plus Page Module is visible or
          not. By default it is visible as a row of tabs.
 
    Default
@@ -184,7 +184,7 @@ mod.web\_txtemplavoilaplusLayout
          string
 
    Description
-         Defines the position of a toolbar within the TemplaVoila Page Module.
+         Defines the position of a toolbar within the TemplaVoilà! Plus Page Module.
          Possible values:  *toptabs, toprows, left*
 
          ***toptabs*** generates a toolbar on top of the page module's content
@@ -250,7 +250,7 @@ mod.web\_txtemplavoilaplusLayout
          boolean
 
    Description
-         Container elements used with TemplaVoila should not be localized.
+         Container elements used with TemplaVoilà! Plus should not be localized.
          Therefore a warning is displayed if <langDisable> is false for such
          data structures. If localization was enabled on purpose this warning
          will be misleading of course and can be disabled by this setting.
@@ -274,7 +274,7 @@ mod.web\_txtemplavoilaplusLayout
          localization.
 
          The problem is that only the default language values of the reference
-         fields (non-content fields) is recognized by TemplaVoila page module
+         fields (non-content fields) is recognized by TemplaVoilà! Plus page module
          while in the frontend the rendering depends on inheritance and what
          other references someone might accidentally put into the reference
          fields of other languages! So, if you use localization for such mixed

@@ -35,7 +35,7 @@ Content Elements.
 
 |img-10|
 
-When you enable the first option, Templavoilà Plus will start usin the
+When you enable the first option, Templavoilà! Plus will start usin the
 Static Data Structures. Even with Static Data Structures disabled, the
 wizard can be useful as a backup system for your Data Structures that
 are stored in the database.

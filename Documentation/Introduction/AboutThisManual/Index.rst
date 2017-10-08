@@ -4,7 +4,7 @@
 About this manual
 ^^^^^^^^^^^^^^^^^
 
-This manual for TemplaVoilà Plus 7.0 isn't complete like it was never for TemplaVoilà.
+This manual for TemplaVoilà! Plus 7.x isn't complete like it was never for TemplaVoilà.
 At the moment it is the old one only imported and some small points are already updated
 but it isn't complete yet. Some points in this documentation are outdated and written
 for TYPO3 4.5 or older.

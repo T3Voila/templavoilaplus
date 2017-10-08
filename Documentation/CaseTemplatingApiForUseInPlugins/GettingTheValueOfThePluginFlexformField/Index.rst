@@ -30,8 +30,8 @@ contains these two variables:
 
 ::
 
-           // TemplaVoila specific:
-       var $TA='';                    // If TemplaVoila is used and a TO record is found, this array will be loaded with Template Array.
+           // TemplaVoilà! Plus specific:
+       var $TA='';                    // If TemplaVoilà! Plus is used and a TO record is found, this array will be loaded with Template Array.
        var $TMPLobj='';            // Template Object
 
 Later, in the listView function you find this initialization which
@@ -44,7 +44,7 @@ detects the record. Comments below
       3:         // Init FlexForm configuration for plugin:
       4:     $this->pi_initPIflexForm();
       5:
-      6:         // Looking for TemplaVoilà Plus TO record and if found, initialize template object:
+      6:         // Looking for TemplaVoilà! Plus TO record and if found, initialize template object:
       7:     if (t3lib_extMgm::isLoaded('templavoilaplus'))    {
       8:         $field_templateObject = $this->pi_getFFvalue($this->cObj->data['pi_flexform'],'field_templateObject');
       9:         if ((int)$field_templateObject)    {
@@ -61,7 +61,7 @@ detects the record. Comments below
   an array with the same XML converted to PHP array by
   t3lib\_div::xml2array()
 
-- Line 7 checks if TemplaVoilà Plus is loaded -which it must be of course!
+- Line 7 checks if TemplaVoilà! Plus is loaded -which it must be of course!
 
 - Line 8 requests the value of “field\_templateObject” in the FlexForm
   content of “pi\_flexform”
@@ -83,7 +83,7 @@ detects the record. Comments below
   the TO.
 
 Now, in the rest of the mininews class we can just check if $this->TA
-is an array and if so use templavoilas API for merging data and
+is an array and if so use TemplaVoilà! Plus API for merging data and
 template. This is shown next.
 
 

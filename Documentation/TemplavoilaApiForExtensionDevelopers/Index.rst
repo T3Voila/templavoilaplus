@@ -15,13 +15,13 @@
 .. role::   php(code)
 
 
-TemplaVoilà Plus API for extension developers
----------------------------------------------
+TemplaVoilà! Plus API for extension developers
+----------------------------------------------
 
 - Basic concept
 
 - flexformPointer / flexformPointerString
-  
+
   - sourcePointer / destinationPointer
 
 

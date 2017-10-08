@@ -18,8 +18,8 @@
 Introduction
 ^^^^^^^^^^^^
 
-TemplaVoilà Plus extends the Data Structure XML with a set of tags
-which defines two things related to TemplaVoilà Plus:
+TemplaVoilà! Plus extends the Data Structure XML with a set of tags
+which defines two things related to TemplaVoilà! Plus:
 
 - **Mapping:** Definition of mapping rules, descriptions, sample data,
   and field type preset
@@ -603,7 +603,7 @@ which defines two things related to TemplaVoilà Plus:
          allowed / makes sense.
 
          **Note:** This tag only takes effect when used in the top-level
-         <tx\_templavoila> section, ie. one level below the <ROOT> tag.
+         <tx\_templavoilaplus> section, ie. one level below the <ROOT> tag.
 
          |img-8|
 
@@ -641,7 +641,7 @@ which defines two things related to TemplaVoilà Plus:
          “#FC2300” etc.)
 
          **Note:** This tag only takes effect when used in the top-level
-         <tx\_templavoila> section, ie. one level below the <ROOT> tag.
+         <tx\_templavoilaplus> section, ie. one level below the <ROOT> tag.
 
          |img-9|
 
@@ -668,7 +668,7 @@ which defines two things related to TemplaVoilà Plus:
    Description
          **Keywords:**
 
-         **disable –** Avoid that the templavoila page module includes the
+         **disable –** Avoid that the TemplaVoilà! Plus page module includes the
          field into it's data preview. That's mainly meant keep the page modul
          nice and clean.
 
@@ -689,8 +689,8 @@ which defines two things related to TemplaVoilà Plus:
 
    Description
          In the Data Structure only “array” or blank makes sense. However for
-         TemplaVoilà Plus there is additional values possible, “attr” and
-         “no\_map”. This is a complete TemplaVoilà Plus related overview of
+         TemplaVoilà! Plus there is additional values possible, “attr” and
+         “no\_map”. This is a complete TemplaVoilà! Plus related overview of
          the <type> / <section> meanings:
 
          - <type>array</type> = Renders an array or objects
@@ -709,12 +709,12 @@ which defines two things related to TemplaVoilà Plus:
 .. ###### END~OF~TABLE ######
 
 
-Sheets and TemplaVoilà Plus
-"""""""""""""""""""""""""""
+Sheets and TemplaVoilà! Plus
+""""""""""""""""""""""""""""
 
-TemplaVoilà Plus is compatible with definition of sheets. In that case
+TemplaVoilà! Plus is compatible with definition of sheets. In that case
 a sheet <ROOT> element is shown in the mapping structure containing each
 sheet as <ROOT> elements under it. Even if multiple sheets are used
-TemplaVoilà Plus renders only one sheet either determined by the
+TemplaVoilà! Plus renders only one sheet either determined by the
 sheetSelector or using the “sDEF” sheet by default.
 
