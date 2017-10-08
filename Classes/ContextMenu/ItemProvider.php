@@ -32,7 +32,7 @@ class ItemProvider extends AbstractProvider
             'type' => 'item',
             'label' => 'LLL:EXT:templavoilaplus/Resources/Private/Language/locallang.xlf:cm1_title',
             'iconIdentifier' => 'extensions-templavoila-templavoila-logo',
-            'callbackAction' => 'templavoilaplus_mapping'
+            'callbackAction' => 'mappingFile', //'templavoilaplus_mapping'
         ],
         'mappingDb' => [
             'type' => 'item',
@@ -78,7 +78,17 @@ class ItemProvider extends AbstractProvider
      */
     public function canHandle(): bool
     {
-        return in_array($this->table, ['tx_templavoilaplus_datastructure', 'tx_templavoilaplus_tmplobj', 'pages', 'tt_content'], true);
+        return in_array(
+            $this->table,
+            [
+                'pages',
+                'sys_file',
+                'tt_content',
+                'tx_templavoilaplus_datastructure',
+                'tx_templavoilaplus_tmplobj',
+            ],
+            true
+        );
     }
 
     /**
@@ -97,7 +107,8 @@ class ItemProvider extends AbstractProvider
         $canRender = false;
         switch ($itemName) {
             case 'mappingFile':
-                $canRender = false;
+                $canRender = $this->backendUser->isAdmin()
+                    && $this->isXmlFile();
                 break;
             case 'mappingDb':
                 $canRender = $this->table === 'tx_templavoilaplus_datastructure'
@@ -123,14 +134,21 @@ class ItemProvider extends AbstractProvider
         return $canRender;
     }
 
-    protected function isTvContentElement()
+    protected function isXmlFile(): bool
+    {
+        return $this->table === 'sys_file'
+            && \Ppi\TemplaVoilaPlus\Domain\Model\File::is_file($this->identifier)
+            && \Ppi\TemplaVoilaPlus\Domain\Model\File::is_xmlFile($this->identifier);
+    }
+
+    protected function isTvContentElement(): bool
     {
         return $this->table === 'tt_content'
             && $this->record['CType'] === 'templavoilaplus_pi1'
             && $this->record['tx_templavoilaplus_flex'];
     }
 
-    protected function isTvPage()
+    protected function isTvPage(): bool
     {
         return $this->table === 'pages'
             && $this->record['tx_templavoilaplus_flex'];
@@ -146,7 +164,9 @@ class ItemProvider extends AbstractProvider
         $attributes = [];
         switch ($itemName) {
             case 'mappingFile':
-                $attributes = [];
+                $attributes = [
+                    'uid' => $this->identifier,
+                ];
                 break;
             case 'mappingDb':
                 $attributes = [

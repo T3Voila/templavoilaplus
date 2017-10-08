@@ -16,6 +16,14 @@ define(function () {
        return top.rawurlencode(top.list_frame.document.location.pathname + top.list_frame.document.location.search);
     };
 
+    ContextMenuActions.mappingFile = function (table, uid) {
+        top.TYPO3.Backend.ContentContainer.setUrl(
+            top.TYPO3.settings.TemplaVoilaPlus.mappingModuleUrl +
+            '&file=' + uid +
+            '&returnUrl=' + ContextMenuActions.getReturnUrl()
+        );
+    }
+
     ContextMenuActions.mappingDb = function (table, uid) {
         top.TYPO3.Backend.ContentContainer.setUrl(
             top.TYPO3.settings.TemplaVoilaPlus.mappingModuleUrl +
