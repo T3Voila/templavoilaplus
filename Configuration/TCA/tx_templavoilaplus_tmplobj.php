@@ -98,7 +98,7 @@ return [
                     'add' => [
                         'type' => 'script',
                         'title' => 'LLL:EXT:templavoilaplus/Resources/Private/Language/locallang_db.xlf:tx_templavoilaplus_tmplobj.ds_createnew',
-                        'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_add.gif',
+                        'icon' => 'actions-add',
                         'params' => [
                             'table' => 'tx_templavoilaplus_datastructure',
                             'pid' => '###CURRENT_PID###',
@@ -123,7 +123,7 @@ return [
                     'link' => [
                         'type' => 'popup',
                         'title' => 'Link',
-                        'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif',
+                        'icon' => 'actions-wizard-link',
                         'module' => [
                             'name' => 'wizard_link',
                             'urlParameters' => [
@@ -151,7 +151,7 @@ return [
                     'link' => [
                         'type' => 'popup',
                         'title' => 'Link',
-                        'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif',
+                        'icon' => 'actions-wizard-link',
                         'module' => [
                             'name' => 'wizard_link',
                             'urlParameters' => [
