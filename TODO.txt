@@ -38,15 +38,6 @@ Various:
 		- DS / XML functions
 
 
-Related to rendering/content elements (css_styled_content):
- - OK: increase $this->cObj->parentRecordNumber - done by RECORDS cObject!
- - OK: if register[maxImageWidth] is set, this will override maxW - this is fixed by inserting in the data structure LOAD_REGISTER / RESTORE_REGISTER!
- - Remove "Columns" field from tt_content
- - Remove "Divider" content element type.
- - $cObj bug in templavoila, "<stdWrap>" tag
- - Use "Content from page" pid from page headers if there (Rendering: Means, that the other page must be looked up!)
-
-
 - Mapping features (Kasper, not urgent but annoying for developers...):
 	- Ability to map NEW non-existing attributes AND possibly just any content into HTML tags (like for images ' width="xxx" height="xxx"'.
 	- Ability to select attributes to be REMOVED in a tag.
