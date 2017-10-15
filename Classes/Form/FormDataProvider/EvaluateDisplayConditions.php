@@ -26,12 +26,11 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  *
  * PHP 7.0 as _only_ used in TYPO3 v8 and up code path
  */
-class EvaluateDisplayConditions
-    extends TYPO3\CMS\Backend\Form\FormDataProvider\FormDataProviderInterface
+class EvaluateDisplayConditions extends \TYPO3\CMS\Backend\Form\FormDataProvider\EvaluateDisplayConditions
 {
     /**
      * @TODO findFieldValue needs to be multilang, as field value may be different per language
-     * @TODO need to check where TODO the language itteration
+     * @TODO need to check where TODO the language iteration
      * @TODO evaluateConditions needs to remove from correct language (not from non language left over tree)
      * @TODO need to check where TODO the language itteration
      * Parsing the condition should not be done per language as this is stable accross all languages.
