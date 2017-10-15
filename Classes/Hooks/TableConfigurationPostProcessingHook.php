@@ -57,6 +57,14 @@ class TableConfigurationPostProcessingHook implements TableConfigurationPostProc
                     => \Ppi\TemplaVoilaPlus\Form\FormDataProvider\TcaFlexProcess::class,
             ]
         );
+        if (version_compare(TYPO3_version, '8.5.0', '>=')) {
+            \Ppi\TemplaVoilaPlus\Utility\FormEngineUtility::replaceInFormDataGroups(
+                [
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\EvaluateDisplayConditions::class
+                        => \Ppi\TemplaVoilaPlus\Form\FormDataProvider\EvaluateDisplayConditions::class,
+                ]
+            );
+        }
         // In TYPO3 8 there is no TcaFlexFetch, so readd it.
         \Ppi\TemplaVoilaPlus\Utility\FormEngineUtility::addTcaFlexFetch();
     }
