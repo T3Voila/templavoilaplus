@@ -55,7 +55,6 @@ class TcaFlexProcess implements FormDataProviderInterface
             $result = $this->addDataStructurePointersToMetaData($result, $fieldName);
             if (!empty($result['flexSectionContainerPreparation']) && version_compare(TYPO3_version, '8.6.0', '>=')) {
                 // Create data and default values for a new section container, set by FormFlexAjaxController
-                die('A');
                 $result = $this->prepareNewSectionContainer($result, $fieldName);
             }
         }

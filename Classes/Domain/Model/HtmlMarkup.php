@@ -602,8 +602,13 @@ class HtmlMarkup
         $isSection = 0;
         $htmlParse = ($this->htmlParse ? $this->htmlParse : GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class));
         if (is_array($editStruct) && count($editStruct)) {
-            $testInt = implode('', array_keys($editStruct));
-            $isSection = !preg_match('/[^0-9]/', $testInt);
+        	if (version_compare(TYPO3_version, '8.6.0', '>=')) {
+        		if(isset(current($editStruct)['_TOGGLE'])) $isSection = true;
+        	}
+        	else {
+        		$testInt = implode('', array_keys($editStruct));
+        		$isSection = !preg_match('/[^0-9]/', $testInt);
+        	}
         }
         $out = '';
         if ($isSection) {

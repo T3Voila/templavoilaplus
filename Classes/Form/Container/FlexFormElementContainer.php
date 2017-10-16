@@ -22,6 +22,10 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
+use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
+use Ppi\TemplaVoilaPlus\Exception\DataStructureException;
 
 /**
  * The container handles single elements.
@@ -93,11 +97,26 @@ class FlexFormElementContainer extends AbstractContainer
                 }
                 $options['flexFormRowData'] = is_array($flexFormRowData[$flexFormFieldName]['el']) ? $flexFormRowData[$flexFormFieldName]['el'] : array();
                 $options['renderType'] = 'flexFormSectionContainer';
+                
+                $databaseConnection = GeneralUtility::makeInstance(DatabaseConnection::class);
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tt_content');
+                $statement = $queryBuilder->select('*')->from('tt_content')->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($options['vanillaUid'])))->execute();
+                if($statement->rowCount() != 1) {
+                	throw new DataStructureException('Could not find uid '.  $options['vanillaUid'] . ' FROM tt_content');
+                }
+                $row = $statement->fetch();
+                
+                $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
+                $options['flexFormDataStructureIdentifier']=  $flexFormTools->getDataStructureIdentifier($GLOBALS['TCA'][$options['tableName']]['columns'][$options['fieldName']], $options['tableName'], $options['fieldName'], $row);
+                
                 $sectionContainerResult = $this->nodeFactory->create($options)->render();
                 $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $sectionContainerResult);
             } else {
                 $html = [];
                 foreach ($lkeys as $lkey) {
+                	if(empty($flexFormFieldArray[$lkey])) {
+                		$flexFormFieldArray[$lkey] = $flexFormFieldArray;
+                	}
                     // Set up options for single element
                     $fakeParameterArray = array(
                         'fieldConf' => array(
