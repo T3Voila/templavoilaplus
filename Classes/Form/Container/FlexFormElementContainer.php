@@ -99,10 +99,10 @@ class FlexFormElementContainer extends AbstractContainer
                 $options['renderType'] = 'flexFormSectionContainer';
                 
                 $databaseConnection = GeneralUtility::makeInstance(DatabaseConnection::class);
-                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tt_content');
-                $statement = $queryBuilder->select('*')->from('tt_content')->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($options['vanillaUid'])))->execute();
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($options['tableName']);
+                $statement = $queryBuilder->select('*')->from($options['tableName'])->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($options['vanillaUid'])))->execute();
                 if($statement->rowCount() != 1) {
-                	throw new DataStructureException('Could not find uid '.  $options['vanillaUid'] . ' FROM tt_content');
+                	throw new DataStructureException('Unexpected Result: uid '.  $options['vanillaUid'] . ' FROM ' . $options['tableName']);
                 }
                 $row = $statement->fetch();
                 
