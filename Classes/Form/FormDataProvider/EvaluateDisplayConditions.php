@@ -15,7 +15,6 @@ namespace Ppi\TemplaVoilaPlus\Form\FormDataProvider;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
@@ -27,7 +26,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  * PHP 7.0 as _only_ used in TYPO3 v8 and up code path
  */
 class EvaluateDisplayConditions
-    extends TYPO3\CMS\Backend\Form\FormDataProvider\FormDataProviderInterface
+    extends \TYPO3\CMS\Backend\Form\FormDataProvider\EvaluateDisplayConditions
 {
     /**
      * @TODO findFieldValue needs to be multilang, as field value may be different per language
