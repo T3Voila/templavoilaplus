@@ -165,24 +165,39 @@ function sortable_updateItemButtons(list, sortOrder)
 
 function sortable_update(list, element, sortOrder)
 {
-    destinationIndex = sortOrder.indexOf(element.id);
-
-    // If it wasn't found in sortOrder then it was removed from given list'
-    if (destinationIndex != -1 && sortableSource != null) {
-        var destination = sortable_containers['#' + list.id] + destinationIndex;
-        new TYPO3.jQuery.ajax({
-            url: TYPO3.settings.ajaxUrls['templavoilaplus_record_move'],
-            type: 'post',
-            cache: false,
-            data: {
-                'source': sortableSource,
-                'destination': destination
-            },
-            success: function(result) {
-                // @TODO Check if it is possible that only after ajax response
-                // The element gets visually moved in collection (or moved back on failure)
+    if (sortableSourceIndex != null) {
+        // NO +1, sortOrder starts with 0 and TV+ starts with 1, but we need index of element
+        // after which we move this element
+        var destinationIndex = sortOrder.indexOf(element.id);
+        var destinationList = '#' + list.id;
+        // If it wasn't found in sortOrder then it was removed from given list'
+        if (destinationIndex != -1) {
+            if (sortableSourceList == destinationList
+                && destinationIndex >= sortableSourceIndex
+            ) {
+                // Element was moved to a lower position in same list
+                // but the list internally already rearranged elements in sortOrder
+                // so we lost 1 position which we need to add here
+                destinationIndex++;
             }
-        });
+
+            var source = sortable_containers[sortableSourceList] + sortableSourceIndex;
+            var destination = sortable_containers['#' + list.id] + destinationIndex;
+
+            new TYPO3.jQuery.ajax({
+                url: TYPO3.settings.ajaxUrls['templavoilaplus_record_move'],
+                type: 'post',
+                cache: false,
+                data: {
+                    'source': source,
+                    'destination': destination
+                },
+                success: function(result) {
+                    // @TODO Check if it is possible that only after ajax response
+                    // The element gets visually moved in collection (or moved back on failure)
+                }
+            });
+        }
     }
 
     sortable_updateItemButtons(list, sortOrder);
@@ -190,13 +205,14 @@ function sortable_update(list, element, sortOrder)
 
 function sortable_start(list, element, sortOrder)
 {
-    sortableSource = sortable_containers['#' + list.id] + (sortOrder.indexOf(element.id) + 1);
+    // +1 as sortOrder starts with 0 but TV+ starts with 1
+    sortableSourceIndex = sortOrder.indexOf(element.id) + 1;
     sortableSourceList = '#' + list.id;
 }
 
 function sortable_stop()
 {
-    sortableSource = null;
+    sortableSourceIndex = null;
     sortableSourceList = null;
 }
 
