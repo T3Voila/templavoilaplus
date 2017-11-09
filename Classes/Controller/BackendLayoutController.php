@@ -432,7 +432,6 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         // Initialize side bar and wizards:
         $this->sideBarObj =& GeneralUtility::getUserObj('Ppi\\TemplaVoilaPlus\Module\\Mod1\\Sidebar', '');
         $this->sideBarObj->init($this);
-        $this->sideBarObj->position = isset($this->modTSconfig['properties']['sideBarPosition']) ? $this->modTSconfig['properties']['sideBarPosition'] : 'toptabs';
 
         $this->wizardsObj = GeneralUtility::getUserObj('Ppi\\TemplaVoilaPlus\Module\\Mod1\\Wizards', '');
         $this->wizardsObj->init($this);

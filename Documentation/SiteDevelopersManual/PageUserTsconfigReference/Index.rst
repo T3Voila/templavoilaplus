@@ -178,42 +178,6 @@ mod.web\_txtemplavoilaplusLayout
 .. container:: table-row
 
    Property
-         sideBarPosition
-
-   Data type
-         string
-
-   Description
-         Defines the position of a toolbar within the TemplaVoilà! Plus Page Module.
-         Possible values:  *toptabs, toprows, left*
-
-         ***toptabs*** generates a toolbar on top of the page module's content
-         with dynamic tabs which allow you to switch between the different
-         option categories.
-
-         |img-4|
-
-         ***toprows*** also generates a toolbar on the top of the page, but
-         uses rows which can be expanded and collapsed instead of tabs.
-
-         |img-5|
-
-         ***left*** instead creates a sidebar at left part of the page module.
-         This sidebar may be shown and hidden by clicking at the little plus /
-         minus sign at the upper right corner of the sidebar.
-
-         |img-6|
-
-         **Note:** The menu items which are available in this toolbar depend on
-         the extensions you have installed as they provide the functionality.
-
-   Default
-         toptabs
-
-
-.. container:: table-row
-
-   Property
          tabList
 
    Data type
