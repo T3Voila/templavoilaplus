@@ -163,44 +163,11 @@ function sortable_updateItemButtons(list, sortOrder)
     });
 }
 
-function sortable_update(list, element, sortOrder)
+function sortable_update(element, sortOrder)
 {
-    if (sortableSourceIndex != null) {
-        // NO +1, sortOrder starts with 0 and TV+ starts with 1, but we need index of element
-        // after which we move this element
-        var destinationIndex = sortOrder.indexOf(element.id);
-        var destinationList = '#' + list.id;
-        // If it wasn't found in sortOrder then it was removed from given list'
-        if (destinationIndex != -1) {
-            if (sortableSourceList == destinationList
-                && destinationIndex >= sortableSourceIndex
-            ) {
-                // Element was moved to a lower position in same list
-                // but the list internally already rearranged elements in sortOrder
-                // so we lost 1 position which we need to add here
-                destinationIndex++;
-            }
-
-            var source = sortable_containers[sortableSourceList] + sortableSourceIndex;
-            var destination = sortable_containers['#' + list.id] + destinationIndex;
-
-            new TYPO3.jQuery.ajax({
-                url: TYPO3.settings.ajaxUrls['templavoilaplus_record_move'],
-                type: 'post',
-                cache: false,
-                data: {
-                    'source': source,
-                    'destination': destination
-                },
-                success: function(result) {
-                    // @TODO Check if it is possible that only after ajax response
-                    // The element gets visually moved in collection (or moved back on failure)
-                }
-            });
-        }
-    }
-
-    sortable_updateItemButtons(list, sortOrder);
+    // NO +1, sortOrder starts with 0 and TV+ starts with 1, but we need index of element
+    // after which we move this element
+    sortableDestinationIndex = sortOrder.indexOf(element.id);
 }
 
 function sortable_start(list, element, sortOrder)
@@ -208,12 +175,50 @@ function sortable_start(list, element, sortOrder)
     // +1 as sortOrder starts with 0 but TV+ starts with 1
     sortableSourceIndex = sortOrder.indexOf(element.id) + 1;
     sortableSourceList = '#' + list.id;
+
+    // NO +1, sortOrder starts with 0 and TV+ starts with 1, but we need index of element
+    // after which we move this element
+    sortableDestinationIndex = sortOrder.indexOf(element.id);
+    sortableDestinationList = '#' + list.id;
 }
 
-function sortable_stop()
+function sortable_stop(item, placeholder)
 {
+    var source = sortable_containers[sortableSourceList] + sortableSourceIndex;
+    var destination = sortable_containers[sortableDestinationList] + sortableDestinationIndex;
+    TYPO3.jQuery('.tpm-titlebar', item).css('background-color', '#FFAAAA')
+    // @TODO Show that the move will be saved
+    new TYPO3.jQuery.ajax({
+        async: false,
+        url: TYPO3.settings.ajaxUrls['templavoilaplus_record_move'],
+        type: 'post',
+        cache: false,
+        data: {
+            'source': source,
+            'destination': destination
+        },
+        success: function(result) {
+            TYPO3.jQuery('.tpm-titlebar', item)
+                .fadeTo(700, 0, function() {TYPO3.jQuery(this).css('background-color', '#AAFFAA');})
+                .fadeTo(700, 1, function() {TYPO3.jQuery(this).css('background-color', '');});
+            // @TODO Check if it is possible that only after ajax response
+            // The element gets visually moved in collection (or moved back on failure)
+            // .sortable('cancel'); to cancel move (but whithout flyout?)
+        }
+    });
+
+    sortable_updateItemButtons(list, sortOrder);
+
     sortableSourceIndex = null;
     sortableSourceList = null;
+    sortableDestinationIndex = null;
+    sortableDestinationList = null;
+}
+
+function sortable_receive(list)
+{
+    // We switch into another list
+    sortableDestinationList = '#' + list.id;
 }
 
 function tv_createSortable(container, connectWith)
@@ -221,9 +226,9 @@ function tv_createSortable(container, connectWith)
     var $sortingContainer = TYPO3.jQuery(container);
     $sortingContainer.sortable(
     {
-        connectWith: connectWith,
+        connectWith: connectWith, /* '.ui-sortable' ?? */
         handle: '.sortable_handle',
-        items: '.sortableItem',
+        items: '> .sortableItem',
         //zIndex: '4000',
         tolerance: 'pointer',
         opacity: 0.5,
@@ -232,10 +237,13 @@ function tv_createSortable(container, connectWith)
             sortable_start(TYPO3.jQuery(this)[0], ui.item[0], TYPO3.jQuery(this).sortable('toArray'));
         },
         update: function (event, ui) {
-            sortable_update(TYPO3.jQuery(this)[0], ui.item[0], TYPO3.jQuery(this).sortable('toArray'));
+            sortable_update(ui.item[0], TYPO3.jQuery(this).sortable('toArray'));
         },
         stop: function (event, ui) {
-            sortable_stop();
+            sortable_stop(ui.item[0], ui.placeholder);
+        },
+        receive: function (event, ui) {
+            sortable_receive(TYPO3.jQuery(this)[0]);
         },
         forcePlaceholderSize: true,
         placeholder: 'drag-placeholder'
