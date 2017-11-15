@@ -130,10 +130,11 @@ function sortable_unlinkRecordSidebarCallBack(pointer) {
     );
 }
 
-function sortable_updateItemButtons(list, sortOrder)
+function sortable_updateItemButtons(listSelector)
 {
+    var sortOrder = TYPO3.jQuery(listSelector).sortable('toArray');
     sortOrder.forEach(function(itemId, position) {
-        var newPos = sortable_containers['#' + list.id] + (position + 1);
+        var newPos = sortable_containers[listSelector] + (position + 1);
         TYPO3.jQuery('#' + itemId).find('a').each(function() {
             $this = TYPO3.jQuery(this);
             if ($this.hasClass('tpm-new')) {
@@ -204,10 +205,13 @@ function sortable_stop(item, placeholder)
             // @TODO Check if it is possible that only after ajax response
             // The element gets visually moved in collection (or moved back on failure)
             // .sortable('cancel'); to cancel move (but whithout flyout?)
+            sortable_updateItemButtons(sortableDestinationList);
+            if (sortableSourceList != sortableDestinationList) {
+                sortable_updateItemButtons(sortableSourceList);
+
+            }
         }
     });
-
-    sortable_updateItemButtons(list, sortOrder);
 
     sortableSourceIndex = null;
     sortableSourceList = null;
