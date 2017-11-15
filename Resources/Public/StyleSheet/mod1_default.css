@@ -216,3 +216,32 @@ div.warning a {
   background-color: #8AAFC4;
   height: 10px;
 }
+
+.t3-page-ce .t3-page-ce-header.toYellow {
+    animation: toYellow 2s ease;
+}
+
+.t3-page-ce .t3-page-ce-header.isYellow {
+    background-color: #ffffd0;
+}
+
+.t3-page-ce .t3-page-ce-header.flashGreen {
+    animation: flashGreen 2s ease;
+}
+
+.t3-page-ce .t3-page-ce-header.flashRed {
+    animation: flashRed 1s ease;
+    animation-iteration-count: 3;
+}
+
+@keyframes toYellow {
+    100% { background-color: #ffffd0; }
+}
+
+@keyframes flashGreen {
+    50% { background-color: #d0ffd0; }
+}
+
+@keyframes flashRed {
+    50% { background-color: #ffd0d0; }
+}

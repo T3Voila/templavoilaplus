@@ -169,6 +169,7 @@ function sortable_update(element, sortOrder)
     // NO +1, sortOrder starts with 0 and TV+ starts with 1, but we need index of element
     // after which we move this element
     sortableDestinationIndex = sortOrder.indexOf(element.id);
+//     element.data('lastPredecessor', element.prev());
 }
 
 function sortable_start(list, element, sortOrder)
@@ -187,10 +188,15 @@ function sortable_stop(item, placeholder)
 {
     var source = sortable_containers[sortableSourceList] + sortableSourceIndex;
     var destination = sortable_containers[sortableDestinationList] + sortableDestinationIndex;
-    TYPO3.jQuery('.tpm-titlebar', item).css('background-color', '#FFAAAA')
-    // @TODO Show that the move will be saved
+
+    TYPO3.jQuery('.tpm-titlebar', item)
+        .addClass("toYellow")
+        // Add isYellow if animation ends before ajax responded
+        .one("animationend webkitAnimationEnd", function(){ TYPO3.jQuery('.tpm-titlebar', item).addClass("isYellow"); });
+    sortableSourceListInProcess = sortableSourceList;
+
     new TYPO3.jQuery.ajax({
-        async: false,
+        async: true,
         url: TYPO3.settings.ajaxUrls['templavoilaplus_record_move'],
         type: 'post',
         cache: false,
@@ -199,17 +205,31 @@ function sortable_stop(item, placeholder)
             'destination': destination
         },
         success: function(result) {
+            // flash green
             TYPO3.jQuery('.tpm-titlebar', item)
-                .fadeTo(700, 0, function() {TYPO3.jQuery(this).css('background-color', '#AAFFAA');})
-                .fadeTo(700, 1, function() {TYPO3.jQuery(this).css('background-color', '');});
-            // @TODO Check if it is possible that only after ajax response
-            // The element gets visually moved in collection (or moved back on failure)
-            // .sortable('cancel'); to cancel move (but whithout flyout?)
+                .off()
+                .addClass("flashGreen")
+                .removeClass("toYellow")
+                .removeClass("isYellow")
+                .one("animationend webkitAnimationEnd", function(){ TYPO3.jQuery('.tpm-titlebar', item).removeClass("flashGreen"); });
             sortable_updateItemButtons(sortableDestinationList);
             if (sortableSourceList != sortableDestinationList) {
                 sortable_updateItemButtons(sortableSourceList);
 
             }
+        },
+        error: function(result) {
+            // flash red
+            TYPO3.jQuery(sortableSourceListInProcess).sortable( "cancel" );
+            TYPO3.jQuery('.tpm-titlebar', item)
+                .off()
+                .addClass("flashRed")
+                .removeClass("toYellow")
+                .removeClass("isYellow")
+                .one("animationend webkitAnimationEnd", function(){ TYPO3.jQuery('.tpm-titlebar', item).removeClass("flashRed"); });
+        },
+        complete: function(result) {
+            sortableSourceListInProcess = null;
         }
     });
 
@@ -245,6 +265,7 @@ function tv_createSortable(container, connectWith)
         },
         stop: function (event, ui) {
             sortable_stop(ui.item[0], ui.placeholder);
+//             TYPO3.jQuery(TYPO3.jQuery(ui.item[0]).data('lastParent')).after(ui.item[0]);
         },
         receive: function (event, ui) {
             sortable_receive(TYPO3.jQuery(this)[0]);
