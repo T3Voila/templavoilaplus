@@ -67,6 +67,8 @@ class FlexFormElementContainer extends AbstractContainer
                 !is_array($flexFormFieldArray)
                 // Not a section or container and not a list of single items
                 || (!isset($flexFormFieldArray['type']) && !is_array($flexFormFieldArray['config']))
+                // if field has no flexform-representation, skip it!
+                || ($flexFormFieldArray['tx_templavoilaplus']['eType'] == 'none')
             ) {
                 continue;
             }
