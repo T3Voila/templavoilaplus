@@ -70,6 +70,16 @@ $tempColumns = array(
 );
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('tt_content', $tempColumns);
 
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin(
+    [
+        'LLL:EXT:templavoilaplus/Resources/Private/Language/locallang_db.xlf:tt_content.CType_pi1',
+        'templavoilaplus_pi1',
+        'EXT:templavoilaplus/Resources/Public/Icon/icon_fce_ce.png'
+    ],
+    'CType',
+    'templavoilaplus'
+);
+
 $GLOBALS['TCA']['tt_content']['ctrl']['typeicon_classes']['templavoilaplus_pi1'] = 'extensions-templavoila-type-fce';
 
 $GLOBALS['TCA']['tt_content']['types']['templavoilaplus_pi1']['showitem'] =

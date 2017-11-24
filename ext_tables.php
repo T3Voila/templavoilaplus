@@ -60,8 +60,6 @@ if (TYPO3_MODE === 'BE') {
         unset ($GLOBALS['TBE_MODULES']['_PATHS']['web_layout']);
     }
 
-    $GLOBALS['TCA']['pages']['ctrl']['typeicon_classes']['contains-tv+'] = 'extensions-templavoila-templavoila-logo';
-
     // Registering CSH:
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
         'be_groups',
@@ -113,15 +111,6 @@ if (TYPO3_MODE === 'BE') {
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_templavoilaplus_datastructure');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_templavoilaplus_tmplobj');
-
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin(
-    [
-        'LLL:EXT:templavoilaplus/Resources/Private/Language/locallang_db.xlf:tt_content.CType_pi1',
-        'templavoilaplus_pi1',
-        'EXT:templavoilaplus/Resources/Public/Icon/icon_fce_ce.png'
-    ],
-    'CType'
-);
 
 // complex condition to make sure the icons are available during frontend editing...
 if (
