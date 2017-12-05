@@ -1228,7 +1228,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                         <select name="_load_ds_xml_to">' . implode('', $opt) . '</select>
                         <br />
                         <p>' . TemplaVoilaUtility::getLanguageService()->getLL('pasteDSXml') . ':</p>
-                        <textarea rows="15" name="_load_ds_xml_content" wrap="off"' . $GLOBALS['TBE_TEMPLATE']->formWidthText(48, 'width:98%;', 'off') . '></textarea>
+                        <textarea rows="15" name="_load_ds_xml_content" wrap="off" style="width:98%;"></textarea>
                         <br />
                         <input type="submit" name="_load_ds_xml" value="' . TemplaVoilaUtility::getLanguageService()->getLL('loadDSXml') . '" />
                         <input type="submit" name="_" value="' . TemplaVoilaUtility::getLanguageService()->getLL('buttonCancel') . '" />
