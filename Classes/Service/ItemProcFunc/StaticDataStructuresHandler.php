@@ -37,11 +37,6 @@ class StaticDataStructuresHandler
     public $prefix = 'Static: ';
 
     /**
-     * @var string
-     */
-    public $iconPath = '../uploads/tx_templavoilaplus/';
-
-    /**
      * Adds static data structures to selector box items arrays.
      * Adds ALL available structures
      *
@@ -205,7 +200,7 @@ class StaticDataStructuresHandler
                             $toObj->getLabel(),
                             $toObj->getKey(),
                             ($toObj->getIcon()
-                                ? '../' . $toObj->getIcon()
+                                ? $toObj->getIcon()
                                 : 'EXT:templavoilaplus/Resources/Public/Icon/icon_pagetemplate.gif'
                             )
                         );
@@ -257,7 +252,7 @@ class StaticDataStructuresHandler
                         $toObj->getLabel(),
                         $toObj->getKey(),
                         ($toObj->getIcon()
-                            ? '../' . $toObj->getIcon()
+                            ? $toObj->getIcon()
                             : 'EXT:templavoilaplus/Resources/Public/Icon/icon_pagetemplate.gif'
                         )
                     );
