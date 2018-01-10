@@ -29,10 +29,6 @@ class EvaluateDisplayConditions
     extends \TYPO3\CMS\Backend\Form\FormDataProvider\EvaluateDisplayConditions
 {
     /**
-     * @TODO findFieldValue needs to be multilang, as field value may be different per language
-     * @TODO need to check where TODO the language itteration
-     * @TODO evaluateConditions needs to remove from correct language (not from non language left over tree)
-     * @TODO need to check where TODO the language itteration
      * Parsing the condition should not be done per language as this is stable accross all languages.
      */
 
@@ -58,151 +54,161 @@ class EvaluateDisplayConditions
             }
             return $fieldValue;
         }
+
+        // Early return for "parentRec." pointing to a databaseRow field name
+        if (strpos($givenFieldName, 'parentRec.') === 0) {
+            $fieldName = substr($givenFieldName, 10);
+            if (array_key_exists($fieldName, $databaseRow)) {
+                $fieldValue = $databaseRow[$fieldName];
+            }
+            return $fieldValue;
+        }
+
+        if (isset($flexContext['context'])
+            && in_array($flexContext['context'], ['flexSheet', 'flexField', 'flexContainerElement'])
+        ) {
+            // Needs to be qualified per language but atm we are inside parsing the display condition, which shouldn't be
+            // different per language
+            // So we will evaluate the field value on a later point (@see evaluateFieldValueForLanguage)
+            $fieldValue = [
+                'fieldName' => $givenFieldName,
+                'flexContext' => $flexContext,
+            ];
+        }
+
+        return $fieldValue;
+    }
+
+    protected function evaluateFieldValueForLanguage($fieldFlex, $langSheetLevel, $langElementLevel)
+    {
+        $fieldValue = null;
+        $flexContext = $fieldFlex['flexContext'];
+        $givenFieldName = $fieldFlex['fieldName'];
+
         if ($flexContext['context'] === 'flexSheet') {
             // A display condition on a flex form sheet. Relatively simple: fieldName is either
             // "parentRec.fieldName" pointing to a databaseRow field name, or "sheetName.fieldName" pointing
             // to a field value from a neighbor field.
-            if (strpos($givenFieldName, 'parentRec.') === 0) {
-                $fieldName = substr($givenFieldName, 10);
-                if (array_key_exists($fieldName, $databaseRow)) {
-                    $fieldValue = $databaseRow[$fieldName];
-                }
-            } else {
-                if (array_key_exists($givenFieldName, $flexContext['sheetNameFieldNames'])) {
-                    if ($flexContext['currentSheetName'] === $flexContext['sheetNameFieldNames'][$givenFieldName]['sheetName']) {
-                        throw new \RuntimeException(
-                            'Configuring displayCond to "' . $givenFieldName . '" on flex form sheet "'
-                            . $flexContext['currentSheetName'] . '" referencing a value from the same sheet does not make sense.',
-                            1481485705
-                        );
-                    }
-                }
-                $sheetName = $flexContext['sheetNameFieldNames'][$givenFieldName]['sheetName'];
-                $fieldName = $flexContext['sheetNameFieldNames'][$givenFieldName]['fieldName'];
-                if (!isset($flexContext['flexFormRowData']['data'][$sheetName]['lDEF'][$fieldName]['vDEF'])) {
+            if (array_key_exists($givenFieldName, $flexContext['sheetNameFieldNames'])) {
+                if ($flexContext['currentSheetName'] === $flexContext['sheetNameFieldNames'][$givenFieldName]['sheetName']) {
                     throw new \RuntimeException(
-                        'Flex form displayCond on sheet "' . $flexContext['currentSheetName'] . '" references field "' . $fieldName
-                        . '" of sheet "' . $sheetName . '", but that field does not exist in current data structure',
-                        1481488492
+                        'Configuring displayCond to "' . $givenFieldName . '" on flex form sheet "'
+                        . $flexContext['currentSheetName'] . '" referencing a value from the same sheet does not make sense.',
+                        1481485705
                     );
                 }
-                $fieldValue = $flexContext['flexFormRowData']['data'][$sheetName]['lDEF'][$fieldName]['vDEF'];
             }
+            $sheetName = $flexContext['sheetNameFieldNames'][$givenFieldName]['sheetName'];
+            $fieldName = $flexContext['sheetNameFieldNames'][$givenFieldName]['fieldName'];
+            if (!isset($flexContext['flexFormRowData']['data'][$sheetName][$langSheetLevel][$fieldName][$langElementLevel])) {
+                throw new \RuntimeException(
+                    'Flex form displayCond on sheet "' . $flexContext['currentSheetName'] . '" references field "' . $fieldName
+                    . '" of sheet "' . $sheetName . '", but that field does not exist in current data structure',
+                    1481488492
+                );
+            }
+            $fieldValue = $flexContext['flexFormRowData']['data'][$sheetName][$langSheetLevel][$fieldName][$langElementLevel];
         } elseif ($flexContext['context'] === 'flexField') {
             // A display condition on a flex field. Handle "parentRec." similar to sheet conditions,
             // get a list of "local" field names and see if they are used as reference, else see if a
             // "sheetName.fieldName" field reference is given
-            if (strpos($givenFieldName, 'parentRec.') === 0) {
-                $fieldName = substr($givenFieldName, 10);
-                if (array_key_exists($fieldName, $databaseRow)) {
-                    $fieldValue = $databaseRow[$fieldName];
-                }
-            } else {
-                $listOfLocalFlexFieldNames = array_keys(
-                    $flexContext['flexFormDataStructure']['sheets'][$flexContext['currentSheetName']]['ROOT']['el']
-                );
-                if (in_array($givenFieldName, $listOfLocalFlexFieldNames, true)) {
-                    // Condition references field name of the same sheet
-                    $sheetName = $flexContext['currentSheetName'];
-                    if (!isset($flexContext['flexFormRowData']['data'][$sheetName]['lDEF'][$givenFieldName]['vDEF'])) {
-                        throw new \RuntimeException(
-                            'Flex form displayCond on field "' . $flexContext['currentFieldName'] . '" on flex form sheet "'
-                            . $flexContext['currentSheetName'] . '" references field "' . $givenFieldName . '", but a field value'
-                            . ' does not exist in this sheet',
-                            1481492953
-                        );
-                    }
-                    $fieldValue = $flexContext['flexFormRowData']['data'][$sheetName]['lDEF'][$givenFieldName]['vDEF'];
-                } elseif (in_array($givenFieldName, array_keys($flexContext['sheetNameFieldNames'], true))) {
-                    // Condition references field name including a sheet name
-                    $sheetName = $flexContext['sheetNameFieldNames'][$givenFieldName]['sheetName'];
-                    $fieldName = $flexContext['sheetNameFieldNames'][$givenFieldName]['fieldName'];
-                    $fieldValue = $flexContext['flexFormRowData']['data'][$sheetName]['lDEF'][$fieldName]['vDEF'];
-                } else {
+            $listOfLocalFlexFieldNames = array_keys(
+                $flexContext['flexFormDataStructure']['sheets'][$flexContext['currentSheetName']]['ROOT']['el']
+            );
+            if (in_array($givenFieldName, $listOfLocalFlexFieldNames, true)) {
+                // Condition references field name of the same sheet
+                $sheetName = $flexContext['currentSheetName'];
+                if (!isset($flexContext['flexFormRowData']['data'][$sheetName][$langSheetLevel][$givenFieldName][$langElementLevel])) {
                     throw new \RuntimeException(
                         'Flex form displayCond on field "' . $flexContext['currentFieldName'] . '" on flex form sheet "'
-                        . $flexContext['currentSheetName'] . '" references a field or field / sheet combination "'
-                        . $givenFieldName . '" that might be defined in given data structure but is not found in data values.',
-                        1481496170
+                        . $flexContext['currentSheetName'] . '" references field "' . $givenFieldName . '", but a field value'
+                        . ' does not exist in this sheet',
+                        1481492953
                     );
                 }
+                $fieldValue = $flexContext['flexFormRowData']['data'][$sheetName][$langSheetLevel][$givenFieldName][$langElementLevel];
+            } elseif (in_array($givenFieldName, array_keys($flexContext['sheetNameFieldNames'], true))) {
+                // Condition references field name including a sheet name
+                $sheetName = $flexContext['sheetNameFieldNames'][$givenFieldName]['sheetName'];
+                $fieldName = $flexContext['sheetNameFieldNames'][$givenFieldName]['fieldName'];
+                $fieldValue = $flexContext['flexFormRowData']['data'][$sheetName][$langSheetLevel][$fieldName][$langElementLevel];
+            } else {
+                throw new \RuntimeException(
+                    'Flex form displayCond on field "' . $flexContext['currentFieldName'] . '" on flex form sheet "'
+                    . $flexContext['currentSheetName'] . '" references a field or field / sheet combination "'
+                    . $givenFieldName . '" that might be defined in given data structure but is not found in data values.',
+                    1481496170
+                );
             }
         } elseif ($flexContext['context'] === 'flexContainerElement') {
             // A display condition on a flex form section container element. Handle "parentRec.", compare to a
             // list of local field names, compare to a list of field names from same sheet, compare to a list
             // of sheet fields from other sheets.
-            if (strpos($givenFieldName, 'parentRec.') === 0) {
-                $fieldName = substr($givenFieldName, 10);
-                if (array_key_exists($fieldName, $databaseRow)) {
-                    $fieldValue = $databaseRow[$fieldName];
-                }
+            $currentSheetName = $flexContext['currentSheetName'];
+            $currentFieldName = $flexContext['currentFieldName'];
+            $currentContainerIdentifier = $flexContext['currentContainerIdentifier'];
+            $currentContainerElementName = $flexContext['currentContainerElementName'];
+            $listOfLocalContainerElementNames = array_keys(
+                $flexContext['flexFormDataStructure']['sheets'][$currentSheetName]['ROOT']
+                    ['el'][$currentFieldName]
+                    ['children'][$currentContainerIdentifier]
+                    ['el']
+            );
+            $listOfLocalContainerElementNamesWithSheetName = [];
+            foreach ($listOfLocalContainerElementNames as $aContainerElementName) {
+                $listOfLocalContainerElementNamesWithSheetName[$currentSheetName . '.' . $aContainerElementName] = [
+                    'containerElementName' => $aContainerElementName,
+                ];
+            }
+            $listOfLocalFlexFieldNames = array_keys(
+                $flexContext['flexFormDataStructure']['sheets'][$currentSheetName]['ROOT']['el']
+            );
+            if (in_array($givenFieldName, $listOfLocalContainerElementNames, true)) {
+                // Condition references field of same container instance
+                $containerType = array_shift(array_keys(
+                    $flexContext['flexFormRowData']['data'][$currentSheetName]
+                        [$langSheetLevel][$currentFieldName]
+                        ['el'][$currentContainerIdentifier]
+                ));
+                $fieldValue = $flexContext['flexFormRowData']['data'][$currentSheetName]
+                    [$langSheetLevel][$currentFieldName]
+                    ['el'][$currentContainerIdentifier]
+                    [$containerType]
+                    ['el'][$givenFieldName][$langElementLevel];
+            } elseif (in_array($givenFieldName, array_keys($listOfLocalContainerElementNamesWithSheetName, true))) {
+                // Condition references field name of same container instance and has sheet name included
+                $containerType = array_shift(array_keys(
+                    $flexContext['flexFormRowData']['data'][$currentSheetName]
+                    [$langSheetLevel][$currentFieldName]
+                    ['el'][$currentContainerIdentifier]
+                ));
+                $fieldName = $listOfLocalContainerElementNamesWithSheetName[$givenFieldName]['containerElementName'];
+                $fieldValue = $flexContext['flexFormRowData']['data'][$currentSheetName]
+                    [$langSheetLevel][$currentFieldName]
+                    ['el'][$currentContainerIdentifier]
+                    [$containerType]
+                    ['el'][$fieldName][$langElementLevel];
+            } elseif (in_array($givenFieldName, $listOfLocalFlexFieldNames, true)) {
+                // Condition reference field name of sheet this section container is in
+                $fieldValue = $flexContext['flexFormRowData']['data'][$currentSheetName]
+                    [$langSheetLevel][$givenFieldName][$langElementLevel];
+            } elseif (in_array($givenFieldName, array_keys($flexContext['sheetNameFieldNames'], true))) {
+                $sheetName = $flexContext['sheetNameFieldNames'][$givenFieldName]['sheetName'];
+                $fieldName = $flexContext['sheetNameFieldNames'][$givenFieldName]['fieldName'];
+                $fieldValue = $flexContext['flexFormRowData']['data'][$sheetName][$langSheetLevel][$fieldName][$langElementLevel];
             } else {
-                $currentSheetName = $flexContext['currentSheetName'];
-                $currentFieldName = $flexContext['currentFieldName'];
-                $currentContainerIdentifier = $flexContext['currentContainerIdentifier'];
-                $currentContainerElementName = $flexContext['currentContainerElementName'];
-                $listOfLocalContainerElementNames = array_keys(
-                    $flexContext['flexFormDataStructure']['sheets'][$currentSheetName]['ROOT']
-                        ['el'][$currentFieldName]
-                        ['children'][$currentContainerIdentifier]
-                        ['el']
+                $containerType = array_shift(array_keys(
+                    $flexContext['flexFormRowData']['data'][$currentSheetName]
+                    [$langSheetLevel][$currentFieldName]
+                    ['el'][$currentContainerIdentifier]
+                ));
+                throw new \RuntimeException(
+                    'Flex form displayCond on section container field "' . $currentContainerElementName . '" of container type "'
+                    . $containerType . '" on flex form sheet "'
+                    . $flexContext['currentSheetName'] . '" references a field or field / sheet combination "'
+                    . $givenFieldName . '" that might be defined in given data structure but is not found in data values.',
+                    1481634649
                 );
-                $listOfLocalContainerElementNamesWithSheetName = [];
-                foreach ($listOfLocalContainerElementNames as $aContainerElementName) {
-                    $listOfLocalContainerElementNamesWithSheetName[$currentSheetName . '.' . $aContainerElementName] = [
-                        'containerElementName' => $aContainerElementName,
-                    ];
-                }
-                $listOfLocalFlexFieldNames = array_keys(
-                    $flexContext['flexFormDataStructure']['sheets'][$currentSheetName]['ROOT']['el']
-                );
-                if (in_array($givenFieldName, $listOfLocalContainerElementNames, true)) {
-                    // Condition references field of same container instance
-                    $containerType = array_shift(array_keys(
-                        $flexContext['flexFormRowData']['data'][$currentSheetName]
-                            ['lDEF'][$currentFieldName]
-                            ['el'][$currentContainerIdentifier]
-                    ));
-                    $fieldValue = $flexContext['flexFormRowData']['data'][$currentSheetName]
-                        ['lDEF'][$currentFieldName]
-                        ['el'][$currentContainerIdentifier]
-                        [$containerType]
-                        ['el'][$givenFieldName]['vDEF'];
-                } elseif (in_array($givenFieldName, array_keys($listOfLocalContainerElementNamesWithSheetName, true))) {
-                    // Condition references field name of same container instance and has sheet name included
-                    $containerType = array_shift(array_keys(
-                        $flexContext['flexFormRowData']['data'][$currentSheetName]
-                        ['lDEF'][$currentFieldName]
-                        ['el'][$currentContainerIdentifier]
-                    ));
-                    $fieldName = $listOfLocalContainerElementNamesWithSheetName[$givenFieldName]['containerElementName'];
-                    $fieldValue = $flexContext['flexFormRowData']['data'][$currentSheetName]
-                        ['lDEF'][$currentFieldName]
-                        ['el'][$currentContainerIdentifier]
-                        [$containerType]
-                        ['el'][$fieldName]['vDEF'];
-                } elseif (in_array($givenFieldName, $listOfLocalFlexFieldNames, true)) {
-                    // Condition reference field name of sheet this section container is in
-                    $fieldValue = $flexContext['flexFormRowData']['data'][$currentSheetName]
-                        ['lDEF'][$givenFieldName]['vDEF'];
-                } elseif (in_array($givenFieldName, array_keys($flexContext['sheetNameFieldNames'], true))) {
-                    $sheetName = $flexContext['sheetNameFieldNames'][$givenFieldName]['sheetName'];
-                    $fieldName = $flexContext['sheetNameFieldNames'][$givenFieldName]['fieldName'];
-                    $fieldValue = $flexContext['flexFormRowData']['data'][$sheetName]['lDEF'][$fieldName]['vDEF'];
-                } else {
-                    $containerType = array_shift(array_keys(
-                        $flexContext['flexFormRowData']['data'][$currentSheetName]
-                        ['lDEF'][$currentFieldName]
-                        ['el'][$currentContainerIdentifier]
-                    ));
-                    throw new \RuntimeException(
-                        'Flex form displayCond on section container field "' . $currentContainerElementName . '" of container type "'
-                        . $containerType . '" on flex form sheet "'
-                        . $flexContext['currentSheetName'] . '" references a field or field / sheet combination "'
-                        . $givenFieldName . '" that might be defined in given data structure but is not found in data values.',
-                        1481634649
-                    );
-                }
             }
         }
 
@@ -237,91 +243,57 @@ class EvaluateDisplayConditions
             }
         }
 
-        // Search for flex fields and evaluate sheet conditions throwing them away if needed
+        foreach ($listOfFlexFieldNames as $columnName) {
+            $languagesOnSheetLevel = $result['processedTca']['columns'][$columnName]['config']['ds']['meta']['languagesOnSheetLevel'];
+            $languagesOnElementLevel = $result['processedTca']['columns'][$columnName]['config']['ds']['meta']['languagesOnElement'];
+
+            // Evaluate fields per lang
+            foreach ($languagesOnSheetLevel as $isoSheetLevel) {
+                $langSheetLevel = 'l' . $isoSheetLevel;
+                foreach ($languagesOnElementLevel as $isoElementLevel) {
+                    $langElementLevel = 'v' . $isoElementLevel;
+                    $result = $this->evaluateConditionsForLanguage($result, $columnName, $langSheetLevel, $langElementLevel);
+                }
+            }
+        }
+
+        // Unset all displayCond after we processed them
         foreach ($listOfFlexFieldNames as $columnName) {
             $columnConfiguration = $result['processedTca']['columns'][$columnName];
             foreach ($columnConfiguration['config']['ds']['sheets'] as $sheetName => $sheetConfiguration) {
+                // Unset per sheet
                 if (is_array($sheetConfiguration['ROOT']['displayCond'])) {
-                    if (!$this->evaluateConditionRecursive($sheetConfiguration['ROOT']['displayCond'])) {
-                        unset($result['processedTca']['columns'][$columnName]['config']['ds']['sheets'][$sheetName]);
-                    } else {
-                        unset($result['processedTca']['columns'][$columnName]['config']['ds']['sheets'][$sheetName]['ROOT']['displayCond']);
-                    }
+                    unset(
+                        $result['processedTca']['columns'][$columnName]['config']['ds']
+                            ['sheets'][$sheetName]['ROOT']['displayCond']
+                    );
                 }
-            }
-        }
 
-        // With full sheets gone we loop over display conditions of single fields in flex to throw fields away if needed
-        $listOfFlexSectionContainers = [];
-        foreach ($listOfFlexFieldNames as $columnName) {
-            $columnConfiguration = $result['processedTca']['columns'][$columnName];
-            if (is_array($columnConfiguration['config']['ds']['sheets'])) {
-                foreach ($columnConfiguration['config']['ds']['sheets'] as $sheetName => $sheetConfiguration) {
-                    if (is_array($sheetConfiguration['ROOT']['el'])) {
-                        foreach ($sheetConfiguration['ROOT']['el'] as $flexField => $flexConfiguration) {
-                            $conditionResult = true;
-                            if (is_array($flexConfiguration['displayCond'])) {
-                                $conditionResult = $this->evaluateConditionRecursive($flexConfiguration['displayCond']);
-                                if (!$conditionResult) {
-                                    unset(
-                                        $result['processedTca']['columns'][$columnName]['config']['ds']
-                                            ['sheets'][$sheetName]['lDEF']['ROOT']
-                                            ['el'][$flexField]
-                                    );
-                                } else {
-                                    unset(
-                                        $result['processedTca']['columns'][$columnName]['config']['ds']
-                                            ['sheets'][$sheetName]['ROOT']
-                                            ['el'][$flexField]['displayCond']
-                                    );
+                foreach ($sheetConfiguration['ROOT']['el'] as $flexField => $flexConfiguration) {
+                    // Unset per flex field
+                    if (is_array($flexConfiguration['displayCond'])) {
+                        unset(
+                            $result['processedTca']['columns'][$columnName]['config']['ds']
+                                ['sheets'][$sheetName]['ROOT']
+                                ['el'][$flexField]['displayCond']
+                        );
+                    }
+
+                    if (isset($flexConfiguration['children'])) {
+                        foreach ($flexConfiguration['children'] as $containerInstanceName => $containerDataStructure) {
+                            if (isset($containerDataStructure['el']) && is_array($containerDataStructure['el'])) {
+                                foreach ($containerDataStructure['el'] as $containerElementName => $containerElementConfiguration) {
+                                    // Unset per container
+                                    if (is_array($containerElementConfiguration['displayCond'])) {
+                                        unset(
+                                            $result['processedTca']['columns'][$columnName]['config']['ds']
+                                                ['sheets'][$sheetName]['ROOT']
+                                                ['el'][$flexField]
+                                                ['children'][$containerInstanceName]
+                                                ['el'][$containerElementName]['displayCond']
+                                        );
+                                    }
                                 }
-                            }
-                            // If it was not removed and if the field is a section container, add it to the section container list
-                            if ($conditionResult
-                                && isset($flexConfiguration['type']) && $flexConfiguration['type'] === 'array'
-                                && isset($flexConfiguration['section']) && $flexConfiguration['section'] == 1
-                                && isset($flexConfiguration['children']) && is_array($flexConfiguration['children'])
-                            ) {
-                                $listOfFlexSectionContainers[] = [
-                                    'columnName' => $columnName,
-                                    'sheetName' => $sheetName,
-                                    'flexField' => $flexField,
-                                ];
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        // Loop over found section container elements and evaluate their conditions
-        foreach ($listOfFlexSectionContainers as $flexSectionContainerPosition) {
-            $columnName = $flexSectionContainerPosition['columnName'];
-            $sheetName = $flexSectionContainerPosition['sheetName'];
-            $flexField = $flexSectionContainerPosition['flexField'];
-            $sectionElement = $result['processedTca']['columns'][$columnName]['config']['ds']
-                ['sheets'][$sheetName]['ROOT']
-                ['el'][$flexField];
-            foreach ($sectionElement['children'] as $containerInstanceName => $containerDataStructure) {
-                if (isset($containerDataStructure['el']) && is_array($containerDataStructure['el'])) {
-                    foreach ($containerDataStructure['el'] as $containerElementName => $containerElementConfiguration) {
-                        if (is_array($containerElementConfiguration['displayCond'])) {
-                            if (!$this->evaluateConditionRecursive($containerElementConfiguration['displayCond'])) {
-                                unset(
-                                    $result['processedTca']['columns'][$columnName]['config']['ds']
-                                        ['sheets'][$sheetName]['ROOT']
-                                        ['el'][$flexField]
-                                        ['children'][$containerInstanceName]
-                                        ['el'][$containerElementName]
-                                );
-                            } else {
-                                unset(
-                                    $result['processedTca']['columns'][$columnName]['config']['ds']
-                                        ['sheets'][$sheetName]['ROOT']
-                                        ['el'][$flexField]
-                                        ['children'][$containerInstanceName]
-                                        ['el'][$containerElementName]['displayCond']
-                                );
                             }
                         }
                     }
@@ -330,5 +302,97 @@ class EvaluateDisplayConditions
         }
 
         return $result;
+    }
+
+    protected function evaluateConditionsForLanguage(array $result, $columnName, $langSheetLevel, $langElementLevel): array
+    {
+        // Search for flex fields and evaluate sheet conditions throwing them away if needed
+        $columnConfiguration = $result['processedTca']['columns'][$columnName];
+        foreach ($columnConfiguration['config']['ds']['sheets'] as $sheetName => $sheetConfiguration) {
+            if (is_array($sheetConfiguration['ROOT']['displayCond'])) {
+                if (!$this->evaluateConditionRecursiveByLanguage($sheetConfiguration['ROOT']['displayCond'], $langSheetLevel, $langElementLevel)) {
+                    unset($result['processedTca']['columns'][$columnName]['config']['ds']['sheets'][$sheetName][$langElementLevel]);
+                }
+            }
+        }
+
+        // With full sheets gone we loop over display conditions of single fields in flex to throw fields away if needed
+        $columnConfiguration = $result['processedTca']['columns'][$columnName];
+        if (is_array($columnConfiguration['config']['ds']['sheets'])) {
+            foreach ($columnConfiguration['config']['ds']['sheets'] as $sheetName => $sheetConfiguration) {
+                if (is_array($sheetConfiguration['ROOT']['el'])) {
+                    foreach ($sheetConfiguration['ROOT']['el'] as $flexField => $flexConfiguration) {
+                        $conditionResult = true;
+                        if (is_array($flexConfiguration['displayCond'])) {
+                            $conditionResult = $this->evaluateConditionRecursiveByLanguage($flexConfiguration['displayCond'], $langSheetLevel, $langElementLevel);
+                            if (!$conditionResult) {
+                                unset(
+                                    $result['processedTca']['columns'][$columnName]['config']['ds']
+                                        ['sheets'][$sheetName][$langSheetLevel]['ROOT']
+                                        ['el'][$flexField][$langElementLevel]
+                                );
+                            }
+                        }
+                        // If it was not removed and if the field is a section container, add it to the section container list
+                        if ($conditionResult
+                            && isset($flexConfiguration['type']) && $flexConfiguration['type'] === 'array'
+                            && isset($flexConfiguration['section']) && $flexConfiguration['section'] == 1
+                            && isset($flexConfiguration['children']) && is_array($flexConfiguration['children'])
+                        ) {
+                            // Loop over found section container elements and evaluate their conditions
+                            foreach ($flexConfiguration['children'] as $containerInstanceName => $containerDataStructure) {
+                                if (isset($containerDataStructure['el']) && is_array($containerDataStructure['el'])) {
+                                    foreach ($containerDataStructure['el'] as $containerElementName => $containerElementConfiguration) {
+                                        if (is_array($containerElementConfiguration['displayCond'])) {
+                                            if (!$this->evaluateConditionRecursive($containerElementConfiguration['displayCond'])) {
+                                                unset(
+                                                    $result['processedTca']['columns'][$columnName]['config']['ds']
+                                                        ['sheets'][$sheetName][$langSheetLevel]['ROOT']
+                                                        ['el'][$flexField][$langElementLevel]
+                                                        ['children'][$containerInstanceName]
+                                                        ['el'][$containerElementName]
+                                                );
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return $result;
+    }
+
+    protected function evaluateConditionRecursiveByLanguage(array $conditionArray, $langSheetLevel, $langElementLevel)
+    {
+        switch ($conditionArray['type']) {
+            case 'AND':
+                $result = true;
+                foreach ($conditionArray['subConditions'] as $subCondition) {
+                    $result = $result && $this->evaluateConditionRecursiveByLanguage($subCondition, $langSheetLevel, $langElementLevel);
+                }
+                return $result;
+            case 'OR':
+                $result = false;
+                foreach ($conditionArray['subConditions'] as $subCondition) {
+                    $result = $result || $this->evaluateConditionRecursiveByLanguage($subCondition, $langSheetLevel, $langElementLevel);
+                }
+                return $result;
+            case 'FIELD':
+                $conditionArray['fieldValue'] = $this->evaluateFieldValueForLanguage($conditionArray['fieldValue'], $langSheetLevel, $langElementLevel);
+                return $this->matchFieldCondition($conditionArray);
+            case 'HIDE_FOR_NON_ADMINS':
+                return (bool)$this->getBackendUser()->isAdmin();
+            case 'REC':
+                return $this->matchRecordCondition($conditionArray);
+            case 'VERSION':
+                return $this->matchVersionCondition($conditionArray);
+            case 'USER':
+                return $this->matchUserCondition($conditionArray);
+        }
+        return false;
     }
 }
