@@ -19,6 +19,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
+use Ppi\TemplaVoilaPlus\Utility\FileUtility;
 
 $GLOBALS['LANG']->includeLLFile(
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('templavoilaplus') . 'Resources/Private/Language/BackendTemplateMapping.xlf'
@@ -103,7 +104,6 @@ class BackendTemplateDisplayController extends \TYPO3\CMS\Backend\Module\BaseScr
     public function main()
     {
         // Setting GPvars:
-        $displayFile = GeneralUtility::_GP('file');
         $show = GeneralUtility::_GP('show');
         $preview = GeneralUtility::_GP('preview');
         $limitTags = GeneralUtility::_GP('limitTags');
@@ -118,8 +118,13 @@ class BackendTemplateDisplayController extends \TYPO3\CMS\Backend\Module\BaseScr
                 $mode = '';
         }
 
+        $displayFile = null;
+        if (!empty(GeneralUtility::_GP('file')) && FileUtility::haveTemplateAccess(GeneralUtility::_GP('file'))) {
+            $displayFile = \Ppi\TemplaVoilaPlus\Domain\Model\File::filename(GeneralUtility::_GP('file'));
+        }
+
         // Checking if the displayFile parameter is set:
-        if (@is_file($displayFile) && GeneralUtility::getFileAbsFileName($displayFile)) {
+        if ($displayFile !== null) {
             $fileData = GeneralUtility::getUrl($displayFile);
             if ($fileData) {
                 $relPathFix = $GLOBALS['BACK_PATH'] . '../' . dirname(substr($displayFile, strlen(PATH_site))) . '/';
