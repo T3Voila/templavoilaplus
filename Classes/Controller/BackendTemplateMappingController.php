@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 use Ppi\TemplaVoilaPlus\Utility\DataStructureUtility;
+use Ppi\TemplaVoilaPlus\Utility\FileUtility;
 
 $GLOBALS['LANG']->includeLLFile(
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('templavoilaplus') . 'Resources/Private/Language/BackendTemplateMapping.xlf'
@@ -381,7 +382,11 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
 
         // Setting GPvars:
         // It can be, that we get a storeg:file link from clickmenu
-        $this->displayFile = \Ppi\TemplaVoilaPlus\Domain\Model\File::filename(GeneralUtility::_GP('file'));
+        $this->displayFile = null;
+        if (!empty(GeneralUtility::_GP('file')) && FileUtility::haveTemplateAccess(GeneralUtility::_GP('file'))) {
+            $this->displayFile = \Ppi\TemplaVoilaPlus\Domain\Model\File::filename(GeneralUtility::_GP('file'));
+        }
+
         $this->displayTable = GeneralUtility::_GP('table');
         $this->displayUid = GeneralUtility::_GP('uid');
 
@@ -1488,8 +1493,8 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
 
                 // Find the file:
                 $theFile = GeneralUtility::getFileAbsFileName($row['fileref'], 1);
-                if ($theFile && @is_file($theFile)) {
-                    $relFilePath = substr($theFile, strlen(PATH_site));
+                if ($theFile && FileUtility::haveTemplateAccess($row['fileref'])) {
+                    $relFilePath = substr($theFile, strlen($theFile));
                     $onCl = 'return top.openUrlInWindow(\'' . GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $relFilePath . '\',\'FileView\');';
                     $tRows[] = '
                         <tr>
