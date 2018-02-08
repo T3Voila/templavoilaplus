@@ -560,7 +560,7 @@ class FrontendController extends AbstractPlugin
                                 $registerCounter++;
                                 if (is_array($el)) {
                                     $theKey = key($el);
-                                    if (is_array($dataValues[$key]['el'][$ik][$theKey]['el'])) {
+                                    if (isset($dataValues[$key]['el'][$ik][$theKey]['el']) && is_array($dataValues[$key]['el'][$ik][$theKey]['el'])) {
                                         $this->processDataValues($dataValues[$key]['el'][$ik][$theKey]['el'], $DSelements[$key]['el'][$theKey]['el'], $TOelements[$key]['el'][$theKey]['el'], $valueKey);
 
                                         // If what was an array is returned as a non-array (eg. string "__REMOVE") then unset the whole thing:
