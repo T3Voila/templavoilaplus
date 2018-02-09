@@ -39,6 +39,13 @@ class TableConfigurationPostProcessingHook implements TableConfigurationPostProc
             'priority' => 40,
             'class' => \Ppi\TemplaVoilaPlus\Form\Container\FlexFormElementContainer::class,
         ];
+        if (version_compare(TYPO3_version, '8.5.0', '>=')) {
+            $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1443361301] = [
+                'nodeName' => 'flexFormSectionContainer',
+                'priority' => 40,
+                'class' => \Ppi\TemplaVoilaPlus\Form\Container\FlexFormSectionContainer::class,
+            ];
+        }
     }
 
     public function registerFormEngineProviders()
