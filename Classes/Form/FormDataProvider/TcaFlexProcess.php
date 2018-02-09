@@ -55,7 +55,6 @@ class TcaFlexProcess implements FormDataProviderInterface
             $result = $this->addDataStructurePointersToMetaData($result, $fieldName);
             if (!empty($result['flexSectionContainerPreparation']) && version_compare(TYPO3_version, '8.6.0', '>=')) {
                 // Create data and default values for a new section container, set by FormFlexAjaxController
-                die('A');
                 $result = $this->prepareNewSectionContainer($result, $fieldName);
             }
         }
@@ -443,7 +442,6 @@ class TcaFlexProcess implements FormDataProviderInterface
              $tcaValueArray = [
                  'uid' => $result['databaseRow']['uid'],
              ];
-
              foreach ($languagesOnSheetLevel as $isoSheetLevel) {
                  $langSheetLevel = 'l' . $isoSheetLevel;
                  $result['processedTca']['columns'][$fieldName]['config']['ds']['sheets'][$dataStructureSheetName][$langSheetLevel]
@@ -570,13 +568,6 @@ class TcaFlexProcess implements FormDataProviderInterface
                                                                 [$singleFieldName][$langElementLevel]
                                                                 = $flexSegmentResult['databaseRow'][$singleFieldName];
                                                         }
-                                                        // Set TCA structure result, actually, this call *might* be obsolete since the "dummy"
-                                                        // handling below will set it again.
-                                                        $result['processedTca']['columns'][$fieldName]['config']['ds']
-                                                            ['sheets'][$dataStructureSheetName][$langSheetLevel]['ROOT']['el'][$dataStructureFieldName]['el']
-                                                            [$aContainerName]['el'][$langElementLevel]
-                                                            = $flexSegmentResult['processedTca']['columns'][$singleFieldName];
-
                                                         if (!isset($containerDataStructuresPerContainer[$aContainerIdentifier]['el'][$singleFieldName])) {
                                                             $containerDataStructuresPerContainer[$aContainerIdentifier]['el'][$singleFieldName]
                                                                 = $flexSegmentResult['processedTca']['columns'][$singleFieldName];
@@ -603,6 +594,9 @@ class TcaFlexProcess implements FormDataProviderInterface
                                     ['sheets'][$dataStructureSheetName][$langSheetLevel]['ROOT']['el']
                                     [$dataStructureFieldName]['children'] = [];
                             }
+                            $result['processedTca']['columns'][$fieldName]['config']['ds']
+                                ['sheets'][$dataStructureSheetName][$langSheetLevel]['ROOT']['el']
+                                [$dataStructureFieldName]['lKEY'] = $langSheetLevel;
                             // Prepare "fresh" row for every possible container
                             if (isset($dataStructureFields[$dataStructureFieldName]['el']) && is_array($dataStructureFields[$dataStructureFieldName]['el'])) {
                                 foreach ($dataStructureFields[$dataStructureFieldName]['el'] as $possibleContainerName => $possibleContainerConfiguration) {
@@ -778,6 +772,7 @@ class TcaFlexProcess implements FormDataProviderInterface
                         }
                     }
                 }
+
         }
 
         return $result;
@@ -798,49 +793,62 @@ class TcaFlexProcess implements FormDataProviderInterface
         $flexFormContainerName = $flexSectionContainerPreparation['flexFormContainerName'];
         $flexFormContainerIdentifier = $flexSectionContainerPreparation['flexFormContainerIdentifier'];
 
-        $containerConfiguration = $result['processedTca']['columns'][$fieldName]['config']['ds']
-            ['sheets'][$flexFormSheetName]['ROOT']['el'][$flexFormFieldName]['el'][$flexFormContainerName];
+        $availableLanguageCodes = $result['processedTca']['columns'][$fieldName]['config']['ds']['meta']['availableLanguageCodes'];
+        if ($dataStructure['meta']['langChildren']) {
+            $languagesOnSheetLevel = [ 'DEF' ];
+        } else {
+            $languagesOnSheetLevel = $availableLanguageCodes;
+        }
 
-        if (isset($containerConfiguration['el']) && is_array($containerConfiguration['el'])) {
-            $formDataGroup = GeneralUtility::makeInstance(FlexFormSegment::class);
-            $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
-            $inputToFlexFormSegment = [
-                'tableName' => $result['tableName'],
-                'command' => 'new',
-                // It is currently not possible to have pageTsConfig for section container
-                'pageTsConfig' => [],
-                'databaseRow' => [
-                    'uid' => $result['databaseRow']['uid'],
-                ],
-                'processedTca' => [
-                    'ctrl' => [],
-                    'columns' => $containerConfiguration['el'],
-                ],
-                'selectTreeCompileItems' => $result['selectTreeCompileItems'],
-                'flexParentDatabaseRow' => $result['databaseRow'],
-            ];
-            $flexSegmentResult = $formDataCompiler->compile($inputToFlexFormSegment);
+        foreach ($languagesOnSheetLevel as $isoSheetLevel) {
+            $langSheetLevel = 'l' . $isoSheetLevel;
 
-            foreach ($containerConfiguration['el'] as $singleFieldName => $singleFieldConfiguration) {
-                // Set 'data structures for this new container' to 'children'
-                $result['processedTca']['columns'][$fieldName]['config']['ds']
-                    ['sheets'][$flexFormSheetName]['ROOT']['el']
-                    [$flexFormFieldName]['children'][$flexFormContainerIdentifier]
-                    = $containerConfiguration;
-                $result['processedTca']['columns'][$fieldName]['config']['ds']
-                    ['sheets'][$flexFormSheetName]['ROOT']['el']
-                    [$flexFormFieldName]['children'][$flexFormContainerIdentifier]['el']
-                    = $flexSegmentResult['processedTca']['columns'];
-                // Set calculated value - this especially contains "default values from TCA"
-                $result['databaseRow'][$fieldName]['data'][$flexFormSheetName]['lDEF']
-                    [$flexFormFieldName]['el']
-                    [$flexFormContainerIdentifier][$flexFormContainerName]['el'][$singleFieldName]['vDEF']
-                    = $flexSegmentResult['databaseRow'][$singleFieldName];
+            $containerConfiguration = $result['processedTca']['columns'][$fieldName]['config']['ds']
+                ['sheets'][$flexFormSheetName][$langSheetLevel]['ROOT']['el'][$flexFormFieldName]['el'][$flexFormContainerName];
+
+            if (isset($containerConfiguration['el']) && is_array($containerConfiguration['el'])) {
+                $formDataGroup = GeneralUtility::makeInstance(FlexFormSegment::class);
+                $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
+                $inputToFlexFormSegment = [
+                    'tableName' => $result['tableName'],
+                    'command' => 'new',
+                    // It is currently not possible to have pageTsConfig for section container
+                    'pageTsConfig' => [],
+                    'databaseRow' => [
+                        'uid' => $result['databaseRow']['uid'],
+                    ],
+                    'processedTca' => [
+                        'ctrl' => [],
+                        'columns' => $containerConfiguration['el'],
+                    ],
+                    'selectTreeCompileItems' => $result['selectTreeCompileItems'],
+                    'flexParentDatabaseRow' => $result['databaseRow'],
+                ];
+
+                $flexSegmentResult = $formDataCompiler->compile($inputToFlexFormSegment);
+
+                foreach ($containerConfiguration['el'] as $singleFieldName => $singleFieldConfiguration) {
+                    // Set 'data structures for this new container' to 'children'
+                    $result['processedTca']['columns'][$fieldName]['config']['ds']
+                        ['sheets'][$flexFormSheetName][$langSheetLevel]['ROOT']['el']
+                        [$flexFormFieldName]['children'][$flexFormContainerIdentifier]
+                        = $containerConfiguration;
+                    $result['processedTca']['columns'][$fieldName]['config']['ds']
+                        ['sheets'][$flexFormSheetName][$langSheetLevel]['ROOT']['el']
+                        [$flexFormFieldName]['children'][$flexFormContainerIdentifier]['el']
+                        = $flexSegmentResult['processedTca']['columns'];
+                    // Set calculated value - this especially contains "default values from TCA"
+                    $result['databaseRow'][$fieldName]['data'][$flexFormSheetName]['lDEF']
+                        [$flexFormFieldName]['el']
+                        [$flexFormContainerIdentifier][$flexFormContainerName]['el'][$singleFieldName]['vDEF']
+                        = $flexSegmentResult['databaseRow'][$singleFieldName];
+                }
             }
         }
 
         return $result;
     }
+
     /**
      * Modify data structure of a single "sheet"
      * Sets "secondary" data like sheet names and so on, but does NOT modify single elements

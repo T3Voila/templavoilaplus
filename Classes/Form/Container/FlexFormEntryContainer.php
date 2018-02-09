@@ -36,6 +36,7 @@ class FlexFormEntryContainer extends AbstractContainer
      */
     public function render()
     {
+        $flexFormDataStructureIdentifier = $this->data['parameterArray']['fieldConf']['config']['dataStructureIdentifier'];
         $flexFormDataStructureArray = $this->data['parameterArray']['fieldConf']['config']['ds'];
         $flexFormRowData = $this->data['parameterArray']['itemFormElValue'];
 
@@ -81,6 +82,8 @@ class FlexFormEntryContainer extends AbstractContainer
             $options['flexFormCurrentLanguage'] = $flexFormCurrentLanguage;
             $options['flexFormDataStructureArray'] = $flexFormDataStructureArray;
             $options['flexFormRowData'] = $flexFormRowData;
+            $options['flexFormDataStructureIdentifier'] = $flexFormDataStructureIdentifier;
+
             if (!$hasTabs) {
                 $options['renderType'] = 'flexFormNoTabsContainer';
                 $flexFormNoTabsResult = $this->nodeFactory->create($options)->render();
@@ -91,7 +94,7 @@ class FlexFormEntryContainer extends AbstractContainer
                 $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $flexFormTabsContainerResult);
             }
         }
-        $resultArray['requireJsModules'][] = 'TYPO3/CMS/Backend/FormEngineFlexForm';
+        $resultArray['requireJsModules'][] = 'TYPO3/CMS/Templavoilaplus/FormEngineFlexForm';
 
         return $resultArray;
     }

@@ -28,4 +28,13 @@ return [
         'path' => '/record/tree/fetchData',
         'target' => Ppi\TemplaVoilaPlus\Form\Controller\FormSelectTreeAjaxController::class . '::fetchDataAction'
     ],
+    'record_tree_data' => [
+        'path' => '/record/tree/fetchData',
+        'target' => Ppi\TemplaVoilaPlus\Form\Controller\FormFlexAjaxController::class . '::fetchDataAction'
+    ],
+    // Add a flex form section container
+    'record_flex_container_add' => [
+        'path' => '/record/flex/containeradd',
+        'target' => Ppi\TemplaVoilaPlus\Form\Controller\FormFlexAjaxController::class . '::containerAdd',
+    ],
 ];
