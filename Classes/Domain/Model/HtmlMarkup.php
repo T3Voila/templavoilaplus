@@ -601,18 +601,22 @@ class HtmlMarkup
     ) {
         $isSection = 0;
         $htmlParse = ($this->htmlParse ? $this->htmlParse : GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class));
-        if (is_array($editStruct) && count($editStruct)) {
-            $testInt = implode('', array_keys($editStruct));
-            $isSection = !preg_match('/[^0-9]/', $testInt);
+        if (is_array($editStruct) && isset($editStruct['_SECTION']) && $editStruct['_SECTION'] === true) {
+            $isSection = true;
         }
+
         $out = '';
         if ($isSection) {
-            foreach ($editStruct as $section) {
+            foreach ($editStruct as $key => $section) {
+                if ($key === '__SECTION') {
+                    continue;
+                }
                 if (is_array($section)) {
                     $secKey = key($section);
                     $secDat = $section[$secKey];
                     if ($currentMappingInfo['sub'][$secKey]) {
                         $out .= $this->mergeFormDataIntoTemplateStructure($secDat['el'], $currentMappingInfo['sub'][$secKey], '', $valueKey);
+                        var_dump($out);
                     }
                 }
             }
