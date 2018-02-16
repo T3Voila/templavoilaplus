@@ -570,6 +570,7 @@ class FrontendController extends AbstractPlugin
                                     }
                                 }
                             }
+                            $dataValues[$key]['el']['__SECTION'] = true;
                         } else {
                             $this->processDataValues($dataValues[$key]['el'], $DSelements[$key]['el'], $TOelements[$key]['el'], $valueKey);
                         }
