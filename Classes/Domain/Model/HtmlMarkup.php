@@ -601,7 +601,7 @@ class HtmlMarkup
     ) {
         $isSection = 0;
         $htmlParse = ($this->htmlParse ? $this->htmlParse : GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class));
-        if (is_array($editStruct) && isset($editStruct['_SECTION']) && $editStruct['_SECTION'] === true) {
+        if (is_array($editStruct) && isset($editStruct['__SECTION']) && $editStruct['__SECTION'] === true) {
             $isSection = true;
         }
 
