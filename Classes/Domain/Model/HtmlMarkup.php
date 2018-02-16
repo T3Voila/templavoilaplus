@@ -616,7 +616,6 @@ class HtmlMarkup
                     $secDat = $section[$secKey];
                     if ($currentMappingInfo['sub'][$secKey]) {
                         $out .= $this->mergeFormDataIntoTemplateStructure($secDat['el'], $currentMappingInfo['sub'][$secKey], '', $valueKey);
-                        var_dump($out);
                     }
                 }
             }
