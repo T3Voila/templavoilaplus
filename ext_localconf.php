@@ -113,3 +113,13 @@ $signalSlotDispatcher->connect(
     \Ppi\TemplaVoilaPlus\Slots\TranslationServiceSlot::class,
     'postProcessMirrorUrl'
 );
+
+// Register install/update processes
+// 8LTS Update
+if (version_compare(TYPO3_version, '8.6.0', '>=')) {
+    // Add us as first Update process, so we can run before DatabaseRowsUpdateWizard
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'] = array_merge(
+        [\Ppi\TemplaVoilaPlus\Updates\Typo8Update::class => \Ppi\TemplaVoilaPlus\Updates\Typo3Lts8Update::class],
+        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']
+    );
+}
