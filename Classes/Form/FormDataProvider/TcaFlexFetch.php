@@ -92,15 +92,35 @@ class TcaFlexFetch implements FormDataProviderInterface
     {
         if (!isset($result['processedTca']['columns'][$fieldName]['config']['dataStructureIdentifier'])) {
             $flexFormTools = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class);
-            $dataStructureIdentifier = $flexFormTools->getDataStructureIdentifier(
-                $result['processedTca']['columns'][$fieldName],
-                $result['tableName'],
-                $fieldName,
-                $result['databaseRow']
-            );
-            // Add the identifier to TCA to use it later during rendering
-            $result['processedTca']['columns'][$fieldName]['config']['dataStructureIdentifier'] = $dataStructureIdentifier;
-            $dataStructureArray = $flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
+
+            $dataStructureIdentifier = '';
+            $dataStructureArray = [
+                'sheets' => [
+                    'sDEF' => [
+                        'ROOT' => [
+                            'el' => [],
+                        ],
+                    ],
+                ],
+            ];
+
+            try {
+                $dataStructureIdentifier = $flexFormTools->getDataStructureIdentifier(
+                    $result['processedTca']['columns'][$fieldName],
+                    $result['tableName'],
+                    $fieldName,
+                    $result['databaseRow']
+                );
+                $dataStructureArray = $flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
+            } catch (\TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidParentRowException $e) {
+            } catch (\TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidParentRowLoopException $e) {
+            } catch (\TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidParentRowRootException $e) {
+            } catch (\TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidPointerFieldValueException $e) {
+            } catch (\TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidIdentifierException $e) {
+            } finally {
+                // Add the identifier to TCA to use it later during rendering
+                $result['processedTca']['columns'][$fieldName]['config']['dataStructureIdentifier'] = $dataStructureIdentifier;
+            }
         } else {
             // Assume the data structure has been given from outside if the data structure identifier is already set.
             $dataStructureArray = $result['processedTca']['columns'][$fieldName]['config']['ds'];
