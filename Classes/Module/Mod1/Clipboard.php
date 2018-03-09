@@ -113,8 +113,9 @@ class Clipboard implements SingletonInterface
 
         // Fetch the element from the "normal" clipboard (if any) and set the button states accordingly:
         if (is_array($this->t3libClipboardObj->clipData['normal']['el'])) {
-            reset($this->t3libClipboardObj->clipData['normal']['el']);
-            list ($clipboardElementTableAndUid, $clipboardElementPointerString) = each($this->t3libClipboardObj->clipData['normal']['el']);
+            $clipboardElementPointerString = reset($this->t3libClipboardObj->clipData['normal']['el']);
+            $clipboardElementTableAndUid = key($this->t3libClipboardObj->clipData['normal']['el']);
+
             $clipboardElementPointer = $this->pObj->apiObj->flexform_getValidPointer($clipboardElementPointerString);
 
             // If we have no flexform reference pointing to the element, we create a short flexform pointer pointing to the record directly:
@@ -217,8 +218,8 @@ class Clipboard implements SingletonInterface
             return '';
         }
 
-        reset($this->t3libClipboardObj->clipData['normal']['el']);
-        list ($clipboardElementTableAndUid, $clipboardElementPointerString) = each($this->t3libClipboardObj->clipData['normal']['el']);
+        $clipboardElementPointerString = reset($this->t3libClipboardObj->clipData['normal']['el']);
+        $clipboardElementTableAndUid = key($this->t3libClipboardObj->clipData['normal']['el']);
         $clipboardElementPointer = $this->pObj->apiObj->flexform_getValidPointer($clipboardElementPointerString);
 
         // If we have no flexform reference pointing to the element, we create a short flexform pointer pointing to the record directly:
