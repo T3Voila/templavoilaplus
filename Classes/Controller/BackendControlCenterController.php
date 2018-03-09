@@ -627,7 +627,7 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
 
         // Preview icon:
         if ($dsObj->getIcon()) {
-            $previewIcon = '<img src="' . $this->getThumbnail($dsObj->getIcon()) . '" alt="" />';
+            $previewIcon = '<img src="' . $this->getThumbnail(realpath($dsObj->getIcon())) . '" alt="" />';
         } else {
             $previewIcon = TemplaVoilaUtility::getLanguageService()->getLL('noicon', true);
         }
@@ -683,6 +683,12 @@ class BackendControlCenterController extends \TYPO3\CMS\Backend\Module\BaseScrip
                     <td>' . TemplaVoilaUtility::getLanguageService()->getLL('updated', true) . '</td>
                     <td>' . BackendUtility::datetime($dsObj->getTstamp()) . '</td>
                 </tr>
+                ' . ($previewIcon ?
+		        '<tr>
+                    <td></td>
+                    <td>' . TemplaVoilaUtility::getLanguageService()->getLL('preview', true) . '</td>
+                    <td>' . $previewIcon . '</td>
+                </tr>' : '') . '
             </tbody>
         </table>';
 
