@@ -402,7 +402,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         }
 
         // enable debug for development
-        if ($this->modTSconfig['properties']['debug']) {
+        if (isset($this->modTSconfig['properties']['debug']) && $this->modTSconfig['properties']['debug']) {
             $this->debug = true;
         }
         $this->blindIcons = isset($this->modTSconfig['properties']['blindIcons']) ? GeneralUtility::trimExplode(',', $this->modTSconfig['properties']['blindIcons'], true) : array();
@@ -430,21 +430,21 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         }
 
         // Initialize side bar and wizards:
-        $this->sideBarObj =& GeneralUtility::getUserObj('Ppi\\TemplaVoilaPlus\Module\\Mod1\\Sidebar', '');
+        $this->sideBarObj = GeneralUtility::getUserObj('Ppi\\TemplaVoilaPlus\Module\\Mod1\\Sidebar', '');
         $this->sideBarObj->init($this);
 
         $this->wizardsObj = GeneralUtility::getUserObj('Ppi\\TemplaVoilaPlus\Module\\Mod1\\Wizards', '');
         $this->wizardsObj->init($this);
         // Initialize the clipboard
-        $this->clipboardObj =& GeneralUtility::getUserObj('Ppi\\TemplaVoilaPlus\Module\\Mod1\\Clipboard', '');
+        $this->clipboardObj = GeneralUtility::getUserObj('Ppi\\TemplaVoilaPlus\Module\\Mod1\\Clipboard', '');
         $this->clipboardObj->init($this);
 
         // Initialize the record module
-        $this->recordsObj =& GeneralUtility::getUserObj('Ppi\\TemplaVoilaPlus\Module\\Mod1\\Records', '');
+        $this->recordsObj = GeneralUtility::getUserObj('Ppi\\TemplaVoilaPlus\Module\\Mod1\\Records', '');
         $this->recordsObj->init($this);
         // Add the localization module if localization is enabled:
         if ($this->alternativeLanguagesDefined()) {
-            $this->localizationObj =& GeneralUtility::getUserObj('Ppi\\TemplaVoilaPlus\Module\\Mod1\\Localization', '');
+            $this->localizationObj = GeneralUtility::getUserObj('Ppi\\TemplaVoilaPlus\Module\\Mod1\\Localization', '');
             $this->localizationObj->init($this);
         }
     }
@@ -456,7 +456,19 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      */
     public function menuConfig()
     {
-        $this->modTSconfig = BackendUtility::getModTSconfig($this->id, 'mod.' . $this->moduleName);
+        // Set defaults, which can be overwritten
+        $this->modTSconfig = [
+            'properties' => [
+                'showTabsIfEmpty' => false,
+                'recordDisplay_tables' => '',
+                'tabList' => false,
+            ]
+        ];
+
+        $this->modTSconfig = array_merge_recursive(
+            BackendUtility::getModTSconfig($this->id, 'mod.' . $this->moduleName),
+            $this->modTSconfig
+        );
 
         // Prepare array of sys_language uids for available translations:
         $this->translatedLanguagesArr = $this->getAvailableLanguages($this->id);
@@ -468,13 +480,13 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         $this->MOD_MENU = array(
             'tt_content_showHidden' => 1,
             'showOutline' => 1,
-            'language' => $translatedLanguagesUids,
+            'language' => '7', // $translatedLanguagesUids,
             'clip_parentPos' => '',
             'clip' => '',
             'langDisplayMode' => '',
             'recordsView_table' => '',
             'recordsView_start' => '',
-            'disablePageStructureInheritance' => ''
+            'disablePageStructureInheritance' => '',
         );
 
         // Hook: menuConfig_preProcessModMenu
@@ -489,7 +501,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         $this->MOD_MENU['view'] = BackendUtility::unsetMenuItems($this->modTSconfig['properties'], $this->MOD_MENU['view'], 'menu.function');
 
         // CLEANSE SETTINGS
-        $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, GeneralUtility::_GP('SET'), $this->moduleName);
+        $this->MOD_SETTINGS = BackendUtility::getModuleData([$this->MOD_MENU], GeneralUtility::_GP('SET'), $this->moduleName);
     }
 
     /*******************************************
@@ -533,7 +545,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             $pageInfoArr = BackendUtility::readPageAccess($altRootRecord['pid'], $this->perms_clause);
         } else {
             $pageInfoArr = BackendUtility::readPageAccess($this->id, $this->perms_clause);
-            $access = (int)$pageInfoArr['uid'] > 0;
+            $access = isset($pageInfoArr['uid']) && (int)$pageInfoArr['uid'] > 0 ? true : false;
         }
 
         if ($access) {
@@ -3107,7 +3119,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 $output[$row['uid']]['flagIcon'] = $row['flag'];
             }
 
-            if ($onlyIsoCoded && !$output[$row['uid']]['ISOcode']) {
+            if ($onlyIsoCoded && !isset($output[$row['uid']]['ISOcode'])) {
                 unset($output[$row['uid']]);
             }
 
@@ -3134,7 +3146,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         global $TYPO3_CONF_VARS;
 
         $hookObjectsArr = array();
-        if (is_array($TYPO3_CONF_VARS['EXTCONF']['templavoilaplus']['mod1'][$hookName])) {
+        if (@is_array($TYPO3_CONF_VARS['EXTCONF']['templavoilaplus']['mod1'][$hookName])) {
             foreach ($TYPO3_CONF_VARS['EXTCONF']['templavoilaplus']['mod1'][$hookName] as $key => $classRef) {
                 $hookObjectsArr[$key] = & GeneralUtility::getUserObj($classRef);
             }
