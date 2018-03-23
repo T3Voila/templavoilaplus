@@ -70,7 +70,7 @@ class Sidebar implements SingletonInterface
         $this->pObj = $pObj;
         $this->moduleTemplate = $this->pObj->moduleTemplate;
 
-        $hideIfEmpty = $pObj->modTSconfig['properties']['showTabsIfEmpty'] ? false : true;
+        $hideIfEmpty = $this->pObj->modTSconfig['properties']['showTabsIfEmpty'] ? false : true;
 
         // Register the locally available sidebar items. Additional items may be added by other extensions.
         if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('version') && !\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('workspaces')
@@ -117,7 +117,7 @@ class Sidebar implements SingletonInterface
      */
     public function addItem($itemKey, $object, $method, $label, $priority = 50, $hideIfEmpty = false)
     {
-        $hideIfEmpty = $pObj->modTSconfig['properties']['showTabsIfEmpty'] ? false : $hideIfEmpty;
+        $hideIfEmpty = $this->pObj->modTSconfig['properties']['showTabsIfEmpty'] ? false : $hideIfEmpty;
         $this->sideBarItems[$itemKey] = array(
             'object' => $object,
             'method' => $method,
@@ -311,14 +311,13 @@ class Sidebar implements SingletonInterface
     /**
      * Renders the "advanced functions" sidebar item.
      *
-     * @param \tx_templavoilaplus_module1 &$pObj Reference to the page object (the templavoila page module)
+     * @param \tx_templavoilaplus_module1 $pObj Reference to the page object (the templavoila page module)
      *
      * @return string HTML output
      */
     public function renderItem_advancedFunctions($pObj)
     {
         $tableRows = [];
-
         // Render checkbox for showing hidden elements:
         $tableRows[] = '
             <tr class="bgColor4">

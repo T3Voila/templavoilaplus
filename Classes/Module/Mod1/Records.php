@@ -55,9 +55,9 @@ class Records implements SingletonInterface
      *
      * @return void
      */
-    public function init(&$pObj)
+    public function init($pObj)
     {
-        $this->pObj = & $pObj;
+        $this->pObj = $pObj;
 
         $this->tables = GeneralUtility::trimExplode(',', $this->pObj->modTSconfig['properties']['recordDisplay_tables'], true);
         if ($this->tables) {
