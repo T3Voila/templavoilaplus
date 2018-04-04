@@ -67,7 +67,7 @@
 				<source>When adding a new page template, the Mapping (see other tab) only works on the &lt;body&gt; tag, if you need to add other HTML tags from the HTML &lt;head&gt; tag, you can do this on this screen. Please make sure to hit the &quot;Set&quot; button on the bottom of this list to save your changes. Additional tags in the head part of your HTML can of course be added via regular TypoScript.</source>
 			</trans-unit>
 			<trans-unit id="mapping_to_headerParts_buttons.description" xml:space="preserve">
-				<source>Press &quot;Clear All&quot; to unset all checkboxes above; &quot;Set&quot; saves the changes of this page (the additional tags), &quot;Save&quot; writes the changes of the Mapping (see other tab) to the database. &quot;Save and return&quot; also writes the mapping to the database, but will also return to the TemplaVoilà Plus Control Center.</source>
+				<source>Press &quot;Clear All&quot; to unset all checkboxes above; &quot;Set&quot; saves the changes of this page (the additional tags), &quot;Save&quot; writes the changes of the Mapping (see other tab) to the database. &quot;Save and return&quot; also writes the mapping to the database, but will also return to the TemplaVoilà! Plus Control Center.</source>
 			</trans-unit>
 			<trans-unit id="mapping_editform.description" xml:space="preserve">
 				<source>Select the Mapping Type, a distinguishable name, instructions for the one who will map the data to a HTML template later on (optional). The Editing Type determines how the data on the field should be entered. Mapping rules allow to only map to certain HTML tags or HTML attributes. &quot;a:attr:href&quot; to only allows mapping to href attributes of HTML anchor tags.</source>
