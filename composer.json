@@ -1,7 +1,7 @@
 {
     "name": "templavoilaplus/templavoilaplus",
     "type": "typo3-cms-extension",
-    "description": "One of many available template engines for TYPO3 CMS",
+    "description": "Point-and-click, popular and easy template engine for TYPO3. Replacement for old TemplaVoilà!.",
     "homepage": "https://github.com/pluspol-interactive/templavoilaplus",
     "license": ["GPL-2.0+"],
     "require": {
