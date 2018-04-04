@@ -7,14 +7,14 @@
                 <source>TemplaVoilà+</source>
             </trans-unit>
             <trans-unit id="mlang_labels_tabdescr" xml:space="preserve">
-                <source>TemplaVoilà Plus Control Center lists all Data Structures and Template Objects available</source>
+                <source>TemplaVoilà! Plus Control Center lists all Data Structures and Template Objects available</source>
             </trans-unit>
             <trans-unit id="mlang_labels_tablabel" xml:space="preserve">
-                <source>TemplaVoilà Plus Control Center</source>
+                <source>TemplaVoilà! Plus Control Center</source>
             </trans-unit>
 
             <trans-unit id="title" xml:space="preserve">
-                <source>TemplaVoilà Plus Control Center</source>
+                <source>TemplaVoilà! Plus Control Center</source>
             </trans-unit>
             <trans-unit id="storagefolders" xml:space="preserve">
                 <source>Storage Folders</source>
