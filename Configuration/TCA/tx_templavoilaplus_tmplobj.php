@@ -105,7 +105,7 @@ return [
                             'setValue' => 'set'
                         ],
                         'module' => [
-                            'name' => 'wizard_add.php'
+                            'name' => 'wizard_add'
                         ]
                     ]
                 ]
