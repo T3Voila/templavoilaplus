@@ -92,7 +92,7 @@ class Localization implements SingletonInterface
     {
         $availableLanguagesArr = $this->pObj->translatedLanguagesArr;
         $availableTranslationsFlags = '';
-        $newLanguagesArr = $this->pObj->getAvailableLanguages(0, true, false);
+        $newLanguagesArr = TemplaVoilaUtility::getAvailableLanguages(0, false, false, $this->pObj->modSharedTSconfig);
         if (count($availableLanguagesArr) <= 1) {
             return false;
         }
@@ -215,12 +215,12 @@ class Localization implements SingletonInterface
             return false;
         }
 
-        $newLanguagesArr = $this->pObj->getAvailableLanguages(0, true, false);
+        $newLanguagesArr = TemplaVoilaUtility::getAvailableLanguages(0, false, false, $this->pObj->modSharedTSconfig);
         if (count($newLanguagesArr) < 1) {
             return false;
         }
 
-        $translatedLanguagesArr = $this->pObj->getAvailableLanguages($this->pObj->id);
+        $translatedLanguagesArr = TemplaVoilaUtility::getAvailableLanguages($this->pObj->id, false, false, $this->pObj->modSharedTSconfig);
         $optionsArr = array('<option value=""></option>');
         foreach ($newLanguagesArr as $language) {
             if (TemplaVoilaUtility::getBackendUser()->checkLanguageAccess($language['uid']) && !isset($translatedLanguagesArr[$language['uid']])) {

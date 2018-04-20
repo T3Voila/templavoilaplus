@@ -67,7 +67,7 @@ class ReferenceElementWizardController extends \TYPO3\CMS\Backend\Module\Abstrac
     public function main()
     {
         $this->modSharedTSconfig = BackendUtility::getModTSconfig($this->pObj->id, 'mod.SHARED');
-        $this->allAvailableLanguages = $this->getAvailableLanguages(0, true, true, true);
+        $this->allAvailableLanguages = TemplaVoilaUtility::getAvailableLanguages(0, true, true, $this->modSharedTSconfig);
 
         $this->templavoilaAPIObj = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Service\ApiService::class);
 
@@ -206,7 +206,7 @@ class ReferenceElementWizardController extends \TYPO3\CMS\Backend\Module\Abstrac
                 $langChildren = (int)$xml['meta']['langChildren'];
                 $langDisable = (int)$xml['meta']['langDisable'];
                 if ($elementRecord[$langField] == -1) {
-                    $translatedLanguagesArr = $this->getAvailableLanguages($pageUid);
+                    $translatedLanguagesArr = TemplaVoilaUtility::getAvailableLanguages($pageUid, true, false, $this->modSharedTSconfig);
                     foreach ($translatedLanguagesArr as $lUid => $lArr) {
                         if ($lUid >= 0) {
                             $lDef[] = $langDisable ? 'lDEF' : ($langChildren ? 'lDEF' : 'l' . $lArr['ISOcode']);
@@ -279,80 +279,6 @@ class ReferenceElementWizardController extends \TYPO3\CMS\Backend\Module\Abstrac
         }
 
         return $elementRecordsArr;
-    }
-
-    /**
-     * Get available languages
-     *
-     * @param integer $id
-     * @param boolean $onlyIsoCoded
-     * @param boolean $setDefault
-     * @param boolean $setMulti
-     *
-     * @return array
-     */
-    protected function getAvailableLanguages($id = 0, $onlyIsoCoded = true, $setDefault = true, $setMulti = false)
-    {
-        $output = array();
-        $excludeHidden = $this->getBackendUser()->isAdmin() ? '1' : 'sys_language.hidden=0';
-
-        if ($id) {
-            $excludeHidden .= ' AND pages_language_overlay.deleted=0';
-            $res = $this->getDatabaseConnection()->exec_SELECTgetRows(
-                'DISTINCT sys_language.*',
-                'pages_language_overlay,sys_language',
-                'pages_language_overlay.sys_language_uid=sys_language.uid AND pages_language_overlay.pid=' . (int)$id . ' AND ' . $excludeHidden,
-                '',
-                'sys_language.title'
-            );
-        } else {
-            $res = $this->getDatabaseConnection()->exec_SELECTgetRows(
-                'sys_language.*',
-                'sys_language',
-                $excludeHidden,
-                '',
-                'sys_language.title'
-            );
-        }
-
-        if ($setDefault) {
-            $output[0] = array(
-                'uid' => 0,
-                'title' => strlen($this->modSharedTSconfig['properties']['defaultLanguageLabel']) ? $this->modSharedTSconfig['properties']['defaultLanguageLabel'] : $this->getLanguageService()->getLL('defaultLanguage'),
-                'ISOcode' => 'DEF',
-                'flagIcon' => strlen($this->modSharedTSconfig['properties']['defaultLanguageFlag']) ? $this->modSharedTSconfig['properties']['defaultLanguageFlag'] : null
-            );
-        }
-
-        if ($setMulti) {
-            $output[-1] = array(
-                'uid' => -1,
-                'title' => $this->getLanguageService()->getLL('multipleLanguages'),
-                'ISOcode' => 'DEF',
-                'flagIcon' => 'multiple',
-            );
-        }
-
-        foreach ($res as $row) {
-            BackendUtility::workspaceOL('sys_language', $row);
-            $output[$row['uid']] = $row;
-
-            if ($row['static_lang_isocode']) {
-                $staticLangRow = BackendUtility::getRecord('static_languages', $row['static_lang_isocode'], 'lg_iso_2');
-                if ($staticLangRow['lg_iso_2']) {
-                    $output[$row['uid']]['ISOcode'] = $staticLangRow['lg_iso_2'];
-                }
-            }
-            if (strlen($row['flag'])) {
-                $output[$row['uid']]['flagIcon'] = $row['flag'];
-            }
-
-            if ($onlyIsoCoded && !$output[$row['uid']]['ISOcode']) {
-                unset($output[$row['uid']]);
-            }
-        }
-
-        return $output;
     }
 
     /**

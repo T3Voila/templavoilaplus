@@ -17,6 +17,8 @@ namespace Ppi\TemplaVoilaPlus\Configuration\FlexForm;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
+use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
+
 /**
  * Contains functions for manipulating flex form data
  */
@@ -134,39 +136,7 @@ class FlexFormTools extends \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools
      */
     public function getAvailableLanguages()
     {
-        $isL = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('static_info_tables');
-        // Find all language records in the system
-        $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-            'language_isocode,static_lang_isocode,title,uid',
-            'sys_language',
-            'pid=0' . BackendUtility::deleteClause('sys_language'),
-            '',
-            'title'
-        );
-        // Traverse them
-        $output = [];
-        $output[0] = [
-            'uid' => 0,
-            'title' => 'Default language',
-            'ISOcode' => 'DEF'
-        ];
-        while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-            $output[$row['uid']] = $row;
-            if (!empty($row['language_isocode'])) {
-                $output[$row['uid']]['ISOcode'] = $row['language_isocode'];
-            } elseif ($isL && $row['static_lang_isocode']) {
-                GeneralUtility::deprecationLog('Usage of the field "static_lang_isocode" is discouraged, and will stop working with CMS 8. Use the built-in language field "language_isocode" in your sys_language records.');
-                $rr = BackendUtility::getRecord('static_languages', $row['static_lang_isocode'], 'lg_iso_2');
-                if ($rr['lg_iso_2']) {
-                    $output[$row['uid']]['ISOcode'] = $rr['lg_iso_2'];
-                }
-            }
-            if (!$output[$row['uid']]['ISOcode']) {
-                unset($output[$row['uid']]);
-            }
-        }
-        $GLOBALS['TYPO3_DB']->sql_free_result($res);
-        return $output;
+        TemplaVoilaUtility::getAvailableLanguages(0, false);
     }
 
     /***********************************

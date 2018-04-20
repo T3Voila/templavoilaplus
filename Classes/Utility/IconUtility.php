@@ -35,7 +35,7 @@ final class IconUtility
     {
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         return '<span alt="' . htmlspecialchars($options['alt']) . '" title="' . htmlspecialchars($options['title']) . '">'
-            . $iconFactory->getIcon('flags-' . ($flagName ? : 'unknown'), Icon::SIZE_SMALL)->render()
+            . $iconFactory->getIcon($flagName ? : 'default-not-found', Icon::SIZE_SMALL)->render()
             . '</span>';
     }
 
@@ -46,7 +46,7 @@ final class IconUtility
      */
     public static function getFlagIconFileForLanguage($flagName)
     {
-        $identifier = 'flags-' . ($flagName ? : 'unknown');
+        $identifier = $flagName ? : 'default-not-found';
 
         $iconRegistry = GeneralUtility::makeInstance(IconRegistry::class);
 
