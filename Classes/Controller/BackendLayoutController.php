@@ -20,7 +20,6 @@ use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
@@ -34,7 +33,7 @@ use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
  */
 
 $GLOBALS['LANG']->includeLLFile(
-    ExtensionManagementUtility::extPath('templavoilaplus') . 'Resources/Private/Language/BackendLayout.xlf'
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('templavoilaplus') . 'Resources/Private/Language/BackendLayout.xlf'
 );
 
 /**
@@ -589,7 +588,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 // https://forge.typo3.org/issues/77589
                 $styleSheetFile = 'EXT:' . $this->extKey . '/Resources/Public/StyleSheet/mod1_default.css';
             } else {
-                $styleSheetFile = ExtensionManagementUtility::extRelPath($this->extKey) . 'Resources/Public/StyleSheet/mod1_default.css';
+                $styleSheetFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->extKey) . 'Resources/Public/StyleSheet/mod1_default.css';
             }
 
             if (isset($this->modTSconfig['properties']['stylesheet'])) {
@@ -605,8 +604,8 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                         // So we do not need this anymore
                         if (substr($file, 0, 4) == 'EXT:') {
                             list($extKey, $local) = explode('/', substr($file, 4), 2);
-                            if (strcmp($extKey, '') && ExtensionManagementUtility::isLoaded($extKey) && strcmp($local, '')) {
-                                $file = ExtensionManagementUtility::extRelPath($extKey) . $local;
+                            if (strcmp($extKey, '') && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extKey) && strcmp($local, '')) {
+                                $file = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($extKey) . $local;
                             }
                         }
                     }
@@ -700,7 +699,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             } else {
                 $this->addJsLibrary(
                     'templavoilaplus_mod1',
-                    ExtensionManagementUtility::extRelPath($this->extKey) . 'Resources/Public/JavaScript/templavoila.js'
+                    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->extKey) . 'Resources/Public/JavaScript/templavoila.js'
                 );
             }
 
@@ -714,10 +713,10 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                             if (substr($filename, 0, 4) == 'EXT:') {
                                 list($extKey, $local) = explode('/', substr($filename, 4), 2);
                                 if (strcmp($extKey, '')
-                                    && ExtensionManagementUtility::isLoaded($extKey)
+                                    && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extKey)
                                     && strcmp($local, '')
                                 ) {
-                                    $filename = ExtensionManagementUtility::extRelPath($extKey) . $local;
+                                    $filename = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($extKey) . $local;
                                 }
                             }
                         }
@@ -3109,9 +3108,8 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 $row['PLO_title'] = $pageRow['title'];
             }
             $output[$row['uid']] = $row;
-            $output[$row['uid']]['ISOcode'] = strtoupper($row['language_isocode']);
 
-            if ($row['static_lang_isocode'] && ExtensionManagementUtility::isLoaded('static_info_tables')) {
+            if ($row['static_lang_isocode']) {
                 $staticLangRow = BackendUtility::getRecord('static_languages', $row['static_lang_isocode'], 'lg_iso_2');
                 if ($staticLangRow['lg_iso_2']) {
                     $output[$row['uid']]['ISOcode'] = $staticLangRow['lg_iso_2'];
