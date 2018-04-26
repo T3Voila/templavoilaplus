@@ -1,4 +1,9 @@
 var browserPos = null;
+var sortableSourceIndex = null;
+var sortableSourceList = null;
+var sortableDestinationIndex = null;
+var sortableDestinationList = null;
+var sortableSourceListInProcess = null;
 
 function setFormValueOpenBrowser(url, mode, params) {
     var url = url + "&mode=" + mode + "&bparams=" + params;
@@ -223,13 +228,12 @@ function sortable_stop(item, placeholder)
         },
         complete: function(result) {
             sortableSourceListInProcess = null;
+            sortableSourceIndex = null;
+            sortableSourceList = null;
+            sortableDestinationIndex = null;
+            sortableDestinationList = null;
         }
     });
-
-    sortableSourceIndex = null;
-    sortableSourceList = null;
-    sortableDestinationIndex = null;
-    sortableDestinationList = null;
 }
 
 function sortable_receive(list)
