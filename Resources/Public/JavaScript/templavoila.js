@@ -77,7 +77,8 @@ function sortable_hideRecord(it, command) {
     new Ajax.Request(command);
     new Effect.Fade(it,
         { duration: 0.5,
-            afterFinish: sortable_hideRecordCallBack });
+          afterFinish: sortable_hideRecordCallBack
+        });
 }
 
 function sortable_hideRecordCallBack(obj) {
@@ -277,8 +278,6 @@ function showInProgress(item)
 {
     TYPO3.jQuery('.tpm-titlebar', item)
         .addClass("toYellow");
-        // Add isYellow if animation ends before ajax responded
-        .one("animationend webkitAnimationEnd", function(){ TYPO3.jQuery('.tpm-titlebar', item).addClass("isYellow"); });
 }
 
 function showSuccess(item)
@@ -288,7 +287,6 @@ function showSuccess(item)
         .off()
         .addClass("flashGreen")
         .removeClass("toYellow")
-        .removeClass("isYellow")
         .one("animationend webkitAnimationEnd", function(){ TYPO3.jQuery('.tpm-titlebar', item).removeClass("flashGreen"); });
 }
 
@@ -299,6 +297,5 @@ function showError(item)
         .off()
         .addClass("flashRed")
         .removeClass("toYellow")
-        .removeClass("isYellow")
         .one("animationend webkitAnimationEnd", function(){ TYPO3.jQuery('.tpm-titlebar', item).removeClass("flashRed"); });
 }

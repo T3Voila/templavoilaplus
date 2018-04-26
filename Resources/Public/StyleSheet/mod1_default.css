@@ -218,20 +218,15 @@ div.warning a {
 }
 
 .t3-page-ce .t3-page-ce-header.toYellow {
-    animation: toYellow 2s ease;
-}
-
-.t3-page-ce .t3-page-ce-header.isYellow {
-    background-color: #ffffd0;
+    animation: toYellow 0.5s linear forwards;
 }
 
 .t3-page-ce .t3-page-ce-header.flashGreen {
-    animation: flashGreen 2s ease;
+    animation: flashGreen 2s linear;
 }
 
 .t3-page-ce .t3-page-ce-header.flashRed {
-    animation: flashRed 1s ease;
-    animation-iteration-count: 3;
+    animation: flashRed 2s linear;
 }
 
 @keyframes toYellow {
@@ -239,9 +234,13 @@ div.warning a {
 }
 
 @keyframes flashGreen {
+     0% { background-color: #ffffd0; }
     50% { background-color: #d0ffd0; }
 }
 
 @keyframes flashRed {
-    50% { background-color: #ffd0d0; }
+     0% { background-color: #ffffd0; }
+    25% { background-color: #ffd0d0; }
+    50% { background-color: #eaeaea; }
+    75% { background-color: #ffd0d0; }
 }
