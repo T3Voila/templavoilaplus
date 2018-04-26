@@ -117,7 +117,7 @@ function sortable_unlinkRecord(pointer, id, elementPointer)
             });
         },
         error: function(result) {
-            showSuccess(item);
+            showError(item);
         }
     });
 }
