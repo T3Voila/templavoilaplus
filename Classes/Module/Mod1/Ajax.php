@@ -51,9 +51,12 @@ class Ajax
         $sourcePointer = $this->apiObj->flexform_getPointerFromString($postParams['source']);
         $destinationPointer = $this->apiObj->flexform_getPointerFromString($postParams['destination']);
 
-        $this->apiObj->moveElement($sourcePointer, $destinationPointer);
+        $result = $this->apiObj->moveElement($sourcePointer, $destinationPointer);
 
-        $response->getBody()->write(json_encode([]));
+        $response->getBody()->write(json_encode($result));
+        if (!$result) {
+            $response = $response->withStatus(406);
+        }
         return $response;
     }
 
@@ -69,9 +72,12 @@ class Ajax
         $postParams = $request->getParsedBody();
         $unlinkPointer = $this->apiObj->flexform_getPointerFromString($postParams['unlink']);
 
-        $this->apiObj->unlinkElement($unlinkPointer);
+        $result = $this->apiObj->unlinkElement($unlinkPointer);
 
-        $response->getBody()->write(json_encode([]));
+        $response->getBody()->write(json_encode($result));
+        if (!$result) {
+            $response = $response->withStatus(406);
+        }
         return $response;
     }
 }
