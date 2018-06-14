@@ -1511,6 +1511,7 @@ class ApiService
             'sys_language_uid' => $row['sys_language_uid'],
             'l18n_parent' => $row['l18n_parent'],
             'CType' => $row['CType'],
+            'layout' => $row['layout'],
             'TO' => $row['tx_templavoilaplus_to'],
         );
 
