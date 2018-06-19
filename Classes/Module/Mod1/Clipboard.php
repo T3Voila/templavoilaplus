@@ -360,16 +360,14 @@ class Clipboard implements SingletonInterface
             if (!$isDeletedInWorkspace) {
                 $elementRows[] = '
                     <tr id="' . $elementPointerString . '" class="tpm-nonused-element">
-                        <td class="tpm-nonused-controls">
-                            <div aria-label="" role="toolbar" class="btn-toolbar">
-                                <div class="btn-group">
-                                    <span class="btn btn-primary disabled btn-sm">' . $languageIcon . '</span>
-                                    ' . $cutButton . $this->renderReferenceCount($row['uid']) . '
-                                    <span class="btn btn-default btn-sm">' . $recordButton . '</span>
-                                </div>
+                        <td class="col-control nowrap">
+                            <div aria-label="" role="group" class="btn-group">'
+                                . ($languageIcon ? '<span class="btn btn-primary disabled btn-sm">' . $languageIcon . '</span>' : '')
+                                . $cutButton . $this->renderReferenceCount($row['uid']) . '
+                                <span class="btn btn-default btn-sm">' . $recordButton . '</span>
                             </div>
                         </td>
-                        <td class="tpm-nonused-preview">'
+                        <td class="col-title col-responsive">'
                              . htmlspecialchars(BackendUtility::getRecordTitle('tt_content', $row))
                     . '</td>
                     </tr>';
@@ -396,14 +394,18 @@ class Clipboard implements SingletonInterface
 
             // Create table and header cell:
             $output = '
-                <table class="tpm-nonused-elements lrPadding" border="0" cellpadding="0" cellspacing="1" width="100%">
-                    <tr class="bgColor4-20">
-                        <td colspan="3">' . TemplaVoilaUtility::getLanguageService()->getLL('inititemno_elementsNotBeingUsed', true) . ':</td>
-                    </tr>
-                    ' . implode('', $elementRows) . '
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                        <td colspan="2">' . TemplaVoilaUtility::getLanguageService()->getLL('inititemno_elementsNotBeingUsed', true) . ':</td>
+                        </tr>
+                    </thead>
+                    <tbody>' . implode('', $elementRows) . '</tbody>
+                    <tfoot>
                     <tr class="bgColor4">
-                        <td colspan="3" class="tpm-nonused-deleteall">' . $deleteAll . '</td>
+                        <td colspan="2" class="tpm-nonused-deleteall">' . $deleteAll . '</td>
                     </tr>
+                    </tfoot>
                 </table>
             ';
         }
