@@ -369,6 +369,7 @@ class Clipboard implements SingletonInterface
                         </td>
                         <td class="col-title col-responsive">'
                              . htmlspecialchars(BackendUtility::getRecordTitle('tt_content', $row))
+                             . '<br>Uid: ' . $row['uid']
                     . '</td>
                     </tr>';
             }
