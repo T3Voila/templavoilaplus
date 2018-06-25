@@ -65,13 +65,11 @@ class FlexFormElementContainer extends AbstractContainer
         foreach ($flexFormDataStructureArray as $flexFormFieldName => $flexFormFieldArray) {
             if (// No item array found at all
                 !is_array($flexFormFieldArray)
-                // Not a section or container and not a list of single items
-                || (!isset($flexFormFieldArray['type']) && !is_array($flexFormFieldArray['config']))
-				|| ($flexFormFieldArray['tx_templavoilaplus']['eType'] == 'none')
             ) {
                 continue;
             }
-            if ($flexFormFieldArray['type'] === 'array') {
+            // Is it a section or container
+            if (isset($flexFormFieldArray['type']) && $flexFormFieldArray['type'] === 'array') {
                 // Section
                 if (empty($flexFormFieldArray['section'])) {
                     $resultArray['html'] = LF . 'Section expected at ' . $flexFormFieldName . ' but not found';
@@ -96,7 +94,9 @@ class FlexFormElementContainer extends AbstractContainer
                 $options['renderType'] = 'flexFormSectionContainer';
                 $sectionContainerResult = $this->nodeFactory->create($options)->render();
                 $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $sectionContainerResult);
-            } else {
+            } elseif(is_array($flexFormFieldArray['config']) // A list of single items and not a blind item
+                && $flexFormFieldArray['tx_templavoilaplus']['eType'] != 'none'
+            ) {
                 $html = [];
                 foreach ($lkeys as $lkey) {
                     // Set up options for single element
