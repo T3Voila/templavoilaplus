@@ -8,27 +8,9 @@ div#typo3-docbody {
   padding: 0;
 }
 
-.typo3-templavoila-pagemodule > #typo3-docheader > .typo3-docheader-functions {
-  padding-top: 5px;
-}
-.typo3-templavoila-pagemodule > #typo3-docbody {
-  top: 27px;
-}
-.typo3-templavoila-pagemodule > #typo3-docbody > .typo3-docheader-buttons {
-  height: auto;
-  padding-top: 0px;
-  padding-bottom: 0px;
-}
-.typo3-templavoila-pagemodule > #typo3-docbody > .typo3-docheader-buttons > .docheader-buttons-inner {
-  margin-left: 10px;
-  margin-right: 10px;
-  width: auto;
-}
-.typo3-templavoila-pagemodule #typo3-docbody #tx_templavoilaplus_mod1_sidebar-bar .typo3-dyntabmenu-tabs table.typo3-dyntabmenu td a,
-.typo3-templavoila-pagemodule #typo3-docbody #tx_templavoilaplus_mod1_sidebar-bar .typo3-dyntabmenu-tabs table.typo3-dyntabmenu td.disabled,
-.typo3-templavoila-pagemodule #typo3-docbody #tx_templavoilaplus_mod1_sidebar-bar .typo3-dyntabmenu-tabs table.typo3-dyntabmenu td.disabled_over {
-  padding-top: 3px;
-  padding-bottom: 1px;
+#tx_templavoilaplus_mod1_sidebar-bar .panel-body {
+    max-height: 60vh;
+    overflow-y: auto;
 }
 
 table {
