@@ -14,6 +14,7 @@ namespace Ppi\TemplaVoilaPlus\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -166,6 +167,6 @@ final class TemplaVoilaUtility
             return $flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
         }
 
-        return \TYPO3\CMS\Backend\Utility\BackendUtility::getFlexFormDS($conf, $row, $table, $fieldName);
+        return BackendUtility::getFlexFormDS($conf, $row, $table, $fieldName);
     }
 }
