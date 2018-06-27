@@ -156,7 +156,7 @@ class DataStructureV8UpdateController extends StepUpdateController
         return $changed;
     }
 
-    protected function migrateStaticDsFilePointer()
+    public function migrateStaticDsFilePointer()
     {
         // Pages
         $toFix = [];

@@ -114,6 +114,8 @@ class DataStructureUpdateHandler
         foreach ($rootCallbacks as $callback) {
             if (is_callable($callback)) {
                 $changed = $callback($data) || $changed;
+            } else {
+                throw new \Exception('Callback function "' . $callback[1] . '" not available. Cann\'t update DataStructure.');
             }
         }
 
@@ -149,6 +151,8 @@ class DataStructureUpdateHandler
         foreach ($elementCallbacks as $callback) {
             if (is_callable($callback)) {
                 $changed = $callback($element) || $changed;
+            } else {
+                throw new \Exception('Callback function "' . $callback[1] . '" not available. Cann\'t update DataStructure.');
             }
         }
 
