@@ -196,7 +196,7 @@ class DataStructureV7UpdateController extends StepUpdateController
      * @param array $element The field element TCA
      * @return boolean True if changed otherwise false
      */
-    protected function migrateIconsForFormFieldWizardToNewLocation(array &$element)
+    public function migrateIconsForFormFieldWizardToNewLocation(array &$element)
     {
         $changed = false;
 
@@ -247,7 +247,7 @@ class DataStructureV7UpdateController extends StepUpdateController
      * @param array $element The field element TCA
      * @return boolean True if changed otherwise false
      */
-    protected function migrateExtAndSysextPathToEXTPath(array &$element)
+    public function migrateExtAndSysextPathToEXTPath(array &$element)
     {
         $changed = false;
 
