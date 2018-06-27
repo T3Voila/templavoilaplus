@@ -289,8 +289,11 @@ class StaticDataUpdateController
         $dataStructure = GeneralUtility::xml2array($dsXml);
         if (empty($dataStructure['ROOT']['tx_templavoilaplus']['title'])
             || $dataStructure['ROOT']['tx_templavoilaplus']['title'] === 'ROOT'
+            && (empty($dataStructure['meta']['title'])
+                || $dataStructure['meta']['title'] === 'ROOT'
+            )
         ) {
-            $dataStructure['ROOT']['tx_templavoilaplus']['title'] = $title;
+            $dataStructure['meta']['title'] = $title;
         }
         $dsXml = DataStructureUtility::array2xml($dataStructure);
         GeneralUtility::writeFile($pathAndFilename, $dsXml);

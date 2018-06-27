@@ -41,12 +41,15 @@ class DataStructureV7UpdateController extends StepUpdateController
     {
         $handler = GeneralUtility::makeInstance(DataStructureUpdateHandler::class);
         $count = $handler->updateAllDs(
-            [],
+            [
+                [$this, 'migrateTitlePathRoot'],
+            ],
             [
                 [$this, 'migrateWizardScriptToModule'],
                 [$this, 'migrateT3editorWizardToRenderTypeT3editorIfNotEnabledByTypeConfig'],
                 [$this, 'migrateIconsForFormFieldWizardToNewLocation'],
                 [$this, 'migrateExtAndSysextPathToEXTPath'],
+                [$this, 'migrateTitlePathElement'],
                 [$this, 'cleanupEmptyWizardFields'],
             ]
         );
@@ -283,6 +286,60 @@ class DataStructureV7UpdateController extends StepUpdateController
                     }
                 }
             }
+        }
+
+        return $changed;
+    }
+
+    /**
+     * Migrate file reference which starts with ext/ or sysext/ to EXT:
+     * The position of the title should be changed from <ROOT><tx_templavoilaplus><title> to <ROOT><title>
+     *
+     * @param array $element The field element TCA
+     * @return boolean True if changed otherwise false
+     */
+    public function migrateTitlePathRoot(array &$data)
+    {
+        $changed = false;
+
+        if (
+            !empty($data['ROOT']['tx_templavoilaplus']['title'])
+            && !isset($data['meta']['title'])
+        ) {
+            $data['meta']['title'] = $data['ROOT']['tx_templavoilaplus']['title'];
+            unset($data['ROOT']['tx_templavoilaplus']['title']);
+            $changed = true;
+        }
+
+        return $changed;
+    }
+
+    /**
+     * Migrate file reference which starts with ext/ or sysext/ to EXT:
+     * The position of the title should be changed from <field><tx_templavoilaplus><title> to <field><title>
+     *
+     * @param array $element The field element TCA
+     * @return boolean True if changed otherwise false
+     */
+    public function migrateTitlePathElement(array &$element)
+    {
+        $changed = false;
+
+        if (
+            isset($element['tx_templavoilaplus']['title'])
+        ) {
+            // For sections and container it needs to be inside $element
+            if ($element['type'] === 'array') {
+                if (!isset($element['title'])) {
+                    $element['title'] = $element['tx_templavoilaplus']['title'];
+                }
+            } else {
+                if (!isset($element['TCEforms']['label'])) {
+                    $element['TCEforms']['label'] = $element['tx_templavoilaplus']['title'];
+                }
+            }
+            unset($element['tx_templavoilaplus']['title']);
+            $changed = true;
         }
 
         return $changed;

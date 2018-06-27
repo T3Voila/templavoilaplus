@@ -122,7 +122,7 @@ class DsEdit
                 <dl id="dsel-general" class="DS-config">
                     <!-- always present options +++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
                     <dt><label>' . $this->getLanguageService()->getLL('renderDSO_title') . ':</label></dt>
-                    <dd><input type="text" size="40" name="' . $formFieldName . '[tx_templavoilaplus][title]" value="' . htmlspecialchars($insertDataArray['tx_templavoilaplus']['title']) . '" /></dd>
+                    <dd><input type="text" size="40" name="' . $formFieldName . '[title]" value="' . htmlspecialchars($insertDataArray['title']) . '" /></dd>
 
                     <dt><label>' . $this->getLanguageService()->getLL('renderDSO_mappingInstructions') . ':</label></dt>
                     <dd><input type="text" size="40" name="' . $formFieldName . '[tx_templavoilaplus][description]" value="' . htmlspecialchars($insertDataArray['tx_templavoilaplus']['description']) . '" /></dd>';
