@@ -121,7 +121,7 @@ class ETypes
                         case 'text':
                             /* preserve previous config, if of the right kind */
                             if ($reset || ($elArray[$key]['TCEforms']['config']['type'] != 'text')) {
-                                $elArray[$key]['TCEforms']['label'] = $elArray[$key]['tx_templavoilaplus']['title'];
+                                $elArray[$key]['TCEforms']['label'] = $elArray[$key]['title'];
                                 $elArray[$key]['TCEforms']['config'] = $eTypes['eType'][$eType]['TCEforms']['config'];
                             }
 
@@ -133,7 +133,7 @@ class ETypes
                         case 'rte':
                             /* preserve previous config, if of the right kind */
                             if ($reset || ($elArray[$key]['TCEforms']['config']['type'] != 'text')) {
-                                $elArray[$key]['TCEforms']['label'] = $elArray[$key]['tx_templavoilaplus']['title'];
+                                $elArray[$key]['TCEforms']['label'] = $elArray[$key]['title'];
                                 $elArray[$key]['TCEforms']['config'] = $eTypes['eType'][$eType]['TCEforms']['config'];
                             }
 
@@ -165,7 +165,7 @@ class ETypes
                         case 'imagefixed':
                             /* preserve previous config, if of the right kind */
                             if ($reset || ($elArray[$key]['TCEforms']['config']['type'] != 'group')) {
-                                $elArray[$key]['TCEforms']['label'] = $elArray[$key]['tx_templavoilaplus']['title'];
+                                $elArray[$key]['TCEforms']['label'] = $elArray[$key]['title'];
                                 $elArray[$key]['TCEforms']['config'] = $eTypes['eType'][$eType]['TCEforms']['config'];
                             }
 
@@ -190,7 +190,7 @@ class ETypes
                         case 'link':
                             /* preserve previous config, if of the right kind */
                             if ($reset || ($elArray[$key]['TCEforms']['config']['type'] != 'input')) {
-                                $elArray[$key]['TCEforms']['label'] = $elArray[$key]['tx_templavoilaplus']['title'];
+                                $elArray[$key]['TCEforms']['label'] = $elArray[$key]['title'];
                                 $elArray[$key]['TCEforms']['config'] = $eTypes['eType'][$eType]['TCEforms']['config'];
                             }
 
@@ -212,7 +212,7 @@ class ETypes
                         case 'ce':
                             /* preserve previous config, if of the right kind */
                             if ($reset || ($elArray[$key]['TCEforms']['config']['type'] != 'group')) {
-                                $elArray[$key]['TCEforms']['label'] = $elArray[$key]['tx_templavoilaplus']['title'];
+                                $elArray[$key]['TCEforms']['label'] = $elArray[$key]['title'];
                                 $elArray[$key]['TCEforms']['config'] = $eTypes['eType'][$eType]['TCEforms']['config'];
                             }
 
@@ -231,7 +231,7 @@ class ETypes
                         case 'int':
                             /* preserve previous config, if of the right kind */
                             if ($reset || ($elArray[$key]['TCEforms']['config']['type'] != 'input')) {
-                                $elArray[$key]['TCEforms']['label'] = $elArray[$key]['tx_templavoilaplus']['title'];
+                                $elArray[$key]['TCEforms']['label'] = $elArray[$key]['title'];
                                 $elArray[$key]['TCEforms']['config'] = $eTypes['eType'][$eType]['TCEforms']['config'];
                             }
                             if ($reset) {
@@ -242,7 +242,7 @@ class ETypes
                         case 'select':
                             /* preserve previous config, if of the right kind */
                             if ($reset || ($elArray[$key]['TCEforms']['config']['type'] != 'select')) {
-                                $elArray[$key]['TCEforms']['label'] = $elArray[$key]['tx_templavoilaplus']['title'];
+                                $elArray[$key]['TCEforms']['label'] = $elArray[$key]['title'];
                                 $elArray[$key]['TCEforms']['config'] = $eTypes['eType'][$eType]['TCEforms']['config'];
                             }
                             if ($reset) {
@@ -252,7 +252,7 @@ class ETypes
                         case 'check':
                             /* preserve previous config, if of the right kind */
                             if ($reset || ($elArray[$key]['TCEforms']['config']['type'] != 'check')) {
-                                $elArray[$key]['TCEforms']['label'] = $elArray[$key]['tx_templavoilaplus']['title'];
+                                $elArray[$key]['TCEforms']['label'] = $elArray[$key]['title'];
                                 $elArray[$key]['TCEforms']['config'] = $eTypes['eType'][$eType]['TCEforms']['config'];
                             }
                             if ($reset) {
@@ -264,7 +264,7 @@ class ETypes
                         case 'input_g':
                             /* preserve previous config, if of the right kind */
                             if ($reset || ($elArray[$key]['TCEforms']['config']['type'] != 'input')) {
-                                $elArray[$key]['TCEforms']['label'] = $elArray[$key]['tx_templavoilaplus']['title'];
+                                $elArray[$key]['TCEforms']['label'] = $elArray[$key]['title'];
                                 $elArray[$key]['TCEforms']['config'] = $eTypes['eType'][$eType]['TCEforms']['config'];
                             }
 
@@ -335,7 +335,7 @@ class ETypes
                         default:
                             /* preserve previous config, if of the right kind */
                             if ($reset || ($elArray[$key]['TCEforms']['config']['type'] != 'text')) {
-                                $elArray[$key]['TCEforms']['label'] = $elArray[$key]['tx_templavoilaplus']['title'];
+                                $elArray[$key]['TCEforms']['label'] = $elArray[$key]['title'];
                                 $elArray[$key]['TCEforms']['config'] = $eTypes['eType'][$eType]['TCEforms']['config'];
                             }
                             if ($reset || !trim($elArray[$key]['tx_templavoilaplus']['TypoScript'])) {

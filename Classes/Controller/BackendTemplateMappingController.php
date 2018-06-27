@@ -2088,7 +2088,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                     $tRows[] = '
                         <tr class="bgColor4">
                             <td class="bgColor5"><strong>' . TemplaVoilaUtility::getLanguageService()->getLL('mapDSelement') . ':</strong></td>
-                            <td>' . $this->elNames[$this->mapElPath]['tx_templavoilaplus']['title'] . '</td>
+                            <td>' . $this->elNames[$this->mapElPath]['title'] . '</td>
                         </tr>
                         <tr class="bgColor4">
                             <td class="bgColor5"><strong>' . TemplaVoilaUtility::getLanguageService()->getLL('mapLimitToTags') . ':</strong></td>
@@ -2228,15 +2228,15 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                     $icon = '<span class="dsType_Icon dsType_' . $info['id'] . '" title="' . $info['title'] . '">' . strtoupper($info['id']) . '</span>';
 
                     // Composing title-cell:
-                    if (preg_match('/^LLL:/', $value['tx_templavoilaplus']['title'])) {
-                        $translatedTitle = TemplaVoilaUtility::getLanguageService()->sL($value['tx_templavoilaplus']['title']);
+                    if (preg_match('/^LLL:/', $value['title'])) {
+                        $translatedTitle = TemplaVoilaUtility::getLanguageService()->sL($value['title']);
                         $translateIcon = '<sup title="' . TemplaVoilaUtility::getLanguageService()->getLL('displayDSTitleTranslated') . '">*</sup>';
                     } else {
-                        $translatedTitle = $value['tx_templavoilaplus']['title'];
+                        $translatedTitle = $value['title'];
                         $translateIcon = '';
                     }
-                    $this->elNames[$formPrefix . '[' . $key . ']']['tx_templavoilaplus']['title'] = $icon . htmlspecialchars(GeneralUtility::fixed_lgd_cs($translatedTitle, 30)) . $translateIcon;
-                    $rowCells['title'] = $this->elNames[$formPrefix . '[' . $key . ']']['tx_templavoilaplus']['title'];
+                    $this->elNames[$formPrefix . '[' . $key . ']']['title'] = $icon . htmlspecialchars(GeneralUtility::fixed_lgd_cs($translatedTitle, 30)) . $translateIcon;
+                    $rowCells['title'] = $this->elNames[$formPrefix . '[' . $key . ']']['title'];
 
                     // Description:
                     $this->elNames[$formPrefix . '[' . $key . ']']['tx_templavoilaplus']['description'] = $rowCells['description'] = htmlspecialchars($value['tx_templavoilaplus']['description']);

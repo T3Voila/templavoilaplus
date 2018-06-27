@@ -1618,7 +1618,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                             sprintf(
                                 TemplaVoilaUtility::getLanguageService()->getLL('maximal_content_elements'),
                                 $maxCnt,
-                                $elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['tx_templavoilaplus']['title']
+                                $elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['title']
                             ),
                             '',
                             \TYPO3\CMS\Core\Messaging\FlashMessage::INFO
@@ -1928,7 +1928,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 if (isset($fieldValue['data']['el'])) {
                     if ($fieldValue['config']['section']) {
                         $result .= '<strong>';
-                        $label = ($fieldValue['config']['TCEforms']['label'] ? $fieldValue['config']['TCEforms']['label'] : $fieldValue['config']['tx_templavoilaplus']['title']);
+                        $label = ($fieldValue['config']['TCEforms']['label'] ? $fieldValue['config']['TCEforms']['label'] : $fieldValue['config']['title']);
                         $result .= $this->localizedFFLabel($label, 1);
                         $result .= '</strong>';
                         $result .= '<ul>';
