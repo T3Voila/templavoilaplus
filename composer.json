@@ -2,14 +2,41 @@
     "name": "templavoilaplus/templavoilaplus",
     "type": "typo3-cms-extension",
     "description": "Point-and-click, popular and easy template engine for TYPO3. Replacement for old TemplaVoilà!.",
-    "homepage": "https://github.com/pluspol-interactive/templavoilaplus",
+    "keywords": [
+        "TYPO3",
+        "extension",
+        "template",
+        "engine"
+    ],
+    "homepage": "https://templavoila.plus/",
     "license": ["GPL-2.0+"],
+    "authors": [
+        {
+            "name": "Alexander Opitz",
+            "email": "opitz@pluspol-interactive.de",
+            "homepage": "http://www.pluspol-interactive.de",
+            "role": "Developer"
+        }
+    ],
     "require": {
-        "typo3/cms-core": "*"
+        "typo3/cms-core": "^7.6.0 || ^8.7.0",
+        "php": ">=5.5.0 <7.2.99"
     },
     "autoload": {
         "psr-4": {
             "Ppi\\TemplaVoilaPlus\\": "Classes/"
         }
+    },
+    "conflict": {
+        "templavoila": "*",
+        "typo3-ter/templavoila": "*",
+        "templavoila/templavoila": "*"
+    },
+    "replace": {
+        "templavoilaplus": "self.version",
+        "typo3-ter/templavoilaplus": "self.version"
+    },
+    "suggest": {
+        "friendsoftypo3/typo3db-legacy": ">1.0.1"
     }
 }
