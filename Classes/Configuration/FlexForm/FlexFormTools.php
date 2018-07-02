@@ -136,7 +136,7 @@ class FlexFormTools extends \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools
      */
     public function getAvailableLanguages()
     {
-        TemplaVoilaUtility::getAvailableLanguages(0, false);
+        return TemplaVoilaUtility::getAvailableLanguages(0, false);
     }
 
     /***********************************
