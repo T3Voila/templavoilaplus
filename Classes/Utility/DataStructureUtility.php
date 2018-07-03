@@ -31,10 +31,9 @@ final class DataStructureUtility
             $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoilaplus']
         );
 
-        if (isset($conf['basic.']['ds.']['indentation'])) {
-            $indentation = (int)$conf['basic.']['ds.']['indentation'];
+        if (isset($conf['ds.']['indentation'])) {
+            $indentation = (int)$conf['ds.']['indentation'];
         }
-
         return '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>'
         . LF
         . GeneralUtility::array2xml(
