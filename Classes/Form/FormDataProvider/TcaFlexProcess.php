@@ -444,8 +444,8 @@ class TcaFlexProcess implements FormDataProviderInterface
              ];
              foreach ($languagesOnSheetLevel as $isoSheetLevel) {
                  $langSheetLevel = 'l' . $isoSheetLevel;
-                 $result['processedTca']['columns'][$fieldName]['config']['ds']['sheets'][$dataStructureSheetName][$langSheetLevel]
-                    = $result['processedTca']['columns'][$fieldName]['config']['ds']['sheets'][$dataStructureSheetName];
+                 $result['processedTca']['columns'][$fieldName]['config']['ds']['sheets'][$dataStructureSheetName][$langSheetLevel]['ROOT']
+                    = $result['processedTca']['columns'][$fieldName]['config']['ds']['sheets'][$dataStructureSheetName]['ROOT'];
                  foreach ($dataStructureFields as $dataStructureFieldName => $dataStructureFieldDefinition) {
                      if (isset($dataStructureFieldDefinition['type']) && $dataStructureFieldDefinition['type'] === 'array'
                         && isset($dataStructureFieldDefinition['section']) && (string)$dataStructureFieldDefinition['section'] === '1'
