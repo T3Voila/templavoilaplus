@@ -1618,7 +1618,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                             sprintf(
                                 TemplaVoilaUtility::getLanguageService()->getLL('maximal_content_elements'),
                                 $maxCnt,
-                                $elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['title']
+                                $elementContentTreeArr['previewData']['sheets'][$sheet][$fieldID]['TCEforms']['label']
                             ),
                             '',
                             \TYPO3\CMS\Core\Messaging\FlashMessage::INFO

@@ -363,7 +363,7 @@ class ETypes
                 }
 
                 // Setting TCEforms title for element if configuration is found:
-                if (!is_array($elArray[$key]['TCEforms']['config'])) {
+                if (!is_array($elArray[$key]['TCEforms']['config']) && !isset($elArray[$key]['TCEforms']['label'])) {
                     unset($elArray[$key]['TCEforms']);
                 }
             }
