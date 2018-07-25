@@ -14,6 +14,7 @@ namespace Ppi\TemplaVoilaPlus\Module\Mod1;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -222,22 +223,48 @@ class Localization implements SingletonInterface
 
         $translatedLanguagesArr = TemplaVoilaUtility::getAvailableLanguages($this->pObj->id, false, false, $this->pObj->modSharedTSconfig);
         $optionsArr = array('<option value=""></option>');
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+
         foreach ($newLanguagesArr as $language) {
             if (TemplaVoilaUtility::getBackendUser()->checkLanguageAccess($language['uid']) && !isset($translatedLanguagesArr[$language['uid']])) {
                 $flag = \Ppi\TemplaVoilaPlus\Utility\IconUtility::getFlagIconFileForLanguage($language['flagIcon']);
                 $style = isset($language['flagIcon']) ? 'background-image: url(' . $flag . '); background-size: 16px auto; background-position: left center; background-repeat: no-repeat; padding-top: 0px; padding-left: 22px;' : '';
-                $optionsArr [] = '<option style="' . $style . '" name="createNewPageTranslation" value="' . $language['uid'] . '">' . htmlspecialchars($language['title']) . '</option>';
+
+                // Build localize command URL to DataHandler (tce_db)
+                // which redirects to FormEngine (record_edit)
+                // which, when finished editing should return back to the current page (returnUrl)
+
+                if (version_compare(TYPO3_version, '9.3.0', '>=')) {
+                    $parameters = [
+                        'justLocalized' => 'pages:' . $this->pObj->id . ':' . (int)$language['uid'],
+                        'returnUrl' => (string)$uriBuilder->buildUriFromRoute(
+                            $this->pObj->getModuleName(),
+                            $this->pObj->getLinkParameters(['SET' => ['language' => $language['uid']]])
+                        ),
+                    ];
+                } else {
+                    $parameters = [
+                        'justLocalized' => 'pages:' . $this->pObj->id . ':' . (int)$language['uid'],
+                        'returnUrl' => (string)$uriBuilder->buildUriFromModule(
+                            $this->pObj->getModuleName(),
+                            $this->pObj->getLinkParameters(['SET' => ['language' => $language['uid']]])
+                        ),
+                    ];
+                }
+
+                $redirectUrl = (string)$uriBuilder->buildUriFromRoute('record_edit', $parameters);
+
+                $language['link'] = BackendUtility::getLinkToDataHandlerAction(
+                    '&cmd[pages][' . $this->pObj->id . '][localize]=' . (int)$language['uid'],
+                    $redirectUrl
+                );
+
+                $optionsArr [] = '<option style="' . $style . '" value="' . $language['link'] . '">' . htmlspecialchars($language['title']) . '</option>';
             }
         }
 
         $output = '';
         if (count($optionsArr) > 1) {
-            $linkParam = ['pid' => $this->pObj->id];
-            if ($this->pObj->rootElementTable === 'pages') {
-                $linkParam['doktype'] = $this->pObj->rootElementRecord['doktype'];
-            }
-            $link = $this->pObj->getBaseUrl($linkParam)
-                . '&createNewPageTranslation=\'+this.options[this.selectedIndex].value';
             $output = '
                 <tr class="bgColor4">
                     <td width="20">
@@ -245,7 +272,7 @@ class Localization implements SingletonInterface
                     </td><td width="200" style="vertical-align:middle;">
                         ' . TemplaVoilaUtility::getLanguageService()->getLL('createnewtranslation', true) . ':
                     </td>
-                    <td style="vertical-align:middle;"><select onChange="document.location=\'' . $link . '">' . implode('', $optionsArr) . '</select></td>
+                    <td style="vertical-align:middle;"><select onChange="document.location=this.options[this.selectedIndex].value">' . implode('', $optionsArr) . '</select></td>
                 </tr>
             ';
         }

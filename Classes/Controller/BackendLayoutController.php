@@ -2859,14 +2859,14 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      * All commands will trigger a redirect by sending a location header after they work is done.
      *
      * Currently supported commands: 'createNewRecord', 'unlinkRecord', 'deleteRecord','pasteRecord',
-     * 'makeLocalRecord', 'localizeElement', 'createNewPageTranslation' and 'editPageLanguageOverlay'
+     * 'makeLocalRecord', 'localizeElement' and 'editPageLanguageOverlay'
      *
      * @return void
      * @access protected
      */
     public function handleIncomingCommands()
     {
-        $possibleCommands = array('createNewRecord', 'unlinkRecord', 'deleteRecord', 'pasteRecord', 'makeLocalRecord', 'localizeElement', 'createNewPageTranslation', 'editPageLanguageOverlay');
+        $possibleCommands = array('createNewRecord', 'unlinkRecord', 'deleteRecord', 'pasteRecord', 'makeLocalRecord', 'localizeElement', 'editPageLanguageOverlay');
 
         $hooks = $this->hooks_prepareObjectsArray('handleIncomingCommands');
 
@@ -2942,20 +2942,6 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                     case 'localizeElement':
                         $sourcePointer = $this->apiObj->flexform_getPointerFromString(GeneralUtility::_GP('source'));
                         $this->apiObj->localizeElement($sourcePointer, $commandParameters);
-                        break;
-
-                    case 'createNewPageTranslation':
-                        // Create parameters and finally run the classic page module for creating a new page translation
-                        $redirectLocation = BackendUtility::getModuleUrl('record_edit', [
-                                'edit' => ['pages_language_overlay' => [(int)GeneralUtility::_GP('pid') => 'new']],
-                                'overrideVals' => [
-                                    'pages_language_overlay' => [
-                                        'doktype' => (int)GeneralUtility::_GP('doktype'),
-                                        'sys_language_uid' => (int)$commandParameters,
-                                    ]
-                                ],
-                                'returnUrl' => $redirectLocation
-                            ]);
                         break;
 
                     case 'editPageLanguageOverlay':
@@ -3126,6 +3112,11 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     public function getModuleTemplate()
     {
         return $this->moduleTemplate;
+    }
+
+    public function getModuleName()
+    {
+        return $this->moduleName;
     }
 
     public function getIconFactory()
