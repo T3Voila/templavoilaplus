@@ -175,11 +175,14 @@
             <trans-unit id="createnewrecord" xml:space="preserve">
                 <source>Create new element</source>
             </trans-unit>
+            <trans-unit id="hiderecord" xml:space="preserve">
+                <source>Hide element</source>
+            </trans-unit>
+            <trans-unit id="unhiderecord" xml:space="preserve">
+                <source>Unhide element</source>
+            </trans-unit>
             <trans-unit id="editrecord" xml:space="preserve">
                 <source>Edit element</source>
-            </trans-unit>
-            <trans-unit id="editrecord_d" xml:space="preserve">
-                <source>Editing is not allowed for this element!</source>
             </trans-unit>
             <trans-unit id="pasterecord" xml:space="preserve">
                 <source>Paste element</source>
