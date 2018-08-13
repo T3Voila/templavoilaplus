@@ -1373,9 +1373,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                             !$elementBelongsToCurrentPage ||
                             $this->global_tt_content_elementRegister[$contentTreeArr['el']['uid']] > 1
                         ) {
-                            // array('title' => TemplaVoilaUtility::getLanguageService()->getLL('unlinkRecord'));
-                            $iconUnlink = $this->iconFactory->getIcon('extensions-templavoila-unlink', Icon::SIZE_SMALL)->render();
-                            $linkUnlink = !in_array('unlink', $this->blindIcons) ? $this->link_unlink($iconUnlink, $parentPointer, false, false, $elementPointer) : '';
+                            $linkUnlink = !in_array('unlink', $this->blindIcons) ? $this->link_unlink('extensions-templavoila-unlink', TemplaVoilaUtility::getLanguageService()->getLL('unlinkRecord'), $parentPointer, false, false, $elementPointer) : '';
                         } else {
                             $linkUnlink = '';
                         }
@@ -1385,19 +1383,15 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
                     if ($canEditElement && TemplaVoilaUtility::getBackendUser()->recordEditAccessInternals('tt_content', $contentTreeArr['previewData']['fullRow'])) {
                         if (($elementBelongsToCurrentPage || $this->modTSconfig['properties']['enableEditIconForRefElements']) && !in_array('edit', $this->blindIcons)) {
-                            // array('title' => TemplaVoilaUtility::getLanguageService()->getLL('editrecord'));
-                            $iconEdit = $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render();
-                            $linkEdit = $this->link_edit($iconEdit, $contentTreeArr['el']['table'], $contentTreeArr['el']['uid'], false, $contentTreeArr['el']['pid'], 'btn btn-default btn-sm');
+                            $linkEdit = $this->buildButtonEdit($contentTreeArr['el']);
                         } else {
                             $linkEdit = '';
                         }
-                        $linkHide = !in_array('hide', $this->blindIcons) ? $this->icon_hide($contentTreeArr['el']) : '';
+                        $linkHide = !in_array('hide', $this->blindIcons) ? $this->buildButtonHide($contentTreeArr['el']) : '';
 
                         if ($canEditContent && $this->modTSconfig['properties']['enableDeleteIconForLocalElements'] && $elementBelongsToCurrentPage) {
                             $hasForeignReferences = TemplaVoilaUtility::hasElementForeignReferences($contentTreeArr['el'], $contentTreeArr['el']['pid']);
-                            // array('title' => TemplaVoilaUtility::getLanguageService()->getLL('deleteRecord'));
-                            $iconDelete = $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render();
-                            $linkDelete = !in_array('delete', $this->blindIcons) ? $this->link_unlink($iconDelete, $parentPointer, true, $hasForeignReferences, $elementPointer) : '';
+                            $linkDelete = !in_array('delete', $this->blindIcons) ? $this->link_unlink('actions-edit-delete', TemplaVoilaUtility::getLanguageService()->getLL('deleteRecord'), $parentPointer, true, $hasForeignReferences, $elementPointer) : '';
                         } else {
                             $linkDelete = '';
                         }
@@ -2324,20 +2318,17 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                         !$elementBelongsToCurrentPage ||
                         $this->global_tt_content_elementRegister[$contentTreeArr['el']['uid']] > 1
                     ) {
-                        $iconUnlink = $this->iconFactory->getIcon('extensions-templavoila-unlink', Icon::SIZE_SMALL)->render();
-                        $linkUnlink = $this->link_unlink($iconUnlink, $parentPointer, false);
+                        $linkUnlink = $this->link_unlink('extensions-templavoila-unlink', TemplaVoilaUtility::getLanguageService()->getLL('unlinkRecord'), $parentPointer, false);
                     } else {
                         $linkUnlink = '';
                     }
                     if ($this->modTSconfig['properties']['enableDeleteIconForLocalElements'] && $elementBelongsToCurrentPage) {
                         $hasForeignReferences = TemplaVoilaUtility::hasElementForeignReferences($contentTreeArr['el'], $contentTreeArr['el']['pid']);
-                        $iconDelete = $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render();
-                        $linkDelete = $this->link_unlink($iconDelete, $parentPointer, true, $hasForeignReferences);
+                        $linkDelete = $this->link_unlink('actions-edit-delete', TemplaVoilaUtility::getLanguageService()->getLL('deleteRecord'), $parentPointer, true, $hasForeignReferences);
                     } else {
                         $linkDelete = '';
                     }
-                    $iconEdit = $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render();
-                    $linkEdit = ($elementBelongsToCurrentPage ? $this->link_edit($iconEdit, $contentTreeArr['el']['table'], $contentTreeArr['el']['uid'], false, 0, 'btn btn-default btn-sm') : '');
+                    $linkEdit = ($elementBelongsToCurrentPage ? $this->buildButtonEdit($contentTreeArr['el']) : '');
 
                     $titleBarRightButtons = $linkEdit . $this->clipboardObj->element_getSelectButtons($parentPointer) . $linkMakeLocal . $linkUnlink . $linkDelete;
                 }
@@ -2574,15 +2565,13 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      * @param integer $uid The uid of the element to be edited
      * @param boolean $forced By default the link is not shown if translatorMode is set, but with this boolean it can be forced anyway.
      * @param integer $usePid ...
-     * @param string $linkClass css class to use for regular content elements
      *
      * @return string HTML anchor tag containing the label and the correct link
      * @access protected
      */
-    public function link_edit($label, $table, $uid, $forced = false, $usePid = 0, $linkClass = '')
+    public function link_edit($label, $table, $uid, $forced = false, $usePid = 0)
     {
         if ($label) {
-            $class = $linkClass ? $linkClass : 'tpm-edit';
             $pid = $table == 'pages' ? $uid : $usePid;
             $calcPerms = $pid == 0 ? $this->calcPerms : $this->getCalcPerms($pid);
 
@@ -2596,7 +2585,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                         . '">' . $label . '</a>';
                 } else {
                     $onClick = BackendUtility::editOnClick('&edit[' . $table . '][' . $uid . ']=edit', '', -1);
-                    return '<a class="' . $class . '" href="#" onclick="' . htmlspecialchars($onClick) . '">' . $label . '</a>';
+                    return '<a class="tpm-edit" href="#" onclick="' . htmlspecialchars($onClick) . '">' . $label . '</a>';
                 }
             } else {
                 return $label;
@@ -2607,79 +2596,56 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     }
 
     /**
-     * Returns an HTML link for hiding
+     * Returns an HTML link for editing element
      *
      * @param array $el
      *
      * @return string HTML anchor tag containing the label and the correct link
      * @access protected
      */
-    public function icon_hide($el)
+    public function buildButtonEdit($el)
     {
-        $iconOptions = array(
-            'title' => ($el['table'] == 'pages' ? TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:' . $this->coreLangPath . 'locallang_mod_web_list.xlf:hidePage') : TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:' . $this->coreLangPath . 'locallang_mod_web_list.xml:hide'))
+        $uid = $el['uid'];
+        $table = $el['table'];
+
+        $workspaceRec = BackendUtility::getWorkspaceVersionOfRecord(TemplaVoilaUtility::getBackendUser()->workspace, $table, $uid);
+        $workspaceId = ($workspaceRec['uid'] > 0) ? $workspaceRec['uid'] : $uid;
+
+        return $this->buildButtonFromUrl(
+            BackendUtility::editOnClick('&edit[' . $table . '][' . $workspaceId . ']=edit', '', -1),
+            TemplaVoilaUtility::getLanguageService()->getLL('editrecord'),
+            'actions-document-open'
         );
-        $hideIcon = $this->iconFactory->getIcon('actions-edit-hide', Icon::SIZE_SMALL)->render();
-
-        $iconOptions = array(
-            'title' => ($el['table'] == 'pages' ? TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:' . $this->coreLangPath . 'locallang_mod_web_list.xlf:unHidePage') : TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:' . $this->coreLangPath . 'locallang_mod_web_list.xml:unHide'))
-        );
-        $unhideIcon = $this->iconFactory->getIcon('actions-edit-unhide', Icon::SIZE_SMALL)->render();
-
-        if ($el['isHidden']) {
-            $label = $unhideIcon;
-        } else {
-            $label = $hideIcon;
-        }
-
-        return $this->link_hide($label, $el['table'], $el['uid'], $el['isHidden'], false, $el['pid']);
     }
 
     /**
-     * @param string $label
-     * @param string $table
-     * @param integer $uid
-     * @param integer $hidden
-     * @param boolean $forced
-     * @param integer $usePid
+     * Returns an HTML link for (un)hiding element
      *
-     * @return string
+     * @param array $el
+     *
+     * @return string HTML anchor tag containing the label and the correct link
+     * @access protected
      */
-    public function link_hide($label, $table, $uid, $hidden, $forced = false, $usePid = 0)
+    public function buildButtonHide($el)
     {
-        if ($label) {
-            $pid = $table == 'pages' ? $uid : $usePid;
-            $calcPerms = $pid == 0 ? $this->calcPerms : $this->getCalcPerms($pid);
+        $uid = $el['uid'];
+        $table = $el['table'];
+        $hidden = $el['isHidden'];
 
-            if (($table == 'pages' && ($calcPerms & 2) ||
-                    $table != 'pages' && ($calcPerms & 16)) &&
-                (!$this->translatorMode || $forced)
-            ) {
-                $workspaceRec = BackendUtility::getWorkspaceVersionOfRecord(TemplaVoilaUtility::getBackendUser()->workspace, $table, $uid);
-                $workspaceId = ($workspaceRec['uid'] > 0) ? $workspaceRec['uid'] : $uid;
-                if ($table == "pages" && $this->currentLanguageUid) {
-                    //    return '<a href="#" onclick="' . htmlspecialchars('return jumpToUrl(\'' . BackendUtility::getLinkToDataHandlerAction($params, -1) . '\');') . '">'.$label.'</a>';
-                } else {
-                    $params = '&data[' . $table . '][' . $workspaceId . '][hidden]=' . (1 - $hidden);
-                    //    return '<a href="#" onclick="' . htmlspecialchars('return jumpToUrl(\'' . BackendUtility::getLinkToDataHandlerAction($params, -1) . '\');') . '">'.$label.'</a>';
+        $workspaceRec = BackendUtility::getWorkspaceVersionOfRecord(TemplaVoilaUtility::getBackendUser()->workspace, $table, $uid);
+        $workspaceId = ($workspaceRec['uid'] > 0) ? $workspaceRec['uid'] : $uid;
 
-                    /* the commands are indipendent of the position,
-                     * so sortable doesn't need to update these and we
-                     * can safely use '#'
-                     */
-                    $returnUrl = ($this->currentElementParentPointer) ? GeneralUtility::getIndpEnv('REQUEST_URI') . '#c' . md5($this->apiObj->flexform_getStringFromPointer($this->currentElementParentPointer) . $uid) : GeneralUtility::getIndpEnv('REQUEST_URI');
-                    if ($hidden) {
-                        return '<a href="#" class="btn btn-default btn-sm" onclick="sortable_unhideRecord(this, \'' . htmlspecialchars(BackendUtility::getLinkToDataHandlerAction($params, $returnUrl)) . '\');">' . $label . '</a>';
-                    } else {
-                        return '<a href="#" class="btn btn-default btn-sm" onclick="sortable_hideRecord(this, \'' . htmlspecialchars(BackendUtility::getLinkToDataHandlerAction($params, $returnUrl)) . '\');">' . $label . '</a>';
-                    }
-                }
-            } else {
-                return $label;
-            }
-        }
+        $returnUrl = ($this->currentElementParentPointer) ? GeneralUtility::getIndpEnv('REQUEST_URI') . '#c' . md5($this->apiObj->flexform_getStringFromPointer($this->currentElementParentPointer) . $uid) : GeneralUtility::getIndpEnv('REQUEST_URI');
+        $params = '&data[' . $table . '][' . $workspaceId . '][hidden]=' . (1 - $hidden);
 
-        return '';
+        $clickUrl =
+            'sortable_' . ($hidden ? 'un' : '') . 'hideRecord(this, \'' . htmlspecialchars(BackendUtility::getLinkToDataHandlerAction($params, $returnUrl)) . '\');';
+
+        return $this->buildButtonFromUrl(
+            $clickUrl,
+            TemplaVoilaUtility::getLanguageService()->getLL($hidden ? 'unhiderecord' : 'hiderecord'),
+            $hidden ? 'actions-edit-unhide' : 'actions-edit-hide'
+        );
     }
 
     /**
@@ -2736,7 +2702,8 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      * Returns an HTML link for unlinking a content element. Unlinking means that the record still exists but
      * is not connected to any other content element or page.
      *
-     * @param string $label The label
+     * @param string $iconName Name of icon
+     * @param string $title Link title
      * @param array $unlinkPointer Flexform pointer pointing to the element to be unlinked
      * @param boolean $realDelete If set, the record is not just unlinked but deleted!
      * @param boolean $foreignReferences If set, the record seems to have references on other pages
@@ -2745,19 +2712,22 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      * @return string HTML anchor tag containing the label and the unlink-link
      * @access protected
      */
-    public function link_unlink($label, $unlinkPointer, $realDelete = false, $foreignReferences = false, $elementPointer = '')
+    public function link_unlink($iconName, $title, $unlinkPointer, $realDelete = false, $foreignReferences = false, $elementPointer = '')
     {
+        $label = $this->iconFactory->getIcon($iconName, Icon::SIZE_SMALL)->render();
+
         $unlinkPointerString = $this->apiObj->flexform_getStringFromPointer($unlinkPointer);
         $encodedUnlinkPointerString = rawurlencode($unlinkPointerString);
 
         if ($realDelete) {
             $LLlabel = $foreignReferences ? 'deleteRecordWithReferencesMsg' : 'deleteRecordMsg';
 
-            return '<a class="btn btn-warning btn-sm tpm-delete" href="'
+            return '<a class="btn btn-warning btn-sm tpm-delete" title="' . $title . '" href="'
                 . BackendUtility::getModuleUrl($this->moduleName, $this->getLinkParameters(['deleteRecord' => $unlinkPointerString]))
                 . '" onclick="' . htmlspecialchars('return confirm(' . GeneralUtility::quoteJSvalue(TemplaVoilaUtility::getLanguageService()->getLL($LLlabel)) . ');') . '">' . $label . '</a>';
         } else {
-            return '<a class="btn btn-default btn-sm tpm-unlink" href="javascript:' . htmlspecialchars('if (confirm(' . GeneralUtility::quoteJSvalue(TemplaVoilaUtility::getLanguageService()->getLL('unlinkRecordMsg')) . '))') . 'sortable_unlinkRecord(\'' . $encodedUnlinkPointerString . '\',\'' . $this->getSortableItemHash($unlinkPointerString) . '\',\'' . $elementPointer . '\');">' . $label . '</a>';
+            return '<a class="btn btn-default btn-sm tpm-unlink" title="' . $title . '" href="javascript:'
+                . htmlspecialchars('if (confirm(' . GeneralUtility::quoteJSvalue(TemplaVoilaUtility::getLanguageService()->getLL('unlinkRecordMsg')) . '))') . 'sortable_unlinkRecord(\'' . $encodedUnlinkPointerString . '\',\'' . $this->getSortableItemHash($unlinkPointerString) . '\',\'' . $elementPointer . '\');">' . $label . '</a>';
         }
     }
 
