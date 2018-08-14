@@ -165,7 +165,9 @@ function sortable_updateItemButtons(listSelector)
                 this.href = this.href.replace(/unlinkRecord\('[^']+'/, "unlinkRecord(\'" + newPos + "\'");
             }
             if ($this.hasClass('tpm-cut') || $this.hasClass('tpm-copy') || $this.hasClass('tpm-ref') ) {
-                this.href = this.href.replace(/CB\[el\]\[([^\]]+)\]=[^&]+/, "CB[el][$1]=" + newPos);
+                //this.setAttribute('onclick',  encodeURI(decodeURI(this.getAttribute('onclick')).replace(/CB\[el\]\[([^\]]+)\]=[^&]+/, "CB[el][$1]=" + newPos)));
+
+                this.setAttribute('onclick',  this.getAttribute('onclick').replace(/CB\[el\]\[([^\]]+)\]=[^&]+/, "CB[el][$1]=" + newPos));
             }
             if ($this.hasClass('tpm-pasteAfter') || $this.hasClass('tpm-pasteSubRef')) {
                 this.href = this.href.replace(/&destination=[^&]+/, "&destination=" + newPos);

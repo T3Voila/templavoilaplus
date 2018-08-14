@@ -1008,7 +1008,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                         ]
                     )
                 );
-                $clickUrl = 'jumpToUrl(\'' . $url . '\');return false;';
+                $clickUrl = 'jumpToUrl(\'' . trim(json_encode(rawurldecode($url), JSON_HEX_APOS | JSON_HEX_QUOT), '"') . '\');return false;';
         }
         return $this->buildButtonFromUrl($clickUrl, $title, $icon, '', $buttonType, $extraClass, $rel);
     }
