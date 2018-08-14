@@ -187,7 +187,9 @@ class Clipboard implements SingletonInterface
                     'web_txtemplavoilaplusLayout',
                     $title,
                     $icon . ($isActive ? '-release' : ''),
-                    $params
+                    $params,
+                    'default',
+                    'tpm-' . $button
                 );
             }
         }
