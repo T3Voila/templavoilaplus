@@ -2043,7 +2043,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                                 && (int)$olrow['t3ver_wsid'] !== (int)$GLOBALS['BE_USER']->workspace
                             ) {
                                 // @TODO Output that it is localized on another WS?
-                                continue;
+                                continue 2;
                             }
 
                             $localizedRecordInfo = array(
