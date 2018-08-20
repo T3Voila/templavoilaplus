@@ -4,7 +4,7 @@
 		<header/>
 		<body>
 			<trans-unit id="tx_templavoilaplus_tmplobj" xml:space="preserve">
-				<source>TemplaVoilà Plus Template Object</source>
+				<source>TemplaVoilà! Plus Template Object</source>
 			</trans-unit>
 			<trans-unit id="tx_templavoilaplus_tmplobj.title" xml:space="preserve">
 				<source>Title:</source>
@@ -46,10 +46,10 @@
 				<source>Local Processing (XML):</source>
 			</trans-unit>
 			<trans-unit id="be_groups.tx_templavoilaplus_access" xml:space="preserve">
-				<source>Disallow access to TemplaVoilà objects:</source>
+				<source>Disallow access to TemplaVoilà! Plus objects:</source>
 			</trans-unit>
 			<trans-unit id="tx_templavoilaplus_datastructure" xml:space="preserve">
-				<source>TemplaVoilà Data Structure</source>
+				<source>TemplaVoilà! Plus Data Structure</source>
 			</trans-unit>
 			<trans-unit id="tx_templavoilaplus_datastructure.title" xml:space="preserve">
 				<source>Title:</source>
