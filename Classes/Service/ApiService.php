@@ -1508,7 +1508,7 @@ class ApiService
             'fullTitle' => BackendUtility::getRecordTitle($table, $row),
             'icon' => '', // kept because it's not clear if this is used elsewhere
             'iconTag' => $this->iconFactory->getIconForRecord($table, $row, Icon::SIZE_SMALL)->render(),
-            'sys_language_uid' => $row['sys_language_uid'],
+            'sys_language_uid' => (int) $row['sys_language_uid'],
             'l18n_parent' => $row['l18n_parent'],
             'CType' => $row['CType'],
             'layout' => $row['layout'],

@@ -624,6 +624,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             } else {
                 $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ClickMenu');
             }
+            $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Tooltip');
 
             // Set up JS for dynamic tab menu and side bar
             $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Tabs');
@@ -1315,7 +1316,9 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         $elementClass .= ' tpm-container-element-depth-' . $contentTreeArr['depth'];
         $elementClass .= ' tpm-container-element-depth-' . ($contentTreeArr['depth'] % 2 ? 'odd' : 'even');
 
-        $recordIcon = $contentTreeArr['el']['iconTag'];
+        $recordIcon = '<span ' . BackendUtility::getRecordToolTip($contentTreeArr['el'], $contentTreeArr['el']['table']) . '>'
+            . $contentTreeArr['el']['iconTag']
+            . '</span>';
 
         $menuCommands = array();
         if (TemplaVoilaUtility::getBackendUser()->isPSet($calcPerms, 'pages', 'new')) {
@@ -1341,6 +1344,13 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             case 'pages':
                 $elementTitlebarClass = 't3-page-column-header';
                 $elementClass .= ' pagecontainer';
+                $languageUid = $this->currentLanguageUid;
+                if ($this->currentLanguageUid !== 0) {
+                    $row = BackendUtility::getRecordLocalization($contentTreeArr['el']['table'], $contentTreeArr['el']['uid'], $this->currentLanguageUid);
+                    if ($row) {
+                        $contentTreeArr['el']['fullTitle'] = BackendUtility::getRecordTitle('pages', $row[0]);
+                    }
+                }
                 break;
 
             case 'tt_content':
@@ -1406,7 +1416,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         }
 
         // Prepare the language icon:
-        $languageLabel = htmlspecialchars($this->allAvailableLanguages[$contentTreeArr['el']['sys_language_uid']]['title']);
+        $languageLabel = htmlspecialchars($this->allAvailableLanguages[$languageUid]['title']);
         if ($this->allAvailableLanguages[$languageUid]['flagIcon']) {
             $languageIcon = \Ppi\TemplaVoilaPlus\Utility\IconUtility::getFlagIconForLanguage(
                 $this->allAvailableLanguages[$languageUid]['flagIcon'],
