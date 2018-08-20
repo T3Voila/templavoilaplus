@@ -167,7 +167,7 @@ class Clipboard implements SingletonInterface
                         ];
                         break;
                     default:
-                        continue;
+                        continue 2;
                 }
 
                 $isActive = ($selectMode === $button);
