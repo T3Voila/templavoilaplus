@@ -947,7 +947,11 @@ class HtmlMarkup
 
             // Body tag:
             if ($MappingInfo_head['addBodyTag'] && $BodyTag_cached) {
-                $GLOBALS['TSFE']->defaultBodyTag = $BodyTag_cached;
+                if (version_compare(TYPO3_version, '8.3.0', '>=')) {
+                    $GLOBALS['TSFE']->pSetup['bodyTag'] = $BodyTag_cached;
+                } else {
+                    $GLOBALS['TSFE']->defaultBodyTag = $BodyTag_cached;
+                }
             }
         }
     }
