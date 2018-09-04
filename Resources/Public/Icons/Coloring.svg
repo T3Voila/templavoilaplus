@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="57.696mm" height="76.595mm" version="1.1" viewBox="0 0 57.696442 76.595238" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+    <metadata>
+        <rdf:RDF>
+            <cc:Work rdf:about="">
+                <dc:format>image/svg+xml</dc:format>
+                <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+                <dc:title/>
+            </cc:Work>
+        </rdf:RDF>
+    </metadata>
+    <g transform="translate(-9.8943 -5.8363)" stroke="#fff" stroke-linecap="round">
+        <rect x="10.394" y="25.235" width="56.696" height="18.899" fill="#4c7e3a" style="paint-order:stroke fill markers"/>
+        <rect x="10.394" y="44.134" width="56.696" height="18.899" fill="#73b45b" style="paint-order:stroke fill markers"/>
+        <rect x="10.394" y="6.3363" width="56.696" height="18.899" fill="#345527" style="paint-order:stroke fill markers"/>
+        <rect x="10.394" y="63.033" width="56.696" height="18.899" fill="#a5cf95" style="paint-order:stroke fill markers"/>
+    </g>
+</svg>
