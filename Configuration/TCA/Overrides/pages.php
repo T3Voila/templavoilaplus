@@ -193,9 +193,9 @@ $GLOBALS['TCA']['pages']['palettes']['storage'] = array(
     'after:media'
 );
 
-$GLOBALS['TCA']['pages']['ctrl']['typeicon_classes']['contains-tv+'] = 'extensions-templavoila-templavoila-logo';
+$GLOBALS['TCA']['pages']['ctrl']['typeicon_classes']['contains-tv+'] = 'extensions-templavoila-folder';
 $GLOBALS['TCA']['pages']['columns']['module']['config']['items'][] = [
     'tv+',
     'tv+',
-    'extensions-templavoila-templavoila-logo',
+    'extensions-templavoila-folder',
 ];

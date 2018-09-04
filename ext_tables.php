@@ -135,6 +135,7 @@ if (
     ];
     $iconsSvg = [
         'default-preview-icon' => 'EXT:templavoilaplus/Resources/Public/Icon/icon_fce_default.svg',
+        'folder' => 'EXT:templavoilaplus/Resources/Public/Icons/Folder.svg',
     ];
 
     $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
