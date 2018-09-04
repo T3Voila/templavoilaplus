@@ -131,11 +131,11 @@ if (
         'unlink' => 'EXT:templavoilaplus/Resources/Public/Icon/unlink.png',
         'htmlvalidate' => 'EXT:templavoilaplus/Resources/Public/Icon/html_go.png',
         'type-fce' => 'EXT:templavoilaplus/Resources/Public/Icon/icon_fce_ce.png',
-        'templavoila-logo' => 'EXT:templavoilaplus/Resources/Public/Image/templavoila-logo.png',
     ];
     $iconsSvg = [
         'default-preview-icon' => 'EXT:templavoilaplus/Resources/Public/Icons/TemplateDefault.svg',
         'folder' => 'EXT:templavoilaplus/Resources/Public/Icons/Folder.svg',
+        'menu-item' => 'EXT:templavoilaplus/Resources/Public/Icons/MenuItem.svg',
     ];
 
     $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);

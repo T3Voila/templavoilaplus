@@ -31,31 +31,31 @@ class ItemProvider extends AbstractProvider
         'mappingFile' => [
             'type' => 'item',
             'label' => 'LLL:EXT:templavoilaplus/Resources/Private/Language/locallang.xlf:cm1_title',
-            'iconIdentifier' => 'extensions-templavoila-templavoila-logo',
+            'iconIdentifier' => 'extensions-templavoila-menu-item',
             'callbackAction' => 'mappingFile', //'templavoilaplus_mapping'
         ],
         'mappingDb' => [
             'type' => 'item',
             'label' => 'LLL:EXT:templavoilaplus/Resources/Private/Language/locallang.xlf:cm1_title',
-            'iconIdentifier' => 'extensions-templavoila-templavoila-logo',
+            'iconIdentifier' => 'extensions-templavoila-menu-item',
             'callbackAction' => 'mappingDb', //'templavoilaplus_mapping',
         ],
         'viewsubelements' => [
             'type' => 'item',
             'label' => 'LLL:EXT:templavoilaplus/Resources/Private/Language/locallang.xlf:cm1_viewsubelements',
-            'iconIdentifier' => 'extensions-templavoila-templavoila-logo',
+            'iconIdentifier' => 'extensions-templavoila-menu-item',
             'callbackAction' => 'viewSubelements', //'web_txtemplavoilaplusLayout',
         ],
         'viewflexformxml' => [
             'type' => 'item',
             'label' => 'LLL:EXT:templavoilaplus/Resources/Private/Language/locallang.xlf:cm1_viewflexformxml',
-            'iconIdentifier' => 'extensions-templavoila-templavoila-logo',
+            'iconIdentifier' => 'extensions-templavoila-menu-item',
             'callbackAction' => 'viewFlexformXml', //'templavoilaplus_flexform_cleaner',
         ],
         'viewdsto' => [
             'type' => 'item',
             'label' => 'LLL:EXT:templavoilaplus/Resources/Private/Language/locallang.xlf:cm_viewdsto',
-            'iconIdentifier' => 'extensions-templavoila-templavoila-logo',
+            'iconIdentifier' => 'extensions-templavoila-menu-item',
             'callbackAction' => 'viewDsTo', //'templavoilaplus_mapping',
         ],
     ];

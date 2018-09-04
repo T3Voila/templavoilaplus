@@ -61,7 +61,7 @@ class MainClickMenu
             ) {
                 $localItems[] = $clickMenu->linkItem(
                     $this->getLanguageService()->getLLL('cm1_title', $LL, true),
-                    $iconFactory->getIcon('extensions-templavoila-templavoila-logo', Icon::SIZE_SMALL)->render(),
+                    $iconFactory->getIcon('extensions-templavoila-menu-item', Icon::SIZE_SMALL)->render(),
                     $clickMenu->urlRefForCM(
                         BackendUtility::getModuleUrl(
                             'templavoilaplus_mapping',
@@ -78,7 +78,7 @@ class MainClickMenu
             ) {
                 $localItems[] = $clickMenu->linkItem(
                     $this->getLanguageService()->getLLL('cm1_title', $LL, true),
-                    $iconFactory->getIcon('extensions-templavoila-templavoila-logo', Icon::SIZE_SMALL)->render(),
+                    $iconFactory->getIcon('extensions-templavoila-menu-item', Icon::SIZE_SMALL)->render(),
                     $clickMenu->urlRefForCM(
                         BackendUtility::getModuleUrl(
                             'templavoilaplus_mapping',
@@ -102,7 +102,7 @@ class MainClickMenu
 
                 $localItems[] = $clickMenu->linkItem(
                     $this->getLanguageService()->getLLL('cm1_viewsubelements', $LL, true),
-                    $iconFactory->getIcon('extensions-templavoila-templavoila-logo', Icon::SIZE_SMALL)->render(),
+                    $iconFactory->getIcon('extensions-templavoila-menu-item', Icon::SIZE_SMALL)->render(),
                     $clickMenu->urlRefForCM(
                         BackendUtility::getModuleUrl(
                             'web_txtemplavoilaplusLayout',
@@ -125,7 +125,7 @@ class MainClickMenu
             if ($this->getBackendUser()->isAdmin() && $isTVelement) {
                 $localItems[] = $clickMenu->linkItem(
                     $this->getLanguageService()->getLLL('cm1_viewflexformxml', $LL, true),
-                    $iconFactory->getIcon('extensions-templavoila-templavoila-logo', Icon::SIZE_SMALL)->render(),
+                    $iconFactory->getIcon('extensions-templavoila-menu-item', Icon::SIZE_SMALL)->render(),
                     $clickMenu->urlRefForCM(
                         BackendUtility::getModuleUrl(
                             'templavoilaplus_flexform_cleaner',
@@ -147,7 +147,7 @@ class MainClickMenu
                 if (MathUtility::canBeInterpretedAsInteger($clickMenu->rec['tx_templavoilaplus_ds'])) {
                     $localItems[] = $clickMenu->linkItem(
                         $this->getLanguageService()->getLLL('cm_viewdsto', $LL, true) . ' [' . $clickMenu->rec['tx_templavoilaplus_ds'] . '/' . $clickMenu->rec['tx_templavoilaplus_to'] . ']',
-                        $iconFactory->getIcon('extensions-templavoila-templavoila-logo', Icon::SIZE_SMALL)->render(),
+                        $iconFactory->getIcon('extensions-templavoila-menu-item', Icon::SIZE_SMALL)->render(),
                         $clickMenu->urlRefForCM(
                             BackendUtility::getModuleUrl(
                                 'templavoilaplus_mapping',
