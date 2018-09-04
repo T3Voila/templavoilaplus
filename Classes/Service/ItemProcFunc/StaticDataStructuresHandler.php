@@ -256,18 +256,20 @@ class StaticDataStructuresHandler
             $iconPrefix = '../';
         }
 
+        $defaultIcon = 'EXT:templavoilaplus/Resources/Public/Icons/TemplateFce48.png';
+        if ($dsObje->getScope === \Ppi\TemplaVoilaPlus\Domain\Model\AbstractDataStructure::SCOPE_PAGE) {
+            $defaultIcon = 'EXT:templavoilaplus/Resources/Public/Icons/TemplatePage48.png';
+        }
+
         $toList = $toRepo->getTemplatesByDatastructure($dsObj, $storagePid);
         foreach ($toList as $toObj) {
             /** @var \Ppi\TemplaVoilaPlus\Domain\Model\Template $toObj */
             if (!$toObj->hasParent() && $toObj->isPermittedForUser($params['row'], $removeTOItems)) {
-                $params['items'][] = array(
+                $params['items'][] = [
                     $toObj->getLabel(),
                     $toObj->getKey(),
-                    ($toObj->getIcon()
-                        ? $iconPrefix . $toObj->getIcon()
-                        : 'EXT:templavoilaplus/Resources/Public/Icon/icon_pagetemplate.gif'
-                    )
-                );
+                    $toObj->getIcon() ? $iconPrefix . $toObj->getIcon() : $defaultIcon,
+                ];
             }
         }
     }
