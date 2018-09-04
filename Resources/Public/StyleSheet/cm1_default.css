@@ -30,8 +30,8 @@ ul.DS-tree li {
 }
 
 ul.DS-tree li.last-child {
-	list-style-image: url('../Image/blank.gif');
-	background: 0 0 url('../Image/joinbottom.gif') no-repeat transparent;
+    list-style-image: url('../Image/joinbottom.gif');
+	background: none;
 }
 
 ul.DS-tree a {
