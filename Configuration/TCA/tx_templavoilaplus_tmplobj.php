@@ -11,7 +11,7 @@ return [
         'sortby' => 'sorting',
         'default_sortby' => 'ORDER BY title',
         'delete' => 'deleted',
-        'iconfile' => 'EXT:templavoilaplus/Resources/Public/Icon/icon_to.gif',
+        'iconfile' => 'EXT:templavoilaplus/Resources/Public/Icons/TemplateDefault.svg',
         'selicon_field' => 'previewicon',
         'selicon_field_path' => 'uploads/tx_templavoilaplus',
         'type' => 'parent', // kept to make sure the user is force to reload the form

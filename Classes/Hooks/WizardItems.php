@@ -47,7 +47,7 @@ class WizardItems
                 }
 
                 $wizardItems['fce_' . $toObj->getKey()] = [
-                    'iconIdentifier' => ($iconIdentifier?: 'extensions-templavoila-default-preview-icon'),
+                    'iconIdentifier' => ($iconIdentifier?: 'extensions-templavoila-template-default'),
                     'description' => $toObj->getDescription()
                         ? $this->getLanguageService()->sL($toObj->getDescription())
                         : TemplaVoilaUtility::getLanguageService()->getLL('template_nodescriptionavailable'),

@@ -133,7 +133,8 @@ if (
         'type-fce' => 'EXT:templavoilaplus/Resources/Public/Icon/icon_fce_ce.png',
     ];
     $iconsSvg = [
-        'default-preview-icon' => 'EXT:templavoilaplus/Resources/Public/Icons/TemplateDefault.svg',
+        'template-default' => 'EXT:templavoilaplus/Resources/Public/Icons/TemplateDefault.svg',
+        'datastructure-default' => 'EXT:templavoilaplus/Resources/Public/Icons/DataStructureDefault.svg',
         'folder' => 'EXT:templavoilaplus/Resources/Public/Icons/Folder.svg',
         'menu-item' => 'EXT:templavoilaplus/Resources/Public/Icons/MenuItem.svg',
     ];

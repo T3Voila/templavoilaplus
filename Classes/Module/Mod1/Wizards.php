@@ -281,7 +281,7 @@ class Wizards implements SingletonInterface
 
         $storageFolderPID = $this->apiObj->getStorageFolderPid($parentPageId);
         $tmplHTML = array();
-        $defaultIcon = $this->pObj->getIconFactory()->getIcon('extensions-templavoila-default-preview-icon', Icon::SIZE_LARGE)->render();
+        $defaultIcon = $this->pObj->getIconFactory()->getIcon('extensions-templavoila-template-default', Icon::SIZE_LARGE)->render();
         $previewIcon = '';
 
         // look for TCEFORM.pages.tx_templavoilaplus_ds.removeItems / TCEFORM.pages.tx_templavoilaplus_to.removeItems
