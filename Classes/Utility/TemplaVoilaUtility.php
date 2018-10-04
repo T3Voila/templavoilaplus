@@ -103,7 +103,7 @@ final class TemplaVoilaUtility
             return false;
         }
         if (!is_array($references)) {
-            $references = array();
+            $references = [];
         }
         $refrows = static::getDatabaseConnection()->exec_SELECTgetRows(
             '*',
@@ -121,7 +121,16 @@ final class TemplaVoilaUtility
                     if (!isset($references[$ref['tablename']][$ref['recuid']])) {
                         // initialize with false to avoid recursion without affecting inner OR combinations
                         $references[$ref['tablename']][$ref['recuid']] = false;
-                        $references[$ref['tablename']][$ref['recuid']] = self::hasElementForeignReferences(array('table' => $ref['tablename'], 'uid' => $ref['recuid']), $pid, $recursion - 1, $references);
+                        $references[$ref['tablename']][$ref['recuid']]
+                            = self::hasElementForeignReferences(
+                                [
+                                    'table' => $ref['tablename'],
+                                    'uid' => $ref['recuid']
+                                ],
+                                $pid,
+                                $recursion - 1,
+                                $references
+                            );
                     }
                 }
             }
@@ -148,7 +157,8 @@ final class TemplaVoilaUtility
         $foreignRefs = false;
         if (is_array($references)) {
             unset($references['pages'][$pid]);
-            $foreignRefs = count($references['pages']) || count($references['pages_language_overlay']);
+            $foreignRefs = isset($references['pages']) && count($references['pages'])
+                || isset($references['pages_language_overlay']) && count($references['pages_language_overlay']);
         }
 
         return $foreignRefs;
