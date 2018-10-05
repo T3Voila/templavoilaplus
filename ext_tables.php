@@ -128,7 +128,6 @@ if (
         'makelocalcopy' => 'EXT:templavoilaplus/Resources/Public/Icon/makelocalcopy.gif',
         'clip_ref' => 'EXT:templavoilaplus/Resources/Public/Icon/clip_ref.gif',
         'clip_ref-release' => 'EXT:templavoilaplus/Resources/Public/Icon/clip_ref_h.gif',
-        'unlink' => 'EXT:templavoilaplus/Resources/Public/Icon/unlink.png',
         'htmlvalidate' => 'EXT:templavoilaplus/Resources/Public/Icon/html_go.png',
         'type-fce' => 'EXT:templavoilaplus/Resources/Public/Icon/icon_fce_ce.png',
     ];
@@ -138,6 +137,10 @@ if (
         'folder' => 'EXT:templavoilaplus/Resources/Public/Icons/Folder.svg',
         'menu-item' => 'EXT:templavoilaplus/Resources/Public/Icons/MenuItem.svg',
     ];
+    $iconsFontAwesome = [
+        'unlink' => 'unlink',
+    ];
+
 
     $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
     foreach ($iconsBitmap as $identifier => $file) {
@@ -153,6 +156,14 @@ if (
             'extensions-templavoila-' . $identifier,
             \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
             ['source' => $file]
+        );
+    }
+
+    foreach ($iconsFontAwesome as $identifier => $name) {
+        $iconRegistry->registerIcon(
+            'extensions-templavoila-' . $identifier,
+            \TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider::class,
+            ['name' => $name]
         );
     }
 }
