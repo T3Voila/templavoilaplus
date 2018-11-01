@@ -48,19 +48,18 @@ class StaticDataStructuresHandler
     public function main(&$params, &$pObj)
     {
         $removeDSItems = $this->getRemoveItems($params, substr($params['field'], 0, -2) . 'ds');
+        $showAdminAll = $this->getShowAdminAllItems($params, substr($params['field'], 0, -2) . 'ds');
 
         $dsRepo = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Domain\Repository\DataStructureRepository::class);
         $dsList = $dsRepo->getAll();
 
-        $params['items'] = array(
-            array(
-                '', ''
-            )
-        );
+        $params['items'] = [
+            ['', ''],
+        ];
 
         foreach ($dsList as $dsObj) {
             /** @var \Ppi\TemplaVoilaPlus\Domain\Model\AbstractDataStructure $dsObj */
-            if ($dsObj->isPermittedForUser($params['row'], $removeDSItems)) {
+            if ($dsObj->isPermittedForUser($params['row'], $removeDSItems, $showAdminAll)) {
                 $params['items'][] = array(
                     $dsObj->getLabel(),
                     $dsObj->getKey(),
@@ -126,17 +125,15 @@ class StaticDataStructuresHandler
         $dsRepo = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Domain\Repository\DataStructureRepository::class);
         $dsList = $dsRepo->getDatastructuresByStoragePidAndScope($storagePid, $scope);
 
-        $params['items'] = array(
-            array(
-                '', ''
-            )
-        );
+        $params['items'] = [
+            ['', ''],
+        ];
 
         $is85OrNewer = version_compare(TYPO3_version, '8.5.0', '>=') ? true : false;
 
         foreach ($dsList as $dsObj) {
             /** @var \Ppi\TemplaVoilaPlus\Domain\Model\AbstractDataStructure $dsObj */
-            if ($dsObj->isPermittedForUser($params['row'], $removeDSItems)) {
+            if ($dsObj->isPermittedForUser($params['row'], $removeDSItems, $showAdminAll)) {
                 $params['items'][] = array(
                     $dsObj->getLabel(),
                     ($is85OrNewer && !is_numeric($dsObj->getKey()) ? 'FILE:' : '') . $dsObj->getKey(),
@@ -218,7 +215,7 @@ class StaticDataStructuresHandler
 
         foreach ($dsList as $dsObj) {
             /** @var \Ppi\TemplaVoilaPlus\Domain\Model\AbstractDataStructure $dsObj */
-            if (!$dsObj->isPermittedForUser($params['row'], $removeDSItems)) {
+            if (!$dsObj->isPermittedForUser($params['row'], $removeDSItems, $showAdminAll)) {
                 continue;
             }
             $curDS = [
@@ -264,7 +261,7 @@ class StaticDataStructuresHandler
         $toList = $toRepo->getTemplatesByDatastructure($dsObj, $storagePid);
         foreach ($toList as $toObj) {
             /** @var \Ppi\TemplaVoilaPlus\Domain\Model\Template $toObj */
-            if (!$toObj->hasParent() && $toObj->isPermittedForUser($params['row'], $removeTOItems)) {
+            if (!$toObj->hasParent() && $toObj->isPermittedForUser($params['row'], $removeTOItems, $showAdminAll)) {
                 $params['items'][] = [
                     $toObj->getLabel(),
                     $toObj->getKey(),
@@ -441,6 +438,24 @@ class StaticDataStructuresHandler
 
         return GeneralUtility::trimExplode(',', $modTSConfig['value'], true);
     }
+
+
+    /**
+     * Find relevant removeItems blocks for a certain field with the given paramst
+     *
+     * @param array $params
+     * @param string $field
+     *
+     * @return bool
+     */
+    protected function getShowAdminAllItems($params, $field)
+    {
+        $pid = $params['row'][$params['table'] == 'pages' ? 'uid' : 'pid'];
+        $modTSConfig = BackendUtility::getModTSconfig($pid, 'TCEFORM.' . $params['table'] . '.' . $field . '.showAdminAllItems');
+
+        return (bool) $modTSConfig['value'];
+    }
+
 
 
     /**

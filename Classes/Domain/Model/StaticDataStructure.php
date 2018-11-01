@@ -128,10 +128,11 @@ class StaticDataStructure extends AbstractDataStructure
      *
      * @param mixed $parentRow
      * @param mixed $removeItems
+     * @param bool $showAdminAll If user is admin and this is true, then it is always permitted
      *
      * @return boolean
      */
-    public function isPermittedForUser($parentRow = array(), $removeItems = array())
+    public function isPermittedForUser($parentRow = array(), $removeItems = array(), $showAdminAll = true)
     {
         return true;
     }

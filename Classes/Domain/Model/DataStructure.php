@@ -85,12 +85,13 @@ class DataStructure extends AbstractDataStructure
      *
      * @param array $parentRow
      * @param array $removeItems
+     * @param bool $showAdminAll If user is admin and this is true, then it is always permitted
      *
      * @return boolean
      */
-    public function isPermittedForUser($parentRow = array(), $removeItems = array())
+    public function isPermittedForUser($parentRow = array(), $removeItems = array(), $showAdminAll = true)
     {
-        if (TemplaVoilaUtility::getBackendUser()->isAdmin()) {
+        if ($showAdminAll && TemplaVoilaUtility::getBackendUser()->isAdmin()) {
             return true;
         } else {
             if (in_array($this->getKey(), $removeItems)) {

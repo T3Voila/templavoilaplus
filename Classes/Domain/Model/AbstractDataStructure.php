@@ -172,10 +172,11 @@ abstract class AbstractDataStructure
      *
      * @param array $parentRow
      * @param array $removeItems
+     * @param bool $showAdminAll If user is admin and this is true, then it is always permitted
      *
      * @return boolean
      */
-    abstract public function isPermittedForUser($parentRow = array(), $removeItems = array());
+    abstract public function isPermittedForUser($parentRow = array(), $removeItems = array(), $showAdminAll = true);
 
     /**
      * Enables to determine whether this element is based on a record or on a file
