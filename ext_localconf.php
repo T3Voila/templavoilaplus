@@ -77,8 +77,11 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/backend.php']['constructPostPro
     = \Ppi\TemplaVoilaPlus\Hooks\BackendControllerHook::class . '->addInlineSettings';
 
 
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['lowlevel']['cleanerModules']['tx_templavoilaplus_unusedce']
-    = array(\Ppi\TemplaVoilaPlus\Command\UnusedContentElementCommand::class);
+// Since v8.5.0 we use Commands.php inside Configuration
+if (version_compare(TYPO3_version, '8.5.0', '<=')) {
+    $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['lowlevel']['cleanerModules']['tx_templavoilaplus_unusedce']
+        = array(\Ppi\TemplaVoilaPlus\Command\UnusedContentElementCommand::class);
+}
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['l10nmgr']['indexFilter']['tx_templavoilaplus_usedCE']
     = array(\Ppi\TemplaVoilaPlus\Service\UserFunc\UsedContentElement::class);
 
