@@ -1671,6 +1671,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
      */
     public function renderTO_editProcessing(&$dataStruct, $row, $theFile, $headerPart = 0)
     {
+
         // Converting GPvars into a "cmd" value:
         $cmd = '';
         if (GeneralUtility::_GP('_reload_from')) { // Reverting to old values in TO
@@ -1691,7 +1692,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
 
         // If that array contains sheets, then traverse them:
         if (is_array($dataStruct['sheets'])) {
-            $dSheets = GeneralUtility::resolveAllSheetsInDS($dataStruct);
+            $dSheets = TemplaVoilaUtility::resolveAllSheetsInDS($dataStruct);
             $dataStruct = array(
                 'ROOT' => array(
                     'tx_templavoilaplus' => array(

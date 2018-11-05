@@ -290,7 +290,7 @@ class FrontendController extends AbstractPlugin
             // Initialize:
             $langChildren = $DS['meta']['langChildren'] ? 1 : 0;
             $langDisabled = $DS['meta']['langDisable'] ? 1 : 0;
-            list ($dataStruct, $sheet, $singleSheet) = GeneralUtility::resolveSheetDefInDS($DS, $renderSheet);
+            list ($dataStruct, $sheet, $singleSheet) = TemplaVoilaUtility::resolveSheetDefInDS($DS, $renderSheet);
 
             // Data from FlexForm field:
             $data = GeneralUtility::xml2array($row['tx_templavoilaplus_flex']);

@@ -1395,6 +1395,7 @@ class ApiService
 
             if (is_array($dataStructureArr['sheets'])) {
                 foreach (array_keys($dataStructureArr['sheets']) as $sheetKey) {
+                    // This GeneralUtility::resolveSheetDefInDS needs no changes, this code path is unused for TYPO3 >= 8.5.0
                     list ($sheetDataStructureArr, $sheet) = GeneralUtility::resolveSheetDefInDS($dataStructureArr, $sheetKey);
                     if ($sheet == $sheetKey) {
                         $expandedDataStructureArr[$sheetKey] = $sheetDataStructureArr;
@@ -1402,6 +1403,7 @@ class ApiService
                 }
             } else {
                 $sheetKey = 'sDEF';
+                // This GeneralUtility::resolveSheetDefInDS needs no changes, this code path is unused for TYPO3 >= 8.5.0
                 list ($sheetDataStructureArr, $sheet) = GeneralUtility::resolveSheetDefInDS($dataStructureArr, $sheetKey);
                 if ($sheet == $sheetKey) {
                     $expandedDataStructureArr[$sheetKey] = $sheetDataStructureArr;
