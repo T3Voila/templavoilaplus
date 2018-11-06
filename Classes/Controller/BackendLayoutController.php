@@ -23,6 +23,10 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
+use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
+
 use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 /**
@@ -2927,27 +2931,9 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                         // Look for pages language overlay record for language:
                         $sys_language_uid = (int)$commandParameters;
                         $params = null;
+
                         if ($sys_language_uid != 0) {
-                            // Edit overlay record
-                            list($pLOrecord) = TemplaVoilaUtility::getDatabaseConnection()->exec_SELECTgetRows(
-                                '*',
-                                'pages_language_overlay',
-                                'pid=' . (int)$this->id . ' AND sys_language_uid=' . $sys_language_uid .
-                                BackendUtility::deleteClause('pages_language_overlay') .
-                                BackendUtility::versioningPlaceholderClause('pages_language_overlay')
-                            );
-                            if ($pLOrecord) {
-                                BackendUtility::workspaceOL('pages_language_overlay', $pLOrecord);
-                                if (is_array($pLOrecord)) {
-                                    $params = [
-                                        'edit' => [
-                                            'pages_language_overlay' => [
-                                                $pLOrecord['uid'] => 'edit',
-                                            ]
-                                        ]
-                                    ];
-                                }
-                            }
+                            $params = $this->getEditParams($this->id, $sys_language_uid);
                         } else {
                             // Edit default language (page properties)
                             // No workspace overlay because we already on this page
@@ -2959,6 +2945,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                                 ]
                             ];
                         }
+
                         if ($params) {
                             $params['returnUrl'] = $this->getBaseUrl();
                             $redirectLocation = BackendUtility::getModuleUrl('record_edit', $params);
@@ -2977,6 +2964,76 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         if (isset($redirectLocation)) {
             header('Location: ' . GeneralUtility::locationHeaderUrl($redirectLocation));
         }
+    }
+
+    /**
+     * @TODO with 8.0 this should go elsewhere and not laying around inside controller.
+     * Do not depend on this function.
+     */
+    protected function getEditParams($id, $sys_language_uid)
+    {
+        $table = 'pages_language_overlay';
+        $params = false;
+        if (version_compare(TYPO3_version, '9.0.0', '>=')) {
+            $table = 'pages';
+            // Since 9.0 we do not have pages_language_overlay anymore
+            $queryBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ConnectionPool::class)->getQueryBuilderForTable('pages');
+            $queryBuilder->getRestrictions()
+                ->removeAll()
+                ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+                ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
+
+            $languagePageRecord = $queryBuilder
+                ->select('*')
+                ->from('pages')
+                ->where(
+                    $queryBuilder->expr()->eq('sys_language_uid', $queryBuilder->createNamedParameter($sys_language_uid, \PDO::PARAM_INT)),
+                    $queryBuilder->expr()->eq('l10n_parent', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT))
+                )
+                ->execute()
+                ->fetch();
+        } elseif (version_compare(TYPO3_version, '8.2.0', '>=')) {
+            // Since 8.2 we have Doctrine
+            $queryBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ConnectionPool::class)->getQueryBuilderForTable('pages_language_overlay');
+            $queryBuilder->getRestrictions()
+                ->removeAll()
+                ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+                ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
+
+            $languagePageRecord = $queryBuilder
+                ->select('*')
+                ->from('pages_language_overlay')
+                ->where(
+                    $queryBuilder->expr()->eq('sys_language_uid', $queryBuilder->createNamedParameter($sys_language_uid, \PDO::PARAM_INT)),
+                    $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT))
+                )
+                ->execute()
+                ->fetch();
+        } else {
+            list($languagePageRecord) = TemplaVoilaUtility::getDatabaseConnection()->exec_SELECTgetRows(
+                '*',
+                'pages_language_overlay',
+                'pid=' . (int)$id . ' AND sys_language_uid=' . $sys_language_uid .
+                BackendUtility::deleteClause('pages_language_overlay') .
+                BackendUtility::versioningPlaceholderClause('pages_language_overlay')
+            );
+        }
+
+        if ($languagePageRecord) {
+            BackendUtility::workspaceOL($table, $languagePageRecord);
+        }
+
+        if (is_array($languagePageRecord)) {
+            $params = [
+                'edit' => [
+                    $table => [
+                        $languagePageRecord['uid'] => 'edit',
+                    ]
+                ]
+            ];
+        }
+
+        return $params;
     }
 
     /***********************************************
