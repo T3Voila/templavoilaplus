@@ -35,5 +35,5 @@
     "replace": {
         "templavoilaplus": "self.version",
         "typo3-ter/templavoilaplus": "self.version"
-    },
+    }
 }
