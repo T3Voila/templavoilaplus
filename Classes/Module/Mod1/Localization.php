@@ -243,12 +243,8 @@ class Localization implements SingletonInterface
                         ),
                     ];
                 } else {
-                    $table = 'pages_language_overlay';
-                    if (version_compare(TYPO3_version, '8.5.0', '>=')) {
-                        $table = 'pages';
-                    }
                     $parameters = [
-                        'justLocalized' => $table . ':' . $this->pObj->id . ':' . (int)$language['uid'],
+                        'justLocalized' => 'pages:' . $this->pObj->id . ':' . (int)$language['uid'],
                         'returnUrl' => (string)$uriBuilder->buildUriFromModule(
                             $this->pObj->getModuleName(),
                             $this->pObj->getLinkParameters(['SET' => ['language' => $language['uid']]])

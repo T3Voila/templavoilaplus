@@ -399,22 +399,12 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
 
         if ($access) {
             // Add custom styles
-            if (version_compare(TYPO3_version, '8.3.0', '>=')) {
-                // Since TYPO3 8.3.0 EXT:extname/... is supported.
-                $this->getPageRenderer()->addCssFile(
-                    'EXT:' . $this->extKey . '/Resources/Public/StyleSheet/cm1_default.css'
-                );
-                $this->getPageRenderer()->addCssFile(
-                    'EXT:' . $this->extKey . '/Resources/Public/StyleSheet/HtmlMarkup.css'
-                );
-            } else {
-                $this->getPageRenderer()->addCssFile(
-                    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->extKey) . 'Resources/Public/StyleSheet/cm1_default.css'
-                );
-                $this->getPageRenderer()->addCssFile(
-                    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->extKey) . 'Resources/Public/StyleSheet/HtmlMarkup.css'
-                );
-            }
+            $this->getPageRenderer()->addCssFile(
+                'EXT:' . $this->extKey . '/Resources/Public/StyleSheet/cm1_default.css'
+            );
+            $this->getPageRenderer()->addCssFile(
+                'EXT:' . $this->extKey . '/Resources/Public/StyleSheet/HtmlMarkup.css'
+            );
 
             // Adding classic jumpToUrl function, needed for the function menu.
             // And some more functions

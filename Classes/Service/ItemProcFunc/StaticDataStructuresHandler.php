@@ -129,14 +129,12 @@ class StaticDataStructuresHandler
             ['', ''],
         ];
 
-        $is85OrNewer = version_compare(TYPO3_version, '8.5.0', '>=') ? true : false;
-
         foreach ($dsList as $dsObj) {
             /** @var \Ppi\TemplaVoilaPlus\Domain\Model\AbstractDataStructure $dsObj */
             if ($dsObj->isPermittedForUser($params['row'], $removeDSItems, $showAdminAll)) {
                 $params['items'][] = array(
                     $dsObj->getLabel(),
-                    ($is85OrNewer && !is_numeric($dsObj->getKey()) ? 'FILE:' : '') . $dsObj->getKey(),
+                    (!is_numeric($dsObj->getKey()) ? 'FILE:' : '') . $dsObj->getKey(),
                     $dsObj->getIcon()
                 );
             }
@@ -248,11 +246,6 @@ class StaticDataStructuresHandler
         $removeTOItems = $this->getRemoveItems($params, substr($params['field'], 0, -2) . 'to');
         $toRepo = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Domain\Repository\TemplateRepository::class);
 
-        $iconPrefix = '';
-        if (version_compare(TYPO3_version, '8.0.0', '<')) {
-            $iconPrefix = '../';
-        }
-
         $defaultIcon = 'EXT:templavoilaplus/Resources/Public/Icons/TemplateFce48.png';
         if ($dsObje->getScope === \Ppi\TemplaVoilaPlus\Domain\Model\AbstractDataStructure::SCOPE_PAGE) {
             $defaultIcon = 'EXT:templavoilaplus/Resources/Public/Icons/TemplatePage48.png';
@@ -265,7 +258,7 @@ class StaticDataStructuresHandler
                 $params['items'][] = [
                     $toObj->getLabel(),
                     $toObj->getKey(),
-                    $toObj->getIcon() ? $iconPrefix . $toObj->getIcon() : $defaultIcon,
+                    $toObj->getIcon() ? $toObj->getIcon() : $defaultIcon,
                 ];
             }
         }

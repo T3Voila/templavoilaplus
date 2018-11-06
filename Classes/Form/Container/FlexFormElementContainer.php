@@ -82,14 +82,8 @@ class FlexFormElementContainer extends AbstractContainer
                 }
 
                 $options = $this->data;
-                if (version_compare(TYPO3_version, '8.6.0', '>=')) {
-                    $options['flexFormDataStructureArray'] = $flexFormFieldArray;
-                    $options['flexFormFieldName'] = $flexFormFieldName;
-                } else {
-                    $options['flexFormDataStructureArray'] = $flexFormFieldArray['el'];
-                    $options['flexFormSectionType'] = $flexFormFieldName;
-                    $options['flexFormSectionTitle'] = $sectionTitle;
-                }
+                $options['flexFormDataStructureArray'] = $flexFormFieldArray;
+                $options['flexFormFieldName'] = $flexFormFieldName;
                 $options['flexFormRowData'] = is_array($flexFormRowData[$flexFormFieldName]['el']) ? $flexFormRowData[$flexFormFieldName]['el'] : array();
                 $options['renderType'] = 'flexFormSectionContainer';
                 $sectionContainerResult = $this->nodeFactory->create($options)->render();
@@ -116,18 +110,14 @@ class FlexFormElementContainer extends AbstractContainer
                         || !empty($GLOBALS['TCA'][$table]['ctrl']['requestUpdate']) && GeneralUtility::inList($GLOBALS['TCA'][$table]['ctrl']['requestUpdate'], $flexFormFieldName)
                     ) {
                         if ($this->getBackendUserAuthentication()->jsConfirmation(JsConfirmation::TYPE_CHANGE)) {
-                            if (version_compare(TYPO3_version, '8.4.0', '>=')) {
-                                $alertMsgOnChange = 'top.TYPO3.Modal.confirm('
-                                        . 'TYPO3.lang["FormEngine.refreshRequiredTitle"],'
-                                        . ' TYPO3.lang["FormEngine.refreshRequiredContent"]'
-                                    . ')'
-                                    . '.on('
-                                        . '"button.clicked",'
-                                        . ' function(e) { if (e.target.name == "ok" && TBE_EDITOR.checkSubmit(-1)) { TBE_EDITOR.submitForm() } top.TYPO3.Modal.dismiss(); }'
-                                    . ');';
-                            } else {
-                                $alertMsgOnChange = 'top.TYPO3.Modal.confirm(TBE_EDITOR.labels.refreshRequired.title, TBE_EDITOR.labels.refreshRequired.content).on("button.clicked", function(e) { if (e.target.name == "ok" && TBE_EDITOR.checkSubmit(-1)) { TBE_EDITOR.submitForm() } top.TYPO3.Modal.dismiss(); });';
-                            }
+                            $alertMsgOnChange = 'top.TYPO3.Modal.confirm('
+                                    . 'TYPO3.lang["FormEngine.refreshRequiredTitle"],'
+                                    . ' TYPO3.lang["FormEngine.refreshRequiredContent"]'
+                                . ')'
+                                . '.on('
+                                    . '"button.clicked",'
+                                    . ' function(e) { if (e.target.name == "ok" && TBE_EDITOR.checkSubmit(-1)) { TBE_EDITOR.submitForm() } top.TYPO3.Modal.dismiss(); }'
+                                . ');';
                         } else {
                             $alertMsgOnChange = 'if (TBE_EDITOR.checkSubmit(-1)){ TBE_EDITOR.submitForm();}';
                         }
@@ -157,13 +147,11 @@ class FlexFormElementContainer extends AbstractContainer
                     }
 
                     $options = $this->data;
-                    if (version_compare(TYPO3_version, '8.6.0', '>=')) {
-                        // Set either flexFormFieldName or flexFormContainerFieldName, depending on if we are a "regular" field or a flex container section field
-                        if (empty($options['flexFormFieldName'])) {
-                            $options['flexFormFieldName'] = $flexFormFieldName;
-                        } else {
-                            $options['flexFormContainerFieldName'] = $flexFormFieldName;
-                        }
+                    // Set either flexFormFieldName or flexFormContainerFieldName, depending on if we are a "regular" field or a flex container section field
+                    if (empty($options['flexFormFieldName'])) {
+                        $options['flexFormFieldName'] = $flexFormFieldName;
+                    } else {
+                        $options['flexFormContainerFieldName'] = $flexFormFieldName;
                     }
                     $options['parameterArray'] = $fakeParameterArray;
                     $options['elementBaseName'] = $this->data['elementBaseName'] . $flexFormFormPrefix . '[' . $flexFormFieldName . '][' . $lkey . ']';

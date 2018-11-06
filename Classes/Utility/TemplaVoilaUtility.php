@@ -35,13 +35,7 @@ final class TemplaVoilaUtility
      */
     public static function getDatabaseConnection()
     {
-        if (version_compare(TYPO3_version, '9.0.0', '>=')
-            && !ExtensionManagementUtility::isLoaded('typo3db_legacy')
-        ) {
-            throw new \TYPO3\CMS\Core\Exception(
-                'Since TYPO3 9.0.0 you need to install the typo3db_legacy extension or TemplaVoilà! Plus 8.0.0 or newer.'
-            );
-        }
+        die('PLEASE REWORK TO USE DB API');
         return $GLOBALS['TYPO3_DB'];
     }
 
@@ -70,11 +64,7 @@ final class TemplaVoilaUtility
      */
     public static function getCoreLangPath()
     {
-        if (version_compare(TYPO3_version, '8.5.0', '>=')) {
-            return 'lang/Resources/Private/Language/';
-        } else {
-            return 'lang/';
-        }
+        return 'lang/Resources/Private/Language/';
     }
     /**
      * Returns an array of available languages (to use for FlexForms)
@@ -120,11 +110,8 @@ final class TemplaVoilaUtility
         if (version_compare(TYPO3_version, '9.0.0', '>=')) {
             // Since 9.0 we do not have pages_language_overlay anymore
             $languageRecords = static::getSysLanguageRows9($id);
-        } elseif (version_compare(TYPO3_version, '8.4.0', '>=')) {
-            // Since 8.2 we have Doctrine and since 8.4 sorting is done by an own field and not title
-            $languageRecords = static::getSysLanguageRows8($id);
         } else {
-            $languageRecords = static::getSysLanguageRows7($id);
+            $languageRecords = static::getSysLanguageRows8($id);
         }
 
         foreach ($languageRecords as $languageRecord) {
@@ -156,32 +143,6 @@ final class TemplaVoilaUtility
         }
 
         return $languages;
-    }
-
-    private static function getSysLanguageRows7($id = 0)
-    {
-        $excludeHidden = static::getBackendUser()->isAdmin() ? '' : 'sys_language.hidden=0';
-
-        if ($id) {
-            $languageRecords = self::getDatabaseConnection()->exec_SELECTgetRows(
-                'DISTINCT sys_language.*',
-                'pages_language_overlay,sys_language',
-                'pages_language_overlay.sys_language_uid=sys_language.uid AND pages_language_overlay.pid=' . (int)$id
-                    . ' AND pages_language_overlay.deleted=0' . ($excludeHidden ? ' AND ' . $excludeHidden : ''),
-                '',
-                'sys_language.title'
-            );
-        } else {
-            $languageRecords = self::getDatabaseConnection()->exec_SELECTgetRows(
-                'sys_language.*',
-                'sys_language',
-                $excludeHidden,
-                '',
-                'sys_language.title'
-            );
-        }
-
-        return $languageRecords;
     }
 
     // Partielly taken from \TYPO3\CMS\Backend\Controller\EditDocumentController::getLanguages
@@ -347,18 +308,14 @@ final class TemplaVoilaUtility
 
     public static function getFlexFormDS($conf, $row, $table, $fieldName = '')
     {
-        if (version_compare(TYPO3_version, '8.5.0', '>=')) {
-            $flexFormTools = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class);
-            $dataStructureIdentifier = $flexFormTools->getDataStructureIdentifier(
-                [ 'config' => $conf ],
-                $table,
-                $fieldName,
-                $row
-            );
-            return $flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
-        }
-
-        return BackendUtility::getFlexFormDS($conf, $row, $table, $fieldName);
+        $flexFormTools = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class);
+        $dataStructureIdentifier = $flexFormTools->getDataStructureIdentifier(
+            [ 'config' => $conf ],
+            $table,
+            $fieldName,
+            $row
+        );
+        return $flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
     }
 
     // DO NOT DEPEND ON FOLLOWING FUNCTIONS

@@ -53,7 +53,7 @@ class TcaFlexProcess implements FormDataProviderInterface
             $result = $this->prepareLanguageHandlingInDataValues($result, $fieldName);
             $result = $this->modifyDataStructureAndDataValuesByFlexFormSegmentGroup($result, $fieldName, $pageTsConfigOfFlex);
             $result = $this->addDataStructurePointersToMetaData($result, $fieldName);
-            if (!empty($result['flexSectionContainerPreparation']) && version_compare(TYPO3_version, '8.6.0', '>=')) {
+            if (!empty($result['flexSectionContainerPreparation']) {
                 // Create data and default values for a new section container, set by FormFlexAjaxController
                 $result = $this->prepareNewSectionContainer($result, $fieldName);
             }
@@ -499,34 +499,19 @@ class TcaFlexProcess implements FormDataProviderInterface
                                                 // uid of "parent" is given down for inline elements to resolve correctly
                                                 $tcaValueArray['uid'] = $result['databaseRow']['uid'];
 
-                                                if (version_compare(TYPO3_version, '8.6.0', '>=')) {
-                                                    $inputToFlexFormSegment = [
-                                                        'tableName' => $result['tableName'],
-                                                        'command' => '',
-                                                        // It is currently not possible to have pageTsConfig for section container
-                                                        'pageTsConfig' => [],
-                                                        'databaseRow' => $tcaValueArray,
-                                                        'processedTca' => [
-                                                            'ctrl' => [],
-                                                            'columns' => [],
-                                                        ],
-                                                        'selectTreeCompileItems' => $result['selectTreeCompileItems'],
-                                                        'flexParentDatabaseRow' => $result['databaseRow'],
-                                                    ];
-                                                } else {
-                                                    $inputToFlexFormSegment = [
-                                                        'tableName' => $result['tableName'],
-                                                        'command' => '',
-                                                        // It is currently not possible to have pageTsConfig for section container
-                                                        'pageTsConfig' => [],
-                                                        'databaseRow' => $tcaValueArray,
-                                                        'processedTca' => [
-                                                            'ctrl' => [],
-                                                            'columns' => [],
-                                                        ],
-                                                        'flexParentDatabaseRow' => $result['databaseRow'],
-                                                    ];
-                                                }
+                                                $inputToFlexFormSegment = [
+                                                    'tableName' => $result['tableName'],
+                                                    'command' => '',
+                                                    // It is currently not possible to have pageTsConfig for section container
+                                                    'pageTsConfig' => [],
+                                                    'databaseRow' => $tcaValueArray,
+                                                    'processedTca' => [
+                                                        'ctrl' => [],
+                                                        'columns' => [],
+                                                    ],
+                                                    'selectTreeCompileItems' => $result['selectTreeCompileItems'],
+                                                    'flexParentDatabaseRow' => $result['databaseRow'],
+                                                ];
                                                 if (!empty($newColumns[$langElementLevel])) {
                                                     // This is scenario "field has been added to data structure, but field value does not exist in value array yet"
                                                     // We want that stuff like TCA "default" values are then applied to those fields. What we do here is
@@ -630,40 +615,22 @@ class TcaFlexProcess implements FormDataProviderInterface
                                             }
                                             foreach ($languagesOnElementLevel as $isoElementLevel) {
                                                 $langElementLevel = 'v' . $isoElementLevel;
-                                                if (version_compare(TYPO3_version, '8.6.0', '>=')) {
-                                                    $inputToFlexFormSegment = [
-                                                        'tableName' => $result['tableName'],
-                                                        'command' => 'new',
-                                                        'pageTsConfig' => [],
-                                                        'databaseRow' => [
-                                                            'uid' => $result['databaseRow']['uid'],
+                                                $inputToFlexFormSegment = [
+                                                    'tableName' => $result['tableName'],
+                                                    'command' => 'new',
+                                                    'pageTsConfig' => [],
+                                                    'databaseRow' => [
+                                                        'uid' => $result['databaseRow']['uid'],
+                                                    ],
+                                                    'processedTca' => [
+                                                        'ctrl' => [],
+                                                        'columns' => [
+                                                            $singleFieldName => $singleFieldConfiguration,
                                                         ],
-                                                        'processedTca' => [
-                                                            'ctrl' => [],
-                                                            'columns' => [
-                                                                $singleFieldName => $singleFieldConfiguration,
-                                                            ],
-                                                        ],
-                                                        'selectTreeCompileItems' => $result['selectTreeCompileItems'],
-                                                        'flexParentDatabaseRow' => $result['databaseRow'],
-                                                    ];
-                                                } else {
-                                                    $inputToFlexFormSegment = [
-                                                        'tableName' => $result['tableName'],
-                                                        'command' => 'new',
-                                                        'pageTsConfig' => [],
-                                                        'databaseRow' => [
-                                                            'uid' => $result['databaseRow']['uid'],
-                                                        ],
-                                                        'processedTca' => [
-                                                            'ctrl' => [],
-                                                            'columns' => [
-                                                                $singleFieldName => $singleFieldConfiguration,
-                                                            ],
-                                                        ],
-                                                        'flexParentDatabaseRow' => $result['databaseRow'],
-                                                    ];
-                                                }
+                                                    ],
+                                                    'selectTreeCompileItems' => $result['selectTreeCompileItems'],
+                                                    'flexParentDatabaseRow' => $result['databaseRow'],
+                                                ];
                                                 $flexSegmentResult = $formDataCompiler->compile($inputToFlexFormSegment);
                                                 if (array_key_exists($singleFieldName, $flexSegmentResult['databaseRow'])) {
                                                     $result['databaseRow'][$fieldName]
@@ -702,36 +669,20 @@ class TcaFlexProcess implements FormDataProviderInterface
                         // uid of "parent" is given down for inline elements to resolve correctly
                         $tcaValueArray['uid'] = $result['databaseRow']['uid'];
 
-                        if (version_compare(TYPO3_version, '8.6.0', '>=')) {
-                            // process the tca columns for the current sheet
-                            $inputToFlexFormSegment = [
-                                // tablename of "parent" is given down for inline elements to resolve correctly
-                                'tableName' => $result['tableName'],
-                                'command' => '',
-                                'pageTsConfig' => $pageTsConfig,
-                                'databaseRow' => $tcaValueArray,
-                                'processedTca' => [
-                                    'ctrl' => [],
-                                    'columns' => [],
-                                ],
-                                'selectTreeCompileItems' => $result['selectTreeCompileItems'],
-                                'flexParentDatabaseRow' => $result['databaseRow'],
-                            ];
-                        } else {
-                            // process the tca columns for the current sheet
-                            $inputToFlexFormSegment = [
-                                // tablename of "parent" is given down for inline elements to resolve correctly
-                                'tableName' => $result['tableName'],
-                                'command' => '',
-                                'pageTsConfig' => $pageTsConfig,
-                                'databaseRow' => $tcaValueArray,
-                                'processedTca' => [
-                                    'ctrl' => [],
-                                    'columns' => [],
-                                ],
-                                'flexParentDatabaseRow' => $result['databaseRow'],
-                            ];
-                        }
+                        // process the tca columns for the current sheet
+                        $inputToFlexFormSegment = [
+                            // tablename of "parent" is given down for inline elements to resolve correctly
+                            'tableName' => $result['tableName'],
+                            'command' => '',
+                            'pageTsConfig' => $pageTsConfig,
+                            'databaseRow' => $tcaValueArray,
+                            'processedTca' => [
+                                'ctrl' => [],
+                                'columns' => [],
+                            ],
+                            'selectTreeCompileItems' => $result['selectTreeCompileItems'],
+                            'flexParentDatabaseRow' => $result['databaseRow'],
+                        ];
 
                         if (!empty($tcaNewColumns)) {
                             $inputToFlexFormSegment['command'] = 'new';

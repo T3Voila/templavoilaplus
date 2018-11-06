@@ -39,13 +39,11 @@ class TableConfigurationPostProcessingHook implements TableConfigurationPostProc
             'priority' => 40,
             'class' => \Ppi\TemplaVoilaPlus\Form\Container\FlexFormElementContainer::class,
         ];
-        if (version_compare(TYPO3_version, '8.5.0', '>=')) {
-            $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1443361301] = [
-                'nodeName' => 'flexFormSectionContainer',
-                'priority' => 40,
-                'class' => \Ppi\TemplaVoilaPlus\Form\Container\FlexFormSectionContainer::class,
-            ];
-        }
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1443361301] = [
+            'nodeName' => 'flexFormSectionContainer',
+            'priority' => 40,
+            'class' => \Ppi\TemplaVoilaPlus\Form\Container\FlexFormSectionContainer::class,
+        ];
     }
 
     public function registerFormEngineProviders()
@@ -59,31 +57,22 @@ class TableConfigurationPostProcessingHook implements TableConfigurationPostProc
                     => \Ppi\TemplaVoilaPlus\Form\FormDataProvider\TcaFlexFetch::class,
                 \TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexPrepare::class
                     => \Ppi\TemplaVoilaPlus\Form\FormDataProvider\TcaFlexPrepare::class,
-                // Maybe there is compatibility6 installed, then also set it to us!
-                \TYPO3\CMS\Compatibility6\Form\FormDataProvider\TcaFlexProcess::class
-                    => \Ppi\TemplaVoilaPlus\Form\FormDataProvider\TcaFlexProcess::class,
             ]
         );
-        if (version_compare(TYPO3_version, '8.5.0', '>=')) {
-            \Ppi\TemplaVoilaPlus\Utility\FormEngineUtility::replaceInFormDataGroups(
-                [
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\EvaluateDisplayConditions::class
-                        => \Ppi\TemplaVoilaPlus\Form\FormDataProvider\EvaluateDisplayConditions::class,
-                ]
-            );
-        }
+        \Ppi\TemplaVoilaPlus\Utility\FormEngineUtility::replaceInFormDataGroups(
+            [
+                \TYPO3\CMS\Backend\Form\FormDataProvider\EvaluateDisplayConditions::class
+                    => \Ppi\TemplaVoilaPlus\Form\FormDataProvider\EvaluateDisplayConditions::class,
+            ]
+        );
         // In TYPO3 8 there is no TcaFlexFetch, so readd it.
+        // @TODO Remerge Core
         \Ppi\TemplaVoilaPlus\Utility\FormEngineUtility::addTcaFlexFetch();
     }
 
     public function registerHookFormEngine()
     {
-        if (version_compare(TYPO3_version, '8.5.0', '>=')) {
-            $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class]['className']
-                = \Ppi\TemplaVoilaPlus\Configuration\FlexForm\FlexFormTools8::class;
-        } else {
-            $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class]['className']
-                = \Ppi\TemplaVoilaPlus\Configuration\FlexForm\FlexFormTools::class;
-        }
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class]['className']
+            = \Ppi\TemplaVoilaPlus\Configuration\FlexForm\FlexFormTools8::class;
     }
 }

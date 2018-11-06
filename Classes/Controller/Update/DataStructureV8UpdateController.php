@@ -35,10 +35,8 @@ class DataStructureV8UpdateController extends StepUpdateController
 
     protected function stepFinal()
     {
-        if ($this->extConf['staticDS.']['enable']
-            && version_compare(TYPO3_version, '8.5.0', '>=')
-        ) {
-            // If static DS is in use and TYPO3 is newer then 8.5.0 we need to migrate the file pointer
+        if ($this->extConf['staticDS.']['enable']) {
+            // If static DS is in use we need to migrate the file pointer
             $countStatic = $this->migrateStaticDsFilePointer();
         }
 

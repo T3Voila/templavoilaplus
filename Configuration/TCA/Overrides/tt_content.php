@@ -101,7 +101,7 @@ if (version_compare(TYPO3_version, '9.0.0', '>=')) {
             rowDescription,
         --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,
     ';
-} elseif (version_compare(TYPO3_version, '8.0.0', '>=')) {
+} else {
     $GLOBALS['TCA']['tt_content']['types']['templavoilaplus_pi1']['showitem'] = '
         --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,
             --palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.general;general,
@@ -119,18 +119,6 @@ if (version_compare(TYPO3_version, '9.0.0', '>=')) {
         --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes,
             rowDescription,
         --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,
-    ';
-} else {
-    $GLOBALS['TCA']['tt_content']['types']['templavoilaplus_pi1']['showitem'] = '
-        --palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.general;general,
-        --palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.headers;headers,
-        --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.appearance,
-            layout;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:layout_formlabel,
-            --palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.appearanceLinks;appearanceLinks,
-        --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access,
-            hidden;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:field.default.hidden,
-            --palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.access;access,
-        --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.extended,rowDescription
     ';
 }
 

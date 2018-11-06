@@ -581,13 +581,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             }
 
             // Add custom styles
-            if (version_compare(TYPO3_version, '8.3.0', '>=')) {
-                // Since TYPO3 8.3.0 EXT:extname/... is supported.
-                // https://forge.typo3.org/issues/77589
-                $styleSheetFile = 'EXT:' . $this->extKey . '/Resources/Public/StyleSheet/mod1_default.css';
-            } else {
-                $styleSheetFile = ExtensionManagementUtility::extRelPath($this->extKey) . 'Resources/Public/StyleSheet/mod1_default.css';
-            }
+            $styleSheetFile = 'EXT:' . $this->extKey . '/Resources/Public/StyleSheet/mod1_default.css';
 
             if (isset($this->modTSconfig['properties']['stylesheet'])) {
                 $styleSheetFile = $this->modTSconfig['properties']['stylesheet'];
@@ -597,16 +591,6 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
             if (isset($this->modTSconfig['properties']['stylesheet.'])) {
                 foreach ($this->modTSconfig['properties']['stylesheet.'] as $file) {
-                    if (version_compare(TYPO3_version, '8.3.0', '<')) {
-                        // Since TYPO3 8.3.0 EXT:extname/... is supported.
-                        // So we do not need this anymore
-                        if (substr($file, 0, 4) == 'EXT:') {
-                            list($extKey, $local) = explode('/', substr($file, 4), 2);
-                            if (strcmp($extKey, '') && ExtensionManagementUtility::isLoaded($extKey) && strcmp($local, '')) {
-                                $file = ExtensionManagementUtility::extRelPath($extKey) . $local;
-                            }
-                        }
-                    }
                     $this->getPageRenderer()->addCssFile($file);
                 }
             }
@@ -621,13 +605,8 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
             $this->getPageRenderer()->loadJquery();
 
-            // Setup JS for ClickMenu which isn't loaded by ModuleTemplate
-            // Setup JS for ClickMenu/ContextMenu which isn't loaded by ModuleTemplate
-            if (version_compare(TYPO3_version, '8.6.0', '>=')) {
-                $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
-            } else {
-                $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ClickMenu');
-            }
+            // Setup JS for ContextMenu which isn't loaded by ModuleTemplate
+            $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
             $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Tooltip');
 
             // Set up JS for dynamic tab menu and side bar
@@ -689,36 +668,15 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 });
             ');
 
-            if (version_compare(TYPO3_version, '8.3.0', '>=')) {
-                // Since TYPO3 8.3.0 EXT:extname/... is supported.
-                $this->addJsLibrary(
-                    'templavoilaplus_mod1',
-                    'EXT:' . $this->extKey . '/Resources/Public/JavaScript/templavoila.js'
-                );
-            } else {
-                $this->addJsLibrary(
-                    'templavoilaplus_mod1',
-                    ExtensionManagementUtility::extRelPath($this->extKey) . 'Resources/Public/JavaScript/templavoila.js'
-                );
-            }
+            $this->addJsLibrary(
+                'templavoilaplus_mod1',
+                'EXT:' . $this->extKey . '/Resources/Public/JavaScript/templavoila.js'
+            );
 
             if (isset($this->modTSconfig['properties']['javascript.']) && is_array($this->modTSconfig['properties']['javascript.'])) {
                 // add custom javascript files
                 foreach ($this->modTSconfig['properties']['javascript.'] as $key => $filename) {
                     if ($filename) {
-                        if (version_compare(TYPO3_version, '8.3.0', '<')) {
-                            // Since TYPO3 8.3.0 EXT:extname/... is supported.
-                            // So we do not need this anymore
-                            if (substr($filename, 0, 4) == 'EXT:') {
-                                list($extKey, $local) = explode('/', substr($filename, 4), 2);
-                                if (strcmp($extKey, '')
-                                    && ExtensionManagementUtility::isLoaded($extKey)
-                                    && strcmp($local, '')
-                                ) {
-                                    $filename = ExtensionManagementUtility::extRelPath($extKey) . $local;
-                                }
-                            }
-                        }
                         $this->addJsLibrary($key, $filename);
                     }
                 }
@@ -2992,7 +2950,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 )
                 ->execute()
                 ->fetch();
-        } elseif (version_compare(TYPO3_version, '8.2.0', '>=')) {
+        } else {
             // Since 8.2 we have Doctrine
             $queryBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ConnectionPool::class)->getQueryBuilderForTable('pages_language_overlay');
             $queryBuilder->getRestrictions()
@@ -3009,14 +2967,6 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 )
                 ->execute()
                 ->fetch();
-        } else {
-            list($languagePageRecord) = TemplaVoilaUtility::getDatabaseConnection()->exec_SELECTgetRows(
-                '*',
-                'pages_language_overlay',
-                'pid=' . (int)$id . ' AND sys_language_uid=' . $sys_language_uid .
-                BackendUtility::deleteClause('pages_language_overlay') .
-                BackendUtility::versioningPlaceholderClause('pages_language_overlay')
-            );
         }
 
         if ($languagePageRecord) {

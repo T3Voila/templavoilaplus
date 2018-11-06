@@ -58,38 +58,6 @@ class TcaFlexFetch implements FormDataProviderInterface
      */
     protected function initializeDataStructure(array $result, $fieldName)
     {
-        if (version_compare(TYPO3_version, '8.5.0', '>=')) {
-            return $this->initializeDataStructure8($result, $fieldName);
-        } else {
-            return $this->initializeDataStructure7($result, $fieldName);
-        }
-    }
-
-    protected function initializeDataStructure7(array $result, $fieldName)
-    {
-        // Fetch / initialize data structure
-        $dataStructureArray = BackendUtility::getFlexFormDS(
-            $result['processedTca']['columns'][$fieldName]['config'],
-            $result['databaseRow'],
-            $result['tableName'],
-            $fieldName
-        );
-        // If data structure can't be parsed, this is a developer error, so throw a non catchable exception
-        // NO! It can also mean, that the editor didn't selected a proper DS source yet, so leave it empty!
-        if (!is_array($dataStructureArray)) {
-            $result['processedTca']['columns'][$fieldName]['config']['ds'] = array();
-            return $result;
-        }
-        if (!isset($dataStructureArray['meta']) || !is_array($dataStructureArray['meta'])) {
-            $dataStructureArray['meta'] = array();
-        }
-        // This kicks one array depth:  config['ds']['matchingIdentifier'] becomes config['ds']
-        $result['processedTca']['columns'][$fieldName]['config']['ds'] = $dataStructureArray;
-        return $result;
-    }
-
-    protected function initializeDataStructure8(array $result, $fieldName)
-    {
         if (!isset($result['processedTca']['columns'][$fieldName]['config']['dataStructureIdentifier'])) {
             $flexFormTools = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class);
 

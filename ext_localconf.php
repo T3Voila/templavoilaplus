@@ -5,13 +5,8 @@ $_EXTCONF = unserialize($_EXTCONF);
 
 // Register "XCLASS" of FlexFormTools for language parsing
 // Done also in TableConfigurationPostProcessingHook!
-if (version_compare(TYPO3_version, '8.5.0', '>=')) {
-    $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class]['className']
-        = \Ppi\TemplaVoilaPlus\Configuration\FlexForm\FlexFormTools8::class;
-} else {
-    $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class]['className']
-        = \Ppi\TemplaVoilaPlus\Configuration\FlexForm\FlexFormTools::class;
-}
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class]['className']
+    = \Ppi\TemplaVoilaPlus\Configuration\FlexForm\FlexFormTools8::class;
 
 // Register XCLASSes
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Backend\Tree\View\ContentCreationPagePositionMap::class]['className']
@@ -77,11 +72,6 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/backend.php']['constructPostPro
     = \Ppi\TemplaVoilaPlus\Hooks\BackendControllerHook::class . '->addInlineSettings';
 
 
-// Since v8.5.0 we use Commands.php inside Configuration
-if (version_compare(TYPO3_version, '8.5.0', '<=')) {
-    $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['lowlevel']['cleanerModules']['tx_templavoilaplus_unusedce']
-        = array(\Ppi\TemplaVoilaPlus\Command\UnusedContentElementCommand::class);
-}
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['l10nmgr']['indexFilter']['tx_templavoilaplus_usedCE']
     = array(\Ppi\TemplaVoilaPlus\Service\UserFunc\UsedContentElement::class);
 
@@ -119,10 +109,8 @@ $signalSlotDispatcher->connect(
 
 // Register install/update processes
 // 8LTS Update
-if (version_compare(TYPO3_version, '8.6.0', '>=')) {
-    // Add us as first Update process, so we can run before DatabaseRowsUpdateWizard
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'] = array_merge(
-        [\Ppi\TemplaVoilaPlus\Updates\Typo8Update::class => \Ppi\TemplaVoilaPlus\Updates\Typo3Lts8Update::class],
-        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']
-    );
-}
+// Add us as first Update process, so we can run before DatabaseRowsUpdateWizard
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'] = array_merge(
+    [\Ppi\TemplaVoilaPlus\Updates\Typo8Update::class => \Ppi\TemplaVoilaPlus\Updates\Typo3Lts8Update::class],
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']
+);

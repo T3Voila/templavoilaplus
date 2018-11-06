@@ -138,18 +138,12 @@ class ETypes
                             }
 
                             /* preserve previous config, if explicitly set */
-                            if (version_compare(TYPO3_version, '8.0.0', '>=')) {
-                                // Enable richtext only exists for eType RTE
-                                $elArray[$key]['TCEforms']['config']['enableRichtext']
-                                    = $eTypes['eType'][$eType]['TCEforms']['config']['enableRichtext'];
-                                if (!$elArray[$key]['TCEforms']['config']['richtextConfiguration']) {
-                                    $elArray[$key]['TCEforms']['config']['richtextConfiguration']
-                                        = $eTypes['eType'][$eType]['TCEforms']['config']['richtextConfiguration'];
-                                }
-                            } else {
-                                if (!$elArray[$key]['TCEforms']['defaultExtras']) {
-                                    $elArray[$key]['TCEforms']['defaultExtras'] = $eTypes['eType'][$eType]['TCEforms']['defaultExtras'];
-                                }
+                            // Enable richtext only exists for eType RTE
+                            $elArray[$key]['TCEforms']['config']['enableRichtext']
+                                = $eTypes['eType'][$eType]['TCEforms']['config']['enableRichtext'];
+                            if (!$elArray[$key]['TCEforms']['config']['richtextConfiguration']) {
+                                $elArray[$key]['TCEforms']['config']['richtextConfiguration']
+                                    = $eTypes['eType'][$eType]['TCEforms']['config']['richtextConfiguration'];
                             }
 
                             if ($reset) {
@@ -510,12 +504,8 @@ backColor = #999999
                     $GLOBALS['TCA']['tt_content']['columns']['bodytext']['config']['softref'] :
                     'typolink_tag,images,email[subst],url'),
         );
-        if (version_compare(TYPO3_version, '8.0.0', '>=')) {
-            $eTypes['eType']['rte']['TCEforms']['config']['enableRichtext'] = true;
-            $eTypes['eType']['rte']['TCEforms']['config']['richtextConfiguration'] = 'default';
-        } else {
-            $eTypes['eType']['rte']['TCEforms']['defaultExtras'] = 'richtext:rte_transform[flag=rte_enabled|mode=ts_css]';
-        }
+        $eTypes['eType']['rte']['TCEforms']['config']['enableRichtext'] = true;
+        $eTypes['eType']['rte']['TCEforms']['config']['richtextConfiguration'] = 'default';
         $eTypes['eType']['rte']['label'] = TemplaVoilaUtility::getLanguageService()->getLL('mapPresets_rte');
         $eTypes['eType']['rte']['Typoscript'] = '
 10 = TEXT

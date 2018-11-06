@@ -71,13 +71,9 @@ class WizardItems
     {
         $dsStructure = $toObj->getLocalDataprotArray();
 
-        // We need to add "FILE:" for static DS sincd 8.5.0
-        // See also /templavoilaplus/Classes/Service/ItemProcFunc/StaticDataStructuresHandler.php
-        $is85OrNewer = version_compare(TYPO3_version, '8.5.0', '>=') ? true : false;
-
         $dsValues = '&defVals[tt_content][CType]=templavoilaplus_pi1'
             . '&defVals[tt_content][tx_templavoilaplus_ds]='
-            . ($is85OrNewer && !is_numeric($toObj->getDatastructure()->getKey()) ? 'FILE:' : '') . $toObj->getDatastructure()->getKey()
+            . (!is_numeric($toObj->getDatastructure()->getKey()) ? 'FILE:' : '') . $toObj->getDatastructure()->getKey()
             . '&defVals[tt_content][tx_templavoilaplus_to]=' . $toObj->getKey();
 
         if (is_array($dsStructure) && is_array($dsStructure['meta']['default']['TCEForms'])) {
@@ -88,7 +84,6 @@ class WizardItems
 
         return $dsValues;
     }
-
 
     /**
      * Returns LanguageService

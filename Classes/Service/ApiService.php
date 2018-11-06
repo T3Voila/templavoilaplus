@@ -1375,41 +1375,15 @@ class ApiService
     {
         $dataStructureArr = [];
 
-        if (version_compare(TYPO3_version, '8.5.0', '>=')) {
-            $flexFormTools = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class);
-            $dataStructureIdentifier = $flexFormTools->getDataStructureIdentifier(
-                $GLOBALS['TCA'][$table]['columns']['tx_templavoilaplus_flex'],
-                $table,
-                'tx_templavoilaplus_flex',
-                $row
-            );
-            $dataStructureArr = $flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
-            $expandedDataStructureArr = $dataStructureArr['sheets'];
-        } else {
-            $dataStructureArr = TemplaVoilaUtility::getFlexFormDS($GLOBALS['TCA'][$table]['columns']['tx_templavoilaplus_flex']['config'], $row, $table);
-
-            $expandedDataStructureArr = array();
-            if (!is_array($dataStructureArr)) {
-                $dataStructureArr = array();
-            }
-
-            if (is_array($dataStructureArr['sheets'])) {
-                foreach (array_keys($dataStructureArr['sheets']) as $sheetKey) {
-                    // This GeneralUtility::resolveSheetDefInDS needs no changes, this code path is unused for TYPO3 >= 8.5.0
-                    list ($sheetDataStructureArr, $sheet) = GeneralUtility::resolveSheetDefInDS($dataStructureArr, $sheetKey);
-                    if ($sheet == $sheetKey) {
-                        $expandedDataStructureArr[$sheetKey] = $sheetDataStructureArr;
-                    }
-                }
-            } else {
-                $sheetKey = 'sDEF';
-                // This GeneralUtility::resolveSheetDefInDS needs no changes, this code path is unused for TYPO3 >= 8.5.0
-                list ($sheetDataStructureArr, $sheet) = GeneralUtility::resolveSheetDefInDS($dataStructureArr, $sheetKey);
-                if ($sheet == $sheetKey) {
-                    $expandedDataStructureArr[$sheetKey] = $sheetDataStructureArr;
-                }
-            }
-        }
+        $flexFormTools = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class);
+        $dataStructureIdentifier = $flexFormTools->getDataStructureIdentifier(
+            $GLOBALS['TCA'][$table]['columns']['tx_templavoilaplus_flex'],
+            $table,
+            'tx_templavoilaplus_flex',
+            $row
+        );
+        $dataStructureArr = $flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
+        $expandedDataStructureArr = $dataStructureArr['sheets'];
 
         return $expandedDataStructureArr;
     }
@@ -1525,18 +1499,14 @@ class ApiService
 
         // If element is a Flexible Content Element (or a page) then look at the content inside:
         if ($table == 'pages' || $table == $this->rootTable || ($table == 'tt_content' && $row['CType'] == 'templavoilaplus_pi1')) {
-            if (version_compare(TYPO3_version, '8.5.0', '>=')) {
-                $flexFormTools = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class);
-                $dataStructureIdentifier = $flexFormTools->getDataStructureIdentifier(
-                    $GLOBALS['TCA'][$table]['columns']['tx_templavoilaplus_flex'],
-                    $table,
-                    'tx_templavoilaplus_flex',
-                    $row
-                );
-                $rawDataStructureArr = $flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
-            } else {
-                $rawDataStructureArr = TemplaVoilaUtility::getFlexFormDS($GLOBALS['TCA'][$table]['columns']['tx_templavoilaplus_flex']['config'], $row, $table);
-            }
+            $flexFormTools = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class);
+            $dataStructureIdentifier = $flexFormTools->getDataStructureIdentifier(
+                $GLOBALS['TCA'][$table]['columns']['tx_templavoilaplus_flex'],
+                $table,
+                'tx_templavoilaplus_flex',
+                $row
+            );
+            $rawDataStructureArr = $flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
 
             if (!is_array($rawDataStructureArr)) {
                 return array();
