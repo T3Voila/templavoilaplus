@@ -19,7 +19,7 @@
         }
     ],
     "require": {
-        "typo3/cms-core": "^7.6.0 || ^8.7.0",
+        "typo3/cms-core": "^7.6.0 || ^8.7.0 || ^9.5.0",
         "php": ">=5.5.0 <7.3.99"
     },
     "autoload": {
@@ -37,6 +37,6 @@
         "typo3-ter/templavoilaplus": "self.version"
     },
     "suggest": {
-        "friendsoftypo3/typo3db-legacy": ">1.0.1"
+        "friendsoftypo3/typo3db-legacy": ">=1.1.1"
     }
 }
