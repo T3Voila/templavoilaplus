@@ -26,10 +26,12 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
+use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
+
 /**
  * Contains functions for manipulating flex form data
  */
-class FlexFormTools8 extends FlexFormTools
+class FlexFormTools8 extends \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools
 {
     /**
      * The method locates a specific data structure from given TCA and row combination
@@ -191,7 +193,7 @@ class FlexFormTools8 extends FlexFormTools
             $editData['meta'] = [];
         }
         $editData['meta']['currentLangId'] = [];
-        $languages = $this->getAvailableLanguages();
+        $languages = TemplaVoilaUtility::getAvailableLanguages(0, false);
         foreach ($languages as $lInfo) {
             $editData['meta']['currentLangId'][] = $lInfo['ISOcode'];
         }
@@ -397,5 +399,34 @@ class FlexFormTools8 extends FlexFormTools
             ];
         }
         return $dataStructureIdentifier;
+    }
+
+    /***********************************
+     *
+     * Processing functions
+     *
+     ***********************************/
+    /**
+     * Call back function for \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools class
+     * Basically just setting the value in a new array (thus cleaning because only values that are valid are visited!)
+     *
+     * @param array $dsArr Data structure for the current value
+     * @param mixed $data Current value
+     * @param array $PA Additional configuration used in calling function
+     * @param string $path Path of value in DS structure
+     * @param FlexFormTools $pObj caller
+     * @return void
+     */
+    public function cleanFlexFormXML_callBackFunction($dsArr, $data, $PA, $path, $pObj)
+    {
+        // Just setting value in our own result array, basically replicating the structure:
+        $pObj->setArrayValueByPath($path, $this->cleanFlexFormXML, $data);
+        // Looking if an "extension" called ".vDEFbase" is found and if so, accept that too:
+        if ($GLOBALS['TYPO3_CONF_VARS']['BE']['flexFormXMLincludeDiffBase']) {
+            $vDEFbase = $pObj->getArrayValueByPath($path . '.vDEFbase', $pObj->traverseFlexFormXMLData_Data);
+            if (isset($vDEFbase)) {
+                $pObj->setArrayValueByPath($path . '.vDEFbase', $this->cleanFlexFormXML, $vDEFbase);
+            }
+        }
     }
 }
