@@ -1,0 +1,8 @@
+module.tx_templavoilaplus {
+    view {
+        templateRootPaths.10 = EXT:templavoilaplus/Resources/Private/Templates/
+        partialRootPaths.10 = EXT:templavoilaplus/Resources/Private/Partials/
+        layoutRootPaths.10 = EXT:templavoilaplus/Resources/Private/Layouts/
+    }
+}
+

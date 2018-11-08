@@ -10,6 +10,24 @@ if (TYPO3_MODE === 'BE') {
         = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Classes/Hooks/WizardItems.php';
 
     // Adding backend modules:
+    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
+        'Ppi.TemplaVoilaPlus',
+        'web',
+        'Layout',
+        'top',
+        [
+            'Backend\PageLayout' => 'show',
+        ],
+        [
+            'access' => 'user,group',
+            'icon' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/PageModuleIcon.svg',
+            'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/Backend/PageLayout.xlf',
+            'navigationComponentId' => 'typo3-pagetree',
+//             'configureModuleFunction' => [\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::class, 'configureModule'],
+        ]
+    );
+
+    // Adding backend modules:
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
         'web',
         'txtemplavoilaplusLayout',
@@ -17,7 +35,7 @@ if (TYPO3_MODE === 'BE') {
         '',
         [
             'access' => 'user,group',
-            'icon' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icon/Modules/PageModuleIcon.svg',
+            'icon' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/PageModuleIcon.svg',
             'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/BackendLayout.xlf',
             'configureModuleFunction' => [\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::class, 'configureModule'],
 
@@ -35,7 +53,7 @@ if (TYPO3_MODE === 'BE') {
         '',
         [
             'access' => 'user,group',
-            'icon' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icon/Modules/AdministrationModuleIcon.svg',
+            'icon' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/AdministrationModuleIcon.svg',
             'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/BackendControlCenter.xlf',
             'configureModuleFunction' => [\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::class, 'configureModule'],
 
