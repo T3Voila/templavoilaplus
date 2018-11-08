@@ -1,5 +1,13 @@
 {namespace core = TYPO3\CMS\Core\ViewHelpers}
-<f:layout name="Backend/Default"/>
+<f:be.pageRenderer
+    pageTitle="TemplaVoilà! Plus"
+    includeCssFiles="{0: '{f:uri.resource(path: \'StyleSheet/PageLayout.css\', extensionName: \'templavoilaplus\')}'}"
+    includeRequireJsModules="{PageLayout: 'TYPO3/CMS/Templavoilaplus/PageLayout', Modal:'TYPO3/CMS/Backend/Modal'}"
+    includeJsFiles="{0: '{f:uri.resource(path: \'JavaScript/templavoila.js\', extensionName: \'templavoilaplus\')}'}"
+/>
+
+<f:render section="content"/>
+
 <f:section name="content">
 Hi
 </f:section>
