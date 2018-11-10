@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace Ppi\TemplaVoilaPlus\Controller\Backend;
 
 /*
@@ -18,6 +19,7 @@ use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
@@ -33,11 +35,39 @@ class PageLayoutController extends ActionController
     protected $defaultViewObjectName = BackendTemplateView::class;
 
     /**
+     * @var int the id of current page
+     */
+    protected $pageId = 0;
+
+    /**
+     * Record of current page with _path information BackendUtility::readPageAccess
+     *
+     * @var array
+     */
+    protected $pageInfo;
+
+    /**
+     * Initialize action
+     */
+    protected function initializeAction()
+    {
+        // determine id parameter
+        $pageId = (int)GeneralUtility::_GP('id');
+
+        if ($pageId && BackendUtility::getRecord('pages', $pageId)) {
+            $this->pageId = $pageId;
+        }
+
+        $this->setPageInfo();
+    }
+
+    /**
      * Displays the page with layout and content elements
      */
     public function showAction()
     {
         $this->registerDocheaderButtons();
+        $this->view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation($this->pageInfo);
     }
 
     /**
@@ -63,7 +93,7 @@ class PageLayoutController extends ActionController
                         TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newPage'),
                         'actions-page-new',
                         [
-                            'id' => $this->id,
+                            'id' => $this->pageId,
                             'pagesOnly' => 1,
                         ],
                         ButtonBar::BUTTON_POSITION_LEFT,
@@ -80,7 +110,7 @@ class PageLayoutController extends ActionController
                         [
                             'edit' => [
                                 'pages' => [
-                                    $this->id => 'edit',
+                                    $this->pageId => 'edit',
                                 ],
                             ],
                         ]
@@ -92,7 +122,7 @@ class PageLayoutController extends ActionController
                         'actions-page-move',
                         [
                             'table' => 'pages',
-                            'uid'=> $this->id,
+                            'uid'=> $this->pageId,
                         ],
                         ButtonBar::BUTTON_POSITION_LEFT,
                         2
@@ -106,7 +136,7 @@ class PageLayoutController extends ActionController
                 TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:recordHistory'),
                 'actions-document-history-open',
                 [
-                    'element' => 'pages:' . $this->id,
+                    'element' => 'pages:' . $this->pageId,
                 ],
                 ButtonBar::BUTTON_POSITION_LEFT,
                 3
@@ -124,20 +154,20 @@ class PageLayoutController extends ActionController
                 TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.showList'),
                 'actions-system-list-open',
                 [
-                    'id' => $this->id,
+                    'id' => $this->pageId,
                 ],
                 ButtonBar::BUTTON_POSITION_RIGHT,
                 1
             );
         }
 
-        if ($this->id) {
+        if ($this->pageId) {
             $this->addDocHeaderButton(
                 'tce_db',
                 TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.clear_cache'),
                 'actions-system-cache-clear',
                 [
-                    'cacheCmd'=> $this->id,
+                    'cacheCmd'=> $this->pageId,
                     'redirect' => GeneralUtility::getIndpEnv('REQUEST_URI'),
                 ],
                 ButtonBar::BUTTON_POSITION_RIGHT,
@@ -174,9 +204,9 @@ class PageLayoutController extends ActionController
             case 'view':
                 $viewAddGetVars = $this->currentLanguageUid ? '&L=' . $this->currentLanguageUid : '';
                 $onClick = BackendUtility::viewOnClick(
-                    $this->id,
+                    $this->pageId,
                     '',
-                    BackendUtility::BEgetRootLine($this->id),
+                    BackendUtility::BEgetRootLine($this->pageId),
                     '',
                     '',
                     $viewAddGetVars
@@ -237,7 +267,16 @@ class PageLayoutController extends ActionController
                     'showLimit'
                 ]
             )
-            ->setSetVariables([]/*array_keys($this->MOD_MENU)*/);
+            ->setSetVariables([]/*array_keys($this->MOD_MENU) @TODO*/);
         $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
+    }
+
+    /**
+     * Check if page record exists and set pageInfo
+     */
+    protected function setPageInfo()
+    {
+        $pagePermsClaus = TemplaVoilaUtility::getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
+        $this->pageInfo = BackendUtility::readPageAccess($this->pageId, $pagePermsClaus);
     }
 }

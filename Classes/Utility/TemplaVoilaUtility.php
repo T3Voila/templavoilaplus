@@ -15,6 +15,7 @@ namespace Ppi\TemplaVoilaPlus\Utility;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -40,9 +41,11 @@ final class TemplaVoilaUtility
     }
 
     /**
+     * Returns the current BE user.
+     *
      * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
      */
-    public static function getBackendUser()
+    public function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }
