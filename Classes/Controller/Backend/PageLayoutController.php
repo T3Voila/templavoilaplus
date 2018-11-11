@@ -53,12 +53,41 @@ class PageLayoutController extends ActionController
      *
      * @var integer
      */
-    public $calcPerms;
+    protected $calcPerms;
 
     /**
      * @var array
      */
-    static protected $calcPermCache = array();
+    static protected $calcPermCache = [];
+
+    /**
+     * TSconfig from mod.SHARED
+     *
+     * @var array
+     */
+    protected $modSharedTSconfig;
+
+    /**
+     * Contains the currently selected language key (Example: DEF or DE)
+     *
+     * @var string
+     */
+    protected $currentLanguageKey;
+
+    /**
+     * Contains the currently selected language uid (Example: -1, 0, 1, 2, ...)
+     *
+     * @var integer
+     */
+    protected $currentLanguageUid;
+
+    /**
+     * Contains records of all available languages (not hidden, with ISOcode), including the default
+     * language and multiple languages. Used for displaying the flags for content elements, set in init().
+     *
+     * @var array
+     */
+    protected $allAvailableLanguages = [];
 
     /**
      * Initialize action
@@ -71,6 +100,10 @@ class PageLayoutController extends ActionController
 
         // determine id parameter
         $this->pageId = (int)GeneralUtility::_GP('id');
+        $this->modSharedTSconfig = BackendUtility::getModTSconfig($this->pageId, 'mod.SHARED');
+        
+        $this->initializeCurrentLanguage();
+
         // if pageId is available the row will be inside pageInfo
         $this->setPageInfo();
     }
@@ -91,13 +124,24 @@ class PageLayoutController extends ActionController
         $access = isset($this->pageInfo['uid']) && (int)$this->pageInfo['uid'] > 0;
 
         if ($access) {
-            // Additional header content
-            $contentHeader .= $this->renderFunctionHook('renderHeader');
-
             $this->calcPerms = $this->getCalcPerms($this->pageInfo['uid']);
 
+            // Additional header content
+            $contentHeader = $this->renderFunctionHook('renderHeader');
+
+            // get body content
+            $contentBody = $this->renderFunctionHook('renderBody', [], true);
+            if ($this->currentLanguageUid !== 0) {
+                $row = BackendUtility::getRecordLocalization('pages', $this->pageId, $this->currentLanguageUid);
+                if ($row) {
+                    $pageTitle = BackendUtility::getRecordTitle('pages', $row[0]);
+                }
+            } else {
+                $pageTitle = BackendUtility::getRecordTitle('pages', $this->pageInfo);
+            }
+            
             // Additional footer content
-            $contentFooter .= $this->renderFunctionHook('renderFooter');
+            $contentFooter = $this->renderFunctionHook('renderFooter');
         } else {
             if (GeneralUtility::_GP('id') === '0') {
                 // normaly no page selected
@@ -115,6 +159,14 @@ class PageLayoutController extends ActionController
                 );
             }
         }
+        
+        $this->view->assign('pageId', $this->pageId);
+        $this->view->assign('pageInfo', $this->pageInfo);
+        $this->view->assign('pageTitle', $pageTitle);
+
+        $this->view->assign('contentHeader', $this->contentHeader);
+        $this->view->assign('contentBody', $this->contentBody);
+        $this->view->assign('contentFooter', $this->contentFooter);
     }
 
     /**
@@ -383,15 +435,26 @@ class PageLayoutController extends ActionController
     }
 
     /**
+     * @param string $key
+     *
+     * @return mixed
+     */
+    public function getSetting($key)
+    {
+        return isset($this->settings[$key]) ? $this->settings[$key] : null;
+    }
+
+    /**
      * Calls defined hooks from TYPO3_CONF_VARS']['SC_OPTIONS']['templavoilaplus']['BackendLayout'][$hookName . 'FunctionHook']
      * and returns there result as combined string.
      *
      * @param string $hookName Name of the hook to call
      * @param array $params Paremeters to give to the called hook function
+     * @param bool $stopOnConsume stop calling more function hooks if a result is not false/empty
      *
      * @return string
      */
-    protected function renderFunctionHook($hookName, $params = [])
+    protected function renderFunctionHook($hookName, $params = [], $stopOnConsume = false)
     {
         $result = '';
 
@@ -401,10 +464,40 @@ class PageLayoutController extends ActionController
                 foreach ($renderFunctionHook as $hook) {
                     $params = [];
                     $result .= (string) GeneralUtility::callUserFunction($hook, $params, $this);
+                    if ($stopOnConsume && $result) {
+                        break;
+                    }
                 }
             }
         }
 
         return $result;
+    }
+
+    protected function initializeCurrentLanguage()
+    {
+        // Fill array allAvailableLanguages and currently selected language (from language selector or from outside)
+        $this->allAvailableLanguages = TemplaVoilaUtility::getAvailableLanguages(0, true, true, $this->modSharedTSconfig);
+
+        $languageFromSession = (int)TemplaVoilaUtility::getBackendUser()->getSessionData('templavoilaplus.language');
+        // determine language parameter
+        $this->currentLanguageUid = (int)GeneralUtility::_GP('language') > 0
+            ? (int)GeneralUtility::_GP('language')
+            : $languageFromSession;
+        if ($this->request->hasArgument('language')) {
+            $this->currentLanguageUid = (int)$this->request->getArgument('language');
+        }
+        // Check if language is available
+        if (!isset($this->allAvailableLanguages[$this->currentLanguageUid])) {
+            $this->currentLanguageUid = 0;
+        }
+        // if changed save to session
+        if ($languageFromSession !== $this->currentLanguageUid) {
+            TemplaVoilaUtility::getBackendUser()->setAndSaveSessionData(
+                'templavoilaplus.language',
+                $this->currentLanguageUid
+            );
+        }
+        $this->currentLanguageKey = $this->allAvailableLanguages[$this->currentLanguageUid]['ISOcode'];
     }
 }
