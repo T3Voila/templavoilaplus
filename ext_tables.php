@@ -9,6 +9,10 @@ if (TYPO3_MODE === 'BE') {
     $GLOBALS['TBE_MODULES_EXT']['xMOD_db_new_content_el']['addElClasses'][\Ppi\TemplaVoilaPlus\Hooks\WizardItems::class]
         = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Classes/Hooks/WizardItems.php';
 
+    $navigationComponentId = 'TYPO3/CMS/Backend/PageTree/PageTreeElement';
+    if (version_compare(TYPO3_version, '9.0.0', '<')) {
+        $navigationComponentId = 'typo3-pagetree';
+    }
     // Adding backend modules:
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
         'Ppi.TemplaVoilaPlus',
@@ -22,7 +26,7 @@ if (TYPO3_MODE === 'BE') {
             'access' => 'user,group',
             'icon' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/PageModuleIcon.svg',
             'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/Backend/PageLayout.xlf',
-            'navigationComponentId' => 'typo3-pagetree',
+            'navigationComponentId' => $navigationComponentId,
 //             'configureModuleFunction' => [\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::class, 'configureModule'],
         ]
     );
@@ -41,7 +45,7 @@ if (TYPO3_MODE === 'BE') {
 
             'name' => 'web_txtemplavoilaplusLayout',
             'extensionName' => 'templavoilaplus',
-            'navigationComponentId' => 'typo3-pagetree',
+            'navigationComponentId' => $navigationComponentId,
             'routeTarget' => \Ppi\TemplaVoilaPlus\Controller\BackendLayoutController::class . '::mainAction',
         ]
     );
