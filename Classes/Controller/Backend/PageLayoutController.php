@@ -19,9 +19,11 @@ use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Frontend\Page\PageRepository;
 
 use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
@@ -47,17 +49,29 @@ class PageLayoutController extends ActionController
     protected $pageInfo;
 
     /**
+     * Permissions for the current page
+     *
+     * @var integer
+     */
+    public $calcPerms;
+
+    /**
+     * @var array
+     */
+    static protected $calcPermCache = array();
+
+    /**
      * Initialize action
      */
     protected function initializeAction()
     {
+        TemplaVoilaUtility::getLanguageService()->includeLLFile(
+            'EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf'
+        );
+
         // determine id parameter
-        $pageId = (int)GeneralUtility::_GP('id');
-
-        if ($pageId && BackendUtility::getRecord('pages', $pageId)) {
-            $this->pageId = $pageId;
-        }
-
+        $this->pageId = (int)GeneralUtility::_GP('id');
+        // if pageId is available the row will be inside pageInfo
         $this->setPageInfo();
     }
 
@@ -68,6 +82,39 @@ class PageLayoutController extends ActionController
     {
         $this->registerDocheaderButtons();
         $this->view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation($this->pageInfo);
+        $this->view->getModuleTemplate()->setFlashMessageQueue($this->controllerContext->getFlashMessageQueue());
+
+        $contentHeader = '';
+        $contentBody = '';
+        $contentFooter = '';
+        
+        $access = isset($this->pageInfo['uid']) && (int)$this->pageInfo['uid'] > 0;
+
+        if ($access) {
+            // Additional header content
+            $contentHeader .= $this->renderFunctionHook('renderHeader');
+
+            $this->calcPerms = $this->getCalcPerms($this->pageInfo['uid']);
+
+            // Additional footer content
+            $contentFooter .= $this->renderFunctionHook('renderFooter');
+        } else {
+            if (GeneralUtility::_GP('id') === '0') {
+                // normaly no page selected
+                $this->addFlashMessage(
+                    TemplaVoilaUtility::getLanguageService()->getLL('infoDefaultIntroduction'),
+                    TemplaVoilaUtility::getLanguageService()->getLL('title'),
+                    FlashMessage::INFO
+                );
+            } else {
+                // NOt found or no show access
+                $this->addFlashMessage(
+                    TemplaVoilaUtility::getLanguageService()->getLL('infoPageNotFound'),
+                    TemplaVoilaUtility::getLanguageService()->getLL('title'),
+                    FlashMessage::INFO
+                );
+            }
+        }
     }
 
     /**
@@ -278,5 +325,86 @@ class PageLayoutController extends ActionController
     {
         $pagePermsClaus = TemplaVoilaUtility::getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
         $this->pageInfo = BackendUtility::readPageAccess($this->pageId, $pagePermsClaus);
+    }
+
+    /**
+     * @param integer $pid
+     * @TODO Cache realy needed? Statically?
+     * @TODO Use constant instead of value 16!
+     *
+     * @return integer
+     */
+    protected function getCalcPerms($pid)
+    {
+        if (!isset(self::$calcPermCache[$pid])) {
+            $row = BackendUtility::getRecordWSOL('pages', $pid);
+            $calcPerms = TemplaVoilaUtility::getBackendUser()->calcPerms($row);
+            if (!$this->hasBasicEditRights('pages', $row)) {
+                // unsetting the "edit content" right - which is 16
+                $calcPerms = $calcPerms & ~16;
+            }
+            self::$calcPermCache[$pid] = $calcPerms;
+        }
+
+        return self::$calcPermCache[$pid];
+    }
+
+    /**
+     * @param string $table
+     * @param array $record
+     * @TODO Use constant instead of value 16!
+     * @TODO rootElement needed? View page content partially?
+     *
+     * @return boolean
+     */
+    protected function hasBasicEditRights($table = null, array $record = null)
+    {
+        if ($table == null) {
+            $table = $this->rootElementTable;
+        }
+
+        if (empty($record)) {
+            $record = $this->rootElementRecord;
+        }
+
+        if (TemplaVoilaUtility::getBackendUser()->isAdmin()) {
+            $hasEditRights = true;
+        } else {
+            $id = $record[($table == 'pages' ? 'uid' : 'pid')];
+            $pageRecord = BackendUtility::getRecordWSOL('pages', $id);
+
+            $mayEditPage = TemplaVoilaUtility::getBackendUser()->doesUserHaveAccess($pageRecord, 16);
+            $mayModifyTable = GeneralUtility::inList(TemplaVoilaUtility::getBackendUser()->groupData['tables_modify'], $table);
+            $mayEditContentField = GeneralUtility::inList(TemplaVoilaUtility::getBackendUser()->groupData['non_exclude_fields'], $table . ':tx_templavoilaplus_flex');
+            $hasEditRights = $mayEditPage && $mayModifyTable && $mayEditContentField;
+        }
+
+        return $hasEditRights;
+    }
+
+    /**
+     * Calls defined hooks from TYPO3_CONF_VARS']['SC_OPTIONS']['templavoilaplus']['BackendLayout'][$hookName . 'FunctionHook']
+     * and returns there result as combined string.
+     *
+     * @param string $hookName Name of the hook to call
+     * @param array $params Paremeters to give to the called hook function
+     *
+     * @return string
+     */
+    protected function renderFunctionHook($hookName, $params = [])
+    {
+        $result = '';
+
+        if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['templavoilaplus']['BackendLayout'][$hookName . 'FunctionHook'])) {
+            $renderFunctionHook = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['templavoilaplus']['BackendLayout'][$hookName . 'FunctionHook'];
+            if (is_array($renderFunctionHook)) {
+                foreach ($renderFunctionHook as $hook) {
+                    $params = [];
+                    $result .= (string) GeneralUtility::callUserFunction($hook, $params, $this);
+                }
+            }
+        }
+
+        return $result;
     }
 }

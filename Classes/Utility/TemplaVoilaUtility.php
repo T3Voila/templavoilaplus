@@ -45,7 +45,7 @@ final class TemplaVoilaUtility
      *
      * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
      */
-    public function getBackendUser(): BackendUserAuthentication
+    public static function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }
