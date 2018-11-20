@@ -53,7 +53,7 @@ class TcaFlexProcess implements FormDataProviderInterface
             $result = $this->prepareLanguageHandlingInDataValues($result, $fieldName);
             $result = $this->modifyDataStructureAndDataValuesByFlexFormSegmentGroup($result, $fieldName, $pageTsConfigOfFlex);
             $result = $this->addDataStructurePointersToMetaData($result, $fieldName);
-            if (!empty($result['flexSectionContainerPreparation']) {
+            if (!empty($result['flexSectionContainerPreparation'])) {
                 // Create data and default values for a new section container, set by FormFlexAjaxController
                 $result = $this->prepareNewSectionContainer($result, $fieldName);
             }

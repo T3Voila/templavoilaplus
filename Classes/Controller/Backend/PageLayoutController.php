@@ -101,7 +101,7 @@ class PageLayoutController extends ActionController
         // determine id parameter
         $this->pageId = (int)GeneralUtility::_GP('id');
         $this->modSharedTSconfig = BackendUtility::getModTSconfig($this->pageId, 'mod.SHARED');
-        
+
         $this->initializeCurrentLanguage();
 
         // if pageId is available the row will be inside pageInfo
@@ -120,7 +120,7 @@ class PageLayoutController extends ActionController
         $contentHeader = '';
         $contentBody = '';
         $contentFooter = '';
-        
+
         $access = isset($this->pageInfo['uid']) && (int)$this->pageInfo['uid'] > 0;
 
         if ($access) {
@@ -139,7 +139,7 @@ class PageLayoutController extends ActionController
             } else {
                 $pageTitle = BackendUtility::getRecordTitle('pages', $this->pageInfo);
             }
-            
+
             // Additional footer content
             $contentFooter = $this->renderFunctionHook('renderFooter');
         } else {
@@ -159,14 +159,14 @@ class PageLayoutController extends ActionController
                 );
             }
         }
-        
+
         $this->view->assign('pageId', $this->pageId);
         $this->view->assign('pageInfo', $this->pageInfo);
         $this->view->assign('pageTitle', $pageTitle);
 
-        $this->view->assign('contentHeader', $this->contentHeader);
-        $this->view->assign('contentBody', $this->contentBody);
-        $this->view->assign('contentFooter', $this->contentFooter);
+        $this->view->assign('contentHeader', $contentHeader);
+        $this->view->assign('contentBody', $contentBody);
+        $this->view->assign('contentFooter', $contentFooter);
     }
 
     /**
