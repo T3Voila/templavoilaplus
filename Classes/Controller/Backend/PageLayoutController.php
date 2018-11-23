@@ -131,14 +131,14 @@ class PageLayoutController extends ActionController
 
             // get body content
             $contentBody = $this->renderFunctionHook('renderBody', [], true);
-            if ($this->currentLanguageUid !== 0) {
-                $row = BackendUtility::getRecordLocalization('pages', $this->pageId, $this->currentLanguageUid);
-                if ($row) {
-                    $pageTitle = BackendUtility::getRecordTitle('pages', $row[0]);
-                }
-            } else {
-                $pageTitle = BackendUtility::getRecordTitle('pages', $this->pageInfo);
+            
+            $activePage = $this->pageInfo;
+            if ($this->currentLanguageUid !== 0
+                && $row = BackendUtility::getRecordLocalization('pages', $this->pageId, $this->currentLanguageUid)
+            ) {
+                $activePage = $row[0]
             }
+            $pageTitle = BackendUtility::getRecordTitle('pages', $activePage);
 
             // Additional footer content
             $contentFooter = $this->renderFunctionHook('renderFooter');
