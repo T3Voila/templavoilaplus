@@ -42,6 +42,25 @@
             <trans-unit id="hintDoktypeShortcutJumpToDestination" xml:space="preserve">
                 <source>Jump to shortcut destination</source>
             </trans-unit>
+
+            <trans-unit id="titleDoktypeLink" xml:space="preserve">
+                <source>External URL</source>
+            </trans-unit>
+            <trans-unit id="infoDoktypeLinkCannotEdit" xml:space="preserve">
+                <source>This page refers to the external address "%s", you therefore cannot edit the content of this page directly.</source>
+            </trans-unit>
+            <trans-unit id="infoDoktypeLinkCannotEdit1" xml:space="preserve">
+                <source>This page refers to an external website, you therefore cannot edit the content of this page directly.</source>
+            </trans-unit>
+            <trans-unit id="infoDoktypeLinkCannotEdit2" xml:space="preserve">
+                <source>This page refers to an external FTP location, you therefore cannot edit the content of this page directly.</source>
+            </trans-unit>
+            <trans-unit id="infoDoktypeLinkCannotEdit3" xml:space="preserve">
+                <source>This page refers to an email address, you therefore cannot edit the content of this page directly.</source>
+            </trans-unit>
+            <trans-unit id="hintDoktypeLinkOpen" xml:space="preserve">
+                <source>Open external address (%s)</source>
+            </trans-unit>
         </body>
     </file>
 </xliff>
