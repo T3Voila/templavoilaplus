@@ -32,11 +32,10 @@ class DoktypeShortcutHandler
      * @param PageLayoutController $controller
      * @param array $pageRecord The current page record
      *
-     * @return string HTML output from this submodule or false if this submodule doesn't feel responsible
+     * @return string HTML output from this submodule
      */
     public function handle(PageLayoutController $controller, array $pageRecord)
     {
-        $jumpToShortcutSourceLink = '';
         $targetUid = 0;
         $targetPageRecord = [];
         $shortcutMode = (int)$pageRecord['shortcut_mode'];
@@ -80,12 +79,6 @@ class DoktypeShortcutHandler
                     'id' => $this->pageId,
                 ]
             );
-            $jumpToShortcutSourceLink = '<a href="' . $url . '"'
-            . ' class="btn btn-default btn-sm"'
-            . ' title="' . TemplaVoilaUtility::getLanguageService()->getLL('hintDoktypeShortcutJumpToDestination', true) . '">'
-            . $controller->getView()->getModuleTemplate()->getIconFactory()->getIcon('apps-pagetree-page-shortcut', Icon::SIZE_SMALL)->render()
-            . '</a>';
-
         }
 
         $controller->addFlashMessage(
@@ -97,6 +90,26 @@ class DoktypeShortcutHandler
             FlashMessage::INFO
         );
 
-        return $jumpToShortcutSourceLink;
+        if ($targetUid) {
+            return $this->getLinkButton($controller, $url);
+        }
+
+        return '';
+    }
+    
+    protected function getLinkButton(PageLayoutController $controller, $url)
+    {
+        if ($url && parse_url($url)) {
+            return '<a href="' . $url . '"'
+                . ' class="btn btn-default btn-sm"'
+                . '>'
+                . $controller->getView()->getModuleTemplate()->getIconFactory()->getIcon('apps-pagetree-page-shortcut', Icon::SIZE_SMALL)->render()
+                . ' ' . sprintf(
+                    TemplaVoilaUtility::getLanguageService()->getLL('hintDoktypeShortcutJumpToDestination', true),
+                    htmlspecialchars($url)
+                )
+                . '</a>';
+        }
+        return '';
     }
 }

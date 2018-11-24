@@ -18,7 +18,6 @@ namespace Ppi\TemplaVoilaPlus\Controller\Backend\Handler;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
-use TYPO3\CMS\Frontend\Page\PageRepository;
 
 use Ppi\TemplaVoilaPlus\Controller\Backend\PageLayoutController;
 use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;

@@ -18,7 +18,6 @@ namespace Ppi\TemplaVoilaPlus\Controller\Backend\Handler;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
-use TYPO3\CMS\Frontend\Page\PageRepository;
 
 use Ppi\TemplaVoilaPlus\Controller\Backend\PageLayoutController;
 use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
@@ -31,7 +30,7 @@ class DoktypeLinkHandler
      * @param PageLayoutController $controller
      * @param array $pageRecord The current page record
      *
-     * @return string HTML output from this submodule or false if this submodule doesn't feel responsible
+     * @return string HTML output from this submodule
      */
     public function handle(PageLayoutController $controller, array $pageRecord)
     {
@@ -42,7 +41,7 @@ class DoktypeLinkHandler
                     htmlspecialchars($pageRecord['url'])
                 ),
                 TemplaVoilaUtility::getLanguageService()->getLL('titleDoktypeLink'),
-                \TYPO3\CMS\Core\Messaging\FlashMessage::INFO
+                FlashMessage::INFO
             );
 
             return $this->getLinkButton($controller, $pageRecord['url']);
@@ -86,7 +85,7 @@ class DoktypeLinkHandler
         $controller->addFlashMessage(
             $notice,
             TemplaVoilaUtility::getLanguageService()->getLL('titleDoktypeLink'),
-            \TYPO3\CMS\Core\Messaging\FlashMessage::INFO
+            FlashMessage::INFO
         );
 
         return $this->getLinkButton($controller, $url);

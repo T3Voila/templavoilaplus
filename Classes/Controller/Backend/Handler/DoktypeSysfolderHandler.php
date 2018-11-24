@@ -18,7 +18,6 @@ namespace Ppi\TemplaVoilaPlus\Controller\Backend\Handler;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
-use TYPO3\CMS\Frontend\Page\PageRepository;
 
 use Ppi\TemplaVoilaPlus\Controller\Backend\PageLayoutController;
 use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
@@ -31,19 +30,19 @@ class DoktypeSysfolderHandler
      * @param PageLayoutController $controller
      * @param array $pageRecord The current page record
      *
-     * @return string HTML output from this submodule or false if this submodule doesn't feel responsible
+     * @return string HTML output from this submodule
      */
     public function handle(PageLayoutController $controller, array $pageRecord)
     {
         if ($this->userHasAccessToListModule()) {
-            $listModuleURL = BackendUtility::getModuleUrl('web_list', array('id' => (int)$this->pObj->id), '');
+            $listModuleURL = BackendUtility::getModuleUrl('web_list', ['id' => (int)$pageRecord['uid']], '');
             $listModuleLink = $this->getLinkButton($controller, $listModuleURL);
         }
 
         $controller->addFlashMessage(
             TemplaVoilaUtility::getLanguageService()->getLL('infoDoktypeSysfolderCannotEdit'),
             TemplaVoilaUtility::getLanguageService()->getLL('titleDoktypeSysfolder'),
-            \TYPO3\CMS\Core\Messaging\FlashMessage::INFO
+            FlashMessage::INFO
         );
 
         return $listModuleLink;
@@ -54,7 +53,6 @@ class DoktypeSysfolderHandler
         if ($url && parse_url($url)) {
             return '<a href="' . $url . '"'
                 . ' class="btn btn-default btn-sm"'
-                . ' target="_blank"'
                 . '>'
                 . $controller->getView()->getModuleTemplate()->getIconFactory()->getIcon('actions-system-list-open', Icon::SIZE_SMALL)->render()
                 . ' ' . sprintf(
