@@ -61,6 +61,16 @@
             <trans-unit id="hintDoktypeLinkOpen" xml:space="preserve">
                 <source>Open external address (%s)</source>
             </trans-unit>
+
+            <trans-unit id="titleDoktypeSysfolder" xml:space="preserve">
+                <source>System folder</source>
+            </trans-unit>
+            <trans-unit id="infoDoktypeSysfolderCannotEdit" xml:space="preserve">
+                <source>The current page is of the type &quot;Sysfolder&quot;. Sysfolders usually don't contain content elements but are used for collecting other types of records in a single folder.</source>
+            </trans-unit>
+            <trans-unit id="hintDoktypeSysfolderOpen" xml:space="preserve">
+                <source>Switch to list view</source>
+            </trans-unit>
         </body>
     </file>
 </xliff>
