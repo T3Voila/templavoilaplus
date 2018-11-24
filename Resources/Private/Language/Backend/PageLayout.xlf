@@ -22,6 +22,23 @@
             <trans-unit id="infoPageNotFound" xml:space="preserve">
                 <source>The requested page can't be found or is not accessible.</source>
             </trans-unit>
+            
+            <!-- Doktype Handler -->
+            <trans-unit id="titleShortcut" xml:space="preserve">
+                <source>Shortcut</source>
+            </trans-unit>
+            <trans-unit id="infoCannotEditShortcut0" xml:space="preserve">
+                <source>This page is of the type &quot;shortcut&quot;. Instead of having content on its own, this page shows the content from the selected page &quot;%s&quot;. Therefore you cannot edit the content of this page directly.</source>
+            </trans-unit>
+            <trans-unit id="infoCannotEditShortcut1" xml:space="preserve">
+                <source>This page is of the type &quot;shortcut&quot;. Instead of having content on its own, this page shows the content from the first sub page of current/selected page, which is &quot;%s&quot;. Therefore you cannot edit the content of this page directly.</source>
+            </trans-unit>
+            <trans-unit id="infoCannotEditShortcut2" xml:space="preserve">
+                <source>This page is of the type &quot;shortcut&quot;. Instead of having content on its own, this page shows the content of a random sub page of current/selected page. Therefore you cannot edit the content of this page directly.</source>
+            </trans-unit>
+            <trans-unit id="infoCannotEditShortcut3" xml:space="preserve">
+                <source>This page is of the type &quot;shortcut&quot;. Instead of having content on its own, this page shows the content of parent page of current/selected page, which is &quot;%s&quot;. Therefore you cannot edit the content of this page directly.</source>
+            </trans-unit>
         </body>
     </file>
 </xliff>

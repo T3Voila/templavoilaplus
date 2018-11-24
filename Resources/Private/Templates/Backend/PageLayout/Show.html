@@ -8,8 +8,8 @@
 
 <h1>{pageTitle}</h1>
 
-<f:render section="content"/>
+<f:render section="content" arguments="{_all}" />
 
 <f:section name="content">
-Hi
+<f:format.raw>{contentBody}</f:format.raw>
 </f:section>
