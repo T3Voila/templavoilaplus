@@ -71,6 +71,16 @@
             <trans-unit id="hintDoktypeSysfolderOpen" xml:space="preserve">
                 <source>Switch to list view</source>
             </trans-unit>
+
+            <trans-unit id="titleDoktypeMountpoint" xml:space="preserve">
+                <source>Mount point</source>
+            </trans-unit>
+            <trans-unit id="infoDoktypeMountpointCannotEdit" xml:space="preserve">
+                <source>This page acts as a mount point and its content is being replaced by another page (&quot;%s&quot;). Therefore you cannot edit the content of this page directly.</source>
+            </trans-unit>
+            <trans-unit id="hintDoktypeMountpointOpen" xml:space="preserve">
+                <source>Jump to source page of this mount point</source>
+            </trans-unit>
         </body>
     </file>
 </xliff>
