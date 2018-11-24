@@ -29,6 +29,7 @@ class DoktypeShortcutHandler
     /**
      * Displays the edit page screen if the currently selected page is of the doktype "Shortcut"
      *
+     * @param PageLayoutController $controller
      * @param array $pageRecord The current page record
      *
      * @return string HTML output from this submodule or false if this submodule doesn't feel responsible
@@ -81,7 +82,7 @@ class DoktypeShortcutHandler
             );
             $jumpToShortcutSourceLink = '<a href="' . $url . '"'
             . ' class="btn btn-default btn-sm"'
-            . ' title="' . TemplaVoilaUtility::getLanguageService()->getLL('jumptoshortcutdestination', true) . '">'
+            . ' title="' . TemplaVoilaUtility::getLanguageService()->getLL('hintDoktypeShortcutJumpToDestination', true) . '">'
             . $controller->getView()->getModuleTemplate()->getIconFactory()->getIcon('apps-pagetree-page-shortcut', Icon::SIZE_SMALL)->render()
             . '</a>';
 
@@ -89,10 +90,10 @@ class DoktypeShortcutHandler
 
         $controller->addFlashMessage(
             sprintf(
-                TemplaVoilaUtility::getLanguageService()->getLL('infoCannotEditShortcut' . $shortcutMode),
+                TemplaVoilaUtility::getLanguageService()->getLL('infoDoktypeShortcutCannotEdit' . $shortcutMode),
                 $targetPageRecord ? BackendUtility::getRecordTitle('pages', $targetPageRecord) : ''
             ),
-            TemplaVoilaUtility::getLanguageService()->getLL('titleShortcut'),
+            TemplaVoilaUtility::getLanguageService()->getLL('titleDoktypeShortcut'),
             FlashMessage::INFO
         );
 
