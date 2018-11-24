@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 
+use Ppi\TemplaVoilaPlus\Configuration\BackendConfiguration;
 use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 class PageLayoutController extends ActionController
@@ -88,6 +89,11 @@ class PageLayoutController extends ActionController
      * @var array
      */
     protected $allAvailableLanguages = [];
+    
+    public function __construct()
+    {
+        $this->configuration = new BackendConfiguration();
+    }
 
     /**
      * Initialize action
@@ -136,9 +142,11 @@ class PageLayoutController extends ActionController
             if ($this->currentLanguageUid !== 0
                 && $row = BackendUtility::getRecordLocalization('pages', $this->pageId, $this->currentLanguageUid)
             ) {
-                $activePage = $row[0]
+                $activePage = $row[0];
             }
             $pageTitle = BackendUtility::getRecordTitle('pages', $activePage);
+
+            $contentBody .= $this->callHandler(BackendConfiguration::HANDLER_DOCTYPE, $activePage['doktype'], $activePage);
 
             // Additional footer content
             $contentFooter = $this->renderFunctionHook('renderFooter');
@@ -444,6 +452,11 @@ class PageLayoutController extends ActionController
         return isset($this->settings[$key]) ? $this->settings[$key] : null;
     }
 
+    public function getView()
+    {
+        return $this->view;
+    }
+
     /**
      * Calls defined hooks from TYPO3_CONF_VARS']['SC_OPTIONS']['templavoilaplus']['BackendLayout'][$hookName . 'FunctionHook']
      * and returns there result as combined string.
@@ -472,6 +485,14 @@ class PageLayoutController extends ActionController
         }
 
         return $result;
+    }
+
+    protected function callHandler($type, $key, ...$param)
+    {
+        if ($this->configuration->haveItem($type, $key)) {
+            $handler = GeneralUtility::makeInstance($this->configuration->getItem($type, $key));
+            return $handler->handle($this, ...$param);
+        }
     }
 
     protected function initializeCurrentLanguage()
