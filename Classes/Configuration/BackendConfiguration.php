@@ -22,7 +22,7 @@ class BackendConfiguration
 {
     // Handler => Classes with a handler function
     const HANDLER_DOCTYPE = 100;
-    
+
     // Renderer => Functions which return string data
     const RENDER_HEADER = 200;
     const RENDER_BODY = 200;
@@ -47,14 +47,17 @@ class BackendConfiguration
             }
         }
     }
-    
+
     public function initDefaults()
     {
+        $this->setItem(self::HANDLER_DOCTYPE, PageRepository::DOKTYPE_DEFAULT, \Ppi\TemplaVoilaPlus\Controller\Backend\Handler\DoktypeDefaultHandler::class);
         $this->setItem(self::HANDLER_DOCTYPE, PageRepository::DOKTYPE_LINK, \Ppi\TemplaVoilaPlus\Controller\Backend\Handler\DoktypeLinkHandler::class);
         $this->setItem(self::HANDLER_DOCTYPE, PageRepository::DOKTYPE_SHORTCUT, \Ppi\TemplaVoilaPlus\Controller\Backend\Handler\DoktypeShortcutHandler::class);
+        $this->setItem(self::HANDLER_DOCTYPE, PageRepository::DOKTYPE_BE_USER_SECTION, \Ppi\TemplaVoilaPlus\Controller\Backend\Handler\DoktypeDefaultHandler::class);
         $this->setItem(self::HANDLER_DOCTYPE, PageRepository::DOKTYPE_MOUNTPOINT, \Ppi\TemplaVoilaPlus\Controller\Backend\Handler\DoktypeMountpointHandler::class);
         $this->setItem(self::HANDLER_DOCTYPE, PageRepository::DOKTYPE_SPACER, \Ppi\TemplaVoilaPlus\Controller\Backend\Handler\DoktypeSpacerHandler::class);
         $this->setItem(self::HANDLER_DOCTYPE, PageRepository::DOKTYPE_SYSFOLDER, \Ppi\TemplaVoilaPlus\Controller\Backend\Handler\DoktypeSysfolderHandler::class);
+        $this->setItem(self::HANDLER_DOCTYPE, PageRepository::DOKTYPE_RECYCLER, \Ppi\TemplaVoilaPlus\Controller\Backend\Handler\DoktypeRecyclerHandler::class);
     }
 
     public function setItem($type, $key, $value)
@@ -73,7 +76,7 @@ class BackendConfiguration
     {
         return isset($this->items[$type][$key]);
     }
-    
+
     public function getItem($type, $key)
     {
         if (isset($this->items[$type][$key])) {
