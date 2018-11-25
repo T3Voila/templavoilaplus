@@ -53,6 +53,7 @@ class BackendConfiguration
         $this->setItem(self::HANDLER_DOCTYPE, PageRepository::DOKTYPE_LINK, \Ppi\TemplaVoilaPlus\Controller\Backend\Handler\DoktypeLinkHandler::class);
         $this->setItem(self::HANDLER_DOCTYPE, PageRepository::DOKTYPE_SHORTCUT, \Ppi\TemplaVoilaPlus\Controller\Backend\Handler\DoktypeShortcutHandler::class);
         $this->setItem(self::HANDLER_DOCTYPE, PageRepository::DOKTYPE_MOUNTPOINT, \Ppi\TemplaVoilaPlus\Controller\Backend\Handler\DoktypeMountpointHandler::class);
+        $this->setItem(self::HANDLER_DOCTYPE, PageRepository::DOKTYPE_SPACER, \Ppi\TemplaVoilaPlus\Controller\Backend\Handler\DoktypeSpacerHandler::class);
         $this->setItem(self::HANDLER_DOCTYPE, PageRepository::DOKTYPE_SYSFOLDER, \Ppi\TemplaVoilaPlus\Controller\Backend\Handler\DoktypeSysfolderHandler::class);
     }
 
