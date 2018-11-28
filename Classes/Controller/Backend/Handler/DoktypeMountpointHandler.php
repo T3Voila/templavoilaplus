@@ -44,7 +44,7 @@ class DoktypeMountpointHandler
 
         $controller->addFlashMessage(
             sprintf(
-                TemplaVoilaUtility::getLanguageService()->getLL('infoDoktypeMountpointCannotEdit'), 
+                TemplaVoilaUtility::getLanguageService()->getLL('infoDoktypeMountpointCannotEdit'),
                 $mountSourcePageRecord['title']
             ),
             TemplaVoilaUtility::getLanguageService()->getLL('titleDoktypeMountpoint'),
@@ -52,7 +52,7 @@ class DoktypeMountpointHandler
         );
 
         return $this->getLinkButton(
-            $controller, 
+            $controller,
             BackendUtility::getModuleUrl(
                 'web_txtemplavoilaplusLayout',
                 [
@@ -62,7 +62,7 @@ class DoktypeMountpointHandler
         );
             ;
     }
-    
+
     protected function getLinkButton(PageLayoutController $controller, $url)
     {
         if ($url && parse_url($url)) {

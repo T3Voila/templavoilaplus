@@ -18,6 +18,7 @@ namespace Ppi\TemplaVoilaPlus\Controller\Backend\Handler;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 
 use Ppi\TemplaVoilaPlus\Controller\Backend\PageLayoutController;
@@ -39,7 +40,7 @@ class DoktypeShortcutHandler
         $targetUid = 0;
         $targetPageRecord = [];
         $shortcutMode = (int)$pageRecord['shortcut_mode'];
-        
+
         switch ($shortcutMode) {
             case PageRepository::SHORTCUT_MODE_NONE: // Should be SHORTCUT_MODE_SELECT
                 // Use selected page
@@ -96,7 +97,7 @@ class DoktypeShortcutHandler
 
         return '';
     }
-    
+
     protected function getLinkButton(PageLayoutController $controller, $url)
     {
         if ($url && parse_url($url)) {

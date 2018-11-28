@@ -49,7 +49,7 @@ class DoktypeLinkHandler
             return $this->handle8($controller, $pageRecord);
         }
     }
-    
+
     public function handle8(PageLayoutController $controller, array $pageRecord)
     {
         switch ($pageRecord['urltype']) {
@@ -90,7 +90,7 @@ class DoktypeLinkHandler
 
         return $this->getLinkButton($controller, $url);
     }
-    
+
     protected function getLinkButton(PageLayoutController $controller, $url)
     {
         if ($url && parse_url($url)) {

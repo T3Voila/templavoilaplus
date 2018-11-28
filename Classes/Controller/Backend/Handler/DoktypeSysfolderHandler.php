@@ -47,7 +47,7 @@ class DoktypeSysfolderHandler
 
         return $listModuleLink;
     }
-    
+
     protected function getLinkButton(PageLayoutController $controller, $url)
     {
         if ($url && parse_url($url)) {
@@ -75,7 +75,7 @@ class DoktypeSysfolderHandler
         if (!BackendUtility::isModuleSetInTBE_MODULES('web_list')) {
             return false;
         }
-        return TemplaVoilaUtility::getBackendUser()->isAdmin() 
+        return TemplaVoilaUtility::getBackendUser()->isAdmin()
             || TemplaVoilaUtility::getBackendUser()->check('modules', 'web_list');
     }
 }
