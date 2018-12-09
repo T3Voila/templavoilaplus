@@ -22,7 +22,7 @@
             <trans-unit id="infoPageNotFound" xml:space="preserve">
                 <source>The requested page can't be found or is not accessible.</source>
             </trans-unit>
-            
+
             <!-- Doktype Handler -->
             <trans-unit id="titleDoktypeShortcut" xml:space="preserve">
                 <source>Shortcut</source>
@@ -81,7 +81,13 @@
             <trans-unit id="hintDoktypeMountpointOpen" xml:space="preserve">
                 <source>Jump to source page of this mount point</source>
             </trans-unit>
+
+            <trans-unit id="titleDoktypeSpacer" xml:space="preserve">
+                <source>Spacer</source>
+            </trans-unit>
+            <trans-unit id="infoDoktypeSpacerCannotEdit" xml:space="preserve">
+                <source>The current page is of the type &quot;Spacer&quot; and therfore cannot be edited.</source>
+            </trans-unit>
         </body>
     </file>
 </xliff>
-
