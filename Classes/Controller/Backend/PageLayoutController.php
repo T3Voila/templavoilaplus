@@ -89,7 +89,14 @@ class PageLayoutController extends ActionController
      * @var array
      */
     protected $allAvailableLanguages = [];
-    
+
+    /**
+     * Contains requested fluid partials in rendering areas
+     *
+     * @var array
+     */
+    protected $contentPartials = [];
+
     public function __construct()
     {
         $this->configuration = new BackendConfiguration();
@@ -137,7 +144,7 @@ class PageLayoutController extends ActionController
 
             // get body content
             $contentBody = $this->renderFunctionHook('renderBody', [], true);
-            
+
             $activePage = $this->pageInfo;
             if ($this->currentLanguageUid !== 0
                 && $row = BackendUtility::getRecordLocalization('pages', $this->pageId, $this->currentLanguageUid)
@@ -172,9 +179,22 @@ class PageLayoutController extends ActionController
         $this->view->assign('pageInfo', $this->pageInfo);
         $this->view->assign('pageTitle', $pageTitle);
 
+        $this->view->assign('contentPartials', $this->contentPartials);
+        // @TODO Deprecate following parts and the renderFunctionHooks? Replace them with Handlers?
+        // Or use these hooks so they can add Partials?
         $this->view->assign('contentHeader', $contentHeader);
         $this->view->assign('contentBody', $contentBody);
         $this->view->assign('contentFooter', $contentFooter);
+    }
+
+    public function addContentPartial($contentPart, $partialName)
+    {
+        $this->contentPartials[$contentPart][] = $partialName;
+    }
+
+    public function getModSharedTSconfig()
+    {
+        return $this->modSharedTSconfig;
     }
 
     /**
