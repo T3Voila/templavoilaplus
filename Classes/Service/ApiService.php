@@ -1371,7 +1371,7 @@ class ApiService
      *
      * @return array The data structure, expanded for all sheets inside.
      */
-    public function ds_getExpandedDataStructure($table, $row)
+    public function ds_getExpandedDataStructure($table, array $row)
     {
         $dataStructureArr = [];
 
