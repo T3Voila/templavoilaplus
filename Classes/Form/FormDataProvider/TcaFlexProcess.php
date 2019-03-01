@@ -512,6 +512,7 @@ class TcaFlexProcess implements FormDataProviderInterface
                                                         ],
                                                         'selectTreeCompileItems' => $result['selectTreeCompileItems'],
                                                         'flexParentDatabaseRow' => $result['databaseRow'],
+                                                        'effectivePid' => $result['effectivePid'],
                                                     ];
                                                 } else {
                                                     $inputToFlexFormSegment = [
@@ -646,6 +647,7 @@ class TcaFlexProcess implements FormDataProviderInterface
                                                         ],
                                                         'selectTreeCompileItems' => $result['selectTreeCompileItems'],
                                                         'flexParentDatabaseRow' => $result['databaseRow'],
+                                                        'effectivePid' => $result['effectivePid'],
                                                     ];
                                                 } else {
                                                     $inputToFlexFormSegment = [
@@ -716,6 +718,7 @@ class TcaFlexProcess implements FormDataProviderInterface
                                 ],
                                 'selectTreeCompileItems' => $result['selectTreeCompileItems'],
                                 'flexParentDatabaseRow' => $result['databaseRow'],
+                                'effectivePid' => $result['effectivePid'],
                             ];
                         } else {
                             // process the tca columns for the current sheet
@@ -823,6 +826,7 @@ class TcaFlexProcess implements FormDataProviderInterface
                     ],
                     'selectTreeCompileItems' => $result['selectTreeCompileItems'],
                     'flexParentDatabaseRow' => $result['databaseRow'],
+                    'effectivePid' => $result['effectivePid'],
                 ];
 
                 $flexSegmentResult = $formDataCompiler->compile($inputToFlexFormSegment);
