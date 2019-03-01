@@ -511,6 +511,7 @@ class TcaFlexProcess implements FormDataProviderInterface
                                                     ],
                                                     'selectTreeCompileItems' => $result['selectTreeCompileItems'],
                                                     'flexParentDatabaseRow' => $result['databaseRow'],
+                                                    'effectivePid' => $result['effectivePid'],
                                                 ];
                                                 if (!empty($newColumns[$langElementLevel])) {
                                                     // This is scenario "field has been added to data structure, but field value does not exist in value array yet"
@@ -630,6 +631,7 @@ class TcaFlexProcess implements FormDataProviderInterface
                                                     ],
                                                     'selectTreeCompileItems' => $result['selectTreeCompileItems'],
                                                     'flexParentDatabaseRow' => $result['databaseRow'],
+                                                    'effectivePid' => $result['effectivePid'],
                                                 ];
                                                 $flexSegmentResult = $formDataCompiler->compile($inputToFlexFormSegment);
                                                 if (array_key_exists($singleFieldName, $flexSegmentResult['databaseRow'])) {
@@ -682,6 +684,7 @@ class TcaFlexProcess implements FormDataProviderInterface
                             ],
                             'selectTreeCompileItems' => $result['selectTreeCompileItems'],
                             'flexParentDatabaseRow' => $result['databaseRow'],
+                            'effectivePid' => $result['effectivePid'],
                         ];
 
                         if (!empty($tcaNewColumns)) {
@@ -774,6 +777,7 @@ class TcaFlexProcess implements FormDataProviderInterface
                     ],
                     'selectTreeCompileItems' => $result['selectTreeCompileItems'],
                     'flexParentDatabaseRow' => $result['databaseRow'],
+                    'effectivePid' => $result['effectivePid'],
                 ];
 
                 $flexSegmentResult = $formDataCompiler->compile($inputToFlexFormSegment);
