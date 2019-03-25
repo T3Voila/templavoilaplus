@@ -215,18 +215,18 @@ class StaticDataUpdateController
                     TemplaVoilaUtility::getDatabaseConnection()->exec_UPDATEquery(
                         'pages',
                         'tx_templavoilaplus_ds="' . $row['uid'] . '"',
-                        array('tx_templavoilaplus_ds' => $outPath)
+                        array('tx_templavoilaplus_ds' => 'FILE:' . $outPath)
                     );
                     TemplaVoilaUtility::getDatabaseConnection()->exec_UPDATEquery(
                         'pages',
                         'tx_templavoilaplus_next_ds="' . $row['uid'] . '"',
-                        array('tx_templavoilaplus_next_ds' => $outPath)
+                        array('tx_templavoilaplus_next_ds' => 'FILE:' . $outPath)
                     );
                     // update tt_content records
                     TemplaVoilaUtility::getDatabaseConnection()->exec_UPDATEquery(
                         'tt_content',
                         'tx_templavoilaplus_ds="' . $row['uid'] . '"',
-                        array('tx_templavoilaplus_ds' => $outPath)
+                        array('tx_templavoilaplus_ds' => 'FILE:' . $outPath)
                     );
                     // delete DS records
                     TemplaVoilaUtility::getDatabaseConnection()->exec_UPDATEquery(
