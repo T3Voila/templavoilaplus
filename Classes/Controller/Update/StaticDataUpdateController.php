@@ -145,14 +145,15 @@ class StaticDataUpdateController
     protected function getDsRecords($conf)
     {
         $updateMessage = '';
-        $writeDsIds = array();
+        $writeDsIds = [];
         $writeIds = GeneralUtility::_GP('staticDSwizard');
         $options = GeneralUtility::_GP('staticDSwizardoptions');
         $checkAll = GeneralUtility::_GP('sdw-checkall');
 
-        if (count($writeIds)) {
+        if (is_array($writeIds) && count($writeIds)) {
             $writeDsIds = array_keys($writeIds);
         }
+
         $rows = TemplaVoilaUtility::getDatabaseConnection()->exec_SELECTgetRows(
             '*',
             'tx_templavoilaplus_datastructure',
