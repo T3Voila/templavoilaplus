@@ -19,16 +19,31 @@ class BackendControllerHook
      */
     public function addInlineSettings(array $configuration, BackendController $backendController)
     {
-        $this->getPageRenderer()->addInlineSettingArray(
-            'TemplaVoilaPlus',
-            [
-                'layoutModuleUrl' => BackendUtility::getModuleUrl('web_txtemplavoilaplusLayout'),
-                'mappingModuleUrl' => BackendUtility::getModuleUrl('templavoilaplus_mapping'),
-                'dislplayModuleUrl' => BackendUtility::getModuleUrl('templavoilaplus_template_disply'),
-                'newSiteWizardModuleUrl' => BackendUtility::getModuleUrl('templavoilaplus_new_site_wizard'),
-                'flexformCleanerModuleUrl' => BackendUtility::getModuleUrl('templavoilaplus_flexform_cleaner'),
-            ]
-        );
+
+        if (version_compare(TYPO3_version, '9.0.0', '>=')) {
+            $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+            $this->getPageRenderer()->addInlineSettingArray(
+                'TemplaVoilaPlus',
+                [
+                    'layoutModuleUrl' => $uriBuilder->buildUriFromRoute('web_txtemplavoilaplusLayout'),
+                    'mappingModuleUrl' => $uriBuilder->buildUriFromRoute('templavoilaplus_mapping'),
+                    'dislplayModuleUrl' => $uriBuilder->buildUriFromRoute('templavoilaplus_template_disply'),
+                    'newSiteWizardModuleUrl' => $uriBuilder->buildUriFromRoute('templavoilaplus_new_site_wizard'),
+                    'flexformCleanerModuleUrl' => $uriBuilder->buildUriFromRoute('templavoilaplus_flexform_cleaner'),
+                ]
+            );
+        } else {
+            $this->getPageRenderer()->addInlineSettingArray(
+                'TemplaVoilaPlus',
+                [
+                    'layoutModuleUrl' => BackendUtility::getModuleUrl('web_txtemplavoilaplusLayout'),
+                    'mappingModuleUrl' => BackendUtility::getModuleUrl('templavoilaplus_mapping'),
+                    'dislplayModuleUrl' => BackendUtility::getModuleUrl('templavoilaplus_template_disply'),
+                    'newSiteWizardModuleUrl' => BackendUtility::getModuleUrl('templavoilaplus_new_site_wizard'),
+                    'flexformCleanerModuleUrl' => BackendUtility::getModuleUrl('templavoilaplus_flexform_cleaner'),
+                ]
+            );
+        }
     }
 
     /**
