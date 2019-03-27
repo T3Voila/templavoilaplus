@@ -53,9 +53,9 @@ configuration in the “mininews” extension:
                                                   </items>
                                                   <foreign_table>tx_templavoilaplus_tmplobj</foreign_table>
                                                   <foreign_table_where>
-                                                           AND tx_templavoilaplus_tmplobj.pid=###STORAGE_PID### 
-                                                           AND tx_templavoilaplus_tmplobj.datastructure="EXT:mininews/template_datastructure.xml" 
-                                                           AND tx_templavoilaplus_tmplobj.parent=0 
+                                                           AND tx_templavoilaplus_tmplobj.pid=###STORAGE_PID###
+                                                           AND tx_templavoilaplus_tmplobj.datastructure="EXT:mininews/template_datastructure.xml"
+                                                           AND tx_templavoilaplus_tmplobj.parent=0
                                                            ORDER BY tx_templavoilaplus_tmplobj.title
                                                   </foreign_table_where>
                                                   <size>1</size>
@@ -73,8 +73,8 @@ the “ext\_tables.php”
 
 ::
 
-   $TCA['tt_content']['types']['list']['subtypes_addlist'][$_EXTKEY.'_pi1']='tx_mininews_frontpage_list;;;;1-1-1,pi_flexform';
-   t3lib_extMgm::addPiFlexFormValue($_EXTKEY.'_pi1', 'FILE:EXT:mininews/flexform_ds.xml');
+   $TCA['tt_content']['types']['list']['subtypes_addlist']['templavoilaplus_pi1']='tx_mininews_frontpage_list;;;;1-1-1,pi_flexform';
+   t3lib_extMgm::addPiFlexFormValue('templavoilaplus_pi1', 'FILE:EXT:mininews/flexform_ds.xml');
 
 This is in fact all you have to do to select an alternative template.
 Of course the question is - what is a Template Object and how to we

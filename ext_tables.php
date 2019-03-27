@@ -3,11 +3,11 @@ defined('TYPO3_MODE') or die();
 
 if (TYPO3_MODE === 'BE') {
 
-    $GLOBALS['TYPO3_CONF_VARS']['BE']['ContextMenu']['ItemProviders'][$_EXTKEY]
+    $GLOBALS['TYPO3_CONF_VARS']['BE']['ContextMenu']['ItemProviders']['templavoilaplus']
         = \Ppi\TemplaVoilaPlus\ContextMenu\ItemProvider::class;
 
     $GLOBALS['TBE_MODULES_EXT']['xMOD_db_new_content_el']['addElClasses'][\Ppi\TemplaVoilaPlus\Hooks\WizardItems::class]
-        = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Classes/Hooks/WizardItems.php';
+        = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('templavoilaplus') . 'Classes/Hooks/WizardItems.php';
 
     $navigationComponentId = 'TYPO3/CMS/Backend/PageTree/PageTreeElement';
     if (version_compare(TYPO3_version, '9.0.0', '<')) {
@@ -24,8 +24,8 @@ if (TYPO3_MODE === 'BE') {
         ],
         [
             'access' => 'user,group',
-            'icon' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/PageModuleIcon.svg',
-            'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/Backend/PageLayout.xlf',
+            'icon' => 'EXT:templavoilaplus/Resources/Public/Icons/PageModuleIcon.svg',
+            'labels' => 'LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf',
             'navigationComponentId' => $navigationComponentId,
 //             'configureModuleFunction' => [\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::class, 'configureModule'],
         ]
@@ -39,8 +39,8 @@ if (TYPO3_MODE === 'BE') {
         '',
         [
             'access' => 'user,group',
-            'icon' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/PageModuleIcon.svg',
-            'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/BackendLayout.xlf',
+            'icon' => 'EXT:templavoilaplus/Resources/Public/Icons/PageModuleIcon.svg',
+            'labels' => 'LLL:EXT:templavoilaplus/Resources/Private/Language/BackendLayout.xlf',
             'configureModuleFunction' => [\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::class, 'configureModule'],
 
             'name' => 'web_txtemplavoilaplusLayout',
@@ -57,8 +57,8 @@ if (TYPO3_MODE === 'BE') {
         '',
         [
             'access' => 'user,group',
-            'icon' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/AdministrationModuleIcon.svg',
-            'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/BackendControlCenter.xlf',
+            'icon' => 'EXT:templavoilaplus/Resources/Public/Icons/AdministrationModuleIcon.svg',
+            'labels' => 'LLL:EXT:templavoilaplus/Resources/Private/Language/BackendControlCenter.xlf',
             'configureModuleFunction' => [\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::class, 'configureModule'],
 
             'name' => 'web_txtemplavoilaplusCenter',

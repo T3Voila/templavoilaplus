@@ -207,7 +207,7 @@ found in ext\_tables.php:
    // Adding datastructure for Mininews:
    $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoilaplus']['staticDataStructures'][]=array(
        'title' => 'Mininews Template',
-       'path' => 'EXT:'.$_EXTKEY.'/template_datastructure.xml',
+       'path' => 'EXT:templavoilaplus/template_datastructure.xml',
        'icon' => '',
        'scope' => 0,
    );

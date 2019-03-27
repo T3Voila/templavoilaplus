@@ -43,7 +43,7 @@ sidebar]
 ::
 
    if (t3lib_extMgm::isLoaded('templavoilaplus'))    {
-       require_once (t3lib_extMgm::extPath($_EXTKEY).'class.tx_myext_templavoila_sidebar.php');
+       require_once (t3lib_extMgm::extPath('templavoilaplus').'class.tx_myext_templavoila_sidebar.php');
        tx_myext_templavoila_sidebar::init();
    }
 
