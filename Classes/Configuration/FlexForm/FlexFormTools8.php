@@ -389,6 +389,13 @@ class FlexFormTools8 extends FlexFormTools
             // But row['uid'] would be 0 so this will fail in DataHandlers checkValueForFlex validation.
             // As the original should have the same config we use the uid of the original.
             $uid = isset($row['uid']) ? (int)$row['uid'] : (int)$row['t3_origuid'];
+
+            // See https://github.com/pluspol-interactive/templavoilaplus/issues/226
+            // If we are in WS mode, uid points to the original record and not to the one in WS
+            // The FlexFormTools parseDataStructureByIdentifier do not use WS while loading records.
+            // Collides with the copy issue?
+            $uid = isset($row['_ORIG_uid']) ? (int)$row['_ORIG_uid'] : $uid;
+
             $dataStructureIdentifier = [
                 'type' => 'record',
                 'tableName' => $tableName,
