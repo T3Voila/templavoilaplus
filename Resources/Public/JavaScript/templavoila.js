@@ -5,6 +5,8 @@ var sortableDestinationIndex = null;
 var sortableDestinationList = null;
 var sortableSourceListInProcess = null;
 
+var TYPO3 = TYPO3 || {}; TYPO3.jQuery = TYPO3.jQuery || jQuery.noConflict(true);
+
 function setFormValueOpenBrowser(url, mode, params) {
     var url = url + "&mode=" + mode + "&bparams=" + params;
 
