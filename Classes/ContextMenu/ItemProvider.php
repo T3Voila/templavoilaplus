@@ -61,14 +61,21 @@ class ItemProvider extends AbstractProvider
     ];
 
     /**
-     * Returns the provider priority which is used for determining the order in which providers are adding items
+     * Returns the provider priority which is used for determining the order in which providers are processing items
      * to the result array. Highest priority means provider is evaluated first.
+     *
+     * This item provider should be called after PageProvider which has priority 100.
+     *
+     * BEWARE: Returned priority should logically not clash with another provider.
+     *         Please check @see \TYPO3\CMS\Backend\ContextMenu\ContextMenu::getAvailableProviders() if needed.
+     *
+     * @doc https://docs.typo3.org/typo3cms/CoreApiReference/ApiOverview/Examples/ContextualMenu/Index.html#step-2-implementation-of-the-item-provider-class
      *
      * @return int
      */
     public function getPriority(): int
     {
-        return 50;
+        return 42;
     }
 
     /**
