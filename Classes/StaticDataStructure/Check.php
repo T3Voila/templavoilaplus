@@ -36,35 +36,33 @@ class Check
             );
         }
 
-        if (version_compare(TYPO3_version, '9.0.0', '<')) {
-            if ($this->datastructureDbCount() === 0) {
-                return TemplaVoilaUtility::getLanguageService()->sL(
-                    'LLL:EXT:templavoilaplus/Resources/Private/Language/locallang.xlf:extconf.staticWizard.messageMigrationDone'
-                );
-            }
-
-            $link = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl(
-                'tools_ExtensionmanagerExtensionmanager',
-                array(
-                    'tx_extensionmanager_tools_extensionmanagerextensionmanager[extensionKey]' => 'templavoilaplus',
-                    'tx_extensionmanager_tools_extensionmanagerextensionmanager[action]' => 'show',
-                    'tx_extensionmanager_tools_extensionmanagerextensionmanager[controller]' => 'UpdateScript'
-                )
+        if ($this->datastructureDbCount() === 0) {
+            return TemplaVoilaUtility::getLanguageService()->sL(
+                'LLL:EXT:templavoilaplus/Resources/Private/Language/locallang.xlf:extconf.staticWizard.messageMigrationDone'
             );
+        }
 
-            return '
-            <div style="position:absolute;top:10px;right:10px; width:300px;z-index:500">
-                <div class="typo3-message message-information">
-                    <div class="message-header">' . TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoilaplus/Resources/Private/Language/locallang.xlf:extconf.staticWizard.header') . '</div>
-                    <div class="message-body">
-                        ' . TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoilaplus/Resources/Private/Language/locallang.xlf:extconf.staticWizard.messageMigration') . '<br />
-                        <a style="text-decoration:underline;" href="' . $link . '">
-                        ' . TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoilaplus/Resources/Private/Language/locallang.xlf:extconf.staticWizard.link') . '</a>
-                    </div>
+        $link = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl(
+            'tools_ExtensionmanagerExtensionmanager',
+            array(
+                'tx_extensionmanager_tools_extensionmanagerextensionmanager[extensionKey]' => 'templavoilaplus',
+                'tx_extensionmanager_tools_extensionmanagerextensionmanager[action]' => 'show',
+                'tx_extensionmanager_tools_extensionmanagerextensionmanager[controller]' => 'UpdateScript'
+            )
+        );
+
+        return '
+        <div style="position:absolute;top:10px;right:10px; width:300px;z-index:500">
+            <div class="typo3-message message-information">
+                <div class="message-header">' . TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoilaplus/Resources/Private/Language/locallang.xlf:extconf.staticWizard.header') . '</div>
+                <div class="message-body">
+                    ' . TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoilaplus/Resources/Private/Language/locallang.xlf:extconf.staticWizard.messageMigration') . '<br />
+                    <a style="text-decoration:underline;" href="' . $link . '">
+                    ' . TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoilaplus/Resources/Private/Language/locallang.xlf:extconf.staticWizard.link') . '</a>
                 </div>
             </div>
-            ';
-        }
+        </div>
+        ';
 
         return 'Use the Update button in the Extension manager to run the staticDS migration tool.';
     }

@@ -42,6 +42,9 @@ final class TemplaVoilaUtility
                 'Since TYPO3 9.0.0 you need to install the typo3db_legacy extension or TemplaVoilà! Plus 8.0.0 or newer.'
             );
         }
+        if (version_compare(TYPO3_version, '9.0.0', '>=') && is_null($GLOBALS['TYPO3_DB'])) {
+            include PATH_typo3conf . 'ext/typo3db_legacy/ext_localconf.php';
+        }
         return $GLOBALS['TYPO3_DB'];
     }
 
