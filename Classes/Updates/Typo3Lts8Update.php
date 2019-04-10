@@ -35,7 +35,7 @@ class Typo3Lts8Update extends AbstractUpdate
     /**
      * @var string
      */
-    protected $title = 'Updates TemplaVoilà! Plus for using with TYPO3 v8 LTS';
+    protected $title = 'Updates TemplaVoilà! Plus for using with TYPO3 v8 LTS or newer';
 
     public function __construct()
     {
@@ -60,7 +60,7 @@ class Typo3Lts8Update extends AbstractUpdate
     public function checkForUpdate(&$description)
     {
         $result = false;
-        $description = 'Changes needed for DataStructures to work with TYPO3 v8 LTS';
+        $description = 'Changes needed for DataStructures to work with TYPO3 v8 LTS or newer';
 
         if ($this->extConf['staticDS.']['enable'])
         {
