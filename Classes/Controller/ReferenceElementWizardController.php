@@ -15,6 +15,8 @@ namespace Ppi\TemplaVoilaPlus\Controller;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
@@ -42,6 +44,11 @@ class ReferenceElementWizardController extends \TYPO3\CMS\Backend\Module\Abstrac
     protected $templavoilaAPIObj;
 
     /**
+     * @var IconFactory
+     */
+    protected $iconFactory;
+
+    /**
      * Returns the menu array
      *
      * @return array
@@ -66,6 +73,18 @@ class ReferenceElementWizardController extends \TYPO3\CMS\Backend\Module\Abstrac
      */
     public function main()
     {
+        $this->moduleTemplate = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\ModuleTemplate::class);
+        $this->iconFactory = $this->moduleTemplate->getIconFactory();
+
+        // Adding classic jumpToUrl function, needed for the function menu.
+        // Also, the id in the parent frameset is configured.
+        $this->getPageRenderer()->addJsInlineCode('templavoilaplus_function', '
+            function jumpToUrl(URL)    { //
+                document.location = URL;
+                return false;
+            }
+        ');
+
         $this->modSharedTSconfig = BackendUtility::getModTSconfig($this->pObj->id, 'mod.SHARED');
         $this->allAvailableLanguages = TemplaVoilaUtility::getAvailableLanguages(0, true, true, $this->modSharedTSconfig);
 
@@ -83,7 +102,7 @@ class ReferenceElementWizardController extends \TYPO3\CMS\Backend\Module\Abstrac
         $tree->init('AND ' . $this->getBackendUser()->getPagePermsClause(1));
 
         // Creating top icon; the current page
-        $HTML = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', $treeStartingRecord);
+        $HTML = $this->iconFactory->getIconForRecord('pages', $treeStartingRecord, Icon::SIZE_SMALL)->render();
         $tree->tree[] = array(
             'row' => $treeStartingRecord,
             'HTML' => $HTML
