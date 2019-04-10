@@ -118,27 +118,8 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => '48',
-                'wizards' => [
-                    '_PADDING' => 2,
-                    'link' => [
-                        'type' => 'popup',
-                        'title' => 'Link',
-                        'icon' => 'actions-wizard-link',
-                        'module' => [
-                            'name' => 'wizard_link',
-                            'urlParameters' => [
-                            ],
-                        ],
-                        'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1',
-                        'params' => [
-                            'blindLinkOptions' => 'page,url,mail,spec,folder',
-                            'allowedExtensions' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'],
-                        ]
-                    ],
-                ],
-                'eval' => 'required,nospace',
-                'softref' => 'typolink'
-            ]
+                'eval' => 'trim,required,nospace',
+            ],
         ],
         'belayout' => [
             'exclude' => 1,
@@ -146,28 +127,8 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => '48',
-                'wizards' => [
-                    '_PADDING' => 2,
-                    'link' => [
-                        'type' => 'popup',
-                        'title' => 'Link',
-                        'icon' => 'actions-wizard-link',
-                        'module' => [
-                            'name' => 'wizard_link',
-                            'urlParameters' => [
-                                'act' => 'file',
-                            ],
-                        ],
-                        'params' => [
-                            'blindLinkOptions' => 'page,folder,mail,spec,url',
-                            'allowedExtensions' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'],
-                        ],
-                        'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1'
-                    ],
-                ],
-                'eval' => 'nospace',
-                'softref' => 'typolink'
-            ]
+                'eval' => 'trim,nospace',
+            ],
         ],
         'previewicon' => [
             'label' => 'LLL:EXT:templavoilaplus/Resources/Private/Language/locallang_db.xlf:tx_templavoilaplus_tmplobj.previewicon',
