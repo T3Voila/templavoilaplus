@@ -17,6 +17,8 @@ namespace Ppi\TemplaVoilaPlus\Controller;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
@@ -73,6 +75,13 @@ class ReferenceElementWizardController extends \TYPO3\CMS\Backend\Module\Abstrac
      */
     public function main()
     {
+        $message = new FlashMessage(
+            'Please use this feature with caution. The result may be not as wished! Please backup your TYPO3 Installation before running that wizard.',
+            'Caution',
+            FlashMessage::WARNING
+        );
+        $this->getFlashMessageQueue()->enqueue($message);
+
         $this->moduleTemplate = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\ModuleTemplate::class);
         $this->iconFactory = $this->moduleTemplate->getIconFactory();
 
@@ -133,7 +142,7 @@ class ReferenceElementWizardController extends \TYPO3\CMS\Backend\Module\Abstrac
             $unreferencedElementRecordsArr = $this->getUnreferencedElementsRecords($row['row']['uid']);
 
             if (count($unreferencedElementRecordsArr)) {
-                $createReferencesLink = '<a href="index.php?id=' . $this->pObj->id . '&createReferencesForPage=' . $row['row']['uid'] . '">Reference elements</a>';
+                $createReferencesLink = '<a href="' . $this->getBaseUrl(['id' => (int)$this->pObj->id, 'createReferencesForPage' => $row['row']['uid']]) . '">Reference elements</a>';
             } else {
                 $createReferencesLink = '';
             }
@@ -173,7 +182,7 @@ class ReferenceElementWizardController extends \TYPO3\CMS\Backend\Module\Abstrac
         return '
 			<br />
 			' . $depthSelectorBox . '
-			<a href="index.php?id=' . $this->pObj->id . '&createReferencesForTree=1">Reference elements for whole tree</a><br />
+			<a href="' . $this->getBaseUrl(['id' => (int)$this->pObj->id, 'createReferencesForTree' => 1]) . '">Reference elements for whole tree</a><br />
 			<br />
 			<table border="0" cellspacing="1" cellpadding="0" class="lrPadding c-list">
 				<tr class="bgColor5 tableheader">
@@ -300,6 +309,26 @@ class ReferenceElementWizardController extends \TYPO3\CMS\Backend\Module\Abstrac
         return $elementRecordsArr;
     }
 
+    public function getBaseUrl(array $extraParams = [])
+    {
+        return BackendUtility::getModuleUrl(
+            'web_func',
+            $this->getLinkParameters($extraParams)
+        );
+    }
+
+    public function getLinkParameters(array $extraParams = [])
+    {
+        return array_merge(
+            [
+                'SET' => [
+                    'function' => self::class,
+                ],
+            ],
+            $extraParams
+        );
+    }
+
     /**
      * @return \TYPO3\CMS\Core\Database\DatabaseConnection
      */
@@ -322,5 +351,18 @@ class ReferenceElementWizardController extends \TYPO3\CMS\Backend\Module\Abstrac
     protected function getLanguageService()
     {
         return $GLOBALS['LANG'];
+    }
+
+    /**
+     * @return FlashMessageQueue
+     */
+    protected function getFlashMessageQueue()
+    {
+        if (!isset($this->flashMessageQueue)) {
+            /** @var FlashMessageService $service */
+            $service = GeneralUtility::makeInstance(FlashMessageService::class);
+            $this->flashMessageQueue = $service->getMessageQueueByIdentifier();
+        }
+        return $this->flashMessageQueue;
     }
 }
