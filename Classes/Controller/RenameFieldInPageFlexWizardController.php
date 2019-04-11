@@ -14,6 +14,8 @@ namespace Ppi\TemplaVoilaPlus\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
@@ -32,21 +34,18 @@ class RenameFieldInPageFlexWizardController extends \TYPO3\CMS\Backend\Module\Ab
     {
         if ($this->getBackendUser()->isAdmin()) {
             if ((int)$this->pObj->id > 0) {
-                return $this->showForm() . $this->executeCommand();
+                $content = $this->showForm() . $this->executeCommand();
             } else {
                 // should never happen, as function module catches this already,
                 // but save is save ;)
-                return 'Please select a page from the tree';
+                $content = 'Please select a page from the tree';
             }
         } else {
-            $message = new \TYPO3\CMS\Core\Messaging\FlashMessage(
-                'Module only available for admins.',
-                '',
-                \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR
-            );
-
-            return $message->render();
+            $message = new FlashMessage('Module only available for admins.', '', FlashMessage::ERROR);
+            $this->getFlashMessageQueue()->enqueue($message);
         }
+
+        return $content;
     }
 
     /**
@@ -56,7 +55,8 @@ class RenameFieldInPageFlexWizardController extends \TYPO3\CMS\Backend\Module\Ab
      */
     protected function getAllSubPages($uid)
     {
-        $completeRecords = BackendUtility::getRecordsByField('pages', 'pid', $uid);
+        $pageRepository = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Page\PageRepository::class);
+        $completeRecords = $pageRepository->getMenu([$uid]);
         $return = array($uid);
         if (count($completeRecords) > 0) {
             foreach ($completeRecords as $record) {
@@ -76,13 +76,13 @@ class RenameFieldInPageFlexWizardController extends \TYPO3\CMS\Backend\Module\Ab
 
         if (GeneralUtility::_GP('executeRename') == 1) {
             if (GeneralUtility::_GP('sourceField') === GeneralUtility::_GP('destinationField')) {
-                $message = new \TYPO3\CMS\Core\Messaging\FlashMessage(
+                $message = new FlashMessage(
                     'Renaming a field to itself is senseless, execution aborted.',
                     '',
-                    \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR
+                    FlashMessage::ERROR
                 );
-
-                return $message->render();
+                $this->getFlashMessageQueue()->enqueue($message);
+                return '';
             }
             $escapedSource = $this->getDatabaseConnection()->fullQuoteStr('%' . GeneralUtility::_GP('sourceField') . '%', 'pages');
             $escapedDest = $this->getDatabaseConnection()->fullQuoteStr('%' . GeneralUtility::_GP('destinationField') . '%', 'pages');
@@ -104,8 +104,8 @@ class RenameFieldInPageFlexWizardController extends \TYPO3\CMS\Backend\Module\Ab
                     $mbuffer .= '<li>' . htmlspecialchars($row['title']) . ' (uid: ' . (int)$row['uid'] . ')</li>';
                 }
                 $mbuffer .= '</ul>';
-                $message = new \TYPO3\CMS\Core\Messaging\FlashMessage($mbuffer, '', \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
-                $buffer .= $message->render();
+                $message = new FlashMessage($mbuffer, '', FlashMessage::INFO);
+                $this->getFlashMessageQueue()->enqueue($message);
                 unset($mbuffer);
                 //really do it
                 if (!GeneralUtility::_GP('simulateField')) {
@@ -116,12 +116,12 @@ class RenameFieldInPageFlexWizardController extends \TYPO3\CMS\Backend\Module\Ab
 						SET tx_templavoilaplus_flex = REPLACE(tx_templavoilaplus_flex, ' . $escapedSource . ', ' . $escapedDest . ')
 						WHERE ' . $condition . '
 					');
-                    $message = new \TYPO3\CMS\Core\Messaging\FlashMessage('DONE', '', \TYPO3\CMS\Core\Messaging\FlashMessage::OK);
-                    $buffer .= $message->render();
+                    $message = new FlashMessage('DONE', '', FlashMessage::OK);
+                    $this->getFlashMessageQueue()->enqueue($message);
                 }
             } else {
-                $message = new \TYPO3\CMS\Core\Messaging\FlashMessage('Nothing to do, can´t find something to replace.', '', \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
-                $buffer .= $message->render();
+                $message = new FlashMessage('Nothing to do, can´t find something to replace.', '', FlashMessage::ERROR);
+                $this->getFlashMessageQueue()->enqueue($message);
             }
         }
 
@@ -133,13 +133,13 @@ class RenameFieldInPageFlexWizardController extends \TYPO3\CMS\Backend\Module\Ab
      */
     protected function showForm()
     {
-        $message = new \TYPO3\CMS\Core\Messaging\FlashMessage(
+        $message = new FlashMessage(
             'This action can affect ' . count($this->getAllSubPages($this->pObj->id)) . ' pages, please ensure, you know what you do!, Please backup your TYPO3 Installation before running that wizard.',
             '',
-            \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING
+            FlashMessage::WARNING
         );
-        $buffer = $message->render();
-        unset($message);
+        $this->getFlashMessageQueue()->enqueue($message);
+
         $buffer .= '<form action="' . $this->getLinkModuleRoot() . '"><div id="formFieldContainer">';
         $options = $this->getDSFieldOptionCode();
         $buffer .= $this->addFormField('sourceField', null, 'select_optgroup', $options);
@@ -280,5 +280,18 @@ class RenameFieldInPageFlexWizardController extends \TYPO3\CMS\Backend\Module\Ab
     protected function getLanguageService()
     {
         return $GLOBALS['LANG'];
+    }
+
+    /**
+     * @return FlashMessageQueue
+     */
+    protected function getFlashMessageQueue()
+    {
+        if (!isset($this->flashMessageQueue)) {
+            /** @var FlashMessageService $service */
+            $service = GeneralUtility::makeInstance(FlashMessageService::class);
+            $this->flashMessageQueue = $service->getMessageQueueByIdentifier();
+        }
+        return $this->flashMessageQueue;
     }
 }
