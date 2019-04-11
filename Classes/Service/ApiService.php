@@ -1038,6 +1038,11 @@ class ApiService
             $recordUids = array();
         }
         $parentRecord = BackendUtility::getRecordWSOL($table, $uid, 'uid,pid,tx_templavoilaplus_ds,tx_templavoilaplus_flex');
+
+        if (!$parentRecord) {
+            return $recordUids;
+        }
+
         $flexFieldArr = GeneralUtility::xml2array($parentRecord['tx_templavoilaplus_flex']);
         $expandedDataStructure = $this->ds_getExpandedDataStructure($table, $parentRecord);
 
