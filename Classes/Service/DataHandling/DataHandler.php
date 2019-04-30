@@ -216,7 +216,9 @@ page.10.disableExplosivePreview = 1';
 
                     BackendUtility::fixVersioningPid($table, $fieldArray);
 
-                    if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_tcemain']['preProcessFieldArrays'][$id])) {
+                    if (!isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_tcemain']['doNotInsertElementRefsToPage'])
+                        || $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_tcemain']['doNotInsertElementRefsToPage'] == 0
+                    ) {
                         $positionReferenceUid = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_tcemain']['preProcessFieldArrays'][$id]['pid'];
                         if ($positionReferenceUid < 0) {
                             $neighbourFlexformPointersArr = $templaVoilaAPI->flexform_getPointersByRecord(abs($positionReferenceUid), $fieldArray['pid']);
@@ -225,6 +227,13 @@ page.10.disableExplosivePreview = 1';
                             if (is_array($neighbourFlexformPointer)) {
                                 $destinationFlexformPointer = $neighbourFlexformPointer;
                             }
+                        }
+                    }
+
+                    if ($fieldArray['sys_language_uid']) {
+                        $translatedParentRecords = BackendUtility::getRecordLocalization('pages', $destinationFlexformPointer['uid'], $fieldArray['sys_language_uid']);
+                        if (count($translatedParentRecords) > 0) {
+                            $destinationFlexformPointer['uid'] = $translatedParentRecords[0]['uid'];
                         }
                     }
 
