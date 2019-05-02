@@ -211,21 +211,30 @@ page.10.disableExplosivePreview = 1';
 
         switch ($status) {
             case 'new':
-                if (!isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_tcemain']['doNotInsertElementRefsToPage'])) {
+                if (!isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_tcemain']['doNotInsertElementRefsToPage'])
+                    || $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_tcemain']['doNotInsertElementRefsToPage'] == 0
+                ) {
                     $destinationFlexformPointer = false;
 
                     BackendUtility::fixVersioningPid($table, $fieldArray);
 
-                    if (!isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_tcemain']['doNotInsertElementRefsToPage'])
-                        || $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_tcemain']['doNotInsertElementRefsToPage'] == 0
-                    ) {
-                        $positionReferenceUid = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_tcemain']['preProcessFieldArrays'][$id]['pid'];
-                        if ($positionReferenceUid < 0) {
-                            $neighbourFlexformPointersArr = $templaVoilaAPI->flexform_getPointersByRecord(abs($positionReferenceUid), $fieldArray['pid']);
+                    if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_tcemain']['preProcessFieldArrays'][$id])) {
+                        $preProcessFields = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_tcemain']['preProcessFieldArrays'][$id];
+                        if ($preProcessFields['pid'] < 0) {
+                            $neighbourFlexformPointersArr = $templaVoilaAPI->flexform_getPointersByRecord(abs($preProcessFields['pid']), $fieldArray['pid']);
                             $neighbourFlexformPointer = $neighbourFlexformPointersArr[0];
 
                             if (is_array($neighbourFlexformPointer)) {
                                 $destinationFlexformPointer = $neighbourFlexformPointer;
+                            } else {
+                                // Use original element for destination flexform (e.g. in case of translation)
+                                $destinationFlexformPointersArr = $templaVoilaAPI->flexform_getPointersByRecord(
+                                    intval($preProcessFields['t3_origuid']),
+                                    $fieldArray['pid']
+                                );
+                                if (isset($destinationFlexformPointersArr[0])) {
+                                    $destinationFlexformPointer = $destinationFlexformPointersArr[0];
+                                }
                             }
                         }
                     }
@@ -268,6 +277,8 @@ page.10.disableExplosivePreview = 1';
                             }
                         }
                     } else {
+                        // Position has to be one less to make sure new element is inserted at the right place
+                        $destinationFlexformPointer['position']--;
                         $templaVoilaAPI->insertElement_setElementReferences($destinationFlexformPointer, $reference->substNEWwithIDs[$id]);
                     }
                 }
@@ -611,8 +622,10 @@ page.10.disableExplosivePreview = 1';
                 $record = BackendUtility::getRecord('tx_templavoilaplus_tmplobj', $toId, 'datastructure');
             }
 
+            $is85OrNewer = version_compare(TYPO3_version, '8.5.0', '>=') ? true : false;
+
             if (is_array($record) && isset($record['datastructure'])) {
-                $incomingFieldArray[$dsField] = (!is_numeric($record['datastructure'])? 'FILE:' : '') . $record['datastructure'];
+                $incomingFieldArray[$dsField] = ($is85OrNewer && !is_numeric($record['datastructure'])? 'FILE:' : '') . $record['datastructure'];
             }
         }
     }
