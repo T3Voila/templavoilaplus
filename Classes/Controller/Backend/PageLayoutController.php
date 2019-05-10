@@ -354,15 +354,29 @@ class PageLayoutController extends ActionController
                 );
                 break;
             default:
-                $url = BackendUtility::getModuleUrl(
-                    $module,
-                    array_merge(
-                        $params,
-                        [
-                            'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI'),
-                        ]
-                    )
-                );
+                if (version_compare(TYPO3_version, '9.0.0', '>=')) {
+                    /** @var $uriBuilder \TYPO3\CMS\Backend\Routing\UriBuilder */
+                    $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+                    $url = $uriBuilder->buildUriFromRoute(
+                        $module,
+                        array_merge(
+                            $params,
+                            [
+                                'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI'),
+                            ]
+                        )
+                    );
+                } else {
+                    $url = BackendUtility::getModuleUrl(
+                        $module,
+                        array_merge(
+                            $params,
+                            [
+                                'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI'),
+                            ]
+                        )
+                    );
+                }
         }
         $button = $buttonBar->makeLinkButton()
             ->setHref($url)
