@@ -62,11 +62,18 @@ class PageLayoutController extends ActionController
     static protected $calcPermCache = [];
 
     /**
-     * TSconfig from mod.SHARED
+     * TSconfig from mod.web_txtemplavoilaplusLayout.
      *
      * @var array
      */
-    protected $modSharedTSconfig;
+    protected $modTSconfig = [];
+
+    /**
+     * TSconfig from mod.SHARED.
+     *
+     * @var array
+     */
+    protected $modSharedTSconfig = [];
 
     /**
      * Contains the currently selected language key (Example: DEF or DE)
@@ -113,7 +120,10 @@ class PageLayoutController extends ActionController
 
         // determine id parameter
         $this->pageId = (int)GeneralUtility::_GP('id');
-        $this->modSharedTSconfig = BackendUtility::getModTSconfig($this->pageId, 'mod.SHARED');
+        $pageTsConfig = BackendUtility::getPagesTSconfig($this->pageId);
+        // @TODO Get rid of this properties key
+        $this->modSharedTSconfig['properties'] = $pageTsConfig['mod.']['SHARED.'];
+        $this->modTSconfig['properties'] = $pageTsConfig['mod.']['web_txtemplavoilaplusLayout.'];
 
         $this->initializeCurrentLanguage();
 
