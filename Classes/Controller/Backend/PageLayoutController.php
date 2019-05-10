@@ -227,7 +227,7 @@ class PageLayoutController extends ActionController
 
         if (!$this->modTSconfig['properties']['disableIconToolbar']) {
             if (!$this->translatorMode) {
-                if (TemplaVoilaUtility::getBackendUser()->isPSet($this->calcPerms, 'pages', 'new')) {
+                if ($this->permissionPageNew()) {
                     // Create new page (wizard)
                     $this->addDocHeaderButton(
                         'db_new',
@@ -242,7 +242,7 @@ class PageLayoutController extends ActionController
                     );
                 }
 
-                if (TemplaVoilaUtility::getBackendUser()->isPSet($this->calcPerms, 'pages', 'edit')) {
+                if ($this->permissionPageEdit()) {
                     // Edit page properties
                     $this->addDocHeaderButton(
                         'record_edit',
@@ -555,4 +555,35 @@ class PageLayoutController extends ActionController
         }
         $this->currentLanguageKey = $this->allAvailableLanguages[$this->currentLanguageUid]['ISOcode'];
     }
+
+    /**
+     * Check if new page can be created by current user
+     *
+     * @return bool
+     */
+    public function permissionPageNew(): bool
+    {
+        return TemplaVoilaUtility::getBackendUser()->isAdmin() || ($this->calcPerms & Permission::PAGE_NEW + Permission::CONTENT_EDIT) === Permission::PAGE_NEW + Permission::CONTENT_EDIT;
+    }
+
+    /**
+     * Check if page can be edited by current user
+     *
+     * @return bool
+     */
+    public function permissionPageEdit(): bool
+    {
+        return TemplaVoilaUtility::getBackendUser()->isAdmin() || ($this->calcPerms & Permission::PAGE_EDIT) === Permission::PAGE_EDIT;
+    }
+
+    /**
+     * Check if content can be edited by current user
+     *
+     * @return bool
+     */
+    public function permissionContentEdit(): bool
+    {
+        return TemplaVoilaUtility::getBackendUser()->isAdmin() || ($this->calcPerms & Permission::CONTENT_EDIT) === Permission::CONTENT_EDIT;
+    }
+
 }
