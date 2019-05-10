@@ -214,10 +214,14 @@ class PageLayoutController extends ActionController
      */
     protected function registerDocheaderButtons()
     {
+        $coreLangFile = 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:';
+        if (version_compare(TYPO3_version, '9.0.0', '>=')) {
+            $coreLangFile = 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:';
+        }
         // View page
         $this->addDocHeaderButton(
             'view',
-            TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.showPage'),
+            TemplaVoilaUtility::getLanguageService()->sL($coreLangFile . 'labels.showPage'),
             'actions-document-view'
         );
 
@@ -288,7 +292,7 @@ class PageLayoutController extends ActionController
         if (TemplaVoilaUtility::getBackendUser()->check('modules', 'web_list')) {
             $this->addDocHeaderButton(
                 'web_list',
-                TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.showList'),
+                TemplaVoilaUtility::getLanguageService()->sL($coreLangFile . 'labels.showList'),
                 'actions-system-list-open',
                 [
                     'id' => $this->pageId,
@@ -301,7 +305,7 @@ class PageLayoutController extends ActionController
         if ($this->pageId) {
             $this->addDocHeaderButton(
                 'tce_db',
-                TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.clear_cache'),
+                TemplaVoilaUtility::getLanguageService()->sL($coreLangFile .  'labels.clear_cache'),
                 'actions-system-cache-clear',
                 [
                     'cacheCmd'=> $this->pageId,
