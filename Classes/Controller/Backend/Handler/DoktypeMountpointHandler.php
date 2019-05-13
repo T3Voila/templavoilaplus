@@ -51,31 +51,37 @@ class DoktypeMountpointHandler
             FlashMessage::INFO
         );
 
-        return $this->getLinkButton(
-            $controller,
-            BackendUtility::getModuleUrl(
-                'web_txtemplavoilaplusLayout',
+        if (version_compare(TYPO3_version, '9.0.0', '>=')) {
+            /** @var $uriBuilder \TYPO3\CMS\Backend\Routing\UriBuilder */
+            $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+            $url = $uriBuilder->buildUriFromRoute(
+                'web_TemplaVoilaPlusLayout',
                 [
                     'id' => $pageRecord['mount_pid'],
                 ]
-            )
-        );
-            ;
+            );
+        } else {
+            $url = BackendUtility::getModuleUrl(
+                'web_TemplaVoilaPlusLayout',
+                [
+                    'id' => $pageRecord['mount_pid'],
+                ]
+            );
+        }
+
+        return $this->getLinkButton($controller, $url);
     }
 
+    /**
+     * @TODO Move into fluid
+     */
     protected function getLinkButton(PageLayoutController $controller, $url)
     {
-        if ($url && parse_url($url)) {
-            return '<a href="' . $url . '"'
-                . ' class="btn btn-default btn-sm"'
-                . '>'
-                . $controller->getView()->getModuleTemplate()->getIconFactory()->getIcon('apps-pagetree-page-mountpoint', Icon::SIZE_SMALL)->render()
-                . ' ' . sprintf(
-                    TemplaVoilaUtility::getLanguageService()->getLL('hintDoktypeMountpointOpen', true),
-                    htmlspecialchars($url)
-                )
-                . '</a>';
-        }
-        return '';
+        return '<a href="' . $url . '"'
+            . ' class="btn btn-info"'
+            . '>'
+            . $controller->getView()->getModuleTemplate()->getIconFactory()->getIcon('apps-pagetree-page-mountpoint', Icon::SIZE_SMALL)->render()
+            . ' ' . TemplaVoilaUtility::getLanguageService()->getLL('hintDoktypeMountpointOpen', true)
+            . '</a>';
     }
 }
