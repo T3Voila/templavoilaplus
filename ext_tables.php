@@ -67,9 +67,17 @@ if (TYPO3_MODE === 'BE') {
         ]
     );
 
-    $_EXTCONF = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoilaplus']);
+    $oldPageModule = false;
+    if (version_compare(TYPO3_version, '9.0.0', '>=')) {
+        $_EXTCONF = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['templavoilaplus'];
+        $oldPageModule = (bool) $_EXTCONF['enable']['oldPageModule'];
+    } else {
+        $_EXTCONF = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoilaplus']);
+        $oldPageModule = (bool) $_EXTCONF['enable.']['oldPageModule'];
+    }
+
     // Remove default Page module (layout) manually if wanted:
-    if (!$_EXTCONF['enable.']['oldPageModule']) {
+    if (!$oldPageModule) {
         $tmp = $GLOBALS['TBE_MODULES']['web'];
         $GLOBALS['TBE_MODULES']['web'] = str_replace(',,', ',', str_replace('layout', '', $tmp));
         unset ($GLOBALS['TBE_MODULES']['_PATHS']['web_layout']);
