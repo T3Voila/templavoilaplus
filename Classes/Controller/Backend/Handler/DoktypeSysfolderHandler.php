@@ -18,6 +18,7 @@ namespace Ppi\TemplaVoilaPlus\Controller\Backend\Handler;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 use Ppi\TemplaVoilaPlus\Controller\Backend\PageLayoutController;
 use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
@@ -35,7 +36,7 @@ class DoktypeSysfolderHandler
     public function handle(PageLayoutController $controller, array $pageRecord)
     {
         if ($this->userHasAccessToListModule()) {
-            $listModuleURL = BackendUtility::getModuleUrl('web_list', ['id' => (int)$pageRecord['uid']], '');
+            $listModuleURL = 'javascript:top.goToModule(\'web_list\',1);';
             $listModuleLink = $this->getLinkButton($controller, $listModuleURL);
         }
 
@@ -48,20 +49,17 @@ class DoktypeSysfolderHandler
         return $listModuleLink;
     }
 
+    /**
+     * @TODO Move into fluid
+     */
     protected function getLinkButton(PageLayoutController $controller, $url)
     {
-        if ($url && parse_url($url)) {
-            return '<a href="' . $url . '"'
-                . ' class="btn btn-default btn-sm"'
-                . '>'
-                . $controller->getView()->getModuleTemplate()->getIconFactory()->getIcon('actions-system-list-open', Icon::SIZE_SMALL)->render()
-                . ' ' . sprintf(
-                    TemplaVoilaUtility::getLanguageService()->getLL('hintDoktypeSysfolderOpen', true),
-                    htmlspecialchars($url)
-                )
-                . '</a>';
-        }
-        return '';
+        return '<a href="' . $url . '"'
+            . ' class="btn btn-info"'
+            . '>'
+            . $controller->getView()->getModuleTemplate()->getIconFactory()->getIcon('actions-system-list-open', Icon::SIZE_SMALL)->render()
+            . ' ' . TemplaVoilaUtility::getLanguageService()->getLL('hintDoktypeSysfolderOpen', true)
+            . '</a>';
     }
 
     /**

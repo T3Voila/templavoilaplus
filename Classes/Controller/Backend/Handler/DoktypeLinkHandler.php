@@ -91,11 +91,14 @@ class DoktypeLinkHandler
         return $this->getLinkButton($controller, $url);
     }
 
+    /**
+     * @TODO Move into fluid
+     */
     protected function getLinkButton(PageLayoutController $controller, $url)
     {
         if ($url && parse_url($url)) {
             return '<a href="' . $url . '"'
-                . ' class="btn btn-default btn-sm"'
+                . ' class="btn btn-info"'
                 . ' target="_blank"'
                 . '>'
                 . $controller->getView()->getModuleTemplate()->getIconFactory()->getIcon('apps-pagetree-page-shortcut-external', Icon::SIZE_SMALL)->render()

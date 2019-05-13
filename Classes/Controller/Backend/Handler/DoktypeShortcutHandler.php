@@ -114,13 +114,10 @@ class DoktypeShortcutHandler
     protected function getLinkButton(PageLayoutController $controller, $url)
     {
         return '<a href="' . $url . '"'
-            . ' class="btn btn-default"'
+            . ' class="btn btn-info"'
             . '>'
             . $controller->getView()->getModuleTemplate()->getIconFactory()->getIcon('apps-pagetree-page-shortcut', Icon::SIZE_SMALL)->render()
-            . ' ' . sprintf(
-                TemplaVoilaUtility::getLanguageService()->getLL('hintDoktypeShortcutJumpToDestination', true),
-                htmlspecialchars((string) $url)
-            )
+            . ' ' . TemplaVoilaUtility::getLanguageService()->getLL('hintDoktypeShortcutJumpToDestination', true)
             . '</a>';
     }
 }
