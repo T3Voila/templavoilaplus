@@ -39,6 +39,7 @@ class DoktypeShortcutHandler
     {
         $targetUid = 0;
         $targetPageRecord = [];
+        $output = '';
         $shortcutMode = (int)$pageRecord['shortcut_mode'];
 
         switch ($shortcutMode) {
@@ -74,12 +75,25 @@ class DoktypeShortcutHandler
 
         if ($targetUid) {
             $targetPageRecord = BackendUtility::getRecordWSOL('pages', $targetUid);
-            $url = BackendUtility::getModuleUrl(
-                'web_txtemplavoilaplusLayout',
-                [
-                    'id' => $this->pageId,
-                ]
-            );
+            if (version_compare(TYPO3_version, '9.0.0', '>=')) {
+                /** @var $uriBuilder \TYPO3\CMS\Backend\Routing\UriBuilder */
+                $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+                $url = $uriBuilder->buildUriFromRoute(
+                    'web_TemplaVoilaPlusLayout',
+                    [
+                        'id' => $targetUid,
+                    ]
+                );
+            } else {
+                $url = BackendUtility::getModuleUrl(
+                    'web_TemplaVoilaPlusLayout',
+                    [
+                        'id' => $targetUid,
+                    ]
+                );
+            }
+
+            $output = $this->getLinkButton($controller, $url);
         }
 
         $controller->addFlashMessage(
@@ -91,26 +105,22 @@ class DoktypeShortcutHandler
             FlashMessage::INFO
         );
 
-        if ($targetUid) {
-            return $this->getLinkButton($controller, $url);
-        }
-
-        return '';
+        return $output;
     }
 
+    /**
+     * @TODO Move into fluid
+     */
     protected function getLinkButton(PageLayoutController $controller, $url)
     {
-        if ($url && parse_url($url)) {
-            return '<a href="' . $url . '"'
-                . ' class="btn btn-default btn-sm"'
-                . '>'
-                . $controller->getView()->getModuleTemplate()->getIconFactory()->getIcon('apps-pagetree-page-shortcut', Icon::SIZE_SMALL)->render()
-                . ' ' . sprintf(
-                    TemplaVoilaUtility::getLanguageService()->getLL('hintDoktypeShortcutJumpToDestination', true),
-                    htmlspecialchars($url)
-                )
-                . '</a>';
-        }
-        return '';
+        return '<a href="' . $url . '"'
+            . ' class="btn btn-default"'
+            . '>'
+            . $controller->getView()->getModuleTemplate()->getIconFactory()->getIcon('apps-pagetree-page-shortcut', Icon::SIZE_SMALL)->render()
+            . ' ' . sprintf(
+                TemplaVoilaUtility::getLanguageService()->getLL('hintDoktypeShortcutJumpToDestination', true),
+                htmlspecialchars((string) $url)
+            )
+            . '</a>';
     }
 }
