@@ -16,6 +16,8 @@ namespace Ppi\TemplaVoilaPlus\Service;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\RelationHandler;
+use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -1712,26 +1714,45 @@ class ApiService
      */
     public function getContentTree_getLocalizationInfoForElement($contentTreeArr, &$tt_content_elementRegister)
     {
-        $localizationInfoArr = array();
+        $localizationInfoArr = [];
+        $languageField = $GLOBALS['TCA']['tt_content']['ctrl']['languageField'];
+        $transOrigPointerField = $GLOBALS['TCA']['tt_content']['ctrl']['transOrigPointerField'];
+
         if ($contentTreeArr['el']['table'] == 'tt_content' && $contentTreeArr['el']['sys_language_uid'] <= 0) {
             // Finding translations of this record and select overlay record:
             $fakeElementRow = array('uid' => $contentTreeArr['el']['uid'], 'pid' => $contentTreeArr['el']['pid']);
             BackendUtility::fixVersioningPid('tt_content', $fakeElementRow);
 
-            $res = $this->getDatabaseConnection()->exec_SELECTquery(
-                '*',
-                'tt_content',
-                'pid=' . $fakeElementRow['pid'] .
-                ' AND sys_language_uid>0' .
-                ' AND l18n_parent=' . (int)$contentTreeArr['el']['uid'] .
-                BackendUtility::deleteClause('tt_content')
-            );
+            // @TODO Should be done in a Repository Class
+            $queryBuilder = TemplaVoilaUtility::getQueryBuilderForTable('tt_content');
+            $queryBuilder->getRestrictions()
+                ->removeAll()
+                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
 
-            $attachedLocalizations = array();
-            while (true == ($olrow = $this->getDatabaseConnection()->sql_fetch_assoc($res))) {
-                BackendUtility::workspaceOL('tt_content', $olrow);
-                if (!isset($attachedLocalizations[$olrow['sys_language_uid']])) {
-                    $attachedLocalizations[$olrow['sys_language_uid']] = $olrow['uid'];
+            $rows = $queryBuilder
+                ->select('*')
+                ->from('tt_content')
+                ->where(
+                    $queryBuilder->expr()->eq(
+                        'pid',
+                        $queryBuilder->createNamedParameter($fakeElementRow['pid'], \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->gt($languageField, 0),
+                    $queryBuilder->expr()->eq(
+                        $transOrigPointerField,
+                        $queryBuilder->createNamedParameter($contentTreeArr['el']['uid'], \PDO::PARAM_INT)
+                    )
+                )
+                ->execute()
+                ->fetch();
+
+            $attachedLocalizations = [];
+            if ($rows) {
+                foreach ($rows as $olrow) {
+                    BackendUtility::workspaceOL('tt_content', $olrow);
+                    if (!isset($attachedLocalizations[$olrow[$languageField]])) {
+                        $attachedLocalizations[$olrow[$languageField]] = $olrow['uid'];
+                    }
                 }
             }
 

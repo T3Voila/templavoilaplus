@@ -16,6 +16,8 @@ namespace Ppi\TemplaVoilaPlus\Utility;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -36,8 +38,19 @@ final class TemplaVoilaUtility
      */
     public static function getDatabaseConnection()
     {
+debug_print_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
         die('PLEASE REWORK TO USE DB API');
         return $GLOBALS['TYPO3_DB'];
+    }
+
+    /**
+     * @param string $tableName
+     * @return \TYPO3\CMS\Core\Database\Query\QueryBuilder
+     */
+    public static function getQueryBuilderForTable($tableName): QueryBuilder
+    {
+        return GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable($tableName);
     }
 
     /**
