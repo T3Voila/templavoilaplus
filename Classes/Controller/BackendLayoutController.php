@@ -688,37 +688,6 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
             $render_editPageScreen = true;
 
-            // Show message if the page is of a special doktype:
-            if ($this->rootElementTable == 'pages') {
-                // Initialize the special doktype class:
-                $specialDoktypesObj =& GeneralUtility::getUserObj('Ppi\\TemplaVoilaPlus\Module\\Mod1\\Specialdoktypes', '');
-                $specialDoktypesObj->init($this);
-                $doktype = $this->rootElementRecord['doktype'];
-
-                // if doktype is configured as editType render normal edit view
-                $docTypesToEdit = $this->modTSconfig['properties']['additionalDoktypesRenderToEditView'];
-                if ($docTypesToEdit && GeneralUtility::inList($docTypesToEdit, $doktype)) {
-                    //Make sure it is editable by page module
-                    $doktype = self::DOKTYPE_NORMAL_EDIT;
-                }
-
-                $methodName = 'renderDoktype_' . $doktype;
-                if (method_exists($specialDoktypesObj, $methodName)) {
-                    $result = $specialDoktypesObj->$methodName($this->rootElementRecord);
-                    if ($result !== false) {
-                        $this->content .= $result;
-                        if (TemplaVoilaUtility::getBackendUser()->isPSet($this->calcPerms, 'pages', 'edit')) {
-                            // Edit icon only if page can be modified by user
-                            $editLinkContent
-                                = $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render()
-                                . TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:' . $this->coreLangPath . 'locallang_mod_web_list.xlf:editPage');
-                            $this->content .= '<br/><br/><strong>' . $this->link_edit($editLinkContent, 'pages', $this->id) . '</strong>';
-                        }
-                        $render_editPageScreen = false; // Do not output editing code for special doctypes!
-                    }
-                }
-            }
-
             if ($render_editPageScreen) {
                 $editCurrentPageHTML = '';
 
