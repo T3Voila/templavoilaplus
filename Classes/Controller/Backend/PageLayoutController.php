@@ -184,6 +184,7 @@ class PageLayoutController extends ActionController
                 );
             }
         }
+        $this->view->assign('lllFile', 'LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf');
 
         $this->view->assign('pageId', $this->pageId);
         $this->view->assign('pageInfo', $this->pageInfo);

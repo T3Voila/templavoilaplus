@@ -49,6 +49,6 @@ class DoktypeDefaultHandler
 
         $controller->addContentPartial('body', 'Backend/Handler/DoktypeDefaultHandler'); // @TODO Add them automagically in controller to harden naming?
 
-        return 'Not yet implemented';
+        return '';
     }
 }

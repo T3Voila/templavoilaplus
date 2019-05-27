@@ -88,6 +88,14 @@
             <trans-unit id="infoDoktypeSpacerCannotEdit" xml:space="preserve">
                 <source>The current page is of the type &quot;Spacer&quot; and therfore cannot be edited.</source>
             </trans-unit>
+
+            <!-- DoktypeDefaultHandler -->
+            <trans-unit id="infoTitleSelectTemplateDesign" xml:space="preserve">
+                <source>Template Design</source>
+            </trans-unit>
+            <trans-unit id="infoContentSelectTemplateDesign" xml:space="preserve">
+                <source>Please select a template design for this page.</source>
+            </trans-unit>
         </body>
     </file>
 </xliff>
