@@ -1,0 +1,25 @@
+{namespace core=TYPO3\CMS\Core\ViewHelpers}
+
+<style>
+.t3js-module-body h1:first-child {display: none;}
+</style>
+
+<h1>TemplaVoilà! Plus 8 update</h1>
+<f:be.infobox title="Warning" state="1">Please backup your database/files before running any of the update scripts!</f:be.infobox>
+<h2>Update?</h2>
+
+<f:if condition="">
+    <f:then>
+    </f:then>
+    <f:else>
+        <form action="#" method="POST">
+            <input type="hidden" name="update" value="TemplaVoilaPlus8" />
+            <f:be.infobox title="" state="1">
+                <button class="btn btn-warning btn-block btn-lg" type="submit" name="step" value="final">
+                    <core:icon identifier="extensions-scheduler-run-task" /> Run Update configuration for TemplaVoilà! Plus 8 <small><small>(Version: 0.0.1)</small></small>
+                </button>
+            </div>
+            </f:be.infobox>
+        </form>
+    </f:else>
+</f:if>

@@ -15,15 +15,35 @@ namespace Ppi\TemplaVoilaPlus\Controller\Update;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 
+use Ppi\TemplaVoilaPlus\Domain\Repository\DataStructureRepository;
 use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 /**
- * Controller to show the switch dialog.
+ * Controller to migrate/update from TV+ 7 to TV+ 8
  *
  * @author Alexander Opitz <opitz.alexander@pluspol-interactive.de>
  */
-class SwitchUpdateController extends AbstractUpdateController
+class TemplaVoilaPlus8UpdateController extends StepUpdateController
 {
+    protected $errors = [];
+
+    protected function stepStart()
+    {
+    }
+
+    protected function stepFinal()
+    {
+    }
+
+    /**
+     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+     */
+    private function getDatabaseConnection()
+    {
+        return TemplaVoilaUtility::getDatabaseConnection();
+    }
 }

@@ -36,14 +36,11 @@ class ExtensionManagerUpdateController
             case 'StaticData':
                 $controller = GeneralUtility::makeInstance(Update\StaticDataUpdateController::class);
                 break;
-            case 'DataStructureV7':
-                $controller = GeneralUtility::makeInstance(Update\DataStructureV7UpdateController::class);
-                break;
             case 'DataStructureV8':
                 $controller = GeneralUtility::makeInstance(Update\DataStructureV8UpdateController::class);
                 break;
-            case 'OldTemplavoila':
-                $controller = GeneralUtility::makeInstance(Update\OldTemplavoilaUpdateController::class);
+            case 'TemplaVoilaPlus8':
+                $controller = GeneralUtility::makeInstance(Update\TemplaVoilaPlus8UpdateController::class);
                 break;
             default:
                 $controller = GeneralUtility::makeInstance(Update\SwitchUpdateController::class);
