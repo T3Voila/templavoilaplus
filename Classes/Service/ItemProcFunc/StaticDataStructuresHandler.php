@@ -278,120 +278,18 @@ class StaticDataStructuresHandler
          * // Get default first
          * $tsConfig = & $pObj->cachedTSconfig[$params['table'] . ':' . $params['row']['uid']];
          * $storagePid = (int)$tsConfig['_STORAGE_PID'];
-         *
-         * StoragePid no longer available since CMS 7
-         * Could be done via BackendUtility::getTCEFORM_TSconfig($params['table'], $params['row']);
-         * But field 'storage_pid' is no longer part of BEgetRootLine method
          */
 
         // Check for alternative storage folder
         $field = $params['table'] == 'pages' ? 'uid' : 'pid';
 
         $modTSConfig = BackendUtility::getModTSconfig($params['row'][$field], 'tx_templavoilaplus.storagePid');
-        $modTSConfigDeprecated = BackendUtility::getModTSconfig($params['row'][$field], 'tx_templavoila.storagePid');
 
         if (is_array($modTSConfig) && MathUtility::canBeInterpretedAsInteger($modTSConfig['value'])) {
             $storagePid = (int)$modTSConfig['value'];
-        } elseif (is_array($modTSConfigDeprecated)
-            && MathUtility::canBeInterpretedAsInteger($modTSConfigDeprecated['value'])
-        ) {
-            GeneralUtility::deprecationLog(
-                'TemplaVoila Plus: tx_templavoila.storagePid is deprecated. Use tx_templavoilaplus.storagePid instead.'
-            );
-            $storagePid = (int)$modTSConfigDeprecated['value'];
-        } else {
-            // @TODO Deprecate this part, configuration in pageTS should be enough
-            $rootLine = $this->BEgetRootLine($params['row'][$field], '', true);
-            foreach ($rootLine as $rC) {
-                if (!empty($rC['storage_pid'])) {
-                    GeneralUtility::deprecationLog(
-                        'TemplaVoila Plus: The field storage_pid is deprecated.'
-                        . ' Instead use tx_templavoilaplus.storagePid in page TypoScript.'
-                    );
-                    $storagePid = (int)$rC['storage_pid'];
-                    break;
-                }
-            }
         }
 
         return $storagePid;
-    }
-
-    /**
-     * From TYPO3 CMS 7.6.9
-     * Returns what is called the 'RootLine'. That is an array with information about the page records from a page id ($uid) and back to the root.
-     * By default deleted pages are filtered.
-     * This RootLine will follow the tree all the way to the root. This is opposite to another kind of root line known from the frontend where the rootline stops when a root-template is found.
-     *
-     * @param int $uid Page id for which to create the root line.
-     * @param string $clause Clause can be used to select other criteria. It would typically be where-clauses that stops the process if we meet a page, the user has no reading access to.
-     * @param bool $workspaceOL If true, version overlay is applied. This must be requested specifically because it is usually only wanted when the rootline is used for visual output while for permission checking you want the raw thing!
-     * @return array Root line array, all the way to the page tree root (or as far as $clause allows!)
-     */
-    public function BEgetRootLine($uid, $clause = '', $workspaceOL = false)
-    {
-        static $BEgetRootLine_cache = array();
-        $output = array();
-        $pid = $uid;
-        $ident = $pid . '-' . $clause . '-' . $workspaceOL;
-        if (is_array($BEgetRootLine_cache[$ident])) {
-            $output = $BEgetRootLine_cache[$ident];
-        } else {
-            $loopCheck = 100;
-            $theRowArray = array();
-            while ($uid != 0 && $loopCheck) {
-                $loopCheck--;
-                $row = $this->getPageForRootline($uid, $clause, $workspaceOL);
-                if (is_array($row)) {
-                    $uid = $row['pid'];
-                    $theRowArray[] = $row;
-                } else {
-                    break;
-                }
-            }
-            $c = count($theRowArray);
-            foreach ($theRowArray as $val) {
-                $c--;
-                $output[$c] = array(
-                    'storage_pid' => $val['storage_pid'],
-                );
-            }
-            $BEgetRootLine_cache[$ident] = $output;
-        }
-        return $output;
-    }
-
-    /**
-     * From TYPO3 CMS 7.6.9
-     * Gets the cached page record for the rootline
-     *
-     * @param int $uid Page id for which to create the root line.
-     * @param string $clause Clause can be used to select other criteria. It would typically be where-clauses that stops the process if we meet a page, the user has no reading access to.
-     * @param bool $workspaceOL If true, version overlay is applied. This must be requested specifically because it is usually only wanted when the rootline is used for visual output while for permission checking you want the raw thing!
-     * @return array Cached page record for the rootline
-     * @see BEgetRootLine
-     */
-    protected function getPageForRootline($uid, $clause, $workspaceOL)
-    {
-        $db = $this->getDatabaseConnection();
-        $res = $db->exec_SELECTquery('pid,uid,storage_pid,t3ver_oid,t3ver_wsid', 'pages', 'uid=' . (int)$uid . ' ' . BackendUtility::deleteClause('pages') . ' ' . $clause);
-        $row = $db->sql_fetch_assoc($res);
-        if ($row) {
-            $newLocation = false;
-            if ($workspaceOL) {
-                BackendUtility::workspaceOL('pages', $row);
-                $newLocation = BackendUtility::getMovePlaceholder('pages', $row['uid'], 'pid');
-            }
-            if (is_array($row)) {
-                if ($newLocation !== false) {
-                    $row['pid'] = $newLocation['pid'];
-                } else {
-                    BackendUtility::fixVersioningPid('pages', $row);
-                }
-            }
-        }
-        $db->sql_free_result($res);
-        return $row;
     }
 
     /**

@@ -116,7 +116,7 @@ class DataHandler
                 $pid = null;
                 if ($status == 'update') {
                     $pid = $id;
-                } elseif ($status == 'new' && (int)$fieldArray['storage_pid'] == 0) {
+                } elseif ($status == 'new') {
                     $pid = $fieldArray['pid'];
                 }
 

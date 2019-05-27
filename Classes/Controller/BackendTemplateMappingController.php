@@ -2662,21 +2662,6 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
         $readPerms = TemplaVoilaUtility::getBackendUser()->getPagePermsClause(1);
         $this->storageFolders = [];
 
-        // Looking up all references to a storage folder:
-        $res = TemplaVoilaUtility::getDatabaseConnection()->exec_SELECTquery(
-            'uid,storage_pid',
-            'pages',
-            'storage_pid>0' . BackendUtility::deleteClause('pages')
-        );
-        while (false !== ($row = TemplaVoilaUtility::getDatabaseConnection()->sql_fetch_assoc($res))) {
-            if (TemplaVoilaUtility::getBackendUser()->isInWebMount($row['storage_pid'], $readPerms)) {
-                $storageFolder = BackendUtility::getRecord('pages', $row['storage_pid'], 'uid,title');
-                if ($storageFolder['uid']) {
-                    $this->storageFolders[$storageFolder['uid']] = $storageFolder['title'];
-                }
-            }
-        }
-
         // Looking up all root-pages and check if there's a tx_templavoilaplus.storagePid setting present
         $res = TemplaVoilaUtility::getDatabaseConnection()->exec_SELECTquery(
             'pid,root',

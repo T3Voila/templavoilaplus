@@ -96,15 +96,6 @@
 			<trans-unit id="pages.tx_templavoilaplus_flex" xml:space="preserve">
 				<source>Content:</source>
 			</trans-unit>
-			<trans-unit id="pages.storage_pid">
-				<source>General Record Storage page:</source>
-			</trans-unit>
-			<trans-unit id="pages.storage_pid_formlabel" xml:space="preserve">
-				<source>Page</source>
-			</trans-unit>
-			<trans-unit id="pages.palettes.storage" xml:space="preserve">
-				<source>General Record Storage Page</source>
-			</trans-unit>
 		</body>
 	</file>
 </xliff>
