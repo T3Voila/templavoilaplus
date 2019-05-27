@@ -3,6 +3,10 @@
 
 <f:if condition="{doktypeDefault.treeData.tree}">
     <f:then>
+        <f:if condition="!{basicEditRights}">
+            <f:be.infobox title="{f:translate(key:'{lllFile}:infoTitleMissingEditRights')}" state="-1"><f:translate key="{lllFile}:infoContentMissingEditRights"/></f:be.infobox>
+        </f:if>
+
         <div class="t3-page-ce tv-doktypeDefault-page">
             <div class="t3-page-ce-header">
                 <div class="t3-page-ce-header-icons-left">

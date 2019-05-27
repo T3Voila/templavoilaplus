@@ -190,6 +190,9 @@ class PageLayoutController extends ActionController
         $this->view->assign('pageInfo', $this->pageInfo);
         $this->view->assign('pageTitle', $pageTitle);
 
+        $this->view->assign('calcPerms', $this->calcPerms);
+        $this->view->assign('basicEditRights', $this->hasBasicEditRights());
+
         $this->view->assign('contentPartials', $this->contentPartials);
         // @TODO Deprecate following parts and the renderFunctionHooks? Replace them with Handlers?
         // Or use these hooks so they can add Partials?
