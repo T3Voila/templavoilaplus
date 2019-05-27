@@ -1106,21 +1106,6 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             . '</div>';
         }
 
-        // Hook for content at the very top (fx. a toolbar):
-        if (is_array($TYPO3_CONF_VARS['EXTCONF']['templavoilaplus']['mod1']['renderTopToolbar'])) {
-            GeneralUtility::deprecationLog('TemplaVoila Plus: The Hook '
-                . '$TYPO3_CONF_VARS[\'EXTCONF\'][\'templavoilaplus\'][\'mod1\'][\'renderTopToolbar\']'
-                . 'is deprecated. Please use '
-                . '$TYPO3_CONF_VARS[\'SC_OPTIONS\'][\'templavoilaplus\'][\'BackendLayout\'][\'renderEditPageHeaderFunctionHook\']'
-                . 'This Hook will be removed with v8.'
-            );
-
-            foreach ($TYPO3_CONF_VARS['EXTCONF']['templavoilaplus']['mod1']['renderTopToolbar'] as $_funcRef) {
-                $_params = array();
-                $output .= GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-            }
-        }
-
         // Hook for content at the very top of editable page (fx. a toolbar):
         $output .= $this->renderFunctionHook('renderEditPageHeader');
 
@@ -1142,22 +1127,6 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             $output .= $this->render_outline($contentTreeData['tree']);
         } else {
             $output .= $this->render_framework_allSheets($contentTreeData['tree'], $this->currentLanguageKey);
-        }
-
-        // See http://bugs.typo3.org/view.php?id=4821
-        $renderHooks = $this->hooks_prepareObjectsArray('render_editPageScreen');
-        if (!empty($renderHooks)) {
-            GeneralUtility::deprecationLog('TemplaVoila Plus: The Object Hook '
-                . '$TYPO3_CONF_VARS[\'EXTCONF\'][\'templavoilaplus\'][\'mod1\'][\'render_editPageScreen\']'
-                . 'is deprecated. Please use the Function Hook '
-                . '$TYPO3_CONF_VARS[\'SC_OPTIONS\'][\'templavoilaplus\'][\'BackendLayout\'][\'renderEditPageFooterFunctionHook\']'
-                . 'This Hook will be removed with v8.'
-            );
-        }
-        foreach ($renderHooks as $hookObj) {
-            if (method_exists($hookObj, 'render_editPageScreen_addContent')) {
-                $output .= $hookObj->render_editPageScreen_addContent($this);
-            }
         }
 
         // Hook for content at the very top of editable page (fx. a toolbar):
