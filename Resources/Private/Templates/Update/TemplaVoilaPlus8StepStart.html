@@ -8,17 +8,20 @@
 <f:be.infobox title="Warning" state="1">Please backup your database/files before running any of the update scripts!</f:be.infobox>
 <h2>Update?</h2>
 
-<f:if condition="">
+<f:if condition="{storagePidConversationNeeded}">
     <f:then>
+            <f:be.infobox title="Warning" state="2">
+                You have pages left where a storage_pid is set. Please migrate them into TypoScript.<br />
+                See: <f:link.typolink parameter="https://github.com/pluspol-interactive/templavoilaplus/issues/250 _blank">https://github.com/pluspol-interactive/templavoilaplus/issues/250</f:link.typolink>
+            </f:be.infobox>
     </f:then>
     <f:else>
         <form action="#" method="POST">
             <input type="hidden" name="update" value="TemplaVoilaPlus8" />
             <f:be.infobox title="" state="1">
                 <button class="btn btn-warning btn-block btn-lg" type="submit" name="step" value="final">
-                    <core:icon identifier="extensions-scheduler-run-task" /> Run Update configuration for TemplaVoilà! Plus 8 <small><small>(Version: 0.0.1)</small></small>
+                    <core:icon identifier="extensions-scheduler-run-task" /> Run Update configuration for TemplaVoilà! Plus 8 <small><small>(Version: 0.0.0)</small></small>
                 </button>
-            </div>
             </f:be.infobox>
         </form>
     </f:else>

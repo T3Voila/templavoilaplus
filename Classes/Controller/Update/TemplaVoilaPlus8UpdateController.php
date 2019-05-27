@@ -14,13 +14,9 @@ namespace Ppi\TemplaVoilaPlus\Controller\Update;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
-
-use Ppi\TemplaVoilaPlus\Domain\Repository\DataStructureRepository;
-use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 /**
  * Controller to migrate/update from TV+ 7 to TV+ 8
@@ -33,17 +29,44 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
 
     protected function stepStart()
     {
+        $this->fluid->assignMultiple([
+            'storagePidConversationNeeded' => $this->storagePidConversationNeeded(),
+        ]);
     }
 
     protected function stepFinal()
     {
     }
 
-    /**
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    private function getDatabaseConnection()
+    protected function storagePidConversationNeeded(): bool
     {
-        return TemplaVoilaUtility::getDatabaseConnection();
+        $columns = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable('pages')
+            ->getSchemaManager()
+            ->listTableColumns('pages');
+
+        if (isset($columns['storage_pid'])) {
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable('pages');
+            $queryBuilder
+                ->getRestrictions()
+                ->removeAll()
+                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+            $count = $queryBuilder
+                ->count('uid')
+                ->from('pages')
+                ->where(
+                    $queryBuilder->expr()->gt('storage_pid', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
+                )
+                ->execute()
+                ->fetchColumn(0);
+
+            if ($count) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
