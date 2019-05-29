@@ -407,30 +407,42 @@ class TcaFlexProcess implements FormDataProviderInterface
              // @deprecated since TYPO3 v8, will be removed in TYPO3 v9
              // When deleting this code and comment block, the according code within AbstractItemProvider can be removed, too.
             if (isset($result['pageTsConfig']['TCEFORM.'][$tableName . '.'][$fieldName . '.']['PAGE_TSCONFIG_ID'])) {
-                GeneralUtility::deprecationLog(
+                $message =
                     'The page TSConfig setting TCEFORM.' . $tableName . '.' . $fieldName . '.PAGE_TSCONFIG_ID for flex forms'
                     . ' is deprecated. Use this setting for single flex fields instead, example: TCEFORM.' . $tableName . '.'
                     . $fieldName . '.theDataStructureName.theSheet.theFieldName.PAGE_TSCONFIG_ID. Be aware these settings are'
-                    . ' no longer allowed for fields within flex form section container elements.'
-                );
+                    . ' no longer allowed for fields within flex form section container elements.';
+                if (version_compare(TYPO3_version, '9.0.0', '>=')) {
+                    trigger_error($message, E_USER_DEPRECATED);
+                } else {
+                    GeneralUtility::deprecationLog($message);
+                }
                 $pageTsConfig['flexHack.']['PAGE_TSCONFIG_ID'] = $result['pageTsConfig']['TCEFORM.'][$tableName . '.'][$fieldName . '.']['PAGE_TSCONFIG_ID'];
             }
             if (isset($result['pageTsConfig']['TCEFORM.'][$tableName . '.'][$fieldName . '.']['PAGE_TSCONFIG_IDLIST'])) {
-                GeneralUtility::deprecationLog(
+                $message =
                     'The page TSConfig setting TCEFORM.' . $tableName . '.' . $fieldName . '.PAGE_TSCONFIG_IDLIST for flex forms'
                     . ' is deprecated. Use this setting for single flex fields instead, example: TCEFORM.' . $tableName . '.'
                     . $fieldName . '.theDataStructureName.theSheet.theFieldName.PAGE_TSCONFIG_IDLIST. Be aware these settings are'
-                    . ' no longer allowed for fields within flex form section container elements.'
-                );
+                    . ' no longer allowed for fields within flex form section container elements.';
+                if (version_compare(TYPO3_version, '9.0.0', '>=')) {
+                    trigger_error($message, E_USER_DEPRECATED);
+                } else {
+                    GeneralUtility::deprecationLog($message);
+                }
                 $pageTsConfig['flexHack.']['PAGE_TSCONFIG_IDLIST'] = $result['pageTsConfig']['TCEFORM.'][$tableName . '.'][$fieldName . '.']['PAGE_TSCONFIG_IDLIST'];
             }
             if (isset($result['pageTsConfig']['TCEFORM.'][$tableName . '.'][$fieldName . '.']['PAGE_TSCONFIG_STR'])) {
-                GeneralUtility::deprecationLog(
+                $message =
                     'The page TSConfig setting TCEFORM.' . $tableName . '.' . $fieldName . '.PAGE_TSCONFIG_STR for flex forms'
                     . ' is deprecated. Use this setting for single flex fields instead, example: TCEFORM.' . $tableName . '.'
                     . $fieldName . '.theDataStructureName.theSheet.theFieldName.PAGE_TSCONFIG_STR.  Be aware these settings are'
-                    . ' no longer allowed for fields within flex form section container elements.'
-                );
+                    . ' no longer allowed for fields within flex form section container elements.';
+                if (version_compare(TYPO3_version, '9.0.0', '>=')) {
+                    trigger_error($message, E_USER_DEPRECATED);
+                } else {
+                    GeneralUtility::deprecationLog($message);
+                }
                 $pageTsConfig['flexHack.']['PAGE_TSCONFIG_STR'] = $result['pageTsConfig']['TCEFORM.'][$tableName . '.'][$fieldName . '.']['PAGE_TSCONFIG_STR'];
             }
 

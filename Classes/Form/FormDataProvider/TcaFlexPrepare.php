@@ -123,7 +123,7 @@ class TcaFlexPrepare implements FormDataProviderInterface
                         && isset($subValue['TCEforms']['config']) && !empty($subValue['TCEforms']['config'])
                     ) {
                         $newSubStructure[$subKey] = array_merge($subValue, $subValue['TCEforms']);
-                        unset($newSubStructure[$subKey]['TCEforms']);                    
+                        unset($newSubStructure[$subKey]['TCEforms']);
                     } else {
                         $newSubStructure[$subKey] = $subValue;
                     }
@@ -181,10 +181,14 @@ class TcaFlexPrepare implements FormDataProviderInterface
                     $migratedTca = $tcaMigration->migrate($dummyTca);
                     $messages = $tcaMigration->getMessages();
                     if (!empty($messages)) {
-                        $context = 'FormEngine did an on-the-fly migration of a flex form data structure. This is deprecated and will be removed'
-                            . ' with TYPO3 CMS 8. Merge the following changes into the flex form definition of table "' . $table . '"" in field "' . $fieldName . '"":';
+                        $context = 'FormEngine did an on-the-fly migration of a flex form data structure. This is deprecated and will be removed.'
+                            . ' Merge the following changes into the flex form definition of table "' . $table . '"" in field "' . $fieldName . '"":';
                         array_unshift($messages, $context);
-                        GeneralUtility::deprecationLog(implode(LF, $messages));
+                        if (version_compare(TYPO3_version, '9.0.0', '>=')) {
+                            trigger_error(implode(LF, $messages), E_USER_DEPRECATED);
+                        } else {
+                            GeneralUtility::deprecationLog(implode(LF, $messages));
+                        }
                     }
                     $newSubStructure[$subKey] = $migratedTca['dummyTable']['columns']['dummyField'];
                 }
