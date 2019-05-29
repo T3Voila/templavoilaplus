@@ -78,6 +78,7 @@ class Template
      */
     public function __construct($uid)
     {
+var_dump($uid);
         $this->row = BackendUtility::getRecordWSOL('tx_templavoilaplus_tmplobj', $uid);
 
         $this->setLabel($this->row['title']);

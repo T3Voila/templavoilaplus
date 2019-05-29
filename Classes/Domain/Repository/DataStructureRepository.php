@@ -15,6 +15,8 @@ namespace Ppi\TemplaVoilaPlus\Domain\Repository;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
@@ -44,14 +46,14 @@ class DataStructureRepository implements \TYPO3\CMS\Core\SingletonInterface
     public function getDatastructureByUidOrFilename($uidOrFile)
     {
         if ((int)$uidOrFile > 0) {
-            $className = 'Ppi\\TemplaVoilaPlus\Domain\\Model\\DataStructure';
+            $className = \Ppi\TemplaVoilaPlus\Domain\Model\DataStructure::class;
         } else {
             if (StringUtility::beginsWith($uidOrFile, 'FILE:')) {
                 $uidOrFile = substr($uidOrFile, 5);
             }
             if (($staticKey = $this->validateStaticDS($uidOrFile)) !== false) {
                 $uidOrFile = $staticKey;
-                $className = 'Ppi\\TemplaVoilaPlus\Domain\\Model\\StaticDataStructure';
+                $className = \Ppi\TemplaVoilaPlus\Domain\Model\StaticDataStructure::class;
             } else {
                 throw new \InvalidArgumentException(
                     'Argument was supposed to be either a uid or a filename',
@@ -87,14 +89,17 @@ class DataStructureRepository implements \TYPO3\CMS\Core\SingletonInterface
         }
 
         if (!self::isStaticDsEnabled()) {
-            $dsRows = TemplaVoilaUtility::getDatabaseConnection()->exec_SELECTgetRows(
-                'uid',
-                'tx_templavoilaplus_datastructure',
-                'pid=' . (int)$pid
-                . BackendUtility::deleteClause('tx_templavoilaplus_datastructure')
-                . ' AND pid!=-1 '
-                . BackendUtility::versioningPlaceholderClause('tx_templavoilaplus_datastructure')
-            );
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable('tx_templavoilaplus_datastructure');
+            $dsRows = $queryBuilder
+                ->select('uid')
+                ->from('tx_templavoilaplus_datastructure')
+                ->where(
+                    $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT))
+                )
+                ->execute()
+                ->fetchAll();
+
             foreach ($dsRows as $ds) {
                 $dscollection[] = $this->getDatastructureByUidOrFilename($ds['uid']);
             }
@@ -116,9 +121,10 @@ class DataStructureRepository implements \TYPO3\CMS\Core\SingletonInterface
     {
         $dscollection = array();
         $confArr = self::getStaticDatastructureConfiguration();
+
         if (count($confArr)) {
             foreach ($confArr as $conf) {
-                if ($conf['scope'] == $scope) {
+                if ($conf['scope'] === $scope) {
                     $ds = $this->getDatastructureByUidOrFilename($conf['path']);
                     $pids = $ds->getStoragePids();
                     if ($pids == '' || GeneralUtility::inList($pids, $pid)) {
@@ -129,14 +135,18 @@ class DataStructureRepository implements \TYPO3\CMS\Core\SingletonInterface
         }
 
         if (!self::isStaticDsEnabled()) {
-            $dsRows = TemplaVoilaUtility::getDatabaseConnection()->exec_SELECTgetRows(
-                'uid',
-                'tx_templavoilaplus_datastructure',
-                'scope=' . (int)$scope . ' AND pid=' . (int)$pid
-                . BackendUtility::deleteClause('tx_templavoilaplus_datastructure')
-                . ' AND pid!=-1 '
-                . BackendUtility::versioningPlaceholderClause('tx_templavoilaplus_datastructure')
-            );
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable('tx_templavoilaplus_datastructure');
+            $dsRows = $queryBuilder
+                ->select('uid')
+                ->from('tx_templavoilaplus_datastructure')
+                ->where(
+                    $queryBuilder->expr()->eq('scope', $scope),
+                    $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT))
+                )
+                ->execute()
+                ->fetchAll();
+
             foreach ($dsRows as $ds) {
                 $dscollection[] = $this->getDatastructureByUidOrFilename($ds['uid']);
             }
@@ -245,9 +255,13 @@ class DataStructureRepository implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function isStaticDsEnabled()
     {
-        $extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoilaplus']);
-
-        return $extConf['staticDS.']['enable'];
+        if (version_compare(TYPO3_version, '9.0.0', '>=')) {
+            $extConfig = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['templavoilaplus'];
+            return (bool) $extConfig['staticDS']['enable'];
+        } else {
+            $extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoilaplus']);
+            return (bool) $extConfig['staticDS.']['enable'];
+        }
     }
 
     /**
@@ -257,9 +271,16 @@ class DataStructureRepository implements \TYPO3\CMS\Core\SingletonInterface
     {
         $config = array();
         if (!self::$staticDsInitComplete) {
-            $extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoilaplus']);
-            if ($extConfig['staticDS.']['enable']) {
-                self::readStaticDsFilesIntoArray($extConfig);
+            if (version_compare(TYPO3_version, '9.0.0', '>=')) {
+                $extConfig = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['templavoilaplus'];
+                if ($extConfig['staticDS']['enable']) {
+                    self::readStaticDsFilesIntoArray($extConfig);
+                }
+            } else {
+                $extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoilaplus']);
+                if ($extConfig['staticDS.']['enable']) {
+                    self::readStaticDsFilesIntoArray($extConfig);
+                }
             }
             self::$staticDsInitComplete = true;
         }
@@ -323,7 +344,24 @@ class DataStructureRepository implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected static function readStaticDsFilesIntoArray($conf)
     {
-        $paths = array_unique(array('fce' => $conf['staticDS.']['path_fce'], 'page' => $conf['staticDS.']['path_page']));
+        $confPathDot = '';
+        if (version_compare(TYPO3_version, '9.0.0', '<=')) {
+            $confPathDot = '.';
+        }
+        $systemPath = '/';
+
+        if (version_compare(TYPO3_version, '9.2.0', '>=')) {
+            $systemPath = Environment::getPublicPath();
+        } else {
+            $systemPath = rtrim(PATH_side, '/');
+        }
+        $systemPath .= '/';
+
+        $paths = array_unique([
+            'fce' => $conf['staticDS' . $confPathDot]['path_fce'],
+            'page' => $conf['staticDS' . $confPathDot]['path_page']
+        ]);
+
         foreach ($paths as $type => $path) {
             $absolutePath = GeneralUtility::getFileAbsFileName($path);
             $files = GeneralUtility::getFilesInDir($absolutePath, 'xml', true);
@@ -336,10 +374,10 @@ class DataStructureRepository implements \TYPO3\CMS\Core\SingletonInterface
                 $pathInfo = pathinfo($filePath);
 
                 $staticDataStructure['title'] = $pathInfo['filename'];
-                $staticDataStructure['path'] = substr($filePath, strlen(PATH_site));
+                $staticDataStructure['path'] = substr($filePath, strlen($systemPath));
                 $iconPath = $pathInfo['dirname'] . '/' . $pathInfo['filename'] . '.gif';
                 if (file_exists($iconPath)) {
-                    $staticDataStructure['icon'] = substr($iconPath, strlen(PATH_site));
+                    $staticDataStructure['icon'] = substr($iconPath, strlen($systemPath));
                 }
 
                 if (($type !== false && $type === 'fce') || strpos($pathInfo['filename'], '(fce)') !== false) {

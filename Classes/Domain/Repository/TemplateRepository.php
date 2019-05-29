@@ -14,6 +14,7 @@ namespace Ppi\TemplaVoilaPlus\Domain\Repository;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
@@ -48,15 +49,23 @@ class TemplateRepository implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function getTemplatesByDatastructure(\Ppi\TemplaVoilaPlus\Domain\Model\AbstractDataStructure $ds, $storagePid = 0)
     {
-        $toList = TemplaVoilaUtility::getDatabaseConnection()->exec_SELECTgetRows(
-            'tx_templavoilaplus_tmplobj.uid',
-            'tx_templavoilaplus_tmplobj',
-            'tx_templavoilaplus_tmplobj.datastructure=' . TemplaVoilaUtility::getDatabaseConnection()->fullQuoteStr($ds->getKey(), 'tx_templavoilaplus_tmplobj')
-            . ((int)$storagePid > 0 ? ' AND tx_templavoilaplus_tmplobj.pid = ' . (int)$storagePid : '')
-            . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoilaplus_tmplobj')
-            . ' AND pid!=-1 '
-            . \TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause('tx_templavoilaplus_tmplobj')
-        );
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('tx_templavoilaplus_tmplobj');
+        $queryBuilder
+            ->select('uid')
+            ->from('tx_templavoilaplus_tmplobj')
+            ->where(
+                $queryBuilder->expr()->eq('datastructure', $queryBuilder->createNamedParameter($ds->getKey()))
+            );
+        if ((int)$storagePid > 0) {
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($storagePid, \PDO::PARAM_INT))
+            );
+        }
+        $toList = $queryBuilder
+            ->execute()
+            ->fetchAll();
+
         $toCollection = array();
         foreach ($toList as $toRec) {
             $toCollection[] = $this->getTemplateByUid($toRec['uid']);

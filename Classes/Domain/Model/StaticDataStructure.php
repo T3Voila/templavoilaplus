@@ -14,6 +14,7 @@ namespace Ppi\TemplaVoilaPlus\Domain\Model;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
@@ -78,14 +79,17 @@ class StaticDataStructure extends AbstractDataStructure
     public function getStoragePids()
     {
         $pids = array();
-        $toList = TemplaVoilaUtility::getDatabaseConnection()->exec_SELECTgetRows(
-            'pid',
-            'tx_templavoilaplus_tmplobj',
-            'tx_templavoilaplus_tmplobj.datastructure='
-                . TemplaVoilaUtility::getDatabaseConnection()->fullQuoteStr($this->filename, 'tx_templavoilaplus_tmplobj')
-                . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_templavoilaplus_tmplobj'),
-            'pid'
-        );
+        // @TODO Move into TsRepository
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('tx_templavoilaplus_tmplobj');
+        $toList = $queryBuilder
+            ->select('pid')
+            ->from('tx_templavoilaplus_tmplobj')
+            ->where(
+                $queryBuilder->expr()->eq('datastructure', $queryBuilder->createNamedParameter($this->filename))
+            )
+            ->execute()
+            ->fetchAll();
 
         foreach ($toList as $toRow) {
             $pids[$toRow['pid']] = 1;
