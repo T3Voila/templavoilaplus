@@ -274,22 +274,17 @@ class StaticDataStructuresHandler
      */
     public function getStoragePid(array $params)
     {
-        /**
-         * // Get default first
-         * $tsConfig = & $pObj->cachedTSconfig[$params['table'] . ':' . $params['row']['uid']];
-         * $storagePid = (int)$tsConfig['_STORAGE_PID'];
-         */
-
         // Check for alternative storage folder
         $field = $params['table'] == 'pages' ? 'uid' : 'pid';
 
-        $modTSConfig = BackendUtility::getModTSconfig($params['row'][$field], 'tx_templavoilaplus.storagePid');
+        $pageTsConfig = BackendUtility::getPagesTSconfig($params['row'][$field]);
+        $storagePid = $pageTsConfig['tx_templavoilaplus.']['storagePid'] ? : false;
 
-        if (is_array($modTSConfig) && MathUtility::canBeInterpretedAsInteger($modTSConfig['value'])) {
-            $storagePid = (int)$modTSConfig['value'];
+        if (is_array($modTSConfig) && MathUtility::canBeInterpretedAsInteger($storagePid)) {
+            return (int)$storagePid;
         }
 
-        return $storagePid;
+        return 0;
     }
 
     /**
@@ -325,9 +320,11 @@ class StaticDataStructuresHandler
     protected function getRemoveItems($params, $field)
     {
         $pid = $params['row'][$params['table'] == 'pages' ? 'uid' : 'pid'];
-        $modTSConfig = BackendUtility::getModTSconfig($pid, 'TCEFORM.' . $params['table'] . '.' . $field . '.removeItems');
 
-        return GeneralUtility::trimExplode(',', $modTSConfig['value'], true);
+        $pageTsConfig = BackendUtility::getPagesTSconfig($pid);
+        $removeItems = $pageTsConfig['TCEFORM.'][$params['table'] . '.'][$field . '.']['removeItems'] ? :'';
+
+        return GeneralUtility::trimExplode(',', $removeItems, true);
     }
 
 
@@ -342,9 +339,10 @@ class StaticDataStructuresHandler
     protected function getShowAdminAllItems($params, $field)
     {
         $pid = $params['row'][$params['table'] == 'pages' ? 'uid' : 'pid'];
-        $modTSConfig = BackendUtility::getModTSconfig($pid, 'TCEFORM.' . $params['table'] . '.' . $field . '.showAdminAllItems');
+        $pageTsConfig = BackendUtility::getPagesTSconfig($pid);
+        $showAdminAllItems = $pageTsConfig['TCEFORM.'][$params['table'] . '.'][$field . '.']['showAdminAllItems'] ? :'';
 
-        return (bool) $modTSConfig['value'];
+        return (bool) $showAdminAllItems;
     }
 
 
