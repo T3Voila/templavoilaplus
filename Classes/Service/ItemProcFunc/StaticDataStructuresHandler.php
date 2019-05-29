@@ -154,42 +154,7 @@ class StaticDataStructuresHandler
     {
         $this->conf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoilaplus']);
 
-        if ($this->conf['enable.']['selectDataStructure']) {
-            $this->templateObjectItemsProcFuncForCurrentDS($params, $pObj);
-        } else {
-            $this->templateObjectItemsProcFuncForAllDSes($params, $pObj);
-        }
-    }
-
-    /**
-     * Adds items to the template object selector according to the scope and
-     * storage folder of the current page/element.
-     *
-     * @param array $params Parameters for itemProcFunc
-     * @param \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems $pObj Calling class
-     *
-     * @return void
-     */
-    protected function templateObjectItemsProcFuncForCurrentDS(array &$params, \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems &$pObj)
-    {
-        // Get DS
-
-        $fieldName = $params['field'] == 'tx_templavoilaplus_next_to' ? 'tx_templavoilaplus_next_ds' : 'tx_templavoilaplus_ds';
-        $dataSource = $params['row'][$fieldName][0];
-
-        $storagePid = $this->getStoragePid($params);
-
-
-        $dsRepo = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Domain\Repository\DataStructureRepository::class);
-
-        try {
-            if (strlen($dataSource)) {
-                $dsObj = $dsRepo->getDatastructureByUidOrFilename($dataSource);
-                $this->addToItems($params, $dsObj, $storagePid);
-            }
-        } catch (\InvalidArgumentException $e) {
-            // we didn't find the DS which we were looking for therefore an empty list is returned
-        }
+        $this->templateObjectItemsProcFuncForAllDSes($params, $pObj);
     }
 
     /**

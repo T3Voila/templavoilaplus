@@ -5,9 +5,6 @@ ds.indentation = 0
 # cat=basic/enable; type=boolean; label=LLL:EXT:templavoilaplus/Resources/Private/Language/PluginConfiguration.xlf:enable.oldPageModule
 enable.oldPageModule = 0
 
-# cat=basic/enable; type=boolean; label=LLL:EXT:templavoilaplus/Resources/Private/Language/PluginConfiguration.xlf:enable.selectDataStructure
-enable.selectDataStructure = 0
-
 # cat=basic/enable; type=boolean; label=LLL:EXT:templavoilaplus/Resources/Private/Language/PluginConfiguration.xlf:enable.renderFCEHeader
 enable.renderFCEHeader = 0
 

@@ -122,29 +122,12 @@ if (version_compare(TYPO3_version, '9.0.0', '>=')) {
     ';
 }
 
-$_EXTCONF = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoilaplus']);
-if ($_EXTCONF['enable.']['selectDataStructure']) {
-    if ($GLOBALS['TCA']['tt_content']['ctrl']['requestUpdate'] !== '') {
-        $GLOBALS['TCA']['tt_content']['ctrl']['requestUpdate'] .= ',';
-    }
-    $GLOBALS['TCA']['tt_content']['ctrl']['requestUpdate'] .= 'tx_templavoilaplus_ds';
-}
-
-if ($_EXTCONF['enable.']['selectDataStructure']) {
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
-        'tt_content',
-        'tx_templavoilaplus_ds,tx_templavoilaplus_to',
-        'templavoilaplus_pi1',
-        'after:layout'
-    );
-} else {
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
-        'tt_content',
-        'tx_templavoilaplus_to',
-        'templavoilaplus_pi1',
-        'after:layout'
-    );
-}
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
+    'tt_content',
+    'tx_templavoilaplus_to',
+    'templavoilaplus_pi1',
+    'after:layout'
+);
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
     'tt_content',
     'tx_templavoilaplus_flex',

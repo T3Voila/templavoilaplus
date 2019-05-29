@@ -76,10 +76,8 @@ class DataHandler
             return;
         }
 
-        if (!$this->extConf['enable.']['selectDataStructure']) {
-            // Update DS if TO was changed
-            $this->updateDataSourceFromTemplateObject($table, $incomingFieldArray, $reference->BE_USER);
-        }
+        // Update DS if TO was changed
+        $this->updateDataSourceFromTemplateObject($table, $incomingFieldArray, $reference->BE_USER);
 
         if ($table == 'tt_content') {
             $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_tcemain']['preProcessFieldArrays'][$id] = $incomingFieldArray;
