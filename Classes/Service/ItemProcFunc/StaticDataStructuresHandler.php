@@ -280,7 +280,7 @@ class StaticDataStructuresHandler
         $pageTsConfig = BackendUtility::getPagesTSconfig($params['row'][$field]);
         $storagePid = $pageTsConfig['tx_templavoilaplus.']['storagePid'] ? : false;
 
-        if (is_array($modTSConfig) && MathUtility::canBeInterpretedAsInteger($storagePid)) {
+        if (MathUtility::canBeInterpretedAsInteger($storagePid)) {
             return (int)$storagePid;
         }
 
