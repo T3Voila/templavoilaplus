@@ -1,0 +1,21 @@
+{namespace core = TYPO3\CMS\Core\ViewHelpers}
+<f:be.pageRenderer
+    pageTitle="TemplaVoilà! Plus"
+    includeCssFiles="{0: '{f:uri.resource(path: \'StyleSheet/ControlCenter.css\', extensionName: \'templavoilaplus\')}'}"
+    includeRequireJsModules="{PageLayout: 'TYPO3/CMS/Templavoilaplus/ControlCenter', Modal:'TYPO3/CMS/Backend/Modal'}"
+    includeJsFiles="{0: '{f:uri.resource(path: \'JavaScript/templavoila.js\', extensionName: \'templavoilaplus\')}'}"
+/>
+
+<h1>{pageTitle}</h1>
+
+<f:render section="content" arguments="{_all}" />
+
+<f:section name="content">
+    <f:comment><!--@TODO Maybe deprecated--></f:comment>
+    <f:format.raw>{contentBody}</f:format.raw>
+
+    <f:for each="{contentPartials.body}" as="partialName">
+        <f:render partial="{partialName}" arguments="{_all}" />
+    </f:for>
+</f:section>
+

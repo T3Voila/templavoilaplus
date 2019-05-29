@@ -86,8 +86,14 @@ $tempColumns = array(
 );
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('pages', $tempColumns);
 
-$_EXTCONF = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoilaplus']);
-if (!$_EXTCONF['enable.']['oldPageModule']) {
+if (version_compare(TYPO3_version, '9.0.0', '>=')) {
+    $extConfig = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['templavoilaplus'];
+    $oldPageModule = (bool) $extConfig['enable']['oldPageModule'];
+} else {
+    $extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoilaplus']);
+    $oldPageModule = (bool) $extConfig['enable.']['oldPageModule'];
+}
+if (!$oldPageModule) {
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
         'pages',
         'tx_templavoilaplus_to',

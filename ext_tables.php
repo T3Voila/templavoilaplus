@@ -30,7 +30,24 @@ if (TYPO3_MODE === 'BE') {
 //             'configureModuleFunction' => [\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::class, 'configureModule'],
         ]
     );
+    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
+        'Ppi.TemplaVoilaPlus',
+        'web',
+        'ControlCenter',
+        'bottom',
+        [
+            'Backend\ControlCenter' => 'show',
+        ],
+        [
+            'access' => 'user,group',
+            'icon' => 'EXT:templavoilaplus/Resources/Public/Icons/AdministrationModuleIcon.svg',
+            'labels' => 'LLL:EXT:templavoilaplus/Resources/Private/Language/BackendControlCenter.xlf',
+            'navigationComponentId' => '',
+            'inheritNavigationComponentFromMainModule' => false
+        ]
+    );
 
+    // @TODO: Old Modules
     // Adding backend modules:
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
         'web',
