@@ -110,7 +110,14 @@ $signalSlotDispatcher->connect(
 // Register install/update processes
 // 8LTS Update
 // Add us as first Update process, so we can run before DatabaseRowsUpdateWizard
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'] = array_merge(
-    [\Ppi\TemplaVoilaPlus\Updates\Typo3Lts8Update::class => \Ppi\TemplaVoilaPlus\Updates\Typo3Lts8Update::class],
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']
-);
+if (version_compare(TYPO3_version, '9.5.0', '>=')) {
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'] = array_merge(
+        [\Ppi\TemplaVoilaPlus\Updates\Typo3Lts9Update::class => \Ppi\TemplaVoilaPlus\Updates\Typo3Lts9Update::class],
+        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']
+    );
+} else {
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'] = array_merge(
+        [\Ppi\TemplaVoilaPlus\Updates\Typo3Lts8Update::class => \Ppi\TemplaVoilaPlus\Updates\Typo3Lts8Update::class],
+        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']
+    );
+}
