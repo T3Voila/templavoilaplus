@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
+use Ppi\TemplaVoilaPlus\Service\ConfigurationService;
 use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 /**
@@ -255,13 +256,8 @@ class DataStructureRepository implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function isStaticDsEnabled()
     {
-        if (version_compare(TYPO3_version, '9.0.0', '>=')) {
-            $extConfig = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['templavoilaplus'];
-            return (bool) $extConfig['staticDS']['enable'];
-        } else {
-            $extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoilaplus']);
-            return (bool) $extConfig['staticDS.']['enable'];
-        }
+        $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
+        return $configurationService->isStaticDataStructureEnabled();
     }
 
     /**
@@ -271,16 +267,8 @@ class DataStructureRepository implements \TYPO3\CMS\Core\SingletonInterface
     {
         $config = array();
         if (!self::$staticDsInitComplete) {
-            if (version_compare(TYPO3_version, '9.0.0', '>=')) {
-                $extConfig = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['templavoilaplus'];
-                if ($extConfig['staticDS']['enable']) {
-                    self::readStaticDsFilesIntoArray($extConfig);
-                }
-            } else {
-                $extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoilaplus']);
-                if ($extConfig['staticDS.']['enable']) {
-                    self::readStaticDsFilesIntoArray($extConfig);
-                }
+            if (self::isStaticDsEnabled()) {
+                self::readStaticDsFilesIntoArray();
             }
             self::$staticDsInitComplete = true;
         }
@@ -338,16 +326,8 @@ class DataStructureRepository implements \TYPO3\CMS\Core\SingletonInterface
         return count($dsCnt);
     }
 
-
-    /**
-     * @param array $conf
-     */
-    protected static function readStaticDsFilesIntoArray($conf)
+    protected static function readStaticDsFilesIntoArray()
     {
-        $confPathDot = '';
-        if (version_compare(TYPO3_version, '9.0.0', '<=')) {
-            $confPathDot = '.';
-        }
         $systemPath = '/';
 
         if (version_compare(TYPO3_version, '9.2.0', '>=')) {
@@ -357,13 +337,11 @@ class DataStructureRepository implements \TYPO3\CMS\Core\SingletonInterface
         }
         $systemPath .= '/';
 
-        $paths = array_unique([
-            'fce' => $conf['staticDS' . $confPathDot]['path_fce'],
-            'page' => $conf['staticDS' . $confPathDot]['path_page']
-        ]);
+        $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
+        $paths = $configurationService->getDataStructurePlacesFromEmConfiguration();
 
-        foreach ($paths as $type => $path) {
-            $absolutePath = GeneralUtility::getFileAbsFileName($path);
+        foreach ($paths as $type => $pathConfig) {
+            $absolutePath = GeneralUtility::getFileAbsFileName($pathConfig['path']);
             $files = GeneralUtility::getFilesInDir($absolutePath, 'xml', true);
             // if all files are in the same folder, don't resolve the scope by path type
             if (count($paths) == 1) {

@@ -26,6 +26,7 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 
 use Ppi\TemplaVoilaPlus\Configuration\BackendConfiguration;
+use Ppi\TemplaVoilaPlus\Service\ConfigurationService;
 use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 class ControlCenterController extends ActionController
@@ -73,6 +74,9 @@ class ControlCenterController extends ActionController
     {
         $this->view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation($this->pageInfo);
         $this->view->getModuleTemplate()->setFlashMessageQueue($this->controllerContext->getFlashMessageQueue());
+
+        $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
+        $placesDataStructure = $configurationService->getDataStructurePlaces();
     }
 
     /**
