@@ -78,9 +78,26 @@ class ControlCenterController extends ActionController
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
         $dataStructurePlaces = $configurationService->getDataStructurePlaces();
         $templatePlaces = $configurationService->getTemplatePlaces();
+        $mappingPlaces = $configurationService->getMappingPlaces();
 
         $this->view->assign('dataStructurePlaces', $dataStructurePlaces);
         $this->view->assign('templatePlaces', $templatePlaces);
+        $this->view->assign('mappingPlaces', $mappingPlaces);
+    }
+
+    public function debugAction()
+    {
+        $this->view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation($this->pageInfo);
+        $this->view->getModuleTemplate()->setFlashMessageQueue($this->controllerContext->getFlashMessageQueue());
+
+        $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
+        $dataStructurePlaces = $configurationService->getDataStructurePlaces();
+        $templatePlaces = $configurationService->getTemplatePlaces();
+        $mappingPlaces = $configurationService->getMappingPlaces();
+
+        $this->view->assign('dataStructurePlaces', $dataStructurePlaces);
+        $this->view->assign('templatePlaces', $templatePlaces);
+        $this->view->assign('mappingPlaces', $mappingPlaces);
     }
 
     /**

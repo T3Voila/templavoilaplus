@@ -36,7 +36,7 @@ if (TYPO3_MODE === 'BE') {
         'ControlCenter',
         'bottom',
         [
-            'Backend\ControlCenter' => 'show',
+            'Backend\ControlCenter' => 'show,debug',
         ],
         [
             'access' => 'user,group',

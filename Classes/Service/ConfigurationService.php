@@ -22,6 +22,7 @@ class ConfigurationService implements SingletonInterface
     private $extConfig = [];
     private $dataStructurePlaces = [];
     private $templatePlaces = [];
+    private $mappingPlaces = [];
 
     public function __construct()
     {
@@ -45,6 +46,11 @@ class ConfigurationService implements SingletonInterface
     public function getTemplatePlaces(): array
     {
         return $this->templatePlaces;
+    }
+
+    public function getMappingPlaces(): array
+    {
+        return $this->mappingPlaces;
     }
 
     public function registerDataStructurePlace($uuid, $name, $path, $scope)
@@ -81,6 +87,23 @@ class ConfigurationService implements SingletonInterface
             'path' => $pathAbsolute,
             'type' => $type,
             'scope' => $scope, // Caution scope should be the table name in a future release
+        ];
+    }
+
+    public function registerMappingPlace($uuid, $name, $path)
+    {
+        // @TODO Check if path is inside FAL and add danger hint!
+        $pathAbsolute = GeneralUtility::getFileAbsFileName($path);
+        if (!is_dir($pathAbsolute) || !is_readable($pathAbsolute)) {
+            throw new \Exception('path ' . $path . 'not exists or readable');
+        }
+        if (isset($this->mappingPlaces[$uuid])) {
+            throw new \Exception('uuid already exists');
+        }
+
+        $this->mappingPlaces[$uuid] = [
+            'name' => $name,
+            'path' => $pathAbsolute,
         ];
     }
 

@@ -28,6 +28,7 @@ class ExtensionUtility implements SingletonInterface
             $path = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey)  . 'Configuration/TVP';
             self::loadDataSourcePlaces($path);
             self::loadTemplatePlaces($path);
+            self::loadMappingPlaces($path);
         }
     }
 
@@ -56,6 +57,19 @@ class ExtensionUtility implements SingletonInterface
                 $contentPlace['path'],
                 $contentPlace['type'],
                 $contentPlace['scope']
+            );
+        }
+    }
+
+    protected static function loadMappingPlaces($path)
+    {
+        $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
+        $mappingPlaces = self::getFileContentArray($path . '/MappingPlaces.php');
+        foreach ($mappingPlaces as $uuid => $mappingPlace) {
+            $configurationService->registerMappingPlace(
+                $uuid,
+                $mappingPlace['name'],
+                $mappingPlace['path']
             );
         }
     }
