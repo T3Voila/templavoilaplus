@@ -15,27 +15,48 @@ namespace Ppi\TemplaVoilaPlus\Service;
  * The TYPO3 project - inspiring people to share!
  */
 use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class ConfigurationService implements SingletonInterface
 {
     private $extConfig = [];
+    private $dataStructurePlaces = [];
 
     public function __construct()
     {
         if (version_compare(TYPO3_version, '9.0.0', '>=')) {
             $this->extConfig = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['templavoilaplus'];
         } else {
-            $extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoilaplus']);
+            $this->extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoilaplus']);
         }
+    }
+
+    public function getExtensionConfig()
+    {
+        return $this->extConfig;
     }
 
     public function getDataStructurePlaces(): array
     {
-        if ($this->isStaticDataStructureEnabled()) {
-            $conf = $this->getDataStructurePlacesFromEmConfiguration();
+        return $this->dataStructurePlaces;
+    }
+
+    public function registerDataStructurePlace($uuid, $name, $path, $scope)
+    {
+        // @TODO Check if path is inside FAL and add danger hint!
+        $path = GeneralUtility::getFileAbsFileName($path);
+        if (!is_dir($path) || !is_readable($path)) {
+            throw new \Exception('path ' . $path . 'not exists or readable');
+        }
+        if (isset($this->dataStructurePlaces[$uuid])) {
+            throw new \Exception('uuid already exists');
         }
 
-        return $conf;
+        $this->dataStructurePlaces[$uuid] = [
+            'name' => $name,
+            'path' => $path,
+            'scope' => $scope, // Caution scope should be the table name in a future release
+        ];
     }
 
     public function isStaticDataStructureEnabled(): bool
@@ -51,26 +72,5 @@ class ConfigurationService implements SingletonInterface
         }
 
         return false;
-    }
-
-    public function getDataStructurePlacesFromEmConfiguration(): array
-    {
-        $confPathDot = '';
-        if (version_compare(TYPO3_version, '9.0.0', '<=')) {
-            $confPathDot = '.';
-        }
-
-        return [
-            'fce' => [
-                'name' => 'FCE',
-                'path' => $this->extConfig['staticDS' . $confPathDot]['path_fce'],
-                'type' => 'fce',
-            ],
-            'page' => [
-                'name' => 'PAGE',
-                'path' => $this->extConfig['staticDS' . $confPathDot]['path_page'],
-                'type' => 'page',
-            ],
-        ];
     }
 }

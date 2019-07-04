@@ -76,7 +76,9 @@ class ControlCenterController extends ActionController
         $this->view->getModuleTemplate()->setFlashMessageQueue($this->controllerContext->getFlashMessageQueue());
 
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
-        $placesDataStructure = $configurationService->getDataStructurePlaces();
+        $dataStructurePlaces = $configurationService->getDataStructurePlaces();
+
+        $this->view->assign('dataStructurePlaces', $dataStructurePlaces);
     }
 
     /**

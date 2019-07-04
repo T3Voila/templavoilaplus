@@ -207,3 +207,5 @@ if (
         );
     }
 }
+
+\Ppi\TemplaVoilaPlus\Utility\ExtensionUtility::handleExtension('templavoilaplus');

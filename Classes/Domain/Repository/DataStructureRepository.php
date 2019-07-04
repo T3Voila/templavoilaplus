@@ -338,15 +338,12 @@ class DataStructureRepository implements \TYPO3\CMS\Core\SingletonInterface
         $systemPath .= '/';
 
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
-        $paths = $configurationService->getDataStructurePlacesFromEmConfiguration();
+        $paths = $configurationService->getDataStructurePlaces();
 
         foreach ($paths as $type => $pathConfig) {
             $absolutePath = GeneralUtility::getFileAbsFileName($pathConfig['path']);
             $files = GeneralUtility::getFilesInDir($absolutePath, 'xml', true);
-            // if all files are in the same folder, don't resolve the scope by path type
-            if (count($paths) == 1) {
-                $type = false;
-            }
+
             foreach ($files as $filePath) {
                 $staticDataStructure = array();
                 $pathInfo = pathinfo($filePath);
@@ -357,12 +354,7 @@ class DataStructureRepository implements \TYPO3\CMS\Core\SingletonInterface
                 if (file_exists($iconPath)) {
                     $staticDataStructure['icon'] = substr($iconPath, strlen($systemPath));
                 }
-
-                if (($type !== false && $type === 'fce') || strpos($pathInfo['filename'], '(fce)') !== false) {
-                    $staticDataStructure['scope'] = \Ppi\TemplaVoilaPlus\Domain\Model\AbstractDataStructure::SCOPE_FCE;
-                } else {
-                    $staticDataStructure['scope'] = \Ppi\TemplaVoilaPlus\Domain\Model\AbstractDataStructure::SCOPE_PAGE;
-                }
+                $staticDataStructure['scope'] = $pathConfig['scope'];
 
                 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoilaplus']['staticDataStructures'][] = $staticDataStructure;
             }
