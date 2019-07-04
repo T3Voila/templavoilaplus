@@ -11,10 +11,21 @@
 <f:render section="content" arguments="{_all}" />
 
 <f:section name="content">
+
+    <h2>Data Structure Places</h2>
     <f:for each="{dataStructurePlaces}" as="dataStructurePlace">
         Name: {dataStructurePlace.name}<br />
         Scope: {dataStructurePlace.scope}<br />
         Path: {dataStructurePlace.path}<br />
+        <br />
+    </f:for>
+
+    <h2>Template Places</h2>
+    <f:for each="{templatePlaces}" as="templatePlace">
+        Name: {templatePlace.name}<br />
+        Scope: {templatePlace.scope}<br />
+        Type: {templatePlace.type}<br />
+        Path: {templatePlace.path}<br />
         <br />
     </f:for>
 

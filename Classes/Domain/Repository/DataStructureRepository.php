@@ -254,7 +254,7 @@ class DataStructureRepository implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * @return boolean
      */
-    protected function isStaticDsEnabled()
+    protected static function isStaticDsEnabled()
     {
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
         return $configurationService->isStaticDataStructureEnabled();
@@ -333,7 +333,7 @@ class DataStructureRepository implements \TYPO3\CMS\Core\SingletonInterface
         if (version_compare(TYPO3_version, '9.2.0', '>=')) {
             $systemPath = Environment::getPublicPath();
         } else {
-            $systemPath = rtrim(PATH_side, '/');
+            $systemPath = rtrim(PATH_site, '/');
         }
         $systemPath .= '/';
 

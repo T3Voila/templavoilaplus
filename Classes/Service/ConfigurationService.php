@@ -21,6 +21,7 @@ class ConfigurationService implements SingletonInterface
 {
     private $extConfig = [];
     private $dataStructurePlaces = [];
+    private $templatePlaces = [];
 
     public function __construct()
     {
@@ -31,7 +32,7 @@ class ConfigurationService implements SingletonInterface
         }
     }
 
-    public function getExtensionConfig()
+    public function getExtensionConfig(): array
     {
         return $this->extConfig;
     }
@@ -41,11 +42,16 @@ class ConfigurationService implements SingletonInterface
         return $this->dataStructurePlaces;
     }
 
+    public function getTemplatePlaces(): array
+    {
+        return $this->templatePlaces;
+    }
+
     public function registerDataStructurePlace($uuid, $name, $path, $scope)
     {
         // @TODO Check if path is inside FAL and add danger hint!
-        $path = GeneralUtility::getFileAbsFileName($path);
-        if (!is_dir($path) || !is_readable($path)) {
+        $pathAbsolute = GeneralUtility::getFileAbsFileName($path);
+        if (!is_dir($pathAbsolute) || !is_readable($pathAbsolute)) {
             throw new \Exception('path ' . $path . 'not exists or readable');
         }
         if (isset($this->dataStructurePlaces[$uuid])) {
@@ -54,7 +60,26 @@ class ConfigurationService implements SingletonInterface
 
         $this->dataStructurePlaces[$uuid] = [
             'name' => $name,
-            'path' => $path,
+            'path' => $pathAbsolute,
+            'scope' => $scope, // Caution scope should be the table name in a future release
+        ];
+    }
+
+    public function registerTemplatePlace($uuid, $name, $path, $type, $scope)
+    {
+        // @TODO Check if path is inside FAL and add danger hint!
+        $pathAbsolute = GeneralUtility::getFileAbsFileName($path);
+        if (!is_dir($pathAbsolute) || !is_readable($pathAbsolute)) {
+            throw new \Exception('path ' . $path . 'not exists or readable');
+        }
+        if (isset($this->templatePlaces[$uuid])) {
+            throw new \Exception('uuid already exists');
+        }
+
+        $this->templatePlaces[$uuid] = [
+            'name' => $name,
+            'path' => $pathAbsolute,
+            'type' => $type,
             'scope' => $scope, // Caution scope should be the table name in a future release
         ];
     }

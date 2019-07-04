@@ -77,8 +77,10 @@ class ControlCenterController extends ActionController
 
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
         $dataStructurePlaces = $configurationService->getDataStructurePlaces();
+        $templatePlaces = $configurationService->getTemplatePlaces();
 
         $this->view->assign('dataStructurePlaces', $dataStructurePlaces);
+        $this->view->assign('templatePlaces', $templatePlaces);
     }
 
     /**
