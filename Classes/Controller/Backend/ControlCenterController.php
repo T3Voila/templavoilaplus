@@ -67,8 +67,9 @@ class ControlCenterController extends ActionController
         // if pageId is available the row will be inside pageInfo
         $this->setPageInfo();
     }
+
     /**
-     * Displays the page with layout and content elements
+     * Displays the menu cards
      */
     public function showAction()
     {
@@ -80,6 +81,8 @@ class ControlCenterController extends ActionController
         $templatePlaces = $configurationService->getTemplatePlaces();
         $mappingPlaces = $configurationService->getMappingPlaces();
 
+        $this->view->assign('pageTitle', 'TemplaVoilà! Plus - Control Center');
+
         $this->view->assign('dataStructurePlaces', $dataStructurePlaces);
         $this->view->assign('templatePlaces', $templatePlaces);
         $this->view->assign('mappingPlaces', $mappingPlaces);
@@ -90,10 +93,19 @@ class ControlCenterController extends ActionController
         $this->view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation($this->pageInfo);
         $this->view->getModuleTemplate()->setFlashMessageQueue($this->controllerContext->getFlashMessageQueue());
 
+        $buttonBar = $this->view->getModuleTemplate()->getDocHeaderComponent()->getButtonBar();
+        $button = $buttonBar->makeLinkButton()
+            ->setHref($this->getControllerContext()->getUriBuilder()->uriFor('show', [], 'Backend\ControlCenter'))
+            ->setTitle('Back')
+            ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
+        $buttonBar->addButton($button, ButtonBar::BUTTON_POSITION_LEFT, 1);
+
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
         $dataStructurePlaces = $configurationService->getDataStructurePlaces();
         $templatePlaces = $configurationService->getTemplatePlaces();
         $mappingPlaces = $configurationService->getMappingPlaces();
+
+        $this->view->assign('pageTitle', 'TemplaVoilà! Plus - Control Center - Debug');
 
         $this->view->assign('dataStructurePlaces', $dataStructurePlaces);
         $this->view->assign('templatePlaces', $templatePlaces);
