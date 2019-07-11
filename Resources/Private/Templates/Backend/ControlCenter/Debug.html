@@ -11,29 +11,77 @@
 <f:render section="content" arguments="{_all}" />
 
 <f:section name="content">
-    <h2>Data Structure Places</h2>
-    <f:for each="{dataStructurePlaces}" as="dataStructurePlace">
-        Name: {dataStructurePlace.name}<br />
-        Scope: {dataStructurePlace.scope}<br />
-        Path: {dataStructurePlace.path}<br />
-        <br />
-    </f:for>
-
-    <h2>Template Places</h2>
-    <f:for each="{templatePlaces}" as="templatePlace">
-        Name: {templatePlace.name}<br />
-        Scope: {templatePlace.scope}<br />
-        Type: {templatePlace.type}<br />
-        Path: {templatePlace.path}<br />
-        <br />
-    </f:for>
-
-    <h2>Mapping Places</h2>
-    <f:for each="{mappingPlaces}" as="mappingPlace">
-        Name: {mappingPlace.name}<br />
-        Scope: {mappingPlace.scope}<br />
-        Type: {mappingPlace.type}<br />
-        Path: {mappingPlace.path}<br />
-        <br />
-    </f:for>
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="panel panel-primary">
+                <div class="panel-heading"><h3 class="panel-title">DataStructures Places</h3></div>
+                <div class="panel-body"></div>
+                <ul class="list-group">
+                    <f:for each="{dataStructurePlaces}" as="dataStructurePlace" key="internalName">
+                        <li class="list-group-item">
+                            Internal Name: {internalName}<br />
+                            Backend Name: {dataStructurePlace.name}<br />
+                            Scope: {dataStructurePlace.scope}<br />
+                            Path: {dataStructurePlace.path}<br />
+                        </li>
+                    </f:for>
+                </ul>
+                <div class="panel-footer"></div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="panel panel-primary">
+                <div class="panel-heading"><h3 class="panel-title">Template Places</h3></div>
+                <div class="panel-body"></div>
+                <ul class="list-group">
+                    <f:for each="{templatePlaces}" as="templatePlace" key="internalName">
+                        <li class="list-group-item">
+                            Internal Name: {internalName}<br />
+                            Backend Name: {templatePlace.name}<br />
+                            Scope: {templatePlace.scope}<br />
+                            Type: {templatePlace.type}<br />
+                            Path: {templatePlace.path}<br />
+                        </li>
+                    </f:for>
+                </ul>
+                <div class="panel-footer"></div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="panel panel-primary">
+                <div class="panel-heading"><h3 class="panel-title">Mapping Places</h3></div>
+                <div class="panel-body"></div>
+                <ul class="list-group">
+                    <f:for each="{mappingPlaces}" as="mappingPlace" key="internalName">
+                        <li class="list-group-item">
+                            Internal Name: {internalName}<br />
+                            Backend Name: {mappingPlace.name}<br />
+                            Scope: {mappingPlace.scope}<br />
+                            Type: {mappingPlace.type}<br />
+                            Path: {mappingPlace.path}<br />
+                        </li>
+                    </f:for>
+                </ul>
+                <div class="panel-footer"></div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="panel panel-primary">
+                <div class="panel-heading"><h3 class="panel-title">Available Renderer</h3></div>
+                <div class="panel-body"></div>
+                <ul class="list-group">
+                    <f:for each="{availableRenderer}" as="renderer" key="internalName">
+                        <li class="list-group-item">
+                            Internal Name: {internalName}<br />
+                            Backend Name: {renderer.name}<br />
+                            Class Name: {renderer.class}<br />
+                        </li>
+                    </f:for>
+                </ul>
+                <div class="panel-footer"></div>
+            </div>
+        </div>
+    </div>
 </f:section>

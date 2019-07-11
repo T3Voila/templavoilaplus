@@ -23,6 +23,7 @@ class ConfigurationService implements SingletonInterface
     private $dataStructurePlaces = [];
     private $templatePlaces = [];
     private $mappingPlaces = [];
+    private $availableRenderer = [];
 
     public function __construct()
     {
@@ -51,6 +52,11 @@ class ConfigurationService implements SingletonInterface
     public function getMappingPlaces(): array
     {
         return $this->mappingPlaces;
+    }
+
+    public function getAvailableRenderer(): array
+    {
+        return $this->availableRenderer;
     }
 
     public function registerDataStructurePlace($uuid, $name, $path, $scope)
@@ -104,6 +110,26 @@ class ConfigurationService implements SingletonInterface
         $this->mappingPlaces[$uuid] = [
             'name' => $name,
             'path' => $pathAbsolute,
+        ];
+    }
+
+    public function registerRenderer($uuid, $name, $class)
+    {
+        $interfaces = @class_implements($class);
+
+        if ($interfaces === false) {
+            throw new \Exception('Class ' . $class . ' not found');
+        }
+        if (!isset($interfaces[\Ppi\TemplaVoilaPlus\Renderer\RendererInterface::class])) {
+            throw new \Exception('Class ' . $class . ' do not implement renderer interface');
+        }
+        if (isset($this->availableRenderer[$uuid])) {
+            throw new \Exception('uuid already exists');
+        }
+
+        $this->availableRenderer[$uuid] = [
+            'name' => $name,
+            'class' => $class,
         ];
     }
 

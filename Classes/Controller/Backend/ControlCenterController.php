@@ -105,11 +105,14 @@ class ControlCenterController extends ActionController
         $templatePlaces = $configurationService->getTemplatePlaces();
         $mappingPlaces = $configurationService->getMappingPlaces();
 
+        $availableRenderer = $configurationService->getAvailableRenderer();
+
         $this->view->assign('pageTitle', 'TemplaVoilà! Plus - Control Center - Debug');
 
         $this->view->assign('dataStructurePlaces', $dataStructurePlaces);
         $this->view->assign('templatePlaces', $templatePlaces);
         $this->view->assign('mappingPlaces', $mappingPlaces);
+        $this->view->assign('availableRenderer', $availableRenderer);
     }
 
     /**

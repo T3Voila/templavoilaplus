@@ -26,6 +26,10 @@ class ExtensionUtility implements SingletonInterface
     {
         if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extensionKey)) {
             $path = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey)  . 'Configuration/TVP';
+            self::loadExtending($path);
+        }
+        if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extensionKey)) {
+            $path = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey)  . 'Configuration/TVP';
             self::loadDataSourcePlaces($path);
             self::loadTemplatePlaces($path);
             self::loadMappingPlaces($path);
@@ -71,6 +75,21 @@ class ExtensionUtility implements SingletonInterface
                 $mappingPlace['name'],
                 $mappingPlace['path']
             );
+        }
+    }
+
+    protected static function loadExtending($path)
+    {
+        $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
+        $extending = self::getFileContentArray($path . '/Extending.php');
+        if (isset($extending['renderer'])) {
+            foreach ($extending['renderer'] as $uuid => $renderer) {
+                $configurationService->registerRenderer(
+                    $uuid,
+                    $renderer['name'],
+                    $renderer['class']
+                );
+            }
         }
     }
 
