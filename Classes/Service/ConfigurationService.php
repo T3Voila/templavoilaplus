@@ -16,6 +16,7 @@ namespace Ppi\TemplaVoilaPlus\Service;
  */
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 class ConfigurationService implements SingletonInterface
 {
@@ -72,12 +73,13 @@ class ConfigurationService implements SingletonInterface
 
         $this->dataStructurePlaces[$uuid] = [
             'name' => $name,
-            'path' => $pathAbsolute,
+            'pathAbs' => $pathAbsolute,
+            'pathRel' => PathUtility::stripPathSitePrefix($pathAbsolute),
             'scope' => $scope, // Caution scope should be the table name in a future release
         ];
     }
 
-    public function registerTemplatePlace($uuid, $name, $path, $type, $scope)
+    public function registerTemplatePlace($uuid, $name, $path, $renderer, $scope)
     {
         // @TODO Check if path is inside FAL and add danger hint!
         $pathAbsolute = GeneralUtility::getFileAbsFileName($path);
@@ -87,11 +89,15 @@ class ConfigurationService implements SingletonInterface
         if (isset($this->templatePlaces[$uuid])) {
             throw new \Exception('uuid already exists');
         }
+        if (!isset($this->availableRenderer[$renderer])) {
+            throw new \Exception('Renderer ' . $renderer . ' unknown.');
+        }
 
         $this->templatePlaces[$uuid] = [
             'name' => $name,
-            'path' => $pathAbsolute,
-            'type' => $type,
+            'pathAbs' => $pathAbsolute,
+            'pathRel' => PathUtility::stripPathSitePrefix($pathAbsolute),
+            'renderer' => $renderer,
             'scope' => $scope, // Caution scope should be the table name in a future release
         ];
     }
@@ -109,7 +115,8 @@ class ConfigurationService implements SingletonInterface
 
         $this->mappingPlaces[$uuid] = [
             'name' => $name,
-            'path' => $pathAbsolute,
+            'pathAbs' => $pathAbsolute,
+            'pathRel' => PathUtility::stripPathSitePrefix($pathAbsolute),
         ];
     }
 

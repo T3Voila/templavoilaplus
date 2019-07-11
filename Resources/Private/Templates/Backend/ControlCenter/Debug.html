@@ -22,7 +22,23 @@
                             Internal Name: {internalName}<br />
                             Backend Name: {dataStructurePlace.name}<br />
                             Scope: {dataStructurePlace.scope}<br />
-                            Path: {dataStructurePlace.path}<br />
+                            Path: {dataStructurePlace.pathRel}<br />
+                        </li>
+                    </f:for>
+                </ul>
+                <div class="panel-footer"></div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="panel panel-primary">
+                <div class="panel-heading"><h3 class="panel-title">Mapping Places</h3></div>
+                <div class="panel-body"></div>
+                <ul class="list-group">
+                    <f:for each="{mappingPlaces}" as="mappingPlace" key="internalName">
+                        <li class="list-group-item">
+                            Internal Name: {internalName}<br />
+                            Backend Name: {templatePlace.name}<br />
+                            Path: {templatePlace.pathRel}<br />
                         </li>
                     </f:for>
                 </ul>
@@ -39,26 +55,8 @@
                             Internal Name: {internalName}<br />
                             Backend Name: {templatePlace.name}<br />
                             Scope: {templatePlace.scope}<br />
-                            Type: {templatePlace.type}<br />
-                            Path: {templatePlace.path}<br />
-                        </li>
-                    </f:for>
-                </ul>
-                <div class="panel-footer"></div>
-            </div>
-        </div>
-        <div class="col-sm-4">
-            <div class="panel panel-primary">
-                <div class="panel-heading"><h3 class="panel-title">Mapping Places</h3></div>
-                <div class="panel-body"></div>
-                <ul class="list-group">
-                    <f:for each="{mappingPlaces}" as="mappingPlace" key="internalName">
-                        <li class="list-group-item">
-                            Internal Name: {internalName}<br />
-                            Backend Name: {mappingPlace.name}<br />
-                            Scope: {mappingPlace.scope}<br />
-                            Type: {mappingPlace.type}<br />
-                            Path: {mappingPlace.path}<br />
+                            For Renderer: {templatePlace.renderer}<br />
+                            Path: {templatePlace.pathRel}<br />
                         </li>
                     </f:for>
                 </ul>

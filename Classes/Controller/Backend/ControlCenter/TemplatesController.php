@@ -82,7 +82,7 @@ class TemplatesController extends ActionController
         $filter->setAllowedFileExtensions('html,htm,tmpl');
 
         foreach ($templatePlaces as $uuid => $templatePlace) {
-            $folder = $resourceFactory->retrieveFileOrFolderObject($templatePlace['path']);
+            $folder = $resourceFactory->retrieveFileOrFolderObject($templatePlace['pathAbs']);
             $folder->setFileAndFolderNameFilters([[$filter, 'filterFileList']]);
 
             $templatePlaces[$uuid]['files'] = $folder->getFiles(0, 0, \TYPO3\CMS\Core\Resource\Folder::FILTER_MODE_USE_OWN_FILTERS, true);

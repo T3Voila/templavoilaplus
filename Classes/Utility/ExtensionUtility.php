@@ -59,7 +59,7 @@ class ExtensionUtility implements SingletonInterface
                 $uuid,
                 $contentPlace['name'],
                 $contentPlace['path'],
-                $contentPlace['type'],
+                $contentPlace['renderer'],
                 $contentPlace['scope']
             );
         }
