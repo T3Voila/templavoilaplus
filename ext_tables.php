@@ -211,4 +211,4 @@ if (
     }
 }
 
-\Ppi\TemplaVoilaPlus\Utility\ExtensionUtility::handleExtension('templavoilaplus');
+\Ppi\TemplaVoilaPlus\Utility\ExtensionUtility::registerExtension('templavoilaplus');

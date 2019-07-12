@@ -22,17 +22,31 @@ use Ppi\TemplaVoilaPlus\Service\ConfigurationService;
 
 class ExtensionUtility implements SingletonInterface
 {
-    public static function handleExtension($extensionKey)
+    private static $registeredExtensions = [];
+
+    public static function registerExtension($extensionKey)
     {
         if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extensionKey)) {
             $path = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey)  . 'Configuration/TVP';
+            if (is_dir($path)) {
+                self::$registeredExtensions[$extensionKey] = $extensionKey;
+            }
+        }
+    }
+
+    public static function handleAllExtensions()
+    {
+        // Extending TV+
+        foreach (self::$registeredExtensions as $extensionKey) {
+            $path = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey)  . 'Configuration/TVP';
             self::loadExtending($path);
         }
-        if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extensionKey)) {
+        // Temnplating TV+
+        foreach (self::$registeredExtensions as $extensionKey) {
             $path = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey)  . 'Configuration/TVP';
-            self::loadDataSourcePlaces($path);
-            self::loadTemplatePlaces($path);
-            self::loadMappingPlaces($path);
+        self::loadDataSourcePlaces($path);
+        self::loadTemplatePlaces($path);
+        self::loadMappingPlaces($path);
         }
     }
 

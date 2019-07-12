@@ -26,6 +26,8 @@ class ConfigurationService implements SingletonInterface
     private $mappingPlaces = [];
     private $availableRenderer = [];
 
+    private $isInitialized = false;
+
     public function __construct()
     {
         if (version_compare(TYPO3_version, '9.0.0', '>=')) {
@@ -35,28 +37,41 @@ class ConfigurationService implements SingletonInterface
         }
     }
 
+    private function initialize()
+    {
+        if (!$this->isInitialized) {
+            $this->isInitialized = true;
+            \Ppi\TemplaVoilaPlus\Utility\ExtensionUtility::handleAllExtensions();
+        }
+    }
+
     public function getExtensionConfig(): array
     {
+        $this->initialize();
         return $this->extConfig;
     }
 
     public function getDataStructurePlaces(): array
     {
+        $this->initialize();
         return $this->dataStructurePlaces;
     }
 
     public function getTemplatePlaces(): array
     {
+        $this->initialize();
         return $this->templatePlaces;
     }
 
     public function getMappingPlaces(): array
     {
+        $this->initialize();
         return $this->mappingPlaces;
     }
 
     public function getAvailableRenderer(): array
     {
+        $this->initialize();
         return $this->availableRenderer;
     }
 
