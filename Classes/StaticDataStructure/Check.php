@@ -14,6 +14,7 @@ namespace Ppi\TemplaVoilaPlus\StaticDataStructure;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Ppi\TemplaVoilaPlus\Service\ConfigurationService;
 use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 /**
@@ -30,7 +31,8 @@ class Check
      */
     public function displayMessage(&$params, &$tsObj)
     {
-        if (!$this->staticDsIsEnabled()) {
+        $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
+        if (!$configurationService->isStaticDataStructureEnabled()) {
             return TemplaVoilaUtility::getLanguageService()->sL(
                 'LLL:EXT:templavoilaplus/Resources/Private/Language/locallang.xlf:extconf.staticWizard.messageNoMigration'
             );
@@ -67,17 +69,6 @@ class Check
         }
 
         return 'Use the Update button in the Extension manager to run the staticDS migration tool.';
-    }
-
-    /**
-     * Is static DS enabled?
-     *
-     * @return boolean
-     */
-    protected function staticDsIsEnabled()
-    {
-        $conf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoilaplus']);
-        return (bool)$conf['staticDS.']['enable'];
     }
 
     /**

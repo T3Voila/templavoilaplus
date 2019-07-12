@@ -26,6 +26,7 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 
 use Ppi\TemplaVoilaPlus\Configuration\BackendConfiguration;
+use Ppi\TemplaVoilaPlus\Service\ConfigurationService;
 use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 class ControlCenterController extends ActionController
@@ -66,13 +67,52 @@ class ControlCenterController extends ActionController
         // if pageId is available the row will be inside pageInfo
         $this->setPageInfo();
     }
+
     /**
-     * Displays the page with layout and content elements
+     * Displays the menu cards
      */
     public function showAction()
     {
         $this->view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation($this->pageInfo);
         $this->view->getModuleTemplate()->setFlashMessageQueue($this->controllerContext->getFlashMessageQueue());
+
+        $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
+        $dataStructurePlaces = $configurationService->getDataStructurePlaces();
+        $templatePlaces = $configurationService->getTemplatePlaces();
+        $mappingPlaces = $configurationService->getMappingPlaces();
+
+        $this->view->assign('pageTitle', 'TemplaVoilà! Plus - Control Center');
+
+        $this->view->assign('dataStructurePlaces', $dataStructurePlaces);
+        $this->view->assign('templatePlaces', $templatePlaces);
+        $this->view->assign('mappingPlaces', $mappingPlaces);
+    }
+
+    public function debugAction()
+    {
+        $this->view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation($this->pageInfo);
+        $this->view->getModuleTemplate()->setFlashMessageQueue($this->controllerContext->getFlashMessageQueue());
+
+        $buttonBar = $this->view->getModuleTemplate()->getDocHeaderComponent()->getButtonBar();
+        $button = $buttonBar->makeLinkButton()
+            ->setHref($this->getControllerContext()->getUriBuilder()->uriFor('show', [], 'Backend\ControlCenter'))
+            ->setTitle('Back')
+            ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
+        $buttonBar->addButton($button, ButtonBar::BUTTON_POSITION_LEFT, 1);
+
+        $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
+        $dataStructurePlaces = $configurationService->getDataStructurePlaces();
+        $templatePlaces = $configurationService->getTemplatePlaces();
+        $mappingPlaces = $configurationService->getMappingPlaces();
+
+        $availableRenderer = $configurationService->getAvailableRenderer();
+
+        $this->view->assign('pageTitle', 'TemplaVoilà! Plus - Control Center - Debug');
+
+        $this->view->assign('dataStructurePlaces', $dataStructurePlaces);
+        $this->view->assign('templatePlaces', $templatePlaces);
+        $this->view->assign('mappingPlaces', $mappingPlaces);
+        $this->view->assign('availableRenderer', $availableRenderer);
     }
 
     /**

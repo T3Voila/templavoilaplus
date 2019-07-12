@@ -1,0 +1,85 @@
+{namespace core = TYPO3\CMS\Core\ViewHelpers}
+<f:be.pageRenderer
+    pageTitle="TemplaVoilà! Plus"
+    includeCssFiles="{0: '{f:uri.resource(path: \'StyleSheet/ControlCenter.css\', extensionName: \'templavoilaplus\')}'}"
+    includeRequireJsModules="{PageLayout: 'TYPO3/CMS/Templavoilaplus/ControlCenter', Modal:'TYPO3/CMS/Backend/Modal'}"
+    includeJsFiles="{0: '{f:uri.resource(path: \'JavaScript/templavoila.js\', extensionName: \'templavoilaplus\')}'}"
+/>
+
+<h1>{pageTitle}</h1>
+
+<f:render section="content" arguments="{_all}" />
+
+<f:section name="content">
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="panel panel-primary">
+                <div class="panel-heading"><h3 class="panel-title">DataStructures Places</h3></div>
+                <div class="panel-body"></div>
+                <ul class="list-group">
+                    <f:for each="{dataStructurePlaces}" as="dataStructurePlace" key="internalName">
+                        <li class="list-group-item">
+                            Internal Name: {internalName}<br />
+                            Backend Name: {dataStructurePlace.name}<br />
+                            Scope: {dataStructurePlace.scope}<br />
+                            Path: {dataStructurePlace.pathRel}<br />
+                        </li>
+                    </f:for>
+                </ul>
+                <div class="panel-footer"></div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="panel panel-primary">
+                <div class="panel-heading"><h3 class="panel-title">Mapping Places</h3></div>
+                <div class="panel-body"></div>
+                <ul class="list-group">
+                    <f:for each="{mappingPlaces}" as="mappingPlace" key="internalName">
+                        <li class="list-group-item">
+                            Internal Name: {internalName}<br />
+                            Backend Name: {templatePlace.name}<br />
+                            Path: {templatePlace.pathRel}<br />
+                        </li>
+                    </f:for>
+                </ul>
+                <div class="panel-footer"></div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="panel panel-primary">
+                <div class="panel-heading"><h3 class="panel-title">Template Places</h3></div>
+                <div class="panel-body"></div>
+                <ul class="list-group">
+                    <f:for each="{templatePlaces}" as="templatePlace" key="internalName">
+                        <li class="list-group-item">
+                            Internal Name: {internalName}<br />
+                            Backend Name: {templatePlace.name}<br />
+                            Scope: {templatePlace.scope}<br />
+                            For Renderer: {templatePlace.renderer}<br />
+                            Path: {templatePlace.pathRel}<br />
+                        </li>
+                    </f:for>
+                </ul>
+                <div class="panel-footer"></div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="panel panel-primary">
+                <div class="panel-heading"><h3 class="panel-title">Available Renderer</h3></div>
+                <div class="panel-body"></div>
+                <ul class="list-group">
+                    <f:for each="{availableRenderer}" as="renderer" key="internalName">
+                        <li class="list-group-item">
+                            Internal Name: {internalName}<br />
+                            Backend Name: {renderer.name}<br />
+                            Class Name: {renderer.class}<br />
+                        </li>
+                    </f:for>
+                </ul>
+                <div class="panel-footer"></div>
+            </div>
+        </div>
+    </div>
+</f:section>

@@ -36,7 +36,10 @@ if (TYPO3_MODE === 'BE') {
         'ControlCenter',
         'bottom',
         [
-            'Backend\ControlCenter' => 'show',
+            'Backend\ControlCenter' => 'show,debug',
+            'Backend\ControlCenter\DataStructures' => 'list',
+            'Backend\ControlCenter\Mappings' => 'list',
+            'Backend\ControlCenter\Templates' => 'list',
         ],
         [
             'access' => 'user,group',
@@ -207,3 +210,5 @@ if (
         );
     }
 }
+
+\Ppi\TemplaVoilaPlus\Utility\ExtensionUtility::registerExtension('templavoilaplus');
