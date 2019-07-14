@@ -21,15 +21,15 @@ if (!class_exists(DataSourcePlaces::class)) {
                 }
 
                 return [
-                    'fce' => [
-                        'name' => 'FCE',
-                        'path' => $configurationService->getExtensionConfig()['staticDS' . $confPathDot]['path_fce'],
-                        'scope' => AbstractDataStructure::SCOPE_FCE,
-                    ],
                     'page' => [
                         'name' => 'PAGE',
                         'path' => $configurationService->getExtensionConfig()['staticDS' . $confPathDot]['path_page'],
                         'scope' => AbstractDataStructure::SCOPE_PAGE,
+                    ],
+                    'fce' => [
+                        'name' => 'FCE',
+                        'path' => $configurationService->getExtensionConfig()['staticDS' . $confPathDot]['path_fce'],
+                        'scope' => AbstractDataStructure::SCOPE_FCE,
                     ],
                 ];
             }
