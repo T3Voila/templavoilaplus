@@ -88,6 +88,7 @@ class ConfigurationService implements SingletonInterface
 
         $this->dataStructurePlaces[$uuid] = [
             'name' => $name,
+            'uuid' => $uuid,
             'pathAbs' => $pathAbsolute,
             'pathRel' => PathUtility::stripPathSitePrefix($pathAbsolute),
             'scope' => $scope, // Caution scope should be the table name in a future release
