@@ -37,7 +37,7 @@ if (TYPO3_MODE === 'BE') {
         'bottom',
         [
             'Backend\ControlCenter' => 'show,debug',
-            'Backend\ControlCenter\DataStructures' => 'list',
+            'Backend\ControlCenter\DataStructures' => 'list,add,edit,info,delete',
             'Backend\ControlCenter\Mappings' => 'list',
             'Backend\ControlCenter\Templates' => 'list',
         ],

@@ -75,7 +75,36 @@ class DataStructuresController extends ActionController
         $this->view->assign('dataStructurePlacesByScope', $dataStructurePlacesByScope);
     }
 
-    protected function enrichDataStructurePlacesWithFiles($dataStructurePlaces): array
+    /**
+     * Deletes configuration from dataStructurePlace
+     * @TODO This implementation is only for complete files not for DB records/overloads/...
+     *
+     * @param string $uuid Uuid of dataStructurePlace
+     * @param string $file Identifier inside the dataStructurePlace
+     * @return void
+     */
+    public function deleteAction($uuid, $file)
+    {
+        $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
+        $dataStructurePlaces = $configurationService->getDataStructurePlaces();
+        $dataStructurePlaces = $this->enrichDataStructurePlacesWithFiles([$uuid => $dataStructurePlaces[$uuid]]);
+
+        foreach ($dataStructurePlaces[$uuid]['files'] as $fileObject) {
+            if ($fileObject->getIdentifier() === $file) {
+                $fileObject->delete();
+            }
+        }
+
+        $this->addFlashMessage(
+            'DataStructure ' . $file . ' deleted.',
+            '',
+            FlashMessage::INFO
+        );
+
+        $this->redirect('list');
+    }
+
+    protected function enrichDataStructurePlacesWithFiles(array $dataStructurePlaces): array
     {
         $resourceFactory = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance();
 
@@ -86,13 +115,13 @@ class DataStructuresController extends ActionController
             $folder = $resourceFactory->retrieveFileOrFolderObject($dataStructurePlace['pathAbs']);
             $folder->setFileAndFolderNameFilters([[$filter, 'filterFileList']]);
 
-            $dataStructurePlaces[$uuid]['files'] = $folder->getFiles(0, 0, \TYPO3\CMS\Core\Resource\Folder::FILTER_MODE_USE_OWN_FILTERS, true);
+           $dataStructurePlaces[$uuid]['files'] = $folder->getFiles(0, 0, \TYPO3\CMS\Core\Resource\Folder::FILTER_MODE_USE_OWN_FILTERS, true);
         }
 
         return $dataStructurePlaces;
     }
 
-    protected function reorderDataStructurePlacesByScope($dataStructurePlaces): array
+    protected function reorderDataStructurePlacesByScope(array $dataStructurePlaces): array
     {
         $dataStructurePlacesByScope = [];
         foreach ($dataStructurePlaces as $uuid => $dataStructurePlace) {
