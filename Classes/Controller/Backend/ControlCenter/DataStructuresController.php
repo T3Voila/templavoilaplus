@@ -21,9 +21,9 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
-use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 
 use Ppi\TemplaVoilaPlus\Configuration\BackendConfiguration;
@@ -73,6 +73,79 @@ class DataStructuresController extends ActionController
         $this->view->assign('pageTitle', 'TemplaVoilà! Plus - DataStructure List');
 
         $this->view->assign('dataStructurePlacesByScope', $dataStructurePlacesByScope);
+    }
+
+    /**
+     * Edits configuration from dataStructurePlace
+     *
+     * @param string $uuid Uuid of dataStructurePlace
+     * @param string $file Identifier inside the dataStructurePlace
+     * @return void
+     */
+    public function editAction($uuid, $file)
+    {
+//         $this->view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation([]);
+//         $this->view->getModuleTemplate()->setFlashMessageQueue($this->controllerContext->getFlashMessageQueue());
+//
+//         $buttonBar = $this->view->getModuleTemplate()->getDocHeaderComponent()->getButtonBar();
+//         $button = $buttonBar->makeLinkButton()
+//             ->setHref($this->getControllerContext()->getUriBuilder()->uriFor('list'))
+//             ->setTitle('Back')
+//             ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
+//         $buttonBar->addButton($button, ButtonBar::BUTTON_POSITION_LEFT, 1);
+        $formDefinition = [
+            'type' => 'DataStructure',
+            'identifier' => $uuid, // . '-' . $file,
+            'label' => $uuid . ':' . $file,
+            'renderables' => [
+                0 => [
+                    'type' => 'Sheet',
+                    'identifier' => 'sheet1',
+                    'label' => 'Sheet 1',
+                ],
+            ],
+            'prototypeName' => 'standard',
+        ];
+        $formEditorAppInitialData = [
+            'formEditorDefinitions' => [
+                'formElements' => [
+                    'DataStructure' => [
+                        'paginationTitle' => 'Sheet {0} of {1}',
+                        'iconIdentifier' => 'extensions-templavoila-datastructure-default',
+                    ],
+                    'Sheet' => [
+                        'iconIdentifier' => 't3-form-icon-page',
+                    ],
+                ],
+                'finishers' => [],
+                'validators' => [],
+                'formElementPropertyValidators' => [],
+            ],
+            'formDefinition' => $formDefinition,
+            'formPersistenceIdentifier' => 'persIdent', //$uuid . ':' . $file,
+            'prototypeName' => 'standard',
+            'endpoints' => [
+                'formPageRenderer' => $this->controllerContext->getUriBuilder()->uriFor('renderFormPage'),
+                'saveForm' => $this->controllerContext->getUriBuilder()->uriFor('saveForm')
+            ],
+            'additionalViewModelModules' => null,
+            'maximumUndoSteps' => 20,
+        ];
+
+        $this->view->assign('formEditorAppInitialData', json_encode($formEditorAppInitialData));
+//         $this->view->assign('stylesheets', $this->resolveResourcePaths($this->prototypeConfiguration['formEditor']['stylesheets']));
+//         $this->view->assign('formEditorTemplates', $this->renderFormEditorTemplates($formEditorDefinitions));
+        $this->view->assign(
+            'dynamicRequireJsModules',
+            [
+                'app' => 'TYPO3/CMS/Form/Backend/FormEditor',
+                'mediator' => 'TYPO3/CMS/Form/Backend/FormEditor/Mediator',
+                'viewModel' => 'TYPO3/CMS/Form/Backend/FormEditor/ViewModel',
+            ]
+        );
+
+        $this->view->setLayoutRootPaths(['EXT:form/Resources/Private/Backend/Layouts']);
+        $this->view->setPartialRootPaths(['EXT:form/Resources/Private/Backend/Partials']);
     }
 
     /**
