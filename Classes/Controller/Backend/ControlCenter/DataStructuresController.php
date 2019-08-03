@@ -24,7 +24,10 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
+use TYPO3\CMS\Fluid\View\TemplateView;
+use TYPO3\CMS\Form\Service\TranslationService;
 use TYPO3\CMS\Frontend\Page\PageRepository;
+
 
 use Ppi\TemplaVoilaPlus\Configuration\BackendConfiguration;
 use Ppi\TemplaVoilaPlus\Service\ConfigurationService;
@@ -76,6 +79,8 @@ class DataStructuresController extends ActionController
     }
 
     /**
+     * Partly Taken from TYPO3\CMS\Form\Controller\FormEditorController
+     *
      * Edits configuration from dataStructurePlace
      *
      * @param string $uuid Uuid of dataStructurePlace
@@ -106,23 +111,53 @@ class DataStructuresController extends ActionController
             ],
             'prototypeName' => 'standard',
         ];
-        $formEditorAppInitialData = [
-            'formEditorDefinitions' => [
-                'formElements' => [
-                    'DataStructure' => [
-                        'paginationTitle' => 'Sheet {0} of {1}',
-                        'iconIdentifier' => 'extensions-templavoila-datastructure-default',
+        $formEditorDefinitions = [
+            'formElements' => [
+                'DataStructure' => [
+                    'editors' => [
+                        0 => [
+                            'identifier' => 'header',
+                            'templateName' => 'Inspector-FormElementHeaderEditor',
+                        ],
+                        1 => [
+                            'identifier' => 'label',
+                            'templateName' => 'Inspector-TextEditor',
+                            'label' => 'formEditor.elements.BaseFormElementMixin.editor.label.label',
+                            'propertyPath' => 'label',
+                        ],
                     ],
-                    'Sheet' => [
-                        'iconIdentifier' => 't3-form-icon-page',
-                    ],
+                    '_isCompositeFormElement' => FALSE,
+                    '_isTopLevelFormElement' => TRUE,
+                    'paginationTitle' => 'Sheet {0} of {1}',
+                    'iconIdentifier' => 'extensions-templavoila-datastructure-default',
                 ],
-                'finishers' => [],
-                'validators' => [],
-                'formElementPropertyValidators' => [],
+                'Sheet' => [
+                    'editors' => [
+                        0 => [
+                            'identifier' => 'header',
+                            'templateName' => 'Inspector-FormElementHeaderEditor',
+                        ],
+                        1 => [
+                            'identifier' => 'label',
+                            'templateName' => 'Inspector-TextEditor',
+                            'label' => 'formEditor.elements.BaseFormElementMixin.editor.label.label',
+                            'propertyPath' => 'label',
+                        ],
+                    ],
+                    '_isCompositeFormElement' => TRUE,
+                    '_isTopLevelFormElement' => TRUE,
+                    'iconIdentifier' => 't3-form-icon-page',
+                ],
             ],
+            'finishers' => [],
+            'validators' => [],
+            'formElementPropertyValidators' => [],
+        ];
+
+        $formEditorAppInitialData = [
+            'formEditorDefinitions' => $formEditorDefinitions,
             'formDefinition' => $formDefinition,
-            'formPersistenceIdentifier' => 'persIdent', //$uuid . ':' . $file,
+            'formPersistenceIdentifier' => $uuid . ':' . $file,
             'prototypeName' => 'standard',
             'endpoints' => [
                 'formPageRenderer' => $this->controllerContext->getUriBuilder()->uriFor('renderFormPage'),
@@ -133,8 +168,8 @@ class DataStructuresController extends ActionController
         ];
 
         $this->view->assign('formEditorAppInitialData', json_encode($formEditorAppInitialData));
-//         $this->view->assign('stylesheets', $this->resolveResourcePaths($this->prototypeConfiguration['formEditor']['stylesheets']));
-//         $this->view->assign('formEditorTemplates', $this->renderFormEditorTemplates($formEditorDefinitions));
+        $this->view->assign('stylesheets', ['EXT:form/Resources/Public/Css/form.css']);
+        $this->view->assign('formEditorTemplates', $this->renderFormEditorTemplates($formEditorDefinitions));
         $this->view->assign(
             'dynamicRequireJsModules',
             [
@@ -146,6 +181,169 @@ class DataStructuresController extends ActionController
 
         $this->view->setLayoutRootPaths(['EXT:form/Resources/Private/Backend/Layouts']);
         $this->view->setPartialRootPaths(['EXT:form/Resources/Private/Backend/Partials']);
+    }
+
+    /**
+     * Taken from TYPO3\CMS\Form\Controller\FormEditorController
+     *
+     * Render the "text/x-formeditor-template" templates.
+     *
+     * @param array $formEditorDefinitions
+     * @return string
+     */
+    protected function renderFormEditorTemplates(array $formEditorDefinitions): string
+    {
+//         $fluidConfiguration = $this->prototypeConfiguration['formEditor']['formEditorFluidConfiguration'];
+//         $formEditorPartials = $this->prototypeConfiguration['formEditor']['formEditorPartials'];
+
+        $fluidConfiguration = [
+            'templatePathAndFilename' => 'EXT:form/Resources/Private/Backend/Templates/FormEditor/InlineTemplates.html',
+            'partialRootPaths' => [10 => 'EXT:form/Resources/Private/Backend/Partials/FormEditor/'],
+            'layoutRootPaths' => [10 => 'EXT:form/Resources/Private/Backend/Layouts/FormEditor/'],
+        ];
+
+        $formEditorPartials = [
+            'FormElement-_ElementToolbar' => 'Stage/_ElementToolbar',
+            'FormElement-_UnknownElement' => 'Stage/_UnknownElement',
+            'FormElement-Page' => 'Stage/Page',
+            'FormElement-SummaryPage' => 'Stage/SummaryPage',
+            'FormElement-Fieldset' => 'Stage/Fieldset',
+            'FormElement-GridContainer' => 'Stage/Fieldset',
+            'FormElement-GridRow' => 'Stage/Fieldset',
+            'FormElement-Text' => 'Stage/SimpleTemplate',
+            'FormElement-Password' => 'Stage/SimpleTemplate',
+            'FormElement-AdvancedPassword' => 'Stage/SimpleTemplate',
+            'FormElement-Textarea' => 'Stage/SimpleTemplate',
+            'FormElement-Checkbox' => 'Stage/SimpleTemplate',
+            'FormElement-MultiCheckbox' => 'Stage/SelectTemplate',
+            'FormElement-MultiSelect' => 'Stage/SelectTemplate',
+            'FormElement-RadioButton' => 'Stage/SelectTemplate',
+            'FormElement-SingleSelect' => 'Stage/SelectTemplate',
+            'FormElement-DatePicker' => 'Stage/SimpleTemplate',
+            'FormElement-StaticText' => 'Stage/StaticText',
+            'FormElement-Hidden' => 'Stage/SimpleTemplate',
+            'FormElement-ContentElement' => 'Stage/ContentElement',
+            'FormElement-FileUpload' => 'Stage/FileUploadTemplate',
+            'FormElement-ImageUpload' => 'Stage/FileUploadTemplate',
+            'Modal-InsertElements' => 'Modals/InsertElements',
+            'Modal-InsertPages' => 'Modals/InsertPages',
+            'Modal-ValidationErrors' => 'Modals/ValidationErrors',
+            'Inspector-FormElementHeaderEditor' => 'Inspector/FormElementHeaderEditor',
+            'Inspector-CollectionElementHeaderEditor' => 'Inspector/CollectionElementHeaderEditor',
+            'Inspector-TextEditor' => 'Inspector/TextEditor',
+            'Inspector-PropertyGridEditor' => 'Inspector/PropertyGridEditor',
+            'Inspector-SingleSelectEditor' => 'Inspector/SingleSelectEditor',
+            'Inspector-MultiSelectEditor' => 'Inspector/MultiSelectEditor',
+            'Inspector-GridColumnViewPortConfigurationEditor' => 'Inspector/GridColumnViewPortConfigurationEditor',
+            'Inspector-TextareaEditor' => 'Inspector/TextareaEditor',
+            'Inspector-RemoveElementEditor' => 'Inspector/RemoveElementEditor',
+            'Inspector-FinishersEditor' => 'Inspector/FinishersEditor',
+            'Inspector-ValidatorsEditor' => 'Inspector/ValidatorsEditor',
+            'Inspector-RequiredValidatorEditor' => 'Inspector/RequiredValidatorEditor',
+            'Inspector-CheckboxEditor' => 'Inspector/CheckboxEditor',
+            'Inspector-Typo3WinBrowserEditor' => 'Inspector/Typo3WinBrowserEditor',
+        ];
+
+        if (!isset($fluidConfiguration['templatePathAndFilename'])) {
+            throw new RenderingException(
+                'The option templatePathAndFilename must be set.',
+                1485636499
+            );
+        }
+        if (
+            !isset($fluidConfiguration['layoutRootPaths'])
+            || !is_array($fluidConfiguration['layoutRootPaths'])
+        ) {
+            throw new RenderingException(
+                'The option layoutRootPaths must be set.',
+                1480294721
+            );
+        }
+        if (
+            !isset($fluidConfiguration['partialRootPaths'])
+            || !is_array($fluidConfiguration['partialRootPaths'])
+        ) {
+            throw new RenderingException(
+                'The option partialRootPaths must be set.',
+                1480294722
+            );
+        }
+
+        $insertRenderablesPanelConfiguration = $this->getInsertRenderablesPanelConfiguration($formEditorDefinitions['formElements']);
+
+        $view = $this->objectManager->get(TemplateView::class);
+        $view->setControllerContext(clone $this->controllerContext);
+        $view->getRenderingContext()->getTemplatePaths()->fillFromConfigurationArray($fluidConfiguration);
+        $view->setTemplatePathAndFilename($fluidConfiguration['templatePathAndFilename']);
+        $view->assignMultiple([
+            'insertRenderablesPanelConfiguration' => $insertRenderablesPanelConfiguration,
+            'formEditorPartials' => $formEditorPartials,
+        ]);
+
+        return $view->render();
+    }
+
+
+    /**
+     * Taken from TYPO3\CMS\Form\Controller\FormEditorController
+     *
+     * Prepare the formElements.*.formEditor section from the YAML settings.
+     * Sort all formElements into groups and add additional data.
+     *
+     * @param array $formElementsDefinition
+     * @return array
+     */
+    protected function getInsertRenderablesPanelConfiguration(array $formElementsDefinition): array
+    {
+        $formElementGroups = []; //isset($this->prototypeConfiguration['formEditor']['formElementGroups']) ? $this->prototypeConfiguration['formEditor']['formElementGroups'] : [];
+        $formElementsByGroup = [];
+
+        foreach ($formElementsDefinition as $formElementName => $formElementConfiguration) {
+            if (!isset($formElementConfiguration['group'])) {
+                continue;
+            }
+            if (!isset($formElementsByGroup[$formElementConfiguration['group']])) {
+                $formElementsByGroup[$formElementConfiguration['group']] = [];
+            }
+
+            $formElementConfiguration = TranslationService::getInstance()->translateValuesRecursive(
+                $formElementConfiguration,
+                $this->prototypeConfiguration['formEditor']['translationFile']
+            );
+
+            $formElementsByGroup[$formElementConfiguration['group']][] = [
+                'key' => $formElementName,
+                'cssKey' => preg_replace('/[^a-z0-9]/', '-', strtolower($formElementName)),
+                'label' => $formElementConfiguration['label'],
+                'sorting' => $formElementConfiguration['groupSorting'],
+                'iconIdentifier' => $formElementConfiguration['iconIdentifier'],
+            ];
+        }
+
+        $formGroups = [];
+        foreach ($formElementGroups as $groupName => $groupConfiguration) {
+            if (!isset($formElementsByGroup[$groupName])) {
+                continue;
+            }
+
+            usort($formElementsByGroup[$groupName], function ($a, $b) {
+                return $a['sorting'] - $b['sorting'];
+            });
+            unset($formElementsByGroup[$groupName]['sorting']);
+
+            $groupConfiguration = TranslationService::getInstance()->translateValuesRecursive(
+                $groupConfiguration,
+                $this->prototypeConfiguration['formEditor']['translationFile']
+            );
+
+            $formGroups[] = [
+                'key' => $groupName,
+                'elements' => $formElementsByGroup[$groupName],
+                'label' => $groupConfiguration['label'],
+            ];
+        }
+
+        return $formGroups;
     }
 
     /**
