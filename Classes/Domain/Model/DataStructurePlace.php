@@ -91,9 +91,16 @@ class DataStructurePlace
         return $this->dataStructures;
     }
 
+    public function getDataStructure($identifier): AbstractDataStructure
+    {
+        $this->initializeDataStructures();
+        return $this->dataStructures[$identifier];
+    }
+
     protected function initializeDataStructures()
     {
         if ($this->dataStructures === null) {
+            $this->dataStructures = [];
             $resourceFactory = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance();
 
             $filter = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter::class);
@@ -102,7 +109,11 @@ class DataStructurePlace
             $folder = $resourceFactory->retrieveFileOrFolderObject($this->pathAbsolute);
             $folder->setFileAndFolderNameFilters([[$filter, 'filterFileList']]);
 
-            $this->dataStructures = $folder->getFiles(0, 0, \TYPO3\CMS\Core\Resource\Folder::FILTER_MODE_USE_OWN_FILTERS, true);
+            $files = $folder->getFiles(0, 0, \TYPO3\CMS\Core\Resource\Folder::FILTER_MODE_USE_OWN_FILTERS, true);
+
+            foreach($files as $file) {
+                $this->dataStructures[$file->getIdentifier()] = new XmlFileDataStructure($file, $this->scope);
+            }
         }
     }
 }

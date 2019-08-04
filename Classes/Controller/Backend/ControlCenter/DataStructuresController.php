@@ -88,22 +88,17 @@ class DataStructuresController extends ActionController
      */
     public function editAction($uuid, $identifier)
     {
+        $this->view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation([]);
+        $this->view->getModuleTemplate()->setFlashMessageQueue($this->controllerContext->getFlashMessageQueue());
+
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
         $dataStructurePlace = $configurationService->getDataStructurePlace($uuid);
+        $dataStructure = $dataStructurePlace->getDataStructure($identifier);
 
-//         $this->view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation([]);
-//         $this->view->getModuleTemplate()->setFlashMessageQueue($this->controllerContext->getFlashMessageQueue());
-//
-//         $buttonBar = $this->view->getModuleTemplate()->getDocHeaderComponent()->getButtonBar();
-//         $button = $buttonBar->makeLinkButton()
-//             ->setHref($this->getControllerContext()->getUriBuilder()->uriFor('list'))
-//             ->setTitle('Back')
-//             ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
-//         $buttonBar->addButton($button, ButtonBar::BUTTON_POSITION_LEFT, 1);
         $formDefinition = [
             'type' => 'DataStructure',
             'identifier' => $uuid, // . '-' . $file,
-            'label' => $uuid . ':' . $identifier,
+            'label' => $dataStructure->getLabel(),
             'renderables' => [
                 0 => [
                     'type' => 'Sheet',
