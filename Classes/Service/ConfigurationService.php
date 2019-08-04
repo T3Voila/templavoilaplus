@@ -18,6 +18,8 @@ use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
+use Ppi\TemplaVoilaPlus\Domain\Model\DataStructurePlace;
+
 class ConfigurationService implements SingletonInterface
 {
     private $extConfig = [];
@@ -57,6 +59,15 @@ class ConfigurationService implements SingletonInterface
         return $this->dataStructurePlaces;
     }
 
+    public function getDataStructurePlace($uuid): DataStructurePlace
+    {
+        $this->initialize();
+        if (!isset($this->dataStructurePlaces[$uuid])) {
+            throw new \Exception('DataStructurePlace "' . $uuid . '" not available.');
+        }
+        return $this->dataStructurePlaces[$uuid];
+    }
+
     public function getTemplatePlaces(): array
     {
         $this->initialize();
@@ -86,13 +97,8 @@ class ConfigurationService implements SingletonInterface
             throw new \Exception('uuid already exists');
         }
 
-        $this->dataStructurePlaces[$uuid] = [
-            'name' => $name,
-            'uuid' => $uuid,
-            'pathAbs' => $pathAbsolute,
-            'pathRel' => PathUtility::stripPathSitePrefix($pathAbsolute),
-            'scope' => $scope, // Caution scope should be the table name in a future release
-        ];
+        $dataStructurePlace = new DataStructurePlace($uuid, $name, $scope, $pathAbsolute);
+        $this->dataStructurePlaces[$uuid] = $dataStructurePlace;
     }
 
     public function registerTemplatePlace($uuid, $name, $path, $renderer, $scope)

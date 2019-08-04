@@ -70,7 +70,6 @@ class DataStructuresController extends ActionController
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
         $dataStructurePlaces = $configurationService->getDataStructurePlaces();
 
-        $dataStructurePlaces = $this->enrichDataStructurePlacesWithFiles($dataStructurePlaces);
         $dataStructurePlacesByScope = $this->reorderDataStructurePlacesByScope($dataStructurePlaces);
 
         $this->view->assign('pageTitle', 'TemplaVoilà! Plus - DataStructure List');
@@ -84,11 +83,14 @@ class DataStructuresController extends ActionController
      * Edits configuration from dataStructurePlace
      *
      * @param string $uuid Uuid of dataStructurePlace
-     * @param string $file Identifier inside the dataStructurePlace
+     * @param string $identifier Identifier inside the dataStructurePlace
      * @return void
      */
-    public function editAction($uuid, $file)
+    public function editAction($uuid, $identifier)
     {
+        $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
+        $dataStructurePlace = $configurationService->getDataStructurePlace($uuid);
+
 //         $this->view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation([]);
 //         $this->view->getModuleTemplate()->setFlashMessageQueue($this->controllerContext->getFlashMessageQueue());
 //
@@ -101,7 +103,7 @@ class DataStructuresController extends ActionController
         $formDefinition = [
             'type' => 'DataStructure',
             'identifier' => $uuid, // . '-' . $file,
-            'label' => $uuid . ':' . $file,
+            'label' => $uuid . ':' . $identifier,
             'renderables' => [
                 0 => [
                     'type' => 'Sheet',
@@ -126,8 +128,8 @@ class DataStructuresController extends ActionController
                             'propertyPath' => 'label',
                         ],
                     ],
-                    '_isCompositeFormElement' => FALSE,
-                    '_isTopLevelFormElement' => TRUE,
+                    '_isCompositeFormElement' => false,
+                    '_isTopLevelFormElement' => true,
                     'paginationTitle' => 'Sheet {0} of {1}',
                     'iconIdentifier' => 'extensions-templavoila-datastructure-default',
                 ],
@@ -144,8 +146,8 @@ class DataStructuresController extends ActionController
                             'propertyPath' => 'label',
                         ],
                     ],
-                    '_isCompositeFormElement' => TRUE,
-                    '_isTopLevelFormElement' => TRUE,
+                    '_isCompositeFormElement' => true,
+                    '_isTopLevelFormElement' => true,
                     'iconIdentifier' => 't3-form-icon-page',
                 ],
             ],
@@ -157,7 +159,7 @@ class DataStructuresController extends ActionController
         $formEditorAppInitialData = [
             'formEditorDefinitions' => $formEditorDefinitions,
             'formDefinition' => $formDefinition,
-            'formPersistenceIdentifier' => $uuid . ':' . $file,
+            'formPersistenceIdentifier' => $uuid . ':' . $identifier,
             'prototypeName' => 'standard',
             'endpoints' => [
                 'formPageRenderer' => $this->controllerContext->getUriBuilder()->uriFor('renderFormPage'),
@@ -351,23 +353,22 @@ class DataStructuresController extends ActionController
      * @TODO This implementation is only for complete files not for DB records/overloads/...
      *
      * @param string $uuid Uuid of dataStructurePlace
-     * @param string $file Identifier inside the dataStructurePlace
+     * @param string $identifier Identifier inside the dataStructurePlace
      * @return void
      */
-    public function deleteAction($uuid, $file)
+    public function deleteAction($uuid, $identifier)
     {
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
-        $dataStructurePlaces = $configurationService->getDataStructurePlaces();
-        $dataStructurePlaces = $this->enrichDataStructurePlacesWithFiles([$uuid => $dataStructurePlaces[$uuid]]);
+        $dataStructurePlace = $configurationService->getDataStructurePlace($uuid);
 
-        foreach ($dataStructurePlaces[$uuid]['files'] as $fileObject) {
-            if ($fileObject->getIdentifier() === $file) {
+        foreach ($dataStructurePlaces['files'] as $fileObject) {
+            if ($fileObject->getIdentifier() === $identifier) {
                 $fileObject->delete();
             }
         }
 
         $this->addFlashMessage(
-            'DataStructure ' . $file . ' deleted.',
+            'DataStructure ' . $identifier . ' deleted.',
             '',
             FlashMessage::INFO
         );
@@ -375,28 +376,11 @@ class DataStructuresController extends ActionController
         $this->redirect('list');
     }
 
-    protected function enrichDataStructurePlacesWithFiles(array $dataStructurePlaces): array
-    {
-        $resourceFactory = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance();
-
-        $filter = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter::class);
-        $filter->setAllowedFileExtensions('xml');
-
-        foreach ($dataStructurePlaces as $uuid => $dataStructurePlace) {
-            $folder = $resourceFactory->retrieveFileOrFolderObject($dataStructurePlace['pathAbs']);
-            $folder->setFileAndFolderNameFilters([[$filter, 'filterFileList']]);
-
-           $dataStructurePlaces[$uuid]['files'] = $folder->getFiles(0, 0, \TYPO3\CMS\Core\Resource\Folder::FILTER_MODE_USE_OWN_FILTERS, true);
-        }
-
-        return $dataStructurePlaces;
-    }
-
     protected function reorderDataStructurePlacesByScope(array $dataStructurePlaces): array
     {
         $dataStructurePlacesByScope = [];
         foreach ($dataStructurePlaces as $uuid => $dataStructurePlace) {
-            $dataStructurePlacesByScope[$dataStructurePlace['scope']][] = $dataStructurePlace;
+            $dataStructurePlacesByScope[$dataStructurePlace->getScope()][] = $dataStructurePlace;
         }
 
         return $dataStructurePlacesByScope;
