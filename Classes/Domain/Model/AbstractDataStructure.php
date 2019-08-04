@@ -166,6 +166,22 @@ abstract class AbstractDataStructure
         return $arr;
     }
 
+    public function getDataStructureAsArray($dataStructureXml)
+    {
+        $dataStructureArray = [];
+
+        if (strlen($dataStructureXml) > 1) {
+            $dataStructureArray = GeneralUtility::xml2array($dataStructureXml);
+            if (!is_array($dataStructureArray)) {
+                throw new DataStructureException(
+                    'XML of DS "' . $this->getLabel() . '" cant\'t be read, we get following error: ' . $dataStructureArray
+                );
+            }
+        }
+
+        return $dataStructureArray;
+    }
+
     /**
      * Determine whether the current user has permission to create elements based on this
      * datastructure or not
