@@ -42,17 +42,17 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <f:if condition="{dataStructurePlace.files -> f:count()} > 0">
+                                            <f:if condition="{dataStructurePlace.dataStructures -> f:count()} > 0">
                                                 <f:then>
                                                     <table class="table table-striped table-hover">
-                                                        <f:for each="{dataStructurePlace.files}" as="file">
+                                                        <f:for each="{dataStructurePlace.dataStructures}" as="dataStructure">
                                                             <tr>
-                                                                <td>{file.name}</td>
+                                                                <td>{dataStructure.name}</td>
                                                                 <td>
                                                                     <div class="btn-group" role="group" aria-label="...">
-                                                                        <f:link.action action="edit" arguments="{'uuid': dataStructurePlace.uuid, 'file': file.identifier}" class="btn btn-default"><core:icon identifier="actions-open" /></f:link.action>
-                                                                        <f:link.action action="info" arguments="{'uuid': dataStructurePlace.uuid, 'file': file.identifier}" class="btn btn-default"><core:icon identifier="actions-document-info" /></f:link.action>
-                                                                        <f:link.action action="delete" arguments="{'uuid': dataStructurePlace.uuid, 'file': file.identifier}" class="btn btn-danger"><core:icon identifier="actions-edit-delete" /></f:link.action>
+                                                                        <f:link.action action="edit" arguments="{'uuid': dataStructurePlace.uuid, 'identifier': dataStructure.identifier}" class="btn btn-default"><core:icon identifier="actions-open" /></f:link.action>
+                                                                        <f:link.action action="info" arguments="{'uuid': dataStructurePlace.uuid, 'identifier': dataStructure.identifier}" class="btn btn-default"><core:icon identifier="actions-document-info" /></f:link.action>
+                                                                        <f:link.action action="delete" arguments="{'uuid': dataStructurePlace.uuid, 'identifier': dataStructure.identifier}" class="btn btn-danger"><core:icon identifier="actions-edit-delete" /></f:link.action>
                                                                     </div>
                                                                 </td>
                                                             </tr>
