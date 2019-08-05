@@ -30,6 +30,7 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
 
 
 use Ppi\TemplaVoilaPlus\Configuration\BackendConfiguration;
+use Ppi\TemplaVoilaPlus\Domain\Model\AbstractDataStructure;
 use Ppi\TemplaVoilaPlus\Service\ConfigurationService;
 use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
@@ -95,19 +96,7 @@ class DataStructuresController extends ActionController
         $dataStructurePlace = $configurationService->getDataStructurePlace($uuid);
         $dataStructure = $dataStructurePlace->getDataStructure($identifier);
 
-        $formDefinition = [
-            'type' => 'DataStructure',
-            'identifier' => $uuid, // . '-' . $file,
-            'label' => $dataStructure->getLabel(),
-            'renderables' => [
-                0 => [
-                    'type' => 'Sheet',
-                    'identifier' => 'sheet1',
-                    'label' => 'Sheet 1',
-                ],
-            ],
-            'prototypeName' => 'standard',
-        ];
+        $formDefinition = $this->transformDataStructureForFormEditor($uuid, $dataStructure);
         $formEditorDefinitions = [
             'formElements' => [
                 'DataStructure' => [
@@ -119,7 +108,7 @@ class DataStructuresController extends ActionController
                         1 => [
                             'identifier' => 'label',
                             'templateName' => 'Inspector-TextEditor',
-                            'label' => 'formEditor.elements.BaseFormElementMixin.editor.label.label',
+                            'label' => 'Name',
                             'propertyPath' => 'label',
                         ],
                     ],
@@ -137,13 +126,83 @@ class DataStructuresController extends ActionController
                         1 => [
                             'identifier' => 'label',
                             'templateName' => 'Inspector-TextEditor',
-                            'label' => 'formEditor.elements.BaseFormElementMixin.editor.label.label',
+                            'label' => 'Label',
                             'propertyPath' => 'label',
+                        ],
+                        2 => [
+                            'identifier' => 'description',
+                            'templateName' => 'Inspector-TextareaEditor',
+                            'label' => 'Description',
+                            'propertyPath' => 'description',
                         ],
                     ],
                     '_isCompositeFormElement' => true,
                     '_isTopLevelFormElement' => true,
+                    'label' => 'Sheet',
                     'iconIdentifier' => 't3-form-icon-page',
+                ],
+                'TypoScriptObject' => [
+                    'editors' => [
+                        0 => [
+                            'identifier' => 'header',
+                            'templateName' => 'Inspector-FormElementHeaderEditor',
+                        ],
+                        1 => [
+                            'identifier' => 'title',
+                            'templateName' => 'Inspector-TextEditor',
+                            'label' => 'Field title',
+                            'propertyPath' => 'title',
+                        ],
+                        2 => [
+                            'identifier' => 'TypoScriptObjectPath',
+                            'templateName' => 'Inspector-TextEditor',
+                            'label' => 'Object path in TypoScript',
+                            'propertyPath' => 'typoScriptObjectPath',
+                        ],
+                    ],
+                    'label' => 'TypoScriptObject',
+                    'group' => 'TypoScript',
+                    'iconIdentifier' => 'mimetypes-text-typoscript',
+                ],
+                'ce' => [
+                    'editors' => [
+                        0 => [
+                            'identifier' => 'header',
+                            'templateName' => 'Inspector-FormElementHeaderEditor',
+                        ],
+                        1 => [
+                            'identifier' => 'title',
+                            'templateName' => 'Inspector-TextEditor',
+                            'label' => 'Field title',
+                            'propertyPath' => 'title',
+                        ],
+                    ],
+                    'label' => 'Field',
+                    'group' => 'Fields',
+                    'iconIdentifier' => 't3-form-icon-content-element',
+                ],
+                'none' => [
+                    'editors' => [
+                        0 => [
+                            'identifier' => 'header',
+                            'templateName' => 'Inspector-FormElementHeaderEditor',
+                        ],
+                        1 => [
+                            'identifier' => 'title',
+                            'templateName' => 'Inspector-TextEditor',
+                            'label' => 'Field title',
+                            'propertyPath' => 'title',
+                        ],
+                        2 => [
+                            'identifier' => 'TypoScript',
+                            'templateName' => 'Inspector-TextareaEditor',
+                            'label' => 'TypoScript',
+                            'propertyPath' => 'TypoScript',
+                        ],
+                    ],
+                    'label' => 'Plain TypoScript',
+                    'group' => 'TypoScript',
+                    'iconIdentifier' => 'mimetypes-x-content-script',
                 ],
             ],
             'finishers' => [],
@@ -178,6 +237,116 @@ class DataStructuresController extends ActionController
 
         $this->view->setLayoutRootPaths(['EXT:form/Resources/Private/Backend/Layouts']);
         $this->view->setPartialRootPaths(['EXT:form/Resources/Private/Backend/Partials']);
+    }
+
+
+    /**
+     * @todo move this to FormDefinitionConversionService
+     * @param array $formDefinition
+     * @return array
+     */
+    protected function transformDataStructureForFormEditor($uuid, AbstractDataStructure $dataStructure): array
+    {
+        $dataStructureArray = $dataStructure->getDataStructureArray();
+
+        $formDefinition = [
+            'type' => 'DataStructure',
+            'identifier' => $uuid, // . '-' . $file,
+            'label' => $dataStructure->getLabel(),
+            'renderables' => [],
+            'prototypeName' => 'standard',
+        ];
+
+        $sheets = [];
+        if (isset($dataStructureArray['sheets'])) {
+            //$this->transformMultiSheetDataForFormEditor($dataStructureArray['sheets'])
+        } elseif (isset($dataStructureArray['ROOT'])) {
+            $sheets = [$this->transformSingleSheetDataForFormEditor($dataStructureArray['ROOT'])];
+        } else {
+            $sheets = [[
+                'type' => 'Sheet',
+                'identifier' => 'ROOT',
+                'label' => 'Sheet 1',
+
+                '_orig_type' => [
+                    'value' => 'Sheet',
+                ],
+            ]];
+        }
+
+        $formDefinition['renderables'] = $sheets;
+
+        return $formDefinition;
+    }
+
+    protected function transformSingleSheetDataForFormEditor(array $sheetStructure): array
+    {
+        $sheet = [
+            'type' => 'Sheet',
+            'identifier' => 'ROOT',
+            'label' => $sheetStructure['tx_templavoilaplus']['title'],
+            'description' => $sheetStructure['tx_templavoilaplus']['description'],
+
+            '_orig_type' => [
+                'value' => 'Sheet',
+            ],
+        ];
+
+        if ($sheetStructure['type'] === 'array' && is_array($sheetStructure['el'])) {
+            $sheet['renderables'] = $this->transformElementArrayDataForFormEditor($sheetStructure['el']);
+        }
+
+        return $sheet;
+    }
+
+    protected function transformElementArrayDataForFormEditor(array $arrayStructure): array
+    {
+        $elements = [];
+        foreach($arrayStructure as $identifier => $elementStructure) {
+            if (!empty($elementStructure['tx_templavoilaplus']['eType'])) {
+                switch ($elementStructure['tx_templavoilaplus']['eType']) {
+                    case 'TypoScriptObject':
+                        $element = [
+                            'type' => $elementStructure['tx_templavoilaplus']['eType'],
+                            'identifier' => $identifier,
+                            'title' => $elementStructure['tx_templavoilaplus']['title'],
+
+                            '_orig_type' => [
+                                'value' => $elementStructure['tx_templavoilaplus']['eType'],
+                            ],
+
+                            'typoScriptObjectPath' => $elementStructure['tx_templavoilaplus']['TypoScriptObjPath'],
+                        ];
+                        break;
+                    case 'ce':
+                        $element = [
+                            'type' => $elementStructure['tx_templavoilaplus']['eType'],
+                            'identifier' => $identifier,
+                            'title' => $elementStructure['tx_templavoilaplus']['title'],
+
+                        ];
+                        break;
+                    case 'none':
+                        $element = [
+                            'type' => $elementStructure['tx_templavoilaplus']['eType'],
+                            'identifier' => $identifier,
+                            'title' => $elementStructure['tx_templavoilaplus']['title'],
+
+                            'TypoScript' => $elementStructure['tx_templavoilaplus']['TypoScript'],
+                        ];
+                        break;
+                    default:
+                        $element = [
+                            'type' => $elementStructure['tx_templavoilaplus']['eType'],
+                            'identifier' => $identifier,
+                            'title' => $elementStructure['tx_templavoilaplus']['title'],
+                        ];
+                }
+                $elements[] = $element;
+            }
+        }
+
+        return $elements;
     }
 
     /**
@@ -222,6 +391,12 @@ class DataStructuresController extends ActionController
             'FormElement-ContentElement' => 'Stage/ContentElement',
             'FormElement-FileUpload' => 'Stage/FileUploadTemplate',
             'FormElement-ImageUpload' => 'Stage/FileUploadTemplate',
+
+            'FormElement-Sheet' => 'Stage/Page',
+            'FormElement-TypoScriptObject' => 'Stage/SimpleTemplate',
+            'FormElement-none' => 'Stage/SimpleTemplate',
+            'FormElement-ce' => 'Stage/ContentElement',
+
             'Modal-InsertElements' => 'Modals/InsertElements',
             'Modal-InsertPages' => 'Modals/InsertPages',
             'Modal-ValidationErrors' => 'Modals/ValidationErrors',
@@ -292,7 +467,14 @@ class DataStructuresController extends ActionController
      */
     protected function getInsertRenderablesPanelConfiguration(array $formElementsDefinition): array
     {
-        $formElementGroups = []; //isset($this->prototypeConfiguration['formEditor']['formElementGroups']) ? $this->prototypeConfiguration['formEditor']['formElementGroups'] : [];
+        $formElementGroups = [
+            'TypoScript' => [
+                'label' => 'TypoScript',
+            ],
+            'Fields' => [
+                'label' => 'Fields',
+            ],
+        ];
         $formElementsByGroup = [];
 
         foreach ($formElementsDefinition as $formElementName => $formElementConfiguration) {
@@ -305,7 +487,7 @@ class DataStructuresController extends ActionController
 
             $formElementConfiguration = TranslationService::getInstance()->translateValuesRecursive(
                 $formElementConfiguration,
-                $this->prototypeConfiguration['formEditor']['translationFile']
+                '' // @TODO Translation file
             );
 
             $formElementsByGroup[$formElementConfiguration['group']][] = [
@@ -330,7 +512,7 @@ class DataStructuresController extends ActionController
 
             $groupConfiguration = TranslationService::getInstance()->translateValuesRecursive(
                 $groupConfiguration,
-                $this->prototypeConfiguration['formEditor']['translationFile']
+                '' // @TODO Translation file
             );
 
             $formGroups[] = [
