@@ -633,14 +633,14 @@ page.10.disableExplosivePreview = 1';
                 }
                 // we're not inserting useful data - can't make a decission
                 if (!is_array($data[$field]) || !is_array($data[$field]['data'])) {
-                    $res = false;
+                    $res = null;
                     break;
                 }
                 // we're not inserting operating on an flex field - can't make a decission
                 if (!is_array($TCA[$table]['columns'][$field]['config']) ||
                     $TCA[$table]['columns'][$field]['config']['type'] != 'flex'
                 ) {
-                    $res = false;
+                    $res = null;
                     break;
                 }
                 // get the field-information and check if only "ce" fields are updated
@@ -648,24 +648,24 @@ page.10.disableExplosivePreview = 1';
                 $currentRecord = BackendUtility::getRecord($table, $id);
                 $dataStructArray = TemplaVoilaUtility::getFlexFormDS($conf, $currentRecord, $table, $field);
                 foreach ($data[$field]['data'] as $sheetData) {
-                    if (!is_array($sheetData) || !is_array($dataStructArray['ROOT']['el'])) {
-                        $res = false;
+                    if (!is_array($sheetData) || !is_array($dataStructArray['sheets']['sDEF']['ROOT']['el'])) {
+                        $res = null;
                         break;
                     }
                     foreach ($sheetData as $lData) {
                         if (!is_array($lData)) {
-                            $res = false;
+                            $res = null;
                             break;
                         }
                         foreach ($lData as $fieldName => $fieldData) {
-                            if (!isset($dataStructArray['ROOT']['el'][$fieldName])) {
-                                $res = false;
+                            if (!isset($dataStructArray['sheets']['sDEF']['ROOT']['el'][$fieldName])) {
+                                $res = null;
                                 break;
                             }
 
-                            $fieldConf = $dataStructArray['ROOT']['el'][$fieldName];
+                            $fieldConf = $dataStructArray['sheets']['sDEF']['ROOT']['el'][$fieldName];
                             if ($fieldConf['tx_templavoilaplus']['eType'] != 'ce') {
-                                $res = false;
+                                $res = null;
                                 break;
                             }
                         }
@@ -673,7 +673,7 @@ page.10.disableExplosivePreview = 1';
                 }
             }
             if (($res == 1) && !$pObj->doesRecordExist($table, $id, 'editcontent')) {
-                $res = false;
+                $res = null;
             }
         }
 
