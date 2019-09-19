@@ -648,7 +648,7 @@ page.10.disableExplosivePreview = 1';
                 $currentRecord = BackendUtility::getRecord($table, $id);
                 $dataStructArray = TemplaVoilaUtility::getFlexFormDS($conf, $currentRecord, $table, $field);
                 foreach ($data[$field]['data'] as $sheetData) {
-                    if (!is_array($sheetData) || !is_array($dataStructArray['sheets']['sDEF']['ROOT']['el'])) {
+                    if (!is_array($sheetData) || !is_array($dataStructArray['ROOT']['el'])) {
                         $res = null;
                         break;
                     }
@@ -658,12 +658,12 @@ page.10.disableExplosivePreview = 1';
                             break;
                         }
                         foreach ($lData as $fieldName => $fieldData) {
-                            if (!isset($dataStructArray['sheets']['sDEF']['ROOT']['el'][$fieldName])) {
+                            if (!isset($dataStructArray['ROOT']['el'][$fieldName])) {
                                 $res = null;
                                 break;
                             }
 
-                            $fieldConf = $dataStructArray['sheets']['sDEF']['ROOT']['el'][$fieldName];
+                            $fieldConf = $dataStructArray['ROOT']['el'][$fieldName];
                             if ($fieldConf['tx_templavoilaplus']['eType'] != 'ce') {
                                 $res = null;
                                 break;
