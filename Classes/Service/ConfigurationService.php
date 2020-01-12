@@ -91,7 +91,7 @@ class ConfigurationService implements SingletonInterface
         // @TODO Check if path is inside FAL and add danger hint!
         $pathAbsolute = GeneralUtility::getFileAbsFileName($path);
         if (!is_dir($pathAbsolute) || !is_readable($pathAbsolute)) {
-            throw new \Exception('path ' . $path . 'not exists or readable');
+            throw new \Exception('path "' . $path . '" does not exist or is not readable');
         }
         if (isset($this->dataStructurePlaces[$uuid])) {
             throw new \Exception('uuid already exists');
@@ -106,7 +106,7 @@ class ConfigurationService implements SingletonInterface
         // @TODO Check if path is inside FAL and add danger hint!
         $pathAbsolute = GeneralUtility::getFileAbsFileName($path);
         if (!is_dir($pathAbsolute) || !is_readable($pathAbsolute)) {
-            throw new \Exception('path ' . $path . 'not exists or readable');
+            throw new \Exception('path "' . $path . '" does not exist or is not readable');
         }
         if (isset($this->templatePlaces[$uuid])) {
             throw new \Exception('uuid already exists');
@@ -129,7 +129,7 @@ class ConfigurationService implements SingletonInterface
         // @TODO Check if path is inside FAL and add danger hint!
         $pathAbsolute = GeneralUtility::getFileAbsFileName($path);
         if (!is_dir($pathAbsolute) || !is_readable($pathAbsolute)) {
-            throw new \Exception('path ' . $path . 'not exists or readable');
+            throw new \Exception('path "' . $path . '" does not exist or is not readable');
         }
         if (isset($this->mappingPlaces[$uuid])) {
             throw new \Exception('uuid already exists');
