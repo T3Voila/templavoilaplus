@@ -17,6 +17,8 @@ namespace Ppi\TemplaVoilaPlus\Service;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface;
 
 use Ppi\TemplaVoilaPlus\Domain\Model\DataStructurePlace;
 
@@ -29,6 +31,11 @@ class ConfigurationService implements SingletonInterface
     private $availableRenderer = [];
 
     private $isInitialized = false;
+
+    /**
+     * @var array
+     */
+    protected $formSettings;
 
     public function __construct()
     {
@@ -44,7 +51,31 @@ class ConfigurationService implements SingletonInterface
         if (!$this->isInitialized) {
             $this->isInitialized = true;
             \Ppi\TemplaVoilaPlus\Utility\ExtensionUtility::handleAllExtensions();
+
+            $this->formSettings = GeneralUtility::makeInstance(ObjectManager::class)
+                ->get(ConfigurationManagerInterface::class)
+                ->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_YAML_SETTINGS, 'templavoilaplus');
         }
+    }
+
+    /**
+     * Get the prototype configuration
+     *
+     * @param string $prototypeName name of the prototype to get the configuration for
+     * @return array the prototype configuration
+     * @throws PrototypeNotFoundException if prototype with the name $prototypeName was not found
+     * @api
+     */
+    public function getFormPrototypeConfiguration(string $prototypeName): array
+    {
+        if (!isset($this->formSettings['prototypes'][$prototypeName])) {
+//             throw new PrototypeNotFoundException(
+            throw new \Exception(
+                sprintf('The Prototype "%s" was not found.', $prototypeName),
+                1475924277
+            );
+        }
+        return $this->formSettings['prototypes'][$prototypeName];
     }
 
     public function getExtensionConfig(): array

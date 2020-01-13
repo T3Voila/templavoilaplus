@@ -1,4 +1,11 @@
 module.tx_templavoilaplus {
+    settings {
+        yamlConfigurations {
+            10 = EXT:templavoilaplus/Configuration/Yaml/BaseSetup.yaml
+            #20 = EXT:templavoilaplus/Configuration/Yaml/FormEditorSetup.yaml
+            #30 = EXT:templavoilaplus/Configuration/Yaml/FormEngineSetup.yaml
+        }
+    }
     view {
         templateRootPaths.10 = EXT:templavoilaplus/Resources/Private/Templates/
         partialRootPaths.10 = EXT:templavoilaplus/Resources/Private/Partials/

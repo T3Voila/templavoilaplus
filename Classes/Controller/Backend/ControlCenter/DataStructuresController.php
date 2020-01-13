@@ -21,6 +21,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
@@ -96,125 +97,17 @@ class DataStructuresController extends ActionController
         $dataStructurePlace = $configurationService->getDataStructurePlace($uuid);
         $dataStructure = $dataStructurePlace->getDataStructure($identifier);
 
-        $formDefinition = $this->transformDataStructureForFormEditor($uuid, $dataStructure);
-        $formEditorDefinitions = [
-            'formElements' => [
-                'DataStructure' => [
-                    'editors' => [
-                        0 => [
-                            'identifier' => 'header',
-                            'templateName' => 'Inspector-FormElementHeaderEditor',
-                        ],
-                        1 => [
-                            'identifier' => 'label',
-                            'templateName' => 'Inspector-TextEditor',
-                            'label' => 'Name',
-                            'propertyPath' => 'label',
-                        ],
-                    ],
-                    '_isCompositeFormElement' => false,
-                    '_isTopLevelFormElement' => true,
-                    'paginationTitle' => 'Sheet {0} of {1}',
-                    'iconIdentifier' => 'extensions-templavoila-datastructure-default',
-                ],
-                'Sheet' => [
-                    'editors' => [
-                        0 => [
-                            'identifier' => 'header',
-                            'templateName' => 'Inspector-FormElementHeaderEditor',
-                        ],
-                        1 => [
-                            'identifier' => 'label',
-                            'templateName' => 'Inspector-TextEditor',
-                            'label' => 'Label',
-                            'propertyPath' => 'label',
-                        ],
-                        2 => [
-                            'identifier' => 'description',
-                            'templateName' => 'Inspector-TextareaEditor',
-                            'label' => 'Description',
-                            'propertyPath' => 'description',
-                        ],
-                    ],
-                    '_isCompositeFormElement' => true,
-                    '_isTopLevelFormElement' => true,
-                    'label' => 'Sheet',
-                    'iconIdentifier' => 't3-form-icon-page',
-                ],
-                'TypoScriptObject' => [
-                    'editors' => [
-                        0 => [
-                            'identifier' => 'header',
-                            'templateName' => 'Inspector-FormElementHeaderEditor',
-                        ],
-                        1 => [
-                            'identifier' => 'title',
-                            'templateName' => 'Inspector-TextEditor',
-                            'label' => 'Field title',
-                            'propertyPath' => 'title',
-                        ],
-                        2 => [
-                            'identifier' => 'TypoScriptObjectPath',
-                            'templateName' => 'Inspector-TextEditor',
-                            'label' => 'Object path in TypoScript',
-                            'propertyPath' => 'typoScriptObjectPath',
-                        ],
-                    ],
-                    'label' => 'TypoScriptObject',
-                    'group' => 'TypoScript',
-                    'iconIdentifier' => 'mimetypes-text-typoscript',
-                ],
-                'ce' => [
-                    'editors' => [
-                        0 => [
-                            'identifier' => 'header',
-                            'templateName' => 'Inspector-FormElementHeaderEditor',
-                        ],
-                        1 => [
-                            'identifier' => 'title',
-                            'templateName' => 'Inspector-TextEditor',
-                            'label' => 'Field title',
-                            'propertyPath' => 'title',
-                        ],
-                    ],
-                    'label' => 'Field',
-                    'group' => 'Fields',
-                    'iconIdentifier' => 't3-form-icon-content-element',
-                ],
-                'none' => [
-                    'editors' => [
-                        0 => [
-                            'identifier' => 'header',
-                            'templateName' => 'Inspector-FormElementHeaderEditor',
-                        ],
-                        1 => [
-                            'identifier' => 'title',
-                            'templateName' => 'Inspector-TextEditor',
-                            'label' => 'Field title',
-                            'propertyPath' => 'title',
-                        ],
-                        2 => [
-                            'identifier' => 'TypoScript',
-                            'templateName' => 'Inspector-TextareaEditor',
-                            'label' => 'TypoScript',
-                            'propertyPath' => 'TypoScript',
-                        ],
-                    ],
-                    'label' => 'Plain TypoScript',
-                    'group' => 'TypoScript',
-                    'iconIdentifier' => 'mimetypes-x-content-script',
-                ],
-            ],
-            'finishers' => [],
-            'validators' => [],
-            'formElementPropertyValidators' => [],
-        ];
+        $prototypeName = 'tvp-dynamic-structures';
+        $formDefinition = $this->transformDataStructureForFormEditor($uuid, $prototypeName, $dataStructure);
+
+        $this->prototypeConfiguration = $configurationService->getFormPrototypeConfiguration($prototypeName);
+        $formEditorDefinitions = $this->getFormEditorDefinitions();
 
         $formEditorAppInitialData = [
             'formEditorDefinitions' => $formEditorDefinitions,
             'formDefinition' => $formDefinition,
             'formPersistenceIdentifier' => $uuid . ':' . $identifier,
-            'prototypeName' => 'standard',
+            'prototypeName' => $prototypeName,
             'endpoints' => [
                 'formPageRenderer' => $this->controllerContext->getUriBuilder()->uriFor('renderFormPage'),
                 'saveForm' => $this->controllerContext->getUriBuilder()->uriFor('saveForm')
@@ -241,11 +134,43 @@ class DataStructuresController extends ActionController
 
 
     /**
+     * Reduce the YAML settings by the 'formEditor' keyword.
+     *
+     * @return array
+     */
+    protected function getFormEditorDefinitions(): array
+    {
+        $formEditorDefinitions = [];
+        foreach ([$this->prototypeConfiguration, $this->prototypeConfiguration['formEditor']] as $configuration) {
+            foreach ($configuration as $firstLevelItemKey => $firstLevelItemValue) {
+                if (substr($firstLevelItemKey, -10) !== 'Definition') {
+                    continue;
+                }
+                $reducedKey = substr($firstLevelItemKey, 0, -10);
+                foreach ($configuration[$firstLevelItemKey] as $formEditorDefinitionKey => $formEditorDefinitionValue) {
+                    if (isset($formEditorDefinitionValue['formEditor'])) {
+                        $formEditorDefinitionValue = array_intersect_key($formEditorDefinitionValue, array_flip(['formEditor']));
+                        $formEditorDefinitions[$reducedKey][$formEditorDefinitionKey] = $formEditorDefinitionValue['formEditor'];
+                    } else {
+                        $formEditorDefinitions[$reducedKey][$formEditorDefinitionKey] = $formEditorDefinitionValue;
+                    }
+                }
+            }
+        }
+        $formEditorDefinitions = ArrayUtility::reIndexNumericArrayKeysRecursive($formEditorDefinitions);
+        $formEditorDefinitions = TranslationService::getInstance()->translateValuesRecursive(
+            $formEditorDefinitions,
+            $this->prototypeConfiguration['formEditor']['translationFile']
+        );
+        return $formEditorDefinitions;
+    }
+
+    /**
      * @todo move this to FormDefinitionConversionService
      * @param array $formDefinition
      * @return array
      */
-    protected function transformDataStructureForFormEditor($uuid, AbstractDataStructure $dataStructure): array
+    protected function transformDataStructureForFormEditor($uuid, $prototypeName, AbstractDataStructure $dataStructure): array
     {
         $dataStructureArray = $dataStructure->getDataStructureArray();
 
@@ -254,7 +179,7 @@ class DataStructuresController extends ActionController
             'identifier' => $uuid, // . '-' . $file,
             'label' => $dataStructure->getLabel(),
             'renderables' => [],
-            'prototypeName' => 'standard',
+            'prototypeName' => $prototypeName,
         ];
 
         $sheets = [];
@@ -307,12 +232,15 @@ class DataStructuresController extends ActionController
                 switch ($elementStructure['tx_templavoilaplus']['eType']) {
                     case 'TypoScriptObject':
                         $element = [
-                            'type' => $elementStructure['tx_templavoilaplus']['eType'],
+                            'type' => 'Text', //$elementStructure['tx_templavoilaplus']['eType'],
                             'identifier' => $identifier,
-                            'title' => $elementStructure['tx_templavoilaplus']['title'],
+                            'label' => $elementStructure['tx_templavoilaplus']['title'],
 
                             '_orig_type' => [
                                 'value' => $elementStructure['tx_templavoilaplus']['eType'],
+                            ],
+                            '_orig_identifier' => [
+                                'value' => $identifier,
                             ],
 
                             'typoScriptObjectPath' => $elementStructure['tx_templavoilaplus']['TypoScriptObjPath'],
@@ -322,7 +250,7 @@ class DataStructuresController extends ActionController
                         $element = [
                             'type' => $elementStructure['tx_templavoilaplus']['eType'],
                             'identifier' => $identifier,
-                            'title' => $elementStructure['tx_templavoilaplus']['title'],
+                            'label' => $elementStructure['tx_templavoilaplus']['title'],
 
                         ];
                         break;
@@ -330,16 +258,16 @@ class DataStructuresController extends ActionController
                         $element = [
                             'type' => $elementStructure['tx_templavoilaplus']['eType'],
                             'identifier' => $identifier,
-                            'title' => $elementStructure['tx_templavoilaplus']['title'],
+                            'label' => $elementStructure['tx_templavoilaplus']['title'],
 
-                            'TypoScript' => $elementStructure['tx_templavoilaplus']['TypoScript'],
+                            'typoScript' => $elementStructure['tx_templavoilaplus']['TypoScript'],
                         ];
                         break;
                     default:
                         $element = [
                             'type' => $elementStructure['tx_templavoilaplus']['eType'],
                             'identifier' => $identifier,
-                            'title' => $elementStructure['tx_templavoilaplus']['title'],
+                            'label' => $elementStructure['tx_templavoilaplus']['title'],
                         ];
                 }
                 $elements[] = $element;
@@ -396,6 +324,7 @@ class DataStructuresController extends ActionController
             'FormElement-TypoScriptObject' => 'Stage/SimpleTemplate',
             'FormElement-none' => 'Stage/SimpleTemplate',
             'FormElement-ce' => 'Stage/ContentElement',
+            'FormElement-Text' => 'Stage/SimpleTemplate',
 
             'Modal-InsertElements' => 'Modals/InsertElements',
             'Modal-InsertPages' => 'Modals/InsertPages',
