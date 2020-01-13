@@ -1,0 +1,150 @@
+TYPO3:
+  CMS:
+    Templavoilaplus:
+      persistenceManager:
+        allowedFileMounts:
+          10: 1:/user_upload/
+        allowSaveToExtensionPaths: false
+        allowDeleteFromExtensionPaths: false
+        #allowedExtensionPaths:
+          #10: EXT:example/Resources/Private/Forms/
+
+      prototypes:
+        tvp-dynamic-structures:
+
+          formEditor:
+            translationFile: 'EXT:form/Resources/Private/Language/Database.xlf'
+
+          ########### DEFAULT FORM ELEMENT DEFINITIONS ###########
+          formElementsDefinition:
+            ### BASE ELEMENTS ###
+            DataStructure:
+              formEditor:
+                _isCompositeFormElement: false
+                _isTopLevelFormElement: true
+
+                saveSuccessFlashMessageTitle: 'formEditor.elements.Form.saveSuccessFlashMessageTitle'
+                saveSuccessFlashMessageMessage: 'formEditor.elements.Form.saveSuccessFlashMessageMessage'
+                saveErrorFlashMessageTitle: 'formEditor.elements.Form.saveErrorFlashMessageTitle'
+                saveErrorFlashMessageMessage: 'formEditor.elements.Form.saveErrorFlashMessageMessage'
+
+                modalValidationErrorsDialogTitle: 'formEditor.modals.validationErrors.dialogTitle'
+                modalValidationErrorsConfirmButton: 'formEditor.modals.validationErrors.confirmButton'
+
+                modalInsertElementsDialogTitle: 'formEditor.modals.insertElements.dialogTitle'
+                modalInsertPagesDialogTitle: 'formEditor.modals.newPages.dialogTitle'
+
+                modalCloseDialogMessage: 'formEditor.modals.close.dialogMessage'
+                modalCloseDialogTitle: 'formEditor.modals.close.dialogTitle'
+                modalCloseConfirmButton: 'formEditor.modals.close.confirmButton'
+                modalCloseCancleButton: 'formEditor.modals.close.cancleButton'
+
+                modalRemoveElementDialogTitle: 'formEditor.modals.removeElement.dialogTitle'
+                modalRemoveElementDialogMessage: 'formEditor.modals.removeElement.dialogMessage'
+                modalRemoveElementConfirmButton: 'formEditor.modals.removeElement.confirmButton'
+                modalRemoveElementCancleButton: 'formEditor.modals.removeElement.cancleButton'
+                modalRemoveElementLastAvailablePageFlashMessageTitle: 'formEditor.modals.removeElement.lastAvailablePageFlashMessageTitle'
+                modalRemoveElementLastAvailablePageFlashMessageMessage: 'formEditor.modals.removeElement.lastAvailablePageFlashMessageMessage'
+
+                inspectorEditorFormElementSelectorNoElements: 'formEditor.inspector.editor.formelement_selector.no_elements'
+
+                paginationTitle: 'Sheet {0} of {1}'
+
+                iconIdentifier: 'extensions-templavoila-datastructure-default'
+                predefinedDefaults:
+                  renderingOptions:
+                    submitButtonLabel: 'formEditor.elements.Form.editor.submitButtonLabel.value'
+                editors:
+                  0:
+                    identifier: 'header'
+                    templateName: 'Inspector-FormElementHeaderEditor'
+                  1:
+                    identifier: 'label'
+                    templateName: 'Inspector-TextEditor'
+                    label: 'Name'
+                    propertyPath: 'label'
+            Sheet:
+              formEditor:
+                _isCompositeFormElement: true
+                _isTopLevelFormElement: true
+
+                label: 'Sheet'
+                group: 'sheet'
+                iconIdentifier: 't3-form-icon-page'
+
+                editors:
+                  100:
+                    identifier: 'header'
+                    templateName: 'Inspector-FormElementHeaderEditor'
+                  200:
+                    identifier: 'label'
+                    templateName: 'Inspector-TextEditor'
+                    label: 'Name'
+                    propertyPath: 'label'
+                  9999:
+                    identifier: 'removeButton'
+                    templateName: 'Inspector-RemoveElementEditor'
+            Text: #TypoScriptObject
+              formEditor:
+                label: 'TypoScriptObject'
+                group: 'TypoScript'
+                iconIdentifier: 'mimetypes-text-typoscript'
+
+                editors:
+                  100:
+                    identifier: 'header'
+                    templateName: 'Inspector-FormElementHeaderEditor'
+                  200:
+                    identifier: 'label'
+                    templateName: 'Inspector-TextEditor'
+                    label: 'Field title'
+                    propertyPath: 'label'
+                  300:
+                    identifier: 'TypoScriptObjectPath'
+                    templateName: 'Inspector-TextEditor'
+                    label: 'Object path in TypoScript'
+                    propertyPath: 'typoScriptObjectPath'
+                  9999:
+                    identifier: 'removeButton'
+                    templateName: 'Inspector-RemoveElementEditor'
+            ce:
+              formEditor:
+                label: 'Field'
+                group: 'Fields'
+                iconIdentifier: 't3-form-icon-content-element'
+
+                editors:
+                  100:
+                    identifier: 'header'
+                    templateName: 'Inspector-FormElementHeaderEditor'
+                  200:
+                    identifier: 'label'
+                    templateName: 'Inspector-TextEditor'
+                    label: 'Field title'
+                    propertyPath: 'label'
+                  9999:
+                    identifier: 'removeButton'
+                    templateName: 'Inspector-RemoveElementEditor'
+            none: #TypoScriptObject
+              formEditor:
+                label: 'Plain TypoScript'
+                group: 'TypoScript'
+                iconIdentifier: 'mimetypes-x-content-script'
+
+                editors:
+                  100:
+                    identifier: 'header'
+                    templateName: 'Inspector-FormElementHeaderEditor'
+                  200:
+                    identifier: 'label'
+                    templateName: 'Inspector-TextEditor'
+                    label: 'Field title'
+                    propertyPath: 'label'
+                  300:
+                    identifier: 'TypoScript'
+                    templateName: 'Inspector-TextareaEditor'
+                    label: 'TypoScript'
+                    propertyPath: 'typoScript'
+                  9999:
+                    identifier: 'removeButton'
+                    templateName: 'Inspector-RemoveElementEditor'

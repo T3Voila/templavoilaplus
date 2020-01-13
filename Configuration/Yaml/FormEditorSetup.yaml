@@ -1,0 +1,29 @@
+TYPO3:
+  CMS:
+    Templavoilaplus:
+      ########### FORMEDITOR CONFIGURATION ###########
+      prototypes:
+        tvp-dynamic-structures:
+          formEditor:
+            translationFile: 'EXT:form/Resources/Private/Language/Database.xlf'
+            dynamicRequireJsModules:
+              app: 'TYPO3/CMS/Form/Backend/FormEditor'
+              mediator: 'TYPO3/CMS/Form/Backend/FormEditor/Mediator'
+              viewModel: 'TYPO3/CMS/Form/Backend/FormEditor/ViewModel'
+              additionalViewModelModules:
+
+            addInlineSettings: []
+            maximumUndoSteps: 10
+
+            stylesheets:
+              200: 'EXT:form/Resources/Public/Css/form.css'
+
+            formEditorFluidConfiguration:
+              templatePathAndFilename: 'EXT:form/Resources/Private/Backend/Templates/FormEditor/InlineTemplates.html'
+              partialRootPaths:
+                10: 'EXT:form/Resources/Private/Backend/Partials/FormEditor/'
+              layoutRootPaths:
+                10: 'EXT:form/Resources/Private/Backend/Layouts/FormEditor/'
+
+            formEditorPartials:
+
