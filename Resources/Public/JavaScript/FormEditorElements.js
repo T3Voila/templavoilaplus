@@ -106,7 +106,13 @@ define([
                     case 'TypoScriptObject':
                     case 'ce':
                     case 'none':
-                        getFormEditorApp().getViewModel().getStage().renderSimpleTemplateWithValidators(args[0], args[1]);
+                    case 'custom':
+                    case 'input':
+                        getFormEditorApp().getViewModel().getStage().renderSimpleTemplate(args[0], args[1]);
+                        break;
+                    case 'select':
+                        getFormEditorApp().getViewModel().getStage().renderSelectTemplates(args[0], args[1]);
+                        break;
                 }
             });
         };
