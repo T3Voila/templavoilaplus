@@ -297,11 +297,23 @@ class DataStructuresController extends ActionController
                             'label' => $elementStructure['tx_templavoilaplus']['title'],
 
                             'typoScript' => $elementStructure['tx_templavoilaplus']['TypoScript'],
-                            // @TODO We should update the eType link to a better config
+                            // @TODO We should update the eType link to a better TCEforms config
+                            // What could be changeable here?
+                        ];
+                        break;
+                    case 'rte':
+                        $element = [
+                            'type' => $elementStructure['tx_templavoilaplus']['eType'],
+                            'identifier' => $identifier,
+                            'label' => $elementStructure['tx_templavoilaplus']['title'],
+
+                            'typoScript' => $elementStructure['tx_templavoilaplus']['TypoScript'],
+                            // @TODO We should update the eType rte to a better TCEforms config
                             // What could be changeable here?
                         ];
                         break;
                     default:
+var_dump($elementStructure);die();
                         $element = [
                             'type' => $elementStructure['tx_templavoilaplus']['eType'],
                             'identifier' => $identifier,
@@ -382,6 +394,8 @@ class DataStructuresController extends ActionController
             'FormElement-custom' => 'Stage/SimpleTemplate',
             'FormElement-input' => 'Stage/ContentElement',
             'FormElement-select' => 'Stage/SelectTemplate',
+            'FormElement-link' => 'Stage/SimpleTemplate',
+            'FormElement-rte' => 'Stage/SimpleTemplate',
 
             'Modal-InsertElements' => 'Modals/InsertElements',
             'Modal-InsertPages' => 'Modals/InsertPages',

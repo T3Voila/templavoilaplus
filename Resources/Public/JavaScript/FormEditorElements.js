@@ -109,6 +109,7 @@ define([
                     case 'custom':
                     case 'input':
                     case 'link':
+                    case 'rte':
                         getFormEditorApp().getViewModel().getStage().renderSimpleTemplate(args[0], args[1]);
                         break;
                     case 'select':
