@@ -290,6 +290,17 @@ class DataStructuresController extends ActionController
                             'tceConfigItems' => $this->convertTceItemsToForm($elementStructure['TCEforms']['config']['items']),
                         ];
                         break;
+                    case 'link':
+                        $element = [
+                            'type' => $elementStructure['tx_templavoilaplus']['eType'],
+                            'identifier' => $identifier,
+                            'label' => $elementStructure['tx_templavoilaplus']['title'],
+
+                            'typoScript' => $elementStructure['tx_templavoilaplus']['TypoScript'],
+                            // @TODO We should update the eType link to a better config
+                            // What could be changeable here?
+                        ];
+                        break;
                     default:
                         $element = [
                             'type' => $elementStructure['tx_templavoilaplus']['eType'],
