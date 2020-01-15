@@ -112,21 +112,14 @@ class DataStructuresController extends ActionController
                 'formPageRenderer' => $this->controllerContext->getUriBuilder()->uriFor('renderFormPage'),
                 'saveForm' => $this->controllerContext->getUriBuilder()->uriFor('saveForm')
             ],
-            'additionalViewModelModules' => null,
+            'additionalViewModelModules' => $this->prototypeConfiguration['formEditor']['dynamicRequireJsModules']['additionalViewModelModules'],
             'maximumUndoSteps' => 20,
         ];
 
         $this->view->assign('formEditorAppInitialData', json_encode($formEditorAppInitialData));
         $this->view->assign('stylesheets', ['EXT:form/Resources/Public/Css/form.css']);
         $this->view->assign('formEditorTemplates', $this->renderFormEditorTemplates($formEditorDefinitions));
-        $this->view->assign(
-            'dynamicRequireJsModules',
-            [
-                'app' => 'TYPO3/CMS/Form/Backend/FormEditor',
-                'mediator' => 'TYPO3/CMS/Form/Backend/FormEditor/Mediator',
-                'viewModel' => 'TYPO3/CMS/Form/Backend/FormEditor/ViewModel',
-            ]
-        );
+        $this->view->assign('dynamicRequireJsModules', $this->prototypeConfiguration['formEditor']['dynamicRequireJsModules']);
 
         $this->view->setLayoutRootPaths(['EXT:form/Resources/Private/Backend/Layouts']);
         $this->view->setPartialRootPaths(['EXT:form/Resources/Private/Backend/Partials']);
@@ -160,7 +153,7 @@ class DataStructuresController extends ActionController
         $formEditorDefinitions = ArrayUtility::reIndexNumericArrayKeysRecursive($formEditorDefinitions);
         $formEditorDefinitions = TranslationService::getInstance()->translateValuesRecursive(
             $formEditorDefinitions,
-            $this->prototypeConfiguration['formEditor']['translationFile']
+            [$this->prototypeConfiguration['formEditor']['translationFile']]
         );
         return $formEditorDefinitions;
     }
@@ -232,7 +225,7 @@ class DataStructuresController extends ActionController
                 switch ($elementStructure['tx_templavoilaplus']['eType']) {
                     case 'TypoScriptObject':
                         $element = [
-                            'type' => 'Text', //$elementStructure['tx_templavoilaplus']['eType'],
+                            'type' => $elementStructure['tx_templavoilaplus']['eType'],
                             'identifier' => $identifier,
                             'label' => $elementStructure['tx_templavoilaplus']['title'],
 
@@ -324,7 +317,6 @@ class DataStructuresController extends ActionController
             'FormElement-TypoScriptObject' => 'Stage/SimpleTemplate',
             'FormElement-none' => 'Stage/SimpleTemplate',
             'FormElement-ce' => 'Stage/ContentElement',
-            'FormElement-Text' => 'Stage/SimpleTemplate',
 
             'Modal-InsertElements' => 'Modals/InsertElements',
             'Modal-InsertPages' => 'Modals/InsertPages',
@@ -414,10 +406,10 @@ class DataStructuresController extends ActionController
                 $formElementsByGroup[$formElementConfiguration['group']] = [];
             }
 
-            $formElementConfiguration = TranslationService::getInstance()->translateValuesRecursive(
-                $formElementConfiguration,
-                '' // @TODO Translation file
-            );
+//             $formElementConfiguration = TranslationService::getInstance()->translateValuesRecursive(
+//                 $formElementConfiguration,
+//                 [] // @TODO Translation file
+//             );
 
             $formElementsByGroup[$formElementConfiguration['group']][] = [
                 'key' => $formElementName,
@@ -439,10 +431,10 @@ class DataStructuresController extends ActionController
             });
             unset($formElementsByGroup[$groupName]['sorting']);
 
-            $groupConfiguration = TranslationService::getInstance()->translateValuesRecursive(
-                $groupConfiguration,
-                '' // @TODO Translation file
-            );
+//             $groupConfiguration = TranslationService::getInstance()->translateValuesRecursive(
+//                 $groupConfiguration,
+//                 '' // @TODO Translation file
+//             );
 
             $formGroups[] = [
                 'key' => $groupName,

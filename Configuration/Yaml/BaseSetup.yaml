@@ -14,6 +14,12 @@ TYPO3:
 
           formEditor:
             translationFile: 'EXT:form/Resources/Private/Language/Database.xlf'
+            dynamicRequireJsModules:
+              app: TYPO3/CMS/Form/Backend/FormEditor
+              mediator: TYPO3/CMS/Form/Backend/FormEditor/Mediator
+              viewModel: TYPO3/CMS/Form/Backend/FormEditor/ViewModel
+              additionalViewModelModules:
+                - TYPO3/CMS/Templavoilaplus/FormEditorElements
 
           ########### DEFAULT FORM ELEMENT DEFINITIONS ###########
           formElementsDefinition:
@@ -84,7 +90,7 @@ TYPO3:
                   9999:
                     identifier: 'removeButton'
                     templateName: 'Inspector-RemoveElementEditor'
-            Text: #TypoScriptObject
+            TypoScriptObject:
               formEditor:
                 label: 'TypoScriptObject'
                 group: 'TypoScript'
