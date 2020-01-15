@@ -275,3 +275,21 @@ TYPO3:
                   9999:
                     identifier: 'removeButton'
                     templateName: 'Inspector-RemoveElementEditor'
+            rte:
+              formEditor:
+                label: 'RTE Editor'
+                group: 'Fields'
+                iconIdentifier: 'mimetypes-x-content-text'
+
+                editors:
+                  100:
+                    identifier: 'header'
+                    templateName: 'Inspector-FormElementHeaderEditor'
+                  200:
+                    identifier: 'label'
+                    templateName: 'Inspector-TextEditor'
+                    label: 'Field title'
+                    propertyPath: 'label'
+                  9999:
+                    identifier: 'removeButton'
+                    templateName: 'Inspector-RemoveElementEditor'
