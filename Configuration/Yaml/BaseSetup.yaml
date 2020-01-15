@@ -131,7 +131,7 @@ TYPO3:
                   9999:
                     identifier: 'removeButton'
                     templateName: 'Inspector-RemoveElementEditor'
-            none: #TypoScriptObject
+            none:
               formEditor:
                 label: 'Plain TypoScript'
                 group: 'TypoScript'
@@ -151,6 +151,109 @@ TYPO3:
                     templateName: 'Inspector-TextareaEditor'
                     label: 'TypoScript'
                     propertyPath: 'typoScript'
+                  9999:
+                    identifier: 'removeButton'
+                    templateName: 'Inspector-RemoveElementEditor'
+            custom:
+              formEditor:
+                label: 'Custom Element'
+                group: 'Fields'
+                iconIdentifier: 'mimetypes-x-content-plugin'
+
+                editors:
+                  100:
+                    identifier: 'header'
+                    templateName: 'Inspector-FormElementHeaderEditor'
+                  200:
+                    identifier: 'label'
+                    templateName: 'Inspector-TextEditor'
+                    label: 'Field title'
+                    propertyPath: 'label'
+                  300:
+                    identifier: 'TypoScript'
+                    templateName: 'Inspector-TextareaEditor'
+                    label: 'TypoScript'
+                    propertyPath: 'typoScript'
+                  9999:
+                    identifier: 'removeButton'
+                    templateName: 'Inspector-RemoveElementEditor'
+            input:
+              formEditor:
+                label: 'Input'
+                group: 'Fields'
+                iconIdentifier: 'form-text'
+
+                editors:
+                  100:
+                    identifier: 'header'
+                    templateName: 'Inspector-FormElementHeaderEditor'
+                  200:
+                    identifier: 'label'
+                    templateName: 'Inspector-TextEditor'
+                    label: 'Field title'
+                    propertyPath: 'label'
+                  300:
+                    identifier: 'TypoScript'
+                    templateName: 'Inspector-TextareaEditor'
+                    label: 'TypoScript'
+                    propertyPath: 'typoScript'
+                  2000:
+                    identifier: 'TCE-label'
+                    templateName: 'Inspector-TextEditor'
+                    label: 'Input Label'
+                    propertyPath: 'tceLabel'
+                  2100:
+                    identifier: 'TCE-config-size'
+                    templateName: 'Inspector-TextEditor'
+                    label: 'Input Size'
+                    propertyPath: 'tceConfigSize'
+                  2200:
+                    identifier: 'TCE-config-eval'
+                    templateName: 'Inspector-TextEditor'
+                    label: 'Input Evaluation'
+                    propertyPath: 'tceConfigEval'
+                  9999:
+                    identifier: 'removeButton'
+                    templateName: 'Inspector-RemoveElementEditor'
+            select:
+              formEditor:
+                label: 'Select'
+                group: 'Fields'
+                iconIdentifier: 'form-single-select'
+
+                editors:
+                  100:
+                    identifier: 'header'
+                    templateName: 'Inspector-FormElementHeaderEditor'
+                  200:
+                    identifier: 'label'
+                    templateName: 'Inspector-TextEditor'
+                    label: 'Field title'
+                    propertyPath: 'label'
+                  300:
+                    identifier: 'TypoScript'
+                    templateName: 'Inspector-TextareaEditor'
+                    label: 'TypoScript'
+                    propertyPath: 'typoScript'
+                  2000:
+                    identifier: 'TCE-label'
+                    templateName: 'Inspector-TextEditor'
+                    label: 'Select Label'
+                    propertyPath: 'tceLabel'
+                  2100:
+                    identifier: 'TCE-options'
+                    templateName: 'Inspector-PropertyGridEditor'
+                    label: 'Options'
+                    propertyPath: 'tceConfigItems'
+                    propertyValidators:
+                      10: NotEmpty
+                    isSortable: true
+                    enableAddRow: true
+                    enableDeleteRow: true
+                    removeLastAvailableRowFlashMessageTitle: formEditor.elements.SelectionMixin.editor.options.removeLastAvailableRowFlashMessageTitle
+                    removeLastAvailableRowFlashMessageMessage: formEditor.elements.SelectionMixin.editor.options.removeLastAvailableRowFlashMessageMessage
+                    shouldShowPreselectedValueColumn: single
+                    multiSelection: false
                   9999:
                     identifier: 'removeButton'
                     templateName: 'Inspector-RemoveElementEditor'

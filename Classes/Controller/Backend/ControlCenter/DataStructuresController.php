@@ -256,6 +256,40 @@ class DataStructuresController extends ActionController
                             'typoScript' => $elementStructure['tx_templavoilaplus']['TypoScript'],
                         ];
                         break;
+                    case 'custom':
+                        $element = [
+                            'type' => $elementStructure['tx_templavoilaplus']['eType'],
+                            'identifier' => $identifier,
+                            'label' => $elementStructure['tx_templavoilaplus']['title'],
+
+                            'typoScript' => $elementStructure['tx_templavoilaplus']['TypoScript'],
+                        ];
+                        break;
+                    case 'input':
+                        $element = [
+                            'type' => $elementStructure['tx_templavoilaplus']['eType'],
+                            'identifier' => $identifier,
+                            'label' => $elementStructure['tx_templavoilaplus']['title'],
+
+                            'typoScript' => $elementStructure['tx_templavoilaplus']['TypoScript'],
+
+                            'tceLabel' => $elementStructure['TCEforms']['label'],
+                            'tceConfigSize' => $elementStructure['TCEforms']['config']['size'],
+                            'tceConfigEval' => $elementStructure['TCEforms']['config']['eval'],
+                        ];
+                        break;
+                    case 'select':
+                        $element = [
+                            'type' => $elementStructure['tx_templavoilaplus']['eType'],
+                            'identifier' => $identifier,
+                            'label' => $elementStructure['tx_templavoilaplus']['title'],
+
+                            'typoScript' => $elementStructure['tx_templavoilaplus']['TypoScript'],
+
+                            'tceLabel' => $elementStructure['TCEforms']['label'],
+                            'tceConfigItems' => $this->convertTceItemsToForm($elementStructure['TCEforms']['config']['items']),
+                        ];
+                        break;
                     default:
                         $element = [
                             'type' => $elementStructure['tx_templavoilaplus']['eType'],
@@ -268,6 +302,23 @@ class DataStructuresController extends ActionController
         }
 
         return $elements;
+    }
+
+    /**
+     * Converts from iTCE items array into EXT:form items array
+     * Caution, do not use values twice, no icon support
+     * @TODO Can we support icons pro option?
+     * @return array
+     **/
+    protected function convertTceItemsToForm(array $items = []): array
+    {
+        $rseult = [];
+
+        foreach ($items as $item) {
+            $result[$item[1]] = $item[0];
+        }
+
+        return $result;
     }
 
     /**
@@ -315,8 +366,11 @@ class DataStructuresController extends ActionController
 
             'FormElement-Sheet' => 'Stage/Page',
             'FormElement-TypoScriptObject' => 'Stage/SimpleTemplate',
-            'FormElement-none' => 'Stage/SimpleTemplate',
             'FormElement-ce' => 'Stage/ContentElement',
+            'FormElement-none' => 'Stage/SimpleTemplate',
+            'FormElement-custom' => 'Stage/SimpleTemplate',
+            'FormElement-input' => 'Stage/ContentElement',
+            'FormElement-select' => 'Stage/SelectTemplate',
 
             'Modal-InsertElements' => 'Modals/InsertElements',
             'Modal-InsertPages' => 'Modals/InsertPages',
