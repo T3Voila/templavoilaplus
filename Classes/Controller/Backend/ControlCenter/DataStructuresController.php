@@ -60,15 +60,9 @@ class DataStructuresController extends FormEditorController
      */
     public function listAction()
     {
+        $this->registerDocheaderButtons();
         $this->view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation([]);
         $this->view->getModuleTemplate()->setFlashMessageQueue($this->controllerContext->getFlashMessageQueue());
-
-        $buttonBar = $this->view->getModuleTemplate()->getDocHeaderComponent()->getButtonBar();
-        $button = $buttonBar->makeLinkButton()
-            ->setHref($this->getControllerContext()->getUriBuilder()->uriFor('show', [], 'Backend\ControlCenter'))
-            ->setTitle('Back')
-            ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
-        $buttonBar->addButton($button, ButtonBar::BUTTON_POSITION_LEFT, 1);
 
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
         $dataStructurePlaces = $configurationService->getDataStructurePlaces();
@@ -125,6 +119,85 @@ class DataStructuresController extends FormEditorController
 
         $this->view->setLayoutRootPaths(['EXT:form/Resources/Private/Backend/Layouts']);
         $this->view->setPartialRootPaths(['EXT:form/Resources/Private/Backend/Partials']);
+    }
+
+    /**
+     * Registers the Icons into the docheader
+     *
+     * @throws \InvalidArgumentException
+     */
+    protected function registerDocheaderButtons()
+    {
+        /** @var ButtonBar $buttonBar */
+        $buttonBar = $this->view->getModuleTemplate()->getDocHeaderComponent()->getButtonBar();
+        $getVars = $this->request->getArguments();
+
+        if (isset($getVars['action']) && $getVars['action'] === 'list') {
+            $backButton = $buttonBar->makeLinkButton()
+                ->setDataAttributes(['identifier' => 'backButton'])
+                ->setHref($this->getControllerContext()->getUriBuilder()->uriFor('show', [], 'Backend\ControlCenter'))
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
+                ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
+            $buttonBar->addButton($backButton, ButtonBar::BUTTON_POSITION_LEFT, 1);
+        }
+
+        if (isset($getVars['action']) && $getVars['action'] === 'edit') {
+            $newPageButton = $buttonBar->makeInputButton()
+                ->setDataAttributes(['action' => 'formeditor-new-page', 'identifier' => 'headerNewPage'])
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.new_page_button'))
+                ->setName('formeditor-new-page')
+                ->setValue('new-page')
+                ->setClasses('t3-form-element-new-page-button hidden')
+                ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-page-new', Icon::SIZE_SMALL));
+
+            $closeButton = $buttonBar->makeLinkButton()
+                ->setDataAttributes(['identifier' => 'closeButton'])
+                ->setHref(BackendUtility::getModuleUrl('web_TemplaVoilaPlusControlcenter', ['tx_templavoilaplus_web_templavoilapluscontrolcenter' => ['controller' => 'Backend\ControlCenter\DataStructures']]))
+                ->setClasses('t3-form-element-close-form-button hidden')
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:rm.closeDoc'))
+                ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-close', Icon::SIZE_SMALL));
+
+            $saveButton = $buttonBar->makeInputButton()
+                ->setDataAttributes(['identifier' => 'saveButton'])
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.save_button'))
+                ->setName('formeditor-save-form')
+                ->setValue('save')
+                ->setClasses('t3-form-element-save-form-button hidden')
+                ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-document-save', Icon::SIZE_SMALL))
+                ->setShowLabelText(true);
+
+            $formSettingsButton = $buttonBar->makeInputButton()
+                ->setDataAttributes(['identifier' => 'formSettingsButton'])
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.form_settings_button'))
+                ->setName('formeditor-form-settings')
+                ->setValue('settings')
+                ->setClasses('t3-form-element-form-settings-button hidden')
+                ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-system-extension-configure', Icon::SIZE_SMALL))
+                ->setShowLabelText(true);
+
+            $undoButton = $buttonBar->makeInputButton()
+                ->setDataAttributes(['identifier' => 'undoButton'])
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.undo_button'))
+                ->setName('formeditor-undo-form')
+                ->setValue('undo')
+                ->setClasses('t3-form-element-undo-form-button hidden disabled')
+                ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
+
+            $redoButton = $buttonBar->makeInputButton()
+                ->setDataAttributes(['identifier' => 'redoButton'])
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.redo_button'))
+                ->setName('formeditor-redo-form')
+                ->setValue('redo')
+                ->setClasses('t3-form-element-redo-form-button hidden disabled')
+                ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-view-go-forward', Icon::SIZE_SMALL));
+
+            $buttonBar->addButton($newPageButton, ButtonBar::BUTTON_POSITION_LEFT, 1);
+            $buttonBar->addButton($closeButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
+            $buttonBar->addButton($saveButton, ButtonBar::BUTTON_POSITION_LEFT, 3);
+            $buttonBar->addButton($formSettingsButton, ButtonBar::BUTTON_POSITION_LEFT, 4);
+            $buttonBar->addButton($undoButton, ButtonBar::BUTTON_POSITION_LEFT, 5);
+            $buttonBar->addButton($redoButton, ButtonBar::BUTTON_POSITION_LEFT, 5);
+        }
     }
 
     /**
