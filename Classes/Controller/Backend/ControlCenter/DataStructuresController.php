@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Fluid\View\TemplateView;
+use TYPO3\CMS\Form\Controller\FormEditorController;
 use TYPO3\CMS\Form\Service\TranslationService;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 
@@ -35,7 +36,7 @@ use Ppi\TemplaVoilaPlus\Domain\Model\AbstractDataStructure;
 use Ppi\TemplaVoilaPlus\Service\ConfigurationService;
 use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
-class DataStructuresController extends ActionController
+class DataStructuresController extends FormEditorController
 {
     /**
      * Default View Container
@@ -90,6 +91,7 @@ class DataStructuresController extends ActionController
      */
     public function editAction($uuid, $identifier)
     {
+        $this->registerDocheaderButtons();
         $this->view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation([]);
         $this->view->getModuleTemplate()->setFlashMessageQueue($this->controllerContext->getFlashMessageQueue());
 
@@ -123,39 +125,6 @@ class DataStructuresController extends ActionController
 
         $this->view->setLayoutRootPaths(['EXT:form/Resources/Private/Backend/Layouts']);
         $this->view->setPartialRootPaths(['EXT:form/Resources/Private/Backend/Partials']);
-    }
-
-
-    /**
-     * Reduce the YAML settings by the 'formEditor' keyword.
-     *
-     * @return array
-     */
-    protected function getFormEditorDefinitions(): array
-    {
-        $formEditorDefinitions = [];
-        foreach ([$this->prototypeConfiguration, $this->prototypeConfiguration['formEditor']] as $configuration) {
-            foreach ($configuration as $firstLevelItemKey => $firstLevelItemValue) {
-                if (substr($firstLevelItemKey, -10) !== 'Definition') {
-                    continue;
-                }
-                $reducedKey = substr($firstLevelItemKey, 0, -10);
-                foreach ($configuration[$firstLevelItemKey] as $formEditorDefinitionKey => $formEditorDefinitionValue) {
-                    if (isset($formEditorDefinitionValue['formEditor'])) {
-                        $formEditorDefinitionValue = array_intersect_key($formEditorDefinitionValue, array_flip(['formEditor']));
-                        $formEditorDefinitions[$reducedKey][$formEditorDefinitionKey] = $formEditorDefinitionValue['formEditor'];
-                    } else {
-                        $formEditorDefinitions[$reducedKey][$formEditorDefinitionKey] = $formEditorDefinitionValue;
-                    }
-                }
-            }
-        }
-        $formEditorDefinitions = ArrayUtility::reIndexNumericArrayKeysRecursive($formEditorDefinitions);
-        $formEditorDefinitions = TranslationService::getInstance()->translateValuesRecursive(
-            $formEditorDefinitions,
-            [$this->prototypeConfiguration['formEditor']['translationFile']]
-        );
-        return $formEditorDefinitions;
     }
 
     /**
@@ -343,118 +312,6 @@ var_dump($elementStructure);die();
 
         return $result;
     }
-
-    /**
-     * Taken from TYPO3\CMS\Form\Controller\FormEditorController
-     *
-     * Render the "text/x-formeditor-template" templates.
-     *
-     * @param array $formEditorDefinitions
-     * @return string
-     */
-    protected function renderFormEditorTemplates(array $formEditorDefinitions): string
-    {
-//         $fluidConfiguration = $this->prototypeConfiguration['formEditor']['formEditorFluidConfiguration'];
-//         $formEditorPartials = $this->prototypeConfiguration['formEditor']['formEditorPartials'];
-
-        $fluidConfiguration = [
-            'templatePathAndFilename' => 'EXT:form/Resources/Private/Backend/Templates/FormEditor/InlineTemplates.html',
-            'partialRootPaths' => [10 => 'EXT:form/Resources/Private/Backend/Partials/FormEditor/'],
-            'layoutRootPaths' => [10 => 'EXT:form/Resources/Private/Backend/Layouts/FormEditor/'],
-        ];
-
-        $formEditorPartials = [
-            'FormElement-_ElementToolbar' => 'Stage/_ElementToolbar',
-            'FormElement-_UnknownElement' => 'Stage/_UnknownElement',
-            'FormElement-Page' => 'Stage/Page',
-            'FormElement-SummaryPage' => 'Stage/SummaryPage',
-            'FormElement-Fieldset' => 'Stage/Fieldset',
-            'FormElement-GridContainer' => 'Stage/Fieldset',
-            'FormElement-GridRow' => 'Stage/Fieldset',
-            'FormElement-Text' => 'Stage/SimpleTemplate',
-            'FormElement-Password' => 'Stage/SimpleTemplate',
-            'FormElement-AdvancedPassword' => 'Stage/SimpleTemplate',
-            'FormElement-Textarea' => 'Stage/SimpleTemplate',
-            'FormElement-Checkbox' => 'Stage/SimpleTemplate',
-            'FormElement-MultiCheckbox' => 'Stage/SelectTemplate',
-            'FormElement-MultiSelect' => 'Stage/SelectTemplate',
-            'FormElement-RadioButton' => 'Stage/SelectTemplate',
-            'FormElement-SingleSelect' => 'Stage/SelectTemplate',
-            'FormElement-DatePicker' => 'Stage/SimpleTemplate',
-            'FormElement-StaticText' => 'Stage/StaticText',
-            'FormElement-Hidden' => 'Stage/SimpleTemplate',
-            'FormElement-ContentElement' => 'Stage/ContentElement',
-            'FormElement-FileUpload' => 'Stage/FileUploadTemplate',
-            'FormElement-ImageUpload' => 'Stage/FileUploadTemplate',
-
-            'FormElement-Sheet' => 'Stage/Page',
-            'FormElement-TypoScriptObject' => 'Stage/SimpleTemplate',
-            'FormElement-ce' => 'Stage/ContentElement',
-            'FormElement-none' => 'Stage/SimpleTemplate',
-            'FormElement-custom' => 'Stage/SimpleTemplate',
-            'FormElement-input' => 'Stage/ContentElement',
-            'FormElement-select' => 'Stage/SelectTemplate',
-            'FormElement-link' => 'Stage/SimpleTemplate',
-            'FormElement-rte' => 'Stage/SimpleTemplate',
-
-            'Modal-InsertElements' => 'Modals/InsertElements',
-            'Modal-InsertPages' => 'Modals/InsertPages',
-            'Modal-ValidationErrors' => 'Modals/ValidationErrors',
-            'Inspector-FormElementHeaderEditor' => 'Inspector/FormElementHeaderEditor',
-            'Inspector-CollectionElementHeaderEditor' => 'Inspector/CollectionElementHeaderEditor',
-            'Inspector-TextEditor' => 'Inspector/TextEditor',
-            'Inspector-PropertyGridEditor' => 'Inspector/PropertyGridEditor',
-            'Inspector-SingleSelectEditor' => 'Inspector/SingleSelectEditor',
-            'Inspector-MultiSelectEditor' => 'Inspector/MultiSelectEditor',
-            'Inspector-GridColumnViewPortConfigurationEditor' => 'Inspector/GridColumnViewPortConfigurationEditor',
-            'Inspector-TextareaEditor' => 'Inspector/TextareaEditor',
-            'Inspector-RemoveElementEditor' => 'Inspector/RemoveElementEditor',
-            'Inspector-FinishersEditor' => 'Inspector/FinishersEditor',
-            'Inspector-ValidatorsEditor' => 'Inspector/ValidatorsEditor',
-            'Inspector-RequiredValidatorEditor' => 'Inspector/RequiredValidatorEditor',
-            'Inspector-CheckboxEditor' => 'Inspector/CheckboxEditor',
-            'Inspector-Typo3WinBrowserEditor' => 'Inspector/Typo3WinBrowserEditor',
-        ];
-
-        if (!isset($fluidConfiguration['templatePathAndFilename'])) {
-            throw new RenderingException(
-                'The option templatePathAndFilename must be set.',
-                1485636499
-            );
-        }
-        if (
-            !isset($fluidConfiguration['layoutRootPaths'])
-            || !is_array($fluidConfiguration['layoutRootPaths'])
-        ) {
-            throw new RenderingException(
-                'The option layoutRootPaths must be set.',
-                1480294721
-            );
-        }
-        if (
-            !isset($fluidConfiguration['partialRootPaths'])
-            || !is_array($fluidConfiguration['partialRootPaths'])
-        ) {
-            throw new RenderingException(
-                'The option partialRootPaths must be set.',
-                1480294722
-            );
-        }
-
-        $insertRenderablesPanelConfiguration = $this->getInsertRenderablesPanelConfiguration($formEditorDefinitions['formElements']);
-
-        $view = $this->objectManager->get(TemplateView::class);
-        $view->setControllerContext(clone $this->controllerContext);
-        $view->getRenderingContext()->getTemplatePaths()->fillFromConfigurationArray($fluidConfiguration);
-        $view->setTemplatePathAndFilename($fluidConfiguration['templatePathAndFilename']);
-        $view->assignMultiple([
-            'insertRenderablesPanelConfiguration' => $insertRenderablesPanelConfiguration,
-            'formEditorPartials' => $formEditorPartials,
-        ]);
-
-        return $view->render();
-    }
-
 
     /**
      * Taken from TYPO3\CMS\Form\Controller\FormEditorController

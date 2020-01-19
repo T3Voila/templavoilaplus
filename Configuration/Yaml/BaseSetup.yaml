@@ -21,6 +21,48 @@ TYPO3:
               additionalViewModelModules:
                 - TYPO3/CMS/Templavoilaplus/FormEditorElements
 
+            formEditorFluidConfiguration:
+              templatePathAndFilename: 'EXT:form/Resources/Private/Backend/Templates/FormEditor/InlineTemplates.html'
+              partialRootPaths:
+                10: 'EXT:form/Resources/Private/Backend/Partials/FormEditor/'
+              layoutRootPaths:
+                10: 'EXT:form/Resources/Private/Backend/Layouts/FormEditor/'
+
+            formEditorPartials:
+              # abstract form element partials
+              FormElement-_ElementToolbar: 'Stage/_ElementToolbar'
+              FormElement-_UnknownElement: 'Stage/_UnknownElement'
+              FormElement-Sheet: 'Stage/Page'
+              FormElement-TypoScriptObject: 'Stage/SimpleTemplate'
+              FormElement-ce: 'Stage/ContentElement'
+              FormElement-none: 'Stage/SimpleTemplate'
+              FormElement-custom: 'Stage/SimpleTemplate'
+              FormElement-input: 'Stage/ContentElement'
+              FormElement-select: 'Stage/SelectTemplate'
+              FormElement-link: 'Stage/SimpleTemplate'
+              FormElement-rte: 'Stage/SimpleTemplate'
+
+              # modals
+              Modal-InsertElements: 'Modals/InsertElements'
+              Modal-InsertPages: 'Modals/InsertPages'
+              Modal-ValidationErrors: 'Modals/ValidationErrors'
+
+              # inspector editors
+              Inspector-FormElementHeaderEditor: 'Inspector/FormElementHeaderEditor'
+              Inspector-CollectionElementHeaderEditor: 'Inspector/CollectionElementHeaderEditor'
+              Inspector-TextEditor: 'Inspector/TextEditor'
+              Inspector-PropertyGridEditor: 'Inspector/PropertyGridEditor'
+              Inspector-SingleSelectEditor: 'Inspector/SingleSelectEditor'
+              Inspector-MultiSelectEditor: 'Inspector/MultiSelectEditor'
+              Inspector-GridColumnViewPortConfigurationEditor: 'Inspector/GridColumnViewPortConfigurationEditor'
+              Inspector-TextareaEditor: 'Inspector/TextareaEditor'
+              Inspector-RemoveElementEditor: 'Inspector/RemoveElementEditor'
+              Inspector-FinishersEditor: 'Inspector/FinishersEditor'
+              Inspector-ValidatorsEditor: 'Inspector/ValidatorsEditor'
+              Inspector-RequiredValidatorEditor: 'Inspector/RequiredValidatorEditor'
+              Inspector-CheckboxEditor: 'Inspector/CheckboxEditor'
+              Inspector-Typo3WinBrowserEditor: 'Inspector/Typo3WinBrowserEditor'
+
           ########### DEFAULT FORM ELEMENT DEFINITIONS ###########
           formElementsDefinition:
             ### BASE ELEMENTS ###
