@@ -21,6 +21,16 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Backend\Controller\Cont
 // Language diff updating in flex
 $GLOBALS['TYPO3_CONF_VARS']['BE']['flexFormXMLincludeDiffBase'] = true;
 
+$renderFceHeader = '';
+if ($_EXTCONF['enable.']['renderFCEHeader']) {
+    $renderFceHeader = '
+    10 < lib.stdheader';
+    if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('fluid_styled_content')) {
+        $renderFceHeader = '
+        10 =< lib.fluidContent
+        10.templateName = Header';
+    }
+}
 
 // Adding the two plugins TypoScript:
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript('templavoilaplus', 'setup', '
@@ -31,9 +41,7 @@ plugin.tx_templavoilaplus_pi1.disableExplosivePreview = 1
 
 tt_content.templavoilaplus_pi1 = COA
 tt_content.templavoilaplus_pi1 {
-' . ($_EXTCONF['enable.']['renderFCEHeader'] ? '
-    10 < lib.stdheader
-    ' : '') . '
+    ' . $renderFceHeader . '
     20 < plugin.tx_templavoilaplus_pi1
 }
 
