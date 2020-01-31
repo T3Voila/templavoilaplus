@@ -277,12 +277,9 @@ class FlexFormTools8 extends FlexFormTools
     {
         $pointerFieldName = $finalPointerFieldName = $fieldTca['config']['ds_pointerField'];
         if (!array_key_exists($pointerFieldName, $row)) {
-            // Pointer field does not exist in row at all -> throw
-            throw new InvalidTcaException(
-                'No data structure for field "' . $fieldName . '" in table "' . $tableName . '" found, no "ds" array'
-                . ' configured and given row does not have a field with ds_pointerField name "' . $pointerFieldName . '".',
-                1464115059
-            );
+            // The user may not have rights to edit this field so set it to empty
+            // Will validate later on, if there is a parent available which have something set
+            $row[$pointerFieldName] = '';
         }
         $pointerValue = $row[$pointerFieldName];
         // If set, this is typically set to "pid"
