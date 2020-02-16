@@ -7,4 +7,10 @@ return [
             'class' => \Ppi\TemplaVoilaPlus\Renderer\XpathRenderer::class,
         ],
     ],
+    'dataStructureHandler' => [
+        \Ppi\TemplaVoilaPlus\DataStructureHandler\FlexFormHandler::NAME => [
+            'name' => 'FlexForm Handler',
+            'class' => \Ppi\TemplaVoilaPlus\DataStructureHandler\FlexFormHandler::class,
+        ],
+    ],
 ];

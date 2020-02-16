@@ -42,6 +42,11 @@ class DataStructurePlace
     protected $name;
 
     /**
+     * @var string Name of the handler for operations of this types
+     */
+    protected $handlerName;
+
+    /**
      * @var string
      */
     protected $pathAbsolute;
@@ -51,11 +56,12 @@ class DataStructurePlace
      */
     protected $dataStructures;
 
-    public function __construct($uuid, $name, $scope, $pathAbsolute)
+    public function __construct($uuid, $name, $scope, string $handlerName, $pathAbsolute)
     {
         $this->uuid = $uuid;
         $this->name = $name;
         $this->scope = $scope;
+        $this->handlerName = $handlerName;
         $this->pathAbsolute = $pathAbsolute;
     }
 
@@ -72,6 +78,11 @@ class DataStructurePlace
     public function getName()
     {
         return TemplaVoilaUtility::getLanguageService()->sL($this->name);
+    }
+
+    public function getHandlerName(): string
+    {
+        return $this->handlerName;
     }
 
     public function getPathAbsolute()
