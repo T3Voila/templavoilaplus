@@ -29,6 +29,7 @@ class ConfigurationService implements SingletonInterface
     private $templatePlaces = [];
     private $mappingPlaces = [];
     private $availableRenderer = [];
+    private $availableDataStructureHandler = [];
 
     private $isInitialized = false;
 
@@ -117,7 +118,13 @@ class ConfigurationService implements SingletonInterface
         return $this->availableRenderer;
     }
 
-    public function registerDataStructurePlace($uuid, $name, $path, $scope)
+    public function getAvailableDataStructureHandler(): array
+    {
+        $this->initialize();
+        return $this->availableDataStructureHandler;
+    }
+
+    public function registerDataStructurePlace($uuid, $name, $path, $scope, $dataStructureHandler)
     {
         // @TODO Check if path is inside FAL and add danger hint!
         $pathAbsolute = GeneralUtility::getFileAbsFileName($path);
@@ -127,8 +134,11 @@ class ConfigurationService implements SingletonInterface
         if (isset($this->dataStructurePlaces[$uuid])) {
             throw new \Exception('uuid already exists');
         }
+        if (!isset($this->availableDataStructureHandler[$dataStructureHandler])) {
+            throw new \Exception('DataStructureHandler ' . $dataStructureHandler . ' unknown.');
+        }
 
-        $dataStructurePlace = new DataStructurePlace($uuid, $name, $scope, $pathAbsolute);
+        $dataStructurePlace = new DataStructurePlace($uuid, $name, $scope, $dataStructureHandler, $pathAbsolute);
         $this->dataStructurePlaces[$uuid] = $dataStructurePlace;
     }
 
@@ -188,6 +198,26 @@ class ConfigurationService implements SingletonInterface
         }
 
         $this->availableRenderer[$uuid] = [
+            'name' => $name,
+            'class' => $class,
+        ];
+    }
+
+    public function registerDataStructureHandler($uuid, $name, $class)
+    {
+        $interfaces = @class_implements($class);
+
+        if ($interfaces === false) {
+            throw new \Exception('Class ' . $class . ' not found');
+        }
+        if (!isset($interfaces[\Ppi\TemplaVoilaPlus\DataStructureHandler\DataStructureHandlerInterface::class])) {
+            throw new \Exception('Class ' . $class . ' do not implement DataStructureHandlerInterface interface');
+        }
+        if (isset($this->availableDataStructureHandler[$uuid])) {
+            throw new \Exception('uuid already exists');
+        }
+
+        $this->availableDataStructureHandler[$uuid] = [
             'name' => $name,
             'class' => $class,
         ];

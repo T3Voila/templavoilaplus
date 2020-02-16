@@ -25,11 +25,13 @@ if (!class_exists(DataSourcePlaces::class)) {
                         'name' => 'PAGE',
                         'path' => $configurationService->getExtensionConfig()['staticDS' . $confPathDot]['path_page'],
                         'scope' => AbstractDataStructure::SCOPE_PAGE,
+                        'handler' => \Ppi\TemplaVoilaPlus\DataStructureHandler\FlexFormHandler::NAME,
                     ],
                     'fce' => [
                         'name' => 'FCE',
                         'path' => $configurationService->getExtensionConfig()['staticDS' . $confPathDot]['path_fce'],
                         'scope' => AbstractDataStructure::SCOPE_FCE,
+                        'handler' => \Ppi\TemplaVoilaPlus\DataStructureHandler\FlexFormHandler::NAME,
                     ],
                 ];
             }

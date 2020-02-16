@@ -59,7 +59,8 @@ class ExtensionUtility implements SingletonInterface
                 $uuid,
                 $dataSourcePlace['name'],
                 $dataSourcePlace['path'],
-                $dataSourcePlace['scope']
+                $dataSourcePlace['scope'],
+                $dataSourcePlace['handler'],
             );
         }
     }
@@ -102,6 +103,15 @@ class ExtensionUtility implements SingletonInterface
                     $uuid,
                     $renderer['name'],
                     $renderer['class']
+                );
+            }
+        }
+        if (isset($extending['dataStructureHandler'])) {
+            foreach ($extending['dataStructureHandler'] as $uuid => $dataStructureHandler) {
+                $configurationService->registerDataStructureHandler(
+                    $uuid,
+                    $dataStructureHandler['name'],
+                    $dataStructureHandler['class']
                 );
             }
         }
