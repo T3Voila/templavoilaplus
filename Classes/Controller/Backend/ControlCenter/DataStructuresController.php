@@ -113,7 +113,7 @@ class DataStructuresController extends FormEditorController
         ];
 
         $this->view->assign('formEditorAppInitialData', json_encode($formEditorAppInitialData));
-        $this->view->assign('stylesheets', ['EXT:form/Resources/Public/Css/form.css']);
+        $this->view->assign('stylesheets', $this->resolveResourcePaths($this->prototypeConfiguration['formEditor']['stylesheets']));
         $this->view->assign('formEditorTemplates', $this->renderFormEditorTemplates($formEditorDefinitions));
         $this->view->assign('dynamicRequireJsModules', $this->prototypeConfiguration['formEditor']['dynamicRequireJsModules']);
 
