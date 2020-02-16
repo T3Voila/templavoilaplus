@@ -7,8 +7,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Ppi\TemplaVoilaPlus\Domain\Model\AbstractDataStructure;
 use Ppi\TemplaVoilaPlus\Service\ConfigurationService;
 
-if (!class_exists(DataSourcePlaces::class)) {
-    class DataSourcePlaces
+if (!class_exists(DataStructurePlaces::class)) {
+    class DataStructurePlaces
     {
         public static function getDataStructurePlaces(): array
         {
@@ -41,4 +41,4 @@ if (!class_exists(DataSourcePlaces::class)) {
     }
 }
 
-return DataSourcePlaces::getDataStructurePlaces();
+return DataStructurePlaces::getDataStructurePlaces();

@@ -44,23 +44,23 @@ class ExtensionUtility implements SingletonInterface
         // Temnplating TV+
         foreach (self::$registeredExtensions as $extensionKey) {
             $path = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey)  . 'Configuration/TVP';
-        self::loadDataSourcePlaces($path);
+        self::loadDataStructurePlaces($path);
         self::loadTemplatePlaces($path);
         self::loadMappingPlaces($path);
         }
     }
 
-    protected static function loadDataSourcePlaces($path)
+    protected static function loadDataStructurePlaces($path)
     {
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
-        $dataSourcePlaces = self::getFileContentArray($path . '/DataSourcePlaces.php');
-        foreach ($dataSourcePlaces as $uuid => $dataSourcePlace) {
+        $dataStructurePlaces = self::getFileContentArray($path . '/DataStructurePlaces.php');
+        foreach ($dataStructurePlaces as $uuid => $dataStructurePlace) {
             $configurationService->registerDataStructurePlace(
                 $uuid,
-                $dataSourcePlace['name'],
-                $dataSourcePlace['path'],
-                $dataSourcePlace['scope'],
-                $dataSourcePlace['handler'],
+                $dataStructurePlace['name'],
+                $dataStructurePlace['path'],
+                $dataStructurePlace['scope'],
+                $dataStructurePlace['handler'],
             );
         }
     }
