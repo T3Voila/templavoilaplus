@@ -31,27 +31,14 @@ class XmlFileDataStructure extends AbstractDataStructure
     protected $file;
 
     /**
-     * @var string
-     */
-    protected $xmlContent = null;
-
-    protected $dataStructureArray = [];
-
-    /**
      * @param \TYPO3\CMS\Core\Resource\File $file
-     * @param string $scope
      */
-    public function __construct(\TYPO3\CMS\Core\Resource\File $file, $scope)
+    public function __construct(\TYPO3\CMS\Core\Resource\File $file)
     {
         $this->file = $file;
 
+        // @TODO setIcon
         $this->setLabel($file->getName());
-        $this->setScope($scope);
-
-        // @TODO Set iconfile if found
-        // Old way was $iconPath = $pathInfo['dirname'] . '/' . $pathInfo['filename'] . '.gif';
-        // $this->setIcon('../' . $iconPath);
-
         $this->dataStructureArray = $this->getDataStructureAsArray($this->file->getContents());
 
         // Read title from XML file and set, if not empty or ROOT
@@ -65,19 +52,6 @@ class XmlFileDataStructure extends AbstractDataStructure
     public function getIdentifier()
     {
         return $this->file->getIdentifier();
-    }
-
-    // @TODO Needed anymore?
-    public function getKey() {} // this is identifier
-    public function getStoragePids() {}
-    public function getDataprotXML() {}
-    public function isPermittedForUser($parentRow = array(), $removeItems = array(), $showAdminAll = true) {return true;}
-    public function getCruser() {}
-
-    // @TODO Into abstract?
-    public function getDataStructureArray(): array
-    {
-        return $this->dataStructureArray;
     }
 
     /**
@@ -110,13 +84,5 @@ class XmlFileDataStructure extends AbstractDataStructure
         return false;
     }
 
-    /**
-     * @param void
-     *
-     * @return string
-     */
-    public function getSortingFieldValue()
-    {
-        return $this->getLabel(); // required to resolve LLL texts
-    }
+    public function getCruser() {}
 }

@@ -124,6 +124,17 @@ class ConfigurationService implements SingletonInterface
         return $this->availableDataStructureHandler;
     }
 
+    public function getDataStructureHandler(
+        string $uuid,
+        \Ppi\TemplaVoilaPlus\Domain\Model\DataStructurePlace $place
+    ): \Ppi\TemplaVoilaPlus\DataStructureHandler\DataStructureHandlerInterface {
+        $this->initialize();
+        if (!isset($this->availableDataStructureHandler[$uuid])) {
+            throw new \Exception('DataStructureHandler with uuid "' . $uuid . '" do not exist');
+        }
+        return GeneralUtility::makeInstance($this->availableDataStructureHandler[$uuid]['class'], $place);
+    }
+
     public function registerDataStructurePlace($uuid, $name, $path, $scope, $dataStructureHandler)
     {
         // @TODO Check if path is inside FAL and add danger hint!
