@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
 use Ppi\TemplaVoilaPlus\Exception\DataStructureException;
+use Ppi\TemplaVoilaPlus\Service\ConfigurationService;
 use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 /**
@@ -51,11 +52,6 @@ class DataStructurePlace
      */
     protected $pathAbsolute;
 
-    /**
-     * @var array
-     */
-    protected $dataStructures;
-
     public function __construct($uuid, $name, $scope, string $handlerName, $pathAbsolute)
     {
         $this->uuid = $uuid;
@@ -85,6 +81,12 @@ class DataStructurePlace
         return $this->handlerName;
     }
 
+    public function getHandler(): \Ppi\TemplaVoilaPlus\DataStructureHandler\DataStructureHandlerInterface
+    {
+        $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
+        return $configurationService->getDataStructureHandler($this->getHandlerName(), $this);
+    }
+
     public function getPathAbsolute()
     {
         return $this->pathAbsolute;
@@ -92,39 +94,6 @@ class DataStructurePlace
 
     public function getPathRelative()
     {
-
         return PathUtility::stripPathSitePrefix($this->pathAbsolute);
-    }
-
-    public function getDataStructures(): array
-    {
-        $this->initializeDataStructures();
-        return $this->dataStructures;
-    }
-
-    public function getDataStructure($identifier): AbstractDataStructure
-    {
-        $this->initializeDataStructures();
-        return $this->dataStructures[$identifier];
-    }
-
-    protected function initializeDataStructures()
-    {
-        if ($this->dataStructures === null) {
-            $this->dataStructures = [];
-            $resourceFactory = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance();
-
-            $filter = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter::class);
-            $filter->setAllowedFileExtensions('xml');
-
-            $folder = $resourceFactory->retrieveFileOrFolderObject($this->pathAbsolute);
-            $folder->setFileAndFolderNameFilters([[$filter, 'filterFileList']]);
-
-            $files = $folder->getFiles(0, 0, \TYPO3\CMS\Core\Resource\Folder::FILTER_MODE_USE_OWN_FILTERS, true);
-
-            foreach($files as $file) {
-                $this->dataStructures[$file->getIdentifier()] = new XmlFileDataStructure($file, $this->scope);
-            }
-        }
     }
 }

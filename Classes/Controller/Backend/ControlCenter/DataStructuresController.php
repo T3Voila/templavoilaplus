@@ -91,7 +91,7 @@ class DataStructuresController extends FormEditorController
 
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
         $dataStructurePlace = $configurationService->getDataStructurePlace($uuid);
-        $dataStructure = $dataStructurePlace->getDataStructure($identifier);
+        $dataStructure = $dataStructurePlace->getHandler()->getDataStructure($identifier);
 
         $prototypeName = 'tvp-dynamic-structures';
         $formDefinition = $this->transformDataStructureForFormEditor($uuid, $prototypeName, $dataStructure);
@@ -493,4 +493,3 @@ var_dump($elementStructure);die();
         return $dataStructurePlacesByScope;
     }
 }
-
