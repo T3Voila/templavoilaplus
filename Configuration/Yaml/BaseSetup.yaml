@@ -21,6 +21,9 @@ TYPO3:
               additionalViewModelModules:
                 - TYPO3/CMS/Templavoilaplus/FormEditorElements
 
+            stylesheets:
+              200: 'EXT:form/Resources/Public/Css/form.css'
+
             formEditorFluidConfiguration:
               templatePathAndFilename: 'EXT:form/Resources/Private/Backend/Templates/FormEditor/InlineTemplates.html'
               partialRootPaths:
