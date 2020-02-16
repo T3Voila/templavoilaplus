@@ -470,9 +470,9 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             ]
         ];
 
-        $this->modTSconfig = array_merge_recursive(
-            BackendUtility::getModTSconfig($this->id, 'mod.' . $this->moduleName),
-            $this->modTSconfig
+        $this->modTSconfig = array_replace_recursive(
+            $this->modTSconfig,
+            BackendUtility::getModTSconfig($this->id, 'mod.' . $this->moduleName)
         );
 
         $this->MOD_MENU = array(
