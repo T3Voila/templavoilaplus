@@ -1096,6 +1096,11 @@ class ApiService
             $flexformPointers = array();
         }
         $parentRecord = BackendUtility::getRecordWSOL($table, $uid, 'uid,pid,tx_templavoilaplus_flex,tx_templavoilaplus_ds,tx_templavoilaplus_to');
+
+        if ($parentRecord === null) {
+            return $flexformPointers;
+        }
+
         $flexFieldArr = GeneralUtility::xml2array($parentRecord['tx_templavoilaplus_flex']);
         $expandedDataStructure = $this->ds_getExpandedDataStructure($table, $parentRecord);
 
