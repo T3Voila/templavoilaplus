@@ -11,6 +11,10 @@ The finalisation of TemplaVoilà! version 1.0 was funded by the
 `TYPO3 Association <https://typo3.org/>`_. Thanks to all our supporting
 members who enable us to develop!
 
-Updating the TemplaVoilà! extension for TYPO3 7/8 LTS under the new
+Updating the TemplaVoilà! extension for TYPO3 v7/v8/v9 LTS under the new
 name "TemplaVoilà! Plus" was sponsored by
-`PLUSPOL interactive <https://www.pluspol-interactive.de>`_
+`PLUSPOL interactive GbR<https://www.pluspol-interactive.de>`_
+
+Updating the TemplaVoilà! Plus extension for TYPO3 v10 LTS and maintenance
+is sponsored by
+`Extrameile GmbH <https://www.extrameile-gehen.de>`_

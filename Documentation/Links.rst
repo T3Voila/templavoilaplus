@@ -19,4 +19,4 @@ Links
     https://github.com/pluspol-interactive/templavoilaplus
 
 :Contact:
-    `Alexander Opitz <mailto:opitz@pluspol.info>`_
+    `Alexander Opitz <mailto:opitz@extrameile.agency>`_

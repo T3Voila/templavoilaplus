@@ -38,13 +38,13 @@ EXT: TemplaVoilà! Plus
 
         Copyright 2010 Tolleiv Nietsch <templavoila@tolleiv.de>
 
-        Copyright 2016-2017 Alexander Opitz <opitz@pluspol.info>
+        Copyright 2016-2020 Alexander Opitz <opitz@extrameile.agency>
 
     :Author:
         Kasper Skårhøj, Robert Lemke, Alexander Opitz
 
     :Email:
-        kasperYYYY@typo3.com, robert@typo3.org, opitz@pluspol.info
+        kasperYYYY@typo3.com, robert@typo3.org, opitz@extrameile.agency
 
     :License:
         This document is published under the Open Content License available
