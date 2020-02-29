@@ -15,16 +15,15 @@ namespace Ppi\TemplaVoilaPlus\Controller\Backend\ControlCenter;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use TYPO3\CMS\Frontend\Page\PageRepository;
+
+use TYPO3\CMS\Lang\LanguageService;
 
 use Ppi\TemplaVoilaPlus\Configuration\BackendConfiguration;
 use Ppi\TemplaVoilaPlus\Service\ConfigurationService;
@@ -54,15 +53,9 @@ class TemplatesController extends ActionController
      */
     public function listAction()
     {
+        $this->registerDocheaderButtons();
         $this->view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation([]);
         $this->view->getModuleTemplate()->setFlashMessageQueue($this->controllerContext->getFlashMessageQueue());
-
-        $buttonBar = $this->view->getModuleTemplate()->getDocHeaderComponent()->getButtonBar();
-        $button = $buttonBar->makeLinkButton()
-            ->setHref($this->getControllerContext()->getUriBuilder()->uriFor('show', [], 'Backend\ControlCenter'))
-            ->setTitle('Back')
-            ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
-        $buttonBar->addButton($button, ButtonBar::BUTTON_POSITION_LEFT, 1);
 
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
         $templatePlaces = $configurationService->getTemplatePlaces();
@@ -72,6 +65,28 @@ class TemplatesController extends ActionController
         $this->view->assign('pageTitle', 'TemplaVoilà! Plus - Templates List');
 
         $this->view->assign('templatePlaces', $templatePlaces);
+    }
+
+
+    /**
+     * Registers the Icons into the docheader
+     *
+     * @throws \InvalidArgumentException
+     */
+    protected function registerDocheaderButtons()
+    {
+        /** @var ButtonBar $buttonBar */
+        $buttonBar = $this->view->getModuleTemplate()->getDocHeaderComponent()->getButtonBar();
+        $getVars = $this->request->getArguments();
+
+        if (isset($getVars['action']) && $getVars['action'] === 'list') {
+            $backButton = $buttonBar->makeLinkButton()
+                ->setDataAttributes(['identifier' => 'backButton'])
+                ->setHref($this->getControllerContext()->getUriBuilder()->uriFor('show', [], 'Backend\ControlCenter'))
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
+                ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
+            $buttonBar->addButton($backButton, ButtonBar::BUTTON_POSITION_LEFT, 1);
+        }
     }
 
     protected function enrichTemplatePlacesWithFiles($templatePlaces): array
@@ -89,5 +104,15 @@ class TemplatesController extends ActionController
         }
 
         return $templatePlaces;
+    }
+
+    /**
+     * Returns the language service
+     *
+     * @return LanguageService
+     */
+    protected function getLanguageService(): LanguageService
+    {
+        return $GLOBALS['LANG'];
     }
 }
