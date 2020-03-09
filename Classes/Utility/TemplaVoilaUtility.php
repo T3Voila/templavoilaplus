@@ -71,6 +71,9 @@ debug_print_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
         if (isset($GLOBALS['LANG'])) {
             return $GLOBALS['LANG'];
         } else {
+            if (version_compare(TYPO3_version, '9.3.0', '>=')) {
+                return GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\LanguageService::class);
+            }
             return GeneralUtility::makeInstance(\TYPO3\CMS\Lang\LanguageService::class);
         }
     }
@@ -80,8 +83,12 @@ debug_print_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
      */
     public static function getCoreLangPath()
     {
+        if (version_compare(TYPO3_version, '9.3.0', '>=')) {
+            return 'core/Resources/Private/Language/';
+        }
         return 'lang/Resources/Private/Language/';
     }
+
     /**
      * Returns an array of available languages (to use for FlexForms)
      *

@@ -23,8 +23,6 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
-use TYPO3\CMS\Lang\LanguageService;
-
 use Ppi\TemplaVoilaPlus\Configuration\BackendConfiguration;
 use Ppi\TemplaVoilaPlus\Service\ConfigurationService;
 use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
@@ -83,7 +81,7 @@ class TemplatesController extends ActionController
             $backButton = $buttonBar->makeLinkButton()
                 ->setDataAttributes(['identifier' => 'backButton'])
                 ->setHref($this->getControllerContext()->getUriBuilder()->uriFor('show', [], 'Backend\ControlCenter'))
-                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
+                ->setTitle(TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:' . TemplaVoilaUtility::getCoreLangPath() . 'locallang_core.xlf:labels.goBack'))
                 ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
             $buttonBar->addButton($backButton, ButtonBar::BUTTON_POSITION_LEFT, 1);
         }
@@ -104,15 +102,5 @@ class TemplatesController extends ActionController
         }
 
         return $templatePlaces;
-    }
-
-    /**
-     * Returns the language service
-     *
-     * @return LanguageService
-     */
-    protected function getLanguageService(): LanguageService
-    {
-        return $GLOBALS['LANG'];
     }
 }
