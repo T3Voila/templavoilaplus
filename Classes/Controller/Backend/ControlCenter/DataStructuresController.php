@@ -136,7 +136,7 @@ class DataStructuresController extends FormEditorController
             $backButton = $buttonBar->makeLinkButton()
                 ->setDataAttributes(['identifier' => 'backButton'])
                 ->setHref($this->getControllerContext()->getUriBuilder()->uriFor('show', [], 'Backend\ControlCenter'))
-                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:' . TemplaVoilaUtility::getCoreLangPath() . 'locallang_core.xlf:labels.goBack'))
                 ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
             $buttonBar->addButton($backButton, ButtonBar::BUTTON_POSITION_LEFT, 1);
         }
@@ -154,7 +154,7 @@ class DataStructuresController extends FormEditorController
                 ->setDataAttributes(['identifier' => 'closeButton'])
                 ->setHref(BackendUtility::getModuleUrl('web_TemplaVoilaPlusControlcenter', ['tx_templavoilaplus_web_templavoilapluscontrolcenter' => ['controller' => 'Backend\ControlCenter\DataStructures']]))
                 ->setClasses('t3-form-element-close-form-button hidden')
-                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:rm.closeDoc'))
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:' . TemplaVoilaUtility::getCoreLangPath() . 'locallang_core.xlf:rm.closeDoc'))
                 ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-close', Icon::SIZE_SMALL));
 
             $saveButton = $buttonBar->makeInputButton()
