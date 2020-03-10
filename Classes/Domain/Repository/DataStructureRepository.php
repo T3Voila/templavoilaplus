@@ -338,11 +338,10 @@ class DataStructureRepository implements \TYPO3\CMS\Core\SingletonInterface
         $systemPath .= '/';
 
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
-        $paths = $configurationService->getDataStructurePlaces();
+        $dataStructurePlaces = $configurationService->getDataStructurePlaces();
 
-        foreach ($paths as $type => $pathConfig) {
-            $absolutePath = GeneralUtility::getFileAbsFileName($pathConfig['path']);
-            $files = GeneralUtility::getFilesInDir($absolutePath, 'xml', true);
+        foreach ($dataStructurePlaces as $dataStructurePlace) {
+            $files = GeneralUtility::getFilesInDir($dataStructurePlace->getPathAbsolute(), 'xml', true);
 
             foreach ($files as $filePath) {
                 $staticDataStructure = array();
@@ -354,7 +353,7 @@ class DataStructureRepository implements \TYPO3\CMS\Core\SingletonInterface
                 if (file_exists($iconPath)) {
                     $staticDataStructure['icon'] = substr($iconPath, strlen($systemPath));
                 }
-                $staticDataStructure['scope'] = $pathConfig['scope'];
+                $staticDataStructure['scope'] = $dataStructurePlace->getScope();
 
                 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoilaplus']['staticDataStructures'][] = $staticDataStructure;
             }
