@@ -146,7 +146,7 @@ class ConfigurationService implements SingletonInterface
             throw new \Exception('uuid already exists');
         }
         if (!isset($this->availableDataStructureHandler[$dataStructureHandler])) {
-            throw new \Exception('DataStructureHandler ' . $dataStructureHandler . ' unknown.');
+            throw new \Exception('DataStructureHandler "' . $dataStructureHandler . '" unknown.');
         }
 
         $dataStructurePlace = new DataStructurePlace($uuid, $name, $scope, $dataStructureHandler, $pathAbsolute);
@@ -164,7 +164,7 @@ class ConfigurationService implements SingletonInterface
             throw new \Exception('uuid already exists');
         }
         if (!isset($this->availableRenderer[$renderer])) {
-            throw new \Exception('Renderer ' . $renderer . ' unknown.');
+            throw new \Exception('Renderer "' . $renderer . '" unknown.');
         }
 
         $this->templatePlaces[$uuid] = [
@@ -199,10 +199,10 @@ class ConfigurationService implements SingletonInterface
         $interfaces = @class_implements($class);
 
         if ($interfaces === false) {
-            throw new \Exception('Class ' . $class . ' not found');
+            throw new \Exception('Class "' . $class . '" not found');
         }
         if (!isset($interfaces[\Ppi\TemplaVoilaPlus\Renderer\RendererInterface::class])) {
-            throw new \Exception('Class ' . $class . ' do not implement renderer interface');
+            throw new \Exception('Class "' . $class . '" do not implement renderer interface');
         }
         if (isset($this->availableRenderer[$uuid])) {
             throw new \Exception('uuid already exists');
@@ -219,10 +219,10 @@ class ConfigurationService implements SingletonInterface
         $interfaces = @class_implements($class);
 
         if ($interfaces === false) {
-            throw new \Exception('Class ' . $class . ' not found');
+            throw new \Exception('Class "' . $class . '" not found');
         }
         if (!isset($interfaces[\Ppi\TemplaVoilaPlus\DataStructureHandler\DataStructureHandlerInterface::class])) {
-            throw new \Exception('Class ' . $class . ' do not implement DataStructureHandlerInterface interface');
+            throw new \Exception('Class "' . $class . '" do not implement DataStructureHandlerInterface interface');
         }
         if (isset($this->availableDataStructureHandler[$uuid])) {
             throw new \Exception('uuid already exists');
