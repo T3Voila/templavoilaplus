@@ -47,6 +47,12 @@ class TemplateYamlPlaceHandler implements TemplatePlaceHandlerInterface
         return $this->templateConfigurations;
     }
 
+    public function getTemplateConfiguration(string $identifier): TemplateYamlConfiguration
+    {
+        $this->initializeTemplateConfigurations();
+        return $this->templateConfigurations[$identifier];
+    }
+
     protected function initializeTemplateConfigurations()
     {
         if ($this->templateConfigurations === null) {
