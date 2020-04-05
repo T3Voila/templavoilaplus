@@ -8,9 +8,9 @@ return [
         ],
     ],
     'placesHandler' => [
-        \Ppi\TemplaVoilaPlus\DataStructureHandler\FlexFormHandler::NAME => [
+        \Ppi\TemplaVoilaPlus\Handler\Place\DataStructureFlexFormPlaceHandler::NAME => [
             'name' => 'FlexForm Handler',
-            'handlerClass' => \Ppi\TemplaVoilaPlus\DataStructureHandler\FlexFormHandler::class,
+            'handlerClass' => \Ppi\TemplaVoilaPlus\Handler\Place\DataStructureFlexFormPlaceHandler::class,
             'placeClass' => \Ppi\TemplaVoilaPlus\Domain\Model\DataStructurePlace::class
         ],
         \Ppi\TemplaVoilaPlus\Handler\Place\TemplateYamlPlaceHandler::NAME => [
