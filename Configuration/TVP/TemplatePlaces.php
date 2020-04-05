@@ -30,8 +30,8 @@ if (!class_exists(TemplatePlaces::class)) {
                     $templatePlaces[$folder->getName()] = [
                         'name' => $folder->getPublicUrl(),
                         'path' => $folder->getPublicUrl(),
-                        'renderer' => \Ppi\TemplaVoilaPlus\Renderer\XpathRenderer::NAME,
                         'scope' => '',
+                        'handler' => \Ppi\TemplaVoilaPlus\Handler\Place\TemplateYamlPlaceHandler::NAME,
                     ];
                 }
             }

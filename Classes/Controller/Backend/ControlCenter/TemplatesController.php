@@ -58,11 +58,12 @@ class TemplatesController extends ActionController
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
         $templatePlaces = $configurationService->getTemplatePlaces();
 
-        $templatePlaces = $this->enrichTemplatePlacesWithFiles($templatePlaces);
+//         $templatePlaces = $this->enrichTemplatePlacesWithFiles($templatePlaces);
+        $templatePlacesByScope = $this->reorderDataStructurePlacesByScope($templatePlaces);
 
         $this->view->assign('pageTitle', 'TemplaVoilà! Plus - Templates List');
 
-        $this->view->assign('templatePlaces', $templatePlaces);
+        $this->view->assign('templatePlacesByScope', $templatePlacesByScope);
     }
 
 
@@ -102,5 +103,15 @@ class TemplatesController extends ActionController
         }
 
         return $templatePlaces;
+    }
+
+    protected function reorderDataStructurePlacesByScope(array $templatePlaces): array
+    {
+        $templatePlacesByScope = [];
+        foreach ($templatePlaces as $uuid => $templatePlace) {
+            $templatePlacesByScope[$templatePlace->getScope()][] = $templatePlace;
+        }
+
+        return $templatePlacesByScope;
     }
 }

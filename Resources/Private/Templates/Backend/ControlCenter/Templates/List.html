@@ -11,27 +11,72 @@
 <f:render section="content" arguments="{_all}" />
 
 <f:section name="content">
-    <f:for each="{templatePlaces}" as="templatePlace">
-        <div class="row">
-            <div class="col-sm-3">
-                <div class="panel panel-info">
-                    <div class="panel-heading"><h3 class="panel-title">{templatePlace.name}</h3></div>
-                    <f:if condition="{templatePlace.files -> f:count()} > 0">
-                        <f:then>
-                            <table class="table table-striped table-hover">
-                                <f:for each="{templatePlace.files}" as="file">
-                                    <tr><td>{file.name}</td></tr>
-                                </f:for>
-                            </table>
-                        </f:then>
-                        <f:else>
-                            <div class="panel-body">
-                                No templates found
-                            </div>
-                        </f:else>
-                    </f:if>
+    <div class="row">
+        <f:for each="{templatePlacesByScope}" key="scope" as="templatePlaces">
+            <div class="col-sm-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            <f:switch expression="{scope}">
+                                <f:case value="1">Pages</f:case>
+                                <f:case value="2">FCEs</f:case>
+                                <f:defaultCase>{scope}</f:defaultCase>
+                            </f:switch>
+                        </h3>
+                    </div>
+                    <ul class="list-group">
+                        <f:for each="{templatePlaces}" as="templatePlace">
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="panel panel-info">
+                                            <div class="panel-heading">
+                                                <div class="row">
+                                                    <div class="col-sm-10">
+                                                        <h2 class="panel-title">{templatePlace.name}</h2>
+                                                    </div>
+                                                    <div class="col-sm-2">
+                                                        <div class="btn-group" role="group" aria-label="...">
+                                                            <f:link.action action="new" arguments="{'uuid': templatePlace.uuid}" class="btn btn-info"><core:icon identifier="actions-template-new" /></f:link.action>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <f:if condition="{templatePlace.handler.templates -> f:count()} > 0">
+                                                <f:then>
+                                                    <table class="table table-striped table-hover">
+                                                        <f:for each="{templatePlace.handler.templates}" as="template">
+                                                            <tr>
+                                                                <td>{template.label}<br/>{template.identifier}</td>
+                                                                <td>
+                                                                    Created: <f:format.date>{template.crdate}</f:format.date><br/>
+                                                                    Modified: <f:format.date>{template.tstamp}</f:format.date>
+                                                                </td>
+                                                                <td>
+                                                                    <div class="btn-group" role="group" aria-label="...">
+                                                                        <f:link.action action="edit" arguments="{'uuid': templatePlace.uuid, 'identifier': template.identifier}" class="btn btn-default"><core:icon identifier="actions-open" /></f:link.action>
+                                                                        <f:link.action action="info" arguments="{'uuid': templatePlace.uuid, 'identifier': template.identifier}" class="btn btn-default"><core:icon identifier="actions-document-info" /></f:link.action>
+                                                                        <f:link.action action="delete" arguments="{'uuid': templatePlace.uuid, 'identifier': template.identifier}" class="btn btn-danger"><core:icon identifier="actions-edit-delete" /></f:link.action>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        </f:for>
+                                                    </table>
+                                                </f:then>
+                                                <f:else>
+                                                    <div class="panel-body">
+                                                        No template configurations found.
+                                                    </div>
+                                                </f:else>
+                                            </f:if>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </f:for>
+                    </ul>
                 </div>
             </div>
-        </div>
-    </f:for>
+        </f:for>
+    </div>
 </f:section>

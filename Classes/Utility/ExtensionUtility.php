@@ -94,8 +94,8 @@ class ExtensionUtility implements SingletonInterface
                 $uuid,
                 $contentPlace['name'],
                 $contentPlace['path'],
-                $contentPlace['renderer'],
-                $contentPlace['scope']
+                $contentPlace['scope'],
+                $contentPlace['handler']
             );
         }
     }
@@ -138,12 +138,13 @@ class ExtensionUtility implements SingletonInterface
                 );
             }
         }
-        if (isset($extending['dataStructureHandler'])) {
-            foreach ($extending['dataStructureHandler'] as $uuid => $dataStructureHandler) {
-                $configurationService->registerDataStructureHandler(
+        if (isset($extending['placesHandler'])) {
+            foreach ($extending['placesHandler'] as $uuid => $placesHandler) {
+                $configurationService->registerPlaceHandler(
                     $uuid,
-                    $dataStructureHandler['name'],
-                    $dataStructureHandler['class']
+                    $placesHandler['name'],
+                    $placesHandler['handlerClass'],
+                    $placesHandler['placeClass']
                 );
             }
         }
