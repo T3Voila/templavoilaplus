@@ -20,5 +20,5 @@ namespace Ppi\TemplaVoilaPlus\Domain\Model;
  */
 class DataStructurePlace extends Place
 {
-    protected static $handlerInterface = \Ppi\TemplaVoilaPlus\DataStructureHandler\DataStructureHandlerInterface::class;
+    protected static $handlerInterface = \Ppi\TemplaVoilaPlus\Handler\Place\DataStructurePlaceHandlerInterface::class;
 }

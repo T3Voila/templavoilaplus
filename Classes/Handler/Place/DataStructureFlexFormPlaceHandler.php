@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace Ppi\TemplaVoilaPlus\DataStructureHandler;
+namespace Ppi\TemplaVoilaPlus\Handler\Place;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -20,9 +20,9 @@ use Ppi\TemplaVoilaPlus\Domain\Model\AbstractDataStructure;
 use Ppi\TemplaVoilaPlus\Domain\Model\DataStructurePlace;
 use Ppi\TemplaVoilaPlus\Domain\Model\XmlFileDataStructure;
 
-class FlexFormHandler implements DataStructureHandlerInterface
+class DataStructureFlexFormPlaceHandler implements DataStructurePlaceHandlerInterface
 {
-    public const NAME = 'templavoilaplus_handler_flexform';
+    public const NAME = 'templavoilaplus_handler_place_datastructure_flexform';
 
     /**
      * @var DataStructurePlace
