@@ -107,6 +107,15 @@ class ConfigurationService implements SingletonInterface
         return $this->templatePlaces;
     }
 
+    public function getTemplatePlace($uuid): TemplatePlace
+    {
+        $this->initialize();
+        if (!isset($this->templatePlaces[$uuid])) {
+            throw new \Exception('TemplatePlace "' . $uuid . '" not available.');
+        }
+        return $this->templatePlaces[$uuid];
+    }
+
     public function getMappingPlaces(): array
     {
         $this->initialize();

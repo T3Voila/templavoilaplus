@@ -47,7 +47,7 @@ class TemplatesController extends ActionController
     }
 
     /**
-     * Displays the page with layout and content elements
+     * List all available configurations for templates
      */
     public function listAction()
     {
@@ -58,7 +58,6 @@ class TemplatesController extends ActionController
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
         $templatePlaces = $configurationService->getTemplatePlaces();
 
-//         $templatePlaces = $this->enrichTemplatePlacesWithFiles($templatePlaces);
         $templatePlacesByScope = $this->reorderDataStructurePlacesByScope($templatePlaces);
 
         $this->view->assign('pageTitle', 'TemplaVoilà! Plus - Templates List');
@@ -66,6 +65,29 @@ class TemplatesController extends ActionController
         $this->view->assign('templatePlacesByScope', $templatePlacesByScope);
     }
 
+
+    /**
+     * Show information about one template configuration
+     *
+     * @param string $uuid Uuid of TemplatePlace
+     * @param string $identifier Identifier inside the dataStructurePlace
+     * @return void
+     */
+    public function infoAction($uuid, $identifier)
+    {
+        $this->registerDocheaderButtons();
+        $this->view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation([]);
+        $this->view->getModuleTemplate()->setFlashMessageQueue($this->controllerContext->getFlashMessageQueue());
+
+        $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
+        $templatePlace = $configurationService->getTemplatePlace($uuid);
+        $templateConfiguration = $templatePlace->getHandler()->getTemplateConfiguration($identifier);
+
+        $this->view->assign('pageTitle', 'TemplaVoilà! Plus - Templates Info');
+
+        $this->view->assign('templatePlace', $templatePlace);
+        $this->view->assign('templateConfiguration', $templateConfiguration);
+    }
 
     /**
      * Registers the Icons into the docheader
@@ -86,23 +108,6 @@ class TemplatesController extends ActionController
                 ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
             $buttonBar->addButton($backButton, ButtonBar::BUTTON_POSITION_LEFT, 1);
         }
-    }
-
-    protected function enrichTemplatePlacesWithFiles($templatePlaces): array
-    {
-        $resourceFactory = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance();
-
-        $filter = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter::class);
-        $filter->setAllowedFileExtensions('html,htm,tmpl');
-
-        foreach ($templatePlaces as $uuid => $templatePlace) {
-            $folder = $resourceFactory->retrieveFileOrFolderObject($templatePlace['pathAbs']);
-            $folder->setFileAndFolderNameFilters([[$filter, 'filterFileList']]);
-
-            $templatePlaces[$uuid]['files'] = $folder->getFiles(0, 0, \TYPO3\CMS\Core\Resource\Folder::FILTER_MODE_USE_OWN_FILTERS, true);
-        }
-
-        return $templatePlaces;
     }
 
     protected function reorderDataStructurePlacesByScope(array $templatePlaces): array
