@@ -119,6 +119,12 @@ class ConfigurationService implements SingletonInterface
         return $this->availableRenderer;
     }
 
+    public function getAvailablePlaceHandler(): array
+    {
+        $this->initialize();
+        return $this->availablePlaceHandler;
+    }
+
     public function getHandler(
         \Ppi\TemplaVoilaPlus\Domain\Model\Place $place
     ) {
