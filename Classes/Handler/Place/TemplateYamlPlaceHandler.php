@@ -16,8 +16,10 @@ namespace Ppi\TemplaVoilaPlus\Handler\Place;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 
 use Ppi\TemplaVoilaPlus\Domain\Model\TemplatePlace;
+use Ppi\TemplaVoilaPlus\Domain\Model\TemplateYamlConfiguration;
 
 class TemplateYamlPlaceHandler implements TemplatePlaceHandlerInterface
 {
@@ -52,7 +54,8 @@ class TemplateYamlPlaceHandler implements TemplatePlaceHandlerInterface
             $resourceFactory = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance();
 
             $filter = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter::class);
-            $filter->setAllowedFileExtensions('tvp.yaml');
+            // WTF? We cann't search for tvp.yaml so search for yaml and filter afterwards
+            $filter->setAllowedFileExtensions('yaml');
 
             $folder = $resourceFactory->retrieveFileOrFolderObject($this->place->getPathAbsolute());
             $folder->setFileAndFolderNameFilters([[$filter, 'filterFileList']]);
@@ -60,7 +63,14 @@ class TemplateYamlPlaceHandler implements TemplatePlaceHandlerInterface
             $files = $folder->getFiles(0, 0, \TYPO3\CMS\Core\Resource\Folder::FILTER_MODE_USE_OWN_FILTERS, true);
 
             foreach($files as $file) {
-                $this->templateConfigurations[$file->getIdentifier()] = $file;
+                if (StringUtility::endsWith($file->getName(), '.tvp.yaml')) {
+                    try {
+                        $this->templateConfigurations[$file->getIdentifier()] = new TemplateYamlConfiguration($file);
+                    } catch (\Exception $e) {
+                        // Empty as we can't process this file
+                        // @TODO Maybe report into log
+                    }
+                }
             }
         }
     }
