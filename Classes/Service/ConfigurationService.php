@@ -21,6 +21,7 @@ use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface;
 
 use Ppi\TemplaVoilaPlus\Domain\Model\DataStructurePlace;
+use Ppi\TemplaVoilaPlus\Domain\Model\TemplatePlace;
 
 class ConfigurationService implements SingletonInterface
 {
@@ -29,7 +30,7 @@ class ConfigurationService implements SingletonInterface
     private $templatePlaces = [];
     private $mappingPlaces = [];
     private $availableRenderer = [];
-    private $availableDataStructureHandler = [];
+    private $availablePlaceHandler = [];
 
     private $isInitialized = false;
 
@@ -118,21 +119,15 @@ class ConfigurationService implements SingletonInterface
         return $this->availableRenderer;
     }
 
-    public function getAvailableDataStructureHandler(): array
-    {
-        $this->initialize();
-        return $this->availableDataStructureHandler;
-    }
+    public function getHandler(
+        \Ppi\TemplaVoilaPlus\Domain\Model\Place $place
+    ) {
+        $availableHandler = $this->availablePlaceHandler[get_class($place)];
 
-    public function getDataStructureHandler(
-        string $uuid,
-        \Ppi\TemplaVoilaPlus\Domain\Model\DataStructurePlace $place
-    ): \Ppi\TemplaVoilaPlus\DataStructureHandler\DataStructureHandlerInterface {
-        $this->initialize();
-        if (!isset($this->availableDataStructureHandler[$uuid])) {
-            throw new \Exception('DataStructureHandler with uuid "' . $uuid . '" do not exist');
+        if (!isset($availableHandler[$place->getHandlerName()])) {
+            throw new \Exception('Handler with uuid "' . $place->getHandlerName() . '" do not exist');
         }
-        return GeneralUtility::makeInstance($this->availableDataStructureHandler[$uuid]['class'], $place);
+        return GeneralUtility::makeInstance($availableHandler[$place->getHandlerName()]['class'], $place);
     }
 
     public function registerDataStructurePlace($uuid, $name, $path, $scope, $dataStructureHandler)
@@ -145,7 +140,7 @@ class ConfigurationService implements SingletonInterface
         if (isset($this->dataStructurePlaces[$uuid])) {
             throw new \Exception('uuid already exists');
         }
-        if (!isset($this->availableDataStructureHandler[$dataStructureHandler])) {
+        if (!isset($this->availablePlaceHandler[DataStructurePlace::class][$dataStructureHandler])) {
             throw new \Exception('DataStructureHandler "' . $dataStructureHandler . '" unknown.');
         }
 
@@ -153,7 +148,7 @@ class ConfigurationService implements SingletonInterface
         $this->dataStructurePlaces[$uuid] = $dataStructurePlace;
     }
 
-    public function registerTemplatePlace($uuid, $name, $path, $renderer, $scope)
+    public function registerTemplatePlace($uuid, $name, $path, $scope, $handler)
     {
         // @TODO Check if path is inside FAL and add danger hint!
         $pathAbsolute = GeneralUtility::getFileAbsFileName($path);
@@ -163,17 +158,12 @@ class ConfigurationService implements SingletonInterface
         if (isset($this->templatePlaces[$uuid])) {
             throw new \Exception('uuid already exists');
         }
-        if (!isset($this->availableRenderer[$renderer])) {
-            throw new \Exception('Renderer "' . $renderer . '" unknown.');
+        if (!isset($this->availablePlaceHandler[TemplatePlace::class][$handler])) {
+            throw new \Exception('TemplateHandler "' . $handler . '" unknown.');
         }
 
-        $this->templatePlaces[$uuid] = [
-            'name' => $name,
-            'pathAbs' => $pathAbsolute,
-            'pathRel' => PathUtility::stripPathSitePrefix($pathAbsolute),
-            'renderer' => $renderer,
-            'scope' => $scope, // Caution scope should be the table name in a future release
-        ];
+        $templatePlace = new TemplatePlace($uuid, $name, $scope, $handler, $pathAbsolute);
+        $this->templatePlaces[$uuid] = $templatePlace;
     }
 
     public function registerMappingPlace($uuid, $name, $path)
@@ -214,24 +204,40 @@ class ConfigurationService implements SingletonInterface
         ];
     }
 
-    public function registerDataStructureHandler($uuid, $name, $class)
+    public function registerPlaceHandler(
+        /* @TODO */ $uuid,
+        string $name,
+        string $handlerClass,
+        string $placeClass
+    ) {
+        $this->mustExistsAndImplements($placeClass, \Ppi\TemplaVoilaPlus\Domain\Model\Place::class);
+
+        $this->mustExistsAndImplements($handlerClass, $placeClass::getHandlerInterface());
+
+        if (isset($this->availablePlaceHandler[$placeClass][$uuid])) {
+            throw new \Exception('uuid already exists for placeType ' . $placeClass);
+        }
+
+        $this->availablePlaceHandler[$placeClass][$uuid] = [
+            'name' => $name,
+            'class' => $handlerClass,
+        ];
+    }
+
+    public function mustExistsAndImplements(string $class, string $implements): bool
     {
         $interfaces = @class_implements($class);
 
         if ($interfaces === false) {
             throw new \Exception('Class "' . $class . '" not found');
         }
-        if (!isset($interfaces[\Ppi\TemplaVoilaPlus\DataStructureHandler\DataStructureHandlerInterface::class])) {
-            throw new \Exception('Class "' . $class . '" do not implement DataStructureHandlerInterface interface');
-        }
-        if (isset($this->availableDataStructureHandler[$uuid])) {
-            throw new \Exception('uuid already exists');
+
+        $parents = @class_parents($class);
+        if (!isset($interfaces[$implements]) && !isset($parents[$implements])) {
+            throw new \Exception('Class "' . $class . '" do not implement "' . $implements . '"');
         }
 
-        $this->availableDataStructureHandler[$uuid] = [
-            'name' => $name,
-            'class' => $class,
-        ];
+        return true;
     }
 
     public function isStaticDataStructureEnabled(): bool

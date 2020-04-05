@@ -18,7 +18,7 @@ namespace Ppi\TemplaVoilaPlus\Domain\Model;
 /**
  * Class to provide place data for datastructures
  */
-class DataStructurePlace extends Place
+class TemplatePlace extends Place
 {
-    protected static $handlerInterface = \Ppi\TemplaVoilaPlus\DataStructureHandler\DataStructureHandlerInterface::class;
+    protected static $handlerInterface = \Ppi\TemplaVoilaPlus\Handler\Place\TemplatePlaceHandlerInterface::class;
 }
