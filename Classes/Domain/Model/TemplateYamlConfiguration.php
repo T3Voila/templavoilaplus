@@ -94,4 +94,28 @@ class TemplateYamlConfiguration
     {
         return $this->file->getProperty('creation_date');
     }
+
+    public function getTemplateFile()
+    {
+        $fileName = rtrim($this->file->getForLocalProcessing(false), '.tvp.yaml');
+        $fileInfo = pathinfo($fileName);
+
+        $resourceFactory = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance();
+
+        $filter = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter::class);
+        $filter->setAllowedFileExtensions('html,htm,tmpl');
+
+        $folder = $resourceFactory->retrieveFileOrFolderObject($fileInfo['dirname']);
+        $folder->setFileAndFolderNameFilters([[$filter, 'filterFileList']]);
+        $files = $folder->getFiles(0, 0, \TYPO3\CMS\Core\Resource\Folder::FILTER_MODE_USE_OWN_FILTERS, true);
+
+        foreach ($files as $file) {
+            if ($file->getNameWithoutExtension() === $fileInfo['basename']) {
+                return $file;
+                break 1;
+            }
+        }
+
+        throw new \Exception('Template file for TemplateConfiguration not found');
+    }
 }
