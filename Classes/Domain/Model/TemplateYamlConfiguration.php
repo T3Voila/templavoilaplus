@@ -97,7 +97,8 @@ class TemplateYamlConfiguration
 
     public function getTemplateFile()
     {
-        $fileName = rtrim($this->file->getForLocalProcessing(false), '.tvp.yaml');
+        // Remove the .tvp.yaml file extension
+        $fileName = mb_substr($this->file->getForLocalProcessing(false), 0, -9);
         $fileInfo = pathinfo($fileName);
 
         $resourceFactory = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance();
