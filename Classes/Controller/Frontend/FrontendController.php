@@ -89,7 +89,7 @@ try {
 
         // getTemplateConfiguration from MappingConfiguration
         // @TODO Identifier seams wrong should be only Default.tvp.yaml
-        $templateConfiguration = $this->getTemplateConfiguration('283274d1-5281-4939-8dd4-e1e8c987d275:/typo3conf/ext/em_tvplus_theme_demo/Resources/Private/Templates/Pages/Default.tvp.yaml'/*$mappingConfiguration->getCombinedTemplateIdentifier()*/);
+        $templateConfiguration = $this->getTemplateConfiguration('283274d1-5281-4939-8dd4-e1e8c987d275:/Default.tvp.yaml'/*$mappingConfiguration->getCombinedTemplateConfigurationIdentifier()*/);
 
         // getDSdata from DS
         // Run TypoScript over DSdata and include TypoScript vars while mapping into TemplateData
@@ -123,12 +123,12 @@ try {
         return []; // MappingConfiguration object
     }
 
-    public function getTemplateConfiguration($combinedTemplateIdentifier): TemplateYamlConfiguration
+    public function getTemplateConfiguration($combinedTemplateConfigurationIdentifier): TemplateYamlConfiguration
     {
-        list($placeIdentifier, $templateIdentifier) = explode(':', $combinedTemplateIdentifier);
+        list($placeIdentifier, $templateConfigurationIdentifier) = explode(':', $combinedTemplateConfigurationIdentifier);
 
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
         $templatePlace = $configurationService->getTemplatePlace($placeIdentifier);
-        return $templatePlace->getHandler()->getTemplateConfiguration($templateIdentifier);
+        return $templatePlace->getHandler()->getTemplateConfiguration($templateConfigurationIdentifier);
     }
 }

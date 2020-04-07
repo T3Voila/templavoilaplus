@@ -50,7 +50,12 @@ class TemplateYamlPlaceHandler implements TemplatePlaceHandlerInterface
     public function getTemplateConfiguration(string $identifier): TemplateYamlConfiguration
     {
         $this->initializeTemplateConfigurations();
-        return $this->templateConfigurations[$identifier];
+
+        if (isset($this->templateConfigurations[$identifier])) {
+            return $this->templateConfigurations[$identifier];
+        }
+
+        throw new \Exception('TemplateConfiguration with identifer "' . $identifier . '" not found');
     }
 
     protected function initializeTemplateConfigurations()
@@ -71,7 +76,8 @@ class TemplateYamlPlaceHandler implements TemplatePlaceHandlerInterface
             foreach($files as $file) {
                 if (StringUtility::endsWith($file->getName(), '.tvp.yaml')) {
                     try {
-                        $this->templateConfigurations[$file->getIdentifier()] = new TemplateYamlConfiguration($file);
+                        $configurationIdentifier = $this->getPlaceIdentifierFromFile($file);
+                        $this->templateConfigurations[$configurationIdentifier] = new TemplateYamlConfiguration($file, $configurationIdentifier);
                     } catch (\Exception $e) {
                         // Empty as we can't process this file
                         // @TODO Maybe report into log
@@ -79,5 +85,28 @@ class TemplateYamlPlaceHandler implements TemplatePlaceHandlerInterface
                 }
             }
         }
+    }
+
+    protected function getPlaceIdentifierFromFile($file): string
+    {
+        $identifier = $file->getIdentifier();
+        $storageConfiguration = $file->getStorage()->getConfiguration();
+
+        if ($file->getStorage()->getUid() === 0) {
+            $relativePath = ltrim($file->getIdentifier(), '/');
+            $identifier = mb_substr($relativePath, mb_strlen($this->place->getPathRelative()));
+        } elseif ($storageConfiguration['pathType'] === 'relative') {
+            $relativePath = rtrim($storageConfiguration['basePath'], '/') . '/' . ltrim($file->getIdentifier(), '/');
+            $identifier = mb_substr($relativePath, mb_strlen($this->place->getPathRelative()));
+        } else {
+            throw new \Exception('Storage type not supported');
+        }
+        /** @TODO Absolute? Storage configuration */
+        /**
+         * Should we replace all Resource handlings with own file operations?
+         * Its a mess with the handling ... how does this work in core:form?
+         */
+
+        return '/'. ltrim($identifier, '/');
     }
 }

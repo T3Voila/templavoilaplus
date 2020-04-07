@@ -34,6 +34,11 @@ class TemplateYamlConfiguration
     /**
      * @var string
      */
+    protected $identifier = '';
+
+    /**
+     * @var string
+     */
     protected $label = '';
 
     /**
@@ -44,9 +49,10 @@ class TemplateYamlConfiguration
     /**
      * @param \TYPO3\CMS\Core\Resource\File $file
      */
-    public function __construct(\TYPO3\CMS\Core\Resource\File $file)
+    public function __construct(\TYPO3\CMS\Core\Resource\File $file, $identifier)
     {
         $this->file = $file;
+        $this->identifier = $identifier;
 
         // @TODO This shouldn't be here
         $yamlFileLoader = GeneralUtility::makeInstance(YamlFileLoader::class);
@@ -62,6 +68,11 @@ class TemplateYamlConfiguration
         if (isset($configuration['tvp-template']['renderer'])) {
             $this->setRendererName($configuration['tvp-template']['renderer']);
         }
+    }
+
+    public function getIdentifier()
+    {
+        return $this->identifier;
     }
 
     /**
@@ -96,7 +107,7 @@ class TemplateYamlConfiguration
     }
 
 
-    public function getIdentifier()
+    public function getFileIdentifier()
     {
         return $this->file->getIdentifier();
     }
