@@ -28,12 +28,11 @@
         }
     },
     "conflict": {
-        "templavoila": "*",
         "typo3-ter/templavoila": "*",
         "templavoila/templavoila": "*"
     },
     "replace": {
-        "templavoilaplus": "self.version",
+        "templavoilaplus/templavoilaplus": "self.version",
         "typo3-ter/templavoilaplus": "self.version"
     },
     "suggest": {
