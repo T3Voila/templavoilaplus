@@ -61,7 +61,7 @@ class DataStructureUpdateHandler
         array $rootCallbacks,
         array $elementCallbacks
     ) {
-        $data = $ds->getDataprotArray();
+        $data = $ds->getDataStructureArray();
 
         $changed = $this->processUpdate($data, $rootCallbacks, $elementCallbacks);
 
