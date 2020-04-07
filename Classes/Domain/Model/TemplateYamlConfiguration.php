@@ -16,6 +16,7 @@ namespace Ppi\TemplaVoilaPlus\Domain\Model;
  */
 
 use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
+use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
@@ -36,6 +37,11 @@ class TemplateYamlConfiguration
     protected $label = '';
 
     /**
+     * @var string
+     */
+    protected $rendererName = '';
+
+    /**
      * @param \TYPO3\CMS\Core\Resource\File $file
      */
     public function __construct(\TYPO3\CMS\Core\Resource\File $file)
@@ -53,10 +59,13 @@ class TemplateYamlConfiguration
         if (isset($configuration['tvp-template']['label'])) {
             $this->setLabel($configuration['tvp-template']['label']);
         }
+        if (isset($configuration['tvp-template']['renderer'])) {
+            $this->setRendererName($configuration['tvp-template']['renderer']);
+        }
     }
 
     /**
-     * Retrieve the label of the datastructure
+     * Retrieve the label of the template
      *
      * @return string
      */
@@ -69,6 +78,23 @@ class TemplateYamlConfiguration
     {
         $this->label = $label;
     }
+
+    /**
+     * Retrieve the name of the renderer of the template
+     *
+     * @TODO Should this be named identifier?
+     * @return string
+     */
+    public function getRendererName()
+    {
+        return $this->rendererName;
+    }
+
+    public function setRendererName(string $rendererName)
+    {
+        $this->rendererName = $rendererName;
+    }
+
 
     public function getIdentifier()
     {
@@ -95,7 +121,7 @@ class TemplateYamlConfiguration
         return $this->file->getProperty('creation_date');
     }
 
-    public function getTemplateFile()
+    public function getTemplateFile(): FileInterface
     {
         // Remove the .tvp.yaml file extension
         $fileName = mb_substr($this->file->getForLocalProcessing(false), 0, -9);

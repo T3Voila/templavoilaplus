@@ -16,7 +16,15 @@ namespace Ppi\TemplaVoilaPlus\Renderer;
  */
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
+/** @TODO Missing Base class */
+use Ppi\TemplaVoilaPlus\Domain\Model\TemplateYamlConfiguration;
+
 class XpathRenderer implements RendererInterface
 {
     public const NAME = 'templavoilaplus_xpath';
+
+    public function renderTemplate(TemplateYamlConfiguration $templateConfiguration, array $processedValues, array $row): string
+    {
+        return $templateConfiguration->getTemplateFile()->getContents();
+    }
 }
