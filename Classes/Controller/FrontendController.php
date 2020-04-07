@@ -137,7 +137,7 @@ class FrontendController extends AbstractPlugin
             if ($GLOBALS['TSFE']->sys_language_isocode) {
                 try {
                     $dsObj = $dsRepo->getDatastructureByUidOrFilename($data['tx_templavoilaplus_ds']);
-                    $DS = $dsObj->getDataprotArray();
+                    $DS = $dsObj->getDataStructureArray();
                 } catch (\InvalidArgumentException $e) {
                     $DS = null;
                 }
@@ -271,7 +271,7 @@ class FrontendController extends AbstractPlugin
         try {
             /** @var \Ppi\TemplaVoilaPlus\Domain\Model\DataStructure $dsObj */
             $dsObj = $dsRepo->getDatastructureByUidOrFilename($row['tx_templavoilaplus_ds']);
-            $DS = $dsObj->getDataprotArray();
+            $DS = $dsObj->getDataStructureArray();
         } catch (\InvalidArgumentException $e) {
             $DS = null;
         }
