@@ -14,7 +14,7 @@
     <div class="row">
         <div class="col-sm-4">
             <div class="panel panel-primary">
-                <div class="panel-heading"><h3 class="panel-title">DataStructures Places</h3></div>
+                <div class="panel-heading"><h3 class="panel-title">DataStructure Places</h3></div>
                 <div class="panel-body"></div>
                 <ul class="list-group">
                     <f:for each="{dataStructurePlaces}" as="dataStructurePlace" key="internalName">
@@ -22,7 +22,9 @@
                             Internal Name: {internalName}<br />
                             Backend Name: {dataStructurePlace.name}<br />
                             Scope: {dataStructurePlace.scope}<br />
-                            Path: {dataStructurePlace.pathRel}<br />
+                            Path: {dataStructurePlace.pathRelative}<br />
+                            Handler Interface Name: {dataStructurePlace.handlerInterface}<br />
+                            Handler Name: {dataStructurePlace.handlerName}<br />
                         </li>
                     </f:for>
                 </ul>
@@ -55,8 +57,9 @@
                             Internal Name: {internalName}<br />
                             Backend Name: {templatePlace.name}<br />
                             Scope: {templatePlace.scope}<br />
-                            For Renderer: {templatePlace.renderer}<br />
-                            Path: {templatePlace.pathRel}<br />
+                            Path: {templatePlace.pathRelative}<br />
+                            Handler Interface Name: {templatePlace.handlerInterface}<br />
+                            Handler Name: {templatePlace.handlerName}<br />
                         </li>
                     </f:for>
                 </ul>
@@ -75,6 +78,33 @@
                             Internal Name: {internalName}<br />
                             Backend Name: {renderer.name}<br />
                             Class Name: {renderer.class}<br />
+                        </li>
+                    </f:for>
+                </ul>
+                <div class="panel-footer"></div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="panel panel-primary">
+                <div class="panel-heading"><h3 class="panel-title">Available Place Handler</h3></div>
+                <div class="panel-body"></div>
+                <ul class="list-group">
+                    <f:for each="{availablePlaceHandler}" as="placeHandlerType" key="placeType">
+                        <li class="list-group-item">
+                            <div class="panel panel-default">
+                                <div class="panel-heading"><h3 class="panel-title">Place Type: {placeType}</h3></div>
+                                <div class="panel-body"></div>
+                                <ul class="list-group">
+                                    <f:for each="{placeHandlerType}" as="placeHandler" key="internal">
+                                        <li class="list-group-item">
+                                            Internal Name: {internal}<br />
+                                            Backend Name: {placeHandler.name}<br />
+                                            Class Name: {placeHandler.class}<br />
+                                        </li>
+                                    </f:for>
+                                </ul>
+                                <div class="panel-footer"></div>
+                            </div>
                         </li>
                     </f:for>
                 </ul>

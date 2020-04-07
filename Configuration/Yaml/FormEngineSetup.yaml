@@ -1,0 +1,7 @@
+TYPO3:
+  CMS:
+    Templavoilaplus:
+      prototypes:
+        tvp-dynamic-structures:
+          formEngine:
+            translationFile: 'EXT:form/Resources/Private/Language/Database.xlf'

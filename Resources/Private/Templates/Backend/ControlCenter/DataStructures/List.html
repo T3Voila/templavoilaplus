@@ -12,7 +12,7 @@
 
 <f:section name="content">
     <div class="row">
-        <f:for each="{templatePlacesByScope}" key="scope" as="templatePlaces">
+        <f:for each="{dataStructurePlacesByScope}" key="scope" as="dataStructurePlaces">
             <div class="col-sm-4">
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -25,7 +25,7 @@
                         </h3>
                     </div>
                     <ul class="list-group">
-                        <f:for each="{templatePlaces}" as="templatePlace">
+                        <f:for each="{dataStructurePlaces}" as="dataStructurePlace">
                             <li class="list-group-item">
                                 <div class="row">
                                     <div class="col-sm-12">
@@ -33,30 +33,30 @@
                                             <div class="panel-heading">
                                                 <div class="row">
                                                     <div class="col-sm-10">
-                                                        <h2 class="panel-title">{templatePlace.name}</h2>
+                                                        <h2 class="panel-title">{dataStructurePlace.name}</h2>
                                                     </div>
                                                     <div class="col-sm-2">
                                                         <div class="btn-group" role="group" aria-label="...">
-                                                            <f:link.action action="new" arguments="{'uuid': templatePlace.uuid}" class="btn btn-info"><core:icon identifier="actions-template-new" /></f:link.action>
+                                                            <f:link.action action="new" arguments="{'uuid': dataStructurePlace.uuid}" class="btn btn-info"><core:icon identifier="actions-template-new" /></f:link.action>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <f:if condition="{templatePlace.handler.templates -> f:count()} > 0">
+                                            <f:if condition="{dataStructurePlace.handler.dataStructures -> f:count()} > 0">
                                                 <f:then>
                                                     <table class="table table-striped table-hover">
-                                                        <f:for each="{templatePlace.handler.templates}" as="template">
+                                                        <f:for each="{dataStructurePlace.handler.dataStructures}" as="dataStructure">
                                                             <tr>
-                                                                <td>{template.label}<br/>{template.identifier}</td>
+                                                                <td>{dataStructure.label}<br/>{dataStructure.identifier}</td>
                                                                 <td>
-                                                                    Created: <f:format.date>{template.crdate}</f:format.date><br/>
-                                                                    Modified: <f:format.date>{template.tstamp}</f:format.date>
+                                                                    Created: <f:format.date>{dataStructure.crdate}</f:format.date><br/>
+                                                                    Modified: <f:format.date>{dataStructure.tstamp}</f:format.date>
                                                                 </td>
                                                                 <td>
                                                                     <div class="btn-group" role="group" aria-label="...">
-                                                                        <f:link.action action="edit" arguments="{'uuid': templatePlace.uuid, 'identifier': template.identifier}" class="btn btn-default"><core:icon identifier="actions-open" /></f:link.action>
-                                                                        <f:link.action action="info" arguments="{'uuid': templatePlace.uuid, 'identifier': template.identifier}" class="btn btn-default"><core:icon identifier="actions-document-info" /></f:link.action>
-                                                                        <f:link.action action="delete" arguments="{'uuid': templatePlace.uuid, 'identifier': template.identifier}" class="btn btn-danger"><core:icon identifier="actions-edit-delete" /></f:link.action>
+                                                                        <f:link.action action="edit" arguments="{'uuid': dataStructurePlace.uuid, 'identifier': dataStructure.identifier}" class="btn btn-default"><core:icon identifier="actions-open" /></f:link.action>
+                                                                        <f:link.action action="info" arguments="{'uuid': dataStructurePlace.uuid, 'identifier': dataStructure.identifier}" class="btn btn-default"><core:icon identifier="actions-document-info" /></f:link.action>
+                                                                        <f:link.action action="delete" arguments="{'uuid': dataStructurePlace.uuid, 'identifier': dataStructure.identifier}" class="btn btn-danger"><core:icon identifier="actions-edit-delete" /></f:link.action>
                                                                     </div>
                                                                 </td>
                                                             </tr>
@@ -65,7 +65,7 @@
                                                 </f:then>
                                                 <f:else>
                                                     <div class="panel-body">
-                                                        No template configurations found.
+                                                        No data structures found.
                                                     </div>
                                                 </f:else>
                                             </f:if>

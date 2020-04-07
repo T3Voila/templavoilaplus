@@ -24,46 +24,67 @@ class ExtensionUtility implements SingletonInterface
 {
     private static $registeredExtensions = [];
 
+    /**
+     * Register an extension as an extension which includes TV+ configuration or extends the TV+ functionality.
+     * This is only a helper for the moment and will be removed after caching extension data is implemented.
+     * So we do not determine all this on every request.
+     *
+     * @TODO Remove after implementing a cache
+     */
     public static function registerExtension($extensionKey)
     {
         if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extensionKey)) {
             $path = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey)  . 'Configuration/TVP';
             if (is_dir($path)) {
-                self::$registeredExtensions[$extensionKey] = $extensionKey;
+                self::$registeredExtensions[$extensionKey] = $path;
             }
         }
     }
 
+    /**
+     * @internal
+     */
     public static function handleAllExtensions()
     {
         // Extending TV+
-        foreach (self::$registeredExtensions as $extensionKey) {
-            $path = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey)  . 'Configuration/TVP';
+        foreach (self::$registeredExtensions as $extensionKey => $path) {
             self::loadExtending($path);
         }
         // Temnplating TV+
-        foreach (self::$registeredExtensions as $extensionKey) {
-            $path = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey)  . 'Configuration/TVP';
-        self::loadDataSourcePlaces($path);
-        self::loadTemplatePlaces($path);
-        self::loadMappingPlaces($path);
+        foreach (self::$registeredExtensions as $extensionKey => $path) {
+            self::loadDataStructurePlaces($path);
+            self::loadTemplatePlaces($path);
+            self::loadMappingPlaces($path);
         }
     }
 
-    protected static function loadDataSourcePlaces($path)
+    /**
+     * Loads the DataStructurePlaces.php inside the extension path
+     * @param string $path
+     * @internal
+     * @return void
+     */
+    protected static function loadDataStructurePlaces($path)
     {
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
-        $dataSourcePlaces = self::getFileContentArray($path . '/DataSourcePlaces.php');
-        foreach ($dataSourcePlaces as $uuid => $dataSourcePlace) {
+        $dataStructurePlaces = self::getFileContentArray($path . '/DataStructurePlaces.php');
+        foreach ($dataStructurePlaces as $uuid => $dataStructurePlace) {
             $configurationService->registerDataStructurePlace(
                 $uuid,
-                $dataSourcePlace['name'],
-                $dataSourcePlace['path'],
-                $dataSourcePlace['scope']
+                $dataStructurePlace['name'],
+                $dataStructurePlace['path'],
+                $dataStructurePlace['scope'],
+                $dataStructurePlace['handler']
             );
         }
     }
 
+    /**
+     * Loads the TemplatePlaces.php inside the extension path
+     * @param string $path
+     * @internal
+     * @return void
+     */
     protected static function loadTemplatePlaces($path)
     {
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
@@ -73,12 +94,18 @@ class ExtensionUtility implements SingletonInterface
                 $uuid,
                 $contentPlace['name'],
                 $contentPlace['path'],
-                $contentPlace['renderer'],
-                $contentPlace['scope']
+                $contentPlace['scope'],
+                $contentPlace['handler']
             );
         }
     }
 
+    /**
+     * Loads the MappingPlaces.php inside the extension path
+     * @param string $path
+     * @internal
+     * @return void
+     */
     protected static function loadMappingPlaces($path)
     {
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
@@ -92,6 +119,12 @@ class ExtensionUtility implements SingletonInterface
         }
     }
 
+    /**
+     * Loads the Extending.php inside the extension path and registers dataStructureHandler
+     * @param string $path
+     * @internal
+     * @return void
+     */
     protected static function loadExtending($path)
     {
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
@@ -105,12 +138,27 @@ class ExtensionUtility implements SingletonInterface
                 );
             }
         }
+        if (isset($extending['placesHandler'])) {
+            foreach ($extending['placesHandler'] as $uuid => $placesHandler) {
+                $configurationService->registerPlaceHandler(
+                    $uuid,
+                    $placesHandler['name'],
+                    $placesHandler['handlerClass'],
+                    $placesHandler['placeClass']
+                );
+            }
+        }
     }
 
-    protected static function getFileContentArray($file)
+    /**
+     * Includes the given file with require (if exists and readable) and exspects an array returned
+     * @param string $file Absolute path and filename
+     * @internal
+     */
+    protected static function getFileContentArray($file): array
     {
         if (is_file($file) && is_readable($file)) {
-            $content = require($file);
+            $content = require $file;
             if (is_array($content)) {
                 return $content;
             }

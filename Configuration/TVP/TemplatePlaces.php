@@ -11,7 +11,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 if (!class_exists(TemplatePlaces::class)) {
     class TemplatePlaces
     {
-
         public static function getTemplatePlaces(): array
         {
             $templatePlaces = [];
@@ -27,11 +26,11 @@ if (!class_exists(TemplatePlaces::class)) {
                 }
 
                 foreach ($folders as $folder) {
-                    $templatePlaces[$folder->getName()] = [
+                    $templatePlaces[$folder->getIdentifier()] = [
                         'name' => $folder->getPublicUrl(),
                         'path' => $folder->getPublicUrl(),
-                        'renderer' => \Ppi\TemplaVoilaPlus\Renderer\XpathRenderer::NAME,
-                        'scope' => '',
+                        'scope' => 'All Scopes',
+                        'handler' => \Ppi\TemplaVoilaPlus\Handler\Place\TemplateYamlPlaceHandler::NAME,
                     ];
                 }
             }

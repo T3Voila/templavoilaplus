@@ -106,6 +106,7 @@ class ControlCenterController extends ActionController
         $mappingPlaces = $configurationService->getMappingPlaces();
 
         $availableRenderer = $configurationService->getAvailableRenderer();
+        $availablePlaceHandler = $configurationService->getAvailablePlaceHandler();
 
         $this->view->assign('pageTitle', 'TemplaVoilà! Plus - Control Center - Debug');
 
@@ -113,6 +114,7 @@ class ControlCenterController extends ActionController
         $this->view->assign('templatePlaces', $templatePlaces);
         $this->view->assign('mappingPlaces', $mappingPlaces);
         $this->view->assign('availableRenderer', $availableRenderer);
+        $this->view->assign('availablePlaceHandler', $availablePlaceHandler);
     }
 
     /**

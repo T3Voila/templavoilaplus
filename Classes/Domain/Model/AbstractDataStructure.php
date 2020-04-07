@@ -56,6 +56,11 @@ abstract class AbstractDataStructure
     protected $iconFile = '';
 
     /**
+     * @var array
+     */
+    protected $dataStructureArray = [];
+
+    /**
      * Retrieve the label of the datastructure
      *
      * @return string
@@ -73,6 +78,11 @@ abstract class AbstractDataStructure
     protected function setLabel($str)
     {
         $this->label = $str;
+    }
+
+    public function getDataStructureArray(): array
+    {
+        return $this->dataStructureArray;
     }
 
     /**
@@ -100,23 +110,11 @@ abstract class AbstractDataStructure
     }
 
     /**
-     * However the datastructure is identifiable (uid or filepath
-     * This method deliver the relevant key
-     *
-     * @return string
-     */
-    abstract public function getKey();
-
-    /**
-     * Determine the icon and append the path
-     * assuming that the path for the iconFile is relative to the TYPO3 main folder
-     *
      * @return string
      */
     public function getIcon()
     {
-        //regex is used to check if there's a filename within the iconFile string
-        return preg_replace('/^.*\/([^\/]+\.(gif|png))?$/i', '\1', $this->iconFile) ? $this->iconFile : '';
+        return '';
     }
 
     /**
@@ -130,63 +128,24 @@ abstract class AbstractDataStructure
     }
 
     /**
-     * Determine relevant storage pids for this element,
-     * usually one uid but in certain situations this might contain multiple uids (see staticds)
-     *
-     * @return string
-     */
-    abstract public function getStoragePids();
-
-    /**
-     * Provides the datastructure configuration as XML
-     *
-     * @return string
-     */
-    abstract public function getDataprotXML();
-
-    /**
      * Provides the datastructure configuration as array
      *
      * @return array
      */
-    public function getDataprotArray()
+    public function getDataStructureAsArray($dataStructureXml)
     {
-        $arr = [];
-        $ds = $this->getDataprotXML();
+        $dataStructureArray = [];
 
-        if (strlen($ds) > 1) {
-            $arr = GeneralUtility::xml2array($ds);
-            if (!is_array($arr)) {
+        if (strlen($dataStructureXml) > 1) {
+            $dataStructureArray = GeneralUtility::xml2array($dataStructureXml);
+            if (!is_array($dataStructureArray)) {
                 throw new DataStructureException(
-                    'XML of DS "' . $this->getLabel() . '" cant\'t be read, we get following error: ' . $arr
+                    'XML of DS "' . $this->getLabel() . '" cant\'t be read, we get following error: ' . $dataStructureArray
                 );
             }
         }
 
-        return $arr;
-    }
-
-    /**
-     * Determine whether the current user has permission to create elements based on this
-     * datastructure or not
-     *
-     * @param array $parentRow
-     * @param array $removeItems
-     * @param bool $showAdminAll If user is admin and this is true, then it is always permitted
-     *
-     * @return boolean
-     */
-    abstract public function isPermittedForUser($parentRow = array(), $removeItems = array(), $showAdminAll = true);
-
-    /**
-     * Enables to determine whether this element is based on a record or on a file
-     * Required for view-related tasks (edit-icons)
-     *
-     * @return boolean
-     */
-    public function isFilebased()
-    {
-        return false;
+        return $dataStructureArray;
     }
 
     /**
@@ -216,11 +175,4 @@ abstract class AbstractDataStructure
      * @return mixed
      */
     abstract public function getBeLayout();
-
-    /**
-     * @param void
-     *
-     * @return string
-     */
-    abstract public function getSortingFieldValue();
 }
