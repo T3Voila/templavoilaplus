@@ -15,6 +15,11 @@ namespace Ppi\TemplaVoilaPlus\Renderer;
  * The TYPO3 project - inspiring people to share!
  */
 
+/** @TODO Missing Base class */
+use Ppi\TemplaVoilaPlus\Domain\Model\TemplateYamlConfiguration;
+
 interface RendererInterface
 {
+
+    public function renderTemplate(TemplateYamlConfiguration $templateConfiguration, array $processedValues, array $row): string;
 }

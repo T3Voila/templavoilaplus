@@ -128,6 +128,15 @@ class ConfigurationService implements SingletonInterface
         return $this->availableRenderer;
     }
 
+    public function getRenderer($uuid): \Ppi\TemplaVoilaPlus\Renderer\RendererInterface
+    {
+        $this->initialize();
+        if (!isset($this->availableRenderer[$uuid])) {
+            throw new \Exception('Renderer "' . $uuid . '" not available.');
+        }
+        return GeneralUtility::makeInstance($this->availableRenderer[$uuid]['class']);
+    }
+
     public function getAvailablePlaceHandler(): array
     {
         $this->initialize();
