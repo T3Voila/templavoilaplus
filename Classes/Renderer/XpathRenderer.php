@@ -85,13 +85,12 @@ class XpathRenderer implements RendererInterface
         $contentOfNode = '';
 
         if ($type === 'INNER') {
-            $contentOfNode = $this->domDocument->saveHTML($node);
+            $contentOfNode = $this->domDocument->saveXML($node);
         } elseif ($type === 'OUTER') {
-            $node = $this->changeName($node, 'toBeDeletedMarker');
-            $contentOfNode = $this->domDocument->saveHTML($node);
-            // @TODO mb_eregi_replace?
-            // @TODO Also remove whitespaces?
-            $contentOfNode = str_replace(['<toBeDeletedMarker>', '</toBeDeletedMarker>'], '', $contentOfNode);
+            $children = $node->childNodes;
+            foreach ($node->childNodes as $childNode) {
+                $contentOfNode .= $this->domDocument->saveXML($childNode);
+            }
         }
         return $contentOfNode;
     }
