@@ -100,7 +100,7 @@ class TemplatesController extends ActionController
         $buttonBar = $this->view->getModuleTemplate()->getDocHeaderComponent()->getButtonBar();
         $getVars = $this->request->getArguments();
 
-        if (isset($getVars['action']) && $getVars['action'] === 'list') {
+        if (isset($getVars['action']) && ($getVars['action'] === 'list' || $getVars['action'] === 'info')) {
             $backButton = $buttonBar->makeLinkButton()
                 ->setDataAttributes(['identifier' => 'backButton'])
                 ->setHref($this->getControllerContext()->getUriBuilder()->uriFor('show', [], 'Backend\ControlCenter'))
