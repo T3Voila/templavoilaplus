@@ -6,6 +6,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
 
 /** @TODO Missing Base class */
+use Ppi\TemplaVoilaPlus\Domain\Model\MappingYamlConfiguration;
 use Ppi\TemplaVoilaPlus\Domain\Model\TemplateYamlConfiguration;
 use Ppi\TemplaVoilaPlus\Service\ConfigurationService;
 use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
@@ -84,29 +85,26 @@ class FrontendController extends AbstractPlugin
     public function renderElement($row, $table)
     {
 try {
-        $mappingConfiguration = $this->getMappingConfiguration($row['tx_templavoilaplus_map']);
+        $mappingConfiguration = $this->getMappingConfiguration('679776ed-6ad6-4672-a268-c08d38ecfb73:/Default.tvp.yaml'/* @TODO $row['tx_templavoilaplus_map']*/);
         // getDS from Mapping
 
         // getTemplateConfiguration from MappingConfiguration
-        // @TODO Identifier seams wrong should be only Default.tvp.yaml
-        $templateConfiguration = $this->getTemplateConfiguration('283274d1-5281-4939-8dd4-e1e8c987d275:/Default.tvp.yaml'/*$mappingConfiguration->getCombinedTemplateConfigurationIdentifier()*/);
+        $templateConfiguration = $this->getTemplateConfiguration($mappingConfiguration->getCombinedTemplateConfigurationIdentifier());
 
         // getDSdata from DS
-        // Run TypoScript over DSdata and include TypoScript vars while mapping into TemplateData
-        $processedValues = [
-            'field_title' => 'My Title',
-            'field_class' => 'bigClass',
-            'field_text' => 'This is the replacement Text',
-        ];
-        // get renderer from templateConfiguration
+        $flexformData = [];
 
+        // Run TypoScript over DSdata and include TypoScript vars while mapping into TemplateData
+        $processedValues = $mappingConfiguration->getHandler()->process($flexformData, $row);
+
+        // get renderer from templateConfiguration
         $rendererName = $templateConfiguration->getRendererName();
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
         $renderer = $configurationService->getRenderer($rendererName);
 
         // Manipulate header data
-        // give TemplateData to renderer
-        // return result
+
+        // give TemplateData to renderer and return result
         return $renderer->renderTemplate($templateConfiguration, $processedValues, $row);
 } catch (\Exception $e) {
     var_dump($e->getMessage());
@@ -121,11 +119,13 @@ try {
      * other points inside TV+ or other extensions.
      */
 
-
-
-    public function getMappingConfiguration($mapIdentifier)
+    public function getMappingConfiguration($combinedMapConfigurationIdentifier): MappingYamlConfiguration
     {
-        return []; // MappingConfiguration object
+        list($placeIdentifier, $mappingConfigurationIdentifier) = explode(':', $combinedMapConfigurationIdentifier);
+
+        $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
+        $templatePlace = $configurationService->getMappingPlace($placeIdentifier);
+        return $templatePlace->getHandler()->getConfiguration($mappingConfigurationIdentifier);
     }
 
     public function getTemplateConfiguration($combinedTemplateConfigurationIdentifier): TemplateYamlConfiguration
