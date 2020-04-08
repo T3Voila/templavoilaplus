@@ -23,50 +23,72 @@ class XpathRenderer implements RendererInterface
 {
     public const NAME = 'templavoilaplus_xpath';
 
+    protected $domDocument;
+    protected $domXpath;
+
     public function renderTemplate(TemplateYamlConfiguration $templateConfiguration, array $processedValues, array $row): string
     {
-        $dom = new \DOMDocument();
-        $dom->loadHTML($templateConfiguration->getTemplateFile()->getContents());
-        $xpath = new \DOMXPath($dom);
+        $this->domDocument = new \DOMDocument();
+        $this->domDocument->loadHTML($templateConfiguration->getTemplateFile()->getContents());
+        $this->domXpath = new \DOMXPath($this->domDocument);
 
         $mapping = $templateConfiguration->getMapping();
 
-        $entries = $xpath->query($mapping['xpath']);
+        $entries = $this->domXpath->query($mapping['xpath']);
 
         if ($entries->count() === 1) {
             $node = $entries->item(0);
             if (isset($mapping['container']) && is_array($mapping['container'])) {
-                $node = $this->processContainer($node, $mapping['container']);
+                $node = $this->processContainer($node, $mapping['container'], $processedValues);
             }
 
-            return $this->getHtml($dom, $node, $mapping['type']);
+            return $this->getHtml($node, $mapping['type']);
         }
 
         return '';
     }
 
-    protected function processContainer($node, $mapping)
+    protected function processContainer($node, $mapping, $processedValues)
     {
         foreach ($mapping as $fieldName => $entry) {
-            $node = $this->processValue($node, $fieldName, $entry);
+            $node = $this->processValue($node, $fieldName, $entry, $processedValues);
         }
         return $node;
     }
 
-    protected function processValue($node, $fieldName, $entry)
+    protected function processValue($node, $fieldName, $entry, $processedValues)
     {
+        $processingNode = $this->domXpath->query($entry['xpath'], $node)->item(0);
+
+        if ($entry['type'] === 'ATTRIB') {
+            $processingNode->setAttribute($entry['attribName'], (string) $processedValues[$fieldName]);
+        } elseif ($entry['type'] === 'OUTER') {
+            while ($processingNode->hasChildNodes()) {
+                $processingNode->removeChild($processingNode->firstChild);
+            }
+            $processingNode->appendChild(
+                $this->domDocument->createTextNode((string) $processedValues[$fieldName])
+            );
+        } elseif ($entry['type'] === 'INNER') {
+            $processingNode->parentNode->replaceChild(
+                $this->domDocument->createTextNode((string) $processedValues[$fieldName]),
+                $processingNode
+            );
+
+        }
+
         return $node;
     }
 
-    protected function getHtml($dom, $node, $type)
+    protected function getHtml($node, $type)
     {
         $contentOfNode = '';
 
         if ($type === 'OUTER') {
-            $contentOfNode = $dom->saveHTML($node);
+            $contentOfNode = $this->domDocument->saveHTML($node);
         } else {
             $node = $this->changeName($node, 'toBeDeletedMarker');
-            $contentOfNode = $dom->saveHTML($node);
+            $contentOfNode = $this->domDocument->saveHTML($node);
             // @TODO mb_eregi_replace?
             // @TODO Also remove whitespaces?
             $contentOfNode = str_replace(['<toBeDeletedMarker>', '</toBeDeletedMarker>'], '', $contentOfNode);
