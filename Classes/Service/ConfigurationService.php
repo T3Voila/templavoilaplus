@@ -153,6 +153,10 @@ class ConfigurationService implements SingletonInterface
         return $this->availablePlaceHandler;
     }
 
+    /**
+     * @TODO getPlaceHandler?
+     * How to get Handler, if OwnMappingPlace extends MappingPlace?
+     */
     public function getHandler(
         \Ppi\TemplaVoilaPlus\Domain\Model\Place $place
     ) {
