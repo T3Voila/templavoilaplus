@@ -62,14 +62,14 @@ class XpathRenderer implements RendererInterface
 
         if ($entry['type'] === 'ATTRIB') {
             $processingNode->setAttribute($entry['attribName'], (string) $processedValues[$fieldName]);
-        } elseif ($entry['type'] === 'OUTER') {
+        } elseif ($entry['type'] === 'INNER') {
             while ($processingNode->hasChildNodes()) {
                 $processingNode->removeChild($processingNode->firstChild);
             }
             $processingNode->appendChild(
                 $this->domDocument->createTextNode((string) $processedValues[$fieldName])
             );
-        } elseif ($entry['type'] === 'INNER') {
+        } elseif ($entry['type'] === 'OUTER') {
             $processingNode->parentNode->replaceChild(
                 $this->domDocument->createTextNode((string) $processedValues[$fieldName]),
                 $processingNode
@@ -84,9 +84,9 @@ class XpathRenderer implements RendererInterface
     {
         $contentOfNode = '';
 
-        if ($type === 'OUTER') {
+        if ($type === 'INNER') {
             $contentOfNode = $this->domDocument->saveHTML($node);
-        } else {
+        } elseif ($type === 'OUTER') {
             $node = $this->changeName($node, 'toBeDeletedMarker');
             $contentOfNode = $this->domDocument->saveHTML($node);
             // @TODO mb_eregi_replace?
