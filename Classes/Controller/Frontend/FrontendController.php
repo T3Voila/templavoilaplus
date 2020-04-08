@@ -134,6 +134,6 @@ try {
 
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
         $templatePlace = $configurationService->getTemplatePlace($placeIdentifier);
-        return $templatePlace->getHandler()->getTemplateConfiguration($templateConfigurationIdentifier);
+        return $templatePlace->getHandler()->getConfiguration($templateConfigurationIdentifier);
     }
 }

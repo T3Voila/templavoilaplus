@@ -114,7 +114,9 @@ class ExtensionUtility implements SingletonInterface
             $configurationService->registerMappingPlace(
                 $uuid,
                 $mappingPlace['name'],
-                $mappingPlace['path']
+                $mappingPlace['path'],
+                $mappingPlace['scope'],
+                $mappingPlace['handler']
             );
         }
     }
