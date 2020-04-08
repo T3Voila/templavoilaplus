@@ -47,6 +47,11 @@ class TemplateYamlConfiguration
     protected $rendererName = '';
 
     /**
+     * @var array
+     */
+    protected $mapping = [];
+
+    /**
      * @param \TYPO3\CMS\Core\Resource\File $file
      */
     public function __construct(\TYPO3\CMS\Core\Resource\File $file, $identifier)
@@ -62,11 +67,14 @@ class TemplateYamlConfiguration
             throw new \Exception('No TemplaVoilà! Plus template configuration');
         }
 
-        if (isset($configuration['tvp-template']['label'])) {
-            $this->setLabel($configuration['tvp-template']['label']);
+        if (isset($configuration['tvp-template']['meta']['label'])) {
+            $this->setLabel($configuration['tvp-template']['meta']['label']);
         }
-        if (isset($configuration['tvp-template']['renderer'])) {
-            $this->setRendererName($configuration['tvp-template']['renderer']);
+        if (isset($configuration['tvp-template']['meta']['renderer'])) {
+            $this->setRendererName($configuration['tvp-template']['meta']['renderer']);
+        }
+        if (isset($configuration['tvp-template']['mapping']) && is_array($configuration['tvp-template']['mapping'])) {
+            $this->setMapping($configuration['tvp-template']['mapping']);
         }
     }
 
@@ -104,6 +112,21 @@ class TemplateYamlConfiguration
     public function setRendererName(string $rendererName)
     {
         $this->rendererName = $rendererName;
+    }
+
+    /**
+     * Retrieve the mapping of the template
+     *
+     * @return string
+     */
+    public function getMapping()
+    {
+        return $this->mapping;
+    }
+
+    public function setMapping(array $mapping)
+    {
+        $this->mapping = $mapping;
     }
 
 
