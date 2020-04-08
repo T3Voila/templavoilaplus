@@ -93,7 +93,11 @@ try {
 
         // getDSdata from DS
         // Run TypoScript over DSdata and include TypoScript vars while mapping into TemplateData
-        $processedValues = [];
+        $processedValues = [
+            'field_title' => 'My Title',
+            'field_class' => 'bigClass',
+            'field_text' => 'This is the replacement Text',
+        ];
         // get renderer from templateConfiguration
 
         $rendererName = $templateConfiguration->getRendererName();
