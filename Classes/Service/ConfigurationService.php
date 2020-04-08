@@ -21,6 +21,7 @@ use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface;
 
 use Ppi\TemplaVoilaPlus\Domain\Model\DataStructurePlace;
+use Ppi\TemplaVoilaPlus\Domain\Model\MappingPlace;
 use Ppi\TemplaVoilaPlus\Domain\Model\TemplatePlace;
 
 class ConfigurationService implements SingletonInterface
@@ -122,6 +123,15 @@ class ConfigurationService implements SingletonInterface
         return $this->mappingPlaces;
     }
 
+    public function getMappingPlace($uuid): MappingPlace
+    {
+        $this->initialize();
+        if (!isset($this->mappingPlaces[$uuid])) {
+            throw new \Exception('MappingPlace "' . $uuid . '" not available.');
+        }
+        return $this->mappingPlaces[$uuid];
+    }
+
     public function getAvailableRenderer(): array
     {
         $this->initialize();
@@ -165,7 +175,7 @@ class ConfigurationService implements SingletonInterface
             throw new \Exception('uuid already exists');
         }
         if (!isset($this->availablePlaceHandler[DataStructurePlace::class][$dataStructureHandler])) {
-            throw new \Exception('DataStructureHandler "' . $dataStructureHandler . '" unknown.');
+            throw new \Exception('DataStructureHandler "' . $dataStructureHandler . '" unknown. Try to register "' . $uuid . '"');
         }
 
         $dataStructurePlace = new DataStructurePlace($uuid, $name, $scope, $dataStructureHandler, $pathAbsolute);
@@ -183,14 +193,14 @@ class ConfigurationService implements SingletonInterface
             throw new \Exception('uuid already exists');
         }
         if (!isset($this->availablePlaceHandler[TemplatePlace::class][$handler])) {
-            throw new \Exception('TemplateHandler "' . $handler . '" unknown.');
+            throw new \Exception('TemplateHandler "' . $handler . '" unknown. Try to register "' . $uuid . '"');
         }
 
         $templatePlace = new TemplatePlace($uuid, $name, $scope, $handler, $pathAbsolute);
         $this->templatePlaces[$uuid] = $templatePlace;
     }
 
-    public function registerMappingPlace($uuid, $name, $path)
+    public function registerMappingPlace($uuid, $name, $path, $scope, $handler)
     {
         // @TODO Check if path is inside FAL and add danger hint!
         $pathAbsolute = GeneralUtility::getFileAbsFileName($path);
@@ -200,12 +210,12 @@ class ConfigurationService implements SingletonInterface
         if (isset($this->mappingPlaces[$uuid])) {
             throw new \Exception('uuid already exists');
         }
+        if (!isset($this->availablePlaceHandler[MappingPlace::class][$handler])) {
+            throw new \Exception('MappingHandler "' . $handler . '" unknown. Try to register "' . $uuid . '"');
+        }
 
-        $this->mappingPlaces[$uuid] = [
-            'name' => $name,
-            'pathAbs' => $pathAbsolute,
-            'pathRel' => PathUtility::stripPathSitePrefix($pathAbsolute),
-        ];
+        $mappingPlace = new MappingPlace($uuid, $name, $scope, $handler, $pathAbsolute);
+        $this->mappingPlaces[$uuid] = $mappingPlace;
     }
 
     public function registerRenderer($uuid, $name, $class)

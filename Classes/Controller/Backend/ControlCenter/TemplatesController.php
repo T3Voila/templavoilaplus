@@ -81,7 +81,7 @@ class TemplatesController extends ActionController
 
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
         $templatePlace = $configurationService->getTemplatePlace($uuid);
-        $templateConfiguration = $templatePlace->getHandler()->getTemplateConfiguration($identifier);
+        $templateConfiguration = $templatePlace->getHandler()->getConfiguration($identifier);
 
         $this->view->assign('pageTitle', 'TemplaVoilà! Plus - Templates Info');
 

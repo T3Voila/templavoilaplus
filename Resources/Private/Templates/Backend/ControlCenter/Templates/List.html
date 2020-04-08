@@ -42,21 +42,21 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <f:if condition="{templatePlace.handler.templates -> f:count()} > 0">
+                                            <f:if condition="{templatePlace.handler.configurations -> f:count()} > 0">
                                                 <f:then>
                                                     <table class="table table-striped table-hover">
-                                                        <f:for each="{templatePlace.handler.templates}" as="template">
+                                                        <f:for each="{templatePlace.handler.configurations}" as="templateConfigurations">
                                                             <tr>
-                                                                <td>{template.label}<br/>{template.identifier}</td>
+                                                                <td>{templateConfigurations.label}<br/>{templateConfigurations.identifier}</td>
                                                                 <td>
-                                                                    Created: <f:format.date>{template.crdate}</f:format.date><br/>
-                                                                    Modified: <f:format.date>{template.tstamp}</f:format.date>
+                                                                    Created: <f:format.date>{templateConfigurations.crdate}</f:format.date><br/>
+                                                                    Modified: <f:format.date>{templateConfigurations.tstamp}</f:format.date>
                                                                 </td>
                                                                 <td>
                                                                     <div class="btn-group" role="group" aria-label="...">
-                                                                        <f:link.action action="edit" arguments="{'uuid': templatePlace.uuid, 'identifier': template.identifier}" class="btn btn-default"><core:icon identifier="actions-open" /></f:link.action>
-                                                                        <f:link.action action="info" arguments="{'uuid': templatePlace.uuid, 'identifier': template.identifier}" class="btn btn-default"><core:icon identifier="actions-document-info" /></f:link.action>
-                                                                        <f:link.action action="delete" arguments="{'uuid': templatePlace.uuid, 'identifier': template.identifier}" class="btn btn-danger"><core:icon identifier="actions-edit-delete" /></f:link.action>
+                                                                        <f:link.action action="edit" arguments="{'uuid': templatePlace.uuid, 'identifier': templateConfigurations.identifier}" class="btn btn-default"><core:icon identifier="actions-open" /></f:link.action>
+                                                                        <f:link.action action="info" arguments="{'uuid': templatePlace.uuid, 'identifier': templateConfigurations.identifier}" class="btn btn-default"><core:icon identifier="actions-document-info" /></f:link.action>
+                                                                        <f:link.action action="delete" arguments="{'uuid': templatePlace.uuid, 'identifier': templateConfigurations.identifier}" class="btn btn-danger"><core:icon identifier="actions-edit-delete" /></f:link.action>
                                                                     </div>
                                                                 </td>
                                                             </tr>
