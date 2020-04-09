@@ -77,7 +77,9 @@ class XpathRenderer implements RendererInterface
 
             $template = $this->domDocument->createDocumentFragment();
             $template->appendXML((string) $processedValues[$fieldName]);
-            $processingNode->appendChild($template);
+            if ($template->hasChildNodes()) {
+                $processingNode->appendChild($template);
+            }
         } elseif ($entry['type'] === 'OUTER') {
             $processingNode->parentNode->replaceChild(
                 $this->domDocument->createTextNode((string) $processedValues[$fieldName]),
