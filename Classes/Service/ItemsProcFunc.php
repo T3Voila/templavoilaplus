@@ -1,0 +1,76 @@
+<?php
+namespace Ppi\TemplaVoilaPlus\Service;
+
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
+class ItemsProcFunc
+{
+
+    /**
+     * @param array $params Parameters to the itemsProcFunc
+     * @param \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems $pObj Calling object
+     *
+     * @return void
+     */
+    public function mapItems(array $params, \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems $pObj)
+    {
+        $scope = $this->getScope($params);
+
+        $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
+        $mappingPlaces = $configurationService->getMappingPlaces();
+
+        // @TODO Do we have a better way for the emptyness? In tt_content this should be hindered?
+        $params['items'] = [
+            ['', ''],
+        ];
+
+        foreach($mappingPlaces as $mappingPlace) {
+            if ($mappingPlace->getScope() === $scope) {
+                $mappingConfigurations = $mappingPlace->getHandler()->getConfigurations();
+                foreach ($mappingConfigurations as $mappingConfiguration) {
+                    $params['items'][] = [
+                        $mappingConfiguration->getLabel(),
+                        $mappingPlace->getUuid() . ':' . $mappingConfiguration->getIdentifier()
+                        // @TODO Icon file
+                    ];
+                }
+            }
+        }
+    }
+
+    /**
+     * Determine scope from current TCA configuration
+     * @TODO Redefine Scope
+     *
+     * @param array $params
+     *
+     * @return string|integer
+     */
+    protected function getScope(array $params)
+    {
+        switch ($params['table']) {
+            case 'pages':
+                $scope = \Ppi\TemplaVoilaPlus\Domain\Model\AbstractDataStructure::SCOPE_PAGE;
+                break;
+            case 'tt_content':
+                $scope = \Ppi\TemplaVoilaPlus\Domain\Model\AbstractDataStructure::SCOPE_FCE;
+                break;
+            default:
+                $scope = $params['table'];
+        }
+        return $scope;
+    }
+}

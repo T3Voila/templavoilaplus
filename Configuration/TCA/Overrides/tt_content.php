@@ -3,35 +3,15 @@ defined('TYPO3_MODE') or die();
 
 // Adding the new content element, "Flexible Content":
 $tempColumns = array(
-    'tx_templavoilaplus_ds' => array(
+    'tx_templavoilaplus_map' => array(
         'exclude' => 1,
-        'label' => 'LLL:EXT:templavoilaplus/Resources/Private/Language/locallang_db.xlf:tt_content.tx_templavoilaplus_ds',
-        'config' => array(
-            'type' => 'select',
-            'renderType' => 'selectSingle',
-            'items' => array(
-                array('', 0),
-            ),
-            'allowNonIdValues' => 1,
-            'itemsProcFunc' => \Ppi\TemplaVoilaPlus\Service\ItemProcFunc\StaticDataStructuresHandler::class . '->dataSourceItemsProcFunc',
-            'size' => 1,
-            'minitems' => 0,
-            'maxitems' => 1,
-            'showIconTable' => true,
-            'selicon_cols' => 10,
-        )
-    ),
-    'tx_templavoilaplus_to' => array(
-        'exclude' => 1,
-        'label' => 'LLL:EXT:templavoilaplus/Resources/Private/Language/locallang_db.xlf:tt_content.tx_templavoilaplus_to',
+        'label' => 'LLL:EXT:templavoilaplus/Resources/Private/Language/locallang_db.xlf:tt_content.tx_templavoilaplus_map',
         'displayCond' => 'FIELD:CType:=:templavoilaplus_pi1',
         'config' => array(
             'type' => 'select',
             'renderType' => 'selectSingle',
-            'items' => array(
-                array('', 0),
-            ),
-            'itemsProcFunc' => \Ppi\TemplaVoilaPlus\Service\ItemProcFunc\StaticDataStructuresHandler::class . '->templateObjectItemsProcFunc',
+            'allowNonIdValues' => 1,
+            'itemsProcFunc' => \Ppi\TemplaVoilaPlus\Service\ItemsProcFunc::class . '->mapItems',
             'size' => 1,
             'minitems' => 0,
             'maxitems' => 1,
@@ -43,30 +23,13 @@ $tempColumns = array(
         'l10n_cat' => 'text',
         'exclude' => 1,
         'label' => 'LLL:EXT:templavoilaplus/Resources/Private/Language/locallang_db.xlf:tt_content.tx_templavoilaplus_flex',
-        'displayCond' => 'FIELD:tx_templavoilaplus_ds:REQ:true',
+        'displayCond' => 'FIELD:tx_templavoilaplus_map:REQ:true',
         'config' => array(
             'type' => 'flex',
-            'ds_pointerField' => 'tx_templavoilaplus_ds',
-            'ds_tableField' => 'tx_templavoilaplus_datastructure:dataprot',
+            'ds_pointerField' => 'tx_templavoilaplus_map',
+//             'ds_tableField' => 'tx_templavoilaplus_datastructure:dataprot',
         )
     ),
-    'tx_templavoilaplus_pito' => array(
-        'exclude' => 1,
-        'label' => 'LLL:EXT:templavoilaplus/Resources/Private/Language/locallang_db.xlf:tt_content.tx_templavoilaplus_pito',
-        'config' => array(
-            'type' => 'select',
-            'renderType' => 'selectSingle',
-            'items' => array(
-                array('', 0),
-            ),
-            'itemsProcFunc' => \Ppi\TemplaVoilaPlus\Service\ItemProcFunc\StaticDataStructuresHandler::class . '->pi_templates',
-            'size' => 1,
-            'minitems' => 0,
-            'maxitems' => 1,
-            'showIconTable' => true,
-            'selicon_cols' => 10,
-        )
-),
 );
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('tt_content', $tempColumns);
 
@@ -124,7 +87,7 @@ if (version_compare(TYPO3_version, '9.0.0', '>=')) {
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
     'tt_content',
-    'tx_templavoilaplus_to',
+    'tx_templavoilaplus_map',
     'templavoilaplus_pi1',
     'after:layout'
 );
