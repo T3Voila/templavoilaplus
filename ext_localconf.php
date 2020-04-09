@@ -62,7 +62,7 @@ tt_content.menu.20.3.indexField.data = register:tx_templavoilaplus_pi1.current_f
 );
 
 // Adding Page Template Selector Fields to root line:
-$GLOBALS['TYPO3_CONF_VARS']['FE']['addRootLineFields'] .= ',tx_templavoilaplus_ds,tx_templavoilaplus_to,tx_templavoilaplus_next_ds,tx_templavoilaplus_next_to';
+$GLOBALS['TYPO3_CONF_VARS']['FE']['addRootLineFields'] .= ',tx_templavoilaplus_map,tx_templavoilaplus_next_map';
 
 // Register our classes at a the hooks:
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass']['templavoilaplus']
