@@ -129,3 +129,5 @@ if (version_compare(TYPO3_version, '9.5.0', '>=')) {
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']
     );
 }
+
+\Ppi\TemplaVoilaPlus\Utility\ExtensionUtility::registerExtension('templavoilaplus');
