@@ -124,8 +124,8 @@ try {
         list($placeIdentifier, $mappingConfigurationIdentifier) = explode(':', $combinedMapConfigurationIdentifier);
 
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
-        $templatePlace = $configurationService->getMappingPlace($placeIdentifier);
-        return $templatePlace->getHandler()->getConfiguration($mappingConfigurationIdentifier);
+        $mappingPlace = $configurationService->getMappingPlace($placeIdentifier);
+        return $mappingPlace->getHandler()->getConfiguration($mappingConfigurationIdentifier);
     }
 
     public function getTemplateConfiguration($combinedTemplateConfigurationIdentifier): TemplateYamlConfiguration
