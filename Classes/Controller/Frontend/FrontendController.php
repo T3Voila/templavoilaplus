@@ -56,11 +56,14 @@ class FrontendController extends AbstractPlugin
     {
         $mapBackupIdentifier = null;
 
+        $isFirst = true;
         // Find in rootline upwards
         foreach ($GLOBALS['TSFE']->rootLine as $key => $pageRecord) {
-            if ($key === 0) {
+            if ($isFirst) {
+                $isFirst = false;
                 continue;
             }
+
             if ($pageRecord['tx_templavoilaplus_next_map']) { // If there is a next-level MAP:
                 return $pageRecord['tx_templavoilaplus_next_map'];
             } elseif ($pageRecord['tx_templavoilaplus_map'] && !$mapBackupIdentifier) { // Otherwise try the NORMAL MAP as backup
