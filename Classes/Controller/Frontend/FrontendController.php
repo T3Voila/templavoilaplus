@@ -85,7 +85,7 @@ class FrontendController extends AbstractPlugin
     public function renderElement($row, $table)
     {
 try {
-        $mappingConfiguration = $this->getMappingConfiguration('679776ed-6ad6-4672-a268-c08d38ecfb73:/Default.tvp.yaml'/* @TODO $row['tx_templavoilaplus_map']*/);
+        $mappingConfiguration = $this->getMappingConfiguration($row['tx_templavoilaplus_map']);
         // getDS from Mapping
 
         // getTemplateConfiguration from MappingConfiguration

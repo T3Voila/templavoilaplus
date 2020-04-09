@@ -76,20 +76,16 @@ CREATE TABLE tx_templavoilaplus_datastructure (
 # Table structure for table 'tt_content'
 #
 CREATE TABLE tt_content (
-    tx_templavoilaplus_ds tinytext,
-    tx_templavoilaplus_to int(11) DEFAULT '0' NOT NULL,
+    tx_templavoilaplus_map tinytext,
     tx_templavoilaplus_flex mediumtext,
-    tx_templavoilaplus_pito int(11) DEFAULT '0' NOT NULL
 );
 
 #
 # Table structure for table 'pages'
 #
 CREATE TABLE pages (
-    tx_templavoilaplus_ds tinytext,
-    tx_templavoilaplus_to int(11) DEFAULT '0' NOT NULL,
-    tx_templavoilaplus_next_ds tinytext,
-    tx_templavoilaplus_next_to int(11) DEFAULT '0' NOT NULL,
+    tx_templavoilaplus_map tinytext,
+    tx_templavoilaplus_next_map tinytext,
     tx_templavoilaplus_flex mediumtext,
 );
 

@@ -114,6 +114,8 @@ class FlexFormTools8 extends \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTool
      */
     public function parseDataStructureByIdentifier(string $identifier): array
     {
+        // @TODO Switching to use MappingConfiguration
+        $identifier = '';
         // @TODO See https://forge.typo3.org/issues/79101
         // if there is a solution we can adapt it accordingly
         if ($identifier === '') {
