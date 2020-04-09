@@ -210,5 +210,3 @@ if (
         );
     }
 }
-
-\Ppi\TemplaVoilaPlus\Utility\ExtensionUtility::registerExtension('templavoilaplus');
