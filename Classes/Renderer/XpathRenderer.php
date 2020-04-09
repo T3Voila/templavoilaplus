@@ -29,6 +29,7 @@ class XpathRenderer implements RendererInterface
     public function renderTemplate(TemplateYamlConfiguration $templateConfiguration, array $processedValues, array $row): string
     {
         $this->domDocument = new \DOMDocument();
+        libxml_use_internal_errors(true);
         $this->domDocument->loadHTML($templateConfiguration->getTemplateFile()->getContents());
         $this->domXpath = new \DOMXPath($this->domDocument);
 
@@ -69,6 +70,14 @@ class XpathRenderer implements RendererInterface
             $processingNode->appendChild(
                 $this->domDocument->createTextNode((string) $processedValues[$fieldName])
             );
+        } elseif ($entry['type'] === 'INNERCHILD') {
+            while ($processingNode->hasChildNodes()) {
+                $processingNode->removeChild($processingNode->firstChild);
+            }
+
+            $template = $this->domDocument->createDocumentFragment();
+            $template->appendXML((string) $processedValues[$fieldName]);
+            $processingNode->appendChild($template);
         } elseif ($entry['type'] === 'OUTER') {
             $processingNode->parentNode->replaceChild(
                 $this->domDocument->createTextNode((string) $processedValues[$fieldName]),
