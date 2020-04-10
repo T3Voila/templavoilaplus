@@ -136,20 +136,4 @@ class XpathRenderer implements RendererInterface
         }
         return $contentOfNode;
     }
-
-    protected function changeName($node, $name)
-    {
-        $nodeReplacement = $node->ownerDocument->createElement($name);
-
-        foreach ($node->childNodes as $child) {
-            $nodeReplacement->appendChild($child->cloneNode(true));
-        }
-
-        foreach ($node->attributes as $attrName => $attrNode) {
-            $nodeReplacement->setAttribute($attrName, $attrNode);
-        }
-        $node->parentNode->replaceChild($nodeReplacement, $node);
-
-        return $nodeReplacement;
-    }
 }
