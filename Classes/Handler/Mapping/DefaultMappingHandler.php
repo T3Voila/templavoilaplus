@@ -41,24 +41,59 @@ class DefaultMappingHandler
         $mappingToTemplate = $this->mappingConfiguration->getMappingToTemplate();
 
         foreach($mappingToTemplate as $templateFieldName => $instructions) {
-            $processedValue = '';
-            if ($instructions['fieldType'] === 'row') {
-                if (isset($row[$instructions['fieldName']])) {
-                    $processedValue = (string) $row[$instructions['fieldName']];
+            $processedMapping[$templateFieldName] = $this->valueProcessing($instructions, $flexformData, $row);
+        }
+
+        return $processedMapping;
+    }
+
+    protected function valueProcessing(array $instructions, array $flexformData, array $row)
+    {
+        $processedValue = '';
+
+        if (isset($instructions['value'])) {
+            $processedValue = $instructions['value'];
+        }
+
+        switch ($instructions['dataType']) {
+            case 'row':
+                if (isset($row[$instructions['dataPath']])) {
+                    $processedValue = (string) $row[$instructions['dataPath']];
                 }
-            }
-            if ($instructions['fieldType'] === 'typoscriptObjectPath') {
+                break;
+            case 'typoscriptObjectPath':
                 /** @var TypoScriptParser $tsparserObj */
                 $tsparserObj = GeneralUtility::makeInstance(TypoScriptParser::class);
                 /** @var ContentObjectRenderer $cObj */
                 $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
 
-                list($name, $conf) = $tsparserObj->getVal($instructions['fieldName'], $GLOBALS['TSFE']->tmpl->setup);
-                $processedValue = $cObj->cObjGetSingle($name, $conf, 'TemplaVoila_ProcObjPath--' . str_replace('.', '*', $instructions['fieldName']) . '.');
-            }
-            $processedMapping[$templateFieldName] = $processedValue;
+                list($name, $conf) = $tsparserObj->getVal($instructions['dataPath'], $GLOBALS['TSFE']->tmpl->setup);
+                $processedValue = $cObj->cObjGetSingle($name, $conf, 'TemplaVoila_ProcObjPath--' . str_replace('.', '*', $instructions['dataPath']) . '.');
+                break;
+            default:
+                // No dataType given, so no data management
         }
 
-        return $processedMapping;
+        /** @TODO Need to support multiple processings */
+        switch ($instructions['valueProcessing']) {
+            case 'typoScript':
+                /** @var TypoScriptParser $tsparserObj */
+                $tsparserObj = GeneralUtility::makeInstance(TypoScriptParser::class);
+                /** @var ContentObjectRenderer $cObj */
+                $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+var_dump('AAA', $instructions['valueProcessing.typoScript']);
+                $tsparserObj->parse($instructions['valueProcessing.typoScript']);
+                $processedValue = $cObj->cObjGet($tsparserObj->setup, 'TemplaVoila_Proc.');
+var_dump($processedValue);
+                break;
+            case 'typoScriptConstants':
+                break;
+            case 'stdWrap':
+                break;
+            default:
+                // No valueProcessing given, so no value manipulation
+        }
+
+        return $processedValue;
     }
 }
