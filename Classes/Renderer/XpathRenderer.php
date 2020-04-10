@@ -78,10 +78,16 @@ class XpathRenderer implements RendererInterface
                     $processingNode->removeChild($processingNode->firstChild);
                 }
 
-                $template = $this->domDocument->createDocumentFragment();
-                $template->appendXML((string) $processedValues[$fieldName]);
-                if ($template->hasChildNodes()) {
-                    $processingNode->appendChild($template);
+                $tmpDoc = new \DOMDocument();
+                $tmpDoc->loadHTML($processedValues[$fieldName]);
+
+                // loadHTML automagically adds the html and body tag so our childs to add are inside body
+                /** @TODO This handling can be configured with libXML option LIBXML_HTML_NOIMPLIED */
+                if ($tmpDoc->getElementsByTagName('body')->item(0)->hasChildNodes()) {
+                    foreach ($tmpDoc->getElementsByTagName('body')->item(0)->childNodes as $importNode) {
+                        $importNode = $this->domDocument->importNode($importNode, true);
+                        $processingNode->appendChild($importNode);
+                    }
                 }
             } elseif ($entry['type'] === 'OUTER') {
                 $processingNode->parentNode->replaceChild(
