@@ -59,33 +59,44 @@ class XpathRenderer implements RendererInterface
 
     protected function processValue($node, $fieldName, $entry, $processedValues)
     {
-        $processingNode = $this->domXpath->query($entry['xpath'], $node)->item(0);
+        $result = $this->domXpath->query($entry['xpath'], $node);
 
-        if ($entry['type'] === 'ATTRIB') {
-            $processingNode->setAttribute($entry['attribName'], (string) $processedValues[$fieldName]);
-        } elseif ($entry['type'] === 'INNER') {
-            while ($processingNode->hasChildNodes()) {
-                $processingNode->removeChild($processingNode->firstChild);
-            }
-            $processingNode->appendChild(
-                $this->domDocument->createTextNode((string) $processedValues[$fieldName])
-            );
-        } elseif ($entry['type'] === 'INNERCHILD') {
-            while ($processingNode->hasChildNodes()) {
-                $processingNode->removeChild($processingNode->firstChild);
-            }
+        if ($result && $result->count() > 0) {
+            $processingNode = $result->item(0);
 
-            $template = $this->domDocument->createDocumentFragment();
-            $template->appendXML((string) $processedValues[$fieldName]);
-            if ($template->hasChildNodes()) {
-                $processingNode->appendChild($template);
-            }
-        } elseif ($entry['type'] === 'OUTER') {
-            $processingNode->parentNode->replaceChild(
-                $this->domDocument->createTextNode((string) $processedValues[$fieldName]),
-                $processingNode
-            );
+            if ($entry['type'] === 'ATTRIB') {
+                $processingNode->setAttribute($entry['attribName'], (string) $processedValues[$fieldName]);
+            } elseif ($entry['type'] === 'INNER') {
+                while ($processingNode->hasChildNodes()) {
+                    $processingNode->removeChild($processingNode->firstChild);
+                }
+                $processingNode->appendChild(
+                    $this->domDocument->createTextNode((string) $processedValues[$fieldName])
+                );
+            } elseif ($entry['type'] === 'INNERCHILD') {
+                while ($processingNode->hasChildNodes()) {
+                    $processingNode->removeChild($processingNode->firstChild);
+                }
 
+                $template = $this->domDocument->createDocumentFragment();
+                $template->appendXML((string) $processedValues[$fieldName]);
+                if ($template->hasChildNodes()) {
+                    $processingNode->appendChild($template);
+                }
+            } elseif ($entry['type'] === 'OUTER') {
+                $processingNode->parentNode->replaceChild(
+                    $this->domDocument->createTextNode((string) $processedValues[$fieldName]),
+                    $processingNode
+                );
+
+            }
+        } else {
+            // @TODO Only in debug? Would be uncool to have such messages live
+            if ($result === false) {
+                var_dump('XPath: "' . $entry['xpath'] . '" is invalid');
+            } else {
+                var_dump('No result for XPath: "' . $entry['xpath'] . '"');
+            }
         }
 
         return $node;
