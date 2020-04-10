@@ -49,6 +49,20 @@ class XpathRenderer implements RendererInterface
         return '';
     }
 
+    public function processHeaderInformation(TemplateYamlConfiguration $templateConfiguration)
+    {
+        $headerConfiguration = $templateConfiguration->getHeader();
+
+        /** @var \TYPO3\CMS\Core\Page\PageRenderer */
+        $pageRenderer = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Page\PageRenderer::class);
+
+        if (isset($headerConfiguration['css']) && is_array($headerConfiguration['css'])) {
+            foreach ($headerConfiguration['css'] as $cssConfiguration) {
+                $pageRenderer->addCssFile($cssConfiguration['href'], $cssConfiguration['rel'], $cssConfiguration['media']);
+            }
+        }
+    }
+
     protected function processContainer($node, $mapping, $processedValues)
     {
         foreach ($mapping as $fieldName => $entry) {
