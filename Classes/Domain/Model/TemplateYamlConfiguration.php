@@ -49,6 +49,11 @@ class TemplateYamlConfiguration
     /**
      * @var array
      */
+    protected $header = [];
+
+    /**
+     * @var array
+     */
     protected $mapping = [];
 
     /**
@@ -72,6 +77,9 @@ class TemplateYamlConfiguration
         }
         if (isset($configuration['tvp-template']['meta']['renderer'])) {
             $this->setRendererName($configuration['tvp-template']['meta']['renderer']);
+        }
+        if (isset($configuration['tvp-template']['header']) && is_array($configuration['tvp-template']['header'])) {
+            $this->setHeader($configuration['tvp-template']['header']);
         }
         if (isset($configuration['tvp-template']['mapping']) && is_array($configuration['tvp-template']['mapping'])) {
             $this->setMapping($configuration['tvp-template']['mapping']);
@@ -112,6 +120,21 @@ class TemplateYamlConfiguration
     public function setRendererName(string $rendererName)
     {
         $this->rendererName = $rendererName;
+    }
+
+    /**
+     * Retrieve the header of the template
+     *
+     * @return string
+     */
+    public function getHeader()
+    {
+        return $this->header;
+    }
+
+    public function setHeader(array $header)
+    {
+        $this->header = $header;
     }
 
     /**

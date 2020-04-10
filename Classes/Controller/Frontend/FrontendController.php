@@ -106,6 +106,8 @@ try {
         $renderer = $configurationService->getRenderer($rendererName);
 
         // Manipulate header data
+        // @TODO The renderer? Not realy or?
+        $renderer->processHeaderInformation($templateConfiguration);
 
         // give TemplateData to renderer and return result
         return $renderer->renderTemplate($templateConfiguration, $processedValues, $row);
