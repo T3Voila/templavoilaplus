@@ -62,13 +62,8 @@ class DefaultMappingHandler
                 }
                 break;
             case 'typoscriptObjectPath':
-                /** @var TypoScriptParser $tsparserObj */
-                $tsparserObj = GeneralUtility::makeInstance(TypoScriptParser::class);
-                /** @var ContentObjectRenderer $cObj */
-                $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
-
-                list($name, $conf) = $tsparserObj->getVal($instructions['dataPath'], $GLOBALS['TSFE']->tmpl->setup);
-                $processedValue = $cObj->cObjGetSingle($name, $conf, 'TemplaVoila_ProcObjPath--' . str_replace('.', '*', $instructions['dataPath']) . '.');
+                list($name, $conf) = $this->getTypoScriptParser()->getVal($instructions['dataPath'], $GLOBALS['TSFE']->tmpl->setup);
+                $processedValue = $this->getContentObjectRenderer($processedValue, $row)->cObjGetSingle($name, $conf, 'TemplaVoila_ProcObjPath--' . str_replace('.', '*', $instructions['dataPath']) . '.');
                 break;
             default:
                 // No dataType given, so no data management
@@ -78,13 +73,11 @@ class DefaultMappingHandler
         switch ($instructions['valueProcessing']) {
             case 'typoScript':
                 /** @var TypoScriptParser $tsparserObj */
-                $tsparserObj = GeneralUtility::makeInstance(TypoScriptParser::class);
+                $tsparserObj = $this->getTypoScriptParser();
                 /** @var ContentObjectRenderer $cObj */
-                $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
-var_dump('AAA', $instructions['valueProcessing.typoScript']);
+                $cObj = $this->getContentObjectRenderer($processedValue, $row);
                 $tsparserObj->parse($instructions['valueProcessing.typoScript']);
                 $processedValue = $cObj->cObjGet($tsparserObj->setup, 'TemplaVoila_Proc.');
-var_dump($processedValue);
                 break;
             case 'typoScriptConstants':
                 break;
@@ -95,5 +88,22 @@ var_dump($processedValue);
         }
 
         return $processedValue;
+    }
+
+    protected function getTypoScriptParser(): TypoScriptParser
+    {
+        /** @var TypoScriptParser $tsparserObj */
+        $tsparserObj = GeneralUtility::makeInstance(TypoScriptParser::class);
+        return $tsparserObj;
+    }
+
+    protected function getContentObjectRenderer($processedValue, $row): ContentObjectRenderer
+    {
+        /** @var ContentObjectRenderer $cObj */
+        $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+        $cObj->setParent($row, '');
+        $cObj->setCurrentVal($processedValue);
+
+        return $cObj;
     }
 }
