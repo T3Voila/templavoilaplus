@@ -93,12 +93,13 @@ class XpathRenderer implements RendererInterface
                 }
 
                 $tmpDoc = new \DOMDocument();
-                $tmpDoc->loadHTML($processedValues[$fieldName]);
+                /** Add own tag to prevent automagical adding of <p> Tag around Tagless content */
+                /** Use LIBXML_HTML_NOIMPLIED and LIBXML_HTML_NODEFDTD so we don't get confused by extra added doctype, html and body nodes */
+                $tmpDoc->loadHTML('<__TEMPLAVOILAPLUS__>' . $processedValues[$fieldName] . '</__TEMPLAVOILAPLUS__>', LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
 
-                // loadHTML automagically adds the html and body tag so our childs to add are inside body
-                /** @TODO This handling can be configured with libXML option LIBXML_HTML_NOIMPLIED */
-                if ($tmpDoc->getElementsByTagName('body')->item(0)->hasChildNodes()) {
-                    foreach ($tmpDoc->getElementsByTagName('body')->item(0)->childNodes as $importNode) {
+                /** firstChild is our own added Tag from above */
+                if ($tmpDoc->firstChild->hasChildNodes()) {
+                    foreach ($tmpDoc->firstChild->childNodes as $importNode) {
                         $importNode = $this->domDocument->importNode($importNode, true);
                         $processingNode->appendChild($importNode);
                     }
