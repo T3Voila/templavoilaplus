@@ -128,11 +128,11 @@ class XpathRenderer implements RendererInterface
         $contentOfNode = '';
 
         if ($type === 'INNER') {
-            $contentOfNode = $this->domDocument->saveXML($node);
+            $contentOfNode = $this->domDocument->saveHTML($node);
         } elseif ($type === 'OUTER') {
             $children = $node->childNodes;
             foreach ($node->childNodes as $childNode) {
-                $contentOfNode .= $this->domDocument->saveXML($childNode);
+                $contentOfNode .= $this->domDocument->saveHTML($childNode);
             }
         }
         return $contentOfNode;
