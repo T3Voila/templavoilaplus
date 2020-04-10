@@ -41,8 +41,11 @@ class DefaultMappingHandler
         $mappingToTemplate = $this->mappingConfiguration->getMappingToTemplate();
 
         foreach($mappingToTemplate as $templateFieldName => $instructions) {
+            $processedValue = '';
             if ($instructions['fieldType'] === 'row') {
-                $processedValue = $row[$instructions['fieldName']] ? : '';
+                if (isset($row[$instructions['fieldName']])) {
+                    $processedValue = (string) $row[$instructions['fieldName']];
+                }
             }
             if ($instructions['fieldType'] === 'typoscriptObjectPath') {
                 /** @var TypoScriptParser $tsparserObj */
