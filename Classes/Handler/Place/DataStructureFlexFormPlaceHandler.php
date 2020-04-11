@@ -22,7 +22,7 @@ use Ppi\TemplaVoilaPlus\Domain\Model\XmlFileDataStructure;
 
 class DataStructureFlexFormPlaceHandler
     extends AbstractPlaceHandler
-    implements DataStructurePlaceHandlerInterface /** @TDOD Needed? */
+    implements DataStructurePlaceHandlerInterface /** @TODO Needed? */
 {
     public const NAME = 'templavoilaplus_handler_place_datastructure_flexform';
 
