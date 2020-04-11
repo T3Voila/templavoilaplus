@@ -42,10 +42,10 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <f:if condition="{dataStructurePlace.handler.dataStructures -> f:count()} > 0">
+                                            <f:if condition="{dataStructurePlace.handler.configurations -> f:count()} > 0">
                                                 <f:then>
                                                     <table class="table table-striped table-hover">
-                                                        <f:for each="{dataStructurePlace.handler.dataStructures}" as="dataStructure">
+                                                        <f:for each="{dataStructurePlace.handler.configurations}" as="dataStructure">
                                                             <tr>
                                                                 <td>{dataStructure.label}<br/>{dataStructure.identifier}</td>
                                                                 <td>
