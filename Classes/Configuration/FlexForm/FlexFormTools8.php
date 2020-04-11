@@ -114,8 +114,6 @@ class FlexFormTools8 extends \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTool
      */
     public function parseDataStructureByIdentifier(string $identifier): array
     {
-        // @TODO Switching to use MappingConfiguration
-        $identifier = '';
         // @TODO See https://forge.typo3.org/issues/79101
         // if there is a solution we can adapt it accordingly
         if ($identifier === '') {
@@ -305,12 +303,16 @@ class FlexFormTools8 extends \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTool
                 $queryStatement = $queryBuilder->from($tableName)
                     ->where(
                         $queryBuilder->expr()->eq(
-                        'uid',
-                        $queryBuilder->createNamedParameter($row[$parentFieldName], \PDO::PARAM_INT)
-                    )
+                            'uid',
+                            $queryBuilder->createNamedParameter($row[$parentFieldName], \PDO::PARAM_INT)
+                        )
                     )
                     ->execute();
-                if ($queryStatement->rowCount() !== 1) {
+                $rowCount = $queryBuilder
+                    ->count('uid')
+                    ->execute()
+                    ->fetchColumn(0);
+                if ($rowCount !== 1) {
                     throw new InvalidParentRowException(
                         'The data structure for field "' . $fieldName . '" in table "' . $tableName . '" has to be looked up'
                         . ' in field "' . $pointerFieldName . '". That field had no valid value, so a lookup in parent record'
