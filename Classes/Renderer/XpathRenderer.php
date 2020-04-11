@@ -56,11 +56,20 @@ class XpathRenderer implements RendererInterface
         /** @var \TYPO3\CMS\Core\Page\PageRenderer */
         $pageRenderer = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Page\PageRenderer::class);
 
+        // Meta
+        if (isset($headerConfiguration['meta']) && is_array($headerConfiguration['meta'])) {
+            foreach ($headerConfiguration['meta'] as $metaName => $metaConfiguration) {
+                $pageRenderer->addMetaTag('<meta name="' . $metaName . '" content="' . $metaConfiguration['content'] . '">');
+            }
+        }
+
+        // CSS
         if (isset($headerConfiguration['css']) && is_array($headerConfiguration['css'])) {
             foreach ($headerConfiguration['css'] as $cssConfiguration) {
                 $pageRenderer->addCssFile($cssConfiguration['href'], $cssConfiguration['rel'], $cssConfiguration['media']);
             }
         }
+        // Javascript
         if (isset($headerConfiguration['javascript']) && is_array($headerConfiguration['javascript'])) {
             foreach ($headerConfiguration['javascript'] as $jsConfiguration) {
                 $pageRenderer->addJsFile($jsConfiguration['src']);
