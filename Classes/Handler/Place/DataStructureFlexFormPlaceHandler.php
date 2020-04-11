@@ -20,7 +20,9 @@ use Ppi\TemplaVoilaPlus\Domain\Model\AbstractDataStructure;
 use Ppi\TemplaVoilaPlus\Domain\Model\DataStructurePlace;
 use Ppi\TemplaVoilaPlus\Domain\Model\XmlFileDataStructure;
 
-class DataStructureFlexFormPlaceHandler implements DataStructurePlaceHandlerInterface
+class DataStructureFlexFormPlaceHandler
+    extends AbstractPlaceHandler
+    implements DataStructurePlaceHandlerInterface /** @TDOD Needed? */
 {
     public const NAME = 'templavoilaplus_handler_place_datastructure_flexform';
 
@@ -40,22 +42,10 @@ class DataStructureFlexFormPlaceHandler implements DataStructurePlaceHandlerInte
         $this->place = $place;
     }
 
-    public function getDataStructures(): array
+    protected function initializeConfigurations()
     {
-        $this->initializeDataStructures();
-        return $this->dataStructures;
-    }
-
-    public function getDataStructure(string $identifier): AbstractDataStructure
-    {
-        $this->initializeDataStructures();
-        return $this->dataStructures[$identifier];
-    }
-
-    protected function initializeDataStructures()
-    {
-        if ($this->dataStructures === null) {
-            $this->dataStructures = [];
+        if ($this->configurations === null) {
+            $this->configurations = [];
             $resourceFactory = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance();
 
             $filter = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter::class);
@@ -67,7 +57,7 @@ class DataStructureFlexFormPlaceHandler implements DataStructurePlaceHandlerInte
             $files = $folder->getFiles(0, 0, \TYPO3\CMS\Core\Resource\Folder::FILTER_MODE_USE_OWN_FILTERS, true);
 
             foreach($files as $file) {
-                $this->dataStructures[$file->getIdentifier()] = new XmlFileDataStructure($file);
+                $this->configurations[$file->getIdentifier()] = new XmlFileDataStructure($file);
             }
         }
     }

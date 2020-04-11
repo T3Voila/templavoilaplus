@@ -21,44 +21,11 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 use Ppi\TemplaVoilaPlus\Domain\Model\Place;
 use Ppi\TemplaVoilaPlus\Domain\Model\TemplateYamlConfiguration;
 
-abstract class AbstractYamlPlaceHandler
+abstract class AbstractYamlPlaceHandler extends AbstractPlaceHandler
 {
-    public const NAME = 'abstract';
-
-    /**
-     * @var Place
-     */
-    protected $place;
-
-    /**
-     * @var array|null Runtime cache for loaded template configurations
-     */
-    protected $configurations;
+    public const NAME = 'abstractYaml';
 
     protected $configurationClassName;
-
-
-    public function __construct(Place $place)
-    {
-        $this->place = $place;
-    }
-
-    public function getConfigurations(): array
-    {
-        $this->initializeConfigurations();
-        return $this->configurations;
-    }
-
-    public function getConfiguration(string $identifier)/** @TODO Configuration master class?: TemplateYamlConfiguration */
-    {
-        $this->initializeConfigurations();
-
-        if (isset($this->configurations[$identifier])) {
-            return $this->configurations[$identifier];
-        }
-
-        throw new \Exception('Configuration with identifer "' . $identifier . '" not found');
-    }
 
     protected function initializeConfigurations()
     {
