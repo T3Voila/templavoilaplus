@@ -40,6 +40,7 @@ $tempColumns = array(
         'config' => array(
             'type' => 'flex',
             'ds_pointerField' => 'tx_templavoilaplus_map',
+            'ds_pointerType' => 'combinedMappingIdentifier',
 //             'ds_pointerField_searchParent' => 'pid',
 //             'ds_pointerField_searchParent_subField' => 'tx_templavoilaplus_next_ds',
 //             'ds_tableField' => 'tx_templavoilaplus_datastructure:dataprot',
