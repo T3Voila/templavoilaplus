@@ -61,6 +61,11 @@ class XpathRenderer implements RendererInterface
                 $pageRenderer->addCssFile($cssConfiguration['href'], $cssConfiguration['rel'], $cssConfiguration['media']);
             }
         }
+        if (isset($headerConfiguration['javascript']) && is_array($headerConfiguration['javascript'])) {
+            foreach ($headerConfiguration['javascript'] as $jsConfiguration) {
+                $pageRenderer->addJsFile($jsConfiguration['src']);
+            }
+        }
     }
 
     protected function processContainer($node, $mapping, $processedValues)
