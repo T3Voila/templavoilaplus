@@ -122,4 +122,13 @@ if (version_compare(TYPO3_version, '9.5.0', '>=')) {
     );
 }
 
+
+// Since TV+ 8.0.0
 \Ppi\TemplaVoilaPlus\Utility\ExtensionUtility::registerExtension('templavoilaplus');
+
+if (TYPO3_MODE === 'BE') {
+    // Hook to enrich tt_content form flex element with finisher settings and form list drop down
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class]['flexParsing'][
+        \Ppi\TemplaVoilaPlus\Configuration\FlexForm\DataStructureIdentifierHook::class
+    ] = \Ppi\TemplaVoilaPlus\Configuration\FlexForm\DataStructureIdentifierHook::class;
+}
