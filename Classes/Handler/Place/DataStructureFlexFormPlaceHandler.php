@@ -26,20 +26,9 @@ class DataStructureFlexFormPlaceHandler
 {
     public const NAME = 'templavoilaplus_handler_place_datastructure_flexform';
 
-    /**
-     * @var DataStructurePlace
-     */
-    protected $place;
-
-    /**
-     * @var array|null Runtime cache for loaded data structures
-     */
-    protected $dataStructures;
-
-
     public function __construct(DataStructurePlace $place)
     {
-        $this->place = $place;
+        parent::__construct($place);
     }
 
     protected function initializeConfigurations()
