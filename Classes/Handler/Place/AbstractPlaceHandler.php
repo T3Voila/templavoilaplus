@@ -59,4 +59,27 @@ abstract class AbstractPlaceHandler
 
     abstract protected function initializeConfigurations();
 
+
+    protected function getPlaceIdentifierFromFile($file): string
+    {
+        $identifier = $file->getIdentifier();
+        $storageConfiguration = $file->getStorage()->getConfiguration();
+
+        if ($file->getStorage()->getUid() === 0) {
+            $relativePath = ltrim($file->getIdentifier(), '/');
+            $identifier = mb_substr($relativePath, mb_strlen($this->place->getPathRelative()));
+        } elseif ($storageConfiguration['pathType'] === 'relative') {
+            $relativePath = rtrim($storageConfiguration['basePath'], '/') . '/' . ltrim($file->getIdentifier(), '/');
+            $identifier = mb_substr($relativePath, mb_strlen($this->place->getPathRelative()));
+        } else {
+            throw new \Exception('Storage type not supported');
+        }
+        /** @TODO Absolute? Storage configuration */
+        /**
+         * Should we replace all Resource handlings with own file operations?
+         * Its a mess with the handling ... how does this work in core:form?
+         */
+
+        return '/'. ltrim($identifier, '/');
+    }
 }
