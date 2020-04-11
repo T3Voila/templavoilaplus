@@ -46,7 +46,8 @@ class DataStructureFlexFormPlaceHandler
             $files = $folder->getFiles(0, 0, \TYPO3\CMS\Core\Resource\Folder::FILTER_MODE_USE_OWN_FILTERS, true);
 
             foreach($files as $file) {
-                $this->configurations[$file->getIdentifier()] = new XmlFileDataStructure($file);
+                $configurationIdentifier = $this->getPlaceIdentifierFromFile($file);
+                $this->configurations[$configurationIdentifier] = new XmlFileDataStructure($file, $configurationIdentifier);
             }
         }
     }
