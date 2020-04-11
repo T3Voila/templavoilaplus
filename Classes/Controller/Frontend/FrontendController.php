@@ -6,6 +6,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
 
 /** @TODO Missing Base class */
+use Ppi\TemplaVoilaPlus\Domain\Model\AbstractDataStructure;
 use Ppi\TemplaVoilaPlus\Domain\Model\MappingYamlConfiguration;
 use Ppi\TemplaVoilaPlus\Domain\Model\TemplateYamlConfiguration;
 use Ppi\TemplaVoilaPlus\Service\ConfigurationService;
@@ -90,6 +91,7 @@ class FrontendController extends AbstractPlugin
 try {
         $mappingConfiguration = $this->getMappingConfiguration($row['tx_templavoilaplus_map']);
         // getDS from Mapping
+        $dataStructure = $this->getDataStructure($mappingConfiguration->getCombinedDataStructureIdentifier());
 
         // getTemplateConfiguration from MappingConfiguration
         $templateConfiguration = $this->getTemplateConfiguration($mappingConfiguration->getCombinedTemplateConfigurationIdentifier());
@@ -124,10 +126,21 @@ try {
      * other points inside TV+ or other extensions.
      */
 
+    public function getDataStructure($combinedDataStructureIdentifier): AbstractDataStructure
+    {
+        list($placeIdentifier, $dataStructureIdentifier) = explode(':', $combinedDataStructureIdentifier);
+
+        /** @var ConfigurationService */
+        $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
+        $dataStructurePlace = $configurationService->getDataStructurePlace($placeIdentifier);
+        return $dataStructurePlace->getHandler()->getConfiguration($dataStructureIdentifier);
+    }
+
     public function getMappingConfiguration($combinedMapConfigurationIdentifier): MappingYamlConfiguration
     {
         list($placeIdentifier, $mappingConfigurationIdentifier) = explode(':', $combinedMapConfigurationIdentifier);
 
+        /** @var ConfigurationService */
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
         $mappingPlace = $configurationService->getMappingPlace($placeIdentifier);
         return $mappingPlace->getHandler()->getConfiguration($mappingConfigurationIdentifier);
@@ -137,6 +150,7 @@ try {
     {
         list($placeIdentifier, $templateConfigurationIdentifier) = explode(':', $combinedTemplateConfigurationIdentifier);
 
+        /** @var ConfigurationService */
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
         $templatePlace = $configurationService->getTemplatePlace($placeIdentifier);
         return $templatePlace->getHandler()->getConfiguration($templateConfigurationIdentifier);

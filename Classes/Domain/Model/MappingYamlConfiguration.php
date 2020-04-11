@@ -44,6 +44,11 @@ class MappingYamlConfiguration
     /**
      * @var string
      */
+    protected $combinedDataStructureIdentifier = '';
+
+    /**
+     * @var string
+     */
     protected $combinedTemplateConfigurationIdentifier = '';
 
     /**
@@ -69,6 +74,9 @@ class MappingYamlConfiguration
 
         if (isset($configuration['tvp-mapping']['meta']['label'])) {
             $this->setLabel($configuration['tvp-mapping']['meta']['label']);
+        }
+        if (isset($configuration['tvp-mapping']['combinedDataStructureIdentifier'])) {
+            $this->setCombinedDataStructureIdentifier($configuration['tvp-mapping']['combinedDataStructureIdentifier']);
         }
         if (isset($configuration['tvp-mapping']['combinedTemplateConfigurationIdentifier'])) {
             $this->setCombinedTemplateConfigurationIdentifier($configuration['tvp-mapping']['combinedTemplateConfigurationIdentifier']);
@@ -99,7 +107,22 @@ class MappingYamlConfiguration
     }
 
     /**
-     * Retrieve the mapping from ds/row to templateConfiguration
+     * Retrieve the DS configuration identifier
+     *
+     * @return string
+     */
+    public function getCombinedDataStructureIdentifier()
+    {
+        return $this->combinedDataStructureIdentifier;
+    }
+
+    public function setCombinedDataStructureIdentifier($combinedDataStructureIdentifier)
+    {
+        $this->combinedDataStructureIdentifier = $combinedDataStructureIdentifier;
+    }
+
+    /**
+     * Retrieve the templateConfiguration identifier
      *
      * @return string
      */
@@ -114,7 +137,7 @@ class MappingYamlConfiguration
     }
 
     /**
-     * Retrieve the mapping of the template
+     * Retrieve the mapping from ds/row to templateConfiguration
      *
      * @return string
      */
