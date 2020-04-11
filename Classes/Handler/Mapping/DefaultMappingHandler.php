@@ -61,6 +61,11 @@ class DefaultMappingHandler
                     $processedValue = (string) $row[$instructions['dataPath']];
                 }
                 break;
+            case 'flexform':
+                if (isset($flexformData[$instructions['dataPath']])) {
+                    $processedValue = (string) $flexformData[$instructions['dataPath']];
+                }
+                break;
             case 'typoscriptObjectPath':
                 list($name, $conf) = $this->getTypoScriptParser()->getVal($instructions['dataPath'], $GLOBALS['TSFE']->tmpl->setup);
                 $processedValue = $this->getContentObjectRenderer($processedValue, $row)->cObjGetSingle($name, $conf, 'TemplaVoila_ProcObjPath--' . str_replace('.', '*', $instructions['dataPath']) . '.');

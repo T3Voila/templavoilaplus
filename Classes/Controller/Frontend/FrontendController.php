@@ -96,11 +96,12 @@ try {
         // getTemplateConfiguration from MappingConfiguration
         $templateConfiguration = $this->getTemplateConfiguration($mappingConfiguration->getCombinedTemplateConfigurationIdentifier());
 
-        // getDSdata from DS
-        $flexformData = [];
+        // getDSdata from flexform field with DS
+        $flexformData = GeneralUtility::xml2array($row['tx_templavoilaplus_flex']);
+        $flexformValues = $this->getFlexformData($dataStructure, $flexformData);
 
         // Run TypoScript over DSdata and include TypoScript vars while mapping into TemplateData
-        $processedValues = $mappingConfiguration->getHandler()->process($flexformData, $row);
+        $processedValues = $mappingConfiguration->getHandler()->process($flexformValues, $row);
 
         // get renderer from templateConfiguration
         $rendererName = $templateConfiguration->getRendererName();
@@ -118,6 +119,42 @@ try {
     var_dump($e);
     die('Error message shown');
 }
+    }
+
+    public function getFlexformData(AbstractDataStructure $dataStructure, array $flexformData)
+    {
+        $flexformValues = [];
+
+        /** @TODO sheet selection */
+        $renderSheet = 'sDEF';
+
+        list($dataStruct, $sheet, $singleSheet) = TemplaVoilaUtility::resolveSheetDefInDS($dataStructure->getDataStructureArray(), $renderSheet);
+
+        /** @TODO Language selection */
+        $lKey = 'lDEF';
+        $vKey = 'vDEF';
+
+        if (isset($flexformData['data'][$sheet][$lKey]) && is_array($flexformData['data'][$sheet][$lKey])) {
+            $flexformLkeyValues = $flexformData['data'][$sheet][$lKey];
+        }
+
+        $flexformValues = $this->processDataValues($flexformLkeyValues, $dataStruct['ROOT']['el'], $vKey);
+
+        return $flexformValues;
+    }
+
+    public function processDataValues(array $dataValues, array $DSelements, $valueKey = 'vDEF')
+    {
+        $processedDataValues = [];
+        foreach ($DSelements as $key => $dsConf) {
+            /** @TDOD DSelement processing */
+        }
+
+        foreach ($dataValues as $field => $fieldData) {
+            $processedDataValues[$field] = $fieldData[$valueKey];
+        }
+
+        return $processedDataValues;
     }
 
     /**
