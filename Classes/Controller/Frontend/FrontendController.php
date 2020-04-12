@@ -102,7 +102,13 @@ try {
         $templateConfiguration = $this->getTemplateConfiguration($mappingConfiguration->getCombinedTemplateConfigurationIdentifier());
 
         // getDSdata from flexform field with DS
-        $flexformData = GeneralUtility::xml2array($row['tx_templavoilaplus_flex']);
+        $flexformData = [];
+        if (!empty($row['tx_templavoilaplus_flex'])) {
+            $flexformData = GeneralUtility::xml2array($row['tx_templavoilaplus_flex']);
+        }
+        if (is_string($flexformData)) {
+            throw new \Exception('Could not load flex data: "' . $flexformData . '"');
+        }
         $flexformValues = $this->getFlexformData($dataStructure, $flexformData);
 
         // Run TypoScript over DSdata and include TypoScript vars while mapping into TemplateData
@@ -139,6 +145,7 @@ try {
         $lKey = 'lDEF';
         $vKey = 'vDEF';
 
+        $flexformLkeyValues = [];
         if (isset($flexformData['data'][$sheet][$lKey]) && is_array($flexformData['data'][$sheet][$lKey])) {
             $flexformLkeyValues = $flexformData['data'][$sheet][$lKey];
         }
