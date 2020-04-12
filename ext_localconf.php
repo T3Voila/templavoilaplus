@@ -36,7 +36,7 @@ if ($_EXTCONF['enable.']['renderFCEHeader']) {
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript('templavoilaplus', 'setup', '
 # Setting templavoila plugin TypoScript
 plugin.tx_templavoilaplus_pi1 = USER
-plugin.tx_templavoilaplus_pi1.userFunc = Ppi\TemplaVoilaPlus\Controller\FrontendController->main
+plugin.tx_templavoilaplus_pi1.userFunc = Ppi\TemplaVoilaPlus\Controller\Frontend\FrontendController->renderContent
 plugin.tx_templavoilaplus_pi1.disableExplosivePreview = 1
 
 tt_content.templavoilaplus_pi1 = COA
