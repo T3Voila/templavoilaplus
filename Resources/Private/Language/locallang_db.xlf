@@ -72,9 +72,6 @@
 			<trans-unit id="tt_content.tx_templavoilaplus_to" xml:space="preserve">
 				<source>Template Object:</source>
 			</trans-unit>
-			<trans-unit id="tt_content.tx_templavoilaplus_pito" xml:space="preserve">
-				<source>Plug-In Template Object:</source>
-			</trans-unit>
 			<trans-unit id="tt_content.tx_templavoilaplus_flex" xml:space="preserve">
 				<source>Content:</source>
 			</trans-unit>

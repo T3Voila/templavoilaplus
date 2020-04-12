@@ -18,23 +18,23 @@ namespace Ppi\TemplaVoilaPlus\Handler\Place;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
-use Ppi\TemplaVoilaPlus\Domain\Model\TemplatePlace;
-use Ppi\TemplaVoilaPlus\Domain\Model\TemplateYamlConfiguration;
+use Ppi\TemplaVoilaPlus\Domain\Model\MappingPlace;
+use Ppi\TemplaVoilaPlus\Domain\Model\MappingYamlConfiguration;
 
-class TemplateYamlPlaceHandler
+class MappingYamlPlaceHandler
     extends AbstractYamlPlaceHandler
-    implements TemplatePlaceHandlerInterface
+    implements MappingPlaceHandlerInterface
 {
-    public const NAME = 'templavoilaplus_handler_place_template_yaml';
+    public const NAME = 'templavoilaplus_handler_place_mapping_yaml';
 
     /**
      * @var array|null Runtime cache for loaded template configurations
      */
     protected $templateConfigurations;
 
-    protected $configurationClassName = TemplateYamlConfiguration::class;
+    protected $configurationClassName = MappingYamlConfiguration::class;
 
-    public function __construct(TemplatePlace $place)
+    public function __construct(MappingPlace $place)
     {
         parent::__construct($place);
     }

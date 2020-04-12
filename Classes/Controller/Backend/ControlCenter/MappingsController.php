@@ -27,7 +27,7 @@ use Ppi\TemplaVoilaPlus\Configuration\BackendConfiguration;
 use Ppi\TemplaVoilaPlus\Service\ConfigurationService;
 use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
-class TemplatesController extends ActionController
+class MappingsController extends ActionController
 {
     /**
      * Default View Container
@@ -42,7 +42,7 @@ class TemplatesController extends ActionController
     protected function initializeAction()
     {
         TemplaVoilaUtility::getLanguageService()->includeLLFile(
-            'EXT:templavoilaplus/Resources/Private/Language/Backend/ControlCenter/Template.xlf'
+            'EXT:templavoilaplus/Resources/Private/Language/Backend/ControlCenter/Mappings.xlf'
         );
     }
 
@@ -56,37 +56,12 @@ class TemplatesController extends ActionController
         $this->view->getModuleTemplate()->setFlashMessageQueue($this->controllerContext->getFlashMessageQueue());
 
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
-        $templatePlaces = $configurationService->getTemplatePlaces();
+        $mappingPlaces = $configurationService->getMappingPlaces();
 
-        $templatePlacesByScope = $this->reorderDataStructurePlacesByScope($templatePlaces);
+        $mappingPlacesByScope = $this->reorderPlacesByScope($mappingPlaces);
 
-        $this->view->assign('pageTitle', 'TemplaVoilà! Plus - Templates List');
-
-        $this->view->assign('templatePlacesByScope', $templatePlacesByScope);
-    }
-
-
-    /**
-     * Show information about one template configuration
-     *
-     * @param string $uuid Uuid of TemplatePlace
-     * @param string $identifier Identifier inside the dataStructurePlace
-     * @return void
-     */
-    public function infoAction($uuid, $identifier)
-    {
-        $this->registerDocheaderButtons();
-        $this->view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation([]);
-        $this->view->getModuleTemplate()->setFlashMessageQueue($this->controllerContext->getFlashMessageQueue());
-
-        $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
-        $templatePlace = $configurationService->getTemplatePlace($uuid);
-        $templateConfiguration = $templatePlace->getHandler()->getConfiguration($identifier);
-
-        $this->view->assign('pageTitle', 'TemplaVoilà! Plus - Templates Info');
-
-        $this->view->assign('templatePlace', $templatePlace);
-        $this->view->assign('templateConfiguration', $templateConfiguration);
+        $this->view->assign('pageTitle', 'TemplaVoilà! Plus - Mappings List');
+        $this->view->assign('mappingPlacesByScope', $mappingPlacesByScope);
     }
 
     /**
@@ -110,13 +85,13 @@ class TemplatesController extends ActionController
         }
     }
 
-    protected function reorderDataStructurePlacesByScope(array $templatePlaces): array
+    protected function reorderPlacesByScope(array $places): array
     {
-        $templatePlacesByScope = [];
-        foreach ($templatePlaces as $uuid => $templatePlace) {
-            $templatePlacesByScope[$templatePlace->getScope()][] = $templatePlace;
+        $placesByScope = [];
+        foreach ($places as $uuid => $place) {
+            $placesByScope[$place->getScope()][] = $place;
         }
 
-        return $templatePlacesByScope;
+        return $placesByScope;
     }
 }

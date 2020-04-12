@@ -16,6 +16,7 @@ namespace Ppi\TemplaVoilaPlus\Domain\Model;
  */
 
 use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
+use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
@@ -33,14 +34,35 @@ class TemplateYamlConfiguration
     /**
      * @var string
      */
+    protected $identifier = '';
+
+    /**
+     * @var string
+     */
     protected $label = '';
+
+    /**
+     * @var string
+     */
+    protected $rendererName = '';
+
+    /**
+     * @var array
+     */
+    protected $header = [];
+
+    /**
+     * @var array
+     */
+    protected $mapping = [];
 
     /**
      * @param \TYPO3\CMS\Core\Resource\File $file
      */
-    public function __construct(\TYPO3\CMS\Core\Resource\File $file)
+    public function __construct(\TYPO3\CMS\Core\Resource\File $file, $identifier)
     {
         $this->file = $file;
+        $this->identifier = $identifier;
 
         // @TODO This shouldn't be here
         $yamlFileLoader = GeneralUtility::makeInstance(YamlFileLoader::class);
@@ -50,13 +72,27 @@ class TemplateYamlConfiguration
             throw new \Exception('No TemplaVoilà! Plus template configuration');
         }
 
-        if (isset($configuration['tvp-template']['label'])) {
-            $this->setLabel($configuration['tvp-template']['label']);
+        if (isset($configuration['tvp-template']['meta']['label'])) {
+            $this->setLabel($configuration['tvp-template']['meta']['label']);
+        }
+        if (isset($configuration['tvp-template']['meta']['renderer'])) {
+            $this->setRendererName($configuration['tvp-template']['meta']['renderer']);
+        }
+        if (isset($configuration['tvp-template']['header']) && is_array($configuration['tvp-template']['header'])) {
+            $this->setHeader($configuration['tvp-template']['header']);
+        }
+        if (isset($configuration['tvp-template']['mapping']) && is_array($configuration['tvp-template']['mapping'])) {
+            $this->setMapping($configuration['tvp-template']['mapping']);
         }
     }
 
+    public function getIdentifier()
+    {
+        return $this->identifier;
+    }
+
     /**
-     * Retrieve the label of the datastructure
+     * Retrieve the label of the template
      *
      * @return string
      */
@@ -70,7 +106,54 @@ class TemplateYamlConfiguration
         $this->label = $label;
     }
 
-    public function getIdentifier()
+    /**
+     * Retrieve the name of the renderer of the template
+     *
+     * @TODO Should this be named identifier?
+     * @return string
+     */
+    public function getRendererName()
+    {
+        return $this->rendererName;
+    }
+
+    public function setRendererName(string $rendererName)
+    {
+        $this->rendererName = $rendererName;
+    }
+
+    /**
+     * Retrieve the header of the template
+     *
+     * @return string
+     */
+    public function getHeader()
+    {
+        return $this->header;
+    }
+
+    public function setHeader(array $header)
+    {
+        $this->header = $header;
+    }
+
+    /**
+     * Retrieve the mapping of the template
+     *
+     * @return string
+     */
+    public function getMapping()
+    {
+        return $this->mapping;
+    }
+
+    public function setMapping(array $mapping)
+    {
+        $this->mapping = $mapping;
+    }
+
+
+    public function getFileIdentifier()
     {
         return $this->file->getIdentifier();
     }
@@ -95,7 +178,7 @@ class TemplateYamlConfiguration
         return $this->file->getProperty('creation_date');
     }
 
-    public function getTemplateFile()
+    public function getTemplateFile(): FileInterface
     {
         // Remove the .tvp.yaml file extension
         $fileName = mb_substr($this->file->getForLocalProcessing(false), 0, -9);

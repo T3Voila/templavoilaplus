@@ -36,7 +36,7 @@ if ($_EXTCONF['enable.']['renderFCEHeader']) {
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript('templavoilaplus', 'setup', '
 # Setting templavoila plugin TypoScript
 plugin.tx_templavoilaplus_pi1 = USER
-plugin.tx_templavoilaplus_pi1.userFunc = Ppi\TemplaVoilaPlus\Controller\FrontendController->main
+plugin.tx_templavoilaplus_pi1.userFunc = Ppi\TemplaVoilaPlus\Controller\Frontend\FrontendController->renderContent
 plugin.tx_templavoilaplus_pi1.disableExplosivePreview = 1
 
 tt_content.templavoilaplus_pi1 = COA
@@ -62,7 +62,7 @@ tt_content.menu.20.3.indexField.data = register:tx_templavoilaplus_pi1.current_f
 );
 
 // Adding Page Template Selector Fields to root line:
-$GLOBALS['TYPO3_CONF_VARS']['FE']['addRootLineFields'] .= ',tx_templavoilaplus_ds,tx_templavoilaplus_to,tx_templavoilaplus_next_ds,tx_templavoilaplus_next_to';
+$GLOBALS['TYPO3_CONF_VARS']['FE']['addRootLineFields'] .= ',tx_templavoilaplus_map,tx_templavoilaplus_next_map';
 
 // Register our classes at a the hooks:
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass']['templavoilaplus']
@@ -128,4 +128,15 @@ if (version_compare(TYPO3_version, '9.5.0', '>=')) {
         [\Ppi\TemplaVoilaPlus\Updates\Typo3Lts8Update::class => \Ppi\TemplaVoilaPlus\Updates\Typo3Lts8Update::class],
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']
     );
+}
+
+
+// Since TV+ 8.0.0
+\Ppi\TemplaVoilaPlus\Utility\ExtensionUtility::registerExtension('templavoilaplus');
+
+if (TYPO3_MODE === 'BE') {
+    // Hook to enrich tt_content form flex element with finisher settings and form list drop down
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class]['flexParsing'][
+        \Ppi\TemplaVoilaPlus\Configuration\FlexForm\DataStructureIdentifierHook::class
+    ] = \Ppi\TemplaVoilaPlus\Configuration\FlexForm\DataStructureIdentifierHook::class;
 }

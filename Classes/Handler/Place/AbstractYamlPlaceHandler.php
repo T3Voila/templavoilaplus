@@ -14,22 +14,18 @@ namespace Ppi\TemplaVoilaPlus\Handler\Place;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 
-use Ppi\TemplaVoilaPlus\Domain\Model\AbstractDataStructure;
-use Ppi\TemplaVoilaPlus\Domain\Model\DataStructurePlace;
-use Ppi\TemplaVoilaPlus\Domain\Model\XmlFileDataStructure;
+use Ppi\TemplaVoilaPlus\Domain\Model\Place;
+use Ppi\TemplaVoilaPlus\Domain\Model\TemplateYamlConfiguration;
 
-class DataStructureFlexFormPlaceHandler
-    extends AbstractPlaceHandler
-    implements DataStructurePlaceHandlerInterface /** @TODO Needed? */
+abstract class AbstractYamlPlaceHandler extends AbstractPlaceHandler
 {
-    public const NAME = 'templavoilaplus_handler_place_datastructure_flexform';
+    public const NAME = 'abstractYaml';
 
-    public function __construct(DataStructurePlace $place)
-    {
-        parent::__construct($place);
-    }
+    protected $configurationClassName;
 
     protected function initializeConfigurations()
     {
@@ -38,7 +34,8 @@ class DataStructureFlexFormPlaceHandler
             $resourceFactory = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance();
 
             $filter = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter::class);
-            $filter->setAllowedFileExtensions('xml');
+            // WTF? We cann't search for tvp.yaml so search for yaml and filter afterwards
+            $filter->setAllowedFileExtensions('yaml');
 
             $folder = $resourceFactory->retrieveFileOrFolderObject($this->place->getPathAbsolute());
             $folder->setFileAndFolderNameFilters([[$filter, 'filterFileList']]);
@@ -46,9 +43,17 @@ class DataStructureFlexFormPlaceHandler
             $files = $folder->getFiles(0, 0, \TYPO3\CMS\Core\Resource\Folder::FILTER_MODE_USE_OWN_FILTERS, true);
 
             foreach($files as $file) {
-                $configurationIdentifier = $this->getPlaceIdentifierFromFile($file);
-                $this->configurations[$configurationIdentifier] = new XmlFileDataStructure($file, $configurationIdentifier);
+                if (StringUtility::endsWith($file->getName(), '.tvp.yaml')) {
+                    try {
+                        $configurationIdentifier = $this->getPlaceIdentifierFromFile($file);
+                        $this->configurations[$configurationIdentifier] = new $this->configurationClassName($file, $configurationIdentifier);
+                    } catch (\Exception $e) {
+                        // Empty as we can't process this file
+                        // @TODO Maybe report into log
+                    }
+                }
             }
         }
     }
 }
+

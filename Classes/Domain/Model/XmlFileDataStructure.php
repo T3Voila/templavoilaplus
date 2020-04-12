@@ -25,17 +25,24 @@ use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
  */
 class XmlFileDataStructure extends AbstractDataStructure
 {
+    /** @TODO file and identifier handling could be moved in an abstract for all configurations
     /**
      * @var \TYPO3\CMS\Core\Resource\File
      */
     protected $file;
 
     /**
+     * @var string
+     */
+    protected $identifier = '';
+
+    /**
      * @param \TYPO3\CMS\Core\Resource\File $file
      */
-    public function __construct(\TYPO3\CMS\Core\Resource\File $file)
+    public function __construct(\TYPO3\CMS\Core\Resource\File $file, $identifier)
     {
         $this->file = $file;
+        $this->identifier = $identifier;
 
         // @TODO setIcon
         $this->setLabel($file->getName());
@@ -50,6 +57,12 @@ class XmlFileDataStructure extends AbstractDataStructure
     }
 
     public function getIdentifier()
+    {
+        return $this->identifier;
+    }
+
+
+    public function getFileIdentifier()
     {
         return $this->file->getIdentifier();
     }

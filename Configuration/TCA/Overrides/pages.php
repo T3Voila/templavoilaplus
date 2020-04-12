@@ -2,18 +2,15 @@
 defined('TYPO3_MODE') or die();
 
 $tempColumns = array(
-    'tx_templavoilaplus_ds' => array(
+    'tx_templavoilaplus_map' => array(
         'exclude' => 1,
-        'label' => 'LLL:EXT:templavoilaplus/Resources/Private/Language/locallang_db.xlf:pages.tx_templavoilaplus_ds',
+        'label' => 'LLL:EXT:templavoilaplus/Resources/Private/Language/locallang_db.xlf:pages.tx_templavoilaplus_map',
         'l10n_mode' => 'exclude',
         'config' => array(
             'type' => 'select',
             'renderType' => 'selectSingle',
-            'items' => array(
-                array('', 0),
-            ),
             'allowNonIdValues' => 1,
-            'itemsProcFunc' => \Ppi\TemplaVoilaPlus\Service\ItemProcFunc\StaticDataStructuresHandler::class . '->dataSourceItemsProcFunc',
+            'itemsProcFunc' => \Ppi\TemplaVoilaPlus\Service\ItemsProcFunc::class . '->mapItems',
             'size' => 1,
             'minitems' => 0,
             'maxitems' => 1,
@@ -21,54 +18,14 @@ $tempColumns = array(
             'selicon_cols' => 10,
         )
     ),
-    'tx_templavoilaplus_to' => array(
+    'tx_templavoilaplus_next_map' => array(
         'exclude' => 1,
-        'label' => 'LLL:EXT:templavoilaplus/Resources/Private/Language/locallang_db.xlf:pages.tx_templavoilaplus_to',
-        'l10n_mode' => 'exclude',
+        'label' => 'LLL:EXT:templavoilaplus/Resources/Private/Language/locallang_db.xlf:pages.tx_templavoilaplus_next_map',
         'config' => array(
             'type' => 'select',
             'renderType' => 'selectSingle',
-            'items' => array(
-                array('', 0),
-            ),
-            'itemsProcFunc' => Ppi\TemplaVoilaPlus\Service\ItemProcFunc\StaticDataStructuresHandler::class . '->templateObjectItemsProcFunc',
-            'size' => 1,
-            'minitems' => 0,
-            'maxitems' => 1,
-            'showIconTable' => true,
-            'selicon_cols' => 10,
-        )
-    ),
-    'tx_templavoilaplus_next_ds' => array(
-        'exclude' => 1,
-        'label' => 'LLL:EXT:templavoilaplus/Resources/Private/Language/locallang_db.xlf:pages.tx_templavoilaplus_next_ds',
-        'l10n_mode' => 'exclude',
-        'config' => array(
-            'type' => 'select',
-            'renderType' => 'selectSingle',
-            'items' => array(
-                array('', 0),
-            ),
             'allowNonIdValues' => 1,
-            'itemsProcFunc' => Ppi\TemplaVoilaPlus\Service\ItemProcFunc\StaticDataStructuresHandler::class . '->dataSourceItemsProcFunc',
-            'size' => 1,
-            'minitems' => 0,
-            'maxitems' => 1,
-            'showIconTable' => true,
-            'selicon_cols' => 10,
-        )
-    ),
-    'tx_templavoilaplus_next_to' => array(
-        'exclude' => 1,
-        'label' => 'LLL:EXT:templavoilaplus/Resources/Private/Language/locallang_db.xlf:pages.tx_templavoilaplus_next_to',
-        'l10n_mode' => 'exclude',
-        'config' => array(
-            'type' => 'select',
-            'renderType' => 'selectSingle',
-            'items' => array(
-                array('', 0),
-            ),
-            'itemsProcFunc' => Ppi\TemplaVoilaPlus\Service\ItemProcFunc\StaticDataStructuresHandler::class . '->templateObjectItemsProcFunc',
+            'itemsProcFunc' => \Ppi\TemplaVoilaPlus\Service\ItemsProcFunc::class . '->mapItems',
             'size' => 1,
             'minitems' => 0,
             'maxitems' => 1,
@@ -82,10 +39,8 @@ $tempColumns = array(
         'l10n_mode' => 'exclude',
         'config' => array(
             'type' => 'flex',
-            'ds_pointerField' => 'tx_templavoilaplus_ds',
-            'ds_pointerField_searchParent' => 'pid',
-            'ds_pointerField_searchParent_subField' => 'tx_templavoilaplus_next_ds',
-            'ds_tableField' => 'tx_templavoilaplus_datastructure:dataprot',
+            'ds_pointerField' => 'tx_templavoilaplus_map',
+            'ds_pointerType' => 'combinedMappingIdentifier',
         )
     ),
 );
@@ -98,39 +53,37 @@ if (version_compare(TYPO3_version, '9.0.0', '>=')) {
     $extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoilaplus']);
     $oldPageModule = (bool) $extConfig['enable.']['oldPageModule'];
 }
+
+$oldPageModule = false;
+
 if (!$oldPageModule) {
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
         'pages',
-        'tx_templavoilaplus_to',
+        'tx_templavoilaplus_map',
         '',
         'replace:backend_layout'
     );
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
         'pages',
-        'tx_templavoilaplus_next_to',
+        'tx_templavoilaplus_next_map',
         '',
         'replace:backend_layout_next_level'
-    );
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
-        'pages',
-        'tx_templavoilaplus_flex',
-        '',
-        'after:title'
     );
 } else {
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToPalette(
         'pages',
-        'layout',
-        '--linebreak--, tx_templavoilaplus_to, tx_templavoilaplus_next_to',
+        '',
+        '--linebreak--, tx_templavoilaplus_map, tx_templavoilaplus_next_map',
         'after:backend_layout_next_level'
     );
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
-        'pages',
-        'tx_templavoilaplus_flex',
-        '',
-        'after:title'
-    );
 }
+
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
+    'pages',
+    'tx_templavoilaplus_flex',
+    '',
+    'after:title'
+);
 
 $GLOBALS['TCA']['pages']['ctrl']['typeicon_classes']['contains-tv+'] = 'extensions-templavoila-folder';
 $GLOBALS['TCA']['pages']['columns']['module']['config']['items'][] = [

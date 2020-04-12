@@ -380,7 +380,7 @@ class Template
     public function getLocalDataprotArray($skipDsDataprot = false)
     {
         if (!$skipDsDataprot) {
-            $dataprot = $this->getDatastructure()->getDataprotArray();
+            $dataprot = $this->getDatastructure()->getDataStructureArray();
         } else {
             $dataprot = [];
         }

@@ -12,7 +12,7 @@
 
 <f:section name="content">
     <div class="row">
-        <f:for each="{templatePlacesByScope}" key="scope" as="templatePlaces">
+        <f:for each="{mappingPlacesByScope}" key="scope" as="mappingPlaces">
             <div class="col-sm-4">
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -25,7 +25,7 @@
                         </h3>
                     </div>
                     <ul class="list-group">
-                        <f:for each="{templatePlaces}" as="templatePlace">
+                        <f:for each="{mappingPlaces}" as="mappingPlace">
                             <li class="list-group-item">
                                 <div class="row">
                                     <div class="col-sm-12">
@@ -33,30 +33,30 @@
                                             <div class="panel-heading">
                                                 <div class="row">
                                                     <div class="col-sm-10">
-                                                        <h2 class="panel-title">{templatePlace.name}</h2>
+                                                        <h2 class="panel-title">{mappingPlace.name}</h2>
                                                     </div>
                                                     <div class="col-sm-2">
                                                         <div class="btn-group" role="group" aria-label="...">
-                                                            <f:link.action action="new" arguments="{'uuid': templatePlace.uuid}" class="btn btn-info disabled"><core:icon identifier="actions-template-new" /></f:link.action>
+                                                            <f:link.action action="new" arguments="{'uuid': mappingPlace.uuid}" class="btn btn-info disabled"><core:icon identifier="actions-template-new" /></f:link.action>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <f:if condition="{templatePlace.handler.configurations -> f:count()} > 0">
+                                            <f:if condition="{mappingPlace.handler.configurations -> f:count()} > 0">
                                                 <f:then>
                                                     <table class="table table-striped table-hover">
-                                                        <f:for each="{templatePlace.handler.configurations}" as="templateConfigurations">
+                                                        <f:for each="{mappingPlace.handler.configurations}" as="mappingConfiguration">
                                                             <tr>
-                                                                <td>{templateConfigurations.label}<br/>{templateConfigurations.identifier}</td>
+                                                                <td>{mappingConfiguration.label}<br/>{mappingConfiguration.identifier}</td>
                                                                 <td>
-                                                                    Created: <f:format.date>{templateConfigurations.crdate}</f:format.date><br/>
-                                                                    Modified: <f:format.date>{templateConfigurations.tstamp}</f:format.date>
+                                                                    Created: <f:format.date>{mappingConfiguration.crdate}</f:format.date><br/>
+                                                                    Modified: <f:format.date>{mappingConfiguration.tstamp}</f:format.date>
                                                                 </td>
                                                                 <td>
                                                                     <div class="btn-group" role="group" aria-label="...">
-                                                                        <f:link.action action="edit" arguments="{'uuid': templatePlace.uuid, 'identifier': templateConfigurations.identifier}" class="btn btn-default disabled"><core:icon identifier="actions-open" /></f:link.action>
-                                                                        <f:link.action action="info" arguments="{'uuid': templatePlace.uuid, 'identifier': templateConfigurations.identifier}" class="btn btn-default"><core:icon identifier="actions-document-info" /></f:link.action>
-                                                                        <f:link.action action="delete" arguments="{'uuid': templatePlace.uuid, 'identifier': templateConfigurations.identifier}" class="btn btn-danger disabled"><core:icon identifier="actions-edit-delete" /></f:link.action>
+                                                                        <f:link.action action="edit" arguments="{'uuid': mappingPlace.uuid, 'identifier': mappingConfiguration.identifier}" class="btn btn-default disabled"><core:icon identifier="actions-open" /></f:link.action>
+                                                                        <f:link.action action="info" arguments="{'uuid': mappingPlace.uuid, 'identifier': mappingConfiguration.identifier}" class="btn btn-default disabled"><core:icon identifier="actions-document-info" /></f:link.action>
+                                                                        <f:link.action action="delete" arguments="{'uuid': mappingPlace.uuid, 'identifier': mappingConfiguration.identifier}" class="btn btn-danger disabled"><core:icon identifier="actions-edit-delete" /></f:link.action>
                                                                     </div>
                                                                 </td>
                                                             </tr>
@@ -65,7 +65,7 @@
                                                 </f:then>
                                                 <f:else>
                                                     <div class="panel-body">
-                                                        No template configurations found.
+                                                        No mapping configurations found.
                                                     </div>
                                                 </f:else>
                                             </f:if>

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace Ppi\TemplaVoilaPlus\Configuration\FlexForm;
 
 /*
@@ -303,12 +304,16 @@ class FlexFormTools8 extends \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTool
                 $queryStatement = $queryBuilder->from($tableName)
                     ->where(
                         $queryBuilder->expr()->eq(
-                        'uid',
-                        $queryBuilder->createNamedParameter($row[$parentFieldName], \PDO::PARAM_INT)
-                    )
+                            'uid',
+                            $queryBuilder->createNamedParameter($row[$parentFieldName], \PDO::PARAM_INT)
+                        )
                     )
                     ->execute();
-                if ($queryStatement->rowCount() !== 1) {
+                $rowCount = $queryBuilder
+                    ->count('uid')
+                    ->execute()
+                    ->fetchColumn(0);
+                if ($rowCount !== 1) {
                     throw new InvalidParentRowException(
                         'The data structure for field "' . $fieldName . '" in table "' . $tableName . '" has to be looked up'
                         . ' in field "' . $pointerFieldName . '". That field had no valid value, so a lookup in parent record'
@@ -356,6 +361,13 @@ class FlexFormTools8 extends \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTool
                 1464114011
             );
         }
+
+        // Implement pointerType for TV+ Mapping
+        $pointerType = 'record';
+        if (isset($fieldTca['config']['ds_pointerType'])) {
+            $pointerType = $fieldTca['config']['ds_pointerType'];
+        }
+
         // Ok, finally we have the field value. This is now either a data structure directly, or a pointer to a file,
         // or the value can be interpreted as integer (is an uid) and "ds_tableField" is set, so this is the table, uid and field
         // where the final data structure can be found.
@@ -377,7 +389,7 @@ class FlexFormTools8 extends \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTool
             }
             list($foreignTableName, $foreignFieldName) = GeneralUtility::trimExplode(':', $fieldTca['config']['ds_tableField']);
             $dataStructureIdentifier = [
-                'type' => 'record',
+                'type' => $pointerType,
                 'tableName' => $foreignTableName,
                 'uid' => (int)$pointerValue,
                 'fieldName' => $foreignFieldName,
@@ -396,7 +408,7 @@ class FlexFormTools8 extends \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTool
             $uid = isset($row['_ORIG_uid']) ? (int)$row['_ORIG_uid'] : $uid;
 
             $dataStructureIdentifier = [
-                'type' => 'record',
+                'type' => $pointerType,
                 'tableName' => $tableName,
                 'uid' => $uid,
                 'fieldName' => $finalPointerFieldName,

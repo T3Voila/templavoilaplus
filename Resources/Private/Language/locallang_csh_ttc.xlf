@@ -12,9 +12,6 @@
 			<trans-unit id="tx_templavoilaplus_flex.description" xml:space="preserve">
 				<source>Fill in the flexible content for this content element structure.</source>
 			</trans-unit>
-			<trans-unit id="tx_templavoilaplus_pito.description" xml:space="preserve">
-				<source>[FILL IN] tx_templavoilaplus_pito</source>
-			</trans-unit>
 		</body>
 	</file>
 </xliff>

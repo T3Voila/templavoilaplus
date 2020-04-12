@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace Ppi\TemplaVoilaPlus\Renderer;
+namespace Ppi\TemplaVoilaPlus\Domain\Model;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,11 +15,10 @@ namespace Ppi\TemplaVoilaPlus\Renderer;
  * The TYPO3 project - inspiring people to share!
  */
 
-/** @TODO Missing Base class */
-use Ppi\TemplaVoilaPlus\Domain\Model\TemplateYamlConfiguration;
-
-interface RendererInterface
+/**
+ * Class to provide place data for mappings
+ */
+class MappingPlace extends Place
 {
-
-    public function renderTemplate(TemplateYamlConfiguration $templateConfiguration, array $processedValues, array $row): string;
+    protected static $handlerInterface = \Ppi\TemplaVoilaPlus\Handler\Place\MappingPlaceHandlerInterface::class;
 }
