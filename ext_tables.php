@@ -50,43 +50,6 @@ if (TYPO3_MODE === 'BE') {
         ]
     );
 
-    // @TODO: Old Modules
-    // Adding backend modules:
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
-        'web',
-        'txtemplavoilaplusLayout',
-        'top',
-        '',
-        [
-            'access' => 'user,group',
-            'icon' => 'EXT:templavoilaplus/Resources/Public/Icons/PageModuleIcon.svg',
-            'labels' => 'LLL:EXT:templavoilaplus/Resources/Private/Language/BackendLayout.xlf',
-            'configureModuleFunction' => [\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::class, 'configureModule'],
-
-            'name' => 'web_txtemplavoilaplusLayout',
-            'extensionName' => 'templavoilaplus',
-            'navigationComponentId' => $navigationComponentId,
-            'routeTarget' => \Ppi\TemplaVoilaPlus\Controller\BackendLayoutController::class . '::mainAction',
-        ]
-    );
-
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
-        'web',
-        'txtemplavoilaplusCenter',
-        '',
-        '',
-        [
-            'access' => 'user,group',
-            'icon' => 'EXT:templavoilaplus/Resources/Public/Icons/AdministrationModuleIcon.svg',
-            'labels' => 'LLL:EXT:templavoilaplus/Resources/Private/Language/BackendControlCenter.xlf',
-            'configureModuleFunction' => [\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::class, 'configureModule'],
-
-            'name' => 'web_txtemplavoilaplusCenter',
-            'extensionName' => 'templavoilaplus',
-            'routeTarget' => \Ppi\TemplaVoilaPlus\Controller\BackendControlCenterController::class . '::mainAction',
-        ]
-    );
-
     $oldPageModule = false;
     if (version_compare(TYPO3_version, '9.0.0', '>=')) {
         $_EXTCONF = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['templavoilaplus'];

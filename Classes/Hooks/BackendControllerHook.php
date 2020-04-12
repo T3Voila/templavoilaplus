@@ -25,7 +25,7 @@ class BackendControllerHook
             $this->getPageRenderer()->addInlineSettingArray(
                 'TemplaVoilaPlus',
                 [
-                    'layoutModuleUrl' => $uriBuilder->buildUriFromRoute('web_txtemplavoilaplusLayout'),
+                    'layoutModuleUrl' => $uriBuilder->buildUriFromRoute('web_TemplaVoilaPlusLayout'),
                     'mappingModuleUrl' => $uriBuilder->buildUriFromRoute('templavoilaplus_mapping'),
                     'dislplayModuleUrl' => $uriBuilder->buildUriFromRoute('templavoilaplus_template_disply'),
                     'newSiteWizardModuleUrl' => $uriBuilder->buildUriFromRoute('templavoilaplus_new_site_wizard'),
@@ -36,7 +36,7 @@ class BackendControllerHook
             $this->getPageRenderer()->addInlineSettingArray(
                 'TemplaVoilaPlus',
                 [
-                    'layoutModuleUrl' => BackendUtility::getModuleUrl('web_txtemplavoilaplusLayout'),
+                    'layoutModuleUrl' => BackendUtility::getModuleUrl('web_TemplaVoilaPlusLayout'),
                     'mappingModuleUrl' => BackendUtility::getModuleUrl('templavoilaplus_mapping'),
                     'dislplayModuleUrl' => BackendUtility::getModuleUrl('templavoilaplus_template_disply'),
                     'newSiteWizardModuleUrl' => BackendUtility::getModuleUrl('templavoilaplus_new_site_wizard'),
