@@ -23,6 +23,8 @@ class XpathRenderer implements RendererInterface
 {
     public const NAME = 'templavoilaplus_xpath';
 
+    protected $libXmlConfig = LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD | LIBXML_NOENT | LIBXML_NONET;
+
     protected $domDocument;
     protected $domXpath;
 
@@ -30,7 +32,7 @@ class XpathRenderer implements RendererInterface
     {
         $this->domDocument = new \DOMDocument();
         libxml_use_internal_errors(true);
-        $this->domDocument->loadHTML($templateConfiguration->getTemplateFile()->getContents());
+        $this->domDocument->loadHTML($templateConfiguration->getTemplateFile()->getContents(), $this->libXmlConfig);
         $this->domXpath = new \DOMXPath($this->domDocument);
 
         $mapping = $templateConfiguration->getMapping();
@@ -109,11 +111,11 @@ class XpathRenderer implements RendererInterface
                 $tmpDoc = new \DOMDocument();
                 /** Add own tag to prevent automagical adding of <p> Tag around Tagless content */
                 /** Use LIBXML_HTML_NOIMPLIED and LIBXML_HTML_NODEFDTD so we don't get confused by extra added doctype, html and body nodes */
-                $tmpDoc->loadHTML('<__TEMPLAVOILAPLUS__>' . $processedValues[$fieldName] . '</__TEMPLAVOILAPLUS__>', LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+                $tmpDoc->loadHTML('<?xml encoding="utf-8" ?><__TEMPLAVOILAPLUS__>' . $processedValues[$fieldName] . '</__TEMPLAVOILAPLUS__>', $this->libXmlConfig);
 
-                /** firstChild is our own added Tag from above */
-                if ($tmpDoc->firstChild->hasChildNodes()) {
-                    foreach ($tmpDoc->firstChild->childNodes as $importNode) {
+                /** lastChild is our own added Tag from above */
+                if ($tmpDoc->lastChild->hasChildNodes()) {
+                    foreach ($tmpDoc->lastChild->childNodes as $importNode) {
                         $importNode = $this->domDocument->importNode($importNode, true);
                         $processingNode->appendChild($importNode);
                     }
@@ -123,7 +125,6 @@ class XpathRenderer implements RendererInterface
                     $this->domDocument->createTextNode((string) $processedValues[$fieldName]),
                     $processingNode
                 );
-
             }
         } else {
             // @TODO Only in debug? Would be uncool to have such messages live
@@ -137,7 +138,7 @@ class XpathRenderer implements RendererInterface
         return $node;
     }
 
-    protected function getHtml($node, $type)
+    protected function  getHtml($node, $type)
     {
         $contentOfNode = '';
 
@@ -149,6 +150,7 @@ class XpathRenderer implements RendererInterface
                 $contentOfNode .= $this->domDocument->saveHTML($childNode);
             }
         }
+
         return $contentOfNode;
     }
 }
