@@ -125,6 +125,34 @@ class XpathRenderer implements RendererInterface
                     $this->domDocument->createTextNode((string) $processedValues[$fieldName]),
                     $processingNode
                 );
+            } elseif ($entry['type'] === 'OUTERCHILD') {
+                $tmpDoc = new \DOMDocument();
+                /** Add own tag to prevent automagical adding of <p> Tag around Tagless content */
+                /** Use LIBXML_HTML_NOIMPLIED and LIBXML_HTML_NODEFDTD so we don't get confused by extra added doctype, html and body nodes */
+                $tmpDoc->loadHTML('<?xml encoding="utf-8" ?><__TEMPLAVOILAPLUS__>' . $processedValues[$fieldName] . '</__TEMPLAVOILAPLUS__>', $this->libXmlConfig);
+
+                /** lastChild is our own added Tag from above */
+                if ($tmpDoc->lastChild->hasChildNodes()) {
+                    $isFirst = true;
+                    foreach ($tmpDoc->lastChild->childNodes as $importNode) {
+                        $importNode = $this->domDocument->importNode($importNode, true);
+                        if ($isFirst) {
+                            // In the first run we replace like we do in normal OUTER
+                            $isFirst = false;
+                            $processingNode->parentNode->replaceChild($importNode, $processingNode);
+                        } else {
+                            // In all following runs we add all nodes after our last node
+                            // There is no insertAfter, so we need to test for nextSibling to insert before or append
+                            if ($processingNode->nextSibling) {
+                                $processingNode->parentNode->insertBefore($importNode, $processingNode->nextSibling);
+                            } else {
+                                $processingNode->parentNode->appendChild($importNode);
+                            }
+                        }
+                        // in every following run we do the operation relative to last imported node
+                        $processingNode = $importNode;
+                    }
+                }
             }
         } else {
             // @TODO Only in debug? Would be uncool to have such messages live
