@@ -50,6 +50,11 @@ class FrontendController extends AbstractPlugin
         return $this->renderElement($pageRecord, 'pages');
     }
 
+    public function renderContent($content, $conf)
+    {
+        return $this->renderElement($this->cObj->data, 'tt_content');
+    }
+
     /**
      * @return string|null
      */
