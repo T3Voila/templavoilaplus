@@ -1526,19 +1526,20 @@ class ApiService
 
             $expandedDataStructureArr = $this->ds_getExpandedDataStructure($table, $row);
 
-            switch ($table) {
-                case 'pages':
-                    $currentTemplateObject = $this->getContentTree_fetchPageTemplateObject($row);
-                    break;
-                case 'tt_content':
-                    $currentTemplateObject = BackendUtility::getRecordWSOL('tx_templavoilaplus_tmplobj', $row['tx_templavoilaplus_to']);
-                    break;
-                default:
-                    $currentTemplateObject = false;
-            }
-            if (is_array($currentTemplateObject)) {
-                $templateMappingArr = unserialize($currentTemplateObject['templatemapping']);
-            }
+/** @TODO Handle the question if something is mapped here? */
+//             switch ($table) {
+//                 case 'pages':
+//                     $currentTemplateObject = $this->getContentTree_fetchPageTemplateObject($row);
+//                     break;
+//                 case 'tt_content':
+//                     $currentTemplateObject = BackendUtility::getRecordWSOL('tx_templavoilaplus_tmplobj', $row['tx_templavoilaplus_to']);
+//                     break;
+//                 default:
+//                     $currentTemplateObject = false;
+//             }
+//             if (is_array($currentTemplateObject)) {
+//                 $templateMappingArr = unserialize($currentTemplateObject['templatemapping']);
+//             }
             $tree['ds_is_found'] = is_array($rawDataStructureArr);
             $tree['ds_meta'] = $rawDataStructureArr['meta'];
             $flexformContentArr = GeneralUtility::xml2array($row['tx_templavoilaplus_flex']);
@@ -1576,20 +1577,20 @@ class ApiService
                                 'section' => $fieldData['section'],
                                 'data' => array(),
                                 'subElements' => array(),
-                                'isMapped' => !empty($templateMappingArr['MappingInfo']['ROOT']['el'][$fieldKey]['MAP_EL'])
+//                                 'isMapped' => !empty($templateMappingArr['MappingInfo']['ROOT']['el'][$fieldKey]['MAP_EL'])
                             );
-//                             foreach ($lKeys as $lKey) {
-//                                 foreach ($vKeys as $vKey) {
-//                                     if (is_array($flexformContentArr['data'])) {
-//                                         $tree['previewData']['sheets'][$sheetKey][$fieldKey]['data'][$lKey][$vKey] = $flexformContentArr['data'][$sheetKey][$lKey][$fieldKey][$vKey];
-//                                     }
-//                                 }
-//
-//                                 if ($fieldData['type'] == 'array') {
-//                                     $tree['previewData']['sheets'][$sheetKey][$fieldKey]['subElements'][$lKey] = $flexformContentArr['data'][$sheetKey][$lKey][$fieldKey]['el'];
-//                                     $tree['previewData']['sheets'][$sheetKey][$fieldKey]['childElements'][$lKey] = $this->getContentTree_processSubFlexFields($table, $row, array($fieldKey => $fieldData), $tt_content_elementRegister, $flexformContentArr['data'][$sheetKey][$lKey], $vKeys);
-//                                 }
-//                             }
+                            foreach ($lKeys as $lKey) {
+                                foreach ($vKeys as $vKey) {
+                                    if (is_array($flexformContentArr['data'])) {
+                                        $tree['previewData']['sheets'][$sheetKey][$fieldKey]['data'][$lKey][$vKey] = $flexformContentArr['data'][$sheetKey][$lKey][$fieldKey][$vKey];
+                                    }
+                                }
+
+                                if ($fieldData['type'] == 'array') {
+                                    $tree['previewData']['sheets'][$sheetKey][$fieldKey]['subElements'][$lKey] = $flexformContentArr['data'][$sheetKey][$lKey][$fieldKey]['el'];
+                                    $tree['previewData']['sheets'][$sheetKey][$fieldKey]['childElements'][$lKey] = $this->getContentTree_processSubFlexFields($table, $row, array($fieldKey => $fieldData), $tt_content_elementRegister, $flexformContentArr['data'][$sheetKey][$lKey], $vKeys);
+                                }
+                            }
                         }
 
                         // If the current field points to other content elements, process them:
@@ -1597,14 +1598,14 @@ class ApiService
                             $fieldData['TCEforms']['config']['internal_type'] == 'db' &&
                             $fieldData['TCEforms']['config']['allowed'] == 'tt_content'
                         ) {
-//                             foreach ($lKeys as $lKey) {
-//                                 foreach ($vKeys as $vKey) {
-//                                     $listOfSubElementUids = $flexformContentArr['data'][$sheetKey][$lKey][$fieldKey][$vKey];
-//                                     $tree['depth'] = $depth;
-//                                     $tree['sub'][$sheetKey][$lKey][$fieldKey][$vKey] = $this->getContentTree_processSubContent($listOfSubElementUids, $tt_content_elementRegister, $prevRecList, $depth);
-//                                     $tree['sub'][$sheetKey][$lKey][$fieldKey][$vKey]['meta']['title'] = $fieldData['TCEforms']['label'];
-//                                 }
-//                             }
+                            foreach ($lKeys as $lKey) {
+                                foreach ($vKeys as $vKey) {
+                                    $listOfSubElementUids = $flexformContentArr['data'][$sheetKey][$lKey][$fieldKey][$vKey];
+                                    $tree['depth'] = $depth;
+                                    $tree['sub'][$sheetKey][$lKey][$fieldKey][$vKey] = $this->getContentTree_processSubContent($listOfSubElementUids, $tt_content_elementRegister, $prevRecList, $depth);
+                                    $tree['sub'][$sheetKey][$lKey][$fieldKey][$vKey]['meta']['title'] = $fieldData['TCEforms']['label'];
+                                }
+                            }
                         } elseif ($fieldData['type'] != 'array' && $fieldData['TCEforms']['config']) { // If generally there are non-container fields, register them:
                             $tree['contentFields'][$sheetKey][] = $fieldKey;
                         }
@@ -1881,6 +1882,12 @@ class ApiService
      */
     public function loadWebsiteLanguages()
     {
+        $languages = TemplaVoilaUtility::getAvailableLanguages();
+
+        foreach ($languages as $language) {
+            $this->allSystemWebsiteLanguages['all_lKeys'][] = 'l' . $language['ISOcode'];
+            $this->allSystemWebsiteLanguages['all_vKeys'][] = 'v' . $language['ISOcode'];
+        }
         // @TODO We have a better and static_lang fixed version in the TemplaVoilaUtility
         // We do not need 2 versions of this, get both together in one place
         // Empty while rework
