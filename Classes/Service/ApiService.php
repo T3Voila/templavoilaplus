@@ -1870,28 +1870,6 @@ class ApiService
     }
 
     /**
-     * Returns the page uid of the selected storage folder from the context of the given page uid.
-     *
-     * @param integer $pageUid : Context page uid
-     *
-     * @return integer PID of the storage folder
-     */
-    public function getStorageFolderPid($pageUid)
-    {
-
-        // Negative PID values is pointing to a page on the same level as the current.
-        if ($pageUid < 0) {
-            $pidRow = BackendUtility::getRecordWSOL('pages', abs($pageUid), 'pid');
-            $pageUid = $pidRow['pid'];
-        }
-        $row = BackendUtility::getRecordWSOL('pages', $pageUid);
-
-        $itemsProcFunc = new \Ppi\TemplaVoilaPlus\Service\ItemProcFunc\StaticDataStructuresHandler();
-
-        return $itemsProcFunc->getStoragePid(['table' => 'pages', 'row' => $row]);
-    }
-
-    /**
      * Reading all languages in sys_language and setting ->allSystemWebsiteLanguages with this information (with a little more as well)
      *
      * @return void
