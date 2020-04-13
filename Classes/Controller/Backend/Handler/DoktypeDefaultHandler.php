@@ -35,6 +35,7 @@ class DoktypeDefaultHandler
      */
     public function handle(PageLayoutController $controller, array $pageRecord)
     {
+        /** @var \Ppi\TemplaVoilaPlus\Service\ApiService */
         $this->apiObj = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Service\ApiService::class, 'pages');
 
         if (isset($controller->getModSharedTSconfig()['properties']['useLiveWorkspaceForReferenceListUpdates'])) {
