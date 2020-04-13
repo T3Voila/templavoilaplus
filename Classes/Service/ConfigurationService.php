@@ -277,19 +277,4 @@ class ConfigurationService implements SingletonInterface
 
         return true;
     }
-
-    public function isStaticDataStructureEnabled(): bool
-    {
-        if (version_compare(TYPO3_version, '9.0.0', '>=')) {
-            if ($this->extConfig['staticDS']['enable']) {
-                return true;
-            }
-        } else {
-            if ($this->extConfig['staticDS.']['enable']) {
-                return true;
-            }
-        }
-
-        return false;
-    }
 }

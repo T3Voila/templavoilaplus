@@ -8,14 +8,8 @@ enable.oldPageModule = 0
 # cat=basic/enable; type=boolean; label=LLL:EXT:templavoilaplus/Resources/Private/Language/PluginConfiguration.xlf:enable.renderFCEHeader
 enable.renderFCEHeader = 0
 
-# cat=static DS; type=boolean; label=LLL:EXT:templavoilaplus/Resources/Private/Language/PluginConfiguration.xlf:staticDS.enable
-staticDS.enable = 0
-
 #cat=static DS;type=string;label=LLL:EXT:templavoilaplus/Resources/Private/Language/PluginConfiguration.xlf:staticDS.path_fce
 staticDS.path_fce = fileadmin/templates/ds/fce/
 
 #cat=static DS;type=string;label=LLL:EXT:templavoilaplus/Resources/Private/Language/PluginConfiguration.xlf:staticDS.path_page
 staticDS.path_page = fileadmin/templates/ds/page/
-
-#cat=static DS; type=user[Ppi\TemplaVoilaPlus\StaticDataStructure\Check->displayMessage]; label=LLL:EXT:templavoilaplus/Resources/Private/Language/PluginConfiguration.xlf:staticDS.updater
-updateMessage=0

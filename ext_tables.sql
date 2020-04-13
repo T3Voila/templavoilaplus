@@ -1,4 +1,5 @@
 #
+<<<<<<< HEAD
 # Table structure for table 'tx_templavoilaplus_tmplobj'
 #
 CREATE TABLE tx_templavoilaplus_tmplobj (
@@ -73,6 +74,8 @@ CREATE TABLE tx_templavoilaplus_datastructure (
 );
 
 #
+=======
+>>>>>>> a256f3e... [TASK] Remove obsolate code for staticDataStructures as we use places now
 # Table structure for table 'tt_content'
 #
 CREATE TABLE tt_content (
