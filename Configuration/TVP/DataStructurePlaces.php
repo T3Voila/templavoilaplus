@@ -4,7 +4,7 @@ namespace Ppi\TemplaVoilaPlus\Configuration;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-use Ppi\TemplaVoilaPlus\Domain\Model\AbstractDataStructure;
+use Ppi\TemplaVoilaPlus\Domain\Model\Scope;
 use Ppi\TemplaVoilaPlus\Service\ConfigurationService;
 
 if (!class_exists(DataStructurePlaces::class)) {
@@ -25,14 +25,14 @@ if (!class_exists(DataStructurePlaces::class)) {
                     'page' => [
                         'name' => 'PAGE',
                         'path' => $extensionConfig['staticDS' . $confPathDot]['path_page'],
-                        'scope' => AbstractDataStructure::SCOPE_PAGE,
-                        'handler' => \Ppi\TemplaVoilaPlus\Handler\Place\DataStructureFlexFormPlaceHandler::NAME,
+                        'scope' => Scope::SCOPE_PAGE,
+                        'loadSaveHandler' => \Ppi\TemplaVoilaPlus\Handler\LoadSave\XmlLoadSaveHandler::$identifier,
                     ],
                     'fce' => [
                         'name' => 'FCE',
                         'path' => $extensionConfig['staticDS' . $confPathDot]['path_fce'],
-                        'scope' => AbstractDataStructure::SCOPE_FCE,
-                        'handler' => \Ppi\TemplaVoilaPlus\Handler\Place\DataStructureFlexFormPlaceHandler::NAME,
+                        'scope' => Scope::SCOPE_FCE,
+                        'loadSaveHandler' => \Ppi\TemplaVoilaPlus\Handler\LoadSave\XmlLoadSaveHandler::$identifier,
                     ],
                 ];
             }

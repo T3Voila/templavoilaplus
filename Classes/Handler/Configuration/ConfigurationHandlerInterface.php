@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace Ppi\TemplaVoilaPlus\Domain\Model;
+namespace Ppi\TemplaVoilaPlus\Handler\Configuration;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,10 +15,14 @@ namespace Ppi\TemplaVoilaPlus\Domain\Model;
  * The TYPO3 project - inspiring people to share!
  */
 
-/**
- * Class to provide place data for datastructures
- */
-class DataStructurePlace extends Place
+use Ppi\TemplaVoilaPlus\Domain\Model\Place;
+use Ppi\TemplaVoilaPlus\Handler\LoadSave\LoadSaveHandlerInterface;
+
+interface ConfigurationHandlerInterface
 {
-    protected static $handlerInterface = \Ppi\TemplaVoilaPlus\Handler\Place\DataStructurePlaceHandlerInterface::class;
+    public function setPlace(Place $place);
+
+    public function setLoadSaveHandler(LoadSaveHandlerInterface $loadSaveHandler);
+
+    public function loadConfigurations();
 }

@@ -20,18 +20,12 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface;
 
-use Ppi\TemplaVoilaPlus\Domain\Model\DataStructurePlace;
-use Ppi\TemplaVoilaPlus\Domain\Model\MappingPlace;
-use Ppi\TemplaVoilaPlus\Domain\Model\TemplatePlace;
+use Ppi\TemplaVoilaPlus\Domain\Model\Place;
 
 class ConfigurationService implements SingletonInterface
 {
     private $extConfig = [];
-    private $dataStructurePlaces = [];
-    private $templatePlaces = [];
-    private $mappingPlaces = [];
     private $availableRenderer = [];
-    private $availablePlaceHandler = [];
 
     private $isInitialized = false;
 
@@ -53,12 +47,22 @@ class ConfigurationService implements SingletonInterface
     {
         if (!$this->isInitialized) {
             $this->isInitialized = true;
+
             \Ppi\TemplaVoilaPlus\Utility\ExtensionUtility::handleAllExtensions();
 
             $this->formSettings = GeneralUtility::makeInstance(ObjectManager::class)
                 ->get(ConfigurationManagerInterface::class)
                 ->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_YAML_SETTINGS, 'templavoilaplus');
         }
+    }
+
+    public function getPlacesService(): PlacesService
+    {
+        $this->initialize();
+
+        /** @var PlacesService */
+        $placesService = GeneralUtility::makeInstance(PlacesService::class);
+        return $placesService;
     }
 
     /**
@@ -87,51 +91,6 @@ class ConfigurationService implements SingletonInterface
         return $this->extConfig;
     }
 
-    public function getDataStructurePlaces(): array
-    {
-        $this->initialize();
-        return $this->dataStructurePlaces;
-    }
-
-    public function getDataStructurePlace($uuid): DataStructurePlace
-    {
-        $this->initialize();
-        if (!isset($this->dataStructurePlaces[$uuid])) {
-            throw new \Exception('DataStructurePlace "' . $uuid . '" not available.');
-        }
-        return $this->dataStructurePlaces[$uuid];
-    }
-
-    public function getTemplatePlaces(): array
-    {
-        $this->initialize();
-        return $this->templatePlaces;
-    }
-
-    public function getTemplatePlace($uuid): TemplatePlace
-    {
-        $this->initialize();
-        if (!isset($this->templatePlaces[$uuid])) {
-            throw new \Exception('TemplatePlace "' . $uuid . '" not available.');
-        }
-        return $this->templatePlaces[$uuid];
-    }
-
-    public function getMappingPlaces(): array
-    {
-        $this->initialize();
-        return $this->mappingPlaces;
-    }
-
-    public function getMappingPlace($uuid): MappingPlace
-    {
-        $this->initialize();
-        if (!isset($this->mappingPlaces[$uuid])) {
-            throw new \Exception('MappingPlace "' . $uuid . '" not available.');
-        }
-        return $this->mappingPlaces[$uuid];
-    }
-
     public function getAvailableRenderer(): array
     {
         $this->initialize();
@@ -147,79 +106,27 @@ class ConfigurationService implements SingletonInterface
         return GeneralUtility::makeInstance($this->availableRenderer[$uuid]['class']);
     }
 
-    public function getAvailablePlaceHandler(): array
-    {
-        $this->initialize();
-        return $this->availablePlaceHandler;
-    }
-
-    /**
-     * @TODO getPlaceHandler?
-     * How to get Handler, if OwnMappingPlace extends MappingPlace?
-     */
-    public function getHandler(
-        \Ppi\TemplaVoilaPlus\Domain\Model\Place $place
+    // Helper function to register new Places
+    public function registerPlace(
+        string $identifier,
+        string $name,
+        /** @TODO */ $scope,
+        string $configurationHandlerIdentifier,
+        string $loadSaveHandlerIdentifier,
+        string $entryPoint
     ) {
-        $availableHandler = $this->availablePlaceHandler[get_class($place)];
+        /** @var PlacesService */
+        $placesService = GeneralUtility::makeInstance(PlacesService::class);
 
-        if (!isset($availableHandler[$place->getHandlerName()])) {
-            throw new \Exception('Handler with uuid "' . $place->getHandlerName() . '" do not exist');
+        if ($placesService->doesIdentifierExists($identifier)) {
+            throw new \Exception('The identifier "' . $identifier . '" is already registered for Places');
         }
-        return GeneralUtility::makeInstance($availableHandler[$place->getHandlerName()]['class'], $place);
-    }
+        // $this->checkHandler $configurationHandlerIdentifier
+        // $this->checkHandler $loadSaveHandlerIdentifier
 
-    public function registerDataStructurePlace($uuid, $name, $path, $scope, $dataStructureHandler)
-    {
-        // @TODO Check if path is inside FAL and add danger hint!
-        $pathAbsolute = GeneralUtility::getFileAbsFileName($path);
-        if (!is_dir($pathAbsolute) || !is_readable($pathAbsolute)) {
-            throw new \Exception('path "' . $path . '" does not exist or is not readable');
-        }
-        if (isset($this->dataStructurePlaces[$uuid])) {
-            throw new \Exception('uuid already exists');
-        }
-        if (!isset($this->availablePlaceHandler[DataStructurePlace::class][$dataStructureHandler])) {
-            throw new \Exception('DataStructureHandler "' . $dataStructureHandler . '" unknown. Try to register "' . $uuid . '"');
-        }
-
-        $dataStructurePlace = new DataStructurePlace($uuid, $name, $scope, $dataStructureHandler, $pathAbsolute);
-        $this->dataStructurePlaces[$uuid] = $dataStructurePlace;
-    }
-
-    public function registerTemplatePlace($uuid, $name, $path, $scope, $handler)
-    {
-        // @TODO Check if path is inside FAL and add danger hint!
-        $pathAbsolute = GeneralUtility::getFileAbsFileName($path);
-        if (!is_dir($pathAbsolute) || !is_readable($pathAbsolute)) {
-            throw new \Exception('path "' . $path . '" does not exist or is not readable');
-        }
-        if (isset($this->templatePlaces[$uuid])) {
-            throw new \Exception('uuid already exists');
-        }
-        if (!isset($this->availablePlaceHandler[TemplatePlace::class][$handler])) {
-            throw new \Exception('TemplateHandler "' . $handler . '" unknown. Try to register "' . $uuid . '"');
-        }
-
-        $templatePlace = new TemplatePlace($uuid, $name, $scope, $handler, $pathAbsolute);
-        $this->templatePlaces[$uuid] = $templatePlace;
-    }
-
-    public function registerMappingPlace($uuid, $name, $path, $scope, $handler)
-    {
-        // @TODO Check if path is inside FAL and add danger hint!
-        $pathAbsolute = GeneralUtility::getFileAbsFileName($path);
-        if (!is_dir($pathAbsolute) || !is_readable($pathAbsolute)) {
-            throw new \Exception('path "' . $path . '" does not exist or is not readable');
-        }
-        if (isset($this->mappingPlaces[$uuid])) {
-            throw new \Exception('uuid already exists');
-        }
-        if (!isset($this->availablePlaceHandler[MappingPlace::class][$handler])) {
-            throw new \Exception('MappingHandler "' . $handler . '" unknown. Try to register "' . $uuid . '"');
-        }
-
-        $mappingPlace = new MappingPlace($uuid, $name, $scope, $handler, $pathAbsolute);
-        $this->mappingPlaces[$uuid] = $mappingPlace;
+        $placesService->registerPlace(
+            new Place($identifier, $name, $scope, $configurationHandlerIdentifier, $loadSaveHandlerIdentifier, $entryPoint)
+        );
     }
 
     public function registerRenderer($uuid, $name, $class)
@@ -242,24 +149,32 @@ class ConfigurationService implements SingletonInterface
         ];
     }
 
-    public function registerPlaceHandler(
-        /* @TODO */ $uuid,
+    public function registerHandler(
+        string $identifier,
         string $name,
         string $handlerClass,
-        string $placeClass
+        string $implementorsInterface
     ) {
-        $this->mustExistsAndImplements($placeClass, \Ppi\TemplaVoilaPlus\Domain\Model\Place::class);
+        $this->mustExistsAndImplements($handlerClass, $implementorsInterface);
 
-        $this->mustExistsAndImplements($handlerClass, $placeClass::getHandlerInterface());
-
-        if (isset($this->availablePlaceHandler[$placeClass][$uuid])) {
-            throw new \Exception('uuid already exists for placeType ' . $placeClass);
+        if (isset($this->availableHandler[$identifier])) {
+            throw new \Exception('The identifier "' . $identifier . '" is already registered for Handler');
         }
 
-        $this->availablePlaceHandler[$placeClass][$uuid] = [
+        $this->availableHandler[$identifier] = [
             'name' => $name,
             'class' => $handlerClass,
         ];
+    }
+
+    /**
+     */
+    public function getHandler(string $handlerIdentifier)
+    {
+        if (!isset($this->availableHandler[$handlerIdentifier])) {
+            throw new \Exception('Handler with identifier "' . $handlerIdentifier . '" do not exist');
+        }
+        return GeneralUtility::makeInstance($this->availableHandler[$handlerIdentifier]['class'], $place);
     }
 
     public function mustExistsAndImplements(string $class, string $implements): bool
