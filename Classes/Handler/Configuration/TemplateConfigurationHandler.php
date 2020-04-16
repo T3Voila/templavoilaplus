@@ -86,7 +86,8 @@ class TemplateConfigurationHandler implements ConfigurationHandlerInterface
             $templateConfiguration->setName($configuration['tvp-template']['meta']['label']);
         }
         if (isset($configuration['tvp-template']['meta']['renderer'])) {
-            $templateConfiguration->setRendererName($configuration['tvp-template']['meta']['renderer']);
+            /** @TODO check before setting */
+            $templateConfiguration->setRenderHandlerIdentifier($configuration['tvp-template']['meta']['renderer']);
         }
         if (isset($configuration['tvp-template']['header']) && is_array($configuration['tvp-template']['header'])) {
             $templateConfiguration->setHeader($configuration['tvp-template']['header']);
