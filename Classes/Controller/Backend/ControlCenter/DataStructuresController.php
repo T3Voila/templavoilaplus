@@ -32,7 +32,7 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
 
 
 use Ppi\TemplaVoilaPlus\Configuration\BackendConfiguration;
-use Ppi\TemplaVoilaPlus\Domain\Model\AbstractDataStructure;
+use Ppi\TemplaVoilaPlus\Domain\Model\DataStructure;
 use Ppi\TemplaVoilaPlus\Service\ConfigurationService;
 use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
@@ -44,6 +44,14 @@ class DataStructuresController extends FormEditorController
      * @var BackendTemplateView
      */
     protected $defaultViewObjectName = BackendTemplateView::class;
+
+    /**
+     * We define BackendTemplateView above so we will get it.
+     *
+     * @var BackendTemplateView
+     * @api
+     */
+    protected $view = null;
 
     /**
      * Initialize action
@@ -64,10 +72,15 @@ class DataStructuresController extends FormEditorController
         $this->view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation([]);
         $this->view->getModuleTemplate()->setFlashMessageQueue($this->controllerContext->getFlashMessageQueue());
 
+        /** @var ConfigurationService */
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
-        $dataStructurePlaces = $configurationService->getDataStructurePlaces();
+        $placesService = $configurationService->getPlacesService();
 
-        $dataStructurePlacesByScope = $this->reorderDataStructurePlacesByScope($dataStructurePlaces);
+        $dataStructurePlaces = $placesService->getAvailablePlacesUsingConfigurationHandlerIdentifier(
+            \Ppi\TemplaVoilaPlus\Handler\Configuration\DataStructureConfigurationHandler::$identifier
+        );
+        $placesService->loadConfigurationsByPlaces($dataStructurePlaces);
+        $dataStructurePlacesByScope = $placesService->reorderPlacesByScope($dataStructurePlaces);
 
         $this->view->assign('pageTitle', 'TemplaVoilà! Plus - DataStructure List');
 
@@ -79,22 +92,29 @@ class DataStructuresController extends FormEditorController
      *
      * Edits configuration from dataStructurePlace
      *
-     * @param string $uuid Uuid of dataStructurePlace
-     * @param string $identifier Identifier inside the dataStructurePlace
+     * @param string $placeIdentifier Uuid of dataStructurePlace
+     * @param string $configurationIdentifier Identifier inside the dataStructurePlace
      * @return void
      */
-    public function editAction($uuid, $identifier)
+    public function editAction($placeIdentifier, $configurationIdentifier)
     {
         $this->registerDocheaderButtons();
         $this->view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation([]);
         $this->view->getModuleTemplate()->setFlashMessageQueue($this->controllerContext->getFlashMessageQueue());
 
+        /** @var ConfigurationService */
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
-        $dataStructurePlace = $configurationService->getDataStructurePlace($uuid);
-        $dataStructure = $dataStructurePlace->getHandler()->getConfiguration($identifier);
+        $placesService = $configurationService->getPlacesService();
+
+        $dataStructurePlace = $placesService->getPlace(
+            $placeIdentifier,
+            \Ppi\TemplaVoilaPlus\Handler\Configuration\DataStructureConfigurationHandler::$identifier
+        );
+        $placesService->loadConfigurationsByPlace($dataStructurePlace);
+        $dataStructure = $dataStructurePlace->getConfiguration($configurationIdentifier);
 
         $prototypeName = 'tvp-dynamic-structures';
-        $formDefinition = $this->transformDataStructureForFormEditor($uuid, $prototypeName, $dataStructure);
+        $formDefinition = $this->transformDataStructureForFormEditor($placeIdentifier, $prototypeName, $dataStructure);
 
         $this->prototypeConfiguration = $configurationService->getFormPrototypeConfiguration($prototypeName);
         $formEditorDefinitions = $this->getFormEditorDefinitions();
@@ -102,7 +122,7 @@ class DataStructuresController extends FormEditorController
         $formEditorAppInitialData = [
             'formEditorDefinitions' => $formEditorDefinitions,
             'formDefinition' => $formDefinition,
-            'formPersistenceIdentifier' => $uuid . ':' . $identifier,
+            'formPersistenceIdentifier' => $placeIdentifier . ':' . $configurationIdentifier,
             'prototypeName' => $prototypeName,
             'endpoints' => [
                 'formPageRenderer' => $this->controllerContext->getUriBuilder()->uriFor('renderFormPage'),
@@ -205,14 +225,14 @@ class DataStructuresController extends FormEditorController
      * @param array $formDefinition
      * @return array
      */
-    protected function transformDataStructureForFormEditor($uuid, $prototypeName, AbstractDataStructure $dataStructure): array
+    protected function transformDataStructureForFormEditor($uuid, $prototypeName, DataStructure $dataStructure): array
     {
         $dataStructureArray = $dataStructure->getDataStructureArray();
 
         $formDefinition = [
             'type' => 'DataStructure',
             'identifier' => $uuid, // . '-' . $file,
-            'label' => $dataStructure->getLabel(),
+            'label' => $dataStructure->getName(),
             'renderables' => [],
             'prototypeName' => $prototypeName,
         ];
@@ -459,37 +479,30 @@ var_dump($elementStructure);die();
      * Deletes configuration from dataStructurePlace
      * @TODO This implementation is only for complete files not for DB records/overloads/...
      *
-     * @param string $uuid Uuid of dataStructurePlace
-     * @param string $identifier Identifier inside the dataStructurePlace
+     * @param string $placeIdentifier Uuid of dataStructurePlace
+     * @param string $configurationIdentifier Identifier inside the dataStructurePlace
      * @return void
      */
-    public function deleteAction($uuid, $identifier)
+    public function deleteAction($placeIdentifier, $configurationIdentifier)
     {
+        /** @var ConfigurationService */
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
-        $dataStructurePlace = $configurationService->getDataStructurePlace($uuid);
+        $placesService = $configurationService->getPlacesService();
 
-        foreach ($dataStructurePlaces['files'] as $fileObject) {
-            if ($fileObject->getIdentifier() === $identifier) {
-                $fileObject->delete();
-            }
-        }
+        $dataStructurePlace = $placesService->getPlace(
+            $placeIdentifier,
+            \Ppi\TemplaVoilaPlus\Handler\Configuration\DataStructureConfigurationHandler::$identifier
+        );
+        $placesService->loadConfigurationsByPlace($dataStructurePlace);
+        // get the LoadSave Handler
+        // call remove on the load/save handler
 
         $this->addFlashMessage(
-            'DataStructure ' . $identifier . ' deleted.',
+            'DataStructure ' . $configurationIdentifier . ' (not yet) deleted.',
             '',
             FlashMessage::INFO
         );
 
         $this->redirect('list');
-    }
-
-    protected function reorderDataStructurePlacesByScope(array $dataStructurePlaces): array
-    {
-        $dataStructurePlacesByScope = [];
-        foreach ($dataStructurePlaces as $uuid => $dataStructurePlace) {
-            $dataStructurePlacesByScope[$dataStructurePlace->getScope()][] = $dataStructurePlace;
-        }
-
-        return $dataStructurePlacesByScope;
     }
 }

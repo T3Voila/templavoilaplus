@@ -7,21 +7,28 @@ return [
             'class' => \Ppi\TemplaVoilaPlus\Renderer\XpathRenderer::class,
         ],
     ],
-    'placesHandler' => [
-        \Ppi\TemplaVoilaPlus\Handler\Place\DataStructureFlexFormPlaceHandler::NAME => [
-            'name' => 'FlexForm Handler',
-            'handlerClass' => \Ppi\TemplaVoilaPlus\Handler\Place\DataStructureFlexFormPlaceHandler::class,
-            'placeClass' => \Ppi\TemplaVoilaPlus\Domain\Model\DataStructurePlace::class
+    'configurationHandler' => [
+        Ppi\TemplaVoilaPlus\Handler\Configuration\DataStructureConfigurationHandler::$identifier => [
+            'name' => 'Handler for creating/validating DataStructure configurations',
+            'handlerClass' => Ppi\TemplaVoilaPlus\Handler\Configuration\DataStructureConfigurationHandler::class,
         ],
-        \Ppi\TemplaVoilaPlus\Handler\Place\MappingYamlPlaceHandler::NAME => [
-            'name' => 'Mapping Yaml Handler',
-            'handlerClass' => \Ppi\TemplaVoilaPlus\Handler\Place\MappingYamlPlaceHandler::class,
-            'placeClass' => \Ppi\TemplaVoilaPlus\Domain\Model\MappingPlace::class
+        Ppi\TemplaVoilaPlus\Handler\Configuration\MappingConfigurationHandler::$identifier => [
+            'name' => 'Handler for creating/validating Mapping configurations',
+            'handlerClass' => Ppi\TemplaVoilaPlus\Handler\Configuration\MappingConfigurationHandler::class,
         ],
-        \Ppi\TemplaVoilaPlus\Handler\Place\TemplateYamlPlaceHandler::NAME => [
-            'name' => 'Template Yaml Handler',
-            'handlerClass' => \Ppi\TemplaVoilaPlus\Handler\Place\TemplateYamlPlaceHandler::class,
-            'placeClass' => \Ppi\TemplaVoilaPlus\Domain\Model\TemplatePlace::class
+        Ppi\TemplaVoilaPlus\Handler\Configuration\TemplateConfigurationHandler::$identifier => [
+            'name' => 'Handler for creating/validating Template configurations',
+            'handlerClass' => Ppi\TemplaVoilaPlus\Handler\Configuration\TemplateConfigurationHandler::class,
+        ],
+    ],
+    'loadSaveHandler' => [
+        Ppi\TemplaVoilaPlus\Handler\LoadSave\XmlLoadSaveHandler::$identifier => [
+            'name' => 'Handler for finding/loading/saving/deleting XML files',
+            'handlerClass' => Ppi\TemplaVoilaPlus\Handler\LoadSave\XmlLoadSaveHandler::class,
+        ],
+        Ppi\TemplaVoilaPlus\Handler\LoadSave\YamlLoadSaveHandler::$identifier => [
+            'name' => 'Handler for finding/loading/saving/deleting YAML files',
+            'handlerClass' => Ppi\TemplaVoilaPlus\Handler\LoadSave\YamlLoadSaveHandler::class,
         ],
     ],
 ];

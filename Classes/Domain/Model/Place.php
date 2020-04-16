@@ -35,37 +35,55 @@ class Place
     /**
      * @var string
      */
-    protected $uuid;
+    protected $identifier = '';
 
     /**
      * @var string
      */
-    protected $name;
+    protected $name = '';
 
     /**
-     * @var string Name of the handler for operations of this types
+     * @var string Identifier of the handler to manage coverting between configuration object and configuration array
      */
-    protected $handlerName;
+    protected $configurationHandlerIdentifier = '';
 
     /**
-     * @var string
+     * @var string Identifier of the handler to manage the loading and saving of configuration array
      */
-    protected $pathAbsolute;
+    protected $loadSaveHandlerIdentifier = '';
 
-    protected static $handlerInterface = '';
+    /**
+     * @var string An entryPoint may be the path to the directory or a table or anything else
+     */
+    protected $entryPoint = '';
 
+    /**
+     * @var array An array of the configurations with the identifier as key
+     */
+    protected $configurations = [];
+
+    /**
+     * @param $identifier string The global name of this place it should be unique, take the PHP Namespace as an orientation.
+     * @param $name string A name for this place in english or an LLL entry.
+     * @param $scope mixed The scope for this place (Page/FCE/tablename) @TODO A better scope handling will hapen later on
+     * @param $configurationHandlerIdentifier string The identifier of the class which will handle the conversation between the array and object @TODO better naming, will this class do more
+     * @param $loadSaveHandlerIdentifier string Identifier of the class which will handle the searching, loading and saving of the configurations (Yaml, XML, ...)
+     * @param $entryPoint string An entry point for this place, mostly a path to the files but may have also other meanings (f.e. a pid for core beLayouts)
+     */
     public function __construct(
-        /* @TODO */ $uuid,
+        string $identifier,
         string $name,
         /* @TODO */ $scope,
-        string $handlerName,
-        string $pathAbsolute
+        string $configurationHandlerIdentifier,
+        string $loadSaveHandlerIdentifier,
+        string $entryPoint
     ) {
-        $this->uuid = $uuid;
+        $this->identifier = $identifier;
         $this->name = $name;
         $this->scope = $scope;
-        $this->handlerName = $handlerName;
-        $this->pathAbsolute = $pathAbsolute;
+        $this->configurationHandlerIdentifier = $configurationHandlerIdentifier;
+        $this->loadSaveHandlerIdentifier = $loadSaveHandlerIdentifier;
+        $this->entryPoint = $entryPoint;
     }
 
     public function getScope()
@@ -73,39 +91,53 @@ class Place
         return $this->scope;
     }
 
-    public function getUuid()
+    public function getIdentifier(): string
     {
-        return $this->uuid;
+        return $this->identifier;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return TemplaVoilaUtility::getLanguageService()->sL($this->name);
     }
 
-    public function getHandlerName(): string
+    public function getConfigurationHandlerIdentifier(): string
     {
-        return $this->handlerName;
+        return $this->configurationHandlerIdentifier;
     }
 
-    public function getHandler()
+    public function getLoadSaveHandlerIdentifier(): string
     {
-        $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
-        return $configurationService->getHandler($this);
+        return $this->loadSaveHandlerIdentifier;
     }
 
-    public static function getHandlerInterface(): string
+    public function getEntryPoint(): string
     {
-        return static::$handlerInterface;
+        return $this->entryPoint;
     }
 
-    public function getPathAbsolute()
+    public function getConfigurations(): array
     {
-        return $this->pathAbsolute;
+        return $this->configurations;
     }
 
-    public function getPathRelative()
+    public function setConfigurations(array $configurations)
     {
-        return PathUtility::stripPathSitePrefix($this->pathAbsolute);
+        $this->configurations = $configurations;
+    }
+
+    public function getConfiguration(string $configurationIdentifier): object
+    {
+        if (!isset($this->configurations[$configurationIdentifier])) {
+            throw new \Exception('Configuration with identifer "' . $configurationIdentifier . '" not found');
+        }
+
+        return $this->configurations[$configurationIdentifier]['configuration'];
+    }
+
+    /** @TODO No processing in models and a entryPoint could also be a non directory */
+    public function getPathRelative(): string
+    {
+        return PathUtility::stripPathSitePrefix($this->entryPoint);
     }
 }

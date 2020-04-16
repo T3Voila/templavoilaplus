@@ -66,38 +66,10 @@ class ExtensionUtility implements SingletonInterface
      */
     protected static function loadDataStructurePlaces($path)
     {
-        $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
-        $dataStructurePlaces = self::getFileContentArray($path . '/DataStructurePlaces.php');
-        foreach ($dataStructurePlaces as $uuid => $dataStructurePlace) {
-            $configurationService->registerDataStructurePlace(
-                $uuid,
-                $dataStructurePlace['name'],
-                $dataStructurePlace['path'],
-                $dataStructurePlace['scope'],
-                $dataStructurePlace['handler']
-            );
-        }
-    }
-
-    /**
-     * Loads the TemplatePlaces.php inside the extension path
-     * @param string $path
-     * @internal
-     * @return void
-     */
-    protected static function loadTemplatePlaces($path)
-    {
-        $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
-        $templatePlaces = self::getFileContentArray($path . '/TemplatePlaces.php');
-        foreach ($templatePlaces as $uuid => $contentPlace) {
-            $configurationService->registerTemplatePlace(
-                $uuid,
-                $contentPlace['name'],
-                $contentPlace['path'],
-                $contentPlace['scope'],
-                $contentPlace['handler']
-            );
-        }
+        static::loadPlaces(
+            $path . '/DataStructurePlaces.php',
+            \Ppi\TemplaVoilaPlus\Handler\Configuration\DataStructureConfigurationHandler::$identifier
+        );
     }
 
     /**
@@ -108,15 +80,45 @@ class ExtensionUtility implements SingletonInterface
      */
     protected static function loadMappingPlaces($path)
     {
+        static::loadPlaces(
+            $path . '/MappingPlaces.php',
+            \Ppi\TemplaVoilaPlus\Handler\Configuration\MappingConfigurationHandler::$identifier
+        );
+    }
+
+    /**
+     * Loads the TemplatePlaces.php inside the extension path
+     * @param string $path
+     * @internal
+     * @return void
+     */
+    protected static function loadTemplatePlaces($path)
+    {
+        static::loadPlaces(
+            $path . '/TemplatePlaces.php',
+            \Ppi\TemplaVoilaPlus\Handler\Configuration\TemplateConfigurationHandler::$identifier
+        );
+    }
+
+    /**
+     * Loads the places inside the extension files
+     * @param string $pathAndFilename
+     * @param string $defaultConfigurationHandlerIdentifier
+     * @internal
+     * @return void
+     */
+    protected static function loadPlaces(string $pathAndFilename, string $defaultConfigurationHandlerIdentifier)
+    {
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
-        $mappingPlaces = self::getFileContentArray($path . '/MappingPlaces.php');
-        foreach ($mappingPlaces as $uuid => $mappingPlace) {
-            $configurationService->registerMappingPlace(
-                $uuid,
-                $mappingPlace['name'],
-                $mappingPlace['path'],
-                $mappingPlace['scope'],
-                $mappingPlace['handler']
+        $placeConfigurations = self::getFileContentArray($pathAndFilename);
+        foreach ($placeConfigurations as $identifier => $placeConfiguration) {
+            $configurationService->registerPlace(
+                $identifier,
+                $placeConfiguration['name'],
+                $placeConfiguration['scope'],
+                $placeConfiguration['configurationHandler'] ?: $defaultConfigurationHandlerIdentifier,
+                $placeConfiguration['loadSaveHandler'],
+                $placeConfiguration['path']
             );
         }
     }
@@ -131,24 +133,32 @@ class ExtensionUtility implements SingletonInterface
     {
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
         $extending = self::getFileContentArray($path . '/Extending.php');
-        if (isset($extending['renderer'])) {
-            foreach ($extending['renderer'] as $uuid => $renderer) {
-                $configurationService->registerRenderer(
-                    $uuid,
-                    $renderer['name'],
-                    $renderer['class']
-                );
-            }
+        if (isset($extending['renderHandler'])) {
+            self::registerHandler($extending['renderHandler'], '');
         }
-        if (isset($extending['placesHandler'])) {
-            foreach ($extending['placesHandler'] as $uuid => $placesHandler) {
-                $configurationService->registerPlaceHandler(
-                    $uuid,
-                    $placesHandler['name'],
-                    $placesHandler['handlerClass'],
-                    $placesHandler['placeClass']
-                );
-            }
+        if (isset($extending['configurationHandler'])) {
+            self::registerHandler(
+                $extending['configurationHandler'],
+                \Ppi\TemplaVoilaPlus\Handler\Configuration\ConfigurationHandlerInterface::class
+            );
+        }
+        if (isset($extending['loadSaveHandler'])) {
+            self::registerHandler(
+                $extending['loadSaveHandler'],
+                \Ppi\TemplaVoilaPlus\Handler\LoadSave\LoadSaveHandlerInterface::class
+            );
+        }
+    }
+    protected static function registerHandler(array $handlerConfigurations, string $implementorsInterface)
+    {
+        $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
+        foreach ($handlerConfigurations as $identifier => $handlerConfiguration) {
+            $configurationService->registerHandler(
+                $identifier,
+                $handlerConfiguration['name'],
+                $handlerConfiguration['handlerClass'],
+                $implementorsInterface
+            );
         }
     }
 

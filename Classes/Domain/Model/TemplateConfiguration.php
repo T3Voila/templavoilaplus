@@ -15,32 +15,11 @@ namespace Ppi\TemplaVoilaPlus\Domain\Model;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
-use TYPO3\CMS\Core\Resource\FileInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-
-use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
-
 /**
- * Class to provide unique access to TemplateYamlConfiguration
+ * Class to provide unique access to TemplateConfiguration
  */
-class TemplateYamlConfiguration
+class TemplateConfiguration extends AbstractConfiguration
 {
-    /**
-     * @var \TYPO3\CMS\Core\Resource\File
-     */
-    protected $file;
-
-    /**
-     * @var string
-     */
-    protected $identifier = '';
-
-    /**
-     * @var string
-     */
-    protected $label = '';
-
     /**
      * @var string
      */
@@ -57,62 +36,12 @@ class TemplateYamlConfiguration
     protected $mapping = [];
 
     /**
-     * @param \TYPO3\CMS\Core\Resource\File $file
-     */
-    public function __construct(\TYPO3\CMS\Core\Resource\File $file, $identifier)
-    {
-        $this->file = $file;
-        $this->identifier = $identifier;
-
-        // @TODO This shouldn't be here
-        $yamlFileLoader = GeneralUtility::makeInstance(YamlFileLoader::class);
-        $configuration = $yamlFileLoader->load($file->getForLocalProcessing(false));
-
-        if (!isset($configuration['tvp-template'])) {
-            throw new \Exception('No TemplaVoilà! Plus template configuration');
-        }
-
-        if (isset($configuration['tvp-template']['meta']['label'])) {
-            $this->setLabel($configuration['tvp-template']['meta']['label']);
-        }
-        if (isset($configuration['tvp-template']['meta']['renderer'])) {
-            $this->setRendererName($configuration['tvp-template']['meta']['renderer']);
-        }
-        if (isset($configuration['tvp-template']['header']) && is_array($configuration['tvp-template']['header'])) {
-            $this->setHeader($configuration['tvp-template']['header']);
-        }
-        if (isset($configuration['tvp-template']['mapping']) && is_array($configuration['tvp-template']['mapping'])) {
-            $this->setMapping($configuration['tvp-template']['mapping']);
-        }
-    }
-
-    public function getIdentifier()
-    {
-        return $this->identifier;
-    }
-
-    /**
-     * Retrieve the label of the template
-     *
-     * @return string
-     */
-    public function getLabel()
-    {
-        return TemplaVoilaUtility::getLanguageService()->sL($this->label);
-    }
-
-    public function setLabel(string $label)
-    {
-        $this->label = $label;
-    }
-
-    /**
      * Retrieve the name of the renderer of the template
      *
      * @TODO Should this be named identifier?
      * @return string
      */
-    public function getRendererName()
+    public function getRendererName(): string
     {
         return $this->rendererName;
     }
@@ -178,7 +107,10 @@ class TemplateYamlConfiguration
         return $this->file->getProperty('creation_date');
     }
 
-    public function getTemplateFile(): FileInterface
+    /**
+     * @TODO This is a stupid idea
+     */
+    public function getTemplateFile()
     {
         // Remove the .tvp.yaml file extension
         $fileName = mb_substr($this->file->getForLocalProcessing(false), 0, -9);

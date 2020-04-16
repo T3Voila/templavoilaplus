@@ -5,7 +5,8 @@ namespace Ppi\TemplaVoilaPlus\Configuration;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-// @TODO We need to find modTSconfig? Or break? Minimum template in defaultFolder but mark this with warning as stupid (like DS inside fileadmin)
+/** @TODO We need to find modTSconfig? Or break? Minimum template in defaultFolder but mark this with warning as stupid (like DS inside fileadmin) */
+/** @TODO Remove if we add an updater, which completely migrates into an extension/site package */
 // See BackendControlCenterController::getTemplateFolders
 
 if (!class_exists(TemplatePlaces::class)) {
@@ -30,7 +31,7 @@ if (!class_exists(TemplatePlaces::class)) {
                         'name' => $folder->getPublicUrl(),
                         'path' => $folder->getPublicUrl(),
                         'scope' => 'All Scopes',
-                        'handler' => \Ppi\TemplaVoilaPlus\Handler\Place\TemplateYamlPlaceHandler::NAME,
+                        'loadSaveHandler' => \Ppi\TemplaVoilaPlus\Handler\LoadSave\YamlLoadSaveHandler::$identifier,
                     ];
                 }
             }

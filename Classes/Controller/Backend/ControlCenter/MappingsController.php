@@ -55,10 +55,15 @@ class MappingsController extends ActionController
         $this->view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation([]);
         $this->view->getModuleTemplate()->setFlashMessageQueue($this->controllerContext->getFlashMessageQueue());
 
+        /** @var ConfigurationService */
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
-        $mappingPlaces = $configurationService->getMappingPlaces();
+        $placesService = $configurationService->getPlacesService();
 
-        $mappingPlacesByScope = $this->reorderPlacesByScope($mappingPlaces);
+        $mappingPlaces = $placesService->getAvailablePlacesUsingConfigurationHandlerIdentifier(
+            \Ppi\TemplaVoilaPlus\Handler\Configuration\MappingConfigurationHandler::$identifier
+        );
+        $placesService->loadConfigurationsByPlaces($mappingPlaces);
+        $mappingPlacesByScope = $placesService->reorderPlacesByScope($mappingPlaces);
 
         $this->view->assign('pageTitle', 'TemplaVoilà! Plus - Mappings List');
         $this->view->assign('mappingPlacesByScope', $mappingPlacesByScope);
@@ -83,15 +88,5 @@ class MappingsController extends ActionController
                 ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
             $buttonBar->addButton($backButton, ButtonBar::BUTTON_POSITION_LEFT, 1);
         }
-    }
-
-    protected function reorderPlacesByScope(array $places): array
-    {
-        $placesByScope = [];
-        foreach ($places as $uuid => $place) {
-            $placesByScope[$place->getScope()][] = $place;
-        }
-
-        return $placesByScope;
     }
 }
