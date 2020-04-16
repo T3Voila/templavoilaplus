@@ -81,32 +81,6 @@ class TemplateConfiguration extends AbstractConfiguration
         $this->mapping = $mapping;
     }
 
-
-    public function getFileIdentifier()
-    {
-        return $this->file->getIdentifier();
-    }
-
-    /**
-     * Retrieve the filereference of the template
-     *
-     * @return integer
-     */
-    public function getTstamp()
-    {
-        return $this->file->getProperty('modification_date');
-    }
-
-    /**
-     * Retrieve the filereference of the template
-     *
-     * @return integer
-     */
-    public function getCrdate()
-    {
-        return $this->file->getProperty('creation_date');
-    }
-
     /**
      * @TODO This is a stupid idea
      */

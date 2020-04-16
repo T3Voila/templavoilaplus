@@ -120,7 +120,7 @@ try {
         // get renderer from templateConfiguration
         $rendererName = $templateConfiguration->getRendererName();
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
-        $renderer = $configurationService->getRenderer($rendererName);
+        $renderer = $configurationService->getHandler($rendererName);
 
         // Manipulate header data
         // @TODO The renderer? Not realy or?

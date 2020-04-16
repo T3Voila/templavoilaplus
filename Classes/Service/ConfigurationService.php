@@ -91,21 +91,6 @@ class ConfigurationService implements SingletonInterface
         return $this->extConfig;
     }
 
-    public function getAvailableRenderer(): array
-    {
-        $this->initialize();
-        return $this->availableRenderer;
-    }
-
-    public function getRenderer($uuid): \Ppi\TemplaVoilaPlus\Renderer\RendererInterface
-    {
-        $this->initialize();
-        if (!isset($this->availableRenderer[$uuid])) {
-            throw new \Exception('Renderer "' . $uuid . '" not available.');
-        }
-        return GeneralUtility::makeInstance($this->availableRenderer[$uuid]['class']);
-    }
-
     // Helper function to register new Places
     public function registerPlace(
         string $identifier,
@@ -127,26 +112,6 @@ class ConfigurationService implements SingletonInterface
         $placesService->registerPlace(
             new Place($identifier, $name, $scope, $configurationHandlerIdentifier, $loadSaveHandlerIdentifier, $entryPoint)
         );
-    }
-
-    public function registerRenderer($uuid, $name, $class)
-    {
-        $interfaces = @class_implements($class);
-
-        if ($interfaces === false) {
-            throw new \Exception('Class "' . $class . '" not found');
-        }
-        if (!isset($interfaces[\Ppi\TemplaVoilaPlus\Renderer\RendererInterface::class])) {
-            throw new \Exception('Class "' . $class . '" do not implement renderer interface');
-        }
-        if (isset($this->availableRenderer[$uuid])) {
-            throw new \Exception('uuid already exists');
-        }
-
-        $this->availableRenderer[$uuid] = [
-            'name' => $name,
-            'class' => $class,
-        ];
     }
 
     public function registerHandler(

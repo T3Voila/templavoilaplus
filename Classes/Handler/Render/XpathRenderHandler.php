@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace Ppi\TemplaVoilaPlus\Renderer;
+namespace Ppi\TemplaVoilaPlus\Handler\Render;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -17,18 +17,18 @@ namespace Ppi\TemplaVoilaPlus\Renderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /** @TODO Missing Base class */
-use Ppi\TemplaVoilaPlus\Domain\Model\TemplateYamlConfiguration;
+use Ppi\TemplaVoilaPlus\Domain\Model\TemplateConfiguration;
 
-class XpathRenderer implements RendererInterface
+class XpathRenderHandler implements RenderHandlerInterface
 {
-    public const NAME = 'templavoilaplus_xpath';
+    static public $identifier = 'TVP\Renderer\XPath';
 
     protected $libXmlConfig = LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD | LIBXML_NOENT | LIBXML_NONET;
 
     protected $domDocument;
     protected $domXpath;
 
-    public function renderTemplate(TemplateYamlConfiguration $templateConfiguration, array $processedValues, array $row): string
+    public function renderTemplate(TemplateConfiguration $templateConfiguration, array $processedValues, array $row): string
     {
         $this->domDocument = new \DOMDocument();
         libxml_use_internal_errors(true);
@@ -51,7 +51,7 @@ class XpathRenderer implements RendererInterface
         return '';
     }
 
-    public function processHeaderInformation(TemplateYamlConfiguration $templateConfiguration)
+    public function processHeaderInformation(TemplateConfiguration $templateConfiguration)
     {
         $headerConfiguration = $templateConfiguration->getHeader();
 

@@ -1,12 +1,6 @@
 <?php
 
 return [
-    'renderer' => [
-        \Ppi\TemplaVoilaPlus\Renderer\XpathRenderer::NAME => [
-            'name' => 'XPath Renderer',
-            'class' => \Ppi\TemplaVoilaPlus\Renderer\XpathRenderer::class,
-        ],
-    ],
     'configurationHandler' => [
         Ppi\TemplaVoilaPlus\Handler\Configuration\DataStructureConfigurationHandler::$identifier => [
             'name' => 'Handler for creating/validating DataStructure configurations',
@@ -29,6 +23,12 @@ return [
         Ppi\TemplaVoilaPlus\Handler\LoadSave\YamlLoadSaveHandler::$identifier => [
             'name' => 'Handler for finding/loading/saving/deleting YAML files',
             'handlerClass' => Ppi\TemplaVoilaPlus\Handler\LoadSave\YamlLoadSaveHandler::class,
+        ],
+    ],
+    'renderHandler' => [
+        \Ppi\TemplaVoilaPlus\Handler\Render\XpathRenderHandler::$identifier => [
+            'name' => 'XPath Renderer',
+            'handlerClass' => \Ppi\TemplaVoilaPlus\Handler\Render\XpathRenderHandler::class,
         ],
     ],
 ];
