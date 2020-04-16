@@ -14,6 +14,10 @@ return [
             'name' => 'Handler for creating/validating Template configurations',
             'handlerClass' => Ppi\TemplaVoilaPlus\Handler\Configuration\TemplateConfigurationHandler::class,
         ],
+        Ppi\TemplaVoilaPlus\Handler\Configuration\BackendLayoutConfigurationHandler::$identifier => [
+            'name' => 'Handler for creating/validating BackendLayout configurations',
+            'handlerClass' => Ppi\TemplaVoilaPlus\Handler\Configuration\BackendLayoutConfigurationHandler::class,
+        ],
     ],
     'loadSaveHandler' => [
         Ppi\TemplaVoilaPlus\Handler\LoadSave\XmlLoadSaveHandler::$identifier => [

@@ -8,6 +8,7 @@ use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
 use Ppi\TemplaVoilaPlus\Domain\Model\DataStructure;
 use Ppi\TemplaVoilaPlus\Domain\Model\MappingConfiguration;
 use Ppi\TemplaVoilaPlus\Domain\Model\TemplateConfiguration;
+use Ppi\TemplaVoilaPlus\Service\ApiService;
 use Ppi\TemplaVoilaPlus\Service\ConfigurationService;
 use Ppi\TemplaVoilaPlus\Utility\ApiHelperUtility;
 use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
@@ -39,12 +40,15 @@ class FrontendController extends AbstractPlugin
      */
     public function renderPage($content, $conf)
     {
+        /** @var ApiService */
+        $apiService = GeneralUtility::makeInstance(ApiService::class, 'pages');
+
         // Current page record which we MIGHT manipulate a little:
         $pageRecord = $GLOBALS['TSFE']->page;
 
         // Find DS and Template in root line IF there is no Data Structure set for the current page:
         if (!$pageRecord['tx_templavoilaplus_map']) {
-            $pageRecord['tx_templavoilaplus_map'] = $this->getMapIdentifierFromRootline();
+            $pageRecord['tx_templavoilaplus_map'] = $apiService->getMapIdentifierFromRootline($GLOBALS['TSFE']->rootLine);
         }
 
         return $this->renderElement($pageRecord, 'pages');
@@ -53,31 +57,6 @@ class FrontendController extends AbstractPlugin
     public function renderContent($content, $conf)
     {
         return $this->renderElement($this->cObj->data, 'tt_content');
-    }
-
-    /**
-     * @return string|null
-     */
-    protected function getMapIdentifierFromRootline()
-    {
-        $mapBackupIdentifier = null;
-
-        $isFirst = true;
-        // Find in rootline upwards
-        foreach ($GLOBALS['TSFE']->rootLine as $key => $pageRecord) {
-            if ($isFirst) {
-                $isFirst = false;
-                continue;
-            }
-
-            if ($pageRecord['tx_templavoilaplus_next_map']) { // If there is a next-level MAP:
-                return $pageRecord['tx_templavoilaplus_next_map'];
-            } elseif ($pageRecord['tx_templavoilaplus_map'] && !$mapBackupIdentifier) { // Otherwise try the NORMAL MAP as backup
-                $mapBackupIdentifier = $pageRecord['tx_templavoilaplus_map'];
-            }
-        }
-
-        return $mapBackupIdentifier;
     }
 
     /**

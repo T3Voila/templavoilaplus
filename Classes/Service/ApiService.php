@@ -1801,6 +1801,7 @@ class ApiService
      */
     public function getContentTree_fetchPageTemplateObject($row)
     {
+        /** @TODO Replace with something like getMapIdentifierFromRootline() */
         $templateObjectUid = $row['tx_templavoilaplus_ds'] ? (int)$row['tx_templavoilaplus_to'] : 0;
         if (!$templateObjectUid) {
             $rootLine = BackendUtility::BEgetRootLine($row['uid'], '', true);
@@ -1947,6 +1948,41 @@ class ApiService
 
         return $this->cachedModWebTSconfig[$pageId];
     }
+
+    /**
+     * @return string|null
+     */
+    public function getMapIdentifierFromRootline(array $rootline)
+    {
+        $mapBackupIdentifier = null;
+
+        $isFirst = true;
+        // Find in rootline upwards
+        foreach ($rootline as $key => $pageRecord) {
+            if ($isFirst) {
+                $isFirst = false;
+                continue;
+            }
+
+            if ($pageRecord['tx_templavoilaplus_next_map']) { // If there is a next-level MAP:
+                return $pageRecord['tx_templavoilaplus_next_map'];
+            } elseif ($pageRecord['tx_templavoilaplus_map'] && !$mapBackupIdentifier) { // Otherwise try the NORMAL MAP as backup
+                $mapBackupIdentifier = $pageRecord['tx_templavoilaplus_map'];
+            }
+        }
+
+        return $mapBackupIdentifier;
+    }
+
+    public function getBackendRootline($uid): array
+    {
+        $rootLine = BackendUtility::BEgetRootLine($uid, '', true);
+        foreach ($rootLine as $key => $rootLineRecord) {
+            $rootLine[$key] = BackendUtility::getRecordWSOL('pages', $rootLineRecord['uid']);
+        }
+        return $rootLine;
+    }
+
 
     /**
      * @return \TYPO3\CMS\Core\Database\DatabaseConnection
