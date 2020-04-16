@@ -54,6 +54,9 @@ class ExtensionUtility implements SingletonInterface
         foreach (self::$registeredExtensions as $extensionKey => $path) {
             self::loadDataStructurePlaces($path);
             self::loadTemplatePlaces($path);
+            self::loadBackendLayoutPlaces($path);
+
+            // Last one, as it contain references to the other ones
             self::loadMappingPlaces($path);
         }
     }
@@ -100,6 +103,19 @@ class ExtensionUtility implements SingletonInterface
         );
     }
 
+    /**
+     * Loads the TemplatePlaces.php inside the extension path
+     * @param string $path
+     * @internal
+     * @return void
+     */
+    protected static function loadBackendLayoutPlaces($path)
+    {
+        static::loadPlaces(
+            $path . '/BackendLayoutPlaces.php',
+            \Ppi\TemplaVoilaPlus\Handler\Configuration\BackendLayoutConfigurationHandler::$identifier
+        );
+    }
     /**
      * Loads the places inside the extension files
      * @param string $pathAndFilename

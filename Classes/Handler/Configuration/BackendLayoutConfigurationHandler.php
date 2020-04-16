@@ -15,13 +15,13 @@ namespace Ppi\TemplaVoilaPlus\Handler\Configuration;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Ppi\TemplaVoilaPlus\Domain\Model\MappingConfiguration;
+use Ppi\TemplaVoilaPlus\Domain\Model\BackendLayoutConfiguration;
 use Ppi\TemplaVoilaPlus\Domain\Model\Place;
 use Ppi\TemplaVoilaPlus\Handler\LoadSave\LoadSaveHandlerInterface;
 
-class MappingConfigurationHandler implements ConfigurationHandlerInterface
+class BackendLayoutConfigurationHandler implements ConfigurationHandlerInterface
 {
-    static public $identifier = 'TVP\ConfigurationHandler\MappingConfiguration';
+    static public $identifier = 'TVP\ConfigurationHandler\BackendLayoutConfiguration';
 
     /**
      * @var Place
@@ -73,31 +73,30 @@ class MappingConfigurationHandler implements ConfigurationHandlerInterface
         $this->place->setConfigurations($configurations);
     }
 
-    public function createConfigurationFromConfigurationArray(array $configuration, $identifier, $possibleName): MappingConfiguration
+    public function createConfigurationFromConfigurationArray(array $configuration, $identifier, $possibleName): BackendLayoutConfiguration
     {
-        $mappingConfiguration = new MappingConfiguration($this->place, $identifier);
-        $mappingConfiguration->setName($possibleName);
+        $templateConfiguration = new BackendLayoutConfiguration($this->place, $identifier);
+        $templateConfiguration->setName($possibleName);
 
-        if (!isset($configuration['tvp-mapping'])) {
-            throw new \Exception('No TemplaVoilà! Plus mapping configuration');
-        }
-
-        if (isset($configuration['tvp-mapping']['meta']['label'])) {
-            $mappingConfiguration->setName($configuration['tvp-mapping']['meta']['label']);
-        }
-        if (isset($configuration['tvp-mapping']['combinedDataStructureIdentifier'])) {
-            $mappingConfiguration->setCombinedDataStructureIdentifier($configuration['tvp-mapping']['combinedDataStructureIdentifier']);
-        }
-        if (isset($configuration['tvp-mapping']['combinedTemplateConfigurationIdentifier'])) {
-            $mappingConfiguration->setCombinedTemplateConfigurationIdentifier($configuration['tvp-mapping']['combinedTemplateConfigurationIdentifier']);
-        }
-        if (isset($configuration['tvp-mapping']['combinedBackendLayoutConfigurationIdentifier'])) {
-            $mappingConfiguration->setCombinedBackendLayoutConfigurationIdentifier($configuration['tvp-mapping']['combinedBackendLayoutConfigurationIdentifier']);
-        }
-        if (isset($configuration['tvp-mapping']['mappingToTemplate']) && is_array($configuration['tvp-mapping']['mappingToTemplate'])) {
-            $mappingConfiguration->setMappingToTemplate($configuration['tvp-mapping']['mappingToTemplate']);
+        if (!isset($configuration['tvp-beLayout'])) {
+            throw new \Exception('No TemplaVoilà! Plus BackendLayout configuration');
         }
 
-        return $mappingConfiguration;
+        if (isset($configuration['tvp-beLayout']['meta']['label'])) {
+            $templateConfiguration->setName($configuration['tvp-beLayout']['meta']['label']);
+        }
+        if (isset($configuration['tvp-beLayout']['meta']['renderer'])) {
+            /** @TODO check before setting */
+            $templateConfiguration->setRenderHandlerIdentifier($configuration['tvp-beLayout']['meta']['renderer']);
+        }
+        if (isset($configuration['tvp-beLayout']['meta']['template'])) {
+            /**
+             * @TODO check before setting
+             * @TODO Relative to Place or configuration file? Support Absolute or 'EXT:' (insecure?)
+             */
+            $templateConfiguration->setTemplateFileName($configuration['tvp-beLayout']['meta']['template']);
+        }
+
+        return $templateConfiguration;
     }
 }

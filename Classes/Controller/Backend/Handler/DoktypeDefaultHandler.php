@@ -21,6 +21,8 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 use Ppi\TemplaVoilaPlus\Controller\Backend\PageLayoutController;
+use Ppi\TemplaVoilaPlus\Service\ApiService;
+use Ppi\TemplaVoilaPlus\Utility\ApiHelperUtility;
 use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 class DoktypeDefaultHandler
@@ -35,18 +37,30 @@ class DoktypeDefaultHandler
      */
     public function handle(PageLayoutController $controller, array $pageRecord)
     {
-        /** @var \Ppi\TemplaVoilaPlus\Service\ApiService */
-        $this->apiObj = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Service\ApiService::class, 'pages');
+        /** @var ApiService */
+        $apiService = GeneralUtility::makeInstance(ApiService::class, 'pages');
 
         if (isset($controller->getModSharedTSconfig()['properties']['useLiveWorkspaceForReferenceListUpdates'])) {
-            $this->apiObj->modifyReferencesInLiveWS(true);
+            $apiService->modifyReferencesInLiveWS(true);
         }
         $controller->getView()->assign(
             'doktypeDefault',
             [
-                'treeData' => $this->apiObj->getContentTree('pages', $pageRecord),
+                'treeData' => $apiService->getContentTree('pages', $pageRecord),
             ]
         );
+
+        $rootLine = $apiService->getBackendRootline($pageRecord['uid']);
+        $pageRecord['tx_templavoilaplus_map'] = $apiService->getMapIdentifierFromRootline($rootLine);
+
+        $mappingConfiguration = ApiHelperUtility::getMappingConfiguration($pageRecord['tx_templavoilaplus_map']);
+        $combinedBackendLayoutConfigurationIdentifier = $mappingConfiguration->getCombinedBackendLayoutConfigurationIdentifier();
+
+        if ($combinedBackendLayoutConfigurationIdentifier === '') {
+            $combinedBackendLayoutConfigurationIdentifier = 'TVP\BackendLayout:DefaultPage.tvp.yaml';
+        }
+        $backendLayoutConfiguration = ApiHelperUtility::getBackendLayoutConfiguration($combinedBackendLayoutConfigurationIdentifier);
+
 
         $controller->addContentPartial('body', 'Backend/Handler/DoktypeDefaultHandler'); // @TODO Add them automagically in controller to harden naming?
 

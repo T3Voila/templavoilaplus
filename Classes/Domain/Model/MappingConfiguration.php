@@ -31,6 +31,11 @@ class MappingConfiguration extends AbstractConfiguration
     protected $combinedTemplateConfigurationIdentifier = '';
 
     /**
+     * @var string
+     */
+    protected $combinedBackendLayoutConfigurationIdentifier = '';
+
+    /**
      * @var array
      */
     protected $mappingToTemplate = [];
@@ -63,6 +68,21 @@ class MappingConfiguration extends AbstractConfiguration
     public function setCombinedTemplateConfigurationIdentifier($combinedTemplateConfigurationIdentifier)
     {
         $this->combinedTemplateConfigurationIdentifier = $combinedTemplateConfigurationIdentifier;
+    }
+
+    /**
+     * Retrieve the backendLayoutConfiguration identifier
+     *
+     * @return string
+     */
+    public function getCombinedBackendLayoutConfigurationIdentifier()
+    {
+        return $this->combinedBackendLayoutConfigurationIdentifier;
+    }
+
+    public function setCombinedBackendLayoutConfigurationIdentifier($combinedBackendLayoutConfigurationIdentifier)
+    {
+        $this->combinedBackendLayoutConfigurationIdentifier = $combinedBackendLayoutConfigurationIdentifier;
     }
 
     /**
