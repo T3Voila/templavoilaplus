@@ -55,10 +55,15 @@ class TemplatesController extends ActionController
         $this->view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation([]);
         $this->view->getModuleTemplate()->setFlashMessageQueue($this->controllerContext->getFlashMessageQueue());
 
+        /** @var ConfigurationService */
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
-        $templatePlaces = $configurationService->getTemplatePlaces();
+        $placesService = $configurationService->getPlacesService();
 
-        $templatePlacesByScope = $this->reorderDataStructurePlacesByScope($templatePlaces);
+        $templatePlace = $placesService->getAvailablePlacesUsingConfigurationHandlerIdentifier(
+            \Ppi\TemplaVoilaPlus\Handler\Configuration\TemplateConfigurationHandler::$identifier
+        );
+        $placesService->loadConfigurationsByPlaces($templatePlace);
+        $templatePlacesByScope = $placesService->reorderPlacesByScope($templatePlace);
 
         $this->view->assign('pageTitle', 'TemplaVoilà! Plus - Templates List');
 
@@ -69,19 +74,26 @@ class TemplatesController extends ActionController
     /**
      * Show information about one template configuration
      *
-     * @param string $uuid Uuid of TemplatePlace
-     * @param string $identifier Identifier inside the dataStructurePlace
+     * @param string $placeIdentifier Uuid of TemplatePlace
+     * @param string $configurationIdentifier Identifier inside the dataStructurePlace
      * @return void
      */
-    public function infoAction($uuid, $identifier)
+    public function infoAction($placeIdentifier, $configurationIdentifier)
     {
         $this->registerDocheaderButtons();
         $this->view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation([]);
         $this->view->getModuleTemplate()->setFlashMessageQueue($this->controllerContext->getFlashMessageQueue());
 
+        /** @var ConfigurationService */
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
-        $templatePlace = $configurationService->getTemplatePlace($uuid);
-        $templateConfiguration = $templatePlace->getHandler()->getConfiguration($identifier);
+        $placesService = $configurationService->getPlacesService();
+
+        $templatePlace = $placesService->getPlace(
+            $placeIdentifier,
+            \Ppi\TemplaVoilaPlus\Handler\Configuration\TemplateConfigurationHandler::$identifier
+        );
+        $placesService->loadConfigurationsByPlace($templatePlace);
+        $templateConfiguration = $templatePlace->getConfiguration($configurationIdentifier);
 
         $this->view->assign('pageTitle', 'TemplaVoilà! Plus - Templates Info');
 
@@ -108,15 +120,5 @@ class TemplatesController extends ActionController
                 ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
             $buttonBar->addButton($backButton, ButtonBar::BUTTON_POSITION_LEFT, 1);
         }
-    }
-
-    protected function reorderDataStructurePlacesByScope(array $templatePlaces): array
-    {
-        $templatePlacesByScope = [];
-        foreach ($templatePlaces as $uuid => $templatePlace) {
-            $templatePlacesByScope[$templatePlace->getScope()][] = $templatePlace;
-        }
-
-        return $templatePlacesByScope;
     }
 }

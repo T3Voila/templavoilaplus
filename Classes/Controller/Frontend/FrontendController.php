@@ -5,11 +5,11 @@ namespace Ppi\TemplaVoilaPlus\Controller\Frontend;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
 
-/** @TODO Missing Base class */
-use Ppi\TemplaVoilaPlus\Domain\Model\AbstractDataStructure;
-use Ppi\TemplaVoilaPlus\Domain\Model\MappingYamlConfiguration;
-use Ppi\TemplaVoilaPlus\Domain\Model\TemplateYamlConfiguration;
+use Ppi\TemplaVoilaPlus\Domain\Model\DataStructure;
+use Ppi\TemplaVoilaPlus\Domain\Model\MappingConfiguration;
+use Ppi\TemplaVoilaPlus\Domain\Model\TemplateConfiguration;
 use Ppi\TemplaVoilaPlus\Service\ConfigurationService;
+use Ppi\TemplaVoilaPlus\Utility\ApiHelperUtility;
 use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 class FrontendController extends AbstractPlugin
@@ -94,12 +94,12 @@ class FrontendController extends AbstractPlugin
     public function renderElement($row, $table)
     {
 try {
-        $mappingConfiguration = $this->getMappingConfiguration($row['tx_templavoilaplus_map']);
+        $mappingConfiguration = ApiHelperUtility::getMappingConfiguration($row['tx_templavoilaplus_map']);
         // getDS from Mapping
-        $dataStructure = $this->getDataStructure($mappingConfiguration->getCombinedDataStructureIdentifier());
+        $dataStructure = ApiHelperUtility::getDataStructure($mappingConfiguration->getCombinedDataStructureIdentifier());
 
         // getTemplateConfiguration from MappingConfiguration
-        $templateConfiguration = $this->getTemplateConfiguration($mappingConfiguration->getCombinedTemplateConfigurationIdentifier());
+        $templateConfiguration = ApiHelperUtility::getTemplateConfiguration($mappingConfiguration->getCombinedTemplateConfigurationIdentifier());
 
         // getDSdata from flexform field with DS
         $flexformData = [];
@@ -112,12 +112,16 @@ try {
         $flexformValues = $this->getFlexformData($dataStructure, $flexformData);
 
         // Run TypoScript over DSdata and include TypoScript vars while mapping into TemplateData
-        $processedValues = $mappingConfiguration->getHandler()->process($flexformValues, $row);
+        /** @TODO Do we need flexibility here? */
+        /** @var \Ppi\TemplaVoilaPlus\Handler\Mapping\DefaultMappingHandler */
+        $mappingHandler = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Handler\Mapping\DefaultMappingHandler::class, $mappingConfiguration);
+        $processedValues = $mappingHandler->process($flexformValues, $row);
 
         // get renderer from templateConfiguration
-        $rendererName = $templateConfiguration->getRendererName();
+        /** @var ConfigurationService */
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
-        $renderer = $configurationService->getRenderer($rendererName);
+        $renderHandlerIdentifier = $templateConfiguration->getRenderHandlerIdentifier();
+        $renderer = $configurationService->getHandler($renderHandlerIdentifier);
 
         // Manipulate header data
         // @TODO The renderer? Not realy or?
@@ -132,7 +136,7 @@ try {
 }
     }
 
-    public function getFlexformData(AbstractDataStructure $dataStructure, array $flexformData)
+    public function getFlexformData(DataStructure $dataStructure, array $flexformData)
     {
         $flexformValues = [];
 
@@ -167,41 +171,5 @@ try {
         }
 
         return $processedDataValues;
-    }
-
-    /**
-     * @TODO
-     * Following functions should reside inside an API so they can be used on
-     * other points inside TV+ or other extensions.
-     */
-
-    public function getDataStructure($combinedDataStructureIdentifier): AbstractDataStructure
-    {
-        list($placeIdentifier, $dataStructureIdentifier) = explode(':', $combinedDataStructureIdentifier);
-
-        /** @var ConfigurationService */
-        $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
-        $dataStructurePlace = $configurationService->getDataStructurePlace($placeIdentifier);
-        return $dataStructurePlace->getHandler()->getConfiguration($dataStructureIdentifier);
-    }
-
-    public function getMappingConfiguration($combinedMapConfigurationIdentifier): MappingYamlConfiguration
-    {
-        list($placeIdentifier, $mappingConfigurationIdentifier) = explode(':', $combinedMapConfigurationIdentifier);
-
-        /** @var ConfigurationService */
-        $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
-        $mappingPlace = $configurationService->getMappingPlace($placeIdentifier);
-        return $mappingPlace->getHandler()->getConfiguration($mappingConfigurationIdentifier);
-    }
-
-    public function getTemplateConfiguration($combinedTemplateConfigurationIdentifier): TemplateYamlConfiguration
-    {
-        list($placeIdentifier, $templateConfigurationIdentifier) = explode(':', $combinedTemplateConfigurationIdentifier);
-
-        /** @var ConfigurationService */
-        $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
-        $templatePlace = $configurationService->getTemplatePlace($placeIdentifier);
-        return $templatePlace->getHandler()->getConfiguration($templateConfigurationIdentifier);
     }
 }

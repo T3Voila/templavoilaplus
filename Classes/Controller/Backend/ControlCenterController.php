@@ -27,6 +27,7 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
 
 use Ppi\TemplaVoilaPlus\Configuration\BackendConfiguration;
 use Ppi\TemplaVoilaPlus\Service\ConfigurationService;
+use Ppi\TemplaVoilaPlus\Service\PlacesService;
 use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 class ControlCenterController extends ActionController
@@ -34,10 +35,17 @@ class ControlCenterController extends ActionController
     /**
      * Default View Container
      *
-     * @var BackendTemplateView
+     * @var string
      */
     protected $defaultViewObjectName = BackendTemplateView::class;
 
+    /**
+     * We define BackendTemplateView above so we will get it.
+     *
+     * @var BackendTemplateView
+     * @api
+     */
+    protected $view = null;
 
     /**
      * @var int the id of current page
@@ -76,16 +84,25 @@ class ControlCenterController extends ActionController
         $this->view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation($this->pageInfo);
         $this->view->getModuleTemplate()->setFlashMessageQueue($this->controllerContext->getFlashMessageQueue());
 
+        /** @var ConfigurationService */
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
-        $dataStructurePlaces = $configurationService->getDataStructurePlaces();
-        $templatePlaces = $configurationService->getTemplatePlaces();
-        $mappingPlaces = $configurationService->getMappingPlaces();
+        $placesService = $configurationService->getPlacesService();
+
+        $dataStructurePlaces = $placesService->getAvailablePlacesUsingConfigurationHandlerIdentifier(
+            \Ppi\TemplaVoilaPlus\Handler\Configuration\DataStructureConfigurationHandler::$identifier
+        );
+        $mappingPlaces = $placesService->getAvailablePlacesUsingConfigurationHandlerIdentifier(
+            \Ppi\TemplaVoilaPlus\Handler\Configuration\MappingConfigurationHandler::$identifier
+        );
+        $templatePlaces = $placesService->getAvailablePlacesUsingConfigurationHandlerIdentifier(
+            \Ppi\TemplaVoilaPlus\Handler\Configuration\TemplateConfigurationHandler::$identifier
+        );
 
         $this->view->assign('pageTitle', 'TemplaVoilà! Plus - Control Center');
 
         $this->view->assign('dataStructurePlaces', $dataStructurePlaces);
-        $this->view->assign('templatePlaces', $templatePlaces);
         $this->view->assign('mappingPlaces', $mappingPlaces);
+        $this->view->assign('templatePlaces', $templatePlaces);
     }
 
     public function debugAction()
@@ -100,21 +117,17 @@ class ControlCenterController extends ActionController
             ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
         $buttonBar->addButton($button, ButtonBar::BUTTON_POSITION_LEFT, 1);
 
+        /** @var ConfigurationService */
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
-        $dataStructurePlaces = $configurationService->getDataStructurePlaces();
-        $templatePlaces = $configurationService->getTemplatePlaces();
-        $mappingPlaces = $configurationService->getMappingPlaces();
+        $placesService = $configurationService->getPlacesService();
+        $availablePlaces = $placesService->getAvailablePlaces();
 
-        $availableRenderer = $configurationService->getAvailableRenderer();
-        $availablePlaceHandler = $configurationService->getAvailablePlaceHandler();
+        $availableHandler = $configurationService->getAvailableHandlers();
 
         $this->view->assign('pageTitle', 'TemplaVoilà! Plus - Control Center - Debug');
 
-        $this->view->assign('dataStructurePlaces', $dataStructurePlaces);
-        $this->view->assign('templatePlaces', $templatePlaces);
-        $this->view->assign('mappingPlaces', $mappingPlaces);
-        $this->view->assign('availableRenderer', $availableRenderer);
-        $this->view->assign('availablePlaceHandler', $availablePlaceHandler);
+        $this->view->assign('availablePlaces', $availablePlaces);
+        $this->view->assign('availableHandler', $availableHandler);
     }
 
     /**

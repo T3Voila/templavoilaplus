@@ -42,15 +42,15 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <f:if condition="{templatePlace.handler.configurations -> f:count()} > 0">
+                                            <f:if condition="{templatePlace.configurations -> f:count()} > 0">
                                                 <f:then>
                                                     <table class="table table-striped table-hover">
-                                                        <f:for each="{templatePlace.handler.configurations}" as="templateConfigurations">
+                                                        <f:for each="{templatePlace.configurations}" as="templateConfigurations">
                                                             <tr>
-                                                                <td>{templateConfigurations.label}<br/>{templateConfigurations.identifier}</td>
+                                                                <td>{templateConfigurations.configuration.name}<br/>{templateConfigurations.configuration.identifier}</td>
                                                                 <td>
-                                                                    Created: <f:format.date>{templateConfigurations.crdate}</f:format.date><br/>
-                                                                    Modified: <f:format.date>{templateConfigurations.tstamp}</f:format.date>
+                                                                    Created: <f:format.date>{templateConfigurations.store.file.CTime}</f:format.date><br/>
+                                                                    Modified: <f:format.date>{templateConfigurations.store.file.MTime}</f:format.date>
                                                                 </td>
                                                                 <td>
                                                                     <div class="btn-group" role="group" aria-label="...">
