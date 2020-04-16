@@ -19,9 +19,9 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-use Ppi\TemplaVoilaPlus\Domain\Model\AbstractDataStructure;
-use Ppi\TemplaVoilaPlus\Domain\Model\MappingYamlConfiguration;
-use Ppi\TemplaVoilaPlus\Service\ConfigurationService;
+use Ppi\TemplaVoilaPlus\Domain\Model\DataStructure;
+use Ppi\TemplaVoilaPlus\Domain\Model\MappingConfiguration;
+use Ppi\TemplaVoilaPlus\Utility\ApiHelperUtility;
 
 class DataStructureIdentifierHook
 {
@@ -48,40 +48,17 @@ class DataStructureIdentifierHook
                 )
                 ->execute()
                 ->fetchColumn(0);
+            try {
+                $mappingConfiguration = ApiHelperUtility::getMappingConfiguration($dataStructure);
+                $dataStructure = ApiHelperUtility::getDataStructure($mappingConfiguration->getCombinedDataStructureIdentifier());
 
-            $mappingConfiguration = $this->getMappingConfiguration($dataStructure);
-            $dataStructure = $this->getDataStructure($mappingConfiguration->getCombinedDataStructureIdentifier());
-
-            $dataStructure = 'FILE:' . ltrim($dataStructure->getFileIdentifier(), '/');
+                $dataStructure = $dataStructure->getDataStructureArray();
+            } catch (\Exception $e) {
+                var_dump($e->getMessage());
+                /** @TODO Do logging, if we cannot found the DS? */
+            }
         }
 
         return $dataStructure;
-    }
-
-    /**
-     * @TODO
-     * Following functions should reside inside an API so they can be used on
-     * other points inside TV+ or other extensions.
-     * @See FrontendController
-     */
-
-    public function getDataStructure($combinedDataStructureIdentifier): AbstractDataStructure
-    {
-        list($placeIdentifier, $dataStructureIdentifier) = explode(':', $combinedDataStructureIdentifier);
-
-        /** @var ConfigurationService */
-        $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
-        $dataStructurePlace = $configurationService->getDataStructurePlace($placeIdentifier);
-        return $dataStructurePlace->getHandler()->getConfiguration($dataStructureIdentifier);
-    }
-
-    public function getMappingConfiguration($combinedMapConfigurationIdentifier): MappingYamlConfiguration
-    {
-        list($placeIdentifier, $mappingConfigurationIdentifier) = explode(':', $combinedMapConfigurationIdentifier);
-
-        /** @var ConfigurationService */
-        $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
-        $mappingPlace = $configurationService->getMappingPlace($placeIdentifier);
-        return $mappingPlace->getHandler()->getConfiguration($mappingConfigurationIdentifier);
     }
 }
