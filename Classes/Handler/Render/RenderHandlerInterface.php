@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace Ppi\TemplaVoilaPlus\Renderer;
+namespace Ppi\TemplaVoilaPlus\Handler\Render;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,11 +15,10 @@ namespace Ppi\TemplaVoilaPlus\Renderer;
  * The TYPO3 project - inspiring people to share!
  */
 
-/** @TODO Missing Base class */
-use Ppi\TemplaVoilaPlus\Domain\Model\TemplateYamlConfiguration;
+use Ppi\TemplaVoilaPlus\Domain\Model\TemplateConfiguration;
 
-interface RendererInterface
+interface RenderHandlerInterface
 {
 
-    public function renderTemplate(TemplateYamlConfiguration $templateConfiguration, array $processedValues, array $row): string;
+    public function renderTemplate(TemplateConfiguration $templateConfiguration, array $processedValues, array $row): string;
 }

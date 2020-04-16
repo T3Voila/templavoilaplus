@@ -134,7 +134,10 @@ class ExtensionUtility implements SingletonInterface
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
         $extending = self::getFileContentArray($path . '/Extending.php');
         if (isset($extending['renderHandler'])) {
-            self::registerHandler($extending['renderHandler'], '');
+            self::registerHandler(
+                $extending['renderHandler'],
+                \Ppi\TemplaVoilaPlus\Handler\Render\RenderHandlerInterface::class
+            );
         }
         if (isset($extending['configurationHandler'])) {
             self::registerHandler(
