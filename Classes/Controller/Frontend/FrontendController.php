@@ -118,9 +118,10 @@ try {
         $processedValues = $mappingHandler->process($flexformValues, $row);
 
         // get renderer from templateConfiguration
-        $rendererName = $templateConfiguration->getRendererName();
+        /** @var ConfigurationService */
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
-        $renderer = $configurationService->getHandler($rendererName);
+        $renderHandlerIdentifier = $templateConfiguration->getRenderHandlerIdentifier();
+        $renderer = $configurationService->getHandler($renderHandlerIdentifier);
 
         // Manipulate header data
         // @TODO The renderer? Not realy or?

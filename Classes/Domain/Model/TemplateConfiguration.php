@@ -23,7 +23,7 @@ class TemplateConfiguration extends AbstractConfiguration
     /**
      * @var string
      */
-    protected $rendererName = '';
+    protected $renderHandlerIdentifier = '';
 
     /**
      * @var array
@@ -36,19 +36,18 @@ class TemplateConfiguration extends AbstractConfiguration
     protected $mapping = [];
 
     /**
-     * Retrieve the name of the renderer of the template
+     * Retrieve the identifier of the RenderHandler for this template
      *
-     * @TODO Should this be named identifier?
      * @return string
      */
-    public function getRendererName(): string
+    public function getRenderHandlerIdentifier(): string
     {
-        return $this->rendererName;
+        return $this->renderHandlerIdentifier;
     }
 
-    public function setRendererName(string $rendererName)
+    public function setRenderHandlerIdentifier(string $renderHandlerIdentifier)
     {
-        $this->rendererName = $rendererName;
+        $this->renderHandlerIdentifier = $renderHandlerIdentifier;
     }
 
     /**
@@ -86,26 +85,5 @@ class TemplateConfiguration extends AbstractConfiguration
      */
     public function getTemplateFile()
     {
-        // Remove the .tvp.yaml file extension
-        $fileName = mb_substr($this->file->getForLocalProcessing(false), 0, -9);
-        $fileInfo = pathinfo($fileName);
-
-        $resourceFactory = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance();
-
-        $filter = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter::class);
-        $filter->setAllowedFileExtensions('html,htm,tmpl');
-
-        $folder = $resourceFactory->retrieveFileOrFolderObject($fileInfo['dirname']);
-        $folder->setFileAndFolderNameFilters([[$filter, 'filterFileList']]);
-        $files = $folder->getFiles(0, 0, \TYPO3\CMS\Core\Resource\Folder::FILTER_MODE_USE_OWN_FILTERS, true);
-
-        foreach ($files as $file) {
-            if ($file->getNameWithoutExtension() === $fileInfo['basename']) {
-                return $file;
-                break 1;
-            }
-        }
-
-        throw new \Exception('Template file for TemplateConfiguration not found');
     }
 }
