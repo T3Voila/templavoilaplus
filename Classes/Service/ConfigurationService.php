@@ -177,6 +177,11 @@ class ConfigurationService implements SingletonInterface
         return GeneralUtility::makeInstance($this->availableHandler[$handlerIdentifier]['class'], $place);
     }
 
+    public function getAvailableHandlers()
+    {
+        return $this->availableHandler;
+    }
+
     public function mustExistsAndImplements(string $class, string $implements): bool
     {
         $interfaces = @class_implements($class);
