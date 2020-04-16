@@ -60,7 +60,7 @@ class Place
     /**
      * @var array An array of the configurations with the identifier as key
      */
-    protected $configurations = [];
+    protected $configurations = null;
 
     /**
      * @param $identifier string The global name of this place it should be unique, take the PHP Namespace as an orientation.
@@ -128,11 +128,25 @@ class Place
 
     public function getConfiguration(string $configurationIdentifier): object
     {
+        $this->loadConfiguration();
         if (!isset($this->configurations[$configurationIdentifier])) {
             throw new \Exception('Configuration with identifer "' . $configurationIdentifier . '" not found');
         }
 
         return $this->configurations[$configurationIdentifier]['configuration'];
+    }
+
+    /**
+     * @TODO Processing in a model?
+     */
+    private function loadConfiguration()
+    {
+        if ($this->configurations === null) {
+            /** @var ConfigurationService */
+            $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
+            $placesService = $configurationService->getPlacesService();
+            $placesService->loadConfigurationsByPlace($this);
+        }
     }
 
     /** @TODO No processing in models and a entryPoint could also be a non directory */

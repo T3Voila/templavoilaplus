@@ -29,8 +29,14 @@ class ItemsProcFunc
     {
         $scope = $this->getScope($params);
 
+        /** @var ConfigurationService */
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
-        $mappingPlaces = $configurationService->getMappingPlaces();
+        $placesService = $configurationService->getPlacesService();
+
+        $mappingPlaces = $placesService->getAvailablePlacesUsingConfigurationHandlerIdentifier(
+            \Ppi\TemplaVoilaPlus\Handler\Configuration\MappingConfigurationHandler::$identifier
+        );
+        $placesService->loadConfigurationsByPlaces($mappingPlaces);
 
         // @TODO Do we have a better way for the emptyness? In tt_content this should be hindered?
         $params['items'] = [
@@ -39,11 +45,12 @@ class ItemsProcFunc
 
         foreach($mappingPlaces as $mappingPlace) {
             if ($mappingPlace->getScope() === $scope) {
-                $mappingConfigurations = $mappingPlace->getHandler()->getConfigurations();
+                $mappingConfigurations = $mappingPlace->getConfigurations();
+
                 foreach ($mappingConfigurations as $mappingConfiguration) {
                     $params['items'][] = [
-                        $mappingConfiguration->getLabel(),
-                        $mappingPlace->getUuid() . ':' . $mappingConfiguration->getIdentifier()
+                        $mappingConfiguration['configuration']->getName(),
+                        $mappingPlace->getIdentifier() . ':' . $mappingConfiguration['configuration']->getIdentifier()
                         // @TODO Icon file
                     ];
                 }
@@ -63,10 +70,10 @@ class ItemsProcFunc
     {
         switch ($params['table']) {
             case 'pages':
-                $scope = \Ppi\TemplaVoilaPlus\Domain\Model\AbstractDataStructure::SCOPE_PAGE;
+                $scope = \Ppi\TemplaVoilaPlus\Domain\Model\Scope::SCOPE_PAGE;
                 break;
             case 'tt_content':
-                $scope = \Ppi\TemplaVoilaPlus\Domain\Model\AbstractDataStructure::SCOPE_FCE;
+                $scope = \Ppi\TemplaVoilaPlus\Domain\Model\Scope::SCOPE_FCE;
                 break;
             default:
                 $scope = $params['table'];
