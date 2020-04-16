@@ -26,6 +26,11 @@ class TemplateConfiguration extends AbstractConfiguration
     protected $renderHandlerIdentifier = '';
 
     /**
+     * @var string
+     */
+    protected $templateFileName = '';
+
+    /**
      * @var array
      */
     protected $header = [];
@@ -48,6 +53,17 @@ class TemplateConfiguration extends AbstractConfiguration
     public function setRenderHandlerIdentifier(string $renderHandlerIdentifier)
     {
         $this->renderHandlerIdentifier = $renderHandlerIdentifier;
+    }
+
+    /** @TODO Support non file? Containing the HTML on request? */
+    public function getTemplateFileName(): string
+    {
+        return $this->templateFileName;
+    }
+
+    public function setTemplateFileName(string $templateFileName)
+    {
+        $this->templateFileName = $templateFileName;
     }
 
     /**
@@ -78,12 +94,5 @@ class TemplateConfiguration extends AbstractConfiguration
     public function setMapping(array $mapping)
     {
         $this->mapping = $mapping;
-    }
-
-    /**
-     * @TODO This is a stupid idea
-     */
-    public function getTemplateFile()
-    {
     }
 }

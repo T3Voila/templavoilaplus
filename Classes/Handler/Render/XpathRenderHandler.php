@@ -32,7 +32,10 @@ class XpathRenderHandler implements RenderHandlerInterface
     {
         $this->domDocument = new \DOMDocument();
         libxml_use_internal_errors(true);
-        $this->domDocument->loadHTML($templateConfiguration->getTemplateFile()->getContents(), $this->libXmlConfig);
+        /** @TODO Support non file here? The place do not need to be file based! */
+
+        $path = GeneralUtility::getFileAbsFileName($templateConfiguration->getPlace()->getEntryPoint());
+        $this->domDocument->loadHTMLFile($path . '/' . $templateConfiguration->getTemplateFileName(), $this->libXmlConfig);
         $this->domXpath = new \DOMXPath($this->domDocument);
 
         $mapping = $templateConfiguration->getMapping();

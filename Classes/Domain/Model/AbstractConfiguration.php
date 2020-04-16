@@ -51,6 +51,11 @@ class AbstractConfiguration
         return $this->identifier;
     }
 
+    public function getPlace(): Place
+    {
+        return $this->place;
+    }
+
     public function getName(): string
     {
         return TemplaVoilaUtility::getLanguageService()->sL($this->name);
