@@ -17,7 +17,7 @@
                 <div class="panel-heading"><h3 class="panel-title">Places</h3></div>
                 <div class="panel-body"></div>
                 <ul class="list-group">
-                    <f:for each="{places}" as="place" key="identifier">
+                    <f:for each="{availablePlaces}" as="place" key="identifier">
                         <li class="list-group-item">
                             Identifier: {identifier}<br />
                             Backend Name: {place.name}<br />
@@ -41,24 +41,6 @@
                             Identifier: {identifier}<br />
                             Backend Name: {handlerType.name}<br />
                             Class Name: {handlerType.class}<br />
-                        </li>
-                    </f:for>
-                </ul>
-                <div class="panel-footer"></div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-4">
-            <div class="panel panel-primary">
-                <div class="panel-heading"><h3 class="panel-title">Available Renderer</h3></div>
-                <div class="panel-body"></div>
-                <ul class="list-group">
-                    <f:for each="{availableRenderer}" as="renderer" key="internalName">
-                        <li class="list-group-item">
-                            Internal Name: {internalName}<br />
-                            Backend Name: {renderer.name}<br />
-                            Class Name: {renderer.class}<br />
                         </li>
                     </f:for>
                 </ul>

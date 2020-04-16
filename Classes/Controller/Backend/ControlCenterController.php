@@ -120,15 +120,13 @@ class ControlCenterController extends ActionController
         /** @var ConfigurationService */
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
         $placesService = $configurationService->getPlacesService();
-        $places = $placesService->getAvailablePlaces();
+        $availablePlaces = $placesService->getAvailablePlaces();
 
-        $availableRenderer = $configurationService->getAvailableRenderer();
         $availableHandler = $configurationService->getAvailableHandlers();
 
         $this->view->assign('pageTitle', 'TemplaVoilà! Plus - Control Center - Debug');
 
-        $this->view->assign('places', $places);
-        $this->view->assign('availableRenderer', $availableRenderer);
+        $this->view->assign('availablePlaces', $availablePlaces);
         $this->view->assign('availableHandler', $availableHandler);
     }
 
