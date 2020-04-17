@@ -3,55 +3,8 @@
         <f:if condition="!{basicEditRights}">
             <f:be.infobox title="{f:translate(key:'{lllFile}:infoTitleMissingEditRights')}" state="-1"><f:translate key="{lllFile}:infoContentMissingEditRights"/></f:be.infobox>
         </f:if>
-    <f:debug>{doktypeDefault.treeData}</f:debug>
 
-        <div class="t3-page-ce">
-            <a name="c' . md5($this->apiObj->flexform_getStringFromPointer($this->currentElementParentPointer) . $contentTreeArr['el']['uid']) . '"></a>
-            <div class="t3-page-ce-header">
-                <div class="t3-page-ce-header-icons-left">
-                    <span title="{allAvailableLanguages.{doktypeDefault.treeData.tree.el.sys_language_uid}.title}"><core:icon identifier="{allAvailableLanguages.{doktypeDefault.treeData.tree.el.sys_language_uid}.flagIcon}" /></span>
-                    <core:iconForRecord table="{doktypeDefault.treeData.tree.el.table}" row="{doktypeDefault.treeData.tree.previewData.fullRow}" />
-                    <f:format.crop maxCharacters="20" respectWordBoundaries="false">{doktypeDefault.treeData.tree.el.fullTitle}</f:format.crop>
-                    <f:comment>@TODO ($elementBelongsToCurrentPage ? '' : '<em>') . ($elementBelongsToCurrentPage ? '' : '</em>')</f:comment>
-                </div>
-                <div class="t3-page-ce-header-icons-right">
-                    <core:icon identifier="actions-edit-unhide" />
-                    <core:icon identifier="actions-edit-hide" />
-                    <core:icon identifier="actions-document-open" />
-                    <core:icon identifier="actions-edit-copy" />
-                    <core:icon identifier="actions-edit-copy-release" />
-                    <core:icon identifier="actions-edit-cut" />
-                    <core:icon identifier="actions-edit-cut-release" />
-                    <core:icon identifier="extensions-templavoila-clip_ref" />
-                    <core:icon identifier="extensions-templavoila-clip_ref-release" />
-                    <core:icon identifier="extensions-templavoila-paste" />
-                    <core:icon identifier="extensions-templavoila-pasteSubRef" />
-                    <core:icon identifier="extensions-templavoila-makelocalcopy" />
-                    <core:icon identifier="extensions-templavoila-unlink" />
-                    <core:icon identifier="actions-edit-delete" />
-                </div>
-            </div>
-            <div class="t3-page-ce-body">
-                <f:comment>@TODO $warnings</f:comment>
-                <div class="t3-page-ce-body-inner">
-                    <div>
-                        @TODO
-                        $this->render_framework_subElements($contentTreeArr, $languageKey, $sheet, $calcPerms)
-                        $previewContent
-                        <div class="t3js-page-new-ce t3-page-ce-wrapper-new-ce" id="colpos-1-page-1-5c0ba71a164f1666631330">
-                            <div class="btn-group btn-group-sm" role="group">
-                                <a href="#" data-url="/typo3/typo3/index.php?route=%2Frecord%2Fcontent%2Fwizard%2Fnew&amp;token=b708f13bf18f1de0b6e4f39bf94c436a8e6eb3e1&amp;id=1&amp;sys_language_uid=0&amp;colPos=1&amp;uid_pid=-2&amp;returnUrl=%2Ftypo3%2Ftypo3%2Findex.php%3Froute%3D%252Fweb%252Flayout%252F%26token%3D87f3e2fc69e6ad01a647ce60d3263c5e73ae5e5d%26id%3D1%26" title="Create new content element" data-title="Create new content element" class="btn btn-default btn-sm t3js-toggle-new-content-element-wizard disabled">
-                                    <core:icon identifier="actions-add" />Content
-                                </a>
-                            </div>
-                        </div>
-                        <div class="t3-page-ce-dropzone-available t3js-page-ce-dropzone-available ui-droppable"></div>
-                    </div>
-                </div>
-                <f:comment>@TODO $this->render_localizationInfoTable($contentTreeArr, $parentPointer, $parentDsMeta)</f:comment>
-            </div>
-        </div>
-
+        <f:render partial="Backend/Handler/DoktypeDefaultHandler/PageElement" arguments="{allAvailableLanguages: allAvailableLanguages, tree: doktypeDefault.treeData.tree}" />
     </f:then>
     <f:else>
         <f:be.infobox title="{f:translate(key:'{lllFile}:infoTitleSelectTemplateDesign')}" state="-1"><f:translate key="{lllFile}:infoContentSelectTemplateDesign"/></f:be.infobox>

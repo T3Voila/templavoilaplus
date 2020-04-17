@@ -1,0 +1,14 @@
+<div class="t3-page-ce tpm-container-element tpm-content-element"><f:comment>tpm-ctype-' . $contentTreeArr['el']['CType'] . ' tpm-layout-' . $contentTreeArr['el']['layout'];</f:comment>
+    <a name="c' . md5($this->apiObj->flexform_getStringFromPointer($this->currentElementParentPointer) . $contentTreeArr['el']['uid']) . '"></a>
+    <div class="t3-page-ce-header tpm-titlebar">
+        <f:render partial="Backend/Handler/DoktypeDefaultHandler/TitleBarRightButtons" arguments="" />
+        <f:render partial="Backend/Handler/DoktypeDefaultHandler/TitleBarLeftButtons" arguments="{sys_language_uid: element.el.sys_language_uid, allAvailableLanguages: allAvailableLanguages, table: element.el.table, row: element.previewData.fullRow, title: element.el.fullTitle}" />
+    </div>
+    <div class="t3-page-ce-body tpm-sub-elements">
+        <f:comment>($warnings ? '<div class="tpm-warnings">' . $warnings . '</div>' : '')</f:comment>
+        <f:comment>$this->render_framework_subElements($contentTreeArr, $languageKey, $sheet, $calcPerms)</f:comment>
+        <f:render partial="Backend/Handler/DoktypeDefaultHandler/PreviewContent" arguments="{element.previewData}" />
+        <f:comment>$this->render_localizationInfoTable($contentTreeArr, $parentPointer, $parentDsMeta)</f:comment>
+    </div>
+</div>
+
