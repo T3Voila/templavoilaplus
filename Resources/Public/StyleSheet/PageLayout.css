@@ -1,1 +1,229 @@
+div#typo3-docbody {
+  padding: 0;
+}
+
+.tpm-editPageScreen div#typo3-inner-docbody {
+  display: table;
+  width: 100%;
+  padding: 0;
+}
+
+#tx_templavoilaplus_mod1_sidebar-bar .panel-body {
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+table {
+  position: relative;
+}
+
+.sortableItem .sortable_handle {
+  cursor: move;
+}
+
+div.warning {
+  background-color: #DDEEF9;
+  border-color: #8AAFC4;
+  border: 1px solid;
+  margin: 4px 0;
+  padding: 6px;
+  font-weight: bold;
+}
+
+div.warning img {
+  vertical-align: middle;
+  padding: 2px 1px;
+}
+
+div.warning a {
+  text-decoration: underline;
+}
+
+.tpm-bottom-controls {
+  display: block;
+}
+
+.tpm-bottom-controls img {
+  border: none;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.tpm-title-cell {
+  padding: 0 .8em;
+  padding-top: .25em;
+}
+
+.tpm-content-cell {
+  padding: 0 .8em;
+  min-width: 120px;
+}
+
+.tpm-title-cell, .tpm-content-cell {
+  vertical-align: top;
+  border-left: 3px solid #5F5F5F;
+}
+
+.tpm-title-cell:first-child, .tpm-content-cell:first-child {
+  border-left: none;
+}
+
+.tpm-subelement-table {
+  border-bottom: 0px;
+  margin: 0;
+}
+
+.tpm-subelement-table .tpm-title-cell {
+  background: none;
+}
+
+.tpm-sub-elements {
+  border-width: 0 1px 1px 1px;
+  border-color: #CACACA;
+  border-style: solid;
+  border-collapse: collapse;
+}
+
+.tpm-sub-elements th, .tpm-sub-elements td {
+  vertical-align: top;
+}
+
+.tpm-container-element-depth-odd {
+  background: #FAFAFA;
+}
+
+.tpm-container-element-depth-even {
+  background: transparent;
+}
+
+.tpm-element-control {
+  vertical-align: top;
+}
+
+.tpm-titlebar {
+  overflow: hidden;
+}
+
+.t3-page-ce .t3-page-ce-header.ver-element {
+    background-color: #fee4c9;
+}
+
+.t3-page-ce:hover .t3-page-ce-header.ver-element {
+    background-color: #f7c898;
+}
+
+
+.t3-page-ce-header-icons-left .tpm-langIcon,
+.t3-page-ce-header-icons-left .tpm-buttonsLeft {
+    float: left;
+    padding-right: 5px;
+}
+
+.tpm-preview ul {
+  padding: 0 0 0 20px;
+  margin: 0;
+}
+
+.tpm-preview, .tpm-warnings {
+  padding: 5px;
+}
+
+.tpm-nonused-elements td:first-child {
+  padding: 3px;
+}
+
+.tpm-nonused-element td {
+  padding: 2px 3px;
+  vertical-align: middle;
+}
+
+.tpm-nonused-element:nth-child(odd) {
+  background: #FFF;
+}
+
+.t3-row-header {
+  color: #FFF;
+  position: relative;
+}
+
+.t3-page-ce.tpm-container-element .t3-page-ce-header-icons-left {
+    float: unset;
+}
+
+.tpm-localisation-info-table th, .tpm-localisation-info-table td {
+  padding: 5px;
+}
+.tpm-localisation-info-table tr.bgColor4 {
+  color: inherit;
+}
+.tpm-localisation-info-table tr.tpm-language-row {
+  background-color: #f1f1f1;
+  color: #212424;
+}
+.tpm-localisation-info-table tr.tpm-language-row:nth-child(even) {
+  background-color: #f9f9f9;
+}
+.tpm-localisation-info-table tr .tpm-language-edit, .tpm-localisation-info-table tr .tpm-language-info {
+  vertical-align: top;
+}
+.tpm-localisation-info-table tr .tpm-language-edit {
+  width: 1%;
+}
+.tpm-localisation-info-table tr .tpm-language-info {
+  width: 99%;
+}
+.tpm-localisation-info-table tr .tpm-language-info .t3js-icon {
+  margin-right: 4px;
+}
+
+.tpm-outline-table .tpm-container img, .tpm-outline-table .tpm-element img, .tpm-outline-table .tpm-elementRef img {
+  vertical-align: middle;
+  padding: 0 1px;
+}
+.tpm-outline-table .tpm-container .nobr img, .tpm-outline-table .tpm-element .nobr img, .tpm-outline-table .tpm-elementRef .nobr img {
+  padding-right: 3px;
+}
+.tpm-outline-table .tpm-outline-level0 {
+  background-color: #B8BEC9;
+}
+.tpm-outline-table .tpm-outline-level1 {
+  background-color: #F8F9FB;
+}
+
+#typo3-docbody > .typo3-message {
+  margin: 5px 8px;
+}
+
+.drag-placeholder {
+  background-color: #8AAFC4;
+  height: 10px;
+}
+
+.t3-page-ce .t3-page-ce-header.toYellow {
+    animation: toYellow 0.5s linear forwards;
+}
+
+.t3-page-ce .t3-page-ce-header.flashGreen {
+    animation: flashGreen 2s linear;
+}
+
+.t3-page-ce .t3-page-ce-header.flashRed {
+    animation: flashRed 2s linear;
+}
+
+@keyframes toYellow {
+    100% { background-color: #ffffd0; }
+}
+
+@keyframes flashGreen {
+     0% { background-color: #ffffd0; }
+    50% { background-color: #d0ffd0; }
+}
+
+@keyframes flashRed {
+     0% { background-color: #ffffd0; }
+    25% { background-color: #ffd0d0; }
+    50% { background-color: #eaeaea; }
+    75% { background-color: #ffd0d0; }
+}
 

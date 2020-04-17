@@ -1,0 +1,8 @@
+<div class="tpm-preview">
+    <f:for each="{sheets.sDEF}" as="previewField">
+        <strong>{previewField.TCEforms.label}</strong>
+        <f:format.crop maxCharacters="200"><f:format.stripTags>{previewField.data.lDEF.vDEF}</f:format.stripTags></f:format.crop>
+        <br>
+    </f:for>
+</div>
+

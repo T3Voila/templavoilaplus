@@ -1,0 +1,32 @@
+<table border="0" cellpadding="2" cellspacing="2" width="100%" class="tpm-subelement-table">
+    <tr>
+        <f:if condition="{tree.sub.sDEF.lDEF}">
+            <f:then>
+                <f:for each="{tree.sub.sDEF.lDEF}" as="subField">
+                    <td width="%4$d%%" class="bgColor6 tpm-title-cell">
+                        {subField.vDEF.meta.title}
+                    </td>
+                </f:for>
+            </f:then>
+            <f:else>
+                <td>&nbsp;</td>
+            </f:else>
+        </f:if>
+    <tr>
+    <tr>
+        <f:if condition="{tree.sub.sDEF.lDEF}">
+            <f:then>
+                <f:for each="{tree.sub.sDEF.lDEF}" as="subField">
+                    <td id="" width="%4$d%%" class="tpm-content-cell">
+                        <f:for each="{subField.vDEF.el}" as="element">
+                            <f:render partial="Backend/Handler/DoktypeDefaultHandler/ContentElement" arguments="{allAvailableLanguages: allAvailableLanguages, element: element}" />
+                        </f:for>
+                    </td>
+                </f:for>
+            </f:then>
+            <f:else>
+                <td>&nbsp;</td>
+            </f:else>
+        </f:if>
+    </tr>
+</table>
