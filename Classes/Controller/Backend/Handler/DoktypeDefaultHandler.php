@@ -50,8 +50,11 @@ class DoktypeDefaultHandler
             ]
         );
 
-        $rootLine = $apiService->getBackendRootline($pageRecord['uid']);
-        $pageRecord['tx_templavoilaplus_map'] = $apiService->getMapIdentifierFromRootline($rootLine);
+        // Find DS and Template in root line IF there is no Data Structure set for the current page:
+        if (!$pageRecord['tx_templavoilaplus_map']) {
+            $rootLine = $apiService->getBackendRootline($pageRecord['uid']);
+            $pageRecord['tx_templavoilaplus_map'] = $apiService->getMapIdentifierFromRootline($rootLine);
+        }
 
         $mappingConfiguration = ApiHelperUtility::getMappingConfiguration($pageRecord['tx_templavoilaplus_map']);
         $combinedBackendLayoutConfigurationIdentifier = $mappingConfiguration->getCombinedBackendLayoutConfigurationIdentifier();
