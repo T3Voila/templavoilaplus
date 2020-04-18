@@ -19,13 +19,13 @@ namespace Ppi\TemplaVoilaPlus;
 class ext_update
 {
     /**
-     * @var Ppi\TemplaVoilaPlus\Controller\ExtensionManagerUpdateController
+     * @var Ppi\TemplaVoilaPlus\Controller\Backend\ExtensionManagerUpdateController
      */
     protected $controller;
 
     public function __construct()
     {
-        $this->controller = new Controller\ExtensionManagerUpdateController();
+        $this->controller = new Controller\Backend\ExtensionManagerUpdateController();
     }
 
     /**
