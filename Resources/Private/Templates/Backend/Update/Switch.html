@@ -4,8 +4,29 @@
 .t3js-module-body h1:first-child {display: none;}
 </style>
 
-<h1>TemplaVoilà Plus! Update Script Selection</h1>
-<f:be.infobox title="Warning" state="1">Please backup your data before running any of the update scripts!</f:be.infobox>
+<div class="callout">
+    <h2 class="text-primary">TemplaVoilà! Plus (TV+)</h2>
+    <p class="lead text-primary"><b>Welcome to the Update Script collection to get your DataStructures, Mapping- and TemplateConfigurations updated to the latest state for your running TYPO3 and TV+ version.</b></p>
+    <p class="lead">Your system runs TYPO3 {typo3Version} and TV+ {tvpVersion}.
+        <f:if condition="{is11orNewer}">
+            <span class="text-warning">Your TYPO3 Version is very new, it may be, that we do not support it correctly yet.</span>
+        </f:if>
+        <f:if condition="!{is8orNewer}">
+            <span class="text-danger">Your TYPO3 Version is very old, TV+ 8 do not support this version anymore. Please stay at latest TV+ 7 version. Hopefully you are running an ELTS Version of TYPO3.</span>
+        </f:if>
+        <f:if condition="{is8orNewer} && !{is11orNewer}">
+            <span class="text-success">Your TYPO3 Version is supported by TV+ 8.</span>
+        </f:if>
+    </p>
+    <h3 class="text-notice">Information</h3>
+    <p class="lead">After upgrading your TYPO3 or your TV+ extension you may need to also run this update scripts so the structure of your data can also be updated to latest requirements. Partially this can be done while you run the TYPO3 Upgrade Wizards but mostly you find them here, as they need multiple steps or TV+ likes to give you multiple ways to update. But, before you run any of the update scripts, we recommand to backup all your data of your TYPO3 instance. The update scipts are tested, but nobody knows if it works with your data and doesn't produce little hobbits which will run on your website afterwards.</p>
+    <f:be.infobox title="Warning" state="2">Please backup your data before running any of the update scripts!</f:be.infobox>
+
+    <f:if condition="!{is9orNewer}">
+        Hint about ELTS TYPO3 Version and that Site Management isn't supported in "TYPO3 v8 LTS".
+    </f:if>
+</div>
+
 <h2>Please select an update script</h2>
 <form action="#" method="POST">
     <f:if condition="{is8orNewer}">
