@@ -14,6 +14,7 @@ namespace Ppi\TemplaVoilaPlus\Controller\Backend\Update;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -77,7 +78,9 @@ class AbstractUpdateController
             'is8orNewer' => version_compare(TYPO3_version, '8.0.0', '>=') ? true : false,
             'is9orNewer' => version_compare(TYPO3_version, '9.0.0', '>=') ? true : false,
             'is10orNewer' => version_compare(TYPO3_version, '10.0.0', '>=') ? true : false,
+            'is11orNewer' => version_compare(TYPO3_version, '11.0.0', '>=') ? true : false,
             'typo3Version' => TYPO3_version,
+            'tvpVersion' => ExtensionManagementUtility::getExtensionVersion('templavoilaplus'),
             'useStaticDS' => ($this->extConf['staticDS.']['enable']),
         ]);
         return $this->fluid->render();
