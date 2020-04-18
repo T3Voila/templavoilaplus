@@ -9,43 +9,59 @@
     <p class="lead text-primary"><b>Welcome to the Update Script collection to get your DataStructures, Mapping- and TemplateConfigurations updated to the latest state for your running TYPO3 and TV+ version.</b></p>
     <p class="lead">Your system runs TYPO3 {typo3Version} and TV+ {tvpVersion}.
         <f:if condition="{is11orNewer}">
-            <span class="text-warning">Your TYPO3 Version is very new, it may be, that we do not support it correctly yet.</span>
+            <span class="text-warning">Your TYPO3 Version is more then new, it may be, you may find some gremlins as we do not support this version yet.</span>
         </f:if>
         <f:if condition="!{is8orNewer}">
             <span class="text-danger">Your TYPO3 Version is very old, TV+ 8 do not support this version anymore. Please stay at latest TV+ 7 version. Hopefully you are running an ELTS Version of TYPO3.</span>
         </f:if>
-        <f:if condition="{is8orNewer} && !{is11orNewer}">
+        <f:if condition="{is8orNewer} && !{is9orNewer}">
+            <span class="text-warning">Your TYPO3 Version is supported by TV+ 8, but see message box below.</span>
+        </f:if>
+        <f:if condition="{is9orNewer} && !{is11orNewer}">
             <span class="text-success">Your TYPO3 Version is supported by TV+ 8.</span>
         </f:if>
     </p>
-    <h3 class="text-notice">Information</h3>
-    <p class="lead">After upgrading your TYPO3 or your TV+ extension you may need to also run this update scripts so the structure of your data can also be updated to latest requirements. Partially this can be done while you run the TYPO3 Upgrade Wizards but mostly you find them here, as they need multiple steps or TV+ likes to give you multiple ways to update. But, before you run any of the update scripts, we recommand to backup all your data of your TYPO3 instance. The update scipts are tested, but nobody knows if it works with your data and doesn't produce little hobbits which will run on your website afterwards.</p>
-    <f:be.infobox title="Warning" state="2">Please backup your data before running any of the update scripts!</f:be.infobox>
 
     <f:if condition="!{is9orNewer}">
-        Hint about ELTS TYPO3 Version and that Site Management isn't supported in "TYPO3 v8 LTS".
-    </f:if>
-</div>
-
-<h2>Please select an update script</h2>
-<form action="#" method="POST">
-    <f:if condition="{is8orNewer}">
-        <f:be.infobox title="You should run this, to fix the TYPO3 TCA Changes between TYPO3 v7 LTS and v8 LTS" state="-1">
-            <button class="btn btn-primary btn-block btn-lg" type="submit" name="update" value="DataStructureV8">
-                <core:icon identifier="extensions-scheduler-run-task" /> Update DataStructure from TYPO3 v7 LTS to v8 LTS <small><small>(Version: 0.0.2)</small></small>
-            </button>
+        <f:be.infobox title="You are using a TYPO3 v8 release" state="1">
+            <ul>
+                <li>On the one side this release is out of normal maintenance support since 31. March 2020. You should upgrade to a newer version of TYPO3 or pay to get extended maintenance support time (ELTS Support). For more information follow this <a href="https://typo3.com/products/extended-support" target="_blank" style="text-decoration: underline dotted red">link</a>. If you need more information on the support times of the TYPO3 versions, take a look <a href="https://typo3.org/cms/roadmap" target="_blank" style="text-decoration: underline dotted red">here</a>.</li>
+                <li>On the other side "TYPO3 v8" do not have the "Site Management" (it was introduced in "TYPO3 v9") so this feature isn't useable together with TemplaVoilà! Plus 8</li>
+            </ul>
         </f:be.infobox>
     </f:if>
-    <f:be.infobox title="TemplaVoilà! Plus 8 update" state="-1">
-        <button class="btn btn-primary btn-block btn-lg" type="submit" name="update" value="TemplaVoilaPlus8">
-            <core:icon identifier="extensions-scheduler-run-task" /> Update configuration for TemplaVoilà! Plus 8 <small><small>(Version: 0.0.1)</small></small>
-        </button>
-    </div>
+
+    <h3 class="text-notice">Information</h3>
+    <p class="lead">After upgrading your TYPO3 or your TV+ extension you may need to also run this update scripts so the structure of your data can also be updated to latest requirements. Partially this can be done while you run the TYPO3 Upgrade Wizards but mostly you will find them here, as TV+ wants to guide you through the update process with multiple steps and give you some natty informations. But, before you run any of the update scripts, we recommand to backup all your data of your TYPO3 instance. The update scipts are tested, but nobody knows if it works with your data and doesn't produce little hobbits which will run on your website afterwards.</p>
+    <p class="lead">Every update script has its own version numbers, some can run multiple times, some may fanish and come back with later versions or if you installed other extensions. But you should <b>NEVER</b> run a database deletion task before you run all possible update scripts which you got presented (This is also valid for other extensions).</p>
+    <f:be.infobox title="Warning" state="2">
+        <ul>
+            <li>Please backup your data before running any of the update scripts!</li>
+            <li>Do not run any database deletion tasks before all possible update scripts are done!</li>
+        </ul>
     </f:be.infobox>
-    <f:be.infobox title="Static Data Structure will be the way to go. But it may be need some love/tests yet." state="1">
-        <button class="btn btn-warning btn-block btn-lg" type="submit" name="update" value="StaticData">
-            <core:icon identifier="extensions-scheduler-run-task" /> Convert to Static Data Structure
-        </button>
-    </div>
-    </f:be.infobox>
-</form>
+
+    <h3>Please select an update script</h3>
+    <form action="#" method="POST">
+        <f:comment>Add check if it needs to be run</f:comment>
+        <f:be.infobox title="TemplaVoilà! Plus 8 update" state="-1" disableIcon="true">
+            <button class="btn btn-primary btn-block btn-lg" type="submit" name="update" value="TemplaVoilaPlus8">
+                <core:icon identifier="extensions-scheduler-run-task" /> Update configuration for TemplaVoilà! Plus 8 <small><small>(Version: 0.0.1)</small></small>
+            </button>
+        </f:be.infobox>
+        <f:comment>Disable it, while TV+ 8 update didn't run yet?</f:comment>
+        <f:if condition="{is8orNewer}">
+            <f:be.infobox title="You should run this, to fix the TYPO3 TCA Changes between TYPO3 v7 LTS and v8 LTS" state="-2" disableIcon="true">
+                <button class="btn btn-default btn-block btn-lg disabled" type="submit" name="update" value="DataStructureV8">
+                    <core:icon identifier="extensions-scheduler-run-task" /> Update DataStructure from TYPO3 v7 LTS to v8 LTS <small><small>(Version: 0.0.2)</small></small>
+                </button>
+            </f:be.infobox>
+        </f:if>
+        <f:comment>This one needs to be removed afterwards, transfoming to Static DS must be done in the TV+ 8 Update as own steps.</f:comment>
+        <f:be.infobox title="Static Data Structure will be the way to go. But it may be need some love/tests yet." state="1" disableIcon="true">
+            <button class="btn btn-warning btn-block btn-lg" type="submit" name="update" value="StaticData">
+                <core:icon identifier="extensions-scheduler-run-task" /> Convert to Static Data Structure
+            </button>
+        </f:be.infobox>
+    </form>
+</div>
