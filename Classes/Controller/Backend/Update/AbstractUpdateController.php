@@ -46,10 +46,10 @@ class AbstractUpdateController
     {
         $this->fluid = GeneralUtility::makeInstance(\TYPO3\CMS\Fluid\View\StandaloneView::class);
         $this->fluid->setPartialRootPaths([
-            GeneralUtility::getFileAbsFileName('EXT:templavoilaplus/Resources/Private/Partials/')
+            GeneralUtility::getFileAbsFileName('EXT:templavoilaplus/Resources/Private/Partials/Backend')
         ]);
         $this->fluid->setTemplateRootPaths([
-            GeneralUtility::getFileAbsFileName('EXT:templavoilaplus/Resources/Private/Templates/')
+            GeneralUtility::getFileAbsFileName('EXT:templavoilaplus/Resources/Private/Templates/Backend/')
         ]);
         $classPartsName = explode('\\', get_class($this));
         $this->setTemplate('Update/' . substr(array_pop($classPartsName), 0, -16));
