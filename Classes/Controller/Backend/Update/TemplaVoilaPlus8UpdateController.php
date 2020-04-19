@@ -49,13 +49,23 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
         $columnContentDatastructureFound = $this->doesColumnExists('tt_content', 'tx_templavoilaplus_ds');
         $columnContentTemplateFound = $this->doesColumnExists('tt_content', 'tx_templavoilaplus_to');
 
-        $allDatabaseElementsFound = $tableDatastructureFound && $tableTemplateFound && $columnPagesDatastructureFound && $columnPagesTemplateFound && $columnContentDatastructureFound && $columnContentTemplateFound;
+        $allOldDatabaseElementsFound = $tableDatastructureFound && $tableTemplateFound && $columnPagesDatastructureFound && $columnPagesTemplateFound && $columnContentDatastructureFound && $columnContentTemplateFound;
+
+        $columnPagesMapFound = $this->doesColumnExists('pages', 'tx_templavoilaplus_map');
+        $columnContentMapFound = $this->doesColumnExists('tt_content', 'tx_templavoilaplus_map');
+
+        $allNewDatabaseElementsFound = $columnPagesMapFound && $columnContentMapFound;
 
         // Check for configuration staticDS = 1 and content of the configured paths
         // Check for storage_pid's to determine how much extensions we need to generate and/or need mapping into Site Management
         // Check database if the found ds/to are in usage, give the possibility to delete them?
+
+        $allChecksAreFine = $allOldDatabaseElementsFound && $allNewDatabaseElementsFound;
+
         $this->fluid->assignMultiple([
-            'allDatabaseElementsFound' => $allDatabaseElementsFound,
+            'allOldDatabaseElementsFound' => $allOldDatabaseElementsFound,
+            'allNewDatabaseElementsFound' => $allNewDatabaseElementsFound,
+            'allChecksAreFine' => $allChecksAreFine,
         ]);
     }
 
