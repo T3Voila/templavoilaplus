@@ -56,15 +56,34 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
 
         $allNewDatabaseElementsFound = $columnPagesMapFound && $columnContentMapFound;
 
-        // Check for configuration staticDS = 1 and content of the configured paths
+
         // Check for storage_pid's to determine how much extensions we need to generate and/or need mapping into Site Management
+        $storagePidsAreFine = false;
+
+        $allPossiblePids = $this->getAllPossibleStoragePidsFromTmplobj();
+        if (!isset($allPossiblePids[-1])) {
+            $storagePidsAreFine = true;
+        }
+
+        $staticDsEnabled = false;
+        if ($this->extConf['staticDS']['enable'])
+        {
+            // Load all DS from path
+            $staticDsEnabled = true;
+        } else {
+            // Load DS from DB
+        }
+
+        // Search for all TO configurations
+
         // Check database if the found ds/to are in usage, give the possibility to delete them?
 
-        $allChecksAreFine = $allOldDatabaseElementsFound && $allNewDatabaseElementsFound;
+        $allChecksAreFine = $allOldDatabaseElementsFound && $allNewDatabaseElementsFound && $storagePidsAreFine;
 
         $this->fluid->assignMultiple([
             'allOldDatabaseElementsFound' => $allOldDatabaseElementsFound,
             'allNewDatabaseElementsFound' => $allNewDatabaseElementsFound,
+            'storagePidsAreFine' => $storagePidsAreFine,
             'allChecksAreFine' => $allChecksAreFine,
         ]);
     }
@@ -140,6 +159,31 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
         $this->fluid->assignMultiple([
             'storagePidConversationNeeded' => $this->storagePidConversationNeeded(),
         ]);
+    }
+
+    protected function getAllPossibleStoragePidsFromTmplobj(): array
+    {
+        $foundPids = [];
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('tx_templavoilaplus_tmplobj');
+        $queryBuilder
+            ->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+        $result = $queryBuilder
+            ->select('pid')
+            ->from('tx_templavoilaplus_tmplobj')
+            ->groupBy('pid')
+            ->orderBy('pid')
+            ->execute()
+            ->fetchAll();
+
+        foreach($result as $row) {
+            $foundPids[$row['pid']] = $row['pid'];
+        }
+
+        return $foundPids;
     }
 
     protected function storagePidConversationNeeded(): bool
