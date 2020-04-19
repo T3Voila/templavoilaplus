@@ -6,16 +6,20 @@
 
     <f:if condition="!{allOldDatabaseElementsFound}">
         <f:be.infobox title="Error" state="2">
-            <p class="lead">It seams you have deleted database tables and/or fields which are necessary for the Update Script. Process stopped.</p>
+            <p class="lead">It seams you have deleted database tables and/or fields which are necessary for the Update Script.<br>Process stopped.</p>
         </f:be.infobox>
     </f:if>
 
     <f:if condition="!{allNewDatabaseElementsFound}">
         <f:be.infobox title="Error" state="2">
-            <p class="lead">The new fields on table pages and tt_content do not exists, please run the "Analyze Database Structure" tool and add that fields (but do not remove any tables or fields) and come back afterwards. Process stopped.</p>
+            <p class="lead">The new fields on table pages and tt_content do not exists, please run the "Analyze Database Structure" tool and add that fields (but do not remove any tables or fields) and come back afterwards.<br>Process stopped.</p>
         </f:be.infobox>
     </f:if>
-
+    <f:if condition="!{storagePidsAreFine}">
+        <f:be.infobox title="Error" state="2">
+            <p class="lead">You have some Template Objects inside Workspaces, as this is unusal and hart to determine what you have done, you need to check for yourself what needs to be done, to get this cleaned up. (This may be old data, left behind by an older and broken TemplaVoilà! or TYPO3 version and can be removed fromn database.)<br>Process stopped.</p>
+        </f:be.infobox>
+    </f:if>
 
     <f:if condition="{allChecksAreFine}">
         <p class="lead">.</p>
