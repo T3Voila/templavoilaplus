@@ -42,11 +42,53 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
      */
     protected function step1()
     {
-        // Check for existence of fields tx_templavoilaplus_ds/tx_templavoilaplus_to on pages/tt_content
-        // Check of existence of table tx_templavoila_datastructure and tx_templavoila_tmplobj
+        $tableDatastructureFound = $this->doesTableExists('tx_templavoilaplus_datastructure');
+        $tableTemplateFound = $this->doesTableExists('tx_templavoilaplus_tmplobj');
+        $columnPagesDatastructureFound = $this->doesColumnExists('pages', 'tx_templavoilaplus_ds');
+        $columnPagesTemplateFound = $this->doesColumnExists('pages', 'tx_templavoilaplus_to');
+        $columnContentDatastructureFound = $this->doesColumnExists('tt_content', 'tx_templavoilaplus_ds');
+        $columnContentTemplateFound = $this->doesColumnExists('tt_content', 'tx_templavoilaplus_to');
+
+        $allDatabaseElementsFound = $tableDatastructureFound && $tableTemplateFound && $columnPagesDatastructureFound && $columnPagesTemplateFound && $columnContentDatastructureFound && $columnContentTemplateFound;
+
         // Check for configuration staticDS = 1 and content of the configured paths
         // Check for storage_pid's to determine how much extensions we need to generate and/or need mapping into Site Management
         // Check database if the found ds/to are in usage, give the possibility to delete them?
+        $this->fluid->assignMultiple([
+            'allDatabaseElementsFound' => $allDatabaseElementsFound,
+        ]);
+    }
+
+    protected function doesTableExists(string $tablename): bool
+    {
+        $tableExists = false;
+        $columns = $this->getColumnsFromTable($tablename);
+
+        if (count($columns) !== 0) {
+            $tableExists = true;
+        }
+
+        return $tableExists;
+    }
+
+    protected function doesColumnExists(string $tablename, string $columnName): bool
+    {
+        $columnExists = false;
+        $columns = $this->getColumnsFromTable($tablename);
+
+        if (isset($columns[$columnName])) {
+            $columnExists = true;
+        }
+
+        return $columnExists;
+    }
+
+    protected function getColumnsFromTable(string $tablename): array
+    {
+        return GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable($tablename)
+            ->getSchemaManager()
+            ->listTableColumns($tablename);
     }
 
     /**
