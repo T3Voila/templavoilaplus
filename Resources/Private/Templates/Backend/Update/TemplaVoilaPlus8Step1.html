@@ -1,0 +1,26 @@
+{namespace core=TYPO3\CMS\Core\ViewHelpers}
+
+<div class="callout">
+    <h2 class="text-primary">Update configuration to TemplaVoilà! Plus 8</h2>
+    <h2>Step 1</h2>
+
+    <f:if condition="{allDatabaseElementsFound}">
+        <f:then>
+            <p class="lead">.</p>
+
+            <form action="#" method="POST">
+                <input type="hidden" name="update" value="TemplaVoilaPlus8" />
+                <f:be.infobox title="" state="-1" disableIcon="true">
+                    <button class="btn btn-primary btn-block btn-lg" type="submit" name="step" value="2">
+                        <core:icon identifier="extensions-scheduler-run-task" /> Continue Update configuration to TemplaVoilà! Plus 8
+                    </button>
+                </f:be.infobox>
+            </form>
+        </f:then>
+        <f:else>
+            <f:be.infobox title="Error" state="2">
+                <p class="lead">It seams you have deleted database tables and/or fields which are necessary for the Update Script. Process stopped.</p>
+            </f:be.infobox>
+        </f:else>
+    </f:if>
+</div>
