@@ -39,9 +39,29 @@ class ConfigurationService implements SingletonInterface
         if (version_compare(TYPO3_version, '9.0.0', '>=')) {
             $this->extConfig = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['templavoilaplus'];
         } else {
-            $this->extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoilaplus']);
+            $this->extConfig = $this->removeDotsFromArrayKeysRecursive(
+                unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoilaplus'])
+            );
         }
     }
+
+    /**
+     * Taken from TYPO3 v9 TYPO3\CMS\Install\Controller\LayoutController
+     * @deprecated Will be removed with TV+ 9
+     */
+    private function removeDotsFromArrayKeysRecursive(array $settings): array
+    {
+        $settingsWithoutDots = [];
+        foreach ($settings as $key => $value) {
+            if (is_array($value)) {
+                $settingsWithoutDots[rtrim($key, '.')] = $this->removeDotsFromArrayKeysRecursive($value);
+            } else {
+                $settingsWithoutDots[$key] = $value;
+            }
+        }
+        return $settingsWithoutDots;
+    }
+
 
     private function initialize()
     {
