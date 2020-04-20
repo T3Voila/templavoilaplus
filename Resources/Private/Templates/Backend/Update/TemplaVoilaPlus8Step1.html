@@ -2,7 +2,9 @@
 
 <div class="callout">
     <h2 class="text-primary">Update configuration to TemplaVoilà! Plus 8</h2>
-    <h2>Step 1</h2>
+    <h2>Step 1 - Check your System</h2>
+
+    <p class="lead">TV+ checks your database and existing configuration for issues, which may hinder TV+ to update your configuration. Also check the output of DataStructures and Temnplate Objects if they are all, does it sound reasonable how often they are used, if not, check your database consistency. Only the green entries, which are listed below, will be migrated, DataStructures and Template Objects wich are marked as deleted inside the TYPO3 database won't be migrated.</p>
 
     <f:if condition="!{allOldDatabaseElementsFound}">
         <f:be.infobox title="Error" state="2">
@@ -80,16 +82,32 @@
         </div>
     </div>
 
-    <f:if condition="{allChecksAreFine}">
-        <p class="lead">.</p>
-
-        <form action="#" method="POST">
-            <input type="hidden" name="update" value="TemplaVoilaPlus8" />
-            <f:be.infobox title="" state="-1" disableIcon="true">
-                <button class="btn btn-primary btn-block btn-lg" type="submit" name="step" value="2">
-                    <core:icon identifier="extensions-scheduler-run-task" /> Continue Update configuration to TemplaVoilà! Plus 8
-                </button>
-            </f:be.infobox>
-        </form>
+    <f:if condition="!{allChecksAreFine}">
+        <p class="lead">Please fix the errors before you can continue in this Update Script. After fixing all issues you can rerun this step. It may be possible, that other errors arrise after your changes.</p>
     </f:if>
+
+    <f:if condition="{allChecksAreFine}">
+        <p class="lead">It seams all your data is fine, so you can go to the next step. Or rerun this step, if you changed some data (maybe deleted a DS or TO as it was unused).</p>
+    </f:if>
+
+    <form action="#" method="POST">
+        <input type="hidden" name="update" value="TemplaVoilaPlus8" />
+        <div class="row">
+            <div class="col-sm-4">
+                <button class="btn btn-default btn-block btn-lg" type="submit" name="step" value="start">
+                    <core:icon identifier="actions-view-go-back" /> Back to start
+                </button>
+            </div>
+            <div class="col-sm-4">
+                <button class="btn {f:if(condition='{allChecksAreFine}', then='btn-default', else='btn-success')} btn-block btn-lg" type="submit" name="step" value="1">
+                    <core:icon identifier="actions-system-refresh" /> Rerun step 1
+                </button>
+            </div>
+            <div class="col-sm-4">
+                <button class="btn btn-primary btn-block btn-lg {f:if(condition='!{allChecksAreFine}', then='disabled')}" type="{f:if(condition='{allChecksAreFine}', then='submit', else='button')}" name="step" value="2">
+                    <core:icon identifier="actions-view-go-forward" /> Continue with step 2
+                </button>
+            </div>
+        </div>
+    </form>
 </div>
