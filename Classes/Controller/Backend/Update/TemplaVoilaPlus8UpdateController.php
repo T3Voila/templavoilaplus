@@ -45,16 +45,22 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
         $tableDatastructureFound = $this->doesTableExists('tx_templavoilaplus_datastructure');
         $tableTemplateFound = $this->doesTableExists('tx_templavoilaplus_tmplobj');
         $columnPagesDatastructureFound = $this->doesColumnExists('pages', 'tx_templavoilaplus_ds');
+        $columnPagesDatastructureNextFound = $this->doesColumnExists('pages', 'tx_templavoilaplus_next_ds');
         $columnPagesTemplateFound = $this->doesColumnExists('pages', 'tx_templavoilaplus_to');
+        $columnPagesTemplateNextFound = $this->doesColumnExists('pages', 'tx_templavoilaplus_next_to');
         $columnContentDatastructureFound = $this->doesColumnExists('tt_content', 'tx_templavoilaplus_ds');
         $columnContentTemplateFound = $this->doesColumnExists('tt_content', 'tx_templavoilaplus_to');
 
-        $allOldDatabaseElementsFound = $tableDatastructureFound && $tableTemplateFound && $columnPagesDatastructureFound && $columnPagesTemplateFound && $columnContentDatastructureFound && $columnContentTemplateFound;
+        $allOldDatabaseElementsFound = $tableDatastructureFound && $tableTemplateFound
+            && $columnPagesDatastructureFound && $columnPagesDatastructureNextFound
+            && $columnPagesTemplateFound && $columnPagesTemplateNextFound
+            && $columnContentDatastructureFound && $columnContentTemplateFound;
 
         $columnPagesMapFound = $this->doesColumnExists('pages', 'tx_templavoilaplus_map');
+        $columnPagesMapNextFound = $this->doesColumnExists('pages', 'tx_templavoilaplus_next_map');
         $columnContentMapFound = $this->doesColumnExists('tt_content', 'tx_templavoilaplus_map');
 
-        $allNewDatabaseElementsFound = $columnPagesMapFound && $columnContentMapFound;
+        $allNewDatabaseElementsFound = $columnPagesMapFound && $columnContentMapFound && $columnPagesMapNextFound;
 
 
         // Check for storage_pid's to determine how much extensions we need to generate and/or need mapping into Site Management
@@ -81,15 +87,14 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
         $allTo = $this->getAllToFromDB();
 
         $allDsToValid = false;
-        list($validationErrors, $validatedDs, $validatedToWithDs) = $this->checkAllDsToValid($allDs, $allTo);
-        if (count($validationErrors) === 0) {
+        list($validationDsToErrors, $validatedDs, $validatedToWithDs) = $this->checkAllDsToValid($allDs, $allTo);
+        if (count($validationDsToErrors) === 0) {
             $allDsToValid = true;
         }
 
-
         // Check database if the found ds/to are in usage, give the possibility to delete them?
 
-        $allChecksAreFine = $allOldDatabaseElementsFound && $allNewDatabaseElementsFound && $storagePidsAreFine && $allDsToValid;
+        $allChecksAreFine = $allOldDatabaseElementsFound && $allNewDatabaseElementsFound && $storagePidsAreFine && $allDsToValid && $allPagesContentValid;
 
         $this->fluid->assignMultiple([
             'allOldDatabaseElementsFound' => $allOldDatabaseElementsFound,
@@ -97,9 +102,11 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
             'storagePidsAreFine' => $storagePidsAreFine,
             'useStaticDS' => $useStaticDS,
             'allDsToValid' => $allDsToValid,
-            'validationErrors' => $validationErrors,
+            'validationDsToErrors' => $validationDsToErrors,
             'validatedDs' => $validatedDs,
             'validatedToWithDs' => $validatedToWithDs,
+            'allPagesContentValid' => $allPagesContentValid,
+            'validationPagesContentErrors' => $validationPagesContentErrors,
             'allChecksAreFine' => $allChecksAreFine,
         ]);
     }
@@ -205,10 +212,11 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
         libxml_use_internal_errors(true);
 
         foreach ($allDs as $ds) {
+            $ds['countUsage'] = 0;
+            $ds['valid'] = false;
+
             /** @TODO Implement NonStaticDs */
             if (is_file($systemPath . $ds['path']) && is_readable($systemPath . $ds['path'])) {
-                $ds['haveTo'] = 0;
-                $ds['valid'] = false;
                 $result = simplexml_load_file($systemPath . $ds['path']);
                 if ($result === false) {
                     $errors = libxml_get_errors();
@@ -223,13 +231,14 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
         }
 
         foreach ($allTo as $to) {
+            $to['countUsage'] = 0;
             $to['valid'] = false;
             if (
                 (!empty($to['datastructure']) && isset($validatedDs[$to['datastructure']]))
                 || $to['parent'] > 0
             ) {
                 if ($to['parent'] === 0) {
-                    $validatedDs[$to['datastructure']]['haveTo']++;
+                    $validatedDs[$to['datastructure']]['countUsage']++;
                 }
 
                 $templatefile = GeneralUtility::getFileAbsFileName($to['fileref']);
@@ -262,7 +271,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
         }
 
         foreach ($validatedDs as $key => $ds) {
-            if ($ds['haveTo'] === 0) {
+            if ($ds['countUsage'] === 0) {
                 $validatedDs[$key]['valid'] = false;
                 $validationErrors[] = 'Cannot verify DS with title "' . $ds['title'] . '" it has no Template Object data';
             }
