@@ -93,6 +93,11 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
         }
 
         // Check database if the found ds/to are in usage, give the possibility to delete them?
+        $allPagesContentValid = false;
+        list($validationPagesContentErrors, $validatedToWithDs) = $this->checkAllPageContentForTo($validatedToWithDs);
+        if (count($validationPagesContentErrors) === 0) {
+            $allPagesContentValid = true;
+        }
 
         $allChecksAreFine = $allOldDatabaseElementsFound && $allNewDatabaseElementsFound && $storagePidsAreFine && $allDsToValid && $allPagesContentValid;
 
@@ -278,6 +283,81 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
         }
 
         return [$validationErrors, $validatedDs, $validatedToWithDs];
+    }
+
+    protected function checkAllPageContentForTo(array $validatedToWithDs): array
+    {
+        $validationErrors = [];
+
+        // PAGES
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable('pages');
+        $queryBuilder
+            ->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+        $result = $queryBuilder
+            ->count('uid')
+            ->addSelect('uid', 'tx_templavoilaplus_to', 'tx_templavoilaplus_next_to')
+            ->from('pages')
+            ->where(
+                $queryBuilder->expr()->neq('tx_templavoilaplus_to', $queryBuilder->createNamedParameter('', \PDO::PARAM_STR))
+            )
+            ->orWhere(
+                $queryBuilder->expr()->neq('tx_templavoilaplus_next_to', $queryBuilder->createNamedParameter('', \PDO::PARAM_STR))
+            )
+            ->groupBy('tx_templavoilaplus_to', 'tx_templavoilaplus_next_to')
+            ->execute()
+            ->fetchAll();
+
+        foreach($result as $row) {
+            if ($row['tx_templavoilaplus_to'] != 0) {
+                if (isset($validatedToWithDs[$row['tx_templavoilaplus_to']])) {
+                    $validatedToWithDs[$row['tx_templavoilaplus_to']]['countUsage'] += $row['COUNT(`uid`)'];
+                } else {
+                    $validationErrors[] = 'There are pages which use an non existent Template Object with uid "' . $row['tx_templavoilaplus_to'] . '" like page with page uid: "' . $row['uid'] . '"';
+                }
+            }
+            if ($row['tx_templavoilaplus_next_to'] != 0) {
+                if (isset($validatedToWithDs[$row['tx_templavoilaplus_next_to']])) {
+                    $validatedToWithDs[$row['tx_templavoilaplus_next_to']]['countUsage'] += $row['COUNT(`uid`)'];
+                } else {
+                    $validationErrors[] = 'There are pages which use an non existent Template Object with uid "' . $row['tx_templavoilaplus_next_to'] . '" for subpages like page with page uid: "' . $row['uid'] . '"';
+                }
+            }
+        }
+
+        // TT_CONTENT
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable('tt_content');
+        $queryBuilder
+            ->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+        $result = $queryBuilder
+            ->count('uid')
+            ->addSelect('uid', 'tx_templavoilaplus_to')
+            ->from('tt_content')
+            ->where(
+                $queryBuilder->expr()->neq('tx_templavoilaplus_to', $queryBuilder->createNamedParameter('', \PDO::PARAM_STR))
+            )
+            ->groupBy('tx_templavoilaplus_to')
+            ->execute()
+            ->fetchAll();
+
+        foreach($result as $row) {
+            if ($row['tx_templavoilaplus_to'] != 0) {
+                if (isset($validatedToWithDs[$row['tx_templavoilaplus_to']])) {
+                    $validatedToWithDs[$row['tx_templavoilaplus_to']]['countUsage'] += $row['COUNT(`uid`)'];
+                } else {
+                    $validationErrors[] = 'There are content elements which use an non existent Template Object with uid "' . $row['tx_templavoilaplus_to'] . '" like content element with uid: "' . $row['uid'] . '"';
+                }
+            }
+        }
+
+        return [$validationErrors, $validatedToWithDs];
     }
 
     protected function getSystemPath(): string
