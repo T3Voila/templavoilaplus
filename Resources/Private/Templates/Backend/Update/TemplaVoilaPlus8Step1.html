@@ -39,10 +39,7 @@
                 <div class="panel-body">
                 <ul class="list-group">
                     <f:for each="{validatedDs}" as="ds">
-                        <f:if condition="{ds.valid}">
-                            <f:then><li class="list-group-item list-group-item-success">{ds.title} ({ds.haveTo})</li></f:then>
-                            <f:else><li class="list-group-item list-group-item-danger">{ds.title} ({ds.haveTo})</li></f:else>
-                        </f:if>
+                        <li class="list-group-item {f:if(condition:'{ds.valid}',then:'list-group-item-success',else:'list-group-item-danger')}">{ds.title} <span class="badge">{ds.haveTo}</span></li>
                     </f:for>
                 </ul>
                 </div>
@@ -55,21 +52,16 @@
                 <div class="panel-body">
                 <ul class="list-group">
                     <f:for each="{validatedToWithDs}" as="to">
-                        <f:if condition="{to.valid}">
-                            <f:then><li class="list-group-item list-group-item-success">{to.title}</li></f:then>
-                            <f:else><li class="list-group-item list-group-item-danger">{to.title}</li></f:else>
-                        </f:if>
-                        <f:if condition="{to.childTO}">
-                            <f:comment>Repeatable? => Partial</f:comment>
-                            <li class="list-group-item"><ul class="list-group">
-                                <f:for each="{to.childTO}" as="childTo">
-                                    <f:if condition="{childTo.valid}">
-                                        <f:then><li class="list-group-item-success">{childTo.title} Type: {childTo.rendertype}</li></f:then>
-                                        <f:else><li class="list-group-item-danger">{childTo.title} Type: {childTo.rendertype}</li></f:else>
-                                    </f:if>
-                                </f:for>
-                            </ul></li>
-                        </f:if>
+                        <li class="list-group-item {f:if(condition:'{to.valid}',then:'list-group-item-success',else:'list-group-item-danger')}">{to.title}
+                            <f:if condition="{to.childTO}">
+                                <f:comment>Repeatable? => Partial</f:comment>
+                                <ul class="list-group" style="margin:0">
+                                    <f:for each="{to.childTO}" as="childTo">
+                                        <li class="list-group-item {f:if(condition:'{to.valid}',then:'list-group-item-success',else:'list-group-item-danger')}">{childTo.title} Type: {childTo.rendertype}</li>
+                                    </f:for>
+                                </ul></li>
+                            </f:if>
+                        </li>
                     </f:for>
                 </ul>
                 </div>
