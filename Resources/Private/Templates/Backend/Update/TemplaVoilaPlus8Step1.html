@@ -25,7 +25,18 @@
         <f:be.infobox title="Error" state="2">
             <p class="lead">You have DataStructures and/or Template Objects which have errors while checking.<br>Process stopped.</p>
             <ul class="list-group">
-                <f:for each="{validationErrors}" as="validationError">
+                <f:for each="{validationDsToErrors}" as="validationError">
+                    <li class="list-group-item list-group-item-danger">{validationError}</li>
+                </f:for>
+            </ul>
+        </f:be.infobox>
+    </f:if>
+
+    <f:if condition="!{allPagesContentValid}">
+        <f:be.infobox title="Error" state="2">
+            <p class="lead">You have Pages or content elements which have errors while checking.<br>Process stopped.</p>
+            <ul class="list-group">
+                <f:for each="{validationPagesContentErrors}" as="validationError">
                     <li class="list-group-item list-group-item-danger">{validationError}</li>
                 </f:for>
             </ul>
@@ -39,7 +50,7 @@
                 <div class="panel-body">
                 <ul class="list-group">
                     <f:for each="{validatedDs}" as="ds">
-                        <li class="list-group-item {f:if(condition:'{ds.valid}',then:'list-group-item-success',else:'list-group-item-danger')}">{ds.title} <span class="badge">{ds.haveTo}</span></li>
+                        <li class="list-group-item {f:if(condition:'{ds.valid}',then:'list-group-item-success',else:'list-group-item-danger')}">{ds.title} <span class="badge">{ds.countUsage}</span></li>
                     </f:for>
                 </ul>
                 </div>
@@ -52,7 +63,7 @@
                 <div class="panel-body">
                 <ul class="list-group">
                     <f:for each="{validatedToWithDs}" as="to">
-                        <li class="list-group-item {f:if(condition:'{to.valid}',then:'list-group-item-success',else:'list-group-item-danger')}">{to.title}
+                        <li class="list-group-item {f:if(condition:'{to.valid}',then:'list-group-item-success',else:'list-group-item-danger')}">{to.title} <span class="badge">{to.countUsage}</span>
                             <f:if condition="{to.childTO}">
                                 <f:comment>Repeatable? => Partial</f:comment>
                                 <ul class="list-group" style="margin:0">
