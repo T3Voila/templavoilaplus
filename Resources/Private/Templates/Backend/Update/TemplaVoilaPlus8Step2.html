@@ -25,7 +25,7 @@
                         <label>New Extension</label>
                     </div>
                     <div class="col-sm-8">
-                        <input type="text" name="newExtensionName" id="newExtensionName" class="form-control" placeholder="Enter an extension name">
+                        <input type="text" name="newExtensionKey" id="newExtensionKey" class="form-control" placeholder="Enter an extension key for your new extension">
                     </div>
                 </div>
             </div>
@@ -84,9 +84,9 @@
 </div>
 
 <script>
-$('input[type=radio][name=selection], #newExtensionName').bind('input propertychange', function() {
+$('input[type=radio][name=selection], #newExtensionKey').bind('input propertychange', function() {
     if (this.value != '' && this.value != 'new'
-        || this.value == 'new' && $('#newExtensionName').val().length > 3
+        || this.value == 'new' && $('#newExtensionKey').val().length > 3
     ) {
         $('#continueButton').prop('type', 'submit').removeClass('disabled');
     } else {
