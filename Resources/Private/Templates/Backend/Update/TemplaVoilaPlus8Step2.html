@@ -4,7 +4,7 @@
     <h2 class="text-primary">Update configuration to TemplaVoilà! Plus 8</h2>
     <h2>Step 2 - Select target</h2>
 
-    <p class="lead">Now we need a target, where the new data gets saved. This will be on your filesystem inside an extension or the "TYPO3 Site Configuration". The data shouldn't reside inside fileadmin or any other storage, as editors could change the files and damage your website. Please select one of the options you like to use.</p>
+    <p class="lead">Now we need a target, where the new data gets saved. This will be on your filesystem inside an extension or the "TYPO3 Site Management" (with TYPO3 v9 or newer). The data shouldn't reside inside fileadmin or any other defined storage, as editors could change the files and damage your website or include security flaws. Please select one of the options you like to use.</p>
 
     <f:if condition="{terListHint}">
         <f:be.infobox title="Warning" state="1">
@@ -34,7 +34,7 @@
                     <div class="row">
                         <div class="col-sm-4">
                             <input type="radio" name="selection" value="new" class="disabled" disabled="disabled">
-                            <label>Site Configuration</label>
+                            <label>Site Management</label>
                         </div>
                         <div class="col-sm-8">
                             <span class="lead">Not implemented</span>
@@ -62,7 +62,7 @@
                 </div>
             </f:for>
         </div>
-        <p><input type="checkbox" name="showAll" value="true"> Show all on rerun.</p>
+        <p><input type="checkbox" name="showAll" value="true"> Show all extensions on rerun.</p>
         <div class="row">
             <div class="col-sm-4">
                 <button class="btn btn-default btn-block btn-lg" type="submit" name="step" value="1">
