@@ -1,0 +1,66 @@
+{namespace core=TYPO3\CMS\Core\ViewHelpers}
+
+<div class="callout">
+    <h2 class="text-primary">Update configuration to TemplaVoilà! Plus 8</h2>
+    <h2>Step 3 - Create new Extension</h2>
+
+    <f:if condition="{terListHint}">
+        <f:be.infobox title="Warning" state="1">
+            <p class="lead">The extension list from the TYPO3 Extension Repository (TER) wasn't downloaded, so we cann't determine between own extensions and released extensions in which you normaly won't write your configuration data.</p>
+        </f:be.infobox>
+    </f:if>
+    <form action="#" method="POST">
+        <input type="hidden" name="update" value="TemplaVoilaPlus8" />
+
+        <f:if condition="{hasError}">
+            <f:be.infobox title="Error" state="2">
+                <ul class="list-group">
+                    <f:for each="{errors}" as="validationError">
+                        <li class="list-group-item list-group-item-danger">{validationError}</li>
+                    </f:for>
+                </ul>
+            </f:be.infobox>
+
+            <div class="list-group" style="column-count: 2">
+                <div class="list-group-item list-group-item-info" style="break-inside: avoid">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <input type="radio" name="selection" value="new" checked>
+                            <label>New Extension</label>
+                        </div>
+                        <div class="col-sm-8">
+                            <input type="text" name="newExtensionKey" id="newExtensionKey" class="form-control" placeholder="Enter an extension key for your new extension" value="{newExtensionKey}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h2>Rerun key validation?</h2>
+        </f:if>
+
+        <f:if condition="!{hasError}">
+            <input type="hidden" name="newExtensionKey" value="{newExtensionKey}">
+            <p class="lead">We need some base data for the new extension.</p>
+
+            <h2>Continue and create extension?</h2>
+        </f:if>
+
+        <div class="row">
+            <div class="col-sm-4">
+                <button class="btn btn-default btn-block btn-lg" type="submit" name="step" value="2">
+                    <core:icon identifier="actions-view-go-back" /> Back to step 2
+                </button>
+            </div>
+            <div class="col-sm-4">
+                <button class="btn {f:if(condition='!{hasError}', then='btn-default', else='btn-success')} btn-block btn-lg" type="submit" name="step" value="3">
+                    <core:icon identifier="actions-system-refresh" /> Rerun step 3
+                </button>
+            </div>
+            <div class="col-sm-4">
+                <button class="btn btn-primary btn-block btn-lg {f:if(condition='{hasError}', then='disabled')}" type="{f:if(condition='{hasError}', then='button', else='submit')}" id="continueButton" name="step" value="4">
+                    <core:icon identifier="actions-view-go-forward" /> Continue with step 4
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
