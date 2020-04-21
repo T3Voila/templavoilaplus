@@ -82,6 +82,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
         } else {
             // Load DS from DB
             /** @TODO Implement */
+            $allDs = [];
         }
 
         // Search for all TO configurations
