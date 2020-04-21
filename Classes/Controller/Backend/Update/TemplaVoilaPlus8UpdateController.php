@@ -468,7 +468,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
             return '3NewExtension';
         }
         if (!empty($selection)) {
-            return '3ValidateExtension';
+            return '3ExistingExtension';
         }
 
         return '2'; // Return to step 2
@@ -486,6 +486,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
 
         // check extensionKey
         $newExtensionKey = strtolower($_POST['newExtensionKey']);
+        $selection = $_POST['selection'];
 
         // Taken from ExtensionValidator from the extension extension_builder
         /*
@@ -534,9 +535,24 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
             'errors' => $errors,
             'hasError' => (count($errors) ? true : false),
             'newExtensionKey' => $newExtensionKey,
+            'selection' => $selection,
         ]);
+    }
+
+    protected function step3ExistingExtension()
+    {
+        $errors = [];
+
+        $selection = $_POST['selection'];
 
 
+        $errors[] = 'Using an existing extension isn\'t supported yet.';
+
+        $this->fluid->assignMultiple([
+            'errors' => $errors,
+            'hasError' => (count($errors) ? true : false),
+            'selection' => $selection,
+        ]);
     }
 
     /**
