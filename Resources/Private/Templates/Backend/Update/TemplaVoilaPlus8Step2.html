@@ -25,7 +25,7 @@
                         <label>New Extension</label>
                     </div>
                     <div class="col-sm-8">
-                        <input type="text" name="newExtensionName" class="form-control" placeholder="Enter an extension name">
+                        <input type="text" name="newExtensionName" id="newExtensionName" class="form-control" placeholder="Enter an extension name">
                     </div>
                 </div>
             </div>
@@ -75,10 +75,22 @@
                 </button>
             </div>
             <div class="col-sm-4">
-                <button class="btn btn-primary btn-block btn-lg disabled" type="button" name="step" value="3">
+                <button class="btn btn-primary btn-block btn-lg disabled" type="button" id="continueButton" name="step" value="3">
                     <core:icon identifier="actions-view-go-forward" /> Continue with step 3
                 </button>
             </div>
         </div>
     </form>
 </div>
+
+<script>
+$('input[type=radio][name=selection], #newExtensionName').bind('input propertychange', function() {
+    if (this.value != '' && this.value != 'new'
+        || this.value == 'new' && $('#newExtensionName').val().length > 3
+    ) {
+        $('#continueButton').prop('type', 'submit').removeClass('disabled');
+    } else {
+        $('#continueButton').prop('type', 'button').addClass('disabled');
+    }
+});
+</script>
