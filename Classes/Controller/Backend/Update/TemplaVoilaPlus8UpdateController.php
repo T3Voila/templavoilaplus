@@ -16,6 +16,7 @@ namespace Ppi\TemplaVoilaPlus\Controller\Backend\Update;
 
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -377,7 +378,81 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
      */
     protected function step2()
     {
-        // Check extension names and provide form to create new extension or better
+        $packagesQualified = [];
+        $showAll = (bool) $_POST['showAll'];
+
+        /** @var PackageManager */
+        $packageManager = GeneralUtility::makeInstance(PackageManager::class);
+        $allAvailablePackages = $packageManager->getAvailablePackages();
+        $activePackages = $packageManager->getActivePackages();
+        $allTerExtensionKeys = $this->getAllTerExtensionKeys();
+
+        ksort($allAvailablePackages);
+
+        foreach ($allAvailablePackages as $key => $package) {
+            $qualify = 0;
+            $why = [];
+            $active = (isset($activePackages[$key])? true : false);
+            if ($active) {
+                $qualify += 1;
+            }
+
+            if ($package->getValueFromComposerManifest('type') === 'typo3-cms-framework') {
+                $qualify -= 100;
+                $why[] = 'TYPO3 Core Framework';
+            } elseif ($package->isProtected()) {
+                $qualify -= 100;
+                $why[] = 'Protected Package';
+            } elseif (isset($allTerExtensionKeys[$key])) {
+                $qualify -= 10;
+                $why[] = 'Existing TER Package';
+            } elseif (!is_dir($package->getPackagePath()) || !is_writeable($package->getPackagePath())) {
+                $qualify -= 100;
+                $why[] = 'Path not writable';
+            } elseif (file_exists($package->getPackagePath() . '/Configuration/TVP')) {
+                // Already includes TVP configuration so maybe possible theme/config extension
+                $qualify += 10;
+            }
+            if (stripos($package->getPackageKey(), 'config') || stripos($package->getPackageMetaData()->getDescription(), 'config')) {
+                $qualify += 10;
+            }
+            if (stripos($package->getPackageKey(), 'theme') || stripos($package->getPackageMetaData()->getDescription(), 'theme')) {
+                $qualify += 10;
+            }
+
+            if ($showAll || $qualify >= 0) {
+                $packagesQualified[$key] = [
+                    'package' => $package,
+                    'active' => $active,
+                    'qualify' => $qualify,
+                    'why' => implode(', ', $why),
+                    'is9orNewer' => version_compare(TYPO3_version, '9.0.0', '>=') ? true : false,
+                ];
+            }
+        }
+
+        $this->fluid->assignMultiple([
+            'terListHint' => (count($allTerExtensionKeys) === 0 ? true : false),
+            'packagesQualified' => $packagesQualified,
+        ]);
+    }
+
+    protected function getAllTerExtensionKeys():array
+    {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('tx_extensionmanager_domain_model_extension');
+
+        $allTerExtensions = $queryBuilder
+            ->select('extension_key')
+            ->from('tx_extensionmanager_domain_model_extension')
+            ->where($queryBuilder->expr()->eq(
+                'current_version',
+                $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT)
+            ))
+            ->execute()
+            ->fetchAll();
+
+        return array_column($allTerExtensions, 'extension_key', 'extension_key');
     }
 
     /**
