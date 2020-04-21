@@ -1,0 +1,84 @@
+{namespace core=TYPO3\CMS\Core\ViewHelpers}
+
+<div class="callout">
+    <h2 class="text-primary">Update configuration to TemplaVoilà! Plus 8</h2>
+    <h2>Step 2 - Select target</h2>
+
+    <p class="lead">Now we need a target, where the new data gets saved. This will be on your filesystem inside an extension or the "TYPO3 Site Configuration". The data shouldn't reside inside fileadmin or any other storage, as editors could change the files and damage your website. Please select one of the options you like to use.</p>
+
+    <f:if condition="{terListHint}">
+        <f:be.infobox title="Warning" state="1">
+            <p class="lead">The extension list from the TYPO3 Extension Repository (TER) wasn't downloaded, so we cann't determine between own extensions and released extensions in which you normaly won't write your configuration data.</p>
+        </f:be.infobox>
+    </f:if>
+
+    <h2>Select an option</h2>
+
+    <form action="#" method="POST">
+        <input type="hidden" name="update" value="TemplaVoilaPlus8" />
+
+        <div class="list-group" style="column-count: 2">
+            <div class="list-group-item list-group-item-info" style="break-inside: avoid">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <input type="radio" name="selection" value="new">
+                        <label>New Extension</label>
+                    </div>
+                    <div class="col-sm-8">
+                        <input type="text" name="newExtensionName" class="form-control" placeholder="Enter an extension name">
+                    </div>
+                </div>
+            </div>
+            <f:if condition="{is9orNewer}">
+                <div class="list-group-item list-group-item-danger" style="break-inside: avoid">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <input type="radio" name="selection" value="new" class="disabled" disabled="disabled">
+                            <label>Site Configuration</label>
+                        </div>
+                        <div class="col-sm-8">
+                            <span class="lead">Not implemented</span>
+                        </div>
+                    </div>
+                </div>
+            </f:if>
+
+            <f:for each="{packagesQualified}" as="packageQualify">
+                <div class="list-group-item {f:if(condition='{packageQualify.qualify} < -50', then='list-group-item-danger')} {f:if(condition='{packageQualify.qualify} < 0', then='list-group-item-warning')} {f:if(condition='{packageQualify.qualify} < 10', then='list-group-item-info')} list-group-item-success" style="break-inside: avoid">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <input type="radio" name="selection" value="{packageQualify.package.packageKey}" {f:if(condition='{packageQualify.qualify} < 0', then='disabled')}>
+                            <label>{packageQualify.package.packageKey}</label>
+                        </div>
+                        <div class="col-sm-8">
+                            <span>
+                                {packageQualify.package.packageMetaData.description}
+                                <f:if condition="{packageQualify.why}">
+                                    <br>Hint: {packageQualify.why}
+                                </f:if>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </f:for>
+        </div>
+        <p><input type="checkbox" name="showAll" value="true"> Show all on rerun.</p>
+        <div class="row">
+            <div class="col-sm-4">
+                <button class="btn btn-default btn-block btn-lg" type="submit" name="step" value="1">
+                    <core:icon identifier="actions-view-go-back" /> Back to step 1
+                </button>
+            </div>
+            <div class="col-sm-4">
+                <button class="btn {f:if(condition='{allChecksAreFine}', then='btn-default', else='btn-success')} btn-block btn-lg" type="submit" name="step" value="2">
+                    <core:icon identifier="actions-system-refresh" /> Rerun step 2
+                </button>
+            </div>
+            <div class="col-sm-4">
+                <button class="btn btn-primary btn-block btn-lg disabled" type="button" name="step" value="3">
+                    <core:icon identifier="actions-view-go-forward" /> Continue with step 3
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
