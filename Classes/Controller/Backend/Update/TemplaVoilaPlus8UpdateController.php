@@ -427,7 +427,6 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
                     'active' => $active,
                     'qualify' => $qualify,
                     'why' => implode(', ', $why),
-                    'is9orNewer' => version_compare(TYPO3_version, '9.0.0', '>=') ? true : false,
                 ];
             }
         }
@@ -463,7 +462,81 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
      */
     protected function step3()
     {
+        $selection = $_POST['selection'];
+
+        if ($selection === 'new') {
+            return '3NewExtension';
+        }
+        if (!empty($selection)) {
+            return '3ValidateExtension';
+        }
+
+        return '2'; // Return to step 2
         // Create files and folders
+    }
+
+    protected function step3NewExtension()
+    {
+        $errors = [];
+
+        /** @var PackageManager */
+        $packageManager = GeneralUtility::makeInstance(PackageManager::class);
+        $allAvailablePackages = $packageManager->getAvailablePackages();
+        $allTerExtensionKeys = $this->getAllTerExtensionKeys();
+
+        // check extensionKey
+        $newExtensionKey = strtolower($_POST['newExtensionKey']);
+
+        // Taken from ExtensionValidator from the extension extension_builder
+        /*
+         * Character test
+         * Allowed characters are: a-z (lowercase), 0-9 and '_' (underscore)
+         */
+        if (!preg_match('/^[a-z0-9_]*$/', $newExtensionKey)) {
+            $errors[] = 'Allowed characters are: a-z (lowercase), 0-9 and \'_\' (underscore)';
+        }
+
+        /*
+         * Start character
+         * Extension keys cannot start or end with 0-9 and '_' (underscore)
+         */
+        if (preg_match('/^[0-9_]/', $newExtensionKey)) {
+            $errors[] = 'Extension keys cannot start or end with 0-9 and "_" (underscore)';
+        }
+
+        /*
+         * Extension key length
+         * An extension key must have minimum 3, maximum 30 characters (not counting underscores)
+         */
+        $keyLengthTest = str_replace('_', '', $newExtensionKey);
+        if (strlen($keyLengthTest) < 3 || strlen($keyLengthTest) > 30) {
+            $errors[] = 'An extension key must have minimum 3, maximum 30 characters (not counting underscores)';
+        }
+
+        /*
+         * Reserved prefixes
+         * The key must not being with one of the following prefixes: tx,pages,tt_,sys_,ts_language_,csh_
+         */
+        if (preg_match('/^(tx|pages_|tt_|sys_|ts_language_|csh_)/', $newExtensionKey)) {
+            $errors[] = 'The key must not being with one of the following prefixes: tx,pages,tt_,sys_,ts_language_,csh_';
+        }
+
+        if (isset($allTerExtensionKeys[$newExtensionKey])) {
+            $errors[] = 'Do not use an extension name from the TER list';
+        }
+
+        if (isset($allAvailablePackages[$newExtensionKey])) {
+            $errors[] = 'Extension already exists on system, select it in step 2 directly';
+        }
+
+        $this->fluid->assignMultiple([
+            'terListHint' => (count($allTerExtensionKeys) === 0 ? true : false),
+            'errors' => $errors,
+            'hasError' => (count($errors) ? true : false),
+            'newExtensionKey' => $newExtensionKey,
+        ]);
+
+
     }
 
     /**
