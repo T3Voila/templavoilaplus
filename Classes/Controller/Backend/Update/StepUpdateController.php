@@ -17,7 +17,8 @@ namespace Ppi\TemplaVoilaPlus\Controller\Backend\Update;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Controller to show the switch dialog.
+ * Controller to handle an update process in multiple steps.
+ * Please hold in mind, the code is fragile the steps do not check if template is available for it.
  *
  * @author Alexander Opitz <opitz.alexander@pluspol-interactive.de>
  */
@@ -30,19 +31,28 @@ class StepUpdateController extends AbstractUpdateController
     {
         $step = GeneralUtility::_GP('step');
 
-        if ($step !== 'start'
-            && $step !== 'final'
-            && !is_numeric($step)
-            && !$this->stepExists($step)
-        ) {
+        if (!$this->stepExists($step)) {
             $step = 'start';
+        }
+        $this->runStep($step);
+
+        return parent::run();
+    }
+
+    protected function runStep($step)
+    {
+        if (!$this->stepExists($step)) {
+            throw new \Exception('Step not found');
         }
 
         $stepFunction = 'step' . ucfirst($step);
-        $this->$stepFunction();
-        $this->setStepTemplate($step);
+        $switchStep = $this->$stepFunction();
 
-        return parent::run();
+        if ($switchStep !== null) {
+            $this->runStep($switchStep);
+        } else {
+            $this->setStepTemplate($step);
+        }
     }
 
     public function stepExists($step)
