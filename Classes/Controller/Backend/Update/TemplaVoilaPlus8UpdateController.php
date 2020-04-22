@@ -487,6 +487,32 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
         // check extensionKey
         $newExtensionKey = strtolower($_POST['newExtensionKey']);
         $selection = $_POST['selection'];
+        $vendorName = strtolower($_POST['vendorName']);
+        $extensionName = strtolower($_POST['extensionName']);
+        $author = strtolower($_POST['author']);
+        $authorCompany = strtolower($_POST['authorCompany']);
+
+        $possibleValues = explode('_', $newExtensionKey);
+
+        if (count($possibleValues) > 1) {
+            $possibleVendorName = array_shift($possibleValues);
+            if (strlen($possibleVendorName) < 4) {
+                $possibleVendorName = strtoupper($possibleVendorName);
+            } else {
+                $possibleVendorName = ucfirst($possibleVendorName);
+            }
+        }
+
+        $possibleExtensionName = implode(' ', array_map('ucfirst', $possibleValues));
+
+
+
+        if (empty($vendorName) && !empty($possibleVendorName)) {
+            $vendorName = $possibleVendorName;
+        }
+        if (empty($extensionName) && !empty($possibleExtensionName)) {
+            $extensionName = $possibleExtensionName;
+        }
 
         // Taken from ExtensionValidator from the extension extension_builder
         /*
@@ -536,6 +562,10 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
             'hasError' => (count($errors) ? true : false),
             'newExtensionKey' => $newExtensionKey,
             'selection' => $selection,
+            'vendorName' => $vendorName,
+            'extensionName' => $extensionName,
+            'author' => $author,
+            'authorCompany' => $authorCompany,
         ]);
     }
 
