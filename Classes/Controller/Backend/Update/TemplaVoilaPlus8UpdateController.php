@@ -456,15 +456,14 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
     }
 
     /**
-     * Build new extension (or replace existing one) or multiple for multiple designs
-     * Or add them to Site Management directories (if support is implemented)
-     * The place may depend if you use composer installed TYPO3 or package based TYPO3
+     * Validate an existing extension (writable, already theme extension, overwrite or add)
+     * or verify extension key and collect information for the new Extension
      */
     protected function step3()
     {
         $selection = $_POST['selection'];
 
-        if ($selection === 'new') {
+        if ($selection === '_new_') {
             return '3NewExtension';
         }
         if (!empty($selection)) {
@@ -494,6 +493,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
 
         $possibleValues = explode('_', $newExtensionKey);
 
+        // Try to determine possible values
         if (count($possibleValues) > 1) {
             $possibleVendorName = array_shift($possibleValues);
             if (strlen($possibleVendorName) < 4) {
@@ -504,9 +504,6 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
         }
 
         $possibleExtensionName = implode(' ', array_map('ucfirst', $possibleValues));
-
-
-
         if (empty($vendorName) && !empty($possibleVendorName)) {
             $vendorName = $possibleVendorName;
         }
@@ -514,7 +511,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
             $extensionName = $possibleExtensionName;
         }
 
-        // Taken from ExtensionValidator from the extension extension_builder
+        // Source taken from ExtensionValidator from the TYPO3 extension extension_builder
         /*
          * Character test
          * Allowed characters are: a-z (lowercase), 0-9 and '_' (underscore)
@@ -575,7 +572,6 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
 
         $selection = $_POST['selection'];
 
-
         $errors[] = 'Using an existing extension isn\'t supported yet.';
 
         $this->fluid->assignMultiple([
@@ -586,12 +582,29 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
     }
 
     /**
-     * Register the generated extensions
-     * Update the map field with the configuration (depending on ds/to)
+     * Build new extension (or replace existing one) or multiple for multiple designs
+     * Or add them to Site Management directories (if support is implemented)
+     * The place may depend if you use composer installed TYPO3 or package based TYPO3
      */
     protected function step4()
     {
+        // Create new extension directory and base extension files
+
+        // Create Configuration/TVP if needed (clear if overwrite mode)
+        // Create/Update Places configuration files
+        // Create new Resources directories
+        // Read old data, convert and write to new places
+        // Hold the mapping information as json
+    }
+
+    /**
+     * Register the generated extensions
+     * Update the map field with the configuration (depending on ds/to)
+     */
+    protected function step5()
+    {
         // Register extensions
+        // Read mapping information from json
         // Update pages
         // Update tt_content
     }
