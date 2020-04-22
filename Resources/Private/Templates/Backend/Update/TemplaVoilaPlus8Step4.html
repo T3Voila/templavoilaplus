@@ -9,6 +9,11 @@
         <input type="hidden" name="selection" value="{selection}">
         <input type="hidden" name="newExtensionKey" value="{newExtensionKey}">
 
+        <input type="hidden" name="vendorName" value="{vendorName}">
+        <input type="hidden" name="extensionName" value="{extensionName}">
+        <input type="hidden" name="author" value="{author}">
+        <input type="hidden" name="authorCompany" value="{authorCompany}">
+
         <f:if condition="{hasError}">
             <f:be.infobox title="Error" state="2">
                 <ul class="list-group">
@@ -17,6 +22,8 @@
                     </f:for>
                 </ul>
             </f:be.infobox>
+
+            <p><input type="checkbox" name="overwrite" value="true"> Remove data or overwrite on rerun.</p>
         </f:if>
 
         <f:if condition="!{hasError}">

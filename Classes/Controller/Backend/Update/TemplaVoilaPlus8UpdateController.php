@@ -17,6 +17,7 @@ namespace Ppi\TemplaVoilaPlus\Controller\Backend\Update;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Package\PackageManager;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -486,10 +487,10 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
         // check extensionKey
         $newExtensionKey = strtolower($_POST['newExtensionKey']);
         $selection = $_POST['selection'];
-        $vendorName = strtolower($_POST['vendorName']);
-        $extensionName = strtolower($_POST['extensionName']);
-        $author = strtolower($_POST['author']);
-        $authorCompany = strtolower($_POST['authorCompany']);
+        $vendorName = $_POST['vendorName'];
+        $extensionName = $_POST['extensionName'];
+        $author = $_POST['author'];
+        $authorCompany = $_POST['authorCompany'];
 
         $possibleValues = explode('_', $newExtensionKey);
 
@@ -593,39 +594,92 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
         /** @var PackageManager */
         $packageManager = GeneralUtility::makeInstance(PackageManager::class);
 
-        /** @var string */
-        $packageBasePath = '';
-        if (version_compare(TYPO3_version, '9.4.0', '>=')) {
-            $packageBasePath = \TYPO3\CMS\Core\Core\Environment::getExtensionsPath();
-        } else {
-            $packageBasePath = PATH_typo3conf . 'ext';
-        }
-
         $selection = $_POST['selection'];
+        $overwrite = $_POST['overwrite'];
         $newExtensionKey = '';
 
-        // Create new extension directory and base extension files
-        if ($selection === '_new_') {
-            $newExtensionKey = $_POST['newExtensionKey'];
+        try {
+            // Create new extension directory and base extension files
+            if ($selection === '_new_') {
+                $newExtensionKey = $_POST['newExtensionKey'];
+                $vendorName = $_POST['vendorName'] ?? 'MyVendor';
+                $extensionName = $_POST['extensionName'] ?? 'MyName';
+                $author = $_POST['author'];
+                $authorCompany = $_POST['authorCompany'];
 
-            $publicExtensionDirectory = $packageBasePath . '/' . $newExtensionKey;
+                $publicExtensionDirectory = $this->getPackagePaths($newExtensionKey);
 
-            /** @TODO With TYPO3 v9 we could support composer pathes which gets symlinks */
-            /** @See extension_builder */
-            if (GeneralUtility::mkdir($publicExtensionDirectory)) {
-                // Create ext_emconf.php
-                // Create composer.json
-                // Create extension registration in ext_localconf which is removed later
-            } else {
-                $errors[] = 'Could not create extension path "' . $publicExtensionDirectory . '"';
+                if (file_exists($publicExtensionDirectory)) {
+                    if ($overwrite) {
+                        // Cleanup from preview run?
+                        if (!GeneralUtility::rmdir($publicExtensionDirectory, true)) {
+                            throw new \Exception('Could not clean up extension path "' . $publicExtensionDirectory . '"');
+                        }
+                    } else {
+                        throw new \Exception('Directory already exists with extension path "' . $publicExtensionDirectory . '"');
+                    }
+                }
+
+                /** @TODO With TYPO3 v9 we could support composer pathes which gets symlinks */
+                /** @See extension_builder */
+                if (GeneralUtility::mkdir($publicExtensionDirectory)) {
+                    // Create ext_emconf.php
+                    $emConfConfig = [
+                        'title' => $extensionName,
+                        'description' => '',
+                        'version' => '0.1.0',
+                        'state' => 'alpha',
+                        'author' => $author,
+                        'author_email' => '',
+                        'author_company' => $authorCompany,
+                        'constraints' => [
+                            'depends' => [
+                                'typo3' => '8.7.0-10.4.99',
+                                'templavoilaplus' => '8.0.0-8.99.99',
+                            ],
+                        ],
+                    ];
+                    $emConfContent = "<?php\n$fileDescription\n\$EM_CONF['$newExtensionKey'] = " . ArrayUtility::arrayExport($emConfConfig) . ";\n";
+                    GeneralUtility::writeFile($publicExtensionDirectory . '/ext_emconf.php', $emConfContent, true);
+
+                    $composerInfo = [
+                        'name' => $vendorName . '/' . $newExtensionKey,
+                        'type' => 'typo3-cms-extension',
+                        'description' => 'My Theme Extension',
+                        'require' => [
+                            'typo3/cms-core' => '^8.7.0 || ^9.5.0 || ^10.4.0',
+                            'templavoilaplus/templavoilaplus' => '~8.0.0',
+                        ],
+                        'replace' => [
+                            $vendorName . '/' . $newExtensionKey => 'self.version',
+                        ],
+                    ];
+
+                    if ($author) {
+                        $composerInfo['authors'][] = [
+                            'name' => $author,
+                            'email' => '',
+                            'role' => 'Developer',
+                        ];
+                    }
+
+                    // Create composer.json
+                    GeneralUtility::writeFile($publicExtensionDirectory . '/composer.json', json_encode($composerInfo, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) . "\n");
+
+                    // Create extension registration in ext_localconf.php which is removed later
+                } else {
+                    throw new \Exception('Could not create extension path "' . $publicExtensionDirectory . '"');
+                }
             }
-        }
 
-        // Create Configuration/TVP if needed (clear if overwrite mode)
-        // Create/Update Places configuration files
-        // Create new Resources directories
-        // Read old data, convert and write to new places
-        // Hold the mapping information as json
+            // Create Configuration/TVP if needed (clear if overwrite mode)
+            // Create/Update Places configuration files
+            // Create new Resources directories
+            // Read old data, convert and write to new places
+            // Hold the mapping information as json
+        } catch (\Exception $e) {
+            $errors[] = $e->getMessage();
+        }
         $this->fluid->assignMultiple([
             'errors' => $errors,
             'hasError' => (count($errors) ? true : false),
@@ -636,6 +690,18 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
             'author' => $author,
             'authorCompany' => $authorCompany,
         ]);
+    }
+
+    protected function getPackagePaths($extensionKey)
+    {
+        $packageBasePath = '';
+        if (version_compare(TYPO3_version, '9.4.0', '>=')) {
+            $packageBasePath = \TYPO3\CMS\Core\Core\Environment::getExtensionsPath();
+        } else {
+            $packageBasePath = PATH_typo3conf . 'ext';
+        }
+
+        return $packageBasePath . '/' . $extensionKey;
     }
 
     /**
