@@ -588,13 +588,54 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
      */
     protected function step4()
     {
+        $errors = [];
+
+        /** @var PackageManager */
+        $packageManager = GeneralUtility::makeInstance(PackageManager::class);
+
+        /** @var string */
+        $packageBasePath = '';
+        if (version_compare(TYPO3_version, '9.4.0', '>=')) {
+            $packageBasePath = \TYPO3\CMS\Core\Core\Environment::getExtensionsPath();
+        } else {
+            $packageBasePath = PATH_typo3conf . 'ext';
+        }
+
+        $selection = $_POST['selection'];
+        $newExtensionKey = '';
+
         // Create new extension directory and base extension files
+        if ($selection === '_new_') {
+            $newExtensionKey = $_POST['newExtensionKey'];
+
+            $publicExtensionDirectory = $packageBasePath . '/' . $newExtensionKey;
+
+            /** @TODO With TYPO3 v9 we could support composer pathes which gets symlinks */
+            /** @See extension_builder */
+            if (GeneralUtility::mkdir($publicExtensionDirectory)) {
+                // Create ext_emconf.php
+                // Create composer.json
+                // Create extension registration in ext_localconf which is removed later
+            } else {
+                $errors[] = 'Could not create extension path "' . $publicExtensionDirectory . '"';
+            }
+        }
 
         // Create Configuration/TVP if needed (clear if overwrite mode)
         // Create/Update Places configuration files
         // Create new Resources directories
         // Read old data, convert and write to new places
         // Hold the mapping information as json
+        $this->fluid->assignMultiple([
+            'errors' => $errors,
+            'hasError' => (count($errors) ? true : false),
+            'newExtensionKey' => $newExtensionKey,
+            'selection' => $selection,
+            'vendorName' => $vendorName,
+            'extensionName' => $extensionName,
+            'author' => $author,
+            'authorCompany' => $authorCompany,
+        ]);
     }
 
     /**
