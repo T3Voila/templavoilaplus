@@ -1,0 +1,43 @@
+{namespace core=TYPO3\CMS\Core\ViewHelpers}
+
+<div class="callout">
+    <h2 class="text-primary">Update configuration to TemplaVoilà! Plus 8</h2>
+    <h2>Step 4 - Extension created</h2>
+
+    <form action="#" method="POST">
+        <input type="hidden" name="update" value="TemplaVoilaPlus8" />
+        <input type="hidden" name="selection" value="{selection}">
+        <input type="hidden" name="newExtensionKey" value="{newExtensionKey}">
+
+        <f:if condition="{hasError}">
+            <f:be.infobox title="Error" state="2">
+                <ul class="list-group">
+                    <f:for each="{errors}" as="validationError">
+                        <li class="list-group-item list-group-item-danger">{validationError}</li>
+                    </f:for>
+                </ul>
+            </f:be.infobox>
+        </f:if>
+
+        <f:if condition="!{hasError}">
+        </f:if>
+
+        <div class="row">
+            <div class="col-sm-4">
+                <button class="btn btn-default btn-block btn-lg" type="submit" name="step" value="3">
+                    <core:icon identifier="actions-view-go-back" /> Back to step 3
+                </button>
+            </div>
+            <div class="col-sm-4">
+                <button class="btn {f:if(condition='!{hasError}', then='btn-success', else='btn-primary')} btn-block btn-lg" type="submit" name="step" value="4">
+                    <core:icon identifier="actions-system-refresh" /> Rerun step 4
+                </button>
+            </div>
+            <div class="col-sm-4">
+                <button class="btn btn-primary btn-block btn-lg {f:if(condition='{hasError}', then='disabled')}" type="{f:if(condition='{hasError}', then='button', else='submit')}" id="continueButton" name="step" value="5">
+                    <core:icon identifier="actions-view-go-forward" /> Continue with step 5
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
