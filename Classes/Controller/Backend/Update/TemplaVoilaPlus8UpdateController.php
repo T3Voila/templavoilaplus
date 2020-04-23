@@ -675,7 +675,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
 
                 // Create extension registration in ext_localconf.php
                 /** @TODO Remove later */
-                $extLocalconf = "<?php\n$fileDescription\ndefined('TYPO3_MODE') or die();\n\n// @TODO This line can be removed after cache is implemented\n\Ppi\TemplaVoilaPlus\Utility\ExtensionUtility::registerExtension('em_tvplus_theme_demo');";
+                $extLocalconf = "<?php\n$fileDescription\ndefined('TYPO3_MODE') or die();\n\n// @TODO This line can be removed after cache is implemented\n\Ppi\TemplaVoilaPlus\Utility\ExtensionUtility::registerExtension('$newExtensionKey');";
                 GeneralUtility::writeFile($publicExtensionDirectory . '/ext_localconf.php', $extLocalconf . "\n");
 
                 // Load package by package manager
@@ -685,10 +685,43 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
 
                 $selection = $newExtensionKey;
             }
+            // Done creating new extension, following is like updating existing extension
 
-            // Create Configuration/TVP if needed (clear if overwrite mode)
-            // Create/Update Places configuration files
+            $publicExtensionDirectory = $this->getPackagePaths($selection);
+            $package = $packageManager->getPackage($selection);
+
+            $packageName = $package->getValueFromComposerManifest('name');
+            // Yes, we get no emConf information from package, so read it from emConf directly
+            $packageTitle = $this->getPackageTitle($selection);
+
+            // Create Configuration/TVP if needed
+            $this->createPath($publicExtensionDirectory, '/Configuration/TVP');
             // Create new Resources directories
+            $this->createPath($publicExtensionDirectory, '/Resources/Private/TVP/DataStructure/Pages');
+            $this->createPath($publicExtensionDirectory, '/Resources/Private/TVP/DataStructure/Fces');
+            $this->createPath($publicExtensionDirectory, '/Resources/Private/TVP/MappingConfiguration');
+            $this->createPath($publicExtensionDirectory, '/Resources/Private/TVP/TemplateConfiguration');
+            $this->createPath($publicExtensionDirectory, '/Resources/Private/TVP/Template');
+
+            $dataStructurePlacesConfig = [
+                $packageName . '/Page/DataStructure' => [
+                    'name' => $packageTitle . ' Pages',
+                    'path' => 'EXT:' . $selection . '/Resources/Private/TVP/DataStructure/Pages',
+                    'scope' => new UnquotedString(\Ppi\TemplaVoilaPlus\Domain\Model\Scope::class . '::SCOPE_PAGE'),
+                    'loadSaveHandler' => new UnquotedString(\Ppi\TemplaVoilaPlus\Handler\LoadSave\XmlLoadSaveHandler::class . '::$identifier'),
+                ],
+                $packageName . '/FCE/DataStructure' => [
+                    'name' => $packageTitle . ' FCEs',
+                    'path' => 'EXT:' . $selection . '/Resources/Private/TVP/DataStructure/Fces',
+                    'scope' => new UnquotedString(\Ppi\TemplaVoilaPlus\Domain\Model\Scope::class . '::SCOPE_FCE'),
+                    'loadSaveHandler' => new UnquotedString(\Ppi\TemplaVoilaPlus\Handler\LoadSave\XmlLoadSaveHandler::class . '::$identifier'),
+                ],
+            ];
+
+            $dataStructurePlaces = "<?php\ndeclare(strict_types=1);\n\nreturn " . $this->arrayExport($dataStructurePlacesConfig) . ";\n";
+            GeneralUtility::writeFile($publicExtensionDirectory . '/Configuration/TVP/DataStructurePlaces.php', $dataStructurePlaces, true);
+
+            // Create/Update Places configuration files
             // Read old data, convert and write to new places
             // Hold the mapping information as json
         } catch (\Exception $e) {
@@ -706,7 +739,14 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
         ]);
     }
 
-    protected function getPackagePaths($extensionKey)
+    protected function createPath($publicExtensionDirectory, $subPath)
+    {
+        if (!file_exists($publicExtensionDirectory . $subPath)) {
+            GeneralUtility::mkdir_deep($publicExtensionDirectory, $subPath);
+        }
+    }
+
+    protected function getPackagePaths($extensionKey): string
     {
         $packageBasePath = '';
         if (version_compare(TYPO3_version, '9.4.0', '>=')) {
@@ -716,6 +756,22 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
         }
 
         return $packageBasePath . '/' . $extensionKey;
+    }
+
+    protected function getPackageTitle($extensionKey): string
+    {
+        $title = '';
+        $path = $this->getPackagePaths($extensionKey);
+        $file = $path . '/ext_emconf.php';
+        $EM_CONF = null;
+        if (file_exists($file)) {
+            include $file;
+            if (is_array($EM_CONF[$extensionKey]) && isset($EM_CONF[$extensionKey]['title'])) {
+                $title = $EM_CONF[$extensionKey]['title'];
+            }
+        }
+
+        return $title;
     }
 
     /**
@@ -733,6 +789,70 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
     protected function stepFinal()
     {
         // Write into sys_registry
+    }
+
+
+    /**
+     * Taken from TYPO3 Core ArrayUtility and expanded for our special object of non quoted string
+     * Exports an array as string.
+     * Similar to var_export(), but representation follows the PSR-2 and TYPO3 core CGL.
+     *
+     * See unit tests for detailed examples
+     *
+     * @param array $array Array to export
+     * @param int $level Internal level used for recursion, do *not* set from outside!
+     * @return string String representation of array
+     * @throws \RuntimeException
+     */
+    public static function arrayExport(array $array = [], $level = 0)
+    {
+        $lines = '[' . LF;
+        $level++;
+        $writeKeyIndex = false;
+        $expectedKeyIndex = 0;
+        foreach ($array as $key => $value) {
+            if ($key === $expectedKeyIndex) {
+                $expectedKeyIndex++;
+            } else {
+                // Found a non integer or non consecutive key, so we can break here
+                $writeKeyIndex = true;
+                break;
+            }
+        }
+        foreach ($array as $key => $value) {
+            // Indention
+            $lines .= str_repeat('    ', $level);
+            if ($writeKeyIndex) {
+                // Numeric / string keys
+                $lines .= is_int($key) ? $key . ' => ' : '\'' . $key . '\' => ';
+            }
+            if (is_array($value)) {
+                if (!empty($value)) {
+                    $lines .= self::arrayExport($value, $level);
+                } else {
+                    $lines .= '[],' . LF;
+                }
+            } elseif (is_int($value) || is_float($value)) {
+                $lines .= $value . ',' . LF;
+            } elseif (is_null($value)) {
+                $lines .= 'null' . ',' . LF;
+            } elseif (is_bool($value)) {
+                $lines .= $value ? 'true' : 'false';
+                $lines .= ',' . LF;
+            } elseif (is_string($value)) {
+                // Quote \ to \\
+                $stringContent = str_replace('\\', '\\\\', $value);
+                // Quote ' to \'
+                $stringContent = str_replace('\'', '\\\'', $stringContent);
+                $lines .= '\'' . $stringContent . '\'' . ',' . LF;
+            } elseif ($value instanceof UnquotedString) {
+                $lines .= (string) $value . ',' . LF;
+            } else {
+                throw new \RuntimeException('Objects are not supported', 1342294987);
+            }
+        }
+        $lines .= str_repeat('    ', ($level - 1)) . ']' . ($level - 1 == 0 ? '' : ',' . LF);
+        return $lines;
     }
 
     protected function stepTODO()
@@ -798,4 +918,10 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
 
         return false;
     }
+}
+
+class UnquotedString {
+    private $value = '';
+    public function __construct(string $value) {$this->value = $value;}
+    public function __toString(): string { return $this->value; }
 }
