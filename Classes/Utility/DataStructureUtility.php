@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace Ppi\TemplaVoilaPlus\Utility;
 
 /*
@@ -16,6 +17,8 @@ namespace Ppi\TemplaVoilaPlus\Utility;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
+use Ppi\TemplaVoilaPlus\Service\ConfigurationService;
+
 /**
  * Class with static functions for data structures templavoila.
  *
@@ -27,13 +30,14 @@ final class DataStructureUtility
     {
         $indentation = 0;
 
-        $conf = unserialize(
-            $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoilaplus']
-        );
+        /** @var ConfigurationService */
+        $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
+        $conf = $configurationService->getExtensionConfig();
 
-        if (isset($conf['ds.']['indentation'])) {
-            $indentation = (int)$conf['ds.']['indentation'];
+        if (isset($conf['ds']['indentation'])) {
+            $indentation = (int)$conf['ds']['indentation'];
         }
+
         return '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>'
         . LF
         . GeneralUtility::array2xml(
