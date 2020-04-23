@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace Ppi\TemplaVoilaPlus\Controller\Backend\Update;
 
 /*
@@ -19,6 +20,8 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+
+use Ppi\TemplaVoilaPlus\Utility\DataStructureUtility;
 
 /**
  * Controller to migrate/update from TV+ 7 to TV+ 8
@@ -74,17 +77,8 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
         }
 
         // Search for all DS configurations
-        $useStaticDS = false;
-        if ($this->extConf['staticDS']['enable'])
-        {
-            // Load all DS from path
-            $useStaticDS = true;
-            $allDs = $this->getAllDsFromStatic();
-        } else {
-            // Load DS from DB
-            /** @TODO Implement */
-            $allDs = [];
-        }
+        $useStaticDS = $this->getUseStaticDs();
+        $allDs = $this->getAllDs($useStaticDS);
 
         // Search for all TO configurations
         $allTo = $this->getAllToFromDB();
@@ -117,6 +111,30 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
             'validationPagesContentErrors' => $validationPagesContentErrors,
             'allChecksAreFine' => $allChecksAreFine,
         ]);
+    }
+
+    protected function getUseStaticDs(): bool
+    {
+        if ($this->extConf['staticDS']['enable'])
+        {
+            return true;
+        }
+        return false;
+    }
+
+    protected function getAllDs(): array
+    {
+        if ($this->getUseStaticDs())
+        {
+            // Load all DS from path
+            $allDs = $this->getAllDsFromStatic();
+        } else {
+            // Load DS from DB
+            /** @TODO Implement */
+            $allDs = [];
+        }
+
+        return $allDs;
     }
 
     protected function doesTableExists(string $tablename): bool
@@ -703,6 +721,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
             $this->createPath($publicExtensionDirectory, '/Resources/Private/TVP/TemplateConfiguration');
             $this->createPath($publicExtensionDirectory, '/Resources/Private/TVP/Template');
 
+            // Generate DataStructureConfiguration
             $dataStructurePlacesConfig = [
                 $packageName . '/Page/DataStructure' => [
                     'name' => $packageTitle . ' Pages',
@@ -721,6 +740,9 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
             $dataStructurePlaces = "<?php\ndeclare(strict_types=1);\n\nreturn " . $this->arrayExport($dataStructurePlacesConfig) . ";\n";
             GeneralUtility::writeFile($publicExtensionDirectory . '/Configuration/TVP/DataStructurePlaces.php', $dataStructurePlaces, true);
 
+            $ds = $this->getAllDs();
+            $this->convertAllDs($ds, $publicExtensionDirectory . '/Resources/Private/TVP/DataStructure');
+
             // Create/Update Places configuration files
             // Read old data, convert and write to new places
             // Hold the mapping information as json
@@ -737,6 +759,42 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
             'author' => $author,
             'authorCompany' => $authorCompany,
         ]);
+    }
+
+    protected function convertAllDs(array $allDs, string $baseDsPath)
+    {
+        $systemPath = $this->getSystemPath();
+
+        foreach ($allDs as $ds) {
+            /** @TODO for DB ds read XML in an other way */
+            $dsXml = file_get_contents($systemPath . $ds['path']);
+            $dataStructure = GeneralUtility::xml2array($dsXml);
+
+            // Cleanup meta part
+            /** @TODO Move langDisable/langChildren/langDatabaseOverlay/noEditOnCreation(?)/default[] into Mapping(?)
+             * Or should noEditOnCreation(?)/default[] better stay here? Needs a look inside core
+             */
+            $title = $dataStructure['meta']['title'] ?? '';
+            unset($dataStructure['meta']);
+            $dataStructure['meta']['title'] = $title;
+
+            $filename = basename($ds['path']);
+            $filepath = $baseDsPath;
+
+            switch ($ds['scope']) {
+                case \Ppi\TemplaVoilaPlus\Domain\Model\Scope::SCOPE_PAGE:
+                    $filepath .= '/Pages';
+                    break;
+                case \Ppi\TemplaVoilaPlus\Domain\Model\Scope::SCOPE_FCE:
+                    $filepath .= '/Fces';
+                    break;
+                default:
+                    // Empty, as we do not add a path segment on umknown scopes
+            }
+
+            $dsXml = DataStructureUtility::array2xml($dataStructure);
+            GeneralUtility::writeFile($filepath . '/' . $filename, $dsXml);
+        }
     }
 
     protected function createPath($publicExtensionDirectory, $subPath)
