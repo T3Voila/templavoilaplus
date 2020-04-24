@@ -745,7 +745,9 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
             GeneralUtility::writeFile($publicExtensionDirectory . $innerPathes['configuration'] . '/DataStructurePlaces.php', $dataStructurePlaces, true);
 
             $ds = $this->getAllDs();
-            $this->convertAllDs($ds, $publicExtensionDirectory, $innerPathes);
+            /** @TODO Support for multiple sorage_pids */
+            $to = $this->getAllToFromDB();
+            $this->convertDsTo($ds, $to, $publicExtensionDirectory, $innerPathes);
 
             // Create/Update Places configuration files
             // Read old data, convert and write to new places
@@ -765,39 +767,41 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
         ]);
     }
 
-    protected function convertAllDs(array $allDs, string $publicExtensionDirectory, array $innerPathes)
+    protected function convertDsTo(array $allDs, array $to, string $publicExtensionDirectory, array $innerPathes)
     {
         $systemPath = $this->getSystemPath();
 
-        foreach ($allDs as $ds) {
-            /** @TODO for DB ds read XML in an other way */
-            $dsXml = file_get_contents($systemPath . $ds['path']);
-            $dataStructure = GeneralUtility::xml2array($dsXml);
-
-            // Cleanup meta part
-            /** @TODO Move langDisable/langChildren/langDatabaseOverlay/noEditOnCreation(?)/default[] into Mapping(?)
-             * Or should noEditOnCreation(?)/default[] better stay here? Needs a look inside core
-             */
-            $title = $dataStructure['meta']['title'] ?? '';
-            unset($dataStructure['meta']);
-            $dataStructure['meta']['title'] = $title;
-
-            $filename = basename($ds['path']);
-
-            switch ($ds['scope']) {
-                case \Ppi\TemplaVoilaPlus\Domain\Model\Scope::SCOPE_PAGE:
-                    $filepath = $publicExtensionDirectory . $innerPathes['ds_pages'];
-                    break;
-                case \Ppi\TemplaVoilaPlus\Domain\Model\Scope::SCOPE_FCE:
-                    $filepath = $publicExtensionDirectory . $innerPathes['ds_fces'];
-                    break;
-                default:
-                    $filepath = $publicExtensionDirectory . $innerPathes['ds'];
-            }
-
-            $dsXml = DataStructureUtility::array2xml($dataStructure);
-            GeneralUtility::writeFile($filepath . '/' . $filename, $dsXml);
-        }
+        // Change the logic the other way arround, we need to itterate over the TOs
+        // and then convert the dependend DS files as we need their data for the mappings
+//         foreach ($allDs as $ds) {
+//             /** @TODO for DB ds read XML in an other way */
+//             $dsXml = file_get_contents($systemPath . $ds['path']);
+//             $dataStructure = GeneralUtility::xml2array($dsXml);
+//
+//             // Cleanup meta part
+//             /** @TODO Move langDisable/langChildren/langDatabaseOverlay/noEditOnCreation(?)/default[] into Mapping(?)
+//              * Or should noEditOnCreation(?)/default[] better stay here? Needs a look inside core
+//              */
+//             $title = $dataStructure['meta']['title'] ?? '';
+//             unset($dataStructure['meta']);
+//             $dataStructure['meta']['title'] = $title;
+//
+//             $filename = basename($ds['path']);
+//
+//             switch ($ds['scope']) {
+//                 case \Ppi\TemplaVoilaPlus\Domain\Model\Scope::SCOPE_PAGE:
+//                     $filepath = $publicExtensionDirectory . $innerPathes['ds_pages'];
+//                     break;
+//                 case \Ppi\TemplaVoilaPlus\Domain\Model\Scope::SCOPE_FCE:
+//                     $filepath = $publicExtensionDirectory . $innerPathes['ds_fces'];
+//                     break;
+//                 default:
+//                     $filepath = $publicExtensionDirectory . $innerPathes['ds'];
+//             }
+//
+//             $dsXml = DataStructureUtility::array2xml($dataStructure);
+//             GeneralUtility::writeFile($filepath . '/' . $filename, $dsXml);
+//         }
     }
 
     protected function createPaths(string $publicExtensionDirectory, array $innerSubPaths)
