@@ -30,7 +30,7 @@ class StepUpdateController extends AbstractUpdateController
      */
     public function run()
     {
-        $step = GeneralUtility::_GP('step');
+        $step = GeneralUtility::_GP('step') ?? '';
 
         if (!$this->stepExists($step)) {
             $step = 'start';
