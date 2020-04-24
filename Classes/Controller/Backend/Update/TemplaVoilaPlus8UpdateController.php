@@ -712,36 +712,40 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
             // Yes, we get no emConf information from package, so read it from emConf directly
             $packageTitle = $this->getPackageTitle($selection);
 
-            // Create Configuration/TVP if needed
-            $this->createPath($publicExtensionDirectory, '/Configuration/TVP');
-            // Create new Resources directories
-            $this->createPath($publicExtensionDirectory, '/Resources/Private/TVP/DataStructure/Pages');
-            $this->createPath($publicExtensionDirectory, '/Resources/Private/TVP/DataStructure/Fces');
-            $this->createPath($publicExtensionDirectory, '/Resources/Private/TVP/MappingConfiguration');
-            $this->createPath($publicExtensionDirectory, '/Resources/Private/TVP/TemplateConfiguration');
-            $this->createPath($publicExtensionDirectory, '/Resources/Private/TVP/Template');
+            $innerPathes = [
+                'configuration' => '/Configuration/TVP',
+                'ds' => '/Resources/Private/TVP/DataStructure/',
+                'ds_pages' => '/Resources/Private/TVP/DataStructure/Pages',
+                'ds_fces' => '/Resources/Private/TVP/DataStructure/Fces',
+                'mappingConfiguration' => '/Resources/Private/TVP/MappingConfiguration',
+                'templateConfiguration' => '/Resources/Private/TVP/TemplateConfiguration',
+                'templates' => '/Resources/Private/TVP/Template',
+            ];
+
+            // Create path if needed
+            $this->createPaths($publicExtensionDirectory, $innerPathes);
 
             // Generate DataStructureConfiguration
             $dataStructurePlacesConfig = [
                 $packageName . '/Page/DataStructure' => [
                     'name' => $packageTitle . ' Pages',
-                    'path' => 'EXT:' . $selection . '/Resources/Private/TVP/DataStructure/Pages',
+                    'path' => 'EXT:' . $selection . $innerPathes['ds_pages'],
                     'scope' => new UnquotedString(\Ppi\TemplaVoilaPlus\Domain\Model\Scope::class . '::SCOPE_PAGE'),
                     'loadSaveHandler' => new UnquotedString(\Ppi\TemplaVoilaPlus\Handler\LoadSave\XmlLoadSaveHandler::class . '::$identifier'),
                 ],
                 $packageName . '/FCE/DataStructure' => [
                     'name' => $packageTitle . ' FCEs',
-                    'path' => 'EXT:' . $selection . '/Resources/Private/TVP/DataStructure/Fces',
+                    'path' => 'EXT:' . $selection . $innerPathes['ds_fces'],
                     'scope' => new UnquotedString(\Ppi\TemplaVoilaPlus\Domain\Model\Scope::class . '::SCOPE_FCE'),
                     'loadSaveHandler' => new UnquotedString(\Ppi\TemplaVoilaPlus\Handler\LoadSave\XmlLoadSaveHandler::class . '::$identifier'),
                 ],
             ];
 
             $dataStructurePlaces = "<?php\ndeclare(strict_types=1);\n\nreturn " . $this->arrayExport($dataStructurePlacesConfig) . ";\n";
-            GeneralUtility::writeFile($publicExtensionDirectory . '/Configuration/TVP/DataStructurePlaces.php', $dataStructurePlaces, true);
+            GeneralUtility::writeFile($publicExtensionDirectory . $innerPathes['configuration'] . '/DataStructurePlaces.php', $dataStructurePlaces, true);
 
             $ds = $this->getAllDs();
-            $this->convertAllDs($ds, $publicExtensionDirectory . '/Resources/Private/TVP/DataStructure');
+            $this->convertAllDs($ds, $publicExtensionDirectory, $innerPathes);
 
             // Create/Update Places configuration files
             // Read old data, convert and write to new places
@@ -761,7 +765,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
         ]);
     }
 
-    protected function convertAllDs(array $allDs, string $baseDsPath)
+    protected function convertAllDs(array $allDs, string $publicExtensionDirectory, array $innerPathes)
     {
         $systemPath = $this->getSystemPath();
 
@@ -779,17 +783,16 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
             $dataStructure['meta']['title'] = $title;
 
             $filename = basename($ds['path']);
-            $filepath = $baseDsPath;
 
             switch ($ds['scope']) {
                 case \Ppi\TemplaVoilaPlus\Domain\Model\Scope::SCOPE_PAGE:
-                    $filepath .= '/Pages';
+                    $filepath = $publicExtensionDirectory . $innerPathes['ds_pages'];
                     break;
                 case \Ppi\TemplaVoilaPlus\Domain\Model\Scope::SCOPE_FCE:
-                    $filepath .= '/Fces';
+                    $filepath = $publicExtensionDirectory . $innerPathes['ds_fces'];
                     break;
                 default:
-                    // Empty, as we do not add a path segment on umknown scopes
+                    $filepath = $publicExtensionDirectory . $innerPathes['ds'];
             }
 
             $dsXml = DataStructureUtility::array2xml($dataStructure);
@@ -797,7 +800,14 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
         }
     }
 
-    protected function createPath($publicExtensionDirectory, $subPath)
+    protected function createPaths(string $publicExtensionDirectory, array $innerSubPaths)
+    {
+        foreach ($innerSubPaths as $subPath) {
+            $this->createPath($publicExtensionDirectory, $subPath);
+        }
+    }
+
+    protected function createPath(string $publicExtensionDirectory, string $subPath)
     {
         if (!file_exists($publicExtensionDirectory . $subPath)) {
             GeneralUtility::mkdir_deep($publicExtensionDirectory, $subPath);
