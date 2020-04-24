@@ -98,6 +98,12 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
 
         $allChecksAreFine = $allOldDatabaseElementsFound && $allNewDatabaseElementsFound && $storagePidsAreFine && $allDsToValid && $allPagesContentValid;
 
+
+        $indentation = 0;
+        if (isset($this->extConf['ds']['indentation'])) {
+            $indentation = (int)$this->extConf['ds']['indentation'];
+        }
+
         $this->fluid->assignMultiple([
             'allOldDatabaseElementsFound' => $allOldDatabaseElementsFound,
             'allNewDatabaseElementsFound' => $allNewDatabaseElementsFound,
@@ -110,6 +116,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
             'allPagesContentValid' => $allPagesContentValid,
             'validationPagesContentErrors' => $validationPagesContentErrors,
             'allChecksAreFine' => $allChecksAreFine,
+            'indentation' => $indentation,
         ]);
     }
 
