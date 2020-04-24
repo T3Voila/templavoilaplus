@@ -715,17 +715,28 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
             $publicExtensionDirectory = $this->getPackagePaths($selection);
             $package = $packageManager->getPackage($selection);
 
+            /** @TODO UpperCamelCase conversion? */
             $packageName = $package->getValueFromComposerManifest('name');
             // Yes, we get no emConf information from package, so read it from emConf directly
             $packageTitle = $this->getPackageTitle($selection);
 
             $innerPathes = [
                 'configuration' => '/Configuration/TVP',
-                'ds' => '/Resources/Private/TVP/DataStructure/',
-                'ds_pages' => '/Resources/Private/TVP/DataStructure/Pages',
-                'ds_fces' => '/Resources/Private/TVP/DataStructure/Fces',
-                'mappingConfiguration' => '/Resources/Private/TVP/MappingConfiguration',
-                'templateConfiguration' => '/Resources/Private/TVP/TemplateConfiguration',
+                'ds' => [
+                    'unknown' => '/Resources/Private/TVP/DataStructure/',
+                    'page' => '/Resources/Private/TVP/DataStructure/Pages',
+                    'fce' => '/Resources/Private/TVP/DataStructure/Fces',
+                ],
+                'mappingConfiguration' => [
+                    'unknown' => '/Resources/Private/TVP/MappingConfiguration',
+                    'page' => '/Resources/Private/TVP/MappingConfiguration/Pages',
+                    'fce' => '/Resources/Private/TVP/MappingConfiguration/Fces',
+                ],
+                'templateConfiguration' => [
+                    'unknown' => '/Resources/Private/TVP/TemplateConfiguration',
+                    'page' => '/Resources/Private/TVP/TemplateConfiguration/Pages',
+                    'fce' => '/Resources/Private/TVP/TemplateConfiguration/Fces',
+                ],
                 'templates' => '/Resources/Private/TVP/Template',
             ];
 
@@ -736,13 +747,13 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
             $dataStructurePlacesConfig = [
                 $packageName . '/Page/DataStructure' => [
                     'name' => $packageTitle . ' Pages',
-                    'path' => 'EXT:' . $selection . $innerPathes['ds_pages'],
+                    'path' => 'EXT:' . $selection . $innerPathes['ds']['page'],
                     'scope' => new UnquotedString(\Ppi\TemplaVoilaPlus\Domain\Model\Scope::class . '::SCOPE_PAGE'),
                     'loadSaveHandler' => new UnquotedString(\Ppi\TemplaVoilaPlus\Handler\LoadSave\XmlLoadSaveHandler::class . '::$identifier'),
                 ],
                 $packageName . '/FCE/DataStructure' => [
                     'name' => $packageTitle . ' FCEs',
-                    'path' => 'EXT:' . $selection . $innerPathes['ds_fces'],
+                    'path' => 'EXT:' . $selection . $innerPathes['ds']['fce'],
                     'scope' => new UnquotedString(\Ppi\TemplaVoilaPlus\Domain\Model\Scope::class . '::SCOPE_FCE'),
                     'loadSaveHandler' => new UnquotedString(\Ppi\TemplaVoilaPlus\Handler\LoadSave\XmlLoadSaveHandler::class . '::$identifier'),
                 ],
@@ -754,7 +765,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
             $ds = $this->getAllDs();
             /** @TODO Support for multiple sorage_pids */
             $to = $this->getAllToFromDB();
-            $this->convertDsTo($ds, $to, $publicExtensionDirectory, $innerPathes);
+            $this->convertDsTo($ds, $to, $packageName, $publicExtensionDirectory, $innerPathes);
 
             // Create/Update Places configuration files
             // Read old data, convert and write to new places
@@ -774,12 +785,69 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
         ]);
     }
 
-    protected function convertDsTo(array $allDs, array $to, string $publicExtensionDirectory, array $innerPathes)
+    protected function convertDsTo(array $allDs, array $allTos, string $packageName, string $publicExtensionDirectory, array $innerPathes)
     {
         $systemPath = $this->getSystemPath();
 
         // Change the logic the other way arround, we need to itterate over the TOs
         // and then convert the dependend DS files as we need their data for the mappings
+        foreach ($allTos as $to) {
+
+            if ($to['parent'] !== 0) {
+                /** @TODO Implement subtemplates/rendertypes */
+                continue;
+            }
+
+            $resultingFileName = $this->copyFile($to['fileref'], $publicExtensionDirectory, $innerPathes['templates']);
+            $yamlFileName = pathinfo($resultingFileName,  PATHINFO_FILENAME) . '.tvp.yaml';
+
+            $ds = $this->getDsForTo($allDs, $to);
+
+            switch ($ds['scope']) {
+                case \Ppi\TemplaVoilaPlus\Domain\Model\Scope::SCOPE_PAGE:
+                    $scopePath = '/Page';
+                    $scopeName = 'page';
+                    break;
+                case \Ppi\TemplaVoilaPlus\Domain\Model\Scope::SCOPE_FCE:
+                    $scopePath = '/FCE';
+                    $scopeName = 'fce';
+                    break;
+                default:
+                    $scopePath = '';
+                    $scopeName = 'unknown';
+            }
+
+            $templateConfiguration = [
+                'tvp-template' => [
+                    'meta' => [
+                        'name' => $to['title'],
+                        'renderer' => \Ppi\TemplaVoilaPlus\Handler\Render\XpathRenderHandler::$identifier,
+                        'template' => '../../' . $resultingFileName,
+                    ],
+                ],
+            ];
+
+            $mappingConfiguration = [
+                'tvp-mapping' => [
+                    'meta' => [
+                        'name' => $to['title'],
+                    ],
+                    'combinedTemplateConfigurationIdentifier' => $packageName . $scopePath . '/Template:' . $yamlFileName,
+                ],
+            ];
+
+
+            GeneralUtility::writeFile(
+                $publicExtensionDirectory . $innerPathes['templateConfiguration'][$scopeName] . '/' . $yamlFileName,
+                \Symfony\Component\Yaml\Yaml::dump($templateConfiguration, 100) // No inline style please
+            );
+
+            GeneralUtility::writeFile(
+                $publicExtensionDirectory . $innerPathes['mappingConfiguration'][$scopeName] . '/' . $yamlFileName,
+                \Symfony\Component\Yaml\Yaml::dump($mappingConfiguration, 100) // No inline style please
+            );
+//             var_dump($to);die();
+        }
 //         foreach ($allDs as $ds) {
 //             /** @TODO for DB ds read XML in an other way */
 //             $dsXml = file_get_contents($systemPath . $ds['path']);
@@ -811,10 +879,45 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
 //         }
     }
 
+    /** @TODO Implement also for non static DS */
+    protected function getDsForTo(array $allDs, array $to): array
+    {
+        foreach ($allDs as $ds) {
+            if ($ds['path'] === $to['datastructure']) {
+                return $ds;
+            }
+        }
+        throw new \Exception('DataStructure "' . $to['datastructure'] . '" not found for Template Object with uid "' . $to['uid'] . '"');
+    }
+
+    protected function copyFile($readPathAndFilename, $publicExtensionDirectory, $subPath)
+    {
+        $source = GeneralUtility::getFileAbsFileName($readPathAndFilename);
+        $filename = basename($readPathAndFilename);
+        $destination = $publicExtensionDirectory . $subPath . '/';
+
+        if (file_exists($destination . $filename)) {
+            /** @TODO Implement me */
+//             $destination = $this->getUniqueFilename($destination, $filename);
+            throw new \Exception('Doubled file names arent implemented yet');
+        }
+
+//         $result = @copy($source, $destination . $filename);
+        if ($result) {
+            GeneralUtility::fixPermissions($destination . $filename);
+        }
+
+        return  $filename;
+    }
+
     protected function createPaths(string $publicExtensionDirectory, array $innerSubPaths)
     {
         foreach ($innerSubPaths as $subPath) {
-            $this->createPath($publicExtensionDirectory, $subPath);
+            if (is_array($subPath)) {
+                $this->createPaths($publicExtensionDirectory, $subPath);
+            } else {
+                $this->createPath($publicExtensionDirectory, $subPath);
+            }
         }
     }
 
