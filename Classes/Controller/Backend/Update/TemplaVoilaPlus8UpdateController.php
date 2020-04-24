@@ -803,6 +803,11 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
 
             $ds = $this->getDsForTo($allDs, $to);
 
+            /** @TODO for DB ds read XML in an other way */
+            $dsXml = file_get_contents($systemPath . $ds['path']);
+            $dataStructure = GeneralUtility::xml2array($dsXml);
+            $dsXmlFileName = basename($ds['path']);
+
             switch ($ds['scope']) {
                 case \Ppi\TemplaVoilaPlus\Domain\Model\Scope::SCOPE_PAGE:
                     $scopePath = '/Page';
@@ -832,10 +837,10 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
                     'meta' => [
                         'name' => $to['title'],
                     ],
+                    'combinedDataStructureIdentifier' => $packageName . $scopePath . '/DataStructure:' . $dsXmlFileName,
                     'combinedTemplateConfigurationIdentifier' => $packageName . $scopePath . '/Template:' . $yamlFileName,
                 ],
             ];
-
 
             GeneralUtility::writeFile(
                 $publicExtensionDirectory . $innerPathes['templateConfiguration'][$scopeName] . '/' . $yamlFileName,
@@ -846,12 +851,14 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
                 $publicExtensionDirectory . $innerPathes['mappingConfiguration'][$scopeName] . '/' . $yamlFileName,
                 \Symfony\Component\Yaml\Yaml::dump($mappingConfiguration, 100) // No inline style please
             );
+
+            GeneralUtility::writeFile(
+                $publicExtensionDirectory . $innerPathes['ds'][$scopeName] . '/' . $dsXmlFileName,
+                DataStructureUtility::array2xml($dataStructure)
+            );
 //             var_dump($to);die();
         }
 //         foreach ($allDs as $ds) {
-//             /** @TODO for DB ds read XML in an other way */
-//             $dsXml = file_get_contents($systemPath . $ds['path']);
-//             $dataStructure = GeneralUtility::xml2array($dsXml);
 //
 //             // Cleanup meta part
 //             /** @TODO Move langDisable/langChildren/langDatabaseOverlay/noEditOnCreation(?)/default[] into Mapping(?)
@@ -861,21 +868,6 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
 //             unset($dataStructure['meta']);
 //             $dataStructure['meta']['title'] = $title;
 //
-//             $filename = basename($ds['path']);
-//
-//             switch ($ds['scope']) {
-//                 case \Ppi\TemplaVoilaPlus\Domain\Model\Scope::SCOPE_PAGE:
-//                     $filepath = $publicExtensionDirectory . $innerPathes['ds_pages'];
-//                     break;
-//                 case \Ppi\TemplaVoilaPlus\Domain\Model\Scope::SCOPE_FCE:
-//                     $filepath = $publicExtensionDirectory . $innerPathes['ds_fces'];
-//                     break;
-//                 default:
-//                     $filepath = $publicExtensionDirectory . $innerPathes['ds'];
-//             }
-//
-//             $dsXml = DataStructureUtility::array2xml($dataStructure);
-//             GeneralUtility::writeFile($filepath . '/' . $filename, $dsXml);
 //         }
     }
 
