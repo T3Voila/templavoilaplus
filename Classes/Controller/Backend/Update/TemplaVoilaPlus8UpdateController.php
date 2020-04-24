@@ -664,6 +664,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
                     'author' => $author,
                     'author_email' => '',
                     'author_company' => $authorCompany,
+                    'clearCacheOnLoad' => true,
                     'constraints' => [
                         'depends' => [
                             'typo3' => '8.7.0-10.4.99',
@@ -743,7 +744,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
             // Create path if needed
             $this->createPaths($publicExtensionDirectory, $innerPathes);
 
-            // Generate DataStructureConfiguration
+            // Generate Place Configuration for DataStructure
             $dataStructurePlacesConfig = [
                 $packageName . '/Page/DataStructure' => [
                     'name' => $packageTitle . ' Pages',
@@ -759,13 +760,51 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
                 ],
             ];
 
+            // Generate Place Configuration for Mapping
+            $mappingConfigurationPlacesConfig = [
+                $packageName . '/Page/MappingConfiguration' => [
+                    'name' => $packageTitle . ' Pages',
+                    'path' => 'EXT:' . $selection . $innerPathes['mappingConfiguration']['page'],
+                    'scope' => new UnquotedString(\Ppi\TemplaVoilaPlus\Domain\Model\Scope::class . '::SCOPE_PAGE'),
+                    'loadSaveHandler' => new UnquotedString(\Ppi\TemplaVoilaPlus\Handler\LoadSave\YamlLoadSaveHandler::class . '::$identifier'),
+                ],
+                $packageName . '/FCE/MappingConfiguration' => [
+                    'name' => $packageTitle . ' FCEs',
+                    'path' => 'EXT:' . $selection . $innerPathes['mappingConfiguration']['fce'],
+                    'scope' => new UnquotedString(\Ppi\TemplaVoilaPlus\Domain\Model\Scope::class . '::SCOPE_FCE'),
+                    'loadSaveHandler' => new UnquotedString(\Ppi\TemplaVoilaPlus\Handler\LoadSave\YamlLoadSaveHandler::class . '::$identifier'),
+                ],
+            ];
+
+            // Generate Place Configuration for Template
+            $templateConfigurationPlacesConfig = [
+                $packageName . '/Page/TemplateConfiguration' => [
+                    'name' => $packageTitle . ' Pages',
+                    'path' => 'EXT:' . $selection . $innerPathes['templateConfiguration']['page'],
+                    'scope' => new UnquotedString(\Ppi\TemplaVoilaPlus\Domain\Model\Scope::class . '::SCOPE_PAGE'),
+                    'loadSaveHandler' => new UnquotedString(\Ppi\TemplaVoilaPlus\Handler\LoadSave\YamlLoadSaveHandler::class . '::$identifier'),
+                ],
+                $packageName . '/FCE/TemplateConfiguration' => [
+                    'name' => $packageTitle . ' FCEs',
+                    'path' => 'EXT:' . $selection . $innerPathes['templateConfiguration']['fce'],
+                    'scope' => new UnquotedString(\Ppi\TemplaVoilaPlus\Domain\Model\Scope::class . '::SCOPE_FCE'),
+                    'loadSaveHandler' => new UnquotedString(\Ppi\TemplaVoilaPlus\Handler\LoadSave\YamlLoadSaveHandler::class . '::$identifier'),
+                ],
+            ];
+
             $dataStructurePlaces = "<?php\ndeclare(strict_types=1);\n\nreturn " . $this->arrayExport($dataStructurePlacesConfig) . ";\n";
             GeneralUtility::writeFile($publicExtensionDirectory . $innerPathes['configuration'] . '/DataStructurePlaces.php', $dataStructurePlaces, true);
+
+            $mappingConfigurationPlaces = "<?php\ndeclare(strict_types=1);\n\nreturn " . $this->arrayExport($mappingConfigurationPlacesConfig) . ";\n";
+            GeneralUtility::writeFile($publicExtensionDirectory . $innerPathes['configuration'] . '/MappingPlaces.php', $mappingConfigurationPlaces, true);
+
+            $templateConfigurationPlaces = "<?php\ndeclare(strict_types=1);\n\nreturn " . $this->arrayExport($templateConfigurationPlacesConfig) . ";\n";
+            GeneralUtility::writeFile($publicExtensionDirectory . $innerPathes['configuration'] . '/TemplatePlaces.php', $templateConfigurationPlaces, true);
 
             $ds = $this->getAllDs();
             /** @TODO Support for multiple sorage_pids */
             $to = $this->getAllToFromDB();
-            $this->convertDsTo($ds, $to, $packageName, $publicExtensionDirectory, $innerPathes);
+            $covertingInstructions = $this->convertDsTo($ds, $to, $packageName, $publicExtensionDirectory, $innerPathes);
 
             // Create/Update Places configuration files
             // Read old data, convert and write to new places
@@ -782,12 +821,15 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
             'extensionName' => $extensionName,
             'author' => $author,
             'authorCompany' => $authorCompany,
+            'covertingInstructions' => $covertingInstructions,
+            'covertingInstructionsJson' => json_encode($covertingInstructions),
         ]);
     }
 
-    protected function convertDsTo(array $allDs, array $allTos, string $packageName, string $publicExtensionDirectory, array $innerPathes)
+    protected function convertDsTo(array $allDs, array $allTos, string $packageName, string $publicExtensionDirectory, array $innerPathes): array
     {
         $systemPath = $this->getSystemPath();
+        $covertingInstructions = [];
 
         // Change the logic the other way arround, we need to itterate over the TOs
         // and then convert the dependend DS files as we need their data for the mappings
@@ -804,6 +846,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
             $ds = $this->getDsForTo($allDs, $to);
 
             /** @TODO for DB ds read XML in an other way */
+            /** @TODO check if DS was already converted */
             $dsXml = file_get_contents($systemPath . $ds['path']);
             $dataStructure = GeneralUtility::xml2array($dsXml);
             $dsXmlFileName = basename($ds['path']);
@@ -838,8 +881,13 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
                         'name' => $to['title'],
                     ],
                     'combinedDataStructureIdentifier' => $packageName . $scopePath . '/DataStructure:' . $dsXmlFileName,
-                    'combinedTemplateConfigurationIdentifier' => $packageName . $scopePath . '/Template:' . $yamlFileName,
+                    'combinedTemplateConfigurationIdentifier' => $packageName . $scopePath . '/TemplateConfiguration:' . $yamlFileName,
                 ],
+            ];
+
+            $covertingInstructions[] = [
+                'fromTo' => $to['uid'],
+                'toMap' => $packageName . $scopePath . '/MappingConfiguration:' . $yamlFileName,
             ];
 
             GeneralUtility::writeFile(
@@ -869,6 +917,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
 //             $dataStructure['meta']['title'] = $title;
 //
 //         }
+        return $covertingInstructions;
     }
 
     /** @TODO Implement also for non static DS */
@@ -954,15 +1003,64 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
      */
     protected function step5()
     {
+        $errors = [];
+
+        $selection = $_POST['selection'];
+
         // Register extensions
+        /** @var \TYPO3\CMS\Extbase\Object\ObjectManager */
+        $objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
+        /** @var \TYPO3\CMS\Extensionmanager\Utility\InstallUtility */
+        $installUtility = $objectManager->get(\TYPO3\CMS\Extensionmanager\Utility\InstallUtility::class);
+        $installUtility->install($selection);
+
         // Read mapping information from json
+        $covertingInstructions = json_decode($_POST['covertingInstructionsJson'], true);
         // Update pages
         // Update tt_content
+
+        // Also updating deleted ones, so history function should work
+        /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder */
+        $queryBuilderPages = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+        $queryBuilderPages->getRestrictions()->removeAll();
+        /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder */
+        $queryBuilderContent = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tt_content');
+        $queryBuilderContent->getRestrictions()->removeAll();
+
+        foreach ($covertingInstructions as $instruction) {
+            $queryBuilderPagesClone = clone $queryBuilderPages;
+            $result = $queryBuilderPagesClone
+                ->update('pages')
+                ->where(
+                    $queryBuilderPagesClone->expr()->eq('tx_templavoilaplus_to', $queryBuilderPagesClone->createNamedParameter($instruction['fromTo'], \PDO::PARAM_INT))
+                )
+                ->set('tx_templavoilaplus_map', $instruction['toMap'])
+                ->execute();
+
+            $queryBuilderPagesClone = clone $queryBuilderPages;
+            $result = $queryBuilderPagesClone
+                ->update('pages')
+                ->where(
+                    $queryBuilderPagesClone->expr()->eq('tx_templavoilaplus_next_to', $queryBuilderPagesClone->createNamedParameter($instruction['fromTo'], \PDO::PARAM_INT))
+                )
+                ->set('tx_templavoilaplus_next_map', $instruction['toMap'])
+                ->execute();
+
+            $queryBuilderContentClone = clone $queryBuilderContent;
+            $result = $queryBuilderContentClone
+                ->update('tt_content')
+                ->where(
+                    $queryBuilderContentClone->expr()->eq('tx_templavoilaplus_to', $queryBuilderContentClone->createNamedParameter($instruction['fromTo'], \PDO::PARAM_INT))
+                )
+                ->set('tx_templavoilaplus_map', $instruction['toMap'])
+                ->execute();
+        }
+
+        // Write into sys_registry including which storage_pid we already did
     }
 
     protected function stepFinal()
     {
-        // Write into sys_registry
     }
 
 
