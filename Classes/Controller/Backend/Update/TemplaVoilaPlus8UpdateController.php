@@ -865,13 +865,17 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
                     $scopeName = 'unknown';
             }
 
+            $templateMappingInfo = $this->convertTemplateMappingInformation(unserialize($to['templatemapping'])['MappingInfo']);
+            $mappingToTemplateInfo = $this->convertDsTo2mappingInformation($dataStructure, $to);
+
             $templateConfiguration = [
                 'tvp-template' => [
                     'meta' => [
                         'name' => $to['title'],
                         'renderer' => \Ppi\TemplaVoilaPlus\Handler\Render\XpathRenderHandler::$identifier,
-                        'template' => '../../' . $resultingFileName,
+                        'template' => '../../Template/' . $resultingFileName,
                     ],
+                    'mapping' => $templateMappingInfo['ROOT'],
                 ],
             ];
 
@@ -882,6 +886,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
                     ],
                     'combinedDataStructureIdentifier' => $packageName . $scopePath . '/DataStructure:' . $dsXmlFileName,
                     'combinedTemplateConfigurationIdentifier' => $packageName . $scopePath . '/TemplateConfiguration:' . $yamlFileName,
+                    'mappingToTemplate' => $mappingToTemplateInfo,
                 ],
             ];
 
@@ -920,6 +925,64 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
         return $covertingInstructions;
     }
 
+    protected function convertTemplateMappingInformation(array $mappingInformation): array
+    {
+        $converted = [];
+
+        foreach ($mappingInformation as $fieldName => $mappingField) {
+            list($xPath, $mappingType) = explode('/', $mappingField['MAP_EL']);
+            $converted[$fieldName] = [
+                'xpath' => $xPath,
+                'type' => $mappingType ?? 'OUTER',
+            ];
+            if (isset($mappingField['el']) && is_array($mappingField['el']) && count($mappingField['el']) > 0) {
+                $converted[$fieldName]['container'] = $this->convertTemplateMappingInformation($mappingField['el']);
+            }
+        }
+
+        return $converted;
+    }
+
+    /**
+     * We are also updating the dsXml, as we remove TypoScript points!
+     */
+    protected function convertDsTo2mappingInformation(array &$dsXml, array $to): array
+    {
+        $mappingToTemplate = [];
+
+        /** @TODO INNER/OUTER vs. INNERCHILD/OUTERCHILD needs to be respected */
+
+        foreach ($dsXml['ROOT']['el'] as $fieldName => $dsElement) {
+            $fieldConfig = [];
+
+            if ($dsElement['tx_templavoilaplus']['eType'] === 'TypoScriptObject') {
+                // TSObject shouldn't reside inside DataStructure, so move completely
+                $fieldConfig = [
+                    'dataType' => 'typoscriptObjectPath',
+                    'dataPath' => $dsElement['tx_templavoilaplus']['TypoScriptObjPath'],
+                ];
+                unset($dsXml['ROOT']['el'][$fieldName]);
+            } else {
+                // Respect EType_extra??
+                // Respect proc ?
+                $fieldConfig = [
+                    'dataType' => 'flexform',
+                    'dataPath' => $fieldName,
+                ];
+                $typoScript = trim($dsElement['tx_templavoilaplus']['TypoScript'] ?? '');
+                if ($typoScript !== '') {
+                    $fieldConfig['valueProcessing'] = 'typoScript';
+                    $fieldConfig['valueProcessing.typoScript'] = $typoScript;
+                }
+                unset($dsXml['ROOT']['el'][$fieldName]['tx_templavoilaplus']);
+            }
+
+            $mappingToTemplate[$fieldName] = $fieldConfig;
+        }
+
+        return $mappingToTemplate;
+    }
+
     /** @TODO Implement also for non static DS */
     protected function getDsForTo(array $allDs, array $to): array
     {
@@ -940,10 +1003,11 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
         if (file_exists($destination . $filename)) {
             /** @TODO Implement me */
 //             $destination = $this->getUniqueFilename($destination, $filename);
-            throw new \Exception('Doubled file names arent implemented yet');
+            return $filename;
+            throw new \Exception('Doubled file names arent implemented yet: "' . $destination . $filename . '"');
         }
 
-//         $result = @copy($source, $destination . $filename);
+        $result = @copy($source, $destination . $filename);
         if ($result) {
             GeneralUtility::fixPermissions($destination . $filename);
         }
