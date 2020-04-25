@@ -932,7 +932,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
         foreach ($mappingInformation as $fieldName => $mappingField) {
             list($xPath, $mappingType) = explode('/', $mappingField['MAP_EL']);
             $converted[$fieldName] = [
-                'xpath' => $xPath,
+                'xpath' => $this->convertXPath($xPath),
                 'type' => $mappingType ?? 'OUTER',
             ];
             if (isset($mappingField['el']) && is_array($mappingField['el']) && count($mappingField['el']) > 0) {
@@ -981,6 +981,32 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
         }
 
         return $mappingToTemplate;
+    }
+
+    protected function convertXPath(string $xpath): string
+    {
+        $xPathPartsConverted = [];
+
+        $xpathParts = GeneralUtility::trimExplode(' ', $xpath, true);
+
+        foreach($xpathParts as $xPathPart) {
+            // Regular expression to match tag.className#idName[number]
+            // Is there a better way? Using now
+            // * for tag "All but not . and not # and not ["
+            // * for class "point and then all but not # and not ["
+            // * for idName "point and then all but not ["
+            // * for number "[ number ]"
+            preg_match('/([^.^#^[]*)(\.[^#^[]*)?(#[^[]*)?(\[\d+\])?/', $xPathPart, $matches);
+
+            // and convert to XPath tag[class=className][id=idName][number]
+            // Not all parts need to exist.
+            $xPathPartsConverted[] = $matches[1]
+                . ($matches[2] !== '' ? '[@class="' . ltrim($matches[2], '.') . '"]' : '')
+                . ($matches[3] !== '' ? '[@id="' . ltrim($matches[3], '#') . '"]' : '')
+                . $matches[4];
+        }
+
+        return implode('/', $xPathPartsConverted);
     }
 
     /** @TODO Implement also for non static DS */
