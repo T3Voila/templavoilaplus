@@ -841,12 +841,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
                 continue;
             }
 
-            if (!isset($copiedTemplateFiles[$to['fileref']])) {
-                $resultingFileName = $this->copyFile($to['fileref'], $publicExtensionDirectory, $innerPathes['templates']);
-                $copiedTemplateFiles[$to['fileref']] = $resultingFileName;
-            } else {
-                $resultingFileName = $copiedTemplateFiles[$to['fileref']];
-            }
+            $resultingFileName = $this->copyFile($to['fileref'], $copiedTemplateFiles, $publicExtensionDirectory, $innerPathes['templates']);
             $yamlFileName = pathinfo($resultingFileName,  PATHINFO_FILENAME) . '.tvp.yaml';
 
             $ds = $this->getDsForTo($allDs, $to);
@@ -1052,9 +1047,14 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
         throw new \Exception('DataStructure "' . $to['datastructure'] . '" not found for Template Object with uid "' . $to['uid'] . '"');
     }
 
-    protected function copyFile($readPathAndFilename, $publicExtensionDirectory, $subPath)
+    protected function copyFile(string $readPathAndFilename, array &$copiedTemplateFiles, string $publicExtensionDirectory, string $subPath): string
     {
         $source = GeneralUtility::getFileAbsFileName($readPathAndFilename);
+
+        if (isset($copiedTemplateFiles[$source])) {
+            return $copiedTemplateFiles[$source];
+        }
+
         $filename = basename($readPathAndFilename);
         $destination = $publicExtensionDirectory . $subPath . '/';
 
@@ -1068,6 +1068,8 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
         if ($result) {
             GeneralUtility::fixPermissions($destination . $filename);
         }
+
+        $copiedTemplateFiles[$source] = $filename;
 
         return  $filename;
     }
