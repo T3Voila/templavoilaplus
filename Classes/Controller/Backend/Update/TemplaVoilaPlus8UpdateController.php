@@ -792,6 +792,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
                 ],
             ];
 
+            // Create/Update Places configuration files
             $dataStructurePlaces = "<?php\ndeclare(strict_types=1);\n\nreturn " . $this->arrayExport($dataStructurePlacesConfig) . ";\n";
             GeneralUtility::writeFile($publicExtensionDirectory . $innerPathes['configuration'] . '/DataStructurePlaces.php', $dataStructurePlaces, true);
 
@@ -804,11 +805,9 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
             $ds = $this->getAllDs();
             /** @TODO Support for multiple sorage_pids */
             $to = $this->getAllToFromDB();
-            $covertingInstructions = $this->convertDsTo($ds, $to, $packageName, $publicExtensionDirectory, $innerPathes);
 
-            // Create/Update Places configuration files
             // Read old data, convert and write to new places
-            // Hold the mapping information as json
+            $covertingInstructions = $this->convertDsTo($ds, $to, $packageName, $publicExtensionDirectory, $innerPathes);
         } catch (\Exception $e) {
             $errors[] = $e->getMessage();
         }
@@ -901,12 +900,12 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
 
             GeneralUtility::writeFile(
                 $publicExtensionDirectory . $innerPathes['templateConfiguration'][$scopeName] . '/' . $yamlFileName,
-                \Symfony\Component\Yaml\Yaml::dump($templateConfiguration, 100) // No inline style please
+                \Symfony\Component\Yaml\Yaml::dump($templateConfiguration, 100,  4, \Symfony\Component\Yaml\Yaml::DUMP_MULTI_LINE_LITERAL_BLOCK) // No inline style please
             );
 
             GeneralUtility::writeFile(
                 $publicExtensionDirectory . $innerPathes['mappingConfiguration'][$scopeName] . '/' . $yamlFileName,
-                \Symfony\Component\Yaml\Yaml::dump($mappingConfiguration, 100) // No inline style please
+                \Symfony\Component\Yaml\Yaml::dump($mappingConfiguration, 100, 4, \Symfony\Component\Yaml\Yaml::DUMP_MULTI_LINE_LITERAL_BLOCK) // No inline style please
             );
 
             GeneralUtility::writeFile(
@@ -1012,7 +1011,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
                 $typoScript = trim($dsElement['tx_templavoilaplus']['TypoScript'] ?? '');
                 if ($typoScript !== '') {
                     $fieldConfig['valueProcessing'] = 'typoScript';
-                    $fieldConfig['valueProcessing.typoScript'] = $typoScript;
+                    $fieldConfig['valueProcessing.typoScript'] = $this->cleanTypoScript($typoScript);
 
                     if (!isset($dsElement['tx_templavoilaplus']['proc']['HSC'])
                         || $dsElement['tx_templavoilaplus']['proc']['HSC'] != '1'
@@ -1040,6 +1039,15 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
         }
 
         return $mappingToTemplate;
+    }
+
+    protected function cleanTypoScript(string $typoScript): string
+    {
+        // Convert from different line breaks to system line breaks and trim whitespaces
+        $typoScriptSplit = preg_split('/\r\n|\r|\n/', $typoScript);
+        $typoScriptSplit = array_map('trim', $typoScriptSplit);
+
+        return implode(PHP_EOL, $typoScriptSplit);
     }
 
     protected function convertXPath(string $xpath): string
