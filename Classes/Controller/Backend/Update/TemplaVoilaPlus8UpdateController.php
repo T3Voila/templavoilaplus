@@ -866,7 +866,10 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
                     $scopeName = 'unknown';
             }
 
-            $templateMappingInfo = $this->convertTemplateMappingInformation(unserialize($to['templatemapping'])['MappingInfo']);
+            $templateMappingInfo = $this->convertTemplateMappingInformation(
+                unserialize($to['templatemapping'])['MappingInfo'],
+                $publicExtensionDirectory . $innerPathes['templates'] . '/' . $resultingFileName
+            );
             $mappingToTemplateInfo = $this->convertDsTo2mappingInformation($dataStructure, $templateMappingInfo, $to);
 
             $templateConfiguration = [
@@ -926,18 +929,47 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
         return $covertingInstructions;
     }
 
-    protected function convertTemplateMappingInformation(array $mappingInformation): array
+    protected function convertTemplateMappingInformation(array $mappingInformation, string $templateFile, $domDocument = null, $baseNode = null): array
     {
         $converted = [];
 
+        $libXmlConfig = LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD | LIBXML_NOENT | LIBXML_NONET;
+
+        if ($domDocument === null) {
+            $domDocument = new \DOMDocument();
+            $domDocument->loadHTMLFile($templateFile, $libXmlConfig);
+        }
+
+        $domXpath = new \DOMXPath($domDocument);
+
         foreach ($mappingInformation as $fieldName => $mappingField) {
             list($xPath, $mappingType) = explode('/', $mappingField['MAP_EL']);
+
+            $convertedXPath = $this->convertXPath($xPath);
+
+            $result = $domXpath->query($convertedXPath, $baseNode);
+
+            if ($result === false) {
+                throw new \Exception('The old mapping path "' . $xPath . '" could not be converted');
+            }
+
+            if ($result->count() === 0) {
+                $convertedXPath = '//' . $convertedXPath;
+                $result = $domXpath->query($convertedXPath, $baseNode);
+                if ($result->count() === 0) {
+                    /** @TODO Add to a hint array, what is wrong but do not stop converting */
+//                     throw new \Exception('The old mapping path "' . $xPath . '" converted to XPath "' . $convertedXPath . '" could not be found in template file "' . $templateFile . '"');
+                }
+            }
+
+            $baseNode = $result->item(0);
+
             $converted[$fieldName] = [
-                'xpath' => $this->convertXPath($xPath),
+                'xpath' => $convertedXPath,
                 'type' => $mappingType ?? 'OUTER',
             ];
             if (isset($mappingField['el']) && is_array($mappingField['el']) && count($mappingField['el']) > 0) {
-                $converted[$fieldName]['container'] = $this->convertTemplateMappingInformation($mappingField['el']);
+                $converted[$fieldName]['container'] = $this->convertTemplateMappingInformation($mappingField['el'], $templateFile, $domDocument, $baseNode);
             }
         }
 
