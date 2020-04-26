@@ -872,7 +872,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
             }
 
             $templateMappingInfo = $this->convertTemplateMappingInformation(unserialize($to['templatemapping'])['MappingInfo']);
-            $mappingToTemplateInfo = $this->convertDsTo2mappingInformation($dataStructure, $to);
+            $mappingToTemplateInfo = $this->convertDsTo2mappingInformation($dataStructure, $templateMappingInfo, $to);
 
             $templateConfiguration = [
                 'tvp-template' => [
@@ -916,6 +916,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
                 DataStructureUtility::array2xml($dataStructure)
             );
         }
+
 //         foreach ($allDs as $ds) {
 //
 //             // Cleanup meta part
@@ -951,14 +952,15 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
     /**
      * We are also updating the dsXml, as we remove TypoScript points!
      */
-    protected function convertDsTo2mappingInformation(array &$dsXml, array $to): array
+    protected function convertDsTo2mappingInformation(array &$dsXml, array &$templateMappingInfo, array $to): array
     {
         $mappingToTemplate = [];
 
-        /** @TODO INNER/OUTER vs. INNERCHILD/OUTERCHILD needs to be respected */
+        /** @TODO Implement Container handling */
 
         foreach ($dsXml['ROOT']['el'] as $fieldName => $dsElement) {
             $fieldConfig = [];
+            $useChild = false;
 
             if ($dsElement['tx_templavoilaplus']['eType'] === 'TypoScriptObject') {
                 // TSObject shouldn't reside inside DataStructure, so move completely
@@ -967,6 +969,12 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
                     'dataPath' => $dsElement['tx_templavoilaplus']['TypoScriptObjPath'],
                 ];
                 unset($dsXml['ROOT']['el'][$fieldName]);
+
+                if (!isset($dsElement['tx_templavoilaplus']['proc']['HSC'])
+                    || $dsElement['tx_templavoilaplus']['proc']['HSC'] != '1'
+                ) {
+                    $useChild = true;
+                }
             } else {
                 // Respect EType_extra??
                 // Respect proc ?
@@ -978,8 +986,27 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
                 if ($typoScript !== '') {
                     $fieldConfig['valueProcessing'] = 'typoScript';
                     $fieldConfig['valueProcessing.typoScript'] = $typoScript;
+
+                    if (!isset($dsElement['tx_templavoilaplus']['proc']['HSC'])
+                        || $dsElement['tx_templavoilaplus']['proc']['HSC'] != '1'
+                    ) {
+                        $useChild = true;
+                    }
                 }
                 unset($dsXml['ROOT']['el'][$fieldName]['tx_templavoilaplus']);
+            }
+
+            if ($useChild) {
+                switch ($templateMappingInfo['ROOT']['container'][$fieldName]['type']) {
+                    case 'OUTER':
+                        $templateMappingInfo['ROOT']['container'][$fieldName]['type'] = 'OUTERCHILD';
+                        break;
+                    case 'INNER':
+                        $templateMappingInfo['ROOT']['container'][$fieldName]['type'] = 'INNERCHILD';
+                        break;
+                    default:
+                        // Nothing, as there is no childing for ATTRIB
+                }
             }
 
             $mappingToTemplate[$fieldName] = $fieldConfig;
