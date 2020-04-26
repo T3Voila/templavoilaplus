@@ -82,8 +82,8 @@ class MappingConfigurationHandler implements ConfigurationHandlerInterface
             throw new \Exception('No TemplaVoilà! Plus mapping configuration');
         }
 
-        if (isset($configuration['tvp-mapping']['meta']['label'])) {
-            $mappingConfiguration->setName($configuration['tvp-mapping']['meta']['label']);
+        if (isset($configuration['tvp-mapping']['meta']['name'])) {
+            $mappingConfiguration->setName($configuration['tvp-mapping']['meta']['name']);
         }
         if (isset($configuration['tvp-mapping']['combinedDataStructureIdentifier'])) {
             $mappingConfiguration->setCombinedDataStructureIdentifier($configuration['tvp-mapping']['combinedDataStructureIdentifier']);

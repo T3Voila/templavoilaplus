@@ -82,8 +82,8 @@ class TemplateConfigurationHandler implements ConfigurationHandlerInterface
             throw new \Exception('No TemplaVoilà! Plus template configuration');
         }
 
-        if (isset($configuration['tvp-template']['meta']['label'])) {
-            $templateConfiguration->setName($configuration['tvp-template']['meta']['label']);
+        if (isset($configuration['tvp-template']['meta']['name'])) {
+            $templateConfiguration->setName($configuration['tvp-template']['meta']['name']);
         }
         if (isset($configuration['tvp-template']['meta']['renderer'])) {
             /** @TODO check before setting */
