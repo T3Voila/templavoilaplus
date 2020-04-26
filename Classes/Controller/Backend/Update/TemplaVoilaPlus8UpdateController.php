@@ -830,6 +830,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
     {
         $systemPath = $this->getSystemPath();
         $covertingInstructions = [];
+        $copiedTemplateFiles = [];
 
         // Change the logic the other way arround, we need to itterate over the TOs
         // and then convert the dependend DS files as we need their data for the mappings
@@ -840,7 +841,12 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
                 continue;
             }
 
-            $resultingFileName = $this->copyFile($to['fileref'], $publicExtensionDirectory, $innerPathes['templates']);
+            if (!isset($copiedTemplateFiles[$to['fileref']])) {
+                $resultingFileName = $this->copyFile($to['fileref'], $publicExtensionDirectory, $innerPathes['templates']);
+                $copiedTemplateFiles[$to['fileref']] = $resultingFileName;
+            } else {
+                $resultingFileName = $copiedTemplateFiles[$to['fileref']];
+            }
             $yamlFileName = pathinfo($resultingFileName,  PATHINFO_FILENAME) . '.tvp.yaml';
 
             $ds = $this->getDsForTo($allDs, $to);
@@ -909,7 +915,6 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
                 $publicExtensionDirectory . $innerPathes['ds'][$scopeName] . '/' . $dsXmlFileName,
                 DataStructureUtility::array2xml($dataStructure)
             );
-//             var_dump($to);die();
         }
 //         foreach ($allDs as $ds) {
 //
@@ -1029,7 +1034,6 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
         if (file_exists($destination . $filename)) {
             /** @TODO Implement me */
 //             $destination = $this->getUniqueFilename($destination, $filename);
-            return $filename;
             throw new \Exception('Doubled file names arent implemented yet: "' . $destination . $filename . '"');
         }
 
