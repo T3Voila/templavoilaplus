@@ -1025,6 +1025,9 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
             // * for number "[ number ]"
             preg_match('/([^.^#^[]*)(\.[^#^[]*)?(#[^[]*)?(\[\d+\])?/', $xPathPart, $matches);
 
+            // Convert multi class select from "className1~~~className2" to "className1 className2""
+            $matches[2] = str_replace('~~~', ' ', $matches[2]);
+
             // and convert to XPath tag[class=className][id=idName][number]
             // Not all parts need to exist.
             $xPathPartsConverted[] = $matches[1]
