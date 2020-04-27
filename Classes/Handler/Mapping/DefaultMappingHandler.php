@@ -77,12 +77,7 @@ class DefaultMappingHandler
         /** @TODO Need to support multiple processings */
         switch ($instructions['valueProcessing']) {
             case 'typoScript':
-                /** @var TypoScriptParser $tsparserObj */
-                $tsparserObj = $this->getTypoScriptParser();
-                /** @var ContentObjectRenderer $cObj */
-                $cObj = $this->getContentObjectRenderer($flexformData, $processedValue, $table, $row);
-                $tsparserObj->parse($instructions['valueProcessing.typoScript']);
-                $processedValue = $cObj->cObjGet($tsparserObj->setup, 'TemplaVoila_Proc.');
+                $processedValue = $this->processTypoScript($flexformData, $processedValue, $table, $row, $instructions['valueProcessing.typoScript']);
                 break;
             case 'typoScriptConstants':
                 break;
@@ -90,6 +85,39 @@ class DefaultMappingHandler
                 break;
             default:
                 // No valueProcessing given, so no value manipulation
+        }
+
+        return $processedValue;
+    }
+
+    protected function processTypoScript(array $flexformData, $processedValue, string $table, array $row, string $theTypoScript): string
+    {
+        /** @var TypoScriptParser $tsparserObj */
+        $tsparserObj = $this->getTypoScriptParser();
+        /** @var ContentObjectRenderer $cObj */
+        $cObj = $this->getContentObjectRenderer($flexformData, $processedValue, $table, $row);
+        $restoreData = [];
+
+        // add into TSFE register the parent rec data
+        /** @TODO On every value which gets processed? Not realy? */
+        $restoreData = $this->registerTypoScriptParentRec($row);
+
+        // Copy current global TypoScript configuration except numerical objects:
+        /** @TODO On every value which gets processed? Not realy? */
+        if (is_array($GLOBALS['TSFE']->tmpl->setup)) {
+            foreach ($GLOBALS['TSFE']->tmpl->setup as $tsObjectKey => $tsObjectValue) {
+                if ($tsObjectKey !== (int)$tsObjectKey) {
+                    $tsparserObj->setup[$tsObjectKey] = $tsObjectValue;
+                }
+            }
+        }
+
+        $tsparserObj->parse($theTypoScript);
+        $processedValue = $cObj->cObjGet($tsparserObj->setup, 'TemplaVoila_Proc.');
+
+        if (count($restoreData)) {
+            /** @TODO On every value which gets processed? Not realy? */
+            $this->restoreTypoScriptParentRec($restoreData);
         }
 
         return $processedValue;
@@ -111,5 +139,44 @@ class DefaultMappingHandler
         $cObj->setCurrentVal($processedValue);
 
         return $cObj;
+    }
+
+    protected function registerTypoScriptParentRec(array $row): array
+    {
+        $restoreData = [
+            'saveKeys' => [],
+            'registerKeys' => [],
+        ];
+
+        // Step 1: save previous parent records from registers. This happens when pi1 is called for FCEs on a page.
+        foreach ($GLOBALS['TSFE']->register as $dkey => $dvalue) {
+            if (preg_match('/^tx_templavoilaplus_pi1\.parentRec\./', $dkey)) {
+                $restoreData['saveKeys'][$dkey] = $dvalue;
+                // Step 2: unset previous parent info
+                unset($GLOBALS['TSFE']->register[$dkey]);
+            }
+        }
+
+        // Step 3: set new parent record to register
+        foreach ($row as $dkey => $dvalue) {
+            $restoreData['registerKeys'][] = $tkey = 'tx_templavoilaplus_pi1.parentRec.' . $dkey;
+            $GLOBALS['TSFE']->register[$tkey] = $dvalue;
+        }
+
+        return $restoreData;
+    }
+
+
+    protected function restoreTypoScriptParentRec(array $restoreData)
+    {
+        // Unset curent parent record info
+        foreach ($restoreData['registerKeys'] as $dkey) {
+            unset($GLOBALS['TSFE']->register[$dkey]);
+        }
+
+        // Restore previous parent record info if necessary
+        foreach ($restoreData['saveKeys'] as $dkey => $dvalue) {
+            $GLOBALS['TSFE']->register[$dkey] = $dvalue;
+        }
     }
 }
