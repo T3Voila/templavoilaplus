@@ -35,19 +35,19 @@ class DefaultMappingHandler
         $this->mappingConfiguration = $mappingConfiguration;
     }
 
-    public function process($flexformData, $row): array
+    public function process($flexformData, $table, $row): array
     {
         $processedMapping = [];
         $mappingToTemplate = $this->mappingConfiguration->getMappingToTemplate();
 
         foreach($mappingToTemplate as $templateFieldName => $instructions) {
-            $processedMapping[$templateFieldName] = $this->valueProcessing($instructions, $flexformData, $row);
+            $processedMapping[$templateFieldName] = $this->valueProcessing($instructions, $flexformData, $table, $row);
         }
 
         return $processedMapping;
     }
 
-    protected function valueProcessing(array $instructions, array $flexformData, array $row)
+    protected function valueProcessing(array $instructions, array $flexformData, string $table, array $row)
     {
         $processedValue = '';
 
@@ -68,7 +68,7 @@ class DefaultMappingHandler
                 break;
             case 'typoscriptObjectPath':
                 list($name, $conf) = $this->getTypoScriptParser()->getVal($instructions['dataPath'], $GLOBALS['TSFE']->tmpl->setup);
-                $processedValue = $this->getContentObjectRenderer($processedValue, $row)->cObjGetSingle($name, $conf, 'TemplaVoila_ProcObjPath--' . str_replace('.', '*', $instructions['dataPath']) . '.');
+                $processedValue = $this->getContentObjectRenderer($flexformData, $processedValue, $table, $row)->cObjGetSingle($name, $conf, 'TemplaVoila_ProcObjPath--' . str_replace('.', '*', $instructions['dataPath']) . '.');
                 break;
             default:
                 // No dataType given, so no data management
@@ -80,7 +80,7 @@ class DefaultMappingHandler
                 /** @var TypoScriptParser $tsparserObj */
                 $tsparserObj = $this->getTypoScriptParser();
                 /** @var ContentObjectRenderer $cObj */
-                $cObj = $this->getContentObjectRenderer($processedValue, $row);
+                $cObj = $this->getContentObjectRenderer($flexformData, $processedValue, $table, $row);
                 $tsparserObj->parse($instructions['valueProcessing.typoScript']);
                 $processedValue = $cObj->cObjGet($tsparserObj->setup, 'TemplaVoila_Proc.');
                 break;
@@ -102,11 +102,12 @@ class DefaultMappingHandler
         return $tsparserObj;
     }
 
-    protected function getContentObjectRenderer($processedValue, $row): ContentObjectRenderer
+    protected function getContentObjectRenderer(array $flexformData, $processedValue, string $table, array $row): ContentObjectRenderer
     {
         /** @var ContentObjectRenderer $cObj */
         $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
-        $cObj->setParent($row, '');
+        $cObj->setParent($row, $table . ':' . $row['uid']);
+        $cObj->start($flexformData, '_NO_TABLE');
         $cObj->setCurrentVal($processedValue);
 
         return $cObj;
