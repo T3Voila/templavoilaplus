@@ -94,7 +94,7 @@ try {
         /** @TODO Do we need flexibility here? */
         /** @var \Ppi\TemplaVoilaPlus\Handler\Mapping\DefaultMappingHandler */
         $mappingHandler = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Handler\Mapping\DefaultMappingHandler::class, $mappingConfiguration);
-        $processedValues = $mappingHandler->process($flexformValues, $row);
+        $processedValues = $mappingHandler->process($flexformValues, $table, $row);
 
         // get renderer from templateConfiguration
         /** @var ConfigurationService */
