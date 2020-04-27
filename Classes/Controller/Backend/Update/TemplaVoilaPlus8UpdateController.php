@@ -966,10 +966,19 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
 
             $baseNode = $result->item(0);
 
+            // Convert ATTRIB:HTMLElementsAttributeName (fe: ATTR:id)
+            $attributeName = '';
+            if ($mappingType && strpos($mappingType, 'ATTR:') === 0) {
+                $attributeName = substr($mappingType, 5);
+                $mappingType = 'ATTRIB';
+            }
             $converted[$fieldName] = [
                 'xpath' => $convertedXPath,
                 'type' => $mappingType ?? 'OUTER',
             ];
+            if ($attributeName) {
+                $converted[$fieldName]['attribName'] = $attributeName;
+            }
             if (isset($mappingField['el']) && is_array($mappingField['el']) && count($mappingField['el']) > 0) {
                 $converted[$fieldName]['container'] = $this->convertTemplateMappingInformation($mappingField['el'], $templateFile, $domDocument, $baseNode);
             }
