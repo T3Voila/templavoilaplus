@@ -138,7 +138,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
         } else {
             // Load DS from DB
             /** @TODO Implement */
-            $allDs = [];
+            $allDs = $this->getAllDsFromDatabase();;
         }
 
         return $allDs;
@@ -191,26 +191,71 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
                 $type = false;
             }
             foreach ($files as $filePath) {
-                $staticDataStructure = [];
                 $pathInfo = pathinfo($filePath);
 
-                $staticDataStructure['title'] = $pathInfo['filename'];
-                $staticDataStructure['path'] = substr($filePath, strlen($systemPath));
+                $dataStructure = [
+                    'staticDS' => true,
+                    'title' => $pathInfo['filename'],
+                    'path' => substr($filePath, strlen($systemPath)),
+                    'xml' => '',
+                    'scope' => '',
+                    'icon' => '',
+                ];
+
+                if (is_file($systemPath . $dataStructure['path']) && is_readable($systemPath . $dataStructure['path'])) {
+                    $dataStructure['xml'] = file_get_contents($systemPath . $dataStructure['path']);
+                }
+
                 $iconPath = $pathInfo['dirname'] . '/' . $pathInfo['filename'] . '.gif';
                 if (file_exists($iconPath)) {
-                    $staticDataStructure['icon'] = substr($iconPath, strlen($systemPath));
+                    $dataStructure['icon'] = substr($iconPath, strlen($systemPath));
                 }
 
                 if (($type !== false && $type === 'fce') || strpos($pathInfo['filename'], '(fce)') !== false) {
-                    $staticDataStructure['scope'] = \Ppi\TemplaVoilaPlus\Domain\Model\Scope::SCOPE_FCE;
+                    $dataStructure['scope'] = \Ppi\TemplaVoilaPlus\Domain\Model\Scope::SCOPE_FCE;
                 } else {
-                    $staticDataStructure['scope'] = \Ppi\TemplaVoilaPlus\Domain\Model\Scope::SCOPE_PAGE;
+                    $dataStructure['scope'] = \Ppi\TemplaVoilaPlus\Domain\Model\Scope::SCOPE_PAGE;
                 }
 
-                $allDs[] = $staticDataStructure;
+                $allDs[] = $dataStructure;
             }
         }
         return $allDs;
+    }
+
+    protected function getAllDsFromDatabase(): array
+    {
+        $allDs = [];
+
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('tx_templavoilaplus_datastructure');
+        $queryBuilder
+            ->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+        $result = $queryBuilder
+            ->select('*')
+            ->from('tx_templavoilaplus_datastructure')
+            ->orderBy('pid')
+            ->execute()
+            ->fetchAll();
+
+        foreach($result as $row) {
+            $dataStructure = [
+                'staticDS' => false,
+                'title' => $row['title'],
+                'path' => $row['uid'],
+                'xml' => $row['dataprot'],
+                'scope' => $row['scope'],
+                'icon' => $row['previewicon'],
+                'belayout' => $row['belayout'], // This should be in TO or is that only there for staticDS??
+            ];
+
+            $allDs[] = $dataStructure;
+        }
+
+        return $result;
     }
 
     protected function getAllToFromDB(): array
@@ -240,17 +285,14 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
         $validatedDs = [];
         $validationErrors = [];
 
-        $systemPath = $this->getSystemPath();
-
         libxml_use_internal_errors(true);
 
         foreach ($allDs as $ds) {
             $ds['countUsage'] = 0;
             $ds['valid'] = false;
 
-            /** @TODO Implement NonStaticDs */
-            if (is_file($systemPath . $ds['path']) && is_readable($systemPath . $ds['path'])) {
-                $result = simplexml_load_file($systemPath . $ds['path']);
+            if ($ds['xml'] !== '') {
+                $result = simplexml_load_string($ds['xml']);
                 if ($result === false) {
                     $errors = libxml_get_errors();
                     $validationErrors[] = 'Cannot verify XML of DS with title "' . $ds['title'] . '" Error is: ' . reset($errors)->message;
@@ -258,7 +300,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
                     $ds['valid'] = true;
                 }
             } else {
-                $validationErrors[] = 'Cannot verify DS with title "' . $ds['title'] . '", as file "' . $ds['path'] . '" could not be found or isn\'t readable';
+                $validationErrors[] = 'Cannot verify DS with title "' . $ds['title'] . '", as uid/file "' . $ds['path'] . '" could not be found or isn\'t readable';
             }
             $validatedDs[$ds['path']] = $ds;
         }
@@ -847,9 +889,26 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
 
             /** @TODO for DB ds read XML in an other way */
             /** @TODO check if DS was already converted */
-            $dsXml = file_get_contents($systemPath . $ds['path']);
-            $dataStructure = GeneralUtility::xml2array($dsXml);
-            $dsXmlFileName = basename($ds['path']);
+            $dataStructure = GeneralUtility::xml2array($ds['xml']);
+
+            $dsXmlFileName = 'a.xml';
+
+            if ($ds['staticDS']) {
+                $dsXmlFileName = basename($ds['path']);
+            } else {
+                $dsXmlFileName = $this->makeCleanFileName($ds['title']) . '.xml';
+
+                // Mostly the DS from database have no title inside XML so update this field
+                // Works like writeXmlWithTitle from old StaticDataUpdateController
+                if (empty($dataStructure['ROOT']['tx_templavoilaplus']['title'])
+                    || $dataStructure['ROOT']['tx_templavoilaplus']['title'] === 'ROOT'
+                    && (empty($dataStructure['meta']['title'])
+                        || $dataStructure['meta']['title'] === 'ROOT'
+                    )
+                ) {
+                    $dataStructure['meta']['title'] = $ds['title'];
+                }
+            }
 
             switch ($ds['scope']) {
                 case \Ppi\TemplaVoilaPlus\Domain\Model\Scope::SCOPE_PAGE:
@@ -928,6 +987,20 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
 //
 //         }
         return $covertingInstructions;
+    }
+
+
+    protected function makeCleanFileName(string $fileName): string
+    {
+        // Take sanitizer from local driver
+        /** @var \TYPO3\CMS\Core\Resource\Driver\LocalDriver */
+        $localdriver = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Driver\LocalDriver::class);
+
+        // After sanitizing remove double underscores and trim underscore
+        return trim(
+            preg_replace('/__/', '_', $localdriver->sanitizeFileName($fileName)),
+            '_'
+        );
     }
 
     protected function convertTemplateMappingInformation(array $mappingInformation, string $templateFile, $domDocument = null, $baseNode = null): array
