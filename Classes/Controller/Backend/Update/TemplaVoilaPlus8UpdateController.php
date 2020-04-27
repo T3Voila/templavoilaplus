@@ -887,6 +887,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
                     'meta' => [
                         'name' => $to['title'],
                     ],
+                    /** @TODO if DS contains no fields, we do not need it */
                     'combinedDataStructureIdentifier' => $packageName . $scopePath . '/DataStructure:' . $dsXmlFileName,
                     'combinedTemplateConfigurationIdentifier' => $packageName . $scopePath . '/TemplateConfiguration:' . $yamlFileName,
                     'mappingToTemplate' => $mappingToTemplateInfo,
@@ -908,6 +909,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
                 \Symfony\Component\Yaml\Yaml::dump($mappingConfiguration, 100, 4, \Symfony\Component\Yaml\Yaml::DUMP_MULTI_LINE_LITERAL_BLOCK) // No inline style please
             );
 
+            /** @TODO if DS contains no fields, we do not need it */
             GeneralUtility::writeFile(
                 $publicExtensionDirectory . $innerPathes['ds'][$scopeName] . '/' . $dsXmlFileName,
                 DataStructureUtility::array2xml($dataStructure)
@@ -939,6 +941,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
             $domDocument->loadHTMLFile($templateFile, $libXmlConfig);
         }
 
+        /** @TODO Read error messages and write into a hint array for user output but do not break */
         $domXpath = new \DOMXPath($domDocument);
 
         foreach ($mappingInformation as $fieldName => $mappingField) {
