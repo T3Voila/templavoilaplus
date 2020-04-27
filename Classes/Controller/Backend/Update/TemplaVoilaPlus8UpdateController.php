@@ -934,12 +934,21 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
     {
         $converted = [];
 
+        libxml_use_internal_errors(true);
         $libXmlConfig = LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD | LIBXML_NOENT | LIBXML_NONET;
 
         if ($domDocument === null) {
             $domDocument = new \DOMDocument();
             $domDocument->loadHTMLFile($templateFile, $libXmlConfig);
         }
+
+        /** @TODO Check the errors if they are fatal
+        $errors = libxml_get_errors();
+        foreach ($errors as $error)
+        {
+        }*/
+
+        libxml_clear_errors();
 
         /** @TODO Read error messages and write into a hint array for user output but do not break */
         $domXpath = new \DOMXPath($domDocument);
