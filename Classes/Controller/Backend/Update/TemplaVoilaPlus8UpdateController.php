@@ -137,7 +137,6 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
             $allDs = $this->getAllDsFromStatic();
         } else {
             // Load DS from DB
-            /** @TODO Implement */
             $allDs = $this->getAllDsFromDatabase();;
         }
 
@@ -887,8 +886,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
 
             $ds = $this->getDsForTo($allDs, $to);
 
-            /** @TODO for DB ds read XML in an other way */
-            /** @TODO check if DS was already converted */
+            /** @TODO check if DS was already converted? */
             $dataStructure = GeneralUtility::xml2array($ds['xml']);
 
             $dsXmlFileName = 'a.xml';
@@ -1173,7 +1171,6 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
         return implode('/', $xPathPartsConverted);
     }
 
-    /** @TODO Implement also for non static DS */
     protected function getDsForTo(array $allDs, array $to): array
     {
         foreach ($allDs as $ds) {
