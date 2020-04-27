@@ -115,13 +115,13 @@ class XpathRenderHandler implements RenderHandlerInterface
                     $processingNode->removeChild($processingNode->firstChild);
                 }
 
-                $tmpDoc = new \DOMDocument();
-                /** Add own tag to prevent automagical adding of <p> Tag around Tagless content */
-                /** Use LIBXML_HTML_NOIMPLIED and LIBXML_HTML_NODEFDTD so we don't get confused by extra added doctype, html and body nodes */
-                $tmpDoc->loadHTML('<?xml encoding="utf-8" ?><__TEMPLAVOILAPLUS__>' . $processedValues[$fieldName] . '</__TEMPLAVOILAPLUS__>', $this->libXmlConfig);
+                if ($processedValues[$fieldName]) {
+                    $tmpDoc = new \DOMDocument();
+                    /** Add own tag to prevent automagical adding of <p> Tag around Tagless content */
+                    /** Use LIBXML_HTML_NOIMPLIED and LIBXML_HTML_NODEFDTD so we don't get confused by extra added doctype, html and body nodes */
+                    $tmpDoc->loadHTML('<?xml encoding="utf-8" ?><__TEMPLAVOILAPLUS__>' . $processedValues[$fieldName] . '</__TEMPLAVOILAPLUS__>', $this->libXmlConfig);
 
-                /** lastChild is our own added Tag from above */
-                if ($tmpDoc->lastChild->hasChildNodes()) {
+                    /** lastChild is our own added Tag from above */
                     foreach ($tmpDoc->lastChild->childNodes as $importNode) {
                         $importNode = $this->domDocument->importNode($importNode, true);
                         $processingNode->appendChild($importNode);
@@ -133,14 +133,15 @@ class XpathRenderHandler implements RenderHandlerInterface
                     $processingNode
                 );
             } elseif ($entry['type'] === 'OUTERCHILD') {
-                $tmpDoc = new \DOMDocument();
-                /** Add own tag to prevent automagical adding of <p> Tag around Tagless content */
-                /** Use LIBXML_HTML_NOIMPLIED and LIBXML_HTML_NODEFDTD so we don't get confused by extra added doctype, html and body nodes */
-                $tmpDoc->loadHTML('<?xml encoding="utf-8" ?><__TEMPLAVOILAPLUS__>' . $processedValues[$fieldName] . '</__TEMPLAVOILAPLUS__>', $this->libXmlConfig);
+                if ($processedValues[$fieldName]) {
+                    $tmpDoc = new \DOMDocument();
+                    /** Add own tag to prevent automagical adding of <p> Tag around Tagless content */
+                    /** Use LIBXML_HTML_NOIMPLIED and LIBXML_HTML_NODEFDTD so we don't get confused by extra added doctype, html and body nodes */
+                    $tmpDoc->loadHTML('<?xml encoding="utf-8" ?><__TEMPLAVOILAPLUS__>' . $processedValues[$fieldName] . '</__TEMPLAVOILAPLUS__>', $this->libXmlConfig);
 
-                /** lastChild is our own added Tag from above */
-                if ($tmpDoc->lastChild->hasChildNodes()) {
                     $isFirst = true;
+
+                    /** lastChild is our own added Tag from above */
                     foreach ($tmpDoc->lastChild->childNodes as $importNode) {
                         $importNode = $this->domDocument->importNode($importNode, true);
                         if ($isFirst) {
@@ -159,6 +160,8 @@ class XpathRenderHandler implements RenderHandlerInterface
                         // in every following run we do the operation relative to last imported node
                         $processingNode = $importNode;
                     }
+                } else {
+                    $processingNode->parentNode->removeChild($processingNode);
                 }
             }
         } else {
