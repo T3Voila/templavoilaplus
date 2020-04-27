@@ -180,9 +180,9 @@ class XpathRenderHandler implements RenderHandlerInterface
     {
         $contentOfNode = '';
 
-        if ($type === 'INNER') {
+        if ($type === 'OUTER') {
             $contentOfNode = $this->domDocument->saveHTML($node);
-        } elseif ($type === 'OUTER') {
+        } elseif ($type === 'INNER') {
             $children = $node->childNodes;
             foreach ($node->childNodes as $childNode) {
                 $contentOfNode .= $this->domDocument->saveHTML($childNode);
