@@ -46,37 +46,18 @@ $tempColumns = array(
 );
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('pages', $tempColumns);
 
-if (version_compare(TYPO3_version, '9.0.0', '>=')) {
-    $extConfig = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['templavoilaplus'];
-    $oldPageModule = (bool) $extConfig['enable']['oldPageModule'];
-} else {
-    $extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoilaplus']);
-    $oldPageModule = (bool) $extConfig['enable.']['oldPageModule'];
-}
-
-$oldPageModule = false;
-
-if (!$oldPageModule) {
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
-        'pages',
-        'tx_templavoilaplus_map',
-        '',
-        'replace:backend_layout'
-    );
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
-        'pages',
-        'tx_templavoilaplus_next_map',
-        '',
-        'replace:backend_layout_next_level'
-    );
-} else {
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToPalette(
-        'pages',
-        '',
-        '--linebreak--, tx_templavoilaplus_map, tx_templavoilaplus_next_map',
-        'after:backend_layout_next_level'
-    );
-}
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
+    'pages',
+    'tx_templavoilaplus_map',
+    '',
+    'replace:backend_layout'
+);
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
+    'pages',
+    'tx_templavoilaplus_next_map',
+    '',
+    'replace:backend_layout_next_level'
+);
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
     'pages',
