@@ -80,14 +80,6 @@ if (TYPO3_MODE === 'BE') {
         'EXT:templavoilaplus/Resources/Private/Language/locallang_csh_ttc.xlf'
     );
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
-        'tx_templavoilaplus_datastructure',
-        'EXT:templavoilaplus/Resources/Private/Language/locallang_csh_ds.xlf'
-    );
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
-        'tx_templavoilaplus_tmplobj',
-        'EXT:templavoilaplus/Resources/Private/Language/locallang_csh_to.xlf'
-    );
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
         'xMOD_tx_templavoilaplus',
         'EXT:templavoilaplus/Resources/Private/Language/locallang_csh_module.xlf'
     );
@@ -114,9 +106,6 @@ if (TYPO3_MODE === 'BE') {
     );
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('_MOD_web_func', 'EXT:wizard_crpages/locallang_csh.xlf');
 }
-
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_templavoilaplus_datastructure');
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_templavoilaplus_tmplobj');
 
 // complex condition to make sure the icons are available during frontend editing...
 if (
