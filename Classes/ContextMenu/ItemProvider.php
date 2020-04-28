@@ -40,12 +40,13 @@ class ItemProvider extends AbstractProvider
             'iconIdentifier' => 'extensions-templavoila-menu-item',
             'callbackAction' => 'viewFlexformXml', //'templavoilaplus_flexform_cleaner',
         ],
-        'viewdsto' => [
-            'type' => 'item',
-            'label' => 'LLL:EXT:templavoilaplus/Resources/Private/Language/locallang.xlf:cm_viewdsto',
-            'iconIdentifier' => 'extensions-templavoila-menu-item',
-            'callbackAction' => 'viewDsTo', //'templavoilaplus_mapping',
-        ],
+        /** @TODO Link to view mapping?
+//         'viewdsto' => [
+//             'type' => 'item',
+//             'label' => 'LLL:EXT:templavoilaplus/Resources/Private/Language/locallang.xlf:cm_viewdsto',
+//             'iconIdentifier' => 'extensions-templavoila-menu-item',
+//             'callbackAction' => 'viewDsTo', //'templavoilaplus_mapping',
+//         ],
     ];
 
     /**
@@ -108,11 +109,11 @@ class ItemProvider extends AbstractProvider
                 $canRender = $this->backendUser->isAdmin()
                     && ($this->isTvContentElement() || $this->isTvPage());
                 break;
-            case 'viewdsto':
-                $canRender = $this->backendUser->isAdmin()
-                    && ($this->isTvContentElement() || $this->isTvPage())
-                    && MathUtility::canBeInterpretedAsInteger($this->record['tx_templavoilaplus_ds']);
-                break;
+//             case 'viewdsto':
+//                 $canRender = $this->backendUser->isAdmin()
+//                     && ($this->isTvContentElement() || $this->isTvPage())
+//                     && MathUtility::canBeInterpretedAsInteger($this->record['tx_templavoilaplus_ds']);
+//                 break;
             default:
                 // Empty as $canRender is already false
                 break;
@@ -167,12 +168,11 @@ class ItemProvider extends AbstractProvider
                     'data-page-uid' => $this->record['pid'],
                 ];
                 break;
-            case 'viewdsto':
-                $attributes += [
-                    'table' => 'tx_templavoilaplus_datastructure',
-                    'uid' => $this->record['tx_templavoilaplus_ds'],
-                ];
-                break;
+//             case 'viewdsto':
+//                 $attributes += [
+//                     'uid' => $this->record['tx_templavoilaplus_map'],
+//                 ];
+//                 break;
             default:
                 // Nothing more to set into the array
                 break;
