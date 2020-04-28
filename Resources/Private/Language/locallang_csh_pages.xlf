@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2014-07-13T20:54:50Z" product-name="templavoilaplus">
-		<header/>
-		<body>
-			<trans-unit id="tx_templavoilaplus_ds.description" xml:space="preserve">
-				<source>Select the kind of page you want to create. You can see the basic layout in the icon below the selector box.</source>
-			</trans-unit>
-			<trans-unit id="tx_templavoilaplus_next_ds.description" xml:space="preserve">
-				<source>Select alternative page structure for subpages.</source>
-			</trans-unit>
-			<trans-unit id="tx_templavoilaplus_next_ds.details" xml:space="preserve">
-				<source>Subpages to this page will normally use the same structure as you have set in the &quot;Page Template Structure&quot; field above. However you can select an alternative structure here to be used by all subpages.</source>
-			</trans-unit>
-			<trans-unit id="tx_templavoilaplus_to.description" xml:space="preserve">
-				<source>Select the template design of the chosen &quot;Page Template Structure&quot; for this page.</source>
-			</trans-unit>
-			<trans-unit id="tx_templavoilaplus_next_to.description" xml:space="preserve">
-				<source>Select a different template design of the chosen &quot;Page Template Structure&quot; above for all subpages.</source>
-			</trans-unit>
-			<trans-unit id="tx_templavoilaplus_flex.description" xml:space="preserve">
-				<source>Select the content and / or flexible elements for your page.</source>
-			</trans-unit>
-			<trans-unit id="tx_templavoilaplus_flex.details" xml:space="preserve">
-				<source>Usually, these fields show you the content types that you defined in the selected data structure above. If you use simple content elements, this fields gets automatically altered through the page module once you add content there.</source>
-			</trans-unit>
-		</body>
-	</file>
+    <file source-language="en" datatype="plaintext" original="messages" date="2014-07-13T20:54:50Z" product-name="templavoilaplus">
+        <header/>
+        <body>
+            <trans-unit id="tx_templavoilaplus_ds.description" xml:space="preserve">
+                <source>Select the kind of page you want to create. You can see the basic layout in the icon below the selector box.</source>
+            </trans-unit>
+            <trans-unit id="tx_templavoilaplus_next_ds.description" xml:space="preserve">
+                <source>Select alternative page structure for subpages.</source>
+            </trans-unit>
+            <trans-unit id="tx_templavoilaplus_next_ds.details" xml:space="preserve">
+                <source>Subpages to this page will normally use the same structure as you have set in the &quot;Page Template Structure&quot; field above. However you can select an alternative structure here to be used by all subpages.</source>
+            </trans-unit>
+            <trans-unit id="tx_templavoilaplus_to.description" xml:space="preserve">
+                <source>Select the template design of the chosen &quot;Page Template Structure&quot; for this page.</source>
+            </trans-unit>
+            <trans-unit id="tx_templavoilaplus_next_to.description" xml:space="preserve">
+                <source>Select a different template design of the chosen &quot;Page Template Structure&quot; above for all subpages.</source>
+            </trans-unit>
+            <trans-unit id="tx_templavoilaplus_flex.description" xml:space="preserve">
+                <source>Select the content and / or flexible elements for your page.</source>
+            </trans-unit>
+            <trans-unit id="tx_templavoilaplus_flex.details" xml:space="preserve">
+                <source>Usually, these fields show you the content types that you defined in the selected data structure above. If you use simple content elements, this fields gets automatically altered through the page module once you add content there.</source>
+            </trans-unit>
+        </body>
+    </file>
 </xliff>
