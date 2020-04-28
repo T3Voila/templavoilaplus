@@ -4,7 +4,9 @@
             <f:then>
                 <f:for each="{tree.sub.sDEF.lDEF}" as="subField">
                     <td width="%4$d%%" class="bgColor6 tpm-title-cell">
-                        {subField.vDEF.meta.title}
+                        <f:if condition="{subField.vDEF.meta.title}">
+                            <strong><f:translate key="{subField.vDEF.meta.title}" default="{subField.vDEF.meta.title}"/></strong>
+                        </f:if>
                     </td>
                 </f:for>
             </f:then>
