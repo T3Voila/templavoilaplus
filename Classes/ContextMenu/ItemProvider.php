@@ -28,18 +28,6 @@ class ItemProvider extends AbstractProvider
      * @var array
      */
     protected $itemsConfiguration = [
-        'mappingFile' => [
-            'type' => 'item',
-            'label' => 'LLL:EXT:templavoilaplus/Resources/Private/Language/locallang.xlf:cm1_title',
-            'iconIdentifier' => 'extensions-templavoila-menu-item',
-            'callbackAction' => 'mappingFile', //'templavoilaplus_mapping'
-        ],
-        'mappingDb' => [
-            'type' => 'item',
-            'label' => 'LLL:EXT:templavoilaplus/Resources/Private/Language/locallang.xlf:cm1_title',
-            'iconIdentifier' => 'extensions-templavoila-menu-item',
-            'callbackAction' => 'mappingDb', //'templavoilaplus_mapping',
-        ],
         'viewsubelements' => [
             'type' => 'item',
             'label' => 'LLL:EXT:templavoilaplus/Resources/Private/Language/locallang.xlf:cm1_viewsubelements',
@@ -89,10 +77,7 @@ class ItemProvider extends AbstractProvider
             $this->table,
             [
                 'pages',
-                'sys_file',
                 'tt_content',
-                'tx_templavoilaplus_datastructure',
-                'tx_templavoilaplus_tmplobj',
             ],
             true
         );
@@ -116,14 +101,6 @@ class ItemProvider extends AbstractProvider
         }
         $canRender = false;
         switch ($itemName) {
-            case 'mappingFile':
-                $canRender = $this->backendUser->isAdmin()
-                    && $this->isXmlFile();
-                break;
-            case 'mappingDb':
-                $canRender = $this->table === 'tx_templavoilaplus_datastructure'
-                    || $this->table === 'tx_templavoilaplus_tmplobj';
-                break;
             case 'viewsubelements':
                 $canRender = $this->isTvContentElement();
                 break;
@@ -142,18 +119,6 @@ class ItemProvider extends AbstractProvider
 
         }
         return $canRender;
-    }
-
-    /**
-     * Checks if we are on sys_file table and if file exists and if it is a XML file
-     *
-     * @return bool
-     */
-    protected function isXmlFile(): bool
-    {
-        return $this->table === 'sys_file'
-            && \Ppi\TemplaVoilaPlus\Domain\Model\File::is_file($this->identifier)
-            && \Ppi\TemplaVoilaPlus\Domain\Model\File::is_xmlFile($this->identifier);
     }
 
     /**
@@ -194,17 +159,6 @@ class ItemProvider extends AbstractProvider
         ];
 
         switch ($itemName) {
-            case 'mappingFile':
-                $attributes += [
-                    'uid' => $this->identifier,
-                ];
-                break;
-            case 'mappingDb':
-                $attributes += [
-                    'table' => $this->table,
-                    'uid' => $this->identifier,
-                ];
-                break;
             case 'viewsubelements':
             case 'viewflexformxml':
                 $attributes += [
