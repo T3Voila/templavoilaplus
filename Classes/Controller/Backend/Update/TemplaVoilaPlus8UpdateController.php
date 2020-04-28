@@ -780,6 +780,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
                     'fce' => '/Resources/Private/TVP/TemplateConfiguration/Fces',
                 ],
                 'templates' => '/Resources/Private/TVP/Template',
+                'backendLayout' => '/Resources/Private/TVP/BackendLayout',
             ];
 
             // Create path if needed
@@ -833,6 +834,15 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
                 ],
             ];
 
+            // Generate Place Configuration for BElayout
+            $beLayoutConfigurationPlacesConfig = [
+                $packageName . '/BackendLayoutConfiguration' => [
+                    'name' => $packageTitle . ' BackendLayouts',
+                    'path' => 'EXT:' . $selection . $innerPathes['backendLayout'],
+                    'loadSaveHandler' => new UnquotedString(\Ppi\TemplaVoilaPlus\Handler\LoadSave\XmlLoadSaveHandler::class . '::$identifier'),
+                ],
+            ];
+
             // Create/Update Places configuration files
             $dataStructurePlaces = "<?php\ndeclare(strict_types=1);\n\nreturn " . $this->arrayExport($dataStructurePlacesConfig) . ";\n";
             GeneralUtility::writeFile($publicExtensionDirectory . $innerPathes['configuration'] . '/DataStructurePlaces.php', $dataStructurePlaces, true);
@@ -842,6 +852,9 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
 
             $templateConfigurationPlaces = "<?php\ndeclare(strict_types=1);\n\nreturn " . $this->arrayExport($templateConfigurationPlacesConfig) . ";\n";
             GeneralUtility::writeFile($publicExtensionDirectory . $innerPathes['configuration'] . '/TemplatePlaces.php', $templateConfigurationPlaces, true);
+
+            $templateConfigurationPlaces = "<?php\ndeclare(strict_types=1);\n\nreturn " . $this->arrayExport($beLayoutConfigurationPlacesConfig) . ";\n";
+            GeneralUtility::writeFile($publicExtensionDirectory . $innerPathes['configuration'] . '/BackendLayoutPlaces.php', $beLayoutConfigurationPlacesConfig, true);
 
             $ds = $this->getAllDs();
             /** @TODO Support for multiple sorage_pids */
@@ -871,6 +884,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
         $systemPath = $this->getSystemPath();
         $covertingInstructions = [];
         $copiedTemplateFiles = [];
+        $copiedBackendLayoutFiles = [];
 
         // Change the logic the other way arround, we need to itterate over the TOs
         // and then convert the dependend DS files as we need their data for the mappings
@@ -882,6 +896,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
             }
 
             $resultingFileName = $this->copyFile($to['fileref'], $copiedTemplateFiles, $publicExtensionDirectory, $innerPathes['templates']);
+
             $yamlFileName = pathinfo($resultingFileName,  PATHINFO_FILENAME) . '.tvp.yaml';
 
             $ds = $this->getDsForTo($allDs, $to);
@@ -947,9 +962,25 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
                     /** @TODO if DS contains no fields, we do not need it */
                     'combinedDataStructureIdentifier' => $packageName . $scopePath . '/DataStructure:' . $dsXmlFileName,
                     'combinedTemplateConfigurationIdentifier' => $packageName . $scopePath . '/TemplateConfiguration:' . $yamlFileName,
-                    'mappingToTemplate' => $mappingToTemplateInfo,
                 ],
             ];
+
+            /**
+             * @TODO in staticDS it was also possible that we had a filenamen with same name but with .html as ending which included the belayout
+             * Add this to the getAllDsFromStatic function.
+             * No Support for beLayout content inside DS-XML or TO-Table only filenames (as this is what only worked in TV+).
+             */
+            if (!empty($to['belayout']) || !empty($ds['belayout'])) {
+                $beLayout = $to['belayout'];
+                if (empty($beLayout)) {
+                    // Old, in nonStaticDS time this was in the DS record
+                    $beLayout = $ds['belayout'];
+                }
+                $backendLayoutFileName = $this->copyFile($beLayout, $copiedBackendLayoutFiles, $publicExtensionDirectory, $innerPathes['backendLayout']);
+                $mappingConfiguration['tvp-mapping']['combinedBackendLayoutConfigurationIdentifier'] = $packageName . '/BackendLayoutConfiguration:' . $backendLayoutFileName;
+            }
+
+            $mappingConfiguration['tvp-mapping']['mappingToTemplate'] = $mappingToTemplateInfo;
 
             $covertingInstructions[] = [
                 'fromTo' => $to['uid'],
