@@ -33,9 +33,6 @@ class ExtensionManagerUpdateController
     public function run()
     {
         switch (GeneralUtility::_GP('update')) {
-            case 'StaticData':
-                $controller = GeneralUtility::makeInstance(Update\StaticDataUpdateController::class);
-                break;
             case 'DataStructureV8':
                 $controller = GeneralUtility::makeInstance(Update\DataStructureV8UpdateController::class);
                 break;
