@@ -189,6 +189,9 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
     {
         $allDs = [];
 
+        $systemPath = $this->getSystemPath();
+
+        // Read config from "Template Extensions"
         if (isset($GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoilaplus_cm1']['staticDataStructures'])
             && is_array($GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoilaplus_cm1']['staticDataStructures'])
         ) {
@@ -201,8 +204,14 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
             $allDs = array_merge($allDs, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoilaplus']['staticDataStructures']);
         }
 
-        $systemPath = $this->getSystemPath();
+        // Read XML data from "Template Extensions" config
+        foreach ($allDs as $key => $dataStructure) {
+            if (is_file($systemPath . $dataStructure['path']) && is_readable($systemPath . $dataStructure['path'])) {
+                $allDs[$key]['xml'] = file_get_contents($systemPath . $dataStructure['path']);
+            }
+        }
 
+        // Read files from defined static DataStructure paths
         $paths = $this->getStaticDsPaths();
         foreach ($paths as $type => $path) {
             $absolutePath = GeneralUtility::getFileAbsFileName($path);
@@ -313,7 +322,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
             $ds['countUsage'] = 0;
             $ds['valid'] = false;
 
-            if ($ds['xml'] !== '') {
+            if (!empty($ds['xml'])) {
                 $result = simplexml_load_string($ds['xml']);
                 if ($result === false) {
                     $errors = libxml_get_errors();
