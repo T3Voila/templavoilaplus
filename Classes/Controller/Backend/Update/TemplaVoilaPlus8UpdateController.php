@@ -109,6 +109,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
             'allNewDatabaseElementsFound' => $allNewDatabaseElementsFound,
             'storagePidsAreFine' => $storagePidsAreFine,
             'useStaticDS' => $useStaticDS,
+            'staticDsInExtension' => (bool) (isset($GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoilaplus_cm1']['staticDataStructures']) || isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoilaplus']['staticDataStructures'])),
             'staticDsPaths' => implode(', ', $this->getStaticDsPaths()),
             'allDsToValid' => $allDsToValid,
             'validationDsToErrors' => $validationDsToErrors,
@@ -188,6 +189,18 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
     {
         $allDs = [];
 
+        if (isset($GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoilaplus_cm1']['staticDataStructures'])
+            && is_array($GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoilaplus_cm1']['staticDataStructures'])
+        ) {
+            $allDs = $GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoilaplus_cm1']['staticDataStructures'];
+        }
+
+        if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoilaplus']['staticDataStructures'])
+            && is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoilaplus']['staticDataStructures'])
+        ) {
+            $allDs = array_merge($allDs, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoilaplus']['staticDataStructures']);
+        }
+
         $systemPath = $this->getSystemPath();
 
         $paths = $this->getStaticDsPaths();
@@ -228,7 +241,8 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
                 $allDs[] = $dataStructure;
             }
         }
-        return $allDs;
+
+         return $allDs;
     }
 
     protected function getAllDsFromDatabase(): array

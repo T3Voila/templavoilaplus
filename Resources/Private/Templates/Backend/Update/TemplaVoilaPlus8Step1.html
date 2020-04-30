@@ -28,6 +28,7 @@
             <f:be.infobox title="Information" state="-1">
                 <p class="lead">Your system was identified as using "Static DataStructures" (file based).</p>
                 <p class="lead">The locations are {staticDsPaths}</p>
+                <f:if condition="{staticDsInExtension}"><p class="lead">There are also "Static DataStructures" in extensions configured</p></f:if>
             </f:be.infobox>
         </f:then>
         <f:else>
