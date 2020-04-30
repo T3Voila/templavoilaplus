@@ -109,6 +109,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
             'allNewDatabaseElementsFound' => $allNewDatabaseElementsFound,
             'storagePidsAreFine' => $storagePidsAreFine,
             'useStaticDS' => $useStaticDS,
+            'staticDsPaths' => implode(', ', $this->getStaticDsPaths()),
             'allDsToValid' => $allDsToValid,
             'validationDsToErrors' => $validationDsToErrors,
             'validatedDs' => $validatedDs,
@@ -127,6 +128,14 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
             return true;
         }
         return false;
+    }
+
+    protected function getStaticDsPaths(): array
+    {
+        return array_unique([
+            'fce' => $this->extConf['staticDS']['path_fce'],
+            'page' => $this->extConf['staticDS']['path_page'],
+        ]);
     }
 
     protected function getAllDs(): array
@@ -181,7 +190,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
 
         $systemPath = $this->getSystemPath();
 
-        $paths = array_unique(array('fce' => $this->extConf['staticDS']['path_fce'], 'page' => $this->extConf['staticDS']['path_page']));
+        $paths = $this->getStaticDsPaths();
         foreach ($paths as $type => $path) {
             $absolutePath = GeneralUtility::getFileAbsFileName($path);
             $files = GeneralUtility::getFilesInDir($absolutePath, 'xml', true);
