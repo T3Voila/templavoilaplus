@@ -327,7 +327,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
                     $validationErrors[] = 'Cannot verify TO with title "' . $to['title'] . '" and uid "' . $to['uid'] . '", as template file "' . $to['fileref'] . '" could not be found.';
                 }
             } else {
-                $validationErrors[] = 'Cannot verify TO with title "' . $to['title'] . '" and uid "' . $to['uid'] . '", as DS could not be found.';
+                $validationErrors[] = 'Cannot verify TO with title "' . $to['title'] . '" and uid "' . $to['uid'] . '", as DataStructure "' . $to['datastructure'] . '" could not be found.';
             }
             $validatedToWithDs[$to['uid']] = $to;
         }
