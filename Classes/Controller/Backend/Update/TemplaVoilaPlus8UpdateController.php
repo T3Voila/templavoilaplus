@@ -141,14 +141,15 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
 
     protected function getAllDs(): array
     {
+        $allDs = [];
         if ($this->getUseStaticDs())
         {
             // Load all DS from path
             $allDs = $this->getAllDsFromStatic();
-        } else {
-            // Load DS from DB
-            $allDs = $this->getAllDsFromDatabase();;
         }
+
+        // Load DS from DB
+        $allDs = array_merge($allDs, $this->getAllDsFromDatabase());
 
         return $allDs;
     }
@@ -286,7 +287,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
             $allDs[] = $dataStructure;
         }
 
-        return $result;
+        return $allDs;
     }
 
     protected function getAllToFromDB(): array
