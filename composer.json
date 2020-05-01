@@ -34,5 +34,10 @@
     "replace": {
         "templavoilaplus/templavoilaplus": "self.version",
         "typo3-ter/templavoilaplus": "self.version"
+    },
+    "extra": {
+        "typo3/cms": {
+            "extension-key": "templavoilaplus"
+        }
     }
 }
