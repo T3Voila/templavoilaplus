@@ -84,14 +84,16 @@
     </form>
 </div>
 
-<script>
-$('input[type=radio][name=selection], #newExtensionKey').bind('input propertychange', function() {
-    if (this.value != '' && this.value != 'new'
-        || this.value == 'new' && $('#newExtensionKey').val().length > 3
-    ) {
-        $('#continueButton').prop('type', 'submit').removeClass('disabled');
-    } else {
-        $('#continueButton').prop('type', 'button').addClass('disabled');
-    }
+<script type="text/javascript">
+$(function() {
+    $('input[type=radio][name=selection], #newExtensionKey').bind('input propertychange', function() {
+        if (this.value != '' && this.value != 'new'
+            || this.value == 'new' && $('#newExtensionKey').val().length > 3
+        ) {
+            $('#continueButton').prop('type', 'submit').removeClass('disabled');
+        } else {
+            $('#continueButton').prop('type', 'button').addClass('disabled');
+        }
+    });
 });
 </script>
