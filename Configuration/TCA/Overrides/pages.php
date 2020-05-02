@@ -40,8 +40,10 @@ $tempColumns = array(
         'config' => array(
             'type' => 'flex',
             'ds_pointerField' => 'tx_templavoilaplus_map',
+            'ds_pointerField_searchParent' => 'pid',
+            'ds_pointerField_searchParent_subField' => 'tx_templavoilaplus_next_map',
             'ds_pointerType' => 'combinedMappingIdentifier',
-        )
+        ),
     ),
 );
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('pages', $tempColumns);
