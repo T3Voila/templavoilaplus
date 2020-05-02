@@ -872,7 +872,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
                 $packageName . '/BackendLayoutConfiguration' => [
                     'name' => $packageTitle . ' BackendLayouts',
                     'path' => 'EXT:' . $selection . $innerPathes['backendLayout'],
-                    'loadSaveHandler' => new UnquotedString(\Ppi\TemplaVoilaPlus\Handler\LoadSave\XmlLoadSaveHandler::class . '::$identifier'),
+                    'loadSaveHandler' => new UnquotedString(\Ppi\TemplaVoilaPlus\Handler\LoadSave\MarkerBasedFileLoadSaveHandler::class . '::$identifier'),
                 ],
             ];
 
