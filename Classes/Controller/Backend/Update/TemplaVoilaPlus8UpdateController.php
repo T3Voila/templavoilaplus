@@ -886,8 +886,8 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
             $templateConfigurationPlaces = "<?php\ndeclare(strict_types=1);\n\nreturn " . $this->arrayExport($templateConfigurationPlacesConfig) . ";\n";
             GeneralUtility::writeFile($publicExtensionDirectory . $innerPathes['configuration'] . '/TemplatePlaces.php', $templateConfigurationPlaces, true);
 
-            $templateConfigurationPlaces = "<?php\ndeclare(strict_types=1);\n\nreturn " . $this->arrayExport($beLayoutConfigurationPlacesConfig) . ";\n";
-            GeneralUtility::writeFile($publicExtensionDirectory . $innerPathes['configuration'] . '/BackendLayoutPlaces.php', $beLayoutConfigurationPlacesConfig, true);
+            $beLayoutConfigurationPlaces = "<?php\ndeclare(strict_types=1);\n\nreturn " . $this->arrayExport($beLayoutConfigurationPlacesConfig) . ";\n";
+            GeneralUtility::writeFile($publicExtensionDirectory . $innerPathes['configuration'] . '/BackendLayoutPlaces.php', $beLayoutConfigurationPlaces, true);
 
             $ds = $this->getAllDs();
             /** @TODO Support for multiple sorage_pids */
