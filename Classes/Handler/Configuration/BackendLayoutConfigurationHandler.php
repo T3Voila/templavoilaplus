@@ -82,8 +82,8 @@ class BackendLayoutConfigurationHandler implements ConfigurationHandlerInterface
             throw new \Exception('No TemplaVoilà! Plus BackendLayout configuration');
         }
 
-        if (isset($configuration['tvp-beLayout']['meta']['label'])) {
-            $templateConfiguration->setName($configuration['tvp-beLayout']['meta']['label']);
+        if (isset($configuration['tvp-beLayout']['meta']['name'])) {
+            $templateConfiguration->setName($configuration['tvp-beLayout']['meta']['name']);
         }
         if (isset($configuration['tvp-beLayout']['meta']['renderer'])) {
             /** @TODO check before setting */
