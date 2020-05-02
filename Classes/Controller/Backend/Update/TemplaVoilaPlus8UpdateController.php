@@ -918,6 +918,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
         $covertingInstructions = [];
         $copiedTemplateFiles = [];
         $copiedBackendLayoutFiles = [];
+        $filenameUsed = [];
 
         // Change the logic the other way arround, we need to itterate over the TOs
         // and then convert the dependend DS files as we need their data for the mappings
@@ -931,6 +932,14 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
             $resultingFileName = $this->copyFile($to['fileref'], $copiedTemplateFiles, $publicExtensionDirectory, $innerPathes['templates']);
 
             $yamlFileName = pathinfo($resultingFileName,  PATHINFO_FILENAME) . '.tvp.yaml';
+
+            // Prevent double usage of configuration files but name them like the templates
+            if ($filenameUsed[$yamlFileName]) {
+                $filenameUsed[$yamlFileName]++;
+                $yamlFileName = pathinfo($resultingFileName,  PATHINFO_FILENAME) . $filenameUsed[$yamlFileName] . '.tvp.yaml';
+            } else {
+                $filenameUsed[$yamlFileName] = 1;
+            }
 
             $ds = $this->getDsForTo($allDs, $to);
 
