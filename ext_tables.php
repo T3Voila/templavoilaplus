@@ -50,6 +50,9 @@ if (TYPO3_MODE === 'BE') {
         ]
     );
 
+    $GLOBALS['TBE_MODULES']['web'] = str_replace(',,', ',', str_replace('layout', '', $GLOBALS['TBE_MODULES']['web']));
+    unset($GLOBALS['TBE_MODULES']['_PATHS']['web_layout']);
+
     // Registering CSH:
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
         'be_groups',
