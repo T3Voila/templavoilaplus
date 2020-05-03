@@ -1,5 +1,5 @@
 tvp-beLayout:
     meta:
         name: Default Backend Layout
-        renderer: 'TVP\Renderer\XPath'
+        renderer: 'TVP\Renderer\MarkerBased'
         template: 'DefaultPageBackendLayout.html'

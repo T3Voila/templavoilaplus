@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 use Ppi\TemplaVoilaPlus\Controller\Backend\PageLayoutController;
 use Ppi\TemplaVoilaPlus\Service\ApiService;
+use Ppi\TemplaVoilaPlus\Service\ConfigurationService;
 use Ppi\TemplaVoilaPlus\Utility\ApiHelperUtility;
 use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
@@ -40,23 +41,22 @@ class DoktypeDefaultHandler
         /** @var ApiService */
         $apiService = GeneralUtility::makeInstance(ApiService::class, 'pages');
 
+        /** @var ConfigurationService */
+        $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
+
         if (isset($controller->getModSharedTSconfig()['properties']['useLiveWorkspaceForReferenceListUpdates'])) {
             $apiService->modifyReferencesInLiveWS(true);
         }
-        $controller->getView()->assign(
-            'doktypeDefault',
-            [
-                'treeData' => $apiService->getContentTree('pages', $pageRecord),
-            ]
-        );
 
+        /** @TODO This loading will be later done again for the FlexFormTools::getDataStructureIdentifierFromRecord() which is stupid IMHO */
+        $combinedMappingConfigurationIdentifier = $pageRecord['tx_templavoilaplus_map'];
         // Find DS and Template in root line IF there is no Data Structure set for the current page:
-        if (!$pageRecord['tx_templavoilaplus_map']) {
+        if (!$combinedMappingConfigurationIdentifier) {
             $rootLine = $apiService->getBackendRootline($pageRecord['uid']);
-            $pageRecord['tx_templavoilaplus_map'] = $apiService->getMapIdentifierFromRootline($rootLine);
+            $combinedMappingConfigurationIdentifier = $apiService->getMapIdentifierFromRootline($rootLine);
         }
 
-        if (!$pageRecord['tx_templavoilaplus_map']) {
+        if (!$combinedMappingConfigurationIdentifier) {
             $controller->getView()->getModuleTemplate()->addFlashMessage(
                 'No mapping configuration found for this page. Please edit the page properties and select one.',
                 'No mapping configuration found',
@@ -72,13 +72,21 @@ class DoktypeDefaultHandler
                 );
             }
         } else {
-            $mappingConfiguration = ApiHelperUtility::getMappingConfiguration($pageRecord['tx_templavoilaplus_map']);
+            $mappingConfiguration = ApiHelperUtility::getMappingConfiguration($combinedMappingConfigurationIdentifier);
             $combinedBackendLayoutConfigurationIdentifier = $mappingConfiguration->getCombinedBackendLayoutConfigurationIdentifier();
 
-            if ($combinedBackendLayoutConfigurationIdentifier === '') {
-                $combinedBackendLayoutConfigurationIdentifier = 'TVP\BackendLayout:DefaultPage.tvp.yaml';
-            }
-            $backendLayoutConfiguration = ApiHelperUtility::getBackendLayoutConfiguration($combinedBackendLayoutConfigurationIdentifier);
+            /** @TODO Use a default beLayout thing instead of the double rendering in the template yet */
+//             if ($combinedBackendLayoutConfigurationIdentifier === '') {
+//                 $combinedBackendLayoutConfigurationIdentifier = 'TVP\BackendLayout:DefaultPage.tvp.yaml';
+//             }
+
+            $controller->getView()->assign(
+                'doktypeDefault',
+                [
+                    'treeData' => $apiService->getContentTree('pages', $pageRecord),
+                    'beLayout' => $combinedBackendLayoutConfigurationIdentifier,
+                ]
+            );
 
 
             $controller->addContentPartial('body', 'Backend/Handler/DoktypeDefaultHandler'); // @TODO Add them automagically in controller to harden naming?

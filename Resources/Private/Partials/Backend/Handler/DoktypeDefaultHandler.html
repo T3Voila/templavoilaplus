@@ -4,7 +4,7 @@
             <f:be.infobox title="{f:translate(key:'{lllFile}:infoTitleMissingEditRights')}" state="-1"><f:translate key="{lllFile}:infoContentMissingEditRights"/></f:be.infobox>
         </f:if>
 
-        <f:render partial="Backend/Handler/DoktypeDefaultHandler/PageElement" arguments="{allAvailableLanguages: allAvailableLanguages, tree: doktypeDefault.treeData.tree}" />
+        <f:render partial="Backend/Handler/DoktypeDefaultHandler/PageElement" arguments="{allAvailableLanguages: allAvailableLanguages, tree: doktypeDefault.treeData.tree, beLayout: doktypeDefault.beLayout}" />
     </f:then>
     <f:else>
         <f:be.infobox title="{f:translate(key:'{lllFile}:infoTitleSelectTemplateDesign')}" state="-1"><f:translate key="{lllFile}:infoContentSelectTemplateDesign"/></f:be.infobox>

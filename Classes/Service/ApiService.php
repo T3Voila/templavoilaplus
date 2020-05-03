@@ -1750,7 +1750,7 @@ class ApiService
                     )
                 )
                 ->execute()
-                ->fetch();
+                ->fetchAll();
 
             $attachedLocalizations = [];
             if ($rows) {

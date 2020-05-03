@@ -109,6 +109,8 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
             'allNewDatabaseElementsFound' => $allNewDatabaseElementsFound,
             'storagePidsAreFine' => $storagePidsAreFine,
             'useStaticDS' => $useStaticDS,
+            'staticDsInExtension' => (bool) (isset($GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoilaplus_cm1']['staticDataStructures']) || isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoilaplus']['staticDataStructures'])),
+            'staticDsPaths' => implode(', ', $this->getStaticDsPaths()),
             'allDsToValid' => $allDsToValid,
             'validationDsToErrors' => $validationDsToErrors,
             'validatedDs' => $validatedDs,
@@ -129,17 +131,25 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
         return false;
     }
 
+    protected function getStaticDsPaths(): array
+    {
+        return array_unique([
+            'fce' => $this->extConf['staticDS']['path_fce'],
+            'page' => $this->extConf['staticDS']['path_page'],
+        ]);
+    }
+
     protected function getAllDs(): array
     {
+        $allDs = [];
         if ($this->getUseStaticDs())
         {
             // Load all DS from path
             $allDs = $this->getAllDsFromStatic();
-        } else {
-            // Load DS from DB
-            /** @TODO Implement */
-            $allDs = [];
         }
+
+        // Load DS from DB
+        $allDs = array_merge($allDs, $this->getAllDsFromDatabase());
 
         return $allDs;
     }
@@ -182,7 +192,28 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
 
         $systemPath = $this->getSystemPath();
 
-        $paths = array_unique(array('fce' => $this->extConf['staticDS']['path_fce'], 'page' => $this->extConf['staticDS']['path_page']));
+        // Read config from "Template Extensions"
+        if (isset($GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoilaplus_cm1']['staticDataStructures'])
+            && is_array($GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoilaplus_cm1']['staticDataStructures'])
+        ) {
+            $allDs = $GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoilaplus_cm1']['staticDataStructures'];
+        }
+
+        if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoilaplus']['staticDataStructures'])
+            && is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoilaplus']['staticDataStructures'])
+        ) {
+            $allDs = array_merge($allDs, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoilaplus']['staticDataStructures']);
+        }
+
+        // Read XML data from "Template Extensions" config
+        foreach ($allDs as $key => $dataStructure) {
+            if (is_file($systemPath . $dataStructure['path']) && is_readable($systemPath . $dataStructure['path'])) {
+                $allDs[$key]['xml'] = file_get_contents($systemPath . $dataStructure['path']);
+            }
+        }
+
+        // Read files from defined static DataStructure paths
+        $paths = $this->getStaticDsPaths();
         foreach ($paths as $type => $path) {
             $absolutePath = GeneralUtility::getFileAbsFileName($path);
             $files = GeneralUtility::getFilesInDir($absolutePath, 'xml', true);
@@ -191,25 +222,71 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
                 $type = false;
             }
             foreach ($files as $filePath) {
-                $staticDataStructure = [];
                 $pathInfo = pathinfo($filePath);
 
-                $staticDataStructure['title'] = $pathInfo['filename'];
-                $staticDataStructure['path'] = substr($filePath, strlen($systemPath));
+                $dataStructure = [
+                    'staticDS' => true,
+                    'title' => $pathInfo['filename'],
+                    'path' => substr($filePath, strlen($systemPath)),
+                    'xml' => '',
+                    'scope' => '',
+                    'icon' => '',
+                ];
+
+                if (is_file($systemPath . $dataStructure['path']) && is_readable($systemPath . $dataStructure['path'])) {
+                    $dataStructure['xml'] = file_get_contents($systemPath . $dataStructure['path']);
+                }
+
                 $iconPath = $pathInfo['dirname'] . '/' . $pathInfo['filename'] . '.gif';
                 if (file_exists($iconPath)) {
-                    $staticDataStructure['icon'] = substr($iconPath, strlen($systemPath));
+                    $dataStructure['icon'] = substr($iconPath, strlen($systemPath));
                 }
 
                 if (($type !== false && $type === 'fce') || strpos($pathInfo['filename'], '(fce)') !== false) {
-                    $staticDataStructure['scope'] = \Ppi\TemplaVoilaPlus\Domain\Model\Scope::SCOPE_FCE;
+                    $dataStructure['scope'] = \Ppi\TemplaVoilaPlus\Domain\Model\Scope::SCOPE_FCE;
                 } else {
-                    $staticDataStructure['scope'] = \Ppi\TemplaVoilaPlus\Domain\Model\Scope::SCOPE_PAGE;
+                    $dataStructure['scope'] = \Ppi\TemplaVoilaPlus\Domain\Model\Scope::SCOPE_PAGE;
                 }
 
-                $allDs[] = $staticDataStructure;
+                $allDs[] = $dataStructure;
             }
         }
+
+         return $allDs;
+    }
+
+    protected function getAllDsFromDatabase(): array
+    {
+        $allDs = [];
+
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('tx_templavoilaplus_datastructure');
+        $queryBuilder
+            ->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+        $result = $queryBuilder
+            ->select('*')
+            ->from('tx_templavoilaplus_datastructure')
+            ->orderBy('pid')
+            ->execute()
+            ->fetchAll();
+
+        foreach($result as $row) {
+            $dataStructure = [
+                'staticDS' => false,
+                'title' => $row['title'],
+                'path' => $row['uid'],
+                'xml' => $row['dataprot'],
+                'scope' => $row['scope'],
+                'icon' => $row['previewicon'],
+                'belayout' => $row['belayout'], // This should be in TO or is that only there for staticDS??
+            ];
+
+            $allDs[] = $dataStructure;
+        }
+
         return $allDs;
     }
 
@@ -240,17 +317,14 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
         $validatedDs = [];
         $validationErrors = [];
 
-        $systemPath = $this->getSystemPath();
-
         libxml_use_internal_errors(true);
 
         foreach ($allDs as $ds) {
             $ds['countUsage'] = 0;
             $ds['valid'] = false;
 
-            /** @TODO Implement NonStaticDs */
-            if (is_file($systemPath . $ds['path']) && is_readable($systemPath . $ds['path'])) {
-                $result = simplexml_load_file($systemPath . $ds['path']);
+            if (!empty($ds['xml'])) {
+                $result = simplexml_load_string($ds['xml']);
                 if ($result === false) {
                     $errors = libxml_get_errors();
                     $validationErrors[] = 'Cannot verify XML of DS with title "' . $ds['title'] . '" Error is: ' . reset($errors)->message;
@@ -258,7 +332,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
                     $ds['valid'] = true;
                 }
             } else {
-                $validationErrors[] = 'Cannot verify DS with title "' . $ds['title'] . '", as file "' . $ds['path'] . '" could not be found or isn\'t readable';
+                $validationErrors[] = 'Cannot verify DS with title "' . $ds['title'] . '", as uid/file "' . $ds['path'] . '" could not be found or isn\'t readable';
             }
             $validatedDs[$ds['path']] = $ds;
         }
@@ -286,7 +360,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
                     $validationErrors[] = 'Cannot verify TO with title "' . $to['title'] . '" and uid "' . $to['uid'] . '", as template file "' . $to['fileref'] . '" could not be found.';
                 }
             } else {
-                $validationErrors[] = 'Cannot verify TO with title "' . $to['title'] . '" and uid "' . $to['uid'] . '", as DS could not be found.';
+                $validationErrors[] = 'Cannot verify TO with title "' . $to['title'] . '" and uid "' . $to['uid'] . '", as DataStructure "' . $to['datastructure'] . '" could not be found.';
             }
             $validatedToWithDs[$to['uid']] = $to;
         }
@@ -739,6 +813,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
                     'fce' => '/Resources/Private/TVP/TemplateConfiguration/Fces',
                 ],
                 'templates' => '/Resources/Private/TVP/Template',
+                'backendLayout' => '/Resources/Private/TVP/BackendLayout',
             ];
 
             // Create path if needed
@@ -792,6 +867,15 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
                 ],
             ];
 
+            // Generate Place Configuration for BElayout
+            $beLayoutConfigurationPlacesConfig = [
+                $packageName . '/BackendLayoutConfiguration' => [
+                    'name' => $packageTitle . ' BackendLayouts',
+                    'path' => 'EXT:' . $selection . $innerPathes['backendLayout'],
+                    'loadSaveHandler' => new UnquotedString(\Ppi\TemplaVoilaPlus\Handler\LoadSave\MarkerBasedFileLoadSaveHandler::class . '::$identifier'),
+                ],
+            ];
+
             // Create/Update Places configuration files
             $dataStructurePlaces = "<?php\ndeclare(strict_types=1);\n\nreturn " . $this->arrayExport($dataStructurePlacesConfig) . ";\n";
             GeneralUtility::writeFile($publicExtensionDirectory . $innerPathes['configuration'] . '/DataStructurePlaces.php', $dataStructurePlaces, true);
@@ -801,6 +885,9 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
 
             $templateConfigurationPlaces = "<?php\ndeclare(strict_types=1);\n\nreturn " . $this->arrayExport($templateConfigurationPlacesConfig) . ";\n";
             GeneralUtility::writeFile($publicExtensionDirectory . $innerPathes['configuration'] . '/TemplatePlaces.php', $templateConfigurationPlaces, true);
+
+            $beLayoutConfigurationPlaces = "<?php\ndeclare(strict_types=1);\n\nreturn " . $this->arrayExport($beLayoutConfigurationPlacesConfig) . ";\n";
+            GeneralUtility::writeFile($publicExtensionDirectory . $innerPathes['configuration'] . '/BackendLayoutPlaces.php', $beLayoutConfigurationPlaces, true);
 
             $ds = $this->getAllDs();
             /** @TODO Support for multiple sorage_pids */
@@ -830,6 +917,8 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
         $systemPath = $this->getSystemPath();
         $covertingInstructions = [];
         $copiedTemplateFiles = [];
+        $copiedBackendLayoutFiles = [];
+        $filenameUsed = [];
 
         // Change the logic the other way arround, we need to itterate over the TOs
         // and then convert the dependend DS files as we need their data for the mappings
@@ -841,15 +930,40 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
             }
 
             $resultingFileName = $this->copyFile($to['fileref'], $copiedTemplateFiles, $publicExtensionDirectory, $innerPathes['templates']);
+
             $yamlFileName = pathinfo($resultingFileName,  PATHINFO_FILENAME) . '.tvp.yaml';
+
+            // Prevent double usage of configuration files but name them like the templates
+            if ($filenameUsed[$yamlFileName]) {
+                $filenameUsed[$yamlFileName]++;
+                $yamlFileName = pathinfo($resultingFileName,  PATHINFO_FILENAME) . $filenameUsed[$yamlFileName] . '.tvp.yaml';
+            } else {
+                $filenameUsed[$yamlFileName] = 1;
+            }
 
             $ds = $this->getDsForTo($allDs, $to);
 
-            /** @TODO for DB ds read XML in an other way */
-            /** @TODO check if DS was already converted */
-            $dsXml = file_get_contents($systemPath . $ds['path']);
-            $dataStructure = GeneralUtility::xml2array($dsXml);
-            $dsXmlFileName = basename($ds['path']);
+            /** @TODO check if DS was already converted? */
+            $dataStructure = GeneralUtility::xml2array($ds['xml']);
+
+            $dsXmlFileName = 'a.xml';
+
+            if ($ds['staticDS']) {
+                $dsXmlFileName = basename($ds['path']);
+            } else {
+                $dsXmlFileName = $this->makeCleanFileName($ds['title']) . '.xml';
+
+                // Mostly the DS from database have no title inside XML so update this field
+                // Works like writeXmlWithTitle from old StaticDataUpdateController
+                if (empty($dataStructure['ROOT']['tx_templavoilaplus']['title'])
+                    || $dataStructure['ROOT']['tx_templavoilaplus']['title'] === 'ROOT'
+                    && (empty($dataStructure['meta']['title'])
+                        || $dataStructure['meta']['title'] === 'ROOT'
+                    )
+                ) {
+                    $dataStructure['meta']['title'] = $ds['title'];
+                }
+            }
 
             switch ($ds['scope']) {
                 case \Ppi\TemplaVoilaPlus\Domain\Model\Scope::SCOPE_PAGE:
@@ -890,9 +1004,25 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
                     /** @TODO if DS contains no fields, we do not need it */
                     'combinedDataStructureIdentifier' => $packageName . $scopePath . '/DataStructure:' . $dsXmlFileName,
                     'combinedTemplateConfigurationIdentifier' => $packageName . $scopePath . '/TemplateConfiguration:' . $yamlFileName,
-                    'mappingToTemplate' => $mappingToTemplateInfo,
                 ],
             ];
+
+            /**
+             * @TODO in staticDS it was also possible that we had a filenamen with same name but with .html as ending which included the belayout
+             * Add this to the getAllDsFromStatic function.
+             * No Support for beLayout content inside DS-XML or TO-Table only filenames (as this is what only worked in TV+).
+             */
+            if (!empty($to['belayout']) || !empty($ds['belayout'])) {
+                $beLayout = $to['belayout'];
+                if (empty($beLayout)) {
+                    // Old, in nonStaticDS time this was in the DS record
+                    $beLayout = $ds['belayout'];
+                }
+                $backendLayoutFileName = $this->copyFile($beLayout, $copiedBackendLayoutFiles, $publicExtensionDirectory, $innerPathes['backendLayout']);
+                $mappingConfiguration['tvp-mapping']['combinedBackendLayoutConfigurationIdentifier'] = $packageName . '/BackendLayoutConfiguration:' . $backendLayoutFileName;
+            }
+
+            $mappingConfiguration['tvp-mapping']['mappingToTemplate'] = $mappingToTemplateInfo;
 
             $covertingInstructions[] = [
                 'fromTo' => $to['uid'],
@@ -928,6 +1058,20 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
 //
 //         }
         return $covertingInstructions;
+    }
+
+
+    protected function makeCleanFileName(string $fileName): string
+    {
+        // Take sanitizer from local driver
+        /** @var \TYPO3\CMS\Core\Resource\Driver\LocalDriver */
+        $localdriver = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Driver\LocalDriver::class);
+
+        // After sanitizing remove double underscores and trim underscore
+        return trim(
+            preg_replace('/__/', '_', $localdriver->sanitizeFileName($fileName)),
+            '_'
+        );
     }
 
     protected function convertTemplateMappingInformation(array $mappingInformation, string $templateFile, $domDocument = null, $baseNode = null): array
@@ -1009,9 +1153,21 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
             $fieldConfig = [];
             $useChild = false;
 
+            if (isset($dsElement['TCEforms']['label'])) {
+                $fieldConfig += [
+                    'title' => $dsElement['TCEforms']['label'],
+                ];
+            }
+
+            if (isset($dsElement['tx_templavoilaplus']['description'])) {
+                $fieldConfig += [
+                    'description' => $dsElement['tx_templavoilaplus']['description'],
+                ];
+            }
+
             if ($dsElement['tx_templavoilaplus']['eType'] === 'TypoScriptObject') {
                 // TSObject shouldn't reside inside DataStructure, so move completely
-                $fieldConfig = [
+                $fieldConfig += [
                     'dataType' => 'typoscriptObjectPath',
                     'dataPath' => $dsElement['tx_templavoilaplus']['TypoScriptObjPath'],
                 ];
@@ -1022,25 +1178,33 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
                 ) {
                     $useChild = true;
                 }
+            } elseif ($dsElement['tx_templavoilaplus']['eType'] === 'none' && !isset($dsElement['TCEforms']['config'])) {
+                // Blind TypoScript element, nothing todo here, already done
+
+                unset($dsXml['ROOT']['el'][$fieldName]);
             } else {
                 // Respect EType_extra??
                 // Respect proc ?
-                $fieldConfig = [
+                $fieldConfig += [
                     'dataType' => 'flexform',
                     'dataPath' => $fieldName,
                 ];
-                $typoScript = trim($dsElement['tx_templavoilaplus']['TypoScript'] ?? '');
-                if ($typoScript !== '') {
-                    $fieldConfig['valueProcessing'] = 'typoScript';
-                    $fieldConfig['valueProcessing.typoScript'] = $this->cleanTypoScript($typoScript);
 
-                    if (!isset($dsElement['tx_templavoilaplus']['proc']['HSC'])
-                        || $dsElement['tx_templavoilaplus']['proc']['HSC'] != '1'
-                    ) {
-                        $useChild = true;
-                    }
-                }
                 unset($dsXml['ROOT']['el'][$fieldName]['tx_templavoilaplus']);
+            }
+
+            $typoScript = trim($dsElement['tx_templavoilaplus']['TypoScript'] ?? '');
+            if ($typoScript !== '') {
+                $fieldConfig += [
+                    'valueProcessing' => 'typoScript',
+                    'valueProcessing.typoScript' => $this->cleanTypoScript($typoScript),
+                ];
+
+                if (!isset($dsElement['tx_templavoilaplus']['proc']['HSC'])
+                    || $dsElement['tx_templavoilaplus']['proc']['HSC'] != '1'
+                ) {
+                    $useChild = true;
+                }
             }
 
             if ($useChild) {
@@ -1100,7 +1264,6 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
         return implode('/', $xPathPartsConverted);
     }
 
-    /** @TODO Implement also for non static DS */
     protected function getDsForTo(array $allDs, array $to): array
     {
         foreach ($allDs as $ds) {

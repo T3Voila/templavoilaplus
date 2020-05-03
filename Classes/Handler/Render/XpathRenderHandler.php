@@ -16,7 +16,6 @@ namespace Ppi\TemplaVoilaPlus\Handler\Render;
  */
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-/** @TODO Missing Base class */
 use Ppi\TemplaVoilaPlus\Domain\Model\TemplateConfiguration;
 
 class XpathRenderHandler implements RenderHandlerInterface

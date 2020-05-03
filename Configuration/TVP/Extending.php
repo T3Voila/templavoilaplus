@@ -28,11 +28,20 @@ return [
             'name' => 'Handler for finding/loading/saving/deleting YAML files',
             'handlerClass' => Ppi\TemplaVoilaPlus\Handler\LoadSave\YamlLoadSaveHandler::class,
         ],
+        /** @TODO Realy? Better MarkerLoadSaveHandler? */
+        Ppi\TemplaVoilaPlus\Handler\LoadSave\MarkerBasedFileLoadSaveHandler::$identifier => [
+            'name' => 'Handler for finding/loading/saving/deleting MarkerBased HTML files',
+            'handlerClass' => Ppi\TemplaVoilaPlus\Handler\LoadSave\MarkerBasedFileLoadSaveHandler::class,
+        ],
     ],
     'renderHandler' => [
         \Ppi\TemplaVoilaPlus\Handler\Render\XpathRenderHandler::$identifier => [
             'name' => 'XPath Renderer',
             'handlerClass' => \Ppi\TemplaVoilaPlus\Handler\Render\XpathRenderHandler::class,
+        ],
+        \Ppi\TemplaVoilaPlus\Handler\Render\MarkerBasedRenderHandler::$identifier => [
+            'name' => 'Marker Based Renderer',
+            'handlerClass' => \Ppi\TemplaVoilaPlus\Handler\Render\MarkerBasedRenderHandler::class,
         ],
     ],
 ];

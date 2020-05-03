@@ -18,41 +18,6 @@ namespace Ppi\TemplaVoilaPlus\Domain\Model;
 /**
  * Class to provide unique access to BackendLayoutConfiguration
  */
-class BackendLayoutConfiguration extends AbstractConfiguration
+class BackendLayoutConfiguration extends TemplateConfiguration
 {
-    /**
-     * @var string
-     */
-    protected $renderHandlerIdentifier = '';
-
-    /**
-     * @var string
-     */
-    protected $templateFileName = '';
-
-    /**
-     * Retrieve the identifier of the RenderHandler for this template
-     *
-     * @return string
-     */
-    public function getRenderHandlerIdentifier(): string
-    {
-        return $this->renderHandlerIdentifier;
-    }
-
-    public function setRenderHandlerIdentifier(string $renderHandlerIdentifier)
-    {
-        $this->renderHandlerIdentifier = $renderHandlerIdentifier;
-    }
-
-    /** @TODO Support non file? Containing the HTML on request? */
-    public function getTemplateFileName(): string
-    {
-        return $this->templateFileName;
-    }
-
-    public function setTemplateFileName(string $templateFileName)
-    {
-        $this->templateFileName = $templateFileName;
-    }
 }

@@ -1,32 +1,45 @@
-<table border="0" cellpadding="2" cellspacing="2" width="100%" class="tpm-subelement-table">
-    <tr>
-        <f:if condition="{tree.sub.sDEF.lDEF}">
-            <f:then>
-                <f:for each="{tree.sub.sDEF.lDEF}" as="subField">
-                    <td width="%4$d%%" class="bgColor6 tpm-title-cell">
-                        {subField.vDEF.meta.title}
-                    </td>
+{namespace tvp=Ppi\TemplaVoilaPlus\ViewHelpers}
+
+<f:comment>@TODO $cellIdStr = ' id="' . $cellId . '"';</f:comment>
+
+<f:if condition="{tree.sub.sDEF.lDEF}">
+    <f:for each="{tree.sub.sDEF.lDEF}" key="fieldKey" as="subField">
+        <tvp:arrayVariable name="layoutHeaders" key="{fieldKey}">
+            <strong><f:translate key="{subField.vDEF.meta.title}" default="{subField.vDEF.meta.title}"/></strong>
+        </tvp:arrayVariable>
+
+        <tvp:arrayVariable name="layoutFields" key="{fieldKey}">
+            <f:for each="{subField.vDEF.el}" as="element">
+                <f:render partial="Backend/Handler/DoktypeDefaultHandler/ContentElement" arguments="{allAvailableLanguages: allAvailableLanguages, element: element}" />
+            </f:for>
+        </tvp:arrayVariable>
+    </f:for>
+</f:if>
+
+<f:if condition="{beLayout}">
+    <f:then>
+        <f:for each="{layoutFields}" key="layoutKey" as="_unused">
+            <tvp:arrayVariable name="layoutComplete" key="{layoutKey}">
+                <div class="t3-page-column-header">
+                    <div class="t3-page-column-header-label"><f:format.raw>{layoutHeaders.{layoutKey}}</f:format.raw></div>
+                </div>
+                <div class="t3-page-ce-wrapper"><f:format.raw>{layoutFields.{layoutKey}}</f:format.raw></div>
+            </tvp:arrayVariable>
+        </f:for>
+        <tvp:renderLayout combinedConfigurationIdentifier="{beLayout}" arguments="{layoutComplete}" />
+    </f:then>
+    <f:else>
+        <table border="0" cellpadding="2" cellspacing="2" width="100%" class="tpm-subelement-table">
+            <tr>
+                <f:for each="{layoutHeaders}" as="layoutHeader">
+                    <td width="%4$d%%" class="tpm-title-cell"><f:format.raw>{layoutHeader}</f:format.raw></td>
                 </f:for>
-            </f:then>
-            <f:else>
-                <td>&nbsp;</td>
-            </f:else>
-        </f:if>
-    <tr>
-    <tr>
-        <f:if condition="{tree.sub.sDEF.lDEF}">
-            <f:then>
-                <f:for each="{tree.sub.sDEF.lDEF}" as="subField">
-                    <td id="" width="%4$d%%" class="tpm-content-cell">
-                        <f:for each="{subField.vDEF.el}" as="element">
-                            <f:render partial="Backend/Handler/DoktypeDefaultHandler/ContentElement" arguments="{allAvailableLanguages: allAvailableLanguages, element: element}" />
-                        </f:for>
-                    </td>
+            </tr>
+            <tr>
+                <f:for each="{layoutFields}" as="layoutField">
+                    <td width="%4$d%%" class="tpm-content-cell"><f:format.raw>{layoutField}</f:format.raw></td>
                 </f:for>
-            </f:then>
-            <f:else>
-                <td>&nbsp;</td>
-            </f:else>
-        </f:if>
-    </tr>
-</table>
+            </tr>
+        </table>
+    </f:else>
+</f:if>
