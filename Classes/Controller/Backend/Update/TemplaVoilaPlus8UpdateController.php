@@ -1155,7 +1155,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
 
             if ($dsElement['tx_templavoilaplus']['eType'] === 'TypoScriptObject') {
                 // TSObject shouldn't reside inside DataStructure, so move completely
-                $fieldConfig = [
+                $fieldConfig += [
                     'dataType' => 'typoscriptObjectPath',
                     'dataPath' => $dsElement['tx_templavoilaplus']['TypoScriptObjPath'],
                 ];
@@ -1166,25 +1166,33 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
                 ) {
                     $useChild = true;
                 }
+            } elseif ($dsElement['tx_templavoilaplus']['eType'] === 'none' && !isset($dsElement['TCEforms']['config'])) {
+                // Blind TypoScript element, nothing todo here, already done
+
+                unset($dsXml['ROOT']['el'][$fieldName]);
             } else {
                 // Respect EType_extra??
                 // Respect proc ?
-                $fieldConfig = [
+                $fieldConfig += [
                     'dataType' => 'flexform',
                     'dataPath' => $fieldName,
                 ];
-                $typoScript = trim($dsElement['tx_templavoilaplus']['TypoScript'] ?? '');
-                if ($typoScript !== '') {
-                    $fieldConfig['valueProcessing'] = 'typoScript';
-                    $fieldConfig['valueProcessing.typoScript'] = $this->cleanTypoScript($typoScript);
 
-                    if (!isset($dsElement['tx_templavoilaplus']['proc']['HSC'])
-                        || $dsElement['tx_templavoilaplus']['proc']['HSC'] != '1'
-                    ) {
-                        $useChild = true;
-                    }
-                }
                 unset($dsXml['ROOT']['el'][$fieldName]['tx_templavoilaplus']);
+            }
+
+            $typoScript = trim($dsElement['tx_templavoilaplus']['TypoScript'] ?? '');
+            if ($typoScript !== '') {
+                $fieldConfig += [
+                    'valueProcessing' => 'typoScript',
+                    'valueProcessing.typoScript' => $this->cleanTypoScript($typoScript),
+                ];
+
+                if (!isset($dsElement['tx_templavoilaplus']['proc']['HSC'])
+                    || $dsElement['tx_templavoilaplus']['proc']['HSC'] != '1'
+                ) {
+                    $useChild = true;
+                }
             }
 
             if ($useChild) {
