@@ -1153,6 +1153,18 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
             $fieldConfig = [];
             $useChild = false;
 
+            if (isset($dsElement['TCEforms']['label'])) {
+                $fieldConfig += [
+                    'title' => $dsElement['TCEforms']['label'],
+                ];
+            }
+
+            if (isset($dsElement['tx_templavoilaplus']['description'])) {
+                $fieldConfig += [
+                    'description' => $dsElement['tx_templavoilaplus']['description'],
+                ];
+            }
+
             if ($dsElement['tx_templavoilaplus']['eType'] === 'TypoScriptObject') {
                 // TSObject shouldn't reside inside DataStructure, so move completely
                 $fieldConfig += [
