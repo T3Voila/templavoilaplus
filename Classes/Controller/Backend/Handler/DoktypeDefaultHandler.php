@@ -48,13 +48,15 @@ class DoktypeDefaultHandler
             $apiService->modifyReferencesInLiveWS(true);
         }
 
+        /** @TODO This loading will be later done again for the FlexFormTools::getDataStructureIdentifierFromRecord() which is stupid IMHO */
+        $combinedMappingConfigurationIdentifier = $pageRecord['tx_templavoilaplus_map'];
         // Find DS and Template in root line IF there is no Data Structure set for the current page:
-        if (!$pageRecord['tx_templavoilaplus_map']) {
+        if (!$combinedMappingConfigurationIdentifier) {
             $rootLine = $apiService->getBackendRootline($pageRecord['uid']);
-            $pageRecord['tx_templavoilaplus_map'] = $apiService->getMapIdentifierFromRootline($rootLine);
+            $combinedMappingConfigurationIdentifier = $apiService->getMapIdentifierFromRootline($rootLine);
         }
 
-        if (!$pageRecord['tx_templavoilaplus_map']) {
+        if (!$combinedMappingConfigurationIdentifier) {
             $controller->getView()->getModuleTemplate()->addFlashMessage(
                 'No mapping configuration found for this page. Please edit the page properties and select one.',
                 'No mapping configuration found',
@@ -70,9 +72,10 @@ class DoktypeDefaultHandler
                 );
             }
         } else {
-            $mappingConfiguration = ApiHelperUtility::getMappingConfiguration($pageRecord['tx_templavoilaplus_map']);
+            $mappingConfiguration = ApiHelperUtility::getMappingConfiguration($combinedMappingConfigurationIdentifier);
             $combinedBackendLayoutConfigurationIdentifier = $mappingConfiguration->getCombinedBackendLayoutConfigurationIdentifier();
 
+            /** @TODO Use a default beLayout thing instead of the double rendering in the template yet */
 //             if ($combinedBackendLayoutConfigurationIdentifier === '') {
 //                 $combinedBackendLayoutConfigurationIdentifier = 'TVP\BackendLayout:DefaultPage.tvp.yaml';
 //             }
