@@ -38,7 +38,7 @@ If you like to test, develop and/or help documenting, see the demo theme extensi
     * Different Output Handler for different doktypes (standard, link, spacer, ...)
     * Loading tree but only handling page layer (not the content elements)
     * You can't edit in the PageLayout
-    * BElayout not respected yet
+    * ~~BElayout not respected yet~~
     * No support for container yet
 * Frontend rendering works for sDEF/lDEV/vDEF as you define
     * DataStructure will be taken into account
@@ -48,13 +48,13 @@ If you like to test, develop and/or help documenting, see the demo theme extensi
     * No support for container yet
 * Extending
     * You could extend TV+ 8 with new Places types with their own handler to load data
-    * You could add new renderer (TYPO3 marker based, Smarty, Twig, Fluid, ...)
+    * You could add new renderer (~~TYPO3 marker based,~~ Smarty, Twig, Fluid, ...)
     * Working on own themes
 * Update Script
     * There is an Update Script which already works quite extensive
-    * Only support for StaticDS yet! Need to find a project which uses DS in DB to check if it works as it should
+    * ~~Only support for StaticDS yet! Need to find a project which uses DS in DB to check if it works as it should~~
     * You should select "creating new extension" also if it shows you a green extension to select
     * Subtemplates/Rendertypes won't be processed yet
-    * BElayout won't be processed yet
+    * ~~BElayout won't be processed yet~~
     * No support for multiple storage pids yet
     * No support for container yet
