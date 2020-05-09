@@ -983,7 +983,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
                 unserialize($to['templatemapping'])['MappingInfo'],
                 $publicExtensionDirectory . $innerPathes['templates'] . '/' . $resultingFileName
             );
-            $mappingToTemplateInfo = $this->convertDsTo2mappingInformation($dataStructure, $templateMappingInfo, $to);
+            $mappingToTemplateInfo = $this->convertDsTo2mappingInformation($dataStructure['ROOT'], $templateMappingInfo['ROOT'], $to);
 
             $templateConfiguration = [
                 'tvp-template' => [
@@ -1149,7 +1149,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
 
         /** @TODO Implement Container handling */
 
-        foreach ($dsXml['ROOT']['el'] as $fieldName => $dsElement) {
+        foreach ($dsXml['el'] as $fieldName => $dsElement) {
             $fieldConfig = [];
             $useChild = false;
 
@@ -1171,7 +1171,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
                     'dataType' => 'typoscriptObjectPath',
                     'dataPath' => $dsElement['tx_templavoilaplus']['TypoScriptObjPath'],
                 ];
-                unset($dsXml['ROOT']['el'][$fieldName]);
+                unset($dsXml['el'][$fieldName]);
 
                 if (!isset($dsElement['tx_templavoilaplus']['proc']['HSC'])
                     || $dsElement['tx_templavoilaplus']['proc']['HSC'] != '1'
@@ -1181,7 +1181,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
             } elseif ($dsElement['tx_templavoilaplus']['eType'] === 'none' && !isset($dsElement['TCEforms']['config'])) {
                 // Blind TypoScript element, nothing todo here, already done
 
-                unset($dsXml['ROOT']['el'][$fieldName]);
+                unset($dsXml['el'][$fieldName]);
             } else {
                 // Respect EType_extra??
                 // Respect proc ?
@@ -1190,7 +1190,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
                     'dataPath' => $fieldName,
                 ];
 
-                unset($dsXml['ROOT']['el'][$fieldName]['tx_templavoilaplus']);
+                unset($dsXml['el'][$fieldName]['tx_templavoilaplus']);
             }
 
             $typoScript = trim($dsElement['tx_templavoilaplus']['TypoScript'] ?? '');
@@ -1207,13 +1207,19 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
                 }
             }
 
+            // Section and repeatables
+            if ($dsElement['type'] === 'array' || (isset($dsElement['section']) && $dsElement['type'] == 1)) {
+                $fieldConfig += $this->convertDsTo2mappingInformation($dsXml['el'][$fieldName], $templateMappingInfo['container'][$fieldName], $to);
+                /** @TODO Unset empty TCEforms config? Or is this needed? */
+            }
+
             if ($useChild) {
-                switch ($templateMappingInfo['ROOT']['container'][$fieldName]['type']) {
+                switch ($templateMappingInfo['container'][$fieldName]['type']) {
                     case 'OUTER':
-                        $templateMappingInfo['ROOT']['container'][$fieldName]['type'] = 'OUTERCHILD';
+                        $templateMappingInfo['container'][$fieldName]['type'] = 'OUTERCHILD';
                         break;
                     case 'INNER':
-                        $templateMappingInfo['ROOT']['container'][$fieldName]['type'] = 'INNERCHILD';
+                        $templateMappingInfo['container'][$fieldName]['type'] = 'INNERCHILD';
                         break;
                     default:
                         // Nothing, as there is no childing for ATTRIB
