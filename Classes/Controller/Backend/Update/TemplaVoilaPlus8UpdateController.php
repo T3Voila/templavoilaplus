@@ -1208,8 +1208,13 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
             }
 
             // Section and repeatables
-            if ($dsElement['type'] === 'array' || (isset($dsElement['section']) && $dsElement['type'] == 1)) {
-                $fieldConfig += $this->convertDsTo2mappingInformation($dsXml['el'][$fieldName], $templateMappingInfo['container'][$fieldName], $to);
+            if ($dsElement['type'] === 'array' || (isset($dsElement['section']) && $dsElement['section'] == 1)) {
+                if (isset($dsElement['section']) && $dsElement['section'] == 1) {
+                    $fieldConfig['dataType'] = 'repeatable';
+                } else {
+                    $fieldConfig['dataType'] = 'container';
+                }
+                $fieldConfig['dataPath'] = $this->convertDsTo2mappingInformation($dsXml['el'][$fieldName], $templateMappingInfo['container'][$fieldName], $to);
                 /** @TODO Unset empty TCEforms config? Or is this needed? */
             }
 
