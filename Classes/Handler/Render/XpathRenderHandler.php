@@ -47,7 +47,7 @@ class XpathRenderHandler implements RenderHandlerInterface
                 $node = $this->processContainer($node, $mapping['container'], $processedValues);
             }
 
-            return $this->getHtml($node, $mapping['type']);
+            return $this->getHtml($node, $mapping['mappingType']);
         }
 
         return '';
@@ -96,24 +96,42 @@ class XpathRenderHandler implements RenderHandlerInterface
     protected function processValue($node, $fieldName, $entry, $processedValues)
     {
         $result = $this->domXpath->query($entry['xpath'], $node);
-
         if ($result && $result->count() > 0) {
             $processingNode = $result->item(0);
 
-            if ($entry['type'] === 'ATTRIB') {
-                $processingNode->setAttribute($entry['attribName'], (string) $processedValues[$fieldName]);
-            } elseif ($entry['type'] === 'INNER') {
-                while ($processingNode->hasChildNodes()) {
-                    $processingNode->removeChild($processingNode->firstChild);
-                }
-                $processingNode->appendChild(
-                    $this->domDocument->createTextNode((string) $processedValues[$fieldName])
-                );
-            } elseif ($entry['type'] === 'INNERCHILD') {
-                while ($processingNode->hasChildNodes()) {
-                    $processingNode->removeChild($processingNode->firstChild);
-                }
+            switch ($entry['mappingType']) {
+                case 'attrib':
+                    $processingNode->setAttribute($entry['attribName'], (string) $processedValues[$fieldName]);
+                    break;
+                case 'inner':
+                    $this->processValueInner($entry, $processingNode, $processedValues, $fieldName);
+                    break;
+                case 'outer':
+                    $this->processValueOuter($entry, $processingNode, $processedValues, $fieldName);
+                    break;
+                default:
+                    /** @TODO Log error? */
+            }
+        } else {
+            // @TODO Only in debug? Would be uncool to have such messages live
+            if ($result === false) {
+                var_dump('XPath: "' . $entry['xpath'] . '" is invalid');
+            } else {
+                var_dump('No result for XPath: "' . $entry['xpath'] . '"');
+            }
+        }
 
+        return $node;
+    }
+
+    protected function processValueInner(array $configuration, \DOMNode $processingNode, array $processedValues, string $fieldName)
+    {
+        while ($processingNode->hasChildNodes()) {
+            $processingNode->removeChild($processingNode->firstChild);
+        }
+
+        switch ($configuration['valueType']) {
+            case 'html':
                 if ($processedValues[$fieldName]) {
                     $tmpDoc = new \DOMDocument();
                     /** Add own tag to prevent automagical adding of <p> Tag around Tagless content */
@@ -126,12 +144,21 @@ class XpathRenderHandler implements RenderHandlerInterface
                         $processingNode->appendChild($importNode);
                     }
                 }
-            } elseif ($entry['type'] === 'OUTER') {
-                $processingNode->parentNode->replaceChild(
-                    $this->domDocument->createTextNode((string) $processedValues[$fieldName]),
-                    $processingNode
+                break;
+            case 'plain':
+            default:
+                // Default is plain
+                $processingNode->appendChild(
+                    $this->domDocument->createTextNode((string) $processedValues[$fieldName])
                 );
-            } elseif ($entry['type'] === 'OUTERCHILD') {
+                break;
+        }
+    }
+
+    protected function processValueOuter(array $configuration, \DOMNode $processingNode, array $processedValues, string $fieldName)
+    {
+        switch ($configuration['valueType']) {
+            case 'html':
                 if ($processedValues[$fieldName]) {
                     $tmpDoc = new \DOMDocument();
                     /** Add own tag to prevent automagical adding of <p> Tag around Tagless content */
@@ -162,32 +189,34 @@ class XpathRenderHandler implements RenderHandlerInterface
                 } else {
                     $processingNode->parentNode->removeChild($processingNode);
                 }
-            }
-        } else {
-            // @TODO Only in debug? Would be uncool to have such messages live
-            if ($result === false) {
-                var_dump('XPath: "' . $entry['xpath'] . '" is invalid');
-            } else {
-                var_dump('No result for XPath: "' . $entry['xpath'] . '"');
-            }
+                break;
+            case 'plain':
+            default:
+                // Default is plain
+                $processingNode->parentNode->replaceChild(
+                    $this->domDocument->createTextNode((string) $processedValues[$fieldName]),
+                    $processingNode
+                );
         }
-
-        return $node;
     }
 
     protected function  getHtml($node, $type)
     {
         $contentOfNode = '';
 
-        if ($type === 'OUTER') {
-            $contentOfNode = $this->domDocument->saveHTML($node);
-        } elseif ($type === 'INNER') {
-            $children = $node->childNodes;
-            foreach ($node->childNodes as $childNode) {
-                $contentOfNode .= $this->domDocument->saveHTML($childNode);
-            }
+        switch ($type) {
+            case 'outer':
+                $contentOfNode = $this->domDocument->saveHTML($node);
+                break;
+            case 'inner':
+                $children = $node->childNodes;
+                foreach ($node->childNodes as $childNode) {
+                    $contentOfNode .= $this->domDocument->saveHTML($childNode);
+                }
+                break;
+            default:
+                /** @TODO Log error? */
         }
-
         return $contentOfNode;
     }
 }
