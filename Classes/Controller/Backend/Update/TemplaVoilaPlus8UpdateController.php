@@ -1220,8 +1220,8 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
 
             if ($useHtmlValue) {
                 switch ($templateMappingInfo['container'][$fieldName]['mappingType']) {
-                    case 'OUTER':
-                    case 'INNER':
+                    case 'outer':
+                    case 'inner':
                         $templateMappingInfo['container'][$fieldName]['valueType'] = 'html';
                         break;
                     default:
