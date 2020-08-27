@@ -257,6 +257,7 @@ page.10.disableExplosivePreview = 1';
                                     $destinationFlexformPointer['position'] = array_search($reference->substNEWwithIDs[$id], array_keys($sort));
                                 }
                             }
+                            $templaVoilaAPI->insertElement_setElementReferences($destinationFlexformPointer, $reference->substNEWwithIDs[$id]);
                         }
                     } else {
                         $templaVoilaAPI->insertElement_setElementReferences($destinationFlexformPointer, $reference->substNEWwithIDs[$id]);
