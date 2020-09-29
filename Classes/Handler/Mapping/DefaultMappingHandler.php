@@ -38,11 +38,11 @@ class DefaultMappingHandler
     public function process($flexformData, $table, $row): array
     {
         $processedMapping = [];
-        $mappingToTemplate = $this->mappingConfiguration->getMappingToTemplate();
+        $containerInstructions = $this->mappingConfiguration->getMappingToTemplate();
 
-        foreach($mappingToTemplate as $templateFieldName => $instructions) {
-            $processedMapping[$templateFieldName] = $this->valueProcessing($instructions, $flexformData, $table, $row);
-        }
+        /** @TODO $table, $row are more globale vars, they are given from function to function */
+
+        $processedMapping = $this->processContainer($flexformData, $table, $row, $containerInstructions);
 
         return $processedMapping;
     }
@@ -58,12 +58,12 @@ class DefaultMappingHandler
         switch ($instructions['dataType']) {
             case 'row':
                 if (isset($row[$instructions['dataPath']])) {
-                    $processedValue = (string) $row[$instructions['dataPath']];
+                    $processedValue = $row[$instructions['dataPath']] ?? '';
                 }
                 break;
             case 'flexform':
                 if (isset($flexformData[$instructions['dataPath']])) {
-                    $processedValue = (string) $flexformData[$instructions['dataPath']];
+                    $processedValue = $flexformData[$instructions['dataPath']] ?? '';
                 }
                 break;
             case 'typoscriptObjectPath':
@@ -77,9 +77,15 @@ class DefaultMappingHandler
         /** @TODO Need to support multiple processings */
         switch ($instructions['valueProcessing']) {
             case 'typoScript':
-                $processedValue = $this->processTypoScript($flexformData, $processedValue, $table, $row, $instructions['valueProcessing.typoScript']);
+                $processedValue = $this->processTypoScript($flexformData, $processedValue, $table, $row, $instructions['valueProcessing.typoScript'] ?? '');
                 break;
             case 'typoScriptConstants':
+                break;
+            case 'repeatable':
+                $processedValue = $this->processRepeatable($processedValue, $table, $row, $instructions['container']);
+                break;
+            case 'container':
+                $processedValue = $this->processContainer($processedValue, $table, $row, $instructions['container']);
                 break;
             case 'stdWrap':
                 break;
@@ -121,6 +127,28 @@ class DefaultMappingHandler
         }
 
         return $processedValue;
+    }
+
+    protected function processRepeatable(array $flexformData, string $table, array $row, array $containerInstructions): array
+    {
+        $postprocessedValue = [];
+        if (is_array($flexformData)) {
+            foreach ($flexformData as $key => $preProcessedValue) {
+                $postprocessedValue[$key] = $this->processContainer($preProcessedValue, $table, $row, $containerInstructions);
+            }
+        }
+        return $postprocessedValue;
+    }
+
+    protected function processContainer(array $flexformData, string $table, array $row, array $containerInstructions): array
+    {
+        $postprocessedValue = [];
+        if (is_array($containerInstructions)) {
+            foreach ($containerInstructions as $templateFieldName => $instructions) {
+                $postprocessedValue[$templateFieldName] = $this->valueProcessing($instructions, $flexformData, $table, $row);
+            }
+        }
+        return $postprocessedValue;
     }
 
     protected function getTypoScriptParser(): TypoScriptParser
