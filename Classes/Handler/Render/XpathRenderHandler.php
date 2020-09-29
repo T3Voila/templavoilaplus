@@ -142,11 +142,11 @@ class XpathRenderHandler implements RenderHandlerInterface
             default:
                 // Default is box
                 // Process directly, we are only one so no need of replacement processes afterwards
+                $toProcessNode = $node;
+                if ($mappingType === 'outer') {
+                    $toProcessNode = $node->parentNode;
+                }
                 foreach ($mappingConfiguration as $fieldName => $fieldMappingConfiguration) {
-                    $toProcessNode = $node;
-                    if ($mappingType === 'outer') {
-                        $toProcessNode = $node->parentNode;
-                    }
                     $node = $this->processValue($toProcessNode, $fieldName, $fieldMappingConfiguration, $processedValues);
                     $processedNodes[] = $node;
                 }
@@ -157,7 +157,6 @@ class XpathRenderHandler implements RenderHandlerInterface
 
     protected function processValue($node, $fieldName, $mappingConfiguration, $processedValues)
     {
-
         $result = $this->domXpath->query($mappingConfiguration['xpath'], $node);
         if ($result && $result->count() > 0) {
             $processingNode = $result->item(0);
