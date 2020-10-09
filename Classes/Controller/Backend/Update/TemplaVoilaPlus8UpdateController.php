@@ -1117,23 +1117,27 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
                 }
             }
 
-            $baseNode = $result->item(0);
-
             // Convert ATTRIB:HTMLElementsAttributeName (fe: ATTR:id)
             $attributeName = '';
             if ($mappingType && strpos($mappingType, 'ATTR:') === 0) {
                 $attributeName = substr($mappingType, 5);
                 $mappingType = 'attrib';
             }
+            // MappingType is lower case and should be set
+            $mappingType = $mappingType ? strtolower($mappingType) : 'outer';
             $converted[$fieldName] = [
                 'xpath' => $convertedXPath,
-                'mappingType' => $mappingType ? strtolower($mappingType) : 'outer',
+                'mappingType' => $mappingType,
             ];
             if ($attributeName) {
                 $converted[$fieldName]['attribName'] = $attributeName;
             }
             if (isset($mappingField['el']) && is_array($mappingField['el']) && count($mappingField['el']) > 0) {
-                $converted[$fieldName]['container'] = $this->convertTemplateMappingInformation($mappingField['el'], $templateFile, $domDocument, $baseNode);
+                $innerBaseNode = $baseNode;
+                if ($mappingType === 'inner') {
+                    $innerBaseNode = $result->item(0);
+                }
+                $converted[$fieldName]['container'] = $this->convertTemplateMappingInformation($mappingField['el'], $templateFile, $domDocument, $innerBaseNode);
             }
         }
 
