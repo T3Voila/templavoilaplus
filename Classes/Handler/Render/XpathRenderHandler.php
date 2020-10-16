@@ -87,7 +87,6 @@ class XpathRenderHandler implements RenderHandlerInterface
 
     protected function processContainer($node, $mappingConfiguration, $processedValues, $containerType, $mappingType = 'inner')
     {
-        $processedNodes = [];
         switch ($containerType) {
             case 'repeatable':
                 $outerCloneNode = $node->cloneNode(true);
@@ -96,20 +95,8 @@ class XpathRenderHandler implements RenderHandlerInterface
                     // For every entrie we need a clean original node, so they can be appended (inner) or replaced (outer) afterwards
                     $cloneNode = $outerCloneNode->cloneNode(true);
 
-//                     $cloneNode->parentNode->replaceChild($importNode, $cloneNode);
-
-//                     $cloneNode = $this->domDocument->importNode($cloneNode);
-//                     $node->parentNode->insertBefore($cloneNode, $node);
-//                     if ($node->nextSibling) {
-//
-//                     } else {
-//                         $node->parentNode->appendChild($cloneNode);
-//                     }
-
-                    foreach ($mappingConfiguration as $fieldName => $fieldMappingConfiguration) {
-                        $this->processValue($cloneNode, $fieldName, $fieldMappingConfiguration, $processedContainerValues);
-                    }
-                    $processedNodes[] = $cloneNode;
+                    $processingNodes = $this->getProcessingNodes($cloneNode, $mappingConfiguration);
+                    $this->processValues($processingNodes, $mappingConfiguration, $processedContainerValues);
 
                     switch ($mappingType) {
                         case 'outer':
@@ -146,48 +133,57 @@ class XpathRenderHandler implements RenderHandlerInterface
                 if ($mappingType === 'outer') {
                     $toProcessNode = $node->parentNode;
                 }
-                foreach ($mappingConfiguration as $fieldName => $fieldMappingConfiguration) {
-                    $node = $this->processValue($toProcessNode, $fieldName, $fieldMappingConfiguration, $processedValues);
-                    $processedNodes[] = $node;
-                }
+                $processingNodes = $this->getProcessingNodes($toProcessNode, $mappingConfiguration);
+                $this->processValues($processingNodes, $mappingConfiguration, $processedValues);
                 break;
         }
-        return $processedNodes;
     }
 
-    protected function processValue($node, $fieldName, $mappingConfiguration, $processedValues)
+    protected function getProcessingNodes($parentNode, array $mappingConfiguration): array
     {
-        $result = $this->domXpath->query($mappingConfiguration['xpath'], $node);
-        if ($result && $result->count() > 0) {
-            $processingNode = $result->item(0);
+        $processingNodes = [];
 
-            switch ($mappingConfiguration['mappingType']) {
-                case 'attrib':
-                    $processingNode->setAttribute($mappingConfiguration['attribName'], (string) $processedValues[$fieldName]);
-                    break;
-                case 'inner':
-                    $this->processValueInner($mappingConfiguration, $processingNode, $processedValues, $fieldName);
-                    break;
-                case 'outer':
-                    $this->processValueOuter($mappingConfiguration, $processingNode, $processedValues, $fieldName);
-                    break;
-                default:
-                    /** @TODO Log error? */
-            }
-        } else {
-            /** @TODO Only in debug? Would be uncool to have such messages live */
-            if ($result === false) {
-                var_dump('XPath: "' . $mappingConfiguration['xpath'] . '" is invalid');
+        foreach ($mappingConfiguration as $fieldName => $fieldMappingConfiguration) {
+            $result = $this->domXpath->query($fieldMappingConfiguration['xpath'], $parentNode);
+            if ($result && $result->count() > 0) {
+                $processingNodes[$fieldName] = $result->item(0);
             } else {
-                var_dump('No result for XPath: "' . $mappingConfiguration['xpath'] . '"');
+                /** @TODO Only in debug? Would be uncool to have such messages live */
+                if ($result === false) {
+                    var_dump('XPath: "' . $fieldMappingConfiguration['xpath'] . '" is invalid');
+                } else {
+                    var_dump('No result for XPath: "' . $fieldMappingConfiguration['xpath'] . '"');
+                }
             }
         }
 
-        $result = $this->domXpath->query($mappingConfiguration['xpath'], $node);
-        $processingNode = $result->item(0);
+        return $processingNodes;
+    }
 
-        $processingNode = $processingNode ?? $node;
-        return $processingNode;
+    protected function processValues(array $processingNodes, array $mappingConfiguration, array $processedValues)
+    {
+        foreach ($processingNodes as $fieldName => $processingNode) {
+            if (isset($mappingConfiguration[$fieldName])) {
+                $this->processValue($processingNode, $fieldName,$mappingConfiguration[$fieldName], $processedValues);
+            }
+        }
+    }
+
+    protected function processValue($processingNode, $fieldName, array $mappingConfiguration, $processedValues)
+    {
+        switch ($mappingConfiguration['mappingType']) {
+            case 'attrib':
+                $processingNode->setAttribute($mappingConfiguration['attribName'], (string) $processedValues[$fieldName]);
+                break;
+            case 'inner':
+                $this->processValueInner($mappingConfiguration, $processingNode, $processedValues, $fieldName);
+                break;
+            case 'outer':
+                $this->processValueOuter($mappingConfiguration, $processingNode, $processedValues, $fieldName);
+                break;
+            default:
+                /** @TODO Log error? */
+        }
     }
 
     protected function processValueInner(array $mappingConfiguration, \DOMNode $processingNode, array $processedValues, string $fieldName)
