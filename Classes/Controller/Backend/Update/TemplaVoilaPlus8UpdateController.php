@@ -1,5 +1,7 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
+
 namespace Ppi\TemplaVoilaPlus\Controller\Backend\Update;
 
 /*
@@ -20,7 +22,6 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-
 use Ppi\TemplaVoilaPlus\Utility\DataStructureUtility;
 
 /**
@@ -68,7 +69,8 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
         $allNewDatabaseElementsFound = $columnPagesMapFound && $columnContentMapFound && $columnPagesMapNextFound;
 
 
-        // Check for storage_pid's to determine how much extensions we need to generate and/or need mapping into Site Management
+        // Check for storage_pid's to determine how much extensions we need to generate and/or need mapping into
+        // Site Management
         $storagePidsAreFine = false;
 
         $allPossiblePids = $this->getAllPossibleStoragePidsFromTmplobj();
@@ -124,8 +126,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
 
     protected function getUseStaticDs(): bool
     {
-        if ($this->extConf['staticDS']['enable'])
-        {
+        if ($this->extConf['staticDS']['enable']) {
             return true;
         }
         return false;
@@ -142,8 +143,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
     protected function getAllDs(): array
     {
         $allDs = [];
-        if ($this->getUseStaticDs())
-        {
+        if ($this->getUseStaticDs()) {
             // Load all DS from path
             $allDs = $this->getAllDsFromStatic();
         }
@@ -193,13 +193,15 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
         $systemPath = $this->getSystemPath();
 
         // Read config from "Template Extensions"
-        if (isset($GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoilaplus_cm1']['staticDataStructures'])
+        if (
+            isset($GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoilaplus_cm1']['staticDataStructures'])
             && is_array($GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoilaplus_cm1']['staticDataStructures'])
         ) {
             $allDs = $GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoilaplus_cm1']['staticDataStructures'];
         }
 
-        if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoilaplus']['staticDataStructures'])
+        if (
+            isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoilaplus']['staticDataStructures'])
             && is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoilaplus']['staticDataStructures'])
         ) {
             $allDs = array_merge($allDs, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoilaplus']['staticDataStructures']);
@@ -273,7 +275,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
             ->execute()
             ->fetchAll();
 
-        foreach($result as $row) {
+        foreach ($result as $row) {
             $dataStructure = [
                 'staticDS' => false,
                 'title' => $row['title'],
@@ -413,7 +415,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
             ->execute()
             ->fetchAll();
 
-        foreach($result as $row) {
+        foreach ($result as $row) {
             if ($row['tx_templavoilaplus_to'] != 0) {
                 if (isset($validatedToWithDs[$row['tx_templavoilaplus_to']])) {
                     $validatedToWithDs[$row['tx_templavoilaplus_to']]['countUsage'] += $row['COUNT(`uid`)'];
@@ -449,7 +451,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
             ->execute()
             ->fetchAll();
 
-        foreach($result as $row) {
+        foreach ($result as $row) {
             if ($row['tx_templavoilaplus_to'] != 0) {
                 if (isset($validatedToWithDs[$row['tx_templavoilaplus_to']])) {
                     $validatedToWithDs[$row['tx_templavoilaplus_to']]['countUsage'] += $row['COUNT(`uid`)'];
@@ -493,7 +495,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
         foreach ($allAvailablePackages as $key => $package) {
             $qualify = 0;
             $why = [];
-            $active = (isset($activePackages[$key])? true : false);
+            $active = (isset($activePackages[$key]) ? true : false);
             if ($active) {
                 $qualify += 1;
             }
@@ -537,7 +539,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
         ]);
     }
 
-    protected function getAllTerExtensionKeys():array
+    protected function getAllTerExtensionKeys(): array
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('tx_extensionmanager_domain_model_extension');
@@ -923,7 +925,6 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
         // Change the logic the other way arround, we need to itterate over the TOs
         // and then convert the dependend DS files as we need their data for the mappings
         foreach ($allTos as $to) {
-
             if ($to['parent'] !== 0) {
                 /** @TODO Implement subtemplates/rendertypes */
                 continue;
@@ -931,12 +932,12 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
 
             $resultingFileName = $this->copyFile($to['fileref'], $copiedTemplateFiles, $publicExtensionDirectory, $innerPathes['templates']);
 
-            $yamlFileName = pathinfo($resultingFileName,  PATHINFO_FILENAME) . '.tvp.yaml';
+            $yamlFileName = pathinfo($resultingFileName, PATHINFO_FILENAME) . '.tvp.yaml';
 
             // Prevent double usage of configuration files but name them like the templates
             if ($filenameUsed[$yamlFileName]) {
                 $filenameUsed[$yamlFileName]++;
-                $yamlFileName = pathinfo($resultingFileName,  PATHINFO_FILENAME) . $filenameUsed[$yamlFileName] . '.tvp.yaml';
+                $yamlFileName = pathinfo($resultingFileName, PATHINFO_FILENAME) . $filenameUsed[$yamlFileName] . '.tvp.yaml';
             } else {
                 $filenameUsed[$yamlFileName] = 1;
             }
@@ -955,7 +956,8 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
 
                 // Mostly the DS from database have no title inside XML so update this field
                 // Works like writeXmlWithTitle from old StaticDataUpdateController
-                if (empty($dataStructure['ROOT']['tx_templavoilaplus']['title'])
+                if (
+                    empty($dataStructure['ROOT']['tx_templavoilaplus']['title'])
                     || $dataStructure['ROOT']['tx_templavoilaplus']['title'] === 'ROOT'
                     && (empty($dataStructure['meta']['title'])
                         || $dataStructure['meta']['title'] === 'ROOT'
@@ -1031,7 +1033,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
 
             GeneralUtility::writeFile(
                 $publicExtensionDirectory . $innerPathes['templateConfiguration'][$scopeName] . '/' . $yamlFileName,
-                \Symfony\Component\Yaml\Yaml::dump($templateConfiguration, 100,  4, \Symfony\Component\Yaml\Yaml::DUMP_MULTI_LINE_LITERAL_BLOCK) // No inline style please
+                \Symfony\Component\Yaml\Yaml::dump($templateConfiguration, 100, 4, \Symfony\Component\Yaml\Yaml::DUMP_MULTI_LINE_LITERAL_BLOCK) // No inline style please
             );
 
             GeneralUtility::writeFile(
@@ -1175,7 +1177,8 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
                 ];
                 unset($dsXml['el'][$fieldName]);
 
-                if (!isset($dsElement['tx_templavoilaplus']['proc']['HSC'])
+                if (
+                    !isset($dsElement['tx_templavoilaplus']['proc']['HSC'])
                     || $dsElement['tx_templavoilaplus']['proc']['HSC'] != '1'
                 ) {
                     $useHtmlValue = true;
@@ -1202,7 +1205,8 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
                     'valueProcessing.typoScript' => $this->cleanTypoScript($typoScript),
                 ];
 
-                if (!isset($dsElement['tx_templavoilaplus']['proc']['HSC'])
+                if (
+                    !isset($dsElement['tx_templavoilaplus']['proc']['HSC'])
                     || $dsElement['tx_templavoilaplus']['proc']['HSC'] != '1'
                 ) {
                     $useHtmlValue = true;
@@ -1254,7 +1258,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
 
         $xpathParts = GeneralUtility::trimExplode(' ', $xpath, true);
 
-        foreach($xpathParts as $xPathPart) {
+        foreach ($xpathParts as $xPathPart) {
             // Regular expression to match tag.className#idName[number]
             // Is there a better way? Using now
             // * for tag "All but not . and not # and not ["
@@ -1515,7 +1519,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
             ->execute()
             ->fetchAll();
 
-        foreach($result as $row) {
+        foreach ($result as $row) {
             $foundPids[$row['pid']] = $row['pid'];
         }
 
@@ -1555,8 +1559,15 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
     }
 }
 
-class UnquotedString {
+class UnquotedString
+{
     private $value = '';
-    public function __construct(string $value) {$this->value = $value;}
-    public function __toString(): string { return $this->value; }
+    public function __construct(string $value)
+    {
+        $this->value = $value;
+    }
+    public function __toString(): string
+    {
+        return $this->value;
+    }
 }
