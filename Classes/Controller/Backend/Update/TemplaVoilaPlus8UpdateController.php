@@ -890,7 +890,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
             GeneralUtility::writeFile($publicExtensionDirectory . $innerPathes['configuration'] . '/BackendLayoutPlaces.php', $beLayoutConfigurationPlaces, true);
 
             $ds = $this->getAllDs();
-            /** @TODO Support for multiple sorage_pids */
+            /** @TODO Support for multiple storage_pids */
             $to = $this->getAllToFromDB();
 
             // Read old data, convert and write to new places
@@ -983,7 +983,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
                 unserialize($to['templatemapping'])['MappingInfo'],
                 $publicExtensionDirectory . $innerPathes['templates'] . '/' . $resultingFileName
             );
-            $mappingToTemplateInfo = $this->convertDsTo2mappingInformation($dataStructure, $templateMappingInfo, $to);
+            $mappingToTemplateInfo = $this->convertDsTo2mappingInformation($dataStructure['ROOT'], $templateMappingInfo['ROOT'], $to);
 
             $templateConfiguration = [
                 'tvp-template' => [
@@ -1117,23 +1117,27 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
                 }
             }
 
-            $baseNode = $result->item(0);
-
             // Convert ATTRIB:HTMLElementsAttributeName (fe: ATTR:id)
             $attributeName = '';
             if ($mappingType && strpos($mappingType, 'ATTR:') === 0) {
                 $attributeName = substr($mappingType, 5);
-                $mappingType = 'ATTRIB';
+                $mappingType = 'attrib';
             }
+            // MappingType is lower case and should be set
+            $mappingType = $mappingType ? strtolower($mappingType) : 'outer';
             $converted[$fieldName] = [
                 'xpath' => $convertedXPath,
-                'type' => $mappingType ?? 'OUTER',
+                'mappingType' => $mappingType,
             ];
             if ($attributeName) {
                 $converted[$fieldName]['attribName'] = $attributeName;
             }
             if (isset($mappingField['el']) && is_array($mappingField['el']) && count($mappingField['el']) > 0) {
-                $converted[$fieldName]['container'] = $this->convertTemplateMappingInformation($mappingField['el'], $templateFile, $domDocument, $baseNode);
+                $innerBaseNode = $baseNode;
+                if ($mappingType === 'inner') {
+                    $innerBaseNode = $result->item(0);
+                }
+                $converted[$fieldName]['container'] = $this->convertTemplateMappingInformation($mappingField['el'], $templateFile, $domDocument, $innerBaseNode);
             }
         }
 
@@ -1147,11 +1151,9 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
     {
         $mappingToTemplate = [];
 
-        /** @TODO Implement Container handling */
-
-        foreach ($dsXml['ROOT']['el'] as $fieldName => $dsElement) {
+        foreach ($dsXml['el'] as $fieldName => $dsElement) {
             $fieldConfig = [];
-            $useChild = false;
+            $useHtmlValue = false;
 
             if (isset($dsElement['TCEforms']['label'])) {
                 $fieldConfig += [
@@ -1171,17 +1173,17 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
                     'dataType' => 'typoscriptObjectPath',
                     'dataPath' => $dsElement['tx_templavoilaplus']['TypoScriptObjPath'],
                 ];
-                unset($dsXml['ROOT']['el'][$fieldName]);
+                unset($dsXml['el'][$fieldName]);
 
                 if (!isset($dsElement['tx_templavoilaplus']['proc']['HSC'])
                     || $dsElement['tx_templavoilaplus']['proc']['HSC'] != '1'
                 ) {
-                    $useChild = true;
+                    $useHtmlValue = true;
                 }
             } elseif ($dsElement['tx_templavoilaplus']['eType'] === 'none' && !isset($dsElement['TCEforms']['config'])) {
                 // Blind TypoScript element, nothing todo here, already done
 
-                unset($dsXml['ROOT']['el'][$fieldName]);
+                unset($dsXml['el'][$fieldName]);
             } else {
                 // Respect EType_extra??
                 // Respect proc ?
@@ -1190,7 +1192,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
                     'dataPath' => $fieldName,
                 ];
 
-                unset($dsXml['ROOT']['el'][$fieldName]['tx_templavoilaplus']);
+                unset($dsXml['el'][$fieldName]['tx_templavoilaplus']);
             }
 
             $typoScript = trim($dsElement['tx_templavoilaplus']['TypoScript'] ?? '');
@@ -1203,17 +1205,28 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
                 if (!isset($dsElement['tx_templavoilaplus']['proc']['HSC'])
                     || $dsElement['tx_templavoilaplus']['proc']['HSC'] != '1'
                 ) {
-                    $useChild = true;
+                    $useHtmlValue = true;
                 }
             }
 
-            if ($useChild) {
-                switch ($templateMappingInfo['ROOT']['container'][$fieldName]['type']) {
-                    case 'OUTER':
-                        $templateMappingInfo['ROOT']['container'][$fieldName]['type'] = 'OUTERCHILD';
-                        break;
-                    case 'INNER':
-                        $templateMappingInfo['ROOT']['container'][$fieldName]['type'] = 'INNERCHILD';
+            // Section and repeatables
+            if ($dsElement['type'] === 'array' || (isset($dsElement['section']) && $dsElement['section'] == 1)) {
+                if (isset($dsElement['section']) && $dsElement['section'] == 1) {
+                    $fieldConfig['valueProcessing'] = 'repeatable';
+                    $templateMappingInfo['container'][$fieldName]['containerType'] = 'repeatable';
+                } else {
+                    $fieldConfig['valueProcessing'] = 'container';
+                    $templateMappingInfo['container'][$fieldName]['containerType'] = 'box';
+                }
+                $fieldConfig['container'] = $this->convertDsTo2mappingInformation($dsXml['el'][$fieldName], $templateMappingInfo['container'][$fieldName], $to);
+                /** @TODO Unset empty TCEforms config? Or is this needed? */
+            }
+
+            if ($useHtmlValue) {
+                switch ($templateMappingInfo['container'][$fieldName]['mappingType']) {
+                    case 'outer':
+                    case 'inner':
+                        $templateMappingInfo['container'][$fieldName]['valueType'] = 'html';
                         break;
                     default:
                         // Nothing, as there is no childing for ATTRIB

@@ -141,12 +141,19 @@ try {
     public function processDataValues(array $dataValues, array $DSelements, $valueKey = 'vDEF')
     {
         $processedDataValues = [];
-        foreach ($DSelements as $key => $dsConf) {
-            /** @TDOD DSelement processing */
-        }
 
-        foreach ($dataValues as $field => $fieldData) {
-            $processedDataValues[$field] = $fieldData[$valueKey];
+        foreach ($DSelements as $fieldName => $dsConf) {
+            if (isset($dsConf['type']) && $dsConf['type'] === 'array' && is_array($dsConf['el'])) {
+                if (isset($dsConf['section']) && $dsConf['section'] === '1') {
+                    foreach ($dataValues[$fieldName]['el'] as $key => $repeatableValue) {
+                        $processedDataValues[$fieldName][$key] = $this->processDataValues($repeatableValue, $dsConf['el'], $valueKey);
+                    }
+                } else {
+                    $processedDataValues[$fieldName] = $this->processDataValues($dataValues[$fieldName]['el'], $dsConf['el'], $valueKey);
+                }
+            } else {
+                $processedDataValues[$fieldName] = $dataValues[$fieldName][$valueKey];
+            }
         }
 
         return $processedDataValues;

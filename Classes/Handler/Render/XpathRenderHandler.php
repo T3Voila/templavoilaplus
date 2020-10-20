@@ -44,10 +44,10 @@ class XpathRenderHandler implements RenderHandlerInterface
         if ($entries->count() === 1) {
             $node = $entries->item(0);
             if (isset($mapping['container']) && is_array($mapping['container'])) {
-                $node = $this->processContainer($node, $mapping['container'], $processedValues);
+                $this->processContainer($node, $mapping['container'], $processedValues, 'box');
             }
 
-            return $this->getHtml($node, $mapping['type']);
+            return $this->getHtml($node, $mapping['mappingType']);
         }
 
         return '';
@@ -85,35 +85,120 @@ class XpathRenderHandler implements RenderHandlerInterface
         }
     }
 
-    protected function processContainer($node, $mapping, $processedValues)
+    protected function processContainer($node, $mappingConfiguration, $processedValues, $containerType, $mappingType = 'inner')
     {
-        foreach ($mapping as $fieldName => $entry) {
-            $node = $this->processValue($node, $fieldName, $entry, $processedValues);
+        switch ($containerType) {
+            case 'repeatable':
+                $outerCloneNode = $node->cloneNode(true);
+                $plainCloneNode = $node->cloneNode(false);
+                foreach ($processedValues as $processedContainerValues) {
+                    // For every entrie we need a clean original node, so they can be appended (inner) or replaced (outer) afterwards
+                    $cloneNode = $outerCloneNode->cloneNode(true);
+
+                    $processingNodes = $this->getProcessingNodes($cloneNode, $mappingConfiguration);
+                    $this->processValues($processingNodes, $mappingConfiguration, $processedContainerValues);
+
+                    switch ($mappingType) {
+                        case 'outer':
+                            $cloneNode = $node->ownerDocument->importNode($cloneNode);
+                            $node->parentNode->insertBefore($cloneNode, $node);
+                            break;
+                        case 'inner':
+                        default:
+                            foreach($cloneNode->childNodes as $processedCloneNode) {
+                                $processedCloneNode = $this->domDocument->importNode($processedCloneNode, true);
+                                $plainCloneNode->appendChild($processedCloneNode->cloneNode(true));
+                            }
+
+                            break;
+                    }
+                }
+
+                switch ($mappingType) {
+                    case 'outer':
+                        $node->parentNode->removeChild($node);
+                        break;
+                    case 'inner':
+                    default:
+                        $node->parentNode->replaceChild($plainCloneNode, $node);
+                        break;
+                }
+
+                break;
+            case 'box':
+            default:
+                // Default is box
+                // Process directly, we are only one so no need of replacement processes afterwards
+                $toProcessNode = $node;
+                if ($mappingType === 'outer') {
+                    $toProcessNode = $node->parentNode;
+                }
+                $processingNodes = $this->getProcessingNodes($toProcessNode, $mappingConfiguration);
+                $this->processValues($processingNodes, $mappingConfiguration, $processedValues);
+                break;
         }
-        return $node;
     }
 
-    protected function processValue($node, $fieldName, $entry, $processedValues)
+    protected function getProcessingNodes($parentNode, array $mappingConfiguration): array
     {
-        $result = $this->domXpath->query($entry['xpath'], $node);
+        $processingNodes = [];
 
-        if ($result && $result->count() > 0) {
-            $processingNode = $result->item(0);
-
-            if ($entry['type'] === 'ATTRIB') {
-                $processingNode->setAttribute($entry['attribName'], (string) $processedValues[$fieldName]);
-            } elseif ($entry['type'] === 'INNER') {
-                while ($processingNode->hasChildNodes()) {
-                    $processingNode->removeChild($processingNode->firstChild);
+        foreach ($mappingConfiguration as $fieldName => $fieldMappingConfiguration) {
+            $result = $this->domXpath->query($fieldMappingConfiguration['xpath'], $parentNode);
+            if ($result && $result->count() > 0) {
+                $processingNodes[$fieldName] = $result->item(0);
+            } else {
+                /** @TODO Only in debug? Would be uncool to have such messages live */
+                if ($result === false) {
+                    var_dump('XPath: "' . $fieldMappingConfiguration['xpath'] . '" is invalid');
+                } else {
+                    var_dump('No result for XPath: "' . $fieldMappingConfiguration['xpath'] . '"');
                 }
-                $processingNode->appendChild(
-                    $this->domDocument->createTextNode((string) $processedValues[$fieldName])
-                );
-            } elseif ($entry['type'] === 'INNERCHILD') {
-                while ($processingNode->hasChildNodes()) {
-                    $processingNode->removeChild($processingNode->firstChild);
-                }
+            }
+        }
 
+        return $processingNodes;
+    }
+
+    protected function processValues(array $processingNodes, array $mappingConfiguration, array $processedValues)
+    {
+        foreach ($processingNodes as $fieldName => $processingNode) {
+            if (isset($mappingConfiguration[$fieldName])) {
+                $this->processValue($processingNode, $fieldName,$mappingConfiguration[$fieldName], $processedValues);
+            }
+        }
+    }
+
+    protected function processValue($processingNode, $fieldName, array $mappingConfiguration, $processedValues)
+    {
+        switch ($mappingConfiguration['mappingType']) {
+            case 'attrib':
+                $processingNode->setAttribute($mappingConfiguration['attribName'], (string) $processedValues[$fieldName]);
+                break;
+            case 'inner':
+                $this->processValueInner($mappingConfiguration, $processingNode, $processedValues, $fieldName);
+                break;
+            case 'outer':
+                $this->processValueOuter($mappingConfiguration, $processingNode, $processedValues, $fieldName);
+                break;
+            default:
+                /** @TODO Log error? */
+        }
+    }
+
+    protected function processValueInner(array $mappingConfiguration, \DOMNode $processingNode, array $processedValues, string $fieldName)
+    {
+        if (isset($mappingConfiguration['container']) && is_array($mappingConfiguration['container'])) {
+            $this->processContainer($processingNode, $mappingConfiguration['container'], $processedValues[$fieldName], $mappingConfiguration['containerType'], 'inner');
+            return;
+        }
+
+        while ($processingNode->hasChildNodes()) {
+            $processingNode->removeChild($processingNode->firstChild);
+        }
+
+        switch ($mappingConfiguration['valueType']) {
+            case 'html':
                 if ($processedValues[$fieldName]) {
                     $tmpDoc = new \DOMDocument();
                     /** Add own tag to prevent automagical adding of <p> Tag around Tagless content */
@@ -126,12 +211,26 @@ class XpathRenderHandler implements RenderHandlerInterface
                         $processingNode->appendChild($importNode);
                     }
                 }
-            } elseif ($entry['type'] === 'OUTER') {
-                $processingNode->parentNode->replaceChild(
-                    $this->domDocument->createTextNode((string) $processedValues[$fieldName]),
-                    $processingNode
+                break;
+            case 'plain':
+            default:
+                // Default is plain
+                $processingNode->appendChild(
+                    $this->domDocument->createTextNode((string) $processedValues[$fieldName])
                 );
-            } elseif ($entry['type'] === 'OUTERCHILD') {
+                break;
+        }
+    }
+
+    protected function processValueOuter(array $mappingConfiguration, \DOMNode $processingNode, array $processedValues, string $fieldName)
+    {
+        if (isset($mappingConfiguration['container']) && is_array($mappingConfiguration['container'])) {
+            $this->processContainer($processingNode, $mappingConfiguration['container'], $processedValues[$fieldName], $mappingConfiguration['containerType'], 'outer');
+            return;
+        }
+
+        switch ($mappingConfiguration['valueType']) {
+            case 'html':
                 if ($processedValues[$fieldName]) {
                     $tmpDoc = new \DOMDocument();
                     /** Add own tag to prevent automagical adding of <p> Tag around Tagless content */
@@ -142,7 +241,7 @@ class XpathRenderHandler implements RenderHandlerInterface
 
                     /** lastChild is our own added Tag from above */
                     foreach ($tmpDoc->lastChild->childNodes as $importNode) {
-                        $importNode = $this->domDocument->importNode($importNode, true);
+                        $importNode = $processingNode->ownerDocument->importNode($importNode, true);
                         if ($isFirst) {
                             // In the first run we replace like we do in normal OUTER
                             $isFirst = false;
@@ -162,32 +261,34 @@ class XpathRenderHandler implements RenderHandlerInterface
                 } else {
                     $processingNode->parentNode->removeChild($processingNode);
                 }
-            }
-        } else {
-            // @TODO Only in debug? Would be uncool to have such messages live
-            if ($result === false) {
-                var_dump('XPath: "' . $entry['xpath'] . '" is invalid');
-            } else {
-                var_dump('No result for XPath: "' . $entry['xpath'] . '"');
-            }
+                break;
+            case 'plain':
+            default:
+                // Default is plain
+                $processingNode->parentNode->replaceChild(
+                    $processingNode->ownerDocument->createTextNode((string) $processedValues[$fieldName]),
+                    $processingNode
+                );
         }
-
-        return $node;
     }
 
     protected function  getHtml($node, $type)
     {
         $contentOfNode = '';
 
-        if ($type === 'OUTER') {
-            $contentOfNode = $this->domDocument->saveHTML($node);
-        } elseif ($type === 'INNER') {
-            $children = $node->childNodes;
-            foreach ($node->childNodes as $childNode) {
-                $contentOfNode .= $this->domDocument->saveHTML($childNode);
-            }
+        switch ($type) {
+            case 'outer':
+                $contentOfNode = $this->domDocument->saveHTML($node);
+                break;
+            case 'inner':
+                $children = $node->childNodes;
+                foreach ($node->childNodes as $childNode) {
+                    $contentOfNode .= $this->domDocument->saveHTML($childNode);
+                }
+                break;
+            default:
+                /** @TODO Log error? */
         }
-
         return $contentOfNode;
     }
 }
