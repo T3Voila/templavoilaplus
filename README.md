@@ -39,13 +39,13 @@ If you like to test, develop and/or help documenting, see the demo theme extensi
     * Loading tree but only handling page layer (not the content elements)
     * You can't edit in the PageLayout
     * ~~BElayout not respected yet~~
-    * No support for container yet
+    * ~~No support for container yet~~
 * Frontend rendering works for sDEF/lDEV/vDEF as you define
     * DataStructure will be taken into account
     * TypoScript can be handled while mapping in process
     * Templates using the XPath Renderer (a.k.a. old TemplaVoilà! template handling)
     * Add Meta/CSS/JS informations from TemplateConfiguration
-    * No support for container yet
+    * ~~No support for container yet~~
 * Extending
     * You could extend TV+ 8 with new Places types with their own handler to load data
     * You could add new renderer (~~TYPO3 marker based,~~ Smarty, Twig, Fluid, ...)
@@ -57,4 +57,4 @@ If you like to test, develop and/or help documenting, see the demo theme extensi
     * Subtemplates/Rendertypes won't be processed yet
     * ~~BElayout won't be processed yet~~
     * No support for multiple storage pids yet
-    * No support for container yet
+    * ~~No support for container yet~~
