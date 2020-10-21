@@ -28,7 +28,6 @@ use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Fluid\View\TemplateView;
 use TYPO3\CMS\Form\Controller\FormEditorController;
 use TYPO3\CMS\Form\Service\TranslationService;
-use TYPO3\CMS\Frontend\Page\PageRepository;
 
 
 use Ppi\TemplaVoilaPlus\Configuration\BackendConfiguration;

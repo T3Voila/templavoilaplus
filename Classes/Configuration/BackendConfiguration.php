@@ -16,7 +16,6 @@ namespace Ppi\TemplaVoilaPlus\Configuration;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\Page\PageRepository;
 
 class BackendConfiguration
 {
@@ -50,14 +49,35 @@ class BackendConfiguration
 
     public function initDefaults()
     {
-        $this->setItem(self::HANDLER_DOCTYPE, PageRepository::DOKTYPE_DEFAULT, \Ppi\TemplaVoilaPlus\Controller\Backend\Handler\DoktypeDefaultHandler::class);
-        $this->setItem(self::HANDLER_DOCTYPE, PageRepository::DOKTYPE_LINK, \Ppi\TemplaVoilaPlus\Controller\Backend\Handler\DoktypeLinkHandler::class);
-        $this->setItem(self::HANDLER_DOCTYPE, PageRepository::DOKTYPE_SHORTCUT, \Ppi\TemplaVoilaPlus\Controller\Backend\Handler\DoktypeShortcutHandler::class);
-        $this->setItem(self::HANDLER_DOCTYPE, PageRepository::DOKTYPE_BE_USER_SECTION, \Ppi\TemplaVoilaPlus\Controller\Backend\Handler\DoktypeDefaultHandler::class);
-        $this->setItem(self::HANDLER_DOCTYPE, PageRepository::DOKTYPE_MOUNTPOINT, \Ppi\TemplaVoilaPlus\Controller\Backend\Handler\DoktypeMountpointHandler::class);
-        $this->setItem(self::HANDLER_DOCTYPE, PageRepository::DOKTYPE_SPACER, \Ppi\TemplaVoilaPlus\Controller\Backend\Handler\DoktypeSpacerHandler::class);
-        $this->setItem(self::HANDLER_DOCTYPE, PageRepository::DOKTYPE_SYSFOLDER, \Ppi\TemplaVoilaPlus\Controller\Backend\Handler\DoktypeSysfolderHandler::class);
-        $this->setItem(self::HANDLER_DOCTYPE, PageRepository::DOKTYPE_RECYCLER, \Ppi\TemplaVoilaPlus\Controller\Backend\Handler\DoktypeRecyclerHandler::class);
+        if (version_compare(TYPO3_version, '10.0.0', '>=')) {
+            $this->initDefaults10();
+        } else {
+            $this->initDefaults8();
+        }
+    }
+
+    public function initDefaults8()
+    {
+        $this->setItem(self::HANDLER_DOCTYPE, \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_DEFAULT, \Ppi\TemplaVoilaPlus\Controller\Backend\Handler\DoktypeDefaultHandler::class);
+        $this->setItem(self::HANDLER_DOCTYPE, \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_LINK, \Ppi\TemplaVoilaPlus\Controller\Backend\Handler\DoktypeLinkHandler::class);
+        $this->setItem(self::HANDLER_DOCTYPE, \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SHORTCUT, \Ppi\TemplaVoilaPlus\Controller\Backend\Handler\DoktypeShortcutHandler::class);
+        $this->setItem(self::HANDLER_DOCTYPE, \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_BE_USER_SECTION, \Ppi\TemplaVoilaPlus\Controller\Backend\Handler\DoktypeDefaultHandler::class);
+        $this->setItem(self::HANDLER_DOCTYPE, \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_MOUNTPOINT, \Ppi\TemplaVoilaPlus\Controller\Backend\Handler\DoktypeMountpointHandler::class);
+        $this->setItem(self::HANDLER_DOCTYPE, \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SPACER, \Ppi\TemplaVoilaPlus\Controller\Backend\Handler\DoktypeSpacerHandler::class);
+        $this->setItem(self::HANDLER_DOCTYPE, \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SYSFOLDER, \Ppi\TemplaVoilaPlus\Controller\Backend\Handler\DoktypeSysfolderHandler::class);
+        $this->setItem(self::HANDLER_DOCTYPE, \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_RECYCLER, \Ppi\TemplaVoilaPlus\Controller\Backend\Handler\DoktypeRecyclerHandler::class);
+    }
+
+    public function initDefaults10()
+    {
+        $this->setItem(self::HANDLER_DOCTYPE, \TYPO3\CMS\Core\Domain\Repository\PageRepository::DOKTYPE_DEFAULT, \Ppi\TemplaVoilaPlus\Controller\Backend\Handler\DoktypeDefaultHandler::class);
+        $this->setItem(self::HANDLER_DOCTYPE, \TYPO3\CMS\Core\Domain\Repository\PageRepository::DOKTYPE_LINK, \Ppi\TemplaVoilaPlus\Controller\Backend\Handler\DoktypeLinkHandler::class);
+        $this->setItem(self::HANDLER_DOCTYPE, \TYPO3\CMS\Core\Domain\Repository\PageRepository::DOKTYPE_SHORTCUT, \Ppi\TemplaVoilaPlus\Controller\Backend\Handler\DoktypeShortcutHandler::class);
+        $this->setItem(self::HANDLER_DOCTYPE, \TYPO3\CMS\Core\Domain\Repository\PageRepository::DOKTYPE_BE_USER_SECTION, \Ppi\TemplaVoilaPlus\Controller\Backend\Handler\DoktypeDefaultHandler::class);
+        $this->setItem(self::HANDLER_DOCTYPE, \TYPO3\CMS\Core\Domain\Repository\PageRepository::DOKTYPE_MOUNTPOINT, \Ppi\TemplaVoilaPlus\Controller\Backend\Handler\DoktypeMountpointHandler::class);
+        $this->setItem(self::HANDLER_DOCTYPE, \TYPO3\CMS\Core\Domain\Repository\PageRepository::DOKTYPE_SPACER, \Ppi\TemplaVoilaPlus\Controller\Backend\Handler\DoktypeSpacerHandler::class);
+        $this->setItem(self::HANDLER_DOCTYPE, \TYPO3\CMS\Core\Domain\Repository\PageRepository::DOKTYPE_SYSFOLDER, \Ppi\TemplaVoilaPlus\Controller\Backend\Handler\DoktypeSysfolderHandler::class);
+        $this->setItem(self::HANDLER_DOCTYPE, \TYPO3\CMS\Core\Domain\Repository\PageRepository::DOKTYPE_RECYCLER, \Ppi\TemplaVoilaPlus\Controller\Backend\Handler\DoktypeRecyclerHandler::class);
     }
 
     public function setItem($type, $key, $value)
