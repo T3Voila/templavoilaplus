@@ -13,6 +13,14 @@ if (TYPO3_MODE === 'BE') {
     if (version_compare(TYPO3_version, '9.0.0', '<')) {
         $navigationComponentId = 'typo3-pagetree';
     }
+
+    $classPrefixForRegisterModule = '';
+    $classPostfixForRegisterModule = '';
+    if (version_compare(TYPO3_version, '10.0.0', '>=')) {
+        $classPrefixForRegisterModule = Ppi\TemplaVoilaPlus\Controller::class . '\\';
+        $classPostfixForRegisterModule = 'Controller';
+    }
+
     // Adding backend modules:
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
         'Ppi.TemplaVoilaPlus',
@@ -20,7 +28,7 @@ if (TYPO3_MODE === 'BE') {
         'Layout',
         'top',
         [
-            'Backend\PageLayout' => 'show',
+            $classPrefixForRegisterModule . 'Backend\PageLayout' . $classPostfixForRegisterModule => 'show',
         ],
         [
             'access' => 'user,group',
@@ -36,10 +44,10 @@ if (TYPO3_MODE === 'BE') {
         'ControlCenter',
         'bottom',
         [
-            'Backend\ControlCenter' => 'show,debug',
-            'Backend\ControlCenter\DataStructures' => 'list,add,edit,info,delete',
-            'Backend\ControlCenter\Mappings' => 'list',
-            'Backend\ControlCenter\Templates' => 'list,info',
+            $classPrefixForRegisterModule . 'Backend\ControlCenter' . $classPostfixForRegisterModule => 'show,debug',
+            $classPrefixForRegisterModule . 'Backend\ControlCenter\DataStructures' . $classPostfixForRegisterModule => 'list,add,edit,info,delete',
+            $classPrefixForRegisterModule . 'Backend\ControlCenter\Mappings' . $classPostfixForRegisterModule => 'list',
+            $classPrefixForRegisterModule . 'Backend\ControlCenter\Templates' . $classPostfixForRegisterModule => 'list,info',
         ],
         [
             'access' => 'user,group',
