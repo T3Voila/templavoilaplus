@@ -1,6 +1,6 @@
 define([
     'jquery'
-], function($, PersistentStorage) {
+], function($) {
     'use strict';
     /**
      * @exports Ppi/TemplaVoilaPlus/PageLayout
@@ -12,6 +12,8 @@ define([
      * Initialize
      */
     PageLayout.initialize = function() {
+        $('#moduleWrapper').removeClass('hidden');
+        $('#moduleLoadingIndicator').addClass('hidden');
     }
 
     $(PageLayout.initialize);

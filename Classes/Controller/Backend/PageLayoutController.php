@@ -20,9 +20,12 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 
 use Ppi\TemplaVoilaPlus\Configuration\BackendConfiguration;
 use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
@@ -144,6 +147,10 @@ class PageLayoutController extends ActionController
     public function showAction()
     {
         $this->registerDocheaderButtons();
+        $this->addViewConfiguration($this->view->getModuleTemplate()->getView());
+
+        $this->pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
+
         $this->view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation($this->pageInfo);
         $this->view->getModuleTemplate()->setFlashMessageQueue($this->controllerContext->getFlashMessageQueue());
 
@@ -191,6 +198,10 @@ class PageLayoutController extends ActionController
                 );
             }
         }
+
+        $this->pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_core.xlf');
+        $this->pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_misc.xlf');
+
         $this->view->assign('lllFile', 'LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf');
 
         $this->view->assign('pageId', $this->pageId);
@@ -207,6 +218,54 @@ class PageLayoutController extends ActionController
         $this->view->assign('contentHeader', $contentHeader);
         $this->view->assign('contentBody', $contentBody);
         $this->view->assign('contentFooter', $contentFooter);
+    }
+
+    /**
+     * Taken from ActionController but extended to ADD module configuration
+     * @param ViewInterface $view
+     */
+    protected function addViewConfiguration(ViewInterface $view)
+    {
+        // Template Path Override
+        $extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(
+            ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK
+        );
+
+        // set TemplateRootPaths
+        $viewSetFunctionName = 'setTemplateRootPaths';
+        if (method_exists($view, $viewSetFunctionName)) {
+            $setting = 'templateRootPaths';
+            $parameter = $this->getViewProperty($extbaseFrameworkConfiguration, $setting);
+            // no need to bother if there is nothing to set
+            if ($parameter) {
+                $parameter = $view->getTemplateRootPaths() + $parameter;
+                $view->$viewSetFunctionName($parameter);
+            }
+        }
+
+        // set LayoutRootPaths
+        $viewSetFunctionName = 'setLayoutRootPaths';
+        if (method_exists($view, $viewSetFunctionName)) {
+            $setting = 'layoutRootPaths';
+            $parameter = $this->getViewProperty($extbaseFrameworkConfiguration, $setting);
+            // no need to bother if there is nothing to set
+            if ($parameter) {
+                $parameter = $view->getLayoutRootPaths() + $parameter;
+                $view->$viewSetFunctionName($parameter);
+            }
+        }
+
+        // set PartialRootPaths
+        $viewSetFunctionName = 'setPartialRootPaths';
+        if (method_exists($view, $viewSetFunctionName)) {
+            $setting = 'partialRootPaths';
+            $parameter = $this->getViewProperty($extbaseFrameworkConfiguration, $setting);
+            // no need to bother if there is nothing to set
+            if ($parameter) {
+                $parameter = $view->getPartialRootPaths() + $parameter;
+                $view->$viewSetFunctionName($parameter);
+            }
+        }
     }
 
     public function addContentPartial($contentPart, $partialName)

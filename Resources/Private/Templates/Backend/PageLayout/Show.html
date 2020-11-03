@@ -3,18 +3,62 @@
     pageTitle="TemplaVoilà! Plus"
     includeCssFiles="{0: '{f:uri.resource(path: \'StyleSheet/PageLayout.css\', extensionName: \'templavoilaplus\')}'}"
     includeRequireJsModules="{PageLayout: 'TYPO3/CMS/Templavoilaplus/PageLayout', Modal:'TYPO3/CMS/Backend/Modal'}"
-    includeJsFiles="{0: '{f:uri.resource(path: \'JavaScript/templavoila.js\', extensionName: \'templavoilaplus\')}'}"
 />
 
-<h1>{pageTitle}</h1>
+<div id="moduleLoadingIndicator" data-identifier="moduleLoadingIndicator" class="tvp-loading-spinner">
+    <core:icon identifier="spinner-circle-dark" size="default" />
+    <div class="tvp-loading-spinner-label"><f:translate key="LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.loading" /></div>
+</div>
 
-<f:render section="content" arguments="{_all}" />
+<div id="moduleWrapper" data-identifier="moduleWrapper" class="hidden">
 
-<f:section name="content">
+    <section id="tvp-component-sidebar-left" class="tvp-component" data-identifier="tvpComponentSidebarLeft">
+        <f:render section="SidebarContentTree" />
+    </section>
+    <section id="tvp-component-stage-container" data-identifier="tvpComponentStageContainer">
+        <div id="tvp-component-stage-container-inner" data-identifier="tvpComponentStageContainerInner">
+            <header id="tvp-component-stage-header">
+                <f:render section="Header"  arguments="{_all}" />
+            </header>
+            <div id="tvp-component-stage-content">
+                <f:render section="Stage"  arguments="{_all}" />
+            </div>
+        </div>
+    </section>
+    <section id="tvp-component-sidebar-right" class="tvp-component" data-identifier="tvpComponentSidebarLeft">
+        <f:render section="Inspector" />
+    </section>
+
+</div>
+
+<f:section name="Header">
+
+    <h1 id="tvpPageTitle" data-identifier="tvpPageTitle">{pageTitle}</h1>
+
+</f:section>
+
+<f:section name="SidebarContentTree">
+    <div class="inner">
+        <div id="tvpContentTree" class="contentTree" data-identifier="tvpContentTree"></div>
+    </div>
+
+</f:section>
+
+<f:section name="Stage">
+
     <f:comment><!--@TODO Maybe deprecated--></f:comment>
     <f:format.raw>{contentBody}</f:format.raw>
 
     <f:for each="{contentPartials.body}" as="partialName">
         <f:render partial="{partialName}" arguments="{_all}" />
     </f:for>
+
+</f:section>
+
+<f:section name="Inspector">
+
+    <div class="inner">
+        <div id="tvpContentInspector" data-identifier="tvpContentInspector"></div>
+    </div>
+
 </f:section>
