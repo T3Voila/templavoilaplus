@@ -1,6 +1,13 @@
+<f:debug>{_all}</f:debug>
 <div class="t3-page-ce-header-icons-right">
-    <core:icon identifier="actions-edit-unhide" />
-    <core:icon identifier="actions-edit-hide" />
+    <f:if condition="{element.el.isHidden}">
+        <f:then>
+            <core:icon identifier="actions-edit-unhide" />
+        </f:then>
+        <f:else>
+            <core:icon identifier="actions-edit-hide" />
+        </f:else>
+    </f:if>
     <core:icon identifier="actions-document-open" />
     <core:icon identifier="actions-edit-copy" />
     <core:icon identifier="actions-edit-copy-release" />
