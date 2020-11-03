@@ -16,14 +16,16 @@ if (TYPO3_MODE === 'BE') {
 
     $classPrefixForRegisterModule = '';
     $classPostfixForRegisterModule = '';
+    $moduleName = 'Ppi.TemplaVoilaPlus';
     if (version_compare(TYPO3_version, '10.0.0', '>=')) {
         $classPrefixForRegisterModule = Ppi\TemplaVoilaPlus\Controller::class . '\\';
         $classPostfixForRegisterModule = 'Controller';
+        $moduleName = 'TemplaVoilaPlus';
     }
 
     // Adding backend modules:
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-        'Ppi.TemplaVoilaPlus',
+        $moduleName,
         'web',
         'Layout',
         'top',
@@ -39,7 +41,7 @@ if (TYPO3_MODE === 'BE') {
         ]
     );
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-        'Ppi.TemplaVoilaPlus',
+        $moduleName,
         'web',
         'ControlCenter',
         'bottom',
