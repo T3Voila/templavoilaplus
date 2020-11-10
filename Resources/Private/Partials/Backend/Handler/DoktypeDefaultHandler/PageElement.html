@@ -2,7 +2,7 @@
     <a name="c' . md5($this->apiObj->flexform_getStringFromPointer($this->currentElementParentPointer) . $contentTreeArr['el']['uid']) . '"></a>
     <div class="t3-page-column-header">
         <div class="t3-page-column-header-icons">
-            <f:render partial="Backend/Handler/DoktypeDefaultHandler/TitleBarRightButtons" arguments="" />
+            <f:render partial="Backend/Handler/DoktypeDefaultHandler/TitleBarRightButtons" arguments="{element: tree}" />
         </div>
         <div class="t3-page-column-header-label">
             <f:render partial="Backend/Handler/DoktypeDefaultHandler/TitleBarLeftButtons" arguments="{sys_language_uid: tree.el.sys_language_uid, allAvailableLanguages: allAvailableLanguages, table: tree.el.table, row: tree.previewData.fullRow, title: tree.el.title}" />
