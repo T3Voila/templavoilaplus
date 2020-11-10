@@ -1950,6 +1950,25 @@ class ApiService
     }
 
     /**
+     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+     */
+    public function getDatabaseConnection()
+    {
+        return TemplaVoilaUtility::getDatabaseConnection();
+    }
+
+    /**
+     * @return \TYPO3\CMS\Lang\LanguageService
+     */
+    public function getLanguageService()
+    {
+        return $GLOBALS['LANG'];
+    }
+
+    /**
+     * NEW PARTS OR ACCEPTED
+     */
+    /**
      * @return string|null
      */
     public function getMapIdentifierFromRootline(array $rootline)
@@ -1981,22 +2000,5 @@ class ApiService
             $rootLine[$key] = BackendUtility::getRecordWSOL('pages', $rootLineRecord['uid']);
         }
         return $rootLine;
-    }
-
-
-    /**
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    public function getDatabaseConnection()
-    {
-        return TemplaVoilaUtility::getDatabaseConnection();
-    }
-
-    /**
-     * @return \TYPO3\CMS\Lang\LanguageService
-     */
-    public function getLanguageService()
-    {
-        return $GLOBALS['LANG'];
     }
 }
