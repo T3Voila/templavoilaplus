@@ -25,6 +25,7 @@ use Ppi\TemplaVoilaPlus\Service\ApiService;
 use Ppi\TemplaVoilaPlus\Service\ConfigurationService;
 use Ppi\TemplaVoilaPlus\Utility\ApiHelperUtility;
 use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
+use Tvp\TemplaVoilaPlus\Service\ProcessingService;
 
 class DoktypeDefaultHandler
 {
@@ -40,6 +41,8 @@ class DoktypeDefaultHandler
     {
         /** @var ApiService */
         $apiService = GeneralUtility::makeInstance(ApiService::class, 'pages');
+        /** @var ProcessingService */
+        $processingService = GeneralUtility::makeInstance(ProcessingService::class);
 
         /** @var ConfigurationService */
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
@@ -84,6 +87,7 @@ class DoktypeDefaultHandler
                 'doktypeDefault',
                 [
                     'treeData' => $apiService->getContentTree('pages', $pageRecord),
+                    'nodeTree' => $processingService->getNodeWithTree('pages', $pageRecord),
                     'beLayout' => $combinedBackendLayoutConfigurationIdentifier,
                 ]
             );
