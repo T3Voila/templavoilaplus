@@ -26,15 +26,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ProcessingService
 {
-    /** @var IconFactory */
-    protected $iconFactory = null;
-
     /** @var FlexFormTools */
     protected $flexFormTools = null;
 
     public function __construct()
     {
-        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $this->flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
     }
 
@@ -61,7 +57,7 @@ class ProcessingService
         // Load language informations? getContentTree_getLocalizationInfoForElement ?
 
         // Get node childs:
-        $node['childs']  = $this->getNodeChilds($table, $row, $tt_content_elementRegister);
+        $node['childNodes']  = $this->getNodeChilds($table, $row, $tt_content_elementRegister);
 
         // Return result:
         return [
@@ -75,14 +71,14 @@ class ProcessingService
         $title = BackendUtility::getRecordTitle($table, $row);
         $node = [
             'raw' => [
-                'fullRow' => $row,
+                'entity' => $row,
                 'table' => $table,
             ],
-            'prepared' => [
+            'rendering' => [
                 'shortTitle' => GeneralUtility::fixed_lgd_cs($title, 50),
                 'fullTitle' => $title,
                 'hintTitle' => BackendUtility::getRecordIconAltText($row, $table),
-                'iconTag' => $this->iconFactory->getIconForRecord($table, $row, Icon::SIZE_SMALL)->render(),
+                'partial' => 'Backend/Handler/DoktypeDefaultHandler/PageElement',
             ],
         ];
 
@@ -92,7 +88,7 @@ class ProcessingService
     public function getDatastructureForNode(array $node): array
     {
         $table = $node['raw']['table'];
-        $row = $node['raw']['fullRow'];
+        $row = $node['raw']['entity'];
 
         /** @TODO At the moment, concentrating only on this parts, but more could be possible */
         if ($table == 'pages' || $table == $this->rootTable || ($table == 'tt_content' && $row['CType'] == 'templavoilaplus_pi1')) {
@@ -104,10 +100,11 @@ class ProcessingService
             );
 
             /** @TODO Runtime Cache? */
-            $rawDataStructureArr = $this->flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
+            $rawDataStructure = $this->flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
 
-            if (is_array($rawDataStructureArr)) {
-                return $rawDataStructureArr;
+            if (is_array($rawDataStructure)) {
+                $rawDataStructure['identifier'] = $dataStructureIdentifier;
+                return $rawDataStructure;
             }
         }
 
@@ -116,7 +113,7 @@ class ProcessingService
 
     public function getFlexformForNode(array $node): array
     {
-            $flexform = GeneralUtility::xml2array($row['tx_templavoilaplus_flex']);
+            $flexform = GeneralUtility::xml2array($node['raw']['entity']['tx_templavoilaplus_flex']);
             if (!is_array($flexform)) {
                 return [];
             }

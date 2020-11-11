@@ -2,17 +2,17 @@
     <a name="c' . md5($this->apiObj->flexform_getStringFromPointer($this->currentElementParentPointer) . $contentTreeArr['el']['uid']) . '"></a>
     <div class="t3-page-column-header">
         <div class="t3-page-column-header-icons">
-            <f:render partial="Backend/Handler/DoktypeDefaultHandler/TitleBarRightButtons" arguments="{element: tree}" />
+            <f:render partial="Backend/Handler/DoktypeDefaultHandler/TitleBarRightButtons" arguments="{node: node}" />
         </div>
         <div class="t3-page-column-header-label">
-            <f:render partial="Backend/Handler/DoktypeDefaultHandler/TitleBarLeftButtons" arguments="{sys_language_uid: tree.el.sys_language_uid, allAvailableLanguages: allAvailableLanguages, table: tree.el.table, row: tree.previewData.fullRow, title: tree.el.title}" />
+            <f:render partial="Backend/Handler/DoktypeDefaultHandler/TitleBarLeftButtons" arguments="{allAvailableLanguages: allAvailableLanguages, node: node}" />
         </div>
     </div>
     <div class="t3-page-ce-body tpm-sub-elements">
         <f:comment>@TODO $warnings</f:comment>
         <div class="t3-page-ce-body-inner">
             <div>
-                <f:render partial="Backend/Handler/DoktypeDefaultHandler/SubElement" arguments="{allAvailableLanguages: allAvailableLanguages, tree: tree, beLayout: beLayout}" />
+                <f:render partial="Backend/Handler/DoktypeDefaultHandler/ChildNodes" arguments="{allAvailableLanguages: allAvailableLanguages, childNodes: node.childNodes, beLayout: beLayout}" />
                 <f:render partial="Backend/Handler/DoktypeDefaultHandler/PreviewContent" arguments="{tree.previewData}" />
 
                 <f:comment>
