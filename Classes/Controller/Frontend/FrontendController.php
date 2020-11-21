@@ -120,9 +120,11 @@ try {
         $flexformValues = [];
 
         /** @TODO sheet selection */
-        $renderSheet = 'sDEF';
+        $sheet = 'sDEF';
 
-        list($dataStruct, $sheet, $singleSheet) = TemplaVoilaUtility::resolveSheetDefInDS($dataStructure->getDataStructureArray(), $renderSheet);
+        /** @TODO This is only correct, if there are no sheets defined */
+        /** We should look forward to define at minimum the sDEF default sheet */
+        $dataStruct = $dataStructure->getDataStructureArray();
 
         /** @TODO Language selection */
         $lKey = 'lDEF';
