@@ -8,15 +8,19 @@
         </f:else>
     </f:if>
     <core:icon identifier="actions-document-open" />
-    <core:icon identifier="actions-edit-copy" />
-    <core:icon identifier="actions-edit-copy-release" />
-    <core:icon identifier="actions-edit-cut" />
-    <core:icon identifier="actions-edit-cut-release" />
-    <core:icon identifier="extensions-templavoila-clip_ref" />
-    <core:icon identifier="extensions-templavoila-clip_ref-release" />
-    <core:icon identifier="extensions-templavoila-paste" />
-    <core:icon identifier="extensions-templavoila-pasteSubRef" />
-    <core:icon identifier="extensions-templavoila-makelocalcopy" />
-    <core:icon identifier="extensions-templavoila-unlink" />
-    <core:icon identifier="actions-edit-delete" />
+    <f:if condition="{node.raw.table} == 'tt_content'">
+        <f:then>
+            <core:icon identifier="actions-edit-copy" />
+            <core:icon identifier="actions-edit-copy-release" />
+            <core:icon identifier="actions-edit-cut" />
+            <core:icon identifier="actions-edit-cut-release" />
+            <core:icon identifier="extensions-templavoila-clip_ref" />
+            <core:icon identifier="extensions-templavoila-clip_ref-release" />
+            <core:icon identifier="extensions-templavoila-paste" />
+            <core:icon identifier="extensions-templavoila-pasteSubRef" />
+            <core:icon identifier="extensions-templavoila-makelocalcopy" />
+            <core:icon identifier="extensions-templavoila-unlink" />
+            <core:icon identifier="actions-edit-delete" />
+        </f:then>
+    </f:if>
 </div>
