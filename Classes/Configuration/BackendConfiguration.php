@@ -40,8 +40,9 @@ class BackendConfiguration
         if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['templavoilaplus']['BackendConfiguration'])) {
             $configurationFunctionHooks = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['templavoilaplus']['BackendConfiguration'];
             if (is_array($configurationFunctionHooks)) {
+                $params = [];
                 foreach ($configurationFunctionHooks as $hook) {
-                    GeneralUtility::callUserFunction($hook, [], $this);
+                    GeneralUtility::callUserFunction($hook, $params, $this);
                 }
             }
         }
