@@ -16,6 +16,7 @@ namespace Tvp\TemplaVoilaPlus\Service;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
+use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -57,7 +58,7 @@ class ProcessingService
         // Load language informations? getContentTree_getLocalizationInfoForElement ?
 
         // Get node childs:
-        $node['childNodes']  = $this->getNodeChilds($table, $row, $tt_content_elementRegister);
+        $node['childNodes']  = $this->getNodeChilds($node);
 
         // Return result:
         return [
@@ -121,8 +122,74 @@ class ProcessingService
             return $flexform;
     }
 
-    public function getNodeChilds()
+    public function getNodeChilds(array $node): array
     {
+        $childs = [];
+
+        $lKeys = ['lDEF'];
+        $vKeys = ['vDEF'];
+
+        // Traverse each sheet in the FlexForm Structure:
+        foreach ($node['datastructure']['sheets'] as $sheetKey => $sheetData) {
+
+            // Traverse the sheet's elements:
+            if (is_array($sheetData) && is_array($sheetData['ROOT']['el'])) {
+                foreach ($sheetData['ROOT']['el'] as $fieldKey => $fieldData) {
+                    // If the current field points to other content elements, process them:
+                    if ($fieldData['TCEforms']['config']['type'] == 'group' &&
+                        $fieldData['TCEforms']['config']['internal_type'] == 'db' &&
+                        $fieldData['TCEforms']['config']['allowed'] == 'tt_content'
+                    ) {
+                        foreach ($lKeys as $lKey) {
+                            foreach ($vKeys as $vKey) {
+                                $listOfSubElementUids = $node['flexform']['data'][$sheetKey][$lKey][$fieldKey][$vKey];
+//                                 $tree['depth'] = $depth;
+                                if ($listOfSubElementUids) {
+                                    $childs[$sheetKey][$lKey][$fieldKey][$vKey] = $this->getNodesFromListWithTree($listOfSubElementUids);
+                                }
+//                                 $tree['sub'][$sheetKey][$lKey][$fieldKey][$vKey]['meta']['title'] = $fieldData['TCEforms']['label'];
+                            }
+                            $childs[] = $listOfSubElementUids;
+                        }
+                    } elseif ($fieldData['type'] != 'array' && $fieldData['TCEforms']['config']) { // If generally there are non-container fields, register them:
+                        $childs['contentFields'][$sheetKey][] = $fieldKey;
+                    }
+                }
+            }
+        }
+
+        return $childs;
+    }
+
+    public function getNodesFromListWithTree(string $listOfNodes): array
+    {
+        $nodes = [];
+
+        // Get records:
+        /** @var RelationHandler $dbAnalysis */
+        $dbAnalysis = GeneralUtility::makeInstance(RelationHandler::class);
+        $dbAnalysis->start($listOfNodes, 'tt_content');
+
+        // Traverse records:
+        $counter = 1; // Note: key in $dbAnalysis->itemArray is not a valid counter! It is in 'tt_content_xx' format!
+        foreach ($dbAnalysis->itemArray as $recIdent) {
+            $idStr = 'tt_content:' . $recIdent['id'];
+
+            $contentRow = BackendUtility::getRecordWSOL('tt_content', $recIdent['id']);
+
+            if (is_array($contentRow)) {
+                $nodes[$idStr] = $this->getNodeWithTree('tt_content', $contentRow);
+//                 $tt_content_elementRegister[$recIdent['id']]++;
+//                 $subTree['el'][$idStr] = $this->getContentTree_element('tt_content', $nextSubRecord, $tt_content_elementRegister, $prevRecList . ',' . $idStr, $depth + 1);
+//                 $subTree['el'][$idStr]['el']['index'] = $counter;
+//                 $subTree['el'][$idStr]['el']['isHidden'] = $GLOBALS['TCA']['tt_content']['ctrl']['enablecolumns']['disabled'] && $nextSubRecord[$GLOBALS['TCA']['tt_content']['ctrl']['enablecolumns']['disabled']];
+//                 $subTree['el_list'][$counter] = $idStr;
+            } else {
+                # ERROR: The element referenced was deleted! - or hidden :-)
+            }
+        }
+
+        return $nodes;
     }
 }
 
