@@ -1,19 +1,20 @@
-<div class="t3-page-ce tpm-container-element tpm-content-element tpm-ctype-{element.el.CType} tpm-layout-{element.el.layout}">
-    <a name="c' . md5($this->apiObj->flexform_getStringFromPointer($this->currentElementParentPointer) . $contentTreeArr['el']['uid']) . '"></a>
-    <div class="t3-page-ce-header tpm-titlebar">
-        <div class="t3-page-column-header-icons">
-            <f:render partial="Backend/Handler/DoktypeDefaultHandler/TitleBarRightButtons" arguments="{node: node}" />
+<div class="sortableItem tpm-element" id="' . $this->getSortableItemHash($this->apiObj->flexform_getStringFromPointer($subElementPointer)) .'">
+    <div class="t3-page-ce tpm-container-element tpm-content-element tpm-ctype-{element.el.CType} tpm-layout-{element.el.layout}">
+        <a name="c' . md5($this->apiObj->flexform_getStringFromPointer($this->currentElementParentPointer) . $contentTreeArr['el']['uid']) . '"></a>
+        <div class="t3-page-ce-header tpm-titlebar">
+            <div class="t3-page-ce-header-icons">
+                <f:render partial="Backend/Handler/DoktypeDefaultHandler/TitleBarRightButtons" arguments="{node: node}" />
+            </div>
+            <div class="t3-page-ce-header-label">
+                <f:render partial="Backend/Handler/DoktypeDefaultHandler/TitleBarLeftButtons" arguments="{allAvailableLanguages: allAvailableLanguages, node: node}" />
+            </div>
         </div>
-        <div class="t3-page-column-header-label">
-            <f:render partial="Backend/Handler/DoktypeDefaultHandler/TitleBarLeftButtons" arguments="{allAvailableLanguages: allAvailableLanguages, node: node}" />
-        </div>
-    </div>
 
-    <div class="t3-page-ce-body tpm-sub-elements">
-        <f:comment>($warnings ? '<div class="tpm-warnings">' . $warnings . '</div>' : '')</f:comment>
-        <f:comment>$this->render_framework_subElements($contentTreeArr, $languageKey, $sheet, $calcPerms)</f:comment>
-        <f:render partial="Backend/Handler/DoktypeDefaultHandler/PreviewContent" arguments="{element.previewData}" />
-        <f:comment>$this->render_localizationInfoTable($contentTreeArr, $parentPointer, $parentDsMeta)</f:comment>
+        <div class="t3-page-ce-body tpm-sub-elements">
+            <f:comment>($warnings ? '<div class="tpm-warnings">' . $warnings . '</div>' : '')</f:comment>
+            <f:comment>$this->render_framework_subElements($contentTreeArr, $languageKey, $sheet, $calcPerms)</f:comment>
+            <f:render partial="Backend/Handler/DoktypeDefaultHandler/PreviewContent" arguments="{element.previewData}" />
+            <f:comment>$this->render_localizationInfoTable($contentTreeArr, $parentPointer, $parentDsMeta)</f:comment>
+        </div>
     </div>
 </div>
-
