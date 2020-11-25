@@ -231,40 +231,34 @@ class PageLayoutController extends ActionController
             ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK
         );
 
+        $templatePaths = $view->getRenderingContext()->getTemplatePaths();
+
         // set TemplateRootPaths
-        $viewSetFunctionName = 'setTemplateRootPaths';
-        if (method_exists($view, $viewSetFunctionName)) {
-            $setting = 'templateRootPaths';
-            $parameter = $this->getViewProperty($extbaseFrameworkConfiguration, $setting);
-            // no need to bother if there is nothing to set
-            if ($parameter) {
-                $parameter = $view->getTemplateRootPaths() + $parameter;
-                $view->$viewSetFunctionName($parameter);
-            }
+        $setting = 'templateRootPaths';
+        $parameter = $this->getViewProperty($extbaseFrameworkConfiguration, $setting);
+        // no need to bother if there is nothing to set
+        if ($parameter) {
+            $parameter = $templatePaths->getTemplateRootPaths() + $parameter;
+            $templatePaths->setTemplateRootPaths($parameter);
         }
 
         // set LayoutRootPaths
         $viewSetFunctionName = 'setLayoutRootPaths';
-        if (method_exists($view, $viewSetFunctionName)) {
-            $setting = 'layoutRootPaths';
-            $parameter = $this->getViewProperty($extbaseFrameworkConfiguration, $setting);
-            // no need to bother if there is nothing to set
-            if ($parameter) {
-                $parameter = $view->getLayoutRootPaths() + $parameter;
-                $view->$viewSetFunctionName($parameter);
-            }
+        $setting = 'layoutRootPaths';
+        $parameter = $this->getViewProperty($extbaseFrameworkConfiguration, $setting);
+        // no need to bother if there is nothing to set
+        if ($parameter) {
+            $parameter = $templatePaths->getLayoutRootPaths() + $parameter;
+            $templatePaths->setLayoutRootPaths($parameter);
         }
 
         // set PartialRootPaths
-        $viewSetFunctionName = 'setPartialRootPaths';
-        if (method_exists($view, $viewSetFunctionName)) {
-            $setting = 'partialRootPaths';
-            $parameter = $this->getViewProperty($extbaseFrameworkConfiguration, $setting);
-            // no need to bother if there is nothing to set
-            if ($parameter) {
-                $parameter = $view->getPartialRootPaths() + $parameter;
-                $view->$viewSetFunctionName($parameter);
-            }
+        $setting = 'partialRootPaths';
+        $parameter = $this->getViewProperty($extbaseFrameworkConfiguration, $setting);
+        // no need to bother if there is nothing to set
+        if ($parameter) {
+            $parameter = $templatePaths->getPartialRootPaths() + $parameter;
+            $templatePaths->setPartialRootPaths($parameter);
         }
     }
 
