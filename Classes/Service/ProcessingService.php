@@ -147,9 +147,7 @@ class ProcessingService
                                 if ($listOfSubElementUids) {
                                     $childs[$sheetKey][$lKey][$fieldKey][$vKey] = $this->getNodesFromListWithTree($listOfSubElementUids);
                                 }
-//                                 $tree['sub'][$sheetKey][$lKey][$fieldKey][$vKey]['meta']['title'] = $fieldData['TCEforms']['label'];
                             }
-                            $childs[] = $listOfSubElementUids;
                         }
                     } elseif ($fieldData['type'] != 'array' && $fieldData['TCEforms']['config']) { // If generally there are non-container fields, register them:
                         $childs['contentFields'][$sheetKey][] = $fieldKey;
