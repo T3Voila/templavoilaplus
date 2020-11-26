@@ -18,9 +18,15 @@
             <core:icon identifier="extensions-templavoila-clip_ref-release" />
             <core:icon identifier="extensions-templavoila-paste" />
             <core:icon identifier="extensions-templavoila-pasteSubRef" />
-            <core:icon identifier="extensions-templavoila-makelocalcopy" />
+            <f:if condition="!{node.rendering.belongsToCurrentPage}">
+                <core:icon identifier="extensions-templavoila-makelocalcopy" />
+            </f:if>
             <core:icon identifier="extensions-templavoila-unlink" />
-            <core:icon identifier="actions-edit-delete" />
+
+            <f:comment>Delete is not possible if element do not belong to current page (only unlinking)</f:comment>
+            <f:if condition="{node.rendering.belongsToCurrentPage}">
+                <core:icon identifier="actions-edit-delete" />
+            </f:if>
         </f:then>
     </f:if>
 </div>

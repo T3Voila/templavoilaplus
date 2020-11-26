@@ -30,6 +30,10 @@ class ProcessingService
     /** @var FlexFormTools */
     protected $flexFormTools = null;
 
+    /** @TODO This makes the Service statefull!! */
+    /** @var int */
+    protected $basePid = null;
+
     public function __construct()
     {
         $this->flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
@@ -46,6 +50,14 @@ class ProcessingService
      */
     public function getNodeWithTree(string $table, array $row): array
     {
+        if ($this->basePid === null) {
+            if ($table === 'pages') {
+                $this->basePid = (int) $row['uid'];
+            } else {
+                $this->basePid = (int) $row['pid'];
+            }
+        }
+
         $node = $this->getNodeFromRow($table, $row);
         $node['datastructure'] = $this->getDatastructureForNode($node);
         $node['flexform'] = $this->getFlexformForNode($node);
@@ -70,6 +82,9 @@ class ProcessingService
     public function getNodeFromRow(string $table, array $row)
     {
         $title = BackendUtility::getRecordTitle($table, $row);
+
+        $onPid = ($table === 'pages' ? (int) $row['uid'] : (int) $row['pid']);
+
         $node = [
             'raw' => [
                 'entity' => $row,
@@ -80,6 +95,7 @@ class ProcessingService
                 'fullTitle' => $title,
                 'hintTitle' => BackendUtility::getRecordIconAltText($row, $table),
                 'partial' => 'Backend/Handler/DoktypeDefaultHandler/PageElement',
+                'belongsToCurrentPage' => ($this->basePid === $onPid),
             ],
         ];
 
