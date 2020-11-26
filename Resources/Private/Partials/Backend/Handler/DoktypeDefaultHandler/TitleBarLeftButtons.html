@@ -1,8 +1,12 @@
 <div class="t3-page-ce-header-icons-left">
-    <span title="{allAvailableLanguages.{node.raw.entity.sys_language_uid}.title}"><core:icon identifier="{allAvailableLanguages.{node.raw.entity.sys_language_uid}.flagIcon}" /></span>
-    <core:iconForRecord table="{node.raw.table}" row="{node.raw.entity}" />
-    <div class="nobr sortable_handle ui-sortable-handle">
-        <f:format.crop maxCharacters="20" respectWordBoundaries="false">{note.rendering.fullTitle}</f:format.crop>
+    <span class="tpm-langIcon" title="{allAvailableLanguages.{node.raw.entity.sys_language_uid}.title}">
+        <core:icon identifier="{allAvailableLanguages.{node.raw.entity.sys_language_uid}.flagIcon}" />
+    </span>
+    <span class="tpm-buttonsLeft">
+        <core:iconForRecord table="{node.raw.table}" row="{node.raw.entity}" />
+    </span>
+    <div class="nobr sortable_handle">
+        <f:format.crop maxCharacters="20" respectWordBoundaries="false">{node.rendering.fullTitle}</f:format.crop>
     </div>
     <f:comment>@TODO ($elementBelongsToCurrentPage ? '' : '<em>') . ($elementBelongsToCurrentPage ? '' : '</em>')</f:comment>
 </div>
