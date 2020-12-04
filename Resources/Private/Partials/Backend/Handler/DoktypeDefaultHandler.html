@@ -1,5 +1,5 @@
-<f:debug>{doktypeDefault.nodeTree.node}</f:debug>
-<f:debug>{doktypeDefault.treeData}</f:debug>
+<f:debug maxDepth="25">{doktypeDefault.nodeTree.node}</f:debug>
+<f:debug maxDepth="25">{doktypeDefault.treeData}</f:debug>
 
 <f:if condition="{doktypeDefault.treeData.tree}">
     <f:then>
@@ -7,7 +7,7 @@
             <f:be.infobox title="{f:translate(key:'{lllFile}:infoTitleMissingEditRights')}" state="-1"><f:translate key="{lllFile}:infoContentMissingEditRights"/></f:be.infobox>
         </f:if>
 
-        <f:render partial="{doktypeDefault.nodeTree.node.rendering.partial}" arguments="{allAvailableLanguages: allAvailableLanguages, node: doktypeDefault.nodeTree.node, beLayout: doktypeDefault.beLayout}" />
+        <f:render partial="{doktypeDefault.nodeTree.node.rendering.partial}" arguments="{allAvailableLanguages: allAvailableLanguages, lllFile: lllFile, node: doktypeDefault.nodeTree.node, beLayout: doktypeDefault.beLayout}" />
     </f:then>
     <f:else>
         <f:be.infobox title="{f:translate(key:'{lllFile}:infoTitleSelectTemplateDesign')}" state="-1"><f:translate key="{lllFile}:infoContentSelectTemplateDesign"/></f:be.infobox>
