@@ -166,7 +166,7 @@ class ProcessingService
                             }
                         }
                     } elseif ($fieldData['type'] != 'array' && $fieldData['TCEforms']['config']) { // If generally there are non-container fields, register them:
-                        $childs['contentFields'][$sheetKey][] = $fieldKey;
+                        $childs['contentFields'][$sheetKey][$fieldKey] = $fieldKey;
                     }
                 }
             }
