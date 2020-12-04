@@ -3,16 +3,18 @@
 <f:comment>@TODO $cellIdStr = ' id="' . $cellId . '"';</f:comment>
 
 <f:if condition="{node.childNodes.sDEF.lDEF}">
-    <f:for each="{node.childNodes.sDEF.lDEF}" key="fieldKey" as="subField">
-        <tvp:arrayVariable name="layoutHeaders" key="{fieldKey}">
-            <strong><f:translate key="{node.datastructure.sheets.sDEF.ROOT.el.{fieldKey}.TCEforms.label}" default="{node.datastructure.sheets.sDEF.ROOT.el.{fieldKey}.TCEforms.label}"/></strong>
-        </tvp:arrayVariable>
+    <f:for each="{node.datastructure.sheets.sDEF.ROOT.el}" key="fieldKey" as="fieldConfig">
+        <f:if condition="!{node.childNodes.contentFields.sDEF.{fieldKey}}">
+            <tvp:arrayVariable name="layoutHeaders" key="{fieldKey}">
+                <strong><f:translate key="{fieldConfig.TCEforms.label}" default="{fieldConfig.TCEforms.label}"/></strong>
+            </tvp:arrayVariable>
 
-        <tvp:arrayVariable name="layoutFields" key="{fieldKey}">
-            <f:for each="{subField.vDEF}" as="element">
-                <f:render partial="Backend/Handler/DoktypeDefaultHandler/ContentElement" arguments="{allAvailableLanguages: allAvailableLanguages, node: element.node}" />
-            </f:for>
-        </tvp:arrayVariable>
+            <tvp:arrayVariable name="layoutFields" key="{fieldKey}">
+                <f:for each="{node.childNodes.sDEF.lDEF.{fieldKey}.vDEF}" as="element">
+                    <f:render partial="Backend/Handler/DoktypeDefaultHandler/ContentElement" arguments="{allAvailableLanguages: allAvailableLanguages, lllFile: lllFile, node: element.node}" />
+                </f:for>
+            </tvp:arrayVariable>
+        </f:if>
     </f:for>
 </f:if>
 
