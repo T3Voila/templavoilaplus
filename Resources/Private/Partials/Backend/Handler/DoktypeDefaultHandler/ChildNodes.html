@@ -31,15 +31,17 @@
         <tvp:renderLayout combinedConfigurationIdentifier="{beLayout}" arguments="{layoutComplete}" />
     </f:then>
     <f:else>
+        {f:variable(name: 'count', value: '{f:count(subject: layoutHeaders)}')}
+        {f:variable(name: 'cellWidth', value: '{100 / count}')}
         <table border="0" cellpadding="2" cellspacing="2" width="100%" class="tpm-subelement-table">
             <tr>
                 <f:for each="{layoutHeaders}" as="layoutHeader">
-                    <td width="%4$d%%" class="tpm-title-cell"><f:format.raw>{layoutHeader}</f:format.raw></td>
+                    <td width="{cellWidth}%" class="tpm-title-cell"><f:format.raw>{layoutHeader}</f:format.raw></td>
                 </f:for>
             </tr>
             <tr>
                 <f:for each="{layoutFields}" as="layoutField">
-                    <td width="%4$d%%" class="tpm-content-cell"><f:format.raw>{layoutField}</f:format.raw></td>
+                    <td width="{cellWidth}%" class="tpm-content-cell"><f:format.raw>{layoutField}</f:format.raw></td>
                 </f:for>
             </tr>
         </table>
