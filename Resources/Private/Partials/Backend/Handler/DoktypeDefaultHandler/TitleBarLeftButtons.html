@@ -3,7 +3,11 @@
         <core:icon identifier="{allAvailableLanguages.{node.raw.entity.sys_language_uid}.flagIcon}" />
     </span>
     <span class="tpm-buttonsLeft">
-        <core:iconForRecord table="{node.raw.table}" row="{node.raw.entity}" />
+        <a href="#" class="t3js-contextmenutrigger" data-table="tt_content" data-uid="{node.raw.entity.uid}" data-context="1">
+            <span data-toggle="tooltip" data-title="{node.rendering.hintTitle}" data-html="true" data-placement="right" data-original-title="" title="">
+                <core:iconForRecord table="{node.raw.table}" row="{node.raw.entity}" />
+            </span>
+        </a>
     </span>
     <div class="nobr sortable_handle">
         <f:if condition="!{node.rendering.belongsToCurrentPage}"><em></f:if>
