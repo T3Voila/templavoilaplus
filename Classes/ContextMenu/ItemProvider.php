@@ -40,7 +40,7 @@ class ItemProvider extends AbstractProvider
             'iconIdentifier' => 'extensions-templavoila-menu-item',
             'callbackAction' => 'viewFlexformXml', //'templavoilaplus_flexform_cleaner',
         ],
-        /** @TODO Link to view mapping?
+        /** @TODO Link to view mapping? */
 //         'viewdsto' => [
 //             'type' => 'item',
 //             'label' => 'LLL:EXT:templavoilaplus/Resources/Private/Language/locallang.xlf:cm_viewdsto',
