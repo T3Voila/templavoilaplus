@@ -1,7 +1,5 @@
 {namespace tvp=Ppi\TemplaVoilaPlus\ViewHelpers}
 
-<f:comment>@TODO $cellIdStr = ' id="' . $cellId . '"';</f:comment>
-
 <f:if condition="{node.childNodes.sDEF.lDEF}">
     <f:for each="{node.datastructure.sheets.sDEF.ROOT.el}" key="fieldKey" as="fieldConfig">
         <f:if condition="!{node.childNodes.contentFields.sDEF.{fieldKey}}">
@@ -40,8 +38,8 @@
                 </f:for>
             </tr>
             <tr>
-                <f:for each="{layoutFields}" as="layoutField">
-                    <td width="{cellWidth}%" class="tpm-content-cell"><f:format.raw>{layoutField}</f:format.raw></td>
+                <f:for each="{layoutFields}" key="layoutKey" as="layoutField">
+                    <td id="cell{node.rendering.md5}_{leyoutKey}{layoutField}" width="{cellWidth}%" class="tpm-content-cell"><f:format.raw>{layoutField}</f:format.raw></td>
                 </f:for>
             </tr>
         </table>

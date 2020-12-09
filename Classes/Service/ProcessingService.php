@@ -45,10 +45,11 @@ class ProcessingService
      *
      * @param string $table Table which contains the (XML) data structure. Only records from table 'pages' or flexible content elements from 'tt_content' are handled
      * @param array $row Record of the root element where the tree starts (Possibly overlaid with workspace content)
+     * @param array $parentPointer @TODO Move this in a model?
      *
      * @return array The content tree
      */
-    public function getNodeWithTree(string $table, array $row): array
+    public function getNodeWithTree(string $table, array $row, array $parentPointer = []): array
     {
         if ($this->basePid === null) {
             if ($table === 'pages') {
@@ -58,7 +59,7 @@ class ProcessingService
             }
         }
 
-        $node = $this->getNodeFromRow($table, $row);
+        $node = $this->getNodeFromRow($table, $row, $parentPointer);
         $node['datastructure'] = $this->getDatastructureForNode($node);
         $node['flexform'] = $this->getFlexformForNode($node);
 
@@ -79,11 +80,12 @@ class ProcessingService
         ];
     }
 
-    public function getNodeFromRow(string $table, array $row)
+    public function getNodeFromRow(string $table, array $row, array $parentPointer = [])
     {
         $title = BackendUtility::getRecordTitle($table, $row);
 
         $onPid = ($table === 'pages' ? (int) $row['uid'] : (int) $row['pid']);
+        $parentPointerString = $this->getParentPointerAsString($parentPointer);
 
         $node = [
             'raw' => [
@@ -96,6 +98,8 @@ class ProcessingService
                 'hintTitle' => BackendUtility::getRecordIconAltText($row, $table),
                 'partial' => 'Backend/Handler/DoktypeDefaultHandler/PageElement',
                 'belongsToCurrentPage' => ($this->basePid === $onPid),
+                'parentPointer' => $parentPointerString,
+                'md5' => md5($parentPointerString . '/' . $table . ':' . $row['uid']),
             ],
         ];
 
@@ -159,9 +163,9 @@ class ProcessingService
                         foreach ($lKeys as $lKey) {
                             foreach ($vKeys as $vKey) {
                                 $listOfSubElementUids = $node['flexform']['data'][$sheetKey][$lKey][$fieldKey][$vKey];
-//                                 $tree['depth'] = $depth;
                                 if ($listOfSubElementUids) {
-                                    $childs[$sheetKey][$lKey][$fieldKey][$vKey] = $this->getNodesFromListWithTree($listOfSubElementUids);
+                                    $parentPointer = $this->createParentPointer($node, $sheetKey, $fieldKey, $lKey, $vKey);
+                                    $childs[$sheetKey][$lKey][$fieldKey][$vKey] = $this->getNodesFromListWithTree($listOfSubElementUids, $parentPointer);
                                 }
                             }
                         }
@@ -175,7 +179,7 @@ class ProcessingService
         return $childs;
     }
 
-    public function getNodesFromListWithTree(string $listOfNodes): array
+    public function getNodesFromListWithTree(string $listOfNodes, array $parentPointer): array
     {
         $nodes = [];
 
@@ -186,18 +190,15 @@ class ProcessingService
 
         // Traverse records:
         $counter = 1; // Note: key in $dbAnalysis->itemArray is not a valid counter! It is in 'tt_content_xx' format!
-        foreach ($dbAnalysis->itemArray as $recIdent) {
+        foreach ($dbAnalysis->itemArray as $position => $recIdent) {
             $idStr = 'tt_content:' . $recIdent['id'];
 
             $contentRow = BackendUtility::getRecordWSOL('tt_content', $recIdent['id']);
 
+            $parentPointer['position'] = $position;
+
             if (is_array($contentRow)) {
-                $nodes[$idStr] = $this->getNodeWithTree('tt_content', $contentRow);
-//                 $tt_content_elementRegister[$recIdent['id']]++;
-//                 $subTree['el'][$idStr] = $this->getContentTree_element('tt_content', $nextSubRecord, $tt_content_elementRegister, $prevRecList . ',' . $idStr, $depth + 1);
-//                 $subTree['el'][$idStr]['el']['index'] = $counter;
-//                 $subTree['el'][$idStr]['el']['isHidden'] = $GLOBALS['TCA']['tt_content']['ctrl']['enablecolumns']['disabled'] && $nextSubRecord[$GLOBALS['TCA']['tt_content']['ctrl']['enablecolumns']['disabled']];
-//                 $subTree['el_list'][$counter] = $idStr;
+                $nodes[$idStr] = $this->getNodeWithTree('tt_content', $contentRow, $parentPointer);
             } else {
                 # ERROR: The element referenced was deleted! - or hidden :-)
             }
@@ -205,5 +206,48 @@ class ProcessingService
 
         return $nodes;
     }
-}
 
+    /**
+     * Converts a flexform pointer array to a string of the format "table:uid:sheet:sLang:field:vLang:position/targettable:targetuid"
+     *
+     * @TODO Fix naming parentPointer vs flexformPointer, move into own class @see flexform_getPointerFromString flexform_getStringFromPointer in ApiService
+     * NOTE: "targettable" currently must be tt_content
+     *
+     * @param array $parentPointer A valid flexform pointer array
+     *
+     * @return string A string of the format "table:uid:sheet:sLang:field:vLang:position". The string might additionally contain "/table:uid" which is used to check the target record of the pointer.
+     */
+    protected function getParentPointerAsString(array $parentPointer): string
+    {
+        if (isset($parentPointer['sheet'])) {
+            $flexformPointerString =
+                $parentPointer['table'] . ':' .
+                $parentPointer['uid'] . ':' .
+                $parentPointer['sheet'] . ':' .
+                $parentPointer['sLang'] . ':' .
+                $parentPointer['field'] . ':' .
+                $parentPointer['vLang'] . ':' .
+                $parentPointer['position'];
+            if (isset($parentPointer['targetCheckUid'])) { /** @TODO Whats that? */
+                $flexformPointerString .= '/tt_content:' . $parentPointer['targetCheckUid'];
+            }
+        } else {
+            $flexformPointerString = $parentPointer['table'] . ':' . $parentPointer['uid'];
+        }
+
+        return $flexformPointerString;
+    }
+
+    protected function createParentPointer(array $node, string $sheetKey, string $fieldKey, string $lKey, string $vKey): array
+    {
+        return [
+            'table' => $node['raw']['table'],
+            'uid' => $node['raw']['entity']['uid'],
+            'sheet' => $sheetKey,
+            'sLang' => $lKey,
+            'field' => $fieldKey,
+            'vLang' => $vKey,
+            'position' => 0,
+        ];
+    }
+}
