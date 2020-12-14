@@ -114,6 +114,9 @@ class PageLayoutController extends ActionController
      */
     protected $contentPartials = [];
 
+    /** @var \TYPO3\CMS\Backend\Clipboard\Clipboard */
+    protected $typo3Clipboard;
+
     public function __construct()
     {
         $this->configuration = new BackendConfiguration();
@@ -146,6 +149,7 @@ class PageLayoutController extends ActionController
      */
     public function showAction()
     {
+        $this->initializeTypo3Clipboard();
         $this->registerDocheaderButtons();
         $this->addViewConfiguration($this->view->getModuleTemplate()->getView());
 
@@ -202,15 +206,25 @@ class PageLayoutController extends ActionController
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_core.xlf');
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_misc.xlf');
 
-        $this->view->assign('lllFile', 'LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf');
-
         $this->view->assign('pageId', $this->pageId);
         $this->view->assign('pageInfo', $this->pageInfo);
         $this->view->assign('pageTitle', $pageTitle);
 
-        $this->view->assign('allAvailableLanguages', $this->allAvailableLanguages);
         $this->view->assign('calcPerms', $this->calcPerms);
         $this->view->assign('basicEditRights', $this->hasBasicEditRights());
+
+        /** @TODO better handle this with an configuration object */
+        $this->view->assign(
+            'configuration',
+            [
+                'allAvailableLanguages' => $this->allAvailableLanguages,
+                'lllFile' => 'LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf',
+                'clipboard' => [
+                    'hasContent' => (isset($this->typo3Clipboard->clipData['normal']['el'])),
+                    'object' => $this->typo3Clipboard,
+                ],
+            ]
+        );
 
         $this->view->assign('contentPartials', $this->contentPartials);
         // @TODO Deprecate following parts and the renderFunctionHooks? Replace them with Handlers?
@@ -218,6 +232,15 @@ class PageLayoutController extends ActionController
         $this->view->assign('contentHeader', $contentHeader);
         $this->view->assign('contentBody', $contentBody);
         $this->view->assign('contentFooter', $contentFooter);
+    }
+
+
+    protected function initializeTypo3Clipboard()
+    {
+        // Initialize the t3lib clipboard:
+        $this->typo3Clipboard = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Clipboard\Clipboard::class);
+        $this->typo3Clipboard->initializeClipboard();
+        $this->typo3Clipboard->lockToNormal();
     }
 
     /**

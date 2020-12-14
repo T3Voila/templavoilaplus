@@ -4,12 +4,12 @@
 <f:if condition="{doktypeDefault.treeData.tree}">
     <f:then>
         <f:if condition="!{basicEditRights}">
-            <f:be.infobox title="{f:translate(key:'{lllFile}:infoTitleMissingEditRights')}" state="-1"><f:translate key="{lllFile}:infoContentMissingEditRights"/></f:be.infobox>
+            <f:be.infobox title="{f:translate(key:'{configuration.lllFile}:infoTitleMissingEditRights')}" state="-1"><f:translate key="{configuration.lllFile}:infoContentMissingEditRights"/></f:be.infobox>
         </f:if>
 
-        <f:render partial="{doktypeDefault.nodeTree.node.rendering.partial}" arguments="{allAvailableLanguages: allAvailableLanguages, lllFile: lllFile, node: doktypeDefault.nodeTree.node, beLayout: doktypeDefault.beLayout}" />
+        <f:render partial="{doktypeDefault.nodeTree.node.rendering.partial}" arguments="{configuration: configuration, node: doktypeDefault.nodeTree.node, beLayout: doktypeDefault.beLayout}" />
     </f:then>
     <f:else>
-        <f:be.infobox title="{f:translate(key:'{lllFile}:infoTitleSelectTemplateDesign')}" state="-1"><f:translate key="{lllFile}:infoContentSelectTemplateDesign"/></f:be.infobox>
+        <f:be.infobox title="{f:translate(key:'{configuration.lllFile}:infoTitleSelectTemplateDesign')}" state="-1"><f:translate key="{configuration.lllFile}:infoContentSelectTemplateDesign"/></f:be.infobox>
     </f:else>
 </f:if>

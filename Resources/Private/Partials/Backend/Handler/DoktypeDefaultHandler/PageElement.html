@@ -5,14 +5,14 @@
             <f:render partial="Backend/Handler/DoktypeDefaultHandler/TitleBarRightButtons" arguments="{node: node}" />
         </div>
         <div class="t3-page-column-header-label">
-            <f:render partial="Backend/Handler/DoktypeDefaultHandler/TitleBarLeftButtons" arguments="{allAvailableLanguages: allAvailableLanguages, node: node}" />
+            <f:render partial="Backend/Handler/DoktypeDefaultHandler/TitleBarLeftButtons" arguments="{configuration: configuration, node: node}" />
         </div>
     </div>
     <div class="t3-page-ce-body tpm-sub-elements">
         <f:comment>@TODO $warnings</f:comment>
         <div class="t3-page-ce-body-inner">
             <div>
-                <f:render partial="Backend/Handler/DoktypeDefaultHandler/ChildNodes" arguments="{allAvailableLanguages: allAvailableLanguages, lllFile: lllFile, node: node, beLayout: beLayout}" />
+                <f:render partial="Backend/Handler/DoktypeDefaultHandler/ChildNodes" arguments="{configuration: configuration, node: node, beLayout: beLayout}" />
                 <f:render partial="Backend/Handler/DoktypeDefaultHandler/PreviewContent" arguments="{tree.previewData}" />
 
                 <f:comment>
