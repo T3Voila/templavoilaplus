@@ -212,17 +212,14 @@ class PageLayoutController extends ActionController
 
         $this->view->assign('calcPerms', $this->calcPerms);
         $this->view->assign('basicEditRights', $this->hasBasicEditRights());
-
+\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($this->typo3Clipboard->clipData);
         /** @TODO better handle this with an configuration object */
         $this->view->assign(
             'configuration',
             [
                 'allAvailableLanguages' => $this->allAvailableLanguages,
                 'lllFile' => 'LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf',
-                'clipboard' => [
-                    'hasContent' => (isset($this->typo3Clipboard->clipData['normal']['el'])),
-                    'object' => $this->typo3Clipboard,
-                ],
+                'clipboard' => $this->clipboard2fluid(),
             ]
         );
 
@@ -241,6 +238,22 @@ class PageLayoutController extends ActionController
         $this->typo3Clipboard = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Clipboard\Clipboard::class);
         $this->typo3Clipboard->initializeClipboard();
         $this->typo3Clipboard->lockToNormal();
+    }
+
+    protected function clipboard2fluid(): array
+    {
+        $clipboard = [
+            'hasContent' => (isset($this->typo3Clipboard->clipData['normal']['el'])),
+            'object' => $this->typo3Clipboard,
+        ];
+
+        if ($clipboard['hasContent']) {
+            $element = key($this->typo3Clipboard->clipData['normal']['el']);
+            list($clipboard['table'], $clipboard['uid']) = explode('|', $element);
+            $clipboard['mode'] = $this->typo3Clipboard->clipData['normal']['mode'];
+        }
+
+        return $clipboard;
     }
 
     /**

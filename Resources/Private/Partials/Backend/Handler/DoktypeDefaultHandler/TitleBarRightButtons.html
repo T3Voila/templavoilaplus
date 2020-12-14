@@ -12,12 +12,24 @@
     </f:if>
     <f:if condition="{node.raw.table} == 'tt_content'">
         <f:then>
-            <core:icon identifier="actions-edit-copy" />
-            <core:icon identifier="actions-edit-copy-release" />
-            <core:icon identifier="extensions-templavoila-clip_ref" />
+            <f:if condition="{configuration.clipboard.hasContent} && {configuration.clipboard.mode} == 'copy' && {configuration.clipboard.table} == 'tt_content' && {configuration.clipboard.uid} == {node.raw.entity.uid}" >
+                <f:then>
+                    <core:icon identifier="actions-edit-copy-release" />
+                </f:then>
+                <f:else>
+                    <core:icon identifier="actions-edit-copy" />
+                </f:else>
+            </f:if>
             <core:icon identifier="extensions-templavoila-clip_ref-release" />
-            <core:icon identifier="actions-edit-cut" />
-            <core:icon identifier="actions-edit-cut-release" />
+            <core:icon identifier="extensions-templavoila-clip_ref" />
+            <f:if condition="{configuration.clipboard.hasContent} && {configuration.clipboard.mode} == '' && {configuration.clipboard.table} == 'tt_content' && {configuration.clipboard.uid} == {node.raw.entity.uid}" >
+                <f:then>
+                    <core:icon identifier="actions-edit-cut-release" />
+                </f:then>
+                <f:else>
+                    <core:icon identifier="actions-edit-cut" />
+                </f:else>
+            </f:if>
             <core:icon identifier="extensions-templavoila-paste" />
             <core:icon identifier="extensions-templavoila-pasteSubRef" />
             <f:if condition="!{node.rendering.belongsToCurrentPage}">
