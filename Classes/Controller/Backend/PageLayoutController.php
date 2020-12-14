@@ -212,7 +212,7 @@ class PageLayoutController extends ActionController
 
         $this->view->assign('calcPerms', $this->calcPerms);
         $this->view->assign('basicEditRights', $this->hasBasicEditRights());
-\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($this->typo3Clipboard->clipData);
+
         /** @TODO better handle this with an configuration object */
         $this->view->assign(
             'configuration',

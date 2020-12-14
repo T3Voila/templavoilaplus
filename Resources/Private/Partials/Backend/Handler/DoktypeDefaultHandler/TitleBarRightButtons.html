@@ -20,8 +20,14 @@
                     <core:icon identifier="actions-edit-copy" />
                 </f:else>
             </f:if>
-            <core:icon identifier="extensions-templavoila-clip_ref-release" />
-            <core:icon identifier="extensions-templavoila-clip_ref" />
+            <f:if condition="{configuration.clipboard.hasContent} && {configuration.clipboard.mode} == 'ref' && {configuration.clipboard.table} == 'tt_content' && {configuration.clipboard.uid} == {node.raw.entity.uid}" >
+                <f:then>
+                    <core:icon identifier="extensions-templavoila-clip_ref-release" />
+                </f:then>
+                <f:else>
+                    <core:icon identifier="extensions-templavoila-clip_ref" />
+                </f:else>
+            </f:if>
             <f:if condition="{configuration.clipboard.hasContent} && {configuration.clipboard.mode} == '' && {configuration.clipboard.table} == 'tt_content' && {configuration.clipboard.uid} == {node.raw.entity.uid}" >
                 <f:then>
                     <core:icon identifier="actions-edit-cut-release" />
