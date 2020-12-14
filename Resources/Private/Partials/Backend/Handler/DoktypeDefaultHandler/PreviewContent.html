@@ -1,10 +1,9 @@
 <div class="tpm-preview">
-    <f:for each="{sheets.sDEF}" as="previewField">
-        <f:if condition="{previewField.TCEforms.label}">
-            <strong><f:translate key="{previewField.TCEforms.label}" default="{previewField.TCEforms.label}" /></strong>
+    <f:for each="{node.datastructure.sheets.sDEF.ROOT.el}" key="fieldName" as="fieldConfig">
+        <f:if condition="{fieldConfig.TCEforms.label}">
+            <strong><f:translate key="{fieldConfig.TCEforms.label}" default="{fieldConfig.TCEforms.label}" /></strong>
         </f:if>
-        <f:format.crop maxCharacters="200"><f:format.stripTags>{previewField.data.lDEF.vDEF}</f:format.stripTags></f:format.crop>
+        <f:format.crop maxCharacters="200"><f:format.stripTags>{node.flexform.data.sDEF.lDEF.{fieldName}.vDEF}</f:format.stripTags></f:format.crop>
         <br>
     </f:for>
 </div>
-

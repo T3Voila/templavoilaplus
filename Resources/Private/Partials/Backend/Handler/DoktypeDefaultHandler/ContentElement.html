@@ -23,7 +23,7 @@
             <f:if condition="{f:count(subject: node.childNodes.sDEF)} > 0">
                 <f:render partial="Backend/Handler/DoktypeDefaultHandler/ChildNodes" arguments="{allAvailableLanguages: allAvailableLanguages, lllFile: lllFile, node: node}" />
             </f:if>
-            <f:render partial="Backend/Handler/DoktypeDefaultHandler/PreviewContent" arguments="{element.previewData}" />
+            <f:render partial="Backend/Handler/DoktypeDefaultHandler/PreviewContent" arguments="{node: node}" />
             <f:comment>$this->render_localizationInfoTable($contentTreeArr, $parentPointer, $parentDsMeta)</f:comment>
         </div>
     </div>
