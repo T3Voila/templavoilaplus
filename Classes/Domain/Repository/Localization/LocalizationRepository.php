@@ -16,18 +16,15 @@ namespace Tvp\TemplaVoilaPlus\Domain\Repository\Localization;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\QueryBuilder;
-use TYPO3\CMS\Core\Database\Query\QueryHelper;
-use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Repository for record localizations
  */
-class LocalizationRepository extends \TYPO3\CMS\Backend\Domain\Repository\Localization\LocalizationRepository
+class LocalizationRepository
 {
     /**
      * Fetch all available languages
@@ -42,30 +39,34 @@ class LocalizationRepository extends \TYPO3\CMS\Backend\Domain\Repository\Locali
         if (BackendUtility::isTableLocalizable($table)) {
             $tcaCtrl = $GLOBALS['TCA'][$table]['ctrl'];
 
-            $queryBuilder = $this->getQueryBuilderWithWorkspaceRestriction($table);
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable($table);
+            $queryBuilder->getRestrictions()
+                ->removeAll()
+                ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+                ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, self::getBackendUserAuthentication()->workspace ?? 0));
 
-            $constraints = [
-                $queryBuilder->expr()->eq(
-                    $table . '.' . $tcaCtrl['languageField'],
-                    $queryBuilder->quoteIdentifier('sys_language.uid')
-                ),
-                $queryBuilder->expr()->eq(
-                    $table . '.' . $tcaCtrl['origUid'],
-                    $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
-                )
-            ];
-            $constraints += $this->getAllowedLanguageConstraintsForBackendUser();
-
-            $queryBuilder->select($table . '.*')
+            $queryBuilder->select('*')
                 ->from($table)
-                ->from('sys_language')
-                ->where(...$constraints)
-                ->groupBy('sys_language.uid', 'sys_language.sorting')
-                ->orderBy('sys_language.sorting');
+                ->where(
+                    $queryBuilder->expr()->eq(
+                        $tcaCtrl['translationSource'] ?? $tcaCtrl['transOrigPointerField'],
+                        $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->gt($tcaCtrl['languageField'], 0)
+                );
 
             $result = $queryBuilder->execute()->fetchAll();
         }
 
         return $result;
+    }
+
+    /**
+     * @return BackendUserAuthentication|null
+     */
+    protected static function getBackendUserAuthentication()
+    {
+        return $GLOBALS['BE_USER'] ?? null;
     }
 }
