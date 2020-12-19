@@ -75,25 +75,33 @@ class DoktypeDefaultHandler
                 );
             }
         } else {
-            $mappingConfiguration = ApiHelperUtility::getMappingConfiguration($combinedMappingConfigurationIdentifier);
-            $combinedBackendLayoutConfigurationIdentifier = $mappingConfiguration->getCombinedBackendLayoutConfigurationIdentifier();
+            try {
+                $mappingConfiguration = ApiHelperUtility::getMappingConfiguration($combinedMappingConfigurationIdentifier);
+                $combinedBackendLayoutConfigurationIdentifier = $mappingConfiguration->getCombinedBackendLayoutConfigurationIdentifier();
 
             /** @TODO Use a default beLayout thing instead of the double rendering in the template yet */
 //             if ($combinedBackendLayoutConfigurationIdentifier === '') {
 //                 $combinedBackendLayoutConfigurationIdentifier = 'TVP\BackendLayout:DefaultPage.tvp.yaml';
 //             }
 
-            $controller->getView()->assign(
-                'doktypeDefault',
-                [
-                    'treeData' => $apiService->getContentTree('pages', $pageRecord),
-                    'nodeTree' => $processingService->getNodeWithTree('pages', $pageRecord),
-                    'beLayout' => $combinedBackendLayoutConfigurationIdentifier,
-                ]
-            );
+                $controller->getView()->assign(
+                    'doktypeDefault',
+                    [
+                        'treeData' => $apiService->getContentTree('pages', $pageRecord),
+                        'nodeTree' => $processingService->getNodeWithTree('pages', $pageRecord),
+                        'beLayout' => $combinedBackendLayoutConfigurationIdentifier,
+                    ]
+                );
+                $controller->addContentPartial('body', 'Backend/Handler/DoktypeDefaultHandler'); // @TODO Add them automagically in controller to harden naming?
 
-
-            $controller->addContentPartial('body', 'Backend/Handler/DoktypeDefaultHandler'); // @TODO Add them automagically in controller to harden naming?
+            } catch (\Exception $e) {
+                $controller->getView()->getModuleTemplate()->addFlashMessage(
+                    'The page have a Layout defined, which seams missing on this system. The error was: ' . $e->getMessage(),
+                    'Template Configuration not loadable',
+                    \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR,
+                    false
+                );
+            }
         }
 
         return '';
