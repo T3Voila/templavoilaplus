@@ -28,7 +28,7 @@
             <f:if condition="{f:count(subject: node.localization)} > 0">
                 <table border="0" cellpadding="0" cellspacing="1" width="100%" class="lrPadding tpm-localisation-info-table">
                     <tr class="bgColor4-20">
-                        <td colspan="2"><f:translate key="{configuration.lllFile}:labelLocalizations" />:</td>
+                        <td><f:translate key="{configuration.lllFile}:labelLocalizations" />:</td>
                     </tr>
                     <f:for each="{configuration.allAvailableLanguages}" as="language">
                         <f:if condition="{language.uid} > 0">
