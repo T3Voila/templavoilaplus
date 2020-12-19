@@ -1,4 +1,5 @@
 <?php
+
 namespace Tvp\TemplaVoilaPlus\Service;
 
 /*
@@ -23,7 +24,6 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-
 use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 /**
@@ -73,10 +73,10 @@ class ApiService
     }
 
     /******************************************************
-	 *
-	 * Element manipulation functions (public)
-	 *
-	 ******************************************************/
+     *
+     * Element manipulation functions (public)
+     *
+     ******************************************************/
 
     /**
      * Creates a new content element record and sets the neccessary references to connect
@@ -401,10 +401,10 @@ class ApiService
     }
 
     /******************************************************
-	 *
-	 * Processing functions (protected)
-	 *
-	 ******************************************************/
+     *
+     * Processing functions (protected)
+     *
+     ******************************************************/
 
     /**
      * This method does the actually processing for the methods moveElement, copyElement etc.
@@ -783,10 +783,10 @@ class ApiService
     }
 
     /******************************************************
-	 *
-	 * Flexform helper functions (public)
-	 *
-	 ******************************************************/
+     *
+     * Flexform helper functions (public)
+     *
+     ******************************************************/
 
     /**
      * Checks if a flexform pointer points to a valid location, ie. the sheets,
@@ -1151,10 +1151,10 @@ class ApiService
     }
 
     /******************************************************
-	 *
-	 * Flexform helper functions (protected)
-	 *
-	 ******************************************************/
+     *
+     * Flexform helper functions (protected)
+     *
+     ******************************************************/
 
     /**
      * Creates a new reference list (as an array) with the $elementUid inserted into the given reference list
@@ -1272,10 +1272,10 @@ class ApiService
     }
 
     /******************************************************
-	 *
-	 * Data structure helper functions (public)
-	 *
-	 ******************************************************/
+     *
+     * Data structure helper functions (public)
+     *
+     ******************************************************/
 
     /**
      * Maps old-style tt_content column positions (0 = Normal, 1 = Left etc.) to data structure field names.
@@ -1436,10 +1436,10 @@ class ApiService
     }
 
     /******************************************************
-	 *
-	 * Get content structure of page
-	 *
-	 ******************************************************/
+     *
+     * Get content structure of page
+     *
+     ******************************************************/
 
     /**
      * Returns the content tree structure including all sheets and languages, but no preview content.
@@ -1594,7 +1594,8 @@ class ApiService
                         }
 
                         // If the current field points to other content elements, process them:
-                        if ($fieldData['TCEforms']['config']['type'] == 'group' &&
+                        if (
+                            $fieldData['TCEforms']['config']['type'] == 'group' &&
                             $fieldData['TCEforms']['config']['internal_type'] == 'db' &&
                             $fieldData['TCEforms']['config']['allowed'] == 'tt_content'
                         ) {
@@ -1833,7 +1834,8 @@ class ApiService
     {
         $isLocalizationLinkEnabledForFCE = false;
         $modTSConfig =& $this->getModWebTSconfig($contentTreeArr['el']['pid']);
-        if ((int)$modTSConfig['properties']['enableLocalizationLinkForFCEs'] === 1 &&
+        if (
+            (int)$modTSConfig['properties']['enableLocalizationLinkForFCEs'] === 1 &&
             $contentTreeArr['el']['CType'] === 'templavoilaplus_pi1' &&
             isset($contentTreeArr['ds_meta']['langDisable']) &&
             (int)$contentTreeArr['ds_meta']['langDisable'] === 1
@@ -1845,10 +1847,10 @@ class ApiService
     }
 
     /******************************************************
-	 *
-	 * Miscellaneous functions (protected)
-	 *
-	 ******************************************************/
+     *
+     * Miscellaneous functions (protected)
+     *
+     ******************************************************/
 
     /**
      * Sets a flag to tell the TemplaVoila TCEmain userfunctions if this API has called a TCEmain

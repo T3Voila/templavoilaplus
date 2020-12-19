@@ -1,5 +1,7 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
+
 namespace Tvp\TemplaVoilaPlus\Handler\LoadSave;
 
 /*
@@ -17,14 +19,11 @@ namespace Tvp\TemplaVoilaPlus\Handler\LoadSave;
 
 use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-
 use Tvp\TemplaVoilaPlus\Domain\Model\Place;
 
-class YamlLoadSaveHandler
-    extends AbstractFileLoadSaveHandler
-    implements LoadSaveHandlerInterface
+class YamlLoadSaveHandler extends AbstractFileLoadSaveHandler implements LoadSaveHandlerInterface
 {
-    static public $identifier = 'TVP\LoadSaveHandler\Yaml';
+    public static $identifier = 'TVP\LoadSaveHandler\Yaml';
 
     protected $fileExtension = '.tvp.yaml';
 

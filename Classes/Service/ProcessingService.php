@@ -1,5 +1,7 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
+
 namespace Tvp\TemplaVoilaPlus\Service;
 
 /*
@@ -136,9 +138,9 @@ class ProcessingService
     public function getFlexformForNode(array $node): array
     {
             $flexform = GeneralUtility::xml2array($node['raw']['entity']['tx_templavoilaplus_flex']);
-            if (!is_array($flexform)) {
-                return [];
-            }
+        if (!is_array($flexform)) {
+            return [];
+        }
 
             return $flexform;
     }
@@ -172,12 +174,12 @@ class ProcessingService
 
         // Traverse each sheet in the FlexForm Structure:
         foreach ($node['datastructure']['sheets'] as $sheetKey => $sheetData) {
-
             // Traverse the sheet's elements:
             if (is_array($sheetData) && is_array($sheetData['ROOT']['el'])) {
                 foreach ($sheetData['ROOT']['el'] as $fieldKey => $fieldData) {
                     // If the current field points to other content elements, process them:
-                    if ($fieldData['TCEforms']['config']['type'] == 'group' &&
+                    if (
+                        $fieldData['TCEforms']['config']['type'] == 'group' &&
                         $fieldData['TCEforms']['config']['internal_type'] == 'db' &&
                         $fieldData['TCEforms']['config']['allowed'] == 'tt_content'
                     ) {

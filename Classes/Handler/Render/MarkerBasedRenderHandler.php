@@ -1,5 +1,7 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
+
 namespace Tvp\TemplaVoilaPlus\Handler\Render;
 
 /*
@@ -17,12 +19,11 @@ namespace Tvp\TemplaVoilaPlus\Handler\Render;
 
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-
 use Tvp\TemplaVoilaPlus\Domain\Model\TemplateConfiguration;
 
 class MarkerBasedRenderHandler implements RenderHandlerInterface
 {
-    static public $identifier = 'TVP\Renderer\MarkerBased';
+    public static $identifier = 'TVP\Renderer\MarkerBased';
 
     public function renderTemplate(TemplateConfiguration $templateConfiguration, array $processedValues, array $row): string
     {

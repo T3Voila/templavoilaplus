@@ -1,4 +1,5 @@
 <?php
+
 namespace Tvp\TemplaVoilaPlus\Form\Container;
 
 /*
@@ -164,4 +165,3 @@ class FlexFormSectionContainer extends AbstractContainer
         return $GLOBALS['LANG'];
     }
 }
-

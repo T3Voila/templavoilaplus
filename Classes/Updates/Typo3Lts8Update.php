@@ -1,4 +1,5 @@
 <?php
+
 namespace Tvp\TemplaVoilaPlus\Updates;
 
 /*
@@ -62,8 +63,7 @@ class Typo3Lts8Update extends AbstractUpdate
         $result = false;
         $description = 'Changes needed for DataStructures to work with TYPO3 v8 LTS or newer';
 
-        if ($this->extConf['staticDS.']['enable'])
-        {
+        if ($this->extConf['staticDS.']['enable']) {
             // If static DS is in use we need to migrate the file pointer
             $description .= '<br />Need to migrate the file pointer for Static Data Structures';
             $result = true;
@@ -81,8 +81,7 @@ class Typo3Lts8Update extends AbstractUpdate
      */
     public function performUpdate(array &$dbQueries, &$customMessage)
     {
-        if ($this->extConf['staticDS.']['enable'])
-        {
+        if ($this->extConf['staticDS.']['enable']) {
             $this->migrateStaticDsFilePointer($dbQueries);
             $customMessage .= 'Migrated file pointer for Static Data Structures';
         }
@@ -117,13 +116,15 @@ class Typo3Lts8Update extends AbstractUpdate
 
         $toFix = [];
         while ($row = $statement->fetch()) {
-            if (!empty($row['tx_templavoilaplus_ds'])
+            if (
+                !empty($row['tx_templavoilaplus_ds'])
                 && !isset($toFix[$row['tx_templavoilaplus_ds']])
                 && !StringUtility::beginsWith($row['tx_templavoilaplus_ds'], 'FILE:')
             ) {
                 $toFix[$row['tx_templavoilaplus_ds']] = 'FILE:' . $row['tx_templavoilaplus_ds'];
             }
-            if (!empty($row['tx_templavoilaplus_next_ds'])
+            if (
+                !empty($row['tx_templavoilaplus_next_ds'])
                 && !isset($toFix[$row['tx_templavoilaplus_next_ds']])
                 && !StringUtility::beginsWith($row['tx_templavoilaplus_next_ds'], 'FILE:')
             ) {
@@ -175,7 +176,8 @@ class Typo3Lts8Update extends AbstractUpdate
 
         $toFix = [];
         while ($row = $statement->fetch()) {
-            if (!empty($row['tx_templavoilaplus_ds'])
+            if (
+                !empty($row['tx_templavoilaplus_ds'])
                 && !isset($toFix[$row['tx_templavoilaplus_ds']])
                 && !StringUtility::beginsWith($row['tx_templavoilaplus_ds'], 'FILE:')
             ) {

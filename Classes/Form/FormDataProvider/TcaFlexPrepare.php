@@ -1,4 +1,5 @@
 <?php
+
 namespace Tvp\TemplaVoilaPlus\Form\FormDataProvider;
 
 /*
@@ -119,7 +120,8 @@ class TcaFlexPrepare implements FormDataProviderInterface
                 foreach ($value as $subKey => $subValue) {
                     if (is_array($subValue) && count($subValue) === 1 && isset($subValue['TCEforms'])) {
                         $newSubStructure[$subKey] = $subValue['TCEforms'];
-                    } elseif (is_array($subValue) && isset($subValue['TCEforms'])
+                    } elseif (
+                        is_array($subValue) && isset($subValue['TCEforms'])
                         && isset($subValue['TCEforms']['config']) && !empty($subValue['TCEforms']['config'])
                     ) {
                         $newSubStructure[$subKey] = array_merge($subValue, $subValue['TCEforms']);

@@ -1,5 +1,7 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
+
 namespace Tvp\TemplaVoilaPlus\Handler\Configuration;
 
 /*
@@ -21,7 +23,7 @@ use Tvp\TemplaVoilaPlus\Handler\LoadSave\LoadSaveHandlerInterface;
 
 class DataStructureConfigurationHandler implements ConfigurationHandlerInterface
 {
-    static public $identifier = 'TVP\ConfigurationHandler\DataStructure';
+    public static $identifier = 'TVP\ConfigurationHandler\DataStructure';
 
     /**
      * @var Place
@@ -50,7 +52,7 @@ class DataStructureConfigurationHandler implements ConfigurationHandlerInterface
         $files = $this->loadSaveHandler->find();
 
         /** @TODO No, we don't know if this are files, this may be something totaly different! */
-        foreach($files as $file) {
+        foreach ($files as $file) {
             $content = $this->loadSaveHandler->load($file);
 
             $identifier = $file->getRelativePath() . $file->getFilename();
@@ -78,7 +80,8 @@ class DataStructureConfigurationHandler implements ConfigurationHandlerInterface
         $dataStructure = new DataStructure($this->place, $identifier);
         $dataStructure->setName($possibleName);
         // Read title from XML file and set, if not empty or ROOT
-        if (!empty($dataStructureArray['meta']['title'])
+        if (
+            !empty($dataStructureArray['meta']['title'])
             && $dataStructureArray['meta']['title'] !== 'ROOT'
         ) {
             $dataStructure->setName($dataStructureArray['meta']['title']);

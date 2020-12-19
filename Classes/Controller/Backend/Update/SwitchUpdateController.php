@@ -1,4 +1,5 @@
 <?php
+
 namespace Tvp\TemplaVoilaPlus\Controller\Backend\Update;
 
 /*
@@ -16,7 +17,6 @@ namespace Tvp\TemplaVoilaPlus\Controller\Backend\Update;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-
 use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 /**

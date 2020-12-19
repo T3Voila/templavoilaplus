@@ -1,4 +1,5 @@
 <?php
+
 namespace Tvp\TemplaVoilaPlus\Controller\Backend\Update;
 
 /*
@@ -16,7 +17,6 @@ namespace Tvp\TemplaVoilaPlus\Controller\Backend\Update;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
-
 use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 /**
@@ -144,7 +144,8 @@ class DataStructureV8UpdateController extends StepUpdateController
     {
         $changed = false;
 
-        if (isset($element['TCEforms']['defaultExtras']) // if defaultExtras is set
+        if (
+            isset($element['TCEforms']['defaultExtras']) // if defaultExtras is set
             && empty($element['TCEforms']['defaultExtras'])  // but is empty
         ) {
             unset($element['TCEforms']['defaultExtras']);
@@ -166,13 +167,15 @@ class DataStructureV8UpdateController extends StepUpdateController
         );
 
         foreach ($rows as $row) {
-            if (!empty($row['tx_templavoilaplus_ds'])
+            if (
+                !empty($row['tx_templavoilaplus_ds'])
                 && !isset($toFix[$row['tx_templavoilaplus_ds']])
                 && !StringUtility::beginsWith($row['tx_templavoilaplus_ds'], 'FILE:')
             ) {
                 $toFix[$row['tx_templavoilaplus_ds']] = 'FILE:' . $row['tx_templavoilaplus_ds'];
             }
-            if (!empty($row['tx_templavoilaplus_next_ds'])
+            if (
+                !empty($row['tx_templavoilaplus_next_ds'])
                 && !isset($toFix[$row['tx_templavoilaplus_next_ds']])
                 && !StringUtility::beginsWith($row['tx_templavoilaplus_next_ds'], 'FILE:')
             ) {
@@ -205,7 +208,8 @@ class DataStructureV8UpdateController extends StepUpdateController
         );
 
         foreach ($rows as $row) {
-            if (!empty($row['tx_templavoilaplus_ds'])
+            if (
+                !empty($row['tx_templavoilaplus_ds'])
                 && !isset($toFix[$row['tx_templavoilaplus_ds']])
                 && !StringUtility::beginsWith($row['tx_templavoilaplus_ds'], 'FILE:')
             ) {

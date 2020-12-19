@@ -1,5 +1,7 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
+
 namespace Tvp\TemplaVoilaPlus\Handler\Render;
 
 /*
@@ -15,12 +17,11 @@ namespace Tvp\TemplaVoilaPlus\Handler\Render;
  * The TYPO3 project - inspiring people to share!
  */
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-
 use Tvp\TemplaVoilaPlus\Domain\Model\TemplateConfiguration;
 
 class XpathRenderHandler implements RenderHandlerInterface
 {
-    static public $identifier = 'TVP\Renderer\XPath';
+    public static $identifier = 'TVP\Renderer\XPath';
 
     protected $libXmlConfig = LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD | LIBXML_NOENT | LIBXML_NONET;
 
@@ -64,7 +65,7 @@ class XpathRenderHandler implements RenderHandlerInterface
         if (isset($headerConfiguration['meta']) && is_array($headerConfiguration['meta'])) {
             foreach ($headerConfiguration['meta'] as $metaName => $metaConfiguration) {
                 if (version_compare(TYPO3_version, '9.3.0', '>=')) {
-                    $pageRenderer->setMetaTag('name', $metaName,  $metaConfiguration['content']);
+                    $pageRenderer->setMetaTag('name', $metaName, $metaConfiguration['content']);
                 } else {
                     $pageRenderer->addMetaTag('<meta name="' . $metaName . '" content="' . $metaConfiguration['content'] . '">');
                 }
@@ -105,7 +106,7 @@ class XpathRenderHandler implements RenderHandlerInterface
                             break;
                         case 'inner':
                         default:
-                            foreach($cloneNode->childNodes as $processedCloneNode) {
+                            foreach ($cloneNode->childNodes as $processedCloneNode) {
                                 $processedCloneNode = $this->domDocument->importNode($processedCloneNode, true);
                                 $plainCloneNode->appendChild($processedCloneNode->cloneNode(true));
                             }
@@ -164,7 +165,7 @@ class XpathRenderHandler implements RenderHandlerInterface
     {
         foreach ($processingNodes as $fieldName => $processingNode) {
             if (isset($mappingConfiguration[$fieldName])) {
-                $this->processValue($processingNode, $fieldName,$mappingConfiguration[$fieldName], $processedValues);
+                $this->processValue($processingNode, $fieldName, $mappingConfiguration[$fieldName], $processedValues);
             }
         }
     }
@@ -272,7 +273,7 @@ class XpathRenderHandler implements RenderHandlerInterface
         }
     }
 
-    protected function  getHtml($node, $type)
+    protected function getHtml($node, $type)
     {
         $contentOfNode = '';
 

@@ -1,4 +1,5 @@
 <?php
+
 namespace Tvp\TemplaVoilaPlus\Utility;
 
 /*
@@ -16,7 +17,6 @@ namespace Tvp\TemplaVoilaPlus\Utility;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
-
 use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 /**
@@ -53,7 +53,8 @@ final class FileUtility
         if (StringUtility::beginsWith($identifier, 'fileadmin/') && static::isAllowedFileExtension($identifier)) {
             $fileNameAbs = GeneralUtility::getFileAbsFileName($identifier);
 
-            if ($fileNameAbs !== '' // identifier is valid (no path dots)
+            if (
+                $fileNameAbs !== '' // identifier is valid (no path dots)
                 && @is_file($fileNameAbs) // identifier is a file
                 && @is_readable($fileNameAbs) // identifier is readable
             ) {

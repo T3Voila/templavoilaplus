@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace Tvp\TemplaVoilaPlus\Form\Controller;
 
 /*
@@ -105,11 +107,11 @@ class FormFlexAjaxController extends \TYPO3\CMS\Backend\Controller\FormFlexAjaxC
         // Set initialized data of that section container from compiler to the array part used
         // by flexFormElementContainer which prepares parameterArray. Important for initialized
         // values of group element.
-        if (isset($formData['databaseRow'][$fieldName]
+        if (
+            isset($formData['databaseRow'][$fieldName]
                 ['data'][$flexFormSheetName]
                 [$flexFormCurrentLanguage][$flexFormFieldName]
-                ['el'][$flexFormContainerIdentifier][$flexFormContainerName]['el']
-            )
+                ['el'][$flexFormContainerIdentifier][$flexFormContainerName]['el'])
             && is_array(
                 $formData['databaseRow'][$fieldName]
                 ['data'][$flexFormSheetName]
@@ -189,4 +191,3 @@ class FormFlexAjaxController extends \TYPO3\CMS\Backend\Controller\FormFlexAjaxC
         return $response;
     }
 }
-

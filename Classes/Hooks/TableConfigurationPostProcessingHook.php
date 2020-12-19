@@ -1,9 +1,9 @@
 <?php
+
 namespace Tvp\TemplaVoilaPlus\Hooks;
 
-use \TYPO3\CMS\Core\Database\TableConfigurationPostProcessingHookInterface;
+use TYPO3\CMS\Core\Database\TableConfigurationPostProcessingHookInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-
 use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 class TableConfigurationPostProcessingHook implements TableConfigurationPostProcessingHookInterface

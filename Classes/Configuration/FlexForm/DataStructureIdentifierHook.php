@@ -1,5 +1,7 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
+
 namespace Tvp\TemplaVoilaPlus\Configuration\FlexForm;
 
 /*
@@ -18,7 +20,6 @@ namespace Tvp\TemplaVoilaPlus\Configuration\FlexForm;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-
 use Tvp\TemplaVoilaPlus\Domain\Model\DataStructure;
 use Tvp\TemplaVoilaPlus\Domain\Model\MappingConfiguration;
 use Tvp\TemplaVoilaPlus\Utility\ApiHelperUtility;

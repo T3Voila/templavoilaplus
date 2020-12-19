@@ -1,4 +1,5 @@
 <?php
+
 namespace Tvp\TemplaVoilaPlus\Form\Controller;
 
 /*
@@ -86,7 +87,8 @@ class FormSelectTreeAjaxController9 extends \TYPO3\CMS\Backend\Controller\FormSe
 
             // Reduce given data structure down to the relevant element only
             if (empty($flexFormContainerFieldName)) {
-                if (isset($dataStructure['sheets'][$flexFormSheetName]['ROOT']
+                if (
+                    isset($dataStructure['sheets'][$flexFormSheetName]['ROOT']
                     ['el'][$flexFormFieldName])
                 ) {
                     $dataStructure = [
@@ -104,7 +106,8 @@ class FormSelectTreeAjaxController9 extends \TYPO3\CMS\Backend\Controller\FormSe
                     ];
                 }
             } else {
-                if (isset($dataStructure['sheets'][$flexFormSheetName]['ROOT']
+                if (
+                    isset($dataStructure['sheets'][$flexFormSheetName]['ROOT']
                     ['el'][$flexFormFieldName]
                     ['el'][$flexFormContainerName]
                     ['el'][$flexFormContainerFieldName])

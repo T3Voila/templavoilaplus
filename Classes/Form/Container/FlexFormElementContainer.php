@@ -1,4 +1,5 @@
 <?php
+
 namespace Tvp\TemplaVoilaPlus\Form\Container;
 
 /*
@@ -63,7 +64,8 @@ class FlexFormElementContainer extends AbstractContainer
         }
 
         foreach ($flexFormDataStructureArray as $flexFormFieldName => $flexFormFieldArray) {
-            if (// No item array found at all
+            if (
+// No item array found at all
                 !is_array($flexFormFieldArray)
             ) {
                 continue;
@@ -88,7 +90,8 @@ class FlexFormElementContainer extends AbstractContainer
                 $options['renderType'] = 'flexFormSectionContainer';
                 $sectionContainerResult = $this->nodeFactory->create($options)->render();
                 $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $sectionContainerResult);
-            } elseif(is_array($flexFormFieldArray['config']) // A list of single items and not a blind item
+            } elseif (
+                is_array($flexFormFieldArray['config']) // A list of single items and not a blind item
                 && $flexFormFieldArray['tx_templavoilaplus']['eType'] != 'none'
             ) {
                 $html = [];
@@ -105,7 +108,8 @@ class FlexFormElementContainer extends AbstractContainer
                     );
 
                     $alertMsgOnChange = '';
-                    if ($fakeParameterArray['fieldConf']['onChange'] === 'reload'
+                    if (
+                        $fakeParameterArray['fieldConf']['onChange'] === 'reload'
                         || !empty($GLOBALS['TCA'][$table]['ctrl']['type']) && $GLOBALS['TCA'][$table]['ctrl']['type'] === $flexFormFieldName
                         || !empty($GLOBALS['TCA'][$table]['ctrl']['requestUpdate']) && GeneralUtility::inList($GLOBALS['TCA'][$table]['ctrl']['requestUpdate'], $flexFormFieldName)
                     ) {
@@ -223,7 +227,8 @@ class FlexFormElementContainer extends AbstractContainer
     protected function renderVDEFDiff($vArray, $vDEFkey)
     {
         $item = null;
-        if ($GLOBALS['TYPO3_CONF_VARS']['BE']['flexFormXMLincludeDiffBase'] && isset($vArray[$vDEFkey . '.vDEFbase'])
+        if (
+            $GLOBALS['TYPO3_CONF_VARS']['BE']['flexFormXMLincludeDiffBase'] && isset($vArray[$vDEFkey . '.vDEFbase'])
             && !is_array($vArray['vDEF']) && !is_array($vArray[$vDEFkey . '.vDEFbase'])
             && $vArray[$vDEFkey . '.vDEFbase'] !== $vArray['vDEF']
         ) {

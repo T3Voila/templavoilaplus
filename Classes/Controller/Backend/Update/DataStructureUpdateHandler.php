@@ -1,4 +1,5 @@
 <?php
+
 namespace Tvp\TemplaVoilaPlus\Controller\Backend\Update;
 
 /*
@@ -16,7 +17,6 @@ namespace Tvp\TemplaVoilaPlus\Controller\Backend\Update;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
-
 use Tvp\TemplaVoilaPlus\Domain\Repository\DataStructureRepository;
 use Tvp\TemplaVoilaPlus\Domain\Repository\TemplateRepository;
 use Tvp\TemplaVoilaPlus\Utility\DataStructureUtility;
@@ -119,7 +119,7 @@ class DataStructureUpdateHandler
             }
         }
 
-        foreach($data['ROOT']['el'] as &$element) {
+        foreach ($data['ROOT']['el'] as &$element) {
             $changed = $this->fixPerElement($element, $elementCallbacks) || $changed;
         }
 
@@ -158,7 +158,7 @@ class DataStructureUpdateHandler
 
         if (isset($element['type']) && $element['type'] === 'array') {
             if (is_array($element['el'])) {
-                foreach($element['el'] as &$subElement) {
+                foreach ($element['el'] as &$subElement) {
                     $changed = $this->fixPerElement($subElement, $elementCallbacks) || $changed;
                 }
             }

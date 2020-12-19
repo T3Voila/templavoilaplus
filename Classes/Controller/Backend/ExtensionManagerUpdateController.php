@@ -1,4 +1,5 @@
 <?php
+
 namespace Tvp\TemplaVoilaPlus\Controller\Backend;
 
 /*
@@ -15,7 +16,6 @@ namespace Tvp\TemplaVoilaPlus\Controller\Backend;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-
 use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 /**
@@ -44,7 +44,6 @@ class ExtensionManagerUpdateController
                 break;
         }
         return $controller->run();
-
     }
 
     /**

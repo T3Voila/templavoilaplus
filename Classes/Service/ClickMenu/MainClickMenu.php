@@ -1,4 +1,5 @@
 <?php
+
 namespace Tvp\TemplaVoilaPlus\Service\ClickMenu;
 
 /*
@@ -20,7 +21,6 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-
 use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 /**
@@ -55,7 +55,8 @@ class MainClickMenu
             );
 
             // Adding link for Mapping tool:
-            if (\Tvp\TemplaVoilaPlus\Domain\Model\File::is_file($table)
+            if (
+                \Tvp\TemplaVoilaPlus\Domain\Model\File::is_file($table)
                 && $this->getBackendUser()->isAdmin()
                 && \Tvp\TemplaVoilaPlus\Domain\Model\File::is_xmlFile($table)
             ) {
@@ -73,7 +74,8 @@ class MainClickMenu
                     ),
                     true // Disables the item in the top-bar. Set this to zero if you wish the item to appear in the top bar!
                 );
-            } elseif ($table === 'tx_templavoilaplus_tmplobj'
+            } elseif (
+                $table === 'tx_templavoilaplus_tmplobj'
                 || $table === 'tx_templavoilaplus_datastructure'
             ) {
                 $localItems[] = $clickMenu->linkItem(

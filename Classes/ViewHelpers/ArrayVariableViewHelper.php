@@ -1,5 +1,7 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
+
 namespace Tvp\TemplaVoilaPlus\ViewHelpers;
 
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
@@ -46,6 +48,4 @@ class ArrayVariableViewHelper extends AbstractViewHelper
 
         $renderingContext->getVariableProvider()->add($arguments['name'], $container);
     }
-
 }
-

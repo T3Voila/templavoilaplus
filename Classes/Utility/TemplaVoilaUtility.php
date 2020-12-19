@@ -1,4 +1,5 @@
 <?php
+
 namespace Tvp\TemplaVoilaPlus\Utility;
 
 /*
@@ -20,7 +21,6 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-
 use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
@@ -38,7 +38,7 @@ final class TemplaVoilaUtility
      */
     public static function getDatabaseConnection()
     {
-debug_print_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
+        debug_print_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
         die('PLEASE REWORK TO USE DB API');
         return $GLOBALS['TYPO3_DB'];
     }

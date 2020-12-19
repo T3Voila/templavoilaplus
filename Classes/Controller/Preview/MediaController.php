@@ -1,4 +1,5 @@
 <?php
+
 namespace Tvp\TemplaVoilaPlus\Controller\Preview;
 
 /*
@@ -15,7 +16,6 @@ namespace Tvp\TemplaVoilaPlus\Controller\Preview;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-
 use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 /**

@@ -1,4 +1,5 @@
 <?php
+
 namespace Tvp\TemplaVoilaPlus\Service;
 
 /*
@@ -80,10 +81,10 @@ class SyntaxHighlightingService
     );
 
     /*************************************
-	 *
-	 * Markup of Data Structure, <T3DataStructure>
-	 *
-	 *************************************/
+     *
+     * Markup of Data Structure, <T3DataStructure>
+     *
+     *************************************/
 
     /**
      * Makes syntax highlighting of a Data Structure, <T3DataStructure>
@@ -180,10 +181,10 @@ class SyntaxHighlightingService
     }
 
     /*************************************
-	 *
-	 * Markup of Data Structure, <T3FlexForms>
-	 *
-	 *************************************/
+     *
+     * Markup of Data Structure, <T3FlexForms>
+     *
+     *************************************/
 
     /**
      * Makes syntax highlighting of a FlexForm Data, <T3FlexForms>
@@ -288,10 +289,10 @@ class SyntaxHighlightingService
     }
 
     /*************************************
-	 *
-	 * Various
-	 *
-	 *************************************/
+     *
+     * Various
+     *
+     *************************************/
 
     /**
      * Returning all tag names found in XML/HTML input string

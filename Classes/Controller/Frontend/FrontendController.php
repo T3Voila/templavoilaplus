@@ -1,10 +1,11 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
+
 namespace Tvp\TemplaVoilaPlus\Controller\Frontend;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
-
 use Tvp\TemplaVoilaPlus\Domain\Model\DataStructure;
 use Tvp\TemplaVoilaPlus\Domain\Model\MappingConfiguration;
 use Tvp\TemplaVoilaPlus\Domain\Model\TemplateConfiguration;
@@ -72,47 +73,47 @@ class FrontendController extends AbstractPlugin
      */
     public function renderElement($row, $table)
     {
-try {
-        $mappingConfiguration = ApiHelperUtility::getMappingConfiguration($row['tx_templavoilaplus_map']);
-        // getDS from Mapping
-        $dataStructure = ApiHelperUtility::getDataStructure($mappingConfiguration->getCombinedDataStructureIdentifier());
+        try {
+                $mappingConfiguration = ApiHelperUtility::getMappingConfiguration($row['tx_templavoilaplus_map']);
+                // getDS from Mapping
+                $dataStructure = ApiHelperUtility::getDataStructure($mappingConfiguration->getCombinedDataStructureIdentifier());
 
-        // getTemplateConfiguration from MappingConfiguration
-        $templateConfiguration = ApiHelperUtility::getTemplateConfiguration($mappingConfiguration->getCombinedTemplateConfigurationIdentifier());
+                // getTemplateConfiguration from MappingConfiguration
+                $templateConfiguration = ApiHelperUtility::getTemplateConfiguration($mappingConfiguration->getCombinedTemplateConfigurationIdentifier());
 
-        // getDSdata from flexform field with DS
-        $flexformData = [];
-        if (!empty($row['tx_templavoilaplus_flex'])) {
-            $flexformData = GeneralUtility::xml2array($row['tx_templavoilaplus_flex']);
-        }
-        if (is_string($flexformData)) {
-            throw new \Exception('Could not load flex data: "' . $flexformData . '"');
-        }
-        $flexformValues = $this->getFlexformData($dataStructure, $flexformData);
+                // getDSdata from flexform field with DS
+                $flexformData = [];
+            if (!empty($row['tx_templavoilaplus_flex'])) {
+                $flexformData = GeneralUtility::xml2array($row['tx_templavoilaplus_flex']);
+            }
+            if (is_string($flexformData)) {
+                throw new \Exception('Could not load flex data: "' . $flexformData . '"');
+            }
+            $flexformValues = $this->getFlexformData($dataStructure, $flexformData);
 
         // Run TypoScript over DSdata and include TypoScript vars while mapping into TemplateData
         /** @TODO Do we need flexibility here? */
         /** @var \Tvp\TemplaVoilaPlus\Handler\Mapping\DefaultMappingHandler */
-        $mappingHandler = GeneralUtility::makeInstance(\Tvp\TemplaVoilaPlus\Handler\Mapping\DefaultMappingHandler::class, $mappingConfiguration);
-        $processedValues = $mappingHandler->process($flexformValues, $table, $row);
+            $mappingHandler = GeneralUtility::makeInstance(\Tvp\TemplaVoilaPlus\Handler\Mapping\DefaultMappingHandler::class, $mappingConfiguration);
+            $processedValues = $mappingHandler->process($flexformValues, $table, $row);
 
         // get renderer from templateConfiguration
         /** @var ConfigurationService */
-        $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
-        $renderHandlerIdentifier = $templateConfiguration->getRenderHandlerIdentifier();
-        $renderer = $configurationService->getHandler($renderHandlerIdentifier);
+            $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
+            $renderHandlerIdentifier = $templateConfiguration->getRenderHandlerIdentifier();
+            $renderer = $configurationService->getHandler($renderHandlerIdentifier);
 
         // Manipulate header data
         // @TODO The renderer? Not realy or?
-        $renderer->processHeaderInformation($templateConfiguration);
+            $renderer->processHeaderInformation($templateConfiguration);
 
         // give TemplateData to renderer and return result
-        return $renderer->renderTemplate($templateConfiguration, $processedValues, $row);
-} catch (\Exception $e) {
-    var_dump($e->getMessage());
-    var_dump($e);
-    die('Error message shown');
-}
+            return $renderer->renderTemplate($templateConfiguration, $processedValues, $row);
+        } catch (\Exception $e) {
+            var_dump($e->getMessage());
+            var_dump($e);
+            die('Error message shown');
+        }
     }
 
     public function getFlexformData(DataStructure $dataStructure, array $flexformData)

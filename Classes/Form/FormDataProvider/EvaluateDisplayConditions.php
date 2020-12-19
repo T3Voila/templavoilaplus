@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace Tvp\TemplaVoilaPlus\Form\FormDataProvider;
 
 /*
@@ -25,8 +27,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  *
  * PHP 7.0 as _only_ used in TYPO3 v8 and up code path
  */
-class EvaluateDisplayConditions
-    extends \TYPO3\CMS\Backend\Form\FormDataProvider\EvaluateDisplayConditions
+class EvaluateDisplayConditions extends \TYPO3\CMS\Backend\Form\FormDataProvider\EvaluateDisplayConditions
 {
     /**
      * Parsing the condition should not be done per language as this is stable accross all languages.
@@ -64,7 +65,8 @@ class EvaluateDisplayConditions
             return $fieldValue;
         }
 
-        if (isset($flexContext['context'])
+        if (
+            isset($flexContext['context'])
             && in_array($flexContext['context'], ['flexSheet', 'flexField', 'flexContainerElement'])
         ) {
             // Needs to be qualified per language but atm we are inside parsing the display condition, which shouldn't be
@@ -334,7 +336,8 @@ class EvaluateDisplayConditions
                             }
                         }
                         // If it was not removed and if the field is a section container, add it to the section container list
-                        if ($conditionResult
+                        if (
+                            $conditionResult
                             && isset($flexConfiguration['type']) && $flexConfiguration['type'] === 'array'
                             && isset($flexConfiguration['section']) && $flexConfiguration['section'] == 1
                             && isset($flexConfiguration['children']) && is_array($flexConfiguration['children'])

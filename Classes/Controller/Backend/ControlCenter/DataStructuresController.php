@@ -1,5 +1,7 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
+
 namespace Tvp\TemplaVoilaPlus\Controller\Backend\ControlCenter;
 
 /*
@@ -28,8 +30,6 @@ use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Fluid\View\TemplateView;
 use TYPO3\CMS\Form\Controller\FormEditorController;
 use TYPO3\CMS\Form\Service\TranslationService;
-
-
 use Tvp\TemplaVoilaPlus\Configuration\BackendConfiguration;
 use Tvp\TemplaVoilaPlus\Domain\Model\DataStructure;
 use Tvp\TemplaVoilaPlus\Service\ConfigurationService;
@@ -281,7 +281,7 @@ class DataStructuresController extends FormEditorController
     protected function transformElementArrayDataForFormEditor(array $arrayStructure): array
     {
         $elements = [];
-        foreach($arrayStructure as $identifier => $elementStructure) {
+        foreach ($arrayStructure as $identifier => $elementStructure) {
             if (!empty($elementStructure['tx_templavoilaplus']['eType'])) {
                 switch ($elementStructure['tx_templavoilaplus']['eType']) {
                     case 'TypoScriptObject':
@@ -374,7 +374,8 @@ class DataStructuresController extends FormEditorController
                         ];
                         break;
                     default:
-var_dump($elementStructure);die();
+                        var_dump($elementStructure);
+                        die();
                         $element = [
                             'type' => $elementStructure['tx_templavoilaplus']['eType'],
                             'identifier' => $identifier,

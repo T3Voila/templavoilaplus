@@ -1,5 +1,7 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
+
 namespace Tvp\TemplaVoilaPlus\Controller\Backend\Update;
 
 /*
@@ -17,7 +19,6 @@ namespace Tvp\TemplaVoilaPlus\Controller\Backend\Update;
 
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-
 use Tvp\TemplaVoilaPlus\Service\ConfigurationService;
 
 /**

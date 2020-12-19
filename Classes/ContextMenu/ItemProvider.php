@@ -1,4 +1,5 @@
 <?php
+
 namespace Tvp\TemplaVoilaPlus\ContextMenu;
 
 /*
@@ -117,7 +118,6 @@ class ItemProvider extends AbstractProvider
             default:
                 // Empty as $canRender is already false
                 break;
-
         }
         return $canRender;
     }

@@ -1,10 +1,10 @@
 <?php
+
 namespace Tvp\TemplaVoilaPlus\Hooks;
 
 use TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-
 use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 class WizardItems
@@ -47,7 +47,7 @@ class WizardItems
                 }
 
                 $wizardItems['fce_' . $toObj->getKey()] = [
-                    'iconIdentifier' => ($iconIdentifier?: 'extensions-templavoila-template-default'),
+                    'iconIdentifier' => ($iconIdentifier ?: 'extensions-templavoila-template-default'),
                     'description' => $toObj->getDescription()
                         ? $this->getLanguageService()->sL($toObj->getDescription())
                         : TemplaVoilaUtility::getLanguageService()->getLL('template_nodescriptionavailable'),

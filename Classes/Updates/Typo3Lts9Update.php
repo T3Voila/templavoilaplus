@@ -1,4 +1,5 @@
 <?php
+
 namespace Tvp\TemplaVoilaPlus\Updates;
 
 /*
@@ -51,8 +52,7 @@ class Typo3Lts9Update implements UpgradeWizardInterface
     {
         $result = false;
 
-        if ($this->extConfig['staticDS']['enable'])
-        {
+        if ($this->extConfig['staticDS']['enable']) {
             // If static DS is in use we need to migrate the file pointer
             $result = true;
         }
@@ -80,8 +80,7 @@ class Typo3Lts9Update implements UpgradeWizardInterface
      */
     public function executeUpdate(): bool
     {
-        if ($this->extConfig['staticDS']['enable'])
-        {
+        if ($this->extConfig['staticDS']['enable']) {
             $this->migrateStaticDsFilePointer();
         }
 
@@ -114,13 +113,15 @@ class Typo3Lts9Update implements UpgradeWizardInterface
 
         $toFix = [];
         while ($row = $statement->fetch()) {
-            if (!empty($row['tx_templavoilaplus_ds'])
+            if (
+                !empty($row['tx_templavoilaplus_ds'])
                 && !isset($toFix[$row['tx_templavoilaplus_ds']])
                 && !StringUtility::beginsWith($row['tx_templavoilaplus_ds'], 'FILE:')
             ) {
                 $toFix[$row['tx_templavoilaplus_ds']] = 'FILE:' . $row['tx_templavoilaplus_ds'];
             }
-            if (!empty($row['tx_templavoilaplus_next_ds'])
+            if (
+                !empty($row['tx_templavoilaplus_next_ds'])
                 && !isset($toFix[$row['tx_templavoilaplus_next_ds']])
                 && !StringUtility::beginsWith($row['tx_templavoilaplus_next_ds'], 'FILE:')
             ) {
@@ -170,7 +171,8 @@ class Typo3Lts9Update implements UpgradeWizardInterface
 
         $toFix = [];
         while ($row = $statement->fetch()) {
-            if (!empty($row['tx_templavoilaplus_ds'])
+            if (
+                !empty($row['tx_templavoilaplus_ds'])
                 && !isset($toFix[$row['tx_templavoilaplus_ds']])
                 && !StringUtility::beginsWith($row['tx_templavoilaplus_ds'], 'FILE:')
             ) {

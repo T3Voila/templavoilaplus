@@ -1,5 +1,7 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
+
 namespace Tvp\TemplaVoilaPlus\Utility;
 
 /*
@@ -16,7 +18,6 @@ namespace Tvp\TemplaVoilaPlus\Utility;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-
 use Tvp\TemplaVoilaPlus\Service\ConfigurationService;
 
 /**

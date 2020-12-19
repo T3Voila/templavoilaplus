@@ -1,4 +1,5 @@
 <?php
+
 namespace Tvp\TemplaVoilaPlus\Service\DataHandling;
 
 /*
@@ -15,7 +16,6 @@ namespace Tvp\TemplaVoilaPlus\Service\DataHandling;
  */
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-
 use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 /**
@@ -49,10 +49,10 @@ class DataHandler
     }
 
     /********************************************
-	 *
-	 * Public API (called by hook handler)
-	 *
-	 ********************************************/
+     *
+     * Public API (called by hook handler)
+     *
+     ********************************************/
 
     /**
      * This method is called by a hook in the TYPO3 Core Engine (TCEmain). If a tt_content record is
@@ -157,7 +157,8 @@ class DataHandler
                     'table' => $table,
                     'row' => $row,
                 );
-                if (!GeneralUtility::callUserFunction(
+                if (
+                    !GeneralUtility::callUserFunction(
                         \Tvp\TemplaVoilaPlus\Service\UserFunc\Access::class . '->recordEditAccessInternals',
                         $params,
                         $this
@@ -321,7 +322,8 @@ page.10.disableExplosivePreview = 1';
                     'table' => $table,
                     'row' => $record,
                 );
-                if (!GeneralUtility::callUserFunction(
+                if (
+                    !GeneralUtility::callUserFunction(
                         \Tvp\TemplaVoilaPlus\Service\UserFunc\Access::class . '->recordEditAccessInternals',
                         $params,
                         $this
@@ -564,7 +566,8 @@ page.10.disableExplosivePreview = 1';
      */
     protected function updateDataSourceFromTemplateObject($table, array &$incomingFieldArray, \TYPO3\CMS\Core\Authentication\BackendUserAuthentication &$beUser)
     {
-        if (($table == 'pages' || $table == 'tt_content') &&
+        if (
+            ($table == 'pages' || $table == 'tt_content') &&
             isset($incomingFieldArray['tx_templavoilaplus_to'])
         ) {
             $this->updateDataSourceFieldFromTemplateObjectField($incomingFieldArray, 'tx_templavoilaplus_ds', 'tx_templavoilaplus_to', $beUser);
@@ -601,7 +604,7 @@ page.10.disableExplosivePreview = 1';
             }
 
             if (is_array($record) && isset($record['datastructure'])) {
-                $incomingFieldArray[$dsField] = (!is_numeric($record['datastructure'])? 'FILE:' : '') . $record['datastructure'];
+                $incomingFieldArray[$dsField] = (!is_numeric($record['datastructure']) ? 'FILE:' : '') . $record['datastructure'];
             }
         }
     }
@@ -637,7 +640,8 @@ page.10.disableExplosivePreview = 1';
                     break;
                 }
                 // we're not inserting operating on an flex field - can't make a decission
-                if (!is_array($TCA[$table]['columns'][$field]['config']) ||
+                if (
+                    !is_array($TCA[$table]['columns'][$field]['config']) ||
                     $TCA[$table]['columns'][$field]['config']['type'] != 'flex'
                 ) {
                     $res = null;

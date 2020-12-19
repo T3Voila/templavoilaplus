@@ -1,4 +1,5 @@
 <?php
+
 namespace Tvp\TemplaVoilaPlus\Service;
 
 /*
@@ -43,7 +44,7 @@ class ItemsProcFunc
             ['', ''],
         ];
 
-        foreach($mappingPlaces as $mappingPlace) {
+        foreach ($mappingPlaces as $mappingPlace) {
             if ($mappingPlace->getScope() === $scope) {
                 $mappingConfigurations = $mappingPlace->getConfigurations();
 

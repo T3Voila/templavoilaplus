@@ -1,5 +1,7 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
+
 namespace Tvp\TemplaVoilaPlus\Handler\LoadSave;
 
 /*
@@ -16,14 +18,11 @@ namespace Tvp\TemplaVoilaPlus\Handler\LoadSave;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-
 use Tvp\TemplaVoilaPlus\Domain\Model\Place;
 
-class MarkerBasedFileLoadSaveHandler
-    extends AbstractFileLoadSaveHandler
-    implements LoadSaveHandlerInterface
+class MarkerBasedFileLoadSaveHandler extends AbstractFileLoadSaveHandler implements LoadSaveHandlerInterface
 {
-    static public $identifier = 'TVP\LoadSaveHandler\MarkerBasedFile';
+    public static $identifier = 'TVP\LoadSaveHandler\MarkerBasedFile';
 
     protected $fileExtension = '.html';
 

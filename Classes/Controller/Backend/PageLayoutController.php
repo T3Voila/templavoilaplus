@@ -1,5 +1,7 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
+
 namespace Tvp\TemplaVoilaPlus\Controller\Backend;
 
 /*
@@ -26,7 +28,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
-
 use Tvp\TemplaVoilaPlus\Configuration\BackendConfiguration;
 use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
@@ -69,7 +70,7 @@ class PageLayoutController extends ActionController
     /**
      * @var array
      */
-    static protected $calcPermCache = [];
+    protected static $calcPermCache = [];
 
     /**
      * TSconfig from mod.web_txtemplavoilaplusLayout.
@@ -174,7 +175,8 @@ class PageLayoutController extends ActionController
             $contentBody = $this->renderFunctionHook('renderBody', [], true);
 
             $activePage = $this->pageInfo;
-            if ($this->currentLanguageUid !== 0
+            if (
+                $this->currentLanguageUid !== 0
                 && $row = BackendUtility::getRecordLocalization('pages', $this->pageId, $this->currentLanguageUid)
             ) {
                 $activePage = $row[0];
@@ -364,7 +366,7 @@ class PageLayoutController extends ActionController
                         'actions-page-move',
                         [
                             'table' => 'pages',
-                            'uid'=> $this->pageId,
+                            'uid' => $this->pageId,
                         ],
                         ButtonBar::BUTTON_POSITION_LEFT,
                         2
@@ -409,7 +411,7 @@ class PageLayoutController extends ActionController
                 TemplaVoilaUtility::getLanguageService()->sL($coreLangFile .  'labels.clear_cache'),
                 'actions-system-cache-clear',
                 [
-                    'cacheCmd'=> $this->pageId,
+                    'cacheCmd' => $this->pageId,
                     'redirect' => GeneralUtility::getIndpEnv('REQUEST_URI'),
                 ],
                 ButtonBar::BUTTON_POSITION_RIGHT,
@@ -700,5 +702,4 @@ class PageLayoutController extends ActionController
     {
         return TemplaVoilaUtility::getBackendUser()->isAdmin() || ($this->calcPerms & Permission::CONTENT_EDIT) === Permission::CONTENT_EDIT;
     }
-
 }

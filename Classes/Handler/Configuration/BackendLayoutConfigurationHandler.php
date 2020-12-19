@@ -1,5 +1,7 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
+
 namespace Tvp\TemplaVoilaPlus\Handler\Configuration;
 
 /*
@@ -21,7 +23,7 @@ use Tvp\TemplaVoilaPlus\Handler\LoadSave\LoadSaveHandlerInterface;
 
 class BackendLayoutConfigurationHandler implements ConfigurationHandlerInterface
 {
-    static public $identifier = 'TVP\ConfigurationHandler\BackendLayoutConfiguration';
+    public static $identifier = 'TVP\ConfigurationHandler\BackendLayoutConfiguration';
 
     /**
      * @var Place
@@ -50,7 +52,7 @@ class BackendLayoutConfigurationHandler implements ConfigurationHandlerInterface
         $files = $this->loadSaveHandler->find();
 
         /** @TODO No, we don't know if this are files, this may be something totaly different! */
-        foreach($files as $file) {
+        foreach ($files as $file) {
             $content = $this->loadSaveHandler->load($file);
 
             $identifier = $file->getRelativePath() . $file->getFilename();

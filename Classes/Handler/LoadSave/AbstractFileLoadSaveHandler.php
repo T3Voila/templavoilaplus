@@ -1,5 +1,7 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
+
 namespace Tvp\TemplaVoilaPlus\Handler\LoadSave;
 
 /*
@@ -16,13 +18,12 @@ namespace Tvp\TemplaVoilaPlus\Handler\LoadSave;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-
 use Tvp\TemplaVoilaPlus\Domain\Model\Place;
 use Symfony\Component\Finder\Finder;
 
 abstract class AbstractFileLoadSaveHandler implements LoadSaveHandlerInterface
 {
-    static public $identifier = 'TVP\LoadSaveHandler\AbstractFile';
+    public static $identifier = 'TVP\LoadSaveHandler\AbstractFile';
 
     /**
      * @var Place
