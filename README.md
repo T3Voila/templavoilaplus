@@ -13,7 +13,7 @@ If you like to help with the translation of the extension, please visit https://
 
 ## The next big TV+ version
 
-The next big TV+ version will be 8.0.0, it contains a complete rewrite of the TV+ code base. It will support TYPO3 v8, v9 and v10.
+The next big TV+ version will be 8.0.0, it contains a complete rewrite of the TV+ code base. It will support TYPO3 v8, v9, v10 and maybe v11 LTS.
 
 ### Development status
 
@@ -24,8 +24,8 @@ All old entry points to extend TV+ are removed at the moment and some complete n
 
 If you like to test, develop and/or help documenting, see the demo theme extension which gives you an orientation and explaination how it works. It get updated while development of TV+ 8 happens as it is the testing reference if all works as exspected.
 
-### DEMO Theme
-** https://github.com/extrameile/em_tvplus_theme_demo/ **
+### Extensions as WIP for TV+ 8
+* https://github.com/extrameile/em_tvplus_theme_demo/
 
 ### What works:
 
@@ -36,8 +36,9 @@ If you like to test, develop and/or help documenting, see the demo theme extensi
     * There is a Debug screen which shows more about the internal configuration of the objects.
 * There is also a new PageLayout Modul, which isn't puzzled together yet while rewriting
     * Different Output Handler for different doktypes (standard, link, spacer, ...)
-    * Loading tree but only handling page layer (not the content elements)
-    * You can't edit in the PageLayout
+    * You can't edit in the PageLayout (The ClickMenu already works)
+    * Backend Preview only partially
+    * ~~Loading tree but only handling page layer (not the content elements)~~
     * ~~BElayout not respected yet~~
     * ~~No support for container yet~~
 * Frontend rendering works for sDEF/lDEV/vDEF as you define
