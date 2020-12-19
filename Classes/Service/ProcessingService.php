@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace Tvp\TemplaVoilaPlus\Service;
 
 /*
@@ -68,7 +69,7 @@ class ProcessingService
 
         // Load sheet informations
 
-        // Load language informations? getContentTree_getLocalizationInfoForElement ?
+        $node['localization'] = $this->getLocalizationForNode($node);
 
         // Get node childs:
         $node['childNodes']  = $this->getNodeChilds($node);
@@ -140,6 +141,27 @@ class ProcessingService
             }
 
             return $flexform;
+    }
+
+    public function getLocalizationForNode(array $node): array
+    {
+        $localization = [];
+        $table = $node['raw']['table'];
+        $row = $node['raw']['entity'];
+
+        $tcaCtrl = $GLOBALS['TCA'][$table]['ctrl'];
+
+        $localizationRepository = GeneralUtility::makeInstance(\Tvp\TemplaVoilaPlus\Domain\Repository\Localization\LocalizationRepository::class);
+
+        $records = $localizationRepository->fetchRecordLocalizations($table, $row['uid']);
+        /** @TODO WSOL? */
+
+        foreach ($records as $record) {
+            $localization[$record[$tcaCtrl['languageField']]] = $record;
+            $localization[$record[$tcaCtrl['languageField']]]['__title'] = BackendUtility::getRecordTitle($table, $record);
+        }
+
+        return $localization;
     }
 
     public function getNodeChilds(array $node): array
