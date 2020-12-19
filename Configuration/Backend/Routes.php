@@ -1,10 +1,12 @@
 <?php
+
 use Tvp\TemplaVoilaPlus\Controller;
 
 /**
  * Definitions for routes provided by EXT:templavoilaplus
  * Contains all "regular" routes for entry points
  */
+
 return [
     'templavoilaplus_mapping' => [
         'path' => '/templavoilaplus/mapping',

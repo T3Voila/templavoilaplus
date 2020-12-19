@@ -1,5 +1,7 @@
 <?php
+
 namespace Tvp\TemplaVoilaPlus;
+
 /*
  * This file is part of the TYPO3 CMS project.
  *

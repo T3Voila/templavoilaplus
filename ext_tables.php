@@ -92,13 +92,13 @@ if (TYPO3_MODE === 'BE') {
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
         'web_func',
         'Tvp\\TemplaVoilaPlus\Controller\\ReferenceElementWizardController',
-        NULL,
+        null,
         'LLL:EXT:templavoilaplus/Resources/Private/Language/locallang.xlf:wiz_refElements'
     );
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
         'web_func',
         'Tvp\\TemplaVoilaPlus\Controller\\RenameFieldInPageFlexWizardController',
-        NULL,
+        null,
         'LLL:EXT:templavoilaplus/Resources/Private/Language/locallang.xlf:wiz_renameFieldsInPage'
     );
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('_MOD_web_func', 'EXT:wizard_crpages/locallang_csh.xlf');

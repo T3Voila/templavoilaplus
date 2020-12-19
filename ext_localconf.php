@@ -1,4 +1,5 @@
 <?php
+
 defined('TYPO3_MODE') or die();
 // Unserializing the configuration so we can use it here
 $_EXTCONF = unserialize($_EXTCONF);
