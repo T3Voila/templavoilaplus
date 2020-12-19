@@ -34,14 +34,11 @@
                         <f:if condition="{language.uid} > 0">
                             <tr class="tpm-language-row">
                                 <f:if condition="{node.localization.{language.uid}}">
-                                    <td class="tpm-language-edit">
-                                        <f:link.action class="tpm-edit">
-                                            <span class="tpm-langIcon" title="{language.title}">
-                                                <core:icon identifier="{language.flagIcon}" />
-                                            </span>
-                                        </f:link.action>
+                                    <td class="tpm-language-info">
+                                        <div class="t3-page-ce-header-icons">
+                                            <f:render partial="Backend/Handler/DoktypeDefaultHandler/TitleBarLeftButtons" arguments="{configuration: configuration, node: '{node.localization.{language.uid}}'}" />
+                                        </div>
                                     </td>
-                                    <td class="tpm-language-info">{node.localization.{language.uid}.__title}</td>
                                 </f:if>
                             </tr>
                         </f:if>

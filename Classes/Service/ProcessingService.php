@@ -157,8 +157,7 @@ class ProcessingService
         /** @TODO WSOL? */
 
         foreach ($records as $record) {
-            $localization[$record[$tcaCtrl['languageField']]] = $record;
-            $localization[$record[$tcaCtrl['languageField']]]['__title'] = BackendUtility::getRecordTitle($table, $record);
+            $localization[$record[$tcaCtrl['languageField']]] = $this->getNodeFromRow($table, $record);
         }
 
         return $localization;
