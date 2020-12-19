@@ -9,7 +9,7 @@
 
             <tvp:arrayVariable name="layoutFields" key="{fieldKey}">
                 <f:for each="{node.childNodes.sDEF.lDEF.{fieldKey}.vDEF}" as="element">
-                    <f:render partial="Backend/Handler/DoktypeDefaultHandler/ContentElement" arguments="{configuration: configuration, node: element.node}" />
+                    <f:render partial="{element.node.rendering.partial}" arguments="{configuration: configuration, node: element.node}" />
                 </f:for>
             </tvp:arrayVariable>
         </f:if>

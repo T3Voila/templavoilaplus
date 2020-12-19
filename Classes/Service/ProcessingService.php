@@ -97,7 +97,7 @@ class ProcessingService
                 'shortTitle' => GeneralUtility::fixed_lgd_cs($title, 50),
                 'fullTitle' => $title,
                 'hintTitle' => BackendUtility::getRecordIconAltText($row, $table),
-                'partial' => 'Backend/Handler/DoktypeDefaultHandler/PageElement',
+                'partial' => 'Backend/Handler/DoktypeDefaultHandler/' . ($table === 'pages' ? 'Page' : 'Content') . 'Element',
                 'belongsToCurrentPage' => ($this->basePid === $onPid),
                 'parentPointer' => $parentPointerString,
                 'md5' => md5($parentPointerString . '/' . $table . ':' . $row['uid']),
