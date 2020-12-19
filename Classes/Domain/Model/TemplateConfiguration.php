@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace Ppi\TemplaVoilaPlus\Domain\Model;
+namespace Tvp\TemplaVoilaPlus\Domain\Model;
 
 /*
  * This file is part of the TYPO3 CMS project.

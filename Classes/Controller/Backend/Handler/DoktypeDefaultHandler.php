@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace Ppi\TemplaVoilaPlus\Controller\Backend\Handler;
+namespace Tvp\TemplaVoilaPlus\Controller\Backend\Handler;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -20,11 +20,11 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-use Ppi\TemplaVoilaPlus\Controller\Backend\PageLayoutController;
-use Ppi\TemplaVoilaPlus\Service\ApiService;
-use Ppi\TemplaVoilaPlus\Service\ConfigurationService;
-use Ppi\TemplaVoilaPlus\Utility\ApiHelperUtility;
-use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
+use Tvp\TemplaVoilaPlus\Controller\Backend\PageLayoutController;
+use Tvp\TemplaVoilaPlus\Service\ApiService;
+use Tvp\TemplaVoilaPlus\Service\ConfigurationService;
+use Tvp\TemplaVoilaPlus\Utility\ApiHelperUtility;
+use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 use Tvp\TemplaVoilaPlus\Service\ProcessingService;
 
 class DoktypeDefaultHandler

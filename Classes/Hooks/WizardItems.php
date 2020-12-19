@@ -1,11 +1,11 @@
 <?php
-namespace Ppi\TemplaVoilaPlus\Hooks;
+namespace Tvp\TemplaVoilaPlus\Hooks;
 
 use TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
+use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 class WizardItems
 {
@@ -19,14 +19,14 @@ class WizardItems
     {
         $iconRegistry = GeneralUtility::makeInstance(IconRegistry::class);
 
-        $apiObj = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Service\ApiService::class);
+        $apiObj = GeneralUtility::makeInstance(\Tvp\TemplaVoilaPlus\Service\ApiService::class);
 
         // Flexible content elements:
         $positionPid = (int)GeneralUtility::_GP('id'); // No access to parent, but parent also get it only from _GP
         $storageFolderPID = $apiObj->getStorageFolderPid($positionPid);
 
-        $toRepo = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Domain\Repository\TemplateRepository::class);
-        $toList = $toRepo->getTemplatesByStoragePidAndScope($storageFolderPID, \Ppi\TemplaVoilaPlus\Domain\Model\AbstractDataStructure::SCOPE_FCE);
+        $toRepo = GeneralUtility::makeInstance(\Tvp\TemplaVoilaPlus\Domain\Repository\TemplateRepository::class);
+        $toList = $toRepo->getTemplatesByStoragePidAndScope($storageFolderPID, \Tvp\TemplaVoilaPlus\Domain\Model\AbstractDataStructure::SCOPE_FCE);
 
         foreach ($toList as $toObj) {
             if ($toObj->hasParentTemplate() && $toObj->getRendertype() !== '') {
@@ -34,7 +34,7 @@ class WizardItems
             }
             $iconIdentifier = '';
 
-            /** @var \Ppi\TemplaVoilaPlus\Domain\Model\Template $toObj */
+            /** @var \Tvp\TemplaVoilaPlus\Domain\Model\Template $toObj */
             if ($toObj->isPermittedForUser()) {
                 $tmpFilename = $toObj->getIcon();
 
@@ -63,11 +63,11 @@ class WizardItems
     /**
      * Process the default-value settings
      *
-     * @param \Ppi\TemplaVoilaPlus\Domain\Model\Template $toObj LocalProcessing as array
+     * @param \Tvp\TemplaVoilaPlus\Domain\Model\Template $toObj LocalProcessing as array
      *
      * @return string additional URL arguments with configured default values
      */
-    public function getDsDefaultValues(\Ppi\TemplaVoilaPlus\Domain\Model\Template $toObj)
+    public function getDsDefaultValues(\Tvp\TemplaVoilaPlus\Domain\Model\Template $toObj)
     {
         $dsStructure = $toObj->getLocalDataprotArray();
 

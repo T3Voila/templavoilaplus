@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace Ppi\TemplaVoilaPlus\Configuration\FlexForm;
+namespace Tvp\TemplaVoilaPlus\Configuration\FlexForm;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -27,7 +27,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
-use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
+use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 /**
  * Contains functions for manipulating flex form data

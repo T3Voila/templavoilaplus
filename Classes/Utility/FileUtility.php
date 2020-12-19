@@ -1,5 +1,5 @@
 <?php
-namespace Ppi\TemplaVoilaPlus\Utility;
+namespace Tvp\TemplaVoilaPlus\Utility;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -17,7 +17,7 @@ namespace Ppi\TemplaVoilaPlus\Utility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
-use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
+use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 /**
  * Class which offers file related functions
@@ -43,7 +43,7 @@ final class FileUtility
 
         // If it is a combined identifier, let the storage do the checks
         if ($objectIdentifier !== null) {
-            return \Ppi\TemplaVoilaPlus\Domain\Model\File::is_file($identifier)
+            return \Tvp\TemplaVoilaPlus\Domain\Model\File::is_file($identifier)
                 && static::isAllowedFileExtension($identifier);
         }
 

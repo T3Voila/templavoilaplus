@@ -1,5 +1,5 @@
 <?php
-namespace Ppi\TemplaVoilaPlus\Controller;
+namespace Tvp\TemplaVoilaPlus\Controller;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -20,7 +20,7 @@ use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
+use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 $GLOBALS['LANG']->includeLLFile(
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('templavoilaplus') . 'Resources/Private/Language/BackendFlexformCleaner.xlf'
@@ -280,7 +280,7 @@ class BackendFlexformCleanerController extends \TYPO3\CMS\Backend\Module\BaseScr
     public function markUpXML($str)
     {
         // Make instance of syntax highlight class:
-        $hlObj = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Service\SyntaxHighlightingService::class);
+        $hlObj = GeneralUtility::makeInstance(\Tvp\TemplaVoilaPlus\Service\SyntaxHighlightingService::class);
 
         // Check which document type, if applicable:
         if (strstr(substr($str, 0, 100), '<T3DataStructure')) {

@@ -2,46 +2,46 @@
 
 return [
     'configurationHandler' => [
-        Ppi\TemplaVoilaPlus\Handler\Configuration\DataStructureConfigurationHandler::$identifier => [
+        Tvp\TemplaVoilaPlus\Handler\Configuration\DataStructureConfigurationHandler::$identifier => [
             'name' => 'Handler for creating/validating DataStructure configurations',
-            'handlerClass' => Ppi\TemplaVoilaPlus\Handler\Configuration\DataStructureConfigurationHandler::class,
+            'handlerClass' => Tvp\TemplaVoilaPlus\Handler\Configuration\DataStructureConfigurationHandler::class,
         ],
-        Ppi\TemplaVoilaPlus\Handler\Configuration\MappingConfigurationHandler::$identifier => [
+        Tvp\TemplaVoilaPlus\Handler\Configuration\MappingConfigurationHandler::$identifier => [
             'name' => 'Handler for creating/validating Mapping configurations',
-            'handlerClass' => Ppi\TemplaVoilaPlus\Handler\Configuration\MappingConfigurationHandler::class,
+            'handlerClass' => Tvp\TemplaVoilaPlus\Handler\Configuration\MappingConfigurationHandler::class,
         ],
-        Ppi\TemplaVoilaPlus\Handler\Configuration\TemplateConfigurationHandler::$identifier => [
+        Tvp\TemplaVoilaPlus\Handler\Configuration\TemplateConfigurationHandler::$identifier => [
             'name' => 'Handler for creating/validating Template configurations',
-            'handlerClass' => Ppi\TemplaVoilaPlus\Handler\Configuration\TemplateConfigurationHandler::class,
+            'handlerClass' => Tvp\TemplaVoilaPlus\Handler\Configuration\TemplateConfigurationHandler::class,
         ],
-        Ppi\TemplaVoilaPlus\Handler\Configuration\BackendLayoutConfigurationHandler::$identifier => [
+        Tvp\TemplaVoilaPlus\Handler\Configuration\BackendLayoutConfigurationHandler::$identifier => [
             'name' => 'Handler for creating/validating BackendLayout configurations',
-            'handlerClass' => Ppi\TemplaVoilaPlus\Handler\Configuration\BackendLayoutConfigurationHandler::class,
+            'handlerClass' => Tvp\TemplaVoilaPlus\Handler\Configuration\BackendLayoutConfigurationHandler::class,
         ],
     ],
     'loadSaveHandler' => [
-        Ppi\TemplaVoilaPlus\Handler\LoadSave\XmlLoadSaveHandler::$identifier => [
+        Tvp\TemplaVoilaPlus\Handler\LoadSave\XmlLoadSaveHandler::$identifier => [
             'name' => 'Handler for finding/loading/saving/deleting XML files',
-            'handlerClass' => Ppi\TemplaVoilaPlus\Handler\LoadSave\XmlLoadSaveHandler::class,
+            'handlerClass' => Tvp\TemplaVoilaPlus\Handler\LoadSave\XmlLoadSaveHandler::class,
         ],
-        Ppi\TemplaVoilaPlus\Handler\LoadSave\YamlLoadSaveHandler::$identifier => [
+        Tvp\TemplaVoilaPlus\Handler\LoadSave\YamlLoadSaveHandler::$identifier => [
             'name' => 'Handler for finding/loading/saving/deleting YAML files',
-            'handlerClass' => Ppi\TemplaVoilaPlus\Handler\LoadSave\YamlLoadSaveHandler::class,
+            'handlerClass' => Tvp\TemplaVoilaPlus\Handler\LoadSave\YamlLoadSaveHandler::class,
         ],
         /** @TODO Realy? Better MarkerLoadSaveHandler? */
-        Ppi\TemplaVoilaPlus\Handler\LoadSave\MarkerBasedFileLoadSaveHandler::$identifier => [
+        Tvp\TemplaVoilaPlus\Handler\LoadSave\MarkerBasedFileLoadSaveHandler::$identifier => [
             'name' => 'Handler for finding/loading/saving/deleting MarkerBased HTML files',
-            'handlerClass' => Ppi\TemplaVoilaPlus\Handler\LoadSave\MarkerBasedFileLoadSaveHandler::class,
+            'handlerClass' => Tvp\TemplaVoilaPlus\Handler\LoadSave\MarkerBasedFileLoadSaveHandler::class,
         ],
     ],
     'renderHandler' => [
-        \Ppi\TemplaVoilaPlus\Handler\Render\XpathRenderHandler::$identifier => [
+        \Tvp\TemplaVoilaPlus\Handler\Render\XpathRenderHandler::$identifier => [
             'name' => 'XPath Renderer',
-            'handlerClass' => \Ppi\TemplaVoilaPlus\Handler\Render\XpathRenderHandler::class,
+            'handlerClass' => \Tvp\TemplaVoilaPlus\Handler\Render\XpathRenderHandler::class,
         ],
-        \Ppi\TemplaVoilaPlus\Handler\Render\MarkerBasedRenderHandler::$identifier => [
+        \Tvp\TemplaVoilaPlus\Handler\Render\MarkerBasedRenderHandler::$identifier => [
             'name' => 'Marker Based Renderer',
-            'handlerClass' => \Ppi\TemplaVoilaPlus\Handler\Render\MarkerBasedRenderHandler::class,
+            'handlerClass' => \Tvp\TemplaVoilaPlus\Handler\Render\MarkerBasedRenderHandler::class,
         ],
     ],
 ];

@@ -1,5 +1,5 @@
 <?php
-namespace Ppi\TemplaVoilaPlus\Utility;
+namespace Tvp\TemplaVoilaPlus\Utility;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -59,13 +59,13 @@ class FormEngineUtility
     public static function addTcaFlexFetch()
     {
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup'] as $group => &$groupConfig) {
-            if (!isset($groupConfig[\Ppi\TemplaVoilaPlus\Form\FormDataProvider\TcaFlexFetch::class])
-                && isset($groupConfig[\Ppi\TemplaVoilaPlus\Form\FormDataProvider\TcaFlexPrepare::class])
+            if (!isset($groupConfig[\Tvp\TemplaVoilaPlus\Form\FormDataProvider\TcaFlexFetch::class])
+                && isset($groupConfig[\Tvp\TemplaVoilaPlus\Form\FormDataProvider\TcaFlexPrepare::class])
             ) {
-                $groupConfig[\Ppi\TemplaVoilaPlus\Form\FormDataProvider\TcaFlexFetch::class]
-                    = $groupConfig[\Ppi\TemplaVoilaPlus\Form\FormDataProvider\TcaFlexPrepare::class];
-                $groupConfig[\Ppi\TemplaVoilaPlus\Form\FormDataProvider\TcaFlexPrepare::class] = [
-                    'depends' => [\Ppi\TemplaVoilaPlus\Form\FormDataProvider\TcaFlexFetch::class]
+                $groupConfig[\Tvp\TemplaVoilaPlus\Form\FormDataProvider\TcaFlexFetch::class]
+                    = $groupConfig[\Tvp\TemplaVoilaPlus\Form\FormDataProvider\TcaFlexPrepare::class];
+                $groupConfig[\Tvp\TemplaVoilaPlus\Form\FormDataProvider\TcaFlexPrepare::class] = [
+                    'depends' => [\Tvp\TemplaVoilaPlus\Form\FormDataProvider\TcaFlexFetch::class]
                 ];
             }
         }

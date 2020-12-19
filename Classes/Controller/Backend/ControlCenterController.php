@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace Ppi\TemplaVoilaPlus\Controller\Backend;
+namespace Tvp\TemplaVoilaPlus\Controller\Backend;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -24,10 +24,10 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
-use Ppi\TemplaVoilaPlus\Configuration\BackendConfiguration;
-use Ppi\TemplaVoilaPlus\Service\ConfigurationService;
-use Ppi\TemplaVoilaPlus\Service\PlacesService;
-use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
+use Tvp\TemplaVoilaPlus\Configuration\BackendConfiguration;
+use Tvp\TemplaVoilaPlus\Service\ConfigurationService;
+use Tvp\TemplaVoilaPlus\Service\PlacesService;
+use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 class ControlCenterController extends ActionController
 {
@@ -88,13 +88,13 @@ class ControlCenterController extends ActionController
         $placesService = $configurationService->getPlacesService();
 
         $dataStructurePlaces = $placesService->getAvailablePlacesUsingConfigurationHandlerIdentifier(
-            \Ppi\TemplaVoilaPlus\Handler\Configuration\DataStructureConfigurationHandler::$identifier
+            \Tvp\TemplaVoilaPlus\Handler\Configuration\DataStructureConfigurationHandler::$identifier
         );
         $mappingPlaces = $placesService->getAvailablePlacesUsingConfigurationHandlerIdentifier(
-            \Ppi\TemplaVoilaPlus\Handler\Configuration\MappingConfigurationHandler::$identifier
+            \Tvp\TemplaVoilaPlus\Handler\Configuration\MappingConfigurationHandler::$identifier
         );
         $templatePlaces = $placesService->getAvailablePlacesUsingConfigurationHandlerIdentifier(
-            \Ppi\TemplaVoilaPlus\Handler\Configuration\TemplateConfigurationHandler::$identifier
+            \Tvp\TemplaVoilaPlus\Handler\Configuration\TemplateConfigurationHandler::$identifier
         );
 
         $this->view->assign('pageTitle', 'TemplaVoilà! Plus - Control Center');

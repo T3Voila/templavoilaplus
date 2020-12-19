@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace Ppi\TemplaVoilaPlus\Service;
+namespace Tvp\TemplaVoilaPlus\Service;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -20,7 +20,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface;
 
-use Ppi\TemplaVoilaPlus\Domain\Model\Place;
+use Tvp\TemplaVoilaPlus\Domain\Model\Place;
 
 class ConfigurationService implements SingletonInterface
 {
@@ -68,7 +68,7 @@ class ConfigurationService implements SingletonInterface
         if (!$this->isInitialized) {
             $this->isInitialized = true;
 
-            \Ppi\TemplaVoilaPlus\Utility\ExtensionUtility::handleAllExtensions();
+            \Tvp\TemplaVoilaPlus\Utility\ExtensionUtility::handleAllExtensions();
 
             $this->formSettings = GeneralUtility::makeInstance(ObjectManager::class)
                 ->get(ConfigurationManagerInterface::class)

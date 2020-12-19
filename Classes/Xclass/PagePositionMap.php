@@ -1,6 +1,6 @@
 <?php
 
-namespace Ppi\TemplaVoilaPlus\Xclass;
+namespace Tvp\TemplaVoilaPlus\Xclass;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 

@@ -1,17 +1,17 @@
 <?php
 declare(strict_types = 1);
-namespace Ppi\TemplaVoilaPlus\Utility;
+namespace Tvp\TemplaVoilaPlus\Utility;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
 
-use Ppi\TemplaVoilaPlus\Domain\Model\DataStructure;
-use Ppi\TemplaVoilaPlus\Domain\Model\AbstractConfiguration;
-use Ppi\TemplaVoilaPlus\Domain\Model\BackendLayoutConfiguration;
-use Ppi\TemplaVoilaPlus\Domain\Model\MappingConfiguration;
-use Ppi\TemplaVoilaPlus\Domain\Model\TemplateConfiguration;
-use Ppi\TemplaVoilaPlus\Service\ConfigurationService;
-use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
+use Tvp\TemplaVoilaPlus\Domain\Model\DataStructure;
+use Tvp\TemplaVoilaPlus\Domain\Model\AbstractConfiguration;
+use Tvp\TemplaVoilaPlus\Domain\Model\BackendLayoutConfiguration;
+use Tvp\TemplaVoilaPlus\Domain\Model\MappingConfiguration;
+use Tvp\TemplaVoilaPlus\Domain\Model\TemplateConfiguration;
+use Tvp\TemplaVoilaPlus\Service\ConfigurationService;
+use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 /**
  * Helper class for easy Api access but all of this is not stable yet.
@@ -22,7 +22,7 @@ class ApiHelperUtility
     {
         return self::getConfiguration(
             $combinedDataStructureIdentifier,
-            \Ppi\TemplaVoilaPlus\Handler\Configuration\DataStructureConfigurationHandler::$identifier
+            \Tvp\TemplaVoilaPlus\Handler\Configuration\DataStructureConfigurationHandler::$identifier
         );
     }
 
@@ -30,7 +30,7 @@ class ApiHelperUtility
     {
         return self::getConfiguration(
             $combinedMappingConfigurationIdentifier,
-            \Ppi\TemplaVoilaPlus\Handler\Configuration\MappingConfigurationHandler::$identifier
+            \Tvp\TemplaVoilaPlus\Handler\Configuration\MappingConfigurationHandler::$identifier
         );
     }
 
@@ -38,7 +38,7 @@ class ApiHelperUtility
     {
         return self::getConfiguration(
             $combinedTemplateConfigurationIdentifier,
-            \Ppi\TemplaVoilaPlus\Handler\Configuration\TemplateConfigurationHandler::$identifier
+            \Tvp\TemplaVoilaPlus\Handler\Configuration\TemplateConfigurationHandler::$identifier
         );
     }
 
@@ -46,7 +46,7 @@ class ApiHelperUtility
     {
         return self::getConfiguration(
             $combinedBackendLayoutConfigurationIdentifier,
-            \Ppi\TemplaVoilaPlus\Handler\Configuration\BackendLayoutConfigurationHandler::$identifier
+            \Tvp\TemplaVoilaPlus\Handler\Configuration\BackendLayoutConfigurationHandler::$identifier
         );
     }
 

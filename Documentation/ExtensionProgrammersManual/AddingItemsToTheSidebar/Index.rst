@@ -30,7 +30,7 @@ sidebar]
        function init() {
                // Create / get instances:
            $thisObj =& t3lib_div::getUserObj ('tx_myext_templavoila_sidebar', '');
-           $sideBarObj =& t3lib_div::getUserObj ('Ppi\\TemplaVoilaPlus\Module\\Mod1\\Sidebar', '');
+           $sideBarObj =& t3lib_div::getUserObj ('Tvp\\TemplaVoilaPlus\Module\\Mod1\\Sidebar', '');
                // Register sidebar item:
            $sideBarObj->addItem ('tx_myext_templavoila_sidebar_item1', $thisObj, 'renderItem_myext', 'My Extension', 50);
        }

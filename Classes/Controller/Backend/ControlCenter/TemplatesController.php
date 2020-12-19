@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace Ppi\TemplaVoilaPlus\Controller\Backend\ControlCenter;
+namespace Tvp\TemplaVoilaPlus\Controller\Backend\ControlCenter;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -23,9 +23,9 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
-use Ppi\TemplaVoilaPlus\Configuration\BackendConfiguration;
-use Ppi\TemplaVoilaPlus\Service\ConfigurationService;
-use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
+use Tvp\TemplaVoilaPlus\Configuration\BackendConfiguration;
+use Tvp\TemplaVoilaPlus\Service\ConfigurationService;
+use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 class TemplatesController extends ActionController
 {
@@ -60,7 +60,7 @@ class TemplatesController extends ActionController
         $placesService = $configurationService->getPlacesService();
 
         $templatePlace = $placesService->getAvailablePlacesUsingConfigurationHandlerIdentifier(
-            \Ppi\TemplaVoilaPlus\Handler\Configuration\TemplateConfigurationHandler::$identifier
+            \Tvp\TemplaVoilaPlus\Handler\Configuration\TemplateConfigurationHandler::$identifier
         );
         $placesService->loadConfigurationsByPlaces($templatePlace);
         $templatePlacesByScope = $placesService->reorderPlacesByScope($templatePlace);
@@ -90,7 +90,7 @@ class TemplatesController extends ActionController
 
         $templatePlace = $placesService->getPlace(
             $placeIdentifier,
-            \Ppi\TemplaVoilaPlus\Handler\Configuration\TemplateConfigurationHandler::$identifier
+            \Tvp\TemplaVoilaPlus\Handler\Configuration\TemplateConfigurationHandler::$identifier
         );
         $placesService->loadConfigurationsByPlace($templatePlace);
         $templateConfiguration = $templatePlace->getConfiguration($configurationIdentifier);

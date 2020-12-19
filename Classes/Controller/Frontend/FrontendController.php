@@ -1,17 +1,17 @@
 <?php
 declare(strict_types = 1);
-namespace Ppi\TemplaVoilaPlus\Controller\Frontend;
+namespace Tvp\TemplaVoilaPlus\Controller\Frontend;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
 
-use Ppi\TemplaVoilaPlus\Domain\Model\DataStructure;
-use Ppi\TemplaVoilaPlus\Domain\Model\MappingConfiguration;
-use Ppi\TemplaVoilaPlus\Domain\Model\TemplateConfiguration;
-use Ppi\TemplaVoilaPlus\Service\ApiService;
-use Ppi\TemplaVoilaPlus\Service\ConfigurationService;
-use Ppi\TemplaVoilaPlus\Utility\ApiHelperUtility;
-use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
+use Tvp\TemplaVoilaPlus\Domain\Model\DataStructure;
+use Tvp\TemplaVoilaPlus\Domain\Model\MappingConfiguration;
+use Tvp\TemplaVoilaPlus\Domain\Model\TemplateConfiguration;
+use Tvp\TemplaVoilaPlus\Service\ApiService;
+use Tvp\TemplaVoilaPlus\Service\ConfigurationService;
+use Tvp\TemplaVoilaPlus\Utility\ApiHelperUtility;
+use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 class FrontendController extends AbstractPlugin
 {
@@ -92,8 +92,8 @@ try {
 
         // Run TypoScript over DSdata and include TypoScript vars while mapping into TemplateData
         /** @TODO Do we need flexibility here? */
-        /** @var \Ppi\TemplaVoilaPlus\Handler\Mapping\DefaultMappingHandler */
-        $mappingHandler = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Handler\Mapping\DefaultMappingHandler::class, $mappingConfiguration);
+        /** @var \Tvp\TemplaVoilaPlus\Handler\Mapping\DefaultMappingHandler */
+        $mappingHandler = GeneralUtility::makeInstance(\Tvp\TemplaVoilaPlus\Handler\Mapping\DefaultMappingHandler::class, $mappingConfiguration);
         $processedValues = $mappingHandler->process($flexformValues, $table, $row);
 
         // get renderer from templateConfiguration

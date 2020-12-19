@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace Ppi\TemplaVoilaPlus\ViewHelpers;
+namespace Tvp\TemplaVoilaPlus\ViewHelpers;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -8,8 +8,8 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
-use Ppi\TemplaVoilaPlus\Service\ConfigurationService;
-use Ppi\TemplaVoilaPlus\Utility\ApiHelperUtility;
+use Tvp\TemplaVoilaPlus\Service\ConfigurationService;
+use Tvp\TemplaVoilaPlus\Utility\ApiHelperUtility;
 
 /**
  * Like VariableViewHelper but against an array

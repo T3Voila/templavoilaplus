@@ -1,5 +1,5 @@
 <?php
-namespace Ppi\TemplaVoilaPlus\Service;
+namespace Tvp\TemplaVoilaPlus\Service;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
-use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
+use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 /**
  * Public API class for proper handling of content elements and other useful TemplaVoila related functions

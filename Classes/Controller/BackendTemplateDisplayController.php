@@ -1,5 +1,5 @@
 <?php
-namespace Ppi\TemplaVoilaPlus\Controller;
+namespace Tvp\TemplaVoilaPlus\Controller;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -18,8 +18,8 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
-use Ppi\TemplaVoilaPlus\Utility\FileUtility;
+use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
+use Tvp\TemplaVoilaPlus\Utility\FileUtility;
 
 $GLOBALS['LANG']->includeLLFile(
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('templavoilaplus') . 'Resources/Private/Language/BackendTemplateMapping.xlf'
@@ -120,7 +120,7 @@ class BackendTemplateDisplayController extends \TYPO3\CMS\Backend\Module\BaseScr
 
         $displayFile = null;
         if (!empty(GeneralUtility::_GP('file')) && FileUtility::haveTemplateAccess(GeneralUtility::_GP('file'))) {
-            $displayFile = \Ppi\TemplaVoilaPlus\Domain\Model\File::filename(GeneralUtility::_GP('file'));
+            $displayFile = \Tvp\TemplaVoilaPlus\Domain\Model\File::filename(GeneralUtility::_GP('file'));
         }
 
         // Checking if the displayFile parameter is set:
@@ -157,7 +157,7 @@ class BackendTemplateDisplayController extends \TYPO3\CMS\Backend\Module\BaseScr
      */
     public function displayFileContentWithMarkup($content, $path, $relPathFix, $limitTags, $show, $mode)
     {
-        $markupObj = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Domain\Model\HtmlMarkup::class);
+        $markupObj = GeneralUtility::makeInstance(\Tvp\TemplaVoilaPlus\Domain\Model\HtmlMarkup::class);
         $markupObj->gnyfImgAdd = $show ? '' : 'onclick="return parent.updPath(\'###PATH###\');"';
         $markupObj->pathPrefix = $path ? $path . '|' : '';
         $markupObj->onlyElements = $limitTags;
@@ -214,7 +214,7 @@ class BackendTemplateDisplayController extends \TYPO3\CMS\Backend\Module\BaseScr
         $currentMappingInfo = is_array($sesDat['currentMappingInfo']) ? $sesDat['currentMappingInfo'] : array();
 
         // Init mark up object.
-        $this->markupObj = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Domain\Model\HtmlMarkup::class);
+        $this->markupObj = GeneralUtility::makeInstance(\Tvp\TemplaVoilaPlus\Domain\Model\HtmlMarkup::class);
         $this->markupObj->htmlParse = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class);
 
         // Splitting content, adding a random token for the part to be previewed:

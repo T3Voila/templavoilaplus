@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace Ppi\TemplaVoilaPlus\Controller\Backend\Update;
+namespace Tvp\TemplaVoilaPlus\Controller\Backend\Update;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -18,7 +18,7 @@ namespace Ppi\TemplaVoilaPlus\Controller\Backend\Update;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-use Ppi\TemplaVoilaPlus\Service\ConfigurationService;
+use Tvp\TemplaVoilaPlus\Service\ConfigurationService;
 
 /**
  * Abstract Controller for Update Scripts

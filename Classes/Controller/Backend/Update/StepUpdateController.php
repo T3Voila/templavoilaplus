@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace Ppi\TemplaVoilaPlus\Controller\Backend\Update;
+namespace Tvp\TemplaVoilaPlus\Controller\Backend\Update;
 
 /*
  * This file is part of the TYPO3 CMS project.

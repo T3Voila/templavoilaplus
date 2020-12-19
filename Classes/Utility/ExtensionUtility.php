@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace Ppi\TemplaVoilaPlus\Utility;
+namespace Tvp\TemplaVoilaPlus\Utility;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -18,7 +18,7 @@ use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-use Ppi\TemplaVoilaPlus\Service\ConfigurationService;
+use Tvp\TemplaVoilaPlus\Service\ConfigurationService;
 
 class ExtensionUtility implements SingletonInterface
 {
@@ -71,7 +71,7 @@ class ExtensionUtility implements SingletonInterface
     {
         static::loadPlaces(
             $path . '/DataStructurePlaces.php',
-            \Ppi\TemplaVoilaPlus\Handler\Configuration\DataStructureConfigurationHandler::$identifier
+            \Tvp\TemplaVoilaPlus\Handler\Configuration\DataStructureConfigurationHandler::$identifier
         );
     }
 
@@ -85,7 +85,7 @@ class ExtensionUtility implements SingletonInterface
     {
         static::loadPlaces(
             $path . '/MappingPlaces.php',
-            \Ppi\TemplaVoilaPlus\Handler\Configuration\MappingConfigurationHandler::$identifier
+            \Tvp\TemplaVoilaPlus\Handler\Configuration\MappingConfigurationHandler::$identifier
         );
     }
 
@@ -99,7 +99,7 @@ class ExtensionUtility implements SingletonInterface
     {
         static::loadPlaces(
             $path . '/TemplatePlaces.php',
-            \Ppi\TemplaVoilaPlus\Handler\Configuration\TemplateConfigurationHandler::$identifier
+            \Tvp\TemplaVoilaPlus\Handler\Configuration\TemplateConfigurationHandler::$identifier
         );
     }
 
@@ -113,7 +113,7 @@ class ExtensionUtility implements SingletonInterface
     {
         static::loadPlaces(
             $path . '/BackendLayoutPlaces.php',
-            \Ppi\TemplaVoilaPlus\Handler\Configuration\BackendLayoutConfigurationHandler::$identifier
+            \Tvp\TemplaVoilaPlus\Handler\Configuration\BackendLayoutConfigurationHandler::$identifier
         );
     }
     /**
@@ -152,19 +152,19 @@ class ExtensionUtility implements SingletonInterface
         if (isset($extending['renderHandler'])) {
             self::registerHandler(
                 $extending['renderHandler'],
-                \Ppi\TemplaVoilaPlus\Handler\Render\RenderHandlerInterface::class
+                \Tvp\TemplaVoilaPlus\Handler\Render\RenderHandlerInterface::class
             );
         }
         if (isset($extending['configurationHandler'])) {
             self::registerHandler(
                 $extending['configurationHandler'],
-                \Ppi\TemplaVoilaPlus\Handler\Configuration\ConfigurationHandlerInterface::class
+                \Tvp\TemplaVoilaPlus\Handler\Configuration\ConfigurationHandlerInterface::class
             );
         }
         if (isset($extending['loadSaveHandler'])) {
             self::registerHandler(
                 $extending['loadSaveHandler'],
-                \Ppi\TemplaVoilaPlus\Handler\LoadSave\LoadSaveHandlerInterface::class
+                \Tvp\TemplaVoilaPlus\Handler\LoadSave\LoadSaveHandlerInterface::class
             );
         }
     }

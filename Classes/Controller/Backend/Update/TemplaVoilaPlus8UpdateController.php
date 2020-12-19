@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ppi\TemplaVoilaPlus\Controller\Backend\Update;
+namespace Tvp\TemplaVoilaPlus\Controller\Backend\Update;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use Ppi\TemplaVoilaPlus\Utility\DataStructureUtility;
+use Tvp\TemplaVoilaPlus\Utility\DataStructureUtility;
 
 /**
  * Controller to migrate/update from TV+ 7 to TV+ 8
@@ -245,9 +245,9 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
                 }
 
                 if (($type !== false && $type === 'fce') || strpos($pathInfo['filename'], '(fce)') !== false) {
-                    $dataStructure['scope'] = \Ppi\TemplaVoilaPlus\Domain\Model\Scope::SCOPE_FCE;
+                    $dataStructure['scope'] = \Tvp\TemplaVoilaPlus\Domain\Model\Scope::SCOPE_FCE;
                 } else {
-                    $dataStructure['scope'] = \Ppi\TemplaVoilaPlus\Domain\Model\Scope::SCOPE_PAGE;
+                    $dataStructure['scope'] = \Tvp\TemplaVoilaPlus\Domain\Model\Scope::SCOPE_PAGE;
                 }
 
                 $allDs[] = $dataStructure;
@@ -777,7 +777,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
 
                 // Create extension registration in ext_localconf.php
                 /** @TODO Remove later */
-                $extLocalconf = "<?php\n$fileDescription\ndefined('TYPO3_MODE') or die();\n\n// @TODO This line can be removed after cache is implemented\n\Ppi\TemplaVoilaPlus\Utility\ExtensionUtility::registerExtension('$newExtensionKey');";
+                $extLocalconf = "<?php\n$fileDescription\ndefined('TYPO3_MODE') or die();\n\n// @TODO This line can be removed after cache is implemented\n\Tvp\TemplaVoilaPlus\Utility\ExtensionUtility::registerExtension('$newExtensionKey');";
                 GeneralUtility::writeFile($publicExtensionDirectory . '/ext_localconf.php', $extLocalconf . "\n");
 
                 // Load package by package manager
@@ -826,14 +826,14 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
                 $packageName . '/Page/DataStructure' => [
                     'name' => $packageTitle . ' Pages',
                     'path' => 'EXT:' . $selection . $innerPathes['ds']['page'],
-                    'scope' => new UnquotedString(\Ppi\TemplaVoilaPlus\Domain\Model\Scope::class . '::SCOPE_PAGE'),
-                    'loadSaveHandler' => new UnquotedString(\Ppi\TemplaVoilaPlus\Handler\LoadSave\XmlLoadSaveHandler::class . '::$identifier'),
+                    'scope' => new UnquotedString(\Tvp\TemplaVoilaPlus\Domain\Model\Scope::class . '::SCOPE_PAGE'),
+                    'loadSaveHandler' => new UnquotedString(\Tvp\TemplaVoilaPlus\Handler\LoadSave\XmlLoadSaveHandler::class . '::$identifier'),
                 ],
                 $packageName . '/FCE/DataStructure' => [
                     'name' => $packageTitle . ' FCEs',
                     'path' => 'EXT:' . $selection . $innerPathes['ds']['fce'],
-                    'scope' => new UnquotedString(\Ppi\TemplaVoilaPlus\Domain\Model\Scope::class . '::SCOPE_FCE'),
-                    'loadSaveHandler' => new UnquotedString(\Ppi\TemplaVoilaPlus\Handler\LoadSave\XmlLoadSaveHandler::class . '::$identifier'),
+                    'scope' => new UnquotedString(\Tvp\TemplaVoilaPlus\Domain\Model\Scope::class . '::SCOPE_FCE'),
+                    'loadSaveHandler' => new UnquotedString(\Tvp\TemplaVoilaPlus\Handler\LoadSave\XmlLoadSaveHandler::class . '::$identifier'),
                 ],
             ];
 
@@ -842,14 +842,14 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
                 $packageName . '/Page/MappingConfiguration' => [
                     'name' => $packageTitle . ' Pages',
                     'path' => 'EXT:' . $selection . $innerPathes['mappingConfiguration']['page'],
-                    'scope' => new UnquotedString(\Ppi\TemplaVoilaPlus\Domain\Model\Scope::class . '::SCOPE_PAGE'),
-                    'loadSaveHandler' => new UnquotedString(\Ppi\TemplaVoilaPlus\Handler\LoadSave\YamlLoadSaveHandler::class . '::$identifier'),
+                    'scope' => new UnquotedString(\Tvp\TemplaVoilaPlus\Domain\Model\Scope::class . '::SCOPE_PAGE'),
+                    'loadSaveHandler' => new UnquotedString(\Tvp\TemplaVoilaPlus\Handler\LoadSave\YamlLoadSaveHandler::class . '::$identifier'),
                 ],
                 $packageName . '/FCE/MappingConfiguration' => [
                     'name' => $packageTitle . ' FCEs',
                     'path' => 'EXT:' . $selection . $innerPathes['mappingConfiguration']['fce'],
-                    'scope' => new UnquotedString(\Ppi\TemplaVoilaPlus\Domain\Model\Scope::class . '::SCOPE_FCE'),
-                    'loadSaveHandler' => new UnquotedString(\Ppi\TemplaVoilaPlus\Handler\LoadSave\YamlLoadSaveHandler::class . '::$identifier'),
+                    'scope' => new UnquotedString(\Tvp\TemplaVoilaPlus\Domain\Model\Scope::class . '::SCOPE_FCE'),
+                    'loadSaveHandler' => new UnquotedString(\Tvp\TemplaVoilaPlus\Handler\LoadSave\YamlLoadSaveHandler::class . '::$identifier'),
                 ],
             ];
 
@@ -858,14 +858,14 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
                 $packageName . '/Page/TemplateConfiguration' => [
                     'name' => $packageTitle . ' Pages',
                     'path' => 'EXT:' . $selection . $innerPathes['templateConfiguration']['page'],
-                    'scope' => new UnquotedString(\Ppi\TemplaVoilaPlus\Domain\Model\Scope::class . '::SCOPE_PAGE'),
-                    'loadSaveHandler' => new UnquotedString(\Ppi\TemplaVoilaPlus\Handler\LoadSave\YamlLoadSaveHandler::class . '::$identifier'),
+                    'scope' => new UnquotedString(\Tvp\TemplaVoilaPlus\Domain\Model\Scope::class . '::SCOPE_PAGE'),
+                    'loadSaveHandler' => new UnquotedString(\Tvp\TemplaVoilaPlus\Handler\LoadSave\YamlLoadSaveHandler::class . '::$identifier'),
                 ],
                 $packageName . '/FCE/TemplateConfiguration' => [
                     'name' => $packageTitle . ' FCEs',
                     'path' => 'EXT:' . $selection . $innerPathes['templateConfiguration']['fce'],
-                    'scope' => new UnquotedString(\Ppi\TemplaVoilaPlus\Domain\Model\Scope::class . '::SCOPE_FCE'),
-                    'loadSaveHandler' => new UnquotedString(\Ppi\TemplaVoilaPlus\Handler\LoadSave\YamlLoadSaveHandler::class . '::$identifier'),
+                    'scope' => new UnquotedString(\Tvp\TemplaVoilaPlus\Domain\Model\Scope::class . '::SCOPE_FCE'),
+                    'loadSaveHandler' => new UnquotedString(\Tvp\TemplaVoilaPlus\Handler\LoadSave\YamlLoadSaveHandler::class . '::$identifier'),
                 ],
             ];
 
@@ -874,7 +874,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
                 $packageName . '/BackendLayoutConfiguration' => [
                     'name' => $packageTitle . ' BackendLayouts',
                     'path' => 'EXT:' . $selection . $innerPathes['backendLayout'],
-                    'loadSaveHandler' => new UnquotedString(\Ppi\TemplaVoilaPlus\Handler\LoadSave\MarkerBasedFileLoadSaveHandler::class . '::$identifier'),
+                    'loadSaveHandler' => new UnquotedString(\Tvp\TemplaVoilaPlus\Handler\LoadSave\MarkerBasedFileLoadSaveHandler::class . '::$identifier'),
                 ],
             ];
 
@@ -968,11 +968,11 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
             }
 
             switch ($ds['scope']) {
-                case \Ppi\TemplaVoilaPlus\Domain\Model\Scope::SCOPE_PAGE:
+                case \Tvp\TemplaVoilaPlus\Domain\Model\Scope::SCOPE_PAGE:
                     $scopePath = '/Page';
                     $scopeName = 'page';
                     break;
-                case \Ppi\TemplaVoilaPlus\Domain\Model\Scope::SCOPE_FCE:
+                case \Tvp\TemplaVoilaPlus\Domain\Model\Scope::SCOPE_FCE:
                     $scopePath = '/FCE';
                     $scopeName = 'fce';
                     break;
@@ -991,7 +991,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
                 'tvp-template' => [
                     'meta' => [
                         'name' => $to['title'],
-                        'renderer' => \Ppi\TemplaVoilaPlus\Handler\Render\XpathRenderHandler::$identifier,
+                        'renderer' => \Tvp\TemplaVoilaPlus\Handler\Render\XpathRenderHandler::$identifier,
                         'template' => '../../Template/' . $resultingFileName,
                     ],
                     'mapping' => $templateMappingInfo['ROOT'],

@@ -1,5 +1,5 @@
 <?php
-namespace Ppi\TemplaVoilaPlus\Controller;
+namespace Tvp\TemplaVoilaPlus\Controller;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -18,7 +18,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
+use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 /**
  * This wizard renames a field in pages.tx_templavoilaplus_flex, to avoid
@@ -234,7 +234,7 @@ class RenameFieldInPageFlexWizardController extends \TYPO3\CMS\Backend\Module\Ab
      */
     protected function getKnownPageDS()
     {
-        $dsRepo = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Domain\Repository\DataStructureRepository::class);
+        $dsRepo = GeneralUtility::makeInstance(\Tvp\TemplaVoilaPlus\Domain\Repository\DataStructureRepository::class);
 
         return $dsRepo->getDatastructuresByScope(1);
     }
@@ -247,7 +247,7 @@ class RenameFieldInPageFlexWizardController extends \TYPO3\CMS\Backend\Module\Ab
         $dsList = $this->getKnownPageDS();
         $return = array();
         foreach ($dsList as $ds) {
-            /** @var $ds \Ppi\TemplaVoilaPlus\Domain\Model\AbstractDataStructure */
+            /** @var $ds \Tvp\TemplaVoilaPlus\Domain\Model\AbstractDataStructure */
             $return[$ds->getLabel()] = array();
             $t = $ds->getDataStructureArray();
             foreach (array_keys($t['ROOT']['el']) as $field) {

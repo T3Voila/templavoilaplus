@@ -1,4 +1,4 @@
-﻿.. include:: ../Includes.txt
+.. include:: ../Includes.txt
 
 Migration from TemplaVoilà! 1.8/1.9/2.0 to TemplaVoilà! Plus 7.x
 ----------------------------------------------------------------
@@ -33,7 +33,7 @@ Steps to work
     page {
         typeNum = 0
         10 = USER
-        10.userFunc = Ppi\TemplaVoilaPlus\Controller\FrontendController->main_page
+        10.userFunc = Tvp\TemplaVoilaPlus\Controller\FrontendController->main_page
     }
 
 Now your system should be ready. If all works you can remove the old TemplaVoilà! extension and its database tables from your system.

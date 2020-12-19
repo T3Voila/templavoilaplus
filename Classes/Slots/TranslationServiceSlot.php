@@ -1,5 +1,5 @@
 <?php
-namespace Ppi\TemplaVoilaPlus\Slots;
+namespace Tvp\TemplaVoilaPlus\Slots;
 
 class TranslationServiceSlot
 {

@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace Ppi\TemplaVoilaPlus\Handler\Configuration;
+namespace Tvp\TemplaVoilaPlus\Handler\Configuration;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,9 +15,9 @@ namespace Ppi\TemplaVoilaPlus\Handler\Configuration;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Ppi\TemplaVoilaPlus\Domain\Model\BackendLayoutConfiguration;
-use Ppi\TemplaVoilaPlus\Domain\Model\Place;
-use Ppi\TemplaVoilaPlus\Handler\LoadSave\LoadSaveHandlerInterface;
+use Tvp\TemplaVoilaPlus\Domain\Model\BackendLayoutConfiguration;
+use Tvp\TemplaVoilaPlus\Domain\Model\Place;
+use Tvp\TemplaVoilaPlus\Handler\LoadSave\LoadSaveHandlerInterface;
 
 class BackendLayoutConfigurationHandler implements ConfigurationHandlerInterface
 {

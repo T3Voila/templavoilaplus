@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace Ppi\TemplaVoilaPlus\Controller\Backend\ControlCenter;
+namespace Tvp\TemplaVoilaPlus\Controller\Backend\ControlCenter;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -30,10 +30,10 @@ use TYPO3\CMS\Form\Controller\FormEditorController;
 use TYPO3\CMS\Form\Service\TranslationService;
 
 
-use Ppi\TemplaVoilaPlus\Configuration\BackendConfiguration;
-use Ppi\TemplaVoilaPlus\Domain\Model\DataStructure;
-use Ppi\TemplaVoilaPlus\Service\ConfigurationService;
-use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
+use Tvp\TemplaVoilaPlus\Configuration\BackendConfiguration;
+use Tvp\TemplaVoilaPlus\Domain\Model\DataStructure;
+use Tvp\TemplaVoilaPlus\Service\ConfigurationService;
+use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 class DataStructuresController extends FormEditorController
 {
@@ -76,7 +76,7 @@ class DataStructuresController extends FormEditorController
         $placesService = $configurationService->getPlacesService();
 
         $dataStructurePlaces = $placesService->getAvailablePlacesUsingConfigurationHandlerIdentifier(
-            \Ppi\TemplaVoilaPlus\Handler\Configuration\DataStructureConfigurationHandler::$identifier
+            \Tvp\TemplaVoilaPlus\Handler\Configuration\DataStructureConfigurationHandler::$identifier
         );
         $placesService->loadConfigurationsByPlaces($dataStructurePlaces);
         $dataStructurePlacesByScope = $placesService->reorderPlacesByScope($dataStructurePlaces);
@@ -107,7 +107,7 @@ class DataStructuresController extends FormEditorController
 
         $dataStructurePlace = $placesService->getPlace(
             $placeIdentifier,
-            \Ppi\TemplaVoilaPlus\Handler\Configuration\DataStructureConfigurationHandler::$identifier
+            \Tvp\TemplaVoilaPlus\Handler\Configuration\DataStructureConfigurationHandler::$identifier
         );
         $placesService->loadConfigurationsByPlace($dataStructurePlace);
         $dataStructure = $dataStructurePlace->getConfiguration($configurationIdentifier);
@@ -490,7 +490,7 @@ var_dump($elementStructure);die();
 
         $dataStructurePlace = $placesService->getPlace(
             $placeIdentifier,
-            \Ppi\TemplaVoilaPlus\Handler\Configuration\DataStructureConfigurationHandler::$identifier
+            \Tvp\TemplaVoilaPlus\Handler\Configuration\DataStructureConfigurationHandler::$identifier
         );
         $placesService->loadConfigurationsByPlace($dataStructurePlace);
         // get the LoadSave Handler

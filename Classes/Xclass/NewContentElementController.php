@@ -1,5 +1,5 @@
 <?php
-namespace Ppi\TemplaVoilaPlus\Xclass;
+namespace Tvp\TemplaVoilaPlus\Xclass;
 
 /*
  * This file is part of the TYPO3 CMS project.

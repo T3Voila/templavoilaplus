@@ -1,5 +1,5 @@
 <?php
-namespace Ppi\TemplaVoilaPlus\Service\ClickMenu;
+namespace Tvp\TemplaVoilaPlus\Service\ClickMenu;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
-use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
+use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 /**
  * Class which will add menu items to click menus for the extension TemplaVoila
@@ -55,9 +55,9 @@ class MainClickMenu
             );
 
             // Adding link for Mapping tool:
-            if (\Ppi\TemplaVoilaPlus\Domain\Model\File::is_file($table)
+            if (\Tvp\TemplaVoilaPlus\Domain\Model\File::is_file($table)
                 && $this->getBackendUser()->isAdmin()
-                && \Ppi\TemplaVoilaPlus\Domain\Model\File::is_xmlFile($table)
+                && \Tvp\TemplaVoilaPlus\Domain\Model\File::is_xmlFile($table)
             ) {
                 $localItems[] = $clickMenu->linkItem(
                     $this->getLanguageService()->getLLL('cm1_title', $LL, true),

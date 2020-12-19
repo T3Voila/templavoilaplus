@@ -1,5 +1,5 @@
 <?php
-namespace Ppi\TemplaVoilaPlus\Tree\View;
+namespace Tvp\TemplaVoilaPlus\Tree\View;
 
 /*
  * This file is part of the TYPO3 CMS project.

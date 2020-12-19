@@ -1,5 +1,5 @@
 <?php
-namespace Ppi\TemplaVoilaPlus\Controller;
+namespace Tvp\TemplaVoilaPlus\Controller;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
+use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 /**
  * Reference elements wizard,
@@ -41,7 +41,7 @@ class ReferenceElementWizardController extends \TYPO3\CMS\Backend\Module\Abstrac
     protected $allAvailableLanguages = array();
 
     /**
-     * @var \Ppi\TemplaVoilaPlus\Service\ApiService
+     * @var \Tvp\TemplaVoilaPlus\Service\ApiService
      */
     protected $templavoilaAPIObj;
 
@@ -97,7 +97,7 @@ class ReferenceElementWizardController extends \TYPO3\CMS\Backend\Module\Abstrac
         $this->modSharedTSconfig = BackendUtility::getModTSconfig($this->pObj->id, 'mod.SHARED');
         $this->allAvailableLanguages = TemplaVoilaUtility::getAvailableLanguages(0, true, true, $this->modSharedTSconfig);
 
-        $this->templavoilaAPIObj = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Service\ApiService::class);
+        $this->templavoilaAPIObj = GeneralUtility::makeInstance(\Tvp\TemplaVoilaPlus\Service\ApiService::class);
 
         // Showing the tree:
         // Initialize starting point of page tree:

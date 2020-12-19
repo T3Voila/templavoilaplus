@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace Ppi\TemplaVoilaPlus\Handler\Render;
+namespace Tvp\TemplaVoilaPlus\Handler\Render;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,7 +15,7 @@ namespace Ppi\TemplaVoilaPlus\Handler\Render;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Ppi\TemplaVoilaPlus\Domain\Model\TemplateConfiguration;
+use Tvp\TemplaVoilaPlus\Domain\Model\TemplateConfiguration;
 
 interface RenderHandlerInterface
 {

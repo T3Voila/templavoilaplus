@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace Ppi\TemplaVoilaPlus\Utility;
+namespace Tvp\TemplaVoilaPlus\Utility;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -17,7 +17,7 @@ namespace Ppi\TemplaVoilaPlus\Utility;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-use Ppi\TemplaVoilaPlus\Service\ConfigurationService;
+use Tvp\TemplaVoilaPlus\Service\ConfigurationService;
 
 /**
  * Class with static functions for data structures templavoila.

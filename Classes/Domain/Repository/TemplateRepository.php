@@ -1,5 +1,5 @@
 <?php
-namespace Ppi\TemplaVoilaPlus\Domain\Repository;
+namespace Tvp\TemplaVoilaPlus\Domain\Repository;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -17,7 +17,7 @@ namespace Ppi\TemplaVoilaPlus\Domain\Repository;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
+use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 /**
  * Class to provide unique access to datastructure
@@ -32,22 +32,22 @@ class TemplateRepository implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param integer $uid
      *
-     * @return \Ppi\TemplaVoilaPlus\Domain\Model\Template
+     * @return \Tvp\TemplaVoilaPlus\Domain\Model\Template
      */
     public function getTemplateByUid($uid)
     {
-        return GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Domain\Model\Template::class, $uid);
+        return GeneralUtility::makeInstance(\Tvp\TemplaVoilaPlus\Domain\Model\Template::class, $uid);
     }
 
     /**
      * Retrieve template objects which are related to a specific datastructure
      *
-     * @param \Ppi\TemplaVoilaPlus\Domain\Model\AbstractDataStructure $ds
+     * @param \Tvp\TemplaVoilaPlus\Domain\Model\AbstractDataStructure $ds
      * @param integer $storagePid
      *
      * @return array
      */
-    public function getTemplatesByDatastructure(\Ppi\TemplaVoilaPlus\Domain\Model\AbstractDataStructure $ds, $storagePid = 0)
+    public function getTemplatesByDatastructure(\Tvp\TemplaVoilaPlus\Domain\Model\AbstractDataStructure $ds, $storagePid = 0)
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('tx_templavoilaplus_tmplobj');
@@ -85,7 +85,7 @@ class TemplateRepository implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function getTemplatesByStoragePidAndScope($storagePid, $scope)
     {
-        $dsRepo = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Domain\Repository\DataStructureRepository::class);
+        $dsRepo = GeneralUtility::makeInstance(\Tvp\TemplaVoilaPlus\Domain\Repository\DataStructureRepository::class);
         $dsList = $dsRepo->getDatastructuresByStoragePidAndScope($storagePid, $scope);
         $toCollection = array();
         foreach ($dsList as $dsObj) {
@@ -99,12 +99,12 @@ class TemplateRepository implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * Retrieve template objects which have a specific template as their parent
      *
-     * @param \Ppi\TemplaVoilaPlus\Domain\Model\Template $to
+     * @param \Tvp\TemplaVoilaPlus\Domain\Model\Template $to
      * @param integer $storagePid
      *
      * @return array
      */
-    public function getTemplatesByParentTemplate(\Ppi\TemplaVoilaPlus\Domain\Model\Template $to, $storagePid = 0)
+    public function getTemplatesByParentTemplate(\Tvp\TemplaVoilaPlus\Domain\Model\Template $to, $storagePid = 0)
     {
         $toList = TemplaVoilaUtility::getDatabaseConnection()->exec_SELECTgetRows(
             'tx_templavoilaplus_tmplobj.uid',
@@ -152,8 +152,8 @@ class TemplateRepository implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * Sorts templates alphabetically
      *
-     * @param \Ppi\TemplaVoilaPlus\Domain\Model\Template $obj1
-     * @param \Ppi\TemplaVoilaPlus\Domain\Model\Template $obj2
+     * @param \Tvp\TemplaVoilaPlus\Domain\Model\Template $obj1
+     * @param \Tvp\TemplaVoilaPlus\Domain\Model\Template $obj2
      *
      * @return integer Result of the comparison (see strcmp())
      * @see usort()

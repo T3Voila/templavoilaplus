@@ -7,6 +7,6 @@
  */
 return [
     'templavoilaplus:unusedce' => [
-        'class' => \Ppi\TemplaVoilaPlus\Command\UnusedContentElementCommand8::class,
+        'class' => \Tvp\TemplaVoilaPlus\Command\UnusedContentElementCommand8::class,
     ],
 ];

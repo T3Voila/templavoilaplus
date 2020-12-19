@@ -4,9 +4,9 @@ defined('TYPO3_MODE') or die();
 if (TYPO3_MODE === 'BE') {
 
     $GLOBALS['TYPO3_CONF_VARS']['BE']['ContextMenu']['ItemProviders']['templavoilaplus']
-        = \Ppi\TemplaVoilaPlus\ContextMenu\ItemProvider::class;
+        = \Tvp\TemplaVoilaPlus\ContextMenu\ItemProvider::class;
 
-    $GLOBALS['TBE_MODULES_EXT']['xMOD_db_new_content_el']['addElClasses'][\Ppi\TemplaVoilaPlus\Hooks\WizardItems::class]
+    $GLOBALS['TBE_MODULES_EXT']['xMOD_db_new_content_el']['addElClasses'][\Tvp\TemplaVoilaPlus\Hooks\WizardItems::class]
         = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('templavoilaplus') . 'Classes/Hooks/WizardItems.php';
 
     $navigationComponentId = 'TYPO3/CMS/Backend/PageTree/PageTreeElement';
@@ -16,9 +16,9 @@ if (TYPO3_MODE === 'BE') {
 
     $classPrefixForRegisterModule = '';
     $classPostfixForRegisterModule = '';
-    $moduleName = 'Ppi.TemplaVoilaPlus';
+    $moduleName = 'Tvp.TemplaVoilaPlus';
     if (version_compare(TYPO3_version, '10.0.0', '>=')) {
-        $classPrefixForRegisterModule = Ppi\TemplaVoilaPlus\Controller::class . '\\';
+        $classPrefixForRegisterModule = Tvp\TemplaVoilaPlus\Controller::class . '\\';
         $classPostfixForRegisterModule = 'Controller';
         $moduleName = 'TemplaVoilaPlus';
     }
@@ -91,13 +91,13 @@ if (TYPO3_MODE === 'BE') {
 
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
         'web_func',
-        'Ppi\\TemplaVoilaPlus\Controller\\ReferenceElementWizardController',
+        'Tvp\\TemplaVoilaPlus\Controller\\ReferenceElementWizardController',
         NULL,
         'LLL:EXT:templavoilaplus/Resources/Private/Language/locallang.xlf:wiz_refElements'
     );
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
         'web_func',
-        'Ppi\\TemplaVoilaPlus\Controller\\RenameFieldInPageFlexWizardController',
+        'Tvp\\TemplaVoilaPlus\Controller\\RenameFieldInPageFlexWizardController',
         NULL,
         'LLL:EXT:templavoilaplus/Resources/Private/Language/locallang.xlf:wiz_renameFieldsInPage'
     );

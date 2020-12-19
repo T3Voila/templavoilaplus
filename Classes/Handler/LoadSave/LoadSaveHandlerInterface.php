@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace Ppi\TemplaVoilaPlus\Handler\LoadSave;
+namespace Tvp\TemplaVoilaPlus\Handler\LoadSave;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,7 +15,7 @@ namespace Ppi\TemplaVoilaPlus\Handler\LoadSave;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Ppi\TemplaVoilaPlus\Domain\Model\Place;
+use Tvp\TemplaVoilaPlus\Domain\Model\Place;
 
 interface LoadSaveHandlerInterface
 {

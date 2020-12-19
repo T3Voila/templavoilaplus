@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace Ppi\TemplaVoilaPlus\Configuration\FlexForm;
+namespace Tvp\TemplaVoilaPlus\Configuration\FlexForm;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -19,9 +19,9 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-use Ppi\TemplaVoilaPlus\Domain\Model\DataStructure;
-use Ppi\TemplaVoilaPlus\Domain\Model\MappingConfiguration;
-use Ppi\TemplaVoilaPlus\Utility\ApiHelperUtility;
+use Tvp\TemplaVoilaPlus\Domain\Model\DataStructure;
+use Tvp\TemplaVoilaPlus\Domain\Model\MappingConfiguration;
+use Tvp\TemplaVoilaPlus\Utility\ApiHelperUtility;
 
 class DataStructureIdentifierHook
 {

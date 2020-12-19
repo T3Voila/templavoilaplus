@@ -1,5 +1,5 @@
 <?php
-namespace Ppi\TemplaVoilaPlus\Hooks;
+namespace Tvp\TemplaVoilaPlus\Hooks;
 
 use TYPO3\CMS\Backend\Controller\BackendController;
 use TYPO3\CMS\Backend\Utility\BackendUtility;

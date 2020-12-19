@@ -1,4 +1,4 @@
-﻿.. include:: ../Includes.txt
+.. include:: ../Includes.txt
 
 FAQ
 ---
@@ -31,7 +31,7 @@ section of this manual:
     page {
         typeNum = 0
         10 = USER
-        10.userFunc = Ppi\TemplaVoilaPlus\Controller\FrontendController->main_page
+        10.userFunc = Tvp\TemplaVoilaPlus\Controller\FrontendController->main_page
     }
 
 **Q:**  *I made “Content Elements” field, added content elements there

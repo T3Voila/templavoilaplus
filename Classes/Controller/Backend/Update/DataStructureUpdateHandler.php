@@ -1,5 +1,5 @@
 <?php
-namespace Ppi\TemplaVoilaPlus\Controller\Backend\Update;
+namespace Tvp\TemplaVoilaPlus\Controller\Backend\Update;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -17,9 +17,9 @@ namespace Ppi\TemplaVoilaPlus\Controller\Backend\Update;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
-use Ppi\TemplaVoilaPlus\Domain\Repository\DataStructureRepository;
-use Ppi\TemplaVoilaPlus\Domain\Repository\TemplateRepository;
-use Ppi\TemplaVoilaPlus\Utility\DataStructureUtility;
+use Tvp\TemplaVoilaPlus\Domain\Repository\DataStructureRepository;
+use Tvp\TemplaVoilaPlus\Domain\Repository\TemplateRepository;
+use Tvp\TemplaVoilaPlus\Utility\DataStructureUtility;
 
 /**
  * Handles Updates in DataStructure via Callbacks
@@ -57,7 +57,7 @@ class DataStructureUpdateHandler
     }
 
     public function updateDs(
-        \Ppi\TemplaVoilaPlus\Domain\Model\AbstractDataStructure $ds,
+        \Tvp\TemplaVoilaPlus\Domain\Model\AbstractDataStructure $ds,
         array $rootCallbacks,
         array $elementCallbacks
     ) {
@@ -79,7 +79,7 @@ class DataStructureUpdateHandler
     }
 
     public function updateTo(
-        \Ppi\TemplaVoilaPlus\Domain\Model\Template $to,
+        \Tvp\TemplaVoilaPlus\Domain\Model\Template $to,
         array $rootCallbacks,
         array $elementCallbacks
     ) {

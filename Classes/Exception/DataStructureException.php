@@ -1,5 +1,5 @@
 <?php
-namespace Ppi\TemplaVoilaPlus\Exception;
+namespace Tvp\TemplaVoilaPlus\Exception;
 
 /*
  * This file is part of the TYPO3 CMS project.

@@ -3,7 +3,7 @@ define([
 ], function($) {
     'use strict';
     /**
-     * @exports Ppi/TemplaVoilaPlus/PageLayout
+     * @exports Tvp/TemplaVoilaPlus/PageLayout
      */
     var PageLayout = {
     }

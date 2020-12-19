@@ -1,5 +1,5 @@
 <?php
-namespace Ppi\TemplaVoilaPlus\Domain\Model;
+namespace Tvp\TemplaVoilaPlus\Domain\Model;
 
 // Temporary to hold the Scope consts
 

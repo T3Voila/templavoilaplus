@@ -1,5 +1,5 @@
 <?php
-namespace Ppi\TemplaVoilaPlus\Domain\Repository;
+namespace Tvp\TemplaVoilaPlus\Domain\Repository;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -20,8 +20,8 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
-use Ppi\TemplaVoilaPlus\Service\ConfigurationService;
-use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
+use Tvp\TemplaVoilaPlus\Service\ConfigurationService;
+use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 /**
  * Class to provide unique access to datastructure
@@ -42,19 +42,19 @@ class DataStructureRepository implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @throws \InvalidArgumentException
      *
-     * @return \Ppi\TemplaVoilaPlus\Domain\Model\AbstractDataStructure
+     * @return \Tvp\TemplaVoilaPlus\Domain\Model\AbstractDataStructure
      */
     public function getDatastructureByUidOrFilename($uidOrFile)
     {
         if ((int)$uidOrFile > 0) {
-            $className = \Ppi\TemplaVoilaPlus\Domain\Model\DataStructure::class;
+            $className = \Tvp\TemplaVoilaPlus\Domain\Model\DataStructure::class;
         } else {
             if (StringUtility::beginsWith($uidOrFile, 'FILE:')) {
                 $uidOrFile = substr($uidOrFile, 5);
             }
             if (($staticKey = $this->validateStaticDS($uidOrFile)) !== false) {
                 $uidOrFile = $staticKey;
-                $className = \Ppi\TemplaVoilaPlus\Domain\Model\StaticDataStructure::class;
+                $className = \Tvp\TemplaVoilaPlus\Domain\Model\StaticDataStructure::class;
             } else {
                 throw new \InvalidArgumentException(
                     'Argument was supposed to be either a uid or a filename',
@@ -296,8 +296,8 @@ class DataStructureRepository implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * Sorts datastructure alphabetically
      *
-     * @param \Ppi\TemplaVoilaPlus\Domain\Model\AbstractDataStructure $obj1
-     * @param \Ppi\TemplaVoilaPlus\Domain\Model\AbstractDataStructure $obj2
+     * @param \Tvp\TemplaVoilaPlus\Domain\Model\AbstractDataStructure $obj1
+     * @param \Tvp\TemplaVoilaPlus\Domain\Model\AbstractDataStructure $obj2
      *
      * @return integer Result of the comparison (see strcmp())
      * @see usort()

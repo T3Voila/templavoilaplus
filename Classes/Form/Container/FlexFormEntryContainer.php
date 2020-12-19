@@ -1,5 +1,5 @@
 <?php
-namespace Ppi\TemplaVoilaPlus\Form\Container;
+namespace Tvp\TemplaVoilaPlus\Form\Container;
 
 /*
  * This file is part of the TYPO3 CMS project.

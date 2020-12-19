@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-namespace Ppi\TemplaVoilaPlus\Form\FormDataProvider;
+namespace Tvp\TemplaVoilaPlus\Form\FormDataProvider;
 
 /*
  * This file is part of the TYPO3 CMS project.

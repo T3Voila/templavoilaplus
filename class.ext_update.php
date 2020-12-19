@@ -1,5 +1,5 @@
 <?php
-namespace Ppi\TemplaVoilaPlus;
+namespace Tvp\TemplaVoilaPlus;
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -19,7 +19,7 @@ namespace Ppi\TemplaVoilaPlus;
 class ext_update
 {
     /**
-     * @var Ppi\TemplaVoilaPlus\Controller\Backend\ExtensionManagerUpdateController
+     * @var Tvp\TemplaVoilaPlus\Controller\Backend\ExtensionManagerUpdateController
      */
     protected $controller;
 

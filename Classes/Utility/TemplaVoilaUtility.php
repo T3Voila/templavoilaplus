@@ -1,5 +1,5 @@
 <?php
-namespace Ppi\TemplaVoilaPlus\Utility;
+namespace Tvp\TemplaVoilaPlus\Utility;
 
 /*
  * This file is part of the TYPO3 CMS project.

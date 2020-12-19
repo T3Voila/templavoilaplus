@@ -1,5 +1,5 @@
 <?php
-use Ppi\TemplaVoilaPlus\Controller;
+use Tvp\TemplaVoilaPlus\Controller;
 
 /**
  * Definitions for routes provided by EXT:templavoilaplus

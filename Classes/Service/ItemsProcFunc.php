@@ -1,5 +1,5 @@
 <?php
-namespace Ppi\TemplaVoilaPlus\Service;
+namespace Tvp\TemplaVoilaPlus\Service;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -34,7 +34,7 @@ class ItemsProcFunc
         $placesService = $configurationService->getPlacesService();
 
         $mappingPlaces = $placesService->getAvailablePlacesUsingConfigurationHandlerIdentifier(
-            \Ppi\TemplaVoilaPlus\Handler\Configuration\MappingConfigurationHandler::$identifier
+            \Tvp\TemplaVoilaPlus\Handler\Configuration\MappingConfigurationHandler::$identifier
         );
         $placesService->loadConfigurationsByPlaces($mappingPlaces);
 
@@ -70,10 +70,10 @@ class ItemsProcFunc
     {
         switch ($params['table']) {
             case 'pages':
-                $scope = \Ppi\TemplaVoilaPlus\Domain\Model\Scope::SCOPE_PAGE;
+                $scope = \Tvp\TemplaVoilaPlus\Domain\Model\Scope::SCOPE_PAGE;
                 break;
             case 'tt_content':
-                $scope = \Ppi\TemplaVoilaPlus\Domain\Model\Scope::SCOPE_FCE;
+                $scope = \Tvp\TemplaVoilaPlus\Domain\Model\Scope::SCOPE_FCE;
                 break;
             default:
                 $scope = $params['table'];

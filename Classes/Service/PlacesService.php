@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace Ppi\TemplaVoilaPlus\Service;
+namespace Tvp\TemplaVoilaPlus\Service;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -18,9 +18,9 @@ use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
-use Ppi\TemplaVoilaPlus\Domain\Model\Place;
-use Ppi\TemplaVoilaPlus\Handler\Configuration\ConfigurationHandlerInterface;
-use Ppi\TemplaVoilaPlus\Handler\LoadSave\LoadSaveHandlerInterface;
+use Tvp\TemplaVoilaPlus\Domain\Model\Place;
+use Tvp\TemplaVoilaPlus\Handler\Configuration\ConfigurationHandlerInterface;
+use Tvp\TemplaVoilaPlus\Handler\LoadSave\LoadSaveHandlerInterface;
 
 /**
  * @TODO Better name? Is this a Service? A Factory? Registry?
@@ -49,7 +49,7 @@ class PlacesService implements SingletonInterface
             throw new \Exception('The Place with identifier "' . $placeIdentifier . '" is not available.');
         }
 
-        /** @var \Ppi\TemplaVoilaPlus\Domain\Model\Place */
+        /** @var \Tvp\TemplaVoilaPlus\Domain\Model\Place */
         $place = $this->availablePlaces[$placeIdentifier];
         if ($place->getConfigurationHandlerIdentifier() !== $configurationHandlerIdentifier) {
             throw new \Exception('The Place with identifier "' . $placeIdentifier . '" do not have the requested configuration handler "' . $configurationHandlerIdentifier . '"');

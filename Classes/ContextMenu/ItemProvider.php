@@ -1,5 +1,5 @@
 <?php
-namespace Ppi\TemplaVoilaPlus\ContextMenu;
+namespace Tvp\TemplaVoilaPlus\ContextMenu;
 
 /*
  * This file is part of the TYPO3 CMS project.

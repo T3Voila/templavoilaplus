@@ -48,7 +48,7 @@ detects the record. Comments below
       7:     if (t3lib_extMgm::isLoaded('templavoilaplus'))    {
       8:         $field_templateObject = $this->pi_getFFvalue($this->cObj->data['pi_flexform'],'field_templateObject');
       9:         if ((int)$field_templateObject)    {
-     10:             $this->TMPLobj = t3lib_div::makeInstance(\Ppi\TemplaVoilaPlus\Domain\Model\HtmlMarkup::class);
+     10:             $this->TMPLobj = t3lib_div::makeInstance(\Tvp\TemplaVoilaPlus\Domain\Model\HtmlMarkup::class);
      11:             $this->TA = $this->TMPLobj->getTemplateArrayForTO((int)$field_templateObject);
      12:             if (is_array($this->TA))    {
      13:                 $this->TMPLobj->setHeaderBodyParts($this->TMPLobj->tDat['MappingInfo_head'],$this->TMPLobj->tDat['MappingData_head_cached']);
@@ -69,7 +69,7 @@ detects the record. Comments below
 - Line 9 sees in that value is an integer - which means it points to a
   Template Object record “uid”
 
-- In line 10 we create an instance of the “\Ppi\TemplaVoilaPlus\Domain\Model\HtmlMarkup::class”
+- In line 10 we create an instance of the “\Tvp\TemplaVoilaPlus\Domain\Model\HtmlMarkup::class”
   class which will be our API for merging our  *data* from mininews with
   the  *template* from the Template Object record.
 

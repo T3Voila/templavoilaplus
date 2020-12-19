@@ -1,5 +1,5 @@
 <?php
-namespace Ppi\TemplaVoilaPlus\Service\DataHandling;
+namespace Tvp\TemplaVoilaPlus\Service\DataHandling;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -16,7 +16,7 @@ namespace Ppi\TemplaVoilaPlus\Service\DataHandling;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
+use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 /**
  * Class being included by TCEmain using a hook
@@ -41,7 +41,7 @@ class DataHandler
     protected $extConf = array();
 
     /**
-     * @return \Ppi\TemplaVoilaPlus\Service\DataHandling\DataHandler
+     * @return \Tvp\TemplaVoilaPlus\Service\DataHandling\DataHandler
      */
     public function __construct()
     {
@@ -119,7 +119,7 @@ class DataHandler
                 }
 
                 if (!is_null($pid)) {
-                    $templaVoilaAPI = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Service\ApiService::class);
+                    $templaVoilaAPI = GeneralUtility::makeInstance(\Tvp\TemplaVoilaPlus\Service\ApiService::class);
                     $templateObjectRecords = $templaVoilaAPI->ds_getAvailablePageTORecords($pid);
 
                     $matchingTOUid = 0;
@@ -158,7 +158,7 @@ class DataHandler
                     'row' => $row,
                 );
                 if (!GeneralUtility::callUserFunction(
-                        \Ppi\TemplaVoilaPlus\Service\UserFunc\Access::class . '->recordEditAccessInternals',
+                        \Tvp\TemplaVoilaPlus\Service\UserFunc\Access::class . '->recordEditAccessInternals',
                         $params,
                         $this
                     )
@@ -173,7 +173,7 @@ class DataHandler
                     $fieldArray['config'] = '
 page = PAGE
 page.10 = USER
-page.10.userFunc = Ppi\TemplaVoilaPlus\Controller\FrontendController->main_page
+page.10.userFunc = Tvp\TemplaVoilaPlus\Controller\FrontendController->main_page
 page.10.disableExplosivePreview = 1';
                 }
             }
@@ -205,7 +205,7 @@ page.10.disableExplosivePreview = 1';
             return;
         }
 
-        $templaVoilaAPI = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Service\ApiService::class);
+        $templaVoilaAPI = GeneralUtility::makeInstance(\Tvp\TemplaVoilaPlus\Service\ApiService::class);
 
         switch ($status) {
             case 'new':
@@ -311,7 +311,7 @@ page.10.disableExplosivePreview = 1';
             return;
         }
 
-        $templaVoilaAPI = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Service\ApiService::class);
+        $templaVoilaAPI = GeneralUtility::makeInstance(\Tvp\TemplaVoilaPlus\Service\ApiService::class);
 
         switch ($command) {
             case 'delete':
@@ -322,7 +322,7 @@ page.10.disableExplosivePreview = 1';
                     'row' => $record,
                 );
                 if (!GeneralUtility::callUserFunction(
-                        \Ppi\TemplaVoilaPlus\Service\UserFunc\Access::class . '->recordEditAccessInternals',
+                        \Tvp\TemplaVoilaPlus\Service\UserFunc\Access::class . '->recordEditAccessInternals',
                         $params,
                         $this
                     )
@@ -404,7 +404,7 @@ page.10.disableExplosivePreview = 1';
             return;
         }
 
-        $templaVoilaAPI = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Service\ApiService::class);
+        $templaVoilaAPI = GeneralUtility::makeInstance(\Tvp\TemplaVoilaPlus\Service\ApiService::class);
 
         $sourceFlexformPointersArr = $templaVoilaAPI->flexform_getPointersByRecord($uid, $sourceRecordBeforeMove['pid']);
         $sourceFlexformPointer = $sourceFlexformPointersArr[0];
@@ -451,7 +451,7 @@ page.10.disableExplosivePreview = 1';
             return;
         }
 
-        $templaVoilaAPI = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Service\ApiService::class);
+        $templaVoilaAPI = GeneralUtility::makeInstance(\Tvp\TemplaVoilaPlus\Service\ApiService::class);
 
         $sourceFlexformPointersArr = $templaVoilaAPI->flexform_getPointersByRecord($uid, $sourceRecordBeforeMove['pid']);
         $sourceFlexformPointer = $sourceFlexformPointersArr[0];
@@ -484,8 +484,8 @@ page.10.disableExplosivePreview = 1';
         global $TCA;
 
         $elementsOnThisPage = array();
-        $templaVoilaAPI = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Service\ApiService::class);
-        /* @var $templaVoilaAPI \Ppi\TemplaVoilaPlus\Service\ApiService */
+        $templaVoilaAPI = GeneralUtility::makeInstance(\Tvp\TemplaVoilaPlus\Service\ApiService::class);
+        /* @var $templaVoilaAPI \Tvp\TemplaVoilaPlus\Service\ApiService */
 
         $diffBaseEnabled = isset($GLOBALS['TYPO3_CONF_VARS']['BE']['flexFormXMLincludeDiffBase'])
             && ($GLOBALS['TYPO3_CONF_VARS']['BE']['flexFormXMLincludeDiffBase'] != false);

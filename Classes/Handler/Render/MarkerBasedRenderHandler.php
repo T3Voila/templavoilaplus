@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace Ppi\TemplaVoilaPlus\Handler\Render;
+namespace Tvp\TemplaVoilaPlus\Handler\Render;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -18,7 +18,7 @@ namespace Ppi\TemplaVoilaPlus\Handler\Render;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-use Ppi\TemplaVoilaPlus\Domain\Model\TemplateConfiguration;
+use Tvp\TemplaVoilaPlus\Domain\Model\TemplateConfiguration;
 
 class MarkerBasedRenderHandler implements RenderHandlerInterface
 {

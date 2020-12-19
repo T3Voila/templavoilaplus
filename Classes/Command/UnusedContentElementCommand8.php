@@ -1,5 +1,5 @@
 <?php
-namespace Ppi\TemplaVoilaPlus\Command;
+namespace Tvp\TemplaVoilaPlus\Command;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -28,7 +28,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 
-use Ppi\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
+use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 /**
  * Cleaner module: Finding unused content elements on pages.
@@ -114,7 +114,7 @@ Automatic Repair:
         $dryRun = $input->hasOption('dry-run') && $input->getOption('dry-run') != false ? true : false;
 
         // Initialize TemplaVoila API class:
-        $this->apiService = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Service\ApiService::class, 'pages');
+        $this->apiService = GeneralUtility::makeInstance(\Tvp\TemplaVoilaPlus\Service\ApiService::class, 'pages');
 
         $unusedCes = $this->findAllUnusedCes($io, $startingPoint, $depth, $excludePageIdList);
 
