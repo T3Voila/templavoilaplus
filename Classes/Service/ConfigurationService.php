@@ -25,7 +25,10 @@ use Tvp\TemplaVoilaPlus\Domain\Model\Place;
 
 class ConfigurationService implements SingletonInterface
 {
+    /** @var array Global extension configuration */
     private $extConfig = [];
+
+    /** @var array Holds a collection of all available registered renderer */
     private $availableRenderer = [];
 
     private $isInitialized = false;
@@ -38,11 +41,15 @@ class ConfigurationService implements SingletonInterface
     public function __construct()
     {
         if (version_compare(TYPO3_version, '9.0.0', '>=')) {
-            $this->extConfig = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['templavoilaplus'];
+            if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['templavoilaplus'])) {
+                $this->extConfig = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['templavoilaplus'];
+            }
         } else {
-            $this->extConfig = $this->removeDotsFromArrayKeysRecursive(
-                unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoilaplus'])
-            );
+            if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoilaplus'])) {
+                $this->extConfig = $this->removeDotsFromArrayKeysRecursive(
+                    unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoilaplus'])
+                );
+            }
         }
     }
 
