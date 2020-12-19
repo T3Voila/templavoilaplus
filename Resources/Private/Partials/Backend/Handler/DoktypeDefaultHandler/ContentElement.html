@@ -25,6 +25,26 @@
             </f:if>
             <f:render partial="Backend/Handler/DoktypeDefaultHandler/PreviewContent" arguments="{node: node}" />
             <f:comment>$this->render_localizationInfoTable($contentTreeArr, $parentPointer, $parentDsMeta)</f:comment>
+
+            <table border="0" cellpadding="0" cellspacing="1" width="100%" class="lrPadding tpm-localisation-info-table">
+                <tr class="bgColor4-20">
+                    <td colspan="2"><f:translate key="{configuration.lllFile}:labelLocalizations" />:</td>
+                </tr>
+                <f:for each="{configuration.allAvailableLanguages}" as="language">
+                    <f:if condition="{language.uid} > 0">
+                        <tr class="tpm-language-row">
+                            <td class="tpm-language-edit">
+                                <f:link.action class="tpm-edit">
+                                    <span class="tpm-langIcon" title="{language.title}">
+                                        <core:icon identifier="{language.flagIcon}" />
+                                    </span>
+                                </f:link.action>
+                            </td>
+                            <td class="tpm-language-info">$l10nInfo</td>
+                        </tr>
+                    </f:if>
+                </f:for>
+            </table>
         </div>
     </div>
 </div>
