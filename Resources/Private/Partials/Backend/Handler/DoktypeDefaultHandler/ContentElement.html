@@ -1,7 +1,7 @@
 <div class="sortableItem tpm-element" id="item{node.rendering.md5}">
     <div class="t3-page-ce tpm-container-element tpm-content-element tpm-ctype-{element.el.CType} tpm-layout-{element.el.layout}">
         <a name="c{node.rendering.md5}{node.raw.entity.uid}"></a>
-        <div class="t3-page-ce-header {f:if(condition:{node.rendering.belongsToCurrentPage}, then: 'tpm-titlebar', else: 'tpm-titlebar-fromOtherPage'}">
+        <div class="t3-page-ce-header {f:if(condition:'{node.rendering.belongsToCurrentPage}', then: 'tpm-titlebar', else: 'tpm-titlebar-fromOtherPage')}">
             <div class="t3-page-ce-header-icons">
                 <f:render partial="Backend/Handler/DoktypeDefaultHandler/TitleBarRightButtons" arguments="{configuration: configuration, node: node}" />
             </div>

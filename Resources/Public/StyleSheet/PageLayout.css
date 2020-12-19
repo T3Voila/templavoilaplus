@@ -150,6 +150,11 @@ div.warning a {
     float: unset;
 }
 
+.t3-page-ce.tpm-container-element .tpm-titlebar-fromOtherPage {
+  background-color: #EAEAEA;
+  background-image: -moz-linear-gradient(center top, #888888 10%, #CACACA 100%)
+}
+
 .tpm-localisation-info-table th, .tpm-localisation-info-table td {
   padding: 5px;
 }
