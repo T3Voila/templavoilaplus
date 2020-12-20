@@ -23,7 +23,7 @@
             <f:if condition="{f:count(subject: node.childNodes.sDEF)} > 0">
                 <f:render partial="Backend/Handler/DoktypeDefaultHandler/ChildNodes" arguments="{configuration: configuration, node: node}" />
             </f:if>
-            <f:render partial="Backend/Handler/DoktypeDefaultHandler/PreviewContent" arguments="{node: node}" />
+            <f:render partial="Backend/Handler/DoktypeDefaultHandler/PreviewContent" arguments="{configuration: configuration, node: node}" />
 
             <f:if condition="{f:count(subject: node.localization)} > 0">
                 <table border="0" cellpadding="0" cellspacing="1" width="100%" class="lrPadding tpm-localisation-info-table">
