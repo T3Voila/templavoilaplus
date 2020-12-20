@@ -32,6 +32,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
  */
 final class TemplaVoilaUtility
 {
+    private static $connectionPool = null;
 
     /**
      * @return \TYPO3\CMS\Core\Database\DatabaseConnection
@@ -41,6 +42,15 @@ final class TemplaVoilaUtility
         debug_print_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
         die('PLEASE REWORK TO USE DB API');
         return $GLOBALS['TYPO3_DB'];
+    }
+
+    public static function getConnectionPool(): ConnectionPool
+    {
+        if (static::$connectionPool === null) {
+            static::$connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+        }
+
+        return static::$connectionPool;
     }
 
     /**
@@ -270,13 +280,19 @@ final class TemplaVoilaUtility
         if (!is_array($references)) {
             $references = [];
         }
-        $refrows = static::getDatabaseConnection()->exec_SELECTgetRows(
-            '*',
-            'sys_refindex',
-            'ref_table=' . static::getDatabaseConnection()->fullQuoteStr($element['table'], 'sys_refindex') .
-            ' AND ref_uid=' . (int)$element['uid'] .
-            ' AND deleted=0'
-        );
+
+        $refrows = TemplaVoilaUtility::getConnectionPool()
+            ->getConnectionForTable('sys_refindex')
+            ->select(
+                ['*'],
+                'sys_refindex',
+                [
+                    'ref_table' => $element['table'],
+                    'ref_uid' => (int)$element['uid'],
+                    'deleted' => 0
+                ]
+            )
+            ->fetchAll();
 
         if (is_array($refrows)) {
             foreach ($refrows as $ref) {
