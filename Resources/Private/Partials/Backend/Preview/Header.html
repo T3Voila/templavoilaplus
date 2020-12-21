@@ -1,0 +1,10 @@
+{namespace tvp=Tvp\TemplaVoilaPlus\ViewHelpers}
+
+<f:variable name="itemLabel" value="{tvp:backend.itemLabel(table:'tt_content', fieldName:'header')}" />
+<strong><f:translate key="{itemLabel}" default="{itemLabel}" /></strong>
+<f:format.crop maxCharacters="2000">
+    <tvp:format.wordLength maxCharacters="75">
+        <tvp:format.stripTags whitespace="true">{node.raw.entity.header}</tvp:format.stripTags>
+    </tvp:format.wordLength>
+</f:format.crop>
+
