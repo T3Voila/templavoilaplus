@@ -1,7 +1,13 @@
+{namespace tvp=Tvp\TemplaVoilaPlus\ViewHelpers}
+
 <f:for each="{node.datastructure.sheets.sDEF.ROOT.el}" key="fieldName" as="fieldConfig">
     <f:if condition="{fieldConfig.TCEforms.label}">
         <strong><f:translate key="{fieldConfig.TCEforms.label}" default="{fieldConfig.TCEforms.label}" /></strong>
     </f:if>
-    <f:format.crop maxCharacters="200"><f:format.stripTags>{node.flexform.data.sDEF.lDEF.{fieldName}.vDEF}</f:format.stripTags></f:format.crop>
+    <f:format.crop maxCharacters="2000">
+        <tvp:format.wordLength maxCharacters="75">
+            <tvp:format.stripTags whitespace="true">{node.flexform.data.sDEF.lDEF.{fieldName}.vDEF}</tvp:format.stripTags>
+        </tvp:format.wordLength>
+    </f:format.crop>
     <br>
 </f:for>
