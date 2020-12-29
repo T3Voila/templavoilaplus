@@ -6,8 +6,8 @@ if (TYPO3_MODE === 'BE') {
     $GLOBALS['TYPO3_CONF_VARS']['BE']['ContextMenu']['ItemProviders']['templavoilaplus']
         = \Tvp\TemplaVoilaPlus\ContextMenu\ItemProvider::class;
 
-    $GLOBALS['TBE_MODULES_EXT']['xMOD_db_new_content_el']['addElClasses'][\Tvp\TemplaVoilaPlus\Hooks\WizardItems::class]
-        = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('templavoilaplus') . 'Classes/Hooks/WizardItems.php';
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms']['db_new_content_el']['wizardItemsHook'][\Tvp\TemplaVoilaPlus\Hooks\WizardItems::class]
+        = \Tvp\TemplaVoilaPlus\Hooks\WizardItems::class;
 
     $navigationComponentId = 'TYPO3/CMS/Backend/PageTree/PageTreeElement';
     if (version_compare(TYPO3_version, '9.0.0', '<')) {
@@ -60,8 +60,8 @@ if (TYPO3_MODE === 'BE') {
         ]
     );
 
-    $GLOBALS['TBE_MODULES']['web'] = str_replace(',,', ',', str_replace('layout', '', $GLOBALS['TBE_MODULES']['web']));
-    unset($GLOBALS['TBE_MODULES']['_PATHS']['web_layout']);
+//     $GLOBALS['TBE_MODULES']['web'] = str_replace(',,', ',', str_replace('layout', '', $GLOBALS['TBE_MODULES']['web']));
+//     unset($GLOBALS['TBE_MODULES']['_PATHS']['web_layout']);
 
     // Registering CSH:
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(

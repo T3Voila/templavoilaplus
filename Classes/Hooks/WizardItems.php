@@ -2,85 +2,79 @@
 
 namespace Tvp\TemplaVoilaPlus\Hooks;
 
+use TYPO3\CMS\Backend\Wizard\NewContentElementWizardHookInterface;
 use TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
+use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use Tvp\TemplaVoilaPlus\Service\ConfigurationService;
 use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
-class WizardItems
+class WizardItems implements NewContentElementWizardHookInterface
 {
     /**
-     * Adds the indexed_search pi1 wizard icon
+     * Modifies WizardItems of the NewContentElementWizard array
      *
-     * @param array $wizardItems Input array with wizard items for plugins
-     * @return array Modified input array, having the item for indexed_search pi1 added.
+     * @param array $wizardItems Array of Wizard Items
+     * @param \TYPO3\CMS\Backend\Controller\ContentElement\NewContentElementController $parentObject Parent object New Content element wizard
      */
-    public function proc($wizardItems)
+    public function manipulateWizardItems(&$wizardItems, &$parentObject)
     {
-        $iconRegistry = GeneralUtility::makeInstance(IconRegistry::class);
+        $fceWizardItems = [
+            'fce' =>  [
+                'header' => $this->getLanguageService()->sL('LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf:newContentElementWizard.fce'),
+                'after' => 'common',
+            ]
+        ];
 
-        $apiObj = GeneralUtility::makeInstance(\Tvp\TemplaVoilaPlus\Service\ApiService::class);
+        /** @var ConfigurationService */
+        $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
+        $placesService = $configurationService->getPlacesService();
 
-        // Flexible content elements:
-        $positionPid = (int)GeneralUtility::_GP('id'); // No access to parent, but parent also get it only from _GP
-        $storageFolderPID = $apiObj->getStorageFolderPid($positionPid);
+        $mappingPlaces = $placesService->getAvailablePlacesUsingConfigurationHandlerIdentifier(
+            \Tvp\TemplaVoilaPlus\Handler\Configuration\MappingConfigurationHandler::$identifier
+        );
+        $placesService->loadConfigurationsByPlaces($mappingPlaces);
 
-        $toRepo = GeneralUtility::makeInstance(\Tvp\TemplaVoilaPlus\Domain\Repository\TemplateRepository::class);
-        $toList = $toRepo->getTemplatesByStoragePidAndScope($storageFolderPID, \Tvp\TemplaVoilaPlus\Domain\Model\AbstractDataStructure::SCOPE_FCE);
+        foreach ($mappingPlaces as $mappingPlace) {
+            if ($mappingPlace->getScope() === \Tvp\TemplaVoilaPlus\Domain\Model\Scope::SCOPE_FCE) {
+                $mappingConfigurations = $mappingPlace->getConfigurations();
 
-        foreach ($toList as $toObj) {
-            if ($toObj->hasParentTemplate() && $toObj->getRendertype() !== '') {
-                continue;
-            }
-            $iconIdentifier = '';
+                foreach ($mappingConfigurations as $mappingConfiguration) {
+                    $combinedMappingIdentifier = $mappingPlace->getIdentifier() . ':' . $mappingConfiguration['configuration']->getIdentifier();
+                    $fceWizardItems['fce_' .$combinedMappingIdentifier] = [
+                        'iconIdentifier' => ($iconIdentifier ?: 'extensions-templavoila-template-default'),
+                        'description' => /** @TODO $mappingConfiguration['configuration']->getDescription() ?? */TemplaVoilaUtility::getLanguageService()->getLL('template_nodescriptionavailable'),
+                        'title' => $mappingConfiguration['configuration']->getName(),
+                        'params' => $this->getDataHandlerDefaultValues($combinedMappingIdentifier)
+                    ];
 
-            /** @var \Tvp\TemplaVoilaPlus\Domain\Model\Template $toObj */
-            if ($toObj->isPermittedForUser()) {
-                $tmpFilename = $toObj->getIcon();
-
-                // Create own iconIdentifier
-                if ($tmpFilename && @is_file(GeneralUtility::getFileAbsFileName($tmpFilename))) {
-                    $iconIdentifier = 'fce_' . $toObj->getKey();
-                    $iconRegistry->registerIcon($iconIdentifier, BitmapIconProvider::class, [
-                        'source' => GeneralUtility::resolveBackPath($tmpFilename)
-                    ]);
                 }
-
-                $wizardItems['fce_' . $toObj->getKey()] = [
-                    'iconIdentifier' => ($iconIdentifier ?: 'extensions-templavoila-template-default'),
-                    'description' => $toObj->getDescription()
-                        ? $this->getLanguageService()->sL($toObj->getDescription())
-                        : TemplaVoilaUtility::getLanguageService()->getLL('template_nodescriptionavailable'),
-                    'title' => $toObj->getLabel(),
-                    'params' => $this->getDsDefaultValues($toObj)
-                ];
             }
         }
-
-        return $wizardItems;
+        $wizardItems = $fceWizardItems + $wizardItems;
+        $wizardItems = GeneralUtility::makeInstance(DependencyOrderingService::class)->orderByDependencies($wizardItems);
     }
 
     /**
      * Process the default-value settings
      *
-     * @param \Tvp\TemplaVoilaPlus\Domain\Model\Template $toObj LocalProcessing as array
-     *
-     * @return string additional URL arguments with configured default values
+     * @param string $combinedMappingIdentifier
+     * @return string additional URL arguments with configured default values for DataHandler/TCEForms
      */
-    public function getDsDefaultValues(\Tvp\TemplaVoilaPlus\Domain\Model\Template $toObj)
+    public function getDataHandlerDefaultValues(string $combinedMappingIdentifier)
     {
-        $dsStructure = $toObj->getLocalDataprotArray();
-
         $dsValues = '&defVals[tt_content][CType]=templavoilaplus_pi1'
-            . '&defVals[tt_content][tx_templavoilaplus_ds]='
-            . (!is_numeric($toObj->getDatastructure()->getKey()) ? 'FILE:' : '') . $toObj->getDatastructure()->getKey()
-            . '&defVals[tt_content][tx_templavoilaplus_to]=' . $toObj->getKey();
+            . '&defVals[tt_content][tx_templavoilaplus_map]=' . $combinedMappingIdentifier;
 
-        if (is_array($dsStructure) && is_array($dsStructure['meta']['default']['TCEForms'])) {
-            foreach ($dsStructure['meta']['default']['TCEForms'] as $field => $value) {
-                $dsValues .= '&defVals[tt_content][' . $field . ']=' . $value;
-            }
-        }
+        /** @TODO We should push the DataStructure TCEForms defaults into the values? Or is this processed automagically already? */
+//         $dsStructure = $toObj->getLocalDataprotArray();
+//
+//         if (is_array($dsStructure) && is_array($dsStructure['meta']['default']['TCEForms'])) {
+//             foreach ($dsStructure['meta']['default']['TCEForms'] as $field => $value) {
+//                 $dsValues .= '&defVals[tt_content][' . $field . ']=' . $value;
+//             }
+//         }
 
         return $dsValues;
     }

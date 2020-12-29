@@ -108,6 +108,9 @@
             <trans-unit id="labelLocalizations" xml:space="preserve">
                 <source>Localizations</source>
             </trans-unit>
+            <trans-unit id="newContentElementWizard.fce" xml:space="preserve">
+                <source>FCE</source>
+            </trans-unit>
 
 
         </body>
