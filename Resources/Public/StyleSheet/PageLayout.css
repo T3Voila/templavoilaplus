@@ -232,8 +232,150 @@ div.warning a {
     75% { background-color: #ffd0d0; }
 }
 
+
+
+
+.module-body {
+    height: 100%;
+}
+
+#moduleWrapper {
+    height: 100%;
+}
+
+.tvp-component-sidebar {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    overflow: hidden;
+    padding-top: 65px;
+}
+
+#tvp-component-sidebar-left {
+    width: 0;
+    left: 0;
+    box-shadow: 6px 0px 20px #333;
+}
+
+#tvp-component-sidebar-right {
+    width: 80px;
+    right: 0;
+    box-shadow: -6px 0px 20px #333;
+}
+
+#tvp-component-stage-container {
+    margin-right: 90px;
+    overflow: auto;
+    position: relative;
+    height: 100%;
+    text-align: center;
+}
+
+#tvp-component-stage-container-inner {
+    position: relative;
+    display: inline-block;
+    text-align: left;
+}
+
+/** @TODO default transition only while switching theme? */
+.animationTransition {
+    transition: all 0.5s linear 0s;
+}
+
+#sidenav {
+    padding: 0;
+    height: 100%;
+    position: absolute;
+    background-color: #9c9c9c;
+    right: 0;
+    transform: translateX(0%);
+}
+
+.sidenav-menu {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+    height: 100%;
+}
+
+.sidenav-item {
+    color: #198734;
+    background-color: #eeeeee;
+    border: 1px solid #9c9c9c;
+}
+
+.sidenav-item-blue {
+    color: #0d6efd;
+}
+
+.sidenav-item-trash {
+    color: #dc3545;
+    margin-top: 10px;
+}
+
+.sidenav-item-config {
+    color: #ffc107;
+}
+
+.sidenav-item:hover {
+    background-color: #d7d7d7;;
+}
+
+.sidenav-item div {
+    margin: 24px
+}
+
 .tvp-loading-spinner {
     width: 150px;
     margin: 5em auto 0;
     text-align: center;
+}
+
+.tvp-tooltip-templates {
+    display: none;
+}
+
+
+/** DARK MODE **/
+
+.dark-mode-on #sidenav {
+    background-color: #2d2d2d;
+}
+
+.dark-mode-on .sidenav-item {
+    background-color: #393939;
+    border-color: #2d2d2d;
+}
+
+.dark-mode-on .sidenav-item:hover {
+    background-color: #aaaaaa;
+}
+
+/** TYPO3 Module Elements **/
+.dark-mode-on .module-body {
+    background-color: #666;
+}
+
+.dark-mode-on .module-docheader {
+    border: none;
+    background-color: #2D2D2D;
+    color: #ffffff;
+}
+
+.dark-mode-on .t3-page-column-header,
+.dark-mode-on .t3-page-ce .t3-page-ce-header {
+    background-color: #393939;
+    color: #999;
+    border: none;
+}
+
+.dark-mode-on .t3-page-ce .t3-page-ce-body {
+    background-color: #666666;
+}
+
+.dark-mode-on .btn-default,
+.dark-mode-on .btn-light {
+    background-color: #393939;
+    border-color: #999;
+    color: #999;
 }

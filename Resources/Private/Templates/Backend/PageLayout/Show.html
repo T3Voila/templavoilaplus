@@ -1,8 +1,13 @@
 {namespace core = TYPO3\CMS\Core\ViewHelpers}
 <f:be.pageRenderer
     pageTitle="TemplaVoilà! Plus"
-    includeCssFiles="{0: '{f:uri.resource(path: \'StyleSheet/PageLayout.css\', extensionName: \'templavoilaplus\')}'}"
-    includeRequireJsModules="{PageLayout: 'TYPO3/CMS/Templavoilaplus/PageLayout', Modal:'TYPO3/CMS/Backend/Modal', ContextMenu:'TYPO3/CMS/Backend/ContextMenu', Tooltip: 'TYPO3/CMS/Backend/Tooltip'}"
+    includeCssFiles="{0: '{f:uri.resource(path: \'StyleSheet/PageLayout.css\', extensionName: \'templavoilaplus\')}', 1: '{f:uri.resource(path: \'StyleSheet/Tooltipster.css\', extensionName: \'templavoilaplus\')}'}"
+    includeRequireJsModules="{
+        PageLayout: 'TYPO3/CMS/Templavoilaplus/PageLayout',
+        Modal:'TYPO3/CMS/Backend/Modal',
+        ContextMenu:'TYPO3/CMS/Backend/ContextMenu',
+        Tooltip: 'TYPO3/CMS/Backend/Tooltip'
+    }"
 />
 
 <div id="moduleLoadingIndicator" data-identifier="moduleLoadingIndicator" class="tvp-loading-spinner">
@@ -10,26 +15,27 @@
     <div class="tvp-loading-spinner-label"><f:translate key="LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.loading" /></div>
 </div>
 
-<div id="moduleWrapper" data-identifier="moduleWrapper" class="hidden">
 
-    <section id="tvp-component-sidebar-left" class="tvp-component" data-identifier="tvpComponentSidebarLeft">
-        <f:render section="SidebarContentTree" />
-    </section>
-    <section id="tvp-component-stage-container" data-identifier="tvpComponentStageContainer">
-        <div id="tvp-component-stage-container-inner" data-identifier="tvpComponentStageContainerInner">
-            <header id="tvp-component-stage-header">
-                <f:render section="Header"  arguments="{_all}" />
-            </header>
-            <div id="tvp-component-stage-content">
-                <f:render section="Stage"  arguments="{_all}" />
+    <div id="moduleWrapper" data-identifier="moduleWrapper" class="hidden">
+
+        <section id="tvp-component-sidebar-left" class="tvp-component-sidebar" data-identifier="tvpComponentSidebarLeft">
+            <f:render section="SidebarContentTree" />
+        </section>
+        <section id="tvp-component-stage-container" data-identifier="tvpComponentStageContainer">
+            <div id="tvp-component-stage-container-inner" data-identifier="tvpComponentStageContainerInner">
+                <header id="tvp-component-stage-header">
+                    <f:render section="Header"  arguments="{_all}" />
+                </header>
+                <div id="tvp-component-stage-content">
+                    <f:render section="Stage"  arguments="{_all}" />
+                </div>
             </div>
-        </div>
-    </section>
-    <section id="tvp-component-sidebar-right" class="tvp-component" data-identifier="tvpComponentSidebarLeft">
-        <f:render section="Inspector" />
-    </section>
+        </section>
+        <section id="tvp-component-sidebar-right" class="tvp-component-sidebar" data-identifier="tvpComponentSidebarLeft">
+            <f:render section="SidebarContentManipulation" />
+        </section>
 
-</div>
+    </div>
 
 <f:section name="Header">
 
@@ -38,6 +44,7 @@
 </f:section>
 
 <f:section name="SidebarContentTree">
+
     <div class="inner">
         <div id="tvpContentTree" class="contentTree" data-identifier="tvpContentTree"></div>
     </div>
@@ -55,9 +62,54 @@
 
 </f:section>
 
-<f:section name="Inspector">
-
+<f:section name="SidebarContentManipulation">
     <div class="inner">
+        <div id="tvpContentIntegrator" data-identifier="tvpContentIntegrator">
+            <nav id="sidenav">
+                <ul class="sidenav-menu">
+                    <li class="sidenav-item">
+                        <div>
+                            <core:icon identifier="actions-document-add" size="default" />
+                        </div>
+                    </li>
+                    <li class="sidenav-item">
+                        <div>
+                            <core:icon identifier="actions-clipboard" size="default" />
+                        </div>
+                    </li>
+                    <li class="sidenav-item sidenav-item-blue">
+                        <div>
+                            <core:icon identifier="actions-template-new" size="default" />
+                        </div>
+                    </li>
+                    <li class="sidenav-item">
+                        <div>
+                            <core:icon identifier="actions-message-add" size="default" />
+                        </div>
+                    </li>
+                    <li class="sidenav-item sidenav-item-trash">
+                        <div>
+                            <core:icon identifier="actions-delete" size="default" />
+                        </div>
+                    </li>
+                    <li class="sidenav-item sidenav-item-config" id="navbarConfig" data-tooltip-content="#navbarConfigTooltip">
+                        <div>
+                            <core:icon identifier="actions-cog-alt" size="default" />
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="tvp-tooltip-templates">
+            <div id="navbarConfigTooltip">
+                <div class="form-check checkbox-type-toggle">
+                    <input type="checkbox" class="form-check-input" value="1" id="dark-mode-switch">
+                    <label class="form-check-label" for="dark-mode-switch">
+                        <span class="checkbox-label-text">&nbsp; Dark Mode</span>
+                    </label>
+                </div>
+            </div>
+        </div>
         <div id="tvpContentInspector" data-identifier="tvpContentInspector"></div>
     </div>
 
