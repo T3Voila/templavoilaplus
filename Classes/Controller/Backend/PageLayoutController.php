@@ -317,10 +317,8 @@ class PageLayoutController extends ActionController
      */
     protected function registerDocheaderButtons()
     {
-        $coreLangFile = 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:';
-        if (version_compare(TYPO3_version, '9.0.0', '>=')) {
-            $coreLangFile = 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:';
-        }
+        $coreLangFile = 'LLL:EXT:' . TemplaVoilaUtility::getCoreLangPath() . 'locallang_core.xlf:';
+
         // View page
         $this->addDocHeaderButton(
             'view',
