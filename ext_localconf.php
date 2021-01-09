@@ -16,9 +16,6 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Backend\Tree\View\Conte
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Backend\Tree\View\PagePositionMap::class]['className']
     = \Tvp\TemplaVoilaPlus\Xclass\PagePositionMap::class;
 
-$GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Backend\Controller\ContentElement\NewContentElementController::class]['className']
-    = \Tvp\TemplaVoilaPlus\Xclass\NewContentElementController::class;
-
 // Language diff updating in flex
 $GLOBALS['TYPO3_CONF_VARS']['BE']['flexFormXMLincludeDiffBase'] = true;
 

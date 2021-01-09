@@ -67,7 +67,6 @@ EXT: TemplaVoilà! Plus
    Introduction/Index
    Migration/Index
    SiteDevelopersManual/Index
-   NewContentElementWizard/Index
    ExtensionProgrammersManual/Index
    TemplavoilaApiForExtensionDevelopers/Index
    T3datastructureExtensions/Index
