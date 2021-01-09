@@ -1,7 +1,8 @@
 define([
+    'bootstrap',
     'jquery',
     'TYPO3/CMS/Templavoilaplus/Tooltipster'
-], function($) {
+], function(bootstrap, $, Tooltipster) {
     'use strict';
     /**
      * @exports Tvp/TemplaVoilaPlus/PageLayout
@@ -13,6 +14,7 @@ define([
      * Initialize
      */
     PageLayout.initialize = function() {
+
         // Check for Dark Mode
         var settings = $('#moduleWrapper').data('tvpSettings');
         if (settings.userSettings.enableDarkMode) {
@@ -30,6 +32,7 @@ define([
             updateAnimation: 'scale',
             side: 'left',
             interactive: true,
+            trackTooltip: true,
             trigger: 'click',
             content: 'Loading...',
             contentAsHTML: true,

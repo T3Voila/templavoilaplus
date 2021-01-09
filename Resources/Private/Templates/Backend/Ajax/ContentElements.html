@@ -1,0 +1,26 @@
+{namespace core = TYPO3\CMS\Core\ViewHelpers}
+<div>
+    <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <f:for each="{contentElementsConfig}" as="section" key="sectionKey">
+                <a class="nav-link" id="nav-{sectionKey}-tab" data-toggle="tab" href="#nav-{sectionKey}" role="tab" aria-controls="nav-{sectionKey}" aria-selected="false">{section.label}</a>
+            </f:for>
+        </div>
+    </nav>
+    <div class="tab-content" id="nav-tabContent">
+        <f:for each="{contentElementsConfig}" as="section" key="sectionKey">
+            <div class="tab-pane" id="nav-{sectionKey}" role="tabpanel" aria-labelledby="nav-{sectionKey}-tab">
+                <f:for each="{section.contentElements}" as="contentElement" key="contentElementKey">
+                    <core:icon identifier="{contentElement.iconIdentifier}" size="default" /><br />
+                </f:for>
+            </div>
+        </f:for>
+    </div>
+</div>
+
+<script>
+    $('#nav-tab a').on('click', function (e) {
+        e.preventDefault()
+        $(this).tab('show')
+    })
+</script>

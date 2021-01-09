@@ -32,7 +32,7 @@ return [
     'templavoilaplus_contentElementWizard' => [
         'path' => '/templavoilaplus/contentElementWizard',
         'access' => 'user,group',
-        'target' => \TYPO3\CMS\Backend\Controller\ContentElement\NewContentElementController::class . '::wizardAction',
+        'target' => \Tvp\TemplaVoilaPlus\Controller\Backend\Ajax\ContentElements::class . '::wizardAction',
     ],
     'templavoilaplus_usersettings_enableDarkMode' => [
         'path' => '/templavoilaplus/usersettings/enableDarkMode',

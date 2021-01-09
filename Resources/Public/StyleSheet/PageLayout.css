@@ -344,6 +344,15 @@ div.warning a {
 }
 
 /** Tooltipster own light mode */
+
+/** Fix issue with trackingTooltip option, it can't see resizing as it gets a max-size */
+.tooltipster-sidetip .tooltipster-content {
+    max-height: none;
+}
+.tooltipster-sidetip .tooltipster-box {
+    overflow: hidden;
+}
+
 .tooltipster-sidetip .tooltipster-box {
     border-radius: 4px;
     border: 1px solid #2d2d2d;
