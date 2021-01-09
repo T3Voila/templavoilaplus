@@ -13,9 +13,34 @@ define([
      * Initialize
      */
     PageLayout.initialize = function() {
-        $('#moduleWrapper').removeClass('hidden');
-        $('#moduleLoadingIndicator').addClass('hidden');
-
+        $('#navbarContentElementWizard').tooltipster({
+            theme: 'tooltipster-noir',
+            updateAnimation: 'scale',
+            side: 'left',
+            interactive: true,
+            trigger: 'click',
+            content: 'Loading...',
+            contentAsHTML: true,
+            functionBefore: function(instance, helper) {
+                if (!$('#moduleWrapper').data('loadedContentElementWizard')) {
+                    $('#moduleWrapper').data('loadedContentElementWizard', true);
+                    $.ajax({
+                        type: 'POST',
+                        data: {
+                            id: $('#moduleWrapper').data('tvpPageId')
+                        },
+                        url: TYPO3.settings.ajaxUrls['templavoilaplus_contentElementWizard'],
+                        success: function(data) {
+                            instance.content(data);
+                        },
+                        error: function(XMLHttpRequest, textStatus, errorThrown) {
+                            instance.content('Request failed because of error: ' + textStatus);
+                            $('#moduleWrapper').data('loadedContentElementWizard', false);
+                        }
+                    });
+                }
+            }
+        });
         $('#navbarConfig').tooltipster({
             theme: 'tooltipster-noir',
             side: 'left',
@@ -41,6 +66,9 @@ define([
                 }, 500);
             }
         });
+
+        $('#moduleWrapper').removeClass('hidden');
+        $('#moduleLoadingIndicator').addClass('hidden');
     }
 
     $(PageLayout.initialize);
