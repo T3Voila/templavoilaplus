@@ -34,6 +34,11 @@ return [
         'access' => 'user,group',
         'target' => \TYPO3\CMS\Backend\Controller\ContentElement\NewContentElementController::class . '::wizardAction',
     ],
+    'templavoilaplus_usersettings_enableDarkMode' => [
+        'path' => '/templavoilaplus/usersettings/enableDarkMode',
+        'access' => 'user,group',
+        'target' => \Tvp\TemplaVoilaPlus\Controller\Backend\Ajax\UserSettings::class . '::enableDarkMode',
+    ],
 
     // Overwrite from core
     // Fetch the tree-structured data from a record for the tree selection

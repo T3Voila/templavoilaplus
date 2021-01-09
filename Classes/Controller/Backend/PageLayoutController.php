@@ -223,6 +223,7 @@ class PageLayoutController extends ActionController
                 'allAvailableLanguages' => $this->allAvailableLanguages,
                 'lllFile' => 'LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf',
                 'clipboard' => $this->clipboard2fluid(),
+                'userSettings' => TemplaVoilaUtility::getBackendUser()->uc['templavoilaplus'] ?? [],
             ]
         );
 

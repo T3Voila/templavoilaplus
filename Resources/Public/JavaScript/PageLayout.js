@@ -13,11 +13,19 @@ define([
      * Initialize
      */
     PageLayout.initialize = function() {
+        // Check for Dark Mode
+        var settings = $('#moduleWrapper').data('tvpSettings');
+        if (settings.userSettings.enableDarkMode) {
+            $('body').addClass('dark-mode-on');
+        }
+        // Enable Sidebar Elements
         if ($('#moduleWrapper').data('tvpPageEditRights')
             && $('#moduleWrapper').data('tvpPageDokType') === 1
         ) {
             $('#navbarContentElementWizard').removeClass('disabled');
         }
+
+        // Add tooltip functionality to Sidebar
         $('#navbarContentElementWizard:not(.disabled)').tooltipster({
             updateAnimation: 'scale',
             side: 'left',
@@ -56,6 +64,7 @@ define([
                 setTimeout(() => {
                     $('body').addClass('dark-mode-on');
                 }, 150);
+                $.get(TYPO3.settings.ajaxUrls['templavoilaplus_usersettings_enableDarkMode'], {enable: 1});
                 setTimeout(() => {
                     $('body').removeClass('animationTransition');
                 }, 500);
@@ -64,6 +73,7 @@ define([
                 setTimeout(() => {
                     $('body').removeClass('dark-mode-on');
                 }, 150);
+                $.get(TYPO3.settings.ajaxUrls['templavoilaplus_usersettings_enableDarkMode'], {enable: 0});
                 setTimeout(() => {
                     $('body').removeClass('animationTransition');
                 }, 500);
