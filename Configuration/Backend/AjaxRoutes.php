@@ -29,6 +29,11 @@ return [
         'access' => 'user,group',
         'target' => \Tvp\TemplaVoilaPlus\Module\Cm1\Ajax::class . '::getDisplayFileContent',
     ],
+    'templavoilaplus_contentElementWizard' => [
+        'path' => '/templavoilaplus/contentElementWizard',
+        'access' => 'user,group',
+        'target' => \TYPO3\CMS\Backend\Controller\ContentElement\NewContentElementController::class . '::wizardAction',
+    ],
 
     // Overwrite from core
     // Fetch the tree-structured data from a record for the tree selection
