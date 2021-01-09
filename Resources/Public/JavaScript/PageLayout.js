@@ -14,7 +14,6 @@ define([
      */
     PageLayout.initialize = function() {
         $('#navbarContentElementWizard').tooltipster({
-            theme: 'tooltipster-noir',
             updateAnimation: 'scale',
             side: 'left',
             interactive: true,
@@ -42,7 +41,6 @@ define([
             }
         });
         $('#navbarConfig').tooltipster({
-            theme: 'tooltipster-noir',
             side: 'left',
             interactive: true,
             trigger: 'click'

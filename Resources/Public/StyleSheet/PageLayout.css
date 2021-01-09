@@ -318,7 +318,7 @@ div.warning a {
 }
 
 .sidenav-item:hover {
-    background-color: #d7d7d7;;
+    background-color: #d7d7d7;
 }
 
 .sidenav-item div {
@@ -335,6 +335,82 @@ div.warning a {
     display: none;
 }
 
+/** Tooltipster own light mode */
+.tooltipster-sidetip .tooltipster-box {
+    border-radius: 4px;
+    border: 1px solid #2d2d2d;
+    background: #eeeeee;
+}
+
+.tooltipster-sidetip .tooltipster-content {
+    color: #333333;
+}
+
+.tooltipster-sidetip .tooltipster-arrow {
+    height: 9px;
+    margin-left: -9px;
+    width: 18px;
+}
+
+.tooltipster-sidetip.tooltipster-left .tooltipster-arrow,
+.tooltipster-sidetip.tooltipster-right .tooltipster-arrow {
+    height: 18px;
+    margin-left: 0;
+    margin-top: -9px;
+    width: 9px;
+}
+
+.tooltipster-sidetip .tooltipster-arrow-background {
+    border: 9px solid transparent;
+}
+
+.tooltipster-sidetip.tooltipster-bottom .tooltipster-arrow-background {
+    border-bottom-color: #eeeeee;
+    top: 1px;
+}
+
+.tooltipster-sidetip.tooltipster-left .tooltipster-arrow-background {
+    border-left-color: #eeeeee;
+    left: -1px;
+}
+
+.tooltipster-sidetip.tooltipster-right .tooltipster-arrow-background {
+    border-right-color: #eeeeee;
+    left: 1px;
+}
+
+.tooltipster-sidetip.tooltipster-top .tooltipster-arrow-background {
+    border-top-color: #eeeeee;
+    top: -1px;
+}
+
+.tooltipster-sidetip .tooltipster-arrow-border {
+    border: 9px solid transparent;
+}
+
+.tooltipster-sidetip.tooltipster-bottom .tooltipster-arrow-border {
+    border-bottom-color: #2d2d2d;
+}
+
+.tooltipster-sidetip.tooltipster-left .tooltipster-arrow-border {
+    border-left-color: #2d2d2d;
+}
+
+.tooltipster-sidetip.tooltipster-right .tooltipster-arrow-border {
+    border-right-color: #2d2d2d;
+}
+
+.tooltipster-sidetip.tooltipster-top .tooltipster-arrow-border {
+    border-top-color: #2d2d2d;
+}
+
+.tooltipster-sidetip.tooltipster-bottom .tooltipster-arrow-uncropped {
+    top: -9px;
+}
+
+.tooltipster-sidetip.tooltipster-right .tooltipster-arrow-uncropped {
+    left: -9px;
+}
 
 /** DARK MODE **/
 
@@ -358,7 +434,7 @@ div.warning a {
 
 .dark-mode-on .module-docheader {
     border: none;
-    background-color: #2D2D2D;
+    background-color: #2d2d2d;
     color: #ffffff;
 }
 
@@ -378,4 +454,46 @@ div.warning a {
     background-color: #393939;
     border-color: #999;
     color: #999;
+}
+
+/** Tooltipster own dark mode */
+.dark-mode-on .tooltipster-sidetip .tooltipster-box {
+    border: 1px solid #999;
+    background: #393939;
+}
+
+.dark-mode-on .tooltipster-sidetip .tooltipster-content {
+    color: #ffffff;
+}
+
+.dark-mode-on .tooltipster-sidetip.tooltipster-bottom .tooltipster-arrow-background {
+    border-bottom-color: #393939;
+}
+
+.dark-mode-on .tooltipster-sidetip.tooltipster-left .tooltipster-arrow-background {
+    border-left-color: #393939;
+}
+
+.dark-mode-on .tooltipster-sidetip.tooltipster-right .tooltipster-arrow-background {
+    border-right-color: #393939;
+}
+
+.dark-mode-on .tooltipster-sidetip.tooltipster-top .tooltipster-arrow-background {
+    border-top-color: #393939;
+}
+
+.dark-mode-on .tooltipster-sidetip.tooltipster-bottom .tooltipster-arrow-border {
+    border-bottom-color: #999;
+}
+
+.dark-mode-on .tooltipster-sidetip.tooltipster-left .tooltipster-arrow-border {
+    border-left-color: #999;
+}
+
+.dark-mode-on .tooltipster-sidetip.tooltipster-right .tooltipster-arrow-border {
+    border-right-color: #999;
+}
+
+.dark-mode-on .tooltipster-sidetip.tooltipster-top .tooltipster-arrow-border {
+    border-top-color: #999;
 }
