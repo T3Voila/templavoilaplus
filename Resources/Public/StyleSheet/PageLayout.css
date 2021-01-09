@@ -304,6 +304,14 @@ div.warning a {
     border: 1px solid #9c9c9c;
 }
 
+.sidenav-item.disabled {
+    background-color: #9c9c9c;
+}
+
+.sidenav-item.disabled > div {
+    filter: grayscale(0.7) blur(0.5px);
+}
+
 .sidenav-item-blue {
     color: #0d6efd;
 }
@@ -317,7 +325,7 @@ div.warning a {
     color: #ffc107;
 }
 
-.sidenav-item:hover {
+.sidenav-item:hover:not(.disabled) {
     background-color: #d7d7d7;
 }
 
@@ -423,7 +431,11 @@ div.warning a {
     border-color: #2d2d2d;
 }
 
-.dark-mode-on .sidenav-item:hover {
+.dark-mode-on .sidenav-item.disabled {
+    background-color: #2d2d2d;
+}
+
+.dark-mode-on .dark-mode-on .sidenav-item:hover:not(.disabled) {
     background-color: #aaaaaa;
 }
 

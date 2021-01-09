@@ -13,7 +13,12 @@ define([
      * Initialize
      */
     PageLayout.initialize = function() {
-        $('#navbarContentElementWizard').tooltipster({
+        if ($('#moduleWrapper').data('tvpPageEditRights')
+            && $('#moduleWrapper').data('tvpPageDokType') === 1
+        ) {
+            $('#navbarContentElementWizard').removeClass('disabled');
+        }
+        $('#navbarContentElementWizard:not(.disabled)').tooltipster({
             updateAnimation: 'scale',
             side: 'left',
             interactive: true,

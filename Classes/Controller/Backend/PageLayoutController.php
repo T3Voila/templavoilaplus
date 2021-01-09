@@ -211,6 +211,7 @@ class PageLayoutController extends ActionController
         $this->view->assign('pageId', $this->pageId);
         $this->view->assign('pageInfo', $this->pageInfo);
         $this->view->assign('pageTitle', $pageTitle);
+        $this->view->assign('pageDoktype', $activePage['doktype']);
 
         $this->view->assign('calcPerms', $this->calcPerms);
         $this->view->assign('basicEditRights', $this->hasBasicEditRights());
