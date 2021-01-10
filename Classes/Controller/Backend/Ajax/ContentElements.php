@@ -21,6 +21,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Http\HtmlResponse;
+use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
@@ -104,9 +105,20 @@ class ContentElements
                     if (isset($overwrite['unset']) && $overwrite['unset']) {
                         unset($newContentElementsConfig[$tabKey]);
                     }
+                    // Manage ordering before
+                    if (isset($overwrite['before'])) {
+                        $newContentElementsConfig[$tabKey]['before'] = $overwrite['before'];
+                    }
+                    // Manage ordering before
+                    if (isset($overwrite['after'])) {
+                        $newContentElementsConfig[$tabKey]['after'] = $overwrite['after'];
+                    }
                 }
             }
         }
+
+        $newContentElementsConfig = GeneralUtility::makeInstance(DependencyOrderingService::class)
+            ->orderByDependencies($newContentElementsConfig);
 
         return $newContentElementsConfig;
     }
