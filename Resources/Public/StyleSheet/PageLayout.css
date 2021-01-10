@@ -239,6 +239,17 @@ div.warning a {
     height: 100%;
 }
 
+#moduleShadowing {
+    background-color: #000;
+    opacity: 0.7;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    z-index: 999999;
+    top: 0;
+    left: 0;
+}
+
 #moduleWrapper {
     height: 100%;
 }

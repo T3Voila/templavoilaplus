@@ -37,6 +37,7 @@ define([
             content: 'Loading...',
             contentAsHTML: true,
             functionBefore: function(instance, helper) {
+                $('#moduleShadowing').removeClass('hidden');
                 if (!$('#moduleWrapper').data('loadedContentElementWizard')) {
                     $('#moduleWrapper').data('loadedContentElementWizard', true);
                     $.ajax({
@@ -54,12 +55,22 @@ define([
                         }
                     });
                 }
+            },
+            functionAfter: function(instance, helper) {
+                $('#moduleShadowing').addClass('hidden');
             }
         });
         $('#navbarConfig').tooltipster({
             side: 'left',
             interactive: true,
-            trigger: 'click'
+            trigger: 'click',
+            functionBefore: function(instance, helper) {
+                $('#moduleShadowing').removeClass('hidden');
+            },
+            functionAfter: function(instance, helper) {
+                $('#moduleShadowing').addClass('hidden');
+            }
+
         });
         $('#dark-mode-switch').change(function() {
             if (this.checked) {
@@ -85,6 +96,7 @@ define([
 
         $('#moduleWrapper').removeClass('hidden');
         $('#moduleLoadingIndicator').addClass('hidden');
+        $('#moduleShadowing').addClass('hidden');
     }
 
     $(PageLayout.initialize);
