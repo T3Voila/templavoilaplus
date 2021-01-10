@@ -25,17 +25,25 @@ use Tvp\TemplaVoilaPlus\Domain\Model\Place;
 
 class ConfigurationService implements SingletonInterface
 {
+    /** @var bool Is true when singleton was initialized. Internal use only */
+    private $isInitialized = false;
+
     /** @var array Global extension configuration */
     private $extConfig = [];
 
-    /** @var array Holds a collection of all available registered renderer */
+    /** @var array Is a register for available renderer */
     private $availableRenderer = [];
 
-    private $isInitialized = false;
+    /** @var array Is a register for available handlers */
+    private $availableHandler = [];
 
-    /**
-     * @var array
-     */
+    /** @var array Is a register for changes to the NewContentElementWizard */
+    private $newContentElementWizardConfiguration = [
+        'overwrites' => [],
+        'simpleView' => [],
+    ];
+
+    /** @var array Settings for the Form extension */
     protected $formSettings;
 
     public function __construct()
@@ -164,6 +172,7 @@ class ConfigurationService implements SingletonInterface
      */
     public function getHandler(string $handlerIdentifier)
     {
+        $this->initialize();
         if (!isset($this->availableHandler[$handlerIdentifier])) {
             throw new \Exception('Handler with identifier "' . $handlerIdentifier . '" do not exist');
         }
@@ -172,10 +181,11 @@ class ConfigurationService implements SingletonInterface
 
     public function getAvailableHandlers()
     {
+        $this->initialize();
         return $this->availableHandler;
     }
 
-    public function mustExistsAndImplements(string $class, string $implements): bool
+    private function mustExistsAndImplements(string $class, string $implements): bool
     {
         $interfaces = @class_implements($class);
 
@@ -189,5 +199,16 @@ class ConfigurationService implements SingletonInterface
         }
 
         return true;
+    }
+
+    public function getNewContentElementWizardConfiguration(): array
+    {
+        $this->initialize();
+        return $this->newContentElementWizardConfiguration;
+    }
+
+    public function setNewContentElementWizardConfiguration(array $newContentElementWizardConfiguration): void
+    {
+        $this->newContentElementWizardConfiguration = $newContentElementWizardConfiguration;
     }
 }

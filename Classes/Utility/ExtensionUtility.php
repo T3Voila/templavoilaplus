@@ -47,9 +47,11 @@ class ExtensionUtility implements SingletonInterface
      */
     public static function handleAllExtensions()
     {
-        // Extending TV+
         foreach (self::$registeredExtensions as $extensionKey => $path) {
+            // Extending TV+
             self::loadExtending($path);
+            // Overwrite NewContentElementWizard
+            self::loadNewContentElementWizardConfiguration($path);
         }
         // Temnplating TV+
         foreach (self::$registeredExtensions as $extensionKey => $path) {
@@ -148,7 +150,6 @@ class ExtensionUtility implements SingletonInterface
      */
     protected static function loadExtending($path)
     {
-        $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
         $extending = self::getFileContentArray($path . '/Extending.php');
         if (isset($extending['renderHandler'])) {
             self::registerHandler(
@@ -169,6 +170,7 @@ class ExtensionUtility implements SingletonInterface
             );
         }
     }
+
     protected static function registerHandler(array $handlerConfigurations, string $implementorsInterface)
     {
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
@@ -180,6 +182,36 @@ class ExtensionUtility implements SingletonInterface
                 $implementorsInterface
             );
         }
+    }
+
+
+    /**
+     * Loads the Extending.php inside the extension path and registers dataStructureHandler
+     * @param string $path
+     * @internal
+     * @return void
+     */
+    protected static function loadNewContentElementWizardConfiguration($path)
+    {
+        /** @var ConfigurationService */
+        $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
+        $configNew = self::getFileContentArray($path . '/NewContentElementWizard.php');
+        $configExisting = $configurationService->getNewContentElementWizardConfiguration();
+
+        if (isset($configNew['overwrites'])) {
+            $configExisting['overwrites'] = array_merge_recursive(
+                $configExisting['overwrites'],
+                $configNew['overwrites']
+            );
+        }
+        if (isset($configNew['simpleView'])) {
+            $configExisting['simpleView'] = array_merge_recursive(
+                $configExisting['simpleView'],
+                $configNew['simpleView']
+            );
+        }
+
+        $configurationService->setNewContentElementWizardConfiguration($configExisting);
     }
 
     /**

@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
+use Tvp\TemplaVoilaPlus\Service\ConfigurationService;
 
 class ContentElements
 {
@@ -53,6 +54,13 @@ class ContentElements
         return $extended->getWizardsByRequest($request);
     }
 
+    /**
+     * Converts the wizards array from TYPO3 Cores NewContentElementWizard into a better manageable array with
+     * subarray. The overrides and simpleView can be handled better inside.
+     *
+     * @param array The array result from getWizards with wizardItemsHook
+     * @result array An array with the contentElements as subArray inside the "tabs" elements
+     */
     private function convertContentElementsWizardArray(array $contentElements): array
     {
         $contentElementsConfig = [];
@@ -74,9 +82,33 @@ class ContentElements
         return $contentElementsConfig;
     }
 
+    /**
+     * Modiefies our contentElementsConfiguration array with the overwrites and SimpleView values from
+     * the "Theme" extension configurations.
+     *
+     * @param array Our contentElementsConfiguration
+     * @result array The updated/manipulated contentElementsConfiguration
+     */
     private function modifyContentElementsConfig(array $contentElementsConfig): array
     {
-        return $contentElementsConfig;
+        /** @var ConfigurationService */
+        $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
+        $newContentElementWizardConfiguration = $configurationService->getNewContentElementWizardConfiguration();
+
+        $newContentElementsConfig = $contentElementsConfig;
+
+        if (isset($newContentElementWizardConfiguration['overwrites'])) {
+            foreach($newContentElementWizardConfiguration['overwrites'] as $tabKey => $overwrite) {
+                if (isset($contentElementsConfig[$tabKey])) {
+                    // Manage unset of an tab/menu
+                    if (isset($overwrite['unset']) && $overwrite['unset']) {
+                        unset($newContentElementsConfig[$tabKey]);
+                    }
+                }
+            }
+        }
+
+        return $newContentElementsConfig;
     }
 
     /**

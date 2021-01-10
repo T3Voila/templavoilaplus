@@ -29,7 +29,7 @@ define([
 
         // Add tooltip functionality to Sidebar
         $('#navbarContentElementWizard:not(.disabled)').tooltipster({
-            updateAnimation: 'scale',
+            updateAnimation: false,
             side: 'left',
             interactive: true,
             trackTooltip: true,
