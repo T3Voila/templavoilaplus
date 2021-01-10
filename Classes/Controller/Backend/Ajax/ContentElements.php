@@ -87,6 +87,8 @@ class ContentElements
      * Modiefies our contentElementsConfiguration array with the overwrites and SimpleView values from
      * the "Theme" extension configurations.
      *
+     * @TODO Refactor to lower complexity/possible bug rate
+     *
      * @param array Our contentElementsConfiguration
      * @result array The updated/manipulated contentElementsConfiguration
      */
@@ -100,25 +102,58 @@ class ContentElements
 
         if (isset($newContentElementWizardConfiguration['overwrites'])) {
             foreach($newContentElementWizardConfiguration['overwrites'] as $tabKey => $overwrite) {
-                if (isset($contentElementsConfig[$tabKey])) {
-                    // Manage unset of an tab/menu
-                    if (isset($overwrite['unset']) && $overwrite['unset']) {
-                        unset($newContentElementsConfig[$tabKey]);
-                    }
-                    // Manage ordering before
-                    if (isset($overwrite['before'])) {
-                        $newContentElementsConfig[$tabKey]['before'] = $overwrite['before'];
-                    }
-                    // Manage ordering before
-                    if (isset($overwrite['after'])) {
-                        $newContentElementsConfig[$tabKey]['after'] = $overwrite['after'];
+                if (!isset($contentElementsConfig[$tabKey])) {
+                    $newContentElementsConfig[$tabKey] = [
+                        'label' => $tabKey,
+                    ];
+                }
+                // Manage unset of an tab/menu
+                if (isset($overwrite['unset']) && $overwrite['unset']) {
+                    unset($newContentElementsConfig[$tabKey]);
+                }
+                // Manage ordering before
+                if (isset($overwrite['before'])) {
+                    $newContentElementsConfig[$tabKey]['before'] = $overwrite['before'];
+                }
+                // Manage ordering before
+                if (isset($overwrite['after'])) {
+                    $newContentElementsConfig[$tabKey]['after'] = $overwrite['after'];
+                }
+                // Manage move
+                if (isset($overwrite['move'])) {
+                    foreach($overwrite['move'] as $elementKey => $position) {
+                        if (isset($newContentElementsConfig[$tabKey]['contentElements'][$elementKey])) {
+                            // Put into new position
+                            $contentElementConfig = $newContentElementsConfig[$tabKey]['contentElements'][$elementKey];
+
+                            if (isset($position['before'])) {
+                                $contentElementConfig['before'] = $position['before'];
+                            }
+                            if (isset($position['after'])) {
+                                $contentElementConfig['after'] = $position['after'];
+                            }
+
+                            $newContentElementsConfig[$position['tab']]['contentElements'][$elementKey] = $contentElementConfig;
+                            unset($newContentElementsConfig[$tabKey]['contentElements'][$elementKey]);
+                        }
                     }
                 }
             }
         }
 
-        $newContentElementsConfig = GeneralUtility::makeInstance(DependencyOrderingService::class)
-            ->orderByDependencies($newContentElementsConfig);
+        /** @var DependencyOrderingService */
+        $dependencyOrderingService = GeneralUtility::makeInstance(DependencyOrderingService::class);
+        $newContentElementsConfig = $dependencyOrderingService->orderByDependencies($newContentElementsConfig);
+
+        // Do dependency ordering inside the tabs or unset tab if empty */
+        foreach ($newContentElementsConfig as $tabKey => $tabConfig) {
+            if (count($newContentElementsConfig[$tabKey]['contentElements']) === 0) {
+                unset($newContentElementsConfig[$tabKey]);
+            } else {
+                $newContentElementsConfig[$tabKey]['contentElements']
+                    = $dependencyOrderingService->orderByDependencies($tabConfig['contentElements']);
+            }
+        }
 
         return $newContentElementsConfig;
     }
