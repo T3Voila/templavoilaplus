@@ -342,6 +342,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
         foreach ($allTo as $to) {
             $to['countUsage'] = 0;
             $to['valid'] = false;
+
             if (
                 (!empty($to['datastructure']) && isset($validatedDs[$to['datastructure']]))
                 || $to['parent'] > 0
@@ -352,11 +353,16 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
 
                 $templatefile = GeneralUtility::getFileAbsFileName($to['fileref']);
                 if (is_file($templatefile) && is_readable($templatefile)) {
-                    if (!empty($to['templatemapping']) && !is_array(unserialize($to['templatemapping']))) {
+                    if (empty($to['templatemapping'])) {
                         $validationErrors[] = 'Cannot verify TO with title "' . $to['title'] . '" and uid "' . $to['uid'] . '", as mapping is broken.';
                     } else {
-                        $to['valid'] = true;
-                        $to['DS'] = $validatedDs[$to['datastructure']]; /** @TODO If parent then from parent! Check if parent exists */
+                        $mappingInformation = unserialize($to['templatemapping']);
+                        if (isset($mappingInformation['MappingInfo']['ROOT'])) {
+                            $to['valid'] = true;
+                            $to['DS'] = $validatedDs[$to['datastructure']]; /** @TODO If parent then from parent! Check if parent exists */
+                        } else {
+                            $validationErrors[] = 'Cannot verify TO with title "' . $to['title'] . '" and uid "' . $to['uid'] . '", as mapping seams not existing.';
+                        }
                     }
                 } else {
                     $validationErrors[] = 'Cannot verify TO with title "' . $to['title'] . '" and uid "' . $to['uid'] . '", as template file "' . $to['fileref'] . '" could not be found.';
