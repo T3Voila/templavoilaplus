@@ -53,10 +53,13 @@ class ConfigurationService implements SingletonInterface
                 $this->extConfig = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['templavoilaplus'];
             }
         } else {
-            if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoilaplus'])) {
+            if (isset($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoilaplus'])) {
                 $this->extConfig = $this->removeDotsFromArrayKeysRecursive(
                     unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoilaplus'])
                 );
+                if (!is_array($this->extConfig)) {
+                    $this->extConfig = [];
+                }
             }
         }
     }
