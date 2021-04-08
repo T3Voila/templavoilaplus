@@ -237,6 +237,9 @@ div.warning a {
 
 .module-body {
     height: 100%;
+    position: absolute;
+    width: 100%;
+    top: 65px;
 }
 
 #moduleShadowing {
@@ -259,7 +262,6 @@ div.warning a {
     top: 0;
     height: 100%;
     overflow: hidden;
-    padding-top: 65px;
 }
 
 #tvp-component-sidebar-left {
@@ -286,6 +288,7 @@ div.warning a {
     position: relative;
     display: inline-block;
     text-align: left;
+    width: 100%;
 }
 
 /** @TODO default transition only while switching theme? */
