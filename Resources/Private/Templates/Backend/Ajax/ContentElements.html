@@ -9,7 +9,7 @@
     </nav>
     <div class="tab-content" id="nav-tabContent">
         <f:for each="{contentElementsConfig}" as="section" key="sectionKey">
-            <div class="tab-pane" id="nav-{sectionKey}" role="tabpanel" aria-labelledby="nav-{sectionKey}-tab">
+            <div class="tab-pane tvjs-drag" id="nav-{sectionKey}" role="tabpanel" aria-labelledby="nav-{sectionKey}-tab">
                 <f:for each="{section.contentElements}" as="contentElement" key="contentElementKey">
                     <core:icon identifier="{contentElement.iconIdentifier}" size="default" /><br />
                 </f:for>

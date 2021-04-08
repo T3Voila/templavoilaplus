@@ -1,9 +1,11 @@
 define([
     'bootstrap',
     'jquery',
-    'TYPO3/CMS/Templavoilaplus/Tooltipster'
-], function(bootstrap, $, Tooltipster) {
+    'TYPO3/CMS/Templavoilaplus/Tooltipster',
+    'TYPO3/CMS/Templavoilaplus/Sortable.min'
+], function(bootstrap, $, Tooltipster, Sortable) {
     'use strict';
+
     /**
      * @exports Tvp/TemplaVoilaPlus/PageLayout
      */
@@ -47,11 +49,31 @@ define([
                         },
                         url: TYPO3.settings.ajaxUrls['templavoilaplus_contentElementWizard'],
                         success: function(data) {
+                            // Add data to content
                             instance.content(data);
                         },
                         error: function(XMLHttpRequest, textStatus, errorThrown) {
                             instance.content('Request failed because of error: ' + textStatus);
                             $('#moduleWrapper').data('loadedContentElementWizard', false);
+                        }
+                    });
+                }
+            },
+            functionReady: function(instance, helper) {
+                // Init Drag&Drop
+                var allDragzones = [].slice.call(instance.elementTooltip().querySelectorAll('.tvjs-drag'))
+console.log(allDragzones);
+                for (var i = 0; i < allDragzones.length; i++) {
+                    new Sortable(allDragzones[i], {
+                        group: {
+                            name: 'dropzones',
+                            pull: 'clone',
+                            put: false
+                        },
+                        animation: 150,
+                        sort: false,
+                        onStart: function (/**Event*/evt) {
+                            instance.close();
                         }
                     });
                 }
@@ -92,6 +114,63 @@ define([
                     $('body').removeClass('animationTransition');
                 }, 500);
             }
+        });
+
+        // Initialize drag&drop
+        var allDropzones = [].slice.call(document.querySelectorAll('.tvjs-dropzone'))
+
+        for (var i = 0; i < allDropzones.length; i++) {
+            new Sortable(allDropzones[i], {
+                revertOnSpill: true,
+                group: {
+                    name: 'dropzones',
+                    pull: function (to, from) {
+                        if (to.el.id === 'navbarClipboard') {
+                            return 'clone';
+                        }
+                        if (to.el.id === 'navbarTrash') {
+                            return true;
+                        }
+                        return true;
+                    },
+                    put: function (to) {
+console.log(to);
+                        return false;
+                    }
+                },
+                dragable: '.sortableItem',
+                animation: 150,
+                revertClone: true,
+                swapThreshold: 0.65,
+                onStart: function (/**Event*/evt) {
+                    $('#navbarClipboard').removeClass('disabled');
+                    $('#navbarTrash').removeClass('disabled');
+                },
+                onEnd: function (/**Event*/evt) {
+                    $('#navbarClipboard').addClass('disabled');
+                    $('#navbarTrash').addClass('disabled');
+                },
+            });
+        }
+
+        new Sortable(document.getElementById('navbarTrash'), {
+            group: {
+                name: 'dropzones',
+                put: true
+            },
+            ghostClass: "hidden",
+            onAdd: function (evt) {
+                var el = evt.item;
+                el.parentNode.removeChild(el);
+            }
+        });
+
+        new Sortable(document.getElementById('navbarClipboard'), {
+            group: {
+                name: 'dropzones',
+                put: true
+            },
+            ghostClass: "hidden",
         });
 
         $('#moduleWrapper').removeClass('hidden');
