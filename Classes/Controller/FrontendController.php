@@ -279,7 +279,7 @@ class FrontendController extends AbstractPlugin
         // If a Data Structure was found:
         if (is_array($DS)) {
             // Sheet Selector:
-            if (isset($DS['meta']['sheetSelector'])) {
+            if (!empty($DS['meta']['sheetSelector'])) {
                 // <meta><sheetSelector> could be something like "EXT:user_extension/class.user_extension_selectsheet.php:&amp;user_extension_selectsheet"
                 $sheetSelector = GeneralUtility::makeInstance($DS['meta']['sheetSelector']);
                 $renderSheet = $sheetSelector->selectSheet();
@@ -288,8 +288,8 @@ class FrontendController extends AbstractPlugin
             }
 
             // Initialize:
-            $langChildren = $DS['meta']['langChildren'] ? 1 : 0;
-            $langDisabled = $DS['meta']['langDisable'] ? 1 : 0;
+            $langChildren = !empty($DS['meta']['langChildren']) ? 1 : 0;
+            $langDisabled = !empty($DS['meta']['langDisable']) ? 1 : 0;
             list ($dataStruct, $sheet, $singleSheet) = TemplaVoilaUtility::resolveSheetDefInDS($DS, $renderSheet);
 
             // Data from FlexForm field:
