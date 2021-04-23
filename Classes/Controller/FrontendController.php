@@ -256,7 +256,7 @@ class FrontendController extends AbstractPlugin
         $hookObjectsArr = array();
         if (is_array($TYPO3_CONF_VARS['EXTCONF']['templavoilaplus']['pi1']['renderElementClass'])) {
             foreach ($TYPO3_CONF_VARS['EXTCONF']['templavoilaplus']['pi1']['renderElementClass'] as $classRef) {
-                $hookObjectsArr[] = & GeneralUtility::getUserObj($classRef);
+                $hookObjectsArr[] = GeneralUtility::makeInstance($classRef);
             }
         }
 
@@ -279,9 +279,9 @@ class FrontendController extends AbstractPlugin
         // If a Data Structure was found:
         if (is_array($DS)) {
             // Sheet Selector:
-            if ($DS['meta']['sheetSelector']) {
+            if (isset($DS['meta']['sheetSelector'])) {
                 // <meta><sheetSelector> could be something like "EXT:user_extension/class.user_extension_selectsheet.php:&amp;user_extension_selectsheet"
-                $sheetSelector = & GeneralUtility::getUserObj($DS['meta']['sheetSelector']);
+                $sheetSelector = GeneralUtility::makeInstance($DS['meta']['sheetSelector']);
                 $renderSheet = $sheetSelector->selectSheet();
             } else {
                 $renderSheet = 'sDEF';
