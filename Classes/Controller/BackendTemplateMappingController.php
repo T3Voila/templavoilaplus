@@ -903,7 +903,7 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
 
                 if ($cmd != 'showXMLDS') {
                     // Set default flags to <meta> tag
-                    if (!isset($dataStruct['meta'])) {
+                    if (!isset($dataStruct['meta']) || !is_array($dataStruct['meta'])) {
                         // Make sure <meta> goes at the beginning of data structure.
                         // This is not critical for typo3 but simply convinient to
                         // people who used to see it at the beginning.
