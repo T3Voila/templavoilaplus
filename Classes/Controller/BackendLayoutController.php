@@ -1852,8 +1852,8 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         // Preview of FlexForm content if any:
         if (is_array($previewData['sheets'][$sheet])) {
             // Define l/v keys for current language:
-            $langChildren = (int)$ds_meta['langChildren'];
-            $langDisable = (int)$ds_meta['langDisable'];
+            $langChildren = (isset($ds_meta['langChildren']) ? (int) $ds_meta['langChildren'] : 0);
+            $langDisable = (isset($ds_meta['langDisable']) ? (int)$ds_meta['langDisable'] : 0);
             $lKey = $langDisable ? 'lDEF' : ($langChildren ? 'lDEF' : 'l' . $languageKey);
             $vKey = $langDisable ? 'vDEF' : ($langChildren ? 'v' . $languageKey : 'vDEF');
 
