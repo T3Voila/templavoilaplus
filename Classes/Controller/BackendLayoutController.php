@@ -1525,8 +1525,8 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         $canEditContent = TemplaVoilaUtility::getBackendUser()->isPSet($calcPerms, 'pages', 'editcontent');
 
         // Define l/v keys for current language:
-        $langChildren = (int)$elementContentTreeArr['ds_meta']['langChildren'];
-        $langDisable = (int)$elementContentTreeArr['ds_meta']['langDisable'];
+        $langChildren = (isset($elementContentTreeArr['ds_meta']['langChildren']) ? (int)$elementContentTreeArr['ds_meta']['langChildren'] : 0);
+        $langDisable = (isset($elementContentTreeArr['ds_meta']['langDisable']) ? (int)$elementContentTreeArr['ds_meta']['langDisable'] : 0);
 
         $lKey = $this->determineFlexLanguageKey($langDisable, $langChildren, $languageKey);
         $vKey = $this->determineFlexValueKey($langDisable, $langChildren, $languageKey);
