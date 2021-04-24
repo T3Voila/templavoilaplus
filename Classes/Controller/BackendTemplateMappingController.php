@@ -2229,9 +2229,9 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                     $icon = '<span class="dsType_Icon dsType_' . $info['id'] . '" title="' . $info['title'] . '">' . strtoupper($info['id']) . '</span>';
 
                     if ($key === 'ROOT') {
-                        $fieldTitle = $dataStruct['meta']['title'];
+                        $fieldTitle = (isset($dataStruct['meta']['title']) ? $dataStruct['meta']['title'] : $value['title']);
                     } else {
-                        $fieldTitle = ($value['TCEforms']['label'] ? $value['TCEforms']['label'] : $value['title']);
+                        $fieldTitle = (!empty($value['TCEforms']['label']) ? $value['TCEforms']['label'] : $value['title']);
                     }
 
                     // Composing title-cell:
