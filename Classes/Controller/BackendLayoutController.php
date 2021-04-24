@@ -1162,7 +1162,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         $this->global_tt_content_elementRegister = $contentTreeData['contentElementUsage'];
 
         // Setting localization mode for root element:
-        $this->rootElementLangMode = $contentTreeData['tree']['ds_meta']['langDisable'] ? 'disable' : ($contentTreeData['tree']['ds_meta']['langChildren'] ? 'inheritance' : 'separate');
+        $this->rootElementLangMode = !empty($contentTreeData['tree']['ds_meta']['langDisable']) ? 'disable' : (!empty($contentTreeData['tree']['ds_meta']['langChildren']) ? 'inheritance' : 'separate');
         $this->rootElementLangParadigm = ($this->modTSconfig['properties']['translationParadigm'] == 'free') ? 'free' : 'bound';
 
         // Create a back button if neccessary:
