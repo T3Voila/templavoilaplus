@@ -1464,7 +1464,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         }
 
         // Preview made:
-        $previewContent = $contentTreeArr['ds_meta']['disableDataPreview'] ? '&nbsp;' : $this->render_previewData($contentTreeArr['previewData'], $contentTreeArr['el'], $contentTreeArr['ds_meta'], $languageKey, $sheet);
+        $previewContent = !empty($contentTreeArr['ds_meta']['disableDataPreview']) ? '&nbsp;' : $this->render_previewData($contentTreeArr['previewData'], $contentTreeArr['el'], $contentTreeArr['ds_meta'], $languageKey, $sheet);
 
         // Wrap workspace notification colors:
         if ($contentTreeArr['el']['_ORIG_uid']) {
