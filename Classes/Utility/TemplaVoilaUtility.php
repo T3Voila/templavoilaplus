@@ -281,16 +281,22 @@ final class TemplaVoilaUtility
             $references = [];
         }
 
+        $selectArray = [
+            'ref_table' => $element['table'],
+            'ref_uid' => (int)$element['uid'],
+        ];
+
+        // No deleted field anymore in sys_refindex https://forge.typo3.org/issues/93029
+        if (version_compare(TYPO3_version, '11.0.0', '<=')) {
+            $selectArray['deleted'] = 0;
+        }
+
         $refrows = TemplaVoilaUtility::getConnectionPool()
             ->getConnectionForTable('sys_refindex')
             ->select(
                 ['*'],
                 'sys_refindex',
-                [
-                    'ref_table' => $element['table'],
-                    'ref_uid' => (int)$element['uid'],
-                    'deleted' => 0
-                ]
+                $selectArray
             )
             ->fetchAll();
 
