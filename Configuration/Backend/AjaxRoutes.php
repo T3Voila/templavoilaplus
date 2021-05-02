@@ -29,6 +29,11 @@ return [
         'access' => 'user,group',
         'target' => \Tvp\TemplaVoilaPlus\Module\Cm1\Ajax::class . '::getDisplayFileContent',
     ],
+    'templavoilaplus_contentElement_insert' => [
+        'path' => '/templavoilaplus/contentElement/insert',
+        'access' => 'user,group',
+        'target' => \Tvp\TemplaVoilaPlus\Controller\Backend\Ajax\ContentElements::class . '::insert',
+    ],
     'templavoilaplus_contentElementWizard' => [
         'path' => '/templavoilaplus/contentElementWizard',
         'access' => 'user,group',

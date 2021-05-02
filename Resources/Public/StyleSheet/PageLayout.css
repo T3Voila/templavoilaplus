@@ -443,6 +443,20 @@ div.warning a {
     left: -9px;
 }
 
+.dragHandle {
+    cursor: move;
+}
+
+.green {
+    background-color: #00A000;
+}
+.red {
+    background-color: #A00000;
+}
+.blue {
+    background-color: #0000A0;
+}
+
 /** DARK MODE **/
 
 .dark-mode-on #sidenav {

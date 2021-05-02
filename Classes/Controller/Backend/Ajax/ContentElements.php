@@ -21,15 +21,40 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Http\HtmlResponse;
+use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
+use Tvp\TemplaVoilaPlus\Service\ApiService;
 use Tvp\TemplaVoilaPlus\Service\ConfigurationService;
 
 class ContentElements
 {
+    /**
+     * @param ServerRequestInterface $request the current request
+     * @return ResponseInterface the response with the content
+     */
+    public function insert(ServerRequestInterface $request): ResponseInterface
+    {
+        $apiService = GeneralUtility::makeInstance(ApiService::class);
 
+        $parameters = $request->getParsedBody();
+
+        $result = $apiService->insertElement(
+            $parameters['destinationPointer'] ?? '',
+            $parameters['elementRow'] ?? []
+        );
+
+        return new JsonResponse([$result]);
+
+        $view = $this->getFluidTemplateObject();
+        $view->assign('contentElementsConfig', $result);
+
+        return new HtmlResponse($view->render());
+    }
+
+    // All for Wizard
     /**
      * Injects the request object for the current request or subrequest
      * As this controller goes only through the main() method, it is rather simple for now

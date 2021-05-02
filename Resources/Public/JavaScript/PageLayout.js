@@ -62,7 +62,7 @@ define([
             functionReady: function(instance, helper) {
                 // Init Drag&Drop
                 var allDragzones = [].slice.call(instance.elementTooltip().querySelectorAll('.tvjs-drag'))
-console.log(allDragzones);
+
                 for (var i = 0; i < allDragzones.length; i++) {
                     new Sortable(allDragzones[i], {
                         group: {
@@ -70,6 +70,7 @@ console.log(allDragzones);
                             pull: 'clone',
                             put: false
                         },
+                        handle: '.dragHandle',
                         animation: 150,
                         sort: false,
                         onStart: function (/**Event*/evt) {
@@ -125,6 +126,7 @@ console.log(allDragzones);
                 group: {
                     name: 'dropzones',
                     pull: function (to, from) {
+//                         to.el.addClass('green');
                         if (to.el.id === 'navbarClipboard') {
                             return 'clone';
                         }
@@ -133,23 +135,57 @@ console.log(allDragzones);
                         }
                         return true;
                     },
-                    put: function (to) {
-console.log(to);
-                        return false;
-                    }
+                    put: function (to, from, el) {
+//                         console.log(el);
+//                         $(to.el).addClass('green');
+                    },
+                    revertClone: true
                 },
+                ghostClass: "iAmGhost",
                 dragable: '.sortableItem',
                 animation: 150,
-                revertClone: true,
                 swapThreshold: 0.65,
                 onStart: function (/**Event*/evt) {
+console.log('onStart');
                     $('#navbarClipboard').removeClass('disabled');
                     $('#navbarTrash').removeClass('disabled');
                 },
                 onEnd: function (/**Event*/evt) {
+console.log('onEnd');
                     $('#navbarClipboard').addClass('disabled');
                     $('#navbarTrash').addClass('disabled');
                 },
+                onMove: function (/**Event*/evt, /**Event*/originalEvent) {
+console.log('onMove');
+                      $('.iAmGhost').addClass('blue');
+//                      $(evt.to).addClass('blue');
+                     console.log(evt);
+//                     return false;
+                },
+                onAdd: function (/**Event*/evt) {
+console.log('onAdd');
+console.log(evt);
+                    if (evt.pullMode === 'clone') {
+                        // Insert from somewhere
+                        // source/destination pages:694:sDEF:lDEF:field_breitOben:vDEF:1
+                        $.ajax({
+                            type: 'POST',
+                            data: {
+                                destinationPointer: 'pages:1:sDEF:lDEF:field_content:vDEF:' + evt.newDraggableIndex.toString(),
+                                elementRow: []
+                            },
+                            url: TYPO3.settings.ajaxUrls['templavoilaplus_contentElement_insert'],
+                            success: function(data) {
+                                // Add data to content
+//                                 instance.content(data);
+                            },
+                            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                            }
+                        });
+                    }
+                    var el = evt.item;
+                    el.parentNode.removeChild(el);
+                }
             });
         }
 
@@ -162,7 +198,7 @@ console.log(to);
             onAdd: function (evt) {
                 var el = evt.item;
                 el.parentNode.removeChild(el);
-            }
+            },
         });
 
         new Sortable(document.getElementById('navbarClipboard'), {
