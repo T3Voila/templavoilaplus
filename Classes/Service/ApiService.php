@@ -168,7 +168,7 @@ class ApiService
         /* @var $tce DataHandler */
 
         // set default TCA values specific for the page and user
-        $TCAdefaultOverride = BackendUtility::getModTSconfig($newRecordPid, 'TCAdefaults');
+        $TCAdefaultOverride['properties'] = BackendUtility::getPagesTSconfig($newRecordPid)['TCAdefaults'] ?? [];
         if (is_array($TCAdefaultOverride['properties'])) {
             $tce->setDefaultsFromUserTS($TCAdefaultOverride['properties']);
         }
@@ -804,7 +804,6 @@ class ApiService
      */
     public function flexform_getValidPointer($flexformPointer)
     {
-
         if (is_string($flexformPointer)) {
             $flexformPointer = $this->flexform_getPointerFromString($flexformPointer);
         }
