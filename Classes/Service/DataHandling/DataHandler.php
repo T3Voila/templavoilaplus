@@ -486,8 +486,9 @@ page.10.disableExplosivePreview = 1';
         global $TCA;
 
         $elementsOnThisPage = array();
+
+        /** @var \Tvp\TemplaVoilaPlus\Service\ApiService */
         $templaVoilaAPI = GeneralUtility::makeInstance(\Tvp\TemplaVoilaPlus\Service\ApiService::class);
-        /* @var $templaVoilaAPI \Tvp\TemplaVoilaPlus\Service\ApiService */
 
         $diffBaseEnabled = isset($GLOBALS['TYPO3_CONF_VARS']['BE']['flexFormXMLincludeDiffBase'])
             && ($GLOBALS['TYPO3_CONF_VARS']['BE']['flexFormXMLincludeDiffBase'] != false);
@@ -538,16 +539,20 @@ page.10.disableExplosivePreview = 1';
 
         $sortByField = $TCA['tt_content']['ctrl']['sortby'];
         if ($sortByField) {
+            /** @var \TYPO3\CMS\Core\Database\Connection */
+            $connection = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ConnectionPool::class)
+                ->getConnectionForTable('tt_content');
             foreach ($elementsOnThisPage as $elementArr) {
                 $colPos = $templaVoilaAPI->ds_getColumnPositionByFieldName($pid, $elementArr['field']);
-                $updateFields = array(
-                    $sortByField => $sortNumber,
-                    'colPos' => $colPos
-                );
-                TemplaVoilaUtility::getDatabaseConnection()->exec_UPDATEquery(
+                $connection->update(
                     'tt_content',
-                    'uid=' . (int)$elementArr['uid'],
-                    $updateFields
+                    [
+                        $sortByField => $sortNumber,
+                        'colPos' => $colPos
+                    ],
+                    [
+                        'uid' => (int)$elementArr['uid']
+                    ]
                 );
                 $sortNumber += 100;
             }
