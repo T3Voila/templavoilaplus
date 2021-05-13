@@ -76,7 +76,16 @@ class ContentElements
 
     private function getContentElements(ServerRequestInterface $request): array
     {
-        $extended = new ExtendedNewContentElementController();
+        if (version_compare(TYPO3_version, '11.2.0', '>=')) {
+            $extended = new ExtendedNewContentElementController(
+                GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconFactory::class),
+                GeneralUtility::makeInstance(\TYPO3\CMS\Core\Page\PageRenderer::class),
+                GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class),
+                GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\ModuleTemplateFactory::class)
+            );
+        } else {
+            $extended = new ExtendedNewContentElementController();
+        }
         return $extended->getWizardsByRequest($request);
     }
 
