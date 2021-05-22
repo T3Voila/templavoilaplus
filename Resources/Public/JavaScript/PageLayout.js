@@ -172,7 +172,7 @@ console.log(evt);
                             type: 'POST',
                             data: {
                                 destinationPointer: 'pages:1:sDEF:lDEF:field_content:vDEF:' + evt.newDraggableIndex.toString(),
-                                elementRow: []
+                                elementRow: JSON.parse(evt.item.dataset.elementrow)
                             },
                             url: TYPO3.settings.ajaxUrls['templavoilaplus_contentElement_insert'],
                             success: function(data) {

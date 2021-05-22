@@ -84,6 +84,7 @@ class ContentElements
         $contentElements = $this->getContentElements($request);
         $contentElementsConfig = $this->convertContentElementsWizardArray($contentElements);
         $contentElementsConfig = $this->modifyContentElementsConfig($contentElementsConfig);
+        $contentElementsConfig = $this->convertParamsValue($contentElementsConfig);
 
         $view = $this->getFluidTemplateObject();
         $view->assign('contentElementsConfig', $contentElementsConfig);
@@ -207,6 +208,26 @@ class ContentElements
         }
 
         return $newContentElementsConfig;
+    }
+
+    /**
+     * @param array Our contentElementsConfiguration
+     * @result array The updated/manipulated contentElementsConfiguration
+     */
+    private function convertParamsValue(array $contentElementsConfig): array
+    {
+        foreach ($contentElementsConfig as $tabKey => $tabConfig) {
+            foreach ($tabConfig['contentElements'] as $_key => $contentElement) {
+                $contentElement['element-row'] = [];
+
+                parse_str($contentElement['params'], $contentElementParams);
+                if (isset($contentElementParams['defVals']['tt_content'])) {
+                    $contentElement['element-row'] = $contentElementParams['defVals']['tt_content'];
+                }
+                $contentElementsConfig[$tabKey]['contentElements'][$_key] = $contentElement;
+            }
+        }
+        return $contentElementsConfig;
     }
 
     /**
