@@ -169,9 +169,14 @@ class ProcessingService
     {
         $childs = [];
 
+        if (!isset($node['datastructure']['sheets'])
+            || !is_array($node['datastructure']['sheets'])
+        ) {
+            return $childs;
+        }
+
         $lKeys = ['lDEF'];
         $vKeys = ['vDEF'];
-
         // Traverse each sheet in the FlexForm Structure:
         foreach ($node['datastructure']['sheets'] as $sheetKey => $sheetData) {
             // Traverse the sheet's elements:

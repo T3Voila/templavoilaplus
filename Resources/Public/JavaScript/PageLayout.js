@@ -196,8 +196,20 @@ console.log(evt);
             },
             ghostClass: "hidden",
             onAdd: function (evt) {
+                // Remove from container later we may give the possibility for restoring before leaving page
                 var el = evt.item;
                 el.parentNode.removeChild(el);
+                $.ajax({
+                    type: 'POST',
+                    data: {
+                        sourcePointer: 'pages:1:sDEF:lDEF:field_content:vDEF:' + evt.oldDraggableIndex.toString()
+                    },
+                    url: TYPO3.settings.ajaxUrls['templavoilaplus_contentElement_remove'],
+                    success: function(data) {
+                    },
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    }
+                });
             },
         });
 

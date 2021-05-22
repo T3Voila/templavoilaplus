@@ -34,6 +34,11 @@ return [
         'access' => 'user,group',
         'target' => \Tvp\TemplaVoilaPlus\Controller\Backend\Ajax\ContentElements::class . '::insert',
     ],
+    'templavoilaplus_contentElement_remove' => [
+        'path' => '/templavoilaplus/contentElement/remove',
+        'access' => 'user,group',
+        'target' => \Tvp\TemplaVoilaPlus\Controller\Backend\Ajax\ContentElements::class . '::remove',
+    ],
     'templavoilaplus_contentElementWizard' => [
         'path' => '/templavoilaplus/contentElementWizard',
         'access' => 'user,group',

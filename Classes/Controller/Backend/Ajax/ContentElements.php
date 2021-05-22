@@ -54,6 +54,23 @@ class ContentElements
         return new HtmlResponse($view->render());
     }
 
+    /**
+     * @param ServerRequestInterface $request the current request
+     * @return ResponseInterface the response with the content
+     */
+    public function remove(ServerRequestInterface $request): ResponseInterface
+    {
+        $apiService = GeneralUtility::makeInstance(ApiService::class);
+
+        $parameters = $request->getParsedBody();
+
+        $result = $apiService->deleteElement(
+            $parameters['sourcePointer'] ?? ''
+        );
+
+        return new JsonResponse([$result]);
+    }
+
     // All for Wizard
     /**
      * Injects the request object for the current request or subrequest

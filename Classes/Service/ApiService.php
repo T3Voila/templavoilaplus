@@ -824,22 +824,30 @@ class ApiService
             return false;
         }
 
-        if ($flexformPointer['position'] > 0) {
-            $elementReferencesArr = $this->flexform_getElementReferencesFromXML($destinationRecord['tx_templavoilaplus_flex'], $flexformPointer);
-            if (!isset($elementReferencesArr[$flexformPointer['position']]) && $flexformPointer['position'] != -1) {
-                if ($this->debug) {
-                    GeneralUtility::devLog('flexform_getValidPointer: The position in the specified flexform pointer does not exist!', 'TemplaVoila API', 2, $flexformPointer);
-                }
-
-                return false;
+        if ($flexformPointer['position'] < 0) {
+            if ($this->debug) {
+                GeneralUtility::devLog('flexform_getValidPointer: The position must be possitive!', 'TemplaVoila API', 2, $flexformPointer);
             }
-            if (isset($flexformPointer['targetCheckUid']) && $elementReferencesArr[$flexformPointer['position']] != $flexformPointer['targetCheckUid']) {
-                if ($this->debug) {
-                    GeneralUtility::devLog('flexform_getValidPointer: The target record uid does not match the targetCheckUid!', 'TemplaVoila API', 2, array($flexformPointer, $elementReferencesArr));
-                }
 
-                return false;
+            return false;
+        }
+
+        $elementReferencesArr = $this->flexform_getElementReferencesFromXML($destinationRecord['tx_templavoilaplus_flex'], $flexformPointer);
+        // position should between 0 and count of existing elements
+        /** @TODO Differentiate between real existing positions and real positions + 1 for adding? */
+        if ($flexformPointer['position'] > count($elementReferencesArr)) {
+            if ($this->debug) {
+                GeneralUtility::devLog('flexform_getValidPointer: The position in the specified flexform pointer does not exist!', 'TemplaVoila API', 2, $flexformPointer);
             }
+
+            return false;
+        }
+        if (isset($flexformPointer['targetCheckUid']) && $elementReferencesArr[$flexformPointer['position']] != $flexformPointer['targetCheckUid']) {
+            if ($this->debug) {
+                GeneralUtility::devLog('flexform_getValidPointer: The target record uid does not match the targetCheckUid!', 'TemplaVoila API', 2, array($flexformPointer, $elementReferencesArr));
+            }
+
+            return false;
         }
 
         return $flexformPointer;
@@ -1011,7 +1019,7 @@ class ApiService
         $dbAnalysis->getFromDB();
 
         $elementReferencesArr = array();
-        $counter = 1;
+        $counter = 0;
         foreach ($arrayOfUIDs as $uid) {
             if (is_array($dbAnalysis->results['tt_content'][$uid])) {
                 $elementReferencesArr[$counter] = $uid;
@@ -1167,34 +1175,9 @@ class ApiService
      */
     public function flexform_insertElementReferenceIntoList($currentReferencesArr, $position, $elementUid)
     {
+        array_splice($currentReferencesArr, $position, 0, [$elementUid]);
 
-        $inserted = false;
-        $newReferencesArr = array();
-        $counter = 1;
-
-        if ($position == 0) {
-            $newReferencesArr[1] = $elementUid;
-            $inserted = true;
-            $counter = 2;
-        }
-
-        if (is_array($currentReferencesArr)) {
-            foreach ($currentReferencesArr as $referenceUid) {
-                $newReferencesArr[$counter] = $referenceUid;
-                if ($position == $counter) {
-                    $counter++;
-                    $newReferencesArr[$counter] = $elementUid;
-                    $inserted = true;
-                }
-                $counter++;
-            }
-
-            if (!$inserted) {
-                $newReferencesArr[$counter] = $elementUid;
-            }
-        }
-
-        return $newReferencesArr;
+        return $currentReferencesArr;
     }
 
     /**
