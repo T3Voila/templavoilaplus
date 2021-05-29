@@ -169,7 +169,7 @@ console.log('onMove');
                         $.ajax({
                             type: 'POST',
                             data: {
-                                destinationPointer: 'pages:1:sDEF:lDEF:field_content:vDEF:' + evt.newDraggableIndex.toString(),
+                                destinationPointer: evt.target.dataset.parentPointer + ':' + evt.newDraggableIndex.toString(),
                                 elementRow: JSON.parse(evt.item.dataset.elementrow)
                             },
                             url: TYPO3.settings.ajaxUrls['templavoilaplus_contentElement_insert'],
@@ -199,7 +199,7 @@ console.log('onMove');
                 $.ajax({
                     type: 'POST',
                     data: {
-                        sourcePointer: 'pages:1:sDEF:lDEF:field_content:vDEF:' + evt.oldDraggableIndex.toString()
+                        sourcePointer: evt.from.dataset.parentPointer + ':' + evt.oldDraggableIndex.toString()
                     },
                     url: TYPO3.settings.ajaxUrls['templavoilaplus_contentElement_remove'],
                     success: function(data) {

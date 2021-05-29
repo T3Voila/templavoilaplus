@@ -62,6 +62,14 @@ class ProcessingService
             }
         }
 
+        /** @TODO The parentPointer is not a pointer to owns parent it is more a pointer to themself with parent relation */
+        if (empty($parentPointer)) {
+            $parentPointer = [
+                'table' => $table,
+                'uid' => $row['uid'],
+            ];
+        }
+
         $node = $this->getNodeFromRow($table, $row, $parentPointer);
         $node['datastructure'] = $this->getDatastructureForNode($node);
         $node['flexform'] = $this->getFlexformForNode($node);
