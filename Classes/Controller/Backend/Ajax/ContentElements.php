@@ -28,6 +28,7 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 use Tvp\TemplaVoilaPlus\Service\ApiService;
 use Tvp\TemplaVoilaPlus\Service\ConfigurationService;
+use Tvp\TemplaVoilaPlus\Service\ProcessingService;
 
 class ContentElements
 {
@@ -37,21 +38,41 @@ class ContentElements
      */
     public function insert(ServerRequestInterface $request): ResponseInterface
     {
+        /** @var ApiService */
         $apiService = GeneralUtility::makeInstance(ApiService::class);
+        /** @var ProcessingService */
+        $processingService = GeneralUtility::makeInstance(ProcessingService::class);
 
         $parameters = $request->getParsedBody();
 
+        /** @TODO LanguageHandling! */
+        /** @TODO Should we hide every element on insert as it isn't configured yet? */
         $result = $apiService->insertElement(
             $parameters['destinationPointer'] ?? '',
             $parameters['elementRow'] ?? []
         );
 
-        return new JsonResponse([$result]);
+        $row = BackendUtility::getRecord('tt_content', $result);
+        $nodeTree = $processingService->getNodeWithTree('tt_content', $row);
 
-        $view = $this->getFluidTemplateObject();
-        $view->assign('contentElementsConfig', $result);
+        $view = $this->getFluidTemplateObject('EXT:templavoilaplus/Resources/Private/Templates/Backend/Ajax/InsertNode.html');
+        $view->assign('nodeTree', $nodeTree);
 
-        return new HtmlResponse($view->render());
+        /** @TODO better handle this with an configuration object */
+        /** @TODO Duplicated more or less from PageLayoutController */
+        $view->assign(
+            'configuration',
+            [
+                'allAvailableLanguages' => TemplaVoilaUtility::getAvailableLanguages(0, true, true, []),
+                'lllFile' => 'LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf',
+                'userSettings' => TemplaVoilaUtility::getBackendUser()->uc['templavoilaplus'] ?? [],
+            ]
+        );
+
+        return new JsonResponse([
+            'uid' => $result,
+            'nodeHtml' => $view->render()
+        ]);
     }
 
     /**
@@ -86,7 +107,7 @@ class ContentElements
         $contentElementsConfig = $this->modifyContentElementsConfig($contentElementsConfig);
         $contentElementsConfig = $this->convertParamsValue($contentElementsConfig);
 
-        $view = $this->getFluidTemplateObject();
+        $view = $this->getFluidTemplateObject('EXT:templavoilaplus/Resources/Private/Templates/Backend/Ajax/ContentElements.html');
         $view->assign('contentElementsConfig', $contentElementsConfig);
 
         return new HtmlResponse($view->render());
@@ -231,15 +252,24 @@ class ContentElements
     }
 
     /**
+     * @param string $templateFile Name of the template file
      * @return StandaloneView
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidExtensionNameException
      */
-    protected function getFluidTemplateObject(): StandaloneView
+    protected function getFluidTemplateObject(string $templateFile): StandaloneView
     {
         /** @var StandaloneView */
         $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:templavoilaplus/Resources/Private/Templates/Backend/Ajax/ContentElements.html'));
+        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($templateFile));
         $view->getRequest()->setControllerExtensionName('Backend');
+
+        $view->setPartialRootPaths([
+            10 => '/var/www/html/typo3conf/ext/templavoilaplus/Resources/Private/Partials/'
+        ]);
+        $view->getLayoutRootPaths([
+            10 => '/var/www/html/typo3conf/ext/templavoilaplus/Resources/Private/Layouts/'
+        ]);
+
         return $view;
     }
 }

@@ -163,8 +163,6 @@ console.log('onMove');
 //                     return false;
                 },
                 onAdd: function (/**Event*/evt) {
-console.log('onAdd');
-console.log(evt);
                     if (evt.pullMode === 'clone') {
                         // Insert from somewhere
                         // source/destination pages:694:sDEF:lDEF:field_breitOben:vDEF:1
@@ -176,15 +174,14 @@ console.log(evt);
                             },
                             url: TYPO3.settings.ajaxUrls['templavoilaplus_contentElement_insert'],
                             success: function(data) {
-                                // Add data to content
-//                                 instance.content(data);
+                                evt.item.innerHTML = data.nodeHtml;
                             },
                             error: function(XMLHttpRequest, textStatus, errorThrown) {
+                                var el = evt.item;
+                                el.parentNode.removeChild(el);
                             }
                         });
                     }
-                    var el = evt.item;
-                    el.parentNode.removeChild(el);
                 }
             });
         }
