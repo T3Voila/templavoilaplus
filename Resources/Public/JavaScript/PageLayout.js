@@ -156,7 +156,7 @@ console.log('onStart');
 console.log('onEnd');
                     $('#navbarClipboard').addClass('disabled');
                     $('#navbarTrash').addClass('disabled');
-                    $('.iAmGhost').removeClass('blue');
+                    $(evt.item).removeClass('blue');
                 },
                 onMove: function (/**Event*/evt, /**Event*/originalEvent) {
 console.log('onMove');
