@@ -51,6 +51,7 @@ define([
                         success: function(data) {
                             // Add data to content
                             instance.content(data);
+                            PageLayout.initWizardDrag(instance);
                         },
                         error: function(XMLHttpRequest, textStatus, errorThrown) {
                             instance.content('Request failed because of error: ' + textStatus);
@@ -60,28 +61,11 @@ define([
                 }
             },
             functionReady: function(instance, helper) {
-                // Init Drag&Drop
-                var allDragzones = [].slice.call(instance.elementTooltip().querySelectorAll('.tvjs-drag'))
-
-                for (var i = 0; i < allDragzones.length; i++) {
-                    new Sortable(allDragzones[i], {
-                        group: {
-                            name: 'dropzones',
-                            pull: 'clone',
-                            put: false
-                        },
-                        handle: '.dragHandle',
-                        animation: 150,
-                        sort: false,
-                        onStart: function (/**Event*/evt) {
-                            instance.close();
-                        }
-                    });
-                }
+                 PageLayout.initWizardDrag(instance);
             },
             functionAfter: function(instance, helper) {
                 $('#moduleShadowing').addClass('hidden');
-            }
+            },
         });
         $('#navbarConfig').tooltipster({
             side: 'left',
@@ -145,6 +129,24 @@ define([
                 dragable: '.sortableItem',
                 animation: 150,
                 swapThreshold: 0.65,
+                onUpdate: function (/**Event*/evt) {
+console.log('onUpdate');
+                },
+                onSort: function (/**Event*/evt) {
+console.log('onSort');
+                },
+                onRemove: function (/**Event*/evt) {
+console.log('onRemove');
+                },
+                onFilter: function (/**Event*/evt) {
+console.log('onFilter');
+                },
+                onClone: function (/**Event*/evt) {
+console.log('onClone');
+                },
+                onChange: function (/**Event*/evt) {
+console.log('onChange');
+                },
                 onStart: function (/**Event*/evt) {
 console.log('onStart');
                     $('#navbarClipboard').removeClass('disabled');
@@ -154,15 +156,14 @@ console.log('onStart');
 console.log('onEnd');
                     $('#navbarClipboard').addClass('disabled');
                     $('#navbarTrash').addClass('disabled');
+                    $('.iAmGhost').removeClass('blue');
                 },
                 onMove: function (/**Event*/evt, /**Event*/originalEvent) {
 console.log('onMove');
-                      $('.iAmGhost').addClass('blue');
-//                      $(evt.to).addClass('blue');
-                     console.log(evt);
-//                     return false;
+                    $('.iAmGhost').addClass('blue');
                 },
                 onAdd: function (/**Event*/evt) {
+console.log('onAdd');
                     if (evt.pullMode === 'clone') {
                         // Insert from somewhere
                         // source/destination pages:694:sDEF:lDEF:field_breitOben:vDEF:1
@@ -222,6 +223,27 @@ console.log('onMove');
         $('#moduleLoadingIndicator').addClass('hidden');
         $('#moduleShadowing').addClass('hidden');
     }
+
+    PageLayout.initWizardDrag = function(instance) {
+        var allDragzones = [].slice.call(instance.elementTooltip().querySelectorAll('.tvjs-drag'))
+
+        for (var i = 0; i < allDragzones.length; i++) {
+            new Sortable(allDragzones[i], {
+                group: {
+                    name: 'dropzones',
+                    pull: 'clone',
+                    put: false
+                },
+                handle: '.dragHandle',
+                animation: 150,
+                sort: false,
+                onStart: function (/**Event*/evt) {
+                    instance.close();
+                }
+            });
+        }
+    }
+
 
     $(PageLayout.initialize);
 
