@@ -416,7 +416,7 @@ class ApiService
      *
      * @return mixed TRUE or something else (depends on operation) if operation was successful, otherwise FALSE
      */
-    public function process($mode, $sourcePointer, $destinationPointer = null, $onlyHandleReferences = false)
+    public function process($mode, $sourcePointer, $destinationPointer = null, bool $onlyHandleReferences = false)
     {
         $destinationReferencesArr = array();
         $destinationParentRecord = array();
@@ -436,7 +436,7 @@ class ApiService
         $sourceReferencesArr = $this->flexform_getElementReferencesFromXML($sourceParentRecord['tx_templavoilaplus_flex'], $sourcePointer);
 
         // Check and get all information about the destination position:
-        if (is_array($destinationPointer)) {
+        if (!is_null($destinationPointer)) {
             if (!$destinationPointer = $this->flexform_getValidPointer($destinationPointer)) {
                 return false;
             }
@@ -512,9 +512,16 @@ class ApiService
      *
      * @return boolean TRUE if operation was successfuly, otherwise false
      */
-    public function process_move($sourcePointer, $destinationPointer, $sourceReferencesArr, $destinationReferencesArr, $sourceParentRecord, $destinationParentRecord, $elementRecord, $onlyHandleReferences)
-    {
-
+    public function process_move(
+        array $sourcePointer,
+        array $destinationPointer,
+        array $sourceReferencesArr,
+        array $destinationReferencesArr,
+        array $sourceParentRecord,
+        array $destinationParentRecord,
+        array $elementRecord,
+        bool $onlyHandleReferences
+    ) {
         $elementUid = $elementRecord['uid'];
 
         // Move the element within the same parent element:
@@ -560,7 +567,22 @@ class ApiService
                 $elementUids[] = $elementUid;
 
                 // Reduce the list to local elements to make sure that references are kept instead of moving the referenced record
-                $localRecords = $this->getDatabaseConnection()->exec_SELECTgetRows('uid,pid', 'tt_content', 'uid IN (' . implode(',', $elementUids) . ') AND pid=' . (int)$sourcePID . ' ' . BackendUtility::deleteClause('tt_content'));
+                $queryBuilder = TemplaVoilaUtility::getQueryBuilderForTable('tt_content');
+                $queryBuilder->getRestrictions()
+                    ->removeByType(\TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction::class)
+                    ->removeByType(\TYPO3\CMS\Core\Database\Query\Restriction\StartTimeRestriction::class)
+                    ->removeByType(\TYPO3\CMS\Core\Database\Query\Restriction\EndTimeRestriction::class);
+
+                $localRecords = $queryBuilder
+                    ->select('uid', 'pid')
+                    ->from('tt_content')
+                    ->where(
+                        $queryBuilder->expr()->in('uid', $elementUids),
+                        $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($sourcePID, \PDO::PARAM_INT))
+                    )
+                    ->execute()
+                    ->fetchAll();
+
                 if (!empty($localRecords) && is_array($localRecords)) {
                     $cmdArray = array();
                     foreach ($localRecords as $localRecord) {
@@ -1046,7 +1068,7 @@ class ApiService
         if (!is_array($recordUids)) {
             $recordUids = array();
         }
-        $parentRecord = BackendUtility::getRecordWSOL($table, $uid, 'uid,pid,tx_templavoilaplus_ds,tx_templavoilaplus_flex');
+        $parentRecord = BackendUtility::getRecordWSOL($table, $uid, 'uid,pid,tx_templavoilaplus_map,tx_templavoilaplus_flex');
 
         if (!$parentRecord) {
             return $recordUids;
@@ -1104,7 +1126,7 @@ class ApiService
         if (!is_array($flexformPointers)) {
             $flexformPointers = array();
         }
-        $parentRecord = BackendUtility::getRecordWSOL($table, $uid, 'uid,pid,tx_templavoilaplus_flex,tx_templavoilaplus_ds,tx_templavoilaplus_to');
+        $parentRecord = BackendUtility::getRecordWSOL($table, $uid, 'uid,pid,tx_templavoilaplus_flex,tx_templavoilaplus_map,tx_templavoilaplus_to');
 
         if ($parentRecord === null) {
             return $flexformPointers;
@@ -1931,14 +1953,6 @@ class ApiService
         }
 
         return $this->cachedModWebTSconfig[$pageId];
-    }
-
-    /**
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    public function getDatabaseConnection()
-    {
-        return TemplaVoilaUtility::getDatabaseConnection();
     }
 
     /**
