@@ -79,6 +79,25 @@ class ContentElements
      * @param ServerRequestInterface $request the current request
      * @return ResponseInterface the response with the content
      */
+    public function move(ServerRequestInterface $request): ResponseInterface
+    {
+        /** @var ApiService */
+        $apiService = GeneralUtility::makeInstance(ApiService::class);
+
+        $parameters = $request->getParsedBody();
+
+        $result = $apiService->moveElement(
+            $parameters['sourcePointer'] ?? '',
+            $parameters['destinationPointer'] ?? ''
+        );
+
+        return new JsonResponse([$result]);
+    }
+
+    /**
+     * @param ServerRequestInterface $request the current request
+     * @return ResponseInterface the response with the content
+     */
     public function remove(ServerRequestInterface $request): ResponseInterface
     {
         $apiService = GeneralUtility::makeInstance(ApiService::class);

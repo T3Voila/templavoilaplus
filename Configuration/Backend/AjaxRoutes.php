@@ -14,16 +14,6 @@ if (version_compare(TYPO3_version, '9.0.0', '>=')) {
  * Contains all "ajax" routes for entry points
  */
 return [
-    'templavoilaplus_record_move' => [
-        'path' => '/templavoilaplus/record/move',
-        'access' => 'user,group',
-        'target' => \Tvp\TemplaVoilaPlus\Module\Mod1\Ajax::class . '::moveRecord',
-    ],
-    'templavoilaplus_record_unlink' => [
-        'path' => '/templavoilaplus/record/unlink',
-        'access' => 'user,group',
-        'target' => \Tvp\TemplaVoilaPlus\Module\Mod1\Ajax::class . '::unlinkRecord',
-    ],
     'templavoilaplus_displayFileContent' => [
         'path' => '/templavoilaplus/fileContent',
         'access' => 'user,group',
@@ -33,6 +23,11 @@ return [
         'path' => '/templavoilaplus/contentElement/insert',
         'access' => 'user,group',
         'target' => \Tvp\TemplaVoilaPlus\Controller\Backend\Ajax\ContentElements::class . '::insert',
+    ],
+    'templavoilaplus_contentElement_move' => [
+        'path' => '/templavoilaplus/contentElement/move',
+        'access' => 'user,group',
+        'target' => \Tvp\TemplaVoilaPlus\Controller\Backend\Ajax\ContentElements::class . '::move',
     ],
     'templavoilaplus_contentElement_remove' => [
         'path' => '/templavoilaplus/contentElement/remove',

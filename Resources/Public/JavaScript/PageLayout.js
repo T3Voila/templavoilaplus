@@ -165,7 +165,7 @@ console.log('onMove');
                 onAdd: function (/**Event*/evt) {
 console.log('onAdd');
                     if (evt.pullMode === 'clone') {
-                        // Insert from somewhere
+                        // Insert from NewContentElementWizard (later also clipboard/trash)
                         // source/destination pages:694:sDEF:lDEF:field_breitOben:vDEF:1
                         $.ajax({
                             type: 'POST',
@@ -180,6 +180,22 @@ console.log('onAdd');
                             error: function(XMLHttpRequest, textStatus, errorThrown) {
                                 var el = evt.item;
                                 el.parentNode.removeChild(el);
+                            }
+                        });
+                    } else {
+                        // Move from another field
+                        // source/destination pages:694:sDEF:lDEF:field_breitOben:vDEF:1
+                        $.ajax({
+                            type: 'POST',
+                            data: {
+                                sourcePointer: evt.from.dataset.parentPointer + ':' + evt.oldDraggableIndex.toString(),
+                                destinationPointer: evt.target.dataset.parentPointer + ':' + evt.newDraggableIndex.toString()
+                            },
+                            url: TYPO3.settings.ajaxUrls['templavoilaplus_contentElement_move'],
+                            success: function(data) {
+                                // @TODO Elements need to update their parenPointer after move
+                            },
+                            error: function(XMLHttpRequest, textStatus, errorThrown) {
                             }
                         });
                     }
