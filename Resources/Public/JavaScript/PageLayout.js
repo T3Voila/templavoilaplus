@@ -190,6 +190,7 @@ console.log('onAdd');
                     } else {
                         // Move from another field
                         // source/destination pages:694:sDEF:lDEF:field_breitOben:vDEF:1
+                        PageLayout.showInProgress(evt.item);
                         $.ajax({
                             type: 'POST',
                             data: {
@@ -199,8 +200,10 @@ console.log('onAdd');
                             url: TYPO3.settings.ajaxUrls['templavoilaplus_contentElement_move'],
                             success: function(data) {
                                 // @TODO Elements need to update their parenPointer after move
+                                PageLayout.showSuccess(evt.item);
                             },
                             error: function(XMLHttpRequest, textStatus, errorThrown) {
+                                PageLayout.showError(evt.item);
                             }
                         });
                     }
@@ -330,7 +333,7 @@ console.log('onAdd');
 
             },
             error: function(XMLHttpRequest, textStatus, errorThrown) {
-                PageLayout.showSuccess(items[0]);
+                PageLayout.showError(items[0]);
             }
         });
     }
