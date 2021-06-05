@@ -279,7 +279,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
             $dataStructure = [
                 'staticDS' => false,
                 'title' => $row['title'],
-                'path' => $row['uid'],
+                'path' => (string) $row['uid'],
                 'xml' => $row['dataprot'],
                 'scope' => $row['scope'],
                 'icon' => $row['previewicon'],
