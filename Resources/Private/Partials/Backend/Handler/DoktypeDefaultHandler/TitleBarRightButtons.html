@@ -39,12 +39,6 @@
             <f:if condition="!{node.rendering.belongsToCurrentPage}">
                 <core:icon identifier="extensions-templavoila-makelocalcopy" />
             </f:if>
-            <core:icon identifier="extensions-templavoila-unlink" />
-
-            <f:comment>Delete is not possible if element do not belong to current page (only unlinking)</f:comment>
-            <f:if condition="{node.rendering.belongsToCurrentPage}">
-                <core:icon identifier="actions-edit-delete" />
-            </f:if>
         </f:then>
     </f:if>
 </div>
