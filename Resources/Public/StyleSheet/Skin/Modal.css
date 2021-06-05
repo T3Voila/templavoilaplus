@@ -1,0 +1,12 @@
+.tvp-modal-record-edit .modal-body {
+    padding: 0;
+}
+.tvp-modal-record-edit .modal-body::after {
+    height: 0;
+}
+.tvp-modal-record-edit .close {
+    display: none;
+}
+.tvp-modal-record-edit .t3js-modal-iframe {
+    display: block;
+}

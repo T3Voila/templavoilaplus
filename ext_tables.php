@@ -9,6 +9,9 @@ if (TYPO3_MODE === 'BE') {
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms']['db_new_content_el']['wizardItemsHook'][\Tvp\TemplaVoilaPlus\Hooks\WizardItems::class]
         = \Tvp\TemplaVoilaPlus\Hooks\WizardItems::class;
 
+    $GLOBALS['TBE_STYLES']['skins']['templavoilaplus']['stylesheetDirectories'][]
+        = 'EXT:templavoilaplus/Resources/Public/StyleSheet/Skin';
+
     $navigationComponentId = 'TYPO3/CMS/Backend/PageTree/PageTreeElement';
     if (version_compare(TYPO3_version, '9.0.0', '<')) {
         $navigationComponentId = 'typo3-pagetree';
