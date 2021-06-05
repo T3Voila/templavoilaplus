@@ -2,8 +2,10 @@ define([
     'bootstrap',
     'jquery',
     'TYPO3/CMS/Templavoilaplus/Tooltipster',
-    'TYPO3/CMS/Templavoilaplus/Sortable.min'
-], function(bootstrap, $, Tooltipster, Sortable) {
+    'TYPO3/CMS/Templavoilaplus/Sortable.min',
+    'TYPO3/CMS/Backend/Modal',
+    'TYPO3/CMS/Backend/Severity'
+], function(bootstrap, $, Tooltipster, Sortable, Modal, Severity) {
     'use strict';
 
     /**
@@ -109,7 +111,9 @@ define([
                 revertOnSpill: true,
                 group: {
                     name: 'dropzones',
-                    pull: function (to, from) {
+                    pull: function (to, from, evt, dragEvent) {
+// console.log(evt);
+console.log(dragEvent.ctrlKey);
 //                         to.el.addClass('green');
                         if (to.el.id === 'navbarClipboard') {
                             return 'clone';
@@ -119,7 +123,8 @@ define([
                         }
                         return true;
                     },
-                    put: function (to, from, el) {
+                    put: function (to, from, el, evt, dragEvent) {
+console.log(evt.ctrlKey);
 //                         console.log(el);
 //                         $(to.el).addClass('green');
                     },
@@ -238,6 +243,20 @@ console.log('onAdd');
         $('#moduleWrapper').removeClass('hidden');
         $('#moduleLoadingIndicator').addClass('hidden');
         $('#moduleShadowing').addClass('hidden');
+
+        PageLayout.initEditRecordListener(document);
+
+    }
+
+    PageLayout.initEditRecordListener = function(base) {
+        var allItems = base.querySelectorAll('.sortableItem .tvp-edit-record');
+
+        for (const item of allItems) {
+            item.addEventListener('click', function(event) {
+                var origItem = item.parentNode.parentNode;
+                PageLayout.openRecordEdit(origItem.dataset.recordTable, origItem.dataset.recordUid);
+            })
+        }
     }
 
     PageLayout.initWizardDrag = function(instance) {
@@ -258,6 +277,88 @@ console.log('onAdd');
                 }
             });
         }
+    }
+
+    PageLayout.openRecordEdit = function(table, uid) {
+        var url = TYPO3.settings.ajaxUrls['templavoilaplus_record_edit'];
+        var separator = (url.indexOf('?') > -1) ? '&' : '?';
+        var params = 'table=' + table + '&uid=' + uid;
+
+        Modal.advanced({
+            type: Modal.types.ajax,
+            title: 'Loading',
+            content: url + separator + params,
+            severity: Severity.notice,
+            buttons: [],
+            size: Modal.sizes.full,
+            ajaxCallback: function() {
+                Modal.currentModal.addClass('tvp-modal-record-edit');
+                Modal.currentModal.find('.t3js-modal-iframe').on('load', function() {
+                    var iframeDocument = Modal.currentModal.find('.t3js-modal-iframe').get(0).contentDocument;
+                    var form = iframeDocument.getElementById('EditDocumentController');
+                    if (form) {
+                        Modal.currentModal.find('.t3js-modal-title').text(form.querySelector('h1').innerHTML);
+                        form.querySelector('h1').style.display = 'none';
+                    }
+                    var closeModal = iframeDocument.getElementById('CloseModal');
+                    if (closeModal) {
+                        Modal.currentModal.trigger('modal-dismiss');
+                        PageLayout.reloadRecord(table, uid);
+                    }
+                })
+            }
+        });
+    }
+
+    PageLayout.reloadRecord = function(table, uid) {
+        var items = $('.sortableItem[data-record-table="' + table +'"][data-record-uid="' + uid +'"]');
+        PageLayout.showInProgress(items[0]);
+
+        $.ajax({
+            type: 'POST',
+            data: {
+                table: table,
+                uid: uid,
+            },
+            url: TYPO3.settings.ajaxUrls['templavoilaplus_contentElement_reload'],
+            success: function(data) {
+                var div = document.createElement('div');
+                div.innerHTML = data.nodeHtml;
+                PageLayout.showSuccess(div.firstChild);
+                PageLayout.initEditRecordListener(div.firstChild);
+                items[0].parentNode.replaceChild(div.firstChild, items[0]);
+
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                PageLayout.showSuccess(items[0]);
+            }
+        });
+    }
+
+    PageLayout.showInProgress = function(item)
+    {
+        $('.tpm-titlebar', item)
+            .addClass("toYellow");
+    }
+
+    PageLayout.showSuccess = function(item)
+    {
+        // flash green
+        $('.tpm-titlebar', item)
+            .off()
+            .addClass("flashGreen")
+            .removeClass("toYellow")
+            .one("animationend webkitAnimationEnd", function(){ $('.tpm-titlebar', item).removeClass("flashGreen"); });
+    }
+
+    PageLayout.showError = function(item)
+    {
+        // flash red
+        $('.tpm-titlebar', item)
+            .off()
+            .addClass("flashRed")
+            .removeClass("toYellow")
+            .one("animationend webkitAnimationEnd", function(){ $('.tpm-titlebar', item).removeClass("flashRed"); });
     }
 
 

@@ -28,4 +28,9 @@ return [
         'access' => 'admin',
         'target' => Controller\BackendFlexformCleanerController::class . '::mainAction',
     ],
+    'templavoilaplus_modalhelper_close' => [
+        'path' => '/templavoilaplus/modalhelper/close',
+        'access' => 'user,group',
+        'target' => \Tvp\TemplaVoilaPlus\Controller\Backend\ModalHelperController::class . '::closeAction',
+    ],
 ];

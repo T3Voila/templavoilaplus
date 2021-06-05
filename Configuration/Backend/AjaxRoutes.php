@@ -24,6 +24,11 @@ return [
         'access' => 'user,group',
         'target' => \Tvp\TemplaVoilaPlus\Controller\Backend\Ajax\ContentElements::class . '::insert',
     ],
+    'templavoilaplus_contentElement_reload' => [
+        'path' => '/templavoilaplus/contentElement/reload',
+        'access' => 'user,group',
+        'target' => \Tvp\TemplaVoilaPlus\Controller\Backend\Ajax\ContentElements::class . '::reload',
+    ],
     'templavoilaplus_contentElement_move' => [
         'path' => '/templavoilaplus/contentElement/move',
         'access' => 'user,group',
@@ -38,6 +43,11 @@ return [
         'path' => '/templavoilaplus/contentElementWizard',
         'access' => 'user,group',
         'target' => \Tvp\TemplaVoilaPlus\Controller\Backend\Ajax\ContentElementWizard::class . '::wizardAction',
+    ],
+    'templavoilaplus_record_edit' => [
+        'path' => '/templavoilaplus/record/editform',
+        'access' => 'user,group',
+        'target' => \Tvp\TemplaVoilaPlus\Controller\Backend\Ajax\Record::class . '::editform',
     ],
     'templavoilaplus_usersettings_enableDarkMode' => [
         'path' => '/templavoilaplus/usersettings/enableDarkMode',

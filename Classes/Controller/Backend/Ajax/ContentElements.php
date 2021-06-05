@@ -20,7 +20,6 @@ namespace Tvp\TemplaVoilaPlus\Controller\Backend\Ajax;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
@@ -37,8 +36,6 @@ class ContentElements extends AbstractResponse
     {
         /** @var ApiService */
         $apiService = GeneralUtility::makeInstance(ApiService::class);
-        /** @var ProcessingService */
-        $processingService = GeneralUtility::makeInstance(ProcessingService::class);
 
         $parameters = $request->getParsedBody();
 
@@ -49,8 +46,33 @@ class ContentElements extends AbstractResponse
             $parameters['elementRow'] ?? []
         );
 
-        $row = BackendUtility::getRecord('tt_content', $result);
-        $nodeTree = $processingService->getNodeWithTree('tt_content', $row);
+        return new JsonResponse([
+            'uid' => $result,
+            'nodeHtml' => $this->record2html('tt_content', $result)
+        ]);
+    }
+
+    /**
+     * @param ServerRequestInterface $request the current request
+     * @return ResponseInterface the response with the content
+     */
+    public function reload(ServerRequestInterface $request): ResponseInterface
+    {
+        $parameters = $request->getParsedBody();
+
+        /** @TODO $parameters['table'] */
+        return new JsonResponse([
+            'nodeHtml' => $this->record2html('tt_content', (int)$parameters['uid'])
+        ]);
+    }
+
+    protected function record2html(string $table, int $uid): string
+    {
+        $row = BackendUtility::getRecord($table, $uid);
+
+        /** @var ProcessingService */
+        $processingService = GeneralUtility::makeInstance(ProcessingService::class);
+        $nodeTree = $processingService->getNodeWithTree($table, $row);
 
         $view = $this->getFluidTemplateObject('EXT:templavoilaplus/Resources/Private/Templates/Backend/Ajax/InsertNode.html');
         $view->assign('nodeTree', $nodeTree);
@@ -66,10 +88,7 @@ class ContentElements extends AbstractResponse
             ]
         );
 
-        return new JsonResponse([
-            'uid' => $result,
-            'nodeHtml' => $view->render()
-        ]);
+        return $view->render();
     }
 
     /**
