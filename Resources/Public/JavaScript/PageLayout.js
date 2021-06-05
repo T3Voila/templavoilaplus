@@ -180,7 +180,11 @@ console.log('onAdd');
                             },
                             url: TYPO3.settings.ajaxUrls['templavoilaplus_contentElement_insert'],
                             success: function(data) {
-                                evt.item.innerHTML = data.nodeHtml;
+                                var div = document.createElement('div');
+                                div.innerHTML = data.nodeHtml;
+                                PageLayout.showSuccess(div.firstChild);
+                                PageLayout.initEditRecordListener(div.firstChild);
+                                evt.item.parentNode.replaceChild(div.firstChild, evt.item);
                             },
                             error: function(XMLHttpRequest, textStatus, errorThrown) {
                                 var el = evt.item;
