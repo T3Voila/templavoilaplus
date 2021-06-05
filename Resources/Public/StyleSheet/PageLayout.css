@@ -291,6 +291,10 @@ div.warning a {
     width: 100%;
 }
 
+.tvp-edit-record {
+    cursor: pointer;
+}
+
 /** @TODO default transition only while switching theme? */
 .animationTransition {
     transition: all 0.5s linear 0s;

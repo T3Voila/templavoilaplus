@@ -1,4 +1,4 @@
-<div class="sortableItem tpm-element" id="item{node.rendering.md5}" data-parent-pointer="{node.rendering.parentPointer}">
+<div class="sortableItem tpm-element" id="item{node.rendering.md5}" data-record-table="{node.raw.table}" data-record-uid="{node.raw.entity.uid}" data-parent-pointer="{node.rendering.parentPointer}">
     <div class="t3-page-ce tpm-container-element tpm-content-element tpm-ctype-{element.el.CType} tpm-layout-{element.el.layout}">
         <a name="c{node.rendering.md5}{node.raw.entity.uid}"></a>
         <div class="t3-page-ce-header {f:if(condition:'{node.rendering.belongsToCurrentPage}', then: 'tpm-titlebar', else: 'tpm-titlebar-fromOtherPage')}">
@@ -10,7 +10,7 @@
             </div>
         </div>
 
-        <div class="t3-page-ce-body tpm-sub-elements">
+        <div class="t3-page-ce-body tpm-sub-elements tvp-edit-record">
             <f:if condition="!{node.rendering.belongsToCurrentPage}">
                 <div class="bg-info">&nbsp;<em><core:icon identifier="status-dialog-notification" /> <f:translate key="{configuration.lllFile}:infoElementFromOtherPage" arguments="{0: node.raw.entity.uid, 1: node.raw.entity.pid}" /></em></div>
             </f:if>
