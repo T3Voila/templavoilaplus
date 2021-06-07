@@ -17,7 +17,6 @@ The next big TV+ version will be 8.0.0, it contains a complete rewrite of the TV
 
 ### Development status
 
-The master contains the best out of the both development subbranches called annaberg and buchholz.
 The handling of configuration is mostly done, we now use so called "Places" to define which configuration type comes from which directory. This is needed, as we want later, that you can install a base theme and extens/overwrite it partially with your own configuration data.
 The old configuration parts DataStructure and TemplateObject fall inside a mixer and we got now TV+ uses three types called DataStructure, MappingConfiguration and TemplateConfiguration. (Beside that we also have BackendLayoutConfiguration) This allows us greater reusage of configuration parts and the possibility to change the Renderer of the frontend output, for example against Twig or Smarty.
 All old entry points to extend TV+ are removed at the moment and some complete new are arising, for example the LoadSaveHandlers, so you can write an own configuration loader/saver for your configuration files and your own super duper configuration file format.
