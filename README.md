@@ -36,8 +36,9 @@ If you like to test, develop and/or help documenting, see the demo theme extensi
     * There is a Debug screen which shows more about the internal configuration of the objects.
 * There is also a new PageLayout Modul, which isn't puzzled together yet while rewriting
     * Different Output Handler for different doktypes (standard, link, spacer, ...)
-    * You can't edit in the PageLayout (The ClickMenu already works)
-    * Backend Preview only partially
+    * Editing via Ajax (Nothing which needs another modal)
+    * Drag'n'Drop insert/move/delete but only in default language
+    * ~~Backend Preview only partially~~
     * ~~Loading tree but only handling page layer (not the content elements)~~
     * ~~BElayout not respected yet~~
     * ~~No support for container yet~~
