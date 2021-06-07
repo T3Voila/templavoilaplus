@@ -4,7 +4,7 @@
 [![version](https://img.shields.io/badge/TER_version-7.3.3-green.svg)](https://extensions.typo3.org/extension/templavoilaplus)
 [![packagist](https://img.shields.io/packagist/v/templavoilaplus/templavoilaplus.svg)](https://packagist.org/packages/templavoilaplus/templavoilaplus)
 
-TeamplaVoilà! Plus is a templating extension for the TYPO3 content management system. It is the follow up of the popular
+TemplaVoilà! Plus is a templating extension for the TYPO3 content management system. It is the follow up of the popular
 TemplaVoilà! extension from Kasper Skårhøj prepared for modern versions of TYPO3.
 
 ## Language files
