@@ -233,6 +233,13 @@ class PageLayoutController extends ActionController
         $this->view->assign('contentHeader', $contentHeader);
         $this->view->assign('contentBody', $contentBody);
         $this->view->assign('contentFooter', $contentFooter);
+
+        $this->view->assignMultiple([
+            'is8orNewer' => version_compare(TYPO3_version, '8.0.0', '>=') ? true : false,
+            'is9orNewer' => version_compare(TYPO3_version, '9.0.0', '>=') ? true : false,
+            'is10orNewer' => version_compare(TYPO3_version, '10.0.0', '>=') ? true : false,
+            'is11orNewer' => version_compare(TYPO3_version, '11.0.0', '>=') ? true : false,
+        ]);
     }
 
 

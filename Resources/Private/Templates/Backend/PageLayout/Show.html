@@ -69,12 +69,26 @@
                 <ul class="sidenav-menu">
                     <li class="sidenav-item disabled" id="navbarContentElementWizard">
                         <div>
-                            <core:icon identifier="actions-document-add" size="default" />
+                            <f:if condition="{is10orNewer}">
+                                <f:then>
+                                    <core:icon identifier="actions-document-add" size="default" />
+                                </f:then>
+                                <f:else>
+                                    <core:icon identifier="actions-document-new" size="default" />
+                                </f:else>
+                            </f:if>
                         </div>
                     </li>
                     <li class="sidenav-item disabled" id="navbarClipboard">
                         <div>
-                            <core:icon identifier="actions-clipboard" size="default" />
+                            <f:if condition="{is10orNewer}">
+                                <f:then>
+                                    <core:icon identifier="actions-clipboard" size="default" />
+                                </f:then>
+                                <f:else>
+                                    <core:icon identifier="actions-edit-copy" size="default" />
+                                </f:else>
+                            </f:if>
                         </div>
                     </li>
                     <li class="sidenav-item disabled sidenav-item-blue">
@@ -84,7 +98,14 @@
                     </li>
                     <li class="sidenav-item disabled">
                         <div>
-                            <core:icon identifier="actions-message-add" size="default" />
+                            <f:if condition="{is10orNewer}">
+                                <f:then>
+                                    <core:icon identifier="actions-message-add" size="default" />
+                                </f:then>
+                                <f:else>
+                                    <core:icon identifier="actions-edit-localize-status-high" size="default" />
+                                </f:else>
+                            </f:if>
                         </div>
                     </li>
                     <li class="sidenav-item disabled sidenav-item-trash" id="navbarTrash">
@@ -94,7 +115,14 @@
                     </li>
                     <li class="sidenav-item sidenav-item-config" id="navbarConfig" data-tooltip-content="#navbarConfigTooltip">
                         <div>
-                            <core:icon identifier="actions-cog-alt" size="default" />
+                            <f:if condition="{is10orNewer}">
+                                <f:then>
+                                    <core:icon identifier="actions-cog-alt" size="default" />
+                                </f:then>
+                                <f:else>
+                                    <core:icon identifier="actions-system-extension-configure" size="default" />
+                                </f:else>
+                            </f:if>
                         </div>
                     </li>
                 </ul>
