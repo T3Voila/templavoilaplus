@@ -49,7 +49,7 @@ class Record extends AbstractResponse
                         $uid => 'edit',
                     ],
                 ],
-                'returnUrl' => (string)$uriBuilder->buildUriFromRoutePath('/templavoilaplus/modalhelper/close')
+                'returnUrl' => (string)$uriBuilder->buildUriFromRoute('templavoilaplus_modalhelper_close')
             ]
         );
 
