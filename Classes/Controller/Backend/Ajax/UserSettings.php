@@ -20,7 +20,7 @@ namespace Tvp\TemplaVoilaPlus\Controller\Backend\Ajax;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Http\JsonResponse;
+use Tvp\TemplaVoilaPlus\Core\Http\JsonResponse;
 use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 class UserSettings

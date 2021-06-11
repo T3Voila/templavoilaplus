@@ -20,7 +20,7 @@ namespace Tvp\TemplaVoilaPlus\Controller\Backend\Ajax;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Wizard\NewContentElementWizardHookInterface;
-use TYPO3\CMS\Core\Http\HtmlResponse;
+use Tvp\TemplaVoilaPlus\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Tvp\TemplaVoilaPlus\Service\ConfigurationService;

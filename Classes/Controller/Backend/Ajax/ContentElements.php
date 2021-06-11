@@ -20,7 +20,7 @@ namespace Tvp\TemplaVoilaPlus\Controller\Backend\Ajax;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Http\JsonResponse;
+use Tvp\TemplaVoilaPlus\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 use Tvp\TemplaVoilaPlus\Service\ApiService;
