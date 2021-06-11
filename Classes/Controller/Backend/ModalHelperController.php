@@ -19,7 +19,7 @@ namespace Tvp\TemplaVoilaPlus\Controller\Backend;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Core\Http\HtmlResponse;
+use Tvp\TemplaVoilaPlus\Core\Http\HtmlResponse;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
 class ModalHelperController extends ActionController
