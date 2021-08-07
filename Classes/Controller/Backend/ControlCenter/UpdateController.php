@@ -1,6 +1,6 @@
 <?php
 
-namespace Tvp\TemplaVoilaPlus\Controller\Backend\Update;
+namespace Tvp\TemplaVoilaPlus\Controller\Backend\ControlCenter;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -17,13 +17,24 @@ namespace Tvp\TemplaVoilaPlus\Controller\Backend\Update;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 /**
  * Controller to show the switch dialog.
  *
  * @author Alexander Opitz <opitz.alexander@pluspol-interactive.de>
  */
-class SwitchUpdateController extends AbstractUpdateController
+class UpdateController extends AbstractUpdateController
 {
+
+    /**
+     * List all available configurations for templates
+     */
+    public function infoAction()
+    {
+//         $this->registerDocheaderButtons();
+//         $this->view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation([]);
+//         $this->view->getModuleTemplate()->setFlashMessageQueue($this->controllerContext->getFlashMessageQueue());
+
+        $this->view->assign('pageTitle', 'TemplaVoilà! Plus - Update Scripts');
+    }
 }

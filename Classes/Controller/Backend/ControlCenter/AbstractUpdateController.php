@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tvp\TemplaVoilaPlus\Controller\Backend\Update;
+namespace Tvp\TemplaVoilaPlus\Controller\Backend\ControlCenter;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -17,28 +17,36 @@ namespace Tvp\TemplaVoilaPlus\Controller\Backend\Update;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use Tvp\TemplaVoilaPlus\Service\ConfigurationService;
+use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 /**
  * Abstract Controller for Update Scripts
  *
  * @author Alexander Opitz <opitz.alexander@pluspol-interactive.de>
  */
-class AbstractUpdateController
+class AbstractUpdateController extends ActionController
 {
     /**
-     * @var \TYPO3\CMS\Fluid\View\StandaloneView
+     * Default View Container
+     *
+     * @var BackendTemplateView
      */
-    protected $fluid;
+    protected $defaultViewObjectName = BackendTemplateView::class;
 
     /**
-     * Filename of template to view in fluid
-     *
-     * @var string
+     * Initialize action
      */
-    protected $template;
+    protected function initializeAction()
+    {
+        TemplaVoilaUtility::getLanguageService()->includeLLFile(
+            'EXT:templavoilaplus/Resources/Private/Language/Backend/ControlCenter/Update.xlf'
+        );
+    }
 
     /**
      * holds the extconf configuration
@@ -49,38 +57,27 @@ class AbstractUpdateController
 
     public function __construct()
     {
-        $this->fluid = GeneralUtility::makeInstance(\TYPO3\CMS\Fluid\View\StandaloneView::class);
-        $this->fluid->setPartialRootPaths([
-            GeneralUtility::getFileAbsFileName('EXT:templavoilaplus/Resources/Private/Partials/Backend')
-        ]);
-        $this->fluid->setTemplateRootPaths([
-            GeneralUtility::getFileAbsFileName('EXT:templavoilaplus/Resources/Private/Templates/Backend/')
-        ]);
-        $classPartsName = explode('\\', get_class($this));
-        $this->setTemplate('Update/' . substr(array_pop($classPartsName), 0, -16));
+//         $this->fluid = GeneralUtility::makeInstance(\TYPO3\CMS\Fluid\View\StandaloneView::class);
+//         $this->fluid->setPartialRootPaths([
+//             GeneralUtility::getFileAbsFileName('EXT:templavoilaplus/Resources/Private/Partials/Backend')
+//         ]);
+//         $this->fluid->setTemplateRootPaths([
+//             GeneralUtility::getFileAbsFileName('EXT:templavoilaplus/Resources/Private/Templates/Backend/')
+//         ]);
+//         $classPartsName = explode('\\', get_class($this));
+//         $this->setTemplate('Update/' . substr(array_pop($classPartsName), 0, -16));
 
         /** @var ConfigurationService */
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
         $this->extConf = $configurationService->getExtensionConfig();
     }
 
-    public function setTemplate($template)
-    {
-        $this->template = $template;
-    }
-
-    public function getTemplate()
-    {
-        return $this->template;
-    }
-
     /**
      * @return string The HTML to be shown.
      */
-    public function run()
+    public function assignDefault()
     {
-        $this->fluid->setTemplate($this->template);
-        $this->fluid->assignMultiple([
+        $this->view->assignMultiple([
             'is8orNewer' => version_compare(TYPO3_version, '8.0.0', '>=') ? true : false,
             'is9orNewer' => version_compare(TYPO3_version, '9.0.0', '>=') ? true : false,
             'is10orNewer' => version_compare(TYPO3_version, '10.0.0', '>=') ? true : false,
@@ -89,6 +86,5 @@ class AbstractUpdateController
             'tvpVersion' => ExtensionManagementUtility::getExtensionVersion('templavoilaplus'),
             'useStaticDS' => ($this->extConf['staticDS']['enable']),
         ]);
-        return $this->fluid->render();
     }
 }
