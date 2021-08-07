@@ -61,6 +61,12 @@ class AbstractUpdateController extends ActionController
         );
     }
 
+    protected function initializeView(\TYPO3\CMS\Extbase\Mvc\View\ViewInterface $view)
+    {
+        $this->view->getModuleTemplate()->getDocHeaderComponent()->disable();
+        $this->assignDefault();
+    }
+
     /**
      * holds the extconf configuration
      *
@@ -70,16 +76,6 @@ class AbstractUpdateController extends ActionController
 
     public function __construct()
     {
-//         $this->fluid = GeneralUtility::makeInstance(\TYPO3\CMS\Fluid\View\StandaloneView::class);
-//         $this->fluid->setPartialRootPaths([
-//             GeneralUtility::getFileAbsFileName('EXT:templavoilaplus/Resources/Private/Partials/Backend')
-//         ]);
-//         $this->fluid->setTemplateRootPaths([
-//             GeneralUtility::getFileAbsFileName('EXT:templavoilaplus/Resources/Private/Templates/Backend/')
-//         ]);
-//         $classPartsName = explode('\\', get_class($this));
-//         $this->setTemplate('Update/' . substr(array_pop($classPartsName), 0, -16));
-
         /** @var ConfigurationService */
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
         $this->extConf = $configurationService->getExtensionConfig();
