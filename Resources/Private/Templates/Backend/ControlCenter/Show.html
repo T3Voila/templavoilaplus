@@ -12,12 +12,16 @@
 
 <f:section name="content">
 
-    <h2>Configuration</h2>
+    <h2>Configuration {is10orNewer}</h2>
+
+    <f:if condition="{is10orNewer}"><f:then>
 
     <div class="row bg-info border border-primary py-2">
         <div class="col-sm-3">
             <div class="card my-0">
-                <h5 class="card-header">DataStructures</h5>
+                <div class="card-header">
+                    <h5 class="card-title">DataStructures</h5>
+                </div>
                 <div class="card-body">
                     <p class="card-text">@TODO Description</p>
                 </div>
@@ -31,7 +35,9 @@
         </div>
         <div class="col-sm-3">
             <div class="card my-0">
-                <h5 class="card-header">Mappings</h5>
+                <div class="card-header">
+                    <h5 class="card-title">Mappings</h5>
+                </div>
                 <div class="card-body">
                     <p class="card-text">@TODO Description</p>
                 </div>
@@ -45,7 +51,9 @@
         </div>
         <div class="col-sm-3">
             <div class="card my-0">
-                <h5 class="card-header">Templates</h5>
+                <div class="card-header">
+                    <h5 class="card-title">Templates</h5>
+                </div>
                 <div class="card-body">
                     <p class="card-text">@TODO Description</p>
                 </div>
@@ -58,6 +66,61 @@
             </div>
         </div>
     </div>
+
+    </f:then><f:else>
+
+    <div class="row">
+        <div class="col-sm-3">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">DataStructures</h3>
+                </div>
+                <div class="panel-body">
+                    <p class="panel-text">@TODO Description</p>
+                </div>
+                <ul class="list-group">
+                    <li class="list-group-item">Found <f:count subject="{dataStructurePlaces}" /> configurations</li>
+                </ul>
+                <div class="panel-footer">
+                    <f:link.action controller="Backend\ControlCenter\DataStructures" action="list" class="btn btn-primary"><core:icon identifier="actions-view-go-forward" /> View DataStructures</f:link.action>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Mappings</h3>
+                </div>
+                <div class="panel-body">
+                    <p class="panel-text">@TODO Description</p>
+                </div>
+                <ul class="list-group">
+                    <li class="list-group-item">Found <f:count subject="{mappingPlaces}" /> configurations</li>
+                </ul>
+                <div class="panel-footer">
+                    <f:link.action controller="Backend\ControlCenter\Mappings" action="list" class="btn btn-primary"><core:icon identifier="actions-view-go-forward" /> View Mappings</f:link.action>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h5 class="panel-title">Templates</h5>
+                </div>
+                <div class="panel-body">
+                    <p class="panel-text">@TODO Description</p>
+                </div>
+                <ul class="list-group">
+                    <li class="list-group-item">Found <f:count subject="{templatePlaces}" /> configurations</li>
+                </ul>
+                <div class="panel-footer">
+                    <f:link.action controller="Backend\ControlCenter\Templates" action="list" class="btn btn-primary"><core:icon identifier="actions-view-go-forward" /> View Templates</f:link.action>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </f:else></f:if>
 
     <h2>Update</h2>
 
