@@ -45,7 +45,7 @@ if (TYPO3_MODE === 'BE') {
     );
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
         $moduleName,
-        'web',
+        'tools',
         'ControlCenter',
         'bottom',
         [
