@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tvp\TemplaVoilaPlus\Controller\Backend\Update;
+namespace Tvp\TemplaVoilaPlus\Controller\Backend\ControlCenter;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -29,14 +29,14 @@ use Tvp\TemplaVoilaPlus\Utility\DataStructureUtility;
  *
  * @author Alexander Opitz <opitz.alexander@pluspol-interactive.de>
  */
-class TemplaVoilaPlus8UpdateController extends StepUpdateController
+class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
 {
     protected $errors = [];
 
     /**
      * Introduction
      */
-    protected function stepStart()
+    protected function stepStartAction()
     {
         // Check sys_registry if we already run?
         // Not realy, this must be done in the SwitchUpdateController who will disable our button
@@ -46,7 +46,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
     /**
      * Static DS or Database
      */
-    protected function step1()
+    protected function step1Action()
     {
         $tableDatastructureFound = $this->doesTableExists('tx_templavoilaplus_datastructure');
         $tableTemplateFound = $this->doesTableExists('tx_templavoilaplus_tmplobj');
@@ -73,17 +73,22 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
         // Site Management
         $storagePidsAreFine = false;
 
-        $allPossiblePids = $this->getAllPossibleStoragePidsFromTmplobj();
-        if (!isset($allPossiblePids[-1])) {
-            $storagePidsAreFine = true;
+        $allPossiblePids = $allDs = $allTo = [];
+
+        if ($allOldDatabaseElementsFound) {
+            $allPossiblePids = $this->getAllPossibleStoragePidsFromTmplobj();
+
+            if (!isset($allPossiblePids[-1])) {
+                $storagePidsAreFine = true;
+            }
+
+            // Search for all DS configurations
+            $useStaticDS = $this->getUseStaticDs();
+            $allDs = $this->getAllDs($useStaticDS);
+
+            // Search for all TO configurations
+            $allTo = $this->getAllToFromDB();
         }
-
-        // Search for all DS configurations
-        $useStaticDS = $this->getUseStaticDs();
-        $allDs = $this->getAllDs($useStaticDS);
-
-        // Search for all TO configurations
-        $allTo = $this->getAllToFromDB();
 
         $allDsToValid = false;
         list($validationDsToErrors, $validatedDs, $validatedToWithDs) = $this->checkAllDsToValid($allDs, $allTo);
@@ -106,7 +111,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
             $indentation = (int)$this->extConf['ds']['indentation'];
         }
 
-        $this->fluid->assignMultiple([
+        $this->view->assignMultiple([
             'allOldDatabaseElementsFound' => $allOldDatabaseElementsFound,
             'allNewDatabaseElementsFound' => $allNewDatabaseElementsFound,
             'storagePidsAreFine' => $storagePidsAreFine,
@@ -399,6 +404,10 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
     {
         $validationErrors = [];
 
+        if (count($validatedToWithDs) === 0) {
+            return [$validationErrors, $validatedToWithDs];
+        }
+
         // PAGES
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getQueryBuilderForTable('pages');
@@ -485,7 +494,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
     /**
      * Find extension names / possible theme extensions / create own theme extension
      */
-    protected function step2()
+    protected function step2Action()
     {
         $packagesQualified = [];
         $showAll = (bool) $_POST['showAll'];
@@ -539,7 +548,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
             }
         }
 
-        $this->fluid->assignMultiple([
+        $this->view->assignMultiple([
             'terListHint' => (count($allTerExtensionKeys) === 0 ? true : false),
             'packagesQualified' => $packagesQualified,
         ]);
@@ -567,7 +576,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
      * Validate an existing extension (writable, already theme extension, overwrite or add)
      * or verify extension key and collect information for the new Extension
      */
-    protected function step3()
+    protected function step3Action()
     {
         $selection = $_POST['selection'];
 
@@ -661,7 +670,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
             $errors[] = 'Extension already exists on system, select it in step 2 directly';
         }
 
-        $this->fluid->assignMultiple([
+        $this->view->assignMultiple([
             'terListHint' => (count($allTerExtensionKeys) === 0 ? true : false),
             'errors' => $errors,
             'hasError' => (count($errors) ? true : false),
@@ -682,7 +691,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
 
         $errors[] = 'Using an existing extension isn\'t supported yet.';
 
-        $this->fluid->assignMultiple([
+        $this->view->assignMultiple([
             'errors' => $errors,
             'hasError' => (count($errors) ? true : false),
             'selection' => $selection,
@@ -694,7 +703,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
      * Or add them to Site Management directories (if support is implemented)
      * The place may depend if you use composer installed TYPO3 or package based TYPO3
      */
-    protected function step4()
+    protected function step4Action()
     {
         $errors = [];
 
@@ -906,7 +915,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
         } catch (\Exception $e) {
             $errors[] = $e->getMessage();
         }
-        $this->fluid->assignMultiple([
+        $this->view->assignMultiple([
             'errors' => $errors,
             'hasError' => (count($errors) ? true : false),
             'newExtensionKey' => $newExtensionKey,
@@ -1374,7 +1383,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
      * Register the generated extensions
      * Update the map field with the configuration (depending on ds/to)
      */
-    protected function step5()
+    protected function step5Action()
     {
         $errors = [];
 
@@ -1432,7 +1441,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
         // Write into sys_registry including which storage_pid we already did
     }
 
-    protected function stepFinal()
+    protected function stepFinalAction()
     {
     }
 
@@ -1502,7 +1511,7 @@ class TemplaVoilaPlus8UpdateController extends StepUpdateController
 
     protected function stepTODO()
     {
-        $this->fluid->assignMultiple([
+        $this->view->assignMultiple([
             'storagePidConversationNeeded' => $this->storagePidConversationNeeded(),
         ]);
     }

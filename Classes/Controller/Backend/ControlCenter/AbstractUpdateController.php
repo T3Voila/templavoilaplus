@@ -39,6 +39,19 @@ class AbstractUpdateController extends ActionController
     protected $defaultViewObjectName = BackendTemplateView::class;
 
     /**
+     * We define BackendTemplateView above so we will get it.
+     *
+     * @var BackendTemplateView
+     * @api
+     */
+    protected $view = null;
+
+    /**
+     * @var int the id of current page
+     */
+    protected $pageId = 0;
+
+    /**
      * Initialize action
      */
     protected function initializeAction()

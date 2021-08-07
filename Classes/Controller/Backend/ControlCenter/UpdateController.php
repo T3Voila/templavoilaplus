@@ -31,10 +31,10 @@ class UpdateController extends AbstractUpdateController
      */
     public function infoAction()
     {
-//         $this->registerDocheaderButtons();
-//         $this->view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation([]);
-//         $this->view->getModuleTemplate()->setFlashMessageQueue($this->controllerContext->getFlashMessageQueue());
+        $this->view->getModuleTemplate()->getDocHeaderComponent()->disable();
+        $this->view->getModuleTemplate()->setFlashMessageQueue($this->controllerContext->getFlashMessageQueue());
 
+        $this->assignDefault();
         $this->view->assign('pageTitle', 'TemplaVoilà! Plus - Update Scripts');
     }
 }

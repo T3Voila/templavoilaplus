@@ -119,24 +119,21 @@
         <p class="lead">It seams all your data is fine, so you can go to the next step. Or rerun this step, if you changed some data (maybe deleted a DS or TO as it was unused).</p>
     </f:if>
 
-    <form action="#" method="POST">
-        <input type="hidden" name="update" value="TemplaVoilaPlus8" />
-        <div class="row">
-            <div class="col-sm-4">
-                <button class="btn btn-default btn-block btn-lg" type="submit" name="step" value="start">
-                    <core:icon identifier="actions-view-go-back" /> Back to start
-                </button>
-            </div>
-            <div class="col-sm-4">
-                <button class="btn {f:if(condition='{allChecksAreFine}', then='btn-default', else='btn-success')} btn-block btn-lg" type="submit" name="step" value="1">
-                    <core:icon identifier="actions-system-refresh" /> Rerun step 1
-                </button>
-            </div>
-            <div class="col-sm-4">
-                <button class="btn btn-primary btn-block btn-lg {f:if(condition='!{allChecksAreFine}', then='disabled')}" type="{f:if(condition='{allChecksAreFine}', then='submit', else='button')}" name="step" value="2">
-                    <core:icon identifier="actions-view-go-forward" /> Continue with step 2
-                </button>
-            </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <f:link.action action="stepStart" class="btn btn-default btn-block btn-lg">
+                <core:icon identifier="actions-view-go-back" /> Back to start
+            </f:link.action>
         </div>
-    </form>
+        <div class="col-sm-4">
+            <f:link.action action="step1" class="btn {f:if(condition='{allChecksAreFine}', then='btn-default', else='btn-success')} btn-block btn-lg">
+                <core:icon identifier="actions-system-refresh" /> Rerun step 1
+            </f:link.action>
+        </div>
+        <div class="col-sm-4">
+            <f:link.action action="step2" class="btn btn-primary btn-block btn-lg {f:if(condition='!{allChecksAreFine}', then='disabled')}">
+                <core:icon identifier="actions-view-go-forward" /> Continue with step 2
+            </f:link.action>
+        </div>
+    </div>
 </div>
