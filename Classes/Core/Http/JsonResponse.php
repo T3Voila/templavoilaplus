@@ -62,7 +62,7 @@ class JsonResponse extends \TYPO3\CMS\Core\Http\Response
         array $headers = [],
         $encodingOptions = self::DEFAULT_JSON_FLAGS
     ) {
-        $body = new Stream('php://temp', 'wb+');
+        $body = new \TYPO3\CMS\Core\Http\Stream('php://temp', 'wb+');
         parent::__construct($body, $status, $headers);
 
         if (!empty($data)) {
