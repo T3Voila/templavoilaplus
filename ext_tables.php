@@ -54,7 +54,7 @@ if (TYPO3_MODE === 'BE') {
             $classPrefixForRegisterModule . 'Backend\ControlCenter\Mappings' . $classPostfixForRegisterModule => 'list',
             $classPrefixForRegisterModule . 'Backend\ControlCenter\Templates' . $classPostfixForRegisterModule => 'list,info',
             $classPrefixForRegisterModule . 'Backend\ControlCenter\Update' . $classPostfixForRegisterModule => 'info',
-            $classPrefixForRegisterModule . 'Backend\ControlCenter\TemplaVoilaPlus8Update' . $classPostfixForRegisterModule => 'stepStart,step1,step2,step3,step4,step5,stepFinal',
+            $classPrefixForRegisterModule . 'Backend\ControlCenter\TemplaVoilaPlus8Update' . $classPostfixForRegisterModule => 'stepStart,step1,step2,step3,step3NewExtension,step3ExistingExtension,step4,step5,stepFinal',
         ],
         [
             'access' => 'user,group',

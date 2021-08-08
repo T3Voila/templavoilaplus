@@ -581,17 +581,16 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
         $selection = $_POST['selection'];
 
         if ($selection === '_new_') {
-            return '3NewExtension';
+            $this->forward('step3NewExtension');
         }
         if (!empty($selection)) {
-            return '3ExistingExtension';
+            $this->forward('step3ExistingExtension');
         }
 
-        return '2'; // Return to step 2
-        // Create files and folders
+        $this->forward('step2'); // Return to step 2
     }
 
-    protected function step3NewExtension()
+    protected function step3NewExtensionAction()
     {
         $errors = [];
 
@@ -683,7 +682,7 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
         ]);
     }
 
-    protected function step3ExistingExtension()
+    protected function step3ExistingExtensionAction()
     {
         $errors = [];
 
